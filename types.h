@@ -1,0 +1,122 @@
+// temporary file
+
+#ifndef _TYPES_H
+#define _TYPES_H
+
+#include "resource.h"
+
+#include <windows.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <mmsystem.h>
+#include <dsound.h>
+#include <ddraw.h>
+#include <ddstream.h>
+#include <io.h>
+#include <process.h>
+#include <math.h>
+#include <time.h>
+#include <shellapi.h>
+#include <shlobj.h>
+
+#pragma warning (disable : 4309) // truncation of constant value
+#pragma warning (disable : 4305) // truncation of int
+#pragma warning (disable : 4018) // signed/unsigned mismatch
+#pragma warning (disable : 4700) // used without having been initialized
+#pragma warning (disable : 4805) // unsafe bool mix
+#pragma warning (disable : 4244) // conversion loss
+#pragma warning (disable : 4800) // bool perf
+#pragma warning (disable : 4146) // negative unsigned
+
+#include "enums.h"
+#include "structs.h"
+
+#include "DiabloUI/_diabloui.h"
+#include "3rdParty/Storm/Source/_storm.h"
+#include "3rdParty/PKWare/pkware.h"
+
+
+#include "defs.h"
+
+// If defined, use copy protection [Default -> Defined]
+//#define COPYPROT
+// If defined, don't reload for debuggers [Default -> Undefined]
+#define DEBUGGER
+// If defined, don't fry the CPU [Default -> Undefined]
+#define SLEEP
+
+/* temp macro for asm XLAT */
+#define ASM_XLAT(eax,ebx) eax = (eax & 0xFFFFFF00) + LOBYTE(ebx[LOBYTE(eax)])
+
+// header files
+#include "Source/appfat.h"
+#include "Source/automap.h"
+#include "Source/capture.h"
+#include "Source/codec.h"
+#include "Source/control.h"
+#include "Source/cursor.h"
+#include "Source/dead.h"
+#include "Source/debug.h"
+#include "Source/diablo.h"
+#include "Source/doom.h"
+#include "Source/drlg_l1.h"
+#include "Source/drlg_l2.h"
+#include "Source/drlg_l3.h"
+#include "Source/drlg_l4.h"
+#include "Source/dthread.h"
+#include "Source/dx.h"
+#include "Source/effects.h"
+#include "Source/encrypt.h"
+#include "Source/engine.h"
+#include "Source/error.h"
+#include "Source/fault.h"
+#include "Source/gamemenu.h"
+#include "Source/gendung.h"
+#include "Source/gmenu.h"
+#include "Source/help.h"
+#include "Source/init.h"
+#include "Source/interfac.h"
+#include "Source/inv.h"
+#include "Source/items.h"
+#include "Source/lighting.h"
+#include "Source/loadsave.h"
+#include "Source/logging.h"
+#include "Source/mainmenu.h"
+#include "Source/minitext.h"
+#include "Source/missiles.h"
+#include "Source/monster.h"
+#include "Source/movie.h"
+#include "Source/mpqapi.h"
+#include "Source/msg.h"
+#include "Source/msgcmd.h"
+#include "Source/multi.h"
+#include "Source/nthread.h"
+#include "Source/objects.h"
+#include "Source/pack.h"
+#include "Source/palette.h"
+#include "Source/path.h"
+#include "Source/pfile.h"
+#include "Source/player.h"
+#include "Source/plrmsg.h"
+#include "Source/portal.h"
+#include "Source/quests.h"
+#include "Source/restrict.h"
+#include "Source/scrollrt.h"
+#include "Source/setmaps.h"
+#include "Source/sha.h"
+#include "Source/sound.h"
+#include "Source/spells.h"
+#include "Source/stores.h"
+#include "Source/sync.h"
+#include "Source/textdat.h" // check file name
+#include "Source/themes.h"
+#include "Source/tmsg.h"
+#include "Source/town.h"
+#include "Source/towners.h"
+#include "Source/track.h"
+#include "Source/trigs.h"
+#include "Source/wave.h"
+#include "Source/world.h"
+
+#endif
