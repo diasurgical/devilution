@@ -40,7 +40,8 @@ Currently there are a few issues with the decompiled code. Most of them are outl
 If you are experienced with reversing, help is needed to document and decompile the user interface (DiabloUI) to help make Diablo cross-plateform.
 
 # Credits
-- @mewmew - documenting the Windows-specific Diablo code (engine, mpq, directx).
+- @mewmew - documenting the Windows-specific Diablo code (engine, mpq, directx)
+- Ladislav Zezula - decompiling PKWARE library
 - @fearedbliss - being awe-inspiring
 - Climax Studios - basically giving out an intermediate source code
 - Blizzard North - wait, this was a typo!
