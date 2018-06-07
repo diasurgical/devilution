@@ -47,7 +47,7 @@ Screenshot 1: Monster life https://postimg.cc/image/xgmizy2h9/
 Screenshot 2: New trade screen https://postimg.cc/image/nw2wd2kv1/
 
 # Credits
-- mewmew - documenting the Windows-specific Diablo code (engine, mpq, directx)
+- [sanctuary](https://github.com/sanctuary) - documenting the Windows-specific Diablo code (engine, mpq, directx)
 - Ladislav Zezula - decompiling PKWARE library
 - fearedbliss - being awe-inspiring
 - Climax Studios - basically giving out an intermediate source code
