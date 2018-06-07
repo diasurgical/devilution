@@ -1,0 +1,36 @@
+[COMMENTS IN CODE]
+ BUG_FIX    known bugs in original code (to be kept that way, but with fix in comments)
+ /*         block comments are things to be fixed/checked
+ FIX_ME     bad data
+
+[PROBLEMS IN DECOMPILED CODE]
+ 1xxx       Serious bugs (crash/fault)
+ 2xxx       Minor bugs (noticeable but can be avoided)
+ 3xxx       Code issues (incorrect code that still compiles/works)
+
+1000 - The Cathedral doesn't generate correctly, sometimes crashing
+1001 - Sometimes dungeon will crash on loading if previous levels loaded (DrawClippedObject)
+1002 - Golem usually crashes, or appears invisible if summoned
+1003 - Stone cursed monsters frequently crash when killed
+1004 - Some CEL functions were written in ASM and have been disabled (engine.cpp)
+1005 - After being in the dungeon for awhile, the 'Control Panel' will sometimes
+       corrupt and be filled with glitched colors (likely a buffer overflow)
+1006 - Timed messages are broken and have been disabled (tmsg.cpp)
+1007 - Server commands are broken and have been disabled (msgcmd.cpp)
+
+2000 - Rooms/halls don't generate correctly in the Catacombs
+2001 - The last seal in Lazarus' Lair doesn't trigger the video/teleport
+2002 - White pixels on monsters/cathedral/catacombs (palette entry 256?)
+2003 - Swapping items in inventory sometimes deletes the item
+2004 - Some spells don't use any mana or charges when they should
+2005 - Some tiles are drawn fully lit when they should be transparent (world.cpp)
+2006 - Objects should darken with radius instead of being fully lit
+2007 - Automap sometimes draws incorrectly, check 'engine_draw_automap_pixels'
+       *Bad args ECX/EDX for 'engine_draw_pixel' (engine.cpp)
+
+3000 - Critical sections should be constructors using CCritSect
+3001 - Function 'DRLG_L4TransFix', decompile and check (Test: seed 2349839 level 13)
+3002 - Some code uses macros such as __PAIR__ or __ROL4__, or __int64
+3003 - Some functions/structures have incorrect signing (signed/unsigned BYTE)
+3004 - Function 'GetLevelMTypes', decompile and check (monster.cpp)
+3005 - Function 'SetAutomapView', decompile and check (automap.cpp)
