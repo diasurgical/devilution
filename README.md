@@ -37,7 +37,7 @@ Currently there are a few issues with the decompiled code. Most of them are outl
 - Storm.dll: we want Diablo to be independent of this library, the main file functions have been reversed as part of StormLib.
 - VidSize.exe: changes one byte in registry, ignore.
 
-If you are experienced with reversing, help is needed to document and decompile the user interface (DiabloUI) to help make Diablo cross-plateform.
+If you are experienced with reversing, help is needed to document and decompile the user interface (DiabloUI) to help make Diablo cross-platform.
 
 # Modding
 Here are some screenshots of a few things I tinkered around with, to demonstrate what can be achieved.
@@ -47,9 +47,9 @@ Screenshot 1: Monster life https://postimg.cc/image/xgmizy2h9/
 Screenshot 2: New trade screen https://postimg.cc/image/nw2wd2kv1/
 
 # Credits
-- @mewmew - documenting the Windows-specific Diablo code (engine, mpq, directx)
+- mewmew - documenting the Windows-specific Diablo code (engine, mpq, directx)
 - Ladislav Zezula - decompiling PKWARE library
-- @fearedbliss - being awe-inspiring
+- fearedbliss - being awe-inspiring
 - Climax Studios - basically giving out an intermediate source code
 - Blizzard North - wait, this was a typo!
 - Depression - reason to waste four months of my life doing this ;)
