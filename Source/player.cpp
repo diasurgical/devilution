@@ -3938,14 +3938,14 @@ int __fastcall PM_DoSpell(int pnum)
 		if ( !plr[v2]._pSplFrom )
 		{
 			if ( _LOBYTE(plr[v2]._pRSplType) == 2
-			  && !(plr[v2]._pScrlSpells[1] & ((unsigned __int64)(1 << (_LOBYTE(plr[v2]._pRSpell) - 1)) >> 32) | plr[v2]._pScrlSpells[0] & (unsigned int)(1 << (_LOBYTE(plr[v2]._pRSpell) - 1))) )
+			  && !(plr[v2]._pScrlSpells[1] & ((unsigned __int64)(1i64 << (_LOBYTE(plr[v2]._pRSpell) - 1)) >> 32) | plr[v2]._pScrlSpells[0] & (unsigned int)(1i64 << (_LOBYTE(plr[v2]._pRSpell) - 1))) )
 			{
 				plr[v2]._pRSpell = -1;
 				_LOBYTE(plr[v2]._pRSplType) = 4;
 				drawpanflag = 255;
 			}
 			if ( _LOBYTE(plr[v2]._pRSplType) == 3
-			  && !(plr[v2]._pISpells[1] & ((unsigned __int64)(1 << (_LOBYTE(plr[v2]._pRSpell) - 1)) >> 32) | plr[v2]._pISpells[0] & (unsigned int)(1 << (_LOBYTE(plr[v2]._pRSpell) - 1))) )
+			  && !(plr[v2]._pISpells[1] & ((unsigned __int64)(1i64 << (_LOBYTE(plr[v2]._pRSpell) - 1)) >> 32) | plr[v2]._pISpells[0] & (unsigned int)(1i64 << (_LOBYTE(plr[v2]._pRSpell) - 1))) )
 			{
 				plr[v2]._pRSpell = -1;
 				_LOBYTE(plr[v2]._pRSplType) = 4;
@@ -4663,7 +4663,7 @@ void __cdecl ValidatePlayer()
 	__int64 v14; // [esp+Ch] [ebp-8h]
 
 	v0 = 0;
-	v14 = 0;
+	v14 = 0i64;
 	if ( (unsigned int)myplr >= 4 )
 		TermMsg("ValidatePlayer: illegal player %d", myplr);
 	v1 = myplr;
@@ -4711,7 +4711,7 @@ void __cdecl ValidatePlayer()
 	{
 		if ( *v11 != -1 )
 		{
-			v14 |= 1 << ((unsigned char)v12 - 1);
+			v14 |= 1i64 << ((unsigned char)v12 - 1);
 			v13 = &plr[v1]._pSplLvl[v12];
 			if ( *v13 > 15 )
 				*v13 = 15;

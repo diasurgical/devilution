@@ -61,32 +61,32 @@ typedef struct _WSIZE
 #define GAMESTATE_REPLAY  0x80
 
 
-extern "C" BOOL STORMAPI SNetCreateGame(const char *pszGameName, const char *pszGamePassword, const char *pszGameStatString, DWORD dwGameType, char *GameTemplateData, int GameTemplateSize, int playerCount, char *creatorName, char *a11, int *playerID);
-extern "C" BOOL STORMAPI SNetDestroy();
-extern "C" BOOL STORMAPI SNetEnumProviders(int (STORMAPI *callback)(DWORD, DWORD, DWORD, DWORD), int mincaps);
+BOOL STORMAPI SNetCreateGame(const char *pszGameName, const char *pszGamePassword, const char *pszGameStatString, DWORD dwGameType, char *GameTemplateData, int GameTemplateSize, int playerCount, char *creatorName, char *a11, int *playerID);
+BOOL STORMAPI SNetDestroy();
+BOOL STORMAPI SNetEnumProviders(int (STORMAPI *callback)(DWORD, DWORD, DWORD, DWORD), int mincaps);
 
-extern "C" BOOL STORMAPI SNetEnumGames(int (STORMAPI *callback)(DWORD, DWORD, DWORD), int *hintnextcall);
+BOOL STORMAPI SNetEnumGames(int (STORMAPI *callback)(DWORD, DWORD, DWORD), int *hintnextcall);
 
 /*  SNetDropPlayer @ 106
- *
+ * 
  *  Drops a player from the current game.
- *
+ *  
  *  playerid:     The player ID for the player to be dropped.
- *  flags:
+ *  flags:        
  *
  *  Returns TRUE if the function was called successfully and FALSE otherwise.
  */
-extern "C" BOOL
+BOOL
 STORMAPI
 SNetDropPlayer(
       int playerid,
       DWORD flags);
 
 /*  SNetGetGameInfo @ 107
- *
+ * 
  *  Retrieves specific game information from Storm, such as name, password,
  *  stats, mode, game template, and players.
- *
+ *  
  *  type:         The type of data to retrieve. See GAMEINFO_ flags.
  *  dst:          The destination buffer for the data.
  *  length:       The maximum size of the destination buffer.
@@ -94,7 +94,7 @@ SNetDropPlayer(
  *
  *  Returns TRUE if the function was called successfully and FALSE otherwise.
  */
-extern "C" BOOL
+BOOL
 STORMAPI
 SNetGetGameInfo(
     int type,
@@ -116,7 +116,7 @@ SNetGetGameInfo(
 #define GAMEINFO_PLAYERS        6
 
 
-extern "C" BOOL STORMAPI SNetGetNumPlayers(int *firstplayerid, int *lastplayerid, int *activeplayers);
+BOOL STORMAPI SNetGetNumPlayers(int *firstplayerid, int *lastplayerid, int *activeplayers);
 
 
 typedef struct _CAPS
@@ -133,54 +133,54 @@ typedef struct _CAPS
 } CAPS, *PCAPS;
 
 
-extern "C" BOOL STORMAPI SNetGetPlayerCaps(char playerid, PCAPS playerCaps);
+BOOL STORMAPI SNetGetPlayerCaps(char playerid, PCAPS playerCaps);
 
 /*  SNetGetPlayerName @ 113
- *
+ * 
  *  Retrieves the name of a player given their player ID.
- *
+ *  
  *  playerid:     The player's ID.
  *  buffer:       The buffer that will receive the name.
  *  buffersize:   The maximum size of buffer.
  *
  *  Returns TRUE if the function was called successfully and FALSE otherwise.
  */
-extern "C" BOOL
+BOOL
 STORMAPI
 SNetGetPlayerName(
-      int playerid,
-      char *buffer,
+      int playerid, 
+      char *buffer, 
       size_t buffersize);
 
 /*  SNetGetProviderCaps @ 114
- *
+ * 
  *  Retrieves network provider capacity information.
- *
+ *  
  *  providerCaps: A pointer to a CAPS structure that will receive the information.
  *
  *  Returns TRUE if the function was called successfully and FALSE otherwise.
  */
-extern "C" BOOL
-STORMAPI
+BOOL 
+STORMAPI 
 SNetGetProviderCaps(
       PCAPS providerCaps);
 
 /*  SNetGetTurnsInTransit @ 115
- *
+ * 
  *  Retrieves the number of turns (buffers) that have been queued
  *  before sending them over the network.
- *
+ *  
  *  turns: A pointer to an integer that will receive the value.
  *
  *  Returns TRUE if the function was called successfully and FALSE otherwise.
  */
-extern "C" BOOL
+BOOL
 STORMAPI
 SNetGetTurnsInTransit(
       int *turns);
 
 
-extern "C" BOOL STORMAPI SNetInitializeDevice(int a1, int a2, int a3, int a4, int *a5);
+BOOL STORMAPI SNetInitializeDevice(int a1, int a2, int a3, int a4, int *a5);
 
 // Network provider structures
 typedef struct _client_info
@@ -285,16 +285,16 @@ typedef struct _storm_head
 
 
 /*  SNetInitializeProvider @ 117
- *
+ * 
  *  Initializes a provider by storing the provider callbacks, and calling
  *  spiInitialize() using the parameters passed to this function.
  *  Note: The use of the parameters is determined by the network
  *  module.
- *
+ *  
  *  providerName:     The provider's identifier. Example: 'TENB' (BNET).
- *  gameClientInfo:   A pointer to a clientInfo structure containing
+ *  gameClientInfo:   A pointer to a clientInfo structure containing 
  *                    information about the game client.
- *  userData:         A pointer to a userInfo structure containing information
+ *  userData:         A pointer to a userInfo structure containing information 
  *                    about the player.
  *  bnCallbacks:      A pointer to a battleInfo structure containing callbacks
  *                    and other information that is specific to Battle.net.
@@ -303,35 +303,35 @@ typedef struct _storm_head
  *
  *  Returns TRUE if the function was called successfully and FALSE otherwise.
  */
-extern "C" BOOL
+BOOL
 STORMAPI
 SNetInitializeProvider(
-      DWORD       providerName,
+      DWORD       providerName, 
       client_info  *gameClientInfo,
       user_info    *userData,
       battle_info  *bnCallbacks,
       module_info  *moduleData);
 
 
-extern "C" BOOL STORMAPI SNetJoinGame(int id, char *gameName, char *gamePassword, char *playerName, char *userStats, int *playerid);
+BOOL STORMAPI SNetJoinGame(int id, char *gameName, char *gamePassword, char *playerName, char *userStats, int *playerid);
 
 /*  SNetLeaveGame @ 119
- *
+ * 
  *  Notifies Storm that the player has left the game. Storm will
  *  notify all connected peers through the network provider.
- *
+ *  
  *  type: The leave type. It doesn't appear to be important, no documentation available.
  *
  *  Returns TRUE if the function was called successfully and FALSE otherwise.
  */
-extern "C" BOOL
+BOOL
 STORMAPI
 SNetLeaveGame(
     int type);
 
-extern "C" BOOL STORMAPI SNetPerformUpgrade(DWORD *upgradestatus);
-extern "C" BOOL STORMAPI SNetReceiveMessage(int *senderplayerid, char **data, int *databytes);
-extern "C" BOOL STORMAPI SNetReceiveTurns(int a1, int arraysize, char **arraydata, unsigned int *arraydatabytes, DWORD *arrayplayerstatus);
+BOOL STORMAPI SNetPerformUpgrade(DWORD *upgradestatus);
+BOOL STORMAPI SNetReceiveMessage(int *senderplayerid, char **data, int *databytes);
+BOOL STORMAPI SNetReceiveTurns(int a1, int arraysize, char **arraydata, unsigned int *arraydatabytes, DWORD *arrayplayerstatus);
 
 // Values for arrayplayerstatus
 #define SNET_PS_OK             0
@@ -351,16 +351,16 @@ typedef struct _s_evt
 
 
 // @TODO: "type" is unknown.
-extern "C" HANDLE STORMAPI SNetRegisterEventHandler(int type, void (STORMAPI *sEvent)(PS_EVT));
+HANDLE STORMAPI SNetRegisterEventHandler(int type, void (STORMAPI *sEvent)(PS_EVT));
 
-extern "C" int  STORMAPI SNetSelectGame(int a1, int a2, int a3, int a4, int a5, int *playerid);
+int  STORMAPI SNetSelectGame(int a1, int a2, int a3, int a4, int a5, int *playerid);
 
 /*  SNetSendMessage @ 127
- *
+ * 
  *  Sends a message to a player given their player ID. Network message
  *  is sent using class 01 and is retrieved by the other client using
  *  SNetReceiveMessage().
- *
+ *  
  *  playerID:   The player index of the player to receive the data.
  *              Conversely, this field can be one of the following constants:
  *                  SNPLAYER_ALL      | Sends the message to all players, including oneself.
@@ -370,7 +370,7 @@ extern "C" int  STORMAPI SNetSelectGame(int a1, int a2, int a3, int a4, int a5, 
  *
  *  Returns TRUE if the function was called successfully and FALSE otherwise.
  */
-extern "C" BOOL
+BOOL
 STORMAPI
 SNetSendMessage(
       int    playerID,
@@ -384,29 +384,29 @@ SNetSendMessage(
 
 
 /*  SNetSendTurn @ 128
- *
+ * 
  *  Sends a turn (data packet) to all players in the game. Network data
  *  is sent using class 02 and is retrieved by the other client using
  *  SNetReceiveTurns().
- *
+ *  
  *  data:       A pointer to the data.
  *  databytes:  The amount of bytes that the data pointer contains.
  *
  *  Returns TRUE if the function was called successfully and FALSE otherwise.
  */
-extern "C" BOOL
+BOOL
 STORMAPI
 SNetSendTurn(
       char    *data,
       size_t  databytes);
 
 /*  SNetSetGameMode @ 130
- *
+ * 
  *  Set's the game's mode flags, notifying the network
  *  provider that the state of the game has changed.
  *  For example: notifies Battle.net when the game is
  *  full.
- *
+ *  
  *  You should first call SNetGetGameInfo to retrieve
  *  the existing mode flags.
  *
@@ -420,7 +420,7 @@ SNetSendTurn(
  *
  *  Returns TRUE if the function was called successfully and FALSE otherwise.
  */
-extern "C" BOOL
+BOOL
 STORMAPI
 SNetSetGameMode(
       DWORD modeFlags,
@@ -428,59 +428,59 @@ SNetSetGameMode(
 
 #define SNMakeGamePublic() SNetSetGameMode( (DWORD mode, SNetGetGameInfo(GAMEINFO_MODEFLAGS, &mode, 4), mode), true)
 
-extern "C" BOOL STORMAPI SNetEnumGamesEx(int a1, int a2, int (__fastcall *callback)(DWORD, DWORD, DWORD), int *hintnextcall);
-extern "C" BOOL STORMAPI SNetSendServerChatCommand(const char *command);
+BOOL STORMAPI SNetEnumGamesEx(int a1, int a2, int (__fastcall *callback)(DWORD, DWORD, DWORD), int *hintnextcall);
+BOOL STORMAPI SNetSendServerChatCommand(const char *command);
 
-extern "C" BOOL STORMAPI SNetDisconnectAll(DWORD flags);
-extern "C" BOOL STORMAPI SNetCreateLadderGame(const char *pszGameName, const char *pszGamePassword, const char *pszGameStatString, DWORD dwGameType, DWORD dwGameLadderType, DWORD dwGameModeFlags, char *GameTemplateData, int GameTemplateSize, int playerCount, char *creatorName, char *a11, int *playerID);
+BOOL STORMAPI SNetDisconnectAll(DWORD flags);
+BOOL STORMAPI SNetCreateLadderGame(const char *pszGameName, const char *pszGamePassword, const char *pszGameStatString, DWORD dwGameType, DWORD dwGameLadderType, DWORD dwGameModeFlags, char *GameTemplateData, int GameTemplateSize, int playerCount, char *creatorName, char *a11, int *playerID);
 
 #define SNET_GAME_RESULT_WIN        1
 #define SNET_GAME_RESULT_LOSS       2
 #define SNET_GAME_RESULT_DRAW       3
 #define SNET_GAME_RESULT_DISCONNECT 4
 
-extern "C" BOOL STORMAPI SNetReportGameResult(unsigned a1, int size, int *results, const char* headerInfo, const char* detailInfo);
+BOOL STORMAPI SNetReportGameResult(unsigned a1, int size, int *results, const char* headerInfo, const char* detailInfo);
 
-extern "C" int  STORMAPI SNetSendLeagueCommand(char *cmd, char *callback);
-extern "C" int  STORMAPI SNetSendReplayPath(int a1, int a2, char *replayPath);
-extern "C" int  STORMAPI SNetGetLeagueName(int leagueID);
-extern "C" BOOL STORMAPI SNetGetPlayerNames(char **names);
-extern "C" int  STORMAPI SNetLeagueLogout(char *bnetName);
-extern "C" int  STORMAPI SNetGetLeaguePlayerName(char *curPlayerLeageName, size_t nameSize);
+int  STORMAPI SNetSendLeagueCommand(char *cmd, char *callback);
+int  STORMAPI SNetSendReplayPath(int a1, int a2, char *replayPath);
+int  STORMAPI SNetGetLeagueName(int leagueID);
+BOOL STORMAPI SNetGetPlayerNames(char **names);
+int  STORMAPI SNetLeagueLogout(char *bnetName);
+int  STORMAPI SNetGetLeaguePlayerName(char *curPlayerLeageName, size_t nameSize);
 
-extern "C" HGDIOBJ STORMAPI SDlgDefDialogProc(HWND hDlg, signed int DlgType, HDC textLabel, HWND hWnd);
+HGDIOBJ STORMAPI SDlgDefDialogProc(HWND hDlg, signed int DlgType, HDC textLabel, HWND hWnd);
 
-extern "C" HANDLE STORMAPI SDlgDialogBoxIndirectParam(HMODULE hModule, LPCSTR lpName, HWND hWndParent, LPVOID lpParam, LPARAM lParam);
+HANDLE STORMAPI SDlgDialogBoxIndirectParam(HMODULE hModule, LPCSTR lpName, HWND hWndParent, LPVOID lpParam, LPARAM lParam);
 
-extern "C" BOOL STORMAPI SDlgEndDialog(HWND hDlg, HANDLE nResult);
+BOOL STORMAPI SDlgEndDialog(HWND hDlg, HANDLE nResult);
 
-extern "C" BOOL STORMAPI SDlgSetControlBitmaps(HWND parentwindow, int *id, int a3, char *buffer2, char *buffer, int flags, int mask);
+BOOL STORMAPI SDlgSetControlBitmaps(HWND parentwindow, int *id, int a3, char *buffer2, char *buffer, int flags, int mask);
 
 /*
-// lpCursorName can only be IDC_ARROW
+// lpCursorName can only be IDC_ARROW 
 BOOL STORMAPI SDlgSetSystemCursor(void *lpSrcBuffer, void *p_a2, LPSIZE lpSize, LPCSTR lpCursorName);
 */
 
-extern "C" BOOL STORMAPI SDlgBltToWindowE(HWND hWnd, HRGN a2, char *a3, int a4, void *buffer, RECT *rct, SIZE *size, int a8, int a9, DWORD rop);
-extern "C" BOOL STORMAPI SDlgSetBitmapE(HWND hWnd, int a2, char *src, int mask1, int flags, int a6, int a7, int width, int a9, int mask2);
+BOOL STORMAPI SDlgBltToWindowE(HWND hWnd, HRGN a2, char *a3, int a4, void *buffer, RECT *rct, SIZE *size, int a8, int a9, DWORD rop);
+BOOL STORMAPI SDlgSetBitmapE(HWND hWnd, int a2, char *src, int mask1, int flags, int a6, int a7, int width, int a9, int mask2);
 
-extern "C" int  STORMAPI Ordinal224(int a1);
+int  STORMAPI Ordinal224(int a1);
 
-extern "C" BOOL STORMAPI SFileCloseArchive(HANDLE hArchive);
-extern "C" BOOL STORMAPI SFileCloseFile(HANDLE hFile);
+BOOL STORMAPI SFileCloseArchive(HANDLE hArchive);
+BOOL STORMAPI SFileCloseFile(HANDLE hFile);
 
-extern "C" BOOL STORMAPI SFileDdaBeginEx(HANDLE directsound, DWORD flags, DWORD mask, unsigned __int32 lDistanceToMove, signed __int32 volume, signed int a6, int a7);
-extern "C" BOOL STORMAPI SFileDdaDestroy();
-extern "C" BOOL STORMAPI SFileDdaEnd(HANDLE directsound);
-extern "C" BOOL STORMAPI SFileDdaGetPos(HANDLE directsound, int a2, int a3);
+BOOL STORMAPI SFileDdaBeginEx(HANDLE directsound, DWORD flags, DWORD mask, unsigned __int32 lDistanceToMove, signed __int32 volume, signed int a6, int a7);
+BOOL STORMAPI SFileDdaDestroy();
+BOOL STORMAPI SFileDdaEnd(HANDLE directsound);
+BOOL STORMAPI SFileDdaGetPos(HANDLE directsound, int a2, int a3);
 
-extern "C" BOOL STORMAPI SFileDdaInitialize(HANDLE directsound);
-extern "C" BOOL STORMAPI SFileDdaSetVolume(HANDLE directsound, signed int bigvolume, signed int volume);
-extern "C" BOOL STORMAPI SFileDestroy();
+BOOL STORMAPI SFileDdaInitialize(HANDLE directsound);
+BOOL STORMAPI SFileDdaSetVolume(HANDLE directsound, signed int bigvolume, signed int volume);
+BOOL STORMAPI SFileDestroy();
 
-extern "C" BOOL STORMAPI SFileGetFileArchive(HANDLE hFile, HANDLE archive);
-extern "C" LONG STORMAPI SFileGetFileSize(HANDLE hFile, LPDWORD lpFileSizeHigh);
-extern "C" BOOL STORMAPI SFileOpenArchive(const char *szMpqName, DWORD dwPriority, DWORD dwFlags, HANDLE *phMpq);
+BOOL STORMAPI SFileGetFileArchive(HANDLE hFile, HANDLE archive);
+LONG STORMAPI SFileGetFileSize(HANDLE hFile, LPDWORD lpFileSizeHigh);
+BOOL STORMAPI SFileOpenArchive(const char *szMpqName, DWORD dwPriority, DWORD dwFlags, HANDLE *phMpq);
 
 // values for dwFlags
 enum MPQFlags
@@ -492,8 +492,8 @@ enum MPQFlags
 };
 
 
-extern "C" BOOL STORMAPI SFileOpenFile(const char *filename, HANDLE *phFile);
-extern "C" BOOL STORMAPI SFileOpenFileEx(HANDLE hMpq, const char *szFileName, DWORD dwSearchScope, HANDLE *phFile);
+BOOL STORMAPI SFileOpenFile(const char *filename, HANDLE *phFile);
+BOOL STORMAPI SFileOpenFileEx(HANDLE hMpq, const char *szFileName, DWORD dwSearchScope, HANDLE *phFile);
 
 // values for dwSearchScope
 enum SFileFlags
@@ -504,22 +504,22 @@ enum SFileFlags
   SFILE_FROM_DISK     = 0x00000004
 };
 
-extern "C" BOOL STORMAPI SFileReadFile(HANDLE hFile, void *buffer, DWORD nNumberOfBytesToRead, DWORD *read, LONG lpDistanceToMoveHigh);
+BOOL STORMAPI SFileReadFile(HANDLE hFile, void *buffer, DWORD nNumberOfBytesToRead, DWORD *read, LONG lpDistanceToMoveHigh);
 
-extern "C" void STORMAPI SFileSetLocale(LCID lcLocale);
+void STORMAPI SFileSetLocale(LCID lcLocale);
 
 // mode:    0 - Silent (callback is NULL)
 //          1 - Application Defined
 //          2 - Handled by storm (callback is NULL)
 // BOOL STORMAPI callback(const char *pszFilename, DWORD dwErrCode, DWORD dwErrCount)
-extern "C" BOOL STORMAPI SFileSetIoErrorMode(DWORD mode, BOOL (STORMAPI *callback)(const char*,DWORD,DWORD) );
+BOOL STORMAPI SFileSetIoErrorMode(DWORD mode, BOOL (STORMAPI *callback)(const char*,DWORD,DWORD) );
 
-extern "C" BOOL STORMAPI SFileGetArchiveName(HANDLE hArchive, char *name, int length);
-extern "C" BOOL STORMAPI SFileGetFileName(HANDLE hFile, char *buffer, int length);
+BOOL STORMAPI SFileGetArchiveName(HANDLE hArchive, char *name, int length);
+BOOL STORMAPI SFileGetFileName(HANDLE hFile, char *buffer, int length);
 
-extern "C" BOOL STORMAPI SFileLoadFile(char *filename, void *buffer, int buffersize, int a4, int a5);
-extern "C" BOOL STORMAPI SFileUnloadFile(HANDLE hFile);
-extern "C" BOOL STORMAPI SFileLoadFileEx(void *hArchive, char *filename, int a3, int a4, int a5, DWORD searchScope, struct _OVERLAPPED *lpOverlapped);
+BOOL STORMAPI SFileLoadFile(char *filename, void *buffer, int buffersize, int a4, int a5);
+BOOL STORMAPI SFileUnloadFile(HANDLE hFile);
+BOOL STORMAPI SFileLoadFileEx(void *hArchive, char *filename, int a3, int a4, int a5, DWORD searchScope, struct _OVERLAPPED *lpOverlapped);
 
 // Options are DWORD except for #6
 // 1: [TRUE|FALSE] - If true, reports resource leaks (SErrReportResourceLeak/SErrReportNamedResourceLeak) to the attached debugger instead of a message box.
@@ -533,8 +533,8 @@ extern "C" BOOL STORMAPI SFileLoadFileEx(void *hArchive, char *filename, int a3,
 //BOOL STORMAPI StormGetOption(int type, void *pValue, size_t *pSize);
 //BOOL STORMAPI StormSetOption(int type, void *pValue, size_t size);
 
-extern "C" BOOL STORMAPI SBltROP3(void *lpDstBuffer, void *lpSrcBuffer, int srcDrawWidth, int srcDrawHeight, int dstWidth, int srcWidth, int a7, DWORD rop);
-extern "C" BOOL STORMAPI SBltROP3Clipped(void *lpDstBuffer, RECT *lpDstRect, POINT *lpDstPt, int a4, void *lpSrcBuffer, RECT *lpSrcRect, POINT *lpSrcPt, int a8, int a9, DWORD rop);
+BOOL STORMAPI SBltROP3(void *lpDstBuffer, void *lpSrcBuffer, int srcDrawWidth, int srcDrawHeight, int dstWidth, int srcWidth, int a7, DWORD rop);
+BOOL STORMAPI SBltROP3Clipped(void *lpDstBuffer, RECT *lpDstRect, POINT *lpDstPt, int a4, void *lpSrcBuffer, RECT *lpSrcRect, POINT *lpSrcPt, int a8, int a9, DWORD rop);
 
 #define SBMP_DEFAULT  0
 #define SBMP_BMP      1
@@ -543,15 +543,15 @@ extern "C" BOOL STORMAPI SBltROP3Clipped(void *lpDstBuffer, RECT *lpDstRect, POI
 
 
 /*  SBmpDecodeImage @ 321
- *
+ * 
  *  Decodes an image that has already been loaded into a buffer.
- *
+ *  
  *  dwImgType:        Optional, the image type. See SBMP_ macros.
  *  pSrcBuffer:       A pointer to the source buffer.
  *  dwSrcBuffersize:  The size of the data in the source buffer.
  *  pPalette:         An optional buffer that receives the image palette.
  *  pDstBuffer:       A buffer that receives the image data.
- *  dwDstBuffersize:  The size of the specified image buffer. If the size of the
+ *  dwDstBuffersize:  The size of the specified image buffer. If the size of the 
  *                    destination buffer is 0, then the destination buffer is not used.
  *  pdwWidth:         An optional variable that receives the image width.
  *  pdwHeight:        An optional variable that receives the image height.
@@ -559,8 +559,8 @@ extern "C" BOOL STORMAPI SBltROP3Clipped(void *lpDstBuffer, RECT *lpDstRect, POI
  *
  *  Returns TRUE if the image was supported and decoded correctly, FALSE otherwise.
  */
-extern "C" BOOL
-STORMAPI
+BOOL 
+STORMAPI 
 SBmpDecodeImage(
     DWORD        dwImgType,
     void         *pSrcBuffer,
@@ -574,9 +574,9 @@ SBmpDecodeImage(
 
 
 /*  SBmpLoadImage @ 323
- *
+ * 
  *  Load an image from an available archive into a buffer.
- *
+ *  
  *  pszFileName:  The name of the graphic in an active archive.
  *  pPalette:     An optional buffer that receives the image palette.
  *  pBuffer:      A buffer that receives the image data.
@@ -587,7 +587,7 @@ SBmpDecodeImage(
  *
  *  Returns TRUE if the image was supported and loaded correctly, FALSE otherwise.
  */
-extern "C" BOOL
+BOOL
 STORMAPI
 SBmpLoadImage(
     const char   *pszFileName,
@@ -599,10 +599,10 @@ SBmpLoadImage(
     DWORD        *pdwBpp      = NULL);
 
 /*  SBmpSaveImage @ 324
- *
- *  Save an image from a buffer to a file. The image format is determined
+ * 
+ *  Save an image from a buffer to a file. The image format is determined 
  *  from the filename and is either .gif, .pcx, .tga, or .bmp being the default.
- *
+ *  
  *  pszFileName:  The name of the file to create.
  *  pPalette:     A pointer to a palette array containing 256 entries.
  *  pBuffer:      A buffer containing the image data.
@@ -612,7 +612,7 @@ SBmpLoadImage(
  *
  *  Returns TRUE if the image was saved correctly, FALSE otherwise.
  */
-extern "C" BOOL
+BOOL
 STORMAPI
 SBmpSaveImage(
     const char    *pszFileName,
@@ -623,27 +623,27 @@ SBmpSaveImage(
     DWORD         dwBpp = 8);
 
 
-extern "C" HANDLE STORMAPI SBmpAllocLoadImage(const char *fileName, PALETTEENTRY *palette, void **buffer, int *width, int *height, int unused6, int unused7, void *(STORMAPI *allocFunction)(DWORD));
+HANDLE STORMAPI SBmpAllocLoadImage(const char *fileName, PALETTEENTRY *palette, void **buffer, int *width, int *height, int unused6, int unused7, void *(STORMAPI *allocFunction)(DWORD));
 
-extern "C" BOOL STORMAPI SCodeCompile(char *directives1, char *directives2, char *loopstring, unsigned int maxiterations, unsigned int flags, HANDLE handle);
-extern "C" BOOL STORMAPI SCodeDelete(HANDLE handle);
+BOOL STORMAPI SCodeCompile(char *directives1, char *directives2, char *loopstring, unsigned int maxiterations, unsigned int flags, HANDLE handle);
+BOOL STORMAPI SCodeDelete(HANDLE handle);
 
-extern "C" int  STORMAPI SCodeExecute(HANDLE handle, int a2);
+int  STORMAPI SCodeExecute(HANDLE handle, int a2);
 
-extern "C" BOOL STORMAPI SDrawAutoInitialize(HINSTANCE hInst, LPCSTR lpClassName, LPCSTR lpWindowName, WNDPROC pfnWndProc, int nMode, int nWidth, int nHeight, int nBits);
+BOOL STORMAPI SDrawAutoInitialize(HINSTANCE hInst, LPCSTR lpClassName, LPCSTR lpWindowName, WNDPROC pfnWndProc, int nMode, int nWidth, int nHeight, int nBits);
 
 
 /*  SDrawCaptureScreen @ 342
- *
+ * 
  *  Saves a screenshot from the primary surface being handled by Storm.
- *
+ *  
  *  pszOutput: The name of the output file. The save format is automatically set by the extension.
  *             The extensions supported are .gif, .pcx, .tga, and .bmp. It will write a bitmap by default.
  *
  *  Returns TRUE if successful and FALSE otherwise.
  */
-extern "C" BOOL
-STORMAPI
+BOOL 
+STORMAPI 
 SDrawCaptureScreen(
     const char *pszOutput);
 
@@ -652,22 +652,22 @@ SDrawCaptureScreen(
  *
  *  Retrieves the window handle that was specified in
  *  SDrawManualInitialize or created in SDrawAutoInitialize.
- *
+ *  
  *  sdraw_framewindow: Optional variable that receives the returned handle.
  *
  *  Returns the handle of the window.
  */
-extern "C" HWND
+HWND
 STORMAPI
 SDrawGetFrameWindow(
     HWND *sdraw_framewindow = NULL);
 
 
 /*  SDrawGetObjects @ 347
- *
+ *  
  *  Retrieves the object information that was initialized using
  *  SDrawManualInitialize or SDrawAutoInitialize.
- *
+ *  
  *  ddInterface:    The DirectDraw interface.
  *  primarySurface: The primary DirectDraw surface.
  *  surface2:       A second unknown surface.
@@ -678,7 +678,7 @@ SDrawGetFrameWindow(
  *
  *  Returns FALSE if the direct draw interface has not been initialized.
  */
-extern "C" BOOL
+BOOL
 STORMAPI
 SDrawGetObjects(
     LPDIRECTDRAW        *ddInterface    = NULL,
@@ -691,7 +691,7 @@ SDrawGetObjects(
 
 
 /*  SDrawGetScreenSize @ 348
- *
+ *  
  *  Obtains information for the current screen resolution.
  *
  *  pdwWidth:   Optional variable that receives the screen width.
@@ -700,7 +700,7 @@ SDrawGetObjects(
  *
  *  Returns FALSE if no variables were specified.
  */
-extern "C" BOOL
+BOOL
 STORMAPI
 SDrawGetScreenSize(
     DWORD *pdwWidth,
@@ -709,11 +709,11 @@ SDrawGetScreenSize(
 
 
 // undefined
-extern "C" BOOL STORMAPI SDrawLockSurface(int surfacenumber, RECT *lpDestRect, void **lplpSurface, int *lpPitch, int arg_unused);
+BOOL STORMAPI SDrawLockSurface(int surfacenumber, RECT *lpDestRect, void **lplpSurface, int *lpPitch, int arg_unused);
 
 
 /*  SDrawManualInitialize @ 351
- *
+ *  
  *  Sets the DirectDraw variables to be referenced in Storm.
  *
  *  hWnd:           The handle of the DirectDraw window.
@@ -730,7 +730,7 @@ extern "C" BOOL STORMAPI SDrawLockSurface(int surfacenumber, RECT *lpDestRect, v
  *
  *  Returns FALSE if no variables were specified.
  */
-extern "C" BOOL
+BOOL
 STORMAPI
 SDrawManualInitialize(
      HWND hWnd                           = NULL,
@@ -745,12 +745,12 @@ SDrawManualInitialize(
 
 /*  SDrawPostClose @ 353
  *
- *  Posts a WM_QUIT message to the active drawing window specified
+ *  Posts a WM_QUIT message to the active drawing window specified 
  *  in SDrawManualInitialize or created in SDrawAutoInitialize.
  *
  *  Returns TRUE if successful and FALSE otherwise.
  */
-extern "C" BOOL
+BOOL
 STORMAPI
 SDrawPostClose();
 
@@ -758,27 +758,27 @@ SDrawPostClose();
 // undefined
 //BOOL STORMAPI SDrawRealizePalette();
 
-extern "C" BOOL STORMAPI SDrawUnlockSurface(int surfacenumber, void *lpSurface, int a3, RECT *lpRect);
-extern "C" BOOL STORMAPI SDrawUpdatePalette(unsigned int firstentry, unsigned int numentries, PALETTEENTRY *pPalEntries, int a4);
+BOOL STORMAPI SDrawUnlockSurface(int surfacenumber, void *lpSurface, int a3, RECT *lpRect);
+BOOL STORMAPI SDrawUpdatePalette(unsigned int firstentry, unsigned int numentries, PALETTEENTRY *pPalEntries, int a4);
 
-extern "C" BOOL STORMAPI SEvtDispatch(DWORD dwMessageID, DWORD dwFlags, int type, PS_EVT pEvent);
+BOOL STORMAPI SEvtDispatch(DWORD dwMessageID, DWORD dwFlags, int type, PS_EVT pEvent);
 
-extern "C" BOOL STORMAPI SGdiDeleteObject(HANDLE handle);
+BOOL STORMAPI SGdiDeleteObject(HANDLE handle);
 
-extern "C" BOOL STORMAPI SGdiExtTextOut(int a1, int a2, int a3, int a4, unsigned int a8, signed int a6, signed int a7, const char *pszString, unsigned int arg20);
-extern "C" BOOL STORMAPI SGdiImportFont(HGDIOBJ handle, int windowsfont);
+BOOL STORMAPI SGdiExtTextOut(int a1, int a2, int a3, int a4, unsigned int a8, signed int a6, signed int a7, const char *pszString, unsigned int arg20);
+BOOL STORMAPI SGdiImportFont(HGDIOBJ handle, int windowsfont);
 
-extern "C" BOOL STORMAPI SGdiSelectObject(int handle);
-extern "C" BOOL STORMAPI SGdiSetPitch(int pitch);
+BOOL STORMAPI SGdiSelectObject(int handle);
+BOOL STORMAPI SGdiSetPitch(int pitch);
 
-extern "C" BOOL STORMAPI Ordinal393(char *pszString, int, int);
+BOOL STORMAPI Ordinal393(char *pszString, int, int);
 
 
 /*  SMemAlloc @ 401
- *
+ *  
  *  Allocates a block of memory. This block is different
  *  from the standard malloc by including a header containing
- *  information about the block.
+ *  information about the block. 
  *
  *  amount:       The amount of memory to allocate, in bytes.
  *  logfilename:  The name of the file or object that this call belongs to.
@@ -788,7 +788,7 @@ extern "C" BOOL STORMAPI Ordinal393(char *pszString, int, int);
  *  Returns a pointer to the allocated memory. This pointer does NOT include
  *  the additional storm header.
  */
-extern "C" void*
+void*
 STORMAPI
 SMemAlloc(
     size_t amount,
@@ -800,18 +800,18 @@ SMemAlloc(
 
 
 /*  SMemFree @ 403
- *
- *  Frees a block of memory that was created using SMemAlloc,
+ *  
+ *  Frees a block of memory that was created using SMemAlloc, 
  *  includes the log file and line for debugging purposes.
  *
  *  location:     The memory location to be freed.
  *  logfilename:  The name of the file or object that this call belongs to.
  *  logline:      The line in the file or one of the SLOG_ macros.
- *  defaultValue:
+ *  defaultValue: 
  *
  *  Returns TRUE if the call was successful and FALSE otherwise.
  */
-extern "C" BOOL
+BOOL
 STORMAPI
 SMemFree(
     void *location,
@@ -823,8 +823,8 @@ SMemFree(
 
 
 /*  SMemReAlloc @ 405
- *
- *  Reallocates a block of memory that was created using SMemAlloc,
+ *  
+ *  Reallocates a block of memory that was created using SMemAlloc, 
  *  includes the log file and line for debugging purposes.
  *
  *  location:     The memory location to be re-allocated. If this parameter
@@ -832,12 +832,12 @@ SMemFree(
  *  amount:       The amount of memory to re-allocate.
  *  logfilename:  The name of the file or object that this call belongs to.
  *  logline:      The line in the file or one of the SLOG_ macros.
- *  defaultValue:
+ *  defaultValue: 
  *
  *  Returns a pointer to the re-allocated memory. This pointer does NOT include
  *  the additional storm header.
  */
-extern "C" void*
+void*
 STORMAPI
 SMemReAlloc(
     void    *location,
@@ -857,14 +857,14 @@ SMemReAlloc(
 #define SLOG_EXCEPTION    -5
 
 
-extern "C" BOOL STORMAPI SRegLoadData(const char *keyname, const char *valuename, int size, LPBYTE lpData, BYTE flags, LPDWORD lpcbData);
-extern "C" BOOL STORMAPI SRegLoadString(const char *keyname, const char *valuename, BYTE flags, char *buffer, size_t buffersize);
-extern "C" BOOL STORMAPI SRegLoadValue(const char *keyname, const char *valuename, BYTE flags, int *value);
-extern "C" BOOL STORMAPI SRegSaveData(const char *keyname, const char *valuename, int size, BYTE *lpData, DWORD cbData);
-extern "C" BOOL STORMAPI SRegSaveString(const char *keyname, const char *valuename, BYTE flags, char *string);
-extern "C" BOOL STORMAPI SRegSaveValue(const char *keyname, const char *valuename, BYTE flags, DWORD result);
+BOOL STORMAPI SRegLoadData(const char *keyname, const char *valuename, int size, LPBYTE lpData, BYTE flags, LPDWORD lpcbData);
+BOOL STORMAPI SRegLoadString(const char *keyname, const char *valuename, BYTE flags, char *buffer, size_t buffersize);
+BOOL STORMAPI SRegLoadValue(const char *keyname, const char *valuename, BYTE flags, int *value);
+BOOL STORMAPI SRegSaveData(const char *keyname, const char *valuename, int size, BYTE *lpData, DWORD cbData);
+BOOL STORMAPI SRegSaveString(const char *keyname, const char *valuename, BYTE flags, char *string);
+BOOL STORMAPI SRegSaveValue(const char *keyname, const char *valuename, BYTE flags, DWORD result);
 
-extern "C" BOOL STORMAPI SRegDeleteValue(const char *keyname, const char *valuename, BYTE flags);
+BOOL STORMAPI SRegDeleteValue(const char *keyname, const char *valuename, BYTE flags);
 
 // Flags for SReg functions
 
@@ -876,29 +876,29 @@ extern "C" BOOL STORMAPI SRegDeleteValue(const char *keyname, const char *valuen
 #define SREG_EXCLUDE_CURRENT_USER   0x00000004  // excludes checking the HKEY_CURRENT_USER hive
 #define SREG_ABSOLUTE               0x00000010  // specifies that the key is not a relative key
 
-extern "C" BOOL STORMAPI STransBlt(void *lpSurface, int x, int y, int width, HANDLE hTrans);
-extern "C" BOOL STORMAPI STransBltUsingMask(void *lpDest, void *lpSource, int pitch, int width, HANDLE hTrans);
+BOOL STORMAPI STransBlt(void *lpSurface, int x, int y, int width, HANDLE hTrans);
+BOOL STORMAPI STransBltUsingMask(void *lpDest, void *lpSource, int pitch, int width, HANDLE hTrans);
 
-extern "C" BOOL STORMAPI STransDelete(HANDLE hTrans);
+BOOL STORMAPI STransDelete(HANDLE hTrans);
 
-extern "C" BOOL STORMAPI STransDuplicate(HANDLE hTransSource, HANDLE hTransDest);
-extern "C" BOOL STORMAPI STransIntersectDirtyArray(HANDLE hTrans, char * dirtyarraymask, unsigned flags, HANDLE * phTransResult);
-extern "C" BOOL STORMAPI STransInvertMask(HANDLE hTrans, HANDLE * phTransResult);
+BOOL STORMAPI STransDuplicate(HANDLE hTransSource, HANDLE hTransDest);
+BOOL STORMAPI STransIntersectDirtyArray(HANDLE hTrans, char * dirtyarraymask, unsigned flags, HANDLE * phTransResult);
+BOOL STORMAPI STransInvertMask(HANDLE hTrans, HANDLE * phTransResult);
 
-extern "C" BOOL STORMAPI STransSetDirtyArrayInfo(int width, int height, int depth, int bits);
+BOOL STORMAPI STransSetDirtyArrayInfo(int width, int height, int depth, int bits);
 
-extern "C" BOOL STORMAPI STransPointInMask(HANDLE hTrans, int x, int y); // Name is a pure guess
-extern "C" BOOL STORMAPI STransCombineMasks(HANDLE hTransA, HANDLE hTransB, int left, int top, int flags, HANDLE * phTransResult);
+BOOL STORMAPI STransPointInMask(HANDLE hTrans, int x, int y); // Name is a pure guess
+BOOL STORMAPI STransCombineMasks(HANDLE hTransA, HANDLE hTransB, int left, int top, int flags, HANDLE * phTransResult);
 
-extern "C" BOOL STORMAPI STransCreateE(void *pBuffer, int width, int height, int bpp, int a5, int bufferSize, HANDLE *phTransOut);
+BOOL STORMAPI STransCreateE(void *pBuffer, int width, int height, int bpp, int a5, int bufferSize, HANDLE *phTransOut);
 
-extern "C" BOOL STORMAPI SVidDestroy();
-extern "C" BOOL STORMAPI SVidGetSize(HANDLE video, int width, int height, int zero);
-extern "C" BOOL STORMAPI SVidInitialize(HANDLE video);
-extern "C" BOOL STORMAPI SVidPlayBegin(char *filename, int arg4, int a3, int a4, int a5, int a6, HANDLE* video);
+BOOL STORMAPI SVidDestroy();
+BOOL STORMAPI SVidGetSize(HANDLE video, int width, int height, int zero);
+BOOL STORMAPI SVidInitialize(HANDLE video);
+BOOL STORMAPI SVidPlayBegin(char *filename, int arg4, int a3, int a4, int a5, int a6, HANDLE* video);
 
-extern "C" BOOL STORMAPI SVidPlayContinueSingle(HANDLE video, int a2, int a3);
-extern "C" BOOL STORMAPI SVidPlayEnd(HANDLE video);
+BOOL STORMAPI SVidPlayContinueSingle(HANDLE video, int a2, int a3);
+BOOL STORMAPI SVidPlayEnd(HANDLE video);
 
 /* SErrDisplayError @ 461
  *
@@ -915,7 +915,7 @@ extern "C" BOOL STORMAPI SVidPlayEnd(HANDLE video);
  *
  *  Returns TRUE if the user chose to continue execution, FALSE otherwise.
  */
-extern "C" BOOL
+BOOL
 STORMAPI
 SErrDisplayError(
     DWORD dwErrMsg,
@@ -930,7 +930,7 @@ SErrDisplayError(
 #define SEDisplayError(err) SErrDisplayError(e, __FILE__, __LINE__)
 
 /*  SErrGetErrorStr @ 462
- *
+ *  
  *  Retrieves a string that describes the specified error code for
  *  the system, Storm, DirectDraw, or DirectSound.
  *
@@ -940,7 +940,7 @@ SErrDisplayError(
  *
  *  Returns TRUE if the call was successful and FALSE otherwise.
  */
-extern "C" BOOL
+BOOL
 STORMAPI
 SErrGetErrorStr(
     DWORD dwErrCode,
@@ -951,13 +951,13 @@ SErrGetErrorStr(
 
 
 /*  SErrGetLastError @ 463
- *
+ *  
  *  Retrieves the last error that was specifically
  *  set for the Storm library.
  *
  *  Returns the last error set within the Storm library.
  */
-extern "C" DWORD
+DWORD
 STORMAPI
 SErrGetLastError();
 
@@ -968,21 +968,21 @@ SErrGetLastError();
 
 
 /*  SErrSetLastError @ 465
- *
+ *  
  *  Sets the last error for the Storm library and the Kernel32 library.
  *
  *  dwErrCode:  The error code that will be set.
  */
-extern "C" void
+void
 STORMAPI
 SErrSetLastError(
     DWORD dwErrCode = NO_ERROR);
 
-//
+// 
 // void STORMAPI SErrReportNamedResourceLeak(const char *pszMsg, const char *pszSubMsg = nullptr)
 // void STORMAPI SErrReportResourceLeak(const char *pszMsg)
 
-extern "C" void STORMAPI SErrSuppressErrors(BOOL suppressErrors);
+void STORMAPI SErrSuppressErrors(BOOL suppressErrors);
 
 // Values for dwErrCode
 #define STORM_ERROR_ASSERTION                    0x85100000
@@ -1022,7 +1022,7 @@ extern "C" void STORMAPI SErrSuppressErrors(BOOL suppressErrors);
 
 
 /*  SMemCopy @ 491
- *
+ *  
  *  Copies a block of memory from source to destination.
  *  This function immediately calls memcpy. See online documentation
  *  of memcpy for more details.
@@ -1031,17 +1031,17 @@ extern "C" void STORMAPI SErrSuppressErrors(BOOL suppressErrors);
  *  source: The source buffer.
  *  size:   The number of bytes to copy.
  */
-extern "C" void
+void
 STORMAPI
 SMemCopy(
-    void *dest,
-    const void *source,
+    void *dest, 
+    const void *source, 
     size_t size);
 
 #define SMCopy(d,s) ( SMemCopy(d, s, __STORM_SSIZEMIN(s,d)) )
 
 /*  SMemFill @ 492
- *
+ *  
  *  Fills a block of memory with the specified character.
  *  This function immediately calls memset. See online documentation
  *  of memset for more details.
@@ -1050,7 +1050,7 @@ SMemCopy(
  *  source: The size of the destination buffer.
  *  size:   The format to use.
  */
-extern "C" void
+void
 STORMAPI
 SMemFill(
     void *location,
@@ -1060,14 +1060,14 @@ SMemFill(
 #define SMFill(l,f) (SMemFill(l, sizeof(l), f))
 
 /*  SMemZero @ 494
- *
+ *  
  *  Fills a block of memory with the integer 0x00 (Zero).
  *
  *  location: The location to write at.
  *  length:   The amount of bytes to write.
  */
-extern "C" void
-STORMAPI
+void 
+STORMAPI 
 SMemZero(
     void *location,
     size_t length);
@@ -1075,12 +1075,12 @@ SMemZero(
 #define SMZero(l) (SMemZero(l, sizeof(l)))
 
 
-extern "C" int   STORMAPI SMemCmp(void *location1, void *location2, DWORD size);
+int   STORMAPI SMemCmp(void *location1, void *location2, DWORD size);
 
 #define SMCmp(l,x) ( SMemCmp(l, x, __STORM_SSIZEMIN(x,l)) )
 
 /*  SStrCopy @ 501
- *
+ *  
  *  Copies a string from src to dest (including NULL terminator)
  *  until the max_length is reached.
  *
@@ -1090,10 +1090,10 @@ extern "C" int   STORMAPI SMemCmp(void *location1, void *location2, DWORD size);
  *
  *  Returns the number of characters copied.
  */
-extern "C" int
+int
 STORMAPI
 SStrCopy(
-    char *dest,
+    char *dest, 
     const char *src,
     int max_length = 0x7FFFFFFF);
 
@@ -1102,7 +1102,7 @@ SStrCopy(
 #define STORM_HASH_ABSOLUTE 1
 
 /*  SStrHash @ 502
- *
+ *  
  *  Creates a simple hash for the string. This function
  *  should NOT be used for sensitive information.
  *
@@ -1116,17 +1116,17 @@ SStrCopy(
  *
  *  Returns the 32-bit hash of the string.
  */
-extern "C" DWORD
+DWORD
 STORMAPI
 SStrHash(
       const char *string,
       DWORD flags = 0,
       DWORD Seed  = 0);
 
-extern "C" int   STORMAPI SStrNCat(char *dest, const char *src, DWORD max_length);
+int   STORMAPI SStrNCat(char *dest, const char *src, DWORD max_length);
 
 /*  SStrLen @ 506
- *
+ *  
  *  Retrieves the length of a string.
  *
  *  string:   The input string of which to obtain a
@@ -1134,13 +1134,13 @@ extern "C" int   STORMAPI SStrNCat(char *dest, const char *src, DWORD max_length
  *
  *  Returns the length of the string.
  */
-extern "C" int
+int
 STORMAPI
 SStrLen(
       const char *string);
 
 /*  SStrCmp @ 508
- *
+ *  
  *  Compares two strings case sensitive.
  *
  *  string1:  The first string.
@@ -1149,17 +1149,17 @@ SStrLen(
  *
  *  Returns 0 if strings are equal. See strcmp documentation for more details.
  */
-extern "C" int
+int
 STORMAPI
 SStrCmp(
-      const char *string1,
-      const char *string2,
+      const char *string1, 
+      const char *string2, 
       size_t size);
 
 #define SSCmp(s,x) ( SStrCmp(s,x,__STORM_SSIZEMIN(s,x)) )
 
 /*  SStrCmpI @ 509
- *
+ *  
  *  Compares two strings case insensitive.
  *
  *  string1:  The first string.
@@ -1168,33 +1168,33 @@ SStrCmp(
  *
  *  Returns 0 if strings are equal. See strcmpi documentation for more details.
  */
-extern "C" int
+int
 STORMAPI
 SStrCmpI(
-      const char *string1,
-      const char *string2,
+      const char *string1, 
+      const char *string2, 
       size_t size);
 
 #define SSCmpI(s,x) ( SStrCmpI(s,x,__STORM_SSIZEMIN(s,x)) )
 
 /*  SStrUpper @ 510
- *
+ *  
  *  Converts all lower-case alpha characters of a string to upper-case.
  *
  *  string:   The string to convert.
- *
+ *  
  *  Returns the same pointer given in the input.
  */
-extern "C" char*
+char*
 STORMAPI
 SStrUpper(
       char* string);
 
-extern "C" void  STORMAPI SRgn523(HANDLE hRgn, RECT *pRect, int a3, int a4);
-extern "C" void  STORMAPI SRgnCreateRegion(HANDLE *hRgn, int a2);
-extern "C" void  STORMAPI SRgnDeleteRegion(HANDLE hRgn);
+void  STORMAPI SRgn523(HANDLE hRgn, RECT *pRect, int a3, int a4);
+void  STORMAPI SRgnCreateRegion(HANDLE *hRgn, int a2);
+void  STORMAPI SRgnDeleteRegion(HANDLE hRgn);
 
-extern "C" void  STORMAPI SRgn529i(int handle, int a2, int a3);
+void  STORMAPI SRgn529i(int handle, int a2, int a3);
 
 
 /* SErrDisplayErrorFmt @ 562
@@ -1212,7 +1212,7 @@ extern "C" void  STORMAPI SRgn529i(int handle, int a2, int a3);
  *
  *  Returns TRUE if the user chose to continue execution, FALSE otherwise.
  */
-extern "C" BOOL
+BOOL
 SErrDisplayErrorFmt(
     DWORD dwErrMsg,
     const char *logfilename,
@@ -1225,37 +1225,37 @@ SErrDisplayErrorFmt(
 //#define SEDisplayErrorFmt(err,...) SErrDisplayErrorFmt(err, __FILE__, __LINE__, FALSE, 1, __VA_ARGS__)
 
 /*  SErrCatchUnhandledExceptions @ 567
- *
+ *  
  *  Registers a top-level exception filter managed entirely by Storm.
  *  The registered filter will display formatted exception information by calling SErrDisplayError.
  */
-extern "C" void
+void
 STORMAPI
 SErrCatchUnhandledExceptions();
 
 
 /*  SStrChr @ 571
- *
- *  Searches a string for the given character. See
+ *  
+ *  Searches a string for the given character. See 
  *  strchr documentation for more details.
  *
  *  string:   The string to search.
  *  c:        The character to search for.
- *
+ *  
  *  Returns a pointer to the first occurance of the character.
  */
-extern "C" char*
+char*
 STORMAPI
 SStrChr(
-    const char *string,
+    const char *string, 
     char c);
 
 
-extern "C" char *STORMAPI SStrChrR(const char *string, char c);
+char *STORMAPI SStrChrR(const char *string, char c);
 
 
 /*  SStrVPrintf @ 578
- *
+ *  
  *  Prints a formatted string to a destination buffer.
  *  This function calls vsnprintf with some extra error handling.
  *  See online documentation of vsnprintf for more details.
@@ -1266,35 +1266,34 @@ extern "C" char *STORMAPI SStrChrR(const char *string, char c);
  *
  *  Returns the number of characters written.
  */
-extern "C" size_t
+size_t
 SStrVPrintf(
-    char *dest,
-    size_t size,
+    char *dest, 
+    size_t size, 
     const char *format, ...);
 
 
-extern "C" int STORMAPI SBigDel(void *buffer);
+int STORMAPI SBigDel(void *buffer);
 
-extern "C" int STORMAPI SBigFromBinary(void *buffer, const void *str, size_t size);
+int STORMAPI SBigFromBinary(void *buffer, const void *str, size_t size);
 
-extern "C" int STORMAPI SBigNew(void **buffer);
+int STORMAPI SBigNew(void **buffer);
 
-extern "C" int STORMAPI SBigPowMod(void *buffer1, void *buffer2, int a3, int a4);
+int STORMAPI SBigPowMod(void *buffer1, void *buffer2, int a3, int a4);
 
-extern "C" int STORMAPI SBigToBinaryBuffer(void *buffer, int length, int a3, int a4);
+int STORMAPI SBigToBinaryBuffer(void *buffer, int length, int a3, int a4);
 
-extern "C" void __stdcall SDrawMessageBox(char *,char *,int);
-extern "C" void __cdecl SDrawDestroy(void);
-extern "C" bool __cdecl StormDestroy(void);
-extern "C" bool __stdcall SFileSetBasePath(char *);
-extern "C" void __cdecl SDrawRealizePalette(void);
-extern "C" bool __cdecl SVidPlayContinue(void);
-extern "C" bool __stdcall SNetGetOwnerTurnsWaiting(int *);
-extern "C" void * __stdcall SNetUnregisterEventHandler(int,void (__stdcall*)(struct _SNETEVENT *));
-extern "C" void * __stdcall SNetRegisterEventHandler(int,void (__stdcall*)(struct _SNETEVENT *));
-extern "C" bool __stdcall SNetSetBasePlayer(int);
-extern "C" int __stdcall SNetInitializeProvider(unsigned long,struct _SNETPROGRAMDATA *,struct _SNETPLAYERDATA *,struct _SNETUIDATA *,struct _SNETVERSIONDATA *);
-extern "C" int __stdcall SNetGetProviderCaps(struct _SNETCAPS *);
-extern "C" int __stdcall SFileSetFilePointer(HANDLE,int,HANDLE,int);
-
+void __stdcall SDrawMessageBox(char *,char *,int);
+void __cdecl SDrawDestroy(void);
+bool __cdecl StormDestroy(void);
+bool __stdcall SFileSetBasePath(char *);
+void __cdecl SDrawRealizePalette(void);
+bool __cdecl SVidPlayContinue(void);
+bool __stdcall SNetGetOwnerTurnsWaiting(int *);
+void * __stdcall SNetUnregisterEventHandler(int,void (__stdcall*)(struct _SNETEVENT *));
+void * __stdcall SNetRegisterEventHandler(int,void (__stdcall*)(struct _SNETEVENT *));
+bool __stdcall SNetSetBasePlayer(int);
+int __stdcall SNetInitializeProvider(unsigned long,struct _SNETPROGRAMDATA *,struct _SNETPLAYERDATA *,struct _SNETUIDATA *,struct _SNETVERSIONDATA *);
+int __stdcall SNetGetProviderCaps(struct _SNETCAPS *);
+int __stdcall SFileSetFilePointer(HANDLE,int,HANDLE,int);
 #endif
