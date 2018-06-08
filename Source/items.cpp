@@ -851,7 +851,7 @@ void __fastcall CalcPlrItemVals(int p, bool Loadgfx)
 	v60 = 0;
 	v52 = 0;
 	v61 = 0;
-	v37 = 0;
+	v37 = 0i64;
 	v49 = 0;
 	v48 = 0;
 	v47 = 0;
@@ -878,7 +878,7 @@ void __fastcall CalcPlrItemVals(int p, bool Loadgfx)
 			v40 = v3;
 			v41 = v2;
 			if ( v7 )
-				v37 |= 1 << ((unsigned char)v7 - 1);
+				v37 |= 1i64 << ((unsigned char)v7 - 1);
 			if ( !*((_BYTE *)v6 - 296) || *(v6 - 75) )
 			{
 				v57 += *(v6 - 28);
@@ -979,7 +979,7 @@ void __fastcall CalcPlrItemVals(int p, bool Loadgfx)
 	plr[v5]._pISpells[0] = v37;
 	plr[v5]._pISpells[1] = HIDWORD(v37);
 	plr[v5]._pDamageMod = v15 / v16;
-	if ( v17 && !(v37 & (1 << (_LOBYTE(plr[v5]._pRSpell) - 1))) )
+	if ( v17 && !(v37 & (1i64 << (_LOBYTE(plr[v5]._pRSpell) - 1))) )
 	{
 		plr[v5]._pRSpell = -1;
 		_LOBYTE(plr[v5]._pRSplType) = 4;
@@ -1143,7 +1143,7 @@ void __fastcall CalcPlrScrolls(int p)
 		{
 			if ( *(v3 - 53) != -1 && (*v3 == IMISC_SCROLL || *v3 == IMISC_SCROLLT) && v3[34] )
 			{
-				v5 = 1 << (*((_BYTE *)v3 + 4) - 1);
+				v5 = 1i64 << (*((_BYTE *)v3 + 4) - 1);
 				plr[v1]._pScrlSpells[0] |= v5;
 				plr[v1]._pScrlSpells[1] |= HIDWORD(v5);
 			}
@@ -1158,7 +1158,7 @@ void __fastcall CalcPlrScrolls(int p)
 	{
 		if ( *(v6 - 53) != -1 && (*v6 == IMISC_SCROLL || *v6 == IMISC_SCROLLT) && v6[34] )
 		{
-			v8 = 1 << (*((_BYTE *)v6 + 4) - 1);
+			v8 = 1i64 << (*((_BYTE *)v6 + 4) - 1);
 			plr[v1]._pScrlSpells[0] |= v8;
 			plr[v1]._pScrlSpells[1] |= HIDWORD(v8);
 		}
@@ -1192,7 +1192,7 @@ void __fastcall CalcPlrStaff(int pnum)
 	plr[v1]._pISpells[1] = 0;
 	if ( !v2 && plr[v1].InvBody[4]._iStatFlag && plr[v1].InvBody[4]._iCharges > 0 )
 	{
-		v3 = 1 << (_LOBYTE(plr[v1].InvBody[4]._iSpell) - 1);
+		v3 = 1i64 << (_LOBYTE(plr[v1].InvBody[4]._iSpell) - 1);
 		plr[v1]._pISpells[0] = v3;
 		plr[v1]._pISpells[1] = HIDWORD(v3);
 	}
@@ -4668,7 +4668,7 @@ LABEL_71:
 					if ( v24 != 2 )
 						return;
 					v25 = p;
-					*(_QWORD *)plr[p]._pMemSpells |= 1 << ((unsigned char)spl - 1);
+					*(_QWORD *)plr[p]._pMemSpells |= 1i64 << ((unsigned char)spl - 1);
 					v26 = &plr[p]._pSplLvl[spl];
 					if ( *v26 < 15 )
 						++*v26;
