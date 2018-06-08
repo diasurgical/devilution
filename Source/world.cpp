@@ -15,7 +15,7 @@ int world_4B325C = 0; // truncated with & 1, some kind of bool??
 unsigned char world_4B3260[5] = { 0u, 0u, 0u, 0u, 0u }; // single mask, int nTileMask
 int world_4B3265 = 0; // speed cel num
 int world_4B3269[5] = { 0, 0, 0, 0, 0 }; // seems to be a single pointer, void *pTileMask
-int tile_draw_masks[3][32] =
+unsigned int tile_draw_masks[3][32] =
 {
 	{
 		0xEAAAAAAA, 0xF5555555, 0xFEAAAAAA, 0xFF555555, 0xFFEAAAAA, 0xFFF55555, 0xFFFEAAAA, 0xFFFF5555,

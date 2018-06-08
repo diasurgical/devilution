@@ -76,7 +76,7 @@ struct TSFX
 
 struct TMenuItem
 {
-	int dwFlags;
+	unsigned int dwFlags;
 	char *pszStr;
 	void (__cdecl *fnMenu)(); /* fix, should have one arg */
 };
@@ -248,8 +248,8 @@ struct SpellData
 
 struct Coord
 {
-	unsigned char x;
-	unsigned char y;
+	char x;
+	char y;
 };
 
 struct RECT8
@@ -813,7 +813,7 @@ struct PlayerStruct
 	char _pSBkSplType;
 	char _pSplLvl[64];
 	int remove_1;
-	int _pMemSpells[2]; // __declspec(align(8)) 
+	int _pMemSpells[2]; // __declspec(align(8))
 	int _pAblSpells[2];
 	int _pScrlSpells[2];
 	int _pSpellFlags;
@@ -909,7 +909,7 @@ struct PlayerStruct
 	int _pIBonusAC;
 	int _pIBonusDamMod;
 	int remove_2;
-	int _pISpells[2]; //__declspec(align(8)) 
+	int _pISpells[2]; //__declspec(align(8))
 	int _pIFlags;
 	int _pIGetHit;
 	char _pISplLvlAdd;
