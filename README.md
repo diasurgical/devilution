@@ -28,6 +28,11 @@ There are two configurations: Debug and Release. The Debug version will compile 
 
 There are currently three options defined in types.h. You can compile without copy protection, compile with debugger support, and compile with CPU throttling. The last option will sleep the main program loop to keep Diablo from using 100% CPU on modern computers.
 
+For further installation and run instructions, refer to the respective documentation:
+
+* [Linux installation](INSTALL_linux.md)
+* [Windows installation](INSTALL_windows.md)
+
 # Contributing
 Currently there are a few issues with the decompiled code. Most of them are outlined in the TODO file. If you wish to contribute, small changes to help fix as many issues possible until everything is perfect and identical to the original game. Currently only Diablo.exe has been reversed, I have not yet started on the other files. Those are:
 - Battle.snp: code for battle.net, outdated protocol and not worth the time.
