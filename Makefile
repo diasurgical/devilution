@@ -12,15 +12,15 @@ devilution.exe: $(DIABLO_OBJ) $(PKWARE_OBJ) diabloui.lib storm.lib
 %.o: %.cpp
 	i686-w64-mingw32-gcc -c -fpermissive -o $@ $<
 
-diabloui.lib: diabloui.dll DiabloUI/diabloui.def
-	i686-w64-mingw32-dlltool -d DiabloUI/diabloui.def -D diabloui.dll -l diabloui.lib
+diabloui.lib: diabloui.dll DiabloUI/diabloui_gcc.def
+	i686-w64-mingw32-dlltool -d DiabloUI/diabloui_gcc.def -D diabloui.dll -l diabloui.lib
 
 diabloui.dll:
 	echo "Please copy diabloui.dll (version 1.09b) here."
 	exit 1
 
-storm.lib: storm.dll 3rdParty/Storm/Source/storm.def
-	i686-w64-mingw32-dlltool -d 3rdParty/Storm/Source/storm.def -D storm.dll -l storm.lib
+storm.lib: storm.dll 3rdParty/Storm/Source/storm_gcc.def
+	i686-w64-mingw32-dlltool -d 3rdParty/Storm/Source/storm_gcc.def -D storm.dll -l storm.lib
 
 storm.dll:
 	echo "Please copy storm.dll (version 1.09b) here."
