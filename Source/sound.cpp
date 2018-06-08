@@ -38,7 +38,7 @@ char *sgszMusicTracks[6] =
   "Music\\DLvlD.wav",
   "Music\\Dintro.wav"
 };
-RECT8 QSRect[2] = { { { 15, -16 }, { 15, -16 } }, { { 30, -31 }, { 30, -31 } } }; /* psx version? */
+RECT8 QSRect[2] = { { { 15u, 240u }, { 15u, 240u } }, { { 30u, 225u }, { 30u, 225u } } }; /* psx version? */
 
 //----- (00456CC0) --------------------------------------------------------
 struct sound_cpp_init

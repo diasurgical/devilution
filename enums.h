@@ -69,7 +69,7 @@ enum unique_base_item
 	UITYPE_GRISWOLD = 0x42,
 	UITYPE_LGTFORGE = 0x43,
 	UITYPE_LAZSTAFF = 0x44,
-	UITYPE_INVALID = -1,
+	UITYPE_INVALID = 0xFF,
 };
 
 enum item_effect_type
@@ -145,7 +145,7 @@ enum item_effect_type
 	IPL_ADDMANAAC = 0x4D,
 	IPL_FIRERESCLVL = 0x4E,
 	IPL_AC_CURSE = 0x4F,
-	IPL_INVALID = -1,
+	IPL_INVALID = 0xFF,
 };
 
 enum affix_item_type
@@ -1031,7 +1031,7 @@ enum item_equip_type
 	ILOC_AMULET = 0x6,
 	ILOC_UNEQUIPABLE = 0x7,
 	ILOC_BELT = 0x8,
-	ILOC_INVALID = -1,
+	ILOC_INVALID = 0xFF,
 };
 
 enum missile_id
