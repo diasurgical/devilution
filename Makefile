@@ -4,9 +4,9 @@ DIABLO_OBJ=$(DIABLO_SRC:.cpp=.o)
 PKWARE_SRC=$(wildcard 3rdParty/PKWare/*.cpp)
 PKWARE_OBJ=$(PKWARE_SRC:.cpp=.o)
 
-all: diablo.exe
+all: devilution.exe
 
-diablo.exe: $(DIABLO_OBJ) $(PKWARE_OBJ) diabloui.lib storm.lib
+devilution.exe: $(DIABLO_OBJ) $(PKWARE_OBJ) diabloui.lib storm.lib
 	i686-w64-mingw32-gcc -L./ -o $@ $^ -lgdi32 -lversion -ldiabloui -lstorm
 
 %.o: %.cpp
