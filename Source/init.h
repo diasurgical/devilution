@@ -40,7 +40,7 @@ void __cdecl init_get_file_info();
 LRESULT __stdcall init_palette(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
 void __fastcall init_activate_window(HWND hWnd, bool activated);
 LRESULT __stdcall init_redraw_window(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
-LRESULT (__stdcall *SetWindowProc(void *func))(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+LRESULT (__stdcall *__fastcall SetWindowProc(void *func))(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 /* data */
 extern int init_inf; // weak
