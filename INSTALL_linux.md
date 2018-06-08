@@ -2,6 +2,7 @@
 
 ## Dependencies
 
+Arch Linux:
 ```bash
 pacman -Sy mingw-w64-gcc mingw-w64-binutils
 ```
