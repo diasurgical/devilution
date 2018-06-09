@@ -2798,7 +2798,7 @@ void __cdecl DrawSpellBook()
 	v1 = plr[myplr]._pISpells[1] | plr[myplr]._pMemSpells[1] | plr[myplr]._pAblSpells[1];
 	do
 	{
-		v2 = *(&attribute_inc_rects[3].h + v9 + 7 * sbooktab);
+		v2 = SpellPages[0][v9 + 7 * sbooktab - 1]; // *(&attribute_inc_rects[3].h + v9 + 7 * sbooktab); /* check */
 		if ( v2 != -1
 		  && v1 & ((unsigned __int64)((__int64)1 << ((unsigned char)v2 - 1)) >> 32) | v0 & (unsigned int)((__int64)1 << ((unsigned char)v2 - 1)) )
 		{
