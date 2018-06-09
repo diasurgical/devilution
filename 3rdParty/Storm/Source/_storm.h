@@ -60,6 +60,9 @@ typedef struct _WSIZE
 #define GAMESTATE_STARTED 0x08
 #define GAMESTATE_REPLAY  0x80
 
+#ifdef __GNUC__
+extern "C" {
+#endif
 
 BOOL STORMAPI SNetCreateGame(const char *pszGameName, const char *pszGamePassword, const char *pszGameStatString, DWORD dwGameType, char *GameTemplateData, int GameTemplateSize, int playerCount, char *creatorName, char *a11, int *playerID);
 BOOL STORMAPI SNetDestroy();
@@ -68,11 +71,11 @@ BOOL STORMAPI SNetEnumProviders(int (STORMAPI *callback)(DWORD, DWORD, DWORD, DW
 BOOL STORMAPI SNetEnumGames(int (STORMAPI *callback)(DWORD, DWORD, DWORD), int *hintnextcall);
 
 /*  SNetDropPlayer @ 106
- * 
+ *
  *  Drops a player from the current game.
- *  
+ *
  *  playerid:     The player ID for the player to be dropped.
- *  flags:        
+ *  flags:
  *
  *  Returns TRUE if the function was called successfully and FALSE otherwise.
  */
@@ -83,10 +86,10 @@ SNetDropPlayer(
       DWORD flags);
 
 /*  SNetGetGameInfo @ 107
- * 
+ *
  *  Retrieves specific game information from Storm, such as name, password,
  *  stats, mode, game template, and players.
- *  
+ *
  *  type:         The type of data to retrieve. See GAMEINFO_ flags.
  *  dst:          The destination buffer for the data.
  *  length:       The maximum size of the destination buffer.
@@ -136,9 +139,9 @@ typedef struct _CAPS
 BOOL STORMAPI SNetGetPlayerCaps(char playerid, PCAPS playerCaps);
 
 /*  SNetGetPlayerName @ 113
- * 
+ *
  *  Retrieves the name of a player given their player ID.
- *  
+ *
  *  playerid:     The player's ID.
  *  buffer:       The buffer that will receive the name.
  *  buffersize:   The maximum size of buffer.
@@ -148,28 +151,28 @@ BOOL STORMAPI SNetGetPlayerCaps(char playerid, PCAPS playerCaps);
 BOOL
 STORMAPI
 SNetGetPlayerName(
-      int playerid, 
-      char *buffer, 
+      int playerid,
+      char *buffer,
       size_t buffersize);
 
 /*  SNetGetProviderCaps @ 114
- * 
+ *
  *  Retrieves network provider capacity information.
- *  
+ *
  *  providerCaps: A pointer to a CAPS structure that will receive the information.
  *
  *  Returns TRUE if the function was called successfully and FALSE otherwise.
  */
-BOOL 
-STORMAPI 
+BOOL
+STORMAPI
 SNetGetProviderCaps(
       _SNETCAPS *providerCaps);
 
 /*  SNetGetTurnsInTransit @ 115
- * 
+ *
  *  Retrieves the number of turns (buffers) that have been queued
  *  before sending them over the network.
- *  
+ *
  *  turns: A pointer to an integer that will receive the value.
  *
  *  Returns TRUE if the function was called successfully and FALSE otherwise.
@@ -285,16 +288,16 @@ typedef struct _storm_head
 
 
 /*  SNetInitializeProvider @ 117
- * 
+ *
  *  Initializes a provider by storing the provider callbacks, and calling
  *  spiInitialize() using the parameters passed to this function.
  *  Note: The use of the parameters is determined by the network
  *  module.
- *  
+ *
  *  providerName:     The provider's identifier. Example: 'TENB' (BNET).
- *  gameClientInfo:   A pointer to a clientInfo structure containing 
+ *  gameClientInfo:   A pointer to a clientInfo structure containing
  *                    information about the game client.
- *  userData:         A pointer to a userInfo structure containing information 
+ *  userData:         A pointer to a userInfo structure containing information
  *                    about the player.
  *  bnCallbacks:      A pointer to a battleInfo structure containing callbacks
  *                    and other information that is specific to Battle.net.
@@ -306,7 +309,7 @@ typedef struct _storm_head
 BOOL
 STORMAPI
 SNetInitializeProvider(
-      DWORD       providerName, 
+      DWORD       providerName,
       _SNETPROGRAMDATA  *gameClientInfo,
       _SNETPLAYERDATA    *userData,
       _SNETUIDATA   *bnCallbacks,
@@ -316,10 +319,10 @@ SNetInitializeProvider(
 BOOL STORMAPI SNetJoinGame(int id, char *gameName, char *gamePassword, char *playerName, char *userStats, int *playerid);
 
 /*  SNetLeaveGame @ 119
- * 
+ *
  *  Notifies Storm that the player has left the game. Storm will
  *  notify all connected peers through the network provider.
- *  
+ *
  *  type: The leave type. It doesn't appear to be important, no documentation available.
  *
  *  Returns TRUE if the function was called successfully and FALSE otherwise.
@@ -357,11 +360,11 @@ HANDLE STORMAPI SNetUnregisterEventHandler(int type, void (STORMAPI *sEvent)(_SN
 int  STORMAPI SNetSelectGame(int a1, int a2, int a3, int a4, int a5, int *playerid);
 
 /*  SNetSendMessage @ 127
- * 
+ *
  *  Sends a message to a player given their player ID. Network message
  *  is sent using class 01 and is retrieved by the other client using
  *  SNetReceiveMessage().
- *  
+ *
  *  playerID:   The player index of the player to receive the data.
  *              Conversely, this field can be one of the following constants:
  *                  SNPLAYER_ALL      | Sends the message to all players, including oneself.
@@ -385,11 +388,11 @@ SNetSendMessage(
 
 
 /*  SNetSendTurn @ 128
- * 
+ *
  *  Sends a turn (data packet) to all players in the game. Network data
  *  is sent using class 02 and is retrieved by the other client using
  *  SNetReceiveTurns().
- *  
+ *
  *  data:       A pointer to the data.
  *  databytes:  The amount of bytes that the data pointer contains.
  *
@@ -402,12 +405,12 @@ SNetSendTurn(
       size_t  databytes);
 
 /*  SNetSetGameMode @ 130
- * 
+ *
  *  Set's the game's mode flags, notifying the network
  *  provider that the state of the game has changed.
  *  For example: notifies Battle.net when the game is
  *  full.
- *  
+ *
  *  You should first call SNetGetGameInfo to retrieve
  *  the existing mode flags.
  *
@@ -458,7 +461,7 @@ BOOL STORMAPI SDlgEndDialog(HWND hDlg, HANDLE nResult);
 BOOL STORMAPI SDlgSetControlBitmaps(HWND parentwindow, int *id, int a3, char *buffer2, char *buffer, int flags, int mask);
 
 /*
-// lpCursorName can only be IDC_ARROW 
+// lpCursorName can only be IDC_ARROW
 BOOL STORMAPI SDlgSetSystemCursor(void *lpSrcBuffer, void *p_a2, LPSIZE lpSize, LPCSTR lpCursorName);
 */
 
@@ -544,15 +547,15 @@ BOOL STORMAPI SBltROP3Clipped(void *lpDstBuffer, RECT *lpDstRect, POINT *lpDstPt
 
 
 /*  SBmpDecodeImage @ 321
- * 
+ *
  *  Decodes an image that has already been loaded into a buffer.
- *  
+ *
  *  dwImgType:        Optional, the image type. See SBMP_ macros.
  *  pSrcBuffer:       A pointer to the source buffer.
  *  dwSrcBuffersize:  The size of the data in the source buffer.
  *  pPalette:         An optional buffer that receives the image palette.
  *  pDstBuffer:       A buffer that receives the image data.
- *  dwDstBuffersize:  The size of the specified image buffer. If the size of the 
+ *  dwDstBuffersize:  The size of the specified image buffer. If the size of the
  *                    destination buffer is 0, then the destination buffer is not used.
  *  pdwWidth:         An optional variable that receives the image width.
  *  pdwHeight:        An optional variable that receives the image height.
@@ -560,8 +563,8 @@ BOOL STORMAPI SBltROP3Clipped(void *lpDstBuffer, RECT *lpDstRect, POINT *lpDstPt
  *
  *  Returns TRUE if the image was supported and decoded correctly, FALSE otherwise.
  */
-BOOL 
-STORMAPI 
+BOOL
+STORMAPI
 SBmpDecodeImage(
     DWORD        dwImgType,
     void         *pSrcBuffer,
@@ -575,9 +578,9 @@ SBmpDecodeImage(
 
 
 /*  SBmpLoadImage @ 323
- * 
+ *
  *  Load an image from an available archive into a buffer.
- *  
+ *
  *  pszFileName:  The name of the graphic in an active archive.
  *  pPalette:     An optional buffer that receives the image palette.
  *  pBuffer:      A buffer that receives the image data.
@@ -600,10 +603,10 @@ SBmpLoadImage(
     DWORD        *pdwBpp      = NULL);
 
 /*  SBmpSaveImage @ 324
- * 
- *  Save an image from a buffer to a file. The image format is determined 
+ *
+ *  Save an image from a buffer to a file. The image format is determined
  *  from the filename and is either .gif, .pcx, .tga, or .bmp being the default.
- *  
+ *
  *  pszFileName:  The name of the file to create.
  *  pPalette:     A pointer to a palette array containing 256 entries.
  *  pBuffer:      A buffer containing the image data.
@@ -635,16 +638,16 @@ BOOL STORMAPI SDrawAutoInitialize(HINSTANCE hInst, LPCSTR lpClassName, LPCSTR lp
 
 
 /*  SDrawCaptureScreen @ 342
- * 
+ *
  *  Saves a screenshot from the primary surface being handled by Storm.
- *  
+ *
  *  pszOutput: The name of the output file. The save format is automatically set by the extension.
  *             The extensions supported are .gif, .pcx, .tga, and .bmp. It will write a bitmap by default.
  *
  *  Returns TRUE if successful and FALSE otherwise.
  */
-BOOL 
-STORMAPI 
+BOOL
+STORMAPI
 SDrawCaptureScreen(
     const char *pszOutput);
 
@@ -653,7 +656,7 @@ SDrawCaptureScreen(
  *
  *  Retrieves the window handle that was specified in
  *  SDrawManualInitialize or created in SDrawAutoInitialize.
- *  
+ *
  *  sdraw_framewindow: Optional variable that receives the returned handle.
  *
  *  Returns the handle of the window.
@@ -665,10 +668,10 @@ SDrawGetFrameWindow(
 
 
 /*  SDrawGetObjects @ 347
- *  
+ *
  *  Retrieves the object information that was initialized using
  *  SDrawManualInitialize or SDrawAutoInitialize.
- *  
+ *
  *  ddInterface:    The DirectDraw interface.
  *  primarySurface: The primary DirectDraw surface.
  *  surface2:       A second unknown surface.
@@ -692,7 +695,7 @@ SDrawGetObjects(
 
 
 /*  SDrawGetScreenSize @ 348
- *  
+ *
  *  Obtains information for the current screen resolution.
  *
  *  pdwWidth:   Optional variable that receives the screen width.
@@ -714,7 +717,7 @@ BOOL STORMAPI SDrawLockSurface(int surfacenumber, RECT *lpDestRect, void **lplpS
 
 
 /*  SDrawManualInitialize @ 351
- *  
+ *
  *  Sets the DirectDraw variables to be referenced in Storm.
  *
  *  hWnd:           The handle of the DirectDraw window.
@@ -746,7 +749,7 @@ SDrawManualInitialize(
 
 /*  SDrawPostClose @ 353
  *
- *  Posts a WM_QUIT message to the active drawing window specified 
+ *  Posts a WM_QUIT message to the active drawing window specified
  *  in SDrawManualInitialize or created in SDrawAutoInitialize.
  *
  *  Returns TRUE if successful and FALSE otherwise.
@@ -776,10 +779,10 @@ BOOL STORMAPI Ordinal393(char *pszString, int, int);
 
 
 /*  SMemAlloc @ 401
- *  
+ *
  *  Allocates a block of memory. This block is different
  *  from the standard malloc by including a header containing
- *  information about the block. 
+ *  information about the block.
  *
  *  amount:       The amount of memory to allocate, in bytes.
  *  logfilename:  The name of the file or object that this call belongs to.
@@ -801,14 +804,14 @@ SMemAlloc(
 
 
 /*  SMemFree @ 403
- *  
- *  Frees a block of memory that was created using SMemAlloc, 
+ *
+ *  Frees a block of memory that was created using SMemAlloc,
  *  includes the log file and line for debugging purposes.
  *
  *  location:     The memory location to be freed.
  *  logfilename:  The name of the file or object that this call belongs to.
  *  logline:      The line in the file or one of the SLOG_ macros.
- *  defaultValue: 
+ *  defaultValue:
  *
  *  Returns TRUE if the call was successful and FALSE otherwise.
  */
@@ -824,8 +827,8 @@ SMemFree(
 
 
 /*  SMemReAlloc @ 405
- *  
- *  Reallocates a block of memory that was created using SMemAlloc, 
+ *
+ *  Reallocates a block of memory that was created using SMemAlloc,
  *  includes the log file and line for debugging purposes.
  *
  *  location:     The memory location to be re-allocated. If this parameter
@@ -833,7 +836,7 @@ SMemFree(
  *  amount:       The amount of memory to re-allocate.
  *  logfilename:  The name of the file or object that this call belongs to.
  *  logline:      The line in the file or one of the SLOG_ macros.
- *  defaultValue: 
+ *  defaultValue:
  *
  *  Returns a pointer to the re-allocated memory. This pointer does NOT include
  *  the additional storm header.
@@ -931,7 +934,7 @@ SErrDisplayError(
 #define SEDisplayError(err) SErrDisplayError(e, __FILE__, __LINE__)
 
 /*  SErrGetErrorStr @ 462
- *  
+ *
  *  Retrieves a string that describes the specified error code for
  *  the system, Storm, DirectDraw, or DirectSound.
  *
@@ -952,7 +955,7 @@ SErrGetErrorStr(
 
 
 /*  SErrGetLastError @ 463
- *  
+ *
  *  Retrieves the last error that was specifically
  *  set for the Storm library.
  *
@@ -969,7 +972,7 @@ SErrGetLastError();
 
 
 /*  SErrSetLastError @ 465
- *  
+ *
  *  Sets the last error for the Storm library and the Kernel32 library.
  *
  *  dwErrCode:  The error code that will be set.
@@ -979,7 +982,7 @@ STORMAPI
 SErrSetLastError(
     DWORD dwErrCode = NO_ERROR);
 
-// 
+//
 // void STORMAPI SErrReportNamedResourceLeak(const char *pszMsg, const char *pszSubMsg = nullptr)
 // void STORMAPI SErrReportResourceLeak(const char *pszMsg)
 
@@ -1023,7 +1026,7 @@ void STORMAPI SErrSuppressErrors(BOOL suppressErrors);
 
 
 /*  SMemCopy @ 491
- *  
+ *
  *  Copies a block of memory from source to destination.
  *  This function immediately calls memcpy. See online documentation
  *  of memcpy for more details.
@@ -1035,14 +1038,14 @@ void STORMAPI SErrSuppressErrors(BOOL suppressErrors);
 void
 STORMAPI
 SMemCopy(
-    void *dest, 
-    const void *source, 
+    void *dest,
+    const void *source,
     size_t size);
 
 #define SMCopy(d,s) ( SMemCopy(d, s, __STORM_SSIZEMIN(s,d)) )
 
 /*  SMemFill @ 492
- *  
+ *
  *  Fills a block of memory with the specified character.
  *  This function immediately calls memset. See online documentation
  *  of memset for more details.
@@ -1061,14 +1064,14 @@ SMemFill(
 #define SMFill(l,f) (SMemFill(l, sizeof(l), f))
 
 /*  SMemZero @ 494
- *  
+ *
  *  Fills a block of memory with the integer 0x00 (Zero).
  *
  *  location: The location to write at.
  *  length:   The amount of bytes to write.
  */
-void 
-STORMAPI 
+void
+STORMAPI
 SMemZero(
     void *location,
     size_t length);
@@ -1081,7 +1084,7 @@ int   STORMAPI SMemCmp(void *location1, void *location2, DWORD size);
 #define SMCmp(l,x) ( SMemCmp(l, x, __STORM_SSIZEMIN(x,l)) )
 
 /*  SStrCopy @ 501
- *  
+ *
  *  Copies a string from src to dest (including NULL terminator)
  *  until the max_length is reached.
  *
@@ -1094,7 +1097,7 @@ int   STORMAPI SMemCmp(void *location1, void *location2, DWORD size);
 int
 STORMAPI
 SStrCopy(
-    char *dest, 
+    char *dest,
     const char *src,
     int max_length = 0x7FFFFFFF);
 
@@ -1103,7 +1106,7 @@ SStrCopy(
 #define STORM_HASH_ABSOLUTE 1
 
 /*  SStrHash @ 502
- *  
+ *
  *  Creates a simple hash for the string. This function
  *  should NOT be used for sensitive information.
  *
@@ -1127,7 +1130,7 @@ SStrHash(
 int   STORMAPI SStrNCat(char *dest, const char *src, DWORD max_length);
 
 /*  SStrLen @ 506
- *  
+ *
  *  Retrieves the length of a string.
  *
  *  string:   The input string of which to obtain a
@@ -1141,7 +1144,7 @@ SStrLen(
       const char *string);
 
 /*  SStrCmp @ 508
- *  
+ *
  *  Compares two strings case sensitive.
  *
  *  string1:  The first string.
@@ -1153,14 +1156,14 @@ SStrLen(
 int
 STORMAPI
 SStrCmp(
-      const char *string1, 
-      const char *string2, 
+      const char *string1,
+      const char *string2,
       size_t size);
 
 #define SSCmp(s,x) ( SStrCmp(s,x,__STORM_SSIZEMIN(s,x)) )
 
 /*  SStrCmpI @ 509
- *  
+ *
  *  Compares two strings case insensitive.
  *
  *  string1:  The first string.
@@ -1172,18 +1175,18 @@ SStrCmp(
 int
 STORMAPI
 SStrCmpI(
-      const char *string1, 
-      const char *string2, 
+      const char *string1,
+      const char *string2,
       size_t size);
 
 #define SSCmpI(s,x) ( SStrCmpI(s,x,__STORM_SSIZEMIN(s,x)) )
 
 /*  SStrUpper @ 510
- *  
+ *
  *  Converts all lower-case alpha characters of a string to upper-case.
  *
  *  string:   The string to convert.
- *  
+ *
  *  Returns the same pointer given in the input.
  */
 char*
@@ -1226,7 +1229,7 @@ SErrDisplayErrorFmt(
 //#define SEDisplayErrorFmt(err,...) SErrDisplayErrorFmt(err, __FILE__, __LINE__, FALSE, 1, __VA_ARGS__)
 
 /*  SErrCatchUnhandledExceptions @ 567
- *  
+ *
  *  Registers a top-level exception filter managed entirely by Storm.
  *  The registered filter will display formatted exception information by calling SErrDisplayError.
  */
@@ -1236,19 +1239,19 @@ SErrCatchUnhandledExceptions();
 
 
 /*  SStrChr @ 571
- *  
- *  Searches a string for the given character. See 
+ *
+ *  Searches a string for the given character. See
  *  strchr documentation for more details.
  *
  *  string:   The string to search.
  *  c:        The character to search for.
- *  
+ *
  *  Returns a pointer to the first occurance of the character.
  */
 char*
 STORMAPI
 SStrChr(
-    const char *string, 
+    const char *string,
     char c);
 
 
@@ -1256,7 +1259,7 @@ char *STORMAPI SStrChrR(const char *string, char c);
 
 
 /*  SStrVPrintf @ 578
- *  
+ *
  *  Prints a formatted string to a destination buffer.
  *  This function calls vsnprintf with some extra error handling.
  *  See online documentation of vsnprintf for more details.
@@ -1269,8 +1272,8 @@ char *STORMAPI SStrChrR(const char *string, char c);
  */
 size_t
 SStrVPrintf(
-    char *dest, 
-    size_t size, 
+    char *dest,
+    size_t size,
     const char *format, ...);
 
 
@@ -1295,4 +1298,9 @@ bool __stdcall SNetSetBasePlayer(int base_player_num);
 int __stdcall SFileSetFilePointer(HANDLE file1, int offset, HANDLE file2, int whence);
 
 void __stdcall SDrawMessageBox(char *text, char *caption, int type);
+
+#ifdef __GNUC__
+}
+#endif
+
 #endif

@@ -543,7 +543,7 @@ LRESULT __stdcall init_redraw_window(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM 
 }
 
 //----- (0041B184) --------------------------------------------------------
-LRESULT (__stdcall *__fastcall SetWindowProc(void *func))(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+LRESULT (__stdcall *SetWindowProc(void *func))(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	LRESULT (__stdcall *result)(HWND, UINT, WPARAM, LPARAM); // eax
 

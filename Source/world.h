@@ -23,7 +23,7 @@ extern int world_4B325C;
 extern unsigned char world_4B3260[5];
 extern int world_4B3265;
 extern int world_4B3269[5];
-extern int tile_draw_masks[3][32];
+extern unsigned int tile_draw_masks[3][32];
 extern int world_4B33FD[48];
 extern int world_4B34BD[17];
 extern int world_4B3501[17];
