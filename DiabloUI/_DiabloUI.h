@@ -9,6 +9,10 @@
  */
 
 
+#ifdef __GNUC__
+extern "C" {
+#endif
+
 void __cdecl UiDestroy(); // { return; }
 void __stdcall UiTitleDialog(int a1); // { return; }
 void __cdecl UiInitialize(); // { return; }
@@ -35,3 +39,7 @@ int __stdcall UiSelectGame(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYERDAT
 int __stdcall UiSelectProvider(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info, _SNETUIDATA *ui_info, _SNETVERSIONDATA *file_info, int *type); // { return 0; }
 int __stdcall UiCreatePlayerDescription(_uiheroinfo *info, int mode, char *desc); // { return 0; }
 int __stdcall UiSetupPlayerInfo(char *str, _uiheroinfo *info, int mode); // { return 0; }
+
+#ifdef __GNUC__
+}
+#endif

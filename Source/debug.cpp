@@ -121,7 +121,7 @@ void __cdecl MaxSpellsCheat()
 	{
 		if ( spelldata[i].sBookLvl != -1 )
 		{
-			*(_QWORD *)plr[myplr]._pMemSpells |= 1i64 << (i - 1);
+			*(_QWORD *)plr[myplr]._pMemSpells |= (__int64)1 << (i - 1);
 			plr[myplr]._pSplLvl[i] = 10;
 		}
 	}

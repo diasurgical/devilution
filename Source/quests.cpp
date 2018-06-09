@@ -27,21 +27,21 @@ int ReturnLvl; // idb
 
 QuestData questlist[16] =
 {
-  { 5, 255, DTYPE_NONE, 0, 100, 0, 0, QUEST_INFRA5, "The Magic Rock" },
-  { 9, 255, DTYPE_NONE, 1, 100, 0, 0, QUEST_MUSH8, "Black Mushroom" },
-  { 4, 255, DTYPE_NONE, 2, 100, 0, 0, QUEST_GARBUD1, "Gharbad The Weak" },
-  { 8, 255, DTYPE_NONE, 3, 100, 0, 0, QUEST_ZHAR1, "Zhar the Mad" },
-  { 14, 255, DTYPE_NONE, 4, 100, 0, 0, QUEST_VEIL9, "Lachdanan" },
-  { 15, 255, DTYPE_NONE, 5, 100, 0, 1, QUEST_VILE3, "Diablo" },
+  { 5, -1, DTYPE_NONE, 0, 100, 0, 0, QUEST_INFRA5, "The Magic Rock" },
+  { 9, -1, DTYPE_NONE, 1, 100, 0, 0, QUEST_MUSH8, "Black Mushroom" },
+  { 4, -1, DTYPE_NONE, 2, 100, 0, 0, QUEST_GARBUD1, "Gharbad The Weak" },
+  { 8, -1, DTYPE_NONE, 3, 100, 0, 0, QUEST_ZHAR1, "Zhar the Mad" },
+  { 14, -1, DTYPE_NONE, 4, 100, 0, 0, QUEST_VEIL9, "Lachdanan" },
+  { 15, -1, DTYPE_NONE, 5, 100, 0, 1, QUEST_VILE3, "Diablo" },
   { 2, 2, DTYPE_NONE, 6, 100, 0, 1, QUEST_BUTCH9, "The Butcher" },
-  { 4, 255, DTYPE_NONE, 7, 100, 0, 0, QUEST_BANNER2, "Ogden's Sign" },
-  { 7, 255, DTYPE_NONE, 8, 100, 0, 0, QUEST_BLINDING, "Halls of the Blind" },
-  { 5, 255, DTYPE_NONE, 9, 100, 0, 0, QUEST_BLOODY, "Valor" },
-  { 10, 255, DTYPE_NONE, 10, 100, 0, 0, QUEST_ANVIL5, "Anvil of Fury" },
-  { 13, 255, DTYPE_NONE, 11, 100, 0, 0, QUEST_BLOODWAR, "Warlord of Blood" },
+  { 4, -1, DTYPE_NONE, 7, 100, 0, 0, QUEST_BANNER2, "Ogden's Sign" },
+  { 7, -1, DTYPE_NONE, 8, 100, 0, 0, QUEST_BLINDING, "Halls of the Blind" },
+  { 5, -1, DTYPE_NONE, 9, 100, 0, 0, QUEST_BLOODY, "Valor" },
+  { 10, -1, DTYPE_NONE, 10, 100, 0, 0, QUEST_ANVIL5, "Anvil of Fury" },
+  { 13, -1, DTYPE_NONE, 11, 100, 0, 0, QUEST_BLOODWAR, "Warlord of Blood" },
   { 3, 3, DTYPE_CATHEDRAL, 12, 100, 1, 1, QUEST_KING2, "The Curse of King Leoric" },
-  { 2, 255, DTYPE_CAVES, 13, 100, 4, 0, QUEST_POISON3, "Poisoned Water Supply" },
-  { 6, 255, DTYPE_CATACOMBS, 14, 100, 2, 0, QUEST_BONER, "The Chamber of Bone" },
+  { 2, -1, DTYPE_CAVES, 13, 100, 4, 0, QUEST_POISON3, "Poisoned Water Supply" },
+  { 6, -1, DTYPE_CATACOMBS, 14, 100, 2, 0, QUEST_BONER, "The Chamber of Bone" },
   { 15, 15, DTYPE_CATHEDRAL, 15, 100, 5, 1, QUEST_VILE1, "Archbishop Lazarus" }
 };
 char questxoff[7] = { 0, -1, 0, -1, -2, -1, -2 };

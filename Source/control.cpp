@@ -485,7 +485,7 @@ LABEL_10:
 		}
 		v20 = &spelldata[1].sTownSpell;
 		v4 = 1;
-		v26 = 1i64;
+		v26 = (__int64)1;
 		v23 = 1;
 		v22 = xp - 216;
 		do
@@ -621,7 +621,7 @@ LABEL_66:
 LABEL_68:
 			v20 += 56;
 			++v4;
-			v26 *= 2i64;
+			v26 *= (__int64)2;
 			v23 = v4;
 		}
 		while ( (signed int)v20 < (signed int)&spelldata[37].sTownSpell );
@@ -753,7 +753,7 @@ void __fastcall ToggleSpell(int slot)
 			v8 = plr[v3]._pAblSpells[0];
 			v9 = plr[v3]._pAblSpells[1];
 		}
-		if ( v9 & ((unsigned __int64)(1i64 << ((unsigned char)v2 - 1)) >> 32) | v8 & (unsigned int)(1i64 << ((unsigned char)v2 - 1)) )
+		if ( v9 & ((unsigned __int64)((__int64)1 << ((unsigned char)v2 - 1)) >> 32) | v8 & (unsigned int)((__int64)1 << ((unsigned char)v2 - 1)) )
 		{
 			drawpanflag = 255;
 			plr[v3]._pRSpell = v12;
@@ -2754,7 +2754,7 @@ int __fastcall GetSBookTrans(int ii, unsigned char townok)
 	v7 = townok;
 	v6 = 1;
 	v3 = myplr;
-	if ( ((unsigned __int64)(1i64 << ((unsigned char)ii - 1)) >> 32) & plr[v3]._pISpells[1] | (unsigned int)(1i64 << ((unsigned char)ii - 1)) & plr[v3]._pISpells[0] )
+	if ( ((unsigned __int64)((__int64)1 << ((unsigned char)ii - 1)) >> 32) & plr[v3]._pISpells[1] | (unsigned int)((__int64)1 << ((unsigned char)ii - 1)) & plr[v3]._pISpells[0] )
 		v6 = 3;
 	result = plr[v3]._pAblSpells[1] & (1 << (ii - 1) >> 31) | plr[v3]._pAblSpells[0] & (1 << (ii - 1));
 	if ( result )
@@ -2800,7 +2800,7 @@ void __cdecl DrawSpellBook()
 	{
 		v2 = *(&attribute_inc_rects[3].h + v9 + 7 * sbooktab);
 		if ( v2 != -1
-		  && v1 & ((unsigned __int64)(1i64 << ((unsigned char)v2 - 1)) >> 32) | v0 & (unsigned int)(1i64 << ((unsigned char)v2 - 1)) )
+		  && v1 & ((unsigned __int64)((__int64)1 << ((unsigned char)v2 - 1)) >> 32) | v0 & (unsigned int)((__int64)1 << ((unsigned char)v2 - 1)) )
 		{
 			v7 = GetSBookTrans(v2, 1u);
 			SetSpellTrans(v7);
@@ -2929,7 +2929,7 @@ void __cdecl CheckSBook()
 			v3 = myplr;
 			LODWORD(v6) = plr[myplr]._pAblSpells[0];
 			HIDWORD(v6) = plr[myplr]._pAblSpells[1];
-			v4 = 1i64 << ((unsigned char)v2 - 1);
+			v4 = (__int64)1 << ((unsigned char)v2 - 1);
 			if ( HIDWORD(v4) & (HIDWORD(v6) | plr[myplr]._pISpells[1] | plr[myplr]._pMemSpells[1]) | (unsigned int)v4 & ((unsigned int)v6 | plr[myplr]._pISpells[0] | plr[myplr]._pMemSpells[0]) )
 			{
 				v5 = 3;
