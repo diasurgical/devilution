@@ -2,36 +2,53 @@ LIBRARY      "Storm"
 
 EXPORTS
   SNetCreateGame                @101 NONAME
+  SNetCreateGame@40             @101 NONAME
   SNetDestroy                   @102 NONAME
+  SNetDestroy@0                 @102 NONAME
   SNetEnumProviders             @103 NONAME
   ;SNetEnumDevices               @104 NONAME
   SNetEnumGames                 @105 NONAME
   SNetDropPlayer                @106 NONAME
+  SNetDropPlayer@8              @106 NONAME
   SNetGetGameInfo               @107 NONAME
+  SNetGetGameInfo@16            @107 NONAME
   ;SNetGetNetworkLatency         @108 NONAME
   SNetGetNumPlayers             @109 NONAME
   SNetGetOwnerTurnsWaiting      @110 NONAME
+  SNetGetOwnerTurnsWaiting@4    @110 NONAME
   ;SNetGetPerformanceData        @111 NONAME
   SNetGetPlayerCaps             @112 NONAME
   SNetGetPlayerName             @113 NONAME
   SNetGetProviderCaps           @114 NONAME
+  SNetGetProviderCaps@4         @114 NONAME
   SNetGetTurnsInTransit         @115 NONAME
+  SNetGetTurnsInTransit@4       @115 NONAME
   SNetInitializeDevice          @116 NONAME
   SNetInitializeProvider        @117 NONAME
+  SNetInitializeProvider@20     @117 NONAME
   SNetJoinGame                  @118 NONAME
   SNetLeaveGame                 @119 NONAME
+  SNetLeaveGame@4               @119 NONAME
   SNetPerformUpgrade            @120 NONAME
+  SNetPerformUpgrade@4          @120 NONAME
   SNetReceiveMessage            @121 NONAME
+  SNetReceiveMessage@12         @121 NONAME
   SNetReceiveTurns              @122 NONAME
+  SNetReceiveTurns@20           @122 NONAME
   SNetRegisterEventHandler      @123 NONAME
+  SNetRegisterEventHandler@8    @123 NONAME
   ;SNetResetLatencyMeasurements  @124 NONAME
   SNetSelectGame                @125 NONAME
   ;SNetSelectProvider            @126 NONAME
   SNetSendMessage               @127 NONAME
+  SNetSendMessage@12            @127 NONAME
   SNetSendTurn                  @128 NONAME
+  SNetSendTurn@8                @128 NONAME
   SNetSetBasePlayer             @129 NONAME
+  SNetSetBasePlayer@4           @129 NONAME
   SNetSetGameMode               @130 NONAME
   SNetUnregisterEventHandler    @131 NONAME
+  SNetUnregisterEventHandler@8  @131 NONAME
 
   SNetEnumGamesEx               @133 NONAME
   SNetSendServerChatCommand     @134 NONAME
@@ -78,25 +95,41 @@ EXPORTS
 
   ;SFileAuthenticateArchive      @251 NONAME
   SFileCloseArchive             @252 NONAME
+  SFileCloseArchive@4           @252 NONAME
   SFileCloseFile                @253 NONAME
+  SFileCloseFile@4              @253 NONAME
   ;SFileDdaBegin                 @254 NONAME
   SFileDdaBeginEx               @255 NONAME
+  SFileDdaBeginEx@28            @255 NONAME
   SFileDdaDestroy               @256 NONAME
+  SFileDdaDestroy@0             @256 NONAME
   SFileDdaEnd                   @257 NONAME
+  SFileDdaEnd@4                 @257 NONAME
   SFileDdaGetPos                @258 NONAME
+  SFileDdaGetPos@12             @258 NONAME
   ;SFileDdaGetVolume             @259 NONAME
   SFileDdaInitialize            @260 NONAME
+  SFileDdaInitialize@4          @260 NONAME
   SFileDdaSetVolume             @261 NONAME
+  SFileDdaSetVolume@12          @261 NONAME
   SFileDestroy                  @262 NONAME
   ;SFileEnableDirectAccess       @263 NONAME
   SFileGetFileArchive           @264 NONAME
+  SFileGetFileArchive@8         @264 NONAME
   SFileGetFileSize              @265 NONAME
+  SFileGetFileSize@8            @265 NONAME
   SFileOpenArchive              @266 NONAME
+  SFileOpenArchive@16           @266 NONAME
   SFileOpenFile                 @267 NONAME
+  SFileOpenFile@8               @267 NONAME
   SFileOpenFileEx               @268 NONAME
+  SFileOpenFileEx@16            @268 NONAME
   SFileReadFile                 @269 NONAME
+  SFileReadFile@20              @269 NONAME
   SFileSetBasePath              @270 NONAME
+  SFileSetBasePath@4            @270 NONAME
   SFileSetFilePointer           @271 NONAME
+  SFileSetFilePointer@16        @271 NONAME
   SFileSetLocale                @272 NONAME
   ;SFileGetBasePath              @273 NONAME
   SFileSetIoErrorMode           @274 NONAME
@@ -155,17 +188,21 @@ EXPORTS
   SDrawDestroy                  @344 NONAME
   ;SDrawFlipPage                 @345 NONAME
   SDrawGetFrameWindow           @346 NONAME
+  SDrawGetFrameWindow@4         @346 NONAME
   SDrawGetObjects               @347 NONAME
   SDrawGetScreenSize            @348 NONAME
   ;SDrawGetServiceLevel          @349 NONAME
   SDrawLockSurface              @350 NONAME
   SDrawManualInitialize         @351 NONAME
+  SDrawManualInitialize@32      @351 NONAME
   SDrawMessageBox               @352 NONAME
+  SDrawMessageBox@12            @352 NONAME
   SDrawPostClose                @353 NONAME
   SDrawRealizePalette           @354 NONAME
   ;SDrawSelectGdiSurface         @355 NONAME
   SDrawUnlockSurface            @356 NONAME
   SDrawUpdatePalette            @357 NONAME
+  SDrawUpdatePalette@16         @357 NONAME
   ;SDrawUpdateScreen             @358 NONAME
   ;SDrawWaitForVerticalBlank     @359 NONAME
 
@@ -194,8 +231,10 @@ EXPORTS
   ;SMem399                       @399 NONAME
 
   SMemAlloc                     @401 NONAME
+  SMemAlloc@16                  @401 NONAME
   ;SMemDestroy                   @402 NONAME
   SMemFree                      @403 NONAME
+  SMemFree@16                   @403 NONAME
   ;SMemGetSize                   @404 NONAME
   SMemReAlloc                   @405 NONAME
   ;Storm406                      @406 NONAME
@@ -210,11 +249,17 @@ EXPORTS
   ;SMsgPushRegisterState         @419 NONAME
   ;SMsg420                       @420 NONAME
   SRegLoadData                  @421 NONAME
+  SRegLoadData@24               @421 NONAME
   SRegLoadString                @422 NONAME
+  SRegLoadString@20             @422 NONAME
   SRegLoadValue                 @423 NONAME
+  SRegLoadValue@16              @423 NONAME
   SRegSaveData                  @424 NONAME
+  SRegSaveData@20               @424 NONAME
   SRegSaveString                @425 NONAME
+  SRegSaveString@16             @425 NONAME
   SRegSaveValue                 @426 NONAME
+  SRegSaveValue@16              @426 NONAME
   ;SRegGetBaseKey                @427 NONAME
   SRegDeleteValue               @428 NONAME
   ;SReg429                       @429 NONAME
@@ -238,20 +283,27 @@ EXPORTS
   ;STransLoadE                   @447 NONAME
 
   SVidDestroy                   @451 NONAME
+  SVidDestroy@0                 @451 NONAME
   SVidGetSize                   @452 NONAME
   SVidInitialize                @453 NONAME
+  SVidInitialize@4              @453 NONAME
   SVidPlayBegin                 @454 NONAME
+  SVidPlayBegin@28              @454 NONAME
   ;SVidPlayBeginFromMemory       @455 NONAME
   SVidPlayContinue              @456 NONAME
   SVidPlayContinueSingle        @457 NONAME
   SVidPlayEnd                   @458 NONAME
+  SVidPlayEnd@4                 @458 NONAME
   ;SVidSetVolume                 @459 NONAME
   ;Storm460                      @460 NONAME
   SErrDisplayError              @461 NONAME
   SErrGetErrorStr               @462 NONAME
+  SErrGetErrorStr@12            @462 NONAME
   SErrGetLastError              @463 NONAME
+  SErrGetLastError@0            @463 NONAME
   ;SErrRegisterMessageSource     @464 NONAME
   SErrSetLastError              @465 NONAME
+  SErrSetLastError@4            @465 NONAME
   ;SErrReportNamedResourceLeak   @466 NONAME
   ;SErrReportResourceLeak        @467 NONAME
   SErrSuppressErrors            @468 NONAME
@@ -287,6 +339,7 @@ EXPORTS
   ;Ordinal498                    @498 NONAME
 
   SStrCopy                      @501 NONAME
+  SStrCopy@12                   @501 NONAME
   SStrHash                      @502 NONAME
   SStrNCat                      @503 NONAME
   ;SStrTokenize                  @504 NONAME
