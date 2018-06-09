@@ -1,7 +1,21 @@
 // DiabloUI.cpp : Defines the entry point for the DLL application.
 //
 
-#include "stdafx.h"
+#include <windows.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <mmsystem.h>
+#include <dsound.h>
+#include <ddraw.h>
+#include <ddstream.h>
+#include <io.h>
+#include <process.h>
+#include <math.h>
+#include <time.h>
+#include <shellapi.h>
+#include <shlobj.h>
+#include "..\structs.h"
 #include "DiabloUI.h"
 
 BOOL APIENTRY DllMain( HANDLE hModule, 
@@ -20,38 +34,6 @@ BOOL APIENTRY DllMain( HANDLE hModule,
     return TRUE;
 }
 
-
-// This is an example of an exported variable
-DIABLOUI_API int nDiabloUI=0;
-
-// This is an example of an exported function.
-DIABLOUI_API int fnDiabloUI(void)
-{
-	return 42;
-}
-
-// This is the constructor of a class that has been exported.
-// see DiabloUI.h for the class definition
-CDiabloUI::CDiabloUI()
-{ 
-	return; 
-}
-
-struct _SNETPROGRAMDATA {
-	int a1;
-};
-struct _SNETPLAYERDATA {
-	int a1;
-};
-struct _SNETUIDATA {
-	int a1;
-};
-struct _SNETVERSIONDATA {
-	int a1;
-};
-struct _uiheroinfo {
-	int a1;
-};
 void __cdecl UiDestroy() { return; }
 void __stdcall UiTitleDialog(int a1) { return; }
 void __cdecl UiInitialize() { return; }
