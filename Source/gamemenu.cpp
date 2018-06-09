@@ -13,29 +13,29 @@
 
 TMenuItem sgSingleMenu[6] =
 {
-  { 0x80000000, "Save Game", &gamemenu_save_game },
-  { 0x80000000, "Options", &gamemenu_options },
-  { 0x80000000, "New Game", &gamemenu_new_game },
-  { 0x80000000, "Load Game", &gamemenu_load_game },
-  { 0x80000000, "Quit Diablo", &gamemenu_quit_game },
-  { 0x80000000, NULL, NULL }
+  { -2147483648, "Save Game", &gamemenu_save_game },
+  { -2147483648, "Options", &gamemenu_options },
+  { -2147483648, "New Game", &gamemenu_new_game },
+  { -2147483648, "Load Game", &gamemenu_load_game },
+  { -2147483648, "Quit Diablo", &gamemenu_quit_game },
+  { -2147483648, NULL, NULL }
 };
 TMenuItem sgMultiMenu[5] =
 {
-  { 0x80000000, "Options", &gamemenu_options },
-  { 0x80000000, "New Game", &gamemenu_new_game },
-  { 0x80000000, "Restart In Town", &gamemenu_restart_town },
-  { 0x80000000, "Quit Diablo", &gamemenu_quit_game },
-  { 0x80000000, NULL, NULL }
+  { -2147483648, "Options", &gamemenu_options },
+  { -2147483648, "New Game", &gamemenu_new_game },
+  { -2147483648, "Restart In Town", &gamemenu_restart_town },
+  { -2147483648, "Quit Diablo", &gamemenu_quit_game },
+  { -2147483648, NULL, NULL }
 };
 TMenuItem sgOptionMenu[6] =
 {
-  { 0xC0000000, NULL, (void (__cdecl *)(void))&gamemenu_music_volume },
-  { 0xC0000000, NULL, (void (__cdecl *)(void))&gamemenu_sound_volume },
-  { 0xC0000000, "Gamma", (void (__cdecl *)(void))&gamemenu_gamma },
-  { 0x80000000, NULL, &gamemenu_color_cycling },
-  { 0x80000000, "Previous Menu", &gamemenu_previous },
-  { 0x80000000, NULL, NULL }
+  { -1073741824, NULL, (void (__cdecl *)(void))&gamemenu_music_volume },
+  { -1073741824, NULL, (void (__cdecl *)(void))&gamemenu_sound_volume },
+  { -1073741824, "Gamma", (void (__cdecl *)(void))&gamemenu_gamma },
+  { -2147483648, NULL, &gamemenu_color_cycling },
+  { -2147483648, "Previous Menu", &gamemenu_previous },
+  { -2147483648, NULL, NULL }
 };
 char *music_toggle_names[] = { "Music", "Music Disabled" };
 char *sound_toggle_names[] = { "Sound", "Sound Disabled" };
