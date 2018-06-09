@@ -816,7 +816,7 @@ int __fastcall FindClosest(int sx, int sy, int rad)
 	int v3; // eax
 	int v4; // eax
 	int v5; // ebx
-	unsigned char *v6; // esi
+	char *v6; // esi
 	int v7; // eax
 	int v8; // ecx
 	int v9; // edi
@@ -2714,7 +2714,7 @@ void __fastcall AddTeleport(int mi, int sx, int sy, int dx, int dy, int midir, i
 	int v9; // esi
 	int v10; // eax
 	int v11; // ecx
-	unsigned char *v12; // edx
+	char *v12; // edx
 	int v13; // ecx
 	int v14; // eax
 	int v15; // edx
@@ -2723,7 +2723,7 @@ void __fastcall AddTeleport(int mi, int sx, int sy, int dx, int dy, int midir, i
 	int v18; // edx
 	int CrawlNum[6]; // [esp+Ch] [ebp-28h]
 	int v20; // [esp+24h] [ebp-10h]
-	unsigned char *v21; // [esp+28h] [ebp-Ch]
+	char *v21; // [esp+28h] [ebp-Ch]
 	int v22; // [esp+2Ch] [ebp-8h]
 	int v23; // [esp+30h] [ebp-4h]
 
@@ -3071,7 +3071,7 @@ void __fastcall AddTown(int mi, int sx, int sy, int dx, int dy, int midir, int m
 	int v11; // edi
 	int v12; // eax
 	int v13; // ecx
-	unsigned char *v14; // eax
+	char *v14; // eax
 	int v15; // eax
 	//int v16; // eax
 	int v17; // ecx
@@ -3082,7 +3082,7 @@ void __fastcall AddTown(int mi, int sx, int sy, int dx, int dy, int midir, int m
 	int v22; // ST0C_4
 	int CrawlNum[6]; // [esp+Ch] [ebp-28h]
 	int i; // [esp+24h] [ebp-10h]
-	unsigned char *v25; // [esp+28h] [ebp-Ch]
+	char *v25; // [esp+28h] [ebp-Ch]
 	int v26; // [esp+2Ch] [ebp-8h]
 	int v27; // [esp+30h] [ebp-4h]
 	int x; // [esp+40h] [ebp+Ch]
@@ -3336,7 +3336,7 @@ void __fastcall AddGuardian(int mi, int sx, int sy, int dx, int dy, int midir, i
 	int v13; // ecx
 	int v14; // eax
 	int v15; // ecx
-	unsigned char *v16; // eax
+	char *v16; // eax
 	int v17; // ebx
 	int v18; // edi
 	//int v19; // eax
@@ -3354,7 +3354,7 @@ void __fastcall AddGuardian(int mi, int sx, int sy, int dx, int dy, int midir, i
 	int v31; // [esp+28h] [ebp-18h]
 	int x1; // [esp+2Ch] [ebp-14h]
 	int v33; // [esp+30h] [ebp-10h]
-	unsigned char *v34; // [esp+34h] [ebp-Ch]
+	char *v34; // [esp+34h] [ebp-Ch]
 	int v35; // [esp+38h] [ebp-8h]
 	int v36; // [esp+3Ch] [ebp-4h]
 
@@ -3729,7 +3729,7 @@ void __fastcall AddStone(int mi, int sx, int sy, int dx, int dy, int midir, int 
 	int v11; // esi
 	int v12; // edi
 	int v13; // ecx
-	unsigned char *v14; // ecx
+	char *v14; // ecx
 	int v15; // ebx
 	int v16; // ebx
 	int v17; // edi
@@ -4089,14 +4089,14 @@ void __fastcall AddFirewallC(int mi, int sx, int sy, int dx, int dy, int midir, 
 	int v9; // esi
 	int v10; // eax
 	int v11; // ecx
-	unsigned char *v12; // eax
+	char *v12; // eax
 	int v13; // ebx
 	int v14; // edi
 	//int v15; // eax
 	int CrawlNum[6]; // [esp+Ch] [ebp-30h]
 	int v17; // [esp+24h] [ebp-18h]
 	int v18; // [esp+28h] [ebp-14h]
-	unsigned char *v19; // [esp+2Ch] [ebp-10h]
+	char *v19; // [esp+2Ch] [ebp-10h]
 	int x1; // [esp+30h] [ebp-Ch]
 	int v21; // [esp+34h] [ebp-8h]
 	int v22; // [esp+38h] [ebp-4h]
@@ -4800,7 +4800,7 @@ void __fastcall MI_Golem(int i)
 	bool v4; // zf
 	int v5; // eax
 	int v6; // ecx
-	unsigned char *v7; // eax
+	char *v7; // eax
 	int v8; // ebx
 	int v9; // edi
 	int v10; // edx
@@ -4811,7 +4811,7 @@ void __fastcall MI_Golem(int i)
 	unsigned int v16; // [esp+24h] [ebp-18h]
 	int v17; // [esp+28h] [ebp-14h]
 	int v18; // [esp+2Ch] [ebp-10h]
-	unsigned char *v19; // [esp+30h] [ebp-Ch]
+	char *v19; // [esp+30h] [ebp-Ch]
 	int v20; // [esp+34h] [ebp-8h]
 	int v21; // [esp+38h] [ebp-4h]
 
@@ -6204,7 +6204,7 @@ void __fastcall MI_Chain(int i)
 	int v8; // edi
 	int v9; // ecx
 	int v10; // eax
-	unsigned char *v11; // ecx
+	char *v11; // ecx
 	int v12; // ebx
 	int v13; // eax
 	int v14; // eax
@@ -6212,7 +6212,7 @@ void __fastcall MI_Chain(int i)
 	int CrawlNum[19]; // [esp+Ch] [ebp-68h]
 	int v2; // [esp+58h] [ebp-1Ch]
 	int v18; // [esp+5Ch] [ebp-18h]
-	unsigned char *v19; // [esp+60h] [ebp-14h]
+	char *v19; // [esp+60h] [ebp-14h]
 	int id; // [esp+64h] [ebp-10h]
 	int sx; // [esp+68h] [ebp-Ch]
 	int sy; // [esp+6Ch] [ebp-8h]
