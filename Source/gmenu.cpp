@@ -202,7 +202,7 @@ void __fastcall gmenu_up_down(int a1)
 			}
 			sgpCurrItem = v1;
 LABEL_10:
-			if ( v1->dwFlags < 0 )
+			if ( (v1->dwFlags & 0x80000000) != 0 )
 			{
 				if ( v2 )
 					PlaySFX(IS_TITLEMOV);
@@ -270,10 +270,10 @@ void __fastcall gmenu_draw_menu_item(TMenuItem *pItem, int a2)
 	{
 		v6 = (v4 >> 1) + 80;
 		CelDecodeOnly(v6, v2 - 10, optbar_cel, 1, 287);
-		v7 = ((unsigned int)v3->dwFlags >> 12) & 0xFFF;
+		v7 = (v3->dwFlags >> 12) & 0xFFF;
 		if ( v7 < 2 )
 			v7 = 2;
-		v8 = ((v3->dwFlags & 0xFFFu) << 8) / v7;
+		v8 = ((v3->dwFlags & 0xFFF) << 8) / v7;
 		v9 = (v5 >> 1) + 82;
 		v10 = v8;
 		gmenu_clear_buffer(v9, v2 - 12, v8 + 13, 28);
@@ -281,7 +281,7 @@ void __fastcall gmenu_draw_menu_item(TMenuItem *pItem, int a2)
 		v5 = v14;
 	}
 	v11 = 384 - (v5 >> 1);
-	v12 = -(v3->dwFlags < 0);
+	v12 = -((v3->dwFlags & 0x80000000) != 0);
 	_LOBYTE(v12) = v12 & 0xF1;
 	light_table_index = v12 + 15;
 	gmenu_print_text(384 - (v5 >> 1), v2, v3->pszStr);
@@ -340,7 +340,7 @@ int __fastcall gmenu_presskeys(int a1)
 	switch ( a1 )
 	{
 		case VK_RETURN:
-			if ( sgpCurrItem->dwFlags < 0 )
+			if ( (sgpCurrItem->dwFlags & 0x80000000) != 0 )
 			{
 				PlaySFX(IS_TITLEMOV);
 				((void (__fastcall *)(signed int))sgpCurrItem->fnMenu)(1);
@@ -375,8 +375,8 @@ LABEL_10:
 //----- (0041A32A) --------------------------------------------------------
 void __fastcall gmenu_left_right(int a1)
 {
-	int v1; // edx
-	int v2; // eax
+	signed int v1; // edx
+	unsigned int v2; // eax
 	int v3; // eax
 
 	v1 = sgpCurrItem->dwFlags;
@@ -462,7 +462,7 @@ int __fastcall gmenu_left_mouse(int a1)
 			{
 				v3 = v2;
 				v4 = &dword_634480[v3];
-				if ( v4->dwFlags < 0 )
+				if ( (v4->dwFlags & 0x80000000) != 0 )
 				{
 					v5 = (unsigned int)gmenu_get_lfont(&dword_634480[v3]) >> 1;
 					if ( MouseX >= 320 - v5 && MouseX <= v5 + 320 )
@@ -507,7 +507,7 @@ void __fastcall gmenu_enable(TMenuItem *pMenuItem, bool enable)
 //----- (0041A4C6) --------------------------------------------------------
 void __fastcall gmenu_slider_1(TMenuItem *pItem, int min, int max, int gamma)
 {
-	int v4; // esi
+	unsigned int v4; // esi
 	int v5; // eax
 
 	v4 = pItem->dwFlags;
@@ -522,7 +522,7 @@ void __fastcall gmenu_slider_1(TMenuItem *pItem, int min, int max, int gamma)
 int __fastcall gmenu_slider_get(TMenuItem *pItem, int min, int max)
 {
 	int v3; // eax
-	int v4; // ecx
+	unsigned int v4; // ecx
 
 	v3 = (pItem->dwFlags >> 12) & 0xFFF;
 	v4 = pItem->dwFlags & 0xFFF;
