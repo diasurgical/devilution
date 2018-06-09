@@ -76,7 +76,7 @@ struct TSFX
 
 struct TMenuItem
 {
-	int dwFlags;
+	unsigned int dwFlags;
 	char *pszStr;
 	void (__cdecl *fnMenu)(); /* fix, should have one arg */
 };
@@ -248,8 +248,8 @@ struct SpellData
 
 struct Coord
 {
-	unsigned char x;
-	unsigned char y;
+	char x;
+	char y;
 };
 
 struct RECT8
