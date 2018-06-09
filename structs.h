@@ -248,8 +248,8 @@ struct SpellData
 
 struct Coord
 {
-	char x;
-	char y;
+	unsigned char x;
+	unsigned char y;
 };
 
 struct RECT8
