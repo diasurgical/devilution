@@ -5456,7 +5456,7 @@ LABEL_47:
 						v60 = random(v7, 37);
 						v7 = v60;
 					}
-					while ( !(plr[v53]._pMemSpells[1] & ((unsigned __int64)(1 << v60) >> 32) | plr[v53]._pMemSpells[0] & (unsigned int)(1 << v60)) );
+					while ( !(plr[v53]._pMemSpells[1] & ((unsigned __int64)((__int64)1 << v60) >> 32) | plr[v53]._pMemSpells[0] & (unsigned int)((__int64)1 << v60)) );
 					v61 = &plr[v53]._pSplLvl[v60 + 1];
 					if ( *v61 < 2 )
 						*v61 = 0;
