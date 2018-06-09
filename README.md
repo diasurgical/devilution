@@ -53,7 +53,8 @@ Here are some screenshots of a few things I tinkered around with, to demonstrate
 
 # Credits
 - [sanctuary](https://github.com/sanctuary) - documenting the Windows-specific Diablo code (engine, mpq, directx)
-- Ladislav Zezula - decompiling PKWARE library
+- [BWAPI Team](https://github.com/bwapi) - providing library API to work with Storm
+- Ladislav Zezula - decompiling PKWARE library, decompiling Storm (StormLib)
 - fearedbliss - being awe-inspiring
 - Climax Studios - basically giving out an intermediate source code
 - Blizzard North - wait, this was a typo!
