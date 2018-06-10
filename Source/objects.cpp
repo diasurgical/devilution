@@ -1846,7 +1846,7 @@ void __fastcall SetupObject(int i, int x, int y, int ot)
 	v8 = 0;
 	while ( v7 != v6 )
 		v7 = ObjFileList[v8++ + 1];
-	object[v4]._oAnimCel = pObjCels[v8];
+	object[v4]._oAnimData = pObjCels[v8];
 	v9 = AllObjects[v5].oAnimFlag;
 	object[v4]._oAnimFlag = v9;
 	if ( v9 )
@@ -7270,7 +7270,7 @@ void __fastcall SyncObjectAnim(int o)
 	v3 = 0;
 	while ( v2 != (char)AllObjects[object[o]._otype].ofindex )
 		v2 = ObjFileList[v3++ + 1];
-	object[o]._oAnimCel = pObjCels[v3];
+	object[o]._oAnimData = pObjCels[v3];
 	if ( v1 <= OBJ_BOOK2R )
 	{
 		if ( v1 != OBJ_BOOK2R )
