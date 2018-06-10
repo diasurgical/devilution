@@ -133,7 +133,7 @@ void __fastcall DrawMissile(int x, int y, int sx, int sy, int a5, int a6, int de
 			v11 = &missile[v10];
 			if ( v11->_mix == v26 && v11->_miy == v7 && v11->_miPreFlag == del_flag && v11->_miDrawFlag )
 			{
-				v12 = (char *)v11->_miAnimCel;
+				v12 = (char *)v11->_miAnimData;
 				if ( !v12 )
 					return;
 				v13 = v11->_miAnimFrame;
@@ -165,7 +165,7 @@ void __fastcall DrawMissile(int x, int y, int sx, int sy, int a5, int a6, int de
 		{
 			if ( v16->_miDrawFlag )
 			{
-				v17 = (char *)v16->_miAnimCel;
+				v17 = (char *)v16->_miAnimData;
 				if ( v17 )
 				{
 					v18 = v16->_miAnimFrame;
@@ -233,7 +233,7 @@ void __fastcall DrawClippedMissile(int x, int y, int sx, int sy, int a5, int a6,
 			v11 = &missile[v10];
 			if ( v11->_mix == v26 && v11->_miy == v7 && v11->_miPreFlag == a7 && v11->_miDrawFlag )
 			{
-				v12 = (char *)v11->_miAnimCel;
+				v12 = (char *)v11->_miAnimData;
 				if ( !v12 )
 					return;
 				v13 = v11->_miAnimFrame;
@@ -265,7 +265,7 @@ void __fastcall DrawClippedMissile(int x, int y, int sx, int sy, int a5, int a6,
 		{
 			if ( v16->_miDrawFlag )
 			{
-				v17 = (char *)v16->_miAnimCel;
+				v17 = (char *)v16->_miAnimData;
 				if ( v17 )
 				{
 					v18 = v16->_miAnimFrame;
@@ -367,7 +367,7 @@ void __fastcall DrawPlayer(int pnum, int x, int y, int px, int py, int animdata,
 						Cl2DecodeFrm1(
 							px + plr[v13]._pAnimWidth2 - misfiledata[9].mAnimWidth2[0],
 							py,
-							(char *)misfiledata[9].mAnimCel[0],
+							(char *)misfiledata[9].mAnimData[0],
 							1,
 							misfiledata[9].mAnimWidth[0],
 							a9,
@@ -380,7 +380,7 @@ void __fastcall DrawPlayer(int pnum, int x, int y, int px, int py, int animdata,
 						Cl2DecodeFrm3(
 							px + plr[v13]._pAnimWidth2 - misfiledata[9].mAnimWidth2[0],
 							py,
-							(char *)misfiledata[9].mAnimCel[0],
+							(char *)misfiledata[9].mAnimData[0],
 							1,
 							misfiledata[9].mAnimWidth[0],
 							a9,
@@ -399,7 +399,7 @@ void __fastcall DrawPlayer(int pnum, int x, int y, int px, int py, int animdata,
 						Cl2DecodeLightTbl(
 							px + plr[v13]._pAnimWidth2 - misfiledata[9].mAnimWidth2[0],
 							py,
-							(char *)misfiledata[9].mAnimCel[0],
+							(char *)misfiledata[9].mAnimData[0],
 							1,
 							misfiledata[9].mAnimWidth[0],
 							a9,
@@ -449,7 +449,7 @@ void __fastcall DrawClippedPlayer(int pnum, int x, int y, int px, int py, int an
 						Cl2DecodeFrm4(
 							px + plr[v13]._pAnimWidth2 - misfiledata[9].mAnimWidth2[0],
 							py,
-							(char *)misfiledata[9].mAnimCel[0],
+							(char *)misfiledata[9].mAnimData[0],
 							1,
 							misfiledata[9].mAnimWidth[0],
 							a9,
@@ -462,7 +462,7 @@ void __fastcall DrawClippedPlayer(int pnum, int x, int y, int px, int py, int an
 						Cl2DecodeFrm5(
 							px + plr[v13]._pAnimWidth2 - misfiledata[9].mAnimWidth2[0],
 							py,
-							(char *)misfiledata[9].mAnimCel[0],
+							(char *)misfiledata[9].mAnimData[0],
 							1,
 							misfiledata[9].mAnimWidth[0],
 							a9,
@@ -481,7 +481,7 @@ void __fastcall DrawClippedPlayer(int pnum, int x, int y, int px, int py, int an
 						Cl2DecodeFrm6(
 							px + plr[v13]._pAnimWidth2 - misfiledata[9].mAnimWidth2[0],
 							py,
-							(char *)misfiledata[9].mAnimCel[0],
+							(char *)misfiledata[9].mAnimData[0],
 							1,
 							misfiledata[9].mAnimWidth[0],
 							a9,
@@ -998,7 +998,7 @@ void __fastcall scrollrt_draw_clipped_dungeon(char *a1, int sx, int sy, int a4, 
 		if ( v7 )
 		{
 			v11 = &dead[(v7 & 0x1F) - 1];
-			v12 = (int *)v11->_deadAnim[(v7 >> 5) & 7];
+			v12 = (int *)v11->_deadData[(v7 >> 5) & 7];
 			v13 = a4 - v11->field_28;
 			if ( v12 )
 			{
@@ -1021,16 +1021,16 @@ void __fastcall scrollrt_draw_clipped_dungeon(char *a1, int sx, int sy, int a4, 
 		v16 = &item[v49-1];
 		if ( !v16->_iPostDraw && (unsigned char)v49 <= 0x7Fu )
 		{
-			v17 = (char *)v16->ItemFrame;
+			v17 = (char *)v16->_iAnimData;
 			if ( v17 )
 			{
 				v18 = v16->_iAnimFrame;
 				if ( v18 >= 1 && *(_DWORD *)v17 <= 0x32u && v18 <= *(_DWORD *)v17 )
 				{
-					v19 = a4 - v16->_iAnimXOff;
+					v19 = a4 - v16->_iAnimWidth2;
 					if ( v49 - 1 == pcursitem )
 						CelDrawHdrClrHL(181, v19, a5, v17, v16->_iAnimFrame, v16->_iAnimWidth, 0, 8);
-					Cel2DecodeHdrLight(v19, a5, (char *)v16->ItemFrame, v16->_iAnimFrame, v16->_iAnimWidth, 0, 8);
+					Cel2DecodeHdrLight(v19, a5, (char *)v16->_iAnimData, v16->_iAnimFrame, v16->_iAnimWidth, 0, 8);
 				}
 			}
 		}
@@ -1158,19 +1158,19 @@ void __fastcall scrollrt_draw_clipped_dungeon(char *a1, int sx, int sy, int a4, 
 		{
 			if ( (unsigned char)v49 <= 0x7Fu )
 			{
-				v37 = (char *)v36->ItemFrame;
+				v37 = (char *)v36->_iAnimData;
 				if ( v37 )
 				{
 					v38 = v36->_iAnimFrame;
 					if ( v38 >= 1 && *(_DWORD *)v37 <= 0x32u && v38 <= *(_DWORD *)v37 )
 					{
-						v39 = a4 - v36->_iAnimXOff;
+						v39 = a4 - v36->_iAnimWidth2;
 						if ( v49 - 1 == pcursitem )
 							CelDrawHdrClrHL(181, v39, a5, v37, v36->_iAnimFrame, v36->_iAnimWidth, 0, 8);
 						Cel2DecodeHdrLight(
 							v39,
 							a5,
-							(char *)v36->ItemFrame,
+							(char *)v36->_iAnimData,
 							v36->_iAnimFrame,
 							v36->_iAnimWidth,
 							0,
@@ -1294,7 +1294,7 @@ void __fastcall DrawClippedObject(int x, int y, int a3, int a4, int pre_flag, in
 	}
 	if ( v9 < 0x7Fu )
 	{
-		v15 = (char *)object[v10]._oAnimCel;
+		v15 = (char *)object[v10]._oAnimData;
 		if ( v15 )
 		{
 			v16 = object[v10]._oAnimFrame;
@@ -1304,7 +1304,7 @@ void __fastcall DrawClippedObject(int x, int y, int a3, int a4, int pre_flag, in
 					CelDrawHdrClrHL(194, v12, v11, v15, v16, object[v10]._oAnimWidth, a6, dir);
 				v19 = object[v10]._oAnimWidth;
 				v18 = object[v10]._oAnimFrame;
-				v17 = (char *)object[v10]._oAnimCel;
+				v17 = (char *)object[v10]._oAnimData;
 				if ( object[v10]._oLight )
 					Cel2DecodeHdrLight(v12, v11, v17, v18, v19, a6, dir);
 				else
@@ -1676,7 +1676,7 @@ void __fastcall scrollrt_draw_clipped_dungeon_2(char *buffer, int x, int y, int 
 		if ( v9 )
 		{
 			v14 = &dead[(v9 & 0x1F) - 1];
-			v15 = (int *)v14->_deadAnim[(v9 >> 5) & 7];
+			v15 = (int *)v14->_deadData[(v9 >> 5) & 7];
 			v16 = v13 - v14->field_28;
 			if ( v15 )
 			{
@@ -1699,16 +1699,16 @@ void __fastcall scrollrt_draw_clipped_dungeon_2(char *buffer, int x, int y, int 
 		v19 = &item[v52-1];
 		if ( !v19->_iPostDraw && (unsigned char)v52 <= 0x7Fu )
 		{
-			v20 = (char *)v19->ItemFrame;
+			v20 = (char *)v19->_iAnimData;
 			if ( v20 )
 			{
 				v21 = v19->_iAnimFrame;
 				if ( v21 >= 1 && *(_DWORD *)v20 <= 0x32u && v21 <= *(_DWORD *)v20 )
 				{
-					v22 = v13 - v19->_iAnimXOff;
+					v22 = v13 - v19->_iAnimWidth2;
 					if ( v52 - 1 == pcursitem )
 						CelDrawHdrClrHL(181, v22, sy, v20, v19->_iAnimFrame, v19->_iAnimWidth, a5, 8);
-					Cel2DecodeHdrLight(v22, sy, (char *)v19->ItemFrame, v19->_iAnimFrame, v19->_iAnimWidth, a5, 8);
+					Cel2DecodeHdrLight(v22, sy, (char *)v19->_iAnimData, v19->_iAnimFrame, v19->_iAnimWidth, a5, 8);
 				}
 			}
 		}
@@ -1838,19 +1838,19 @@ void __fastcall scrollrt_draw_clipped_dungeon_2(char *buffer, int x, int y, int 
 		{
 			if ( (unsigned char)v52 <= 0x7Fu )
 			{
-				v40 = (char *)v39->ItemFrame;
+				v40 = (char *)v39->_iAnimData;
 				if ( v40 )
 				{
 					v41 = v39->_iAnimFrame;
 					if ( v41 >= 1 && *(_DWORD *)v40 <= 0x32u && v41 <= *(_DWORD *)v40 )
 					{
-						v42 = v13 - v39->_iAnimXOff;
+						v42 = v13 - v39->_iAnimWidth2;
 						if ( v52 - 1 == pcursitem )
 							CelDrawHdrClrHL(181, v42, sy, v40, v41, v39->_iAnimWidth, a5, 8);
 						Cel2DecodeHdrLight(
 							v42,
 							sy,
-							(char *)v39->ItemFrame,
+							(char *)v39->_iAnimData,
 							v39->_iAnimFrame,
 							v39->_iAnimWidth,
 							a5,
@@ -2281,7 +2281,7 @@ void __fastcall scrollrt_draw_dungeon(char *buffer, int x, int y, int a4, int a5
 		if ( v9 )
 		{
 			v13 = &dead[(v9 & 0x1F) - 1];
-			v14 = (int *)v13->_deadAnim[(v9 >> 5) & 7];
+			v14 = (int *)v13->_deadData[(v9 >> 5) & 7];
 			v15 = sx - v13->field_28;
 			if ( v14 )
 			{
@@ -2304,16 +2304,16 @@ void __fastcall scrollrt_draw_dungeon(char *buffer, int x, int y, int a4, int a5
 		v18 = &item[v51-1];
 		if ( !v18->_iPostDraw && (unsigned char)v51 <= 0x7Fu )
 		{
-			v19 = (char *)v18->ItemFrame;
+			v19 = (char *)v18->_iAnimData;
 			if ( v19 )
 			{
 				v20 = v18->_iAnimFrame;
 				if ( v20 >= 1 && *(_DWORD *)v19 <= 0x32u && v20 <= *(_DWORD *)v19 )
 				{
-					v21 = sx - v18->_iAnimXOff;
+					v21 = sx - v18->_iAnimWidth2;
 					if ( v51 - 1 == pcursitem )
 						CelDecodeClr(181, v21, sy, v19, v18->_iAnimFrame, v18->_iAnimWidth, 0, a5);
-					CelDecodeHdrLightOnly(v21, sy, (char *)v18->ItemFrame, v18->_iAnimFrame, v18->_iAnimWidth, 0, a5);
+					CelDecodeHdrLightOnly(v21, sy, (char *)v18->_iAnimData, v18->_iAnimFrame, v18->_iAnimWidth, 0, a5);
 				}
 			}
 		}
@@ -2441,19 +2441,19 @@ void __fastcall scrollrt_draw_dungeon(char *buffer, int x, int y, int a4, int a5
 		{
 			if ( (unsigned char)v51 <= 0x7Fu )
 			{
-				v39 = (char *)v38->ItemFrame;
+				v39 = (char *)v38->_iAnimData;
 				if ( v39 )
 				{
 					v40 = v38->_iAnimFrame;
 					if ( v40 >= 1 && *(_DWORD *)v39 <= 0x32u && v40 <= *(_DWORD *)v39 )
 					{
-						v41 = sx - v38->_iAnimXOff;
+						v41 = sx - v38->_iAnimWidth2;
 						if ( v51 - 1 == pcursitem )
 							CelDecodeClr(181, v41, sy, v39, v38->_iAnimFrame, v38->_iAnimWidth, 0, a5);
 						CelDecodeHdrLightOnly(
 							v41,
 							sy,
-							(char *)v38->ItemFrame,
+							(char *)v38->_iAnimData,
 							v38->_iAnimFrame,
 							v38->_iAnimWidth,
 							0,
@@ -2575,7 +2575,7 @@ void __fastcall DrawObject(int x, int y, int a3, int a4, int pre_flag, int a6, i
 	}
 	if ( v9 < 0x7Fu )
 	{
-		v15 = (char *)object[v10]._oAnimCel;
+		v15 = (char *)object[v10]._oAnimData;
 		if ( v15 )
 		{
 			v16 = object[v10]._oAnimFrame;
@@ -2588,7 +2588,7 @@ void __fastcall DrawObject(int x, int y, int a3, int a4, int pre_flag, int a6, i
 					CelDecodeHdrLightOnly(
 						v12,
 						v11,
-						(char *)object[v10]._oAnimCel,
+						(char *)object[v10]._oAnimData,
 						object[v10]._oAnimFrame,
 						object[v10]._oAnimWidth,
 						a6,
@@ -2596,7 +2596,7 @@ void __fastcall DrawObject(int x, int y, int a3, int a4, int pre_flag, int a6, i
 				}
 				else
 				{
-					v17 = (char *)object[v10]._oAnimCel;
+					v17 = (char *)object[v10]._oAnimData;
 					if ( v17 )
 						CelDrawHdrOnly(v12, v11, v17, object[v10]._oAnimFrame, object[v10]._oAnimWidth, a6, dir);
 				}
