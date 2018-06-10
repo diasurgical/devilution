@@ -2743,9 +2743,9 @@ void __fastcall SetupItem(int i)
 
 	it = ItemCAnimTbl[item[i]._iCurs];
 	item[i]._iAnimWidth = 96;
-	item[i]._iAnimXOff = 16;
+	item[i]._iAnimWidth2 = 16;
 	il = ItemAnimLs[it];
-	item[i].ItemFrame = Item2Frm[it];
+	item[i]._iAnimData = Item2Frm[it];
 	item[i]._iAnimLen = il;
 	item[i]._iIdentified = 0;
 	item[i]._iPostDraw = 0;
@@ -3507,11 +3507,11 @@ void __fastcall RespawnItem(int i, bool FlipFlag)
 	int il; // eax
 
 	item[i]._iAnimWidth = 96;
-	item[i]._iAnimXOff = 16;
+	item[i]._iAnimWidth2 = 16;
 	it = ItemCAnimTbl[item[i]._iCurs];
 	il = ItemAnimLs[it];
 	item[i]._iAnimLen = il;
-	item[i].ItemFrame = Item2Frm[it];
+	item[i]._iAnimData = Item2Frm[it];
 	item[i]._iPostDraw = 0;
 	item[i]._iRequest = 0;
 
@@ -3634,7 +3634,7 @@ void __cdecl FreeItemGFX()
 //----- (00422BCF) --------------------------------------------------------
 void __fastcall GetItemFrm(int i)
 {
-	item[i].ItemFrame = Item2Frm[ItemCAnimTbl[item[i]._iCurs]];
+	item[i]._iAnimData = Item2Frm[ItemCAnimTbl[item[i]._iCurs]];
 }
 
 //----- (00422BF0) --------------------------------------------------------
