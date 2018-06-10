@@ -127,7 +127,7 @@ struct MisFileData
 	unsigned char mAnimFAmt;
 	char *mName;
 	int mFlags;
-	int mAnimCel[16]; // unsigned char *mAnimData[16]
+	int mAnimData[16]; // unsigned char *
 	unsigned char mAnimDelay[16];
 	unsigned char mAnimLen[16];
 	int mAnimWidth[16];
@@ -309,11 +309,11 @@ struct ItemStruct
 	int _ix;
 	int _iy;
 	int _iAnimFlag;
-	int ItemFrame; // unsigned char *_iAnimData
+	int _iAnimData; // unsigned char *
 	int _iAnimLen;
 	int _iAnimFrame;
 	int _iAnimWidth;
-	int _iAnimXOff; // width 2?
+	int _iAnimWidth2; // width 2?
 	int offs002C;
 	char _iSelFlag;
 	int _iPostDraw;
@@ -375,7 +375,7 @@ struct ItemStruct
 
 struct DeadStruct
 {
-	int _deadAnim[8]; // unsigned char *_deadData
+	int _deadData[8]; // unsigned char *
 	int _deadFrame;
 	int field_24; // width
 	int field_28; // cel or fnum _deadtype?
@@ -453,7 +453,7 @@ struct MissileStruct
 	int _miDelFlag;
 	int _miAnimType;
 	int _miAnimFlags;
-	int _miAnimCel; // unsigned char *_miAnimData
+	int _miAnimData; // unsigned char *
 	int _miAnimDelay;
 	int _miAnimLen;
 	int _miAnimWidth;
@@ -485,8 +485,8 @@ struct MissileStruct
 
 struct AnimStruct
 {
-	// int CMem
-	int Frames[9]; // int CMem, unsigned char *Frames[8]
+	int CMem; // [unsigned] char * ??
+	int Frames[8]; // unsigned char *
 	int Rate;
 	int Delay;
 };
@@ -725,7 +725,7 @@ struct ObjectStruct
 	int _oy;
 	int _oLight;
 	int _oAnimFlag;
-	int _oAnimCel; // unsigned char *_oAnimData
+	int _oAnimData; // unsigned char *
 	int _oAnimDelay;
 	int _oAnimCnt;
 	int _oAnimLen;
@@ -1002,7 +1002,7 @@ struct TownerStruct
 	int _txvel;
 	int _tyvel;
 	int _tdir;
-	void *_tAnimCel; // unsigned char *_tAnimData
+	void *_tAnimData; // unsigned char *
 	int _tAnimDelay;
 	int _tAnimCnt;
 	int _tAnimLen;
