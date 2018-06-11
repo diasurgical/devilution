@@ -29,12 +29,9 @@
 #ifndef IDA_GARBAGE
 #define IDA_GARBAGE
 
-#include <stdint.h>
-
-// note to self: only works for x86, originally used this way by the devs
 inline void memset32(void *s, unsigned int c, size_t n)
 {
-	uint32_t *p = (uint32_t*)s;
+	unsigned int *p = (unsigned int *)s;
 	for (int i = 0; i < n; i++) {
 		p[i] = c;
 	}
