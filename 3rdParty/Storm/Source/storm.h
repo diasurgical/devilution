@@ -163,10 +163,10 @@ SNetGetPlayerName(
  *
  *  Returns TRUE if the function was called successfully and FALSE otherwise.
  */
-BOOL
-STORMAPI
-SNetGetProviderCaps(
-      PCAPS providerCaps);
+//BOOL
+//STORMAPI
+//SNetGetProviderCaps(
+//      PCAPS providerCaps);
 
 /*  SNetGetTurnsInTransit @ 115
  *
@@ -306,14 +306,14 @@ typedef struct _storm_head
  *
  *  Returns TRUE if the function was called successfully and FALSE otherwise.
  */
-BOOL
-STORMAPI
-SNetInitializeProvider(
-      DWORD       providerName,
-      client_info  *gameClientInfo,
-      user_info    *userData,
-      battle_info  *bnCallbacks,
-      module_info  *moduleData);
+//BOOL
+//STORMAPI
+//SNetInitializeProvider(
+//      DWORD       providerName,
+//      client_info  *gameClientInfo,
+//      user_info    *userData,
+//      battle_info  *bnCallbacks,
+//      module_info  *moduleData);
 
 
 BOOL STORMAPI SNetJoinGame(int id, char *gameName, char *gamePassword, char *playerName, char *userStats, int *playerid);
@@ -354,7 +354,7 @@ typedef struct _s_evt
 
 
 // @TODO: "type" is unknown.
-HANDLE STORMAPI SNetRegisterEventHandler(int type, void (STORMAPI *sEvent)(PS_EVT));
+//HANDLE STORMAPI SNetRegisterEventHandler(int type, void (STORMAPI *sEvent)(PS_EVT));
 
 int  STORMAPI SNetSelectGame(int a1, int a2, int a3, int a4, int a5, int *playerid);
 

@@ -29,18 +29,15 @@
 #ifndef IDA_GARBAGE
 #define IDA_GARBAGE
 
-// note to self: only works for x86, originally used this way by the devs
-inline void memset32(void *s, unsigned int i, size_t n)
-{
-	__asm {
-		mov ecx, n
-		mov eax, i
-		mov edi, s
-		rep stosd
-	}
+#include <stdint.h>
 
-	//for(x = 0; x < n; x++)
-	//	(DWORD)s[x] = i;
+// note to self: only works for x86, originally used this way by the devs
+inline void memset32(void *s, unsigned int c, size_t n)
+{
+	uint32_t *p = (uint32_t*)s;
+	for (int i = 0; i < n; i++) {
+		p[i] = c;
+	}
 }
 
 typedef          __int64 ll;
