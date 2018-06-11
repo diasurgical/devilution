@@ -685,7 +685,7 @@ void __fastcall InitMonsterGFX(int monst)
 			}
 			else
 			{
-				memset(v4, (int)v7, 8u);
+				memset32(v4, (int)v7, 8u);
 				v4 = v30;
 			}
 			v5 = v28;
