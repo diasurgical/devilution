@@ -66,7 +66,7 @@ void __cdecl InitDead()
 	}
 	v16 = 0;
 	v4 = v0;
-	memset(&dead[v0], misfiledata[16].mAnimData[0], 8u);
+	memset32(&dead[v0], misfiledata[16].mAnimData[0], 8u);
 	_LOBYTE(dead[v4]._deadtrans) = 0;
 	dead[v4]._deadFrame = 8;
 	v5 = misfiledata[18].mAnimData[0];
@@ -74,7 +74,7 @@ void __cdecl InitDead()
 	dead[v4].field_28 = 32;
 	v6 = v0 + 1;
 	spurtndx = v0 + 1;
-	memset(&dead[v6], v5, 8u);
+	memset32(&dead[v6], v5, 8u);
 	_LOBYTE(dead[v6]._deadtrans) = 0;
 	stonendx = v0 + 2;
 	v7 = nummonsters;
