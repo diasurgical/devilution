@@ -2142,10 +2142,10 @@ void __fastcall SetMissAnim(int mi, int animtype)
 	missile[v2]._miAnimLen = v8;
 	v9 = misfiledata[0].mAnimWidth[v6];
 	missile[v2]._miAnimFlags = v4;
-	v10 = misfiledata[0].mAnimCel[v6];
+	v10 = misfiledata[0].mAnimData[v6];
 	missile[v2]._miAnimWidth = v9;
 	v11 = misfiledata[0].mAnimWidth2[v6];
-	missile[v2]._miAnimCel = v10;
+	missile[v2]._miAnimData = v10;
 	missile[v2]._miAnimDelay = v7;
 	missile[v2]._miAnimWidth2 = v11;
 	missile[v2]._miAnimFrame = 1;
@@ -2180,7 +2180,7 @@ void __fastcall LoadMissileGFX(int mi)
 		v3 = 0;
 		if ( v1->mAnimFAmt )
 		{
-			v4 = v1->mAnimCel;
+			v4 = v1->mAnimData;
 			do
 			{
 				v5 = (int)&v2[*(_DWORD *)&v2[4 * v3++]];
@@ -2196,15 +2196,15 @@ void __fastcall LoadMissileGFX(int mi)
 		if ( v6 == 1 )
 		{
 			sprintf(arglist, "Missiles\\%s.CL2", v1->mName);
-			if ( !v1->mAnimCel[0] )
-				v1->mAnimCel[0] = (int)LoadFileInMem(arglist, 0);
+			if ( !v1->mAnimData[0] )
+				v1->mAnimData[0] = (int)LoadFileInMem(arglist, 0);
 		}
 		else
 		{
 			v7 = 0;
 			if ( v6 )
 			{
-				v8 = (unsigned int *)v1->mAnimCel;
+				v8 = (unsigned int *)v1->mAnimData;
 				do
 				{
 					v9 = v7 + 1;
@@ -2253,11 +2253,11 @@ void __fastcall FreeMissileGFX(int mi)
 	v1 = mi;
 	if ( misfiledata[mi].mFlags & 4 )
 	{
-		v2 = misfiledata[v1].mAnimCel[0];
+		v2 = misfiledata[v1].mAnimData[0];
 		if ( v2 )
 		{
 			mem_free_dbg((void *)(v2 - 4 * misfiledata[v1].mAnimFAmt));
-			misfiledata[v1].mAnimCel[0] = 0;
+			misfiledata[v1].mAnimData[0] = 0;
 		}
 	}
 	else
@@ -2265,7 +2265,7 @@ void __fastcall FreeMissileGFX(int mi)
 		v3 = 0;
 		if ( misfiledata[v1].mAnimFAmt )
 		{
-			v4 = (void **)misfiledata[v1].mAnimCel;
+			v4 = (void **)misfiledata[v1].mAnimData;
 			do
 			{
 				v5 = *v4;
@@ -3523,7 +3523,7 @@ void __fastcall AddRhino(int mi, int sx, int sy, int dx, int dy, int midir, int 
 	int v9; // esi
 	CMonster *v10; // eax
 	char v11; // cl
-	int v12; // edi
+	AnimStruct *v12; // edi
 	int v13; // eax
 	CMonster *v14; // ecx
 	char v15; // cl
@@ -3536,20 +3536,20 @@ void __fastcall AddRhino(int mi, int sx, int sy, int dx, int dy, int midir, int 
 	v11 = v10->mtype;
 	if ( v10->mtype < MT_HORNED || v11 > MT_OBLORD )
 	{
-		if ( v11 < MT_NSNAKE || (v12 = (int)v10->Anims[2].Frames, v11 > MT_GSNAKE) )
-			v12 = (int)v10->Anims[1].Frames;
+		if ( v11 < MT_NSNAKE || (v12 = &v10->Anims[2], v11 > MT_GSNAKE) )
+			v12 = &v10->Anims[1];
 	}
 	else
 	{
-		v12 = (int)v10->Anims[5].Frames;
+		v12 = &v10->Anims[5];
 	}
 	GetMissileVel(i, sx, sy, dx, dy, 18);
 	v13 = i;
 	missile[v13]._miAnimFlags = 0;
 	missile[v13]._mimfnum = midir;
-	missile[v13]._miAnimCel = *(_DWORD *)(v12 + 4 * midir + 4);
-	missile[v13]._miAnimDelay = *(_DWORD *)(v12 + 40);
-	missile[v13]._miAnimLen = *(_DWORD *)(v12 + 36);
+	missile[v13]._miAnimData = v12->Frames[midir];
+	missile[v13]._miAnimDelay = v12->Delay;
+	missile[v13]._miAnimLen = v12->Rate;
 	v14 = monster[v9].MType;
 	missile[v13]._miAnimWidth = v14->flags_1;
 	missile[v13]._miAnimWidth2 = v14->flags_2;
@@ -3588,7 +3588,7 @@ void __fastcall miss_null_32(int mi, int sx, int sy, int dx, int dy, int midir, 
 	v12 = v10;
 	missile[v12]._mimfnum = midir;
 	missile[v12]._miAnimFlags = 0;
-	missile[v12]._miAnimCel = v11->Frames[midir + 1];
+	missile[v12]._miAnimData = v11->Frames[midir];
 	missile[v12]._miAnimDelay = v11->Delay;
 	missile[v12]._miAnimLen = v11->Rate;
 	v13 = monster[id].MType;
@@ -6715,9 +6715,9 @@ void __fastcall mi_null_32(int i)
 		missile[v2]._miyvel = -missile[v2]._miyvel;
 		v14 = opposite[v13];
 		missile[v2]._mimfnum = v14;
-		v15 = monster[v4].MType->Anims[1].Frames[v14 + 1];
+		v15 = monster[v4].MType->Anims[1].Frames[v14];
 		++missile[v2]._miVar2;
-		missile[v2]._miAnimCel = v15;
+		missile[v2]._miAnimData = v15;
 		if ( v10 > 0 )
 			missile[v2]._miVar1 |= 1u;
 	}
@@ -7675,7 +7675,7 @@ void __cdecl missiles_process_charge()
 	bool v4; // zf
 	CMonster *v5; // eax
 	char v6; // dl
-	int v7; // eax
+	AnimStruct *v7; // eax
 
 	v0 = nummissiles;
 	for ( i = 0; i < v0; ++i )
@@ -7683,7 +7683,7 @@ void __cdecl missiles_process_charge()
 		v2 = missileactive[i];
 		v3 = missile[v2]._mimfnum;
 		v4 = missile[v2]._mitype == MIS_RHINO;
-		missile[v2]._miAnimCel = misfiledata[0].mAnimCel[v3 + 59 * _LOBYTE(missile[v2]._miAnimType)];
+		missile[v2]._miAnimData = misfiledata[0].mAnimData[v3 + 59 * _LOBYTE(missile[v2]._miAnimType)];
 		if ( v4 )
 		{
 			v5 = monster[missile[v2]._misource].MType;
@@ -7691,15 +7691,15 @@ void __cdecl missiles_process_charge()
 			if ( v5->mtype < MT_HORNED || v6 > MT_OBLORD )
 			{
 				if ( v6 < MT_NSNAKE || v6 > MT_GSNAKE )
-					v7 = (int)v5->Anims[1].Frames;
+					v7 = &v5->Anims[1];
 				else
-					v7 = (int)v5->Anims[2].Frames;
+					v7 = &v5->Anims[2];
 			}
 			else
 			{
-				v7 = (int)v5->Anims[5].Frames;
+				v7 = &v5->Anims[5];
 			}
-			missile[v2]._miAnimCel = *(_DWORD *)(v7 + 4 * v3 + 4);
+			missile[v2]._miAnimData = v7->Frames[v3];
 		}
 	}
 }

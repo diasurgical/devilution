@@ -8,17 +8,9 @@
  2xxx       Minor bugs (noticeable but can be avoided)
  3xxx       Code issues (incorrect code that still compiles/works)
 
-1000 - The Cathedral doesn't generate correctly, sometimes crashing
-1001 - Sometimes dungeon will crash on loading if previous levels loaded (DrawClippedObject)
-1002 - Golem usually crashes, or appears invisible if summoned
-1003 - Stone cursed monsters frequently crash when killed
-1004 - Some CEL functions were written in ASM and have been disabled (engine.cpp)
-1005 - After being in the dungeon for awhile, the 'Control Panel' will sometimes
-       corrupt and be filled with glitched colors (likely a buffer overflow)
-1006 - Timed messages are broken and have been disabled (tmsg.cpp)
-1007 - Server commands are broken and have been disabled (msgcmd.cpp)
+1000 - Sometimes dungeon will crash on loading if previous levels loaded (DrawClippedObject)
 
-2000 - Rooms/halls don't generate correctly in the Catacombs
+2000 - Generation of Cathedral/Catacombs is slightly inaccurate
 2001 - The last seal in Lazarus' Lair doesn't trigger the video/teleport
 2002 - White pixels on monsters/cathedral/catacombs (palette entry 256?)
 2003 - Swapping items in inventory sometimes deletes the item
@@ -27,6 +19,11 @@
 2006 - Objects should darken with radius instead of being fully lit
 2007 - Automap sometimes draws incorrectly, check 'engine_draw_automap_pixels'
        *Bad args ECX/EDX for 'engine_draw_pixel' (engine.cpp)
+2008 - After being in the dungeon for awhile, the 'Control Panel' will sometimes
+       corrupt and be filled with glitched colors (likely a buffer overflow)
+2009 - Some CEL functions were written in ASM and have been disabled (engine.cpp)
+2010 - Timed messages are broken and have been disabled (tmsg.cpp)
+2011 - Server commands are broken and have been disabled (msgcmd.cpp)
 
 3000 - Critical sections should be constructors using CCritSect
 3001 - Function 'DRLG_L4TransFix', decompile and check (Test: seed 2349839 level 13)
