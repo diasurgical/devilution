@@ -1959,7 +1959,7 @@ void __fastcall L5VertWall(int i, int j, char p, int dy)
 		_LOWORD(v13) = v9;
 		_LOBYTE(v9) = v19;
 		v14 = (unsigned int)(dy - 1) >> 2;
-		memset(v12, v13, v14);
+		memset32(v12, v13, v14);
 		memset(&v12[4 * v14], v13, ((_BYTE)dy - 1) & 3);
 		v11 = dy;
 		v4 = v18;

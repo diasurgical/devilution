@@ -362,7 +362,7 @@ void __fastcall NewTownerAnim(int tnum, void *pAnim, int numFrames, int Delay)
 	v4 = tnum;
 	towner[v4]._tAnimCnt = 0;
 	towner[v4]._tAnimLen = numFrames;
-	towner[v4]._tAnimCel = pAnim;
+	towner[v4]._tAnimData = pAnim;
 	towner[v4]._tAnimFrame = 1;
 	towner[v4]._tAnimDelay = Delay;
 }
