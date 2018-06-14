@@ -92,11 +92,11 @@ void __fastcall exception_hex_format(char *a1, char a2)
 {
 	unsigned int v2; // ebp
 	char *v3; // edi
-	UINT_PTR v4; // ebx
+	unsigned int v4; // ebx
 	unsigned int v5; // esi
 	char *v6; // eax
 	int v7; // ST04_4
-	UINT_PTR v8; // esi
+	unsigned int v8; // esi
 	unsigned char v9; // al
 
 	v2 = a2;
