@@ -2540,7 +2540,7 @@ int __fastcall CanPut(int i, int j)
 	v7 = v6 < 0;
 	if ( v6 > 0 )
 	{
-		if ( _LOBYTE(objectavail[30 * v6 + 113]) ) /* check */
+		if ( _LOBYTE(object[v6-1]._oSelFlag) ) /* check */
 			return 0;
 		v7 = v6 < 0;
 	}
@@ -2550,7 +2550,7 @@ int __fastcall CanPut(int i, int j)
 	if ( v8 > 0 )
 	{
 		v9 = dObject[v2][j + 1];
-		if ( v9 > 0 && _LOBYTE(objectavail[30 * v8 + 113]) && _LOBYTE(objectavail[30 * v9 + 113]) )
+		if ( v9 > 0 && _LOBYTE(object[v8-1]._oSelFlag) && _LOBYTE(object[v9-1]._oSelFlag) )
 			return 0;
 	}
 	if ( !currlevel && (dMonster[0][v3] || dMonster[1][v3 + 1]) )

@@ -1636,7 +1636,7 @@ bool __fastcall ItemSpaceOk(int i, int j)
 	v7 = v6 < 0;
 	if ( v6 > 0 )
 	{
-		if ( _LOBYTE(objectavail[30 * v6 + 113]) ) /* check */
+		if ( _LOBYTE(object[v6-1]._oSelFlag) ) /* check */
 			return 0;
 		v7 = v6 < 0;
 	}
@@ -1646,7 +1646,7 @@ bool __fastcall ItemSpaceOk(int i, int j)
 		if ( v8 <= 0 )
 			return nSolidTable[dPiece[0][v3]] == 0;
 		v9 = dObject[v2][j + 1];
-		if ( v9 <= 0 || !_LOBYTE(objectavail[30 * v8 + 113]) || !_LOBYTE(objectavail[30 * v9 + 113]) )
+		if ( v9 <= 0 || !_LOBYTE(object[v8-1]._oSelFlag) || !_LOBYTE(object[v9-1]._oSelFlag) )
 			return nSolidTable[dPiece[0][v3]] == 0;
 	}
 	return 0;
