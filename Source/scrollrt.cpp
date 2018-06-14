@@ -3177,9 +3177,9 @@ void __fastcall DrawMain(int dwHgt, int draw_desc, int draw_hp, int draw_mana, i
 	a4 = dwHgt;
 	if ( window_activated && lpDDSPrimary )
 	{
-		if ( IDirectDrawSurface_IsLost(lpDDSPrimary) == DDERR_SURFACELOST )
+		if ( lpDDSPrimary->IsLost() == DDERR_SURFACELOST )
 		{
-			if ( IDirectDrawSurface_Restore(lpDDSPrimary) )
+			if ( lpDDSPrimary->Restore() )
 				return;
 			ResetPal();
 			a4 = 480;
@@ -3192,7 +3192,7 @@ LABEL_8:
 			while ( 1 )
 			{
 				DDS_desc.dwSize = 108;
-				v8 = IDirectDrawSurface_Lock(lpDDSPrimary, NULL, &DDS_desc, DDLOCK_WRITEONLY|DDLOCK_WAIT, NULL);
+				v8 = lpDDSPrimary->Lock(NULL, &DDS_desc, DDLOCK_WRITEONLY|DDLOCK_WAIT, NULL);
 				if ( !v8 )
 					break;
 				if ( v7 - GetTickCount() > 5000 )
@@ -3251,7 +3251,7 @@ LABEL_17:
 		}
 		if ( !lpDDSBackBuf )
 		{
-			v9 = IDirectDrawSurface_Unlock(lpDDSPrimary, NULL);
+			v9 = lpDDSPrimary->Unlock(NULL);
 			if ( v9 != DDERR_SURFACELOST )
 			{
 				if ( v9 )
@@ -3288,10 +3288,10 @@ void __cdecl DrawFPS()
 		if ( framerate > 99 )
 			framerate = 99;
 		wsprintfA(String, "%2d", framerate);
-		if ( !IDirectDrawSurface_GetDC(lpDDSPrimary, &hdc) )
+		if ( !lpDDSPrimary->GetDC(&hdc) )
 		{
 			TextOutA(hdc, 0, 400, String, strlen(String));
-			IDirectDrawSurface_ReleaseDC(lpDDSPrimary, hdc);
+			lpDDSPrimary->ReleaseDC(hdc);
 		}
 	}
 }
@@ -3326,7 +3326,7 @@ void __fastcall DoBlitScreen(int dwX, int dwY, int dwWdt, int dwHgt)
 		a4 = GetTickCount();
 		while ( 1 )
 		{
-			error_code = IDirectDrawSurface_BltFast(lpDDSPrimary, v5, v4, lpDDSBackBuf, &Rect, DDBLTFAST_WAIT);
+			error_code = lpDDSPrimary->BltFast(v5, v4, lpDDSBackBuf, &Rect, DDBLTFAST_WAIT);
 			if ( !error_code )
 				break;
 			if ( a4 - GetTickCount() <= 5000 )

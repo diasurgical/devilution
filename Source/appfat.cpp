@@ -797,7 +797,7 @@ void __fastcall DiskFreeDlg(char *error)
 //----- (00401D1D) --------------------------------------------------------
 bool __cdecl InsertCDDlg()
 {
-	INT_PTR v0; // edi
+	int v0; // edi
 
 	ShowCursor(1);
 	v0 = DialogBoxParamA(ghInst, (LPCSTR)0x70, ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)&empty_string);

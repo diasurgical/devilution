@@ -7,23 +7,19 @@
 
 #include <windows.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <mmsystem.h>
-#include <dsound.h>
 #include <ddraw.h>
-#include <ddstream.h>
+#include <dsound.h>
 #include <io.h>
-#include <process.h>
 #include <math.h>
 #include <time.h>
-#include <shellapi.h>
+#include <process.h>
 #include <shlobj.h>
 
 #pragma warning (disable : 4309) // truncation of constant value
 #pragma warning (disable : 4305) // truncation of int
 #pragma warning (disable : 4018) // signed/unsigned mismatch
 #pragma warning (disable : 4700) // used without having been initialized
+#pragma warning (disable : 4804) // unsafe use of type 'bool' in operation
 #pragma warning (disable : 4805) // unsafe bool mix
 #pragma warning (disable : 4244) // conversion loss
 #pragma warning (disable : 4800) // bool perf
@@ -32,7 +28,7 @@
 #include "enums.h"
 #include "structs.h"
 
-#include "DiabloUI/DiabloUI.h"
+#include "DiabloUI/diabloui.h"
 #include "3rdParty/Storm/Source/storm.h"
 #include "3rdParty/PKWare/pkware.h"
 

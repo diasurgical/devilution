@@ -52,10 +52,10 @@ void __cdecl palette_init()
 	palette_load_gamma();
 	memcpy(system_palette, orig_palette, 0x400u);
 	LoadSysPal();
-	v0 = IDirectDraw_CreatePalette(lpDDInterface, DDPCAPS_ALLOW256|DDPCAPS_8BIT, system_palette, &lpDDPalette, NULL);
+	v0 = lpDDInterface->CreatePalette(DDPCAPS_ALLOW256|DDPCAPS_8BIT, system_palette, &lpDDPalette, NULL);
 	if ( v0 )
 		TermDlg(111, v0, "C:\\Src\\Diablo\\Source\\PALETTE.CPP", 143);
-	v1 = IDirectDrawSurface_SetPalette(lpDDSPrimary, lpDDPalette);
+	v1 = lpDDSPrimary->SetPalette(lpDDPalette);
 	if ( v1 )
 		TermDlg(111, v1, "C:\\Src\\Diablo\\Source\\PALETTE.CPP", 146);
 }
@@ -157,8 +157,8 @@ void __fastcall LoadRndLvlPal(int l)
 void __cdecl ResetPal()
 {
 	if ( !lpDDSPrimary
-	  || IDirectDrawSurface_IsLost(lpDDSPrimary) != DDERR_SURFACELOST
-	  || !IDirectDrawSurface_Restore(lpDDSPrimary) )
+	  || lpDDSPrimary->IsLost() != DDERR_SURFACELOST
+	  || !lpDDSPrimary->Restore() )
 	{
 		SDrawRealizePalette();
 	}
@@ -267,7 +267,7 @@ void __fastcall SetFadeLevel(int fadeval)
 			system_palette[i].peBlue = (fadeval * logical_palette[i].peBlue) >> 8;
 		}
 		Sleep(3);
-		IDirectDraw_WaitForVerticalBlank(lpDDInterface, DDWAITVB_BLOCKBEGIN, NULL);
+		lpDDInterface->WaitForVerticalBlank(DDWAITVB_BLOCKBEGIN, NULL);
 		palette_update();
 	}
 }
