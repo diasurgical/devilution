@@ -1,5 +1,5 @@
 # Microsoft Developer Studio Project File - Name="Diablo" - Package Owner=<4>
-# Microsoft Developer Studio Generated Build File, Format Version 6.00
+# Microsoft Developer Studio Generated Build File, Format Version 5.00
 # ** DO NOT EDIT **
 
 # TARGTYPE "Win32 (x86) Application" 0x0101
@@ -22,7 +22,6 @@ CFG=Diablo - Win32 Debug
 !MESSAGE 
 
 # Begin Project
-# PROP AllowPerConfigDependencies 0
 # PROP Scc_ProjName ""
 # PROP Scc_LocalPath ""
 CPP=cl.exe
@@ -40,13 +39,11 @@ RSC=rc.exe
 # PROP Use_Debug_Libraries 0
 # PROP Output_Dir "Source/WinRel"
 # PROP Intermediate_Dir "Source/WinRel"
-# PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /FD /c
-# SUBTRACT CPP /YX /Yc /Yu
-# ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
-# ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
+# ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o NUL /win32
+# ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o NUL /win32
 # ADD BASE RSC /l 0x409 /d "NDEBUG"
 # ADD RSC /l 0x409 /d "NDEBUG"
 BSC32=bscmake.exe
@@ -54,7 +51,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /machine:I386
-# ADD LINK32 DiabloUI/WinRel/diabloui.lib 3rdParty/Storm/Source/WinRel/storm.lib kernel32.lib user32.lib gdi32.lib advapi32.lib shell32.lib version.lib /nologo /subsystem:windows /machine:I386
+# ADD LINK32 DiabloUI/WinRel/DiabloUI.lib 3rdParty/Storm/Source/WinRel/Storm.lib kernel32.lib user32.lib gdi32.lib advapi32.lib shell32.lib version.lib /nologo /subsystem:windows /machine:I386
 
 !ELSEIF  "$(CFG)" == "Diablo - Win32 Debug"
 
@@ -67,13 +64,11 @@ LINK32=link.exe
 # PROP Use_Debug_Libraries 1
 # PROP Output_Dir "Source/WinDebug"
 # PROP Intermediate_Dir "Source/WinDebug"
-# PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /YX /FD /GZ /c
-# ADD CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /FD /GZ /c
-# SUBTRACT CPP /YX /Yc /Yu
-# ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
-# ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
+# ADD BASE CPP /nologo /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MTd /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o NUL /win32
+# ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o NUL /win32
 # ADD BASE RSC /l 0x409 /d "_DEBUG"
 # ADD RSC /l 0x409 /d "_DEBUG"
 BSC32=bscmake.exe
@@ -81,7 +76,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 DiabloUI/WinDebug/diabloui.lib 3rdParty/Storm/Source/WinDebug/storm.lib kernel32.lib user32.lib gdi32.lib advapi32.lib shell32.lib version.lib /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
+# ADD LINK32 DiabloUI/WinDebug/DiabloUI.lib 3rdParty/Storm/Source/WinDebug/Storm.lib kernel32.lib user32.lib gdi32.lib advapi32.lib shell32.lib version.lib /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
 
 !ENDIF 
 
@@ -130,10 +125,6 @@ SOURCE=.\Source\diablo.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\Diablo.rc
-# End Source File
-# Begin Source File
-
 SOURCE=.\Source\doom.cpp
 # End Source File
 # Begin Source File
@@ -178,10 +169,6 @@ SOURCE=.\Source\error.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\3rdParty\PKWare\explode.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\Source\fault.cpp
 # End Source File
 # Begin Source File
@@ -199,10 +186,6 @@ SOURCE=.\Source\gmenu.cpp
 # Begin Source File
 
 SOURCE=.\Source\help.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\3rdParty\PKWare\implode.cpp
 # End Source File
 # Begin Source File
 
@@ -377,6 +360,18 @@ SOURCE=.\Source\wave.cpp
 SOURCE=.\Source\world.cpp
 # End Source File
 # End Group
+# Begin Group "Resource Files"
+
+# PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
+# Begin Source File
+
+SOURCE=.\Diablo.ico
+# End Source File
+# Begin Source File
+
+SOURCE=.\Diablo.rc
+# End Source File
+# End Group
 # Begin Group "Header Files"
 
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
@@ -385,12 +380,16 @@ SOURCE=.\Source\world.cpp
 SOURCE=.\resource.h
 # End Source File
 # End Group
-# Begin Group "Resource Files"
+# Begin Group "PKWare"
 
-# PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
+# PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
-SOURCE=.\Diablo.ico
+SOURCE=.\3rdParty\PKWare\explode.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\3rdParty\PKWare\implode.cpp
 # End Source File
 # End Group
 # End Target
