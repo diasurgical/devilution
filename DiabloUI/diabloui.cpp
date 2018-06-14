@@ -1,22 +1,15 @@
-// DiabloUI.cpp : Defines the entry point for the DLL application.
-//
-
 #include <windows.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <mmsystem.h>
-#include <dsound.h>
 #include <ddraw.h>
-#include <ddstream.h>
+#include <dsound.h>
 #include <io.h>
-#include <process.h>
 #include <math.h>
 #include <time.h>
-#include <shellapi.h>
+#include <process.h>
 #include <shlobj.h>
+
 #include "..\structs.h"
-#include "DiabloUI.h"
+#include "diabloui.h"
 
 BOOL APIENTRY DllMain( HANDLE hModule, 
                        DWORD  ul_reason_for_call, 
