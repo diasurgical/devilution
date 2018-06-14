@@ -87,7 +87,7 @@ bool __fastcall TFit_Shrine(int i)
 		  && !nSolidTable[dPiece[1][v3]]
 		  && dung_map[-1][v3] == v1 // block_lvid[v3 + 1940] == v1
 		  && dung_map[1][v3] == v1
-		  && !dungeon[37][v3 + 7]
+		  && !dObject[-1][v3 - 1]
 		  && !dObject[0][v3 + 111] )
 		{
 			v6 = 1;
@@ -99,8 +99,8 @@ bool __fastcall TFit_Shrine(int i)
 		  || nSolidTable[dPiece[0][v3 + 1]]
 		  || dung_map[0][v3 - 1] != v1 // *(&byte_5B78EB + v3) != v1
 		  || dung_map[0][v3 + 1] != v1
-		  || dungeon[37][v3 + 7]
-		  || dungeon[37][v3 + 9] )
+		  || dObject[-1][v3 - 1]
+		  || dObject[-1][v3 + 1] ) /* check */
 		{
 			goto LABEL_21;
 		}

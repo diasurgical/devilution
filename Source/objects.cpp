@@ -4204,7 +4204,7 @@ void __fastcall OperateBook(int pnum, int i)
 			}
 			if ( v4 )
 			{
-				++objectavail[30 * dObject[35][36] + 123]; /* fix */
+				++object[dObject[35][36]-1]._oVar5; // ++objectavail[30 * dObject[35][36] + 123]; /* fix */
 				AddMissile(plr[v3].WorldX, plr[v3].WorldY, v1, v2, plr[v3]._pdir, MIS_RNDTELEPORT, 0, v3, 0, 0);
 				v11 = 1;
 				v4 = 0;
