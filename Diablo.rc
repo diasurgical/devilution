@@ -7,10 +7,7 @@
 //
 // Generated from the TEXTINCLUDE 2 resource.
 //
-#define APSTUDIO_HIDDEN_SYMBOLS
-#include "windows.h"
-#undef APSTUDIO_HIDDEN_SYMBOLS
-#include "resource.h"
+#include "afxres.h"
 
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
@@ -31,14 +28,40 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-101                     ICON    DISCARDABLE     "Diablo.ico"
+IDI_ICON1               ICON    DISCARDABLE     "Diablo.ico"
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Dialog
 //
 
-104 DIALOG DISCARDABLE  0, 0, 250, 241
+IDD_DIALOG1 DIALOG DISCARDABLE  0, 0, 250, 241
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Direct Draw Error"
 FONT 8, "MS Sans Serif"
@@ -61,7 +84,7 @@ BEGIN
                     -1,7,116,236,18
 END
 
-105 DIALOG DISCARDABLE  0, 0, 250, 213
+IDD_DIALOG2 DIALOG DISCARDABLE  0, 0, 250, 213
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Out of Memory Error"
 FONT 8, "MS Sans Serif"
@@ -79,7 +102,7 @@ BEGIN
     LTEXT           "For Windows NT:",-1,7,89,236,9
 END
 
-106 DIALOG DISCARDABLE  0, 0, 265, 114
+IDD_DIALOG3 DIALOG DISCARDABLE  0, 0, 265, 114
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Data File Error"
 FONT 8, "MS Sans Serif"
@@ -92,7 +115,7 @@ BEGIN
     LTEXT           "unknown file",1000,20,59,210,27
 END
 
-107 DIALOG DISCARDABLE  0, 0, 250, 161
+IDD_DIALOG4 DIALOG DISCARDABLE  0, 0, 250, 161
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Direct Draw Error"
 FONT 8, "MS Sans Serif"
@@ -109,7 +132,7 @@ BEGIN
                     -1,7,39,236,18
 END
 
-108 DIALOG DISCARDABLE  0, 0, 250, 161
+IDD_DIALOG5 DIALOG DISCARDABLE  0, 0, 250, 161
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Direct Sound Error"
 FONT 8, "MS Sans Serif"
@@ -125,8 +148,8 @@ BEGIN
     LTEXT           "If you continue to have problems with DirectX, please contact Microsoft's Technical Support at:",
                     -1,7,39,236,18
 END
-/*
-109 DIALOG DISCARDABLE  0, 0, 250, 92
+
+/* IDD_DIALOG6 DIALOG DISCARDABLE  0, 0, 250, 92
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "System warning"
 FONT 8, "MS Sans Serif"
@@ -139,9 +162,9 @@ BEGIN
     LTEXT           "Press ""OK"" to proceed, otherwise press ""Cancel"" to exit this program.",
                     -1,7,53,236,9
     PUSHBUTTON      "&Cancel",2,193,71,50,14
-END
-*/
-110 DIALOG DISCARDABLE  0, 0, 250, 100
+END */
+
+IDD_DIALOG7 DIALOG DISCARDABLE  0, 0, 250, 100
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Out of Disk Space"
 FONT 8, "MS Sans Serif"
@@ -155,7 +178,7 @@ BEGIN
                     -1,7,52,236,18
 END
 
-111 DIALOG DISCARDABLE  0, 0, 250, 161
+IDD_DIALOG8 DIALOG DISCARDABLE  0, 0, 250, 161
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Direct Draw Error"
 FONT 8, "MS Sans Serif"
@@ -171,7 +194,7 @@ BEGIN
     LTEXT           "For Windows 95 and Windows NT",-1,7,41,236,9
 END
 
-112 DIALOG DISCARDABLE  0, 0, 250, 92
+IDD_DIALOG9 DIALOG DISCARDABLE  0, 0, 250, 92
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Data File Error"
 FONT 8, "MS Sans Serif"
@@ -183,7 +206,7 @@ BEGIN
     PUSHBUTTON      "Exit",2,193,71,50,14
 END
 
-113 DIALOG DISCARDABLE  0, 0, 223, 116
+IDD_DIALOG10 DIALOG DISCARDABLE  0, 0, 223, 116
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Windows 2000 Restricted User Advisory"
 FONT 8, "MS Sans Serif"
@@ -197,7 +220,7 @@ BEGIN
                     -1,7,63,209,28
 END
 
-114 DIALOG DISCARDABLE  0, 0, 220, 121
+IDD_DIALOG11 DIALOG DISCARDABLE  0, 0, 220, 121
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Read-Only Directory Error"
 FONT 8, "MS Sans Serif"
@@ -208,35 +231,6 @@ BEGIN
     LTEXT           "Diablo or the current user does not seem to have write privilages in this directory. Contact your system administrator.\n\nNote that Windows 2000 Restricted Users can not write to the Windows or Program Files directory hierarchies.",
                     -1,7,44,206,50
 END
-
-
-#ifdef APSTUDIO_INVOKED
-/////////////////////////////////////////////////////////////////////////////
-//
-// TEXTINCLUDE
-//
-
-2 TEXTINCLUDE DISCARDABLE 
-BEGIN
-    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
-    "#include ""windows.h""\r\n"
-    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
-    "#include ""resource.h""\r\n"
-    "\0"
-END
-
-3 TEXTINCLUDE DISCARDABLE 
-BEGIN
-    "\r\n"
-    "\0"
-END
-
-1 TEXTINCLUDE DISCARDABLE 
-BEGIN
-    "resource.h\0"
-END
-
-#endif    // APSTUDIO_INVOKED
 
 
 #ifndef _MAC
@@ -266,7 +260,7 @@ BEGIN
             VALUE "FileDescription", "Diablo\0"
             VALUE "FileVersion", "2001, 5, 18, 1\0"
             VALUE "InternalName", "Diablo\0"
-            VALUE "LegalCopyright", "Copyright © 1996-2001\0"
+            VALUE "LegalCopyright", "Copyright Â© 1996-2001\0"
             VALUE "OriginalFilename", "Diablo.exe\0"
             VALUE "ProductName", "Blizzard Entertainment Diablo\0"
             VALUE "ProductVersion", "1, 0, 9, 2\0"
