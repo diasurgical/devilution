@@ -23,7 +23,7 @@ void __cdecl CaptureScreen()
 	if ( hObject != (HANDLE)-1 )
 	{
 		DrawAndBlit();
-		IDirectDrawPalette_GetEntries(lpDDPalette, 0, 0, 256, palette);
+		lpDDPalette->GetEntries(0, 0, 256, palette);
 		RedPalette(palette);
 		dx_lock_mutex();
 		v4 = CaptureHdr(hObject, 640, 480);
@@ -40,7 +40,7 @@ void __cdecl CaptureScreen()
 		if ( !v4 )
 			DeleteFileA(FileName);
 		Sleep(300);
-		IDirectDrawPalette_SetEntries(lpDDPalette, 0, 0, 256, palette);
+		lpDDPalette->SetEntries(0, 0, 256, palette);
 	}
 }
 // 40311B: could not find valid save-restore pair for ebx
@@ -215,5 +215,5 @@ void __fastcall RedPalette(PALETTEENTRY *pal)
 		red[i].peFlags = 0;
 	}
 
-	IDirectDrawPalette_SetEntries(lpDDPalette, 0, 0, 256, red);
+	lpDDPalette->SetEntries(0, 0, 256, red);
 }

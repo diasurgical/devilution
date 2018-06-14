@@ -89,7 +89,7 @@ void __fastcall dx_init(HWND hWnd)
 	if ( v3 )
 		TermDlg(104, v3, "C:\\Src\\Diablo\\Source\\dx.cpp", 149);
 	fullscreen = 1;
-	v4 = IDirectDraw_SetCooperativeLevel(lpDDInterface, v1, DDSCL_EXCLUSIVE|DDSCL_ALLOWREBOOT|DDSCL_FULLSCREEN);
+	v4 = lpDDInterface->SetCooperativeLevel(v1, DDSCL_EXCLUSIVE|DDSCL_ALLOWREBOOT|DDSCL_FULLSCREEN);
 	if ( v4 == DDERR_EXCLUSIVEMODEALREADYSET )
 	{
 		MI_Dummy(0); // v5
@@ -98,11 +98,11 @@ void __fastcall dx_init(HWND hWnd)
 	{
 		TermDlg(104, v4, "C:\\Src\\Diablo\\Source\\dx.cpp", 170);
 	}
-	if ( IDirectDraw_SetDisplayMode(lpDDInterface, 640, 480, 8) )
+	if ( lpDDInterface->SetDisplayMode(640, 480, 8) )
 	{
 		v6 = GetSystemMetrics(SM_CXSCREEN);
 		v7 = GetSystemMetrics(SM_CYSCREEN);
-		v8 = IDirectDraw_SetDisplayMode(lpDDInterface, v6, v7, 8);
+		v8 = lpDDInterface->SetDisplayMode(v6, v7, 8);
 		if ( v8 )
 			TermDlg(104, v8, "C:\\Src\\Diablo\\Source\\dx.cpp", 183);
 	}
@@ -125,16 +125,16 @@ void __cdecl dx_create_back_buffer()
 	DDSURFACEDESC v4; // [esp+Ch] [ebp-70h]
 	DDSCAPS v5; // [esp+78h] [ebp-4h]
 
-	v0 = IDirectDrawSurface_GetCaps(lpDDSPrimary, &v5);
+	v0 = lpDDSPrimary->GetCaps(&v5);
 	if ( v0 )
 		DDErrDlg(v0, 59, "C:\\Src\\Diablo\\Source\\dx.cpp");
 	if ( !gbBackBuf )
 	{
 		v4.dwSize = 108;
-		v1 = IDirectDrawSurface_Lock(lpDDSPrimary, NULL, &v4, DDLOCK_WRITEONLY|DDLOCK_WAIT, NULL);
+		v1 = lpDDSPrimary->Lock(NULL, &v4, DDLOCK_WRITEONLY|DDLOCK_WAIT, NULL);
 		if ( !v1 )
 		{
-			IDirectDrawSurface_Unlock(lpDDSPrimary, NULL);
+			lpDDSPrimary->Unlock(NULL);
 			sgpBackBuf = DiabloAllocPtr(0x7B000);
 			return;
 		}
@@ -149,10 +149,10 @@ void __cdecl dx_create_back_buffer()
 	v4.ddsCaps.dwCaps = DDSCAPS_SYSTEMMEMORY|DDSCAPS_OFFSCREENPLAIN;
 	v4.dwHeight = 656;
 	v4.ddpfPixelFormat.dwSize = 32;
-	v2 = IDirectDrawSurface_GetPixelFormat(lpDDSPrimary, &v4.ddpfPixelFormat);
+	v2 = lpDDSPrimary->GetPixelFormat(&v4.ddpfPixelFormat);
 	if ( v2 )
 		TermDlg(104, v2, "C:\\Src\\Diablo\\Source\\dx.cpp", 94);
-	v3 = IDirectDraw_CreateSurface(lpDDInterface, &v4, &lpDDSBackBuf, NULL);
+	v3 = lpDDInterface->CreateSurface(&v4, &lpDDSBackBuf, NULL);
 	if ( v3 )
 		TermDlg(104, v3, "C:\\Src\\Diablo\\Source\\dx.cpp", 96);
 }
@@ -168,7 +168,7 @@ void __cdecl dx_create_primary_surface()
 	v1.dwSize = 108;
 	v1.dwFlags = DDSD_CAPS;
 	v1.ddsCaps.dwCaps = DDSCAPS_PRIMARYSURFACE;
-	v0 = IDirectDraw_CreateSurface(lpDDInterface, &v1, &lpDDSPrimary, NULL);
+	v0 = lpDDInterface->CreateSurface(&v1, &lpDDSPrimary, NULL);
 	if ( v0 )
 		TermDlg(104, v0, "C:\\Src\\Diablo\\Source\\dx.cpp", 109);
 }
@@ -218,7 +218,7 @@ void __cdecl dx_lock_mutex()
 		if ( sgdwLockCount )
 			goto LABEL_9;
 		v2.dwSize = 108;
-		v1 = IDirectDrawSurface_Lock(lpDDSBackBuf, NULL, &v2, DDLOCK_WAIT, NULL);
+		v1 = lpDDSBackBuf->Lock(NULL, &v2, DDLOCK_WAIT, NULL);
 		if ( v1 )
 			DDErrDlg(v1, 235, "C:\\Src\\Diablo\\Source\\dx.cpp");
 		v0 = (Screen *)v2.lpSurface;
@@ -251,7 +251,7 @@ void __cdecl dx_unlock_mutex()
 		screen_buf_end -= (signed int)v0;
 		if ( !sgpBackBuf )
 		{
-			v1 = IDirectDrawSurface_Unlock(lpDDSBackBuf, NULL);
+			v1 = lpDDSBackBuf->Unlock(NULL);
 			if ( v1 )
 				DDErrDlg(v1, 273, "C:\\Src\\Diablo\\Source\\dx.cpp");
 		}
@@ -277,7 +277,7 @@ void __cdecl dx_cleanup()
 	}
 	else if ( lpDDSBackBuf )
 	{
-		IDirectDrawSurface_Release(lpDDSBackBuf);
+		lpDDSBackBuf->Release();
 		lpDDSBackBuf = 0;
 	}
 	sgdwLockCount = 0;
@@ -285,17 +285,17 @@ void __cdecl dx_cleanup()
 	LeaveCriticalSection(&sgMemCrit);
 	if ( lpDDSPrimary )
 	{
-		IDirectDrawSurface_Release(lpDDSPrimary);
+		lpDDSPrimary->Release();
 		lpDDSPrimary = 0;
 	}
 	if ( lpDDPalette )
 	{
-		IDirectDrawPalette_Release(lpDDPalette);
+		lpDDPalette->Release();
 		lpDDPalette = 0;
 	}
 	if ( lpDDInterface )
 	{
-		IDirectDraw_Release(lpDDInterface);
+		lpDDInterface->Release();
 		lpDDInterface = 0;
 	}
 }
