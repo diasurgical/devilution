@@ -189,7 +189,7 @@ void __fastcall pfile_get_save_path(char *pszBuf, int dwBufSize, int save_num)
 		TermMsg("Unable to get save directory");
 	sprintf(v7, v4, save_num);
 	strcat(v3, v7);
-	strlwr(v3);
+	_strlwr(v3);
 }
 // 679660: using guessed type char gbMaxPlayers;
 
@@ -431,7 +431,7 @@ char *__fastcall GetSaveDirectory(char *dst, int dst_size, int save_num)
 		TermMsg("Unable to get save directory");
 	sprintf(path_buf, v4, save_num);
 	strcat(v3, path_buf);
-	return strlwr(v3);
+	return _strlwr(v3);
 }
 // 679660: using guessed type char gbMaxPlayers;
 
