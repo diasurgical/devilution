@@ -47,7 +47,7 @@ If you are experienced with reversing, help is needed to document and decompile 
 # Modding
 Here are some screenshots of a few things I tinkered around with, to demonstrate what can be achieved.
 
-![Screenshot 1: Monster life](https://s22.postimg.cc/rfou2vfv5/diabdung.png "Monster life")
+![Screenshot 1: Monster lifebar+items](https://s33.postimg.cc/6xnnhhlmn/diabuimon.png "Monster lifebar+items")
 
 ![Screenshot 2: New trade screen](https://s22.postimg.cc/z8fhuutk1/diabstore.png "New trade screen")
 
