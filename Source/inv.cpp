@@ -1019,8 +1019,8 @@ void __fastcall CheckInvPaste(int pnum, int mx, int my)
 	int v67; // [esp+190h] [ebp-Ch]
 	int v68; // [esp+194h] [ebp-8h]
 	int v69; // [esp+198h] [ebp-4h]
-	char cursor_id; // [esp+1A4h] [ebp+8h]
-	char cursor_ida; // [esp+1A4h] [ebp+8h]
+	int cursor_id; // [esp+1A4h] [ebp+8h]
+	int cursor_ida; // [esp+1A4h] [ebp+8h]
 
 	p = pnum;
 	v3 = pnum;
