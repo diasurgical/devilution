@@ -1544,35 +1544,23 @@ void __fastcall engine_draw_automap_pixels(int x1, int y1, int x2, int y2, char 
 	int v12; // edx
 	int v13; // eax
 	int v14; // esi
-	int v15; // edi
+	int v15; // edi MAPDST
 	__int64 v16; // rax
 	int v17; // ebx
 	int v18; // esi
-	//int v19; // edx
-	//int v20; // edx
-	int v21; // edx
-	int v22; // edx
-	int v23; // edx
 	int v24; // esi
-	int v25; // edx
 	int v26; // ecx
 	int v27; // esi
-	int v28; // edx
 	int v29; // edx
 	int v30; // esi
 	int v31; // ebx
 	int v32; // edi
 	int v33; // ebx
-	int v34; // edx
 	int v35; // eax
-	int v36; // edx
-	int v37; // edx
-	//int v38; // edx
 	int v39; // edi
 	int v40; // esi
 	int v41; // esi
 	int v42; // esi
-	//int v43; // edx
 	int v44; // [esp+Ch] [ebp-18h]
 	int v45; // [esp+10h] [ebp-14h]
 	int v46; // [esp+14h] [ebp-10h]
@@ -1585,7 +1573,7 @@ void __fastcall engine_draw_automap_pixels(int x1, int y1, int x2, int y2, char 
 	int v53; // [esp+1Ch] [ebp-8h]
 	signed int v54; // [esp+20h] [ebp-4h]
 	int xa; // [esp+2Ch] [ebp+8h]
-	int x; // [esp+2Ch] [ebp+8h]
+	int x; // [esp+2Ch] [ebp+8h] MAPDST
 	signed int a4; // [esp+30h] [ebp+Ch]
 	int a5a; // [esp+34h] [ebp+10h]
 	int a5b; // [esp+34h] [ebp+10h]
@@ -1671,7 +1659,7 @@ void __fastcall engine_draw_automap_pixels(int x1, int y1, int x2, int y2, char 
 						v15 += a4;
 						engine_draw_pixel(v30, v15);
 						v14 = v30 + 1;
-						engine_draw_pixel(v14, v15); /* fix */
+						engine_draw_pixel(v14, v15);
 						x -= a4;
 						engine_draw_pixel(v31, x);
 					}
@@ -1682,12 +1670,11 @@ void __fastcall engine_draw_automap_pixels(int x1, int y1, int x2, int y2, char 
 						v14 = v30 + 1;
 						engine_draw_pixel(v14, v15);
 						engine_draw_pixel(v31, x);
-						v37 = v36 - a4; /* fix */
-						x = v37;
+						x -= a4;
 					}
 					v33 = a5a - 2;
 					a5a = v33;
-					engine_draw_pixel(v33, x); /* fix */
+					engine_draw_pixel(v33, x);
 					v35 = v44;
 				}
 				else
@@ -1700,8 +1687,8 @@ void __fastcall engine_draw_automap_pixels(int x1, int y1, int x2, int y2, char 
 					engine_draw_pixel(v31, x - a4);
 					v33 = a5a - 2;
 					a5a = v33;
-					x = v34 - a4; /* fix */
-					engine_draw_pixel(v33, v34 - a4);
+					x -= a4;
+					engine_draw_pixel(v33, x);
 					v35 = 2 * v50;
 				}
 				v53 += v35;
@@ -1727,7 +1714,7 @@ void __fastcall engine_draw_automap_pixels(int x1, int y1, int x2, int y2, char 
 			v42 = v14 + 1;
 			engine_draw_pixel(v42, a4 + v15);
 			if ( v54 > 1 )
-				engine_draw_pixel(v42 + 1, a4 + v15); /* fix */
+				engine_draw_pixel(v42 + 1, v15);
 			if ( v54 <= 2 )
 				return;
 			if ( v53 > v50 )
@@ -1768,7 +1755,7 @@ LABEL_64:
 					v15 += a4;
 					engine_draw_pixel(v18, v15);
 					v14 = v18 + 1;
-					engine_draw_pixel(v14, v23); /* fix */
+					engine_draw_pixel(v14, v15);
 					x -= a4;
 					engine_draw_pixel(a5b, x);
 				}
@@ -1779,21 +1766,20 @@ LABEL_64:
 					v14 = v18 + 1;
 					engine_draw_pixel(v14, v15);
 					engine_draw_pixel(a5b, x);
-					v22 = v21 - a4; /* fix */
-					x = v22;
+					x -= a4;
 				}
 				a5a = a5b - 1;
-				engine_draw_pixel(a5a, v22);
+				engine_draw_pixel(a5a, x);
 				v17 += v44;
 			}
 			else
 			{
 				engine_draw_pixel(v18, v15);
 				v14 = v18 + 1;
-				engine_draw_pixel(v14, v15); /* fix */
+				engine_draw_pixel(v14, v15);
 				engine_draw_pixel(a5b, x);
 				a5a = a5b - 1;
-				engine_draw_pixel(a5a, v15); /* fix */
+				engine_draw_pixel(a5a, x);
 				v17 += v52;
 			}
 			--v47;
@@ -1816,9 +1802,9 @@ LABEL_64:
 			engine_draw_pixel(v24, v15);
 			if ( v54 > 1 )
 			{
-				v25 = v15 + a4;
+				v15 += a4;
 LABEL_36:
-				engine_draw_pixel(v24 + 1, v15); /* fix */
+				engine_draw_pixel(v24 + 1, v15);
 			}
 LABEL_37:
 			if ( v54 <= 2 )
@@ -1829,7 +1815,7 @@ LABEL_37:
 		v27 = v14 + 1;
 		engine_draw_pixel(v27, a4 + v15);
 		if ( v54 > 1 )
-			engine_draw_pixel(v27 + 1, v28); /* fix */
+			engine_draw_pixel(v27 + 1, v15);
 		if ( v54 > 2 )
 		{
 			v29 = x - a4;
