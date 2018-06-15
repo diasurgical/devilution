@@ -20,7 +20,7 @@ int HelpTop; // weak
 char gszHelpText[] =
 {
 	"$Keyboard Shortcuts:|"
-	"F1:	Open Help Screen|"
+	"F1:    Open Help Screen|"
 	"Esc:   Display Main Menu|"
 	"Tab:   Display Auto-map|"
 	"Space: Hide all info screens|"
@@ -34,7 +34,7 @@ char gszHelpText[] =
 	"Z: Zoom Game Screen|"
 	"+ / -: Zoom Automap|"
 	"1 - 8: Use Belt item|"
-	"F5, F6, F7, F8:	 Set hot key for skill or spell|"
+	"F5, F6, F7, F8:     Set hot key for skill or spell|"
 	"Shift + Left Click: Attack without moving|"
 	"|"
 	"$Movement:|"
