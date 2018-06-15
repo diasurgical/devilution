@@ -859,7 +859,7 @@ void __cdecl S_StartSBuy()
 	stextsize = 1;
 	stextscrl = 1;
 	stextsval = 0;
-	sprintf(tempstr, "I have these items for sale :		   Your gold : %i", v0);
+	sprintf(tempstr, "I have these items for sale :           Your gold : %i", v0);
 	AddSText(0, 1, 1u, tempstr, COL_GOLD, 0);
 	AddSLine(3);
 	AddSLine(21);
@@ -1102,7 +1102,7 @@ void __cdecl S_StartSSell()
 		stextsmax = plr[myplr]._pNumInv;
 		stextscrl = 1;
 		stextsval = 0;
-		sprintf(tempstr, "Which item is for sale?			Your gold : %i", plr[myplr]._pGold);
+		sprintf(tempstr, "Which item is for sale?            Your gold : %i", plr[myplr]._pGold);
 		AddSText(0, 1, 1, tempstr, COL_GOLD, 0);
 		AddSLine(3);
 		AddSLine(21);
@@ -1113,7 +1113,7 @@ void __cdecl S_StartSSell()
 	else
 	{
 		stextscrl = 0;
-		sprintf(tempstr, "You have nothing I want.			Your gold : %i", plr[myplr]._pGold);
+		sprintf(tempstr, "You have nothing I want.            Your gold : %i", plr[myplr]._pGold);
 		AddSText(0, 1, 1, tempstr, COL_GOLD, 0);
 		AddSLine(3);
 		AddSLine(21);
@@ -1223,7 +1223,7 @@ void __cdecl S_StartSRepair()
 		v10 = plr[v9]._pNumInv;
 		stextscrl = 1;
 		stextsmax = v10;
-		sprintf(tempstr, "Repair which item?			Your gold : %i", v11);
+		sprintf(tempstr, "Repair which item?            Your gold : %i", v11);
 		AddSText(0, 1, 1u, tempstr, COL_GOLD, 0);
 		AddSLine(3);
 		AddSLine(21);
@@ -1232,7 +1232,7 @@ void __cdecl S_StartSRepair()
 	else
 	{
 		stextscrl = 0;
-		sprintf(tempstr, "You have nothing to repair.			Your gold : %i", v11);
+		sprintf(tempstr, "You have nothing to repair.            Your gold : %i", v11);
 		AddSText(0, 1, 1u, tempstr, COL_GOLD, 0);
 		AddSLine(3);
 		AddSLine(21);
@@ -1348,7 +1348,7 @@ void __cdecl S_StartWBuy()
 	stextscrl = 1;
 	stextsval = 0;
 	stextsmax = 20;
-	sprintf(tempstr, "I have these items for sale :		   Your gold : %i", v0);
+	sprintf(tempstr, "I have these items for sale :           Your gold : %i", v0);
 	AddSText(0, 1, 1u, tempstr, COL_GOLD, 0);
 	AddSLine(3);
 	AddSLine(21);
@@ -1455,7 +1455,7 @@ void __cdecl S_StartWSell()
 		stextscrl = 1;
 		stextsval = 0;
 		stextsmax = plr[myplr]._pNumInv;
-		sprintf(tempstr, "Which item is for sale?			Your gold : %i", plr[myplr]._pGold);
+		sprintf(tempstr, "Which item is for sale?            Your gold : %i", plr[myplr]._pGold);
 		AddSText(0, 1, 1, tempstr, COL_GOLD, 0);
 		AddSLine(3);
 		AddSLine(21);
@@ -1464,7 +1464,7 @@ void __cdecl S_StartWSell()
 	else
 	{
 		stextscrl = 0;
-		sprintf(tempstr, "You have nothing I want.			Your gold : %i", plr[myplr]._pGold);
+		sprintf(tempstr, "You have nothing I want.            Your gold : %i", plr[myplr]._pGold);
 		AddSText(0, 1, 1, tempstr, COL_GOLD, 0);
 		AddSLine(3);
 		AddSLine(21);
@@ -1576,7 +1576,7 @@ void __cdecl S_StartWRecharge()
 		stextscrl = 1;
 		stextsval = 0;
 		stextsmax = v2;
-		sprintf(tempstr, "Recharge which item?			Your gold : %i", v5);
+		sprintf(tempstr, "Recharge which item?            Your gold : %i", v5);
 		AddSText(0, 1, 1u, tempstr, COL_GOLD, 0);
 		AddSLine(3);
 		AddSLine(21);
@@ -1585,7 +1585,7 @@ void __cdecl S_StartWRecharge()
 	else
 	{
 		stextscrl = 0;
-		sprintf(tempstr, "You have nothing to recharge.			Your gold : %i", v5);
+		sprintf(tempstr, "You have nothing to recharge.            Your gold : %i", v5);
 		AddSText(0, 1, 1u, tempstr, COL_GOLD, 0);
 		AddSLine(3);
 		AddSLine(21);
@@ -1738,7 +1738,7 @@ void __cdecl S_StartBBoy()
 
 	stextsize = 1;
 	stextscrl = 0;
-	sprintf(tempstr, "I have this item for sale :		   Your gold : %i", plr[myplr]._pGold);
+	sprintf(tempstr, "I have this item for sale :           Your gold : %i", plr[myplr]._pGold);
 	AddSText(0, 1, 1u, tempstr, COL_GOLD, 0);
 	AddSLine(3);
 	AddSLine(21);
@@ -1827,7 +1827,7 @@ void __cdecl S_StartHBuy()
 	stextsize = 1;
 	stextscrl = 1;
 	stextsval = 0;
-	sprintf(tempstr, "I have these items for sale :		   Your gold : %i", v0);
+	sprintf(tempstr, "I have these items for sale :           Your gold : %i", v0);
 	AddSText(0, 1, 1u, tempstr, COL_GOLD, 0);
 	AddSLine(3);
 	AddSLine(21);
@@ -1968,7 +1968,7 @@ void __cdecl S_StartSIdentify()
 		stextscrl = 1;
 		stextsval = 0;
 		stextsmax = plr[myplr]._pNumInv;
-		sprintf(tempstr, "Identify which item?			Your gold : %i", plr[myplr]._pGold);
+		sprintf(tempstr, "Identify which item?            Your gold : %i", plr[myplr]._pGold);
 		AddSText(0, 1, 1, tempstr, COL_GOLD, 0);
 		AddSLine(3);
 		AddSLine(21);
@@ -1977,7 +1977,7 @@ void __cdecl S_StartSIdentify()
 	else
 	{
 		stextscrl = 0;
-		sprintf(tempstr, "You have nothing to identify.			Your gold : %i", plr[myplr]._pGold);
+		sprintf(tempstr, "You have nothing to identify.            Your gold : %i", plr[myplr]._pGold);
 		AddSText(0, 1, 1, tempstr, COL_GOLD, 0);
 		AddSLine(3);
 		AddSLine(21);
