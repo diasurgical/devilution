@@ -229,7 +229,7 @@ void __fastcall exception_call_stack(void *a1, LPVOID lp)
 
 	v2 = (unsigned int *)lp;
 	v3 = a1;
-	log_printf("Call stack:\r\nAddress  Frame	Logical addr  Module\r\n");
+	log_printf("Call stack:\r\nAddress  Frame    Logical addr  Module\r\n");
 	do
 	{
 		exception_unknown_module(v3, String1, 260, (int)&a4, (int)&a5);
