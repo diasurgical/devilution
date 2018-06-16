@@ -1197,7 +1197,7 @@ void __cdecl MakeLightTable()
 					{
 						++v10;
 					}
-					if ( v10 == -1 )
+					if ( v10 == LOBYTE(-1) )
 					{
 						v11 = 0;
 						v10 = 0;
