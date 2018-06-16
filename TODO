@@ -11,15 +11,12 @@
 1000 - Sometimes dungeon will crash on loading if previous levels loaded (DrawClippedObject)
 
 2000 - Generation of Cathedral/Catacombs is slightly inaccurate
-2001 - White pixels on monsters/cathedral/catacombs (palette entry 256?)
-2002 - Some spells don't use any mana or charges when they should
-2003 - Some tiles are drawn fully lit when they should be transparent (world.cpp)
-2004 - Objects should darken with radius instead of being fully lit
-2005 - After being in the dungeon for awhile, the 'Control Panel' will sometimes
-       corrupt and be filled with glitched colors (likely a buffer overflow)
-2006 - Some CEL functions were written in ASM and have been disabled (engine.cpp)
-2007 - Timed messages are broken and have been disabled (tmsg.cpp)
-2008 - Server commands are broken and have been disabled (msgcmd.cpp)
+2001 - Some spells don't use any mana or charges when they should
+2002 - Some tiles are drawn fully lit when they should be transparent (world.cpp)
+2003 - Objects should darken with radius instead of being fully lit
+2004 - Some CEL functions were written in ASM and have been disabled (engine.cpp)
+2005 - Timed messages are broken and have been disabled (tmsg.cpp)
+2006 - Server commands are broken and have been disabled (msgcmd.cpp)
 
 3000 - Critical sections should be constructors using CCritSect
 3001 - Function 'DRLG_L4TransFix', decompile and check (Test: seed 2349839 level 13)
