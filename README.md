@@ -20,7 +20,7 @@ The goal of Devilution itself is to recreate the original source code as accurat
 As a side goal, Devilution helps document the unused and cut content from the final game. Development of Diablo was rushed near the end--many ideas were scrapped and Multiplayer was quickly hacked in. By examining the source, we can see various quirks of planned development.
 
 # Compiling
-Development of Diablo began around the time Windows 95 released, for which is was optimized. The compiler used was Microsoft Visual C++ 4.20, which was upgraded to 5.10 in later patches ([ref: spreadsheet](Surgery/sdk.xls)). Compatibility with these tools is retained to help ensure the reversal is as accurate as possible. There are also Makefiles provided to compile with modern tools as well.
+Development of Diablo began around the time Windows 95 released, for which is was optimized. The compiler used was Microsoft Visual C++ 4.20, which was upgraded to 5.10 in later patches ([ref: spreadsheet](Support/linker.xls)). Compatibility with these tools is retained to help ensure the reversal is as accurate as possible. There are also Makefiles provided to compile with modern tools as well.
 
 Building with Visual C++ 5.10
 - Make sure Service Pack 3 is installed in order to update the linker from 5.00 -> 5.10! Newer versions of Visual Studio work as well, but will upgrade the project.
@@ -29,7 +29,7 @@ Building with Visual C++ 5.10
 Building with MinGW(32/64)
 - Ensure that the MinGW binary paths have been added to the command line.
 - For MinGW32, navigate to the project root and execute "mingw32-make -f Makefile32". The process will take longer than Visual Studio.
-- For MinGW64, refer to the respective documentation: [Linux](INSTALL_linux.md) | [Windows](INSTALL_windows.md). Note that only x86 systems may be targeted for the time being.
+- For MinGW64, refer to the respective documentation: [Linux](Support/INSTALL_linux.md) | [Windows](Support/INSTALL_windows.md). Note that only x86 systems may be targeted for the time being.
 
 Compiling Definitions
 - `COPYPROT` (default: on) will define whether or not to use the CD drive for DIABDAT.MPQ
