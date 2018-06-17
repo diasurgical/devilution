@@ -155,30 +155,29 @@ void __fastcall init_run_office(char *dir)
 void __fastcall init_disable_screensaver(bool disable)
 {
 	bool v1; // al
-	BYTE Data; // [esp+4h] [ebp-20h]
-	char v3; // [esp+5h] [ebp-1Fh]
+	char Data[16]; // [esp+4h] [ebp-20h]
 	DWORD Type; // [esp+14h] [ebp-10h]
 	DWORD cbData; // [esp+18h] [ebp-Ch]
 	HKEY phkResult; // [esp+1Ch] [ebp-8h]
-	bool v7; // [esp+20h] [ebp-4h]
+	bool v6; // [esp+20h] [ebp-4h]
 
-	v7 = disable;
+	v6 = disable;
 	if ( !RegOpenKeyExA(HKEY_CURRENT_USER, "Control Panel\\Desktop", 0, KEY_READ|KEY_WRITE, &phkResult) )
 	{
-		if ( v7 )
+		if ( v6 )
 		{
 			cbData = 16;
-			if ( !RegQueryValueExA(phkResult, "ScreenSaveActive", 0, &Type, &Data, &cbData) )
-				screensaver_enabled_prev = Data != '0';
+			if ( !RegQueryValueExA(phkResult, "ScreenSaveActive", 0, &Type, (LPBYTE)Data, &cbData) )
+				screensaver_enabled_prev = Data[0] != '0';
 			v1 = 0;
 		}
 		else
 		{
 			v1 = screensaver_enabled_prev;
 		}
-		v3 = 0;
-		Data = (v1 != 0) + '0';
-		RegSetValueExA(phkResult, "ScreenSaveActive", 0, REG_SZ, &Data, 2u);
+		Data[1] = 0;
+		Data[0] = (v1 != 0) + '0';
+		RegSetValueExA(phkResult, "ScreenSaveActive", 0, REG_SZ, (const BYTE *)Data, 2u);
 		RegCloseKey(phkResult);
 	}
 }
