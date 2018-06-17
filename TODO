@@ -8,8 +8,6 @@
  2xxx       Minor bugs (noticeable but can be avoided)
  3xxx       Code issues (incorrect code that still compiles/works)
 
-1000 - Sometimes dungeon will crash on loading if previous levels loaded (DrawClippedObject)
-
 2000 - Generation of Cathedral/Catacombs is slightly inaccurate
 2001 - Some spells don't use any mana or charges when they should
 2002 - Some tiles are drawn fully lit when they should be transparent (world.cpp)
