@@ -46,7 +46,7 @@ char *__fastcall GetErr(int error_code)
 	int v1; // edi
 	unsigned int v2; // eax
 	signed int v4; // eax
-	_BYTE *i; // ecx
+	char *i; // ecx
 
 	v1 = error_code;
 	v2 = ((unsigned int)error_code >> 16) & 0x1FFF;
@@ -64,7 +64,7 @@ char *__fastcall GetErr(int error_code)
 			wsprintfA(sz_error_buf, "unknown error 0x%08x", v1);
 	}
 	v4 = strlen(sz_error_buf);
-	for ( i = (unsigned char *)&appfat_terminated + v4 + 3; v4 > 0; *i = 0 )
+	for ( i = &sz_error_buf[v4-1]; v4 > 0; *i = 0 )
 	{
 		--v4;
 		if ( *--i != '\r' && *i != '\n' )
@@ -72,7 +72,6 @@ char *__fastcall GetErr(int error_code)
 	}
 	return sz_error_buf;
 }
-// 4B7930: using guessed type int appfat_terminated;
 
 //----- (004010CE) --------------------------------------------------------
 void __fastcall GetDDErr(int error_code, char *error_buf, int error_buf_len)
