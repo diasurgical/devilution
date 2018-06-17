@@ -659,7 +659,7 @@ LABEL_23:
 			v17 = themeCount;
 			for ( k = 0; k < themeCount; v13 += 5 )
 			{
-				if ( _LOBYTE(themes[k].ttype) == -1 )
+				if ( _LOBYTE(themes[k].ttype) == LOBYTE(-1) ) /* char */
 				{
 					_LOBYTE(v12) = 0;
 					themes[k].ttval = *v13;
