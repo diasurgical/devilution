@@ -24,11 +24,11 @@ Development of Diablo began around the time Windows 95 released, for which is wa
 
 Building with Visual C++ 5.10
 - Make sure Service Pack 3 is installed in order to update the linker from 5.00 -> 5.10! Newer versions of Visual Studio work as well, but will upgrade the project.
-- Open the project workspace "Diablo.dsw" and select "Build Diablo.exe". This will build all dependencies and only takes a few seconds.
+- Open the project workspace `Diablo.dsw` and select `Build Diablo.exe`. This will build all dependencies and only takes a few seconds.
 
 Building with MinGW(32/64)
 - Ensure that the MinGW binary paths have been added to the command line.
-- For MinGW32, navigate to the project root and execute "mingw32-make -f Makefile32". The process will take longer than Visual Studio.
+- For MinGW32, navigate to the project root and execute `mingw32-make -f Makefile32`. The process will take longer than Visual Studio.
 - For MinGW64, refer to the respective documentation: [Linux](Support/INSTALL_linux.md) | [Windows](Support/INSTALL_windows.md). Note that only x86 systems may be targeted for the time being.
 
 Compiling Definitions
