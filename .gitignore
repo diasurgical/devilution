@@ -1,7 +1,15 @@
+# ELF object file.
 *.o
+
+# PE shared library and associated files.
 *.lib
+*.exp
 *.dll
+
+# PE executable.
 *.exe
+
+# GCC dependency file.
 *.d
 
 # Created by https://www.gitignore.io/api/visualstudio
