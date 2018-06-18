@@ -278,10 +278,10 @@ void __fastcall sound_CreateSoundBuffer(TSnd *sound_file)
 	DSBUFFERDESC v3; // [esp+4h] [ebp-14h]
 
 	v1 = sound_file;
-	memset(&v3, 0, 0x14u);
+	memset(&v3, 0, sizeof(DSBUFFERDESC));
 	v3.dwBufferBytes = v1->len;
 	v3.lpwfxFormat = &v1->fmt;
-	v3.dwSize = 20;
+	v3.dwSize = sizeof(DSBUFFERDESC);
 	v3.dwFlags = DSBCAPS_CTRLVOLUME|DSBCAPS_CTRLPAN|DSBCAPS_STATIC;
 	v2 = sglpDS->CreateSoundBuffer(&v3, &v1->DSB, NULL);
 	if ( v2 )
@@ -367,8 +367,8 @@ void __fastcall sound_create_primary_buffer(int music_track)
 	a1 = music_track;
 	if ( !music_track )
 	{
-		memset(&v4, 0, 0x14u);
-		v4.dwSize = 20;
+		memset(&v4, 0, sizeof(DSBUFFERDESC));
+		v4.dwSize = sizeof(DSBUFFERDESC);
 		v4.dwFlags = DSBCAPS_PRIMARYBUFFER;
 		v1 = sglpDS->CreateSoundBuffer(&v4, &sglpDSB, NULL);
 		if ( v1 )
