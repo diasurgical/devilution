@@ -35,7 +35,7 @@ Compiling Definitions
 - `COPYPROT` (default: on) will define whether or not to use the CD drive for DIABDAT.MPQ
 - `DEBUGGER` (default: off) will define whether to skip reloading for direct execution through debuggers
 - `SLEEP` (default: off) will define whether to sleep the program to prevent 100% CPU usage
-- `_DEBUG` (default: off) will define whether to include debug features (refer to 'Debugging' section)
+- `_DEBUG` (default: off) will define whether to include debug features (refer to [Debugging Document](Support/debug.md))
 
 # Installing
 Once compiled, the Devilution binary will serve as a replacement for `Diablo.exe`. A clean installation of Diablo patched to 1.09(b) is needed to run the game. Either copy Devilution into Diablo's installation folder, or make sure the following files are present:
@@ -51,53 +51,34 @@ While Devilution should produce a binary close to the original (compatible with 
 
 Note that newer compilers may need to be tweaked to properly produce an executable. Currently this is being worked on to provide multiple Makefiles for a variety of systems. To ensure the best results, either MinGW or Visual Studio 2003/older should be used for the time being.
 
-# Debugging
-There are debug features available through both in-game and through the command-line. These have been ported from the 12-21-96 debug build. Note that not all of them are available yet.
+# F.A.Q.
+> Wow, does this mean I can download and play Diablo for free now?
 
-Command-line parameters
-- `-^` : enable god mode and debug tools
-- `-$` : enable god mode with less stuff (further documenting needed) [NOT YET IMPLEMENTED]
-- `-b` : enables item drop log [NOT YET IMPLEMENTED]
-- `-d` : disable startup video + increased item drops [PARTIALLY IMPLEMENTED]
-- `-f` : display frames per second
-- `-i` : disable network timeout
-- `-n` : disable startup video
-- `-s` : unused
-- `-v` : draw yellow debug tiles
-- `-w` : enable cheats
-- `-x` : disable exclusive DirectDraw access [NOT YET IMPLEMENTED]
-- `-j <##>` : init trigger at level [NOT YET IMPLEMENTED]
-- `-l <#> <##>` : start in level as type
-- `-m <###>` : add debug monster, up to 10 allowed
-- `-q <#>` : force a certain quest
-- `-r <##########>` : set map seed to
-- `-t <##>` : sets current quest level
+No, you'll need access to the data from the original game. Blizzard has discontinued Diablo, but there's plenty of used copies floating around. (I'm still using an original 1996-disc in 2018 without problems)
+> Cool, so I fired your mod up, but there's no 1080p or new features?
 
-In-game hotkeys
-- `?` -> start quest text mode (`-`/`_`, `+`/`=`, and `Enter` to use) [NOT YET IMPLEMENTED]
-- `Esc` -> stop quest text mode [NOT YET IMPLEMENTED]
-- `Shift` -> while holding, use the mouse to scroll screen
-- `F2` -> display dungeon information [NOT YET IMPLEMENTED]
-- `F3` -> display number of items on the ground/cursor item
-- `F4` -> display quest status information
-- `0`/`)` -> cycle through active item flags [NOT YET IMPLEMENTED]
-- `8`/`*` -> level up character
-- `~` -> refresh vendor items (Griswold premium and Adria)
-- `]` -> all spells level 10
-- `:` -> all spells preset level
-- `[` -> delete all gold in inventory
-- `|` -> fill inventory with gold (5000 piece piles)
-- `.` -> display dungeon Y/sum [NOT YET IMPLEMENTED]
-- `a` -> increase level of the last spell casted
-- `A` -> display "Mid" monster related
-- `d` -> print debug player info
-- `D` -> switch current debug player
-- `e` -> display "EFlag"
-- `l`/`L` -> toggle lighting in dungeon [NOT YET IMPLEMENTED]
-- `m` -> print debug monster info
-- `M` -> switch current debug monster
-- `r`/`R` -> display game seeds
-- `t`/`T` -> display player and cursor coordinates
+Devilution aims to keep the original code unaltered, for documentation purposes.
+> So will you ever add cross-platform support or new features in the future?
+
+Yes! However, this will be a **_side project_** based on Devilution. I have yet to announce the project.
+> When and what can I expect from the upcoming project?
+
+Honestly I have no idea. More than 1,200 hours went into creating Devilution, and I have other things going on right now. Maybe in 6-12 months? The goal is to create a native Linux port, convert to OpenGL, modernize the UI, etc. you get the drill. There has to be some surprises. ;)
+> Ok, so I'm playing Devilution now and all the sudden it crashed. NOW WHAT??
+
+Try to remember as many details about the crash as possible. Inside the Diablo folder should be a log file containing crash information. Open an issue, upload the log, and provide as much information as possible (OS version, etc.).
+> I thought I'd fix the crash myself, but after looking at the code its a disaster. Do you speak v2-34-v8?
+
+That is the result of decompiled code. Whenever a program is compiled, much of the source is optimized and stripped away, so it's nearly impossible to decompile it back. Have patience. Everything will be cleaned up eventually. :)
+> Will you be reverse engineering Diablo II next? Ooooh please!
+
+Absolutely not. Diablo II is still supported, sold, and maintained by Blizzard. Setting the legal implications aside, there's about 8x as much code, and a chance Blizzard will remaster the game soon anyway. (as of 2018)
+> Are you interested in working for me? I have this game I want you to reverse...
+
+Sorry, but no. Money takes the passion out of it. Forgoing that, Diablo was an exception given that symbolic information was readily available. Even then it took countless hours to pick apart such a tiny game.
+> I think that's about all, but is Devilution even legal?
+
+That's a tricky question. Under the DMCA, reverse-engineering has exceptions for the purpose of documentation and interoperability. Devilution provides the necessary documentation needed to achieve the latter. However, it falls into an entirely grey area. The real question is whether or not Blizzard deems it necessary to take action.
 
 # Contributing
 Currently there are a few issues with the decompiled code. The focus should be on fixing these issues for now instead of cleaning up the code. Currently only Diablo.exe has been reversed, the other files are:
