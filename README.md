@@ -20,7 +20,7 @@ The goal of Devilution itself is to recreate the original source code as accurat
 As a side goal, Devilution helps document the unused and cut content from the final game. Development of Diablo was rushed near the end--many ideas were scrapped and Multiplayer was quickly hacked in. By examining the source, we can see various quirks of planned development.
 
 # Compiling
-Development of Diablo began around the time Windows 95 released, for which is was optimized. The compiler used was Microsoft Visual C++ 4.20, which was upgraded to 5.10 in later patches ([ref: spreadsheet](Support/linker.xls)). Compatibility with these tools is retained to help ensure the reversal is as accurate as possible. There are also Makefiles provided to compile with modern tools as well.
+Development of Diablo began around the time Windows 95 released, for which it was optimized. The compiler used was Microsoft Visual C++ 4.20, which was upgraded to 5.10 in later patches ([ref: spreadsheet](Support/linker.xls)). Compatibility with these tools is retained to help ensure the reversal is as accurate as possible. There are also Makefiles provided to compile with modern tools as well.
 
 Building with Visual C++ 5.10
 - Make sure Service Pack 3 is installed in order to update the linker from 5.00 -> 5.10! Newer versions of Visual Studio work as well, but will upgrade the project.
@@ -36,6 +36,18 @@ Compiling Definitions
 - `DEBUGGER` (default: off) will define whether to skip reloading for direct execution through debuggers
 - `SLEEP` (default: off) will define whether to sleep the program to prevent 100% CPU usage
 - `_DEBUG` (default: off) will define whether to include debug features (refer to 'Debugging' section)
+
+# Installing
+Once compiled, the Devilution binary will serve as a replacement for `Diablo.exe`. A clean installation of Diablo patched to 1.09(b) is needed to run the game. Either copy Devilution into Diablo's installation folder, or make sure the following files are present:
+- `DIABDAT.MPQ` : if `COPYPROT` was defined, then the Diablo CD will be required
+- `DiabloUI.dll` : provides module for the title screen interface
+- `SmackW32.dll` : provides library for playing Smacker video files
+- `Storm.dll` : provides various "standard" functions
+
+# Troubleshooting
+While Devilution should produce a binary close to the original (compatible with Windows 95/NT), it may cause issues on newer systems. It has been reported to frequently crash on some setups, although for many it appears to be running flawless otherwise. Windows 7, Linux-WINE, and Windows 10 have all reported success.
+
+Note that newer compilers may need to be tweaked to properly produce an executable. Currently this is being worked on to provide multiple Makefiles for a variety of systems. To ensure the best results, either MinGW or Visual Studio 2003/older should be used for the time being.
 
 # Debugging
 There are debug features available through both in-game and through the command-line. These have been ported from the 12-21-96 debug build. Note that not all of them are available yet.
@@ -62,6 +74,10 @@ Command-line parameters
 In-game hotkeys
 - `?` -> start quest text mode (`-`/`_`, `+`/`=`, and `Enter` to use) [NOT YET IMPLEMENTED]
 - `Esc` -> stop quest text mode [NOT YET IMPLEMENTED]
+- `Shift` -> while holding, use the mouse to scroll screen
+- `F2` -> display dungeon information [NOT YET IMPLEMENTED]
+- `F3` -> display number of items on the ground/cursor item
+- `F4` -> display quest status information
 - `0`/`)` -> cycle through active item flags [NOT YET IMPLEMENTED]
 - `8`/`*` -> level up character
 - `~` -> refresh vendor items (Griswold premium and Adria)
