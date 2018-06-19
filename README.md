@@ -44,6 +44,8 @@ Once compiled, the Devilution binary will serve as a replacement for `Diablo.exe
 - `SmackW32.dll` : provides library for playing Smacker video files
 - `Storm.dll` : provides various "standard" functions
 
+To run the game in windowed mode, a DirectDraw wrapper will be needed. Strange Bytes' [DirectDraw patch](http://www.strangebytes.com/index.php/projects/1-diablo-1-windows-7-vista-patch) is recommended. To install, place the `ddraw.dll` into the same location as the Devilution binary.
+
 # Troubleshooting
 While Devilution should produce a binary close to the original (compatible with Windows 95/NT), it may cause issues on newer systems. It has been reported to frequently crash on some setups, although for many it appears to be running flawless otherwise. Windows 7, Linux-WINE, and Windows 10 have all reported success.
 
