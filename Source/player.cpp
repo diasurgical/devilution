@@ -3816,10 +3816,10 @@ int __fastcall PM_DoRangeAttack(int pnum)
 	if ( plr[v2]._pAnimFrame != plr[v2]._pAFNum )
 		goto LABEL_21;
 	v5 = 0;
-	if ( v3 & 8 ) // fire arrow
+	if ( v3 & 8 )
+		v5 = MIS_FARROW;
+	if ( v3 & 0x2000000 )
 		v5 = MIS_LARROW;
-	if ( v3 & 0x2000000 ) // lightning arrow
-		v5 = MIS_LARROW2;
 	AddMissile(plr[v2].WorldX, plr[v2].WorldY, plr[v2]._pVar1, plr[v2]._pVar2, plr[v2]._pdir, v5, 0, v1, 4, 0);
 	PlaySfxLoc(PS_BFIRE, plr[v2].WorldX, plr[v2].WorldY);
 	//_LOBYTE(v6) = WeaponDur(v1, 40);
