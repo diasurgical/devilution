@@ -9,7 +9,6 @@ bool sgbIsWalking; // weak
 
 int track_inf = 0x7F800000; // weak
 
-//----- (004618AA) --------------------------------------------------------
 struct track_cpp_init
 {
 	track_cpp_init()
@@ -20,7 +19,6 @@ struct track_cpp_init
 // 4802D0: using guessed type int track_inf;
 // 6ABABC: using guessed type int track_cpp_init_value;
 
-//----- (004618B5) --------------------------------------------------------
 void __cdecl track_process()
 {
 	int v0; // eax
@@ -50,7 +48,6 @@ void __cdecl track_process()
 // 6ABAC0: using guessed type int sgdwLastWalk;
 // 6ABAC4: using guessed type int sgbIsWalking;
 
-//----- (00461953) --------------------------------------------------------
 void __fastcall track_repeat_walk(bool rep)
 {
 	if ( sgbIsWalking != rep )
@@ -72,7 +69,6 @@ void __fastcall track_repeat_walk(bool rep)
 // 6ABAC0: using guessed type int sgdwLastWalk;
 // 6ABAC4: using guessed type int sgbIsWalking;
 
-//----- (0046199F) --------------------------------------------------------
 bool __cdecl track_isscrolling()
 {
 	return sgbIsScrolling;

@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __PATH_H__
+#define __PATH_H__
 
-//path
 extern PATHNODE path_nodes[300];
 extern int gdwCurPathStep;
 extern int pnode_vals[26];
@@ -30,3 +31,5 @@ extern char pathydir[8];
 
 /* rdata */
 extern char path_directions[9];
+
+#endif /* __PATH_H__ */

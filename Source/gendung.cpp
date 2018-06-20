@@ -69,7 +69,6 @@ int dminx; // weak
 int dminy; // weak
 short dpiece_defs_map_2[16][112][112];
 
-//----- (00418C8B) --------------------------------------------------------
 void __cdecl FillSolidBlockTbls()
 {
 	unsigned char *v0; // eax
@@ -137,7 +136,6 @@ LABEL_13:
 }
 // 5BB1ED: using guessed type char leveltype;
 
-//----- (00418D91) --------------------------------------------------------
 void __cdecl gendung_418D91()
 {
 	signed int v0; // edx
@@ -496,7 +494,6 @@ LABEL_66:
 // 53CD4C: using guessed type int nlevel_frames;
 // 5BB1ED: using guessed type char leveltype;
 
-//----- (004191BF) --------------------------------------------------------
 void __fastcall gendung_4191BF(int frames)
 {
 	int v1; // edi
@@ -520,7 +517,6 @@ void __fastcall gendung_4191BF(int frames)
 	}
 }
 
-//----- (004191FB) --------------------------------------------------------
 void __fastcall gendung_4191FB(int a1, int a2)
 {
 	int v2; // esi
@@ -554,7 +550,6 @@ void __fastcall gendung_4191FB(int a1, int a2)
 	*(int *)((char *)level_frame_sizes + v2) = v10;
 }
 
-//----- (0041927A) --------------------------------------------------------
 int __fastcall gendung_get_dpiece_num_from_coord(int x, int y)
 {
 	__int64 v3; // rax
@@ -565,7 +560,6 @@ int __fastcall gendung_get_dpiece_num_from_coord(int x, int y)
 	return 12543 - (((signed int)v3 - HIDWORD(v3)) >> 1);
 }
 
-//----- (004192C2) --------------------------------------------------------
 void __cdecl gendung_4192C2()
 {
 	short (*v0)[112][112]; // ebx
@@ -592,7 +586,6 @@ void __cdecl gendung_4192C2()
 	while ( (signed int)v0 < (signed int)&dpiece_defs_map_2[16][0][0] );
 }
 
-//----- (0041930B) --------------------------------------------------------
 void __cdecl SetDungeonMicros()
 {
 	signed int v0; // esi
@@ -679,7 +672,6 @@ void __cdecl SetDungeonMicros()
 // 5C3000: using guessed type int scr_pix_width;
 // 5C3004: using guessed type int scr_pix_height;
 
-//----- (0041944A) --------------------------------------------------------
 void __cdecl DRLG_InitTrans()
 {
 	memset(dung_map, 0, 0x3100u);
@@ -688,7 +680,6 @@ void __cdecl DRLG_InitTrans()
 }
 // 5A5590: using guessed type char TransVal;
 
-//----- (00419477) --------------------------------------------------------
 void __fastcall DRLG_MRectTrans(int x1, int y1, int x2, int y2)
 {
 	int v4; // esi
@@ -720,7 +711,6 @@ void __fastcall DRLG_MRectTrans(int x1, int y1, int x2, int y2)
 }
 // 5A5590: using guessed type char TransVal;
 
-//----- (004194D0) --------------------------------------------------------
 void __fastcall DRLG_RectTrans(int x1, int y1, int x2, int y2)
 {
 	int i; // esi
@@ -746,13 +736,11 @@ void __fastcall DRLG_RectTrans(int x1, int y1, int x2, int y2)
 }
 // 5A5590: using guessed type char TransVal;
 
-//----- (00419515) --------------------------------------------------------
 void __fastcall DRLG_CopyTrans(int sx, int sy, int dx, int dy)
 {
 	dung_map[dx][dy] = dung_map[sx][sy];
 }
 
-//----- (00419534) --------------------------------------------------------
 void __fastcall DRLG_ListTrans(int num, unsigned char *List)
 {
 	unsigned char *v2; // esi
@@ -782,7 +770,6 @@ void __fastcall DRLG_ListTrans(int num, unsigned char *List)
 	}
 }
 
-//----- (00419565) --------------------------------------------------------
 void __fastcall DRLG_AreaTrans(int num, unsigned char *List)
 {
 	unsigned char *v2; // esi
@@ -815,7 +802,6 @@ void __fastcall DRLG_AreaTrans(int num, unsigned char *List)
 }
 // 5A5590: using guessed type char TransVal;
 
-//----- (004195A2) --------------------------------------------------------
 void __cdecl DRLG_InitSetPC()
 {
 	setpc_x = 0;
@@ -826,7 +812,6 @@ void __cdecl DRLG_InitSetPC()
 // 5CF330: using guessed type int setpc_h;
 // 5CF334: using guessed type int setpc_w;
 
-//----- (004195B9) --------------------------------------------------------
 void __cdecl DRLG_SetPC()
 {
 	int v0; // ebx
@@ -860,7 +845,6 @@ void __cdecl DRLG_SetPC()
 // 5CF330: using guessed type int setpc_h;
 // 5CF334: using guessed type int setpc_w;
 
-//----- (0041960C) --------------------------------------------------------
 void __fastcall Make_SetPC(int x, int y, int w, int h)
 {
 	int v4; // eax
@@ -892,7 +876,6 @@ void __fastcall Make_SetPC(int x, int y, int w, int h)
 	}
 }
 
-//----- (0041965B) --------------------------------------------------------
 bool __fastcall DRLG_WillThemeRoomFit(int floor, int x, int y, int minSize, int maxSize, int *width, int *height)
 {
 	int v7; // esi
@@ -1038,7 +1021,6 @@ LABEL_32:
 // 41965B: using guessed type int var_6C[20];
 // 41965B: using guessed type int var_BC[20];
 
-//----- (004197F4) --------------------------------------------------------
 void __fastcall DRLG_CreateThemeRoom(int themeIndex)
 {
 	int v1; // esi
@@ -1273,7 +1255,6 @@ LABEL_53:
 }
 // 5BB1ED: using guessed type char leveltype;
 
-//----- (00419C10) --------------------------------------------------------
 void __fastcall DRLG_PlaceThemeRooms(int minSize, int maxSize, int floor, int freq, int rndSize)
 {
 	int v5; // ebx
@@ -1374,7 +1355,6 @@ void __fastcall DRLG_PlaceThemeRooms(int minSize, int maxSize, int floor, int fr
 // 5A5590: using guessed type char TransVal;
 // 5BB1ED: using guessed type char leveltype;
 
-//----- (00419D92) --------------------------------------------------------
 void __cdecl DRLG_HoldThemeRooms()
 {
 	int *v0; // esi
@@ -1431,7 +1411,6 @@ void __cdecl DRLG_HoldThemeRooms()
 	}
 }
 
-//----- (00419E1F) --------------------------------------------------------
 bool __fastcall SkipThemeRoom(int x, int y)
 {
 	int i; // ebx
@@ -1458,7 +1437,6 @@ bool __fastcall SkipThemeRoom(int x, int y)
 	return 0;
 }
 
-//----- (00419E71) --------------------------------------------------------
 void __cdecl InitLevels()
 {
 	if ( !leveldebug )

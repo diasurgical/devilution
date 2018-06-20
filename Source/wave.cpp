@@ -6,7 +6,6 @@ int wave_cpp_init_value; // weak
 
 int wave_inf = 0x7F800000; // weak
 
-//----- (00462C72) --------------------------------------------------------
 struct wave_cpp_init
 {
 	wave_cpp_init()
@@ -17,13 +16,11 @@ struct wave_cpp_init
 // 4802D4: using guessed type int wave_inf;
 // 6ABB34: using guessed type int wave_cpp_init_value;
 
-//----- (00462C7D) --------------------------------------------------------
 bool __fastcall WCloseFile(void *file)
 {
 	return SFileCloseFile(file);
 }
 
-//----- (00462C84) --------------------------------------------------------
 int __fastcall WGetFileSize(HANDLE hsFile, unsigned long *a2)
 {
 	unsigned long *v2; // edi
@@ -42,7 +39,6 @@ int __fastcall WGetFileSize(HANDLE hsFile, unsigned long *a2)
 	return result;
 }
 
-//----- (00462CAF) --------------------------------------------------------
 void __fastcall WGetFileArchive(HANDLE hsFile, int *a2, char *dwInitParam)
 {
 	int *v3; // esi
@@ -68,7 +64,6 @@ void __fastcall WGetFileArchive(HANDLE hsFile, int *a2, char *dwInitParam)
 	}
 }
 
-//----- (00462D06) --------------------------------------------------------
 int __fastcall WOpenFile(char *dwInitParam, HANDLE *phsFile, int a3)
 {
 	HANDLE *v3; // edi
@@ -89,7 +84,6 @@ int __fastcall WOpenFile(char *dwInitParam, HANDLE *phsFile, int a3)
 	return 0;
 }
 
-//----- (00462D48) --------------------------------------------------------
 char __fastcall WReadFile(HANDLE hsFile, char *buf, int a3)
 {
 	char *v3; // ebx
@@ -112,7 +106,6 @@ char __fastcall WReadFile(HANDLE hsFile, char *buf, int a3)
 	return v5;
 }
 
-//----- (00462D9A) --------------------------------------------------------
 int __fastcall WSetFilePointer(HANDLE file1, int offset, HANDLE file2, int whence)
 {
 	int v4; // edi
@@ -131,7 +124,6 @@ int __fastcall WSetFilePointer(HANDLE file1, int offset, HANDLE file2, int whenc
 	return result;
 }
 
-//----- (00462DCE) --------------------------------------------------------
 int __fastcall LoadWaveFormat(HANDLE hsFile, WAVEFORMATEX *pwfx)
 {
 	WAVEFORMATEX *v2; // esi
@@ -145,7 +137,6 @@ int __fastcall LoadWaveFormat(HANDLE hsFile, WAVEFORMATEX *pwfx)
 	return v3;
 }
 
-//----- (00462DFC) --------------------------------------------------------
 void *__fastcall AllocateMemFile(HANDLE hsFile, MEMFILE *pMemFile, unsigned int a3)
 {
 	MEMFILE *v3; // esi
@@ -172,7 +163,6 @@ void *__fastcall AllocateMemFile(HANDLE hsFile, MEMFILE *pMemFile, unsigned int 
 	return result;
 }
 
-//----- (00462E45) --------------------------------------------------------
 void __fastcall FreeMemFile(MEMFILE *pMemFile)
 {
 	MEMFILE *v1; // eax
@@ -184,7 +174,6 @@ void __fastcall FreeMemFile(MEMFILE *pMemFile)
 	mem_free_dbg(v2);
 }
 
-//----- (00462E53) --------------------------------------------------------
 int __fastcall ReadWaveFile(MEMFILE *pMemFile, WAVEFORMATEX *pwfx, int *a3)
 {
 	WAVEFORMATEX *v3; // esi
@@ -222,7 +211,6 @@ int __fastcall ReadWaveFile(MEMFILE *pMemFile, WAVEFORMATEX *pwfx, int *a3)
 	return result;
 }
 
-//----- (00462F1D) --------------------------------------------------------
 int __fastcall ReadMemFile(MEMFILE *pMemFile, void *lpBuf, size_t a3)
 {
 	size_t v3; // ebx
@@ -255,7 +243,6 @@ int __fastcall ReadMemFile(MEMFILE *pMemFile, void *lpBuf, size_t a3)
 	return 0;
 }
 
-//----- (00462F73) --------------------------------------------------------
 void __fastcall FillMemFile(MEMFILE *pMemFile)
 {
 	MEMFILE *v1; // esi
@@ -272,7 +259,6 @@ void __fastcall FillMemFile(MEMFILE *pMemFile)
 	v1->bytes_to_read = v2;
 }
 
-//----- (00462FAE) --------------------------------------------------------
 int __fastcall SeekMemFile(MEMFILE *pMemFile, unsigned int lDist, int dwMethod)
 {
 	unsigned int v3; // eax
@@ -291,7 +277,6 @@ int __fastcall SeekMemFile(MEMFILE *pMemFile, unsigned int lDist, int dwMethod)
 	return pMemFile->offset;
 }
 
-//----- (00462FCC) --------------------------------------------------------
 int __fastcall ReadWaveSection(MEMFILE *pMemFile, int a2, int *a3)
 {
 	int v3; // esi
@@ -316,7 +301,6 @@ int __fastcall ReadWaveSection(MEMFILE *pMemFile, int a2, int *a3)
 	return v6 != -1;
 }
 
-//----- (00463023) --------------------------------------------------------
 void *__fastcall LoadWaveFile(HANDLE hsFile, WAVEFORMATEX *pwfx, int *a3)
 {
 	WAVEFORMATEX *v3; // esi

@@ -2,7 +2,6 @@
 
 #include "../types.h"
 
-//----- (0045E151) --------------------------------------------------------
 void __fastcall town_clear_upper_buf(int a1)
 {
 	unsigned int v1; // edi
@@ -43,7 +42,6 @@ void __fastcall town_clear_upper_buf(int a1)
 }
 // 69CF0C: using guessed type int screen_buf_end;
 
-//----- (0045E1B7) --------------------------------------------------------
 void __fastcall town_clear_low_buf(int y_related)
 {
 	unsigned int v1; // edi
@@ -97,7 +95,6 @@ void __fastcall town_clear_low_buf(int y_related)
 }
 // 69CF0C: using guessed type int screen_buf_end;
 
-//----- (0045E226) --------------------------------------------------------
 void __fastcall town_draw_clipped_e_flag(void *buffer, int x, int y, int sx, int sy)
 {
 	int v5; // ebx
@@ -131,7 +128,6 @@ void __fastcall town_draw_clipped_e_flag(void *buffer, int x, int y, int sx, int
 }
 // 69CF14: using guessed type int level_cel_block;
 
-//----- (0045E2A5) --------------------------------------------------------
 void __fastcall town_draw_clipped_town(void *unused, int x, int y, int sx, int sy, int some_flag)
 {
 	unsigned int v6; // edx
@@ -251,7 +247,6 @@ void __fastcall town_draw_clipped_town(void *unused, int x, int y, int sx, int s
 // 4B8CC0: using guessed type char pcursitem;
 // 4B8CC2: using guessed type char pcursplr;
 
-//----- (0045E5B0) --------------------------------------------------------
 void __fastcall town_draw_lower(int x, int y, int sx, int sy, int a5, int some_flag)
 {
 	int v6; // ebx
@@ -390,7 +385,6 @@ void __fastcall town_draw_lower(int x, int y, int sx, int sy, int a5, int some_f
 }
 // 69CF14: using guessed type int level_cel_block;
 
-//----- (0045E898) --------------------------------------------------------
 void __fastcall town_draw_clipped_e_flag_2(void *buffer, int x, int y, int a4, int a5, int sx, int sy)
 {
 	int v7; // ebx
@@ -434,7 +428,6 @@ void __fastcall town_draw_clipped_e_flag_2(void *buffer, int x, int y, int a4, i
 }
 // 69CF14: using guessed type int level_cel_block;
 
-//----- (0045E939) --------------------------------------------------------
 void __fastcall town_draw_clipped_town_2(int x, int y, int a3, int a4, int a5, int sx, int sy, int some_flag)
 {
 	unsigned int v8; // edx
@@ -554,7 +547,6 @@ void __fastcall town_draw_clipped_town_2(int x, int y, int a3, int a4, int a5, i
 // 4B8CC0: using guessed type char pcursitem;
 // 4B8CC2: using guessed type char pcursplr;
 
-//----- (0045EC49) --------------------------------------------------------
 void __fastcall town_draw_lower_2(int x, int y, int sx, int sy, int a5, int a6, int some_flag)
 {
 	int v7; // esi
@@ -719,7 +711,6 @@ LABEL_18:
 }
 // 69CF14: using guessed type int level_cel_block;
 
-//----- (0045EF8A) --------------------------------------------------------
 void __fastcall town_draw_e_flag(void *buffer, int x, int y, int a4, int dir, int sx, int sy)
 {
 	int v7; // ebx
@@ -756,7 +747,6 @@ void __fastcall town_draw_e_flag(void *buffer, int x, int y, int a4, int dir, in
 }
 // 69CF14: using guessed type int level_cel_block;
 
-//----- (0045F013) --------------------------------------------------------
 void __fastcall town_draw_town_all(void *buffer, int x, int y, int a4, int dir, int sx, int sy, int some_flag)
 {
 	//int v9; // ebx
@@ -819,7 +809,6 @@ void __fastcall town_draw_town_all(void *buffer, int x, int y, int a4, int dir, 
 // 4B8CC0: using guessed type char pcursitem;
 // 4B8CC2: using guessed type char pcursplr;
 
-//----- (0045F323) --------------------------------------------------------
 void __fastcall town_draw_upper(int x, int y, int sx, int sy, int a5, int a6, int some_flag)
 {
 	signed int v7; // ebx
@@ -1002,7 +991,6 @@ LABEL_36:
 }
 // 69CF14: using guessed type int level_cel_block;
 
-//----- (0045F65D) --------------------------------------------------------
 void __fastcall T_DrawGame(int x, int y)
 {
 	int v2; // esi
@@ -1135,7 +1123,6 @@ LABEL_15:
 // 69BD04: using guessed type int questlog;
 // 69CF0C: using guessed type int screen_buf_end;
 
-//----- (0045F856) --------------------------------------------------------
 void __fastcall T_DrawZoom(int x, int y)
 {
 	int v2; // edi
@@ -1306,7 +1293,6 @@ LABEL_24:
 // 69BD04: using guessed type int questlog;
 // 69CF0C: using guessed type int screen_buf_end;
 
-//----- (0045FAAB) --------------------------------------------------------
 void __fastcall T_DrawView(int StartX, int StartY)
 {
 	light_table_index = 0;
@@ -1373,7 +1359,6 @@ void __fastcall T_DrawView(int StartX, int StartY)
 // 69CF94: using guessed type int cel_transparency_active;
 // 6AA705: using guessed type char stextflag;
 
-//----- (0045FBD7) --------------------------------------------------------
 void __cdecl town_init_dpiece_defs_map()
 {
 	int (*v0)[112]; // ebx
@@ -1439,7 +1424,6 @@ void __cdecl town_init_dpiece_defs_map()
 // 5C3000: using guessed type int scr_pix_width;
 // 5C3004: using guessed type int scr_pix_height;
 
-//----- (0045FCBF) --------------------------------------------------------
 void __fastcall T_FillSector(unsigned char *P3Tiles, unsigned char *pSector, int xi, int yi, int w, int h) /* check 7 params: int AddSec */
 {
 	int v7; // ebx
@@ -1513,7 +1497,6 @@ void __fastcall T_FillSector(unsigned char *P3Tiles, unsigned char *pSector, int
 	}
 }
 
-//----- (0045FD75) --------------------------------------------------------
 void __fastcall T_FillTile(unsigned char *P3Tiles, int xx, int yy, int t)
 {
 	unsigned char *v4; // esi
@@ -1540,7 +1523,6 @@ void __fastcall T_FillTile(unsigned char *P3Tiles, int xx, int yy, int t)
 	dPiece[xx + 1][yy + 1] = v6 + 1;
 }
 
-//----- (0045FDE6) --------------------------------------------------------
 void __cdecl T_Pass3()
 {
 	int *v1; // esi
@@ -1611,7 +1593,6 @@ void __cdecl T_Pass3()
 // 45FDE6: could not find valid save-restore pair for edi
 // 679660: using guessed type char gbMaxPlayers;
 
-//----- (0045FF83) --------------------------------------------------------
 void __fastcall CreateTown(int entry)
 {
 	int v1; // edi

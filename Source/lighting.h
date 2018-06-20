@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __LIGHTING_H__
+#define __LIGHTING_H__
 
-//lighting
 extern LightListStruct VisionList[32];
 extern char lightactive[32];
 extern LightListStruct LightList[32];
@@ -47,3 +48,5 @@ extern void *pCrawlTable[19];
 extern unsigned char vCrawlTable[23][30];
 extern unsigned char byte_49463C[18][18];
 extern unsigned char RadiusAdj[23];
+
+#endif /* __LIGHTING_H__ */

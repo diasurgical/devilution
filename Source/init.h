@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __INIT_H__
+#define __INIT_H__
 
-//init
 extern _SNETVERSIONDATA fileinfo;
 extern int init_cpp_init_value; // weak
 extern int window_activated; // weak
@@ -40,3 +41,5 @@ extern int init_inf; // weak
 
 extern char gszVersionNumber[260];
 extern char gszProductName[260];
+
+#endif /* __INIT_H__ */

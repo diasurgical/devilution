@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __MOVIE_H__
+#define __MOVIE_H__
 
-//movie
 extern int movie_cpp_init_value; // weak
 extern char movie_playing; // weak
 extern int loop_movie; // weak
@@ -12,3 +13,5 @@ LRESULT __stdcall MovieWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam
 /* data */
 
 extern int movie_inf; // weak
+
+#endif /* __MOVIE_H__ */

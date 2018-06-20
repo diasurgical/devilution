@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __MISSILES_H__
+#define __MISSILES_H__
 
-//missile
 extern int missileactive[125];
 extern int missileavail[125];
 extern MissileStruct missile[125];
@@ -150,3 +151,5 @@ extern MissileData missiledata[68];
 extern MisFileData misfiledata[47];
 extern int XDirAdd[8];
 extern int YDirAdd[8];
+
+#endif /* __MISSILES_H__ */

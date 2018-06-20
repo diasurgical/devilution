@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __AUTOMAP_H__
+#define __AUTOMAP_H__
 
-//automap
 extern short automaptype[512];
 extern int AMdword_4B7E40; // weak
 extern int AMdword_4B7E44; // weak
@@ -32,3 +33,5 @@ short __fastcall GetAutomapType(int tx, int ty, bool view);
 void __cdecl DrawAutomapGame();
 void __fastcall SetAutomapView(int x, int y);
 void __cdecl AutomapZoomReset();
+
+#endif /* __AUTOMAP_H__ */

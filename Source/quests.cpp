@@ -50,7 +50,6 @@ int QuestGroup2[3] = { QTYPE_BLIND, QTYPE_INFRA, QTYPE_BLOOD };
 int QuestGroup3[3] = { QTYPE_BLKM, QTYPE_ZHAR, QTYPE_ANVIL };
 int QuestGroup4[2] = { QTYPE_VEIL, QTYPE_WARLRD };
 
-//----- (0045138E) --------------------------------------------------------
 void __cdecl InitQuests()
 {
 	char v0; // dl
@@ -185,7 +184,6 @@ void __cdecl InitQuests()
 // 69BD04: using guessed type int questlog;
 // 69BE90: using guessed type int qline;
 
-//----- (0045155C) --------------------------------------------------------
 void __cdecl CheckQuests()
 {
 	//int v0; // eax
@@ -282,7 +280,6 @@ LABEL_29:
 // 679660: using guessed type char gbMaxPlayers;
 // 69BE90: using guessed type int qline;
 
-//----- (0045178F) --------------------------------------------------------
 bool __cdecl ForceQuests()
 {
 	QuestStruct *v0; // eax
@@ -315,7 +312,6 @@ LABEL_10:
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-//----- (00451831) --------------------------------------------------------
 bool __fastcall QuestStatus(int i)
 {
 	bool result; // al
@@ -332,7 +328,6 @@ bool __fastcall QuestStatus(int i)
 // 5CF31D: using guessed type char setlevel;
 // 679660: using guessed type char gbMaxPlayers;
 
-//----- (00451871) --------------------------------------------------------
 void __fastcall CheckQuestKill(int m, unsigned char sendmsg)
 {
 	int v2; // ecx
@@ -567,13 +562,11 @@ LABEL_10:
 // 52A554: using guessed type int sfxdelay;
 // 679660: using guessed type char gbMaxPlayers;
 
-//----- (00451BEA) --------------------------------------------------------
 void __cdecl DrawButcher()
 {
 	DRLG_RectTrans(2 * setpc_x + 19, 2 * setpc_y + 19, 2 * setpc_x + 26, 2 * setpc_y + 26);
 }
 
-//----- (00451C11) --------------------------------------------------------
 void __fastcall DrawSkelKing(int quest_id, int xx, int yy)
 {
 	int v3; // eax
@@ -583,7 +576,6 @@ void __fastcall DrawSkelKing(int quest_id, int xx, int yy)
 	quests[v3]._qty = 2 * yy + 23;
 }
 
-//----- (00451C32) --------------------------------------------------------
 void __fastcall DrawWarLord(int xx, int yy)
 {
 	int v2; // esi
@@ -644,7 +636,6 @@ void __fastcall DrawWarLord(int xx, int yy)
 // 5CF330: using guessed type int setpc_h;
 // 5CF334: using guessed type int setpc_w;
 
-//----- (00451CC2) --------------------------------------------------------
 void __fastcall DrawSChamber(int quest_id, int xx, int yy)
 {
 	int v3; // esi
@@ -708,7 +699,6 @@ void __fastcall DrawSChamber(int quest_id, int xx, int yy)
 // 5CF330: using guessed type int setpc_h;
 // 5CF334: using guessed type int setpc_w;
 
-//----- (00451D7C) --------------------------------------------------------
 void __fastcall DrawLTBanner(int xx, int yy)
 {
 	int v2; // ebx
@@ -768,7 +758,6 @@ void __fastcall DrawLTBanner(int xx, int yy)
 // 5CF330: using guessed type int setpc_h;
 // 5CF334: using guessed type int setpc_w;
 
-//----- (00451E08) --------------------------------------------------------
 void __fastcall DrawBlind(int xx, int yy)
 {
 	int v2; // ebx
@@ -828,7 +817,6 @@ void __fastcall DrawBlind(int xx, int yy)
 // 5CF330: using guessed type int setpc_h;
 // 5CF334: using guessed type int setpc_w;
 
-//----- (00451E94) --------------------------------------------------------
 void __fastcall DrawBlood(int xx, int yy)
 {
 	int v2; // ebx
@@ -888,7 +876,6 @@ void __fastcall DrawBlood(int xx, int yy)
 // 5CF330: using guessed type int setpc_h;
 // 5CF334: using guessed type int setpc_w;
 
-//----- (00451F20) --------------------------------------------------------
 void __fastcall DRLG_CheckQuests(int xx, int yy)
 {
 	int v2; // esi
@@ -938,7 +925,6 @@ void __fastcall DRLG_CheckQuests(int xx, int yy)
 }
 // 69BE90: using guessed type int qline;
 
-//----- (00451FB1) --------------------------------------------------------
 void __cdecl SetReturnLvlPos()
 {
 	int v0; // eax
@@ -975,7 +961,6 @@ LABEL_10:
 }
 // 5CCB10: using guessed type char setlvlnum;
 
-//----- (00452064) --------------------------------------------------------
 void __cdecl GetReturnLvlPos()
 {
 	if ( quests[15]._qactive == 3 )
@@ -987,7 +972,6 @@ void __cdecl GetReturnLvlPos()
 }
 // 5BB1ED: using guessed type char leveltype;
 
-//----- (0045209D) --------------------------------------------------------
 void __cdecl ResyncMPQuests()
 {
 	if ( quests[12]._qactive == 1
@@ -1013,7 +997,6 @@ void __cdecl ResyncMPQuests()
 		AddObject(OBJ_ALTBOY, 2 * setpc_x + 20, 2 * setpc_y + 22);
 }
 
-//----- (00452159) --------------------------------------------------------
 void __cdecl ResyncQuests()
 {
 	char *v0; // ecx
@@ -1126,7 +1109,6 @@ void __cdecl ResyncQuests()
 // 5CF330: using guessed type int setpc_h;
 // 5CF334: using guessed type int setpc_w;
 
-//----- (0045247F) --------------------------------------------------------
 void __fastcall PrintQLString(int x, int y, unsigned char cjustflag, char *str, int col)
 {
 	int v5; // ebx
@@ -1210,7 +1192,6 @@ LABEL_24:
 }
 // 69BE90: using guessed type int qline;
 
-//----- (004525CD) --------------------------------------------------------
 void __cdecl DrawQuestLog()
 {
 	int v0; // edi
@@ -1229,7 +1210,6 @@ void __cdecl DrawQuestLog()
 }
 // 69BED4: using guessed type int numqlines;
 
-//----- (00452659) --------------------------------------------------------
 void __cdecl StartQuestlog()
 {
 	signed int v0; // eax
@@ -1265,7 +1245,6 @@ void __cdecl StartQuestlog()
 // 69BE90: using guessed type int qline;
 // 69BED4: using guessed type int numqlines;
 
-//----- (004526C9) --------------------------------------------------------
 void __cdecl QuestlogUp()
 {
 	if ( numqlines )
@@ -1288,7 +1267,6 @@ void __cdecl QuestlogUp()
 // 69BE90: using guessed type int qline;
 // 69BED4: using guessed type int numqlines;
 
-//----- (00452710) --------------------------------------------------------
 void __cdecl QuestlogDown()
 {
 	if ( numqlines )
@@ -1311,7 +1289,6 @@ void __cdecl QuestlogDown()
 // 69BE90: using guessed type int qline;
 // 69BED4: using guessed type int numqlines;
 
-//----- (0045275A) --------------------------------------------------------
 void __cdecl QuestlogEnter()
 {
 	PlaySFX(IS_TITLSLCT);
@@ -1323,7 +1300,6 @@ void __cdecl QuestlogEnter()
 // 69BE90: using guessed type int qline;
 // 69BED4: using guessed type int numqlines;
 
-//----- (0045279C) --------------------------------------------------------
 void __cdecl QuestlogESC()
 {
 	int v0; // esi
@@ -1350,7 +1326,6 @@ void __cdecl QuestlogESC()
 // 69BE90: using guessed type int qline;
 // 69BED4: using guessed type int numqlines;
 
-//----- (004527F1) --------------------------------------------------------
 void __fastcall SetMultiQuest(int q, int s, unsigned char l, int v1)
 {
 	int v4; // eax

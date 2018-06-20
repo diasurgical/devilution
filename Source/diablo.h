@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __DIABLO_H__
+#define __DIABLO_H__
 
-//diablo
 extern int diablo_cpp_init_value; // weak
 extern HWND ghMainWnd;
 extern int glMid1Seed[17];
@@ -96,3 +97,5 @@ extern int framestart;
 extern int FriendlyMode; // weak
 extern char *spszMsgTbl[4]; // weak
 extern char *spszMsgKeyTbl[4]; // weak
+
+#endif /* __DIABLO_H__ */

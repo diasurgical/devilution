@@ -295,7 +295,6 @@ unsigned char L4BTYPES[140] =
 	0,   0,   0,   0,   0,   0,   0,   0,   0,   0
 };
 
-//----- (00412655) --------------------------------------------------------
 void __cdecl DRLG_LoadL4SP()
 {
 	setloadflag_2 = 0;
@@ -313,7 +312,6 @@ void __cdecl DRLG_LoadL4SP()
 // 5B50D8: using guessed type int setloadflag_2;
 // 679660: using guessed type char gbMaxPlayers;
 
-//----- (004126AD) --------------------------------------------------------
 void __cdecl DRLG_FreeL4SP()
 {
 	char *v0; // ecx
@@ -323,7 +321,6 @@ void __cdecl DRLG_FreeL4SP()
 	mem_free_dbg(v0);
 }
 
-//----- (004126BF) --------------------------------------------------------
 void __fastcall DRLG_L4SetSPRoom(int rx1, int ry1)
 {
 	int v2; // edi
@@ -376,7 +373,6 @@ void __fastcall DRLG_L4SetSPRoom(int rx1, int ry1)
 // 5CF330: using guessed type int setpc_h;
 // 5CF334: using guessed type int setpc_w;
 
-//----- (00412744) --------------------------------------------------------
 void __cdecl L4SaveQuads()
 {
 	char *v0; // esi
@@ -428,7 +424,6 @@ void __cdecl L4SaveQuads()
 // 528A34: using guessed type int l4holdx;
 // 528A38: using guessed type int l4holdy;
 
-//----- (004127D3) --------------------------------------------------------
 void __fastcall DRLG_L4SetRoom(unsigned char *pSetPiece, int rx1, int ry1)
 {
 	int v3; // ebx
@@ -475,7 +470,6 @@ void __fastcall DRLG_L4SetRoom(unsigned char *pSetPiece, int rx1, int ry1)
 	}
 }
 
-//----- (00412831) --------------------------------------------------------
 void __fastcall DRLG_LoadDiabQuads(bool preflag)
 {
 	bool v1; // esi
@@ -523,7 +517,6 @@ void __fastcall DRLG_LoadDiabQuads(bool preflag)
 // 528A34: using guessed type int l4holdx;
 // 528A38: using guessed type int l4holdy;
 
-//----- (00412933) --------------------------------------------------------
 bool __fastcall IsDURWall(char d)
 {
 	bool result; // al
@@ -535,7 +528,6 @@ bool __fastcall IsDURWall(char d)
 	return result;
 }
 
-//----- (00412948) --------------------------------------------------------
 bool __fastcall IsDLLWall(char dd)
 {
 	bool result; // al
@@ -547,7 +539,6 @@ bool __fastcall IsDLLWall(char dd)
 	return result;
 }
 
-//----- (0041295D) --------------------------------------------------------
 void __cdecl L4FixRim()
 {
 	char (*v0)[20]; // eax
@@ -567,7 +558,6 @@ void __cdecl L4FixRim()
 }
 // 52A4DC: using guessed type int dword_52A4DC;
 
-//----- (0041297B) --------------------------------------------------------
 void __cdecl DRLG_L4GeneralFix()
 {
 	signed int v0; // ecx
@@ -592,7 +582,6 @@ void __cdecl DRLG_L4GeneralFix()
 	while ( v0 < 39 );
 }
 
-//----- (004129B0) --------------------------------------------------------
 void __fastcall CreateL4Dungeon(int rseed, int entry)
 {
 	int v2; // esi
@@ -617,7 +606,6 @@ void __fastcall CreateL4Dungeon(int rseed, int entry)
 // 5D2458: using guessed type int dminx;
 // 5D245C: using guessed type int dminy;
 
-//----- (00412A00) --------------------------------------------------------
 void __fastcall DRLG_L4(int entry)
 {
 	signed int v1; // ebp
@@ -854,7 +842,6 @@ LABEL_31:
 // 5B50D8: using guessed type int setloadflag_2;
 // 679660: using guessed type char gbMaxPlayers;
 
-//----- (00412DDD) --------------------------------------------------------
 void __cdecl DRLG_L4Shadows()
 {
 	signed int v0; // esi
@@ -896,7 +883,6 @@ void __cdecl DRLG_L4Shadows()
 	while ( v0 < 40 );
 }
 
-//----- (00412E34) --------------------------------------------------------
 void __cdecl InitL4Dungeon()
 {
 	signed int v0; // edx
@@ -923,7 +909,6 @@ void __cdecl InitL4Dungeon()
 	while ( v0 < 40 );
 }
 
-//----- (00412E7B) --------------------------------------------------------
 void __cdecl L4makeDmt()
 {
 	signed int v0; // ecx
@@ -958,7 +943,6 @@ void __cdecl L4makeDmt()
 	while ( v0 <= 77 );
 }
 
-//----- (00412ECB) --------------------------------------------------------
 void __cdecl L4AddWall()
 {
 	int v0; // edi
@@ -1089,7 +1073,6 @@ void __cdecl L4AddWall()
 	while ( v0 < 40 );
 }
 
-//----- (004131C2) --------------------------------------------------------
 int __fastcall L4HWallOk(int i, int j)
 {
 	int v2; // esi
@@ -1145,7 +1128,6 @@ int __fastcall L4HWallOk(int i, int j)
 	return result;
 }
 
-//----- (00413270) --------------------------------------------------------
 int __fastcall L4VWallOk(int i, int j)
 {
 	int v2; // ecx
@@ -1196,7 +1178,6 @@ int __fastcall L4VWallOk(int i, int j)
 	return result;
 }
 
-//----- (0041330B) --------------------------------------------------------
 void __fastcall L4HorizWall(int i, int j, int dx)
 {
 	int v3; // esi
@@ -1254,7 +1235,6 @@ void __fastcall L4HorizWall(int i, int j, int dx)
 		*v12 = 59;
 }
 
-//----- (004133D6) --------------------------------------------------------
 void __fastcall L4VertWall(int i, int j, int dy)
 {
 	int v3; // edi
@@ -1310,7 +1290,6 @@ void __fastcall L4VertWall(int i, int j, int dy)
 		*(v10 - 41) = 55;
 }
 
-//----- (004134B4) --------------------------------------------------------
 void __cdecl L4tileFix()
 {
 	signed int v0; // edx
@@ -2296,7 +2275,6 @@ void __cdecl L4tileFix()
 	while ( v135 < 40 );
 }
 
-//----- (004142DD) --------------------------------------------------------
 void __cdecl DRLG_L4Subs()
 {
 	signed int v0; // edi
@@ -2361,7 +2339,6 @@ void __cdecl DRLG_L4Subs()
 	while ( v6 < 40 );
 }
 
-//----- (0041439A) --------------------------------------------------------
 void __cdecl L4makeDungeon()
 {
 	signed int v0; // ebx
@@ -2480,7 +2457,6 @@ void __cdecl L4makeDungeon()
 	while ( (signed int)v26 > (signed int)&dung[18][19] );
 }
 
-//----- (004144B1) --------------------------------------------------------
 void __cdecl uShape()
 {
 	int v0; // ecx
@@ -2599,7 +2575,6 @@ void __cdecl uShape()
 	while ( v11 );
 }
 
-//----- (004145E4) --------------------------------------------------------
 int __cdecl GetArea()
 {
 	int result; // eax
@@ -2627,7 +2602,6 @@ int __cdecl GetArea()
 	return result;
 }
 
-//----- (00414606) --------------------------------------------------------
 void __cdecl L4firstRoom()
 {
 	int v0; // esi
@@ -2698,7 +2672,6 @@ LABEL_10:
 // 528A48: using guessed type int SP4y2;
 // 679660: using guessed type char gbMaxPlayers;
 
-//----- (00414738) --------------------------------------------------------
 void __fastcall L4drawRoom(int x, int y, int width, int height)
 {
 	int i; // esi
@@ -2722,7 +2695,6 @@ void __fastcall L4drawRoom(int x, int y, int width, int height)
 	}
 }
 
-//----- (0041476F) --------------------------------------------------------
 void __fastcall L4roomGen(int x, int y, int w, int h, int dir)
 {
 	int v5; // eax
@@ -2836,7 +2808,6 @@ void __fastcall L4roomGen(int x, int y, int w, int h, int dir)
 	}
 }
 
-//----- (00414976) --------------------------------------------------------
 bool __fastcall L4checkRoom(int x, int y, int width, int height)
 {
 	int v4; // esi
@@ -2872,7 +2843,6 @@ LABEL_12:
 	return 0;
 }
 
-//----- (004149E2) --------------------------------------------------------
 bool __fastcall DRLG_L4PlaceMiniSet(unsigned char *miniset, int tmin, int tmax, int cx, int cy, int setview, int ldir)
 {
 	int v7; // ebx
@@ -3065,7 +3035,6 @@ bool __fastcall DRLG_L4PlaceMiniSet(unsigned char *miniset, int tmin, int tmax, 
 // 5CF320: using guessed type int LvlViewY;
 // 5CF324: using guessed type int LvlViewX;
 
-//----- (00414C44) --------------------------------------------------------
 void __cdecl DRLG_L4FloodTVal()
 {
 	int v0; // ebx
@@ -3103,7 +3072,6 @@ void __cdecl DRLG_L4FloodTVal()
 }
 // 5A5590: using guessed type char TransVal;
 
-//----- (00414CB3) --------------------------------------------------------
 void __fastcall DRLG_L4FTVR(int i, int j, int x, int y, int d)
 {
 	int v5; // ebx
@@ -3209,7 +3177,6 @@ void __fastcall DRLG_L4FTVR(int i, int j, int x, int y, int d)
 }
 // 5A5590: using guessed type char TransVal;
 
-//----- (00414EA3) --------------------------------------------------------
 void __cdecl DRLG_L4TransFix() /* check */
 {
 	signed int v0; // edi
@@ -3285,7 +3252,6 @@ void __cdecl DRLG_L4TransFix() /* check */
 	while ( v0 < 40 );
 }
 
-//----- (00414F5B) --------------------------------------------------------
 void __cdecl DRLG_L4Corners()
 {
 	signed int v0; // edx
@@ -3316,7 +3282,6 @@ void __cdecl DRLG_L4Corners()
 	while ( v0 < 39 );
 }
 
-//----- (00414F90) --------------------------------------------------------
 void __cdecl DRLG_L4Pass3()
 {
 	int v0; // eax

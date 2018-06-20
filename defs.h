@@ -1,3 +1,33 @@
+// some global definitions, found in debug release
+
+#define DMAXX					40
+#define DMAXY					40
+
+#define LIGHTSIZE				6912 // 27 * 256
+
+#define MAX_PLRS				4
+#define MAX_CHARACTERS			10
+#define MAX_LVLMTYPES			16
+// #define MAX_PATH				260
+#define MAX_SEND_STR_LEN		80
+
+#define MAXDEAD					31
+#define MAXDUNX					112
+#define MAXDUNY					112
+#define MAXITEMS				127
+#define MAXMISSILES				125
+#define MAXMONSTERS				200
+#define MAXMULTIQUESTS			4
+#define MAXOBJECTS				127
+#define MAXPORTAL				4
+#define MAXQUESTS				16
+#define MAXTHEMES				50
+#define MAXTILES				2048
+#define MAXTRIGGERS				5
+#define MDMAXX					40
+#define MDMAXY					40
+
+
 // Diablo uses a 256 color palette
 // Entry 0-127 (0x00-0x7F) are level specific
 // Entry 128-255 (0x80-0xFF) are global

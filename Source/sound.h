@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __SOUND_H__
+#define __SOUND_H__
 
-//sound
 extern float sound_cpp_init_value;
 extern IDirectSoundBuffer *DSBs[8];
 extern IDirectSound *sglpDS;
@@ -45,3 +46,5 @@ extern char gbDupSounds; // weak
 extern int sgnMusicTrack;
 extern char *sgszMusicTracks[6];
 extern RECT8 QSRect[2]; /* psx version? */
+
+#endif /* __SOUND_H__ */

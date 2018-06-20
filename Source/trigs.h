@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __TRIGS_H__
+#define __TRIGS_H__
 
-//trigs
 extern int trigflag[5];
 extern TriggerStruct trigs[5];
 extern int TWarpFrom; // weak
@@ -43,3 +44,5 @@ extern int L4UpList[4];
 extern int L4DownList[6];
 extern int L4TWarpUpList[4];
 extern int L4PentaList[33];
+
+#endif /* __TRIGS_H__ */

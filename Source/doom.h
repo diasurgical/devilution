@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __DOOM_H__
+#define __DOOM_H__
 
-//doom
 extern int doom_quest_time; // weak
 extern int doom_stars_drawn; // weak
 extern void *pDoomCel;
@@ -14,3 +15,5 @@ void __cdecl doom_load_graphics();
 void __cdecl doom_init();
 void __cdecl doom_close();
 void __cdecl doom_draw();
+
+#endif /* __DOOM_H__ */

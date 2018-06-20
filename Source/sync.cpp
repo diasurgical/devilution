@@ -8,7 +8,6 @@ short sync_word_6AA89C[200];
 int dword_6AAA2C[2];
 int sgnSyncPInv; // weak
 
-//----- (0045C199) --------------------------------------------------------
 int __fastcall sync_all_monsters(TSyncHeader *packet, int size)
 {
 	int result; // eax
@@ -47,7 +46,6 @@ int __fastcall sync_all_monsters(TSyncHeader *packet, int size)
 	return result;
 }
 
-//----- (0045C21E) --------------------------------------------------------
 void __cdecl sync_one_monster()
 {
 	int i; // ebx
@@ -81,7 +79,6 @@ void __cdecl sync_one_monster()
 	}
 }
 
-//----- (0045C2C4) --------------------------------------------------------
 int __fastcall sync_monster_active(TSyncMonster *packet)
 {
 	unsigned int v1; // ebx
@@ -111,7 +108,6 @@ int __fastcall sync_monster_active(TSyncMonster *packet)
 	return 1;
 }
 
-//----- (0045C317) --------------------------------------------------------
 int __fastcall sync_monster_pos(TSyncMonster *packet, int mon_id)
 {
 	int v2; // ebx
@@ -139,7 +135,6 @@ int __fastcall sync_monster_pos(TSyncMonster *packet, int mon_id)
 	return result * 2;
 }
 
-//----- (0045C386) --------------------------------------------------------
 int __fastcall sync_monster_active2(TSyncMonster *packet)
 {
 	int v1; // edx
@@ -176,7 +171,6 @@ int __fastcall sync_monster_active2(TSyncMonster *packet)
 }
 // 6AA898: using guessed type int dword_6AA898;
 
-//----- (0045C3E6) --------------------------------------------------------
 char __fastcall SyncPlrInv(TSyncHeader *pItem)
 {
 	int v1; // edx
@@ -251,7 +245,6 @@ char __fastcall SyncPlrInv(TSyncHeader *pItem)
 }
 // 6AAA34: using guessed type int sgnSyncPInv;
 
-//----- (0045C5C7) --------------------------------------------------------
 int __fastcall SyncData(int pnum, TSyncHeader *packet)
 {
 	TSyncHeader *v2; // esi
@@ -286,7 +279,6 @@ int __fastcall SyncData(int pnum, TSyncHeader *packet)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0045C63B) --------------------------------------------------------
 void __fastcall sync_monster_data(int pnum, TSyncMonster *packet)
 {
 	TSyncMonster *v2; // edi
@@ -385,7 +377,6 @@ LABEL_23:
 	}
 }
 
-//----- (0045C84B) --------------------------------------------------------
 void __cdecl sync_clear_pkt()
 {
 	dword_6AA898 = 16 * myplr;

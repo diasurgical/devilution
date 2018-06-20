@@ -1,4 +1,6 @@
 //HEADER_GOES_HERE
+#ifndef __GAMEMENU_H__
+#define __GAMEMENU_H__
 
 void __cdecl gamemenu_previous();
 void __cdecl gamemenu_enable_single();
@@ -30,3 +32,5 @@ extern TMenuItem sgOptionMenu[6];
 extern char *music_toggle_names[];
 extern char *sound_toggle_names[];
 extern char *color_cycling_toggle_names[];
+
+#endif /* __GAMEMENU_H__ */

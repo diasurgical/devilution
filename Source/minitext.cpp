@@ -41,7 +41,6 @@ unsigned char mfontkern[56] =
 
 int qscroll_spd_tbl[9] = { 2, 4, 6, 8, 0, -1, -2, -3, -4 };
 
-//----- (00428056) --------------------------------------------------------
 void __cdecl FreeQuestText()
 {
 	void *v0; // ecx
@@ -55,7 +54,6 @@ void __cdecl FreeQuestText()
 	mem_free_dbg(v1);
 }
 
-//----- (0042807A) --------------------------------------------------------
 void __cdecl InitQuestText()
 {
 	unsigned char *v0; // eax
@@ -67,7 +65,6 @@ void __cdecl InitQuestText()
 }
 // 646D00: using guessed type char qtextflag;
 
-//----- (004280A4) --------------------------------------------------------
 void __fastcall InitQTextMsg(int m)
 {
 	if ( alltext[m].scrlltxt )
@@ -89,7 +86,6 @@ void __fastcall InitQTextMsg(int m)
 // 646D08: using guessed type int sgLastScroll;
 // 69BD04: using guessed type int questlog;
 
-//----- (00428104) --------------------------------------------------------
 void __cdecl DrawQTextBack()
 {
 	char *v0; // edi
@@ -139,7 +135,6 @@ void __cdecl DrawQTextBack()
 	*v0 = 0;
 }
 
-//----- (00428160) --------------------------------------------------------
 void __fastcall PrintQTextChr(int screen_x, int screen_y, char *cel_buf, int frame)
 {
 	char *v4; // ebx
@@ -205,7 +200,6 @@ LABEL_15:
 	while ( (char *)v7 != v5 );
 }
 
-//----- (00428202) --------------------------------------------------------
 void __cdecl DrawQText()
 {
 	char *v0; // edi

@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __LOGGING_H__
+#define __LOGGING_H__
 
-//logging
 extern int log_cpp_init_value; // weak
 extern CHAR FileName[260]; // idb
 extern char log_buffer[388];
@@ -26,3 +27,5 @@ extern int log_inf; // weak
 
 extern int log_not_created; // weak
 extern HANDLE log_file; // idb
+
+#endif /* __LOGGING_H__ */

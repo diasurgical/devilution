@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __MULTI_H__
+#define __MULTI_H__
 
-//multi
 extern char gbSomebodyWonGameKludge; // weak
 extern char pkdata_6761C0[4100];
 extern char szPlayerDescript[128];
@@ -69,3 +70,5 @@ void __fastcall multi_player_joins(int pnum, TCmdPlrInfoHdr *cmd, int a3);
 
 extern int multi_inf; // weak
 extern event_type event_types[3];
+
+#endif /* __MULTI_H__ */

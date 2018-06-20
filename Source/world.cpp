@@ -74,7 +74,6 @@ int world_4B3501[17] = { 0, 32, 60, 88, 112, 136, 156, 176, 192, 208, 220, 232, 
 	|/
 */
 
-//----- (00463060) --------------------------------------------------------
 void __fastcall drawTopArchesUpperScreen(void *a1)
 {
 	char v1; // edx
@@ -2567,7 +2566,6 @@ LABEL_391:
 // 69CF0C: using guessed type int screen_buf_end;
 // 69CF14: using guessed type int level_cel_block;
 
-//----- (0046468D) --------------------------------------------------------
 void __fastcall drawBottomArchesUpperScreen(void *a1, int a2)
 {
 	char *v2; // edi
@@ -3683,7 +3681,6 @@ LABEL_208:
 // 69CF0C: using guessed type int screen_buf_end;
 // 69CF14: using guessed type int level_cel_block;
 
-//----- (004652C5) --------------------------------------------------------
 void __fastcall drawUpperScreen(void *a1)
 {
 	char v1; // edx
@@ -4879,7 +4876,6 @@ LABEL_205:
 // 69CF94: using guessed type int cel_transparency_active;
 // 69CF98: using guessed type int level_piece_id;
 
-//----- (00465F38) --------------------------------------------------------
 void __fastcall drawTopArchesLowerScreen(void *a1)
 {
 	char v1; // edx
@@ -7728,7 +7724,6 @@ LABEL_336:
 // 69CF0C: using guessed type int screen_buf_end;
 // 69CF14: using guessed type int level_cel_block;
 
-//----- (00467949) --------------------------------------------------------
 void __fastcall drawBottomArchesLowerScreen(void *a1, int a2)
 {
 	char *v2; // edi
@@ -9089,7 +9084,6 @@ LABEL_180:
 // 69CF0C: using guessed type int screen_buf_end;
 // 69CF14: using guessed type int level_cel_block;
 
-//----- (0046886B) --------------------------------------------------------
 void __fastcall drawLowerScreen(void *a1)
 {
 	char v1; // edx
@@ -10407,7 +10401,6 @@ LABEL_171:
 // 69CF94: using guessed type int cel_transparency_active;
 // 69CF98: using guessed type int level_piece_id;
 
-//----- (004696BE) --------------------------------------------------------
 void __fastcall world_draw_black_tile(char *dst_buf)
 {
 	char *v1; // edi
