@@ -6,23 +6,23 @@ PKWARE_OBJ=$(PKWARE_SRC:.cpp=.o)
 
 all: devilution.exe
 
-devilution.exe: $(DIABLO_OBJ) $(PKWARE_OBJ) DiabloUI.lib Storm.lib
+devilution.exe: $(DIABLO_OBJ) $(PKWARE_OBJ) diabloui.lib storm.lib
 	mingw32-gcc -L./ -o $@ $^ -lgdi32 -lversion -ldiabloui -lstorm
 
 %.o: %.cpp
-	mingw32-gcc -c -fpermissive -o $@ $<
+	mingw32-gcc -c -fpermissive -Wno-write-strings -o $@ $<
 
-DiabloUI.lib: DiabloUI.dll DiabloUI/diabloui_gcc.def
-	dlltool -d DiabloUI/diabloui_gcc.def -D DiabloUI.dll -l DiabloUI.lib
+diabloui.lib: diabloui.dll DiabloUI/diabloui_gcc.def
+	dlltool -d DiabloUI/diabloui_gcc.def -D diabloui.dll -l diabloui.lib
 
-DiabloUI.dll:
-	echo "Please copy DiabloUI.dll (version 1.09b) here."
+diabloui.dll:
+	echo "Please copy diabloui.dll (version 1.09b) here."
 
-Storm.lib: Storm.dll 3rdParty/Storm/Source/storm_gcc.def
-	dlltool -d 3rdParty/Storm/Source/storm_gcc.def -D Storm.dll -l Storm.lib
+storm.lib: storm.dll 3rdParty/Storm/Source/storm_gcc.def
+	dlltool -d 3rdParty/Storm/Source/storm_gcc.def -D storm.dll -l storm.lib
 
-Storm.dll:
-	echo "Please copy Storm.dll (version 1.09b) here."
+storm.dll:
+	echo "Please copy storm.dll (version 1.09b) here."
 
 clean:
 	rm -f $(DIABLO_OBJ) $(PKWARE_OBJ)
