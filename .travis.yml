@@ -8,7 +8,6 @@ addons:
   apt:
     packages:
       - mingw-w64
-      #- mingw-w64-tools
 
 before_script:
   - touch storm.dll
