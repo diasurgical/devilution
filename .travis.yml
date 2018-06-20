@@ -9,8 +9,11 @@ addons:
     packages:
       - mingw-w64
       - mingw-w64-tools
-      - gcc-mingw-w64
+      #- gcc-mingw-w64
       - gcc-mingw-w64-i686
+
+before_script:
+  - touch storm.dll
 
 script:
   - make
