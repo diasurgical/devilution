@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __APPFAT_H__
+#define __APPFAT_H__
 
-//appfat
 extern int appfat_terminated; // weak
 extern char sz_error_buf[256];
 extern int terminating; // weak
@@ -26,3 +27,5 @@ void __fastcall FileErrDlg(char *error);
 void __fastcall DiskFreeDlg(char *error);
 bool __cdecl InsertCDDlg();
 void __fastcall DirErrDlg(char *error);
+
+#endif /* __APPFAT_H__ */

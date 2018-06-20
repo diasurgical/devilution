@@ -388,14 +388,12 @@ int InvItemHeight[180] =
   84
 };
 
-//----- (0040740A) --------------------------------------------------------
 void __cdecl InitCursor()
 {
 	pCursCels = LoadFileInMem("Data\\Inv\\Objcurs.CEL", 0);
 	ClearCursor();
 }
 
-//----- (00407420) --------------------------------------------------------
 void __cdecl FreeCursor()
 {
 	void *v0; // ecx
@@ -406,7 +404,6 @@ void __cdecl FreeCursor()
 	ClearCursor();
 }
 
-//----- (00407437) --------------------------------------------------------
 void __fastcall SetICursor(int i)
 {
 	int v1; // ecx
@@ -420,7 +417,6 @@ void __fastcall SetICursor(int i)
 // 4B8CB4: using guessed type int icursH;
 // 4B8CBC: using guessed type int icursW;
 
-//----- (0040746B) --------------------------------------------------------
 void __fastcall SetCursor(int i)
 {
 	int v1; // eax
@@ -433,7 +429,6 @@ void __fastcall SetCursor(int i)
 }
 // 4B8C9C: using guessed type int cursH;
 
-//----- (00407493) --------------------------------------------------------
 void __cdecl InitLevelCursor()
 {
 	SetCursor(CURSOR_HAND);
@@ -451,7 +446,6 @@ void __cdecl InitLevelCursor()
 // 4B8CC2: using guessed type char pcursplr;
 // 4B8CCC: using guessed type int dword_4B8CCC;
 
-//----- (004074D0) --------------------------------------------------------
 void __cdecl CheckTown()
 {
 	int v0; // ecx
@@ -495,7 +489,6 @@ void __cdecl CheckTown()
 	}
 }
 
-//----- (004075FD) --------------------------------------------------------
 void __cdecl CheckRportal()
 {
 	int v0; // ecx
@@ -543,7 +536,6 @@ void __cdecl CheckRportal()
 }
 // 5CF31D: using guessed type char setlevel;
 
-//----- (00407729) --------------------------------------------------------
 void __cdecl CheckCursMove()
 {
 	int v0; // esi

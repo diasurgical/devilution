@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __DRLG_L3_H__
+#define __DRLG_L3_H__
 
-//drlg_l3
 extern char lavapool; // weak
 extern int abyssx; // weak
 extern int lockoutcnt; // weak
@@ -82,3 +83,5 @@ extern unsigned char L3ANVIL[244];
 extern unsigned char L3SpawnTbl1[15]; /* local spawntable? */
 extern unsigned char L3SpawnTbl2[15]; /* local spawntable? */
 extern unsigned char L3PoolSub[15]; /* local poolsub? */
+
+#endif /* __DRLG_L3_H__ */

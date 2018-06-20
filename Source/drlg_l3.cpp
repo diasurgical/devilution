@@ -75,7 +75,6 @@ unsigned char L3SpawnTbl1[15] = { 0u, 10u, 67u, 5u, 44u, 6u, 9u, 0u, 0u, 28u, 13
 unsigned char L3SpawnTbl2[15] = { 0u, 10u, 3u, 5u, 12u, 6u, 9u, 0u, 0u, 12u, 3u, 6u, 9u, 10u, 5u }; /* local spawntable? */
 unsigned char L3PoolSub[15] = { 0u, 35u, 26u, 36u, 25u, 29u, 34u, 7u, 33u, 28u, 27u, 37u, 32u, 31u, 30u }; /* local poolsub? */
 
-//----- (0040FF81) --------------------------------------------------------
 void __cdecl AddFenceDoors()
 {
 	signed int v0; // esi
@@ -121,7 +120,6 @@ void __cdecl AddFenceDoors()
 	while ( v0 < 40 );
 }
 
-//----- (0040FFEC) --------------------------------------------------------
 void __cdecl FenceDoorFix()
 {
 	signed int v0; // edi
@@ -193,7 +191,6 @@ void __cdecl FenceDoorFix()
 	while ( v0 < 40 );
 }
 
-//----- (00410105) --------------------------------------------------------
 int __cdecl DRLG_L3Anvil()
 {
 	int v0; // esi
@@ -289,7 +286,6 @@ int __cdecl DRLG_L3Anvil()
 // 5CF330: using guessed type int setpc_h;
 // 5CF334: using guessed type int setpc_w;
 
-//----- (00410215) --------------------------------------------------------
 void __cdecl FixL3Warp()
 {
 	int v0; // ecx
@@ -327,7 +323,6 @@ void __cdecl FixL3Warp()
 	}
 }
 
-//----- (0041027D) --------------------------------------------------------
 void __cdecl FixL3HallofHeroes()
 {
 	signed int v0; // ecx
@@ -384,7 +379,6 @@ void __cdecl FixL3HallofHeroes()
 	while ( v3 < 40 );
 }
 
-//----- (004102F1) --------------------------------------------------------
 void __fastcall DRLG_L3LockRec(int x, int y)
 {
 	int v2; // esi
@@ -414,7 +408,6 @@ void __fastcall DRLG_L3LockRec(int x, int y)
 }
 // 528380: using guessed type int lockoutcnt;
 
-//----- (00410344) --------------------------------------------------------
 bool __cdecl DRLG_L3Lockout()
 {
 	int v0; // esi
@@ -456,7 +449,6 @@ bool __cdecl DRLG_L3Lockout()
 }
 // 528380: using guessed type int lockoutcnt;
 
-//----- (004103A1) --------------------------------------------------------
 void __fastcall CreateL3Dungeon(int rseed, int entry)
 {
 	int v2; // esi
@@ -502,7 +494,6 @@ void __fastcall CreateL3Dungeon(int rseed, int entry)
 // 5D2458: using guessed type int dminx;
 // 5D245C: using guessed type int dminy;
 
-//----- (0041044E) --------------------------------------------------------
 void __fastcall DRLG_L3(int entry)
 {
 	int x1; // esi
@@ -663,7 +654,6 @@ LABEL_24:
 }
 // 528378: using guessed type char lavapool;
 
-//----- (0041087F) --------------------------------------------------------
 void __cdecl InitL3Dungeon()
 {
 	int i; // edx
@@ -681,7 +671,6 @@ void __cdecl InitL3Dungeon()
 	}
 }
 
-//----- (004108B5) --------------------------------------------------------
 int __fastcall DRLG_L3FillRoom(int x1, int y1, int x2, int y2)
 {
 	int v4; // esi
@@ -796,7 +785,6 @@ LABEL_12:
 	return 1;
 }
 
-//----- (004109F0) --------------------------------------------------------
 void __fastcall DRLG_L3CreateBlock(int x, int y, int obs, int dir)
 {
 	int v4; // esi
@@ -919,7 +907,6 @@ void __fastcall DRLG_L3CreateBlock(int x, int y, int obs, int dir)
 	}
 }
 
-//----- (00410BC0) --------------------------------------------------------
 void __fastcall DRLG_L3FloorArea(int x1, int y1, int x2, int y2)
 {
 	int i; // esi
@@ -943,7 +930,6 @@ void __fastcall DRLG_L3FloorArea(int x1, int y1, int x2, int y2)
 	}
 }
 
-//----- (00410BF4) --------------------------------------------------------
 void __cdecl DRLG_L3FillDiags()
 {
 	signed int v0; // ebx
@@ -990,7 +976,6 @@ LABEL_11:
 	while ( v0 < 39 );
 }
 
-//----- (00410C65) --------------------------------------------------------
 void __cdecl DRLG_L3FillSingles()
 {
 	signed int v0; // ecx
@@ -1020,7 +1005,6 @@ void __cdecl DRLG_L3FillSingles()
 	while ( v0 < 39 );
 }
 
-//----- (00410CC4) --------------------------------------------------------
 void __cdecl DRLG_L3FillStraights()
 {
 	int v0; // esi
@@ -1242,7 +1226,6 @@ void __cdecl DRLG_L3FillStraights()
 	while ( v17 < 39 );
 }
 
-//----- (00410EDB) --------------------------------------------------------
 void __cdecl DRLG_L3Edges()
 {
 	char *v0; // eax
@@ -1257,7 +1240,6 @@ void __cdecl DRLG_L3Edges()
 	while ( (signed int)v0 < (signed int)&dungeon[40][39] );
 }
 
-//----- (00410EFC) --------------------------------------------------------
 int __cdecl DRLG_L3GetFloorArea()
 {
 	int gfa; // eax
@@ -1275,7 +1257,6 @@ int __cdecl DRLG_L3GetFloorArea()
 	return gfa;
 }
 
-//----- (00410F1F) --------------------------------------------------------
 void __cdecl DRLG_L3MakeMegas()
 {
 	signed int v0; // edi
@@ -1327,7 +1308,6 @@ LABEL_9:
 	while ( (signed int)v5 < (signed int)&dungeon[40][39] );
 }
 
-//----- (00410FAD) --------------------------------------------------------
 void __cdecl DRLG_L3River()
 {
 	signed int v0; // ebx
@@ -1763,7 +1743,6 @@ LABEL_148:
 // 410FAD: using guessed type int var_4E8[100];
 // 410FAD: using guessed type int var_358[98];
 
-//----- (00411614) --------------------------------------------------------
 void __cdecl DRLG_L3Pool()
 {
 	int v0; // ebx
@@ -1865,7 +1844,6 @@ void __cdecl DRLG_L3Pool()
 }
 // 528378: using guessed type char lavapool;
 
-//----- (00411772) --------------------------------------------------------
 int __fastcall DRLG_L3SpawnEdge(int x, int y, int *totarea)
 {
 	int *v3; // ebp
@@ -1936,7 +1914,6 @@ LABEL_18:
 	return 1;
 }
 
-//----- (0041189C) --------------------------------------------------------
 int __fastcall DRLG_L3Spawn(int x, int y, int *totarea)
 {
 	int v3; // edi
@@ -1970,7 +1947,6 @@ int __fastcall DRLG_L3Spawn(int x, int y, int *totarea)
 	return result;
 }
 
-//----- (004119E0) --------------------------------------------------------
 void __cdecl DRLG_L3PoolFix()
 {
 	signed int v0; // esi
@@ -2033,7 +2009,6 @@ void __cdecl DRLG_L3PoolFix()
 	while ( v0 < 40 );
 }
 
-//----- (00411A74) --------------------------------------------------------
 int __fastcall DRLG_L3PlaceMiniSet(unsigned char *miniset, int tmin, int tmax, int cx, int cy, bool setview, int ldir)
 {
 	int v7; // ebx
@@ -2207,7 +2182,6 @@ int __fastcall DRLG_L3PlaceMiniSet(unsigned char *miniset, int tmin, int tmax, i
 // 5CF320: using guessed type int LvlViewY;
 // 5CF324: using guessed type int LvlViewX;
 
-//----- (00411C83) --------------------------------------------------------
 void __fastcall DRLG_L3PlaceRndSet(unsigned char *miniset, int rndper)
 {
 	unsigned char *v2; // ebx
@@ -2345,7 +2319,6 @@ LABEL_33:
 	}
 }
 
-//----- (00411E0E) --------------------------------------------------------
 void __cdecl DRLG_L3Wood()
 {
 	char *v0; // edi
@@ -2649,7 +2622,6 @@ LABEL_112:
 	FenceDoorFix();
 }
 
-//----- (0041223E) --------------------------------------------------------
 bool __fastcall WoodVertU(int i, int y)
 {
 	int v2; // eax
@@ -2676,7 +2648,6 @@ bool __fastcall WoodVertU(int i, int y)
 	return result;
 }
 
-//----- (0041228A) --------------------------------------------------------
 bool __fastcall WoodVertD(int i, int y)
 {
 	int v2; // eax
@@ -2703,7 +2674,6 @@ bool __fastcall WoodVertD(int i, int y)
 	return result;
 }
 
-//----- (004122CE) --------------------------------------------------------
 bool __fastcall WoodHorizL(int x, int j)
 {
 	int v2; // eax
@@ -2730,7 +2700,6 @@ bool __fastcall WoodHorizL(int x, int j)
 	return result;
 }
 
-//----- (0041231A) --------------------------------------------------------
 bool __fastcall WoodHorizR(int x, int j)
 {
 	int v2; // eax
@@ -2757,7 +2726,6 @@ bool __fastcall WoodHorizR(int x, int j)
 	return result;
 }
 
-//----- (0041235E) --------------------------------------------------------
 void __cdecl DRLG_L3Pass3()
 {
 	int v0; // eax
@@ -2855,7 +2823,6 @@ void __cdecl DRLG_L3Pass3()
 	while ( v4 < 40 );
 }
 
-//----- (00412466) --------------------------------------------------------
 void __fastcall LoadL3Dungeon(char *sFileName, int vx, int vy)
 {
 	char *v3; // esi
@@ -2964,7 +2931,6 @@ void __fastcall LoadL3Dungeon(char *sFileName, int vx, int vy)
 // 5D2458: using guessed type int dminx;
 // 5D245C: using guessed type int dminy;
 
-//----- (004125B0) --------------------------------------------------------
 void __fastcall LoadPreL3Dungeon(char *sFileName, int vx, int vy)
 {
 	char *v3; // esi

@@ -2,7 +2,6 @@
 
 #include "../types.h"
 
-//----- (0040311B) --------------------------------------------------------
 void __cdecl CaptureScreen()
 {
 	int v4; // edi
@@ -38,7 +37,6 @@ void __cdecl CaptureScreen()
 // 40311B: could not find valid save-restore pair for edi
 // 40311B: could not find valid save-restore pair for esi
 
-//----- (00403204) --------------------------------------------------------
 bool __fastcall CaptureHdr(HANDLE hFile, short width, int height)
 {
 	short v3; // si
@@ -62,7 +60,6 @@ bool __fastcall CaptureHdr(HANDLE hFile, short width, int height)
 	return WriteFile(v4, &Buffer, 0x80u, &lpNumBytes, NULL) && lpNumBytes == 128;
 }
 
-//----- (00403294) --------------------------------------------------------
 bool __fastcall CapturePal(HANDLE hFile, PALETTEENTRY *palette)
 {
 	BYTE *v2; // eax
@@ -88,7 +85,6 @@ bool __fastcall CapturePal(HANDLE hFile, PALETTEENTRY *palette)
 	return WriteFile(hFile, Buffer, 0x301u, &lpNumBytes, 0) && lpNumBytes == 769;
 }
 
-//----- (004032FD) --------------------------------------------------------
 bool __fastcall CapturePix(HANDLE hFile, short width, short height, short stride, char *pixels)
 {
 	int v5; // esi
@@ -117,7 +113,6 @@ bool __fastcall CapturePix(HANDLE hFile, short width, short height, short stride
 	return 0;
 }
 
-//----- (0040336A) --------------------------------------------------------
 char *__fastcall CaptureEnc(char *src, char *dst, int width)
 {
 	int v3; // esi
@@ -155,7 +150,6 @@ LABEL_13:
 	return dst;
 }
 
-//----- (004033A8) --------------------------------------------------------
 HANDLE __fastcall CaptureFile(char *dst_path)
 {
 	char *v1; // edi
@@ -192,7 +186,6 @@ HANDLE __fastcall CaptureFile(char *dst_path)
 }
 // 4033A8: using guessed type char var_64[100];
 
-//----- (00403470) --------------------------------------------------------
 void __fastcall RedPalette(PALETTEENTRY *pal)
 {
 	int i; // eax

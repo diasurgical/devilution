@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __GENDUNG_H__
+#define __GENDUNG_H__
 
-//gendung
 extern short level_frame_types[2048];
 extern int themeCount;
 extern char nTransTable[2049];
@@ -90,3 +91,5 @@ void __fastcall DRLG_PlaceThemeRooms(int minSize, int maxSize, int floor, int fr
 void __cdecl DRLG_HoldThemeRooms();
 bool __fastcall SkipThemeRoom(int x, int y);
 void __cdecl InitLevels();
+
+#endif /* __GENDUNG_H__ */

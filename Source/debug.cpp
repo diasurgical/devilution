@@ -6,7 +6,6 @@ void *pSquareCel;
 char dMonsDbg[17][112][112];
 char dFlagDbg[17][112][112];
 
-//----- (004086F4) --------------------------------------------------------
 void __cdecl LoadDebugGFX()
 {
 	if ( visiondebug )
@@ -14,7 +13,6 @@ void __cdecl LoadDebugGFX()
 }
 // 525720: using guessed type int visiondebug;
 
-//----- (0040870F) --------------------------------------------------------
 void __cdecl FreeDebugGFX()
 {
 	void *v0; // ecx
@@ -24,7 +22,6 @@ void __cdecl FreeDebugGFX()
 	mem_free_dbg(v0);
 }
 
-//----- (00408721) --------------------------------------------------------
 void __cdecl CheckDungeonClear()
 {
 	int i;

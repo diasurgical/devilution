@@ -17,7 +17,6 @@ int AutoMapYPos; // weak
 int AMPlayerX; // weak
 int AMPlayerY; // weak
 
-//----- (00401DA4) --------------------------------------------------------
 void __cdecl InitAutomapOnce()
 {
 	automapflag = 0;
@@ -34,7 +33,6 @@ void __cdecl InitAutomapOnce()
 // 4B84C4: using guessed type int AMPlayerX;
 // 4B84C8: using guessed type int AMPlayerY;
 
-//----- (00401DE8) --------------------------------------------------------
 void __cdecl InitAutomap()
 {
 	signed int v0; // edi
@@ -124,7 +122,6 @@ void __cdecl InitAutomap()
 }
 // 5BB1ED: using guessed type char leveltype;
 
-//----- (00401EF4) --------------------------------------------------------
 void __cdecl StartAutomap()
 {
 	AutoMapXOfs = 0;
@@ -134,7 +131,6 @@ void __cdecl StartAutomap()
 // 4B84B0: using guessed type int AutoMapXOfs;
 // 4B84B4: using guessed type int AutoMapYOfs;
 
-//----- (00401F0D) --------------------------------------------------------
 void __cdecl AutomapUp()
 {
 	--AutoMapXOfs;
@@ -143,7 +139,6 @@ void __cdecl AutomapUp()
 // 4B84B0: using guessed type int AutoMapXOfs;
 // 4B84B4: using guessed type int AutoMapYOfs;
 
-//----- (00401F1A) --------------------------------------------------------
 void __cdecl AutomapDown()
 {
 	++AutoMapXOfs;
@@ -152,7 +147,6 @@ void __cdecl AutomapDown()
 // 4B84B0: using guessed type int AutoMapXOfs;
 // 4B84B4: using guessed type int AutoMapYOfs;
 
-//----- (00401F27) --------------------------------------------------------
 void __cdecl AutomapLeft()
 {
 	--AutoMapXOfs;
@@ -161,7 +155,6 @@ void __cdecl AutomapLeft()
 // 4B84B0: using guessed type int AutoMapXOfs;
 // 4B84B4: using guessed type int AutoMapYOfs;
 
-//----- (00401F34) --------------------------------------------------------
 void __cdecl AutomapRight()
 {
 	++AutoMapXOfs;
@@ -170,7 +163,6 @@ void __cdecl AutomapRight()
 // 4B84B0: using guessed type int AutoMapXOfs;
 // 4B84B4: using guessed type int AutoMapYOfs;
 
-//----- (00401F41) --------------------------------------------------------
 void __cdecl AutomapZoomIn()
 {
 	if ( AutoMapScale < 200 )
@@ -189,7 +181,6 @@ void __cdecl AutomapZoomIn()
 // 4B84C4: using guessed type int AMPlayerX;
 // 4B84C8: using guessed type int AMPlayerY;
 
-//----- (00401F80) --------------------------------------------------------
 void __cdecl AutomapZoomOut()
 {
 	if ( AutoMapScale > 50 )
@@ -208,7 +199,6 @@ void __cdecl AutomapZoomOut()
 // 4B84C4: using guessed type int AMPlayerX;
 // 4B84C8: using guessed type int AMPlayerY;
 
-//----- (00401FBD) --------------------------------------------------------
 void __cdecl DrawAutomap()
 {
 	int v0; // eax
@@ -391,7 +381,6 @@ void __cdecl DrawAutomap()
 // 69BD04: using guessed type int questlog;
 // 69CF0C: using guessed type int screen_buf_end;
 
-//----- (00402233) --------------------------------------------------------
 void __fastcall DrawAutomapType(int screen_x, int screen_y, short automap_type)
 {
 	short v3; // al
@@ -628,7 +617,6 @@ LABEL_36:
 // 4B84C4: using guessed type int AMPlayerX;
 // 4B84C8: using guessed type int AMPlayerY;
 
-//----- (004029A8) --------------------------------------------------------
 void __cdecl DrawAutomapPlr()
 {
 	int v0; // ebx
@@ -782,7 +770,6 @@ LABEL_25:
 // 4B8968: using guessed type int sbookflag;
 // 69BD04: using guessed type int questlog;
 
-//----- (00402D83) --------------------------------------------------------
 short __fastcall GetAutomapType(int tx, int ty, bool view)
 {
 	int v3; // edi
@@ -830,7 +817,6 @@ short __fastcall GetAutomapType(int tx, int ty, bool view)
 	return v7;
 }
 
-//----- (00402E4A) --------------------------------------------------------
 void __cdecl DrawAutomapGame()
 {
 	int v0; // esi
@@ -867,7 +853,6 @@ void __cdecl DrawAutomapGame()
 // 5CF31D: using guessed type char setlevel;
 // 679660: using guessed type char gbMaxPlayers;
 
-//----- (00402F27) --------------------------------------------------------
 void __fastcall SetAutomapView(int x, int y)
 {
 	signed int v2; // esi
@@ -964,7 +949,6 @@ LABEL_35:
 // 4B7E40: using guessed type int AMdword_4B7E40;
 // 4B7E44: using guessed type int AMdword_4B7E44;
 
-//----- (004030DD) --------------------------------------------------------
 void __cdecl AutomapZoomReset()
 {
 	AutoMapXOfs = 0;

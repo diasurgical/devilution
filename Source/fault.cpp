@@ -4,7 +4,6 @@
 
 LPTOP_LEVEL_EXCEPTION_FILTER lpTopLevelExceptionFilter; // idb
 
-//----- (004182AD) --------------------------------------------------------
 struct exception_cpp_init
 {
 	exception_cpp_init()
@@ -14,25 +13,21 @@ struct exception_cpp_init
 	}
 } _exception_cpp_init;
 
-//----- (004182B7) --------------------------------------------------------
 void __cdecl exception_install_filter()
 {
 	exception_set_filter();
 }
 
-//----- (004182C1) --------------------------------------------------------
 void __cdecl j_exception_init_filter()
 {
 	atexit(exception_init_filter);
 }
 
-//----- (004182CD) --------------------------------------------------------
 void __cdecl exception_init_filter()
 {
 	exception_set_filter_ptr();
 }
 
-//----- (004182D7) --------------------------------------------------------
 LONG __stdcall TopLevelExceptionFilter(struct _EXCEPTION_POINTERS *ExceptionInfo)
 {
 	PEXCEPTION_RECORD v1; // esi
@@ -78,7 +73,6 @@ LONG __stdcall TopLevelExceptionFilter(struct _EXCEPTION_POINTERS *ExceptionInfo
 	return result;
 }
 
-//----- (00418455) --------------------------------------------------------
 void __fastcall exception_hex_format(char *a1, char a2)
 {
 	unsigned int v2; // ebp
@@ -138,7 +132,6 @@ void __fastcall exception_hex_format(char *a1, char a2)
 	log_printf("\r\n");
 }
 
-//----- (00418518) --------------------------------------------------------
 void __fastcall exception_unknown_module(LPCVOID lpAddress, LPSTR lpString1, int iMaxLength, int a4, int a5)
 {
 	int v6; // eax
@@ -208,7 +201,6 @@ void __fastcall exception_unknown_module(LPCVOID lpAddress, LPSTR lpString1, int
 	}
 }
 
-//----- (004185FF) --------------------------------------------------------
 void __fastcall exception_call_stack(void *a1, LPVOID lp)
 {
 	_DWORD *v2; // ebx
@@ -237,7 +229,6 @@ void __fastcall exception_call_stack(void *a1, LPVOID lp)
 	log_printf("\r\n");
 }
 
-//----- (00418688) --------------------------------------------------------
 char *__fastcall exception_get_error_type(DWORD dwMessageId, LPSTR lpString1, DWORD nSize)
 {
 	CHAR *v3; // esi
@@ -356,19 +347,16 @@ LABEL_42:
 	return v3;
 }
 
-//----- (0041883C) --------------------------------------------------------
 void __fastcall exception_set_filter()
 {
 	lpTopLevelExceptionFilter = SetUnhandledExceptionFilter((LPTOP_LEVEL_EXCEPTION_FILTER)TopLevelExceptionFilter);
 }
 
-//----- (00418853) --------------------------------------------------------
 LPTOP_LEVEL_EXCEPTION_FILTER __cdecl exception_set_filter_ptr()
 {
 	return SetUnhandledExceptionFilter(lpTopLevelExceptionFilter);
 }
 
-//----- (00418860) --------------------------------------------------------
 LPTOP_LEVEL_EXCEPTION_FILTER __cdecl exception_get_filter()
 {
 	return lpTopLevelExceptionFilter;
