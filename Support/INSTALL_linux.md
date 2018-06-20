@@ -2,9 +2,9 @@
 
 ## Dependencies
 
-Arch Linux:
+Arch Linux
 ```bash
-pacman -Sy mingw-w64-gcc mingw-w64-binutils
+pacman -S mingw-w64-gcc mingw-w64-binutils
 ```
 
 ## Building
@@ -16,6 +16,9 @@ cp /path/to/diablo_game_dir/diabloui.dll .
 cp /path/to/diablo_game_dir/storm.dll .
 make
 ```
+
+On a 32-bit host, `$ make MINGW32=mingw32` should be used, to specify the 32-bit
+toolchain.
 
 ## Install
 
