@@ -7,8 +7,8 @@ notifications:
 addons:
   apt:
     packages:
-      #- gcc-mingw-w64
-      - gcc-mingw-w64-tools
+      #- mingw-w64-tools
+      - mingw-w64-tools
       - gcc-mingw-w64-i686
 
 script:
