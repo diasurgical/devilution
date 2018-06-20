@@ -42,6 +42,7 @@ Once compiled, the Devilution binary will serve as a replacement for `Diablo.exe
 - `DIABDAT.MPQ` : if `COPYPROT` was defined, then the Diablo CD will be required
 - `DiabloUI.dll` : provides module for the title screen interface
 - `SmackW32.dll` : provides library for playing Smacker video files
+- `Standard.snp` : provides local multiplayer code (Modem/IPX/Serial, Starcraft version adds TCP/IP)
 - `Storm.dll` : provides various "standard" functions
 
 To run the game in windowed mode, a DirectDraw wrapper will be needed. Strange Bytes' [DirectDraw patch](http://www.strangebytes.com/index.php/projects/1-diablo-1-windows-7-vista-patch) is recommended. To install, place the `ddraw.dll` into the same location as the Devilution binary.
