@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __EFFECTS_H__
+#define __EFFECTS_H__
 
-//effects
 extern int effects_cpp_init_value; // weak
 extern int sfxdelay; // weak
 extern int sfxdnum;
@@ -36,3 +37,5 @@ extern char monster_action_sounds[]; // idb
 /* rdata */
 
 extern TSFX sgSFX[858];
+
+#endif /* __EFFECTS_H__ */

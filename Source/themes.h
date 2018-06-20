@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __THEMES_H__
+#define __THEMES_H__
 
-//themes
 extern int numthemes; // idb
 extern bool armorFlag; // weak
 extern int ThemeGoodIn[4];
@@ -57,3 +58,5 @@ extern int trm5x[25];
 extern int trm5y[25];
 extern int trm3x[9];
 extern int trm3y[9];
+
+#endif /* __THEMES_H__ */

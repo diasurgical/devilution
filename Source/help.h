@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __HELP_H__
+#define __HELP_H__
 
-//help
 extern int help_select_line; // weak
 extern int dword_634494; // weak
 extern int helpflag;
@@ -16,3 +17,5 @@ void __cdecl HelpScrollDown();
 
 /* data */
 extern char gszHelpText[];
+
+#endif /* __HELP_H__ */

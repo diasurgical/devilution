@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __DX_H__
+#define __DX_H__
 
-//dx
 extern void *sgpBackBuf;
 extern int dx_cpp_init_value; // weak
 extern IDirectDraw *lpDDInterface;
@@ -33,3 +34,5 @@ void __cdecl j_dx_reinit();
 /* data */
 
 extern int dx_inf; // weak
+
+#endif /* __DX_H__ */

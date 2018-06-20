@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __LOADSAVE_H__
+#define __LOADSAVE_H__
 
-//loadsave
 extern void *tbuff;
 
 void __fastcall LoadGame(bool firstflag);
@@ -35,3 +36,5 @@ void __fastcall SaveVision(int i);
 void __fastcall SavePortal(int i);
 void __cdecl SaveLevel();
 void __cdecl LoadLevel();
+
+#endif /* __LOADSAVE_H__ */

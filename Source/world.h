@@ -1,4 +1,6 @@
 //HEADER_GOES_HERE
+#ifndef __WORLD_H__
+#define __WORLD_H__
 
 void __fastcall drawTopArchesUpperScreen(void *a1);
 void __fastcall drawBottomArchesUpperScreen(void *a1, int a2);
@@ -18,3 +20,5 @@ extern unsigned int tile_draw_masks[3][32];
 extern int world_4B33FD[48];
 extern int world_4B34BD[17];
 extern int world_4B3501[17];
+
+#endif /* __WORLD_H__ */

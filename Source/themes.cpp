@@ -53,7 +53,6 @@ int trm3y[9] =
 	1, 1, 1
 };
 
-//----- (0045C870) --------------------------------------------------------
 bool __fastcall TFit_Shrine(int i)
 {
 	int v1; // ecx
@@ -114,7 +113,6 @@ LABEL_21:
 	return 1;
 }
 
-//----- (0045C993) --------------------------------------------------------
 bool __fastcall TFit_Obj5(int t)
 {
 	int v2; // ebx
@@ -181,7 +179,6 @@ LABEL_18:
 	}
 }
 
-//----- (0045CA72) --------------------------------------------------------
 bool __fastcall TFit_SkelRoom(int t)
 {
 	int i; // esi
@@ -203,7 +200,6 @@ bool __fastcall TFit_SkelRoom(int t)
 }
 // 5BB1ED: using guessed type char leveltype;
 
-//----- (0045CAC4) --------------------------------------------------------
 bool __fastcall TFit_GoatShrine(int t)
 {
 	int i; // esi
@@ -222,7 +218,6 @@ bool __fastcall TFit_GoatShrine(int t)
 	return TFit_Obj5(t);
 }
 
-//----- (0045CB09) --------------------------------------------------------
 bool __fastcall CheckThemeObj3(int xp, int yp, int t, int f)
 {
 	int i; // edi
@@ -252,7 +247,6 @@ bool __fastcall CheckThemeObj3(int xp, int yp, int t, int f)
 	return 0;
 }
 
-//----- (0045CB88) --------------------------------------------------------
 bool __fastcall TFit_Obj3(int t)
 {
 	int yp; // edi
@@ -286,7 +280,6 @@ bool __fastcall TFit_Obj3(int t)
 }
 // 5BB1ED: using guessed type char leveltype;
 
-//----- (0045CBE4) --------------------------------------------------------
 bool __fastcall CheckThemeReqs(int t)
 {
 	bool rv; // al
@@ -375,7 +368,6 @@ LABEL_16:
 // 6AAC08: using guessed type int pFountainFlag;
 // 6AAC0C: using guessed type int bFountainFlag;
 
-//----- (0045CC64) --------------------------------------------------------
 bool __fastcall SpecialThemeFit(int i, int t)
 {
 	bool rv; // eax
@@ -461,7 +453,6 @@ bool __fastcall SpecialThemeFit(int i, int t)
 // 6AAC08: using guessed type int pFountainFlag;
 // 6AAC0C: using guessed type int bFountainFlag;
 
-//----- (0045CD9A) --------------------------------------------------------
 bool __fastcall CheckThemeRoom(int tv)
 {
 	int v1; // esi
@@ -545,7 +536,6 @@ LABEL_16:
 }
 // 5BB1ED: using guessed type char leveltype;
 
-//----- (0045CED2) --------------------------------------------------------
 void __cdecl InitThemes()
 {
 	int v0; // esi
@@ -682,7 +672,6 @@ LABEL_23:
 // 6AAC0C: using guessed type int bFountainFlag;
 // 6AAC10: using guessed type int bCrossFlag;
 
-//----- (0045D087) --------------------------------------------------------
 void __cdecl HoldThemeRooms()
 {
 	int v0; // ebx
@@ -726,7 +715,6 @@ void __cdecl HoldThemeRooms()
 }
 // 5BB1ED: using guessed type char leveltype;
 
-//----- (0045D0E1) --------------------------------------------------------
 void __fastcall PlaceThemeMonsts(int t, int f)
 {
 	int numscattypes; // edx
@@ -763,7 +751,6 @@ void __fastcall PlaceThemeMonsts(int t, int f)
 }
 // 45D0E1: using guessed type int var_1D0[111];
 
-//----- (0045D1C2) --------------------------------------------------------
 void __fastcall Theme_Barrel(int t)
 {
 	int yp; // edi
@@ -800,7 +787,6 @@ void __fastcall Theme_Barrel(int t)
 }
 // 5BB1ED: using guessed type char leveltype;
 
-//----- (0045D29A) --------------------------------------------------------
 void __fastcall Theme_Shrine(int t)
 {
 	char monstrnd[5]; // [esp+3h] [ebp-5h]
@@ -826,7 +812,6 @@ void __fastcall Theme_Shrine(int t)
 }
 // 5BB1ED: using guessed type char leveltype;
 
-//----- (0045D34D) --------------------------------------------------------
 void __fastcall Theme_MonstPit(int t)
 {
 	int r; // eax
@@ -863,7 +848,6 @@ void __fastcall Theme_MonstPit(int t)
 }
 // 5BB1ED: using guessed type char leveltype;
 
-//----- (0045D3E6) --------------------------------------------------------
 void __fastcall Theme_SkelRoom(int t)
 {
 	int yp; // esi
@@ -920,7 +904,6 @@ void __fastcall Theme_SkelRoom(int t)
 }
 // 5BB1ED: using guessed type char leveltype;
 
-//----- (0045D5BC) --------------------------------------------------------
 void __fastcall Theme_Treasure(int t)
 {
 	int yp; // esi
@@ -964,7 +947,6 @@ void __fastcall Theme_Treasure(int t)
 }
 // 5BB1ED: using guessed type char leveltype;
 
-//----- (0045D707) --------------------------------------------------------
 void __fastcall Theme_Library(int t)
 {
 	int v1; // edi
@@ -1047,7 +1029,6 @@ void __fastcall Theme_Library(int t)
 // 5BB1ED: using guessed type char leveltype;
 // 6AAA64: using guessed type int zharlib;
 
-//----- (0045D88A) --------------------------------------------------------
 void __fastcall Theme_Torture(int t)
 {
 	int v1; // ebx
@@ -1102,7 +1083,6 @@ void __fastcall Theme_Torture(int t)
 }
 // 5BB1ED: using guessed type char leveltype;
 
-//----- (0045D95D) --------------------------------------------------------
 void __fastcall Theme_BloodFountain(int t)
 {
 	char monstrnd[5]; // [esp+3h] [ebp-5h]
@@ -1117,7 +1097,6 @@ void __fastcall Theme_BloodFountain(int t)
 }
 // 5BB1ED: using guessed type char leveltype;
 
-//----- (0045D9A3) --------------------------------------------------------
 void __fastcall Theme_Decap(int t)
 {
 	int v1; // ebx
@@ -1172,7 +1151,6 @@ void __fastcall Theme_Decap(int t)
 }
 // 5BB1ED: using guessed type char leveltype;
 
-//----- (0045DA76) --------------------------------------------------------
 void __fastcall Theme_PurifyingFountain(int t)
 {
 	char monstrnd[5]; // [esp+3h] [ebp-5h]
@@ -1187,7 +1165,6 @@ void __fastcall Theme_PurifyingFountain(int t)
 }
 // 5BB1ED: using guessed type char leveltype;
 
-//----- (0045DABC) --------------------------------------------------------
 void __fastcall Theme_ArmorStand(int t)
 {
 	int v1; // esi
@@ -1249,7 +1226,6 @@ void __fastcall Theme_ArmorStand(int t)
 // 5BB1ED: using guessed type char leveltype;
 // 6AAA3C: using guessed type int armorFlag;
 
-//----- (0045DBAD) --------------------------------------------------------
 void __fastcall Theme_GoatShrine(int t)
 {
 	int v1; // edx
@@ -1295,7 +1271,6 @@ void __fastcall Theme_GoatShrine(int t)
 	}
 }
 
-//----- (0045DC7B) --------------------------------------------------------
 void __fastcall Theme_Cauldron(int t)
 {
 	char monstrnd[5]; // [esp+3h] [ebp-5h]
@@ -1310,7 +1285,6 @@ void __fastcall Theme_Cauldron(int t)
 }
 // 5BB1ED: using guessed type char leveltype;
 
-//----- (0045DCC1) --------------------------------------------------------
 void __fastcall Theme_MurkyFountain(int t)
 {
 	char monstrnd[5]; // [esp+3h] [ebp-5h]
@@ -1325,7 +1299,6 @@ void __fastcall Theme_MurkyFountain(int t)
 }
 // 5BB1ED: using guessed type char leveltype;
 
-//----- (0045DD07) --------------------------------------------------------
 void __fastcall Theme_TearFountain(int t)
 {
 	char monstrnd[5]; // [esp+3h] [ebp-5h]
@@ -1340,7 +1313,6 @@ void __fastcall Theme_TearFountain(int t)
 }
 // 5BB1ED: using guessed type char leveltype;
 
-//----- (0045DD4D) --------------------------------------------------------
 void __fastcall Theme_BrnCross(int t)
 {
 	int v1; // esi
@@ -1397,7 +1369,6 @@ void __fastcall Theme_BrnCross(int t)
 // 5BB1ED: using guessed type char leveltype;
 // 6AAC10: using guessed type int bCrossFlag;
 
-//----- (0045DE20) --------------------------------------------------------
 void __fastcall Theme_WeaponRack(int t)
 {
 	int v1; // esi
@@ -1459,7 +1430,6 @@ void __fastcall Theme_WeaponRack(int t)
 // 5BB1ED: using guessed type char leveltype;
 // 6AAA50: using guessed type int weaponFlag;
 
-//----- (0045DF11) --------------------------------------------------------
 void __cdecl UpdateL4Trans()
 {
 	int i; // ecx
@@ -1475,7 +1445,6 @@ void __cdecl UpdateL4Trans()
 	}
 }
 
-//----- (0045DF31) --------------------------------------------------------
 void __cdecl CreateThemeRooms()
 {
 	int i; // esi

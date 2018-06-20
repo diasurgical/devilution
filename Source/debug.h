@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __DEBUG_H__
+#define __DEBUG_H__
 
-//debug
 extern void *pSquareCel;
 extern char dMonsDbg[17][112][112];
 extern char dFlagDbg[17][112][112];
@@ -19,3 +20,5 @@ void __fastcall PrintDebugMonster(int m);
 void __cdecl GetDebugMonster();
 void __cdecl NextDebugMonster();
 #endif
+
+#endif /* __DEBUG_H__ */

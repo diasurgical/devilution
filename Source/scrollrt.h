@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __SCROLLRT_H__
+#define __SCROLLRT_H__
 
-//scrollrt
 extern int light_table_index; // weak
 extern int screen_y_times_768[1024];
 extern int scrollrt_cpp_init_value; // weak
@@ -69,3 +70,5 @@ extern int scrollrt_inf; // weak
 /* used in 1.00 debug */
 extern char *szMonModeAssert[18];
 extern char *szPlrModeAssert[12];
+
+#endif /* __SCROLLRT_H__ */

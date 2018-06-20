@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __DRLG_L4_H__
+#define __DRLG_L4_H__
 
-//drlg_l4
 extern int diabquad1x; // weak
 extern int diabquad1y; // weak
 extern int diabquad3x; // idb
@@ -64,3 +65,5 @@ extern unsigned char L4DSTAIRS[52];
 extern unsigned char L4PENTA[52];
 extern unsigned char L4PENTA2[52];
 extern unsigned char L4BTYPES[140];
+
+#endif /* __DRLG_L4_H__ */

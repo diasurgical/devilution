@@ -88,14 +88,12 @@ int L4PentaList[33] =
   -1
 };
 
-//----- (004619A7) --------------------------------------------------------
 void __cdecl InitNoTriggers()
 {
 	trigflag[4] = 0;
 	trigflag[3] = 0;
 }
 
-//----- (004619B6) --------------------------------------------------------
 void __cdecl InitTownTriggers()
 {
 	char v0; // bl
@@ -163,7 +161,6 @@ void __cdecl InitTownTriggers()
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-//----- (00461B45) --------------------------------------------------------
 void __cdecl InitL1Triggers()
 {
 	int v0; // edi
@@ -217,7 +214,6 @@ void __cdecl InitL1Triggers()
 	trigflag[3] = 0;
 }
 
-//----- (00461BEE) --------------------------------------------------------
 void __cdecl InitL2Triggers()
 {
 	signed int v0; // edi
@@ -289,7 +285,6 @@ void __cdecl InitL2Triggers()
 	trigflag[3] = 0;
 }
 
-//----- (00461CF6) --------------------------------------------------------
 void __cdecl InitL3Triggers()
 {
 	int v0; // edi
@@ -353,7 +348,6 @@ void __cdecl InitL3Triggers()
 	trigflag[3] = 0;
 }
 
-//----- (00461DC6) --------------------------------------------------------
 void __cdecl InitL4Triggers()
 {
 	signed int v0; // edi
@@ -453,7 +447,6 @@ void __cdecl InitL4Triggers()
 	trigflag[3] = 0;
 }
 
-//----- (00461F0A) --------------------------------------------------------
 void __cdecl InitSKingTriggers()
 {
 	trigflag[3] = 0;
@@ -463,7 +456,6 @@ void __cdecl InitSKingTriggers()
 	trigs[0]._tmsg = 1028;
 }
 
-//----- (00461F3A) --------------------------------------------------------
 void __cdecl InitSChambTriggers()
 {
 	trigflag[3] = 0;
@@ -473,7 +465,6 @@ void __cdecl InitSChambTriggers()
 	trigs[0]._tmsg = 1028;
 }
 
-//----- (00461F6A) --------------------------------------------------------
 void __cdecl InitPWaterTriggers()
 {
 	trigflag[3] = 0;
@@ -483,7 +474,6 @@ void __cdecl InitPWaterTriggers()
 	trigs[0]._tmsg = 1028;
 }
 
-//----- (00461F9A) --------------------------------------------------------
 void __cdecl InitVPTriggers()
 {
 	trigflag[3] = 0;
@@ -493,7 +483,6 @@ void __cdecl InitVPTriggers()
 	trigs[0]._tmsg = 1028;
 }
 
-//----- (00461FCA) --------------------------------------------------------
 unsigned char __cdecl ForceTownTrig()
 {
 	int v0; // edx
@@ -570,7 +559,6 @@ LABEL_17:
 	return 0;
 }
 
-//----- (00462130) --------------------------------------------------------
 unsigned char __cdecl ForceL1Trig()
 {
 	int *v0; // eax
@@ -652,7 +640,6 @@ LABEL_11:
 	return 1;
 }
 
-//----- (0046224C) --------------------------------------------------------
 unsigned char __cdecl ForceL2Trig()
 {
 	int *v0; // eax
@@ -790,7 +777,6 @@ LABEL_37:
 	return 1;
 }
 
-//----- (0046244F) --------------------------------------------------------
 unsigned char __cdecl ForceL3Trig()
 {
 	int *v0; // eax
@@ -924,7 +910,6 @@ LABEL_29:
 	return 0;
 }
 
-//----- (0046262D) --------------------------------------------------------
 unsigned char __cdecl ForceL4Trig()
 {
 	int *v0; // eax
@@ -1093,7 +1078,6 @@ LABEL_40:
 	return 0;
 }
 
-//----- (00462876) --------------------------------------------------------
 void __cdecl Freeupstairs()
 {
 	int *v0; // ecx
@@ -1133,7 +1117,6 @@ void __cdecl Freeupstairs()
 	}
 }
 
-//----- (004628B7) --------------------------------------------------------
 unsigned char __cdecl ForceSKingTrig()
 {
 	int v0; // eax
@@ -1156,7 +1139,6 @@ unsigned char __cdecl ForceSKingTrig()
 	return 1;
 }
 
-//----- (0046291F) --------------------------------------------------------
 unsigned char __cdecl ForceSChambTrig()
 {
 	int v0; // eax
@@ -1179,7 +1161,6 @@ unsigned char __cdecl ForceSChambTrig()
 	return 1;
 }
 
-//----- (00462987) --------------------------------------------------------
 unsigned char __cdecl ForcePWaterTrig()
 {
 	int v0; // eax
@@ -1202,7 +1183,6 @@ unsigned char __cdecl ForcePWaterTrig()
 	return 1;
 }
 
-//----- (004629EF) --------------------------------------------------------
 void __cdecl CheckTrigForce()
 {
 	int v0; // eax
@@ -1276,7 +1256,6 @@ LABEL_24:
 // 5CCB10: using guessed type char setlvlnum;
 // 5CF31D: using guessed type char setlevel;
 
-//----- (00462A9D) --------------------------------------------------------
 void __cdecl CheckTriggers()
 {
 	int *v0; // edi

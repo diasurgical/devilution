@@ -235,7 +235,6 @@ int Patterns[100][10] =
   { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
 };
 
-//----- (0040D357) --------------------------------------------------------
 void __cdecl InitDungeon()
 {
 	signed int v0; // edx
@@ -260,7 +259,6 @@ void __cdecl InitDungeon()
 	while ( v0 < 40 );
 }
 
-//----- (0040D379) --------------------------------------------------------
 void __cdecl L2LockoutFix()
 {
 	int i; // ecx
@@ -333,7 +331,6 @@ void __cdecl L2LockoutFix()
 	}
 }
 
-//----- (0040D4CC) --------------------------------------------------------
 void __cdecl L2DoorFix()
 {
 	signed int v0; // ecx
@@ -360,7 +357,6 @@ void __cdecl L2DoorFix()
 	while ( v0 < 40 );
 }
 
-//----- (0040D501) --------------------------------------------------------
 void __fastcall LoadL2Dungeon(char *sFileName, int vx, int vy)
 {
 	char *v3; // esi
@@ -541,7 +537,6 @@ void __fastcall LoadL2Dungeon(char *sFileName, int vx, int vy)
 	mem_free_dbg(ptr);
 }
 
-//----- (0040D6C1) --------------------------------------------------------
 void __cdecl DRLG_L2Pass3()
 {
 	int v0; // eax
@@ -625,7 +620,6 @@ void __cdecl DRLG_L2Pass3()
 	while ( v4 < 40 );
 }
 
-//----- (0040D7B3) --------------------------------------------------------
 void __fastcall LoadPreL2Dungeon(char *sFileName, int vx, int vy)
 {
 	char *v3; // esi
@@ -737,7 +731,6 @@ void __fastcall LoadPreL2Dungeon(char *sFileName, int vx, int vy)
 	mem_free_dbg(ptr);
 }
 
-//----- (0040D888) --------------------------------------------------------
 void __fastcall CreateL2Dungeon(int rseed, int entry)
 {
 	int v2; // esi
@@ -793,7 +786,6 @@ LABEL_10:
 // 5D245C: using guessed type int dminy;
 // 679660: using guessed type char gbMaxPlayers;
 
-//----- (0040D94F) --------------------------------------------------------
 void __cdecl DRLG_LoadL2SP()
 {
 	char *v1; // ecx
@@ -821,7 +813,6 @@ void __cdecl DRLG_LoadL2SP()
 }
 // 5B50D8: using guessed type int setloadflag_2;
 
-//----- (0040D9A4) --------------------------------------------------------
 void __cdecl DRLG_FreeL2SP()
 {
 	char *v0; // ecx
@@ -831,7 +822,6 @@ void __cdecl DRLG_FreeL2SP()
 	mem_free_dbg(v0);
 }
 
-//----- (0040D9B6) --------------------------------------------------------
 void __fastcall DRLG_L2(int entry)
 {
 	int v1; // esi
@@ -1043,7 +1033,6 @@ LABEL_21:
 }
 // 5B50D8: using guessed type int setloadflag_2;
 
-//----- (0040E074) --------------------------------------------------------
 bool __fastcall DRLG_L2PlaceMiniSet(char *miniset, int tmin, int tmax, int cx, int cy, bool setview, int ldir)
 {
 	int v7; // ebx
@@ -1233,7 +1222,6 @@ bool __fastcall DRLG_L2PlaceMiniSet(char *miniset, int tmin, int tmax, int cx, i
 // 5CF320: using guessed type int LvlViewY;
 // 5CF324: using guessed type int LvlViewX;
 
-//----- (0040E2D1) --------------------------------------------------------
 void __fastcall DRLG_L2PlaceRndSet(char *miniset, int rndper)
 {
 	char *v2; // ebx
@@ -1402,7 +1390,6 @@ LABEL_34:
 // 5276CC: using guessed type int nSx2;
 // 5276D4: using guessed type int nSy2;
 
-//----- (0040E49C) --------------------------------------------------------
 void __cdecl DRLG_L2Subs()
 {
 	signed int v0; // edi
@@ -1469,7 +1456,6 @@ void __cdecl DRLG_L2Subs()
 // 5276CC: using guessed type int nSx2;
 // 5276D4: using guessed type int nSy2;
 
-//----- (0040E59C) --------------------------------------------------------
 void __cdecl DRLG_L2Shadows()
 {
 	char *v0; // eax
@@ -1538,7 +1524,6 @@ void __cdecl DRLG_L2Shadows()
 }
 // 48489A: using guessed type short word_48489A;
 
-//----- (0040E66B) --------------------------------------------------------
 void __fastcall DRLG_L2SetRoom(int rx1, int ry1)
 {
 	int v2; // edi
@@ -1591,7 +1576,6 @@ void __fastcall DRLG_L2SetRoom(int rx1, int ry1)
 // 5CF330: using guessed type int setpc_h;
 // 5CF334: using guessed type int setpc_w;
 
-//----- (0040E6F0) --------------------------------------------------------
 void __cdecl L2TileFix()
 {
 	signed int v0; // edx
@@ -1629,7 +1613,6 @@ void __cdecl L2TileFix()
 	while ( v0 < 40 );
 }
 
-//----- (0040E74F) --------------------------------------------------------
 bool __cdecl CreateDungeon()
 {
 	int v0; // esi
@@ -1747,7 +1730,6 @@ LABEL_12:
 	return v8;
 }
 
-//----- (0040E8A4) --------------------------------------------------------
 void __fastcall CreateRoom(int nX1, int nY1, int nX2, int nY2, int nRDest, int nHDir, int ForceHW, int nH, int nW)
 {
 	int v9; // esi
@@ -1980,7 +1962,6 @@ LABEL_7:
 // 5276CC: using guessed type int nSx2;
 // 5276D4: using guessed type int nSy2;
 
-//----- (0040ECF9) --------------------------------------------------------
 void __fastcall DefineRoom(int nX1, int nY1, int nX2, int nY2, int ForceHW)
 {
 	int v5; // esi
@@ -2063,7 +2044,6 @@ void __fastcall DefineRoom(int nX1, int nY1, int nX2, int nY2, int ForceHW)
 	}
 }
 
-//----- (0040EE1D) --------------------------------------------------------
 void __fastcall AddHall(int nX1, int nY1, int nX2, int nY2, int nHd)
 {
 	int v5; // edi
@@ -2098,7 +2078,6 @@ void __fastcall AddHall(int nX1, int nY1, int nX2, int nY2, int nHd)
 	}
 }
 
-//----- (0040EEAC) --------------------------------------------------------
 void __fastcall GetHall(int *nX1, int *nY1, int *nX2, int *nY2, int *nHd)
 {
 	HALLNODE *v5; // esi
@@ -2116,7 +2095,6 @@ void __fastcall GetHall(int *nX1, int *nY1, int *nX2, int *nY2, int *nHd)
 	pHallList = v5;
 }
 
-//----- (0040EF09) --------------------------------------------------------
 void __fastcall ConnectHall(int nX1, int nY1, int nX2, int nY2, int nHd)
 {
 	int v5; // edi
@@ -2355,7 +2333,6 @@ LABEL_109:
 	while ( !v34 );
 }
 
-//----- (0040F265) --------------------------------------------------------
 void __fastcall CreateDoorType(int nX, int nY)
 {
 	int v2; // eax
@@ -2381,7 +2358,6 @@ void __fastcall CreateDoorType(int nX, int nY)
 		*v4 = 68;
 }
 
-//----- (0040F2BD) --------------------------------------------------------
 void __fastcall PlaceHallExt(int nX, int nY)
 {
 	char *v2; // eax
@@ -2391,7 +2367,6 @@ void __fastcall PlaceHallExt(int nX, int nY)
 		*v2 = 44;
 }
 
-//----- (0040F2D0) --------------------------------------------------------
 void __fastcall DoPatternCheck(int i, int j)
 {
 	int v2; // edx
@@ -2498,7 +2473,6 @@ LABEL_25:
 	}
 }
 
-//----- (0040F459) --------------------------------------------------------
 bool __cdecl DL2_FillVoids()
 {
 	int i; // eax
@@ -2913,7 +2887,6 @@ LABEL_177:
 	return DL2_NumNoChar() <= 700;
 }
 
-//----- (0040F9B1) --------------------------------------------------------
 bool __fastcall DL2_Cont(bool x1f, bool y1f, bool x2f, bool y2f)
 {
 	bool v4; // zf
@@ -2943,7 +2916,6 @@ LABEL_11:
 	return 0;
 }
 
-//----- (0040F9EE) --------------------------------------------------------
 int __cdecl DL2_NumNoChar()
 {
 	int result; // eax
@@ -2971,7 +2943,6 @@ int __cdecl DL2_NumNoChar()
 	return result;
 }
 
-//----- (0040FA10) --------------------------------------------------------
 void __fastcall DL2_DrawRoom(int x1, int y1, int x2, int y2)
 {
 	int v4; // ebx
@@ -3020,7 +2991,6 @@ void __fastcall DL2_DrawRoom(int x1, int y1, int x2, int y2)
 	}
 }
 
-//----- (0040FA97) --------------------------------------------------------
 void __fastcall DL2_KnockWalls(int x1, int y1, int x2, int y2)
 {
 	int v4; // esi
@@ -3076,7 +3046,6 @@ void __fastcall DL2_KnockWalls(int x1, int y1, int x2, int y2)
 	}
 }
 
-//----- (0040FB6C) --------------------------------------------------------
 void __cdecl DRLG_L2FloodTVal()
 {
 	int v0; // ebx
@@ -3114,7 +3083,6 @@ void __cdecl DRLG_L2FloodTVal()
 }
 // 5A5590: using guessed type char TransVal;
 
-//----- (0040FBDB) --------------------------------------------------------
 void __fastcall DRLG_L2FTVR(int i, int j, int x, int y, int d)
 {
 	int v5; // ebx
@@ -3220,7 +3188,6 @@ void __fastcall DRLG_L2FTVR(int i, int j, int x, int y, int d)
 }
 // 5A5590: using guessed type char TransVal;
 
-//----- (0040FDCB) --------------------------------------------------------
 void __cdecl DRLG_L2TransFix()
 {
 	signed int v0; // esi
@@ -3287,7 +3254,6 @@ void __cdecl DRLG_L2TransFix()
 	while ( v0 < 40 );
 }
 
-//----- (0040FE53) --------------------------------------------------------
 void __cdecl L2DirtFix()
 {
 	signed int v0; // ecx
@@ -3322,7 +3288,6 @@ void __cdecl L2DirtFix()
 	while ( v0 < 40 );
 }
 
-//----- (0040FEBF) --------------------------------------------------------
 void __cdecl DRLG_InitL2Vals()
 {
 	int v0; // edi

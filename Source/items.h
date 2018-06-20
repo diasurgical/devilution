@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __ITEMS_H__
+#define __ITEMS_H__
 
-//items
 extern int itemactive[127];
 extern int uitemflag;
 extern int itemavail[127];
@@ -142,3 +143,5 @@ extern int ItemDropSnds[35];
 extern int ItemInvSnds[35];
 extern int idoppely; // weak
 extern int premiumlvladd[6];
+
+#endif /* __ITEMS_H__ */

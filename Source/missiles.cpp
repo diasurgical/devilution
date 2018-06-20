@@ -464,7 +464,6 @@ MisFileData misfiledata[47] =
 int XDirAdd[8] = { 1, 0, -1, -1, -1, 0, 1, 1 };
 int YDirAdd[8] = { 1, 1, 1, 0, -1, -1, -1, 0 };
 
-//----- (004283C0) --------------------------------------------------------
 void __fastcall GetDamageAmt(int i, int *mind, int *maxd)
 {
 	int v3; // eax
@@ -779,7 +778,6 @@ LABEL_74:
 	}
 }
 
-//----- (00428921) --------------------------------------------------------
 int __fastcall CheckBlock(int fx, int fy, int tx, int ty)
 {
 	int v4; // edi
@@ -801,7 +799,6 @@ int __fastcall CheckBlock(int fx, int fy, int tx, int ty)
 	return v6;
 }
 
-//----- (0042897A) --------------------------------------------------------
 int __fastcall FindClosest(int sx, int sy, int rad)
 {
 	int v3; // eax
@@ -871,7 +868,6 @@ LABEL_13:
 	}
 }
 
-//----- (00428A99) --------------------------------------------------------
 int __fastcall GetSpellLevel(int id, int sn)
 {
 	int result; // eax
@@ -885,7 +881,6 @@ int __fastcall GetSpellLevel(int id, int sn)
 	return result;
 }
 
-//----- (00428AC4) --------------------------------------------------------
 int __fastcall GetDirection8(int x1, int y1, int x2, int y2)
 {
 	int v4; // edi
@@ -973,7 +968,6 @@ int __fastcall GetDirection8(int x1, int y1, int x2, int y2)
 	return result;
 }
 
-//----- (004290EE) --------------------------------------------------------
 int __fastcall GetDirection16(int x1, int y1, int x2, int y2)
 {
 	int v4; // edi
@@ -1069,7 +1063,6 @@ int __fastcall GetDirection16(int x1, int y1, int x2, int y2)
 	return result;
 }
 
-//----- (0042977E) --------------------------------------------------------
 void __fastcall DeleteMissile(int mi, int i)
 {
 	int v2; // edi
@@ -1097,7 +1090,6 @@ void __fastcall DeleteMissile(int mi, int i)
 		missileactive[v3] = missileactive[v5];
 }
 
-//----- (004297EE) --------------------------------------------------------
 void __fastcall GetMissileVel(int i, int sx, int sy, int dx, int dy, int v)
 {
 	int v6; // eax
@@ -1123,7 +1115,6 @@ void __fastcall GetMissileVel(int i, int sx, int sy, int dx, int dy, int v)
 	}
 }
 
-//----- (004298AD) --------------------------------------------------------
 void __fastcall PutMissile(int i)
 {
 	int v1; // eax
@@ -1152,7 +1143,6 @@ void __fastcall PutMissile(int i)
 }
 // 64CCD4: using guessed type int MissilePreFlag;
 
-//----- (00429918) --------------------------------------------------------
 void __fastcall GetMissilePos(int i)
 {
 	int v1; // ecx
@@ -1203,7 +1193,6 @@ void __fastcall GetMissilePos(int i)
 	ChangeLightOff(missile[v1]._mlid, v12 - 8 * v8, v10 - 8 * v11);
 }
 
-//----- (004299EA) --------------------------------------------------------
 void __fastcall MoveMissilePos(int i)
 {
 	int v1; // esi
@@ -1248,7 +1237,6 @@ LABEL_7:
 	}
 }
 
-//----- (00429A99) --------------------------------------------------------
 bool __fastcall MonsterTrapHit(int m, int mindam, int maxdam, int dist, int t, int shift)
 {
 	int v6; // esi
@@ -1344,7 +1332,6 @@ bool __fastcall MonsterTrapHit(int m, int mindam, int maxdam, int dist, int t, i
 	return 1;
 }
 
-//----- (00429C3B) --------------------------------------------------------
 bool __fastcall MonsterMHit(int pnum, int m, int mindam, int maxdam, int dist, int t, int shift)
 {
 	int v7; // edi
@@ -1515,7 +1502,6 @@ bool __fastcall MonsterMHit(int pnum, int m, int mindam, int maxdam, int dist, i
 	return 1;
 }
 
-//----- (00429F4E) --------------------------------------------------------
 bool __fastcall PlayerMHit(int pnum, int m, int dist, int mind, int maxd, int mtype, int shift, int earflag)
 {
 	int v8; // ebx
@@ -1756,7 +1742,6 @@ LABEL_78:
 	return 0;
 }
 
-//----- (0042A307) --------------------------------------------------------
 bool __fastcall Plr2PlrMHit(int pnum, int p, int mindam, int maxdam, int dist, int mtype, int shift)
 {
 	int v7; // edi
@@ -1922,7 +1907,6 @@ LABEL_14:
 	return 0;
 }
 
-//----- (0042A5DB) --------------------------------------------------------
 void __fastcall CheckMissileCol(int i, int mindam, int maxdam, bool shift, int mx, int my, int nodel)
 {
 	int v7; // ebx
@@ -2107,7 +2091,6 @@ LABEL_39:
 	}
 }
 
-//----- (0042A8D5) --------------------------------------------------------
 void __fastcall SetMissAnim(int mi, int animtype)
 {
 	int v2; // ecx
@@ -2142,14 +2125,12 @@ void __fastcall SetMissAnim(int mi, int animtype)
 	missile[v2]._miAnimFrame = 1;
 }
 
-//----- (0042A959) --------------------------------------------------------
 void __fastcall SetMissDir(int mi, int dir)
 {
 	missile[mi]._mimfnum = dir;
 	SetMissAnim(mi, _LOBYTE(missile[mi]._miAnimType));
 }
 
-//----- (0042A973) --------------------------------------------------------
 void __fastcall LoadMissileGFX(int mi)
 {
 	MisFileData *v1; // esi
@@ -2211,7 +2192,6 @@ void __fastcall LoadMissileGFX(int mi)
 	}
 }
 
-//----- (0042AA5C) --------------------------------------------------------
 void __cdecl InitMissileGFX()
 {
 	char v0; // bl
@@ -2232,7 +2212,6 @@ void __cdecl InitMissileGFX()
 	}
 }
 
-//----- (0042AA89) --------------------------------------------------------
 void __fastcall FreeMissileGFX(int mi)
 {
 	int v1; // esi
@@ -2273,7 +2252,6 @@ void __fastcall FreeMissileGFX(int mi)
 	}
 }
 
-//----- (0042AAF2) --------------------------------------------------------
 void __cdecl FreeMissiles()
 {
 	int v0; // edi
@@ -2294,7 +2272,6 @@ void __cdecl FreeMissiles()
 	}
 }
 
-//----- (0042AB20) --------------------------------------------------------
 void __cdecl FreeMissiles2()
 {
 	int v0; // edi
@@ -2315,7 +2292,6 @@ void __cdecl FreeMissiles2()
 	}
 }
 
-//----- (0042AB4E) --------------------------------------------------------
 void __cdecl InitMissiles()
 {
 	int v0; // eax
@@ -2380,7 +2356,6 @@ void __cdecl InitMissiles()
 }
 // 64CCD8: using guessed type int END_unkmis_126;
 
-//----- (0042AC0C) --------------------------------------------------------
 void __fastcall AddLArrow(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // esi
@@ -2430,7 +2405,6 @@ LABEL_12:
 	missile[v15]._mlid = AddLight(v10, sy, 5);
 }
 
-//----- (0042ACD9) --------------------------------------------------------
 void __fastcall AddArrow(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // ebx
@@ -2479,7 +2453,6 @@ void __fastcall AddArrow(int mi, int sx, int sy, int dx, int dy, int midir, int 
 	missile[v14]._miAnimFrame = v15 + 1;
 }
 
-//----- (0042ADAA) --------------------------------------------------------
 void __fastcall GetVileMissPos(int mi, int dx, int dy)
 {
 	signed int v3; // edi
@@ -2534,7 +2507,6 @@ void __fastcall GetVileMissPos(int mi, int dx, int dy)
 	missile[v6]._miy = dy;
 }
 
-//----- (0042AE48) --------------------------------------------------------
 void __fastcall AddRndTeleport(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // eax
@@ -2603,7 +2575,6 @@ LABEL_12:
 // 5CCB10: using guessed type char setlvlnum;
 // 5CF31D: using guessed type char setlevel;
 
-//----- (0042AF8B) --------------------------------------------------------
 void __fastcall AddFirebolt(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int id, int dam)
 {
 	int v9; // ebx
@@ -2661,7 +2632,6 @@ LABEL_17:
 	missile[v15]._mlid = AddLight(v11, sy, 8);
 }
 
-//----- (0042B09A) --------------------------------------------------------
 void __fastcall AddMagmaball(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // esi
@@ -2682,7 +2652,6 @@ void __fastcall AddMagmaball(int mi, int sx, int sy, int dx, int dy, int midir, 
 	*(int *)((char *)&missile[0]._mlid + v9) = AddLight(v10, sy, 8);
 }
 
-//----- (0042B113) --------------------------------------------------------
 void __fastcall miss_null_33(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // esi
@@ -2699,7 +2668,6 @@ void __fastcall miss_null_33(int mi, int sx, int sy, int dx, int dy, int midir, 
 	PutMissile(v10);
 }
 
-//----- (0042B159) --------------------------------------------------------
 void __fastcall AddTeleport(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // esi
@@ -2774,7 +2742,6 @@ LABEL_13:
 	}
 }
 
-//----- (0042B284) --------------------------------------------------------
 void __fastcall AddLightball(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // edi
@@ -2806,7 +2773,6 @@ void __fastcall AddLightball(int mi, int sx, int sy, int dx, int dy, int midir, 
 	}
 }
 
-//----- (0042B303) --------------------------------------------------------
 void __fastcall AddFirewall(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // ST20_4
@@ -2837,7 +2803,6 @@ void __fastcall AddFirewall(int mi, int sx, int sy, int dx, int dy, int midir, i
 	missile[v11]._miVar1 = v16;
 }
 
-//----- (0042B3C0) --------------------------------------------------------
 void __fastcall AddFireball(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // edi
@@ -2904,7 +2869,6 @@ void __fastcall AddFireball(int mi, int sx, int sy, int dx, int dy, int midir, i
 	missile[v16]._mlid = AddLight(v9, sy, 8);
 }
 
-//----- (0042B4E7) --------------------------------------------------------
 void __fastcall AddLightctrl(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // edi
@@ -2927,7 +2891,6 @@ void __fastcall AddLightctrl(int mi, int sx, int sy, int dx, int dy, int midir, 
 	missile[v11]._miAnimFrame = v13 + 1;
 }
 
-//----- (0042B553) --------------------------------------------------------
 void __fastcall AddLightning(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // esi
@@ -2965,7 +2928,6 @@ LABEL_10:
 	missile[v9]._mlid = AddLight(missile[v9]._mix, missile[v9]._miy, 4);
 }
 
-//----- (0042B620) --------------------------------------------------------
 void __fastcall AddMisexp(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // edi
@@ -3002,7 +2964,6 @@ void __fastcall AddMisexp(int mi, int sx, int sy, int dx, int dy, int midir, int
 	missile[v11]._mirange = missile[v9]._miAnimLen;
 }
 
-//----- (0042B711) --------------------------------------------------------
 void __fastcall AddWeapexp(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // esi
@@ -3024,7 +2985,6 @@ void __fastcall AddWeapexp(int mi, int sx, int sy, int dx, int dy, int midir, in
 	missile[v9]._mirange = missile[v9]._miAnimLen - 1;
 }
 
-//----- (0042B77C) --------------------------------------------------------
 bool __fastcall CheckIfTrig(int x, int y)
 {
 	int v2; // edi
@@ -3054,7 +3014,6 @@ bool __fastcall CheckIfTrig(int x, int y)
 	return 1;
 }
 
-//----- (0042B7DF) --------------------------------------------------------
 void __fastcall AddTown(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // ebx
@@ -3177,7 +3136,6 @@ LABEL_14:
 // 5CCB10: using guessed type char setlvlnum;
 // 5CF31D: using guessed type char setlevel;
 
-//----- (0042B9FC) --------------------------------------------------------
 void __fastcall AddFlash(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // esi
@@ -3230,7 +3188,6 @@ LABEL_13:
 	missile[v9]._mirange = 19;
 }
 
-//----- (0042BAC1) --------------------------------------------------------
 void __fastcall AddFlash2(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // esi
@@ -3278,7 +3235,6 @@ void __fastcall AddFlash2(int mi, int sx, int sy, int dx, int dy, int midir, int
 	missile[v14]._mirange = 19;
 }
 
-//----- (0042BB83) --------------------------------------------------------
 void __fastcall AddManashield(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // eax
@@ -3295,7 +3251,6 @@ void __fastcall AddManashield(int mi, int sx, int sy, int dx, int dy, int midir,
 	plr[id].pManaShield = 1;
 }
 
-//----- (0042BBFA) --------------------------------------------------------
 void __fastcall AddFiremove(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // edi
@@ -3317,7 +3272,6 @@ void __fastcall AddFiremove(int mi, int sx, int sy, int dx, int dy, int midir, i
 	*(int *)((char *)&missile[0]._mirange + v11) = 255;
 }
 
-//----- (0042BC76) --------------------------------------------------------
 void __fastcall AddGuardian(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // edi
@@ -3445,7 +3399,6 @@ LABEL_18:
 	}
 }
 
-//----- (0042BE98) --------------------------------------------------------
 void __fastcall AddChain(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // ecx
@@ -3456,7 +3409,6 @@ void __fastcall AddChain(int mi, int sx, int sy, int dx, int dy, int midir, int 
 	missile[v9]._mirange = 1;
 }
 
-//----- (0042BECB) --------------------------------------------------------
 void __fastcall miss_null_11(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // esi
@@ -3470,7 +3422,6 @@ void __fastcall miss_null_11(int mi, int sx, int sy, int dx, int dy, int midir, 
 	missile[v10]._mirange = 250;
 }
 
-//----- (0042BEFE) --------------------------------------------------------
 void __fastcall miss_null_12(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	signed int v9; // edx
@@ -3488,7 +3439,6 @@ void __fastcall miss_null_12(int mi, int sx, int sy, int dx, int dy, int midir, 
 	missile[v11]._mirange = 250;
 }
 
-//----- (0042BF3B) --------------------------------------------------------
 void __fastcall miss_null_13(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	signed int v9; // edx
@@ -3508,7 +3458,6 @@ void __fastcall miss_null_13(int mi, int sx, int sy, int dx, int dy, int midir, 
 	missile[v11]._mirange = v12;
 }
 
-//----- (0042BF7A) --------------------------------------------------------
 void __fastcall AddRhino(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // esi
@@ -3561,7 +3510,6 @@ void __fastcall AddRhino(int mi, int sx, int sy, int dx, int dy, int midir, int 
 	PutMissile(i);
 }
 
-//----- (0042C08B) --------------------------------------------------------
 void __fastcall miss_null_32(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // esi
@@ -3598,7 +3546,6 @@ void __fastcall miss_null_32(int mi, int sx, int sy, int dx, int dy, int midir, 
 	PutMissile(v10);
 }
 
-//----- (0042C167) --------------------------------------------------------
 void __fastcall AddFlare(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // edi
@@ -3653,7 +3600,6 @@ void __fastcall AddFlare(int mi, int sx, int sy, int dx, int dy, int midir, int 
 	}
 }
 
-//----- (0042C276) --------------------------------------------------------
 void __fastcall AddAcid(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // esi
@@ -3676,7 +3622,6 @@ void __fastcall AddAcid(int mi, int sx, int sy, int dx, int dy, int midir, int m
 	PutMissile(v10);
 }
 
-//----- (0042C2EE) --------------------------------------------------------
 void __fastcall miss_null_1D(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // ecx
@@ -3692,7 +3637,6 @@ void __fastcall miss_null_1D(int mi, int sx, int sy, int dx, int dy, int midir, 
 	missile[v9]._miVar2 = 0;
 }
 
-//----- (0042C32A) --------------------------------------------------------
 void __fastcall AddAcidpud(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // esi
@@ -3712,7 +3656,6 @@ void __fastcall AddAcidpud(int mi, int sx, int sy, int dx, int dy, int midir, in
 	missile[v9]._mirange = v11 + 40 * ((unsigned char)monster[v10]._mint + 1);
 }
 
-//----- (0042C38E) --------------------------------------------------------
 void __fastcall AddStone(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // eax
@@ -3806,7 +3749,6 @@ LABEL_19:
 	}
 }
 
-//----- (0042C518) --------------------------------------------------------
 void __fastcall AddGolem(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // eax
@@ -3858,7 +3800,6 @@ LABEL_6:
 	}
 }
 
-//----- (0042C5DA) --------------------------------------------------------
 void __fastcall AddEtherealize(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // edx
@@ -3892,13 +3833,11 @@ void __fastcall AddEtherealize(int mi, int sx, int sy, int dx, int dy, int midir
 		UseMana(id, 25);
 }
 
-//----- (0042C664) --------------------------------------------------------
 void __fastcall miss_null_1F(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	missile[mi]._miDelFlag = 1;
 }
 
-//----- (0042C677) --------------------------------------------------------
 void __fastcall miss_null_23(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // esi
@@ -3921,7 +3860,6 @@ void __fastcall miss_null_23(int mi, int sx, int sy, int dx, int dy, int midir, 
 	missile[v9]._mirange = v11;
 }
 
-//----- (0042C6D9) --------------------------------------------------------
 void __fastcall AddBoom(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // ecx
@@ -3940,7 +3878,6 @@ void __fastcall AddBoom(int mi, int sx, int sy, int dx, int dy, int midir, int m
 	missile[v9]._miVar1 = 0;
 }
 
-//----- (0042C72C) --------------------------------------------------------
 void __fastcall AddHeal(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // esi
@@ -3996,7 +3933,6 @@ void __fastcall AddHeal(int mi, int sx, int sy, int dx, int dy, int midir, int m
 	drawhpflag = 1;
 }
 
-//----- (0042C80C) --------------------------------------------------------
 void __fastcall AddHealOther(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	missile[mi]._miDelFlag = 1;
@@ -4005,7 +3941,6 @@ void __fastcall AddHealOther(int mi, int sx, int sy, int dx, int dy, int midir, 
 		SetCursor(CURSOR_HEALOTHER);
 }
 
-//----- (0042C83F) --------------------------------------------------------
 void __fastcall AddElement(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // ebx
@@ -4058,7 +3993,6 @@ void __fastcall AddElement(int mi, int sx, int sy, int dx, int dy, int midir, in
 	missile[v14]._mlid = AddLight(x, sy, 8);
 }
 
-//----- (0042C942) --------------------------------------------------------
 void __fastcall AddIdentify(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	missile[mi]._miDelFlag = 1;
@@ -4074,7 +4008,6 @@ void __fastcall AddIdentify(int mi, int sx, int sy, int dx, int dy, int midir, i
 }
 // 4B8968: using guessed type int sbookflag;
 
-//----- (0042C993) --------------------------------------------------------
 void __fastcall AddFirewallC(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // esi
@@ -4154,7 +4087,6 @@ LABEL_16:
 	}
 }
 
-//----- (0042CAF5) --------------------------------------------------------
 void __fastcall AddInfra(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // ecx
@@ -4180,7 +4112,6 @@ void __fastcall AddInfra(int mi, int sx, int sy, int dx, int dy, int midir, int 
 		UseMana(id, 9);
 }
 
-//----- (0042CB5C) --------------------------------------------------------
 void __fastcall AddWave(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // ecx
@@ -4194,7 +4125,6 @@ void __fastcall AddWave(int mi, int sx, int sy, int dx, int dy, int midir, int m
 	missile[v9]._miAnimFrame = 4;
 }
 
-//----- (0042CBA7) --------------------------------------------------------
 void __fastcall AddNova(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // esi
@@ -4266,7 +4196,6 @@ void __fastcall AddNova(int mi, int sx, int sy, int dx, int dy, int midir, int m
 	missile[v9]._mirange = 1;
 }
 
-//----- (0042CC98) --------------------------------------------------------
 void __fastcall AddRepair(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	missile[mi]._miDelFlag = 1;
@@ -4282,7 +4211,6 @@ void __fastcall AddRepair(int mi, int sx, int sy, int dx, int dy, int midir, int
 }
 // 4B8968: using guessed type int sbookflag;
 
-//----- (0042CCE9) --------------------------------------------------------
 void __fastcall AddRecharge(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	missile[mi]._miDelFlag = 1;
@@ -4298,7 +4226,6 @@ void __fastcall AddRecharge(int mi, int sx, int sy, int dx, int dy, int midir, i
 }
 // 4B8968: using guessed type int sbookflag;
 
-//----- (0042CD3A) --------------------------------------------------------
 void __fastcall AddDisarm(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	missile[mi]._miDelFlag = 1;
@@ -4307,7 +4234,6 @@ void __fastcall AddDisarm(int mi, int sx, int sy, int dx, int dy, int midir, int
 		SetCursor(CURSOR_DISARM);
 }
 
-//----- (0042CD6D) --------------------------------------------------------
 void __fastcall AddApoca(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // esi
@@ -4351,7 +4277,6 @@ void __fastcall AddApoca(int mi, int sx, int sy, int dx, int dy, int midir, int 
 	missile[v9]._mirange = 255;
 }
 
-//----- (0042CE32) --------------------------------------------------------
 void __fastcall AddFlame(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // esi
@@ -4392,7 +4317,6 @@ void __fastcall AddFlame(int mi, int sx, int sy, int dx, int dy, int midir, int 
 	}
 }
 
-//----- (0042CF35) --------------------------------------------------------
 void __fastcall AddFlamec(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // esi
@@ -4420,7 +4344,6 @@ void __fastcall AddFlamec(int mi, int sx, int sy, int dx, int dy, int midir, int
 	missile[v13]._mirange = 256;
 }
 
-//----- (0042CFAD) --------------------------------------------------------
 void __fastcall AddCbolt(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int id, int dam)
 {
 	int v9; // esi
@@ -4467,7 +4390,6 @@ void __fastcall AddCbolt(int mi, int sx, int sy, int dx, int dy, int midir, int 
 	missile[v9]._mirange = 256;
 }
 
-//----- (0042D098) --------------------------------------------------------
 void __fastcall AddHbolt(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int id, int dam)
 {
 	int v9; // esi
@@ -4516,7 +4438,6 @@ LABEL_8:
 	missile[v14]._midam = random(v16, 10) + plr[id]._pLevel + 9;
 }
 
-//----- (0042D178) --------------------------------------------------------
 void __fastcall AddResurrect(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // esi
@@ -4528,7 +4449,6 @@ void __fastcall AddResurrect(int mi, int sx, int sy, int dx, int dy, int midir, 
 	missile[v9]._miDelFlag = 1;
 }
 
-//----- (0042D1AF) --------------------------------------------------------
 void __fastcall AddResurrectBeam(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // ecx
@@ -4545,7 +4465,6 @@ void __fastcall AddResurrectBeam(int mi, int sx, int sy, int dx, int dy, int mid
 	missile[v9]._mirange = v10;
 }
 
-//----- (0042D1F3) --------------------------------------------------------
 void __fastcall AddTelekinesis(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	missile[mi]._miDelFlag = 1;
@@ -4554,7 +4473,6 @@ void __fastcall AddTelekinesis(int mi, int sx, int sy, int dx, int dy, int midir
 		SetCursor(CURSOR_TELEKINESIS);
 }
 
-//----- (0042D226) --------------------------------------------------------
 void __fastcall AddBoneSpirit(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // ebx
@@ -4598,7 +4516,6 @@ void __fastcall AddBoneSpirit(int mi, int sx, int sy, int dx, int dy, int midir,
 	}
 }
 
-//----- (0042D311) --------------------------------------------------------
 void __fastcall AddRportal(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	int v9; // eax
@@ -4616,7 +4533,6 @@ void __fastcall AddRportal(int mi, int sx, int sy, int dx, int dy, int midir, in
 	PutMissile(mi);
 }
 
-//----- (0042D35B) --------------------------------------------------------
 void __fastcall AddDiabApoca(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	signed int v9; // edi
@@ -4649,7 +4565,6 @@ void __fastcall AddDiabApoca(int mi, int sx, int sy, int dx, int dy, int midir, 
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-//----- (0042D3DA) --------------------------------------------------------
 int __fastcall AddMissile(int sx, int sy, int v1, int v2, int midir, int mitype, int micaster, int id, int v3, int spllvl)
 {
 	int v10; // esi
@@ -4736,7 +4651,6 @@ LABEL_9:
 	return v13;
 }
 
-//----- (0042D5A3) --------------------------------------------------------
 int __fastcall Sentfire(int i, int sx, int sy)
 {
 	int v3; // esi
@@ -4782,7 +4696,6 @@ void __fastcall MI_Dummy(int i)
 	return;
 }
 
-//----- (0042D680) --------------------------------------------------------
 void __fastcall MI_Golem(int i)
 {
 	int v1; // esi
@@ -4864,13 +4777,11 @@ LABEL_17:
 	missile[v1]._miDelFlag = 1;
 }
 
-//----- (0042D7C7) --------------------------------------------------------
 void __fastcall MI_SetManashield(int i)
 {
 	ManashieldFlag = 1;
 }
 
-//----- (0042D7D2) --------------------------------------------------------
 void __fastcall MI_LArrow(int i)
 {
 	int v1; // esi
@@ -5028,7 +4939,6 @@ void __fastcall MI_LArrow(int i)
 	PutMissile(ia);
 }
 
-//----- (0042DAD0) --------------------------------------------------------
 void __fastcall MI_Arrow(int i)
 {
 	int v1; // esi
@@ -5077,7 +4987,6 @@ void __fastcall MI_Arrow(int i)
 	PutMissile(ia);
 }
 
-//----- (0042DBA1) --------------------------------------------------------
 void __fastcall MI_Firebolt(int i)
 {
 	int v1; // edi
@@ -5253,7 +5162,6 @@ LABEL_39:
 	PutMissile(v1);
 }
 
-//----- (0042DE5A) --------------------------------------------------------
 void __fastcall MI_Lightball(int i)
 {
 	int v1; // esi
@@ -5292,7 +5200,6 @@ void __fastcall MI_Lightball(int i)
 	PutMissile(ia);
 }
 
-//----- (0042DF42) --------------------------------------------------------
 void __fastcall mi_null_33(int i)
 {
 	int v1; // edi
@@ -5312,7 +5219,6 @@ void __fastcall mi_null_33(int i)
 	PutMissile(v1);
 }
 
-//----- (0042DFAB) --------------------------------------------------------
 void __fastcall MI_Acidpud(int i)
 {
 	int v1; // ebx
@@ -5344,7 +5250,6 @@ void __fastcall MI_Acidpud(int i)
 	PutMissile(v1);
 }
 
-//----- (0042E01E) --------------------------------------------------------
 void __fastcall MI_Firewall(int i)
 {
 	int v1; // esi
@@ -5410,7 +5315,6 @@ void __fastcall MI_Firewall(int i)
 	PutMissile(ia);
 }
 
-//----- (0042E18F) --------------------------------------------------------
 void __fastcall MI_Fireball(int i)
 {
 	int v1; // esi
@@ -5545,7 +5449,6 @@ void __fastcall MI_Fireball(int i)
 	PutMissile(ia);
 }
 
-//----- (0042E5A7) --------------------------------------------------------
 void __fastcall MI_Lightctrl(int i)
 {
 	int v1; // esi
@@ -5641,7 +5544,6 @@ LABEL_27:
 		missile[v1]._miDelFlag = 1;
 }
 
-//----- (0042E79B) --------------------------------------------------------
 void __fastcall MI_Lightning(int i)
 {
 	int v1; // edi
@@ -5668,7 +5570,6 @@ void __fastcall MI_Lightning(int i)
 	PutMissile(v1);
 }
 
-//----- (0042E820) --------------------------------------------------------
 void __fastcall MI_Town(int i)
 {
 	int v1; // esi
@@ -5743,7 +5644,6 @@ void __fastcall MI_Town(int i)
 	PutMissile(ia);
 }
 
-//----- (0042E9CB) --------------------------------------------------------
 void __fastcall MI_Flash(int i)
 {
 	int v1; // edi
@@ -5783,7 +5683,6 @@ void __fastcall MI_Flash(int i)
 	PutMissile(v1);
 }
 
-//----- (0042EAF1) --------------------------------------------------------
 void __fastcall MI_Flash2(int i)
 {
 	int v1; // edi
@@ -5820,7 +5719,6 @@ void __fastcall MI_Flash2(int i)
 	PutMissile(v1);
 }
 
-//----- (0042EBBF) --------------------------------------------------------
 void __fastcall MI_Manashield(int i)
 {
 	int v1; // edi
@@ -5940,7 +5838,6 @@ LABEL_33:
 	PutMissile(ia);
 }
 
-//----- (0042EE19) --------------------------------------------------------
 void __fastcall MI_Etherealize(int i)
 {
 	int v1; // ebx
@@ -5996,7 +5893,6 @@ void __fastcall MI_Etherealize(int i)
 	PutMissile(v1);
 }
 
-//----- (0042EEFD) --------------------------------------------------------
 void __fastcall MI_Firemove(int i)
 {
 	int v1; // esi
@@ -6078,7 +5974,6 @@ void __fastcall MI_Firemove(int i)
 	PutMissile(v10);
 }
 
-//----- (0042F0C8) --------------------------------------------------------
 void __fastcall MI_Guardian(int i)
 {
 	int v1; // esi
@@ -6182,7 +6077,6 @@ void __fastcall MI_Guardian(int i)
 	PutMissile(ia);
 }
 
-//----- (0042F2C2) --------------------------------------------------------
 void __fastcall MI_Chain(int i)
 {
 	int v1; // esi
@@ -6274,7 +6168,6 @@ void __fastcall MI_Chain(int i)
 		missile[v1]._miDelFlag = 1;
 }
 
-//----- (0042F475) --------------------------------------------------------
 void __fastcall mi_null_11(int i)
 {
 	int v1; // eax
@@ -6290,7 +6183,6 @@ void __fastcall mi_null_11(int i)
 	PutMissile(i);
 }
 
-//----- (0042F4A9) --------------------------------------------------------
 void __fastcall MI_Weapexp(int i)
 {
 	int v1; // esi
@@ -6358,7 +6250,6 @@ void __fastcall MI_Weapexp(int i)
 	}
 }
 
-//----- (0042F5D6) --------------------------------------------------------
 void __fastcall MI_Misexp(int i)
 {
 	int v1; // edi
@@ -6400,7 +6291,6 @@ void __fastcall MI_Misexp(int i)
 	}
 }
 
-//----- (0042F692) --------------------------------------------------------
 void __fastcall MI_Acidsplat(int i)
 {
 	int v1; // eax
@@ -6442,7 +6332,6 @@ void __fastcall MI_Acidsplat(int i)
 	}
 }
 
-//----- (0042F723) --------------------------------------------------------
 void __fastcall MI_Teleport(int i)
 {
 	int v1; // edi
@@ -6499,7 +6388,6 @@ void __fastcall MI_Teleport(int i)
 }
 // 5BB1ED: using guessed type char leveltype;
 
-//----- (0042F82C) --------------------------------------------------------
 void __fastcall MI_Stone(int i)
 {
 	int v1; // esi
@@ -6542,7 +6430,6 @@ void __fastcall MI_Stone(int i)
 	}
 }
 
-//----- (0042F8EE) --------------------------------------------------------
 void __fastcall MI_Boom(int i)
 {
 	int v1; // edi
@@ -6560,7 +6447,6 @@ void __fastcall MI_Boom(int i)
 	PutMissile(v1);
 }
 
-//----- (0042F94F) --------------------------------------------------------
 void __fastcall MI_Rhino(int i)
 {
 	int v1; // ebx
@@ -6632,7 +6518,6 @@ LABEL_12:
 	PutMissile(arglist);
 }
 
-//----- (0042FAD0) --------------------------------------------------------
 void __fastcall mi_null_32(int i)
 {
 	int v1; // edi
@@ -6716,7 +6601,6 @@ void __fastcall mi_null_32(int i)
 	PutMissile(arglist);
 }
 
-//----- (0042FC74) --------------------------------------------------------
 void __fastcall MI_FirewallC(int i)
 {
 	int v1; // esi
@@ -6805,7 +6689,6 @@ void __fastcall MI_FirewallC(int i)
 	}
 }
 
-//----- (0042FDE3) --------------------------------------------------------
 void __fastcall MI_Infra(int i)
 {
 	int v1; // eax
@@ -6825,7 +6708,6 @@ void __fastcall MI_Infra(int i)
 	}
 }
 
-//----- (0042FE20) --------------------------------------------------------
 void __fastcall MI_Apoca(int i)
 {
 	int v1; // esi
@@ -6890,7 +6772,6 @@ LABEL_18:
 	}
 }
 
-//----- (0042FF0B) --------------------------------------------------------
 void __fastcall MI_Wave(int i)
 {
 	int v1; // esi
@@ -6980,7 +6861,6 @@ void __fastcall MI_Wave(int i)
 		missile[v1]._miDelFlag = 1;
 }
 
-//----- (00430154) --------------------------------------------------------
 void __fastcall MI_Nova(int i)
 {
 	int v1; // edi
@@ -7036,13 +6916,11 @@ void __fastcall MI_Nova(int i)
 		missile[v1]._miDelFlag = 1;
 }
 
-//----- (004302A7) --------------------------------------------------------
 void __fastcall MI_Blodboil(int i)
 {
 	missile[i]._miDelFlag = 1;
 }
 
-//----- (004302B8) --------------------------------------------------------
 void __fastcall MI_Flame(int i)
 {
 	int v1; // ebx
@@ -7086,7 +6964,6 @@ void __fastcall MI_Flame(int i)
 		PutMissile(v1);
 }
 
-//----- (0043037E) --------------------------------------------------------
 void __fastcall MI_Flamec(int i)
 {
 	int v1; // edi
@@ -7139,7 +7016,6 @@ void __fastcall MI_Flamec(int i)
 		missile[v2]._miDelFlag = 1;
 }
 
-//----- (0043045C) --------------------------------------------------------
 void __fastcall MI_Cbolt(int i)
 {
 	int v1; // esi
@@ -7223,7 +7099,6 @@ void __fastcall MI_Cbolt(int i)
 	PutMissile(ia);
 }
 
-//----- (004305E2) --------------------------------------------------------
 void __fastcall MI_Hbolt(int i)
 {
 	int v1; // edi
@@ -7280,7 +7155,6 @@ void __fastcall MI_Hbolt(int i)
 	PutMissile(v1);
 }
 
-//----- (0043071F) --------------------------------------------------------
 void __fastcall MI_Element(int i)
 {
 	int v1; // esi
@@ -7395,7 +7269,6 @@ void __fastcall MI_Element(int i)
 	PutMissile(ia);
 }
 
-//----- (00430A98) --------------------------------------------------------
 void __fastcall MI_Bonespirit(int i)
 {
 	int v1; // ebx
@@ -7486,7 +7359,6 @@ void __fastcall MI_Bonespirit(int i)
 	PutMissile(v5);
 }
 
-//----- (00430C8D) --------------------------------------------------------
 void __fastcall MI_ResurrectBeam(int i)
 {
 	int v1; // eax
@@ -7500,7 +7372,6 @@ void __fastcall MI_ResurrectBeam(int i)
 	PutMissile(i);
 }
 
-//----- (00430CAC) --------------------------------------------------------
 void __fastcall MI_Rportal(int i)
 {
 	int v1; // esi
@@ -7554,7 +7425,6 @@ LABEL_13:
 	PutMissile(ia);
 }
 
-//----- (00430DDA) --------------------------------------------------------
 void __cdecl ProcessMissiles()
 {
 	int v0; // eax
@@ -7656,7 +7526,6 @@ void __cdecl ProcessMissiles()
 }
 // 64CCD4: using guessed type int MissilePreFlag;
 
-//----- (00430F35) --------------------------------------------------------
 void __cdecl missiles_process_charge()
 {
 	int v0; // ebx
@@ -7695,7 +7564,6 @@ void __cdecl missiles_process_charge()
 	}
 }
 
-//----- (00430FB9) --------------------------------------------------------
 void __fastcall ClearMissileSpot(int mi)
 {
 	dFlags[missile[mi]._mix][missile[mi]._miy] &= 0xFE;

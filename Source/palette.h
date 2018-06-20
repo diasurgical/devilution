@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __PALETTE_H__
+#define __PALETTE_H__
 
-//palette
 extern PALETTEENTRY logical_palette[256];
 extern int palette_cpp_init_value; // weak
 extern PALETTEENTRY system_palette[256];
@@ -38,3 +39,5 @@ extern int palette_inf; // weak
 extern int gamma_correction; // idb
 extern int color_cycling_enabled; // idb
 extern bool sgbFadedIn;
+
+#endif /* __PALETTE_H__ */

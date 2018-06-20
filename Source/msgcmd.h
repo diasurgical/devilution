@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __MSGCMD_H__
+#define __MSGCMD_H__
 
-//msgcmd
 extern int msgcmd_cpp_init_value; // weak
 extern ChatCmd sgChat_Cmd;
 extern int sgdwMsgCmdTimer;
@@ -26,3 +27,5 @@ void __fastcall msgcmd_cleanup_extern_msg(ServerCommand **extern_msgs);
 /* data */
 
 extern int msgcmd_inf; // weak
+
+#endif /* __MSGCMD_H__ */

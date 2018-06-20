@@ -4,7 +4,6 @@
 
 void *tbuff;
 
-//----- (00426564) --------------------------------------------------------
 void __fastcall LoadGame(bool firstflag)
 {
 	int v1; // esi
@@ -390,7 +389,6 @@ void __fastcall LoadGame(bool firstflag)
 // 5CCB10: using guessed type char setlvlnum;
 // 5CF31D: using guessed type char setlevel;
 
-//----- (00426AE2) --------------------------------------------------------
 char __cdecl BLoad()
 {
 	char result; // al
@@ -400,7 +398,6 @@ char __cdecl BLoad()
 	return result;
 }
 
-//----- (00426AF0) --------------------------------------------------------
 int __cdecl ILoad()
 {
 	int v0; // eax
@@ -420,7 +417,6 @@ int __cdecl ILoad()
 	return result;
 }
 
-//----- (00426B2C) --------------------------------------------------------
 int __cdecl ILoad_2()
 {
 	int v0; // eax
@@ -440,7 +436,6 @@ int __cdecl ILoad_2()
 	return result;
 }
 
-//----- (00426B68) --------------------------------------------------------
 bool __cdecl OLoad()
 {
 	char v0; // cl
@@ -454,14 +449,12 @@ bool __cdecl OLoad()
 	return result;
 }
 
-//----- (00426B7F) --------------------------------------------------------
 void __fastcall LoadPlayer(int i)
 {
 	memcpy(&plr[i], tbuff, 0x54B0u);
 	tbuff = (char *)tbuff + 21680;
 }
 
-//----- (00426BA9) --------------------------------------------------------
 void __fastcall LoadMonster(int i)
 {
 	int v1; // edi
@@ -472,21 +465,18 @@ void __fastcall LoadMonster(int i)
 	SyncMonsterAnim(v1);
 }
 
-//----- (00426BDE) --------------------------------------------------------
 void __fastcall LoadMissile(int i)
 {
 	memcpy(&missile[i], tbuff, 0xB0u);
 	tbuff = (char *)tbuff + 176;
 }
 
-//----- (00426C08) --------------------------------------------------------
 void __fastcall LoadObject(int i)
 {
 	memcpy(&object[i], tbuff, 0x78u);
 	tbuff = (char *)tbuff + 120;
 }
 
-//----- (00426C2A) --------------------------------------------------------
 void __fastcall LoadItem(int i)
 {
 	int v1; // edi
@@ -497,14 +487,12 @@ void __fastcall LoadItem(int i)
 	GetItemFrm(v1);
 }
 
-//----- (00426C5F) --------------------------------------------------------
 void __fastcall LoadPremium(int i)
 {
 	memcpy(&premiumitem[i], tbuff, 0x170u);
 	tbuff = (char *)tbuff + 368;
 }
 
-//----- (00426C89) --------------------------------------------------------
 void __fastcall LoadQuest(int i)
 {
 	memcpy(&quests[i], tbuff, 0x18u);
@@ -516,28 +504,24 @@ void __fastcall LoadQuest(int i)
 	DoomQuestState = ILoad();
 }
 
-//----- (00426CDE) --------------------------------------------------------
 void __fastcall LoadLighting(int i)
 {
 	memcpy(&LightList[i], tbuff, 0x34u);
 	tbuff = (char *)tbuff + 52;
 }
 
-//----- (00426D00) --------------------------------------------------------
 void __fastcall LoadVision(int i)
 {
 	memcpy(&VisionList[i], tbuff, 0x34u);
 	tbuff = (char *)tbuff + 52;
 }
 
-//----- (00426D22) --------------------------------------------------------
 void __fastcall LoadPortal(int i)
 {
 	memcpy(&portal[i], tbuff, 0x18u);
 	tbuff = (char *)tbuff + 24;
 }
 
-//----- (00426D45) --------------------------------------------------------
 void __cdecl SaveGame()
 {
 	int v0; // eax
@@ -896,14 +880,12 @@ void __cdecl SaveGame()
 // 5CCB10: using guessed type char setlvlnum;
 // 5CF31D: using guessed type char setlevel;
 
-//----- (00427203) --------------------------------------------------------
 void __fastcall BSave(char v)
 {
 	*(_BYTE *)tbuff = v;
 	tbuff = (char *)tbuff + 1;
 }
 
-//----- (00427211) --------------------------------------------------------
 void __fastcall ISave(int v)
 {
 	*(_BYTE *)tbuff = _HIBYTE(v);
@@ -916,7 +898,6 @@ void __fastcall ISave(int v)
 	tbuff = (char *)tbuff + 1;
 }
 
-//----- (00427258) --------------------------------------------------------
 void __fastcall ISave_2(int v)
 {
 	*(_BYTE *)tbuff = _HIBYTE(v);
@@ -929,7 +910,6 @@ void __fastcall ISave_2(int v)
 	tbuff = (char *)tbuff + 1;
 }
 
-//----- (0042729F) --------------------------------------------------------
 void __fastcall OSave(unsigned char v)
 {
 	if ( v )
@@ -939,49 +919,42 @@ void __fastcall OSave(unsigned char v)
 	tbuff = (char *)tbuff + 1;
 }
 
-//----- (004272B7) --------------------------------------------------------
 void __fastcall SavePlayer(int i)
 {
 	memcpy(tbuff, &plr[i], 0x54B0u);
 	tbuff = (char *)tbuff + 21680;
 }
 
-//----- (004272E1) --------------------------------------------------------
 void __fastcall SaveMonster(int i)
 {
 	memcpy(tbuff, &monster[i], 0xD8u);
 	tbuff = (char *)tbuff + 216;
 }
 
-//----- (0042730B) --------------------------------------------------------
 void __fastcall SaveMissile(int i)
 {
 	memcpy(tbuff, &missile[i], 0xB0u);
 	tbuff = (char *)tbuff + 176;
 }
 
-//----- (00427335) --------------------------------------------------------
 void __fastcall SaveObject(int i)
 {
 	memcpy(tbuff, &object[i], 0x78u);
 	tbuff = (char *)tbuff + 120;
 }
 
-//----- (00427357) --------------------------------------------------------
 void __fastcall SaveItem(int i)
 {
 	memcpy(tbuff, &item[i], 0x170u);
 	tbuff = (char *)tbuff + 368;
 }
 
-//----- (00427381) --------------------------------------------------------
 void __fastcall SavePremium(int i)
 {
 	memcpy(tbuff, &premiumitem[i], 0x170u);
 	tbuff = (char *)tbuff + 368;
 }
 
-//----- (004273AB) --------------------------------------------------------
 void __fastcall SaveQuest(int i)
 {
 	memcpy(tbuff, &quests[i], 0x18u);
@@ -993,28 +966,24 @@ void __fastcall SaveQuest(int i)
 	ISave(DoomQuestState);
 }
 
-//----- (00427404) --------------------------------------------------------
 void __fastcall SaveLighting(int i)
 {
 	memcpy(tbuff, &LightList[i], 0x34u);
 	tbuff = (char *)tbuff + 52;
 }
 
-//----- (00427426) --------------------------------------------------------
 void __fastcall SaveVision(int i)
 {
 	memcpy(tbuff, &VisionList[i], 0x34u);
 	tbuff = (char *)tbuff + 52;
 }
 
-//----- (00427448) --------------------------------------------------------
 void __fastcall SavePortal(int i)
 {
 	memcpy(tbuff, &portal[i], 0x18u);
 	tbuff = (char *)tbuff + 24;
 }
 
-//----- (0042746B) --------------------------------------------------------
 void __cdecl SaveLevel()
 {
 	int v0; // eax
@@ -1153,7 +1122,6 @@ void __cdecl SaveLevel()
 // 5CCB10: using guessed type char setlvlnum;
 // 5CF31D: using guessed type char setlevel;
 
-//----- (0042772F) --------------------------------------------------------
 void __cdecl LoadLevel()
 {
 	int i; // esi

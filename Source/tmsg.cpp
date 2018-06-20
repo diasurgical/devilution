@@ -4,7 +4,6 @@
 
 TMsg *sgpTimedMsgHead;
 
-//----- (0045E08C) --------------------------------------------------------
 int __fastcall tmsg_get(unsigned char *pbMsg, char bLen)
 {
 	unsigned char *v2; // ebx
@@ -26,7 +25,6 @@ int __fastcall tmsg_get(unsigned char *pbMsg, char bLen)
 	return dwMaxLen;
 }
 
-//----- (0045E0D7) --------------------------------------------------------
 void __fastcall tmsg_add(unsigned char *pbMsg, char bLen)
 {
 	char v2; // bl
@@ -56,7 +54,6 @@ void __fastcall tmsg_add(unsigned char *pbMsg, char bLen)
 	*v9 = v6;
 }
 
-//----- (0045E12A) --------------------------------------------------------
 void __cdecl tmsg_cleanup()
 {
 	TMsg *v0; // eax

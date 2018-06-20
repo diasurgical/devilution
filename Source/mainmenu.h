@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __MAINMENU_H__
+#define __MAINMENU_H__
 
-//mainmenu
 extern int mainmenu_cpp_init_value; // weak
 extern char chr_name_str[16];
 
@@ -21,3 +22,5 @@ extern int mainmenu_inf; // weak
 /* rdata */
 
 extern int menu_music_track_id; // idb
+
+#endif /* __MAINMENU_H__ */
