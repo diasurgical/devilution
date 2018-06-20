@@ -4,6 +4,11 @@ notifications:
   email:
     on_failure: change # default: always
 
+addons:
+  apt:
+    packages:
+      - MinGW-w64
+
 script:
   - make get-deps
   - make
