@@ -8,6 +8,7 @@ addons:
   apt:
     packages:
       - gcc-mingw-w64
+      - g++
 
 script:
   - make
