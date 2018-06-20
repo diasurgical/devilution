@@ -7,9 +7,7 @@ notifications:
 addons:
   apt:
     packages:
-      - gcc-mingw-w64
-      - mingw-w64-x86_64
-      - mingw-w64-x86_64-toolchain
+      - gcc-mingw-w64-i686
 
 script:
   - make
