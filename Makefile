@@ -4,7 +4,11 @@ MINGW32 ?= i686-w64-mingw32
 _CXX ?= g++
 
 CXX=$(MINGW32)-$(_CXX)
-DLLTOOL=$(MINGW32)-dlltool
+ifeq ($(MINGW32), "mingw32")
+	DLLTOOL=dlltool
+else
+	DLLTOOL=$(MINGW32)-dlltool
+endif
 
 # Clang doesn't understand permissive compilation, we need to "fix" invalid
 # casts from a pointer type there using
