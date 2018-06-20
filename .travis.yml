@@ -7,8 +7,7 @@ notifications:
 addons:
   apt:
     packages:
-      - MinGW-w64
+      - gcc-mingw-w64
 
 script:
-  - make get-deps
   - make
