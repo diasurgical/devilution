@@ -1,0 +1,14 @@
+language: cpp
+
+notifications:
+  email:
+    on_failure: change # default: always
+
+#addons:
+  #apt:
+    #packages:
+      #- 
+
+script:
+	- make get-deps
+	- make
