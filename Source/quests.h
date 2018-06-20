@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __QUESTS_H__
+#define __QUESTS_H__
 
-//quests
 extern int qtopline; // idb
 extern int questlog; // weak
 extern void *pQLogCel;
@@ -50,3 +51,5 @@ extern int QuestGroup1[3];
 extern int QuestGroup2[3];
 extern int QuestGroup3[3];
 extern int QuestGroup4[2];
+
+#endif /* __QUESTS_H__ */

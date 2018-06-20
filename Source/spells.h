@@ -1,4 +1,6 @@
 //HEADER_GOES_HERE
+#ifndef __SPELLS_H__
+#define __SPELLS_H__
 
 int __fastcall GetManaAmount(int id, int sn);
 void __fastcall UseMana(int id, int sn);
@@ -11,3 +13,5 @@ void __fastcall DoHealOther(int pnum, int rid);
 /* rdata */
 
 extern SpellData spelldata[37];
+
+#endif /* __SPELLS_H__ */

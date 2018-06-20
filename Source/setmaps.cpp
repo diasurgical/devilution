@@ -47,7 +47,6 @@ char *quest_level_names[] =
   "Archbishop Lazarus' Lair"
 };
 
-//----- (00456625) --------------------------------------------------------
 int __fastcall ObjIndex(int x, int y)
 {
 	int i; // edi
@@ -70,7 +69,6 @@ int __fastcall ObjIndex(int x, int y)
 	return -1;
 }
 
-//----- (0045666B) --------------------------------------------------------
 void __cdecl AddSKingObjs()
 {
 	SetObjMapRange(ObjIndex(64, 34), 20, 7, 23, 10, 1);
@@ -81,14 +79,12 @@ void __cdecl AddSKingObjs()
 	SetObjMapRange(ObjIndex(27, 53), 8, 1, 15, 11, 3);
 }
 
-//----- (0045671A) --------------------------------------------------------
 void __cdecl AddSChamObjs()
 {
 	SetObjMapRange(ObjIndex(37, 30), 17, 0, 21, 5, 1);
 	SetObjMapRange(ObjIndex(37, 46), 13, 0, 16, 5, 2);
 }
 
-//----- (00456755) --------------------------------------------------------
 void __cdecl AddVileObjs()
 {
 	SetObjMapRange(ObjIndex(26, 45), 1, 1, 9, 10, 1);
@@ -96,7 +92,6 @@ void __cdecl AddVileObjs()
 	SetObjMapRange(ObjIndex(35, 36), 7, 11, 13, 18, 3);
 }
 
-//----- (004567AD) --------------------------------------------------------
 void __fastcall DRLG_SetMapTrans(char *sFileName)
 {
 	unsigned char *pLevelMap; // ecx
@@ -144,7 +139,6 @@ void __fastcall DRLG_SetMapTrans(char *sFileName)
 	mem_free_dbg(pLevelMap);
 }
 
-//----- (00456819) --------------------------------------------------------
 void __cdecl LoadSetMap()
 {
 	switch ( setlvlnum )

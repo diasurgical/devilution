@@ -31,7 +31,6 @@ char *sgszMusicTracks[6] =
 };
 RECT8 QSRect[2] = { { { 15, -16 }, { 15, -16 } }, { { 30, -31 }, { 30, -31 } } }; /* psx version? */
 
-//----- (00456CC0) --------------------------------------------------------
 struct sound_cpp_init
 {
 	sound_cpp_init()
@@ -41,7 +40,6 @@ struct sound_cpp_init
 } _sound_cpp_init;
 // 47F24C: using guessed type int sound_inf;
 
-//----- (00456CCB) --------------------------------------------------------
 void __fastcall snd_update(bool bStopAll)
 {
 	BOOL v1; // edi
@@ -65,7 +63,6 @@ void __fastcall snd_update(bool bStopAll)
 	while ( v2 < 8 );
 }
 
-//----- (00456D22) --------------------------------------------------------
 void __fastcall snd_stop_snd(TSnd *pSnd)
 {
 	IDirectSoundBuffer *v1; // eax
@@ -78,7 +75,6 @@ void __fastcall snd_stop_snd(TSnd *pSnd)
 	}
 }
 
-//----- (00456D34) --------------------------------------------------------
 bool __fastcall snd_playing(TSnd *pSnd)
 {
 	IDirectSoundBuffer *v1; // eax
@@ -99,7 +95,6 @@ bool __fastcall snd_playing(TSnd *pSnd)
 	return result;
 }
 
-//----- (00456D60) --------------------------------------------------------
 void __fastcall snd_play_snd(TSnd *pSnd, int lVolume, int lPan)
 {
 	TSnd *v3; // edi
@@ -162,7 +157,6 @@ void __fastcall snd_play_snd(TSnd *pSnd, int lVolume, int lPan)
 }
 // 4A22D5: using guessed type char gbSoundOn;
 
-//----- (00456E39) --------------------------------------------------------
 IDirectSoundBuffer *__fastcall sound_dup_channel(IDirectSoundBuffer *DSB)
 {
 	IDirectSoundBuffer *result; // eax
@@ -188,7 +182,6 @@ IDirectSoundBuffer *__fastcall sound_dup_channel(IDirectSoundBuffer *DSB)
 }
 // 4A22D6: using guessed type char gbDupSounds;
 
-//----- (00456E74) --------------------------------------------------------
 bool __fastcall sound_file_reload(TSnd *sound_file, IDirectSoundBuffer *DSB)
 {
 	IDirectSoundBuffer *v2; // edi
@@ -219,7 +212,6 @@ bool __fastcall sound_file_reload(TSnd *sound_file, IDirectSoundBuffer *DSB)
 	return v8;
 }
 
-//----- (00456F07) --------------------------------------------------------
 TSnd *__fastcall sound_file_load(char *path)
 {
 //	int v1; // esi
@@ -261,7 +253,6 @@ TSnd *__fastcall sound_file_load(char *path)
 }
 // 456F07: could not find valid save-restore pair for esi
 
-//----- (00457003) --------------------------------------------------------
 void __fastcall sound_CreateSoundBuffer(TSnd *sound_file)
 {
 	TSnd *v1; // esi
@@ -279,7 +270,6 @@ void __fastcall sound_CreateSoundBuffer(TSnd *sound_file)
 		DSErrDlg(v2, 282, "C:\\Src\\Diablo\\Source\\SOUND.CPP");
 }
 
-//----- (00457060) --------------------------------------------------------
 void __fastcall sound_file_cleanup(TSnd *sound_file)
 {
 	TSnd *v1; // esi
@@ -299,7 +289,6 @@ void __fastcall sound_file_cleanup(TSnd *sound_file)
 	}
 }
 
-//----- (0045708B) --------------------------------------------------------
 void __fastcall snd_init(HWND hWnd)
 {
 	sound_load_volume("Sound Volume", &sglSoundVolume);
@@ -317,7 +306,6 @@ void __fastcall snd_init(HWND hWnd)
 // 4A22D4: using guessed type char gbMusicOn;
 // 4A22D5: using guessed type char gbSoundOn;
 
-//----- (0045712B) --------------------------------------------------------
 void __fastcall sound_load_volume(char *value_name, int *value)
 {
 	int *v2; // esi
@@ -345,7 +333,6 @@ void __fastcall sound_load_volume(char *value_name, int *value)
 	*v2 -= *v2 % 100;
 }
 
-//----- (0045717C) --------------------------------------------------------
 void __fastcall sound_create_primary_buffer(int music_track)
 {
 	int v1; // eax
@@ -387,7 +374,6 @@ void __fastcall sound_create_primary_buffer(int music_track)
 }
 // 69F100: using guessed type int sglpDSB;
 
-//----- (0045727E) --------------------------------------------------------
 int __fastcall sound_DirectSoundCreate(GUID *guid, IDirectSound **DS, int always_null)
 {
 	IDirectSound **v3; // ebp
@@ -416,7 +402,6 @@ int __fastcall sound_DirectSoundCreate(GUID *guid, IDirectSound **DS, int always
 	return ((int (__stdcall *)(GUID *, IDirectSound **, int))v5)(v8, v3, always_null);
 }
 
-//----- (004572FF) --------------------------------------------------------
 void __cdecl sound_cleanup()
 {
 	snd_update(1);
@@ -435,13 +420,11 @@ void __cdecl sound_cleanup()
 	}
 }
 
-//----- (00457358) --------------------------------------------------------
 void __fastcall sound_store_volume(char *key, int value)
 {
 	SRegSaveValue("Diablo", key, 0, value);
 }
 
-//----- (00457367) --------------------------------------------------------
 void __cdecl music_stop()
 {
 	if ( sgpMusicTrack )
@@ -453,7 +436,6 @@ void __cdecl music_stop()
 	}
 }
 
-//----- (00457393) --------------------------------------------------------
 void __fastcall music_start(int nTrack)
 {
 	//int v1; // esi
@@ -480,7 +462,6 @@ void __fastcall music_start(int nTrack)
 }
 // 4A22D4: using guessed type char gbMusicOn;
 
-//----- (004573FE) --------------------------------------------------------
 void __fastcall sound_disable_music(bool disable)
 {
 	if ( disable )
@@ -493,7 +474,6 @@ void __fastcall sound_disable_music(bool disable)
 	}
 }
 
-//----- (00457418) --------------------------------------------------------
 int __fastcall sound_get_or_set_music_volume(int volume)
 {
 	if ( volume != 1 )
@@ -505,7 +485,6 @@ int __fastcall sound_get_or_set_music_volume(int volume)
 	return sglMusicVolume;
 }
 
-//----- (0045743B) --------------------------------------------------------
 int __fastcall sound_get_or_set_sound_volume(int volume)
 {
 	int result; // eax

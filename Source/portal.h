@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __PORTAL_H__
+#define __PORTAL_H__
 
-//portal
 extern PortalStruct portal[4];
 extern int portalindex;
 // int END_portalstruct; // weak
@@ -22,3 +23,5 @@ bool __fastcall PosOkPortal(int level, int x, int y);
 /* rdata */
 extern int WarpDropX[4];
 extern int WarpDropY[4];
+
+#endif /* __PORTAL_H__ */

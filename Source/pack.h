@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __PACK_H__
+#define __PACK_H__
 
-//pack
 extern int pack_cpp_init_value; // weak
 
 void __cdecl pack_cpp_init();
@@ -13,3 +14,5 @@ void __fastcall UnPackItem(PkItemStruct *is, ItemStruct *id);
 /* data */
 
 extern int pack_inf; // weak
+
+#endif /* __PACK_H__ */

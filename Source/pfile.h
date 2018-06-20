@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __PFILE_H__
+#define __PFILE_H__
 
-//pfile
 extern int pfile_cpp_init_value;
 extern char hero_names[320];
 extern bool gbValidSaveFile; // idb
@@ -47,3 +48,5 @@ void __fastcall pfile_update(bool force_save);
 /* data */
 
 extern int pfile_inf; // weak
+
+#endif /* __PFILE_H__ */

@@ -43,7 +43,6 @@ SpellData spelldata[37] =
 	{ SPL_BONESPIRIT,  24,  STYPE_MAGIC,	 "Bone Spirit",	 NULL,			 9,  7,  0, 0, 34,  IS_CAST2, { MIS_BONESPIRIT,  0,		  0 }, 1, 12,  20, 60, 11500, 800 }
 };
 
-//----- (0045744E) --------------------------------------------------------
 int __fastcall GetManaAmount(int id, int sn)
 {
 	int v2; // eax
@@ -90,7 +89,6 @@ int __fastcall GetManaAmount(int id, int sn)
 	return v8 * (100 - plr[v2]._pISplCost) / 100;
 }
 
-//----- (0045753A) --------------------------------------------------------
 void __fastcall UseMana(int id, int sn)
 {
 	int v2; // esi
@@ -124,7 +122,6 @@ void __fastcall UseMana(int id, int sn)
 	}
 }
 
-//----- (00457584) --------------------------------------------------------
 bool __fastcall CheckSpell(int id, int sn, char st, bool manaonly)
 {
 	bool result; // al
@@ -149,7 +146,6 @@ bool __fastcall CheckSpell(int id, int sn, char st, bool manaonly)
 	return result;
 }
 
-//----- (004575D5) --------------------------------------------------------
 void __fastcall CastSpell(int id, int spl, int sx, int sy, int dx, int dy, int caster, int spllvl)
 {
 	int v8; // eax
@@ -206,7 +202,6 @@ LABEL_7:
 	}
 }
 
-//----- (004576B1) --------------------------------------------------------
 void __fastcall DoResurrect(int pnum, int rid)
 {
 	int v2; // ebx
@@ -254,7 +249,6 @@ void __fastcall DoResurrect(int pnum, int rid)
 	}
 }
 
-//----- (004577CB) --------------------------------------------------------
 void __fastcall PlacePlayer(int pnum)
 {
 	int v1; // ebx
@@ -330,7 +324,6 @@ void __fastcall PlacePlayer(int pnum)
 	}
 }
 
-//----- (004578EE) --------------------------------------------------------
 void __fastcall DoHealOther(int pnum, int rid)
 {
 	int v2; // ebx

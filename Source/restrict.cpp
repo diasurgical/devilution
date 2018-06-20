@@ -2,7 +2,6 @@
 
 #include "../types.h"
 
-//----- (00452831) --------------------------------------------------------
 bool __cdecl SystemSupported()
 {
 	bool v0; // di
@@ -20,7 +19,6 @@ bool __cdecl SystemSupported()
 	return v0;
 }
 
-//----- (00452885) --------------------------------------------------------
 bool __cdecl RestrictedTest()
 {
 	bool v0; // si
@@ -45,7 +43,6 @@ bool __cdecl RestrictedTest()
 	return v0;
 }
 
-//----- (004528F7) --------------------------------------------------------
 bool __cdecl ReadOnlyTest()
 {
 	bool v0; // si
