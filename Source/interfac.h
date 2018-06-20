@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __INTERFAC_H__
+#define __INTERFAC_H__
 
-//interfac
 extern void *sgpBackCel;
 extern float interfac_cpp_init_value;
 extern int sgdwProgress;
@@ -20,3 +21,5 @@ void __fastcall InitCutscene(int interface_mode);
 extern int interfac_inf; // weak
 extern unsigned char progress_bar_colours[3];
 extern POINT32 progress_bar_screen_pos[3];
+
+#endif /* __INTERFAC_H__ */

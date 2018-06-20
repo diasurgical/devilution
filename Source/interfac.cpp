@@ -11,7 +11,6 @@ int interfac_inf = 0x7F800000; // weak
 unsigned char progress_bar_colours[3] = { 138u, 43u, 254u };
 POINT32 progress_bar_screen_pos[3] = { { 53, 37 }, { 53, 421 }, { 53, 37 } };
 
-//----- (0041B195) --------------------------------------------------------
 struct interfac_cpp_init
 {
 	interfac_cpp_init()
@@ -21,7 +20,6 @@ struct interfac_cpp_init
 } _interfac_cpp_init;
 // 47AE40: using guessed type int interfac_inf;
 
-//----- (0041B1A0) --------------------------------------------------------
 void __cdecl interface_msg_pump()
 {
 	MSG Msg; // [esp+8h] [ebp-1Ch]
@@ -36,7 +34,6 @@ void __cdecl interface_msg_pump()
 	}
 }
 
-//----- (0041B1DF) --------------------------------------------------------
 bool __cdecl IncProgress()
 {
 	interface_msg_pump();
@@ -48,7 +45,6 @@ bool __cdecl IncProgress()
 	return (unsigned int)sgdwProgress >= 0x216;
 }
 
-//----- (0041B218) --------------------------------------------------------
 void __cdecl DrawCutscene()
 {
 	unsigned int v0; // esi
@@ -71,7 +67,6 @@ void __cdecl DrawCutscene()
 }
 // 52571C: using guessed type int drawpanflag;
 
-//----- (0041B28D) --------------------------------------------------------
 void __fastcall DrawProgress(int screen_x, int screen_y, int progress_id)
 {
 	_BYTE *v3; // eax
@@ -88,7 +83,6 @@ void __fastcall DrawProgress(int screen_x, int screen_y, int progress_id)
 	while ( v4 );
 }
 
-//----- (0041B2B6) --------------------------------------------------------
 void __fastcall ShowProgress(int uMsg)
 {
 	LRESULT (__stdcall *saveProc)(HWND, UINT, WPARAM, LPARAM); // edi
@@ -245,7 +239,6 @@ LABEL_41:
 // 6761B8: using guessed type char gbSomebodyWonGameKludge;
 // 679660: using guessed type char gbMaxPlayers;
 
-//----- (0041B5F5) --------------------------------------------------------
 void __cdecl FreeInterface()
 {
 	void *v0; // ecx
@@ -255,7 +248,6 @@ void __cdecl FreeInterface()
 	mem_free_dbg(v0);
 }
 
-//----- (0041B607) --------------------------------------------------------
 void __fastcall InitCutscene(int interface_mode)
 {
 	int v1; // eax

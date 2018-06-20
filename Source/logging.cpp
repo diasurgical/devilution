@@ -16,7 +16,6 @@ int log_inf = 0x7F800000; // weak
 int log_not_created = 1; // weak
 HANDLE log_file = (HANDLE)0xFFFFFFFF; // idb
 
-//----- (004279F7) --------------------------------------------------------
 struct log_cpp_init_1
 {
 	log_cpp_init_1()
@@ -27,7 +26,6 @@ struct log_cpp_init_1
 // 47F070: using guessed type int log_inf;
 // 646A30: using guessed type int log_cpp_init_value;
 
-//----- (00427A02) --------------------------------------------------------
 struct log_cpp_init_2
 {
 	log_cpp_init_2()
@@ -37,25 +35,21 @@ struct log_cpp_init_2
 	}
 } _log_cpp_init_2;
 
-//----- (00427A0C) --------------------------------------------------------
 void __cdecl log_init_mutex()
 {
 	InitializeCriticalSection(&sgMemCrit);
 }
 
-//----- (00427A18) --------------------------------------------------------
 void __cdecl j_log_cleanup_mutex()
 {
 	atexit(log_cleanup_mutex);
 }
 
-//----- (00427A24) --------------------------------------------------------
 void __cdecl log_cleanup_mutex()
 {
 	DeleteCriticalSection(&sgMemCrit);
 }
 
-//----- (00427A30) --------------------------------------------------------
 void __cdecl log_flush(bool force_close)
 {
 	void *v1; // eax
@@ -86,7 +80,6 @@ void __cdecl log_flush(bool force_close)
 	LeaveCriticalSection(&sgMemCrit);
 }
 
-//----- (00427AC2) --------------------------------------------------------
 void *__cdecl log_create()
 {
 	char *v0; // eax
@@ -142,7 +135,6 @@ void *__cdecl log_create()
 }
 // 4947D4: using guessed type int log_not_created;
 
-//----- (00427C18) --------------------------------------------------------
 void __fastcall log_get_version(VS_FIXEDFILEINFO *file_info)
 {
 	DWORD v1; // eax
@@ -176,7 +168,6 @@ void __fastcall log_get_version(VS_FIXEDFILEINFO *file_info)
 	}
 }
 
-//----- (00427CC9) --------------------------------------------------------
 void log_printf(char *pszFmt, ...)
 {
 	size_t v1; // edi
@@ -203,7 +194,6 @@ void log_printf(char *pszFmt, ...)
 	LeaveCriticalSection(&sgMemCrit);
 }
 
-//----- (00427D75) --------------------------------------------------------
 void __cdecl log_dump_computer_info()
 {
 	char Buffer[64]; // [esp+0h] [ebp-88h]
