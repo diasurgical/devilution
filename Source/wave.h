@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __WAVE_H__
+#define __WAVE_H__
 
-//wave
 extern int wave_cpp_init_value; // weak
 //int dword_6ABB9C; // weak
 
@@ -25,3 +26,5 @@ void __fastcall j_engine_mem_free(void *ptr);
 /* data */
 
 extern int wave_inf; // weak
+
+#endif /* __WAVE_H__ */

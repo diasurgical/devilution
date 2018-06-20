@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __TOWNERS_H__
+#define __TOWNERS_H__
 
-//towners
 extern int storeflag; // weak
 extern int sgnCowMsg; // weak
 extern int numtowners; // idb
@@ -58,3 +59,5 @@ extern int cowoffx[8];
 extern int cowoffy[8];
 extern QuestTalkData Qtalklist[11];
 extern int CowPlaying;
+
+#endif /* __TOWNERS_H__ */

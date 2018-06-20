@@ -1,4 +1,6 @@
 //HEADER_GOES_HERE
+#ifndef __TOWN_H__
+#define __TOWN_H__
 
 void __fastcall town_clear_upper_buf(int a1);
 void __fastcall town_clear_low_buf(int y_related);
@@ -19,3 +21,5 @@ void __fastcall T_FillSector(unsigned char *P3Tiles, unsigned char *pSector, int
 void __fastcall T_FillTile(unsigned char *P3Tiles, int xx, int yy, int t);
 void __cdecl T_Pass3();
 void __fastcall CreateTown(int entry);
+
+#endif /* __TOWN_H__ */

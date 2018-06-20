@@ -76,7 +76,6 @@ char *talkname[9] =
   "Wirt"
 };
 
-//----- (00457A01) --------------------------------------------------------
 void __cdecl InitStores()
 {
 	int i; // eax
@@ -104,7 +103,6 @@ void __cdecl InitStores()
 // 6A8A3C: using guessed type int boylevel;
 // 6AA705: using guessed type char stextflag;
 
-//----- (00457A87) --------------------------------------------------------
 void __cdecl SetupTownStores()
 {
 	int i; // eax
@@ -138,7 +136,6 @@ void __cdecl SetupTownStores()
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-//----- (00457B42) --------------------------------------------------------
 void __cdecl FreeStoreMem()
 {
 	void *v0; // ecx
@@ -156,7 +153,6 @@ void __cdecl FreeStoreMem()
 	mem_free_dbg(v2);
 }
 
-//----- (00457B78) --------------------------------------------------------
 void __cdecl DrawSTextBack()
 {
 	char *v0; // edi
@@ -206,7 +202,6 @@ void __cdecl DrawSTextBack()
 	*v0 = 0;
 }
 
-//----- (00457BD6) --------------------------------------------------------
 void __fastcall PrintSString(int x, int y, unsigned char cjustflag, char *str, int col, int val)
 {
 	int v6; // edi
@@ -317,7 +312,6 @@ void __fastcall PrintSString(int x, int y, unsigned char cjustflag, char *str, i
 // 6A8A28: using guessed type int stextsel;
 // 457BD6: using guessed type char valstr[32];
 
-//----- (00457DE2) --------------------------------------------------------
 void __fastcall DrawSLine(int y)
 {
 	int v1; // eax
@@ -363,7 +357,6 @@ void __fastcall DrawSLine(int y)
 }
 // 6A09E0: using guessed type char stextsize;
 
-//----- (00457E62) --------------------------------------------------------
 void __fastcall DrawSArrows(int a1, int a2)
 {
 	int *v2; // ebp
@@ -408,7 +401,6 @@ void __fastcall DrawSArrows(int a1, int a2)
 // 6A8A2C: using guessed type char stextscrldbtn;
 // 6AA704: using guessed type char stextscrlubtn;
 
-//----- (00457F52) --------------------------------------------------------
 void __cdecl DrawSTextHelp()
 {
 	stextsel = -1;
@@ -417,7 +409,6 @@ void __cdecl DrawSTextHelp()
 // 6A09E0: using guessed type char stextsize;
 // 6A8A28: using guessed type int stextsel;
 
-//----- (00457F61) --------------------------------------------------------
 void __fastcall ClearSText(int s, int e)
 {
 	int v2; // edx
@@ -444,7 +435,6 @@ void __fastcall ClearSText(int s, int e)
 	}
 }
 
-//----- (00457FA6) --------------------------------------------------------
 void __fastcall AddSLine(int y)
 {
 	int v1; // ecx
@@ -456,19 +446,16 @@ void __fastcall AddSLine(int y)
 	stext[v1]._sline = 1;
 }
 
-//----- (00457FCB) --------------------------------------------------------
 void __fastcall AddSTextVal(int y, int val)
 {
 	stext[y]._sval = val;
 }
 
-//----- (00457FD8) --------------------------------------------------------
 void __fastcall OffsetSTextY(int y, int yo)
 {
 	stext[y]._syoff = yo;
 }
 
-//----- (00457FE5) --------------------------------------------------------
 void __fastcall AddSText(int x, int y, unsigned char j, char *str, int clr, int sel)
 {
 	int v6; // esi
@@ -483,7 +470,6 @@ void __fastcall AddSText(int x, int y, unsigned char j, char *str, int clr, int 
 	stext[v6]._ssel = sel;
 }
 
-//----- (00458036) --------------------------------------------------------
 void __cdecl StoreAutoPlace()
 {
 	int v0; // edi
@@ -684,7 +670,6 @@ LABEL_50:
 }
 // 48E9A8: using guessed type int AP2x2Tbl[10];
 
-//----- (004582B3) --------------------------------------------------------
 void __cdecl S_StartSmith()
 {
 	stextsize = 0;
@@ -705,7 +690,6 @@ void __cdecl S_StartSmith()
 // 6A09E0: using guessed type char stextsize;
 // 6A6BB8: using guessed type int stextscrl;
 
-//----- (0045837D) --------------------------------------------------------
 void __fastcall S_ScrollSBuy(int idx)
 {
 	int v1; // esi
@@ -747,7 +731,6 @@ void __fastcall S_ScrollSBuy(int idx)
 // 6A8A28: using guessed type int stextsel;
 // 6AA700: using guessed type int stextdown;
 
-//----- (00458439) --------------------------------------------------------
 void __fastcall PrintStoreItem(ItemStruct *x, int l, char iclr)
 {
 	ItemStruct *v3; // esi
@@ -839,7 +822,6 @@ void __fastcall PrintStoreItem(ItemStruct *x, int l, char iclr)
 	}
 }
 
-//----- (004586B3) --------------------------------------------------------
 void __cdecl S_StartSBuy()
 {
 	int v0; // ST10_4
@@ -879,7 +861,6 @@ void __cdecl S_StartSBuy()
 // 6A09E4: using guessed type int stextsmax;
 // 6A6BB8: using guessed type int stextscrl;
 
-//----- (00458773) --------------------------------------------------------
 void __fastcall S_ScrollSPBuy(int idx)
 {
 	int v1; // esi
@@ -940,7 +921,6 @@ void __fastcall S_ScrollSPBuy(int idx)
 // 6A8A28: using guessed type int stextsel;
 // 6AA700: using guessed type int stextdown;
 
-//----- (00458851) --------------------------------------------------------
 bool __cdecl S_StartSPBuy()
 {
 	int *v0; // eax
@@ -989,7 +969,6 @@ bool __cdecl S_StartSPBuy()
 // 6A6BB8: using guessed type int stextscrl;
 // 6A8A28: using guessed type int stextsel;
 
-//----- (00458931) --------------------------------------------------------
 bool __fastcall SmithSellOk(int i)
 {
 	if ( plr[myplr].InvList[i]._itype != ITYPE_NONE
@@ -1002,7 +981,6 @@ bool __fastcall SmithSellOk(int i)
 		return 0;
 }
 
-//----- (00458972) --------------------------------------------------------
 void __fastcall S_ScrollSSell(int idx)
 {
 	int v1; // esi
@@ -1057,7 +1035,6 @@ void __fastcall S_ScrollSSell(int idx)
 // 6A09E4: using guessed type int stextsmax;
 // 6AA700: using guessed type int stextdown;
 
-//----- (00458A59) --------------------------------------------------------
 void __cdecl S_StartSSell()
 {
 	int i; // eax
@@ -1117,7 +1094,6 @@ void __cdecl S_StartSSell()
 // 6A09E4: using guessed type int stextsmax;
 // 6A6BB8: using guessed type int stextscrl;
 
-//----- (00458C0B) --------------------------------------------------------
 bool __fastcall SmithRepairOk(int i)
 {
 	if ( plr[myplr].InvList[i]._itype != ITYPE_NONE
@@ -1129,7 +1105,6 @@ bool __fastcall SmithRepairOk(int i)
 		return 0;
 }
 
-//----- (00458C4E) --------------------------------------------------------
 void __cdecl S_StartSRepair()
 {
 	int v0; // ebp
@@ -1236,7 +1211,6 @@ void __cdecl S_StartSRepair()
 // 6A09E4: using guessed type int stextsmax;
 // 6A6BB8: using guessed type int stextscrl;
 
-//----- (00458E9A) --------------------------------------------------------
 void __fastcall AddStoreHoldRepair(ItemStruct *itm, int i)
 {
 	int v2; // ebx
@@ -1266,7 +1240,6 @@ void __fastcall AddStoreHoldRepair(ItemStruct *itm, int i)
 }
 // 69F10C: using guessed type int storenumh;
 
-//----- (00458F3D) --------------------------------------------------------
 void __cdecl S_StartWitch()
 {
 	stextsize = 0;
@@ -1285,7 +1258,6 @@ void __cdecl S_StartWitch()
 // 6A09E0: using guessed type char stextsize;
 // 6A6BB8: using guessed type int stextscrl;
 
-//----- (00458FE3) --------------------------------------------------------
 void __fastcall S_ScrollWBuy(int idx)
 {
 	int v1; // esi
@@ -1327,7 +1299,6 @@ void __fastcall S_ScrollWBuy(int idx)
 // 6A8A28: using guessed type int stextsel;
 // 6AA700: using guessed type int stextdown;
 
-//----- (0045909F) --------------------------------------------------------
 void __cdecl S_StartWBuy()
 {
 	int v0; // ST10_4
@@ -1368,7 +1339,6 @@ void __cdecl S_StartWBuy()
 // 6A09E4: using guessed type int stextsmax;
 // 6A6BB8: using guessed type int stextscrl;
 
-//----- (00459169) --------------------------------------------------------
 bool __fastcall WitchSellOk(int i)
 {
 	bool rv; // al
@@ -1392,7 +1362,6 @@ bool __fastcall WitchSellOk(int i)
 	return rv;
 }
 
-//----- (004591C4) --------------------------------------------------------
 void __cdecl S_StartWSell()
 {
 	int i; // eax
@@ -1469,7 +1438,6 @@ void __cdecl S_StartWSell()
 // 6A09E4: using guessed type int stextsmax;
 // 6A6BB8: using guessed type int stextscrl;
 
-//----- (00459431) --------------------------------------------------------
 bool __fastcall WitchRechargeOk(int i)
 {
 	bool rv; // al
@@ -1483,7 +1451,6 @@ bool __fastcall WitchRechargeOk(int i)
 	return rv;
 }
 
-//----- (00459460) --------------------------------------------------------
 void __fastcall AddStoreHoldRecharge(ItemStruct itm, int i)
 {
 	int v2; // ebx
@@ -1511,7 +1478,6 @@ void __fastcall AddStoreHoldRecharge(ItemStruct itm, int i)
 // 69F108: using guessed type int stextup;
 // 69F10C: using guessed type int storenumh;
 
-//----- (004594E6) --------------------------------------------------------
 void __cdecl S_StartWRecharge()
 {
 	int *v0; // eax
@@ -1589,7 +1555,6 @@ void __cdecl S_StartWRecharge()
 // 6A09E4: using guessed type int stextsmax;
 // 6A6BB8: using guessed type int stextscrl;
 
-//----- (00459693) --------------------------------------------------------
 void __cdecl S_StartNoMoney()
 {
 	StartStore((unsigned char)stextshold);
@@ -1601,7 +1566,6 @@ void __cdecl S_StartNoMoney()
 // 6A09E0: using guessed type char stextsize;
 // 6A6BB8: using guessed type int stextscrl;
 
-//----- (004596CD) --------------------------------------------------------
 void __cdecl S_StartNoRoom()
 {
 	StartStore((unsigned char)stextshold);
@@ -1611,7 +1575,6 @@ void __cdecl S_StartNoRoom()
 }
 // 6A6BB8: using guessed type int stextscrl;
 
-//----- (00459700) --------------------------------------------------------
 void __cdecl S_StartConfirm()
 {
 	BOOL idprint; // esi
@@ -1697,7 +1660,6 @@ LABEL_37:
 }
 // 6A6BB8: using guessed type int stextscrl;
 
-//----- (00459873) --------------------------------------------------------
 void __cdecl S_StartBoy()
 {
 	stextsize = 0;
@@ -1722,7 +1684,6 @@ void __cdecl S_StartBoy()
 // 6A09E0: using guessed type char stextsize;
 // 6A6BB8: using guessed type int stextscrl;
 
-//----- (00459930) --------------------------------------------------------
 void __cdecl S_StartBBoy()
 {
 	int iclr; // esi
@@ -1752,7 +1713,6 @@ void __cdecl S_StartBBoy()
 // 6A09E0: using guessed type char stextsize;
 // 6A6BB8: using guessed type int stextscrl;
 
-//----- (004599FD) --------------------------------------------------------
 void __cdecl S_StartHealer()
 {
 	stextsize = 0;
@@ -1771,7 +1731,6 @@ void __cdecl S_StartHealer()
 // 6A09E0: using guessed type char stextsize;
 // 6A6BB8: using guessed type int stextscrl;
 
-//----- (00459AA5) --------------------------------------------------------
 void __fastcall S_ScrollHBuy(int idx)
 {
 	int v1; // esi
@@ -1807,7 +1766,6 @@ void __fastcall S_ScrollHBuy(int idx)
 // 6A8A28: using guessed type int stextsel;
 // 6AA700: using guessed type int stextdown;
 
-//----- (00459B55) --------------------------------------------------------
 void __cdecl S_StartHBuy()
 {
 	int v0; // ST10_4
@@ -1847,7 +1805,6 @@ void __cdecl S_StartHBuy()
 // 6A09E4: using guessed type int stextsmax;
 // 6A6BB8: using guessed type int stextscrl;
 
-//----- (00459C15) --------------------------------------------------------
 void __cdecl S_StartStory()
 {
 	stextsize = 0;
@@ -1862,7 +1819,6 @@ void __cdecl S_StartStory()
 // 6A09E0: using guessed type char stextsize;
 // 6A6BB8: using guessed type int stextscrl;
 
-//----- (00459C8E) --------------------------------------------------------
 bool __fastcall IdItemOk(ItemStruct *i)
 {
 	bool result; // al
@@ -1876,7 +1832,6 @@ bool __fastcall IdItemOk(ItemStruct *i)
 	return result;
 }
 
-//----- (00459CA2) --------------------------------------------------------
 void __fastcall AddStoreHoldId(ItemStruct itm, int i)
 {
 	qmemcpy(&storehold[storenumh], &itm, sizeof(ItemStruct));
@@ -1887,7 +1842,6 @@ void __fastcall AddStoreHoldId(ItemStruct itm, int i)
 // 69F108: using guessed type int stextup;
 // 69F10C: using guessed type int storenumh;
 
-//----- (00459CE6) --------------------------------------------------------
 void __cdecl S_StartSIdentify()
 {
 	ItemStruct itm; // [esp-170h] [ebp-18Ch]
@@ -1982,7 +1936,6 @@ void __cdecl S_StartSIdentify()
 // 6A09E4: using guessed type int stextsmax;
 // 6A6BB8: using guessed type int stextscrl;
 
-//----- (00459F95) --------------------------------------------------------
 void __cdecl S_StartIdShow()
 {
 	char iclr; // [esp+4h] [ebp-4h]
@@ -2004,7 +1957,6 @@ void __cdecl S_StartIdShow()
 }
 // 6A6BB8: using guessed type int stextscrl;
 
-//----- (0045A046) --------------------------------------------------------
 void __cdecl S_StartTalk()
 {
 	int *v0; // edi
@@ -2069,7 +2021,6 @@ void __cdecl S_StartTalk()
 // 6A09E0: using guessed type char stextsize;
 // 6A6BB8: using guessed type int stextscrl;
 
-//----- (0045A168) --------------------------------------------------------
 void __cdecl S_StartTavern()
 {
 	stextsize = 0;
@@ -2086,7 +2037,6 @@ void __cdecl S_StartTavern()
 // 6A09E0: using guessed type char stextsize;
 // 6A6BB8: using guessed type int stextscrl;
 
-//----- (0045A1EC) --------------------------------------------------------
 void __cdecl S_StartBarMaid()
 {
 	stextsize = 0;
@@ -2102,7 +2052,6 @@ void __cdecl S_StartBarMaid()
 // 6A09E0: using guessed type char stextsize;
 // 6A6BB8: using guessed type int stextscrl;
 
-//----- (0045A25E) --------------------------------------------------------
 void __cdecl S_StartDrunk()
 {
 	stextsize = 0;
@@ -2118,7 +2067,6 @@ void __cdecl S_StartDrunk()
 // 6A09E0: using guessed type char stextsize;
 // 6A6BB8: using guessed type int stextscrl;
 
-//----- (0045A2D0) --------------------------------------------------------
 void __fastcall StartStore(char s)
 {
 	char t; // bl
@@ -2231,7 +2179,6 @@ void __fastcall StartStore(char s)
 // 6A8A28: using guessed type int stextsel;
 // 6AA705: using guessed type char stextflag;
 
-//----- (0045A48F) --------------------------------------------------------
 void __cdecl DrawSText()
 {
 	int i; // edi
@@ -2296,7 +2243,6 @@ LABEL_19:
 // 6A6BB8: using guessed type int stextscrl;
 // 6AA705: using guessed type char stextflag;
 
-//----- (0045A584) --------------------------------------------------------
 void __cdecl STextESC()
 {
 	char v0; // cl
@@ -2387,7 +2333,6 @@ LABEL_18:
 // 6A8A28: using guessed type int stextsel;
 // 6AA705: using guessed type char stextflag;
 
-//----- (0045A6AF) --------------------------------------------------------
 void __cdecl STextUp()
 {
 	int v0; // eax
@@ -2442,7 +2387,6 @@ LABEL_20:
 // 6A6BB8: using guessed type int stextscrl;
 // 6A8A28: using guessed type int stextsel;
 
-//----- (0045A757) --------------------------------------------------------
 void __cdecl STextDown()
 {
 	int v0; // eax
@@ -2498,7 +2442,6 @@ LABEL_20:
 // 6A8A28: using guessed type int stextsel;
 // 6AA700: using guessed type int stextdown;
 
-//----- (0045A804) --------------------------------------------------------
 void __cdecl STextPrior()
 {
 	PlaySFX(IS_TITLEMOV);
@@ -2523,7 +2466,6 @@ void __cdecl STextPrior()
 // 6A6BB8: using guessed type int stextscrl;
 // 6A8A28: using guessed type int stextsel;
 
-//----- (0045A84E) --------------------------------------------------------
 void __cdecl STextNext()
 {
 	PlaySFX(IS_TITLEMOV);
@@ -2547,7 +2489,6 @@ void __cdecl STextNext()
 // 6A8A28: using guessed type int stextsel;
 // 6AA700: using guessed type int stextdown;
 
-//----- (0045A89B) --------------------------------------------------------
 void __cdecl S_SmithEnter()
 {
 	int v0; // ecx
@@ -2591,7 +2532,6 @@ LABEL_13:
 // 6A8A30: using guessed type int gossipend;
 // 6AA705: using guessed type char stextflag;
 
-//----- (0045A904) --------------------------------------------------------
 void __fastcall SetGoldCurs(int pnum, int i)
 {
 	if ( plr[pnum].InvList[i]._ivalue < 2500 )
@@ -2607,7 +2547,6 @@ void __fastcall SetGoldCurs(int pnum, int i)
 	}
 }
 
-//----- (0045A94A) --------------------------------------------------------
 void __fastcall SetSpdbarGoldCurs(int pnum, int i)
 {
 	if ( plr[pnum].SpdList[i]._ivalue < 2500 )
@@ -2623,7 +2562,6 @@ void __fastcall SetSpdbarGoldCurs(int pnum, int i)
 	}
 }
 
-//----- (0045A990) --------------------------------------------------------
 void __fastcall TakePlrsMoney(int cost)
 {
 	int v1; // edi
@@ -2792,7 +2730,6 @@ LABEL_26:
 }
 // 52571C: using guessed type int drawpanflag;
 
-//----- (0045AB69) --------------------------------------------------------
 void __cdecl SmithBuyItem()
 {
 	int idx; // eax
@@ -2832,7 +2769,6 @@ void __cdecl SmithBuyItem()
 // 69F110: using guessed type int stextlhold;
 // 6A8A24: using guessed type int stextvhold;
 
-//----- (0045AC14) --------------------------------------------------------
 void __cdecl S_SBuyEnter()
 {
 	int v0; // eax
@@ -2889,7 +2825,6 @@ LABEL_11:
 // 6A8A24: using guessed type int stextvhold;
 // 6A8A28: using guessed type int stextsel;
 
-//----- (0045ACE9) --------------------------------------------------------
 void __cdecl SmithBuyPItem()
 {
 	int xx; // ecx
@@ -2929,7 +2864,6 @@ void __cdecl SmithBuyPItem()
 // 69F110: using guessed type int stextlhold;
 // 6A8A24: using guessed type int stextvhold;
 
-//----- (0045AD7E) --------------------------------------------------------
 void __cdecl S_SPBuyEnter()
 {
 	int v0; // eax
@@ -3012,7 +2946,6 @@ LABEL_16:
 // 6A8A24: using guessed type int stextvhold;
 // 6A8A28: using guessed type int stextsel;
 
-//----- (0045AE72) --------------------------------------------------------
 bool __fastcall StoreGoldFit(int idx)
 {
 	int cost; // edi
@@ -3057,7 +2990,6 @@ bool __fastcall StoreGoldFit(int idx)
 }
 // 4B8C9C: using guessed type int cursH;
 
-//----- (0045AF48) --------------------------------------------------------
 void __fastcall PlaceStoreGold(int v)
 {
 	bool done; // ecx
@@ -3088,7 +3020,6 @@ void __fastcall PlaceStoreGold(int v)
 	}
 }
 
-//----- (0045B010) --------------------------------------------------------
 void __cdecl StoreSellItem()
 {
 	int idx; // ebx
@@ -3175,7 +3106,6 @@ LABEL_15:
 // 69F110: using guessed type int stextlhold;
 // 6A8A24: using guessed type int stextvhold;
 
-//----- (0045B160) --------------------------------------------------------
 void __cdecl S_SSellEnter()
 {
 	int idx; // eax
@@ -3205,7 +3135,6 @@ void __cdecl S_SSellEnter()
 // 6A8A24: using guessed type int stextvhold;
 // 6A8A28: using guessed type int stextsel;
 
-//----- (0045B1DF) --------------------------------------------------------
 void __cdecl SmithRepairItem()
 {
 	int i; // edx
@@ -3237,7 +3166,6 @@ void __cdecl SmithRepairItem()
 // 69F110: using guessed type int stextlhold;
 // 6A8A24: using guessed type int stextvhold;
 
-//----- (0045B2B6) --------------------------------------------------------
 void __cdecl S_SRepairEnter()
 {
 	int idx; // eax
@@ -3274,7 +3202,6 @@ void __cdecl S_SRepairEnter()
 // 6A8A24: using guessed type int stextvhold;
 // 6A8A28: using guessed type int stextsel;
 
-//----- (0045B337) --------------------------------------------------------
 void __cdecl S_WitchEnter()
 {
 	int v0; // ecx
@@ -3316,7 +3243,6 @@ LABEL_12:
 // 6A8A30: using guessed type int gossipend;
 // 6AA705: using guessed type char stextflag;
 
-//----- (0045B39F) --------------------------------------------------------
 void __cdecl WitchBuyItem()
 {
 	int idx; // ebx
@@ -3360,7 +3286,6 @@ void __cdecl WitchBuyItem()
 // 69F110: using guessed type int stextlhold;
 // 6A8A24: using guessed type int stextvhold;
 
-//----- (0045B457) --------------------------------------------------------
 void __cdecl S_WBuyEnter()
 {
 	int idx; // ecx
@@ -3411,7 +3336,6 @@ void __cdecl S_WBuyEnter()
 // 6A8A24: using guessed type int stextvhold;
 // 6A8A28: using guessed type int stextsel;
 
-//----- (0045B52C) --------------------------------------------------------
 void __cdecl S_WSellEnter()
 {
 	int idx; // eax
@@ -3440,7 +3364,6 @@ void __cdecl S_WSellEnter()
 // 6A8A24: using guessed type int stextvhold;
 // 6A8A28: using guessed type int stextsel;
 
-//----- (0045B5AB) --------------------------------------------------------
 void __cdecl WitchRechargeItem()
 {
 	int i; // ecx
@@ -3463,7 +3386,6 @@ void __cdecl WitchRechargeItem()
 // 69F110: using guessed type int stextlhold;
 // 6A8A24: using guessed type int stextvhold;
 
-//----- (0045B634) --------------------------------------------------------
 void __cdecl S_WRechargeEnter()
 {
 	int idx; // eax
@@ -3500,7 +3422,6 @@ void __cdecl S_WRechargeEnter()
 // 6A8A24: using guessed type int stextvhold;
 // 6A8A28: using guessed type int stextsel;
 
-//----- (0045B6B5) --------------------------------------------------------
 void __cdecl S_BoyEnter()
 {
 	signed int v0; // ecx
@@ -3545,7 +3466,6 @@ LABEL_5:
 // 6A8A30: using guessed type int gossipend;
 // 6AA705: using guessed type char stextflag;
 
-//----- (0045B757) --------------------------------------------------------
 void __cdecl BoyBuyItem()
 {
 	TakePlrsMoney(plr[myplr].HoldItem._iIvalue);
@@ -3555,7 +3475,6 @@ void __cdecl BoyBuyItem()
 	CalcPlrInv(myplr, 1u);
 }
 
-//----- (0045B791) --------------------------------------------------------
 void __cdecl HealerBuyItem()
 {
 	int idx; // esi
@@ -3637,7 +3556,6 @@ void __cdecl HealerBuyItem()
 // 69F110: using guessed type int stextlhold;
 // 6A8A24: using guessed type int stextvhold;
 
-//----- (0045B895) --------------------------------------------------------
 void __cdecl S_BBuyEnter()
 {
 	int v0; // ecx
@@ -3695,7 +3613,6 @@ LABEL_10:
 // 6A8A28: using guessed type int stextsel;
 // 6AA705: using guessed type char stextflag;
 
-//----- (0045B968) --------------------------------------------------------
 void __cdecl StoryIdItem()
 {
 	int v0; // ecx
@@ -3734,7 +3651,6 @@ void __cdecl StoryIdItem()
 // 69F110: using guessed type int stextlhold;
 // 6A8A24: using guessed type int stextvhold;
 
-//----- (0045BA57) --------------------------------------------------------
 void __cdecl S_ConfirmEnter()
 {
 	char v0; // cl
@@ -3797,7 +3713,6 @@ LABEL_27:
 // 6A8A24: using guessed type int stextvhold;
 // 6A8A28: using guessed type int stextsel;
 
-//----- (0045BAF7) --------------------------------------------------------
 void __cdecl S_HealerEnter()
 {
 	int v0; // ecx
@@ -3841,7 +3756,6 @@ LABEL_12:
 // 6A8A30: using guessed type int gossipend;
 // 6AA705: using guessed type char stextflag;
 
-//----- (0045BB9F) --------------------------------------------------------
 void __cdecl S_HBuyEnter()
 {
 	int v0; // eax
@@ -3898,7 +3812,6 @@ LABEL_11:
 // 6A8A24: using guessed type int stextvhold;
 // 6A8A28: using guessed type int stextsel;
 
-//----- (0045BC74) --------------------------------------------------------
 void __cdecl S_StoryEnter()
 {
 	int v0; // ecx
@@ -3931,7 +3844,6 @@ LABEL_8:
 // 6A8A30: using guessed type int gossipend;
 // 6AA705: using guessed type char stextflag;
 
-//----- (0045BCCA) --------------------------------------------------------
 void __cdecl S_SIDEnter()
 {
 	int idx; // eax
@@ -3968,7 +3880,6 @@ void __cdecl S_SIDEnter()
 // 6A8A24: using guessed type int stextvhold;
 // 6A8A28: using guessed type int stextsel;
 
-//----- (0045BD4B) --------------------------------------------------------
 void __cdecl S_TalkEnter()
 {
 	int v0; // edx
@@ -4054,7 +3965,6 @@ void __cdecl S_TalkEnter()
 // 6A8A28: using guessed type int stextsel;
 // 6A8A30: using guessed type int gossipend;
 
-//----- (0045BE4A) --------------------------------------------------------
 void __cdecl S_TavernEnter()
 {
 	int v0; // ecx
@@ -4082,7 +3992,6 @@ void __cdecl S_TavernEnter()
 // 6A8A30: using guessed type int gossipend;
 // 6AA705: using guessed type char stextflag;
 
-//----- (0045BE98) --------------------------------------------------------
 void __cdecl S_BarmaidEnter()
 {
 	int v0; // ecx
@@ -4110,7 +4019,6 @@ void __cdecl S_BarmaidEnter()
 // 6A8A30: using guessed type int gossipend;
 // 6AA705: using guessed type char stextflag;
 
-//----- (0045BEE6) --------------------------------------------------------
 void __cdecl S_DrunkEnter()
 {
 	int v0; // ecx
@@ -4138,7 +4046,6 @@ void __cdecl S_DrunkEnter()
 // 6A8A30: using guessed type int gossipend;
 // 6AA705: using guessed type char stextflag;
 
-//----- (0045BF34) --------------------------------------------------------
 void __cdecl STextEnter()
 {
 	if ( qtextflag )
@@ -4233,7 +4140,6 @@ void __cdecl STextEnter()
 // 6A8A28: using guessed type int stextsel;
 // 6AA705: using guessed type char stextflag;
 
-//----- (0045C053) --------------------------------------------------------
 void __cdecl CheckStoreBtn()
 {
 	bool v0; // sf
@@ -4326,7 +4232,6 @@ void __cdecl CheckStoreBtn()
 // 6A8A2C: using guessed type char stextscrldbtn;
 // 6AA704: using guessed type char stextscrlubtn;
 
-//----- (0045C18A) --------------------------------------------------------
 void __cdecl ReleaseStoreBtn()
 {
 	stextscrlubtn = -1;
