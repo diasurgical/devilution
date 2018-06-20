@@ -8,7 +8,6 @@ int loop_movie; // weak
 
 int movie_inf = 0x7F800000; // weak
 
-//----- (0043AD38) --------------------------------------------------------
 struct movie_cpp_init
 {
 	movie_cpp_init()
@@ -19,7 +18,6 @@ struct movie_cpp_init
 // 47F144: using guessed type int movie_inf;
 // 659AF4: using guessed type int movie_cpp_init_value;
 
-//----- (0043AD43) --------------------------------------------------------
 void __fastcall play_movie(char *pszMovie, bool user_can_close)
 {
 	char *v2; // esi
@@ -71,7 +69,6 @@ void __fastcall play_movie(char *pszMovie, bool user_can_close)
 // 659AF8: using guessed type int movie_playing;
 // 659AFC: using guessed type int loop_movie;
 
-//----- (0043AE3E) --------------------------------------------------------
 LRESULT __stdcall MovieWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
 	if ( Msg == WM_KEYFIRST || Msg == WM_CHAR )

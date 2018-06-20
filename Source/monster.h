@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __MONSTER_H__
+#define __MONSTER_H__
 
-//monster
 extern int MissileFileFlag; // weak
 extern int monster_cpp_init_value; // weak
 extern int monstkills[200];
@@ -190,3 +191,5 @@ extern int rnd60[4];
 //
 
 extern void (__fastcall *AiProc[])(int i);
+
+#endif /* __MONSTER_H__ */

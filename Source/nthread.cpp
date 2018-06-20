@@ -25,7 +25,6 @@ int nthread_inf = 0x7F800000; // weak
 /* rdata */
 static HANDLE sghThread = (HANDLE)0xFFFFFFFF; // idb
 
-//----- (00440DB3) --------------------------------------------------------
 struct nthread_cpp_init_1
 {
 	nthread_cpp_init_1()
@@ -36,7 +35,6 @@ struct nthread_cpp_init_1
 // 47F164: using guessed type int nthread_inf;
 // 679700: using guessed type int nthread_cpp_init_value;
 
-//----- (00440DBE) --------------------------------------------------------
 struct nthread_cpp_init_2
 {
 	nthread_cpp_init_2()
@@ -46,25 +44,21 @@ struct nthread_cpp_init_2
 	}
 } _nthread_cpp_init_2;
 
-//----- (00440DC8) --------------------------------------------------------
 void __cdecl nthread_init_mutex()
 {
 	InitializeCriticalSection(&sgMemCrit);
 }
 
-//----- (00440DD4) --------------------------------------------------------
 void __cdecl nthread_cleanup_mutex_atexit()
 {
 	atexit(nthread_cleanup_mutex);
 }
 
-//----- (00440DE0) --------------------------------------------------------
 void __cdecl nthread_cleanup_mutex()
 {
 	DeleteCriticalSection(&sgMemCrit);
 }
 
-//----- (00440DEC) --------------------------------------------------------
 void __fastcall nthread_terminate_game(char *pszFcn)
 {
 	char *v1; // esi
@@ -88,7 +82,6 @@ void __fastcall nthread_terminate_game(char *pszFcn)
 }
 // 67862D: using guessed type char gbGameDestroyed;
 
-//----- (00440E28) --------------------------------------------------------
 int __fastcall nthread_send_and_recv_turn(int cur_turn, int turn_delta)
 {
 	int v2; // ebx
@@ -130,7 +123,6 @@ int __fastcall nthread_send_and_recv_turn(int cur_turn, int turn_delta)
 // 679738: using guessed type int gdwTurnsInTransit;
 // 679754: using guessed type int dword_679754;
 
-//----- (00440EAA) --------------------------------------------------------
 int __fastcall nthread_recv_turns(int *pfSendAsync)
 {
 	int *v1; // esi
@@ -174,14 +166,12 @@ LABEL_11:
 // 679759: using guessed type char sgbPacketCountdown;
 // 679764: using guessed type int dword_679764;
 
-//----- (00440F56) --------------------------------------------------------
 void __cdecl nthread_set_turn_upper_bit()
 {
 	dword_679754 = 0x80000000;
 }
 // 679754: using guessed type int dword_679754;
 
-//----- (00440F61) --------------------------------------------------------
 void __fastcall nthread_start(bool set_turn_upper_bit)
 {
 	BOOL v1; // esi
@@ -262,7 +252,6 @@ void __fastcall nthread_start(bool set_turn_upper_bit)
 // 679760: using guessed type int gdwNormalMsgSize;
 // 679764: using guessed type int dword_679764;
 
-//----- (004410CF) --------------------------------------------------------
 unsigned int __stdcall nthread_handler(void *a1)
 {
 	signed int v1; // esi
@@ -293,7 +282,6 @@ unsigned int __stdcall nthread_handler(void *a1)
 // 679734: using guessed type char byte_679734;
 // 679764: using guessed type int dword_679764;
 
-//----- (00441145) --------------------------------------------------------
 void __cdecl nthread_cleanup()
 {
 	char *v0; // eax
@@ -321,7 +309,6 @@ void __cdecl nthread_cleanup()
 // 67975C: using guessed type int gdwLargestMsgSize;
 // 679760: using guessed type int gdwNormalMsgSize;
 
-//----- (004411C4) --------------------------------------------------------
 void __fastcall nthread_ignore_mutex(bool bStart)
 {
 	bool v1; // bl
@@ -338,7 +325,6 @@ void __fastcall nthread_ignore_mutex(bool bStart)
 }
 // 67975A: using guessed type char sgbThreadIsRunning;
 
-//----- (004411EF) --------------------------------------------------------
 bool __cdecl nthread_has_500ms_passed()
 {
 	DWORD v0; // eax

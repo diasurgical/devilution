@@ -16,7 +16,6 @@ int mpqapi_inf = 0x7F800000; // weak
 
 HANDLE sghArchive = (HANDLE)0xFFFFFFFF; // idb
 
-//----- (0043AE95) --------------------------------------------------------
 struct mpqapi_cpp_init
 {
 	mpqapi_cpp_init()
@@ -27,7 +26,6 @@ struct mpqapi_cpp_init
 // 47F148: using guessed type int mpqapi_inf;
 // 659B00: using guessed type int mpqapi_cpp_init_value;
 
-//----- (0043AEA0) --------------------------------------------------------
 bool __fastcall mpqapi_set_hidden(char *pszArchive, bool hidden)
 {
 	char *v2; // edi
@@ -49,7 +47,6 @@ bool __fastcall mpqapi_set_hidden(char *pszArchive, bool hidden)
 	return result;
 }
 
-//----- (0043AEDC) --------------------------------------------------------
 void __fastcall mpqapi_store_creation_time(char *pszArchive, int dwChar)
 {
 	int v2; // esi
@@ -77,7 +74,6 @@ void __fastcall mpqapi_store_creation_time(char *pszArchive, int dwChar)
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-//----- (0043AF4F) --------------------------------------------------------
 bool __fastcall mpqapi_reg_load_modification_time(char *dst, int size)
 {
 	unsigned int v2; // esi
@@ -106,7 +102,6 @@ bool __fastcall mpqapi_reg_load_modification_time(char *dst, int size)
 	return 1;
 }
 
-//----- (0043AFA5) --------------------------------------------------------
 void __fastcall mpqapi_xor_buf(char *pbData)
 {
 	signed int v1; // eax
@@ -126,7 +121,6 @@ void __fastcall mpqapi_xor_buf(char *pbData)
 	while ( v3 );
 }
 
-//----- (0043AFC4) --------------------------------------------------------
 bool __fastcall mpqapi_reg_store_modification_time(char *pbData, int dwLen)
 {
 	int v2; // ebx
@@ -153,7 +147,6 @@ bool __fastcall mpqapi_reg_store_modification_time(char *pbData, int dwLen)
 	return SRegSaveData("Diablo", "Video Player ", 0, (unsigned char *)v3, v2);
 }
 
-//----- (0043B002) --------------------------------------------------------
 void __fastcall mpqapi_remove_hash_entry(char *pszName)
 {
 	int v1; // eax
@@ -177,7 +170,6 @@ void __fastcall mpqapi_remove_hash_entry(char *pszName)
 }
 // 65AB0C: using guessed type int save_archive_modified;
 
-//----- (0043B054) --------------------------------------------------------
 void __fastcall mpqapi_alloc_block(int block_offset, int block_size)
 {
 	int v2; // esi
@@ -235,7 +227,6 @@ LABEL_11:
 	}
 }
 
-//----- (0043B0E4) --------------------------------------------------------
 _BLOCKENTRY *__fastcall mpqapi_new_block(int *block_index)
 {
 	_BLOCKENTRY *result; // eax
@@ -258,7 +249,6 @@ _BLOCKENTRY *__fastcall mpqapi_new_block(int *block_index)
 	return result;
 }
 
-//----- (0043B123) --------------------------------------------------------
 int __fastcall mpqapi_get_hash_index_of_path(char *pszName) // FetchHandle
 {
 	char *v1; // esi
@@ -273,7 +263,6 @@ int __fastcall mpqapi_get_hash_index_of_path(char *pszName) // FetchHandle
 	return mpqapi_get_hash_index(v4, v3, v2, 0);
 }
 
-//----- (0043B153) --------------------------------------------------------
 int __fastcall mpqapi_get_hash_index(short index, int hash_a, int hash_b, int locale)
 {
 	int v4; // ecx
@@ -303,7 +292,6 @@ int __fastcall mpqapi_get_hash_index(short index, int hash_a, int hash_b, int lo
 	return i;
 }
 
-//----- (0043B1BD) --------------------------------------------------------
 void __fastcall mpqapi_remove_hash_entries(bool (__stdcall *fnGetName)(int, char *))
 {
 	bool (__stdcall *v1)(int, char *); // edi
@@ -321,7 +309,6 @@ void __fastcall mpqapi_remove_hash_entries(bool (__stdcall *fnGetName)(int, char
 	}
 }
 
-//----- (0043B1F8) --------------------------------------------------------
 bool __fastcall mpqapi_write_file(char *pszName, char *pbData, int dwLen)
 {
 	char *v3; // edi
@@ -340,7 +327,6 @@ bool __fastcall mpqapi_write_file(char *pszName, char *pbData, int dwLen)
 }
 // 65AB0C: using guessed type int save_archive_modified;
 
-//----- (0043B23D) --------------------------------------------------------
 _BLOCKENTRY *__fastcall mpqapi_add_file(char *pszName, _BLOCKENTRY *pBlk, int block_index)
 {
 	char *v3; // edi
@@ -387,7 +373,6 @@ _BLOCKENTRY *__fastcall mpqapi_add_file(char *pszName, _BLOCKENTRY *pBlk, int bl
 	return v12;
 }
 
-//----- (0043B317) --------------------------------------------------------
 bool __fastcall mpqapi_write_file_contents(char *pszName, char *pbData, int dwLen, _BLOCKENTRY *pBlk)
 {
 	char *v4; // esi
@@ -491,7 +476,6 @@ LABEL_25:
 	return 1;
 }
 
-//----- (0043B51C) --------------------------------------------------------
 int __fastcall mpqapi_find_free_block(int size, int *block_size)
 {
 	_BLOCKENTRY *v2; // eax
@@ -529,7 +513,6 @@ int __fastcall mpqapi_find_free_block(int size, int *block_size)
 	return v5;
 }
 
-//----- (0043B570) --------------------------------------------------------
 void __fastcall mpqapi_rename(char *pszOld, char *pszNew)
 {
 	char *v2; // esi
@@ -552,13 +535,11 @@ void __fastcall mpqapi_rename(char *pszOld, char *pszNew)
 }
 // 65AB0C: using guessed type int save_archive_modified;
 
-//----- (0043B5AF) --------------------------------------------------------
 bool __fastcall mpqapi_has_file(char *pszName)
 {
 	return mpqapi_get_hash_index_of_path(pszName) != -1;
 }
 
-//----- (0043B5BF) --------------------------------------------------------
 bool __fastcall mpqapi_open_archive(char *pszArchive, bool hidden, int dwChar) // OpenMPQ
 {
 	char *v3; // ebp
@@ -627,7 +608,6 @@ LABEL_15:
 // 65AB14: using guessed type char save_archive_open;
 // 679660: using guessed type char gbMaxPlayers;
 
-//----- (0043B791) --------------------------------------------------------
 bool __fastcall mpqapi_parse_archive_header(TMPQHeader *pHdr, int *pdwNextFileStart) // ParseMPQHeader
 {
 	int *v2; // ebp
@@ -671,7 +651,6 @@ bool __fastcall mpqapi_parse_archive_header(TMPQHeader *pHdr, int *pdwNextFileSt
 // 65AB0C: using guessed type int save_archive_modified;
 // 65AB14: using guessed type char save_archive_open;
 
-//----- (0043B882) --------------------------------------------------------
 void __fastcall mpqapi_close_archive(char *pszArchive, bool bFree, int dwChar) // CloseMPQ
 {
 	char *v3; // esi
@@ -707,7 +686,6 @@ void __fastcall mpqapi_close_archive(char *pszArchive, bool bFree, int dwChar) /
 // 65AB0C: using guessed type int save_archive_modified;
 // 65AB14: using guessed type char save_archive_open;
 
-//----- (0043B8FD) --------------------------------------------------------
 void __fastcall mpqapi_store_modified_time(char *pszArchive, int dwChar)
 {
 	int v2; // esi
@@ -735,7 +713,6 @@ void __fastcall mpqapi_store_modified_time(char *pszArchive, int dwChar)
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-//----- (0043B970) --------------------------------------------------------
 void __fastcall mpqapi_flush_and_close(char *pszArchive, bool bFree, int dwChar)
 {
 	if ( sghArchive != (HANDLE)-1 )
@@ -756,7 +733,6 @@ void __fastcall mpqapi_flush_and_close(char *pszArchive, bool bFree, int dwChar)
 }
 // 65AB0C: using guessed type int save_archive_modified;
 
-//----- (0043B9CA) --------------------------------------------------------
 bool __cdecl mpqapi_write_header() // WriteMPQHeader
 {
 	bool result; // al
@@ -780,7 +756,6 @@ bool __cdecl mpqapi_write_header() // WriteMPQHeader
 	return result;
 }
 
-//----- (0043BA60) --------------------------------------------------------
 bool __cdecl mpqapi_write_block_table()
 {
 	int v1; // eax
@@ -798,7 +773,6 @@ bool __cdecl mpqapi_write_block_table()
 	return v2 && NumberOfBytesWritten == 0x8000;
 }
 
-//----- (0043BAEB) --------------------------------------------------------
 bool __cdecl mpqapi_write_hash_table()
 {
 	int v1; // eax
@@ -816,7 +790,6 @@ bool __cdecl mpqapi_write_hash_table()
 	return v2 && NumberOfBytesWritten == 0x8000;
 }
 
-//----- (0043BB79) --------------------------------------------------------
 bool __cdecl mpqapi_can_seek()
 {
 	bool result; // al
