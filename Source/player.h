@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __PLAYER_H__
+#define __PLAYER_H__
 
-//player
 extern int plr_lframe_size; // idb
 extern int plr_wframe_size; // idb
 extern char plr_gfx_flag; // weak
@@ -134,3 +135,5 @@ extern int MaxStats[3][4];
 extern int ExpLvlsTbl[51];
 extern char *ClassStrTbl[3];
 extern unsigned char fix[9];
+
+#endif /* __PLAYER_H__ */

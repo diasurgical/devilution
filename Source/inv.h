@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __INV_H__
+#define __INV_H__
 
-//inv
 extern int invflag;
 extern void *pInvCels;
 extern int drawsbarflag; // idb
@@ -54,3 +55,5 @@ extern InvXY InvRect[73];
 /* rdata */
 
 extern int AP2x2Tbl[10]; // weak
+
+#endif /* __INV_H__ */

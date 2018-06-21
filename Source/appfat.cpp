@@ -31,7 +31,6 @@ bool __cdecl appfat_cpp_free(void *a1)
 }
 */
 
-//----- (0040102A) --------------------------------------------------------
 char *__fastcall GetErr(int error_code)
 {
 	int v1; // edi
@@ -64,7 +63,6 @@ char *__fastcall GetErr(int error_code)
 	return sz_error_buf;
 }
 
-//----- (004010CE) --------------------------------------------------------
 void __fastcall GetDDErr(int error_code, char *error_buf, int error_buf_len)
 {
 	const char *v3; // eax
@@ -494,7 +492,6 @@ LABEL_182:
 	strncpy(error_buf, v3, error_buf_len);
 }
 
-//----- (00401831) --------------------------------------------------------
 void __fastcall GetDSErr(int error_code, char *error_buf, int error_buf_len)
 {
 	const char *v3; // eax
@@ -558,7 +555,6 @@ LABEL_29:
 	strncpy(error_buf, v3, error_buf_len);
 }
 
-//----- (0040193A) --------------------------------------------------------
 char *__cdecl GetLastErr()
 {
 	int v0; // eax
@@ -567,7 +563,6 @@ char *__cdecl GetLastErr()
 	return GetErr(v0);
 }
 
-//----- (00401947) --------------------------------------------------------
 void TermMsg(char *pszFmt, ...)
 {
 	va_list arglist; // [esp+8h] [ebp+8h]
@@ -580,7 +575,6 @@ void TermMsg(char *pszFmt, ...)
 	exit(1);
 }
 
-//----- (00401975) --------------------------------------------------------
 void __fastcall MsgBox(char *pszFmt, va_list va)
 {
 	char Text[256]; // [esp+0h] [ebp-100h]
@@ -591,7 +585,6 @@ void __fastcall MsgBox(char *pszFmt, va_list va)
 	MessageBoxA(ghMainWnd, Text, "ERROR", MB_TASKMODAL|MB_ICONHAND);
 }
 
-//----- (004019C7) --------------------------------------------------------
 void __cdecl FreeDlg()
 {
 	if ( terminating && cleanup_thread_id != GetCurrentThreadId() )
@@ -611,7 +604,6 @@ void __cdecl FreeDlg()
 // 4B7A38: using guessed type int cleanup_thread_id;
 // 679660: using guessed type char gbMaxPlayers;
 
-//----- (00401A30) --------------------------------------------------------
 void DrawDlg(char *pszFmt, ...)
 {
 	char text[256]; // [esp+0h] [ebp-100h]
@@ -622,7 +614,6 @@ void DrawDlg(char *pszFmt, ...)
 	SDrawMessageBox(text, "Diablo", MB_TASKMODAL|MB_ICONEXCLAMATION);
 }
 
-//----- (00401A65) --------------------------------------------------------
 void __fastcall DDErrDlg(int error_code, int log_line_nr, char *log_file_path)
 {
 	int v3; // esi
@@ -636,7 +627,6 @@ void __fastcall DDErrDlg(int error_code, int log_line_nr, char *log_file_path)
 	}
 }
 
-//----- (00401A88) --------------------------------------------------------
 void __fastcall DSErrDlg(int error_code, int log_line_nr, char *log_file_path)
 {
 	int v3; // esi
@@ -650,7 +640,6 @@ void __fastcall DSErrDlg(int error_code, int log_line_nr, char *log_file_path)
 	}
 }
 
-//----- (00401AAB) --------------------------------------------------------
 void __fastcall CenterDlg(HWND hDlg)
 {
 	LONG v1; // esi
@@ -677,7 +666,6 @@ void __fastcall CenterDlg(HWND hDlg)
 	}
 }
 
-//----- (00401B3D) --------------------------------------------------------
 void __fastcall TermDlg(int template_id, int error_code, char *log_file_path, int log_line_nr)
 {
 	int v4; // ebx
@@ -701,7 +689,6 @@ void __fastcall TermDlg(int template_id, int error_code, char *log_file_path, in
 	TermMsg(0);
 }
 
-//----- (00401BCA) --------------------------------------------------------
 bool __stdcall FuncDlg(HWND hDlg, UINT uMsg, WPARAM wParam, char *text)
 {
 	if ( uMsg == WM_INITDIALOG )
@@ -724,7 +711,6 @@ bool __stdcall FuncDlg(HWND hDlg, UINT uMsg, WPARAM wParam, char *text)
 	return 1;
 }
 
-//----- (00401C0F) --------------------------------------------------------
 void __fastcall TextDlg(HWND hDlg, char *text)
 {
 	char *v2; // esi
@@ -737,7 +723,6 @@ void __fastcall TextDlg(HWND hDlg, char *text)
 		SetDlgItemTextA(v3, 1000, v2);
 }
 
-//----- (00401C2E) --------------------------------------------------------
 void __fastcall ErrDlg(template_id template_id, int error_code, char *log_file_path, int log_line_nr)
 {
 	char *v4; // esi
@@ -758,7 +743,6 @@ void __fastcall ErrDlg(template_id template_id, int error_code, char *log_file_p
 	DialogBoxParamA(ghInst, (LPCSTR)v6, ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)dwInitParam);
 }
 
-//----- (00401C9C) --------------------------------------------------------
 void __fastcall FileErrDlg(char *error)
 {
 	char *v1; // esi
@@ -772,7 +756,6 @@ void __fastcall FileErrDlg(char *error)
 	TermMsg(0);
 }
 
-//----- (00401CE1) --------------------------------------------------------
 void __fastcall DiskFreeDlg(char *error)
 {
 	char *v1; // esi
@@ -784,7 +767,6 @@ void __fastcall DiskFreeDlg(char *error)
 	TermMsg(0);
 }
 
-//----- (00401D1D) --------------------------------------------------------
 bool __cdecl InsertCDDlg()
 {
 	int v0; // edi
@@ -797,7 +779,6 @@ bool __cdecl InsertCDDlg()
 	return v0 == 1;
 }
 
-//----- (00401D68) --------------------------------------------------------
 void __fastcall DirErrDlg(char *error)
 {
 	char *v1; // esi

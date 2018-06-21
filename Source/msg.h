@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __MSG_H__
+#define __MSG_H__
 
-//msg
 extern int sgdwOwnerWait; // weak
 extern int msg_cpp_init_value; // weak
 extern int sgdwRecvOffset; // idb
@@ -160,3 +161,5 @@ int __fastcall On_REMSHIELD(int unused, int pnum);
 /* data */
 
 extern int msg_inf; // weak
+
+#endif /* __MSG_H__ */

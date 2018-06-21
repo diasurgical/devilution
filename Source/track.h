@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __TRACK_H__
+#define __TRACK_H__
 
-//track
 extern bool sgbIsScrolling; // weak
 extern int track_cpp_init_value; // weak
 extern int sgdwLastWalk; // weak
@@ -14,3 +15,5 @@ bool __cdecl track_isscrolling();
 /* data */
 
 extern int track_inf; // weak
+
+#endif /* __TRACK_H__ */

@@ -32,7 +32,6 @@ char *music_toggle_names[] = { "Music", "Music Disabled" };
 char *sound_toggle_names[] = { "Sound", "Sound Disabled" };
 char *color_cycling_toggle_names[] = { "Color Cycling Off", "Color Cycling On" };
 
-//----- (00418866) --------------------------------------------------------
 void __cdecl gamemenu_previous()
 {
 	void (__cdecl *v0)(); // edx
@@ -53,7 +52,6 @@ void __cdecl gamemenu_previous()
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-//----- (0041888F) --------------------------------------------------------
 void __cdecl gamemenu_enable_single()
 {
 	bool v0; // dl
@@ -65,19 +63,16 @@ void __cdecl gamemenu_enable_single()
 	gmenu_enable(sgSingleMenu, v0);
 }
 
-//----- (004188C8) --------------------------------------------------------
 void __cdecl gamemenu_enable_multi()
 {
 	gmenu_enable(&sgMultiMenu[2], deathflag);
 }
 
-//----- (004188D8) --------------------------------------------------------
 void __cdecl gamemenu_off()
 {
 	gmenu_call_proc(0, 0);
 }
 
-//----- (004188E1) --------------------------------------------------------
 void __cdecl gamemenu_handle_previous()
 {
 	if ( gmenu_exception() )
@@ -86,7 +81,6 @@ void __cdecl gamemenu_handle_previous()
 		gamemenu_previous();
 }
 
-//----- (004188F9) --------------------------------------------------------
 void __cdecl gamemenu_new_game()
 {
 	int i; // eax
@@ -106,7 +100,6 @@ void __cdecl gamemenu_new_game()
 // 525650: using guessed type int gbRunGame;
 // 52571C: using guessed type int drawpanflag;
 
-//----- (0041893B) --------------------------------------------------------
 void __cdecl gamemenu_quit_game()
 {
 	gamemenu_new_game();
@@ -114,7 +107,6 @@ void __cdecl gamemenu_quit_game()
 }
 // 525698: using guessed type int gbRunGameResult;
 
-//----- (00418948) --------------------------------------------------------
 void __cdecl gamemenu_load_game()
 {
 	LRESULT (__stdcall *saveProc)(HWND, UINT, WPARAM, LPARAM); // edi
@@ -138,7 +130,6 @@ void __cdecl gamemenu_load_game()
 }
 // 52571C: using guessed type int drawpanflag;
 
-//----- (004189BE) --------------------------------------------------------
 void __cdecl gamemenu_save_game()
 {
 	LRESULT (__stdcall *saveProc)(HWND, UINT, WPARAM, LPARAM); // edi
@@ -168,13 +159,11 @@ void __cdecl gamemenu_save_game()
 }
 // 52571C: using guessed type int drawpanflag;
 
-//----- (00418A42) --------------------------------------------------------
 void __cdecl gamemenu_restart_town()
 {
 	NetSendCmd(1u, CMD_RETOWN);
 }
 
-//----- (00418A4C) --------------------------------------------------------
 void __cdecl gamemenu_options()
 {
 	gamemenu_get_music();
@@ -184,13 +173,11 @@ void __cdecl gamemenu_options()
 	gmenu_call_proc(sgOptionMenu, 0);
 }
 
-//----- (00418A6C) --------------------------------------------------------
 void __cdecl gamemenu_get_music()
 {
 	gamemenu_sound_music_toggle(music_toggle_names, sgOptionMenu, sound_get_or_set_music_volume(1));
 }
 
-//----- (00418A85) --------------------------------------------------------
 void __fastcall gamemenu_sound_music_toggle(char **names, TMenuItem *menu_item, int gamma)
 {
 	if ( gbSndInited )
@@ -207,26 +194,22 @@ void __fastcall gamemenu_sound_music_toggle(char **names, TMenuItem *menu_item, 
 	}
 }
 
-//----- (00418AC6) --------------------------------------------------------
 void __cdecl gamemenu_get_sound()
 {
 	gamemenu_sound_music_toggle(sound_toggle_names, &sgOptionMenu[1], sound_get_or_set_sound_volume(1));
 }
 
-//----- (00418ADF) --------------------------------------------------------
 void __cdecl gamemenu_get_color_cycling()
 {
 	sgOptionMenu[3].pszStr = color_cycling_toggle_names[palette_get_colour_cycling()];
 }
 
-//----- (00418AF4) --------------------------------------------------------
 void __cdecl gamemenu_get_gamma()
 {
 	gmenu_slider_3(&sgOptionMenu[2], 15);
 	gmenu_slider_1(&sgOptionMenu[2], 30, 100, palette_update_gamma(0));
 }
 
-//----- (00418B1A) --------------------------------------------------------
 void __fastcall gamemenu_music_volume(int a1)
 {
 	int v1; // esi
@@ -266,13 +249,11 @@ LABEL_11:
 // 4A22D4: using guessed type char gbMusicOn;
 // 5BB1ED: using guessed type char leveltype;
 
-//----- (00418BA3) --------------------------------------------------------
 int __fastcall gamemenu_slider_music_sound(TMenuItem *menu_item)
 {
 	return gmenu_slider_get(menu_item, -1600, 0);
 }
 
-//----- (00418BB0) --------------------------------------------------------
 void __fastcall gamemenu_sound_volume(int a1)
 {
 	int v1; // ecx
@@ -315,7 +296,6 @@ void __fastcall gamemenu_sound_volume(int a1)
 }
 // 4A22D5: using guessed type char gbSoundOn;
 
-//----- (00418C30) --------------------------------------------------------
 void __fastcall gamemenu_gamma(int a1)
 {
 	int v1; // eax
@@ -335,13 +315,11 @@ void __fastcall gamemenu_gamma(int a1)
 	gamemenu_get_gamma();
 }
 
-//----- (00418C5A) --------------------------------------------------------
 int __cdecl gamemenu_slider_gamma()
 {
 	return gmenu_slider_get(&sgOptionMenu[2], 30, 100);
 }
 
-//----- (00418C6A) --------------------------------------------------------
 void __cdecl gamemenu_color_cycling()
 {
 	palette_set_color_cycling(palette_get_colour_cycling() == 0);

@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __STORES_H__
+#define __STORES_H__
 
-//stores
 extern int stextup; // weak
 extern int storenumh; // weak
 extern int stextlhold; // weak
@@ -135,3 +136,5 @@ void __cdecl ReleaseStoreBtn();
 
 extern int SStringY[24];
 extern char *talkname[9];
+
+#endif /* __STORES_H__ */

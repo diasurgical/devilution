@@ -8,7 +8,6 @@ int sgdwMsgCmdTimer;
 
 int msgcmd_inf = 0x7F800000; // weak
 
-//----- (0043F84E) --------------------------------------------------------
 struct msgcmd_cpp_init_1
 {
 	msgcmd_cpp_init_1()
@@ -19,7 +18,6 @@ struct msgcmd_cpp_init_1
 // 47F150: using guessed type int msgcmd_inf;
 // 6761A0: using guessed type int msgcmd_cpp_init_value;
 
-//----- (0043F859) --------------------------------------------------------
 struct msgcmd_cpp_init_2
 {
 	msgcmd_cpp_init_2()
@@ -29,32 +27,27 @@ struct msgcmd_cpp_init_2
 	}
 } _msgcmd_cpp_init_2;
 
-//----- (0043F863) --------------------------------------------------------
 void __cdecl msgcmd_init_event()
 {
 	msgcmd_init_chatcmd(&sgChat_Cmd);
 }
 
-//----- (0043F86D) --------------------------------------------------------
 void __cdecl msgcmd_cleanup_chatcmd_atexit()
 {
 	atexit(msgcmd_cleanup_chatcmd);
 }
 
-//----- (0043F879) --------------------------------------------------------
 void __cdecl msgcmd_cleanup_chatcmd()
 {
 	msgcmd_cleanup_chatcmd_1(&sgChat_Cmd);
 	msgcmd_cleanup_extern_msg(sgChat_Cmd.extern_msgs);
 }
 
-//----- (0043F88D) --------------------------------------------------------
 void __cdecl msgcmd_cmd_cleanup()
 {
 	msgcmd_free_event(&sgChat_Cmd);
 }
 
-//----- (0043F897) --------------------------------------------------------
 void __cdecl msgcmd_send_chat()
 {
 	ServerCommand *v0; // esi
@@ -73,7 +66,6 @@ void __cdecl msgcmd_send_chat()
 	}
 }
 
-//----- (0043F8D4) --------------------------------------------------------
 bool __fastcall msgcmd_add_server_cmd_W(char *chat_message)
 {
 	if ( *chat_message != '/' )
@@ -82,7 +74,6 @@ bool __fastcall msgcmd_add_server_cmd_W(char *chat_message)
 	return 1;
 }
 
-//----- (0043F8E5) --------------------------------------------------------
 void __fastcall msgcmd_add_server_cmd(char *command)
 {
 	char *v1; // edi
@@ -104,7 +95,6 @@ void __fastcall msgcmd_add_server_cmd(char *command)
 	}
 }
 
-//----- (0043F920) --------------------------------------------------------
 void __fastcall msgcmd_init_chatcmd(ChatCmd *chat_cmd)
 {
 	ServerCommand **v1; // edx
@@ -117,7 +107,6 @@ void __fastcall msgcmd_init_chatcmd(ChatCmd *chat_cmd)
 	chat_cmd->extern_msgs[1] = (ServerCommand *)~(unsigned int)chat_cmd->extern_msgs;
 }
 
-//----- (0043F936) --------------------------------------------------------
 void __fastcall msgcmd_free_event(ChatCmd *a1)
 {
 	int v1; // edx
@@ -135,7 +124,6 @@ void __fastcall msgcmd_free_event(ChatCmd *a1)
 	}
 }
 
-//----- (0043F95E) --------------------------------------------------------
 bool __fastcall msgcmd_delete_server_cmd_W(ChatCmd *cmd, ServerCommand *extern_msg)
 {
 	char *v2; // eax
@@ -156,7 +144,6 @@ bool __fastcall msgcmd_delete_server_cmd_W(ChatCmd *cmd, ServerCommand *extern_m
 	return v4;
 }
 
-//----- (0043F999) --------------------------------------------------------
 ChatCmd *__fastcall msgcmd_alloc_event(ChatCmd *a1, int a2, int a3, int a4, int a5)
 {
 	int v5; // eax
@@ -184,7 +171,6 @@ ChatCmd *__fastcall msgcmd_alloc_event(ChatCmd *a1, int a2, int a3, int a4, int 
 	return v9;
 }
 
-//----- (0043F9E5) --------------------------------------------------------
 void __fastcall msgcmd_remove_event(ChatCmd *a1, int a2)
 {
 	ServerCommand **v2; // esi
@@ -199,7 +185,6 @@ void __fastcall msgcmd_remove_event(ChatCmd *a1, int a2)
 	}
 }
 
-//----- (0043FA14) --------------------------------------------------------
 void __fastcall msgcmd_event_type(ChatCmd *a1, int a2, int *a3, int a4, int a5)
 {
 	ChatCmd *v5; // edi
@@ -248,7 +233,6 @@ void __fastcall msgcmd_event_type(ChatCmd *a1, int a2, int *a3, int a4, int a5)
 	}
 }
 
-//----- (0043FA85) --------------------------------------------------------
 void __fastcall msgcmd_cleanup_chatcmd_1(ChatCmd *a1)
 {
 	ChatCmd *v1; // esi
@@ -264,7 +248,6 @@ void __fastcall msgcmd_cleanup_chatcmd_1(ChatCmd *a1)
 	}
 }
 
-//----- (0043FA98) --------------------------------------------------------
 void __fastcall msgcmd_cleanup_extern_msg(ServerCommand **extern_msgs)
 {
 	ServerCommand *v1; // esi

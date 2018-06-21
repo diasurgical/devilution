@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __OBJECTS_H__
+#define __OBJECTS_H__
 
-//objects
 extern int trapid; // weak
 extern int trapdir; // weak
 extern int pObjCels[40];
@@ -158,3 +159,5 @@ extern unsigned char shrinemax[26];
 extern unsigned char shrineavail[26];
 extern char *StoryBookName[9];
 extern int StoryText[3][3];
+
+#endif /* __OBJECTS_H__ */

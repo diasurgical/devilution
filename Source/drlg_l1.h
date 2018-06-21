@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __DRLG_L1_H__
+#define __DRLG_L1_H__
 
-//drlg_l1
 extern char L5dungeon[80][80];
 extern char mydflags[40][40];
 extern int setloadflag; // weak
@@ -63,3 +64,5 @@ extern unsigned char PWATERIN[];
 
 /* rdata */
 extern unsigned char L5ConvTbl[16];
+
+#endif /* __DRLG_L1_H__ */

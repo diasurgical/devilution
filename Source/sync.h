@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __SYNC_H__
+#define __SYNC_H__
 
-//sync
 extern short sync_word_6AA708[200];
 extern int dword_6AA898; // weak
 extern short sync_word_6AA89C[200];
@@ -16,3 +17,5 @@ char __fastcall SyncPlrInv(TSyncHeader *pItem);
 int __fastcall SyncData(int pnum, TSyncHeader *packet);
 void __fastcall sync_monster_data(int pnum, TSyncMonster *packet);
 void __cdecl sync_clear_pkt();
+
+#endif /* __SYNC_H__ */

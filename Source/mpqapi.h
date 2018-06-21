@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __MPQAPI_H__
+#define __MPQAPI_H__
 
-//mpqapi
 extern int mpqapi_cpp_init_value; // weak
 extern int sgdwMpqOffset; // idb
 extern char mpq_buf[4096];
@@ -45,3 +46,5 @@ extern int mpqapi_inf; // weak
 /* rdata */
 
 extern HANDLE sghArchive; // idb
+
+#endif /* __MPQAPI_H__ */

@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __MINITEXT_H__
+#define __MINITEXT_H__
 
-//minitext
 extern int qtexty; // weak
 extern char *qtextptr;
 extern int qtextSpd; // weak
@@ -25,3 +26,5 @@ extern unsigned char mfontkern[56];
 /* rdata */
 
 extern int qscroll_spd_tbl[9];
+
+#endif /* __MINITEXT_H__ */

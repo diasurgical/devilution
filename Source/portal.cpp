@@ -8,7 +8,6 @@ int portalindex;
 int WarpDropX[4] = { 57, 59, 61, 63 };
 int WarpDropY[4] = { 40, 40, 40, 40 };
 
-//----- (00450FFE) --------------------------------------------------------
 void __cdecl InitPortals()
 {
 	int i; // edi
@@ -20,7 +19,6 @@ void __cdecl InitPortals()
 	}
 }
 
-//----- (00451024) --------------------------------------------------------
 void __fastcall SetPortalStats(int i, int o, int x, int y, int lvl, int lvltype)
 {
 	portal[i].x = x;
@@ -31,7 +29,6 @@ void __fastcall SetPortalStats(int i, int o, int x, int y, int lvl, int lvltype)
 	portal[i].ltype = lvltype;
 }
 
-//----- (00451062) --------------------------------------------------------
 void __fastcall AddWarpMissile(int i, int x, int y)
 {
 	int mi; // eax
@@ -51,7 +48,6 @@ void __fastcall AddWarpMissile(int i, int x, int y)
 	}
 }
 
-//----- (004510D6) --------------------------------------------------------
 void __cdecl SyncPortals()
 {
 	int v0; // edi
@@ -86,13 +82,11 @@ void __cdecl SyncPortals()
 // 5CF31D: using guessed type char setlevel;
 // 69BD04: using guessed type int questlog;
 
-//----- (00451131) --------------------------------------------------------
 void __fastcall AddInTownPortal(int i)
 {
 	AddWarpMissile(i, WarpDropX[i], WarpDropY[i]);
 }
 
-//----- (00451145) --------------------------------------------------------
 void __fastcall ActivatePortal(int i, int x, int y, int lvl, int lvltype, int sp)
 {
 	portal[i].open = 1;
@@ -107,13 +101,11 @@ void __fastcall ActivatePortal(int i, int x, int y, int lvl, int lvltype, int sp
 	}
 }
 
-//----- (0045118A) --------------------------------------------------------
 void __fastcall DeactivatePortal(int i)
 {
 	portal[i].open = 0;
 }
 
-//----- (00451196) --------------------------------------------------------
 bool __fastcall PortalOnLevel(int i)
 {
 	if ( portal[i].level == currlevel )
@@ -122,7 +114,6 @@ bool __fastcall PortalOnLevel(int i)
 		return currlevel == 0;
 }
 
-//----- (004511B8) --------------------------------------------------------
 void __fastcall RemovePortalMissile(int id)
 {
 	int i; // esi
@@ -144,13 +135,11 @@ void __fastcall RemovePortalMissile(int id)
 	}
 }
 
-//----- (00451234) --------------------------------------------------------
 void __fastcall SetCurrentPortal(int p)
 {
 	portalindex = p;
 }
 
-//----- (0045123B) --------------------------------------------------------
 void __cdecl GetPortalLevel()
 {
 	if ( currlevel )
@@ -187,7 +176,6 @@ void __cdecl GetPortalLevel()
 // 5CCB10: using guessed type char setlvlnum;
 // 5CF31D: using guessed type char setlevel;
 
-//----- (004512E3) --------------------------------------------------------
 void __cdecl GetPortalLvlPos()
 {
 	if ( currlevel )
@@ -208,7 +196,6 @@ void __cdecl GetPortalLvlPos()
 	}
 }
 
-//----- (00451346) --------------------------------------------------------
 bool __fastcall PosOkPortal(int level, int x, int y)
 {
 	int *v3; // eax

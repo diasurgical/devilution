@@ -22,7 +22,6 @@ int init_inf = 0x7F800000; // weak
 char gszVersionNumber[260] = "internal version unknown";
 char gszProductName[260] = "Diablo v1.09";
 
-//----- (0041A7B8) --------------------------------------------------------
 struct init_cpp_init
 {
 	init_cpp_init()
@@ -33,7 +32,6 @@ struct init_cpp_init
 // 47AE20: using guessed type int init_inf;
 // 63497C: using guessed type int init_cpp_init_value;
 
-//----- (0041A7C3) --------------------------------------------------------
 void __fastcall init_cleanup(bool show_cursor)
 {
 	int v1; // edi
@@ -68,7 +66,6 @@ void __fastcall init_cleanup(bool show_cursor)
 		ShowCursor(1);
 }
 
-//----- (0041A84C) --------------------------------------------------------
 void __cdecl init_run_office_from_start_menu()
 {
 	HWND v0; // eax
@@ -93,7 +90,6 @@ void __cdecl init_run_office_from_start_menu()
 }
 // 634CA0: using guessed type int killed_mom_parent;
 
-//----- (0041A8B9) --------------------------------------------------------
 void __fastcall init_run_office(char *dir)
 {
 	char *v1; // esi
@@ -142,7 +138,6 @@ void __fastcall init_run_office(char *dir)
 	}
 }
 
-//----- (0041AA2C) --------------------------------------------------------
 void __fastcall init_disable_screensaver(bool disable)
 {
 	bool v1; // al
@@ -173,7 +168,6 @@ void __fastcall init_disable_screensaver(bool disable)
 	}
 }
 
-//----- (0041AAC5) --------------------------------------------------------
 void __cdecl init_create_window()
 {
 	int nHeight; // eax
@@ -217,7 +211,6 @@ void __cdecl init_create_window()
 	init_disable_screensaver(1);
 }
 
-//----- (0041AC00) --------------------------------------------------------
 void __cdecl init_kill_mom_parent()
 {
 	HWND v0; // eax
@@ -231,7 +224,6 @@ void __cdecl init_kill_mom_parent()
 }
 // 634CA0: using guessed type int killed_mom_parent;
 
-//----- (0041AC21) --------------------------------------------------------
 HWND __cdecl init_find_mom_parent()
 {
 	HWND i; // eax
@@ -250,7 +242,6 @@ HWND __cdecl init_find_mom_parent()
 	return v1;
 }
 
-//----- (0041AC71) --------------------------------------------------------
 void __cdecl init_await_mom_parent_exit()
 {
 	DWORD v0; // edi
@@ -265,7 +256,6 @@ void __cdecl init_await_mom_parent_exit()
 	while ( GetTickCount() - v0 <= 4000 );
 }
 
-//----- (0041ACA1) --------------------------------------------------------
 void __cdecl init_archives()
 {
 	void *a1; // [esp+8h] [ebp-8h]
@@ -294,7 +284,6 @@ void __cdecl init_archives()
 	patch_rt_mpq = init_test_access(patch_rt_mpq_path, "\\patch_rt.mpq", "DiabloInstall", 2000, 0);
 }
 
-//----- (0041AD72) --------------------------------------------------------
 void *__fastcall init_test_access(char *mpq_path, char *mpq_name, char *reg_loc, int flags, bool on_cd)
 {
 	char *v5; // esi
@@ -361,7 +350,6 @@ void *__fastcall init_test_access(char *mpq_path, char *mpq_name, char *reg_loc,
 	return 0;
 }
 
-//----- (0041AF22) --------------------------------------------------------
 char *__fastcall init_strip_trailing_slash(char *path)
 {
 	char *result; // eax
@@ -375,7 +363,6 @@ char *__fastcall init_strip_trailing_slash(char *path)
 	return result;
 }
 
-//----- (0041AF3A) --------------------------------------------------------
 int __fastcall init_read_test_file(char *mpq_path, char *mpq_name, int flags, void **archive)
 {
 	char *v4; // edi
@@ -412,7 +399,6 @@ int __fastcall init_read_test_file(char *mpq_path, char *mpq_name, int flags, vo
 	return 1;
 }
 
-//----- (0041AFCE) --------------------------------------------------------
 void __cdecl init_get_file_info()
 {
 	int v0; // eax
@@ -445,7 +431,6 @@ void __cdecl init_get_file_info()
 	}
 }
 
-//----- (0041B06C) --------------------------------------------------------
 LRESULT __stdcall init_palette(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
 	if ( Msg > WM_ERASEBKGND )
@@ -490,7 +475,6 @@ LRESULT __stdcall init_palette(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam
 }
 // 52571C: using guessed type int drawpanflag;
 
-//----- (0041B105) --------------------------------------------------------
 void __fastcall init_activate_window(HWND hWnd, bool activated)
 {
 	LONG dwNewLong; // eax
@@ -516,7 +500,6 @@ void __fastcall init_activate_window(HWND hWnd, bool activated)
 // 52571C: using guessed type int drawpanflag;
 // 634980: using guessed type int window_activated;
 
-//----- (0041B15F) --------------------------------------------------------
 LRESULT __stdcall init_redraw_window(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
 	LRESULT result; // eax
@@ -528,7 +511,6 @@ LRESULT __stdcall init_redraw_window(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM 
 	return result;
 }
 
-//----- (0041B184) --------------------------------------------------------
 LRESULT (__stdcall *SetWindowProc(void *func))(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	LRESULT (__stdcall *result)(HWND, UINT, WPARAM, LPARAM); // eax

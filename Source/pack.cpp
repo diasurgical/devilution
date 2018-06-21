@@ -6,7 +6,6 @@ int pack_cpp_init_value; // weak
 
 int pack_inf = 0x7F800000; // weak
 
-//----- (0044875A) --------------------------------------------------------
 struct pack_cpp_init
 {
 	pack_cpp_init()
@@ -17,7 +16,6 @@ struct pack_cpp_init
 // 47F168: using guessed type int pack_inf;
 // 67D7C8: using guessed type int pack_cpp_init_value;
 
-//----- (00448765) --------------------------------------------------------
 void __fastcall PackPlayer(PkPlayerStruct *pPack, int pnum, bool manashield)
 {
 	PlayerStruct *pPlayer; // edi
@@ -86,7 +84,6 @@ void __fastcall PackPlayer(PkPlayerStruct *pPack, int pnum, bool manashield)
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-//----- (00448953) --------------------------------------------------------
 void __fastcall PackItem(PkItemStruct *id, ItemStruct *is)
 {
 	short v2; // ax
@@ -130,7 +127,6 @@ void __fastcall PackItem(PkItemStruct *id, ItemStruct *is)
 	}
 }
 
-//----- (00448A5E) --------------------------------------------------------
 void __fastcall VerifyGoldSeeds(PlayerStruct *pPlayer)
 {
 	int i; // ebp
@@ -155,7 +151,6 @@ void __fastcall VerifyGoldSeeds(PlayerStruct *pPlayer)
 	}
 }
 
-//----- (00448AD0) --------------------------------------------------------
 void __fastcall UnPackPlayer(PkPlayerStruct *pPack, int pnum, bool killok)
 {
 	PlayerStruct *pPlayer; // esi
@@ -246,7 +241,6 @@ void __fastcall UnPackPlayer(PkPlayerStruct *pPack, int pnum, bool killok)
 	pPlayer->pManaShield = pPack->pManaShield;
 }
 
-//----- (00448D48) --------------------------------------------------------
 void __fastcall UnPackItem(PkItemStruct *is, ItemStruct *id)
 {
 	PkItemStruct *v2; // esi

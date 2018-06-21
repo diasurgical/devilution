@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __DTHREAD_H__
+#define __DTHREAD_H__
 
-//dthread
 extern int dthread_cpp_init_value; // weak
 extern unsigned int glpDThreadId; // idb
 extern TMegaPkt *sgpInfoHead; /* may not be right struct */
@@ -20,3 +21,5 @@ void __cdecl dthread_cleanup();
 
 /* data */
 extern int dthread_inf; // weak
+
+#endif /* __DTHREAD_H__ */

@@ -1,4 +1,6 @@
 //HEADER_GOES_HERE
+#ifndef __SHA_H__
+#define __SHA_H__
 
 /*
  *  Define the SHA1 circular left shift macro
@@ -16,3 +18,5 @@ void __fastcall SHA1Calculate(int n, const char *data, char Message_Digest[SHA1H
 void __fastcall SHA1Input(SHA1Context *context, const char *message_array, int len);
 void __fastcall SHA1ProcessMessageBlock(SHA1Context *context);
 void __fastcall SHA1Reset(int n);
+
+#endif /* __SHA_H__ */

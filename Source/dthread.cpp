@@ -14,7 +14,6 @@ int dthread_inf = 0x7F800000; // weak
 /* rdata */
 static HANDLE sghThread = (HANDLE)0xFFFFFFFF; // idb
 
-//----- (0041509D) --------------------------------------------------------
 struct dthread_cpp_init_1
 {
 	dthread_cpp_init_1()
@@ -25,8 +24,6 @@ struct dthread_cpp_init_1
 // 47A460: using guessed type int dthread_inf;
 // 52A4E0: using guessed type int dthread_cpp_init_value;
 
-//----- (004150A8) --------------------------------------------------------
-
 void __cdecl dthread_cpp_init_2()
 {
     dthread_init_mutex();
@@ -34,25 +31,21 @@ void __cdecl dthread_cpp_init_2()
 }
 
 
-//----- (004150B2) --------------------------------------------------------
 void __cdecl dthread_init_mutex()
 {
 	InitializeCriticalSection(&sgMemCrit);
 }
 
-//----- (004150BE) --------------------------------------------------------
 void __cdecl dthread_cleanup_mutex_atexit()
 {
 	atexit(dthread_cleanup_mutex);
 }
 
-//----- (004150CA) --------------------------------------------------------
 void __cdecl dthread_cleanup_mutex()
 {
 	DeleteCriticalSection(&sgMemCrit);
 }
 
-//----- (004150D6) --------------------------------------------------------
 void __fastcall dthread_remove_player(int pnum)
 {
 	int v1; // edi
@@ -68,7 +61,6 @@ void __fastcall dthread_remove_player(int pnum)
 	LeaveCriticalSection(&sgMemCrit);
 }
 
-//----- (00415109) --------------------------------------------------------
 void __fastcall dthread_send_delta(int pnum, int cmd, void *pbSrc, int dwLen)
 {
 	char v4; // bl
@@ -104,7 +96,6 @@ void __fastcall dthread_send_delta(int pnum, int cmd, void *pbSrc, int dwLen)
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-//----- (00415186) --------------------------------------------------------
 void __cdecl dthread_start()
 {
 	char *v0; // eax
@@ -130,7 +121,6 @@ void __cdecl dthread_start()
 // 52A508: using guessed type char byte_52A508;
 // 679660: using guessed type char gbMaxPlayers;
 
-//----- (004151F3) --------------------------------------------------------
 unsigned int __stdcall dthread_handler(void *a1)
 {
 	char *v1; // eax
@@ -170,7 +160,6 @@ unsigned int __stdcall dthread_handler(void *a1)
 // 52A508: using guessed type char byte_52A508;
 // 679730: using guessed type int gdwDeltaBytesSec;
 
-//----- (004152C0) --------------------------------------------------------
 void __cdecl dthread_cleanup()
 {
 	char *v0; // eax

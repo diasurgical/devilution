@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __DRLG_L2_H__
+#define __DRLG_L2_H__
 
-//drlg_l2
 extern int nSx1;
 extern int nSx2; // weak
 extern int nSy1;
@@ -168,3 +169,5 @@ extern unsigned char CTRDOOR6[];
 extern unsigned char CTRDOOR7[];
 extern unsigned char CTRDOOR8[];
 extern int Patterns[100][10];
+
+#endif /* __DRLG_L2_H__ */

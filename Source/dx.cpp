@@ -17,7 +17,6 @@ HMODULE ghDiabMod; // idb
 
 int dx_inf = 0x7F800000; // weak
 
-//----- (00415367) --------------------------------------------------------
 struct dx_cpp_init_1
 {
 	dx_cpp_init_1()
@@ -28,32 +27,27 @@ struct dx_cpp_init_1
 // 47A464: using guessed type int dx_inf;
 // 52A514: using guessed type int dx_cpp_init_value;
 
-//----- (00415372) --------------------------------------------------------
 void __cdecl dx_cpp_init_2()
 {
     dx_init_mutex();
     dx_cleanup_mutex_atexit();
 }
 
-//----- (0041537C) --------------------------------------------------------
 void __cdecl dx_init_mutex()
 {
 	InitializeCriticalSection(&sgMemCrit);
 }
 
-//----- (00415388) --------------------------------------------------------
 void __cdecl dx_cleanup_mutex_atexit()
 {
 	atexit(dx_cleanup_mutex);
 }
 
-//----- (00415394) --------------------------------------------------------
 void __cdecl dx_cleanup_mutex()
 {
 	DeleteCriticalSection(&sgMemCrit);
 }
 
-//----- (004153A0) --------------------------------------------------------
 void __fastcall dx_init(HWND hWnd)
 {
 	HWND v1; // esi
@@ -103,7 +97,6 @@ void __fastcall dx_init(HWND hWnd)
 // 484364: using guessed type int fullscreen;
 // 52A549: using guessed type char gbEmulate;
 
-//----- (004154B5) --------------------------------------------------------
 void __cdecl dx_create_back_buffer()
 {
 	int v0; // eax
@@ -146,7 +139,6 @@ void __cdecl dx_create_back_buffer()
 }
 // 52A548: using guessed type char gbBackBuf;
 
-//----- (004155C2) --------------------------------------------------------
 void __cdecl dx_create_primary_surface()
 {
 	int v0; // eax
@@ -161,7 +153,6 @@ void __cdecl dx_create_primary_surface()
 		TermDlg(104, v0, "C:\\Src\\Diablo\\Source\\dx.cpp", 109);
 }
 
-//----- (0041561A) --------------------------------------------------------
 HRESULT __fastcall dx_DirectDrawCreate(GUID *guid, IDirectDraw **DD, void *unknown)
 {
 	IDirectDraw **v3; // ebp
@@ -190,7 +181,6 @@ HRESULT __fastcall dx_DirectDrawCreate(GUID *guid, IDirectDraw **DD, void *unkno
 	return ((int (__stdcall *)(GUID *, IDirectDraw **, void *))v5)(v8, v3, unknown);
 }
 
-//----- (0041569A) --------------------------------------------------------
 void __cdecl dx_lock_mutex()
 {
 	Screen *v0; // eax
@@ -222,7 +212,6 @@ LABEL_9:
 }
 // 69CF0C: using guessed type int screen_buf_end;
 
-//----- (00415725) --------------------------------------------------------
 void __cdecl dx_unlock_mutex()
 {
 	Screen *v0; // eax
@@ -248,7 +237,6 @@ void __cdecl dx_unlock_mutex()
 }
 // 69CF0C: using guessed type int screen_buf_end;
 
-//----- (004157A0) --------------------------------------------------------
 void __cdecl dx_cleanup()
 {
 	void *v0; // ecx
@@ -288,7 +276,6 @@ void __cdecl dx_cleanup()
 	}
 }
 
-//----- (00415848) --------------------------------------------------------
 void __cdecl dx_reinit()
 {
 	int v0; // esi

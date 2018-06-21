@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __CURSOR_H__
+#define __CURSOR_H__
 
-//cursor
 extern int cursH; // weak
 extern int icursH28; // idb
 extern int cursW; // idb
@@ -31,3 +32,5 @@ void __cdecl CheckCursMove();
 /* data */
 extern int InvItemWidth[180];
 extern int InvItemHeight[180];
+
+#endif /* __CURSOR_H__ */

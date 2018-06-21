@@ -1,9 +1,10 @@
 //HEADER_GOES_HERE
+#ifndef __ENGINE_H__
+#define __ENGINE_H__
 
 //offset 0
 //pCelBuff->pFrameTable[0]
 
-//engine
 extern int engine_cpp_init_value; // weak
 extern char byte_52B96C; // automap pixel color 8-bit (palette entry)
 extern int dword_52B970; // bool flip - if y < x
@@ -73,3 +74,5 @@ void __fastcall PlayInGameMovie(char *pszMovie);
 /* data */
 
 extern int engine_inf; // weak
+
+#endif /* __ENGINE_H__ */

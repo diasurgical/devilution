@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __GMENU_H__
+#define __GMENU_H__
 
-//gmenu
 extern void *optbar_cel;
 extern bool byte_634464; // weak
 extern void *PentSpin_cel;
@@ -39,3 +40,5 @@ void __fastcall gmenu_slider_3(TMenuItem *pItem, int dwTicks);
 
 extern unsigned char lfontframe[127];
 extern unsigned char lfontkern[56];
+
+#endif /* __GMENU_H__ */

@@ -11,7 +11,6 @@ int mainmenu_inf = 0x7F800000; // weak
 
 int menu_music_track_id = 5; // idb
 
-//----- (00427E13) --------------------------------------------------------
 struct mainmenu_cpp_init
 {
 	mainmenu_cpp_init()
@@ -22,7 +21,6 @@ struct mainmenu_cpp_init
 // 47F074: using guessed type int mainmenu_inf;
 // 646CE0: using guessed type int mainmenu_cpp_init_value;
 
-//----- (00427E1E) --------------------------------------------------------
 void __cdecl mainmenu_refresh_music()
 {
 	int v0; // eax
@@ -38,7 +36,6 @@ void __cdecl mainmenu_refresh_music()
 	menu_music_track_id = v0;
 }
 
-//----- (00427E45) --------------------------------------------------------
 void __stdcall mainmenu_create_hero(char *a1, char *a2)
 {
 	// char *v2; // [esp-14h] [ebp-14h]
@@ -47,7 +44,6 @@ void __stdcall mainmenu_create_hero(char *a1, char *a2)
 		pfile_create_save_file(a1, a2);
 }
 
-//----- (00427E62) --------------------------------------------------------
 int __stdcall mainmenu_select_hero_dialog(int u1, int u2, int u3, int u4, int mode, char *cname, int clen, char *cdesc, int cdlen, int *multi) /* fix args */
 {
 	int v10; // eax
@@ -110,7 +106,6 @@ LABEL_6:
 // 5256E8: using guessed type int dword_5256E8;
 // 679660: using guessed type char gbMaxPlayers;
 
-//----- (00427F76) --------------------------------------------------------
 void __fastcall mainmenu_action(int option)
 {
 /*	int v1; // eax
@@ -194,7 +189,6 @@ LABEL_16:
 }
 // 634980: using guessed type int window_activated;
 
-//----- (00427FEC) --------------------------------------------------------
 int __cdecl mainmenu_single_player()
 {
 	gbMaxPlayers = 1;
@@ -202,7 +196,6 @@ int __cdecl mainmenu_single_player()
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-//----- (00427FFA) --------------------------------------------------------
 int __fastcall mainmenu_init_menu(int a1)
 {
 	int v1; // esi
@@ -218,7 +211,6 @@ int __fastcall mainmenu_init_menu(int a1)
 	return v3;
 }
 
-//----- (00428030) --------------------------------------------------------
 int __cdecl mainmenu_multi_player()
 {
 	gbMaxPlayers = 4;
@@ -226,7 +218,6 @@ int __cdecl mainmenu_multi_player()
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-//----- (0042803F) --------------------------------------------------------
 void __cdecl mainmenu_play_intro()
 {
 	music_stop();

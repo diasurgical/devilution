@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __CONTROL_H__
+#define __CONTROL_H__
 
-//control
 extern char sgbNextTalkSave; // weak
 extern char sgbTalkSavePos; // weak
 extern void *pDurIcons;
@@ -136,3 +137,5 @@ extern char *PanBtnHotKey[8];
 extern char *PanBtnStr[8];
 extern RECT32 attribute_inc_rects[4];
 extern int SpellPages[6][7];
+
+#endif /* __CONTROL_H__ */

@@ -78,7 +78,6 @@ char gszHelpText[] =
 	"&"
 };
 
-//----- (0041A553) --------------------------------------------------------
 void __cdecl InitHelp()
 {
 	helpflag = 0;
@@ -87,7 +86,6 @@ void __cdecl InitHelp()
 }
 // 634494: using guessed type int dword_634494;
 
-//----- (0041A565) --------------------------------------------------------
 void __cdecl DrawHelp()
 {
 	int v0; // edi
@@ -222,7 +220,6 @@ LABEL_48:
 // 634490: using guessed type int help_select_line;
 // 634960: using guessed type int HelpTop;
 
-//----- (0041A6FA) --------------------------------------------------------
 void __fastcall DrawHelpLine(int always_0, int help_line_nr, char *text, text_color color)
 {
 	signed int v4; // ebx
@@ -248,7 +245,6 @@ void __fastcall DrawHelpLine(int always_0, int help_line_nr, char *text, text_co
 	}
 }
 
-//----- (0041A773) --------------------------------------------------------
 void __cdecl DisplayHelp()
 {
 	help_select_line = 0;
@@ -258,7 +254,6 @@ void __cdecl DisplayHelp()
 // 634490: using guessed type int help_select_line;
 // 634960: using guessed type int HelpTop;
 
-//----- (0041A78F) --------------------------------------------------------
 void __cdecl HelpScrollUp()
 {
 	if ( help_select_line > 0 )
@@ -266,7 +261,6 @@ void __cdecl HelpScrollUp()
 }
 // 634490: using guessed type int help_select_line;
 
-//----- (0041A79F) --------------------------------------------------------
 void __cdecl HelpScrollDown()
 {
 	if ( help_select_line < HelpTop )

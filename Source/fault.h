@@ -1,6 +1,7 @@
 //HEADER_GOES_HERE
+#ifndef __FAULT_H__
+#define __FAULT_H__
 
-//fault
 //int dword_52B9F4;
 extern LPTOP_LEVEL_EXCEPTION_FILTER lpTopLevelExceptionFilter; // idb
 
@@ -16,3 +17,5 @@ char *__fastcall exception_get_error_type(DWORD dwMessageId, LPSTR lpString1, DW
 void __fastcall exception_set_filter();
 LPTOP_LEVEL_EXCEPTION_FILTER __cdecl exception_set_filter_ptr();
 LPTOP_LEVEL_EXCEPTION_FILTER __cdecl exception_get_filter();
+
+#endif /* __FAULT_H__ */

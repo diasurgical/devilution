@@ -23,7 +23,6 @@ int msg_err_timer; // weak
 
 int msg_inf = 0x7F800000; // weak
 
-//----- (0043BBA9) --------------------------------------------------------
 struct msg_cpp_init
 {
 	msg_cpp_init()
@@ -34,7 +33,6 @@ struct msg_cpp_init
 // 47F14C: using guessed type int msg_inf;
 // 65AB1C: using guessed type int msg_cpp_init_value;
 
-//----- (0043BBB4) --------------------------------------------------------
 void __fastcall msg_send_drop_pkt(int pnum, int reason)
 {
 	TFakeDropPlr cmd; // [esp+0h] [ebp-8h]
@@ -45,7 +43,6 @@ void __fastcall msg_send_drop_pkt(int pnum, int reason)
 	msg_send_packet(pnum, &cmd, 6);
 }
 
-//----- (0043BBCF) --------------------------------------------------------
 void __fastcall msg_send_packet(int pnum, void *packet, int dwSize)
 {
 	void *v3; // edi
@@ -71,7 +68,6 @@ void __fastcall msg_send_packet(int pnum, void *packet, int dwSize)
 }
 // 65AB24: using guessed type int sgnCurrMegaPlayer;
 
-//----- (0043BC31) --------------------------------------------------------
 TMegaPkt *__cdecl msg_get_next_packet()
 {
 	TMegaPkt *v0; // eax
@@ -93,7 +89,6 @@ TMegaPkt *__cdecl msg_get_next_packet()
 	return result;
 }
 
-//----- (0043BC6D) --------------------------------------------------------
 int __cdecl msg_wait_resync()
 {
 	int v0; // eax
@@ -128,7 +123,6 @@ LABEL_6:
 // 676194: using guessed type char gbBufferMsgs;
 // 67862D: using guessed type char gbGameDestroyed;
 
-//----- (0043BCED) --------------------------------------------------------
 void __cdecl msg_free_packets()
 {
 	TMegaPkt *v0; // eax
@@ -146,7 +140,6 @@ void __cdecl msg_free_packets()
 	}
 }
 
-//----- (0043BD19) --------------------------------------------------------
 int __cdecl msg_wait_for_turns()
 {
 	//int v0; // eax
@@ -191,7 +184,6 @@ int __cdecl msg_wait_for_turns()
 // 6796E4: using guessed type char gbDeltaSender;
 // 679738: using guessed type int gdwTurnsInTransit;
 
-//----- (0043BDEB) --------------------------------------------------------
 void __cdecl msg_process_net_packets()
 {
 	if ( gbMaxPlayers != 1 )
@@ -205,7 +197,6 @@ void __cdecl msg_process_net_packets()
 // 676194: using guessed type char gbBufferMsgs;
 // 679660: using guessed type char gbMaxPlayers;
 
-//----- (0043BE0D) --------------------------------------------------------
 void __cdecl msg_pre_packet()
 {
 	TMegaPkt *v0; // edi
@@ -247,7 +238,6 @@ void __cdecl msg_pre_packet()
 	}
 }
 
-//----- (0043BE74) --------------------------------------------------------
 void __fastcall DeltaExportData(int pnum)
 {
 	char *v1; // edi
@@ -290,7 +280,6 @@ void __fastcall DeltaExportData(int pnum)
 }
 // 67618C: using guessed type char sgbDeltaChanged;
 
-//----- (0043BF2B) --------------------------------------------------------
 void *__fastcall DeltaExportItem(void *dst, void *src)
 {
 	_BYTE *v2; // edi
@@ -318,7 +307,6 @@ void *__fastcall DeltaExportItem(void *dst, void *src)
 	return v3;
 }
 
-//----- (0043BF5B) --------------------------------------------------------
 void *__fastcall DeltaExportObject(void *dst, void *src)
 {
 	char *v2; // esi
@@ -328,7 +316,6 @@ void *__fastcall DeltaExportObject(void *dst, void *src)
 	return v2 + 127;
 }
 
-//----- (0043BF6F) --------------------------------------------------------
 void *__fastcall DeltaExportMonster(void *dst, void *src)
 {
 	_BYTE *v2; // edi
@@ -356,7 +343,6 @@ void *__fastcall DeltaExportMonster(void *dst, void *src)
 	return v3;
 }
 
-//----- (0043BFA1) --------------------------------------------------------
 char *__fastcall DeltaExportJunk(char *a1)
 {
 	char *v1; // ebx
@@ -402,7 +388,6 @@ char *__fastcall DeltaExportJunk(char *a1)
 	return v1;
 }
 
-//----- (0043C019) --------------------------------------------------------
 int __fastcall msg_comp_level(char *buffer, int size)
 {
 	char *v2; // esi
@@ -416,7 +401,6 @@ int __fastcall msg_comp_level(char *buffer, int size)
 	return v4 + 1;
 }
 
-//----- (0043C035) --------------------------------------------------------
 void __cdecl delta_init()
 {
 	sgbDeltaChanged = 0;
@@ -428,7 +412,6 @@ void __cdecl delta_init()
 // 67618C: using guessed type char sgbDeltaChanged;
 // 676190: using guessed type int deltaload;
 
-//----- (0043C07C) --------------------------------------------------------
 void __fastcall delta_kill_monster(int mi, unsigned char x, unsigned char y, unsigned char bLevel)
 {
 	DMonsterStr *v4; // eax
@@ -448,7 +431,6 @@ void __fastcall delta_kill_monster(int mi, unsigned char x, unsigned char y, uns
 // 67618C: using guessed type char sgbDeltaChanged;
 // 679660: using guessed type char gbMaxPlayers;
 
-//----- (0043C0C2) --------------------------------------------------------
 void __fastcall delta_monster_hp(int mi, int hp, unsigned char bLevel)
 {
 	DMonsterStr *v3; // eax
@@ -464,7 +446,6 @@ void __fastcall delta_monster_hp(int mi, int hp, unsigned char bLevel)
 // 67618C: using guessed type char sgbDeltaChanged;
 // 679660: using guessed type char gbMaxPlayers;
 
-//----- (0043C0F2) --------------------------------------------------------
 void __fastcall delta_sync_monster(TCmdLocParam1 *packet, char level)
 {
 	DMonsterStr *v2; // eax
@@ -487,7 +468,6 @@ void __fastcall delta_sync_monster(TCmdLocParam1 *packet, char level)
 // 67618C: using guessed type char sgbDeltaChanged;
 // 679660: using guessed type char gbMaxPlayers;
 
-//----- (0043C134) --------------------------------------------------------
 void __fastcall delta_sync_golem(TCmdGolem *pG, int pnum, int bLevel)
 {
 	DMonsterStr *v3; // eax
@@ -509,7 +489,6 @@ void __fastcall delta_sync_golem(TCmdGolem *pG, int pnum, int bLevel)
 // 67618C: using guessed type char sgbDeltaChanged;
 // 679660: using guessed type char gbMaxPlayers;
 
-//----- (0043C17D) --------------------------------------------------------
 void __fastcall delta_leave_sync(unsigned char bLevel)
 {
 	unsigned char v1; // bl
@@ -556,19 +535,16 @@ void __fastcall delta_leave_sync(unsigned char bLevel)
 // 67618C: using guessed type char sgbDeltaChanged;
 // 679660: using guessed type char gbMaxPlayers;
 
-//----- (0043C24F) --------------------------------------------------------
 bool __fastcall delta_portal_inited(int portal_num)
 {
 	return sgJunk[0].portal[portal_num].x == -1;
 }
 
-//----- (0043C25D) --------------------------------------------------------
 bool __fastcall delta_quest_inited(int quest_num)
 {
 	return sgJunk[0].quests[quest_num].qstate != -1;
 }
 
-//----- (0043C26B) --------------------------------------------------------
 void __fastcall DeltaAddItem(int ii)
 {
 	int v1; // eax
@@ -641,7 +617,6 @@ void __fastcall DeltaAddItem(int ii)
 // 67618C: using guessed type char sgbDeltaChanged;
 // 679660: using guessed type char gbMaxPlayers;
 
-//----- (0043C372) --------------------------------------------------------
 void __cdecl DeltaSaveLevel()
 {
 	int v0; // eax
@@ -669,7 +644,6 @@ void __cdecl DeltaSaveLevel()
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-//----- (0043C3BA) --------------------------------------------------------
 void __cdecl DeltaLoadLevel()
 {
 	int v0; // ebx
@@ -933,7 +907,6 @@ void __cdecl DeltaLoadLevel()
 // 676190: using guessed type int deltaload;
 // 679660: using guessed type char gbMaxPlayers;
 
-//----- (0043C873) --------------------------------------------------------
 void __fastcall NetSendCmd(unsigned char bHiPri, unsigned char bCmd)
 {
 	TCmd cmd; // [esp+3h] [ebp-1h]
@@ -945,7 +918,6 @@ void __fastcall NetSendCmd(unsigned char bHiPri, unsigned char bCmd)
 		NetSendLoPri((unsigned char *)&cmd, 1u);
 }
 
-//----- (0043C891) --------------------------------------------------------
 void __fastcall NetSendCmdGolem(unsigned char mx, unsigned char my, unsigned char dir, unsigned char menemy, int hp, int cl)
 {
 	TCmdGolem cmd; // [esp+0h] [ebp-Ch]
@@ -960,7 +932,6 @@ void __fastcall NetSendCmdGolem(unsigned char mx, unsigned char my, unsigned cha
 	NetSendLoPri((unsigned char *)&cmd, 0xAu);
 }
 
-//----- (0043C8C7) --------------------------------------------------------
 void __fastcall NetSendCmdLoc(unsigned char bHiPri, unsigned char bCmd, unsigned char x, unsigned char y)
 {
 	TCmdLoc cmd; // [esp+1h] [ebp-3h]
@@ -974,7 +945,6 @@ void __fastcall NetSendCmdLoc(unsigned char bHiPri, unsigned char bCmd, unsigned
 		NetSendLoPri((unsigned char *)&cmd, 3u);
 }
 
-//----- (0043C8F3) --------------------------------------------------------
 void __fastcall NetSendCmdLocParam1(unsigned char bHiPri, unsigned char bCmd, unsigned char x, unsigned char y, int wParam1)
 {
 	TCmdLocParam1 cmd; // [esp+0h] [ebp-8h]
@@ -989,7 +959,6 @@ void __fastcall NetSendCmdLocParam1(unsigned char bHiPri, unsigned char bCmd, un
 		NetSendLoPri((unsigned char *)&cmd, 5u);
 }
 
-//----- (0043C928) --------------------------------------------------------
 void __fastcall NetSendCmdLocParam2(unsigned char bHiPri, unsigned char bCmd, unsigned char x, unsigned char y, int wParam1, int wParam2)
 {
 	TCmdLocParam2 cmd; // [esp+0h] [ebp-8h]
@@ -1005,7 +974,6 @@ void __fastcall NetSendCmdLocParam2(unsigned char bHiPri, unsigned char bCmd, un
 		NetSendLoPri((unsigned char *)&cmd, 7u);
 }
 
-//----- (0043C965) --------------------------------------------------------
 void __fastcall NetSendCmdLocParam3(unsigned char bHiPri, unsigned char bCmd, unsigned char x, unsigned char y, int wParam1, int wParam2, int wParam3)
 {
 	TCmdLocParam3 cmd; // [esp+0h] [ebp-Ch]
@@ -1022,7 +990,6 @@ void __fastcall NetSendCmdLocParam3(unsigned char bHiPri, unsigned char bCmd, un
 		NetSendLoPri((unsigned char *)&cmd, 9u);
 }
 
-//----- (0043C9AB) --------------------------------------------------------
 void __fastcall NetSendCmdParam1(unsigned char bHiPri, unsigned char bCmd, unsigned short wParam1)
 {
 	TCmdParam1 cmd; // [esp+1h] [ebp-3h]
@@ -1035,7 +1002,6 @@ void __fastcall NetSendCmdParam1(unsigned char bHiPri, unsigned char bCmd, unsig
 		NetSendLoPri((unsigned char *)&cmd, 3u);
 }
 
-//----- (0043C9D3) --------------------------------------------------------
 void __fastcall NetSendCmdParam2(unsigned char bHiPri, unsigned char bCmd, unsigned short wParam1, unsigned short wParam2)
 {
 	TCmdParam2 cmd; // [esp+0h] [ebp-8h]
@@ -1049,7 +1015,6 @@ void __fastcall NetSendCmdParam2(unsigned char bHiPri, unsigned char bCmd, unsig
 		NetSendLoPri((unsigned char *)&cmd, 5u);
 }
 
-//----- (0043CA04) --------------------------------------------------------
 void __fastcall NetSendCmdParam3(unsigned char bHiPri, unsigned char bCmd, unsigned short wParam1, unsigned short wParam2, int wParam3)
 {
 	TCmdParam3 cmd; // [esp+0h] [ebp-8h]
@@ -1064,7 +1029,6 @@ void __fastcall NetSendCmdParam3(unsigned char bHiPri, unsigned char bCmd, unsig
 		NetSendLoPri((unsigned char *)&cmd, 7u);
 }
 
-//----- (0043CA3D) --------------------------------------------------------
 void __fastcall NetSendCmdQuest(unsigned char bHiPri, unsigned char q)
 {
 	int v2; // eax
@@ -1085,7 +1049,6 @@ void __fastcall NetSendCmdQuest(unsigned char bHiPri, unsigned char q)
 		NetSendLoPri((unsigned char *)&cmd, 5u);
 }
 
-//----- (0043CA84) --------------------------------------------------------
 void __fastcall NetSendCmdGItem(unsigned char bHiPri, unsigned char bCmd, unsigned char mast, unsigned char pnum, int ii)
 {
 	int v5; // eax
@@ -1146,7 +1109,6 @@ void __fastcall NetSendCmdGItem(unsigned char bHiPri, unsigned char bCmd, unsign
 		NetSendLoPri((unsigned char *)&cmd, 0x1Eu);
 }
 
-//----- (0043CC09) --------------------------------------------------------
 void __fastcall NetSendCmdGItem2(unsigned char usonly, unsigned char bCmd, unsigned char mast, unsigned char pnum, struct TCmdGItem *p)
 {
 	unsigned char v5; // bl
@@ -1179,7 +1141,6 @@ void __fastcall NetSendCmdGItem2(unsigned char usonly, unsigned char bCmd, unsig
 	multi_msg_add(&cmd.bCmd, 0x1Eu);
 }
 
-//----- (0043CC74) --------------------------------------------------------
 bool __fastcall NetSendCmdReq2(unsigned char bCmd, unsigned char mast, unsigned char pnum, struct TCmdGItem *p)
 {
 	unsigned char v4; // bl
@@ -1206,7 +1167,6 @@ LABEL_3:
 	return 0;
 }
 
-//----- (0043CCCF) --------------------------------------------------------
 void __fastcall NetSendCmdExtra(struct TCmdGItem *p)
 {
 	TCmdGItem cmd; // [esp+0h] [ebp-20h]
@@ -1217,7 +1177,6 @@ void __fastcall NetSendCmdExtra(struct TCmdGItem *p)
 	NetSendHiPri((unsigned char *)&cmd, 0x1Eu);
 }
 
-//----- (0043CCF8) --------------------------------------------------------
 void __fastcall NetSendCmdPItem(unsigned char bHiPri, unsigned char bCmd, unsigned char x, unsigned char y)
 {
 	int v4; // eax
@@ -1275,7 +1234,6 @@ void __fastcall NetSendCmdPItem(unsigned char bHiPri, unsigned char bCmd, unsign
 		NetSendLoPri((unsigned char *)&cmd, 0x16u);
 }
 
-//----- (0043CE5B) --------------------------------------------------------
 void __fastcall NetSendCmdChItem(unsigned char bHiPri, unsigned char bLoc)
 {
 	short v2; // dx
@@ -1296,7 +1254,6 @@ void __fastcall NetSendCmdChItem(unsigned char bHiPri, unsigned char bLoc)
 		NetSendLoPri((unsigned char *)&cmd, 0xBu);
 }
 
-//----- (0043CEB2) --------------------------------------------------------
 void __fastcall NetSendCmdDelItem(unsigned char bHiPri, unsigned char bLoc)
 {
 	TCmdDelItem cmd; // [esp+2h] [ebp-2h]
@@ -1309,7 +1266,6 @@ void __fastcall NetSendCmdDelItem(unsigned char bHiPri, unsigned char bLoc)
 		NetSendLoPri((unsigned char *)&cmd, 2u);
 }
 
-//----- (0043CED4) --------------------------------------------------------
 void __fastcall NetSendCmdDItem(unsigned char bHiPri, int ii)
 {
 	int v2; // eax
@@ -1367,7 +1323,6 @@ void __fastcall NetSendCmdDItem(unsigned char bHiPri, int ii)
 		NetSendLoPri((unsigned char *)&cmd, 0x16u);
 }
 
-//----- (0043D039) --------------------------------------------------------
 void __fastcall NetSendCmdDamage(unsigned char bHiPri, unsigned char bPlr, unsigned int dwDam)
 {
 	TCmdDamage cmd; // [esp+0h] [ebp-8h]
@@ -1381,7 +1336,6 @@ void __fastcall NetSendCmdDamage(unsigned char bHiPri, unsigned char bPlr, unsig
 		NetSendLoPri((unsigned char *)&cmd, 6u);
 }
 
-//----- (0043D064) --------------------------------------------------------
 void __fastcall NetSendCmdString(int a1, const char *pszStr)
 {
 	const char *v2; // esi
@@ -1397,7 +1351,6 @@ void __fastcall NetSendCmdString(int a1, const char *pszStr)
 	multi_send_msg_packet(v3, &cmd.bCmd, dwStrLen + 2);
 }
 
-//----- (0043D09D) --------------------------------------------------------
 void __fastcall RemovePlrPortal(int pnum)
 {
 	memset((char *)sgJunk + 5 * pnum, 255, 5u);
@@ -1405,7 +1358,6 @@ void __fastcall RemovePlrPortal(int pnum)
 }
 // 67618C: using guessed type char sgbDeltaChanged;
 
-//----- (0043D0BC) --------------------------------------------------------
 int __fastcall ParseCmd(int pnum, TCmd *pCmd)
 {
 	bool v2; // zf
@@ -1637,7 +1589,6 @@ LABEL_100:
 // 67618D: using guessed type char sgbDeltaChunks;
 // 6796E4: using guessed type char gbDeltaSender;
 
-//----- (0043D632) --------------------------------------------------------
 void __fastcall DeltaImportData(unsigned char cmd, int recv_offset)
 {
 	unsigned char v2; // bl
@@ -1669,7 +1620,6 @@ void __fastcall DeltaImportData(unsigned char cmd, int recv_offset)
 // 67618C: using guessed type char sgbDeltaChanged;
 // 67618D: using guessed type char sgbDeltaChunks;
 
-//----- (0043D6BA) --------------------------------------------------------
 void *__fastcall DeltaImportItem(void *src, void *dst)
 {
 	char *v2; // edi
@@ -1698,7 +1648,6 @@ void *__fastcall DeltaImportItem(void *src, void *dst)
 	return v3;
 }
 
-//----- (0043D6F5) --------------------------------------------------------
 void *__fastcall DeltaImportObject(void *src, void *dst)
 {
 	char *v2; // esi
@@ -1708,7 +1657,6 @@ void *__fastcall DeltaImportObject(void *src, void *dst)
 	return v2 + 127;
 }
 
-//----- (0043D709) --------------------------------------------------------
 void *__fastcall DeltaImportMonster(void *src, void *dst)
 {
 	char *v2; // edi
@@ -1737,7 +1685,6 @@ void *__fastcall DeltaImportMonster(void *src, void *dst)
 	return v3;
 }
 
-//----- (0043D746) --------------------------------------------------------
 char __fastcall DeltaImportJunk(int a1)
 {
 	_BYTE *v1; // ebx
@@ -1797,13 +1744,11 @@ char __fastcall DeltaImportJunk(int a1)
 	return result;
 }
 
-//----- (0043D7F1) --------------------------------------------------------
 int __fastcall On_SYNCDATA(void *packet, int pnum)
 {
 	return SyncData(pnum, (TSyncHeader *)packet);
 }
 
-//----- (0043D7FC) --------------------------------------------------------
 int __fastcall On_WALKXY(struct TCmdLoc *pCmd, int pnum)
 {
 	int v2; // ebx
@@ -1826,7 +1771,6 @@ int __fastcall On_WALKXY(struct TCmdLoc *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043D84A) --------------------------------------------------------
 int __fastcall On_ADDSTR(struct TCmdParam1 *pCmd, int pnum)
 {
 	unsigned short v2; // cx
@@ -1845,7 +1789,6 @@ int __fastcall On_ADDSTR(struct TCmdParam1 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043D87B) --------------------------------------------------------
 int __fastcall On_ADDMAG(struct TCmdParam1 *pCmd, int pnum)
 {
 	unsigned short v2; // cx
@@ -1864,7 +1807,6 @@ int __fastcall On_ADDMAG(struct TCmdParam1 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043D8AC) --------------------------------------------------------
 int __fastcall On_ADDDEX(struct TCmdParam1 *pCmd, int pnum)
 {
 	unsigned short v2; // cx
@@ -1883,7 +1825,6 @@ int __fastcall On_ADDDEX(struct TCmdParam1 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043D8DD) --------------------------------------------------------
 int __fastcall On_ADDVIT(struct TCmdParam1 *pCmd, int pnum)
 {
 	unsigned short v2; // cx
@@ -1902,7 +1843,6 @@ int __fastcall On_ADDVIT(struct TCmdParam1 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043D90E) --------------------------------------------------------
 int __fastcall On_SBSPELL(struct TCmdParam1 *pCmd, int pnum)
 {
 	int v2; // eax
@@ -1926,7 +1866,6 @@ int __fastcall On_SBSPELL(struct TCmdParam1 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043D97D) --------------------------------------------------------
 void msg_errorf(char *pszFmt, ...)
 {
 	DWORD v1; // eax
@@ -1944,7 +1883,6 @@ void msg_errorf(char *pszFmt, ...)
 }
 // 67619C: using guessed type int msg_err_timer;
 
-//----- (0043D9C4) --------------------------------------------------------
 int __fastcall On_GOTOGETITEM(struct TCmdLocParam1 *pCmd, int pnum)
 {
 	struct TCmdLocParam1 *v2; // edi
@@ -1965,7 +1903,6 @@ int __fastcall On_GOTOGETITEM(struct TCmdLocParam1 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043DA16) --------------------------------------------------------
 int __fastcall On_REQUESTGITEM(struct TCmdGItem *pCmd, int pnum)
 {
 	struct TCmdGItem *v2; // esi
@@ -2013,7 +1950,6 @@ int __fastcall On_REQUESTGITEM(struct TCmdGItem *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043DAE6) --------------------------------------------------------
 bool __fastcall i_own_level(int nReqLevel)
 {
 	int v1; // edx
@@ -2033,7 +1969,6 @@ bool __fastcall i_own_level(int nReqLevel)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043DB2D) --------------------------------------------------------
 int __fastcall On_GETITEM(struct TCmdGItem *pCmd, int pnum)
 {
 	struct TCmdGItem *v2; // esi
@@ -2106,7 +2041,6 @@ int __fastcall On_GETITEM(struct TCmdGItem *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043DC3D) --------------------------------------------------------
 bool __fastcall delta_get_item(struct TCmdGItem *pI, unsigned char bLevel)
 {
 	struct TCmdGItem *v2; // esi
@@ -2181,7 +2115,6 @@ LABEL_15:
 // 67618C: using guessed type char sgbDeltaChanged;
 // 679660: using guessed type char gbMaxPlayers;
 
-//----- (0043DD40) --------------------------------------------------------
 int __fastcall On_GOTOAGETITEM(struct TCmdLocParam1 *pCmd, int pnum)
 {
 	struct TCmdLocParam1 *v2; // edi
@@ -2202,7 +2135,6 @@ int __fastcall On_GOTOAGETITEM(struct TCmdLocParam1 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043DD92) --------------------------------------------------------
 int __fastcall On_REQUESTAGITEM(struct TCmdGItem *pCmd, int pnum)
 {
 	struct TCmdGItem *v2; // esi
@@ -2250,7 +2182,6 @@ int __fastcall On_REQUESTAGITEM(struct TCmdGItem *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043DE60) --------------------------------------------------------
 int __fastcall On_AGETITEM(struct TCmdGItem *pCmd, int pnum)
 {
 	struct TCmdGItem *v2; // esi
@@ -2322,7 +2253,6 @@ int __fastcall On_AGETITEM(struct TCmdGItem *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043DF6E) --------------------------------------------------------
 int __fastcall On_ITEMEXTRA(struct TCmdGItem *pCmd, int pnum)
 {
 	int v2; // edi
@@ -2349,7 +2279,6 @@ int __fastcall On_ITEMEXTRA(struct TCmdGItem *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043DFC9) --------------------------------------------------------
 int __fastcall On_PUTITEM(struct TCmdPItem *pCmd, int pnum)
 {
 	int v2; // edi
@@ -2406,7 +2335,6 @@ int __fastcall On_PUTITEM(struct TCmdPItem *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043E0CE) --------------------------------------------------------
 void __fastcall delta_put_item(struct TCmdPItem *pI, int x, int y, unsigned char bLevel)
 {
 	struct TCmdPItem *v4; // ebx
@@ -2461,7 +2389,6 @@ void __fastcall delta_put_item(struct TCmdPItem *pI, int x, int y, unsigned char
 // 67618C: using guessed type char sgbDeltaChanged;
 // 679660: using guessed type char gbMaxPlayers;
 
-//----- (0043E179) --------------------------------------------------------
 void __fastcall check_update_plr(int pnum)
 {
 	if ( gbMaxPlayers != 1 && pnum == myplr )
@@ -2469,7 +2396,6 @@ void __fastcall check_update_plr(int pnum)
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-//----- (0043E193) --------------------------------------------------------
 int __fastcall On_SYNCPUTITEM(struct TCmdPItem *pCmd, int pnum)
 {
 	int v2; // ebx
@@ -2519,7 +2445,6 @@ int __fastcall On_SYNCPUTITEM(struct TCmdPItem *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043E284) --------------------------------------------------------
 int __fastcall On_RESPAWNITEM(struct TCmdPItem *pCmd, int pnum)
 {
 	struct TCmdPItem *v2; // esi
@@ -2556,7 +2481,6 @@ int __fastcall On_RESPAWNITEM(struct TCmdPItem *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043E32A) --------------------------------------------------------
 int __fastcall On_ATTACKXY(struct TCmdLoc *pCmd, int pnum)
 {
 	struct TCmdLoc *v2; // edi
@@ -2578,7 +2502,6 @@ int __fastcall On_ATTACKXY(struct TCmdLoc *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043E386) --------------------------------------------------------
 int __fastcall On_SATTACKXY(struct TCmdLoc *pCmd, int pnum)
 {
 	struct TCmdLoc *v2; // edi
@@ -2600,7 +2523,6 @@ int __fastcall On_SATTACKXY(struct TCmdLoc *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043E3D5) --------------------------------------------------------
 int __fastcall On_RATTACKXY(struct TCmdLoc *pCmd, int pnum)
 {
 	struct TCmdLoc *v2; // edi
@@ -2622,7 +2544,6 @@ int __fastcall On_RATTACKXY(struct TCmdLoc *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043E424) --------------------------------------------------------
 int __fastcall On_SPELLXYD(struct TCmdLocParam3 *pCmd, int pnum)
 {
 	struct TCmdLocParam3 *v2; // edi
@@ -2658,7 +2579,6 @@ int __fastcall On_SPELLXYD(struct TCmdLocParam3 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043E4D2) --------------------------------------------------------
 int __fastcall On_SPELLXY(struct TCmdLocParam2 *pCmd, int pnum)
 {
 	struct TCmdLocParam2 *v2; // edi
@@ -2693,7 +2613,6 @@ int __fastcall On_SPELLXY(struct TCmdLocParam2 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043E576) --------------------------------------------------------
 int __fastcall On_TSPELLXY(struct TCmdLocParam2 *pCmd, int pnum)
 {
 	struct TCmdLocParam2 *v2; // edi
@@ -2726,7 +2645,6 @@ int __fastcall On_TSPELLXY(struct TCmdLocParam2 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043E61A) --------------------------------------------------------
 int __fastcall On_OPOBJXY(struct TCmdLocParam1 *pCmd, int pnum)
 {
 	struct TCmdLocParam1 *v2; // esi
@@ -2752,7 +2670,6 @@ int __fastcall On_OPOBJXY(struct TCmdLocParam1 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043E68A) --------------------------------------------------------
 int __fastcall On_DISARMXY(struct TCmdLocParam1 *pCmd, int pnum)
 {
 	struct TCmdLocParam1 *v2; // esi
@@ -2778,7 +2695,6 @@ int __fastcall On_DISARMXY(struct TCmdLocParam1 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043E6FA) --------------------------------------------------------
 int __fastcall On_OPOBJT(struct TCmdParam1 *pCmd, int pnum)
 {
 	int v2; // eax
@@ -2796,7 +2712,6 @@ int __fastcall On_OPOBJT(struct TCmdParam1 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043E732) --------------------------------------------------------
 int __fastcall On_ATTACKID(struct TCmdParam1 *pCmd, int pnum)
 {
 	int v2; // ebp
@@ -2828,7 +2743,6 @@ int __fastcall On_ATTACKID(struct TCmdParam1 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043E7DF) --------------------------------------------------------
 int __fastcall On_ATTACKPID(struct TCmdParam1 *pCmd, int pnum)
 {
 	struct TCmdParam1 *v2; // edi
@@ -2849,7 +2763,6 @@ int __fastcall On_ATTACKPID(struct TCmdParam1 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043E840) --------------------------------------------------------
 int __fastcall On_RATTACKID(struct TCmdParam1 *pCmd, int pnum)
 {
 	struct TCmdParam1 *v2; // edi
@@ -2870,7 +2783,6 @@ int __fastcall On_RATTACKID(struct TCmdParam1 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043E885) --------------------------------------------------------
 int __fastcall On_RATTACKPID(struct TCmdParam1 *pCmd, int pnum)
 {
 	struct TCmdParam1 *v2; // edi
@@ -2891,7 +2803,6 @@ int __fastcall On_RATTACKPID(struct TCmdParam1 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043E8CA) --------------------------------------------------------
 int __fastcall On_SPELLID(struct TCmdLocParam2 *pCmd, int pnum)
 {
 	struct TCmdLocParam2 *v2; // edi
@@ -2925,7 +2836,6 @@ int __fastcall On_SPELLID(struct TCmdLocParam2 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043E964) --------------------------------------------------------
 int __fastcall On_SPELLPID(struct TCmdLocParam2 *pCmd, int pnum)
 {
 	struct TCmdLocParam2 *v2; // edi
@@ -2959,7 +2869,6 @@ int __fastcall On_SPELLPID(struct TCmdLocParam2 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043E9FE) --------------------------------------------------------
 int __fastcall On_TSPELLID(struct TCmdLocParam2 *pCmd, int pnum)
 {
 	struct TCmdLocParam2 *v2; // edi
@@ -2991,7 +2900,6 @@ int __fastcall On_TSPELLID(struct TCmdLocParam2 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043EA98) --------------------------------------------------------
 int __fastcall On_TSPELLPID(struct TCmdLocParam2 *pCmd, int pnum)
 {
 	struct TCmdLocParam2 *v2; // edi
@@ -3023,7 +2931,6 @@ int __fastcall On_TSPELLPID(struct TCmdLocParam2 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043EB32) --------------------------------------------------------
 int __fastcall On_KNOCKBACK(struct TCmdParam1 *pCmd, int pnum)
 {
 	int v2; // edi
@@ -3040,7 +2947,6 @@ int __fastcall On_KNOCKBACK(struct TCmdParam1 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043EB74) --------------------------------------------------------
 int __fastcall On_RESURRECT(struct TCmdParam1 *pCmd, int pnum)
 {
 	int v2; // esi
@@ -3059,7 +2965,6 @@ int __fastcall On_RESURRECT(struct TCmdParam1 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043EBA4) --------------------------------------------------------
 int __fastcall On_HEALOTHER(struct TCmdParam1 *pCmd, int pnum)
 {
 	if ( gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel )
@@ -3068,7 +2973,6 @@ int __fastcall On_HEALOTHER(struct TCmdParam1 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043EBD5) --------------------------------------------------------
 int __fastcall On_TALKXY(struct TCmdLocParam1 *pCmd, int pnum)
 {
 	struct TCmdLocParam1 *v2; // edi
@@ -3089,7 +2993,6 @@ int __fastcall On_TALKXY(struct TCmdLocParam1 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043EC27) --------------------------------------------------------
 int __fastcall On_NEWLVL(struct TCmdParam2 *pCmd, int pnum)
 {
 	if ( gbBufferMsgs == 1 )
@@ -3104,7 +3007,6 @@ int __fastcall On_NEWLVL(struct TCmdParam2 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043EC5B) --------------------------------------------------------
 int __fastcall On_WARP(struct TCmdParam1 *pCmd, int pnum)
 {
 	int v2; // esi
@@ -3127,7 +3029,6 @@ int __fastcall On_WARP(struct TCmdParam1 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043ECBA) --------------------------------------------------------
 int __fastcall On_MONSTDEATH(struct TCmdLocParam1 *pCmd, int pnum)
 {
 	struct TCmdLocParam1 *v2; // esi
@@ -3149,7 +3050,6 @@ int __fastcall On_MONSTDEATH(struct TCmdLocParam1 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043ED23) --------------------------------------------------------
 int __fastcall On_KILLGOLEM(struct TCmdLocParam1 *pCmd, int pnum)
 {
 	int v2; // edi
@@ -3171,7 +3071,6 @@ int __fastcall On_KILLGOLEM(struct TCmdLocParam1 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043ED89) --------------------------------------------------------
 int __fastcall On_AWAKEGOLEM(struct TCmdGolem *pCmd, int pnum)
 {
 	int v2; // esi
@@ -3229,7 +3128,6 @@ LABEL_16:
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043EE3D) --------------------------------------------------------
 int __fastcall On_MONSTDAMAGE(struct TCmdLocParam1 *pCmd, int pnum)
 {
 	int v2; // edi
@@ -3267,7 +3165,6 @@ int __fastcall On_MONSTDAMAGE(struct TCmdLocParam1 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043EEF5) --------------------------------------------------------
 int __fastcall On_PLRDEAD(struct TCmdParam1 *pCmd, int pnum)
 {
 	if ( gbBufferMsgs == 1 )
@@ -3286,7 +3183,6 @@ int __fastcall On_PLRDEAD(struct TCmdParam1 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043EF2D) --------------------------------------------------------
 int __fastcall On_PLRDAMAGE(struct TCmdDamage *pCmd, int pnum)
 {
 	int v2; // edi
@@ -3326,7 +3222,6 @@ int __fastcall On_PLRDAMAGE(struct TCmdDamage *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043EFDD) --------------------------------------------------------
 int __fastcall On_OPENDOOR(struct TCmdParam1 *pCmd, int pnum)
 {
 	struct TCmdParam1 *v2; // edi
@@ -3348,7 +3243,6 @@ int __fastcall On_OPENDOOR(struct TCmdParam1 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043F033) --------------------------------------------------------
 void __fastcall delta_sync_object(int oi, unsigned char bCmd, unsigned char bLevel)
 {
 	if ( gbMaxPlayers != 1 )
@@ -3360,7 +3254,6 @@ void __fastcall delta_sync_object(int oi, unsigned char bCmd, unsigned char bLev
 // 67618C: using guessed type char sgbDeltaChanged;
 // 679660: using guessed type char gbMaxPlayers;
 
-//----- (0043F058) --------------------------------------------------------
 int __fastcall On_CLOSEDOOR(struct TCmdParam1 *pCmd, int pnum)
 {
 	struct TCmdParam1 *v2; // edi
@@ -3382,7 +3275,6 @@ int __fastcall On_CLOSEDOOR(struct TCmdParam1 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043F0AE) --------------------------------------------------------
 int __fastcall On_OPERATEOBJ(struct TCmdParam1 *pCmd, int pnum)
 {
 	struct TCmdParam1 *v2; // edi
@@ -3404,7 +3296,6 @@ int __fastcall On_OPERATEOBJ(struct TCmdParam1 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043F104) --------------------------------------------------------
 int __fastcall On_PLROPOBJ(struct TCmdParam2 *pCmd, int pnum)
 {
 	struct TCmdParam2 *v2; // esi
@@ -3426,7 +3317,6 @@ int __fastcall On_PLROPOBJ(struct TCmdParam2 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043F15C) --------------------------------------------------------
 int __fastcall On_BREAKOBJ(struct TCmdParam2 *pCmd, int pnum)
 {
 	struct TCmdParam2 *v2; // esi
@@ -3448,7 +3338,6 @@ int __fastcall On_BREAKOBJ(struct TCmdParam2 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043F1B0) --------------------------------------------------------
 int __fastcall On_CHANGEPLRITEMS(struct TCmdChItem *pCmd, int pnum)
 {
 	int v2; // eax
@@ -3474,7 +3363,6 @@ int __fastcall On_CHANGEPLRITEMS(struct TCmdChItem *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043F1F0) --------------------------------------------------------
 int __fastcall On_DELPLRITEMS(struct TCmdDelItem *pCmd, int pnum)
 {
 	int v2; // eax
@@ -3493,7 +3381,6 @@ int __fastcall On_DELPLRITEMS(struct TCmdDelItem *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043F21E) --------------------------------------------------------
 int __fastcall On_PLRLEVEL(struct TCmdParam1 *pCmd, int pnum)
 {
 	if ( gbBufferMsgs == 1 )
@@ -3508,7 +3395,6 @@ int __fastcall On_PLRLEVEL(struct TCmdParam1 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043F258) --------------------------------------------------------
 int __fastcall On_DROPITEM(struct TCmdPItem *pCmd, int pnum)
 {
 	if ( gbBufferMsgs == 1 )
@@ -3519,7 +3405,6 @@ int __fastcall On_DROPITEM(struct TCmdPItem *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043F28F) --------------------------------------------------------
 int __fastcall On_SEND_PLRINFO(struct TCmdPlrInfoHdr *pCmd, int pnum)
 {
 	struct TCmdPlrInfoHdr *v2; // esi
@@ -3538,7 +3423,6 @@ int __fastcall On_ACK_PLRINFO(struct TCmdPlrInfoHdr *pCmd, int pnum)
   return On_SEND_PLRINFO(pCmd, pnum);
 }
 
-//----- (0043F2CE) --------------------------------------------------------
 int __fastcall On_PLAYER_JOINLEVEL(struct TCmdLocParam1 *pCmd, int pnum)
 {
 	int v2; // ebx
@@ -3612,7 +3496,6 @@ int __fastcall On_PLAYER_JOINLEVEL(struct TCmdLocParam1 *pCmd, int pnum)
 // 676194: using guessed type char gbBufferMsgs;
 // 67862C: using guessed type char gbActivePlayers;
 
-//----- (0043F448) --------------------------------------------------------
 int __fastcall On_ACTIVATEPORTAL(DJunk *pCmd, int pnum)
 {
 	signed int v2; // ebx
@@ -3690,7 +3573,6 @@ LABEL_19:
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043F521) --------------------------------------------------------
 void __fastcall delta_open_portal(int pnum, int x, int y, int bLevel, int bLType, int bSetLvl)
 {
 	int v6; // eax
@@ -3705,7 +3587,6 @@ void __fastcall delta_open_portal(int pnum, int x, int y, int bLevel, int bLType
 }
 // 67618C: using guessed type char sgbDeltaChanged;
 
-//----- (0043F55C) --------------------------------------------------------
 int __fastcall On_DEACTIVATEPORTAL(struct TCmd *pCmd, int pnum)
 {
 	int v2; // esi
@@ -3726,7 +3607,6 @@ int __fastcall On_DEACTIVATEPORTAL(struct TCmd *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043F59A) --------------------------------------------------------
 int __fastcall On_RETOWN(struct TCmd *pCmd, int pnum)
 {
 	int v2; // esi
@@ -3749,7 +3629,6 @@ int __fastcall On_RETOWN(struct TCmd *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043F5D3) --------------------------------------------------------
 int __fastcall On_SETSTR(struct TCmdParam1 *pCmd, int pnum)
 {
 	unsigned short v2; // cx
@@ -3768,7 +3647,6 @@ int __fastcall On_SETSTR(struct TCmdParam1 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043F60C) --------------------------------------------------------
 int __fastcall On_SETDEX(struct TCmdParam1 *pCmd, int pnum)
 {
 	unsigned short v2; // cx
@@ -3787,7 +3665,6 @@ int __fastcall On_SETDEX(struct TCmdParam1 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043F645) --------------------------------------------------------
 int __fastcall On_SETMAG(struct TCmdParam1 *pCmd, int pnum)
 {
 	unsigned short v2; // cx
@@ -3806,7 +3683,6 @@ int __fastcall On_SETMAG(struct TCmdParam1 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043F67E) --------------------------------------------------------
 int __fastcall On_SETVIT(struct TCmdParam1 *pCmd, int pnum)
 {
 	unsigned short v2; // cx
@@ -3825,7 +3701,6 @@ int __fastcall On_SETVIT(struct TCmdParam1 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043F6B7) --------------------------------------------------------
 int __fastcall On_STRING(struct TCmdString *pCmd, int pnum)
 {
 	const char *v2; // esi
@@ -3841,7 +3716,6 @@ int __fastcall On_STRING(struct TCmdString *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043F6EC) --------------------------------------------------------
 int __fastcall On_SYNCQUEST(struct TCmdQuest *pCmd, int pnum)
 {
 	if ( gbBufferMsgs == 1 )
@@ -3863,7 +3737,6 @@ int __fastcall On_SYNCQUEST(struct TCmdQuest *pCmd, int pnum)
 // 67618C: using guessed type char sgbDeltaChanged;
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043F72E) --------------------------------------------------------
 int __fastcall On_ENDSHIELD(int a1, int pnum)
 {
 	int v2; // ebx
@@ -3915,13 +3788,11 @@ int __fastcall On_CHEAT_SPELL_LEVEL(struct TCmd *pCmd, int pnum)
 }
 #endif
 
-//----- (0043F7A5) --------------------------------------------------------
 int __cdecl On_DEBUG()
 {
 	return 1;
 }
 
-//----- (0043F7A9) --------------------------------------------------------
 int __fastcall On_NOVA(struct TCmdLoc *pCmd, int pnum)
 {
 	struct TCmdLoc *v2; // edi
@@ -3946,7 +3817,6 @@ int __fastcall On_NOVA(struct TCmdLoc *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043F818) --------------------------------------------------------
 int __fastcall On_SETSHIELD(int unused, int pnum)
 {
 	int result; // eax
@@ -3958,7 +3828,6 @@ int __fastcall On_SETSHIELD(int unused, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-//----- (0043F830) --------------------------------------------------------
 int __fastcall On_REMSHIELD(int unused, int pnum)
 {
 	int result; // eax
