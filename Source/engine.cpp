@@ -1879,14 +1879,12 @@ int __fastcall random(int idx, int v)
 	return v4 % v2;
 }
 
-struct engine_cpp_init_2
+void __cdecl engine_cpp_init_2()
 {
-	engine_cpp_init_2()
-	{
-		mem_init_mutex();
-		mem_atexit_mutex();
-	}
-} _engine_cpp_init_2;
+    mem_init_mutex();
+    mem_atexit_mutex();
+}
+
 
 void __cdecl mem_init_mutex()
 {

@@ -27,14 +27,11 @@ struct dx_cpp_init_1
 // 47A464: using guessed type int dx_inf;
 // 52A514: using guessed type int dx_cpp_init_value;
 
-struct dx_cpp_init_2
+void __cdecl dx_cpp_init_2()
 {
-	dx_cpp_init_2()
-	{
-		dx_init_mutex();
-		dx_cleanup_mutex_atexit();
-	}
-} _dx_cpp_init_2;
+    dx_init_mutex();
+    dx_cleanup_mutex_atexit();
+}
 
 void __cdecl dx_init_mutex()
 {
