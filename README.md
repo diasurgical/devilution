@@ -28,7 +28,7 @@ Building with Visual C++ 5.10
 
 Building with MinGW(32/64)
 - Ensure that the MinGW binary paths have been added to the command line.
-- For MinGW32, navigate to the project root and execute `mingw32-make -f Makefile32`. The process will take longer than Visual Studio.
+- For MinGW32, navigate to the project root and execute `make MINGW32=mingw32`. The process will take longer than Visual Studio.
 - For MinGW64, refer to the respective documentation: [Linux](Support/INSTALL_linux.md) | [Windows](Support/INSTALL_windows.md). Note that only x86 systems may be targeted for the time being.
 
 Compiling Definitions
