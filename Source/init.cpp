@@ -484,7 +484,7 @@ void __fastcall init_activate_window(HWND hWnd, bool activated)
 	LONG dwNewLong; // eax
 
 	window_activated = activated;
-	//UiAppActivate(activated);
+	UiAppActivate(activated);
 	dwNewLong = GetWindowLongA(hWnd, GWL_STYLE);
 
 	if ( window_activated && fullscreen )
