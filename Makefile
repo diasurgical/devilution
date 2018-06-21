@@ -1,30 +1,46 @@
-DIABLO_SRC=$(wildcard Source/*.cpp)
-DIABLO_OBJ=$(DIABLO_SRC:.cpp=.o)
+# For 32-bit build systems, the executable is just mingw32
+MINGW32 ?= i686-w64-mingw32
+# Used s.t. we can try to use clang to compile code
+_CXX ?= g++
 
-PKWARE_SRC=$(wildcard 3rdParty/PKWare/*.cpp)
-PKWARE_OBJ=$(PKWARE_SRC:.cpp=.o)
+CXX=$(MINGW32)-$(_CXX)
+ifeq ($(MINGW32), "mingw32")
+	DLLTOOL=dlltool
+else
+	DLLTOOL=$(MINGW32)-dlltool
+endif
+
+# Clang doesn't understand permissive compilation, we need to "fix" invalid
+# casts from a pointer type there using
+#     static_cast<NEW_TYPE>(reinterpret_cast<uintptr_t>(ptr))
+# instead of
+#     (NEW_TYPE)(ptr)
+CXXFLAGS=-std=c++98 -fpermissive -Wno-write-strings
+CPPFLAGS=-MMD -MF $*.d
+LDLIBS=-lgdi32 -lversion -ldiabloui -lstorm
+LDFLAGS=-L./
 
 all: devilution.exe
 
-devilution.exe: $(DIABLO_OBJ) $(PKWARE_OBJ) diabloui.lib storm.lib
-	i686-w64-mingw32-gcc -L./ -o $@ $^ -lgdi32 -lversion -ldiabloui -lstorm
+include 3rdParty/PKWare/objs.mak
+include Source/objs.mak
 
-%.o: %.cpp
-	i686-w64-mingw32-gcc -c -fpermissive -Wno-write-strings -o $@ $<
+devilution.exe: $(OBJS) $(PKWARE_OBJS) diabloui.lib storm.lib
+	$(CXX) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 
 diabloui.lib: diabloui.dll DiabloUI/diabloui_gcc.def
-	i686-w64-mingw32-dlltool -d DiabloUI/diabloui_gcc.def -D diabloui.dll -l diabloui.lib
+	$(DLLTOOL) -d DiabloUI/diabloui_gcc.def -D $< -l $@
 
 diabloui.dll:
-	echo "Please copy diabloui.dll (version 1.09b) here."
+	$(error Please copy diabloui.dll (version 1.09b) here)
 
 storm.lib: storm.dll 3rdParty/Storm/Source/storm_gcc.def
-	i686-w64-mingw32-dlltool -d 3rdParty/Storm/Source/storm_gcc.def -D storm.dll -l storm.lib
+	$(DLLTOOL) -d 3rdParty/Storm/Source/storm_gcc.def -D $< -l $@
 
 storm.dll:
-	echo "Please copy storm.dll (version 1.09b) here."
+	$(error Please copy storm.dll (version 1.09b) here)
 
 clean:
-	rm -f $(DIABLO_OBJ) $(PKWARE_OBJ)
+	@$(RM) -v $(OBJS) $(OBJS:.o=.d) $(PKWARE_OBJS)  $(PKWARE_OBJS:.o=d)
 
 .PHONY: clean all
