@@ -1,0 +1,17 @@
+language: cpp
+
+notifications:
+  email:
+    on_failure: change # default: always
+
+addons:
+  apt:
+    packages:
+      - mingw-w64
+
+before_script:
+  - touch storm.dll
+  - touch diabloui.dll
+
+script:
+  - make
