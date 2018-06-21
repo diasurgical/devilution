@@ -284,9 +284,19 @@ bool __cdecl diablo_get_not_running()
 	return GetLastError() != ERROR_ALREADY_EXISTS;
 }
 
+void preMainInit(){
+    engine_cpp_init_2();
+    dx_cpp_init_2();
+    dthread_cpp_init_2();
+    nthread_cpp_init_2();
+    log_cpp_init_2();
+
+}
+
 //----- (00408B4A) --------------------------------------------------------
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
+    preMainInit();
 	HINSTANCE v4; // esi
 	//int v11; // ecx
 	char Filename[260]; // [esp+8h] [ebp-10Ch]

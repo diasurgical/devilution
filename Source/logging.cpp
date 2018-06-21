@@ -28,14 +28,11 @@ struct log_cpp_init_1
 // 646A30: using guessed type int log_cpp_init_value;
 
 //----- (00427A02) --------------------------------------------------------
-struct log_cpp_init_2
+void __cdecl log_cpp_init_2()
 {
-	log_cpp_init_2()
-	{
-		log_init_mutex();
-		j_log_cleanup_mutex();
-	}
-} _log_cpp_init_2;
+    log_init_mutex();
+    j_log_cleanup_mutex();
+}
 
 //----- (00427A0C) --------------------------------------------------------
 void __cdecl log_init_mutex()

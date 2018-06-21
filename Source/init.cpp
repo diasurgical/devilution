@@ -279,18 +279,14 @@ void __cdecl init_archives()
 	fileinfo.originalarchivefile = diabdat_mpq_path;
 	fileinfo.patcharchivefile = patch_rt_mpq_path;
 	init_get_file_info();
+
+    diabdat_mpq = init_test_access(diabdat_mpq_path, "\\diabdat.mpq", "DiabloCD", 1000, 1);
 #ifdef COPYPROT
-	while ( 1 )
-	{
-#endif
-		diabdat_mpq = init_test_access(diabdat_mpq_path, "\\diabdat.mpq", "DiabloCD", 1000, 1);
-#ifdef COPYPROT
-		if ( diabdat_mpq )
-			break;
-		UiCopyProtError((int)&v1);
+    if (! diabdat_mpq ){
+		UiCopyProtError(&v1);
 		if ( v1 == COPYPROT_CANCEL )
 			FileErrDlg("diabdat.mpq");
-	}
+    }
 #endif
 	if ( !WOpenFile("ui_art\\title.pcx", &a1, 1) )
 		FileErrDlg("Main program archive: diabdat.mpq");
@@ -500,7 +496,7 @@ void __fastcall init_activate_window(HWND hWnd, bool activated)
 	LONG dwNewLong; // eax
 
 	window_activated = activated;
-	UiAppActivate(activated);
+	//UiAppActivate(activated);
 	dwNewLong = GetWindowLongA(hWnd, GWL_STYLE);
 
 	if ( window_activated && fullscreen )

@@ -26,14 +26,13 @@ struct dthread_cpp_init_1
 // 52A4E0: using guessed type int dthread_cpp_init_value;
 
 //----- (004150A8) --------------------------------------------------------
-struct dthread_cpp_init_2
+
+void __cdecl dthread_cpp_init_2()
 {
-	dthread_cpp_init_2()
-	{
-		dthread_init_mutex();
-		dthread_cleanup_mutex_atexit();
-	}
-} _dthread_cpp_init_2;
+    dthread_init_mutex();
+    dthread_cleanup_mutex_atexit();
+}
+
 
 //----- (004150B2) --------------------------------------------------------
 void __cdecl dthread_init_mutex()

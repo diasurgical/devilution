@@ -113,7 +113,7 @@ LABEL_6:
 //----- (00427F76) --------------------------------------------------------
 void __fastcall mainmenu_action(int option)
 {
-	int v1; // eax
+/*	int v1; // eax
 	int a2; // [esp+0h] [ebp-4h]
 
 	a2 = option;
@@ -152,6 +152,44 @@ LABEL_15:
 	}
 	while ( v1 );
 LABEL_16:
+	music_stop();*/
+
+	int quit; // eax
+	int a2; // [esp+0h] [ebp-4h]
+
+	//a2 = option;// development history seems to be showing here
+	mainmenu_refresh_music();
+	do{
+	    quit = 1;
+        a2 = 0;
+        if ( !UiMainMenuDialog("Diablo v1.09", &a2, effects_play_sound, 30) ){
+            TermMsg("Unable to display mainmenu");
+            //old code would go directly to single player here...
+            break;//new code will quit.
+        }
+
+        switch ( a2 )
+        {
+            case MAINMENU_SINGLE_PLAYER:
+                quit = mainmenu_single_player();
+                break;
+            case MAINMENU_MULTIPLAYER:
+                quit = mainmenu_multi_player();
+                break;
+            case MAINMENU_SHOW_CREDITS:
+                UiCreditsDialog(16);
+                break;
+            case MAINMENU_EXIT_DIABLO:
+                quit = 0;
+                break;
+            case MAINMENU_REPLAY_INTRO:
+            case MAINMENU_ATTRACT_MODE:
+                if ( window_activated )
+                    mainmenu_play_intro();
+                break;
+        }
+	}while ( quit );
+
 	music_stop();
 }
 // 634980: using guessed type int window_activated;
