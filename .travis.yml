@@ -1,13 +1,22 @@
 language: cpp
 
+os:
+  - linux
+  - osx
+
 notifications:
   email:
     on_failure: change # default: always
 
+# Packages for Linux
 addons:
   apt:
     packages:
       - mingw-w64
+
+before_install:
+  # Packages for OSX
+  - if [ $TRAVIS_OS_NAME = osx ]; then brew install mingw-w64; fi
 
 before_script:
   - touch storm.dll
