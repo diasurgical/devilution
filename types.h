@@ -15,6 +15,12 @@
 #include <process.h>
 #include <shlobj.h>
 
+#ifdef __GNUC__
+#include <ctype.h>
+#endif
+
+// tell Visual C++ to shut the hell up
+#ifdef _MSC_VER
 #pragma warning (disable : 4309) // truncation of constant value
 #pragma warning (disable : 4305) // truncation of int
 #pragma warning (disable : 4018) // signed/unsigned mismatch
@@ -24,6 +30,7 @@
 #pragma warning (disable : 4244) // conversion loss
 #pragma warning (disable : 4800) // bool perf
 #pragma warning (disable : 4146) // negative unsigned
+#endif
 
 #include "enums.h"
 #include "structs.h"
@@ -38,7 +45,7 @@
 // If defined, use copy protection [Default -> Defined]
 //#define COPYPROT
 // If defined, don't reload for debuggers [Default -> Undefined]
-#define DEBUGGER
+//#define DEBUGGER
 // If defined, don't fry the CPU [Default -> Undefined]
 #define SLEEP
 
