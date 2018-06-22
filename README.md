@@ -29,8 +29,8 @@ Building with Visual C++ 5.10
 - Open the project workspace `Diablo.dsw` and select `Build Diablo.exe`. This will build all dependencies and only takes a few seconds.
 
 Building with MinGW(32/64)
-- Ensure that the MinGW binary paths have been added to the command line.
-- For MinGW32, navigate to the project root and execute `make MINGW32=mingw32`. The process will take longer than Visual Studio.
+- Ensure that the MinGW binary paths have been added to the command line. On Windows, you would usually type: `set PATH=C:\mingw\bin;C:\mingw\msys\1.0\bin`
+- For MinGW32, navigate to the project root and execute `make MINGW32=1`. The process will take longer than Visual Studio.
 - For MinGW64, refer to the respective documentation: [Linux](Support/INSTALL_linux.md) | [Windows](Support/INSTALL_windows.md) | [Mac](Support/INSTALL_mac.md). Note that only x86 systems may be targeted for the time being.
 
 Compiling Definitions
