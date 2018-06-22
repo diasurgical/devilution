@@ -8,6 +8,7 @@
 # Start the *MSYS2 MinGW 32-bit* terminal.
 pacman -Sy git make mingw-w64-i686-gcc mingw-w64-i686-binutils
 ln -s /mingw32/i686-w64-mingw32/bin/dlltool.exe /usr/bin/i686-w64-mingw32-dlltool.exe
+ln -s /mingw32/i686-w64-mingw32/bin/as.exe /usr/bin/i686-w64-mingw32-as.exe
 ```
 
 ## Building
