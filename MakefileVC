@@ -1,0 +1,31 @@
+VC_DIR ?= $(HOME)/DevStudio/VC
+VC_BIN_DIR = $(VC_DIR)/bin
+VC_INC_DIR = $(VC_DIR)/include
+VC_LIB_DIR = $(VC_DIR)/lib
+# TODO: Figure out a clean way to only use Wine on Linux. Thus letting this
+# Makefile be used on both Unix and Windows systems.
+CL = wine $(VC_BIN_DIR)/CL.EXE
+
+all: devilution.exe
+
+include 3rdParty/PKWare/objs.mak
+include 3rdParty/Storm/Source/objs.mak
+include DiabloUI/objs.mak
+include Source/objs.mak
+
+devilution.exe: $(OBJS:.o=.obj) $(PKWARE_OBJS:.o=.obj) 3rdParty/Storm/Source/storm.lib DiabloUI/diabloui.lib
+	$(CL) /nologo /Fe$@ $(OBJS:.o=.obj) $(PKWARE_OBJS:.o=.obj) /link /LIBPATH:$(VC_LIB_DIR) advapi32.lib gdi32.lib shell32.lib user32.lib version.lib 3rdParty/Storm/Source/storm.lib DiabloUI/diabloui.lib
+
+%.obj: %.cpp
+	$(CL) /nologo /c /O1 /W3 /MT /I $(VC_INC_DIR) /Fo$@ $<
+
+3rdParty/Storm/Source/storm.lib: $(STORM_OBJS:.o=.obj)
+	$(CL) $^ /link /nologo /dll /subsystem:windows /machine:I386 /LIBPATH:$(VC_LIB_DIR) /def:"3rdParty/Storm/Source/storm.def" /out:3rdParty/Storm/Source/storm.dll
+
+DiabloUI/diabloui.lib: $(DIABLOUI_OBJS:.o=.obj)
+	$(CL) $^ /link /nologo /dll /subsystem:windows /machine:I386 /LIBPATH:$(VC_LIB_DIR) /def:"DiabloUI/diabloui.def" /out:DiabloUI/diabloui.dll
+
+clean:
+	@$(RM) -v $(OBJS:.o=.obj) $(PKWARE_OBJS:.o=.obj) $(STORM_OBJS:.o=.obj) $(DIABLOUI_OBJS:.o=.obj) 3rdParty/Storm/Source/storm.{exp,lib,dll} DiabloUI/diabloui.{exp,lib,dll}
+
+.PHONY: clean all
