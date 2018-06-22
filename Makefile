@@ -41,6 +41,6 @@ storm.dll:
 	$(error Please copy storm.dll (version 1.09b) here)
 
 clean:
-	@$(RM) -v $(OBJS) $(OBJS:.o=.d) $(PKWARE_OBJS)  $(PKWARE_OBJS:.o=d)
+	@$(RM) -v $(OBJS) $(OBJS:.o=.d) $(PKWARE_OBJS)  $(PKWARE_OBJS:.o=d) storm.lib diabloui.lib
 
 .PHONY: clean all
