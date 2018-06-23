@@ -8,11 +8,15 @@ notifications:
   email:
     on_failure: change # default: always
 
-# Packages for Linux
 addons:
+  # Packages for Linux
   apt:
     packages:
       - mingw-w64
+
+env:
+  - MAKE_BUILD=make
+  - MAKE_BUILD=debug
 
 before_install:
   # Packages for OSX
@@ -23,4 +27,8 @@ before_script:
   - touch diabloui.dll
 
 script:
-  - make
+  - if [ $MAKE_BUILD = make ]; then make; fi
+  - if [ $MAKE_BUILD = debug ]; then make debug; fi
+
+after_script:
+  - make clean
