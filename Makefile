@@ -21,6 +21,10 @@ LDFLAGS=-L./ -static-libgcc -mwindows
 
 all: devilution.exe
 
+debug: CXXFLAGS += -D_DEBUG
+debug: CPPFLAGS += -D_DEBUG
+debug: devilution.exe
+
 DIABLO_SRC=$(wildcard Source/*.cpp)
 OBJS=$(DIABLO_SRC:.cpp=.o)
 
