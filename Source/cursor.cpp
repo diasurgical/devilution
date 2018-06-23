@@ -857,7 +857,7 @@ LABEL_223:
 		if ( pcurs == CURSOR_RESURRECT )
 		{
 			v79 = -1;
-			v77 = &nBlockTable[v27 + 1944 + v8];
+			v77 = &dFlags[-1][v27 + v8]; /* v77 = &nBlockTable[v27 + 1944 + v8]; check */
 			do
 			{
 				v80 = -1;
