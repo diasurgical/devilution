@@ -7,7 +7,6 @@
 ```bash
 brew install wine
 brew install mingw-w64
-ln -s /usr/local/Cellar/mingw-w64/5.0.4/toolchain-x86_64/bin/x86_64-w64-mingw32-windres /usr/local/bin/windres
 ```
 
 ## Building
