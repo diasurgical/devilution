@@ -1742,6 +1742,11 @@ LABEL_27:
 						NetSendCmdString(1 << myplr, tempstr);
 					}
 					return;
+				case 'L':
+				case 'l':
+					if ( debug_mode_key_inverted_v )
+						ToggleLighting();
+					return;
 				case 'M':
 					NextDebugMonster();
 					return;
