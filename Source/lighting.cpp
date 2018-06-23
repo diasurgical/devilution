@@ -1391,6 +1391,31 @@ void __cdecl MakeLightTable()
 // 525728: using guessed type int light4flag;
 // 5BB1ED: using guessed type char leveltype;
 
+#ifdef _DEBUG
+void __cdecl ToggleLighting()
+{
+	int i;
+
+	lightflag ^= 1;
+	if ( lightflag )
+	{
+		memset(dTransVal, 0, 0x3100u);
+	}
+	else
+	{
+		memcpy(dTransVal, dTransVal2, 0x3100u);
+		for(i = 0; i < 4; i++)
+		{
+			if ( plr[i].plractive )
+			{
+				if ( currlevel == plr[i].plrlevel )
+					DoLighting(plr[i].WorldX, plr[i].WorldY, plr[i]._pLightRad, -1);
+			}
+		}
+	}
+}
+#endif
+
 void __cdecl InitLightMax()
 {
 	lightmax = light4flag == 0 ? 15 : 3;
