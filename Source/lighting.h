@@ -24,6 +24,9 @@ void __fastcall DoVision(int nXPos, int nYPos, int nRadius, unsigned char doauto
 void __cdecl FreeLightTable();
 void __cdecl InitLightTable();
 void __cdecl MakeLightTable();
+#ifdef _DEBUG
+void __cdecl ToggleLighting();
+#endif
 void __cdecl InitLightMax();
 void __cdecl InitLighting();
 int __fastcall AddLight(int x, int y, int r);

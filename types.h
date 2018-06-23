@@ -45,7 +45,10 @@
 // If defined, use copy protection [Default -> Defined]
 //#define COPYPROT
 // If defined, don't reload for debuggers [Default -> Undefined]
-//#define DEBUGGER
+// Note that with patch 1.03 the command line was hosed, this is required to pass arguments to the game
+#ifdef _DEBUG
+#define DEBUGGER
+#endif
 // If defined, don't fry the CPU [Default -> Undefined]
 #define SLEEP
 

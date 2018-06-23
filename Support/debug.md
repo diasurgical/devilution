@@ -39,7 +39,7 @@ In-game hotkeys
 - `d` -> print debug player info
 - `D` -> switch current debug player
 - `e` -> display "EFlag"
-- `l`/`L` -> toggle lighting in dungeon [NOT YET IMPLEMENTED]
+- `l`/`L` -> toggle lighting in dungeon
 - `m` -> print debug monster info
 - `M` -> switch current debug monster
 - `r`/`R` -> display game seeds
