@@ -2,9 +2,11 @@
 ifdef MINGW32
 	CXX=mingw32-g++
 	DLLTOOL=dlltool
+	WINDRES=windres
 else
 	CXX=i686-w64-mingw32-g++
 	DLLTOOL=i686-w64-mingw32-dlltool
+	WINDRES=i686-w64-mingw32-windres
 endif
 
 # Clang doesn't understand permissive compilation, we need to "fix" invalid
@@ -29,7 +31,7 @@ devilution.exe: $(OBJS) $(PKWARE_OBJS) diabres.o diabloui.lib storm.lib
 	$(CXX) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 
 diabres.o: Diablo.rc
-	windres $< $@
+	$(WINDRES) $< $@
 
 diabloui.lib: diabloui.dll DiabloUI/diabloui_gcc.def
 	$(DLLTOOL) -d DiabloUI/diabloui_gcc.def -D $< -l $@
