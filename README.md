@@ -6,23 +6,23 @@ Diablo devolved - magic behind the 1996 computer game
 Reverse engineered by GalaXyHaXz in 2018
 
 # Introduction
-Diablo was everything but loved by Blizzard. The last update to the game was in 2001, and Blizzard stopped supporting/selling it altogether a few years ago. I took up a mission to fix this problem. Diablo was a game I played extensively as a teenager; but as time passed, it became difficult to run the game on newer hardware. The lack of new content also took away from the re-playability. The ideal solution would be to modernize the source, but reversing the whole game initially sounded impossible.
+Diablo was everything but loved by Blizzard. The last update to the game was in 2001, and Blizzard stopped sales and support altogether a few years ago. I took up a mission to fix this problem. Diablo was a game I played extensively as a teenager; but as time passed, running the game beecame more difficult on newer hardware. The lack of new contents also decreased re-playability. The ideal solution would be to modernize the source, but reversing the whole game initially sounded impossible.
 
-Thankfully, there was a little oversight in 1998. Blizzard gave Diablo's source code to two developers: Synergestic Software (to create an expansion), and Climax Studios (to create a Playstation port). Now Sony of Japan has long been known for letting things slide in their QA department. Anything from prototypes to full source code leaks (Beatmania), and Diablo was no exception. A symbolic file was accidentally left on the Japanese port, which contained a layout of everything in the game. This includes functions, data, types, and more! A beta version of the port also leaked, which contained yet another one of these files.
+Thankfully, there was a little oversight in 1998. Blizzard gave Diablo's source code to two developers: Synergestic Software (to create an expansion), and Climax Studios (to create a Playstation port). Now, QA department of Sony Japan has long been known for letting things slide. Anything from prototypes to full source code leaks (Beatmania), and Diablo was no exception. A symbolic file was accidentally left on the Japanese port, which contained a layout of everything in the game. The file includes functions, data, types, and more! A beta version of the port also leaked, which contained yet another one of these files.
 
-To top it all off, a debug build of the PC version is contained right there on your Diablo disc! Hidden in `DIABDAT.MPQ -> D1221A.MPQ -> DIABLO.EXE`. This build contains debug tools not found in the retail game, and many assert strings giving away code information. Combining these aspects not only makes reversing the game much easier, but it makes it far more accurate. File names, function names, and even line numbers will be fairly close to the real deal.
+To top it all off, a debug build of the PC version is contained right there on your Diablo disc! Hidden in `DIABDAT.MPQ -> D1221A.MPQ -> DIABLO.EXE`. This build contains debug tools not found in the retail game and many assert strings give away code information. Combining these aspects not only makes reversing the game much easier but it makes the process far more accurate. File names, function names, and even line numbers will be fairly close to the real deal.
 
 After four months of hard work, I present to you Devilution! Instead of seeing how Diablo evolved, we'll see it devolved!
 
 # Purpose
-Having the source code makes things much easier to maintain. For years mod-makers had to rely on tedious code editing and memory injection. A few even went even further and reversed a good chunk of the game (such as Belzebub/The Hell). The problem is that they never released their sources. Usually being a one-man job, they move on with their lives inevitably due to the amount of time/work required or lack of interest. This leaves people with a half-finished mod; one which had countless hours put into it, but left full of bugs and unfinished potential. So we're back to square one. Devilution aims to fix this, by making the source code of Diablo freely available to all.
+Having the source code makes things much easier to maintain. For years, mod-makers had to rely on tedious code editing and memory injection. A few went even further and reversed a good chunk of the game (such as Belzebub/The Hell). The problem is that they never released their sources. Usually being a one-man job, they inevitably moved on with their lives either due to lack of interst or the amount of time/work required. This left people with a half-finished mod; one which had countless hours put into it but full of bugs and unfinished potentials. So, we're back to square one. Devilution aims to fix this, by making the source code of Diablo freely available to all.
 
-The goal of Devilution itself is to recreate the original source code as accurately as possible, in order to ensure that everything is preserved. This goes as far as bugs and badly written code in the original game. However, it becomes a solid base for developers to work with; making it much easier than before to update, fix, and port the game to other platforms.
+The goal of Devilution itself is to recreate the original source code as accurately as possible, preserving everything. This applies to bugs and badly written code in the original game as well. However, it will be a solid base for developers to work with; making it much easier than before to update, fix, and port the game to other platforms.
 
-As a side goal, Devilution helps document the unused and cut content from the final game. Development of Diablo was rushed near the end--many ideas were scrapped and Multiplayer was quickly hacked in. By examining the source, we can see various quirks of planned development.
+As a side goal, Devilution helps document the unused and cut content from the final game. Development of Diablo was rushed near the end--many ideas were scrapped and Multiplayer was quickly hacked in. By examining the source, we can identify various quirks of planned development.
 
 # Compiling
-Development of Diablo began around the time Windows 95 released, for which it was optimized. The compiler used was Microsoft Visual C++ 4.20, which was upgraded to 5.10 in later patches ([ref: spreadsheet](Support/linker.xls)). Compatibility with these tools is retained to help ensure the reversal is as accurate as possible. There are also Makefiles provided to compile with modern tools as well.
+Development of Diablo began around the time Windows 95 released. The game was optimized for the operating system. The compiler used was Microsoft Visual C++ 4.20, which was upgraded to 5.10 in later patches ([ref: spreadsheet](Support/linker.xls)). Compatibility with these tools is retained to help ensure the reversal is as accurate as possible. There are also Makefiles provided to compile with modern tools.
 
 Building with Visual C++ 5.10
 - Make sure Service Pack 3 is installed in order to update the linker from 5.00 -> 5.10! Newer versions of Visual Studio work as well, but will upgrade the project.
@@ -41,20 +41,20 @@ Building with MinGW(32/64)
 - For MinGW64, refer to the respective documentation: [Linux](Support/INSTALL_linux.md) | [Windows](Support/INSTALL_windows.md) | [Mac](Support/INSTALL_mac.md). Note that only x86 systems may be targeted for the time being.
 
 Compiling Definitions
-- `COPYPROT` (default: on) will define whether or not to use the CD drive for DIABDAT.MPQ
-- `DEBUGGER` (default: off) will define whether to skip reloading for direct execution through debuggers
-- `SLEEP` (default: off) will define whether to sleep the program to prevent 100% CPU usage
-- `_DEBUG` (default: off) will define whether to include debug features (refer to [Debugging Document](Support/debug.md))
+- `COPYPROT` (default: on) will define whether to use the CD drive for DIABDAT.MPQ
+- `DEBUGGER` (default: off) will define whether to skip reloading for direct execution through debuggers.
+- `SLEEP` (default: off) will define whether to sleep the program to prevent 100% CPU usage.
+- `_DEBUG` (default: off) will define whether to include debug features (refer to [Debugging Document](Support/debug.md)).
 
 # [Compatibility Matrix, Compilations, Platform Statuses](Support/compatibility_matrix.md)
 
 # Installing
 Once compiled, the Devilution binary will serve as a replacement for `Diablo.exe`. A clean installation of Diablo patched to 1.09(b) is needed to run the game. Either copy Devilution into Diablo's installation folder, or make sure the following files are present:
-- `DIABDAT.MPQ` : if `COPYPROT` was defined, then the Diablo CD will be required
-- `DiabloUI.dll` : provides module for the title screen interface
-- `SmackW32.dll` : provides library for playing Smacker video files
-- `Standard.snp` : provides local multiplayer code (Modem/IPX/Serial, Starcraft version adds TCP/IP)
-- `Storm.dll` : provides various "standard" functions
+- `DIABDAT.MPQ` : if `COPYPROT` was defined, then the Diablo CD will be required.
+- `DiabloUI.dll` : provides module for the title screen interface.
+- `SmackW32.dll` : provides library for playing Smacker video files.
+- `Standard.snp` : provides local multiplayer code (Modem/IPX/Serial, Starcraft version adds TCP/IP).
+- `Storm.dll` : provides various "standard" functions.
 
 To run the game in windowed mode, a DirectDraw wrapper will be needed. Strange Bytes' [DirectDraw patch](http://www.strangebytes.com/index.php/projects/1-diablo-1-windows-7-vista-patch) is recommended. To install, place the `ddraw.dll` into the same location as the Devilution binary.
 
@@ -90,7 +90,7 @@ Sorry, but no. Money takes the passion out of it. Forgoing that, Diablo was an e
 That's a tricky question. Under the DMCA, reverse-engineering has exceptions for the purpose of documentation and interoperability. Devilution provides the necessary documentation needed to achieve the latter. However, it falls into an entirely grey area. The real question is whether or not Blizzard deems it necessary to take action.
 
 # Contributing
-Currently there are a few issues with the decompiled code. The focus should be on fixing these issues for now instead of cleaning up the code. Currently only Diablo.exe has been reversed, the other files are:
+Currently, there are a few issues with the decompiled code. The focus should be on fixing these issues for now instead of cleaning up the code. Currently only Diablo.exe has been reversed, the other files are:
 - `Battle.snp`: code for battle.net, outdated protocol and not worth the time.
 - `DiabloUI.dll`: code for the main menu, this is entirely Windows specific and poorly written. However, it needs to be reversed to complete the source code.
 - `SmackW32.dll`: code for the Smacker video library, not worth the time.
