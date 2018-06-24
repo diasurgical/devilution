@@ -1093,7 +1093,7 @@ void __cdecl Freeupstairs()
 		v1 = trigflag[4];
 		do
 		{
-			v2 = &nBlockTable[112 * *(v0 - 1) + 1830 + *v0];
+			v2 = &dFlags[*(v0 - 1)-2][*v0-2]; /* v2 = &nBlockTable[112 * *(v0 - 1) + 1830 + *v0]; check */
 			v3 = 5;
 			do
 			{
