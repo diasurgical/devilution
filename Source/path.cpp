@@ -100,7 +100,12 @@ int __fastcall path_get_h_cost(int sx, int sy, int dx, int dy)
 	return 2 * (delta_x + delta_y);
 }
 
-/* return 2 if pPath is a path to (dx,dy) else return 3 */
+/* return 2 if pPath's destination is in a straight line with (dx, dy), else 3
+ *
+ * I think this is to approximate that diagonal movement should have a cost of
+ * sqrt(2). That's approx. 1.5, so they multiply all step costs by 2 except
+ * diagonals which are multiplied by 3
+ */
 int __fastcall path_check_equal(PATHNODE *pPath, int dx, int dy)
 {
 	return ( pPath->x == dx || pPath->y == dy ) ? 2 : 3;
