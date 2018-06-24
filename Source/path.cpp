@@ -98,15 +98,10 @@ int __fastcall path_get_h_cost(int sx, int sy, int dx, int dy)
 	return 2 * (delta_x + delta_y);
 }
 
+/* return 2 if pPath is a path to (dx,dy) else return 3 */
 int __fastcall path_check_equal(PATHNODE *pPath, int dx, int dy)
 {
-	int v4; // [esp-4h] [ebp-4h]
-
-	if ( pPath->x == dx || pPath->y == dy )
-		v4 = 2;
-	else
-		v4 = 3;
-	return v4;
+	return ( pPath->x == dx || pPath->y == dy ) ? 2 : 3;
 }
 
 PATHNODE *__cdecl GetNextPath()
