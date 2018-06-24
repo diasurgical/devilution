@@ -28,6 +28,13 @@ Building with Visual C++ 5.10
 - Make sure Service Pack 3 is installed in order to update the linker from 5.00 -> 5.10! Newer versions of Visual Studio work as well, but will upgrade the project.
 - Open the project workspace `Diablo.dsw` and select `Build Diablo.exe`. This will build all dependencies and only takes a few seconds.
 
+Building with modern version of Visual Studio
+- Make sure to disable Data Exection Prevention: Configuration options -> Linker -> Advanced -> Data Execution Prevention (DEP).
+- Set this value to: No (/NXCOMPAT: NO).
+- Storm.dll uses dynamic compilation to improve rendering performance but fails to mark the resulting memory page as executable, leading to a protection fault when trying to draw.
+
+
+
 Building with MinGW(32/64)
 - Ensure that the MinGW binary paths have been added to the command line. On Windows, you would usually type: `set PATH=C:\mingw\bin;C:\mingw\msys\1.0\bin`
 - For MinGW32, navigate to the project root and execute `make MINGW32=1`. The process will take longer than Visual Studio.
