@@ -102,7 +102,7 @@ void __cdecl InitTownTriggers()
 
 	trigs[0]._tx = 25;
 	trigs[0]._ty = 29;
-	trigs[0]._tmsg = 1026;
+	trigs[0]._tmsg = WM_DIABNEXTLVL;
 	trigflag[4] = 1;
 	if ( gbMaxPlayers == 4 )
 	{
@@ -111,15 +111,15 @@ void __cdecl InitTownTriggers()
 		trigflag[1] = 1;
 		trigflag[2] = 1;
 		trigs[1]._ty = 21;
-		trigs[1]._tmsg = 1031;
+		trigs[1]._tmsg = WM_DIABTOWNWARP;
 		trigs[1]._tlvl = 5;
 		trigs[2]._tx = 17;
 		trigs[2]._ty = 69;
-		trigs[2]._tmsg = 1031;
+		trigs[2]._tmsg = WM_DIABTOWNWARP;
 		trigs[2]._tlvl = 9;
 		trigs[3]._tx = 41;
 		trigs[3]._ty = 80;
-		trigs[3]._tmsg = 1031;
+		trigs[3]._tmsg = WM_DIABTOWNWARP;
 		trigs[3]._tlvl = 13;
 		trigflag[4] = 4;
 	}
@@ -133,7 +133,7 @@ void __cdecl InitTownTriggers()
 		{
 			trigs[1]._tx = 49;
 			trigs[1]._ty = 21;
-			trigs[1]._tmsg = 1031;
+			trigs[1]._tmsg = WM_DIABTOWNWARP;
 			trigs[1]._tlvl = 5;
 			trigflag[4] = 2;
 			trigflag[0] = 1;
@@ -144,7 +144,7 @@ void __cdecl InitTownTriggers()
 			v1 = trigflag[4]++;
 			trigs[v1]._tx = 17;
 			trigs[v1]._ty = 69;
-			trigs[v1]._tmsg = 1031;
+			trigs[v1]._tmsg = WM_DIABTOWNWARP;
 			trigs[v1]._tlvl = 9;
 		}
 		if ( v0 & 4 )
@@ -153,7 +153,7 @@ void __cdecl InitTownTriggers()
 			v2 = trigflag[4]++;
 			trigs[v2]._tx = 41;
 			trigs[v2]._ty = 80;
-			trigs[v2]._tmsg = 1031;
+			trigs[v2]._tmsg = WM_DIABTOWNWARP;
 			trigs[v2]._tlvl = 13;
 		}
 	}
@@ -188,7 +188,7 @@ void __cdecl InitL1Triggers()
 				++trigflag[4];
 				v4->_tx = v1;
 				*v3 = v0;
-				*v2 = 1027;
+				*v2 = WM_DIABPREVLVL;
 				++v4;
 				v3 += 4;
 				v2 += 4;
@@ -198,7 +198,7 @@ void __cdecl InitL1Triggers()
 				++trigflag[4];
 				v4->_tx = v1;
 				*v3 = v0;
-				*v2 = 1026;
+				*v2 = WM_DIABNEXTLVL;
 				++v4;
 				v3 += 4;
 				v2 += 4;
@@ -245,7 +245,7 @@ void __cdecl InitL2Triggers()
 				v8 += 4;
 				v3->_tx = v0;
 				*v2 = v7;
-				*v1 = 1027;
+				*v1 = WM_DIABPREVLVL;
 				++v3;
 				v2 += 4;
 				v1 += 4;
@@ -256,7 +256,7 @@ void __cdecl InitL2Triggers()
 				*v2 = v7;
 				v4 = v8;
 				v8 += 4;
-				*v1 = 1032;
+				*v1 = WM_DIABTWARPUP;
 				*v4 = 0;
 				++trigflag[4];
 				++v3;
@@ -269,7 +269,7 @@ void __cdecl InitL2Triggers()
 				v8 += 4;
 				v3->_tx = v0;
 				*v2 = v7;
-				*v1 = 1026;
+				*v1 = WM_DIABNEXTLVL;
 				++v3;
 				v2 += 4;
 				v1 += 4;
@@ -312,7 +312,7 @@ void __cdecl InitL3Triggers()
 				++trigflag[4];
 				v4->_tx = v1;
 				*v3 = v0;
-				*v2 = 1027;
+				*v2 = WM_DIABPREVLVL;
 				++v4;
 				v3 += 4;
 				v2 += 4;
@@ -322,7 +322,7 @@ void __cdecl InitL3Triggers()
 				++trigflag[4];
 				v4->_tx = v1;
 				*v3 = v0;
-				*v2 = 1026;
+				*v2 = WM_DIABNEXTLVL;
 				++v4;
 				v3 += 4;
 				v2 += 4;
@@ -332,7 +332,7 @@ void __cdecl InitL3Triggers()
 				++trigflag[4];
 				v4->_tx = v1;
 				*v3 = v0;
-				*v2 = 1032;
+				*v2 = WM_DIABTWARPUP;
 				++v4;
 				v3 += 4;
 				v2 += 4;
@@ -382,7 +382,7 @@ void __cdecl InitL4Triggers()
 				++trigflag[4];
 				v3->_tx = v0;
 				*v2 = v11;
-				*v1 = 1027;
+				*v1 = WM_DIABPREVLVL;
 				v4 += 4;
 				++v3;
 				v2 += 4;
@@ -392,7 +392,7 @@ void __cdecl InitL4Triggers()
 			{
 				v3->_tx = v0;
 				*v2 = v11;
-				*v1 = 1032;
+				*v1 = WM_DIABTWARPUP;
 				*v4 = 0;
 				++trigflag[4];
 				v4 += 4;
@@ -405,7 +405,7 @@ void __cdecl InitL4Triggers()
 				++trigflag[4];
 				v3->_tx = v0;
 				*v2 = v11;
-				*v1 = 1026;
+				*v1 = WM_DIABNEXTLVL;
 				v4 += 4;
 				++v3;
 				v2 += 4;
@@ -433,7 +433,7 @@ void __cdecl InitL4Triggers()
 				++trigflag[4];
 				*(v8 - 1) = v7;
 				*v8 = v5;
-				v8[1] = 1026;
+				v8[1] = WM_DIABNEXTLVL;
 				v8 += 4;
 			}
 			++v7;
@@ -453,7 +453,7 @@ void __cdecl InitSKingTriggers()
 	trigflag[4] = 1;
 	trigs[0]._tx = 82;
 	trigs[0]._ty = 42;
-	trigs[0]._tmsg = 1028;
+	trigs[0]._tmsg = WM_DIABRTNLVL;
 }
 
 void __cdecl InitSChambTriggers()
@@ -462,7 +462,7 @@ void __cdecl InitSChambTriggers()
 	trigflag[4] = 1;
 	trigs[0]._tx = 70;
 	trigs[0]._ty = 39;
-	trigs[0]._tmsg = 1028;
+	trigs[0]._tmsg = WM_DIABRTNLVL;
 }
 
 void __cdecl InitPWaterTriggers()
@@ -471,7 +471,7 @@ void __cdecl InitPWaterTriggers()
 	trigflag[4] = 1;
 	trigs[0]._tx = 30;
 	trigs[0]._ty = 83;
-	trigs[0]._tmsg = 1028;
+	trigs[0]._tmsg = WM_DIABRTNLVL;
 }
 
 void __cdecl InitVPTriggers()
@@ -480,7 +480,7 @@ void __cdecl InitVPTriggers()
 	trigflag[4] = 1;
 	trigs[0]._tx = 35;
 	trigs[0]._ty = 32;
-	trigs[0]._tmsg = 1028;
+	trigs[0]._tmsg = WM_DIABRTNLVL;
 }
 
 unsigned char __cdecl ForceTownTrig()
@@ -594,7 +594,7 @@ LABEL_19:
 				return 0;
 		}
 		v6 = &trigs[0]._tmsg;
-		while ( *v6 != 1026 )
+		while ( *v6 != WM_DIABNEXTLVL )
 		{
 			++v2;
 			v6 += 4;
@@ -625,7 +625,7 @@ LABEL_11:
 				goto LABEL_12;
 		}
 		v3 = &trigs[0]._tmsg;
-		while ( *v3 != 1027 )
+		while ( *v3 != WM_DIABPREVLVL )
 		{
 			++v2;
 			v3 += 4;
@@ -685,7 +685,7 @@ LABEL_18:
 					goto LABEL_22;
 			}
 			v9 = &trigs[0]._tmsg;
-			while ( *v9 != 1026 )
+			while ( *v9 != WM_DIABNEXTLVL )
 			{
 				++v8;
 				v9 += 4;
@@ -720,7 +720,7 @@ LABEL_32:
 		v15 = trigs;
 		while ( 1 )
 		{
-			if ( v15->_tmsg == 1032 )
+			if ( v15->_tmsg == WM_DIABTWARPUP )
 			{
 				v16 = abs(v15->_tx - cursmx);
 				v17 = abs(v15->_ty - cursmy);
@@ -755,7 +755,7 @@ LABEL_10:
 		v3 = trigs;
 		while ( 1 )
 		{
-			if ( v3->_tmsg == 1027 )
+			if ( v3->_tmsg == WM_DIABPREVLVL )
 			{
 				v4 = abs(v3->_tx - cursmx);
 				v5 = abs(v3->_ty - cursmy);
@@ -819,7 +819,7 @@ LABEL_8:
 				goto LABEL_9;
 		}
 		v3 = &trigs[0]._tmsg;
-		while ( *v3 != 1027 )
+		while ( *v3 != WM_DIABPREVLVL )
 		{
 			++v2;
 			v3 += 4;
@@ -851,7 +851,7 @@ LABEL_18:
 				goto LABEL_19;
 		}
 		v8 = &trigs[0]._tmsg;
-		while ( *v8 != 1026 )
+		while ( *v8 != WM_DIABNEXTLVL )
 		{
 			++v2;
 			v8 += 4;
@@ -889,7 +889,7 @@ LABEL_29:
 		v12 = trigs;
 		while ( 1 )
 		{
-			if ( v12->_tmsg == 1032 )
+			if ( v12->_tmsg == WM_DIABTWARPUP )
 			{
 				v13 = abs(v12->_tx - cursmx);
 				v14 = abs(v12->_ty - cursmy);
@@ -953,7 +953,7 @@ LABEL_8:
 				goto LABEL_9;
 		}
 		v3 = &trigs[0]._tmsg;
-		while ( *v3 != 1027 )
+		while ( *v3 != WM_DIABPREVLVL )
 		{
 			++v2;
 			v3 += 4;
@@ -983,7 +983,7 @@ LABEL_16:
 				goto LABEL_17;
 		}
 		v6 = &trigs[0]._tmsg;
-		while ( *v6 != 1026 )
+		while ( *v6 != WM_DIABNEXTLVL )
 		{
 			++v2;
 			v6 += 4;
@@ -1016,7 +1016,7 @@ LABEL_27:
 			v10 = trigs;
 			while ( 1 )
 			{
-				if ( v10->_tmsg == 1032 )
+				if ( v10->_tmsg == WM_DIABTWARPUP )
 				{
 					v11 = abs(v10->_tx - cursmx);
 					v12 = abs(v10->_ty - cursmy);
@@ -1058,7 +1058,7 @@ LABEL_36:
 					return 0;
 			}
 			v15 = &trigs[0]._tmsg;
-			while ( *v15 != 1026 )
+			while ( *v15 != WM_DIABNEXTLVL )
 			{
 				++v2;
 				v15 += 4;
