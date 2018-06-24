@@ -9,8 +9,10 @@ PATHNODE *pnode_ptr;
 PATHNODE *pnode_tblptr[300];
 PATHNODE path_2_nodes[300];
 
-char pathxdir[8] = { -1, -1, 1, 1, -1, 0, 1, 0 };
-char pathydir[8] = { -1, 1, -1, 1, 0, -1, 0, 1 };
+#define DIRECTIONS 8
+
+char pathxdir[DIRECTIONS] = { -1, -1, 1, 1, -1, 0, 1, 0 };
+char pathydir[DIRECTIONS] = { -1, 1, -1, 1, 0, -1, 0, 1 };
 
 /* rdata */
 char path_directions[9] = { 5, 1, 6, 2, 0, 3, 8, 4, 7 };
@@ -167,32 +169,39 @@ LABEL_13:
 	return result;
 }
 
+/* get path from (x,y) to pPath's destination, using PosOk to check each step
+ * return 1 if no path was found
+ */
 int __fastcall path_get_path(bool (__fastcall *PosOk)(int, int, int), int PosOkArg, PATHNODE *pPath, int x, int y)
 {
-	int v5; // eax
-	int dx; // esi
-	int dy; // edi
-	int i; // [esp+14h] [ebp-4h]
+	int dx;
+	int dy;
 
-	v5 = 0;
-	for ( i = 0; ; v5 = i )
+	// try moving every direction from the path's destination
+	for (int i = 0; i < DIRECTIONS; ++i)
 	{
-		dx = pPath->x + pathxdir[v5];
-		dy = pPath->y + pathydir[v5];
-		if ( !PosOk(PosOkArg, dx, dy) )
-			break;
-		if ( path_solid_pieces(pPath, dx, dy) )
-			goto LABEL_8;
-LABEL_9:
-		if ( ++i >= 8 )
-			return 1;
+		dx = pPath->x + pathxdir[i];
+		dy = pPath->y + pathydir[i];
+
+		// if position is OK
+		if ( PosOk(PosOkArg, dx, dy) )
+		{
+			// check that it is a solid piece of path?
+			if ( !path_solid_pieces(pPath, dx, dy) ) continue;
+		}
+		else
+		{
+			// otherwise it's OK if that's our starting point
+			// TODO it would probably be okay if the previous conditions were an &&
+			if ( dx != x || dy != y ) continue;
+		}
+
+		// this direction could work, try getting the rest of the path?
+		if ( !path_parent_path(pPath, dx, dy, x, y) ) return 0;
 	}
-	if ( dx != x || dy != y )
-		goto LABEL_9;
-LABEL_8:
-	if ( path_parent_path(pPath, dx, dy, x, y) )
-		goto LABEL_9;
-	return 0;
+
+	// no path in any direction
+	return 1;
 }
 
 int __fastcall path_parent_path(PATHNODE *pPath, int dx, int dy, int sx, int sy)
