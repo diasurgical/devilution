@@ -90,24 +90,12 @@ int __fastcall FindPath(bool (__fastcall *PosOk)(int, int, int), int PosOkArg, i
 	return result;
 }
 
+/* heuristic, estimated cost from (sx,sy) to (dx,dy) */
 int __fastcall path_get_h_cost(int sx, int sy, int dx, int dy)
 {
-	int v4; // esi
-	int v5; // edi
-	int v6; // eax
-	int v7; // ecx
-
-	v4 = sy;
-	v5 = abs(sx - dx);
-	v6 = abs(v4 - dy);
-	v7 = v5;
-	if ( v5 >= v6 )
-	{
-		v7 = v6;
-		if ( v5 > v6 )
-			v6 = v5;
-	}
-	return 2 * (v7 + v6);
+	int delta_x = abs(sx - dx);
+	int delta_y = abs(sy - dy);
+	return 2 * (delta_x + delta_y);
 }
 
 int __fastcall path_check_equal(PATHNODE *pPath, int dx, int dy)
