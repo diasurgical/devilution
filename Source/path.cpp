@@ -9,10 +9,11 @@ PATHNODE *pnode_ptr;
 PATHNODE *pnode_tblptr[300];
 PATHNODE path_2_nodes[300];
 
-#define DIRECTIONS 8
+// Diablo is on a square grid, so the player can move in 8 different directions
+#define NUM_DIRS 8
 
-char pathxdir[DIRECTIONS] = { -1, -1, 1, 1, -1, 0, 1, 0 };
-char pathydir[DIRECTIONS] = { -1, 1, -1, 1, 0, -1, 0, 1 };
+char pathxdir[NUM_DIRS] = { -1, -1, 1, 1, -1, 0, 1, 0 };
+char pathydir[NUM_DIRS] = { -1, 1, -1, 1, 0, -1, 0, 1 };
 
 /* rdata */
 char path_directions[9] = { 5, 1, 6, 2, 0, 3, 8, 4, 7 };
@@ -97,14 +98,15 @@ int __fastcall path_get_h_cost(int sx, int sy, int dx, int dy)
 {
 	int delta_x = abs(sx - dx);
 	int delta_y = abs(sy - dy);
+	// see path_check_equal for why this is times 2
 	return 2 * (delta_x + delta_y);
 }
 
-/* return 2 if pPath's destination is in a straight line with (dx, dy), else 3
+/* return 2 if pPath is horizontally/vertically aligned with (dx, dy), else 3.
  *
- * I think this is to approximate that diagonal movement should have a cost of
- * sqrt(2). That's approx. 1.5, so they multiply all step costs by 2 except
- * diagonals which are multiplied by 3
+ * This is to approximate that diagonal movement should have a cost of sqrt(2).
+ * That's approx. 1.5, so they multiply all step costs by 2 except diagonals
+ * which are multiplied by 3
  */
 int __fastcall path_check_equal(PATHNODE *pPath, int dx, int dy)
 {
@@ -174,16 +176,16 @@ LABEL_13:
 	return result;
 }
 
-/* get path from (x,y) to pPath's destination, using PosOk to check each step
- * return 1 if no path was found
+/* Extend pPath towards (x,y) by running a single step of A* breadth-first
+ * search. Return 1 if pPath is a dead end
  */
 int __fastcall path_get_path(bool (__fastcall *PosOk)(int, int, int), int PosOkArg, PATHNODE *pPath, int x, int y)
 {
 	int dx;
 	int dy;
 
-	// try moving every direction from the path's destination
-	for (int i = 0; i < DIRECTIONS; ++i)
+	// try moving every direction from the path's current end
+	for (int i = 0; i < NUM_DIRS; ++i)
 	{
 		dx = pPath->x + pathxdir[i];
 		dy = pPath->y + pathydir[i];
@@ -196,12 +198,14 @@ int __fastcall path_get_path(bool (__fastcall *PosOk)(int, int, int), int PosOkA
 		}
 		else
 		{
-			// otherwise it's OK if that's our starting point
-			// TODO it would probably be okay if the previous conditions were an &&
+			/* if (dx,dy) is where we want to go we don't care that it's not OK
+			 * TODO could probably safely combine this whole thing into one check:
+			 * if (((ok && solid) || equal) && !parent) return 0
+			 */
 			if ( dx != x || dy != y ) continue;
 		}
 
-		// this direction could work, try getting the rest of the path?
+		// this direction could work, try to extend pPath in that direction
 		if ( !path_parent_path(pPath, dx, dy, x, y) ) return 0;
 	}
 
@@ -209,87 +213,70 @@ int __fastcall path_get_path(bool (__fastcall *PosOk)(int, int, int), int PosOkA
 	return 1;
 }
 
-
+/* add a step to (dx,dy) to pPath, return 1 if successful */
 int __fastcall path_parent_path(PATHNODE *pPath, int dx, int dy, int sx, int sy)
 {
-	PATHNODE *v7; // esi
+	PATHNODE *next_node;
+	int empty_slot;
 
-	// current path cost plus next step
+	// current path cost plus next step to get to (dx,dy)
 	int g_next = pPath->g + path_check_equal(pPath, dx, dy);
 
-	if ( v7 = path_get_node1(dx, dy) )
+	// if the search has already visited this node?
+	if ( next_node = path_get_node1(dx, dy) )
 	{
-		int v8 = 0;
-		struct PATHNODE** v9 = pPath->Child;
-		do
+		// find the next open child slot
+		/* TODO no point in checking empty_slot < NUM_DIRS. It should
+		 * always be true, and if it isn't that's probably a crash!
+		 */
+		for (empty_slot = 0; empty_slot < NUM_DIRS && pPath->Child[empty_slot]; ++empty_slot);
+		pPath->Child[empty_slot] = next_node;
+
+		// if we just found a faster path to (dx,dy)
+		if ( g_next < next_node->g && path_solid_pieces(pPath, dx, dy) )
 		{
-			if ( !*v9 )
-				break;
-			++v8;
-			++v9;
+			// update the path/cost for getting there
+			next_node->Parent = pPath;
+			next_node->g = g_next;
+			next_node->f = next_node->g + next_node->h;
 		}
-		while ( v8 < 8 );
-		pPath->Child[v8] = v7;
-		if ( g_next < v7->g )
-		{
-			if ( path_solid_pieces(pPath, dx, dy) )
-			{
-				v7->Parent = pPath;
-				v7->g = g_next;
-				v7->f = v7->g + v7->h;
-			}
-		}
+
+		return 1;
 	}
-	else
+
+	// if we have a leftover node from a previous search?
+	if ( next_node = path_get_node2(dx, dy) )
 	{
-		PATHNODE* v11 = path_get_node2(dx, dy);
-		if ( v11 )
+		for (empty_slot = 0; empty_slot < NUM_DIRS && pPath->Child[empty_slot]; ++empty_slot);
+		pPath->Child[empty_slot] = next_node;
+
+		if ( g_next < next_node->g && path_solid_pieces(pPath, dx, dy) )
 		{
-			int v12 = 0;
-			struct PATHNODE** v13 = pPath->Child;
-			do
-			{
-				if ( !*v13 )
-					break;
-				++v12;
-				++v13;
-			}
-			while ( v12 < 8 );
-			pPath->Child[v12] = v11;
-			if ( g_next < v11->g && path_solid_pieces(pPath, dx, dy) )
-			{
-				v11->Parent = pPath;
-				v11->g = g_next;
-				v11->f = v11->g + v11->h;
-				path_set_coords(v11);
-			}
+			next_node->Parent = pPath;
+			next_node->g = g_next;
+			next_node->f = next_node->g + next_node->h;
+			// clear (dx,dy)'s old info???
+			path_set_coords(next_node);
 		}
-		else
-		{
-			PATHNODE* result = path_new_step();
-			PATHNODE* v16 = result;
-			if ( !result )
-				return 0;
-			result->Parent = pPath;
-			result->g = g_next;
-			v16->h = path_get_h_cost(dx, dy, sx, sy);
-			v16->f = g_next + v16->h;
-			v16->x = dx;
-			v16->y = dy;
-			path_next_node(v16);
-			int v18 = 0;
-			struct PATHNODE** v19 = pPath->Child;
-			do
-			{
-				if ( !*v19 )
-					break;
-				++v18;
-				++v19;
-			}
-			while ( v18 < 8 );
-			pPath->Child[v18] = v16;
-		}
+
+		return 1;
 	}
+
+	// else we need a new node
+	next_node = path_new_step();
+	if ( !next_node ) return 0;
+
+	next_node->Parent = pPath;
+	next_node->g = g_next;
+	next_node->h = path_get_h_cost(dx, dy, sx, sy);
+	next_node->f = next_node->g + next_node->h;
+	next_node->x = dx;
+	next_node->y = dy;
+	path_next_node(next_node);
+
+	for (empty_slot = 0; empty_slot < NUM_DIRS && pPath->Child[empty_slot]; ++empty_slot);
+	pPath->Child[empty_slot] = next_node;
+
 	return 1;
 }
 
@@ -374,10 +361,7 @@ void __fastcall path_set_coords(PATHNODE *pPath)
 
 void __fastcall path_push_active_step(PATHNODE *pPath)
 {
-	int v1; // eax
-
-	v1 = gdwCurPathStep++;
-	pnode_tblptr[v1] = pPath;
+	pnode_tblptr[gdwCurPathStep++] = pPath;
 }
 
 PATHNODE *__cdecl path_pop_active_step()
