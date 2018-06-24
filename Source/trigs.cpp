@@ -1296,7 +1296,7 @@ void __cdecl CheckTriggers()
 			v6 = currlevel + 1;
 			goto LABEL_32;
 		}
-		if ( *v0 == 1027 )
+		if ( *v0 == WM_DIABPREVLVL )
 		{
 			if ( pcurs >= CURSOR_FIRSTITEM && DropItemBeforeTrig() )
 				return;
@@ -1305,7 +1305,7 @@ LABEL_32:
 			v9 = v6;
 			goto LABEL_33;
 		}
-		if ( *v0 != 1028 )
+		if ( *v0 != WM_DIABRTNLVL )
 			break;
 		StartNewLvl(myplr, v4, ReturnLvl);
 LABEL_34:
@@ -1314,9 +1314,9 @@ LABEL_34:
 		if ( v12 >= trigflag[4] )
 			return;
 	}
-	if ( *v0 != 1031 )
+	if ( *v0 != WM_DIABTOWNWARP )
 	{
-		if ( *v0 == 1032 )
+		if ( *v0 == WM_DIABTWARPUP )
 		{
 			TWarpFrom = currlevel;
 			StartNewLvl(myplr, v4, 0);
