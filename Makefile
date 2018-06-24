@@ -33,6 +33,7 @@ PKWARE_OBJS=$(PKWARE_SRC:.cpp=.o)
 
 devilution.exe: $(OBJS) $(PKWARE_OBJS) diabres.o diabloui.lib storm.lib
 	$(CXX) $(LDFLAGS) -o $@ $^ $(LDLIBS)
+	cp $@ /c/Diablo/
 
 diabres.o: Diablo.rc
 	$(WINDRES) $< $@
