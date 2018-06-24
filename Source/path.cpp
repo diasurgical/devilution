@@ -209,33 +209,18 @@ int __fastcall path_get_path(bool (__fastcall *PosOk)(int, int, int), int PosOkA
 	return 1;
 }
 
+
 int __fastcall path_parent_path(PATHNODE *pPath, int dx, int dy, int sx, int sy)
 {
-	PATHNODE *v5; // edi
-	int v6; // ebx
 	PATHNODE *v7; // esi
-	signed int v8; // eax
-	struct PATHNODE **v9; // ecx
-	char v10; // al
-	PATHNODE *v11; // esi
-	signed int v12; // eax
-	struct PATHNODE **v13; // ecx
-	char v14; // al
-	PATHNODE *result; // eax
-	PATHNODE *v16; // esi
-	char v17; // al
-	signed int v18; // ecx
-	struct PATHNODE **v19; // eax
-	int a1; // [esp+Ch] [ebp-4h]
 
-	a1 = dx;
-	v5 = pPath;
-	v6 = pPath->g + path_check_equal(pPath, dx, dy);
-	v7 = path_get_node1(a1, dy);
-	if ( v7 )
+	// current path cost plus next step
+	int g_next = pPath->g + path_check_equal(pPath, dx, dy);
+
+	if ( v7 = path_get_node1(dx, dy) )
 	{
-		v8 = 0;
-		v9 = v5->Child;
+		int v8 = 0;
+		struct PATHNODE** v9 = pPath->Child;
 		do
 		{
 			if ( !*v9 )
@@ -244,25 +229,24 @@ int __fastcall path_parent_path(PATHNODE *pPath, int dx, int dy, int sx, int sy)
 			++v9;
 		}
 		while ( v8 < 8 );
-		v5->Child[v8] = v7;
-		if ( v6 < v7->g )
+		pPath->Child[v8] = v7;
+		if ( g_next < v7->g )
 		{
-			if ( path_solid_pieces(v5, a1, dy) )
+			if ( path_solid_pieces(pPath, dx, dy) )
 			{
-				v10 = v7->h;
-				v7->Parent = v5;
-				v7->g = v6;
-				v7->f = v6 + v10;
+				v7->Parent = pPath;
+				v7->g = g_next;
+				v7->f = v7->g + v7->h;
 			}
 		}
 	}
 	else
 	{
-		v11 = path_get_node2(a1, dy);
+		PATHNODE* v11 = path_get_node2(dx, dy);
 		if ( v11 )
 		{
-			v12 = 0;
-			v13 = v5->Child;
+			int v12 = 0;
+			struct PATHNODE** v13 = pPath->Child;
 			do
 			{
 				if ( !*v13 )
@@ -271,32 +255,30 @@ int __fastcall path_parent_path(PATHNODE *pPath, int dx, int dy, int sx, int sy)
 				++v13;
 			}
 			while ( v12 < 8 );
-			v5->Child[v12] = v11;
-			if ( v6 < v11->g && path_solid_pieces(v5, a1, dy) )
+			pPath->Child[v12] = v11;
+			if ( g_next < v11->g && path_solid_pieces(pPath, dx, dy) )
 			{
-				v14 = v6 + v11->h;
-				v11->Parent = v5;
-				v11->g = v6;
-				v11->f = v14;
+				v11->Parent = pPath;
+				v11->g = g_next;
+				v11->f = v11->g + v11->h;
 				path_set_coords(v11);
 			}
 		}
 		else
 		{
-			result = path_new_step();
-			v16 = result;
+			PATHNODE* result = path_new_step();
+			PATHNODE* v16 = result;
 			if ( !result )
 				return 0;
-			result->Parent = v5;
-			result->g = v6;
-			v17 = path_get_h_cost(a1, dy, sx, sy);
-			v16->h = v17;
-			v16->f = v6 + v17;
-			v16->x = a1;
+			result->Parent = pPath;
+			result->g = g_next;
+			v16->h = path_get_h_cost(dx, dy, sx, sy);
+			v16->f = g_next + v16->h;
+			v16->x = dx;
 			v16->y = dy;
 			path_next_node(v16);
-			v18 = 0;
-			v19 = v5->Child;
+			int v18 = 0;
+			struct PATHNODE** v19 = pPath->Child;
 			do
 			{
 				if ( !*v19 )
@@ -305,7 +287,7 @@ int __fastcall path_parent_path(PATHNODE *pPath, int dx, int dy, int sx, int sy)
 				++v19;
 			}
 			while ( v18 < 8 );
-			v5->Child[v18] = v16;
+			pPath->Child[v18] = v16;
 		}
 	}
 	return 1;
