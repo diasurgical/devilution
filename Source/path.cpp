@@ -127,53 +127,18 @@ PATHNODE *__cdecl GetNextPath()
 	return result;
 }
 
+/* Make sure the path isn't cutting a corner. If you want to move from
+ * A to B, both Xs need to be clear:
+ *
+ *    XA
+ *    BX
+ *
+ * return true if the path is allowed.
+ */
 bool __fastcall path_solid_pieces(PATHNODE *pPath, int dx, int dy)
 {
-	bool result; // eax
-	int dir; // ecx
-	int v8; // ecx
-	int v10; // edx
-
-	result = 1;
-	dir = path_directions[3 * (dy - pPath->y) - pPath->x + 4 + dx] - 5;
-	if ( !dir )
-	{
-		result = 0;
-		if ( nSolidTable[dPiece[dx][dy + 1]] )
-			return result;
-		v8 = dPiece[dx + 1][dy];
-		goto LABEL_13;
-	}
-	dir--;
-	if ( !dir )
-	{
-		v10 = dPiece[dx][dy + 1];
-		goto LABEL_9;
-	}
-	dir--;
-	if ( !dir )
-	{
-		v10 = dPiece[dx][dy-1]; /* check */
-LABEL_9:
-		result = 0;
-		if ( nSolidTable[v10] )
-			return result;
-		v8 = dPiece[dx-4][dy]; /* check */
-		goto LABEL_13;
-	}
-	if ( dir == 1 )
-	{
-		result = 0;
-		if ( !nSolidTable[dPiece[dx + 1][dy]] )
-		{
-			v8 = dPiece[dx][dy-1]; /* check */
-LABEL_13:
-			if ( nSolidTable[v8] == result )
-				result = 1;
-			return result;
-		}
-	}
-	return result;
+	if (path_check_equal(pPath, dx, dy) == 2) return 1;
+	return !(nSolidTable[dPiece[dx][pPath->y]] || nSolidTable[dPiece[pPath->x][dy]]);
 }
 
 /* Extend pPath towards (x,y) by running a single step of A* breadth-first
@@ -193,7 +158,7 @@ int __fastcall path_get_path(bool (__fastcall *PosOk)(int, int, int), int PosOkA
 		// if position is OK
 		if ( PosOk(PosOkArg, dx, dy) )
 		{
-			// check that it is a solid piece of path?
+			// check that we aren't cutting a corner
 			if ( !path_solid_pieces(pPath, dx, dy) ) continue;
 		}
 		else
