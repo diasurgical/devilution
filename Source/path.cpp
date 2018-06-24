@@ -371,11 +371,8 @@ PATHNODE *__cdecl path_pop_active_step()
 
 PATHNODE *__cdecl path_new_step()
 {
-	PATHNODE *v1; // esi
-
-	if ( pnode_vals[0] == 300 )
-		return 0;
-	v1 = &path_nodes[pnode_vals[0]++];
-	memset(v1, 0, 0x34u);
-	return v1;
+	if ( pnode_vals[0] == 300 ) return 0;
+	PATHNODE* new_node = &path_nodes[pnode_vals[0]++];
+	memset(new_node, 0, sizeof(struct PATHNODE));
+	return new_node;
 }
