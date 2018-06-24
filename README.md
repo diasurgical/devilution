@@ -39,6 +39,8 @@ Compiling Definitions
 - `SLEEP` (default: off) will define whether to sleep the program to prevent 100% CPU usage
 - `_DEBUG` (default: off) will define whether to include debug features (refer to [Debugging Document](Support/debug.md))
 
+# [Compatibility Matrix, Compilations, Platform Statuses](Support/compatibility_matrix.md)
+
 # Installing
 Once compiled, the Devilution binary will serve as a replacement for `Diablo.exe`. A clean installation of Diablo patched to 1.09(b) is needed to run the game. Either copy Devilution into Diablo's installation folder, or make sure the following files are present:
 - `DIABDAT.MPQ` : if `COPYPROT` was defined, then the Diablo CD will be required
@@ -49,10 +51,7 @@ Once compiled, the Devilution binary will serve as a replacement for `Diablo.exe
 
 To run the game in windowed mode, a DirectDraw wrapper will be needed. Strange Bytes' [DirectDraw patch](http://www.strangebytes.com/index.php/projects/1-diablo-1-windows-7-vista-patch) is recommended. To install, place the `ddraw.dll` into the same location as the Devilution binary.
 
-# Troubleshooting
-While Devilution should produce a binary close to the original (compatible with Windows 95/NT), it may cause issues on newer systems. It has been reported to frequently crash on some setups, although for many it appears to be running flawless otherwise. Windows 7, Linux-WINE, and Windows 10 have all reported success.
-
-Note that newer compilers may need to be tweaked to properly produce an executable. Currently this is being worked on to provide multiple Makefiles for a variety of systems. To ensure the best results, either MinGW or Visual Studio 2003/older should be used for the time being.
+# [Troubleshooting](Support/troubleshooting.md)
 
 # F.A.Q.
 > Wow, does this mean I can download and play Diablo for free now?
