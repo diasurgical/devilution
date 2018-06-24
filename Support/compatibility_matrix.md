@@ -20,6 +20,10 @@ Please use UTC times for all entries. The Z ending represents UTC time.
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 2018-06-24 @ 17:05 Z| Gold | 10 | x64 | 1803 | 17134.112 | i686-w64-mingw32-gcc-7.3.0 | MSYS 2 i686 | fearedbliss | Needed to use ddraw patch. |
 
+| Date | Status | OS | Bitness | Version (OS) | Build (OS) | Compiler | Build Platform | User | Workaround |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 2018-06-24 @ 12:52 Z| Platinum | 7 | x64 | 6.1 | 7601 | Microsoft Visual C++ 6.0 | cl.exe | Sergi4UA | None |
+
 ## Linux
 
 ## Mac OS X
