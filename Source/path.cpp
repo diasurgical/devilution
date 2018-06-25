@@ -318,19 +318,24 @@ void __fastcall path_set_coords(PATHNODE *pPath)
 	}
 }
 
+/* push pPath onto the pnode_tblptr stack */
 void __fastcall path_push_active_step(PATHNODE *pPath)
 {
 	pnode_tblptr[gdwCurPathStep++] = pPath;
 }
 
+/* pop and return a node from the pnode_tblptr stack */
 PATHNODE *__cdecl path_pop_active_step()
 {
 	return pnode_tblptr[--gdwCurPathStep];
 }
 
+/* zero one of the 300 preallocated path nodes and return a pointer to it, or
+ * NULL if none are available
+ */
 PATHNODE *__cdecl path_new_step()
 {
-	if ( pnode_vals[0] == 300 ) return 0;
+	if ( pnode_vals[0] == 300 ) return NULL;
 	PATHNODE* new_node = &path_nodes[pnode_vals[0]++];
 	memset(new_node, 0, sizeof(struct PATHNODE));
 	return new_node;
