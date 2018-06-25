@@ -846,7 +846,7 @@ void __fastcall InitMonster(int i, int rd, int mtype, int x, int y)
 	monster[v6]._mint = v17->mInt;
 	_LOBYTE(monster[v6]._pathcount) = 0;
 	monster[v6]._uniqtype = 0;
-	_LOBYTE(monster[v6]._msquelch) = 0;
+	monster[v6]._msquelch = 0;
 	_LOBYTE(monster[v6]._mgoal) = 1;
 	monster[v6]._mgoalvar1 = 0;
 	monster[v6]._mgoalvar2 = 0;
@@ -2622,7 +2622,7 @@ void __fastcall M_DiabloDeath(int i, unsigned char sendmsg)
 	for ( j = 0; j < nummonsters; ++j )
 	{
 		v5 = monstactive[v4];
-		if ( v5 != v15 && _LOBYTE(monster[v3]._msquelch) )
+		if ( v5 != v15 && monster[v3]._msquelch )
 		{
 			v6 = v5;
 			NewMonsterAnim(monstactive[v4], &monster[v5].MType->Anims[4], monster[v5]._mdir);
@@ -3938,7 +3938,7 @@ int __fastcall M_DoTalk(int i)
 			quests[11]._qvar1 = 2;
 		if ( v9 == UniqMonst[4].mName && gbMaxPlayers != 1 )
 		{
-			_LOBYTE(monster[v2]._msquelch) = -1;
+			monster[v2]._msquelch = -1;
 			monster[v2].mtalkmsg = 0;
 			quests[15]._qvar1 = 6;
 			_LOBYTE(monster[v2]._mgoal) = 1;
@@ -4425,11 +4425,11 @@ void __fastcall GroupUnity(int i)
 	if ( monster[v2].leaderflag == 1 )
 	{
 		v6 = v3;
-		if ( _LOBYTE(monster[v2]._msquelch) > _LOBYTE(monster[v3]._msquelch) )
+		if ( monster[v2]._msquelch > monster[v3]._msquelch )
 		{
 			monster[v6]._lastx = monster[v2]._mx;
 			monster[v6]._lasty = monster[v2]._my;
-			_LOBYTE(monster[v6]._msquelch) = _LOBYTE(monster[v2]._msquelch) - 1;
+			monster[v6]._msquelch = monster[v2]._msquelch - 1;
 		}
 		if ( monster[v6]._mAi == AI_GARG )
 		{
@@ -4454,11 +4454,11 @@ LABEL_18:
 				v11 = monstactive[j];
 				if ( monster[v11].leaderflag == 1 && (unsigned char)monster[v11].leader == v1 )
 				{
-					if ( _LOBYTE(monster[v2]._msquelch) > _LOBYTE(monster[v11]._msquelch) )
+					if ( monster[v2]._msquelch > monster[v11]._msquelch )
 					{
 						monster[v11]._lastx = monster[v2]._mx;
 						monster[v11]._lasty = monster[v2]._my;
-						_LOBYTE(monster[v11]._msquelch) = _LOBYTE(monster[v2]._msquelch) - 1;
+						monster[v11]._msquelch = monster[v2]._msquelch - 1;
 					}
 					if ( monster[v11]._mAi == AI_GARG )
 					{
@@ -4811,7 +4811,7 @@ void __fastcall MAI_SkelSd(int i)
 	if ( (unsigned int)i >= 0xC8 )
 		TermMsg("MAI_SkelSd: Invalid monster %d", i);
 	v2 = &monster[v1];
-	if ( v2->_mmode == MM_STAND && _LOBYTE(v2->_msquelch) )
+	if ( v2->_mmode == MM_STAND && v2->_msquelch )
 	{
 		v3 = v2->_mx;
 		v4 = v2->_my;
@@ -4875,7 +4875,7 @@ bool __fastcall MAI_Path(int i)
 	v2 = &monster[v1];
 	if ( v2->MType->mtype != MT_GOLEM )
 	{
-		if ( !_LOBYTE(v2->_msquelch) )
+		if ( !v2->_msquelch )
 			return 0;
 		if ( v2->_mmode )
 			return 0;
@@ -4962,7 +4962,7 @@ void __fastcall MAI_Snake(int i)
 	pattern[1] = 1;
 	v3 = esi3->_mmode == 0;
 	micaster = esi3->_menemy;
-	if ( v3 && LOBYTE(esi3->_msquelch) )
+	if ( v3 && esi3->_msquelch )
 	{
 		v4 = esi3->_mx;
 		v5 = (unsigned char)esi3->_menemyy;
@@ -5140,7 +5140,7 @@ void __fastcall MAI_Bat(int i)
 		TermMsg("MAI_Bat: Invalid monster %d", i);
 	esi3 = &monster[esi1];
 	micaster = esi3->_menemy;
-	if ( esi3->_mmode == MM_STAND && _LOBYTE(esi3->_msquelch) )
+	if ( esi3->_mmode == MM_STAND && esi3->_msquelch )
 	{
 		v3 = esi3->_mx;
 		v4 = esi3->_my;
@@ -5252,7 +5252,7 @@ void __fastcall MAI_SkelBow(int i)
 	if ( (unsigned int)i >= 0xC8 )
 		TermMsg("MAI_SkelBow: Invalid monster %d", i);
 	v2 = &monster[v1];
-	if ( v2->_mmode == MM_STAND && _LOBYTE(v2->_msquelch) )
+	if ( v2->_mmode == MM_STAND && v2->_msquelch )
 	{
 		v3 = v2->_mx - (unsigned char)v2->_menemyx;
 		v4 = v2->_my - (unsigned char)v2->_menemyy;
@@ -5316,7 +5316,7 @@ void __fastcall MAI_Fat(int i)
 	if ( (unsigned int)i >= 0xC8 )
 		TermMsg("MAI_Fat: Invalid monster %d", i);
 	v2 = &monster[v1];
-	if ( v2->_mmode == MM_STAND && _LOBYTE(v2->_msquelch) )
+	if ( v2->_mmode == MM_STAND && v2->_msquelch )
 	{
 		v3 = v2->_mx - (unsigned char)v2->_menemyx;
 		v4 = v2->_my - (unsigned char)v2->_menemyy;
@@ -5487,7 +5487,7 @@ void __fastcall MAI_Fireman(int i)
 	if ( (unsigned int)i >= 0xC8 )
 		TermMsg("MAI_Fireman: Invalid monster %d", i);
 	esi3 = esi1;
-	if ( monster[esi3]._mmode || !_LOBYTE(monster[esi3]._msquelch) )
+	if ( monster[esi3]._mmode || !monster[esi3]._msquelch )
 		return;
 	v3 = (unsigned char)monster[esi3]._menemyy;
 	micaster = monster[esi3]._menemy;
@@ -5608,7 +5608,7 @@ void __fastcall MAI_Fallen(int i)
 		else
 			_LOBYTE(monster[v3]._mgoal) = 1;
 	}
-	if ( monster[v3]._mmode == MM_STAND && _LOBYTE(monster[v3]._msquelch) )
+	if ( monster[v3]._mmode == MM_STAND && monster[v3]._msquelch )
 	{
 		if ( _LOBYTE(monster[v3]._mgoal) == 2 )
 		{
@@ -5701,7 +5701,7 @@ void __fastcall MAI_Cleaver(int i)
 	if ( (unsigned int)i >= 0xC8 )
 		TermMsg("MAI_Cleaver: Invalid monster %d", i);
 	v2 = &monster[v1];
-	if ( v2->_mmode == MM_STAND && _LOBYTE(v2->_msquelch) )
+	if ( v2->_mmode == MM_STAND && v2->_msquelch )
 	{
 		v3 = v2->_mx;
 		v4 = v2->_my;
@@ -5759,7 +5759,7 @@ void __fastcall MAI_Round(int i, unsigned char special)
 	if ( (unsigned int)i >= 0xC8 )
 		TermMsg("MAI_Round: Invalid monster %d", i);
 	v3 = &monster[v2];
-	if ( v3->_mmode == MM_STAND && _LOBYTE(v3->_msquelch) )
+	if ( v3->_mmode == MM_STAND && v3->_msquelch )
 	{
 		v4 = v3->_my;
 		v5 = v3->_mx;
@@ -5768,11 +5768,11 @@ void __fastcall MAI_Round(int i, unsigned char special)
 		v7 = v5 - v6;
 		v32 = v4 - v28;
 		md = GetDirection(v5, v4, v3->_lastx, v3->_lasty);
-		if ( _LOBYTE(v3->_msquelch) < 0xFFu )
+		if ( v3->_msquelch < 0xFFu ) /* check sign */
 			MonstCheckDoors(arglist);
 		_LOBYTE(v8) = 114;
 		v30 = random(v8, 100);
-		if ( (abs(v7) >= 2 || abs(v32) >= 2) && _LOBYTE(v3->_msquelch) == -1 )
+		if ( (abs(v7) >= 2 || abs(v32) >= 2) && v3->_msquelch == -1 )
 		{
 			v29 = &dung_map[v6][v28];
 			if ( dung_map[v3->_mx][v3->_my] == *v29 )
@@ -5895,7 +5895,7 @@ void __fastcall MAI_Ranged(int i, int missile_type, unsigned char special)
 			x2 = (unsigned char)monster[v4]._menemyx;
 			v9 = monster[v4]._mx - x2;
 			v20 = M_GetDir(arglist);
-			if ( _LOBYTE(monster[v4]._msquelch) < 0xFFu )
+			if ( monster[v4]._msquelch < 0xFFu ) /* check sign */
 				MonstCheckDoors(arglist);
 			v11 = monster[v4]._mVar1 == 10;
 			monster[v4]._mdir = v20;
@@ -6211,7 +6211,7 @@ void __fastcall MAI_RoundRanged(int i, int missile_type, unsigned char checkdoor
 	if ( (unsigned int)i >= 0xC8 )
 		TermMsg("MAI_RoundRanged: Invalid monster %d", i);
 	v6 = &monster[v5];
-	if ( v6->_mmode == MM_STAND && _LOBYTE(v6->_msquelch) )
+	if ( v6->_mmode == MM_STAND && v6->_msquelch )
 	{
 		v7 = v6->_my;
 		y2 = (unsigned char)v6->_menemyy;
@@ -6220,7 +6220,7 @@ void __fastcall MAI_RoundRanged(int i, int missile_type, unsigned char checkdoor
 		v9 = v6->_mx - x2;
 		v33 = v7 - y2;
 		md = GetDirection(v6->_mx, v7, v6->_lastx, v6->_lasty);
-		if ( checkdoors && _LOBYTE(v6->_msquelch) < 0xFFu )
+		if ( checkdoors && v6->_msquelch < 0xFFu ) /* check sign */
 			MonstCheckDoors(arglist);
 		_LOBYTE(v10) = 121;
 		checkdoorsa = random(v10, 10000);
@@ -6233,7 +6233,7 @@ void __fastcall MAI_RoundRanged(int i, int missile_type, unsigned char checkdoor
 			if ( v14 < 2 )
 				goto LABEL_50;
 		}
-		if ( _LOBYTE(v6->_msquelch) != -1 )
+		if ( v6->_msquelch != -1 )
 			goto LABEL_50;
 		//v13 = y2;
 		if ( dung_map[v6->_mx][v6->_my] != dung_map[x2][y2] )
@@ -6399,7 +6399,7 @@ void __fastcall MAI_RR2(int i, int mistype, int dam)
 		MAI_SkelSd(v3);
 		return;
 	}
-	if ( v4->_mmode == MM_STAND && _LOBYTE(v4->_msquelch) )
+	if ( v4->_mmode == MM_STAND && v4->_msquelch )
 	{
 		v6 = v4->_my;
 		y2 = (unsigned char)v4->_menemyy;
@@ -6408,7 +6408,7 @@ void __fastcall MAI_RR2(int i, int mistype, int dam)
 		v8 = v4->_mx - x2;
 		v36 = v6 - y2;
 		md = GetDirection(v4->_mx, v6, v4->_lastx, v4->_lasty);
-		if ( _LOBYTE(v4->_msquelch) < 0xFFu )
+		if ( v4->_msquelch < 0xFFu ) /* check sign */
 			MonstCheckDoors(arglist);
 		_LOBYTE(v9) = 121;
 		v38 = random(v9, 100);
@@ -6416,7 +6416,7 @@ void __fastcall MAI_RR2(int i, int mistype, int dam)
 		//v12 = v11;
 		if ( v10 >= 2 || (v13 = abs(v7), v13 >= 2) ) /* v12 = v14,  */
 		{
-			if ( _LOBYTE(v4->_msquelch) == -1 )
+			if ( v4->_msquelch == -1 )
 			{
 				//v12 = y2;
 				if ( dung_map[v4->_mx][v4->_my] == dung_map[x2][y2] )
@@ -6539,7 +6539,7 @@ void __fastcall MAI_Golum(int i)
 	int v7; // ebx
 	int v8; // eax
 	char v9; // cl
-	int *v10; // eax
+	//char v10; // eax
 	signed int v11; // edx
 	signed int v12; // ecx
 	int v13; // eax
@@ -6587,11 +6587,10 @@ void __fastcall MAI_Golum(int i)
 					v8 = monster[v2]._menemy;
 					monster[v2]._menemyx = monster[v8]._mx;
 					v9 = monster[v8]._my;
-					v10 = &monster[v8]._msquelch;
 					monster[v2]._menemyy = v9;
-					if ( !*(_BYTE *)v10 )
+					if ( !monster[v8]._msquelch )
 					{
-						*(_BYTE *)v10 = -1;
+						monster[v8]._msquelch = -1;
 						monster[monster[v2]._menemy]._lastx = monster[v2]._mx;
 						v11 = 0;
 						monster[monster[v2]._menemy]._lasty = monster[v2]._my;
@@ -6600,11 +6599,12 @@ void __fastcall MAI_Golum(int i)
 							v12 = 0;
 							do
 							{
-								v13 = *(_DWORD *)&nTransTable[4
+								/* v13 = *(_DWORD *)&nTransTable[4
 															* (monster[v2]._my + v11 + 112 * (v12 + monster[v2]._mx))
-															+ 1148];
+															+ 1148]; check */
+								v13 = dMonster[monster[v2]._mx + v12 - 2][monster[v2]._my + v11 - 2];
 								if ( v13 > 0 )
-									_LOBYTE(monster[v13]._msquelch) = -1;
+									monster[v13]._msquelch = -1;
 								++v12;
 							}
 							while ( v12 < 5 );
@@ -6687,7 +6687,7 @@ void __fastcall MAI_SkelKing(int i)
 	if ( (unsigned int)i >= 0xC8 )
 		TermMsg("MAI_SkelKing: Invalid monster %d", i);
 	v2 = &monster[v1];
-	if ( v2->_mmode == MM_STAND && _LOBYTE(v2->_msquelch) )
+	if ( v2->_mmode == MM_STAND && v2->_msquelch )
 	{
 		v3 = v2->_my;
 		y2 = (unsigned char)v2->_menemyy;
@@ -6696,11 +6696,11 @@ void __fastcall MAI_SkelKing(int i)
 		v5 = v2->_mx - x2;
 		v34 = v3 - y2;
 		md = GetDirection(v2->_mx, v3, v2->_lastx, v2->_lasty);
-		if ( _LOBYTE(v2->_msquelch) < 0xFFu )
+		if ( v2->_msquelch < 0xFFu ) /* check sign */
 			MonstCheckDoors(arglist);
 		_LOBYTE(v6) = 126;
 		v35 = random(v6, 100);
-		if ( (abs(v5) >= 2 || abs(v4) >= 2) && _LOBYTE(v2->_msquelch) == -1 )
+		if ( (abs(v5) >= 2 || abs(v4) >= 2) && v2->_msquelch == -1 )
 		{
 			v32 = &dung_map[x2][y2];
 			if ( dung_map[v2->_mx][v2->_my] == *v32 )
@@ -6849,7 +6849,7 @@ void __fastcall MAI_Rhino(int i)
 	if ( (unsigned int)i >= 0xC8 )
 		TermMsg("MAI_Rhino: Invalid monster %d", i);
 	esi3 = &monster[esi1];
-	if ( esi3->_mmode == MM_STAND && _LOBYTE(esi3->_msquelch) )
+	if ( esi3->_mmode == MM_STAND && esi3->_msquelch )
 	{
 		v3 = esi3->_my;
 		v2 = (unsigned char)esi3->_menemyy;
@@ -6858,7 +6858,7 @@ void __fastcall MAI_Rhino(int i)
 		v5 = esi3->_mx - v1;
 		v31 = v3 - v2;
 		midir = GetDirection(esi3->_mx, v3, esi3->_lastx, esi3->_lasty);
-		if ( _LOBYTE(esi3->_msquelch) < 0xFFu )
+		if ( esi3->_msquelch < 0xFFu ) /* check sign */
 			MonstCheckDoors(arglist);
 		_LOBYTE(v6) = -125;
 		v30 = random(v6, 100);
@@ -7017,7 +7017,7 @@ void __fastcall MAI_Counselor(int i)
 	if ( (unsigned int)i >= 0xC8 )
 		TermMsg("MAI_Counselor: Invalid monster %d", i);
 	v2 = v1;
-	if ( monster[v1]._mmode == MM_STAND && _LOBYTE(monster[v2]._msquelch) )
+	if ( monster[v1]._mmode == MM_STAND && monster[v2]._msquelch )
 	{
 		v3 = monster[v2]._mx;
 		x2 = (unsigned char)monster[v2]._menemyx;
@@ -7026,7 +7026,7 @@ void __fastcall MAI_Counselor(int i)
 		y2 = (unsigned char)monster[v2]._menemyy;
 		v6 = v5 - y2;
 		md = GetDirection(v3, v5, monster[v2]._lastx, monster[v2]._lasty);
-		if ( _LOBYTE(monster[v2]._msquelch) < 0xFFu )
+		if ( monster[v2]._msquelch < 0xFFu ) /* check sign */
 			MonstCheckDoors(v1);
 		_LOBYTE(v7) = 121;
 		v39 = random(v7, 100);
@@ -7056,7 +7056,7 @@ void __fastcall MAI_Counselor(int i)
 				v17 = abs(v4);
 			v18 = v17;
 			if ( abs(v4) < 2 && abs(v6) < 2
-			  || _LOBYTE(monster[v2]._msquelch) != -1
+			  || monster[v2]._msquelch != -1
 			  || dung_map[monster[v2]._mx][monster[v2]._my] != dung_map[x2][y2] )
 			{
 				v1 = arglist;
@@ -7188,7 +7188,7 @@ void __fastcall MAI_Garbud(int i)
 				//_LOBYTE(v6) = effect_is_playing(USFX_GARBUD4);
 				if ( !effect_is_playing(USFX_GARBUD4) && _LOBYTE(monster[v2]._mgoal) == 7 )
 				{
-					_LOBYTE(monster[v2]._msquelch) = -1;
+					monster[v2]._msquelch = -1;
 					monster[v2].mtalkmsg = 0;
 					_LOBYTE(monster[v2]._mgoal) = 1;
 				}
@@ -7246,7 +7246,7 @@ void __fastcall MAI_Zhar(int i)
 				//_LOBYTE(v8) = effect_is_playing(USFX_ZHAR2);
 				if ( !effect_is_playing(USFX_ZHAR2) && _LOBYTE(monster[v2]._mgoal) == 7 )
 				{
-					_LOBYTE(monster[v2]._msquelch) = -1;
+					monster[v2]._msquelch = -1;
 					monster[v2].mtalkmsg = 0;
 					_LOBYTE(monster[v2]._mgoal) = 1;
 				}
@@ -7302,7 +7302,7 @@ void __fastcall MAI_SnotSpil(int i)
 					ObjChangeMap(setpc_x, setpc_y, setpc_w + setpc_x + 1, setpc_h + setpc_y + 1);
 					quests[7]._qvar1 = 3;
 					RedoPlayerVision();
-					_LOBYTE(monster[v2]._msquelch) = -1;
+					monster[v2]._msquelch = -1;
 					monster[v2].mtalkmsg = 0;
 					_LOBYTE(monster[v2]._mgoal) = 1;
 				}
@@ -7363,7 +7363,7 @@ void __fastcall MAI_Lazurus(int i)
 					{
 						ObjChangeMapResync(1, 18, 20, 24);
 						RedoPlayerVision();
-						_LOBYTE(monster[v2]._msquelch) = -1;
+						monster[v2]._msquelch = -1;
 						monster[v2].mtalkmsg = 0;
 						quests[15]._qvar1 = 6;
 						_LOBYTE(monster[v2]._mgoal) = 1;
@@ -7503,7 +7503,7 @@ void __fastcall MAI_Warlord(int i)
 			//_LOBYTE(v6) = effect_is_playing(USFX_WARLRD1);
 			if ( !effect_is_playing(USFX_WARLRD1) && _LOBYTE(monster[v2]._mgoal) == 7 )
 			{
-				_LOBYTE(monster[v2]._msquelch) = -1;
+				monster[v2]._msquelch = -1;
 				monster[v2].mtalkmsg = 0;
 				_LOBYTE(monster[v2]._mgoal) = 1;
 			}
@@ -7609,7 +7609,7 @@ void __cdecl ProcessMonsters()
 			}
 		}
 		v4 = &dFlags[monster[v1]._mx][monster[v1]._my];
-		if ( *v4 & 2 && !_LOBYTE(monster[v1]._msquelch) && monster[v1].MType->mtype == MT_CLEAVER )
+		if ( *v4 & 2 && !monster[v1]._msquelch && monster[v1].MType->mtype == MT_CLEAVER )
 			PlaySFX(USFX_CLEAVER);
 		if ( monster[v1]._mFlags & 0x10 )
 		{
@@ -7639,13 +7639,13 @@ void __cdecl ProcessMonsters()
 			{
 				v16 = monster[v1]._msquelch;
 				if ( v16 && monster[v1]._mAi != MT_DIABLO ) /* BUG_FIX: change '_mAi' to 'MType->mtype' */
-					_LOBYTE(monster[v1]._msquelch) = v16 - 1;
+					monster[v1]._msquelch = v16 - 1;
 			}
 			else
 			{
 				v14 = *(_DWORD *)v12;
 				v15 = *(_DWORD *)v13;
-				_LOBYTE(monster[v1]._msquelch) = -1;
+				monster[v1]._msquelch = -1;
 				monster[v1]._lastx = v14;
 				monster[v1]._lasty = v15;
 			}
