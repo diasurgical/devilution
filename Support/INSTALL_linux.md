@@ -7,6 +7,12 @@ Arch Linux
 pacman -S mingw-w64-gcc mingw-w64-binutils
 ```
 
+Fedora 28:
+```bash
+sudo dnf install mingw32-gcc-c++ wine
+```
+
+
 ## Building
 
 ```bash
