@@ -390,7 +390,7 @@ void __cdecl InitObjectGFX()
 				v3 = numthemes;
 				for ( i = 0; i < v3; ++i )
 				{
-					if ( _LOBYTE(themes[i].ttype) == v2 )
+					if ( themes[i].ttype == v2 )
 						fileload[(char)*(v1 - 4)] = 1;
 				}
 			}
