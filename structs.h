@@ -967,7 +967,7 @@ struct SHA1Context
 
 struct ThemeStruct
 {
-	int ttype; /* char, aligned 4 */
+	char ttype; /* aligned 4 */
 	int ttval;
 };
 
