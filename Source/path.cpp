@@ -272,12 +272,8 @@ PATHNODE *__fastcall path_get_node2(int dx, int dy)
 	return NULL;
 }
 
-/* find a node in the global list with total cost < pPath's total cost. insert
- * pPath between that node and its predecessor.
- *
- * If the global list is empty, just make pPath the head of the global list
- *
- * I guess so that the global list is sorted by descending total path cost?
+/* Insert pPath into the global list such that the total path costs are in
+ * ascending order
  */
 void __fastcall path_next_node(PATHNODE *pPath)
 {
@@ -285,7 +281,7 @@ void __fastcall path_next_node(PATHNODE *pPath)
 	PATHNODE* next = global_node->NextNode;
 	if ( next )
 	{
-		while ( next && next->f >= pPath->f )
+		while ( next && next->f < pPath->f )
 		{
 			current = next;
 			next = current->NextNode;
@@ -295,37 +291,29 @@ void __fastcall path_next_node(PATHNODE *pPath)
 	current->NextNode = pPath;
 }
 
+/* update all path costs using depth-first search starting at pPath */
 void __fastcall path_set_coords(PATHNODE *pPath)
 {
-	PATHNODE *PathOld; // edi
-	PATHNODE *PathAct; // esi
-	char v6; // al
-	int i; // [esp+0h] [ebp-8h]
-	PATHNODE **v9; // [esp+4h] [ebp-4h]
-
 	path_push_active_step(pPath);
+	// while stack is nonempty
 	while ( gdwCurPathStep )
 	{
-		PathOld = path_pop_active_step();
-		v9 = PathOld->Child;
-		for(i = 0; i < 8; i++)
+		PATHNODE* PathOld = path_pop_active_step();
+		// iterate over next node's children
+		PATHNODE* PathAct;
+		for (int i = 0; i < 8 && (PathAct = PathOld->Child[i]); ++i)
 		{
-			PathAct = *v9;
-			if ( !*v9 )
-				break;
-
-			if ( PathOld->g + path_check_equal(PathOld, PathAct->x, PathAct->y) < PathAct->g )
+			short g_next = PathOld->g + path_check_equal(PathOld, PathAct->x, PathAct->y);
+			// if we found a faster path to the child
+			if ( g_next < PathAct->g && path_solid_pieces(PathOld, PathAct->x, PathAct->y) )
 			{
-				if ( path_solid_pieces(PathOld, PathAct->x, PathAct->y) )
-				{
-					PathAct->Parent = PathOld;
-					v6 = PathOld->g + path_check_equal(PathOld, PathAct->x, PathAct->y);
-					PathAct->g = v6;
-					PathAct->f = v6 + PathAct->h;
-					path_push_active_step(PathAct);
-				}
+				// update it
+				PathAct->Parent = PathOld;
+				PathAct->g = g_next;
+				PathAct->f = g_next + PathAct->h;
+				// add it to the stack
+				path_push_active_step(PathAct);
 			}
-			++v9;
 		}
 	}
 }
