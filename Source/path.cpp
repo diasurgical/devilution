@@ -113,11 +113,12 @@ int __fastcall path_check_equal(PATHNODE *pPath, int dx, int dy)
 	return ( pPath->x == dx || pPath->y == dy ) ? 2 : 3;
 }
 
+/* if global is not empty, remove the first node, insert it at the head of
+ * pnode's list, and return it
+ */
 PATHNODE *__cdecl GetNextPath()
 {
-	PATHNODE *result; // eax
-
-	result = global_node->NextNode;
+	PATHNODE* result = global_node->NextNode;
 	if ( result )
 	{
 		global_node->NextNode = result->NextNode;
@@ -245,26 +246,30 @@ int __fastcall path_parent_path(PATHNODE *pPath, int dx, int dy, int sx, int sy)
 	return 1;
 }
 
+// return a node in the global list at (dx,dy), or NULL if not found
 PATHNODE *__fastcall path_get_node1(int dx, int dy)
 {
-	PATHNODE *result; // eax
-
-	result = global_node;
-	do
-		result = result->NextNode;
-	while ( result && (result->x != dx || result->y != dy) );
-	return result;
+	for (PATHNODE* result = global_node->NextNode; result; result = result->NextNode )
+	{
+		if ( result->x == dx && result->y == dy )
+		{
+			return result;
+		}
+	}
+	return NULL;
 }
 
+// return a node in the pnode list at (dx,dy), or NULL if not found
 PATHNODE *__fastcall path_get_node2(int dx, int dy)
 {
-	PATHNODE *result; // eax
-
-	result = pnode_ptr;
-	do
-		result = result->NextNode;
-	while ( result && (result->x != dx || result->y != dy) );
-	return result;
+	for (PATHNODE* result = pnode_ptr->NextNode; result; result = result->NextNode )
+	{
+		if ( result->x == dx && result->y == dy )
+		{
+			return result;
+		}
+	}
+	return NULL;
 }
 
 void __fastcall path_next_node(PATHNODE *pPath)
