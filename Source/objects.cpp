@@ -5916,7 +5916,7 @@ void __fastcall OperateBookCase(int pnum, int i, unsigned char sendmsg)
 			//_LOBYTE(v7) = QuestStatus(3);
 			if ( QuestStatus(3)
 			  && monster[4].mName == UniqMonst[2].mName
-			  && _LOBYTE(monster[4]._msquelch) == -1
+			  && monster[4]._msquelch == -1
 			  && monster[4]._mhitpoints )
 			{
 				monster[4].mtalkmsg = QUEST_ZHAR2;

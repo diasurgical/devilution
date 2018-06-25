@@ -554,7 +554,7 @@ struct MonsterStruct
 	unsigned char _mint;
 	short falign_9A;
 	int _mFlags;
-	int _msquelch;
+	char _msquelch; /* unsigned char */
 	int falign_A4;
 	int _lastx;
 	int _lasty;

@@ -63,7 +63,7 @@ void __cdecl sync_one_monster()
 		v2 = monstactive[i];
 		v3 = abs(plr[myplr].WorldY - monster[v2]._my);
 		v4 = abs(plr[myplr].WorldX - monster[v2]._mx);
-		v5 = _LOBYTE(monster[v2]._msquelch) == 0;
+		v5 = monster[v2]._msquelch == 0;
 		v6 = &sync_word_6AA708[v1];
 		*v6 = v4 + v3;
 		if ( v5 )
@@ -369,7 +369,7 @@ LABEL_23:
 						dMonster[0][monster[v5]._my + 112 * monster[v5]._mx] = v4 + 1;
 						M_WalkDir(v4, mda);
 					}
-					_LOBYTE(monster[v5]._msquelch) = -1;
+					monster[v5]._msquelch = -1;
 					goto LABEL_23;
 				}
 			}
