@@ -272,26 +272,27 @@ PATHNODE *__fastcall path_get_node2(int dx, int dy)
 	return NULL;
 }
 
+/* find a node in the global list with total cost < pPath's total cost. insert
+ * pPath between that node and its predecessor.
+ *
+ * If the global list is empty, just make pPath the head of the global list
+ *
+ * I guess so that the global list is sorted by descending total path cost?
+ */
 void __fastcall path_next_node(PATHNODE *pPath)
 {
-	PATHNODE *v1; // edx
-	PATHNODE *v2; // eax
-
-	v1 = global_node;
-	v2 = global_node->NextNode;
-	if ( v2 )
+	PATHNODE* current = global_node;
+	PATHNODE* next = global_node->NextNode;
+	if ( next )
 	{
-		do
+		while ( next && next->f >= pPath->f )
 		{
-			if ( v2->f >= pPath->f )
-				break;
-			v1 = v2;
-			v2 = v2->NextNode;
+			current = next;
+			next = current->NextNode;
 		}
-		while ( v2 );
-		pPath->NextNode = v2;
+		pPath->NextNode = next;
 	}
-	v1->NextNode = pPath;
+	current->NextNode = pPath;
 }
 
 void __fastcall path_set_coords(PATHNODE *pPath)
