@@ -32,7 +32,7 @@ int __fastcall FindPath(bool (__fastcall *PosOk)(int, int, int), int PosOkArg, i
 {
 	num_path_nodes = 0; // empty the preallocated path nodes
 	gdwCurPathStep = 0; // empty the pnode_tableptr stack
-	// create dummy nodes for the two node lists?
+	// create root nodes for the frontier/visited lists
 	frontier_ptr = path_new_step();
 	pnode_ptr = path_new_step();
 
