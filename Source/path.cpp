@@ -2,12 +2,20 @@
 
 #include "../types.h"
 
+// preallocated nodes, all searches are terminated after visiting 300 nodes
 PATHNODE path_nodes[300];
-int gdwCurPathStep;
+
 int pnode_vals[26];
+
+// all visited nodes
 PATHNODE *pnode_ptr;
+// a stack for recursively processing nodes
 PATHNODE *pnode_tblptr[300];
-PATHNODE* global_node;
+// the stack size
+int gdwCurPathStep;
+
+// the A* frontier sorted by distance, so we can just keep popping the next node to explore off the front
+PATHNODE* frontier_ptr;
 
 // Diablo is on a square grid, so the player can move in 8 different directions
 #define NUM_DIRS 8
@@ -24,27 +32,33 @@ int __fastcall FindPath(bool (__fastcall *PosOk)(int, int, int), int PosOkArg, i
 	pnode_vals[0] = 0; // empty the preallocated path nodes
 	gdwCurPathStep = 0; // empty the pnode_tableptr stack
 	// create dummy nodes for the two node lists?
-	global_node = path_new_step();
+	frontier_ptr = path_new_step();
 	pnode_ptr = path_new_step();
 
+	// create a node for the path's starting position
 	PATHNODE* path_start = path_new_step();
 	path_start->g = 0;
 	path_start->h = path_get_h_cost(sx, sy, dx, dy);
 	path_start->x = sx;
 	path_start->f = path_start->g + path_start->h;
 	path_start->y = sy;
-	global_node->NextNode = path_start;
+	// it is our frontier
+	frontier_ptr->NextNode = path_start;
 
-	PATHNODE *v11;
-	while ( 1 )
+	PATHNODE *current;
+	while ( true )
 	{
-		v11 = GetNextPath();
-		if ( !v11 ) return 0;
-		if ( v11->x == dx && v11->y == dy ) break;
-		if ( !path_get_path(PosOk, PosOkArg, v11, dx, dy) ) return 0;
+		// get the next frontier node
+		current = GetNextPath();
+		// frontier is empty, no path
+		if ( !current ) return 0;
+		// we've reached our destination, we're done
+		if ( current->x == dx && current->y == dy ) break;
+		// we ran out of preallocated nodes while searching, no path
+		if ( !path_get_path(PosOk, PosOkArg, current, dx, dy) ) return 0;
 	}
-	PATHNODE* v13 = v11;
-	int v14 = (int)&v11->Parent;
+	PATHNODE* destination = current;
+	int v14 = (int)&current->Parent;
 
 	int v15 = 0;
 	if ( *(_DWORD *)v14 )
@@ -55,11 +69,11 @@ int __fastcall FindPath(bool (__fastcall *PosOk)(int, int, int), int PosOkArg, i
 			v16 = v15 == 25;
 			if ( v15 >= 25 )
 				break;
-			pnode_vals[++v15] = path_directions[3 * (v13->y - *(_DWORD *)(*(_DWORD *)v14 + 8))
+			pnode_vals[++v15] = path_directions[3 * (destination->y - *(_DWORD *)(*(_DWORD *)v14 + 8))
 													- *(_DWORD *)(*(_DWORD *)v14 + 4)
 													+ 4
-													+ v13->x];
-			v13 = *(PATHNODE **)v14;
+													+ destination->x];
+			destination = *(PATHNODE **)v14;
 			v14 = *(_DWORD *)v14 + 12;
 			if ( !*(_DWORD *)v14 )
 			{
@@ -107,15 +121,15 @@ int __fastcall path_check_equal(PATHNODE *pPath, int dx, int dy)
 	return ( pPath->x == dx || pPath->y == dy ) ? 2 : 3;
 }
 
-/* if global is not empty, remove the first node, insert it at the head of
- * pnode's list, and return it
+/* if the frontier is not empty, remove the first node (shortest distance),
+ * insert it at the head of pnode's list, and return it
  */
 PATHNODE *__cdecl GetNextPath()
 {
-	PATHNODE* result = global_node->NextNode;
+	PATHNODE* result = frontier_ptr->NextNode;
 	if ( result )
 	{
-		global_node->NextNode = result->NextNode;
+		frontier_ptr->NextNode = result->NextNode;
 		result->NextNode = pnode_ptr->NextNode;
 		pnode_ptr->NextNode = result;
 	}
@@ -136,19 +150,18 @@ bool __fastcall path_solid_pieces(PATHNODE *pPath, int dx, int dy)
 	return !(nSolidTable[dPiece[dx][pPath->y]] || nSolidTable[dPiece[pPath->x][dy]]);
 }
 
-/* Extend pPath towards (x,y) by running a single step of A* breadth-first
- * search. Return 1 if pPath is a dead end
+/* Extend pPath towards (x,y) by expanding in every possible direction i.e. a
+ * single step of A* breadth-first search.
+ *
+ * return 0 if we're out of preallocated nodes to use, else 1
  */
 int __fastcall path_get_path(bool (__fastcall *PosOk)(int, int, int), int PosOkArg, PATHNODE *pPath, int x, int y)
 {
-	int dx;
-	int dy;
-
 	// try moving every direction from the path's current end
 	for (int i = 0; i < NUM_DIRS; ++i)
 	{
-		dx = pPath->x + pathxdir[i];
-		dy = pPath->y + pathydir[i];
+		int dx = pPath->x + pathxdir[i];
+		int dy = pPath->y + pathydir[i];
 
 		// if position is OK
 		if ( PosOk(PosOkArg, dx, dy) )
@@ -165,85 +178,93 @@ int __fastcall path_get_path(bool (__fastcall *PosOk)(int, int, int), int PosOkA
 			if ( dx != x || dy != y ) continue;
 		}
 
-		// this direction could work, try to extend pPath in that direction
+		/* This direction could work, extend pPath in that direction.
+		 * This only fails if we're out of path nodes to use, so abort
+		 * in that case
+		 */
 		if ( !path_parent_path(pPath, dx, dy, x, y) ) return 0;
 	}
 
-	// no path in any direction
+	// successfully expanded in every possible direction
 	return 1;
 }
 
-/* add a step to (dx,dy) to pPath, return 1 if successful */
+/* add a step from pPath to (dx,dy), return 1 if successful, update the
+ * frontier/visited nodes accordingly
+ */
 int __fastcall path_parent_path(PATHNODE *pPath, int dx, int dy, int sx, int sy)
 {
-	PATHNODE *next_node;
+	PATHNODE *dxdy_node;
 	int empty_slot;
 
 	// current path cost plus next step to get to (dx,dy)
 	int g_next = pPath->g + path_check_equal(pPath, dx, dy);
 
-	// if the search has already visited this node?
-	if ( next_node = path_get_node1(dx, dy) )
+	/* if (dx,dy) is on the frontier it's easy: just update that one node
+	 * because we haven't explored from it yet
+	 */
+	if ( dxdy_node = path_get_node1(dx, dy) )
 	{
-		// find the next open child slot
-		/* TODO no point in checking empty_slot < NUM_DIRS. It should
-		 * always be true, and if it isn't that's probably a crash!
-		 */
 		for (empty_slot = 0; empty_slot < NUM_DIRS && pPath->Child[empty_slot]; ++empty_slot);
-		pPath->Child[empty_slot] = next_node;
+		pPath->Child[empty_slot] = dxdy_node;
 
-		// if we just found a faster path to (dx,dy)
-		if ( g_next < next_node->g && path_solid_pieces(pPath, dx, dy) )
+		// it is a shortcut
+		if ( g_next < dxdy_node->g && path_solid_pieces(pPath, dx, dy) )
 		{
 			// update the path/cost for getting there
-			next_node->Parent = pPath;
-			next_node->g = g_next;
-			next_node->f = next_node->g + next_node->h;
+			dxdy_node->Parent = pPath;
+			dxdy_node->g = g_next;
+			dxdy_node->f = dxdy_node->g + dxdy_node->h;
 		}
 
 		return 1;
 	}
 
-	// if we have a leftover node from a previous search?
-	if ( next_node = path_get_node2(dx, dy) )
+	/* if (dx,dy) has already been visited, it's hard: we need to
+	 * recursively update nodes starting from (dx,dy) because we might have
+	 * found a new shortcut
+	 */
+	if ( dxdy_node = path_get_node2(dx, dy) )
 	{
 		for (empty_slot = 0; empty_slot < NUM_DIRS && pPath->Child[empty_slot]; ++empty_slot);
-		pPath->Child[empty_slot] = next_node;
+		pPath->Child[empty_slot] = dxdy_node;
 
-		if ( g_next < next_node->g && path_solid_pieces(pPath, dx, dy) )
+		// it is a shortcut
+		if ( g_next < dxdy_node->g && path_solid_pieces(pPath, dx, dy) )
 		{
-			next_node->Parent = pPath;
-			next_node->g = g_next;
-			next_node->f = next_node->g + next_node->h;
-			// clear (dx,dy)'s old info???
-			path_set_coords(next_node);
+			dxdy_node->Parent = pPath;
+			dxdy_node->g = g_next;
+			dxdy_node->f = dxdy_node->g + dxdy_node->h;
+			// update all of this node's neighbors
+			path_set_coords(dxdy_node);
 		}
 
 		return 1;
 	}
 
-	// else we need a new node
-	next_node = path_new_step();
-	if ( !next_node ) return 0;
+	// else just get a new node
+	dxdy_node = path_new_step();
+	if ( !dxdy_node ) return 0;
 
-	next_node->Parent = pPath;
-	next_node->g = g_next;
-	next_node->h = path_get_h_cost(dx, dy, sx, sy);
-	next_node->f = next_node->g + next_node->h;
-	next_node->x = dx;
-	next_node->y = dy;
-	path_next_node(next_node);
+	dxdy_node->Parent = pPath;
+	dxdy_node->g = g_next;
+	dxdy_node->h = path_get_h_cost(dx, dy, sx, sy);
+	dxdy_node->f = dxdy_node->g + dxdy_node->h;
+	dxdy_node->x = dx;
+	dxdy_node->y = dy;
+	// and add it to the frontier
+	path_next_node(dxdy_node);
 
 	for (empty_slot = 0; empty_slot < NUM_DIRS && pPath->Child[empty_slot]; ++empty_slot);
-	pPath->Child[empty_slot] = next_node;
+	pPath->Child[empty_slot] = dxdy_node;
 
 	return 1;
 }
 
-// return a node in the global list at (dx,dy), or NULL if not found
+// return a node for (dx,dy) on the frontier, or NULL if not found
 PATHNODE *__fastcall path_get_node1(int dx, int dy)
 {
-	for (PATHNODE* result = global_node->NextNode; result; result = result->NextNode )
+	for (PATHNODE* result = frontier_ptr->NextNode; result; result = result->NextNode )
 	{
 		if ( result->x == dx && result->y == dy )
 		{
@@ -253,7 +274,7 @@ PATHNODE *__fastcall path_get_node1(int dx, int dy)
 	return NULL;
 }
 
-// return a node in the pnode list at (dx,dy), or NULL if not found
+// return an already visited node for (dx,dy), or NULL if not found
 PATHNODE *__fastcall path_get_node2(int dx, int dy)
 {
 	for (PATHNODE* result = pnode_ptr->NextNode; result; result = result->NextNode )
@@ -266,13 +287,13 @@ PATHNODE *__fastcall path_get_node2(int dx, int dy)
 	return NULL;
 }
 
-/* Insert pPath into the global list such that the total path costs are in
+/* Insert pPath into the frontier list such that the total path costs are in
  * ascending order
  */
 void __fastcall path_next_node(PATHNODE *pPath)
 {
-	PATHNODE* current = global_node;
-	PATHNODE* next = global_node->NextNode;
+	PATHNODE* current = frontier_ptr;
+	PATHNODE* next = frontier_ptr->NextNode;
 	if ( next )
 	{
 		while ( next && next->f < pPath->f )
