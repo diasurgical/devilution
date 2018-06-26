@@ -152,21 +152,19 @@ bool __fastcall path_solid_pieces(PATHNODE *pPath, int dx, int dy)
 		v8 = dPiece[dx + 1][dy];
 		goto LABEL_13;
 	}
-	dir--;
-	if ( !dir )
+	if ( !--dir )
 	{
 		v10 = dPiece[dx][dy + 1];
 		goto LABEL_9;
 	}
-	dir--;
-	if ( !dir )
+	if ( !--dir )
 	{
 		v10 = dPiece[dx][dy-1]; /* check */
 LABEL_9:
 		result = 0;
 		if ( nSolidTable[v10] )
 			return result;
-		v8 = dPiece[dx-4][dy]; /* check */
+		v8 = dPiece[dx-1][dy]; /* check */
 		goto LABEL_13;
 	}
 	if ( dir == 1 )
@@ -176,7 +174,7 @@ LABEL_9:
 		{
 			v8 = dPiece[dx][dy-1]; /* check */
 LABEL_13:
-			if ( nSolidTable[v8] == result )
+			if ( !nSolidTable[v8] )
 				result = 1;
 			return result;
 		}
