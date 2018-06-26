@@ -1493,9 +1493,9 @@ bool __fastcall MonsterMHit(int pnum, int m, int mindam, int maxdam, int dist, i
 	{
 		M_StartKill(arglist, v21);
 	}
-	if ( !_LOBYTE(monster[v7]._msquelch) )
+	if ( !monster[v7]._msquelch )
 	{
-		_LOBYTE(monster[v7]._msquelch) = -1;
+		monster[v7]._msquelch = -1;
 		monster[v7]._lastx = plr[v12].WorldX;
 		monster[v7]._lasty = plr[v12].WorldY;
 	}
