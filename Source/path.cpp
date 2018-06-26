@@ -46,6 +46,7 @@ int __fastcall FindPath(bool (__fastcall *PosOk)(int, int, int), int PosOkArg, i
 	// it is our frontier
 	frontier_ptr->NextNode = path_start;
 
+	// find the shortest path
 	PATHNODE *current;
 	while ( true )
 	{
@@ -62,6 +63,7 @@ int __fastcall FindPath(bool (__fastcall *PosOk)(int, int, int), int PosOkArg, i
 	PATHNODE* destination = current;
 	PATHNODE* previous = destination->Parent;
 
+	// walk backwards from end to start, reconstructing the movement directions
 	int num_steps = 0;
 	while ( true )
 	{
@@ -72,18 +74,11 @@ int __fastcall FindPath(bool (__fastcall *PosOk)(int, int, int), int PosOkArg, i
 		previous = destination->Parent;
 	}
 
-	int result = 0;
-	int *v17;
-	if ( num_steps > 0 )
+	// reverse the path to go from start to end
+	int result;
+	for (result = 0; num_steps > 0; ++result)
 	{
-		v17 = &pnode_vals[num_steps];
-		do
-		{
-			char v18 = *(_BYTE *)v17;
-			--v17;
-			path[result++] = v18;
-		}
-		while ( result < num_steps );
+		path[result] = pnode_vals[num_steps--];
 	}
 	return result;
 }
