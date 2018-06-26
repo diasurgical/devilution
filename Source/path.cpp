@@ -4,6 +4,7 @@
 
 PATHNODE path_nodes[300];
 int gdwCurPathStep;
+int gdwCurNodes;
 int pnode_vals[25];
 PATHNODE *pnode_ptr;
 PATHNODE *pnode_tblptr[300];
@@ -28,7 +29,7 @@ int __fastcall FindPath(bool (__fastcall *PosOk)(int, int, int), int PosOkArg, i
 	int *v17; // ecx
 	char v18; // dl
 
-	pnode_vals[0] = 0;
+	gdwCurNodes = 0;
 	path_2_nodes = path_new_step();
 	gdwCurPathStep = 0;
 	pnode_ptr = path_new_step();
@@ -60,7 +61,7 @@ int __fastcall FindPath(bool (__fastcall *PosOk)(int, int, int), int PosOkArg, i
 			v16 = v15 == 25;
 			if ( v15 >= 25 )
 				break;
-			pnode_vals[++v15] = path_directions[3 * (v13->y - (*v14)->y) - (*v14)->x + 4 + v13->x];
+			pnode_vals[++v15-1] = path_directions[3 * (v13->y - (*v14)->y) - (*v14)->x + 4 + v13->x];
 			v13 = *v14;
 			v14 = &(*v14)->Parent;
 			if ( !*v14 )
@@ -75,7 +76,7 @@ int __fastcall FindPath(bool (__fastcall *PosOk)(int, int, int), int PosOkArg, i
 	result = 0;
 	if ( v15 > 0 )
 	{
-		v17 = &pnode_vals[v15];
+		v17 = &pnode_vals[v15-1];
 		do
 		{
 			v18 = *(_BYTE *)v17;
@@ -405,9 +406,9 @@ PATHNODE *__cdecl path_new_step()
 {
 	PATHNODE *v1; // esi
 
-	if ( pnode_vals[0] == 300 )
+	if ( gdwCurNodes == 300 )
 		return 0;
-	v1 = &path_nodes[pnode_vals[0]++];
+	v1 = &path_nodes[gdwCurNodes++];
 	memset(v1, 0, 0x34u);
 	return v1;
 }
