@@ -4,7 +4,8 @@
 
 extern PATHNODE path_nodes[300];
 extern int gdwCurPathStep;
-extern int pnode_vals[26];
+extern int num_path_nodes;
+extern int pnode_vals[25];
 extern PATHNODE *pnode_ptr;
 extern PATHNODE *pnode_tblptr[300];
 extern PATHNODE *frontier_ptr;

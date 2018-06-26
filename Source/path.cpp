@@ -4,22 +4,22 @@
 
 // preallocated nodes, all searches are terminated after visiting 300 nodes
 PATHNODE path_nodes[300];
-
-// pnode_vals[0] is the number of in-use nodes in path_nodes
-int pnode_vals[26];
-
+// the number of in-use nodes in path_nodes
+int num_path_nodes;
 // all visited nodes
 PATHNODE *pnode_ptr;
 // a stack for recursively processing nodes
 PATHNODE *pnode_tblptr[300];
 // the stack size
 int gdwCurPathStep;
-
 // a linked list of nodes: the A* frontier sorted by distance, so we can pop off the front to keep searching
 PATHNODE* frontier_ptr;
 
 // Diablo is on a square grid, so you can move in at most 8 different directions
 #define NUM_DIRS 8
+
+// TODO doesn't need to be global, used for converting the linked list of nodes to an array of directions
+int pnode_vals[25];
 
 // these are for iterating through the 8 adjacent directions
 char pathxdir[NUM_DIRS] = { -1, -1, 1, 1, -1, 0, 1, 0 };
@@ -30,7 +30,7 @@ char path_directions[9] = { 5, 1, 6, 2, 0, 3, 8, 4, 7 };
 
 int __fastcall FindPath(bool (__fastcall *PosOk)(int, int, int), int PosOkArg, int sx, int sy, int dx, int dy, char *path)
 {
-	pnode_vals[0] = 0; // empty the preallocated path nodes
+	num_path_nodes = 0; // empty the preallocated path nodes
 	gdwCurPathStep = 0; // empty the pnode_tableptr stack
 	// create dummy nodes for the two node lists?
 	frontier_ptr = path_new_step();
@@ -67,9 +67,10 @@ int __fastcall FindPath(bool (__fastcall *PosOk)(int, int, int), int PosOkArg, i
 	int num_steps = 0;
 	while ( true )
 	{
+		// TODO we *can* fit a path of 25 steps, but someone decided that 24 was the cutoff
 		if ( num_steps >= 25 ) return 0;
 		if ( !previous ) break;
-		pnode_vals[++num_steps] = path_directions[3 * (destination->y - previous->y + 1) + (destination->x - previous->x + 1)];
+		pnode_vals[num_steps++] = path_directions[3 * (destination->y - previous->y + 1) + (destination->x - previous->x + 1)];
 		destination = previous;
 		previous = destination->Parent;
 	}
@@ -78,7 +79,7 @@ int __fastcall FindPath(bool (__fastcall *PosOk)(int, int, int), int PosOkArg, i
 	int result;
 	for (result = 0; num_steps > 0; ++result)
 	{
-		path[result] = pnode_vals[num_steps--];
+		path[result] = pnode_vals[--num_steps];
 	}
 	return result;
 }
@@ -332,8 +333,8 @@ PATHNODE *__cdecl path_pop_active_step()
  */
 PATHNODE *__cdecl path_new_step()
 {
-	if ( pnode_vals[0] == 300 ) return NULL;
-	PATHNODE* new_node = &path_nodes[pnode_vals[0]++];
+	if ( num_path_nodes == 300 ) return NULL;
+	PATHNODE* new_node = &path_nodes[num_path_nodes++];
 	memset(new_node, 0, sizeof(struct PATHNODE));
 	return new_node;
 }
