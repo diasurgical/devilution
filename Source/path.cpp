@@ -5,6 +5,7 @@
 // preallocated nodes, all searches are terminated after visiting 300 nodes
 PATHNODE path_nodes[300];
 
+// pnode_vals[0] is the number of in-use nodes in path_nodes
 int pnode_vals[26];
 
 // all visited nodes
@@ -14,10 +15,10 @@ PATHNODE *pnode_tblptr[300];
 // the stack size
 int gdwCurPathStep;
 
-// the A* frontier sorted by distance, so we can just keep popping the next node to explore off the front
+// a linked list of nodes: the A* frontier sorted by distance, so we can pop off the front to keep searching
 PATHNODE* frontier_ptr;
 
-// Diablo is on a square grid, so the player can move in 8 different directions
+// Diablo is on a square grid, so you can move in at most 8 different directions
 #define NUM_DIRS 8
 
 // these are for iterating through the 8 adjacent directions
@@ -37,11 +38,11 @@ int __fastcall FindPath(bool (__fastcall *PosOk)(int, int, int), int PosOkArg, i
 
 	// create a node for the path's starting position
 	PATHNODE* path_start = path_new_step();
+	path_start->x = sx;
+	path_start->y = sy;
 	path_start->g = 0;
 	path_start->h = path_get_h_cost(sx, sy, dx, dy);
-	path_start->x = sx;
 	path_start->f = path_start->g + path_start->h;
-	path_start->y = sy;
 	// it is our frontier
 	frontier_ptr->NextNode = path_start;
 
@@ -57,45 +58,32 @@ int __fastcall FindPath(bool (__fastcall *PosOk)(int, int, int), int PosOkArg, i
 		// we ran out of preallocated nodes while searching, no path
 		if ( !path_get_path(PosOk, PosOkArg, current, dx, dy) ) return 0;
 	}
+
 	PATHNODE* destination = current;
 	PATHNODE* previous = destination->Parent;
 
-	int v15 = 0;
-	if ( previous )
+	int num_steps = 0;
+	while ( true )
 	{
-		bool v16;
-		while ( 1 )
-		{
-			v16 = v15 == 25;
-			if ( v15 >= 25 )
-				break;
-			pnode_vals[++v15] = path_directions[
-				3 * (destination->y - previous->y + 1) + (destination->x - previous->x + 1)
-			];
-			destination = previous;
-			previous = destination->Parent;
-			if ( !previous )
-			{
-				v16 = v15 == 25;
-				break;
-			}
-		}
-		if ( v16 )
-			return 0;
+		if ( num_steps >= 25 ) return 0;
+		if ( !previous ) break;
+		pnode_vals[++num_steps] = path_directions[3 * (destination->y - previous->y + 1) + (destination->x - previous->x + 1)];
+		destination = previous;
+		previous = destination->Parent;
 	}
 
 	int result = 0;
 	int *v17;
-	if ( v15 > 0 )
+	if ( num_steps > 0 )
 	{
-		v17 = &pnode_vals[v15];
+		v17 = &pnode_vals[num_steps];
 		do
 		{
 			char v18 = *(_BYTE *)v17;
 			--v17;
 			path[result++] = v18;
 		}
-		while ( result < v15 );
+		while ( result < num_steps );
 	}
 	return result;
 }
@@ -315,7 +303,7 @@ void __fastcall path_set_coords(PATHNODE *pPath)
 		PATHNODE* PathOld = path_pop_active_step();
 		// iterate over next node's children
 		PATHNODE* PathAct;
-		for (int i = 0; i < 8 && (PathAct = PathOld->Child[i]); ++i)
+		for (int i = 0; i < NUM_DIRS && (PathAct = PathOld->Child[i]); ++i)
 		{
 			short g_next = PathOld->g + path_check_equal(PathOld, PathAct->x, PathAct->y);
 			// if we found a faster path to the child
