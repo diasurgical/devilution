@@ -58,10 +58,10 @@ int __fastcall FindPath(bool (__fastcall *PosOk)(int, int, int), int PosOkArg, i
 		if ( !path_get_path(PosOk, PosOkArg, current, dx, dy) ) return 0;
 	}
 	PATHNODE* destination = current;
-	int v14 = (int)&current->Parent;
+	PATHNODE* previous = destination->Parent;
 
 	int v15 = 0;
-	if ( *(_DWORD *)v14 )
+	if ( previous )
 	{
 		bool v16;
 		while ( 1 )
@@ -69,13 +69,12 @@ int __fastcall FindPath(bool (__fastcall *PosOk)(int, int, int), int PosOkArg, i
 			v16 = v15 == 25;
 			if ( v15 >= 25 )
 				break;
-			pnode_vals[++v15] = path_directions[3 * (destination->y - *(_DWORD *)(*(_DWORD *)v14 + 8))
-													- *(_DWORD *)(*(_DWORD *)v14 + 4)
-													+ 4
-													+ destination->x];
-			destination = *(PATHNODE **)v14;
-			v14 = *(_DWORD *)v14 + 12;
-			if ( !*(_DWORD *)v14 )
+			pnode_vals[++v15] = path_directions[
+				3 * (destination->y - previous->y + 1) + (destination->x - previous->x + 1)
+			];
+			destination = previous;
+			previous = destination->Parent;
+			if ( !previous )
 			{
 				v16 = v15 == 25;
 				break;
