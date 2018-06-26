@@ -12,6 +12,7 @@ PATHNODE* global_node;
 // Diablo is on a square grid, so the player can move in 8 different directions
 #define NUM_DIRS 8
 
+// these are for iterating through the 8 adjacent directions
 char pathxdir[NUM_DIRS] = { -1, -1, 1, 1, -1, 0, 1, 0 };
 char pathydir[NUM_DIRS] = { -1, 1, -1, 1, 0, -1, 0, 1 };
 
@@ -20,44 +21,35 @@ char path_directions[9] = { 5, 1, 6, 2, 0, 3, 8, 4, 7 };
 
 int __fastcall FindPath(bool (__fastcall *PosOk)(int, int, int), int PosOkArg, int sx, int sy, int dx, int dy, char *path)
 {
-	PATHNODE *v8; // esi
-	char v9; // al
-	PATHNODE *v11; // eax
-	int result; // eax
-	PATHNODE *v13; // edx
-	int v14; // eax
-	int v15; // edi
-	bool v16; // zf
-	int *v17; // ecx
-	char v18; // dl
-
-	pnode_vals[0] = 0;
+	pnode_vals[0] = 0; // empty the preallocated path nodes
+	gdwCurPathStep = 0; // empty the pnode_tableptr stack
+	// create dummy nodes for the two node lists?
 	global_node = path_new_step();
-	gdwCurPathStep = 0;
 	pnode_ptr = path_new_step();
-	v8 = path_new_step();
-	v8->g = 0;
-	v9 = path_get_h_cost(sx, sy, dx, dy);
-	v8->h = v9;
-	v8->x = sx;
-	v8->f = v9 + v8->g;
-	v8->y = sy;
-	global_node->NextNode = v8;
+
+	PATHNODE* path_start = path_new_step();
+	path_start->g = 0;
+	path_start->h = path_get_h_cost(sx, sy, dx, dy);
+	path_start->x = sx;
+	path_start->f = path_start->g + path_start->h;
+	path_start->y = sy;
+	global_node->NextNode = path_start;
+
+	PATHNODE *v11;
 	while ( 1 )
 	{
 		v11 = GetNextPath();
-		if ( !v11 )
-			return 0;
-		if ( v11->x == dx && v11->y == dy )
-			break;
-		if ( !path_get_path(PosOk, PosOkArg, v11, dx, dy) )
-			return 0;
+		if ( !v11 ) return 0;
+		if ( v11->x == dx && v11->y == dy ) break;
+		if ( !path_get_path(PosOk, PosOkArg, v11, dx, dy) ) return 0;
 	}
-	v13 = v11;
-	v14 = (int)&v11->Parent;
-	v15 = 0;
+	PATHNODE* v13 = v11;
+	int v14 = (int)&v11->Parent;
+
+	int v15 = 0;
 	if ( *(_DWORD *)v14 )
 	{
+		bool v16;
 		while ( 1 )
 		{
 			v16 = v15 == 25;
@@ -78,13 +70,15 @@ int __fastcall FindPath(bool (__fastcall *PosOk)(int, int, int), int PosOkArg, i
 		if ( v16 )
 			return 0;
 	}
-	result = 0;
+
+	int result = 0;
+	int *v17;
 	if ( v15 > 0 )
 	{
 		v17 = &pnode_vals[v15];
 		do
 		{
-			v18 = *(_BYTE *)v17;
+			char v18 = *(_BYTE *)v17;
 			--v17;
 			path[result++] = v18;
 		}
