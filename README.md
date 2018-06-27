@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.org/galaxyhaxz/devilution.svg?branch=master)](https://travis-ci.org/galaxyhaxz/devilution)
 
+[![Build status](https://ci.appveyor.com/api/projects/status/ssk0xjhoka1uu940?svg=true)](https://ci.appveyor.com/project/galaxyhaxz/devilution)
+
 # Devilution
 Diablo devolved - magic behind the 1996 computer game
 
