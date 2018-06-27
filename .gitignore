@@ -12,6 +12,9 @@
 # GCC dependency file.
 *.d
 
+# Resource file.
+*.res
+
 # Created by https://www.gitignore.io/api/visualstudio
 
 ### VisualStudio ###
