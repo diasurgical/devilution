@@ -14,16 +14,16 @@ endif
 
 all: devilution.exe
 
-DIABLO_SRC=$(wildcard Source/*.cpp)
+DIABLO_SRC=$(sort $(wildcard Source/*.cpp))
 OBJS=$(DIABLO_SRC:.cpp=.obj)
 
-PKWARE_SRC=$(wildcard 3rdParty/PKWare/*.cpp)
+PKWARE_SRC=$(sort $(wildcard 3rdParty/PKWare/*.cpp))
 PKWARE_OBJS=$(PKWARE_SRC:.cpp=.obj)
 
-STORM_SRC=$(wildcard 3rdParty/Storm/Source/*.cpp)
+STORM_SRC=$(sort $(wildcard 3rdParty/Storm/Source/*.cpp))
 STORM_OBJS=$(STORM_SRC:.cpp=.obj)
 
-DIABLOUI_SRC=$(wildcard DiabloUI/*.cpp)
+DIABLOUI_SRC=$(sort $(wildcard DiabloUI/*.cpp))
 DIABLOUI_OBJS=$(DIABLOUI_SRC:.cpp=.obj)
 
 devilution.exe: $(OBJS) $(PKWARE_OBJS) diablo.res DiabloUI/diabloui.lib 3rdParty/Storm/Source/storm.lib
