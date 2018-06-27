@@ -2,30 +2,42 @@ VC_DIR ?= $(HOME)/DevStudio/VC
 VC_BIN_DIR = $(VC_DIR)/bin
 VC_INC_DIR = $(VC_DIR)/include
 VC_LIB_DIR = $(VC_DIR)/lib
-# TODO: Figure out a clean way to only use Wine on Linux. Thus letting this
-# Makefile be used on both Unix and Windows systems.
-CL = wine $(VC_BIN_DIR)/CL.EXE
+ifeq ($(OS),Windows_NT)
+	CL = $(VC_BIN_DIR)/CL.EXE
+else
+	CL = wine $(VC_BIN_DIR)/CL.EXE
+endif
 
 all: devilution.exe
 
-include 3rdParty/PKWare/objs.mak
-include 3rdParty/Storm/Source/objs.mak
-include DiabloUI/objs.mak
-include Source/objs.mak
+DIABLO_SRC=$(wildcard Source/*.cpp)
+OBJS=$(DIABLO_SRC:.cpp=.obj)
 
-devilution.exe: $(OBJS:.o=.obj) $(PKWARE_OBJS:.o=.obj) 3rdParty/Storm/Source/storm.lib DiabloUI/diabloui.lib
-	$(CL) /nologo /Fe$@ $(OBJS:.o=.obj) $(PKWARE_OBJS:.o=.obj) /link /LIBPATH:$(VC_LIB_DIR) advapi32.lib gdi32.lib shell32.lib user32.lib version.lib 3rdParty/Storm/Source/storm.lib DiabloUI/diabloui.lib
+PKWARE_SRC=$(wildcard 3rdParty/PKWare/*.cpp)
+PKWARE_OBJS=$(PKWARE_SRC:.cpp=.obj)
+
+STORM_SRC=$(wildcard 3rdParty/Storm/Source/*.cpp)
+STORM_OBJS=$(STORM_SRC:.cpp=.obj)
+
+DIABLOUI_SRC=$(wildcard DiabloUI/*.cpp)
+DIABLOUI_OBJS=$(DIABLOUI_SRC:.cpp=.obj)
+
+devilution.exe: $(OBJS) $(PKWARE_OBJS) DiabloUI/diabloui.lib 3rdParty/Storm/Source/storm.lib
+	$(CL) /nologo /Fe$@ $(OBJS) $(PKWARE_OBJS) /link /LIBPATH:$(VC_LIB_DIR) advapi32.lib gdi32.lib shell32.lib user32.lib version.lib DiabloUI/diabloui.lib 3rdParty/Storm/Source/storm.lib
+
+DiabloUI/diabloui.lib: $(DIABLOUI_OBJS)
+	$(CL) $^ /link /nologo /dll /subsystem:windows /machine:I386 /LIBPATH:$(VC_LIB_DIR) /def:"DiabloUI/diabloui.def" /out:DiabloUI/diabloui.dll
+
+3rdParty/Storm/Source/storm.lib: $(STORM_OBJS)
+	$(CL) $^ /link /nologo /dll /subsystem:windows /machine:I386 /LIBPATH:$(VC_LIB_DIR) /def:"3rdParty/Storm/Source/storm.def" /out:3rdParty/Storm/Source/storm.dll
 
 %.obj: %.cpp
 	$(CL) /nologo /c /O1 /W3 /MT /I $(VC_INC_DIR) /Fo$@ $<
 
-3rdParty/Storm/Source/storm.lib: $(STORM_OBJS:.o=.obj)
-	$(CL) $^ /link /nologo /dll /subsystem:windows /machine:I386 /LIBPATH:$(VC_LIB_DIR) /def:"3rdParty/Storm/Source/storm.def" /out:3rdParty/Storm/Source/storm.dll
-
-DiabloUI/diabloui.lib: $(DIABLOUI_OBJS:.o=.obj)
-	$(CL) $^ /link /nologo /dll /subsystem:windows /machine:I386 /LIBPATH:$(VC_LIB_DIR) /def:"DiabloUI/diabloui.def" /out:DiabloUI/diabloui.dll
+#diabres.obj: Diablo.rc
+#	$(WINDRES) $< $@
 
 clean:
-	@$(RM) -v $(OBJS:.o=.obj) $(PKWARE_OBJS:.o=.obj) $(STORM_OBJS:.o=.obj) $(DIABLOUI_OBJS:.o=.obj) 3rdParty/Storm/Source/storm.{exp,lib,dll} DiabloUI/diabloui.{exp,lib,dll}
+	@$(RM) -v $(OBJS) $(PKWARE_OBJS) $(STORM_OBJS) $(DIABLOUI_OBJS) DiabloUI/diabloui.{exp,lib,dll} 3rdParty/Storm/Source/storm.{exp,lib,dll}
 
 .PHONY: clean all
