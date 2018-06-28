@@ -733,10 +733,10 @@ struct ObjectStruct
 	int _oAnimWidth;
 	int _oAnimWidth2;
 	int _oDelFlag;
-	int _oBreak;
+	char _oBreak;
 	int _oSolidFlag;
 	int _oMissFlag;
-	int _oSelFlag;
+	char _oSelFlag;
 	int _oPreFlag;
 	int _oTrapFlag;
 	int _oDoorFlag;

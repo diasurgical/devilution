@@ -948,10 +948,9 @@ LABEL_96:
 		}
 		if ( pcursobj != -1 )
 		{
-			if ( v1 != 5 || v7 && (v7 = 120 * pcursobj, *((_BYTE *)&object[0]._oBreak + v7) == 1) )
+			if ( v1 != 5 || v7 && object[pcursobj]._oBreak == 1 )
 			{
-				_LOWORD(v7) = pcursobj;
-				NetSendCmdLocParam1(1u, (pcurs == 5) + CMD_OPOBJXY, cursmx, cursmy, v7);
+				NetSendCmdLocParam1(1u, (pcurs == 5) + CMD_OPOBJXY, cursmx, cursmy, pcursobj);
 				goto LABEL_95;
 			}
 		}

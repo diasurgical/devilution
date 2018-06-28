@@ -1007,7 +1007,7 @@ void __fastcall Theme_Library(int t)
 						if ( random(v6, 2 * librnd[leveltype]) )
 						{
 							v7 = *v3 - 1;
-							_LOBYTE(object[v7]._oSelFlag) = 0;
+							object[v7]._oSelFlag = 0;
 							object[v7]._oAnimFrame += 2;
 						}
 					}
