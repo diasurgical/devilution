@@ -4182,7 +4182,7 @@ void __fastcall CheckNewPath(int pnum)
 					}
 					if ( v102 > 1 || v48 > 1 )
 						break;
-					if ( _LOBYTE(object[v47]._oBreak) != 1 )
+					if ( object[v47]._oBreak != 1 )
 						goto LABEL_73;
 					goto LABEL_80;
 				case 14:
@@ -4199,7 +4199,7 @@ void __fastcall CheckNewPath(int pnum)
 					}
 					if ( v103 > 1 || v51 > 1 )
 						break;
-					if ( _LOBYTE(object[v47]._oBreak) == 1 )
+					if ( object[v47]._oBreak == 1 )
 					{
 LABEL_80:
 						v20 = GetDirection(plr[v2].WorldX, plr[v2].WorldY, object[v47]._ox, object[v47]._oy);
@@ -4245,7 +4245,7 @@ LABEL_73:
 						TalkToTowner(v1, plr[v2].destParam1);
 					break;
 				case 18:
-					if ( _LOBYTE(object[plr[v2].destParam1]._oBreak) != 1 )
+					if ( object[plr[v2].destParam1]._oBreak != 1 )
 						OperateObject(v1, plr[v2].destParam1, 1u);
 					break;
 				case 20:
@@ -4362,7 +4362,7 @@ LABEL_107:
 					}
 					if ( v104 <= 1 && v71 <= 1 )
 					{
-						if ( _LOBYTE(object[v70]._oBreak) == 1 )
+						if ( object[v70]._oBreak == 1 )
 						{
 							v73 = GetDirection(plr[v2].WorldX, plr[v2].WorldY, object[v70]._ox, object[v70]._oy);
 							StartAttack(p, v73);

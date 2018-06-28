@@ -1795,7 +1795,6 @@ void __fastcall SetupObject(int i, int x, int y, int ot)
 	int v12; // ecx
 	int v13; // eax
 	int v14; // eax
-	unsigned char v15; // al
 
 	v4 = i;
 	object[v4]._otype = ot;
@@ -1834,10 +1833,9 @@ void __fastcall SetupObject(int i, int x, int y, int ot)
 	object[v4]._oSolidFlag = AllObjects[v5].oSolidFlag;
 	object[v4]._oMissFlag = AllObjects[v5].oMissFlag;
 	object[v4]._oLight = AllObjects[v5].oLightFlag;
-	_LOBYTE(object[v4]._oBreak) = AllObjects[v5].oBreak;
-	v15 = AllObjects[v5].oSelFlag;
+	object[v4]._oBreak = AllObjects[v5].oBreak;
 	object[v4]._oDelFlag = 0;
-	_LOBYTE(object[v4]._oSelFlag) = v15;
+	object[v4]._oSelFlag = AllObjects[v5].oSelFlag;
 	object[v4]._oPreFlag = 0;
 	object[v4]._oTrapFlag = 0;
 	object[v4]._oDoorFlag = 0;
@@ -2156,7 +2154,7 @@ void __fastcall AddArmorStand(int i)
 	if ( !armorFlag )
 	{
 		v1 = i;
-		_LOBYTE(object[v1]._oSelFlag) = 0;
+		object[v1]._oSelFlag = 0;
 		object[v1]._oAnimFlag = 2;
 	}
 	object[i]._oRndSeed = GetRndSeed();
@@ -2642,7 +2640,7 @@ void __fastcall Obj_Door(int i)
 	{
 		dy = object[i]._oy;
 		dx = object[i]._ox;
-		_LOBYTE(object[i]._oSelFlag) = 2;
+		object[i]._oSelFlag = 2;
 		object[i]._oMissFlag = 1;
 		object[i]._oVar4 = ((dItem[dx][dy] == 0
 						   && dDead[dx][dy] == 0
@@ -2653,7 +2651,7 @@ void __fastcall Obj_Door(int i)
 	else
 	{
 		object[i]._oMissFlag = 0;
-		_LOBYTE(object[i]._oSelFlag) = 3;
+		object[i]._oSelFlag = 3;
 	}
 }
 
@@ -2828,7 +2826,7 @@ LABEL_17:
 		goto LABEL_17;
 	}
 LABEL_9:
-	if ( _LOBYTE(object[v2]._oSelFlag) )
+	if ( object[v2]._oSelFlag )
 		return;
 LABEL_10:
 	v4 = object[edi1]._ox;
@@ -3407,7 +3405,7 @@ void __fastcall OperateL1RDoor(int pnum, int oi, unsigned char sendflag)
 				NetSendCmdParam1(1u, CMD_CLOSEDOOR, param1);
 			v7 = object[v3]._oVar1;
 			object[v3]._oVar4 = 0;
-			_LOBYTE(object[v3]._oSelFlag) = 3;
+			object[v3]._oSelFlag = 3;
 			ObjSetMicro(v5, v6, v7);
 			if ( object[v3]._oVar2 == 50 )
 			{
@@ -3436,7 +3434,7 @@ void __fastcall OperateL1RDoor(int pnum, int oi, unsigned char sendflag)
 			object[v3]._oPreFlag = 1;
 			DoorSet(param1, v5 - 1, v6);
 			object[v3]._oVar4 = 1;
-			_LOBYTE(object[v3]._oSelFlag) = 2;
+			object[v3]._oSelFlag = 2;
 		}
 		RedoPlayerVision();
 		return;
@@ -3479,7 +3477,7 @@ void __fastcall OperateL1LDoor(int pnum, int oi, unsigned char sendflag)
 				NetSendCmdParam1(1u, CMD_CLOSEDOOR, param1);
 			v7 = object[v3]._oVar1;
 			object[v3]._oVar4 = 0;
-			_LOBYTE(object[v3]._oSelFlag) = 3;
+			object[v3]._oSelFlag = 3;
 			ObjSetMicro(v5, v6, v7);
 			if ( object[v3]._oVar2 == 50 )
 			{
@@ -3511,7 +3509,7 @@ void __fastcall OperateL1LDoor(int pnum, int oi, unsigned char sendflag)
 			object[v3]._oPreFlag = 1;
 			DoorSet(param1, v5, v6 - 1);
 			object[v3]._oVar4 = 1;
-			_LOBYTE(object[v3]._oSelFlag) = 2;
+			object[v3]._oSelFlag = 2;
 		}
 		RedoPlayerVision();
 		return;
@@ -3550,7 +3548,7 @@ void __fastcall OperateL2RDoor(int pnum, int oi, unsigned char sendflag)
 			if ( v7 == myplr && sendflag )
 				NetSendCmdParam1(1u, CMD_CLOSEDOOR, param1);
 			object[v3]._oVar4 = 0;
-			_LOBYTE(object[v3]._oSelFlag) = 3;
+			object[v3]._oSelFlag = 3;
 			ObjSetMicro(v8, v5, 540);
 			object[v3]._oAnimFrame -= 2;
 			object[v3]._oPreFlag = 0;
@@ -3565,7 +3563,7 @@ void __fastcall OperateL2RDoor(int pnum, int oi, unsigned char sendflag)
 			object[v3]._oAnimFrame += 2;
 			object[v3]._oPreFlag = 1;
 			object[v3]._oVar4 = 1;
-			_LOBYTE(object[v3]._oSelFlag) = 2;
+			object[v3]._oSelFlag = 2;
 		}
 		RedoPlayerVision();
 		return;
@@ -3604,7 +3602,7 @@ void __fastcall OperateL2LDoor(int pnum, int oi, unsigned char sendflag)
 			if ( v7 == myplr && sendflag )
 				NetSendCmdParam1(1u, CMD_CLOSEDOOR, param1);
 			object[v3]._oVar4 = 0;
-			_LOBYTE(object[v3]._oSelFlag) = 3;
+			object[v3]._oSelFlag = 3;
 			ObjSetMicro(v8, v5, 538);
 			object[v3]._oAnimFrame -= 2;
 			object[v3]._oPreFlag = 0;
@@ -3619,7 +3617,7 @@ void __fastcall OperateL2LDoor(int pnum, int oi, unsigned char sendflag)
 			object[v3]._oAnimFrame += 2;
 			object[v3]._oPreFlag = 1;
 			object[v3]._oVar4 = 1;
-			_LOBYTE(object[v3]._oSelFlag) = 2;
+			object[v3]._oSelFlag = 2;
 		}
 		RedoPlayerVision();
 		return;
@@ -3658,7 +3656,7 @@ void __fastcall OperateL3RDoor(int pnum, int oi, unsigned char sendflag)
 			if ( v7 == myplr && sendflag )
 				NetSendCmdParam1(1u, CMD_CLOSEDOOR, param1);
 			object[v3]._oVar4 = 0;
-			_LOBYTE(object[v3]._oSelFlag) = 3;
+			object[v3]._oSelFlag = 3;
 			ObjSetMicro(v8, v5, 534);
 			object[v3]._oAnimFrame -= 2;
 			object[v3]._oPreFlag = 0;
@@ -3673,7 +3671,7 @@ void __fastcall OperateL3RDoor(int pnum, int oi, unsigned char sendflag)
 			object[v3]._oAnimFrame += 2;
 			object[v3]._oPreFlag = 1;
 			object[v3]._oVar4 = 1;
-			_LOBYTE(object[v3]._oSelFlag) = 2;
+			object[v3]._oSelFlag = 2;
 		}
 		RedoPlayerVision();
 		return;
@@ -3712,7 +3710,7 @@ void __fastcall OperateL3LDoor(int pnum, int oi, unsigned char sendflag)
 			if ( v7 == myplr && sendflag )
 				NetSendCmdParam1(1u, CMD_CLOSEDOOR, param1);
 			object[v3]._oVar4 = 0;
-			_LOBYTE(object[v3]._oSelFlag) = 3;
+			object[v3]._oSelFlag = 3;
 			ObjSetMicro(v8, v5, 531);
 			object[v3]._oAnimFrame -= 2;
 			object[v3]._oPreFlag = 0;
@@ -3727,7 +3725,7 @@ void __fastcall OperateL3LDoor(int pnum, int oi, unsigned char sendflag)
 			object[v3]._oAnimFrame += 2;
 			object[v3]._oPreFlag = 1;
 			object[v3]._oVar4 = 1;
-			_LOBYTE(object[v3]._oSelFlag) = 2;
+			object[v3]._oSelFlag = 2;
 		}
 		RedoPlayerVision();
 		return;
@@ -4022,7 +4020,7 @@ void __fastcall OperateLever(int pnum, int i)
 
 	param1 = i;
 	v2 = i;
-	v3 = &object[i]._oSelFlag;
+	v3 = (int*)&object[i]._oSelFlag;
 	v8 = pnum;
 	if ( *(_BYTE *)v3 )
 	{
@@ -4041,7 +4039,7 @@ void __fastcall OperateLever(int pnum, int i)
 			v6 = objectactive[v5];
 			if ( object[v6]._otype == OBJ_SWITCHSKL
 			  && object[v2]._oVar8 == object[v6]._oVar8
-			  && _LOBYTE(object[v6]._oSelFlag) )
+			  && object[v6]._oSelFlag )
 			{
 				v4 = 0;
 			}
@@ -4076,7 +4074,7 @@ void __fastcall OperateBook(int pnum, int i)
 	esi1 = i;
 	v3 = pnum;
 	v10 = pnum;
-	if ( !_LOBYTE(object[esi1]._oSelFlag) )
+	if ( !object[esi1]._oSelFlag )
 		return;
 	if ( !setlevel || setlvlnum != SL_VILEBETRAYER )
 		goto LABEL_17;
@@ -4122,7 +4120,7 @@ void __fastcall OperateBook(int pnum, int i)
 LABEL_17:
 			++object[esi1]._oAnimFrame;
 			v6 = setlevel == 0;
-			_LOBYTE(object[esi1]._oSelFlag) = 0;
+			object[esi1]._oSelFlag = 0;
 			if ( !v6 )
 			{
 				if ( setlvlnum == SL_BONECHAMB )
@@ -4193,7 +4191,7 @@ void __fastcall OperateBookLever(int pnum, int i)
 	v13 = pnum;
 	v3 = 2 * setpc_x + 16;
 	v4 = 2 * setpc_y + 16;
-	if ( _LOBYTE(object[i]._oSelFlag) && !qtextflag )
+	if ( object[i]._oSelFlag && !qtextflag )
 	{
 		v5 = object[v2]._otype;
 		if ( v5 == OBJ_BLINDBOOK && !quests[8]._qvar1 )
@@ -4254,7 +4252,7 @@ void __fastcall OperateSChambBk(int pnum, int i)
 	//int speech_id; // [esp+4h] [ebp-4h]
 
 	v2 = i;
-	if ( _LOBYTE(object[i]._oSelFlag) && !qtextflag )
+	if ( object[i]._oSelFlag && !qtextflag )
 	{
 		if ( object[v2]._oAnimFrame != object[v2]._oVar6 )
 		{
@@ -4309,13 +4307,13 @@ void __fastcall OperateChest(int pnum, int i, unsigned char sendmsg)
 	param2 = i;
 	v3 = i;
 	param1 = pnum;
-	if ( _LOBYTE(object[i]._oSelFlag) )
+	if ( object[i]._oSelFlag )
 	{
 		if ( !deltaload )
 			PlaySfxLoc(IS_CHEST, object[v3]._ox, object[v3]._oy);
 		object[v3]._oAnimFrame += 2;
 		v4 = deltaload == 0;
-		_LOBYTE(object[v3]._oSelFlag) = 0;
+		object[v3]._oSelFlag = 0;
 		if ( v4 )
 		{
 			SetRndSeed(object[v3]._oRndSeed);
@@ -4423,13 +4421,13 @@ void __fastcall OperateMushPatch(int pnum, int i)
 	else
 	{
 		v2 = i;
-		if ( _LOBYTE(object[i]._oSelFlag) )
+		if ( object[i]._oSelFlag )
 		{
 			if ( !deltaload )
 				PlaySfxLoc(IS_CHEST, object[v2]._ox, object[v2]._oy);
 			++object[v2]._oAnimFrame;
 			v3 = deltaload == 0;
-			_LOBYTE(object[v2]._oSelFlag) = 0;
+			object[v2]._oSelFlag = 0;
 			if ( v3 )
 			{
 				GetSuperItemLoc(object[v2]._ox, object[v2]._oy, &xx, &yy);
@@ -4453,13 +4451,13 @@ void __fastcall OperateInnSignChest(int pnum, int i)
 	if ( quests[7]._qvar1 == 2 )
 	{
 		v4 = i;
-		if ( _LOBYTE(object[i]._oSelFlag) )
+		if ( object[i]._oSelFlag )
 		{
 			if ( !deltaload )
 				PlaySfxLoc(IS_CHEST, object[v4]._ox, object[v4]._oy);
 			object[v4]._oAnimFrame += 2;
 			v5 = deltaload == 0;
-			_LOBYTE(object[v4]._oSelFlag) = 0;
+			object[v4]._oSelFlag = 0;
 			if ( v5 )
 			{
 				GetSuperItemLoc(object[v4]._ox, object[v4]._oy, &xx, &yy);
@@ -4500,10 +4498,10 @@ void __fastcall OperateSlainHero(int pnum, int i, unsigned char sendmsg)
 	v3 = i;
 	v4 = pnum;
 	v5 = i;
-	if ( _LOBYTE(object[i]._oSelFlag) )
+	if ( object[i]._oSelFlag )
 	{
 		v6 = deltaload == 0;
-		_LOBYTE(object[v5]._oSelFlag) = 0;
+		object[v5]._oSelFlag = 0;
 		if ( v6 )
 		{
 			v7 = plr[pnum]._pClass;
@@ -4600,12 +4598,12 @@ void __fastcall OperateSarc(int pnum, int i, unsigned char sendmsg)
 	v3 = i;
 	v4 = i;
 	v7 = pnum;
-	if ( _LOBYTE(object[i]._oSelFlag) )
+	if ( object[i]._oSelFlag )
 	{
 		if ( !deltaload )
 			PlaySfxLoc(IS_SARC, object[v4]._ox, object[v4]._oy);
 		v5 = deltaload == 0;
-		_LOBYTE(object[v4]._oSelFlag) = 0;
+		object[v4]._oSelFlag = 0;
 		if ( v5 )
 		{
 			v6 = object[v4]._oRndSeed;
@@ -4751,7 +4749,7 @@ void __fastcall OperatePedistal(int pnum, int i)
 			LoadMapObjs(v4, 2 * setpc_x, 2 * setpc_y);
 			mem_free_dbg(v4);
 			CreateItem(7, 2 * setpc_x + 25, 2 * setpc_y + 19);
-			_LOBYTE(object[v2]._oSelFlag) = 0;
+			object[v2]._oSelFlag = 0;
 		}
 	}
 }
@@ -4976,8 +4974,8 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 		dropGoldValue = 0;
 	}
 	v3 = i;
-	v4 = &object[i]._oSelFlag;
-	if ( _LOBYTE(object[i]._oSelFlag) )
+	v4 = (int*)&object[i]._oSelFlag;
+	if ( object[i]._oSelFlag )
 	{
 		SetRndSeed(object[v3]._oRndSeed);
 		v5 = deltaload;
@@ -5359,13 +5357,13 @@ LABEL_47:
 				{
 					v63 = objectactive[j];
 					v7 = object[v63]._otype;
-					if ( (v7 == OBJ_CHEST1 || v7 == OBJ_CHEST2 || v7 == OBJ_CHEST3) && !_LOBYTE(object[v63]._oSelFlag) )
+					if ( (v7 == OBJ_CHEST1 || v7 == OBJ_CHEST2 || v7 == OBJ_CHEST3) && !object[v63]._oSelFlag )
 					{
 						v64 = GetRndSeed();
 						object[v63]._oAnimFrame -= 2;
 						object[v63]._oRndSeed = v64;
 						v5 = deltaload;
-						_LOBYTE(object[v63]._oSelFlag) = 1;
+						object[v63]._oSelFlag = 1;
 					}
 				}
 				if ( v5 )
@@ -5866,13 +5864,13 @@ void __fastcall OperateSkelBook(int pnum, int i, unsigned char sendmsg)
 	v3 = i;
 	v4 = i;
 	v10 = pnum;
-	if ( _LOBYTE(object[i]._oSelFlag) )
+	if ( object[i]._oSelFlag )
 	{
 		if ( !deltaload )
 			PlaySfxLoc(IS_ISCROL, object[v4]._ox, object[v4]._oy);
 		object[v4]._oAnimFrame += 2;
 		v5 = deltaload == 0;
-		_LOBYTE(object[v4]._oSelFlag) = 0;
+		object[v4]._oSelFlag = 0;
 		if ( v5 )
 		{
 			SetRndSeed(object[v4]._oRndSeed);
@@ -5902,13 +5900,13 @@ void __fastcall OperateBookCase(int pnum, int i, unsigned char sendmsg)
 	v3 = i;
 	v4 = pnum;
 	v5 = i;
-	if ( _LOBYTE(object[i]._oSelFlag) )
+	if ( object[i]._oSelFlag )
 	{
 		if ( !deltaload )
 			PlaySfxLoc(IS_ISCROL, object[v5]._ox, object[v5]._oy);
 		object[v5]._oAnimFrame -= 2;
 		v6 = deltaload == 0;
-		_LOBYTE(object[v5]._oSelFlag) = 0;
+		object[v5]._oSelFlag = 0;
 		if ( v6 )
 		{
 			SetRndSeed(object[v5]._oRndSeed);
@@ -5942,7 +5940,7 @@ void __fastcall OperateDecap(int pnum, int i, unsigned char sendmsg)
 	v3 = i;
 	v4 = i;
 	v5 = pnum;
-	v6 = &object[i]._oSelFlag;
+	v6 = (int*)&object[i]._oSelFlag;
 	if ( *(_BYTE *)v6 )
 	{
 		v7 = deltaload == 0;
@@ -5973,7 +5971,7 @@ void __fastcall OperateArmorStand(int pnum, int i, unsigned char sendmsg)
 	v3 = i;
 	v4 = i;
 	v11 = pnum;
-	v5 = &object[i]._oSelFlag;
+	v5 = (int*)&object[i]._oSelFlag;
 	if ( *(_BYTE *)v5 )
 	{
 		++object[v4]._oAnimFrame;
@@ -6167,11 +6165,11 @@ LABEL_38:
 			}
 			return 0;
 		case OBJ_MURKYFTN:
-			if ( _LOBYTE(object[v3]._oSelFlag) )
+			if ( object[v3]._oSelFlag )
 			{
 				if ( !deltaload )
 					PlaySfxLoc(LS_FOUNTAIN, object[v3]._ox, object[v3]._oy);
-				_LOBYTE(object[v3]._oSelFlag) = 0;
+				object[v3]._oSelFlag = 0;
 				if ( deltaload )
 					return 0;
 				AddMissile(
@@ -6191,7 +6189,7 @@ LABEL_38:
 			}
 			break;
 		default:
-			if ( object[v3]._otype == OBJ_TEARFTN && _LOBYTE(object[v3]._oSelFlag) )
+			if ( object[v3]._otype == OBJ_TEARFTN && object[v3]._oSelFlag )
 			{
 				v7 = -1;
 				v8 = -1;
@@ -6199,7 +6197,7 @@ LABEL_38:
 				v24 = 0;
 				if ( !deltaload )
 					PlaySfxLoc(LS_FOUNTAIN, object[v3]._ox, object[v3]._oy);
-				_LOBYTE(object[v3]._oSelFlag) = 0;
+				object[v3]._oSelFlag = 0;
 				if ( deltaload || v4 != myplr )
 					return 0;
 				do
@@ -6274,7 +6272,7 @@ void __fastcall OperateWeaponRack(int pnum, int i, unsigned char sendmsg)
 	v3 = i;
 	v4 = i;
 	v14 = pnum;
-	if ( !_LOBYTE(object[i]._oSelFlag) )
+	if ( !object[i]._oSelFlag )
 		return;
 	SetRndSeed(object[v4]._oRndSeed);
 	_LOBYTE(v5) = 0;
@@ -6309,7 +6307,7 @@ LABEL_7:
 LABEL_12:
 	++object[v4]._oAnimFrame;
 	v10 = deltaload == 0;
-	_LOBYTE(object[v4]._oSelFlag) = 0;
+	object[v4]._oSelFlag = 0;
 	if ( v10 )
 	{
 		v11 = object[v4]._ox;
@@ -6334,7 +6332,7 @@ void __fastcall OperateStoryBook(int pnum, int i)
 
 	v2 = i;
 	v3 = i;
-	if ( _LOBYTE(object[i]._oSelFlag) && !deltaload && !qtextflag && pnum == myplr )
+	if ( object[i]._oSelFlag && !deltaload && !qtextflag && pnum == myplr )
 	{
 		v4 = object[v3]._oy;
 		v5 = object[v3]._ox;
@@ -6355,11 +6353,11 @@ void __fastcall OperateLazStand(int pnum, int i)
 	int yy; // [esp+8h] [ebp-4h]
 
 	v2 = i;
-	if ( _LOBYTE(object[i]._oSelFlag) && !deltaload && !qtextflag && pnum == myplr )
+	if ( object[i]._oSelFlag && !deltaload && !qtextflag && pnum == myplr )
 	{
 		v3 = object[v2]._oy;
 		++object[v2]._oAnimFrame;
-		_LOBYTE(object[v2]._oSelFlag) = 0;
+		object[v2]._oSelFlag = 0;
 		GetSuperItemLoc(object[v2]._ox, v3, &xx, &yy);
 		SpawnQuestItem(33, xx, yy, 0, 0);
 	}
@@ -6692,8 +6690,8 @@ void __fastcall BreakCrux(int i)
 
 	v1 = i;
 	v2 = nobjects;
-	_LOBYTE(object[v1]._oBreak) = -1;
-	_LOBYTE(object[v1]._oSelFlag) = 0;
+	object[v1]._oBreak = -1;
+	object[v1]._oSelFlag = 0;
 	v3 = 0;
 	v4 = 1;
 	object[v1]._oAnimFlag = 1;
@@ -6709,7 +6707,7 @@ void __fastcall BreakCrux(int i)
 		v6 = object[v5]._otype;
 		if ( (v6 == OBJ_CRUX1 || v6 == OBJ_CRUX2 || v6 == OBJ_CRUX3)
 		  && object[v1]._oVar8 == object[v5]._oVar8
-		  && _LOBYTE(object[v5]._oBreak) != -1 )
+		  && object[v5]._oBreak != -1 )
 		{
 			v4 = 0;
 		}
@@ -6749,7 +6747,7 @@ void __fastcall BreakBarrel(int pnum, int i, int dam, unsigned char forcebreak, 
 	param2 = i;
 	v5 = i;
 	param1 = pnum;
-	if ( _LOBYTE(object[i]._oSelFlag) )
+	if ( object[i]._oSelFlag )
 	{
 		if ( forcebreak )
 		{
@@ -6763,7 +6761,7 @@ void __fastcall BreakBarrel(int pnum, int i, int dam, unsigned char forcebreak, 
 		}
 		if ( object[v5]._oVar1 <= 0 )
 		{
-			_LOBYTE(object[v5]._oBreak) = -1;
+			object[v5]._oBreak = -1;
 			v6 = deltaload == 0;
 			object[v5]._oVar1 = 0;
 			object[v5]._oAnimFlag = 1;
@@ -6771,7 +6769,7 @@ void __fastcall BreakBarrel(int pnum, int i, int dam, unsigned char forcebreak, 
 			object[v5]._oAnimDelay = 1;
 			object[v5]._oSolidFlag = 0;
 			object[v5]._oMissFlag = 1;
-			_LOBYTE(object[v5]._oSelFlag) = 0;
+			object[v5]._oSelFlag = 0;
 			object[v5]._oPreFlag = 1;
 			if ( v6 )
 			{
@@ -6804,7 +6802,7 @@ void __fastcall BreakBarrel(int pnum, int i, int dam, unsigned char forcebreak, 
 									if ( v13 > 0 )
 									{
 										v14 = v13 - 1;
-										if ( object[v14]._otype == OBJ_BARRELEX && _LOBYTE(object[v14]._oBreak) != -1 )
+										if ( object[v14]._otype == OBJ_BARRELEX && object[v14]._oBreak != -1 )
 											BreakBarrel(param1, v14, dam, 1u, sendmsg);
 									}
 									++v18;
@@ -6914,7 +6912,7 @@ void __fastcall SyncL1Doors(int i)
 		v4 = object[v2]._ox;
 		v5 = object[v2]._otype == 1;
 		object[v2]._oMissFlag = 1;
-		_LOBYTE(object[v2]._oSelFlag) = 2;
+		object[v2]._oSelFlag = 2;
 		if ( v5 )
 		{
 			if ( object[v2]._oVar1 == 214 )
@@ -6955,7 +6953,7 @@ void __fastcall SyncCrux(int i)
 		v4 = object[v3]._otype;
 		if ( (v4 == OBJ_CRUX1 || v4 == OBJ_CRUX2 || v4 == OBJ_CRUX3)
 		  && object[i]._oVar8 == object[v3]._oVar8
-		  && _LOBYTE(object[v3]._oBreak) != -1 )
+		  && object[v3]._oBreak != -1 )
 		{
 			v1 = 0;
 		}
@@ -6972,7 +6970,7 @@ void __fastcall SyncLever(int i)
 	int v1; // ecx
 
 	v1 = i;
-	if ( !_LOBYTE(object[v1]._oSelFlag) )
+	if ( !object[v1]._oSelFlag )
 		ObjChangeMap(object[v1]._oVar1, object[v1]._oVar2, object[v1]._oVar3, object[v1]._oVar4);
 }
 
@@ -7043,7 +7041,7 @@ void __fastcall SyncL2Doors(int i)
 		object[v1]._oMissFlag = 0;
 	v3 = object[v1]._ox;
 	v4 = object[v1]._oy;
-	_LOBYTE(object[v1]._oSelFlag) = 2;
+	object[v1]._oSelFlag = 2;
 	v5 = object[v1]._otype;
 	if ( v5 != OBJ_L2LDOOR )
 		goto LABEL_18;
@@ -7088,7 +7086,7 @@ void __fastcall SyncL3Doors(int i)
 	v3 = object[i]._ox;
 	v4 = object[v1]._oy;
 	object[v1]._oMissFlag = 1;
-	_LOBYTE(object[v1]._oSelFlag) = 2;
+	object[v1]._oSelFlag = 2;
 	if ( v2 != OBJ_L3LDOOR )
 		goto LABEL_15;
 	if ( !object[v1]._oVar4 )

@@ -1608,17 +1608,17 @@ bool __fastcall ItemSpaceOk(int i, int j)
 	v7 = v6 < 0;
 	if ( v6 > 0 )
 	{
-		if ( _LOBYTE(object[v6-1]._oSelFlag) ) /* check */
+		if ( object[v6-1]._oSelFlag ) /* check */
 			return 0;
 		v7 = v6 < 0;
 	}
-	if ( !v7 || !_LOBYTE(object[-(v6 + 1)]._oSelFlag) )
+	if ( !v7 || !object[-(v6 + 1)]._oSelFlag )
 	{
 		v8 = dObject[v2 + 1][j];
 		if ( v8 <= 0 )
 			return nSolidTable[dPiece[0][v3]] == 0;
 		v9 = dObject[v2][j + 1];
-		if ( v9 <= 0 || !_LOBYTE(object[v8-1]._oSelFlag) || !_LOBYTE(object[v9-1]._oSelFlag) )
+		if ( v9 <= 0 || !object[v8-1]._oSelFlag || !object[v9-1]._oSelFlag )
 			return nSolidTable[dPiece[0][v3]] == 0;
 	}
 	return 0;
