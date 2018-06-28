@@ -2070,7 +2070,7 @@ LABEL_39:
 		v25 = v24 <= 0 ? -1 - v24 : v24 - 1;
 		if ( !object[v25]._oMissFlag )
 		{
-			if ( _LOBYTE(object[v25]._oBreak) == 1 )
+			if ( object[v25]._oBreak == 1 )
 				BreakObject(-1, v25);
 			if ( !(_BYTE)nodel )
 				missile[v8]._mirange = 0;
