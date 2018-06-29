@@ -1493,9 +1493,9 @@ bool __fastcall MonsterMHit(int pnum, int m, int mindam, int maxdam, int dist, i
 	{
 		M_StartKill(arglist, v21);
 	}
-	if ( !_LOBYTE(monster[v7]._msquelch) )
+	if ( !monster[v7]._msquelch )
 	{
-		_LOBYTE(monster[v7]._msquelch) = -1;
+		monster[v7]._msquelch = -1;
 		monster[v7]._lastx = plr[v12].WorldX;
 		monster[v7]._lasty = plr[v12].WorldY;
 	}
@@ -2070,7 +2070,7 @@ LABEL_39:
 		v25 = v24 <= 0 ? -1 - v24 : v24 - 1;
 		if ( !object[v25]._oMissFlag )
 		{
-			if ( _LOBYTE(object[v25]._oBreak) == 1 )
+			if ( object[v25]._oBreak == 1 )
 				BreakObject(-1, v25);
 			if ( !(_BYTE)nodel )
 				missile[v8]._mirange = 0;

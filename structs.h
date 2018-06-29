@@ -554,7 +554,7 @@ struct MonsterStruct
 	unsigned char _mint;
 	short falign_9A;
 	int _mFlags;
-	int _msquelch;
+	char _msquelch; /* unsigned char */
 	int falign_A4;
 	int _lastx;
 	int _lasty;
@@ -733,10 +733,10 @@ struct ObjectStruct
 	int _oAnimWidth;
 	int _oAnimWidth2;
 	int _oDelFlag;
-	int _oBreak;
+	char _oBreak; // check
 	int _oSolidFlag;
 	int _oMissFlag;
-	int _oSelFlag;
+	char _oSelFlag; // check
 	int _oPreFlag;
 	int _oTrapFlag;
 	int _oDoorFlag;
@@ -967,7 +967,7 @@ struct SHA1Context
 
 struct ThemeStruct
 {
-	int ttype; /* char, aligned 4 */
+	char ttype; /* aligned 4 */
 	int ttval;
 };
 

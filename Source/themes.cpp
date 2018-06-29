@@ -599,7 +599,7 @@ void __cdecl InitThemes()
 						_LOBYTE(v7) = 0;
 					}
 					v8 = numthemes;
-					_LOBYTE(themes[numthemes].ttype) = i;
+					themes[numthemes].ttype = i;
 					v1 = leveltype;
 					v0 = v8 + 1;
 					numthemes = v0;
@@ -612,7 +612,7 @@ void __cdecl InitThemes()
 		{
 			v9 = themeCount;
 			for ( j = 0; j < v9; ++j )
-				_LOBYTE(themes[j].ttype) = -1;
+				themes[j].ttype = -1;
 			//_LOBYTE(v11) = QuestStatus(3);
 			v13 = &themeLoc[0].ttval;
 			if ( QuestStatus(3) )
@@ -632,7 +632,7 @@ void __cdecl InitThemes()
 						if ( v14 >= themeCount )
 							goto LABEL_23;
 					}
-					_LOBYTE(themes[v14].ttype) = 5;
+					themes[v14].ttype = 5;
 					zharlib = v14;
 				}
 			}
@@ -640,7 +640,7 @@ LABEL_23:
 			v17 = themeCount;
 			for ( k = 0; k < themeCount; v13 += 5 )
 			{
-				if ( _LOBYTE(themes[k].ttype) == LOBYTE(-1) ) /* char */
+				if ( themes[k].ttype == -1 )
 				{
 					_LOBYTE(v12) = 0;
 					themes[k].ttval = *v13;
@@ -651,7 +651,7 @@ LABEL_23:
 							break;
 						_LOBYTE(v12) = 0;
 					}
-					_LOBYTE(themes[k].ttype) = l;
+					themes[k].ttype = l;
 				}
 				v17 = themeCount;
 				++k;
@@ -1007,7 +1007,7 @@ void __fastcall Theme_Library(int t)
 						if ( random(v6, 2 * librnd[leveltype]) )
 						{
 							v7 = *v3 - 1;
-							_LOBYTE(object[v7]._oSelFlag) = 0;
+							object[v7]._oSelFlag = 0;
 							object[v7]._oAnimFrame += 2;
 						}
 					}

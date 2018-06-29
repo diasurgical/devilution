@@ -855,43 +855,43 @@ void __fastcall DRLG_L2(int entry)
 		DRLG_L2TransFix();
 		if ( !v13 )
 		{
-			v3 = DRLG_L2PlaceMiniSet((char *)USTAIRS, 1, 1, -1, -1, 1, 0);
+			v3 = DRLG_L2PlaceMiniSet(USTAIRS, 1, 1, -1, -1, 1, 0);
 			v1 = v3;
 			if ( !v3 )
 				goto LABEL_21;
-			v4 = DRLG_L2PlaceMiniSet((char *)DSTAIRS, 1, 1, -1, -1, 0, 1);
+			v4 = DRLG_L2PlaceMiniSet(DSTAIRS, 1, 1, -1, -1, 0, 1);
 			v1 = v4;
 			if ( !v4 || currlevel != 5 )
 				goto LABEL_21;
-			v5 = DRLG_L2PlaceMiniSet((char *)WARPSTAIRS, 1, 1, -1, -1, 0, 6);
+			v5 = DRLG_L2PlaceMiniSet(WARPSTAIRS, 1, 1, -1, -1, 0, 6);
 LABEL_20:
 			v1 = v5;
 LABEL_21:
 			ViewY -= 2;
 			continue;
 		}
-		v6 = DRLG_L2PlaceMiniSet((char *)USTAIRS, 1, 1, -1, -1, 0, 0);
+		v6 = DRLG_L2PlaceMiniSet(USTAIRS, 1, 1, -1, -1, 0, 0);
 		v1 = v6;
 		if ( v13 != 1 )
 		{
 			if ( !v6 )
 				goto LABEL_21;
-			v9 = DRLG_L2PlaceMiniSet((char *)DSTAIRS, 1, 1, -1, -1, 0, 1);
+			v9 = DRLG_L2PlaceMiniSet(DSTAIRS, 1, 1, -1, -1, 0, 1);
 			v1 = v9;
 			if ( !v9 || currlevel != 5 )
 				goto LABEL_21;
-			v5 = DRLG_L2PlaceMiniSet((char *)WARPSTAIRS, 1, 1, -1, -1, 1, 6);
+			v5 = DRLG_L2PlaceMiniSet(WARPSTAIRS, 1, 1, -1, -1, 1, 6);
 			goto LABEL_20;
 		}
 		if ( v6 )
 		{
-			v7 = DRLG_L2PlaceMiniSet((char *)DSTAIRS, 1, 1, -1, -1, 1, 1);
+			v7 = DRLG_L2PlaceMiniSet(DSTAIRS, 1, 1, -1, -1, 1, 1);
 			v1 = v7;
 			if ( v7 )
 			{
 				if ( currlevel == 5 )
 				{
-					v8 = DRLG_L2PlaceMiniSet((char *)WARPSTAIRS, 1, 1, -1, -1, 0, 6);
+					v8 = DRLG_L2PlaceMiniSet(WARPSTAIRS, 1, 1, -1, -1, 0, 6);
 					v1 = v8;
 				}
 			}
@@ -903,114 +903,114 @@ LABEL_21:
 	L2DoorFix();
 	L2DirtFix();
 	DRLG_PlaceThemeRooms(6, 10, 3, 0, 0);
-	DRLG_L2PlaceRndSet((char *)CTRDOOR1, 100);
-	DRLG_L2PlaceRndSet((char *)CTRDOOR2, 100);
-	DRLG_L2PlaceRndSet((char *)CTRDOOR3, 100);
-	DRLG_L2PlaceRndSet((char *)CTRDOOR4, 100);
-	DRLG_L2PlaceRndSet((char *)CTRDOOR5, 100);
-	DRLG_L2PlaceRndSet((char *)CTRDOOR6, 100);
-	DRLG_L2PlaceRndSet((char *)CTRDOOR7, 100);
-	DRLG_L2PlaceRndSet((char *)CTRDOOR8, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH33, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH34, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH35, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH36, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH37, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH38, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH39, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH40, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH1, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH2, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH3, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH4, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH5, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH6, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH7, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH8, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH9, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH10, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH11, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH12, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH13, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH14, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH15, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH16, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH17, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH18, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH19, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH20, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH21, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH22, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH23, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH24, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH25, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH26, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH27, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH28, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH29, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH30, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH31, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH32, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH1, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH2, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH3, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH4, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH5, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH6, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH7, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH8, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH9, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH10, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH11, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH12, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH13, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH14, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH15, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH16, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH17, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH18, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH19, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH20, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH21, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH22, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH23, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH24, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH25, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH26, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH27, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH28, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH29, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH30, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH31, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH32, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH33, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH34, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH35, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH36, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH37, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH38, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH39, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH40, 100);
-	DRLG_L2PlaceRndSet((char *)CRUSHCOL, 99);
-	DRLG_L2PlaceRndSet((char *)RUINS1, 10);
-	DRLG_L2PlaceRndSet((char *)RUINS2, 10);
-	DRLG_L2PlaceRndSet((char *)RUINS3, 10);
-	DRLG_L2PlaceRndSet((char *)RUINS4, 10);
-	DRLG_L2PlaceRndSet((char *)RUINS5, 10);
-	DRLG_L2PlaceRndSet((char *)RUINS6, 10);
-	DRLG_L2PlaceRndSet((char *)RUINS7, 50);
-	DRLG_L2PlaceRndSet((char *)PANCREAS1, 1);
-	DRLG_L2PlaceRndSet((char *)PANCREAS2, 1);
-	DRLG_L2PlaceRndSet((char *)BIG1, 3);
-	DRLG_L2PlaceRndSet((char *)BIG2, 3);
-	DRLG_L2PlaceRndSet((char *)BIG3, 3);
-	DRLG_L2PlaceRndSet((char *)BIG4, 3);
-	DRLG_L2PlaceRndSet((char *)BIG5, 3);
-	DRLG_L2PlaceRndSet((char *)BIG6, 20);
-	DRLG_L2PlaceRndSet((char *)BIG7, 20);
-	DRLG_L2PlaceRndSet((char *)BIG8, 3);
-	DRLG_L2PlaceRndSet((char *)BIG9, 20);
-	DRLG_L2PlaceRndSet((char *)BIG10, 20);
+	DRLG_L2PlaceRndSet(CTRDOOR1, 100);
+	DRLG_L2PlaceRndSet(CTRDOOR2, 100);
+	DRLG_L2PlaceRndSet(CTRDOOR3, 100);
+	DRLG_L2PlaceRndSet(CTRDOOR4, 100);
+	DRLG_L2PlaceRndSet(CTRDOOR5, 100);
+	DRLG_L2PlaceRndSet(CTRDOOR6, 100);
+	DRLG_L2PlaceRndSet(CTRDOOR7, 100);
+	DRLG_L2PlaceRndSet(CTRDOOR8, 100);
+	DRLG_L2PlaceRndSet(VARCH33, 100);
+	DRLG_L2PlaceRndSet(VARCH34, 100);
+	DRLG_L2PlaceRndSet(VARCH35, 100);
+	DRLG_L2PlaceRndSet(VARCH36, 100);
+	DRLG_L2PlaceRndSet(VARCH37, 100);
+	DRLG_L2PlaceRndSet(VARCH38, 100);
+	DRLG_L2PlaceRndSet(VARCH39, 100);
+	DRLG_L2PlaceRndSet(VARCH40, 100);
+	DRLG_L2PlaceRndSet(VARCH1, 100);
+	DRLG_L2PlaceRndSet(VARCH2, 100);
+	DRLG_L2PlaceRndSet(VARCH3, 100);
+	DRLG_L2PlaceRndSet(VARCH4, 100);
+	DRLG_L2PlaceRndSet(VARCH5, 100);
+	DRLG_L2PlaceRndSet(VARCH6, 100);
+	DRLG_L2PlaceRndSet(VARCH7, 100);
+	DRLG_L2PlaceRndSet(VARCH8, 100);
+	DRLG_L2PlaceRndSet(VARCH9, 100);
+	DRLG_L2PlaceRndSet(VARCH10, 100);
+	DRLG_L2PlaceRndSet(VARCH11, 100);
+	DRLG_L2PlaceRndSet(VARCH12, 100);
+	DRLG_L2PlaceRndSet(VARCH13, 100);
+	DRLG_L2PlaceRndSet(VARCH14, 100);
+	DRLG_L2PlaceRndSet(VARCH15, 100);
+	DRLG_L2PlaceRndSet(VARCH16, 100);
+	DRLG_L2PlaceRndSet(VARCH17, 100);
+	DRLG_L2PlaceRndSet(VARCH18, 100);
+	DRLG_L2PlaceRndSet(VARCH19, 100);
+	DRLG_L2PlaceRndSet(VARCH20, 100);
+	DRLG_L2PlaceRndSet(VARCH21, 100);
+	DRLG_L2PlaceRndSet(VARCH22, 100);
+	DRLG_L2PlaceRndSet(VARCH23, 100);
+	DRLG_L2PlaceRndSet(VARCH24, 100);
+	DRLG_L2PlaceRndSet(VARCH25, 100);
+	DRLG_L2PlaceRndSet(VARCH26, 100);
+	DRLG_L2PlaceRndSet(VARCH27, 100);
+	DRLG_L2PlaceRndSet(VARCH28, 100);
+	DRLG_L2PlaceRndSet(VARCH29, 100);
+	DRLG_L2PlaceRndSet(VARCH30, 100);
+	DRLG_L2PlaceRndSet(VARCH31, 100);
+	DRLG_L2PlaceRndSet(VARCH32, 100);
+	DRLG_L2PlaceRndSet(HARCH1, 100);
+	DRLG_L2PlaceRndSet(HARCH2, 100);
+	DRLG_L2PlaceRndSet(HARCH3, 100);
+	DRLG_L2PlaceRndSet(HARCH4, 100);
+	DRLG_L2PlaceRndSet(HARCH5, 100);
+	DRLG_L2PlaceRndSet(HARCH6, 100);
+	DRLG_L2PlaceRndSet(HARCH7, 100);
+	DRLG_L2PlaceRndSet(HARCH8, 100);
+	DRLG_L2PlaceRndSet(HARCH9, 100);
+	DRLG_L2PlaceRndSet(HARCH10, 100);
+	DRLG_L2PlaceRndSet(HARCH11, 100);
+	DRLG_L2PlaceRndSet(HARCH12, 100);
+	DRLG_L2PlaceRndSet(HARCH13, 100);
+	DRLG_L2PlaceRndSet(HARCH14, 100);
+	DRLG_L2PlaceRndSet(HARCH15, 100);
+	DRLG_L2PlaceRndSet(HARCH16, 100);
+	DRLG_L2PlaceRndSet(HARCH17, 100);
+	DRLG_L2PlaceRndSet(HARCH18, 100);
+	DRLG_L2PlaceRndSet(HARCH19, 100);
+	DRLG_L2PlaceRndSet(HARCH20, 100);
+	DRLG_L2PlaceRndSet(HARCH21, 100);
+	DRLG_L2PlaceRndSet(HARCH22, 100);
+	DRLG_L2PlaceRndSet(HARCH23, 100);
+	DRLG_L2PlaceRndSet(HARCH24, 100);
+	DRLG_L2PlaceRndSet(HARCH25, 100);
+	DRLG_L2PlaceRndSet(HARCH26, 100);
+	DRLG_L2PlaceRndSet(HARCH27, 100);
+	DRLG_L2PlaceRndSet(HARCH28, 100);
+	DRLG_L2PlaceRndSet(HARCH29, 100);
+	DRLG_L2PlaceRndSet(HARCH30, 100);
+	DRLG_L2PlaceRndSet(HARCH31, 100);
+	DRLG_L2PlaceRndSet(HARCH32, 100);
+	DRLG_L2PlaceRndSet(HARCH33, 100);
+	DRLG_L2PlaceRndSet(HARCH34, 100);
+	DRLG_L2PlaceRndSet(HARCH35, 100);
+	DRLG_L2PlaceRndSet(HARCH36, 100);
+	DRLG_L2PlaceRndSet(HARCH37, 100);
+	DRLG_L2PlaceRndSet(HARCH38, 100);
+	DRLG_L2PlaceRndSet(HARCH39, 100);
+	DRLG_L2PlaceRndSet(HARCH40, 100);
+	DRLG_L2PlaceRndSet(CRUSHCOL, 99);
+	DRLG_L2PlaceRndSet(RUINS1, 10);
+	DRLG_L2PlaceRndSet(RUINS2, 10);
+	DRLG_L2PlaceRndSet(RUINS3, 10);
+	DRLG_L2PlaceRndSet(RUINS4, 10);
+	DRLG_L2PlaceRndSet(RUINS5, 10);
+	DRLG_L2PlaceRndSet(RUINS6, 10);
+	DRLG_L2PlaceRndSet(RUINS7, 50);
+	DRLG_L2PlaceRndSet(PANCREAS1, 1);
+	DRLG_L2PlaceRndSet(PANCREAS2, 1);
+	DRLG_L2PlaceRndSet(BIG1, 3);
+	DRLG_L2PlaceRndSet(BIG2, 3);
+	DRLG_L2PlaceRndSet(BIG3, 3);
+	DRLG_L2PlaceRndSet(BIG4, 3);
+	DRLG_L2PlaceRndSet(BIG5, 3);
+	DRLG_L2PlaceRndSet(BIG6, 20);
+	DRLG_L2PlaceRndSet(BIG7, 20);
+	DRLG_L2PlaceRndSet(BIG8, 3);
+	DRLG_L2PlaceRndSet(BIG9, 20);
+	DRLG_L2PlaceRndSet(BIG10, 20);
 	DRLG_L2Subs();
 	DRLG_L2Shadows();
 	v10 = 0;
@@ -1033,7 +1033,7 @@ LABEL_21:
 }
 // 5B50D8: using guessed type int setloadflag_2;
 
-bool __fastcall DRLG_L2PlaceMiniSet(char *miniset, int tmin, int tmax, int cx, int cy, bool setview, int ldir)
+bool __fastcall DRLG_L2PlaceMiniSet(unsigned char *miniset, int tmin, int tmax, int cx, int cy, bool setview, int ldir)
 {
 	int v7; // ebx
 	int v8; // esi
@@ -1051,13 +1051,13 @@ bool __fastcall DRLG_L2PlaceMiniSet(char *miniset, int tmin, int tmax, int cx, i
 	int v20; // edi
 	signed int i; // eax
 	int v22; // ecx
-	char v23; // dl
+	unsigned char v23; // dl
 	int v24; // eax
 	int v25; // edi
 	char *v26; // edx
-	char v27; // bl
+	unsigned char v27; // bl
 	bool result; // al
-	char *v29; // [esp+Ch] [ebp-28h]
+	unsigned char *v29; // [esp+Ch] [ebp-28h]
 	int v30; // [esp+10h] [ebp-24h]
 	int v31; // [esp+14h] [ebp-20h]
 	int v32; // [esp+18h] [ebp-1Ch]
@@ -1070,13 +1070,13 @@ bool __fastcall DRLG_L2PlaceMiniSet(char *miniset, int tmin, int tmax, int cx, i
 	int v39; // [esp+30h] [ebp-4h]
 	int tmaxa; // [esp+3Ch] [ebp+8h]
 
-	v7 = (unsigned char)miniset[1];
+	v7 = miniset[1];
 	v8 = tmin;
-	v9 = (unsigned char)*miniset;
+	v9 = *miniset;
 	v29 = miniset;
 	v10 = tmax - tmin;
-	v34 = (unsigned char)*miniset;
-	v35 = (unsigned char)miniset[1];
+	v34 = *miniset;
+	v35 = miniset[1];
 	if ( v10 )
 	{
 		_LOBYTE(miniset) = 0;
@@ -1090,7 +1090,7 @@ bool __fastcall DRLG_L2PlaceMiniSet(char *miniset, int tmin, int tmax, int cx, i
 	if ( v30 <= 0 )
 	{
 		v13 = ldir;
-		v14 = 0; /* v38 */
+		v14 = 0; /* v38; check */
 	}
 	else
 	{
@@ -1176,7 +1176,7 @@ bool __fastcall DRLG_L2PlaceMiniSet(char *miniset, int tmin, int tmax, int cx, i
 			if ( v33 >= 200 )
 				return 0;
 			v24 = 0;
-			for ( miniset = (char *)(v34 * v35 + 2); v24 < v35; ++v24 )
+			for ( miniset = (unsigned char *)(v34 * v35 + 2); v24 < v35; ++v24 )
 			{
 				v25 = v34;
 				if ( v34 > 0 )
@@ -1222,9 +1222,9 @@ bool __fastcall DRLG_L2PlaceMiniSet(char *miniset, int tmin, int tmax, int cx, i
 // 5CF320: using guessed type int LvlViewY;
 // 5CF324: using guessed type int LvlViewX;
 
-void __fastcall DRLG_L2PlaceRndSet(char *miniset, int rndper)
+void __fastcall DRLG_L2PlaceRndSet(unsigned char *miniset, int rndper)
 {
-	char *v2; // ebx
+	unsigned char *v2; // ebx
 	signed int v3; // esi
 	signed int v4; // ecx
 	int v5; // edx
@@ -1232,7 +1232,7 @@ void __fastcall DRLG_L2PlaceRndSet(char *miniset, int rndper)
 	signed int i; // edx
 	signed int v8; // esi
 	int v9; // eax
-	char v10; // cl
+	unsigned char v10; // cl
 	int v11; // edi
 	_BYTE *v12; // ecx
 	int v13; // esi
@@ -1240,10 +1240,10 @@ void __fastcall DRLG_L2PlaceRndSet(char *miniset, int rndper)
 	int v15; // eax
 	signed int j; // edx
 	signed int v17; // esi
-	char *v18; // eax
-	char v19; // cl
+	unsigned char *v18; // eax
+	unsigned char v19; // cl
 	int v20; // [esp+8h] [ebp-3Ch]
-	char *v21; // [esp+10h] [ebp-34h]
+	unsigned char *v21; // [esp+10h] [ebp-34h]
 	int v22; // [esp+14h] [ebp-30h]
 	int v23; // [esp+18h] [ebp-2Ch]
 	int v24; // [esp+1Ch] [ebp-28h]
@@ -1260,8 +1260,8 @@ void __fastcall DRLG_L2PlaceRndSet(char *miniset, int rndper)
 	v2 = miniset;
 	v32 = 0;
 	v20 = rndper;
-	v3 = (unsigned char)miniset[1];
-	v4 = (unsigned char)*miniset;
+	v3 = miniset[1];
+	v4 = *miniset;
 	v21 = v2;
 	v30 = v4;
 	v26 = 40 - v3;
@@ -1326,7 +1326,7 @@ LABEL_34:
 									v17 = v30;
 									if ( v30 > 0 )
 									{
-										v18 = (char *)dungeon + j + v28 + v32;
+										v18 = (unsigned char *)dungeon + j + v28 + v32;
 										do
 										{
 											v19 = v2[v11];

@@ -933,7 +933,7 @@ LABEL_306:
 			if ( !v62 )
 				goto LABEL_272;
 			v61 = v62 <= 0 ? -1 - v62 : v62 - 1;
-			if ( SLOBYTE(object[v61]._oSelFlag) < 2 )
+			if ( object[v61]._oSelFlag < 2 )
 				goto LABEL_272;
 			cursmx = v6;
 			cursmy = v8 + 1;
@@ -944,7 +944,7 @@ LABEL_306:
 			if ( !v60 )
 				goto LABEL_272;
 			v61 = v60 <= 0 ? -1 - v60 : v60 - 1;
-			if ( SLOBYTE(object[v61]._oSelFlag) < 2 )
+			if ( object[v61]._oSelFlag < 2 )
 				goto LABEL_272;
 			cursmy = v8;
 			cursmx = v6 + 1;
@@ -964,7 +964,7 @@ LABEL_272:
 			}
 		}
 		v66 = dObject[1][v27 + 1 + v8];
-		if ( !v66 || (v66 <= 0 ? (v67 = -1 - v66) : (v67 = v66 - 1), SLOBYTE(object[v67]._oSelFlag) < 2) )
+		if ( !v66 || (v66 <= 0 ? (v67 = -1 - v66) : (v67 = v66 - 1), object[v67]._oSelFlag < 2) )
 		{
 LABEL_286:
 			if ( pcursobj != -1 || pcursmonst != -1 )

@@ -4,10 +4,11 @@
 
 PATHNODE path_nodes[300];
 int gdwCurPathStep;
-int pnode_vals[26];
+int gdwCurNodes;
+int pnode_vals[25];
 PATHNODE *pnode_ptr;
 PATHNODE *pnode_tblptr[300];
-PATHNODE path_2_nodes[300];
+PATHNODE *path_2_nodes;
 
 char pathxdir[8] = { -1, -1, 1, 1, -1, 0, 1, 0 };
 char pathydir[8] = { -1, 1, -1, 1, 0, -1, 0, 1 };
@@ -22,14 +23,14 @@ int __fastcall FindPath(bool (__fastcall *PosOk)(int, int, int), int PosOkArg, i
 	PATHNODE *v11; // eax
 	int result; // eax
 	PATHNODE *v13; // edx
-	int v14; // eax
+	PATHNODE **v14; // eax
 	int v15; // edi
 	bool v16; // zf
 	int *v17; // ecx
 	char v18; // dl
 
-	pnode_vals[0] = 0;
-	*(_DWORD *)&path_2_nodes[0].f = (unsigned int)path_new_step();
+	gdwCurNodes = 0;
+	path_2_nodes = path_new_step();
 	gdwCurPathStep = 0;
 	pnode_ptr = path_new_step();
 	v8 = path_new_step();
@@ -39,7 +40,7 @@ int __fastcall FindPath(bool (__fastcall *PosOk)(int, int, int), int PosOkArg, i
 	v8->x = sx;
 	v8->f = v9 + v8->g;
 	v8->y = sy;
-	*(_DWORD *)(*(_DWORD *)&path_2_nodes[0].f + 48) = (unsigned int)v8;
+	path_2_nodes->NextNode = v8;
 	while ( 1 )
 	{
 		v11 = GetNextPath();
@@ -51,22 +52,19 @@ int __fastcall FindPath(bool (__fastcall *PosOk)(int, int, int), int PosOkArg, i
 			return 0;
 	}
 	v13 = v11;
-	v14 = (int)&v11->Parent;
+	v14 = &v11->Parent;
 	v15 = 0;
-	if ( *(_DWORD *)v14 )
+	if ( *v14 )
 	{
 		while ( 1 )
 		{
 			v16 = v15 == 25;
 			if ( v15 >= 25 )
 				break;
-			pnode_vals[++v15] = path_directions[3 * (v13->y - *(_DWORD *)(*(_DWORD *)v14 + 8))
-													- *(_DWORD *)(*(_DWORD *)v14 + 4)
-													+ 4
-													+ v13->x];
-			v13 = *(PATHNODE **)v14;
-			v14 = *(_DWORD *)v14 + 12;
-			if ( !*(_DWORD *)v14 )
+			pnode_vals[++v15-1] = path_directions[3 * (v13->y - (*v14)->y) - (*v14)->x + 4 + v13->x];
+			v13 = *v14;
+			v14 = &(*v14)->Parent;
+			if ( !*v14 )
 			{
 				v16 = v15 == 25;
 				break;
@@ -78,7 +76,7 @@ int __fastcall FindPath(bool (__fastcall *PosOk)(int, int, int), int PosOkArg, i
 	result = 0;
 	if ( v15 > 0 )
 	{
-		v17 = &pnode_vals[v15];
+		v17 = &pnode_vals[v15-1];
 		do
 		{
 			v18 = *(_BYTE *)v17;
@@ -125,10 +123,10 @@ PATHNODE *__cdecl GetNextPath()
 {
 	PATHNODE *result; // eax
 
-	result = *(PATHNODE **)(*(_DWORD *)&path_2_nodes[0].f + 48);
+	result = path_2_nodes->NextNode;
 	if ( result )
 	{
-		*(_DWORD *)(*(_DWORD *)&path_2_nodes[0].f + 48) = (unsigned int)result->NextNode;
+		path_2_nodes->NextNode = result->NextNode;
 		result->NextNode = pnode_ptr->NextNode;
 		pnode_ptr->NextNode = result;
 	}
@@ -152,21 +150,19 @@ bool __fastcall path_solid_pieces(PATHNODE *pPath, int dx, int dy)
 		v8 = dPiece[dx + 1][dy];
 		goto LABEL_13;
 	}
-	dir--;
-	if ( !dir )
+	if ( !--dir )
 	{
 		v10 = dPiece[dx][dy + 1];
 		goto LABEL_9;
 	}
-	dir--;
-	if ( !dir )
+	if ( !--dir )
 	{
 		v10 = dPiece[dx][dy-1]; /* check */
 LABEL_9:
 		result = 0;
 		if ( nSolidTable[v10] )
 			return result;
-		v8 = dPiece[dx-4][dy]; /* check */
+		v8 = dPiece[dx-1][dy]; /* check */
 		goto LABEL_13;
 	}
 	if ( dir == 1 )
@@ -176,7 +172,7 @@ LABEL_9:
 		{
 			v8 = dPiece[dx][dy-1]; /* check */
 LABEL_13:
-			if ( nSolidTable[v8] == result )
+			if ( !nSolidTable[v8] )
 				result = 1;
 			return result;
 		}
@@ -318,7 +314,7 @@ PATHNODE *__fastcall path_get_node1(int dx, int dy)
 {
 	PATHNODE *result; // eax
 
-	result = *(PATHNODE **)&path_2_nodes[0].f;
+	result = path_2_nodes;
 	do
 		result = result->NextNode;
 	while ( result && (result->x != dx || result->y != dy) );
@@ -341,8 +337,8 @@ void __fastcall path_next_node(PATHNODE *pPath)
 	PATHNODE *v1; // edx
 	PATHNODE *v2; // eax
 
-	v1 = *(PATHNODE **)&path_2_nodes[0].f;
-	v2 = *(PATHNODE **)(*(_DWORD *)&path_2_nodes[0].f + 48);
+	v1 = path_2_nodes;
+	v2 = path_2_nodes->NextNode;
 	if ( v2 )
 	{
 		do
@@ -410,9 +406,9 @@ PATHNODE *__cdecl path_new_step()
 {
 	PATHNODE *v1; // esi
 
-	if ( pnode_vals[0] == 300 )
+	if ( gdwCurNodes == 300 )
 		return 0;
-	v1 = &path_nodes[pnode_vals[0]++];
+	v1 = &path_nodes[gdwCurNodes++];
 	memset(v1, 0, 0x34u);
 	return v1;
 }
