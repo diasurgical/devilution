@@ -6,7 +6,7 @@ Devilution.
 ## Useful Repos
 
 * [diasurgical/scalpel](https://github.com/diasurgical/scalpel) - uploaded .SYM
-  files from each realese of Diablo 1 on Playstation
+  files from each release of Diablo 1 on Playstation
 * [sanctuary/notes](https://github.com/sanctuary/notes) - documented
   Windows-specific Diablo code
 
@@ -21,7 +21,7 @@ Devilution.
 Described below are steps for using the IDA and SYM files to reverse the Diablo
 source.
 
-### Understanding Devilution and Sancutary Notes
+### Understanding Devilution and Sanctuary Notes
 
 Both Devilution and the Sanctuary Notes repo have the intended aim to get as
 close as possible to document the original game. Devilution is closer in the
@@ -57,9 +57,9 @@ void __fastcall drlg_l1_load_dun(char *dun_path, int view_x, int view_y);
   ones.); for more info, see [#79 (comment)](https://github.com/diasurgical/devilution/pull/79#issuecomment-400536087)
 * Example: search for `drlg_l1_load_dun`
   * Starting memory address `0x40AE79`
-  * Funcation name `drlg_l1_load_dun`
+  * Function name `drlg_l1_load_dun`
   * Function arguments `(char *dun_path, int view_x, int view_y)`
-  * #TODO whatelse can be inferred from below?
+  * #TODO what else can be inferred from below?
 
 ```asm
 ; drlg_l1_load_dun loads tile IDs, monsters and objects from the given
@@ -100,7 +100,7 @@ xor     ecx, ecx
 
 ### About the SYM
 
-The diasurgical/scalpel repository includes a copy of a symbolic file that was
+The [diasurgical/scalpel](https://github.com/diasurgical/scalpel) repository includes a copy of a symbolic file that was
 accidentally left on the Japanese release of Diablo on Playstation 1. The CD
 contained debug information in a .SYM file, the format of which has been
 reversed, so we can recover type information, variable names, etc, for the PSX
@@ -111,7 +111,7 @@ release.
   * Starting memory address `0x8013CF64`
   * Function name `LoadL1Dungeon`
   * Function arguments `(*char sFilename, int vx, int, vy)`
-  * #TODO whatelse can be inferred from below?
+  * #TODO what else can be inferred from below?
 
 ```
 135ea8: $8013cf64 8c Function_start
