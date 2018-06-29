@@ -92,8 +92,8 @@ void __cdecl FreeGameMem()
 	v1 = pMegaTiles;
 	pMegaTiles = 0;
 	mem_free_dbg(v1);
-	v2 = *(void **)&dpiece_defs[0].blocks;
-	*(_DWORD *)&dpiece_defs[0].blocks = 0;
+	v2 = *(void**)&dpiece_defs[0].blocks;
+	*(_DWORD*)&dpiece_defs[0].blocks = 0;
 	mem_free_dbg(v2);
 	v3 = level_special_cel;
 	level_special_cel = 0;
@@ -1797,61 +1797,47 @@ LABEL_27:
 
 void __cdecl LoadLvlGFX()
 {
-	unsigned char *v0; // eax
-	char *v1; // ecx
-	unsigned char *v2; // eax
-	char *v3; // ecx
-	unsigned char *v4; // eax
-	char *v5; // ecx
-
-	if ( !leveltype )
+	switch (leveltype)
 	{
+	case DTYPE_TOWN:
 		pDungeonCels = LoadFileInMem("Levels\\TownData\\Town.CEL", 0);
 		pMegaTiles = LoadFileInMem("Levels\\TownData\\Town.TIL", 0);
-		v4 = LoadFileInMem("Levels\\TownData\\Town.MIN", 0);
-		v5 = "Levels\\TownData\\TownS.CEL";
-		goto LABEL_14;
-	}
-	if ( leveltype == 1 )
-	{
+		*(_DWORD*)&dpiece_defs[0].blocks = (_DWORD)LoadFileInMem("Levels\\TownData\\Town.MIN", 0);
+		level_special_cel = LoadFileInMem("Levels\\TownData\\TownS.CEL", 0);
+		break;
+	
+	case DTYPE_CATHEDRAL:
 		pDungeonCels = LoadFileInMem("Levels\\L1Data\\L1.CEL", 0);
-		v2 = LoadFileInMem("Levels\\L1Data\\L1.TIL", 0);
-		v3 = "Levels\\L1Data\\L1.MIN";
-		goto LABEL_12;
-	}
-	if ( leveltype != 2 )
-	{
-		if ( leveltype != 3 )
-		{
-			if ( leveltype != 4 )
-			{
-				TermMsg("LoadLvlGFX");
-				return;
-			}
-			pDungeonCels = LoadFileInMem("Levels\\L4Data\\L4.CEL", 0);
-			v0 = LoadFileInMem("Levels\\L4Data\\L4.TIL", 0);
-			v1 = "Levels\\L4Data\\L4.MIN";
-			goto LABEL_10;
-		}
+		pMegaTiles = LoadFileInMem("Levels\\L1Data\\L1.TIL", 0);
+		*(_DWORD*)&dpiece_defs[0].blocks = (_DWORD)LoadFileInMem("Levels\\L1Data\\L1.MIN", 0);
+		level_special_cel = LoadFileInMem("Levels\\L1Data\\L1S.CEL", 0);
+		break;
+	
+	case DTYPE_CATACOMBS:
+		pDungeonCels = LoadFileInMem("Levels\\L2Data\\L2.CEL", 0);
+		pMegaTiles = LoadFileInMem("Levels\\L2Data\\L2.TIL", 0);
+		*(_DWORD*)&dpiece_defs[0].blocks = (_DWORD)LoadFileInMem("Levels\\L2Data\\L2.MIN", 0);
+		level_special_cel = LoadFileInMem("Levels\\L2Data\\L2S.CEL", 0);
+		break;
+	
+	case DTYPE_CAVES:
 		pDungeonCels = LoadFileInMem("Levels\\L3Data\\L3.CEL", 0);
-		v2 = LoadFileInMem("Levels\\L3Data\\L3.TIL", 0);
-		v3 = "Levels\\L3Data\\L3.MIN";
-LABEL_12:
-		pMegaTiles = v2;
-		v4 = LoadFileInMem(v3, 0);
-		v5 = "Levels\\L1Data\\L1S.CEL";
-		goto LABEL_14;
+		pMegaTiles = LoadFileInMem("Levels\\L3Data\\L3.TIL", 0);
+		*(_DWORD*)&dpiece_defs[0].blocks = (_DWORD)LoadFileInMem("Levels\\L3Data\\L3.MIN", 0);
+		level_special_cel = LoadFileInMem("Levels\\L1Data\\L1S.CEL", 0);
+		break;
+	
+	case DTYPE_HELL:
+		pDungeonCels = LoadFileInMem("Levels\\L4Data\\L4.CEL", 0);
+		pMegaTiles = LoadFileInMem("Levels\\L4Data\\L4.TIL", 0);
+		*(_DWORD*)&dpiece_defs[0].blocks = (_DWORD)LoadFileInMem("Levels\\L4Data\\L4.MIN", 0);
+		level_special_cel = LoadFileInMem("Levels\\L2Data\\L2S.CEL", 0);
+		break;
+	
+	default:
+		TermMsg("LoadLvlGFX");
+		return;
 	}
-	pDungeonCels = LoadFileInMem("Levels\\L2Data\\L2.CEL", 0);
-	v0 = LoadFileInMem("Levels\\L2Data\\L2.TIL", 0);
-	v1 = "Levels\\L2Data\\L2.MIN";
-LABEL_10:
-	pMegaTiles = v0;
-	v4 = LoadFileInMem(v1, 0);
-	v5 = "Levels\\L2Data\\L2S.CEL";
-LABEL_14:
-	*(_DWORD *)&dpiece_defs[0].blocks = (unsigned int)v4;
-	level_special_cel = LoadFileInMem(v5, 0);
 }
 // 5BB1ED: using guessed type char leveltype;
 
