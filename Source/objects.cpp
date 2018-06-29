@@ -3077,9 +3077,9 @@ void __fastcall ObjSetMicro(int dx, int dy, int pn)
 {
 	int v3; // esi
 	char *v4; // eax
-	int v5; // edx
+	char *v5; // edx
 	signed int v6; // ecx
-	int v7; // esi
+	char *v7; // esi
 	signed int v8; // ecx
 
 	dPiece[0][dy + 112 * dx] = pn;
@@ -3087,22 +3087,22 @@ void __fastcall ObjSetMicro(int dx, int dy, int pn)
 	v4 = (char *)dpiece_defs_map_1 + 32 * gendung_get_dpiece_num_from_coord(dx, dy);
 	if ( leveltype == DTYPE_HELL )
 	{
-		v7 = *(_DWORD *)&dpiece_defs[0].blocks + 32 * v3;
+		v7 = (char *)pLevelPieces + 32 * v3;
 		v8 = 0;
 		do
 		{
-			*(_WORD *)&v4[2 * v8] = *(_WORD *)(v7 + 2 * ((v8 & 1) - (v8 & 0xE)) + 28);
+			*(_WORD *)&v4[2 * v8] = *(_WORD *)&v7[2 * ((v8 & 1) - (v8 & 0xE)) + 28];
 			++v8;
 		}
 		while ( v8 < 16 );
 	}
 	else
 	{
-		v5 = *(_DWORD *)&dpiece_defs[0].blocks + 20 * v3;
+		v5 = (char *)pLevelPieces + 20 * v3;
 		v6 = 0;
 		do
 		{
-			*(_WORD *)&v4[2 * v6] = *(_WORD *)(v5 + 2 * ((v6 & 1) - (v6 & 0xE)) + 16);
+			*(_WORD *)&v4[2 * v6] = *(_WORD *)&v5[2 * ((v6 & 1) - (v6 & 0xE)) + 16];
 			++v6;
 		}
 		while ( v6 < 10 );
@@ -3121,8 +3121,8 @@ void __fastcall objects_set_door_piece(int x, int y)
 	v2 = y;
 	v3 = x;
 	v4 = dPiece[0][y + 112 * x] - 1;
-	v5 = *(_WORD *)(20 * (unsigned short)v4 + *(_DWORD *)&dpiece_defs[0].blocks + 16);
-	v6 = *(_WORD *)(20 * (unsigned short)v4 + *(_DWORD *)&dpiece_defs[0].blocks + 18);
+	v5 = *((_WORD *)pLevelPieces + 10 * (unsigned short)v4 + 8);
+	v6 = *((_WORD *)pLevelPieces + 10 * (unsigned short)v4 + 9);
 	dpiece_defs_map_1[0][0][16 * gendung_get_dpiece_num_from_coord(x, y)] = v5;
 	dpiece_defs_map_1[0][0][16 * gendung_get_dpiece_num_from_coord(v3, v2) + 1] = v6;
 }

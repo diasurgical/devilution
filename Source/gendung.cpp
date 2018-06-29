@@ -23,7 +23,7 @@ char dTransVal[112][112];
 int setloadflag_2; // weak
 Tile tile_defs[1024];
 void *pMegaTiles;
-DPiece dpiece_defs[2];
+void *pLevelPieces;
 int gnDifficulty; // idb
 char block_lvid[2049];
 //char byte_5B78EB;
@@ -592,7 +592,7 @@ void __cdecl SetDungeonMicros()
 	short (*v1)[112][112]; // edx
 	int (*v2)[112]; // ebp
 	int v3; // eax
-	int v4; // eax
+	char *v4; // eax
 	signed int i; // ecx
 	_WORD *v6; // edi
 	int j; // ecx
@@ -623,11 +623,11 @@ void __cdecl SetDungeonMicros()
 			{
 				v3 = (*v2)[0] - 1;
 				if ( leveltype == DTYPE_HELL )
-					v4 = *(_DWORD *)&dpiece_defs[0].blocks + 32 * v3;
+					v4 = (char *)pLevelPieces + 32 * v3;
 				else
-					v4 = *(_DWORD *)&dpiece_defs[0].blocks + 20 * v3;
+					v4 = (char *)pLevelPieces + 20 * v3;
 				for ( i = 0; i < v0; ++i )
-					(*v1)[0][i] = *(_WORD *)(v4 + 2 * (v0 + (i & 1) - (i & 0xE)) - 4);
+					(*v1)[0][i] = *(_WORD *)&v4[2 * (v0 + (i & 1) - (i & 0xE)) - 4];
 			}
 			else if ( v0 > 0 )
 			{
