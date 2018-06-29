@@ -188,8 +188,10 @@ bool __fastcall path_solid_pieces(PATHNODE *pPath, int dx, int dy)
 	int tile2; // edx
 
 	result = 1;
+	// this maps the four corner directions to 0,1,2,3
 	dir = path_directions[3 * (dy - pPath->y) - pPath->x + 4 + dx] - 5;
-	if ( !dir )
+	// and this is basically a switch
+	if ( !dir ) // (-1,-1)->0
 	{
 		result = 0;
 		if ( nSolidTable[dPiece[dx][dy + 1]] )
@@ -197,12 +199,12 @@ bool __fastcall path_solid_pieces(PATHNODE *pPath, int dx, int dy)
 		tile1 = dPiece[dx + 1][dy];
 		goto LABEL_13;
 	}
-	if ( !--dir )
+	if ( !--dir ) // (1,-1)->1
 	{
 		tile2 = dPiece[dx][dy + 1];
 		goto LABEL_9;
 	}
-	if ( !--dir )
+	if ( !--dir ) // (1,1)->2
 	{
 		tile2 = dPiece[dx][dy-1]; /* check */
 LABEL_9:
@@ -212,7 +214,7 @@ LABEL_9:
 		tile1 = dPiece[dx-1][dy]; /* check */
 		goto LABEL_13;
 	}
-	if ( dir == 1 )
+	if ( dir == 1 ) // (-1,1)->3
 	{
 		result = 0;
 		if ( !nSolidTable[dPiece[dx + 1][dy]] )
