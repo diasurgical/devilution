@@ -23,7 +23,7 @@ extern char dTransVal[112][112];
 extern int setloadflag_2; // weak
 extern Tile tile_defs[1024];
 extern void *pMegaTiles;
-extern DPiece dpiece_defs[2];
+extern void *pLevelPieces;
 extern int gnDifficulty; // idb
 extern char block_lvid[2049];
 //char byte_5B78EB;
