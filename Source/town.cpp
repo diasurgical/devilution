@@ -1365,7 +1365,7 @@ void __cdecl town_init_dpiece_defs_map()
 	int v1; // ebp
 	int v2; // esi
 	char *v3; // edi
-	int v4; // ecx
+	char *v4; // ecx
 	signed int v5; // eax
 	int (*v6)[112]; // [esp+10h] [ebp-8h]
 	int y; // [esp+14h] [ebp-4h]
@@ -1382,11 +1382,11 @@ void __cdecl town_init_dpiece_defs_map()
 			v3 = (char *)dpiece_defs_map_1 + 32 * gendung_get_dpiece_num_from_coord(v1, y);
 			if ( v2 )
 			{
-				v4 = 32 * v2 + *(_DWORD *)&dpiece_defs[0].blocks - 32;
+				v4 = (char *)pLevelPieces + 32 * v2 - 32;
 				v5 = 0;
 				do
 				{
-					*(_WORD *)&v3[2 * v5] = *(_WORD *)(v4 + 2 * ((v5 & 1) - (v5 & 0xE)) + 28);
+					*(_WORD *)&v3[2 * v5] = *(_WORD *)&v4[2 * ((v5 & 1) - (v5 & 0xE)) + 28];
 					++v5;
 				}
 				while ( v5 < 16 );

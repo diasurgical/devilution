@@ -404,11 +404,6 @@ struct Tile
 	short bottom;
 };
 
-struct DPiece
-{
-	short blocks;
-};
-
 struct _SNETVERSIONDATA
 {
 	int size;
