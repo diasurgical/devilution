@@ -762,7 +762,7 @@ void __fastcall scrollrt_draw_lower(int x, int y, int sx, int sy, int a5, int so
 					drawLowerScreen(v19);
 				v20 = v8[11];
 				level_cel_block = v8[11];
-				if ( v20 && leveltype == 4 )
+				if ( v20 && leveltype == DTYPE_HELL )
 					drawLowerScreen(v19 - 24576);
 				v21 = sy;
 				scrollrt_draw_clipped_dungeon((char *)gpBuffer + screen_y_times_768[sy] + sx, sxa, sya, sx, sy, 0);
@@ -887,7 +887,7 @@ LABEL_23:
 			level_cel_block = v8[10];
 			if ( v45 )
 			{
-				if ( leveltype == 4 )
+				if ( leveltype == DTYPE_HELL )
 					drawLowerScreen(v44 - 24576);
 			}
 			scrollrt_draw_clipped_dungeon((char *)gpBuffer + *v51 + sx, sxa, sya, sx, sy, 0);

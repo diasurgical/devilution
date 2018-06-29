@@ -229,7 +229,7 @@ void __cdecl DrawAutomap()
 	int v25; // [esp+10h] [ebp-8h]
 	int screen_y; // [esp+14h] [ebp-4h]
 
-	if ( leveltype )
+	if ( leveltype != DTYPE_TOWN )
 	{
 		screen_buf_end = (int)gpBuffer->row[352].col_unused_1;
 		v0 = AutoMapXOfs;

@@ -1227,7 +1227,7 @@ void __cdecl CheckTrigForce()
 					break;
 				default:
 LABEL_14:
-					if ( !leveltype )
+					if ( leveltype == DTYPE_TOWN )
 						goto LABEL_24;
 					if ( trigflag[3] )
 					{

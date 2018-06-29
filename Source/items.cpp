@@ -2111,7 +2111,7 @@ void __fastcall GetItemAttrs(int i, int idata, int lvl)
 		if ( gnDifficulty == DIFF_HELL )
 			rndv = 5 * (currlevel + 32) + random(21, 10 * (currlevel + 32));
 
-		if ( leveltype == 4 )
+		if ( leveltype == DTYPE_HELL )
 			rndv += rndv >> 3;
 		if ( rndv > 5000 )
 			rndv = 5000;

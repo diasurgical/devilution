@@ -3017,7 +3017,7 @@ bool __cdecl UseScroll()
 	signed int v4; // esi
 	int *v5; // ecx
 
-	if ( pcurs != CURSOR_HAND || !leveltype && !*(_DWORD *)&spelldata[plr[myplr]._pRSpell].sTownSpell )
+	if ( pcurs != CURSOR_HAND || leveltype == DTYPE_TOWN && !*(_DWORD *)&spelldata[plr[myplr]._pRSpell].sTownSpell )
 		return 0;
 	v0 = myplr;
 	v1 = 0;
