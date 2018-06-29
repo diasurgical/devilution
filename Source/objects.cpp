@@ -1134,7 +1134,7 @@ void __cdecl AddChestTraps()
 				if ( v3 >= OBJ_CHEST1 && v3 <= OBJ_CHEST3 && !object[v2]._oTrapFlag && random(0, 100) < 10 )
 				{
 					object[v2]._otype += OBJ_BOOKCASER;
-					v4 = leveltype == 2;
+					v4 = leveltype == DTYPE_CATACOMBS;
 					object[v2]._oTrapFlag = 1;
 					if ( v4 )
 						v5 = random(0, 2);
@@ -1518,7 +1518,7 @@ void __fastcall InitObjects(int a1)
 			AddStoryBooks();
 		if ( currlevel == 12 )
 			AddStoryBooks();
-		if ( leveltype == 1 )
+		if ( leveltype == DTYPE_CATHEDRAL )
 		{
 			//_LOBYTE(v1) = QuestStatus(6);
 			if ( QuestStatus(6) )
@@ -1533,7 +1533,7 @@ void __fastcall InitObjects(int a1)
 			AddL1Objs(0, 0, 112, 112);
 			InitRndBarrels();
 		}
-		if ( leveltype == 2 )
+		if ( leveltype == DTYPE_CATACOMBS )
 		{
 			//_LOBYTE(v4) = QuestStatus(0);
 			if ( QuestStatus(0) )
@@ -1603,12 +1603,12 @@ void __fastcall InitObjects(int a1)
 		{
 			v8 = v16;
 		}
-		if ( leveltype == 3 )
+		if ( leveltype == DTYPE_CAVES )
 		{
 			AddL3Objs(0, 0, 112, 112);
 			InitRndBarrels();
 		}
-		if ( leveltype == 4 )
+		if ( leveltype == DTYPE_HELL )
 		{
 			//_LOBYTE(v12) = QuestStatus(11);
 			if ( QuestStatus(11) )
@@ -3087,7 +3087,7 @@ void __fastcall ObjSetMicro(int dx, int dy, int pn)
 	dPiece[0][dy + 112 * dx] = pn;
 	v3 = pn - 1;
 	v4 = (char *)dpiece_defs_map_1 + 32 * gendung_get_dpiece_num_from_coord(dx, dy);
-	if ( leveltype == 4 )
+	if ( leveltype == DTYPE_HELL )
 	{
 		v7 = *(_DWORD *)&dpiece_defs[0].blocks + 32 * v3;
 		v8 = 0;
@@ -3913,12 +3913,12 @@ void __fastcall ObjChangeMap(int x1, int y1, int x2, int y2)
 			while ( i <= v5 );
 		}
 	}
-	if ( leveltype == 1 )
+	if ( leveltype == DTYPE_CATHEDRAL )
 	{
 		ObjL1Special(2 * v6 + 16, 2 * v4 + 16, 2 * v5 + 17, 2 * y2 + 17);
 		AddL1Objs(2 * v6 + 16, 2 * v4 + 16, 2 * v5 + 17, 2 * y2 + 17); /* v7 */
 	}
-	if ( leveltype == 2 )
+	if ( leveltype == DTYPE_CATACOMBS )
 	{
 		v8 = 2 * v5 + 17;
 		v9 = 2 * v4 + 16;
@@ -3960,9 +3960,9 @@ void __fastcall ObjChangeMapResync(int x1, int y1, int x2, int y2)
 			v5 = v8;
 		}
 	}
-	if ( leveltype == 1 )
+	if ( leveltype == DTYPE_CATHEDRAL )
 		ObjL1Special(2 * v6 + 16, 2 * v5 + 16, 2 * x2 + 17, 2 * v4 + 17);
-	if ( leveltype == 2 )
+	if ( leveltype == DTYPE_CATACOMBS )
 		ObjL2Special(2 * v6 + 16, 2 * v5 + 16, 2 * x2 + 17, 2 * v4 + 17);
 }
 // 5BB1ED: using guessed type char leveltype;

@@ -1201,7 +1201,7 @@ void __cdecl MakeLightTable()
 	}
 	memset(v0, 0, 0x100u);
 	v12 = v0 + 256;
-	if ( leveltype == 4 )
+	if ( leveltype == DTYPE_HELL )
 	{
 		v13 = pLightTbl;
 		if ( v1 > 0 )
@@ -1753,7 +1753,7 @@ void __cdecl lighting_color_cycling()
 	char v4; // dl
 	const void *v5; // esi
 
-	if ( leveltype == 4 )
+	if ( leveltype == DTYPE_HELL )
 	{
 		v0 = pLightTbl;
 		if ( (light4flag != 0 ? 4 : 16) > 0 )

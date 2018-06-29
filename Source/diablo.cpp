@@ -932,7 +932,7 @@ LABEL_48:
 		CheckLvlBtn();
 	if ( lvlbtndown )
 		return 0;
-	if ( leveltype )
+	if ( leveltype != DTYPE_TOWN )
 	{
 		v7 = abs(plr[myplr].WorldX - cursmx) < 2 && abs(plr[myplr].WorldY - cursmy) < 2;
 		_HIWORD(v8) = _HIWORD(pcurs);
@@ -1294,7 +1294,7 @@ LABEL_113:
 								chrflag = 0;
 								sbookflag = 0;
 								spselflag = 0;
-								if ( qtextflag && !leveltype )
+								if ( qtextflag && leveltype == DTYPE_TOWN)
 								{
 									qtextflag = 0;
 									sfx_stop();
@@ -1418,7 +1418,7 @@ LABEL_106:
 										chrflag = 0;
 										sbookflag = 0;
 										spselflag = 0;
-										if ( qtextflag && !leveltype )
+										if ( qtextflag && leveltype == DTYPE_TOWN )
 										{
 											qtextflag = 0;
 											sfx_stop();
@@ -1805,7 +1805,7 @@ void __cdecl LoadLvlGFX()
 	unsigned char *v4; // eax
 	char *v5; // ecx
 
-	if ( !leveltype )
+	if (leveltype == DTYPE_TOWN)
 	{
 		pDungeonCels = LoadFileInMem("Levels\\TownData\\Town.CEL", 0);
 		pMegaTiles = LoadFileInMem("Levels\\TownData\\Town.TIL", 0);
@@ -1813,18 +1813,18 @@ void __cdecl LoadLvlGFX()
 		v5 = "Levels\\TownData\\TownS.CEL";
 		goto LABEL_14;
 	}
-	if ( leveltype == 1 )
+	if (leveltype == DTYPE_CATHEDRAL)
 	{
 		pDungeonCels = LoadFileInMem("Levels\\L1Data\\L1.CEL", 0);
 		v2 = LoadFileInMem("Levels\\L1Data\\L1.TIL", 0);
 		v3 = "Levels\\L1Data\\L1.MIN";
 		goto LABEL_12;
 	}
-	if ( leveltype != 2 )
+	if (leveltype != DTYPE_CATACOMBS)
 	{
-		if ( leveltype != 3 )
+		if (leveltype != DTYPE_CAVES)
 		{
-			if ( leveltype != 4 )
+			if (leveltype != DTYPE_HELL)
 			{
 				TermMsg("LoadLvlGFX");
 				return;
@@ -1873,30 +1873,30 @@ void __fastcall CreateLevel(int lvldir)
 
 	switch ( leveltype )
 	{
-		case 0:
+		case DTYPE_TOWN:
 			CreateTown(lvldir);
 			InitTownTriggers();
 			hnd = 0;
 			break;
-		case 1:
+		case DTYPE_CATHEDRAL:
 			CreateL5Dungeon(glSeedTbl[currlevel], lvldir);
 			InitL1Triggers();
 			Freeupstairs();
 			hnd = 1;
 			break;
-		case 2:
+		case DTYPE_CATACOMBS:
 			CreateL2Dungeon(glSeedTbl[currlevel], lvldir);
 			InitL2Triggers();
 			Freeupstairs();
 			hnd = 2;
 			break;
-		case 3:
+		case DTYPE_CAVES:
 			CreateL3Dungeon(glSeedTbl[currlevel], lvldir);
 			InitL3Triggers();
 			Freeupstairs();
 			hnd = 3;
 			break;
-		case 4:
+		case DTYPE_HELL:
 			CreateL4Dungeon(glSeedTbl[currlevel], lvldir);
 			InitL4Triggers();
 			Freeupstairs();
@@ -1945,11 +1945,11 @@ void __fastcall LoadGameLevel(bool firstflag, int lvldir)
 		InitHelp();
 	}
 	SetRndSeed(glSeedTbl[currlevel]);
-	if ( !leveltype )
+	if ( leveltype == DTYPE_TOWN)
 		SetupTownStores();
 	IncProgress();
 	InitAutomap();
-	if ( leveltype && lvldir != 4 )
+	if ( leveltype != DTYPE_TOWN && lvldir != 4 )
 	{
 		InitLighting();
 		InitVision();
@@ -1962,7 +1962,7 @@ void __fastcall LoadGameLevel(bool firstflag, int lvldir)
 		IncProgress();
 		FillSolidBlockTbls();
 		SetRndSeed(glSeedTbl[currlevel]);
-		if ( leveltype )
+		if ( leveltype != DTYPE_TOWN )
 		{
 			GetLevelMTypes();
 			InitThemes();
@@ -2007,7 +2007,7 @@ void __fastcall LoadGameLevel(bool firstflag, int lvldir)
 			}
 		}
 		SetRndSeed(glSeedTbl[currlevel]);
-		if ( leveltype )
+		if ( leveltype != DTYPE_TOWN)
 		{
 			if ( firstflag || lvldir == 4 || !plr[myplr]._pLvlVisited[currlevel] || gbMaxPlayers != 1 )
 			{
@@ -2120,7 +2120,7 @@ LABEL_72:
 		}
 	}
 
-	if ( leveltype )
+	if ( leveltype != DTYPE_TOWN )
 		SetDungeonMicros();
 	InitLightMax();
 	IncProgress();
@@ -2130,7 +2130,7 @@ LABEL_72:
 		InitControlPan();
 		IncProgress();
 	}
-	if ( leveltype )
+	if ( leveltype != DTYPE_TOWN)
 	{
 		ProcessLightList();
 		ProcessVisionList();
@@ -2202,7 +2202,7 @@ void __cdecl game_logic()
 			}
 			if ( gbProcessPlayers )
 				ProcessPlayers();
-			if ( leveltype )
+			if ( leveltype != DTYPE_TOWN )
 			{
 				ProcessMonsters();
 				ProcessObjects();
@@ -2277,11 +2277,11 @@ void __cdecl diablo_color_cyc_logic()
 		color_cycle_timer = v0;
 		if ( palette_get_colour_cycling() )
 		{
-			if ( leveltype == 4 )
+			if ( leveltype == DTYPE_HELL )
 			{
 				lighting_color_cycling();
 			}
-			else if ( leveltype == 3 )
+			else if ( leveltype == DTYPE_CAVES )
 			{
 				if ( fullscreen )
 					palette_update_caves();

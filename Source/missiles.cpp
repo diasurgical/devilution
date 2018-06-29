@@ -6368,7 +6368,7 @@ void __fastcall MI_Teleport(int i)
 		v9 = plr[v2].WorldX;
 		missile[v1]._miVar1 = 1;
 		v10 = plr[v2].WorldY;
-		v11 = leveltype == 0;
+		v11 = leveltype == DTYPE_TOWN;
 		dPlayer[v9][v10] = v2 + 1;
 		if ( !v11 )
 		{

@@ -570,7 +570,7 @@ void __fastcall SetPlrAnims(int pnum)
 	v3 = v1;
 	v4 = SLOBYTE(plr[v1]._pClass);
 	v5 = v4;
-	v6 = leveltype == 0;
+	v6 = leveltype == DTYPE_TOWN;
 	plr[v3]._pNWidth = 96;
 	plr[v3]._pWWidth = 96;
 	plr[v3]._pAWidth = 128;
@@ -1377,7 +1377,7 @@ void __fastcall PlrDoTrans(int x, int y)
 	int v7; // eax
 	int v8; // [esp+8h] [ebp-4h]
 
-	if ( leveltype == 1 || leveltype == 2 )
+	if ( leveltype == DTYPE_CATHEDRAL || leveltype == DTYPE_CATACOMBS )
 	{
 		v2 = y - 1;
 		if ( y - 1 <= y + 1 )
@@ -1894,7 +1894,7 @@ void __fastcall StartWalk3(int pnum, int xvel, int yvel, int xoff, int yoff, int
 		plr[v12]._pVar4 = x;
 		plr[v12]._pyoff = yoff;
 		dFlags[x][v16] |= 0x20u;
-		v17 = leveltype == 0;
+		v17 = leveltype == DTYPE_TOWN;
 		plr[v12]._pxoff = xoff;
 		if ( !v17 )
 		{
@@ -2999,7 +2999,7 @@ LABEL_9:
 		v7 = v5 + plr[v2]._pVar1;
 		v8 = plr[v2]._pVar2 + v6;
 		plr[v2].WorldX = v7;
-		v9 = leveltype == 0;
+		v9 = leveltype == DTYPE_TOWN;
 		dPlayer[v7][v8] = v1 + 1;
 		plr[v2].WorldY = v8;
 		if ( !v9 )
@@ -3129,7 +3129,7 @@ LABEL_9:
 		plr[v2].WorldX = v5;
 		*v6 &= 0xDFu;
 		v7 = plr[v2]._pVar2;
-		v8 = leveltype == 0;
+		v8 = leveltype == DTYPE_TOWN;
 		dPlayer[v5][v7] = v1 + 1;
 		plr[v2].WorldY = v7;
 		if ( !v8 )
@@ -4934,7 +4934,7 @@ void __fastcall CheckPlrSpell()
 	v2 = plr[v0]._pRSpell;
 	if ( v2 != -1 )
 	{
-		if ( !leveltype && !*(_DWORD *)&spelldata[v2].sTownSpell )
+		if ( leveltype == DTYPE_TOWN && !*(_DWORD *)&spelldata[v2].sTownSpell )
 		{
 			v5 = *((_BYTE *)&plr[0]._pClass + v1);
 			switch ( v5 )

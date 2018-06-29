@@ -326,13 +326,13 @@ LABEL_21:
 			}
 			if ( leveltype != 3 )
 			{
-				v6 = leveltype == 4;
+				v6 = leveltype == DTYPE_HELL;
 				goto LABEL_21;
 			}
 			return 0;
 		}
 LABEL_16:
-		v6 = leveltype == 1;
+		v6 = leveltype == DTYPE_CATHEDRAL;
 		goto LABEL_21;
 	}
 	v7 = t - 12;
@@ -354,7 +354,7 @@ LABEL_16:
 			return rv;
 		goto LABEL_16;
 	}
-	if ( leveltype == 4 )
+	if ( leveltype == DTYPE_HELL )
 	{
 		v6 = cauldronFlag == 0;
 		goto LABEL_21;
@@ -575,7 +575,7 @@ void __cdecl InitThemes()
 	if ( currlevel != 16 )
 	{
 		v1 = leveltype;
-		if ( leveltype == 1 )
+		if ( leveltype == DTYPE_CATHEDRAL )
 		{
 			ThemeGoodIn[0] = 0;
 			ThemeGoodIn[1] = 0;
@@ -683,7 +683,7 @@ void __cdecl HoldThemeRooms()
 
 	if ( currlevel != 16 )
 	{
-		if ( leveltype == 1 )
+		if ( leveltype == DTYPE_CATHEDRAL )
 		{
 			v0 = numthemes;
 			for ( i = 0; i < v0; ++i )
@@ -1514,7 +1514,7 @@ void __cdecl CreateThemeRooms()
 			}
 		}
 		InitObjFlag = 0;
-		if ( leveltype == 4 && themeCount > 0 )
+		if ( leveltype == DTYPE_HELL && themeCount > 0 )
 			UpdateL4Trans();
 	}
 }

@@ -83,7 +83,7 @@ void __cdecl FillSolidBlockTbls()
 	memset(nTransTable, 0, 0x801u);
 	memset(nMissileTable, 0, 0x801u);
 	memset(nTrapTable, 0, 0x801u);
-	if ( leveltype )
+	if ( leveltype != DTYPE_TOWN )
 	{
 		switch ( leveltype )
 		{
@@ -211,7 +211,7 @@ void __cdecl gendung_418D91()
 	}
 	while ( v0 < 2048 );
 	v1 = dpiece_defs_map_2;
-	v48 = 2 * (leveltype == 4) + 10;
+	v48 = 2 * (leveltype == DTYPE_HELL) + 10;
 	do
 	{
 		v2 = v1;
@@ -250,7 +250,7 @@ void __cdecl gendung_418D91()
 	}
 	v9 = 0;
 	level_frame_sizes[0] = 0;
-	if ( leveltype == 4 && v8 > 0 )
+	if ( leveltype == DTYPE_HELL && v8 > 0 )
 	{
 		do
 		{
@@ -600,7 +600,7 @@ void __cdecl SetDungeonMicros()
 	int (*v9)[112]; // [esp+Ch] [ebp-8h]
 	signed int v10; // [esp+10h] [ebp-4h]
 
-	if ( leveltype == 4 )
+	if ( leveltype == DTYPE_HELL )
 	{
 		dword_5A5594 = 12;
 		v0 = 16;
@@ -622,7 +622,7 @@ void __cdecl SetDungeonMicros()
 			if ( (*v2)[0] )
 			{
 				v3 = (*v2)[0] - 1;
-				if ( leveltype == 4 )
+				if ( leveltype == DTYPE_HELL )
 					v4 = *(_DWORD *)&dpiece_defs[0].blocks + 32 * v3;
 				else
 					v4 = *(_DWORD *)&dpiece_defs[0].blocks + 20 * v3;
@@ -1067,7 +1067,7 @@ LABEL_52:
 		v21 = &dungeon[v6][v4];
 		while ( 1 )
 		{
-			if ( leveltype != 2 )
+			if ( leveltype != DTYPE_CATACOMBS )
 				goto LABEL_21;
 			if ( v4 == v2 && v6 >= themeLoc[v1].x && v6 <= v20 )
 				goto LABEL_12;
@@ -1080,7 +1080,7 @@ LABEL_16:
 				goto LABEL_19;
 			*v21 = 3;
 LABEL_21:
-			if ( leveltype == 3 )
+			if ( leveltype == DTYPE_CAVES )
 			{
 				if ( v4 == v2 && v6 >= themeLoc[v1].x && v6 <= v20 )
 				{
@@ -1111,7 +1111,7 @@ LABEL_35:
 					goto LABEL_35;
 				*v21 = 7;
 			}
-			if ( leveltype != 4 )
+			if ( leveltype != DTYPE_HELL )
 				goto LABEL_51;
 			if ( v4 != v2 || v6 < themeLoc[v1].x || v6 > v20 )
 			{
@@ -1151,7 +1151,7 @@ LABEL_13:
 		goto LABEL_16;
 	}
 LABEL_53:
-	if ( leveltype == 2 )
+	if ( leveltype == DTYPE_CATACOMBS )
 	{
 		v7 = themeLoc[v1].x;
 		v8 = 10 * (v7 + themeLoc[v1].width);
@@ -1161,7 +1161,7 @@ LABEL_53:
 		dungeon[0][v5 + v2 - 1] = 9; // *((_BYTE *)&dMonster[111][111] + v5 + v2 + 3) = 9;
 		dungeon[-1][v3 + v8 * 4 + v2 - 1] = 6; // *((_BYTE *)&dMonster[111][101] + v3 + v8 * 4 + v2 + 3) = 6;
 	}
-	if ( leveltype == 3 )
+	if ( leveltype == DTYPE_CAVES )
 	{
 		v9 = themeLoc[v1].x;
 		v10 = 10 * (v9 + themeLoc[v1].width);
@@ -1171,7 +1171,7 @@ LABEL_53:
 		dungeon[0][v5 + v2 - 1] = 152; // *((_BYTE *)&dMonster[111][111] + v5 + v2 + 3) = -104;
 		dungeon[-1][v3 + v10 * 4 + v2 - 1] = 138; // *((_BYTE *)&dMonster[111][101] + v3 + v10 * 4 + v2 + 3) = -118;
 	}
-	if ( leveltype == 4 )
+	if ( leveltype == DTYPE_HELL )
 	{
 		v11 = themeLoc[v1].x;
 		v12 = 10 * (v11 + themeLoc[v1].width);
@@ -1181,7 +1181,7 @@ LABEL_53:
 		dungeon[0][v5 + v2 - 1] = 15; // *((_BYTE *)&dMonster[111][111] + v5 + v2 + 3) = 15;
 		dungeon[-1][v3 + v12 * 4 + v2 - 1] = 12; // *((_BYTE *)&dMonster[111][101] + v3 + v12 * 4 + v2 + 3) = 12;
 	}
-	if ( leveltype == 2 )
+	if ( leveltype == DTYPE_CATACOMBS )
 	{
 		_LOBYTE(v5) = 0;
 		v13 = random(v5, 2);
@@ -1203,7 +1203,7 @@ LABEL_53:
 			// *((_BYTE *)&dMonster[111][10 * (themeLoc[v1].x + themeLoc[v1].width) + 102] + themeLoc[v1].height / 2 + v5) = 4;
 		}
 	}
-	if ( leveltype == 3 )
+	if ( leveltype == DTYPE_CAVES )
 	{
 		_LOBYTE(v5) = 0;
 		v14 = random(v5, 2);
@@ -1225,7 +1225,7 @@ LABEL_53:
 			// *((_BYTE *)&dMonster[111][10 * (themeLoc[v1].x + themeLoc[v1].width) + 102] + themeLoc[v1].height / 2 + v5) = -109;
 		}
 	}
-	if ( leveltype == 4 )
+	if ( leveltype == DTYPE_HELL )
 	{
 		_LOBYTE(v5) = 0;
 		v15 = random(v5, 2);
@@ -1333,7 +1333,7 @@ void __fastcall DRLG_PlaceThemeRooms(int minSize, int maxSize, int floor, int fr
 						themeLoc[v18].height = v16;
 						v20 = x + v19;
 						v21 = v5 + v16;
-						if ( leveltype == 3 )
+						if ( leveltype == DTYPE_CAVES )
 							DRLG_RectTrans(x_start, 2 * v5 + 20, 2 * v20 + 15, 2 * v21 + 15);
 						else
 							DRLG_MRectTrans(x + 1, v5 + 1, v20, v21);

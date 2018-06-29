@@ -740,7 +740,7 @@ LABEL_40:
 	}
 	if ( sbookflag && MouseX > 320 || (chrflag || questlog) && MouseX < 320 )
 		return;
-	if ( !leveltype )
+	if ( leveltype == DTYPE_TOWN )
 	{
 		if ( v83 )
 		{
