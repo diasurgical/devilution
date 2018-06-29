@@ -14,16 +14,16 @@ Devilution.
 
 * A clean installation of Diablo patched to version 1.09b (Diablo.exe)
 * Download IDA (Interactive Disassembler) [Hex-Rays](https://www.hex-rays.com/products/ida/support/download_freeware.shtml)
-* Download IDC script from sancturary/notes repository: [notes.idc](http://sanctuary.github.io/notes/notes.idc)
+* Download IDC script from sanctuary/notes repository: [notes.idc](http://sanctuary.github.io/notes/notes.idc)
 
 ## How To...
 
-Described below are steps for using the IDA and SYM to reverse the Diablo
+Described below are steps for using the IDA and SYM files to reverse the Diablo
 source.
 
-### Understanding Devilusion and Sancutary Notes
+### Understanding Devilution and Sancutary Notes
 
-Both Devilution and the Sancutary Notes repo have the intended aim to get as
+Both Devilution and the Sanctuary Notes repo have the intended aim to get as
 close as possible to document the original game. Devilution is closer in the
 sense that the same names have been used for functions as based on the SYM
 debug info. The notes repo has tried to use consistent naming for functions,
@@ -32,7 +32,7 @@ e.g. prefix with source file name.
 See for instance [drlg_l1_load_dun](http://sanctuary.github.io/notes/#function/drlg_l1_load_dun),
 which is defined in `drlg_l1.cpp`. This function has the PSX signature
 `void LoadL1Dungeon__FPcii(char *sFileName, int vx, int vy)`, but is documented
-in the Sancutary Notes repo as follows for consistency:
+in the Sanctuary Notes repo as follows for consistency:
 
 ```cpp
 /// address: 0x40AE79
@@ -53,7 +53,7 @@ void __fastcall drlg_l1_load_dun(char *dun_path, int view_x, int view_y);
   * Processor type i386 (80386)
 * Run the IDC script in IDA on the fresh IDB database to import names for
   variables and functions, type definitions, etc. (Note: run the IDC script
-  only on new IDB databases as it removes all variable names before adding new
+  **only** on new IDB databases as it removes all variable names before adding new
   ones.); for more info, see [#79 (comment)](https://github.com/diasurgical/devilution/pull/79#issuecomment-400536087)
 * Example: search for `drlg_l1_load_dun`
   * Starting memory address `0x40AE79`
@@ -61,7 +61,7 @@ void __fastcall drlg_l1_load_dun(char *dun_path, int view_x, int view_y);
   * Function arguments `(char *dun_path, int view_x, int view_y)`
   * #TODO whatelse can be inferred from below?
 
-```
+```asm
 ; drlg_l1_load_dun loads tile IDs, monsters and objects from the given
 ; dungeon file.
 ; Attributes: bp-based frame
@@ -100,10 +100,11 @@ xor     ecx, ecx
 
 ### About the SYM
 
-The diasurgical/scalpel includes a copy of a symbolic file was accidentally
-left on the Japanese release of Diablo on Playstation 1. The CD contained debug
-information in a .SYM file, the format of which has been reversed, so we can
-recover type information, variable names, etc, for the PSX release.
+The diasurgical/scalpel repository includes a copy of a symbolic file that was
+accidentally left on the Japanese release of Diablo on Playstation 1. The CD
+contained debug information in a .SYM file, the format of which has been
+reversed, so we can recover type information, variable names, etc, for the PSX
+release.
 
 * Download and open [jap_05291998.out](https://raw.githubusercontent.com/diasurgical/scalpel/master/psx/symbols/jap_05291998.out)
 * Example: search for `LoadL1Dungeon__FPcii`
