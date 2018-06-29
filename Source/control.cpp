@@ -1851,7 +1851,7 @@ LABEL_32:
 			GetObjectStr(pcursobj);
 		if ( pcursmonst != -1 )
 		{
-			if ( leveltype )
+			if ( leveltype != DTYPE_TOWN)
 			{
 				_LOBYTE(infoclr) = 0;
 				strcpy(infostr, monster[pcursmonst].mName);
@@ -2641,7 +2641,7 @@ void __cdecl RedBack()
 	v0 = -(light4flag != 0);
 	_LOWORD(v0) = v0 & 0xF400;
 	v12 = v0 + 0x1200;
-	if ( leveltype == 4 )
+	if ( leveltype == DTYPE_HELL )
 	{
 		v7 = gpBuffer->row[0].pixels;
 		_EBX = &pLightTbl[v12];
