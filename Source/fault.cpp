@@ -76,6 +76,8 @@ LONG __stdcall TopLevelExceptionFilter(PEXCEPTION_POINTERS ExceptionInfo)
 
 void __fastcall exception_hex_format(BYTE *ptr, unsigned int numBytes)
 {
+	int i;
+
 	while (numBytes > 0)
 	{
 		unsigned int bytesRead = 16;
@@ -87,7 +89,7 @@ void __fastcall exception_hex_format(BYTE *ptr, unsigned int numBytes)
 
 		log_printf("0x%08x: ", ptr);
 
-		for (int i = 0; i < 16; ++i)
+		for (i = 0; i < 16; ++i)
 		{
 			const char *fmt = "%02x ";
 			if (i >= bytesRead)
@@ -97,7 +99,7 @@ void __fastcall exception_hex_format(BYTE *ptr, unsigned int numBytes)
 				log_printf(" ");
 		}
 
-		for (int i = 0; i < bytesRead; ++i)
+		for (i = 0; i < bytesRead; ++i)
 		{
 			char c;
 			if (isprint(ptr[i]))
@@ -139,7 +141,7 @@ void __fastcall exception_unknown_module(LPCVOID lpAddress, LPSTR lpModuleName, 
 		LONG ntOffset = dosHeader->e_lfanew;
 		if (ntOffset)
 		{
-			PIMAGE_NT_HEADERS32 ntHeader = (PIMAGE_NT_HEADERS32)((DWORD)dosHeader + ntOffset);
+			PIMAGE_NT_HEADERS ntHeader = (PIMAGE_NT_HEADERS)((DWORD)dosHeader + ntOffset);
 			if (ntHeader->Signature == IMAGE_NT_SIGNATURE)
 			{
 				DWORD numSections = ntHeader->FileHeader.NumberOfSections;
