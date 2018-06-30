@@ -2,34 +2,27 @@
 
 #include "../types.h"
 
-int appfat_terminated = 0; // weak
+// +Infinity after initialization of appfat.cpp.
+float appfat_cpp_init_value;
+
 char sz_error_buf[256];
 int terminating; // weak
 int cleanup_thread_id; // weak
 char empty_string;
 
-void __cdecl appfat_cpp_init()
-{
-	appfat_terminated = 0x7F800000;
-}
-
-struct j_appfat_cpp_init
-{
-	j_appfat_cpp_init()
-	{
-		appfat_cpp_init();
+// appfat_cpp_init initializes the C++ runtime of appfat.cpp.
+struct appfat_cpp_init {
+	appfat_cpp_init() {
+		appfat_cpp_init_value = INFINITY;
 	}
-} _j_appfat_cpp_init;
-/*
-bool __cdecl appfat_cpp_free(void *a1)
-{
-	bool result; // al
+} appfat_cpp_init;
 
-	if ( a1 )
-		result = SMemFree(a1, "delete", -1, 0);
-	return result;
+// delete overloads the delete operator.
+void operator delete(void *ptr) {
+	if (ptr != NULL) {
+		SMemFree(ptr, "delete", -1, 0);
+	}
 }
-*/
 
 char *__fastcall GetErr(int error_code)
 {

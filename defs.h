@@ -217,3 +217,8 @@ template<class T, class U> int8 __OFSUB__(T x, U y)
 #endif
 
 #endif /* IDA_GARBAGE */
+
+#ifndef INFINITY
+#include <limits>
+#define INFINITY std::numeric_limits<float>::infinity()
+#endif
