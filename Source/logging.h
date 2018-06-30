@@ -16,7 +16,7 @@ void __cdecl log_cleanup_mutex();
 void __cdecl log_flush(bool force_close);
 void *__cdecl log_create(); // should be HANDLE
 void __fastcall log_get_version(VS_FIXEDFILEINFO *file_info);
-void log_printf(char *pszFmt, ...); // LogMessage
+void log_printf(const char *pszFmt, ...); // LogMessage
 void __cdecl log_dump_computer_info();
 
 /* data */

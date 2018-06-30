@@ -168,7 +168,7 @@ void __fastcall log_get_version(VS_FIXEDFILEINFO *file_info)
 	}
 }
 
-void log_printf(char *pszFmt, ...)
+void log_printf(const char *pszFmt, ...)
 {
 	size_t v1; // edi
 	char *v2; // eax
