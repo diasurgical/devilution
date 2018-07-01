@@ -2,7 +2,6 @@
 #ifndef __APPFAT_H__
 #define __APPFAT_H__
 
-extern int appfat_terminated; // weak
 extern char sz_error_buf[256];
 extern int terminating; // weak
 extern int cleanup_thread_id; // weak
