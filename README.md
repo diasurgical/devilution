@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/galaxyhaxz/devilution.svg?branch=master)](https://travis-ci.org/galaxyhaxz/devilution)
+[![Build Status](https://travis-ci.org/diasurgical/devilution.svg?branch=master)](https://travis-ci.org/diasurgical/devilution)
 
 [![Build status](https://ci.appveyor.com/api/projects/status/ssk0xjhoka1uu940?svg=true)](https://ci.appveyor.com/project/galaxyhaxz/devilution)
 
@@ -24,7 +24,7 @@ The goal of Devilution itself is to recreate the original source code as accurat
 As a side goal, Devilution helps document the unused and cut content from the final game. Development of Diablo was rushed near the end--many ideas were scrapped and Multiplayer was quickly hacked in. By examining the source, we can see various quirks of planned development.
 
 # Compiling
-Development of Diablo began around the time Windows 95 released, for which it was optimized. The compiler used was Microsoft Visual C++ 4.20, which was upgraded to 5.10 in later patches ([ref: spreadsheet](Support/linker.xls)). Compatibility with these tools is retained to help ensure the reversal is as accurate as possible. There are also Makefiles provided to compile with modern tools as well.
+Development of Diablo began around the time Windows 95 released, for which it was optimized. The compiler used was Microsoft Visual C++ 4.20, which was upgraded to 5.10 in later patches ([ref: spreadsheet](Support/surgery.xls)). Compatibility with these tools is retained to help ensure the reversal is as accurate as possible. There are also Makefiles provided to compile with modern tools as well.
 
 Building with Visual C++ 5.10
 - Make sure Service Pack 3 is installed in order to update the linker from 5.00 -> 5.10! Newer versions of Visual Studio work as well, but will upgrade the project.
