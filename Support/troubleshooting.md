@@ -16,6 +16,8 @@ with MSYS2/MinGW32, he was getting the following messages:
 
 ![Screenshot 2: DirectDraw Error ](https://i.imgur.com/kiWkBuk.png)
 
-In order for him to fix these issues, he simply used the DirectDraw patch (ddraw.dll)
-and placed that .dll in his Diablo directory. That seems to have fixed it and he was
-able to launch and run Diablo with no crashes (Quick smoke test - Cleared Level 1).
+For the first issue, it is annoying but doesn't seem to stop you from playing the game.
+
+The second issue simply requires you to use the DirectDraw patch (ddraw.dll). Once the
+dll is placed in your Diablo directory, and all of it's dependencies are installed
+(DirectX 9 Runtime, and VC++ 2010 x86 Redistributable), it will work.
