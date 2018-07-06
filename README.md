@@ -2,6 +2,8 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/ssk0xjhoka1uu940?svg=true)](https://ci.appveyor.com/project/galaxyhaxz/devilution)
 
+### [Devilution Development & Xyinn Network Discord](https://discord.gg/3DD6ZVQ)
+
 # Devilution
 Diablo devolved - magic behind the 1996 computer game
 
@@ -31,11 +33,21 @@ Building with Visual C++ 5.10
 - Open the project workspace `Diablo.dsw` and select `Build Diablo.exe`. This will build all dependencies and only takes a few seconds.
 
 Building with modern version of Visual Studio
+
+The DEP tweak is already included in the project as default for the .sln until we can figure out the root cause.
 - Make sure to disable Data Exection Prevention: Configuration options -> Linker -> Advanced -> Data Execution Prevention (DEP).
 - Set this value to: No (/NXCOMPAT: NO).
+
 - Storm.dll uses dynamic compilation to improve rendering performance but fails to mark the resulting memory page as executable, leading to a protection fault when trying to draw.
 
+You will also need the following dependencies installed if you are using Visual Studio 2017.
+Make sure to enable these when installing (or modify your installation):
 
+- Requires "Windows 8.1 SDK" (Target Platform)
+- Requires "Visual C++ MFC for x86 and x64" (For afxres.h)
+- Requires "Windows Universal CRT SDK" (For ctype.h)
+
+Devilution for VS 2017 compilation is currently targetting Windows 8.1 SDK.
 
 Building with MinGW(32/64)
 - Ensure that the MinGW binary paths have been added to the command line. On Windows, you would usually type: `set PATH=C:\mingw\bin;C:\mingw\msys\1.0\bin`
