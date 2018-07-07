@@ -5540,18 +5540,20 @@ void __fastcall CreateMagicItem(int x, int y, int imisc, int icurs, int sendmsg,
 	bool done; // [esp+Ch] [ebp-4h]
 
 	done = 0;
-	idx = RndTypeItems(imisc, 0);
 	if ( numitems < 127 )
 	{
 		ii = itemavail[0];
 		GetSuperItemSpace(x, y, itemavail[0]);
 		itemactive[numitems] = ii;
 		itemavail[0] = itemavail[-numitems + 126];
+		idx = RndTypeItems(imisc, 0);
 		do
 		{
 			SetupAllItems(ii, idx, GetRndSeed(), 2 * currlevel, 1, 1, 0, delta);
 			if ( item[ii]._iCurs == icurs )
 				done = 1;
+			else
+				idx = RndTypeItems(imisc, 0);
 		}
 		while ( !done );
 		if ( sendmsg )
