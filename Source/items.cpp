@@ -5552,6 +5552,8 @@ void __fastcall CreateMagicItem(int x, int y, int imisc, int icurs, int sendmsg,
 			SetupAllItems(ii, idx, GetRndSeed(), 2 * currlevel, 1, 1, 0, delta);
 			if ( item[ii]._iCurs == icurs )
 				done = 1;
+			else
+				idx = RndTypeItems(imisc, 0);
 		}
 		while ( !done );
 		if ( sendmsg )
