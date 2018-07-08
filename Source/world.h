@@ -2,23 +2,27 @@
 #ifndef __WORLD_H__
 #define __WORLD_H__
 
-void __fastcall drawTopArchesUpperScreen(void *a1);
-void __fastcall drawBottomArchesUpperScreen(void *a1, int a2);
-void __fastcall drawUpperScreen(void *a1);
-void __fastcall drawTopArchesLowerScreen(void *a1);
-void __fastcall drawBottomArchesLowerScreen(void *a1, int a2);
-void __fastcall drawLowerScreen(void *a1);
-void __fastcall world_draw_black_tile(char *dst_buf);
+void __fastcall drawTopArchesUpperScreen(unsigned char *pbDst);
+void __fastcall drawBottomArchesUpperScreen(unsigned char *pbDst, unsigned int *pMask);
+void __fastcall drawUpperScreen(unsigned char *pbDst);
+void __fastcall drawTopArchesLowerScreen(unsigned char *pbDst);
+void __fastcall drawBottomArchesLowerScreen(unsigned char *pbDst, unsigned int *pMask);
+void __fastcall drawLowerScreen(unsigned char *pbDst);
+void __fastcall world_draw_black_tile(unsigned char *pbDst);
 
 /* rdata */
 
-extern int world_4B325C;
-extern unsigned char world_4B3260[5];
-extern int world_4B3265;
-extern int world_4B3269[5];
-extern unsigned int tile_draw_masks[3][32];
-extern int world_4B33FD[48];
-extern int world_4B34BD[17];
-extern int world_4B3501[17];
+extern int WorldBoolFlag;
+extern unsigned int gdwCurrentMask;
+// extern char world_4B3264;
+extern unsigned char *gpCelFrame;
+extern unsigned int *gpDrawMask;
+// extern char world_4B326D[16];
+extern unsigned int RightMask[32];
+extern unsigned int LeftMask[32];
+extern unsigned int WallMask[32];
+extern int WorldTbl3x16[48];
+extern int WorldTbl17_1[17];
+extern int WorldTbl17_2[17];
 
 #endif /* __WORLD_H__ */
