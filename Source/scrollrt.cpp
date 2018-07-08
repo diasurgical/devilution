@@ -681,10 +681,10 @@ void __fastcall scrollrt_draw_lower(int x, int y, int sx, int sy, int a5, int so
 	char *v13; // edx
 	int v14; // edi
 	int v15; // eax
-	char *v16; // edi
-	char *v17; // edi
-	char *v18; // edi
-	char *v19; // edi
+	unsigned char *v16; // edi
+	unsigned char *v17; // edi
+	unsigned char *v18; // edi
+	unsigned char *v19; // edi
 	int v20; // eax
 	int v21; // edi
 	int v22; // ecx
@@ -694,7 +694,7 @@ void __fastcall scrollrt_draw_lower(int x, int y, int sx, int sy, int a5, int so
 	int v26; // ecx
 	int v27; // eax
 	int v28; // edi
-	char *v29; // edi
+	unsigned char *v29; // edi
 	int v30; // eax
 	int v31; // eax
 	int v32; // eax
@@ -704,12 +704,12 @@ void __fastcall scrollrt_draw_lower(int x, int y, int sx, int sy, int a5, int so
 	int v36; // ecx
 	int v37; // eax
 	char *v38; // edi
-	char *v39; // edi
+	unsigned char *v39; // edi
 	int v40; // eax
-	char *v41; // edi
-	char *v42; // edi
-	char *v43; // edi
-	char *v44; // edi
+	unsigned char *v41; // edi
+	unsigned char *v42; // edi
+	unsigned char *v43; // edi
+	unsigned char *v44; // edi
 	int v45; // eax
 	int v46; // [esp+Ch] [ebp-10h]
 	int v47; // [esp+10h] [ebp-Ch]
@@ -741,10 +741,10 @@ void __fastcall scrollrt_draw_lower(int x, int y, int sx, int sy, int a5, int so
 				level_cel_block = v8[1];
 				v14 = (int)&v13[sx + 32];
 				if ( level_cel_block )
-					drawLowerScreen(&v13[sx + 32]);
+					drawLowerScreen((unsigned char *)&v13[sx + 32]);
 				v15 = v8[3];
 				arch_draw_type = 0;
-				v16 = (char *)(v14 - 24576);
+				v16 = (unsigned char *)(v14 - 24576);
 				level_cel_block = v15;
 				if ( v15 )
 					drawLowerScreen(v16);
@@ -768,7 +768,7 @@ void __fastcall scrollrt_draw_lower(int x, int y, int sx, int sy, int a5, int so
 				scrollrt_draw_clipped_dungeon((char *)gpBuffer + screen_y_times_768[sy] + sx, sxa, sya, sx, sy, 0);
 				goto LABEL_21;
 			}
-			world_draw_black_tile((char *)gpBuffer + screen_y_times_768[sy] + sx);
+			world_draw_black_tile((unsigned char *)gpBuffer + screen_y_times_768[sy] + sx);
 		}
 		v21 = sy;
 LABEL_21:
@@ -806,7 +806,7 @@ LABEL_23:
 					cel_transparency_active = v26;
 					arch_draw_type = 1;
 					level_cel_block = v27;
-					v29 = (char *)gpBuffer + v28 + sx;
+					v29 = (unsigned char *)gpBuffer + v28 + sx;
 					if ( v27 )
 						drawLowerScreen(v29);
 					v30 = v8[1];
@@ -833,7 +833,7 @@ LABEL_23:
 				}
 				else
 				{
-					world_draw_black_tile((char *)gpBuffer + screen_y_times_768[v21] + sx);
+					world_draw_black_tile((unsigned char *)gpBuffer + screen_y_times_768[v21] + sx);
 				}
 				v22 = v47;
 			}
@@ -862,7 +862,7 @@ LABEL_23:
 			cel_transparency_active = v36;
 			arch_draw_type = 1;
 			level_cel_block = v37;
-			v39 = &v38[sx];
+			v39 = (unsigned char *)&v38[sx];
 			if ( v37 )
 				drawLowerScreen(v39);
 			v40 = v8[2];
@@ -894,7 +894,7 @@ LABEL_23:
 		}
 		else
 		{
-			world_draw_black_tile((char *)gpBuffer + screen_y_times_768[v21] + sx);
+			world_draw_black_tile((unsigned char *)gpBuffer + screen_y_times_768[v21] + sx);
 		}
 	}
 }
@@ -1311,13 +1311,13 @@ void __fastcall scrollrt_draw_clipped_e_flag(char *buffer, int x, int y, int a4,
 	int v18; // [esp+Ch] [ebp-14h]
 	int xa; // [esp+10h] [ebp-10h]
 	int i; // [esp+14h] [ebp-Ch]
-	char *a1; // [esp+18h] [ebp-8h]
-	char *v22; // [esp+1Ch] [ebp-4h]
+	unsigned char *a1; // [esp+18h] [ebp-8h]
+	unsigned char *pbDst; // [esp+1Ch] [ebp-4h]
 
 	xa = x;
 	v18 = level_piece_id;
 	v5 = y + 112 * x;
-	a1 = buffer;
+	a1 = (unsigned char *)buffer;
 	v6 = cel_transparency_active;
 	v7 = dPiece[0][v5];
 	v8 = dTransVal[0][v5];
@@ -1340,21 +1340,21 @@ void __fastcall scrollrt_draw_clipped_e_flag(char *buffer, int x, int y, int a4,
 	if ( v15 )
 		drawLowerScreen(a1 + 32);
 	arch_draw_type = 0;
-	v22 = a1;
+	pbDst = a1;
 	v16 = 2;
 	for ( i = 2; i < dword_5A5594; i += 2 )
 	{
-		v22 -= 24576;
+		pbDst -= 24576;
 		level_cel_block = v13[v16];
 		if ( level_cel_block )
-			drawLowerScreen(v22);
+			drawLowerScreen(pbDst);
 		v17 = v13[i + 1];
 		level_cel_block = v13[i + 1];
 		if ( v17 )
-			drawLowerScreen(v22 + 32);
+			drawLowerScreen(pbDst + 32);
 		v16 = i + 2;
 	}
-	scrollrt_draw_clipped_dungeon(a1, xa, y, a4, a5, 0);
+	scrollrt_draw_clipped_dungeon((char *)a1, xa, y, a4, a5, 0);
 	light_table_index = v10;
 	cel_transparency_active = v6;
 	level_piece_id = v18;
@@ -1376,7 +1376,7 @@ void __fastcall scrollrt_draw_lower_2(int x, int y, int sx, int sy, int a5, int 
 	int v13; // ecx
 	int v14; // ecx
 	int v15; // eax
-	char *v16; // ebx
+	unsigned char *v16; // ebx
 	int v17; // eax
 	int v18; // eax
 	int v19; // ecx
@@ -1387,8 +1387,8 @@ void __fastcall scrollrt_draw_lower_2(int x, int y, int sx, int sy, int a5, int 
 	unsigned short *v24; // [esp+10h] [ebp-10h]
 	int v25; // [esp+10h] [ebp-10h]
 	int a1; // [esp+14h] [ebp-Ch]
-	char *a1a; // [esp+14h] [ebp-Ch]
-	char *a1b; // [esp+14h] [ebp-Ch]
+	unsigned char *a1a; // [esp+14h] [ebp-Ch]
+	unsigned char *a1b; // [esp+14h] [ebp-Ch]
 	char *v29; // [esp+18h] [ebp-8h]
 	signed int xa; // [esp+1Ch] [ebp-4h]
 	int a6a; // [esp+28h] [ebp+8h]
@@ -1414,7 +1414,7 @@ void __fastcall scrollrt_draw_lower_2(int x, int y, int sx, int sy, int a5, int 
 			{
 				a6a = 0;
 				cel_transparency_active = (unsigned char)(nTransTable[v10] & TransList[dung_map[0][v9]]);
-				a1a = (char *)gpBuffer + screen_y_times_768[sy] + v8 - 24544;
+				a1a = (unsigned char *)gpBuffer + screen_y_times_768[sy] + v8 - 24544;
 				if ( (dword_5A5594 >> 1) - 1 > 0 )
 				{
 					v24 = (unsigned short *)(v29 + 6);
@@ -1473,7 +1473,7 @@ void __fastcall scrollrt_draw_lower_2(int x, int y, int sx, int sy, int a5, int 
 				{
 					a6b = 0;
 					cel_transparency_active = (unsigned char)(nTransTable[v15] & TransList[dung_map[0][v14]]);
-					v16 = (char *)gpBuffer + screen_y_times_768[sy] + v8 - 24576;
+					v16 = (unsigned char *)gpBuffer + screen_y_times_768[sy] + v8 - 24576;
 					if ( (dword_5A5594 >> 1) - 1 > 0 )
 					{
 						a5a = (unsigned short *)(v29 + 6);
@@ -1531,7 +1531,7 @@ void __fastcall scrollrt_draw_lower_2(int x, int y, int sx, int sy, int a5, int 
 			{
 				a6c = 0;
 				cel_transparency_active = (unsigned char)(nTransTable[v20] & TransList[dung_map[0][v19]]);
-				a1b = (char *)gpBuffer + screen_y_times_768[sy] + v8 - 24576;
+				a1b = (unsigned char *)gpBuffer + screen_y_times_768[sy] + v8 - 24576;
 				if ( (dword_5A5594 >> 1) - 1 > 0 )
 				{
 					a5b = (unsigned short *)(v29 + 4);
@@ -1855,14 +1855,14 @@ void __fastcall scrollrt_draw_clipped_e_flag_2(char *buffer, int x, int y, int a
 	int v8; // ecx
 	int v9; // esi
 	int v10; // eax
-	int v11; // edi
+	unsigned char *v11; // edi
 	int v12; // eax
 	unsigned short *v13; // esi
 	int v14; // eax
 	int v15; // eax
 	int v16; // eax
 	int v17; // eax
-	int v18; // edi
+	unsigned char *v18; // edi
 	int v19; // eax
 	int v20; // [esp+Ch] [ebp-14h]
 	int v21; // [esp+10h] [ebp-10h]
@@ -1880,7 +1880,7 @@ void __fastcall scrollrt_draw_clipped_e_flag_2(char *buffer, int x, int y, int a
 	v9 = dTransVal[0][v7];
 	v10 = dung_map[0][v7];
 	level_piece_id = v8;
-	v11 = (int)&a1[24576 * a4];
+	v11 = (unsigned char *)&a1[24576 * a4];
 	v12 = (unsigned char)(nTransTable[v8] & TransList[v10]);
 	light_table_index = v9;
 	cel_transparency_active = v12;
@@ -1890,11 +1890,11 @@ void __fastcall scrollrt_draw_clipped_e_flag_2(char *buffer, int x, int y, int a
 		v14 = v13[2];
 		level_cel_block = v13[2];
 		if ( v14 )
-			drawLowerScreen((void *)v11);
+			drawLowerScreen(v11);
 		v15 = v13[3];
 		level_cel_block = v13[3];
 		if ( v15 )
-			drawLowerScreen((void *)(v11 + 32));
+			drawLowerScreen(v11 + 32);
 		goto LABEL_10;
 	}
 	if ( a4 == 1 )
@@ -1903,11 +1903,11 @@ LABEL_10:
 		v11 -= 24576;
 		level_cel_block = v13[4];
 		if ( level_cel_block )
-			drawLowerScreen((void *)v11);
+			drawLowerScreen(v11);
 		v16 = v13[5];
 		level_cel_block = v13[5];
 		if ( v16 )
-			drawLowerScreen((void *)(v11 + 32));
+			drawLowerScreen(v11 + 32);
 		goto LABEL_14;
 	}
 	if ( a4 != 2 )
@@ -1920,20 +1920,20 @@ LABEL_14:
 	v11 -= 24576;
 	level_cel_block = v13[6];
 	if ( level_cel_block )
-		drawLowerScreen((void *)v11);
+		drawLowerScreen(v11);
 	v17 = v13[7];
 	level_cel_block = v13[7];
 	if ( v17 )
-		drawLowerScreen((void *)(v11 + 32));
+		drawLowerScreen(v11 + 32);
 LABEL_18:
 	v18 = v11 - 24576;
 	level_cel_block = v13[8];
 	if ( level_cel_block )
-		drawLowerScreen((void *)v18);
+		drawLowerScreen(v18);
 	v19 = v13[9];
 	level_cel_block = v13[9];
 	if ( v19 )
-		drawLowerScreen((void *)(v18 + 32));
+		drawLowerScreen(v18 + 32);
 LABEL_22:
 	if ( a5 < 8 )
 		scrollrt_draw_clipped_dungeon_2(a1, xa, y, a4, a5, sx, sy, 0);
@@ -1956,9 +1956,9 @@ void __fastcall scrollrt_draw_upper(int x, int y, int sx, int sy, int a5, int a6
 	char *v12; // edx
 	int v13; // edi
 	int v14; // eax
-	char *v15; // edi
+	unsigned char *v15; // edi
 	int v16; // eax
-	char *v17; // edi
+	unsigned char *v17; // edi
 	int v18; // eax
 	int v19; // eax
 	int v20; // esi
@@ -1967,18 +1967,18 @@ void __fastcall scrollrt_draw_upper(int x, int y, int sx, int sy, int a5, int a6
 	int v23; // ecx
 	int v24; // eax
 	int v25; // esi
-	char *v26; // esi
+	unsigned char *v26; // esi
 	int v27; // eax
 	int v28; // eax
 	int v29; // eax
 	bool v30; // zf
 	int v31; // ecx
 	int v32; // eax
-	char *v33; // esi
+	unsigned char *v33; // esi
 	int v34; // eax
-	char *v35; // esi
+	unsigned char *v35; // esi
 	int v36; // eax
-	char *v37; // esi
+	unsigned char *v37; // esi
 	int v38; // eax
 	int v39; // eax
 	int v40; // [esp+Ch] [ebp-14h]
@@ -2016,11 +2016,11 @@ void __fastcall scrollrt_draw_upper(int x, int y, int sx, int sy, int a5, int a6
 					if ( v14 )
 					{
 						arch_draw_type = 2;
-						drawUpperScreen(&v12[sx + 32]);
+						drawUpperScreen((unsigned char *)&v12[sx + 32]);
 						arch_draw_type = 0;
 					}
 				}
-				v15 = (char *)(v13 - 24576);
+				v15 = (unsigned char *)(v13 - 24576);
 				if ( a6 >= 1 )
 				{
 					v16 = v9[3];
@@ -2048,7 +2048,7 @@ void __fastcall scrollrt_draw_upper(int x, int y, int sx, int sy, int a5, int a6
 			}
 			else
 			{
-				world_draw_black_tile((char *)gpBuffer + screen_y_times_768[sy] + sx);
+				world_draw_black_tile((unsigned char *)gpBuffer + screen_y_times_768[sy] + sx);
 			}
 		}
 		sx += 64;
@@ -2080,7 +2080,7 @@ void __fastcall scrollrt_draw_upper(int x, int y, int sx, int sy, int a5, int a6
 					v25 = screen_y_times_768[sy];
 					cel_transparency_active = v23;
 					level_cel_block = v24;
-					v26 = (char *)gpBuffer + v25 + sx;
+					v26 = (unsigned char *)gpBuffer + v25 + sx;
 					if ( v24 )
 						drawUpperScreen(v26);
 					v27 = v9[1];
@@ -2110,7 +2110,7 @@ void __fastcall scrollrt_draw_upper(int x, int y, int sx, int sy, int a5, int a6
 				}
 				else
 				{
-					world_draw_black_tile((char *)gpBuffer + screen_y_times_768[sy] + sx);
+					world_draw_black_tile((unsigned char *)gpBuffer + screen_y_times_768[sy] + sx);
 				}
 			}
 			++xa;
@@ -2134,7 +2134,7 @@ void __fastcall scrollrt_draw_upper(int x, int y, int sx, int sy, int a5, int a6
 		{
 			arch_draw_type = 1;
 			cel_transparency_active = (unsigned char)(nTransTable[v32] & TransList[dung_map[0][v31]]);
-			v33 = (char *)gpBuffer + screen_y_times_768[sy] + sx;
+			v33 = (unsigned char *)gpBuffer + screen_y_times_768[sy] + sx;
 			if ( a6 >= 0 )
 			{
 				v34 = *v9;
@@ -2170,7 +2170,7 @@ void __fastcall scrollrt_draw_upper(int x, int y, int sx, int sy, int a5, int a6
 		}
 		else
 		{
-			world_draw_black_tile((char *)gpBuffer + screen_y_times_768[sy] + sx);
+			world_draw_black_tile((unsigned char *)gpBuffer + screen_y_times_768[sy] + sx);
 		}
 	}
 }
@@ -2595,8 +2595,8 @@ void __fastcall scrollrt_draw_e_flag(char *buffer, int x, int y, int a4, int a5,
 	int v21; // eax
 	int v22; // [esp+Ch] [ebp-14h]
 	int xa; // [esp+10h] [ebp-10h]
-	int *a1; // [esp+14h] [ebp-Ch]
-	char *v25; // [esp+18h] [ebp-8h]
+	unsigned char *a1; // [esp+14h] [ebp-Ch]
+	unsigned char *v25; // [esp+18h] [ebp-8h]
 	int i; // [esp+1Ch] [ebp-4h]
 
 	xa = x;
@@ -2612,8 +2612,8 @@ void __fastcall scrollrt_draw_e_flag(char *buffer, int x, int y, int a4, int a5,
 	v14 = (unsigned char)nTransTable[v9];
 	v15 = light_table_index;
 	light_table_index = v11;
-	a1 = (int *)v8;
-	v25 = v8;
+	a1 = (unsigned char *)v8;
+	v25 = (unsigned char *)v8;
 	cel_transparency_active = v14 & v13;
 	v16 = gendung_get_dpiece_num_from_coord(xa, y);
 	arch_draw_type = 1;
@@ -2626,7 +2626,7 @@ void __fastcall scrollrt_draw_e_flag(char *buffer, int x, int y, int a4, int a5,
 	arch_draw_type = 2;
 	level_cel_block = v19;
 	if ( v19 )
-		drawUpperScreen(a1 + 8);
+		drawUpperScreen(a1 + 32);
 	arch_draw_type = 0;
 	for ( i = 1; i < (dword_5A5594 >> 1) - 1; ++i )
 	{
