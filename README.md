@@ -1,8 +1,7 @@
 [![Build Status](https://travis-ci.org/diasurgical/devilution.svg?branch=master)](https://travis-ci.org/diasurgical/devilution)
-
 [![Build status](https://ci.appveyor.com/api/projects/status/ssk0xjhoka1uu940?svg=true)](https://ci.appveyor.com/project/galaxyhaxz/devilution)
 
-### [Devilution Development & Xyinn Network Discord](https://discord.gg/3DD6ZVQ)
+[Discord](https://discord.gg/3DD6ZVQ)
 
 # Devilution
 Diablo devolved - magic behind the 1996 computer game
@@ -10,69 +9,63 @@ Diablo devolved - magic behind the 1996 computer game
 Reverse engineered by GalaXyHaXz in 2018
 
 # Introduction
-Diablo was everything but loved by Blizzard. The last update to the game was in 2001, and Blizzard stopped supporting/selling it altogether a few years ago. I took up a mission to fix this problem. Diablo was a game I played extensively as a teenager; but as time passed, it became difficult to run the game on newer hardware. The lack of new content also took away from the re-playability. The ideal solution would be to modernize the source, but reversing the whole game initially sounded impossible.
+While most titles from Blizzard receive years of love and support, Diablo stayed in the shadows. Abandoned in favor of a sequel, it remained full of bugs and unfinished potential. The game was last patched in 2001 until finally being discontinued altogether. I took up a mission to fix this problem: Diablo was a game I played extensively as a teenager--but as time passed it became difficult to run the game on newer hardware. The lack of new content also made things less appealing. Trying to update the entire game through modding alone is simply too much work. Thankfully a little oversight in 1997 would make this job much easier.
 
-Thankfully, there was a little oversight in 1998. Blizzard gave Diablo's source code to two developers: Synergestic Software (to create an expansion), and Climax Studios (to create a Playstation port). Now Sony of Japan has long been known for letting things slide in their QA department. Anything from prototypes to full source code leaks (Beatmania), and Diablo was no exception. A symbolic file was accidentally left on the Japanese port, which contained a layout of everything in the game. This includes functions, data, types, and more! A beta version of the port also leaked, which contained yet another one of these files.
+With Diablo's development team moving on, the source code was given to **Synergestic Software** to handle the expansion. Less known however, is that it was also given to **Climax Studios** to create a PlayStation port. Now, Sony has long been known for letting things slip; _especially_ in Japan. Anything from leaking prototypes to full source code and Diablo was no exception. Symbolic information was accidentally left on the Japanese PlayStation port. This information normally used for debugging, contained a layout of all the code in the game. That would include file names, function names, structures, variables, and more!
 
-To top it all off, a debug build of the PC version is contained right there on your Diablo disc! Hidden in `DIABDAT.MPQ -> D1221A.MPQ -> DIABLO.EXE`. This build contains debug tools not found in the retail game, and many assert strings giving away code information. Combining these aspects not only makes reversing the game much easier, but it makes it far more accurate. File names, function names, and even line numbers will be fairly close to the real deal.
-
-After four months of hard work, I present to you Devilution! Instead of seeing how Diablo evolved, we'll see it devolved!
+To top it all off, a special build is hidden on the disc of the PC release in `DIABDAT.MPQ -> D1221A.MPQ -> DIABLO.EXE`! This build contains debug tools and many assert strings giving away raw code. Combining these aspects makes reversing the game far easier and closer to the original source code. After months of piecing everything together, the magic behind Diablo has come to light!
 
 # Purpose
-Having the source code makes things much easier to maintain. For years mod-makers had to rely on tedious code editing and memory injection. A few even went even further and reversed a good chunk of the game (such as Belzebub/The Hell). The problem is that they never released their sources. Usually being a one-man job, they move on with their lives inevitably due to the amount of time/work required or lack of interest. This leaves people with a half-finished mod; one which had countless hours put into it, but left full of bugs and unfinished potential. So we're back to square one. Devilution aims to fix this, by making the source code of Diablo freely available to all.
+Having the source code makes Diablo much easier to update and maintain. For years mod-makers had to rely on tedious code editing and memory injection. A few even went further and reversed most or all of the game. The problem is that they never shared their work. Usually being a one-person job, they move on with their lives due to the amount of time required or lack of interest. This brings us back to square one, with an amazing game being left behind. Devilution aims to fix this by making the source code open to the community.
 
-The goal of Devilution itself is to recreate the original source code as accurately as possible, in order to ensure that everything is preserved. This goes as far as bugs and badly written code in the original game. However, it becomes a solid base for developers to work with; making it much easier than before to update, fix, and port the game to other platforms.
+Devilution does not mod the game but instead recreates the original in order to ensure that everything is preserved. This goes as far as bugs and badly written code in the original game. With that it serves as a base for developers to work with, making it much easier then before to update, fix, and port the game to other platforms.
 
-As a side goal, Devilution helps document the unused and cut content from the final game. Development of Diablo was rushed near the end--many ideas were scrapped and Multiplayer was quickly hacked in. By examining the source, we can see various quirks of planned development.
+As a side goal Devilution tries to document the unused and cut content from the final game. Development of Diablo was rushed near the end--many ideas were scrapped and Multiplayer was quickly hacked in. By examining the source, we can see various quirks of planned development.
 
 # Compiling
-Development of Diablo began around the time Windows 95 released, for which it was optimized. The compiler used was Microsoft Visual C++ 4.20, which was upgraded to 5.10 in later patches ([ref: spreadsheet](Support/surgery.xls)). Compatibility with these tools is retained to help ensure the reversal is as accurate as possible. There are also Makefiles provided to compile with modern tools as well.
+Diablo was developed on Windows 95 using Visual C++ 4.20. Devilution is based on the latest patch `1.09(b)`, which was compiled under Visual C++ 5.10. To help ensure the code is as accurate as possible, the project is optimized for the same compiler the original binary was built. However, the project also maintains compatibility with modern tools.
 
-Building with Visual C++ 5.10
-- Make sure Service Pack 3 is installed in order to update the linker from 5.00 -> 5.10! Newer versions of Visual Studio work as well, but will upgrade the project.
-- Open the project workspace `Diablo.dsw` and select `Build Diablo.exe`. This will build all dependencies and only takes a few seconds.
+### Building with Visual C++ 4/5/6
+- Open the project workspace `Diablo.dsw`, choose `Debug` or `Release`, and then `Build Diablo.exe`.
 
-Building with modern version of Visual Studio
+To build a binary as close as possible to the original, use [Visual C++ 5](https://winworldpc.com/product/visual-c/5x) upgraded to [Service Pack 3](http://www.mediafire.com/file/jw4j4sd5dnzze4p/VS97SP3.zip).
 
-The DEP tweak is already included in the project as default for the .sln until we can figure out the root cause.
-- Make sure to disable Data Exection Prevention: Configuration options -> Linker -> Advanced -> Data Execution Prevention (DEP).
+### Building with Visual Studio 2010-2017
+- Open the project solution `Diablo.sln`, choose `Debug` or `Release`, and then `Build Solution`.
+
+Make sure to disable Data Exection Prevention. `Storm.dll` uses dynamic compilation to improve rendering performance but fails to mark the resulting memory page as executable, leading to a protection fault when trying to draw.
+- Configuration options -> Linker -> Advanced -> Data Execution Prevention (DEP).
 - Set this value to: No (/NXCOMPAT: NO).
-
-- Storm.dll uses dynamic compilation to improve rendering performance but fails to mark the resulting memory page as executable, leading to a protection fault when trying to draw.
 
 You will also need the following dependencies installed if you are using Visual Studio 2017.
 Make sure to enable these when installing (or modify your installation):
-
 - Requires "Windows 8.1 SDK" (Target Platform)
 - Requires "Visual C++ MFC for x86 and x64" (For afxres.h)
 - Requires "Windows Universal CRT SDK" (For ctype.h)
 
-Devilution for VS 2017 compilation is currently targetting Windows 8.1 SDK.
+### Building with MinGW
+- Execute `make MINGW32=1` for **MinGW32** or `make` for **MinGW64**. Optionally, add `debug` to build with debug features.
 
-Building with MinGW(32/64)
-- Ensure that the MinGW binary paths have been added to the command line. On Windows, you would usually type: `set PATH=C:\mingw\bin;C:\mingw\msys\1.0\bin`
-- For MinGW32, navigate to the project root and execute `make MINGW32=1`. The process will take longer than Visual Studio.
-- For MinGW64, refer to the respective documentation: [Linux](Support/INSTALL_linux.md) | [Windows](Support/INSTALL_windows.md) | [Mac](Support/INSTALL_mac.md). Note that only x86 systems may be targeted for the time being.
+For compiling with MinGW64 on different platforms, refer to the respective documentation: [Linux](Support/INSTALL_linux.md) | [Windows](Support/INSTALL_windows.md) | [Mac](Support/INSTALL_mac.md).
 
-Compiling Definitions
-- `COPYPROT` (default: on) will define whether or not to use the CD drive for DIABDAT.MPQ
-- `DEBUGGER` (default: off) will define whether to skip reloading for direct execution through debuggers
-- `SLEEP` (default: off) will define whether to sleep the program to prevent 100% CPU usage
-- `_DEBUG` (default: off) will define whether to include debug features (refer to [Debugging Document](Support/debug.md))
-
-# [Compatibility Matrix, Compilations, Platform Statuses](Support/compatibility_matrix.md)
+[Debug Build Features](Support/debug.md)
+| [Compatibility Matrix](Support/compatibility_matrix.md)
+| [Troubleshooting](Support/troubleshooting.md)
 
 # Installing
-Once compiled, the Devilution binary will serve as a replacement for `Diablo.exe`. A clean installation of Diablo patched to 1.09(b) is needed to run the game. Either copy Devilution into Diablo's installation folder, or make sure the following files are present:
-- `DIABDAT.MPQ` : if `COPYPROT` was defined, then the Diablo CD will be required
-- `DiabloUI.dll` : provides module for the title screen interface
-- `SmackW32.dll` : provides library for playing Smacker video files
-- `Standard.snp` : provides local multiplayer code (Modem/IPX/Serial, Starcraft version adds TCP/IP)
-- `Storm.dll` : provides various "standard" functions
+Once compiled, the Devilution binary will serve as a replacement for `Diablo.exe`. The following files from the original game patched to 1.09(b) need to be present: `DIABDAT.MPQ`, `DiabloUI.dll`, `SmackW32.dll`, `Standard.snp`, and `Storm.dll`. If `COPYPROT` was defined when compiling, the Diablo CD will also be required.
 
-To run the game in windowed mode, a DirectDraw wrapper will be needed. Strange Bytes' [DirectDraw patch](http://www.strangebytes.com/index.php/projects/1-diablo-1-windows-7-vista-patch) is recommended. To install, place the `ddraw.dll` into the same location as the Devilution binary.
+Additionally, Strange Bytes' [DirectDraw patch](http://www.strangebytes.com/index.php/projects/1-diablo-1-windows-7-vista-patch) is recommended to help fix compatibility issues and run the game in windowed mode.
 
-# [Troubleshooting](Support/troubleshooting.md)
+# Contributing
+[Guidelines](Support/CONTRIBUTING.md)
+
+# Modding
+Here are some screenshots of a few things I tinkered around with, to demonstrate the relative ease of improving the game:
+
+![Screenshot 1: Monster lifebar+items](https://s33.postimg.cc/6xnnhhlmn/diabuimon.png "Monster lifebar+items")
+
+![Screenshot 2: New trade screen](https://s22.postimg.cc/z8fhuutk1/diabstore.png "New trade screen")
 
 # F.A.Q.
 > Wow, does this mean I can download and play Diablo for free now?
@@ -89,37 +82,19 @@ Yes! However, this will be a **_side project_** based on Devilution. I have yet 
 Honestly I have no idea. More than 1,200 hours went into creating Devilution, and I have other things going on right now. Maybe in 6-12 months? The goal is to create a native Linux port, convert to OpenGL, modernize the UI, etc. you get the drill. There has to be some surprises. ;)
 > Ok, so I'm playing Devilution now and all the sudden it crashed. NOW WHAT??
 
-Try to remember as many details about the crash as possible. Inside the Diablo folder should be a log file containing crash information. Open an issue, upload the log, and provide as much information as possible (OS version, etc.).
+Open an issue and provide as much information as possible (OS version, etc.) including any crash logs.
 > I thought I'd fix the crash myself, but after looking at the code its a disaster. Do you speak v2-34-v8?
 
 That is the result of decompiled code. Whenever a program is compiled, much of the source is optimized and stripped away, so it's nearly impossible to decompile it back. Have patience. Everything will be cleaned up eventually. :)
 > Will you be reverse engineering Diablo II next? Ooooh please!
 
-Absolutely not. Diablo II is still supported, sold, and maintained by Blizzard. Setting the legal implications aside, there's about 8x as much code, and a chance Blizzard will remaster the game soon anyway. (as of 2018)
+Absolutely not. Diablo II would require far more work and is still supported by Blizzard. Setting that aside, there are rumors that the game will be remastered which takes the point out of it.
 > Are you interested in working for me? I have this game I want you to reverse...
 
-Sorry, but no. Money takes the passion out of it. Forgoing that, Diablo was an exception given that symbolic information was readily available. Even then it took countless hours to pick apart such a tiny game.
+Sorry, but no. This project is time consuming enough as it is, and it's just a hobby.
 > I think that's about all, but is Devilution even legal?
 
 That's a tricky question. Under the DMCA, reverse-engineering has exceptions for the purpose of documentation and interoperability. Devilution provides the necessary documentation needed to achieve the latter. However, it falls into an entirely grey area. The real question is whether or not Blizzard deems it necessary to take action.
-
-# Contributing
-Currently there are a few issues with the decompiled code. The focus should be on fixing these issues for now instead of cleaning up the code. Currently only Diablo.exe has been reversed, the other files are:
-- `Battle.snp`: code for battle.net, outdated protocol and not worth the time.
-- `DiabloUI.dll`: code for the main menu, this is entirely Windows specific and poorly written. However, it needs to be reversed to complete the source code.
-- `SmackW32.dll`: code for the Smacker video library, not worth the time.
-- `Standard.snp`: code for local multiplayer, again outdated. Starcraft uses the same format and TCP/IP was added in a later patch. Reversing the UDP portion is desired.
-- `Storm.dll`: we want Diablo to be independent of this library, the main file functions have been reversed as part of StormLib.
-- `VidSize.exe`: changes one byte in registry, ignore.
-
-If you are experienced with reversing, help is needed to reverse the user interface (DiabloUI) to help make Diablo cross-platform.
-
-# Modding
-Here are some screenshots of a few things I tinkered around with, to demonstrate the relative ease of improving the game:
-
-![Screenshot 1: Monster lifebar+items](https://s33.postimg.cc/6xnnhhlmn/diabuimon.png "Monster lifebar+items")
-
-![Screenshot 2: New trade screen](https://s22.postimg.cc/z8fhuutk1/diabstore.png "New trade screen")
 
 # Credits
 - [sanctuary](https://github.com/sanctuary) - documenting the Windows-specific Diablo code (engine, mpq, directx)
@@ -131,7 +106,7 @@ Here are some screenshots of a few things I tinkered around with, to demonstrate
 - Depression - reason to waste four months of my life doing this ;)
 
 # Legal
-This work is being released to the Public Domain. No assets of Diablo are being provided. You must own a copy of Diablo and have access to the assets beforehand in order to use this software.
+This software is being released to the Public Domain. No assets of Diablo are being provided. You must own a copy of Diablo and have access to the assets beforehand in order to use this software.
 
 Battle.net(R) - Copyright (C) 1996 Blizzard Entertainment, Inc. All rights reserved. Battle.net and Blizzard Entertainment are trademarks or registered trademarks of Blizzard Entertainment, Inc. in the U.S. and/or other countries.
 
