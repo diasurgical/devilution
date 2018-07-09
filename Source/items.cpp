@@ -2729,7 +2729,7 @@ int __fastcall RndItem(int m)
 	int i; // edx
 	int ril[512]; // [esp+4h] [ebp-800h]
 
-	if ( monster[m].MData->mTreasure & 0x8000 )
+	if ( (monster[m].MData->mTreasure & 0x8000) != 0 )
 		return -1 - (monster[m].MData->mTreasure & 0xFFF);
 	if ( monster[m].MData->mTreasure & 0x4000 )
 		return 0;
@@ -2772,7 +2772,7 @@ int __fastcall RndUItem(int m)
 
 	if ( m != -1 )
 	{
-		if ( monster[m].MData->mTreasure < 0 && gbMaxPlayers == 1 )
+		if ( (monster[m].MData->mTreasure & 0x8000) != 0 && gbMaxPlayers == 1 )
 			return -1 - (monster[m].MData->mTreasure & 0xFFF);
 	}
 	ri = 0;
@@ -3062,7 +3062,7 @@ void __fastcall SpawnItem(int m, int x, int y, unsigned char sendmsg)
 	int onlygood; // [esp+Ch] [ebp-Ch]
 	int idx; // [esp+14h] [ebp-4h]
 
-	if ( !monster[m]._uniqtype && (monster[m].MData->mTreasure >= 0 || gbMaxPlayers == 1) )
+	if ( !monster[m]._uniqtype && ((monster[m].MData->mTreasure & 0x8000) == 0 || gbMaxPlayers == 1) )
 	{
 		if ( quests[1]._qactive == 2 && quests[1]._qvar1 == 5 )
 		{
