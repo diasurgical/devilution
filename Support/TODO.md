@@ -8,13 +8,12 @@ Serious bugs (crash/fault)
 - TBA
 
 Minor bugs (noticeable but can be avoided)
-- Generation of Cathedral/Catacombs is slightly inaccurate
+- Generation of Cathedral/Catacombs walls and floors are slightly inaccurate
 - Some spells don't use any mana or charges when they should
 - Some tiles are drawn fully lit when they should be transparent `world.cpp`
-- Objects should darken with radius instead of being fully lit
-- Some CEL functions were written in ASM and have been disabled `engine.cpp`
 - Timed messages are broken and have been disabled `tmsg.cpp`
 - Server commands are broken and have been disabled `msgcmd.cpp`
+- Automap drawing is slightly incorrect
 
 Code issues (incorrect code that still works)
 - Critical sections should be constructors using `CCritSect`
