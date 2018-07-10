@@ -3929,6 +3929,7 @@ void __fastcall AddHeal(int mi, int sx, int sy, int dx, int dy, int midir, int m
 	*v17 += v12;
 	if ( *v17 > v18 )
 		*v17 = v18;
+	UseMana(id,SPL_HEAL);
 	missile[i]._miDelFlag = 1;
 	drawhpflag = 1;
 }
