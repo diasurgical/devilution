@@ -3184,6 +3184,7 @@ LABEL_12:
 		missile[v9]._midam = v13;
 	}
 	missile[v9]._midam += missile[v9]._midam >> 1;
+	UseMana(id, 4);
 LABEL_13:
 	missile[v9]._mirange = 19;
 }
@@ -3407,6 +3408,7 @@ void __fastcall AddChain(int mi, int sx, int sy, int dx, int dy, int midir, int 
 	missile[v9]._miVar1 = dx;
 	missile[v9]._miVar2 = dy;
 	missile[v9]._mirange = 1;
+	UseMana(id, 14);
 }
 
 void __fastcall miss_null_11(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
@@ -3779,6 +3781,7 @@ LABEL_6:
 		missile[v9]._miVar5 = dy;
 		if ( (monster[v10]._mx != 1 || monster[v10]._my) && v10 == myplr )
 			M_StartKill(v10, v10);
+		UseMana(id, 21);
 	}
 	else
 	{
@@ -3929,6 +3932,7 @@ void __fastcall AddHeal(int mi, int sx, int sy, int dx, int dy, int midir, int m
 	*v17 += v12;
 	if ( *v17 > v18 )
 		*v17 = v18;
+	UseMana(id, 2);
 	missile[i]._miDelFlag = 1;
 	drawhpflag = 1;
 }
@@ -3936,8 +3940,8 @@ void __fastcall AddHeal(int mi, int sx, int sy, int dx, int dy, int midir, int m
 void __fastcall AddHealOther(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	missile[mi]._miDelFlag = 1;
-	UseMana(mienemy, 34);
-	if ( mienemy == myplr )
+	UseMana(id, 34);
+	if ( id == myplr )
 		SetCursor(CURSOR_HEALOTHER);
 }
 
@@ -3991,13 +3995,14 @@ void __fastcall AddElement(int mi, int sx, int sy, int dx, int dy, int midir, in
 	missile[v14]._miVar4 = v9;
 	missile[v14]._miVar5 = v10;
 	missile[v14]._mlid = AddLight(x, sy, 8);
+	UseMana(id, 29);
 }
 
 void __fastcall AddIdentify(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	missile[mi]._miDelFlag = 1;
-	UseMana(mienemy, 5);
-	if ( mienemy == myplr )
+	UseMana(id, 5);
+	if ( id == myplr )
 	{
 		if ( sbookflag )
 			sbookflag = 0;
@@ -4123,6 +4128,7 @@ void __fastcall AddWave(int mi, int sx, int sy, int dx, int dy, int midir, int m
 	missile[v9]._miVar2 = dy;
 	missile[v9]._mirange = 1;
 	missile[v9]._miAnimFrame = 4;
+	UseMana(id, 15);
 }
 
 void __fastcall AddNova(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
@@ -4199,8 +4205,8 @@ void __fastcall AddNova(int mi, int sx, int sy, int dx, int dy, int midir, int m
 void __fastcall AddRepair(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	missile[mi]._miDelFlag = 1;
-	UseMana(mienemy, 26);
-	if ( mienemy == myplr )
+	UseMana(id, 26);
+	if ( id == myplr )
 	{
 		if ( sbookflag )
 			sbookflag = 0;
@@ -4214,8 +4220,8 @@ void __fastcall AddRepair(int mi, int sx, int sy, int dx, int dy, int midir, int
 void __fastcall AddRecharge(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	missile[mi]._miDelFlag = 1;
-	UseMana(mienemy, 27);
-	if ( mienemy == myplr )
+	UseMana(id, 27);
+	if ( id == myplr )
 	{
 		if ( sbookflag )
 			sbookflag = 0;
@@ -4229,8 +4235,8 @@ void __fastcall AddRecharge(int mi, int sx, int sy, int dx, int dy, int midir, i
 void __fastcall AddDisarm(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	missile[mi]._miDelFlag = 1;
-	UseMana(mienemy, 28);
-	if ( mienemy == myplr )
+	UseMana(id, 28);
+	if ( id == myplr )
 		SetCursor(CURSOR_DISARM);
 }
 
@@ -4275,6 +4281,7 @@ void __fastcall AddApoca(int mi, int sx, int sy, int dx, int dy, int midir, int 
 	}
 	missile[v9]._miDelFlag = 0;
 	missile[v9]._mirange = 255;
+	UseMana(id, 24);
 }
 
 void __fastcall AddFlame(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
@@ -4436,6 +4443,7 @@ LABEL_8:
 	_LOBYTE(v16) = 69;
 	missile[v14]._mlid = v15;
 	missile[v14]._midam = random(v16, 10) + plr[id]._pLevel + 9;
+	UseMana(id, 31);
 }
 
 void __fastcall AddResurrect(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
@@ -4443,8 +4451,8 @@ void __fastcall AddResurrect(int mi, int sx, int sy, int dx, int dy, int midir, 
 	int v9; // esi
 
 	v9 = mi;
-	UseMana(mienemy, 32);
-	if ( mienemy == myplr )
+	UseMana(id, 32);
+	if ( id == myplr )
 		SetCursor(CURSOR_RESURRECT);
 	missile[v9]._miDelFlag = 1;
 }
@@ -4468,8 +4476,8 @@ void __fastcall AddResurrectBeam(int mi, int sx, int sy, int dx, int dy, int mid
 void __fastcall AddTelekinesis(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
 	missile[mi]._miDelFlag = 1;
-	UseMana(mienemy, 33);
-	if ( mienemy == myplr )
+	UseMana(id, 33);
+	if ( id == myplr )
 		SetCursor(CURSOR_TELEKINESIS);
 }
 
