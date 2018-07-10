@@ -138,68 +138,32 @@ LABEL_13:
 
 void __cdecl gendung_418D91()
 {
-	signed int v0; // edx
-	short (*v1)[112][112]; // edi
-	short (*v2)[112][112]; // esi
-	signed int v3; // ebx
-	int i; // edx
-	short v5; // ax
-	int v6; // ecx
-	signed int v7; // edx
-	int v8; // eax
-	int v9; // edi
-	char *v10; // esi
-	int j; // ecx
-	unsigned char v12; // al
-	unsigned char *v13; // esi
-	int v14; // ecx
-	signed int v15; // edx
-	int v16; // eax
-	int v17; // ecx
-	unsigned char v18; // al
-	signed int v19; // ecx
-	int v20; // edi
-	int v21; // edx
-	int v22; // edi
-	int v23; // eax
-	int v24; // eax
-	bool v25; // zf
-	int v26; // edx
-	char *v27; // esi
-	char *speed_cel_ptr; // edi
-	int k; // ecx
-	char *v33; // esi
-	char *v34; // edi
-	int v36; // ecx
-	signed int v37; // edx
-	int v38; // eax
-	int v39; // ecx
-	short (*v42)[112][112]; // esi
-	short v43; // ax
-	unsigned short v44; // dx
-	short v45; // ax
-	int v46; // [esp-4h] [ebp-38h]
-	int v47; // [esp-4h] [ebp-38h]
-	int v48; // [esp+Ch] [ebp-28h]
-	int (*v49)[128]; // [esp+10h] [ebp-24h]
-	int (*v50)[112]; // [esp+10h] [ebp-24h]
-	int v51; // [esp+14h] [ebp-20h]
-	short (*v52)[112][112]; // [esp+14h] [ebp-20h]
-	signed int v53; // [esp+18h] [ebp-1Ch]
-	int v54; // [esp+18h] [ebp-1Ch]
-	short (*v55)[112][112]; // [esp+18h] [ebp-1Ch]
-	int v56; // [esp+1Ch] [ebp-18h]
-	int (*v57)[112]; // [esp+1Ch] [ebp-18h]
-	signed int v58; // [esp+20h] [ebp-14h]
-	int v59; // [esp+20h] [ebp-14h]
-	int v60; // [esp+24h] [ebp-10h]
-	signed int v61; // [esp+24h] [ebp-10h]
-	int v62; // [esp+28h] [ebp-Ch]
-	int v63; // [esp+2Ch] [ebp-8h]
-	signed int v64; // [esp+30h] [ebp-4h]
-	signed int v65; // [esp+30h] [ebp-4h]
-	int _EAX;
-	char *_EBX;
+	//iteator variables
+	int i;
+	int j;
+	int k;
+
+	//first block
+	int dungeon_type_iterations;
+	int map_length; //112
+	int map_length_times_thirty_two; //112 * 32 (0xE00)
+	short* dpiece_defs_map_2_ptr; //iterating through map entries
+	short map_block_info; // TODO add ref
+	short frame; // TODO add ref
+
+	//second block
+	int* dungeon_cel;
+	int frame_size;
+
+	//third block
+	int level_frame_types_index;
+	char set_level_frame_count_zero; //really should be a bool (is project using c99/c11?)
+	char* dungeon_cel_ptr;
+	char level_cel_index;
+	unsigned char frame_num;
+
+	//
+	char* speed_cel_ptr;
 
 	//v0 = 0;
 	memset(level_frame_types, 0, sizeof(level_frame_types));
@@ -245,29 +209,27 @@ void __cdecl gendung_418D91()
 	}
 	while ( (signed int)v1 < (signed int)dpiece_defs_map_2[0][16] );
 	*/
-	int dungeon_type_iterations = 2 * (leveltype == DTYPE_HELL) + 10;
-	int map_length = sizeof(dpiece_defs_map_2[0][0]) / sizeof(dpiece_defs_map_2[0][0][0]);
-	short(*dpiece_defs_map_2_ptr)[112][112] = dpiece_defs_map_2;
-	do
+	dungeon_type_iterations = 2 * (leveltype == DTYPE_HELL) + 10; //12 if in HELL else 10
+	map_length = sizeof(dpiece_defs_map_2[0][0]) / sizeof(dpiece_defs_map_2[0][0][0]);
+	map_length_times_thirty_two = map_length * 32;
+	dpiece_defs_map_2_ptr = dpiece_defs_map_2[0][0];
+	for (i = 0; i < map_length_times_thirty_two; i++)
 	{
-		short(*dpiece_defs_map_2_ptr2)[112] = dpiece_defs_map_2[0];
-		int current_map_index = map_length;
-		do
+		for(j = 0; j < map_length; j++)
 		{
-			for(i = 0; i < dungeon_type_iterations; i++)
+			for (k = 0; k < dungeon_type_iterations; k++)
 			{
-				short map_block_info = (*dpiece_defs_map_2_ptr2)[i];
-				if(map_block_info)
+				map_block_info = dpiece_defs_map_2_ptr[k + j * map_length_times_thirty_two/2];
+				if (map_block_info)
 				{
-					short frame = map_block_info & 0x0FFF;
+					frame = map_block_info & 0x0FFF;
 					++level_frame_count[frame];
 					level_frame_types[frame] = map_block_info & 0x7000;
 				}
 			}
-			dpiece_defs_map_2_ptr2 += 16;
-		} while (--current_map_index);
-		dpiece_defs_map_2_ptr = (short(*)[112][112])((char *)dpiece_defs_map_2_ptr + 32);
-	} while ((char*)dpiece_defs_map_2_ptr < (char*)dpiece_defs_map_2[0][16]);
+		}
+		dpiece_defs_map_2_ptr += 16;
+	}
 	///////////////////////////
 	/*
 	v7 = 1;
@@ -285,13 +247,12 @@ void __cdecl gendung_418D91()
 	}
 	*/
 	////////////////////////////
-	i = 1;
-	int* dungeon_cel = (int*)pDungeonCels;
+	dungeon_cel = (int*)pDungeonCels;
 	nlevel_frames = dungeon_cel[0] & 0xFFFF;
 	for (i = 1; i < nlevel_frames; i++)
 	{
-		const int cel_val = dungeon_cel[i + 1] - dungeon_cel[i];
-		level_frame_sizes[i] = cel_val & 0xFFFF;
+		frame_size = dungeon_cel[i + 1] - dungeon_cel[i];
+		level_frame_sizes[i] = frame_size & 0xFFFF;
 	}
 	////////////////////////////
 	/*
@@ -362,7 +323,7 @@ LABEL_36:
 	}
 	*/
 	////////////////////////////
-	int level_frame_types_index = 0;
+	level_frame_types_index = 0;
 	level_frame_sizes[0] = 0;
 	if (leveltype == DTYPE_HELL && nlevel_frames > 0)
 	{
@@ -370,15 +331,14 @@ LABEL_36:
 		{
 			if (!level_frame_types_index)
 				level_frame_count[0] = 0;
-			char set_level_frame_count_zero = 1; //really should be a bool (is project using c99/c11?)
+			set_level_frame_count_zero = 1;
 			if (level_frame_count[level_frame_types_index])
 			{
 				if (level_frame_types[level_frame_types_index] == 4096)
 				{
-					char* dungeon_cel_ptr = (char*)dungeon_cel + dungeon_cel[level_frame_types_index];
+					dungeon_cel_ptr = (char*)dungeon_cel + dungeon_cel[level_frame_types_index];
 					for(i = 0; i < 32; i++)
 					{
-						char level_cel_index;
 						for (j = 32; j != 0; j -= level_cel_index)
 						{
 							while (1)
@@ -402,7 +362,7 @@ LABEL_36:
 
 							for (k = 0; k < level_cel_index; k++)
 							{
-								unsigned char frame_num = *dungeon_cel_ptr++;
+								frame_num = *dungeon_cel_ptr++;
 								if (frame_num < 32 && frame_num > 0) //check frame type
 								{
 									set_level_frame_count_zero = 0;
@@ -413,7 +373,7 @@ LABEL_36:
 				}
 				else
 				{
-					char* dungeon_cel_ptr = (char*)dungeon_cel + dungeon_cel[level_frame_types_index];
+					dungeon_cel_ptr = (char*)dungeon_cel + dungeon_cel[level_frame_types_index];
 					for (i = 0; i < level_frame_sizes[level_frame_types_index]; i++)
 					{
 						unsigned char frame_num = *dungeon_cel_ptr++;
