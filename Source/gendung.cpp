@@ -468,8 +468,7 @@ LABEL_36:
 	}
 	while (total_level_frame_size < 0x100000);
 	//////////////////////////
-	/*
-	v22 = v20 - 1;
+	/*v22 = v20 - 1;
 	v58 = v22;
 	if ( v22 > 128 )
 	{
@@ -577,8 +576,7 @@ LABEL_66:
 			v56 += 16;
 		}
 		while ( v54 < v22 );
-	}
-	*/
+	}*/
 	//////////////////////////
 	/*
 	*.text:00418FB5 neg     eax
@@ -589,6 +587,7 @@ LABEL_66:
 	* eax = -(eax != 0)
 	* eax only can be 0 or -1...
 	*/
+	
 	if (--level_frame_size_index > 128)// limit the counter to 128
 	{
 		level_frame_size_index = 128;
@@ -606,8 +605,8 @@ LABEL_66:
 		{
 			int level_frame_types_index_save = level_frame_types_index2;
 			int level_frame_types_equal_0x1000 = level_frame_types[level_frame_types_index2] == 4096;
-			Tile tile_defs_ = tile_defs[level_frame_types_index2];
-			int tile_defs_val = ((int)tile_defs_.top) << sizeof(short) | (int)tile_defs_.right;
+			//Tile tile_defs_ = tile_defs[level_frame_types_index2];
+			int tile_defs_val = *((_DWORD *)&tile_defs[0].top + level_frame_types_index2);
 			(*speed_cel_frame_num_from_light_index_frame_num1)[0] = tile_defs_val;
 			if (level_frame_types_equal_0x1000)
 			{
@@ -694,6 +693,7 @@ LABEL_66:
 		} while (level_frame_types_index2 < level_frame_size_index);
 	}
 	//////////////////////////
+	/*
 	v57 = dPiece;
 	v55 = dpiece_defs_map_2;
 	do
@@ -742,7 +742,61 @@ LABEL_66:
 		v55 = (short (*)[112][112])((char *)v55 + 32);
 		v57 = (int (*)[112])((char *)v57 + 4);
 	}
-	while ( (signed int)v55 < (signed int)dpiece_defs_map_2[0][16] ); /* check */
+	while ( (signed int)v55 < (signed int)dpiece_defs_map_2[0][16] );
+	*/
+	//////////////////////////
+	int result = 0;
+	int (*piece_pid_map_ptr)[112] = dPiece;
+	short (*dpieces_defs_map2_ptr)[112][112] = dpiece_defs_map_2;
+	do
+	{
+		int map_length2 = 112;
+		short* dpieces_defs_map3_ptr = (short *)dpieces_defs_map2_ptr;
+		int(*piece_pid_map_ptr2)[112] = piece_pid_map_ptr;
+		do
+		{
+			result = (short)piece_pid_map_ptr2;
+			if ((*piece_pid_map_ptr2)[0])
+			{
+				result = dungeon_type;
+				if (dungeon_type > 0)
+				{
+					short* dpieces_defs_map4_ptr = dpieces_defs_map3_ptr;
+					int dungeon_type2 = dungeon_type;
+					do
+					{
+						result = *dpieces_defs_map4_ptr;
+						if (*dpieces_defs_map4_ptr)
+						{
+							int level_frame_size_index2 = 0;
+							if (level_frame_size_index2 > 0)
+							{
+								do
+								{
+									if ((result & 0xFFF) == *((_DWORD *)&tile_defs[0].top + level_frame_size_index2))
+									{
+										v45 = level_frame_size_index2 + level_frame_types[level_frame_size_index2];
+										level_frame_size_index2 = level_frame_size_index;
+										result = v45 + -32768;
+									}
+									++level_frame_size_index2;
+								} while (level_frame_size_index2 < level_frame_size_index);
+								*dpieces_defs_map4_ptr = result;
+							}
+						}
+						++dpieces_defs_map4_ptr;
+						--dungeon_type2;
+					} while (dungeon_type2);
+				}
+			}
+			++piece_pid_map_ptr2;
+			dpieces_defs_map3_ptr += 1792;
+			--map_length2;
+		} while (map_length2);
+		dpieces_defs_map2_ptr = (short(*)[112][112])((char *)dpieces_defs_map2_ptr + 32);
+		piece_pid_map_ptr = (int(*)[112])((char *)piece_pid_map_ptr + 4);
+	} while ((signed int)dpieces_defs_map2_ptr < (signed int)dpiece_defs_map_2[0][16]);
+	//return result;
 }
 // 525728: using guessed type int light4flag;
 // 53CD4C: using guessed type int nlevel_frames;
