@@ -166,7 +166,7 @@ void __cdecl gendung_418D91()
 	bool v25; // zf
 	int v26; // edx
 	char *v27; // esi
-	char *v28; // edi
+	char *speed_cel_ptr; // edi
 	int k; // ecx
 	char *v33; // esi
 	char *v34; // edi
@@ -376,44 +376,40 @@ LABEL_36:
 				if (level_frame_types[level_frame_types_index] == 4096)
 				{
 					char* dungeon_cel_ptr = (char*)dungeon_cel + dungeon_cel[level_frame_types_index];
-					int level_cel_size = 32;
-					do
+					for(i = 0; i < 32; i++)
 					{
-						int level_cel_size_check = 32;
-						do
+						char level_cel_index;
+						for (j = 32; j != 0; j -= level_cel_index)
 						{
-							char level_cel_block = 0;
-							char level_cel_break = 0;
-							while (!level_cel_break)
+							while (1)
 							{
-								level_cel_block = *dungeon_cel_ptr++;
+								level_cel_index = *dungeon_cel_ptr++;
 								//check msb (0 is valid)
-								if ((level_cel_block & 0x80u) == 0)
+								if ((level_cel_index & 0x80u) == 0)
 									break;
 								//else iterate and go to next dungeon cel ptr
-								level_cel_block = -level_cel_block;
-								level_cel_size_check -= level_cel_block;
-								if (!level_cel_size_check)
+								level_cel_index = -level_cel_index;
+								j -= level_cel_index;
+								if (!j)
 								{
-									level_cel_break = 1;
+									break;
 								}
 							}
-							if (level_cel_break)
+							if (!j)
 							{
 								break;
 							}
 
-							level_cel_size_check -= level_cel_block;
-							do
+							for (k = 0; k < level_cel_index; k++)
 							{
 								unsigned char frame_num = *dungeon_cel_ptr++;
 								if (frame_num < 32 && frame_num > 0) //check frame type
 								{
 									set_level_frame_count_zero = 0;
 								}
-							} while (--level_cel_block);
-						} while (level_cel_size_check);
-					} while (--level_cel_size);
+							}
+						}
+					}
 				}
 				else
 				{
@@ -592,105 +588,82 @@ LABEL_66:
 	{
 		level_frame_size_index = 128;
 	}
-	int ligthing_flags_enable = -(light4flag != 0); // 0 if 0 else -1
-	int add_val = 0;
-	_LOBYTE(ligthing_flags_enable) = ligthing_flags_enable & 0xF4;
-	int level_frame_types_index2 = 0;
-	int ligthing_flags_enable_plus_0xF = ligthing_flags_enable + 0xF;
+	int ligthing_flag_enable = -(light4flag != 0); // 0 if 0 else -1
+	int level_frame_total_size = 0;
+	int lighting_flag_index = (ligthing_flag_enable & 0xF4) + 0xF;
+	level_frame_types_index = 0;
 	if (level_frame_size_index > 0)
 	{
-		int speed_light_index2 = 0;
-		int (*speed_cel_frame_num_from_light_index_frame_num1)[128] = speed_cel_frame_num_from_light_index_frame_num;
+		int speed_light_multiplier_index = 0;
+		int (*speed_cel_frame_num_from_light_index_frame_num_ptr)[128] = speed_cel_frame_num_from_light_index_frame_num;
 		do
 		{
-			int level_frame_types_index_save = level_frame_types_index2;
-			int level_frame_types_equal_0x1000 = level_frame_types[level_frame_types_index2] == 4096;
 			//Tile tile_defs_ = tile_defs[level_frame_types_index2];
-			int tile_defs_val = *((_DWORD *)&tile_defs[0].top + level_frame_types_index2);
-			(*speed_cel_frame_num_from_light_index_frame_num1)[0] = tile_defs_val;
-			if (level_frame_types_equal_0x1000)
+			int tile_defs_val = *((_DWORD *)&tile_defs[0].top + level_frame_types_index);
+			(*speed_cel_frame_num_from_light_index_frame_num_ptr)[0] = tile_defs_val;
+			if (level_frame_types[level_frame_types_index] == 4096)
 			{
 				int speed_light_index = 1;
-				if (ligthing_flags_enable_plus_0xF > 1)// always true... if original value was 1
+				do
 				{
-					do
+					speed_cel_frame_num_from_light_index_frame_num[0][speed_light_index + speed_light_multiplier_index] = level_frame_total_size;
+					char* dungeon_cel_ptr = (char*)dungeon_cel + dungeon_cel[tile_defs_val];
+					speed_cel_ptr  = (char *)pSpeedCels + level_frame_total_size;
+					char* light_table_ptr = (char *)pLightTbl + 0x100 * speed_light_index;
+					for (i = 0; i < 32; i++)
 					{
-						speed_cel_frame_num_from_light_index_frame_num[0][speed_light_index + speed_light_index2] = add_val;
-						char* level_cel_ptr3 = (char *)dungeon_cel + *((_DWORD *)dungeon_cel + tile_defs_val);
-						char* speed_cel_ptr = (char *)pSpeedCels + add_val;
-						_EBX = (char *)pLightTbl + 0x100 * speed_light_index;// not useless, used for xlat
-						int thirty_two_to_0_ = 32;
-						int thirty_two_to_0 = 0;
-						do
+						char level_cel_val;
+						for(j = 32; j != 0; j-= level_cel_val)
 						{
-							thirty_two_to_0 = thirty_two_to_0_;
-							int is_zero = 32;
-							do
+							while (1)
 							{
-								int level_cel_val6 = 0;
-								while (1)
+								level_cel_val = *dungeon_cel_ptr++;
+								*speed_cel_ptr++ = level_cel_val;
+								if ((level_cel_val & 0x80u) == 0)
+									break;
+								level_cel_val = -level_cel_val;
+								j -= level_cel_val;
+								if (!j)
 								{
-									level_cel_val6 = (unsigned __int8)*level_cel_ptr3++;
-									*speed_cel_ptr++ = level_cel_val6;
-									if ((level_cel_val6 & 0x80u) == 0)
-										break;
-									_LOBYTE(level_cel_val6) = -(char)level_cel_val6;
-									is_zero -= level_cel_val6;
-									if (!is_zero)
-										goto LABEL_63;
+									break;
 								}
-								is_zero -= level_cel_val6;
-								int iteration_level_cel_val = level_cel_val6;
-								do
-								{
-									char _AL = *level_cel_ptr3++;      // al = ebx[*level_cel_ptr++]
-									__asm { xlat }
-									*speed_cel_ptr++ = _AL;
-									--iteration_level_cel_val;
-								} while (iteration_level_cel_val);
-							} while (is_zero);
-						LABEL_63:
-							thirty_two_to_0_ = thirty_two_to_0 - 1;
-						} while (thirty_two_to_0 != 1);
-						add_val += level_frame_sizes[level_frame_types_index2];
-						++speed_light_index;
-					} while (speed_light_index < ligthing_flags_enable_plus_0xF);
-					goto LABEL_65;
-				}
+							}
+							if (!j)
+							{
+								break;
+							}
+
+							for(k = 0; k < level_cel_val; k++)
+							{
+								*speed_cel_ptr++ = light_table_ptr[*dungeon_cel_ptr++];
+							}
+						}
+					}
+					level_frame_total_size += level_frame_sizes[level_frame_types_index];
+					++speed_light_index;
+				} while (speed_light_index < lighting_flag_index);
 			}
 			else
 			{
-				int level_frame_size_val = level_frame_sizes[level_frame_types_index_save];
-				int level_frame_size_val2 = level_frame_sizes[level_frame_types_index_save];
-				int speed_light_index3 = 1;
-				if (ligthing_flags_enable_plus_0xF > 1)
+				int level_frame_size_val = level_frame_sizes[level_frame_types_index];
+				int speed_light_index = 1;
+				for(speed_light_index = 1; speed_light_index < lighting_flag_index; speed_light_index++)
 				{
-					do                                    // copy
+					speed_cel_frame_num_from_light_index_frame_num[0][speed_light_index + speed_light_multiplier_index] = level_frame_total_size;
+					char* level_cel_ptr4 = (char *)dungeon_cel + *((_DWORD *)dungeon_cel + tile_defs_val);
+					char* light_table_ptr = (char *)pLightTbl + 0x100 * speed_light_index;
+					speed_cel_ptr = (char *)pSpeedCels + level_frame_total_size;
+					for (i = 0; i < level_frame_size_val; i++)
 					{
-						speed_cel_frame_num_from_light_index_frame_num[0][speed_light_index3 + speed_light_index2] = add_val;
-						char* level_cel_ptr4 = (char *)dungeon_cel + *((_DWORD *)dungeon_cel + tile_defs_val);
-						v28 = (char *)pSpeedCels + add_val;
-						_EBX = (char *)pLightTbl + 0x100 * speed_light_index3;
-						for (k = level_frame_size_val2; k; --k)
-						{
-							char _AL = *level_cel_ptr4++;
-							__asm { xlat }
-							*v28++ = _AL;
-						}
-						add_val += level_frame_size_val;
-						++speed_light_index3;
-					} while (speed_light_index3 < ligthing_flags_enable_plus_0xF);
-				LABEL_65:
-					//level_frame_size_index = level_frame_size_counter_minus_one2;
-					goto LABEL_66;
+						*speed_cel_ptr++ = light_table_ptr[*level_cel_ptr4++];
+					}
+					level_frame_total_size += level_frame_size_val;
 				}
 			}
-		LABEL_66:
-			++level_frame_types_index2;
-			speed_cel_frame_num_from_light_index_frame_num1 = (int(*)[128])((char *)speed_cel_frame_num_from_light_index_frame_num1
-				+ 64);
-			speed_light_index2 += 16;
-		} while (level_frame_types_index2 < level_frame_size_index);
+			++level_frame_types_index;
+			speed_cel_frame_num_from_light_index_frame_num_ptr = (int(*)[128])((char *)speed_cel_frame_num_from_light_index_frame_num_ptr + 64);
+			speed_light_multiplier_index += 16;
+		} while (level_frame_types_index < level_frame_size_index);
 	}
 	//////////////////////////
 	/*
