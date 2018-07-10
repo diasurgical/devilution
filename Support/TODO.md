@@ -9,7 +9,6 @@ Serious bugs (crash/fault)
 
 Minor bugs (noticeable but can be avoided)
 - Generation of Cathedral/Catacombs walls and floors are slightly inaccurate
-- Some spells don't use any mana or charges when they should
 - Some tiles are drawn fully lit when they should be transparent `world.cpp`
 - Timed messages are broken and have been disabled `tmsg.cpp`
 - Server commands are broken and have been disabled `msgcmd.cpp`
@@ -23,3 +22,4 @@ Code issues (incorrect code that still works)
 - Function `GetLevelMTypes`, decompile and check `monster.cpp`
 - Function `SetAutomapView`, decompile and check `automap.cpp`
 - Function `engine_draw_automap_pixels`, decompile and check `engine.cpp`
+- Double check `UseMana` references
