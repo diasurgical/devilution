@@ -245,7 +245,7 @@ void __cdecl gendung_418D91()
 	}
 	while ( (signed int)v1 < (signed int)dpiece_defs_map_2[0][16] );
 	*/
-	int dungeon_type = 2 * (leveltype == DTYPE_HELL) + 10;
+	int dungeon_type_iterations = 2 * (leveltype == DTYPE_HELL) + 10;
 	int map_length = sizeof(dpiece_defs_map_2[0][0]) / sizeof(dpiece_defs_map_2[0][0][0]);
 	short(*dpiece_defs_map_2_ptr)[112][112] = dpiece_defs_map_2;
 	do
@@ -254,7 +254,7 @@ void __cdecl gendung_418D91()
 		int current_map_index = map_length;
 		do
 		{
-			for(i = 0; i < dungeon_type; i++)
+			for(i = 0; i < dungeon_type_iterations; i++)
 			{
 				short map_block_info = (*dpiece_defs_map_2_ptr2)[i];
 				if(map_block_info)
@@ -720,56 +720,45 @@ LABEL_66:
 	//////////////////////////
 	int result = 0;
 	int (*piece_pid_map_ptr)[112] = dPiece;
-	short (*dpieces_defs_map2_ptr)[112][112] = dpiece_defs_map_2;
-	do
+	for (i = 0; i < 0xE00; i++)
 	{
 		int map_length2 = 112;
-		short* dpieces_defs_map3_ptr = (short *)dpieces_defs_map2_ptr;
+		short* dpieces_defs_map3_ptr = dpiece_defs_map_2[0][0];
 		int(*piece_pid_map_ptr2)[112] = piece_pid_map_ptr;
 		do
 		{
-			result = (short)piece_pid_map_ptr2;
-			if ((*piece_pid_map_ptr2)[0])
+			if ((*piece_pid_map_ptr2)[0] && (dungeon_type_iterations > 0))
 			{
-				result = dungeon_type;
-				if (dungeon_type > 0)
+				short* dpieces_defs_map4_ptr = dpieces_defs_map3_ptr;
+				for (j = 0; j < dungeon_type_iterations; j++)
 				{
-					short* dpieces_defs_map4_ptr = dpieces_defs_map3_ptr;
-					int dungeon_type2 = dungeon_type;
-					do
+					result = *dpieces_defs_map4_ptr;
+					if (*dpieces_defs_map4_ptr)
 					{
-						result = *dpieces_defs_map4_ptr;
-						if (*dpieces_defs_map4_ptr)
+						if (level_frame_types_index > 0)
 						{
-							int level_frame_size_index2 = 0;
-							if (level_frame_size_index2 > 0)
+							for (k = 0; k < level_frame_size_index; k++)
 							{
-								do
+								if ((result & 0xFFF) == *((_DWORD *)&tile_defs[0].top + k))
 								{
-									if ((result & 0xFFF) == *((_DWORD *)&tile_defs[0].top + level_frame_size_index2))
-									{
-										v45 = level_frame_size_index2 + level_frame_types[level_frame_size_index2];
-										level_frame_size_index2 = level_frame_size_index;
-										result = v45 + -32768;
-									}
-									++level_frame_size_index2;
-								} while (level_frame_size_index2 < level_frame_size_index);
-								*dpieces_defs_map4_ptr = result;
+									int val = k + level_frame_types[k];
+									level_frame_types_index = k;
+									result = val + -32768;
+								}
 							}
+							*dpieces_defs_map4_ptr = result;
 						}
-						++dpieces_defs_map4_ptr;
-						--dungeon_type2;
-					} while (dungeon_type2);
+					}
+					++dpieces_defs_map4_ptr;
+					--dungeon_type_iterations;
 				}
 			}
 			++piece_pid_map_ptr2;
 			dpieces_defs_map3_ptr += 1792;
 			--map_length2;
 		} while (map_length2);
-		dpieces_defs_map2_ptr = (short(*)[112][112])((char *)dpieces_defs_map2_ptr + 32);
 		piece_pid_map_ptr = (int(*)[112])((char *)piece_pid_map_ptr + 4);
-	} while ((signed int)dpieces_defs_map2_ptr < (signed int)dpiece_defs_map_2[0][16]);
-	//return result;
+	}
 }
 // 525728: using guessed type int light4flag;
 // 53CD4C: using guessed type int nlevel_frames;
