@@ -33,7 +33,7 @@ extern char leveltype; // weak
 extern unsigned char currlevel; // idb
 extern char TransList[256];
 extern char nSolidTable[2049];
-extern int level_frame_count[2049];
+extern int level_frame_count[2048];
 extern ScrollStruct ScrollInfo;
 extern void *pDungeonCels;
 extern int speed_cel_frame_num_from_light_index_frame_num[16][128];
