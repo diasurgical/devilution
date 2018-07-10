@@ -142,6 +142,7 @@ void __cdecl gendung_418D91()
 	int i;
 	int j;
 	int k;
+	int h;
 
 	//first block
 	int dungeon_type_iterations;
@@ -323,23 +324,21 @@ LABEL_36:
 	}
 	*/
 	////////////////////////////
-	level_frame_types_index = 0;
 	level_frame_sizes[0] = 0;
-	if (leveltype == DTYPE_HELL && nlevel_frames > 0)
+	if (leveltype == DTYPE_HELL)
 	{
-		do
+		level_frame_count[0] = 0;
+		for (level_frame_types_index = 0; level_frame_types_index < nlevel_frames; level_frame_types_index++)
 		{
-			if (!level_frame_types_index)
-				level_frame_count[0] = 0;
 			set_level_frame_count_zero = 1;
 			if (level_frame_count[level_frame_types_index])
 			{
 				if (level_frame_types[level_frame_types_index] == 4096)
 				{
 					dungeon_cel_ptr = (char*)dungeon_cel + dungeon_cel[level_frame_types_index];
-					for(i = 0; i < 32; i++)
+					for (j = 0; j < 32; j++)
 					{
-						for (j = 32; j != 0; j -= level_cel_index)
+						for (k = 32; k != 0; k -= level_cel_index)
 						{
 							while (1)
 							{
@@ -349,18 +348,18 @@ LABEL_36:
 									break;
 								//else iterate and go to next dungeon cel ptr
 								level_cel_index = -level_cel_index;
-								j -= level_cel_index;
-								if (!j)
+								k -= level_cel_index;
+								if (!k)
 								{
 									break;
 								}
 							}
-							if (!j)
+							if (!k)
 							{
 								break;
 							}
 
-							for (k = 0; k < level_cel_index; k++)
+							for (h = 0; h < level_cel_index; h++)
 							{
 								frame_num = *dungeon_cel_ptr++;
 								if (frame_num < 32 && frame_num > 0) //check frame type
@@ -374,7 +373,7 @@ LABEL_36:
 				else
 				{
 					dungeon_cel_ptr = (char*)dungeon_cel + dungeon_cel[level_frame_types_index];
-					for (i = 0; i < level_frame_sizes[level_frame_types_index]; i++)
+					for (j = 0; j < level_frame_sizes[level_frame_types_index]; j++)
 					{
 						unsigned char frame_num = *dungeon_cel_ptr++;
 						if (frame_num < 32 && frame_num > 0) //check frame type
@@ -388,8 +387,7 @@ LABEL_36:
 					level_frame_count[level_frame_types_index] = 0;
 				}
 			}
-			++level_frame_types_index;
-		} while (level_frame_types_index < nlevel_frames);
+		}
 	}
 	
 	//////////////////////////
