@@ -145,23 +145,24 @@ void __cdecl gendung_418D91()
 	int l;
 
 	//first block
-	int dungeon_type_iterations;
+	int dungeon_type_iterations; //12 if hell else 10
 	int map_length; //112
 	int map_length_times_thirty_two; //112 * 32 (0xE00)
 	short* dpiece_defs_map_2_ptr; //iterating through map entries
-	short map_block_info; // TODO add ref
-	short frame; // TODO add ref
+	short level_cel_block; //http://sanctuary.github.io/notes/#variable/level_cel_block
+	short frame_num; // map_block_info & 0x0FFF
+	short frame_type; //map_block_info & 0x7000 >> 12
 
 	//second block
-	int* dungeon_cel;
-	int frame_size;
+	int* dungeon_cel; //same as pDungeonCels, but casted to int*
+	int frame_size; // calculated from dungeon_cel[i + 1] - dungeon_cel[i], stored into level_frame_sizes
 
 	//third block
-	int level_frame_types_index;
-	char set_level_frame_count_zero; //really should be a bool (is project using c99/c11?)
-	char* dungeon_cel_ptr;
-	char level_cel_index;
-	unsigned char frame_num;
+	int level_frame_types_index; //used to index level_frame_types
+	char set_level_frame_count_zero; //bool used to check whether or not we should set current index into level frame count to zero
+	char* level_cel_ptr; //ptr to pDungeonCels (moved around)
+	char level_cel_index; //index into dungeon_cel_ptr
+	unsigned char frame_num2; 
 
 	//fourth block
 	int total_level_frame_size;
@@ -175,9 +176,12 @@ void __cdecl gendung_418D91()
 	int speed_light_index;
 	char* light_table_ptr;
 	int level_frame_size_val;
+	int speed_light_multiplier_index;
+	int(*speed_cel_frame_num_from_light_index_frame_num_ptr)[128];
+	int tile_defs_val;
 
 	//sixth block
-	int result = 0;
+	int dpieces_defs_map2_val;
 	int(*piece_pid_map_ptr)[112];
 	int(*piece_pid_map_ptr2)[112];
 	short* dpieces_defs_map3_ptr;
@@ -242,12 +246,13 @@ void __cdecl gendung_418D91()
 		{
 			for (k = 0; k < dungeon_type_iterations; k++)
 			{
-				map_block_info = dpiece_defs_map_2_ptr[k + j * map_length_times_thirty_two/2];
-				if (map_block_info)
+				level_cel_block = dpiece_defs_map_2_ptr[k + j * map_length_times_thirty_two/2];
+				if (level_cel_block)
 				{
-					frame = map_block_info & 0x0FFF;
-					++level_frame_count[frame];
-					level_frame_types[frame] = map_block_info & 0x7000;
+					frame_num = level_cel_block & 0x0FFF;
+					frame_type = level_cel_block & 0x7000;
+					++level_frame_count[frame_num];
+					level_frame_types[frame_num] = frame_type;
 				}
 			}
 		}
@@ -357,14 +362,14 @@ LABEL_36:
 			{
 				if (level_frame_types[level_frame_types_index] == 4096)
 				{
-					dungeon_cel_ptr = (char*)dungeon_cel + dungeon_cel[level_frame_types_index];
+					level_cel_ptr = (char*)dungeon_cel + dungeon_cel[level_frame_types_index];
 					for (j = 0; j < 32; j++)
 					{
 						for (k = 32; k != 0; k -= level_cel_index)
 						{
 							while (1)
 							{
-								level_cel_index = *dungeon_cel_ptr++;
+								level_cel_index = *level_cel_ptr++;
 								//check msb (0 is valid)
 								if ((level_cel_index & 0x80u) == 0)
 									break;
@@ -381,10 +386,11 @@ LABEL_36:
 								break;
 							}
 
+							//if msb is 0, use the remaining level_cel_index to iterate and go to next level_cel_ptr
 							for (l = 0; l < level_cel_index; l++)
 							{
-								frame_num = *dungeon_cel_ptr++;
-								if (frame_num < 32 && frame_num > 0) //check frame type
+								frame_num2 = *level_cel_ptr++;
+								if (frame_num2 < 32 && frame_num2 > 0) //check frame type
 								{
 									set_level_frame_count_zero = 0;
 								}
@@ -394,11 +400,11 @@ LABEL_36:
 				}
 				else
 				{
-					dungeon_cel_ptr = (char*)dungeon_cel + dungeon_cel[level_frame_types_index];
+					level_cel_ptr = (char*)dungeon_cel + dungeon_cel[level_frame_types_index];
 					for (j = 0; j < level_frame_sizes[level_frame_types_index]; j++)
 					{
-						unsigned char frame_num = *dungeon_cel_ptr++;
-						if (frame_num < 32 && frame_num > 0) //check frame type
+						frame_num2 = *level_cel_ptr++;
+						if (frame_num2 < 32 && frame_num2 > 0) //check frame type
 						{
 							set_level_frame_count_zero = 0;
 						}
@@ -573,19 +579,18 @@ LABEL_66:
 	level_frame_types_index = 0;
 	if (level_frame_size_index > 0)
 	{
-		int speed_light_multiplier_index = 0;
-		int (*speed_cel_frame_num_from_light_index_frame_num_ptr)[128] = speed_cel_frame_num_from_light_index_frame_num;
+		speed_light_multiplier_index = 0;
+		speed_cel_frame_num_from_light_index_frame_num_ptr = speed_cel_frame_num_from_light_index_frame_num;
 		for(level_frame_types_index = 0; level_frame_types_index < level_frame_size_index; level_frame_types_index++)
 		{
-			//Tile tile_defs_ = tile_defs[level_frame_types_index2];
-			int tile_defs_val = *((_DWORD *)&tile_defs[0].top + level_frame_types_index);
+			tile_defs_val = *((_DWORD *)&tile_defs[0].top + level_frame_types_index);
 			(*speed_cel_frame_num_from_light_index_frame_num_ptr)[0] = tile_defs_val;
 			if (level_frame_types[level_frame_types_index] == 4096)
 			{
 				for(speed_light_index = 1; speed_light_index < lighting_flag_index; speed_light_index++)
 				{
 					speed_cel_frame_num_from_light_index_frame_num[0][speed_light_index + speed_light_multiplier_index] = level_frame_total_size;
-					dungeon_cel_ptr = (char*)dungeon_cel + dungeon_cel[tile_defs_val];
+					level_cel_ptr = (char*)dungeon_cel + dungeon_cel[tile_defs_val];
 					speed_cel_ptr  = (char *)pSpeedCels + level_frame_total_size;
 					light_table_ptr = (char *)pLightTbl + 0x100 * speed_light_index;
 					for (i = 0; i < 32; i++)
@@ -594,7 +599,7 @@ LABEL_66:
 						{
 							while (1)
 							{
-								level_cel_val = *dungeon_cel_ptr++;
+								level_cel_val = *level_cel_ptr++;
 								*speed_cel_ptr++ = level_cel_val;
 								if ((level_cel_val & 0x80u) == 0)
 									break;
@@ -612,7 +617,7 @@ LABEL_66:
 
 							for(k = 0; k < level_cel_val; k++)
 							{
-								*speed_cel_ptr++ = light_table_ptr[*dungeon_cel_ptr++];
+								*speed_cel_ptr++ = light_table_ptr[*level_cel_ptr++];
 							}
 						}
 					}
@@ -625,12 +630,12 @@ LABEL_66:
 				for(speed_light_index = 1; speed_light_index < lighting_flag_index; speed_light_index++)
 				{
 					speed_cel_frame_num_from_light_index_frame_num[0][speed_light_index + speed_light_multiplier_index] = level_frame_total_size;
-					dungeon_cel_ptr = (char*)dungeon_cel + dungeon_cel[tile_defs_val];
+					level_cel_ptr = (char*)dungeon_cel + dungeon_cel[tile_defs_val];
 					light_table_ptr = (char *)pLightTbl + 0x100 * speed_light_index;
 					speed_cel_ptr = (char *)pSpeedCels + level_frame_total_size;
 					for (i = 0; i < level_frame_size_val; i++)
 					{
-						*speed_cel_ptr++ = light_table_ptr[*dungeon_cel_ptr++];
+						*speed_cel_ptr++ = light_table_ptr[*level_cel_ptr++];
 					}
 					level_frame_total_size += level_frame_size_val;
 				}
@@ -692,7 +697,7 @@ LABEL_66:
 	while ( (signed int)v55 < (signed int)dpiece_defs_map_2[0][16] );
 	*/
 	//////////////////////////
-	result = 0;
+	dpieces_defs_map2_val = 0;
 	piece_pid_map_ptr = dPiece;
 	for (i = 0; i < map_length_times_thirty_two; i++)
 	{
@@ -705,20 +710,20 @@ LABEL_66:
 				dpieces_defs_map4_ptr = dpieces_defs_map3_ptr;
 				for (k = 0; k < dungeon_type_iterations; k++)
 				{
-					result = *dpieces_defs_map4_ptr;
+					dpieces_defs_map2_val = *dpieces_defs_map4_ptr;
 					if (*dpieces_defs_map4_ptr)
 					{
 						if (level_frame_types_index > 0)
 						{
 							for (l = 0; l < level_frame_size_index; l++)
 							{
-								if ((result & 0xFFF) == *((_DWORD *)&tile_defs[0].top + l))
+								if ((dpieces_defs_map2_val & 0xFFF) == *((_DWORD *)&tile_defs[0].top + l))
 								{
 									level_frame_types_index = l;
-									result = l + level_frame_types[l] + -32768;
+									dpieces_defs_map2_val = l + level_frame_types[l] + -32768;
 								}
 							}
-							*dpieces_defs_map4_ptr = result;
+							*dpieces_defs_map4_ptr = dpieces_defs_map2_val;
 						}
 					}
 					++dpieces_defs_map4_ptr;
