@@ -175,7 +175,16 @@ void __cdecl gendung_418D91()
 	int speed_light_index;
 	char* light_table_ptr;
 	int level_frame_size_val;
+
+	//sixth block
+	int result = 0;
+	int(*piece_pid_map_ptr)[112];
+	int(*piece_pid_map_ptr2)[112];
+	short* dpieces_defs_map3_ptr;
+	short* dpieces_defs_map4_ptr;
+
 	//
+
 	char* speed_cel_ptr;
 	char level_cel_val;
 
@@ -683,17 +692,17 @@ LABEL_66:
 	while ( (signed int)v55 < (signed int)dpiece_defs_map_2[0][16] );
 	*/
 	//////////////////////////
-	int result = 0;
-	int (*piece_pid_map_ptr)[112] = dPiece;
+	result = 0;
+	piece_pid_map_ptr = dPiece;
 	for (i = 0; i < map_length_times_thirty_two; i++)
 	{
-		short* dpieces_defs_map3_ptr = dpiece_defs_map_2[0][0];
-		int(*piece_pid_map_ptr2)[112] = piece_pid_map_ptr;
+		dpieces_defs_map3_ptr = dpiece_defs_map_2[0][0];
+		piece_pid_map_ptr2 = piece_pid_map_ptr;
 		for(j = 0; j < map_length; j++)
 		{
 			if ((*piece_pid_map_ptr2)[0] && (dungeon_type_iterations > 0))
 			{
-				short* dpieces_defs_map4_ptr = dpieces_defs_map3_ptr;
+				dpieces_defs_map4_ptr = dpieces_defs_map3_ptr;
 				for (k = 0; k < dungeon_type_iterations; k++)
 				{
 					result = *dpieces_defs_map4_ptr;
@@ -705,9 +714,8 @@ LABEL_66:
 							{
 								if ((result & 0xFFF) == *((_DWORD *)&tile_defs[0].top + l))
 								{
-									int val = l + level_frame_types[l];
 									level_frame_types_index = l;
-									result = val + -32768;
+									result = l + level_frame_types[l] + -32768;
 								}
 							}
 							*dpieces_defs_map4_ptr = result;
