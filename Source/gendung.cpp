@@ -136,15 +136,14 @@ LABEL_13:
 }
 // 5BB1ED: using guessed type char leveltype;
 
-void __cdecl gendung_418D91()
+void __cdecl SetupDungeon()
 {
-	//iteator variables
+	//indexing variables
 	int i;
 	int j;
 	int k;
 	int l;
 
-	//first block
 	int dungeon_type_iterations; //12 if hell else 10
 	int map_length; //112
 	int map_length_times_thirty_two; //112 * 32 (0xE00)
@@ -153,23 +152,19 @@ void __cdecl gendung_418D91()
 	short frame_num; // map_block_info & 0x0FFF
 	short frame_type; //map_block_info & 0x7000 >> 12
 
-	//second block
 	int* dungeon_cel; //same as pDungeonCels, but casted to int*
 	int frame_size; // calculated from dungeon_cel[i + 1] - dungeon_cel[i], stored into level_frame_sizes
 
-	//third block
 	int level_frame_types_index; //used to index level_frame_types
 	char set_level_frame_count_zero; //bool used to check whether or not we should set current index into level frame count to zero
 	char* level_cel_ptr; //ptr to pDungeonCels (moved around)
 	char level_cel_index; //index into dungeon_cel_ptr
 	unsigned char frame_num2; 
 
-	//fourth block
 	int total_level_frame_size;
 	int level_frame_size_index;
 	int frame_multiplier;
 
-	//fifth block
 	int ligthing_flag_enable;
 	int level_frame_total_size;
 	int lighting_flag_index;
@@ -180,62 +175,25 @@ void __cdecl gendung_418D91()
 	int(*speed_cel_frame_num_from_light_index_frame_num_ptr)[128];
 	int tile_defs_val;
 
-	//sixth block
 	int dpieces_defs_map2_val;
 	int(*piece_pid_map_ptr)[112];
 	int(*piece_pid_map_ptr2)[112];
 	short* dpieces_defs_map3_ptr;
 	short* dpieces_defs_map4_ptr;
 
-	//
-
 	char* speed_cel_ptr;
 	char level_cel_val;
 
-	//v0 = 0;
 	memset(level_frame_types, 0, sizeof(level_frame_types));
 	memset(level_frame_count, 0, sizeof(level_frame_count));
-	/*
-	do
-	{
-		*((_DWORD *)&tile_defs[0].top + v0) = v0;
-		++v0;
-	} while (v0 < 2048);
-	*/
+
 	//set tile_defs to be 1,2,3,...
 	for (i = 0; i < sizeof(tile_defs)/sizeof(*tile_defs); i++)
 	{
 		tile_defs[i].top = i * 2;
 		tile_defs[i].left = i * 2 + 1;
 	}
-	/////////////////////
-	/*
-	v1 = dpiece_defs_map_2;
-	v48 = 2 * (leveltype == DTYPE_HELL) + 10;
-	do
-	{
-		v2 = v1;
-		v3 = 112;
-		do
-		{
-			for ( i = 0; i < v48; ++i )
-			{
-				v5 = (*v2)[0][i];
-				if ( (*v2)[0][i] )
-				{
-					v6 = v5 & 0xFFF;
-					++level_frame_count[v6];
-					level_frame_types[v6] = v5 & 0x7000;
-				}
-			}
-			v2 = (short (*)[112][112])((char *)v2 + 0xE00);
-			--v3;
-		}
-		while ( v3 );
-		v1 = (short (*)[112][112])((char *)v1 + 32);
-	}
-	while ( (signed int)v1 < (signed int)dpiece_defs_map_2[0][16] );
-	*/
+
 	dungeon_type_iterations = 2 * (leveltype == DTYPE_HELL) + 10; //12 if in HELL else 10
 	map_length = sizeof(dpiece_defs_map_2[0][0]) / sizeof(dpiece_defs_map_2[0][0][0]);
 	map_length_times_thirty_two = map_length * 32;
@@ -258,23 +216,7 @@ void __cdecl gendung_418D91()
 		}
 		dpiece_defs_map_2_ptr += 16;
 	}
-	///////////////////////////
-	/*
-	v7 = 1;
-	nlevel_frames = *(_DWORD *)pDungeonCels & 0xFFFF;
-	v8 = nlevel_frames;
-	if ( nlevel_frames > 1 )
-	{
-		do
-		{
-			level_frame_sizes[v7] = (*((_DWORD *)pDungeonCels + v7 + 1) - *((_DWORD *)pDungeonCels + v7)) & 0xFFFF;
-			v8 = nlevel_frames;
-			++v7;
-		}
-		while ( v7 < nlevel_frames );
-	}
-	*/
-	////////////////////////////
+
 	dungeon_cel = (int*)pDungeonCels;
 	nlevel_frames = dungeon_cel[0] & 0xFFFF;
 	for (i = 1; i < nlevel_frames; i++)
@@ -282,75 +224,7 @@ void __cdecl gendung_418D91()
 		frame_size = dungeon_cel[i + 1] - dungeon_cel[i];
 		level_frame_sizes[i] = frame_size & 0xFFFF;
 	}
-	////////////////////////////
-	/*
-	v9 = 0;
-	level_frame_sizes[0] = 0;
-	if ( leveltype == DTYPE_HELL && v8 > 0 )
-	{
-		do
-		{
-			if ( !v9 )
-				level_frame_count[0] = 0;
-			v53 = 1;
-			if ( level_frame_count[v9] )
-			{
-				if ( level_frame_types[v9] == 4096 )
-				{
-					v13 = (unsigned char *)pDungeonCels + *((_DWORD *)pDungeonCels + v9);
-					v14 = 32;
-					do
-					{
-						v46 = v14;
-						v15 = 32;
-						do
-						{
-							while ( 1 )
-							{
-								v16 = *v13++;
-								if ( (v16 & 0x80u) == 0 )
-									break;
-								_LOBYTE(v16) = -(char)v16;
-								v15 -= v16;
-								if ( !v15 )
-									goto LABEL_36;
-							}
-							v15 -= v16;
-							v17 = v16;
-							do
-							{
-								v18 = *v13++;
-								if ( v18 && v18 < 0x20u )
-									v53 = 0;
-								--v17;
-							}
-							while ( v17 );
-						}
-						while ( v15 );
-LABEL_36:
-						v14 = v46 - 1;
-					}
-					while ( v46 != 1 );
-				}
-				else
-				{
-					v10 = (char *)pDungeonCels + *((_DWORD *)pDungeonCels + v9);
-					for ( j = level_frame_sizes[v9]; j; --j )
-					{
-						v12 = *v10++;
-						if ( v12 && v12 < 0x20u )
-							v53 = 0;
-					}
-				}
-				if ( !v53 )
-					level_frame_count[v9] = 0;
-			}
-			++v9;
-		}
-		while ( v9 < nlevel_frames );
-	}
-	*/
-	////////////////////////////
+
 	level_frame_sizes[0] = 0;
 	if (leveltype == DTYPE_HELL)
 	{
@@ -418,28 +292,6 @@ LABEL_36:
 		}
 	}
 	
-	//////////////////////////
-	/*
-	gendung_4191BF(2047);
-	v19 = 0;
-	v20 = 0;
-	if ( light4flag )
-	{
-		do
-		{
-			v21 = level_frame_sizes[v20++];
-			v19 += 2 * v21;
-		}
-		while ( v19 < 0x100000 );
-	}
-	else
-	{
-		do
-			v19 += 14 * level_frame_sizes[v20++];
-		while ( v19 < 0x100000 );
-	}
-	*/
-	//////////////////////////
 	gendung_4191BF(2047);
 	total_level_frame_size = 0;
 	level_frame_size_index = 0;
@@ -448,127 +300,7 @@ LABEL_36:
 	{
 		total_level_frame_size += frame_multiplier * level_frame_sizes[level_frame_size_index++];
 	}
-	//////////////////////////
-	/*v22 = v20 - 1;
-	v58 = v22;
-	if ( v22 > 128 )
-	{
-		v58 = 128;
-		v22 = 128;
-	}
-	v23 = -(light4flag != 0);
-	v63 = 0;
-	_LOBYTE(v23) = v23 & 0xF4;
-	v54 = 0;
-	v60 = v23 + 15;
-	if ( v22 > 0 )
-	{
-		v56 = 0;
-		v49 = speed_cel_frame_num_from_light_index_frame_num;
-		do
-		{
-			v24 = v54;
-			v25 = level_frame_types[v54] == 4096;
-			v62 = *((_DWORD *)&tile_defs[0].top + v54);
-			(*v49)[0] = v62;
-			if ( v25 )
-			{
-				v65 = 1;
-				if ( v60 > 1 )
-				{
-					do
-					{
-						speed_cel_frame_num_from_light_index_frame_num[0][v65 + v56] = v63;
-						v33 = (char *)pDungeonCels + *((_DWORD *)pDungeonCels + v62);
-						v34 = (char *)pSpeedCels + v63;
-						_EBX = &pLightTbl[256 * v65];
-						v36 = 32;
-						do
-						{
-							v47 = v36;
-							v37 = 32;
-							do
-							{
-								while ( 1 )
-								{
-									v38 = (unsigned char)*v33++;
-									*v34++ = v38;
-									if ( (v38 & 0x80u) == 0 )
-										break;
-									_LOBYTE(v38) = -(char)v38;
-									v37 -= v38;
-									if ( !v37 )
-										goto LABEL_63;
-								}
-								v37 -= v38;
-								v39 = v38;
-								do
-								{
-									_EAX = *v33++;
-									ASM_XLAT(_EAX,_EBX);
-									*v34++ = _EAX;
-									--v39;
-								}
-								while ( v39 );
-							}
-							while ( v37 );
-LABEL_63:
-							v36 = v47 - 1;
-						}
-						while ( v47 != 1 );
-						v63 += level_frame_sizes[v54];
-						++v65;
-					}
-					while ( v65 < v60 );
-					goto LABEL_65;
-				}
-			}
-			else
-			{
-				v26 = level_frame_sizes[v24];
-				v51 = level_frame_sizes[v24];
-				v64 = 1;
-				if ( v60 > 1 )
-				{
-					do
-					{
-						speed_cel_frame_num_from_light_index_frame_num[0][v64 + v56] = v63;
-						v27 = (char *)pDungeonCels + *((_DWORD *)pDungeonCels + v62);
-						v28 = (char *)pSpeedCels + v63;
-						_EBX = &pLightTbl[256 * v64];
-						for ( k = v51; k; --k )
-						{
-							_EAX = *v27++;
-							ASM_XLAT(_EAX,_EBX);
-							*v28++ = _EAX;
-						}
-						v63 += v26;
-						++v64;
-					}
-					while ( v64 < v60 );
-LABEL_65:
-					v22 = v58;
-					goto LABEL_66;
-				}
-			}
-LABEL_66:
-			++v54;
-			v49 = (int (*)[128])((char *)v49 + 64);
-			v56 += 16;
-		}
-		while ( v54 < v22 );
-	}*/
-	//////////////////////////
-	/*
-	*.text:00418FB5 neg     eax
-	.text:00418FB7 sbb     eax, eax
-	* if eax == 0, CF = 0 else 1
-	* eax = eax - (eax + CF)
-	* eax = eax - eax - eax != 0
-	* eax = -(eax != 0)
-	* eax only can be 0 or -1...
-	*/
-	
+
 	if (--level_frame_size_index > 128)// limit the index to 128
 	{
 		level_frame_size_index = 128;
@@ -644,59 +376,7 @@ LABEL_66:
 			speed_light_multiplier_index += 16;
 		}
 	}
-	//////////////////////////
-	/*
-	v57 = dPiece;
-	v55 = dpiece_defs_map_2;
-	do
-	{
-		v61 = 112;
-		v52 = v55;
-		v50 = v57;
-		do
-		{
-			if ( (*v50)[0] && v48 > 0 )
-			{
-				v42 = v52;
-				v59 = v48;
-				do
-				{
-					v43 = *(_WORD *)v42;
-					if ( *(_WORD *)v42 )
-					{
-						v44 = 0;
-						if ( v22 > 0 )
-						{
-							do
-							{
-								if ( (v43 & 0xFFF) == *((_DWORD *)&tile_defs[0].top + v44) )
-								{
-									v45 = v44 + level_frame_types[v44];
-									v44 = v22;
-									v43 = v45 + -32768;
-								}
-								++v44;
-							}
-							while ( v44 < v22 );
-							*(_WORD *)v42 = v43;
-						}
-					}
-					v42 = (short (*)[112][112])((char *)v42 + 2);
-					--v59;
-				}
-				while ( v59 );
-			}
-			++v50;
-			v52 = (short (*)[112][112])((char *)v52 + 3584);
-			--v61;
-		}
-		while ( v61 );
-		v55 = (short (*)[112][112])((char *)v55 + 32);
-		v57 = (int (*)[112])((char *)v57 + 4);
-	}
-	while ( (signed int)v55 < (signed int)dpiece_defs_map_2[0][16] );
-	*/
-	//////////////////////////
+
 	dpieces_defs_map2_val = 0;
 	piece_pid_map_ptr = dPiece;
 	for (i = 0; i < map_length_times_thirty_two; i++)
