@@ -159,30 +159,30 @@ void __cdecl SetupDungeon()
 	char set_level_frame_count_zero; //bool used to check whether or not we should set current index into level frame count to zero
 	char* level_cel_ptr; //ptr to pDungeonCels (moved around)
 	char level_cel_index; //index into dungeon_cel_ptr
-	unsigned char frame_num2; 
+	unsigned char frame_num2; //used to check if the value from *level_cel_ptr is > 0 and < 32
 
-	int total_level_frame_size;
-	int level_frame_size_index;
-	int frame_multiplier;
+	int total_level_frame_size; //used as a threshold to increment level_frame_size_index
+	int level_frame_size_index; //index into level_frame_size
+	int frame_multiplier; //a multipler that used in calculating total_level_frame_size and is 2 if light4flag else 14
 
-	int ligthing_flag_enable;
-	int level_frame_total_size;
-	int lighting_flag_index;
-	int speed_light_index;
-	char* light_table_ptr;
-	int level_frame_size_val;
-	int speed_light_multiplier_index;
-	int(*speed_cel_frame_num_from_light_index_frame_num_ptr)[128];
-	int tile_defs_val;
+	int ligthing_flag_enable; //0 if light4flag == 0 else -1
+	int level_frame_total_size; //an index into pSpeedCel computed by adding level_frame_sizes
+	int lighting_flag_index; //computed from light4flags & 0xF4 + 0xF. Will be either 15 or 0x103 (259). Used for array looping condition
+	int speed_light_index; // used as an indexer in pSpeedCel until lighting_flag_index
+	char* light_table_ptr; //
+	int level_frame_size_val; //level_frame_size_val = level_frame_sizes[level_frame_types_index]; used as a array looping condition for copying
+	int speed_light_multiplier_index; //used as a 16*i in accessing pSpeedCel
+	int(*speed_cel_frame_num_from_light_index_frame_num_ptr)[128]; //
+	int tile_defs_val; //value from tile_defs
 
-	int dpieces_defs_map2_val;
-	int(*piece_pid_map_ptr)[112];
-	int(*piece_pid_map_ptr2)[112];
-	short* dpieces_defs_map3_ptr;
+	int dpieces_defs_map2_val; //value from dpieces_def_map2
+	int(*dpiece_def_map_ptr)[112]; //ptr to dPiece
+	int(*dpiece_defs_map_ptr2)[112];
+	short* dpieces_defs_map3_ptr; //short* version
 	short* dpieces_defs_map4_ptr;
 
-	char* speed_cel_ptr;
-	char level_cel_val;
+	char* speed_cel_ptr; //ptr to pSpeedCel
+	char level_cel_val; //val from level_cel_ptr
 
 	memset(level_frame_types, 0, sizeof(level_frame_types));
 	memset(level_frame_count, 0, sizeof(level_frame_count));
@@ -194,6 +194,9 @@ void __cdecl SetupDungeon()
 		tile_defs[i].left = i * 2 + 1;
 	}
 
+	/*
+	 * Iterates through dpiece_defs_map_2 and updates level_frame_types with the fetched value from dpiece_defs_map_2
+	 */
 	dungeon_type_iterations = 2 * (leveltype == DTYPE_HELL) + 10; //12 if in HELL else 10
 	map_length = sizeof(dpiece_defs_map_2[0][0]) / sizeof(dpiece_defs_map_2[0][0][0]);
 	map_length_times_thirty_two = map_length * 32;
@@ -217,6 +220,9 @@ void __cdecl SetupDungeon()
 		dpiece_defs_map_2_ptr += 16;
 	}
 
+	/*
+	 * Iterates through pDungeonCels and updates level_frame_size with the fetched values from pDungeonCels
+	 */
 	dungeon_cel = (int*)pDungeonCels;
 	nlevel_frames = dungeon_cel[0] & 0xFFFF;
 	for (i = 1; i < nlevel_frames; i++)
@@ -225,6 +231,11 @@ void __cdecl SetupDungeon()
 		level_frame_sizes[i] = frame_size & 0xFFFF;
 	}
 
+	/*
+	 * This block updates level_frame_count (ONLY IN HELL ENVIRONMENT)
+	 * The loops try to set set_level_frame_count_zero to 0. This is attempted by looping through dungeon_cel and checking if *dungeon_cel is > 0 and < 32.
+	 * if set_level_frame_count_zero == 0, then level_frame_count[level_frame_types_index] = 0;
+	 */
 	level_frame_sizes[0] = 0;
 	if (leveltype == DTYPE_HELL)
 	{
@@ -291,8 +302,13 @@ void __cdecl SetupDungeon()
 			}
 		}
 	}
-	
+
+	//did not decompile gendung_4191BF
 	gendung_4191BF(2047);
+
+	/*
+	 * This block updates level_frame_size_index (used to index level_frame_size), until total_level_frame_size >= 0x100000
+	 */
 	total_level_frame_size = 0;
 	level_frame_size_index = 0;
 	frame_multiplier = light4flag ? 2 : 14;
@@ -301,6 +317,12 @@ void __cdecl SetupDungeon()
 		total_level_frame_size += frame_multiplier * level_frame_sizes[level_frame_size_index++];
 	}
 
+	/*
+	 * level_frame_size_index is capped at 128. 
+	 * This block updates speed_cel_frame_num_from_light_index_frame_num, pSpeedCels
+	 * speed_cel_frame_num_from_light_index_frame_num is updated by an element in tile_defs and level_frame_total_size (computed by elements in level_frame_sizes)
+	 * pSpeedCels is updated by an element in pLightTbl using an element from dungeon_cel as an index.
+	 */
 	if (--level_frame_size_index > 128)// limit the index to 128
 	{
 		level_frame_size_index = 128;
@@ -377,15 +399,19 @@ void __cdecl SetupDungeon()
 		}
 	}
 
+	/*
+	 * This block updates dPiece (by checking values on multiple levels dPiece
+	 * dPiece is updated by checking frame_num (0x0FFF) with tile_defs and then, copying an elment from level_frame_types into dPiece
+	 */
 	dpieces_defs_map2_val = 0;
-	piece_pid_map_ptr = dPiece;
+	dpiece_def_map_ptr = dPiece;
 	for (i = 0; i < map_length_times_thirty_two; i++)
 	{
 		dpieces_defs_map3_ptr = dpiece_defs_map_2[0][0];
-		piece_pid_map_ptr2 = piece_pid_map_ptr;
+		dpiece_defs_map_ptr2 = dpiece_def_map_ptr;
 		for(j = 0; j < map_length; j++)
 		{
-			if ((*piece_pid_map_ptr2)[0] && (dungeon_type_iterations > 0))
+			if ((*dpiece_defs_map_ptr2)[0] && (dungeon_type_iterations > 0))
 			{
 				dpieces_defs_map4_ptr = dpieces_defs_map3_ptr;
 				for (k = 0; k < dungeon_type_iterations; k++)
@@ -410,10 +436,10 @@ void __cdecl SetupDungeon()
 					--dungeon_type_iterations;
 				}
 			}
-			++piece_pid_map_ptr2;
+			++dpiece_defs_map_ptr2;
 			dpieces_defs_map3_ptr += map_length_times_thirty_two/2;
 		}
-		piece_pid_map_ptr = (int(*)[112])((char *)piece_pid_map_ptr + 4);
+		dpiece_def_map_ptr = (int(*)[112])((char *)dpiece_def_map_ptr + 4);
 	}
 }
 // 525728: using guessed type int light4flag;
@@ -574,7 +600,7 @@ void __cdecl SetDungeonMicros()
 		v9 = (int (*)[112])((char *)v9 + 4);
 	}
 	while ( (signed int)v8 < (signed int)dpiece_defs_map_2[0][16] ); /* check */
-	gendung_418D91();
+	SetupDungeon();
 	gendung_4192C2();
 	if ( zoomflag )
 	{

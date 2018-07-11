@@ -70,7 +70,7 @@ extern int dminy; // weak
 extern short dpiece_defs_map_2[16][112][112];
 
 void __cdecl FillSolidBlockTbls();
-void __cdecl gendung_418D91();
+void __cdecl SetupDungeon();
 void __fastcall gendung_4191BF(int frames);
 void __fastcall gendung_4191FB(int a1, int a2);
 int __fastcall gendung_get_dpiece_num_from_coord(int x, int y);
