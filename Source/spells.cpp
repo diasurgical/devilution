@@ -43,44 +43,44 @@ SpellData spelldata[37] =
 	{ SPL_BONESPIRIT,  24,  STYPE_MAGIC,	 "Bone Spirit",	 NULL,			 9,  7,  0, 0, 34,  IS_CAST2, { MIS_BONESPIRIT,  0,		  0 }, 1, 12,  20, 60, 11500, 800 }
 };
 
-int __fastcall GetManaAmount(int player_index, int spell_number)
+int __fastcall GetManaAmount(int id, int sn)
 {
-	int spLvlManaAdjust; // esi
-	int spellLevel; // ecx
-	int rawManaCost; // ecx
-	int manaCost; // ecx
+	int adj; // mana adjust
+	int sl; // spell level
+	int i; // "raw" mana cost
+	int ma; // mana amount
 
-	spLvlManaAdjust = 0;
-	spellLevel = plr[player_index]._pSplLvl[spell_number] + plr[player_index]._pISplLvlAdd - 1;
-	if (spellLevel < 0)
-		spellLevel = 0;
+	adj = 0;
+	sl = plr[id]._pSplLvl[sn] + plr[id]._pISplLvlAdd - 1;
+	if (sl < 0)
+		sl = 0;
 
-	if ( spellLevel > 0 )
-		spLvlManaAdjust = spellLevel * spelldata[spell_number].sManaAdj;
-	if ( spell_number == SPL_FIREBOLT )
-		spLvlManaAdjust >>= 1;
-	if ( spell_number == SPL_RESURRECT && spellLevel > 0 )
-		spLvlManaAdjust = spellLevel * (spelldata[SPL_RESURRECT].sManaCost / 8);
+	if ( sl > 0 )
+		adj = sl * spelldata[sn].sManaAdj;
+	if ( sn == SPL_FIREBOLT )
+		adj >>= 1;
+	if ( sn == SPL_RESURRECT && sl > 0 )
+		adj = sl * (spelldata[SPL_RESURRECT].sManaCost / 8);
 
-	if (spelldata[spell_number].sManaCost == 255 )
-		rawManaCost = (unsigned char)plr[player_index]._pMaxManaBase;
+	if (spelldata[sn].sManaCost == 255 )
+		i = (unsigned char)plr[id]._pMaxManaBase;
 	else
-		rawManaCost = spelldata[spell_number].sManaCost;
+		i = spelldata[sn].sManaCost;
 
-	manaCost = (rawManaCost - spLvlManaAdjust) << 6;
+	ma = (i - adj) << 6;
 
-	if ( spell_number == SPL_HEAL )
-		manaCost = (spelldata[SPL_HEAL].sManaCost + 2 * plr[player_index]._pLevel - spLvlManaAdjust) << 6;
-	if ( spell_number == SPL_HEALOTHER )
-		manaCost = (spelldata[SPL_HEAL].sManaCost + 2 * plr[player_index]._pLevel - spLvlManaAdjust) << 6;
+	if ( sn == SPL_HEAL )
+		ma = (spelldata[SPL_HEAL].sManaCost + 2 * plr[id]._pLevel - adj) << 6;
+	if ( sn == SPL_HEALOTHER )
+		ma = (spelldata[SPL_HEAL].sManaCost + 2 * plr[id]._pLevel - adj) << 6;
 
-	if ( plr[player_index]._pClass == 1 )
-		manaCost -= manaCost >> 2;
+	if ( plr[id]._pClass == 1 )
+		ma -= ma >> 2;
 
-	if (spelldata[spell_number].sMinMana > manaCost >> 6 )
-		manaCost = spelldata[spell_number].sMinMana << 6;
+	if (spelldata[sn].sMinMana > ma >> 6 )
+		ma = spelldata[sn].sMinMana << 6;
 
-	return manaCost * (100 - plr[player_index]._pISplCost) / 100;
+	return ma * (100 - plr[id]._pISplCost) / 100;
 }
 
 void __fastcall UseMana(int id, int sn)
