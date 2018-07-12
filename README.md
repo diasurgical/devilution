@@ -18,7 +18,7 @@ After months of peicing these mistakes together, Devilution was born. I present 
 # Purpose
 Having the source code makes Diablo much easier to update and maintain. For years mod-makers had to rely on tedious code editing and memory injection. A few even went further and reversed most or all of the game. The problem is that they rarely shared their work. Usually being a one-person job, they move on with their lives due to the amount of time required or lack of interest. This brings us back to square one having to do countless hours of work all over again. Devilution aims to fix this by finally making the source code open to the community.
 
-In order to ensure that everything is preserved, Devilution keeps everything as it was originally designed. This goes as far as bugs and badly written code in the original game. With that it serves as a base for developers to work with making it much easier then before to update, fix, and port the game to other platforms.
+In order to ensure that everything is preserved, Devilution keeps everything as it was originally designed. This goes as far as bugs and badly written code in the original game. With that it serves as a base for developers to work with making it much easier than before to update, fix, and port the game to other platforms.
 
 As a side goal Devilution tries to document the unused and cut content from the final game. Development of Diablo was rushed near the end--many ideas were scrapped and Multiplayer was quickly hacked in. By examining the source, we can see various quirks of planned development.
 
