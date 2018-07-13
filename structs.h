@@ -820,7 +820,7 @@ struct PlayerStruct
 	char _pLightRad;
 	unsigned char _pLvlChanging;
 	char _pName[32];
-	int _pClass;
+	unsigned char _pClass;
 	int _pStrength;
 	int _pBaseStr;
 	int _pMagic;
