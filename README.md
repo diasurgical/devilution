@@ -11,16 +11,16 @@ Reverse engineered by GalaXyHaXz in 2018
 # Introduction
 While most titles from Blizzard receive years of love and support, Diablo stayed in the shadows. Abandoned in favor of a sequel, it remained full of bugs and unfinished potential. The game was last patched in 2001 before being discontinued altogether, a problem I wanted to fix. I played Diablo extensively as a teenager, but as time passed it became difficult to run the game on newer hardware. The lack of many improvements found in the sequel also kept it from aging well. At first the game appeared to be a lost cause, but thankfully a little oversight in 1997 made it not so.
 
-With Diablo's development team moving on the source code was given to **Synergestic Software** to handle the expansion. Less known however is that it was also given to **Climax Studios** to create a PlayStation port. Now Sony has long been known for letting things slide; _especially_ in Japan. Anything from leaking prototypes to full source code and Diablo was no exception. Symbolic information was accidentally left on the Japanese port. Normally used for debugging, a symbol file contains a map of everything generated during compile time. This includes file names, functions, structures, variables, and more! To top it all off a special build is hidden on the PC release in `DIABDAT.MPQ -> D1221A.MPQ -> DIABLO.EXE`! This build contains debug tools and assert strings further giving away code information.
+With Diablo's development team moving on the source code was given to **Synergistic Software** to handle the expansion. Less known however is that it was also given to **Climax Studios** to create a PlayStation port. Now Sony has long been known for letting things slide; _especially_ in Japan. Anything from leaking prototypes to full source code and Diablo was no exception. Symbolic information was accidentally left on the Japanese port. Normally used for debugging, a symbol file contains a map of everything generated during compile time. This includes file names, functions, structures, variables, and more! To top it all off a special build is hidden on the PC release in `DIABDAT.MPQ -> D1221A.MPQ -> DIABLO.EXE`! This build contains debug tools and assert strings further giving away code information.
 
-After months of peicing these mistakes together, Devilution was born. I present to you a reconstructed form of Diablo's original source code! Once more shall the heroes of Sanctuary return to the depths below!
+After months of piecing these mistakes together, Devilution was born. I present to you a reconstructed form of Diablo's original source code! Once more shall the heroes of Sanctuary return to the depths below!
 
 # Purpose
 Having the source code makes Diablo much easier to update and maintain. For years mod-makers had to rely on tedious code editing and memory injection. A few even went further and reversed most or all of the game. The problem is that they rarely shared their work. Usually being a one-person job, they move on with their lives due to the amount of time required or lack of interest. This brings us back to square one having to do countless hours of work all over again. Devilution aims to fix this by finally making the source code open to the community.
 
 In order to ensure that everything is preserved, Devilution keeps everything as it was originally designed. This goes as far as bugs and badly written code in the original game. With that it serves as a base for developers to work with making it much easier than before to update, fix, and port the game to other platforms.
 
-As a side goal Devilution tries to document the unused and cut content from the final game. Development of Diablo was rushed near the end--many ideas were scrapped and Multiplayer was quickly hacked in. By examining the source, we can see various quirks of planned development.
+As a side goal Devilution tries to document the unused and cut content from the final game. Development of Diablo was rushed near the end--many ideas were scrapped and multiplayer was quickly hacked in. By examining the source, we can see various quirks of planned development.
 
 # Compiling
 Diablo was developed on Windows 95 using Visual C++ 4.20 and later 5.10 for newer patches. Devilution is optimized for the same tools originally used but is also compatible with modern setups.
@@ -33,7 +33,7 @@ To build a binary as close as possible to the original, use [Visual C++ 5](https
 ### Building with Visual Studio 2010-2017
 - Open the project solution `Diablo.sln`, choose `Debug` or `Release`, and then `Build Solution`.
 
-Make sure to disable Data Exection Prevention. `Storm.dll` uses dynamic compilation to improve rendering performance but fails to mark the resulting memory page as executable, leading to a protection fault when trying to draw.
+Make sure to disable Data Execution Prevention. `Storm.dll` uses dynamic compilation to improve rendering performance but fails to mark the resulting memory page as executable, leading to a protection fault when trying to draw.
 - Configuration options -> Linker -> Advanced -> Data Execution Prevention (DEP).
 - Set this value to: No (/NXCOMPAT: NO).
 
@@ -97,7 +97,7 @@ Absolutely not. Diablo II would require far more work and is still supported by 
 Sorry, but no. This project is time consuming enough as it is, and it's just a hobby.
 > I think that's about all, but is Devilution even legal?
 
-That's a tricky question. Under the DMCA, reverse-engineering has exceptions for the purpose of documentation and interoperability. Devilution provides the necessary documentation needed to achieve the latter. However, it falls into an entirely grey area. The real question is whether or not Blizzard deems it necessary to take action.
+That's a tricky question. Under the DMCA, reverse-engineering has exceptions for the purpose of documentation and interoperability. Devilution provides the necessary documentation needed to achieve the latter. However, it falls into an entirely gray area. The real question is whether or not Blizzard deems it necessary to take action.
 
 # Credits
 - [sanctuary](https://github.com/sanctuary) - extensively documenting Diablo's game engine
