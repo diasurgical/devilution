@@ -305,7 +305,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	{
 		diablo_init_screen();
 		diablo_parse_flags(lpCmdLine);
-		init_create_window();
+		init_create_window(nCmdShow);
 		sound_init();
 		UiInitialize();
 #ifdef _DEBUG

@@ -9,7 +9,7 @@ extern int nummissiles; // idb
 extern int ManashieldFlag;
 extern unk_missile_struct misflagstruct_unknown[125];
 extern int MissilePreFlag; // weak
-// int END_unkmis_126; // weak
+extern int unk_missile_flag; // weak
 
 void __fastcall GetDamageAmt(int i, int *mind, int *maxd);
 int __fastcall CheckBlock(int fx, int fy, int tx, int ty);

@@ -9,7 +9,7 @@ int nummissiles; // idb
 int ManashieldFlag;
 unk_missile_struct misflagstruct_unknown[125];
 int MissilePreFlag; // weak
-
+int unk_missile_flag; // weak
 
 MissileData missiledata[68] =
 {
@@ -2328,7 +2328,7 @@ void __cdecl InitMissiles()
 		++v4;
 	}
 	while ( v4 < 125 );
-	// END_unkmis_126 = 0;
+	unk_missile_flag = 0;
 	v5 = &misflagstruct_unknown[0].field_4;
 	do
 	{
@@ -2354,7 +2354,7 @@ void __cdecl InitMissiles()
 	}
 	while ( v6 < 112 );
 }
-// 64CCD8: using guessed type int END_unkmis_126;
+// 64CCD8: using guessed type int unk_missile_flag;
 
 void __fastcall AddLArrow(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
