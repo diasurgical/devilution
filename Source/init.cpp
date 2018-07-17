@@ -168,7 +168,7 @@ void __fastcall init_disable_screensaver(bool disable)
 	}
 }
 
-void __cdecl init_create_window()
+void __fastcall init_create_window(int nCmdShow)
 {
 	int nHeight; // eax
 	HWND hWnd; // esi
@@ -201,7 +201,7 @@ void __cdecl init_create_window()
 	hWnd = CreateWindowExA(0, "DIABLO", "DIABLO", WS_POPUP, 0, 0, nWidth, nHeight, NULL, NULL, ghInst, NULL);
 	if ( !hWnd )
 		TermMsg("Unable to create main window");
-	ShowWindow(hWnd, SW_SHOWNORMAL);
+	ShowWindow(hWnd, SW_SHOWNORMAL); // nCmdShow used only in beta: ShowWindow(hWnd, nCmdShow)
 	UpdateWindow(hWnd);
 	init_await_mom_parent_exit();
 	dx_init(hWnd);
