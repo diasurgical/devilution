@@ -20,7 +20,7 @@ void __fastcall init_cleanup(bool show_cursor);
 void __cdecl init_run_office_from_start_menu();
 void __fastcall init_run_office(char *dir);
 void __fastcall init_disable_screensaver(bool disable);
-void __cdecl init_create_window();
+void __fastcall init_create_window(int nCmdShow);
 void __cdecl init_kill_mom_parent();
 HWND __cdecl init_find_mom_parent();
 void __cdecl init_await_mom_parent_exit();
