@@ -52,6 +52,7 @@ EXPORTS
 
   SNetEnumGamesEx               @133 NONAME
   SNetSetServerChatCommand      @134 NONAME
+  SNetSetServerChatCommand@4    @134 NONAME
   ;SNetSendDatagram             @135 NONAME
   ;SNetReceiveDatagram          @136 NONAME
   SNetDisconnectAll             @137 NONAME
