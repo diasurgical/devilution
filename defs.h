@@ -27,6 +27,8 @@
 #define MDMAXX					40
 #define MDMAXY					40
 
+// from diablo 2 beta
+#define MAXEXP					2000000000
 
 // Diablo uses a 256 color palette
 // Entry 0-127 (0x00-0x7F) are level specific
