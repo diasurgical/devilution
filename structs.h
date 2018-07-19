@@ -1038,13 +1038,13 @@ struct _SNETUIDATA
 	void (__cdecl *statuscallback)();
 	void (__cdecl *getdatacallback)();
 	void (__cdecl *categorycallback)();
-	void (__cdecl *field_34)();
-	void (__cdecl *field_38)();
+	void (__cdecl *categorylistcallback)();
+	void (__cdecl *newaccountcallback)();
 	void (__cdecl *profilecallback)();
-	int profilegetstring;
-	void (__cdecl *profiledraw)();
-	void (__cdecl *selecthero)();
-	void (__cdecl *createhero)();
+	int profilefields;
+	void (__cdecl *profilebitmapcallback)();
+	void (__cdecl *selectnamecallback)();
+	void (__cdecl *changenamecallback)();
 };
 
 struct _SNETPROGRAMDATA
@@ -1056,14 +1056,14 @@ struct _SNETPROGRAMDATA
 	int versionid;
 	int reserved1;
 	int maxplayers;
-	int multi_seed;
 	void *initdata;
 	int initdatabytes;
 	void *reserved2;
 	int optcategorybits;
-	int reserved3;
-	int reserved4;
-	int languageid;
+	char *cdkey;
+	char *registereduser;
+	int spawned;
+	int lcid;
 };
 
 struct _uiheroinfo
@@ -1180,7 +1180,7 @@ struct _SNETPLAYERDATA
 	int size;
 	char *playername;
 	char *playerdescription;
-	int field_C;
+	int reserved;
 };
 
 struct _SNETCAPS
