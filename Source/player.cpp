@@ -977,8 +977,8 @@ void __fastcall AddPlrExperience(int pnum, int lvl, int exp)
 			}
 			v10 = &plr[v5]._pExperience;
 			*v10 += v7;
-			if ( plr[v5]._pExperience > 2000000000u )
-				*v10 = 2000000000;
+			if ( plr[v5]._pExperience > MAXEXP )
+				*v10 = MAXEXP;
 			v11 = *v10;
 			if ( v11 < ExpLvlsTbl[49] )
 			{
