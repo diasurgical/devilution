@@ -809,7 +809,7 @@ int __fastcall NetInit(int bSinglePlayer, int *pfExitProgram)
 	{
 		*a4 = 0;
 		SetRndSeed(0);
-		sgGameInitInfo.dwSeed = time(0);
+		sgGameInitInfo.dwSeed = time(NULL);
 		_LOBYTE(sgGameInitInfo.bDiff) = gnDifficulty;
 		memset(&ProgramData, 0, 0x3Cu);
 		ProgramData.size = 60;
@@ -818,10 +818,10 @@ int __fastcall NetInit(int bSinglePlayer, int *pfExitProgram)
 		ProgramData.programid = 'DRTL';
 		ProgramData.versionid = 42;
 		ProgramData.maxplayers = 4;
-		ProgramData.multi_seed = (int)&sgGameInitInfo;
-		ProgramData.initdata = (void *)8;
-		ProgramData.reserved2 = (void *)15;
-		ProgramData.languageid = 1033;
+		ProgramData.initdata = &sgGameInitInfo;
+		ProgramData.initdatabytes = 8;
+		ProgramData.optcategorybits = 15;
+		ProgramData.lcid = 1033;
 		memset(&a2, 0, 0x10u);
 		a2.size = 16;
 		memset(&UiData, 0, 0x50u);
@@ -835,11 +835,11 @@ int __fastcall NetInit(int bSinglePlayer, int *pfExitProgram)
 		UiData.authcallback = UiAuthCallback;
 		UiData.getdatacallback = UiGetDataCallback;
 		UiData.categorycallback = UiCategoryCallback;
-		UiData.selecthero = (void (__cdecl *)())mainmenu_select_hero_dialog;
-		UiData.createhero = (void (__cdecl *)())mainmenu_create_hero;
-		UiData.profiledraw = UiProfileDraw;
+		UiData.selectnamecallback = (void (__cdecl *)())mainmenu_select_hero_dialog;
+		UiData.changenamecallback = (void (__cdecl *)())mainmenu_create_hero;
+		UiData.profilebitmapcallback = UiProfileDraw;
 		UiData.profilecallback = UiProfileCallback;
-		UiData.profilegetstring = UiProfileGetString();
+		UiData.profilefields = UiProfileGetString();
 		memset(sgbPlayerTurnBitTbl, 0, 4u);
 		gbGameDestroyed = 0;
 		memset(sgbPlayerLeftGameTbl, 0, 4u);
