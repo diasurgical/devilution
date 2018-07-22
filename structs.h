@@ -481,7 +481,7 @@ struct MissileStruct
 struct AnimStruct
 {
 	int CMem; // [unsigned] char * ??
-	int Frames[8]; // unsigned char *
+	unsigned char *Frames[8]; // array of 8 pointers // TODO: to CelBuf struct?
 	int Rate;
 	int Delay;
 };
@@ -500,7 +500,7 @@ struct CMonster
 	unsigned char mAFNum;
 	char mdeadval;
 	MonsterData *MData;
-	void *trans_file;
+	unsigned char *trans_file; // array, possibly 256 bytes
 };
 
 struct MonsterStruct
