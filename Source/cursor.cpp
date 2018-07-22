@@ -429,6 +429,10 @@ void __fastcall SetCursor(int i)
 }
 // 4B8C9C: using guessed type int cursH;
 
+void __fastcall NewCursor(int i) {
+	SetCursor(i);
+}
+
 void __cdecl InitLevelCursor()
 {
 	SetCursor(CURSOR_HAND);
