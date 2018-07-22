@@ -4807,7 +4807,7 @@ void __fastcall ClrPlrPath(int pnum)
 	memset(plr[v1].walkpath, -1, 0x19u);
 }
 
-bool __fastcall PosOkPlayer(int pnum, int px, int py)
+BOOL __fastcall PosOkPlayer(int pnum, int px, int py)
 {
 	char v8; // cl
 	unsigned int v9; // ecx

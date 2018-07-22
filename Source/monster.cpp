@@ -4567,7 +4567,7 @@ LABEL_20:
 bool __fastcall M_PathWalk(int i)
 {
 	int v1; // esi
-	bool (__fastcall *Check)(int, int, int); // ecx
+	BOOL (__fastcall *Check)(int, int, int); // ecx
 	char path[25]; // [esp+4h] [ebp-1Ch]
 
 	v1 = i;
@@ -8082,7 +8082,7 @@ bool __fastcall LineClear(int x1, int y1, int x2, int y2)
 	return LineClearF(PosOkMissile, x1, y1, x2, y2);
 }
 
-bool __fastcall LineClearF1(bool (__fastcall *Clear)(int, int, int), int monst, int x1, int y1, int x2, int y2)
+BOOL __fastcall LineClearF1(BOOL (__fastcall *Clear)(int, int, int), int monst, int x1, int y1, int x2, int y2)
 {
 	int v6; // esi
 	int v7; // edi
@@ -8626,7 +8626,7 @@ void __fastcall MissToMonst(int i, int x, int y)
 	}
 }
 
-bool __fastcall PosOkMonst(int i, int x, int y)
+BOOL __fastcall PosOkMonst(int i, int x, int y)
 {
 	int v3; // edi
 	signed int v4; // ebx
@@ -8686,7 +8686,7 @@ LABEL_24:
 	return result;
 }
 
-bool __fastcall PosOkMonst2(int i, int x, int y)
+BOOL __fastcall PosOkMonst2(int i, int x, int y)
 {
 	int v3; // edi
 	int v4; // ebx
@@ -8747,7 +8747,7 @@ LABEL_23:
 	return result;
 }
 
-bool __fastcall PosOkMonst3(int i, int x, int y)
+BOOL __fastcall PosOkMonst3(int i, int x, int y)
 {
 	int v3; // esi
 	signed int v4; // ebp
