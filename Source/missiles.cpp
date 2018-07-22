@@ -3454,7 +3454,7 @@ void __fastcall AddRhino(int mi, int sx, int sy, int dx, int dy, int midir, int 
 	v13 = i;
 	missile[v13]._miAnimFlags = 0;
 	missile[v13]._mimfnum = midir;
-	missile[v13]._miAnimData = v12->Frames[midir];
+	missile[v13]._miAnimData = (int)v12->Frames[midir];
 	missile[v13]._miAnimDelay = v12->Delay;
 	missile[v13]._miAnimLen = v12->Rate;
 	v14 = monster[v9].MType;
@@ -3494,7 +3494,7 @@ void __fastcall miss_null_32(int mi, int sx, int sy, int dx, int dy, int midir, 
 	v12 = v10;
 	missile[v12]._mimfnum = midir;
 	missile[v12]._miAnimFlags = 0;
-	missile[v12]._miAnimData = v11->Frames[midir];
+	missile[v12]._miAnimData = (int)v11->Frames[midir];
 	missile[v12]._miAnimDelay = v11->Delay;
 	missile[v12]._miAnimLen = v11->Rate;
 	v13 = monster[id].MType;
@@ -6511,7 +6511,7 @@ void __fastcall mi_null_32(int i)
 		missile[v2]._miyvel = -missile[v2]._miyvel;
 		v14 = opposite[v13];
 		missile[v2]._mimfnum = v14;
-		v15 = monster[v4].MType->Anims[1].Frames[v14];
+		v15 = (int)monster[v4].MType->Anims[1].Frames[v14];
 		++missile[v2]._miVar2;
 		missile[v2]._miAnimData = v15;
 		if ( v10 > 0 )
@@ -7479,7 +7479,7 @@ void __cdecl missiles_process_charge()
 			{
 				v7 = &v5->Anims[5];
 			}
-			missile[v2]._miAnimData = v7->Frames[v3];
+			missile[v2]._miAnimData = (int)v7->Frames[v3];
 		}
 	}
 }

@@ -17,7 +17,7 @@ extern int uniquetrans;
 extern int nummtypes;
 
 void __cdecl monster_cpp_init();
-void __fastcall InitMonsterTRN(int monst, int special);
+void __fastcall InitMonsterTRN(int monst, BOOL special);
 void __cdecl InitLevelMonsters();
 int __fastcall AddMonsterType(int type, int placeflag);
 void __cdecl GetLevelMTypes();
