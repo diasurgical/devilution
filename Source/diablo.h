@@ -89,6 +89,7 @@ extern int debug_mode_key_i;
 extern int dbgplr;
 extern int dbgqst;
 extern int dbgmon;
+extern int arrowdebug;
 extern int frameflag;
 extern int frameend;
 extern int framerate;
