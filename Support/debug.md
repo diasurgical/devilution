@@ -26,7 +26,7 @@ In-game hotkeys
 - `F2` -> display dungeon information [NOT YET IMPLEMENTED]
 - `F3` -> display number of items on the ground/cursor item
 - `F4` -> display quest status information
-- `0`/`)` -> cycle through active item flags [NOT YET IMPLEMENTED]
+- `0`/`)` -> cycle between regular/magic arrows
 - `8`/`*` -> level up character
 - `~` -> refresh vendor items (Griswold premium and Adria)
 - `]` -> all spells level 10
