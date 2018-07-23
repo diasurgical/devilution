@@ -52,6 +52,7 @@ int debug_mode_key_i;
 int dbgplr;
 int dbgqst;
 int dbgmon;
+int arrowdebug;
 int frameflag;
 int frameend;
 int framerate;
@@ -1713,6 +1714,28 @@ LABEL_27:
 					zoomflag = zoomflag == 0;
 					return;
 #ifdef _DEBUG
+				case ')':
+				case '0':
+					if ( debug_mode_key_inverted_v )
+					{
+						if ( arrowdebug > 2 )
+							arrowdebug = 0;
+						if ( !arrowdebug )
+						{
+							plr[myplr]._pIFlags &= ~ISPL_FIRE_ARROWS;
+							plr[myplr]._pIFlags &= ~ISPL_LIGHT_ARROWS;
+						}
+						if ( arrowdebug == 1 )
+							plr[myplr]._pIFlags |= ISPL_FIRE_ARROWS;
+						if ( arrowdebug == 2 )
+							plr[myplr]._pIFlags |= ISPL_LIGHT_ARROWS;
+						arrowdebug++;
+					}
+					return;
+				case ':':
+					if ( !currlevel && debug_mode_key_w )
+						SetAllSpellsCheat();
+					return;
 				case '[':
 					if ( !currlevel && debug_mode_key_w )
 						TakeGoldCheat();
