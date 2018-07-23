@@ -117,7 +117,7 @@ void __cdecl MaxSpellsCheat()
 
 void __fastcall SetSpellLevelCheat(char spl, int spllvl)
 {
-	*(_QWORD *)plr[myplr]._pMemSpells |= 1i64 << (spl - 1);
+	*(_QWORD *)plr[myplr]._pMemSpells |= (__int64)1 << (spl - 1);
 	plr[myplr]._pSplLvl[spl] = spllvl;
 }
 
