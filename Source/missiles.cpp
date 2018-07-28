@@ -2,6 +2,9 @@
 
 #include "../types.h"
 
+int _gFlashCounter;
+int _gFlashCounter2;
+
 int missileactive[125];
 int missileavail[125];
 MissileStruct missile[125];
@@ -3187,6 +3190,7 @@ LABEL_12:
 	UseMana(id, 4);
 LABEL_13:
 	missile[v9]._mirange = 19;
+	_gFlashCounter = missile[v9]._mirange; 
 }
 
 void __fastcall AddFlash2(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
@@ -3234,6 +3238,7 @@ void __fastcall AddFlash2(int mi, int sx, int sy, int dx, int dy, int midir, int
 	v14 = v15;
 	missile[v14]._miPreFlag = 1;
 	missile[v14]._mirange = 19;
+	_gFlashCounter2 = missile[v14]._mirange = 19;
 }
 
 void __fastcall AddManashield(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
@@ -5670,14 +5675,16 @@ void __fastcall MI_Flash(int i)
 			plr[v3]._pInvincible = 1;
 	}
 	v4 = missile[v2]._mix;
-	--missile[v2]._mirange;
+	//--missile[v2]._mirange;
+	--_gFlashCounter;
 	CheckMissileCol(i, missile[v2]._midam, missile[v2]._midam, 1, v4 - 1, missile[v2]._miy, 1);
 	CheckMissileCol(v1, missile[v2]._midam, missile[v2]._midam, 1, missile[v2]._mix, missile[v2]._miy, 1);
 	CheckMissileCol(v1, missile[v2]._midam, missile[v2]._midam, 1, missile[v2]._mix + 1, missile[v2]._miy, 1);
 	CheckMissileCol(v1, missile[v2]._midam, missile[v2]._midam, 1, missile[v2]._mix - 1, missile[v2]._miy + 1, 1);
 	CheckMissileCol(v1, missile[v2]._midam, missile[v2]._midam, 1, missile[v2]._mix, missile[v2]._miy + 1, 1);
 	CheckMissileCol(v1, missile[v2]._midam, missile[v2]._midam, 1, missile[v2]._mix + 1, missile[v2]._miy + 1, 1);
-	if ( !missile[v2]._mirange )
+	//if ( !missile[v2]._mirange )
+	if ( _gFlashCounter == 0 )
 	{
 		v5 = missile[v2]._micaster == 0;
 		missile[v2]._miDelFlag = 1;
@@ -5709,11 +5716,13 @@ void __fastcall MI_Flash2(int i)
 			plr[v3]._pInvincible = 1;
 	}
 	v4 = missile[v2]._miy;
-	--missile[v2]._mirange;
+	//--missile[v2]._mirange;
+	--_gFlashCounter2;
 	CheckMissileCol(i, missile[v2]._midam, missile[v2]._midam, 1, missile[v2]._mix - 1, v4 - 1, 1);
 	CheckMissileCol(v1, missile[v2]._midam, missile[v2]._midam, 1, missile[v2]._mix, missile[v2]._miy - 1, 1);
 	CheckMissileCol(v1, missile[v2]._midam, missile[v2]._midam, 1, missile[v2]._mix + 1, missile[v2]._miy - 1, 1);
-	if ( !missile[v2]._mirange )
+	//if ( !missile[v2]._mirange )
+	if ( _gFlashCounter2 == 0 )
 	{
 		v5 = missile[v2]._micaster == 0;
 		missile[v2]._miDelFlag = 1;
