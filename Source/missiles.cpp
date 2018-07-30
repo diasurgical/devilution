@@ -5726,6 +5726,8 @@ void __fastcall MI_Flash2(int i)
 	{
 		v5 = missile[v2]._micaster == 0;
 		missile[v2]._miDelFlag = 1;
+		(*((DWORD *) 0x006DDB54)) = 1; //I am not sure why this is needed, but It is needed for the scroll of flash.
+		
 		if ( v5 )
 		{
 			v6 = missile[v2]._misource;
