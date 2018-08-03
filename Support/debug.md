@@ -47,3 +47,8 @@ In-game hotkeys
 - `M` -> switch current debug monster
 - `r`/`R` -> display game seeds
 - `t`/`T` -> display player and cursor coordinates
+
+Multiplayer hotkeys [NOT YET IMPLEMENTED]
+- `Ctrl`+`C` -> trigger breakpoint
+- `Ctrl`+`P` -> print mouse clicks and frame counter for each player
+- `Ctrl`+`S` -> sleep the network thread
