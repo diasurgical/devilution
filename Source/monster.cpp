@@ -8853,6 +8853,7 @@ int __fastcall M_SpawnSkel(int x, int y, int dir)
 
 	ya = y;
 	xa = x;
+	v5 = 0;
 	if ( nummtypes <= 0 )
 		return -1;
 	v3 = Monsters;
@@ -9005,10 +9006,12 @@ bool __fastcall SpawnSkeleton(int ii, int x, int y)
 
 int __cdecl PreSpawnSkeleton()
 {
-	int skeltypes; // edx
-	int j; // edx
+	int skeltypes; // edx // should be i/j
+	int j; // edx // remove
 	int skel; // eax
-	int i; // [esp+10h] [ebp-4h]
+	int i; // [esp+10h] [ebp-4h] // should be skeltypes
+
+	skeltypes = 0;
 
 	if ( nummtypes <= 0 )
 		return -1;
