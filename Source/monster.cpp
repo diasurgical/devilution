@@ -433,32 +433,24 @@ int __fastcall AddMonsterType(int type, int placeflag)
 	return i;
 }
 
-void __cdecl GetLevelMTypes() /* note-decompile this function again and check */
+void __cdecl GetLevelMTypes()
 {
-	//int v0; // eax
-	//int v1; // eax
-	//int v2; // eax
-	//int v3; // eax
-	//int v4; // eax
-	//int v5; // eax
-	char *v6; // esi
-	int v7; // edi
-	int v10; // eax
-	int v11; // esi
-	int v12; // edi
-	char *v13; // ecx
-	int i; // esi
-	int v15; // ecx
-	bool v16; // zf
-	int v17; // edx
-	int *v18; // eax
-	int v19; // esi
-	int *v20; // esi
-	int v21; // eax
-	//int v22; // [esp+8h] [ebp-328h]
-	int typelist[MAXMONSTERS]; // [esp+Ch] [ebp-324h]
-	int skeltypes[111]; // [esp+170h] [ebp-1C0h]
-	int max; // [esp+32Ch] [ebp-4h]
+	int i;
+
+	// note: the array size is not 190 like in the PSX version
+	// (stack sizes compared with beta, 1.05, 1.09)
+	// this array is merged with skeltypes down below.
+	int typelist[200];
+
+	int minl; // min level
+	int maxl; // max level
+	char mamask = 3; // monster availability mask?
+
+	int mt; // (current) monster type
+	int nt; // number of types?
+
+	// TODO: local variable QuestMask: didn't find any obvious use for that.
+	// maybe a PSX only mask that was used instead of QuestStatus?
 
 	AddMonsterType(MT_GOLEM, 2);
 	if ( currlevel == 16 )
@@ -466,114 +458,101 @@ void __cdecl GetLevelMTypes() /* note-decompile this function again and check */
 		AddMonsterType(MT_ADVOCATE, 1);
 		AddMonsterType(MT_RBLACK, 1);
 		AddMonsterType(MT_DIABLO, 2);
+		return;
 	}
-	else if ( setlevel )
+
+	if ( setlevel )
 	{
 		if ( setlvlnum == SL_SKELKING )
 			AddMonsterType(MT_SKING, 4);
+		return;
+	}
+
+
+	if ( QuestStatus(QTYPE_BUTCH) )
+		AddMonsterType(MT_CLEAVER, 2);
+	if ( QuestStatus(QTYPE_GARB) )
+		AddMonsterType(UniqMonst[0].mtype, 4);
+	if ( QuestStatus(QTYPE_ZHAR) )
+		AddMonsterType(UniqMonst[2].mtype, 4);
+	if ( QuestStatus(QTYPE_BOL) )
+		AddMonsterType(UniqMonst[3].mtype, 4);
+	if ( QuestStatus(QTYPE_VEIL) )
+		AddMonsterType(UniqMonst[7].mtype, 4);
+	if ( QuestStatus(QTYPE_WARLRD) )
+		AddMonsterType(UniqMonst[8].mtype, 4);
+
+	if ( gbMaxPlayers != 1 && currlevel == quests[12]._qlevel )
+	{
+
+		AddMonsterType(MT_SKING, 4);
+
+		int skeltypes[111];
+		// TODO: `numskeltypes` doesn't want to merge with `nt` while compiling,
+		// so the stack is 4 bytes bigger
+		int numskeltypes = 0;
+
+		for ( mt = 8; mt <= 27; mt++ )
+		{
+			if ( IsSkel(mt) )
+			{
+				minl = 15 * monsterdata[mt].mMinDLvl / 30 + 1;
+				maxl = 15 * monsterdata[mt].mMaxDLvl / 30 + 1;
+
+				if ( currlevel >= minl && currlevel <= maxl )
+				{
+					if ( MonstAvailTbl[mt] & mamask )
+						skeltypes[numskeltypes++] = mt;
+				}
+			}
+		}
+		AddMonsterType(skeltypes[random(88, numskeltypes)], 1);
+	}
+
+	nt = 0;
+	for ( mt = 0; mt < 111; mt++ )
+	{
+		minl = 15 * monsterdata[mt].mMinDLvl / 30 + 1;
+		maxl = 15 * monsterdata[mt].mMaxDLvl / 30 + 1;
+
+		if ( currlevel >= minl && currlevel <= maxl )
+		{
+			if ( MonstAvailTbl[mt] & mamask )
+				typelist[nt++] = mt;
+		}
+	}
+
+	if ( monstdebug )
+	{
+		for ( i = 0; i < debugmonsttypes; i++ )
+			AddMonsterType(DebugMonsters[i], 1);
 	}
 	else
 	{
-		if ( QuestStatus(6) )
-			AddMonsterType(MT_CLEAVER, 2);
-		if ( QuestStatus(2) )
-			AddMonsterType((char)UniqMonst[0].mtype, 4);
-		if ( QuestStatus(3) )
-			AddMonsterType((char)UniqMonst[2].mtype, 4);
-		if ( QuestStatus(7) )
-			AddMonsterType((char)UniqMonst[3].mtype, 4);
-		if ( QuestStatus(4) )
-			AddMonsterType((char)UniqMonst[7].mtype, 4);
-		if ( QuestStatus(11) )
-			AddMonsterType((char)UniqMonst[8].mtype, 4);
 
-		if ( gbMaxPlayers != 1 && currlevel == quests[12]._qlevel )
+		while ( nt > 0 && nummtypes < 16 && monstimgtot < 4000 )
 		{
-			AddMonsterType(MT_SKING, 4);
-			max = 0;
-			v6 = &monsterdata[8].mMaxDLvl;
-			v7 = 8;
-			do
+			for ( mt = 0; mt < nt; )
 			{
-				if ( IsSkel(v7) )
+				if ( monsterdata[typelist[mt]].mType <= 4000 - monstimgtot )
 				{
-					if ( currlevel >= 15 * (char)*(v6 - 1) / 30 + 1
-						&& currlevel <= 15 * (char)*v6 / 30 + 1
-						&& MonstAvailTbl[v7] & 3 )
-					{
-						skeltypes[max++] = v7;
-					}
+					mt++;
 				}
-				v6 += 128;
-				++v7;
+				else
+				{
+					typelist[mt] = typelist[--nt];
+				}
 			}
-			while ( (signed int)v6 <= (signed int)&monsterdata[27].mMaxDLvl );
-			v10 = random(88, max);
-			AddMonsterType(skeltypes[v10], 1);
-		}
-		v11 = currlevel;
-		v12 = 0;
-		v13 = &monsterdata[0].mMaxDLvl;
-		max = 0;
-		do
-		{
-			if ( v11 >= 15 * (char)*(v13 - 1) / 30 + 1 && v11 <= 15 * (char)*v13 / 30 + 1 && MonstAvailTbl[max] & 3 )
-				typelist[v12++] = max;
-			++max;
-			v13 += 128;
-		}
-		while ( (signed int)v13 < (signed int)&monsterdata[111].mMaxDLvl );
-		if ( monstdebug )
-		{
-			for ( i = 0; i < debugmonsttypes; i++ )
-				AddMonsterType(DebugMonsters[i], 1);
-		}
-		else
-		{
-			while ( v12 > 0 )
+
+			if ( nt != 0 )
 			{
-				if ( nummtypes >= 16 || monstimgtot >= 4000 )
-					break;
-				v15 = 0;
-				v16 = v12 == 0;
-				if ( v12 > 0 )
-				{
-					v17 = 4000 - monstimgtot;
-					do
-					{
-						v18 = &typelist[v15];
-						if ( monsterdata[LOBYTE(*v18)].mType <= v17 )
-						{
-							++v15;
-						}
-						else
-						{
-							v19 = typelist[v12-- - 1]; //v19 = *(&v22 + v12--); /* fix and check */
-							*v18 = v19;
-						}
-					}
-					while ( v15 < v12 );
-					v16 = v12 == 0;
-				}
-				if ( !v16 )
-				{
-					v20 = &typelist[random(88, v12)];
-					AddMonsterType(LOBYTE(*v20), 1);
-					v21 = typelist[v12-- - 1]; // v21 = *(&v22 + v12--);
-					*v20 = v21;
-				}
+				mt = random(88, nt);
+				AddMonsterType(typelist[mt], 1);
+				typelist[mt] = typelist[--nt];
 			}
 		}
 	}
 }
-// 525730: using guessed type int monstdebug;
-// 52573C: using guessed type int debugmonsttypes;
-// 5CCB10: using guessed type char setlvlnum;
-// 5CF31D: using guessed type char setlevel;
-// 659AE8: using guessed type int monstimgtot;
-// 679660: using guessed type char gbMaxPlayers;
-// 43114F: using guessed type int var_1C0[111];
-// 43114F: using guessed type int var_324[89];
 
 void __fastcall InitMonsterGFX(int monst)
 {
@@ -8678,7 +8657,7 @@ BOOL __fastcall PosOkMonst3(int i, int x, int y)
 	return result;
 }
 
-bool __fastcall IsSkel(int mt)
+BOOL __fastcall IsSkel(int mt)
 {
 	return mt >= MT_WSKELAX && mt <= MT_XSKELAX
 		|| mt >= MT_WSKELBW && mt <= MT_XSKELBW
