@@ -388,7 +388,7 @@ void __fastcall InitMonsterTRN(int monst, BOOL special)
 
 void __cdecl InitLevelMonsters()
 {
-	int i; // eax
+	int i;
 
 	nummtypes = 0;
 	monstimgtot = 0;
@@ -406,23 +406,16 @@ void __cdecl InitLevelMonsters()
 
 	uniquetrans = 0;
 }
-// 64CCE0: using guessed type int MissileFileFlag;
-// 658550: using guessed type int totalmonsters;
-// 6599D9: using guessed type int END_Monsters_17;
-// 659AE8: using guessed type int monstimgtot;
 
 int __fastcall AddMonsterType(int type, int placeflag)
 {
-	bool done; // eax
-	int i; // esi
+	BOOL done;
+	int i;
 
-	done = 0;
+	done = FALSE;
 
-	for ( i = 0; i < nummtypes; i++ )
+	for ( i = 0; i < nummtypes && !done; i++ )
 	{
-		if ( done )
-			break;
-
 		done = type == Monsters[i].mtype;
 	}
 
@@ -439,7 +432,6 @@ int __fastcall AddMonsterType(int type, int placeflag)
 	Monsters[i].mPlaceFlags |= placeflag;
 	return i;
 }
-// 659AE8: using guessed type int monstimgtot;
 
 void __cdecl GetLevelMTypes() /* note-decompile this function again and check */
 {
