@@ -361,7 +361,7 @@ void __fastcall InitMonsterTRN(int monst, BOOL special)
 {
 	unsigned char *trans_file = Monsters[monst].trans_file;
 
-	for (int i = 0; i < 256; ++i )
+	for ( int i = 0; i < 256; ++i )
 	{
 		if ( *trans_file == 255 )
 		{
@@ -371,11 +371,11 @@ void __fastcall InitMonsterTRN(int monst, BOOL special)
 		++trans_file;
 	}
 
-	for (int anim_index = 0; anim_index < (special ? 6 : 5); ++anim_index )
+	for ( int anim_index = 0; anim_index < (special ? 6 : 5); ++anim_index )
 	{
 		if ( anim_index != 1 || Monsters[monst].mtype < MT_COUNSLR || Monsters[monst].mtype > MT_ADVOCATE )
 		{
-			for (int i = 0; i < 8; ++i )
+			for ( int i = 0; i < 8; ++i )
 			{
 				Cl2ApplyTrans(
 					Monsters[monst].Anims[anim_index].Frames[i],
