@@ -150,7 +150,7 @@ void __fastcall MissToMonst(int i, int x, int y);
 BOOL __fastcall PosOkMonst(int i, int x, int y);
 BOOL __fastcall PosOkMonst2(int i, int x, int y);
 BOOL __fastcall PosOkMonst3(int i, int x, int y);
-bool __fastcall IsSkel(int mt);
+BOOL __fastcall IsSkel(int mt);
 bool __fastcall IsGoat(int mt);
 int __fastcall M_SpawnSkel(int x, int y, int dir);
 void __fastcall ActivateSpawn(int i, int x, int y, int dir);

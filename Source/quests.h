@@ -19,7 +19,7 @@ extern int ReturnLvl; // idb
 void __cdecl InitQuests();
 void __cdecl CheckQuests();
 bool __cdecl ForceQuests();
-bool __fastcall QuestStatus(int i);
+BOOL __fastcall QuestStatus(int i);
 void __fastcall CheckQuestKill(int m, unsigned char sendmsg);
 void __cdecl DrawButcher();
 void __fastcall DrawSkelKing(int q, int x, int y);
