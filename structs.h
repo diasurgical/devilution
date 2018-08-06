@@ -500,7 +500,10 @@ struct CMonster
 	unsigned char mAFNum;
 	char mdeadval;
 	MonsterData *MData;
-	unsigned char *trans_file; // array, possibly 256 bytes
+
+	// A TRN file contains a sequence of colour transitions, represented
+	// as indexes into a palette. (a 256 byte array of palette indices)
+	unsigned char *trans_file;
 };
 
 struct MonsterStruct
