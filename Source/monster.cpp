@@ -482,7 +482,7 @@ void __cdecl GetLevelMTypes()
 	if ( QuestStatus(QTYPE_WARLRD) )
 		AddMonsterType(UniqMonst[8].mtype, 4);
 
-	if ( gbMaxPlayers != 1 && currlevel == quests[12]._qlevel )
+	if ( gbMaxPlayers != 1 && currlevel == quests[QTYPE_KING]._qlevel )
 	{
 
 		AddMonsterType(MT_SKING, 4);
