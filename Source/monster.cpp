@@ -394,14 +394,14 @@ void __cdecl InitLevelMonsters()
 	monstimgtot = 0;
 	MissileFileFlag = 0;
 
-	for ( i = 0; i < 16; i++ )
+	for ( i = 0; i < MAX_LVLMTYPES; i++ )
 		Monsters[i].mPlaceFlags = 0;
 
 	ClrAllMonsters();
 	nummonsters = 0;
 	totalmonsters = MAXMONSTERS;
 
-	for ( i = 0; i < 200; i++ )
+	for ( i = 0; i < MAXMONSTERS; i++ )
 		monstactive[i] = i;
 
 	uniquetrans = 0;
@@ -437,20 +437,19 @@ void __cdecl GetLevelMTypes()
 {
 	int i;
 
-	// note: the array size is not 190 like in the PSX version
-	// (stack sizes compared with beta, 1.05, 1.09)
 	// this array is merged with skeltypes down below.
-	int typelist[200];
+	int typelist[MAXMONSTERS];
 
 	int minl; // min level
 	int maxl; // max level
 	char mamask = 3; // monster availability mask?
 
-	int mt; // (current) monster type
 	int nt; // number of types?
 
-	// TODO: local variable QuestMask: didn't find any obvious use for that.
-	// maybe a PSX only mask that was used instead of QuestStatus?
+	// TODO: local variable QuestMask that was referenced in the psx symbols
+	// didn't find any obvious use for that. the casing/naming of it hints at
+	// a PSX only variable
+	// maybe it was used instead of QuestStatus() on the console
 
 	AddMonsterType(MT_GOLEM, 2);
 	if ( currlevel == 16 )
@@ -487,39 +486,42 @@ void __cdecl GetLevelMTypes()
 
 		AddMonsterType(MT_SKING, 4);
 
-		int skeltypes[111];
-		// TODO: `numskeltypes` doesn't want to merge with `nt` while compiling,
-		// so the stack is 4 bytes bigger
-		int numskeltypes = 0;
+		int skeltypes[NUM_MTYPES];
+		const int numskeltypes = 19;
 
-		for ( mt = 8; mt <= 27; mt++ )
+		nt = 0;
+		for ( i = MT_WSKELAX; i <= MT_WSKELAX + numskeltypes; i++ )
 		{
-			if ( IsSkel(mt) )
+			if ( IsSkel(i) )
 			{
-				minl = 15 * monsterdata[mt].mMinDLvl / 30 + 1;
-				maxl = 15 * monsterdata[mt].mMaxDLvl / 30 + 1;
+				minl = 15 * monsterdata[i].mMinDLvl / 30 + 1;
+				maxl = 15 * monsterdata[i].mMaxDLvl / 30 + 1;
 
 				if ( currlevel >= minl && currlevel <= maxl )
 				{
-					if ( MonstAvailTbl[mt] & mamask )
-						skeltypes[numskeltypes++] = mt;
+					if ( MonstAvailTbl[i] & mamask )
+					{
+						skeltypes[nt++] = i;
 				}
 			}
 		}
-		AddMonsterType(skeltypes[random(88, numskeltypes)], 1);
+	}
+		AddMonsterType(skeltypes[random(88, nt)], 1);
 	}
 
 	nt = 0;
-	for ( mt = 0; mt < 111; mt++ )
+	for ( i = 0; i < 111; i++ )
 	{
-		minl = 15 * monsterdata[mt].mMinDLvl / 30 + 1;
-		maxl = 15 * monsterdata[mt].mMaxDLvl / 30 + 1;
+		minl = 15 * monsterdata[i].mMinDLvl / 30 + 1;
+		maxl = 15 * monsterdata[i].mMaxDLvl / 30 + 1;
 
 		if ( currlevel >= minl && currlevel <= maxl )
 		{
-			if ( MonstAvailTbl[mt] & mamask )
-				typelist[nt++] = mt;
+			if ( MonstAvailTbl[i] & mamask )
+			{
+				typelist[nt++] = i;
 		}
+	}
 	}
 
 	if ( monstdebug )
@@ -530,25 +532,25 @@ void __cdecl GetLevelMTypes()
 	else
 	{
 
-		while ( nt > 0 && nummtypes < 16 && monstimgtot < 4000 )
+		while ( nt > 0 && nummtypes < MAX_LVLMTYPES && monstimgtot < 4000 )
 		{
-			for ( mt = 0; mt < nt; )
+			for ( i = 0; i < nt; )
 			{
-				if ( monsterdata[typelist[mt]].mType <= 4000 - monstimgtot )
+				if ( monsterdata[typelist[i]].mType <= 4000 - monstimgtot )
 				{
-					mt++;
+					i++;
 				}
 				else
 				{
-					typelist[mt] = typelist[--nt];
+					typelist[i] = typelist[--nt];
 				}
 			}
 
 			if ( nt != 0 )
 			{
-				mt = random(88, nt);
-				AddMonsterType(typelist[mt], 1);
-				typelist[mt] = typelist[--nt];
+				i = random(88, nt);
+				AddMonsterType(typelist[i], 1);
+				typelist[i] = typelist[--nt];
 			}
 		}
 	}
