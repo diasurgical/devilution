@@ -23,17 +23,12 @@ struct mainmenu_cpp_init
 
 void __cdecl mainmenu_refresh_music()
 {
-	int v0; // eax
-
 	music_start(menu_music_track_id);
-	v0 = menu_music_track_id;
-	do
-	{
-		if ( ++v0 == 6 )
-			v0 = 0;
-	}
-	while ( !v0 || v0 == 1 );
-	menu_music_track_id = v0;
+
+	if ( menu_music_track_id == 5 )
+		menu_music_track_id = 2;
+	else
+		menu_music_track_id++;
 }
 
 void __stdcall mainmenu_create_hero(char *a1, char *a2)
