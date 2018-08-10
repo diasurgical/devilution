@@ -12,7 +12,6 @@ Minor bugs (noticeable but can be avoided)
 - Some tiles are drawn fully lit when they should be transparent `world.cpp`
 - Timed messages are broken and have been disabled `tmsg.cpp`
 - Server commands are broken and have been disabled `msgcmd.cpp`
-- Automap drawing is slightly incorrect
 
 Code issues (incorrect code that still works)
 - Critical sections should be constructors using `CCritSect`
@@ -23,3 +22,4 @@ Code issues (incorrect code that still works)
 - Function `SetAutomapView`, decompile and check `automap.cpp`
 - Function `engine_draw_automap_pixels`, decompile and check `engine.cpp`
 - Double check `UseMana` references
+- Double check `LOBYTE` of function `random(int, int)`
