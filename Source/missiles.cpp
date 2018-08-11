@@ -2119,6 +2119,9 @@ void __fastcall SetMissDir(int mi, int dir)
 	SetMissAnim(mi, _LOBYTE(missile[mi]._miAnimType));
 }
 
+// TODO: replace `int mi` parameter with `missile_graphic_id mi`
+// to enable the compiler to optimize int to char properly
+// check for example the calls in `InitMonsterGFX`
 void __fastcall LoadMissileGFX(int mi)
 {
 	MisFileData *v1; // esi
