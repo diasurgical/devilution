@@ -563,54 +563,51 @@ void __fastcall InitMonsterGFX(int monst)
 	int mtype = (unsigned char)Monsters[monst].mtype;
 	char strBuff[256];
 
-	MonsterData *pmonsterdata = &monsterdata[mtype];
-
 	for ( int anim = 0; anim < 6; anim++ )
 	{
-		if ( (animletter[anim] != 's' || pmonsterdata->has_special) && pmonsterdata->Frames )
+		if ( (animletter[anim] != 's' || monsterdata[mtype].has_special) && monsterdata[mtype].Frames[anim] > 0 )
 		{
-			sprintf(strBuff, pmonsterdata->GraphicType, animletter[anim]);
+			sprintf(strBuff, monsterdata[mtype].GraphicType, animletter[anim]);
 
-			Monsters[monst].Anims[anim].CMem = LoadFileInMem(strBuff, NULL);
+			unsigned char* celBuf = LoadFileInMem(strBuff, NULL);
+			Monsters[monst].Anims[anim].CMem = celBuf;
 
 			if ( Monsters[monst].mtype != MT_GOLEM || (animletter[anim] != 's' && animletter[anim] != 'd') )
 			{
 
 				for ( int i = 0; i < 8; i++ )
 				{
-					// TODO: this can probably be cleaned up by defining the CMem structure
 					Monsters[monst].Anims[anim].Frames[i] =
-						(unsigned char*)
-						((int)Monsters[monst].Anims[anim].CMem + ((int *)Monsters[monst].Anims[anim].CMem)[i]);
+						&celBuf[((int *)celBuf)[i]];
 				}
 			}
 			else
 			{
 				for ( int i = 0; i < 8; i++ )
 				{
-					Monsters[monst].Anims[anim].Frames[i] = Monsters[monst].Anims[anim].CMem;
+					Monsters[monst].Anims[anim].Frames[i] = celBuf;
 				}
 			}
 		}
 
 		// TODO: either the AnimStruct members have wrong naming or the MonsterData ones it seems
-		Monsters[monst].Anims[anim].Rate = pmonsterdata->Frames[0];
-		Monsters[monst].Anims[anim].Delay = pmonsterdata->Rate[0];
+		Monsters[monst].Anims[anim].Rate = monsterdata[mtype].Frames[anim];
+		Monsters[monst].Anims[anim].Delay = monsterdata[mtype].Rate[anim];
 	}
 
 
-	Monsters[monst].MData = pmonsterdata;
-	Monsters[monst].flags_1 = pmonsterdata->flags;
-	Monsters[monst].flags_2 = (pmonsterdata->flags - 64) >> 1;
-	Monsters[monst].mMinHP = pmonsterdata->mMinHP;
-	Monsters[monst].mMaxHP = pmonsterdata->mMaxHP;
-	Monsters[monst].has_special = pmonsterdata->has_special;
-	Monsters[monst].mAFNum = pmonsterdata->mAFNum;
+	Monsters[monst].MData = &monsterdata[mtype];
+	Monsters[monst].flags_1 = monsterdata[mtype].flags;
+	Monsters[monst].flags_2 = (monsterdata[mtype].flags - 64) >> 1;
+	Monsters[monst].mMinHP = monsterdata[mtype].mMinHP;
+	Monsters[monst].mMaxHP = monsterdata[mtype].mMaxHP;
+	Monsters[monst].has_special = monsterdata[mtype].has_special;
+	Monsters[monst].mAFNum = monsterdata[mtype].mAFNum;
 
-	if ( pmonsterdata->has_trans )
+	if ( monsterdata[mtype].has_trans )
 	{
-		Monsters[monst].trans_file = LoadFileInMem(pmonsterdata->TransFile, NULL);
-		InitMonsterTRN(monst, pmonsterdata->has_special);
+		Monsters[monst].trans_file = LoadFileInMem(monsterdata[mtype].TransFile, NULL);
+		InitMonsterTRN(monst, monsterdata[mtype].has_special);
 
 		void *trans_file = Monsters[monst].trans_file;
 		Monsters[monst].trans_file = NULL;
