@@ -2,7 +2,9 @@
 
 #include "../types.h"
 
-int MissileFileFlag; // weak
+// Tracks which missile files are already loaded
+int MissileFileFlag;
+
 int monster_cpp_init_value; // weak
 int monstkills[MAXMONSTERS];
 int monstactive[MAXMONSTERS];
@@ -502,10 +504,10 @@ void __cdecl GetLevelMTypes()
 					if ( MonstAvailTbl[i] & mamask )
 					{
 						skeltypes[nt++] = i;
+					}
 				}
 			}
 		}
-	}
 		AddMonsterType(skeltypes[random(88, nt)], 1);
 	}
 
@@ -520,8 +522,8 @@ void __cdecl GetLevelMTypes()
 			if ( MonstAvailTbl[i] & mamask )
 			{
 				typelist[nt++] = i;
+			}
 		}
-	}
 	}
 
 	if ( monstdebug )
@@ -558,168 +560,123 @@ void __cdecl GetLevelMTypes()
 
 void __fastcall InitMonsterGFX(int monst)
 {
-	int v1; // esi
-	int v2; // ebx
-	int v3; // ebx
-	int *v4; // edi
-	int *v5; // eax
-	char v6; // cl
-	unsigned char *v7; // eax
-	char v8; // cl
-	int *v9; // ecx
-	int v10; // edx
-	int v11; // ecx
-	int v12; // ecx
-	bool v13; // zf
-	int v14; // ecx
-	void **v15; // esi
-	unsigned char *v16; // eax
-	int v17; // edx
-	int v18; // ecx
-	void *v19; // ecx
-	//int v20; // ecx
-	//int v21; // ecx
-	//int v22; // ecx
-	//int v23; // ecx
-	//int v24; // ecx
-	//int v25; // ecx
-	char strBuff[256]; // [esp+Ch] [ebp-114h]
-	int mon_id; // [esp+10Ch] [ebp-14h]
-	int *v28; // [esp+110h] [ebp-10h]
-	int v29; // [esp+114h] [ebp-Ch]
-	int *v30; // [esp+118h] [ebp-8h]
-	int v31; // [esp+11Ch] [ebp-4h]
+	int mtype = (unsigned char)Monsters[monst].mtype;
+	char strBuff[256];
 
-	v29 = 0;
-	mon_id = monst;
-	v1 = monst;
-	v2 = (unsigned char)Monsters[monst].mtype;
-	v31 = v2;
-	v3 = v2 << 7;
-	v4 = (int *)Monsters[monst].Anims[0].Frames;
-	v5 = (int *)((char *)monsterdata[0].Frames + v3);
-	v30 = (int *)Monsters[monst].Anims[0].Frames;
-	v28 = (int *)((char *)monsterdata[0].Frames + v3);
-	do
+	MonsterData *pmonsterdata = &monsterdata[mtype];
+
+	for ( int anim = 0; anim < 6; anim++ )
 	{
-		v6 = animletter[v29];
-		if ( (v6 != 's' || *(int *)((char *)&monsterdata[0].has_special + v3)) && *v5 > 0 )
+		if ( (animletter[anim] != 's' || pmonsterdata->has_special) && pmonsterdata->Frames )
 		{
-			sprintf(strBuff, *(const char **)((char *)&monsterdata[0].GraphicType + v3), v6);
-			v7 = LoadFileInMem(strBuff, 0);
-			*(v4 - 1) = (int)v7;
-			if ( Monsters[v1].mtype != MT_GOLEM || (v8 = animletter[v29], v8 != 's') && v8 != 'd' )
+			sprintf(strBuff, pmonsterdata->GraphicType, animletter[anim]);
+
+			Monsters[monst].Anims[anim].CMem = LoadFileInMem(strBuff, NULL);
+
+			if ( Monsters[monst].mtype != MT_GOLEM || (animletter[anim] != 's' && animletter[anim] != 'd') )
 			{
-				v30 = 0;
-				v9 = v4;
-				do
+
+				for ( int i = 0; i < 8; i++ )
 				{
-					v10 = (int)&v7[*(_DWORD *)&v7[4 * (_DWORD)v30]];
-					v30 = (int *)((char *)v30 + 1);
-					*v9 = v10;
-					++v9;
+					// TODO: this can probably be cleaned up by defining the CMem structure
+					Monsters[monst].Anims[anim].Frames[i] =
+						(unsigned char*)
+						((int)Monsters[monst].Anims[anim].CMem + ((int *)Monsters[monst].Anims[anim].CMem)[i]);
 				}
-				while ( (signed int)v30 < 8 );
 			}
 			else
 			{
-				memset32(v4, (int)v7, 8u);
-				v4 = v30;
+				for ( int i = 0; i < 8; i++ )
+				{
+					Monsters[monst].Anims[anim].Frames[i] = Monsters[monst].Anims[anim].CMem;
+				}
 			}
-			v5 = v28;
 		}
-		v11 = *v5;
-		++v29;
-		v4[8] = v11;
-		v4[9] = v5[6];
-		++v5;
-		v4 += 11;
-		v28 = v5;
-		v30 = v4;
+
+		// TODO: either the AnimStruct members have wrong naming or the MonsterData ones it seems
+		Monsters[monst].Anims[anim].Rate = pmonsterdata->Frames[0];
+		Monsters[monst].Anims[anim].Delay = pmonsterdata->Rate[0];
 	}
-	while ( v29 < 6 );
-	Monsters[v1].MData = (MonsterData *)((char *)monsterdata + v3);
-	v12 = *(int *)((char *)&monsterdata[0].flags + v3);
-	Monsters[v1].flags_1 = v12;
-	Monsters[v1].flags_2 = (v12 - 64) >> 1;
-	Monsters[v1].mMinHP = *((_BYTE *)&monsterdata[0].mMinHP + v3);
-	v13 = *(int *)((char *)&monsterdata[0].has_trans + v3) == 0;
-	Monsters[v1].mMaxHP = *((_BYTE *)&monsterdata[0].mMaxHP + v3);
-	v14 = *(int *)((char *)&monsterdata[0].has_special + v3);
-	Monsters[v1].has_special = v14;
-	Monsters[v1].mAFNum = *(&monsterdata[0].mAFNum + v3);
-	if ( !v13 )
+
+
+	Monsters[monst].MData = pmonsterdata;
+	Monsters[monst].flags_1 = pmonsterdata->flags;
+	Monsters[monst].flags_2 = (pmonsterdata->flags - 64) >> 1;
+	Monsters[monst].mMinHP = pmonsterdata->mMinHP;
+	Monsters[monst].mMaxHP = pmonsterdata->mMaxHP;
+	Monsters[monst].has_special = pmonsterdata->has_special;
+	Monsters[monst].mAFNum = pmonsterdata->mAFNum;
+
+	if ( pmonsterdata->has_trans )
 	{
-		v15 = (void **)&Monsters[v1].trans_file;
-		v16 = LoadFileInMem(*(char **)((char *)&monsterdata[0].TransFile + v3), 0);
-		v17 = *(int *)((char *)&monsterdata[0].has_special + v3);
-		v18 = mon_id;
-		*v15 = v16;
-		InitMonsterTRN(v18, v17);
-		v19 = *v15;
-		*v15 = 0;
-		mem_free_dbg(v19);
+		Monsters[monst].trans_file = LoadFileInMem(pmonsterdata->TransFile, NULL);
+		InitMonsterTRN(monst, pmonsterdata->has_special);
+
+		void *trans_file = Monsters[monst].trans_file;
+		Monsters[monst].trans_file = NULL;
+
+		mem_free_dbg(trans_file);
 	}
-	if ( v31 >= MT_NMAGMA && v31 <= MT_WMAGMA && !(MissileFileFlag & 1) )
+
+	if ( mtype >= MT_NMAGMA && mtype <= MT_WMAGMA && !(MissileFileFlag & 1) )
 	{
-		MissileFileFlag |= 1u;
+		MissileFileFlag |= 1;
 		LoadMissileGFX(MFILE_MAGBALL);
 	}
-	if ( v31 >= MT_STORM && v31 <= MT_MAEL && !(MissileFileFlag & 2) )
+	if ( mtype >= MT_STORM && mtype <= MT_MAEL && !(MissileFileFlag & 2) )
 	{
-		MissileFileFlag |= 2u;
+		MissileFileFlag |= 2;
 		LoadMissileGFX(MFILE_THINLGHT);
 	}
-	if ( v31 == MT_SUCCUBUS )
+	if ( mtype == MT_SUCCUBUS )
 	{
-		if ( MissileFileFlag & 4 )
-			return;
-		MissileFileFlag |= 4u;
+		if ( MissileFileFlag & 4 ) return;
+
+		MissileFileFlag |= 4;
 		LoadMissileGFX(MFILE_FLARE);
 		LoadMissileGFX(MFILE_FLAREEXP);
 	}
-	if ( v31 == MT_SNOWWICH )
+	if ( mtype == MT_SNOWWICH )
 	{
-		if ( MissileFileFlag & 0x20 )
-			return;
-		MissileFileFlag |= 0x20u;
+		if ( MissileFileFlag & 0x20 ) return;
+
+		MissileFileFlag |= 0x20;
 		LoadMissileGFX(MFILE_SCUBMISB);
 		LoadMissileGFX(MFILE_SCBSEXPB);
 	}
-	if ( v31 == MT_HLSPWN )
+	if ( mtype == MT_HLSPWN )
 	{
-		if ( MissileFileFlag & 0x40 )
-			return;
-		MissileFileFlag |= 0x40u;
+		if ( MissileFileFlag & 0x40 ) return;
+
+		MissileFileFlag |= 0x40;
 		LoadMissileGFX(MFILE_SCUBMISD);
 		LoadMissileGFX(MFILE_SCBSEXPD);
 	}
-	if ( v31 == MT_SOLBRNR )
+	if ( mtype == MT_SOLBRNR )
 	{
-		if ( (MissileFileFlag & 0x80u) != 0 )
-			return;
+		if ( MissileFileFlag & 0x80 ) return;
+
 		MissileFileFlag |= 0x80;
 		LoadMissileGFX(MFILE_SCUBMISC);
 		LoadMissileGFX(MFILE_SCBSEXPC);
 	}
-	if ( v31 >= MT_INCIN && v31 <= MT_HELLBURN && !(MissileFileFlag & 8) )
+	if ( mtype >= MT_INCIN && mtype <= MT_HELLBURN && !(MissileFileFlag & 8) )
 	{
-		MissileFileFlag |= 8u;
+		MissileFileFlag |= 8;
 		LoadMissileGFX(MFILE_KRULL);
 	}
-	if ( v31 >= MT_NACID && v31 <= MT_XACID && !(MissileFileFlag & 0x10) )
+	if ( mtype >= MT_NACID && mtype <= MT_XACID && !(MissileFileFlag & 0x10) )
 	{
-		MissileFileFlag |= 0x10u;
+		MissileFileFlag |= 0x10;
 		LoadMissileGFX(MFILE_ACIDBF);
 		LoadMissileGFX(MFILE_ACIDSPLA);
 		LoadMissileGFX(MFILE_ACIDPUD);
 	}
-	if ( v31 == MT_DIABLO )
+	if ( mtype == MT_DIABLO )
 	{
 		LoadMissileGFX(MFILE_FIREPLAR);
 	}
 }
-// 64CCE0: using guessed type int MissileFileFlag;
 
 void __fastcall ClearMVars(int i)
 {
@@ -735,183 +692,150 @@ void __fastcall ClearMVars(int i)
 
 void __fastcall InitMonster(int i, int rd, int mtype, int x, int y)
 {
-	int v5; // ebx
-	int v6; // esi
-	CMonster *monst; // edi
-	MonsterData *v8; // eax
-	char *v9; // ecx
-	int v10; // eax
-	int v11; // eax
-	//int v12; // ecx
-	int v13; // eax
-	int v16; // eax
-	MonsterData *v17; // eax
-	int v18; // eax
-	MonsterData *v19; // eax
-	short v20; // cx
-	int v21; // edx
-	int v22; // edx
-	int v24; // ecx
-	int v25; // ecx
-	char v26; // dl
-	int v27; // ecx
-	char v28; // dl
+	CMonster *monst = &Monsters[mtype];
 
-	v5 = rd;
-	v6 = i;
-	monster[v6]._mmode = MM_STAND;
-	monst = &Monsters[mtype];
-	monster[v6]._mx = x;
-	monster[v6]._mfutx = x;
-	monster[v6]._moldx = x;
-	v8 = monst->MData;
-	monster[v6]._mdir = rd;
-	monster[v6]._my = y;
-	monster[v6]._mfuty = y;
-	monster[v6]._moldy = y;
-	monster[v6]._mMTidx = mtype;
-	v9 = v8->mName;
-	monster[v6].mName = v9;
-	monster[v6].MType = monst;
-	monster[v6].MData = v8;
-	monster[v6]._mAFNum = (int)monst->Anims[0].Frames[rd];
-	v10 = monst->Anims[0].Delay;
-	monster[v6]._mAnimDelay = v10;
-	monster[v6]._mAnimCnt = random(88, v10 - 1);
-	v11 = monst->Anims[0].Rate;
-	monster[v6]._mAnimLen = v11;
-	v13 = random(88, v11 - 1);
-	monster[v6]._mAnimFrame = v13 + 1;
+	monster[i]._mmode = MM_STAND;
+	monster[i]._mx = x;
+	monster[i]._mfutx = x;
+	monster[i]._moldx = x;
+	monster[i]._mdir = rd;
+	monster[i]._my = y;
+	monster[i]._mfuty = y;
+	monster[i]._moldy = y;
+	monster[i]._mMTidx = mtype;
+	monster[i].mName = monst->MData->mName;
+	monster[i].MType = monst;
+	monster[i].MData = monst->MData;
+	monster[i]._mAFNum = (int)monst->Anims[0].Frames[rd];
+	monster[i]._mAnimDelay = monst->Anims[0].Delay;
+	monster[i]._mAnimCnt = random(88, monst->Anims[0].Delay - 1);
+	monster[i]._mAnimLen = monst->Anims[0].Rate;
+	monster[i]._mAnimFrame = random(88, monst->Anims[0].Rate - 1) + 1;
+
 	if ( monst->mtype == MT_DIABLO )
-		v16 = random(88, 1) + 1666;
+	{
+		monster[i]._mmaxhp = (random(88, 1) + 1666) << 6;
+	}
 	else
-		v16 = monst->mMinHP + random(88, monst->mMaxHP - monst->mMinHP + 1);
-	monster[v6]._mmaxhp = v16 << 6;
+	{
+		monster[i]._mmaxhp = (monst->mMinHP + random(88, monst->mMaxHP - monst->mMinHP + 1)) << 6;
+	}
+
 	if ( gbMaxPlayers == 1 )
 	{
-		monster[v6]._mmaxhp >>= 1;
-		if ( monster[v6]._mmaxhp < 64 )
-			monster[v6]._mmaxhp = 64;
+		monster[i]._mmaxhp >>= 1;
+		if ( monster[i]._mmaxhp < 64 )
+		{
+			monster[i]._mmaxhp = 64;
+		}
 	}
-	monster[v6]._mhitpoints = monster[v6]._mmaxhp;
-	v17 = monst->MData;
-	monster[v6]._mAi = v17->mAi;
-	monster[v6]._mint = v17->mInt;
-	_LOBYTE(monster[v6]._pathcount) = 0;
-	monster[v6]._uniqtype = 0;
-	monster[v6]._msquelch = 0;
-	_LOBYTE(monster[v6]._mgoal) = 1;
-	monster[v6]._mgoalvar1 = 0;
-	monster[v6]._mgoalvar2 = 0;
-	monster[v6]._mgoalvar3 = 0;
-	monster[v6].field_18 = 0;
-	monster[v6]._mDelFlag = 0;
-	monster[v6]._mRndSeed = GetRndSeed();
-	v18 = GetRndSeed();
-	monster[v6].mWhoHit = 0;
-	monster[v6]._mAISeed = v18;
-	v19 = monst->MData;
-	_LOBYTE(monster[v6].mLevel) = v19->mLevel;
-	monster[v6].mExp = v19->mExp;
-	monster[v6].mHit = v19->mHit;
-	monster[v6].mMinDamage = v19->mMinDamage;
-	monster[v6].mMaxDamage = v19->mMaxDamage;
-	monster[v6].mHit2 = v19->mHit2;
-	monster[v6].mMinDamage2 = v19->mMinDamage2;
-	monster[v6].mMaxDamage2 = v19->mMaxDamage2;
-	monster[v6].mArmorClass = v19->mArmorClass;
-	v20 = v19->mMagicRes;
-	monster[v6].leader = 0;
-	monster[v6].leaderflag = 0;
-	_LOWORD(monster[v6].mMagicRes) = v20;
-	v21 = v19->mFlags;
-	monster[v6].mtalkmsg = 0;
-	monster[v6]._mFlags = v21;
-	if ( monster[v6]._mAi == AI_GARG )
+
+	monster[i]._mhitpoints = monster[i]._mmaxhp;
+	monster[i]._mAi = monst->MData->mAi;
+	monster[i]._mint = monst->MData->mInt;
+	monster[i]._pathcount = 0;
+	monster[i]._uniqtype = 0;
+	monster[i]._msquelch = 0;
+	monster[i]._mgoal = 1;
+	monster[i]._mgoalvar1 = 0;
+	monster[i]._mgoalvar2 = 0;
+	monster[i]._mgoalvar3 = 0;
+	monster[i].field_18 = 0;
+	monster[i]._mDelFlag = 0;
+	monster[i]._mRndSeed = GetRndSeed();
+	monster[i].mWhoHit = 0;
+	monster[i]._mAISeed = GetRndSeed();
+	monster[i].mLevel = monst->MData->mLevel;
+	monster[i].mExp = monst->MData->mExp;
+	monster[i].mHit = monst->MData->mHit;
+	monster[i].mMinDamage = monst->MData->mMinDamage;
+	monster[i].mMaxDamage = monst->MData->mMaxDamage;
+	monster[i].mHit2 = monst->MData->mHit2;
+	monster[i].mMinDamage2 = monst->MData->mMinDamage2;
+	monster[i].mMaxDamage2 = monst->MData->mMaxDamage2;
+	monster[i].mArmorClass = monst->MData->mArmorClass;
+	monster[i].leader = 0;
+	monster[i].leaderflag = 0;
+	monster[i].mMagicRes = monst->MData->mMagicRes;
+	monster[i].mtalkmsg = 0;
+	monster[i]._mFlags = monst->MData->mFlags;
+
+	if ( monster[i]._mAi == AI_GARG )
 	{
-		v22 = (int)monst->Anims[5].Frames[v5];
-		monster[v6]._mFlags |= 4u;
-		monster[v6]._mAFNum = v22;
-		monster[v6]._mAnimFrame = 1;
-		monster[v6]._mmode = MM_SATTACK;
+		monster[i]._mFlags |= 4u;
+		monster[i]._mAFNum = (int)monst->Anims[5].Frames[rd];
+		monster[i]._mAnimFrame = 1;
+		monster[i]._mmode = MM_SATTACK;
 	}
+
 	if ( gnDifficulty == DIFF_NIGHTMARE )
 	{
-		v24 = monster[v6]._mmaxhp;
-		_LOBYTE(monster[v6].mLevel) += 15;
-		monster[v6].mHit += 85;
-		monster[v6].mHit2 += 85;
-		v25 = 3 * v24 + 64;
-		monster[v6]._mmaxhp = v25;
-		monster[v6]._mhitpoints = v25;
-		monster[v6].mExp = 2 * (monster[v6].mExp + 1000);
-		monster[v6].mMinDamage = 2 * (monster[v6].mMinDamage + 2);
-		monster[v6].mMaxDamage = 2 * (monster[v6].mMaxDamage + 2);
-		monster[v6].mMinDamage2 = 2 * (monster[v6].mMinDamage2 + 2);
-		_LOBYTE(v25) = 2 * (monster[v6].mMaxDamage2 + 2);
-		monster[v6].mArmorClass += 50;
-		monster[v6].mMaxDamage2 = v25;
+		monster[i].mLevel += 15;
+		monster[i].mHit += 85;
+		monster[i].mHit2 += 85;
+		monster[i]._mmaxhp = 3 * monster[i]._mmaxhp + 64;
+		monster[i]._mhitpoints = monster[i]._mmaxhp;
+		monster[i].mExp = 2 * (monster[i].mExp + 1000);
+		monster[i].mMinDamage = 2 * (monster[i].mMinDamage + 2);
+		monster[i].mMaxDamage = 2 * (monster[i].mMaxDamage + 2);
+		monster[i].mMinDamage2 = 2 * (monster[i].mMinDamage2 + 2);
+		monster[i].mArmorClass += 50;
+		monster[i].mMaxDamage2 = 2 * (monster[i].mMaxDamage2 + 2);
 	}
+
 	if ( gnDifficulty == DIFF_HELL )
 	{
-		v26 = 4 * monster[v6].mMinDamage;
-		v27 = 4 * monster[v6]._mmaxhp + 192;
-		_LOBYTE(monster[v6].mLevel) += 30;
-		monster[v6]._mmaxhp = v27;
-		monster[v6]._mhitpoints = v27;
-		_LOWORD(v27) = monster[v6].mExp;
-		monster[v6].mHit += 120;
-		monster[v6].mHit2 += 120;
-		monster[v6].mExp = 4 * (v27 + 1000);
-		monster[v6].mMinDamage = v26 + 6;
-		monster[v6].mMaxDamage = 4 * monster[v6].mMaxDamage + 6;
-		monster[v6].mMinDamage2 = 4 * monster[v6].mMinDamage2 + 6;
-		v28 = 4 * monster[v6].mMaxDamage2 + 6;
-		monster[v6].mArmorClass += 80;
-		monster[v6].mMaxDamage2 = v28;
-		_LOWORD(monster[v6].mMagicRes) = v19->mMagicRes2;
+		monster[i].mLevel += 30;
+		monster[i]._mmaxhp = 4 * monster[i]._mmaxhp + 192;
+		monster[i]._mhitpoints = monster[i]._mmaxhp;
+		monster[i].mHit += 120;
+		monster[i].mHit2 += 120;
+		monster[i].mExp = 4 * (monster[i].mExp + 1000);
+		monster[i].mMinDamage = 4 * monster[i].mMinDamage + 6;
+		monster[i].mMaxDamage = 4 * monster[i].mMaxDamage + 6;
+		monster[i].mMinDamage2 = 4 * monster[i].mMinDamage2 + 6;
+		monster[i].mArmorClass += 80;
+		monster[i].mMaxDamage2 = 4 * monster[i].mMaxDamage2 + 6;
+		monster[i].mMagicRes = monst->MData->mMagicRes2;
 	}
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 void __cdecl ClrAllMonsters()
 {
-	int i; // edi
-	int v6; // eax
+	MonsterStruct *Monst;
 
-	for ( i = 0; i < 200; i++ )
+	for ( int i = 0; i < 200; i++ )
 	{
+		Monst = &monster[i];
 		ClearMVars(i);
-		monster[i].mName = "Invalid Monster";
-		monster[i]._mgoal = 0;
-		monster[i]._mmode = 0;
-		monster[i]._mVar1 = 0;
-		monster[i]._mVar2 = 0;
-		monster[i]._mx = 0;
-		monster[i]._my = 0;
-		monster[i]._mfutx = 0;
-		monster[i]._mfuty = 0;
-		monster[i]._moldx = 0;
-		monster[i]._moldy = 0;
-		monster[i]._mdir = random(89, 8);
-		monster[i]._mxvel = 0;
-		monster[i]._myvel = 0;
-		monster[i]._mAFNum = 0;
-		monster[i]._mAnimDelay = 0;
-		monster[i]._mAnimCnt = 0;
-		monster[i]._mAnimLen = 0;
-		monster[i]._mAnimFrame = 0;
-		monster[i]._mFlags = 0;
-		monster[i]._mDelFlag = 0;
-		v6 = random(89, gbActivePlayers);
-		monster[i]._menemy = v6;
-		monster[i]._menemyx = plr[v6]._px;
-		monster[i]._menemyy = plr[v6]._py;
+		Monst->mName = "Invalid Monster";
+		Monst->_mgoal = 0;
+		Monst->_mmode = 0;
+		Monst->_mVar1 = 0;
+		Monst->_mVar2 = 0;
+		Monst->_mx = 0;
+		Monst->_my = 0;
+		Monst->_mfutx = 0;
+		Monst->_mfuty = 0;
+		Monst->_moldx = 0;
+		Monst->_moldy = 0;
+		Monst->_mdir = random(89, 8);
+		Monst->_mxvel = 0;
+		Monst->_myvel = 0;
+		Monst->_mAFNum = 0;
+		Monst->_mAnimDelay = 0;
+		Monst->_mAnimCnt = 0;
+		Monst->_mAnimLen = 0;
+		Monst->_mAnimFrame = 0;
+		Monst->_mFlags = 0;
+		Monst->_mDelFlag = 0;
+		Monst->_menemy = random(89, gbActivePlayers);
+		Monst->_menemyx = plr[Monst->_menemy]._px;
+		Monst->_menemyy = plr[Monst->_menemy]._py;
 	}
 }
-// 67862C: using guessed type char gbActivePlayers;
 
-bool __fastcall MonstPlace(int xp, int yp)
+BOOL __fastcall MonstPlace(int xp, int yp)
 {
 	if ( xp < 0 || xp >= 112
 		|| yp < 0 || yp >= 112
@@ -920,11 +844,11 @@ bool __fastcall MonstPlace(int xp, int yp)
 		|| dFlags[xp][yp] & 2
 		|| dFlags[xp][yp] & 8 )
 	{
-		return 0;
+		return FALSE;
 	}
 	else
 	{
-		return SolidLoc(xp, yp) == 0;
+		return !SolidLoc(xp, yp);
 	}
 }
 
@@ -6410,7 +6334,7 @@ void __fastcall MAI_Golum(int i)
 	signed int v12; // ecx
 	int v13; // eax
 	bool v14; // eax
-	int *v15; // esi
+	unsigned char *v15; // esi
 	bool v16; // eax
 	int v17; // esi
 	int v18; // edi
