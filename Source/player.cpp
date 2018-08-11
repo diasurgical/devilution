@@ -1044,9 +1044,7 @@ void __fastcall InitPlayer(int pnum, bool FirstTime)
 	PlayerStruct *v4; // edi
 	int v5; // eax
 	int v6; // ST08_4
-	int v7; // ecx
 	int v8; // eax
-	int v9; // ecx
 	int v10; // ST08_4
 	int v11; // edx
 	int v12; // eax
@@ -1100,11 +1098,9 @@ void __fastcall InitPlayer(int pnum, bool FirstTime)
 			v6 = plr[v3]._pNWidth;
 			v4->_pmode = 0;
 			NewPlrAnim(v2, plr[v3]._pNAnim[0], plr[v3]._pNFrames, 3, v6);
-			_LOBYTE(v7) = 2;
-			v8 = random(v7, plr[v3]._pNFrames - 1);
-			_LOBYTE(v9) = 2;
+			v8 = random(2, plr[v3]._pNFrames - 1);
 			plr[v3]._pAnimFrame = v8 + 1;
-			plr[v3]._pAnimCnt = random(v9, 3);
+			plr[v3]._pAnimCnt = random(2, 3);
 		}
 		v13 = 0;
 		v14 = v2 == myplr;
@@ -3177,8 +3173,7 @@ bool __fastcall WeaponDur(int pnum, int durrnd)
 	v2 = pnum;
 	if ( pnum != myplr )
 		return 0;
-	_LOBYTE(pnum) = 3;
-	if ( random(pnum, durrnd) )
+	if ( random(3, durrnd) )
 		return 0;
 	if ( v2 >= 4 )
 		TermMsg("WeaponDur: illegal player %d", v2);
@@ -3254,7 +3249,6 @@ bool __fastcall PlrHitMonst(int pnum, int m)
 	int v12; // edi
 	int v13; // edi
 	//int v14; // eax
-	int v15; // ecx
 	int v16; // edx
 	int v17; // eax
 	int v18; // ecx
@@ -3311,8 +3305,7 @@ bool __fastcall PlrHitMonst(int pnum, int m)
 		//pnum = v7;
 	}
 	v42 = 0;
-	_LOBYTE(pnum) = 4;
-	v8 = random(pnum, 100);
+	v8 = random(4, 100);
 	v23 = *(MON_MODE *)((char *)&monster[0]._mmode + v5) == MM_STONE;
 	v46 = v8;
 	if ( v23 )
@@ -3336,17 +3329,15 @@ bool __fastcall PlrHitMonst(int pnum, int m)
 	if ( (signed int)v46 < v13 )
 #endif
 	{
-		_LOBYTE(v15) = 5;
 		v16 = plr[v9]._pIMaxDam - plr[v9]._pIMinDam + 1;
 		v48 = plr[v9]._pIMinDam;
-		v17 = random(v15, v16);
+		v17 = random(5, v16);
 		v18 = 100;
 		v19 = plr[v9]._pIBonusDamMod + plr[v9]._pDamageMod + (v48 + v17) * plr[v9]._pIBonusDam / 100 + v48 + v17;
 		if ( !_LOBYTE(plr[v9]._pClass) )
 		{
-			_LOBYTE(v18) = 6;
 			v48 = plr[v9]._pLevel;
-			v20 = random(v18, 100);
+			v20 = random(6, 100);
 			if ( v20 < v48 )
 				v19 *= 2;
 		}
@@ -3383,8 +3374,7 @@ LABEL_40:
 			*(int *)((char *)&monster[0]._mhitpoints + v5) -= v26;
 		if ( v24 & 2 )
 		{
-			_LOBYTE(v25) = 7;
-			v27 = random(v25, v26 >> 3);
+			v27 = random(7, v26 >> 3);
 			v28 = plr[v9]._pMaxHP;
 			v29 = &plr[v9]._pHitPoints;
 			*v29 += v27;
@@ -3529,9 +3519,8 @@ bool __fastcall PlrHitPlr(int pnum, char p)
 		TermMsg("PlrHitPlr: illegal attacking player %d", v3);
 		//pnum = v7;
 	}
-	_LOBYTE(pnum) = 4;
 	v8 = v3;
-	v29 = random(pnum, 100);
+	v29 = random(4, 100);
 	v9 = (plr[v8]._pDexterity >> 1) - plr[v5]._pIBonusAC - plr[v5]._pIAC - plr[v5]._pDexterity / 5;
 	v10 = plr[v8]._pLevel;
 	v11 = v9 + v10 + 50;
@@ -3549,8 +3538,7 @@ bool __fastcall PlrHitPlr(int pnum, char p)
 	}
 	else
 	{
-		_LOBYTE(v9) = 5;
-		v14 = random(v9, 100);
+		v14 = random(5, 100);
 	}
 	v15 = plr[v5]._pDexterity + plr[v5]._pBaseToBlk + 2 * plr[v5]._pLevel - 2 * plr[v8]._pLevel;
 	if ( v15 < 0 )
@@ -3562,22 +3550,19 @@ bool __fastcall PlrHitPlr(int pnum, char p)
 		if ( v14 >= v15 )
 		{
 			v17 = plr[v8]._pIMinDam;
-			_LOBYTE(v15) = 5;
-			v18 = random(v15, plr[v8]._pIMaxDam - v17 + 1);
+			v18 = random(5, plr[v8]._pIMaxDam - v17 + 1);
 			v19 = 100;
 			v20 = plr[v8]._pIBonusDamMod + plr[v8]._pDamageMod + (v17 + v18) * plr[v8]._pIBonusDam / 100 + v17 + v18;
 			if ( !_LOBYTE(plr[v8]._pClass) )
 			{
 				v21 = plr[v8]._pLevel;
-				_LOBYTE(v19) = 6;
-				if ( random(v19, 100) < v21 )
+				if ( random(6, 100) < v21 )
 					v20 *= 2;
 			}
 			v22 = v20 << 6;
 			if ( plr[v8]._pIFlags & 2 )
 			{
-				_LOBYTE(v19) = 7;
-				v23 = random(v19, v22 >> 3);
+				v23 = random(7, v22 >> 3);
 				v24 = plr[v8]._pMaxHP;
 				v25 = &plr[v8]._pHitPoints;
 				*v25 += v23;
@@ -3826,7 +3811,6 @@ int __fastcall PM_DoBlock(int pnum)
 {
 	int v1; // esi
 	int v2; // eax
-	int v3; // ecx
 
 	v1 = pnum;
 	if ( (unsigned int)pnum >= 4 )
@@ -3838,8 +3822,7 @@ int __fastcall PM_DoBlock(int pnum)
 		return 0;
 	StartStand(v1, plr[v2]._pdir);
 	ClearPlrPVars(v1);
-	_LOBYTE(v3) = 3;
-	if ( !random(v3, 10) )
+	if ( !random(3, 10) )
 		ShieldDur(v1);
 	return 1;
 }
@@ -3909,7 +3892,6 @@ int __fastcall PM_DoGotHit(int pnum)
 	int v2; // eax
 	int v3; // edx
 	int v4; // ecx
-	int v5; // ecx
 
 	v1 = pnum;
 	if ( (unsigned int)pnum >= 4 )
@@ -3927,8 +3909,7 @@ int __fastcall PM_DoGotHit(int pnum)
 		return 0;
 	StartStand(v1, plr[v2]._pdir);
 	ClearPlrPVars(v1);
-	_LOBYTE(v5) = 3;
-	if ( random(v5, 4) )
+	if ( random(3, 4) )
 		ArmorDur(v1);
 	return 1;
 }
@@ -3956,8 +3937,7 @@ void __fastcall ArmorDur(int pnum)
 		v3 = &plr[v1];
 		if ( v3->InvBody[6]._itype != -1 || v3->InvBody[0]._itype != -1 )
 		{
-			_LOBYTE(pnum) = 8;
-			v4 = random(pnum, 3);
+			v4 = random(8, 3);
 			v5 = v3->InvBody[6]._itype;
 			if ( v5 == -1 )
 				goto LABEL_23;
