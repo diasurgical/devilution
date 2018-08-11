@@ -968,7 +968,6 @@ int __fastcall DRLG_PlaceMiniSet(unsigned char *miniset, int tmin, int tmax, int
 	int v10; // esi
 	int v11; // edx
 	int v12; // eax
-	int v13; // ecx
 	int v14; // esi
 	int v15; // edi
 	int v16; // ebx
@@ -1005,8 +1004,7 @@ int __fastcall DRLG_PlaceMiniSet(unsigned char *miniset, int tmin, int tmax, int
 	v37 = miniset[1];
 	if ( v11 )
 	{
-		_LOBYTE(miniset) = 0;
-		v31 = v10 + random((int)miniset, v11);
+		v31 = v10 + random(0, v11);
 	}
 	else
 	{
@@ -1019,12 +1017,10 @@ int __fastcall DRLG_PlaceMiniSet(unsigned char *miniset, int tmin, int tmax, int
 		v29 = 40 - v37;
 		while ( 1 )
 		{
-			_LOBYTE(miniset) = 0;
-			v12 = random((int)miniset, max);
-			_LOBYTE(v13) = 0;
+			v12 = random(0, max);
 			v14 = v12;
 			v33 = 0;
-			v15 = random(v13, v29);
+			v15 = random(0, v29);
 			while ( 1 )
 			{
 				tmaxa = 1;
@@ -1362,14 +1358,12 @@ void __fastcall L5roomGen(int x, int y, int w, int h, bool dir)
 	int v7; // eax
 	int v8; // ecx
 	int v9; // eax
-	int v10; // ecx
 	int v11; // esi
 	int v12; // edi
 	int v13; // ebx
 	int v14; // eax
 	int v15; // eax
 	int v16; // eax
-	int v17; // ecx
 	int v18; // esi
 	int v19; // edi
 	int v20; // ebx
@@ -1395,8 +1389,7 @@ void __fastcall L5roomGen(int x, int y, int w, int h, bool dir)
 	{
 		while ( 1 )
 		{
-			_LOBYTE(x) = 0;
-			v5 = random(x, 4);
+			v5 = random(0, 4);
 			v6 = 0;
 			_LOBYTE(v6) = dir == 1 ? v5 != 0 : v5 == 0;
 			v7 = v6;
@@ -1409,11 +1402,9 @@ void __fastcall L5roomGen(int x, int y, int w, int h, bool dir)
 			twa = w / 2;
 			do
 			{
-				_LOBYTE(v8) = 0;
-				v9 = random(v8, 5);
-				_LOBYTE(v10) = 0;
+				v9 = random(0, 5);
 				v11 = (v9 + 2) & 0xFFFFFFFE;
-				v12 = (random(v10, 5) + 2) & 0xFFFFFFFE;
+				v12 = (random(0, 5) + 2) & 0xFFFFFFFE;
 				v13 = txa + twa - v11 / 2;
 				tya = v29 - v12;
 				v14 = L5checkRoom(v13 - 1, v29 - v12 - 1, v11 + 2, v12 + 1);
@@ -1442,11 +1433,9 @@ void __fastcall L5roomGen(int x, int y, int w, int h, bool dir)
 		thb = h / 2;
 		do
 		{
-			_LOBYTE(v8) = 0;
-			v16 = random(v8, 5);
-			_LOBYTE(v17) = 0;
+			v16 = random(0, 5);
 			v18 = (v16 + 2) & 0xFFFFFFFE;
-			v19 = (random(v17, 5) + 2) & 0xFFFFFFFE;
+			v19 = (random(0, 5) + 2) & 0xFFFFFFFE;
 			v20 = v29 + thb - v19 / 2;
 			tyb = txa - v18;
 			v21 = L5checkRoom(txa - v18 - 1, v20 - 1, v19 + 2, v18 + 1);
@@ -1780,7 +1769,6 @@ void __fastcall L5HorizWall(int i, int j, char p, int dx)
 	int v4; // edi
 	int v5; // esi
 	int v6; // eax
-	int v7; // ecx
 	char v8; // bl
 	int v9; // eax
 	int v10; // ecx
@@ -1793,9 +1781,8 @@ void __fastcall L5HorizWall(int i, int j, char p, int dx)
 
 	v4 = j;
 	v5 = i;
-	_LOBYTE(i) = 0;
 	v15 = j;
-	v6 = random(i, 4);
+	v6 = random(0, 4);
 	if ( v6 >= 0 )
 	{
 		if ( v6 <= 1 )
@@ -1819,8 +1806,7 @@ void __fastcall L5HorizWall(int i, int j, char p, int dx)
 				_LOBYTE(p) = 27;
 		}
 	}
-	_LOBYTE(v7) = 0;
-	v8 = random(v7, 6) != 5 ? 26 : 12;
+	v8 = random(0, 6) != 5 ? 26 : 12;
 	if ( v16 == 12 )
 		v8 = 12;
 	v9 = v4 + 40 * v5;
@@ -1839,8 +1825,7 @@ void __fastcall L5HorizWall(int i, int j, char p, int dx)
 		while ( v12 );
 		v4 = v15;
 	}
-	_LOBYTE(v10) = 0;
-	v13 = random(v10, dx - 1) + 1;
+	v13 = random(0, dx - 1) + 1;
 	if ( v8 == 12 )
 	{
 		dungeon[v5 + v13][v4] = 12;
@@ -1858,7 +1843,6 @@ void __fastcall L5VertWall(int i, int j, char p, int dy)
 	int v4; // edi
 	int v5; // esi
 	int v6; // eax
-	int v7; // ecx
 	int v8; // eax
 	int v9; // ebx
 	int v10; // esi
@@ -1875,9 +1859,8 @@ void __fastcall L5VertWall(int i, int j, char p, int dy)
 
 	v4 = j;
 	v5 = i;
-	_LOBYTE(i) = 0;
 	v18 = j;
-	v6 = random(i, 4);
+	v6 = random(0, 4);
 	if ( v6 >= 0 )
 	{
 		if ( v6 <= 1 )
@@ -1901,8 +1884,7 @@ void __fastcall L5VertWall(int i, int j, char p, int dy)
 				_LOBYTE(p) = 37;
 		}
 	}
-	_LOBYTE(v7) = 0;
-	v8 = random(v7, 6);
+	v8 = random(0, 6);
 	v9 = 5 - v8;
 	_LOBYTE(v9) = v8 != 5 ? 25 : 11;
 	v19 = v8 != 5 ? 25 : 11;
@@ -1929,8 +1911,7 @@ void __fastcall L5VertWall(int i, int j, char p, int dy)
 		v4 = v18;
 	}
 	v15 = v11 - 1;
-	_LOBYTE(v11) = 0;
-	v16 = random(v11, v15) + 1;
+	v16 = random(0, v15) + 1;
 	if ( (_BYTE)v9 == 11 )
 	{
 		dungeon[0][v16 + v10 * 40 + v4] = 11;

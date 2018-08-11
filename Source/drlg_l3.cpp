@@ -684,11 +684,9 @@ int __fastcall DRLG_L3FillRoom(int x1, int y1, int x2, int y2)
 	char *v12; // edx
 	int v13; // eax
 	int i; // ebx
-	int v15; // ecx
 	int v16; // ecx
 	char *v17; // ebx
 	int v18; // edi
-	int v19; // ecx
 	int v21; // [esp+Ch] [ebp-4h]
 	int x2a; // [esp+18h] [ebp+8h]
 	int y2a; // [esp+1Ch] [ebp+Ch]
@@ -756,11 +754,9 @@ LABEL_12:
 	}
 	for ( i = v5; i <= y2; ++i )
 	{
-		_LOBYTE(v8) = 0;
-		if ( random(v8, 2) )
+		if ( random(0, 2) )
 			dungeon[v4][i] = 1;
-		_LOBYTE(v15) = 0;
-		if ( random(v15, 2) )
+		if ( random(0, 2) )
 			dungeon[v6][i] = 1;
 	}
 	if ( v4 <= v6 )
@@ -771,11 +767,9 @@ LABEL_12:
 		y2a = v21 - y2;
 		do
 		{
-			_LOBYTE(v16) = 0;
-			if ( random(v16, 2) )
+			if ( random(0, 2) )
 				v17[y2a] = 1;
-			_LOBYTE(v19) = 0;
-			if ( random(v19, 2) )
+			if ( random(0, 2) )
 				*v17 = 1;
 			v17 += 40;
 			--v18;
@@ -790,12 +784,9 @@ void __fastcall DRLG_L3CreateBlock(int x, int y, int obs, int dir)
 	int v4; // esi
 	int v5; // edi
 	int v6; // eax
-	int v7; // ecx
-	int v8; // ecx
 	int v9; // ebx
 	bool v10; // zf
 	bool v11; // zf
-	int v12; // ecx
 	int y2; // [esp+Ch] [ebp-14h]
 	int x2; // [esp+10h] [ebp-10h]
 	int i; // [esp+14h] [ebp-Ch]
@@ -807,26 +798,22 @@ void __fastcall DRLG_L3CreateBlock(int x, int y, int obs, int dir)
 	v16 = y;
 	for ( i = x; ; i = v4 )
 	{
-		_LOBYTE(x) = 0;
-		v6 = random(x, 2);
-		_LOBYTE(v7) = 0;
+		v6 = random(0, 2);
 		max = v6 + 3;
-		v9 = random(v7, 2) + 3;
+		v9 = random(0, 2) + 3;
 		if ( !dir )
 		{
 			y2 = v16 - 1;
 			v5 = v16 - 1 - v9;
 			if ( max < obs )
 			{
-				_LOBYTE(v8) = 0;
-				v4 = i + random(v8, max);
+				v4 = i + random(0, max);
 			}
 			if ( max == obs )
 				v4 = i;
 			if ( max > obs )
 			{
-				_LOBYTE(v8) = 0;
-				v4 = i - random(v8, max);
+				v4 = i - random(0, max);
 			}
 			x2 = v4 + max;
 		}
@@ -837,16 +824,14 @@ void __fastcall DRLG_L3CreateBlock(int x, int y, int obs, int dir)
 			v10 = v9 == obs;
 			if ( v9 < obs )
 			{
-				_LOBYTE(v8) = 0;
-				v5 = v16 + random(v8, v9);
+				v5 = v16 + random(0, v9);
 				v10 = v9 == obs;
 			}
 			if ( v10 )
 				v5 = v16;
 			if ( v9 > obs )
 			{
-				_LOBYTE(v8) = 0;
-				v5 = v16 - random(v8, v9);
+				v5 = v16 - random(0, v9);
 			}
 			y2 = v5 + v9;
 		}
@@ -856,15 +841,13 @@ void __fastcall DRLG_L3CreateBlock(int x, int y, int obs, int dir)
 			y2 = v16 + 1 + v9;
 			if ( max < obs )
 			{
-				_LOBYTE(v8) = 0;
-				v4 = i + random(v8, max);
+				v4 = i + random(0, max);
 			}
 			if ( max == obs )
 				v4 = i;
 			if ( max > obs )
 			{
-				_LOBYTE(v8) = 0;
-				v4 = i - random(v8, max);
+				v4 = i - random(0, max);
 			}
 			x2 = v4 + max;
 		}
@@ -875,23 +858,20 @@ void __fastcall DRLG_L3CreateBlock(int x, int y, int obs, int dir)
 			x2 = i + 1 + max;
 			if ( v9 < obs )
 			{
-				_LOBYTE(v8) = 0;
-				v5 = v16 + random(v8, v9);
+				v5 = v16 + random(0, v9);
 				v11 = v9 == obs;
 			}
 			if ( v11 )
 				v5 = v16;
 			if ( v9 > obs )
 			{
-				_LOBYTE(v8) = 0;
-				v5 = v16 - random(v8, v9);
+				v5 = v16 - random(0, v9);
 			}
 			y2 = v5 + v9;
 		}
 		if ( DRLG_L3FillRoom(v4, v5, x2, y2) != 1 )
 			break;
-		_LOBYTE(v12) = 0;
-		if ( !random(v12, 4) )
+		if ( !random(0, 4) )
 			break;
 		if ( dir != 2 )
 			DRLG_L3CreateBlock(v4, v5, v9, 0);
@@ -950,8 +930,7 @@ void __cdecl DRLG_L3FillDiags()
 			   + 2 * ((unsigned char)*(v1 - 40) + 2 * ((unsigned char)*(v1 - 1) + 2 * (unsigned char)*(v1 - 41)));
 			if ( v4 == 6 )
 			{
-				_LOBYTE(v3) = 0;
-				if ( !random(v3, 2) )
+				if ( !random(0, 2) )
 				{
 					*(v1 - 41) = 1;
 					goto LABEL_11;
@@ -960,8 +939,7 @@ void __cdecl DRLG_L3FillDiags()
 			}
 			if ( v4 == 9 )
 			{
-				_LOBYTE(v3) = 0;
-				if ( random(v3, 2) )
+				if ( random(0, 2) )
 					*(v1 - 40) = 1;
 				else
 					*(v1 - 1) = 1;
@@ -1056,8 +1034,7 @@ void __cdecl DRLG_L3FillStraights()
 			{
 				if ( v2 > 3 )
 				{
-					_LOBYTE(v1) = 0;
-					if ( random((int)v1, 2) )
+					if ( random(0, 2) )
 					{
 						if ( v0 < v29 )
 						{
@@ -1065,8 +1042,7 @@ void __cdecl DRLG_L3FillStraights()
 							v24 = (char *)dungeon + v4 + v27;
 							do
 							{
-								_LOBYTE(v1) = 0;
-								v6 = random((int)v1, 2);
+								v6 = random(0, 2);
 								v1 = v24;
 								v24 += 40;
 								--v5;
@@ -1113,8 +1089,7 @@ void __cdecl DRLG_L3FillStraights()
 			{
 				if ( v8 > 3 )
 				{
-					_LOBYTE(v7) = 0;
-					if ( random((int)v7, 2) )
+					if ( random(0, 2) )
 					{
 						if ( v0 < v30 )
 						{
@@ -1122,8 +1097,7 @@ void __cdecl DRLG_L3FillStraights()
 							v24 = &dungeon[0][v10 + 1 + v28];
 							do
 							{
-								_LOBYTE(v7) = 0;
-								v12 = random((int)v7, 2);
+								v12 = random(0, 2);
 								v7 = v24;
 								v24 += 40;
 								--v11;
@@ -1165,13 +1139,11 @@ void __cdecl DRLG_L3FillStraights()
 			{
 				if ( v14 > 3 )
 				{
-					_LOBYTE(v7) = 0;
-					if ( random((int)v7, 2) )
+					if ( random(0, 2) )
 					{
 						for ( i = (signed int)v24; i < v15; ++i )
 						{
-							_LOBYTE(v7) = 0;
-							dungeon[v13][i] = random((int)v7, 2);
+							dungeon[v13][i] = random(0, 2);
 						}
 					}
 				}
@@ -1200,13 +1172,11 @@ void __cdecl DRLG_L3FillStraights()
 			{
 				if ( v18 > 3 )
 				{
-					_LOBYTE(v7) = 0;
-					if ( random((int)v7, 2) )
+					if ( random(0, 2) )
 					{
 						for ( j = (signed int)v24; j < v19; ++j )
 						{
-							_LOBYTE(v7) = 0;
-							dungeon[v17 + 1][j] = random((int)v7, 2);
+							dungeon[v17 + 1][j] = random(0, 2);
 						}
 					}
 				}
@@ -1277,8 +1247,7 @@ void __cdecl DRLG_L3MakeMegas()
 			v4 = v3 + 2 * ((unsigned char)*v1 + 2 * ((unsigned char)v1[39] + 2 * (unsigned char)*(v1 - 1)));
 			if ( v4 == 6 )
 			{
-				_LOBYTE(v3) = 0;
-				if ( !random(v3, 2) )
+				if ( !random(0, 2) )
 				{
 					v4 = 12;
 					goto LABEL_9;
@@ -1287,8 +1256,7 @@ void __cdecl DRLG_L3MakeMegas()
 			}
 			if ( v4 == 9 )
 			{
-				_LOBYTE(v3) = 0;
-				v4 = (random(v3, 2) != 0) + 13;
+				v4 = (random(0, 2) != 0) + 13;
 			}
 LABEL_9:
 			--v2;
@@ -1786,8 +1754,7 @@ void __cdecl DRLG_L3Pool()
 				v5 = v2 <= 0 || v4 ? 1 : DRLG_L3SpawnEdge(v2, v0, &totarea);
 				v6 = v0 + 1 >= 40 || v5 ? 1 : DRLG_L3SpawnEdge(x, v0 + 1, &totarea);
 				v17 = v0 - 1 <= 0 || v6 ? 1 : DRLG_L3SpawnEdge(x, v0 - 1, &totarea);
-				_LOBYTE(v3) = 0;
-				v7 = random(v3, 100);
+				v7 = random(0, 100);
 				v8 = totarea;
 				v15 = v7;
 				v9 = v0 - totarea;
@@ -2016,14 +1983,11 @@ int __fastcall DRLG_L3PlaceMiniSet(unsigned char *miniset, int tmin, int tmax, i
 	int v9; // edi
 	int v10; // edx
 	int v11; // eax
-	int v12; // ecx
 	int v13; // esi
 	signed int v14; // ebx
 	int v15; // ecx
 	int v16; // eax
-	int v17; // ecx
 	int v18; // eax
-	int v19; // ecx
 	int v20; // edi
 	signed int i; // eax
 	int v22; // ecx
@@ -2051,8 +2015,7 @@ int __fastcall DRLG_L3PlaceMiniSet(unsigned char *miniset, int tmin, int tmax, i
 	v35 = miniset[1];
 	if ( v10 )
 	{
-		_LOBYTE(miniset) = 0;
-		v30 = v8 + random((int)miniset, v10);
+		v30 = v8 + random(0, v10);
 	}
 	else
 	{
@@ -2069,12 +2032,10 @@ int __fastcall DRLG_L3PlaceMiniSet(unsigned char *miniset, int tmin, int tmax, i
 		v36 = 40 - v7;
 		do
 		{
-			_LOBYTE(miniset) = 0;
-			v11 = random((int)miniset, max);
-			_LOBYTE(v12) = 0;
+			v11 = random(0, max);
 			v13 = v11;
 			v33 = 0;
-			tmax = random(v12, v36);
+			tmax = random(0, v36);
 			while ( 1 )
 			{
 				if ( v33 >= 200 )
@@ -2086,20 +2047,17 @@ int __fastcall DRLG_L3PlaceMiniSet(unsigned char *miniset, int tmin, int tmax, i
 					v15 = cx - v34;
 					if ( v13 >= cx - v34 && v13 <= cx + 12 )
 					{
-						_LOBYTE(v15) = 0;
-						v16 = random(v15, max);
-						_LOBYTE(v17) = 0;
+						v16 = random(0, max);
 						v13 = v16;
-						tmax = random(v17, v36);
+						tmax = random(0, v36);
 						v14 = 0;
 					}
 				}
 				if ( cy != -1 && tmax >= cy - v35 && tmax <= cy + 12 )
 				{
-					v18 = random(cy - v35, max);
-					_LOBYTE(v19) = 0;
+					v18 = random(0, max); /* cy - v35 */
 					v13 = v18;
-					tmax = random(v19, v36);
+					tmax = random(0, v36);
 					v14 = 0;
 				}
 				v20 = 0;
@@ -2291,8 +2249,7 @@ LABEL_43:
 LABEL_33:
 		if ( v29 == 1 )
 		{
-			_LOBYTE(v5) = 0;
-			if ( random((int)v5, 100) < v19 )
+			if ( random(0, 100) < v19 )
 			{
 				for ( j = 0; j < v28; ++j )
 				{

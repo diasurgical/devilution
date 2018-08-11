@@ -1689,8 +1689,7 @@ bool __fastcall GetItemSpace(int x, int y, char inum)
 		v5 = (char (*)[3])((char *)v5 + 4);
 	}
 	while ( (signed int)v5 < (signed int)&itemhold[3][0] );
-	_LOBYTE(v11) = 13;
-	v12 = random(v11, 15) + 1;
+	v12 = random(13, 15) + 1;
 	if ( !v9 )
 		return 0;
 	v14 = 0;
@@ -1858,8 +1857,7 @@ void __fastcall GetBookSpell(int i, int lvl)
 	v3 = i;
 	if ( !lvl )
 		v2 = lvl + 1;
-	_LOBYTE(i) = 14;
-	v4 = random(i, 37) + 1;
+	v4 = random(14, 37) + 1;
 LABEL_13:
 	v6 = 1;
 	while ( v4 > 0 )
@@ -1918,9 +1916,8 @@ void __fastcall GetStaffPower(int i, int lvl, int bs, unsigned char onlygood)
 
 	v4 = lvl;
 	ia = i;
-	_LOBYTE(i) = 15;
 	v5 = -1;
-	if ( !random(i, 10) || onlygood )
+	if ( !random(15, 10) || onlygood )
 	{
 		v6 = 0;
 		v7 = 0;
@@ -1939,8 +1936,7 @@ void __fastcall GetStaffPower(int i, int lvl, int bs, unsigned char onlygood)
 			while ( PL_Prefix[v7].PLPower != -1 );
 			if ( v6 )
 			{
-				_LOBYTE(v7) = 16;
-				v5 = l[random(v7, v6)];
+				v5 = l[random(16, v6)];
 				v9 = ia;
 				v17 = item[ia]._iIName;
 				sprintf(istr, "%s %s", PL_Prefix[v5].PLName, item[ia]._iIName);
@@ -4516,9 +4512,8 @@ LABEL_41:
 				return;
 			}
 			v10 = p;
-			_LOBYTE(p) = 40;
 			v11 = plr[v10]._pMaxMana >> 8;
-			v12 = (v11 & 0xFFFFFFFE) + 2 * random(p, v11);
+			v12 = (v11 & 0xFFFFFFFE) + 2 * random(40, v11);
 			v13 = plr[v10]._pClass;
 			v14 = 32 * v12;
 			if ( v13 == 2 )
@@ -4543,9 +4538,8 @@ LABEL_41:
 		}
 LABEL_71:
 		v61 = p;
-		_LOBYTE(p) = 39;
 		v62 = plr[v61]._pMaxHP >> 8;
-		v63 = (v62 & 0xFFFFFFFE) + 2 * random(p, v62);
+		v63 = (v62 & 0xFFFFFFFE) + 2 * random(39, v62);
 		v64 = plr[v61]._pClass;
 		v65 = 32 * v63;
 		if ( !v64 )
@@ -4664,9 +4658,8 @@ LABEL_71:
 	else
 	{
 		v42 = p;
-		_LOBYTE(p) = 39;
 		v43 = plr[v42]._pMaxHP >> 8;
-		v44 = (v43 & 0xFFFFFFFE) + 2 * random(p, v43);
+		v44 = (v43 & 0xFFFFFFFE) + 2 * random(39, v43);
 		v45 = plr[v42]._pClass;
 		v46 = 32 * v44;
 		if ( !v45 )
@@ -4685,9 +4678,8 @@ LABEL_71:
 			*v50 = v49;
 		v51 = plr[v42]._pMaxMana >> 8;
 		v52 = plr[v42]._pMaxMana >> 8;
-		_LOBYTE(v49) = 40;
 		drawhpflag = 1;
-		v53 = (v51 & 0xFFFFFFFE) + 2 * random(v49, v52);
+		v53 = (v51 & 0xFFFFFFFE) + 2 * random(40, v52);
 		v54 = plr[v42]._pClass;
 		v55 = 32 * v53;
 		if ( v54 == 2 )

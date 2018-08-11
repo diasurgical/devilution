@@ -3889,7 +3889,6 @@ void __cdecl S_TalkEnter()
 	int *v4; // ecx
 	int v5; // esi
 	signed int v6; // ebp
-	int v7; // ecx
 	int v8; // eax
 	int v9; // ebx
 	int v10; // ecx
@@ -3927,8 +3926,7 @@ void __cdecl S_TalkEnter()
 		if ( stextsel == v5 - 2 )
 		{
 			SetRndSeed(towner[talker]._tSeed);
-			_LOBYTE(v7) = 0;
-			v8 = random(v7, gossipend - gossipstart + 1);
+			v8 = random(0, gossipend - gossipstart + 1);
 			InitQTextMsg(gossipstart + v8);
 		}
 		else

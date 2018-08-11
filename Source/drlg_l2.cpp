@@ -1040,14 +1040,11 @@ bool __fastcall DRLG_L2PlaceMiniSet(unsigned char *miniset, int tmin, int tmax, 
 	int v9; // edi
 	int v10; // edx
 	int v11; // eax
-	int v12; // ecx
 	int v13; // esi
 	int v14; // ebx
 	int v15; // ecx
 	int v16; // eax
-	int v17; // ecx
 	int v18; // eax
-	int v19; // ecx
 	int v20; // edi
 	signed int i; // eax
 	int v22; // ecx
@@ -1079,8 +1076,7 @@ bool __fastcall DRLG_L2PlaceMiniSet(unsigned char *miniset, int tmin, int tmax, 
 	v35 = miniset[1];
 	if ( v10 )
 	{
-		_LOBYTE(miniset) = 0;
-		v30 = v8 + random((int)miniset, v10);
+		v30 = v8 + random(0, v10);
 	}
 	else
 	{
@@ -1098,12 +1094,10 @@ bool __fastcall DRLG_L2PlaceMiniSet(unsigned char *miniset, int tmin, int tmax, 
 		v36 = 40 - v7;
 		do
 		{
-			_LOBYTE(miniset) = 0;
-			v11 = random((int)miniset, max);
-			_LOBYTE(v12) = 0;
+			v11 = random(0, max);
 			v13 = v11;
 			v33 = 0;
-			v14 = random(v12, v36);
+			v14 = random(0, v36);
 			v39 = v14;
 			do
 			{
@@ -1117,22 +1111,19 @@ bool __fastcall DRLG_L2PlaceMiniSet(unsigned char *miniset, int tmin, int tmax, 
 					v15 = cx - v34;
 					if ( v13 >= cx - v34 && v13 <= cx + 12 )
 					{
-						_LOBYTE(v15) = 0;
-						v16 = random(v15, max);
-						_LOBYTE(v17) = 0;
+						v16 = random(0, max);
 						v13 = v16;
 						tmaxa = 0;
-						v39 = random(v17, v36);
+						v39 = random(0, v36);
 						v14 = v39;
 					}
 				}
 				if ( cy != -1 && v14 >= cy - v35 && v14 <= cy + 12 )
 				{
-					v18 = random(cy - v35, max);
-					_LOBYTE(v19) = 0;
+					v18 = random(0, max); /* cy - v35 */
 					v13 = v18;
 					tmaxa = 0;
-					v39 = random(v19, v36);
+					v39 = random(0, v36);
 					v14 = v39;
 				}
 				v20 = 0;
@@ -1318,8 +1309,7 @@ void __fastcall DRLG_L2PlaceRndSet(unsigned char *miniset, int rndper)
 						if ( v23 >= v32 + 2 * v31 )
 						{
 LABEL_34:
-							_LOBYTE(v12) = 0;
-							if ( random((int)v12, 100) < v20 )
+							if ( random(0, 100) < v20 )
 							{
 								for ( j = 0; j < v31; ++j )
 								{
@@ -1739,16 +1729,13 @@ void __fastcall CreateRoom(int nX1, int nY1, int nX2, int nY2, int nRDest, int n
 	int v13; // edx
 	int v14; // edx
 	int v15; // edi
-	int v16; // ecx
 	int v17; // esi
 	int v18; // ebx
 	int v19; // edx
 	int v20; // ecx
 	int v21; // eax
-	int v22; // ecx
 	int v23; // eax
 	int v24; // eax
-	int v25; // ecx
 	int v26; // eax
 	int *v27; // ecx
 	int v28; // eax
@@ -1803,18 +1790,15 @@ LABEL_11:
 				v13 = nY2 - v39;
 			}
 			v14 = v13 - nX1;
-			_LOBYTE(nX1) = 0;
-			v36 = Room_Min + random(nX1, v14);
+			v36 = Room_Min + random(0, v14);
 LABEL_16:
 			if ( ForceHW == 1 )
 			{
 				v41 = nW;
 				v36 = nH;
 			}
-			_LOBYTE(nX1) = 0;
-			v15 = v37 + random(nX1, v9);
-			_LOBYTE(v16) = 0;
-			v17 = v39 + random(v16, v10);
+			v15 = v37 + random(0, v9);
+			v17 = v39 + random(0, v10);
 			v18 = v15 + v41;
 			v43 = v17 + v36;
 			if ( v15 + v41 > nX2 )
@@ -1859,53 +1843,45 @@ LABEL_16:
 			{
 				if ( nHDir == 1 )
 				{
-					_LOBYTE(v20) = 0;
-					v21 = random(v20, v18 - v15 - 2);
-					_LOBYTE(v22) = 0;
+					v21 = random(0, v18 - v15 - 2);
 					nX1a = v21 + v15 + 1;
 					v33 = v17;
-					v23 = random(v22, RoomList[nRDest].nRoomx2 - RoomList[nRDest].nRoomx1 - 2);
+					v23 = random(0, RoomList[nRDest].nRoomx2 - RoomList[nRDest].nRoomx1 - 2);
 					v20 = 20 * nRDest;
 					v34 = v23 + RoomList[nRDest].nRoomx1 + 1;
 					v35 = RoomList[nRDest].nRoomy2;
 				}
 				if ( nHDir == 3 )
 				{
-					_LOBYTE(v20) = 0;
-					v24 = random(v20, v18 - v15 - 2);
-					_LOBYTE(v25) = 0;
+					v24 = random(0, v18 - v15 - 2);
 					nX1a = v24 + v15 + 1;
 					v33 = v43;
-					v26 = random(v25, RoomList[nRDest].nRoomx2 - RoomList[nRDest].nRoomx1 - 2);
+					v26 = random(0, RoomList[nRDest].nRoomx2 - RoomList[nRDest].nRoomx1 - 2);
 					v20 = 20 * nRDest;
 					v34 = v26 + RoomList[nRDest].nRoomx1 + 1;
 					v35 = RoomList[nRDest].nRoomy1;
 				}
 				if ( nHDir == 2 )
 				{
-					_LOBYTE(v20) = 0;
 					nX1a = v18;
-					v33 = random(v20, v43 - v17 - 2) + v17 + 1;
+					v33 = random(0, v43 - v17 - 2) + v17 + 1;
 					v34 = RoomList[nRDest].nRoomx1;
 					v27 = &RoomList[nRDest].nRoomy1;
 					ForceHWa = v27;
 					v28 = RoomList[nRDest].nRoomy2 - *v27;
-					_LOBYTE(v27) = 0;
-					v29 = random((int)v27, v28 - 2);
+					v29 = random(0, v28 - 2);
 					v20 = *ForceHWa;
 					v35 = v29 + *ForceHWa + 1;
 				}
 				if ( nHDir == 4 )
 				{
-					_LOBYTE(v20) = 0;
 					nX1a = v15;
-					v33 = random(v20, v43 - v17 - 2) + v17 + 1;
+					v33 = random(0, v43 - v17 - 2) + v17 + 1;
 					v34 = RoomList[nRDest].nRoomx2;
 					v30 = &RoomList[nRDest].nRoomy1;
 					ForceHWb = v30;
 					v31 = RoomList[nRDest].nRoomy2 - *v30;
-					_LOBYTE(v30) = 0;
-					v35 = random((int)v30, v31 - 2) + *ForceHWb + 1;
+					v35 = random(0, v31 - 2) + *ForceHWb + 1;
 				}
 				AddHall(nX1a, v33, v34, v35, nHDir);
 				v19 = v42;
@@ -1949,8 +1925,7 @@ LABEL_16:
 		}
 		v11 = Room_Max - Room_Min;
 LABEL_7:
-		_LOBYTE(nX1) = 0;
-		v12 = random(nX1, v11);
+		v12 = random(0, v11);
 		nX1 = Room_Min;
 		v41 = Room_Min + v12;
 		goto LABEL_11;
@@ -2100,7 +2075,6 @@ void __fastcall ConnectHall(int nX1, int nY1, int nX2, int nY2, int nHd)
 	int v5; // edi
 	signed int v6; // esi
 	int v7; // eax
-	int v8; // ecx
 	int v9; // edi
 	int v10; // ebx
 	int v11; // ecx
@@ -2114,7 +2088,6 @@ void __fastcall ConnectHall(int nX1, int nY1, int nX2, int nY2, int nHd)
 	int v19; // edx
 	int v20; // eax
 	//int v21; // ST04_4
-	int v22; // ecx
 	int v23; // ebx
 	int v24; // ebx
 	bool v25; // zf
@@ -2138,12 +2111,10 @@ void __fastcall ConnectHall(int nX1, int nY1, int nX2, int nY2, int nHd)
 	v34 = 0;
 	v5 = nY1;
 	v6 = nX1;
-	_LOBYTE(nX1) = 0;
 	nY = nY1;
-	v7 = random(nX1, 100);
-	_LOBYTE(v8) = 0;
+	v7 = random(0, 100);
 	v33 = v7;
-	v32 = random(v8, 100);
+	v32 = random(0, 100);
 	v31 = v6;
 	v30 = v5;
 	CreateDoorType(v6, v5);
@@ -2239,8 +2210,7 @@ void __fastcall ConnectHall(int nX1, int nY1, int nX2, int nY2, int nHd)
 			v24 = 5 * v20;
 			if ( 5 * v20 > 80 )
 				v24 = 80;
-			_LOBYTE(v22) = 0;
-			if ( random(v22, 100) < v24 )
+			if ( random(0, 100) < v24 )
 			{
 				if ( nY2a <= nY || nY >= 40 )
 				{
@@ -2256,8 +2226,7 @@ void __fastcall ConnectHall(int nX1, int nY1, int nX2, int nY2, int nHd)
 			v23 = 2 * v36;
 			if ( 2 * v36 > 30 )
 				v23 = 30;
-			_LOBYTE(v22) = 0;
-			if ( random(v22, 100) < v23 )
+			if ( random(0, 100) < v23 )
 			{
 				if ( nX2a <= v6 || v6 >= 40 )
 					v26 = 4;
@@ -2476,9 +2445,7 @@ LABEL_25:
 bool __cdecl DL2_FillVoids()
 {
 	int i; // eax
-	int v1; // ecx
 	int v2; // eax
-	int v3; // ecx
 	int v4; // edi
 	int v5; // eax
 	int v6; // ebx
@@ -2540,11 +2507,9 @@ bool __cdecl DL2_FillVoids()
 	v48 = 0;
 	for ( i = DL2_NumNoChar(); i > 700 && v48 < 100; i = DL2_NumNoChar() )
 	{
-		_LOBYTE(v1) = 0;
-		v2 = random(v1, 38);
-		_LOBYTE(v3) = 0;
+		v2 = random(0, 38);
 		v4 = v2 + 1;
-		v5 = random(v3, 38);
+		v5 = random(0, 38);
 		v6 = v5 + 1;
 		v7 = v5 + 1 + 40 * v4;
 		if ( predungeon[0][v7] != 35 )
