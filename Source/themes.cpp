@@ -542,15 +542,12 @@ void __cdecl InitThemes()
 	char v1; // bl
 	int v2; // edi
 	//int v3; // eax
-	int v4; // ecx
 	int i; // ebx
 	//int v6; // eax
-	int v7; // ecx
 	int v8; // esi
 	int v9; // ecx
 	int j; // eax
 	//int v11; // eax
-	int v12; // ecx
 	int *v13; // edi
 	int v14; // esi
 	int *v15; // ebx
@@ -589,14 +586,12 @@ void __cdecl InitThemes()
 				//_LOBYTE(v3) = CheckThemeRoom(v2);
 				if ( CheckThemeRoom(v2) )
 				{
-					_LOBYTE(v4) = 0;
 					themes[v0].ttval = v2;
-					for ( i = ThemeGood[random(v4, 4)]; ; i = random(v7, 17) )
+					for ( i = ThemeGood[random(0, 4)]; ; i = random(0, 17) )
 					{
 						//_LOBYTE(v6) = SpecialThemeFit(numthemes, i);
 						if ( SpecialThemeFit(numthemes, i) )
 							break;
-						_LOBYTE(v7) = 0;
 					}
 					v8 = numthemes;
 					themes[numthemes].ttype = i;
@@ -642,14 +637,12 @@ LABEL_23:
 			{
 				if ( themes[k].ttype == -1 )
 				{
-					_LOBYTE(v12) = 0;
 					themes[k].ttval = *v13;
-					for ( l = ThemeGood[random(v12, 4)]; ; l = random(v12, 17) )
+					for ( l = ThemeGood[random(0, 4)]; ; l = random(0, 17) )
 					{
 						//_LOBYTE(v20) = SpecialThemeFit(k, l);
 						if ( SpecialThemeFit(k, l) )
 							break;
-						_LOBYTE(v12) = 0;
 					}
 					themes[k].ttype = l;
 				}
@@ -953,8 +946,6 @@ void __fastcall Theme_Library(int t)
 	int v2; // ebx
 	char *v3; // esi
 	//int v4; // eax
-	int v5; // ecx
-	int v6; // ecx
 	int v7; // eax
 	//int v8; // eax
 	int ta; // [esp+Ch] [ebp-14h]
@@ -999,12 +990,10 @@ void __fastcall Theme_Library(int t)
 			{
 				if ( !*v10 )
 				{
-					_LOBYTE(v5) = 0;
-					if ( !random(v5, librnd[leveltype]) )
+					if ( !random(0, librnd[leveltype]) )
 					{
 						AddObject(OBJ_BOOKSTAND, v2, v1);
-						_LOBYTE(v6) = 0;
-						if ( random(v6, 2 * librnd[leveltype]) )
+						if ( random(0, 2 * librnd[leveltype]) )
 						{
 							v7 = *v3 - 1;
 							object[v7]._oSelFlag = 0;
@@ -1035,7 +1024,6 @@ void __fastcall Theme_Torture(int t)
 	int v2; // esi
 	char *v3; // edi
 	//int v4; // eax
-	int v5; // ecx
 	int *x; // [esp+Ch] [ebp-14h]
 	char monstrnd[5]; // [esp+10h] [ebp-10h]
 	int *v8; // [esp+14h] [ebp-Ch]
@@ -1065,8 +1053,7 @@ void __fastcall Theme_Torture(int t)
 				//LOBYTE(v4) = CheckThemeObj3(v10, v2, v1, -1);
 				if ( CheckThemeObj3(v10, v2, v1, -1) )
 				{
-					_LOBYTE(v5) = 0;
-					if ( !random(v5, tortrnd[leveltype]) )
+					if ( !random(0, tortrnd[leveltype]) )
 						AddObject(OBJ_TNUDEM2, v10, v2);
 				}
 			}
@@ -1103,7 +1090,6 @@ void __fastcall Theme_Decap(int t)
 	int v2; // esi
 	char *v3; // edi
 	//int v4; // eax
-	int v5; // ecx
 	int *x; // [esp+Ch] [ebp-14h]
 	char monstrnd[5]; // [esp+10h] [ebp-10h]
 	int *v8; // [esp+14h] [ebp-Ch]
@@ -1133,8 +1119,7 @@ void __fastcall Theme_Decap(int t)
 				//LOBYTE(v4) = CheckThemeObj3(v10, v2, v1, -1);
 				if ( CheckThemeObj3(v10, v2, v1, -1) )
 				{
-					_LOBYTE(v5) = 0;
-					if ( !random(v5, decaprnd[leveltype]) )
+					if ( !random(0, decaprnd[leveltype]) )
 						AddObject(OBJ_DECAP, v10, v2);
 				}
 			}
@@ -1171,7 +1156,6 @@ void __fastcall Theme_ArmorStand(int t)
 	int v2; // ebx
 	char *v3; // edi
 	//int v4; // eax
-	int v5; // ecx
 	int ta; // [esp+Ch] [ebp-14h]
 	int *v7; // [esp+10h] [ebp-10h]
 	char monstrnd[5]; // [esp+14h] [ebp-Ch]
@@ -1206,8 +1190,7 @@ void __fastcall Theme_ArmorStand(int t)
 				//LOBYTE(v4) = CheckThemeObj3(v2, v1, ta, -1);
 				if ( CheckThemeObj3(v2, v1, ta, -1) )
 				{
-					_LOBYTE(v5) = 0;
-					if ( !random(v5, armorrnd[leveltype]) )
+					if ( !random(0, armorrnd[leveltype]) )
 						AddObject(OBJ_ARMORSTANDN, v2, v1);
 				}
 			}
@@ -1319,7 +1302,6 @@ void __fastcall Theme_BrnCross(int t)
 	int v2; // ebx
 	char *v3; // edi
 	//int v4; // eax
-	int v5; // ecx
 	int ta; // [esp+Ch] [ebp-14h]
 	int *v7; // [esp+10h] [ebp-10h]
 	char monstrnd[5]; // [esp+14h] [ebp-Ch]
@@ -1349,8 +1331,7 @@ void __fastcall Theme_BrnCross(int t)
 				//LOBYTE(v4) = CheckThemeObj3(v2, v1, ta, -1);
 				if ( CheckThemeObj3(v2, v1, ta, -1) )
 				{
-					_LOBYTE(v5) = 0;
-					if ( !random(v5, bcrossrnd[leveltype]) )
+					if ( !random(0, bcrossrnd[leveltype]) )
 						AddObject(OBJ_TBCROSS, v2, v1);
 				}
 			}
@@ -1375,7 +1356,6 @@ void __fastcall Theme_WeaponRack(int t)
 	int v2; // ebx
 	char *v3; // edi
 	//int v4; // eax
-	int v5; // ecx
 	int ta; // [esp+Ch] [ebp-14h]
 	int *v7; // [esp+10h] [ebp-10h]
 	char monstrnd[5]; // [esp+14h] [ebp-Ch]
@@ -1410,8 +1390,7 @@ void __fastcall Theme_WeaponRack(int t)
 				//LOBYTE(v4) = CheckThemeObj3(v2, v1, ta, -1);
 				if ( CheckThemeObj3(v2, v1, ta, -1) )
 				{
-					_LOBYTE(v5) = 0;
-					if ( !random(v5, weaponrnd[leveltype]) )
+					if ( !random(0, weaponrnd[leveltype]) )
 						AddObject(OBJ_WEAPONRACKN, v2, v1);
 				}
 			}

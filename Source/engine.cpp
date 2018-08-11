@@ -1845,16 +1845,11 @@ int __cdecl GetRndSeed()
 
 int __fastcall random(int idx, int v)
 {
-	int v2; // esi
-	int v4; // eax
-
-	v2 = v;
 	if ( v <= 0 )
 		return 0;
-	v4 = GetRndSeed();
-	if ( v2 < 0xFFFF )
-		v4 >>= 16;
-	return v4 % v2;
+	if ( v >= 0xFFFF )
+		return GetRndSeed() % v;
+	return (GetRndSeed() >> 16) % v;
 }
 
 struct engine_cpp_init_2

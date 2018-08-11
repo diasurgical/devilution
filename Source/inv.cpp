@@ -2390,18 +2390,15 @@ LABEL_71:
 			switch ( v12 )
 			{
 				case UI_WARRIOR:
-					_LOBYTE(v5) = 0;
-					v13 = random(v5, 3) + PS_WARR14;
+					v13 = random(0, 3) + PS_WARR14;
 LABEL_84:
 					PlaySFX(v13);
 					break;
 				case UI_ROGUE:
-					_LOBYTE(v5) = 0;
-					v13 = random(v5, 3) + PS_ROGUE14;
+					v13 = random(0, 3) + PS_ROGUE14;
 					goto LABEL_84;
 				case UI_SORCERER:
-					_LOBYTE(v5) = 0;
-					v13 = random(v5, 3) + PS_MAGE14;
+					v13 = random(0, 3) + PS_MAGE14;
 					goto LABEL_84;
 			}
 		}

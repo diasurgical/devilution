@@ -63,14 +63,9 @@ void __cdecl InitQuests()
 	unsigned char v8; // al
 	unsigned char v9; // al
 	char v10; // al
-	int v11; // ecx
-	int v12; // ecx
 	int v13; // eax
-	int v14; // ecx
 	int v15; // eax
-	int v16; // ecx
 	int v17; // eax
-	int v18; // ecx
 	int v19; // eax
 	char v20; // [esp+8h] [ebp-4h]
 
@@ -149,22 +144,17 @@ void __cdecl InitQuests()
 	if ( v0 == 1 )
 	{
 		SetRndSeed(glSeedTbl[15]);
-		_LOBYTE(v11) = 0;
-		if ( random(v11, 2) )
+		if ( random(0, 2) )
 			quests[13]._qactive = 0;
 		else
 			quests[12]._qactive = 0;
-		_LOBYTE(v12) = 0;
-		v13 = random(v12, 3);
-		_LOBYTE(v14) = 0;
+		v13 = random(0, 3);
 		quests[QuestGroup1[v13]]._qactive = 0;
-		v15 = random(v14, 3);
-		_LOBYTE(v16) = 0;
+		v15 = random(0, 3);
 		quests[QuestGroup2[v15]]._qactive = 0;
-		v17 = random(v16, 3);
-		_LOBYTE(v18) = 0;
+		v17 = random(0, 3);
 		quests[QuestGroup3[v17]]._qactive = 0;
-		v19 = random(v18, 2);
+		v19 = random(0, 2);
 		v0 = gbMaxPlayers;
 		quests[QuestGroup4[v19]]._qactive = 0;
 	}

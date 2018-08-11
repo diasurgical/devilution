@@ -672,7 +672,6 @@ void __cdecl InitCows()
 	int v5; // eax
 	void **v6; // ecx
 	int v7; // edi
-	int v8; // ecx
 	int v9; // edx
 	int v10; // eax
 	int v11; // ecx
@@ -700,8 +699,7 @@ void __cdecl InitCows()
 		towner[numtowners]._tNFrames = 12;
 		NewTownerAnim(v7, (void *)towner[0]._tNAnim[v4 + 58 * v7], 12, 3);
 		v7 *= 232;
-		_LOBYTE(v8) = 0;
-		*(int *)((char *)&towner[0]._tAnimFrame + v7) = random(v8, 11) + 1;
+		*(int *)((char *)&towner[0]._tAnimFrame + v7) = random(0, 11) + 1;
 		*(int *)((char *)&towner[0]._tSelFlag + v7) = 1;
 		strcpy(&towner[0]._tName[v7], "Cow");
 		v9 = v3 + cowoffx[v4];
@@ -990,8 +988,6 @@ void __fastcall TalkToTowner(int p, int t)
 {
 	int v2; // ebx
 	int v3; // edi
-	int v4; // ecx
-	int v5; // ecx
 	int v6; // ebp
 	int v7; // esi
 	int v8; // eax
@@ -1011,13 +1007,10 @@ void __fastcall TalkToTowner(int p, int t)
 
 	v2 = t;
 	v3 = p;
-	_LOBYTE(p) = 6;
 	v21 = t;
-	random(p, 3);
-	_LOBYTE(v4) = 6;
-	random(v4, 4);
-	_LOBYTE(v5) = 6;
-	random(v5, 5);
+	random(6, 3); /* figure out what these are for */
+	random(6, 4);
+	random(6, 5);
 	v6 = v3;
 	v7 = v2;
 	inv_item_num = abs(plr[v3].WorldX - towner[v2]._tx);

@@ -1222,8 +1222,7 @@ void __fastcall L4HorizWall(int i, int j, int dx)
 		*v9 = 23;
 	if ( *v9 == 22 )
 		*v9 = 29;
-	_LOBYTE(v6) = 0;
-	v10 = v4 + 40 * (v3 + random(v6, dx - 3) + 1);
+	v10 = v4 + 40 * (v3 + random(0, dx - 3) + 1);
 	dungeon[2][v10] = 56;
 	dungeon[1][v10] = 60;
 	v11 = dungeon[0][v10 - 1] == 6;
@@ -1277,8 +1276,7 @@ void __fastcall L4VertWall(int i, int j, int dy)
 	if ( *v7 == 23 )
 		*v7 = 29;
 	v8 = v6 - 3;
-	_LOBYTE(v6) = 0;
-	v9 = random(v6, v8) + 1 + v4 + v3;
+	v9 = random(0, v8) + 1 + v4 + v3;
 	v10 = (char *)dungeon + v9;
 	dungeon[0][v9 + 2] = 52;
 	dungeon[0][v9 + 1] = 6;
@@ -2493,8 +2491,7 @@ void __cdecl uShape()
 		--v0;
 	}
 	while ( v0 >= 0 );
-	_LOBYTE(v0) = 0;
-	v4 = random(v0, 19) + 1;
+	v4 = random(0, 19) + 1;
 	do
 	{
 		if ( hallok[v4] )
@@ -2543,8 +2540,7 @@ void __cdecl uShape()
 		v7 -= 20;
 	}
 	while ( (signed int)v8 >= (signed int)hallok );
-	_LOBYTE(v7) = 0;
-	v11 = random(v7, 19) + 1;
+	v11 = random(0, 19) + 1;
 	do
 	{
 		if ( hallok[v11] )
@@ -2702,13 +2698,11 @@ void __fastcall L4roomGen(int x, int y, int w, int h, int dir)
 	int v7; // eax
 	int v8; // ecx
 	int v9; // eax
-	int v10; // ecx
 	int v11; // esi
 	int v12; // edi
 	int v13; // ebx
 	int v14; // eax
 	int v15; // eax
-	int v16; // ecx
 	int v17; // esi
 	int v18; // edi
 	int v19; // ebx
@@ -2733,8 +2727,7 @@ void __fastcall L4roomGen(int x, int y, int w, int h, int dir)
 	{
 		while ( 1 )
 		{
-			_LOBYTE(x) = 0;
-			v5 = random(x, 4);
+			v5 = random(0, 4);
 			v6 = 0;
 			_LOBYTE(v6) = dir == 1 ? v5 != 0 : v5 == 0;
 			v7 = v6;
@@ -2747,11 +2740,9 @@ void __fastcall L4roomGen(int x, int y, int w, int h, int dir)
 			wa = w / 2;
 			do
 			{
-				_LOBYTE(v8) = 0;
-				v9 = random(v8, 5);
-				_LOBYTE(v10) = 0;
+				v9 = random(0, 5);
 				v11 = (v9 + 2) & 0xFFFFFFFE;
-				v12 = (random(v10, 5) + 2) & 0xFFFFFFFE;
+				v12 = (random(0, 5) + 2) & 0xFFFFFFFE;
 				v13 = xa + wa - v11 / 2;
 				ya = v27 - v12;
 				v14 = L4checkRoom(v13 - 1, v27 - v12 - 1, v11 + 2, v12 + 1);
@@ -2779,11 +2770,9 @@ void __fastcall L4roomGen(int x, int y, int w, int h, int dir)
 		hb = h / 2;
 		do
 		{
-			_LOBYTE(v8) = 0;
-			v15 = random(v8, 5);
-			_LOBYTE(v16) = 0;
+			v15 = random(0, 5);
 			v17 = (v15 + 2) & 0xFFFFFFFE;
-			v18 = (random(v16, 5) + 2) & 0xFFFFFFFE;
+			v18 = (random(0, 5) + 2) & 0xFFFFFFFE;
 			v19 = v27 + hb - v18 / 2;
 			yb = xa - v17;
 			v20 = L4checkRoom(xa - v17 - 1, v19 - 1, v18 + 2, v17 + 1);
@@ -2850,14 +2839,11 @@ bool __fastcall DRLG_L4PlaceMiniSet(unsigned char *miniset, int tmin, int tmax, 
 	int v9; // edi
 	int v10; // edx
 	int v11; // eax
-	int v12; // ecx
 	int v13; // esi
 	int v14; // ebx
 	int v15; // ecx
 	int v16; // eax
-	int v17; // ecx
 	int v18; // eax
-	int v19; // ecx
 	int v20; // edi
 	signed int i; // eax
 	int v22; // ecx
@@ -2889,8 +2875,7 @@ bool __fastcall DRLG_L4PlaceMiniSet(unsigned char *miniset, int tmin, int tmax, 
 	v35 = miniset[1];
 	if ( v10 )
 	{
-		_LOBYTE(miniset) = 0;
-		v30 = v8 + random((int)miniset, v10);
+		v30 = v8 + random(0, v10);
 	}
 	else
 	{
@@ -2908,12 +2893,10 @@ bool __fastcall DRLG_L4PlaceMiniSet(unsigned char *miniset, int tmin, int tmax, 
 		v36 = 40 - v7;
 		do
 		{
-			_LOBYTE(miniset) = 0;
-			v11 = random((int)miniset, max);
-			_LOBYTE(v12) = 0;
+			v11 = random(0, max);
 			v13 = v11;
 			v33 = 0;
-			v14 = random(v12, v36);
+			v14 = random(0, v36);
 			v39 = v14;
 			do
 			{
@@ -2927,22 +2910,19 @@ bool __fastcall DRLG_L4PlaceMiniSet(unsigned char *miniset, int tmin, int tmax, 
 					v15 = cx - v34;
 					if ( v13 >= cx - v34 && v13 <= cx + 12 )
 					{
-						_LOBYTE(v15) = 0;
-						v16 = random(v15, max);
-						_LOBYTE(v17) = 0;
+						v16 = random(0, max);
 						v13 = v16;
 						tmaxa = 0;
-						v39 = random(v17, v36);
+						v39 = random(0, v36);
 						v14 = v39;
 					}
 				}
 				if ( cy != -1 && v14 >= cy - v35 && v14 <= cy + 12 )
 				{
-					v18 = random(cy - v35, max);
-					_LOBYTE(v19) = 0;
+					v18 = random(0, max); /* cy - v35 */
 					v13 = v18;
 					tmaxa = 0;
-					v39 = random(v19, v36);
+					v39 = random(0, v36);
 					v14 = v39;
 				}
 				v20 = 0;

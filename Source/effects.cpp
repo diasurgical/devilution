@@ -1022,8 +1022,7 @@ void __fastcall PlayEffect(int i, int mode)
 	v3 = i;
 	if ( !plr[myplr].pLvlLoad )
 	{
-		_LOBYTE(i) = -92;
-		v4 = random(i, 2);
+		v4 = random(164, 2);
 		if ( gbSndInited )
 		{
 			if ( gbSoundOn )
@@ -1188,8 +1187,7 @@ int __fastcall RndSFX(int psfx)
 LABEL_12:
 			v3 = 2;
 LABEL_15:
-			_LOBYTE(psfx) = -91;
-			return v1 + random(psfx, v3);
+			return v1 + random(165, v3);
 		case PS_WARR2:
 LABEL_19:
 			v3 = 3;
