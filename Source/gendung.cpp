@@ -1183,8 +1183,7 @@ LABEL_53:
 	}
 	if ( leveltype == DTYPE_CATACOMBS )
 	{
-		_LOBYTE(v5) = 0;
-		v13 = random(v5, 2);
+		v13 = random(0, 2);
 		if ( v13 )
 		{
 			if ( v13 == 1 )
@@ -1205,8 +1204,7 @@ LABEL_53:
 	}
 	if ( leveltype == DTYPE_CAVES )
 	{
-		_LOBYTE(v5) = 0;
-		v14 = random(v5, 2);
+		v14 = random(0, 2);
 		if ( v14 )
 		{
 			if ( v14 == 1 )
@@ -1227,8 +1225,7 @@ LABEL_53:
 	}
 	if ( leveltype == DTYPE_HELL )
 	{
-		_LOBYTE(v5) = 0;
-		v15 = random(v5, 2);
+		v15 = random(0, 2);
 		if ( v15 )
 		{
 			if ( v15 == 1 )
@@ -1258,16 +1255,12 @@ LABEL_53:
 void __fastcall DRLG_PlaceThemeRooms(int minSize, int maxSize, int floor, int freq, int rndSize)
 {
 	int v5; // ebx
-	int v6; // ecx
 	//int v7; // eax
 	int v8; // esi
 	int v9; // edi
 	int v10; // eax
-	int v11; // ecx
 	int v12; // eax
-	int v13; // ecx
 	int v14; // eax
-	int v15; // ecx
 	int v16; // eax
 	int v17; // edi
 	int v18; // esi
@@ -1296,8 +1289,7 @@ void __fastcall DRLG_PlaceThemeRooms(int minSize, int maxSize, int floor, int fr
 		{
 			if ( *v24 == floor )
 			{
-				_LOBYTE(v6) = 0;
-				if ( !random(v6, freq) )
+				if ( !random(0, freq) )
 				{
 					//_LOBYTE(v7) = DRLG_WillThemeRoomFit(floor, x, v5, minSize2, maxSize2, &width, &height);
 					if ( DRLG_WillThemeRoomFit(floor, x, v5, minSize2, maxSize2, &width, &height) )
@@ -1306,16 +1298,12 @@ void __fastcall DRLG_PlaceThemeRooms(int minSize, int maxSize, int floor, int fr
 						{
 							v8 = minSize2 - 2;
 							v9 = maxSize2 - 2;
-							_LOBYTE(v6) = 0;
-							v10 = random(v6, width - (minSize2 - 2) + 1);
-							_LOBYTE(v11) = 0;
-							v12 = minSize2 - 2 + random(v11, v10);
+							v10 = random(0, width - (minSize2 - 2) + 1);
+							v12 = minSize2 - 2 + random(0, v10);
 							if ( v12 < minSize2 - 2 || (width = v12, v12 > v9) )
 								width = minSize2 - 2;
-							_LOBYTE(v13) = 0;
-							v14 = random(v13, height - v8 + 1);
-							_LOBYTE(v15) = 0;
-							v16 = v8 + random(v15, v14);
+							v14 = random(0, height - v8 + 1);
+							v16 = v8 + random(0, v14);
 							if ( v16 < v8 || v16 > v9 )
 								v16 = minSize2 - 2;
 							height = v16;
