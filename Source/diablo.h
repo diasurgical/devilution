@@ -65,9 +65,9 @@ void __cdecl LoadLvlGFX();
 void __cdecl LoadAllGFX();
 void __fastcall CreateLevel(int lvldir);
 void __fastcall LoadGameLevel(bool firstflag, int lvldir);
-void __fastcall game_loop(bool startup);
+void __fastcall game_loop(bool bStartup);
 void __cdecl game_logic();
-void __fastcall timeout_cursor(bool timeout);
+void __fastcall timeout_cursor(bool bTimeout);
 void __cdecl diablo_color_cyc_logic();
 
 /* data */
