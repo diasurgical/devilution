@@ -18,7 +18,7 @@ void __fastcall mpqapi_xor_buf(char *pbData);
 bool __fastcall mpqapi_reg_store_modification_time(char *pbData, int dwLen);
 _BLOCKENTRY *__fastcall j_mpqapi_remove_hash_entry(char *pszName);
 void __fastcall mpqapi_remove_hash_entry(char *pszName);
-void __fastcall mpqapi_alloc_block(int block_offset, int block_size);
+void __fastcall mpqapi_free_block(int block_offset, int block_size);
 _BLOCKENTRY *__fastcall mpqapi_new_block(int *block_index);
 int __fastcall mpqapi_get_hash_index_of_path(char *pszName);
 int __fastcall mpqapi_get_hash_index(short index, int hash_a, int hash_b, int locale);
