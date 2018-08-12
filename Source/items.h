@@ -16,7 +16,7 @@ extern int numitems;
 extern int gnNumGetRecords;
 
 void __cdecl InitItemGFX();
-bool __fastcall ItemPlace(int x, int y);
+bool __fastcall ItemPlace(int xp, int yp);
 void __cdecl AddInitItems();
 void __cdecl InitItems();
 void __fastcall CalcPlrItemVals(int p, bool Loadgfx);
