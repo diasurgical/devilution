@@ -557,16 +557,16 @@ void __cdecl DrawButcher()
 	DRLG_RectTrans(2 * setpc_x + 19, 2 * setpc_y + 19, 2 * setpc_x + 26, 2 * setpc_y + 26);
 }
 
-void __fastcall DrawSkelKing(int quest_id, int xx, int yy)
+void __fastcall DrawSkelKing(int q, int x, int y)
 {
 	int v3; // eax
 
-	v3 = quest_id;
-	quests[v3]._qtx = 2 * xx + 28;
-	quests[v3]._qty = 2 * yy + 23;
+	v3 = q;
+	quests[v3]._qtx = 2 * x + 28;
+	quests[v3]._qty = 2 * y + 23;
 }
 
-void __fastcall DrawWarLord(int xx, int yy)
+void __fastcall DrawWarLord(int x, int y)
 {
 	int v2; // esi
 	int v3; // edi
@@ -582,8 +582,8 @@ void __fastcall DrawWarLord(int xx, int yy)
 	int v13; // [esp+10h] [ebp-8h]
 	int v14; // [esp+14h] [ebp-4h]
 
-	v2 = yy;
-	v3 = xx;
+	v2 = y;
+	v3 = x;
 	v4 = LoadFileInMem("Levels\\L4Data\\Warlord2.DUN", 0);
 	v5 = *v4;
 	ptr = v4;
@@ -626,7 +626,7 @@ void __fastcall DrawWarLord(int xx, int yy)
 // 5CF330: using guessed type int setpc_h;
 // 5CF334: using guessed type int setpc_w;
 
-void __fastcall DrawSChamber(int quest_id, int xx, int yy)
+void __fastcall DrawSChamber(int q, int x, int y)
 {
 	int v3; // esi
 	unsigned char *v4; // eax
@@ -643,20 +643,20 @@ void __fastcall DrawSChamber(int quest_id, int xx, int yy)
 	int v15; // [esp+14h] [ebp-8h]
 	int v16; // [esp+18h] [ebp-4h]
 
-	v3 = xx;
-	v14 = quest_id;
+	v3 = x;
+	v14 = q;
 	v4 = LoadFileInMem("Levels\\L2Data\\Bonestr1.DUN", 0);
-	v5 = yy;
+	v5 = y;
 	ptr = v4;
-	v6 = yy;
+	v6 = y;
 	v7 = *v4;
 	setpc_h = ptr[2];
 	v8 = (char *)(ptr + 4);
 	setpc_w = v7;
 	setpc_x = v3;
-	setpc_y = yy;
-	v15 = yy + setpc_h;
-	if ( yy < yy + setpc_h )
+	setpc_y = y;
+	v15 = y + setpc_h;
+	if ( y < y + setpc_h )
 	{
 		v16 = v3 + v7;
 		do
@@ -677,9 +677,9 @@ void __fastcall DrawSChamber(int quest_id, int xx, int yy)
 				}
 				while ( v9 );
 			}
-			v6 = yy++ + 1;
+			v6 = y++ + 1;
 		}
-		while ( yy < v15 );
+		while ( y < v15 );
 	}
 	v12 = v14;
 	quests[v12]._qtx = 2 * v3 + 22;
@@ -689,7 +689,7 @@ void __fastcall DrawSChamber(int quest_id, int xx, int yy)
 // 5CF330: using guessed type int setpc_h;
 // 5CF334: using guessed type int setpc_w;
 
-void __fastcall DrawLTBanner(int xx, int yy)
+void __fastcall DrawLTBanner(int x, int y)
 {
 	int v2; // ebx
 	int v3; // esi
@@ -705,9 +705,9 @@ void __fastcall DrawLTBanner(int xx, int yy)
 	int v13; // [esp+14h] [ebp-8h]
 	int v14; // [esp+18h] [ebp-4h]
 
-	v2 = yy;
-	v3 = xx;
-	v12 = yy;
+	v2 = y;
+	v3 = x;
+	v12 = y;
 	v4 = LoadFileInMem("Levels\\L1Data\\Banner1.DUN", 0);
 	v5 = v4;
 	v14 = 0;
@@ -748,7 +748,7 @@ void __fastcall DrawLTBanner(int xx, int yy)
 // 5CF330: using guessed type int setpc_h;
 // 5CF334: using guessed type int setpc_w;
 
-void __fastcall DrawBlind(int xx, int yy)
+void __fastcall DrawBlind(int x, int y)
 {
 	int v2; // ebx
 	int v3; // esi
@@ -764,9 +764,9 @@ void __fastcall DrawBlind(int xx, int yy)
 	int v13; // [esp+14h] [ebp-8h]
 	int v14; // [esp+18h] [ebp-4h]
 
-	v2 = yy;
-	v3 = xx;
-	v12 = yy;
+	v2 = y;
+	v3 = x;
+	v12 = y;
 	v4 = LoadFileInMem("Levels\\L2Data\\Blind1.DUN", 0);
 	v5 = v4;
 	v14 = 0;
@@ -807,7 +807,7 @@ void __fastcall DrawBlind(int xx, int yy)
 // 5CF330: using guessed type int setpc_h;
 // 5CF334: using guessed type int setpc_w;
 
-void __fastcall DrawBlood(int xx, int yy)
+void __fastcall DrawBlood(int x, int y)
 {
 	int v2; // ebx
 	int v3; // esi
@@ -823,9 +823,9 @@ void __fastcall DrawBlood(int xx, int yy)
 	int v13; // [esp+14h] [ebp-8h]
 	int v14; // [esp+18h] [ebp-4h]
 
-	v2 = yy;
-	v3 = xx;
-	v12 = yy;
+	v2 = y;
+	v3 = x;
+	v12 = y;
 	v4 = LoadFileInMem("Levels\\L2Data\\Blood2.DUN", 0);
 	v5 = v4;
 	v14 = 0;
@@ -866,7 +866,7 @@ void __fastcall DrawBlood(int xx, int yy)
 // 5CF330: using guessed type int setpc_h;
 // 5CF334: using guessed type int setpc_w;
 
-void __fastcall DRLG_CheckQuests(int xx, int yy)
+void __fastcall DRLG_CheckQuests(int x, int y)
 {
 	int v2; // esi
 	int v3; // edi
@@ -874,8 +874,8 @@ void __fastcall DRLG_CheckQuests(int xx, int yy)
 	unsigned char *v5; // ebp
 	//int v6; // eax
 
-	v2 = yy;
-	v3 = xx;
+	v2 = y;
+	v3 = x;
 	v4 = 0;
 	v5 = &quests[0]._qtype;
 	do
