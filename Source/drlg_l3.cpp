@@ -2860,8 +2860,8 @@ void __fastcall LoadL3Dungeon(char *sFileName, int vx, int vy)
 	DRLG_Init_Globals();
 	ViewX = 31;
 	ViewY = 83;
-	SetMapMonsters(v5, 0, 0);
-	SetMapObjects(v5, 0, 0);
+	SetMapMonsters((unsigned char *)v5, 0, 0);
+	SetMapObjects((unsigned char *)v5, 0, 0);
 	v19 = dPiece;
 	do
 	{
