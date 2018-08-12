@@ -857,324 +857,243 @@ void __fastcall PlaceMonster(int i, int mtype, int x, int y)
 
 void __fastcall PlaceUniqueMonst(int uniqindex, int miniontype, int unpackfilesize)
 {
-	MonsterStruct *v3; // esi
-	CMonster *v4; // ecx
-	int v5; // edx
-	int v6; // eax
-	int v8; // edi
-	int v9; // eax
-	int v10; // ebx
-	int v11; // eax
-	int i; // edx
-	int v13; // edx
-	BOOL v14; // edx
-	int(*v15)[112]; // ecx
-	int(*v16)[112]; // eax
-	int v17; // edi
-	char v18; // al
-	char *v19; // eax
-	int v20; // eax
-	bool v21; // zf
-	signed int v22; // eax
-	char v23; // cl
-	char v24; // al
-	int v25; // edx
-	int v26; // eax
-	int v27; // ecx
-	char v28; // al
-	char v29; // al
-	int v30; // ecx
-	int v31; // eax
-	int v32; // eax
-	int v33; // eax
-	int v34; // eax
-	char v35; // al
-	short v36; // cx
-	char v37; // al
-	int v38; // ecx
-	int v39; // eax
-	int v40; // edx
-	int v41; // eax
-	char filestr[64]; // [esp+4h] [ebp-60h]
-	int v43; // [esp+44h] [ebp-20h]
-	CMonster *v44; // [esp+48h] [ebp-1Ch]
-	int v45; // [esp+4Ch] [ebp-18h]
-	int *v46; // [esp+50h] [ebp-14h]
-	int v47; // [esp+54h] [ebp-10h]
-	int v48; // [esp+58h] [ebp-Ch]
-	int mtype; // [esp+5Ch] [ebp-8h]
-	int xp; // [esp+60h] [ebp-4h]
+	MonsterStruct *Monst = &monster[nummonsters];
+	UniqMonstStruct *Uniq = &UniqMonst[uniqindex];
+	int x;
+	int y;
+	char filestr[64];
+	int mtype;
 
-	v46 = 0;
-	v48 = uniqindex;
-	v3 = &monster[nummonsters];
-	v4 = (CMonster *)&UniqMonst[uniqindex];
-	v43 = miniontype;
-	v44 = v4;
-	if ( (uniquetrans + 19) << 8 < LIGHTSIZE )
+	if ( (uniquetrans + 19) << 8 < 6912 )
 	{
 		mtype = 0;
 		if ( nummtypes > 0 )
 		{
-			v5 = v4->mtype;
-			v4 = Monsters;
-			do
+			for ( int i = 0; i < nummtypes; i++ )
 			{
-				if ( (unsigned char)v4->mtype == v5 )
+				if ( Monsters[i].mtype == Uniq->mtype )
+				{
 					break;
-				++mtype;
-				++v4;
+				}
+
+				mtype++;
 			}
-			while ( mtype < nummtypes );
 		}
+
 		do
 		{
-			do
+			for ( int i = 0; i < 1000; i++ )
 			{
-				v6 = random(91, 80);
-				v8 = v6 + 16;
-				v9 = random(91, 80);
-				v47 = 0;
-				v4 = (CMonster *)(v8 - 3);
-				v10 = v9 + 16;
-				xp = v8 - 3;
-				if ( __OFSUB__(v8 - 3, v8 + 3) ^ 1 )
+				int count = 0;
+				x = random(91, 80) + 16;
+				y = random(91, 80) + 16;
+
+				for ( int xp = x - 3; xp < x + 3; xp++ )
 				{
-					v11 = v9 + 19;
-					do
+					for ( int yp = y - 3; yp < y + 3; yp++ )
 					{
-						for ( i = v10 - 3; ; i = v45 + 1 )
+						if ( yp >= 0 && yp < 112 && xp >= 0 && xp < 112 && MonstPlace(xp, yp) )
 						{
-							v45 = i;
-							if ( i >= v11 )
-								break;
-							if ( i >= 0 && i < 112 && xp >= 0 && xp < 112 && MonstPlace(xp, i) )
-								++v47;
-							v11 = v10 + 3;
+							++count;
 						}
-						++xp;
-						v4 = (CMonster *)(v8 + 3);
 					}
-					while ( xp < v8 + 3 );
-					if ( v47 >= 9 )
-						break;
 				}
-				v46 = (int *)((char *)v46 + 1);
+
+				if ( count >= 9 )
+					break;
 			}
-			while ( (signed int)v46 < 1000 );
 		}
-		while ( !MonstPlace(v8, v10) );
-		v13 = v48;
-		if ( v48 == 3 )
+		while ( !MonstPlace(x, y) );
+
+		if ( uniqindex == 3 )
 		{
-			v8 = 2 * setpc_x + 24;
-			v10 = 2 * setpc_y + 28;
+			x = 2 * setpc_x + 24;
+			y = 2 * setpc_y + 28;
 		}
-		if ( v48 == 8 )
+		if ( uniqindex == 8 )
 		{
-			v8 = 2 * setpc_x + 22;
-			v10 = 2 * setpc_y + 23;
+			x = 2 * setpc_x + 22;
+			y = 2 * setpc_y + 23;
 		}
-		if ( v48 == 2 )
+		if ( uniqindex == 2 )
 		{
-			xp = 0;
-			v45 = 1;
-			if ( themeCount > 0 )
+			int count2 = 1;
+			for ( int i = 0; i < themeCount; i++ )
 			{
-				v46 = &themeLoc[0].y;
-				do
+				if ( i == zharlib && count2 == 1 )
 				{
-					if ( xp == zharlib && v45 == 1 )
-					{
-						v45 = 0;
-						v8 = 2 * *(v46 - 1) + 20;
-						v10 = 2 * *v46 + 20;
-					}
-					++xp;
-					v46 += 5;
+					count2 = 0;
+					x = 2 * themeLoc[i].x + 20;
+					y = 2 * themeLoc[i].y + 20;
 				}
-				while ( xp < themeCount );
 			}
-			v13 = v48;
 		}
 		if ( gbMaxPlayers == 1 )
 		{
-			if ( v13 == 4 )
+			if ( uniqindex == 4 )
 			{
-				v8 = 32;
-				v10 = 46;
+				x = 32;
+				y = 46;
 			}
-			if ( v13 == 5 )
+			if ( uniqindex == 5 )
 			{
-				v8 = 40;
-				v10 = 45;
+				x = 40;
+				y = 45;
 			}
-			if ( v13 == 6 )
+			if ( uniqindex == 6 )
 			{
-				v8 = 38;
-				v10 = 49;
+				x = 38;
+				y = 49;
 			}
-			if ( v13 == 1 )
+			if ( uniqindex == 1 )
 			{
-				v8 = 35;
-				v10 = 47;
+				x = 35;
+				y = 47;
 			}
 		}
 		else
 		{
-			if ( v13 == 4 )
+			if ( uniqindex == 4 )
 			{
-				v8 = 2 * setpc_x + 19;
-				v10 = 2 * setpc_y + 22;
+				x = 2 * setpc_x + 19;
+				y = 2 * setpc_y + 22;
 			}
-			if ( v13 == 5 )
+			if ( uniqindex == 5 )
 			{
-				v8 = 2 * setpc_x + 21;
-				v10 = 2 * setpc_y + 19;
+				x = 2 * setpc_x + 21;
+				y = 2 * setpc_y + 19;
 			}
-			if ( v13 == 6 )
+			if ( uniqindex == 6 )
 			{
-				v8 = 2 * setpc_x + 21;
-				v10 = 2 * setpc_y + 25;
+				x = 2 * setpc_x + 21;
+				y = 2 * setpc_y + 25;
 			}
 		}
-		if ( v13 == 9 )
+		if ( uniqindex == 9 )
 		{
-			v14 = 0;
-			v10 = 0;
-			v15 = dPiece;
-			do
+			BOOL done = FALSE;
+
+			for ( x = 0; x < 112 && !done; x++ )
 			{
-				if ( v14 )
-					break;
-				v8 = 0;
-				v16 = v15;
-				do
+				for ( y = 0; y < 112 && !done; y++ )
 				{
-					if ( v14 )
-						break;
-					v14 = (*v16)[0] == 367;
-					++v8;
-					++v16;
+					done = dPiece[x][y] == 367;
 				}
-				while ( v8 < 112 );
-				v15 = (int(*)[112])((char *)v15 + 4);
-				++v10;
 			}
-			while ( (signed int)v15 < (signed int)dPiece[1] );
 		}
-		PlaceMonster(nummonsters, mtype, v8, v10);
-		v17 = (int)v44;
-		v3->_uniqtype = v48 + 1;
-		v18 = *(_BYTE *)(v17 + 12);
-		if ( v18 )
-			_LOBYTE(v3->mLevel) = 2 * v18;
+
+		PlaceMonster(nummonsters, mtype, x, y);
+		Monst->_uniqtype = uniqindex + 1;
+
+		if ( Uniq->mlevel )
+			Monst->mLevel = 2 * Uniq->mlevel;
 		else
-			_LOBYTE(v3->mLevel) += 5;
-		v19 = *(char **)(v17 + 4);
-		v3->mExp *= 2;
-		v3->mName = v19;
-		v20 = *(unsigned short *)(v17 + 14) << 6;
-		v21 = gbMaxPlayers == 1;
-		v3->_mmaxhp = v20;
-		if ( v21 )
+			Monst->mLevel += 5;
+
+		Monst->mExp *= 2;
+		Monst->mName = Uniq->mName;
+		Monst->_mmaxhp = Uniq->mmaxhp << 6;
+
+		if ( gbMaxPlayers == 1 )
 		{
-			v22 = v20 >> 1;
-			v3->_mmaxhp = v22;
-			if ( v22 < 64 )
-				v3->_mmaxhp = 64;
+			Monst->_mmaxhp = Monst->_mmaxhp >> 1;
+			if ( Monst->_mmaxhp < 64 )
+				Monst->_mmaxhp = 64;
 		}
-		v23 = *(_BYTE *)(v17 + 19);
-		v3->_mhitpoints = v3->_mmaxhp;
-		v3->_mAi = *(_BYTE *)(v17 + 16);
-		v3->_mint = *(_BYTE *)(v17 + 17);
-		v24 = *(_BYTE *)(v17 + 18);
-		v25 = v3->_my;
-		v3->mMinDamage = v24;
-		v3->mMinDamage2 = v24;
-		_LOWORD(v3->mMagicRes) = *(_WORD *)(v17 + 20);
-		v26 = *(_DWORD *)(v17 + 28);
-		v3->mMaxDamage = v23;
-		v3->mMaxDamage2 = v23;
-		v27 = v3->_mx;
-		v3->mtalkmsg = v26;
-		v28 = AddLight(v27, v25, 3);
-		v21 = gbMaxPlayers == 1;
-		v3->mlid = v28;
-		if ( v21 )
-			goto LABEL_83;
-		v29 = v3->_mAi;
-		if ( v29 == AI_LAZHELP )
-			v3->mtalkmsg = 0;
-		if ( v29 != AI_LAZURUS || quests[15]._qvar1 <= 3u )
+
+		Monst->_mhitpoints = Monst->_mmaxhp;
+		Monst->_mAi = Uniq->mAi;
+		Monst->_mint = Uniq->mint;
+		Monst->mMinDamage = Uniq->mMinDamage;
+		Monst->mMinDamage2 = Uniq->mMinDamage;
+		Monst->mMagicRes = Uniq->mMagicRes;
+		Monst->mMaxDamage = Uniq->mMaxDamage;
+		Monst->mMaxDamage2 = Uniq->mMaxDamage;
+		Monst->mtalkmsg = Uniq->mtalkmsg;
+		Monst->mlid = AddLight(Monst->_mx, Monst->_my, 3);
+
+		if ( gbMaxPlayers == 1 )
 		{
-		LABEL_83:
-			if ( v3->mtalkmsg )
-				_LOBYTE(v3->_mgoal) = 6;
+			if ( Monst->mtalkmsg )
+			{
+				Monst->_mgoal = 6;
+			}
 		}
 		else
 		{
-			_LOBYTE(v3->_mgoal) = 1;
+			if ( Monst->_mAi == AI_LAZHELP )
+			{
+				Monst->mtalkmsg = 0;
+			}
+
+			if ( Monst->_mAi != AI_LAZURUS || quests[15]._qvar1 <= 3 )
+			{
+				if ( Monst->mtalkmsg )
+				{
+					Monst->_mgoal = 6;
+				}
+			}
+			else
+			{
+				Monst->_mgoal = 1;
+			}
 		}
-		v30 = gnDifficulty;
+
 		if ( gnDifficulty == DIFF_NIGHTMARE )
 		{
-			v31 = v3->_mmaxhp;
-			_LOBYTE(v3->mLevel) += 15;
-			v32 = 3 * v31 + 64;
-			v3->_mmaxhp = v32;
-			v3->_mhitpoints = v32;
-			v3->mExp = 2 * (v3->mExp + 1000);
-			v3->mMinDamage = 2 * (v3->mMinDamage + 2);
-			v3->mMaxDamage = 2 * (v3->mMaxDamage + 2);
-			v3->mMinDamage2 = 2 * (v3->mMinDamage2 + 2);
-			v3->mMaxDamage2 = 2 * (v3->mMaxDamage2 + 2);
+			Monst->mLevel += 15;
+			Monst->_mmaxhp = 3 * Monst->_mmaxhp + 64;
+			Monst->_mhitpoints = 3 * Monst->_mmaxhp + 64;
+			Monst->mExp = 2 * (Monst->mExp + 1000);
+			Monst->mMinDamage = 2 * (Monst->mMinDamage + 2);
+			Monst->mMaxDamage = 2 * (Monst->mMaxDamage + 2);
+			Monst->mMinDamage2 = 2 * (Monst->mMinDamage2 + 2);
+			Monst->mMaxDamage2 = 2 * (Monst->mMaxDamage2 + 2);
 		}
-		if ( v30 == DIFF_HELL )
+
+		if ( gnDifficulty == DIFF_HELL )
 		{
-			v33 = v3->_mmaxhp;
-			_LOBYTE(v3->mLevel) += 30;
-			v34 = 4 * v33 + 192;
-			v3->_mmaxhp = v34;
-			v3->_mhitpoints = v34;
-			v3->mExp = 4 * (v3->mExp + 1000);
-			v3->mMinDamage = 4 * v3->mMinDamage + 6;
-			v3->mMaxDamage = 4 * v3->mMaxDamage + 6;
-			v3->mMinDamage2 = 4 * v3->mMinDamage2 + 6;
-			v3->mMaxDamage2 = 4 * v3->mMaxDamage2 + 6;
+			Monst->mLevel += 30;
+			Monst->_mmaxhp = 4 * Monst->_mmaxhp + 192;
+			Monst->_mhitpoints = 4 * Monst->_mmaxhp + 192;
+			Monst->mExp = 4 * (Monst->mExp + 1000);
+			Monst->mMinDamage = 4 * Monst->mMinDamage + 6;
+			Monst->mMaxDamage = 4 * Monst->mMaxDamage + 6;
+			Monst->mMinDamage2 = 4 * Monst->mMinDamage2 + 6;
+			Monst->mMaxDamage2 = 4 * Monst->mMaxDamage2 + 6;
 		}
-		sprintf(filestr, "Monsters\\Monsters\\%s.TRN", *(_DWORD *)(v17 + 8));
+
+		sprintf(filestr, "Monsters\\Monsters\\%s.TRN", Uniq->mName);
 		LoadFileWithMem(filestr, &pLightTbl[256 * (uniquetrans + 19)]);
-		v35 = uniquetrans;
-		v36 = *(_WORD *)(v17 + 22);
-		++uniquetrans;
-		v3->_uniqtrans = v35;
-		if ( v36 & 4 )
+
+		Monst->_uniqtrans = uniquetrans++;
+
+		if ( Uniq->mUnqAttr & 4 )
 		{
-			v37 = *(_BYTE *)(v17 + 24);
-			v3->mHit = v37;
-			v3->mHit2 = v37;
+			Monst->mHit = Uniq->mUnqVar1;
+			Monst->mHit2 = Uniq->mUnqVar1;
 		}
-		if ( v36 & 8 )
-			v3->mArmorClass = *(_BYTE *)(v17 + 24);
-		++nummonsters;
-		if ( v36 & 1 )
-			PlaceGroup(v43, unpackfilesize, v36, nummonsters - 1);
-		if ( v3->_mAi != AI_GARG )
+		if ( Uniq->mUnqAttr & 8 )
 		{
-			v38 = (int)v3->MType;
-			v39 = *(_DWORD *)(v38 + 4 * v3->_mdir + 8);
-			v40 = v3->_mAnimLen - 1;
-			v3->_mAFNum = v39;
-			v41 = random(88, v40);
-			v3->_mFlags &= 0xFFFFFFFB;
-			v3->_mmode = 0;
-			v3->_mAnimFrame = v41 + 1;
+			Monst->mArmorClass = Uniq->mUnqVar1;
+		}
+
+		nummonsters++;
+
+		if ( Uniq->mUnqAttr & 1 )
+		{
+			PlaceGroup(miniontype, unpackfilesize, Uniq->mUnqAttr, nummonsters - 1);
+		}
+
+		if ( Monst->_mAi != AI_GARG )
+		{
+			Monst->_mAFNum = (int)Monst->MType->Anims[0].Frames[Monst->_mdir];
+			Monst->_mFlags &= 0xFFFFFFFB;
+			Monst->_mmode = 0;
+			Monst->_mAnimFrame = random(88, Monst->_mAnimLen - 1) + 1;
 		}
 	}
 }
-// 679660: using guessed type char gbMaxPlayers;
-// 6AAA64: using guessed type int zharlib;
 
 void __cdecl PlaceQuestMonsters()
 {
@@ -1531,12 +1450,12 @@ void __cdecl InitMonsters()
 				if ( currlevel == 2 )
 				{
 					v17 = random(95, 2) + 1;
-LABEL_40:
+				LABEL_40:
 					v18 = v17 + 1;
 					goto LABEL_41;
 				}
 				v18 = random(95, 3) + 3;
-LABEL_41:
+			LABEL_41:
 				PlaceGroup(v15, v18, 0, 0);
 				if ( nummonsters >= totalmonsters )
 					goto LABEL_42;
@@ -4678,7 +4597,7 @@ void __fastcall MAI_SkelSd(int i)
 				if ( v13 >= v14 )
 				{
 					v15 = random(105, 10) + 2 * (5 - (unsigned char)v2->_mint);
-LABEL_10:
+				LABEL_10:
 					M_StartDelay(arglist, v15);
 					goto LABEL_16;
 				}
@@ -4811,8 +4730,8 @@ void __fastcall MAI_Snake(int i)
 			{
 				v14 = esi3->_mVar1;
 				if ( v14 == 13
-				  || v14 == 14
-				  || (v15 = random(105, 100), v16 = (unsigned char)esi3->_mint + 20, v15 < v16) )
+					|| v14 == 14
+					|| (v15 = random(105, 100), v16 = (unsigned char)esi3->_mint + 20, v15 < v16) )
 				{
 					M_StartAttack(arglist);
 				LABEL_49:
@@ -6859,8 +6778,8 @@ void __fastcall MAI_Counselor(int i)
 				if ( LineClear(monster[v2]._mx, monster[v2]._my, x2, y2) )
 				{
 					v32 = random(
-							  77,
-							  (unsigned char)monster[v2].mMaxDamage - (unsigned char)monster[v2].mMinDamage + 1);
+						77,
+						(unsigned char)monster[v2].mMaxDamage - (unsigned char)monster[v2].mMinDamage + 1);
 					M_StartRAttack(
 						v1,
 						(unsigned char)counsmiss[(unsigned char)monster[v2]._mint], /* counsmiss is local */
@@ -6891,9 +6810,9 @@ void __fastcall MAI_Counselor(int i)
 				goto LABEL_39;
 			}
 			if ( monster[v2]._mVar1 == 13
-			  || (v29 = random(105, 100),
-				  v30 = 2 * (unsigned char)monster[v2]._mint + 20,
-				  v29 < v30) )
+				|| (v29 = random(105, 100),
+					v30 = 2 * (unsigned char)monster[v2]._mint + 20,
+					v29 < v30) )
 			{
 				M_StartRAttack(v1, -1, 0);
 				AddMissile(monster[v2]._mx, monster[v2]._my, 0, 0, monster[v2]._mdir, 11, 1, v1, 4, 0);
