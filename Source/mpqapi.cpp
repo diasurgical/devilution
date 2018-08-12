@@ -164,13 +164,13 @@ void __fastcall mpqapi_remove_hash_entry(char *pszName)
 		v4 = v3->offset;
 		v5 = v3->sizealloc;
 		memset(v3, 0, 0x10u);
-		mpqapi_alloc_block(v4, v5);
+		mpqapi_free_block(v4, v5);
 		save_archive_modified = 1;
 	}
 }
 // 65AB0C: using guessed type int save_archive_modified;
 
-void __fastcall mpqapi_alloc_block(int block_offset, int block_size)
+void __fastcall mpqapi_free_block(int block_offset, int block_size)
 {
 	int v2; // esi
 	int v3; // edi
@@ -470,7 +470,7 @@ LABEL_25:
 		{
 			v15 = destsize + v9->offset;
 			v9->sizealloc = destsize;
-			mpqapi_alloc_block(v15, v14);
+			mpqapi_free_block(v15, v14);
 		}
 	}
 	return 1;

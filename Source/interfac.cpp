@@ -248,7 +248,7 @@ void __cdecl FreeInterface()
 	mem_free_dbg(v0);
 }
 
-void __fastcall InitCutscene(int interface_mode)
+void __fastcall InitCutscene(int uMsg)
 {
 	int v1; // eax
 	int v2; // eax
@@ -265,7 +265,7 @@ void __fastcall InitCutscene(int interface_mode)
 	int v13; // eax
 	int v14; // eax
 
-	switch ( interface_mode )
+	switch ( uMsg )
 	{
 		case WM_DIABNEXTLVL:
 			v1 = gnLevelTypeTbl[currlevel];

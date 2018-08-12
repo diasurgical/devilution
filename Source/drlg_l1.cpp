@@ -211,8 +211,8 @@ void __fastcall LoadL1Dungeon(char *sFileName, int vx, int vy)
 	DRLG_L1Pass3();
 	DRLG_Init_Globals();
 	DRLG_InitL1Vals();
-	SetMapMonsters((char *)v4, 0, 0);
-	SetMapObjects((char *)v4, 0, 0);
+	SetMapMonsters(v4, 0, 0);
+	SetMapObjects(v4, 0, 0);
 	mem_free_dbg(v4);
 }
 // 5CF328: using guessed type int dmaxx;

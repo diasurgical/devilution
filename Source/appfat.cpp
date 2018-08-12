@@ -257,7 +257,7 @@ void DrawDlg(char *pszFmt, ...)
 	SDrawMessageBox(text, "Diablo", MB_TASKMODAL|MB_ICONEXCLAMATION);
 }
 
-void __fastcall DDErrDlg(int error_code, int log_line_nr, char *log_file_path)
+void __fastcall DDErrMsg(int error_code, int log_line_nr, char *log_file_path)
 {
 	int v3; // esi
 	char *v4; // eax
@@ -270,7 +270,7 @@ void __fastcall DDErrDlg(int error_code, int log_line_nr, char *log_file_path)
 	}
 }
 
-void __fastcall DSErrDlg(int error_code, int log_line_nr, char *log_file_path)
+void __fastcall DSErrMsg(int error_code, int log_line_nr, char *log_file_path)
 {
 	int v3; // esi
 	char *v4; // eax
@@ -283,7 +283,7 @@ void __fastcall DSErrDlg(int error_code, int log_line_nr, char *log_file_path)
 	}
 }
 
-void __fastcall CenterDlg(HWND hDlg)
+void __fastcall center_window(HWND hDlg)
 {
 	LONG v1; // esi
 	LONG v2; // edi
@@ -309,7 +309,7 @@ void __fastcall CenterDlg(HWND hDlg)
 	}
 }
 
-void __fastcall TermDlg(int template_id, int error_code, char *log_file_path, int log_line_nr)
+void __fastcall ErrDlg(int template_id, int error_code, char *log_file_path, int log_line_nr)
 {
 	int v4; // ebx
 	int v5; // edi
@@ -327,7 +327,7 @@ void __fastcall TermDlg(int template_id, int error_code, char *log_file_path, in
 		v6 = v7 + 1;
 	v8 = GetErr(v4);
 	wsprintfA((LPSTR)dwInitParam, "%s\nat: %s line %d", v8, v6, log_line_nr);
-	if ( DialogBoxParamA(ghInst, (LPCSTR)(unsigned short)v5, ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)dwInitParam) == -1 )
+	if ( DialogBoxParamA(ghInst, MAKEINTRESOURCE(v5), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)dwInitParam) == -1 )
 		TermMsg("ErrDlg: %d", v5);
 	TermMsg(0);
 }
@@ -361,12 +361,12 @@ void __fastcall TextDlg(HWND hDlg, char *text)
 
 	v2 = text;
 	v3 = hDlg;
-	CenterDlg(hDlg);
+	center_window(hDlg);
 	if ( v2 )
 		SetDlgItemTextA(v3, 1000, v2);
 }
 
-void __fastcall ErrDlg(template_id template_id, int error_code, char *log_file_path, int log_line_nr)
+void __fastcall ErrOkDlg(int template_id, int error_code, char *log_file_path, int log_line_nr)
 {
 	char *v4; // esi
 	int v5; // edi
@@ -383,7 +383,7 @@ void __fastcall ErrDlg(template_id template_id, int error_code, char *log_file_p
 		v4 = v7 + 1;
 	v8 = GetErr(v5);
 	wsprintfA((LPSTR)dwInitParam, "%s\nat: %s line %d", v8, v4, log_line_nr);
-	DialogBoxParamA(ghInst, (LPCSTR)v6, ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)dwInitParam);
+	DialogBoxParamA(ghInst, MAKEINTRESOURCE(v6), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)dwInitParam);
 }
 
 void __fastcall FileErrDlg(char *error)
@@ -394,7 +394,7 @@ void __fastcall FileErrDlg(char *error)
 	FreeDlg();
 	if ( !v1 )
 		v1 = &empty_string;
-	if ( DialogBoxParamA(ghInst, (LPCSTR)0x6A, ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)v1) == -1 )
+	if ( DialogBoxParamA(ghInst, MAKEINTRESOURCE(IDD_DIALOG3), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)v1) == -1 )
 		TermMsg("FileErrDlg");
 	TermMsg(0);
 }
@@ -405,7 +405,7 @@ void __fastcall DiskFreeDlg(char *error)
 
 	v1 = error;
 	FreeDlg();
-	if ( DialogBoxParamA(ghInst, (LPCSTR)0x6E, ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)v1) == -1 )
+	if ( DialogBoxParamA(ghInst, MAKEINTRESOURCE(IDD_DIALOG7), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)v1) == -1 )
 		TermMsg("DiskFreeDlg");
 	TermMsg(0);
 }
@@ -415,20 +415,20 @@ bool __cdecl InsertCDDlg()
 	int v0; // edi
 
 	ShowCursor(1);
-	v0 = DialogBoxParamA(ghInst, (LPCSTR)0x70, ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)&empty_string);
+	v0 = DialogBoxParamA(ghInst, MAKEINTRESOURCE(IDD_DIALOG9), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)&empty_string);
 	if ( v0 == -1 )
 		TermMsg("InsertCDDlg");
 	ShowCursor(0);
 	return v0 == 1;
 }
 
-void __fastcall DirErrDlg(char *error)
+void __fastcall DirErrorDlg(char *error)
 {
 	char *v1; // esi
 
 	v1 = error;
 	FreeDlg();
-	if ( DialogBoxParamA(ghInst, (LPCSTR)0x72, ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)v1) == -1 )
+	if ( DialogBoxParamA(ghInst, MAKEINTRESOURCE(IDD_DIALOG11), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)v1) == -1 )
 		TermMsg("DirErrorDlg");
 	TermMsg(0);
 }

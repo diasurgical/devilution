@@ -18,7 +18,7 @@ void __fastcall RemovePortalMissile(int id);
 void __fastcall SetCurrentPortal(int p);
 void __cdecl GetPortalLevel();
 void __cdecl GetPortalLvlPos();
-bool __fastcall PosOkPortal(int level, int x, int y);
+bool __fastcall PosOkPortal(int lvl, int x, int y);
 
 /* rdata */
 extern int WarpDropX[4];

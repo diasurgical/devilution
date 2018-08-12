@@ -196,12 +196,12 @@ void __cdecl GetPortalLvlPos()
 	}
 }
 
-bool __fastcall PosOkPortal(int level, int x, int y)
+bool __fastcall PosOkPortal(int lvl, int x, int y)
 {
 	int *v3; // eax
 
 	v3 = &portal[0].x;
-	while ( !*(v3 - 1) || v3[2] != level || (*v3 != x || v3[1] != y) && (*v3 != x - 1 || v3[1] != y - 1) )
+	while ( !*(v3 - 1) || v3[2] != lvl || (*v3 != x || v3[1] != y) && (*v3 != x - 1 || v3[1] != y - 1) )
 	{
 		v3 += 6;
 		if ( (signed int)v3 >= (signed int)&portal[4].x )

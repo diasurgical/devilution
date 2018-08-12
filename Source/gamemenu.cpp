@@ -207,7 +207,7 @@ void __cdecl gamemenu_get_color_cycling()
 void __cdecl gamemenu_get_gamma()
 {
 	gmenu_slider_3(&sgOptionMenu[2], 15);
-	gmenu_slider_1(&sgOptionMenu[2], 30, 100, palette_update_gamma(0));
+	gmenu_slider_1(&sgOptionMenu[2], 30, 100, UpdateGamma(0));
 }
 
 void __fastcall gamemenu_music_volume(int a1)
@@ -303,7 +303,7 @@ void __fastcall gamemenu_gamma(int a1)
 
 	if ( a1 )
 	{
-		v1 = -(palette_update_gamma(0) != 30);
+		v1 = -(UpdateGamma(0) != 30);
 		_LOBYTE(v1) = v1 & 0xBA;
 		v2 = v1 + 100;
 	}
@@ -311,7 +311,7 @@ void __fastcall gamemenu_gamma(int a1)
 	{
 		v2 = gamemenu_slider_gamma();
 	}
-	palette_update_gamma(v2);
+	UpdateGamma(v2);
 	gamemenu_get_gamma();
 }
 
