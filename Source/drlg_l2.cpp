@@ -532,8 +532,8 @@ void __fastcall LoadL2Dungeon(char *sFileName, int vx, int vy)
 	while ( (signed int)v25 < (signed int)dPiece[1] );
 	ViewX = v30;
 	ViewY = vy;
-	SetMapMonsters(ptr, 0, 0);
-	SetMapObjects(ptr, 0, 0);
+	SetMapMonsters((unsigned char *)ptr, 0, 0);
+	SetMapObjects((unsigned char *)ptr, 0, 0);
 	mem_free_dbg(ptr);
 }
 

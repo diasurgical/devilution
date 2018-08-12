@@ -3,7 +3,7 @@
 #include "../types.h"
 
 int engine_cpp_init_value; // weak
-char byte_52B96C; // automap pixel color 8-bit (palette entry)
+char gbPixelCol; // automap pixel color 8-bit (palette entry)
 int dword_52B970; // bool flip - if y < x
 int orgseed; // weak
 int sgnWidth;
@@ -1488,16 +1488,16 @@ void __fastcall engine_draw_pixel(int x, int y)
 		v2 = (unsigned char *)gpBuffer + screen_y_times_768[y] + x;
 LABEL_14:
 		if ( (unsigned int)v2 < screen_buf_end )
-			*v2 = byte_52B96C;
+			*v2 = gbPixelCol;
 		return;
 	}
 }
-// 52B96C: using guessed type char byte_52B96C;
+// 52B96C: using guessed type char gbPixelCol;
 // 52B970: using guessed type int dword_52B970;
 // 52B99C: using guessed type int dword_52B99C;
 // 69CF0C: using guessed type int screen_buf_end;
 
-void __fastcall engine_draw_automap_pixels(int x1, int y1, int x2, int y2, char a5)
+void __fastcall DrawLine(int x0, int y0, int x1, int y1, char col)
 {
 	int v5; // ST18_4
 	int v6; // ST2C_4
@@ -1538,28 +1538,28 @@ void __fastcall engine_draw_automap_pixels(int x1, int y1, int x2, int y2, char 
 	int v41; // [esp+50h] [ebp-4h]
 	int x2a; // [esp+5Ch] [ebp+8h]
 
-	v8 = y1;
-	v9 = x1;
-	byte_52B96C = a5;
+	v8 = y0;
+	v9 = x0;
+	gbPixelCol = col;
 	dword_52B99C = 0;
+	if ( x0 < 64 || x0 >= 704 )
+		dword_52B99C = 1;
 	if ( x1 < 64 || x1 >= 704 )
 		dword_52B99C = 1;
-	if ( x2 < 64 || x2 >= 704 )
+	if ( y0 < 160 || y0 >= 512 )
 		dword_52B99C = 1;
 	if ( y1 < 160 || y1 >= 512 )
 		dword_52B99C = 1;
-	if ( y2 < 160 || y2 >= 512 )
-		dword_52B99C = 1;
-	if ( x2 - x1 < 0 )
+	if ( x1 - x0 < 0 )
 		v36 = -1;
 	else
 		v36 = 1;
-	v11 = v36 * (x2 - x1);
-	if ( y2 - y1 < 0 )
+	v11 = v36 * (x1 - x0);
+	if ( y1 - y0 < 0 )
 		v35 = -1;
 	else
 		v35 = 1;
-	v10 = v35 * (y2 - y1);
+	v10 = v35 * (y1 - y0);
 	if ( v35 == v36 )
 		v12 = 1;
 	else
@@ -1570,27 +1570,27 @@ void __fastcall engine_draw_automap_pixels(int x1, int y1, int x2, int y2, char 
 	}
 	else
 	{
-		v8 = y1 ^ x1 ^ y1;
-		v9 = v8 ^ y1 ^ x1;
-		x2a = y2 ^ x2;
-		y2 ^= x2a;
-		x2 = y2 ^ x2a;
+		v8 = y0 ^ x0 ^ y0;
+		v9 = v8 ^ y0 ^ x0;
+		x2a = y1 ^ x1;
+		y1 ^= x2a;
+		x1 = y1 ^ x2a;
 		v5 = v10 ^ v11;
 		v10 ^= v5;
 		v11 = v10 ^ v5;
 		dword_52B970 = 1;
 	}
-	if ( x2 >= v9 )
+	if ( x1 >= v9 )
 	{
 		x = v9;
 		y = v8;
-		v32 = x2;
-		v13 = y2;
+		v32 = x1;
+		v13 = y1;
 	}
 	else
 	{
-		x = x2;
-		y = y2;
+		x = x1;
+		y = y1;
 		v32 = v9;
 		v13 = v8;
 	}
@@ -1767,7 +1767,7 @@ void __fastcall engine_draw_automap_pixels(int x1, int y1, int x2, int y2, char 
 		}
 	}
 }
-// 52B96C: using guessed type char byte_52B96C;
+// 52B96C: using guessed type char gbPixelCol;
 // 52B970: using guessed type int dword_52B970;
 // 52B99C: using guessed type int dword_52B99C;
 
@@ -1889,17 +1889,17 @@ void *__fastcall DiabloAllocPtr(int dwBytes)
 	if ( !v2 )
 	{
 		v3 = GetLastError();
-		TermDlg(105, v3, "C:\\Src\\Diablo\\Source\\ENGINE.CPP", 2269);
+		ErrDlg(IDD_DIALOG2, v3, "C:\\Src\\Diablo\\Source\\ENGINE.CPP", 2269);
 	}
 	return v2;
 }
 
-void __fastcall mem_free_dbg(void *ptr)
+void __fastcall mem_free_dbg(void *p)
 {
 	void *v1; // edi
 
-	v1 = ptr;
-	if ( ptr )
+	v1 = p;
+	if ( p )
 	{
 		EnterCriticalSection(&sgMemCrit);
 		SMemFree(v1, "C:\\Src\\Diablo\\Source\\ENGINE.CPP", 2317, 0);

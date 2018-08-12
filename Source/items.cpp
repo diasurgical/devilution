@@ -651,15 +651,15 @@ void __cdecl InitItemGFX()
 	memset(UniqueItemFlag, 0, 0x200u);
 }
 
-bool __fastcall ItemPlace(int x, int y)
+bool __fastcall ItemPlace(int xp, int yp)
 {
 	int v2; // ecx
 	int v3; // eax
 	bool result; // al
 
-	v2 = x;
-	v3 = v2 * 112 + y;
-	if ( dMonster[0][v3] || dPlayer[v2][y] || dItem[v2][y] || dObject[v2][y] || dFlags[v2][y] & 8 )
+	v2 = xp;
+	v3 = v2 * 112 + yp;
+	if ( dMonster[0][v3] || dPlayer[v2][yp] || dItem[v2][yp] || dObject[v2][yp] || dFlags[v2][yp] & 8 )
 		result = 0;
 	else
 		result = nSolidTable[dPiece[0][v3]] == 0;

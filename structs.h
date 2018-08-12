@@ -309,12 +309,12 @@ struct ItemStruct
 	int _ix;
 	int _iy;
 	int _iAnimFlag;
-	int _iAnimData; // unsigned char *
+	int _iAnimData; // unsigned char * (PSX name -> ItemFrame)
 	int _iAnimLen;
 	int _iAnimFrame;
 	int _iAnimWidth;
 	int _iAnimWidth2; // width 2?
-	int offs002C;
+	int _isin; // set when item is flagged for deletion, deprecated in 1.02
 	char _iSelFlag;
 	int _iPostDraw;
 	int _iIdentified;
@@ -370,7 +370,7 @@ struct ItemStruct
 	char _iMinDex;
 	int _iStatFlag;
 	int IDidx;
-	int offs016C;
+	int offs016C; // _oldlight or _iInvalid
 };
 
 struct DeadStruct

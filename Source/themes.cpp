@@ -251,19 +251,19 @@ bool __fastcall TFit_Obj3(int t)
 {
 	int yp; // edi
 	int xp; // esi
-	char objrnd[5]; // [esp+Bh] [ebp-5h]
+	char objrnd[4]; // [esp+Bh] [ebp-5h]
 
+	objrnd[0] = 4;
 	objrnd[1] = 4;
-	objrnd[2] = 4;
-	objrnd[3] = 3;
-	objrnd[4] = 5;
+	objrnd[2] = 3;
+	objrnd[3] = 5;
 	yp = 1;
 	while ( 2 )
 	{
 		xp = 1;
 		do
 		{
-			if ( CheckThemeObj3(xp, yp, t, objrnd[leveltype]) )
+			if ( CheckThemeObj3(xp, yp, t, objrnd[leveltype-1]) )
 			{
 				themex = xp;
 				themey = yp;
@@ -749,17 +749,17 @@ void __fastcall Theme_Barrel(int t)
 	int yp; // edi
 	int xp; // ebx
 	int r;
-	char monstrnd[5];
-	char barrnd[5];
+	char monstrnd[4];
+	char barrnd[4];
 
-	barrnd[1] = 2;
-	barrnd[2] = 6;
-	barrnd[3] = 4;
-	barrnd[4] = 8;
-	monstrnd[1] = 5;
-	monstrnd[2] = 7;
-	monstrnd[3] = 3;
-	monstrnd[4] = 9;
+	barrnd[0] = 2;
+	barrnd[1] = 6;
+	barrnd[2] = 4;
+	barrnd[3] = 8;
+	monstrnd[0] = 5;
+	monstrnd[1] = 7;
+	monstrnd[2] = 3;
+	monstrnd[3] = 9;
 
 	for(yp = 0; yp < 112; yp++)
 	{
@@ -767,27 +767,27 @@ void __fastcall Theme_Barrel(int t)
 		{
 			if ( dung_map[xp][yp] == themes[t].ttval && !nSolidTable[dPiece[xp][yp]] )
 			{
-				if ( !random(0, barrnd[leveltype]) )
+				if ( !random(0, barrnd[leveltype-1]) )
 				{
-					r = random(0, barrnd[leveltype]);
+					r = random(0, barrnd[leveltype-1]);
 					AddObject((r != 0) + OBJ_BARREL, xp, yp);
 				}
 			}
 		}
 	}
 
-	PlaceThemeMonsts(t, monstrnd[leveltype]);
+	PlaceThemeMonsts(t, monstrnd[leveltype-1]);
 }
 // 5BB1ED: using guessed type char leveltype;
 
 void __fastcall Theme_Shrine(int t)
 {
-	char monstrnd[5]; // [esp+3h] [ebp-5h]
+	char monstrnd[4]; // [esp+3h] [ebp-5h]
 
+	monstrnd[0] = 6;
 	monstrnd[1] = 6;
-	monstrnd[2] = 6;
-	monstrnd[3] = 3;
-	monstrnd[4] = 9;
+	monstrnd[2] = 3;
+	monstrnd[3] = 9;
 	TFit_Shrine(t);
 	if ( themeVar1 == 1 )
 	{
@@ -801,7 +801,7 @@ void __fastcall Theme_Shrine(int t)
 		AddObject(OBJ_SHRINEL, themex, themey);
 		AddObject(OBJ_CANDLE2, themex, themey + 1);
 	}
-	PlaceThemeMonsts(t, monstrnd[leveltype]);
+	PlaceThemeMonsts(t, monstrnd[leveltype-1]);
 }
 // 5BB1ED: using guessed type char leveltype;
 
@@ -810,12 +810,12 @@ void __fastcall Theme_MonstPit(int t)
 	int r; // eax
 	int ixp; // ecx
 	int iyp; // edx
-	char monstrnd[5]; // [esp+4h] [ebp-8h]
+	char monstrnd[4]; // [esp+4h] [ebp-8h]
 
-	monstrnd[1] = 6;
-	monstrnd[2] = 7;
-	monstrnd[3] = 3;
-	monstrnd[4] = 9;
+	monstrnd[0] = 6;
+	monstrnd[1] = 7;
+	monstrnd[2] = 3;
+	monstrnd[3] = 9;
 	r = random(0, 100) + 1;
 	ixp = 0;
 	iyp = 0;
@@ -837,7 +837,7 @@ void __fastcall Theme_MonstPit(int t)
 	}
 	CreateRndItem(ixp, iyp, 1u, 0, 1);
 	ItemNoFlippy();
-	PlaceThemeMonsts(t, monstrnd[leveltype]);
+	PlaceThemeMonsts(t, monstrnd[leveltype-1]);
 }
 // 5BB1ED: using guessed type char leveltype;
 
@@ -845,47 +845,47 @@ void __fastcall Theme_SkelRoom(int t)
 {
 	int yp; // esi
 	int xp; // edi
-	char monstrnd[5]; // [esp+Bh] [ebp-5h]
+	char monstrnd[4]; // [esp+Bh] [ebp-5h]
 
-	monstrnd[1] = 6;
-	monstrnd[2] = 7;
-	monstrnd[3] = 3;
-	monstrnd[4] = 9;
+	monstrnd[0] = 6;
+	monstrnd[1] = 7;
+	monstrnd[2] = 3;
+	monstrnd[3] = 9;
 	TFit_SkelRoom(t);
 	yp = themey;
 	xp = themex;
 	AddObject(OBJ_SKFIRE, themex, themey);
 
-	if ( random(0, monstrnd[leveltype]) )
+	if ( random(0, monstrnd[leveltype-1]) )
 		SpawnSkeleton(PreSpawnSkeleton(), xp - 1, yp - 1);
 	else
 		AddObject(OBJ_BANNERL, xp - 1, yp - 1);
 
 	SpawnSkeleton(PreSpawnSkeleton(), xp, yp - 1);
 
-	if ( random(0, monstrnd[leveltype]) )
+	if ( random(0, monstrnd[leveltype-1]) )
 		SpawnSkeleton(PreSpawnSkeleton(), xp + 1, yp - 1);
 	else
 		AddObject(OBJ_BANNERR, xp + 1, yp - 1);
 
-	if ( random(0, monstrnd[leveltype]) )
+	if ( random(0, monstrnd[leveltype-1]) )
 		SpawnSkeleton(PreSpawnSkeleton(), xp - 1, yp);
 	else
 		AddObject(OBJ_BANNERM, xp - 1, yp);
 
-	if ( random(0, monstrnd[leveltype]) )
+	if ( random(0, monstrnd[leveltype-1]) )
 		SpawnSkeleton(PreSpawnSkeleton(), xp + 1, yp);
 	else
 		AddObject(OBJ_BANNERM, xp + 1, yp);
 
-	if ( random(0, monstrnd[leveltype]) )
+	if ( random(0, monstrnd[leveltype-1]) )
 		SpawnSkeleton(PreSpawnSkeleton(), xp - 1, yp + 1);
 	else
 		AddObject(OBJ_BANNERR, xp - 1, yp + 1);
 
 	SpawnSkeleton(PreSpawnSkeleton(), xp, yp + 1);
 
-	if ( random(0, monstrnd[leveltype]) )
+	if ( random(0, monstrnd[leveltype-1]) )
 		SpawnSkeleton(PreSpawnSkeleton(), xp + 1, yp + 1);
 	else
 		AddObject(OBJ_BANNERL, xp + 1, yp + 1);
@@ -902,17 +902,17 @@ void __fastcall Theme_Treasure(int t)
 	int yp; // esi
 	int xp; // edi
 	int rv; // [esp+14h] [ebp-10h]
-	char monstrnd[5]; // [esp+18h] [ebp-Ch]
-	char treasrnd[5]; // [esp+20h] [ebp-4h]
+	char monstrnd[4]; // [esp+18h] [ebp-Ch]
+	char treasrnd[4]; // [esp+20h] [ebp-4h]
 
-	treasrnd[1] = 4;
-	treasrnd[2] = 9;
-	treasrnd[3] = 7;
-	treasrnd[4] = 10;
-	monstrnd[1] = 6;
-	monstrnd[2] = 8;
-	monstrnd[3] = 3;
-	monstrnd[4] = 7;
+	treasrnd[0] = 4;
+	treasrnd[1] = 9;
+	treasrnd[2] = 7;
+	treasrnd[3] = 10;
+	monstrnd[0] = 6;
+	monstrnd[1] = 8;
+	monstrnd[2] = 3;
+	monstrnd[3] = 7;
 	GetRndSeed();
 	for(yp = 0; yp < 112; yp++)
 	{
@@ -920,8 +920,8 @@ void __fastcall Theme_Treasure(int t)
 		{
 			if ( dung_map[xp][yp] == themes[t].ttval && !nSolidTable[dPiece[xp][yp]] )
 			{
-				rv = random(0, treasrnd[leveltype]);
-				if ( !(2 * random(0, treasrnd[leveltype])) )
+				rv = random(0, treasrnd[leveltype-1]);
+				if ( !(2 * random(0, treasrnd[leveltype-1])) )
 				{
 					CreateTypeItem(xp, yp, 0, ITYPE_GOLD, 0, 0, 1);
 					ItemNoFlippy();
@@ -931,12 +931,12 @@ void __fastcall Theme_Treasure(int t)
 					CreateRndItem(xp, yp, 0, 0, 1);
 					ItemNoFlippy();
 				}
-				if ( rv >= treasrnd[leveltype] - 2 && leveltype != 1 )
+				if ( rv >= treasrnd[leveltype-1] - 2 && leveltype != 1 )
 					item[ItemNoFlippy()]._ivalue >>= 1; /* check */
 			}
 		}
 	}
-	PlaceThemeMonsts(t, monstrnd[leveltype]);
+	PlaceThemeMonsts(t, monstrnd[leveltype-1]);
 }
 // 5BB1ED: using guessed type char leveltype;
 
@@ -951,18 +951,18 @@ void __fastcall Theme_Library(int t)
 	int ta; // [esp+Ch] [ebp-14h]
 	int *v10; // [esp+10h] [ebp-10h]
 	int *v11; // [esp+14h] [ebp-Ch]
-	char monstrnd[5]; // [esp+18h] [ebp-8h]
-	char librnd[5]; // [esp+1Ch] [ebp-4h]
+	char monstrnd[4]; // [esp+18h] [ebp-8h]
+	char librnd[4]; // [esp+1Ch] [ebp-4h]
 
 	ta = t;
-	librnd[1] = 1;
+	librnd[0] = 1;
+	librnd[1] = 2;
 	librnd[2] = 2;
-	librnd[3] = 2;
-	librnd[4] = 5;
-	monstrnd[1] = 5;
-	monstrnd[2] = 7;
-	monstrnd[3] = 3;
-	monstrnd[4] = 9;
+	librnd[3] = 5;
+	monstrnd[0] = 5;
+	monstrnd[1] = 7;
+	monstrnd[2] = 3;
+	monstrnd[3] = 9;
 	TFit_Shrine(t);
 	v1 = 1;
 	if ( themeVar1 == 1 )
@@ -990,10 +990,10 @@ void __fastcall Theme_Library(int t)
 			{
 				if ( !*v10 )
 				{
-					if ( !random(0, librnd[leveltype]) )
+					if ( !random(0, librnd[leveltype-1]) )
 					{
 						AddObject(OBJ_BOOKSTAND, v2, v1);
-						if ( random(0, 2 * librnd[leveltype]) )
+						if ( random(0, 2 * librnd[leveltype-1]) )
 						{
 							v7 = *v3 - 1;
 							object[v7]._oSelFlag = 0;
@@ -1013,7 +1013,7 @@ void __fastcall Theme_Library(int t)
 	while ( (signed int)v11 < (signed int)&dMonster[1][111] );
 	//LOBYTE(v8) = QuestStatus(3);
 	if ( !QuestStatus(3) || ta != zharlib )
-		PlaceThemeMonsts(ta, monstrnd[leveltype]);
+		PlaceThemeMonsts(ta, monstrnd[leveltype-1]);
 }
 // 5BB1ED: using guessed type char leveltype;
 // 6AAA64: using guessed type int zharlib;
@@ -1025,20 +1025,20 @@ void __fastcall Theme_Torture(int t)
 	char *v3; // edi
 	//int v4; // eax
 	int *x; // [esp+Ch] [ebp-14h]
-	char monstrnd[5]; // [esp+10h] [ebp-10h]
+	char monstrnd[4]; // [esp+10h] [ebp-10h]
 	int *v8; // [esp+14h] [ebp-Ch]
-	char tortrnd[5]; // [esp+18h] [ebp-8h]
+	char tortrnd[4]; // [esp+18h] [ebp-8h]
 	int v10; // [esp+1Ch] [ebp-4h]
 
 	v1 = t;
-	tortrnd[1] = 6;
-	tortrnd[2] = 8;
-	tortrnd[3] = 3;
-	tortrnd[4] = 8;
-	monstrnd[1] = 6;
-	monstrnd[2] = 8;
-	monstrnd[3] = 3;
-	monstrnd[4] = 9;
+	tortrnd[0] = 6;
+	tortrnd[1] = 8;
+	tortrnd[2] = 3;
+	tortrnd[3] = 8;
+	monstrnd[0] = 6;
+	monstrnd[1] = 8;
+	monstrnd[2] = 3;
+	monstrnd[3] = 9;
 	v2 = 1;
 	v8 = &dPiece[1][1];
 	do
@@ -1053,7 +1053,7 @@ void __fastcall Theme_Torture(int t)
 				//LOBYTE(v4) = CheckThemeObj3(v10, v2, v1, -1);
 				if ( CheckThemeObj3(v10, v2, v1, -1) )
 				{
-					if ( !random(0, tortrnd[leveltype]) )
+					if ( !random(0, tortrnd[leveltype-1]) )
 						AddObject(OBJ_TNUDEM2, v10, v2);
 				}
 			}
@@ -1066,21 +1066,21 @@ void __fastcall Theme_Torture(int t)
 		++v2;
 	}
 	while ( (signed int)v8 < (signed int)&dPiece[1][111] );
-	PlaceThemeMonsts(v1, monstrnd[leveltype]);
+	PlaceThemeMonsts(v1, monstrnd[leveltype-1]);
 }
 // 5BB1ED: using guessed type char leveltype;
 
 void __fastcall Theme_BloodFountain(int t)
 {
-	char monstrnd[5]; // [esp+3h] [ebp-5h]
+	char monstrnd[4]; // [esp+3h] [ebp-5h]
 
-	monstrnd[1] = 6;
-	monstrnd[2] = 8;
-	monstrnd[3] = 3;
-	monstrnd[4] = 9;
+	monstrnd[0] = 6;
+	monstrnd[1] = 8;
+	monstrnd[2] = 3;
+	monstrnd[3] = 9;
 	TFit_Obj5(t);
 	AddObject(OBJ_BLOODFTN, themex, themey);
-	PlaceThemeMonsts(t, monstrnd[leveltype]);
+	PlaceThemeMonsts(t, monstrnd[leveltype-1]);
 }
 // 5BB1ED: using guessed type char leveltype;
 
@@ -1091,20 +1091,20 @@ void __fastcall Theme_Decap(int t)
 	char *v3; // edi
 	//int v4; // eax
 	int *x; // [esp+Ch] [ebp-14h]
-	char monstrnd[5]; // [esp+10h] [ebp-10h]
+	char monstrnd[4]; // [esp+10h] [ebp-10h]
 	int *v8; // [esp+14h] [ebp-Ch]
-	char decaprnd[5]; // [esp+18h] [ebp-8h]
+	char decaprnd[4]; // [esp+18h] [ebp-8h]
 	int v10; // [esp+1Ch] [ebp-4h]
 
 	v1 = t;
-	decaprnd[1] = 6;
-	decaprnd[2] = 8;
-	decaprnd[3] = 3;
-	decaprnd[4] = 8;
-	monstrnd[1] = 6;
-	monstrnd[2] = 8;
-	monstrnd[3] = 3;
-	monstrnd[4] = 9;
+	decaprnd[0] = 6;
+	decaprnd[1] = 8;
+	decaprnd[2] = 3;
+	decaprnd[3] = 8;
+	monstrnd[0] = 6;
+	monstrnd[1] = 8;
+	monstrnd[2] = 3;
+	monstrnd[3] = 9;
 	v2 = 1;
 	v8 = &dPiece[1][1];
 	do
@@ -1119,7 +1119,7 @@ void __fastcall Theme_Decap(int t)
 				//LOBYTE(v4) = CheckThemeObj3(v10, v2, v1, -1);
 				if ( CheckThemeObj3(v10, v2, v1, -1) )
 				{
-					if ( !random(0, decaprnd[leveltype]) )
+					if ( !random(0, decaprnd[leveltype-1]) )
 						AddObject(OBJ_DECAP, v10, v2);
 				}
 			}
@@ -1132,21 +1132,21 @@ void __fastcall Theme_Decap(int t)
 		++v2;
 	}
 	while ( (signed int)v8 < (signed int)&dPiece[1][111] );
-	PlaceThemeMonsts(v1, monstrnd[leveltype]);
+	PlaceThemeMonsts(v1, monstrnd[leveltype-1]);
 }
 // 5BB1ED: using guessed type char leveltype;
 
 void __fastcall Theme_PurifyingFountain(int t)
 {
-	char monstrnd[5]; // [esp+3h] [ebp-5h]
+	char monstrnd[4]; // [esp+3h] [ebp-5h]
 
-	monstrnd[1] = 6;
-	monstrnd[2] = 7;
-	monstrnd[3] = 3;
-	monstrnd[4] = 9;
+	monstrnd[0] = 6;
+	monstrnd[1] = 7;
+	monstrnd[2] = 3;
+	monstrnd[3] = 9;
 	TFit_Obj5(t);
 	AddObject(OBJ_PURIFYINGFTN, themex, themey);
-	PlaceThemeMonsts(t, monstrnd[leveltype]);
+	PlaceThemeMonsts(t, monstrnd[leveltype-1]);
 }
 // 5BB1ED: using guessed type char leveltype;
 
@@ -1158,20 +1158,20 @@ void __fastcall Theme_ArmorStand(int t)
 	//int v4; // eax
 	int ta; // [esp+Ch] [ebp-14h]
 	int *v7; // [esp+10h] [ebp-10h]
-	char monstrnd[5]; // [esp+14h] [ebp-Ch]
+	char monstrnd[4]; // [esp+14h] [ebp-Ch]
 	int *v9; // [esp+18h] [ebp-8h]
-	char armorrnd[5]; // [esp+1Ch] [ebp-4h]
+	char armorrnd[4]; // [esp+1Ch] [ebp-4h]
 
 	v1 = 0;
 	ta = t;
-	armorrnd[1] = 6;
-	armorrnd[2] = 8;
-	armorrnd[3] = 3;
-	armorrnd[4] = 8;
-	monstrnd[1] = 6;
-	monstrnd[2] = 7;
-	monstrnd[3] = 3;
-	monstrnd[4] = 9;
+	armorrnd[0] = 6;
+	armorrnd[1] = 8;
+	armorrnd[2] = 3;
+	armorrnd[3] = 8;
+	monstrnd[0] = 6;
+	monstrnd[1] = 7;
+	monstrnd[2] = 3;
+	monstrnd[3] = 9;
 	if ( armorFlag )
 	{
 		TFit_Obj3(t);
@@ -1190,7 +1190,7 @@ void __fastcall Theme_ArmorStand(int t)
 				//LOBYTE(v4) = CheckThemeObj3(v2, v1, ta, -1);
 				if ( CheckThemeObj3(v2, v1, ta, -1) )
 				{
-					if ( !random(0, armorrnd[leveltype]) )
+					if ( !random(0, armorrnd[leveltype-1]) )
 						AddObject(OBJ_ARMORSTANDN, v2, v1);
 				}
 			}
@@ -1203,7 +1203,7 @@ void __fastcall Theme_ArmorStand(int t)
 		++v1;
 	}
 	while ( (signed int)v9 < (signed int)dPiece[1] );
-	PlaceThemeMonsts(ta, monstrnd[leveltype]);
+	PlaceThemeMonsts(ta, monstrnd[leveltype-1]);
 	armorFlag = 0;
 }
 // 5BB1ED: using guessed type char leveltype;
@@ -1256,43 +1256,43 @@ void __fastcall Theme_GoatShrine(int t)
 
 void __fastcall Theme_Cauldron(int t)
 {
-	char monstrnd[5]; // [esp+3h] [ebp-5h]
+	char monstrnd[4]; // [esp+3h] [ebp-5h]
 
-	monstrnd[1] = 6;
-	monstrnd[2] = 7;
-	monstrnd[3] = 3;
-	monstrnd[4] = 9;
+	monstrnd[0] = 6;
+	monstrnd[1] = 7;
+	monstrnd[2] = 3;
+	monstrnd[3] = 9;
 	TFit_Obj5(t);
 	AddObject(OBJ_CAULDRON, themex, themey);
-	PlaceThemeMonsts(t, monstrnd[leveltype]);
+	PlaceThemeMonsts(t, monstrnd[leveltype-1]);
 }
 // 5BB1ED: using guessed type char leveltype;
 
 void __fastcall Theme_MurkyFountain(int t)
 {
-	char monstrnd[5]; // [esp+3h] [ebp-5h]
+	char monstrnd[4]; // [esp+3h] [ebp-5h]
 
-	monstrnd[1] = 6;
-	monstrnd[2] = 7;
-	monstrnd[3] = 3;
-	monstrnd[4] = 9;
+	monstrnd[0] = 6;
+	monstrnd[1] = 7;
+	monstrnd[2] = 3;
+	monstrnd[3] = 9;
 	TFit_Obj5(t);
 	AddObject(OBJ_MURKYFTN, themex, themey);
-	PlaceThemeMonsts(t, monstrnd[leveltype]);
+	PlaceThemeMonsts(t, monstrnd[leveltype-1]);
 }
 // 5BB1ED: using guessed type char leveltype;
 
 void __fastcall Theme_TearFountain(int t)
 {
-	char monstrnd[5]; // [esp+3h] [ebp-5h]
+	char monstrnd[4]; // [esp+3h] [ebp-5h]
 
-	monstrnd[1] = 6;
-	monstrnd[2] = 7;
-	monstrnd[3] = 3;
-	monstrnd[4] = 9;
+	monstrnd[0] = 6;
+	monstrnd[1] = 7;
+	monstrnd[2] = 3;
+	monstrnd[3] = 9;
 	TFit_Obj5(t);
 	AddObject(OBJ_TEARFTN, themex, themey);
-	PlaceThemeMonsts(t, monstrnd[leveltype]);
+	PlaceThemeMonsts(t, monstrnd[leveltype-1]);
 }
 // 5BB1ED: using guessed type char leveltype;
 
@@ -1304,19 +1304,19 @@ void __fastcall Theme_BrnCross(int t)
 	//int v4; // eax
 	int ta; // [esp+Ch] [ebp-14h]
 	int *v7; // [esp+10h] [ebp-10h]
-	char monstrnd[5]; // [esp+14h] [ebp-Ch]
+	char monstrnd[4]; // [esp+14h] [ebp-Ch]
 	int *v9; // [esp+18h] [ebp-8h]
-	char bcrossrnd[5]; // [esp+1Ch] [ebp-4h]
+	char bcrossrnd[4]; // [esp+1Ch] [ebp-4h]
 
 	ta = t;
-	monstrnd[1] = 6;
-	monstrnd[2] = 8;
-	monstrnd[3] = 3;
-	monstrnd[4] = 9;
-	bcrossrnd[1] = 5;
-	bcrossrnd[2] = 7;
-	bcrossrnd[3] = 3;
-	bcrossrnd[4] = 8;
+	monstrnd[0] = 6;
+	monstrnd[1] = 8;
+	monstrnd[2] = 3;
+	monstrnd[3] = 9;
+	bcrossrnd[0] = 5;
+	bcrossrnd[1] = 7;
+	bcrossrnd[2] = 3;
+	bcrossrnd[3] = 8;
 	v1 = 0;
 	v9 = (int *)dPiece;
 	do
@@ -1331,7 +1331,7 @@ void __fastcall Theme_BrnCross(int t)
 				//LOBYTE(v4) = CheckThemeObj3(v2, v1, ta, -1);
 				if ( CheckThemeObj3(v2, v1, ta, -1) )
 				{
-					if ( !random(0, bcrossrnd[leveltype]) )
+					if ( !random(0, bcrossrnd[leveltype-1]) )
 						AddObject(OBJ_TBCROSS, v2, v1);
 				}
 			}
@@ -1344,7 +1344,7 @@ void __fastcall Theme_BrnCross(int t)
 		++v1;
 	}
 	while ( (signed int)v9 < (signed int)dPiece[1] );
-	PlaceThemeMonsts(ta, monstrnd[leveltype]);
+	PlaceThemeMonsts(ta, monstrnd[leveltype-1]);
 	bCrossFlag = 1;
 }
 // 5BB1ED: using guessed type char leveltype;
@@ -1358,20 +1358,20 @@ void __fastcall Theme_WeaponRack(int t)
 	//int v4; // eax
 	int ta; // [esp+Ch] [ebp-14h]
 	int *v7; // [esp+10h] [ebp-10h]
-	char monstrnd[5]; // [esp+14h] [ebp-Ch]
+	char monstrnd[4]; // [esp+14h] [ebp-Ch]
 	int *v9; // [esp+18h] [ebp-8h]
-	char weaponrnd[5]; // [esp+1Ch] [ebp-4h]
+	char weaponrnd[4]; // [esp+1Ch] [ebp-4h]
 
 	v1 = 0;
 	ta = t;
-	weaponrnd[1] = 6;
-	weaponrnd[2] = 8;
-	weaponrnd[3] = 5;
-	weaponrnd[4] = 8;
-	monstrnd[1] = 6;
-	monstrnd[2] = 7;
-	monstrnd[3] = 3;
-	monstrnd[4] = 9;
+	weaponrnd[0] = 6;
+	weaponrnd[1] = 8;
+	weaponrnd[2] = 5;
+	weaponrnd[3] = 8;
+	monstrnd[0] = 6;
+	monstrnd[1] = 7;
+	monstrnd[2] = 3;
+	monstrnd[3] = 9;
 	if ( weaponFlag )
 	{
 		TFit_Obj3(t);
@@ -1390,7 +1390,7 @@ void __fastcall Theme_WeaponRack(int t)
 				//LOBYTE(v4) = CheckThemeObj3(v2, v1, ta, -1);
 				if ( CheckThemeObj3(v2, v1, ta, -1) )
 				{
-					if ( !random(0, weaponrnd[leveltype]) )
+					if ( !random(0, weaponrnd[leveltype-1]) )
 						AddObject(OBJ_WEAPONRACKN, v2, v1);
 				}
 			}
@@ -1403,7 +1403,7 @@ void __fastcall Theme_WeaponRack(int t)
 		++v1;
 	}
 	while ( (signed int)v9 < (signed int)dPiece[1] );
-	PlaceThemeMonsts(ta, monstrnd[leveltype]);
+	PlaceThemeMonsts(ta, monstrnd[leveltype-1]);
 	weaponFlag = 0;
 }
 // 5BB1ED: using guessed type char leveltype;

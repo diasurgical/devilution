@@ -3175,7 +3175,7 @@ LABEL_8:
 LABEL_17:
 					if ( v8 != DDERR_SURFACELOST && v8 != DDERR_WASSTILLDRAWING && v8 != DDERR_SURFACEBUSY )
 					{
-						DDErrDlg(v8, 3707, "C:\\Src\\Diablo\\Source\\SCROLLRT.CPP");
+						DDErrMsg(v8, 3707, "C:\\Src\\Diablo\\Source\\SCROLLRT.CPP");
 						break;
 					}
 					return;
@@ -3218,7 +3218,7 @@ LABEL_17:
 			if ( v9 != DDERR_SURFACELOST )
 			{
 				if ( v9 )
-					DDErrDlg(v9, 3779, "C:\\Src\\Diablo\\Source\\SCROLLRT.CPP");
+					DDErrMsg(v9, 3779, "C:\\Src\\Diablo\\Source\\SCROLLRT.CPP");
 			}
 		}
 #ifdef _DEBUG
@@ -3300,7 +3300,7 @@ void __fastcall DoBlitScreen(int dwX, int dwY, int dwWdt, int dwHgt)
 					continue;
 			}
 			if ( error_code != DDERR_SURFACELOST && error_code != DDERR_WASSTILLDRAWING && error_code != DDERR_SURFACEBUSY )
-				DDErrDlg(error_code, 3596, "C:\\Src\\Diablo\\Source\\SCROLLRT.CPP");
+				DDErrMsg(error_code, 3596, "C:\\Src\\Diablo\\Source\\SCROLLRT.CPP");
 			return;
 		}
 	}

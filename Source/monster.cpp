@@ -1337,31 +1337,31 @@ void __cdecl PlaceQuestMonsters()
 		if ( QuestStatus(7) )
 		{
 			setp = LoadFileInMem("Levels\\L1Data\\Banner1.DUN", 0);
-			SetMapMonsters((char *)setp, 2 * setpc_x, 2 * setpc_y);
+			SetMapMonsters(setp, 2 * setpc_x, 2 * setpc_y);
 			mem_free_dbg(setp);
 		}
 		if ( QuestStatus(9) )
 		{
 			setp = LoadFileInMem("Levels\\L2Data\\Blood2.DUN", 0);
-			SetMapMonsters((char *)setp, 2 * setpc_x, 2 * setpc_y);
+			SetMapMonsters(setp, 2 * setpc_x, 2 * setpc_y);
 			mem_free_dbg(setp);
 		}
 		if ( QuestStatus(8) )
 		{
 			setp = LoadFileInMem("Levels\\L2Data\\Blind2.DUN", 0);
-			SetMapMonsters((char *)setp, 2 * setpc_x, 2 * setpc_y);
+			SetMapMonsters(setp, 2 * setpc_x, 2 * setpc_y);
 			mem_free_dbg(setp);
 		}
 		if ( QuestStatus(10) )
 		{
 			setp = LoadFileInMem("Levels\\L3Data\\Anvil.DUN", 0);
-			SetMapMonsters((char *)setp, 2 * setpc_x + 2, 2 * setpc_y + 2);
+			SetMapMonsters(setp, 2 * setpc_x + 2, 2 * setpc_y + 2);
 			mem_free_dbg(setp);
 		}
 		if ( QuestStatus(11) )
 		{
 			setp = LoadFileInMem("Levels\\L4Data\\Warlord.DUN", 0);
-			SetMapMonsters((char *)setp, 2 * setpc_x, 2 * setpc_y);
+			SetMapMonsters(setp, 2 * setpc_x, 2 * setpc_y);
 			mem_free_dbg(setp);
 			AddMonsterType((char)UniqMonst[8].mtype, 1);
 		}
@@ -1377,7 +1377,7 @@ void __cdecl PlaceQuestMonsters()
 			PlaceUniqueMonst(5, 0, 0);
 			PlaceUniqueMonst(6, 0, 0);
 			setp = LoadFileInMem("Levels\\L4Data\\Vile1.DUN", 0);
-			SetMapMonsters((char *)setp, 2 * setpc_x, 2 * setpc_y);
+			SetMapMonsters(setp, 2 * setpc_x, 2 * setpc_y);
 			mem_free_dbg(setp);
 		}
 	}
@@ -1522,16 +1522,16 @@ void __cdecl LoadDiabMonsts()
 	unsigned char *lpSetPiece; // esi
 
 	lpSetPiece = LoadFileInMem("Levels\\L4Data\\diab1.DUN", 0);
-	SetMapMonsters((char *)lpSetPiece, 2 * diabquad1x, 2 * diabquad1y);
+	SetMapMonsters(lpSetPiece, 2 * diabquad1x, 2 * diabquad1y);
 	mem_free_dbg(lpSetPiece);
 	lpSetPiece = LoadFileInMem("Levels\\L4Data\\diab2a.DUN", 0);
-	SetMapMonsters((char *)lpSetPiece, 2 * diabquad2x, 2 * diabquad2y);
+	SetMapMonsters(lpSetPiece, 2 * diabquad2x, 2 * diabquad2y);
 	mem_free_dbg(lpSetPiece);
 	lpSetPiece = LoadFileInMem("Levels\\L4Data\\diab3a.DUN", 0);
-	SetMapMonsters((char *)lpSetPiece, 2 * diabquad3x, 2 * diabquad3y);
+	SetMapMonsters(lpSetPiece, 2 * diabquad3x, 2 * diabquad3y);
 	mem_free_dbg(lpSetPiece);
 	lpSetPiece = LoadFileInMem("Levels\\L4Data\\diab4a.DUN", 0);
-	SetMapMonsters((char *)lpSetPiece, 2 * diabquad4x, 2 * diabquad4y);
+	SetMapMonsters(lpSetPiece, 2 * diabquad4x, 2 * diabquad4y);
 	mem_free_dbg(lpSetPiece);
 }
 // 5289C4: using guessed type int diabquad1x;
@@ -1777,20 +1777,20 @@ LABEL_23:
 	}
 }
 
-void __fastcall SetMapMonsters(char *pMap, int startx, int starty)
+void __fastcall SetMapMonsters(unsigned char *pMap, int startx, int starty)
 {
-	char *v3; // esi
+	unsigned char *v3; // esi
 	unsigned short v4; // cx
 	int v5; // edx
 	int v6; // edi
 	int v7; // ecx
-	char *v8; // edx
+	unsigned char *v8; // edx
 	int i; // esi
 	int v10; // eax
 	int v11; // ecx
 	int v12; // [esp+Ch] [ebp-Ch]
 	int v13; // [esp+10h] [ebp-8h]
-	char *v14; // [esp+14h] [ebp-4h]
+	unsigned char *v14; // [esp+14h] [ebp-4h]
 	int startya; // [esp+20h] [ebp+8h]
 
 	v12 = startx;
@@ -2191,7 +2191,7 @@ void __fastcall M_StartWalk(int i, int xvel, int yvel, int xadd, int yadd, int E
 	M_CheckEFlag(v6);
 }
 
-void __fastcall M_StartWalk2(int i, int xvel, int yvel, int a4, int a5, int a6, int a7, int EndDir)
+void __fastcall M_StartWalk2(int i, int xvel, int yvel, int xoff, int yoff, int xadd, int yadd, int EndDir)
 {
 	int v8; // esi
 	int v9; // edx
@@ -2207,7 +2207,7 @@ void __fastcall M_StartWalk2(int i, int xvel, int yvel, int a4, int a5, int a6, 
 	v15 = xvel;
 	ia = i;
 	v8 = i;
-	v9 = a6 + monster[i]._mx;
+	v9 = xadd + monster[i]._mx;
 	EndDira = monster[i]._mx;
 	v10 = monster[i]._my;
 	v11 = monster[v8]._my;
@@ -2215,7 +2215,7 @@ void __fastcall M_StartWalk2(int i, int xvel, int yvel, int a4, int a5, int a6, 
 	dMonster[0][v10 + 112 * EndDira] = -1 - ia;
 	monster[v8]._mVar1 = EndDira;
 	monster[v8]._moldx = EndDira;
-	v12 = a7 + v11;
+	v12 = yadd + v11;
 	monster[v8]._moldy = v10;
 	v13 = monster[v8]._uniqtype == 0;
 	monster[v8]._mx = v9;
@@ -2228,19 +2228,19 @@ void __fastcall M_StartWalk2(int i, int xvel, int yvel, int a4, int a5, int a6, 
 	v14 = monster[v8].MType;
 	monster[v8]._mxvel = v15;
 	monster[v8]._myvel = yvel;
-	monster[v8]._mxoff = a4;
-	monster[v8]._myoff = a5;
+	monster[v8]._mxoff = xoff;
+	monster[v8]._myoff = yoff;
 	monster[v8]._mmode = MM_WALK2;
 	monster[v8]._mVar3 = EndDir;
 	monster[v8]._mdir = EndDir;
 	NewMonsterAnim(ia, &v14->Anims[1], EndDir);
 	monster[v8]._mVar8 = 0;
-	monster[v8]._mVar6 = 16 * a4;
-	monster[v8]._mVar7 = 16 * a5;
+	monster[v8]._mVar6 = 16 * xoff;
+	monster[v8]._mVar7 = 16 * yoff;
 	M_CheckEFlag(ia);
 }
 
-void __fastcall M_StartWalk3(int i, int xvel, int yvel, int a4, int a5, int a6, int a7, int a8, int a9, int EndDir)
+void __fastcall M_StartWalk3(int i, int xvel, int yvel, int xoff, int yoff, int xadd, int yadd, int mapx, int mapy, int EndDir)
 {
 	int v10; // esi
 	int v11; // ebx
@@ -2259,10 +2259,10 @@ void __fastcall M_StartWalk3(int i, int xvel, int yvel, int a4, int a5, int a6, 
 	v11 = monster[i]._my;
 	v12 = monster[i]._mx;
 	v17 = xvel;
-	a6a = v12 + a6;
-	a7a = v11 + a7;
-	v13 = a8 + v12;
-	v14 = a9 + v11;
+	a6a = v12 + xadd;
+	a7a = v11 + yadd;
+	v13 = mapx + v12;
+	v14 = mapy + v11;
 	if ( monster[i]._uniqtype )
 		ChangeLightXY((unsigned char)monster[v10].mlid, v13, v14);
 	v15 = monster[v10]._my + 112 * monster[v10]._mx;
@@ -2280,15 +2280,15 @@ void __fastcall M_StartWalk3(int i, int xvel, int yvel, int a4, int a5, int a6, 
 	monster[v10]._mfuty = a7a;
 	monster[v10]._mVar1 = a6a;
 	monster[v10]._mVar2 = a7a;
-	monster[v10]._mxoff = a4;
-	monster[v10]._myoff = a5;
+	monster[v10]._mxoff = xoff;
+	monster[v10]._myoff = yoff;
 	monster[v10]._mmode = MM_WALK3;
 	monster[v10]._mVar3 = EndDir;
 	monster[v10]._mdir = EndDir;
 	NewMonsterAnim(ia, &v16->Anims[1], EndDir);
 	monster[v10]._mVar8 = 0;
-	monster[v10]._mVar6 = 16 * a4;
-	monster[v10]._mVar7 = 16 * a5;
+	monster[v10]._mVar6 = 16 * xoff;
+	monster[v10]._mVar7 = 16 * yoff;
 	M_CheckEFlag(ia);
 }
 

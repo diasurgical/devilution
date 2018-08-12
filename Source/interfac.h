@@ -14,7 +14,7 @@ void __cdecl DrawCutscene();
 void __fastcall DrawProgress(int screen_x, int screen_y, int progress_id);
 void __fastcall ShowProgress(int uMsg);
 void __cdecl FreeInterface();
-void __fastcall InitCutscene(int interface_mode);
+void __fastcall InitCutscene(int uMsg);
 
 /* data */
 

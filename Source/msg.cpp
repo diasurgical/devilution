@@ -535,14 +535,14 @@ void __fastcall delta_leave_sync(unsigned char bLevel)
 // 67618C: using guessed type char sgbDeltaChanged;
 // 679660: using guessed type char gbMaxPlayers;
 
-bool __fastcall delta_portal_inited(int portal_num)
+bool __fastcall delta_portal_inited(int i)
 {
-	return sgJunk[0].portal[portal_num].x == -1;
+	return sgJunk[0].portal[i].x == -1;
 }
 
-bool __fastcall delta_quest_inited(int quest_num)
+bool __fastcall delta_quest_inited(int i)
 {
-	return sgJunk[0].quests[quest_num].qstate != -1;
+	return sgJunk[0].quests[i].qstate != -1;
 }
 
 void __fastcall DeltaAddItem(int ii)
