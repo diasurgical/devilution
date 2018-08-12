@@ -64,7 +64,7 @@ void __cdecl DrawSpellList();
 void __cdecl SetSpell();
 void __fastcall SetSpeedSpell(int slot);
 void __fastcall ToggleSpell(int slot);
-void __fastcall CPrintString(int No, unsigned char pszStr, int Just);
+void __fastcall CPrintString(int No, unsigned char pszStr, int Just); /* check arg names */
 void __fastcall AddPanelString(char *str, int just);
 void __cdecl ClearPanel();
 void __fastcall DrawPanelBox(int x, int y, int w, int h, int sx, int sy);
