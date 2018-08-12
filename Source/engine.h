@@ -6,7 +6,7 @@
 //pCelBuff->pFrameTable[0]
 
 extern int engine_cpp_init_value; // weak
-extern char byte_52B96C; // automap pixel color 8-bit (palette entry)
+extern char gbPixelCol; // automap pixel color 8-bit (palette entry)
 extern int dword_52B970; // bool flip - if y < x
 extern int orgseed; // weak
 extern int sgnWidth;
@@ -41,7 +41,7 @@ void __fastcall CelDecodeClr(char colour, int screen_x, int screen_y, char *pCel
 void __fastcall CelDrawHdrClrHL(char colour, int screen_x, int screen_y, char *pCelBuff, int frame, int frame_width, int a7, int direction);
 void __fastcall ENG_set_pixel(int screen_x, int screen_y, char pixel);
 void __fastcall engine_draw_pixel(int x, int y);
-void __fastcall engine_draw_automap_pixels(int x1, int y1, int x2, int y2, char a5);
+void __fastcall DrawLine(int x0, int y0, int x1, int y1, char col);
 int __fastcall GetDirection(int x1, int y1, int x2, int y2);
 void __fastcall SetRndSeed(int s);
 int __cdecl GetRndSeed();
@@ -51,7 +51,7 @@ void __cdecl mem_init_mutex();
 void __cdecl mem_atexit_mutex();
 void __cdecl mem_free_mutex();
 void *__fastcall DiabloAllocPtr(int dwBytes);
-void __fastcall mem_free_dbg(void *ptr);
+void __fastcall mem_free_dbg(void *p);
 unsigned char *__fastcall LoadFileInMem(char *pszName, int *pdwFileLen);
 void __fastcall LoadFileWithMem(char *pszName, void *buf);
 void __fastcall Cl2ApplyTrans(char *p, char *ttbl, int last_frame);
