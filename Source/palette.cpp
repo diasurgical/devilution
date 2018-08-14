@@ -42,10 +42,10 @@ void __cdecl palette_init()
 	LoadSysPal();
 	v0 = lpDDInterface->CreatePalette(DDPCAPS_ALLOW256|DDPCAPS_8BIT, system_palette, &lpDDPalette, NULL);
 	if ( v0 )
-		ErrDlg(IDD_DIALOG8, v0, "C:\\Src\\Diablo\\Source\\PALETTE.CPP", 143);
+		ErrDlg(IDD_DIALOG8, v0, "C:\\Src\\Diablo\\Source\\PALETTE.CPP", __LINE__);
 	v1 = lpDDSPrimary->SetPalette(lpDDPalette);
 	if ( v1 )
-		ErrDlg(IDD_DIALOG8, v1, "C:\\Src\\Diablo\\Source\\PALETTE.CPP", 146);
+		ErrDlg(IDD_DIALOG8, v1, "C:\\Src\\Diablo\\Source\\PALETTE.CPP", __LINE__);
 }
 
 void __cdecl LoadGamma()
