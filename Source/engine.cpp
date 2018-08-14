@@ -1884,12 +1884,12 @@ void *__fastcall DiabloAllocPtr(int dwBytes)
 
 	v1 = dwBytes;
 	EnterCriticalSection(&sgMemCrit);
-	v2 = SMemAlloc(v1, "C:\\Src\\Diablo\\Source\\ENGINE.CPP", 2236, 0);
+	v2 = SMemAlloc(v1, "C:\\Src\\Diablo\\Source\\ENGINE.CPP", __LINE__, 0);
 	LeaveCriticalSection(&sgMemCrit);
 	if ( !v2 )
 	{
 		v3 = GetLastError();
-		ErrDlg(IDD_DIALOG2, v3, "C:\\Src\\Diablo\\Source\\ENGINE.CPP", 2269);
+		ErrDlg(IDD_DIALOG2, v3, "C:\\Src\\Diablo\\Source\\ENGINE.CPP", __LINE__);
 	}
 	return v2;
 }
@@ -1902,7 +1902,7 @@ void __fastcall mem_free_dbg(void *p)
 	if ( p )
 	{
 		EnterCriticalSection(&sgMemCrit);
-		SMemFree(v1, "C:\\Src\\Diablo\\Source\\ENGINE.CPP", 2317, 0);
+		SMemFree(v1, "C:\\Src\\Diablo\\Source\\ENGINE.CPP", __LINE__, 0);
 		LeaveCriticalSection(&sgMemCrit);
 	}
 }
