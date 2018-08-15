@@ -4845,36 +4845,36 @@ void __fastcall MakePlrPath(int pnum, int xx, int yy, unsigned char endspace)
 		{
 			if ( !endspace )
 			{
-				v10 = *((char *)&plr[v6]._pmode + v9-- + 3);
+				v10 = plr[v6].walkpath[--v9]; /* *((char *)&plr[v6]._pmode + v9-- + 3) */
 				switch ( v10 )
 				{
-					case PM_WALK:
+					case 1: // N
 						goto LABEL_12;
-					case PM_WALK2:
+					case 2: // W
 						++v5;
 						break;
-					case PM_WALK3:
+					case 3: // E
 						--v5;
 						break;
-					case PM_ATTACK:
+					case 4: // S
 						goto LABEL_15;
-					case PM_RATTACK:
+					case 5: // NW
 						++v5;
 						goto LABEL_12;
-					case PM_BLOCK:
+					case 6: // NE
 						--v5;
 LABEL_12:
 						v7 = yy + 1;
 						break;
-					case PM_GOTHIT:
+					case 7: // SE
 						--v5;
 						goto LABEL_15;
-					case PM_DEATH:
+					case 8: // SW
 						++v5;
 LABEL_15:
 						v7 = yy - 1;
 						break;
-					default:
+					default: // 0/Neutral
 						break;
 				}
 				plr[v6]._ptargx = v5;
