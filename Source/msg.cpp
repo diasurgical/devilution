@@ -6,12 +6,12 @@ int sgdwOwnerWait; // weak
 int msg_cpp_init_value; // weak
 int sgdwRecvOffset; // idb
 int sgnCurrMegaPlayer; // weak
-DLevel sgLevels[17];
+DLevel sgLevels[NUMLEVELS];
 char sbLastCmd; // weak
 TMegaPkt *sgpCurrPkt;
 char sgRecvBuf[4722];
 unsigned char sgbRecvCmd; // idb
-LocalLevel sgLocals[17];
+LocalLevel sgLocals[NUMLEVELS];
 DJunk sgJunk[4];
 TMegaPkt *sgpMegaPkt;
 char sgbDeltaChanged; // weak
@@ -269,7 +269,7 @@ void __fastcall DeltaExportData(int pnum)
 			dthread_send_delta(player_num, (_BYTE)v11++ + CMD_DLEVEL_0, v1, v7);
 			v2 += 4721;
 		}
-		while ( (signed int)v2 < (signed int)&sgLevels[17].object );
+		while ( (signed int)v2 < (signed int)&sgLevels[NUMLEVELS].object );
 		v8 = DeltaExportJunk((char *)v3);
 		v9 = msg_comp_level(v1, (int)v8);
 		dthread_send_delta(player_num, CMD_DLEVEL_JUNK, v1, v9);
@@ -324,7 +324,7 @@ void *__fastcall DeltaExportMonster(void *dst, void *src)
 
 	v2 = (unsigned char *)src;
 	v3 = (unsigned char *)dst;
-	v4 = 200;
+	v4 = MAXMONSTERS;
 	do
 	{
 		if ( *v2 == -1 )
@@ -1665,7 +1665,7 @@ void *__fastcall DeltaImportMonster(void *src, void *dst)
 
 	v2 = (char *)dst;
 	v3 = (unsigned char *)src;
-	v4 = 200;
+	v4 = MAXMONSTERS;
 	do
 	{
 		if ( *v3 == -1 )
