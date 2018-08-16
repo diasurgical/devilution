@@ -4,19 +4,19 @@
 
 int diablo_cpp_init_value; // weak
 HWND ghMainWnd;
-int glMid1Seed[17];
-int glMid2Seed[17];
-int gnLevelTypeTbl[17];
+int glMid1Seed[NUMLEVELS];
+int glMid2Seed[NUMLEVELS];
+int gnLevelTypeTbl[NUMLEVELS];
 int MouseY; // idb
 int MouseX; // idb
 bool gbGameLoopStartup; // idb
-int glSeedTbl[17];
+int glSeedTbl[NUMLEVELS];
 int gbRunGame; // weak
-int glMid3Seed[17];
+int glMid3Seed[NUMLEVELS];
 int gbRunGameResult; // weak
 int zoomflag; // weak
 int gbProcessPlayers; // weak
-int glEndSeed[17];
+int glEndSeed[NUMLEVELS];
 int dword_5256E8; // weak
 HINSTANCE ghInst; // idb
 int DebugMonsters[10];
@@ -261,7 +261,7 @@ void __cdecl free_game()
 	FreeQuestText();
 	FreeStoreMem();
 
-	for(i = 0; i < 4; i++)
+	for(i = 0; i < MAX_PLRS; i++)
 		FreePlayerGFX(i);
 
 	FreeItemGFX();
@@ -1982,7 +1982,7 @@ void __fastcall LoadGameLevel(bool firstflag, int lvldir)
 			GetPortalLvlPos();
 		IncProgress();
 
-		for(i = 0; i < 4; i++)
+		for(i = 0; i < MAX_PLRS; i++)
 		{
 			if ( plr[i].plractive )
 			{
@@ -2080,7 +2080,7 @@ LABEL_53:
 	if ( lvldir == 5 )
 		GetPortalLvlPos();
 
-	for(i = 0; i < 4; i++)
+	for(i = 0; i < MAX_PLRS; i++)
 	{
 		if ( plr[i].plractive )
 		{
@@ -2110,7 +2110,7 @@ LABEL_53:
 LABEL_72:
 	SyncPortals();
 
-	for(i = 0; i < 4; i++)
+	for(i = 0; i < MAX_PLRS; i++)
 	{
 		if ( plr[i].plractive && plr[i].plrlevel == currlevel && (!plr[i]._pLvlChanging || i == myplr) )
 		{
