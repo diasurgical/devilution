@@ -6,11 +6,11 @@ extern int trapid; // weak
 extern int trapdir; // weak
 extern int pObjCels[40];
 extern char ObjFileList[40];
-extern int objectactive[127];
+extern int objectactive[MAXOBJECTS];
 extern int nobjects; // idb
 extern int leverid; // idb
-extern int objectavail[127];
-extern ObjectStruct object[127];
+extern int objectavail[MAXOBJECTS];
+extern ObjectStruct object[MAXOBJECTS];
 extern int InitObjFlag; // weak
 extern int numobjfiles; // weak
 
