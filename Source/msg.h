@@ -6,12 +6,12 @@ extern int sgdwOwnerWait; // weak
 extern int msg_cpp_init_value; // weak
 extern int sgdwRecvOffset; // idb
 extern int sgnCurrMegaPlayer; // weak
-extern DLevel sgLevels[17];
+extern DLevel sgLevels[NUMLEVELS];
 extern char sbLastCmd; // weak
 extern TMegaPkt *sgpCurrPkt;
 extern char sgRecvBuf[4722];
 extern unsigned char sgbRecvCmd; // idb
-extern LocalLevel sgLocals[17];
+extern LocalLevel sgLocals[NUMLEVELS];
 extern DJunk sgJunk[4];
 extern TMegaPkt *sgpMegaPkt;
 extern char sgbDeltaChanged; // weak
