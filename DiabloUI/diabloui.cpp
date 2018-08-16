@@ -8,6 +8,11 @@
 #include <process.h>
 #include <shlobj.h>
 
+#ifdef _MSC_VER
+#pragma warning (disable : 4018) // signed/unsigned mismatch
+#endif
+
+#include "..\defs.h"
 #include "..\structs.h"
 #include "diabloui.h"
 
