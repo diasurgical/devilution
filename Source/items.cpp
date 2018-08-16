@@ -2,12 +2,12 @@
 
 #include "../types.h"
 
-int itemactive[127];
+int itemactive[MAXITEMS];
 int uitemflag;
-int itemavail[127];
+int itemavail[MAXITEMS];
 ItemStruct curruitem;
-ItemGetRecordStruct itemrecord[127];
-ItemStruct item[128];
+ItemGetRecordStruct itemrecord[MAXITEMS];
+ItemStruct item[MAXITEMS+1];
 char itemhold[3][3];
 char byte_641234[28]; /* check if part of above */
 int Item2Frm[35];
@@ -732,7 +732,7 @@ void __cdecl InitItems()
 		v0[10] = 0;
 		v0 += 92;
 	}
-	while ( (signed int)v0 < (signed int)&item[128]._ix );
+	while ( (signed int)v0 < (signed int)&item[MAXITEMS+1]._ix );
 	v1 = 0;
 	memset(itemactive, 0, sizeof(itemactive));
 	do
@@ -740,7 +740,7 @@ void __cdecl InitItems()
 		itemavail[v1] = v1;
 		++v1;
 	}
-	while ( v1 < 127 );
+	while ( v1 < MAXITEMS );
 	if ( !setlevel )
 	{
 		GetRndSeed();
@@ -2959,13 +2959,13 @@ void __fastcall SpawnUnique(int uid, int x, int y)
 	int ii; // esi
 	int itype; // edx
 
-	if ( numitems < 127 )
+	if ( numitems < MAXITEMS )
 	{
 		ii = itemavail[0];
 		GetSuperItemSpace(x, y, itemavail[0]);
 		itype = 0;
 		itemactive[numitems] = ii;
-		itemavail[0] = itemavail[-numitems + 126];
+		itemavail[0] = itemavail[-numitems + 126]; /* MAXITEMS */
 
 		if ( AllItemsList[0].iItemId != UniqueItemList[uid].UIItemId )
 		{
@@ -3084,12 +3084,12 @@ LABEL_10:
 		goto LABEL_10;
 	onlygood = 1;
 LABEL_13:
-	if ( numitems < 127 )
+	if ( numitems < MAXITEMS )
 	{
 		ii = itemavail[0];
 		GetSuperItemSpace(x, y, itemavail[0]);
 		itemactive[numitems] = ii;
-		itemavail[0] = itemavail[-numitems + 126];
+		itemavail[0] = itemavail[-numitems + 126]; /* MAXITEMS */
 
 		if ( !monster[m]._uniqtype )
 			SetupAllItems(ii, idx, GetRndSeed(), monster[m].MData->mLevel, 1, onlygood, 0, 0);
@@ -3108,13 +3108,13 @@ void __fastcall CreateItem(int uid, int x, int y)
 	int ii; // esi
 	int idx; // edx
 
-	if ( numitems < 127 )
+	if ( numitems < MAXITEMS )
 	{
 		ii = itemavail[0];
 		GetSuperItemSpace(x, y, itemavail[0]);
 		idx = 0;
 		itemactive[numitems] = ii;
-		itemavail[0] = itemavail[-numitems + 126];
+		itemavail[0] = itemavail[-numitems + 126]; /* MAXITEMS */
 
 		if ( AllItemsList[0].iItemId != UniqueItemList[uid].UIItemId )
 		{
@@ -3143,12 +3143,12 @@ void __fastcall CreateRndItem(int x, int y, unsigned char onlygood, unsigned cha
 	else
 		idx = RndAllItems();
 
-	if ( numitems < 127 )
+	if ( numitems < MAXITEMS )
 	{
 		ii = itemavail[0];
 		GetSuperItemSpace(x, y, itemavail[0]);
 		itemactive[numitems] = ii;
-		itemavail[0] = itemavail[-numitems + 126];
+		itemavail[0] = itemavail[-numitems + 126]; /* MAXITEMS */
 		SetupAllItems(ii, idx, GetRndSeed(), 2 * currlevel, 1, onlygood, 0, delta);
 
 		if ( sendmsg )
@@ -3183,12 +3183,12 @@ void __fastcall CreateRndUseful(int pnum, int x, int y, unsigned char sendmsg)
 {
 	int ii; // esi
 
-	if ( numitems < 127 )
+	if ( numitems < MAXITEMS )
 	{
 		ii = itemavail[0];
 		GetSuperItemSpace(x, y, itemavail[0]);
 		itemactive[numitems] = ii;
-		itemavail[0] = itemavail[-numitems + 126];
+		itemavail[0] = itemavail[-numitems + 126]; /* MAXITEMS */
 		SetupAllUseful(ii, GetRndSeed(), currlevel);
 
 		if ( sendmsg )
@@ -3208,12 +3208,12 @@ void __fastcall CreateTypeItem(int x, int y, unsigned char onlygood, int itype, 
 	else
 		idx = RndTypeItems(itype, imisc);
 
-	if ( numitems < 127 )
+	if ( numitems < MAXITEMS )
 	{
 		ii = itemavail[0];
 		GetSuperItemSpace(x, y, itemavail[0]);
 		itemactive[numitems] = ii;
-		itemavail[0] = itemavail[-numitems + 126];
+		itemavail[0] = itemavail[-numitems + 126]; /* MAXITEMS */
 		SetupAllItems(ii, idx, GetRndSeed(), 2 * currlevel, 1, onlygood, 0, delta);
 
 		if ( sendmsg )
@@ -3360,14 +3360,14 @@ LABEL_3:
 		}
 	}
 LABEL_13:
-	if ( numitems < 127 )
+	if ( numitems < MAXITEMS )
 	{
 		v12 = itemavail[0];
 		v13 = itemavail[0];
 		item[v13]._ix = x;
 		itemactive[numitems] = v12;
 		item[v13]._iy = y;
-		itemavail[0] = itemavail[-numitems + 126]; /* double check */
+		itemavail[0] = itemavail[-numitems + 126]; /* double check, MAXITEMS */
 		dItem[x][y] = v12 + 1;
 		GetItemAttrs(v12, itemid, currlevel);
 		SetupItem(v12);
@@ -3483,7 +3483,7 @@ void __fastcall DeleteItem(int ii, int i)
 	v2 = numitems - 1;
 	v3 = numitems == 1;
 	v4 = numitems - 1 < 0;
-	itemavail[-numitems + 127] = ii;
+	itemavail[-numitems + MAXITEMS] = ii;
 	numitems = v2;
 	if ( !v4 && !v3 && i != v2 )
 		itemactive[i] = itemactive[v2];
@@ -5504,12 +5504,12 @@ void __fastcall CreateSpellBook(int x, int y, int ispell, bool sendmsg, int delt
 
 	done = 0;
 	idx = RndTypeItems(0, 24);
-	if ( numitems < 127 )
+	if ( numitems < MAXITEMS )
 	{
 		ii = itemavail[0];
 		GetSuperItemSpace(x, y, itemavail[0]);
 		itemactive[numitems] = ii;
-		itemavail[0] = itemavail[-numitems + 126];
+		itemavail[0] = itemavail[-numitems + 126]; /* MAXITEMS */
 		do
 		{
 			SetupAllItems(ii, idx, GetRndSeed(), 2 * currlevel, 1, 1, 0, delta);
@@ -5532,12 +5532,12 @@ void __fastcall CreateMagicItem(int x, int y, int imisc, int icurs, int sendmsg,
 	bool done; // [esp+Ch] [ebp-4h]
 
 	done = 0;
-	if ( numitems < 127 )
+	if ( numitems < MAXITEMS )
 	{
 		ii = itemavail[0];
 		GetSuperItemSpace(x, y, itemavail[0]);
 		itemactive[numitems] = ii;
-		itemavail[0] = itemavail[-numitems + 126];
+		itemavail[0] = itemavail[-numitems + 126]; /* MAXITEMS */
 		idx = RndTypeItems(imisc, 0);
 		do
 		{
@@ -5617,7 +5617,7 @@ void __fastcall SetItemRecord(int dwSeed, int CI, int indx)
 {
 	int i; // ecx
 
-	if ( gnNumGetRecords != 127 )
+	if ( gnNumGetRecords != MAXITEMS )
 	{
 		i = gnNumGetRecords++;
 		itemrecord[i].dwTimestamp = GetTickCount();

@@ -5,9 +5,9 @@
 int qtopline; // idb
 int questlog; // weak
 void *pQLogCel;
-QuestStruct quests[16];
+QuestStruct quests[MAXQUESTS];
 int qline; // weak
-int qlist[16];
+int qlist[MAXQUESTS];
 int numqlines; // weak
 int WaterDone; // idb
 int ReturnLvlY; // idb
@@ -16,7 +16,7 @@ int ReturnLvlT; // idb
 int ALLQUESTS; // idb
 int ReturnLvl; // idb
 
-QuestData questlist[16] =
+QuestData questlist[MAXQUESTS] =
 {
   { 5, -1, DTYPE_NONE, 0, 100, 0, 0, QUEST_INFRA5, "The Magic Rock" },
   { 9, -1, DTYPE_NONE, 1, 100, 0, 0, QUEST_MUSH8, "Black Mushroom" },
@@ -79,7 +79,7 @@ void __cdecl InitQuests()
 			*v2 = 0;
 			v2 += 24;
 		}
-		while ( (signed int)v2 < (signed int)&quests[16]._qactive );
+		while ( (signed int)v2 < (signed int)&quests[MAXQUESTS]._qactive );
 	}
 	else
 	{
@@ -92,7 +92,7 @@ void __cdecl InitQuests()
 			v4 += 5;
 			v3 += 24;
 		}
-		while ( (signed int)v4 < (signed int)&questlist[16]._qflags );
+		while ( (signed int)v4 < (signed int)&questlist[MAXQUESTS]._qflags );
 	}
 	v5 = 0;
 	questlog = 0;
@@ -140,7 +140,7 @@ void __cdecl InitQuests()
 		++v6;
 		v1 += 24;
 	}
-	while ( v6 < 16 );
+	while ( v6 < MAXQUESTS );
 	if ( v0 == 1 )
 	{
 		SetRndSeed(glSeedTbl[15]);
@@ -260,7 +260,7 @@ LABEL_29:
 			}
 			v1 += 24;
 		}
-		while ( (signed int)v1 < (signed int)&quests[16]._qactive );
+		while ( (signed int)v1 < (signed int)&quests[MAXQUESTS]._qactive );
 	}
 }
 // 5BB1ED: using guessed type char leveltype;
@@ -284,7 +284,7 @@ bool __cdecl ForceQuests()
 	{
 LABEL_10:
 		++v0;
-		if ( (signed int)v0 >= (signed int)&quests[16]._qslvl ) /* fix */
+		if ( (signed int)v0 >= (signed int)&quests[MAXQUESTS]._qslvl ) /* fix */
 			return 0;
 	}
 	v1 = *(_DWORD *)&v0[-1]._qvar2;
@@ -911,7 +911,7 @@ void __fastcall DRLG_CheckQuests(int x, int y)
 		v5 += 24;
 		++v4;
 	}
-	while ( (signed int)v5 < (signed int)&quests[16]._qtype );
+	while ( (signed int)v5 < (signed int)&quests[MAXQUESTS]._qtype );
 }
 // 69BE90: using guessed type int qline;
 
@@ -1218,7 +1218,7 @@ void __cdecl StartQuestlog()
 		++v2;
 		++v1;
 	}
-	while ( v2 < 16 );
+	while ( v2 < MAXQUESTS );
 	numqlines = v0;
 	if ( v0 <= 5 )
 		v3 = 8;

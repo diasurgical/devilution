@@ -4,11 +4,11 @@
 
 int MissileFileFlag; // weak
 int monster_cpp_init_value; // weak
-int monstkills[200];
-int monstactive[200];
+int monstkills[MAXMONSTERS];
+int monstactive[MAXMONSTERS];
 int nummonsters;
 int sgbSaveSoundOn; // weak
-MonsterStruct monster[200];
+MonsterStruct monster[MAXMONSTERS];
 int totalmonsters; // weak
 CMonster Monsters[16];
 // int END_Monsters_17; // weak
@@ -419,9 +419,9 @@ void __cdecl InitLevelMonsters()
 
 	ClrAllMonsters();
 	nummonsters = 0;
-	totalmonsters = 200;
+	totalmonsters = MAXMONSTERS;
 
-	for(i = 0; i < 200; i++)
+	for(i = 0; i < MAXMONSTERS; i++)
 		monstactive[i] = i;
 
 	uniquetrans = 0;
@@ -484,7 +484,7 @@ void __cdecl GetLevelMTypes() /* note-decompile this function again and check */
 	int *v20; // esi
 	int v21; // eax
 	//int v22; // [esp+8h] [ebp-328h]
-	int typelist[200]; // [esp+Ch] [ebp-324h]
+	int typelist[MAXMONSTERS]; // [esp+Ch] [ebp-324h]
 	int skeltypes[111]; // [esp+170h] [ebp-1C0h]
 	int max; // [esp+32Ch] [ebp-4h]
 
@@ -926,7 +926,7 @@ void __cdecl ClrAllMonsters()
 	int i; // edi
 	int v6; // eax
 
-	for(i = 0; i < 200; i++)
+	for(i = 0; i < MAXMONSTERS; i++)
 	{
 		ClearMVars(i);
 		monster[i].mName = "Invalid Monster";
@@ -1037,7 +1037,7 @@ void __fastcall PlaceUniqueMonst(int uniqindex, int miniontype, int unpackfilesi
 	v4 = (CMonster *)&UniqMonst[uniqindex];
 	v43 = miniontype;
 	v44 = v4;
-	if ( (uniquetrans + 19) << 8 < 6912 )
+	if ( (uniquetrans + 19) << 8 < LIGHTSIZE )
 	{
 		mtype = 0;
 		if ( nummtypes > 0 )
@@ -1859,7 +1859,7 @@ int __fastcall AddMonster(int x, int y, int dir, int mtype, int InMap)
 {
 	int i; // esi
 
-	if ( nummonsters >= 200 )
+	if ( nummonsters >= MAXMONSTERS )
 		return -1;
 	i = monstactive[nummonsters++];
 	if ( InMap )
@@ -2663,7 +2663,7 @@ void __fastcall M2MStartHit(int mid, int i, int dam)
 	v3 = mid;
 	v4 = i;
 	v11 = i;
-	if ( (unsigned int)mid >= 0xC8 )
+	if ( (unsigned int)mid >= MAXMONSTERS )
 		TermMsg("Invalid monster %d getting hit by monster", mid);
 	v5 = v3;
 	if ( !monster[v3].MType )
@@ -2726,7 +2726,7 @@ void __fastcall MonstStartKill(int i, int pnum, unsigned char sendmsg)
 
 	v3 = i;
 	v4 = pnum;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("MonstStartKill: Invalid monster %d", i);
 	v5 = v3;
 	if ( !monster[v3].MType )
@@ -2795,7 +2795,7 @@ void __fastcall M2MStartKill(int i, int mid)
 
 	v2 = i;
 	v3 = mid;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 	{
 		TermMsg("M2MStartKill: Invalid monster (attacker) %d", i);
 		TermMsg("M2MStartKill: Invalid monster (killed) %d", v3);
@@ -2854,7 +2854,7 @@ void __fastcall M_StartKill(int i, int pnum)
 
 	v2 = i;
 	v3 = pnum;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("M_StartKill: Invalid monster %d", i);
 	if ( myplr == v3 )
 	{
@@ -2883,7 +2883,7 @@ void __fastcall M_SyncStartKill(int i, int x, int y, int pnum)
 	v4 = i;
 	v5 = x;
 	arglist = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("M_SyncStartKill: Invalid monster %d", i);
 	v6 = v4;
 	if ( monster[v6]._mhitpoints && monster[v6]._mmode != MM_DEATH )
@@ -2921,7 +2921,7 @@ void __fastcall M_StartFadein(int i, int md, unsigned char backwards)
 	v3 = i;
 	v4 = md;
 	arglist = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("M_StartFadein: Invalid monster %d", i);
 	v5 = v3;
 	if ( !monster[v5].MType )
@@ -2959,7 +2959,7 @@ void __fastcall M_StartFadeout(int i, int md, unsigned char backwards)
 
 	v3 = i;
 	mda = md;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("M_StartFadeout: Invalid monster %d", i);
 	v4 = v3;
 	v5 = &monster[v3].MType;
@@ -2994,7 +2994,7 @@ void __fastcall M_StartHeal(int i)
 	int v5; // eax
 
 	v1 = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("M_StartHeal: Invalid monster %d", i);
 	v2 = v1;
 	if ( !monster[v1].MType )
@@ -3022,7 +3022,7 @@ void __fastcall M_ChangeLightOffset(int monst)
 	signed int v9; // esi
 
 	v1 = monst;
-	if ( (unsigned int)monst >= 0xC8 )
+	if ( (unsigned int)monst >= MAXMONSTERS )
 		TermMsg("M_ChangeLightOffset: Invalid monster %d", monst);
 	v2 = v1;
 	v3 = monster[v1]._myoff;
@@ -3061,7 +3061,7 @@ int __fastcall M_DoStand(int i)
 	int v5; // eax
 
 	v1 = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("M_DoStand: Invalid monster %d", i);
 	v2 = v1;
 	if ( !monster[v1].MType )
@@ -3096,7 +3096,7 @@ int __fastcall M_DoWalk(int i)
 	int v13; // ecx
 
 	v1 = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("M_DoWalk: Invalid monster %d", i);
 	v2 = v1;
 	v3 = 0;
@@ -3149,7 +3149,7 @@ int __fastcall M_DoWalk2(int i)
 	int v9; // ecx
 
 	v1 = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("M_DoWalk2: Invalid monster %d", i);
 	v2 = v1;
 	if ( !monster[v1].MType )
@@ -3203,7 +3203,7 @@ int __fastcall M_DoWalk3(int i)
 	int v14; // ecx
 
 	v1 = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("M_DoWalk3: Invalid monster %d", i);
 	v2 = v1;
 	if ( !monster[v1].MType )
@@ -3263,7 +3263,7 @@ void __fastcall M_TryM2MHit(int i, int mid, int hper, int mind, int maxd)
 	v5 = mid;
 	*(_DWORD *)arglist = mid;
 	*(_DWORD *)v13 = i;
-	if ( (unsigned int)mid >= 0xC8 )
+	if ( (unsigned int)mid >= MAXMONSTERS )
 	{
 		TermMsg("M_TryM2MHit: Invalid monster %d", mid);
 		//i = v6;
@@ -3345,7 +3345,7 @@ void __fastcall M_TryH2HHit(int i, int pnum, int Hit, int MinDam, int MaxDam)
 	v5 = i;
 	plr_num = pnum;
 	arglist = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("M_TryH2HHit: Invalid monster %d", i);
 	v6 = v5;
 	if ( !monster[v5].MType )
@@ -3540,7 +3540,7 @@ int __fastcall M_DoAttack(int i)
 	unsigned char v5; // al
 
 	v1 = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("M_DoAttack: Invalid monster %d", i);
 	v2 = v1;
 	v3 = &monster[v1].MType;
@@ -3601,7 +3601,7 @@ int __fastcall M_DoRAttack(int i)
 	int v6; // edi
 
 	v1 = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("M_DoRAttack: Invalid monster %d", i);
 	v2 = v1;
 	v3 = &monster[v1].MType;
@@ -3655,7 +3655,7 @@ int __fastcall M_DoRSpAttack(int i)
 	int v5; // ecx
 
 	v1 = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("M_DoRSpAttack: Invalid monster %d", i);
 	v2 = v1;
 	v3 = &monster[v1].MType;
@@ -3710,7 +3710,7 @@ int __fastcall M_DoSAttack(int i)
 	bool v4; // zf
 
 	v1 = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("M_DoSAttack: Invalid monster %d", i);
 	v2 = v1;
 	v3 = &monster[v1].MType;
@@ -3741,7 +3741,7 @@ int __fastcall M_DoFadein(int i)
 	int v2; // esi
 
 	v1 = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("M_DoFadein: Invalid monster %d", i);
 	v2 = v1;
 	if ( (!(monster[v1]._mFlags & 2) || monster[v2]._mAnimFrame != 1)
@@ -3764,7 +3764,7 @@ int __fastcall M_DoFadeout(int i)
 	int v6; // edx
 
 	v1 = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("M_DoFadeout: Invalid monster %d", i);
 	v2 = v1;
 	v3 = monster[v1]._mFlags;
@@ -3796,7 +3796,7 @@ int __fastcall M_DoHeal(int i)
 	int v8; // esi
 
 	v1 = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("M_DoHeal: Invalid monster %d", i);
 	v2 = v1;
 	if ( monster[v1]._mFlags & 8 )
@@ -3840,7 +3840,7 @@ int __fastcall M_DoTalk(int i)
 	char *v9; // eax
 
 	v1 = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("M_DoTalk: Invalid monster %d", i);
 	v2 = v1;
 	M_StartStand(v1, monster[v1]._mdir);
@@ -3946,7 +3946,7 @@ void __fastcall M_Teleport(int i)
 
 	v1 = i;
 	a1 = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 	{
 		TermMsg("M_Teleport: Invalid monster %d", i);
 		//i = v2;
@@ -4010,7 +4010,7 @@ int __fastcall M_DoGotHit(int i)
 	int v2; // esi
 
 	v1 = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("M_DoGotHit: Invalid monster %d", i);
 	v2 = v1;
 	if ( !monster[v1].MType )
@@ -4030,7 +4030,7 @@ void __fastcall M_UpdateLeader(int i)
 	unsigned char *v5; // eax
 
 	v1 = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("M_UpdateLeader: Invalid monster %d", i);
 	v2 = nummonsters;
 	for ( j = 0; j < v2; ++j )
@@ -4143,7 +4143,7 @@ int __fastcall M_DoDeath(int i)
 	int v11; // eax
 
 	v1 = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("M_DoDeath: Invalid monster %d", i);
 	v2 = v1;
 	if ( !monster[v1].MType )
@@ -4194,7 +4194,7 @@ int __fastcall M_DoSpStand(int i)
 	int v2; // esi
 
 	v1 = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("M_DoSpStand: Invalid monster %d", i);
 	v2 = v1;
 	if ( !monster[v1].MType )
@@ -4218,7 +4218,7 @@ int __fastcall M_DoDelay(int i)
 	int v7; // ebx
 
 	v1 = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("M_DoDelay: Invalid monster %d", i);
 	v2 = v1;
 	if ( !monster[v1].MType )
@@ -4249,7 +4249,7 @@ int __fastcall M_DoStone(int i)
 	int v3; // ecx
 
 	v1 = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("M_DoStone: Invalid monster %d", i);
 	v2 = v1;
 	if ( !monster[v1]._mhitpoints )
@@ -4282,7 +4282,7 @@ void __fastcall M_WalkDir(int i, int md)
 
 	v2 = i;
 	v3 = md;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("M_WalkDir: Invalid monster %d", i);
 	v4 = monster[v2].MType->Anims[1].Rate - 1;
 	switch ( v3 )
@@ -4357,7 +4357,7 @@ void __fastcall GroupUnity(int i)
 	//int v13; // [esp+10h] [ebp-4h]
 
 	v1 = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("GroupUnity: Invalid monster %d", i);
 	v2 = v1;
 	if ( monster[v1].leaderflag )
@@ -4537,7 +4537,7 @@ bool __fastcall M_PathWalk(int i)
 	char path[25]; // [esp+4h] [ebp-1Ch]
 
 	v1 = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("M_PathWalk: Invalid monster %d", i);
 	Check = PosOkMonst3;
 	if ( !(monster[v1]._mFlags & 0x200) )
@@ -4698,7 +4698,7 @@ void __fastcall MAI_Zombie(int i)
 
 	v1 = i;
 	arglist = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 	{
 		TermMsg("MAI_Zombie: Invalid monster %d", i);
 		//i = v2;
@@ -4768,7 +4768,7 @@ void __fastcall MAI_SkelSd(int i)
 
 	v1 = i;
 	arglist = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("MAI_SkelSd: Invalid monster %d", i);
 	v2 = &monster[v1];
 	if ( v2->_mmode == MM_STAND && v2->_msquelch )
@@ -4826,7 +4826,7 @@ bool __fastcall MAI_Path(int i)
 	unsigned char v5; // al
 
 	v1 = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("MAI_Path: Invalid monster %d", i);
 	v2 = &monster[v1];
 	if ( v2->MType->mtype != MT_GOLEM )
@@ -4905,7 +4905,7 @@ void __fastcall MAI_Snake(int i)
 
 	esi1 = i;
 	arglist = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("MAI_Snake: Invalid monster %d", i);
 	pattern[2] = 0;
 	pattern[3] = -1;
@@ -5084,7 +5084,7 @@ void __fastcall MAI_Bat(int i)
 
 	esi1 = i;
 	arglist = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("MAI_Bat: Invalid monster %d", i);
 	esi3 = &monster[esi1];
 	micaster = esi3->_menemy;
@@ -5193,7 +5193,7 @@ void __fastcall MAI_SkelBow(int i)
 	v18 = 0;
 	v1 = i;
 	arglist = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("MAI_SkelBow: Invalid monster %d", i);
 	v2 = &monster[v1];
 	if ( v2->_mmode == MM_STAND && v2->_msquelch )
@@ -5254,7 +5254,7 @@ void __fastcall MAI_Fat(int i)
 
 	v1 = i;
 	arglist = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("MAI_Fat: Invalid monster %d", i);
 	v2 = &monster[v1];
 	if ( v2->_mmode == MM_STAND && v2->_msquelch )
@@ -5314,7 +5314,7 @@ void __fastcall MAI_Sneak(int i)
 
 	v1 = i;
 	arglist = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("MAI_Sneak: Invalid monster %d", i);
 	v2 = &monster[v1];
 	if ( v2->_mmode == MM_STAND )
@@ -5419,7 +5419,7 @@ void __fastcall MAI_Fireman(int i)
 
 	esi1 = i;
 	arglist = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("MAI_Fireman: Invalid monster %d", i);
 	esi3 = esi1;
 	if ( monster[esi3]._mmode || !monster[esi3]._msquelch )
@@ -5527,7 +5527,7 @@ void __fastcall MAI_Fallen(int i)
 	int v16; // esi
 
 	v1 = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 	{
 		TermMsg("MAI_Fallen: Invalid monster %d", i);
 		//i = v2;
@@ -5630,7 +5630,7 @@ void __fastcall MAI_Cleaver(int i)
 
 	v1 = i;
 	arglist = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("MAI_Cleaver: Invalid monster %d", i);
 	v2 = &monster[v1];
 	if ( v2->_mmode == MM_STAND && v2->_msquelch )
@@ -5683,7 +5683,7 @@ void __fastcall MAI_Round(int i, unsigned char special)
 	v2 = i;
 	v27 = special;
 	arglist = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("MAI_Round: Invalid monster %d", i);
 	v3 = &monster[v2];
 	if ( v3->_mmode == MM_STAND && v3->_msquelch )
@@ -5802,7 +5802,7 @@ void __fastcall MAI_Ranged(int i, int missile_type, unsigned char special)
 	v3 = i;
 	missile_typea = missile_type;
 	arglist = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("MAI_Ranged: Invalid monster %d", i);
 	v4 = v3;
 	if ( monster[v3]._mmode == MM_STAND )
@@ -5899,7 +5899,7 @@ void __fastcall MAI_Scav(int i)
 
 	v1 = i;
 	arglist = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("MAI_Scav: Invalid monster %d", i);
 	v2 = v1;
 	v20 = 0;
@@ -6047,7 +6047,7 @@ void __fastcall MAI_Garg(int i)
 	int v8; // [esp+10h] [ebp-4h]
 
 	v1 = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("MAI_Garg: Invalid monster %d", i);
 	v2 = &monster[v1];
 	v3 = v2->_mx - v2->_lastx;
@@ -6125,7 +6125,7 @@ void __fastcall MAI_RoundRanged(int i, int missile_type, unsigned char checkdoor
 	v5 = i;
 	missile_typea = missile_type;
 	arglist = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("MAI_RoundRanged: Invalid monster %d", i);
 	v6 = &monster[v5];
 	if ( v6->_mmode == MM_STAND && v6->_msquelch )
@@ -6300,7 +6300,7 @@ void __fastcall MAI_RR2(int i, int mistype, int dam)
 	v3 = i;
 	missile_type = mistype;
 	arglist = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("MAI_RR2: Invalid monster %d", i);
 	v4 = &monster[v3];
 	v5 = v4->_my - (unsigned char)v4->_menemyy;
@@ -6458,7 +6458,7 @@ void __fastcall MAI_Golum(int i)
 
 	v1 = i;
 	arglist = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("MAI_Golum: Invalid monster %d", i);
 	v2 = v1;
 	if ( monster[v1]._mx != 1 || monster[v2]._my )
@@ -6583,7 +6583,7 @@ void __fastcall MAI_SkelKing(int i)
 
 	v1 = i;
 	arglist = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("MAI_SkelKing: Invalid monster %d", i);
 	v2 = &monster[v1];
 	if ( v2->_mmode == MM_STAND && v2->_msquelch )
@@ -6661,7 +6661,7 @@ LABEL_26:
 			{
 				v21 = v2->_mx + offset_x[md];
 				v22 = v2->_my + offset_y[md];
-				if ( PosOkMonst(arglist, v21, v22) && nummonsters < 200 )
+				if ( PosOkMonst(arglist, v21, v22) && nummonsters < MAXMONSTERS )
 				{
 					M_SpawnSkel(v21, v22, md);
 					M_StartSpStand(arglist, md);
@@ -6734,7 +6734,7 @@ void __fastcall MAI_Rhino(int i)
 
 	esi1 = i;
 	arglist = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("MAI_Rhino: Invalid monster %d", i);
 	esi3 = &monster[esi1];
 	if ( esi3->_mmode == MM_STAND && esi3->_msquelch )
@@ -6893,7 +6893,7 @@ void __fastcall MAI_Counselor(int i)
 
 	v1 = i;
 	arglist = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("MAI_Counselor: Invalid monster %d", i);
 	v2 = v1;
 	if ( monster[v1]._mmode == MM_STAND && monster[v2]._msquelch )
@@ -7038,7 +7038,7 @@ void __fastcall MAI_Garbud(int i)
 
 	v1 = i;
 	arglist = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("MAI_Garbud: Invalid monster %d", i);
 	v2 = v1;
 	if ( monster[v2]._mmode == MM_STAND )
@@ -7093,7 +7093,7 @@ void __fastcall MAI_Zhar(int i)
 
 	v1 = i;
 	arglist = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("MAI_Zhar: Invalid monster %d", i);
 	v2 = v1;
 	if ( monster[v1]._mmode == MM_STAND )
@@ -7148,7 +7148,7 @@ void __fastcall MAI_SnotSpil(int i)
 
 	v1 = i;
 	arglist = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("MAI_SnotSpil: Invalid monster %d", i);
 	v2 = v1;
 	if ( monster[v1]._mmode == MM_STAND )
@@ -7210,7 +7210,7 @@ void __fastcall MAI_Lazurus(int i)
 
 	v1 = i;
 	arglist = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("MAI_Lazurus: Invalid monster %d", i);
 	v2 = v1;
 	if ( monster[v1]._mmode == MM_STAND )
@@ -7276,7 +7276,7 @@ void __fastcall MAI_Lazhelp(int i)
 
 	v1 = i;
 	ia = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("MAI_Lazhelp: Invalid monster %d", i);
 	v2 = v1;
 	if ( monster[v2]._mmode == MM_STAND )
@@ -7317,7 +7317,7 @@ void __fastcall MAI_Lachdanan(int i)
 	int v6; // [esp+8h] [ebp-4h]
 
 	v1 = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("MAI_Lachdanan: Invalid monster %d", i);
 	v2 = v1;
 	if ( monster[v1]._mmode == MM_STAND )
@@ -7362,7 +7362,7 @@ void __fastcall MAI_Warlord(int i)
 
 	v1 = i;
 	arglist = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("MAI_Warlord: Invalid monster %d", i);
 	v2 = v1;
 	if ( monster[v1]._mmode == MM_STAND )
@@ -7488,7 +7488,7 @@ void __cdecl ProcessMonsters()
 		if ( monster[v1]._mFlags & 0x10 )
 		{
 			v5 = monster[v1]._menemy;
-			if ( v5 >= 0xC8 )
+			if ( v5 >= MAXMONSTERS )
 				TermMsg("Illegal enemy monster %d for monster \"%s\"", v5, monster[v1].mName);
 			v6 = monster[v1]._menemy;
 			v7 = monster[v6]._mfutx;
@@ -7501,7 +7501,7 @@ void __cdecl ProcessMonsters()
 		else
 		{
 			v9 = monster[v1]._menemy;
-			if ( v9 >= 4 )
+			if ( v9 >= MAX_PLRS )
 				TermMsg("Illegal enemy player %d for monster \"%s\"", v9, monster[v1].mName);
 			v10 = monster[v1]._menemy;
 			v11 = (*v4 & 2) == 0;
@@ -7700,7 +7700,7 @@ bool __fastcall DirOK(int i, int mdir)
 	v3 = mdir;
 	v25 = mdir;
 	a1 = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("DirOK: Invalid monster %d", i);
 	v4 = v2;
 	v5 = offset_y[v3];
@@ -8103,7 +8103,7 @@ void __fastcall SyncMonsterAnim(int i)
 	int v13; // edx
 
 	v1 = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("SyncMonsterAnim: Invalid monster %d", i);
 	v2 = v1;
 	v3 = monster[v1]._mMTidx;
@@ -8405,7 +8405,7 @@ void __fastcall MissToMonst(int i, int x, int y)
 	v4 = &missile[v3];
 	v5 = v4->_misource;
 	ia = v4->_misource;
-	if ( v5 >= 0xC8 )
+	if ( v5 >= MAXMONSTERS )
 		TermMsg("MissToMonst: Invalid monster %d", v5);
 	v32 = v4->_mix;
 	v31 = v4->_miy;
@@ -8923,7 +8923,7 @@ void __fastcall TalktoMonster(int i)
 	int inv_item_num; // [esp+8h] [ebp-4h]
 
 	v1 = i;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("TalktoMonster: Invalid monster %d", i);
 	v2 = &monster[v1];
 	v3 = v2->_mAi;
@@ -8965,7 +8965,7 @@ void __fastcall SpawnGolum(int i, int x, int y, int mi)
 
 	v4 = i;
 	v5 = x;
-	if ( (unsigned int)i >= 0xC8 )
+	if ( (unsigned int)i >= MAXMONSTERS )
 		TermMsg("SpawnGolum: Invalid monster %d", i);
 	v6 = v4;
 	monster[v6]._mx = v5;
@@ -9011,7 +9011,7 @@ bool __fastcall CanTalkToMonst(int m)
 	bool result; // al
 
 	v1 = m;
-	if ( (unsigned int)m >= 0xC8 )
+	if ( (unsigned int)m >= MAXMONSTERS )
 		TermMsg("CanTalkToMonst: Invalid monster %d", m);
 	v2 = monster[v1]._mgoal;
 	if ( v2 == 6 )
@@ -9032,7 +9032,7 @@ bool __fastcall CheckMonsterHit(int m, bool *ret)
 
 	v2 = m;
 	v3 = ret;
-	if ( (unsigned int)m >= 0xC8 )
+	if ( (unsigned int)m >= MAXMONSTERS )
 		TermMsg("CheckMonsterHit: Invalid monster %d", m);
 	v4 = v2;
 	if ( monster[v2]._mAi == AI_GARG && (v5 = monster[v4]._mFlags, v5 & 4) )

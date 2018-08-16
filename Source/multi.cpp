@@ -5,20 +5,20 @@
 char gbSomebodyWonGameKludge; // weak
 char pkdata_6761C0[4100];
 char szPlayerDescript[128];
-short sgwPackPlrOffsetTbl[4];
-PkPlayerStruct pkplr[4];
-char sgbPlayerTurnBitTbl[4];
-char sgbPlayerLeftGameTbl[4];
+short sgwPackPlrOffsetTbl[MAX_PLRS];
+PkPlayerStruct pkplr[MAX_PLRS];
+char sgbPlayerTurnBitTbl[MAX_PLRS];
+char sgbPlayerLeftGameTbl[MAX_PLRS];
 int multi_cpp_init_value; // weak
 int sgbSentThisCycle; // idb
 int dword_678628; // weak
 char gbActivePlayers; // weak
 char gbGameDestroyed; // weak
-char sgbSendDeltaTbl[4];
+char sgbSendDeltaTbl[MAX_PLRS];
 _gamedata sgGameInitInfo;
 char byte_678640; // weak
 int sglTimeoutStart; // weak
-int sgdwPlayerLeftReasonTbl[4];
+int sgdwPlayerLeftReasonTbl[MAX_PLRS];
 char pkdata_678658[4100];
 unsigned int sgdwGameLoops; // idb
 char gbMaxPlayers; // weak
@@ -26,7 +26,7 @@ char sgbTimeout; // weak
 char szPlayerName[128];
 char gbDeltaSender; // weak
 int sgbNetInited; // weak
-int player_state[4];
+int player_state[MAX_PLRS];
 
 int multi_inf = 0x7F800000; // weak
 event_type event_types[3] =
@@ -235,7 +235,7 @@ void __cdecl multi_msg_countdown()
 		}
 		++v0;
 	}
-	while ( v0 < 4 );
+	while ( v0 < MAX_PLRS );
 }
 
 void __fastcall multi_parse_turn(int pnum, int turn)
@@ -269,7 +269,7 @@ void __fastcall multi_handle_turn_upper_bit(int pnum)
 			break;
 		++v1;
 	}
-	while ( v1 < 4 );
+	while ( v1 < MAX_PLRS );
 	if ( myplr == v1 )
 	{
 		sgbSendDeltaTbl[pnum] = 1;
@@ -306,7 +306,7 @@ void __cdecl multi_clear_left_tbl()
 		}
 		++v0;
 	}
-	while ( v0 < 4 );
+	while ( v0 < MAX_PLRS );
 }
 // 676194: using guessed type char gbBufferMsgs;
 
@@ -380,7 +380,7 @@ int __cdecl multi_handle_delta()
 		}
 		++v0;
 	}
-	while ( v0 < 4 );
+	while ( v0 < MAX_PLRS );
 	sgbSentThisCycle = nthread_send_and_recv_turn(sgbSentThisCycle, 1);
 	if ( !nthread_recv_turns(&recieved) )
 	{
@@ -432,7 +432,7 @@ void __cdecl multi_mon_seeds()
 		*v2 = v3;
 		v2 += 57;
 	}
-	while ( (signed int)v2 < (signed int)&monster[200]._mAISeed );
+	while ( (signed int)v2 < (signed int)&monster[MAXMONSTERS]._mAISeed );
 }
 
 void __cdecl multi_begin_timeout()
@@ -481,7 +481,7 @@ void __cdecl multi_begin_timeout()
 					}
 					++v4;
 				}
-				while ( v4 < 4 );
+				while ( v4 < MAX_PLRS );
 				if ( bGroupPlayers >= v6 && (bGroupPlayers != v6 || nLowestPlayer == nLowestActive) )
 				{
 					if ( nLowestActive == myplr )
@@ -520,7 +520,7 @@ void __cdecl multi_check_drop_player()
 		}
 		++v0;
 	}
-	while ( v0 < 4 );
+	while ( v0 < MAX_PLRS );
 }
 
 void __cdecl multi_process_network_packets()
@@ -543,7 +543,7 @@ void __cdecl multi_process_network_packets()
 	//int v15; // eax
 	TPktHdr *pkt; // [esp+0h] [ebp-Ch]
 	int len; // [esp+4h] [ebp-8h]
-	char arglist[4]; // [esp+8h] [ebp-4h]
+	char arglist[4]; // [esp+8h] [ebp-4h] /* fix, int */
 
 	multi_clear_left_tbl();
 	multi_process_tmsgs();
@@ -817,11 +817,11 @@ int __fastcall NetInit(int bSinglePlayer, int *pfExitProgram)
 		ProgramData.programdescription = gszVersionNumber;
 		ProgramData.programid = 'DRTL';
 		ProgramData.versionid = 42;
-		ProgramData.maxplayers = 4;
+		ProgramData.maxplayers = MAX_PLRS;
 		ProgramData.initdata = &sgGameInitInfo;
 		ProgramData.initdatabytes = 8;
 		ProgramData.optcategorybits = 15;
-		ProgramData.lcid = 1033;
+		ProgramData.lcid = 1033; /* LANG_ENGLISH */
 		memset(&a2, 0, 0x10u);
 		a2.size = 16;
 		memset(&UiData, 0, 0x50u);
@@ -1050,10 +1050,10 @@ int __fastcall multi_init_multi(_SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *
 			break;
 		byte_678640 = 1;
 	}
-	if ( (unsigned int)a6 >= 4 )
+	if ( (unsigned int)a6 >= MAX_PLRS )
 		return 0;
 	myplr = a6;
-	gbMaxPlayers = 4;
+	gbMaxPlayers = MAX_PLRS;
 	pfile_read_player_from_save();
 	if ( type == 'BNET' )
 		plr[myplr].pBattleNet = 1;

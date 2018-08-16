@@ -2,9 +2,9 @@
 
 #include "../types.h"
 
-short sync_word_6AA708[200];
+short sync_word_6AA708[MAXMONSTERS];
 int dword_6AA898; // weak
-short sync_word_6AA89C[200];
+short sync_word_6AA89C[MAXMONSTERS];
 int dword_6AAA2C[2];
 int sgnSyncPInv; // weak
 

@@ -2,12 +2,12 @@
 #ifndef __ITEMS_H__
 #define __ITEMS_H__
 
-extern int itemactive[127];
+extern int itemactive[MAXITEMS];
 extern int uitemflag;
-extern int itemavail[127];
+extern int itemavail[MAXITEMS];
 extern ItemStruct curruitem;
-extern ItemGetRecordStruct itemrecord[127];
-extern ItemStruct item[128];
+extern ItemGetRecordStruct itemrecord[MAXITEMS];
+extern ItemStruct item[MAXITEMS+1];
 extern char itemhold[3][3];
 extern char byte_641234[28]; /* check if part of above */
 extern int Item2Frm[35];

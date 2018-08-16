@@ -2,12 +2,12 @@
 #ifndef __MISSILES_H__
 #define __MISSILES_H__
 
-extern int missileactive[125];
-extern int missileavail[125];
-extern MissileStruct missile[125];
+extern int missileactive[MAXMISSILES];
+extern int missileavail[MAXMISSILES];
+extern MissileStruct missile[MAXMISSILES];
 extern int nummissiles; // idb
 extern int ManashieldFlag;
-extern unk_missile_struct misflagstruct_unknown[125];
+extern unk_missile_struct misflagstruct_unknown[MAXMISSILES];
 extern int MissilePreFlag; // weak
 extern int unk_missile_flag; // weak
 
