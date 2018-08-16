@@ -1043,7 +1043,7 @@ void __cdecl FreeLightTable()
 
 void __cdecl InitLightTable()
 {
-	pLightTbl = (char *)DiabloAllocPtr(6912);
+	pLightTbl = (char *)DiabloAllocPtr(LIGHTSIZE);
 }
 
 void __cdecl MakeLightTable()
