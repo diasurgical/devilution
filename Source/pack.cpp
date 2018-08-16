@@ -241,6 +241,8 @@ void __fastcall UnPackPlayer(PkPlayerStruct *pPack, int pnum, bool killok)
 	pPlayer->pManaShield = pPack->pManaShield;
 }
 
+// Note: last slot of item[MAXITEMS+1] used as temporary buffer
+// find real name reference below, possibly [sizeof(item[])/sizeof(ItemStruct)]
 void __fastcall UnPackItem(PkItemStruct *is, ItemStruct *id)
 {
 	PkItemStruct *v2; // esi
@@ -259,7 +261,7 @@ void __fastcall UnPackItem(PkItemStruct *is, ItemStruct *id)
 		if ( is->idx == IDI_EAR )
 		{
 			RecreateEar(
-				127,
+				MAXITEMS,
 				is->iCreateInfo,
 				is->iSeed,
 				is->bId,
@@ -274,14 +276,14 @@ void __fastcall UnPackItem(PkItemStruct *is, ItemStruct *id)
 		{
 			v5 = (unsigned short)is->wValue;
 			_LOWORD(v5) = v2->iCreateInfo;
-			RecreateItem(127, is->idx, v5, v2->iSeed, (unsigned short)v2->wValue);
-			item[127]._iMagical = (unsigned char)v2->bId >> 1;
-			item[127]._iIdentified = v2->bId & 1;
-			item[127]._iDurability = (unsigned char)v2->bDur;
-			item[127]._iMaxDur = (unsigned char)v2->bMDur;
-			item[127]._iCharges = (unsigned char)v2->bCh;
-			item[127]._iMaxCharges = (unsigned char)v2->bMCh;
+			RecreateItem(MAXITEMS, is->idx, v5, v2->iSeed, (unsigned short)v2->wValue);
+			item[MAXITEMS]._iMagical = (unsigned char)v2->bId >> 1;
+			item[MAXITEMS]._iIdentified = v2->bId & 1;
+			item[MAXITEMS]._iDurability = (unsigned char)v2->bDur;
+			item[MAXITEMS]._iMaxDur = (unsigned char)v2->bMDur;
+			item[MAXITEMS]._iCharges = (unsigned char)v2->bCh;
+			item[MAXITEMS]._iMaxCharges = (unsigned char)v2->bMCh;
 		}
-		qmemcpy(v3, &item[127], sizeof(ItemStruct));
+		qmemcpy(v3, &item[MAXITEMS], sizeof(ItemStruct));
 	}
 }
