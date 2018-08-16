@@ -5,20 +5,20 @@
 extern char gbSomebodyWonGameKludge; // weak
 extern char pkdata_6761C0[4100];
 extern char szPlayerDescript[128];
-extern short sgwPackPlrOffsetTbl[4];
-extern PkPlayerStruct pkplr[4];
-extern char sgbPlayerTurnBitTbl[4];
-extern char sgbPlayerLeftGameTbl[4];
+extern short sgwPackPlrOffsetTbl[MAX_PLRS];
+extern PkPlayerStruct pkplr[MAX_PLRS];
+extern char sgbPlayerTurnBitTbl[MAX_PLRS];
+extern char sgbPlayerLeftGameTbl[MAX_PLRS];
 extern int multi_cpp_init_value; // weak
 extern int sgbSentThisCycle; // idb
 extern int dword_678628; // weak
 extern char gbActivePlayers; // weak
 extern char gbGameDestroyed; // weak
-extern char sgbSendDeltaTbl[4];
+extern char sgbSendDeltaTbl[MAX_PLRS];
 extern _gamedata sgGameInitInfo;
 extern char byte_678640; // weak
 extern int sglTimeoutStart; // weak
-extern int sgdwPlayerLeftReasonTbl[4];
+extern int sgdwPlayerLeftReasonTbl[MAX_PLRS];
 extern char pkdata_678658[4100];
 extern unsigned int sgdwGameLoops; // idb
 extern char gbMaxPlayers; // weak
@@ -26,7 +26,7 @@ extern char sgbTimeout; // weak
 extern char szPlayerName[128];
 extern char gbDeltaSender; // weak
 extern int sgbNetInited; // weak
-extern int player_state[4];
+extern int player_state[MAX_PLRS];
 
 void __cdecl multi_cpp_init();
 void __fastcall multi_msg_add(unsigned char *a1, unsigned char a2);
