@@ -14,7 +14,7 @@ extern int zharlib; // weak
 extern int themex; // idb
 extern int themey; // idb
 extern int themeVar1; // idb
-extern ThemeStruct themes[50];
+extern ThemeStruct themes[MAXTHEMES];
 extern bool pFountainFlag; // weak
 extern bool bFountainFlag; // weak
 extern bool bCrossFlag; // weak
