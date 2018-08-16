@@ -5,9 +5,9 @@
 extern int qtopline; // idb
 extern int questlog; // weak
 extern void *pQLogCel;
-extern QuestStruct quests[16];
+extern QuestStruct quests[MAXQUESTS];
 extern int qline; // weak
-extern int qlist[16];
+extern int qlist[MAXQUESTS];
 extern int numqlines; // weak
 extern int WaterDone; // idb
 extern int ReturnLvlY; // idb
@@ -43,7 +43,7 @@ void __cdecl QuestlogESC();
 void __fastcall SetMultiQuest(int q, int s, unsigned char l, int v1);
 
 /* rdata */
-extern QuestData questlist[16];
+extern QuestData questlist[MAXQUESTS];
 extern char questxoff[7];
 extern char questyoff[7];
 extern char *questtrigstr[5];

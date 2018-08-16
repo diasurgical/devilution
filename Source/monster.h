@@ -4,11 +4,11 @@
 
 extern int MissileFileFlag; // weak
 extern int monster_cpp_init_value; // weak
-extern int monstkills[200];
-extern int monstactive[200];
+extern int monstkills[MAXMONSTERS];
+extern int monstactive[MAXMONSTERS];
 extern int nummonsters;
 extern int sgbSaveSoundOn; // weak
-extern MonsterStruct monster[200];
+extern MonsterStruct monster[MAXMONSTERS];
 extern int totalmonsters; // weak
 extern CMonster Monsters[16];
 // int END_Monsters_17; // weak

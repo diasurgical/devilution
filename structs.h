@@ -622,9 +622,9 @@ struct  TCmdPItem
 /* __declspec(align(1))*/
 struct  DLevel
 {
-	TCmdPItem item[127];
-	DObjectStr object[127];
-	DMonsterStr monster[200];
+	TCmdPItem item[MAXITEMS];
+	DObjectStr object[MAXOBJECTS];
+	DMonsterStr monster[MAXMONSTERS];
 };
 
 struct DPortal
@@ -645,8 +645,8 @@ struct MultiQuests
 
 struct DJunk
 {
-	DPortal portal[4];
-	MultiQuests quests[4];
+	DPortal portal[MAXPORTAL];
+	MultiQuests quests[MAXMULTIQUESTS];
 };
 
 /*  __declspec(align(1)) */
@@ -861,7 +861,7 @@ struct PlayerStruct
 	int _pVar6;
 	int _pVar7;
 	int _pVar8;
-	unsigned char _pLvlVisited[17];
+	unsigned char _pLvlVisited[17]; // NUMLEVELS
 	unsigned char _pSLvlVisited[10];
 	char gap20F[9];
 	int _pGFXLoad;

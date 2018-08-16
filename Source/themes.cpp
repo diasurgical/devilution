@@ -14,7 +14,7 @@ int zharlib; // weak
 int themex; // idb
 int themey; // idb
 int themeVar1; // idb
-ThemeStruct themes[50];
+ThemeStruct themes[MAXTHEMES];
 bool pFountainFlag; // weak
 bool bFountainFlag; // weak
 bool bCrossFlag; // weak
@@ -581,7 +581,7 @@ void __cdecl InitThemes()
 			v2 = 0;
 			do
 			{
-				if ( v0 >= 50 )
+				if ( v0 >= MAXTHEMES )
 					break;
 				//_LOBYTE(v3) = CheckThemeRoom(v2);
 				if ( CheckThemeRoom(v2) )

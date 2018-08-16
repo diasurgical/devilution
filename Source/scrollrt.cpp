@@ -19,7 +19,7 @@ int cel_transparency_active; // weak
 int level_piece_id; // weak
 int sgdwCursWdt;
 int (__fastcall *DrawPlrProc)(int player_num, int x, int y, int screen_x, int screen_y, void *cl2_buf, int frame, int frame_width, int a9, int a10);
-char cursor_draw_back_buffer[8192];
+char sgSaveBack[8192];
 int draw_monster_num; // weak
 int sgdwCursHgtOld; // idb
 
@@ -116,7 +116,7 @@ void __fastcall DrawMissile(int x, int y, int sx, int sy, int a5, int a6, int de
 		for ( i = 0; i < nummissiles; v9 = i++ + 1 )
 		{
 			v10 = missileactive[v9];
-			if ( v10 >= 125 )
+			if ( v10 >= MAXMISSILES )
 				break;
 			v11 = &missile[v10];
 			if ( v11->_mix == v26 && v11->_miy == v7 && v11->_miPreFlag == del_flag && v11->_miDrawFlag )
@@ -215,7 +215,7 @@ void __fastcall DrawClippedMissile(int x, int y, int sx, int sy, int a5, int a6,
 		for ( i = 0; i < nummissiles; v9 = i++ + 1 )
 		{
 			v10 = missileactive[v9];
-			if ( v10 >= 125 )
+			if ( v10 >= MAXMISSILES )
 				break;
 			v11 = &missile[v10];
 			if ( v11->_mix == v26 && v11->_miy == v7 && v11->_miPreFlag == a7 && v11->_miDrawFlag )
@@ -3000,7 +3000,7 @@ void __cdecl scrollrt_draw_cursor_back_buffer()
 	if ( sgdwCursWdt )
 	{
 		v1 = sgdwCursY;
-		v2 = cursor_draw_back_buffer;
+		v2 = sgSaveBack;
 		v3 = &gpBuffer->row[sgdwCursY].pixels[sgdwCursX];
 		v4 = sgdwCursHgt;
 		if ( sgdwCursHgt )
@@ -3082,7 +3082,7 @@ void __cdecl scrollrt_draw_cursor_item()
 				v5 = cursH + v3 + 1;
 				if ( v5 > 0x1DF )
 					v5 = 479;
-				v14 = cursor_draw_back_buffer;
+				v14 = sgSaveBack;
 				v6 = 1 - v3 + v5;
 				sgdwCursHgt = v6;
 				v7 = &gpBuffer->row[v3].pixels[v2 & 0xFFFFFFFC];

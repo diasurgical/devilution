@@ -2,12 +2,12 @@
 
 #include "../types.h"
 
-int missileactive[125];
-int missileavail[125];
-MissileStruct missile[125];
+int missileactive[MAXMISSILES];
+int missileavail[MAXMISSILES];
+MissileStruct missile[MAXMISSILES];
 int nummissiles; // idb
 int ManashieldFlag;
-unk_missile_struct misflagstruct_unknown[125];
+unk_missile_struct misflagstruct_unknown[MAXMISSILES];
 int MissilePreFlag; // weak
 int unk_missile_flag; // weak
 
@@ -1084,7 +1084,7 @@ void __fastcall DeleteMissile(int mi, int i)
 	v5 = nummissiles - 1;
 	v6 = nummissiles == 1;
 	v7 = nummissiles - 1 < 0;
-	missileavail[-nummissiles + 125] = v2; /* *(&missile[0]._mitype - nummissiles) = v2; */
+	missileavail[-nummissiles + MAXMISSILES] = v2; /* *(&missile[0]._mitype - nummissiles) = v2; */
 	nummissiles = v5;
 	if ( !v7 && !v6 && v3 != v5 )
 		missileactive[v3] = missileactive[v5];
@@ -2315,7 +2315,7 @@ void __cdecl InitMissiles()
 		missileavail[v4] = v4;
 		++v4;
 	}
-	while ( v4 < 125 );
+	while ( v4 < MAXMISSILES );
 	unk_missile_flag = 0;
 	v5 = &misflagstruct_unknown[0].field_4;
 	do
@@ -2325,7 +2325,7 @@ void __cdecl InitMissiles()
 		v5[1] = 0;
 		v5 += 3;
 	}
-	while ( (signed int)v5 < (signed int)&misflagstruct_unknown[125].field_4 );
+	while ( (signed int)v5 < (signed int)&misflagstruct_unknown[MAXMISSILES].field_4 );
 	v6 = 0;
 	do
 	{
@@ -4524,7 +4524,7 @@ int __fastcall AddMissile(int sx, int sy, int v1, int v2, int midir, int mitype,
 
 	sya = sy;
 	sxa = sx;
-	if ( nummissiles >= 125 )
+	if ( nummissiles >= MAXMISSILES )
 		return -1;
 	if ( mitype != 13 || plr[id].pManaShield != 1 )
 		goto LABEL_9;
@@ -4544,7 +4544,7 @@ int __fastcall AddMissile(int sx, int sy, int v1, int v2, int midir, int mitype,
 LABEL_9:
 	v12 = nummissiles;
 	v13 = missileavail[0];
-	v14 = missileavail[-nummissiles++ + 124];
+	v14 = missileavail[-nummissiles++ + 124]; /* MAXMISSILES */
 	missileavail[0] = v14;
 	v15 = v13;
 	missile[v15]._mitype = mitype;

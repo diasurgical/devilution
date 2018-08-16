@@ -32,15 +32,13 @@
 #pragma warning (disable : 4146) // negative unsigned
 #endif
 
+#include "defs.h"
 #include "enums.h"
 #include "structs.h"
 
 #include "DiabloUI/diabloui.h"
 #include "3rdParty/Storm/Source/storm.h"
 #include "3rdParty/PKWare/pkware.h"
-
-
-#include "defs.h"
 
 // temporarily enable debug features for all builds
 #ifndef _DEBUG

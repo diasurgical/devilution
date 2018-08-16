@@ -19,7 +19,7 @@ extern int cel_transparency_active; // weak
 extern int level_piece_id; // weak
 extern int sgdwCursWdt;
 extern int (__fastcall *DrawPlrProc)(int player_num, int x, int y, int screen_x, int screen_y, void *cl2_buf, int frame, int frame_width, int a9, int a10);
-extern char cursor_draw_back_buffer[8192];
+extern char sgSaveBack[8192];
 extern int draw_monster_num; // weak
 extern int sgdwCursHgtOld; // idb
 

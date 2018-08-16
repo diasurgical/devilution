@@ -6,11 +6,11 @@ int trapid; // weak
 int trapdir; // weak
 int pObjCels[40];
 char ObjFileList[40];
-int objectactive[127];
+int objectactive[MAXOBJECTS];
 int nobjects; // idb
 int leverid; // idb
-int objectavail[127];
-ObjectStruct object[127];
+int objectavail[MAXOBJECTS];
+ObjectStruct object[MAXOBJECTS];
 int InitObjFlag; // weak
 int numobjfiles; // weak
 
@@ -647,7 +647,7 @@ void __cdecl ClrAllObjects()
 		v0[23] = 0;
 		v0 += 30;
 	}
-	while ( (signed int)v0 < (signed int)&object[127]._oy );
+	while ( (signed int)v0 < (signed int)&object[MAXOBJECTS]._oy );
 	v1 = 0;
 	memset(objectactive, 0, sizeof(objectactive));
 	nobjects = 0;
@@ -656,7 +656,7 @@ void __cdecl ClrAllObjects()
 		objectavail[v1] = v1;
 		++v1;
 	}
-	while ( v1 < 127 );
+	while ( v1 < MAXOBJECTS );
 	trapdir = 0;
 	trapid = 1;
 	leverid = 1;
@@ -1752,7 +1752,7 @@ void __fastcall DeleteObject(int oi, int i)
 	v2 = nobjects - 1;
 	v3 = nobjects == 1;
 	v4 = nobjects - 1 < 0;
-	objectavail[-nobjects + 127] = oi; /* *(&object[0]._otype - nobjects) = oi; */
+	objectavail[-nobjects + MAXOBJECTS] = oi; /* *(&object[0]._otype - nobjects) = oi; */
 	nobjects = v2;
 	if ( !v4 && !v3 && i != v2 )
 		objectactive[i] = objectactive[v2];
@@ -2287,7 +2287,7 @@ void __cdecl AddMushPatch()
 	int y; // [esp+0h] [ebp-8h]
 	int x; // [esp+4h] [ebp-4h]
 
-	if ( nobjects < 127 )
+	if ( nobjects < MAXOBJECTS )
 	{
 		i = objectavail[0];
 		GetRndObjLoc(5, &x, &y);
@@ -2318,12 +2318,12 @@ void __fastcall AddObject(int ot, int ox, int oy)
 
 	v3 = ox;
 	v4 = ot;
-	if ( nobjects < 127 )
+	if ( nobjects < MAXOBJECTS )
 	{
 		//v5 = 4 * nobjects;
 		v6 = objectavail[0];
 		objectactive[nobjects] = objectavail[0];
-		objectavail[0] = objectavail[-nobjects + 126]; /* double check */
+		objectavail[0] = objectavail[-nobjects + 126]; /* double check, MAXOBJECTS */
 		dObject[ox][oy] = v6 + 1;
 		SetupObject(v6, ox, oy, ot);
 		switch ( v4 )

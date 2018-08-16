@@ -2,8 +2,8 @@
 #ifndef __TRIGS_H__
 #define __TRIGS_H__
 
-extern int trigflag[5];
-extern TriggerStruct trigs[5];
+extern int trigflag[MAXTRIGGERS];
+extern TriggerStruct trigs[MAXTRIGGERS];
 extern int TWarpFrom; // weak
 
 void __cdecl InitNoTriggers();

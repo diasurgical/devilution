@@ -2,7 +2,7 @@
 #ifndef __PORTAL_H__
 #define __PORTAL_H__
 
-extern PortalStruct portal[4];
+extern PortalStruct portal[MAXPORTAL];
 extern int portalindex;
 // int END_portalstruct; // weak
 
@@ -21,7 +21,7 @@ void __cdecl GetPortalLvlPos();
 bool __fastcall PosOkPortal(int lvl, int x, int y);
 
 /* rdata */
-extern int WarpDropX[4];
-extern int WarpDropY[4];
+extern int WarpDropX[MAXPORTAL];
+extern int WarpDropY[MAXPORTAL];
 
 #endif /* __PORTAL_H__ */

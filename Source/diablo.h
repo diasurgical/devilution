@@ -4,19 +4,19 @@
 
 extern int diablo_cpp_init_value; // weak
 extern HWND ghMainWnd;
-extern int glMid1Seed[17];
-extern int glMid2Seed[17];
-extern int gnLevelTypeTbl[17];
+extern int glMid1Seed[NUMLEVELS];
+extern int glMid2Seed[NUMLEVELS];
+extern int gnLevelTypeTbl[NUMLEVELS];
 extern int MouseY; // idb
 extern int MouseX; // idb
 extern bool gbGameLoopStartup; // idb
-extern int glSeedTbl[17];
+extern int glSeedTbl[NUMLEVELS];
 extern int gbRunGame; // weak
-extern int glMid3Seed[17];
+extern int glMid3Seed[NUMLEVELS];
 extern int gbRunGameResult; // weak
 extern int zoomflag; // weak
 extern int gbProcessPlayers; // weak
-extern int glEndSeed[17];
+extern int glEndSeed[NUMLEVELS];
 extern int dword_5256E8; // weak
 extern HINSTANCE ghInst; // idb
 extern int DebugMonsters[10];
