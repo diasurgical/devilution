@@ -3,8 +3,8 @@
 #define __DEBUG_H__
 
 extern void *pSquareCel;
-extern char dMonsDbg[17][112][112];
-extern char dFlagDbg[17][112][112];
+extern char dMonsDbg[NUMLEVELS][MAXDUNX][MAXDUNY];
+extern char dFlagDbg[NUMLEVELS][MAXDUNX][MAXDUNY];
 
 void __cdecl LoadDebugGFX();
 void __cdecl FreeDebugGFX();
