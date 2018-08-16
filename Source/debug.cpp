@@ -3,8 +3,8 @@
 #include "../types.h"
 
 void *pSquareCel;
-char dMonsDbg[17][112][112];
-char dFlagDbg[17][112][112];
+char dMonsDbg[NUMLEVELS][MAXDUNX][MAXDUNY];
+char dFlagDbg[NUMLEVELS][MAXDUNX][MAXDUNY];
 
 void __cdecl LoadDebugGFX()
 {
@@ -27,9 +27,9 @@ void __cdecl CheckDungeonClear()
 	int i;
 	int j;
 
-	for(i = 0; i < 112; i++)
+	for(i = 0; i < MAXDUNX; i++)
 	{
-		for(j = 0; j < 112; j++)
+		for(j = 0; j < MAXDUNY; j++)
 		{
 			if ( dMonster[i][j] )
 				TermMsg("Monsters not cleared");
@@ -178,7 +178,7 @@ void __cdecl PrintDebugQuest()
 
 	sprintf(dstr, "Quest %i :  Active = %i, Var1 = %i", dbgqst, quests[dbgqst]._qactive, quests[dbgqst]._qvar1);
 	NetSendCmdString(1 << myplr, dstr);
-	if ( ++dbgqst == 16 )
+	if ( ++dbgqst == MAXQUESTS )
 		dbgqst = 0;
 }
 
@@ -236,7 +236,7 @@ void __cdecl NextDebugMonster()
 {
 	char dstr[128]; // [esp+0h] [ebp-80h]
 
-	if ( dbgmon++ == 200 )
+	if ( dbgmon++ == MAXMONSTERS )
 		dbgmon = 0;
 
 	sprintf(dstr, "Current debug monster = %i", dbgmon);
