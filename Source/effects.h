@@ -36,6 +36,6 @@ extern char monster_action_sounds[]; // idb
 
 /* rdata */
 
-extern TSFX sgSFX[858];
+extern TSFX sgSFX[NUM_SFX];
 
 #endif /* __EFFECTS_H__ */
