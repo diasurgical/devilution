@@ -8,7 +8,7 @@ char plr_gfx_flag; // weak
 int player_cpp_init_value; // weak
 int plr_aframe_size; // idb
 int myplr;
-PlayerStruct plr[4];
+PlayerStruct plr[MAX_PLRS];
 int plr_fframe_size; // idb
 int plr_qframe_size; // idb
 int deathflag; // idb
@@ -152,7 +152,7 @@ void __fastcall LoadPlrGFX(int pnum, int gfxflag)
 
 	v2 = pnum;
 	v16 = gfxflag;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("LoadPlrGFX: illegal player %d", pnum);
 	v3 = &plr[v2];
 	sprintf(
@@ -294,7 +294,7 @@ void __fastcall InitPlayerGFX(int pnum)
 	int v2; // edx
 
 	v1 = pnum;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("InitPlayerGFX: illegal player %d", pnum);
 	if ( plr[v1]._pHitPoints & 0xFFFFFFC0 )
 	{
@@ -330,7 +330,7 @@ void __fastcall InitPlrGFXMem(int pnum)
 	void *v18; // eax
 
 	v1 = pnum;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("InitPlrGFXMem: illegal player %d", pnum);
 	if ( !(plr_gfx_flag & 1) )
 	{
@@ -481,7 +481,7 @@ void __fastcall FreePlayerGFX(int pnum)
 	void *v11; // ecx
 
 	v1 = pnum;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("FreePlayerGFX: illegal player %d", pnum);
 	v2 = v1;
 	v3 = plr[v2]._pNData;
@@ -522,7 +522,7 @@ void __fastcall NewPlrAnim(int pnum, int Peq, int numFrames, int Delay, int widt
 
 	v5 = pnum;
 	v6 = Peq;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("NewPlrAnim: illegal player %d", pnum);
 	v7 = v5;
 	plr[v7]._pAnimLen = numFrames;
@@ -540,7 +540,7 @@ void __fastcall ClearPlrPVars(int pnum)
 	int v2; // eax
 
 	v1 = pnum;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("ClearPlrPVars: illegal player %d", pnum);
 	v2 = v1;
 	plr[v2]._pVar1 = 0;
@@ -564,7 +564,7 @@ void __fastcall SetPlrAnims(int pnum)
 	int v7; // ecx
 
 	v1 = pnum;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("SetPlrAnims: illegal player %d", pnum);
 	v2 = leveltype;
 	v3 = v1;
@@ -715,7 +715,7 @@ void __fastcall CreatePlayer(int pnum, char c)
 	ClearPlrRVars(&plr[pnum]);
 	v5 = GetTickCount();
 	SetRndSeed(v5);
-	if ( v2 >= 4 )
+	if ( v2 >= MAX_PLRS )
 		TermMsg("CreatePlayer: illegal player %d", v2);
 	v6 = v3;
 	_LOBYTE(plr[v4]._pClass) = v3;
@@ -882,7 +882,7 @@ void __fastcall NextPlrLevel(int pnum)
 	int v11; // edx
 
 	v1 = pnum;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("NextPlrLevel: illegal player %d", pnum);
 	v2 = v1;
 	v3 = &plr[v1]._pLevel;
@@ -945,7 +945,7 @@ void __fastcall AddPlrExperience(int pnum, int lvl, int exp)
 	arglist = pnum;
 	if ( pnum == myplr )
 	{
-		if ( (unsigned int)myplr >= 4 )
+		if ( (unsigned int)myplr >= MAX_PLRS )
 		{
 			TermMsg("AddPlrExperience: illegal player %d", myplr);
 			v3 = myplr;
@@ -1059,7 +1059,7 @@ void __fastcall InitPlayer(int pnum, bool FirstTime)
 
 	v2 = pnum;
 	v20 = FirstTime;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("InitPlayer: illegal player %d", pnum);
 	v3 = v2;
 	v4 = &plr[v2];
@@ -1199,7 +1199,7 @@ void __cdecl InitMultiView()
 {
 	int v0; // eax
 
-	if ( (unsigned int)myplr >= 4 )
+	if ( (unsigned int)myplr >= MAX_PLRS )
 		TermMsg("InitPlayer: illegal player %d", myplr);
 	v0 = plr[myplr].WorldY;
 	ViewX = plr[myplr].WorldX;
@@ -1229,7 +1229,7 @@ void __fastcall InitPlayerLoc(int pnum, bool flag)
 
 	v2 = pnum;
 	v13 = flag;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("InitPlayer: illegal player %d", pnum);
 	v3 = v2;
 	v14 = 0;
@@ -1296,7 +1296,7 @@ bool __fastcall PlrDirOK(int pnum, int dir)
 	v2 = pnum;
 	v3 = dir;
 	p = pnum;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("PlrDirOK: illegal player %d", pnum);
 	v4 = v2;
 	v5 = plr[v2].WorldX + offset_x[v3];
@@ -1419,7 +1419,7 @@ void __fastcall SetPlayerOld(int pnum)
 	int v2; // eax
 
 	v1 = pnum;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("SetPlayerOld: illegal player %d", pnum);
 	v2 = v1;
 	plr[v2]._poldx = plr[v1].WorldX;
@@ -1439,7 +1439,7 @@ void __fastcall FixPlayerLocation(int pnum, int dir)
 
 	v2 = pnum;
 	v3 = dir;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("FixPlayerLocation: illegal player %d", pnum);
 	v4 = v2;
 	v5 = plr[v2].WorldY;
@@ -1473,7 +1473,7 @@ void __fastcall StartStand(int pnum, int dir)
 
 	v2 = pnum;
 	v3 = dir;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("StartStand: illegal player %d", pnum);
 	v4 = v2;
 	if ( !plr[v2]._pInvincible || plr[v4]._pHitPoints || v2 != myplr )
@@ -1502,7 +1502,7 @@ void __fastcall StartWalkStand(int pnum)
 	int v5; // eax
 
 	v1 = pnum;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("StartWalkStand: illegal player %d", pnum);
 	v2 = v1;
 	v3 = plr[v1].WorldX;
@@ -1543,7 +1543,7 @@ void __fastcall PM_ChangeLightOff(int pnum)
 	int lx; // [esp+18h] [ebp-4h]
 
 	v1 = pnum;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("PM_ChangeLightOff: illegal player %d", pnum);
 	v2 = v1;
 	v3 = -1;
@@ -1596,7 +1596,7 @@ void __fastcall PM_ChangeOffset(int pnum)
 
 	v1 = pnum;
 	arglist = pnum;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("PM_ChangeOffset: illegal player %d", pnum);
 	v2 = v1;
 	v3 = plr[v1]._pVar6;
@@ -1644,7 +1644,7 @@ void __fastcall StartWalk(int pnum, int xvel, int yvel, int xadd, int yadd, int 
 	v7 = pnum;
 	v18 = xvel;
 	arglist = pnum;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("StartWalk: illegal player %d", pnum);
 	v8 = v7;
 	if ( plr[v7]._pInvincible && !plr[v8]._pHitPoints && v7 == myplr )
@@ -1745,7 +1745,7 @@ void __fastcall StartWalk2(int pnum, int xvel, int yvel, int xoff, int yoff, int
 	v9 = pnum;
 	v24 = xvel;
 	arglist = pnum;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("StartWalk2: illegal player %d", pnum);
 	v10 = v9;
 	if ( plr[v9]._pInvincible && !plr[v10]._pHitPoints && v9 == myplr )
@@ -1856,7 +1856,7 @@ void __fastcall StartWalk3(int pnum, int xvel, int yvel, int xoff, int yoff, int
 	v11 = pnum;
 	v25 = xvel;
 	arglist = pnum;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("StartWalk3: illegal player %d", pnum);
 	v12 = v11;
 	if ( plr[v11]._pInvincible && !plr[v12]._pHitPoints && v11 == myplr )
@@ -1956,7 +1956,7 @@ void __fastcall StartAttack(int pnum, int d)
 
 	v2 = pnum;
 	v3 = d;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("StartAttack: illegal player %d", pnum);
 	v4 = v2;
 	if ( !plr[v2]._pInvincible || plr[v4]._pHitPoints || v2 != myplr )
@@ -1984,7 +1984,7 @@ void __fastcall StartRangeAttack(int pnum, int d, int cx, int cy)
 
 	v4 = pnum;
 	a2a = d;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("StartRangeAttack: illegal player %d", pnum);
 	v5 = v4;
 	if ( !plr[v4]._pInvincible || plr[v5]._pHitPoints || v4 != myplr )
@@ -2014,7 +2014,7 @@ void __fastcall StartPlrBlock(int pnum, int dir)
 
 	v2 = pnum;
 	v3 = dir;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("StartPlrBlock: illegal player %d", pnum);
 	v4 = v2;
 	if ( !plr[v2]._pInvincible || plr[v4]._pHitPoints || v2 != myplr )
@@ -2045,7 +2045,7 @@ void __fastcall StartSpell(int pnum, int d, int cx, int cy)
 
 	v4 = pnum;
 	a2 = d;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("StartSpell: illegal player %d", pnum);
 	v5 = v4;
 	if ( plr[v4]._pInvincible && !plr[v5]._pHitPoints && v4 == myplr )
@@ -2108,7 +2108,7 @@ void __fastcall FixPlrWalkTags(int pnum)
 	char *v15; // [esp+10h] [ebp-4h]
 
 	v1 = pnum;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("FixPlrWalkTags: illegal player %d", pnum);
 	v13 = v1 + 1;
 	v2 = -1 - v1;
@@ -2221,7 +2221,7 @@ void __fastcall StartPlrHit(int pnum, int dam, unsigned char forcehit)
 
 	v3 = pnum;
 	v4 = dam;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("StartPlrHit: illegal player %d", pnum);
 	v5 = v3;
 	if ( plr[v3]._pInvincible && !plr[v5]._pHitPoints && v3 == myplr )
@@ -2472,7 +2472,7 @@ void __fastcall PlrDeadItem(int pnum, struct ItemStruct *itm, int xx, int yy)
 	v4 = pnum;
 	if ( itm->_itype != -1 )
 	{
-		if ( (unsigned int)pnum >= 4 )
+		if ( (unsigned int)pnum >= MAX_PLRS )
 			TermMsg("PlrDeadItem: illegal player %d", pnum);
 		v5 = v4;
 		v6 = yy + plr[v5].WorldY;
@@ -2552,7 +2552,7 @@ void __fastcall DropHalfPlayersGold(int pnum)
 	signed int ic; // [esp+10h] [ebp-4h]
 
 	v1 = pnum;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("DropHalfPlayersGold: illegal player %d", pnum);
 	v2 = v1;
 	v3 = plr[v1]._pGold >> 1;
@@ -2968,7 +2968,7 @@ int __fastcall PM_DoWalk(int pnum)
 	int result; // eax
 
 	v1 = pnum;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("PM_DoWalk: illegal player %d", pnum);
 	v2 = v1;
 	v3 = plr[v1]._pAnimFrame;
@@ -3035,7 +3035,7 @@ int __fastcall PM_DoWalk2(int pnum)
 	int result; // eax
 
 	v1 = pnum;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("PM_DoWalk2: illegal player %d", pnum);
 	v2 = v1;
 	v3 = plr[v1]._pAnimFrame;
@@ -3098,7 +3098,7 @@ int __fastcall PM_DoWalk3(int pnum)
 	int result; // eax
 
 	v1 = pnum;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("PM_DoWalk3: illegal player %d", pnum);
 	v2 = v1;
 	v3 = plr[v1]._pAnimFrame;
@@ -3629,7 +3629,7 @@ int __fastcall PM_DoAttack(int pnum)
 
 	v1 = pnum;
 	arglist = pnum;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("PM_DoAttack: illegal player %d", pnum);
 	v2 = v1;
 	v3 = plr[v2]._pIFlags;
@@ -3730,7 +3730,7 @@ int __fastcall PM_DoRangeAttack(int pnum)
 	//int v6; // eax
 
 	v1 = pnum;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("PM_DoRangeAttack: illegal player %d", pnum);
 	v2 = v1;
 	v3 = plr[v1]._pIFlags;
@@ -3772,7 +3772,7 @@ void __fastcall ShieldDur(int pnum)
 	v1 = pnum;
 	if ( pnum == myplr )
 	{
-		if ( (unsigned int)pnum >= 4 )
+		if ( (unsigned int)pnum >= MAX_PLRS )
 			TermMsg("ShieldDur: illegal player %d", pnum);
 		v2 = v1;
 		if ( plr[v1].InvBody[4]._itype == ITYPE_SHIELD )
@@ -3813,7 +3813,7 @@ int __fastcall PM_DoBlock(int pnum)
 	int v2; // eax
 
 	v1 = pnum;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("PM_DoBlock: illegal player %d", pnum);
 	v2 = v1;
 	if ( plr[v1]._pIFlags & 0x1000000 && plr[v2]._pAnimFrame != 1 )
@@ -3833,7 +3833,7 @@ int __fastcall PM_DoSpell(int pnum)
 	int v2; // esi
 
 	v1 = pnum;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("PM_DoSpell: illegal player %d", pnum);
 	v2 = v1;
 	if ( plr[v1]._pVar8 == plr[v1]._pSFNum )
@@ -3894,7 +3894,7 @@ int __fastcall PM_DoGotHit(int pnum)
 	int v4; // ecx
 
 	v1 = pnum;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("PM_DoGotHit: illegal player %d", pnum);
 	v2 = v1;
 	v3 = plr[v1]._pIFlags;
@@ -3929,7 +3929,7 @@ void __fastcall ArmorDur(int pnum)
 	v1 = pnum;
 	if ( pnum == myplr )
 	{
-		if ( (unsigned int)pnum >= 4 )
+		if ( (unsigned int)pnum >= MAX_PLRS )
 		{
 			TermMsg("ArmorDur: illegal player %d", pnum);
 			//pnum = v2;
@@ -3982,7 +3982,7 @@ int __fastcall PM_DoDeath(int pnum)
 	int v5; // eax
 
 	v1 = pnum;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("PM_DoDeath: illegal player %d", pnum);
 	v2 = v1;
 	if ( plr[v1]._pVar8 >= 2 * plr[v1]._pDFrames )
@@ -4117,7 +4117,7 @@ void __fastcall CheckNewPath(int pnum)
 
 	v1 = pnum;
 	p = pnum;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("CheckNewPath: illegal player %d", pnum);
 	v2 = v1;
 	if ( plr[v1].destAction == 20 )
@@ -4536,7 +4536,7 @@ bool __fastcall PlrDeathModeOK(int pnum)
 	v1 = pnum;
 	if ( pnum != myplr )
 		goto LABEL_10;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("PlrDeathModeOK: illegal player %d", pnum);
 	v3 = plr[v1]._pmode;
 	if ( v3 == PM_DEATH || v3 == PM_QUIT )
@@ -4752,7 +4752,7 @@ LABEL_38:
 		v5 += 5430;
 		++v4;
 	}
-	while ( (signed int)v5 < (signed int)&plr[4]._pHitPoints );
+	while ( (signed int)v5 < (signed int)&plr[MAX_PLRS]._pHitPoints );
 }
 // 52A554: using guessed type int sfxdelay;
 
@@ -4782,7 +4782,7 @@ void __fastcall ClrPlrPath(int pnum)
 	int v1; // esi
 
 	v1 = pnum;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("ClrPlrPath: illegal player %d", pnum);
 	memset(plr[v1].walkpath, -1, 0x19u);
 }
@@ -4831,7 +4831,7 @@ void __fastcall MakePlrPath(int pnum, int xx, int yy, unsigned char endspace)
 	v4 = pnum;
 	v5 = xx;
 	a2 = pnum;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("MakePlrPath: illegal player %d", pnum);
 	v6 = v4;
 	v7 = yy;
@@ -5044,7 +5044,7 @@ void __fastcall SyncPlrAnim(int pnum)
 	int v5; // edx
 
 	v1 = pnum;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("SyncPlrAnim: illegal player %d", pnum);
 	v2 = v1;
 	v3 = plr[v1]._pdir;
@@ -5183,7 +5183,7 @@ void __fastcall SyncInitPlr(int pnum)
 	int v1; // esi
 
 	v1 = pnum;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("SyncInitPlr: illegal player %d", pnum);
 	SetPlrAnims(v1);
 	SyncInitPlrPos(v1);
@@ -5207,7 +5207,7 @@ void __fastcall CheckStats(int pnum)
 	//signed int v14; // [esp+Ch] [ebp-4h]
 
 	v1 = pnum;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("CheckStats: illegal player %d", pnum);
 	v2 = v1;
 	v3 = plr[v1]._pClass;
@@ -5313,7 +5313,7 @@ void __fastcall ModifyPlrStr(int pnum, int l)
 	v2 = pnum;
 	v3 = l;
 	p = pnum;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("ModifyPlrStr: illegal player %d", pnum);
 	v4 = v2;
 	v5 = plr[v4]._pClass;
@@ -5355,7 +5355,7 @@ void __fastcall ModifyPlrMag(int pnum, int l)
 	v2 = pnum;
 	v3 = l;
 	p = pnum;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("ModifyPlrMag: illegal player %d", pnum);
 	v4 = v2;
 	v5 = plr[v4]._pClass;
@@ -5391,7 +5391,7 @@ void __fastcall ModifyPlrDex(int pnum, int l)
 
 	v2 = pnum;
 	v3 = l;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("ModifyPlrDex: illegal player %d", pnum);
 	v4 = v2;
 	v5 = MaxStats[SLOBYTE(plr[v2]._pClass)][2];
@@ -5422,7 +5422,7 @@ void __fastcall ModifyPlrVit(int pnum, int l)
 	v2 = pnum;
 	v3 = l;
 	p = pnum;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("ModifyPlrVit: illegal player %d", pnum);
 	v4 = v2;
 	v5 = plr[v4]._pClass;
@@ -5455,7 +5455,7 @@ void __fastcall SetPlayerHitPoints(int pnum, int newhp)
 
 	v2 = pnum;
 	v3 = newhp;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("SetPlayerHitPoints: illegal player %d", pnum);
 	v4 = v2;
 	v5 = plr[v2]._pMaxHPBase;
@@ -5476,7 +5476,7 @@ void __fastcall SetPlrStr(int pnum, int v)
 
 	v2 = pnum;
 	v3 = v;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("SetPlrStr: illegal player %d", pnum);
 	v4 = v2;
 	plr[v2]._pBaseStr = v3;
@@ -5503,7 +5503,7 @@ void __fastcall SetPlrMag(int pnum, int v)
 
 	v2 = pnum;
 	v3 = v;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("SetPlrMag: illegal player %d", pnum);
 	v4 = v2;
 	plr[v2]._pBaseMag = v3;
@@ -5525,7 +5525,7 @@ void __fastcall SetPlrDex(int pnum, int v)
 
 	v2 = pnum;
 	v3 = v;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("SetPlrDex: illegal player %d", pnum);
 	v4 = v2;
 	plr[v2]._pBaseDex = v3;
@@ -5552,7 +5552,7 @@ void __fastcall SetPlrVit(int pnum, int v)
 
 	v2 = pnum;
 	v3 = v;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("SetPlrVit: illegal player %d", pnum);
 	v4 = v2;
 	plr[v2]._pBaseVit = v3;
@@ -5569,7 +5569,7 @@ void __fastcall InitDungMsgs(int pnum)
 	int v1; // esi
 
 	v1 = pnum;
-	if ( (unsigned int)pnum >= 4 )
+	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("InitDungMsgs: illegal player %d", pnum);
 	plr[v1].pDungMsgs = 0;
 }
