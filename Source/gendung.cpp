@@ -6,20 +6,20 @@ short level_frame_types[2048];
 int themeCount;
 char nTransTable[2049];
 //int dword_52D204;
-int dMonster[112][112];
+int dMonster[MAXDUNX][MAXDUNY];
 char dungeon[40][40];
-char dObject[112][112];
+char dObject[MAXDUNX][MAXDUNY];
 void *pSpeedCels;
 int nlevel_frames; // weak
 char pdungeon[40][40];
-char dDead[112][112];
-short dpiece_defs_map_1[16][112][112];
-char dTransVal2[112][112];
+char dDead[MAXDUNX][MAXDUNY];
+short dpiece_defs_map_1[16][MAXDUNX][MAXDUNY];
+char dTransVal2[MAXDUNX][MAXDUNY];
 char TransVal; // weak
 int dword_5A5594;
 char dflags[40][40];
-int dPiece[112][112];
-char dTransVal[112][112];
+int dPiece[MAXDUNX][MAXDUNY];
+char dTransVal[MAXDUNX][MAXDUNY];
 int setloadflag_2; // weak
 Tile tile_defs[1024];
 void *pMegaTiles;
@@ -27,7 +27,7 @@ void *pLevelPieces;
 int gnDifficulty; // idb
 char block_lvid[2049];
 //char byte_5B78EB;
-char dung_map[112][112];
+char dung_map[MAXDUNX][MAXDUNY];
 char nTrapTable[2049];
 char leveltype; // weak
 unsigned char currlevel; // idb
@@ -37,17 +37,17 @@ int level_frame_count[2049];
 ScrollStruct ScrollInfo;
 void *pDungeonCels;
 int speed_cel_frame_num_from_light_index_frame_num[16][128];
-THEME_LOC themeLoc[50];
-char dPlayer[112][112];
+THEME_LOC themeLoc[MAXTHEMES];
+char dPlayer[MAXDUNX][MAXDUNY];
 int dword_5C2FF8; // weak
 int dword_5C2FFC; // weak
 int scr_pix_width; // weak
 int scr_pix_height; // weak
-char dArch[112][112];
+char dArch[MAXDUNX][MAXDUNY];
 char nBlockTable[2049];
 void *level_special_cel;
-char dFlags[112][112];
-char dItem[112][112];
+char dFlags[MAXDUNX][MAXDUNY];
+char dItem[MAXDUNX][MAXDUNY];
 char setlvlnum; // weak
 int level_frame_sizes[2048];
 char nMissileTable[2049];
@@ -64,10 +64,10 @@ int setpc_x; // idb
 int ViewX; // idb
 int ViewY; // idb
 int setpc_y; // idb
-char dMissile[112][112];
+char dMissile[MAXDUNX][MAXDUNY];
 int dminx; // weak
 int dminy; // weak
-short dpiece_defs_map_2[16][112][112];
+short dpiece_defs_map_2[16][MAXDUNX][MAXDUNY];
 
 void __cdecl FillSolidBlockTbls()
 {
