@@ -3,7 +3,7 @@
 #include "../types.h"
 
 int spurtndx; // weak
-DeadStruct dead[31];
+DeadStruct dead[MAXDEAD];
 int stonendx;
 
 void __cdecl InitDead()
@@ -21,7 +21,7 @@ void __cdecl InitDead()
 	CMonster *v10; // ecx
 	char *v11; // edi
 	int *v12; // ebx
-	int mtypes[200]; // [esp+Ch] [ebp-330h]
+	int mtypes[MAXMONSTERS]; // [esp+Ch] [ebp-330h]
 	int *v14; // [esp+32Ch] [ebp-10h]
 	int *v15; // [esp+330h] [ebp-Ch]
 	int v16; // [esp+334h] [ebp-8h]
