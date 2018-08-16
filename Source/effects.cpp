@@ -13,7 +13,7 @@ char monster_action_sounds[] = { 'a', 'h', 'd', 's' }; // idb
 
 /* rdata */
 
-TSFX sgSFX[858] =
+TSFX sgSFX[NUM_SFX] =
 {
   { 2u, "Sfx\\Misc\\Walk1.wav", NULL },
   { 2u, "Sfx\\Misc\\Walk2.wav", NULL },
@@ -1256,7 +1256,7 @@ void __cdecl sound_stop()
 {
 	int i; // edi
 
-	for(i = 0; i < 858; i++)
+	for(i = 0; i < NUM_SFX; i++)
 	{
 		if ( sgSFX[i].pSnd )
 			snd_stop_snd(sgSFX[i].pSnd);
@@ -1308,7 +1308,7 @@ void __cdecl effects_cleanup_sfx()
 		}
 		++v0;
 	}
-	while ( v0 < 858 );
+	while ( v0 < NUM_SFX );
 }
 
 void __cdecl stream_update()
@@ -1377,7 +1377,7 @@ void __fastcall priv_sound_init(int bLoadMask)
 			}
 			++v3;
 		}
-		while ( v3 < 858 );
+		while ( v3 < NUM_SFX );
 	}
 }
 
@@ -1401,7 +1401,7 @@ void __stdcall effects_play_sound(char *snd_file)
 		{
 			++v2;
 			++v1;
-			if ( v2 >= 858 )
+			if ( v2 >= NUM_SFX )
 				return;
 		}
 		v3 = &sgSFX[v1].pSnd;
