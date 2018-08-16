@@ -8,7 +8,7 @@ extern char plr_gfx_flag; // weak
 extern int player_cpp_init_value; // weak
 extern int plr_aframe_size; // idb
 extern int myplr;
-extern PlayerStruct plr[4];
+extern PlayerStruct plr[MAX_PLRS];
 extern int plr_fframe_size; // idb
 extern int plr_qframe_size; // idb
 extern int deathflag; // idb
