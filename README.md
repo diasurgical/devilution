@@ -68,7 +68,7 @@ Here are some screenshots of a few things I tinkered around with, to demonstrate
 
 ![Screenshot 1: Monster lifebar+items](https://s33.postimg.cc/6xnnhhlmn/diabuimon.png "Monster lifebar+items")
 
-![Screenshot 2: New trade screen](https://s22.postimg.cc/z8fhuutk1/diabstore.png "New trade screen")
+![Screenshot 2: New trade screen](https://s22.postimg.cc/5i5k91vht/diabstore.png "New trade screen, items that couldn't spawn")
 
 # F.A.Q.
 > Wow, does this mean I can download and play Diablo for free now?
