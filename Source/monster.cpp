@@ -411,14 +411,12 @@ void __cdecl InitLevelMonsters()
 
 int __fastcall AddMonsterType(int type, int placeflag)
 {
-	BOOL done;
+	BOOL done = FALSE;
 	int i;
-
-	done = FALSE;
 
 	for ( i = 0; i < nummtypes && !done; i++ )
 	{
-		done = type == Monsters[i].mtype;
+		done = Monsters[i].mtype == type;
 	}
 
 	i--;
@@ -465,90 +463,90 @@ void __cdecl GetLevelMTypes()
 
 	if ( !setlevel )
 	{
-	if ( QuestStatus(QTYPE_BUTCH) )
-		AddMonsterType(MT_CLEAVER, 2);
-	if ( QuestStatus(QTYPE_GARB) )
-		AddMonsterType(UniqMonst[0].mtype, 4);
-	if ( QuestStatus(QTYPE_ZHAR) )
-		AddMonsterType(UniqMonst[2].mtype, 4);
-	if ( QuestStatus(QTYPE_BOL) )
-		AddMonsterType(UniqMonst[3].mtype, 4);
-	if ( QuestStatus(QTYPE_VEIL) )
-		AddMonsterType(UniqMonst[7].mtype, 4);
-	if ( QuestStatus(QTYPE_WARLRD) )
-		AddMonsterType(UniqMonst[8].mtype, 4);
+		if ( QuestStatus(QTYPE_BUTCH) )
+			AddMonsterType(MT_CLEAVER, 2);
+		if ( QuestStatus(QTYPE_GARB) )
+			AddMonsterType(UniqMonst[0].mtype, 4);
+		if ( QuestStatus(QTYPE_ZHAR) )
+			AddMonsterType(UniqMonst[2].mtype, 4);
+		if ( QuestStatus(QTYPE_BOL) )
+			AddMonsterType(UniqMonst[3].mtype, 4);
+		if ( QuestStatus(QTYPE_VEIL) )
+			AddMonsterType(UniqMonst[7].mtype, 4);
+		if ( QuestStatus(QTYPE_WARLRD) )
+			AddMonsterType(UniqMonst[8].mtype, 4);
 
-	if ( gbMaxPlayers != 1 && currlevel == quests[QTYPE_KING]._qlevel )
-	{
-
-		AddMonsterType(MT_SKING, 4);
-		const int numskeltypes = 19;
-
-		nt = 0;
-		for ( i = MT_WSKELAX; i <= MT_WSKELAX + numskeltypes; i++ )
+		if ( gbMaxPlayers != 1 && currlevel == quests[QTYPE_KING]._qlevel )
 		{
-			if ( IsSkel(i) )
-			{
-				minl = 15 * monsterdata[i].mMinDLvl / 30 + 1;
-				maxl = 15 * monsterdata[i].mMaxDLvl / 30 + 1;
 
-				if ( currlevel >= minl && currlevel <= maxl )
+			AddMonsterType(MT_SKING, 4);
+			const int numskeltypes = 19;
+
+			nt = 0;
+			for ( i = MT_WSKELAX; i <= MT_WSKELAX + numskeltypes; i++ )
+			{
+				if ( IsSkel(i) )
 				{
-					if ( MonstAvailTbl[i] & mamask )
+					minl = 15 * monsterdata[i].mMinDLvl / 30 + 1;
+					maxl = 15 * monsterdata[i].mMaxDLvl / 30 + 1;
+
+					if ( currlevel >= minl && currlevel <= maxl )
 					{
-						skeltypes[nt++] = i;
+						if ( MonstAvailTbl[i] & mamask )
+						{
+							skeltypes[nt++] = i;
+						}
 					}
 				}
 			}
+			AddMonsterType(skeltypes[random(88, nt)], 1);
 		}
-		AddMonsterType(skeltypes[random(88, nt)], 1);
-	}
 
-	nt = 0;
-	for ( i = 0; i < 111; i++ )
-	{
-		minl = 15 * monsterdata[i].mMinDLvl / 30 + 1;
-		maxl = 15 * monsterdata[i].mMaxDLvl / 30 + 1;
-
-		if ( currlevel >= minl && currlevel <= maxl )
+		nt = 0;
+		for ( i = 0; i < 111; i++ )
 		{
-			if ( MonstAvailTbl[i] & mamask )
+			minl = 15 * monsterdata[i].mMinDLvl / 30 + 1;
+			maxl = 15 * monsterdata[i].mMaxDLvl / 30 + 1;
+
+			if ( currlevel >= minl && currlevel <= maxl )
 			{
-				typelist[nt++] = i;
+				if ( MonstAvailTbl[i] & mamask )
+				{
+					typelist[nt++] = i;
+				}
 			}
 		}
-	}
 
-	if ( monstdebug )
-	{
-		for ( i = 0; i < debugmonsttypes; i++ )
-			AddMonsterType(DebugMonsters[i], 1);
-	}
-	else
-	{
-
-		while ( nt > 0 && nummtypes < MAX_LVLMTYPES && monstimgtot < 4000 )
+		if ( monstdebug )
 		{
-			for ( i = 0; i < nt; )
+			for ( i = 0; i < debugmonsttypes; i++ )
+				AddMonsterType(DebugMonsters[i], 1);
+		}
+		else
+		{
+
+			while ( nt > 0 && nummtypes < MAX_LVLMTYPES && monstimgtot < 4000 )
 			{
-				if ( monsterdata[typelist[i]].mType <= 4000 - monstimgtot )
+				for ( i = 0; i < nt; )
 				{
-					i++;
+					if ( monsterdata[typelist[i]].mType <= 4000 - monstimgtot )
+					{
+						i++;
+					}
+					else
+					{
+						typelist[i] = typelist[--nt];
+					}
 				}
-				else
+
+				if ( nt != 0 )
 				{
+					i = random(88, nt);
+					AddMonsterType(typelist[i], 1);
 					typelist[i] = typelist[--nt];
 				}
 			}
-
-			if ( nt != 0 )
-			{
-				i = random(88, nt);
-				AddMonsterType(typelist[i], 1);
-				typelist[i] = typelist[--nt];
-			}
 		}
-	}
 
 	}
 	else
