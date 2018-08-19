@@ -1097,75 +1097,82 @@ void __fastcall PlaceUniqueMonst(int uniqindex, int miniontype, int unpackfilesi
 
 void __cdecl PlaceQuestMonsters()
 {
-	int skeltype; // esi
-	CMonster *v2; // edi
-	unsigned char *setp; // esi
+	int skeltype;
+	unsigned char *setp;
 
 	if ( setlevel )
 	{
 		if ( setlvlnum == SL_SKELKING )
+		{
 			PlaceUniqueMonst(1, 0, 0);
+		}
 	}
 	else
 	{
-		if ( QuestStatus(6) )
+		if ( QuestStatus(QTYPE_BUTCH) )
+		{
 			PlaceUniqueMonst(9, 0, 0);
+		}
+
 		if ( currlevel == quests[12]._qlevel && gbMaxPlayers != 1 )
 		{
 			skeltype = 0;
-			if ( nummtypes > 0 )
+
+			for ( skeltype = 0; skeltype < nummtypes; skeltype++ )
 			{
-				v2 = Monsters;
-				do
+				if ( IsSkel(Monsters[skeltype].mtype) )
 				{
-					if ( IsSkel((unsigned char)v2->mtype) )
-						break;
-					++skeltype;
-					++v2;
+					break;
 				}
-				while ( skeltype < nummtypes );
 			}
+
 			PlaceUniqueMonst(1, skeltype, 30);
 		}
-		if ( QuestStatus(7) )
+
+		if ( QuestStatus(QTYPE_BOL) )
 		{
 			setp = LoadFileInMem("Levels\\L1Data\\Banner1.DUN", 0);
 			SetMapMonsters(setp, 2 * setpc_x, 2 * setpc_y);
 			mem_free_dbg(setp);
 		}
-		if ( QuestStatus(9) )
+		if ( QuestStatus(QTYPE_BLOOD) )
 		{
 			setp = LoadFileInMem("Levels\\L2Data\\Blood2.DUN", 0);
 			SetMapMonsters(setp, 2 * setpc_x, 2 * setpc_y);
 			mem_free_dbg(setp);
 		}
-		if ( QuestStatus(8) )
+		if ( QuestStatus(QTYPE_BLIND) )
 		{
 			setp = LoadFileInMem("Levels\\L2Data\\Blind2.DUN", 0);
 			SetMapMonsters(setp, 2 * setpc_x, 2 * setpc_y);
 			mem_free_dbg(setp);
 		}
-		if ( QuestStatus(10) )
+		if ( QuestStatus(QTYPE_ANVIL) )
 		{
 			setp = LoadFileInMem("Levels\\L3Data\\Anvil.DUN", 0);
 			SetMapMonsters(setp, 2 * setpc_x + 2, 2 * setpc_y + 2);
 			mem_free_dbg(setp);
 		}
-		if ( QuestStatus(11) )
+		if ( QuestStatus(QTYPE_WARLRD) )
 		{
 			setp = LoadFileInMem("Levels\\L4Data\\Warlord.DUN", 0);
 			SetMapMonsters(setp, 2 * setpc_x, 2 * setpc_y);
 			mem_free_dbg(setp);
-			AddMonsterType((char)UniqMonst[8].mtype, 1);
+			AddMonsterType(UniqMonst[8].mtype, 1);
 		}
-		if ( QuestStatus(4) )
-			AddMonsterType((char)UniqMonst[7].mtype, 1);
-		if ( QuestStatus(3) && zharlib == -1 )
+		if ( QuestStatus(QTYPE_VEIL) )
+		{
+			AddMonsterType(UniqMonst[7].mtype, 1);
+		}
+		if ( QuestStatus(QTYPE_ZHAR) && zharlib == -1 )
+		{
 			quests[3]._qactive = 0;
+		}
+
 		if ( currlevel == quests[15]._qlevel && gbMaxPlayers != 1 )
 		{
-			AddMonsterType((char)UniqMonst[4].mtype, 4);
-			AddMonsterType((char)UniqMonst[5].mtype, 4);
+			AddMonsterType(UniqMonst[4].mtype, 4);
+			AddMonsterType(UniqMonst[5].mtype, 4);
 			PlaceUniqueMonst(4, 0, 0);
 			PlaceUniqueMonst(5, 0, 0);
 			PlaceUniqueMonst(6, 0, 0);
@@ -1175,138 +1182,98 @@ void __cdecl PlaceQuestMonsters()
 		}
 	}
 }
-// 5CCB10: using guessed type char setlvlnum;
-// 5CF31D: using guessed type char setlevel;
-// 679660: using guessed type char gbMaxPlayers;
-// 6AAA64: using guessed type int zharlib;
 
-void __fastcall PlaceGroup(int mtype, int num, unsigned char leaderf, int leader)
+void __fastcall PlaceGroup(int mtype, int num, int leaderf, int leader)
 {
-	int v4; // ecx
-	int *v5; // eax
-	int v6; // edx
-	int v7; // eax
-	int v8; // edi
-	int v9; // esi
-	int v10; // eax
-	int v12; // eax
-	int v13; // ecx
-	int v14; // eax
-	//int v15; // ST04_4
-	int v16; // eax
-	//int v17; // ST04_4
-	int v18; // eax
-	int *v19; // edx
-	int v20; // ecx
-	int v21; // ebx
-	int v22; // ecx
-	int mtypea; // [esp+Ch] [ebp-24h]
-	signed int v25; // [esp+14h] [ebp-1Ch]
-	int v26; // [esp+18h] [ebp-18h]
-	signed int i; // [esp+1Ch] [ebp-14h]
-	int v28; // [esp+20h] [ebp-10h]
-	int v29; // [esp+24h] [ebp-Ch]
-	int v30; // [esp+28h] [ebp-8h]
-	int v31; // [esp+2Ch] [ebp-4h]
+	int placed = 0;
+	int xp;
+	int yp;
+	int x1;
+	int y1;
 
-	mtypea = mtype;
-	v4 = 0;
-	v31 = num;
-	v30 = 0;
-	v25 = 0;
-	do
+	for ( int try1 = 0; try1 < 10; try1++ )
 	{
-		if ( v4 )
+		while ( placed )
 		{
-			v30 = 0;
-			v5 = &monster[nummonsters]._my;
-			nummonsters -= v4;
-			do
-			{
-				v6 = *(v5 - 58);
-				v5 -= 57;
-				--v4;
-				dMonster[0][*v5 + 112 * v6] = 0;
-			}
-			while ( v4 );
+			nummonsters--;
+			placed--;
+			dMonster[monster[nummonsters]._mx][monster[nummonsters]._my] = 0;
 		}
+
 		if ( leaderf & 1 )
 		{
-			v7 = random(92, 8);
-			v8 = monster[leader]._mx + offset_x[v7];
-			v9 = monster[leader]._my + offset_y[v7];
-			v29 = monster[leader]._mx + offset_x[v7];
-			v28 = monster[leader]._my + offset_y[v7];
+			int offset = random(92, 8);
+			xp = monster[leader]._mx + offset_x[offset];
+			yp = monster[leader]._my + offset_y[offset];
+			x1 = monster[leader]._mx + offset_x[offset];
+			y1 = monster[leader]._my + offset_y[offset];
 		}
 		else
 		{
 			do
 			{
-				v10 = random(93, 80);
-				v8 = v10 + 16;
-				v29 = v10 + 16;
-				v12 = random(93, 80);
-				v9 = v12 + 16;
-				v28 = v12 + 16;
+				xp = random(93, 80) + 16;
+				x1 = xp;
+				yp = random(93, 80) + 16;
+				y1 = yp;
 			}
-			while ( !MonstPlace(v8, v12 + 16) );
+			while ( !MonstPlace(xp, yp) );
 		}
-		if ( nummonsters + v31 > totalmonsters )
-			v31 = totalmonsters - nummonsters;
-		v26 = 0;
-		for ( i = 0; v26 < v31; v9 += offset_x[random(94, 8)] )
+
+		if ( num + nummonsters > totalmonsters )
+			num = totalmonsters - nummonsters;
+
+		int try2 = 0;
+		for ( int j = 0; j < num; xp += offset_x[random(94, 8)], yp += offset_x[random(94, 8)] )
 		{
-			if ( i >= 100 )
+			if ( try2 >= 100 )
+			{
 				break;
-			if ( !MonstPlace(v8, v9)
-				|| (v13 = 112 * v29, dung_map[v8][v9] != dung_map[v29][v28])
-				|| leaderf & 2
-				&& ((v14 = abs(v8 - v29), v13 = 0, v14 >= 4) || (v16 = abs(v9 - v28), v13 = 0, v16 >= 4)) ) /* v15/v17 */
-			{
-				++i;
 			}
-			else
+
+			if ( !MonstPlace(xp, yp)
+				|| (dung_map[x1][y1] != dung_map[xp][yp])
+				|| leaderf & 2 && ((abs(xp - x1) >= 4) || (abs(yp - y1) >= 4)) )
 			{
-				PlaceMonster(nummonsters, mtypea, v8, v9);
-				if ( leaderf & 1 )
+				try2++;
+				continue;
+			}
+
+			PlaceMonster(nummonsters, mtype, xp, yp);
+			if ( leaderf & 1 )
+			{
+				monster[nummonsters]._mmaxhp *= 2;
+				monster[nummonsters]._mhitpoints = monster[nummonsters]._mmaxhp;
+				monster[nummonsters]._mint = monster[leader]._mint;
+
+				if ( leaderf & 2 )
 				{
-					v18 = nummonsters;
-					v19 = &monster[nummonsters]._mmaxhp;
-					v20 = 2 * *v19;
-					*v19 = v20;
-					monster[v18]._mhitpoints = v20;
-					v13 = 228 * leader;
-					monster[v18]._mint = monster[leader]._mint;
-					if ( leaderf & 2 )
-					{
-						monster[v18].leader = leader;
-						monster[v18].leaderflag = 1;
-						monster[v18]._mAi = *(&monster[0]._mAi + v13);
-					}
-					if ( monster[v18]._mAi != AI_GARG )
-					{
-						v21 = nummonsters;
-						v22 = (int)monster[v18].MType->Anims[0].Frames[monster[v18]._mdir];
-						monster[v18]._mAFNum = v22;
-						monster[v21]._mAnimFrame = random(88, monster[v21]._mAnimLen - 1) + 1;
-						monster[v21]._mFlags &= 0xFFFFFFFB;
-						monster[v21]._mmode = MM_STAND;
-					}
+					monster[nummonsters].leader = leader;
+					monster[nummonsters].leaderflag = 1;
+					monster[nummonsters]._mAi = monster[leader]._mAi;
 				}
-				++nummonsters;
-				++v30;
-				++v26;
+
+				if ( monster[nummonsters]._mAi != AI_GARG )
+				{
+					monster[nummonsters]._mAFNum = (int)monster[nummonsters].MType->Anims[0].Frames[monster[nummonsters]._mdir];
+					monster[nummonsters]._mAnimFrame = random(88, monster[nummonsters]._mAnimLen - 1) + 1;
+					monster[nummonsters]._mFlags &= 0xFFFFFFFB;
+					monster[nummonsters]._mmode = MM_STAND;
+				}
+
 			}
-			v8 += offset_x[random(94, 8)];
+			++nummonsters;
+			++placed;
+			++j;
 		}
-		v4 = v30;
-		if ( v30 >= v31 )
+		if ( placed >= num )
 			break;
-		++v25;
 	}
-	while ( v25 < 10 );
+
 	if ( leaderf & 2 )
-		monster[leader].unpackfilesize = v30;
+	{
+		monster[leader].unpackfilesize = placed;
+	}
 }
 // 658550: using guessed type int totalmonsters;
 
@@ -1587,7 +1554,7 @@ void __fastcall SetMapMonsters(unsigned char *pMap, int startx, int starty)
 	int startya; // [esp+20h] [ebp+8h]
 
 	v12 = startx;
-	v3 = pMap;
+	v3 = (char *)pMap;
 	AddMonsterType(MT_GOLEM, 2);
 	AddMonster(1, 0, 0, 0, 0);
 	AddMonster(1, 0, 0, 0, 0);
