@@ -1554,7 +1554,7 @@ void __fastcall SetMapMonsters(unsigned char *pMap, int startx, int starty)
 	int startya; // [esp+20h] [ebp+8h]
 
 	v12 = startx;
-	v3 = (char *)pMap;
+	v3 = pMap;
 	AddMonsterType(MT_GOLEM, 2);
 	AddMonster(1, 0, 0, 0, 0);
 	AddMonster(1, 0, 0, 0, 0);
