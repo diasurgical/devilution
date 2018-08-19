@@ -441,6 +441,7 @@ void __cdecl GetLevelMTypes()
 
 	// this array is merged with skeltypes down below.
 	int typelist[MAXMONSTERS];
+	int skeltypes[NUM_MTYPES];
 
 	int minl; // min level
 	int maxl; // max level
@@ -462,14 +463,8 @@ void __cdecl GetLevelMTypes()
 		return;
 	}
 
-	if ( setlevel )
+	if ( !setlevel )
 	{
-		if ( setlvlnum == SL_SKELKING )
-			AddMonsterType(MT_SKING, 4);
-		return;
-	}
-
-
 	if ( QuestStatus(QTYPE_BUTCH) )
 		AddMonsterType(MT_CLEAVER, 2);
 	if ( QuestStatus(QTYPE_GARB) )
@@ -487,8 +482,6 @@ void __cdecl GetLevelMTypes()
 	{
 
 		AddMonsterType(MT_SKING, 4);
-
-		int skeltypes[NUM_MTYPES];
 		const int numskeltypes = 19;
 
 		nt = 0;
@@ -556,6 +549,15 @@ void __cdecl GetLevelMTypes()
 			}
 		}
 	}
+
+	}
+	else
+	{
+		if ( setlvlnum == SL_SKELKING )
+			AddMonsterType(MT_SKING, 4);
+		return;
+	}
+
 }
 
 void __fastcall InitMonsterGFX(int monst)
