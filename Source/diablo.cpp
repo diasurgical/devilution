@@ -153,7 +153,7 @@ void __fastcall run_game_loop(int uMsg)
 	bool v5; // zf
 	//int v6; // eax
 	signed int v7; // [esp+8h] [ebp-24h]
-	LRESULT (__stdcall *saveProc)(HWND, UINT, WPARAM, LPARAM); // [esp+Ch] [ebp-20h]
+	WNDPROC saveProc; // [esp+Ch] [ebp-20h]
 	struct tagMSG msg; // [esp+10h] [ebp-1Ch]
 
 	nthread_ignore_mutex(1);
@@ -662,16 +662,16 @@ LABEL_10:
 // 646D00: using guessed type char qtextflag;
 // 6AA705: using guessed type char stextflag;
 
-LRESULT __stdcall DisableInputWndProc(HWND hWnd, int uMsg, int wParam, int lParam)
+LRESULT __stdcall DisableInputWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	bool v5; // zf
 
-	if ( uMsg <= (unsigned int)WM_LBUTTONDOWN )
+	if ( uMsg <= WM_LBUTTONDOWN )
 	{
 		if ( uMsg != WM_LBUTTONDOWN )
 		{
-			if ( uMsg >= (unsigned int)WM_KEYFIRST
-			  && (uMsg <= (unsigned int)WM_CHAR
+			if ( uMsg >= WM_KEYFIRST
+			  && (uMsg <= WM_CHAR
 			   || uMsg == WM_SYSKEYDOWN
 			   || uMsg == WM_SYSCOMMAND
 			   || uMsg == WM_MOUSEFIRST) )
@@ -724,7 +724,7 @@ LABEL_23:
 }
 // 525748: using guessed type char sgbMouseDown;
 
-int __stdcall GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+LRESULT __stdcall GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	if ( uMsg > WM_LBUTTONDOWN )
 	{
