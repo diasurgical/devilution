@@ -58,7 +58,7 @@ char __fastcall multi_event_handler(int a1);
 void __stdcall multi_handle_events(_SNETEVENT *pEvt);
 int __fastcall NetInit(int bSinglePlayer, int *pfExitProgram);
 void __fastcall multi_clear_pkt(char *a1);
-void __fastcall multi_send_pinfo(int pnum, TCmdPlrInfoHdr *cmd);
+void __fastcall multi_send_pinfo(int pnum, char cmd);
 int __fastcall InitNewSeed(int newseed);
 void __cdecl SetupLocalCoords();
 int __fastcall multi_init_single(_SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info, _SNETUIDATA *ui_info);
