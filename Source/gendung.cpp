@@ -33,7 +33,7 @@ char leveltype; // weak
 unsigned char currlevel; // idb
 char TransList[256];
 char nSolidTable[2049];
-int level_frame_count[2049];
+int level_frame_count[2048];
 ScrollStruct ScrollInfo;
 void *pDungeonCels;
 int speed_cel_frame_num_from_light_index_frame_num[16][128];
@@ -136,359 +136,311 @@ LABEL_13:
 }
 // 5BB1ED: using guessed type char leveltype;
 
-void __cdecl gendung_418D91()
+void __cdecl SetupDungeon()
 {
-	signed int v0; // edx
-	short (*v1)[112][112]; // edi
-	short (*v2)[112][112]; // esi
-	signed int v3; // ebx
-	int i; // edx
-	short v5; // ax
-	int v6; // ecx
-	signed int v7; // edx
-	int v8; // eax
-	int v9; // edi
-	char *v10; // esi
-	int j; // ecx
-	unsigned char v12; // al
-	unsigned char *v13; // esi
-	int v14; // ecx
-	signed int v15; // edx
-	int v16; // eax
-	int v17; // ecx
-	unsigned char v18; // al
-	signed int v19; // ecx
-	int v20; // edi
-	int v21; // edx
-	int v22; // edi
-	int v23; // eax
-	int v24; // eax
-	bool v25; // zf
-	int v26; // edx
-	char *v27; // esi
-	char *v28; // edi
-	int k; // ecx
-	char *v33; // esi
-	char *v34; // edi
-	int v36; // ecx
-	signed int v37; // edx
-	int v38; // eax
-	int v39; // ecx
-	short (*v42)[112][112]; // esi
-	short v43; // ax
-	unsigned short v44; // dx
-	short v45; // ax
-	int v46; // [esp-4h] [ebp-38h]
-	int v47; // [esp-4h] [ebp-38h]
-	int v48; // [esp+Ch] [ebp-28h]
-	int (*v49)[128]; // [esp+10h] [ebp-24h]
-	int (*v50)[112]; // [esp+10h] [ebp-24h]
-	int v51; // [esp+14h] [ebp-20h]
-	short (*v52)[112][112]; // [esp+14h] [ebp-20h]
-	signed int v53; // [esp+18h] [ebp-1Ch]
-	int v54; // [esp+18h] [ebp-1Ch]
-	short (*v55)[112][112]; // [esp+18h] [ebp-1Ch]
-	int v56; // [esp+1Ch] [ebp-18h]
-	int (*v57)[112]; // [esp+1Ch] [ebp-18h]
-	signed int v58; // [esp+20h] [ebp-14h]
-	int v59; // [esp+20h] [ebp-14h]
-	int v60; // [esp+24h] [ebp-10h]
-	signed int v61; // [esp+24h] [ebp-10h]
-	int v62; // [esp+28h] [ebp-Ch]
-	int v63; // [esp+2Ch] [ebp-8h]
-	signed int v64; // [esp+30h] [ebp-4h]
-	signed int v65; // [esp+30h] [ebp-4h]
-	int _EAX;
-	char *_EBX;
+	//indexing variables
+	int i;
+	int j;
+	int k;
+	int l;
 
-	v0 = 0;
+	int dungeon_type_iterations; //12 if hell else 10
+	int map_length; //112
+	int map_length_times_thirty_two; //112 * 32 (0xE00)
+	short* dpiece_defs_map_2_ptr; //iterating through map entries
+	short level_cel_block; //http://sanctuary.github.io/notes/#variable/level_cel_block
+	short frame_num; // map_block_info & 0x0FFF
+	short frame_type; //map_block_info & 0x7000 >> 12
+
+	int* dungeon_cel; //same as pDungeonCels, but casted to int*
+	int frame_size; // calculated from dungeon_cel[i + 1] - dungeon_cel[i], stored into level_frame_sizes
+
+	int level_frame_types_index; //used to index level_frame_types
+	char set_level_frame_count_zero; //bool used to check whether or not we should set current index into level frame count to zero
+	char* level_cel_ptr; //ptr to pDungeonCels (moved around)
+	char level_cel_index; //index into dungeon_cel_ptr
+	unsigned char frame_num2; //used to check if the value from *level_cel_ptr is > 0 and < 32
+
+	int total_level_frame_size; //used as a threshold to increment level_frame_size_index
+	int level_frame_size_index; //index into level_frame_size
+	int frame_multiplier; //a multipler that used in calculating total_level_frame_size and is 2 if light4flag else 14
+
+	int ligthing_flag_enable; //0 if light4flag == 0 else -1
+	int level_frame_total_size; //an index into pSpeedCel computed by adding level_frame_sizes
+	int lighting_flag_index; //computed from light4flags & 0xF4 + 0xF. Will be either 15 or 0x103 (259). Used for array looping condition
+	int speed_light_index; // used as an indexer in pSpeedCel until lighting_flag_index
+	char* light_table_ptr; //
+	int level_frame_size_val; //level_frame_size_val = level_frame_sizes[level_frame_types_index]; used as a array looping condition for copying
+	int speed_light_multiplier_index; //used as a 16*i in accessing pSpeedCel
+	int(*speed_cel_frame_num_from_light_index_frame_num_ptr)[128]; //
+	int tile_defs_val; //value from tile_defs
+
+	int dpieces_defs_map2_val; //value from dpieces_def_map2
+	int(*dpiece_def_map_ptr)[112]; //ptr to dPiece
+	int(*dpiece_defs_map_ptr2)[112];
+	short* dpieces_defs_map3_ptr; //short* version
+	short* dpieces_defs_map4_ptr;
+
+	char* speed_cel_ptr; //ptr to pSpeedCel
+	char level_cel_val; //val from level_cel_ptr
+
 	memset(level_frame_types, 0, sizeof(level_frame_types));
-	memset(level_frame_count, 0, 0x2000u);
-	do
+	memset(level_frame_count, 0, sizeof(level_frame_count));
+
+	//set tile_defs to be 1,2,3,...
+	for (i = 0; i < sizeof(tile_defs)/sizeof(*tile_defs); i++)
 	{
-		*((_DWORD *)&tile_defs[0].top + v0) = v0;
-		++v0;
+		tile_defs[i].top = i * 2;
+		tile_defs[i].left = i * 2 + 1;
 	}
-	while ( v0 < 2048 );
-	v1 = dpiece_defs_map_2;
-	v48 = 2 * (leveltype == DTYPE_HELL) + 10;
-	do
+
+	/*
+	 * Iterates through dpiece_defs_map_2 and updates level_frame_types with the fetched value from dpiece_defs_map_2
+	 */
+	dungeon_type_iterations = 2 * (leveltype == DTYPE_HELL) + 10; //12 if in HELL else 10
+	map_length = sizeof(dpiece_defs_map_2[0][0]) / sizeof(dpiece_defs_map_2[0][0][0]);
+	map_length_times_thirty_two = map_length * 32;
+	dpiece_defs_map_2_ptr = dpiece_defs_map_2[0][0];
+	for (i = 0; i < map_length_times_thirty_two; i++)
 	{
-		v2 = v1;
-		v3 = 112;
-		do
+		for(j = 0; j < map_length; j++)
 		{
-			for ( i = 0; i < v48; ++i )
+			for (k = 0; k < dungeon_type_iterations; k++)
 			{
-				v5 = (*v2)[0][i];
-				if ( (*v2)[0][i] )
+				level_cel_block = dpiece_defs_map_2_ptr[k + j * map_length_times_thirty_two/2];
+				if (level_cel_block)
 				{
-					v6 = v5 & 0xFFF;
-					++level_frame_count[v6];
-					level_frame_types[v6] = v5 & 0x7000;
+					frame_num = level_cel_block & 0x0FFF;
+					frame_type = level_cel_block & 0x7000;
+					++level_frame_count[frame_num];
+					level_frame_types[frame_num] = frame_type;
 				}
 			}
-			v2 = (short (*)[112][112])((char *)v2 + 3584);
-			--v3;
 		}
-		while ( v3 );
-		v1 = (short (*)[112][112])((char *)v1 + 32);
+		dpiece_defs_map_2_ptr += 16;
 	}
-	while ( (signed int)v1 < (signed int)dpiece_defs_map_2[0][16] ); /* check */
-	v7 = 1;
-	nlevel_frames = *(_DWORD *)pDungeonCels & 0xFFFF;
-	v8 = nlevel_frames;
-	if ( nlevel_frames > 1 )
+
+	/*
+	 * Iterates through pDungeonCels and updates level_frame_size with the fetched values from pDungeonCels
+	 */
+	dungeon_cel = (int*)pDungeonCels;
+	nlevel_frames = dungeon_cel[0] & 0xFFFF;
+	for (i = 1; i < nlevel_frames; i++)
 	{
-		do
-		{
-			level_frame_sizes[v7] = (*((_DWORD *)pDungeonCels + v7 + 1) - *((_DWORD *)pDungeonCels + v7)) & 0xFFFF;
-			v8 = nlevel_frames;
-			++v7;
-		}
-		while ( v7 < nlevel_frames );
+		frame_size = dungeon_cel[i + 1] - dungeon_cel[i];
+		level_frame_sizes[i] = frame_size & 0xFFFF;
 	}
-	v9 = 0;
+
+	/*
+	 * This block updates level_frame_count (ONLY IN HELL ENVIRONMENT)
+	 * The loops try to set set_level_frame_count_zero to 0. This is attempted by looping through dungeon_cel and checking if *dungeon_cel is > 0 and < 32.
+	 * if set_level_frame_count_zero == 0, then level_frame_count[level_frame_types_index] = 0;
+	 */
 	level_frame_sizes[0] = 0;
-	if ( leveltype == DTYPE_HELL && v8 > 0 )
+	if (leveltype == DTYPE_HELL)
 	{
-		do
+		level_frame_count[0] = 0;
+		for (level_frame_types_index = 0; level_frame_types_index < nlevel_frames; level_frame_types_index++)
 		{
-			if ( !v9 )
-				level_frame_count[0] = 0;
-			v53 = 1;
-			if ( level_frame_count[v9] )
+			set_level_frame_count_zero = 1;
+			if (level_frame_count[level_frame_types_index])
 			{
-				if ( level_frame_types[v9] == 4096 )
+				if (level_frame_types[level_frame_types_index] == 4096)
 				{
-					v13 = (unsigned char *)pDungeonCels + *((_DWORD *)pDungeonCels + v9);
-					v14 = 32;
-					do
+					level_cel_ptr = (char*)dungeon_cel + dungeon_cel[level_frame_types_index];
+					for (j = 0; j < 32; j++)
 					{
-						v46 = v14;
-						v15 = 32;
-						do
+						for (k = 32; k != 0; k -= level_cel_index)
 						{
-							while ( 1 )
+							while (1)
 							{
-								v16 = *v13++;
-								if ( (v16 & 0x80u) == 0 )
+								level_cel_index = *level_cel_ptr++;
+								//check msb (0 is valid)
+								if ((level_cel_index & 0x80u) == 0)
 									break;
-								_LOBYTE(v16) = -(char)v16;
-								v15 -= v16;
-								if ( !v15 )
-									goto LABEL_36;
+								//else iterate and go to next dungeon cel ptr
+								level_cel_index = -level_cel_index;
+								k -= level_cel_index;
+								if (!k)
+								{
+									break;
+								}
 							}
-							v15 -= v16;
-							v17 = v16;
-							do
+							if (!k)
 							{
-								v18 = *v13++;
-								if ( v18 && v18 < 0x20u )
-									v53 = 0;
-								--v17;
+								break;
 							}
-							while ( v17 );
+
+							//if msb is 0, use the remaining level_cel_index to iterate and go to next level_cel_ptr
+							for (l = 0; l < level_cel_index; l++)
+							{
+								frame_num2 = *level_cel_ptr++;
+								if (frame_num2 < 32 && frame_num2 > 0) //check frame type
+								{
+									set_level_frame_count_zero = 0;
+								}
+							}
 						}
-						while ( v15 );
-LABEL_36:
-						v14 = v46 - 1;
 					}
-					while ( v46 != 1 );
 				}
 				else
 				{
-					v10 = (char *)pDungeonCels + *((_DWORD *)pDungeonCels + v9);
-					for ( j = level_frame_sizes[v9]; j; --j )
+					level_cel_ptr = (char*)dungeon_cel + dungeon_cel[level_frame_types_index];
+					for (j = 0; j < level_frame_sizes[level_frame_types_index]; j++)
 					{
-						v12 = *v10++;
-						if ( v12 && v12 < 0x20u )
-							v53 = 0;
+						frame_num2 = *level_cel_ptr++;
+						if (frame_num2 < 32 && frame_num2 > 0) //check frame type
+						{
+							set_level_frame_count_zero = 0;
+						}
 					}
 				}
-				if ( !v53 )
-					level_frame_count[v9] = 0;
-			}
-			++v9;
-		}
-		while ( v9 < nlevel_frames );
-	}
-	gendung_4191BF(2047);
-	v19 = 0;
-	v20 = 0;
-	if ( light4flag )
-	{
-		do
-		{
-			v21 = level_frame_sizes[v20++];
-			v19 += 2 * v21;
-		}
-		while ( v19 < 0x100000 );
-	}
-	else
-	{
-		do
-			v19 += 14 * level_frame_sizes[v20++];
-		while ( v19 < 0x100000 );
-	}
-	v22 = v20 - 1;
-	v58 = v22;
-	if ( v22 > 128 )
-	{
-		v58 = 128;
-		v22 = 128;
-	}
-	v23 = -(light4flag != 0);
-	v63 = 0;
-	_LOBYTE(v23) = v23 & 0xF4;
-	v54 = 0;
-	v60 = v23 + 15;
-	if ( v22 > 0 )
-	{
-		v56 = 0;
-		v49 = speed_cel_frame_num_from_light_index_frame_num;
-		do
-		{
-			v24 = v54;
-			v25 = level_frame_types[v54] == 4096;
-			v62 = *((_DWORD *)&tile_defs[0].top + v54);
-			(*v49)[0] = v62;
-			if ( v25 )
-			{
-				v65 = 1;
-				if ( v60 > 1 )
+				if (!set_level_frame_count_zero)
 				{
-					do
+					level_frame_count[level_frame_types_index] = 0;
+				}
+			}
+		}
+	}
+
+	//did not decompile gendung_4191BF
+	gendung_4191BF(2047);
+
+	/*
+	 * This block updates level_frame_size_index (used to index level_frame_size), until total_level_frame_size >= 0x100000
+	 */
+	total_level_frame_size = 0;
+	level_frame_size_index = 0;
+	frame_multiplier = light4flag ? 2 : 14;
+	while (total_level_frame_size < 0x100000)
+	{
+		total_level_frame_size += frame_multiplier * level_frame_sizes[level_frame_size_index++];
+	}
+
+	/*
+	 * level_frame_size_index is capped at 128. 
+	 * This block updates speed_cel_frame_num_from_light_index_frame_num, pSpeedCels
+	 * speed_cel_frame_num_from_light_index_frame_num is updated by an element in tile_defs and level_frame_total_size (computed by elements in level_frame_sizes)
+	 * pSpeedCels is updated by an element in pLightTbl using an element from dungeon_cel as an index.
+	 */
+	if (--level_frame_size_index > 128)// limit the index to 128
+	{
+		level_frame_size_index = 128;
+	}
+	ligthing_flag_enable = -(light4flag != 0); // 0 if 0 else -1
+	level_frame_total_size = 0;
+	lighting_flag_index = (ligthing_flag_enable & 0xF4) + 0xF;
+	level_frame_types_index = 0;
+	if (level_frame_size_index > 0)
+	{
+		speed_light_multiplier_index = 0;
+		speed_cel_frame_num_from_light_index_frame_num_ptr = speed_cel_frame_num_from_light_index_frame_num;
+		for(level_frame_types_index = 0; level_frame_types_index < level_frame_size_index; level_frame_types_index++)
+		{
+			tile_defs_val = *((_DWORD *)&tile_defs[0].top + level_frame_types_index);
+			(*speed_cel_frame_num_from_light_index_frame_num_ptr)[0] = tile_defs_val;
+			if (level_frame_types[level_frame_types_index] == 4096)
+			{
+				for(speed_light_index = 1; speed_light_index < lighting_flag_index; speed_light_index++)
+				{
+					speed_cel_frame_num_from_light_index_frame_num[0][speed_light_index + speed_light_multiplier_index] = level_frame_total_size;
+					level_cel_ptr = (char*)dungeon_cel + dungeon_cel[tile_defs_val];
+					speed_cel_ptr  = (char *)pSpeedCels + level_frame_total_size;
+					light_table_ptr = (char *)pLightTbl + 0x100 * speed_light_index;
+					for (i = 0; i < 32; i++)
 					{
-						speed_cel_frame_num_from_light_index_frame_num[0][v65 + v56] = v63;
-						v33 = (char *)pDungeonCels + *((_DWORD *)pDungeonCels + v62);
-						v34 = (char *)pSpeedCels + v63;
-						_EBX = &pLightTbl[256 * v65];
-						v36 = 32;
-						do
+						for(j = 32; j != 0; j-= level_cel_val)
 						{
-							v47 = v36;
-							v37 = 32;
-							do
+							while (1)
 							{
-								while ( 1 )
+								level_cel_val = *level_cel_ptr++;
+								*speed_cel_ptr++ = level_cel_val;
+								if ((level_cel_val & 0x80u) == 0)
+									break;
+								level_cel_val = -level_cel_val;
+								j -= level_cel_val;
+								if (!j)
 								{
-									v38 = (unsigned char)*v33++;
-									*v34++ = v38;
-									if ( (v38 & 0x80u) == 0 )
-										break;
-									_LOBYTE(v38) = -(char)v38;
-									v37 -= v38;
-									if ( !v37 )
-										goto LABEL_63;
+									break;
 								}
-								v37 -= v38;
-								v39 = v38;
-								do
-								{
-									_EAX = *v33++;
-									ASM_XLAT(_EAX,_EBX);
-									*v34++ = _EAX;
-									--v39;
-								}
-								while ( v39 );
 							}
-							while ( v37 );
-LABEL_63:
-							v36 = v47 - 1;
+							if (!j)
+							{
+								break;
+							}
+
+							for(k = 0; k < level_cel_val; k++)
+							{
+								*speed_cel_ptr++ = light_table_ptr[*level_cel_ptr++];
+							}
 						}
-						while ( v47 != 1 );
-						v63 += level_frame_sizes[v54];
-						++v65;
 					}
-					while ( v65 < v60 );
-					goto LABEL_65;
+					level_frame_total_size += level_frame_sizes[level_frame_types_index];
 				}
 			}
 			else
 			{
-				v26 = level_frame_sizes[v24];
-				v51 = level_frame_sizes[v24];
-				v64 = 1;
-				if ( v60 > 1 )
+				level_frame_size_val = level_frame_sizes[level_frame_types_index];
+				for(speed_light_index = 1; speed_light_index < lighting_flag_index; speed_light_index++)
 				{
-					do
+					speed_cel_frame_num_from_light_index_frame_num[0][speed_light_index + speed_light_multiplier_index] = level_frame_total_size;
+					level_cel_ptr = (char*)dungeon_cel + dungeon_cel[tile_defs_val];
+					light_table_ptr = (char *)pLightTbl + 0x100 * speed_light_index;
+					speed_cel_ptr = (char *)pSpeedCels + level_frame_total_size;
+					for (i = 0; i < level_frame_size_val; i++)
 					{
-						speed_cel_frame_num_from_light_index_frame_num[0][v64 + v56] = v63;
-						v27 = (char *)pDungeonCels + *((_DWORD *)pDungeonCels + v62);
-						v28 = (char *)pSpeedCels + v63;
-						_EBX = &pLightTbl[256 * v64];
-						for ( k = v51; k; --k )
-						{
-							_EAX = *v27++;
-							ASM_XLAT(_EAX,_EBX);
-							*v28++ = _EAX;
-						}
-						v63 += v26;
-						++v64;
+						*speed_cel_ptr++ = light_table_ptr[*level_cel_ptr++];
 					}
-					while ( v64 < v60 );
-LABEL_65:
-					v22 = v58;
-					goto LABEL_66;
+					level_frame_total_size += level_frame_size_val;
 				}
 			}
-LABEL_66:
-			++v54;
-			v49 = (int (*)[128])((char *)v49 + 64);
-			v56 += 16;
+			speed_cel_frame_num_from_light_index_frame_num_ptr = (int(*)[128])((char *)speed_cel_frame_num_from_light_index_frame_num_ptr + 64);
+			speed_light_multiplier_index += 16;
 		}
-		while ( v54 < v22 );
 	}
-	v57 = dPiece;
-	v55 = dpiece_defs_map_2;
-	do
+
+	/*
+	 * This block updates dPiece (by checking values on multiple levels dPiece
+	 * dPiece is updated by checking frame_num (0x0FFF) with tile_defs and then, copying an elment from level_frame_types into dPiece
+	 */
+	dpieces_defs_map2_val = 0;
+	dpiece_def_map_ptr = dPiece;
+	for (i = 0; i < map_length_times_thirty_two; i++)
 	{
-		v61 = 112;
-		v52 = v55;
-		v50 = v57;
-		do
+		dpieces_defs_map3_ptr = dpiece_defs_map_2[0][0];
+		dpiece_defs_map_ptr2 = dpiece_def_map_ptr;
+		for(j = 0; j < map_length; j++)
 		{
-			if ( (*v50)[0] && v48 > 0 )
+			if ((*dpiece_defs_map_ptr2)[0] && (dungeon_type_iterations > 0))
 			{
-				v42 = v52;
-				v59 = v48;
-				do
+				dpieces_defs_map4_ptr = dpieces_defs_map3_ptr;
+				for (k = 0; k < dungeon_type_iterations; k++)
 				{
-					v43 = *(_WORD *)v42;
-					if ( *(_WORD *)v42 )
+					dpieces_defs_map2_val = *dpieces_defs_map4_ptr;
+					if (*dpieces_defs_map4_ptr)
 					{
-						v44 = 0;
-						if ( v22 > 0 )
+						if (level_frame_types_index > 0)
 						{
-							do
+							for (l = 0; l < level_frame_size_index; l++)
 							{
-								if ( (v43 & 0xFFF) == *((_DWORD *)&tile_defs[0].top + v44) )
+								if ((dpieces_defs_map2_val & 0xFFF) == *((_DWORD *)&tile_defs[0].top + l))
 								{
-									v45 = v44 + level_frame_types[v44];
-									v44 = v22;
-									v43 = v45 + -32768;
+									level_frame_types_index = l;
+									dpieces_defs_map2_val = l + level_frame_types[l] + -32768;
 								}
-								++v44;
 							}
-							while ( v44 < v22 );
-							*(_WORD *)v42 = v43;
+							*dpieces_defs_map4_ptr = dpieces_defs_map2_val;
 						}
 					}
-					v42 = (short (*)[112][112])((char *)v42 + 2);
-					--v59;
+					++dpieces_defs_map4_ptr;
+					--dungeon_type_iterations;
 				}
-				while ( v59 );
 			}
-			++v50;
-			v52 = (short (*)[112][112])((char *)v52 + 3584);
-			--v61;
+			++dpiece_defs_map_ptr2;
+			dpieces_defs_map3_ptr += map_length_times_thirty_two/2;
 		}
-		while ( v61 );
-		v55 = (short (*)[112][112])((char *)v55 + 32);
-		v57 = (int (*)[112])((char *)v57 + 4);
+		dpiece_def_map_ptr = (int(*)[112])((char *)dpiece_def_map_ptr + 4);
 	}
-	while ( (signed int)v55 < (signed int)dpiece_defs_map_2[0][16] ); /* check */
 }
 // 525728: using guessed type int light4flag;
 // 53CD4C: using guessed type int nlevel_frames;
@@ -648,7 +600,7 @@ void __cdecl SetDungeonMicros()
 		v9 = (int (*)[112])((char *)v9 + 4);
 	}
 	while ( (signed int)v8 < (signed int)dpiece_defs_map_2[0][16] ); /* check */
-	gendung_418D91();
+	SetupDungeon();
 	gendung_4192C2();
 	if ( zoomflag )
 	{
