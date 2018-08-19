@@ -1100,14 +1100,7 @@ void __cdecl PlaceQuestMonsters()
 	int skeltype;
 	unsigned char *setp;
 
-	if ( setlevel )
-	{
-		if ( setlvlnum == SL_SKELKING )
-		{
-			PlaceUniqueMonst(1, 0, 0);
-		}
-	}
-	else
+	if ( !setlevel )
 	{
 		if ( QuestStatus(QTYPE_BUTCH) )
 		{
@@ -1179,6 +1172,13 @@ void __cdecl PlaceQuestMonsters()
 			setp = LoadFileInMem("Levels\\L4Data\\Vile1.DUN", 0);
 			SetMapMonsters(setp, 2 * setpc_x, 2 * setpc_y);
 			mem_free_dbg(setp);
+		}
+	}
+	else
+	{
+		if ( setlvlnum == SL_SKELKING )
+		{
+			PlaceUniqueMonst(1, 0, 0);
 		}
 	}
 }
