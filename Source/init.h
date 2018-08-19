@@ -8,7 +8,7 @@ extern int window_activated; // weak
 extern char diablo_exe_path[260];
 extern void *unused_mpq;
 extern char patch_rt_mpq_path[260];
-extern LRESULT (__stdcall *CurrentProc)(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+extern WNDPROC CurrentProc;
 extern void *diabdat_mpq;
 extern char diabdat_mpq_path[260];
 extern void *patch_rt_mpq;
@@ -32,7 +32,7 @@ void __cdecl init_get_file_info();
 LRESULT __stdcall init_palette(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
 void __fastcall init_activate_window(HWND hWnd, bool activated);
 LRESULT __stdcall init_redraw_window(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
-LRESULT (__stdcall *SetWindowProc(void *func))(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+WNDPROC __stdcall SetWindowProc(WNDPROC func);
 
 /* data */
 extern int init_inf; // weak

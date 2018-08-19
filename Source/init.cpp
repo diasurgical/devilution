@@ -8,7 +8,7 @@ int window_activated; // weak
 char diablo_exe_path[260];
 void *unused_mpq;
 char patch_rt_mpq_path[260];
-LRESULT (__stdcall *CurrentProc)(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+WNDPROC CurrentProc;
 void *diabdat_mpq;
 char diabdat_mpq_path[260];
 void *patch_rt_mpq;
@@ -515,11 +515,11 @@ LRESULT __stdcall init_redraw_window(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM 
 	return result;
 }
 
-LRESULT (__stdcall *SetWindowProc(void *func))(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+WNDPROC __stdcall SetWindowProc(WNDPROC func)
 {
-	LRESULT (__stdcall *result)(HWND, UINT, WPARAM, LPARAM); // eax
+	WNDPROC result; // eax
 
 	result = CurrentProc;
-	CurrentProc = (LRESULT (__stdcall *)(HWND, UINT, WPARAM, LPARAM))func;
+	CurrentProc = func;
 	return result;
 }
