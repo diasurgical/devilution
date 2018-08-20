@@ -1315,7 +1315,8 @@ enum _monster_id
 	MT_ADVOCATE = 0x6C,
 	MT_GOLEM = 0x6D,
 	MT_DIABLO = 0x6E,
-	MT_DARKMAGE = 0x6F
+	MT_DARKMAGE = 0x6F,
+	NUM_MTYPES
 };
 
 enum _speech_id
