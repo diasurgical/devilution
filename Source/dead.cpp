@@ -83,7 +83,7 @@ void __cdecl InitDead()
 				v10 = monster[v9].MType;
 				v11 = (char *)(v8 - 8);
 				v15 = (int *)8;
-				v14 = v10->Anims[4].Frames;
+				v14 = (int *)v10->Anims[4].Frames;
 				do
 				{
 					v12 = v14;
