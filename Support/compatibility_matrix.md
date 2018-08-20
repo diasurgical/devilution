@@ -29,7 +29,8 @@ Please use UTC times for all entries. The Z ending represents UTC time.
 ## Linux
 
 | Date | Status | OS | Bitness | Version (OS) | Build (OS) | Compiler | Build Platform | User | Workaround |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 2018-08-20 @ 12:05 Z| Gold | Ubuntu (WSL) | x64 | xenial | 16.04.4 LTS | i686-w64-mingw32-g++ (GCC) 5.3.1 20160211 | --- | ChaosMarc | Needed to use ddraw patch. |
+| 2018-08-20 @ 12:05 Z| Trash | Ubuntu (WSL) | x64 | bionic | 18.04 LTS | i686-w64-mingw32-g++ (GCC) 7.3-win32 20180312 | --- | ChaosMarc | Crashes on startup (#107) |
 
 ## Mac OS X
 
