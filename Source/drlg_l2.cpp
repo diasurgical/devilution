@@ -261,74 +261,111 @@ void __cdecl InitDungeon()
 
 void __cdecl L2LockoutFix()
 {
-	int i; // ecx
-	int j; // edx
-	bool doorok; // esi
+	signed int v0; // ecx
+	char *v1; // eax
+	signed int v2; // edx
+	signed int v3; // ecx
+	signed int v4; // edi
+	signed int v5; // eax
+	char *v6; // esi
+	signed int v7; // edx
+	char v8; // al
+	unsigned int v9; // ecx
+	signed int v10; // eax
+	char v11; // dl
+	signed int v12; // esi
+	char v13; // bl
+	char *v14; // edx
 
-	for(i = 0; i < 40; i++)
+	v0 = 0;
+	do
 	{
-		for(j = 0; j < 40; j++)
+		v1 = (char *)dungeon + v0;
+		v2 = 40;
+		do
 		{
-			if ( dungeon[i][j] == 4 && dungeon[i-1][j] != 3 )
-				dungeon[i][j] = 1;
-			if ( dungeon[i][j] == 5 && dungeon[i][j-1] != 3 )
-				dungeon[i][j] = 2;
+			if ( *v1 == 4 && *(v1 - 40) != 3 )
+				*v1 = 1;
+			if ( *v1 == 5 && *(v1 - 1) != 3 )
+				*v1 = 2;
+			v1 += 40;
+			--v2;
 		}
+		while ( v2 );
+		++v0;
 	}
-
-	for(i = 1; i < 39; i++)
+	while ( v0 < 40 );
+	v3 = 1;
+	do
 	{
-		for(j = 1; j < 39; j++)
+		v4 = 1;
+		do
 		{
-			if ( dflags[i][j] >= 0 )
+			v5 = v4;
+			if ( dflags[v4][v3] >= 0 )
 			{
-				if ( (dungeon[i][j] == 2 || dungeon[i][j] == 5) && dungeon[i][j-1] == 3 && dungeon[i][j+1] == 3 )
+				v6 = &dungeon[v5][v3];
+				if ( (*v6 == 2 || *v6 == 5) && *(v6 - 1) == 3 && dungeon[v5][v3 + 1] == 3 )
 				{
-					doorok = 0;
+					v7 = 0;
 					while ( 1 )
 					{
-						if ( dungeon[i][j] != 2 && dungeon[i][j] != 5 )
+						v8 = *v6;
+						if ( *v6 != 2 && v8 != 5 )
 							break;
-						if ( dungeon[i][j-1] != 3 || dungeon[i][j+1] != 3 )
+						if ( *(v6 - 1) != 3 || v6[1] != 3 )
 							break;
-						if ( dungeon[i][j] == 5 )
-							doorok = 1;
-						++i;
+						if ( v8 == 5 )
+							v7 = 1;
+						++v4;
+						v6 += 40;
 					}
-					if ( !doorok && dflags[i-1][j] >= 0 ) // dTransVal2[111][40 * i + 80 + j] >= 0 )
-						dungeon[i-1][j] = 5; // *((_BYTE *)&dMonster[111][10 * i + 102] + j) = 5;
+					if ( !v7 && dflags[v4 - 1][v3] >= 0 ) // dflags[-1][]
+						dungeon[v4 - 1][v3] = 5; // dungeon[-1][]
 				}
 			}
+			++v4;
 		}
+		while ( v4 < 39 );
+		++v3;
 	}
-
-	for(i = 1; i < 39; i++)
+	while ( v3 < 39 );
+	v9 = 1;
+	do
 	{
-		for(j = 1; j < 39; j++)
+		v10 = 1;
+		do
 		{
-			if ( dflags[i][j] >= 0 )
+			if ( dflags[v9][v10] >= 0 )
 			{
-				if ( (dungeon[i][j] == 1 || dungeon[i][j] == 4)
-				  && dungeon[i-1][j] == 3 // *((_BYTE *)&dMonster[111][i / 4 + 102] + j) == 3
-				  && dungeon[i+1][j] == 3 )
+				v11 = dungeon[v9][v10];
+				if ( (v11 == 1 || v11 == 4)
+				  && dungeon[v9 - 1][v10] == 3 // dungeon[-1][]
+				  && dungeon[v9 + 1][v10] == 3 )
 				{
-					doorok = 0;
+					v12 = 0;
 					while ( 1 )
 					{
-						if ( dungeon[i][j] != 1 && dungeon[i][j] != 4 )
+						v13 = dungeon[v9][v10];
+						if ( v13 != 1 && v13 != 4 )
 							break;
-						if ( dungeon[i-1][j] != 3 || dungeon[i+1][j] != 3 )
+						v14 = &dungeon[v9 + 1][v10];
+						if ( *(v14 - 80) != 3 || *v14 != 3 )
 							break;
-						if ( dungeon[i][j] == 4 )
-							doorok = 1;
-						++j;
+						if ( v13 == 4 )
+							v12 = 1;
+						++v10;
 					}
-					if ( !doorok && dflags[i][j-1] >= 0 ) // *(_BYTE *)(i + j + 5920151) >= 0 ) /* check */
-						dungeon[i][j-1] = 4; // *((_BYTE *)&dMonster[111][i / 4 + 111] + j + 3) = 4;
+					if ( !v12 && dflags[v9][v10 - 1] >= 0 ) // dflags[][-1]
+						dungeon[v9][v10 - 1] = 4; // dungeon[][-1]
 				}
 			}
+			++v10;
 		}
+		while ( v10 < 39 );
+		++v9;
 	}
+	while ( v9 < 39 );
 }
 
 void __cdecl L2DoorFix()
