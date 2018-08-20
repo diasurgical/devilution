@@ -99,24 +99,22 @@ void __cdecl FreeInvGFX()
 
 void __cdecl InitInv()
 {
-	char v0; // al
 	char *v1; // ecx
 
-	v0 = plr[myplr]._pClass;
-	switch ( v0 )
+	switch ( plr[myplr]._pClass )
 	{
 		case UI_WARRIOR:
 			v1 = "Data\\Inv\\Inv.CEL";
-LABEL_7:
-			pInvCels = LoadFileInMem(v1, 0);
 			break;
 		case UI_ROGUE:
 			v1 = "Data\\Inv\\Inv_rog.CEL";
-			goto LABEL_7;
+			break;
 		case UI_SORCERER:
 			v1 = "Data\\Inv\\Inv_Sor.CEL";
-			goto LABEL_7;
+			break;
 	}
+
+	pInvCels = LoadFileInMem(v1, 0);
 	invflag = 0;
 	drawsbarflag = 0;
 }
@@ -948,7 +946,6 @@ void __fastcall CheckInvPaste(int pnum, int mx, int my)
 	int v16; // esi
 	int v17; // ecx
 	int v18; // edx
-	char v19; // al
 	int v20; // ecx
 	int v21; // esi
 	ItemStruct *v22; // edi
@@ -1559,28 +1556,21 @@ LABEL_81:
 	if ( !v12 )
 		return;
 	if ( v69 == ILOC_UNEQUIPABLE || v69 == ILOC_BELT || plr[v3].HoldItem._iStatFlag )
-		goto LABEL_92;
-	v19 = plr[v3]._pClass;
-	if ( !v19 )
-	{
-		v20 = PS_WARR13;
-		goto LABEL_89;
-	}
-	if ( v19 != 1 )
-	{
-		if ( v19 != 2 )
-			return;
-		PlaySFX(PS_MAGE13);
-		v12 = 0;
-		v10 = v68;
-LABEL_92:
-		if ( !v12 )
-			return;
 		goto LABEL_93;
+
+	// I can't use that yet
+	switch ( plr[v3]._pClass )
+	{
+		case UI_WARRIOR:
+			PlaySFX(PS_WARR13);
+			return;
+		case UI_ROGUE:
+			PlaySFX(PS_ROGUE13);
+			return;
+		case UI_SORCERER:
+			PlaySFX(PS_MAGE13);
+			return;
 	}
-	v20 = PS_ROGUE13;
-LABEL_89:
-	PlaySFX(v20);
 }
 // 4B8C9C: using guessed type int cursH;
 // 4B8CB4: using guessed type int icursH;
@@ -1944,40 +1934,27 @@ void __fastcall CheckBookLevel(int pnum)
 
 void __fastcall CheckQuestItem(int pnum)
 {
-	int v1; // ecx
-	int v2; // esi
-	char v3; // cl
-	char v4; // cl
-	char v5; // cl
-	char v6; // cl
-	char v7; // al
-
-	v1 = pnum;
-	v2 = plr[v1].HoldItem.IDidx;
-	if ( v2 == IDI_OPTAMULET )
+	int quest = plr[pnum].HoldItem.IDidx;
+	if ( quest == IDI_OPTAMULET )
 		quests[8]._qactive = 3;
-	if ( v2 == IDI_MUSHROOM && quests[1]._qactive == 2 && quests[1]._qvar1 == 3 )
+	if ( quest == IDI_MUSHROOM && quests[1]._qactive == 2 && quests[1]._qvar1 == 3 )
 	{
-		v3 = plr[v1]._pClass;
 		sfxdelay = IDI_OPTAMULET;
-		if ( v3 )
+		switch ( plr[pnum]._pClass )
 		{
-			if ( v3 == 1 )
-			{
+			case UI_WARRIOR:
+				sfxdnum = PS_WARR95;
+				break;
+			case UI_ROGUE:
 				sfxdnum = PS_ROGUE95;
-			}
-			else if ( v3 == 2 )
-			{
+				break;
+			case UI_SORCERER:
 				sfxdnum = PS_MAGE95;
-			}
-		}
-		else
-		{
-			sfxdnum = PS_WARR95;
+				break;
 		}
 		quests[1]._qvar1 = 4;
 	}
-	if ( v2 == IDI_ANVIL )
+	if ( quest == IDI_ANVIL )
 	{
 		if ( quests[10]._qactive == 1 )
 		{
@@ -1987,45 +1964,37 @@ void __fastcall CheckQuestItem(int pnum)
 		if ( quests[10]._qlog == 1 )
 		{
 			sfxdelay = IDI_OPTAMULET;
-			v4 = plr[myplr]._pClass;
-			if ( v4 )
+			switch ( plr[myplr]._pClass )
 			{
-				if ( v4 == 1 )
-				{
+				case UI_WARRIOR:
+					sfxdnum = PS_WARR89;
+					break;
+				case UI_ROGUE:
 					sfxdnum = PS_ROGUE89;
-				}
-				else if ( v4 == 2 )
-				{
+					break;
+				case UI_SORCERER:
 					sfxdnum = PS_MAGE89;
-				}
-			}
-			else
-			{
-				sfxdnum = PS_WARR89;
+					break;
 			}
 		}
 	}
-	if ( v2 == IDI_GLDNELIX )
+	if ( quest == IDI_GLDNELIX )
 	{
 		sfxdelay = 30;
-		v5 = plr[myplr]._pClass;
-		if ( v5 )
+		switch ( plr[myplr]._pClass )
 		{
-			if ( v5 == 1 )
-			{
+			case UI_WARRIOR:
+				sfxdnum = PS_WARR88;
+				break;
+			case UI_ROGUE:
 				sfxdnum = PS_ROGUE88;
-			}
-			else if ( v5 == 2 )
-			{
+				break;
+			case UI_SORCERER:
 				sfxdnum = PS_MAGE88;
-			}
-		}
-		else
-		{
-			sfxdnum = PS_WARR88;
+				break;
 		}
 	}
-	if ( v2 == IDI_ROCK )
+	if ( quest == IDI_ROCK )
 	{
 		if ( quests[0]._qactive == 1 )
 		{
@@ -2035,43 +2004,35 @@ void __fastcall CheckQuestItem(int pnum)
 		if ( quests[0]._qlog == 1 )
 		{
 			sfxdelay = IDI_OPTAMULET;
-			v6 = plr[myplr]._pClass;
-			if ( v6 )
+			switch ( plr[myplr]._pClass )
 			{
-				if ( v6 == 1 )
-				{
+				case UI_WARRIOR:
+					sfxdnum = PS_WARR87;
+					break;
+				case UI_ROGUE:
 					sfxdnum = PS_ROGUE87;
-				}
-				else if ( v6 == 2 )
-				{
+					break;
+				case UI_SORCERER:
 					sfxdnum = PS_MAGE87;
-				}
-			}
-			else
-			{
-				sfxdnum = PS_WARR87;
+					break;
 			}
 		}
 	}
-	if ( v2 == IDI_ARMOFVAL )
+	if ( quest == IDI_ARMOFVAL )
 	{
 		quests[9]._qactive = 3;
 		sfxdelay = 20;
-		v7 = plr[myplr]._pClass;
-		if ( v7 )
+		switch ( plr[myplr]._pClass )
 		{
-			if ( v7 == 1 )
-			{
+			case UI_WARRIOR:
+				sfxdnum = PS_WARR91;
+				break;
+			case UI_ROGUE:
 				sfxdnum = PS_ROGUE91;
-			}
-			else if ( v7 == 2 )
-			{
+				break;
+			case UI_SORCERER:
 				sfxdnum = PS_MAGE91;
-			}
-		}
-		else
-		{
-			sfxdnum = PS_WARR91;
+				break;
 		}
 	}
 }
@@ -2138,7 +2099,6 @@ void __fastcall AutoGetItem(int pnum, int ii)
 	int v9; // edi
 	int v10; // edx
 	int v11; // ecx
-	char v12; // al
 	int v13; // ecx
 	int iia; // [esp+10h] [ebp-18h]
 	signed int iib; // [esp+10h] [ebp-18h]
@@ -2386,21 +2346,19 @@ LABEL_71:
 		}
 		if ( v2 == myplr )
 		{
-			v12 = plr[v3]._pClass;
-			switch ( v12 )
+			switch ( plr[v3]._pClass )
 			{
 				case UI_WARRIOR:
 					v13 = random(0, 3) + PS_WARR14;
-LABEL_84:
-					PlaySFX(v13);
 					break;
 				case UI_ROGUE:
 					v13 = random(0, 3) + PS_ROGUE14;
-					goto LABEL_84;
+					break;
 				case UI_SORCERER:
 					v13 = random(0, 3) + PS_MAGE14;
-					goto LABEL_84;
+					break;
 			}
+			PlaySFX(v13);
 		}
 		qmemcpy(&plr[v3].HoldItem, &item[v28], sizeof(plr[v3].HoldItem));
 		RespawnItem(i, 1);
@@ -3112,12 +3070,9 @@ int __fastcall UseInvItem(int pnum, int cii)
 	int v4; // ebx
 	int v5; // ebp
 	_DWORD *v6; // edi
-	char v7; // al
 	int v8; // ecx
 	int v9; // eax
 	int v10; // ecx
-	char v11; // al
-	char v12; // al
 	int p; // [esp+10h] [ebp-8h]
 	signed int v14; // [esp+14h] [ebp-4h]
 
@@ -3148,44 +3103,36 @@ int __fastcall UseInvItem(int pnum, int cii)
 		}
 		if ( v6[90] == 17 )
 		{
-			v12 = plr[v2]._pClass;
 			sfxdelay = 10;
-			if ( v12 )
+			switch ( plr[v2]._pClass )
 			{
-				if ( v12 == 1 )
-				{
+				case UI_WARRIOR:
+					sfxdnum = PS_WARR95;
+					break;
+				case UI_ROGUE:
 					sfxdnum = PS_ROGUE95;
-				}
-				else if ( v12 == 2 )
-				{
+					break;
+				case UI_SORCERER:
 					sfxdnum = PS_MAGE95;
-				}
-			}
-			else
-			{
-				sfxdnum = PS_WARR95;
+					break;
 			}
 			return 1;
 		}
 		if ( v6[90] == 19 )
 		{
 			PlaySFX(IS_IBOOK);
-			v11 = plr[v2]._pClass;
 			sfxdelay = 10;
-			if ( v11 )
+			switch ( plr[v2]._pClass )
 			{
-				if ( v11 == 1 )
-				{
+				case UI_WARRIOR:
+					sfxdnum = PS_WARR29;
+					break;
+				case UI_ROGUE:
 					sfxdnum = PS_ROGUE29;
-				}
-				else if ( v11 == 2 )
-				{
+					break;
+				case UI_SORCERER:
 					sfxdnum = PS_MAGE29;
-				}
-			}
-			else
-			{
-				sfxdnum = PS_WARR29;
+					break;
 			}
 			return 1;
 		}
@@ -3193,25 +3140,19 @@ int __fastcall UseInvItem(int pnum, int cii)
 			return 0;
 		if ( !v6[89] )
 		{
-			v7 = plr[v2]._pClass;
-			if ( v7 )
+			switch ( plr[v2]._pClass )
 			{
-				if ( v7 == 1 )
-				{
+				case UI_WARRIOR:
+					v8 = PS_WARR13;
+					break;
+				case UI_ROGUE:
 					v8 = PS_ROGUE13;
-				}
-				else
-				{
-					if ( v7 != 2 )
-						return 1;
+					break;
+				case UI_SORCERER:
 					v8 = PS_MAGE13;
-				}
+					break;
 			}
-			else
-			{
-				v8 = PS_WARR13;
-			}
-			PlaySFX(v8);
+			PlaySFX(v8); // I can't use that yet
 			return 1;
 		}
 		v9 = v6[55];

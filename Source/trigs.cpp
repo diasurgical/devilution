@@ -1265,7 +1265,6 @@ void __cdecl CheckTriggers()
 	int v4; // edx
 	signed int v5; // edx
 	int v6; // eax
-	char v7; // al
 	int v8; // ecx
 	int v9; // [esp-4h] [ebp-20h]
 	int x; // [esp+Ch] [ebp-10h]
@@ -1359,21 +1358,19 @@ LABEL_33:
 		StartNewLvl(myplr, *v0, v9);
 		goto LABEL_34;
 	}
-	v7 = plr[myplr]._pClass;
-	switch ( v7 )
+	switch ( plr[myplr]._pClass )
 	{
 		case UI_WARRIOR:
 			v8 = PS_WARR43;
-			goto LABEL_42;
+			break;
 		case UI_ROGUE:
 			v8 = PS_ROGUE43;
-			goto LABEL_42;
+			break;
 		case UI_SORCERER:
 			v8 = PS_MAGE43;
-LABEL_42:
-			PlaySFX(v8);
 			break;
 	}
+	PlaySFX(v8);
 	_LOBYTE(v2) = error_id;
 	InitDiabloMsg(v2);
 	NetSendCmdLoc(1u, 1u, x, y);
