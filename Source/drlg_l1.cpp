@@ -847,7 +847,7 @@ void __cdecl DRLG_L1Shadows()
 	do
 	{
 		v1 = &dungeon[0][v0 + 39];
-		v2 = 40;
+		v2 = 1;
 		do
 		{
 			v3 = &SPATS[0].s1;
@@ -884,10 +884,10 @@ void __cdecl DRLG_L1Shadows()
 				v3 += 7;
 			}
 			while ( (signed int)v3 < (signed int)&SPATS[37].s1 );
-			v2 += 40;
+			++v2;
 			v1 += 40;
 		}
-		while ( v2 < 1600 );
+		while ( v2 < 40 );
 		++v0;
 	}
 	while ( v0 < 40 );
