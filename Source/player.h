@@ -38,7 +38,7 @@ void __fastcall AddPlrMonstExper(int lvl, int exp, char pmask);
 void __fastcall InitPlayer(int pnum, bool FirstTime);
 void __cdecl InitMultiView();
 void __fastcall InitPlayerLoc(int pnum, bool flag);
-bool __fastcall SolidLoc(int x, int y);
+BOOL __fastcall SolidLoc(int x, int y);
 bool __fastcall PlrDirOK(int pnum, int dir);
 void __fastcall PlrClrTrans(int x, int y);
 void __fastcall PlrDoTrans(int x, int y);

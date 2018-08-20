@@ -1270,13 +1270,14 @@ void __fastcall InitPlayerLoc(int pnum, bool flag)
 	}
 }
 
-bool __fastcall SolidLoc(int x, int y)
+BOOL __fastcall SolidLoc(int x, int y)
 {
-	bool result; // eax
+	BOOL result; // eax
 
 	if ( x < 0 || y < 0 || x >= 112 || y >= 112 )
-		result = 0;
+		result = FALSE;
 	else
+		// TODO: remove cast when changing nSolidTable to unsigned char
 		result = (unsigned char)nSolidTable[dPiece[0][y + 112 * x]];
 	return result;
 }

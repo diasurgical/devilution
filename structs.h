@@ -139,7 +139,7 @@ struct MonsterData
 	int flags; // width?
 	int mType;
 	char *GraphicType;
-	int has_special;
+	BOOL has_special;
 	char *sndfile;
 	int snd_special;
 	int has_trans;
@@ -480,8 +480,8 @@ struct MissileStruct
 
 struct AnimStruct
 {
-	int CMem; // [unsigned] char * ??
-	int Frames[8]; // unsigned char *
+	unsigned char *CMem;
+	unsigned char *Frames[8]; // TODO: to CelBuf struct?
 	int Rate;
 	int Delay;
 };
@@ -500,19 +500,22 @@ struct CMonster
 	unsigned char mAFNum;
 	char mdeadval;
 	MonsterData *MData;
-	void *trans_file;
+
+	// A TRN file contains a sequence of colour transitions, represented
+	// as indexes into a palette. (a 256 byte array of palette indices)
+	unsigned char *trans_file;
 };
 
 struct MonsterStruct
 {
 	int _mMTidx;
 	int _mmode;
-	int _mgoal;
+	unsigned char _mgoal;
 	int _mgoalvar1;
 	int _mgoalvar2;
 	int _mgoalvar3;
 	int field_18;
-	int _pathcount;
+	unsigned char _pathcount;
 	int _mx;
 	int _my;
 	int _mfutx;
@@ -560,7 +563,7 @@ struct MonsterStruct
 	unsigned char _uniqtrans;
 	char _udeadval;
 	char mWhoHit;
-	short mLevel; /* char */
+	char mLevel;
 	unsigned short mExp;
 	unsigned char mHit;
 	unsigned char mMinDamage;
@@ -570,7 +573,7 @@ struct MonsterStruct
 	unsigned char mMaxDamage2;
 	char mArmorClass;
 	char falign_CB;
-	int mMagicRes; /* ushort */
+	unsigned short mMagicRes;
 	int mtalkmsg;
 	unsigned char leader;
 	unsigned char leaderflag;

@@ -302,16 +302,16 @@ LABEL_10:
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-bool __fastcall QuestStatus(int i)
+BOOL __fastcall QuestStatus(int i)
 {
-	bool result; // al
+	BOOL result; // al
 
 	if ( setlevel
 	  || currlevel != quests[i]._qlevel
 	  || !quests[i]._qactive
 	  || (result = 1, gbMaxPlayers != 1) && !(questlist[i]._qflags & 1) )
 	{
-		result = 0;
+		result = FALSE;
 	}
 	return result;
 }
