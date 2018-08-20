@@ -259,36 +259,30 @@ void __cdecl pfile_flush_W()
 
 void __fastcall game_2_ui_player(PlayerStruct *p, _uiheroinfo *heroinfo, bool bHasSaveFile)
 {
-	_uiheroinfo *v3; // esi
-	PlayerStruct *v4; // edi
-	char v5; // al
-
-	v3 = heroinfo;
-	v4 = p;
 	memset(heroinfo, 0, 0x2Cu);
-	strncpy(v3->name, v4->_pName, 0xFu);
-	v3->name[15] = 0;
-	v3->level = v4->_pLevel;
-	v3->heroclass = game_2_ui_class(v4);
-	v3->strength = v4->_pStrength;
-	v3->magic = v4->_pMagic;
-	v3->dexterity = v4->_pDexterity;
-	v3->vitality = v4->_pVitality;
-	v3->gold = v4->_pGold;
-	v3->hassaved = bHasSaveFile;
-	v5 = v4->pDiabloKillLevel;
-	v3->spawned = 0;
-	v3->herorank = v5;
+	strncpy(heroinfo->name, p->_pName, 0xFu);
+	heroinfo->name[15] = 0;
+	heroinfo->level = p->_pLevel;
+	heroinfo->heroclass = game_2_ui_class(p);
+	heroinfo->strength = p->_pStrength;
+	heroinfo->magic = p->_pMagic;
+	heroinfo->dexterity = p->_pDexterity;
+	heroinfo->vitality = p->_pVitality;
+	heroinfo->gold = p->_pGold;
+	heroinfo->hassaved = bHasSaveFile;
+	heroinfo->spawned = 0;
+	heroinfo->herorank = p->pDiabloKillLevel;
 }
 
 char __fastcall game_2_ui_class(PlayerStruct *p)
 {
-	char result; // al
+	char result = p->_pClass;
+	if ( result = UI_WARRIOR )
+		return result;
+	if ( result = UI_SORCERER )
+		return result;
 
-	result = p->_pClass;
-	if ( result )
-		result = (result != 1) + 1;
-	return result;
+	return UI_ROGUE;
 }
 
 bool __stdcall pfile_ui_set_hero_infos(void (__stdcall *ui_add_hero_info)(_uiheroinfo *))

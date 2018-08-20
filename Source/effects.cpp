@@ -4,7 +4,7 @@
 
 int effects_cpp_init_value; // weak
 int sfxdelay; // weak
-int sfxdnum;
+_sfx_id sfxdnum;
 void *sfx_stream;
 TSFX *sfx_data_cur;
 

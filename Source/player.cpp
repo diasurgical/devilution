@@ -158,11 +158,11 @@ void __fastcall LoadPlrGFX(int pnum, int gfxflag)
 	sprintf(
 		v15,
 		"%c%c%c",
-		CharChar[SLOBYTE(v3->_pClass)],
+		CharChar[v3->_pClass],
 		ArmourChar[v3->_pgfxnum >> 4],
 		WepChar[v3->_pgfxnum & 0xF]);
 	v4 = 1;
-	v17 = ClassStrTbl[SLOBYTE(v3->_pClass)];
+	v17 = ClassStrTbl[v3->_pClass];
 	v5 = leveltype;
 	v6 = v17;
 	v7 = v17;
@@ -555,111 +555,107 @@ void __fastcall ClearPlrPVars(int pnum)
 
 void __fastcall SetPlrAnims(int pnum)
 {
-	int v1; // esi
-	char v2; // bl
-	int v3; // eax
-	int v4; // esi
-	int v5; // ecx
-	bool v6; // zf
 	int v7; // ecx
 
-	v1 = pnum;
 	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("SetPlrAnims: illegal player %d", pnum);
-	v2 = leveltype;
-	v3 = v1;
-	v4 = SLOBYTE(plr[v1]._pClass);
-	v5 = v4;
-	v6 = leveltype == DTYPE_TOWN;
-	plr[v3]._pNWidth = 96;
-	plr[v3]._pWWidth = 96;
-	plr[v3]._pAWidth = 128;
-	plr[v3]._pHWidth = 96;
-	plr[v3]._pSWidth = 96;
-	plr[v3]._pDWidth = 128;
-	plr[v3]._pBWidth = 96;
-	if ( v6 )
+
+	char pClass = plr[pnum]._pClass;
+
+	plr[pnum]._pNWidth = 96;
+	plr[pnum]._pWWidth = 96;
+	plr[pnum]._pAWidth = 128;
+	plr[pnum]._pHWidth = 96;
+	plr[pnum]._pSWidth = 96;
+	plr[pnum]._pDWidth = 128;
+	plr[pnum]._pBWidth = 96;
+
+	if ( leveltype == DTYPE_TOWN )
 	{
-		plr[v3]._pNFrames = PlrGFXAnimLens[v5][7];
-		plr[v3]._pWFrames = PlrGFXAnimLens[v5][8];
-		plr[v3]._pDFrames = PlrGFXAnimLens[v5][4];
-		plr[v3]._pSFrames = PlrGFXAnimLens[v5][5];
+		plr[pnum]._pNFrames = PlrGFXAnimLens[pClass][7];
+		plr[pnum]._pWFrames = PlrGFXAnimLens[pClass][8];
+		plr[pnum]._pDFrames = PlrGFXAnimLens[pClass][4];
+		plr[pnum]._pSFrames = PlrGFXAnimLens[pClass][5];
 	}
 	else
 	{
-		plr[v3]._pNFrames = PlrGFXAnimLens[v5][0];
-		plr[v3]._pWFrames = PlrGFXAnimLens[v5][2];
-		plr[v3]._pAFrames = PlrGFXAnimLens[v5][1];
-		plr[v3]._pHFrames = PlrGFXAnimLens[v5][6];
-		plr[v3]._pSFrames = PlrGFXAnimLens[v5][5];
-		plr[v3]._pDFrames = PlrGFXAnimLens[v5][4];
-		plr[v3]._pBFrames = PlrGFXAnimLens[v5][3];
-		plr[v3]._pAFNum = PlrGFXAnimLens[v5][9];
+		plr[pnum]._pNFrames = PlrGFXAnimLens[pClass][0];
+		plr[pnum]._pWFrames = PlrGFXAnimLens[pClass][2];
+		plr[pnum]._pAFrames = PlrGFXAnimLens[pClass][1];
+		plr[pnum]._pHFrames = PlrGFXAnimLens[pClass][6];
+		plr[pnum]._pSFrames = PlrGFXAnimLens[pClass][5];
+		plr[pnum]._pDFrames = PlrGFXAnimLens[pClass][4];
+		plr[pnum]._pBFrames = PlrGFXAnimLens[pClass][3];
+		plr[pnum]._pAFNum = PlrGFXAnimLens[pClass][9];
 	}
-	plr[v3]._pSFNum = PlrGFXAnimLens[v5][10];
-	v7 = plr[v3]._pgfxnum & 0xF;
-	if ( !v4 )
+
+	plr[pnum]._pSFNum = PlrGFXAnimLens[pClass][10];
+	v7 = plr[pnum]._pgfxnum & 0xF;
+
+	if ( pClass == UI_WARRIOR )
 	{
-		if ( v7 == 4 )
+		switch ( v7 )
 		{
-			if ( v2 )
-				plr[v3]._pNFrames = 8;
-			plr[v3]._pAWidth = 96;
-			goto LABEL_11;
-		}
-		if ( v7 == 5 )
-		{
-			plr[v3]._pAFrames = 20;
-			plr[v3]._pAFNum = 10;
-			return;
-		}
-LABEL_19:
-		if ( v7 == 8 )
-		{
-			plr[v3]._pAFrames = 16;
-LABEL_11:
-			plr[v3]._pAFNum = 11;
-			return;
+			case 4:
+				if ( leveltype != DTYPE_TOWN )
+					plr[pnum]._pNFrames = 8;
+				plr[pnum]._pAWidth = 96;
+				plr[pnum]._pAFNum = 11;
+				return;
+			case 5:
+				plr[pnum]._pAFrames = 20;
+				plr[pnum]._pAFNum = 10;
+				return;
+			case 8:
+				plr[pnum]._pAFrames = 16;
+				plr[pnum]._pAFNum = 11;
+				return;
 		}
 		return;
 	}
-	if ( v4 == 1 )
+
+	if ( pClass == UI_ROGUE )
 	{
-		if ( v7 == 5 )
+		switch ( v7 )
 		{
-			plr[v3]._pAFrames = 22;
-			plr[v3]._pAFNum = 13;
-			return;
+			case 4:
+				plr[pnum]._pAFrames = 12;
+				plr[pnum]._pAFNum = 7;
+				return;
+			case 5:
+				plr[pnum]._pAFrames = 22;
+				plr[pnum]._pAFNum = 13;
+				return;
+			case 8:
+				plr[pnum]._pAFrames = 16;
+				plr[pnum]._pAFNum = 11;
+				return;
 		}
-		if ( v7 == 4 )
-		{
-			plr[v3]._pAFrames = 12;
-			plr[v3]._pAFNum = 7;
-			return;
-		}
-		goto LABEL_19;
-	}
-	if ( v4 != 2 )
 		return;
-	plr[v3]._pSWidth = 128;
-	switch ( v7 )
-	{
-		case 0:
-			plr[v3]._pAFrames = 20;
-			return;
-		case 1:
-			plr[v3]._pAFNum = 9;
-			return;
-		case 4:
-			plr[v3]._pAFrames = 20;
-			break;
-		case 5:
-			plr[v3]._pAFrames = 24;
-			break;
-		default:
-			return;
 	}
-	plr[v3]._pAFNum = 16;
+
+	if ( pClass == UI_SORCERER )
+	{
+		plr[pnum]._pSWidth = 128;
+		switch ( v7 )
+		{
+			case 0:
+				plr[pnum]._pAFrames = 20;
+				return;
+			case 1:
+				plr[pnum]._pAFNum = 9;
+				return;
+			case 4:
+				plr[pnum]._pAFrames = 20;
+				plr[pnum]._pAFNum = 16;
+				return;
+			case 5:
+				plr[pnum]._pAFrames = 24;
+				plr[pnum]._pAFNum = 16;
+				return;
+		}
+		return;
+	}
 }
 // 5BB1ED: using guessed type char leveltype;
 
@@ -687,11 +683,7 @@ void __fastcall ClearPlrRVars(PlayerStruct *pPlayer)
 
 void __fastcall CreatePlayer(int pnum, char c)
 {
-	unsigned int v2; // edi
-	char v3; // bl
-	int v4; // esi
 	int v5; // eax
-	int v6; // ecx
 	char v7; // al
 	char v8; // al
 	char v9; // al
@@ -703,168 +695,150 @@ void __fastcall CreatePlayer(int pnum, char c)
 	int v15; // eax
 	int v16; // eax
 	int v17; // eax
-	bool v18; // zf
-	char v19; // [esp+Ch] [ebp-8h]
-	int arglist; // [esp+10h] [ebp-4h]
 
-	v2 = pnum;
-	v3 = c;
-	v4 = pnum;
-	v19 = c;
-	arglist = pnum;
 	ClearPlrRVars(&plr[pnum]);
 	v5 = GetTickCount();
 	SetRndSeed(v5);
-	if ( v2 >= MAX_PLRS )
-		TermMsg("CreatePlayer: illegal player %d", v2);
-	v6 = v3;
-	_LOBYTE(plr[v4]._pClass) = v3;
-	v7 = StrengthTbl[v6];
+	if ( pnum >= MAX_PLRS )
+		TermMsg("CreatePlayer: illegal player %d", pnum);
+	plr[pnum]._pClass = c;
+	v7 = StrengthTbl[pnum];
 	if ( v7 < 0 )
 		v7 = 0;
-	plr[v4]._pStrength = v7;
-	plr[v4]._pBaseStr = v7;
-	v8 = MagicTbl[v6];
+	plr[pnum]._pStrength = v7;
+	plr[pnum]._pBaseStr = v7;
+	v8 = MagicTbl[pnum];
 	if ( v8 < 0 )
 		v8 = 0;
-	plr[v4]._pMagic = v8;
-	plr[v4]._pBaseMag = v8;
-	v9 = DexterityTbl[v6];
+	plr[pnum]._pMagic = v8;
+	plr[pnum]._pBaseMag = v8;
+	v9 = DexterityTbl[pnum];
 	if ( v9 < 0 )
 		v9 = 0;
-	plr[v4]._pDexterity = v9;
-	plr[v4]._pBaseDex = v9;
-	v10 = VitalityTbl[v6];
+	plr[pnum]._pDexterity = v9;
+	plr[pnum]._pBaseDex = v9;
+	v10 = VitalityTbl[pnum];
 	if ( v10 < 0 )
 		v10 = 0;
 	v11 = v10;
-	plr[v4]._pVitality = v10;
-	plr[v4]._pBaseVit = v10;
-	plr[v4]._pStatPts = 0;
-	plr[v4].pTownWarps = 0;
-	plr[v4].pDungMsgs = 0;
-	plr[v4].pLvlLoad = 0;
-	plr[v4].pDiabloKillLevel = 0;
-	if ( v19 == 1 )
+	plr[pnum]._pVitality = v10;
+	plr[pnum]._pBaseVit = v10;
+	plr[pnum]._pStatPts = 0;
+	plr[pnum].pTownWarps = 0;
+	plr[pnum].pDungMsgs = 0;
+	plr[pnum].pLvlLoad = 0;
+	plr[pnum].pDiabloKillLevel = 0;
+	if ( c == UI_ROGUE )
 	{
 		v12 = 200;
-		v13 = plr[v4]._pLevel * (plr[v4]._pStrength + plr[v4]._pDexterity);
+		v13 = plr[pnum]._pLevel * (plr[pnum]._pStrength + plr[pnum]._pDexterity);
 	}
 	else
 	{
-		v13 = plr[v4]._pStrength * plr[v4]._pLevel;
+		v13 = plr[pnum]._pStrength * plr[pnum]._pLevel;
 		v12 = 100;
 	}
-	plr[v4]._pDamageMod = v13 / v12;
-	plr[v4]._pBaseToBlk = ToBlkTbl[v6];
-	plr[v4]._pHitPoints = (v11 + 10) << 6;
-	if ( !v19 )
-		plr[v4]._pHitPoints = (v11 + 10) << 7;
-	if ( v19 == 1 )
-		plr[v4]._pHitPoints += plr[v4]._pHitPoints >> 1;
-	v14 = plr[v4]._pHitPoints;
-	plr[v4]._pMaxHP = v14;
-	plr[v4]._pHPBase = v14;
-	plr[v4]._pMaxHPBase = v14;
-	v15 = plr[v4]._pMagic << 6;
-	plr[v4]._pMana = v15;
-	if ( v19 == 2 )
-		plr[v4]._pMana = 2 * v15;
-	if ( v19 == 1 )
-		plr[v4]._pMana += plr[v4]._pMana >> 1;
-	v16 = plr[v4]._pMana;
-	plr[v4]._pMaxMana = v16;
-	plr[v4]._pManaBase = v16;
-	plr[v4]._pMaxManaBase = v16;
+	plr[pnum]._pDamageMod = v13 / v12;
+	plr[pnum]._pBaseToBlk = ToBlkTbl[pnum];
+	plr[pnum]._pHitPoints = (v11 + 10) << 6;
+	if ( c == UI_WARRIOR )
+		plr[pnum]._pHitPoints = (v11 + 10) << 7;
+	if ( c == UI_ROGUE )
+		plr[pnum]._pHitPoints += plr[pnum]._pHitPoints >> 1;
+	v14 = plr[pnum]._pHitPoints;
+	plr[pnum]._pMaxHP = v14;
+	plr[pnum]._pHPBase = v14;
+	plr[pnum]._pMaxHPBase = v14;
+	v15 = plr[pnum]._pMagic << 6;
+	plr[pnum]._pMana = v15;
+	if ( c == UI_SORCERER )
+		plr[pnum]._pMana = 2 * v15;
+	if ( c == UI_ROGUE )
+		plr[pnum]._pMana += plr[pnum]._pMana >> 1;
+	v16 = plr[pnum]._pMana;
+	plr[pnum]._pMaxMana = v16;
+	plr[pnum]._pManaBase = v16;
+	plr[pnum]._pMaxManaBase = v16;
 	v17 = ExpLvlsTbl[1];
-	plr[v4]._pLevel = 1;
-	plr[v4]._pMaxLvl = 1;
-	plr[v4]._pExperience = 0;
-	plr[v4]._pMaxExp = 0;
-	plr[v4]._pNextExper = v17;
-	plr[v4]._pArmorClass = 0;
-	plr[v4]._pMagResist = 0;
-	plr[v4]._pFireResist = 0;
-	plr[v4]._pLghtResist = 0;
-	plr[v4]._pLightRad = 10;
-	plr[v4]._pInfraFlag = 0;
-	if ( !v19 )
+	plr[pnum]._pLevel = 1;
+	plr[pnum]._pMaxLvl = 1;
+	plr[pnum]._pExperience = 0;
+	plr[pnum]._pMaxExp = 0;
+	plr[pnum]._pNextExper = v17;
+	plr[pnum]._pArmorClass = 0;
+	plr[pnum]._pMagResist = 0;
+	plr[pnum]._pFireResist = 0;
+	plr[pnum]._pLghtResist = 0;
+	plr[pnum]._pLightRad = 10;
+	plr[pnum]._pInfraFlag = 0;
+	switch ( c )
 	{
-		plr[v4]._pAblSpells[0] = 0x2000000;
-LABEL_26:
-		plr[v4]._pAblSpells[1] = 0;
-LABEL_27:
-		plr[v4]._pMemSpells[0] = 0;
-		goto LABEL_28;
+		case UI_WARRIOR:
+			plr[pnum]._pAblSpells[0] = 0x2000000;
+			plr[pnum]._pAblSpells[1] = 0;
+			plr[pnum]._pMemSpells[0] = 0;
+			break;
+		case UI_ROGUE:
+			plr[pnum]._pAblSpells[0] = 0x8000000;
+			plr[pnum]._pAblSpells[1] = 0;
+			plr[pnum]._pMemSpells[0] = 0;
+			break;
+		case UI_SORCERER:
+			plr[pnum]._pAblSpells[0] = 0x4000000;
+			plr[pnum]._pAblSpells[1] = 0;
+			plr[pnum]._pMemSpells[0] = 1;
+			break;
 	}
-	if ( v19 == 1 )
+	plr[pnum]._pMemSpells[1] = 0;
+	memset(plr[pnum]._pSplLvl, 0, sizeof(plr[pnum]._pSplLvl));
+	_LOBYTE(plr[pnum]._pSpellFlags) = 0;
+	if ( plr[pnum]._pClass == UI_SORCERER )
+		plr[pnum]._pSplLvl[1] = 2;
+	plr[pnum]._pSplHotKey[0] = -1;
+	plr[pnum]._pSplHotKey[1] = -1;
+	plr[pnum]._pSplHotKey[2] = -1;
+
+	switch ( plr[pnum]._pClass )
 	{
-		plr[v4]._pAblSpells[0] = 0x8000000;
-		goto LABEL_26;
+		case UI_WARRIOR:
+			plr[pnum]._pgfxnum = 3;
+			break;
+		case UI_ROGUE:
+			plr[pnum]._pgfxnum = 4;
+			break;
+		case UI_SORCERER:
+			plr[pnum]._pgfxnum = 8;
+			break;
 	}
-	if ( v19 != 2 )
-		goto LABEL_27;
-	plr[v4]._pAblSpells[0] = 0x4000000;
-	plr[v4]._pAblSpells[1] = 0;
-	plr[v4]._pMemSpells[0] = 1;
-LABEL_28:
-	plr[v4]._pMemSpells[1] = 0;
-	memset(plr[v4]._pSplLvl, 0, sizeof(plr[v4]._pSplLvl));
-	v18 = _LOBYTE(plr[v4]._pClass) == 2;
-	_LOBYTE(plr[v4]._pSpellFlags) = 0;
-	if ( v18 )
-		plr[v4]._pSplLvl[1] = 2;
-	plr[v4]._pSplHotKey[0] = -1;
-	plr[v4]._pSplHotKey[1] = -1;
-	plr[v4]._pSplHotKey[2] = -1;
-	if ( v19 )
-	{
-		if ( v19 == 1 )
-		{
-			plr[v4]._pgfxnum = 4;
-		}
-		else if ( v19 == 2 )
-		{
-			plr[v4]._pgfxnum = 8;
-		}
-	}
-	else
-	{
-		plr[v4]._pgfxnum = 3;
-	}
-	*(_DWORD *)plr[v4]._pLvlVisited = 0;
-	*(_DWORD *)&plr[v4]._pLvlVisited[4] = 0;
-	*(_DWORD *)&plr[v4]._pLvlVisited[8] = 0;
-	*(_DWORD *)&plr[v4]._pLvlVisited[12] = 0;
-	plr[v4]._pLvlVisited[16] = 0;
-	*(_DWORD *)plr[v4]._pSLvlVisited = 0;
-	*(_DWORD *)&plr[v4]._pSLvlVisited[4] = 0;
-	*(_WORD *)&plr[v4]._pSLvlVisited[8] = 0;
-	plr[v4]._pLvlChanging = 0;
-	plr[v4].pTownWarps = 0;
-	plr[v4].pLvlLoad = 0;
-	plr[v4].pBattleNet = 0;
-	plr[v4].pManaShield = 0;
-	InitDungMsgs(arglist);
-	CreatePlrItems(arglist);
+	*(_DWORD *)plr[pnum]._pLvlVisited = 0;
+	*(_DWORD *)&plr[pnum]._pLvlVisited[4] = 0;
+	*(_DWORD *)&plr[pnum]._pLvlVisited[8] = 0;
+	*(_DWORD *)&plr[pnum]._pLvlVisited[12] = 0;
+	plr[pnum]._pLvlVisited[16] = 0;
+	*(_DWORD *)plr[pnum]._pSLvlVisited = 0;
+	*(_DWORD *)&plr[pnum]._pSLvlVisited[4] = 0;
+	*(_WORD *)&plr[pnum]._pSLvlVisited[8] = 0;
+	plr[pnum]._pLvlChanging = 0;
+	plr[pnum].pTownWarps = 0;
+	plr[pnum].pLvlLoad = 0;
+	plr[pnum].pBattleNet = 0;
+	plr[pnum].pManaShield = 0;
+	InitDungMsgs(pnum);
+	CreatePlrItems(pnum);
 	SetRndSeed(0);
 }
 
 int __fastcall CalcStatDiff(int pnum)
 {
-	int v1; // ecx
-	int v2; // edx
-
-	v1 = pnum;
-	v2 = SLOBYTE(plr[v1]._pClass);
-	return MaxStats[v2][0]
-		 + MaxStats[v2][1]
-		 + MaxStats[v2][2]
-		 + MaxStats[v2][3]
-		 - plr[v1]._pBaseVit
-		 - plr[v1]._pBaseDex
-		 - plr[v1]._pBaseMag
-		 - plr[v1]._pBaseStr;
+	char pClass = plr[pnum]._pClass;
+	return MaxStats[pClass][0]
+		 + MaxStats[pClass][1]
+		 + MaxStats[pClass][2]
+		 + MaxStats[pClass][3]
+		 - plr[pnum]._pBaseVit
+		 - plr[pnum]._pBaseDex
+		 - plr[pnum]._pBaseMag
+		 - plr[pnum]._pBaseStr;
 }
 
 void __fastcall NextPlrLevel(int pnum)
@@ -874,11 +848,9 @@ void __fastcall NextPlrLevel(int pnum)
 	char *v3; // eax
 	char v4; // bl
 	int v5; // eax
-	char v6; // bl
-	char v7; // al
-	signed int v8; // edx
+	signed int hpBoost; // edx
 	int v9; // ebp
-	signed int v10; // eax
+	signed int manaBoost; // eax
 	int v11; // edx
 
 	v1 = pnum;
@@ -892,25 +864,22 @@ void __fastcall NextPlrLevel(int pnum)
 		plr[v2]._pStatPts += 5;
 	else
 		plr[v2]._pStatPts = CalcStatDiff(v1);
-	v5 = v4;
-	v6 = gbMaxPlayers;
-	plr[v2]._pNextExper = ExpLvlsTbl[v5];
-	v7 = plr[v2]._pClass;
-	v8 = v7 != 2 ? 128 : 64;
-	if ( v6 == 1 )
-		v8 = v7 != 2 ? 129 : 65;
+	plr[v2]._pNextExper = ExpLvlsTbl[v4];
+	hpBoost = plr[v2]._pClass != UI_SORCERER ? 128 : 64;
+	if ( gbMaxPlayers == 1 )
+		hpBoost = plr[v2]._pClass != UI_SORCERER ? 129 : 65;
 	v9 = myplr;
-	plr[v2]._pMaxHP += v8;
+	plr[v2]._pMaxHP += hpBoost;
 	plr[v2]._pHitPoints = plr[v2]._pMaxHP;
-	plr[v2]._pMaxHPBase += v8;
+	plr[v2]._pMaxHPBase += hpBoost;
 	plr[v2]._pHPBase = plr[v2]._pMaxHPBase;
 	if ( v1 == v9 )
 		drawhpflag = 1;
-	v10 = v7 != 0 ? 128 : 64;
-	if ( v6 == 1 )
-		++v10;
-	plr[v2]._pMaxMana += v10;
-	plr[v2]._pMaxManaBase += v10;
+	manaBoost = plr[v2]._pClass != UI_WARRIOR ? 128 : 64;
+	if ( gbMaxPlayers == 1 )
+		++manaBoost;
+	plr[v2]._pMaxMana += manaBoost;
+	plr[v2]._pMaxManaBase += manaBoost;
 	v11 = plr[v2]._pMaxManaBase;
 	if ( !(plr[v1]._pIFlags & 0x8000000) )
 	{
@@ -2212,8 +2181,7 @@ void __fastcall StartPlrHit(int pnum, int dam, unsigned char forcehit)
 {
 	int v3; // ebx
 	int v4; // edi
-	int v5; // esi
-	char v6; // al
+	char pClass; // al
 	int v7; // ecx
 	int v8; // eax
 	int v9; // edi
@@ -2223,41 +2191,39 @@ void __fastcall StartPlrHit(int pnum, int dam, unsigned char forcehit)
 	v4 = dam;
 	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("StartPlrHit: illegal player %d", pnum);
-	v5 = v3;
-	if ( plr[v3]._pInvincible && !plr[v5]._pHitPoints && v3 == myplr )
+	if ( plr[v3]._pInvincible && !plr[v3]._pHitPoints && v3 == myplr )
 	{
 		SyncPlrKill(v3, -1);
 		return;
 	}
-	v6 = plr[v5]._pClass;
-	switch ( v6 )
+	pClass = plr[v3]._pClass;
+	switch ( pClass )
 	{
 		case UI_WARRIOR:
 			v7 = PS_WARR69;
-LABEL_13:
-			PlaySfxLoc(v7, plr[v5].WorldX, plr[v5].WorldY);
 			break;
 		case UI_ROGUE:
 			v7 = PS_ROGUE69;
-			goto LABEL_13;
+			break;
 		case UI_SORCERER:
 			v7 = PS_MAGE69;
-			goto LABEL_13;
+			break;
 	}
-	v8 = plr[v5]._pLevel;
+	PlaySfxLoc(v7, plr[v3].WorldX, plr[v3].WorldY);
+	v8 = plr[v3]._pLevel;
 	drawhpflag = 1;
 	if ( v4 >> 6 >= v8 || forcehit )
 	{
-		v9 = plr[v5]._pdir;
-		if ( !(plr[v5]._pGFXLoad & 8) )
+		v9 = plr[v3]._pdir;
+		if ( !(plr[v3]._pGFXLoad & 8) )
 			LoadPlrGFX(v3, 8);
-		v10 = plr[v5]._pHWidth;
-		NewPlrAnim(v3, plr[0]._pHAnim[v9 + 5430 * v3], plr[v5]._pHFrames, 0, v10);
-		plr[v5]._pmode = PM_GOTHIT;
+		v10 = plr[v3]._pHWidth;
+		NewPlrAnim(v3, plr[0]._pHAnim[v9 + 5430 * v3], plr[v3]._pHFrames, 0, v10);
+		plr[v3]._pmode = PM_GOTHIT;
 		FixPlayerLocation(v3, v9);
-		plr[v5]._pVar8 = 1;
+		plr[v3]._pVar8 = 1;
 		FixPlrWalkTags(v3);
-		dPlayer[plr[v5].WorldX][plr[v5].WorldY] = v3 + 1;
+		dPlayer[plr[v3].WorldX][plr[v3].WorldY] = v3 + 1;
 		SetPlayerOld(v3);
 	}
 }
@@ -4887,12 +4853,9 @@ LABEL_15:
 
 void __fastcall CheckPlrSpell()
 {
-	int v0; // ecx
 	int v1; // eax
 	int v2; // edx
-	char v3; // al
-	int v4; // ecx
-	char v5; // al
+	_sfx_id sfx_id; // ecx
 	int v6; // eax
 	int v7; // edx
 	int v8; // esi
@@ -4902,33 +4865,30 @@ void __fastcall CheckPlrSpell()
 	int v12; // eax
 	int v13; // ST10_4
 	int v14; // eax
-	char v15; // al
 
-	v0 = myplr;
 	if ( (unsigned int)myplr >= 4 )
 	{
 		TermMsg("CheckPlrSpell: illegal player %d", myplr);
-		v0 = myplr;
 	}
-	v1 = 21720 * v0;
-	v2 = plr[v0]._pRSpell;
+	v1 = 21720 * myplr;
+	v2 = plr[myplr]._pRSpell;
 	if ( v2 != -1 )
 	{
 		if ( leveltype == DTYPE_TOWN && !*(_DWORD *)&spelldata[v2].sTownSpell )
 		{
-			v5 = *((_BYTE *)&plr[0]._pClass + v1);
-			switch ( v5 )
+			switch ( plr[myplr]._pClass )
 			{
 				case UI_WARRIOR:
-					v4 = PS_WARR27;
-					goto LABEL_53;
+					sfx_id = PS_WARR27;
+					break;
 				case UI_ROGUE:
-					v4 = PS_ROGUE27;
-					goto LABEL_53;
+					sfx_id = PS_ROGUE27;
+					break;
 				case UI_SORCERER:
-					v4 = PS_MAGE27;
-					goto LABEL_53;
+					sfx_id = PS_MAGE27;
+					break;
 			}
+			PlaySFX(sfx_id); // I can't cast that here
 			return;
 		}
 		if ( pcurs != CURSOR_HAND
@@ -4947,7 +4907,7 @@ void __fastcall CheckPlrSpell()
 			goto LABEL_46;
 		if ( (char)v1 <= 1 )
 		{
-			v6 = CheckSpell(v0, v2, v1, 0);
+			v6 = CheckSpell(myplr, v2, v1, 0);
 		}
 		else
 		{
@@ -4959,28 +4919,27 @@ void __fastcall CheckPlrSpell()
 					goto LABEL_36;
 				}
 LABEL_46:
-				if ( _LOBYTE(plr[v0]._pRSplType) == 1 )
+				if ( _LOBYTE(plr[myplr]._pRSplType) == 1 )
 				{
-					v15 = plr[v0]._pClass;
-					switch ( v15 )
+					switch ( plr[myplr]._pClass )
 					{
 						case UI_WARRIOR:
-							v4 = PS_WARR35;
-							goto LABEL_53;
+							sfx_id = PS_WARR35;
+							break;
 						case UI_ROGUE:
-							v4 = PS_ROGUE35;
-							goto LABEL_53;
+							sfx_id = PS_ROGUE35;
+							break;
 						case UI_SORCERER:
-							v4 = PS_MAGE35;
-							goto LABEL_53;
+							sfx_id = PS_MAGE35;
+							break;
 					}
+					PlaySFX(sfx_id);
 				}
 				return;
 			}
 			v6 = UseScroll();
 		}
 LABEL_36:
-		v0 = myplr;
 		if ( v6 )
 		{
 			v7 = plr[myplr]._pRSpell;
@@ -5016,21 +4975,19 @@ LABEL_36:
 		}
 		goto LABEL_46;
 	}
-	v3 = *((_BYTE *)&plr[0]._pClass + v1);
-	switch ( v3 )
+	switch ( plr[myplr]._pClass )
 	{
 		case UI_WARRIOR:
-			v4 = PS_WARR34;
-LABEL_53:
-			PlaySFX(v4);
-			return;
+			sfx_id = PS_WARR34;
+			break;
 		case UI_ROGUE:
-			v4 = PS_ROGUE34;
-			goto LABEL_53;
+			sfx_id = PS_ROGUE34;
+			break;
 		case UI_SORCERER:
-			v4 = PS_MAGE34;
-			goto LABEL_53;
+			sfx_id = PS_MAGE34;
+			break;
 	}
+	PlaySFX(sfx_id);
 }
 // 4B8CC2: using guessed type char pcursplr;
 // 5BB1ED: using guessed type char leveltype;
@@ -5191,8 +5148,6 @@ void __fastcall SyncInitPlr(int pnum)
 
 void __fastcall CheckStats(int pnum)
 {
-	int v1; // esi
-	int v2; // eax
 	char v3; // cl
 	signed int v4; // esi
 	signed int v5; // edi
@@ -5206,30 +5161,25 @@ void __fastcall CheckStats(int pnum)
 	int v13; // ecx
 	//signed int v14; // [esp+Ch] [ebp-4h]
 
-	v1 = pnum;
 	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("CheckStats: illegal player %d", pnum);
-	v2 = v1;
-	v3 = plr[v1]._pClass;
-	if ( v3 )
+
+	switch ( plr[pnum]._pClass )
 	{
-		if ( v3 == 1 )
-		{
+		case UI_WARRIOR:
+			v4 = 0;
+			break;
+		case UI_ROGUE:
 			v4 = 1;
-		}
-		else if ( v3 == 2 )
-		{
+			break;
+		case UI_SORCERER:
 			v4 = 2;
-		}
-		/*else
-		{
+			break;
+		/*default:
 			v4 = v14;
-		}*/
+			break;*/
 	}
-	else
-	{
-		v4 = 0;
-	}
+
 	v5 = 0;
 	do
 	{
@@ -5238,58 +5188,58 @@ void __fastcall CheckStats(int pnum)
 			switch ( v5 )
 			{
 				case ATTRIB_MAG:
-					v10 = plr[v2]._pBaseMag;
+					v10 = plr[pnum]._pBaseMag;
 					v11 = MaxStats[v4][1];
 					if ( v10 <= v11 )
 					{
 						if ( v10 < 0 )
-							plr[v2]._pBaseMag = 0;
+							plr[pnum]._pBaseMag = 0;
 					}
 					else
 					{
-						plr[v2]._pBaseMag = v11;
+						plr[pnum]._pBaseMag = v11;
 					}
 					break;
 				case ATTRIB_DEX:
-					v8 = plr[v2]._pBaseDex;
+					v8 = plr[pnum]._pBaseDex;
 					v9 = MaxStats[v4][2];
 					if ( v8 <= v9 )
 					{
 						if ( v8 < 0 )
-							plr[v2]._pBaseDex = 0;
+							plr[pnum]._pBaseDex = 0;
 					}
 					else
 					{
-						plr[v2]._pBaseDex = v9;
+						plr[pnum]._pBaseDex = v9;
 					}
 					break;
 				case ATTRIB_VIT:
-					v6 = plr[v2]._pBaseVit;
+					v6 = plr[pnum]._pBaseVit;
 					v7 = MaxStats[v4][3];
 					if ( v6 <= v7 )
 					{
 						if ( v6 < 0 )
-							plr[v2]._pBaseVit = 0;
+							plr[pnum]._pBaseVit = 0;
 					}
 					else
 					{
-						plr[v2]._pBaseVit = v7;
+						plr[pnum]._pBaseVit = v7;
 					}
 					break;
 			}
 		}
 		else
 		{
-			v12 = plr[v2]._pBaseStr;
+			v12 = plr[pnum]._pBaseStr;
 			v13 = MaxStats[v4][0];
 			if ( v12 <= v13 )
 			{
 				if ( v12 < 0 )
-					plr[v2]._pBaseStr = 0;
+					plr[pnum]._pBaseStr = 0;
 			}
 			else
 			{
-				plr[v2]._pBaseStr = v13;
+				plr[pnum]._pBaseStr = v13;
 			}
 		}
 		++v5;
@@ -5299,45 +5249,38 @@ void __fastcall CheckStats(int pnum)
 
 void __fastcall ModifyPlrStr(int pnum, int l)
 {
-	int v2; // esi
-	int v3; // edi
-	int v4; // esi
-	char v5; // dl
-	int v6; // ecx
-	int v7; // eax
+	char pClass; // dl
+	int baseStr; // ecx
+	int max; // eax
 	int v8; // ebx
 	int v9; // eax
 	signed int v10; // ecx
-	int p; // [esp+8h] [ebp-4h]
 
-	v2 = pnum;
-	v3 = l;
-	p = pnum;
 	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("ModifyPlrStr: illegal player %d", pnum);
-	v4 = v2;
-	v5 = plr[v4]._pClass;
-	v6 = plr[v4]._pBaseStr;
-	v7 = MaxStats[v5][0];
-	if ( v6 + v3 > v7 )
-		v3 = v7 - v6;
-	plr[v4]._pBaseStr = v3 + v6;
-	plr[v4]._pStrength += v3;
-	v8 = plr[v4]._pStrength;
-	if ( v5 == 1 )
+
+	pClass = plr[pnum]._pClass;
+	baseStr = plr[pnum]._pBaseStr;
+	max = MaxStats[pClass][0];
+	if ( baseStr + l > max )
+		l = max - baseStr;
+	plr[pnum]._pBaseStr = l + baseStr;
+	plr[pnum]._pStrength += l;
+	v8 = plr[pnum]._pStrength;
+	if ( pClass == UI_ROGUE )
 	{
-		v9 = plr[v4]._pLevel * (v8 + plr[v4]._pDexterity);
+		v9 = plr[pnum]._pLevel * (v8 + plr[pnum]._pDexterity);
 		v10 = 200;
 	}
 	else
 	{
-		v9 = v8 * plr[v4]._pLevel;
+		v9 = v8 * plr[pnum]._pLevel;
 		v10 = 100;
 	}
-	plr[v4]._pDamageMod = v9 / v10;
-	CalcPlrInv(p, 1u);
-	if ( p == myplr )
-		NetSendCmdParam1(0, CMD_SETSTR, plr[v4]._pBaseStr);
+	plr[pnum]._pDamageMod = v9 / v10;
+	CalcPlrInv(pnum, 1u);
+	if ( pnum == myplr )
+		NetSendCmdParam1(0, CMD_SETSTR, plr[pnum]._pBaseStr);
 }
 
 void __fastcall ModifyPlrMag(int pnum, int l)
@@ -5345,7 +5288,7 @@ void __fastcall ModifyPlrMag(int pnum, int l)
 	int v2; // esi
 	int v3; // edi
 	int v4; // esi
-	char v5; // dl
+	char pClass; // dl
 	int v6; // ecx
 	int v7; // eax
 	int v8; // eax
@@ -5358,8 +5301,8 @@ void __fastcall ModifyPlrMag(int pnum, int l)
 	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("ModifyPlrMag: illegal player %d", pnum);
 	v4 = v2;
-	v5 = plr[v4]._pClass;
-	v6 = MaxStats[v5][1];
+	pClass = plr[v4]._pClass;
+	v6 = MaxStats[pClass][1];
 	v7 = plr[v4]._pBaseMag;
 	if ( v7 + v3 > v6 )
 		v3 = v6 - v7;
@@ -5367,7 +5310,7 @@ void __fastcall ModifyPlrMag(int pnum, int l)
 	v8 = v3 + v7;
 	v9 = v3 << 6;
 	plr[v4]._pBaseMag = v8;
-	if ( v5 == 2 )
+	if ( pClass == UI_SORCERER )
 		v9 *= 2;
 	plr[v4]._pMaxManaBase += v9;
 	plr[v4]._pMaxMana += v9;
@@ -5401,7 +5344,7 @@ void __fastcall ModifyPlrDex(int pnum, int l)
 	plr[v4]._pDexterity += v3;
 	plr[v4]._pBaseDex = v3 + v6;
 	CalcPlrInv(v2, 1u);
-	if ( _LOBYTE(plr[v4]._pClass) == 1 )
+	if ( plr[v4]._pClass == UI_ROGUE )
 		plr[v4]._pDamageMod = plr[v4]._pLevel * (plr[v4]._pDexterity + plr[v4]._pStrength) / 200;
 	if ( v2 == myplr )
 		NetSendCmdParam1(0, CMD_SETDEX, plr[v4]._pBaseDex);
@@ -5412,7 +5355,7 @@ void __fastcall ModifyPlrVit(int pnum, int l)
 	int v2; // esi
 	int v3; // edi
 	int v4; // esi
-	char v5; // dl
+	char pClass; // dl
 	int v6; // ecx
 	int v7; // eax
 	int v8; // eax
@@ -5425,8 +5368,8 @@ void __fastcall ModifyPlrVit(int pnum, int l)
 	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("ModifyPlrVit: illegal player %d", pnum);
 	v4 = v2;
-	v5 = plr[v4]._pClass;
-	v6 = MaxStats[v5][3];
+	pClass = plr[v4]._pClass;
+	v6 = MaxStats[pClass][3];
 	v7 = plr[v4]._pBaseVit;
 	if ( v7 + v3 > v6 )
 		v3 = v6 - v7;
@@ -5434,7 +5377,7 @@ void __fastcall ModifyPlrVit(int pnum, int l)
 	v8 = v3 + v7;
 	v9 = v3 << 6;
 	plr[v4]._pBaseVit = v8;
-	if ( !v5 )
+	if ( pClass == UI_WARRIOR )
 		v9 *= 2;
 	plr[v4]._pHPBase += v9;
 	plr[v4]._pMaxHPBase += v9;
@@ -5468,30 +5411,24 @@ void __fastcall SetPlayerHitPoints(int pnum, int newhp)
 
 void __fastcall SetPlrStr(int pnum, int v)
 {
-	int v2; // edi
-	int v3; // ebx
-	int v4; // esi
 	int v5; // eax
 	signed int v6; // ecx
 
-	v2 = pnum;
-	v3 = v;
 	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("SetPlrStr: illegal player %d", pnum);
-	v4 = v2;
-	plr[v2]._pBaseStr = v3;
-	CalcPlrInv(v2, 1u);
-	if ( _LOBYTE(plr[v2]._pClass) == 1 )
+	plr[pnum]._pBaseStr = v;
+	CalcPlrInv(pnum, 1u);
+	if ( plr[pnum]._pClass == UI_ROGUE )
 	{
-		v5 = plr[v4]._pLevel * (plr[v4]._pStrength + plr[v4]._pDexterity);
+		v5 = plr[pnum]._pLevel * (plr[pnum]._pStrength + plr[pnum]._pDexterity);
 		v6 = 200;
 	}
 	else
 	{
-		v5 = plr[v4]._pStrength * plr[v4]._pLevel;
+		v5 = plr[pnum]._pStrength * plr[pnum]._pLevel;
 		v6 = 100;
 	}
-	plr[v4]._pDamageMod = v5 / v6;
+	plr[pnum]._pDamageMod = v5 / v6;
 }
 
 void __fastcall SetPlrMag(int pnum, int v)
@@ -5508,7 +5445,7 @@ void __fastcall SetPlrMag(int pnum, int v)
 	v4 = v2;
 	plr[v2]._pBaseMag = v3;
 	v5 = v3 << 6;
-	if ( _LOBYTE(plr[v2]._pClass) == 2 )
+	if ( plr[v2]._pClass == UI_SORCERER )
 		v5 *= 2;
 	plr[v4]._pMaxManaBase = v5;
 	plr[v4]._pMaxMana = v5;
@@ -5530,7 +5467,7 @@ void __fastcall SetPlrDex(int pnum, int v)
 	v4 = v2;
 	plr[v2]._pBaseDex = v3;
 	CalcPlrInv(v2, 1u);
-	if ( _LOBYTE(plr[v2]._pClass) == 1 )
+	if ( plr[v2]._pClass == UI_ROGUE )
 	{
 		v5 = plr[v4]._pLevel * (plr[v4]._pStrength + plr[v4]._pDexterity);
 		v6 = 200;
@@ -5557,7 +5494,7 @@ void __fastcall SetPlrVit(int pnum, int v)
 	v4 = v2;
 	plr[v2]._pBaseVit = v3;
 	v5 = v3 << 6;
-	if ( !_LOBYTE(plr[v2]._pClass) )
+	if ( plr[v2]._pClass == UI_WARRIOR )
 		v5 *= 2;
 	plr[v4]._pHPBase = v5;
 	plr[v4]._pMaxHPBase = v5;
@@ -5579,22 +5516,16 @@ void __cdecl PlayDungMsgs()
 	int v0; // eax
 	int v1; // eax
 	char v2; // cl
-	char v3; // dl
-	char v4; // cl
 	char v5; // cl
-	char v6; // dl
 	char v7; // cl
-	char v8; // dl
 	char v9; // cl
-	char v10; // dl
 	char v11; // cl
-	char v12; // dl
+	char pClass; // dl
 
 	v0 = myplr;
 	if ( (unsigned int)myplr >= 4 )
 	{
 		TermMsg("PlayDungMsgs: illegal player %d", myplr);
-		v0 = myplr;
 	}
 	switch ( currlevel )
 	{
@@ -5605,26 +5536,20 @@ void __cdecl PlayDungMsgs()
 				v2 = plr[v1].pDungMsgs;
 				if ( !(v2 & 1) )
 				{
-					v3 = plr[v1]._pClass;
 					sfxdelay = 40;
-					if ( v3 )
+					switch ( plr[v1]._pClass )
 					{
-						if ( v3 == 1 )
-						{
+						case UI_WARRIOR:
+							sfxdnum = PS_WARR97;
+							break;
+						case UI_ROGUE:
 							sfxdnum = PS_ROGUE97;
-						}
-						else if ( v3 == 2 )
-						{
+							break;
+						case UI_SORCERER:
 							sfxdnum = PS_MAGE97;
-						}
+							break;
 					}
-					else
-					{
-						sfxdnum = PS_WARR97;
-					}
-					v4 = v2 | 1;
-LABEL_14:
-					plr[v1].pDungMsgs = v4;
+					plr[v1].pDungMsgs = v2 | 1;
 					return;
 				}
 			}
@@ -5636,25 +5561,21 @@ LABEL_14:
 				v5 = plr[v1].pDungMsgs;
 				if ( !(v5 & 2) )
 				{
-					v6 = plr[v1]._pClass;
 					sfxdelay = 40;
-					if ( v6 )
+					switch ( plr[v1]._pClass )
 					{
-						if ( v6 == 1 )
-						{
+						case UI_WARRIOR:
+							sfxdnum = PS_WARR96B;
+							break;
+						case UI_ROGUE:
 							sfxdnum = PS_ROGUE96;
-						}
-						else if ( v6 == 2 )
-						{
+							break;
+						case UI_SORCERER:
 							sfxdnum = PS_MAGE96;
-						}
+							break;
 					}
-					else
-					{
-						sfxdnum = PS_WARR96B;
-					}
-					v4 = v5 | 2;
-					goto LABEL_14;
+					plr[v1].pDungMsgs = v5 | 2;
+					return;
 				}
 			}
 			break;
@@ -5665,25 +5586,21 @@ LABEL_14:
 				v7 = plr[v1].pDungMsgs;
 				if ( !(v7 & 4) )
 				{
-					v8 = plr[v1]._pClass;
 					sfxdelay = 40;
-					if ( v8 )
+					switch ( plr[v1]._pClass )
 					{
-						if ( v8 == 1 )
-						{
+						case UI_WARRIOR:
+							sfxdnum = PS_WARR98;
+							break;
+						case UI_ROGUE:
 							sfxdnum = PS_ROGUE98;
-						}
-						else if ( v8 == 2 )
-						{
+							break;
+						case UI_SORCERER:
 							sfxdnum = PS_MAGE98;
-						}
+							break;
 					}
-					else
-					{
-						sfxdnum = PS_WARR98;
-					}
-					v4 = v7 | 4;
-					goto LABEL_14;
+					plr[v1].pDungMsgs = v7 | 4;
+					return;
 				}
 			}
 			break;
@@ -5694,25 +5611,21 @@ LABEL_14:
 				v9 = plr[v1].pDungMsgs;
 				if ( !(v9 & 8) )
 				{
-					v10 = plr[v1]._pClass;
 					sfxdelay = 40;
-					if ( v10 )
+					switch ( plr[v1]._pClass )
 					{
-						if ( v10 == 1 )
-						{
+						case UI_WARRIOR:
+							sfxdnum = PS_WARR99;
+							break;
+						case UI_ROGUE:
 							sfxdnum = PS_ROGUE99;
-						}
-						else if ( v10 == 2 )
-						{
+							break;
+						case UI_SORCERER:
 							sfxdnum = PS_MAGE99;
-						}
+							break;
 					}
-					else
-					{
-						sfxdnum = PS_WARR99;
-					}
-					v4 = v9 | 8;
-					goto LABEL_14;
+					plr[v1].pDungMsgs = v9 | 8;
+					return;
 				}
 			}
 			break;
@@ -5723,12 +5636,12 @@ LABEL_14:
 				v11 = plr[v1].pDungMsgs;
 				if ( !(v11 & 0x10) )
 				{
-					v12 = plr[v1]._pClass;
+					pClass = plr[v1]._pClass;
 					sfxdelay = 40;
-					if ( !v12 || v12 == 1 || v12 == 2 )
+					if ( pClass == UI_WARRIOR || pClass == UI_ROGUE || pClass == UI_SORCERER )
 						sfxdnum = PS_DIABLVLINT;
-					v4 = v11 | 0x10;
-					goto LABEL_14;
+					plr[v1].pDungMsgs = v11 | 0x10;
+					return;
 				}
 			}
 			break;

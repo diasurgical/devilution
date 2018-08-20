@@ -776,7 +776,6 @@ void __fastcall CalcPlrItemVals(int p, bool Loadgfx)
 	signed int v18; // eax
 	signed int v19; // ecx
 	signed int v20; // ebx
-	char v21; // dl
 	int v22; // eax
 	int v23; // ecx
 	int v24; // eax
@@ -951,7 +950,7 @@ void __fastcall CalcPlrItemVals(int p, bool Loadgfx)
 	if ( *v13 <= 0 )
 		*v13 = 0;
 	v14 = plr[v5]._pLevel;
-	if ( _LOBYTE(plr[v5]._pClass) == 1 )
+	if ( plr[v5]._pClass == UI_ROGUE )
 	{
 		v15 = (plr[v5]._pStrength + plr[v5]._pDexterity) * v14;
 		v16 = 200;
@@ -993,18 +992,17 @@ void __fastcall CalcPlrItemVals(int p, bool Loadgfx)
 	plr[v5]._pFireResist = v19;
 	if ( v20 > 75 )
 		_LOBYTE(v20) = 75;
-	v21 = plr[v5]._pClass;
 	v22 = v61;
 	plr[v5]._pLghtResist = v20;
-	if ( !v21 )
+	if ( plr[v5]._pClass == UI_WARRIOR )
 		v22 = 2 * v61;
-	if ( v21 == 1 )
+	if ( plr[v5]._pClass == UI_ROGUE )
 		v22 += v22 >> 1;
 	v23 = (v22 << 6) + v46;
 	v24 = v60;
-	if ( v21 == 2 )
+	if ( plr[v5]._pClass == UI_SORCERER )
 		v24 = 2 * v60;
-	if ( v21 == 1 )
+	if ( plr[v5]._pClass == UI_ROGUE )
 		v24 += v24 >> 1;
 	v64 = (v24 << 6) + v63;
 	v25 = v23 + plr[v5]._pHPBase;
@@ -1535,7 +1533,7 @@ void __fastcall CreatePlrItems(int p)
 		--v7;
 	}
 	while ( v7 );
-	switch ( _LOBYTE(plr[v1]._pClass) )
+	switch ( plr[v1]._pClass )
 	{
 		case UI_WARRIOR:
 			SetPlrHandItem(&plr[v1].InvBody[4], IDI_WARRIOR);
@@ -1545,25 +1543,26 @@ void __fastcall CreatePlrItems(int p)
 			SetPlrHandItem(&plr[v1].HoldItem, IDI_WARRCLUB);
 			GetPlrHandSeed(&plr[v1].HoldItem);
 			AutoPlace(player_numa, 0, 1, 3, 1);
-			goto LABEL_13;
-		case UI_ROGUE:
-			SetPlrHandItem(&plr[v1].InvBody[4], IDI_ROGUE);
-			GetPlrHandSeed(&plr[v1].InvBody[4]);
-LABEL_13:
 			SetPlrHandItem(plr[v1].SpdList, IDI_HEAL);
 			GetPlrHandSeed(plr[v1].SpdList);
 			SetPlrHandItem(&plr[v1].SpdList[1], IDI_HEAL);
-			goto LABEL_14;
+			break;
+		case UI_ROGUE:
+			SetPlrHandItem(&plr[v1].InvBody[4], IDI_ROGUE);
+			GetPlrHandSeed(&plr[v1].InvBody[4]);
+			SetPlrHandItem(plr[v1].SpdList, IDI_HEAL);
+			GetPlrHandSeed(plr[v1].SpdList);
+			SetPlrHandItem(&plr[v1].SpdList[1], IDI_HEAL);
+			break;
 		case UI_SORCERER:
 			SetPlrHandItem(&plr[v1].InvBody[4], IDI_SORCEROR);
 			GetPlrHandSeed(&plr[v1].InvBody[4]);
 			SetPlrHandItem(plr[v1].SpdList, IDI_MANA);
 			GetPlrHandSeed(plr[v1].SpdList);
 			SetPlrHandItem(&plr[v1].SpdList[1], IDI_MANA);
-LABEL_14:
-			GetPlrHandSeed(&plr[v1].SpdList[1]);
 			break;
 	}
+	GetPlrHandSeed(&plr[v1].SpdList[1]);
 	SetPlrHandItem(&plr[v1].HoldItem, IDI_GOLD);
 	GetPlrHandSeed(&plr[v1].HoldItem);
 	plr[v1].HoldItem._iCurs = 4;
@@ -4382,7 +4381,6 @@ void __fastcall UseItem(int p, int Mid, int spl)
 	int v10; // esi
 	int v11; // edi
 	unsigned int v12; // edi
-	char v13; // al
 	int v14; // edi
 	int v15; // ecx
 	int *v16; // eax
@@ -4414,7 +4412,6 @@ void __fastcall UseItem(int p, int Mid, int spl)
 	int v42; // esi
 	int v43; // edi
 	unsigned int v44; // edi
-	char v45; // al
 	int v46; // edi
 	int v47; // ecx
 	int *v48; // eax
@@ -4423,7 +4420,6 @@ void __fastcall UseItem(int p, int Mid, int spl)
 	int v51; // edi
 	int v52; // edx
 	unsigned int v53; // edi
-	char v54; // al
 	int v55; // edi
 	int v56; // ecx
 	int *v57; // eax
@@ -4433,7 +4429,6 @@ void __fastcall UseItem(int p, int Mid, int spl)
 	int v61; // esi
 	int v62; // edi
 	unsigned int v63; // edi
-	char v64; // al
 	int v65; // edi
 	int v66; // ecx
 	int *v67; // eax
@@ -4514,11 +4509,10 @@ LABEL_41:
 			v10 = p;
 			v11 = plr[v10]._pMaxMana >> 8;
 			v12 = (v11 & 0xFFFFFFFE) + 2 * random(40, v11);
-			v13 = plr[v10]._pClass;
 			v14 = 32 * v12;
-			if ( v13 == 2 )
+			if ( plr[v10]._pClass == UI_SORCERER )
 				v14 *= 2;
-			if ( v13 == 1 )
+			if ( plr[v10]._pClass == UI_ROGUE )
 				v14 += v14 >> 1;
 			if ( !(plr[v10]._pIFlags & 0x8000000) )
 			{
@@ -4540,11 +4534,10 @@ LABEL_71:
 		v61 = p;
 		v62 = plr[v61]._pMaxHP >> 8;
 		v63 = (v62 & 0xFFFFFFFE) + 2 * random(39, v62);
-		v64 = plr[v61]._pClass;
 		v65 = 32 * v63;
-		if ( !v64 )
+		if ( plr[v61]._pClass == UI_WARRIOR )
 			v65 *= 2;
-		if ( v64 == 1 )
+		if ( plr[v61]._pClass == UI_ROGUE )
 			v65 += v65 >> 1;
 		v66 = plr[v61]._pMaxHP;
 		v67 = &plr[v61]._pHitPoints;
@@ -4660,11 +4653,10 @@ LABEL_71:
 		v42 = p;
 		v43 = plr[v42]._pMaxHP >> 8;
 		v44 = (v43 & 0xFFFFFFFE) + 2 * random(39, v43);
-		v45 = plr[v42]._pClass;
 		v46 = 32 * v44;
-		if ( !v45 )
+		if ( plr[v42]._pClass == UI_WARRIOR )
 			v46 *= 2;
-		if ( v45 == 1 )
+		if ( plr[v42]._pClass == UI_ROGUE )
 			v46 += v46 >> 1;
 		v47 = plr[v42]._pMaxHP;
 		v48 = &plr[v42]._pHitPoints;
@@ -4680,11 +4672,10 @@ LABEL_71:
 		v52 = plr[v42]._pMaxMana >> 8;
 		drawhpflag = 1;
 		v53 = (v51 & 0xFFFFFFFE) + 2 * random(40, v52);
-		v54 = plr[v42]._pClass;
 		v55 = 32 * v53;
-		if ( v54 == 2 )
+		if ( plr[v42]._pClass == UI_SORCERER )
 			v55 *= 2;
-		if ( v54 == 1 )
+		if ( plr[v42]._pClass == UI_ROGUE )
 			v55 += v55 >> 1;
 		if ( !(plr[v42]._pIFlags & 0x8000000) )
 		{
@@ -4792,14 +4783,13 @@ void __cdecl SortSmith()
 			v4 = v0;
 			do
 			{
-				v5 = (int)(v3 + 92);
 				if ( *v3 > v3[92] )
 				{
 					BubbleSwapItem((ItemStruct *)(v3 - 90), (ItemStruct *)(v3 + 2));
 					v2 = 0;
 				}
 				--v4;
-				v3 = (int *)v5;
+				v3 += 92;
 			}
 			while ( v4 );
 		}
@@ -5030,14 +5020,13 @@ void __cdecl SortWitch()
 			v4 = v0 - 3;
 			do
 			{
-				v5 = (int)(v3 + 92);
 				if ( *v3 > v3[92] )
 				{
 					BubbleSwapItem((ItemStruct *)(v3 - 90), (ItemStruct *)(v3 + 2));
 					v2 = 0;
 				}
 				--v4;
-				v3 = (int *)v5;
+				v3 += 92;
 			}
 			while ( v4 );
 		}
@@ -5291,14 +5280,13 @@ void __cdecl SortHealer()
 			v4 = v0 - 2;
 			do
 			{
-				v5 = (int)(v3 + 92);
 				if ( *v3 > v3[92] )
 				{
 					BubbleSwapItem((ItemStruct *)(v3 - 90), (ItemStruct *)(v3 + 2));
 					v2 = 0;
 				}
 				--v4;
-				v3 = (int *)v5;
+				v3 += 92;
 			}
 			while ( v4 );
 		}

@@ -4,7 +4,7 @@
 
 extern int effects_cpp_init_value; // weak
 extern int sfxdelay; // weak
-extern int sfxdnum;
+extern _sfx_id sfxdnum;
 extern void *sfx_stream;
 extern TSFX *sfx_data_cur;
 

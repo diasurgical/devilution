@@ -599,7 +599,7 @@ void __fastcall DeltaAddItem(int ii)
 				v4->item[0].x = v10;
 				v4->item[0].y = *((_BYTE *)&item[0]._iy + v9);
 				v4->item[0].wIndx = *(_WORD *)((char *)&item[0].IDidx + v9);
-				v4->item[0].wCI = *(short *)((char *)&item[0]._iCreateInfo + v9);
+				v4->item[0].wCI = item[0]._iCreateInfo + v9;
 				v4->item[0].dwSeed = *(int *)((char *)&item[0]._iSeed + v9);
 				v4->item[0].bId = *((_BYTE *)&item[0]._iIdentified + v9);
 				v4->item[0].bDur = *((_BYTE *)&item[0]._iDurability + v9);
@@ -662,7 +662,7 @@ void __cdecl DeltaLoadLevel()
 	int v13; // eax
 	int v14; // ebx
 	int *v15; // edx
-	unsigned short v16; // cx
+	int v16; // cx
 	int v17; // ST1C_4
 	int v18; // ST18_4
 	int v19; // eax
@@ -788,7 +788,7 @@ void __cdecl DeltaLoadLevel()
 					v33 = itemavail[0];
 					v15 = &itemavail[-numitems + 126];
 					itemactive[numitems] = itemavail[0];
-					v16 = *(short *)((char *)&sgLevels[0].item[0].wIndx + v13);
+					v16 = sgLevels[0].item[0].wIndx + v13;
 					itemavail[0] = *v15;
 					if ( v16 == IDI_EAR )
 					{
@@ -1918,7 +1918,7 @@ int __fastcall On_REQUESTGITEM(struct TCmdGItem *pCmd, int pnum)
 		if ( i_own_level(plr[pnum].plrlevel) )
 		{
 			_LOWORD(v4) = v2->wCI;
-			if ( GetItemRecord(v2->dwSeed, v4, (unsigned short)v2->wIndx) )
+			if ( GetItemRecord(v2->dwSeed, v4, v2->wIndx) )
 			{
 				_LOWORD(v5) = v2->wCI;
 				v7 = FindGetItem((unsigned short)v2->wIndx, v5, v2->dwSeed);
@@ -1937,7 +1937,7 @@ int __fastcall On_REQUESTGITEM(struct TCmdGItem *pCmd, int pnum)
 						SyncGetItem(
 							(unsigned char)v2->x,
 							(unsigned char)v2->y,
-							(unsigned short)v2->wIndx,
+							v2->wIndx,
 							v2->wCI,
 							v2->dwSeed);
 					_LOWORD(v9) = v2->wCI;
@@ -2001,7 +2001,7 @@ int __fastcall On_GETITEM(struct TCmdGItem *pCmd, int pnum)
 				SyncGetItem(
 					(unsigned char)v2->x,
 					(unsigned char)v2->y,
-					(unsigned short)v2->wIndx,
+					v2->wIndx,
 					v2->wCI,
 					v2->dwSeed);
 				return 30;
@@ -2018,7 +2018,7 @@ int __fastcall On_GETITEM(struct TCmdGItem *pCmd, int pnum)
 						 myplr,
 						 plr[myplr].WorldX,
 						 plr[myplr].WorldY,
-						 (unsigned short)v2->wIndx,
+						 v2->wIndx,
 						 v8,
 						 v2->dwSeed,
 						 (unsigned char)v2->bId,
@@ -2169,7 +2169,7 @@ int __fastcall On_REQUESTAGITEM(struct TCmdGItem *pCmd, int pnum)
 						SyncGetItem(
 							(unsigned char)v2->x,
 							(unsigned char)v2->y,
-							(unsigned short)v2->wIndx,
+							v2->wIndx,
 							v2->wCI,
 							v2->dwSeed);
 					_LOWORD(v9) = v2->wCI;
@@ -2213,7 +2213,7 @@ int __fastcall On_AGETITEM(struct TCmdGItem *pCmd, int pnum)
 				SyncGetItem(
 					(unsigned char)v2->x,
 					(unsigned char)v2->y,
-					(unsigned short)v2->wIndx,
+					v2->wIndx,
 					v2->wCI,
 					v2->dwSeed);
 				return 30;
@@ -2230,7 +2230,7 @@ int __fastcall On_AGETITEM(struct TCmdGItem *pCmd, int pnum)
 						 myplr,
 						 plr[myplr].WorldX,
 						 plr[myplr].WorldY,
-						 (unsigned short)v2->wIndx,
+						 v2->wIndx,
 						 v6,
 						 v2->dwSeed,
 						 (unsigned char)v2->bId,
@@ -2271,7 +2271,7 @@ int __fastcall On_ITEMEXTRA(struct TCmdGItem *pCmd, int pnum)
 			SyncGetItem(
 				(unsigned char)v3->x,
 				(unsigned char)v3->y,
-				(unsigned short)v3->wIndx,
+				v3->wIndx,
 				v3->wCI,
 				v3->dwSeed);
 	}
@@ -2313,7 +2313,7 @@ int __fastcall On_PUTITEM(struct TCmdPItem *pCmd, int pnum)
 				 v2,
 				 v5,
 				 (unsigned char)pCmd->y,
-				 (unsigned short)pCmd->wIndx,
+				 pCmd->wIndx,
 				 (unsigned short)pCmd->wCI,
 				 pCmd->dwSeed,
 				 (unsigned char)pCmd->bId,
@@ -2424,7 +2424,7 @@ int __fastcall On_SYNCPUTITEM(struct TCmdPItem *pCmd, int pnum)
 			 pnum,
 			 (unsigned char)pCmd->x,
 			 (unsigned char)pCmd->y,
-			 (unsigned short)pCmd->wIndx,
+			 pCmd->wIndx,
 			 (unsigned short)pCmd->wCI,
 			 pCmd->dwSeed,
 			 (unsigned char)pCmd->bId,
@@ -2463,7 +2463,7 @@ int __fastcall On_RESPAWNITEM(struct TCmdPItem *pCmd, int pnum)
 				pnum,
 				(unsigned char)pCmd->x,
 				(unsigned char)pCmd->y,
-				(unsigned short)pCmd->wIndx,
+				pCmd->wIndx,
 				(unsigned short)pCmd->wCI,
 				pCmd->dwSeed,
 				(unsigned char)pCmd->bId,
@@ -3340,24 +3340,18 @@ int __fastcall On_BREAKOBJ(struct TCmdParam2 *pCmd, int pnum)
 
 int __fastcall On_CHANGEPLRITEMS(struct TCmdChItem *pCmd, int pnum)
 {
-	int v2; // eax
 	int v3; // edx
-	int v4; // ST04_4
 	int v5; // edx
 
-	v2 = pnum;
 	if ( gbBufferMsgs == 1 )
 	{
 		msg_send_packet(pnum, pCmd, 11);
 	}
 	else if ( pnum != myplr )
 	{
-		v3 = (unsigned char)pCmd->bId;
 		_LOWORD(v3) = pCmd->wCI;
-		v4 = v3;
-		v5 = (unsigned short)pCmd->wIndx;
 		_LOBYTE(v5) = pCmd->bLoc;
-		CheckInvSwap(v2, v5, (unsigned short)pCmd->wIndx, v4, pCmd->dwSeed, (unsigned char)pCmd->bId);
+		CheckInvSwap(pnum, v5, pCmd->wIndx, v3, pCmd->dwSeed, (unsigned char)pCmd->bId);
 	}
 	return 11;
 }

@@ -4048,7 +4048,6 @@ void __fastcall M_UpdateLeader(int i)
 
 void __cdecl DoEnding()
 {
-	char v0; // al
 	char *v1; // ecx
 	char bMusicOn; // bl
 	int v3; // esi
@@ -4058,16 +4057,17 @@ void __cdecl DoEnding()
 	music_stop();
 	if ( (unsigned char)gbMaxPlayers > 1u )
 		Sleep(1000);
-	v0 = plr[myplr]._pClass;
-	if ( v0 )
+	switch ( plr[myplr]._pClass )
 	{
-		v1 = "gendata\\DiabVic1.smk";
-		if ( v0 != 2 )
+		case UI_WARRIOR:
+			v1 = "gendata\\DiabVic2.smk";
+			break;
+		case UI_ROGUE:
 			v1 = "gendata\\DiabVic3.smk";
-	}
-	else
-	{
-		v1 = "gendata\\DiabVic2.smk";
+			break;
+		case UI_SORCERER:
+			v1 = "gendata\\DiabVic1.smk";
+			break;
 	}
 	play_movie(v1, 0);
 	play_movie("gendata\\Diabend.smk", 0);

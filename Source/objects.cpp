@@ -1474,13 +1474,10 @@ void __cdecl InitObjects()
 	//int v4; // eax
 	//int v5; // eax
 	//int v6; // eax
-	char v7; // al
 	signed int v8; // ebx
 	unsigned char *v9; // esi
 	//int v10; // eax
-	char v11; // al
 	//int v12; // eax
-	char v13; // al
 	unsigned char *v14; // esi
 	//int v15; // eax
 	//int v16; // [esp+0h] [ebp-4h]
@@ -1532,21 +1529,17 @@ void __cdecl InitObjects()
 			//_LOBYTE(v6) = QuestStatus(8);
 			if ( QuestStatus(8) )
 			{
-				v7 = plr[myplr]._pClass;
-				if ( v7 )
+				switch ( plr[myplr]._pClass )
 				{
-					if ( v7 == 1 )
-					{
+					case UI_WARRIOR:
+						v8 = QUEST_BLINDING;
+						break;
+					case UI_ROGUE:
 						v8 = QUEST_RBLINDING;
-					}
-					else
-					{
+						break;
+					case UI_SORCERER:
 						v8 = QUEST_MBLINDING;
-					}
-				}
-				else
-				{
-					v8 = QUEST_BLINDING;
+						break;
 				}
 				quests[8]._qmsg = v8;
 				AddBookLever(0, 0, 112, 112, setpc_x, setpc_y, setpc_w + setpc_x + 1, setpc_h + setpc_y + 1, v8);
@@ -1557,21 +1550,17 @@ void __cdecl InitObjects()
 			//_LOBYTE(v10) = QuestStatus(9);
 			if ( QuestStatus(9) )
 			{
-				v11 = plr[myplr]._pClass;
-				if ( v11 )
+				switch ( plr[myplr]._pClass )
 				{
-					if ( v11 == 1 )
-					{
+					case UI_WARRIOR:
+						v8 = QUEST_BLOODY;
+						break;
+					case UI_ROGUE:
 						v8 = QUEST_RBLOODY;
-					}
-					else if ( v11 == 2 )
-					{
+						break;
+					case UI_SORCERER:
 						v8 = QUEST_MBLOODY;
-					}
-				}
-				else
-				{
-					v8 = QUEST_BLOODY;
+						break;
 				}
 				quests[9]._qmsg = v8;
 				AddBookLever(0, 0, 112, 112, setpc_x, setpc_y + 3, setpc_x + 2, setpc_y + 7, v8);
@@ -1589,21 +1578,17 @@ void __cdecl InitObjects()
 			//_LOBYTE(v12) = QuestStatus(11);
 			if ( QuestStatus(11) )
 			{
-				v13 = plr[myplr]._pClass;
-				if ( v13 )
+				switch ( plr[myplr]._pClass )
 				{
-					if ( v13 == 1 )
-					{
+					case UI_WARRIOR:
+						v8 = QUEST_BLOODWAR;
+						break;
+					case UI_ROGUE:
 						v8 = QUEST_RBLOODWAR;
-					}
-					else if ( v13 == 2 )
-					{
+						break;
+					case UI_SORCERER:
 						v8 = QUEST_MBLOODWAR;
-					}
-				}
-				else
-				{
-					v8 = QUEST_BLOODWAR;
+						break;
 				}
 				quests[11]._qmsg = v8;
 				AddBookLever(0, 0, 112, 112, setpc_x, setpc_y, setpc_x + setpc_w, setpc_y + setpc_h, v8);
@@ -2836,8 +2821,7 @@ void __fastcall Obj_BCrossDamage(int i)
 	bool v2; // zf
 	int v3; // ecx
 	int v4; // edx
-	char v5; // al
-	int v6; // ecx
+	_sfx_id sfx_id; // ecx
 	int damage[5]; // [esp+4h] [ebp-18h]
 	int v8; // [esp+18h] [ebp-4h]
 
@@ -2858,33 +2842,32 @@ void __fastcall Obj_BCrossDamage(int i)
 			v4 = damage[(unsigned char)leveltype];
 			plr[v1]._pHitPoints -= v4;
 			plr[v1]._pHPBase -= v4;
+
 			if ( (signed int)(plr[v1]._pHitPoints & 0xFFFFFFC0) <= 0 )
 			{
 				SyncPlrKill(myplr, 0);
-LABEL_15:
 				drawhpflag = 1;
 				return;
 			}
-			v5 = plr[v1]._pClass;
-			if ( v5 )
+
+			switch ( plr[v1]._pClass )
 			{
-				if ( v5 == 1 )
-				{
-					v6 = PS_ROGUE68;
-				}
-				else
-				{
-					if ( v5 != 2 )
-						goto LABEL_15;
-					v6 = PS_MAGE68;
-				}
+				case UI_WARRIOR:
+					sfx_id = PS_WARR68;
+					break;
+				case UI_ROGUE:
+					sfx_id = PS_ROGUE68;
+					break;
+				case UI_SORCERER:
+					sfx_id = PS_MAGE68;
+					break;
+				default:
+					drawhpflag = 1;
+					return;
 			}
-			else
-			{
-				v6 = PS_WARR68;
-			}
-			PlaySfxLoc(v6, plr[v1].WorldX, plr[v1].WorldY);
-			goto LABEL_15;
+			PlaySfxLoc(sfx_id, plr[v1].WorldX, plr[v1].WorldY);
+			drawhpflag = 1;
+			return;
 		}
 	}
 }
@@ -4204,7 +4187,6 @@ void __fastcall OperateSChambBk(int pnum, int i)
 {
 	int v2; // esi
 	int j; // edi
-	char v4; // al
 	signed int v5; // ecx
 	//int speech_id; // [esp+4h] [ebp-4h]
 
@@ -4223,23 +4205,20 @@ void __fastcall OperateSChambBk(int pnum, int i)
 			quests[14]._qactive = 2;
 			quests[14]._qlog = 1;
 		}
-		v4 = plr[myplr]._pClass;
-		if ( v4 )
+		switch ( plr[myplr]._pClass )
 		{
-			if ( v4 == 1 )
-			{
+			case UI_WARRIOR:
+				v5 = QUEST_BONER;
+				break;
+			case UI_ROGUE:
 				v5 = QUEST_RBONER;
-			}
-			else
-			{
+				break;
+			case UI_SORCERER:
 				v5 = QUEST_MBONER;
-				//if ( v4 != 2 )
-					//v5 = speech_id;
-			}
-		}
-		else
-		{
-			v5 = QUEST_BONER;
+				break;
+			//default:
+				//v5 = speech_id;
+				//return;
 		}
 		quests[14]._qmsg = v5;
 		InitQTextMsg(v5);
@@ -4345,8 +4324,7 @@ void __fastcall OperateMushPatch(int pnum, int i)
 {
 	int v2; // esi
 	bool v3; // zf
-	char v4; // al
-	int v5; // ecx
+	_sfx_id sfx_id; // ecx
 	int xx; // [esp+8h] [ebp-8h]
 	int yy; // [esp+Ch] [ebp-4h]
 
@@ -4354,25 +4332,21 @@ void __fastcall OperateMushPatch(int pnum, int i)
 	{
 		if ( !deltaload && pnum == myplr )
 		{
-			v4 = plr[myplr]._pClass;
-			if ( v4 )
+			switch ( plr[myplr]._pClass )
 			{
-				if ( v4 == 1 )
-				{
-					v5 = PS_ROGUE13;
-				}
-				else
-				{
-					if ( v4 != 2 )
-						return;
-					v5 = PS_MAGE13;
-				}
+				case UI_WARRIOR:
+					sfx_id = PS_WARR13;
+					break;
+				case UI_ROGUE:
+					sfx_id = PS_ROGUE13;
+					break;
+				case UI_SORCERER:
+					sfx_id = PS_MAGE13;
+					break;
+				default:
+					return;
 			}
-			else
-			{
-				v5 = PS_WARR13;
-			}
-			PlaySFX(v5);
+			PlaySFX(sfx_id);
 		}
 	}
 	else
@@ -4398,8 +4372,7 @@ void __fastcall OperateMushPatch(int pnum, int i)
 
 void __fastcall OperateInnSignChest(int pnum, int i)
 {
-	char v2; // al
-	int v3; // ecx
+	_sfx_id sfx_id; // ecx
 	int v4; // esi
 	bool v5; // zf
 	int xx; // [esp+8h] [ebp-8h]
@@ -4424,21 +4397,19 @@ void __fastcall OperateInnSignChest(int pnum, int i)
 	}
 	else if ( !deltaload && pnum == myplr )
 	{
-		v2 = plr[myplr]._pClass;
-		switch ( v2 )
+		switch ( plr[myplr]._pClass )
 		{
 			case UI_WARRIOR:
-				v3 = PS_WARR24;
-LABEL_8:
-				PlaySFX(v3);
-				return;
+				sfx_id = PS_WARR24;
+				break;
 			case UI_ROGUE:
-				v3 = PS_ROGUE24;
-				goto LABEL_8;
+				sfx_id = PS_ROGUE24;
+				break;
 			case UI_SORCERER:
-				v3 = PS_MAGE24;
-				goto LABEL_8;
+				sfx_id = PS_MAGE24;
+				break;
 		}
+		PlaySFX(sfx_id);
 	}
 }
 // 676190: using guessed type int deltaload;
@@ -4446,45 +4417,34 @@ LABEL_8:
 void __fastcall OperateSlainHero(int pnum, int i, unsigned char sendmsg)
 {
 	unsigned short v3; // di
-	int v4; // esi
-	int v5; // eax
-	bool v6; // zf
-	char v7; // cl
-	int v8; // ecx
+	_sfx_id sfx_id; // ecx
 
 	v3 = i;
-	v4 = pnum;
-	v5 = i;
 	if ( object[i]._oSelFlag )
 	{
-		v6 = deltaload == 0;
-		object[v5]._oSelFlag = 0;
-		if ( v6 )
+		object[i]._oSelFlag = 0;
+		if ( deltaload == 0 )
 		{
-			v7 = plr[pnum]._pClass;
-			if ( v7 )
+			switch ( plr[pnum]._pClass )
 			{
-				if ( v7 == 1 )
-				{
-					CreateMagicItem(object[v5]._ox, object[v5]._oy, 3, 119, 0, 1);
-					v8 = PS_ROGUE9;
-				}
-				else
-				{
-					if ( v7 != 2 )
-						goto LABEL_10;
-					CreateSpellBook(object[v5]._ox, object[v5]._oy, 3, 0, 1);
-					v8 = PS_MAGE9;
-				}
+				case UI_WARRIOR:
+					CreateMagicItem(object[i]._ox, object[i]._oy, 9, 153, 0, 1);
+					sfx_id = PS_WARR9;
+					break;
+				case UI_ROGUE:
+					CreateMagicItem(object[i]._ox, object[i]._oy, 3, 119, 0, 1);
+					sfx_id = PS_ROGUE9;
+					break;
+				case UI_SORCERER:
+					CreateSpellBook(object[i]._ox, object[i]._oy, 3, 0, 1);;
+					sfx_id = PS_MAGE9;
+					break;
+				default:
+					goto LABEL_10;
 			}
-			else
-			{
-				CreateMagicItem(object[v5]._ox, object[v5]._oy, 9, 153, 0, 1);
-				v8 = PS_WARR9;
-			}
-			PlaySfxLoc(v8, plr[myplr].WorldX, plr[myplr].WorldY);
+			PlaySfxLoc(sfx_id, plr[myplr].WorldX, plr[myplr].WorldY);
 LABEL_10:
-			if ( v4 == myplr )
+			if ( pnum == myplr )
 				NetSendCmdParam1(0, CMD_OPERATEOBJ, v3);
 			return;
 		}
@@ -7269,7 +7229,7 @@ void __fastcall GetObjectStr(int i)
 		default:
 			break;
 	}
-	if ( _LOBYTE(plr[myplr]._pClass) == 1 )
+	if ( plr[myplr]._pClass == UI_ROGUE )
 	{
 		if ( object[v1]._oTrapFlag )
 		{
