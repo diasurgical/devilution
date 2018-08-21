@@ -1,5 +1,15 @@
-VC5_DIR ?= $(HOME)/DevTools/VC
-VC6_DIR ?= $(HOME)/VS6/VC98
+VC5_DIR ?= $(HOME)/DevStudio_5.10/VC
+
+# The $(VS6_DIR) directory is a copy of the "Microsoft Visual Studio" directory.
+#
+# To get a working setup on Linux or other "portable" copies of VS,
+# the following DLLs have to be compied to the
+# $(VS6_DIR)/VC98/Bin directory.
+#
+#     - $(VS6_DIR)/Common/MSDev98/Bin/MSPDB60.DLL
+VS6_DIR ?= $(HOME)/VS6_SP3
+
+VC6_DIR     = $(VS6_DIR)/VC98
 
 VC6_BIN_DIR = $(VC6_DIR)/Bin
 VC6_INC_DIR = $(VC6_DIR)/Include
@@ -7,7 +17,7 @@ VC6_LIB_DIR = $(VC6_DIR)/Lib
 
 VC5_LIB_DIR = $(VC5_DIR)/lib
 
-IDE_DIR ?= $(HOME)/VS6/Common/MSDev98
+IDE_DIR ?= $(VS6_DIR)/Common/MSDev98
 IDE_BIN_DIR = $(IDE_DIR)/bin
 ifeq ($(OS),Windows_NT)
 	CL = $(VC6_BIN_DIR)/CL.EXE
