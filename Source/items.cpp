@@ -1392,10 +1392,13 @@ void __fastcall CalcPlrInv(int p, bool Loadgfx)
 
 void __fastcall SetPlrHandItem(ItemStruct *h, int idata)
 {
-	ItemDataStruct *pAllItem; // edi
+	ItemDataStruct *pAllItem;
 
 	pAllItem = &AllItemsList[idata];
-	memset(h, 0, 0x170u);
+
+	// zero-initialize struct
+	memset(h, 0, sizeof(*h));
+
 	h->_itype = pAllItem->itype;
 	h->_iCurs = pAllItem->iCurs;
 	strcpy(h->_iName, pAllItem->iName);
@@ -1409,7 +1412,9 @@ void __fastcall SetPlrHandItem(ItemStruct *h, int idata)
 	h->_iSpell = pAllItem->iSpell;
 
 	if ( pAllItem->iMiscId == IMISC_STAFF )
+	{
 		h->_iCharges = 40;
+	}
 
 	h->_iMaxCharges = h->_iCharges;
 	h->_iDurability = pAllItem->iDurability;
@@ -1418,10 +1423,10 @@ void __fastcall SetPlrHandItem(ItemStruct *h, int idata)
 	h->_iMinMag = pAllItem->iMinMag;
 	h->_iMinDex = pAllItem->iMinDex;
 	h->_ivalue = pAllItem->iValue;
+	h->_iIvalue = pAllItem->iValue;
 	h->_iPrePower = -1;
 	h->_iSufPower = -1;
 	h->_iMagical = 0;
-	h->_iIvalue = pAllItem->iValue;
 	h->IDidx = idata;
 }
 
