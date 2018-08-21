@@ -6,7 +6,7 @@ char gbSomebodyWonGameKludge; // weak
 char pkdata_6761C0[4100];
 char szPlayerDescript[128];
 short sgwPackPlrOffsetTbl[MAX_PLRS];
-PkPlayerStruct pkplr[MAX_PLRS];
+PkPlayerStruct netplr[MAX_PLRS];
 char sgbPlayerTurnBitTbl[MAX_PLRS];
 char sgbPlayerLeftGameTbl[MAX_PLRS];
 int multi_cpp_init_value; // weak
@@ -1107,7 +1107,7 @@ void __fastcall multi_player_joins(int pnum, TCmdPlrInfoHdr *cmd, int a3)
 			{
 				multi_send_pinfo(pnum, CMD_ACK_PLRINFO);
 			}
-			memcpy((char *)&pkplr[v3] + (unsigned short)v4->wOffset, &v4[1], (unsigned short)v4->wBytes);
+			memcpy((char *)&netplr[v3] + (unsigned short)v4->wOffset, &v4[1], (unsigned short)v4->wBytes);
 			*v5 += v4->wBytes;
 			if ( *v5 == 1266 )
 			{
@@ -1115,7 +1115,7 @@ void __fastcall multi_player_joins(int pnum, TCmdPlrInfoHdr *cmd, int a3)
 				multi_player_left_msg(v3, 0);
 				v6 = v3;
 				plr[v3]._pGFXLoad = 0;
-				UnPackPlayer(&pkplr[v3], v3, 1);
+				UnPackPlayer(&netplr[v3], v3, 1);
 				if ( a3 )
 				{
 					++gbActivePlayers;
