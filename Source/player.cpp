@@ -4157,7 +4157,7 @@ void __fastcall CheckNewPath(int pnum)
 					if ( v48 > 1 )
 					{
 						v49 = object[v47]._oy;
-						if ( dObject[object[v47]._ox-1][v49-1] == -1 - arglista ) /* dungeon[39][112 * object[v47]._ox + 39 + v49] check */
+						if ( dObject[object[v47]._ox][v49-1] == -1 - arglista ) /* dungeon[39][112 * object[v47]._ox + 39 + v49] check */
 							v48 = abs(plr[v2].WorldY - v49 + 1);
 					}
 					if ( v102 > 1 || v48 > 1 )
@@ -4174,7 +4174,7 @@ void __fastcall CheckNewPath(int pnum)
 					if ( v51 > 1 )
 					{
 						v52 = object[v47]._oy;
-						if ( dObject[object[v47]._ox-1][v52-1] == -1 - arglista ) /* dungeon[39][112 * object[v47]._ox + 39 + v52] check */
+						if ( dObject[object[v47]._ox][v52-1] == -1 - arglista ) /* dungeon[39][112 * object[v47]._ox + 39 + v52] check */
 							v51 = abs(plr[v2].WorldY - v52 + 1);
 					}
 					if ( v103 > 1 || v51 > 1 )
@@ -4337,7 +4337,7 @@ LABEL_107:
 					if ( v71 > 1 )
 					{
 						v72 = object[v70]._oy;
-						if ( dObject[object[v70]._ox-1][v72-1] == -1 - arglistb ) /* dungeon[39][112 * object[v70]._ox + 39 + v72] check */
+						if ( dObject[object[v70]._ox][v72-1] == -1 - arglistb ) /* dungeon[39][112 * object[v70]._ox + 39 + v72] check */
 							v71 = abs(plr[v2].WorldY - v72 + 1);
 					}
 					if ( v104 <= 1 && v71 <= 1 )
