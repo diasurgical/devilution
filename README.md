@@ -23,12 +23,14 @@ In order to ensure that everything is preserved, Devilution keeps everything as 
 As a side goal Devilution tries to document the unused and cut content from the final game. Development of Diablo was rushed near the end--many ideas were scrapped and multiplayer was quickly hacked in. By examining the source, we can see various quirks of planned development.
 
 # Compiling
-Diablo was developed on Windows 95 using Visual C++ 4.20 and later 5.10 for newer patches. Devilution is optimized for the same tools originally used but is also compatible with modern setups.
+Diablo was developed on Windows 95 using Visual C++ 4.20 and later 5.10 and 6 for newer patches. Devilution is optimized for the same tools originally used but is also compatible with modern setups.
 
-### Building with Visual C++ 4/5/6
+### Building with Visual C++ 6
 - Open the project workspace `Diablo.dsw`, choose `Debug` or `Release`, and then `Build Diablo.exe`.
 
-To build a binary as close as possible to the original, use [Visual C++ 5](https://winworldpc.com/product/visual-c/5x) upgraded to [Service Pack 3](http://www.mediafire.com/file/jw4j4sd5dnzze4p/VS97SP3.zip).
+To build a binary with functions compiled as close as possible to the original, use [Visual C++ 6](https://winworldpc.com/product/visual-c/6x) with Service Pack 3 or lower.
+
+If you aim to build a binary as close as possible to the original one you will also need [Visual C++ 5](https://winworldpc.com/product/visual-c/5x) with [Service Pack 3](http://www.mediafire.com/file/jw4j4sd5dnzze4p/VS97SP3.zip), since the original binary as linked with the older linker from that. Sadly, you cannot use the old linker right out of VC6, so you'll need to link manually or via the `MakefileVC` in the project root.
 
 ### Building with Visual Studio 2010-2017
 - Open the project solution `Diablo.sln`, choose `Debug` or `Release`, and then `Build Solution`.
