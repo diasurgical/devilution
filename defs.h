@@ -5,7 +5,9 @@
 
 #define LIGHTSIZE				6912 // 27 * 256
 
-#define MAX_PLRS				4
+// must be unsigned to generate unsigned comparisons with pnum
+#define MAX_PLRS				4U
+
 #define MAX_CHARACTERS			10
 #define MAX_LVLMTYPES			16
 // #define MAX_PATH				260

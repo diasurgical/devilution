@@ -887,7 +887,7 @@ struct PlayerStruct
 	int _pVar6;
 	int _pVar7;
 	int _pVar8;
-	unsigned char _pLvlVisited[17]; // NUMLEVELS
+	unsigned char _pLvlVisited[NUMLEVELS];
 	unsigned char _pSLvlVisited[10];
 	char gap20F[9];
 	int _pGFXLoad;

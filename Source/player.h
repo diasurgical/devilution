@@ -30,7 +30,7 @@ void __fastcall NewPlrAnim(int pnum, unsigned char *Peq, int numFrames, int Dela
 void __fastcall ClearPlrPVars(int pnum);
 void __fastcall SetPlrAnims(int pnum);
 void __fastcall ClearPlrRVars(PlayerStruct *p);
-void __fastcall CreatePlayer(int pnum, char c);
+void __fastcall CreatePlayer(int pnum, int c);
 int __fastcall CalcStatDiff(int pnum);
 void __fastcall NextPlrLevel(int pnum);
 void __fastcall AddPlrExperience(int pnum, int lvl, int exp);
