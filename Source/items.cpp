@@ -1519,83 +1519,87 @@ void __fastcall SetPlrHandGoldCurs(ItemStruct *h)
 
 void __fastcall CreatePlrItems(int p)
 {
-	int v1; // ebx
-	int *v2; // eax
-	signed int v3; // ecx
-	int *v4; // eax
-	signed int v5; // ecx
-	int *v6; // eax
-	signed int v7; // ecx
-	int player_numa; // [esp+Ch] [ebp-4h]
+	int i;
+	for ( i = 0; i < NUM_INVLOC; i++ )
+	{
+		plr[p].InvBody[i]._itype = ITYPE_NONE;
+	}
 
-	player_numa = p;
-	v1 = p;
-	v2 = &plr[p].InvBody[0]._itype;
-	v3 = 7;
-	do
-	{
-		*v2 = -1;
-		v2 += 92;
-		--v3;
+	// for now this generates a `rep stosd` loop (10xDWORD) instead of a memset call
+	// probably because of alignment differences or something similar
+	// it's also interesting that IDA still shows it as memset instead of memset32.
+	for ( i = 0; i < sizeof(plr[p].InvGrid); i++) {
+		plr[p].InvGrid[i] = 0;
 	}
-	while ( v3 );
-	memset(plr[v1].InvGrid, 0, 0x28u);
-	v4 = &plr[v1].InvList[0]._itype;
-	v5 = 40;
-	do
+
+	// TODO: define/const for that 40, something like NUM_MAX_INV_ITEMS
+	for ( i = 0; i < 40; i++ )
 	{
-		*v4 = -1;
-		v4 += 92;
-		--v5;
+		plr[p].InvList[i]._itype = ITYPE_NONE;
 	}
-	while ( v5 );
-	plr[v1]._pNumInv = 0;
-	v6 = &plr[v1].SpdList[0]._itype;
-	v7 = 8;
-	do
+
+	plr[p]._pNumInv = 0;
+
+	// TODO: define/const for that 8
+	for ( i = 0; i < 8; i++ )
 	{
-		*v6 = -1;
-		v6 += 92;
-		--v7;
+		plr[p].SpdList[i]._itype = ITYPE_NONE;
 	}
-	while ( v7 );
-	switch ( _LOBYTE(plr[v1]._pClass) )
+
+	switch ( plr[p]._pClass )
 	{
 		case UI_WARRIOR:
-			SetPlrHandItem(&plr[v1].InvBody[4], IDI_WARRIOR);
-			GetPlrHandSeed(&plr[v1].InvBody[4]);
-			SetPlrHandItem(&plr[v1].InvBody[5], IDI_WARRSHLD);
-			GetPlrHandSeed(&plr[v1].InvBody[5]);
-			SetPlrHandItem(&plr[v1].HoldItem, IDI_WARRCLUB);
-			GetPlrHandSeed(&plr[v1].HoldItem);
-			AutoPlace(player_numa, 0, 1, 3, 1);
-			goto LABEL_13;
+			SetPlrHandItem(&plr[p].InvBody[4], IDI_WARRIOR);
+			GetPlrHandSeed(&plr[p].InvBody[4]);
+
+			SetPlrHandItem(&plr[p].InvBody[5], IDI_WARRSHLD);
+			GetPlrHandSeed(&plr[p].InvBody[5]);
+
+			SetPlrHandItem(&plr[p].HoldItem, IDI_WARRCLUB);
+			GetPlrHandSeed(&plr[p].HoldItem);
+			AutoPlace(p, 0, 1, 3, 1);
+
+			SetPlrHandItem(&plr[p].SpdList[0], IDI_HEAL);
+			GetPlrHandSeed(&plr[p].SpdList[0]);
+
+			SetPlrHandItem(&plr[p].SpdList[1], IDI_HEAL);
+			GetPlrHandSeed(&plr[p].SpdList[1]);
+			break;
 		case UI_ROGUE:
-			SetPlrHandItem(&plr[v1].InvBody[4], IDI_ROGUE);
-			GetPlrHandSeed(&plr[v1].InvBody[4]);
-LABEL_13:
-			SetPlrHandItem(plr[v1].SpdList, IDI_HEAL);
-			GetPlrHandSeed(plr[v1].SpdList);
-			SetPlrHandItem(&plr[v1].SpdList[1], IDI_HEAL);
-			goto LABEL_14;
+			SetPlrHandItem(&plr[p].InvBody[4], IDI_ROGUE);
+			GetPlrHandSeed(&plr[p].InvBody[4]);
+
+			SetPlrHandItem(&plr[p].SpdList[0], IDI_HEAL);
+			GetPlrHandSeed(&plr[p].SpdList[0]);
+
+			SetPlrHandItem(&plr[p].SpdList[1], IDI_HEAL);
+			GetPlrHandSeed(&plr[p].SpdList[1]);
+			break;
 		case UI_SORCERER:
-			SetPlrHandItem(&plr[v1].InvBody[4], IDI_SORCEROR);
-			GetPlrHandSeed(&plr[v1].InvBody[4]);
-			SetPlrHandItem(plr[v1].SpdList, IDI_MANA);
-			GetPlrHandSeed(plr[v1].SpdList);
-			SetPlrHandItem(&plr[v1].SpdList[1], IDI_MANA);
-LABEL_14:
-			GetPlrHandSeed(&plr[v1].SpdList[1]);
+			SetPlrHandItem(&plr[p].InvBody[4], IDI_SORCEROR);
+			GetPlrHandSeed(&plr[p].InvBody[4]);
+
+			SetPlrHandItem(&plr[p].SpdList[0], IDI_MANA);
+			GetPlrHandSeed(&plr[p].SpdList[0]);
+
+			SetPlrHandItem(&plr[p].SpdList[1], IDI_MANA);
+			GetPlrHandSeed(&plr[p].SpdList[1]);
 			break;
 	}
-	SetPlrHandItem(&plr[v1].HoldItem, IDI_GOLD);
-	GetPlrHandSeed(&plr[v1].HoldItem);
-	plr[v1].HoldItem._iCurs = 4;
-	plr[v1].HoldItem._ivalue = 100;
-	plr[v1]._pGold = 100;
-	qmemcpy((char *)&plr[0].InvList[plr[v1]._pNumInv++] + v1 * 21720, &plr[v1].HoldItem, 0x170u);
-	plr[v1].InvGrid[30] = plr[v1]._pNumInv;
-	CalcPlrItemVals(player_numa, 0);
+
+	SetPlrHandItem(&plr[p].HoldItem, IDI_GOLD);
+	GetPlrHandSeed(&plr[p].HoldItem);
+
+	plr[p].HoldItem._iCurs = 4;
+	plr[p].HoldItem._ivalue = 100;
+	plr[p]._pGold = 100;
+
+	plr[p].InvList[plr[p]._pNumInv] = plr[p].HoldItem;
+	plr[p]._pNumInv++;
+
+	plr[p].InvGrid[30] = plr[p]._pNumInv;
+
+	CalcPlrItemVals(p, FALSE);
 }
 
 bool __fastcall ItemSpaceOk(int i, int j)
