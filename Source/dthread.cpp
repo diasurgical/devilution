@@ -63,16 +63,14 @@ void __fastcall dthread_remove_player(int pnum)
 	LeaveCriticalSection(&sgMemCrit);
 }
 
-void __fastcall dthread_send_delta(int pnum, int cmd, void *pbSrc, int dwLen)
+void __fastcall dthread_send_delta(int pnum, char cmd, void *pbSrc, int dwLen)
 {
-	char v4; // bl
 	TMegaPkt *v5; // eax
 	TMegaPkt *v6; // esi
 	TMegaPkt *v7; // eax
 	TMegaPkt **v8; // ecx
 	int v9; // [esp+4h] [ebp-4h]
 
-	v4 = cmd;
 	v9 = pnum;
 	if ( gbMaxPlayers != 1 )
 	{
@@ -80,7 +78,7 @@ void __fastcall dthread_send_delta(int pnum, int cmd, void *pbSrc, int dwLen)
 		v6 = v5;
 		v5->pNext = 0;
 		v5->dwSpaceLeft = v9;
-		v5->data[0] = v4;
+		v5->data[0] = cmd;
 		*(_DWORD *)&v5->data[4] = dwLen;
 		memcpy(&v5->data[8], pbSrc, dwLen);
 		EnterCriticalSection(&sgMemCrit);
