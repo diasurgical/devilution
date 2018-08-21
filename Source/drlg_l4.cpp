@@ -3157,76 +3157,67 @@ void __fastcall DRLG_L4FTVR(int i, int j, int x, int y, int d)
 }
 // 5A5590: using guessed type char TransVal;
 
-void __cdecl DRLG_L4TransFix() /* check */
+void __cdecl DRLG_L4TransFix()
 {
-	signed int v0; // edi
+	signed int v0; // ebx
 	char *v1; // esi
-	signed int v2; // ebx
-	char v6; // al
-	char v10; // al
-	char v11; // al
-	char v12; // al
-	char v13; // al
-	char v14; // al
-	char v15; // al
-	char *v16; // [esp+Ch] [ebp-4h]
+	char *v2; // edi
+	char v3; // al
+	signed int v4; // [esp+Ch] [ebp-8h]
+	char *v5; // [esp+10h] [ebp-4h]
 
 	v0 = 0;
-	v16 = &dung_map[17][17];
+	v5 = &dung_map[16][16];
 	do
 	{
-		v1 = (char *)dungeon + v0;
-		v2 = 40;
+		v1 = v5;
+		v2 = (char *)dungeon + v0;
+		v4 = 40;
 		do
 		{
-			if ( IsDURWall(*v1) && *(v1 - 1) == 18 )
+			if ( IsDURWall(*v2) && *(v2 - 1) == 18 )
 			{
-				v6 = *(v16 - 113);
-				*(v16 - 1) = v6;
-				*v16 = v6;
+				v1[112] = *v1;
+				v1[113] = *v1;
 			}
-			if ( IsDLLWall(*v1) && v1[40] == 19 )
+			if ( IsDLLWall(*v2) && v2[40] == 19 )
 			{
-				v10 = *(v16 - 113);
-				*(v16 - 112) = v10;
-				*v16 = v10;
+				v1[1] = *v1;
+				v1[113] = *v1;
 			}
-			if ( *v1 == 18 )
+			v3 = *v2;
+			if ( *v2 == 18 )
 			{
-				v11 = *(v16 - 113);
-				*(v16 - 1) = v11;
-				*v16 = v11;
+				v1[112] = *v1;
+				v1[113] = *v1;
 			}
-			if ( *v1 == 19 )
+			if ( v3 == 19 )
 			{
-				v12 = *(v16 - 113);
-				*(v16 - 112) = v12;
-				*v16 = v12;
+				v1[1] = *v1;
+				v1[113] = *v1;
 			}
-			if ( *v1 == 24 )
+			if ( v3 == 24 )
 			{
-				v13 = *(v16 - 113);
-				*(v16 - 1) = v13;
-				*(v16 - 112) = v13;
-				*v16 = v13;
+				v1[112] = *v1;
+				v1[1] = *v1;
+				v1[113] = *v1;
 			}
-			if ( *v1 == 57 )
+			if ( v3 == 57 )
 			{
-				v14 = *(v16 - 112);
-				*(v16 - 225) = v14;
-				*(v16 - 113) = v14;
+				*(v1 - 112) = v1[1];
+				*v1 = v1[1];
 			}
-			if ( *v1 == 53 )
+			if ( v3 == 53 )
 			{
-				v15 = *(v16 - 1);
-				*(v16 - 114) = v15;
-				*(v16 - 113) = v15;
+				*(v1 - 1) = v1[112];
+				*v1 = v1[112];
 			}
-			v1 += 40;
-			--v2;
+			v1 += 224;
+			v2 += 40;
+			--v4;
 		}
-		while ( v2 );
-		v16 += 2;
+		while ( v4 );
+		v5 += 2;
 		++v0;
 	}
 	while ( v0 < 40 );
