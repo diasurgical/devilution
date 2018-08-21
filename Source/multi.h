@@ -6,7 +6,7 @@ extern char gbSomebodyWonGameKludge; // weak
 extern char pkdata_6761C0[4100];
 extern char szPlayerDescript[128];
 extern short sgwPackPlrOffsetTbl[MAX_PLRS];
-extern PkPlayerStruct pkplr[MAX_PLRS];
+extern PkPlayerStruct netplr[MAX_PLRS];
 extern char sgbPlayerTurnBitTbl[MAX_PLRS];
 extern char sgbPlayerLeftGameTbl[MAX_PLRS];
 extern int multi_cpp_init_value; // weak
@@ -58,7 +58,7 @@ char __fastcall multi_event_handler(int a1);
 void __stdcall multi_handle_events(_SNETEVENT *pEvt);
 int __fastcall NetInit(int bSinglePlayer, int *pfExitProgram);
 void __fastcall multi_clear_pkt(char *a1);
-void __fastcall multi_send_pinfo(int pnum, TCmdPlrInfoHdr *cmd);
+void __fastcall multi_send_pinfo(int pnum, char cmd);
 int __fastcall InitNewSeed(int newseed);
 void __cdecl SetupLocalCoords();
 int __fastcall multi_init_single(_SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info, _SNETUIDATA *ui_info);
