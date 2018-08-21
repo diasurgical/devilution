@@ -6,7 +6,7 @@ extern char gbSomebodyWonGameKludge; // weak
 extern char pkdata_6761C0[4100];
 extern char szPlayerDescript[128];
 extern short sgwPackPlrOffsetTbl[MAX_PLRS];
-extern PkPlayerStruct pkplr[MAX_PLRS];
+extern PkPlayerStruct netplr[MAX_PLRS];
 extern char sgbPlayerTurnBitTbl[MAX_PLRS];
 extern char sgbPlayerLeftGameTbl[MAX_PLRS];
 extern int multi_cpp_init_value; // weak
