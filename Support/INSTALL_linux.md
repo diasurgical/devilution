@@ -2,6 +2,11 @@
 
 ## Dependencies
 
+Ubuntu
+```bash
+sudo apt install g++-mingw-w64-i686
+```
+
 Arch Linux
 ```bash
 pacman -S mingw-w64-gcc mingw-w64-binutils

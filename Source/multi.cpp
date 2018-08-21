@@ -6,7 +6,7 @@ char gbSomebodyWonGameKludge; // weak
 char pkdata_6761C0[4100];
 char szPlayerDescript[128];
 short sgwPackPlrOffsetTbl[MAX_PLRS];
-PkPlayerStruct pkplr[MAX_PLRS];
+PkPlayerStruct netplr[MAX_PLRS];
 char sgbPlayerTurnBitTbl[MAX_PLRS];
 char sgbPlayerLeftGameTbl[MAX_PLRS];
 int multi_cpp_init_value; // weak
@@ -791,7 +791,6 @@ int __fastcall NetInit(int bSinglePlayer, int *pfExitProgram)
 	int v2; // ebx
 	int v4; // eax
 	//int v5; // ecx
-	TCmdPlrInfoHdr *v6; // edx
 	bool v7; // zf
 	//int v9; // eax
 	//int v10; // eax
@@ -871,8 +870,7 @@ int __fastcall NetInit(int bSinglePlayer, int *pfExitProgram)
 		gbSomebodyWonGameKludge = 0;
 		nthread_send_and_recv_turn(0, 0);
 		SetupLocalCoords();
-		_LOBYTE(v6) = CMD_SEND_PLRINFO;
-		multi_send_pinfo(-2, v6);
+		multi_send_pinfo(-2, CMD_SEND_PLRINFO);
 		gbActivePlayers = 1;
 		v7 = sgbPlayerTurnBitTbl[myplr] == 0;
 		plr[myplr].plractive = 1;
@@ -913,18 +911,16 @@ void __fastcall multi_clear_pkt(char *a1)
 	a1[4] = 0;
 }
 
-void __fastcall multi_send_pinfo(int pnum, TCmdPlrInfoHdr *cmd)
+void __fastcall multi_send_pinfo(int pnum, char cmd)
 {
 	char v2; // bl
 	int v3; // esi
-	int v4; // edx
 	PkPlayerStruct pkplr; // [esp+8h] [ebp-4F4h]
 
-	v2 = (char)cmd;
+	v2 = cmd;
 	v3 = pnum;
 	PackPlayer(&pkplr, myplr, 1);
-	_LOBYTE(v4) = v2;
-	dthread_send_delta(v3, v4, &pkplr, 1266);
+	dthread_send_delta(v3, v2, &pkplr, 1266);
 }
 
 int __fastcall InitNewSeed(int newseed)
@@ -1109,10 +1105,9 @@ void __fastcall multi_player_joins(int pnum, TCmdPlrInfoHdr *cmd, int a3)
 		{
 			if ( !a3 && !*v5 )
 			{
-				_LOBYTE(cmd) = CMD_ACK_PLRINFO;
-				multi_send_pinfo(pnum, cmd);
+				multi_send_pinfo(pnum, CMD_ACK_PLRINFO);
 			}
-			memcpy((char *)&pkplr[v3] + (unsigned short)v4->wOffset, &v4[1], (unsigned short)v4->wBytes);
+			memcpy((char *)&netplr[v3] + (unsigned short)v4->wOffset, &v4[1], (unsigned short)v4->wBytes);
 			*v5 += v4->wBytes;
 			if ( *v5 == 1266 )
 			{
@@ -1120,7 +1115,7 @@ void __fastcall multi_player_joins(int pnum, TCmdPlrInfoHdr *cmd, int a3)
 				multi_player_left_msg(v3, 0);
 				v6 = v3;
 				plr[v3]._pGFXLoad = 0;
-				UnPackPlayer(&pkplr[v3], v3, 1);
+				UnPackPlayer(&netplr[v3], v3, 1);
 				if ( a3 )
 				{
 					++gbActivePlayers;
