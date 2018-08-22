@@ -839,6 +839,13 @@ struct PlayerStruct
 	char _pLightRad;
 	unsigned char _pLvlChanging;
 	char _pName[32];
+
+	// plr_class enum value.
+	// TODO: this could very well be `enum plr_class _pClass`
+	// since there are 3 bytes of alingment after this field.
+	// it could just be that the compiler optimized away all accesses to
+	// the higher bytes by using byte instructions, since all possible values
+	// of plr_class fit into one byte.
 	char _pClass;
 	int _pStrength;
 	int _pBaseStr;

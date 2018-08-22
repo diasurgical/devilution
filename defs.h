@@ -28,7 +28,6 @@
 #define MDMAXY					40
 
 // todo: enums
-#define NUM_CLASSES				3
 #define NUM_INVLOC				7
 #define NUM_SFX					858
 #define NUMLEVELS				17

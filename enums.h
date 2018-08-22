@@ -2393,6 +2393,14 @@ enum _unique_items
 	UITEM_INVALID = 0x5A,
 };
 
+enum plr_class
+{
+	PC_WARRIOR = 0x0,
+	PC_ROGUE = 0x1,
+	PC_SORCERER = 0x2,
+	NUM_CLASSES
+};
+
 enum _ui_classes
 {
 	UI_WARRIOR = 0x0,
