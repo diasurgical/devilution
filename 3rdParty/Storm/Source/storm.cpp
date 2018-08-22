@@ -36,7 +36,7 @@ BOOL STORMAPI SNetSendTurn(char *data, size_t databytes) rBool;
 BOOL STORMAPI SNetSetGameMode(DWORD modeFlags, bool makePublic) rBool;
 
 BOOL STORMAPI SNetEnumGamesEx(int a1, int a2, int (__fastcall *callback)(DWORD, DWORD, DWORD), int *hintnextcall) rBool;
-BOOL STORMAPI SNetSetServerChatCommand(const char *command) rBool;
+BOOL STORMAPI SNetSendServerChatCommand(const char *command) rBool;
 
 BOOL STORMAPI SNetDisconnectAll(DWORD flags) rBool;
 BOOL STORMAPI SNetCreateLadderGame(const char *pszGameName, const char *pszGamePassword, const char *pszGameStatString, DWORD dwGameType, DWORD dwGameLadderType, DWORD dwGameModeFlags, char *GameTemplateData, int GameTemplateSize, int playerCount, char *creatorName, char *a11, int *playerID) rBool;
