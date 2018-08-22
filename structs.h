@@ -100,8 +100,14 @@ struct ItemDataStruct
 	char iMinStr;
 	char iMinMag;
 	char iMinDex;
+
+	// item_special_effect
 	int iFlags;
+
+	// item_misc_id
 	int iMiscId;
+
+	// spell_id
 	int iSpell;
 	int iUsable;
 	int iValue;
@@ -322,6 +328,8 @@ struct ItemStruct
 	char _iName[64];
 	char _iIName[64];
 	char _iLoc;
+
+	// item_class enum
 	char _iClass;
 	int _iCurs;
 	int _ivalue;
@@ -329,8 +337,14 @@ struct ItemStruct
 	int _iMinDam;
 	int _iMaxDam;
 	int _iAC;
+
+	// item_special_effect
 	int _iFlags;
+
+	// item_misc_id
 	int _iMiscId;
+
+	// spell_id
 	int _iSpell;
 	int _iCharges;
 	int _iMaxCharges;
@@ -806,7 +820,9 @@ struct PlayerStruct
 	int _pTSpell;
 	int _pTSplType;
 	int _pRSpell;
-	int _pRSplType;
+
+	// enum spell_type
+	char _pRSplType;
 	int _pSBkSpell;
 	char _pSBkSplType;
 	char _pSplLvl[64];
@@ -907,6 +923,8 @@ struct PlayerStruct
 	int _pIBonusAC;
 	int _pIBonusDamMod;
 	int remove_2;
+
+	// TODO: switch to __int64
 	int _pISpells[2]; //__declspec(align(8))
 	int _pIFlags;
 	int _pIGetHit;
