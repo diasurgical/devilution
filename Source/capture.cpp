@@ -14,7 +14,7 @@ void __cdecl CaptureScreen()
 		lpDDPalette->GetEntries(0, 0, 256, palette);
 		RedPalette(palette);
 
-		dx_lock_mutex();
+		lock_buf_priv();
 		bool success = CaptureHdr(hObject, 640, 480);
 		if (success)
 		{
@@ -24,7 +24,7 @@ void __cdecl CaptureScreen()
 				success = CapturePal(hObject, palette);
 			}
 		}
-		dx_unlock_mutex();
+		unlock_buf_priv();
 		CloseHandle(hObject);
 
 		if (!success)
