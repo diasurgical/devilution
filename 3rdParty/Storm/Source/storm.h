@@ -432,7 +432,7 @@ SNetSetGameMode(
 #define SNMakeGamePublic() SNetSetGameMode( (DWORD mode, SNetGetGameInfo(GAMEINFO_MODEFLAGS, &mode, 4), mode), true)
 
 BOOL STORMAPI SNetEnumGamesEx(int a1, int a2, int (__fastcall *callback)(DWORD, DWORD, DWORD), int *hintnextcall);
-BOOL STORMAPI SNetSetServerChatCommand(const char *command);
+BOOL STORMAPI SNetSendServerChatCommand(const char *command);
 
 BOOL STORMAPI SNetDisconnectAll(DWORD flags);
 BOOL STORMAPI SNetCreateLadderGame(const char *pszGameName, const char *pszGamePassword, const char *pszGameStatString, DWORD dwGameType, DWORD dwGameLadderType, DWORD dwGameModeFlags, char *GameTemplateData, int GameTemplateSize, int playerCount, char *creatorName, char *a11, int *playerID);

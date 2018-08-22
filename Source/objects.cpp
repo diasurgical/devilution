@@ -2838,24 +2838,24 @@ void __fastcall Obj_BCrossDamage(int i)
 	int v4; // edx
 	char v5; // al
 	int v6; // ecx
-	int damage[5]; // [esp+4h] [ebp-18h]
+	int damage[4]; // [esp+4h] [ebp-18h]
 	int v8; // [esp+18h] [ebp-4h]
 
 	v1 = myplr;
 	v8 = i;
 	v2 = plr[myplr]._pmode == PM_DEATH;
-	damage[1] = 6;
-	damage[2] = 8;
-	damage[3] = 10;
-	damage[4] = 12;
+	damage[0] = 6;
+	damage[1] = 8;
+	damage[2] = 10;
+	damage[3] = 12;
 	if ( !v2 )
 	{
 		v3 = plr[v1]._pFireResist;
 		if ( v3 > 0 )
-			damage[(unsigned char)leveltype] -= v3 * damage[(unsigned char)leveltype] / 100;
+			damage[(unsigned char)leveltype-1] -= v3 * damage[(unsigned char)leveltype-1] / 100;
 		if ( plr[v1].WorldX == object[v8]._ox && plr[v1].WorldY == object[v8]._oy - 1 )
 		{
-			v4 = damage[(unsigned char)leveltype];
+			v4 = damage[(unsigned char)leveltype-1];
 			plr[v1]._pHitPoints -= v4;
 			plr[v1]._pHPBase -= v4;
 			if ( (signed int)(plr[v1]._pHitPoints & 0xFFFFFFC0) <= 0 )

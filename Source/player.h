@@ -29,7 +29,7 @@ void __fastcall FreePlayerGFX(int pnum);
 void __fastcall NewPlrAnim(int pnum, int Peq, int numFrames, int Delay, int width);
 void __fastcall ClearPlrPVars(int pnum);
 void __fastcall SetPlrAnims(int pnum);
-void __fastcall ClearPlrRVars(PlayerStruct *pPlayer);
+void __fastcall ClearPlrRVars(PlayerStruct *p);
 void __fastcall CreatePlayer(int pnum, char c);
 int __fastcall CalcStatDiff(int pnum);
 void __fastcall NextPlrLevel(int pnum);

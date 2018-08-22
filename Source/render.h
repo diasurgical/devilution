@@ -1,6 +1,6 @@
 //HEADER_GOES_HERE
-#ifndef __WORLD_H__
-#define __WORLD_H__
+#ifndef __RENDER_H__
+#define __RENDER_H__
 
 void __fastcall drawTopArchesUpperScreen(unsigned char *pbDst);
 void __fastcall drawBottomArchesUpperScreen(unsigned char *pbDst, unsigned int *pMask);
@@ -25,4 +25,4 @@ extern int WorldTbl3x16[48];
 extern int WorldTbl17_1[17];
 extern int WorldTbl17_2[17];
 
-#endif /* __WORLD_H__ */
+#endif /* __RENDER_H__ */

@@ -12,6 +12,8 @@ bool save_archive_open; // weak
 
 int mpqapi_inf = 0x7F800000; // weak
 
+//note: 32872 = 32768 + 104 (sizeof(TMPQHEADER))
+
 /* rdata */
 
 HANDLE sghArchive = (HANDLE)0xFFFFFFFF; // idb

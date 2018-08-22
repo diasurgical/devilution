@@ -391,7 +391,7 @@ SOURCE=.\Source\wave.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\Source\world.cpp
+SOURCE=.\Source\render.cpp
 # End Source File
 # End Group
 # Begin Group "Resource Files"
