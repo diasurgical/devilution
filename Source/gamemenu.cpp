@@ -109,7 +109,7 @@ void __cdecl gamemenu_quit_game()
 
 void __cdecl gamemenu_load_game()
 {
-	LRESULT (__stdcall *saveProc)(HWND, UINT, WPARAM, LPARAM); // edi
+	WNDPROC saveProc; // edi
 
 	saveProc = SetWindowProc(DisableInputWndProc);
 	gamemenu_off();
@@ -132,7 +132,7 @@ void __cdecl gamemenu_load_game()
 
 void __cdecl gamemenu_save_game()
 {
-	LRESULT (__stdcall *saveProc)(HWND, UINT, WPARAM, LPARAM); // edi
+	WNDPROC saveProc; // edi
 
 	if ( pcurs == CURSOR_HAND )
 	{
