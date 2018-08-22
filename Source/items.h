@@ -19,7 +19,7 @@ void __cdecl InitItemGFX();
 bool __fastcall ItemPlace(int xp, int yp);
 void __cdecl AddInitItems();
 void __cdecl InitItems();
-void __fastcall CalcPlrItemVals(int p, bool Loadgfx);
+void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx);
 void __fastcall CalcPlrScrolls(int p);
 void __fastcall CalcPlrStaff(int pnum);
 void __fastcall CalcSelfItems(int pnum);
