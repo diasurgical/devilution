@@ -62,7 +62,7 @@ void __cdecl msgcmd_send_chat()
 		if ( (unsigned int)(v1 - sgdwMsgCmdTimer) >= 2000 )
 		{
 			sgdwMsgCmdTimer = v1;
-			SNetSetServerChatCommand(v0->command);
+			SNetSendServerChatCommand(v0->command);
 			msgcmd_delete_server_cmd_W(&sgChat_Cmd, v0);
 		}
 	}
