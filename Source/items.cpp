@@ -757,6 +757,7 @@ void __cdecl InitItems()
 
 void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 {
+	// note: didn't find any obvious use for the `unsigned long l` from the PSX symbols.
 
 	int mind = 0; // min damage
 	int maxd = 0; // max damage
@@ -767,7 +768,7 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 	int bac = 0; // bonus accuracy
 
 	// note that the order of these next 5 variables does not
-	// align with the order in the PSX SYM files.
+	// align with the order in the PSX SYM files or the use in the code.
 	// with the current optimization settings this order
 	// generates the var initialization code closest to the
 	// original binary, however.
@@ -923,7 +924,7 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 		plr[myplr]._pVitality = 0;
 	}
 
-	if ( ptrplr->_pClass == UI_ROGUE )
+	if ( ptrplr->_pClass == PC_ROGUE )
 	{
 		ptrplr->_pDamageMod = (ptrplr->_pStrength + ptrplr->_pDexterity) * ptrplr->_pLevel / 200;
 	}
@@ -972,21 +973,21 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 	}
 	ptrplr->_pLghtResist = lr;
 
-	if ( ptrplr->_pClass == UI_WARRIOR )
+	if ( ptrplr->_pClass == PC_WARRIOR )
 	{
 		vadd *= 2;
 	}
-	if ( ptrplr->_pClass == UI_ROGUE )
+	if ( ptrplr->_pClass == PC_ROGUE )
 	{
 		vadd += vadd >> 1;
 	}
 	ihp = (vadd << 6) + ihp;
 
-	if ( ptrplr->_pClass == UI_SORCERER )
+	if ( ptrplr->_pClass == PC_SORCERER )
 	{
 		madd *= 2;
 	}
-	if ( ptrplr->_pClass == UI_ROGUE )
+	if ( ptrplr->_pClass == PC_ROGUE )
 	{
 		madd += madd >> 1;
 	}
