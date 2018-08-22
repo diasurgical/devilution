@@ -53,6 +53,10 @@
 #endif
 // If defined, don't fry the CPU [Default -> Undefined]
 #define SLEEP
+// If defined, use standard memcpy() in place of qmemcpy() [Default -> Undefined]
+// Will be replaced with [rep movsd] if optimization is used
+#define FAST_MEMCPY
+
 
 /* temp macro for asm XLAT */
 #define ASM_XLAT(eax,ebx) eax = (eax & 0xFFFFFF00) + LOBYTE(ebx[LOBYTE(eax)])
@@ -125,6 +129,6 @@
 #include "Source/track.h"
 #include "Source/trigs.h"
 #include "Source/wave.h"
-#include "Source/world.h"
+#include "Source/render.h" // linked last, likely .s/.asm
 
 #endif

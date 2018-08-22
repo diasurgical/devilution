@@ -663,26 +663,26 @@ LABEL_11:
 }
 // 5BB1ED: using guessed type char leveltype;
 
-void __fastcall ClearPlrRVars(PlayerStruct *pPlayer)
+void __fastcall ClearPlrRVars(PlayerStruct *p)
 {
-	pPlayer->bReserved[0] = 0;
-	pPlayer->bReserved[1] = 0;
-	pPlayer->bReserved[2] = 0;
-	pPlayer->wReserved[0] = 0;
-	pPlayer->wReserved[1] = 0;
-	pPlayer->wReserved[2] = 0;
-	pPlayer->wReserved[3] = 0;
-	pPlayer->wReserved[4] = 0;
-	pPlayer->wReserved[5] = 0;
-	pPlayer->wReserved[6] = 0;
-	pPlayer->wReserved[7] = 0;
-	pPlayer->dwReserved[0] = 0;
-	pPlayer->dwReserved[1] = 0;
-	pPlayer->dwReserved[2] = 0;
-	pPlayer->dwReserved[3] = 0;
-	pPlayer->dwReserved[4] = 0;
-	pPlayer->dwReserved[5] = 0;
-	pPlayer->dwReserved[6] = 0;
+	p->bReserved[0] = 0;
+	p->bReserved[1] = 0;
+	p->bReserved[2] = 0;
+	p->wReserved[0] = 0;
+	p->wReserved[1] = 0;
+	p->wReserved[2] = 0;
+	p->wReserved[3] = 0;
+	p->wReserved[4] = 0;
+	p->wReserved[5] = 0;
+	p->wReserved[6] = 0;
+	p->wReserved[7] = 0;
+	p->dwReserved[0] = 0;
+	p->dwReserved[1] = 0;
+	p->dwReserved[2] = 0;
+	p->dwReserved[3] = 0;
+	p->dwReserved[4] = 0;
+	p->dwReserved[5] = 0;
+	p->dwReserved[6] = 0;
 }
 
 void __fastcall CreatePlayer(int pnum, char c)

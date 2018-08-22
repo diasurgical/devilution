@@ -184,7 +184,7 @@ HRESULT __fastcall dx_DirectDrawCreate(GUID *guid, IDirectDraw **DD, void *unkno
 	return ((int (__stdcall *)(GUID *, IDirectDraw **, void *))v5)(v8, v3, unknown);
 }
 
-void __cdecl dx_lock_mutex()
+void __cdecl lock_buf_priv()
 {
 	Screen *v0; // eax
 	int v1; // eax
@@ -215,7 +215,7 @@ LABEL_9:
 }
 // 69CF0C: using guessed type int screen_buf_end;
 
-void __cdecl dx_unlock_mutex()
+void __cdecl unlock_buf_priv()
 {
 	Screen *v0; // eax
 	int v1; // eax
@@ -287,12 +287,12 @@ void __cdecl dx_reinit()
 	ClearCursor();
 	v0 = sgdwLockCount;
 	while ( sgdwLockCount )
-		dx_unlock_mutex();
+		unlock_buf_priv();
 	dx_cleanup();
 	drawpanflag = 255;
 	dx_init(ghMainWnd);
 	for ( ; v0; --v0 )
-		dx_lock_mutex();
+		lock_buf_priv();
 	LeaveCriticalSection(&sgMemCrit);
 }
 // 52571C: using guessed type int drawpanflag;

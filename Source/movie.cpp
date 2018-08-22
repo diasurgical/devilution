@@ -21,7 +21,7 @@ struct movie_cpp_init
 void __fastcall play_movie(char *pszMovie, bool user_can_close)
 {
 	char *v2; // esi
-	LRESULT (__stdcall *saveProc)(HWND, UINT, WPARAM, LPARAM); // edi
+	WNDPROC saveProc; // edi
 	//int v4; // eax
 	MSG Msg; // [esp+8h] [ebp-24h]
 	BOOL v6; // [esp+24h] [ebp-8h]
