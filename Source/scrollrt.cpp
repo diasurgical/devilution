@@ -2828,12 +2828,12 @@ void __cdecl ClearScreenBuffer()
 {
 	int i; // edx
 
-	dx_lock_mutex();
+	lock_buf_priv();
 
 	for(i = 0; i < 480; i++)
 		memset(gpBuffer->row[i].pixels, 0, 640);
 
-	dx_unlock_mutex();
+	unlock_buf_priv();
 }
 
 #ifdef _DEBUG
@@ -2973,16 +2973,16 @@ void __fastcall scrollrt_draw_game_screen(bool draw_cursor)
 	}
 	if ( draw_cursor )
 	{
-		dx_lock_mutex();
+		lock_buf_priv();
 		scrollrt_draw_cursor_item();
-		dx_unlock_mutex();
+		unlock_buf_priv();
 	}
 	DrawMain(dwHgt, 0, 0, 0, 0, 0);
 	if ( draw_cursor )
 	{
-		dx_lock_mutex();
+		lock_buf_priv();
 		scrollrt_draw_cursor_back_buffer();
-		dx_unlock_mutex();
+		unlock_buf_priv();
 	}
 }
 // 52571C: using guessed type int drawpanflag;
@@ -3312,7 +3312,7 @@ void __fastcall DoBlitScreen(int dwX, int dwY, int dwWdt, int dwHgt)
 		v6 = 768 - dwWdt;
 		error_codea = (unsigned int)dwWdt >> 2;
 		v16 = v6;
-		dx_lock_mutex();
+		lock_buf_priv();
 		v7 = (char *)gpBuffer + v14;
 		v8 = (char *)DDS_desc.lpSurface + v15;
 		v9 = dwHgt;
@@ -3324,7 +3324,7 @@ void __fastcall DoBlitScreen(int dwX, int dwY, int dwWdt, int dwHgt)
 			--v9;
 		}
 		while ( v9 );
-		dx_unlock_mutex();
+		unlock_buf_priv();
 	}
 }
 
@@ -3355,7 +3355,7 @@ void __cdecl DrawAndBlit()
 			dwHgt = 352;
 		}
 		drawpanflag = 0;
-		dx_lock_mutex();
+		lock_buf_priv();
 		if ( leveltype )
 			DrawView(ViewX, ViewY);
 		else
@@ -3376,11 +3376,11 @@ void __cdecl DrawAndBlit()
 			dwHgt = 480;
 		}
 		scrollrt_draw_cursor_item();
-		dx_unlock_mutex();
+		unlock_buf_priv();
 		DrawMain(dwHgt, ddsdesc, drawhpflag, drawmanaflag, drawsbarflag, drawbtnflag);
-		dx_lock_mutex();
+		lock_buf_priv();
 		scrollrt_draw_cursor_back_buffer();
-		dx_unlock_mutex();
+		unlock_buf_priv();
 		drawhpflag = 0;
 		drawmanaflag = 0;
 		drawbtnflag = 0;

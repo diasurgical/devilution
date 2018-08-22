@@ -140,12 +140,9 @@ typedef ull             uint64;
 
 #ifdef __cplusplus
 
-
-// memcpy() with determined behavoir: it always copies
-// from the start to the end of the buffer
-// note: it copies byte by byte, so it is not equivalent to, for example, rep movsd
+#ifdef FAST_MEMCPY
 #define qmemcpy memcpy
-/*
+#else
 inline void *qmemcpy(void *dst, const void *src, size_t cnt)
 {
   char *out = (char *)dst;
@@ -156,7 +153,8 @@ inline void *qmemcpy(void *dst, const void *src, size_t cnt)
     --cnt;
   }
   return dst;
-} */
+}
+#endif
 
 // Generate a reference to pair of operands
 template<class T>  int16 __PAIR__( int8  high, T low) { return ((( int16)high) << sizeof(high)*8) | uint8(low); }

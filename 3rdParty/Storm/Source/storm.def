@@ -34,7 +34,7 @@ EXPORTS
   SNetUnregisterEventHandler    @131 NONAME
 
   SNetEnumGamesEx               @133 NONAME
-  SNetSetServerChatCommand      @134 NONAME
+  SNetSendServerChatCommand     @134 NONAME
   ;SNetSendDatagram             @135 NONAME
   ;SNetReceiveDatagram          @136 NONAME
   SNetDisconnectAll             @137 NONAME

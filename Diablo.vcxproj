@@ -190,7 +190,7 @@
     <ClCompile Include="Source\track.cpp" />
     <ClCompile Include="Source\trigs.cpp" />
     <ClCompile Include="Source\wave.cpp" />
-    <ClCompile Include="Source\world.cpp" />
+    <ClCompile Include="Source\render.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Diablo.ico" />
@@ -270,7 +270,7 @@
     <ClInclude Include="Source\track.h" />
     <ClInclude Include="Source\trigs.h" />
     <ClInclude Include="Source\wave.h" />
-    <ClInclude Include="Source\world.h" />
+    <ClInclude Include="Source\render.h" />
     <ClInclude Include="structs.h" />
     <ClInclude Include="types.h" />
   </ItemGroup>
