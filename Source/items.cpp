@@ -909,21 +909,21 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 	}
 
 	ptrplr->_pMagic = madd + ptrplr->_pBaseMag;
-	if ( ptrplr->_pMagic <= 0 )
+	if ( plr[myplr]._pMagic <= 0 )
 	{
-		ptrplr->_pMagic = 0;
+		plr[myplr]._pMagic = 0;
 	}
 
 	ptrplr->_pDexterity = dadd + ptrplr->_pBaseDex;
-	if ( ptrplr->_pDexterity <= 0 )
+	if ( plr[myplr]._pDexterity <= 0 )
 	{
-		ptrplr->_pDexterity = 0;
+		plr[myplr]._pDexterity = 0;
 	}
 
 	ptrplr->_pVitality = vadd + ptrplr->_pBaseVit;
-	if ( ptrplr->_pVitality <= 0 )
+	if ( plr[myplr]._pVitality <= 0 )
 	{
-		ptrplr->_pVitality = 0;
+		plr[myplr]._pVitality = 0;
 	}
 
 	// TODO: this shouldn't need to be here
