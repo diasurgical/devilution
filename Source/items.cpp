@@ -757,28 +757,25 @@ void __cdecl InitItems()
 
 void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 {
-	// note: didn't find any obvious use for the `unsigned long l` from the PSX symbols.
-
 	int mind = 0; // min damage
 	int maxd = 0; // max damage
 	int tac = 0; // accuracy
+
+	int g;
+	int i;
+	int mi;
 
 	int bdam = 0; // bonus damage
 	int btohit = 0; // bonus chance to hit
 	int bac = 0; // bonus accuracy
 
-	// note that the order of these next 5 variables does not
-	// align with the order in the PSX SYM files or the use in the code.
-	// with the current optimization settings this order
-	// generates the var initialization code closest to the
-	// original binary, however.
-	int vadd = 0; // added vitality
-	int sadd = 0; // added stregth
 	int iflgs = 0; // item_special_effect flags
-	int dadd = 0; // added dexterity
+	int sadd = 0; // added stregth
 	int madd = 0; // added magic
+	int dadd = 0; // added dexterity
+	int vadd = 0; // added vitality
 
-	__int64 spl = 0; // bitarray for all enabled/active spells
+	unsigned __int64 spl = 0; // bitarray for all enabled/active spells
 
 	signed int fr = 0; // fire resistance
 	signed int lr = 0; // lightning resistance
@@ -800,21 +797,24 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 	int lmin = 0; // minimum lightning damage
 	int lmax = 0; // maximum lightning damage
 
+	// didn't find a use for t for now
+	//int t;
+
 	PlayerStruct *ptrplr = &plr[p];
 
-	int i;
 	for ( i = 0; i < NUM_INVLOC; i++ )
 	{
 		ItemStruct *itm = &plr[p].InvBody[i];
 		if ( itm->_itype != ITYPE_NONE && itm->_iStatFlag )
 		{
+
 			mind += itm->_iMinDam;
 			tac += itm->_iAC;
 			maxd += itm->_iMaxDam;
 
 			if ( itm->_iSpell != SPL_NULL )
 			{
-				spl |= (__int64)1 << (itm->_iSpell - 1);
+				spl |= (unsigned __int64)1 << (itm->_iSpell - 1);
 			}
 
 			if ( !itm->_iMagical || itm->_iIdentified )
@@ -855,10 +855,12 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 	{
 		mind = 1;
 		maxd = 1;
+
 		if ( ptrplr->InvBody[4]._itype == ITYPE_SHIELD && ptrplr->InvBody[4]._iStatFlag )
 		{
 			maxd = 3;
 		}
+
 		if ( ptrplr->InvBody[5]._itype == ITYPE_SHIELD && ptrplr->InvBody[5]._iStatFlag )
 		{
 			maxd = 3;
@@ -901,43 +903,46 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 	}
 
 	ptrplr->_pStrength = sadd + ptrplr->_pBaseStr;
-	if ( ptrplr->_pStrength <= 0 )
+	if ( plr[myplr]._pStrength <= 0 )
 	{
-		ptrplr->_pStrength = 0;
+		plr[myplr]._pStrength = 0;
 	}
 
 	ptrplr->_pMagic = madd + ptrplr->_pBaseMag;
-	if ( plr[myplr]._pMagic <= 0 )
+	if ( ptrplr->_pMagic <= 0 )
 	{
-		plr[myplr]._pMagic = 0;
+		ptrplr->_pMagic = 0;
 	}
 
 	ptrplr->_pDexterity = dadd + ptrplr->_pBaseDex;
-	if ( plr[myplr]._pDexterity <= 0 )
+	if ( ptrplr->_pDexterity <= 0 )
 	{
-		plr[myplr]._pDexterity = 0;
+		ptrplr->_pDexterity = 0;
 	}
 
 	ptrplr->_pVitality = vadd + ptrplr->_pBaseVit;
-	if ( plr[myplr]._pVitality <= 0 )
+	if ( ptrplr->_pVitality <= 0 )
 	{
-		plr[myplr]._pVitality = 0;
+		ptrplr->_pVitality = 0;
 	}
 
+	// TODO: this shouldn't need to be here
+	int l = ptrplr->_pLevel;
 	if ( ptrplr->_pClass == PC_ROGUE )
 	{
-		ptrplr->_pDamageMod = (ptrplr->_pStrength + ptrplr->_pDexterity) * ptrplr->_pLevel / 200;
+		ptrplr->_pDamageMod = l * (ptrplr->_pStrength + ptrplr->_pDexterity) / 200;
 	}
 	else
 	{
-		ptrplr->_pDamageMod = ptrplr->_pStrength * ptrplr->_pLevel / 100;
+		ptrplr->_pDamageMod = l * ptrplr->_pStrength / 100;
 	}
 
 	// TODO: switch to normal 64bit assignment
 	*(__int64 *)&ptrplr->_pISpells = spl;
 
 	// check if the current RSplType is a valid/allowed spell
-	if ( ptrplr->_pRSplType == RSPLTYPE_CHARGES && !(spl & ((__int64)1 << (ptrplr->_pRSpell - 1))) )
+	if ( ptrplr->_pRSplType == RSPLTYPE_CHARGES
+		&& !(spl & ((unsigned __int64)1 << (ptrplr->_pRSpell - 1))) )
 	{
 		ptrplr->_pRSpell = SPL_INVALID;
 		ptrplr->_pRSplType = RSPLTYPE_INVALID;
@@ -1021,7 +1026,7 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 	ptrplr->_pBlockFlag = 0;
 	ptrplr->_pwtype = 0;
 
-	int g = 0;
+	g = 0;
 
 	if ( ptrplr->InvBody[4]._itype != ITYPE_NONE
 		&& ptrplr->InvBody[4]._iClass == ICLASS_WEAPON
@@ -1056,15 +1061,16 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 			g = 8;
 			break;
 	}
+
 	if ( ptrplr->InvBody[4]._itype == ITYPE_SHIELD && ptrplr->InvBody[4]._iStatFlag )
 	{
 		ptrplr->_pBlockFlag = 1;
-		++g;
+		g++;
 	}
 	if ( ptrplr->InvBody[5]._itype == ITYPE_SHIELD && ptrplr->InvBody[5]._iStatFlag )
 	{
 		ptrplr->_pBlockFlag = 1;
-		++g;
+		g++;
 	}
 
 	if ( ptrplr->InvBody[6]._itype == ITYPE_MARMOR && ptrplr->InvBody[6]._iStatFlag )
@@ -1084,7 +1090,7 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 		ptrplr->_pGFXLoad = 0;
 		LoadPlrGFX(p, 1);
 		SetPlrAnims(p);
-		ptrplr->_pAnimData = ptrplr->_pNAnim[ptrplr->_pdir];;
+		ptrplr->_pAnimData = plr[p]._pNAnim[ptrplr->_pdir];
 		ptrplr->_pAnimLen = ptrplr->_pNFrames;
 		ptrplr->_pAnimWidth = ptrplr->_pNWidth;
 		ptrplr->_pAnimFrame = 1;
@@ -1097,9 +1103,9 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 		ptrplr->_pgfxnum = g;
 	}
 
-	for ( i = 0; i < nummissiles; ++i )
+	for ( i = 0; i < nummissiles; i++ )
 	{
-		int mi = missileactive[i];
+		mi = missileactive[i];
 		if ( missile[mi]._mitype == 13 && missile[mi]._misource == p )
 		{
 			missile[mi]._miVar1 = ptrplr->_pHitPoints;
