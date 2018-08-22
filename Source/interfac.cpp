@@ -49,7 +49,7 @@ void __cdecl DrawCutscene()
 {
 	unsigned int v0; // esi
 
-	dx_lock_mutex();
+	lock_buf_priv();
 	CelDecodeOnly(64, 639, sgpBackCel, 1, 640);
 	v0 = 0;
 	if ( sgdwProgress )
@@ -61,7 +61,7 @@ void __cdecl DrawCutscene()
 				progress_id);
 		while ( v0 < sgdwProgress );
 	}
-	dx_unlock_mutex();
+	unlock_buf_priv();
 	drawpanflag = 255;
 	scrollrt_draw_game_screen(0);
 }
@@ -85,7 +85,7 @@ void __fastcall DrawProgress(int screen_x, int screen_y, int progress_id)
 
 void __fastcall ShowProgress(int uMsg)
 {
-	LRESULT (__stdcall *saveProc)(HWND, UINT, WPARAM, LPARAM); // edi
+	WNDPROC saveProc; // edi
 	bool v3; // cl
 	int v4; // eax
 	int v5; // edx
