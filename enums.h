@@ -2414,22 +2414,22 @@ enum _walk_path
 	WALK_W = 0x8,
 };
 
-typedef enum {
+enum item_class {
 	ICLASS_NONE = 0,
 	ICLASS_WEAPON = 1,
 	ICLASS_ARMOR = 2,
 	ICLASS_MISC = 3,
 	ICLASS_GOLD = 4,
 	ICLASS_QUEST = 5,
-} item_class;
+};
 
-typedef enum {
+enum item_drop_rate {
 	IDROP_NEVER   = 0,
 	IDROP_REGULAR = 1,
 	IDROP_DOUBLE  = 2,
-} item_drop_rate;
+};
 
-typedef enum {
+enum item_special_effect {
 	ISPL_NONE = 0x00000000,
 	ISPL_INFRAVISION = 0x00000001,
 	ISPL_RNDSTEALLIFE = 0x00000002,
@@ -2463,4 +2463,4 @@ typedef enum {
 	ISPL_UNKNOWN_4 = 0x20000000,
 	ISPL_3XDAMVDEM = 0x40000000,
 	ISPL_ALLRESZERO = 0x80000000,
-} item_special_effect;
+};
