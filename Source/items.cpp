@@ -10,7 +10,7 @@ ItemGetRecordStruct itemrecord[MAXITEMS];
 ItemStruct item[MAXITEMS+1];
 char itemhold[3][3];
 char byte_641234[28]; /* check if part of above */
-int Item2Frm[35];
+unsigned char *Item2Frm[35];
 int UniqueItemFlag[128];
 int numitems;
 int gnNumGetRecords;
@@ -644,7 +644,7 @@ void __cdecl InitItemGFX()
 	do
 	{
 		sprintf(arglist, "Items\\%s.CEL", ItemDropStrs[v0]);
-		Item2Frm[v0] = (int)LoadFileInMem(arglist, 0);
+		Item2Frm[v0] = LoadFileInMem(arglist, 0);
 		++v0;
 	}
 	while ( v0 < 35 );
@@ -786,7 +786,7 @@ void __fastcall CalcPlrItemVals(int p, bool Loadgfx)
 	int v28; // eax
 	int v29; // ebx
 	int v30; // ecx
-	int v31; // eax
+	unsigned char *v31; // eax
 	int v32; // eax
 	int v33; // ecx
 	int i; // edx

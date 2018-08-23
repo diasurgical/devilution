@@ -343,7 +343,7 @@ void __fastcall SetTownerGPtrs(void *pData, void **pAnim)
 	while ( v5 < 8 );
 }
 
-void __fastcall NewTownerAnim(int tnum, void *pAnim, int numFrames, int Delay)
+void __fastcall NewTownerAnim(int tnum, unsigned char *pAnim, int numFrames, int Delay)
 {
 	int v4; // ecx
 
@@ -419,7 +419,7 @@ void __cdecl InitSmith()
 	v0 = numtowners;
 	InitQstSnds(numtowners);
 	v1 = v0;
-	towner[v1]._tNData = (char *)LoadFileInMem("Towners\\Smith\\SmithN.CEL", 0);
+	towner[v1]._tNData = LoadFileInMem("Towners\\Smith\\SmithN.CEL", 0);
 	v2 = (unsigned int *)towner[v1]._tNAnim;
 	v3 = 8;
 	do
@@ -431,7 +431,7 @@ void __cdecl InitSmith()
 	while ( v3 );
 	v4 = numtowners;
 	towner[v1]._tNFrames = 16;
-	NewTownerAnim(v4, (void *)towner[v1]._tNAnim[1], 16, 3);
+	NewTownerAnim(v4, towner[v1]._tNAnim[1], 16, 3);
 	strcpy(towner[v1]._tName, "Griswold the Blacksmith");
 	++numtowners;
 }
@@ -449,7 +449,7 @@ void __cdecl InitBarOwner()
 	v0 = numtowners;
 	InitQstSnds(numtowners);
 	v1 = v0;
-	towner[v1]._tNData = (char *)LoadFileInMem("Towners\\TwnF\\TwnFN.CEL", 0);
+	towner[v1]._tNData = LoadFileInMem("Towners\\TwnF\\TwnFN.CEL", 0);
 	v2 = (unsigned int *)towner[v1]._tNAnim;
 	v3 = 8;
 	do
@@ -461,7 +461,7 @@ void __cdecl InitBarOwner()
 	while ( v3 );
 	v4 = numtowners;
 	towner[v1]._tNFrames = 16;
-	NewTownerAnim(v4, (void *)towner[v1]._tNAnim[1], 16, 3);
+	NewTownerAnim(v4, towner[v1]._tNAnim[1], 16, 3);
 	strcpy(towner[v1]._tName, "Ogden the Tavern owner");
 	++numtowners;
 }
@@ -479,7 +479,7 @@ void __cdecl InitTownDead()
 	v0 = numtowners;
 	InitQstSnds(numtowners);
 	v1 = v0;
-	towner[v1]._tNData = (char *)LoadFileInMem("Towners\\Butch\\Deadguy.CEL", 0);
+	towner[v1]._tNData = LoadFileInMem("Towners\\Butch\\Deadguy.CEL", 0);
 	v2 = (unsigned int *)towner[v1]._tNAnim;
 	v3 = 8;
 	do
@@ -491,7 +491,7 @@ void __cdecl InitTownDead()
 	while ( v3 );
 	v4 = numtowners;
 	towner[v1]._tNFrames = 8;
-	NewTownerAnim(v4, (void *)towner[v1]._tNAnim[4], 8, 6);
+	NewTownerAnim(v4, towner[v1]._tNAnim[4], 8, 6);
 	strcpy(towner[v1]._tName, "Wounded Townsman");
 	++numtowners;
 }
@@ -507,7 +507,7 @@ void __cdecl InitWitch()
 	v0 = numtowners;
 	InitQstSnds(numtowners);
 	v1 = v0;
-	towner[v1]._tNData = (char *)LoadFileInMem("Towners\\TownWmn1\\Witch.CEL", 0);
+	towner[v1]._tNData = LoadFileInMem("Towners\\TownWmn1\\Witch.CEL", 0);
 	v2 = (unsigned int *)towner[v1]._tNAnim;
 	v3 = 8;
 	do
@@ -518,7 +518,7 @@ void __cdecl InitWitch()
 	}
 	while ( v3 );
 	towner[v1]._tNFrames = 19;
-	NewTownerAnim(numtowners, (void *)towner[v1]._tNAnim[0], 19, 6);
+	NewTownerAnim(numtowners, towner[v1]._tNAnim[0], 19, 6);
 	strcpy(towner[v1]._tName, "Adria the Witch");
 	++numtowners;
 }
@@ -534,7 +534,7 @@ void __cdecl InitBarmaid()
 	v0 = numtowners;
 	InitQstSnds(numtowners);
 	v1 = v0;
-	towner[v1]._tNData = (char *)LoadFileInMem("Towners\\TownWmn1\\WmnN.CEL", 0);
+	towner[v1]._tNData = LoadFileInMem("Towners\\TownWmn1\\WmnN.CEL", 0);
 	v2 = (unsigned int *)towner[v1]._tNAnim;
 	v3 = 8;
 	do
@@ -545,7 +545,7 @@ void __cdecl InitBarmaid()
 	}
 	while ( v3 );
 	towner[v1]._tNFrames = 18;
-	NewTownerAnim(numtowners, (void *)towner[v1]._tNAnim[0], 18, 6);
+	NewTownerAnim(numtowners, towner[v1]._tNAnim[0], 18, 6);
 	strcpy(towner[v1]._tName, "Gillian the Barmaid");
 	++numtowners;
 }
@@ -562,7 +562,7 @@ void __cdecl InitBoy()
 	v0 = numtowners;
 	InitQstSnds(numtowners);
 	v1 = v0;
-	towner[v1]._tNData = (char *)LoadFileInMem("Towners\\TownBoy\\PegKid1.CEL", 0);
+	towner[v1]._tNData = LoadFileInMem("Towners\\TownBoy\\PegKid1.CEL", 0);
 	v2 = (unsigned int *)towner[v1]._tNAnim;
 	v3 = 8;
 	do
@@ -573,7 +573,7 @@ void __cdecl InitBoy()
 	}
 	while ( v3 );
 	towner[v1]._tNFrames = 20;
-	NewTownerAnim(numtowners, (void *)towner[v1]._tNAnim[0], 20, 6);
+	NewTownerAnim(numtowners, towner[v1]._tNAnim[0], 20, 6);
 	strcpy(towner[v1]._tName, "Wirt the Peg-legged boy");
 	++numtowners;
 }
@@ -591,7 +591,7 @@ void __cdecl InitHealer()
 	v0 = numtowners;
 	InitQstSnds(numtowners);
 	v1 = v0;
-	towner[v1]._tNData = (char *)LoadFileInMem("Towners\\Healer\\Healer.CEL", 0);
+	towner[v1]._tNData = LoadFileInMem("Towners\\Healer\\Healer.CEL", 0);
 	v2 = (unsigned int *)towner[v1]._tNAnim;
 	v3 = 8;
 	do
@@ -603,7 +603,7 @@ void __cdecl InitHealer()
 	while ( v3 );
 	v4 = numtowners;
 	towner[v1]._tNFrames = 20;
-	NewTownerAnim(v4, (void *)towner[v1]._tNAnim[7], 20, 6);
+	NewTownerAnim(v4, towner[v1]._tNAnim[7], 20, 6);
 	strcpy(towner[v1]._tName, "Pepin the Healer");
 	++numtowners;
 }
@@ -619,7 +619,7 @@ void __cdecl InitTeller()
 	v0 = numtowners;
 	InitQstSnds(numtowners);
 	v1 = v0;
-	towner[v1]._tNData = (char *)LoadFileInMem("Towners\\Strytell\\Strytell.CEL", 0);
+	towner[v1]._tNData = LoadFileInMem("Towners\\Strytell\\Strytell.CEL", 0);
 	v2 = (unsigned int *)towner[v1]._tNAnim;
 	v3 = 8;
 	do
@@ -630,7 +630,7 @@ void __cdecl InitTeller()
 	}
 	while ( v3 );
 	towner[v1]._tNFrames = 25;
-	NewTownerAnim(numtowners, (void *)towner[v1]._tNAnim[0], 25, 3);
+	NewTownerAnim(numtowners, towner[v1]._tNAnim[0], 25, 3);
 	strcpy(towner[v1]._tName, "Cain the Elder");
 	++numtowners;
 }
@@ -646,7 +646,7 @@ void __cdecl InitDrunk()
 	v0 = numtowners;
 	InitQstSnds(numtowners);
 	v1 = v0;
-	towner[v1]._tNData = (char *)LoadFileInMem("Towners\\Drunk\\TwnDrunk.CEL", 0);
+	towner[v1]._tNData = LoadFileInMem("Towners\\Drunk\\TwnDrunk.CEL", 0);
 	v2 = (unsigned int *)towner[v1]._tNAnim;
 	v3 = 8;
 	do
@@ -657,7 +657,7 @@ void __cdecl InitDrunk()
 	}
 	while ( v3 );
 	towner[v1]._tNFrames = 18;
-	NewTownerAnim(numtowners, (void *)towner[v1]._tNAnim[0], 18, 3);
+	NewTownerAnim(numtowners, towner[v1]._tNAnim[0], 18, 3);
 	strcpy(towner[v1]._tName, "Farnham the Drunk");
 	++numtowners;
 }
@@ -697,7 +697,7 @@ void __cdecl InitCows()
 		SetTownerGPtrs(*v6, (void **)towner[v5]._tNAnim);
 		v7 = numtowners;
 		towner[numtowners]._tNFrames = 12;
-		NewTownerAnim(v7, (void *)towner[0]._tNAnim[v4 + 58 * v7], 12, 3);
+		NewTownerAnim(v7, towner[0]._tNAnim[v4 + 58 * v7], 12, 3);
 		v7 *= 232;
 		*(int *)((char *)&towner[0]._tAnimFrame + v7) = random(0, 11) + 1;
 		*(int *)((char *)&towner[0]._tSelFlag + v7) = 1;

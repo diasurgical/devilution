@@ -12,7 +12,7 @@ extern TMegaPkt *sgpCurrPkt;
 extern char sgRecvBuf[4722];
 extern unsigned char sgbRecvCmd; // idb
 extern LocalLevel sgLocals[NUMLEVELS];
-extern DJunk sgJunk[4];
+extern DJunk sgJunk;
 extern TMegaPkt *sgpMegaPkt;
 extern char sgbDeltaChanged; // weak
 extern char sgbDeltaChunks; // weak

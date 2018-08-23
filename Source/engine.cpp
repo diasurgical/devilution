@@ -1876,15 +1876,15 @@ void __cdecl mem_free_mutex()
 	DeleteCriticalSection(&sgMemCrit);
 }
 
-void *__fastcall DiabloAllocPtr(int dwBytes)
+unsigned char *__fastcall DiabloAllocPtr(int dwBytes)
 {
 	int v1; // ebx
-	void *v2; // ebx
+	unsigned char *v2; // ebx
 	int v3; // eax
 
 	v1 = dwBytes;
 	EnterCriticalSection(&sgMemCrit);
-	v2 = SMemAlloc(v1, "C:\\Src\\Diablo\\Source\\ENGINE.CPP", 2236, 0);
+	v2 = (unsigned char *)SMemAlloc(v1, "C:\\Src\\Diablo\\Source\\ENGINE.CPP", 2236, 0);
 	LeaveCriticalSection(&sgMemCrit);
 	if ( !v2 )
 	{

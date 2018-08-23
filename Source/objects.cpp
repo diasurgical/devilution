@@ -4,7 +4,7 @@
 
 int trapid; // weak
 int trapdir; // weak
-int pObjCels[40];
+unsigned char *pObjCels[40];
 char ObjFileList[40];
 int objectactive[MAXOBJECTS];
 int nobjects; // idb
@@ -415,7 +415,7 @@ void __cdecl InitObjectGFX()
 			sprintf(filestr, "Objects\\%s.CEL", v8);
 			v9 = LoadFileInMem(filestr, 0);
 			v10 = numobjfiles++;
-			pObjCels[v10] = (int)v9;
+			pObjCels[v10] = v9;
 		}
 		++v7;
 	}
@@ -1713,7 +1713,7 @@ void __fastcall SetMapObjects(unsigned char *pMap, int startx, int starty)
 			sprintf(filestr, "Objects\\%s.CEL", v16);
 			v17 = LoadFileInMem(filestr, 0);
 			v18 = numobjfiles++;
-			pObjCels[v18] = (int)v17;
+			pObjCels[v18] = v17;
 		}
 		++v15;
 	}
