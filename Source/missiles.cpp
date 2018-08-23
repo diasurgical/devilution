@@ -2089,7 +2089,7 @@ void __fastcall SetMissAnim(int mi, int animtype)
 	int v7; // esi
 	int v8; // eax
 	int v9; // eax
-	int v10; // edi
+	unsigned char *v10; // edi
 	int v11; // eax
 
 	v2 = mi;
@@ -2143,7 +2143,7 @@ void __fastcall LoadMissileGFX(int mi)
 		v3 = 0;
 		if ( v1->mAnimFAmt )
 		{
-			v4 = v1->mAnimData;
+			v4 = (int *)v1->mAnimData;
 			do
 			{
 				v5 = (int)&v2[*(_DWORD *)&v2[4 * v3++]];
@@ -2160,7 +2160,7 @@ void __fastcall LoadMissileGFX(int mi)
 		{
 			sprintf(arglist, "Missiles\\%s.CL2", v1->mName);
 			if ( !v1->mAnimData[0] )
-				v1->mAnimData[0] = (int)LoadFileInMem(arglist, 0);
+				v1->mAnimData[0] = LoadFileInMem(arglist, 0);
 		}
 		else
 		{
@@ -2206,7 +2206,7 @@ void __cdecl InitMissileGFX()
 void __fastcall FreeMissileGFX(int mi)
 {
 	int v1; // esi
-	int v2; // ecx
+	unsigned char *v2; // ecx
 	signed int v3; // ebx
 	void **v4; // edi
 	void *v5; // ecx
@@ -2217,7 +2217,7 @@ void __fastcall FreeMissileGFX(int mi)
 		v2 = misfiledata[v1].mAnimData[0];
 		if ( v2 )
 		{
-			mem_free_dbg((void *)(v2 - 4 * misfiledata[v1].mAnimFAmt));
+			mem_free_dbg(&v2[-4 * misfiledata[v1].mAnimFAmt]);
 			misfiledata[v1].mAnimData[0] = 0;
 		}
 	}
@@ -3457,7 +3457,7 @@ void __fastcall AddRhino(int mi, int sx, int sy, int dx, int dy, int midir, int 
 	v13 = i;
 	missile[v13]._miAnimFlags = 0;
 	missile[v13]._mimfnum = midir;
-	missile[v13]._miAnimData = (int)v12->Frames[midir];
+	missile[v13]._miAnimData = v12->Frames[midir];
 	missile[v13]._miAnimDelay = v12->Delay;
 	missile[v13]._miAnimLen = v12->Rate;
 	v14 = monster[v9].MType;
@@ -3497,7 +3497,7 @@ void __fastcall miss_null_32(int mi, int sx, int sy, int dx, int dy, int midir, 
 	v12 = v10;
 	missile[v12]._mimfnum = midir;
 	missile[v12]._miAnimFlags = 0;
-	missile[v12]._miAnimData = (int)v11->Frames[midir];
+	missile[v12]._miAnimData = v11->Frames[midir];
 	missile[v12]._miAnimDelay = v11->Delay;
 	missile[v12]._miAnimLen = v11->Rate;
 	v13 = monster[id].MType;
@@ -6457,7 +6457,7 @@ void __fastcall mi_null_32(int i)
 	//int v12; // eax
 	int v13; // ecx
 	int v14; // ecx
-	int v15; // eax
+	unsigned char *v15; // eax
 	int v16; // [esp+Ch] [ebp-14h]
 	int arglist; // [esp+10h] [ebp-10h]
 	int x; // [esp+14h] [ebp-Ch]
@@ -6514,7 +6514,7 @@ void __fastcall mi_null_32(int i)
 		missile[v2]._miyvel = -missile[v2]._miyvel;
 		v14 = opposite[v13];
 		missile[v2]._mimfnum = v14;
-		v15 = (int)monster[v4].MType->Anims[1].Frames[v14];
+		v15 = monster[v4].MType->Anims[1].Frames[v14];
 		++missile[v2]._miVar2;
 		missile[v2]._miAnimData = v15;
 		if ( v10 > 0 )
@@ -7482,7 +7482,7 @@ void __cdecl missiles_process_charge()
 			{
 				v7 = &v5->Anims[5];
 			}
-			missile[v2]._miAnimData = (int)v7->Frames[v3];
+			missile[v2]._miAnimData = v7->Frames[v3];
 		}
 	}
 }

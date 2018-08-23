@@ -10,7 +10,7 @@ extern ItemGetRecordStruct itemrecord[MAXITEMS];
 extern ItemStruct item[MAXITEMS+1];
 extern char itemhold[3][3];
 extern char byte_641234[28]; /* check if part of above */
-extern int Item2Frm[35];
+extern unsigned char *Item2Frm[35];
 extern int UniqueItemFlag[128];
 extern int numitems;
 extern int gnNumGetRecords;

@@ -315,19 +315,19 @@ void __fastcall InitPlrGFXMem(int pnum)
 	unsigned int v3; // eax
 	char *v4; // ecx
 	int v5; // esi
-	void *v6; // eax
+	unsigned char *v6; // eax
 	bool v7; // zf
 	unsigned int v8; // ebx
 	unsigned int v9; // eax
 	char *v10; // ecx
-	void *v11; // eax
-	void *v12; // eax
-	void *v13; // eax
-	void *v14; // eax
-	void *v15; // eax
-	void *v16; // eax
-	void *v17; // eax
-	void *v18; // eax
+	unsigned char *v11; // eax
+	unsigned char *v12; // eax
+	unsigned char *v13; // eax
+	unsigned char *v14; // eax
+	unsigned char *v15; // eax
+	unsigned char *v16; // eax
+	unsigned char *v17; // eax
+	unsigned char *v18; // eax
 
 	v1 = pnum;
 	if ( (unsigned int)pnum >= MAX_PLRS )
@@ -514,10 +514,10 @@ void __fastcall FreePlayerGFX(int pnum)
 	plr[v2]._pGFXLoad = 0;
 }
 
-void __fastcall NewPlrAnim(int pnum, int Peq, int numFrames, int Delay, int width)
+void __fastcall NewPlrAnim(int pnum, unsigned char *Peq, int numFrames, int Delay, int width)
 {
 	int v5; // edi
-	int v6; // esi
+	unsigned char *v6; // esi
 	int v7; // eax
 
 	v5 = pnum;
@@ -1046,7 +1046,7 @@ void __fastcall InitPlayer(int pnum, bool FirstTime)
 	int v6; // ST08_4
 	int v8; // eax
 	int v10; // ST08_4
-	int v11; // edx
+	unsigned char *v11; // edx
 	int v12; // eax
 	unsigned int v13; // edi
 	bool v14; // zf
@@ -2039,7 +2039,7 @@ void __fastcall StartSpell(int pnum, int d, int cx, int cy)
 {
 	int v4; // edi
 	int v5; // esi
-	int v6; // edx
+	unsigned char *v6; // edx
 	int v7; // ST08_4
 	int v8; // edx
 	int a2; // [esp+Ch] [ebp-4h]
@@ -5041,7 +5041,7 @@ void __fastcall SyncPlrAnim(int pnum)
 	int v1; // esi
 	int v2; // eax
 	int v3; // ecx
-	int v4; // ecx
+	unsigned char *v4; // ecx
 	int v5; // edx
 
 	v1 = pnum;
