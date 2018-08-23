@@ -2089,7 +2089,7 @@ void __fastcall SetMissAnim(int mi, int animtype)
 	int v7; // esi
 	int v8; // eax
 	int v9; // eax
-	int v10; // edi
+	unsigned char *v10; // edi
 	int v11; // eax
 
 	v2 = mi;
@@ -2140,7 +2140,7 @@ void __fastcall LoadMissileGFX(int mi)
 		v3 = 0;
 		if ( v1->mAnimFAmt )
 		{
-			v4 = v1->mAnimData;
+			v4 = (int *)v1->mAnimData;
 			do
 			{
 				v5 = (int)&v2[*(_DWORD *)&v2[4 * v3++]];
@@ -2157,7 +2157,7 @@ void __fastcall LoadMissileGFX(int mi)
 		{
 			sprintf(arglist, "Missiles\\%s.CL2", v1->mName);
 			if ( !v1->mAnimData[0] )
-				v1->mAnimData[0] = (int)LoadFileInMem(arglist, 0);
+				v1->mAnimData[0] = LoadFileInMem(arglist, 0);
 		}
 		else
 		{
@@ -2203,7 +2203,7 @@ void __cdecl InitMissileGFX()
 void __fastcall FreeMissileGFX(int mi)
 {
 	int v1; // esi
-	int v2; // ecx
+	unsigned char *v2; // ecx
 	signed int v3; // ebx
 	void **v4; // edi
 	void *v5; // ecx
@@ -2214,7 +2214,7 @@ void __fastcall FreeMissileGFX(int mi)
 		v2 = misfiledata[v1].mAnimData[0];
 		if ( v2 )
 		{
-			mem_free_dbg((void *)(v2 - 4 * misfiledata[v1].mAnimFAmt));
+			mem_free_dbg(&v2[-4 * misfiledata[v1].mAnimFAmt]);
 			misfiledata[v1].mAnimData[0] = 0;
 		}
 	}
@@ -6454,7 +6454,7 @@ void __fastcall mi_null_32(int i)
 	//int v12; // eax
 	int v13; // ecx
 	int v14; // ecx
-	int v15; // eax
+	unsigned char *v15; // eax
 	int v16; // [esp+Ch] [ebp-14h]
 	int arglist; // [esp+10h] [ebp-10h]
 	int x; // [esp+14h] [ebp-Ch]
