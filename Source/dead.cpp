@@ -56,10 +56,10 @@ void __cdecl InitDead()
 	}
 	v16 = 0;
 	v4 = v0;
-	memset32(&dead[v0], misfiledata[16].mAnimData[0], 8u);
+	memset32(&dead[v0], (unsigned int)misfiledata[16].mAnimData[0], 8u);
 	_LOBYTE(dead[v4]._deadtrans) = 0;
 	dead[v4]._deadFrame = 8;
-	v5 = misfiledata[18].mAnimData[0];
+	v5 = (unsigned int)misfiledata[18].mAnimData[0];
 	dead[v4].field_24 = 128;
 	dead[v4].field_28 = 32;
 	v6 = v0 + 1;
@@ -83,7 +83,7 @@ void __cdecl InitDead()
 				v10 = monster[v9].MType;
 				v11 = (char *)(v8 - 8);
 				v15 = (int *)8;
-				v14 = v10->Anims[4].Frames;
+				v14 = (int *)v10->Anims[4].Frames;
 				do
 				{
 					v12 = v14;
