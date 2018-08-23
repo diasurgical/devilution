@@ -12,7 +12,7 @@ TMegaPkt *sgpCurrPkt;
 char sgRecvBuf[4722];
 unsigned char sgbRecvCmd; // idb
 LocalLevel sgLocals[NUMLEVELS];
-DJunk sgJunk[4];
+DJunk sgJunk;
 TMegaPkt *sgpMegaPkt;
 char sgbDeltaChanged; // weak
 char sgbDeltaChunks; // weak
@@ -352,8 +352,8 @@ char *__fastcall DeltaExportJunk(char *a1)
 	int *v5; // ebp
 
 	v1 = a1;
-	v2 = sgJunk;
-	v3 = sgJunk[0].quests;
+	v2 = &sgJunk;
+	v3 = sgJunk.quests;
 	do
 	{
 		if ( v2->portal[0].x == -1 )
@@ -367,7 +367,7 @@ char *__fastcall DeltaExportJunk(char *a1)
 		}
 		v2 = (DJunk *)((char *)v2 + 5);
 	}
-	while ( (signed int)v2 < (signed int)sgJunk[0].quests );
+	while ( (signed int)v2 < (signed int)sgJunk.quests );
 	v4 = &quests[0]._qactive;
 	v5 = &questlist[0]._qflags;
 	do
@@ -404,7 +404,7 @@ int __fastcall msg_comp_level(char *buffer, int size)
 void __cdecl delta_init()
 {
 	sgbDeltaChanged = 0;
-	memset(sgJunk, 255, 0x20u);
+	memset(&sgJunk, 255, 0x20u);
 	memset(sgLevels, 255, 0x13981u);
 	memset(sgLocals, 0, 0x6A40u);
 	deltaload = 0;
@@ -537,12 +537,12 @@ void __fastcall delta_leave_sync(unsigned char bLevel)
 
 bool __fastcall delta_portal_inited(int i)
 {
-	return sgJunk[0].portal[i].x == -1;
+	return sgJunk.portal[i].x == -1;
 }
 
 bool __fastcall delta_quest_inited(int i)
 {
-	return sgJunk[0].quests[i].qstate != -1;
+	return sgJunk.quests[i].qstate != -1;
 }
 
 void __fastcall DeltaAddItem(int ii)
@@ -1353,7 +1353,7 @@ void __fastcall NetSendCmdString(int a1, const char *pszStr)
 
 void __fastcall RemovePlrPortal(int pnum)
 {
-	memset((char *)sgJunk + 5 * pnum, 255, 5u);
+	memset(&sgJunk.portal[pnum], 255, 5u);
 	sgbDeltaChanged = 1;
 }
 // 67618C: using guessed type char sgbDeltaChanged;
@@ -1697,7 +1697,7 @@ char __fastcall DeltaImportJunk(int a1)
 
 	v1 = (_BYTE *)a1;
 	v2 = 0;
-	v3 = sgJunk;
+	v3 = &sgJunk;
 	do
 	{
 		if ( *v1 == -1 )
@@ -1721,8 +1721,8 @@ char __fastcall DeltaImportJunk(int a1)
 		v3 = (DJunk *)((char *)v3 + 5);
 		++v2;
 	}
-	while ( (signed int)v3 < (signed int)sgJunk[0].quests );
-	v5 = sgJunk[0].quests;
+	while ( (signed int)v3 < (signed int)sgJunk.quests );
+	v5 = sgJunk.quests;
 	v6 = &quests[0]._qactive;
 	v7 = &questlist[0]._qflags;
 	do
@@ -3579,11 +3579,11 @@ void __fastcall delta_open_portal(int pnum, int x, int y, int bLevel, int bLType
 
 	v6 = pnum;
 	sgbDeltaChanged = 1;
-	sgJunk[0].portal[v6].y = y;
-	sgJunk[0].portal[v6].level = bLevel;
-	sgJunk[0].portal[v6].ltype = bLType;
-	sgJunk[0].portal[v6].x = x;
-	sgJunk[0].portal[v6].setlvl = bSetLvl;
+	sgJunk.portal[v6].y = y;
+	sgJunk.portal[v6].level = bLevel;
+	sgJunk.portal[v6].ltype = bLType;
+	sgJunk.portal[v6].x = x;
+	sgJunk.portal[v6].setlvl = bSetLvl;
 }
 // 67618C: using guessed type char sgbDeltaChanged;
 
