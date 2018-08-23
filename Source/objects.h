@@ -4,7 +4,7 @@
 
 extern int trapid; // weak
 extern int trapdir; // weak
-extern int pObjCels[40];
+extern unsigned char *pObjCels[40];
 extern char ObjFileList[40];
 extern int objectactive[MAXOBJECTS];
 extern int nobjects; // idb

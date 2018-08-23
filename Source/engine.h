@@ -50,7 +50,7 @@ void __cdecl engine_cpp_init_2();
 void __cdecl mem_init_mutex();
 void __cdecl mem_atexit_mutex();
 void __cdecl mem_free_mutex();
-void *__fastcall DiabloAllocPtr(int dwBytes);
+unsigned char *__fastcall DiabloAllocPtr(int dwBytes);
 void __fastcall mem_free_dbg(void *p);
 unsigned char *__fastcall LoadFileInMem(char *pszName, int *pdwFileLen);
 void __fastcall LoadFileWithMem(char *pszName, void *buf);

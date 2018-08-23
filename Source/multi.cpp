@@ -1091,7 +1091,7 @@ void __fastcall multi_player_joins(int pnum, TCmdPlrInfoHdr *cmd, int a3)
 	bool v7; // zf
 	char *v8; // eax
 	int v9; // ST08_4
-	int v10; // edx
+	unsigned char *v10; // edx
 	int v11; // eax
 	int v12; // ecx
 	int v13; // eax
