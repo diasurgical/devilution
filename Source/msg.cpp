@@ -356,7 +356,7 @@ char *__fastcall DeltaExportJunk(char *a1)
 	v3 = sgJunk.quests;
 	do
 	{
-		if ( v2->portal[0].x == -1 )
+		if ( v2->portal[0].x == LOBYTE(-1) )
 		{
 			*v1++ = -1;
 		}
@@ -537,12 +537,12 @@ void __fastcall delta_leave_sync(unsigned char bLevel)
 
 bool __fastcall delta_portal_inited(int i)
 {
-	return sgJunk.portal[i].x == -1;
+	return sgJunk.portal[i].x == LOBYTE(-1);
 }
 
 bool __fastcall delta_quest_inited(int i)
 {
-	return sgJunk.quests[i].qstate != -1;
+	return sgJunk.quests[i].qstate != LOBYTE(-1);
 }
 
 void __fastcall DeltaAddItem(int ii)
