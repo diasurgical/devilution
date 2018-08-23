@@ -3430,7 +3430,7 @@ int __fastcall On_PLAYER_JOINLEVEL(struct TCmdLocParam1 *pCmd, int pnum)
 	int v4; // esi
 	int v5; // ecx
 	int v6; // ST08_4
-	int v7; // edx
+	unsigned char *v7; // edx
 	int v8; // eax
 	int v9; // ecx
 	int v10; // eax
