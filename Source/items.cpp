@@ -770,6 +770,7 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 	int bac = 0; // bonus accuracy
 
 	int iflgs = 0; // item_special_effect flags
+
 	int sadd = 0; // added stregth
 	int madd = 0; // added magic
 	int dadd = 0; // added dexterity
@@ -790,7 +791,7 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 	int imana = 0; // increased mana
 
 	int spllvladd = 0; // increased spell level
-	int enac = 0;
+	int enac = 0; // enhanced accuracy
 
 	int fmin = 0; // minimum fire damage
 	int fmax = 0; // maximum fire damage
@@ -798,7 +799,7 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 	int lmax = 0; // maximum lightning damage
 
 	// didn't find a use for t for now
-	//int t;
+	// int t;
 
 	for ( i = 0; i < NUM_INVLOC; i++ )
 	{
@@ -888,13 +889,14 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 	{
 		ChangeLightRadius(plr[p]._plid, lrad);
 
+		int pvid = plr[p]._pvid;
 		if ( lrad >= 10 )
 		{
-			ChangeVisionRadius(plr[p]._pvid, lrad);
+			ChangeVisionRadius(pvid, lrad);
 		}
 		else
 		{
-			ChangeVisionRadius(plr[p]._pvid, 10);
+			ChangeVisionRadius(pvid, 10);
 		}
 
 		plr[p]._pLightRad = lrad;
@@ -924,7 +926,6 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 		plr[myplr]._pVitality = 0;
 	}
 
-	int l = plr[p]._pLevel;
 	if ( plr[p]._pClass == PC_ROGUE )
 	{
 		plr[p]._pDamageMod = plr[p]._pLevel * (plr[p]._pStrength + plr[p]._pDexterity) / 200;
@@ -973,6 +974,7 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 	{
 		lr = 75;
 	}
+
 	plr[p]._pLghtResist = lr;
 
 	if ( plr[p]._pClass == PC_WARRIOR )
@@ -983,7 +985,8 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 	{
 		vadd += vadd >> 1;
 	}
-	ihp = (vadd << 6) + ihp;
+	ihp += (vadd << 6);
+
 
 	if ( plr[p]._pClass == PC_SORCERER )
 	{
@@ -993,10 +996,10 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 	{
 		madd += madd >> 1;
 	}
-	imana = (madd << 6) + imana;
+	imana += (madd << 6);
 
-	plr[p]._pHitPoints = ihp + plr[p]._pHPBase;
-	plr[p]._pMaxHP = ihp + plr[p]._pMaxHPBase;
+	plr[p]._pHitPoints = vadd + plr[p]._pHPBase;
+	plr[p]._pMaxHP = vadd + plr[p]._pMaxHPBase;
 
 	if ( p == myplr && (plr[p]._pHitPoints >> 6) <= 0 )
 	{
@@ -1087,13 +1090,18 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 		plr[p]._pGFXLoad = 0;
 		LoadPlrGFX(p, 1);
 		SetPlrAnims(p);
+
+
 		int d = plr[p]._pdir;
+
+		// TODO: Add debug assert here ( plr[p]._pNAnim[d] != NULL )
 		plr[p]._pAnimData = plr[p]._pNAnim[d];
+
 		plr[p]._pAnimLen = plr[p]._pNFrames;
-		plr[p]._pAnimWidth = plr[p]._pNWidth;
 		plr[p]._pAnimFrame = 1;
 		plr[p]._pAnimCnt = 0;
 		plr[p]._pAnimDelay = 3;
+		plr[p]._pAnimWidth = plr[p]._pNWidth;
 		plr[p]._pAnimWidth2 = (plr[p]._pNWidth - 64) >> 1;
 	}
 	else
