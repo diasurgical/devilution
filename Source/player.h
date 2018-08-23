@@ -26,7 +26,7 @@ void __fastcall InitPlayerGFX(int pnum);
 void __fastcall InitPlrGFXMem(int pnum);
 int __fastcall GetPlrGFXSize(char *szCel);
 void __fastcall FreePlayerGFX(int pnum);
-void __fastcall NewPlrAnim(int pnum, int Peq, int numFrames, int Delay, int width);
+void __fastcall NewPlrAnim(int pnum, unsigned char *Peq, int numFrames, int Delay, int width);
 void __fastcall ClearPlrPVars(int pnum);
 void __fastcall SetPlrAnims(int pnum);
 void __fastcall ClearPlrRVars(PlayerStruct *p);

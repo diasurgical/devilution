@@ -127,7 +127,7 @@ struct MisFileData
 	unsigned char mAnimFAmt;
 	char *mName;
 	int mFlags;
-	int mAnimData[16]; // unsigned char *
+	unsigned char *mAnimData[16];
 	unsigned char mAnimDelay[16];
 	unsigned char mAnimLen[16];
 	int mAnimWidth[16];
@@ -309,7 +309,7 @@ struct ItemStruct
 	int _ix;
 	int _iy;
 	int _iAnimFlag;
-	int _iAnimData; // unsigned char * (PSX name -> ItemFrame)
+	unsigned char *_iAnimData; // PSX name -> ItemFrame
 	int _iAnimLen;
 	int _iAnimFrame;
 	int _iAnimWidth;
@@ -375,7 +375,7 @@ struct ItemStruct
 
 struct DeadStruct
 {
-	int _deadData[8]; // unsigned char *
+	unsigned char *_deadData[8];
 	int _deadFrame;
 	int field_24; // width
 	int field_28; // cel or fnum _deadtype?
@@ -448,7 +448,7 @@ struct MissileStruct
 	int _miDelFlag;
 	int _miAnimType;
 	int _miAnimFlags;
-	int _miAnimData; // unsigned char *
+	unsigned char *_miAnimData;
 	int _miAnimDelay;
 	int _miAnimLen;
 	int _miAnimWidth;
@@ -478,10 +478,10 @@ struct MissileStruct
 	int _miVar8;
 };
 
-struct AnimStruct
+struct AnimStruct // note: wrong names
 {
 	int CMem; // [unsigned] char * ??
-	int Frames[8]; // unsigned char *
+	unsigned char *Frames[8]; // probably Data[8]
 	int Rate;
 	int Delay;
 };
@@ -503,7 +503,7 @@ struct CMonster
 	void *trans_file;
 };
 
-struct MonsterStruct
+struct MonsterStruct // note: missing field _mAFNum
 {
 	int _mMTidx;
 	int _mmode;
@@ -528,7 +528,7 @@ struct MonsterStruct
 	unsigned char _menemyx;
 	unsigned char _menemyy;
 	short falign_52;
-	int _mAFNum;
+	unsigned char *_mAnimData;
 	int _mAnimDelay;
 	int _mAnimCnt;
 	int _mAnimLen;
@@ -720,7 +720,7 @@ struct ObjectStruct
 	int _oy;
 	int _oLight;
 	int _oAnimFlag;
-	int _oAnimData; // unsigned char *
+	unsigned char *_oAnimData;
 	int _oAnimDelay;
 	int _oAnimCnt;
 	int _oAnimLen;
@@ -787,7 +787,7 @@ struct PlayerStruct
 	int _pdir;
 	int _nextdir;
 	int _pgfxnum;
-	int _pAnimData; // unsigned char *
+	unsigned char *_pAnimData;
 	int _pAnimDelay;
 	int _pAnimCnt;
 	int _pAnimLen;
@@ -865,29 +865,29 @@ struct PlayerStruct
 	unsigned char _pSLvlVisited[10];
 	char gap20F[9];
 	int _pGFXLoad;
-	int _pNAnim[8]; // unsigned char *
+	unsigned char *_pNAnim[8];
 	int _pNFrames;
 	int _pNWidth;
-	int _pWAnim[8]; // unsigned char *
+	unsigned char *_pWAnim[8];
 	int _pWFrames;
 	int _pWWidth;
-	int _pAAnim[8]; // unsigned char *
+	unsigned char *_pAAnim[8];
 	int _pAFrames;
 	int _pAWidth;
 	int _pAFNum;
-	int _pLAnim[8]; // unsigned char *
-	int _pFAnim[8]; // unsigned char *
-	int _pTAnim[8]; // unsigned char *
+	unsigned char *_pLAnim[8];
+	unsigned char *_pFAnim[8];
+	unsigned char *_pTAnim[8];
 	int _pSFrames;
 	int _pSWidth;
 	int _pSFNum;
-	int _pHAnim[8]; // unsigned char *
+	unsigned char *_pHAnim[8];
 	int _pHFrames;
 	int _pHWidth;
-	int _pDAnim[8]; // unsigned char *
+	unsigned char *_pDAnim[8];
 	int _pDFrames;
 	int _pDWidth;
-	int _pBAnim[8]; // unsigned char *
+	unsigned char *_pBAnim[8];
 	int _pBFrames;
 	int _pBWidth;
 	ItemStruct InvBody[7];
@@ -925,15 +925,15 @@ struct PlayerStruct
 	short wReserved[8];
 	int pDiabloKillLevel;
 	int dwReserved[7];
-	void *_pNData;
-	void *_pWData;
-	void *_pAData;
-	void *_pLData;
-	void *_pFData;
-	void *_pTData;
-	void *_pHData;
-	void *_pDData;
-	void *_pBData;
+	unsigned char *_pNData;
+	unsigned char *_pWData;
+	unsigned char *_pAData;
+	unsigned char *_pLData;
+	unsigned char *_pFData;
+	unsigned char *_pTData;
+	unsigned char *_pHData;
+	unsigned char *_pDData;
+	unsigned char *_pBData;
 	int unused_54D4;
 };
 
@@ -997,7 +997,7 @@ struct TownerStruct
 	int _txvel;
 	int _tyvel;
 	int _tdir;
-	void *_tAnimData; // unsigned char *
+	unsigned char *_tAnimData;
 	int _tAnimDelay;
 	int _tAnimCnt;
 	int _tAnimLen;
@@ -1018,9 +1018,9 @@ struct TownerStruct
 	int _tVar3;
 	int _tVar4;
 	char _tName[32];
-	int _tNAnim[8]; // unsigned char *
+	unsigned char *_tNAnim[8];
 	int _tNFrames;
-	char *_tNData; // unsigned char *
+	unsigned char *_tNData;
 };
 
 struct _SNETUIDATA
