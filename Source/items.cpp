@@ -800,8 +800,6 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 	// didn't find a use for t for now
 	//int t;
 
-	PlayerStruct *ptrplr = &plr[p];
-
 	for ( i = 0; i < NUM_INVLOC; i++ )
 	{
 		ItemStruct *itm = &plr[p].InvBody[i];
@@ -856,26 +854,26 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 		mind = 1;
 		maxd = 1;
 
-		if ( ptrplr->InvBody[4]._itype == ITYPE_SHIELD && ptrplr->InvBody[4]._iStatFlag )
+		if ( plr[p].InvBody[4]._itype == ITYPE_SHIELD && plr[p].InvBody[4]._iStatFlag )
 		{
 			maxd = 3;
 		}
 
-		if ( ptrplr->InvBody[5]._itype == ITYPE_SHIELD && ptrplr->InvBody[5]._iStatFlag )
+		if ( plr[p].InvBody[5]._itype == ITYPE_SHIELD && plr[p].InvBody[5]._iStatFlag )
 		{
 			maxd = 3;
 		}
 	}
 
-	ptrplr->_pIMaxDam = maxd;
-	ptrplr->_pIAC = tac;
-	ptrplr->_pIBonusDam = bdam;
-	ptrplr->_pIBonusToHit = btohit;
-	ptrplr->_pIBonusAC = bac;
-	ptrplr->_pIFlags = iflgs;
-	ptrplr->_pIGetHit = ghit;
-	ptrplr->_pIMinDam = mind;
-	ptrplr->_pIBonusDamMod = dmod;
+	plr[p]._pIMaxDam = maxd;
+	plr[p]._pIAC = tac;
+	plr[p]._pIBonusDam = bdam;
+	plr[p]._pIBonusToHit = btohit;
+	plr[p]._pIBonusAC = bac;
+	plr[p]._pIFlags = iflgs;
+	plr[p]._pIGetHit = ghit;
+	plr[p]._pIMinDam = mind;
+	plr[p]._pIBonusDamMod = dmod;
 
 	if ( lrad < 2 )
 	{
@@ -886,71 +884,70 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 		lrad = 15;
 	}
 
-	if ( ptrplr->_pLightRad != lrad && p == myplr )
+	if ( plr[p]._pLightRad != lrad && p == myplr )
 	{
-		ChangeLightRadius(ptrplr->_plid, lrad);
+		ChangeLightRadius(plr[p]._plid, lrad);
 
 		if ( lrad >= 10 )
 		{
-			ChangeVisionRadius(ptrplr->_pvid, lrad);
+			ChangeVisionRadius(plr[p]._pvid, lrad);
 		}
 		else
 		{
-			ChangeVisionRadius(ptrplr->_pvid, 10);
+			ChangeVisionRadius(plr[p]._pvid, 10);
 		}
 
-		ptrplr->_pLightRad = lrad;
+		plr[p]._pLightRad = lrad;
 	}
 
-	ptrplr->_pStrength = sadd + ptrplr->_pBaseStr;
+	plr[p]._pStrength = sadd + plr[p]._pBaseStr;
 	if ( plr[myplr]._pStrength <= 0 )
 	{
 		plr[myplr]._pStrength = 0;
 	}
 
-	ptrplr->_pMagic = madd + ptrplr->_pBaseMag;
+	plr[p]._pMagic = madd + plr[p]._pBaseMag;
 	if ( plr[myplr]._pMagic <= 0 )
 	{
 		plr[myplr]._pMagic = 0;
 	}
 
-	ptrplr->_pDexterity = dadd + ptrplr->_pBaseDex;
+	plr[p]._pDexterity = dadd + plr[p]._pBaseDex;
 	if ( plr[myplr]._pDexterity <= 0 )
 	{
 		plr[myplr]._pDexterity = 0;
 	}
 
-	ptrplr->_pVitality = vadd + ptrplr->_pBaseVit;
+	plr[p]._pVitality = vadd + plr[p]._pBaseVit;
 	if ( plr[myplr]._pVitality <= 0 )
 	{
 		plr[myplr]._pVitality = 0;
 	}
 
-	// TODO: this shouldn't need to be here
-	int l = ptrplr->_pLevel;
-	if ( ptrplr->_pClass == PC_ROGUE )
+	int l = plr[p]._pLevel;
+	if ( plr[p]._pClass == PC_ROGUE )
 	{
-		ptrplr->_pDamageMod = l * (ptrplr->_pStrength + ptrplr->_pDexterity) / 200;
+		plr[p]._pDamageMod = plr[p]._pLevel * (plr[p]._pStrength + plr[p]._pDexterity) / 200;
 	}
 	else
 	{
-		ptrplr->_pDamageMod = l * ptrplr->_pStrength / 100;
+		plr[p]._pDamageMod = plr[p]._pLevel * plr[p]._pStrength / 100;
 	}
 
 	// TODO: switch to normal 64bit assignment
-	*(__int64 *)&ptrplr->_pISpells = spl;
+	*(__int64 *)&plr[p]._pISpells = spl;
 
 	// check if the current RSplType is a valid/allowed spell
-	if ( ptrplr->_pRSplType == RSPLTYPE_CHARGES
-		&& !(spl & ((unsigned __int64)1 << (ptrplr->_pRSpell - 1))) )
+	if ( plr[p]._pRSplType == RSPLTYPE_CHARGES
+		&& !(spl & ((unsigned __int64)1 << (plr[p]._pRSpell - 1))) )
 	{
-		ptrplr->_pRSpell = SPL_INVALID;
-		ptrplr->_pRSplType = RSPLTYPE_INVALID;
+		plr[p]._pRSpell = SPL_INVALID;
+		plr[p]._pRSplType = RSPLTYPE_INVALID;
 		drawpanflag = 255;
 	}
 
-	ptrplr->_pISplLvlAdd = spllvladd;
-	ptrplr->_pIEnAc = enac;
+	plr[p]._pISplLvlAdd = spllvladd;
+	plr[p]._pIEnAc = enac;
 
 	if ( iflgs & ISPL_ALLRESZERO )
 	{
@@ -964,82 +961,82 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 	{
 		mr = 75;
 	}
-	ptrplr->_pMagResist = mr;
+	plr[p]._pMagResist = mr;
 
 	if ( fr > 75 )
 	{
 		fr = 75;
 	}
-	ptrplr->_pFireResist = fr;
+	plr[p]._pFireResist = fr;
 
 	if ( lr > 75 )
 	{
 		lr = 75;
 	}
-	ptrplr->_pLghtResist = lr;
+	plr[p]._pLghtResist = lr;
 
-	if ( ptrplr->_pClass == PC_WARRIOR )
+	if ( plr[p]._pClass == PC_WARRIOR )
 	{
 		vadd *= 2;
 	}
-	if ( ptrplr->_pClass == PC_ROGUE )
+	if ( plr[p]._pClass == PC_ROGUE )
 	{
 		vadd += vadd >> 1;
 	}
 	ihp = (vadd << 6) + ihp;
 
-	if ( ptrplr->_pClass == PC_SORCERER )
+	if ( plr[p]._pClass == PC_SORCERER )
 	{
 		madd *= 2;
 	}
-	if ( ptrplr->_pClass == PC_ROGUE )
+	if ( plr[p]._pClass == PC_ROGUE )
 	{
 		madd += madd >> 1;
 	}
 	imana = (madd << 6) + imana;
 
-	ptrplr->_pHitPoints = ihp + ptrplr->_pHPBase;
-	ptrplr->_pMaxHP = ihp + ptrplr->_pMaxHPBase;
+	plr[p]._pHitPoints = ihp + plr[p]._pHPBase;
+	plr[p]._pMaxHP = ihp + plr[p]._pMaxHPBase;
 
-	if ( p == myplr && (ptrplr->_pHitPoints >> 6) <= 0 )
+	if ( p == myplr && (plr[p]._pHitPoints >> 6) <= 0 )
 	{
 		SetPlayerHitPoints(p, 0);
 	}
 
-	ptrplr->_pMana = imana + ptrplr->_pManaBase;
-	ptrplr->_pMaxMana = imana + ptrplr->_pMaxManaBase;
+	plr[p]._pMana = imana + plr[p]._pManaBase;
+	plr[p]._pMaxMana = imana + plr[p]._pMaxManaBase;
 
-	ptrplr->_pIFMinDam = fmin;
-	ptrplr->_pIFMaxDam = fmax;
-	ptrplr->_pILMinDam = lmin;
-	ptrplr->_pILMaxDam = lmax;
+	plr[p]._pIFMinDam = fmin;
+	plr[p]._pIFMaxDam = fmax;
+	plr[p]._pILMinDam = lmin;
+	plr[p]._pILMaxDam = lmax;
 
 	if ( iflgs & ISPL_INFRAVISION )
 	{
-		ptrplr->_pInfraFlag = 1;
+		plr[p]._pInfraFlag = 1;
 	}
 	else
 	{
-		ptrplr->_pInfraFlag = 0;
+		plr[p]._pInfraFlag = 0;
 	}
 
-	ptrplr->_pBlockFlag = 0;
-	ptrplr->_pwtype = 0;
+	plr[p]._pBlockFlag = 0;
+	plr[p]._pwtype = 0;
 
 	g = 0;
 
-	if ( ptrplr->InvBody[4]._itype != ITYPE_NONE
-		&& ptrplr->InvBody[4]._iClass == ICLASS_WEAPON
-		&& ptrplr->InvBody[4]._iStatFlag )
+	if ( plr[p].InvBody[4]._itype != ITYPE_NONE
+		&& plr[p].InvBody[4]._iClass == ICLASS_WEAPON
+		&& plr[p].InvBody[4]._iStatFlag )
 	{
-		g = ptrplr->InvBody[4]._itype;
+		g = plr[p].InvBody[4]._itype;
 	}
 
-	if ( ptrplr->InvBody[5]._itype != ITYPE_NONE
-		&& ptrplr->InvBody[5]._iClass == ICLASS_WEAPON
-		&& ptrplr->InvBody[5]._iStatFlag )
+	if ( plr[p].InvBody[5]._itype != ITYPE_NONE
+		&& plr[p].InvBody[5]._iClass == ICLASS_WEAPON
+		&& plr[p].InvBody[5]._iStatFlag )
 	{
-		g = ptrplr->InvBody[5]._itype;
+		g = plr[p].InvBody[5]._itype;
 	}
 
 	switch ( g )
@@ -1051,7 +1048,7 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 			g = 5;
 			break;
 		case ITYPE_BOW:
-			ptrplr->_pwtype = 1;
+			plr[p]._pwtype = 1;
 			g = 4;
 			break;
 		case ITYPE_MACE:
@@ -1062,45 +1059,46 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 			break;
 	}
 
-	if ( ptrplr->InvBody[4]._itype == ITYPE_SHIELD && ptrplr->InvBody[4]._iStatFlag )
+	if ( plr[p].InvBody[4]._itype == ITYPE_SHIELD && plr[p].InvBody[4]._iStatFlag )
 	{
-		ptrplr->_pBlockFlag = 1;
+		plr[p]._pBlockFlag = 1;
 		g++;
 	}
-	if ( ptrplr->InvBody[5]._itype == ITYPE_SHIELD && ptrplr->InvBody[5]._iStatFlag )
+	if ( plr[p].InvBody[5]._itype == ITYPE_SHIELD && plr[p].InvBody[5]._iStatFlag )
 	{
-		ptrplr->_pBlockFlag = 1;
+		plr[p]._pBlockFlag = 1;
 		g++;
 	}
 
-	if ( ptrplr->InvBody[6]._itype == ITYPE_MARMOR && ptrplr->InvBody[6]._iStatFlag )
+	if ( plr[p].InvBody[6]._itype == ITYPE_MARMOR && plr[p].InvBody[6]._iStatFlag )
 	{
 		// probably a flag set
 		g += 16;
 	}
-	if ( ptrplr->InvBody[6]._itype == ITYPE_HARMOR && ptrplr->InvBody[6]._iStatFlag )
+	if ( plr[p].InvBody[6]._itype == ITYPE_HARMOR && plr[p].InvBody[6]._iStatFlag )
 	{
 		// probably a flag set
 		g += 32;
 	}
 
-	if ( ptrplr->_pgfxnum != g && Loadgfx )
+	if ( plr[p]._pgfxnum != g && Loadgfx )
 	{
-		ptrplr->_pgfxnum = g;
-		ptrplr->_pGFXLoad = 0;
+		plr[p]._pgfxnum = g;
+		plr[p]._pGFXLoad = 0;
 		LoadPlrGFX(p, 1);
 		SetPlrAnims(p);
-		ptrplr->_pAnimData = plr[p]._pNAnim[ptrplr->_pdir];
-		ptrplr->_pAnimLen = ptrplr->_pNFrames;
-		ptrplr->_pAnimWidth = ptrplr->_pNWidth;
-		ptrplr->_pAnimFrame = 1;
-		ptrplr->_pAnimCnt = 0;
-		ptrplr->_pAnimDelay = 3;
-		ptrplr->_pAnimWidth2 = (ptrplr->_pNWidth - 64) >> 1;
+		int d = plr[p]._pdir;
+		plr[p]._pAnimData = plr[p]._pNAnim[d];
+		plr[p]._pAnimLen = plr[p]._pNFrames;
+		plr[p]._pAnimWidth = plr[p]._pNWidth;
+		plr[p]._pAnimFrame = 1;
+		plr[p]._pAnimCnt = 0;
+		plr[p]._pAnimDelay = 3;
+		plr[p]._pAnimWidth2 = (plr[p]._pNWidth - 64) >> 1;
 	}
 	else
 	{
-		ptrplr->_pgfxnum = g;
+		plr[p]._pgfxnum = g;
 	}
 
 	for ( i = 0; i < nummissiles; i++ )
@@ -1108,8 +1106,8 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 		mi = missileactive[i];
 		if ( missile[mi]._mitype == 13 && missile[mi]._misource == p )
 		{
-			missile[mi]._miVar1 = ptrplr->_pHitPoints;
-			missile[mi]._miVar2 = ptrplr->_pHPBase;
+			missile[mi]._miVar1 = plr[p]._pHitPoints;
+			missile[mi]._miVar2 = plr[p]._pHPBase;
 		}
 	}
 
