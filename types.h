@@ -3,9 +3,12 @@
 #ifndef _TYPES_H
 #define _TYPES_H
 
+#define WIN32_LEAN_AND_MEAN
+
 #include "resource.h"
 
 #include <windows.h>
+#include <mmsystem.h>
 #include <stdio.h>
 #include <ddraw.h>
 #include <dsound.h>
@@ -14,6 +17,7 @@
 #include <time.h>
 #include <process.h>
 #include <shlobj.h>
+#include <shellapi.h>
 
 #ifdef __GNUC__
 #include <ctype.h>
