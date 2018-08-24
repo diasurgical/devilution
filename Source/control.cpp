@@ -2956,7 +2956,7 @@ void __fastcall control_drop_gold(int vkey)
 		dropGoldValue = 0;
 		return;
 	}
-	memset(v6, 0, 6u);
+	memset(v6, 0, sizeof(v6));
 	_itoa(dropGoldValue, v6, 10);
 	if ( v1 != VK_RETURN )
 	{

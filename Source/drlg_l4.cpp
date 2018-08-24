@@ -889,8 +889,8 @@ void __cdecl InitL4Dungeon()
 	signed int v1; // eax
 	signed int v2; // ecx
 
-	memset(dung, 0, 0x190u);
-	memset(L4dungeon, 0, 0x1900u);
+	memset(dung, 0, sizeof(dung));
+	memset(L4dungeon, 0, sizeof(L4dungeon));
 	v0 = 0;
 	do
 	{

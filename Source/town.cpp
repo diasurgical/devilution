@@ -1639,13 +1639,13 @@ void __fastcall CreateTown(int entry)
 		ViewY = 68;
 	}
 	T_Pass3();
-	memset(dTransVal, 0, 0x3100u);
-	memset(dFlags, 0, 0x3100u);
-	memset(dPlayer, 0, 0x3100u);
-	memset(dMonster, 0, 0xC400u);
-	memset(dObject, 0, 0x3100u);
-	memset(dItem, 0, 0x3100u);
-	memset(dArch, 0, 0x3100u);
+	memset(dTransVal, 0, sizeof(dTransVal));
+	memset(dFlags, 0, sizeof(dFlags));
+	memset(dPlayer, 0, sizeof(dPlayer));
+	memset(dMonster, 0, sizeof(dMonster));
+	memset(dObject, 0, sizeof(dObject));
+	memset(dItem, 0, sizeof(dItem));
+	memset(dArch, 0, sizeof(dArch));
 	v2 = dPiece;
 	do
 	{
