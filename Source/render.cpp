@@ -101,7 +101,6 @@ void __fastcall drawTopArchesUpperScreen(unsigned char *pbDst)
 	unsigned int n_draw_shift; // ecx MAPDST
 	unsigned int temp32; // eax MAPDST
 	unsigned int x_minus; // ecx MAPDST
-	unsigned char ofsub_only; // of
 	unsigned int y_minus; // ecx MAPDST
 	char *tmp_dst; // edi MAPDST
 	signed int junk_v134; // ebp
@@ -472,9 +471,8 @@ LABEL_67:
 							}
 						}
 						tmp_pbDst -= 800;
-						ofsub_only = __OFSUB__(xx_32, 2);
 						xx_32 -= 2;
-						if ( (xx_32 < 0) ^ ofsub_only )
+						if ( xx_32 < 0 )
 						{
 							yy_32 = 2;
 							do
@@ -756,9 +754,8 @@ LABEL_67:
 							pdung_cels += l_index;
 						}
 						tmp_pbDst = &tmp_pbDst[xx_32 - 800];
-						ofsub_only = __OFSUB__(xx_32, 2);
 						xx_32 -= 2;
-						if ( (xx_32 < 0) ^ ofsub_only )
+						if ( xx_32 < 0 )
 						{
 							yy_32 = 2;
 							do
@@ -1040,9 +1037,8 @@ LABEL_67:
 							}
 						}
 						tmp_pbDst -= 800;
-						ofsub_only = __OFSUB__(xx_32, 2);
 						xx_32 -= 2;
-						if ( (xx_32 < 0) ^ ofsub_only )
+						if ( xx_32 < 0 )
 						{
 							i = 8;
 							do
@@ -1223,9 +1219,8 @@ LABEL_67:
 							pdung_cels += l_index;
 						}
 						tmp_pbDst = &tmp_pbDst[xx_32 - 800];
-						ofsub_only = __OFSUB__(xx_32, 2);
 						xx_32 -= 2;
-						if ( (xx_32 < 0) ^ ofsub_only )
+						if ( xx_32 < 0 )
 						{
 							i = 8;
 							do
@@ -1482,9 +1477,8 @@ LABEL_268:
 						}
 					}
 					tmp_pbDst -= 800;
-					ofsub_only = __OFSUB__(xx_32, 2);
 					xx_32 -= 2;
-					if ( (xx_32 < 0) ^ ofsub_only )
+					if ( xx_32 < 0 )
 					{
 						yy_32 = 2;
 						do
@@ -1608,9 +1602,8 @@ LABEL_268:
 						}
 					}
 					tmp_pbDst = &tmp_pbDst[xx_32 - 800];
-					ofsub_only = __OFSUB__(xx_32, 2);
 					xx_32 -= 2;
-					if ( (xx_32 < 0) ^ ofsub_only )
+					if ( xx_32 < 0 )
 					{
 						yy_32 = 2;
 						do
@@ -1733,9 +1726,8 @@ LABEL_268:
 						}
 					}
 					tmp_pbDst -= 800;
-					ofsub_only = __OFSUB__(xx_32, 2);
 					xx_32 -= 2;
-					if ( (xx_32 < 0) ^ ofsub_only )
+					if ( xx_32 < 0 )
 					{
 						i = 8;
 						do
@@ -1830,9 +1822,8 @@ LABEL_268:
 						}
 					}
 					tmp_pbDst = &tmp_pbDst[xx_32 - 800];
-					ofsub_only = __OFSUB__(xx_32, 2);
 					xx_32 -= 2;
-					if ( (xx_32 < 0) ^ ofsub_only )
+					if ( xx_32 < 0 )
 					{
 						i = 8;
 						do
@@ -2345,7 +2336,6 @@ void __fastcall drawBottomArchesUpperScreen(unsigned char *pbDst, unsigned int *
 	unsigned int cel_type_16_tmp; // eax MAPDST
 	int cel_type_32; // eax
 	unsigned char junk_rol; // cf
-	unsigned char ofsub_only; // of
 	int xx_32; // edx MAPDST
 	unsigned int left_shift; // edx MAPDST
 	char temp8; // al MAPDST
@@ -2477,9 +2467,8 @@ LABEL_129:
 						while ( n_draw_shift );
 					}
 					tmp_pbDst -= 800;
-					ofsub_only = __OFSUB__(xx_32, 2);
 					xx_32 -= 2;
-					if ( (xx_32 < 0) ^ ofsub_only )
+					if ( xx_32 < 0 )
 					{
 						yy_32 = 2;
 						do
@@ -2536,9 +2525,8 @@ LABEL_129:
 						tmp_pbDst += 2;
 					}
 					tmp_pbDst = &tmp_pbDst[xx_32 - 800];
-					ofsub_only = __OFSUB__(xx_32, 2);
 					xx_32 -= 2;
-					if ( (xx_32 < 0) ^ ofsub_only )
+					if ( xx_32 < 0 )
 					{
 						yy_32 = 2;
 						do
@@ -2591,9 +2579,8 @@ LABEL_129:
 						while ( n_draw_shift );
 					}
 					tmp_pbDst -= 800;
-					ofsub_only = __OFSUB__(xx_32, 2);
 					xx_32 -= 2;
-					if ( (xx_32 < 0) ^ ofsub_only )
+					if ( xx_32 < 0 )
 					{
 						gpDrawMask -= 16;
 						yy_32 = 16;
@@ -2643,9 +2630,8 @@ LABEL_129:
 						tmp_pbDst += 2;
 					}
 					tmp_pbDst = &tmp_pbDst[xx_32 - 800];
-					ofsub_only = __OFSUB__(xx_32, 2);
 					xx_32 -= 2;
-					if ( (xx_32 < 0) ^ ofsub_only )
+					if ( xx_32 < 0 )
 					{
 						gpDrawMask -= 16;
 						yy_32 = 16;
@@ -2807,9 +2793,8 @@ LABEL_268:
 							while ( n_draw_shift );
 						}
 						tmp_pbDst -= 800;
-						ofsub_only = __OFSUB__(xx_32, 2);
 						xx_32 -= 2;
-						if ( (xx_32 < 0) ^ ofsub_only )
+						if ( xx_32 < 0 )
 						{
 							yy_32 = 2;
 							do
@@ -2884,9 +2869,8 @@ LABEL_269:
 							tmp_pbDst += 2;
 						}
 						tmp_pbDst = &tmp_pbDst[xx_32 - 800];
-						ofsub_only = __OFSUB__(xx_32, 2);
 						xx_32 -= 2;
-						if ( (xx_32 < 0) ^ ofsub_only )
+						if ( xx_32 < 0 )
 						{
 							yy_32 = 2;
 							do
@@ -2961,9 +2945,8 @@ LABEL_270:
 							while ( n_draw_shift );
 						}
 						tmp_pbDst -= 800;
-						ofsub_only = __OFSUB__(xx_32, 2);
 						xx_32 -= 2;
-						if ( (xx_32 < 0) ^ ofsub_only )
+						if ( xx_32 < 0 )
 						{
 							gpDrawMask -= 16;
 							yy_32 = 16;
@@ -3027,9 +3010,8 @@ LABEL_270:
 							tmp_pbDst += 2;
 						}
 						tmp_pbDst = &tmp_pbDst[xx_32 - 800];
-						ofsub_only = __OFSUB__(xx_32, 2);
 						xx_32 -= 2;
-						if ( (xx_32 < 0) ^ ofsub_only )
+						if ( xx_32 < 0 )
 						{
 							gpDrawMask -= 16;
 							yy_32 = 16;
@@ -3371,7 +3353,6 @@ void __fastcall drawUpperScreen(unsigned char *pbDst)
 	char base_4; // cl MAPDST
 	unsigned char dstbyte; // ch MAPDST
 	char x_minus; // cl MAPDST
-	unsigned char ofsub_only; // of
 	char y_minus; // cl
 	int temp32; // eax MAPDST
 	signed int xx_32; // ebp MAPDST
@@ -3528,9 +3509,8 @@ LABEL_133:
 						while ( n_draw_shift );
 					}
 					tmp_pbDst -= 800;
-					ofsub_only = __OFSUB__(xx_32, 2);
 					xx_32 -= 2;
-					if ( (xx_32 < 0) ^ ofsub_only )
+					if ( xx_32 < 0 )
 					{
 						yy_32 = 2;
 						do
@@ -3587,9 +3567,8 @@ LABEL_133:
 						tmp_pbDst += 2;
 					}
 					tmp_pbDst = &tmp_pbDst[xx_32 - 800];
-					ofsub_only = __OFSUB__(xx_32, 2);
 					xx_32 -= 2;
-					if ( (xx_32 < 0) ^ ofsub_only )
+					if ( xx_32 < 0 )
 					{
 						yy_32 = 2;
 						do
@@ -3642,9 +3621,8 @@ LABEL_133:
 						while ( n_draw_shift );
 					}
 					tmp_pbDst -= 800;
-					ofsub_only = __OFSUB__(xx_32, 2);
 					xx_32 -= 2;
-					if ( (xx_32 < 0) ^ ofsub_only )
+					if ( xx_32 < 0 )
 					{
 						i = 16;
 						do
@@ -3688,9 +3666,8 @@ LABEL_133:
 						tmp_pbDst += 2;
 					}
 					tmp_pbDst = &tmp_pbDst[xx_32 - 800];
-					ofsub_only = __OFSUB__(xx_32, 2);
 					xx_32 -= 2;
-					if ( (xx_32 < 0) ^ ofsub_only )
+					if ( xx_32 < 0 )
 					{
 						i = 16;
 						do
@@ -3864,9 +3841,8 @@ LABEL_58:
 							tmp_pbDst += 2;
 						}
 						tmp_pbDst -= 800;
-						ofsub_only = __OFSUB__(xx_32, 2);
 						xx_32 -= 2;
-						if ( (xx_32 < 0) ^ ofsub_only )
+						if ( xx_32 < 0 )
 						{
 							yy_32 = 2;
 							do
@@ -3951,9 +3927,8 @@ LABEL_58:
 						l_index = (unsigned char)pdung_cels & 2;
 						pdung_cels += l_index;
 						tmp_pbDst = &tmp_pbDst[xx_32 - 800];
-						ofsub_only = __OFSUB__(xx_32, 2);
 						xx_32 -= 2;
-						if ( (xx_32 < 0) ^ ofsub_only )
+						if ( xx_32 < 0 )
 						{
 							yy_32 = 2;
 							do
@@ -4038,9 +4013,8 @@ LABEL_58:
 							tmp_pbDst += 2;
 						}
 						tmp_pbDst -= 800;
-						ofsub_only = __OFSUB__(xx_32, 2);
 						xx_32 -= 2;
-						if ( (xx_32 < 0) ^ ofsub_only )
+						if ( xx_32 < 0 )
 						{
 							yy_32 = 16;
 							do
@@ -4110,9 +4084,8 @@ LABEL_58:
 						l_index = (unsigned char)pdung_cels & 2;
 						pdung_cels += l_index;
 						tmp_pbDst = &tmp_pbDst[xx_32 - 800];
-						ofsub_only = __OFSUB__(xx_32, 2);
 						xx_32 -= 2;
-						if ( (xx_32 < 0) ^ ofsub_only )
+						if ( xx_32 < 0 )
 						{
 							yy_32 = 16;
 							do
@@ -4434,7 +4407,6 @@ void __fastcall drawTopArchesLowerScreen(unsigned char *pbDst)
 	int cel_type_32; // eax
 	unsigned int temp32; // eax MAPDST
 	unsigned char junk_ror; // cf
-	unsigned char ofsub_only; // of
 	signed int tile_42_45; // eax MAPDST
 	unsigned int world_tbl; // ecx MAPDST
 	int world_192; // eax MAPDST
@@ -5540,10 +5512,9 @@ LABEL_98:
 						}
 					}
 					tmp_pbDst -= 800;
-					ofsub_only = __OFSUB__(xx_32, 2);
 					xx_32 -= 2;
 				}
-				while ( !((xx_32 < 0) ^ ofsub_only) );
+				while ( xx_32 >= 0 );
 				goto LABEL_98;
 			case 3:
 				WorldBoolFlag = 0;
@@ -5849,10 +5820,9 @@ LABEL_154:
 						pdung_cels += l_index;
 					}
 					tmp_pbDst = &tmp_pbDst[xx_32 - 800];
-					ofsub_only = __OFSUB__(xx_32, 2);
 					xx_32 -= 2;
 				}
-				while ( !((xx_32 < 0) ^ ofsub_only) );
+				while ( xx_32 >= 0 );
 				goto LABEL_154;
 			case 4:
 				WorldBoolFlag = 0;
@@ -6060,10 +6030,9 @@ LABEL_210:
 						}
 					}
 					tmp_pbDst -= 800;
-					ofsub_only = __OFSUB__(xx_32, 2);
 					xx_32 -= 2;
 				}
-				while ( !((xx_32 < 0) ^ ofsub_only) );
+				while ( xx_32 >= 0 );
 				goto LABEL_210;
 			default:
 				WorldBoolFlag = 0;
@@ -6270,10 +6239,9 @@ LABEL_249:
 						pdung_cels += l_index;
 					}
 					tmp_pbDst = &tmp_pbDst[xx_32 - 800];
-					ofsub_only = __OFSUB__(xx_32, 2);
 					xx_32 -= 2;
 				}
-				while ( !((xx_32 < 0) ^ ofsub_only) );
+				while ( xx_32 >= 0 );
 				goto LABEL_249;
 		}
 		return;
@@ -6601,10 +6569,9 @@ LABEL_308:
 					}
 				}
 				tmp_pbDst -= 800;
-				ofsub_only = __OFSUB__(xx_32, 2);
 				xx_32 -= 2;
 			}
-			while ( !((xx_32 < 0) ^ ofsub_only) );
+			while ( xx_32 >= 0 );
 			goto LABEL_308;
 		case 11:
 			WorldBoolFlag = 0;
@@ -6670,10 +6637,9 @@ LABEL_326:
 						}
 					}
 					tmp_pbDst = &tmp_pbDst[xx_32 - 800];
-					ofsub_only = __OFSUB__(xx_32, 2);
 					xx_32 -= 2;
 				}
-				while ( !((xx_32 < 0) ^ ofsub_only) );
+				while ( xx_32 >= 0 );
 				goto LABEL_336;
 			}
 			tmp_pbDst = (char *)(pbDst - 12288);
@@ -6874,10 +6840,9 @@ LABEL_364:
 					}
 				}
 				tmp_pbDst -= 800;
-				ofsub_only = __OFSUB__(xx_32, 2);
 				xx_32 -= 2;
 			}
-			while ( !((xx_32 < 0) ^ ofsub_only) );
+			while ( xx_32 >= 0 );
 			goto LABEL_364;
 		default:
 			WorldBoolFlag = 0;
@@ -6998,10 +6963,9 @@ LABEL_389:
 					}
 				}
 				tmp_pbDst = &tmp_pbDst[xx_32 - 800];
-				ofsub_only = __OFSUB__(xx_32, 2);
 				xx_32 -= 2;
 			}
-			while ( !((xx_32 < 0) ^ ofsub_only) );
+			while ( xx_32 >= 0 );
 			goto LABEL_389;
 	}
 }
@@ -7015,7 +6979,6 @@ void __fastcall drawBottomArchesLowerScreen(unsigned char *pbDst, unsigned int *
 	int cel_type_32; // eax
 	unsigned char junk_rol; // cf
 	int and80_i; // ecx MAPDST
-	unsigned char ofsub_only; // of
 	signed int tile_42_45; // eax MAPDST
 	unsigned int world_tbl; // ecx MAPDST
 	char temp8; // al MAPDST
@@ -7565,10 +7528,9 @@ LABEL_324:
 							while ( n_draw_shift );
 						}
 						tmp_pbDst -= 800;
-						ofsub_only = __OFSUB__(xx_32, 2);
 						xx_32 -= 2;
 					}
-					while ( !((xx_32 < 0) ^ ofsub_only) );
+					while ( xx_32 >= 0 );
 					goto LABEL_62;
 				case 3:
 					xx_32 = 30;
@@ -7655,10 +7617,9 @@ LABEL_80:
 							tmp_pbDst += 2;
 						}
 						tmp_pbDst = &tmp_pbDst[xx_32 - 800];
-						ofsub_only = __OFSUB__(xx_32, 2);
 						xx_32 -= 2;
 					}
-					while ( !((xx_32 < 0) ^ ofsub_only) );
+					while ( xx_32 >= 0 );
 					goto LABEL_80;
 				case 4:
 					xx_32 = 30;
@@ -7746,10 +7707,9 @@ LABEL_322:
 							while ( n_draw_shift );
 						}
 						tmp_pbDst -= 800;
-						ofsub_only = __OFSUB__(xx_32, 2);
 						xx_32 -= 2;
 					}
-					while ( !((xx_32 < 0) ^ ofsub_only) );
+					while ( xx_32 >= 0 );
 					goto LABEL_98;
 				default:
 					xx_32 = 30;
@@ -7831,10 +7791,9 @@ LABEL_117:
 							tmp_pbDst += 2;
 						}
 						tmp_pbDst = &tmp_pbDst[xx_32 - 800];
-						ofsub_only = __OFSUB__(xx_32, 2);
 						xx_32 -= 2;
 					}
-					while ( !((xx_32 < 0) ^ ofsub_only) );
+					while ( xx_32 >= 0 );
 					goto LABEL_117;
 			}
 			return;
@@ -8019,10 +7978,9 @@ LABEL_162:
 					while ( n_draw_shift );
 				}
 				tmp_pbDst -= 800;
-				ofsub_only = __OFSUB__(xx_32, 2);
 				xx_32 -= 2;
 			}
-			while ( !((xx_32 < 0) ^ ofsub_only) );
+			while ( xx_32 >= 0 );
 			goto LABEL_162;
 		case 11:
 			xx_32 = 30;
@@ -8053,10 +8011,9 @@ LABEL_175:
 						tmp_pbDst += 2;
 					}
 					tmp_pbDst = &tmp_pbDst[xx_32 - 800];
-					ofsub_only = __OFSUB__(xx_32, 2);
 					xx_32 -= 2;
 				}
-				while ( !((xx_32 < 0) ^ ofsub_only) );
+				while ( xx_32 >= 0 );
 				goto LABEL_180;
 			}
 			tmp_pbDst = (char *)(pbDst - 12288);
@@ -8165,10 +8122,9 @@ LABEL_198:
 					while ( n_draw_shift );
 				}
 				tmp_pbDst -= 800;
-				ofsub_only = __OFSUB__(xx_32, 2);
 				xx_32 -= 2;
 			}
-			while ( !((xx_32 < 0) ^ ofsub_only) );
+			while ( xx_32 >= 0 );
 			goto LABEL_198;
 		default:
 			xx_32 = 30;
@@ -8237,10 +8193,9 @@ LABEL_217:
 					tmp_pbDst += 2;
 				}
 				tmp_pbDst = &tmp_pbDst[xx_32 - 800];
-				ofsub_only = __OFSUB__(xx_32, 2);
 				xx_32 -= 2;
 			}
-			while ( !((xx_32 < 0) ^ ofsub_only) );
+			while ( xx_32 >= 0 );
 			goto LABEL_217;
 	}
 }
@@ -8259,7 +8214,6 @@ void __fastcall drawLowerScreen(unsigned char *pbDst)
 	int yy_32; // ebp MAPDST
 	char block_4; // cl MAPDST
 	unsigned char dstbyte; // ch MAPDST
-	unsigned char ofsub_only; // of
 	int x_minus; // ecx MAPDST
 	int y_minus; // ecx MAPDST
 	unsigned int chk_sh_and; // ecx MAPDST
@@ -8780,10 +8734,9 @@ LABEL_68:
 						}
 						while ( x_minus );
 						tmp_pbDst -= 800;
-						ofsub_only = __OFSUB__(xx_32, 2);
 						xx_32 -= 2;
 					}
-					while ( !((xx_32 < 0) ^ ofsub_only) );
+					while ( xx_32 >= 0 );
 					goto LABEL_68;
 				case 3:
 					xx_32 = 30;
@@ -8842,10 +8795,9 @@ LABEL_83:
 						l_index = (unsigned char)pdung_cels & 2;
 						pdung_cels += l_index;
 						tmp_pbDst = &tmp_pbDst[xx_32 - 800];
-						ofsub_only = __OFSUB__(xx_32, 2);
 						xx_32 -= 2;
 					}
-					while ( !((xx_32 < 0) ^ ofsub_only) );
+					while ( xx_32 >= 0 );
 					goto LABEL_83;
 				case 4:
 					xx_32 = 30;
@@ -8939,10 +8891,9 @@ LABEL_100:
 							tmp_pbDst += 2;
 						}
 						tmp_pbDst -= 800;
-						ofsub_only = __OFSUB__(xx_32, 2);
 						xx_32 -= 2;
 					}
-					while ( !((xx_32 < 0) ^ ofsub_only) );
+					while ( xx_32 >= 0 );
 					goto LABEL_100;
 				default:
 					xx_32 = 30;
@@ -9029,10 +8980,9 @@ LABEL_116:
 						l_index = (unsigned char)pdung_cels & 2;
 						pdung_cels += l_index;
 						tmp_pbDst = &tmp_pbDst[xx_32 - 800];
-						ofsub_only = __OFSUB__(xx_32, 2);
 						xx_32 -= 2;
 					}
-					while ( !((xx_32 < 0) ^ ofsub_only) );
+					while ( xx_32 >= 0 );
 					goto LABEL_116;
 			}
 			return;
@@ -9213,10 +9163,9 @@ LABEL_153:
 					while ( n_draw_shift );
 				}
 				tmp_pbDst -= 800;
-				ofsub_only = __OFSUB__(xx_32, 2);
 				xx_32 -= 2;
 			}
-			while ( !((xx_32 < 0) ^ ofsub_only) );
+			while ( xx_32 >= 0 );
 			goto LABEL_153;
 		case 11:
 			xx_32 = 30;
@@ -9247,10 +9196,9 @@ LABEL_166:
 						tmp_pbDst += 2;
 					}
 					tmp_pbDst = &tmp_pbDst[xx_32 - 800];
-					ofsub_only = __OFSUB__(xx_32, 2);
 					xx_32 -= 2;
 				}
-				while ( !((xx_32 < 0) ^ ofsub_only) );
+				while ( xx_32 >= 0 );
 				goto LABEL_171;
 			}
 			tmp_pbDst = pbDst - 12288;
@@ -9353,10 +9301,9 @@ LABEL_189:
 					while ( n_draw_shift );
 				}
 				tmp_pbDst -= 800;
-				ofsub_only = __OFSUB__(xx_32, 2);
 				xx_32 -= 2;
 			}
-			while ( !((xx_32 < 0) ^ ofsub_only) );
+			while ( xx_32 >= 0 );
 			goto LABEL_189;
 		default:
 			xx_32 = 30;
@@ -9417,10 +9364,9 @@ LABEL_205:
 					tmp_pbDst += 2;
 				}
 				tmp_pbDst = &tmp_pbDst[xx_32 - 800];
-				ofsub_only = __OFSUB__(xx_32, 2);
 				xx_32 -= 2;
 			}
-			while ( !((xx_32 < 0) ^ ofsub_only) );
+			while ( xx_32 >= 0 );
 			goto LABEL_205;
 	}
 }
