@@ -1,5 +1,7 @@
-[![Build Status](https://travis-ci.org/diasurgical/devilution.svg?branch=master)](https://travis-ci.org/diasurgical/devilution)
+Devilution: [![Build Status](https://travis-ci.org/diasurgical/devilution.svg?branch=master)](https://travis-ci.org/diasurgical/devilution)
 [![Build status](https://ci.appveyor.com/api/projects/status/ssk0xjhoka1uu940?svg=true)](https://ci.appveyor.com/project/galaxyhaxz/devilution)
+
+Nightly: [![Build Status](https://travis-ci.com/diasurgical/devil-nightly.svg?branch=master)](https://travis-ci.com/diasurgical/devil-nightly)
 
 [Discord](https://discord.gg/XEKDxHK)
 
