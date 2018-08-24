@@ -32,3 +32,12 @@ script:
 
 after_script:
   - make clean
+
+jobs:
+  include:
+    - stage: Test with Riivaaja
+      os: linux
+      sudo: required
+      services:
+        - docker
+      script: docker run -v $(pwd):/root/devilution diasurgical/riivaaja
