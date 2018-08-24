@@ -655,6 +655,7 @@ LABEL_11:
 
 void __fastcall ClearPlrRVars(PlayerStruct *p)
 {
+	// TODO: Missing debug assert p != NULL
 	p->bReserved[0] = 0;
 	p->bReserved[1] = 0;
 	p->bReserved[2] = 0;
@@ -675,13 +676,9 @@ void __fastcall ClearPlrRVars(PlayerStruct *p)
 	p->dwReserved[6] = 0;
 }
 
-// TODO: c should be of type _ui_classes in order to allow
-// the compiler to optimize the size and accesses to c
-// (especially the switch statements)
-void __fastcall CreatePlayer(int pnum, int c)
+// c: plr_classes value
+void __fastcall CreatePlayer(int pnum, char c)
 {
-	int i;
-
 	ClearPlrRVars(&plr[pnum]);
 	SetRndSeed(GetTickCount());
 
@@ -691,16 +688,35 @@ void __fastcall CreatePlayer(int pnum, int c)
 	}
 	plr[pnum]._pClass = c;
 
-	plr[pnum]._pStrength = StrengthTbl[c] < 0 ? 0 : StrengthTbl[c];
-	plr[pnum]._pBaseStr = plr[pnum]._pStrength;
+	char str = StrengthTbl[c];
+	if ( str < 0 )
+	{
+		str = 0;
+	}
+	plr[pnum]._pStrength = str;
+	plr[pnum]._pBaseStr = str;
 
-	plr[pnum]._pMagic = MagicTbl[c] < 0 ? 0 : MagicTbl[c];
-	plr[pnum]._pBaseMag = plr[pnum]._pMagic;
+	char mag = MagicTbl[c];
+	if ( mag < 0 )
+	{
+		mag = 0;
+	}
+	plr[pnum]._pMagic = mag;
+	plr[pnum]._pBaseMag = mag;
 
-	plr[pnum]._pDexterity = DexterityTbl[c] < 0 ? 0 : DexterityTbl[c];
-	plr[pnum]._pBaseDex = plr[pnum]._pDexterity;
+	char dex = DexterityTbl[c];
+	if ( dex < 0 )
+	{
+		dex = 0;
+	}
+	plr[pnum]._pDexterity = dex;
+	plr[pnum]._pBaseDex = dex;
 
-	int vit = VitalityTbl[c] < 0 ? 0 : VitalityTbl[c];
+	char vit = VitalityTbl[c];
+	if ( vit < 0 )
+	{
+		vit = 0;
+	}
 	plr[pnum]._pVitality = vit;
 	plr[pnum]._pBaseVit = vit;
 
@@ -710,45 +726,47 @@ void __fastcall CreatePlayer(int pnum, int c)
 	plr[pnum].pLvlLoad = 0;
 	plr[pnum].pDiabloKillLevel = 0;
 
-	if ( c == UI_ROGUE )
+	if ( c == PC_ROGUE )
 	{
-		plr[pnum]._pDamageMod = (plr[pnum]._pLevel * (plr[pnum]._pStrength + plr[pnum]._pDexterity)) / 200;
+		plr[pnum]._pDamageMod = plr[pnum]._pLevel * (plr[pnum]._pStrength + plr[pnum]._pDexterity) / 200;
 	}
 	else
 	{
-		plr[pnum]._pDamageMod = (plr[pnum]._pStrength * plr[pnum]._pLevel) / 100;
+		plr[pnum]._pDamageMod = plr[pnum]._pStrength * plr[pnum]._pLevel / 100;
 	}
 
 	plr[pnum]._pBaseToBlk = ToBlkTbl[c];
 
+
 	plr[pnum]._pHitPoints = (vit + 10) << 6;
-	if ( c == UI_WARRIOR )
+	if ( c == PC_WARRIOR )
 	{
-		plr[pnum]._pHitPoints = (vit + 10) << 7;
+		plr[pnum]._pHitPoints *= 2;
 	}
-	if ( c == UI_ROGUE )
+	if ( c == PC_ROGUE )
 	{
 		plr[pnum]._pHitPoints += plr[pnum]._pHitPoints >> 1;
 	}
 
-	plr[pnum]._pMaxHP = plr[pnum]._pHitPoints;
-	plr[pnum]._pHPBase = plr[pnum]._pHitPoints;
-	plr[pnum]._pMaxHPBase = plr[pnum]._pHitPoints;
+	int hp = plr[pnum]._pHitPoints;
+	plr[pnum]._pMaxHP = hp;
+	plr[pnum]._pHPBase = hp;
+	plr[pnum]._pMaxHPBase = hp;
 
 	plr[pnum]._pMana = plr[pnum]._pMagic << 6;
-	if ( c == UI_SORCERER )
+	if ( c == PC_SORCERER )
 	{
 		plr[pnum]._pMana *= 2;
 	}
-
-	if ( c == UI_ROGUE )
+	if ( c == PC_ROGUE )
 	{
 		plr[pnum]._pMana += plr[pnum]._pMana >> 1;
 	}
 
-	plr[pnum]._pMaxMana = plr[pnum]._pMana;
-	plr[pnum]._pManaBase = plr[pnum]._pMana;
-	plr[pnum]._pMaxManaBase = plr[pnum]._pMana;
+	int mana = plr[pnum]._pMana;
+	plr[pnum]._pMaxMana = mana;
+	plr[pnum]._pManaBase = mana;
+	plr[pnum]._pMaxManaBase = mana;
 
 	plr[pnum]._pLevel = 1;
 	plr[pnum]._pMaxLvl = 1;
@@ -762,34 +780,41 @@ void __fastcall CreatePlayer(int pnum, int c)
 	plr[pnum]._pLightRad = 10;
 	plr[pnum]._pInfraFlag = 0;
 
-	switch ( c )
+	if ( c == PC_WARRIOR )
 	{
-		case UI_WARRIOR:
-			plr[pnum]._pAblSpells[0] = 0x2000000;
-			plr[pnum]._pAblSpells[1] = 0;
-			plr[pnum]._pMemSpells[0] = 0;
-			break;
-		case UI_ROGUE:
-			plr[pnum]._pAblSpells[0] = 0x8000000;
-			plr[pnum]._pAblSpells[1] = 0;
-			plr[pnum]._pMemSpells[0] = 0;
-			break;
-		case UI_SORCERER:
-			plr[pnum]._pAblSpells[0] = 0x4000000;
-			plr[pnum]._pAblSpells[1] = 0;
-			plr[pnum]._pMemSpells[0] = 1;
-			break;
+		plr[pnum]._pAblSpells[0] = 0x2000000;
+		plr[pnum]._pAblSpells[1] = 0;
+	}
+	else if ( c == PC_ROGUE )
+	{
+		plr[pnum]._pAblSpells[0] = 0x8000000;
+		plr[pnum]._pAblSpells[1] = 0;
+	}
+	else if ( c == PC_SORCERER )
+	{
+		plr[pnum]._pAblSpells[0] = 0x4000000;
+		plr[pnum]._pAblSpells[1] = 0;
+	}
+
+	if ( c == PC_SORCERER )
+	{
+		plr[pnum]._pMemSpells[0] = 1;
+	}
+	else
+	{
+		plr[pnum]._pMemSpells[0] = 0;
 	}
 	plr[pnum]._pMemSpells[1] = 0;
 
+	int i;
 	for ( i = 0; i < sizeof(plr[pnum]._pSplLvl); i++ )
 	{
 		plr[pnum]._pSplLvl[i] = 0;
 	}
 
-	_LOBYTE(plr[pnum]._pSpellFlags) = 0;
+	plr[pnum]._pSpellFlags = 0;
 
-	if ( plr[pnum]._pClass == UI_SORCERER )
+	if ( plr[pnum]._pClass == PC_SORCERER )
 	{
 		plr[pnum]._pSplLvl[1] = 2;
 	}
@@ -800,17 +825,17 @@ void __fastcall CreatePlayer(int pnum, int c)
 		plr[pnum]._pSplHotKey[i] = -1;
 	}
 
-	switch ( c )
+	if ( c == PC_WARRIOR )
 	{
-		case UI_WARRIOR:
-			plr[pnum]._pgfxnum = 3;
-			break;
-		case UI_ROGUE:
-			plr[pnum]._pgfxnum = 4;
-			break;
-		case UI_SORCERER:
-			plr[pnum]._pgfxnum = 8;
-			break;
+		plr[pnum]._pgfxnum = 3;
+	}
+	else if ( c == PC_ROGUE )
+	{
+		plr[pnum]._pgfxnum = 4;
+	}
+	else if ( c == PC_SORCERER )
+	{
+		plr[pnum]._pgfxnum = 8;
 	}
 
 	for ( i = 0; i < sizeof(plr[pnum]._pLvlVisited); i++ )
