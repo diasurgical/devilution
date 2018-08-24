@@ -59,7 +59,6 @@ int WorldTbl17_2[17] = { 0, 32, 60, 88, 112, 136, 156, 176, 192, 208, 220, 232, 
 
 //temporary
 #define __CFSHL__(x, y) ((x) & 0x80000000) ? 1 : 0
-#define __CFSHR__(x, y) ((x) & y)
 
 /*
  32x32 arch types
@@ -106,7 +105,6 @@ void __fastcall drawTopArchesUpperScreen(unsigned char *pbDst)
 	signed int junk_v134; // ebp
 	char *junk_v139; // esi
 	char temp8; // al MAPDST
-	int temp_andone; // eax MAPDST
 	short temp16; // ax MAPDST
 	char junk_minus; // bp
 	int junk_v180; // ebp
@@ -1423,19 +1421,19 @@ LABEL_268:
 				{
 					tmp_pbDst += xx_32;
 					x_minus = 32 - xx_32;
-					temp_andone = ((_BYTE)WorldBoolFlag + 1) & 1;
 					WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 					if ( WorldBoolFlag )
 					{
-						chk_andone = __CFSHR__(x_minus, 2);
 						n_draw_shift = x_minus >> 2;
-						if ( !chk_andone
-						  || (_LOWORD(temp_andone) = *((_WORD *)pdung_cels + 1),
-							  pdung_cels += 4,
-							  tmp_dst = tmp_pbDst + 1,
-							  *tmp_dst = __ROR4__(temp_andone, 8),
-							  tmp_pbDst = tmp_dst + 1,
-							  n_draw_shift) )
+						if ( x_minus & 2 )
+						{
+							temp16 = *((_WORD *)pdung_cels + 1);
+							pdung_cels += 4;
+							tmp_dst = tmp_pbDst + 1;
+							*tmp_dst = __ROR4__(temp16, 8);
+							tmp_pbDst = tmp_dst + 1;
+						}
+						if ( n_draw_shift )
 						{
 							do
 							{
@@ -1454,14 +1452,15 @@ LABEL_268:
 					}
 					else
 					{
-						chk_andone = __CFSHR__(x_minus, 2);
 						n_draw_shift = x_minus >> 2;
-						if ( !chk_andone
-						  || (temp16 = *((_WORD *)pdung_cels + 1),
-							  pdung_cels += 4,
-							  *tmp_pbDst = temp16,
-							  tmp_pbDst += 2,
-							  n_draw_shift) )
+						if ( x_minus & 2 )
+						{
+							temp16 = *((_WORD *)pdung_cels + 1);
+							pdung_cels += 4;
+							*tmp_pbDst = temp16;
+							tmp_pbDst += 2;
+						}
+						if ( n_draw_shift )
 						{
 							do
 							{
@@ -1487,19 +1486,19 @@ LABEL_268:
 								break;
 							tmp_pbDst += yy_32;
 							y_minus = 32 - yy_32;
-							temp_andone = ((_BYTE)WorldBoolFlag + 1) & 1;
 							WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 							if ( WorldBoolFlag )
 							{
-								chk_andone = __CFSHR__(y_minus, 2);
 								n_draw_shift = y_minus >> 2;
-								if ( !chk_andone
-								  || (_LOWORD(temp_andone) = *((_WORD *)pdung_cels + 1),
-									  pdung_cels += 4,
-									  tmp_dst = tmp_pbDst + 1,
-									  *tmp_dst = __ROR4__(temp_andone, 8),
-									  tmp_pbDst = tmp_dst + 1,
-									  n_draw_shift) )
+								if ( y_minus & 2 )
+								{
+									temp16 = *((_WORD *)pdung_cels + 1);
+									pdung_cels += 4;
+									tmp_dst = tmp_pbDst + 1;
+									*tmp_dst = __ROR4__(temp16, 8);
+									tmp_pbDst = tmp_dst + 1;
+								}
+								if ( n_draw_shift )
 								{
 									do
 									{
@@ -1518,14 +1517,15 @@ LABEL_268:
 							}
 							else
 							{
-								chk_andone = __CFSHR__(y_minus, 2);
 								n_draw_shift = y_minus >> 2;
-								if ( !chk_andone
-								  || (temp16 = *((_WORD *)pdung_cels + 1),
-									  pdung_cels += 4,
-									  *tmp_pbDst = temp16,
-									  tmp_pbDst += 2,
-									  n_draw_shift) )
+								if ( y_minus & 2 )
+								{
+									temp16 = *((_WORD *)pdung_cels + 1);
+									pdung_cels += 4;
+									*tmp_pbDst = temp16;
+									tmp_pbDst += 2;
+								}
+								if ( n_draw_shift )
 								{
 									do
 									{
@@ -1554,10 +1554,9 @@ LABEL_268:
 				while ( (unsigned int)tmp_pbDst >= screen_buf_end )
 				{
 					x_minus = 32 - xx_32;
-					temp_andone = ((_BYTE)WorldBoolFlag + 1) & 1;
 					junk_minus = 32 - xx_32;
 					WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
-					if ( temp_andone )
+					if ( WorldBoolFlag )
 					{
 						for ( n_draw_shift = x_minus >> 2; n_draw_shift; --n_draw_shift )
 						{
@@ -1567,17 +1566,16 @@ LABEL_268:
 							temp32 = __ROR4__(temp32, 8);
 							*tmp_dst = temp32;
 							tmp_dst += 2;
-							temp_andone = __ROR4__(temp32, 16);
-							*tmp_dst = temp_andone;
+							*tmp_dst = __ROR4__(temp32, 16);
 							tmp_pbDst = tmp_dst + 1;
 						}
 						junk_v180 = junk_minus & 2;
 						if ( junk_v180 )
 						{
-							_LOWORD(temp_andone) = *(_WORD *)pdung_cels;
+							temp16 = *(_WORD *)pdung_cels;
 							pdung_cels += 4;
 							tmp_dst = tmp_pbDst + 1;
-							*tmp_dst = __ROR4__(temp_andone, 8);
+							*tmp_dst = __ROR4__(temp16, 8);
 							tmp_pbDst = tmp_dst + 1;
 						}
 					}
@@ -1611,7 +1609,6 @@ LABEL_268:
 							if ( (unsigned int)tmp_pbDst < screen_buf_end )
 								break;
 							y_minus = 32 - yy_32;
-							temp_andone = ((_BYTE)WorldBoolFlag + 1) & 1;
 							WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 							if ( WorldBoolFlag )
 							{
@@ -1623,17 +1620,16 @@ LABEL_268:
 									temp32 = __ROR4__(temp32, 8);
 									*tmp_dst = temp32;
 									tmp_dst += 2;
-									temp_andone = __ROR4__(temp32, 16);
-									*tmp_dst = temp_andone;
+									*tmp_dst = __ROR4__(temp32, 16);
 									tmp_pbDst = tmp_dst + 1;
 								}
 								junk_v180 &= 2u;
 								if ( junk_v180 )
 								{
-									_LOWORD(temp_andone) = *(_WORD *)pdung_cels;
+									temp16 = *(_WORD *)pdung_cels;
 									pdung_cels += 4;
 									tmp_dst = tmp_pbDst + 1;
-									*tmp_dst = __ROR4__(temp_andone, 8);
+									*tmp_dst = __ROR4__(temp16, 8);
 									tmp_pbDst = tmp_dst + 1;
 								}
 							}
@@ -1672,19 +1668,19 @@ LABEL_268:
 				{
 					tmp_pbDst += xx_32;
 					x_minus = 32 - xx_32;
-					temp_andone = ((_BYTE)WorldBoolFlag + 1) & 1;
 					WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 					if ( WorldBoolFlag )
 					{
-						chk_andone = __CFSHR__(x_minus, 2);
 						n_draw_shift = x_minus >> 2;
-						if ( !chk_andone
-						  || (_LOWORD(temp_andone) = *((_WORD *)pdung_cels + 1),
-							  pdung_cels += 4,
-							  tmp_dst = tmp_pbDst + 1,
-							  *tmp_dst = __ROR4__(temp_andone, 8),
-							  tmp_pbDst = tmp_dst + 1,
-							  n_draw_shift) )
+						if ( x_minus & 2 )
+						{
+							temp16 = *((_WORD *)pdung_cels + 1);
+							pdung_cels += 4;
+							tmp_dst = tmp_pbDst + 1;
+							*tmp_dst = __ROR4__(temp16, 8);
+							tmp_pbDst = tmp_dst + 1;
+						}
+						if ( n_draw_shift)
 						{
 							do
 							{
@@ -1703,14 +1699,15 @@ LABEL_268:
 					}
 					else
 					{
-						chk_andone = __CFSHR__(x_minus, 2);
 						n_draw_shift = x_minus >> 2;
-						if ( !chk_andone
-						  || (temp16 = *((_WORD *)pdung_cels + 1),
-							  pdung_cels += 4,
-							  *tmp_pbDst = temp16,
-							  tmp_pbDst += 2,
-							  n_draw_shift) )
+						if ( x_minus & 2 )
+						{
+							temp16 = *((_WORD *)pdung_cels + 1);
+							pdung_cels += 4;
+							*tmp_pbDst = temp16;
+							tmp_pbDst += 2;
+						}
+						if ( n_draw_shift )
 						{
 							do
 							{
@@ -1777,7 +1774,6 @@ LABEL_268:
 				while ( (unsigned int)tmp_pbDst >= screen_buf_end )
 				{
 					x_minus = 32 - xx_32;
-					temp_andone = ((_BYTE)WorldBoolFlag + 1) & 1;
 					WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 					if ( WorldBoolFlag )
 					{
@@ -1789,16 +1785,15 @@ LABEL_268:
 							temp32 = __ROR4__(temp32, 8);
 							*tmp_dst = temp32;
 							tmp_dst += 2;
-							temp_andone = __ROR4__(temp32, 16);
-							*tmp_dst = temp_andone;
+							*tmp_dst = __ROR4__(temp32, 16);
 							tmp_pbDst = tmp_dst + 1;
 						}
 						if ( (32 - (_BYTE)xx_32) & 2 )
 						{
-							_LOWORD(temp_andone) = *(_WORD *)pdung_cels;
+							temp16 = *(_WORD *)pdung_cels;
 							pdung_cels += 4;
 							tmp_dst = tmp_pbDst + 1;
-							*tmp_dst = __ROR4__(temp_andone, 8);
+							*tmp_dst = __ROR4__(temp16, 8);
 							tmp_pbDst = tmp_dst + 1;
 						}
 					}
@@ -2005,9 +2000,14 @@ LABEL_391:
 				WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 				if ( WorldBoolFlag )
 				{
-					chk_andone = __CFSHR__(x_minus, 2);
 					n_draw_shift = x_minus >> 2;
-					if ( !chk_andone || (tmp_dst = tmp_pbDst + 1, *tmp_dst = 0, tmp_pbDst = tmp_dst + 1, n_draw_shift) )
+					if ( x_minus & 2 )
+					{
+						tmp_dst = tmp_pbDst + 1;
+						*tmp_dst = 0;
+						tmp_pbDst = tmp_dst + 1;
+					}
+					if ( n_draw_shift )
 					{
 						do
 						{
@@ -2021,9 +2021,13 @@ LABEL_391:
 				}
 				else
 				{
-					chk_andone = __CFSHR__(x_minus, 2);
 					n_draw_shift = x_minus >> 2;
-					if ( !chk_andone || (*tmp_pbDst = 0, tmp_pbDst += 2, n_draw_shift) )
+					if ( x_minus & 2 )
+					{
+						*tmp_pbDst = 0;
+						tmp_pbDst += 2;
+					}
+					if ( n_draw_shift)
 					{
 						do
 						{
@@ -2049,9 +2053,14 @@ LABEL_391:
 				WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 				if ( WorldBoolFlag )
 				{
-					chk_andone = __CFSHR__(y_minus, 2);
 					n_draw_shift = y_minus >> 2;
-					if ( !chk_andone || (tmp_dst = tmp_pbDst + 1, *tmp_dst = 0, tmp_pbDst = tmp_dst + 1, n_draw_shift) )
+					if ( y_minus & 2 )
+					{
+						tmp_dst = tmp_pbDst + 1;
+						*tmp_dst = 0;
+						tmp_pbDst = tmp_dst + 1;
+					}
+					if ( n_draw_shift )
 					{
 						do
 						{
@@ -2065,9 +2074,13 @@ LABEL_391:
 				}
 				else
 				{
-					chk_andone = __CFSHR__(y_minus, 2);
 					n_draw_shift = y_minus >> 2;
-					if ( !chk_andone || (*tmp_pbDst = 0, tmp_pbDst += 2, n_draw_shift) )
+					if ( y_minus & 2 )
+					{
+						*tmp_pbDst = 0;
+						tmp_pbDst += 2;
+					}
+					if ( n_draw_shift)
 					{
 						do
 						{
@@ -2094,9 +2107,14 @@ LABEL_391:
 				WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 				if ( WorldBoolFlag )
 				{
-					chk_andone = __CFSHR__(x_minus, 2);
 					n_draw_shift = x_minus >> 2;
-					if ( !chk_andone || (tmp_dst = tmp_pbDst + 1, *tmp_dst = 0, tmp_pbDst = tmp_dst + 1, n_draw_shift) )
+					if ( x_minus & 2 )
+					{
+						tmp_dst = tmp_pbDst + 1;
+						*tmp_dst = 0;
+						tmp_pbDst = tmp_dst + 1;
+					}
+					if ( n_draw_shift )
 					{
 						do
 						{
@@ -2110,9 +2128,13 @@ LABEL_391:
 				}
 				else
 				{
-					chk_andone = __CFSHR__(x_minus, 2);
 					n_draw_shift = x_minus >> 2;
-					if ( !chk_andone || (*tmp_pbDst = 0, tmp_pbDst += 2, n_draw_shift) )
+					if ( x_minus & 2 )
+					{
+						*tmp_pbDst = 0;
+						tmp_pbDst += 2;
+					}
+					if ( n_draw_shift )
 					{
 						do
 						{
@@ -2138,9 +2160,14 @@ LABEL_391:
 				WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 				if ( WorldBoolFlag )
 				{
-					chk_andone = __CFSHR__(y_minus, 2);
 					n_draw_shift = y_minus >> 2;
-					if ( !chk_andone || (tmp_dst = tmp_pbDst + 1, *tmp_dst = 0, tmp_pbDst = tmp_dst + 1, n_draw_shift) )
+					if ( y_minus & 2 )
+					{
+						tmp_dst = tmp_pbDst + 1;
+						*tmp_dst = 0;
+						tmp_pbDst = tmp_dst + 1;
+					}
+					if ( n_draw_shift )
 					{
 						do
 						{
@@ -2154,9 +2181,13 @@ LABEL_391:
 				}
 				else
 				{
-					chk_andone = __CFSHR__(y_minus, 2);
 					n_draw_shift = y_minus >> 2;
-					if ( !chk_andone || (*tmp_pbDst = 0, tmp_pbDst += 2, n_draw_shift) )
+					if ( y_minus & 2 )
+					{
+						*tmp_pbDst = 0;
+						tmp_pbDst += 2;
+					}
+					if ( n_draw_shift )
 					{
 						do
 						{
@@ -2184,9 +2215,14 @@ LABEL_391:
 				WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 				if ( WorldBoolFlag )
 				{
-					chk_andone = __CFSHR__(x_minus, 2);
 					n_draw_shift = x_minus >> 2;
-					if ( !chk_andone || (tmp_dst = tmp_pbDst + 1, *tmp_dst = 0, tmp_pbDst = tmp_dst + 1, n_draw_shift) )
+					if ( x_minus & 2 )
+					{
+						tmp_dst = tmp_pbDst + 1;
+						*tmp_dst = 0;
+						tmp_pbDst = tmp_dst + 1;
+					}
+					if ( n_draw_shift )
 					{
 						do
 						{
@@ -2200,9 +2236,13 @@ LABEL_391:
 				}
 				else
 				{
-					chk_andone = __CFSHR__(x_minus, 2);
 					n_draw_shift = x_minus >> 2;
-					if ( !chk_andone || (*tmp_pbDst = 0, tmp_pbDst += 2, n_draw_shift) )
+					if ( x_minus & 2 )
+					{
+						*tmp_pbDst = 0;
+						tmp_pbDst += 2;
+					}
+					if ( n_draw_shift )
 					{
 						do
 						{
@@ -2259,9 +2299,14 @@ LABEL_391:
 				WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 				if ( WorldBoolFlag )
 				{
-					chk_andone = __CFSHR__(x_minus, 2);
 					n_draw_shift = x_minus >> 2;
-					if ( !chk_andone || (tmp_dst = tmp_pbDst + 1, *tmp_dst = 0, tmp_pbDst = tmp_dst + 1, n_draw_shift) )
+					if ( x_minus & 2 )
+					{
+						tmp_dst = tmp_pbDst + 1;
+						*tmp_dst = 0;
+						tmp_pbDst = tmp_dst + 1;
+					}
+					if ( n_draw_shift )
 					{
 						do
 						{
@@ -2275,9 +2320,13 @@ LABEL_391:
 				}
 				else
 				{
-					chk_andone = __CFSHR__(x_minus, 2);
 					n_draw_shift = x_minus >> 2;
-					if ( !chk_andone || (*tmp_pbDst = 0, tmp_pbDst += 2, n_draw_shift) )
+					if ( x_minus & 2 )
+					{
+						*tmp_pbDst = 0;
+						tmp_pbDst += 2;
+					}
+					if ( n_draw_shift )
 					{
 						do
 						{
@@ -2449,12 +2498,14 @@ LABEL_129:
 				{
 					tmp_pbDst += xx_32;
 					n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
-					if ( !__CFSHR__(32 - xx_32, 2)
-					  || (temp16 = *((_WORD *)pdung_cels + 1),
-						  pdung_cels += 4,
-						  *(_WORD *)tmp_pbDst = temp16,
-						  tmp_pbDst += 2,
-						  n_draw_shift) )
+					if ( (32 - xx_32) & 2 )
+					{
+						temp16 = *((_WORD *)pdung_cels + 1);
+						pdung_cels += 4;
+						*(_WORD *)tmp_pbDst = temp16;
+						tmp_pbDst += 2;
+					}
+					if ( n_draw_shift )
 					{
 						do
 						{
@@ -2477,16 +2528,14 @@ LABEL_129:
 								break;
 							tmp_pbDst += yy_32;
 							n_draw_shift = (unsigned int)(32 - yy_32) >> 2;
-							if ( __CFSHR__(32 - yy_32, 2) )
+							if ( (32 - yy_32) & 2 )
 							{
 								temp16 = *((_WORD *)pdung_cels + 1);
 								pdung_cels += 4;
 								*(_WORD *)tmp_pbDst = temp16;
 								tmp_pbDst += 2;
-								/* if ( !n_draw_shift )
-									continue; check */
 							}
-							if(n_draw_shift)
+							if ( n_draw_shift )
 							{
 								do
 								{
@@ -2561,12 +2610,14 @@ LABEL_129:
 				{
 					tmp_pbDst += xx_32;
 					n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
-					if ( !__CFSHR__(32 - xx_32, 2)
-					  || (temp16 = *((_WORD *)pdung_cels + 1),
-						  pdung_cels += 4,
-						  *(_WORD *)tmp_pbDst = temp16,
-						  tmp_pbDst += 2,
-						  n_draw_shift) )
+					if ( (32 - xx_32) & 2 )
+					{
+						temp16 = *((_WORD *)pdung_cels + 1);
+						pdung_cels += 4;
+						*(_WORD *)tmp_pbDst = temp16;
+						tmp_pbDst += 2;
+					}
+					if ( n_draw_shift )
 					{
 						do
 						{
@@ -2763,18 +2814,18 @@ LABEL_50:
 					{
 						tmp_pbDst += xx_32;
 						n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
-						if ( !__CFSHR__(32 - xx_32, 2) )
-							goto LABEL_268;
-						_EAX = *((_WORD *)pdung_cels + 1);
-						pdung_cels += 4;
-						ASM_XLAT(_EAX,_EBX);
-						_EAX = __ROR2__(_EAX, 8);
-						ASM_XLAT(_EAX,_EBX);
-						*(_WORD *)tmp_pbDst = __ROR2__(_EAX, 8);
-						tmp_pbDst += 2;
+						if ( (32 - xx_32) & 2 )
+						{
+							_EAX = *((_WORD *)pdung_cels + 1);
+							pdung_cels += 4;
+							ASM_XLAT(_EAX,_EBX);
+							_EAX = __ROR2__(_EAX, 8);
+							ASM_XLAT(_EAX,_EBX);
+							*(_WORD *)tmp_pbDst = __ROR2__(_EAX, 8);
+							tmp_pbDst += 2;
+						}
 						if ( n_draw_shift )
 						{
-LABEL_268:
 							do
 							{
 								_EAX = *(_DWORD *)pdung_cels;
@@ -2803,18 +2854,18 @@ LABEL_268:
 									break;
 								tmp_pbDst += yy_32;
 								n_draw_shift = (unsigned int)(32 - yy_32) >> 2;
-								if ( !__CFSHR__(32 - yy_32, 2) )
-									goto LABEL_269;
-								_EAX = *((_WORD *)pdung_cels + 1);
-								pdung_cels += 4;
-								ASM_XLAT(_EAX,_EBX);
-								_EAX = __ROR2__(_EAX, 8);
-								ASM_XLAT(_EAX,_EBX);
-								*(_WORD *)tmp_pbDst = __ROR2__(_EAX, 8);
-								tmp_pbDst += 2;
+								if ( (32 - yy_32) & 2 )
+								{
+									_EAX = *((_WORD *)pdung_cels + 1);
+									pdung_cels += 4;
+									ASM_XLAT(_EAX,_EBX);
+									_EAX = __ROR2__(_EAX, 8);
+									ASM_XLAT(_EAX,_EBX);
+									*(_WORD *)tmp_pbDst = __ROR2__(_EAX, 8);
+									tmp_pbDst += 2;
+								}
 								if ( n_draw_shift )
 								{
-LABEL_269:
 									do
 									{
 										_EAX = *(_DWORD *)pdung_cels;
@@ -2915,18 +2966,18 @@ LABEL_269:
 					{
 						tmp_pbDst += xx_32;
 						n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
-						if ( !__CFSHR__(32 - xx_32, 2) )
-							goto LABEL_270;
-						_EAX = *((_WORD *)pdung_cels + 1);
-						pdung_cels += 4;
-						ASM_XLAT(_EAX,_EBX);
-						_EAX = __ROR2__(_EAX, 8);
-						ASM_XLAT(_EAX,_EBX);
-						*(_WORD *)tmp_pbDst = __ROR2__(_EAX, 8);
-						tmp_pbDst += 2;
+						if ( (32 - xx_32) & 2 )
+						{
+							_EAX = *((_WORD *)pdung_cels + 1);
+							pdung_cels += 4;
+							ASM_XLAT(_EAX,_EBX);
+							_EAX = __ROR2__(_EAX, 8);
+							ASM_XLAT(_EAX,_EBX);
+							*(_WORD *)tmp_pbDst = __ROR2__(_EAX, 8);
+							tmp_pbDst += 2;
+						}
 						if ( n_draw_shift )
 						{
-LABEL_270:
 							do
 							{
 								_EAX = *(_DWORD *)pdung_cels;
@@ -3144,7 +3195,12 @@ LABEL_208:
 			{
 				tmp_pbDst += xx_32;
 				n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
-				if ( !__CFSHR__(32 - xx_32, 2) || (*(_WORD *)tmp_pbDst = 0, tmp_pbDst += 2, n_draw_shift) )
+				if ( (32 - xx_32) & 2 )
+				{
+					*(_WORD *)tmp_pbDst = 0;
+					tmp_pbDst += 2;
+				}
+				if ( n_draw_shift )
 				{
 					do
 					{
@@ -3164,14 +3220,12 @@ LABEL_208:
 							break;
 						tmp_pbDst += yy_32;
 						n_draw_shift = (unsigned int)(32 - yy_32) >> 2;
-						if ( __CFSHR__(32 - yy_32, 2) )
+						if ( (32 - yy_32) & 2 )
 						{
 							*(_WORD *)tmp_pbDst = 0;
 							tmp_pbDst += 2;
-							/* if ( !n_draw_shift )
-								continue; check */
 						}
-						if(n_draw_shift)
+						if ( n_draw_shift )
 						{
 							do
 							{
@@ -3195,7 +3249,12 @@ LABEL_208:
 			while ( (unsigned int)tmp_pbDst >= screen_buf_end )
 			{
 				n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
-				if ( !__CFSHR__(32 - xx_32, 2) || (*(_WORD *)tmp_pbDst = 0, tmp_pbDst += 2, n_draw_shift) )
+				if ( (32 - xx_32) & 2 )
+				{
+					*(_WORD *)tmp_pbDst = 0;
+					tmp_pbDst += 2;
+				}
+				if ( n_draw_shift )
 				{
 					do
 					{
@@ -3214,14 +3273,12 @@ LABEL_208:
 						if ( (unsigned int)tmp_pbDst < screen_buf_end )
 							break;
 						n_draw_shift = (unsigned int)(32 - yy_32) >> 2;
-						if ( __CFSHR__(32 - yy_32, 2) )
+						if ( (32 - yy_32) & 2 )
 						{
 							*(_WORD *)tmp_pbDst = 0;
 							tmp_pbDst += 2;
-							/* if ( !n_draw_shift )
-								continue; check */
 						}
-						if(n_draw_shift)
+						if ( n_draw_shift )
 						{
 							do
 							{
@@ -3247,7 +3304,12 @@ LABEL_208:
 			{
 				tmp_pbDst += xx_32;
 				n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
-				if ( !__CFSHR__(32 - xx_32, 2) || (*(_WORD *)tmp_pbDst = 0, tmp_pbDst += 2, n_draw_shift) )
+				if ( (32 - xx_32) & 2 )
+				{
+					*(_WORD *)tmp_pbDst = 0;
+					tmp_pbDst += 2;
+				}
+				if ( n_draw_shift )
 				{
 					do
 					{
@@ -3294,7 +3356,12 @@ LABEL_208:
 			while ( (unsigned int)tmp_pbDst >= screen_buf_end )
 			{
 				n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
-				if ( !__CFSHR__(32 - xx_32, 2) || (*(_WORD *)tmp_pbDst = 0, tmp_pbDst += 2, n_draw_shift) )
+				if ( (32 - xx_32) & 2 )
+				{
+					*(_WORD *)tmp_pbDst = 0;
+					tmp_pbDst += 2;
+				}
+				if ( n_draw_shift )
 				{
 					do
 					{
@@ -3491,12 +3558,14 @@ LABEL_133:
 				{
 					tmp_pbDst += xx_32;
 					n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
-					if ( !__CFSHR__(32 - xx_32, 2)
-					  || (temp16 = *((_WORD *)pdung_cels + 1),
-						  pdung_cels += 4,
-						  *(_WORD *)tmp_pbDst = temp16,
-						  tmp_pbDst += 2,
-						  n_draw_shift) )
+					if ( (32 - xx_32) & 2 )
+					{
+						temp16 = *((_WORD *)pdung_cels + 1);
+						pdung_cels += 4;
+						*(_WORD *)tmp_pbDst = temp16;
+						tmp_pbDst += 2;
+					}
+					if ( n_draw_shift )
 					{
 						do
 						{
@@ -3519,16 +3588,14 @@ LABEL_133:
 								break;
 							tmp_pbDst += yy_32;
 							n_draw_shift = (unsigned int)(32 - yy_32) >> 2;
-							if ( __CFSHR__(32 - yy_32, 2) )
+							if ( (32 - yy_32) & 2 )
 							{
 								temp16 = *((_WORD *)pdung_cels + 1);
 								pdung_cels += 4;
 								*(_WORD *)tmp_pbDst = temp16;
 								tmp_pbDst += 2;
-								/* if ( !n_draw_shift )
-									continue; check */
 							}
-							if(n_draw_shift)
+							if ( n_draw_shift )
 							{
 								do
 								{
@@ -3603,12 +3670,14 @@ LABEL_133:
 				{
 					tmp_pbDst += xx_32;
 					n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
-					if ( !__CFSHR__(32 - xx_32, 2)
-					  || (temp16 = *((_WORD *)pdung_cels + 1),
-						  pdung_cels += 4,
-						  *(_WORD *)tmp_pbDst = temp16,
-						  tmp_pbDst += 2,
-						  n_draw_shift) )
+					if ( (32 - xx_32) & 2 )
+					{
+						temp16 = *((_WORD *)pdung_cels + 1);
+						pdung_cels += 4;
+						*(_WORD *)tmp_pbDst = temp16;
+						tmp_pbDst += 2;
+					}
+					if ( n_draw_shift )
 					{
 						do
 						{
@@ -4214,7 +4283,12 @@ LABEL_205:
 			{
 				tmp_pbDst += xx_32;
 				n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
-				if ( !__CFSHR__(32 - xx_32, 2) || (*(_WORD *)tmp_pbDst = 0, tmp_pbDst += 2, n_draw_shift) )
+				if ( (32 - xx_32) & 2 )
+				{
+					*(_WORD *)tmp_pbDst = 0;
+					tmp_pbDst += 2;
+				}
+				if ( n_draw_shift )
 				{
 					do
 					{
@@ -4234,14 +4308,12 @@ LABEL_205:
 							break;
 						tmp_pbDst += yy_32;
 						n_draw_shift = (unsigned int)(32 - yy_32) >> 2;
-						if ( __CFSHR__(32 - yy_32, 2) )
+						if ( (32 - yy_32) & 2 )
 						{
 							*(_WORD *)tmp_pbDst = 0;
 							tmp_pbDst += 2;
-							/* if ( !n_draw_shift )
-								continue; check */
 						}
-						if(n_draw_shift)
+						if ( n_draw_shift )
 						{
 							do
 							{
@@ -4265,7 +4337,12 @@ LABEL_205:
 			while ( (unsigned int)tmp_pbDst >= screen_buf_end )
 			{
 				n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
-				if ( !__CFSHR__(32 - xx_32, 2) || (*(_WORD *)tmp_pbDst = 0, tmp_pbDst += 2, n_draw_shift) )
+				if ( (32 - xx_32) & 2 )
+				{
+					*(_WORD *)tmp_pbDst = 0;
+					tmp_pbDst += 2;
+				}
+				if ( n_draw_shift )
 				{
 					do
 					{
@@ -4284,14 +4361,12 @@ LABEL_205:
 						if ( (unsigned int)tmp_pbDst < screen_buf_end )
 							break;
 						n_draw_shift = (unsigned int)(32 - yy_32) >> 2;
-						if ( __CFSHR__(32 - yy_32, 2) )
+						if ( (32 - yy_32) & 2 )
 						{
 							*(_WORD *)tmp_pbDst = 0;
 							tmp_pbDst += 2;
-							/* if ( !n_draw_shift )
-								continue; check */
 						}
-						if(n_draw_shift)
+						if ( n_draw_shift )
 						{
 							do
 							{
@@ -4317,7 +4392,12 @@ LABEL_205:
 			{
 				tmp_pbDst += xx_32;
 				n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
-				if ( !__CFSHR__(32 - xx_32, 2) || (*(_WORD *)tmp_pbDst = 0, tmp_pbDst += 2, n_draw_shift) )
+				if ( (32 - xx_32) & 2 )
+				{
+					*(_WORD *)tmp_pbDst = 0;
+					tmp_pbDst += 2;
+				}
+				if ( n_draw_shift )
 				{
 					do
 					{
@@ -4357,7 +4437,12 @@ LABEL_205:
 			while ( (unsigned int)tmp_pbDst >= screen_buf_end )
 			{
 				n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
-				if ( !__CFSHR__(32 - xx_32, 2) || (*(_WORD *)tmp_pbDst = 0, tmp_pbDst += 2, n_draw_shift) )
+				if ( (32 - xx_32) & 2 )
+				{
+					*(_WORD *)tmp_pbDst = 0;
+					tmp_pbDst += 2;
+				}
+				if ( n_draw_shift )
 				{
 					do
 					{
@@ -4412,7 +4497,6 @@ void __fastcall drawTopArchesLowerScreen(unsigned char *pbDst)
 	int world_192; // eax MAPDST
 	char *junk_v155; // esi
 	char temp8; // al MAPDST
-	int temp_andone; // eax MAPDST
 	short temp16; // ax MAPDST
 	unsigned int dung_and80; // eax MAPDST
 	unsigned int chk_sh_and; // ecx MAPDST
@@ -4597,10 +4681,14 @@ LABEL_430:
 						WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 						if ( WorldBoolFlag )
 						{
-							junk_ror = __CFSHR__(x_minus, 2);
 							n_draw_shift = x_minus >> 2;
-							if ( !junk_ror
-							  || (tmp_dst = tmp_pbDst + 1, *tmp_dst = 0, tmp_pbDst = tmp_dst + 1, n_draw_shift) )
+							if ( x_minus & 2 )
+							{
+								tmp_dst = tmp_pbDst + 1;
+								*tmp_dst = 0;
+								tmp_pbDst = tmp_dst + 1;
+							}
+							if ( n_draw_shift )
 							{
 								do
 								{
@@ -4614,9 +4702,13 @@ LABEL_430:
 						}
 						else
 						{
-							junk_ror = __CFSHR__(x_minus, 2);
 							n_draw_shift = x_minus >> 2;
-							if ( !junk_ror || (*tmp_pbDst = 0, tmp_pbDst += 2, n_draw_shift) )
+							if ( x_minus & 2 )
+							{
+								*tmp_pbDst = 0;
+								tmp_pbDst += 2;
+							}
+							if ( n_draw_shift )
 							{
 								do
 								{
@@ -4648,10 +4740,14 @@ LABEL_430:
 						WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 						if ( WorldBoolFlag )
 						{
-							junk_ror = __CFSHR__(y_minus, 2);
 							n_draw_shift = y_minus >> 2;
-							if ( !junk_ror
-							  || (tmp_dst = tmp_pbDst + 1, *tmp_dst = 0, tmp_pbDst = tmp_dst + 1, n_draw_shift) )
+							if ( y_minus & 2 )
+							{
+								tmp_dst = tmp_pbDst + 1;
+								*tmp_dst = 0;
+								tmp_pbDst = tmp_dst + 1;
+							}
+							if ( n_draw_shift )
 							{
 								do
 								{
@@ -4665,9 +4761,13 @@ LABEL_430:
 						}
 						else
 						{
-							junk_ror = __CFSHR__(y_minus, 2);
 							n_draw_shift = y_minus >> 2;
-							if ( !junk_ror || (*tmp_pbDst = 0, tmp_pbDst += 2, n_draw_shift) )
+							if ( y_minus & 2 )
+							{
+								*tmp_pbDst = 0;
+								tmp_pbDst += 2;
+							}
+							if ( n_draw_shift )
 							{
 								do
 								{
@@ -4700,10 +4800,14 @@ LABEL_430:
 						WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 						if ( WorldBoolFlag )
 						{
-							junk_ror = __CFSHR__(x_minus, 2);
 							n_draw_shift = x_minus >> 2;
-							if ( !junk_ror
-							  || (tmp_dst = tmp_pbDst + 1, *tmp_dst = 0, tmp_pbDst = tmp_dst + 1, n_draw_shift) )
+							if ( x_minus & 2 )
+							{
+								tmp_dst = tmp_pbDst + 1;
+								*tmp_dst = 0;
+								tmp_pbDst = tmp_dst + 1;
+							}
+							if ( n_draw_shift )
 							{
 								do
 								{
@@ -4717,9 +4821,13 @@ LABEL_430:
 						}
 						else
 						{
-							junk_ror = __CFSHR__(x_minus, 2);
 							n_draw_shift = x_minus >> 2;
-							if ( !junk_ror || (*tmp_pbDst = 0, tmp_pbDst += 2, n_draw_shift) )
+							if ( x_minus & 2 )
+							{
+								*tmp_pbDst = 0;
+								tmp_pbDst += 2;
+							}
+							if ( n_draw_shift )
 							{
 								do
 								{
@@ -4751,10 +4859,14 @@ LABEL_430:
 						WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 						if ( WorldBoolFlag )
 						{
-							junk_ror = __CFSHR__(y_minus, 2);
 							n_draw_shift = y_minus >> 2;
-							if ( !junk_ror
-							  || (tmp_dst = tmp_pbDst + 1, *tmp_dst = 0, tmp_pbDst = tmp_dst + 1, n_draw_shift) )
+							if ( y_minus & 2 )
+							{
+								tmp_dst = tmp_pbDst + 1;
+								*tmp_dst = 0;
+								tmp_pbDst = tmp_dst + 1;
+							}
+							if ( n_draw_shift )
 							{
 								do
 								{
@@ -4768,9 +4880,13 @@ LABEL_430:
 						}
 						else
 						{
-							junk_ror = __CFSHR__(y_minus, 2);
 							n_draw_shift = y_minus >> 2;
-							if ( !junk_ror || (*tmp_pbDst = 0, tmp_pbDst += 2, n_draw_shift) )
+							if ( y_minus & 2 )
+							{
+								*tmp_pbDst = 0;
+								tmp_pbDst += 2;
+							}
+							if ( n_draw_shift )
 							{
 								do
 								{
@@ -4804,10 +4920,14 @@ LABEL_430:
 						WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 						if ( WorldBoolFlag )
 						{
-							junk_ror = __CFSHR__(x_minus, 2);
 							n_draw_shift = x_minus >> 2;
-							if ( !junk_ror
-							  || (tmp_dst = tmp_pbDst + 1, *tmp_dst = 0, tmp_pbDst = tmp_dst + 1, n_draw_shift) )
+							if ( x_minus & 2 )
+							{
+								tmp_dst = tmp_pbDst + 1;
+								*tmp_dst = 0;
+								tmp_pbDst = tmp_dst + 1;
+							}
+							if ( n_draw_shift )
 							{
 								do
 								{
@@ -4821,9 +4941,13 @@ LABEL_430:
 						}
 						else
 						{
-							junk_ror = __CFSHR__(x_minus, 2);
 							n_draw_shift = x_minus >> 2;
-							if ( !junk_ror || (*tmp_pbDst = 0, tmp_pbDst += 2, n_draw_shift) )
+							if ( x_minus & 2 )
+							{
+								*tmp_pbDst = 0;
+								tmp_pbDst += 2;
+							}
+							if ( n_draw_shift )
 							{
 								do
 								{
@@ -4898,10 +5022,14 @@ LABEL_430:
 						WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 						if ( WorldBoolFlag )
 						{
-							junk_ror = __CFSHR__(x_minus, 2);
 							n_draw_shift = x_minus >> 2;
-							if ( !junk_ror
-							  || (tmp_dst = tmp_pbDst + 1, *tmp_dst = 0, tmp_pbDst = tmp_dst + 1, n_draw_shift) )
+							if ( x_minus & 2 )
+							{
+								tmp_dst = tmp_pbDst + 1;
+								*tmp_dst = 0;
+								tmp_pbDst = tmp_dst + 1;
+							}
+							if ( n_draw_shift )
 							{
 								do
 								{
@@ -4915,9 +5043,13 @@ LABEL_430:
 						}
 						else
 						{
-							junk_ror = __CFSHR__(x_minus, 2);
 							n_draw_shift = x_minus >> 2;
-							if ( !junk_ror || (*tmp_pbDst = 0, tmp_pbDst += 2, n_draw_shift) )
+							if ( x_minus & 2 )
+							{
+								*tmp_pbDst = 0;
+								tmp_pbDst += 2;
+							}
+							if ( n_draw_shift )
 							{
 								do
 								{
@@ -6443,19 +6575,19 @@ LABEL_308:
 					{
 						tmp_pbDst += yy_32;
 						y_minus = 32 - yy_32;
-						temp_andone = ((_BYTE)WorldBoolFlag + 1) & 1;
 						WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 						if ( WorldBoolFlag )
 						{
-							junk_ror = __CFSHR__(y_minus, 2);
 							n_draw_shift = y_minus >> 2;
-							if ( !junk_ror
-							  || (_LOWORD(temp_andone) = *(_WORD *)(pdung_cels + 2),
-								  pdung_cels += 4,
-								  tmp_dst = tmp_pbDst + 1,
-								  *tmp_dst = __ROR4__(temp_andone, 8),
-								  tmp_pbDst = tmp_dst + 1,
-								  n_draw_shift) )
+							if ( y_minus & 2 )
+							{
+								temp16 = *(_WORD *)(pdung_cels + 2);
+								pdung_cels += 4;
+								tmp_dst = tmp_pbDst + 1;
+								*tmp_dst = __ROR4__(temp16, 8);
+								tmp_pbDst = tmp_dst + 1;
+							}
+							if ( n_draw_shift )
 							{
 								do
 								{
@@ -6474,15 +6606,16 @@ LABEL_308:
 						}
 						else
 						{
-							junk_ror = __CFSHR__(y_minus, 2);
 							n_draw_shift = y_minus >> 2;
-							if ( !junk_ror
-							  || (temp16 = *(_WORD *)(pdung_cels + 2),
-								  pdung_cels += 4,
-								  *tmp_pbDst = temp16,
-								  tmp_pbDst += 2,
-								  --n_draw_shift,
-								  n_draw_shift) )
+							if ( y_minus & 2 )
+							{
+								temp16 = *(_WORD *)(pdung_cels + 2);
+								pdung_cels += 4;
+								*tmp_pbDst = temp16;
+								tmp_pbDst += 2;
+								--n_draw_shift; /* check */
+							}
+							if ( n_draw_shift )
 							{
 								do
 								{
@@ -6515,19 +6648,19 @@ LABEL_308:
 			{
 				tmp_pbDst += xx_32;
 				x_minus = 32 - xx_32;
-				temp_andone = ((_BYTE)WorldBoolFlag + 1) & 1;
 				WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 				if ( WorldBoolFlag )
 				{
-					junk_ror = __CFSHR__(x_minus, 2);
 					n_draw_shift = x_minus >> 2;
-					if ( !junk_ror
-					  || (_LOWORD(temp_andone) = *(_WORD *)(pdung_cels + 2),
-						  pdung_cels += 4,
-						  tmp_dst = tmp_pbDst + 1,
-						  *tmp_dst = __ROR4__(temp_andone, 8),
-						  tmp_pbDst = tmp_dst + 1,
-						  n_draw_shift) )
+					if ( x_minus & 2 )
+					{
+						temp16 = *(_WORD *)(pdung_cels + 2);
+						pdung_cels += 4;
+						tmp_dst = tmp_pbDst + 1;
+						*tmp_dst = __ROR4__(temp16, 8);
+						tmp_pbDst = tmp_dst + 1;
+					}
+					if ( n_draw_shift )
 					{
 						do
 						{
@@ -6546,14 +6679,15 @@ LABEL_308:
 				}
 				else
 				{
-					junk_ror = __CFSHR__(x_minus, 2);
 					n_draw_shift = x_minus >> 2;
-					if ( !junk_ror
-					  || (temp16 = *(_WORD *)(pdung_cels + 2),
-						  pdung_cels += 4,
-						  *tmp_pbDst = temp16,
-						  tmp_pbDst += 2,
-						  n_draw_shift) )
+					if ( x_minus & 2 )
+					{
+						temp16 = *(_WORD *)(pdung_cels + 2);
+						pdung_cels += 4;
+						*tmp_pbDst = temp16;
+						tmp_pbDst += 2;
+					}
+					if ( n_draw_shift )
 					{
 						do
 						{
@@ -6592,7 +6726,6 @@ LABEL_308:
 				{
 LABEL_326:
 					x_minus = 32 - xx_32;
-					temp_andone = ((_BYTE)WorldBoolFlag + 1) & 1;
 					WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 					if ( WorldBoolFlag )
 					{
@@ -6604,16 +6737,15 @@ LABEL_326:
 							temp32 = __ROR4__(temp32, 8);
 							*tmp_dst = temp32;
 							tmp_dst += 2;
-							temp_andone = __ROR4__(temp32, 16);
-							*tmp_dst = temp_andone;
+							*tmp_dst = __ROR4__(temp32, 16);
 							tmp_pbDst = tmp_dst + 1;
 						}
 						if ( (32 - (_BYTE)xx_32) & 2 )
 						{
-							_LOWORD(temp_andone) = *(_WORD *)pdung_cels;
+							temp16 = *(_WORD *)pdung_cels;
 							pdung_cels += 4;
 							tmp_dst = tmp_pbDst + 1;
-							*tmp_dst = __ROR4__(temp_andone, 8);
+							*tmp_dst = __ROR4__(temp16, 8);
 							tmp_pbDst = tmp_dst + 1;
 						}
 					}
@@ -6662,7 +6794,6 @@ LABEL_336:
 			do
 			{
 				y_minus = 32 - yy_32;
-				temp_andone = ((_BYTE)WorldBoolFlag + 1) & 1;
 				WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 				if ( WorldBoolFlag )
 				{
@@ -6674,16 +6805,15 @@ LABEL_336:
 						temp32 = __ROR4__(temp32, 8);
 						*tmp_dst = temp32;
 						tmp_dst += 2;
-						temp_andone = __ROR4__(temp32, 16);
-						*tmp_dst = temp_andone;
+						*tmp_dst = __ROR4__(temp32, 16);
 						tmp_pbDst = tmp_dst + 1;
 					}
 					if ( (32 - (_BYTE)yy_32) & 2 )
 					{
-						_LOWORD(temp_andone) = *(_WORD *)pdung_cels;
+						temp16 = *(_WORD *)pdung_cels;
 						pdung_cels += 4;
 						tmp_dst = tmp_pbDst + 1;
-						*tmp_dst = __ROR4__(temp_andone, 8);
+						*tmp_dst = __ROR4__(temp16, 8);
 						tmp_pbDst = tmp_dst + 1;
 					}
 				}
@@ -6786,19 +6916,19 @@ LABEL_364:
 			{
 				tmp_pbDst += xx_32;
 				x_minus = 32 - xx_32;
-				temp_andone = ((_BYTE)WorldBoolFlag + 1) & 1;
 				WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 				if ( WorldBoolFlag )
 				{
-					junk_ror = __CFSHR__(x_minus, 2);
 					n_draw_shift = x_minus >> 2;
-					if ( !junk_ror
-					  || (_LOWORD(temp_andone) = *(_WORD *)(pdung_cels + 2),
-						  pdung_cels += 4,
-						  tmp_dst = tmp_pbDst + 1,
-						  *tmp_dst = __ROR4__(temp_andone, 8),
-						  tmp_pbDst = tmp_dst + 1,
-						  n_draw_shift) )
+					if ( x_minus & 2 )
+					{
+						temp16 = *(_WORD *)(pdung_cels + 2);
+						pdung_cels += 4;
+						tmp_dst = tmp_pbDst + 1;
+						*tmp_dst = __ROR4__(temp16, 8);
+						tmp_pbDst = tmp_dst + 1;
+					}
+					if ( n_draw_shift )
 					{
 						do
 						{
@@ -6817,14 +6947,15 @@ LABEL_364:
 				}
 				else
 				{
-					junk_ror = __CFSHR__(x_minus, 2);
 					n_draw_shift = x_minus >> 2;
-					if ( !junk_ror
-					  || (temp16 = *(_WORD *)(pdung_cels + 2),
-						  pdung_cels += 4,
-						  *tmp_pbDst = temp16,
-						  tmp_pbDst += 2,
-						  n_draw_shift) )
+					if ( x_minus & 2 )
+					{
+						temp16 = *(_WORD *)(pdung_cels + 2);
+						pdung_cels += 4;
+						*tmp_pbDst = temp16;
+						tmp_pbDst += 2;
+					}
+					if ( n_draw_shift )
 					{
 						do
 						{
@@ -6918,7 +7049,6 @@ LABEL_389:
 			do
 			{
 				x_minus = 32 - xx_32;
-				temp_andone = ((_BYTE)WorldBoolFlag + 1) & 1;
 				WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 				if ( WorldBoolFlag )
 				{
@@ -6930,16 +7060,15 @@ LABEL_389:
 						temp32 = __ROR4__(temp32, 8);
 						*tmp_dst = temp32;
 						tmp_dst += 2;
-						temp_andone = __ROR4__(temp32, 16);
-						*tmp_dst = temp_andone;
+						*tmp_dst = __ROR4__(temp32, 16);
 						tmp_pbDst = tmp_dst + 1;
 					}
 					if ( (32 - (_BYTE)xx_32) & 2 )
 					{
-						_LOWORD(temp_andone) = *(_WORD *)pdung_cels;
+						temp16 = *(_WORD *)pdung_cels;
 						pdung_cels += 4;
 						tmp_dst = tmp_pbDst + 1;
-						*tmp_dst = __ROR4__(temp_andone, 8);
+						*tmp_dst = __ROR4__(temp16, 8);
 						tmp_pbDst = tmp_dst + 1;
 					}
 				}
@@ -7106,7 +7235,12 @@ LABEL_252:
 						{
 							tmp_pbDst += i;
 							n_draw_shift = (unsigned int)(32 - i) >> 2;
-							if ( !__CFSHR__(32 - i, 2) || (*(_WORD *)tmp_pbDst = 0, tmp_pbDst += 2, n_draw_shift) )
+							if ( (32 - i) & 2 )
+							{
+								*(_WORD *)tmp_pbDst = 0;
+								tmp_pbDst += 2;
+							}
+							if ( n_draw_shift )
 							{
 								do
 								{
@@ -7133,7 +7267,12 @@ LABEL_252:
 						{
 							tmp_pbDst += i;
 							n_draw_shift = (unsigned int)(32 - i) >> 2;
-							if ( !__CFSHR__(32 - i, 2) || (*(_WORD *)tmp_pbDst = 0, tmp_pbDst += 2, n_draw_shift) )
+							if ( (32 - i) & 2 )
+							{
+								*(_WORD *)tmp_pbDst = 0;
+								tmp_pbDst += 2;
+							}
+							if ( n_draw_shift )
 							{
 								do
 								{
@@ -7160,7 +7299,12 @@ LABEL_252:
 						if ( (unsigned int)tmp_pbDst < screen_buf_end )
 						{
 							n_draw_shift = (unsigned int)(32 - i) >> 2;
-							if ( !__CFSHR__(32 - i, 2) || (*(_WORD *)tmp_pbDst = 0, tmp_pbDst += 2, n_draw_shift) )
+							if ( (32 - i) & 2 )
+							{
+								*(_WORD *)tmp_pbDst = 0;
+								tmp_pbDst += 2;
+							}
+							if ( n_draw_shift )
 							{
 								do
 								{
@@ -7187,7 +7331,12 @@ LABEL_252:
 						if ( (unsigned int)tmp_pbDst < screen_buf_end )
 						{
 							n_draw_shift = (unsigned int)(32 - i) >> 2;
-							if ( !__CFSHR__(32 - i, 2) || (*(_WORD *)tmp_pbDst = 0, tmp_pbDst += 2, n_draw_shift) )
+							if ( (32 - i) & 2 )
+							{
+								*(_WORD *)tmp_pbDst = 0;
+								tmp_pbDst += 2;
+							}
+							if ( n_draw_shift )
 							{
 								do
 								{
@@ -7215,7 +7364,12 @@ LABEL_252:
 						{
 							tmp_pbDst += i;
 							n_draw_shift = (unsigned int)(32 - i) >> 2;
-							if ( !__CFSHR__(32 - i, 2) || (*(_WORD *)tmp_pbDst = 0, tmp_pbDst += 2, n_draw_shift) )
+							if ( (32 - i) & 2 )
+							{
+								*(_WORD *)tmp_pbDst = 0;
+								tmp_pbDst += 2;
+							}
+							if ( n_draw_shift )
 							{
 								do
 								{
@@ -7273,7 +7427,12 @@ LABEL_252:
 						if ( (unsigned int)tmp_pbDst < screen_buf_end )
 						{
 							n_draw_shift = (unsigned int)(32 - i) >> 2;
-							if ( !__CFSHR__(32 - i, 2) || (*(_WORD *)tmp_pbDst = 0, tmp_pbDst += 2, n_draw_shift) )
+							if ( (32 - i) & 2 )
+							{
+								*(_WORD *)tmp_pbDst = 0;
+								tmp_pbDst += 2;
+							}
+							if ( n_draw_shift )
 							{
 								do
 								{
@@ -7454,18 +7613,18 @@ LABEL_62:
 							{
 								tmp_pbDst += yy_32;
 								n_draw_shift = (unsigned int)(32 - yy_32) >> 2;
-								if ( !__CFSHR__(32 - yy_32, 2) )
-									goto LABEL_323;
-								_EAX = *((_WORD *)pdung_cels + 1);
-								pdung_cels += 4;
-								ASM_XLAT(_EAX,_EBX);
-								_EAX = __ROR2__(_EAX, 8);
-								ASM_XLAT(_EAX,_EBX);
-								*(_WORD *)tmp_pbDst = __ROR2__(_EAX, 8);
-								tmp_pbDst += 2;
+								if ( (32 - yy_32) & 2 )
+								{
+									_EAX = *((_WORD *)pdung_cels + 1);
+									pdung_cels += 4;
+									ASM_XLAT(_EAX,_EBX);
+									_EAX = __ROR2__(_EAX, 8);
+									ASM_XLAT(_EAX,_EBX);
+									*(_WORD *)tmp_pbDst = __ROR2__(_EAX, 8);
+									tmp_pbDst += 2;
+								}
 								if ( n_draw_shift )
 								{
-LABEL_323:
 									do
 									{
 										_EAX = *(_DWORD *)pdung_cels;
@@ -7498,18 +7657,18 @@ LABEL_323:
 					{
 						tmp_pbDst += xx_32;
 						n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
-						if ( !__CFSHR__(32 - xx_32, 2) )
-							goto LABEL_324;
-						_EAX = *((_WORD *)pdung_cels + 1);
-						pdung_cels += 4;
-						ASM_XLAT(_EAX,_EBX);
-						_EAX = __ROR2__(_EAX, 8);
-						ASM_XLAT(_EAX,_EBX);
-						*(_WORD *)tmp_pbDst = __ROR2__(_EAX, 8);
-						tmp_pbDst += 2;
+						if ( (32 - xx_32) & 2 )
+						{
+							_EAX = *((_WORD *)pdung_cels + 1);
+							pdung_cels += 4;
+							ASM_XLAT(_EAX,_EBX);
+							_EAX = __ROR2__(_EAX, 8);
+							ASM_XLAT(_EAX,_EBX);
+							*(_WORD *)tmp_pbDst = __ROR2__(_EAX, 8);
+							tmp_pbDst += 2;
+						}
 						if ( n_draw_shift )
 						{
-LABEL_324:
 							do
 							{
 								_EAX = *(_DWORD *)pdung_cels;
@@ -7677,18 +7836,18 @@ LABEL_98:
 					{
 						tmp_pbDst += xx_32;
 						n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
-						if ( !__CFSHR__(32 - xx_32, 2) )
-							goto LABEL_322;
-						_EAX = *((_WORD *)pdung_cels + 1);
-						pdung_cels += 4;
-						ASM_XLAT(_EAX,_EBX);
-						_EAX = __ROR2__(_EAX, 8);
-						ASM_XLAT(_EAX,_EBX);
-						*(_WORD *)tmp_pbDst = __ROR2__(_EAX, 8);
-						tmp_pbDst += 2;
+						if ( (32 - xx_32) & 2 )
+						{
+							_EAX = *((_WORD *)pdung_cels + 1);
+							pdung_cels += 4;
+							ASM_XLAT(_EAX,_EBX);
+							_EAX = __ROR2__(_EAX, 8);
+							ASM_XLAT(_EAX,_EBX);
+							*(_WORD *)tmp_pbDst = __ROR2__(_EAX, 8);
+							tmp_pbDst += 2;
+						}
 						if ( n_draw_shift )
 						{
-LABEL_322:
 							do
 							{
 								_EAX = *(_DWORD *)pdung_cels;
@@ -7928,12 +8087,14 @@ LABEL_162:
 					{
 						tmp_pbDst += yy_32;
 						n_draw_shift = (unsigned int)(32 - yy_32) >> 2;
-						if ( !__CFSHR__(32 - yy_32, 2)
-						  || (temp16 = *((_WORD *)pdung_cels + 1),
-							  pdung_cels += 4,
-							  *(_WORD *)tmp_pbDst = temp16,
-							  tmp_pbDst += 2,
-							  n_draw_shift) )
+						if ( (32 - yy_32) & 2 )
+						{
+							temp16 = *((_WORD *)pdung_cels + 1);
+							pdung_cels += 4;
+							*(_WORD *)tmp_pbDst = temp16;
+							tmp_pbDst += 2;
+						}
+						if ( n_draw_shift )
 						{
 							do
 							{
@@ -7960,12 +8121,14 @@ LABEL_162:
 			{
 				tmp_pbDst += xx_32;
 				n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
-				if ( !__CFSHR__(32 - xx_32, 2)
-				  || (temp16 = *((_WORD *)pdung_cels + 1),
-					  pdung_cels += 4,
-					  *(_WORD *)tmp_pbDst = temp16,
-					  tmp_pbDst += 2,
-					  n_draw_shift) )
+				if ( (32 - xx_32) & 2 )
+				{
+					temp16 = *((_WORD *)pdung_cels + 1);
+					pdung_cels += 4;
+					*(_WORD *)tmp_pbDst = temp16;
+					tmp_pbDst += 2;
+				}
+				if ( n_draw_shift )
 				{
 					do
 					{
@@ -8104,12 +8267,14 @@ LABEL_198:
 			{
 				tmp_pbDst += xx_32;
 				n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
-				if ( !__CFSHR__(32 - xx_32, 2)
-				  || (temp16 = *((_WORD *)pdung_cels + 1),
-					  pdung_cels += 4,
-					  *(_WORD *)tmp_pbDst = temp16,
-					  tmp_pbDst += 2,
-					  n_draw_shift) )
+				if ( (32 - xx_32) & 2 )
+				{
+					temp16 = *((_WORD *)pdung_cels + 1);
+					pdung_cels += 4;
+					*(_WORD *)tmp_pbDst = temp16;
+					tmp_pbDst += 2;
+				}
+				if ( n_draw_shift )
 				{
 					do
 					{
@@ -8355,7 +8520,12 @@ LABEL_232:
 						{
 							tmp_pbDst += i;
 							n_draw_shift = (unsigned int)(32 - i) >> 2;
-							if ( !__CFSHR__(32 - i, 2) || (*(_WORD *)tmp_pbDst = 0, tmp_pbDst += 2, n_draw_shift) )
+							if ( (32 - i) & 2 )
+							{
+								*(_WORD *)tmp_pbDst = 0;
+								tmp_pbDst += 2;
+							}
+							if ( n_draw_shift )
 							{
 								do
 								{
@@ -8382,7 +8552,12 @@ LABEL_232:
 						{
 							tmp_pbDst += i;
 							n_draw_shift = (unsigned int)(32 - i) >> 2;
-							if ( !__CFSHR__(32 - i, 2) || (*(_WORD *)tmp_pbDst = 0, tmp_pbDst += 2, n_draw_shift) )
+							if ( (32 - i) & 2 )
+							{
+								*(_WORD *)tmp_pbDst = 0;
+								tmp_pbDst += 2;
+							}
+							if ( n_draw_shift )
 							{
 								do
 								{
@@ -8409,7 +8584,12 @@ LABEL_232:
 						if ( (unsigned int)tmp_pbDst < screen_buf_end )
 						{
 							n_draw_shift = (unsigned int)(32 - i) >> 2;
-							if ( !__CFSHR__(32 - i, 2) || (*(_WORD *)tmp_pbDst = 0, tmp_pbDst += 2, n_draw_shift) )
+							if ( (32 - i) & 2 )
+							{
+								*(_WORD *)tmp_pbDst = 0;
+								tmp_pbDst += 2;
+							}
+							if ( n_draw_shift )
 							{
 								do
 								{
@@ -8436,7 +8616,12 @@ LABEL_232:
 						if ( (unsigned int)tmp_pbDst < screen_buf_end )
 						{
 							n_draw_shift = (unsigned int)(32 - i) >> 2;
-							if ( !__CFSHR__(32 - i, 2) || (*(_WORD *)tmp_pbDst = 0, tmp_pbDst += 2, n_draw_shift) )
+							if ( (32 - i) & 2 )
+							{
+								*(_WORD *)tmp_pbDst = 0;
+								tmp_pbDst += 2;
+							}
+							if ( n_draw_shift )
 							{
 								do
 								{
@@ -8464,7 +8649,12 @@ LABEL_232:
 						{
 							tmp_pbDst += i;
 							n_draw_shift = (unsigned int)(32 - i) >> 2;
-							if ( !__CFSHR__(32 - i, 2) || (*(_WORD *)tmp_pbDst = 0, tmp_pbDst += 2, n_draw_shift) )
+							if ( (32 - i) & 2 )
+							{
+								*(_WORD *)tmp_pbDst = 0;
+								tmp_pbDst += 2;
+							}
+							if ( n_draw_shift )
 							{
 								do
 								{
@@ -8514,7 +8704,12 @@ LABEL_232:
 						if ( (unsigned int)tmp_pbDst < screen_buf_end )
 						{
 							n_draw_shift = (unsigned int)(32 - i) >> 2;
-							if ( !__CFSHR__(32 - i, 2) || (*(_WORD *)tmp_pbDst = 0, tmp_pbDst += 2, n_draw_shift) )
+							if ( (32 - i) & 2 )
+							{
+								*(_WORD *)tmp_pbDst = 0;
+								tmp_pbDst += 2;
+							}
+							if ( n_draw_shift )
 							{
 								do
 								{
@@ -9113,12 +9308,14 @@ LABEL_153:
 					{
 						tmp_pbDst += yy_32;
 						n_draw_shift = (unsigned int)(32 - yy_32) >> 2;
-						if ( !__CFSHR__(32 - yy_32, 2)
-						  || (temp16 = *((_WORD *)pdung_cels + 1),
-							  pdung_cels += 4,
-							  *(_WORD *)tmp_pbDst = temp16,
-							  tmp_pbDst += 2,
-							  n_draw_shift) )
+						if ( (32 - yy_32) & 2 )
+						{
+							temp16 = *((_WORD *)pdung_cels + 1);
+							pdung_cels += 4;
+							*(_WORD *)tmp_pbDst = temp16;
+							tmp_pbDst += 2;
+						}
+						if ( n_draw_shift )
 						{
 							do
 							{
@@ -9145,12 +9342,14 @@ LABEL_153:
 			{
 				tmp_pbDst += xx_32;
 				n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
-				if ( !__CFSHR__(32 - xx_32, 2)
-				  || (temp16 = *((_WORD *)pdung_cels + 1),
-					  pdung_cels += 4,
-					  *(_WORD *)tmp_pbDst = temp16,
-					  tmp_pbDst += 2,
-					  n_draw_shift) )
+				if ( (32 - xx_32) & 2 )
+				{
+					temp16 = *((_WORD *)pdung_cels + 1);
+					pdung_cels += 4;
+					*(_WORD *)tmp_pbDst = temp16;
+					tmp_pbDst += 2;
+				}
+				if ( n_draw_shift )
 				{
 					do
 					{
@@ -9283,12 +9482,14 @@ LABEL_189:
 			{
 				tmp_pbDst += xx_32;
 				n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
-				if ( !__CFSHR__(32 - xx_32, 2)
-				  || (temp16 = *((_WORD *)pdung_cels + 1),
-					  pdung_cels += 4,
-					  *(_WORD *)tmp_pbDst = temp16,
-					  tmp_pbDst += 2,
-					  n_draw_shift) )
+				if ( (32 - xx_32) & 2 )
+				{
+					temp16 = *((_WORD *)pdung_cels + 1);
+					pdung_cels += 4;
+					*(_WORD *)tmp_pbDst = temp16;
+					tmp_pbDst += 2;
+				}
+				if ( n_draw_shift )
 				{
 					do
 					{
