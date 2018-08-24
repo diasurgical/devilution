@@ -1520,40 +1520,56 @@ void __fastcall SetPlrHandGoldCurs(ItemStruct *h)
 void __fastcall CreatePlrItems(int p)
 {
 	int i;
+	ItemStruct *pi;
+
+	pi = plr[p].InvBody;
 	for ( i = 0; i < NUM_INVLOC; i++ )
 	{
-		plr[p].InvBody[i]._itype = ITYPE_NONE;
+		pi[i]._itype = ITYPE_NONE;
 	}
 
-	// for now this generates a `rep stosd` loop (10xDWORD) instead of a memset call
-	// probably because of alignment differences or something similar
-	// it's also interesting that IDA still shows it as memset instead of memset32.
-	for ( i = 0; i < sizeof(plr[p].InvGrid); i++) {
-		plr[p].InvGrid[i] = 0;
-	}
+	// converting this to a for loop creates a `rep stosd` instruction,
+	// so this probably actually was a memset
+	memset(&plr[p].InvGrid, 0, sizeof(plr[p].InvGrid));
 
+	pi = plr[p].InvList;
 	// TODO: define/const for that 40, something like NUM_MAX_INV_ITEMS
 	for ( i = 0; i < 40; i++ )
 	{
-		plr[p].InvList[i]._itype = ITYPE_NONE;
+		pi[i]._itype = ITYPE_NONE;
 	}
 
 	plr[p]._pNumInv = 0;
 
+	pi = plr[p].SpdList;
 	// TODO: define/const for that 8
 	for ( i = 0; i < 8; i++ )
 	{
-		plr[p].SpdList[i]._itype = ITYPE_NONE;
+		pi[i]._itype = ITYPE_NONE;
 	}
 
+	// TODO: The compiler seems to load the argument for the last call
+	// of `GetPlrHandSeed` twice instead of once
 	switch ( plr[p]._pClass )
 	{
-		case UI_WARRIOR:
+		case PC_SORCERER:
+			SetPlrHandItem(&plr[p].InvBody[4], IDI_SORCEROR);
+			GetPlrHandSeed(&plr[p].InvBody[4]);
+
+			SetPlrHandItem(&plr[p].SpdList[0], IDI_MANA);
+			GetPlrHandSeed(&plr[p].SpdList[0]);
+
+			SetPlrHandItem(&plr[p].SpdList[1], IDI_MANA);
+			GetPlrHandSeed(&plr[p].SpdList[1]);
+			break;
+		case PC_WARRIOR:
 			SetPlrHandItem(&plr[p].InvBody[4], IDI_WARRIOR);
 			GetPlrHandSeed(&plr[p].InvBody[4]);
 
 			SetPlrHandItem(&plr[p].InvBody[5], IDI_WARRSHLD);
 			GetPlrHandSeed(&plr[p].InvBody[5]);
+
+			// TODO: Add debug logic from 1.00 here
 
 			SetPlrHandItem(&plr[p].HoldItem, IDI_WARRCLUB);
 			GetPlrHandSeed(&plr[p].HoldItem);
@@ -1565,7 +1581,7 @@ void __fastcall CreatePlrItems(int p)
 			SetPlrHandItem(&plr[p].SpdList[1], IDI_HEAL);
 			GetPlrHandSeed(&plr[p].SpdList[1]);
 			break;
-		case UI_ROGUE:
+		case PC_ROGUE:
 			SetPlrHandItem(&plr[p].InvBody[4], IDI_ROGUE);
 			GetPlrHandSeed(&plr[p].InvBody[4]);
 
@@ -1575,28 +1591,19 @@ void __fastcall CreatePlrItems(int p)
 			SetPlrHandItem(&plr[p].SpdList[1], IDI_HEAL);
 			GetPlrHandSeed(&plr[p].SpdList[1]);
 			break;
-		case UI_SORCERER:
-			SetPlrHandItem(&plr[p].InvBody[4], IDI_SORCEROR);
-			GetPlrHandSeed(&plr[p].InvBody[4]);
 
-			SetPlrHandItem(&plr[p].SpdList[0], IDI_MANA);
-			GetPlrHandSeed(&plr[p].SpdList[0]);
-
-			SetPlrHandItem(&plr[p].SpdList[1], IDI_MANA);
-			GetPlrHandSeed(&plr[p].SpdList[1]);
-			break;
 	}
 
 	SetPlrHandItem(&plr[p].HoldItem, IDI_GOLD);
 	GetPlrHandSeed(&plr[p].HoldItem);
 
+	// TODO: Add debug logic from 1.00 here
+
 	plr[p].HoldItem._iCurs = 4;
 	plr[p].HoldItem._ivalue = 100;
 	plr[p]._pGold = 100;
 
-	plr[p].InvList[plr[p]._pNumInv] = plr[p].HoldItem;
-	plr[p]._pNumInv++;
-
+	plr[p].InvList[plr[p]._pNumInv++] = plr[p].HoldItem;
 	plr[p].InvGrid[30] = plr[p]._pNumInv;
 
 	CalcPlrItemVals(p, FALSE);
