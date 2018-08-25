@@ -131,7 +131,12 @@ void __fastcall drawTopArchesUpperScreen(unsigned char *pbDst)
 			cel_type_16 = (unsigned char)(BYTE1(level_cel_block) >> 4);
 			switch ( cel_type_16 )
 			{
-				case 0:
+				case 0: // upper (top transparent), with lighting
+/*
+	|--|
+	|  |
+	|--|
+*/
 					i = 16;
 					do
 					{
@@ -165,7 +170,12 @@ void __fastcall drawTopArchesUpperScreen(unsigned char *pbDst)
 					}
 					while ( i );
 					break;
-				case 1:
+				case 1: // upper (top transparent), with lighting
+/*
+	 /\
+	(  )
+	 \/
+*/
 					WorldBoolFlag = (unsigned char)pbDst & 1;
 					xx_32 = 32;
 					do
@@ -304,7 +314,12 @@ LABEL_67:
 					}
 					while ( xx_32 );
 					break;
-				case 2:
+				case 2: // upper (top transparent), with lighting
+/*
+	 /-|
+	(  |
+	 \-|
+*/
 					WorldBoolFlag = 0;
 					xx_32 = 30;
 					while ( (unsigned int)tmp_pbDst >= screen_buf_end )
@@ -552,7 +567,12 @@ LABEL_67:
 						}
 					}
 					break;
-				case 3:
+				case 3: // upper (top transparent), with lighting
+/*
+	|-\
+	|  )
+	|-/
+*/
 					WorldBoolFlag = 0;
 					xx_32 = 30;
 					while ( (unsigned int)tmp_pbDst >= screen_buf_end )
@@ -798,7 +818,12 @@ LABEL_67:
 						}
 					}
 					break;
-				case 4:
+				case 4: // upper (top transparent), with lighting
+/*
+	  /|
+	 / |
+	|__|
+*/
 					WorldBoolFlag = 0;
 					xx_32 = 30;
 					while ( (unsigned int)tmp_pbDst >= screen_buf_end )
@@ -956,7 +981,12 @@ LABEL_67:
 						}
 					}
 					break;
-				default:
+				default: // upper (top transparent), with lighting
+/*
+	|\
+	| \
+	|__|
+*/
 					WorldBoolFlag = 0;
 					xx_32 = 30;
 					while ( (unsigned int)tmp_pbDst >= screen_buf_end )
@@ -1123,7 +1153,12 @@ LABEL_11:
 
 		switch ( cel_type_16 )
 		{
-			case 8:
+			case 8: // upper (top transparent), without lighting
+/*
+	|--|
+	|  |
+	|--|
+*/
 				i = 16;
 				do
 				{
@@ -1163,7 +1198,12 @@ LABEL_11:
 				}
 				while ( i );
 				break;
-			case 9:
+			case 9: // upper (top transparent), without lighting
+/*
+	 /\
+	(  )
+	 \/
+*/
 				WorldBoolFlag = (unsigned char)pbDst & 1;
 				junk_v134 = 32;
 LABEL_251:
@@ -1270,7 +1310,12 @@ LABEL_268:
 						goto LABEL_271;
 				}
 				break;
-			case 10:
+			case 10: // upper (top transparent), without lighting
+/*
+	 /-|
+	(  |
+	 \-|
+*/
 				WorldBoolFlag = 0;
 				xx_32 = 30;
 				while ( (unsigned int)tmp_pbDst >= screen_buf_end )
@@ -1404,7 +1449,12 @@ LABEL_268:
 					}
 				}
 				break;
-			case 11:
+			case 11: // upper (top transparent), without lighting
+/*
+	|-\
+	|  )
+	|-/
+*/
 				WorldBoolFlag = 0;
 				xx_32 = 30;
 				while ( (unsigned int)tmp_pbDst >= screen_buf_end )
@@ -1517,7 +1567,12 @@ LABEL_268:
 					}
 				}
 				break;
-			case 12:
+			case 12: // upper (top transparent), without lighting
+/*
+	  /|
+	 / |
+	|__|
+*/
 				WorldBoolFlag = 0;
 				xx_32 = 30;
 				while ( (unsigned int)tmp_pbDst >= screen_buf_end )
@@ -1624,7 +1679,12 @@ LABEL_268:
 					}
 				}
 				break;
-			default:
+			default: // upper (top transparent), without lighting
+/*
+	|\
+	| \
+	|__|
+*/
 				WorldBoolFlag = 0;
 				xx_32 = 30;
 				while ( (unsigned int)tmp_pbDst >= screen_buf_end )
@@ -1730,7 +1790,12 @@ LABEL_268:
 	cel_type_32 = (cel_type_16_tmp >> 4) & 7;
 	switch ( (_WORD)cel_type_32 )
 	{
-		case 0:
+		case 0: // upper (top transparent), black
+/*
+	|--|
+	|  |
+	|--|
+*/
 			i = 16;
 			do
 			{
@@ -1762,7 +1827,12 @@ LABEL_268:
 			}
 			while ( i );
 			break;
-		case 1:
+		case 1: // upper (top transparent), black
+/*
+	 /\
+	(  )
+	 \/
+*/
 			WorldBoolFlag = (unsigned char)pbDst & 1;
 			xx_32 = 32;
 			while ( 1 )
@@ -1853,7 +1923,12 @@ LABEL_391:
 				if ( !--xx_32 )
 					return;
 			}
-		case 2:
+		case 2: // upper (top transparent), black
+/*
+	 /-|
+	(  |
+	 \-|
+*/
 			WorldBoolFlag = 0;
 			for ( xx_32 = 30; ; xx_32 -= 2 )
 			{
@@ -1961,7 +2036,12 @@ LABEL_391:
 			}
 			while ( yy_32 != 32 );
 			break;
-		case 3:
+		case 3: // upper (top transparent), black
+/*
+	|-\
+	|  )
+	|-/
+*/
 			WorldBoolFlag = 0;
 			for ( xx_32 = 30; ; xx_32 -= 2 )
 			{
@@ -2068,7 +2148,12 @@ LABEL_391:
 			}
 			while ( yy_32 != 32 );
 			break;
-		case 4:
+		case 4: // upper (top transparent), black
+/*
+	  /|
+	 / |
+	|__|
+*/
 			WorldBoolFlag = 0;
 			for ( xx_32 = 30; ; xx_32 -= 2 )
 			{
@@ -2153,7 +2238,12 @@ LABEL_391:
 			}
 			while ( i );
 			break;
-		default:
+		default: // upper (top transparent), black
+/*
+	|\
+	| \
+	|__|
+*/
 			WorldBoolFlag = 0;
 			for ( xx_32 = 30; ; xx_32 -= 2 )
 			{
@@ -2276,7 +2366,12 @@ void __fastcall drawBottomArchesUpperScreen(unsigned char *pbDst, unsigned int *
 LABEL_12:
 		switch ( cel_type_16 )
 		{
-			case 8:
+			case 8: // upper (bottom transparent), without lighting
+/*
+	|--|
+	|  |
+	|--|
+*/
 				xx_32 = 32;
 				do
 				{
@@ -2301,7 +2396,12 @@ LABEL_12:
 				}
 				while ( x32_temp != 1 );
 				break;
-			case 9:
+			case 9: // upper (bottom transparent), without lighting
+/*
+	 /\
+	(  )
+	 \/
+*/
 				xx_32 = 32;
 				do
 				{
@@ -2350,7 +2450,12 @@ LABEL_129:
 				}
 				while ( x32_temp != 1 );
 				break;
-			case 10:
+			case 10: // upper (bottom transparent), without lighting
+/*
+	 /-|
+	(  |
+	 \-|
+*/
 				xx_32 = 30;
 				while ( (unsigned int)tmp_pbDst >= screen_buf_end )
 				{
@@ -2409,7 +2514,12 @@ LABEL_129:
 					}
 				}
 				break;
-			case 11:
+			case 11: // upper (bottom transparent), without lighting
+/*
+	|-\
+	|  )
+	|-/
+*/
 				xx_32 = 30;
 				while ( (unsigned int)tmp_pbDst >= screen_buf_end )
 				{
@@ -2454,7 +2564,12 @@ LABEL_129:
 					}
 				}
 				break;
-			case 12:
+			case 12: // upper (bottom transparent), without lighting
+/*
+	  /|
+	 / |
+	|__|
+*/
 				xx_32 = 30;
 				while ( (unsigned int)tmp_pbDst >= screen_buf_end )
 				{
@@ -2509,7 +2624,12 @@ LABEL_129:
 					}
 				}
 				break;
-			default:
+			default: // upper (bottom transparent), without lighting
+/*
+	|\
+	| \
+	|__|
+*/
 				xx_32 = 30;
 				while ( (unsigned int)tmp_pbDst >= screen_buf_end )
 				{
@@ -2570,7 +2690,12 @@ LABEL_129:
 			cel_type_16 = (unsigned char)(BYTE1(level_cel_block) >> 4);
 			switch ( cel_type_16 )
 			{
-				case 0:
+				case 0: // upper (bottom transparent), with lighting
+/*
+	|--|
+	|  |
+	|--|
+*/
 					xx_32 = 32;
 					do
 					{
@@ -2595,7 +2720,12 @@ LABEL_129:
 					}
 					while ( x32_temp != 1 );
 					break;
-				case 1:
+				case 1: // upper (bottom transparent), with lighting
+/*
+	 /\
+	(  )
+	 \/
+*/
 					xx_32 = 32;
 					do
 					{
@@ -2644,7 +2774,12 @@ LABEL_50:
 					}
 					while ( x32_temp != 1 );
 					break;
-				case 2:
+				case 2: // upper (bottom transparent), with lighting
+/*
+	 /-|
+	(  |
+	 \-|
+*/
 					xx_32 = 30;
 					while ( (unsigned int)tmp_pbDst >= screen_buf_end )
 					{
@@ -2727,7 +2862,12 @@ LABEL_50:
 						}
 					}
 					break;
-				case 3:
+				case 3: // upper (bottom transparent), with lighting
+/*
+	|-\
+	|  )
+	|-/
+*/
 					xx_32 = 30;
 					while ( (unsigned int)tmp_pbDst >= screen_buf_end )
 					{
@@ -2796,7 +2936,12 @@ LABEL_50:
 						}
 					}
 					break;
-				case 4:
+				case 4: // upper (bottom transparent), with lighting
+/*
+	  /|
+	 / |
+	|__|
+*/
 					xx_32 = 30;
 					while ( (unsigned int)tmp_pbDst >= screen_buf_end )
 					{
@@ -2864,7 +3009,12 @@ LABEL_50:
 						}
 					}
 					break;
-				default:
+				default: // upper (bottom transparent), with lighting
+/*
+	|\
+	| \
+	|__|
+*/
 					xx_32 = 30;
 					while ( (unsigned int)tmp_pbDst >= screen_buf_end )
 					{
@@ -2942,7 +3092,12 @@ LABEL_50:
 	cel_type_32 = (cel_type_16_tmp >> 4) & 7;
 	switch ( (_WORD)cel_type_32 )
 	{
-		case 0:
+		case 0: // upper (bottom transparent), black
+/*
+	|--|
+	|  |
+	|--|
+*/
 			xx_32 = 32;
 			do
 			{
@@ -2966,7 +3121,12 @@ LABEL_50:
 			}
 			while ( x32_temp != 1 );
 			break;
-		case 1:
+		case 1: // upper (bottom transparent), black
+/*
+	 /\
+	(  )
+	 \/
+*/
 			xx_32 = 32;
 			do
 			{
@@ -3015,7 +3175,12 @@ LABEL_208:
 			}
 			while ( x32_temp != 1 );
 			break;
-		case 2:
+		case 2: // upper (bottom transparent), black
+/*
+	 /-|
+	(  |
+	 \-|
+*/
 			xx_32 = 30;
 			while ( (unsigned int)tmp_pbDst >= screen_buf_end )
 			{
@@ -3070,7 +3235,12 @@ LABEL_208:
 				xx_32 -= 2;
 			}
 			break;
-		case 3:
+		case 3: // upper (bottom transparent), black
+/*
+	|-\
+	|  )
+	|-/
+*/
 			xx_32 = 30;
 			while ( (unsigned int)tmp_pbDst >= screen_buf_end )
 			{
@@ -3124,7 +3294,12 @@ LABEL_208:
 				xx_32 -= 2;
 			}
 			break;
-		case 4:
+		case 4: // upper (bottom transparent), black
+/*
+	  /|
+	 / |
+	|__|
+*/
 			xx_32 = 30;
 			while ( (unsigned int)tmp_pbDst >= screen_buf_end )
 			{
@@ -3176,7 +3351,12 @@ LABEL_208:
 				xx_32 -= 2;
 			}
 			break;
-		default:
+		default: // upper (bottom transparent), black
+/*
+	|\
+	| \
+	|__|
+*/
 			xx_32 = 30;
 			while ( (unsigned int)tmp_pbDst >= screen_buf_end )
 			{
@@ -3295,7 +3475,12 @@ void __fastcall drawUpperScreen(unsigned char *pbDst)
 LABEL_22:
 		switch ( cel_type_16 )
 		{
-			case 8:
+			case 8: // upper (solid), without lighting
+/*
+	|--|
+	|  |
+	|--|
+*/
 				i = 32;
 				do
 				{
@@ -3315,7 +3500,12 @@ LABEL_22:
 				}
 				while ( i );
 				break;
-			case 9:
+			case 9: // upper (solid), without lighting
+/*
+	 /\
+	(  )
+	 \/
+*/
 				xx_32 = 32;
 				do
 				{
@@ -3369,7 +3559,12 @@ LABEL_133:
 				}
 				while ( xx_32 );
 				break;
-			case 10:
+			case 10: // upper (solid), without lighting
+/*
+	 /-|
+	(  |
+	 \-|
+*/
 				xx_32 = 30;
 				while ( (unsigned int)tmp_pbDst >= screen_buf_end )
 				{
@@ -3428,7 +3623,12 @@ LABEL_133:
 					}
 				}
 				break;
-			case 11:
+			case 11: // upper (solid), without lighting
+/*
+	|-\
+	|  )
+	|-/
+*/
 				xx_32 = 30;
 				while ( (unsigned int)tmp_pbDst >= screen_buf_end )
 				{
@@ -3473,7 +3673,12 @@ LABEL_133:
 					}
 				}
 				break;
-			case 12:
+			case 12: // upper (solid), without lighting
+/*
+	  /|
+	 / |
+	|__|
+*/
 				xx_32 = 30;
 				while ( (unsigned int)tmp_pbDst >= screen_buf_end )
 				{
@@ -3522,7 +3727,12 @@ LABEL_133:
 					}
 				}
 				break;
-			default:
+			default: // upper (solid), without lighting
+/*
+	|\
+	| \
+	|__|
+*/
 				xx_32 = 30;
 				while ( (unsigned int)tmp_pbDst >= screen_buf_end )
 				{
@@ -3576,7 +3786,12 @@ LABEL_133:
 			cel_type_16 = (unsigned short)level_cel_block >> 12;
 			switch ( cel_type_16 )
 			{
-				case 0:
+				case 0: // upper (solid), with lighting
+/*
+	|--|
+	|  |
+	|--|
+*/
 					l_index = 32;
 					do
 					{
@@ -3600,7 +3815,12 @@ LABEL_133:
 					}
 					while ( y32_temp != 1 );
 					break;
-				case 1:
+				case 1: // upper (solid), with lighting
+/*
+	 /\
+	(  )
+	 \/
+*/
 					xx_32 = 32;
 					do
 					{
@@ -3651,7 +3871,12 @@ LABEL_58:
 					}
 					while ( xx_32 );
 					break;
-				case 2:
+				case 2: // upper (solid), with lighting
+/*
+	 /-|
+	(  |
+	 \-|
+*/
 					xx_32 = 30;
 					while ( (unsigned int)tmp_pbDst >= screen_buf_end )
 					{
@@ -3722,7 +3947,12 @@ LABEL_58:
 						}
 					}
 					break;
-				case 3:
+				case 3: // upper (solid), with lighting
+/*
+	|-\
+	|  )
+	|-/
+*/
 					xx_32 = 30;
 					while ( (unsigned int)tmp_pbDst >= screen_buf_end )
 					{
@@ -3779,7 +4009,12 @@ LABEL_58:
 						}
 					}
 					break;
-				case 4:
+				case 4: // upper (solid), with lighting
+/*
+	  /|
+	 / |
+	|__|
+*/
 					xx_32 = 30;
 					while ( (unsigned int)tmp_pbDst >= screen_buf_end )
 					{
@@ -3837,7 +4072,12 @@ LABEL_58:
 						}
 					}
 					break;
-				default:
+				default: // upper (solid), with lighting
+/*
+	|\
+	| \
+	|__|
+*/
 					xx_32 = 30;
 					while ( (unsigned int)tmp_pbDst >= screen_buf_end )
 					{
@@ -3903,7 +4143,12 @@ LABEL_58:
 	cel_type_32 = ((unsigned int)level_cel_block >> 12) & 7;
 	switch ( (_WORD)cel_type_32 )
 	{
-		case 0:
+		case 0: // upper (solid), black
+/*
+	|--|
+	|  |
+	|--|
+*/
 			i = 32;
 			do
 			{
@@ -3922,7 +4167,12 @@ LABEL_58:
 			}
 			while ( i );
 			break;
-		case 1:
+		case 1: // upper (solid), black
+/*
+	 /\
+	(  )
+	 \/
+*/
 			xx_32 = 32;
 			do
 			{
@@ -3975,7 +4225,12 @@ LABEL_205:
 			}
 			while ( xx_32 );
 			break;
-		case 2:
+		case 2: // upper (solid), black
+/*
+	 /-|
+	(  |
+	 \-|
+*/
 			xx_32 = 30;
 			while ( (unsigned int)tmp_pbDst >= screen_buf_end )
 			{
@@ -4030,7 +4285,12 @@ LABEL_205:
 				xx_32 -= 2;
 			}
 			break;
-		case 3:
+		case 3: // upper (solid), black
+/*
+	|-\
+	|  )
+	|-/
+*/
 			xx_32 = 30;
 			while ( (unsigned int)tmp_pbDst >= screen_buf_end )
 			{
@@ -4084,7 +4344,12 @@ LABEL_205:
 				xx_32 -= 2;
 			}
 			break;
-		case 4:
+		case 4: // upper (solid), black
+/*
+	  /|
+	 / |
+	|__|
+*/
 			xx_32 = 30;
 			while ( (unsigned int)tmp_pbDst >= screen_buf_end )
 			{
@@ -4130,7 +4395,12 @@ LABEL_205:
 				xx_32 -= 2;
 			}
 			break;
-		default:
+		default: // upper (solid), black
+/*
+	|\
+	| \
+	|__|
+*/
 			xx_32 = 30;
 			while ( (unsigned int)tmp_pbDst >= screen_buf_end )
 			{
@@ -4232,7 +4502,12 @@ void __fastcall drawTopArchesLowerScreen(unsigned char *pbDst)
 		cel_type_32 = (cel_type_16_tmp >> 4) & 7;
 		switch ( (_WORD)cel_type_32 )
 		{
-			case 0:
+			case 0: // lower (top transparent), black
+/*
+	|--|
+	|  |
+	|--|
+*/
 				i = 16;
 				do
 				{
@@ -4276,7 +4551,12 @@ void __fastcall drawTopArchesLowerScreen(unsigned char *pbDst)
 				}
 				while ( i );
 				break;
-			case 1:
+			case 1: // lower (top transparent), black
+/*
+	 /\
+	(  )
+	 \/
+*/
 				WorldBoolFlag = (unsigned char)pbDst & 1;
 				xx_32 = 32;
 LABEL_412:
@@ -4377,7 +4657,12 @@ LABEL_430:
 						goto LABEL_433;
 				}
 				break;
-			case 2:
+			case 2: // lower (top transparent), black
+/*
+	 /-|
+	(  |
+	 \-|
+*/
 				WorldBoolFlag = 0;
 				for ( xx_32 = 30; ; xx_32 -= 2 )
 				{
@@ -4497,7 +4782,12 @@ LABEL_430:
 				}
 				while ( yy_32 != 32 );
 				break;
-			case 3:
+			case 3: // lower (top transparent), black
+/*
+	|-\
+	|  )
+	|-/
+*/
 				WorldBoolFlag = 0;
 				for ( xx_32 = 30; ; xx_32 -= 2 )
 				{
@@ -4616,7 +4906,12 @@ LABEL_430:
 				}
 				while ( yy_32 != 32 );
 				break;
-			case 4:
+			case 4: // lower (top transparent), black
+/*
+	  /|
+	 / |
+	|__|
+*/
 				WorldBoolFlag = 0;
 				for ( xx_32 = 30; ; xx_32 -= 2 )
 				{
@@ -4719,7 +5014,12 @@ LABEL_430:
 				}
 				while ( i );
 				break;
-			default:
+			default: // lower (top transparent), black
+/*
+	|\
+	| \
+	|__|
+*/
 				WorldBoolFlag = 0;
 				for ( xx_32 = 30; ; xx_32 -= 2 )
 				{
@@ -4832,7 +5132,12 @@ LABEL_430:
 		cel_type_16 = (unsigned char)(BYTE1(level_cel_block) >> 4);
 		switch ( cel_type_16 )
 		{
-			case 0:
+			case 0: // lower (top transparent), with lighting
+/*
+	|--|
+	|  |
+	|--|
+*/
 				i = 16;
 				do
 				{
@@ -4878,7 +5183,12 @@ LABEL_430:
 				}
 				while ( i );
 				break;
-			case 1:
+			case 1: // lower (top transparent), with lighting
+/*
+	 /\
+	(  )
+	 \/
+*/
 				WorldBoolFlag = (unsigned char)pbDst & 1;
 				xx_32 = 32;
 				do
@@ -5020,7 +5330,12 @@ LABEL_69:
 				}
 				while ( x32_temp != 1 );
 				break;
-			case 2:
+			case 2: // lower (top transparent), with lighting
+/*
+	 /-|
+	(  |
+	 \-|
+*/
 				WorldBoolFlag = 0;
 				xx_32 = 30;
 				if ( (unsigned int)pbDst >= screen_buf_end )
@@ -5038,7 +5353,7 @@ LABEL_98:
 							if ( tile_42_45 > 42 )
 								return;
 							world_tbl = WorldTbl3x16[tile_42_45];
-							pdung_cels += *(int *)((char *)WorldTbl17_2 + world_tbl);
+							pdung_cels += WorldTbl17_2[world_tbl >> 2];
 							world_192 = 192 * world_tbl;
 							world_tbl >>= 1;
 							tmp_pbDst -= world_192;
@@ -5167,7 +5482,7 @@ LABEL_98:
 						return;
 					}
 					world_tbl = WorldTbl3x16[tile_42_45];
-					pdung_cels += *(int *)((char *)WorldTbl17_1 + world_tbl);
+					pdung_cels += WorldTbl17_1[world_tbl >> 2];
 					world_192 = 192 * world_tbl;
 					world_tbl >>= 1;
 					tmp_pbDst -= world_192;
@@ -5294,7 +5609,12 @@ LABEL_98:
 				}
 				while ( xx_32 >= 0 );
 				goto LABEL_98;
-			case 3:
+			case 3: // lower (top transparent), with lighting
+/*
+	|-\
+	|  )
+	|-/
+*/
 				WorldBoolFlag = 0;
 				xx_32 = 30;
 				if ( (unsigned int)pbDst >= screen_buf_end )
@@ -5312,7 +5632,7 @@ LABEL_154:
 							if ( tile_42_45 > 42 )
 								return;
 							world_tbl = WorldTbl3x16[tile_42_45];
-							pdung_cels += *(int *)((char *)WorldTbl17_2 + world_tbl);
+							pdung_cels += WorldTbl17_2[world_tbl >> 2];
 							world_192 = 192 * world_tbl;
 							world_tbl >>= 1;
 							tmp_pbDst -= world_192;
@@ -5440,7 +5760,7 @@ LABEL_154:
 						return;
 					}
 					world_tbl = WorldTbl3x16[tile_42_45];
-					pdung_cels += *(int *)((char *)WorldTbl17_1 + world_tbl);
+					pdung_cels += WorldTbl17_1[world_tbl >> 2];
 					world_192 = 192 * world_tbl;
 					world_tbl >>= 1;
 					tmp_pbDst -= world_192;
@@ -5566,7 +5886,12 @@ LABEL_154:
 				}
 				while ( xx_32 >= 0 );
 				goto LABEL_154;
-			case 4:
+			case 4: // lower (top transparent), with lighting
+/*
+	  /|
+	 / |
+	|__|
+*/
 				WorldBoolFlag = 0;
 				xx_32 = 30;
 				if ( (unsigned int)pbDst >= screen_buf_end )
@@ -5624,7 +5949,7 @@ LABEL_210:
 						return;
 					}
 					world_tbl = WorldTbl3x16[tile_42_45];
-					pdung_cels += *(int *)((char *)WorldTbl17_1 + world_tbl);
+					pdung_cels += WorldTbl17_1[world_tbl >> 2];
 					world_192 = 192 * world_tbl;
 					world_tbl >>= 1;
 					tmp_pbDst -= world_192;
@@ -5751,7 +6076,12 @@ LABEL_210:
 				}
 				while ( xx_32 >= 0 );
 				goto LABEL_210;
-			default:
+			default: // lower (top transparent), with lighting
+/*
+	|\
+	| \
+	|__|
+*/
 				WorldBoolFlag = 0;
 				xx_32 = 30;
 				if ( (unsigned int)pbDst >= screen_buf_end )
@@ -5809,7 +6139,7 @@ LABEL_249:
 						return;
 					}
 					world_tbl = WorldTbl3x16[tile_42_45];
-					pdung_cels += *(int *)((char *)WorldTbl17_1 + world_tbl);
+					pdung_cels += WorldTbl17_1[world_tbl >> 2];
 					world_192 = 192 * world_tbl;
 					world_tbl >>= 1;
 					tmp_pbDst -= world_192;
@@ -5943,7 +6273,12 @@ LABEL_249:
 LABEL_11:
 	switch ( cel_type_16 )
 	{
-		case 8:
+		case 8: // lower (top transparent), without lighting
+/*
+	|--|
+	|  |
+	|--|
+*/
 			i = 16;
 			do
 			{
@@ -5995,7 +6330,12 @@ LABEL_11:
 			}
 			while ( i );
 			break;
-		case 9:
+		case 9: // lower (top transparent), without lighting
+/*
+	 /\
+	(  )
+	 \/
+*/
 			WorldBoolFlag = (unsigned char)pbDst & 1;
 			xx_32 = 32;
 			while ( 1 )
@@ -6108,7 +6448,12 @@ LABEL_293:
 				if ( x32_temp == 1 )
 					return;
 			}
-		case 10:
+		case 10: // lower (top transparent), without lighting
+/*
+	 /-|
+	(  |
+	 \-|
+*/
 			WorldBoolFlag = 0;
 			xx_32 = 30;
 			if ( (unsigned int)pbDst >= screen_buf_end )
@@ -6126,7 +6471,7 @@ LABEL_308:
 						if ( tile_42_45 > 42 )
 							return;
 						world_tbl = WorldTbl3x16[tile_42_45];
-						pdung_cels += *(int *)((char *)WorldTbl17_2 + world_tbl);
+						pdung_cels += WorldTbl17_2[world_tbl >> 2];
 						world_192 = 192 * world_tbl;
 						world_tbl >>= 1;
 						tmp_pbDst -= world_192;
@@ -6199,7 +6544,7 @@ LABEL_308:
 					return;
 				}
 				world_tbl = WorldTbl3x16[tile_42_45];
-				pdung_cels += *(int *)((char *)WorldTbl17_1 + world_tbl);
+				pdung_cels += WorldTbl17_1[world_tbl >> 2];
 				world_192 = 192 * world_tbl;
 				world_tbl >>= 1;
 				tmp_pbDst -= world_192;
@@ -6269,7 +6614,12 @@ LABEL_308:
 			}
 			while ( xx_32 >= 0 );
 			goto LABEL_308;
-		case 11:
+		case 11: // lower (top transparent), without lighting
+/*
+	|-\
+	|  )
+	|-/
+*/
 			WorldBoolFlag = 0;
 			xx_32 = 30;
 			if ( (unsigned int)pbDst < screen_buf_end )
@@ -6278,7 +6628,7 @@ LABEL_308:
 			if ( tile_42_45 <= 45 )
 			{
 				world_tbl = WorldTbl3x16[tile_42_45];
-				pdung_cels += *(int *)((char *)WorldTbl17_1 + world_tbl);
+				pdung_cels += WorldTbl17_1[world_tbl >> 2];
 				world_192 = 192 * world_tbl;
 				world_tbl >>= 1;
 				tmp_pbDst -= world_192;
@@ -6346,7 +6696,7 @@ LABEL_336:
 				if ( tile_42_45 > 42 )
 					return;
 				world_tbl = WorldTbl3x16[tile_42_45];
-				pdung_cels += *(int *)((char *)WorldTbl17_2 + world_tbl);
+				pdung_cels += WorldTbl17_2[world_tbl >> 2];
 				world_192 = 192 * world_tbl;
 				world_tbl >>= 1;
 				tmp_pbDst -= world_192;
@@ -6403,7 +6753,12 @@ LABEL_336:
 			}
 			while ( yy_32 != 32 );
 			break;
-		case 12:
+		case 12: // lower (top transparent), without lighting
+/*
+	  /|
+	 / |
+	|__|
+*/
 			WorldBoolFlag = 0;
 			xx_32 = 30;
 			if ( (unsigned int)pbDst >= screen_buf_end )
@@ -6467,7 +6822,7 @@ LABEL_364:
 					return;
 				}
 				world_tbl = WorldTbl3x16[tile_42_45];
-				pdung_cels += *(int *)((char *)WorldTbl17_1 + world_tbl);
+				pdung_cels += WorldTbl17_1[world_tbl >> 2];
 				world_192 = 192 * world_tbl;
 				world_tbl >>= 1;
 				tmp_pbDst -= world_192;
@@ -6537,7 +6892,12 @@ LABEL_364:
 			}
 			while ( xx_32 >= 0 );
 			goto LABEL_364;
-		default:
+		default: // lower (top transparent), without lighting
+/*
+	|\
+	| \
+	|__|
+*/
 			WorldBoolFlag = 0;
 			xx_32 = 30;
 			if ( (unsigned int)pbDst >= screen_buf_end )
@@ -6601,7 +6961,7 @@ LABEL_389:
 					return;
 				}
 				world_tbl = WorldTbl3x16[tile_42_45];
-				pdung_cels += *(int *)((char *)WorldTbl17_1 + world_tbl);
+				pdung_cels += WorldTbl17_1[world_tbl >> 2];
 				world_192 = 192 * world_tbl;
 				world_tbl >>= 1;
 				tmp_pbDst -= world_192;
@@ -6698,7 +7058,12 @@ void __fastcall drawBottomArchesLowerScreen(unsigned char *pbDst, unsigned int *
 			cel_type_32 = (cel_type_16_tmp >> 4) & 7;
 			switch ( (_WORD)cel_type_32 )
 			{
-				case 0:
+				case 0: // lower (bottom transparent), black
+/*
+	|--|
+	|  |
+	|--|
+*/
 					yy_32 = 32;
 					do
 					{
@@ -6729,7 +7094,12 @@ void __fastcall drawBottomArchesLowerScreen(unsigned char *pbDst, unsigned int *
 					}
 					while ( yy_32 );
 					break;
-				case 1:
+				case 1: // lower (bottom transparent), black
+/*
+	 /\
+	(  )
+	 \/
+*/
 					xx_32 = 32;
 					do
 					{
@@ -6784,7 +7154,12 @@ LABEL_252:
 					}
 					while ( x32_temp != 1 );
 					break;
-				case 2:
+				case 2: // lower (bottom transparent), black
+/*
+	 /-|
+	(  |
+	 \-|
+*/
 					for ( i = 30; ; i -= 2 )
 					{
 						if ( (unsigned int)tmp_pbDst < screen_buf_end )
@@ -6849,7 +7224,12 @@ LABEL_252:
 					}
 					while ( i != 32 );
 					break;
-				case 3:
+				case 3: // lower (bottom transparent), black
+/*
+	|-\
+	|  )
+	|-/
+*/
 					for ( i = 30; ; i -= 2 )
 					{
 						if ( (unsigned int)tmp_pbDst < screen_buf_end )
@@ -6913,7 +7293,12 @@ LABEL_252:
 					}
 					while ( i != 32 );
 					break;
-				case 4:
+				case 4: // lower (bottom transparent), black
+/*
+	  /|
+	 / |
+	|__|
+*/
 					for ( i = 30; ; i -= 2 )
 					{
 						if ( (unsigned int)tmp_pbDst < screen_buf_end )
@@ -6976,7 +7361,12 @@ LABEL_252:
 					}
 					while ( yy_32 );
 					break;
-				default:
+				default: // lower (bottom transparent), black
+/*
+	|\
+	| \
+	|__|
+*/
 					for ( i = 30; ; i -= 2 )
 					{
 						if ( (unsigned int)tmp_pbDst < screen_buf_end )
@@ -7049,7 +7439,12 @@ LABEL_252:
 			cel_type_16 = (unsigned char)(BYTE1(level_cel_block) >> 4);
 			switch ( cel_type_16 )
 			{
-				case 0:
+				case 0: // lower (bottom transparent), with lighting
+/*
+	|--|
+	|  |
+	|--|
+*/
 					yy_32 = 32;
 					do
 					{
@@ -7079,7 +7474,12 @@ LABEL_252:
 					}
 					while ( yy_32 );
 					break;
-				case 1:
+				case 1: // lower (bottom transparent), with lighting
+/*
+	 /\
+	(  )
+	 \/
+*/
 					xx_32 = 32;
 					do
 					{
@@ -7134,7 +7534,12 @@ LABEL_52:
 					}
 					while ( x32_temp != 1 );
 					break;
-				case 2:
+				case 2: // lower (bottom transparent), with lighting
+/*
+	 /-|
+	(  |
+	 \-|
+*/
 					xx_32 = 30;
 					if ( (unsigned int)pbDst >= screen_buf_end )
 					{
@@ -7151,7 +7556,7 @@ LABEL_62:
 								if ( tile_42_45 > 42 )
 									return;
 								world_tbl = WorldTbl3x16[tile_42_45];
-								pdung_cels += *(int *)((char *)WorldTbl17_2 + world_tbl);
+								pdung_cels += WorldTbl17_2[world_tbl >> 2];
 								tmp_pbDst -= 192 * world_tbl;
 								yy_32 = (world_tbl >> 1) + 2;
 							}
@@ -7195,7 +7600,7 @@ LABEL_62:
 							return;
 						}
 						world_tbl = WorldTbl3x16[tile_42_45];
-						pdung_cels += *(int *)((char *)WorldTbl17_1 + world_tbl);
+						pdung_cels += WorldTbl17_1[world_tbl >> 2];
 						tmp_pbDst -= 192 * world_tbl;
 						xx_32 = 30 - (world_tbl >> 1);
 					}
@@ -7237,7 +7642,12 @@ LABEL_62:
 					}
 					while ( xx_32 >= 0 );
 					goto LABEL_62;
-				case 3:
+				case 3: // lower (bottom transparent), with lighting
+/*
+	|-\
+	|  )
+	|-/
+*/
 					xx_32 = 30;
 					if ( (unsigned int)pbDst >= screen_buf_end )
 					{
@@ -7254,7 +7664,7 @@ LABEL_80:
 								if ( tile_42_45 > 42 )
 									return;
 								world_tbl = WorldTbl3x16[tile_42_45];
-								pdung_cels += *(int *)((char *)WorldTbl17_2 + world_tbl);
+								pdung_cels += WorldTbl17_2[world_tbl >> 2];
 								tmp_pbDst -= 192 * world_tbl;
 								yy_32 = (world_tbl >> 1) + 2;
 							}
@@ -7291,7 +7701,7 @@ LABEL_80:
 							return;
 						}
 						world_tbl = WorldTbl3x16[tile_42_45];
-						pdung_cels += *(int *)((char *)WorldTbl17_1 + world_tbl);
+						pdung_cels += WorldTbl17_1[world_tbl >> 2];
 						tmp_pbDst -= 192 * world_tbl;
 						xx_32 = 30 - (world_tbl >> 1);
 					}
@@ -7326,7 +7736,12 @@ LABEL_80:
 					}
 					while ( xx_32 >= 0 );
 					goto LABEL_80;
-				case 4:
+				case 4: // lower (bottom transparent), with lighting
+/*
+	  /|
+	 / |
+	|__|
+*/
 					xx_32 = 30;
 					if ( (unsigned int)pbDst >= screen_buf_end )
 					{
@@ -7370,7 +7785,7 @@ LABEL_98:
 							return;
 						}
 						world_tbl = WorldTbl3x16[tile_42_45];
-						pdung_cels += *(int *)((char *)WorldTbl17_1 + world_tbl);
+						pdung_cels += WorldTbl17_1[world_tbl >> 2];
 						tmp_pbDst -= 192 * world_tbl;
 						xx_32 = 30 - (world_tbl >> 1);
 					}
@@ -7412,7 +7827,12 @@ LABEL_98:
 					}
 					while ( xx_32 >= 0 );
 					goto LABEL_98;
-				default:
+				default: // lower (bottom transparent), with lighting
+/*
+	|\
+	| \
+	|__|
+*/
 					xx_32 = 30;
 					if ( (unsigned int)pbDst >= screen_buf_end )
 					{
@@ -7457,7 +7877,7 @@ LABEL_117:
 							return;
 						}
 						world_tbl = WorldTbl3x16[tile_42_45];
-						pdung_cels += *(int *)((char *)WorldTbl17_1 + world_tbl);
+						pdung_cels += WorldTbl17_1[world_tbl >> 2];
 						tmp_pbDst -= 192 * world_tbl;
 						xx_32 = 30 - (world_tbl >> 1);
 					}
@@ -7511,7 +7931,12 @@ LABEL_117:
 	}
 	switch ( cel_type_16 )
 	{
-		case 8:
+		case 8: // lower (bottom transparent), without lighting
+/*
+	|--|
+	|  |
+	|--|
+*/
 			yy_32 = 32;
 			do
 			{
@@ -7543,7 +7968,12 @@ LABEL_117:
 			}
 			while ( yy_32 );
 			break;
-		case 9:
+		case 9: // lower (bottom transparent), without lighting
+/*
+	 /\
+	(  )
+	 \/
+*/
 			xx_32 = 32;
 			do
 			{
@@ -7598,7 +8028,12 @@ LABEL_152:
 			}
 			while ( x32_temp != 1 );
 			break;
-		case 10:
+		case 10: // lower (bottom transparent), without lighting
+/*
+	 /-|
+	(  |
+	 \-|
+*/
 			xx_32 = 30;
 			if ( (unsigned int)pbDst >= screen_buf_end )
 			{
@@ -7615,7 +8050,7 @@ LABEL_162:
 						if ( tile_42_45 > 42 )
 							return;
 						world_tbl = WorldTbl3x16[tile_42_45];
-						pdung_cels += *(int *)((char *)WorldTbl17_2 + world_tbl);
+						pdung_cels += WorldTbl17_2[world_tbl >> 2];
 						tmp_pbDst -= 192 * world_tbl;
 						yy_32 = (world_tbl >> 1) + 2;
 					}
@@ -7647,7 +8082,7 @@ LABEL_162:
 					return;
 				}
 				world_tbl = WorldTbl3x16[tile_42_45];
-				pdung_cels += *(int *)((char *)WorldTbl17_1 + world_tbl);
+				pdung_cels += WorldTbl17_1[world_tbl >> 2];
 				tmp_pbDst -= 192 * world_tbl;
 				xx_32 = 30 - (world_tbl >> 1);
 			}
@@ -7677,7 +8112,12 @@ LABEL_162:
 			}
 			while ( xx_32 >= 0 );
 			goto LABEL_162;
-		case 11:
+		case 11: // lower (bottom transparent), without lighting
+/*
+	|-\
+	|  )
+	|-/
+*/
 			xx_32 = 30;
 			if ( (unsigned int)pbDst < screen_buf_end )
 				goto LABEL_175;
@@ -7685,7 +8125,7 @@ LABEL_162:
 			if ( tile_42_45 <= 45 )
 			{
 				world_tbl = WorldTbl3x16[tile_42_45];
-				pdung_cels += *(int *)((char *)WorldTbl17_1 + world_tbl);
+				pdung_cels += WorldTbl17_1[world_tbl >> 2];
 				tmp_pbDst -= 192 * world_tbl;
 				xx_32 = 30 - (world_tbl >> 1);
 				do
@@ -7719,7 +8159,7 @@ LABEL_180:
 				if ( tile_42_45 > 42 )
 					return;
 				world_tbl = WorldTbl3x16[tile_42_45];
-				pdung_cels += *(int *)((char *)WorldTbl17_2 + world_tbl);
+				pdung_cels += WorldTbl17_2[world_tbl >> 2];
 				tmp_pbDst -= 192 * world_tbl;
 				yy_32 = (world_tbl >> 1) + 2;
 			}
@@ -7742,7 +8182,12 @@ LABEL_180:
 			}
 			while ( yy_32 != 32 );
 			break;
-		case 12:
+		case 12: // lower (bottom transparent), without lighting
+/*
+	  /|
+	 / |
+	|__|
+*/
 			xx_32 = 30;
 			if ( (unsigned int)pbDst >= screen_buf_end )
 			{
@@ -7786,7 +8231,7 @@ LABEL_198:
 					return;
 				}
 				world_tbl = WorldTbl3x16[tile_42_45];
-				pdung_cels += *(int *)((char *)WorldTbl17_1 + world_tbl);
+				pdung_cels += WorldTbl17_1[world_tbl >> 2];
 				tmp_pbDst -= 192 * world_tbl;
 				xx_32 = 30 - (world_tbl >> 1);
 			}
@@ -7816,7 +8261,12 @@ LABEL_198:
 			}
 			while ( xx_32 >= 0 );
 			goto LABEL_198;
-		default:
+		default: // lower (bottom transparent), without lighting
+/*
+	|\
+	| \
+	|__|
+*/
 			xx_32 = 30;
 			if ( (unsigned int)pbDst >= screen_buf_end )
 			{
@@ -7861,7 +8311,7 @@ LABEL_217:
 					return;
 				}
 				world_tbl = WorldTbl3x16[tile_42_45];
-				pdung_cels += *(int *)((char *)WorldTbl17_1 + world_tbl);
+				pdung_cels += WorldTbl17_1[world_tbl >> 2];
 				tmp_pbDst -= 192 * world_tbl;
 				xx_32 = 30 - (world_tbl >> 1);
 			}
@@ -7954,7 +8404,12 @@ void __fastcall drawLowerScreen(unsigned char *pbDst)
 			cel_type_32 = (cel_type_16_tmp >> 4) & 7;
 			switch ( (_WORD)cel_type_32 )
 			{
-				case 0:
+				case 0: // lower (solid), black
+/*
+	|--|
+	|  |
+	|--|
+*/
 					i = 32;
 					do
 					{
@@ -7979,7 +8434,12 @@ void __fastcall drawLowerScreen(unsigned char *pbDst)
 					}
 					while ( i );
 					break;
-				case 1:
+				case 1: // lower (solid), black
+/*
+	 /\
+	(  )
+	 \/
+*/
 					xx_32 = 32;
 					do
 					{
@@ -8041,7 +8501,12 @@ LABEL_232:
 					}
 					while ( x32_temp != 1 );
 					break;
-				case 2:
+				case 2: // lower (solid), black
+/*
+	 /-|
+	(  |
+	 \-|
+*/
 					for ( i = 30; ; i -= 2 )
 					{
 						if ( (unsigned int)tmp_pbDst < screen_buf_end )
@@ -8106,7 +8571,12 @@ LABEL_232:
 					}
 					while ( i != 32 );
 					break;
-				case 3:
+				case 3: // lower (solid), black
+/*
+	|-\
+	|  )
+	|-/
+*/
 					for ( i = 30; ; i -= 2 )
 					{
 						if ( (unsigned int)tmp_pbDst < screen_buf_end )
@@ -8170,7 +8640,12 @@ LABEL_232:
 					}
 					while ( i != 32 );
 					break;
-				case 4:
+				case 4: // lower (solid), black
+/*
+	  /|
+	 / |
+	|__|
+*/
 					for ( i = 30; ; i -= 2 )
 					{
 						if ( (unsigned int)tmp_pbDst < screen_buf_end )
@@ -8226,7 +8701,12 @@ LABEL_232:
 					}
 					while ( i );
 					break;
-				default:
+				default: // lower (solid), black
+/*
+	|\
+	| \
+	|__|
+*/
 					for ( i = 30; ; i -= 2 )
 					{
 						if ( (unsigned int)tmp_pbDst < screen_buf_end )
@@ -8292,7 +8772,12 @@ LABEL_232:
 			cel_type_16 = (unsigned short)level_cel_block >> 12;
 			switch ( cel_type_16 )
 			{
-				case 0:
+				case 0: // lower (solid), with lighting
+/*
+	|--|
+	|  |
+	|--|
+*/
 					xx_32 = 32;
 					do
 					{
@@ -8332,7 +8817,12 @@ LABEL_232:
 					}
 					while ( x32_temp != 1 );
 					break;
-				case 1:
+				case 1: // lower (solid), with lighting
+/*
+	 /\
+	(  )
+	 \/
+*/
 					xx_32 = 32;
 					do
 					{
@@ -8386,7 +8876,12 @@ LABEL_232:
 					}
 					while ( x32_temp != 1 );
 					break;
-				case 2:
+				case 2: // lower (solid), with lighting
+/*
+	 /-|
+	(  |
+	 \-|
+*/
 					xx_32 = 30;
 					if ( (unsigned int)pbDst >= screen_buf_end )
 					{
@@ -8403,7 +8898,7 @@ LABEL_68:
 								if ( tile_42_45 > 42 )
 									return;
 								world_tbl = WorldTbl3x16[tile_42_45];
-								pdung_cels += *(int *)((char *)WorldTbl17_2 + world_tbl);
+								pdung_cels += WorldTbl17_2[world_tbl >> 2];
 								tmp_pbDst -= 192 * world_tbl;
 								yy_32 = (world_tbl >> 1) + 2;
 							}
@@ -8426,7 +8921,7 @@ LABEL_68:
 							return;
 						}
 						world_tbl = WorldTbl3x16[tile_42_45];
-						pdung_cels += *(int *)((char *)WorldTbl17_1 + world_tbl);
+						pdung_cels += WorldTbl17_1[world_tbl >> 2];
 						tmp_pbDst -= 192 * world_tbl;
 						xx_32 = 30 - (world_tbl >> 1);
 					}
@@ -8447,7 +8942,12 @@ LABEL_68:
 					}
 					while ( xx_32 >= 0 );
 					goto LABEL_68;
-				case 3:
+				case 3: // lower (solid), with lighting
+/*
+	|-\
+	|  )
+	|-/
+*/
 					xx_32 = 30;
 					if ( (unsigned int)pbDst >= screen_buf_end )
 					{
@@ -8464,7 +8964,7 @@ LABEL_83:
 								if ( tile_42_45 > 42 )
 									return;
 								world_tbl = WorldTbl3x16[tile_42_45];
-								pdung_cels += *(int *)((char *)WorldTbl17_2 + world_tbl);
+								pdung_cels += WorldTbl17_2[world_tbl >> 2];
 								tmp_pbDst -= 192 * world_tbl;
 								yy_32 = (world_tbl >> 1) + 2;
 							}
@@ -8486,7 +8986,7 @@ LABEL_83:
 							return;
 						}
 						world_tbl = WorldTbl3x16[tile_42_45];
-						pdung_cels += *(int *)((char *)WorldTbl17_1 + world_tbl);
+						pdung_cels += WorldTbl17_1[world_tbl >> 2];
 						tmp_pbDst -= 192 * world_tbl;
 						xx_32 = 30 - (world_tbl >> 1);
 					}
@@ -8506,7 +9006,12 @@ LABEL_83:
 					}
 					while ( xx_32 >= 0 );
 					goto LABEL_83;
-				case 4:
+				case 4: // lower (solid), with lighting
+/*
+	  /|
+	 / |
+	|__|
+*/
 					xx_32 = 30;
 					if ( (unsigned int)pbDst >= screen_buf_end )
 					{
@@ -8546,7 +9051,7 @@ LABEL_100:
 							return;
 						}
 						world_tbl = WorldTbl3x16[tile_42_45];
-						pdung_cels += *(int *)((char *)WorldTbl17_1 + world_tbl);
+						pdung_cels += WorldTbl17_1[world_tbl >> 2];
 						tmp_pbDst -= 192 * world_tbl;
 						xx_32 = 30 - (world_tbl >> 1);
 					}
@@ -8582,7 +9087,12 @@ LABEL_100:
 					}
 					while ( xx_32 >= 0 );
 					goto LABEL_100;
-				default:
+				default: // lower (solid), with lighting
+/*
+	|\
+	| \
+	|__|
+*/
 					xx_32 = 30;
 					if ( (unsigned int)pbDst >= screen_buf_end )
 					{
@@ -8622,7 +9132,7 @@ LABEL_116:
 							return;
 						}
 						world_tbl = WorldTbl3x16[tile_42_45];
-						pdung_cels += *(int *)((char *)WorldTbl17_1 + world_tbl);
+						pdung_cels += WorldTbl17_1[world_tbl >> 2];
 						tmp_pbDst -= 192 * world_tbl;
 						xx_32 = 30 - (world_tbl >> 1);
 					}
@@ -8668,7 +9178,12 @@ LABEL_116:
 	}
 	switch ( cel_type_16 )
 	{
-		case 8:
+		case 8: // lower (solid), without lighting
+/*
+	|--|
+	|  |
+	|--|
+*/
 			i = 32;
 			do
 			{
@@ -8694,7 +9209,12 @@ LABEL_116:
 			}
 			while ( i );
 			break;
-		case 9:
+		case 9: // lower (solid), without lighting
+/*
+	 /\
+	(  )
+	 \/
+*/
 			xx_32 = 32;
 			do
 			{
@@ -8758,7 +9278,12 @@ LABEL_143:
 			}
 			while ( x32_temp != 1 );
 			break;
-		case 10:
+		case 10: // lower (solid), without lighting
+/*
+	 /-|
+	(  |
+	 \-|
+*/
 			xx_32 = 30;
 			if ( (unsigned int)pbDst >= screen_buf_end )
 			{
@@ -8775,7 +9300,7 @@ LABEL_153:
 						if ( tile_42_45 > 42 )
 							return;
 						world_tbl = WorldTbl3x16[tile_42_45];
-						pdung_cels += *(int *)((char *)WorldTbl17_2 + world_tbl);
+						pdung_cels += WorldTbl17_2[world_tbl >> 2];
 						tmp_pbDst -= 192 * world_tbl;
 						yy_32 = (world_tbl >> 1) + 2;
 					}
@@ -8807,7 +9332,7 @@ LABEL_153:
 					return;
 				}
 				world_tbl = WorldTbl3x16[tile_42_45];
-				pdung_cels += *(int *)((char *)WorldTbl17_1 + world_tbl);
+				pdung_cels += WorldTbl17_1[world_tbl >> 2];
 				tmp_pbDst -= 192 * world_tbl;
 				xx_32 = 30 - (world_tbl >> 1);
 			}
@@ -8837,7 +9362,12 @@ LABEL_153:
 			}
 			while ( xx_32 >= 0 );
 			goto LABEL_153;
-		case 11:
+		case 11: // lower (solid), without lighting
+/*
+	|-\
+	|  )
+	|-/
+*/
 			xx_32 = 30;
 			if ( (unsigned int)pbDst < screen_buf_end )
 				goto LABEL_166;
@@ -8845,7 +9375,7 @@ LABEL_153:
 			if ( tile_42_45 <= 45 )
 			{
 				world_tbl = WorldTbl3x16[tile_42_45];
-				pdung_cels += *(int *)((char *)WorldTbl17_1 + world_tbl);
+				pdung_cels += WorldTbl17_1[world_tbl >> 2];
 				tmp_pbDst -= 192 * world_tbl;
 				xx_32 = 30 - (world_tbl >> 1);
 				do
@@ -8879,7 +9409,7 @@ LABEL_171:
 				if ( tile_42_45 > 42 )
 					return;
 				world_tbl = WorldTbl3x16[tile_42_45];
-				pdung_cels += *(int *)((char *)WorldTbl17_2 + world_tbl);
+				pdung_cels += WorldTbl17_2[world_tbl >> 2];
 				tmp_pbDst -= 192 * world_tbl;
 				yy_32 = (world_tbl >> 1) + 2;
 			}
@@ -8903,7 +9433,12 @@ LABEL_171:
 			}
 			while ( yy_32 < 32 );
 			break;
-		case 12:
+		case 12: // lower (solid), without lighting
+/*
+	  /|
+	 / |
+	|__|
+*/
 			xx_32 = 30;
 			if ( (unsigned int)pbDst >= screen_buf_end )
 			{
@@ -8940,7 +9475,7 @@ LABEL_189:
 					return;
 				}
 				world_tbl = WorldTbl3x16[tile_42_45];
-				pdung_cels += *(int *)((char *)WorldTbl17_1 + world_tbl);
+				pdung_cels += WorldTbl17_1[world_tbl >> 2];
 				tmp_pbDst -= 192 * world_tbl;
 				xx_32 = 30 - (world_tbl >> 1);
 			}
@@ -8970,7 +9505,12 @@ LABEL_189:
 			}
 			while ( xx_32 >= 0 );
 			goto LABEL_189;
-		default:
+		default: // lower (solid), without lighting
+/*
+	|\
+	| \
+	|__|
+*/
 			xx_32 = 30;
 			if ( (unsigned int)pbDst >= screen_buf_end )
 			{
@@ -9007,7 +9547,7 @@ LABEL_205:
 					return;
 				}
 				world_tbl = WorldTbl3x16[tile_42_45];
-				pdung_cels += *(int *)((char *)WorldTbl17_1 + world_tbl);
+				pdung_cels += WorldTbl17_1[world_tbl >> 2];
 				tmp_pbDst -= 192 * world_tbl;
 				xx_32 = 30 - (world_tbl >> 1);
 			}
