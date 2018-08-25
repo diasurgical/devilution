@@ -1599,7 +1599,7 @@ void __fastcall CreatePlrItems(int p)
 
 	// TODO: Add debug logic from 1.00 here
 
-	plr[p].HoldItem._iCurs = 4;
+	plr[p].HoldItem._iCurs = CURSOR_RECHARGE;
 	plr[p].HoldItem._ivalue = 100;
 	plr[p]._pGold = 100;
 
