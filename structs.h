@@ -830,7 +830,7 @@ struct PlayerStruct
 	int _pMemSpells[2]; // __declspec(align(8))
 	int _pAblSpells[2];
 	int _pScrlSpells[2];
-	int _pSpellFlags;
+	char _pSpellFlags;
 	int _pSplHotKey[4];
 	char _pSplTHotKey[4];
 	int _pwtype;
