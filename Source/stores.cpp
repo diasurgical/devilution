@@ -165,40 +165,29 @@ void __cdecl DrawSTextBack()
 
 	CelDecodeOnly(408, 487, pSTextBoxCels, 1, 271);
 	v0 = &gpBuffer->row[324].pixels[347];
-	v1 = 148;
-	do
+	for (v1 = 148; v1; --v1)
 	{
-		v2 = 132;
-		do
+		for (v2 = 132; v2; --v2)
 		{
 			*v0 = 0;
 			v0 += 2;
-			--v2;
 		}
-		while ( v2 );
 		*v0 = 0;
 		v3 = (int)(v0 - 1032);
-		v4 = 132;
-		do
+		for (v4 = 132; v4; --v4)
 		{
 			v5 = (_BYTE *)(v3 + 1);
 			*v5 = 0;
 			v3 = (int)(v5 + 1);
-			--v4;
 		}
-		while ( v4 );
 		v0 = (char *)(v3 - 1032);
-		--v1;
 	}
-	while ( v1 );
-	v6 = 132;
-	do
+	
+	for (v6 = 132; v6; --v6)
 	{
 		*v0 = 0;
 		v0 += 2;
-		--v6;
 	}
-	while ( v6 );
 	*v0 = 0;
 }
 
@@ -267,10 +256,9 @@ void __fastcall PrintSString(int x, int y, unsigned char cjustflag, char *str, i
 			v14 = v27 + v8 - 20;
 		CelDecodeOnly(v14, v6 + 205, pCelBuff, InStoreFlag, 12);
 	}
-	v29 = 0;
 	if ( v28 > 0 )
 	{
-		do
+		for (v29 = 0; v29 < v28; v29++)
 		{
 			v15 = fontframe[fontidx[(unsigned char)str[v29]]];
 			v16 = v15;
@@ -279,10 +267,8 @@ void __fastcall PrintSString(int x, int y, unsigned char cjustflag, char *str, i
 			if ( v15 && v17 <= v25 )
 				CPrintString(v10, v15, col);
 			v18 = fontkern[v16];
-			++v29;
 			v10 += v18 + 1;
 		}
-		while ( v29 < v28 );
 		v8 = v26;
 	}
 	if ( !cjustflag && val >= 0 )
@@ -342,8 +328,7 @@ void __fastcall DrawSLine(int y)
 	}
 	v3 = (char *)gpBuffer + v8;
 	v4 = (char *)gpBuffer + v2;
-	v5 = 3;
-	do
+	for (v5 = 3; v5; --v5)
 	{
 		qmemcpy(v4, v3, 4 * v10);
 		v7 = &v3[4 * v10];
@@ -351,9 +336,7 @@ void __fastcall DrawSLine(int y)
 		*(_WORD *)v6 = *(_WORD *)v7;
 		v3 = &v7[v9 + 2];
 		v4 = &v6[v9 + 2];
-		--v5;
 	}
-	while ( v5 );
 }
 // 6A09E0: using guessed type char stextsize;
 
@@ -506,9 +489,8 @@ void __cdecl StoreAutoPlace()
 			v2 = myplr;
 			if ( plr[myplr].HoldItem._iStatFlag && AllItemsList[plr[v2].HoldItem.IDidx].iUsable )
 			{
-				v19 = 0;
 				v3 = plr[v2].SpdList;
-				do
+				for (v19 = 0; v19 < 8; v19++)
 				{
 					if ( v1 )
 						break;
@@ -518,39 +500,34 @@ void __cdecl StoreAutoPlace()
 						v0 = v20;
 						v1 = 1;
 					}
-					++v19;
 					++v3;
 				}
-				while ( v19 < 8 );
 			}
-			v4 = 30;
-			do
+			for (v4 = 30; v4 <= 39; v4++)
 			{
 				if ( v1 )
 					break;
-				v1 = AutoPlace(myplr, v4++, 1, 1, 1);
+				v1 = AutoPlace(myplr, v4, 1, 1, 1);
 			}
-			while ( v4 <= 39 );
-			v5 = 20;
-			do
+			
+			for (v5 = 20; v5 <= 29; v5++)
 			{
 				if ( v1 )
 					break;
-				v1 = AutoPlace(myplr, v5++, 1, 1, 1);
+				v1 = AutoPlace(myplr, v5, 1, 1, 1);
 			}
-			while ( v5 <= 29 );
-			v6 = 10;
-			do
+			
+			for (v6 = 10; v6 <= 19; v6++)
 			{
 				if ( v1 )
 					break;
-				v1 = AutoPlace(myplr, v6++, 1, 1, 1);
+				v1 = AutoPlace(myplr, v6, 1, 1, 1);
 			}
-			while ( v6 <= 19 );
 			v7 = 0;
 			while ( !v1 )
 			{
-				v1 = AutoPlace(myplr, v7++, 1, 1, 1);
+				v1 = AutoPlace(myplr, v7, 1, 1, 1);
+				v7++;
 				if ( v7 > 9 )
 					goto LABEL_22;
 			}
@@ -560,26 +537,23 @@ void __cdecl StoreAutoPlace()
 LABEL_22:
 			if ( v0 == 2 )
 			{
-				v8 = 29;
-				do
+				for (v8 = 29; v8 >= 20; --v8)
 				{
 					if ( v1 )
 						break;
-					v1 = AutoPlace(myplr, v8--, 1, 2, 1);
+					v1 = AutoPlace(myplr, v8, 1, 2, 1);
 				}
-				while ( v8 >= 20 );
-				v9 = 9;
-				do
+				for (v9 = 9; v9; --v9)
 				{
 					if ( v1 )
 						break;
-					v1 = AutoPlace(myplr, v9--, 1, 2, 1);
+					v1 = AutoPlace(myplr, v9, 1, 2, 1);
 				}
-				while ( v9 >= 0 );
 				v10 = 19;
 				while ( !v1 )
 				{
-					v1 = AutoPlace(myplr, v10--, 1, 2, 1);
+					v1 = AutoPlace(myplr, v10, 1, 2, 1);
+					--v10;
 					if ( v10 < 10 )
 						goto LABEL_32;
 				}
@@ -592,7 +566,8 @@ LABEL_32:
 					v11 = 0;
 					while ( !v1 )
 					{
-						v1 = AutoPlace(myplr, v11++, 1, 3, 1);
+						v1 = AutoPlace(myplr, v11, 1, 3, 1);
+						v11++;
 						if ( v11 >= 20 )
 							goto LABEL_36;
 					}
@@ -607,37 +582,30 @@ LABEL_36:
 		{
 			if ( v0 == 2 )
 			{
-				v12 = AP2x2Tbl;
-				do
+				for (v12 = &AP2x2Tbl[0]; v12 < &AP2x2Tbl[10]; v12++)
 				{
 					if ( v1 )
 						break;
 					v1 = AutoPlace(myplr, *v12, 2, 2, 1);
-					++v12;
 				}
-				while ( (signed int)v12 < (signed int)&AP2x2Tbl[10] );
-				v13 = 21;
-				do
+				for (v13 = 21; v13 < 29; v13 += 2)
 				{
 					if ( v1 )
 						break;
 					v1 = AutoPlace(myplr, v13, 2, 2, 1);
-					v13 += 2;
 				}
-				while ( v13 < 29 );
-				v14 = 1;
-				do
+				
+				for (v14 = 1; v14 < 9; v14 += 2)
 				{
 					if ( v1 )
 						break;
 					v1 = AutoPlace(myplr, v14, 2, 2, 1);
-					v14 += 2;
 				}
-				while ( v14 < 9 );
 				v15 = 10;
 				while ( !v1 )
 				{
-					v1 = AutoPlace(myplr, v15++, 2, 2, 1);
+					v1 = AutoPlace(myplr, v15, 2, 2, 1);
+					v15++;
 					if ( v15 >= 19 )
 						goto LABEL_50;
 				}
@@ -647,22 +615,19 @@ LABEL_36:
 LABEL_50:
 				if ( v0 == 3 )
 				{
-					v16 = 0;
-					do
+					for (v16 = 0; v16 < 9; v16++)
 					{
 						if ( v1 )
 							break;
-						v1 = AutoPlace(myplr, v16++, 2, 3, 1);
+						v1 = AutoPlace(myplr, v16, 2, 3, 1);
 					}
-					while ( v16 < 9 );
-					v17 = 10;
-					do
+					
+					for (v17 = 10; v17 < 19; v17++)
 					{
 						if ( v1 )
 							break;
-						v1 = AutoPlace(myplr, v17++, 2, 3, 1);
+						v1 = AutoPlace(myplr, v17, 2, 3, 1);
 					}
-					while ( v17 < 19 );
 				}
 			}
 		}
@@ -699,11 +664,10 @@ void __fastcall S_ScrollSBuy(int idx)
 	int iclr; // [esp+Ch] [ebp-4h]
 
 	v1 = idx;
-	v2 = 5;
 	ClearSText(5, 21);
 	v3 = &smithitem[v1]._iMagical;
 	stextup = 5;
-	do
+	for (v2 = 5; v2 < 20; v2 += 4)
 	{
 		if ( *((_DWORD *)v3 - 13) != -1 )
 		{
@@ -721,9 +685,7 @@ void __fastcall S_ScrollSBuy(int idx)
 			stextdown = v2;
 			v3 += 368;
 		}
-		v2 += 4;
 	}
-	while ( v2 < 20 );
 	if ( !stext[stextsel]._ssel && stextsel != 22 )
 		stextsel = stextdown;
 }
@@ -872,7 +834,6 @@ void __fastcall S_ScrollSPBuy(int idx)
 	int iclr; // [esp+Ch] [ebp-4h]
 
 	v1 = idx;
-	v2 = 5;
 	ClearSText(5, 21);
 	v3 = v1;
 	v4 = 0;
@@ -890,7 +851,7 @@ void __fastcall S_ScrollSPBuy(int idx)
 		while ( v3 );
 	}
 	v6 = &premiumitem[v4]._iMagical;
-	do
+	for (v2 = 5; v2 < 20; v2 += 4)
 	{
 		if ( (signed int)v6 >= (signed int)&premiumitem[6]._iMagical )
 			break;
@@ -910,10 +871,8 @@ void __fastcall S_ScrollSPBuy(int idx)
 			PrintStoreItem((ItemStruct *)(v6 - 60), v2 + 1, iclr);
 			stextdown = v2;
 		}
-		v2 += 4;
 		v6 += 368;
 	}
-	while ( v2 < 20 );
 	if ( !stext[stextsel]._ssel && stextsel != 22 )
 		stextsel = stextdown;
 }
@@ -928,14 +887,11 @@ bool __cdecl S_StartSPBuy()
 	int v2; // ST10_4
 
 	storenumh = 0;
-	v0 = &premiumitem[0]._itype;
-	do
+	for (v0 = &premiumitem[0]._itype; v0 < &premiumitem[6]._itype; v0 += 92)
 	{
 		if ( *v0 != -1 )
 			++storenumh;
-		v0 += 92;
 	}
-	while ( (signed int)v0 < (signed int)&premiumitem[6]._itype );
 	if ( storenumh )
 	{
 		v2 = plr[myplr]._pGold;
@@ -992,11 +948,10 @@ void __fastcall S_ScrollSSell(int idx)
 
 	v1 = idx;
 	v5 = idx;
-	v2 = 5;
 	ClearSText(5, 21);
 	v3 = &storehold[v1]._iMagical;
 	stextup = 5;
-	do
+	for (v2 = 5; v2 < 20; v2 += 4)
 	{
 		if ( v5 >= storenumh )
 			break;
@@ -1022,10 +977,8 @@ void __fastcall S_ScrollSSell(int idx)
 			stextdown = v2;
 		}
 		++v5;
-		v2 += 4;
 		v3 += 368;
 	}
-	while ( v2 < 20 );
 	stextsmax = storenumh - 4;
 	if ( storenumh - 4 < 0 )
 		stextsmax = 0;
@@ -1122,17 +1075,13 @@ void __cdecl S_StartSRepair()
 	signed int v12; // [esp+10h] [ebp-8h]
 	int v13; // [esp+14h] [ebp-4h]
 
-	v0 = 0;
 	stextsize = 1;
 	v12 = 0;
 	storenumh = 0;
-	v1 = &storehold[0]._itype;
-	do
+	for (v1 = &storehold[0]._itype; v1 < &storehold[48]._itype; v1 += 92)
 	{
 		*v1 = -1;
-		v1 += 92;
 	}
-	while ( (signed int)v1 < (signed int)&storehold[48]._itype );
 	v2 = myplr;
 	v3 = myplr;
 	if ( plr[myplr].InvBody[0]._itype != -1 && plr[v3].InvBody[0]._iDurability != plr[v3].InvBody[0]._iMaxDur )
@@ -1166,7 +1115,7 @@ void __cdecl S_StartSRepair()
 	if ( plr[v2]._pNumInv > 0 )
 	{
 		v13 = 0;
-		do
+		for (v0 = 0; v0 < plr[v2]._pNumInv; v0++)
 		{
 			//_LOBYTE(v8) = SmithRepairOk(v0);
 			if ( SmithRepairOk(v0) )
@@ -1177,9 +1126,7 @@ void __cdecl S_StartSRepair()
 			}
 			++v13;
 			v7 = 21720 * v2;
-			++v0;
 		}
-		while ( v0 < plr[v2]._pNumInv );
 	}
 	v9 = v2;
 	v11 = plr[v9]._pGold;
@@ -1267,11 +1214,10 @@ void __fastcall S_ScrollWBuy(int idx)
 	int iclr; // [esp+Ch] [ebp-4h]
 
 	v1 = idx;
-	v2 = 5;
 	ClearSText(5, 21);
 	v3 = &witchitem[v1]._iMagical;
 	stextup = 5;
-	do
+	for (v2 = 5; v2 < 20; v2 += 4)
 	{
 		if ( *((_DWORD *)v3 - 13) != -1 )
 		{
@@ -1289,9 +1235,7 @@ void __fastcall S_ScrollWBuy(int idx)
 			stextdown = v2;
 			v3 += 368;
 		}
-		v2 += 4;
 	}
-	while ( v2 < 20 );
 	if ( !stext[stextsel]._ssel && stextsel != 22 )
 		stextsel = stextdown;
 }
@@ -1493,13 +1437,10 @@ void __cdecl S_StartWRecharge()
 	stextsize = 1;
 	v8 = 0;
 	storenumh = 0;
-	v0 = &storehold[0]._itype;
-	do
+	for (v0 = &storehold[0]._itype; v0 < &storehold[48]._itype; v0 += 92)
 	{
 		*v0 = -1;
-		v0 += 92;
 	}
-	while ( (signed int)v0 < (signed int)&storehold[48]._itype );
 	v1 = myplr;
 	if ( plr[myplr].InvBody[4]._itype == ITYPE_STAFF && plr[v1].InvBody[4]._iCharges != plr[v1].InvBody[4]._iMaxCharges )
 	{
@@ -1508,11 +1449,10 @@ void __cdecl S_StartWRecharge()
 		AddStoreHoldRecharge(v4, -1);
 	}
 	v2 = plr[v1]._pNumInv;
-	inv_num = 0;
 	if ( v2 > 0 )
 	{
 		v7 = plr[v1].InvList;
-		do
+		for (inv_num = 0; inv_num < v2; inv_num++)
 		{
 			//_LOBYTE(v3) = WitchRechargeOk(inv_num);
 			if ( WitchRechargeOk(inv_num) )
@@ -1521,11 +1461,9 @@ void __cdecl S_StartWRecharge()
 				qmemcpy(&v4, v7, sizeof(v4));
 				AddStoreHoldRecharge(v4, inv_num);
 			}
-			++inv_num;
 			v2 = plr[v1]._pNumInv;
 			++v7;
 		}
-		while ( inv_num < v2 );
 	}
 	v5 = plr[v1]._pGold;
 	if ( v8 )
@@ -1739,11 +1677,10 @@ void __fastcall S_ScrollHBuy(int idx)
 	int iclr; // [esp+8h] [ebp-4h]
 
 	v1 = idx;
-	v2 = 5;
 	ClearSText(5, 21);
 	stextup = 5;
 	v3 = &healitem[v1]._iStatFlag;
-	do
+	for (v2 = 5; v2 < 20; v2 += 4)
 	{
 		if ( *(v3 - 87) != -1 )
 		{
@@ -1756,9 +1693,7 @@ void __fastcall S_ScrollHBuy(int idx)
 			stextdown = v2;
 			v3 += 92;
 		}
-		v2 += 4;
 	}
-	while ( v2 < 20 );
 	if ( !stext[stextsel]._ssel && stextsel != 22 )
 		stextsel = stextdown;
 }
@@ -1975,18 +1910,14 @@ void __cdecl S_StartTalk()
 	sprintf(tempstr, "Talk to %s", talkname[talker]);
 	AddSText(0, 2, 1u, tempstr, COL_GOLD, 0);
 	AddSLine(5);
-	v0 = &quests[0]._qlog;
 	v1 = 0;
 	v2 = 0;
-	v3 = &quests[0]._qlog;
-	do
+	for (v3 = &quests[0]._qlog; v3 < &quests[16]._qlog; v3 += 6)
 	{
 		if ( *((_BYTE *)v3 - 18) == 2 && *((_DWORD *)&Qtalklist[0]._qinfra + v2 + 16 * talker) != -1 && *v3 )
 			++v1;
-		v3 += 6;
 		++v2;
 	}
-	while ( (signed int)v3 < (signed int)&quests[16]._qlog );
 	if ( v1 <= 6 )
 	{
 		v7 = 15;
@@ -2002,18 +1933,16 @@ void __cdecl S_StartTalk()
 	v5 = v7 - v1;
 	v6 = 0;
 	y = v7 - v1 - 2;
-	do
+	for (v0 = &quests[0]._qlog; v0 < &quests[16]._qlog; v0 += 6)
 	{
 		if ( *((_BYTE *)v0 - 18) == 2 && *((_DWORD *)&Qtalklist[0]._qinfra + v6 + 16 * talker) != -1 && *v0 )
 		{
 			AddSText(0, v5, 1u, *v4, COL_WHITE, 1);
 			v5 += v8;
 		}
-		v0 += 6;
 		++v6;
 		v4 += 5;
 	}
-	while ( (signed int)v0 < (signed int)&quests[16]._qlog );
 	AddSText(0, y, 1u, "Gossip", COL_BLUE, 1);
 	AddSText(0, 22, 1u, "Back", COL_WHITE, 1);
 }
@@ -2619,8 +2548,7 @@ void __fastcall TakePlrsMoney(int cost)
 		{
 			if ( v1 > 0 )
 			{
-				v8 = 0;
-				do
+				for (v8 = 0; v8 < 8; v8++)
 				{
 					if ( v1 <= 0 )
 						break;
@@ -2643,9 +2571,7 @@ void __fastcall TakePlrsMoney(int cost)
 							v1 = 0;
 						}
 					}
-					++v8;
 				}
-				while ( v8 < 8 );
 			}
 			break;
 		}
@@ -2658,13 +2584,12 @@ void __fastcall TakePlrsMoney(int cost)
 		if ( plr[v3]._pNumInv <= 0 )
 		{
 LABEL_26:
-			v17 = 0;
 			if ( v1 > 0 )
 			{
 				v18 = 21720 * v3;
 				if ( plr[v3]._pNumInv > 0 )
 				{
-					do
+					for (v17 = 0; v17 < plr[v3]._pNumInv; v17++)
 					{
 						if ( v1 <= 0 )
 							break;
@@ -2687,10 +2612,8 @@ LABEL_26:
 								v1 = 0;
 							}
 						}
-						++v17;
 						v18 = 21720 * v3;
 					}
-					while ( v17 < plr[v3]._pNumInv );
 				}
 			}
 		}
@@ -2794,14 +2717,12 @@ void __cdecl S_SBuyEnter()
 			qmemcpy(&plr[v0].HoldItem, &smithitem[idx], sizeof(plr[v0].HoldItem));
 			SetCursor(plr[v0].HoldItem._iCurs + 12);
 			done = 0;
-			i = 0;
-			do
+			for (i = 0; i < 40; i++)
 			{
 				if ( done )
 					goto LABEL_9;
-				done = AutoPlace(myplr, i++, cursW / 28, cursH / 28, 0);
+				done = AutoPlace(myplr, i, cursW / 28, cursH / 28, 0);
 			}
-			while ( i < 40 );
 			if ( done )
 			{
 LABEL_9:
@@ -2915,14 +2836,12 @@ void __cdecl S_SPBuyEnter()
 			qmemcpy(&plr[v7].HoldItem, &premiumitem[v6], sizeof(plr[v7].HoldItem));
 			SetCursor(plr[v7].HoldItem._iCurs + 12);
 			v8 = 0;
-			v9 = 0;
-			do
+			for (v9 = 0; v9 < 40; v9++)
 			{
 				if ( v8 )
 					goto LABEL_14;
-				v8 = AutoPlace(myplr, v9++, cursW / 28, cursH / 28, 0);
+				v8 = AutoPlace(myplr, v9, cursW / 28, cursH / 28, 0);
 			}
-			while ( v9 < 40 );
 			if ( v8 )
 			{
 LABEL_14:
@@ -3577,14 +3496,12 @@ void __cdecl S_BBuyEnter()
 			plr[v1].HoldItem._iIvalue += plr[v1].HoldItem._iIvalue >> 1;
 			SetCursor(plr[v1].HoldItem._iCurs + 12);
 			v3 = 0;
-			v4 = 0;
-			do
+			for (v4 = 0; v4 < 40; v4++)
 			{
 				if ( v3 )
 					goto LABEL_8;
-				v3 = AutoPlace(myplr, v4++, cursW / 28, cursH / 28, 0);
+				v3 = AutoPlace(myplr, v4, cursW / 28, cursH / 28, 0);
 			}
-			while ( v4 < 40 );
 			if ( v3 )
 			{
 LABEL_8:
@@ -3781,14 +3698,12 @@ void __cdecl S_HBuyEnter()
 			qmemcpy(&plr[v0].HoldItem, &healitem[idx], sizeof(plr[v0].HoldItem));
 			SetCursor(plr[v0].HoldItem._iCurs + 12);
 			done = 0;
-			i = 0;
-			do
+			for (i = 0; i < 40; i++)
 			{
 				if ( done )
 					goto LABEL_9;
-				done = SpecialAutoPlace(myplr, i++, cursW / 28, cursH / 28, 0);
+				done = SpecialAutoPlace(myplr, i, cursW / 28, cursH / 28, 0);
 			}
-			while ( i < 40 );
 			if ( done )
 			{
 LABEL_9:
@@ -3901,18 +3816,14 @@ void __cdecl S_TalkEnter()
 	else
 	{
 		v0 = talker;
-		v1 = &quests[0]._qlog;
 		v2 = 0;
 		v3 = 0;
-		v4 = &quests[0]._qlog;
-		do
+		for (v4 = &quests[0]._qlog; v4 < &quests[16]._qlog; v4 += 6)
 		{
 			if ( *((_BYTE *)v4 - 18) == 2 && *((_DWORD *)&Qtalklist[0]._qinfra + v3 + 16 * talker) != -1 && *v4 )
 				++v2;
-			v4 += 6;
 			++v3;
 		}
-		while ( (signed int)v4 < (signed int)&quests[16]._qlog );
 		if ( v2 <= 6 )
 		{
 			v5 = 15 - v2;
@@ -3932,7 +3843,7 @@ void __cdecl S_TalkEnter()
 		else
 		{
 			v9 = 0;
-			do
+			for (v1 = &quests[0]._qlog; v1 < &quests[16]._qlog; v1 += 6)
 			{
 				if ( *((_BYTE *)v1 - 18) == 2 )
 				{
@@ -3950,10 +3861,8 @@ void __cdecl S_TalkEnter()
 						}
 					}
 				}
-				v1 += 6;
 				++v9;
 			}
-			while ( (signed int)v1 < (signed int)&quests[16]._qlog );
 		}
 	}
 }
