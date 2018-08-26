@@ -516,41 +516,31 @@ void __fastcall FreePlayerGFX(int pnum)
 
 void __fastcall NewPlrAnim(int pnum, unsigned char *Peq, int numFrames, int Delay, int width)
 {
-	int v5; // edi
-	unsigned char *v6; // esi
-	int v7; // eax
-
-	v5 = pnum;
-	v6 = Peq;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS )
 		TermMsg("NewPlrAnim: illegal player %d", pnum);
-	v7 = v5;
-	plr[v7]._pAnimLen = numFrames;
-	plr[v7]._pAnimCnt = 0;
-	plr[v7]._pAnimDelay = Delay;
-	plr[v7]._pAnimData = v6;
-	plr[v7]._pAnimWidth = width;
-	plr[v7]._pAnimFrame = 1;
-	plr[v7]._pAnimWidth2 = (width - 64) >> 1;
+
+	plr[pnum]._pAnimLen = numFrames;
+	plr[pnum]._pAnimCnt = 0;
+	plr[pnum]._pAnimDelay = Delay;
+	plr[pnum]._pAnimData = Peq;
+	plr[pnum]._pAnimWidth = width;
+	plr[pnum]._pAnimFrame = 1;
+	plr[pnum]._pAnimWidth2 = (width - 64) >> 1;
 }
 
 void __fastcall ClearPlrPVars(int pnum)
 {
-	int v1; // esi
-	int v2; // eax
-
-	v1 = pnum;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS )
 		TermMsg("ClearPlrPVars: illegal player %d", pnum);
-	v2 = v1;
-	plr[v2]._pVar1 = 0;
-	plr[v2]._pVar2 = 0;
-	plr[v2]._pVar3 = 0;
-	plr[v2]._pVar4 = 0;
-	plr[v2]._pVar5 = 0;
-	plr[v2]._pVar6 = 0;
-	plr[v2]._pVar7 = 0;
-	plr[v2]._pVar8 = 0;
+
+	plr[pnum]._pVar1 = 0;
+	plr[pnum]._pVar2 = 0;
+	plr[pnum]._pVar3 = 0;
+	plr[pnum]._pVar4 = 0;
+	plr[pnum]._pVar5 = 0;
+	plr[pnum]._pVar6 = 0;
+	plr[pnum]._pVar7 = 0;
+	plr[pnum]._pVar8 = 0;
 }
 
 void __fastcall SetPlrAnims(int pnum)
