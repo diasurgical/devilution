@@ -23,7 +23,7 @@ void __cdecl InitCursor();
 void __cdecl FreeCursor();
 void __fastcall SetICursor(int i);
 void __fastcall SetCursor(int i);
-void __fastcall j_SetCursor(int i);
+void __fastcall NewCursor(int i);
 void __cdecl InitLevelCursor();
 void __cdecl CheckTown();
 void __cdecl CheckRportal();
