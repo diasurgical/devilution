@@ -546,10 +546,11 @@ void __fastcall ClearPlrPVars(int pnum)
 void __fastcall SetPlrAnims(int pnum)
 {
 	if ( (DWORD)pnum >= MAX_PLRS )
+	{
 		TermMsg("SetPlrAnims: illegal player %d", pnum);
+	}
 
 	int pc = plr[pnum]._pClass;
-	char *pAnims = *&PlrGFXAnimLens[pc];
 
 	plr[pnum]._pNWidth = 96;
 	plr[pnum]._pWWidth = 96;
@@ -561,96 +562,85 @@ void __fastcall SetPlrAnims(int pnum)
 
 	if ( leveltype == DTYPE_TOWN )
 	{
-		plr[pnum]._pNFrames = pAnims[7];
-		plr[pnum]._pWFrames = pAnims[8];
-		plr[pnum]._pDFrames = pAnims[4];
-		plr[pnum]._pSFrames = pAnims[5];
+		plr[pnum]._pNFrames = PlrGFXAnimLens[pc][0];
+		plr[pnum]._pWFrames = PlrGFXAnimLens[pc][2];
+		plr[pnum]._pAFrames = PlrGFXAnimLens[pc][1];
+		plr[pnum]._pHFrames = PlrGFXAnimLens[pc][6];
+		plr[pnum]._pSFrames = PlrGFXAnimLens[pc][5];
+		plr[pnum]._pDFrames = PlrGFXAnimLens[pc][4];
+		plr[pnum]._pBFrames = PlrGFXAnimLens[pc][3];
+		plr[pnum]._pAFNum = PlrGFXAnimLens[pc][9];
 	}
 	else
 	{
-		plr[pnum]._pNFrames = pAnims[0];
-		plr[pnum]._pWFrames = pAnims[2];
-		plr[pnum]._pAFrames = pAnims[1];
-		plr[pnum]._pHFrames = pAnims[6];
-		plr[pnum]._pSFrames = pAnims[5];
-		plr[pnum]._pDFrames = pAnims[4];
-		plr[pnum]._pBFrames = pAnims[3];
-		plr[pnum]._pAFNum = pAnims[9];
+		plr[pnum]._pNFrames = PlrGFXAnimLens[pc][7];
+		plr[pnum]._pWFrames = PlrGFXAnimLens[pc][8];
+		plr[pnum]._pDFrames = PlrGFXAnimLens[pc][4];
+		plr[pnum]._pSFrames = PlrGFXAnimLens[pc][5];
 	}
-	plr[pnum]._pSFNum = pAnims[10];
+	plr[pnum]._pSFNum = PlrGFXAnimLens[pc][10];
 
 	int gn = plr[pnum]._pgfxnum & 0xF;
-	if ( pc == PC_WARRIOR  )
+	if ( pc == PC_WARRIOR )
 	{
 		if ( gn == 4 )
 		{
 			if ( leveltype )
+			{
 				plr[pnum]._pNFrames = 8;
+			}
 			plr[pnum]._pAWidth = 96;
 			plr[pnum]._pAFNum = 11;
-			return;
 		}
-		if ( gn == 5 )
+		else if ( gn == 5 )
 		{
 			plr[pnum]._pAFrames = 20;
 			plr[pnum]._pAFNum = 10;
-			return;
 		}
-		if ( gn == 8 )
+		else if ( gn == 8 )
 		{
 			plr[pnum]._pAFrames = 16;
 			plr[pnum]._pAFNum = 11;
-			return;
 		}
-		return;
 	}
-	if ( pc == PC_ROGUE )
+	else if ( pc == PC_ROGUE )
 	{
 		if ( gn == 5 )
 		{
 			plr[pnum]._pAFrames = 22;
 			plr[pnum]._pAFNum = 13;
-			return;
 		}
-		if ( gn == 4 )
+		else if ( gn == 4 )
 		{
 			plr[pnum]._pAFrames = 12;
 			plr[pnum]._pAFNum = 7;
-			return;
 		}
-		if ( gn == 8 )
+		else if ( gn == 8 )
 		{
 			plr[pnum]._pAFrames = 16;
 			plr[pnum]._pAFNum = 11;
-			return;
 		}
-		return;
 	}
-	if ( pc == PC_SORCERER ) {
+	else if ( pc == PC_SORCERER ) {
 		plr[pnum]._pSWidth = 128;
 		if ( gn == 0 )
 		{
 			plr[pnum]._pAFrames = 20;
-			return;
 		}
-		if ( gn == 1 )
+		else if ( gn == 1 )
 		{
 			plr[pnum]._pAFNum = 9;
-			return;
 		}
-		if ( gn == 4 )
+		else if ( gn == 4 )
 		{
 			plr[pnum]._pAFrames = 20;
 			plr[pnum]._pAFNum = 16;
-			return;
 		}
-		if ( gn == 5 )
+		else if ( gn == 5 )
 		{
 			plr[pnum]._pAFrames = 24;
 			plr[pnum]._pAFNum = 16;
-			return;
 		}
-		return;
 	}
 }
 // 5BB1ED: using guessed type char leveltype;
