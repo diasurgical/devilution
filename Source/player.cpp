@@ -562,6 +562,13 @@ void __fastcall SetPlrAnims(int pnum)
 
 	if ( leveltype == DTYPE_TOWN )
 	{
+		plr[pnum]._pNFrames = PlrGFXAnimLens[pc][7];
+		plr[pnum]._pWFrames = PlrGFXAnimLens[pc][8];
+		plr[pnum]._pDFrames = PlrGFXAnimLens[pc][4];
+		plr[pnum]._pSFrames = PlrGFXAnimLens[pc][5];
+	}
+	else
+	{
 		plr[pnum]._pNFrames = PlrGFXAnimLens[pc][0];
 		plr[pnum]._pWFrames = PlrGFXAnimLens[pc][2];
 		plr[pnum]._pAFrames = PlrGFXAnimLens[pc][1];
@@ -570,13 +577,7 @@ void __fastcall SetPlrAnims(int pnum)
 		plr[pnum]._pDFrames = PlrGFXAnimLens[pc][4];
 		plr[pnum]._pBFrames = PlrGFXAnimLens[pc][3];
 		plr[pnum]._pAFNum = PlrGFXAnimLens[pc][9];
-	}
-	else
-	{
-		plr[pnum]._pNFrames = PlrGFXAnimLens[pc][7];
-		plr[pnum]._pWFrames = PlrGFXAnimLens[pc][8];
-		plr[pnum]._pDFrames = PlrGFXAnimLens[pc][4];
-		plr[pnum]._pSFrames = PlrGFXAnimLens[pc][5];
+
 	}
 	plr[pnum]._pSFNum = PlrGFXAnimLens[pc][10];
 
