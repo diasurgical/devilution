@@ -26,7 +26,7 @@ void __fastcall CalcSelfItems(int pnum);
 void __fastcall CalcPlrItemMin(int pnum);
 bool __fastcall ItemMinStats(PlayerStruct *p, ItemStruct *x);
 void __fastcall CalcPlrBookVals(int p);
-void __fastcall CalcPlrInv(int p, bool Loadgfx);
+void __fastcall CalcPlrInv(int p, BOOL Loadgfx);
 void __fastcall SetPlrHandItem(ItemStruct *h, int idata);
 void __fastcall GetPlrHandSeed(ItemStruct *h);
 void __fastcall GetGoldSeed(int pnum, ItemStruct *h);

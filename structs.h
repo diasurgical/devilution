@@ -323,7 +323,7 @@ struct ItemStruct
 	int _isin; // set when item is flagged for deletion, deprecated in 1.02
 	char _iSelFlag;
 	int _iPostDraw;
-	int _iIdentified;
+	BOOL _iIdentified;
 	char _iMagical;
 	char _iName[64];
 	char _iIName[64];

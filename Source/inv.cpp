@@ -1587,33 +1587,33 @@ LABEL_89:
 // 4B8CBC: using guessed type int icursW;
 // 52571C: using guessed type int drawpanflag;
 
-void __fastcall CheckInvSwap(int pnum, int bLoc, int idx, int wCI, int seed, int bId)
+void __fastcall CheckInvSwap(int pnum, BYTE bLoc, int idx, WORD wCI, int seed, BOOL bId)
 {
-	unsigned char v6; // bl
-	PlayerStruct *v7; // eax
-	int p; // [esp+Ch] [ebp-4h]
-
-	v6 = bLoc;
-	p = pnum;
 	RecreateItem(127, idx, wCI, seed, 0);
-	v7 = &plr[p];
-	qmemcpy(&v7->HoldItem, &item[127], sizeof(v7->HoldItem));
+
+	PlayerStruct *p = &plr[pnum];
+	p->HoldItem = item[127];
+
 	if ( bId )
-		v7->HoldItem._iIdentified = 1;
-	if ( v6 < 7u )
 	{
-		qmemcpy(&v7->InvBody[v6], &v7->HoldItem, sizeof(v7->InvBody[v6]));
-		if ( v6 == 4 )
+		p->HoldItem._iIdentified = TRUE;
+	}
+
+	// TODO: Enum values for bLoc
+	if ( bLoc < 7 )
+	{
+		p->InvBody[bLoc] = p->HoldItem;
+		if ( bLoc == 4 && p->HoldItem._iLoc == ILOC_TWOHAND )
 		{
-			if ( v7->HoldItem._iLoc == ILOC_TWOHAND )
-				v7->InvBody[5]._itype = ITYPE_NONE;
+			p->InvBody[5]._itype = ITYPE_NONE;
 		}
-		else if ( v6 == 5 && v7->HoldItem._iLoc == ILOC_TWOHAND )
+		else if ( bLoc == 5 && p->HoldItem._iLoc == ILOC_TWOHAND )
 		{
-			v7->InvBody[4]._itype = ITYPE_NONE;
+			p->InvBody[4]._itype = ITYPE_NONE;
 		}
 	}
-	CalcPlrInv(p, 1u);
+
+	CalcPlrInv(pnum, TRUE);
 }
 
 void __fastcall CheckInvCut(int pnum, int mx, int my)
