@@ -1393,7 +1393,7 @@ void __fastcall CalcPlrBookVals(int p)
 	}
 }
 
-void __fastcall CalcPlrInv(int p, bool Loadgfx)
+void __fastcall CalcPlrInv(int p, BOOL Loadgfx)
 {
 	CalcPlrItemMin(p);
 	CalcSelfItems(p);
