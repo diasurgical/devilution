@@ -675,7 +675,7 @@ void __fastcall CreatePlayer(int pnum, char c)
 	ClearPlrRVars(&plr[pnum]);
 	SetRndSeed(GetTickCount());
 
-	if ( pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS )
 	{
 		TermMsg("CreatePlayer: illegal player %d", pnum);
 	}
