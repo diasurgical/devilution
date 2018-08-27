@@ -1400,7 +1400,7 @@ LABEL_268:
 									pdung_cels += 4;
 									tmp_pbDst += 4;
 								}
-								if ( x_minus & 2 ) /* should be y_minus */
+								if ( x_minus & 2 ) /// BUGFIX: change to `y_minus & 2`
 								{
 									tmp_pbDst[1] = pdung_cels[1];
 									pdung_cels += 4;
@@ -1416,7 +1416,7 @@ LABEL_268:
 									pdung_cels += 4;
 									tmp_pbDst += 4;
 								}
-								if ( x_minus & 2 ) /* should be y_minus */
+								if ( x_minus & 2 ) /// BUGFIX: change to `y_minus & 2`
 								{
 									tmp_pbDst[0] = pdung_cels[0];
 									pdung_cels += 4;
@@ -6138,7 +6138,7 @@ LABEL_308:
 								tmp_pbDst[0] = pdung_cels[2];
 								pdung_cels += 4;
 								tmp_pbDst += 2;
-								--n_draw_shift; /* check SHOULDNT BE HERE */
+								--n_draw_shift; /// BUGFIX: delete this line
 							}
 							if ( n_draw_shift )
 							{
@@ -7207,7 +7207,7 @@ LABEL_80:
 								{
 									tmp_pbDst[0] = _EBX[pdung_cels[0]];
 									tmp_pbDst[1] = _EBX[pdung_cels[1]];
-									pdung_cels += 2; /* check SHOULD BE +4 */
+									pdung_cels += 2; /// BUGFIX: change to `pdung_cels += 4`
 									tmp_pbDst += 2;
 								}
 								tmp_pbDst = &tmp_pbDst[yy_32 - 800];
