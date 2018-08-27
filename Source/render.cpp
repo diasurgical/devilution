@@ -97,9 +97,7 @@ void __fastcall drawTopArchesUpperScreen(unsigned char *pbDst)
 	unsigned int n_draw_shift; // ecx MAPDST
 	unsigned int x_minus; // ecx MAPDST
 	unsigned int y_minus; // ecx MAPDST
-	char *tmp_dst; // edi MAPDST
 	signed int junk_v134; // ebp
-	short temp16; // ax MAPDST
 	char junk_minus; // bp
 	int junk_v180; // ebp
 	signed int i; // edx MAPDST
@@ -1235,7 +1233,7 @@ LABEL_265:
 							n_draw_shift = chk_sh_and >> 1;
 							if ( chk_sh_and & 1 )
 							{
-								*tmp_pbDst = *pdung_cels;
+								tmp_pbDst[0] = pdung_cels[0];
 								pdung_cels += 2;
 								tmp_pbDst += 2;
 							}
@@ -1308,11 +1306,9 @@ LABEL_268:
 						n_draw_shift = x_minus >> 2;
 						if ( x_minus & 2 )
 						{
-							temp16 = *((_WORD *)pdung_cels + 1);
+							tmp_pbDst[1] = pdung_cels[3];
 							pdung_cels += 4;
-							tmp_dst = tmp_pbDst + 1;
-							*tmp_dst = __ROR4__(temp16, 8);
-							tmp_pbDst = tmp_dst + 1;
+							tmp_pbDst += 2;
 						}
 						if ( n_draw_shift )
 						{
@@ -1332,7 +1328,7 @@ LABEL_268:
 						n_draw_shift = x_minus >> 2;
 						if ( x_minus & 2 )
 						{
-							*tmp_pbDst = *((_WORD *)pdung_cels + 1);
+							tmp_pbDst[0] = pdung_cels[2];
 							pdung_cels += 4;
 							tmp_pbDst += 2;
 						}
@@ -1366,11 +1362,9 @@ LABEL_268:
 								n_draw_shift = y_minus >> 2;
 								if ( y_minus & 2 )
 								{
-									temp16 = *((_WORD *)pdung_cels + 1);
+									tmp_pbDst[1] = pdung_cels[3];
 									pdung_cels += 4;
-									tmp_dst = tmp_pbDst + 1;
-									*tmp_dst = __ROR4__(temp16, 8);
-									tmp_pbDst = tmp_dst + 1;
+									tmp_pbDst += 2;
 								}
 								if ( n_draw_shift )
 								{
@@ -1390,7 +1384,7 @@ LABEL_268:
 								n_draw_shift = y_minus >> 2;
 								if ( y_minus & 2 )
 								{
-									*tmp_pbDst = *((_WORD *)pdung_cels + 1);
+									tmp_pbDst[0] = pdung_cels[2];
 									pdung_cels += 4;
 									tmp_pbDst += 2;
 								}
@@ -1440,11 +1434,9 @@ LABEL_268:
 						junk_v180 = junk_minus & 2;
 						if ( junk_v180 )
 						{
-							temp16 = *(_WORD *)pdung_cels;
+							tmp_pbDst[1] = pdung_cels[1];
 							pdung_cels += 4;
-							tmp_dst = tmp_pbDst + 1;
-							*tmp_dst = __ROR4__(temp16, 8);
-							tmp_pbDst = tmp_dst + 1;
+							tmp_pbDst += 2;
 						}
 					}
 					else
@@ -1459,7 +1451,7 @@ LABEL_268:
 						junk_v180 = junk_minus & 2;
 						if ( junk_v180 )
 						{
-							*tmp_pbDst = *(_WORD *)pdung_cels;
+							tmp_pbDst[0] = pdung_cels[0];
 							pdung_cels += 4;
 							tmp_pbDst += 2;
 						}
@@ -1487,11 +1479,9 @@ LABEL_268:
 								junk_v180 &= 2u;
 								if ( junk_v180 )
 								{
-									temp16 = *(_WORD *)pdung_cels;
+									tmp_pbDst[1] = pdung_cels[1];
 									pdung_cels += 4;
-									tmp_dst = tmp_pbDst + 1;
-									*tmp_dst = __ROR4__(temp16, 8);
-									tmp_pbDst = tmp_dst + 1;
+									tmp_pbDst += 2;
 								}
 							}
 							else
@@ -1506,7 +1496,7 @@ LABEL_268:
 								junk_v180 &= 2u;
 								if ( junk_v180 )
 								{
-									*tmp_pbDst = *(_WORD *)pdung_cels;
+									tmp_pbDst[0] = pdung_cels[0];
 									pdung_cels += 4;
 									tmp_pbDst += 2;
 								}
@@ -1537,11 +1527,9 @@ LABEL_268:
 						n_draw_shift = x_minus >> 2;
 						if ( x_minus & 2 )
 						{
-							temp16 = *((_WORD *)pdung_cels + 1);
+							tmp_pbDst[1] = pdung_cels[3];
 							pdung_cels += 4;
-							tmp_dst = tmp_pbDst + 1;
-							*tmp_dst = __ROR4__(temp16, 8);
-							tmp_pbDst = tmp_dst + 1;
+							tmp_pbDst += 2;
 						}
 						if ( n_draw_shift)
 						{
@@ -1561,7 +1549,7 @@ LABEL_268:
 						n_draw_shift = x_minus >> 2;
 						if ( x_minus & 2 )
 						{
-							*tmp_pbDst = *((_WORD *)pdung_cels + 1);
+							tmp_pbDst[0] = pdung_cels[2];
 							pdung_cels += 4;
 							tmp_pbDst += 2;
 						}
@@ -1641,11 +1629,9 @@ LABEL_268:
 						}
 						if ( (32 - (_BYTE)xx_32) & 2 )
 						{
-							temp16 = *(_WORD *)pdung_cels;
+							tmp_pbDst[1] = pdung_cels[1];
 							pdung_cels += 4;
-							tmp_dst = tmp_pbDst + 1;
-							*tmp_dst = __ROR4__(temp16, 8);
-							tmp_pbDst = tmp_dst + 1;
+							tmp_pbDst += 2;
 						}
 					}
 					else
@@ -1659,7 +1645,7 @@ LABEL_268:
 						}
 						if ( (32 - (_BYTE)xx_32) & 2 )
 						{
-							*tmp_pbDst = *(_WORD *)pdung_cels;
+							tmp_pbDst[0] = pdung_cels[0];
 							pdung_cels += 4;
 							tmp_pbDst += 2;
 						}
@@ -1742,7 +1728,7 @@ LABEL_268:
 				j = 8;
 				do
 				{
-					*tmp_pbDst = 0;
+					tmp_pbDst[0] = 0;
 					tmp_pbDst[2] = 0;
 					tmp_pbDst += 4;
 					--j;
@@ -1787,14 +1773,14 @@ LABEL_385:
 								n_draw_shift = chk_sh_and >> 1;
 								if ( chk_sh_and & 1 )
 								{
-									*tmp_pbDst = 0;
+									tmp_pbDst[0] = 0;
 									tmp_pbDst += 2;
 								}
 								if ( n_draw_shift )
 								{
 									do
 									{
-										*tmp_pbDst = 0;
+										tmp_pbDst[0] = 0;
 										tmp_pbDst[2] = 0;
 										tmp_pbDst += 4;
 										--n_draw_shift;
@@ -1867,9 +1853,8 @@ LABEL_391:
 					n_draw_shift = x_minus >> 2;
 					if ( x_minus & 2 )
 					{
-						tmp_dst = tmp_pbDst + 1;
-						*tmp_dst = 0;
-						tmp_pbDst = tmp_dst + 1;
+						tmp_pbDst[1] = 0;
+						tmp_pbDst += 2;
 					}
 					if ( n_draw_shift )
 					{
@@ -1888,14 +1873,14 @@ LABEL_391:
 					n_draw_shift = x_minus >> 2;
 					if ( x_minus & 2 )
 					{
-						*tmp_pbDst = 0;
+						tmp_pbDst[0] = 0;
 						tmp_pbDst += 2;
 					}
 					if ( n_draw_shift)
 					{
 						do
 						{
-							*tmp_pbDst = 0;
+							tmp_pbDst[0] = 0;
 							tmp_pbDst[2] = 0;
 							tmp_pbDst += 4;
 							--n_draw_shift;
@@ -1920,9 +1905,8 @@ LABEL_391:
 					n_draw_shift = y_minus >> 2;
 					if ( y_minus & 2 )
 					{
-						tmp_dst = tmp_pbDst + 1;
-						*tmp_dst = 0;
-						tmp_pbDst = tmp_dst + 1;
+						tmp_pbDst[1] = 0;
+						tmp_pbDst += 2;
 					}
 					if ( n_draw_shift )
 					{
@@ -1941,14 +1925,14 @@ LABEL_391:
 					n_draw_shift = y_minus >> 2;
 					if ( y_minus & 2 )
 					{
-						*tmp_pbDst = 0;
+						tmp_pbDst[0] = 0;
 						tmp_pbDst += 2;
 					}
 					if ( n_draw_shift)
 					{
 						do
 						{
-							*tmp_pbDst = 0;
+							tmp_pbDst[0] = 0;
 							tmp_pbDst[2] = 0;
 							tmp_pbDst += 4;
 							--n_draw_shift;
@@ -1979,9 +1963,8 @@ LABEL_391:
 					n_draw_shift = x_minus >> 2;
 					if ( x_minus & 2 )
 					{
-						tmp_dst = tmp_pbDst + 1;
-						*tmp_dst = 0;
-						tmp_pbDst = tmp_dst + 1;
+						tmp_pbDst[1] = 0;
+						tmp_pbDst += 2;
 					}
 					if ( n_draw_shift )
 					{
@@ -2000,14 +1983,14 @@ LABEL_391:
 					n_draw_shift = x_minus >> 2;
 					if ( x_minus & 2 )
 					{
-						*tmp_pbDst = 0;
+						tmp_pbDst[0] = 0;
 						tmp_pbDst += 2;
 					}
 					if ( n_draw_shift )
 					{
 						do
 						{
-							*tmp_pbDst = 0;
+							tmp_pbDst[0] = 0;
 							tmp_pbDst[2] = 0;
 							tmp_pbDst += 4;
 							--n_draw_shift;
@@ -2032,9 +2015,8 @@ LABEL_391:
 					n_draw_shift = y_minus >> 2;
 					if ( y_minus & 2 )
 					{
-						tmp_dst = tmp_pbDst + 1;
-						*tmp_dst = 0;
-						tmp_pbDst = tmp_dst + 1;
+						tmp_pbDst[1] = 0;
+						tmp_pbDst += 2;
 					}
 					if ( n_draw_shift )
 					{
@@ -2053,14 +2035,14 @@ LABEL_391:
 					n_draw_shift = y_minus >> 2;
 					if ( y_minus & 2 )
 					{
-						*tmp_pbDst = 0;
+						tmp_pbDst[0] = 0;
 						tmp_pbDst += 2;
 					}
 					if ( n_draw_shift )
 					{
 						do
 						{
-							*tmp_pbDst = 0;
+							tmp_pbDst[0] = 0;
 							tmp_pbDst[2] = 0;
 							tmp_pbDst += 4;
 							--n_draw_shift;
@@ -2092,9 +2074,8 @@ LABEL_391:
 					n_draw_shift = x_minus >> 2;
 					if ( x_minus & 2 )
 					{
-						tmp_dst = tmp_pbDst + 1;
-						*tmp_dst = 0;
-						tmp_pbDst = tmp_dst + 1;
+						tmp_pbDst[1] = 0;
+						tmp_pbDst += 2;
 					}
 					if ( n_draw_shift )
 					{
@@ -2113,14 +2094,14 @@ LABEL_391:
 					n_draw_shift = x_minus >> 2;
 					if ( x_minus & 2 )
 					{
-						*tmp_pbDst = 0;
+						tmp_pbDst[0] = 0;
 						tmp_pbDst += 2;
 					}
 					if ( n_draw_shift )
 					{
 						do
 						{
-							*tmp_pbDst = 0;
+							tmp_pbDst[0] = 0;
 							tmp_pbDst[2] = 0;
 							tmp_pbDst += 4;
 							--n_draw_shift;
@@ -2152,7 +2133,7 @@ LABEL_391:
 				j = 8;
 				do
 				{
-					*tmp_pbDst = 0;
+					tmp_pbDst[0] = 0;
 					tmp_pbDst[2] = 0;
 					tmp_pbDst += 4;
 					--j;
@@ -2181,9 +2162,8 @@ LABEL_391:
 					n_draw_shift = x_minus >> 2;
 					if ( x_minus & 2 )
 					{
-						tmp_dst = tmp_pbDst + 1;
-						*tmp_dst = 0;
-						tmp_pbDst = tmp_dst + 1;
+						tmp_pbDst[1] = 0;
+						tmp_pbDst += 2;
 					}
 					if ( n_draw_shift )
 					{
@@ -2202,14 +2182,14 @@ LABEL_391:
 					n_draw_shift = x_minus >> 2;
 					if ( x_minus & 2 )
 					{
-						*tmp_pbDst = 0;
+						tmp_pbDst[0] = 0;
 						tmp_pbDst += 2;
 					}
 					if ( n_draw_shift )
 					{
 						do
 						{
-							*tmp_pbDst = 0;
+							tmp_pbDst[0] = 0;
 							tmp_pbDst[2] = 0;
 							tmp_pbDst += 4;
 							--n_draw_shift;
@@ -2242,7 +2222,7 @@ LABEL_391:
 				j = 8;
 				do
 				{
-					*tmp_pbDst = 0;
+					tmp_pbDst[0] = 0;
 					tmp_pbDst[2] = 0;
 					tmp_pbDst += 4;
 					--j;
@@ -2273,7 +2253,6 @@ void __fastcall drawBottomArchesUpperScreen(unsigned char *pbDst, unsigned int *
 	signed int i; // ecx MAPDST
 	int y32_temp; // [esp-8h] [ebp-14h] MAPDST
 	int x32_temp; // [esp-4h] [ebp-10h] MAPDST
-	int _EAX;
 	char *_EBX;
 
 	gpCelFrame = (unsigned char *)speed_cel_frame_num_from_light_index_frame_num;
@@ -2308,7 +2287,7 @@ LABEL_12:
 					do
 					{
 						if ( left_shift & 0x80000000 )
-							*tmp_pbDst = *pdung_cels;
+							tmp_pbDst[0] = pdung_cels[0];
 						left_shift *= 2;
 						++pdung_cels;
 						++tmp_pbDst;
@@ -2357,7 +2336,7 @@ LABEL_12:
 						do
 						{
 							if ( left_shift & 0x80000000 )
-								*tmp_pbDst = *pdung_cels;
+								tmp_pbDst[0] = pdung_cels[0];
 							left_shift *= 2;
 							++pdung_cels;
 							++tmp_pbDst;
@@ -2533,7 +2512,7 @@ LABEL_129:
 							do
 							{
 								if ( left_shift & 0x80000000 )
-									*tmp_pbDst = *pdung_cels;
+									tmp_pbDst[0] = pdung_cels[0];
 								left_shift *= 2;
 								++pdung_cels;
 								++tmp_pbDst;
@@ -2586,7 +2565,7 @@ LABEL_129:
 							do
 							{
 								if ( left_shift & 0x80000000 )
-									*tmp_pbDst = *pdung_cels;
+									tmp_pbDst[0] = pdung_cels[0];
 								left_shift *= 2;
 								++pdung_cels;
 								++tmp_pbDst;
@@ -2632,7 +2611,7 @@ LABEL_129:
 						do
 						{
 							if ( left_shift & 0x80000000 )
-								*tmp_pbDst = _EBX[*pdung_cels];
+								tmp_pbDst[0] = _EBX[pdung_cels[0]];
 							left_shift *= 2;
 							++pdung_cels;
 							++tmp_pbDst;
@@ -2681,7 +2660,7 @@ LABEL_129:
 							do
 							{
 								if ( left_shift & 0x80000000 )
-									*tmp_pbDst = _EBX[*pdung_cels];
+									tmp_pbDst[0] = _EBX[pdung_cels[0]];
 								left_shift *= 2;
 								++pdung_cels;
 								++tmp_pbDst;
@@ -2712,12 +2691,9 @@ LABEL_50:
 						n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
 						if ( (32 - xx_32) & 2 )
 						{
-							_EAX = *((_WORD *)pdung_cels + 1);
+							tmp_pbDst[0] = _EBX[pdung_cels[2]];
+							tmp_pbDst[1] = _EBX[pdung_cels[3]];
 							pdung_cels += 4;
-							ASM_XLAT(_EAX,_EBX);
-							_EAX = __ROR2__(_EAX, 8);
-							ASM_XLAT(_EAX,_EBX);
-							*(_WORD *)tmp_pbDst = __ROR2__(_EAX, 8);
 							tmp_pbDst += 2;
 						}
 						if ( n_draw_shift )
@@ -2747,12 +2723,9 @@ LABEL_50:
 								n_draw_shift = (unsigned int)(32 - yy_32) >> 2;
 								if ( (32 - yy_32) & 2 )
 								{
-									_EAX = *((_WORD *)pdung_cels + 1);
+									tmp_pbDst[0] = _EBX[pdung_cels[2]];
+									tmp_pbDst[1] = _EBX[pdung_cels[3]];
 									pdung_cels += 4;
-									ASM_XLAT(_EAX,_EBX);
-									_EAX = __ROR2__(_EAX, 8);
-									ASM_XLAT(_EAX,_EBX);
-									*(_WORD *)tmp_pbDst = __ROR2__(_EAX, 8);
 									tmp_pbDst += 2;
 								}
 								if ( n_draw_shift )
@@ -2797,12 +2770,9 @@ LABEL_50:
 						}
 						if ( (32 - (_BYTE)xx_32) & 2 )
 						{
-							_EAX = *(_WORD *)pdung_cels;
+							tmp_pbDst[0] = _EBX[pdung_cels[0]];
+							tmp_pbDst[1] = _EBX[pdung_cels[1]];
 							pdung_cels += 4;
-							ASM_XLAT(_EAX,_EBX);
-							_EAX = __ROR2__(_EAX, 8);
-							ASM_XLAT(_EAX,_EBX);
-							*(_WORD *)tmp_pbDst = __ROR2__(_EAX, 8);
 							tmp_pbDst += 2;
 						}
 						tmp_pbDst = &tmp_pbDst[xx_32 - 800];
@@ -2825,12 +2795,9 @@ LABEL_50:
 								}
 								if ( (32 - (_BYTE)yy_32) & 2 )
 								{
-									_EAX = *(_WORD *)pdung_cels;
+									tmp_pbDst[0] = _EBX[pdung_cels[0]];
+									tmp_pbDst[1] = _EBX[pdung_cels[1]];
 									pdung_cels += 4;
-									ASM_XLAT(_EAX,_EBX);
-									_EAX = __ROR2__(_EAX, 8);
-									ASM_XLAT(_EAX,_EBX);
-									*(_WORD *)tmp_pbDst = __ROR2__(_EAX, 8);
 									tmp_pbDst += 2;
 								}
 								tmp_pbDst = &tmp_pbDst[yy_32 - 800];
@@ -2854,12 +2821,9 @@ LABEL_50:
 						n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
 						if ( (32 - xx_32) & 2 )
 						{
-							_EAX = *((_WORD *)pdung_cels + 1);
+							tmp_pbDst[0] = _EBX[pdung_cels[2]];
+							tmp_pbDst[1] = _EBX[pdung_cels[3]];
 							pdung_cels += 4;
-							ASM_XLAT(_EAX,_EBX);
-							_EAX = __ROR2__(_EAX, 8);
-							ASM_XLAT(_EAX,_EBX);
-							*(_WORD *)tmp_pbDst = __ROR2__(_EAX, 8);
 							tmp_pbDst += 2;
 						}
 						if ( n_draw_shift )
@@ -2893,7 +2857,7 @@ LABEL_50:
 								do
 								{
 									if ( left_shift & 0x80000000 )
-										*tmp_pbDst = _EBX[*pdung_cels];
+										tmp_pbDst[0] = _EBX[pdung_cels[0]];
 									left_shift *= 2;
 									++pdung_cels;
 									++tmp_pbDst;
@@ -2929,12 +2893,9 @@ LABEL_50:
 						}
 						if ( (32 - (_BYTE)xx_32) & 2 )
 						{
-							_EAX = *(_WORD *)pdung_cels;
+							tmp_pbDst[0] = _EBX[pdung_cels[0]];
+							tmp_pbDst[1] = _EBX[pdung_cels[1]];
 							pdung_cels += 4;
-							ASM_XLAT(_EAX,_EBX);
-							_EAX = __ROR2__(_EAX, 8);
-							ASM_XLAT(_EAX,_EBX);
-							*(_WORD *)tmp_pbDst = __ROR2__(_EAX, 8);
 							tmp_pbDst += 2;
 						}
 						tmp_pbDst = &tmp_pbDst[xx_32 - 800];
@@ -2953,7 +2914,7 @@ LABEL_50:
 								do
 								{
 									if ( left_shift & 0x80000000 )
-										*tmp_pbDst = _EBX[*pdung_cels];
+										tmp_pbDst[0] = _EBX[pdung_cels[0]];
 									left_shift *= 2;
 									++pdung_cels;
 									++tmp_pbDst;
@@ -3004,7 +2965,7 @@ LABEL_50:
 				do
 				{
 					if ( left_shift & 0x80000000 )
-						*tmp_pbDst = 0;
+						tmp_pbDst[0] = 0;
 					left_shift *= 2;
 					++tmp_pbDst;
 					--i;
@@ -3053,7 +3014,7 @@ LABEL_50:
 					do
 					{
 						if ( left_shift & 0x80000000 )
-							*tmp_pbDst = 0;
+							tmp_pbDst[0] = 0;
 						left_shift *= 2;
 						++tmp_pbDst;
 						--and80_i;
@@ -3230,7 +3191,7 @@ LABEL_208:
 						do
 						{
 							if ( left_shift & 0x80000000 )
-								*tmp_pbDst = 0;
+								tmp_pbDst[0] = 0;
 							left_shift *= 2;
 							++tmp_pbDst;
 							--i;
@@ -3286,7 +3247,7 @@ LABEL_208:
 						do
 						{
 							if ( left_shift & 0x80000000 )
-								*tmp_pbDst = 0;
+								tmp_pbDst[0] = 0;
 							left_shift *= 2;
 							++tmp_pbDst;
 							--i;
@@ -4350,20 +4311,15 @@ void __fastcall drawTopArchesLowerScreen(unsigned char *pbDst)
 	short cel_type_16; // ax MAPDST
 	unsigned int cel_type_16_tmp; // eax MAPDST
 	int cel_type_32; // eax
-	unsigned int temp32; // eax MAPDST
 	unsigned char junk_ror; // cf
 	signed int tile_42_45; // eax MAPDST
 	unsigned int world_tbl; // ecx MAPDST
 	int world_192; // eax MAPDST
-	char *junk_v155; // esi
-	char temp8; // al MAPDST
-	short temp16; // ax MAPDST
 	unsigned int dung_and80; // eax MAPDST
 	unsigned int chk_sh_and; // ecx MAPDST
 	int xx_32; // edx MAPDST
 	unsigned int x_minus; // ecx MAPDST
 	unsigned int n_draw_shift; // ecx MAPDST
-	char *tmp_dst; // edi MAPDST
 	int yy_32; // edx MAPDST
 	unsigned int y_minus; // ecx MAPDST
 	signed int i; // edx MAPDST
@@ -4426,7 +4382,7 @@ void __fastcall drawTopArchesLowerScreen(unsigned char *pbDst)
 						j = 8;
 						do
 						{
-							*tmp_pbDst = 0;
+							tmp_pbDst[0] = 0;
 							tmp_pbDst[2] = 0;
 							tmp_pbDst += 4;
 							--j;
@@ -4491,14 +4447,14 @@ LABEL_427:
 								n_draw_shift = chk_sh_and >> 1;
 								if ( chk_sh_and & 1 )
 								{
-									*tmp_pbDst = 0;
+									tmp_pbDst[0] = 0;
 									tmp_pbDst += 2;
 								}
 								if ( n_draw_shift )
 								{
 									do
 									{
-										*tmp_pbDst = 0;
+										tmp_pbDst[0] = 0;
 										tmp_pbDst[2] = 0;
 										tmp_pbDst += 4;
 										--n_draw_shift;
@@ -4587,14 +4543,14 @@ LABEL_430:
 							n_draw_shift = x_minus >> 2;
 							if ( x_minus & 2 )
 							{
-								*tmp_pbDst = 0;
+								tmp_pbDst[0] = 0;
 								tmp_pbDst += 2;
 							}
 							if ( n_draw_shift )
 							{
 								do
 								{
-									*tmp_pbDst = 0;
+									tmp_pbDst[0] = 0;
 									tmp_pbDst[2] = 0;
 									tmp_pbDst += 4;
 									--n_draw_shift;
@@ -4645,14 +4601,14 @@ LABEL_430:
 							n_draw_shift = y_minus >> 2;
 							if ( y_minus & 2 )
 							{
-								*tmp_pbDst = 0;
+								tmp_pbDst[0] = 0;
 								tmp_pbDst += 2;
 							}
 							if ( n_draw_shift )
 							{
 								do
 								{
-									*tmp_pbDst = 0;
+									tmp_pbDst[0] = 0;
 									tmp_pbDst[2] = 0;
 									tmp_pbDst += 4;
 									--n_draw_shift;
@@ -4709,14 +4665,14 @@ LABEL_430:
 							n_draw_shift = x_minus >> 2;
 							if ( x_minus & 2 )
 							{
-								*tmp_pbDst = 0;
+								tmp_pbDst[0] = 0;
 								tmp_pbDst += 2;
 							}
 							if ( n_draw_shift )
 							{
 								do
 								{
-									*tmp_pbDst = 0;
+									tmp_pbDst[0] = 0;
 									tmp_pbDst[2] = 0;
 									tmp_pbDst += 4;
 									--n_draw_shift;
@@ -4767,14 +4723,14 @@ LABEL_430:
 							n_draw_shift = y_minus >> 2;
 							if ( y_minus & 2 )
 							{
-								*tmp_pbDst = 0;
+								tmp_pbDst[0] = 0;
 								tmp_pbDst += 2;
 							}
 							if ( n_draw_shift )
 							{
 								do
 								{
-									*tmp_pbDst = 0;
+									tmp_pbDst[0] = 0;
 									tmp_pbDst[2] = 0;
 									tmp_pbDst += 4;
 									--n_draw_shift;
@@ -4832,14 +4788,14 @@ LABEL_430:
 							n_draw_shift = x_minus >> 2;
 							if ( x_minus & 2 )
 							{
-								*tmp_pbDst = 0;
+								tmp_pbDst[0] = 0;
 								tmp_pbDst += 2;
 							}
 							if ( n_draw_shift )
 							{
 								do
 								{
-									*tmp_pbDst = 0;
+									tmp_pbDst[0] = 0;
 									tmp_pbDst[2] = 0;
 									tmp_pbDst += 4;
 									--n_draw_shift;
@@ -4883,7 +4839,7 @@ LABEL_430:
 						j = 8;
 						do
 						{
-							*tmp_pbDst = 0;
+							tmp_pbDst[0] = 0;
 							tmp_pbDst[2] = 0;
 							tmp_pbDst += 4;
 							--j;
@@ -4938,14 +4894,14 @@ LABEL_430:
 							n_draw_shift = x_minus >> 2;
 							if ( x_minus & 2 )
 							{
-								*tmp_pbDst = 0;
+								tmp_pbDst[0] = 0;
 								tmp_pbDst += 2;
 							}
 							if ( n_draw_shift )
 							{
 								do
 								{
-									*tmp_pbDst = 0;
+									tmp_pbDst[0] = 0;
 									tmp_pbDst[2] = 0;
 									tmp_pbDst += 4;
 									--n_draw_shift;
@@ -4990,7 +4946,7 @@ LABEL_430:
 						j = 8;
 						do
 						{
-							*tmp_pbDst = 0;
+							tmp_pbDst[0] = 0;
 							tmp_pbDst[2] = 0;
 							tmp_pbDst += 4;
 							--j;
@@ -6244,7 +6200,7 @@ LABEL_287:
 									n_draw_shift = chk_sh_and >> 1;
 									if ( chk_sh_and & 1 )
 									{
-										*tmp_pbDst = *pdung_cels;
+										tmp_pbDst[0] = pdung_cels[0];
 										pdung_cels += 2;
 										tmp_pbDst += 2;
 									}
@@ -6275,12 +6231,9 @@ LABEL_280:
 									n_draw_shift = chk_sh_and >> 1;
 									if ( chk_sh_and & 1 )
 									{
-										junk_v155 = pdung_cels + 1;
-										tmp_dst = tmp_pbDst + 1;
-										temp8 = *junk_v155;
-										pdung_cels = junk_v155 + 1;
-										*tmp_dst = temp8;
-										tmp_pbDst = tmp_dst + 1;
+										tmp_pbDst[1] = pdung_cels[1];
+										pdung_cels += 2;
+										tmp_pbDst += 2;
 									}
 									if ( n_draw_shift )
 									{
@@ -6359,11 +6312,9 @@ LABEL_308:
 							n_draw_shift = y_minus >> 2;
 							if ( y_minus & 2 )
 							{
-								temp16 = *((_WORD *)pdung_cels + 1);
+								tmp_pbDst[1] = pdung_cels[3];
 								pdung_cels += 4;
-								tmp_dst = tmp_pbDst + 1;
-								*tmp_dst = __ROR4__(temp16, 8);
-								tmp_pbDst = tmp_dst + 1;
+								tmp_pbDst += 2;
 							}
 							if ( n_draw_shift )
 							{
@@ -6383,10 +6334,10 @@ LABEL_308:
 							n_draw_shift = y_minus >> 2;
 							if ( y_minus & 2 )
 							{
-								*tmp_pbDst = *((_WORD *)pdung_cels + 1);
+								tmp_pbDst[0] = pdung_cels[2];
 								pdung_cels += 4;
 								tmp_pbDst += 2;
-								--n_draw_shift; /* check */
+								--n_draw_shift; /* check SHOULDNT BE HERE */
 							}
 							if ( n_draw_shift )
 							{
@@ -6425,11 +6376,9 @@ LABEL_308:
 					n_draw_shift = x_minus >> 2;
 					if ( x_minus & 2 )
 					{
-						temp16 = *((_WORD *)pdung_cels + 1);
+						tmp_pbDst[1] = pdung_cels[3];
 						pdung_cels += 4;
-						tmp_dst = tmp_pbDst + 1;
-						*tmp_dst = __ROR4__(temp16, 8);
-						tmp_pbDst = tmp_dst + 1;
+						tmp_pbDst += 2;
 					}
 					if ( n_draw_shift )
 					{
@@ -6449,7 +6398,7 @@ LABEL_308:
 					n_draw_shift = x_minus >> 2;
 					if ( x_minus & 2 )
 					{
-						*tmp_pbDst = *((_WORD *)pdung_cels + 1);
+						tmp_pbDst[0] = pdung_cels[2];
 						pdung_cels += 4;
 						tmp_pbDst += 2;
 					}
@@ -6507,11 +6456,9 @@ LABEL_326:
 						}
 						if ( (32 - (_BYTE)xx_32) & 2 )
 						{
-							temp16 = *(_WORD *)pdung_cels;
+							tmp_pbDst[1] = pdung_cels[1];
 							pdung_cels += 4;
-							tmp_dst = tmp_pbDst + 1;
-							*tmp_dst = __ROR4__(temp16, 8);
-							tmp_pbDst = tmp_dst + 1;
+							tmp_pbDst += 2;
 						}
 					}
 					else
@@ -6525,7 +6472,7 @@ LABEL_326:
 						}
 						if ( (32 - (_BYTE)xx_32) & 2 )
 						{
-							*tmp_pbDst = *(_WORD *)pdung_cels;
+							tmp_pbDst[0] = pdung_cels[0];
 							pdung_cels += 4;
 							tmp_pbDst += 2;
 						}
@@ -6568,11 +6515,9 @@ LABEL_336:
 					}
 					if ( (32 - (_BYTE)yy_32) & 2 )
 					{
-						temp16 = *(_WORD *)pdung_cels;
+						tmp_pbDst[1] = pdung_cels[1];
 						pdung_cels += 4;
-						tmp_dst = tmp_pbDst + 1;
-						*tmp_dst = __ROR4__(temp16, 8);
-						tmp_pbDst = tmp_dst + 1;
+						tmp_pbDst += 2;
 					}
 				}
 				else
@@ -6586,7 +6531,7 @@ LABEL_336:
 					}
 					if ( (32 - (_BYTE)yy_32) & 2 )
 					{
-						*tmp_pbDst = *(_WORD *)pdung_cels;
+						tmp_pbDst[0] = pdung_cels[0];
 						pdung_cels += 4;
 						tmp_pbDst += 2;
 					}
@@ -6676,11 +6621,9 @@ LABEL_364:
 					n_draw_shift = x_minus >> 2;
 					if ( x_minus & 2 )
 					{
-						temp16 = *((_WORD *)pdung_cels + 1);
+						tmp_pbDst[1] = pdung_cels[3];
 						pdung_cels += 4;
-						tmp_dst = tmp_pbDst + 1;
-						*tmp_dst = __ROR4__(temp16, 8);
-						tmp_pbDst = tmp_dst + 1;
+						tmp_pbDst += 2;
 					}
 					if ( n_draw_shift )
 					{
@@ -6700,7 +6643,7 @@ LABEL_364:
 					n_draw_shift = x_minus >> 2;
 					if ( x_minus & 2 )
 					{
-						*tmp_pbDst = *((_WORD *)pdung_cels + 1);
+						tmp_pbDst[0] = pdung_cels[2];
 						pdung_cels += 4;
 						tmp_pbDst += 2;
 					}
@@ -6708,13 +6651,11 @@ LABEL_364:
 					{
 						do
 						{
-							temp32 = *(_DWORD *)pdung_cels;
+							tmp_pbDst[0] = pdung_cels[0];
+							tmp_pbDst[2] = pdung_cels[2];
 							pdung_cels += 4;
-							*tmp_pbDst = temp32;
-							tmp_dst = tmp_pbDst + 2;
-							*tmp_dst = __ROR4__(temp32, 16);
+							tmp_pbDst += 4;
 							--n_draw_shift;
-							tmp_pbDst = tmp_dst + 2;
 						}
 						while ( n_draw_shift );
 					}
@@ -6809,11 +6750,9 @@ LABEL_389:
 					}
 					if ( (32 - (_BYTE)xx_32) & 2 )
 					{
-						temp16 = *(_WORD *)pdung_cels;
+						tmp_pbDst[1] = pdung_cels[1];
 						pdung_cels += 4;
-						tmp_dst = tmp_pbDst + 1;
-						*tmp_dst = __ROR4__(temp16, 8);
-						tmp_pbDst = tmp_dst + 1;
+						tmp_pbDst += 2;
 					}
 				}
 				else
@@ -6827,7 +6766,7 @@ LABEL_389:
 					}
 					if ( (32 - (_BYTE)xx_32) & 2 )
 					{
-						*tmp_pbDst = *(_WORD *)pdung_cels;
+						tmp_pbDst[0] = pdung_cels[0];
 						pdung_cels += 4;
 						tmp_pbDst += 2;
 					}
@@ -6858,7 +6797,6 @@ void __fastcall drawBottomArchesLowerScreen(unsigned char *pbDst, unsigned int *
 	unsigned int n_draw_shift; // ecx MAPDST
 	int y32_temp; // [esp-8h] [ebp-14h] MAPDST
 	int x32_temp; // [esp-4h] [ebp-10h] MAPDST
-	int _EAX;
 	char *_EBX;
 
 	gpCelFrame = (unsigned char *)speed_cel_frame_num_from_light_index_frame_num;
@@ -6894,7 +6832,7 @@ void __fastcall drawBottomArchesLowerScreen(unsigned char *pbDst, unsigned int *
 							do
 							{
 								if ( left_shift & 0x80000000 )
-									*tmp_pbDst = 0;
+									tmp_pbDst[0] = 0;
 								left_shift *= 2;
 								++tmp_pbDst;
 								--i;
@@ -6942,7 +6880,7 @@ void __fastcall drawBottomArchesLowerScreen(unsigned char *pbDst, unsigned int *
 									do
 									{
 										if ( left_shift & 0x80000000 )
-											*tmp_pbDst = 0;
+											tmp_pbDst[0] = 0;
 										left_shift *= 2;
 										++tmp_pbDst;
 										--and80_i;
@@ -7161,7 +7099,7 @@ LABEL_252:
 							do
 							{
 								if ( left_shift & 0x80000000 )
-									*tmp_pbDst = 0;
+									tmp_pbDst[0] = 0;
 								left_shift *= 2;
 								++tmp_pbDst;
 								--i;
@@ -7229,7 +7167,7 @@ LABEL_252:
 							do
 							{
 								if ( left_shift & 0x80000000 )
-									*tmp_pbDst = 0;
+									tmp_pbDst[0] = 0;
 								left_shift *= 2;
 								++tmp_pbDst;
 								--i;
@@ -7274,7 +7212,7 @@ LABEL_252:
 							do
 							{
 								if ( left_shift & 0x80000000 )
-									*tmp_pbDst = _EBX[*pdung_cels];
+									tmp_pbDst[0] = _EBX[pdung_cels[0]];
 								left_shift *= 2;
 								++pdung_cels;
 								++tmp_pbDst;
@@ -7321,7 +7259,7 @@ LABEL_252:
 									do
 									{
 										if ( left_shift & 0x80000000 )
-											*tmp_pbDst = _EBX[*pdung_cels];
+											tmp_pbDst[0] = _EBX[pdung_cels[0]];
 										left_shift *= 2;
 										++pdung_cels;
 										++tmp_pbDst;
@@ -7385,12 +7323,9 @@ LABEL_62:
 								n_draw_shift = (unsigned int)(32 - yy_32) >> 2;
 								if ( (32 - yy_32) & 2 )
 								{
-									_EAX = *((_WORD *)pdung_cels + 1);
+									tmp_pbDst[0] = _EBX[pdung_cels[2]];
+									tmp_pbDst[1] = _EBX[pdung_cels[3]];
 									pdung_cels += 4;
-									ASM_XLAT(_EAX,_EBX);
-									_EAX = __ROR2__(_EAX, 8);
-									ASM_XLAT(_EAX,_EBX);
-									*(_WORD *)tmp_pbDst = __ROR2__(_EAX, 8);
 									tmp_pbDst += 2;
 								}
 								if ( n_draw_shift )
@@ -7424,12 +7359,9 @@ LABEL_62:
 						n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
 						if ( (32 - xx_32) & 2 )
 						{
-							_EAX = *((_WORD *)pdung_cels + 1);
+							tmp_pbDst[0] = _EBX[pdung_cels[2]];
+							tmp_pbDst[1] = _EBX[pdung_cels[3]];
 							pdung_cels += 4;
-							ASM_XLAT(_EAX,_EBX);
-							_EAX = __ROR2__(_EAX, 8);
-							ASM_XLAT(_EAX,_EBX);
-							*(_WORD *)tmp_pbDst = __ROR2__(_EAX, 8);
 							tmp_pbDst += 2;
 						}
 						if ( n_draw_shift )
@@ -7490,12 +7422,9 @@ LABEL_80:
 								}
 								if ( (32 - (_BYTE)yy_32) & 2 )
 								{
-									_EAX = *(_WORD *)pdung_cels;
-									pdung_cels += 2;
-									ASM_XLAT(_EAX,_EBX);
-									_EAX = __ROR2__(_EAX, 8);
-									ASM_XLAT(_EAX,_EBX);
-									*(_WORD *)tmp_pbDst = __ROR2__(_EAX, 8);
+									tmp_pbDst[0] = _EBX[pdung_cels[0]];
+									tmp_pbDst[1] = _EBX[pdung_cels[1]];
+									pdung_cels += 2; /* check SHOULD BE +4 */
 									tmp_pbDst += 2;
 								}
 								tmp_pbDst = &tmp_pbDst[yy_32 - 800];
@@ -7522,12 +7451,9 @@ LABEL_80:
 						}
 						if ( (32 - (_BYTE)xx_32) & 2 )
 						{
-							_EAX = *(_WORD *)pdung_cels;
+							tmp_pbDst[0] = _EBX[pdung_cels[0]];
+							tmp_pbDst[1] = _EBX[pdung_cels[1]];
 							pdung_cels += 4;
-							ASM_XLAT(_EAX,_EBX);
-							_EAX = __ROR2__(_EAX, 8);
-							ASM_XLAT(_EAX,_EBX);
-							*(_WORD *)tmp_pbDst = __ROR2__(_EAX, 8);
 							tmp_pbDst += 2;
 						}
 						tmp_pbDst = &tmp_pbDst[xx_32 - 800];
@@ -7562,7 +7488,7 @@ LABEL_98:
 									do
 									{
 										if ( left_shift & 0x80000000 )
-											*tmp_pbDst = _EBX[*pdung_cels];
+											tmp_pbDst[0] = _EBX[pdung_cels[0]];
 										left_shift *= 2;
 										++pdung_cels;
 										++tmp_pbDst;
@@ -7594,12 +7520,9 @@ LABEL_98:
 						n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
 						if ( (32 - xx_32) & 2 )
 						{
-							_EAX = *((_WORD *)pdung_cels + 1);
+							tmp_pbDst[0] = _EBX[pdung_cels[2]];
+							tmp_pbDst[1] = _EBX[pdung_cels[3]];
 							pdung_cels += 4;
-							ASM_XLAT(_EAX,_EBX);
-							_EAX = __ROR2__(_EAX, 8);
-							ASM_XLAT(_EAX,_EBX);
-							*(_WORD *)tmp_pbDst = __ROR2__(_EAX, 8);
 							tmp_pbDst += 2;
 						}
 						if ( n_draw_shift )
@@ -7648,7 +7571,7 @@ LABEL_117:
 									do
 									{
 										if ( left_shift & 0x80000000 )
-											*tmp_pbDst = _EBX[*pdung_cels];
+											tmp_pbDst[0] = _EBX[pdung_cels[0]];
 										left_shift *= 2;
 										++pdung_cels;
 										++tmp_pbDst;
@@ -7688,12 +7611,9 @@ LABEL_117:
 						}
 						if ( (32 - (_BYTE)xx_32) & 2 )
 						{
-							_EAX = *(_WORD *)pdung_cels;
+							tmp_pbDst[0] = _EBX[pdung_cels[0]];
+							tmp_pbDst[1] = _EBX[pdung_cels[1]];
 							pdung_cels += 4;
-							ASM_XLAT(_EAX,_EBX);
-							_EAX = __ROR2__(_EAX, 8);
-							ASM_XLAT(_EAX,_EBX);
-							*(_WORD *)tmp_pbDst = __ROR2__(_EAX, 8);
 							tmp_pbDst += 2;
 						}
 						tmp_pbDst = &tmp_pbDst[xx_32 - 800];
@@ -7737,7 +7657,7 @@ LABEL_117:
 					do
 					{
 						if ( left_shift & 0x80000000 )
-							*tmp_pbDst = *pdung_cels;
+							tmp_pbDst[0] = pdung_cels[0];
 						left_shift *= 2;
 						++pdung_cels;
 						++tmp_pbDst;
@@ -7785,7 +7705,7 @@ LABEL_117:
 							do
 							{
 								if ( left_shift & 0x80000000 )
-									*tmp_pbDst = *pdung_cels;
+									tmp_pbDst[0] = pdung_cels[0];
 								left_shift *= 2;
 								++pdung_cels;
 								++tmp_pbDst;
@@ -7998,7 +7918,7 @@ LABEL_198:
 							do
 							{
 								if ( left_shift & 0x80000000 )
-									*tmp_pbDst = *pdung_cels;
+									tmp_pbDst[0] = pdung_cels[0];
 								left_shift *= 2;
 								++pdung_cels;
 								++tmp_pbDst;
@@ -8077,7 +7997,7 @@ LABEL_217:
 							do
 							{
 								if ( left_shift & 0x80000000 )
-									*tmp_pbDst = *pdung_cels;
+									tmp_pbDst[0] = pdung_cels[0];
 								left_shift *= 2;
 								++pdung_cels;
 								++tmp_pbDst;
@@ -8253,7 +8173,7 @@ void __fastcall drawLowerScreen(unsigned char *pbDst)
 								chk_sh_and = dung_and80 >> 1;
 								if ( dung_and80 & 1 )
 								{
-									*tmp_pbDst = 0;
+									tmp_pbDst[0] = 0;
 									++tmp_pbDst;
 								}
 								if ( chk_sh_and )
@@ -9018,7 +8938,7 @@ LABEL_116:
 						chk_sh_and = dung_and80 >> 1;
 						if ( dung_and80 & 1 )
 						{
-							*tmp_pbDst = *pdung_cels;
+							tmp_pbDst[0] = pdung_cels[0];
 							++pdung_cels;
 							++tmp_pbDst;
 						}
