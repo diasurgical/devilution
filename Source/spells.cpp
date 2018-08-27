@@ -222,7 +222,7 @@ void __fastcall DoResurrect(int pnum, int rid)
 		AddMissile(plr[rid].WorldX, plr[rid].WorldY, plr[rid].WorldX, plr[rid].WorldY, 0, MIS_RESURRECTBEAM, 0, pnum, 0, 0);
 
 	if ( pnum == myplr )
-		j_SetCursor(CURSOR_HAND);
+		NewCursor(CURSOR_HAND);
 
 	if ( (_BYTE)rid != LOBYTE(-1) && plr[rid]._pHitPoints == 0 )
 	{
@@ -314,7 +314,7 @@ void __fastcall DoHealOther(int pnum, int rid)
 	int j;
 
 	if ( pnum == myplr )
-		j_SetCursor(CURSOR_HAND);
+		NewCursor(CURSOR_HAND);
 
 	if ( (_BYTE)rid != LOBYTE(-1) && (plr[rid]._pHitPoints >> 6) > 0 )
 	{
