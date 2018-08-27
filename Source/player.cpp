@@ -867,56 +867,45 @@ int __fastcall CalcStatDiff(int pnum)
 
 void __fastcall NextPlrLevel(int pnum)
 {
-	int v1; // edi
-	int v2; // esi
-	char *v3; // eax
-	char v4; // bl
-	int v5; // eax
-	char v6; // bl
-	char v7; // al
-	signed int v8; // edx
-	int v9; // ebp
-	signed int v10; // eax
-	int v11; // edx
-
-	v1 = pnum;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("NextPlrLevel: illegal player %d", pnum);
-	v2 = v1;
-	v3 = &plr[v1]._pLevel;
-	v4 = ++*v3;
-	++plr[v2]._pMaxLvl;
-	if ( CalcStatDiff(v1) >= 5 )
-		plr[v2]._pStatPts += 5;
-	else
-		plr[v2]._pStatPts = CalcStatDiff(v1);
-	v5 = v4;
-	v6 = gbMaxPlayers;
-	plr[v2]._pNextExper = ExpLvlsTbl[v5];
-	v7 = plr[v2]._pClass;
-	v8 = v7 != 2 ? 128 : 64;
-	if ( v6 == 1 )
-		v8 = v7 != 2 ? 129 : 65;
-	v9 = myplr;
-	plr[v2]._pMaxHP += v8;
-	plr[v2]._pHitPoints = plr[v2]._pMaxHP;
-	plr[v2]._pMaxHPBase += v8;
-	plr[v2]._pHPBase = plr[v2]._pMaxHPBase;
-	if ( v1 == v9 )
-		drawhpflag = 1;
-	v10 = v7 != 0 ? 128 : 64;
-	if ( v6 == 1 )
-		++v10;
-	plr[v2]._pMaxMana += v10;
-	plr[v2]._pMaxManaBase += v10;
-	v11 = plr[v2]._pMaxManaBase;
-	if ( !(plr[v1]._pIFlags & 0x8000000) )
-	{
-		plr[v2]._pMana = plr[v2]._pMaxMana;
-		plr[v2]._pManaBase = v11;
 	}
-	if ( v1 == v9 )
+
+	char l = ++plr[pnum]._pLevel;
+	plr[pnum]._pMaxLvl++;
+	if ( CalcStatDiff(pnum) < 5 ) {
+		plr[pnum]._pStatPts = CalcStatDiff(pnum);
+	} else {
+		plr[pnum]._pStatPts += 5;
+	}
+
+	plr[pnum]._pNextExper = ExpLvlsTbl[l];
+
+	char c = plr[pnum]._pClass;
+	int hp = c == PC_SORCERER ? 64 : 128;
+	if ( gbMaxPlayers == 1 ) {
+		hp++;
+	}
+	plr[pnum]._pMaxHP += hp;
+	plr[pnum]._pHitPoints = plr[pnum]._pMaxHP;
+	plr[pnum]._pMaxHPBase += hp;
+	plr[pnum]._pHPBase = plr[pnum]._pMaxHPBase;
+	if ( pnum == myplr ) {
+		drawhpflag = 1;
+	}
+	int mana = c != PC_WARRIOR ? 128 : 64;
+	if ( gbMaxPlayers == 1 ) {
+		++mana;
+	}
+	plr[pnum]._pMaxMana += mana;
+	plr[pnum]._pMaxManaBase += mana;
+	if ( !(plr[pnum]._pIFlags & ISPL_NOMANA) ) {
+		plr[pnum]._pMana = plr[pnum]._pMaxMana;
+		plr[pnum]._pManaBase = plr[pnum]._pMaxManaBase;
+	}
+	if ( pnum == myplr ) {
 		drawmanaflag = 1;
+	}
 }
 // 679660: using guessed type char gbMaxPlayers;
 
