@@ -1520,9 +1520,7 @@ void __fastcall SetPlrHandGoldCurs(ItemStruct *h)
 void __fastcall CreatePlrItems(int p)
 {
 	int i;
-	ItemStruct *pi;
-
-	pi = plr[p].InvBody;
+	ItemStruct *pi = plr[p].InvBody;
 	for ( i = 0; i < NUM_INVLOC; i++ )
 	{
 		pi[i]._itype = ITYPE_NONE;
@@ -1552,16 +1550,6 @@ void __fastcall CreatePlrItems(int p)
 	// of `GetPlrHandSeed` twice instead of once
 	switch ( plr[p]._pClass )
 	{
-		case PC_SORCERER:
-			SetPlrHandItem(&plr[p].InvBody[4], IDI_SORCEROR);
-			GetPlrHandSeed(&plr[p].InvBody[4]);
-
-			SetPlrHandItem(&plr[p].SpdList[0], IDI_MANA);
-			GetPlrHandSeed(&plr[p].SpdList[0]);
-
-			SetPlrHandItem(&plr[p].SpdList[1], IDI_MANA);
-			GetPlrHandSeed(&plr[p].SpdList[1]);
-			break;
 		case PC_WARRIOR:
 			SetPlrHandItem(&plr[p].InvBody[4], IDI_WARRIOR);
 			GetPlrHandSeed(&plr[p].InvBody[4]);
@@ -1591,7 +1579,16 @@ void __fastcall CreatePlrItems(int p)
 			SetPlrHandItem(&plr[p].SpdList[1], IDI_HEAL);
 			GetPlrHandSeed(&plr[p].SpdList[1]);
 			break;
+		case PC_SORCERER:
+			SetPlrHandItem(&plr[p].InvBody[4], IDI_SORCEROR);
+			GetPlrHandSeed(&plr[p].InvBody[4]);
 
+			SetPlrHandItem(&plr[p].SpdList[0], IDI_MANA);
+			GetPlrHandSeed(&plr[p].SpdList[0]);
+
+			SetPlrHandItem(&plr[p].SpdList[1], IDI_MANA);
+			GetPlrHandSeed(&plr[p].SpdList[1]);
+			break;
 	}
 
 	SetPlrHandItem(&plr[p].HoldItem, IDI_GOLD);
