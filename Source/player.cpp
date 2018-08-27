@@ -545,111 +545,113 @@ void __fastcall ClearPlrPVars(int pnum)
 
 void __fastcall SetPlrAnims(int pnum)
 {
-	int v1; // esi
-	char v2; // bl
-	int v3; // eax
-	int v4; // esi
-	int v5; // ecx
-	bool v6; // zf
-	int v7; // ecx
-
-	v1 = pnum;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS )
 		TermMsg("SetPlrAnims: illegal player %d", pnum);
-	v2 = leveltype;
-	v3 = v1;
-	v4 = SLOBYTE(plr[v1]._pClass);
-	v5 = v4;
-	v6 = leveltype == DTYPE_TOWN;
-	plr[v3]._pNWidth = 96;
-	plr[v3]._pWWidth = 96;
-	plr[v3]._pAWidth = 128;
-	plr[v3]._pHWidth = 96;
-	plr[v3]._pSWidth = 96;
-	plr[v3]._pDWidth = 128;
-	plr[v3]._pBWidth = 96;
-	if ( v6 )
+
+	int pc = plr[pnum]._pClass;
+	char *pAnims = *&PlrGFXAnimLens[pc];
+
+	plr[pnum]._pNWidth = 96;
+	plr[pnum]._pWWidth = 96;
+	plr[pnum]._pAWidth = 128;
+	plr[pnum]._pHWidth = 96;
+	plr[pnum]._pSWidth = 96;
+	plr[pnum]._pDWidth = 128;
+	plr[pnum]._pBWidth = 96;
+
+	if ( leveltype == DTYPE_TOWN )
 	{
-		plr[v3]._pNFrames = PlrGFXAnimLens[v5][7];
-		plr[v3]._pWFrames = PlrGFXAnimLens[v5][8];
-		plr[v3]._pDFrames = PlrGFXAnimLens[v5][4];
-		plr[v3]._pSFrames = PlrGFXAnimLens[v5][5];
+		plr[pnum]._pNFrames = pAnims[7];
+		plr[pnum]._pWFrames = pAnims[8];
+		plr[pnum]._pDFrames = pAnims[4];
+		plr[pnum]._pSFrames = pAnims[5];
 	}
 	else
 	{
-		plr[v3]._pNFrames = PlrGFXAnimLens[v5][0];
-		plr[v3]._pWFrames = PlrGFXAnimLens[v5][2];
-		plr[v3]._pAFrames = PlrGFXAnimLens[v5][1];
-		plr[v3]._pHFrames = PlrGFXAnimLens[v5][6];
-		plr[v3]._pSFrames = PlrGFXAnimLens[v5][5];
-		plr[v3]._pDFrames = PlrGFXAnimLens[v5][4];
-		plr[v3]._pBFrames = PlrGFXAnimLens[v5][3];
-		plr[v3]._pAFNum = PlrGFXAnimLens[v5][9];
+		plr[pnum]._pNFrames = pAnims[0];
+		plr[pnum]._pWFrames = pAnims[2];
+		plr[pnum]._pAFrames = pAnims[1];
+		plr[pnum]._pHFrames = pAnims[6];
+		plr[pnum]._pSFrames = pAnims[5];
+		plr[pnum]._pDFrames = pAnims[4];
+		plr[pnum]._pBFrames = pAnims[3];
+		plr[pnum]._pAFNum = pAnims[9];
 	}
-	plr[v3]._pSFNum = PlrGFXAnimLens[v5][10];
-	v7 = plr[v3]._pgfxnum & 0xF;
-	if ( !v4 )
+	plr[pnum]._pSFNum = pAnims[10];
+
+	int gn = plr[pnum]._pgfxnum & 0xF;
+	if ( pc == PC_WARRIOR  )
 	{
-		if ( v7 == 4 )
+		if ( gn == 4 )
 		{
-			if ( v2 )
-				plr[v3]._pNFrames = 8;
-			plr[v3]._pAWidth = 96;
-			goto LABEL_11;
-		}
-		if ( v7 == 5 )
-		{
-			plr[v3]._pAFrames = 20;
-			plr[v3]._pAFNum = 10;
+			if ( leveltype )
+				plr[pnum]._pNFrames = 8;
+			plr[pnum]._pAWidth = 96;
+			plr[pnum]._pAFNum = 11;
 			return;
 		}
-LABEL_19:
-		if ( v7 == 8 )
+		if ( gn == 5 )
 		{
-			plr[v3]._pAFrames = 16;
-LABEL_11:
-			plr[v3]._pAFNum = 11;
+			plr[pnum]._pAFrames = 20;
+			plr[pnum]._pAFNum = 10;
+			return;
+		}
+		if ( gn == 8 )
+		{
+			plr[pnum]._pAFrames = 16;
+			plr[pnum]._pAFNum = 11;
 			return;
 		}
 		return;
 	}
-	if ( v4 == 1 )
+	if ( pc == PC_ROGUE )
 	{
-		if ( v7 == 5 )
+		if ( gn == 5 )
 		{
-			plr[v3]._pAFrames = 22;
-			plr[v3]._pAFNum = 13;
+			plr[pnum]._pAFrames = 22;
+			plr[pnum]._pAFNum = 13;
 			return;
 		}
-		if ( v7 == 4 )
+		if ( gn == 4 )
 		{
-			plr[v3]._pAFrames = 12;
-			plr[v3]._pAFNum = 7;
+			plr[pnum]._pAFrames = 12;
+			plr[pnum]._pAFNum = 7;
 			return;
 		}
-		goto LABEL_19;
-	}
-	if ( v4 != 2 )
+		if ( gn == 8 )
+		{
+			plr[pnum]._pAFrames = 16;
+			plr[pnum]._pAFNum = 11;
+			return;
+		}
 		return;
-	plr[v3]._pSWidth = 128;
-	switch ( v7 )
-	{
-		case 0:
-			plr[v3]._pAFrames = 20;
-			return;
-		case 1:
-			plr[v3]._pAFNum = 9;
-			return;
-		case 4:
-			plr[v3]._pAFrames = 20;
-			break;
-		case 5:
-			plr[v3]._pAFrames = 24;
-			break;
-		default:
-			return;
 	}
-	plr[v3]._pAFNum = 16;
+	if ( pc == PC_SORCERER ) {
+		plr[pnum]._pSWidth = 128;
+		if ( gn == 0 )
+		{
+			plr[pnum]._pAFrames = 20;
+			return;
+		}
+		if ( gn == 1 )
+		{
+			plr[pnum]._pAFNum = 9;
+			return;
+		}
+		if ( gn == 4 )
+		{
+			plr[pnum]._pAFrames = 20;
+			plr[pnum]._pAFNum = 16;
+			return;
+		}
+		if ( gn == 5 )
+		{
+			plr[pnum]._pAFrames = 24;
+			plr[pnum]._pAFNum = 16;
+			return;
+		}
+		return;
+	}
 }
 // 5BB1ED: using guessed type char leveltype;
 
