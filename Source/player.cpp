@@ -516,8 +516,9 @@ void __fastcall FreePlayerGFX(int pnum)
 
 void __fastcall NewPlrAnim(int pnum, unsigned char *Peq, int numFrames, int Delay, int width)
 {
-	if ( (DWORD)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("NewPlrAnim: illegal player %d", pnum);
+	}
 
 	plr[pnum]._pAnimLen = numFrames;
 	plr[pnum]._pAnimCnt = 0;
@@ -530,8 +531,9 @@ void __fastcall NewPlrAnim(int pnum, unsigned char *Peq, int numFrames, int Dela
 
 void __fastcall ClearPlrPVars(int pnum)
 {
-	if ( (DWORD)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("ClearPlrPVars: illegal player %d", pnum);
+	}
 
 	plr[pnum]._pVar1 = 0;
 	plr[pnum]._pVar2 = 0;
@@ -545,8 +547,7 @@ void __fastcall ClearPlrPVars(int pnum)
 
 void __fastcall SetPlrAnims(int pnum)
 {
-	if ( (DWORD)pnum >= MAX_PLRS )
-	{
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("SetPlrAnims: illegal player %d", pnum);
 	}
 
@@ -586,7 +587,7 @@ void __fastcall SetPlrAnims(int pnum)
 	{
 		if ( gn == 4 )
 		{
-			if ( leveltype )
+			if ( leveltype != DTYPE_TOWN )
 			{
 				plr[pnum]._pNFrames = 8;
 			}
@@ -675,8 +676,7 @@ void __fastcall CreatePlayer(int pnum, char c)
 	ClearPlrRVars(&plr[pnum]);
 	SetRndSeed(GetTickCount());
 
-	if ( (DWORD)pnum >= MAX_PLRS )
-	{
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("CreatePlayer: illegal player %d", pnum);
 	}
 	plr[pnum]._pClass = c;
@@ -854,19 +854,15 @@ void __fastcall CreatePlayer(int pnum, char c)
 
 int __fastcall CalcStatDiff(int pnum)
 {
-	int v1; // ecx
-	int v2; // edx
-
-	v1 = pnum;
-	v2 = SLOBYTE(plr[v1]._pClass);
-	return MaxStats[v2][0]
-		+ MaxStats[v2][1]
-		+ MaxStats[v2][2]
-		+ MaxStats[v2][3]
-		- plr[v1]._pBaseVit
-		- plr[v1]._pBaseDex
-		- plr[v1]._pBaseMag
-		- plr[v1]._pBaseStr;
+	int c = plr[pnum]._pClass;
+	return MaxStats[c][ATTRIB_STR]
+		- plr[pnum]._pBaseStr
+		+ MaxStats[c][ATTRIB_MAG]
+		- plr[pnum]._pBaseMag
+		+ MaxStats[c][ATTRIB_DEX]
+		- plr[pnum]._pBaseDex
+		+ MaxStats[c][ATTRIB_VIT]
+		- plr[pnum]._pBaseVit;
 }
 
 void __fastcall NextPlrLevel(int pnum)
@@ -2235,15 +2231,15 @@ void __fastcall StartPlrHit(int pnum, int dam, unsigned char forcehit)
 	v6 = plr[v5]._pClass;
 	switch ( v6 )
 	{
-		case UI_WARRIOR:
+		case PC_WARRIOR:
 			v7 = PS_WARR69;
 LABEL_13:
 			PlaySfxLoc(v7, plr[v5].WorldX, plr[v5].WorldY);
 			break;
-		case UI_ROGUE:
+		case PC_ROGUE:
 			v7 = PS_ROGUE69;
 			goto LABEL_13;
-		case UI_SORCERER:
+		case PC_SORCERER:
 			v7 = PS_MAGE69;
 			goto LABEL_13;
 	}
@@ -4922,13 +4918,13 @@ void __fastcall CheckPlrSpell()
 			v5 = *((_BYTE *)&plr[0]._pClass + v1);
 			switch ( v5 )
 			{
-				case UI_WARRIOR:
+				case PC_WARRIOR:
 					v4 = PS_WARR27;
 					goto LABEL_53;
-				case UI_ROGUE:
+				case PC_ROGUE:
 					v4 = PS_ROGUE27;
 					goto LABEL_53;
-				case UI_SORCERER:
+				case PC_SORCERER:
 					v4 = PS_MAGE27;
 					goto LABEL_53;
 			}
@@ -4967,13 +4963,13 @@ LABEL_46:
 					v15 = plr[v0]._pClass;
 					switch ( v15 )
 					{
-						case UI_WARRIOR:
+						case PC_WARRIOR:
 							v4 = PS_WARR35;
 							goto LABEL_53;
-						case UI_ROGUE:
+						case PC_ROGUE:
 							v4 = PS_ROGUE35;
 							goto LABEL_53;
-						case UI_SORCERER:
+						case PC_SORCERER:
 							v4 = PS_MAGE35;
 							goto LABEL_53;
 					}
@@ -5022,15 +5018,15 @@ LABEL_36:
 	v3 = *((_BYTE *)&plr[0]._pClass + v1);
 	switch ( v3 )
 	{
-		case UI_WARRIOR:
+		case PC_WARRIOR:
 			v4 = PS_WARR34;
 LABEL_53:
 			PlaySFX(v4);
 			return;
-		case UI_ROGUE:
+		case PC_ROGUE:
 			v4 = PS_ROGUE34;
 			goto LABEL_53;
-		case UI_SORCERER:
+		case PC_SORCERER:
 			v4 = PS_MAGE34;
 			goto LABEL_53;
 	}
