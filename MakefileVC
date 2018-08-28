@@ -23,14 +23,25 @@ ifeq ($(OS),Windows_NT)
 	CL = $(VC6_BIN_DIR)/CL.EXE
 	RC = $(IDE_BIN_DIR)/RC.EXE
 	VC5_LINK = $(VC5_DIR)/bin/link.exe
+	VC6_LINK = $(VC6_BIN_DIR)/link.exe
 else
 	CL = wine $(VC6_BIN_DIR)/CL.EXE
 	RC = wine $(IDE_BIN_DIR)/RC.EXE
 	VC5_LINK = wine $(VC5_DIR)/bin/link.exe
+	VC6_LINK = wine $(VC6_BIN_DIR)/link.exe
 endif
 
 CFLAGS=/nologo /c /GX /W3 /O1 /I $(VC6_INC_DIR) /FD /MT /D "NDEBUG" /D "WIN32" /D "_WINDOWS"
-LINK5FLAGS=/nologo /subsystem:windows /machine:I386 /incremental:no /LIBPATH:$(VC5_LIB_DIR)
+LINKFLAGS=/nologo /subsystem:windows /machine:I386 /incremental:no
+
+ifeq ($(MAKE_BUILD),pdb)
+	VC_LINK=$(VC6_LINK)
+	CFLAGS+= /Zi
+	LINKFLAGS+= /pdb:"Diablo.pdb" /LIBPATH:$(VC6_LIB_DIR) /debug
+else
+	VC_LINK=$(VC5_LINK)
+	LINKFLAGS+= /LIBPATH:$(VC5_LIB_DIR)
+endif
 
 all: Diablo.exe
 
@@ -47,7 +58,7 @@ DIABLOUI_SRC=$(sort $(wildcard DiabloUI/*.cpp))
 DIABLOUI_OBJS=$(DIABLOUI_SRC:.cpp=.obj)
 
 Diablo.exe: $(OBJS) $(PKWARE_OBJS) diablo.res DiabloUI/diabloui.lib 3rdParty/Storm/Source/storm.lib
-	$(VC5_LINK) /OUT:$@ $(LINK5FLAGS) $(OBJS) $(PKWARE_OBJS) diablo.res advapi32.lib gdi32.lib shell32.lib user32.lib version.lib DiabloUI/diabloui.lib 3rdParty/Storm/Source/storm.lib
+	$(VC_LINK) /OUT:$@ $(LINKFLAGS) $(OBJS) $(PKWARE_OBJS) diablo.res advapi32.lib gdi32.lib shell32.lib user32.lib version.lib DiabloUI/diabloui.lib 3rdParty/Storm/Source/storm.lib
 
 DiabloUI/diabloui.lib: $(DIABLOUI_OBJS)
 	$(CL) $^ /link /LINK50COMPAT /nologo /dll /subsystem:windows /machine:I386 /LIBPATH:$(VC6_LIB_DIR) /def:"DiabloUI/diabloui.def" /out:DiabloUI/diabloui.dll
