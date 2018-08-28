@@ -8,7 +8,7 @@ extern int scrollrt_cpp_init_value; // weak
 extern unsigned int sgdwCursWdtOld; // idb
 extern int sgdwCursX; // idb
 extern int sgdwCursY; // idb
-extern int screen_buf_end; // weak
+extern unsigned char *gpBufEnd; // weak
 extern int sgdwCursHgt;
 extern int level_cel_block; // weak
 extern int sgdwCursXOld; // idb
