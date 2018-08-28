@@ -231,7 +231,7 @@ void __cdecl DrawAutomap()
 
 	if ( leveltype != DTYPE_TOWN )
 	{
-		screen_buf_end = (int)gpBuffer->row[352].col_unused_1;
+		gpBufEnd = (unsigned char *)&gpBuffer->row[352];
 		v0 = AutoMapXOfs;
 		v1 = (ViewX - 16) >> 1;
 		v2 = AutoMapXOfs + v1;
@@ -379,7 +379,7 @@ void __cdecl DrawAutomap()
 // 4B8968: using guessed type int sbookflag;
 // 5BB1ED: using guessed type char leveltype;
 // 69BD04: using guessed type int questlog;
-// 69CF0C: using guessed type int screen_buf_end;
+// 69CF0C: using guessed type int gpBufEnd;
 
 void __fastcall DrawAutomapType(int screen_x, int screen_y, short automap_type)
 {
