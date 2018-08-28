@@ -433,6 +433,7 @@ int __fastcall AddMonsterType(int type, int placeflag)
 		InitMonsterGFX(i);
 		InitMonsterSND(i);
 	}
+
 	Monsters[i].mPlaceFlags |= placeflag;
 	return i;
 }
@@ -447,14 +448,9 @@ void __cdecl GetLevelMTypes()
 
 	int minl; // min level
 	int maxl; // max level
-	char mamask = 3; // monster availability mask?
+	char mamask = 3; // monster availability mask
 
-	int nt; // number of types?
-
-	// TODO: local variable QuestMask that was referenced in the psx symbols
-	// didn't find any obvious use for that. the casing/naming of it hints at
-	// a PSX only variable
-	// maybe it was used instead of QuestStatus() on the console
+	int nt; // number of types
 
 	AddMonsterType(MT_GOLEM, 2);
 	if ( currlevel == 16 )
@@ -533,14 +529,13 @@ void __cdecl GetLevelMTypes()
 			{
 				for ( i = 0; i < nt; )
 				{
-					if ( monsterdata[typelist[i]].mType <= 4000 - monstimgtot )
-					{
-						i++;
-					}
-					else
+					if ( monsterdata[typelist[i]].mType > 4000 - monstimgtot )
 					{
 						typelist[i] = typelist[--nt];
+						continue;
 					}
+
+					i++;
 				}
 
 				if ( nt != 0 )
@@ -556,8 +551,9 @@ void __cdecl GetLevelMTypes()
 	else
 	{
 		if ( setlvlnum == SL_SKELKING )
+		{
 			AddMonsterType(MT_SKING, 4);
-		return;
+		}
 	}
 
 }
