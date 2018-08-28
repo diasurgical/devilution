@@ -410,14 +410,6 @@ struct Screen
 	ScreenRow row_unused_2[16];
 };
 
-struct Tile
-{
-	short top;
-	short right;
-	short left;
-	short bottom;
-};
-
 struct _SNETVERSIONDATA
 {
 	int size;
