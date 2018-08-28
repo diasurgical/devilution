@@ -1633,13 +1633,13 @@ void __fastcall CheckInvCut(int pnum, int mx, int my)
 	BOOL done = FALSE;
 
 	// TODO: this loop is compiled differently (via InvRect pointers)
-	for ( r = 0; r < NUM_XY_SLOTS && !done; r++ )
+	for ( r = 0; (DWORD)r < NUM_XY_SLOTS && !done; r++ )
 	{
 		// check which inventory rectangle the mouse is in, if any
-		if ( InvRect[r].X <= mx
-			&& InvRect[r].X + INV_SLOT_SIZE_PX > mx
-			&& InvRect[r].Y - INV_SLOT_SIZE_PX <= my
-			&& InvRect[r].Y > my )
+		if ( mx >= InvRect[r].X
+			&& mx < InvRect[r].X + INV_SLOT_SIZE_PX
+			&& my >= InvRect[r].Y - INV_SLOT_SIZE_PX
+			&& my < InvRect[r].Y )
 		{
 			done = TRUE;
 			r--;
