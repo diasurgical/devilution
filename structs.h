@@ -495,6 +495,7 @@ struct AnimStruct // note: wrong names
 struct CMonster
 {
 	unsigned char mtype;
+	// TODO: Add enum for place flags
 	unsigned char mPlaceFlags;
 	AnimStruct Anims[6];
 	TSnd *Snds[8];
