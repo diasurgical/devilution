@@ -776,7 +776,7 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 	int dadd = 0; // added dexterity
 	int vadd = 0; // added vitality
 
-	unsigned __int64 spl = 0; // bitarray for all enabled/active spells
+	UINT64 spl = 0; // bitarray for all enabled/active spells
 
 	signed int fr = 0; // fire resistance
 	signed int lr = 0; // lightning resistance
@@ -935,12 +935,12 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 		plr[p]._pDamageMod = plr[p]._pLevel * plr[p]._pStrength / 100;
 	}
 
-	// TODO: switch to normal 64bit assignment
-	*(__int64 *)&plr[p]._pISpells = spl;
+	// TODO: switch to normal 64bit assignment/remove case
+	*(UINT64 *)&plr[p]._pISpells = spl;
 
 	// check if the current RSplType is a valid/allowed spell
 	if ( plr[p]._pRSplType == RSPLTYPE_CHARGES
-		&& !(spl & ((unsigned __int64)1 << (plr[p]._pRSpell - 1))) )
+		&& !(spl & ((UINT64)1 << (plr[p]._pRSpell - 1))) )
 	{
 		plr[p]._pRSpell = SPL_INVALID;
 		plr[p]._pRSplType = RSPLTYPE_INVALID;
