@@ -382,7 +382,7 @@ struct ItemStruct
 	char _iMinStr;
 	unsigned char _iMinMag;
 	char _iMinDex;
-	int _iStatFlag;
+	BOOL _iStatFlag;
 	int IDidx;
 	int offs016C; // _oldlight or _iInvalid
 };
@@ -821,6 +821,8 @@ struct PlayerStruct
 	int remove_1;
 	int _pMemSpells[2]; // __declspec(align(8))
 	int _pAblSpells[2];
+
+	// should be UINT64
 	int _pScrlSpells[2];
 	char _pSpellFlags;
 	int _pSplHotKey[4];
@@ -926,7 +928,7 @@ struct PlayerStruct
 	int _pIBonusDamMod;
 	int remove_2;
 
-	// TODO: switch to __int64
+	// TODO: switch to UINT64
 	int _pISpells[2]; //__declspec(align(8))
 	int _pIFlags;
 	int _pIGetHit;

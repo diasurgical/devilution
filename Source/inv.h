@@ -20,7 +20,7 @@ int __fastcall SwapItem(ItemStruct *a, ItemStruct *b);
 void __fastcall CheckInvPaste(int pnum, int mx, int my);
 void __fastcall CheckInvSwap(int pnum, BYTE bLoc, int idx, WORD wCI, int seed, BOOL bId);
 void __fastcall CheckInvCut(int pnum, int mx, int my);
-void __fastcall inv_update_rem_item(int pnum, int iv);
+void __fastcall inv_update_rem_item(int pnum, BYTE iv);
 void __fastcall RemoveInvItem(int pnum, int iv);
 void __fastcall RemoveSpdBarItem(int pnum, int iv);
 void __cdecl CheckInvItem();
