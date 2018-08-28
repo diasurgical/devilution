@@ -520,12 +520,12 @@ void __fastcall NewPlrAnim(int pnum, unsigned char *Peq, int numFrames, int Dela
 		TermMsg("NewPlrAnim: illegal player %d", pnum);
 	}
 
+	plr[pnum]._pAnimData = Peq;
 	plr[pnum]._pAnimLen = numFrames;
+	plr[pnum]._pAnimFrame = 1;
 	plr[pnum]._pAnimCnt = 0;
 	plr[pnum]._pAnimDelay = Delay;
-	plr[pnum]._pAnimData = Peq;
 	plr[pnum]._pAnimWidth = width;
-	plr[pnum]._pAnimFrame = 1;
 	plr[pnum]._pAnimWidth2 = (width - 64) >> 1;
 }
 
