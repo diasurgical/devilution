@@ -974,7 +974,6 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 	{
 		lr = 75;
 	}
-
 	plr[p]._pLghtResist = lr;
 
 	if ( plr[p]._pClass == PC_WARRIOR )
@@ -987,7 +986,6 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 	}
 	ihp += (vadd << 6);
 
-
 	if ( plr[p]._pClass == PC_SORCERER )
 	{
 		madd *= 2;
@@ -998,8 +996,8 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 	}
 	imana += (madd << 6);
 
-	plr[p]._pHitPoints = vadd + plr[p]._pHPBase;
-	plr[p]._pMaxHP = vadd + plr[p]._pMaxHPBase;
+	plr[p]._pHitPoints = ihp + plr[p]._pHPBase;
+	plr[p]._pMaxHP = ihp + plr[p]._pMaxHPBase;
 
 	if ( p == myplr && (plr[p]._pHitPoints >> 6) <= 0 )
 	{
