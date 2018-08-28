@@ -21,7 +21,7 @@ char dflags[40][40];
 int dPiece[MAXDUNX][MAXDUNY];
 char dTransVal[MAXDUNX][MAXDUNY];
 int setloadflag_2; // weak
-Tile tile_defs[1024];
+int tile_defs[2048];
 void *pMegaTiles;
 void *pLevelPieces;
 int gnDifficulty; // idb
@@ -33,7 +33,7 @@ char leveltype; // weak
 unsigned char currlevel; // idb
 char TransList[256];
 char nSolidTable[2049];
-int level_frame_count[2049];
+int level_frame_count[2048];
 ScrollStruct ScrollInfo;
 void *pDungeonCels;
 int speed_cel_frame_num_from_light_index_frame_num[16][128];
@@ -203,10 +203,10 @@ void __cdecl gendung_418D91()
 
 	v0 = 0;
 	memset(level_frame_types, 0, sizeof(level_frame_types));
-	memset(level_frame_count, 0, 0x2000u);
+	memset(level_frame_count, 0, sizeof(level_frame_count));
 	do
 	{
-		*((_DWORD *)&tile_defs[0].top + v0) = v0;
+		tile_defs[v0] = v0;
 		++v0;
 	}
 	while ( v0 < 2048 );
@@ -351,7 +351,7 @@ LABEL_36:
 		{
 			v24 = v54;
 			v25 = level_frame_types[v54] == 4096;
-			v62 = *((_DWORD *)&tile_defs[0].top + v54);
+			v62 = tile_defs[v54];
 			(*v49)[0] = v62;
 			if ( v25 )
 			{
@@ -463,7 +463,7 @@ LABEL_66:
 						{
 							do
 							{
-								if ( (v43 & 0xFFF) == *((_DWORD *)&tile_defs[0].top + v44) )
+								if ( (v43 & 0xFFF) == tile_defs[v44] )
 								{
 									v45 = v44 + level_frame_types[v44];
 									v44 = v22;
@@ -535,12 +535,12 @@ void __fastcall gendung_4191FB(int a1, int a2)
 	v2 *= 4;
 	v5 = *v3;
 	*v3 = *(int *)((char *)level_frame_count + v2);
-	v6 = (int *)((char *)tile_defs + 4 * a1);
+	v6 = &tile_defs[a1];
 	*(int *)((char *)level_frame_count + v2) = v5;
 	v7 = &level_frame_sizes[a1];
 	v8 = *v6;
-	*v6 = *(_DWORD *)((char *)&tile_defs[0].top + v2);
-	*(_DWORD *)((char *)&tile_defs[0].top + v2) = v8;
+	*v6 = *(int *)((char *)tile_defs + v2);
+	*(int *)((char *)tile_defs + v2) = v8;
 	v9 = &level_frame_types[a1];
 	_LOWORD(v6) = *v9;
 	*v9 = *v4;
