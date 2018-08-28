@@ -125,7 +125,7 @@ void __fastcall drawTopArchesUpperScreen(unsigned char *pbDst)
 					i = 16;
 					do
 					{
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < (char *)gpBufEnd )
 							break;
 						j = 8;
 						do
@@ -138,7 +138,7 @@ void __fastcall drawTopArchesUpperScreen(unsigned char *pbDst)
 						}
 						while ( j );
 						tmp_pbDst -= 800;
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < (char *)gpBufEnd )
 							break;
 						j = 8;
 						do
@@ -179,7 +179,7 @@ void __fastcall drawTopArchesUpperScreen(unsigned char *pbDst)
 								if ( !yy_32 )
 									goto LABEL_67;
 							}
-							if ( (unsigned int)tmp_pbDst < screen_buf_end )
+							if ( tmp_pbDst < (char *)gpBufEnd )
 								return;
 							if ( ((unsigned char)tmp_pbDst & 1) == WorldBoolFlag )
 							{
@@ -298,7 +298,7 @@ LABEL_67:
 */
 					WorldBoolFlag = 0;
 					xx_32 = 30;
-					while ( (unsigned int)tmp_pbDst >= screen_buf_end )
+					while ( tmp_pbDst >= (char *)gpBufEnd )
 					{
 						tmp_pbDst += xx_32;
 						x_minus = 32 - xx_32;
@@ -411,7 +411,7 @@ LABEL_67:
 							yy_32 = 2;
 							do
 							{
-								if ( (unsigned int)tmp_pbDst < screen_buf_end )
+								if ( tmp_pbDst < (char *)gpBufEnd )
 									break;
 								tmp_pbDst += yy_32;
 								y_minus = 32 - yy_32;
@@ -533,7 +533,7 @@ LABEL_67:
 */
 					WorldBoolFlag = 0;
 					xx_32 = 30;
-					while ( (unsigned int)tmp_pbDst >= screen_buf_end )
+					while ( tmp_pbDst >= (char *)gpBufEnd )
 					{
 						x_minus = 32 - xx_32;
 						WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
@@ -645,7 +645,7 @@ LABEL_67:
 							yy_32 = 2;
 							do
 							{
-								if ( (unsigned int)tmp_pbDst < screen_buf_end )
+								if ( tmp_pbDst < (char *)gpBufEnd )
 									break;
 								y_minus = 32 - yy_32;
 								WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
@@ -766,7 +766,7 @@ LABEL_67:
 */
 					WorldBoolFlag = 0;
 					xx_32 = 30;
-					while ( (unsigned int)tmp_pbDst >= screen_buf_end )
+					while ( tmp_pbDst >= (char *)gpBufEnd )
 					{
 						tmp_pbDst += xx_32;
 						x_minus = 32 - xx_32;
@@ -879,7 +879,7 @@ LABEL_67:
 							i = 8;
 							do
 							{
-								if ( (unsigned int)tmp_pbDst < screen_buf_end )
+								if ( tmp_pbDst < (char *)gpBufEnd )
 									break;
 								j = 8;
 								do
@@ -892,7 +892,7 @@ LABEL_67:
 								}
 								while ( j );
 								tmp_pbDst -= 800;
-								if ( (unsigned int)tmp_pbDst < screen_buf_end )
+								if ( tmp_pbDst < (char *)gpBufEnd )
 									break;
 								j = 8;
 								do
@@ -920,7 +920,7 @@ LABEL_67:
 */
 					WorldBoolFlag = 0;
 					xx_32 = 30;
-					while ( (unsigned int)tmp_pbDst >= screen_buf_end )
+					while ( tmp_pbDst >= (char *)gpBufEnd )
 					{
 						x_minus = 32 - xx_32;
 						WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
@@ -1032,7 +1032,7 @@ LABEL_67:
 							i = 8;
 							do
 							{
-								if ( (unsigned int)tmp_pbDst < screen_buf_end )
+								if ( tmp_pbDst < (char *)gpBufEnd )
 									break;
 								j = 8;
 								do
@@ -1045,7 +1045,7 @@ LABEL_67:
 								}
 								while ( j );
 								tmp_pbDst -= 800;
-								if ( (unsigned int)tmp_pbDst < screen_buf_end )
+								if ( tmp_pbDst < (char *)gpBufEnd )
 									break;
 								j = 8;
 								do
@@ -1084,7 +1084,7 @@ LABEL_11:
 				i = 16;
 				do
 				{
-					if ( (unsigned int)tmp_pbDst < screen_buf_end )
+					if ( tmp_pbDst < (char *)gpBufEnd )
 						break;
 					j = 8;
 					do
@@ -1097,7 +1097,7 @@ LABEL_11:
 					}
 					while ( j );
 					tmp_pbDst -= 800;
-					if ( (unsigned int)tmp_pbDst < screen_buf_end )
+					if ( tmp_pbDst < (char *)gpBufEnd )
 						break;
 					j = 8;
 					do
@@ -1145,7 +1145,7 @@ LABEL_271:
 						}
 					}
 					xx_32 -= dung_and80;
-					if ( (unsigned int)tmp_pbDst < screen_buf_end )
+					if ( tmp_pbDst < (char *)gpBufEnd )
 						return;
 					if ( ((unsigned char)tmp_pbDst & 1) == WorldBoolFlag )
 					{
@@ -1223,7 +1223,7 @@ LABEL_268:
 */
 				WorldBoolFlag = 0;
 				xx_32 = 30;
-				while ( (unsigned int)tmp_pbDst >= screen_buf_end )
+				while ( tmp_pbDst >= (char *)gpBufEnd )
 				{
 					tmp_pbDst += xx_32;
 					x_minus = 32 - xx_32;
@@ -1279,7 +1279,7 @@ LABEL_268:
 						yy_32 = 2;
 						do
 						{
-							if ( (unsigned int)tmp_pbDst < screen_buf_end )
+							if ( tmp_pbDst < (char *)gpBufEnd )
 								break;
 							tmp_pbDst += yy_32;
 							y_minus = 32 - yy_32;
@@ -1344,7 +1344,7 @@ LABEL_268:
 */
 				WorldBoolFlag = 0;
 				xx_32 = 30;
-				while ( (unsigned int)tmp_pbDst >= screen_buf_end )
+				while ( tmp_pbDst >= (char *)gpBufEnd )
 				{
 					x_minus = 32 - xx_32;
 					WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
@@ -1387,7 +1387,7 @@ LABEL_268:
 						yy_32 = 2;
 						do
 						{
-							if ( (unsigned int)tmp_pbDst < screen_buf_end )
+							if ( tmp_pbDst < (char *)gpBufEnd )
 								break;
 							y_minus = 32 - yy_32;
 							WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
@@ -1439,7 +1439,7 @@ LABEL_268:
 */
 				WorldBoolFlag = 0;
 				xx_32 = 30;
-				while ( (unsigned int)tmp_pbDst >= screen_buf_end )
+				while ( tmp_pbDst >= (char *)gpBufEnd )
 				{
 					tmp_pbDst += xx_32;
 					x_minus = 32 - xx_32;
@@ -1495,7 +1495,7 @@ LABEL_268:
 						i = 8;
 						do
 						{
-							if ( (unsigned int)tmp_pbDst < screen_buf_end )
+							if ( tmp_pbDst < (char *)gpBufEnd )
 								break;
 							j = 8;
 							do
@@ -1508,7 +1508,7 @@ LABEL_268:
 							}
 							while ( j );
 							tmp_pbDst -= 800;
-							if ( (unsigned int)tmp_pbDst < screen_buf_end )
+							if ( tmp_pbDst < (char *)gpBufEnd )
 								break;
 							j = 8;
 							do
@@ -1536,7 +1536,7 @@ LABEL_268:
 */
 				WorldBoolFlag = 0;
 				xx_32 = 30;
-				while ( (unsigned int)tmp_pbDst >= screen_buf_end )
+				while ( tmp_pbDst >= (char *)gpBufEnd )
 				{
 					x_minus = 32 - xx_32;
 					WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
@@ -1579,7 +1579,7 @@ LABEL_268:
 						i = 8;
 						do
 						{
-							if ( (unsigned int)tmp_pbDst < screen_buf_end )
+							if ( tmp_pbDst < (char *)gpBufEnd )
 								break;
 							j = 8;
 							do
@@ -1592,7 +1592,7 @@ LABEL_268:
 							}
 							while ( j );
 							tmp_pbDst -= 800;
-							if ( (unsigned int)tmp_pbDst < screen_buf_end )
+							if ( tmp_pbDst < (char *)gpBufEnd )
 								break;
 							j = 8;
 							do
@@ -1631,7 +1631,7 @@ LABEL_268:
 			i = 16;
 			do
 			{
-				if ( (unsigned int)tmp_pbDst < screen_buf_end )
+				if ( tmp_pbDst < (char *)gpBufEnd )
 					break;
 				j = 8;
 				do
@@ -1643,7 +1643,7 @@ LABEL_268:
 				}
 				while ( j );
 				tmp_pbDst -= 800;
-				if ( (unsigned int)tmp_pbDst < screen_buf_end )
+				if ( tmp_pbDst < (char *)gpBufEnd )
 					break;
 				j = 8;
 				do
@@ -1678,7 +1678,7 @@ LABEL_268:
 						if ( (dung_and80 & 0x80u) != 0 )
 							break;
 						yy_32 -= dung_and80;
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < (char *)gpBufEnd )
 							return;
 						pdung_cels += dung_and80;
 						if ( ((unsigned char)tmp_pbDst & 1) == WorldBoolFlag )
@@ -1763,7 +1763,7 @@ LABEL_391:
 			WorldBoolFlag = 0;
 			for ( xx_32 = 30; ; xx_32 -= 2 )
 			{
-				if ( (unsigned int)tmp_pbDst < screen_buf_end )
+				if ( tmp_pbDst < (char *)gpBufEnd )
 					return;
 				tmp_pbDst += xx_32;
 				x_minus = 32 - xx_32;
@@ -1815,7 +1815,7 @@ LABEL_391:
 			yy_32 = 2;
 			do
 			{
-				if ( (unsigned int)tmp_pbDst < screen_buf_end )
+				if ( tmp_pbDst < (char *)gpBufEnd )
 					break;
 				tmp_pbDst += yy_32;
 				y_minus = 32 - yy_32;
@@ -1874,7 +1874,7 @@ LABEL_391:
 			WorldBoolFlag = 0;
 			for ( xx_32 = 30; ; xx_32 -= 2 )
 			{
-				if ( (unsigned int)tmp_pbDst < screen_buf_end )
+				if ( tmp_pbDst < (char *)gpBufEnd )
 					return;
 				x_minus = 32 - xx_32;
 				WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
@@ -1926,7 +1926,7 @@ LABEL_391:
 			yy_32 = 2;
 			do
 			{
-				if ( (unsigned int)tmp_pbDst < screen_buf_end )
+				if ( tmp_pbDst < (char *)gpBufEnd )
 					break;
 				y_minus = 32 - yy_32;
 				WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
@@ -1984,7 +1984,7 @@ LABEL_391:
 			WorldBoolFlag = 0;
 			for ( xx_32 = 30; ; xx_32 -= 2 )
 			{
-				if ( (unsigned int)tmp_pbDst < screen_buf_end )
+				if ( tmp_pbDst < (char *)gpBufEnd )
 					return;
 				tmp_pbDst += xx_32;
 				x_minus = 32 - xx_32;
@@ -2036,7 +2036,7 @@ LABEL_391:
 			i = 8;
 			do
 			{
-				if ( (unsigned int)tmp_pbDst < screen_buf_end )
+				if ( tmp_pbDst < (char *)gpBufEnd )
 					break;
 				j = 8;
 				do
@@ -2048,7 +2048,7 @@ LABEL_391:
 				}
 				while ( j );
 				tmp_pbDst -= 800;
-				if ( (unsigned int)tmp_pbDst < screen_buf_end )
+				if ( tmp_pbDst < (char *)gpBufEnd )
 					break;
 				j = 8;
 				do
@@ -2073,7 +2073,7 @@ LABEL_391:
 			WorldBoolFlag = 0;
 			for ( xx_32 = 30; ; xx_32 -= 2 )
 			{
-				if ( (unsigned int)tmp_pbDst < screen_buf_end )
+				if ( tmp_pbDst < (char *)gpBufEnd )
 					return;
 				x_minus = 32 - xx_32;
 				WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
@@ -2125,7 +2125,7 @@ LABEL_391:
 			i = 8;
 			do
 			{
-				if ( (unsigned int)tmp_pbDst < screen_buf_end )
+				if ( tmp_pbDst < (char *)gpBufEnd )
 					break;
 				j = 8;
 				do
@@ -2137,7 +2137,7 @@ LABEL_391:
 				}
 				while ( j );
 				tmp_pbDst -= 800;
-				if ( (unsigned int)tmp_pbDst < screen_buf_end )
+				if ( tmp_pbDst < (char *)gpBufEnd )
 					break;
 				j = 8;
 				do
@@ -2192,7 +2192,7 @@ LABEL_12:
 				xx_32 = 32;
 				do
 				{
-					if ( (unsigned int)tmp_pbDst < screen_buf_end )
+					if ( tmp_pbDst < (char *)gpBufEnd )
 						break;
 					left_shift = *gpDrawMask;
 					i = 32;
@@ -2239,7 +2239,7 @@ LABEL_12:
 								goto LABEL_129;
 						}
 						yy_32 -= dung_and80;
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < (char *)gpBufEnd )
 							return;
 						left_shift = gdwCurrentMask;
 						and80_i = dung_and80;
@@ -2270,7 +2270,7 @@ LABEL_129:
 	 \-|
 */
 				xx_32 = 30;
-				while ( (unsigned int)tmp_pbDst >= screen_buf_end )
+				while ( tmp_pbDst >= (char *)gpBufEnd )
 				{
 					tmp_pbDst += xx_32;
 					n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
@@ -2298,7 +2298,7 @@ LABEL_129:
 						yy_32 = 2;
 						do
 						{
-							if ( (unsigned int)tmp_pbDst < screen_buf_end )
+							if ( tmp_pbDst < (char *)gpBufEnd )
 								break;
 							tmp_pbDst += yy_32;
 							n_draw_shift = (unsigned int)(32 - yy_32) >> 2;
@@ -2334,7 +2334,7 @@ LABEL_129:
 	|-/
 */
 				xx_32 = 30;
-				while ( (unsigned int)tmp_pbDst >= screen_buf_end )
+				while ( tmp_pbDst >= (char *)gpBufEnd )
 				{
 					for ( n_draw_shift = (unsigned int)(32 - xx_32) >> 2; n_draw_shift; --n_draw_shift )
 					{
@@ -2355,7 +2355,7 @@ LABEL_129:
 						yy_32 = 2;
 						do
 						{
-							if ( (unsigned int)tmp_pbDst < screen_buf_end )
+							if ( tmp_pbDst < (char *)gpBufEnd )
 								break;
 							for ( n_draw_shift = (unsigned int)(32 - yy_32) >> 2; n_draw_shift; --n_draw_shift )
 							{
@@ -2384,7 +2384,7 @@ LABEL_129:
 	|__|
 */
 				xx_32 = 30;
-				while ( (unsigned int)tmp_pbDst >= screen_buf_end )
+				while ( tmp_pbDst >= (char *)gpBufEnd )
 				{
 					tmp_pbDst += xx_32;
 					n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
@@ -2413,7 +2413,7 @@ LABEL_129:
 						yy_32 = 16;
 						do
 						{
-							if ( (unsigned int)tmp_pbDst < screen_buf_end )
+							if ( tmp_pbDst < (char *)gpBufEnd )
 								break;
 							left_shift = *gpDrawMask;
 							i = 32;
@@ -2443,7 +2443,7 @@ LABEL_129:
 	|__|
 */
 				xx_32 = 30;
-				while ( (unsigned int)tmp_pbDst >= screen_buf_end )
+				while ( tmp_pbDst >= (char *)gpBufEnd )
 				{
 					for ( n_draw_shift = (unsigned int)(32 - xx_32) >> 2; n_draw_shift; --n_draw_shift )
 					{
@@ -2465,7 +2465,7 @@ LABEL_129:
 						yy_32 = 16;
 						do
 						{
-							if ( (unsigned int)tmp_pbDst < screen_buf_end )
+							if ( tmp_pbDst < (char *)gpBufEnd )
 								break;
 							left_shift = *gpDrawMask;
 							i = 32;
@@ -2510,7 +2510,7 @@ LABEL_129:
 					xx_32 = 32;
 					do
 					{
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < (char *)gpBufEnd )
 							break;
 						left_shift = *gpDrawMask;
 						i = 32;
@@ -2557,7 +2557,7 @@ LABEL_129:
 									goto LABEL_50;
 							}
 							yy_32 -= dung_and80;
-							if ( (unsigned int)tmp_pbDst < screen_buf_end )
+							if ( tmp_pbDst < (char *)gpBufEnd )
 								return;
 							and80_i = dung_and80;
 							left_shift = gdwCurrentMask;
@@ -2588,7 +2588,7 @@ LABEL_50:
 	 \-|
 */
 					xx_32 = 30;
-					while ( (unsigned int)tmp_pbDst >= screen_buf_end )
+					while ( tmp_pbDst >= (char *)gpBufEnd )
 					{
 						tmp_pbDst += xx_32;
 						n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
@@ -2620,7 +2620,7 @@ LABEL_50:
 							yy_32 = 2;
 							do
 							{
-								if ( (unsigned int)tmp_pbDst < screen_buf_end )
+								if ( tmp_pbDst < (char *)gpBufEnd )
 									break;
 								tmp_pbDst += yy_32;
 								n_draw_shift = (unsigned int)(32 - yy_32) >> 2;
@@ -2660,7 +2660,7 @@ LABEL_50:
 	|-/
 */
 					xx_32 = 30;
-					while ( (unsigned int)tmp_pbDst >= screen_buf_end )
+					while ( tmp_pbDst >= (char *)gpBufEnd )
 					{
 						for ( n_draw_shift = (unsigned int)(32 - xx_32) >> 2; n_draw_shift; --n_draw_shift )
 						{
@@ -2685,7 +2685,7 @@ LABEL_50:
 							yy_32 = 2;
 							do
 							{
-								if ( (unsigned int)tmp_pbDst < screen_buf_end )
+								if ( tmp_pbDst < (char *)gpBufEnd )
 									break;
 								for ( n_draw_shift = (unsigned int)(32 - yy_32) >> 2; n_draw_shift; --n_draw_shift )
 								{
@@ -2718,7 +2718,7 @@ LABEL_50:
 	|__|
 */
 					xx_32 = 30;
-					while ( (unsigned int)tmp_pbDst >= screen_buf_end )
+					while ( tmp_pbDst >= (char *)gpBufEnd )
 					{
 						tmp_pbDst += xx_32;
 						n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
@@ -2751,7 +2751,7 @@ LABEL_50:
 							yy_32 = 16;
 							do
 							{
-								if ( (unsigned int)tmp_pbDst < screen_buf_end )
+								if ( tmp_pbDst < (char *)gpBufEnd )
 									break;
 								left_shift = *gpDrawMask;
 								i = 32;
@@ -2782,7 +2782,7 @@ LABEL_50:
 	|__|
 */
 					xx_32 = 30;
-					while ( (unsigned int)tmp_pbDst >= screen_buf_end )
+					while ( tmp_pbDst >= (char *)gpBufEnd )
 					{
 						for ( n_draw_shift = (unsigned int)(32 - xx_32) >> 2; n_draw_shift; --n_draw_shift )
 						{
@@ -2808,7 +2808,7 @@ LABEL_50:
 							yy_32 = 16;
 							do
 							{
-								if ( (unsigned int)tmp_pbDst < screen_buf_end )
+								if ( tmp_pbDst < (char *)gpBufEnd )
 									break;
 								left_shift = *gpDrawMask;
 								i = 32;
@@ -2856,7 +2856,7 @@ LABEL_50:
 			xx_32 = 32;
 			do
 			{
-				if ( (unsigned int)tmp_pbDst < screen_buf_end )
+				if ( tmp_pbDst < (char *)gpBufEnd )
 					break;
 				left_shift = *gpDrawMask;
 				i = 32;
@@ -2902,7 +2902,7 @@ LABEL_50:
 							goto LABEL_208;
 					}
 					yy_32 -= dung_and80;
-					if ( (unsigned int)tmp_pbDst < screen_buf_end )
+					if ( tmp_pbDst < (char *)gpBufEnd )
 						return;
 					left_shift = gdwCurrentMask;
 					and80_i = dung_and80;
@@ -2933,7 +2933,7 @@ LABEL_208:
 	 \-|
 */
 			xx_32 = 30;
-			while ( (unsigned int)tmp_pbDst >= screen_buf_end )
+			while ( tmp_pbDst >= (char *)gpBufEnd )
 			{
 				tmp_pbDst += xx_32;
 				n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
@@ -2958,7 +2958,7 @@ LABEL_208:
 					yy_32 = 2;
 					do
 					{
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < (char *)gpBufEnd )
 							break;
 						tmp_pbDst += yy_32;
 						n_draw_shift = (unsigned int)(32 - yy_32) >> 2;
@@ -2993,7 +2993,7 @@ LABEL_208:
 	|-/
 */
 			xx_32 = 30;
-			while ( (unsigned int)tmp_pbDst >= screen_buf_end )
+			while ( tmp_pbDst >= (char *)gpBufEnd )
 			{
 				n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
 				if ( (32 - xx_32) & 2 )
@@ -3017,7 +3017,7 @@ LABEL_208:
 					yy_32 = 2;
 					do
 					{
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < (char *)gpBufEnd )
 							break;
 						n_draw_shift = (unsigned int)(32 - yy_32) >> 2;
 						if ( (32 - yy_32) & 2 )
@@ -3052,7 +3052,7 @@ LABEL_208:
 	|__|
 */
 			xx_32 = 30;
-			while ( (unsigned int)tmp_pbDst >= screen_buf_end )
+			while ( tmp_pbDst >= (char *)gpBufEnd )
 			{
 				tmp_pbDst += xx_32;
 				n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
@@ -3078,7 +3078,7 @@ LABEL_208:
 					yy_32 = 16;
 					do
 					{
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < (char *)gpBufEnd )
 							break;
 						left_shift = *gpDrawMask;
 						i = 32;
@@ -3108,7 +3108,7 @@ LABEL_208:
 	|__|
 */
 			xx_32 = 30;
-			while ( (unsigned int)tmp_pbDst >= screen_buf_end )
+			while ( tmp_pbDst >= (char *)gpBufEnd )
 			{
 				n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
 				if ( (32 - xx_32) & 2 )
@@ -3133,7 +3133,7 @@ LABEL_208:
 					yy_32 = 16;
 					do
 					{
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < (char *)gpBufEnd )
 							break;
 						left_shift = *gpDrawMask;
 						i = 32;
@@ -3222,7 +3222,7 @@ LABEL_22:
 				i = 32;
 				do
 				{
-					if ( (unsigned int)tmp_pbDst < screen_buf_end )
+					if ( tmp_pbDst < gpBufEnd )
 						break;
 					j = 8;
 					do
@@ -3262,7 +3262,7 @@ LABEL_22:
 								goto LABEL_133;
 						}
 						yy_32 -= dung_and80;
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < gpBufEnd )
 							return;
 						chk_sh_and = dung_and80 >> 1;
 						if ( dung_and80 & 1 )
@@ -3303,7 +3303,7 @@ LABEL_133:
 	 \-|
 */
 				xx_32 = 30;
-				while ( (unsigned int)tmp_pbDst >= screen_buf_end )
+				while ( tmp_pbDst >= gpBufEnd )
 				{
 					tmp_pbDst += xx_32;
 					n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
@@ -3331,7 +3331,7 @@ LABEL_133:
 						yy_32 = 2;
 						do
 						{
-							if ( (unsigned int)tmp_pbDst < screen_buf_end )
+							if ( tmp_pbDst < gpBufEnd )
 								break;
 							tmp_pbDst += yy_32;
 							n_draw_shift = (unsigned int)(32 - yy_32) >> 2;
@@ -3367,7 +3367,7 @@ LABEL_133:
 	|-/
 */
 				xx_32 = 30;
-				while ( (unsigned int)tmp_pbDst >= screen_buf_end )
+				while ( tmp_pbDst >= gpBufEnd )
 				{
 					for ( n_draw_shift = (unsigned int)(32 - xx_32) >> 2; n_draw_shift; --n_draw_shift )
 					{
@@ -3388,7 +3388,7 @@ LABEL_133:
 						yy_32 = 2;
 						do
 						{
-							if ( (unsigned int)tmp_pbDst < screen_buf_end )
+							if ( tmp_pbDst < gpBufEnd )
 								break;
 							for ( n_draw_shift = (unsigned int)(32 - yy_32) >> 2; n_draw_shift; --n_draw_shift )
 							{
@@ -3417,7 +3417,7 @@ LABEL_133:
 	|__|
 */
 				xx_32 = 30;
-				while ( (unsigned int)tmp_pbDst >= screen_buf_end )
+				while ( tmp_pbDst >= gpBufEnd )
 				{
 					tmp_pbDst += xx_32;
 					n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
@@ -3445,7 +3445,7 @@ LABEL_133:
 						i = 16;
 						do
 						{
-							if ( (unsigned int)tmp_pbDst < screen_buf_end )
+							if ( tmp_pbDst < gpBufEnd )
 								break;
 							j = 8;
 							do
@@ -3471,7 +3471,7 @@ LABEL_133:
 	|__|
 */
 				xx_32 = 30;
-				while ( (unsigned int)tmp_pbDst >= screen_buf_end )
+				while ( tmp_pbDst >= gpBufEnd )
 				{
 					for ( n_draw_shift = (unsigned int)(32 - xx_32) >> 2; n_draw_shift; --n_draw_shift )
 					{
@@ -3492,7 +3492,7 @@ LABEL_133:
 						i = 16;
 						do
 						{
-							if ( (unsigned int)tmp_pbDst < screen_buf_end )
+							if ( tmp_pbDst < gpBufEnd )
 								break;
 							j = 8;
 							do
@@ -3532,7 +3532,7 @@ LABEL_133:
 					xx_32 = 32;
 					do
 					{
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < gpBufEnd )
 							break;
 						base_4 = 32;
 						do
@@ -3575,7 +3575,7 @@ LABEL_133:
 									goto LABEL_58;
 							}
 							yy_32 -= dung_and80;
-							if ( (unsigned int)tmp_pbDst < screen_buf_end )
+							if ( tmp_pbDst < gpBufEnd )
 								return;
 							for ( base_4 = dung_and80; base_4 >= 4; base_4 -= 4 )
 							{
@@ -3612,7 +3612,7 @@ LABEL_58:
 	 \-|
 */
 					xx_32 = 30;
-					while ( (unsigned int)tmp_pbDst >= screen_buf_end )
+					while ( tmp_pbDst >= gpBufEnd )
 					{
 						tmp_pbDst += xx_32;
 						x_minus = 32 - xx_32;
@@ -3645,7 +3645,7 @@ LABEL_58:
 							yy_32 = 2;
 							do
 							{
-								if ( (unsigned int)tmp_pbDst < screen_buf_end )
+								if ( tmp_pbDst < gpBufEnd )
 									break;
 								tmp_pbDst += yy_32;
 								y_minus = 32 - yy_32;
@@ -3686,7 +3686,7 @@ LABEL_58:
 	|-/
 */
 					xx_32 = 30;
-					while ( (unsigned int)tmp_pbDst >= screen_buf_end )
+					while ( tmp_pbDst >= gpBufEnd )
 					{
 						for ( base_4 = 32 - xx_32; base_4 >= 4; base_4 -= 4 )
 						{
@@ -3712,7 +3712,7 @@ LABEL_58:
 							yy_32 = 2;
 							do
 							{
-								if ( (unsigned int)tmp_pbDst < screen_buf_end )
+								if ( tmp_pbDst < gpBufEnd )
 									break;
 								for ( base_4 = 32 - yy_32; base_4 >= 4; base_4 -= 4 )
 								{
@@ -3746,7 +3746,7 @@ LABEL_58:
 	|__|
 */
 					xx_32 = 30;
-					while ( (unsigned int)tmp_pbDst >= screen_buf_end )
+					while ( tmp_pbDst >= gpBufEnd )
 					{
 						tmp_pbDst += xx_32;
 						x_minus = 32 - xx_32;
@@ -3779,7 +3779,7 @@ LABEL_58:
 							yy_32 = 16;
 							do
 							{
-								if ( (unsigned int)tmp_pbDst < screen_buf_end )
+								if ( tmp_pbDst < gpBufEnd )
 									break;
 								base_4 = 32;
 								do
@@ -3808,7 +3808,7 @@ LABEL_58:
 	|__|
 */
 					xx_32 = 30;
-					while ( (unsigned int)tmp_pbDst >= screen_buf_end )
+					while ( tmp_pbDst >= gpBufEnd )
 					{
 						for ( base_4 = 32 - xx_32; base_4 >= 4; base_4 -= 4 )
 						{
@@ -3834,7 +3834,7 @@ LABEL_58:
 							yy_32 = 16;
 							do
 							{
-								if ( (unsigned int)tmp_pbDst < screen_buf_end )
+								if ( tmp_pbDst < gpBufEnd )
 									break;
 								base_4 = 32;
 								do
@@ -3880,7 +3880,7 @@ LABEL_58:
 			i = 32;
 			do
 			{
-				if ( (unsigned int)tmp_pbDst < screen_buf_end )
+				if ( tmp_pbDst < gpBufEnd )
 					break;
 				j = 8;
 				do
@@ -3919,7 +3919,7 @@ LABEL_58:
 							goto LABEL_205;
 					}
 					yy_32 -= dung_and80;
-					if ( (unsigned int)tmp_pbDst < screen_buf_end )
+					if ( tmp_pbDst < gpBufEnd )
 						return;
 					pdung_cels += dung_and80;
 					chk_sh_and = dung_and80 >> 1;
@@ -3959,7 +3959,7 @@ LABEL_205:
 	 \-|
 */
 			xx_32 = 30;
-			while ( (unsigned int)tmp_pbDst >= screen_buf_end )
+			while ( tmp_pbDst >= gpBufEnd )
 			{
 				tmp_pbDst += xx_32;
 				n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
@@ -3984,7 +3984,7 @@ LABEL_205:
 					yy_32 = 2;
 					do
 					{
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < gpBufEnd )
 							break;
 						tmp_pbDst += yy_32;
 						n_draw_shift = (unsigned int)(32 - yy_32) >> 2;
@@ -4019,7 +4019,7 @@ LABEL_205:
 	|-/
 */
 			xx_32 = 30;
-			while ( (unsigned int)tmp_pbDst >= screen_buf_end )
+			while ( tmp_pbDst >= gpBufEnd )
 			{
 				n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
 				if ( (32 - xx_32) & 2 )
@@ -4043,7 +4043,7 @@ LABEL_205:
 					yy_32 = 2;
 					do
 					{
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < gpBufEnd )
 							break;
 						n_draw_shift = (unsigned int)(32 - yy_32) >> 2;
 						if ( (32 - yy_32) & 2 )
@@ -4078,7 +4078,7 @@ LABEL_205:
 	|__|
 */
 			xx_32 = 30;
-			while ( (unsigned int)tmp_pbDst >= screen_buf_end )
+			while ( tmp_pbDst >= gpBufEnd )
 			{
 				tmp_pbDst += xx_32;
 				n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
@@ -4103,7 +4103,7 @@ LABEL_205:
 					i = 16;
 					do
 					{
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < gpBufEnd )
 							break;
 						j = 8;
 						do
@@ -4129,7 +4129,7 @@ LABEL_205:
 	|__|
 */
 			xx_32 = 30;
-			while ( (unsigned int)tmp_pbDst >= screen_buf_end )
+			while ( tmp_pbDst >= gpBufEnd )
 			{
 				n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
 				if ( (32 - xx_32) & 2 )
@@ -4153,7 +4153,7 @@ LABEL_205:
 					i = 16;
 					do
 					{
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < gpBufEnd )
 							break;
 						j = 8;
 						do
@@ -4224,7 +4224,7 @@ void __fastcall drawTopArchesLowerScreen(unsigned char *pbDst)
 				i = 16;
 				do
 				{
-					if ( (unsigned int)tmp_pbDst < screen_buf_end )
+					if ( tmp_pbDst < (char *)gpBufEnd )
 					{
 						j = 8;
 						do
@@ -4242,7 +4242,7 @@ void __fastcall drawTopArchesLowerScreen(unsigned char *pbDst)
 						tmp_pbDst += 32;
 					}
 					tmp_pbDst -= 800;
-					if ( (unsigned int)tmp_pbDst < screen_buf_end )
+					if ( tmp_pbDst < (char *)gpBufEnd )
 					{
 						j = 8;
 						do
@@ -4295,7 +4295,7 @@ LABEL_433:
 						}
 					}
 					yy_32 -= dung_and80;
-					if ( (unsigned int)tmp_pbDst < screen_buf_end )
+					if ( tmp_pbDst < (char *)gpBufEnd )
 					{
 						pdung_cels += dung_and80;
 						if ( ((unsigned char)tmp_pbDst & 1) == WorldBoolFlag )
@@ -4376,7 +4376,7 @@ LABEL_430:
 				WorldBoolFlag = 0;
 				for ( xx_32 = 30; ; xx_32 -= 2 )
 				{
-					if ( (unsigned int)tmp_pbDst < screen_buf_end )
+					if ( tmp_pbDst < (char *)gpBufEnd )
 					{
 						tmp_pbDst += xx_32;
 						x_minus = 32 - xx_32;
@@ -4434,7 +4434,7 @@ LABEL_430:
 				yy_32 = 2;
 				do
 				{
-					if ( (unsigned int)tmp_pbDst < screen_buf_end )
+					if ( tmp_pbDst < (char *)gpBufEnd )
 					{
 						tmp_pbDst += yy_32;
 						y_minus = 32 - yy_32;
@@ -4499,7 +4499,7 @@ LABEL_430:
 				WorldBoolFlag = 0;
 				for ( xx_32 = 30; ; xx_32 -= 2 )
 				{
-					if ( (unsigned int)tmp_pbDst < screen_buf_end )
+					if ( tmp_pbDst < (char *)gpBufEnd )
 					{
 						x_minus = 32 - xx_32;
 						WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
@@ -4557,7 +4557,7 @@ LABEL_430:
 				yy_32 = 2;
 				do
 				{
-					if ( (unsigned int)tmp_pbDst < screen_buf_end )
+					if ( tmp_pbDst < (char *)gpBufEnd )
 					{
 						y_minus = 32 - yy_32;
 						WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
@@ -4621,7 +4621,7 @@ LABEL_430:
 				WorldBoolFlag = 0;
 				for ( xx_32 = 30; ; xx_32 -= 2 )
 				{
-					if ( (unsigned int)tmp_pbDst < screen_buf_end )
+					if ( tmp_pbDst < (char *)gpBufEnd )
 					{
 						tmp_pbDst += xx_32;
 						x_minus = 32 - xx_32;
@@ -4679,7 +4679,7 @@ LABEL_430:
 				i = 8;
 				do
 				{
-					if ( (unsigned int)tmp_pbDst < screen_buf_end )
+					if ( tmp_pbDst < (char *)gpBufEnd )
 					{
 						j = 8;
 						do
@@ -4697,7 +4697,7 @@ LABEL_430:
 						tmp_pbDst += 32;
 					}
 					tmp_pbDst -= 800;
-					if ( (unsigned int)tmp_pbDst < screen_buf_end )
+					if ( tmp_pbDst < (char *)gpBufEnd )
 					{
 						j = 8;
 						do
@@ -4728,7 +4728,7 @@ LABEL_430:
 				WorldBoolFlag = 0;
 				for ( xx_32 = 30; ; xx_32 -= 2 )
 				{
-					if ( (unsigned int)tmp_pbDst < screen_buf_end )
+					if ( tmp_pbDst < (char *)gpBufEnd )
 					{
 						x_minus = 32 - xx_32;
 						WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
@@ -4786,7 +4786,7 @@ LABEL_430:
 				i = 8;
 				do
 				{
-					if ( (unsigned int)tmp_pbDst < screen_buf_end )
+					if ( tmp_pbDst < (char *)gpBufEnd )
 					{
 						j = 8;
 						do
@@ -4804,7 +4804,7 @@ LABEL_430:
 						tmp_pbDst += 32;
 					}
 					tmp_pbDst -= 800;
-					if ( (unsigned int)tmp_pbDst < screen_buf_end )
+					if ( tmp_pbDst < (char *)gpBufEnd )
 					{
 						j = 8;
 						do
@@ -4845,7 +4845,7 @@ LABEL_430:
 				i = 16;
 				do
 				{
-					if ( (unsigned int)tmp_pbDst < screen_buf_end )
+					if ( tmp_pbDst < (char *)gpBufEnd )
 					{
 						j = 8;
 						do
@@ -4864,7 +4864,7 @@ LABEL_430:
 						tmp_pbDst += 32;
 					}
 					tmp_pbDst -= 800;
-					if ( (unsigned int)tmp_pbDst < screen_buf_end )
+					if ( tmp_pbDst < (char *)gpBufEnd )
 					{
 						j = 8;
 						do
@@ -4912,7 +4912,7 @@ LABEL_430:
 								goto LABEL_69;
 						}
 						yy_32 -= dung_and80;
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < (char *)gpBufEnd )
 						{
 							if ( ((unsigned char)tmp_pbDst & 1) == WorldBoolFlag )
 							{
@@ -5036,18 +5036,18 @@ LABEL_69:
 */
 				WorldBoolFlag = 0;
 				xx_32 = 30;
-				if ( (unsigned int)pbDst >= screen_buf_end )
+				if ( pbDst >= gpBufEnd )
 				{
-					tile_42_45 = (unsigned int)&pbDst[-screen_buf_end + 1023] >> 8;
+					tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
 					if ( tile_42_45 > 45 )
 					{
 						tmp_pbDst = (char *)(pbDst - 12288);
 						pdung_cels += 288;
 LABEL_98:
 						yy_32 = 2;
-						if ( (unsigned int)tmp_pbDst >= screen_buf_end )
+						if ( tmp_pbDst >= (char *)gpBufEnd )
 						{
-							tile_42_45 = (unsigned int)&tmp_pbDst[-screen_buf_end + 1023] >> 8;
+							tile_42_45 = (unsigned int)(tmp_pbDst - (char *)gpBufEnd + 1023) >> 8;
 							if ( tile_42_45 > 42 )
 								return;
 							world_tbl = WorldTbl3x16[tile_42_45];
@@ -5297,18 +5297,18 @@ LABEL_98:
 */
 				WorldBoolFlag = 0;
 				xx_32 = 30;
-				if ( (unsigned int)pbDst >= screen_buf_end )
+				if ( pbDst >= gpBufEnd )
 				{
-					tile_42_45 = (unsigned int)&pbDst[-screen_buf_end + 1023] >> 8;
+					tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
 					if ( tile_42_45 > 45 )
 					{
 						tmp_pbDst = (char *)(pbDst - 12288);
 						pdung_cels += 288;
 LABEL_154:
 						yy_32 = 2;
-						if ( (unsigned int)tmp_pbDst >= screen_buf_end )
+						if ( tmp_pbDst >= (char *)gpBufEnd )
 						{
-							tile_42_45 = (unsigned int)&tmp_pbDst[-screen_buf_end + 1023] >> 8;
+							tile_42_45 = (unsigned int)(tmp_pbDst - (char *)gpBufEnd + 1023) >> 8;
 							if ( tile_42_45 > 42 )
 								return;
 							world_tbl = WorldTbl3x16[tile_42_45];
@@ -5556,9 +5556,9 @@ LABEL_154:
 */
 				WorldBoolFlag = 0;
 				xx_32 = 30;
-				if ( (unsigned int)pbDst >= screen_buf_end )
+				if ( pbDst >= gpBufEnd )
 				{
-					tile_42_45 = (unsigned int)&pbDst[-screen_buf_end + 1023] >> 8;
+					tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
 					if ( tile_42_45 > 45 )
 					{
 						tmp_pbDst = (char *)(pbDst - 12288);
@@ -5567,7 +5567,7 @@ LABEL_210:
 						i = 8;
 						do
 						{
-							if ( (unsigned int)tmp_pbDst < screen_buf_end )
+							if ( tmp_pbDst < (char *)gpBufEnd )
 							{
 								j = 8;
 								do
@@ -5586,7 +5586,7 @@ LABEL_210:
 								tmp_pbDst += 32;
 							}
 							tmp_pbDst -= 800;
-							if ( (unsigned int)tmp_pbDst < screen_buf_end )
+							if ( tmp_pbDst < (char *)gpBufEnd )
 							{
 								j = 8;
 								do
@@ -5737,9 +5737,9 @@ LABEL_210:
 */
 				WorldBoolFlag = 0;
 				xx_32 = 30;
-				if ( (unsigned int)pbDst >= screen_buf_end )
+				if ( pbDst >= gpBufEnd )
 				{
-					tile_42_45 = (unsigned int)&pbDst[-screen_buf_end + 1023] >> 8;
+					tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
 					if ( tile_42_45 > 45 )
 					{
 						tmp_pbDst = (char *)(pbDst - 12288);
@@ -5748,7 +5748,7 @@ LABEL_249:
 						i = 8;
 						do
 						{
-							if ( (unsigned int)tmp_pbDst < screen_buf_end )
+							if ( tmp_pbDst < (char *)gpBufEnd )
 							{
 								j = 8;
 								do
@@ -5767,7 +5767,7 @@ LABEL_249:
 								tmp_pbDst += 32;
 							}
 							tmp_pbDst -= 800;
-							if ( (unsigned int)tmp_pbDst < screen_buf_end )
+							if ( tmp_pbDst < (char *)gpBufEnd )
 							{
 								j = 8;
 								do
@@ -5926,7 +5926,7 @@ LABEL_11:
 			i = 16;
 			do
 			{
-				if ( (unsigned int)tmp_pbDst < screen_buf_end )
+				if ( tmp_pbDst < (char *)gpBufEnd )
 				{
 					j = 8;
 					do
@@ -5945,7 +5945,7 @@ LABEL_11:
 					tmp_pbDst += 32;
 				}
 				tmp_pbDst -= 800;
-				if ( (unsigned int)tmp_pbDst < screen_buf_end )
+				if ( tmp_pbDst < (char *)gpBufEnd )
 				{
 					j = 8;
 					do
@@ -5987,7 +5987,7 @@ LABEL_11:
 						if ( (dung_and80 & 0x80u) != 0 )
 							break;
 						yy_32 -= dung_and80;
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < (char *)gpBufEnd )
 						{
 							if ( ((unsigned char)tmp_pbDst & 1) == WorldBoolFlag )
 							{
@@ -6081,18 +6081,18 @@ LABEL_293:
 */
 			WorldBoolFlag = 0;
 			xx_32 = 30;
-			if ( (unsigned int)pbDst >= screen_buf_end )
+			if ( pbDst >= gpBufEnd )
 			{
-				tile_42_45 = (unsigned int)&pbDst[-screen_buf_end + 1023] >> 8;
+				tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
 				if ( tile_42_45 > 45 )
 				{
 					tmp_pbDst = (char *)(pbDst - 12288);
 					pdung_cels += 288;
 LABEL_308:
 					yy_32 = 2;
-					if ( (unsigned int)tmp_pbDst >= screen_buf_end )
+					if ( tmp_pbDst >= (char *)gpBufEnd )
 					{
-						tile_42_45 = (unsigned int)&tmp_pbDst[-screen_buf_end + 1023] >> 8;
+						tile_42_45 = (unsigned int)(tmp_pbDst - (char *)gpBufEnd + 1023) >> 8;
 						if ( tile_42_45 > 42 )
 							return;
 						world_tbl = WorldTbl3x16[tile_42_45];
@@ -6229,9 +6229,9 @@ LABEL_308:
 */
 			WorldBoolFlag = 0;
 			xx_32 = 30;
-			if ( (unsigned int)pbDst < screen_buf_end )
+			if ( pbDst < gpBufEnd )
 				goto LABEL_326;
-			tile_42_45 = (unsigned int)&pbDst[-screen_buf_end + 1023] >> 8;
+			tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
 			if ( tile_42_45 <= 45 )
 			{
 				world_tbl = WorldTbl3x16[tile_42_45];
@@ -6288,9 +6288,9 @@ LABEL_326:
 			pdung_cels += 288;
 LABEL_336:
 			yy_32 = 2;
-			if ( (unsigned int)tmp_pbDst >= screen_buf_end )
+			if ( tmp_pbDst >= (char *)gpBufEnd )
 			{
-				tile_42_45 = (unsigned int)&tmp_pbDst[-screen_buf_end + 1023] >> 8;
+				tile_42_45 = (unsigned int)(tmp_pbDst - (char *)gpBufEnd + 1023) >> 8;
 				if ( tile_42_45 > 42 )
 					return;
 				world_tbl = WorldTbl3x16[tile_42_45];
@@ -6350,9 +6350,9 @@ LABEL_336:
 */
 			WorldBoolFlag = 0;
 			xx_32 = 30;
-			if ( (unsigned int)pbDst >= screen_buf_end )
+			if ( pbDst >= gpBufEnd )
 			{
-				tile_42_45 = (unsigned int)&pbDst[-screen_buf_end + 1023] >> 8;
+				tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
 				if ( tile_42_45 > 45 )
 				{
 					tmp_pbDst = (char *)(pbDst - 12288);
@@ -6361,7 +6361,7 @@ LABEL_364:
 					i = 8;
 					do
 					{
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < (char *)gpBufEnd )
 						{
 							j = 8;
 							do
@@ -6380,7 +6380,7 @@ LABEL_364:
 							tmp_pbDst += 32;
 						}
 						tmp_pbDst -= 800;
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < (char *)gpBufEnd )
 						{
 							j = 8;
 							do
@@ -6474,9 +6474,9 @@ LABEL_364:
 */
 			WorldBoolFlag = 0;
 			xx_32 = 30;
-			if ( (unsigned int)pbDst >= screen_buf_end )
+			if ( pbDst >= gpBufEnd )
 			{
-				tile_42_45 = (unsigned int)&pbDst[-screen_buf_end + 1023] >> 8;
+				tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
 				if ( tile_42_45 > 45 )
 				{
 					tmp_pbDst = (char *)(pbDst - 12288);
@@ -6485,7 +6485,7 @@ LABEL_389:
 					i = 8;
 					do
 					{
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < (char *)gpBufEnd )
 						{
 							j = 8;
 							do
@@ -6504,7 +6504,7 @@ LABEL_389:
 							tmp_pbDst += 32;
 						}
 						tmp_pbDst -= 800;
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < (char *)gpBufEnd )
 						{
 							j = 8;
 							do
@@ -6619,7 +6619,7 @@ void __fastcall drawBottomArchesLowerScreen(unsigned char *pbDst, unsigned int *
 					yy_32 = 32;
 					do
 					{
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < (char *)gpBufEnd )
 						{
 							left_shift = *gpDrawMask;
 							i = 32;
@@ -6663,7 +6663,7 @@ void __fastcall drawBottomArchesLowerScreen(unsigned char *pbDst, unsigned int *
 								if ( (dung_and80 & 0x80u) != 0 )
 									break;
 								yy_32 -= dung_and80;
-								if ( (unsigned int)tmp_pbDst < screen_buf_end )
+								if ( tmp_pbDst < (char *)gpBufEnd )
 								{
 									and80_i = dung_and80;
 									pdung_cels += dung_and80;
@@ -6709,7 +6709,7 @@ LABEL_252:
 */
 					for ( i = 30; ; i -= 2 )
 					{
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < (char *)gpBufEnd )
 						{
 							tmp_pbDst += i;
 							n_draw_shift = (unsigned int)(32 - i) >> 2;
@@ -6741,7 +6741,7 @@ LABEL_252:
 					i = 2;
 					do
 					{
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < (char *)gpBufEnd )
 						{
 							tmp_pbDst += i;
 							n_draw_shift = (unsigned int)(32 - i) >> 2;
@@ -6779,7 +6779,7 @@ LABEL_252:
 */
 					for ( i = 30; ; i -= 2 )
 					{
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < (char *)gpBufEnd )
 						{
 							n_draw_shift = (unsigned int)(32 - i) >> 2;
 							if ( (32 - i) & 2 )
@@ -6811,7 +6811,7 @@ LABEL_252:
 					i = 2;
 					do
 					{
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < (char *)gpBufEnd )
 						{
 							n_draw_shift = (unsigned int)(32 - i) >> 2;
 							if ( (32 - i) & 2 )
@@ -6848,7 +6848,7 @@ LABEL_252:
 */
 					for ( i = 30; ; i -= 2 )
 					{
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < (char *)gpBufEnd )
 						{
 							tmp_pbDst += i;
 							n_draw_shift = (unsigned int)(32 - i) >> 2;
@@ -6881,7 +6881,7 @@ LABEL_252:
 					yy_32 = 16;
 					do
 					{
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < (char *)gpBufEnd )
 						{
 							left_shift = *gpDrawMask;
 							i = 32;
@@ -6914,7 +6914,7 @@ LABEL_252:
 */
 					for ( i = 30; ; i -= 2 )
 					{
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < (char *)gpBufEnd )
 						{
 							n_draw_shift = (unsigned int)(32 - i) >> 2;
 							if ( (32 - i) & 2 )
@@ -6947,7 +6947,7 @@ LABEL_252:
 					yy_32 = 16;
 					do
 					{
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < (char *)gpBufEnd )
 						{
 							left_shift = *gpDrawMask;
 							i = 32;
@@ -6991,7 +6991,7 @@ LABEL_252:
 					yy_32 = 32;
 					do
 					{
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < (char *)gpBufEnd )
 						{
 							left_shift = *gpDrawMask;
 							i = 32;
@@ -7036,7 +7036,7 @@ LABEL_252:
 								if ( (dung_and80 & 0x80u) != 0 )
 									break;
 								yy_32 -= dung_and80;
-								if ( (unsigned int)tmp_pbDst < screen_buf_end )
+								if ( tmp_pbDst < (char *)gpBufEnd )
 								{
 									and80_i = dung_and80;
 									left_shift = gdwCurrentMask;
@@ -7081,18 +7081,18 @@ LABEL_52:
 	 \-|
 */
 					xx_32 = 30;
-					if ( (unsigned int)pbDst >= screen_buf_end )
+					if ( pbDst >= gpBufEnd )
 					{
-						tile_42_45 = (unsigned int)&pbDst[-screen_buf_end + 1023] >> 8;
+						tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
 						if ( tile_42_45 > 45 )
 						{
 							tmp_pbDst = (char *)(pbDst - 12288);
 							pdung_cels += 288;
 LABEL_62:
 							yy_32 = 2;
-							if ( (unsigned int)tmp_pbDst >= screen_buf_end )
+							if ( tmp_pbDst >= (char *)gpBufEnd )
 							{
-								tile_42_45 = (unsigned int)&tmp_pbDst[-screen_buf_end + 1023] >> 8;
+								tile_42_45 = (unsigned int)(tmp_pbDst - (char *)gpBufEnd + 1023) >> 8;
 								if ( tile_42_45 > 42 )
 									return;
 								world_tbl = WorldTbl3x16[tile_42_45];
@@ -7173,18 +7173,18 @@ LABEL_62:
 	|-/
 */
 					xx_32 = 30;
-					if ( (unsigned int)pbDst >= screen_buf_end )
+					if ( pbDst >= gpBufEnd )
 					{
-						tile_42_45 = (unsigned int)&pbDst[-screen_buf_end + 1023] >> 8;
+						tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
 						if ( tile_42_45 > 45 )
 						{
 							tmp_pbDst = (char *)(pbDst - 12288);
 							pdung_cels += 288;
 LABEL_80:
 							yy_32 = 2;
-							if ( (unsigned int)tmp_pbDst >= screen_buf_end )
+							if ( tmp_pbDst >= (char *)gpBufEnd )
 							{
-								tile_42_45 = (unsigned int)&tmp_pbDst[-screen_buf_end + 1023] >> 8;
+								tile_42_45 = (unsigned int)(tmp_pbDst - (char *)gpBufEnd + 1023) >> 8;
 								if ( tile_42_45 > 42 )
 									return;
 								world_tbl = WorldTbl3x16[tile_42_45];
@@ -7251,9 +7251,9 @@ LABEL_80:
 	|__|
 */
 					xx_32 = 30;
-					if ( (unsigned int)pbDst >= screen_buf_end )
+					if ( pbDst >= gpBufEnd )
 					{
-						tile_42_45 = (unsigned int)&pbDst[-screen_buf_end + 1023] >> 8;
+						tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
 						if ( tile_42_45 > 45 )
 						{
 							tmp_pbDst = (char *)(pbDst - 12288);
@@ -7263,7 +7263,7 @@ LABEL_98:
 							yy_32 = 16;
 							do
 							{
-								if ( (unsigned int)tmp_pbDst < screen_buf_end )
+								if ( tmp_pbDst < (char *)gpBufEnd )
 								{
 									left_shift = *gpDrawMask;
 									i = 32;
@@ -7332,9 +7332,9 @@ LABEL_98:
 	|__|
 */
 					xx_32 = 30;
-					if ( (unsigned int)pbDst >= screen_buf_end )
+					if ( pbDst >= gpBufEnd )
 					{
-						tile_42_45 = (unsigned int)&pbDst[-screen_buf_end + 1023] >> 8;
+						tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
 						if ( tile_42_45 > 45 )
 						{
 							tmp_pbDst = (char *)(pbDst - 12288);
@@ -7344,7 +7344,7 @@ LABEL_117:
 							yy_32 = 16;
 							do
 							{
-								if ( (unsigned int)tmp_pbDst < screen_buf_end )
+								if ( tmp_pbDst < (char *)gpBufEnd )
 								{
 									left_shift = *gpDrawMask;
 									i = 32;
@@ -7426,7 +7426,7 @@ LABEL_117:
 			yy_32 = 32;
 			do
 			{
-				if ( (unsigned int)tmp_pbDst < screen_buf_end )
+				if ( tmp_pbDst < (char *)gpBufEnd )
 				{
 					left_shift = *gpDrawMask;
 					i = 32;
@@ -7471,7 +7471,7 @@ LABEL_117:
 						if ( (dung_and80 & 0x80u) != 0 )
 							break;
 						yy_32 -= dung_and80;
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < (char *)gpBufEnd )
 						{
 							and80_i = dung_and80;
 							left_shift = gdwCurrentMask;
@@ -7516,18 +7516,18 @@ LABEL_152:
 	 \-|
 */
 			xx_32 = 30;
-			if ( (unsigned int)pbDst >= screen_buf_end )
+			if ( pbDst >= gpBufEnd )
 			{
-				tile_42_45 = (unsigned int)&pbDst[-screen_buf_end + 1023] >> 8;
+				tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
 				if ( tile_42_45 > 45 )
 				{
 					tmp_pbDst = (char *)(pbDst - 12288);
 					pdung_cels += 288;
 LABEL_162:
 					yy_32 = 2;
-					if ( (unsigned int)tmp_pbDst >= screen_buf_end )
+					if ( tmp_pbDst >= (char *)gpBufEnd )
 					{
-						tile_42_45 = (unsigned int)&tmp_pbDst[-screen_buf_end + 1023] >> 8;
+						tile_42_45 = (unsigned int)(tmp_pbDst - (char *)gpBufEnd + 1023) >> 8;
 						if ( tile_42_45 > 42 )
 							return;
 						world_tbl = WorldTbl3x16[tile_42_45];
@@ -7600,9 +7600,9 @@ LABEL_162:
 	|-/
 */
 			xx_32 = 30;
-			if ( (unsigned int)pbDst < screen_buf_end )
+			if ( pbDst < gpBufEnd )
 				goto LABEL_175;
-			tile_42_45 = (unsigned int)&pbDst[-screen_buf_end + 1023] >> 8;
+			tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
 			if ( tile_42_45 <= 45 )
 			{
 				world_tbl = WorldTbl3x16[tile_42_45];
@@ -7634,9 +7634,9 @@ LABEL_175:
 			pdung_cels += 288;
 LABEL_180:
 			yy_32 = 2;
-			if ( (unsigned int)tmp_pbDst >= screen_buf_end )
+			if ( tmp_pbDst >= (char *)gpBufEnd )
 			{
-				tile_42_45 = (unsigned int)&tmp_pbDst[-screen_buf_end + 1023] >> 8;
+				tile_42_45 = (unsigned int)(tmp_pbDst - (char *)gpBufEnd + 1023) >> 8;
 				if ( tile_42_45 > 42 )
 					return;
 				world_tbl = WorldTbl3x16[tile_42_45];
@@ -7670,9 +7670,9 @@ LABEL_180:
 	|__|
 */
 			xx_32 = 30;
-			if ( (unsigned int)pbDst >= screen_buf_end )
+			if ( pbDst >= gpBufEnd )
 			{
-				tile_42_45 = (unsigned int)&pbDst[-screen_buf_end + 1023] >> 8;
+				tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
 				if ( tile_42_45 > 45 )
 				{
 					tmp_pbDst = (char *)(pbDst - 12288);
@@ -7682,7 +7682,7 @@ LABEL_198:
 					yy_32 = 16;
 					do
 					{
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < (char *)gpBufEnd )
 						{
 							left_shift = *gpDrawMask;
 							i = 32;
@@ -7747,9 +7747,9 @@ LABEL_198:
 	|__|
 */
 			xx_32 = 30;
-			if ( (unsigned int)pbDst >= screen_buf_end )
+			if ( pbDst >= gpBufEnd )
 			{
-				tile_42_45 = (unsigned int)&pbDst[-screen_buf_end + 1023] >> 8;
+				tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
 				if ( tile_42_45 > 45 )
 				{
 					tmp_pbDst = (char *)(pbDst - 12288);
@@ -7759,7 +7759,7 @@ LABEL_217:
 					yy_32 = 16;
 					do
 					{
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < (char *)gpBufEnd )
 						{
 							left_shift = *gpDrawMask;
 							i = 32;
@@ -7879,7 +7879,7 @@ void __fastcall drawLowerScreen(unsigned char *pbDst)
 					i = 32;
 					do
 					{
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < gpBufEnd )
 						{
 							j = 8;
 							do
@@ -7924,7 +7924,7 @@ void __fastcall drawLowerScreen(unsigned char *pbDst)
 									goto LABEL_232;
 							}
 							yy_32 -= dung_and80;
-							if ( (unsigned int)tmp_pbDst < screen_buf_end )
+							if ( tmp_pbDst < gpBufEnd )
 							{
 								pdung_cels += dung_and80;
 								chk_sh_and = dung_and80 >> 1;
@@ -7974,7 +7974,7 @@ LABEL_232:
 */
 					for ( i = 30; ; i -= 2 )
 					{
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < gpBufEnd )
 						{
 							tmp_pbDst += i;
 							n_draw_shift = (unsigned int)(32 - i) >> 2;
@@ -8006,7 +8006,7 @@ LABEL_232:
 					i = 2;
 					do
 					{
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < gpBufEnd )
 						{
 							tmp_pbDst += i;
 							n_draw_shift = (unsigned int)(32 - i) >> 2;
@@ -8044,7 +8044,7 @@ LABEL_232:
 */
 					for ( i = 30; ; i -= 2 )
 					{
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < gpBufEnd )
 						{
 							n_draw_shift = (unsigned int)(32 - i) >> 2;
 							if ( (32 - i) & 2 )
@@ -8076,7 +8076,7 @@ LABEL_232:
 					i = 2;
 					do
 					{
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < gpBufEnd )
 						{
 							n_draw_shift = (unsigned int)(32 - i) >> 2;
 							if ( (32 - i) & 2 )
@@ -8113,7 +8113,7 @@ LABEL_232:
 */
 					for ( i = 30; ; i -= 2 )
 					{
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < gpBufEnd )
 						{
 							tmp_pbDst += i;
 							n_draw_shift = (unsigned int)(32 - i) >> 2;
@@ -8145,7 +8145,7 @@ LABEL_232:
 					i = 16;
 					do
 					{
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < gpBufEnd )
 						{
 							j = 8;
 							do
@@ -8174,7 +8174,7 @@ LABEL_232:
 */
 					for ( i = 30; ; i -= 2 )
 					{
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < gpBufEnd )
 						{
 							n_draw_shift = (unsigned int)(32 - i) >> 2;
 							if ( (32 - i) & 2 )
@@ -8206,7 +8206,7 @@ LABEL_232:
 					i = 16;
 					do
 					{
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < gpBufEnd )
 						{
 							j = 8;
 							do
@@ -8246,7 +8246,7 @@ LABEL_232:
 					xx_32 = 32;
 					do
 					{
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < gpBufEnd )
 						{
 							j = 8;
 							do
@@ -8287,7 +8287,7 @@ LABEL_232:
 							if ( (dung_and80 & 0x80u) == 0 )
 							{
 								yy_32 -= dung_and80;
-								if ( (unsigned int)tmp_pbDst < screen_buf_end )
+								if ( tmp_pbDst < gpBufEnd )
 								{
 									for ( block_4 = dung_and80; block_4 >= 4; block_4 -= 4 )
 									{
@@ -8336,18 +8336,18 @@ LABEL_232:
 	 \-|
 */
 					xx_32 = 30;
-					if ( (unsigned int)pbDst >= screen_buf_end )
+					if ( pbDst >= gpBufEnd )
 					{
-						tile_42_45 = (unsigned int)&pbDst[-screen_buf_end + 1023] >> 8;
+						tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
 						if ( tile_42_45 > 45 )
 						{
 							tmp_pbDst = pbDst - 12288;
 							pdung_cels += 288;
 LABEL_68:
 							yy_32 = 2;
-							if ( (unsigned int)tmp_pbDst >= screen_buf_end )
+							if ( tmp_pbDst >= gpBufEnd )
 							{
-								tile_42_45 = (unsigned int)&tmp_pbDst[-screen_buf_end + 1023] >> 8;
+								tile_42_45 = (unsigned int)(tmp_pbDst - gpBufEnd + 1023) >> 8;
 								if ( tile_42_45 > 42 )
 									return;
 								world_tbl = WorldTbl3x16[tile_42_45];
@@ -8400,18 +8400,18 @@ LABEL_68:
 	|-/
 */
 					xx_32 = 30;
-					if ( (unsigned int)pbDst >= screen_buf_end )
+					if ( pbDst >= gpBufEnd )
 					{
-						tile_42_45 = (unsigned int)&pbDst[-screen_buf_end + 1023] >> 8;
+						tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
 						if ( tile_42_45 > 45 )
 						{
 							tmp_pbDst = pbDst - 12288;
 							pdung_cels += 288;
 LABEL_83:
 							yy_32 = 2;
-							if ( (unsigned int)tmp_pbDst >= screen_buf_end )
+							if ( tmp_pbDst >= gpBufEnd )
 							{
-								tile_42_45 = (unsigned int)&tmp_pbDst[-screen_buf_end + 1023] >> 8;
+								tile_42_45 = (unsigned int)(tmp_pbDst - gpBufEnd + 1023) >> 8;
 								if ( tile_42_45 > 42 )
 									return;
 								world_tbl = WorldTbl3x16[tile_42_45];
@@ -8462,9 +8462,9 @@ LABEL_83:
 	|__|
 */
 					xx_32 = 30;
-					if ( (unsigned int)pbDst >= screen_buf_end )
+					if ( pbDst >= gpBufEnd )
 					{
-						tile_42_45 = (unsigned int)&pbDst[-screen_buf_end + 1023] >> 8;
+						tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
 						if ( tile_42_45 > 45 )
 						{
 							tmp_pbDst = pbDst - 12288;
@@ -8473,7 +8473,7 @@ LABEL_100:
 							i = 16;
 							do
 							{
-								if ( (unsigned int)tmp_pbDst < screen_buf_end )
+								if ( tmp_pbDst < gpBufEnd )
 								{
 									block_4 = 32;
 									do
@@ -8542,9 +8542,9 @@ LABEL_100:
 	|__|
 */
 					xx_32 = 30;
-					if ( (unsigned int)pbDst >= screen_buf_end )
+					if ( pbDst >= gpBufEnd )
 					{
-						tile_42_45 = (unsigned int)&pbDst[-screen_buf_end + 1023] >> 8;
+						tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
 						if ( tile_42_45 > 45 )
 						{
 							tmp_pbDst = pbDst - 12288;
@@ -8553,7 +8553,7 @@ LABEL_116:
 							j = 16;
 							do
 							{
-								if ( (unsigned int)tmp_pbDst < screen_buf_end )
+								if ( tmp_pbDst < gpBufEnd )
 								{
 									block_4 = 32;
 									do
@@ -8634,7 +8634,7 @@ LABEL_116:
 			i = 32;
 			do
 			{
-				if ( (unsigned int)tmp_pbDst < screen_buf_end )
+				if ( tmp_pbDst < gpBufEnd )
 				{
 					j = 8;
 					do
@@ -8680,7 +8680,7 @@ LABEL_116:
 							goto LABEL_143;
 					}
 					yy_32 -= dung_and80;
-					if ( (unsigned int)tmp_pbDst < screen_buf_end )
+					if ( tmp_pbDst < gpBufEnd )
 					{
 						chk_sh_and = dung_and80 >> 1;
 						if ( dung_and80 & 1 )
@@ -8731,18 +8731,18 @@ LABEL_143:
 	 \-|
 */
 			xx_32 = 30;
-			if ( (unsigned int)pbDst >= screen_buf_end )
+			if ( pbDst >= gpBufEnd )
 			{
-				tile_42_45 = (unsigned int)&pbDst[-screen_buf_end + 1023] >> 8;
+				tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
 				if ( tile_42_45 > 45 )
 				{
 					tmp_pbDst = pbDst - 12288;
 					pdung_cels += 288;
 LABEL_153:
 					yy_32 = 2;
-					if ( (unsigned int)tmp_pbDst >= screen_buf_end )
+					if ( tmp_pbDst >= gpBufEnd )
 					{
-						tile_42_45 = (unsigned int)&tmp_pbDst[-screen_buf_end + 1023] >> 8;
+						tile_42_45 = (unsigned int)(tmp_pbDst - gpBufEnd + 1023) >> 8;
 						if ( tile_42_45 > 42 )
 							return;
 						world_tbl = WorldTbl3x16[tile_42_45];
@@ -8815,9 +8815,9 @@ LABEL_153:
 	|-/
 */
 			xx_32 = 30;
-			if ( (unsigned int)pbDst < screen_buf_end )
+			if ( pbDst < gpBufEnd )
 				goto LABEL_166;
-			tile_42_45 = (unsigned int)&pbDst[-screen_buf_end + 1023] >> 8;
+			tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
 			if ( tile_42_45 <= 45 )
 			{
 				world_tbl = WorldTbl3x16[tile_42_45];
@@ -8849,9 +8849,9 @@ LABEL_166:
 			pdung_cels += 288;
 LABEL_171:
 			yy_32 = 2;
-			if ( (unsigned int)tmp_pbDst >= screen_buf_end )
+			if ( tmp_pbDst >= gpBufEnd )
 			{
-				tile_42_45 = (unsigned int)&tmp_pbDst[-screen_buf_end + 1023] >> 8;
+				tile_42_45 = (unsigned int)(tmp_pbDst - gpBufEnd + 1023) >> 8;
 				if ( tile_42_45 > 42 )
 					return;
 				world_tbl = WorldTbl3x16[tile_42_45];
@@ -8886,9 +8886,9 @@ LABEL_171:
 	|__|
 */
 			xx_32 = 30;
-			if ( (unsigned int)pbDst >= screen_buf_end )
+			if ( pbDst >= gpBufEnd )
 			{
-				tile_42_45 = (unsigned int)&pbDst[-screen_buf_end + 1023] >> 8;
+				tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
 				if ( tile_42_45 > 45 )
 				{
 					tmp_pbDst = pbDst - 12288;
@@ -8897,7 +8897,7 @@ LABEL_189:
 					i = 16;
 					do
 					{
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < gpBufEnd )
 						{
 							j = 8;
 							do
@@ -8958,9 +8958,9 @@ LABEL_189:
 	|__|
 */
 			xx_32 = 30;
-			if ( (unsigned int)pbDst >= screen_buf_end )
+			if ( pbDst >= gpBufEnd )
 			{
-				tile_42_45 = (unsigned int)&pbDst[-screen_buf_end + 1023] >> 8;
+				tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
 				if ( tile_42_45 > 45 )
 				{
 					tmp_pbDst = pbDst - 12288;
@@ -8969,7 +8969,7 @@ LABEL_205:
 					i = 16;
 					do
 					{
-						if ( (unsigned int)tmp_pbDst < screen_buf_end )
+						if ( tmp_pbDst < gpBufEnd )
 						{
 							j = 8;
 							do

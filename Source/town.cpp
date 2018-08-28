@@ -2,35 +2,35 @@
 
 #include "../types.h"
 
-void __fastcall town_clear_upper_buf(int a1)
+void __fastcall town_clear_upper_buf(unsigned char *a1)
 {
-	unsigned int v1; // edi
+	unsigned char *v1; // edi
 	signed int v2; // edx
 	signed int v3; // ebx
-	char *v4; // edi
+	unsigned char *v4; // edi
 	signed int v5; // edx
 	signed int v6; // ebx
-	char *v7; // edi
+	unsigned char *v7; // edi
 
 	v1 = a1;
 	v2 = 30;
 	v3 = 1;
-	while ( v1 >= screen_buf_end )
+	while ( v1 >= gpBufEnd )
 	{
-		v4 = (char *)(v2 + v1);
+		v4 = &v1[v2];
 		memset(v4, 0, 4 * v3);
-		v1 = (unsigned int)&v4[4 * v3 - 832 + v2];
+		v1 = &v4[4 * v3 - 832 + v2];
 		if ( !v2 )
 		{
 			v5 = 2;
 			v6 = 15;
 			do
 			{
-				if ( v1 < screen_buf_end )
+				if ( v1 < gpBufEnd )
 					break;
-				v7 = (char *)(v5 + v1);
+				v7 = &v1[v5];
 				memset(v7, 0, 4 * v6);
-				v1 = (unsigned int)&v7[4 * v6-- - 832 + v5];
+				v1 = &v7[4 * v6-- - 832 + v5];
 				v5 += 2;
 			}
 			while ( v5 != 32 );
@@ -40,29 +40,29 @@ void __fastcall town_clear_upper_buf(int a1)
 		++v3;
 	}
 }
-// 69CF0C: using guessed type int screen_buf_end;
+// 69CF0C: using guessed type int gpBufEnd;
 
-void __fastcall town_clear_low_buf(int y_related)
+void __fastcall town_clear_low_buf(unsigned char *y_related)
 {
-	unsigned int v1; // edi
+	unsigned char *v1; // edi
 	signed int v2; // edx
 	signed int i; // ebx
-	int v4; // edi
-	char *v5; // edi
+	unsigned char *v4; // edi
+	unsigned char *v5; // edi
 	signed int v6; // edx
 	signed int v7; // ebx
-	int v8; // edi
-	char *v9; // edi
+	unsigned char *v8; // edi
+	unsigned char *v9; // edi
 
 	v1 = y_related;
 	v2 = 30;
 	for ( i = 1; ; ++i )
 	{
-		if ( v1 < screen_buf_end )
+		if ( v1 < gpBufEnd )
 		{
-			v5 = (char *)(v2 + v1);
+			v5 = &v1[v2];
 			memset(v5, 0, 4 * i);
-			v4 = (int)&v5[4 * i + v2];
+			v4 = &v5[4 * i + v2];
 		}
 		else
 		{
@@ -77,11 +77,11 @@ void __fastcall town_clear_low_buf(int y_related)
 	v7 = 15;
 	do
 	{
-		if ( v1 < screen_buf_end )
+		if ( v1 < gpBufEnd )
 		{
-			v9 = (char *)(v6 + v1);
+			v9 = &v1[v6];
 			memset(v9, 0, 4 * v7);
-			v8 = (int)&v9[4 * v7 + v6];
+			v8 = &v9[4 * v7 + v6];
 		}
 		else
 		{
@@ -93,7 +93,7 @@ void __fastcall town_clear_low_buf(int y_related)
 	}
 	while ( v6 != 32 );
 }
-// 69CF0C: using guessed type int screen_buf_end;
+// 69CF0C: using guessed type int gpBufEnd;
 
 void __fastcall town_draw_clipped_e_flag(void *buffer, int x, int y, int sx, int sy)
 {
@@ -299,7 +299,7 @@ void __fastcall town_draw_lower(int x, int y, int sx, int sy, int a5, int some_f
 		}
 		else
 		{
-			town_clear_low_buf((int)gpBuffer + screen_y_times_768[sy] + sx);
+			town_clear_low_buf((unsigned char *)gpBuffer + screen_y_times_768[sy] + sx);
 			v6 = sy;
 		}
 		++xa;
@@ -344,7 +344,7 @@ void __fastcall town_draw_lower(int x, int y, int sx, int sy, int a5, int some_f
 			}
 			else
 			{
-				town_clear_low_buf((int)gpBuffer + *v11 + sx);
+				town_clear_low_buf((unsigned char *)gpBuffer + *v11 + sx);
 			}
 			++xa;
 			sx += 64;
@@ -379,7 +379,7 @@ void __fastcall town_draw_lower(int x, int y, int sx, int sy, int a5, int some_f
 		}
 		else
 		{
-			town_clear_low_buf((int)gpBuffer + screen_y_times_768[v6] + sx);
+			town_clear_low_buf((unsigned char *)gpBuffer + screen_y_times_768[v6] + sx);
 		}
 	}
 }
@@ -616,7 +616,7 @@ void __fastcall town_draw_lower_2(int x, int y, int sx, int sy, int a5, int a6, 
 				goto LABEL_16;
 			}
 		}
-		town_clear_low_buf((int)gpBuffer + screen_y_times_768[sy] + v7);
+		town_clear_low_buf((unsigned char *)gpBuffer + screen_y_times_768[sy] + v7);
 		v8 = sy;
 LABEL_16:
 		++xa;
@@ -666,7 +666,7 @@ LABEL_18:
 			}
 			else
 			{
-				town_clear_low_buf((int)gpBuffer + *v13 + v11);
+				town_clear_low_buf((unsigned char *)gpBuffer + *v13 + v11);
 			}
 			++xa;
 			v14 += 112;
@@ -705,7 +705,7 @@ LABEL_18:
 		}
 		else
 		{
-			town_clear_low_buf((int)gpBuffer + screen_y_times_768[v8] + v11);
+			town_clear_low_buf((unsigned char *)gpBuffer + screen_y_times_768[v8] + v11);
 		}
 	}
 }
@@ -885,7 +885,7 @@ void __fastcall town_draw_upper(int x, int y, int sx, int sy, int a5, int a6, in
 				goto LABEL_17;
 			}
 		}
-		town_clear_upper_buf((int)gpBuffer + screen_y_times_768[v11] + v8);
+		town_clear_upper_buf((unsigned char *)gpBuffer + screen_y_times_768[v11] + v8);
 LABEL_17:
 		++xa;
 		ya = --v7;
@@ -939,7 +939,7 @@ LABEL_19:
 					goto LABEL_36;
 				}
 			}
-			town_clear_upper_buf((int)v17 + v14 + screen_y_times_768[sy]);
+			town_clear_upper_buf((unsigned char *)v17 + v14 + screen_y_times_768[sy]);
 LABEL_36:
 			++xa;
 			v15 += 112;
@@ -986,7 +986,7 @@ LABEL_36:
 				return;
 			}
 		}
-		town_clear_upper_buf((int)gpBuffer + screen_y_times_768[v23] + v14);
+		town_clear_upper_buf((unsigned char *)gpBuffer + screen_y_times_768[v23] + v14);
 	}
 }
 // 69CF14: using guessed type int level_cel_block;
@@ -1075,7 +1075,7 @@ LABEL_15:
 			break;
 	}
 	a6 = 0;
-	screen_buf_end = (int)gpBuffer + screen_y_times_768[160];
+	gpBufEnd = (unsigned char *)gpBuffer + screen_y_times_768[160];
 	do
 	{
 		town_draw_upper(v3, ya++, v2, v4, a5, a6, 0);
@@ -1087,7 +1087,7 @@ LABEL_15:
 		++a6;
 	}
 	while ( a6 < 7 );
-	screen_buf_end = (int)gpBuffer + screen_y_times_768[512];
+	gpBufEnd = (unsigned char *)gpBuffer + screen_y_times_768[512];
 	if ( v11 > 0 )
 	{
 		do
@@ -1121,7 +1121,7 @@ LABEL_15:
 // 5C3000: using guessed type int scr_pix_width;
 // 5C3004: using guessed type int scr_pix_height;
 // 69BD04: using guessed type int questlog;
-// 69CF0C: using guessed type int screen_buf_end;
+// 69CF0C: using guessed type int gpBufEnd;
 
 void __fastcall T_DrawZoom(int x, int y)
 {
@@ -1203,7 +1203,7 @@ LABEL_9:
 			break;
 	}
 	a6 = 0;
-	screen_buf_end = (int)gpBuffer + screen_y_times_768[143];
+	gpBufEnd = (unsigned char *)gpBuffer + screen_y_times_768[143];
 	do
 	{
 		town_draw_upper(v3, ya++, v2, v4, a5, a6, 0);
@@ -1215,7 +1215,7 @@ LABEL_9:
 		++a6;
 	}
 	while ( a6 < 7 );
-	screen_buf_end = (int)gpBuffer + screen_y_times_768[320];
+	gpBufEnd = (unsigned char *)gpBuffer + screen_y_times_768[320];
 	if ( v18 > 0 )
 	{
 		do
@@ -1291,7 +1291,7 @@ LABEL_24:
 // 5C3000: using guessed type int scr_pix_width;
 // 5C3004: using guessed type int scr_pix_height;
 // 69BD04: using guessed type int questlog;
-// 69CF0C: using guessed type int screen_buf_end;
+// 69CF0C: using guessed type int gpBufEnd;
 
 void __fastcall T_DrawView(int StartX, int StartY)
 {

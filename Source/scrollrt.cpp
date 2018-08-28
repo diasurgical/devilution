@@ -8,7 +8,7 @@ int scrollrt_cpp_init_value; // weak
 unsigned int sgdwCursWdtOld; // idb
 int sgdwCursX; // idb
 int sgdwCursY; // idb
-int screen_buf_end; // weak
+unsigned char *gpBufEnd; // weak
 int sgdwCursHgt;
 int level_cel_block; // weak
 int sgdwCursXOld; // idb
@@ -619,7 +619,7 @@ LABEL_15:
 			break;
 	}
 	a6 = 0;
-	screen_buf_end = (int)gpBuffer + screen_y_times_768[160];
+	gpBufEnd = (unsigned char *)gpBuffer + screen_y_times_768[160];
 	do
 	{
 		scrollrt_draw_upper(v3, ya++, v2, v4, a5, a6, 0);
@@ -631,7 +631,7 @@ LABEL_15:
 		++a6;
 	}
 	while ( a6 < 4 );
-	screen_buf_end = (int)gpBuffer + screen_y_times_768[512];
+	gpBufEnd = (unsigned char *)gpBuffer + screen_y_times_768[512];
 	if ( v11 > 0 )
 	{
 		do
@@ -666,7 +666,7 @@ LABEL_15:
 // 5C3000: using guessed type int scr_pix_width;
 // 5C3004: using guessed type int scr_pix_height;
 // 69BD04: using guessed type int questlog;
-// 69CF0C: using guessed type int screen_buf_end;
+// 69CF0C: using guessed type int gpBufEnd;
 // 69CF20: using guessed type char arch_draw_type;
 
 void __fastcall scrollrt_draw_lower(int x, int y, int sx, int sy, int a5, int some_flag)
@@ -2732,7 +2732,7 @@ LABEL_9:
 			break;
 	}
 	a6 = 0;
-	screen_buf_end = (int)gpBuffer + screen_y_times_768[143];
+	gpBufEnd = (unsigned char *)gpBuffer + screen_y_times_768[143];
 	do
 	{
 		scrollrt_draw_upper(v3, ya++, v2, v4, a5, a6, 0);
@@ -2744,7 +2744,7 @@ LABEL_9:
 		++a6;
 	}
 	while ( a6 < 4 );
-	screen_buf_end = (int)gpBuffer + screen_y_times_768[320];
+	gpBufEnd = (unsigned char *)gpBuffer + screen_y_times_768[320];
 	if ( v18 > 0 )
 	{
 		do
@@ -2821,7 +2821,7 @@ LABEL_24:
 // 5C3000: using guessed type int scr_pix_width;
 // 5C3004: using guessed type int scr_pix_height;
 // 69BD04: using guessed type int questlog;
-// 69CF0C: using guessed type int screen_buf_end;
+// 69CF0C: using guessed type int gpBufEnd;
 // 69CF20: using guessed type char arch_draw_type;
 
 void __cdecl ClearScreenBuffer()
@@ -3102,7 +3102,7 @@ void __cdecl scrollrt_draw_cursor_item()
 				}
 				v9 = v2 + 1;
 				v10 = v3 + 1;
-				screen_buf_end = (int)gpBuffer + screen_y_times_768[640] - v0 - 2;
+				gpBufEnd = (unsigned char *)gpBuffer + screen_y_times_768[640] - v0 - 2;
 				if ( pcurs < 12 )
 				{
 					Cel2DrawHdrOnly(v9 + 64, v1 + v10 + 159, (char *)pCursCels, pcurs, v0, 0, 8);
@@ -3127,7 +3127,7 @@ void __cdecl scrollrt_draw_cursor_item()
 	}
 }
 // 4B8C9C: using guessed type int cursH;
-// 69CF0C: using guessed type int screen_buf_end;
+// 69CF0C: using guessed type int gpBufEnd;
 
 void __fastcall DrawMain(int dwHgt, int draw_desc, int draw_hp, int draw_mana, int draw_sbar, int draw_btn)
 {
