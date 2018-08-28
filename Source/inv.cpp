@@ -1618,8 +1618,6 @@ void __fastcall CheckInvSwap(int pnum, BYTE bLoc, int idx, WORD wCI, int seed, B
 
 void __fastcall CheckInvCut(int pnum, int mx, int my)
 {
-	int i;
-
 	if ( plr[pnum]._pmode > PM_WALK3 )
 	{
 		return;
@@ -1725,41 +1723,41 @@ void __fastcall CheckInvCut(int pnum, int mx, int my)
 
 	if ( r >= SLOTXY_INV_FIRST && r <= SLOTXY_INV_LAST )
 	{
-		char iv = plr[pnum].InvGrid[r - SLOTXY_INV_FIRST];
-		if ( iv )
+		char ii = plr[pnum].InvGrid[r - SLOTXY_INV_FIRST];
+		if ( ii )
 		{
-			int ii = iv;
-			if ( iv <= 0 )
+			int iv = ii;
+			if ( ii <= 0 )
 			{
-				ii = -iv;
+				iv = -ii;
 			}
 
-			for ( i = 0; i < NUM_INVELEMS; i++ )
+			for ( int i = 0; i < NUM_INVELEMS; i++ )
 			{
-				if ( plr[pnum].InvGrid[i] == ii || plr[pnum].InvGrid[i] == -ii )
+				if ( plr[pnum].InvGrid[i] == iv || plr[pnum].InvGrid[i] == -iv )
 				{
 					plr[pnum].InvGrid[i] = 0;
 				}
 			}
 
-			ii--;
+			iv--;
 
-			plr[pnum].HoldItem = plr[pnum].InvList[ii];
+			plr[pnum].HoldItem = plr[pnum].InvList[iv];
 			plr[pnum]._pNumInv--;
 
-			if ( plr[pnum]._pNumInv > 0 && plr[pnum]._pNumInv != ii )
+			if ( plr[pnum]._pNumInv > 0 && plr[pnum]._pNumInv != iv )
 			{
-				plr[pnum].InvList[ii] = plr[pnum].InvList[plr[pnum]._pNumInv];
+				plr[pnum].InvList[iv] = plr[pnum].InvList[plr[pnum]._pNumInv];
 
-				for ( i = 0; i < NUM_INVELEMS; i++ )
+				for ( int j = 0; j < NUM_INVELEMS; j++ )
 				{
-					if ( plr[pnum].InvGrid[i] == plr[pnum]._pNumInv + 1 )
+					if ( plr[pnum].InvGrid[j] == plr[pnum]._pNumInv + 1 )
 					{
-						plr[pnum].InvGrid[i] = ii + 1;
+						plr[pnum].InvGrid[j] = iv + 1;
 					}
-					if ( plr[pnum].InvGrid[i] == -(plr[pnum]._pNumInv + 1) )
+					if ( plr[pnum].InvGrid[j] == -(plr[pnum]._pNumInv + 1) )
 					{
-						plr[pnum].InvGrid[i] = -ii - 1;
+						plr[pnum].InvGrid[j] = -iv - 1;
 					}
 				}
 			}
@@ -1791,127 +1789,133 @@ void __fastcall CheckInvCut(int pnum, int mx, int my)
 		if ( pnum == myplr )
 		{
 			PlaySFX(IS_IGRAB);
-			SetCursor(plr[pnum].HoldItem._iCurs + 12);
+			SetCursor(plr[pnum].HoldItem._iCurs + CURSOR_FIRSTITEM);
 			SetCursorPos(mx - (cursW >> 1), MouseY - (cursH >> 1));
 		}
 	}
 }
 
-void __fastcall inv_update_rem_item(int pnum, int iv)
+void __fastcall inv_update_rem_item(int pnum, BYTE iv)
 {
-	unsigned char v2; // dl
+	if ( iv < NUM_INVLOC )
+	{
+		plr[pnum].InvBody[iv]._itype = ITYPE_NONE;
+	}
 
-	if ( (unsigned char)iv < 7u )
-		plr[pnum].InvBody[(unsigned char)iv]._itype = -1;
-	v2 = 0;
+	BOOL Loadgfx = FALSE;
+
 	if ( plr[pnum]._pmode != PM_DEATH )
-		v2 = 1;
-	CalcPlrInv(pnum, v2);
+	{
+		Loadgfx = TRUE;
+	}
+
+	CalcPlrInv(pnum, Loadgfx);
 }
 
 void __fastcall RemoveInvItem(int pnum, int iv)
 {
-	int v2; // edx
-	signed int v3; // ecx
-	int v4; // ebx
-	char *v5; // eax
-	int v6; // esi
-	int v7; // edx
-	int v8; // eax
-	signed int v9; // edi
-	char *v10; // esi
-	int v11; // eax
-	int p; // [esp+Ch] [ebp-4h]
+	iv++;
 
-	p = pnum;
-	v2 = iv + 1;
-	v3 = 0;
-	v4 = p;
-	do
+	for ( int i = 0; i < NUM_INVELEMS; i++ )
 	{
-		v5 = &plr[v4].InvGrid[v3];
-		v6 = *v5;
-		if ( v6 == v2 || v6 == -v2 )
-			*v5 = 0;
-		++v3;
-	}
-	while ( v3 < 40 );
-	v7 = v2 - 1;
-	v8 = --plr[v4]._pNumInv;
-	if ( v8 > 0 && v8 != v7 )
-	{
-		qmemcpy((char *)&plr[0].InvList[v7] + v4 * 21720, (char *)&plr[0].InvList[v8] + v4 * 21720, 0x170u);
-		v9 = 0;
-		do
+		if ( plr[pnum].InvGrid[i] == iv || plr[pnum].InvGrid[i] == -iv )
 		{
-			v10 = &plr[v4].InvGrid[v9];
-			if ( *v10 == plr[v4]._pNumInv + 1 )
-				*v10 = v7 + 1;
-			if ( *v10 == -1 - plr[v4]._pNumInv )
-				*v10 = -1 - v7;
-			++v9;
+			plr[pnum].InvGrid[i] = 0;
 		}
-		while ( v9 < 40 );
 	}
-	CalcPlrScrolls(p);
-	if ( _LOBYTE(plr[v4]._pRSplType) == 2 )
+
+	iv--;
+	plr[pnum]._pNumInv--;
+
+	if ( plr[pnum]._pNumInv > 0 && plr[pnum]._pNumInv != iv )
 	{
-		v11 = plr[v4]._pRSpell;
-		if ( v11 != -1 )
+		plr[pnum].InvList[iv] = plr[pnum].InvList[plr[pnum]._pNumInv];
+
+		for ( int j = 0; j < NUM_INVELEMS; j++ )
 		{
-			if ( !(plr[v4]._pScrlSpells[1] & (1 << (v11 - 1) >> 31) | plr[v4]._pScrlSpells[0] & (1 << (v11 - 1))) )
-				plr[v4]._pRSpell = -1;
+			if ( plr[pnum].InvGrid[j] == plr[pnum]._pNumInv + 1 )
+			{
+				plr[pnum].InvGrid[j] = iv + 1;
+			}
+			if ( plr[pnum].InvGrid[j] == -(plr[pnum]._pNumInv + 1) )
+			{
+				plr[pnum].InvGrid[j] = -(iv + 1);
+			}
+		}
+	}
+
+	CalcPlrScrolls(pnum);
+
+	if ( plr[pnum]._pRSplType == RSPLTYPE_SCROLL )
+	{
+		if ( plr[pnum]._pRSpell != SPL_INVALID )
+		{
+			if ( !(
+				*(UINT64 *)&plr[pnum]._pScrlSpells // TODO: remove cast when pScrlSpells is converted to UINT64
+				& (1 << (plr[pnum]._pRSpell - 1))) )
+			{
+				plr[pnum]._pRSpell = SPL_INVALID;
+			}
+
 			drawpanflag = 255;
 		}
 	}
 }
-// 52571C: using guessed type int drawpanflag;
 
 void __fastcall RemoveSpdBarItem(int pnum, int iv)
 {
-	int v2; // esi
-	int v3; // eax
+	plr[pnum].SpdList[iv]._itype = ITYPE_NONE;
 
-	v2 = pnum;
-	plr[pnum].SpdList[iv]._itype = -1;
 	CalcPlrScrolls(pnum);
-	if ( _LOBYTE(plr[v2]._pRSplType) == 2 )
+
+	if ( plr[pnum]._pRSplType == RSPLTYPE_SCROLL )
 	{
-		v3 = plr[v2]._pRSpell;
-		if ( v3 != -1 && !(plr[v2]._pScrlSpells[1] & (1 << (v3 - 1) >> 31) | plr[v2]._pScrlSpells[0] & (1 << (v3 - 1))) )
-			plr[v2]._pRSpell = -1;
+		if ( plr[pnum]._pRSpell != SPL_INVALID )
+		{
+			if ( !(
+				*(UINT64 *)&plr[pnum]._pScrlSpells // TODO: remove cast when pScrlSpells is converted to UINT64
+				& (1 << (plr[pnum]._pRSpell - 1))) )
+			{
+				plr[pnum]._pRSpell = SPL_INVALID;
+			}
+
+			drawpanflag = 255;
+		}
 	}
-	drawpanflag = 255;
 }
-// 52571C: using guessed type int drawpanflag;
 
 void __cdecl CheckInvItem()
 {
-	if ( pcurs < CURSOR_FIRSTITEM )
-		CheckInvCut(myplr, MouseX, MouseY);
-	else
+	if ( pcurs >= CURSOR_FIRSTITEM )
+	{
 		CheckInvPaste(myplr, MouseX, MouseY);
+	}
+	else
+	{
+		CheckInvCut(myplr, MouseX, MouseY);
+	}
 }
 
 void __cdecl CheckInvScrn()
 {
-	if ( MouseX > 190 && MouseX < 437 && MouseY > 352 && MouseY < 385 )
+	if ( MouseX > 190 && MouseX < 437
+		&& MouseY > 352 && MouseY < 385 )
+	{
 		CheckInvItem();
+	}
 }
 
 void __fastcall CheckItemStats(int pnum)
 {
-	PlayerStruct *v1; // eax
-	int v2; // ecx
+	PlayerStruct *p = &plr[pnum];
 
-	v1 = &plr[pnum];
-	v2 = v1->HoldItem._iMinStr;
-	v1->HoldItem._iStatFlag = 0;
-	if ( v1->_pStrength >= v2
-		&& v1->_pMagic >= (unsigned char)v1->HoldItem._iMinMag
-		&& v1->_pDexterity >= v1->HoldItem._iMinDex )
+	p->HoldItem._iStatFlag = FALSE;
+
+	if ( p->_pStrength >= p->HoldItem._iMinStr
+		&& p->_pMagic >= p->HoldItem._iMinMag
+		&& p->_pDexterity >= p->HoldItem._iMinDex )
 	{
-		v1->HoldItem._iStatFlag = 1;
+		p->HoldItem._iStatFlag = TRUE;
 	}
 }
 
