@@ -1519,6 +1519,7 @@ void __fastcall CreatePlrItems(int p)
 {
 	int i;
 	ItemStruct *pi = plr[p].InvBody;
+
 	for ( i = 0; i < NUM_INVLOC; i++ )
 	{
 		pi[i]._itype = ITYPE_NONE;
@@ -1529,8 +1530,7 @@ void __fastcall CreatePlrItems(int p)
 	memset(&plr[p].InvGrid, 0, sizeof(plr[p].InvGrid));
 
 	pi = plr[p].InvList;
-	// TODO: define/const for that 40, something like NUM_MAX_INV_ITEMS
-	for ( i = 0; i < 40; i++ )
+	for ( i = 0; i < NUM_INVELEMS; i++ )
 	{
 		pi[i]._itype = ITYPE_NONE;
 	}
@@ -1544,16 +1544,14 @@ void __fastcall CreatePlrItems(int p)
 		pi[i]._itype = ITYPE_NONE;
 	}
 
-	// TODO: The compiler seems to load the argument for the last call
-	// of `GetPlrHandSeed` twice instead of once
 	switch ( plr[p]._pClass )
 	{
 		case PC_WARRIOR:
-			SetPlrHandItem(&plr[p].InvBody[4], IDI_WARRIOR);
-			GetPlrHandSeed(&plr[p].InvBody[4]);
+			SetPlrHandItem(&plr[p].InvBody[INVLOC_HAND_LEFT], IDI_WARRIOR);
+			GetPlrHandSeed(&plr[p].InvBody[INVLOC_HAND_LEFT]);
 
-			SetPlrHandItem(&plr[p].InvBody[5], IDI_WARRSHLD);
-			GetPlrHandSeed(&plr[p].InvBody[5]);
+			SetPlrHandItem(&plr[p].InvBody[INVLOC_HAND_RIGHT], IDI_WARRSHLD);
+			GetPlrHandSeed(&plr[p].InvBody[INVLOC_HAND_RIGHT]);
 
 			// TODO: Add debug logic from 1.00 here
 
@@ -1568,8 +1566,8 @@ void __fastcall CreatePlrItems(int p)
 			GetPlrHandSeed(&plr[p].SpdList[1]);
 			break;
 		case PC_ROGUE:
-			SetPlrHandItem(&plr[p].InvBody[4], IDI_ROGUE);
-			GetPlrHandSeed(&plr[p].InvBody[4]);
+			SetPlrHandItem(&plr[p].InvBody[INVLOC_HAND_LEFT], IDI_ROGUE);
+			GetPlrHandSeed(&plr[p].InvBody[INVLOC_HAND_LEFT]);
 
 			SetPlrHandItem(&plr[p].SpdList[0], IDI_HEAL);
 			GetPlrHandSeed(&plr[p].SpdList[0]);
@@ -1578,8 +1576,8 @@ void __fastcall CreatePlrItems(int p)
 			GetPlrHandSeed(&plr[p].SpdList[1]);
 			break;
 		case PC_SORCERER:
-			SetPlrHandItem(&plr[p].InvBody[4], IDI_SORCEROR);
-			GetPlrHandSeed(&plr[p].InvBody[4]);
+			SetPlrHandItem(&plr[p].InvBody[INVLOC_HAND_LEFT], IDI_SORCEROR);
+			GetPlrHandSeed(&plr[p].InvBody[INVLOC_HAND_LEFT]);
 
 			SetPlrHandItem(&plr[p].SpdList[0], IDI_MANA);
 			GetPlrHandSeed(&plr[p].SpdList[0]);
