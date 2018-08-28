@@ -45,7 +45,7 @@ void __fastcall DrawLine(int x0, int y0, int x1, int y1, char col);
 int __fastcall GetDirection(int x1, int y1, int x2, int y2);
 void __fastcall SetRndSeed(int s);
 int __cdecl GetRndSeed();
-int __fastcall random(int idx, int v);
+int __fastcall random(BYTE idx, int v);
 void __cdecl engine_cpp_init_2();
 void __cdecl mem_init_mutex();
 void __cdecl mem_atexit_mutex();
