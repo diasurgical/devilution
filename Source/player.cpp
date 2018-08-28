@@ -681,37 +681,37 @@ void __fastcall CreatePlayer(int pnum, char c)
 	}
 	plr[pnum]._pClass = c;
 
-	char str = StrengthTbl[c];
-	if ( str < 0 )
+	char val = StrengthTbl[c];
+	if ( val < 0 )
 	{
-		str = 0;
+		val = 0;
 	}
-	plr[pnum]._pStrength = str;
-	plr[pnum]._pBaseStr = str;
+	plr[pnum]._pStrength = val;
+	plr[pnum]._pBaseStr = val;
 
-	char mag = MagicTbl[c];
-	if ( mag < 0 )
+	val = MagicTbl[c];
+	if ( val < 0 )
 	{
-		mag = 0;
+		val = 0;
 	}
-	plr[pnum]._pMagic = mag;
-	plr[pnum]._pBaseMag = mag;
+	plr[pnum]._pMagic = val;
+	plr[pnum]._pBaseMag = val;
 
-	char dex = DexterityTbl[c];
-	if ( dex < 0 )
+	val = DexterityTbl[c];
+	if ( val < 0 )
 	{
-		dex = 0;
+		val = 0;
 	}
-	plr[pnum]._pDexterity = dex;
-	plr[pnum]._pBaseDex = dex;
+	plr[pnum]._pDexterity = val;
+	plr[pnum]._pBaseDex = val;
 
-	char vit = VitalityTbl[c];
-	if ( vit < 0 )
+	val = VitalityTbl[c];
+	if ( val < 0 )
 	{
-		vit = 0;
+		val = 0;
 	}
-	plr[pnum]._pVitality = vit;
-	plr[pnum]._pBaseVit = vit;
+	plr[pnum]._pVitality = val;
+	plr[pnum]._pBaseVit = val;
 
 	plr[pnum]._pStatPts = 0;
 	plr[pnum].pTownWarps = 0;
@@ -731,7 +731,7 @@ void __fastcall CreatePlayer(int pnum, char c)
 	plr[pnum]._pBaseToBlk = ToBlkTbl[c];
 
 
-	plr[pnum]._pHitPoints = (vit + 10) << 6;
+	plr[pnum]._pHitPoints = (val + 10) << 6;
 	if ( c == PC_WARRIOR )
 	{
 		plr[pnum]._pHitPoints *= 2;
