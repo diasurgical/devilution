@@ -361,28 +361,27 @@ struct monster_cpp_init
 
 void __fastcall InitMonsterTRN(int monst, BOOL special)
 {
-	unsigned char *trans_file = Monsters[monst].trans_file;
-
-	for ( int i = 0; i < 256; ++i )
+	BYTE *f = Monsters[monst].trans_file;
+	for ( int i = 0; i < 256; i++ )
 	{
-		if ( *trans_file == 255 )
+		if ( *f == 255 )
 		{
-			*trans_file = 0;
+			*f = 0;
 		}
-
-		++trans_file;
+		f++;
 	}
 
-	for ( int anim_index = 0; anim_index < (special ? 6 : 5); ++anim_index )
+	int n = special ? 6 : 5;
+	for ( int j = 0; j < n; ++j )
 	{
-		if ( anim_index != 1 || Monsters[monst].mtype < MT_COUNSLR || Monsters[monst].mtype > MT_ADVOCATE )
+		if ( j != 1 || Monsters[monst].mtype < MT_COUNSLR || Monsters[monst].mtype > MT_ADVOCATE )
 		{
-			for ( int i = 0; i < 8; ++i )
+			for ( int k = 0; k < 8; k++ )
 			{
 				Cl2ApplyTrans(
-					Monsters[monst].Anims[anim_index].Frames[i],
+					Monsters[monst].Anims[j].Frames[k],
 					Monsters[monst].trans_file,
-					Monsters[monst].Anims[anim_index].Rate);
+					Monsters[monst].Anims[j].Rate);
 			}
 		}
 	}
