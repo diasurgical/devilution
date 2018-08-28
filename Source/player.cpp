@@ -871,8 +871,11 @@ void __fastcall NextPlrLevel(int pnum)
 		TermMsg("NextPlrLevel: illegal player %d", pnum);
 	}
 
-	char l = ++plr[pnum]._pLevel;
+	plr[pnum]._pLevel++;
+	char l = plr[pnum]._pLevel;
+
 	plr[pnum]._pMaxLvl++;
+
 	if ( CalcStatDiff(pnum) < 5 ) {
 		plr[pnum]._pStatPts = CalcStatDiff(pnum);
 	} else {
@@ -882,6 +885,7 @@ void __fastcall NextPlrLevel(int pnum)
 	plr[pnum]._pNextExper = ExpLvlsTbl[l];
 
 	char c = plr[pnum]._pClass;
+
 	int hp = c == PC_SORCERER ? 64 : 128;
 	if ( gbMaxPlayers == 1 ) {
 		hp++;
@@ -890,19 +894,23 @@ void __fastcall NextPlrLevel(int pnum)
 	plr[pnum]._pHitPoints = plr[pnum]._pMaxHP;
 	plr[pnum]._pMaxHPBase += hp;
 	plr[pnum]._pHPBase = plr[pnum]._pMaxHPBase;
+
 	if ( pnum == myplr ) {
 		drawhpflag = 1;
 	}
+
 	int mana = c != PC_WARRIOR ? 128 : 64;
 	if ( gbMaxPlayers == 1 ) {
-		++mana;
+		mana++;
 	}
 	plr[pnum]._pMaxMana += mana;
 	plr[pnum]._pMaxManaBase += mana;
+
 	if ( !(plr[pnum]._pIFlags & ISPL_NOMANA) ) {
 		plr[pnum]._pMana = plr[pnum]._pMaxMana;
 		plr[pnum]._pManaBase = plr[pnum]._pMaxManaBase;
 	}
+
 	if ( pnum == myplr ) {
 		drawmanaflag = 1;
 	}
