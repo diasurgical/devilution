@@ -29,8 +29,12 @@
 #define MDMAXX					40
 #define MDMAXY					40
 
+
+// number of inventory grid cells
+#define NUM_INVELEMS			40
+#define INV_SLOT_SIZE_PX		29
+
 // todo: enums
-#define NUM_INVLOC				7
 #define NUM_SFX					858
 #define NUMLEVELS				17
 

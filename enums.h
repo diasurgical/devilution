@@ -2472,3 +2472,40 @@ enum item_special_effect {
 	ISPL_3XDAMVDEM = 0x40000000,
 	ISPL_ALLRESZERO = 0x80000000,
 };
+
+// Logical equipment locations
+enum inv_body_loc {
+	INVLOC_HEAD = 0,
+	INVLOC_RING_LEFT = 1,
+	INVLOC_RING_RIGHT = 2,
+	INVLOC_AMULET = 3,
+	INVLOC_HAND_LEFT = 4,
+	INVLOC_HAND_RIGHT = 5,
+	INVLOC_CHEST = 6,
+	NUM_INVLOC,
+};
+
+// identifiers for each of the inventory squares
+// see https://github.com/sanctuary/graphics/blob/master/inventory.png
+enum inv_xy_slot {
+	SLOTXY_HEAD_FIRST = 0,
+	SLOTXY_HEAD_LAST = 3,
+	SLOTXY_RING_LEFT = 4,
+	SLOTXY_RING_RIGHT = 5,
+	SLOTXY_AMULET = 6,
+	SLOTXY_HAND_LEFT_FIRST = 7,
+	SLOTXY_HAND_LEFT_LAST = 12,
+	SLOTXY_HAND_RIGHT_FIRST = 13,
+	SLOTXY_HAND_RIGHT_LAST = 18,
+	SLOTXY_CHEST_FIRST = 19,
+	SLOTXY_CHEST_LAST = 24,
+
+	// regular inventory
+	SLOTXY_INV_FIRST = 25,
+	SLOTXY_INV_LAST = 64,
+
+	// belt items
+	SLOTXY_BELT_FIRST = 65,
+	SLOTXY_BELT_LAST = 72,
+	NUM_XY_SLOTS = 73
+};

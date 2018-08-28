@@ -1254,7 +1254,7 @@ void __fastcall NetSendCmdChItem(unsigned char bHiPri, unsigned char bLoc)
 		NetSendLoPri((unsigned char *)&cmd, 0xBu);
 }
 
-void __fastcall NetSendCmdDelItem(unsigned char bHiPri, unsigned char bLoc)
+void __fastcall NetSendCmdDelItem(BOOL bHiPri, unsigned char bLoc)
 {
 	TCmdDelItem cmd; // [esp+2h] [ebp-2h]
 
