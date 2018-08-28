@@ -1589,27 +1589,27 @@ LABEL_89:
 
 void __fastcall CheckInvSwap(int pnum, BYTE bLoc, int idx, WORD wCI, int seed, BOOL bId)
 {
-	RecreateItem(127, idx, wCI, seed, 0);
+	RecreateItem(MAXITEMS, idx, wCI, seed, 0);
 
 	PlayerStruct *p = &plr[pnum];
-	p->HoldItem = item[127];
+	p->HoldItem = item[MAXITEMS];
 
 	if ( bId )
 	{
 		p->HoldItem._iIdentified = TRUE;
 	}
 
-	// TODO: Enum values for bLoc
-	if ( bLoc < 7 )
+	if ( bLoc < NUM_INVLOC )
 	{
 		p->InvBody[bLoc] = p->HoldItem;
-		if ( bLoc == 4 && p->HoldItem._iLoc == ILOC_TWOHAND )
+
+		if ( bLoc == INVLOC_HAND_LEFT && p->HoldItem._iLoc == ILOC_TWOHAND )
 		{
-			p->InvBody[5]._itype = ITYPE_NONE;
+			p->InvBody[INVLOC_HAND_RIGHT]._itype = ITYPE_NONE;
 		}
-		else if ( bLoc == 5 && p->HoldItem._iLoc == ILOC_TWOHAND )
+		else if ( bLoc == INVLOC_HAND_RIGHT && p->HoldItem._iLoc == ILOC_TWOHAND )
 		{
-			p->InvBody[4]._itype = ITYPE_NONE;
+			p->InvBody[INVLOC_HAND_LEFT]._itype = ITYPE_NONE;
 		}
 	}
 
@@ -1618,179 +1618,184 @@ void __fastcall CheckInvSwap(int pnum, BYTE bLoc, int idx, WORD wCI, int seed, B
 
 void __fastcall CheckInvCut(int pnum, int mx, int my)
 {
-	int v3; // ebp
-	signed int v4; // ecx
-	signed int v5; // ebx
-	int v6; // eax
-	int v7; // eax
-	char v8; // al
-	int v9; // edx
-	signed int v10; // esi
-	char *v11; // eax
-	int v12; // ecx
-	int v13; // edx
-	int v14; // eax
-	signed int v15; // esi
-	char *v16; // eax
-	int v17; // eax
-	int v18; // eax
-	signed int v19; // [esp+Ch] [ebp-Ch]
-	int p; // [esp+10h] [ebp-8h]
-	int v21; // [esp+14h] [ebp-4h]
+	int i;
 
-	p = pnum;
-	v3 = pnum;
-	v21 = mx;
 	if ( plr[pnum]._pmode > PM_WALK3 )
+	{
 		return;
-	v4 = 0;
+	}
+
 	if ( dropGoldFlag )
 	{
 		dropGoldFlag = 0;
 		dropGoldValue = 0;
 	}
-	v5 = 0;
-	v19 = 0;
-	while ( !v4 )
+
+	int r;
+	BOOL done = FALSE;
+
+	// TODO: this loop is compiled differently (via InvRect pointers)
+	for ( r = 0; r < NUM_XY_SLOTS && !done; r++ )
 	{
-		v6 = InvRect[v5].X;
-		if ( mx >= v6 && mx < v6 + 29 )
+		// check which inventory rectangle the mouse is in, if any
+		if ( InvRect[r].X <= mx
+			&& InvRect[r].X + INV_SLOT_SIZE_PX > mx
+			&& InvRect[r].Y - INV_SLOT_SIZE_PX <= my
+			&& InvRect[r].Y > my )
 		{
-			v7 = InvRect[v5].Y;
-			if ( my >= v7 - 29 && my < v7 )
+			done = TRUE;
+			r--;
+		}
+	}
+
+	if ( !done )
+	{
+		// not on an inventory slot rectangle
+		return;
+	}
+
+	plr[pnum].HoldItem._itype = ITYPE_NONE;
+
+	if (
+		r >= SLOTXY_HEAD_FIRST
+		&& r <= SLOTXY_HEAD_LAST
+		&& plr[pnum].InvBody[INVLOC_HEAD]._itype != ITYPE_NONE )
+	{
+		NetSendCmdDelItem(FALSE, INVLOC_HEAD);
+		plr[pnum].HoldItem = plr[pnum].InvBody[INVLOC_HEAD];
+		plr[pnum].InvBody[INVLOC_HEAD]._itype = ITYPE_NONE;
+	}
+
+	if (
+		r == SLOTXY_RING_LEFT
+		&& plr[pnum].InvBody[INVLOC_RING_LEFT]._itype != ITYPE_NONE )
+	{
+		NetSendCmdDelItem(FALSE, INVLOC_RING_LEFT);
+		plr[pnum].HoldItem = plr[pnum].InvBody[INVLOC_RING_LEFT];
+		plr[pnum].InvBody[INVLOC_RING_LEFT]._itype = ITYPE_NONE;
+	}
+
+	if (
+		r == SLOTXY_RING_RIGHT
+		&& plr[pnum].InvBody[INVLOC_RING_RIGHT]._itype != ITYPE_NONE )
+	{
+		NetSendCmdDelItem(FALSE, INVLOC_RING_RIGHT);
+		plr[pnum].HoldItem = plr[pnum].InvBody[INVLOC_RING_RIGHT];
+		plr[pnum].InvBody[INVLOC_RING_RIGHT]._itype = ITYPE_NONE;
+	}
+
+	if (
+		r == SLOTXY_AMULET
+		&& plr[pnum].InvBody[INVLOC_AMULET]._itype != ITYPE_NONE )
+	{
+		NetSendCmdDelItem(FALSE, INVLOC_AMULET);
+		plr[pnum].HoldItem = plr[pnum].InvBody[INVLOC_AMULET];
+		plr[pnum].InvBody[INVLOC_AMULET]._itype = ITYPE_NONE;
+	}
+
+	if (
+		r >= SLOTXY_HAND_LEFT_FIRST
+		&& r <= SLOTXY_HAND_LEFT_LAST
+		&& plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE )
+	{
+		NetSendCmdDelItem(FALSE, INVLOC_HAND_LEFT);
+		plr[pnum].HoldItem = plr[pnum].InvBody[INVLOC_HAND_LEFT];
+		plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype = ITYPE_NONE;
+	}
+
+	if (
+		r >= SLOTXY_HAND_RIGHT_FIRST
+		&& r <= SLOTXY_HAND_RIGHT_LAST
+		&& plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype != ITYPE_NONE )
+	{
+		NetSendCmdDelItem(FALSE, INVLOC_HAND_RIGHT);
+		plr[pnum].HoldItem = plr[pnum].InvBody[INVLOC_HAND_RIGHT];
+		plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype = ITYPE_NONE;
+	}
+
+	if (
+		r >= SLOTXY_CHEST_FIRST
+		&& r <= SLOTXY_CHEST_LAST
+		&& plr[pnum].InvBody[INVLOC_CHEST]._itype != ITYPE_NONE )
+	{
+		NetSendCmdDelItem(FALSE, INVLOC_CHEST);
+		plr[pnum].HoldItem = plr[pnum].InvBody[INVLOC_CHEST];
+		plr[pnum].InvBody[INVLOC_CHEST]._itype = ITYPE_NONE;
+	}
+
+	if ( r >= SLOTXY_INV_FIRST && r <= SLOTXY_INV_LAST )
+	{
+		char iv = plr[pnum].InvGrid[r - SLOTXY_INV_FIRST];
+		if ( iv )
+		{
+			int ii = iv;
+			if ( iv <= 0 )
 			{
-				v4 = 1;
-				--v5;
+				ii = -iv;
 			}
-		}
-		v19 = ++v5;
-		if ( (unsigned int)v5 >= 0x49 )
-		{
-			if ( !v4 )
-				return;
-			break;
-		}
-	}
-	plr[v3].HoldItem._itype = ITYPE_NONE;
-	if ( v5 >= 0 && v5 <= 3 && plr[v3].InvBody[0]._itype != ITYPE_NONE )
-	{
-		NetSendCmdDelItem(0, 0);
-		qmemcpy(&plr[v3].HoldItem, plr[v3].InvBody, sizeof(plr[v3].HoldItem));
-		plr[v3].InvBody[0]._itype = ITYPE_NONE;
-	}
-	if ( v5 == 4 )
-	{
-		if ( plr[v3].InvBody[1]._itype == ITYPE_NONE )
-			goto LABEL_60;
-		NetSendCmdDelItem(0, 1u);
-		qmemcpy(&plr[v3].HoldItem, &plr[v3].InvBody[1], sizeof(plr[v3].HoldItem));
-		plr[v3].InvBody[1]._itype = ITYPE_NONE;
-	}
-	if ( v5 == 5 )
-	{
-		if ( plr[v3].InvBody[2]._itype == ITYPE_NONE )
-			goto LABEL_60;
-		NetSendCmdDelItem(0, 2u);
-		qmemcpy(&plr[v3].HoldItem, &plr[v3].InvBody[2], sizeof(plr[v3].HoldItem));
-		plr[v3].InvBody[2]._itype = ITYPE_NONE;
-	}
-	if ( v5 != 6 )
-		goto LABEL_26;
-	if ( plr[v3].InvBody[3]._itype != ITYPE_NONE )
-	{
-		NetSendCmdDelItem(0, 3u);
-		qmemcpy(&plr[v3].HoldItem, &plr[v3].InvBody[3], sizeof(plr[v3].HoldItem));
-		plr[v3].InvBody[3]._itype = ITYPE_NONE;
-LABEL_26:
-		if ( v5 >= 7 && v5 <= 12 && plr[v3].InvBody[4]._itype != ITYPE_NONE )
-		{
-			NetSendCmdDelItem(0, 4u);
-			qmemcpy(&plr[v3].HoldItem, &plr[v3].InvBody[4], sizeof(plr[v3].HoldItem));
-			plr[v3].InvBody[4]._itype = ITYPE_NONE;
-		}
-		if ( v5 >= 13 && v5 <= 18 && plr[v3].InvBody[5]._itype != ITYPE_NONE )
-		{
-			NetSendCmdDelItem(0, 5u);
-			qmemcpy(&plr[v3].HoldItem, &plr[v3].InvBody[5], sizeof(plr[v3].HoldItem));
-			plr[v3].InvBody[5]._itype = ITYPE_NONE;
-		}
-		if ( v5 >= 19 && v5 <= 24 && plr[v3].InvBody[6]._itype != ITYPE_NONE )
-		{
-			NetSendCmdDelItem(0, 6u);
-			qmemcpy(&plr[v3].HoldItem, &plr[v3].InvBody[6], sizeof(plr[v3].HoldItem));
-			plr[v3].InvBody[6]._itype = ITYPE_NONE;
-		}
-		if ( v5 >= 25 && v5 <= 64 )
-		{
-			v8 = plr[v3].InvGrid[v5-25]; // *((_BYTE *)&plr[0].InvList[39]._iVAdd2 + v5 + v3 * 21720 + 3); /* find right address */
-			if ( v8 )
+
+			for ( i = 0; i < NUM_INVELEMS; i++ )
 			{
-				v9 = v8;
-				if ( v8 <= 0 )
-					v9 = -v8;
-				v10 = 0;
-				do
+				if ( plr[pnum].InvGrid[i] == ii || plr[pnum].InvGrid[i] == -ii )
 				{
-					v11 = &plr[0].InvGrid[v10 + v3 * 21720];
-					v12 = *v11;
-					if ( v12 == v9 || v12 == -v9 )
-						*v11 = 0;
-					++v10;
+					plr[pnum].InvGrid[i] = 0;
 				}
-				while ( v10 < 40 );
-				v13 = v9 - 1;
-				qmemcpy(&plr[v3].HoldItem, (char *)&plr[0].InvList[v13] + v3 * 21720, sizeof(plr[v3].HoldItem));
-				v14 = --plr[v3]._pNumInv;
-				if ( v14 > 0 && v14 != v13 )
+			}
+
+			ii--;
+
+			plr[pnum].HoldItem = plr[pnum].InvList[ii];
+			plr[pnum]._pNumInv--;
+
+			if ( plr[pnum]._pNumInv > 0 && plr[pnum]._pNumInv != ii )
+			{
+				plr[pnum].InvList[ii] = plr[pnum].InvList[plr[pnum]._pNumInv];
+
+				for ( i = 0; i < NUM_INVELEMS; i++ )
 				{
-					qmemcpy(
-						(char *)&plr[0].InvList[v13] + v3 * 21720,
-						(char *)&plr[0].InvList[v14] + v3 * 21720,
-						0x170u);
-					v15 = 0;
-					do
+					if ( plr[pnum].InvGrid[i] == plr[pnum]._pNumInv + 1 )
 					{
-						v16 = &plr[0].InvGrid[v15 + v3 * 21720];
-						if ( *v16 == plr[v3]._pNumInv + 1 )
-							*v16 = v13 + 1;
-						if ( *v16 == -1 - plr[v3]._pNumInv )
-							*v16 = -1 - v13;
-						++v15;
+						plr[pnum].InvGrid[i] = ii + 1;
 					}
-					while ( v15 < 40 );
+					if ( plr[pnum].InvGrid[i] == -(plr[pnum]._pNumInv + 1) )
+					{
+						plr[pnum].InvGrid[i] = -ii - 1;
+					}
 				}
-				v5 = v19;
-			}
-		}
-		if ( v5 >= 65 )
-		{
-			v17 = v3 * 21720 + 368 * (v5 - 65);
-			if ( *(int *)((char *)&plr[0].SpdList[0]._itype + v17) != -1 )
-			{
-				qmemcpy(&plr[v3].HoldItem, (char *)plr[0].SpdList + v17, sizeof(plr[v3].HoldItem));
-				*(int *)((char *)&plr[0].SpdList[0]._itype + v17) = -1;
-				drawsbarflag = 1;
 			}
 		}
 	}
-LABEL_60:
-	v18 = plr[v3].HoldItem._itype;
-	if ( v18 != ITYPE_NONE )
+
+	if ( r >= SLOTXY_BELT_FIRST )
 	{
-		if ( v18 == ITYPE_GOLD )
-			plr[v3]._pGold = CalculateGold(p);
-		CalcPlrInv(p, 1u);
-		CheckItemStats(p);
-		if ( p == myplr )
+		int offs = r - SLOTXY_BELT_FIRST;
+		if ( plr[pnum].SpdList[offs]._itype != ITYPE_NONE )
+		{
+			plr[pnum].HoldItem = plr[pnum].SpdList[offs];
+			plr[pnum].SpdList[offs]._itype = ITYPE_NONE;
+			drawsbarflag = 1;
+		}
+	}
+
+
+	if ( plr[pnum].HoldItem._itype != ITYPE_NONE )
+	{
+		if ( plr[pnum].HoldItem._itype == ITYPE_GOLD )
+		{
+			plr[pnum]._pGold = CalculateGold(pnum);
+		}
+
+		CalcPlrInv(pnum, TRUE);
+		CheckItemStats(pnum);
+
+		if ( pnum == myplr )
 		{
 			PlaySFX(IS_IGRAB);
-			SetCursor(plr[v3].HoldItem._iCurs + 12);
-			SetCursorPos(v21 - (cursW >> 1), MouseY - (cursH >> 1));
+			SetCursor(plr[pnum].HoldItem._iCurs + 12);
+			SetCursorPos(mx - (cursW >> 1), MouseY - (cursH >> 1));
 		}
 	}
 }
-// 4B84DC: using guessed type int dropGoldFlag;
-// 4B8C9C: using guessed type int cursH;
 
 void __fastcall inv_update_rem_item(int pnum, int iv)
 {
@@ -1903,8 +1908,8 @@ void __fastcall CheckItemStats(int pnum)
 	v2 = v1->HoldItem._iMinStr;
 	v1->HoldItem._iStatFlag = 0;
 	if ( v1->_pStrength >= v2
-	  && v1->_pMagic >= (unsigned char)v1->HoldItem._iMinMag
-	  && v1->_pDexterity >= v1->HoldItem._iMinDex )
+		&& v1->_pMagic >= (unsigned char)v1->HoldItem._iMinMag
+		&& v1->_pDexterity >= v1->HoldItem._iMinDex )
 	{
 		v1->HoldItem._iStatFlag = 1;
 	}
@@ -2441,9 +2446,9 @@ void __fastcall SyncGetItem(int x, int y, int idx, unsigned short ci, int iseed)
 
 	v5 = dItem[x][y];
 	if ( v5
-	  && (v6 = v5 - 1, v7 = v6, item[v7].IDidx == idx)
-	  && item[v7]._iSeed == iseed
-	  && item[v7]._iCreateInfo == ci )
+		&& (v6 = v5 - 1, v7 = v6, item[v7].IDidx == idx)
+		&& item[v7]._iSeed == iseed
+		&& item[v7]._iCreateInfo == ci )
 	{
 		FindGetItem(idx, ci, iseed);
 	}
@@ -2502,7 +2507,7 @@ int __fastcall CanPut(int i, int j)
 	v7 = v6 < 0;
 	if ( v6 > 0 )
 	{
-		if ( object[v6-1]._oSelFlag ) /* check */
+		if ( object[v6 - 1]._oSelFlag ) /* check */
 			return 0;
 		v7 = v6 < 0;
 	}
@@ -2512,7 +2517,7 @@ int __fastcall CanPut(int i, int j)
 	if ( v8 > 0 )
 	{
 		v9 = dObject[v2][j + 1];
-		if ( v9 > 0 && object[v8-1]._oSelFlag && object[v9-1]._oSelFlag )
+		if ( v9 > 0 && object[v8 - 1]._oSelFlag && object[v9 - 1]._oSelFlag )
 			return 0;
 	}
 	if ( !currlevel && (dMonster[0][v3] || dMonster[1][v3 + 1]) )
@@ -2536,8 +2541,8 @@ int __cdecl TryInvPut()
 	v3 = plr[myplr].WorldY;
 	v4 = plr[myplr].WorldX;
 	if ( CanPut(v4 + offset_x[v1], v3 + offset_y[v1])
-	  || (v5 = (v2 - 1) & 7, CanPut(v4 + offset_x[v5], v3 + offset_y[v5]))
-	  || CanPut(v4 + offset_x[((_BYTE)v5 + 2) & 7], v3 + offset_y[((_BYTE)v5 + 2) & 7]) )
+		|| (v5 = (v2 - 1) & 7, CanPut(v4 + offset_x[v5], v3 + offset_y[v5]))
+		|| CanPut(v4 + offset_x[((_BYTE)v5 + 2) & 7], v3 + offset_y[((_BYTE)v5 + 2) & 7]) )
 	{
 		result = 1;
 	}
@@ -2902,7 +2907,7 @@ int __cdecl CheckInvHLight()
 		}
 		else
 		{
-			result = abs(v3->InvGrid[v0-25]); // abs(*((char *)&v3->InvList[39]._iVAdd2 + v0 + 3)); /* find right address */
+			result = abs(v3->InvGrid[v0 - 25]); // abs(*((char *)&v3->InvList[39]._iVAdd2 + v0 + 3)); /* find right address */
 			if ( result )
 			{
 				v4 = result - 1;
@@ -3054,8 +3059,8 @@ void __fastcall UseStaffCharge(int pnum)
 
 	v1 = pnum;
 	if ( plr[pnum].InvBody[4]._itype != ITYPE_NONE
-	  && plr[v1].InvBody[4]._iMiscId == IMISC_STAFF
-	  && plr[v1].InvBody[4]._iSpell == plr[v1]._pRSpell )
+		&& plr[v1].InvBody[4]._iMiscId == IMISC_STAFF
+		&& plr[v1].InvBody[4]._iSpell == plr[v1]._pRSpell )
 	{
 		v2 = &plr[v1].InvBody[4]._iCharges;
 		if ( *v2 > 0 )
@@ -3076,9 +3081,9 @@ bool __cdecl UseStaff()
 	{
 		v0 = myplr;
 		if ( plr[myplr].InvBody[4]._itype != ITYPE_NONE
-		  && plr[v0].InvBody[4]._iMiscId == IMISC_STAFF
-		  && plr[v0].InvBody[4]._iSpell == plr[v0]._pRSpell
-		  && plr[v0].InvBody[4]._iCharges > 0 )
+			&& plr[v0].InvBody[4]._iMiscId == IMISC_STAFF
+			&& plr[v0].InvBody[4]._iSpell == plr[v0]._pRSpell
+			&& plr[v0].InvBody[4]._iCharges > 0 )
 		{
 			result = 1;
 		}
@@ -3226,7 +3231,7 @@ int __fastcall UseInvItem(int pnum, int cii)
 			dropGoldValue = 0;
 		}
 		if ( v9 == 21 && !currlevel && !*(_DWORD *)&spelldata[v6[56]].sTownSpell
-		  || v9 == 22 && !currlevel && !*(_DWORD *)&spelldata[v6[56]].sTownSpell )
+			|| v9 == 22 && !currlevel && !*(_DWORD *)&spelldata[v6[56]].sTownSpell )
 		{
 			return 1;
 		}

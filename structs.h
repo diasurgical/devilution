@@ -908,10 +908,13 @@ struct PlayerStruct
 	unsigned char *_pBAnim[8];
 	int _pBFrames;
 	int _pBWidth;
+
+	// TODO: Replace 7 with NUM_INVLOC, however VC6
+	// doesn't seem to allow enum members as array size...
 	ItemStruct InvBody[7];
-	ItemStruct InvList[40];
+	ItemStruct InvList[NUM_INVELEMS];
 	int _pNumInv;
-	char InvGrid[40];
+	char InvGrid[NUM_INVELEMS];
 	ItemStruct SpdList[8];
 	ItemStruct HoldItem;
 	int _pIMinDam;
