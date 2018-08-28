@@ -396,14 +396,18 @@ void __cdecl InitLevelMonsters()
 	MissileFileFlag = 0;
 
 	for ( i = 0; i < MAX_LVLMTYPES; i++ )
+	{
 		Monsters[i].mPlaceFlags = 0;
+	}
 
 	ClrAllMonsters();
 	nummonsters = 0;
 	totalmonsters = MAXMONSTERS;
 
 	for ( i = 0; i < MAXMONSTERS; i++ )
+	{
 		monstactive[i] = i;
+	}
 
 	uniquetrans = 0;
 }
@@ -422,7 +426,8 @@ int __fastcall AddMonsterType(int type, int placeflag)
 
 	if ( !done )
 	{
-		i = nummtypes++;
+		i = nummtypes;
+		nummtypes++;
 		Monsters[i].mtype = type;
 		monstimgtot += monsterdata[type].mType;
 		InitMonsterGFX(i);
