@@ -8,8 +8,7 @@ extern int itemavail[MAXITEMS];
 extern ItemStruct curruitem;
 extern ItemGetRecordStruct itemrecord[MAXITEMS];
 extern ItemStruct item[MAXITEMS+1];
-extern char itemhold[3][3];
-extern char byte_641234[28]; /* check if part of above */
+extern BOOL itemhold[3][3];
 extern unsigned char *Item2Frm[35];
 extern int UniqueItemFlag[128];
 extern int numitems;
@@ -33,7 +32,7 @@ void __fastcall GetGoldSeed(int pnum, ItemStruct *h);
 void __fastcall SetPlrHandSeed(ItemStruct *h, int iseed);
 void __fastcall SetPlrHandGoldCurs(ItemStruct *h);
 void __fastcall CreatePlrItems(int p);
-bool __fastcall ItemSpaceOk(int i, int j);
+BOOL __fastcall ItemSpaceOk(int i, int j);
 bool __fastcall GetItemSpace(int x, int y, char inum);
 void __fastcall GetSuperItemSpace(int x, int y, char inum);
 void __fastcall GetSuperItemLoc(int x, int y, int *xx, int *yy);
