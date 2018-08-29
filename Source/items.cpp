@@ -8,8 +8,7 @@ int itemavail[MAXITEMS];
 ItemStruct curruitem;
 ItemGetRecordStruct itemrecord[MAXITEMS];
 ItemStruct item[MAXITEMS+1];
-char itemhold[3][3];
-char byte_641234[28]; /* check if part of above */
+BOOL itemhold[3][3];
 unsigned char *Item2Frm[35];
 int UniqueItemFlag[128];
 int numitems;
@@ -1602,7 +1601,7 @@ void __fastcall CreatePlrItems(int p)
 	CalcPlrItemVals(p, FALSE);
 }
 
-bool __fastcall ItemSpaceOk(int i, int j)
+BOOL __fastcall ItemSpaceOk(int i, int j)
 {
 	int v2; // eax
 	int v3; // esi
@@ -1656,11 +1655,11 @@ bool __fastcall GetItemSpace(int x, int y, char inum)
 {
 	int v3; // eax
 	int v4; // edx
-	char (*v5)[3]; // edi
+	BOOL *v5; // edi
 	int v6; // ebx
-	char (*v7)[3]; // esi
+	BOOL *v7; // esi
 	signed int v9; // esi
-	char (*v10)[3]; // eax
+	BOOL *v10; // eax
 	int v11; // ecx
 	int v12; // eax
 	int v14; // ecx
@@ -1670,16 +1669,16 @@ bool __fastcall GetItemSpace(int x, int y, char inum)
 	int v18; // ecx
 	int v19; // [esp+8h] [ebp-Ch]
 	int v20; // [esp+Ch] [ebp-8h]
-	char (*v21)[3]; // [esp+10h] [ebp-4h]
+	BOOL *v21; // [esp+10h] [ebp-4h]
 
 	v3 = y;
 	v19 = y;
 	v4 = y - 1;
 	v20 = x;
-	v5 = itemhold;
+	v5 = itemhold[0];
 	if ( v4 <= v19 + 1 )
 	{
-		v21 = itemhold;
+		v21 = itemhold[0];
 		do
 		{
 			v6 = x - 1;
@@ -1688,15 +1687,15 @@ bool __fastcall GetItemSpace(int x, int y, char inum)
 				v7 = v21;
 				do
 				{
-					*(_DWORD *)v7 = ItemSpaceOk(v6, v4);
-					v7 += 4;
+					*v7 = ItemSpaceOk(v6, v4);
+					v7 += 3;
 					++v6;
 				}
 				while ( v6 <= v20 + 1 );
 				v3 = v19;
 				x = v20;
 			}
-			v21 = (char (*)[3])((char *)v21 + 4);
+			++v21;
 			++v4;
 		}
 		while ( v4 <= v3 + 1 );
@@ -1708,15 +1707,15 @@ bool __fastcall GetItemSpace(int x, int y, char inum)
 		v11 = 3;
 		do
 		{
-			if ( *(_DWORD *)v10 )
+			if ( *v10 )
 				v9 = 1;
-			v10 += 4;
+			v10 += 3;
 			--v11;
 		}
 		while ( v11 );
-		v5 = (char (*)[3])((char *)v5 + 4);
+		++v5;
 	}
-	while ( (signed int)v5 < (signed int)&itemhold[3][0] );
+	while ( v5 < itemhold[1] );
 	v12 = random(13, 15) + 1;
 	if ( !v9 )
 		return 0;
@@ -1726,7 +1725,7 @@ bool __fastcall GetItemSpace(int x, int y, char inum)
 	{
 		while ( 1 )
 		{
-			if ( *(_DWORD *)&itemhold[0][4 * (v15 + 2 * v14 + v14)] )
+			if (itemhold[v14][v15])
 				--v12;
 			if ( v12 <= 0 )
 				break;
