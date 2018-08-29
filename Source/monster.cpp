@@ -690,21 +690,19 @@ void __fastcall ClearMVars(int i)
 void __fastcall InitMonster(int i, int rd, int mtype, int x, int y)
 {
 	CMonster *monst = &Monsters[mtype];
-	MonsterData *mdata = monst->MData;
 
-
-	monster[i]._mmode = MM_STAND;
-	monster[i]._mx = x;
-	monster[i]._mfutx = x;
-	monster[i]._moldx = x;
 	monster[i]._mdir = rd;
+	monster[i]._mx = x;
 	monster[i]._my = y;
+	monster[i]._mfutx = x;
 	monster[i]._mfuty = y;
+	monster[i]._moldx = x;
 	monster[i]._moldy = y;
+	monster[i]._mmode = MM_STAND;
 	monster[i]._mMTidx = mtype;
-	monster[i].mName = mdata->mName;
+	monster[i].mName = monst->MData->mName;
 	monster[i].MType = monst;
-	monster[i].MData = mdata;
+	monster[i].MData = monst->MData;
 	monster[i]._mAnimData = monst->Anims[0].Frames[rd];
 	monster[i]._mAnimDelay = monst->Anims[0].Delay;
 	monster[i]._mAnimCnt = random(88, monst->Anims[0].Delay - 1);
@@ -730,40 +728,40 @@ void __fastcall InitMonster(int i, int rd, int mtype, int x, int y)
 	}
 
 	monster[i]._mhitpoints = monster[i]._mmaxhp;
-	monster[i]._mAi = mdata->mAi;
-	monster[i]._mint = mdata->mInt;
-	monster[i]._pathcount = 0;
-	monster[i]._uniqtype = 0;
-	monster[i]._msquelch = 0;
+	monster[i]._mAi = monst->MData->mAi;
+	monster[i]._mint = monst->MData->mInt;
 	monster[i]._mgoal = 1;
 	monster[i]._mgoalvar1 = 0;
 	monster[i]._mgoalvar2 = 0;
 	monster[i]._mgoalvar3 = 0;
+	monster[i]._pathcount = 0;
+	monster[i]._uniqtype = 0;
+	monster[i]._msquelch = 0;
 	monster[i].field_18 = 0;
 	monster[i]._mDelFlag = 0;
 	monster[i]._mRndSeed = GetRndSeed();
-	monster[i].mWhoHit = 0;
 	monster[i]._mAISeed = GetRndSeed();
-	monster[i].mLevel = mdata->mLevel;
-	monster[i].mExp = mdata->mExp;
-	monster[i].mHit = mdata->mHit;
-	monster[i].mMinDamage = mdata->mMinDamage;
-	monster[i].mMaxDamage = mdata->mMaxDamage;
-	monster[i].mHit2 = mdata->mHit2;
-	monster[i].mMinDamage2 = mdata->mMinDamage2;
-	monster[i].mMaxDamage2 = mdata->mMaxDamage2;
-	monster[i].mArmorClass = mdata->mArmorClass;
+	monster[i].mWhoHit = 0;
+	monster[i].mLevel = monst->MData->mLevel;
+	monster[i].mExp = monst->MData->mExp;
+	monster[i].mHit = monst->MData->mHit;
+	monster[i].mMinDamage = monst->MData->mMinDamage;
+	monster[i].mMaxDamage = monst->MData->mMaxDamage;
+	monster[i].mHit2 = monst->MData->mHit2;
+	monster[i].mMinDamage2 = monst->MData->mMinDamage2;
+	monster[i].mMaxDamage2 = monst->MData->mMaxDamage2;
+	monster[i].mArmorClass = monst->MData->mArmorClass;
+	monster[i].mMagicRes = monst->MData->mMagicRes;
 	monster[i].leader = 0;
 	monster[i].leaderflag = 0;
-	monster[i].mMagicRes = mdata->mMagicRes;
+	monster[i]._mFlags = monst->MData->mFlags;
 	monster[i].mtalkmsg = 0;
-	monster[i]._mFlags = mdata->mFlags;
 
 	if ( monster[i]._mAi == AI_GARG )
 	{
-		monster[i]._mFlags |= 4u;
 		monster[i]._mAnimData = monst->Anims[5].Frames[rd];
 		monster[i]._mAnimFrame = 1;
+		monster[i]._mFlags |= 4u;
 		monster[i]._mmode = MM_SATTACK;
 	}
 
@@ -778,8 +776,8 @@ void __fastcall InitMonster(int i, int rd, int mtype, int x, int y)
 		monster[i].mMinDamage = 2 * (monster[i].mMinDamage + 2);
 		monster[i].mMaxDamage = 2 * (monster[i].mMaxDamage + 2);
 		monster[i].mMinDamage2 = 2 * (monster[i].mMinDamage2 + 2);
-		monster[i].mArmorClass += 50;
 		monster[i].mMaxDamage2 = 2 * (monster[i].mMaxDamage2 + 2);
+		monster[i].mArmorClass += 50;
 	}
 
 	if ( gnDifficulty == DIFF_HELL )
@@ -793,9 +791,9 @@ void __fastcall InitMonster(int i, int rd, int mtype, int x, int y)
 		monster[i].mMinDamage = 4 * monster[i].mMinDamage + 6;
 		monster[i].mMaxDamage = 4 * monster[i].mMaxDamage + 6;
 		monster[i].mMinDamage2 = 4 * monster[i].mMinDamage2 + 6;
-		monster[i].mArmorClass += 80;
 		monster[i].mMaxDamage2 = 4 * monster[i].mMaxDamage2 + 6;
-		monster[i].mMagicRes = mdata->mMagicRes2;
+		monster[i].mArmorClass += 80;
+		monster[i].mMagicRes = monst->MData->mMagicRes2;
 	}
 }
 
