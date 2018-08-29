@@ -7,7 +7,7 @@ VC5_DIR ?= $(HOME)/DevStudio_5.10/VC
 # $(VS6_DIR)/VC98/Bin directory.
 #
 #     - $(VS6_DIR)/Common/MSDev98/Bin/MSPDB60.DLL
-VS6_DIR ?= $(HOME)/VS6_SP3
+VS6_DIR ?= $(HOME)/VS6
 
 VC6_DIR     = $(VS6_DIR)/VC98
 
