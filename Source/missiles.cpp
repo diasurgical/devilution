@@ -2122,7 +2122,7 @@ void __fastcall SetMissDir(int mi, int dir)
 // TODO: replace `int mi` parameter with `missile_graphic_id mi`
 // to enable the compiler to optimize int to char properly
 // check for example the calls in `InitMonsterGFX`
-void __fastcall LoadMissileGFX(int mi)
+void __fastcall LoadMissileGFX(BYTE mi)
 {
 	MisFileData *v1; // esi
 	unsigned char *v2; // eax

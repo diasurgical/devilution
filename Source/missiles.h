@@ -29,7 +29,7 @@ bool __fastcall Plr2PlrMHit(int pnum, int p, int mindam, int maxdam, int dist, i
 void __fastcall CheckMissileCol(int i, int mindam, int maxdam, bool shift, int mx, int my, int nodel);
 void __fastcall SetMissAnim(int mi, int animtype);
 void __fastcall SetMissDir(int mi, int dir);
-void __fastcall LoadMissileGFX(int mi);
+void __fastcall LoadMissileGFX(BYTE mi);
 void __cdecl InitMissileGFX();
 void __fastcall FreeMissileGFX(int mi);
 void __cdecl FreeMissiles();
