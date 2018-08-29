@@ -2282,14 +2282,9 @@ LABEL_129:
 					}
 					if ( n_draw_shift )
 					{
-						do
-						{
-							*(_DWORD *)tmp_pbDst = *(_DWORD *)pdung_cels;
-							pdung_cels += 4;
-							tmp_pbDst += 4;
-							--n_draw_shift;
-						}
-						while ( n_draw_shift );
+						qmemcpy(tmp_pbDst, pdung_cels, 4 * n_draw_shift);
+						pdung_cels += 4 * n_draw_shift;
+						tmp_pbDst += 4 * n_draw_shift;
 					}
 					tmp_pbDst -= 800;
 					xx_32 -= 2;
@@ -2310,14 +2305,9 @@ LABEL_129:
 							}
 							if ( n_draw_shift )
 							{
-								do
-								{
-									*(_DWORD *)tmp_pbDst = *(_DWORD *)pdung_cels;
-									pdung_cels += 4;
-									tmp_pbDst += 4;
-									--n_draw_shift;
-								}
-								while ( n_draw_shift );
+								qmemcpy(tmp_pbDst, pdung_cels, 4 * n_draw_shift);
+								pdung_cels += 4 * n_draw_shift;
+								tmp_pbDst += 4 * n_draw_shift;
 							}
 							tmp_pbDst -= 800;
 							yy_32 += 2;
@@ -2336,11 +2326,12 @@ LABEL_129:
 				xx_32 = 30;
 				while ( tmp_pbDst >= (char *)gpBufEnd )
 				{
-					for ( n_draw_shift = (unsigned int)(32 - xx_32) >> 2; n_draw_shift; --n_draw_shift )
+					n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
+					if ( n_draw_shift )
 					{
-						*(_DWORD *)tmp_pbDst = *(_DWORD *)pdung_cels;
-						pdung_cels += 4;
-						tmp_pbDst += 4;
+						qmemcpy(tmp_pbDst, pdung_cels, 4 * n_draw_shift);
+						pdung_cels += 4 * n_draw_shift;
+						tmp_pbDst += 4 * n_draw_shift;
 					}
 					if ( (32 - (_BYTE)xx_32) & 2 )
 					{
@@ -2357,11 +2348,12 @@ LABEL_129:
 						{
 							if ( tmp_pbDst < (char *)gpBufEnd )
 								break;
-							for ( n_draw_shift = (unsigned int)(32 - yy_32) >> 2; n_draw_shift; --n_draw_shift )
+							n_draw_shift = (unsigned int)(32 - yy_32) >> 2;
+							if ( n_draw_shift )
 							{
-								*(_DWORD *)tmp_pbDst = *(_DWORD *)pdung_cels;
-								pdung_cels += 4;
-								tmp_pbDst += 4;
+								qmemcpy(tmp_pbDst, pdung_cels, 4 * n_draw_shift);
+								pdung_cels += 4 * n_draw_shift;
+								tmp_pbDst += 4 * n_draw_shift;
 							}
 							if ( (32 - (_BYTE)yy_32) & 2 )
 							{
@@ -2396,14 +2388,9 @@ LABEL_129:
 					}
 					if ( n_draw_shift )
 					{
-						do
-						{
-							*(_DWORD *)tmp_pbDst = *(_DWORD *)pdung_cels;
-							pdung_cels += 4;
-							tmp_pbDst += 4;
-							--n_draw_shift;
-						}
-						while ( n_draw_shift );
+						qmemcpy(tmp_pbDst, pdung_cels, 4 * n_draw_shift);
+						pdung_cels += 4 * n_draw_shift;
+						tmp_pbDst += 4 * n_draw_shift;
 					}
 					tmp_pbDst -= 800;
 					xx_32 -= 2;
@@ -2445,11 +2432,12 @@ LABEL_129:
 				xx_32 = 30;
 				while ( tmp_pbDst >= (char *)gpBufEnd )
 				{
-					for ( n_draw_shift = (unsigned int)(32 - xx_32) >> 2; n_draw_shift; --n_draw_shift )
+					n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
+					if ( n_draw_shift )
 					{
-						*(_DWORD *)tmp_pbDst = *(_DWORD *)pdung_cels;
-						pdung_cels += 4;
-						tmp_pbDst += 4;
+						qmemcpy(tmp_pbDst, pdung_cels, 4 * n_draw_shift);
+						pdung_cels += 4 * n_draw_shift;
+						tmp_pbDst += 4 * n_draw_shift;
 					}
 					if ( (32 - (_BYTE)xx_32) & 2 )
 					{
@@ -2944,13 +2932,8 @@ LABEL_208:
 				}
 				if ( n_draw_shift )
 				{
-					do
-					{
-						*(_DWORD *)tmp_pbDst = 0;
-						tmp_pbDst += 4;
-						--n_draw_shift;
-					}
-					while ( n_draw_shift );
+					memset(tmp_pbDst, 0, 4 * n_draw_shift);
+					tmp_pbDst += 4 * n_draw_shift;
 				}
 				tmp_pbDst -= 800;
 				if ( !xx_32 )
@@ -2969,13 +2952,8 @@ LABEL_208:
 						}
 						if ( n_draw_shift )
 						{
-							do
-							{
-								*(_DWORD *)tmp_pbDst = 0;
-								tmp_pbDst += 4;
-								--n_draw_shift;
-							}
-							while ( n_draw_shift );
+							memset(tmp_pbDst, 0, 4 * n_draw_shift);
+							tmp_pbDst += 4 * n_draw_shift;
 						}
 						tmp_pbDst -= 800;
 						yy_32 += 2;
@@ -3003,13 +2981,8 @@ LABEL_208:
 				}
 				if ( n_draw_shift )
 				{
-					do
-					{
-						*(_DWORD *)tmp_pbDst = 0;
-						tmp_pbDst += 4;
-						--n_draw_shift;
-					}
-					while ( n_draw_shift );
+					memset(tmp_pbDst, 0, 4 * n_draw_shift);
+					tmp_pbDst += 4 * n_draw_shift;
 				}
 				tmp_pbDst -= 800;
 				if ( !xx_32 )
@@ -3027,13 +3000,8 @@ LABEL_208:
 						}
 						if ( n_draw_shift )
 						{
-							do
-							{
-								*(_DWORD *)tmp_pbDst = 0;
-								tmp_pbDst += 4;
-								--n_draw_shift;
-							}
-							while ( n_draw_shift );
+							memset(tmp_pbDst, 0, 4 * n_draw_shift);
+							tmp_pbDst += 4 * n_draw_shift;
 						}
 						tmp_pbDst = &tmp_pbDst[yy_32 - 800];
 						yy_32 += 2;
@@ -3063,13 +3031,8 @@ LABEL_208:
 				}
 				if ( n_draw_shift )
 				{
-					do
-					{
-						*(_DWORD *)tmp_pbDst = 0;
-						tmp_pbDst += 4;
-						--n_draw_shift;
-					}
-					while ( n_draw_shift );
+					memset(tmp_pbDst, 0, 4 * n_draw_shift);
+					tmp_pbDst += 4 * n_draw_shift;
 				}
 				tmp_pbDst -= 800;
 				if ( !xx_32 )
@@ -3118,13 +3081,8 @@ LABEL_208:
 				}
 				if ( n_draw_shift )
 				{
-					do
-					{
-						*(_DWORD *)tmp_pbDst = 0;
-						tmp_pbDst += 4;
-						--n_draw_shift;
-					}
-					while ( n_draw_shift );
+					memset(tmp_pbDst, 0, 4 * n_draw_shift);
+					tmp_pbDst += 4 * n_draw_shift;
 				}
 				tmp_pbDst -= 800;
 				if ( !xx_32 )
@@ -3175,7 +3133,6 @@ void __fastcall drawUpperScreen(unsigned char *pbDst)
 	unsigned int chk_sh_and; // ecx MAPDST
 	unsigned int n_draw_shift; // ecx MAPDST
 	signed int i; // edx MAPDST
-	signed int j; // ecx MAPDST
 
 	if ( cel_transparency_active )
 	{
@@ -3224,16 +3181,9 @@ LABEL_22:
 				{
 					if ( tmp_pbDst < gpBufEnd )
 						break;
-					j = 8;
-					do
-					{
-						*(_DWORD *)tmp_pbDst = *(_DWORD *)pdung_cels;
-						pdung_cels += 4;
-						tmp_pbDst += 4;
-						--j;
-					}
-					while ( j );
-					tmp_pbDst -= 800;
+					qmemcpy(tmp_pbDst, pdung_cels, 32);
+					pdung_cels += 32;
+					tmp_pbDst -= 768;
 					--i;
 				}
 				while ( i );
@@ -3280,14 +3230,9 @@ LABEL_22:
 							if ( !n_draw_shift )
 								continue;
 						}
-						do
-						{
-							*(_DWORD *)tmp_pbDst = *(_DWORD *)pdung_cels;
-							pdung_cels += 4;
-							tmp_pbDst += 4;
-							--n_draw_shift;
-						}
-						while ( n_draw_shift );
+						qmemcpy(tmp_pbDst, pdung_cels, 4 * n_draw_shift);
+						pdung_cels += 4 * n_draw_shift;
+						tmp_pbDst += 4 * n_draw_shift;
 					}
 					while ( yy_32 );
 LABEL_133:
@@ -3315,14 +3260,9 @@ LABEL_133:
 					}
 					if ( n_draw_shift )
 					{
-						do
-						{
-							*(_DWORD *)tmp_pbDst = *(_DWORD *)pdung_cels;
-							pdung_cels += 4;
-							tmp_pbDst += 4;
-							--n_draw_shift;
-						}
-						while ( n_draw_shift );
+						qmemcpy(tmp_pbDst, pdung_cels, 4 * n_draw_shift);
+						pdung_cels += 4 * n_draw_shift;
+						tmp_pbDst += 4 * n_draw_shift;
 					}
 					tmp_pbDst -= 800;
 					xx_32 -= 2;
@@ -3343,14 +3283,9 @@ LABEL_133:
 							}
 							if ( n_draw_shift )
 							{
-								do
-								{
-									*(_DWORD *)tmp_pbDst = *(_DWORD *)pdung_cels;
-									pdung_cels += 4;
-									tmp_pbDst += 4;
-									--n_draw_shift;
-								}
-								while ( n_draw_shift );
+								qmemcpy(tmp_pbDst, pdung_cels, 4 * n_draw_shift);
+								pdung_cels += 4 * n_draw_shift;
+								tmp_pbDst += 4 * n_draw_shift;
 							}
 							tmp_pbDst -= 800;
 							yy_32 += 2;
@@ -3369,11 +3304,12 @@ LABEL_133:
 				xx_32 = 30;
 				while ( tmp_pbDst >= gpBufEnd )
 				{
-					for ( n_draw_shift = (unsigned int)(32 - xx_32) >> 2; n_draw_shift; --n_draw_shift )
+					n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
+					if ( n_draw_shift )
 					{
-						*(_DWORD *)tmp_pbDst = *(_DWORD *)pdung_cels;
-						pdung_cels += 4;
-						tmp_pbDst += 4;
+						qmemcpy(tmp_pbDst, pdung_cels, 4 * n_draw_shift);
+						pdung_cels += 4 * n_draw_shift;
+						tmp_pbDst += 4 * n_draw_shift;
 					}
 					if ( (32 - (_BYTE)xx_32) & 2 )
 					{
@@ -3390,11 +3326,12 @@ LABEL_133:
 						{
 							if ( tmp_pbDst < gpBufEnd )
 								break;
-							for ( n_draw_shift = (unsigned int)(32 - yy_32) >> 2; n_draw_shift; --n_draw_shift )
+							n_draw_shift = (unsigned int)(32 - yy_32) >> 2;
+							if ( n_draw_shift )
 							{
-								*(_DWORD *)tmp_pbDst = *(_DWORD *)pdung_cels;
-								pdung_cels += 4;
-								tmp_pbDst += 4;
+								qmemcpy(tmp_pbDst, pdung_cels, 4 * n_draw_shift);
+								pdung_cels += 4 * n_draw_shift;
+								tmp_pbDst += 4 * n_draw_shift;
 							}
 							if ( (32 - (_BYTE)yy_32) & 2 )
 							{
@@ -3429,14 +3366,9 @@ LABEL_133:
 					}
 					if ( n_draw_shift )
 					{
-						do
-						{
-							*(_DWORD *)tmp_pbDst = *(_DWORD *)pdung_cels;
-							pdung_cels += 4;
-							tmp_pbDst += 4;
-							--n_draw_shift;
-						}
-						while ( n_draw_shift );
+						qmemcpy(tmp_pbDst, pdung_cels, 4 * n_draw_shift);
+						pdung_cels += 4 * n_draw_shift;
+						tmp_pbDst += 4 * n_draw_shift;
 					}
 					tmp_pbDst -= 800;
 					xx_32 -= 2;
@@ -3447,16 +3379,9 @@ LABEL_133:
 						{
 							if ( tmp_pbDst < gpBufEnd )
 								break;
-							j = 8;
-							do
-							{
-								*(_DWORD *)tmp_pbDst = *(_DWORD *)pdung_cels;
-								pdung_cels += 4;
-								tmp_pbDst += 4;
-								--j;
-							}
-							while ( j );
-							tmp_pbDst -= 800;
+							qmemcpy(tmp_pbDst, pdung_cels, 32);
+							pdung_cels += 32;
+							tmp_pbDst -= 768;
 							--i;
 						}
 						while ( i );
@@ -3473,11 +3398,12 @@ LABEL_133:
 				xx_32 = 30;
 				while ( tmp_pbDst >= gpBufEnd )
 				{
-					for ( n_draw_shift = (unsigned int)(32 - xx_32) >> 2; n_draw_shift; --n_draw_shift )
+					n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
+					if ( n_draw_shift )
 					{
-						*(_DWORD *)tmp_pbDst = *(_DWORD *)pdung_cels;
-						pdung_cels += 4;
-						tmp_pbDst += 4;
+						qmemcpy(tmp_pbDst, pdung_cels, 4 * n_draw_shift);
+						pdung_cels += 4 * n_draw_shift;
+						tmp_pbDst += 4 * n_draw_shift;
 					}
 					if ( (32 - (_BYTE)xx_32) & 2 )
 					{
@@ -3494,16 +3420,9 @@ LABEL_133:
 						{
 							if ( tmp_pbDst < gpBufEnd )
 								break;
-							j = 8;
-							do
-							{
-								*(_DWORD *)tmp_pbDst = *(_DWORD *)pdung_cels;
-								pdung_cels += 4;
-								tmp_pbDst += 4;
-								--j;
-							}
-							while ( j );
-							tmp_pbDst -= 800;
+							qmemcpy(tmp_pbDst, pdung_cels, 32);
+							pdung_cels += 32;
+							tmp_pbDst -= 768;
 							--i;
 						}
 						while ( i );
@@ -3882,15 +3801,8 @@ LABEL_58:
 			{
 				if ( tmp_pbDst < gpBufEnd )
 					break;
-				j = 8;
-				do
-				{
-					*(_DWORD *)tmp_pbDst = 0;
-					tmp_pbDst += 4;
-					--j;
-				}
-				while ( j );
-				tmp_pbDst -= 800;
+				memset(tmp_pbDst, 0, 32);
+				tmp_pbDst -= 768;
 				--i;
 			}
 			while ( i );
@@ -3937,13 +3849,8 @@ LABEL_58:
 						if ( !n_draw_shift )
 							continue;
 					}
-					do
-					{
-						*(_DWORD *)tmp_pbDst = 0;
-						tmp_pbDst += 4;
-						--n_draw_shift;
-					}
-					while ( n_draw_shift );
+					memset(tmp_pbDst, 0, 4 * n_draw_shift);
+					tmp_pbDst += 4 * n_draw_shift;
 				}
 				while ( yy_32 );
 LABEL_205:
@@ -3970,13 +3877,8 @@ LABEL_205:
 				}
 				if ( n_draw_shift )
 				{
-					do
-					{
-						*(_DWORD *)tmp_pbDst = 0;
-						tmp_pbDst += 4;
-						--n_draw_shift;
-					}
-					while ( n_draw_shift );
+					memset(tmp_pbDst, 0, 4 * n_draw_shift);
+					tmp_pbDst += 4 * n_draw_shift;
 				}
 				tmp_pbDst -= 800;
 				if ( !xx_32 )
@@ -3995,13 +3897,8 @@ LABEL_205:
 						}
 						if ( n_draw_shift )
 						{
-							do
-							{
-								*(_DWORD *)tmp_pbDst = 0;
-								tmp_pbDst += 4;
-								--n_draw_shift;
-							}
-							while ( n_draw_shift );
+							memset(tmp_pbDst, 0, 4 * n_draw_shift);
+							tmp_pbDst += 4 * n_draw_shift;
 						}
 						tmp_pbDst -= 800;
 						yy_32 += 2;
@@ -4029,13 +3926,8 @@ LABEL_205:
 				}
 				if ( n_draw_shift )
 				{
-					do
-					{
-						*(_DWORD *)tmp_pbDst = 0;
-						tmp_pbDst += 4;
-						--n_draw_shift;
-					}
-					while ( n_draw_shift );
+					memset(tmp_pbDst, 0, 4 * n_draw_shift);
+					tmp_pbDst += 4 * n_draw_shift;
 				}
 				tmp_pbDst -= 800;
 				if ( !xx_32 )
@@ -4053,13 +3945,8 @@ LABEL_205:
 						}
 						if ( n_draw_shift )
 						{
-							do
-							{
-								*(_DWORD *)tmp_pbDst = 0;
-								tmp_pbDst += 4;
-								--n_draw_shift;
-							}
-							while ( n_draw_shift );
+							memset(tmp_pbDst, 0, 4 * n_draw_shift);
+							tmp_pbDst += 4 * n_draw_shift;
 						}
 						tmp_pbDst = &tmp_pbDst[yy_32 - 800];
 						yy_32 += 2;
@@ -4089,13 +3976,8 @@ LABEL_205:
 				}
 				if ( n_draw_shift )
 				{
-					do
-					{
-						*(_DWORD *)tmp_pbDst = 0;
-						tmp_pbDst += 4;
-						--n_draw_shift;
-					}
-					while ( n_draw_shift );
+					memset(tmp_pbDst, 0, 4 * n_draw_shift);
+					tmp_pbDst += 4 * n_draw_shift;
 				}
 				tmp_pbDst -= 800;
 				if ( !xx_32 )
@@ -4105,15 +3987,8 @@ LABEL_205:
 					{
 						if ( tmp_pbDst < gpBufEnd )
 							break;
-						j = 8;
-						do
-						{
-							*(_DWORD *)tmp_pbDst = 0;
-							tmp_pbDst += 4;
-							--j;
-						}
-						while ( j );
-						tmp_pbDst -= 800;
+						memset(tmp_pbDst, 0, 32);
+						tmp_pbDst -= 768;
 						--i;
 					}
 					while ( i );
@@ -4139,13 +4014,8 @@ LABEL_205:
 				}
 				if ( n_draw_shift )
 				{
-					do
-					{
-						*(_DWORD *)tmp_pbDst = 0;
-						tmp_pbDst += 4;
-						--n_draw_shift;
-					}
-					while ( n_draw_shift );
+					memset(tmp_pbDst, 0, 4 * n_draw_shift);
+					tmp_pbDst += 4 * n_draw_shift;
 				}
 				tmp_pbDst -= 800;
 				if ( !xx_32 )
@@ -4155,15 +4025,8 @@ LABEL_205:
 					{
 						if ( tmp_pbDst < gpBufEnd )
 							break;
-						j = 8;
-						do
-						{
-							*(_DWORD *)tmp_pbDst = 0;
-							tmp_pbDst += 4;
-							--j;
-						}
-						while ( j );
-						tmp_pbDst -= 800;
+						memset(tmp_pbDst, 0, 32);
+						tmp_pbDst -= 768;
 						--i;
 					}
 					while ( i );
@@ -6720,13 +6583,8 @@ LABEL_252:
 							}
 							if ( n_draw_shift )
 							{
-								do
-								{
-									*(_DWORD *)tmp_pbDst = 0;
-									tmp_pbDst += 4;
-									--n_draw_shift;
-								}
-								while ( n_draw_shift );
+								memset(tmp_pbDst, 0, 4 * n_draw_shift);
+								tmp_pbDst += 4 * n_draw_shift;
 							}
 						}
 						else
@@ -6752,13 +6610,8 @@ LABEL_252:
 							}
 							if ( n_draw_shift )
 							{
-								do
-								{
-									*(_DWORD *)tmp_pbDst = 0;
-									tmp_pbDst += 4;
-									--n_draw_shift;
-								}
-								while ( n_draw_shift );
+								memset(tmp_pbDst, 0, 4 * n_draw_shift);
+								tmp_pbDst += 4 * n_draw_shift;
 							}
 						}
 						else
@@ -6789,13 +6642,8 @@ LABEL_252:
 							}
 							if ( n_draw_shift )
 							{
-								do
-								{
-									*(_DWORD *)tmp_pbDst = 0;
-									tmp_pbDst += 4;
-									--n_draw_shift;
-								}
-								while ( n_draw_shift );
+								memset(tmp_pbDst, 0, 4 * n_draw_shift);
+								tmp_pbDst += 4 * n_draw_shift;
 							}
 						}
 						else
@@ -6821,13 +6669,8 @@ LABEL_252:
 							}
 							if ( n_draw_shift )
 							{
-								do
-								{
-									*(_DWORD *)tmp_pbDst = 0;
-									tmp_pbDst += 4;
-									--n_draw_shift;
-								}
-								while ( n_draw_shift );
+								memset(tmp_pbDst, 0, 4 * n_draw_shift);
+								tmp_pbDst += 4 * n_draw_shift;
 							}
 						}
 						else
@@ -6859,13 +6702,8 @@ LABEL_252:
 							}
 							if ( n_draw_shift )
 							{
-								do
-								{
-									*(_DWORD *)tmp_pbDst = 0;
-									tmp_pbDst += 4;
-									--n_draw_shift;
-								}
-								while ( n_draw_shift );
+								memset(tmp_pbDst, 0, 4 * n_draw_shift);
+								tmp_pbDst += 4 * n_draw_shift;
 							}
 						}
 						else
@@ -6924,13 +6762,8 @@ LABEL_252:
 							}
 							if ( n_draw_shift )
 							{
-								do
-								{
-									*(_DWORD *)tmp_pbDst = 0;
-									tmp_pbDst += 4;
-									--n_draw_shift;
-								}
-								while ( n_draw_shift );
+								memset(tmp_pbDst, 0, 4 * n_draw_shift);
+								tmp_pbDst += 4 * n_draw_shift;
 							}
 						}
 						else
@@ -7547,14 +7380,9 @@ LABEL_162:
 						}
 						if ( n_draw_shift )
 						{
-							do
-							{
-								*(_DWORD *)tmp_pbDst = *(_DWORD *)pdung_cels;
-								pdung_cels += 4;
-								tmp_pbDst += 4;
-								--n_draw_shift;
-							}
-							while ( n_draw_shift );
+							qmemcpy(tmp_pbDst, pdung_cels, 4 * n_draw_shift);
+							pdung_cels += 4 * n_draw_shift;
+							tmp_pbDst += 4 * n_draw_shift;
 						}
 						tmp_pbDst -= 800;
 						yy_32 += 2;
@@ -7579,14 +7407,9 @@ LABEL_162:
 				}
 				if ( n_draw_shift )
 				{
-					do
-					{
-						*(_DWORD *)tmp_pbDst = *(_DWORD *)pdung_cels;
-						pdung_cels += 4;
-						tmp_pbDst += 4;
-						--n_draw_shift;
-					}
-					while ( n_draw_shift );
+					qmemcpy(tmp_pbDst, pdung_cels, 4 * n_draw_shift);
+					pdung_cels += 4 * n_draw_shift;
+					tmp_pbDst += 4 * n_draw_shift;
 				}
 				tmp_pbDst -= 800;
 				xx_32 -= 2;
@@ -7612,11 +7435,12 @@ LABEL_162:
 				do
 				{
 LABEL_175:
-					for ( n_draw_shift = (unsigned int)(32 - xx_32) >> 2; n_draw_shift; --n_draw_shift )
+					n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
+					if ( n_draw_shift )
 					{
-						*(_DWORD *)tmp_pbDst = *(_DWORD *)pdung_cels;
-						pdung_cels += 4;
-						tmp_pbDst += 4;
+						qmemcpy(tmp_pbDst, pdung_cels, 4 * n_draw_shift);
+						pdung_cels += 4 * n_draw_shift;
+						tmp_pbDst += 4 * n_draw_shift;
 					}
 					if ( (32 - (_BYTE)xx_32) & 2 )
 					{
@@ -7646,11 +7470,12 @@ LABEL_180:
 			}
 			do
 			{
-				for ( n_draw_shift = (unsigned int)(32 - yy_32) >> 2; n_draw_shift; --n_draw_shift )
+				n_draw_shift = (unsigned int)(32 - yy_32) >> 2;
+				if ( n_draw_shift )
 				{
-					*(_DWORD *)tmp_pbDst = *(_DWORD *)pdung_cels;
-					pdung_cels += 4;
-					tmp_pbDst += 4;
+					qmemcpy(tmp_pbDst, pdung_cels, 4 * n_draw_shift);
+					pdung_cels += 4 * n_draw_shift;
+					tmp_pbDst += 4 * n_draw_shift;
 				}
 				if ( (32 - (_BYTE)yy_32) & 2 )
 				{
@@ -7726,14 +7551,9 @@ LABEL_198:
 				}
 				if ( n_draw_shift )
 				{
-					do
-					{
-						*(_DWORD *)tmp_pbDst = *(_DWORD *)pdung_cels;
-						pdung_cels += 4;
-						tmp_pbDst += 4;
-						--n_draw_shift;
-					}
-					while ( n_draw_shift );
+					qmemcpy(tmp_pbDst, pdung_cels, 4 * n_draw_shift);
+					pdung_cels += 4 * n_draw_shift;
+					tmp_pbDst += 4 * n_draw_shift;
 				}
 				tmp_pbDst -= 800;
 				xx_32 -= 2;
@@ -7794,11 +7614,12 @@ LABEL_217:
 			}
 			do
 			{
-				for ( n_draw_shift = (unsigned int)(32 - xx_32) >> 2; n_draw_shift; --n_draw_shift )
+				n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
+				if ( n_draw_shift )
 				{
-					*(_DWORD *)tmp_pbDst = *(_DWORD *)pdung_cels;
-					pdung_cels += 4;
-					tmp_pbDst += 4;
+					qmemcpy(tmp_pbDst, pdung_cels, 4 * n_draw_shift);
+					pdung_cels += 4 * n_draw_shift;
+					tmp_pbDst += 4 * n_draw_shift;
 				}
 				if ( (32 - (_BYTE)xx_32) & 2 )
 				{
@@ -7880,22 +7701,10 @@ void __fastcall drawLowerScreen(unsigned char *pbDst)
 					do
 					{
 						if ( tmp_pbDst < gpBufEnd )
-						{
-							j = 8;
-							do
-							{
-								*(_DWORD *)tmp_pbDst = 0;
-								tmp_pbDst += 4;
-								--j;
-							}
-							while ( j );
-						}
+							memset(tmp_pbDst, 0, 32);
 						else
-						{
 							pdung_cels += 32;
-							tmp_pbDst += 32;
-						}
-						tmp_pbDst -= 800;
+						tmp_pbDst -= 768;
 						--i;
 					}
 					while ( i );
@@ -7943,13 +7752,8 @@ void __fastcall drawLowerScreen(unsigned char *pbDst)
 									}
 									if ( n_draw_shift )
 									{
-										do
-										{
-											*(_DWORD *)tmp_pbDst = 0;
-											tmp_pbDst += 4;
-											--n_draw_shift;
-										}
-										while ( n_draw_shift );
+										memset(tmp_pbDst, 0, 4 * n_draw_shift);
+										tmp_pbDst += 4 * n_draw_shift;
 									}
 								}
 							}
@@ -7985,13 +7789,8 @@ LABEL_232:
 							}
 							if ( n_draw_shift )
 							{
-								do
-								{
-									*(_DWORD *)tmp_pbDst = 0;
-									tmp_pbDst += 4;
-									--n_draw_shift;
-								}
-								while ( n_draw_shift );
+								memset(tmp_pbDst, 0, 4 * n_draw_shift);
+								tmp_pbDst += 4 * n_draw_shift;
 							}
 						}
 						else
@@ -8017,13 +7816,8 @@ LABEL_232:
 							}
 							if ( n_draw_shift )
 							{
-								do
-								{
-									*(_DWORD *)tmp_pbDst = 0;
-									tmp_pbDst += 4;
-									--n_draw_shift;
-								}
-								while ( n_draw_shift );
+								memset(tmp_pbDst, 0, 4 * n_draw_shift);
+								tmp_pbDst += 4 * n_draw_shift;
 							}
 						}
 						else
@@ -8054,13 +7848,8 @@ LABEL_232:
 							}
 							if ( n_draw_shift )
 							{
-								do
-								{
-									*(_DWORD *)tmp_pbDst = 0;
-									tmp_pbDst += 4;
-									--n_draw_shift;
-								}
-								while ( n_draw_shift );
+								memset(tmp_pbDst, 0, 4 * n_draw_shift);
+								tmp_pbDst += 4 * n_draw_shift;
 							}
 						}
 						else
@@ -8086,13 +7875,8 @@ LABEL_232:
 							}
 							if ( n_draw_shift )
 							{
-								do
-								{
-									*(_DWORD *)tmp_pbDst = 0;
-									tmp_pbDst += 4;
-									--n_draw_shift;
-								}
-								while ( n_draw_shift );
+								memset(tmp_pbDst, 0, 4 * n_draw_shift);
+								tmp_pbDst += 4 * n_draw_shift;
 							}
 						}
 						else
@@ -8124,13 +7908,8 @@ LABEL_232:
 							}
 							if ( n_draw_shift )
 							{
-								do
-								{
-									*(_DWORD *)tmp_pbDst = 0;
-									tmp_pbDst += 4;
-									--n_draw_shift;
-								}
-								while ( n_draw_shift );
+								memset(tmp_pbDst, 0, 4 * n_draw_shift);
+								tmp_pbDst += 4 * n_draw_shift;
 							}
 						}
 						else
@@ -8146,22 +7925,10 @@ LABEL_232:
 					do
 					{
 						if ( tmp_pbDst < gpBufEnd )
-						{
-							j = 8;
-							do
-							{
-								*(_DWORD *)tmp_pbDst = 0;
-								tmp_pbDst += 4;
-								--j;
-							}
-							while ( j );
-						}
+							memset(tmp_pbDst, 0, 32);
 						else
-						{
 							pdung_cels += 32;
-							tmp_pbDst += 32;
-						}
-						tmp_pbDst -= 800;
+						tmp_pbDst -= 768;
 						--i;
 					}
 					while ( i );
@@ -8184,13 +7951,8 @@ LABEL_232:
 							}
 							if ( n_draw_shift )
 							{
-								do
-								{
-									*(_DWORD *)tmp_pbDst = 0;
-									tmp_pbDst += 4;
-									--n_draw_shift;
-								}
-								while ( n_draw_shift );
+								memset(tmp_pbDst, 0, 4 * n_draw_shift);
+								tmp_pbDst += 4 * n_draw_shift;
 							}
 						}
 						else
@@ -8207,22 +7969,10 @@ LABEL_232:
 					do
 					{
 						if ( tmp_pbDst < gpBufEnd )
-						{
-							j = 8;
-							do
-							{
-								*(_DWORD *)tmp_pbDst = 0;
-								tmp_pbDst += 4;
-								--j;
-							}
-							while ( j );
-						}
+							memset(tmp_pbDst, 0, 32);
 						else
-						{
 							pdung_cels += 32;
-							tmp_pbDst += 32;
-						}
-						tmp_pbDst -= 800;
+						tmp_pbDst -= 768;
 						--i;
 					}
 					while ( i );
@@ -8635,23 +8385,9 @@ LABEL_116:
 			do
 			{
 				if ( tmp_pbDst < gpBufEnd )
-				{
-					j = 8;
-					do
-					{
-						*(_DWORD *)tmp_pbDst = *(_DWORD *)pdung_cels;
-						pdung_cels += 4;
-						tmp_pbDst += 4;
-						--j;
-					}
-					while ( j );
-				}
-				else
-				{
-					pdung_cels += 32;
-					tmp_pbDst += 32;
-				}
-				tmp_pbDst -= 800;
+					qmemcpy(tmp_pbDst, pdung_cels, 32);
+				pdung_cels += 32;
+				tmp_pbDst -= 768;
 				--i;
 			}
 			while ( i );
@@ -8700,14 +8436,9 @@ LABEL_116:
 							}
 							if ( n_draw_shift )
 							{
-								do
-								{
-									*(_DWORD *)tmp_pbDst = *(_DWORD *)pdung_cels;
-									pdung_cels += 4;
-									tmp_pbDst += 4;
-									--n_draw_shift;
-								}
-								while ( n_draw_shift );
+								qmemcpy(tmp_pbDst, pdung_cels, 4 * n_draw_shift);
+								pdung_cels += 4 * n_draw_shift;
+								tmp_pbDst += 4 * n_draw_shift;
 							}
 						}
 					}
@@ -8762,14 +8493,9 @@ LABEL_153:
 						}
 						if ( n_draw_shift )
 						{
-							do
-							{
-								*(_DWORD *)tmp_pbDst = *(_DWORD *)pdung_cels;
-								pdung_cels += 4;
-								tmp_pbDst += 4;
-								--n_draw_shift;
-							}
-							while ( n_draw_shift );
+							qmemcpy(tmp_pbDst, pdung_cels, 4 * n_draw_shift);
+							pdung_cels += 4 * n_draw_shift;
+							tmp_pbDst += 4 * n_draw_shift;
 						}
 						yy_32 += 2;
 						tmp_pbDst -= 800;
@@ -8794,14 +8520,9 @@ LABEL_153:
 				}
 				if ( n_draw_shift )
 				{
-					do
-					{
-						*(_DWORD *)tmp_pbDst = *(_DWORD *)pdung_cels;
-						pdung_cels += 4;
-						tmp_pbDst += 4;
-						--n_draw_shift;
-					}
-					while ( n_draw_shift );
+					qmemcpy(tmp_pbDst, pdung_cels, 4 * n_draw_shift);
+					pdung_cels += 4 * n_draw_shift;
+					tmp_pbDst += 4 * n_draw_shift;
 				}
 				tmp_pbDst -= 800;
 				xx_32 -= 2;
@@ -8827,11 +8548,12 @@ LABEL_153:
 				do
 				{
 LABEL_166:
-					for ( n_draw_shift = (unsigned int)(32 - xx_32) >> 2; n_draw_shift; --n_draw_shift )
+					n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
+					if ( n_draw_shift )
 					{
-						*(_DWORD *)tmp_pbDst = *(_DWORD *)pdung_cels;
-						pdung_cels += 4;
-						tmp_pbDst += 4;
+						qmemcpy(tmp_pbDst, pdung_cels, 4 * n_draw_shift);
+						pdung_cels += 4 * n_draw_shift;
+						tmp_pbDst += 4 * n_draw_shift;
 					}
 					if ( (32 - (_BYTE)xx_32) & 2 )
 					{
@@ -8861,11 +8583,12 @@ LABEL_171:
 			}
 			do
 			{
-				for ( n_draw_shift = (unsigned int)(32 - yy_32) >> 2; n_draw_shift; --n_draw_shift )
+				n_draw_shift = (unsigned int)(32 - yy_32) >> 2;
+				if ( n_draw_shift )
 				{
-					*(_DWORD *)tmp_pbDst = *(_DWORD *)pdung_cels;
-					pdung_cels += 4;
-					tmp_pbDst += 4;
+					qmemcpy(tmp_pbDst, pdung_cels, 4 * n_draw_shift);
+					pdung_cels += 4 * n_draw_shift;
+					tmp_pbDst += 4 * n_draw_shift;
 				}
 				if ( (32 - (_BYTE)yy_32) & 2 )
 				{
@@ -8898,23 +8621,9 @@ LABEL_189:
 					do
 					{
 						if ( tmp_pbDst < gpBufEnd )
-						{
-							j = 8;
-							do
-							{
-								*(_DWORD *)tmp_pbDst = *(_DWORD *)pdung_cels;
-								pdung_cels += 4;
-								tmp_pbDst += 4;
-								--j;
-							}
-							while ( j );
-						}
-						else
-						{
-							pdung_cels += 32;
-							tmp_pbDst += 32;
-						}
-						tmp_pbDst -= 800;
+							qmemcpy(tmp_pbDst, pdung_cels, 32);
+						pdung_cels += 32;
+						tmp_pbDst -= 768;
 						--i;
 					}
 					while ( i );
@@ -8937,14 +8646,9 @@ LABEL_189:
 				}
 				if ( n_draw_shift )
 				{
-					do
-					{
-						*(_DWORD *)tmp_pbDst = *(_DWORD *)pdung_cels;
-						pdung_cels += 4;
-						tmp_pbDst += 4;
-						--n_draw_shift;
-					}
-					while ( n_draw_shift );
+					qmemcpy(tmp_pbDst, pdung_cels, 4 * n_draw_shift);
+					pdung_cels += 4 * n_draw_shift;
+					tmp_pbDst += 4 * n_draw_shift;
 				}
 				tmp_pbDst -= 800;
 				xx_32 -= 2;
@@ -8970,23 +8674,9 @@ LABEL_205:
 					do
 					{
 						if ( tmp_pbDst < gpBufEnd )
-						{
-							j = 8;
-							do
-							{
-								*(_DWORD *)tmp_pbDst = *(_DWORD *)pdung_cels;
-								pdung_cels += 4;
-								tmp_pbDst += 4;
-								--j;
-							}
-							while ( j );
-						}
-						else
-						{
-							pdung_cels += 32;
-							tmp_pbDst += 32;
-						}
-						tmp_pbDst -= 800;
+							qmemcpy(tmp_pbDst, pdung_cels, 32);
+						pdung_cels += 32;
+						tmp_pbDst -= 768;
 						--i;
 					}
 					while ( i );
@@ -8999,11 +8689,12 @@ LABEL_205:
 			}
 			do
 			{
-				for ( n_draw_shift = (unsigned int)(32 - xx_32) >> 2; n_draw_shift; --n_draw_shift )
+				n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
+				if ( n_draw_shift )
 				{
-					*(_DWORD *)tmp_pbDst = *(_DWORD *)pdung_cels;
-					pdung_cels += 4;
-					tmp_pbDst += 4;
+					qmemcpy(tmp_pbDst, pdung_cels, 4 * n_draw_shift);
+					pdung_cels += 4 * n_draw_shift;
+					tmp_pbDst += 4 * n_draw_shift;
 				}
 				if ( (32 - (_BYTE)xx_32) & 2 )
 				{
@@ -9024,7 +8715,6 @@ void __fastcall world_draw_black_tile(unsigned char *pbDst)
 	unsigned char *tmp_pbDst; // edi MAPDST
 	signed int xx_32; // edx
 	signed int i; // ebx MAPDST
-	signed int j; // ecx MAPDST
 	signed int yy_32; // edx
 
 	tmp_pbDst = pbDst;
@@ -9032,15 +8722,8 @@ void __fastcall world_draw_black_tile(unsigned char *pbDst)
 	for ( i = 1; ; ++i )
 	{
 		tmp_pbDst += xx_32;
-		j = i;
-		do
-		{
-			*(_DWORD *)tmp_pbDst = 0;
-			tmp_pbDst += 4;
-			--j;
-		}
-		while ( j );
-		tmp_pbDst = &tmp_pbDst[xx_32 - 832];
+		memset(tmp_pbDst, 0, 4 * i);
+		tmp_pbDst = &tmp_pbDst[4 * i - 832 + xx_32];
 		if ( !xx_32 )
 			break;
 		xx_32 -= 2;
@@ -9050,15 +8733,8 @@ void __fastcall world_draw_black_tile(unsigned char *pbDst)
 	do
 	{
 		tmp_pbDst += yy_32;
-		j = i;
-		do
-		{
-			*(_DWORD *)tmp_pbDst = 0;
-			tmp_pbDst += 4;
-			--j;
-		}
-		while ( j );
-		tmp_pbDst = &tmp_pbDst[yy_32 - 832];
+		memset(tmp_pbDst, 0, 4 * i);
+		tmp_pbDst = &tmp_pbDst[4 * i - 832 + yy_32];
 		--i;
 		yy_32 += 2;
 	}
