@@ -113,20 +113,11 @@ struct player_cpp_init
 
 void __fastcall SetPlayerGPtrs(char *pData, char *pAnim)
 {
-	char *v2; // eax
-	int v3; // esi
-	signed int v4; // edx
-
-	v2 = pAnim;
-	v3 = pData - pAnim;
-	v4 = 8;
-	do
-	{
-		*(_DWORD *)v2 = (unsigned int)&pData[*(_DWORD *)&v2[v3]];
-		v2 += 4;
-		--v4;
+	int delta = pData - pAnim;
+	for (int i = 8; i; i--) {
+		*(DWORD *)pAnim = (DWORD)&pData[*(DWORD *)&pAnim[delta]];
+		pAnim += 4;
 	}
-	while ( v4 );
 }
 
 void __fastcall LoadPlrGFX(int pnum, int gfxflag)
