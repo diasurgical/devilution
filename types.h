@@ -44,10 +44,6 @@
 #include "3rdParty/Storm/Source/storm.h"
 #include "3rdParty/PKWare/pkware.h"
 
-// temporarily enable debug features for all builds
-#ifndef _DEBUG
-#define _DEBUG
-#endif
 // If defined, use copy protection [Default -> Defined]
 //#define COPYPROT
 // If defined, don't reload for debuggers [Default -> Undefined]
