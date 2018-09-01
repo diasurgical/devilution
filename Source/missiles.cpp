@@ -585,7 +585,7 @@ void __fastcall GetDamageAmt(int i, int *mind, int *maxd)
 				*mind = v14;
 			}
 			v16 = maxd;
-			v5 = 2 * plr[myplr]._pLevel + 40; // BUG_FIX: 2 * (plr[myplr]._pLevel + 20) + 4
+			v5 = 2 * plr[myplr]._pLevel + 40; /// BUGFIX: set to `2 * (plr[myplr]._pLevel + 20) + 4`
 			*maxd = v5;
 			if ( v4 <= 0 )
 				return;
@@ -712,7 +712,7 @@ LABEL_43:
 				*mind = v24;
 			}
 			v16 = maxd;
-			v5 = 2 * plr[myplr]._pLevel + 40; // BUG_FIX: 2 * (plr[myplr]._pLevel + 20) + 4
+			v5 = 2 * plr[myplr]._pLevel + 40; /// BUGFIX: set to `2 * (plr[myplr]._pLevel + 20) + 4`
 			*maxd = v5;
 			if ( v4 <= 0 )
 				return;
