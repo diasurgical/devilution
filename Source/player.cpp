@@ -2341,7 +2341,7 @@ void __fastcall StartPlayerKill(int pnum, int earflag)
 		PlaySfxLoc(v5, plr[v3 / 0x54D8].WorldX, plr[v3 / 0x54D8].WorldY);
 		goto LABEL_18;
 	}
-	PlaySfxLoc(PS_DEAD, plr[v3 / 0x54D8].WorldX, plr[v3 / 0x54D8].WorldY); /// BUGFIX: uses Black Knight death sound, should use `PS_WARR71`
+	PlaySfxLoc(PS_DEAD, plr[v3 / 0x54D8].WorldX, plr[v3 / 0x54D8].WorldY); /// BUGFIX: should use `PS_WARR71` like other classes
 LABEL_18:
 	if ( plr[v3 / 0x54D8]._pgfxnum )
 	{
