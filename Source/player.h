@@ -20,7 +20,7 @@ extern int deathdelay; // weak
 extern int plr_dframe_size; // idb
 
 void __cdecl player_cpp_init();
-void __fastcall player_init_cl2_hdrs(char *src, char *dst);
+void __fastcall SetPlayerGPtrs(char *pData, char *pAnim); /* unsigned char *+** */
 void __fastcall LoadPlrGFX(int pnum, int gfxflag);
 void __fastcall InitPlayerGFX(int pnum);
 void __fastcall InitPlrGFXMem(int pnum);
