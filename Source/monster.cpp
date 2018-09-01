@@ -7512,7 +7512,7 @@ void __cdecl ProcessMonsters()
 			if ( v11 )
 			{
 				v16 = monster[v1]._msquelch;
-				if ( v16 && monster[v1]._mAi != MT_DIABLO ) /* BUG_FIX: change '_mAi' to 'MType->mtype' */
+				if ( v16 && monster[v1]._mAi != MT_DIABLO ) /// BUGFIX: test `MT_DIABLO` with 'MType->mtype' instead of '_mAi'
 					monster[v1]._msquelch = v16 - 1;
 			}
 			else
