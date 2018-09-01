@@ -111,18 +111,18 @@ struct player_cpp_init
 // 47F204: using guessed type int player_inf;
 // 68643C: using guessed type int player_cpp_init_value;
 
-void __fastcall player_init_cl2_hdrs(char *src, char *dst)
+void __fastcall SetPlayerGPtrs(char *pData, char *pAnim)
 {
 	char *v2; // eax
 	int v3; // esi
 	signed int v4; // edx
 
-	v2 = dst;
-	v3 = src - dst;
+	v2 = pAnim;
+	v3 = pData - pAnim;
 	v4 = 8;
 	do
 	{
-		*(_DWORD *)v2 = (unsigned int)&src[*(_DWORD *)&v2[v3]];
+		*(_DWORD *)v2 = (unsigned int)&pData[*(_DWORD *)&v2[v3]];
 		v2 += 4;
 		--v4;
 	}
@@ -236,7 +236,7 @@ LABEL_27:
 LABEL_37:
 			sprintf(arglist, "PlrGFX\\%s\\%s\\%s%s.CL2", v17, v15, v15, v19);
 			LoadFileWithMem(arglist, v6);
-			player_init_cl2_hdrs((char *)v6, v7);
+			SetPlayerGPtrs((char *)v6, v7);
 			v3->_pGFXLoad |= v18;
 			v5 = leveltype;
 			goto LABEL_38;
@@ -813,6 +813,7 @@ void __fastcall CreatePlayer(int pnum, char c)
 	}
 
 	// interestingly, only the first three hotkeys are reset
+	// TODO: BUGFIX: clear all 4 hotkeys instead of 3 (demo leftover)
 	for ( i = 0; i < 3; i++ )
 	{
 		plr[pnum]._pSplHotKey[i] = -1;
@@ -2337,7 +2338,7 @@ void __fastcall StartPlayerKill(int pnum, int earflag)
 		PlaySfxLoc(v5, plr[v3 / 0x54D8].WorldX, plr[v3 / 0x54D8].WorldY);
 		goto LABEL_18;
 	}
-	PlaySfxLoc(PS_DEAD, plr[v3 / 0x54D8].WorldX, plr[v3 / 0x54D8].WorldY); /* BUG_FIX: uses wrong sound, should use PS_WARR71 */
+	PlaySfxLoc(PS_DEAD, plr[v3 / 0x54D8].WorldX, plr[v3 / 0x54D8].WorldY); /// BUGFIX: should use `PS_WARR71` like other classes
 LABEL_18:
 	if ( plr[v3 / 0x54D8]._pgfxnum )
 	{
