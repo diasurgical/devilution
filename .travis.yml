@@ -35,9 +35,21 @@ after_script:
 
 jobs:
   include:
-    - stage: Test with Riivaaja
+    - stage: Build with Riivaaja
       os: linux
       sudo: required
       services:
         - docker
       script: docker run -v $(pwd):/root/devilution diasurgical/riivaaja
+    - stage: Calculate binary accuracy
+      script:
+        - |
+          set -e
+          wget https://github.com/diasurgical/devilution-comparer/releases/download/v0.3.2/devilution-comparer-linux-x64.tar.xz
+          tar xf devilution-comparer-linux-x64.tar.xz
+          echo '#!/bin/sh' | sudo tee /bin/wine
+          echo 'docker run -v $(pwd):/root/devilution --entrypoint "/usr/bin/wine" diasurgical/riivaaja $(basename $1) $2 $3' | sudo tee --append /bin/wine
+          sudo chmod +x /bin/wine
+          docker run -v $(pwd):/root/devilution -e MAKE_BUILD=pdb diasurgical/riivaaja
+          ./devilution-comparer generate-full Diablo.exe --no-mem-disp
+          docker run -v $(pwd):/root/devilution diasurgical/riivaaja ../status.sh
