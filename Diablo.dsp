@@ -358,7 +358,6 @@ SOURCE=.\Source\wave.cpp
 # Begin Source File
 
 SOURCE=.\Source\render.cpp
-# ADD CPP /O2
 # End Source File
 # End Group
 # Begin Group "Resource Files"
