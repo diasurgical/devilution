@@ -868,162 +868,187 @@ void __fastcall PlaceMonster(int i, int mtype, int x, int y)
 
 void __fastcall PlaceUniqueMonst(int uniqindex, int miniontype, int unpackfilesize)
 {
-	MonsterStruct *Monst = &monster[nummonsters];
-	UniqMonstStruct *Uniq = &UniqMonst[uniqindex];
-	int x;
-	int y;
+	int xp;
+	int yp;
 	char filestr[64];
-	int mtype;
 
-	if ( (uniquetrans + 19) << 8 < 6912 )
+	UniqMonstStruct *Uniq = &UniqMonst[uniqindex];
+	MonsterStruct *Monst = &monster[nummonsters];
+	int count = 0;
+
+	if ( (uniquetrans + 19) << 8 >= 6912 )
 	{
-		mtype = 0;
-		if ( nummtypes > 0 )
+		return;
+	}
+
+	int uniqtype;
+	for ( uniqtype = 0; uniqtype < nummtypes; uniqtype++ )
+	{
+		if ( Monsters[uniqtype].mtype == Uniq->mtype )
 		{
-			for ( int i = 0; i < nummtypes; i++ )
+			break;
+		}
+	}
+
+	while (true)
+	{
+
+		xp = random(91, 80) + 16;
+		yp = random(91, 80) + 16;
+		int count2 = 0;
+		for ( int x = xp - 3; x < xp + 3; x++ )
+		{
+			for ( int y = yp - 3; y < yp + 3; y++ )
 			{
-				if ( Monsters[i].mtype == Uniq->mtype )
+				if ( y >= 0 && y < 112 && x >= 0 && x < 112 && MonstPlace(x, y) )
 				{
-					break;
-				}
-
-				mtype++;
-			}
-		}
-
-		do
-		{
-			for ( int i = 0; i < 1000; i++ )
-			{
-				int count = 0;
-				x = random(91, 80) + 16;
-				y = random(91, 80) + 16;
-
-				for ( int xp = x - 3; xp < x + 3; xp++ )
-				{
-					for ( int yp = y - 3; yp < y + 3; yp++ )
-					{
-						if ( yp >= 0 && yp < 112 && xp >= 0 && xp < 112 && MonstPlace(xp, yp) )
-						{
-							++count;
-						}
-					}
-				}
-
-				if ( count >= 9 )
-					break;
-			}
-		}
-		while ( !MonstPlace(x, y) );
-
-		if ( uniqindex == 3 )
-		{
-			x = 2 * setpc_x + 24;
-			y = 2 * setpc_y + 28;
-		}
-		if ( uniqindex == 8 )
-		{
-			x = 2 * setpc_x + 22;
-			y = 2 * setpc_y + 23;
-		}
-		if ( uniqindex == 2 )
-		{
-			int count2 = 1;
-			for ( int i = 0; i < themeCount; i++ )
-			{
-				if ( i == zharlib && count2 == 1 )
-				{
-					count2 = 0;
-					x = 2 * themeLoc[i].x + 20;
-					y = 2 * themeLoc[i].y + 20;
-				}
-			}
-		}
-		if ( gbMaxPlayers == 1 )
-		{
-			if ( uniqindex == 4 )
-			{
-				x = 32;
-				y = 46;
-			}
-			if ( uniqindex == 5 )
-			{
-				x = 40;
-				y = 45;
-			}
-			if ( uniqindex == 6 )
-			{
-				x = 38;
-				y = 49;
-			}
-			if ( uniqindex == 1 )
-			{
-				x = 35;
-				y = 47;
-			}
-		}
-		else
-		{
-			if ( uniqindex == 4 )
-			{
-				x = 2 * setpc_x + 19;
-				y = 2 * setpc_y + 22;
-			}
-			if ( uniqindex == 5 )
-			{
-				x = 2 * setpc_x + 21;
-				y = 2 * setpc_y + 19;
-			}
-			if ( uniqindex == 6 )
-			{
-				x = 2 * setpc_x + 21;
-				y = 2 * setpc_y + 25;
-			}
-		}
-		if ( uniqindex == 9 )
-		{
-			BOOL done = FALSE;
-
-			for ( x = 0; x < 112 && !done; x++ )
-			{
-				for ( y = 0; y < 112 && !done; y++ )
-				{
-					done = dPiece[x][y] == 367;
+					count2++;
 				}
 			}
 		}
 
-		PlaceMonster(nummonsters, mtype, x, y);
-		Monst->_uniqtype = uniqindex + 1;
-
-		if ( Uniq->mlevel )
-			Monst->mLevel = 2 * Uniq->mlevel;
-		else
-			Monst->mLevel += 5;
-
-		Monst->mExp *= 2;
-		Monst->mName = Uniq->mName;
-		Monst->_mmaxhp = Uniq->mmaxhp << 6;
-
-		if ( gbMaxPlayers == 1 )
-		{
-			Monst->_mmaxhp = Monst->_mmaxhp >> 1;
-			if ( Monst->_mmaxhp < 64 )
-				Monst->_mmaxhp = 64;
+		if ( count2 < 9 ) {
+			count++;
+			if ( count < 1000 )
+			{
+				continue;
+			}
 		}
 
-		Monst->_mhitpoints = Monst->_mmaxhp;
-		Monst->_mAi = Uniq->mAi;
-		Monst->_mint = Uniq->mint;
-		Monst->mMinDamage = Uniq->mMinDamage;
-		Monst->mMinDamage2 = Uniq->mMinDamage;
-		Monst->mMagicRes = Uniq->mMagicRes;
-		Monst->mMaxDamage = Uniq->mMaxDamage;
-		Monst->mMaxDamage2 = Uniq->mMaxDamage;
-		Monst->mtalkmsg = Uniq->mtalkmsg;
-		Monst->mlid = AddLight(Monst->_mx, Monst->_my, 3);
 
-		if ( gbMaxPlayers == 1 )
+		if ( MonstPlace(xp, yp) )
+		{
+			break;
+		}
+	}
+
+	if ( uniqindex == 3 )
+	{
+		xp = 2 * setpc_x + 24;
+		yp = 2 * setpc_y + 28;
+	}
+	if ( uniqindex == 8 )
+	{
+		xp = 2 * setpc_x + 22;
+		yp = 2 * setpc_y + 23;
+	}
+	if ( uniqindex == 2 )
+	{
+		BOOL zharflag = TRUE;
+		for ( int i = 0; i < themeCount; i++ )
+		{
+			if ( i == zharlib && zharflag == TRUE )
+			{
+				zharflag = FALSE;
+				xp = 2 * themeLoc[i].x + 20;
+				yp = 2 * themeLoc[i].y + 20;
+			}
+		}
+	}
+	if ( gbMaxPlayers == 1 )
+	{
+		if ( uniqindex == 4 )
+		{
+			xp = 32;
+			yp = 46;
+		}
+		if ( uniqindex == 5 )
+		{
+			xp = 40;
+			yp = 45;
+		}
+		if ( uniqindex == 6 )
+		{
+			xp = 38;
+			yp = 49;
+		}
+		if ( uniqindex == 1 )
+		{
+			xp = 35;
+			yp = 47;
+		}
+	}
+	else
+	{
+		if ( uniqindex == 4 )
+		{
+			xp = 2 * setpc_x + 19;
+			yp = 2 * setpc_y + 22;
+		}
+		if ( uniqindex == 5 )
+		{
+			xp = 2 * setpc_x + 21;
+			yp = 2 * setpc_y + 19;
+		}
+		if ( uniqindex == 6 )
+		{
+			xp = 2 * setpc_x + 21;
+			yp = 2 * setpc_y + 25;
+		}
+	}
+	if ( uniqindex == 9 )
+	{
+		BOOL done = FALSE;
+		for ( yp = 0; yp < 112 && !done; yp++ )
+		{
+			for ( xp = 0; xp < 112 && !done; xp++ )
+			{
+				done = dPiece[xp][yp] == 367;
+			}
+		}
+	}
+
+	PlaceMonster(nummonsters, uniqtype, xp, yp);
+	Monst->_uniqtype = uniqindex + 1;
+
+	if ( Uniq->mlevel )
+	{
+		Monst->mLevel = 2 * Uniq->mlevel;
+	}
+	else
+	{
+		Monst->mLevel += 5;
+	}
+
+	Monst->mExp *= 2;
+	Monst->mName = Uniq->mName;
+	Monst->_mmaxhp = Uniq->mmaxhp << 6;
+
+	if ( gbMaxPlayers == 1 )
+	{
+		Monst->_mmaxhp = Monst->_mmaxhp >> 1;
+		if ( Monst->_mmaxhp < 64 )
+		{
+			Monst->_mmaxhp = 64;
+		}
+	}
+
+	Monst->_mhitpoints = Monst->_mmaxhp;
+	Monst->_mAi = Uniq->mAi;
+	Monst->_mint = Uniq->mint;
+	Monst->mMinDamage = Uniq->mMinDamage;
+	Monst->mMaxDamage = Uniq->mMaxDamage;
+	Monst->mMinDamage2 = Uniq->mMinDamage;
+	Monst->mMaxDamage2 = Uniq->mMaxDamage;
+	Monst->mMagicRes = Uniq->mMagicRes;
+	Monst->mtalkmsg = Uniq->mtalkmsg;
+	Monst->mlid = AddLight(Monst->_mx, Monst->_my, 3);
+
+	if ( gbMaxPlayers == 1 )
+	{
+		if ( Monst->mtalkmsg )
+		{
+			Monst->_mgoal = 6;
+		}
+	}
+	else
+	{
+		if ( Monst->_mAi == AI_LAZHELP )
+		{
+			Monst->mtalkmsg = 0;
+		}
+
+		if ( Monst->_mAi != AI_LAZURUS || quests[15]._qvar1 <= 3 )
 		{
 			if ( Monst->mtalkmsg )
 			{
@@ -1032,77 +1057,62 @@ void __fastcall PlaceUniqueMonst(int uniqindex, int miniontype, int unpackfilesi
 		}
 		else
 		{
-			if ( Monst->_mAi == AI_LAZHELP )
-			{
-				Monst->mtalkmsg = 0;
-			}
-
-			if ( Monst->_mAi != AI_LAZURUS || quests[15]._qvar1 <= 3 )
-			{
-				if ( Monst->mtalkmsg )
-				{
-					Monst->_mgoal = 6;
-				}
-			}
-			else
-			{
-				Monst->_mgoal = 1;
-			}
+			Monst->_mgoal = 1;
 		}
+	}
 
-		if ( gnDifficulty == DIFF_NIGHTMARE )
-		{
-			Monst->mLevel += 15;
-			Monst->_mmaxhp = 3 * Monst->_mmaxhp + 64;
-			Monst->_mhitpoints = 3 * Monst->_mmaxhp + 64;
-			Monst->mExp = 2 * (Monst->mExp + 1000);
-			Monst->mMinDamage = 2 * (Monst->mMinDamage + 2);
-			Monst->mMaxDamage = 2 * (Monst->mMaxDamage + 2);
-			Monst->mMinDamage2 = 2 * (Monst->mMinDamage2 + 2);
-			Monst->mMaxDamage2 = 2 * (Monst->mMaxDamage2 + 2);
-		}
+	if ( gnDifficulty == DIFF_NIGHTMARE )
+	{
+		Monst->mLevel += 15;
+		Monst->_mmaxhp = 3 * Monst->_mmaxhp + 64;
+		Monst->_mhitpoints = Monst->_mmaxhp;
+		Monst->mExp = 2 * (Monst->mExp + 1000);
+		Monst->mMinDamage = 2 * (Monst->mMinDamage + 2);
+		Monst->mMaxDamage = 2 * (Monst->mMaxDamage + 2);
+		Monst->mMinDamage2 = 2 * (Monst->mMinDamage2 + 2);
+		Monst->mMaxDamage2 = 2 * (Monst->mMaxDamage2 + 2);
+	}
 
-		if ( gnDifficulty == DIFF_HELL )
-		{
-			Monst->mLevel += 30;
-			Monst->_mmaxhp = 4 * Monst->_mmaxhp + 192;
-			Monst->_mhitpoints = 4 * Monst->_mmaxhp + 192;
-			Monst->mExp = 4 * (Monst->mExp + 1000);
-			Monst->mMinDamage = 4 * Monst->mMinDamage + 6;
-			Monst->mMaxDamage = 4 * Monst->mMaxDamage + 6;
-			Monst->mMinDamage2 = 4 * Monst->mMinDamage2 + 6;
-			Monst->mMaxDamage2 = 4 * Monst->mMaxDamage2 + 6;
-		}
+	if ( gnDifficulty == DIFF_HELL )
+	{
+		Monst->mLevel += 30;
+		Monst->_mmaxhp = 4 * Monst->_mmaxhp + 192;
+		Monst->_mhitpoints = Monst->_mmaxhp;
+		Monst->mExp = 4 * (Monst->mExp + 1000);
+		Monst->mMinDamage = 4 * Monst->mMinDamage + 6;
+		Monst->mMaxDamage = 4 * Monst->mMaxDamage + 6;
+		Monst->mMinDamage2 = 4 * Monst->mMinDamage2 + 6;
+		Monst->mMaxDamage2 = 4 * Monst->mMaxDamage2 + 6;
+	}
 
-		sprintf(filestr, "Monsters\\Monsters\\%s.TRN", Uniq->mName);
-		LoadFileWithMem(filestr, &pLightTbl[256 * (uniquetrans + 19)]);
+	sprintf(filestr, "Monsters\\Monsters\\%s.TRN", Uniq->mName);
+	LoadFileWithMem(filestr, &pLightTbl[256 * (uniquetrans + 19)]);
 
-		Monst->_uniqtrans = uniquetrans++;
+	Monst->_uniqtrans = uniquetrans++;
 
-		if ( Uniq->mUnqAttr & 4 )
-		{
-			Monst->mHit = Uniq->mUnqVar1;
-			Monst->mHit2 = Uniq->mUnqVar1;
-		}
-		if ( Uniq->mUnqAttr & 8 )
-		{
-			Monst->mArmorClass = Uniq->mUnqVar1;
-		}
+	if ( Uniq->mUnqAttr & 4 )
+	{
+		Monst->mHit = Uniq->mUnqVar1;
+		Monst->mHit2 = Uniq->mUnqVar1;
+	}
+	if ( Uniq->mUnqAttr & 8 )
+	{
+		Monst->mArmorClass = Uniq->mUnqVar1;
+	}
 
-		nummonsters++;
+	nummonsters++;
 
-		if ( Uniq->mUnqAttr & 1 )
-		{
-			PlaceGroup(miniontype, unpackfilesize, Uniq->mUnqAttr, nummonsters - 1);
-		}
+	if ( Uniq->mUnqAttr & 1 )
+	{
+		PlaceGroup(miniontype, unpackfilesize, Uniq->mUnqAttr, nummonsters - 1);
+	}
 
-		if ( Monst->_mAi != AI_GARG )
-		{
-			Monst->_mAnimData = Monst->MType->Anims[0].Frames[Monst->_mdir];
-			Monst->_mFlags &= 0xFFFFFFFB;
-			Monst->_mmode = 0;
-			Monst->_mAnimFrame = random(88, Monst->_mAnimLen - 1) + 1;
-		}
+	if ( Monst->_mAi != AI_GARG )
+	{
+		Monst->_mAnimData = Monst->MType->Anims[0].Frames[Monst->_mdir];
+		Monst->_mAnimFrame = random(88, Monst->_mAnimLen - 1) + 1;
+		Monst->_mFlags &= 0xFFFFFFFB;
+		Monst->_mmode = 0;
 	}
 }
 
