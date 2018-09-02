@@ -33,15 +33,27 @@ script:
 after_script:
   - make clean
 
+stages:
+  - Riivaaja
+  - test
+
 jobs:
   include:
-    - stage: Build with Riivaaja
-      os: linux
+    - stage: Riivaaja
+      name: "Build using Riivaaja (original toolset)"
+      language: minimal
       sudo: required
       services:
         - docker
+      addons: {}
       script: docker run -v $(pwd):/root/devilution diasurgical/riivaaja
-    - stage: Calculate binary accuracy
+    - stage: test
+      name: "Riivaaja: Calculate binary accuracy"
+      language: minimal
+      sudo: required
+      services:
+        - docker
+      addons: {}
       script:
         - |
           set -e
