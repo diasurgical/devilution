@@ -861,7 +861,9 @@ BOOL __fastcall MonstPlace(int xp, int yp)
 void __fastcall PlaceMonster(int i, int mtype, int x, int y)
 {
 	dMonster[x][y] = i + 1;
-	InitMonster(i, random(90, 8), mtype, x, y);
+
+	int rd = random(90, 8);
+	InitMonster(i, rd, mtype, x, y);
 }
 
 void __fastcall PlaceUniqueMonst(int uniqindex, int miniontype, int unpackfilesize)
