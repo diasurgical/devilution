@@ -319,40 +319,48 @@ void __fastcall PlacePlayer(int pnum)
 
 void __fastcall DoHealOther(int pnum, int rid)
 {
-	int i;
-	int j;
-
 	if ( pnum == myplr )
-		NewCursor(CURSOR_HAND);
-
-	if ( (_BYTE)rid != LOBYTE(-1) && (plr[rid]._pHitPoints >> 6) > 0 )
 	{
-		i = 0;
-		for ( j = (random(57, 10) + 1) << 6; i < plr[pnum]._pLevel; ++i )
+		NewCursor(CURSOR_HAND);
+	}
+
+	if ( (char)rid != -1 && (plr[rid]._pHitPoints >> 6) > 0 )
+	{
+		int hp = (random(57, 10) + 1) << 6;
+
+		for ( int i = 0; i < plr[pnum]._pLevel; i++ )
 		{
-			j += (random(57, 4) + 1) << 6;
+			hp += (random(57, 4) + 1) << 6;
 		}
 
-		for ( i = 0; i < GetSpellLevel(pnum, SPL_HEALOTHER); ++i )
+		for ( int j = 0; j < GetSpellLevel(pnum, SPL_HEALOTHER); ++j )
 		{
-			j += (random(57, 6) + 1) << 6;
+			hp += (random(57, 6) + 1) << 6;
 		}
 
-		if ( plr[pnum]._pClass == UI_WARRIOR )
-			j *= 2;
+		if ( plr[pnum]._pClass == PC_WARRIOR )
+		{
+			hp *= 2;
+		}
 
-		if ( plr[pnum]._pClass == UI_ROGUE )
-			j += j >> 1;
+		if ( plr[pnum]._pClass == PC_ROGUE )
+		{
+			hp += hp >> 1;
+		}
 
-		plr[rid]._pHitPoints += j;
+		plr[rid]._pHitPoints += hp;
 
 		if ( plr[rid]._pHitPoints > plr[rid]._pMaxHP )
+		{
 			plr[rid]._pHitPoints = plr[rid]._pMaxHP;
+		}
 
-		plr[rid]._pHPBase += j;
+		plr[rid]._pHPBase += hp;
 
 		if ( plr[rid]._pHPBase > plr[rid]._pMaxHPBase )
+		{
 			plr[rid]._pHPBase = plr[rid]._pMaxHPBase;
+		}
 
 		drawhpflag = 1;
 	}
