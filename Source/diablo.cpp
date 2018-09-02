@@ -494,7 +494,7 @@ void __cdecl diablo_init_screen()
 }
 // 69CEFC: using guessed type int scrollrt_cpp_init_value;
 
-HWND __fastcall diablo_find_window(LPCSTR lpClassName)
+BOOL __fastcall diablo_find_window(LPCSTR lpClassName)
 {
 	HWND result; // eax
 	HWND v2; // esi
@@ -503,19 +503,18 @@ HWND __fastcall diablo_find_window(LPCSTR lpClassName)
 
 	result = FindWindowA(lpClassName, 0);
 	v2 = result;
-	if ( result )
-	{
-		v3 = GetLastActivePopup(result);
-		if ( v3 )
-			v2 = v3;
-		v4 = GetTopWindow(v2);
-		if ( !v4 )
-			v4 = v2;
-		SetForegroundWindow(v2);
-		SetFocus(v4);
-		result = (HWND)1;
-	}
-	return result;
+	if ( !result )
+		return 0;
+
+	v3 = GetLastActivePopup(result);
+	if ( v3 )
+		v2 = v3;
+	v4 = GetTopWindow(v2);
+	if ( !v4 )
+		v4 = v2;
+	SetForegroundWindow(v2);
+	SetFocus(v4);
+	return 1;
 }
 
 void __fastcall diablo_reload_process(HMODULE hModule)
