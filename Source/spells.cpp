@@ -43,7 +43,6 @@ SpellData spelldata[37] =
 	{ SPL_BONESPIRIT,  24,  STYPE_MAGIC,     "Bone Spirit",     NULL,             9,  7,  0, 0, 34,  IS_CAST2, { MIS_BONESPIRIT,  0,          0 }, 1, 12,  20, 60, 11500, 800 }
 };
 
-// int __fastcall GetManaAmount(int id, spell_id sn)
 int __fastcall GetManaAmount(int id, int sn)
 {
 	int i; // "raw" mana cost
@@ -106,7 +105,6 @@ int __fastcall GetManaAmount(int id, int sn)
 	return ma * (100 - plr[id]._pISplCost) / 100;
 }
 
-// void __fastcall UseMana(int id, spell_id sn)
 void __fastcall UseMana(int id, int sn)
 {
 	int ma; // mana cost
@@ -132,23 +130,18 @@ void __fastcall UseMana(int id, int sn)
 			RemoveScroll(id);
 			break;
 		case RSPLTYPE_CHARGES:
-			// TODO: this should be inlined
 			UseStaffCharge(id);
 			break;
 		}
 	}
 }
 
-// BOOL __fastcall CheckSpell(int id, spell_id sn, spell_type st, BOOL manaonly)
-BOOL __fastcall CheckSpell(int id, int sn, int st, BOOL manaonly)
+BOOL __fastcall CheckSpell(int id, int sn, BYTE st, BOOL manaonly)
 {
 #ifdef _DEBUG
 	if ( debug_mode_key_inverted_v )
 		return true;
 #endif
-
-	// TODO: the first few instructions are encoded differently.
-	// It seems that the original compiler liked using EAX more.
 
 	BOOL result = true;
 	if ( !manaonly && pcurs != 1 )
@@ -157,16 +150,15 @@ BOOL __fastcall CheckSpell(int id, int sn, int st, BOOL manaonly)
 	}
 	else
 	{
-		// TODO: switch the type of st to spell_type, which would probably allow to remove the (_BYTE)
-		if ( (_BYTE)st != RSPLTYPE_SKILL )
+		if ( st != RSPLTYPE_SKILL )
 		{
 			if ( GetSpellLevel(id, sn) <= 0 )
 			{
-				return false;
+				result = false;
 			}
 			else
 			{
-				return plr[id]._pMana >= GetManaAmount(id, sn);
+				result = plr[id]._pMana >= GetManaAmount(id, sn);
 			}
 		}
 	}
@@ -174,63 +166,46 @@ BOOL __fastcall CheckSpell(int id, int sn, int st, BOOL manaonly)
 	return result;
 }
 
-// void __fastcall CastSpell(int id, spell_id spl, int sx, int sy, int dx, int dy, BOOL caster, int spllvl)
-void __fastcall CastSpell(int id, int spl, int sx, int sy, int dx, int dy, int caster, int spllvl)
+void __fastcall CastSpell(int id, int spl, int sx, int sy, int dx, int dy, BOOL caster, int spllvl)
 {
 
 	int dir; // missile direction
 
-	if ( caster )
+	// ugly switch, but generates the right code
+	switch ( caster )
 	{
-		if ( caster == 1 )
+		case TRUE:
 			dir = monster[id]._mdir;
+			break;
+		case FALSE:
+			// caster must be 0 already in this case, but oh well,
+			// it's needed to generate the right code
+			caster = 0;
+			dir = plr[id]._pdir;
 
-		// note: dir is uninitialized when caster != 0 && caster != 1.
-		// in older patches there was a
-		// else
-		//     dir = caster;
-		// here it seems, but it's completely gone in 1.09
-		// (traced the assembly manually to make sure IDA didn't miss something)
-	}
-	else
-	{
-		// see notes below.
-		// caster = 0;
-
-		dir = plr[id]._pdir;
-
-		if ( spl == SPL_FIREWALL )
-			dir = plr[id]._pVar3;
-
-		// note: logically, this line seems to make no sense, since caster has to be 0 to
-		// get into this branch, but every version back to the beta has this statement.
-
-		// note: based on the code generation and the position in the beta version, this has to be here,
-		// since only with the line here ebx is used as zero register in the whole function.
-		// e.g. the zero in AddMissile is a `push ebx` instead of `push 0`. Saves a single byte per change.
-		// Code flow wise it happens before the first statement in this else block.
-
-		// TODO: investigate after more functions have been cleaned up to see if some optimization changes cause this
-		caster = 0;
+			if ( spl == SPL_FIREWALL )
+			{
+				dir = plr[id]._pVar3;
+			}
+			break;
 	}
 
-	int i;
-	for ( i = 0; spelldata[spl].sMissiles[i] && i < 3; ++i )
+	for ( int i = 0; spelldata[spl].sMissiles[i] != MIS_ARROW && i < 3; i++ )
 	{
 		AddMissile(sx, sy, dx, dy, dir, spelldata[spl].sMissiles[i], caster, id, 0, spllvl);
 	}
 
-	if ( *spelldata[spl].sMissiles == MIS_TOWN )
+	if ( spelldata[spl].sMissiles[0] == MIS_TOWN )
+	{
 		UseMana(id, SPL_TOWN);
-	if ( *spelldata[spl].sMissiles == MIS_CBOLT )
+	}
+	if ( spelldata[spl].sMissiles[0] == MIS_CBOLT )
 	{
 		UseMana(id, SPL_CBOLT);
-		if ( (spllvl >> 1) + 3 > 0 )
+
+		for ( int i = 0; i < (spllvl >> 1) + 3; i++ )
 		{
-			for ( i = (spllvl >> 1) + 3; i > 0; --i )
-			{
-				AddMissile(sx, sy, dx, dy, dir, MIS_CBOLT, caster, id, 0, spllvl);
-			}
+			AddMissile(sx, sy, dx, dy, dir, MIS_CBOLT, caster, id, 0, spllvl);
 		}
 	}
 }
