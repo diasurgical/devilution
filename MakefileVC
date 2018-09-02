@@ -45,7 +45,9 @@ endif
 
 all: Diablo.exe
 
-DIABLO_SRC=$(sort $(wildcard Source/*.cpp))
+# fix compilation order to match the VC6 workspace files
+DIABLO_SRC=$(sort $(filter-out Source/render.cpp, $(wildcard Source/*.cpp)))
+DIABLO_SRC += Source/render.cpp
 OBJS=$(DIABLO_SRC:.cpp=.obj)
 
 PKWARE_SRC=$(sort $(wildcard 3rdParty/PKWare/*.cpp))
@@ -57,7 +59,7 @@ STORM_OBJS=$(STORM_SRC:.cpp=.obj)
 DIABLOUI_SRC=$(sort $(wildcard DiabloUI/*.cpp))
 DIABLOUI_OBJS=$(DIABLOUI_SRC:.cpp=.obj)
 
-Diablo.exe: $(OBJS) $(PKWARE_OBJS) diablo.res DiabloUI/diabloui.lib 3rdParty/Storm/Source/storm.lib
+Diablo.exe: main_files $(PKWARE_OBJS) diablo.res DiabloUI/diabloui.lib 3rdParty/Storm/Source/storm.lib
 	$(VC_LINK) /OUT:$@ $(LINKFLAGS) $(OBJS) $(PKWARE_OBJS) diablo.res advapi32.lib gdi32.lib shell32.lib user32.lib version.lib DiabloUI/diabloui.lib 3rdParty/Storm/Source/storm.lib
 
 DiabloUI/diabloui.lib: $(DIABLOUI_OBJS)
@@ -65,6 +67,10 @@ DiabloUI/diabloui.lib: $(DIABLOUI_OBJS)
 
 3rdParty/Storm/Source/storm.lib: $(STORM_OBJS)
 	$(CL) $^ /link /LINK50COMPAT /nologo /dll /subsystem:windows /machine:I386 /LIBPATH:$(VC6_LIB_DIR) /def:"3rdParty/Storm/Source/storm.def" /out:3rdParty/Storm/Source/storm.dll
+
+# compiles all main source files with once compiler call
+main_files:
+	$(CL) $(CFLAGS) /FoSource/ $(DIABLO_SRC)
 
 %.obj: %.cpp
 	$(CL) $(CFLAGS) /Fo$@ $<
