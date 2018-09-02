@@ -214,16 +214,18 @@ void __fastcall CastSpell(int id, int spl, int sx, int sy, int dx, int dy, BOOL 
 // rid: target player index
 void __fastcall DoResurrect(int pnum, int rid)
 {
-
-	if ( (_BYTE)rid != LOBYTE(-1) )
+	if ( (char)rid != -1 )
+	{
 		AddMissile(plr[rid].WorldX, plr[rid].WorldY, plr[rid].WorldX, plr[rid].WorldY, 0, MIS_RESURRECTBEAM, 0, pnum, 0, 0);
+	}
 
 	if ( pnum == myplr )
-		NewCursor(CURSOR_HAND);
-
-	if ( (_BYTE)rid != LOBYTE(-1) && plr[rid]._pHitPoints == 0 )
 	{
+		NewCursor(CURSOR_HAND);
+	}
 
+	if ( (char)rid != -1 && plr[rid]._pHitPoints == 0 )
+	{
 		if ( rid == myplr )
 		{
 			deathflag = 0;
@@ -237,10 +239,12 @@ void __fastcall DoResurrect(int pnum, int rid)
 		plr[rid]._pInvincible = 0;
 		PlacePlayer(rid);
 
+		int hp = 640;
 		if ( plr[rid]._pMaxHPBase < 640 )
-			SetPlayerHitPoints(rid, plr[rid]._pMaxHPBase);
-		else
-			SetPlayerHitPoints(rid, 640);
+		{
+			hp = plr[rid]._pMaxHPBase;
+		}
+		SetPlayerHitPoints(rid, hp);
 
 		plr[rid]._pMana = 0;
 		plr[rid]._pHPBase = plr[rid]._pHitPoints + (plr[rid]._pMaxHPBase - plr[rid]._pMaxHP);
@@ -249,9 +253,13 @@ void __fastcall DoResurrect(int pnum, int rid)
 		CalcPlrInv(rid, TRUE);
 
 		if ( plr[rid].plrlevel == currlevel )
+		{
 			StartStand(rid, plr[rid]._pdir);
+		}
 		else
+		{
 			plr[rid]._pmode = 0;
+		}
 	}
 }
 
