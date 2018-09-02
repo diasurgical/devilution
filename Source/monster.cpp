@@ -876,7 +876,7 @@ void __fastcall PlaceUniqueMonst(int uniqindex, int miniontype, int unpackfilesi
 	MonsterStruct *Monst = &monster[nummonsters];
 	int count = 0;
 
-	if ( (uniquetrans + 19) << 8 >= 6912 )
+	if ( (uniquetrans + 19) << 8 >= LIGHTSIZE )
 	{
 		return;
 	}
