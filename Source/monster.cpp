@@ -837,16 +837,25 @@ BOOL __fastcall MonstPlace(int xp, int yp)
 	if ( xp < 0 || xp >= 112
 		|| yp < 0 || yp >= 112
 		|| dMonster[xp][yp]
-		|| dPlayer[xp][yp]
-		|| dFlags[xp][yp] & 2
-		|| dFlags[xp][yp] & 8 )
+		|| dPlayer[xp][yp] )
 	{
 		return FALSE;
 	}
-	else
+
+	char f = dFlags[xp][yp];
+
+	// TODO: Add enum values here
+	if ( f & 2 )
 	{
-		return !SolidLoc(xp, yp);
+		return FALSE;
 	}
+
+	if ( f & 8 )
+	{
+		return FALSE;
+	}
+
+	return !SolidLoc(xp, yp);
 }
 
 void __fastcall PlaceMonster(int i, int mtype, int x, int y)
