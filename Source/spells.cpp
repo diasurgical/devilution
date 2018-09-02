@@ -46,40 +46,62 @@ SpellData spelldata[37] =
 // int __fastcall GetManaAmount(int id, spell_id sn)
 int __fastcall GetManaAmount(int id, int sn)
 {
-	int adj; // mana adjust
-	int sl; // spell level
 	int i; // "raw" mana cost
 	int ma; // mana amount
 
-	adj = 0;
-	sl = plr[id]._pSplLvl[sn] + plr[id]._pISplLvlAdd - 1;
+	// mana adjust
+	int adj = 0;
+
+	// spell level
+	int sl = plr[id]._pSplLvl[sn] + plr[id]._pISplLvlAdd - 1;
+
 	if ( sl < 0 )
+	{
 		sl = 0;
+	}
 
 	if ( sl > 0 )
+	{
 		adj = sl * spelldata[sn].sManaAdj;
+	}
 	if ( sn == SPL_FIREBOLT )
+	{
 		adj >>= 1;
+	}
 	if ( sn == SPL_RESURRECT && sl > 0 )
+	{
 		adj = sl * (spelldata[SPL_RESURRECT].sManaCost / 8);
+	}
 
-	if ( spelldata[sn].sManaCost == 255 ) /* check sign */
-		i = plr[id]._pMaxManaBase;
+	if ( spelldata[sn].sManaCost == 255 ) // TODO: check sign
+	{
+		i = (BYTE)plr[id]._pMaxManaBase;
+	}
 	else
+	{
 		i = spelldata[sn].sManaCost;
+	}
 
 	ma = (i - adj) << 6;
 
 	if ( sn == SPL_HEAL )
+	{
 		ma = (spelldata[SPL_HEAL].sManaCost + 2 * plr[id]._pLevel - adj) << 6;
+	}
 	if ( sn == SPL_HEALOTHER )
+	{
 		ma = (spelldata[SPL_HEAL].sManaCost + 2 * plr[id]._pLevel - adj) << 6;
+	}
 
-	if ( plr[id]._pClass == 1 )
+	if ( plr[id]._pClass == PC_ROGUE )
+	{
 		ma -= ma >> 2;
+	}
 
 	if ( spelldata[sn].sMinMana > ma >> 6 )
+	{
 		ma = spelldata[sn].sMinMana << 6;
+	}
 
 	return ma * (100 - plr[id]._pISplCost) / 100;
 }
