@@ -270,31 +270,35 @@ void __fastcall PlacePlayer(int pnum)
 
 	if ( plr[pnum].plrlevel == currlevel )
 	{
-		for ( unsigned int i = 0; i < 8; ++i )
+		for ( DWORD i = 0; i < 8; i++ )
 		{
 			nx = plr[pnum].WorldX + plrxoff2[i];
 			ny = plr[pnum].WorldY + plryoff2[i];
 
 			if ( PosOkPlayer(pnum, nx, ny) )
+			{
 				break;
+			}
 		}
 
 		if ( !PosOkPlayer(pnum, nx, ny) )
 		{
 			BOOL done = FALSE;
 
-			for ( int max = 1, min = -1; !done && min > -50; ++max, --min )
+			for ( int max = 1, min = -1; min > -50 && !done; max++, min-- )
 			{
-				for ( int y = min; y <= max && !done; ++y )
+				for ( int y = min; y <= max && !done; y++ )
 				{
-					ny = y + plr[pnum].WorldY;
+					ny = plr[pnum].WorldY + y;
 
-					for ( int x = min; x <= max && !done; ++x )
+					for ( int x = min; x <= max && !done; x++ )
 					{
-						nx = x + plr[pnum].WorldX;
+						nx = plr[pnum].WorldX + x;
 
 						if ( PosOkPlayer(pnum, nx, ny) )
+						{
 							done = TRUE;
+						}
 					}
 				}
 			}
