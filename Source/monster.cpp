@@ -1226,8 +1226,8 @@ void __fastcall PlaceGroup(int mtype, int num, int leaderf, int leader)
 			int offset = random(92, 8);
 			xp = monster[leader]._mx + offset_x[offset];
 			yp = monster[leader]._my + offset_y[offset];
-			x1 = monster[leader]._mx + offset_x[offset];
-			y1 = monster[leader]._my + offset_y[offset];
+			x1 = xp;
+			y1 = yp;
 		}
 		else
 		{
@@ -1242,19 +1242,16 @@ void __fastcall PlaceGroup(int mtype, int num, int leaderf, int leader)
 		}
 
 		if ( num + nummonsters > totalmonsters )
-			num = totalmonsters - nummonsters;
-
-		int try2 = 0;
-		for ( int j = 0; j < num; xp += offset_x[random(94, 8)], yp += offset_x[random(94, 8)] )
 		{
-			if ( try2 >= 100 )
-			{
-				break;
-			}
+			num = totalmonsters - nummonsters;
+		}
 
+		int j = 0;
+		for ( int try2 = 0; j < num && try2 < 100; xp += offset_x[random(94, 8)], yp += offset_x[random(94, 8)] )
+		{
 			if ( !MonstPlace(xp, yp)
 				|| (dung_map[x1][y1] != dung_map[xp][yp])
-				|| leaderf & 2 && ((abs(xp - x1) >= 4) || (abs(yp - y1) >= 4)) )
+				|| (leaderf & 2) && ((abs(xp - x1) >= 4) || (abs(yp - y1) >= 4)) )
 			{
 				try2++;
 				continue;
@@ -1283,12 +1280,15 @@ void __fastcall PlaceGroup(int mtype, int num, int leaderf, int leader)
 				}
 
 			}
-			++nummonsters;
-			++placed;
-			++j;
+			nummonsters++;
+			placed++;
+			j++;
 		}
+
 		if ( placed >= num )
+		{
 			break;
+		}
 	}
 
 	if ( leaderf & 2 )
@@ -1296,7 +1296,6 @@ void __fastcall PlaceGroup(int mtype, int num, int leaderf, int leader)
 		monster[leader].unpackfilesize = placed;
 	}
 }
-// 658550: using guessed type int totalmonsters;
 
 void __cdecl LoadDiabMonsts()
 {
