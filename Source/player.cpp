@@ -1002,24 +1002,15 @@ void __fastcall AddPlrExperience(int pnum, int lvl, int exp)
 
 void __fastcall AddPlrMonstExper(int lvl, int exp, char pmask)
 {
-	int v3; // ebx
-	int v4; // edi
-	signed int v5; // ecx
-
-	v3 = lvl;
-	v4 = 0;
-	v5 = 0;
-	do
-	{
-		if ( (1 << v5) & pmask )
-			++v4;
-		++v5;
+	int totplrs = 0;
+	for (int i = 0; i < 4; i++ ) {
+		if ( (1 << i) & pmask ) {
+			totplrs++;
+		}
 	}
-	while ( v5 < 4 );
-	if ( v4 )
-	{
-		if ( (1 << myplr) & pmask )
-			AddPlrExperience(myplr, v3, exp / v4);
+
+	if ( totplrs && (1 << myplr) & pmask ) {
+		AddPlrExperience(myplr, lvl, exp / totplrs);
 	}
 }
 
