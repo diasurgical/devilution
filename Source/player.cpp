@@ -280,22 +280,16 @@ LABEL_38:
 
 void __fastcall InitPlayerGFX(int pnum)
 {
-	int v1; // esi
-	int v2; // edx
-
-	v1 = pnum;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("InitPlayerGFX: illegal player %d", pnum);
-	if ( plr[v1]._pHitPoints & 0xFFFFFFC0 )
-	{
-		v2 = 0x17F;
 	}
-	else
-	{
-		plr[v1]._pgfxnum = 0;
-		v2 = 0x80;
+
+	if ( (DWORD)plr[pnum]._pHitPoints/64 == 0 ) {
+		plr[pnum]._pgfxnum = 0;
+		LoadPlrGFX(pnum, 0x80);
+	} else {
+		LoadPlrGFX(pnum, 0x17F);
 	}
-	LoadPlrGFX(v1, v2);
 }
 
 void __fastcall InitPlrGFXMem(int pnum)
