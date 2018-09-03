@@ -111,12 +111,11 @@ struct player_cpp_init
 // 47F204: using guessed type int player_inf;
 // 68643C: using guessed type int player_cpp_init_value;
 
-void __fastcall SetPlayerGPtrs(char *pData, char *pAnim)
+void __fastcall SetPlayerGPtrs(BYTE *pData, BYTE **pAnim)
 {
-	int delta = pData - pAnim;
-	for (int i = 8; i; i--) {
-		*(DWORD *)pAnim = (DWORD)&pData[*(DWORD *)&pAnim[delta]];
-		pAnim += 4;
+	for ( int i = 0; i < 8; i++ )
+	{
+		pAnim[i] = pData + ((DWORD *)pData)[i];
 	}
 }
 
@@ -227,7 +226,7 @@ LABEL_27:
 LABEL_37:
 			sprintf(arglist, "PlrGFX\\%s\\%s\\%s%s.CL2", v17, v15, v15, v19);
 			LoadFileWithMem(arglist, v6);
-			SetPlayerGPtrs((char *)v6, v7);
+			SetPlayerGPtrs((BYTE *)v6, (BYTE **)v7);
 			v3->_pGFXLoad |= v18;
 			v5 = leveltype;
 			goto LABEL_38;
