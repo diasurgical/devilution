@@ -46,7 +46,7 @@ jobs:
       services:
         - docker
       addons: {}
-      script: docker run -v $(pwd):/root/devilution diasurgical/riivaaja
+      script: docker run -v $(pwd):/root/devilution diasurgical/riivaaja:stable
     - stage: test
       name: "Riivaaja: Calculate binary accuracy"
       language: minimal
@@ -60,8 +60,14 @@ jobs:
           wget https://github.com/diasurgical/devilution-comparer/releases/download/v0.3.2/devilution-comparer-linux-x64.tar.xz
           tar xf devilution-comparer-linux-x64.tar.xz
           echo '#!/bin/sh' | sudo tee /bin/wine
-          echo 'docker run -v $(pwd):/root/devilution --entrypoint "/usr/bin/wine" diasurgical/riivaaja $(basename $1) $2 $3' | sudo tee --append /bin/wine
+          echo 'docker run -v $(pwd):/root/devilution --entrypoint "/usr/bin/wine" diasurgical/riivaaja:stable $(basename $1) $2 $3' | sudo tee --append /bin/wine
           sudo chmod +x /bin/wine
-          docker run -v $(pwd):/root/devilution -e MAKE_BUILD=pdb diasurgical/riivaaja
+          docker run -v $(pwd):/root/devilution -e MAKE_BUILD=pdb diasurgical/riivaaja:stable
           ./devilution-comparer generate-full Diablo.exe --no-mem-disp
-          docker run -v $(pwd):/root/devilution diasurgical/riivaaja ../status.sh
+          docker run -v $(pwd):/root/devilution diasurgical/riivaaja:stable ../status.sh
+      after_success:
+        - |
+          set -e
+          wget https://raw.githubusercontent.com/diasurgical/riivaaja/master/are-we-d1-yet.sh
+          chmod +x are-we-d1-yet.sh
+          ./are-we-d1-yet.sh "$(< accuracy.txt)" $DISCORD_WEBHOOK
