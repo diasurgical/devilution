@@ -68,6 +68,4 @@ jobs:
       after_success:
         - |
           set -e
-          wget https://raw.githubusercontent.com/diasurgical/riivaaja/master/are-we-d1-yet.sh
-          chmod +x are-we-d1-yet.sh
-          ./are-we-d1-yet.sh "$(< accuracy.txt)" $DISCORD_WEBHOOK
+          travis/are-we-d1-yet.sh "$(< accuracy.txt)" $DISCORD_WEBHOOK
