@@ -68,4 +68,4 @@ jobs:
       after_success:
         - |
           set -e
-          travis/are-we-d1-yet.sh "$(< accuracy.txt)" $DISCORD_WEBHOOK
+          .travis/are-we-d1-yet.sh "$(< accuracy.txt)" $DISCORD_WEBHOOK
