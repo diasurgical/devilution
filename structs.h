@@ -378,11 +378,11 @@ struct MisFileData
 	int mAnimWidth2[16];
 };
 
-struct unk_missile_struct
+struct ChainStruct
 {
-	int field_0;
-	int field_4;
-	int field_8;
+	int idx;
+	int _mitype;
+	int _mirange;
 };
 
 struct MissileStruct
@@ -1226,8 +1226,8 @@ struct DeadStruct
 {
 	unsigned char *_deadData[8];
 	int _deadFrame;
-	int field_24; // width
-	int field_28; // cel or fnum _deadtype?
+	int _deadWidth;
+	int _deadWidth2;
 	int _deadtrans;
 };
 
