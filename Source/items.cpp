@@ -4400,7 +4400,6 @@ void __fastcall PrintItemDur(ItemStruct *x)
 void __fastcall UseItem(int p, int Mid, int spl)
 {
 	int v3; // esi
-	int v4; // edx
 	int v5; // edx
 	int v6; // edx
 	int v7; // edx
@@ -4415,8 +4414,6 @@ void __fastcall UseItem(int p, int Mid, int spl)
 	int *v16; // eax
 	int *v17; // eax
 	int v18; // esi
-	int v19; // esi
-	int v20; // edx
 	int v21; // edx
 	int v22; // edx
 	int v23; // edx
@@ -4456,7 +4453,6 @@ void __fastcall UseItem(int p, int Mid, int spl)
 	int *v57; // eax
 	int *v58; // eax
 	int v59; // esi
-	int v60; // edx
 	int v61; // esi
 	int v62; // edi
 	unsigned int v63; // edi
@@ -4466,49 +4462,40 @@ void __fastcall UseItem(int p, int Mid, int spl)
 	int *v67; // eax
 	int *v68; // eax
 	int v69; // esi
-	int v70; // edx
 	int pa; // [esp+Ch] [ebp-4h]
 
 	v3 = p;
 	pa = p;
 	if ( Mid > 28 )
 	{
-		v70 = Mid - 42;
-		if ( !v70 )
+		if ( Mid == IMISC_MAPOFDOOM )
 		{
 			doom_init();
-			return;
+		} else if ( Mid == IMISC_SPECELIX ) {
+			ModifyPlrStr(p, 3);
+			ModifyPlrMag(v3, 3);
+			ModifyPlrDex(v3, 3);
+			ModifyPlrVit(v3, 3);
 		}
-		if ( v70 != 2 )
-			return;
-		ModifyPlrStr(p, 3);
-		ModifyPlrMag(v3, 3);
-		ModifyPlrDex(v3, 3);
-		v60 = 3;
-LABEL_82:
-		ModifyPlrVit(v3, v60);
 		return;
 	}
-	if ( Mid == 28 )
+	if ( Mid == IMISC_HEAL_1C )
 		goto LABEL_71;
 	if ( Mid <= 12 )
 	{
-		if ( Mid == 12 )
+		if ( Mid == IMISC_ELIXDEX )
 		{
 			ModifyPlrDex(p, 1);
 			return;
 		}
-		v4 = Mid - 2;
-		if ( !v4 )
+		if ( Mid == IMISC_FULLHEAL )
 		{
-			v19 = p;
-			plr[v19]._pHitPoints = plr[v19]._pMaxHP;
-			plr[v19]._pHPBase = plr[p]._pMaxHPBase;
-LABEL_25:
+			plr[p]._pHitPoints = plr[p]._pMaxHP;
+			plr[p]._pHPBase = plr[p]._pMaxHPBase;
 			drawhpflag = 1;
 			return;
 		}
-		v5 = v4 - 1;
+		v5 = Mid - 3;
 		if ( v5 )
 		{
 			v6 = v5 - 3;
@@ -4583,15 +4570,15 @@ LABEL_71:
 		*v68 += v65;
 		if ( *v68 > v69 )
 			*v68 = v69;
-		goto LABEL_25;
+		drawhpflag = 1;
+		return;
 	}
-	v20 = Mid - 13;
-	if ( !v20 )
+	if ( Mid == IMISC_ELIXVIT )
 	{
-		v60 = 1;
-		goto LABEL_82;
+		ModifyPlrVit(v3, 1);
+		return;
 	}
-	v21 = v20 - 5;
+	v21 = Mid - 18;
 	if ( v21 )
 	{
 		v22 = v21 - 1;
