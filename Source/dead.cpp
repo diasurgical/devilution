@@ -60,8 +60,8 @@ void __cdecl InitDead()
 	_LOBYTE(dead[v4]._deadtrans) = 0;
 	dead[v4]._deadFrame = 8;
 	v5 = (unsigned int)misfiledata[18].mAnimData[0];
-	dead[v4].field_24 = 128;
-	dead[v4].field_28 = 32;
+	dead[v4]._deadWidth = 128;
+	dead[v4]._deadWidth2 = 32;
 	v6 = v0 + 1;
 	spurtndx = v0 + 1;
 	memset32(&dead[v6], v5, 8u);
@@ -69,8 +69,8 @@ void __cdecl InitDead()
 	stonendx = v0 + 2;
 	v7 = nummonsters;
 	dead[v6]._deadFrame = 12;
-	dead[v6].field_24 = 128;
-	dead[v6].field_28 = 32;
+	dead[v6]._deadWidth = 128;
+	dead[v6]._deadWidth2 = 32;
 	v17 = v0 + 2;
 	if ( v7 > 0 )
 	{
