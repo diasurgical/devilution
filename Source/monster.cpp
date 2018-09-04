@@ -1085,7 +1085,7 @@ void __fastcall PlaceUniqueMonst(int uniqindex, int miniontype, int unpackfilesi
 		Monst->mMaxDamage2 = 4 * Monst->mMaxDamage2 + 6;
 	}
 
-	sprintf(filestr, "Monsters\\Monsters\\%s.TRN", Uniq->mName);
+	sprintf(filestr, "Monsters\\Monsters\\%s.TRN", Uniq->mMode);
 	LoadFileWithMem(filestr, &pLightTbl[256 * (uniquetrans + 19)]);
 
 	Monst->_uniqtrans = uniquetrans++;
