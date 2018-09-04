@@ -7,9 +7,9 @@ int missileavail[MAXMISSILES];
 MissileStruct missile[MAXMISSILES];
 int nummissiles; // idb
 int ManashieldFlag;
-unk_missile_struct misflagstruct_unknown[MAXMISSILES];
+ChainStruct chain[MAXMISSILES];
 int MissilePreFlag; // weak
-int unk_missile_flag; // weak
+int numchains; // weak
 
 MissileData missiledata[68] =
 {
@@ -2319,8 +2319,8 @@ void __cdecl InitMissiles()
 		++v4;
 	}
 	while ( v4 < MAXMISSILES );
-	unk_missile_flag = 0;
-	v5 = &misflagstruct_unknown[0].field_4;
+	numchains = 0;
+	v5 = &chain[0]._mitype;
 	do
 	{
 		*(v5 - 1) = -1;
@@ -2328,7 +2328,7 @@ void __cdecl InitMissiles()
 		v5[1] = 0;
 		v5 += 3;
 	}
-	while ( (signed int)v5 < (signed int)&misflagstruct_unknown[MAXMISSILES].field_4 );
+	while ( (signed int)v5 < (signed int)&chain[MAXMISSILES]._mitype );
 	v6 = 0;
 	do
 	{
@@ -2345,7 +2345,7 @@ void __cdecl InitMissiles()
 	}
 	while ( v6 < 112 );
 }
-// 64CCD8: using guessed type int unk_missile_flag;
+// 64CCD8: using guessed type int numchains;
 
 void __fastcall AddLArrow(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
