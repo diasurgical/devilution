@@ -29,7 +29,13 @@ char *sgszMusicTracks[6] =
   "Music\\DLvlD.wav",
   "Music\\Dintro.wav"
 };
-RECT8 QSRect[2] = { { { 15, -16 }, { 15, -16 } }, { { 30, -31 }, { 30, -31 } } }; /* psx version? */
+char unk_volume[4][2] =
+{
+	{ 15, -16 },
+	{ 15, -16 },
+	{ 30, -31 },
+	{ 30, -31 }
+};
 
 struct sound_cpp_init
 {

@@ -2,41 +2,66 @@
 
 #include "../types.h"
 
-RECT8 QSRects[32] =
+unsigned char SkelKingTrans1[8] =
 {
-  { { 19u, 47u }, { 26u, 55u } },
-  { { 26u, 49u }, { 30u, 53u } },
-  { { 33u, 19u }, { 47u, 29u } },
-  { { 37u, 29u }, { 43u, 39u } },
-  { { 27u, 53u }, { 35u, 61u } },
-  { { 27u, 35u }, { 34u, 42u } },
-  { { 45u, 35u }, { 53u, 43u } },
-  { { 45u, 53u }, { 53u, 61u } },
-  { { 31u, 39u }, { 49u, 57u } },
-  { { 49u, 45u }, { 58u, 51u } },
-  { { 57u, 31u }, { 62u, 37u } },
-  { { 63u, 31u }, { 69u, 40u } },
-  { { 59u, 41u }, { 73u, 55u } },
-  { { 63u, 55u }, { 69u, 65u } },
-  { { 73u, 45u }, { 78u, 51u } },
-  { { 79u, 43u }, { 89u, 53u } },
-  { { 43u, 19u }, { 50u, 26u } },
-  { { 51u, 19u }, { 59u, 26u } },
-  { { 35u, 27u }, { 42u, 34u } },
-  { { 43u, 27u }, { 49u, 34u } },
-  { { 50u, 27u }, { 59u, 34u } },
-  { { 19u, 31u }, { 34u, 47u } },
-  { { 34u, 35u }, { 42u, 42u } },
-  { { 43u, 35u }, { 50u, 42u } },
-  { { 51u, 35u }, { 62u, 42u } },
-  { { 63u, 31u }, { 66u, 46u } },
-  { { 67u, 31u }, { 78u, 34u } },
-  { { 67u, 35u }, { 78u, 42u } },
-  { { 67u, 43u }, { 78u, 46u } },
-  { { 35u, 43u }, { 42u, 51u } },
-  { { 43u, 43u }, { 49u, 51u } },
-  { { 50u, 43u }, { 59u, 51u } }
+	19, 47, 26, 55,
+	26, 49, 30, 53
 };
+
+unsigned char SkelKingTrans2[8] =
+{
+	33, 19, 47, 29,
+	37, 29, 43, 39
+};
+
+unsigned char SkelKingTrans3[20] =
+{
+	27, 53, 35, 61,
+	27, 35, 34, 42,
+	45, 35, 53, 43,
+	45, 53, 53, 61,
+	31, 39, 49, 57
+};
+
+unsigned char SkelKingTrans4[28] =
+{
+	49, 45, 58, 51,
+	57, 31, 62, 37,
+	63, 31, 69, 40,
+	59, 41, 73, 55,
+	63, 55, 69, 65,
+	73, 45, 78, 51,
+	79, 43, 89, 53
+};
+
+unsigned char SkelChamTrans1[20] =
+{
+	43, 19, 50, 26,
+	51, 19, 59, 26,
+	35, 27, 42, 34,
+	43, 27, 49, 34,
+	50, 27, 59, 34
+};
+
+unsigned char SkelChamTrans2[8] =
+{
+	19, 31, 34, 47,
+	34, 35, 42, 42
+};
+
+unsigned char SkelChamTrans3[36] =
+{
+	43, 35, 50, 42,
+	51, 35, 62, 42,
+	63, 31, 66, 46,
+	67, 31, 78, 34,
+	67, 35, 78, 42,
+	67, 43, 78, 46,
+	35, 43, 42, 51,
+	43, 43, 49, 51,
+	50, 43, 59, 51
+};
+
 char *quest_level_names[] =
 {
   &empty_string,
@@ -152,10 +177,10 @@ void __cdecl LoadSetMap()
 			LoadPreL1Dungeon("Levels\\L1Data\\SklKng1.DUN", 83, 45);
 			LoadL1Dungeon("Levels\\L1Data\\SklKng2.DUN", 83, 45);
 			LoadPalette("Levels\\L1Data\\L1_2.pal");
-			DRLG_AreaTrans(2, (unsigned char *)QSRects);
-			DRLG_ListTrans(2, (unsigned char *)&QSRects[2]);
-			DRLG_AreaTrans(5, (unsigned char *)&QSRects[4]);
-			DRLG_ListTrans(7, (unsigned char *)&QSRects[9]);
+			DRLG_AreaTrans(2, SkelKingTrans1);
+			DRLG_ListTrans(2, SkelKingTrans2);
+			DRLG_AreaTrans(5, SkelKingTrans3);
+			DRLG_ListTrans(7, SkelKingTrans4);
 			AddL1Objs(0, 0, 112, 112);
 			AddSKingObjs();
 			InitSKingTriggers();
@@ -164,9 +189,9 @@ void __cdecl LoadSetMap()
 			LoadPreL2Dungeon("Levels\\L2Data\\Bonecha2.DUN", 69, 39);
 			LoadL2Dungeon("Levels\\L2Data\\Bonecha1.DUN", 69, 39);
 			LoadPalette("Levels\\L2Data\\L2_2.pal");
-			DRLG_ListTrans(5, (unsigned char *)&QSRects[16]);
-			DRLG_AreaTrans(2, (unsigned char *)&QSRects[21]);
-			DRLG_ListTrans(9, (unsigned char *)&QSRects[23]);
+			DRLG_ListTrans(5, SkelChamTrans1);
+			DRLG_AreaTrans(2, SkelChamTrans2);
+			DRLG_ListTrans(9, SkelChamTrans3);
 			AddL2Objs(0, 0, 112, 112);
 			AddSChamObjs();
 			InitSChambTriggers();

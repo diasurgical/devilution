@@ -45,6 +45,6 @@ extern char gbSoundOn; // weak
 extern char gbDupSounds; // weak
 extern int sgnMusicTrack;
 extern char *sgszMusicTracks[6];
-extern RECT8 QSRect[2]; /* psx version? */
+extern char unk_volume[4][2];
 
 #endif /* __SOUND_H__ */

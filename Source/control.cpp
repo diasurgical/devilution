@@ -173,7 +173,7 @@ char *PanBtnStr[8] =
   "Send Message",
   "Player Attack"
 };
-RECT32 attribute_inc_rects[4] =
+int attribute_inc_rects[4][4] =
 {
   { 137, 138, 41, 22 },
   { 137, 166, 41, 22 },
@@ -2455,11 +2455,11 @@ LABEL_12:
 					if ( v5 ^ v6 )
 					{
 						v10 = v0;
-						v11 = attribute_inc_rects[v0].x;
-						if ( v2 >= v11 && v2 <= v11 + attribute_inc_rects[v10].w )
+						v11 = attribute_inc_rects[v0][0];
+						if ( v2 >= v11 && v2 <= v11 + attribute_inc_rects[v10][2] )
 						{
-							v12 = attribute_inc_rects[v10].y;
-							if ( MouseY >= v12 && MouseY <= v12 + attribute_inc_rects[v10].h )
+							v12 = attribute_inc_rects[v10][1];
+							if ( MouseY >= v12 && MouseY <= v12 + attribute_inc_rects[v10][3] )
 							{
 								chrbtn[v0] = 1;
 								chrbtnactive = 1;
@@ -2497,11 +2497,11 @@ void __cdecl ReleaseChrBtns()
 		{
 			*v1 = 0;
 			v2 = v0;
-			v3 = attribute_inc_rects[v0].x;
-			if ( MouseX >= v3 && MouseX <= v3 + attribute_inc_rects[v2].w )
+			v3 = attribute_inc_rects[v0][0];
+			if ( MouseX >= v3 && MouseX <= v3 + attribute_inc_rects[v2][2] )
 			{
-				v4 = attribute_inc_rects[v2].y;
-				if ( MouseY >= v4 && MouseY <= v4 + attribute_inc_rects[v2].h )
+				v4 = attribute_inc_rects[v2][1];
+				if ( MouseY >= v4 && MouseY <= v4 + attribute_inc_rects[v2][3] )
 				{
 					if ( v0 )
 					{
