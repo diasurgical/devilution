@@ -9,7 +9,7 @@ int progress_id; // idb
 
 int interfac_inf = 0x7F800000; // weak
 unsigned char progress_bar_colours[3] = { 138u, 43u, 254u };
-POINT32 progress_bar_screen_pos[3] = { { 53, 37 }, { 53, 421 }, { 53, 37 } };
+int progress_bar_screen_pos[3][2] = { { 53, 37 }, { 53, 421 }, { 53, 37 } };
 
 struct interfac_cpp_init
 {
@@ -56,8 +56,8 @@ void __cdecl DrawCutscene()
 	{
 		do
 			DrawProgress(
-				progress_bar_screen_pos[progress_id].x + v0++ + 64,
-				progress_bar_screen_pos[progress_id].y + 160,
+				progress_bar_screen_pos[progress_id][0] + v0++ + 64,
+				progress_bar_screen_pos[progress_id][1] + 160,
 				progress_id);
 		while ( v0 < sgdwProgress );
 	}
