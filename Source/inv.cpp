@@ -90,33 +90,27 @@ int AP2x2Tbl[10] = { 8, 28, 6, 26, 4, 24, 2, 22, 0, 20 }; // weak
 
 void __cdecl FreeInvGFX()
 {
-	void *v0; // ecx
+	void *invCels = pInvCels;
 
-	v0 = pInvCels;
-	pInvCels = 0;
-	mem_free_dbg(v0);
+	pInvCels = NULL;
+	mem_free_dbg(invCels);
 }
 
 void __cdecl InitInv()
 {
-	char v0; // al
-	char *v1; // ecx
-
-	v0 = plr[myplr]._pClass;
-	switch ( v0 )
+	if ( plr[myplr]._pClass == PC_WARRIOR )
 	{
-		case UI_WARRIOR:
-			v1 = "Data\\Inv\\Inv.CEL";
-LABEL_7:
-			pInvCels = LoadFileInMem(v1, 0);
-			break;
-		case UI_ROGUE:
-			v1 = "Data\\Inv\\Inv_rog.CEL";
-			goto LABEL_7;
-		case UI_SORCERER:
-			v1 = "Data\\Inv\\Inv_Sor.CEL";
-			goto LABEL_7;
+		pInvCels = LoadFileInMem("Data\\Inv\\Inv.CEL", 0);
 	}
+	else if ( plr[myplr]._pClass == PC_ROGUE )
+	{
+		pInvCels = LoadFileInMem("Data\\Inv\\Inv_rog.CEL", 0);
+	}
+	else if ( plr[myplr]._pClass == PC_SORCERER )
+	{
+		pInvCels = LoadFileInMem("Data\\Inv\\Inv_Sor.CEL", 0);
+	}
+
 	invflag = 0;
 	drawsbarflag = 0;
 }
