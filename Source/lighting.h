@@ -46,8 +46,8 @@ void __cdecl lighting_color_cycling();
 
 /* rdata */
 
-extern CircleCoord CrawlTable;
-extern void *pCrawlTable[19];
+extern char CrawlTable[2749];
+extern char *pCrawlTable[19];
 extern unsigned char vCrawlTable[23][30];
 extern unsigned char byte_49463C[18][18];
 extern unsigned char RadiusAdj[23];

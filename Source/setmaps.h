@@ -10,7 +10,13 @@ void __fastcall DRLG_SetMapTrans(char *sFileName);
 void __cdecl LoadSetMap();
 
 /* rdata */
-extern RECT8 QSRects[32];
+extern unsigned char SkelKingTrans1[8];
+extern unsigned char SkelKingTrans2[8];
+extern unsigned char SkelKingTrans3[20];
+extern unsigned char SkelKingTrans4[28];
+extern unsigned char SkelChamTrans1[20];
+extern unsigned char SkelChamTrans2[8];
+extern unsigned char SkelChamTrans3[36];
 extern char *quest_level_names[];
 
 #endif /* __SETMAPS_H__ */
