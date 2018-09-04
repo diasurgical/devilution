@@ -20,6 +20,6 @@ void __fastcall InitCutscene(int uMsg);
 
 extern int interfac_inf; // weak
 extern unsigned char progress_bar_colours[3];
-extern POINT32 progress_bar_screen_pos[3];
+extern int progress_bar_screen_pos[3][2];
 
 #endif /* __INTERFAC_H__ */
