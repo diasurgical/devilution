@@ -231,7 +231,7 @@ void __cdecl DrawAutomap()
 
 	if ( leveltype != DTYPE_TOWN )
 	{
-		gpBufEnd = (unsigned char *)&gpBuffer->row[352];
+		gpBufEnd = (unsigned char *)&gpBuffer->Screen.row[352];
 		v0 = AutoMapXOfs;
 		v1 = (ViewX - 16) >> 1;
 		v2 = AutoMapXOfs + v1;

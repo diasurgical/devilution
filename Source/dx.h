@@ -7,7 +7,7 @@ extern int dx_cpp_init_value; // weak
 extern IDirectDraw *lpDDInterface;
 extern IDirectDrawPalette *lpDDPalette; // idb
 extern int sgdwLockCount;
-extern Screen *gpBuffer;
+extern WorkBuf *gpBuffer;
 extern IDirectDrawSurface *lpDDSBackBuf;
 extern IDirectDrawSurface *lpDDSPrimary;
 extern char gbBackBuf; // weak

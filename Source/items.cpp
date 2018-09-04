@@ -4038,7 +4038,7 @@ void __cdecl DrawUBack()
 	signed int v6; // ecx
 
 	CelDecodeOnly(88, 487, pSTextBoxCels, 1, 271);
-	v0 = &gpBuffer->row[324].pixels[27];
+	v0 = (char *)&gpBuffer->Screen.row[324].pixels[27];
 	v1 = 148;
 	do
 	{
@@ -4142,8 +4142,8 @@ void __fastcall DrawULine(int y)
 	char *v2; // edi
 	signed int v3; // edx
 
-	v1 = &gpBuffer->row[25].pixels[26];
-	v2 = &gpBuffer->row_unused_1[0].pixels[screen_y_times_768[SStringY[y] + 198] + 26];
+	v1 = (char *)&gpBuffer->Screen.row[25].pixels[26];
+	v2 = (char *)&gpBuffer->LinearBuf[screen_y_times_768[SStringY[y] + 198] + 26];
 	v3 = 3;
 	do
 	{

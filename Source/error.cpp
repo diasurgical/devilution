@@ -141,7 +141,7 @@ void __cdecl DrawDiabloMsg()
 		--v1;
 	}
 	while ( v1 );
-	v2 = &gpBuffer->row[203].pixels[104];
+	v2 = (char *)&gpBuffer->Screen.row[203].pixels[104];
 	v3 = 27;
 	do
 	{

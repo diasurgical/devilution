@@ -164,7 +164,7 @@ void __cdecl DrawSTextBack()
 	signed int v6; // ecx
 
 	CelDecodeOnly(408, 487, pSTextBoxCels, 1, 271);
-	v0 = &gpBuffer->row[324].pixels[347];
+	v0 = (char *)&gpBuffer->Screen.row[324].pixels[347];
 	v1 = 148;
 	do
 	{
