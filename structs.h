@@ -1,3 +1,23 @@
+//////////////////////////////////////////////////
+// items
+//////////////////////////////////////////////////
+
+struct PLStruct
+{
+	const char *PLName;
+	char PLPower;
+	int PLParam1;
+	int PLParam2;
+	int PLMinLvl;
+	int PLIType;
+	int PLGOE;
+	int PLDouble;
+	int PLOk;
+	int PLMinVal;
+	int PLMaxVal;
+	int PLMultVal;
+};
+
 struct UItemStruct
 {
 	char *UIName;
@@ -23,62 +43,6 @@ struct UItemStruct
 	char UIPower6;
 	int UIParam11;
 	int UIParam12;
-};
-
-struct PLStruct
-{
-	const char *PLName;
-	char PLPower;
-	int PLParam1;
-	int PLParam2;
-	int PLMinLvl;
-	int PLIType;
-	int PLGOE;
-	int PLDouble;
-	int PLOk;
-	int PLMinVal;
-	int PLMaxVal;
-	int PLMultVal;
-};
-
-struct TextDataStruct
-{
-	char *txtstr;
-	int scrlltxt;
-	int txtspd;
-	int sfxnr;
-};
-
-struct RECT32
-{
-	int x;
-	int y;
-	int w;
-	int h;
-};
-
-struct TSnd
-{
-	WAVEFORMATEX fmt;
-	int len;
-	int offset;
-	char *sound_path;
-	IDirectSoundBuffer *DSB;
-	int start_tc;
-};
-
-struct TSFX
-{
-	unsigned char bFlags;
-	char *pszName;
-	TSnd *pSnd;
-};
-
-struct TMenuItem
-{
-	unsigned int dwFlags;
-	char *pszStr;
-	void (__cdecl *fnMenu)(); /* fix, should have one arg */
 };
 
 struct ItemDataStruct
@@ -108,197 +72,12 @@ struct ItemDataStruct
 	int iMaxValue;
 };
 
-struct MissileData
+struct ItemGetRecordStruct
 {
-	unsigned char mName;
-	void (__fastcall *mAddProc)(int, int, int, int, int, int, int, int, int);
-	void (__fastcall *mProc)(int);
-	int mDraw;
-	unsigned char mType;
-	unsigned char mResist;
-	unsigned char mFileNum;
-	int mlSFX;
-	int miSFX;
-};
-
-struct MisFileData
-{
-	unsigned char mAnimName;
-	unsigned char mAnimFAmt;
-	char *mName;
-	int mFlags;
-	unsigned char *mAnimData[16];
-	unsigned char mAnimDelay[16];
-	unsigned char mAnimLen[16];
-	int mAnimWidth[16];
-	int mAnimWidth2[16];
-};
-
-struct MonsterData
-{
-	int flags; // width?
-	int mType;
-	char *GraphicType;
-	int has_special;
-	char *sndfile;
-	int snd_special;
-	int has_trans;
-	char *TransFile;
-	int Frames[6];
-	int Rate[6];
-	char *mName;
-	char mMinDLvl;
-	char mMaxDLvl;
-	char mLevel;
-	int mMinHP;
-	int mMaxHP;
-	char mAi;
-	int mFlags;
-	unsigned char mInt;
-	unsigned char mHit;
-	unsigned char mAFNum;
-	unsigned char mMinDamage;
-	unsigned char mMaxDamage;
-	unsigned char mHit2;
-	unsigned char mAFNum2;
-	unsigned char mMinDamage2;
-	unsigned char mMaxDamage2;
-	char mArmorClass;
-	char mMonstClass;
-	unsigned short mMagicRes;
-	unsigned short mMagicRes2;
-	unsigned short mTreasure;
-	char mSelFlag;
-	unsigned short mExp;
-};
-
-struct UniqMonstStruct
-{
-	char mtype;
-	char *mName;
-	char *mMode;
-	unsigned char mlevel;
-	unsigned short mmaxhp;
-	unsigned char mAi;
-	unsigned char mint;
-	unsigned char mMinDamage;
-	unsigned char mMaxDamage;
-	unsigned short mMagicRes;
-	unsigned short mUnqAttr;
-	unsigned char mUnqVar1;
-	unsigned char mUnqVar2;
-	int mtalkmsg;
-};
-
-struct ObjDataStruct
-{
-	char oload;
-	char ofindex;
-	char ominlvl;
-	char omaxlvl;
-	char olvltype;
-	char otheme;
-	char oquest;
-	int oAnimFlag;
-	int oAnimDelay;
-	int oAnimLen;
-	int oAnimWidth;
-	int oSolidFlag;
-	int oMissFlag;
-	int oLightFlag;
-	char oBreak;
-	char oSelFlag;
-	int oTrapFlag;
-};
-
-struct QuestData
-{
-	unsigned char _qdlvl;
-	char _qdmultlvl;
-	unsigned char _qlvlt;
-	unsigned char _qdtype;
-	unsigned char _qdrnd;
-	unsigned char _qslvl;
-	int _qflags; //__declspec(align(4)) /* unsigned char */
-	int _qdmsg;
-	char *_qlstr;
-};
-
-struct SpellData
-{
-	unsigned char sName;
-	unsigned char sManaCost;
-	unsigned char sType;
-	char *sNameText;
-	char *sSkillText;
-	int sBookLvl;
-	int sStaffLvl;
-	int sTargeted;
-	unsigned char sTownSpell;
-	int sMinInt;
-	unsigned char sSFX;
-	unsigned char sMissiles[3];
-	unsigned char sManaAdj;
-	unsigned char sMinMana;
-	int sStaffMin;
-	int sStaffMax;
-	int sBookCost;
-	int sStaffCost;
-};
-
-struct Coord
-{
-	char x;
-	char y;
-};
-
-struct RECT8
-{
-	Coord x;
-	Coord y;
-};
-
-struct QuestTalkData
-{
-	int _qinfra;
-	int _qblkm;
-	int _qgarb;
-	int _qzhar;
-	int _qveil;
-	int _qmod;
-	int _qbutch;
-	int _qbol;
-	int _qblind;
-	int _qblood;
-	int _qanvil;
-	int _qwarlrd;
-	int _qking;
-	int _qpw;
-	int _qbone;
-	int _qvb;
-};
-
-struct ShadowStruct
-{
-	unsigned char strig;
-	unsigned char s1;
-	unsigned char s2;
-	unsigned char s3;
-	unsigned char nv1;
-	unsigned char nv2;
-	unsigned char nv3;
-};
-
-struct POINT32 /* remove this struct */
-{
-	int x;
-	int y;
-};
-
-struct InvXY
-{
-	int X;
-	int Y;
+	int nSeed;
+	unsigned short wCI;
+	int nIndex;
+	int dwTimestamp;
 };
 
 struct ItemStruct
@@ -373,53 +152,238 @@ struct ItemStruct
 	int offs016C; // _oldlight or _iInvalid
 };
 
-struct DeadStruct
+//////////////////////////////////////////////////
+// player
+//////////////////////////////////////////////////
+
+struct PlayerStruct
 {
-	unsigned char *_deadData[8];
-	int _deadFrame;
-	int field_24; // width
-	int field_28; // cel or fnum _deadtype?
-	int _deadtrans;
+	int _pmode;
+	char walkpath[25];
+	unsigned char plractive;
+	int destAction;
+	int destParam1;
+	int destParam2;
+	int destParam3;
+	int destParam4;
+	int plrlevel;
+	int WorldX;
+	int WorldY;
+	int _px;
+	int _py;
+	int _ptargx;
+	int _ptargy;
+	int _pownerx;
+	int _pownery;
+	int _poldx;
+	int _poldy;
+	int _pxoff;
+	int _pyoff;
+	int _pxvel;
+	int _pyvel;
+	int _pdir;
+	int _nextdir;
+	int _pgfxnum;
+	unsigned char *_pAnimData;
+	int _pAnimDelay;
+	int _pAnimCnt;
+	int _pAnimLen;
+	int _pAnimFrame;
+	int _pAnimWidth;
+	int _pAnimWidth2;
+	int _peflag;
+	int _plid;
+	int _pvid;
+	int _pSpell;
+	char _pSplType;
+	char _pSplFrom;
+	int _pTSpell;
+	int _pTSplType;
+	int _pRSpell;
+	int _pRSplType;
+	int _pSBkSpell;
+	char _pSBkSplType;
+	char _pSplLvl[64];
+	int remove_1; /* fix: remove and align 8 */
+	int _pMemSpells[2];
+	int _pAblSpells[2];
+	int _pScrlSpells[2];
+	int _pSpellFlags;
+	int _pSplHotKey[4];
+	char _pSplTHotKey[4];
+	int _pwtype;
+	unsigned char _pBlockFlag;
+	unsigned char _pInvincible;
+	char _pLightRad;
+	unsigned char _pLvlChanging;
+	char _pName[32];
+	char _pClass;
+	int _pStrength;
+	int _pBaseStr;
+	int _pMagic;
+	int _pBaseMag;
+	int _pDexterity;
+	int _pBaseDex;
+	int _pVitality;
+	int _pBaseVit;
+	int _pStatPts;
+	int _pDamageMod;
+	int _pBaseToBlk;
+	int _pHPBase;
+	int _pMaxHPBase;
+	int _pHitPoints;
+	int _pMaxHP;
+	int _pHPPer;
+	int _pManaBase;
+	int _pMaxManaBase;
+	int _pMana;
+	int _pMaxMana;
+	int _pManaPer;
+	char _pLevel;
+	char _pMaxLvl;
+	int _pExperience;
+	int _pMaxExp;
+	int _pNextExper;
+	char _pArmorClass;
+	char _pMagResist;
+	char _pFireResist;
+	char _pLghtResist;
+	int _pGold;
+	int _pInfraFlag;
+	int _pVar1;
+	int _pVar2;
+	int _pVar3;
+	int _pVar4;
+	int _pVar5;
+	int _pVar6;
+	int _pVar7;
+	int _pVar8;
+	unsigned char _pLvlVisited[17]; // NUMLEVELS
+	unsigned char _pSLvlVisited[10];
+	char gap20F[9];
+	int _pGFXLoad;
+	unsigned char *_pNAnim[8];
+	int _pNFrames;
+	int _pNWidth;
+	unsigned char *_pWAnim[8];
+	int _pWFrames;
+	int _pWWidth;
+	unsigned char *_pAAnim[8];
+	int _pAFrames;
+	int _pAWidth;
+	int _pAFNum;
+	unsigned char *_pLAnim[8];
+	unsigned char *_pFAnim[8];
+	unsigned char *_pTAnim[8];
+	int _pSFrames;
+	int _pSWidth;
+	int _pSFNum;
+	unsigned char *_pHAnim[8];
+	int _pHFrames;
+	int _pHWidth;
+	unsigned char *_pDAnim[8];
+	int _pDFrames;
+	int _pDWidth;
+	unsigned char *_pBAnim[8];
+	int _pBFrames;
+	int _pBWidth;
+	ItemStruct InvBody[7];
+	ItemStruct InvList[40];
+	int _pNumInv;
+	char InvGrid[40];
+	ItemStruct SpdList[8];
+	ItemStruct HoldItem;
+	int _pIMinDam;
+	int _pIMaxDam;
+	int _pIAC;
+	int _pIBonusDam;
+	int _pIBonusToHit;
+	int _pIBonusAC;
+	int _pIBonusDamMod;
+	int remove_2; /* fix: remove and align 8 */
+	int _pISpells[2];
+	int _pIFlags;
+	int _pIGetHit;
+	char _pISplLvlAdd;
+	char _pISplCost;
+	int _pISplDur;
+	int _pIEnAc;
+	int _pIFMinDam;
+	int _pIFMaxDam;
+	int _pILMinDam;
+	int _pILMaxDam;
+	int _pOilType;
+	unsigned char pTownWarps;
+	unsigned char pDungMsgs;
+	unsigned char pLvlLoad;
+	unsigned char pBattleNet;
+	unsigned char pManaShield;
+	char bReserved[3];
+	short wReserved[8];
+	int pDiabloKillLevel;
+	int dwReserved[7];
+	unsigned char *_pNData;
+	unsigned char *_pWData;
+	unsigned char *_pAData;
+	unsigned char *_pLData;
+	unsigned char *_pFData;
+	unsigned char *_pTData;
+	unsigned char *_pHData;
+	unsigned char *_pDData;
+	unsigned char *_pBData;
+	int unused_54D4;
 };
 
-struct ScreenRow
+//////////////////////////////////////////////////
+// textdat
+//////////////////////////////////////////////////
+
+struct TextDataStruct
 {
-	char col_unused_1[64];
-	char pixels[640];
-	char col_unused_2[64];
+	char *txtstr;
+	int scrlltxt;
+	int txtspd;
+	int sfxnr;
 };
 
-struct Screen
+//////////////////////////////////////////////////
+// missiles
+//////////////////////////////////////////////////
+
+// TPDEF PTR FCN VOID MIADDPRC
+// TPDEF PTR FCN VOID MIPROC
+
+struct MissileData
 {
-	ScreenRow row_unused_1[160];
-	ScreenRow row[480];
-	ScreenRow row_unused_2[16];
+	unsigned char mName;
+	void (__fastcall *mAddProc)(int, int, int, int, int, int, int, int, int);
+	void (__fastcall *mProc)(int);
+	int mDraw;
+	unsigned char mType;
+	unsigned char mResist;
+	unsigned char mFileNum;
+	int mlSFX;
+	int miSFX;
 };
 
-struct _SNETVERSIONDATA
+struct MisFileData
 {
-	int size;
-	char *versionstring;
-	char *executablefile;
-	char *originalarchivefile;
-	char *patcharchivefile;
+	unsigned char mAnimName;
+	unsigned char mAnimFAmt;
+	char *mName;
+	int mFlags;
+	unsigned char *mAnimData[16];
+	unsigned char mAnimDelay[16];
+	unsigned char mAnimLen[16];
+	int mAnimWidth[16];
+	int mAnimWidth2[16];
 };
 
-struct LightListStruct
+struct unk_missile_struct
 {
-	int _lx;
-	int _ly;
-	int _lradius;
-	int _lid;
-	int _ldel;
-	int _lunflag;
-	int field_18;
-	int _lunx;
-	int _luny;
-	int _lunr;
-	int _xoff;
-	int _yoff;
-	int _lflags;
+	int field_0;
+	int field_4;
+	int field_8;
 };
 
 struct MissileStruct
@@ -470,12 +434,75 @@ struct MissileStruct
 	int _miVar8;
 };
 
+//////////////////////////////////////////////////
+// effects/sound
+//////////////////////////////////////////////////
+
+struct TSnd
+{
+	WAVEFORMATEX fmt;
+	int len;
+	int offset;
+	char *sound_path;
+	IDirectSoundBuffer *DSB;
+	int start_tc;
+};
+
+struct TSFX
+{
+	unsigned char bFlags;
+	char *pszName;
+	TSnd *pSnd;
+};
+
+//////////////////////////////////////////////////
+// monster
+//////////////////////////////////////////////////
+
 struct AnimStruct // note: wrong names
 {
 	int CMem; // [unsigned] char * ??
 	unsigned char *Frames[8]; // probably Data[8]
 	int Rate;
 	int Delay;
+};
+
+struct MonsterData
+{
+	int flags; // width?
+	int mType;
+	char *GraphicType;
+	int has_special;
+	char *sndfile;
+	int snd_special;
+	int has_trans;
+	char *TransFile;
+	int Frames[6];
+	int Rate[6];
+	char *mName;
+	char mMinDLvl;
+	char mMaxDLvl;
+	char mLevel;
+	int mMinHP;
+	int mMaxHP;
+	char mAi;
+	int mFlags;
+	unsigned char mInt;
+	unsigned char mHit;
+	unsigned char mAFNum;
+	unsigned char mMinDamage;
+	unsigned char mMaxDamage;
+	unsigned char mHit2;
+	unsigned char mAFNum2;
+	unsigned char mMinDamage2;
+	unsigned char mMaxDamage2;
+	char mArmorClass;
+	char mMonstClass;
+	unsigned short mMagicRes;
+	unsigned short mMagicRes2;
+	unsigned short mTreasure;
+	char mSelFlag;
+	unsigned short mExp;
 };
 
 struct CMonster
@@ -573,137 +600,48 @@ struct MonsterStruct // note: missing field _mAFNum
 	MonsterData *MData;
 };
 
-struct DObjectStr
+struct UniqMonstStruct
 {
-	unsigned char bCmd;
+	char mtype;
+	char *mName;
+	char *mMode;
+	unsigned char mlevel;
+	unsigned short mmaxhp;
+	unsigned char mAi;
+	unsigned char mint;
+	unsigned char mMinDamage;
+	unsigned char mMaxDamage;
+	unsigned short mMagicRes;
+	unsigned short mUnqAttr;
+	unsigned char mUnqVar1;
+	unsigned char mUnqVar2;
+	int mtalkmsg;
 };
 
-/* __declspec(align(1))*/
-#pragma pack(push, 1)
-struct  DMonsterStr
-{
-	char _mx; /* these might be unsigned */
-	char _my;
-	char _mdir;
-	char _menemy;
-	char _mactive;
-	int _mhitpoints;
-};
-#pragma pack(pop)
+//////////////////////////////////////////////////
+// objects
+//////////////////////////////////////////////////
 
-/* __declspec(align(2))*/
-#pragma pack(push, 1)
-struct  TCmdPItem
+struct ObjDataStruct
 {
-	char bCmd; /* unsigned */
-	unsigned char x;
-	unsigned char y;
-	unsigned short wIndx;
-	unsigned short wCI;
-	int dwSeed;
-	unsigned char bId;
-	unsigned char bDur;
-	unsigned char bMDur;
-	unsigned char bCh;
-	unsigned char bMCh;
-	unsigned short wValue;
-	int dwBuff;
+	char oload;
+	char ofindex;
+	char ominlvl;
+	char omaxlvl;
+	char olvltype;
+	char otheme;
+	char oquest;
+	int oAnimFlag;
+	int oAnimDelay;
+	int oAnimLen;
+	int oAnimWidth;
+	int oSolidFlag;
+	int oMissFlag;
+	int oLightFlag;
+	char oBreak;
+	char oSelFlag;
+	int oTrapFlag;
 };
-#pragma pack(pop)
-
-/* __declspec(align(1))*/
-struct  DLevel
-{
-	TCmdPItem item[MAXITEMS];
-	DObjectStr object[MAXOBJECTS];
-	DMonsterStr monster[MAXMONSTERS];
-};
-
-struct DPortal
-{
-	unsigned char x;
-	unsigned char y;
-	unsigned char level;
-	unsigned char ltype;
-	unsigned char setlvl;
-};
-
-struct MultiQuests
-{
-	unsigned char qstate;
-	unsigned char qlog;
-	unsigned char qvar1;
-};
-
-struct DJunk
-{
-	DPortal portal[MAXPORTAL];
-	MultiQuests quests[MAXMULTIQUESTS];
-};
-
-/*  __declspec(align(1)) */
-#pragma pack(push, 1)
-struct PkItemStruct
-{
-	int iSeed;
-	short iCreateInfo;
-	short idx;
-	char bId;
-	char bDur;
-	char bMDur;
-	char bCh;
-	char bMCh;
-	short wValue;
-	int dwBuff;
-};
-#pragma pack(pop)
-
-/* __declspec(align(2)) */
-#pragma pack(push, 1)
-struct PkPlayerStruct
-{
-	FILETIME archiveTime;
-	char destAction;
-	char destParam1;
-	char destParam2;
-	char plrlevel;
-	char px;
-	char py;
-	char targx;
-	char targy;
-	char pName[32];
-	char pClass;
-	char pBaseStr;
-	char pBaseMag;
-	char pBaseDex;
-	char pBaseVit;
-	char pLevel;
-	char pStatPts;
-	int pExperience;
-	int pGold;
-	int pHPBase;
-	int pMaxHPBase;
-	int pManaBase;
-	int pMaxManaBase;
-	char pSplLvl[37];
-	int pMemSpells;
-	int pMemSpells2;
-	PkItemStruct InvBody[7];
-	PkItemStruct InvList[40];
-	char InvGrid[40];
-	char _pNumInv;
-	PkItemStruct SpdList[8];
-	char pTownWarps;
-	char pDungMsgs;
-	char pLvlLoad;
-	char pBattleNet;
-	char pManaShield;
-	char bReserved[3];
-	short wReserved[8];
-	int pDiabloKillLevel;
-	int dwReserved[7];
-};
-#pragma pack(pop)
 
 struct ObjectStruct
 {
@@ -739,195 +677,312 @@ struct ObjectStruct
 	int _oVar8;
 };
 
-struct PATHNODE
+//////////////////////////////////////////////////
+// portal
+//////////////////////////////////////////////////
+
+struct PortalStruct
 {
-	char f;
-	char h;
-	short g;
+	int open;
 	int x;
 	int y;
-	struct PATHNODE *Parent;
-	struct PATHNODE *Child[8];
-	struct PATHNODE *NextNode;
+	int level;
+	int ltype;
+	int setlvl;
 };
 
-struct PlayerStruct
+//////////////////////////////////////////////////
+// msg
+//////////////////////////////////////////////////
+
+#pragma pack(push, 1)
+struct TCmd
 {
-	int _pmode;
-	char walkpath[25];
-	unsigned char plractive;
-	int destAction;
-	int destParam1;
-	int destParam2;
-	int destParam3;
-	int destParam4;
-	int plrlevel;
-	int WorldX;
-	int WorldY;
-	int _px;
-	int _py;
-	int _ptargx;
-	int _ptargy;
-	int _pownerx;
-	int _pownery;
-	int _poldx;
-	int _poldy;
-	int _pxoff;
-	int _pyoff;
-	int _pxvel;
-	int _pyvel;
-	int _pdir;
-	int _nextdir;
-	int _pgfxnum;
-	unsigned char *_pAnimData;
-	int _pAnimDelay;
-	int _pAnimCnt;
-	int _pAnimLen;
-	int _pAnimFrame;
-	int _pAnimWidth;
-	int _pAnimWidth2;
-	int _peflag;
-	int _plid;
-	int _pvid;
-	int _pSpell;
-	char _pSplType;
-	char _pSplFrom;
-	int _pTSpell;
-	int _pTSplType;
-	int _pRSpell;
-	int _pRSplType;
-	int _pSBkSpell;
-	char _pSBkSplType;
-	char _pSplLvl[64];
-	int remove_1;
-	int _pMemSpells[2]; // __declspec(align(8))
-	int _pAblSpells[2];
-	int _pScrlSpells[2];
-	int _pSpellFlags;
-	int _pSplHotKey[4];
-	char _pSplTHotKey[4];
-	int _pwtype;
-	unsigned char _pBlockFlag;
-	unsigned char _pInvincible;
-	char _pLightRad;
-	unsigned char _pLvlChanging;
-	char _pName[32];
-	char _pClass;
-	int _pStrength;
-	int _pBaseStr;
-	int _pMagic;
-	int _pBaseMag;
-	int _pDexterity;
-	int _pBaseDex;
-	int _pVitality;
-	int _pBaseVit;
-	int _pStatPts;
-	int _pDamageMod;
-	int _pBaseToBlk;
-	int _pHPBase;
-	int _pMaxHPBase;
-	int _pHitPoints;
-	int _pMaxHP;
-	int _pHPPer;
-	int _pManaBase;
-	int _pMaxManaBase;
-	int _pMana;
-	int _pMaxMana;
-	int _pManaPer;
-	char _pLevel;
-	char _pMaxLvl;
-	int _pExperience;
-	int _pMaxExp;
-	int _pNextExper;
-	char _pArmorClass;
-	char _pMagResist;
-	char _pFireResist;
-	char _pLghtResist;
-	int _pGold;
-	int _pInfraFlag;
-	int _pVar1;
-	int _pVar2;
-	int _pVar3;
-	int _pVar4;
-	int _pVar5;
-	int _pVar6;
-	int _pVar7;
-	int _pVar8;
-	unsigned char _pLvlVisited[17]; // NUMLEVELS
-	unsigned char _pSLvlVisited[10];
-	char gap20F[9];
-	int _pGFXLoad;
-	unsigned char *_pNAnim[8];
-	int _pNFrames;
-	int _pNWidth;
-	unsigned char *_pWAnim[8];
-	int _pWFrames;
-	int _pWWidth;
-	unsigned char *_pAAnim[8];
-	int _pAFrames;
-	int _pAWidth;
-	int _pAFNum;
-	unsigned char *_pLAnim[8];
-	unsigned char *_pFAnim[8];
-	unsigned char *_pTAnim[8];
-	int _pSFrames;
-	int _pSWidth;
-	int _pSFNum;
-	unsigned char *_pHAnim[8];
-	int _pHFrames;
-	int _pHWidth;
-	unsigned char *_pDAnim[8];
-	int _pDFrames;
-	int _pDWidth;
-	unsigned char *_pBAnim[8];
-	int _pBFrames;
-	int _pBWidth;
-	ItemStruct InvBody[7];
-	ItemStruct InvList[40];
-	int _pNumInv;
-	char InvGrid[40];
-	ItemStruct SpdList[8];
-	ItemStruct HoldItem;
-	int _pIMinDam;
-	int _pIMaxDam;
-	int _pIAC;
-	int _pIBonusDam;
-	int _pIBonusToHit;
-	int _pIBonusAC;
-	int _pIBonusDamMod;
-	int remove_2;
-	int _pISpells[2]; //__declspec(align(8))
-	int _pIFlags;
-	int _pIGetHit;
-	char _pISplLvlAdd;
-	char _pISplCost;
-	int _pISplDur;
-	int _pIEnAc;
-	int _pIFMinDam;
-	int _pIFMaxDam;
-	int _pILMinDam;
-	int _pILMaxDam;
-	int _pOilType;
-	unsigned char pTownWarps;
-	unsigned char pDungMsgs;
-	unsigned char pLvlLoad;
-	unsigned char pBattleNet;
-	unsigned char pManaShield;
-	char bReserved[3];
-	short wReserved[8];
-	int pDiabloKillLevel;
-	int dwReserved[7];
-	unsigned char *_pNData;
-	unsigned char *_pWData;
-	unsigned char *_pAData;
-	unsigned char *_pLData;
-	unsigned char *_pFData;
-	unsigned char *_pTData;
-	unsigned char *_pHData;
-	unsigned char *_pDData;
-	unsigned char *_pBData;
-	int unused_54D4;
+	unsigned char bCmd;
 };
+
+struct TCmdLoc
+{
+	unsigned char bCmd;
+	unsigned char x;
+	unsigned char y;
+};
+
+struct TCmdLocParam1
+{
+	unsigned char bCmd;
+	unsigned char x;
+	unsigned char y;
+	unsigned short wParam1;
+};
+
+struct TCmdLocParam2
+{
+	unsigned char bCmd;
+	unsigned char x;
+	unsigned char y;
+	unsigned short wParam1;
+	unsigned short wParam2;
+};
+
+struct TCmdLocParam3
+{
+	unsigned char bCmd;
+	unsigned char x;
+	unsigned char y;
+	unsigned short wParam1;
+	unsigned short wParam2;
+	unsigned short wParam3;
+};
+
+struct TCmdParam1
+{
+	unsigned char bCmd;
+	unsigned short wParam1;
+};
+
+struct TCmdParam2
+{
+	unsigned char bCmd;
+	unsigned short wParam1;
+	unsigned short wParam2;
+};
+
+struct TCmdParam3
+{
+	unsigned char bCmd;
+	unsigned short wParam1;
+	unsigned short wParam2;
+	unsigned short wParam3;
+};
+
+struct TCmdGolem
+{
+	unsigned char bCmd;
+	unsigned char _mx;
+	unsigned char _my;
+	unsigned char _mdir;
+	unsigned char _menemy;
+	int _mhitpoints;
+	unsigned char _currlevel;
+};
+
+struct TCmdQuest
+{
+	unsigned char bCmd;
+	unsigned char q;
+	unsigned char qstate;
+	unsigned char qlog;
+	unsigned char qvar1;
+};
+
+struct TCmdGItem
+{
+	unsigned char bCmd;
+	unsigned char bMaster;
+	unsigned char bPnum;
+	unsigned char bCursitem;
+	unsigned char bLevel;
+	unsigned char x;
+	unsigned char y;
+	unsigned short wIndx;
+	unsigned short wCI;
+	int dwSeed;
+	unsigned char bId;
+	unsigned char bDur;
+	unsigned char bMDur;
+	unsigned char bCh;
+	unsigned char bMCh;
+	unsigned short wValue;
+	int dwBuff;
+	int dwTime;
+};
+
+struct TCmdPItem
+{
+	char bCmd; /* unsigned */
+	unsigned char x;
+	unsigned char y;
+	unsigned short wIndx;
+	unsigned short wCI;
+	int dwSeed;
+	unsigned char bId;
+	unsigned char bDur;
+	unsigned char bMDur;
+	unsigned char bCh;
+	unsigned char bMCh;
+	unsigned short wValue;
+	int dwBuff;
+};
+
+struct TCmdChItem
+{
+	unsigned char bCmd;
+	unsigned char bLoc;
+	unsigned short wIndx;
+	unsigned short wCI;
+	int dwSeed;
+	unsigned char bId;
+};
+
+struct TCmdDelItem
+{
+	unsigned char bCmd;
+	unsigned char bLoc;
+};
+
+struct TCmdDamage
+{
+	unsigned char bCmd;
+	unsigned char bPlr;
+	int dwDam;
+};
+
+struct TCmdPlrInfoHdr
+{
+	unsigned char bCmd;
+	unsigned short wOffset;
+	unsigned short wBytes;
+};
+
+struct TCmdString
+{
+	unsigned char bCmd;
+	char str[80];
+};
+
+struct TFakeCmdPlr
+{
+	unsigned char bCmd;
+	unsigned char bPlr;
+};
+
+struct TFakeDropPlr
+{
+	unsigned char bCmd;
+	unsigned char bPlr;
+	int dwReason;
+};
+#pragma pack(pop)
+
+struct TSyncHeader /* todo: packed */
+{
+	unsigned char bCmd;
+	unsigned char bLevel;
+	unsigned short wLen;
+	unsigned char bObjId;
+	unsigned char bObjCmd;
+	unsigned char bItemI;
+	unsigned char bItemX;
+	unsigned char bItemY;
+	unsigned short wItemIndx;
+	unsigned short wItemCI;
+	int dwItemSeed;
+	unsigned char bItemId;
+	unsigned char bItemDur;
+	unsigned char bItemMDur;
+	unsigned char bItemCh;
+	unsigned char bItemMCh;
+	unsigned short wItemVal;
+	unsigned int dwItemBuff;
+	unsigned char bPInvLoc;
+	unsigned short wPInvIndx;
+	unsigned short wPInvCI;
+	int dwPInvSeed;
+	unsigned char bPInvId;
+};
+
+#pragma pack(push, 1)
+struct TSyncMonster
+{
+	unsigned char _mndx;
+	unsigned char _mx;
+	unsigned char _my;
+	unsigned char _menemy;
+	unsigned char _mdelta;
+};
+
+struct TPktHdr
+{
+	unsigned char px;
+	unsigned char py;
+	unsigned char targx;
+	unsigned char targy;
+	int php;
+	int pmhp;
+	unsigned char bstr;
+	unsigned char bmag;
+	unsigned char bdex;
+	unsigned short wCheck;
+	unsigned short wLen;
+};
+
+struct TPkt
+{
+	TPktHdr hdr;
+	unsigned char body[493];
+};
+
+struct DMonsterStr
+{
+	char _mx; /* these might be unsigned */
+	char _my;
+	char _mdir;
+	char _menemy;
+	char _mactive;
+	int _mhitpoints;
+};
+
+struct DObjectStr
+{
+	unsigned char bCmd;
+};
+
+struct DLevel
+{
+	TCmdPItem item[MAXITEMS];
+	DObjectStr object[MAXOBJECTS];
+	DMonsterStr monster[MAXMONSTERS];
+};
+
+struct LocalLevel
+{
+	unsigned char automapsv[40][40];
+};
+
+struct DPortal
+{
+	unsigned char x;
+	unsigned char y;
+	unsigned char level;
+	unsigned char ltype;
+	unsigned char setlvl;
+};
+
+struct MultiQuests
+{
+	unsigned char qstate;
+	unsigned char qlog;
+	unsigned char qvar1;
+};
+
+struct DJunk
+{
+	DPortal portal[MAXPORTAL];
+	MultiQuests quests[MAXMULTIQUESTS];
+};
+#pragma pack(pop)
+
+struct TMegaPkt
+{
+	TMegaPkt *pNext;
+	int dwSpaceLeft;
+	unsigned char data[32000];
+};
+
+//////////////////////////////////////////////////
+// quests
+//////////////////////////////////////////////////
 
 struct QuestStruct
 {
@@ -945,31 +1000,63 @@ struct QuestStruct
 	int _qlog; /* char */
 };
 
-struct SHA1Context
+struct QuestData
 {
-	int state[5];
-	int count[2];
-	char buffer[64];
+	unsigned char _qdlvl;
+	char _qdmultlvl;
+	unsigned char _qlvlt;
+	unsigned char _qdtype;
+	unsigned char _qdrnd;
+	unsigned char _qslvl;
+	int _qflags; /* unsigned char */
+	int _qdmsg;
+	char *_qlstr;
 };
 
-struct ThemeStruct
+//////////////////////////////////////////////////
+// gamemenu/gmenu
+//////////////////////////////////////////////////
+
+// TPDEF PTR FCN VOID TMenuFcn
+
+struct TMenuItem
 {
-	char ttype; /* aligned 4 */
-	int ttval;
+	unsigned int dwFlags;
+	char *pszStr;
+	void (__cdecl *fnMenu)(); /* fix, should have one arg */
 };
 
-struct TMsgHeader
+// TPDEF PTR FCN VOID TMenuUpdateFcn
+
+//////////////////////////////////////////////////
+// spells
+//////////////////////////////////////////////////
+
+struct SpellData
 {
-	char next;
-	char start_tc;
-	char len;
+	unsigned char sName;
+	unsigned char sManaCost;
+	unsigned char sType;
+	char *sNameText;
+	char *sSkillText;
+	int sBookLvl;
+	int sStaffLvl;
+	int sTargeted;
+	unsigned char sTownSpell;
+	int sMinInt;
+	unsigned char sSFX;
+	unsigned char sMissiles[3];
+	unsigned char sManaAdj;
+	unsigned char sMinMana;
+	int sStaffMin;
+	int sStaffMax;
+	int sBookCost;
+	int sStaffCost;
 };
 
-struct TMsg
-{
-	TMsgHeader hdr;
-	char data;
-};
+//////////////////////////////////////////////////
+// towners
+//////////////////////////////////////////////////
 
 struct TNQ
 {
@@ -1015,6 +1102,227 @@ struct TownerStruct
 	unsigned char *_tNData;
 };
 
+struct QuestTalkData
+{
+	int _qinfra;
+	int _qblkm;
+	int _qgarb;
+	int _qzhar;
+	int _qveil;
+	int _qmod;
+	int _qbutch;
+	int _qbol;
+	int _qblind;
+	int _qblood;
+	int _qanvil;
+	int _qwarlrd;
+	int _qking;
+	int _qpw;
+	int _qbone;
+	int _qvb;
+};
+
+//////////////////////////////////////////////////
+// gendung
+//////////////////////////////////////////////////
+
+struct ScrollStruct
+{
+	int _sxoff;
+	int _syoff;
+	int _sdx;
+	int _sdy;
+	int _sdir;
+};
+
+struct THEME_LOC
+{
+	int x;
+	int y;
+	int ttval;
+	int width;
+	int height;
+};
+
+//////////////////////////////////////////////////
+// drlg
+//////////////////////////////////////////////////
+
+struct ShadowStruct
+{
+	unsigned char strig;
+	unsigned char s1;
+	unsigned char s2;
+	unsigned char s3;
+	unsigned char nv1;
+	unsigned char nv2;
+	unsigned char nv3;
+};
+
+struct HALLNODE
+{
+	int nHallx1;
+	int nHally1;
+	int nHallx2;
+	int nHally2;
+	int nHalldir;
+	HALLNODE *pNext;
+};
+
+struct ROOMNODE
+{
+	int nRoomx1;
+	int nRoomy1;
+	int nRoomx2;
+	int nRoomy2;
+	int nRoomDest;
+};
+
+//////////////////////////////////////////////////
+// themes
+//////////////////////////////////////////////////
+
+struct ThemeStruct
+{
+	char ttype; /* aligned 4 */
+	int ttval;
+};
+
+//////////////////////////////////////////////////
+// inv
+//////////////////////////////////////////////////
+
+struct InvXY
+{
+	int X;
+	int Y;
+};
+
+//////////////////////////////////////////////////
+// lighting
+//////////////////////////////////////////////////
+
+struct LightListStruct
+{
+	int _lx;
+	int _ly;
+	int _lradius;
+	int _lid;
+	int _ldel;
+	int _lunflag;
+	int field_18;
+	int _lunx;
+	int _luny;
+	int _lunr;
+	int _xoff;
+	int _yoff;
+	int _lflags;
+};
+
+//////////////////////////////////////////////////
+// dead
+//////////////////////////////////////////////////
+
+struct DeadStruct
+{
+	unsigned char *_deadData[8];
+	int _deadFrame;
+	int field_24; // width
+	int field_28; // cel or fnum _deadtype?
+	int _deadtrans;
+};
+
+//////////////////////////////////////////////////
+// dx
+//////////////////////////////////////////////////
+
+struct ScreenRow
+{
+	char col_unused_1[64];
+	char pixels[640];
+	char col_unused_2[64];
+};
+
+struct Screen /* create union for work data vs visible data */
+{
+	ScreenRow row_unused_1[160];
+	ScreenRow row[480];
+	ScreenRow row_unused_2[16];
+};
+
+//////////////////////////////////////////////////
+// storm
+//////////////////////////////////////////////////
+
+// TPDEF PTR FCN VOID SEVTHANDLER
+
+// TPDEF PTR FCN UCHAR SMSGIDLEPROC
+// TPDEF PTR FCN VOID SMSGHANDLER
+
+struct _SNETCAPS
+{
+	int size;
+	int flags;
+	int maxmessagesize;
+	int maxqueuesize;
+	int maxplayers;
+	int bytessec;
+	int latencyms;
+	int defaultturnssec;
+	int defaultturnsintransit;
+};
+
+struct _SNETEVENT
+{
+	int eventid;
+	int playerid;
+	void *data;
+	int databytes;
+};
+
+// TPDEF PTR FCN UCHAR SNETABORTPROC
+// TPDEF PTR FCN UCHAR SNETCATEGORYPROC
+// TPDEF PTR FCN UCHAR SNETCHECKAUTHPROC
+// TPDEF PTR FCN UCHAR SNETCREATEPROC
+// TPDEF PTR FCN UCHAR SNETDRAWDESCPROC
+// TPDEF PTR FCN UCHAR SNETENUMDEVICESPROC
+// TPDEF PTR FCN UCHAR SNETENUMGAMESPROC
+// TPDEF PTR FCN UCHAR SNETENUMPROVIDERSPROC
+// TPDEF PTR FCN VOID SNETEVENTPROC
+// TPDEF PTR FCN UCHAR SNETGETARTPROC
+// TPDEF PTR FCN UCHAR SNETGETDATAPROC
+// TPDEF PTR FCN INT SNETMESSAGEBOXPROC
+// TPDEF PTR FCN UCHAR SNETPLAYSOUNDPROC
+// TPDEF PTR FCN UCHAR SNETSELECTEDPROC
+// TPDEF PTR FCN UCHAR SNETSTATUSPROC
+
+struct _SNETPLAYERDATA
+{
+	int size;
+	char *playername;
+	char *playerdescription;
+	int reserved;
+};
+
+struct _SNETPROGRAMDATA
+{
+	int size;
+	char *programname;
+	char *programdescription;
+	int programid;
+	int versionid;
+	int reserved1;
+	int maxplayers;
+	void *initdata;
+	int initdatabytes;
+	void *reserved2;
+	int optcategorybits;
+	char *cdkey;
+	char *registereduser;
+	int spawned;
+	int lcid;
+};
+
 struct _SNETUIDATA
 {
 	int size;
@@ -1039,23 +1347,36 @@ struct _SNETUIDATA
 	void (__cdecl *changenamecallback)();
 };
 
-struct _SNETPROGRAMDATA
+struct _SNETVERSIONDATA
 {
 	int size;
-	char *programname;
-	char *programdescription;
-	int programid;
-	int versionid;
-	int reserved1;
-	int maxplayers;
-	void *initdata;
-	int initdatabytes;
-	void *reserved2;
-	int optcategorybits;
-	char *cdkey;
-	char *registereduser;
-	int spawned;
-	int lcid;
+	char *versionstring;
+	char *executablefile;
+	char *originalarchivefile;
+	char *patcharchivefile;
+};
+
+// TPDEF PTR FCN UCHAR SNETSPIBIND
+// TPDEF PTR FCN UCHAR SNETSPIQUERY
+
+//////////////////////////////////////////////////
+// diabloui
+//////////////////////////////////////////////////
+
+// TPDEF PTR FCN VOID PLAYSND
+
+struct _gamedata
+{
+	int dwSeed;
+	unsigned char bDiff;
+};
+
+struct _uidefaultstats
+{
+	unsigned short strength;
+	unsigned short magic;
+	unsigned short dexterity;
+	unsigned short vitality;
 };
 
 struct _uiheroinfo
@@ -1074,119 +1395,129 @@ struct _uiheroinfo
 	int spawned;
 };
 
-struct _HASHENTRY
-{
-	int hashcheck[2];
-	int lcid;
-	int block;
-};
+// TPDEF PTR FCN UCHAR ENUMHEROPROC
+// TPDEF PTR FCN UCHAR ENUMHEROS
+// TPDEF PTR FCN UCHAR CREATEHERO
+// TPDEF PTR FCN UCHAR DELETEHERO
+// TPDEF PTR FCN UCHAR GETDEFHERO
 
-struct _BLOCKENTRY
-{
-	int offset;
-	int sizealloc;
-	int sizefile;
-	int flags;
-};
+// TPDEF PTR FCN INT PROGRESSFCN
 
-/* __declspec(align(2)) */
+//////////////////////////////////////////////////
+// pack
+//////////////////////////////////////////////////
+
 #pragma pack(push, 1)
-struct TCmdGItem
+struct PkItemStruct
 {
-	unsigned char bCmd;
-	unsigned char bMaster;
-	unsigned char bPnum;
-	unsigned char bCursitem;
-	unsigned char bLevel;
-	unsigned char x;
-	unsigned char y;
-	unsigned short wIndx;
-	unsigned short wCI;
-	int dwSeed;
-	unsigned char bId;
-	unsigned char bDur;
-	unsigned char bMDur;
-	unsigned char bCh;
-	unsigned char bMCh;
-	unsigned short wValue;
+	int iSeed;
+	short iCreateInfo;
+	short idx;
+	char bId;
+	char bDur;
+	char bMDur;
+	char bCh;
+	char bMCh;
+	short wValue;
 	int dwBuff;
-	int dwTime;
+};
+
+struct PkPlayerStruct
+{
+	FILETIME archiveTime;
+	char destAction;
+	char destParam1;
+	char destParam2;
+	char plrlevel;
+	char px;
+	char py;
+	char targx;
+	char targy;
+	char pName[32];
+	char pClass;
+	char pBaseStr;
+	char pBaseMag;
+	char pBaseDex;
+	char pBaseVit;
+	char pLevel;
+	char pStatPts;
+	int pExperience;
+	int pGold;
+	int pHPBase;
+	int pMaxHPBase;
+	int pManaBase;
+	int pMaxManaBase;
+	char pSplLvl[37];
+	int pMemSpells;
+	int pMemSpells2;
+	PkItemStruct InvBody[7];
+	PkItemStruct InvList[40];
+	char InvGrid[40];
+	char _pNumInv;
+	PkItemStruct SpdList[8];
+	char pTownWarps;
+	char pDungMsgs;
+	char pLvlLoad;
+	char pBattleNet;
+	char pManaShield;
+	char bReserved[3];
+	short wReserved[8];
+	int pDiabloKillLevel;
+	int dwReserved[7];
 };
 #pragma pack(pop)
 
-struct TCmdLoc
+//////////////////////////////////////////////////
+// path
+//////////////////////////////////////////////////
+
+struct PATHNODE
 {
-	unsigned char bCmd;
-	unsigned char x;
-	unsigned char y;
+	char f;
+	char h;
+	short g;
+	int x;
+	int y;
+	struct PATHNODE *Parent;
+	struct PATHNODE *Child[8];
+	struct PATHNODE *NextNode;
 };
 
-/* __declspec(align(1)) */
-#pragma pack(push, 1)
-struct TCmdParam1
-{
-	unsigned char bCmd;
-	unsigned short wParam1;
-};
-#pragma pack(pop)
+// TPDEF PTR FCN UCHAR CHECKFUNC1
 
-/* __declspec(align(1)) */
-#pragma pack(push, 1)
-struct TCmdLocParam1
-{
-	unsigned char bCmd;
-	unsigned char x;
-	unsigned char y;
-	unsigned short wParam1;
-};
-#pragma pack(pop)
+// TPDEF PTR FCN UCHAR CHECKFUNC
 
-/* __declspec(align(1)) */
-#pragma pack(push, 1)
-struct TPktHdr
-{
-	unsigned char px;
-	unsigned char py;
-	unsigned char targx;
-	unsigned char targy;
-	int php;
-	int pmhp;
-	unsigned char bstr;
-	unsigned char bmag;
-	unsigned char bdex;
-	unsigned short wCheck;
-	unsigned short wLen;
-};
-#pragma pack(pop)
+//////////////////////////////////////////////////
+// sha
+//////////////////////////////////////////////////
 
-struct _SNETEVENT
+struct SHA1Context
 {
-	int eventid;
-	int playerid;
-	void *data;
-	int databytes;
+	int state[5];
+	int count[2];
+	char buffer[64];
 };
 
-struct _SNETPLAYERDATA
+//////////////////////////////////////////////////
+// tmsg
+//////////////////////////////////////////////////
+
+struct TMsgHeader
 {
-	int size;
-	char *playername;
-	char *playerdescription;
-	int reserved;
+	char next;
+	char start_tc;
+	char len;
 };
 
-struct _SNETCAPS
+struct TMsg
 {
-	int size;
-	int flags;
-	int maxmessagesize;
-	int maxqueuesize;
-	int maxplayers;
-	int bytessec;
-	int latencyms;
-	int defaultturnssec;
-	int defaultturnsintransit;
+	TMsgHeader hdr;
+	char data;
 };
+
+//////////////////////////////////////////////////
+// mpqapi
+//////////////////////////////////////////////////
 
 struct TMPQHeader // _FILEHEADER
 {
@@ -1202,157 +1533,159 @@ struct TMPQHeader // _FILEHEADER
 	char field_20[72];
 };
 
-struct _uidefaultstats
+struct _HASHENTRY
 {
-	unsigned short strength;
-	unsigned short magic;
-	unsigned short dexterity;
-	unsigned short vitality;
+	int hashcheck[2];
+	int lcid;
+	int block;
 };
 
-/* __declspec(align(1)) */
-#pragma pack(push, 1)
-struct TCmdLocParam2
+struct _BLOCKENTRY
 {
-	unsigned char bCmd;
-	unsigned char x;
-	unsigned char y;
-	unsigned short wParam1;
-	unsigned short wParam2;
-};
-#pragma pack(pop)
-
-/* __declspec(align(1)) */
-#pragma pack(push, 1)
-struct TCmdLocParam3
-{
-	unsigned char bCmd;
-	unsigned char x;
-	unsigned char y;
-	unsigned short wParam1;
-	unsigned short wParam2;
-	unsigned short wParam3;
-};
-#pragma pack(pop)
-
-/* __declspec(align(1)) */
-#pragma pack(push, 1)
-struct TCmdParam2
-{
-	unsigned char bCmd;
-	unsigned short wParam1;
-	unsigned short wParam2;
-};
-#pragma pack(pop)
-
-/* __declspec(align(1)) */
-#pragma pack(push, 1)
-struct TCmdParam3
-{
-	unsigned char bCmd;
-	unsigned short wParam1;
-	unsigned short wParam2;
-	unsigned short wParam3;
-};
-#pragma pack(pop)
-
-struct TCmd
-{
-	unsigned char bCmd;
+	int offset;
+	int sizealloc;
+	int sizefile;
+	int flags;
 };
 
-/* __declspec(align(2)) */
-#pragma pack(push, 1)
-struct TCmdGolem
-{
-	unsigned char bCmd;
-	unsigned char _mx;
-	unsigned char _my;
-	unsigned char _mdir;
-	unsigned char _menemy;
-	int _mhitpoints;
-	unsigned char _currlevel;
-};
-#pragma pack(pop)
+// TPDEF PTR FCN UCHAR TGetNameFcn
 
-struct TCmdQuest
+// TPDEF PTR FCN VOID TCrypt
+
+//////////////////////////////////////////////////
+// trigs
+//////////////////////////////////////////////////
+
+struct TriggerStruct
 {
-	unsigned char bCmd;
-	unsigned char q;
-	unsigned char qstate;
-	unsigned char qlog;
-	unsigned char qvar1;
+	int _tx;
+	int _ty;
+	int _tmsg;
+	int _tlvl;
 };
 
-/* __declspec(align(1)) */
-#pragma pack(push, 1)
-struct TCmdChItem
-{
-	unsigned char bCmd;
-	unsigned char bLoc;
-	unsigned short wIndx;
-	unsigned short wCI;
-	int dwSeed;
-	unsigned char bId;
-};
-#pragma pack(pop)
+//////////////////////////////////////////////////
+// stores
+//////////////////////////////////////////////////
 
-struct TCmdDelItem
+struct STextStruct
 {
-	unsigned char bCmd;
-	unsigned char bLoc;
+	int _sx;
+	int _syoff;
+	char _sstr[128];
+	int _sjust;
+	int _sclr;
+	int _sline;
+	int _ssel;
+	int _sval;
 };
 
-/* __declspec(align(2)) */
-#pragma pack(push, 1)
-struct TCmdDamage
-{
-	unsigned char bCmd;
-	unsigned char bPlr;
-	int dwDam;
-};
-#pragma pack(pop)
+//////////////////////////////////////////////////
+// wave
+//////////////////////////////////////////////////
 
-struct TFakeCmdPlr
+struct MEMFILE
 {
-	unsigned char bCmd;
-	unsigned char bPlr;
-};
-
-/* __declspec(align(2)) */
-#pragma pack(push, 1)
-struct TFakeDropPlr
-{
-	unsigned char bCmd;
-	unsigned char bPlr;
-	int dwReason;
-};
-#pragma pack(pop)
-
-struct TCmdString
-{
-	unsigned char bCmd;
-	char str[80];
+	int end;
+	int offset;
+	int buf_len;
+	int dist;
+	int bytes_to_read;
+	char *buf;
+	int file;
 };
 
-/* __declspec(align(1)) */
-#pragma pack(push, 1)
-struct TCmdPlrInfoHdr
-{
-	unsigned char bCmd;
-	unsigned short wOffset;
-	unsigned short wBytes;
-};
-#pragma pack(pop)
+//////////////////////////////////////////////////
+// plrmsg
+//////////////////////////////////////////////////
 
-struct PortalStruct
+struct _plrmsg
 {
-	int open;
+	int time;
+	char player;
+	char str[144];
+};
+
+//////////////////////////////////////////////////
+// capture
+//////////////////////////////////////////////////
+
+struct PCXHeader
+{
+	char manufacturer;
+	char version;
+	char encoding;
+	char bitsPerPixel;
+	short xmin, ymin;
+	short xmax, ymax;
+	short horzRes, vertRes;
+	char palette[48];
+	char reserved;
+	char numColorPlanes;
+	short bytesPerScanLine;
+	short paletteType;
+	short horzSize, vertSize;
+	char padding[54];
+};
+
+//////////////////////////////////////////////////
+// encrypt
+//////////////////////////////////////////////////
+
+struct TDataInfo
+{
+	unsigned char *pbInBuff;
+	unsigned char *pbInBuffEnd;
+	unsigned char *pbOutBuff;
+	unsigned char *pbOutBuffEnd;
+	unsigned char *pbSize;
+};
+
+//////////////////////////////////////////////////
+// msgcmd
+//////////////////////////////////////////////////
+
+struct ServerCommand
+{
+	int field_0;
+	int field_4;
+	char command[128];
+};
+
+struct ChatCmd
+{
+	struct ChatCmd *next;
+	ServerCommand *extern_msgs[2];
+};
+
+//////////////////////////////////////////////////
+// garbage (should be removed)
+//////////////////////////////////////////////////
+
+struct RECT32
+{
 	int x;
 	int y;
-	int level;
-	int ltype;
-	int setlvl;
+	int w;
+	int h;
+};
+
+struct POINT32
+{
+	int x;
+	int y;
+};
+
+struct Coord
+{
+	char x;
+	char y;
+};
+
+struct RECT8
+{
+	Coord x;
+	Coord y;
 };
 
 struct CircleCoord
@@ -1396,191 +1729,3 @@ struct CircleCoord
 	unsigned char n_144;
 	Coord delta_144[144];
 };
-
-struct TriggerStruct
-{
-	int _tx;
-	int _ty;
-	int _tmsg;
-	int _tlvl;
-};
-
-struct THEME_LOC
-{
-	int x;
-	int y;
-	int ttval;
-	int width;
-	int height;
-};
-
-struct STextStruct
-{
-	int _sx;
-	int _syoff;
-	char _sstr[128];
-	int _sjust;
-	int _sclr;
-	int _sline;
-	int _ssel;
-	int _sval;
-};
-
-struct HALLNODE
-{
-	int nHallx1;
-	int nHally1;
-	int nHallx2;
-	int nHally2;
-	int nHalldir;
-	HALLNODE *pNext;
-};
-
-struct ROOMNODE
-{
-	int nRoomx1;
-	int nRoomy1;
-	int nRoomx2;
-	int nRoomy2;
-	int nRoomDest;
-};
-
-struct LocalLevel
-{
-	unsigned char automapsv[40][40];
-};
-
-struct TMegaPkt
-{
-	TMegaPkt *pNext;
-	int dwSpaceLeft;
-	unsigned char data[32000];
-};
-
-struct ScrollStruct
-{
-	int _sxoff;
-	int _syoff;
-	int _sdx;
-	int _sdy;
-	int _sdir;
-};
-
-struct _gamedata
-{
-	int dwSeed;
-	unsigned char bDiff;
-};
-
-struct TPkt
-{
-	TPktHdr hdr;
-	unsigned char body[493];
-};
-
-struct MEMFILE
-{
-	int end;
-	int offset;
-	int buf_len;
-	int dist;
-	int bytes_to_read;
-	char *buf;
-	int file;
-};
-
-struct _plrmsg
-{
-	int time;
-	char player;
-	char str[144];
-};
-
-struct ItemGetRecordStruct
-{
-	int nSeed;
-	unsigned short wCI;
-	int nIndex;
-	int dwTimestamp;
-};
-
-struct unk_missile_struct
-{
-	int field_0;
-	int field_4;
-	int field_8;
-};
-
-struct TSyncMonster
-{
-	unsigned char _mndx;
-	unsigned char _mx;
-	unsigned char _my;
-	unsigned char _menemy;
-	unsigned char _mdelta;
-};
-
-struct TSyncHeader
-{
-	unsigned char bCmd;
-	unsigned char bLevel;
-	unsigned short wLen;
-	unsigned char bObjId;
-	unsigned char bObjCmd;
-	unsigned char bItemI;
-	unsigned char bItemX;
-	unsigned char bItemY;
-	unsigned short wItemIndx;
-	unsigned short wItemCI;
-	int dwItemSeed;
-	unsigned char bItemId;
-	unsigned char bItemDur;
-	unsigned char bItemMDur;
-	unsigned char bItemCh;
-	unsigned char bItemMCh;
-	unsigned short wItemVal;
-	unsigned int dwItemBuff;
-	unsigned char bPInvLoc;
-	unsigned short wPInvIndx;
-	unsigned short wPInvCI;
-	int dwPInvSeed;
-	unsigned char bPInvId;
-};
-
-struct PCXHeader
-{
-	char manufacturer;
-	char version;
-	char encoding;
-	char bitsPerPixel;
-	short xmin, ymin;
-	short xmax, ymax;
-	short horzRes, vertRes;
-	char palette[48];
-	char reserved;
-	char numColorPlanes;
-	short bytesPerScanLine;
-	short paletteType;
-	short horzSize, vertSize;
-	char padding[54];
-};
-
-typedef struct
-{
-	unsigned char * pbInBuff;           // Pointer to input data buffer
-	unsigned char * pbInBuffEnd;        // End of the input buffer
-	unsigned char * pbOutBuff;          // Pointer to output data buffer
-	unsigned char * pbOutBuffEnd;       // Pointer to output data buffer
-	unsigned char * pbSize;
-} TDataInfo;
-
-typedef struct {
-	int field_0;
-	int field_4;
-	char command[128];
-} ServerCommand;
-
-typedef struct ChatCmd {
-	struct ChatCmd *next;
-	ServerCommand *extern_msgs[2];
-} ChatCmd;
