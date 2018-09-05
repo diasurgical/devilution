@@ -8,6 +8,26 @@ void *pDoomCel;
 int doomflag; // weak
 int DoomQuestState; // idb
 
+/*
+void __cdecl doom_reset_state()
+{
+	if ( DoomQuestState <= 0 ) {
+		DoomQuestState = 0;
+	}
+}
+
+void __cdecl doom_play_movie()
+{
+	if ( DoomQuestState < 36001 ) {
+		DoomQuestState++;
+		if ( DoomQuestState == 36001 ) {
+			PlayInGameMovie("gendata\\doom.smk");
+			DoomQuestState++;
+		}
+	}
+}
+*/
+
 int __cdecl doom_get_frame_from_time()
 {
 	if ( DoomQuestState == 36001 ) {
