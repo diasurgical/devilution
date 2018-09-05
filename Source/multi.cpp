@@ -652,7 +652,7 @@ void __cdecl multi_process_tmsgs()
 
 	while ( 1 )
 	{
-		v0 = tmsg_get(&pkt.hdr.px, 512);
+		v0 = tmsg_get((unsigned char *)&pkt, 512);
 		if ( !v0 )
 			break;
 		multi_handle_all_packets(myplr, &pkt, v0);
