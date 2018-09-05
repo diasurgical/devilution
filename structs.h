@@ -862,9 +862,8 @@ struct TFakeDropPlr
 	unsigned char bPlr;
 	int dwReason;
 };
-#pragma pack(pop)
 
-struct TSyncHeader /* todo: packed */
+struct TSyncHeader
 {
 	unsigned char bCmd;
 	unsigned char bLevel;
@@ -891,7 +890,6 @@ struct TSyncHeader /* todo: packed */
 	unsigned char bPInvId;
 };
 
-#pragma pack(push, 1)
 struct TSyncMonster
 {
 	unsigned char _mndx;
