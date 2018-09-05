@@ -332,7 +332,7 @@ void __fastcall ErrDlg(int template_id, int error_code, char *log_file_path, int
 	TermMsg(0);
 }
 
-bool __stdcall FuncDlg(HWND hDlg, UINT uMsg, WPARAM wParam, char *text)
+BOOL __stdcall FuncDlg(HWND hDlg, UINT uMsg, WPARAM wParam, char *text)
 {
 	if ( uMsg == WM_INITDIALOG )
 	{
