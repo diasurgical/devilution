@@ -1520,18 +1520,22 @@ struct SHA1Context
 // tmsg
 //////////////////////////////////////////////////
 
-struct TMsgHeader
+#pragma pack(push, 1)
+struct TMsg;
+
+struct TMsgHdr
 {
-	char next;
-	char start_tc;
-	char len;
+	TMsg *pNext;
+	unsigned int dwTime;
+	unsigned char bLen;
 };
 
 struct TMsg
 {
-	TMsgHeader hdr;
-	char data;
+	TMsgHdr hdr;
+	unsigned char body[3];
 };
+#pragma pack(pop)
 
 //////////////////////////////////////////////////
 // mpqapi
