@@ -8,6 +8,10 @@ extern void *pDoomCel;
 extern int doomflag; // weak
 extern int DoomQuestState; // idb
 
+/*
+void __cdecl doom_reset_state();
+void __cdecl doom_play_movie();
+*/
 int __cdecl doom_get_frame_from_time();
 void __cdecl doom_alloc_cel();
 void __cdecl doom_cleanup();
