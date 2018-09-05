@@ -40,8 +40,8 @@ extern int sound_inf; // weak
 
 /* rdata */
 
-extern char gbMusicOn; // weak
-extern char gbSoundOn; // weak
+extern UCHAR gbMusicOn;
+extern UCHAR gbSoundOn;
 extern char gbDupSounds; // weak
 extern int sgnMusicTrack;
 extern char *sgszMusicTracks[6];
