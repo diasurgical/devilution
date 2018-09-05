@@ -1529,7 +1529,7 @@ void __fastcall CreatePlrItems(int p)
 	memset(&plr[p].InvGrid, 0, sizeof(plr[p].InvGrid));
 
 	pi = plr[p].InvList;
-	for ( i = 0; i < NUM_INVELEMS; i++ )
+	for ( i = 0; i < NUM_INV_GRID_ELEM; i++ )
 	{
 		pi[i]._itype = ITYPE_NONE;
 	}

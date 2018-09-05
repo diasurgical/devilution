@@ -1271,7 +1271,7 @@ LABEL_14:
 	}
 }
 
-void __fastcall CelDecodeClr(char colour, int screen_x, int screen_y, char *pCelBuff, int frame, int frame_width, int a7, int direction)
+void __fastcall CelDecodeClr(BYTE colour, int screen_x, int screen_y, char *pCelBuff, int frame, int frame_width, int a7, int direction)
 {
 	char *v8; // ebx
 	int v9; // eax

@@ -157,287 +157,304 @@ LABEL_9:
 
 void __cdecl DrawInv()
 {
-	int v0; // ecx
-	int v1; // eax
-	int v2; // esi
-	int v3; // ebp
-	char v4; // cl
-	int v5; // ecx
-	int v6; // eax
-	int v7; // edi
-	int v8; // edx
-	char v9; // cl
-	int v10; // ecx
-	int v11; // eax
-	int v12; // edi
-	int v13; // edx
-	char v14; // cl
-	int v15; // ecx
-	int v16; // eax
-	int v17; // esi
-	int v18; // edx
-	char v19; // cl
-	int v20; // ecx
-	int v21; // eax
-	int v22; // esi
-	int v23; // edi
-	int v24; // ebp
-	char v25; // cl
-	char *v26; // ecx
-	int v27; // ebp
-	int v28; // eax
-	int v29; // esi
-	int v30; // edi
-	char v31; // cl
-	int v32; // ecx
-	int v33; // eax
-	int v34; // esi
-	int v35; // edi
-	char v36; // cl
-	signed int v37; // esi
-	signed int v38; // edi
-	int v39; // ecx
-	char v40; // al
-	int v41; // eax
-	int v42; // ebp
-	int v43; // ecx
-	int v44; // esi
-	char v45; // al
-	int v46; // ecx
-	int v47; // edx
-	int screen_y; // [esp+10h] [ebp-A8h]
-	int screen_ya; // [esp+10h] [ebp-A8h]
-	int screen_yb; // [esp+10h] [ebp-A8h]
-	signed int screen_yc; // [esp+10h] [ebp-A8h]
-	signed int screen_yd; // [esp+10h] [ebp-A8h]
-	int screen_ye; // [esp+10h] [ebp-A8h]
-	signed int screen_x; // [esp+14h] [ebp-A4h]
-	int invtest[40]; // [esp+18h] [ebp-A0h]
+	BOOL invtest[40];
 
 	CelDecodeOnly(384, 511, pInvCels, 1, 320);
-	if ( plr[myplr].InvBody[0]._itype != -1 )
+
+	if ( plr[myplr].InvBody[INVLOC_HEAD]._itype != ITYPE_NONE )
 	{
-		InvDrawSlotBack(517, 219, 56, 56);
-		v0 = myplr;
-		v1 = myplr;
-		v2 = plr[myplr].InvBody[0]._iCurs + 12;
-		v3 = InvItemWidth[v2];
-		if ( !pcursinvitem )
+		InvDrawSlotBack(517, 219, 2 * INV_SLOT_SIZE_PX, 2 * INV_SLOT_SIZE_PX);
+
+		int frame = plr[myplr].InvBody[INVLOC_HEAD]._iCurs + 12;
+		int frame_width = InvItemWidth[frame];
+
+		if ( pcursinvitem == INVITEM_HEAD )
 		{
-			v4 = -59;
-			if ( plr[v1].InvBody[0]._iMagical )
-				v4 = -75;
-			if ( !plr[v1].InvBody[0]._iStatFlag )
-				v4 = -27;
-			CelDecodeClr(v4, 517, 219, (char *)pCursCels, v2, v3, 0, 8);
-			v0 = myplr;
+			int colour = 197;
+			if ( plr[myplr].InvBody[INVLOC_HEAD]._iMagical )
+			{
+				colour = 181;
+			}
+			if ( !plr[myplr].InvBody[INVLOC_HEAD]._iStatFlag )
+			{
+				colour = 229;
+			}
+			CelDecodeClr(colour, 517, 219, (char *)pCursCels, frame, frame_width, 0, 8);
 		}
-		if ( plr[v0].InvBody[0]._iStatFlag )
-			CelDrawHdrOnly(517, 219, (char *)pCursCels, v2, v3, 0, 8);
+
+		if ( plr[myplr].InvBody[INVLOC_HEAD]._iStatFlag )
+		{
+			CelDrawHdrOnly(517, 219, (char *)pCursCels, frame, frame_width, 0, 8);
+		}
 		else
-			CelDrawHdrLightRed(517, 219, (char *)pCursCels, v2, v3, 0, 8, 1);
+		{
+			CelDrawHdrLightRed(517, 219, (char *)pCursCels, frame, frame_width, 0, 8, 1);
+		}
 	}
-	if ( plr[myplr].InvBody[1]._itype != -1 )
+
+	if ( plr[myplr].InvBody[INVLOC_RING_LEFT]._itype != ITYPE_NONE )
 	{
-		InvDrawSlotBack(432, 365, 28, 28);
-		v5 = myplr;
-		v6 = myplr;
-		v7 = plr[myplr].InvBody[1]._iCurs + 12;
-		v8 = InvItemWidth[v7];
-		screen_y = InvItemWidth[v7];
-		if ( pcursinvitem == 1 )
+		InvDrawSlotBack(432, 365, INV_SLOT_SIZE_PX, INV_SLOT_SIZE_PX);
+
+		int frame = plr[myplr].InvBody[INVLOC_RING_LEFT]._iCurs + 12;
+		int frame_width = InvItemWidth[frame];
+
+		if ( pcursinvitem == INVITEM_RING_LEFT )
 		{
-			v9 = -59;
-			if ( plr[v6].InvBody[1]._iMagical )
-				v9 = -75;
-			if ( !plr[v6].InvBody[1]._iStatFlag )
-				v9 = -27;
-			CelDecodeClr(v9, 432, 365, (char *)pCursCels, v7, v8, 0, 8);
-			v5 = myplr;
-			v8 = screen_y;
+			int colour = 197;
+			if ( plr[myplr].InvBody[INVLOC_RING_LEFT]._iMagical )
+			{
+				colour = 181;
+			}
+			if ( !plr[myplr].InvBody[INVLOC_RING_LEFT]._iStatFlag )
+			{
+				colour = 229;
+			}
+			CelDecodeClr(colour, 432, 365, (char *)pCursCels, frame, frame_width, 0, 8);
 		}
-		if ( plr[v5].InvBody[1]._iStatFlag )
-			CelDrawHdrOnly(432, 365, (char *)pCursCels, v7, v8, 0, 8);
+
+		if ( plr[myplr].InvBody[INVLOC_RING_LEFT]._iStatFlag )
+		{
+			CelDrawHdrOnly(432, 365, (char *)pCursCels, frame, frame_width, 0, 8);
+		}
 		else
-			CelDrawHdrLightRed(432, 365, (char *)pCursCels, v7, v8, 0, 8, 1);
+		{
+			CelDrawHdrLightRed(432, 365, (char *)pCursCels, frame, frame_width, 0, 8, 1);
+		}
 	}
-	if ( plr[myplr].InvBody[2]._itype != -1 )
+
+	if ( plr[myplr].InvBody[INVLOC_RING_RIGHT]._itype != ITYPE_NONE )
 	{
-		InvDrawSlotBack(633, 365, 28, 28);
-		v10 = myplr;
-		v11 = myplr;
-		v12 = plr[myplr].InvBody[2]._iCurs + 12;
-		v13 = InvItemWidth[v12];
-		screen_ya = InvItemWidth[v12];
-		if ( pcursinvitem == 2 )
+		InvDrawSlotBack(633, 365, INV_SLOT_SIZE_PX, INV_SLOT_SIZE_PX);
+
+		int frame = plr[myplr].InvBody[INVLOC_RING_RIGHT]._iCurs + 12;
+		int frame_width = InvItemWidth[frame];
+
+		if ( pcursinvitem == INVITEM_RING_RIGHT )
 		{
-			v14 = -59;
-			if ( plr[v11].InvBody[2]._iMagical )
-				v14 = -75;
-			if ( !plr[v11].InvBody[2]._iStatFlag )
-				v14 = -27;
-			CelDecodeClr(v14, 633, 365, (char *)pCursCels, v12, v13, 0, 8);
-			v10 = myplr;
-			v13 = screen_ya;
+			int colour = 197;
+			if ( plr[myplr].InvBody[INVLOC_RING_RIGHT]._iMagical )
+			{
+				colour = 181;
+			}
+			if ( !plr[myplr].InvBody[INVLOC_RING_RIGHT]._iStatFlag )
+			{
+				colour = 229;
+			}
+			CelDecodeClr(colour, 633, 365, (char *)pCursCels, frame, frame_width, 0, 8);
 		}
-		if ( plr[v10].InvBody[2]._iStatFlag )
-			CelDrawHdrOnly(633, 365, (char *)pCursCels, v12, v13, 0, 8);
+
+		if ( plr[myplr].InvBody[INVLOC_RING_RIGHT]._iStatFlag )
+		{
+			CelDrawHdrOnly(633, 365, (char *)pCursCels, frame, frame_width, 0, 8);
+		}
 		else
-			CelDrawHdrLightRed(633, 365, (char *)pCursCels, v12, v13, 0, 8, 1);
+		{
+			CelDrawHdrLightRed(633, 365, (char *)pCursCels, frame, frame_width, 0, 8, 1);
+		}
 	}
-	if ( plr[myplr].InvBody[3]._itype != -1 )
+
+	if ( plr[myplr].InvBody[INVLOC_AMULET]._itype != ITYPE_NONE )
 	{
-		InvDrawSlotBack(589, 220, 28, 28);
-		v15 = myplr;
-		v16 = myplr;
-		v17 = plr[myplr].InvBody[3]._iCurs + 12;
-		v18 = InvItemWidth[v17];
-		screen_yb = InvItemWidth[v17];
-		if ( pcursinvitem == 3 )
+		InvDrawSlotBack(589, 220, INV_SLOT_SIZE_PX, INV_SLOT_SIZE_PX);
+
+		int frame = plr[myplr].InvBody[INVLOC_AMULET]._iCurs + 12;
+		int frame_width = InvItemWidth[frame];
+
+		if ( pcursinvitem == INVITEM_AMULET )
 		{
-			v19 = -59;
-			if ( plr[v16].InvBody[3]._iMagical )
-				v19 = -75;
-			if ( !plr[v16].InvBody[3]._iStatFlag )
-				v19 = -27;
-			CelDecodeClr(v19, 589, 220, (char *)pCursCels, v17, v18, 0, 8);
-			v15 = myplr;
-			v18 = screen_yb;
+			int colour = 197;
+			if ( plr[myplr].InvBody[INVLOC_AMULET]._iMagical )
+			{
+				colour = 181;
+			}
+			if ( !plr[myplr].InvBody[INVLOC_AMULET]._iStatFlag )
+			{
+				colour = 229;
+			}
+			CelDecodeClr(colour, 589, 220, (char *)pCursCels, frame, frame_width, 0, 8);
 		}
-		if ( plr[v15].InvBody[3]._iStatFlag )
-			CelDrawHdrOnly(589, 220, (char *)pCursCels, v17, v18, 0, 8);
+
+		if ( plr[myplr].InvBody[INVLOC_AMULET]._iStatFlag )
+		{
+			CelDrawHdrOnly(589, 220, (char *)pCursCels, frame, frame_width, 0, 8);
+		}
 		else
-			CelDrawHdrLightRed(589, 220, (char *)pCursCels, v17, v18, 0, 8, 1);
+		{
+			CelDrawHdrLightRed(589, 220, (char *)pCursCels, frame, frame_width, 0, 8, 1);
+		}
 	}
-	if ( plr[myplr].InvBody[4]._itype != -1 )
+
+	if ( plr[myplr].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE )
 	{
-		InvDrawSlotBack(401, 320, 56, 84);
-		v20 = myplr;
-		v21 = myplr;
-		v22 = plr[myplr].InvBody[4]._iCurs + 12;
-		v23 = InvItemWidth[v22];
-		v24 = v23 != 28 ? 401 : 415;
-		screen_yc = InvItemHeight[v22] != 84 ? 306 : 320;
-		if ( pcursinvitem == 4 )
+		InvDrawSlotBack(401, 320, 2 * INV_SLOT_SIZE_PX, 3 * INV_SLOT_SIZE_PX);
+
+		int frame = plr[myplr].InvBody[INVLOC_HAND_LEFT]._iCurs + 12;
+		int frame_width = InvItemWidth[frame];
+		// calc item offsets for weapons smaller than 2x3 slots
+		int screen_x = frame_width == INV_SLOT_SIZE_PX ? 415 : 401;
+		int screen_y = InvItemHeight[frame] == (3 * INV_SLOT_SIZE_PX) ? 320 : 306;
+
+		if ( pcursinvitem == INVITEM_HAND_LEFT )
 		{
-			v25 = -59;
-			if ( plr[v21].InvBody[4]._iMagical )
-				v25 = -75;
-			if ( !plr[v21].InvBody[4]._iStatFlag )
-				v25 = -27;
-			CelDecodeClr(v25, v24, screen_yc, (char *)pCursCels, v22, v23, 0, 8);
-			v20 = myplr;
+			int colour = 197;
+			if ( plr[myplr].InvBody[INVLOC_HAND_LEFT]._iMagical )
+			{
+				colour = 181;
+			}
+			if ( !plr[myplr].InvBody[INVLOC_HAND_LEFT]._iStatFlag )
+			{
+				colour = 229;
+			}
+			CelDecodeClr(colour, screen_x, screen_y, (char *)pCursCels, frame, frame_width, 0, 8);
 		}
-		if ( plr[v20].InvBody[4]._iStatFlag )
-			CelDrawHdrOnly(v24, screen_yc, (char *)pCursCels, v22, v23, 0, 8);
-		else
-			CelDrawHdrLightRed(v24, screen_yc, (char *)pCursCels, v22, v23, 0, 8, 1);
-		if ( plr[myplr].InvBody[4]._iLoc == ILOC_TWOHAND )
+
+		if ( plr[myplr].InvBody[INVLOC_HAND_LEFT]._iStatFlag )
 		{
-			InvDrawSlotBack(631, 320, 56, 84);
+			CelDrawHdrOnly(screen_x, screen_y, (char *)pCursCels, frame, frame_width, 0, 8);
+		}
+		else
+		{
+			CelDrawHdrLightRed(screen_x, screen_y, (char *)pCursCels, frame, frame_width, 0, 8, 1);
+		}
+
+		if ( plr[myplr].InvBody[INVLOC_HAND_LEFT]._iLoc == ILOC_TWOHAND )
+		{
+			InvDrawSlotBack(631, 320, 2 * INV_SLOT_SIZE_PX, 3 * INV_SLOT_SIZE_PX);
 			light_table_index = 0;
 			cel_transparency_active = 1;
-			v26 = &gpBuffer->row[160].pixels[581];
-			if ( v23 != 28 )
-				v26 = &gpBuffer->row[160].pixels[567];
-			CelDecodeHdrLightTrans(v26, (char *)pCursCels, v22, v23, 0, 8);
+
+			CelDecodeHdrLightTrans(
+				frame_width == INV_SLOT_SIZE_PX
+					? &gpBuffer->row[160].pixels[581]
+					: &gpBuffer->row[160].pixels[567],
+				(char *)pCursCels, frame, frame_width, 0, 8);
+
 			cel_transparency_active = 0;
 		}
 	}
-	if ( plr[myplr].InvBody[5]._itype != -1 )
+	if ( plr[myplr].InvBody[INVLOC_HAND_RIGHT]._itype != ITYPE_NONE )
 	{
-		InvDrawSlotBack(631, 320, 56, 84);
-		v27 = myplr;
-		v28 = myplr;
-		v29 = plr[myplr].InvBody[5]._iCurs + 12;
-		v30 = InvItemWidth[v29];
-		screen_yd = InvItemHeight[v29] != 84 ? 306 : 320;
-		if ( pcursinvitem == 5 )
+		InvDrawSlotBack(631, 320, 2 * INV_SLOT_SIZE_PX, 3 * INV_SLOT_SIZE_PX);
+
+		int frame = plr[myplr].InvBody[INVLOC_HAND_RIGHT]._iCurs + 12;
+		int frame_width = InvItemWidth[frame];
+		// calc item offsets for weapons smaller than 2x3 slots
+		int screen_x = frame_width == INV_SLOT_SIZE_PX ? 645 : 633;
+		int screen_y = InvItemHeight[frame] == 3 * INV_SLOT_SIZE_PX ? 320 : 306;
+
+		if ( pcursinvitem == INVITEM_HAND_RIGHT )
 		{
-			v31 = -59;
-			if ( plr[v28].InvBody[5]._iMagical )
-				v31 = -75;
-			if ( !plr[v28].InvBody[5]._iStatFlag )
-				v31 = -27;
-			CelDecodeClr(v31, v30 != 28 ? 633 : 645, screen_yd, (char *)pCursCels, v29, v30, 0, 8);
-			v27 = myplr;
-		}
-		screen_x = v30 != 28 ? 633 : 645;
-		if ( plr[v27].InvBody[5]._iStatFlag )
-			CelDrawHdrOnly(screen_x, screen_yd, (char *)pCursCels, v29, v30, 0, 8);
-		else
-			CelDrawHdrLightRed(screen_x, screen_yd, (char *)pCursCels, v29, v30, 0, 8, 1);
-	}
-	if ( plr[myplr].InvBody[6]._itype != -1 )
-	{
-		InvDrawSlotBack(517, 320, 56, 84);
-		v32 = myplr;
-		v33 = myplr;
-		v34 = plr[myplr].InvBody[6]._iCurs + 12;
-		v35 = InvItemWidth[v34];
-		if ( pcursinvitem == 6 )
-		{
-			v36 = -59;
-			if ( plr[v33].InvBody[6]._iMagical )
-				v36 = -75;
-			if ( !plr[v33].InvBody[6]._iStatFlag )
-				v36 = -27;
-			CelDecodeClr(v36, 517, 320, (char *)pCursCels, v34, v35, 0, 8);
-			v32 = myplr;
-		}
-		if ( plr[v32].InvBody[6]._iStatFlag )
-			CelDrawHdrOnly(517, 320, (char *)pCursCels, v34, v35, 0, 8);
-		else
-			CelDrawHdrLightRed(517, 320, (char *)pCursCels, v34, v35, 0, 8, 1);
-	}
-	v37 = 0;
-	do
-	{
-		if ( plr[myplr].InvGrid[v37] )
-			InvDrawSlotBack(InvRect[v37 + 25].X + 64, InvRect[v37 + 25].Y + 159, 28, 28);
-		++v37;
-	}
-	while ( v37 < 40 );
-	v38 = 0;
-	do
-	{
-		v39 = 21720 * myplr;
-		v40 = plr[myplr].InvGrid[v38];
-		if ( v40 > 0 )
-		{
-			v41 = v40 - 1;
-			invtest[v38] = 1;
-			v42 = v41;
-			v43 = 368 * v41 + v39;
-			v44 = *(int *)((char *)&plr[0].InvList[0]._iCurs + v43) + 12;
-			screen_ye = InvItemWidth[v44];
-			if ( pcursinvitem == v41 + 7 )
+			int colour = 197;
+			if ( plr[myplr].InvBody[INVLOC_HAND_RIGHT]._iMagical )
 			{
-				v45 = -59;
-				if ( *(&plr[0].InvList[0]._iMagical + v43) )
-					v45 = -75;
-				if ( !*(int *)((char *)&plr[0].InvList[0]._iStatFlag + v43) )
-					v45 = -27;
-				CelDecodeClr(
-					v45,
-					InvRect[v38 + 25].X + 64,
-					InvRect[v38 + 25].Y + 159,
-					(char *)pCursCels,
-					v44,
-					screen_ye,
-					0,
-					8);
+				colour = 181;
 			}
-			v46 = InvRect[v38 + 25].X + 64;
-			v47 = InvRect[v38 + 25].Y + 159;
-			if ( plr[myplr].InvList[v42]._iStatFlag )
-				CelDrawHdrOnly(v46, v47, (char *)pCursCels, v44, screen_ye, 0, 8);
-			else
-				CelDrawHdrLightRed(v46, v47, (char *)pCursCels, v44, screen_ye, 0, 8, 1);
+			if ( !plr[myplr].InvBody[INVLOC_HAND_RIGHT]._iStatFlag )
+			{
+				colour = 229;
+			}
+			CelDecodeClr(colour, screen_x, screen_y, (char *)pCursCels, frame, frame_width, 0, 8);
 		}
-		++v38;
+
+		if ( plr[myplr].InvBody[INVLOC_HAND_RIGHT]._iStatFlag )
+		{
+			CelDrawHdrOnly(screen_x, screen_y, (char *)pCursCels, frame, frame_width, 0, 8);
+		}
+		else
+		{
+			CelDrawHdrLightRed(screen_x, screen_y, (char *)pCursCels, frame, frame_width, 0, 8, 1);
+		}
 	}
-	while ( v38 < 40 );
+
+
+	if ( plr[myplr].InvBody[INVLOC_CHEST]._itype != ITYPE_NONE )
+	{
+		InvDrawSlotBack(517, 320, 2 * INV_SLOT_SIZE_PX, 3 * INV_SLOT_SIZE_PX);
+
+		int frame = plr[myplr].InvBody[INVLOC_CHEST]._iCurs + 12;
+		int frame_width = InvItemWidth[frame];
+
+		if ( pcursinvitem == INVITEM_CHEST )
+		{
+			int colour = 197;
+			if ( plr[myplr].InvBody[INVLOC_CHEST]._iMagical )
+			{
+				colour = 181;
+			}
+			if ( !plr[myplr].InvBody[INVLOC_CHEST]._iStatFlag )
+			{
+				colour = 229;
+			}
+			CelDecodeClr(colour, 517, 320, (char *)pCursCels, frame, frame_width, 0, 8);
+		}
+
+		if ( plr[myplr].InvBody[INVLOC_CHEST]._iStatFlag )
+		{
+			CelDrawHdrOnly(517, 320, (char *)pCursCels, frame, frame_width, 0, 8);
+		}
+		else
+		{
+			CelDrawHdrLightRed(517, 320, (char *)pCursCels, frame, frame_width, 0, 8, 1);
+		}
+	}
+
+	for ( int i = 0; i < NUM_INV_GRID_ELEM; i++ )
+	{
+		if ( plr[myplr].InvGrid[i] != 0 )
+		{
+			InvDrawSlotBack(
+				InvRect[i + SLOTXY_INV_FIRST].X + 64,
+				InvRect[i + SLOTXY_INV_FIRST].Y + 159,
+				INV_SLOT_SIZE_PX,
+				INV_SLOT_SIZE_PX);
+		}
+	}
+
+	for ( int j = 0; j < NUM_INV_GRID_ELEM; j++ )
+	{
+		if ( plr[myplr].InvGrid[j] > 0 ) // first slot of an item
+		{
+			int ii = plr[myplr].InvGrid[j] - 1;
+
+			invtest[j] = TRUE;
+
+			int frame = plr[myplr].InvList[ii]._iCurs + 12;
+			int frame_width = InvItemWidth[frame];
+			if ( pcursinvitem == ii + INVITEM_INV_FIRST )
+			{
+				int colour = 197;
+				if ( plr[myplr].InvList[ii]._iMagical )
+				{
+					colour = 181;
+				}
+				if ( !plr[myplr].InvList[ii]._iStatFlag )
+				{
+					colour = 229;
+				}
+				CelDecodeClr(
+					colour,
+					InvRect[j + SLOTXY_INV_FIRST].X + 64,
+					InvRect[j + SLOTXY_INV_FIRST].Y + 159,
+					(char *)pCursCels, frame, frame_width, 0, 8);
+			}
+
+			if ( plr[myplr].InvList[ii]._iStatFlag )
+			{
+				CelDrawHdrOnly(
+					InvRect[j + SLOTXY_INV_FIRST].X + 64,
+					InvRect[j + SLOTXY_INV_FIRST].Y + 159,
+					(char *)pCursCels, frame, frame_width, 0, 8);
+			}
+			else
+			{
+				CelDrawHdrLightRed(
+					InvRect[j + SLOTXY_INV_FIRST].X + 64,
+					InvRect[j + SLOTXY_INV_FIRST].Y + 159,
+					(char *)pCursCels, frame, frame_width, 0, 8, 1);
+			}
+		}
+	}
 }
 // 4B8CB8: using guessed type char pcursinvitem;
 // 69BEF8: using guessed type int light_table_index;
@@ -1631,8 +1648,8 @@ void __fastcall CheckInvCut(int pnum, int mx, int my)
 	{
 		// check which inventory rectangle the mouse is in, if any
 		if ( mx >= InvRect[r].X
-			&& mx < InvRect[r].X + INV_SLOT_SIZE_PX
-			&& my >= InvRect[r].Y - INV_SLOT_SIZE_PX
+			&& mx < InvRect[r].X + (INV_SLOT_SIZE_PX + 1)
+			&& my >= InvRect[r].Y - (INV_SLOT_SIZE_PX + 1)
 			&& my < InvRect[r].Y )
 		{
 			done = TRUE;
@@ -1726,7 +1743,7 @@ void __fastcall CheckInvCut(int pnum, int mx, int my)
 				iv = -ii;
 			}
 
-			for ( int i = 0; i < NUM_INVELEMS; i++ )
+			for ( int i = 0; i < NUM_INV_GRID_ELEM; i++ )
 			{
 				if ( plr[pnum].InvGrid[i] == iv || plr[pnum].InvGrid[i] == -iv )
 				{
@@ -1743,7 +1760,7 @@ void __fastcall CheckInvCut(int pnum, int mx, int my)
 			{
 				plr[pnum].InvList[iv] = plr[pnum].InvList[plr[pnum]._pNumInv];
 
-				for ( int j = 0; j < NUM_INVELEMS; j++ )
+				for ( int j = 0; j < NUM_INV_GRID_ELEM; j++ )
 				{
 					if ( plr[pnum].InvGrid[j] == plr[pnum]._pNumInv + 1 )
 					{
@@ -1810,7 +1827,7 @@ void __fastcall RemoveInvItem(int pnum, int iv)
 {
 	iv++;
 
-	for ( int i = 0; i < NUM_INVELEMS; i++ )
+	for ( int i = 0; i < NUM_INV_GRID_ELEM; i++ )
 	{
 		if ( plr[pnum].InvGrid[i] == iv || plr[pnum].InvGrid[i] == -iv )
 		{
@@ -1825,7 +1842,7 @@ void __fastcall RemoveInvItem(int pnum, int iv)
 	{
 		plr[pnum].InvList[iv] = plr[pnum].InvList[plr[pnum]._pNumInv];
 
-		for ( int j = 0; j < NUM_INVELEMS; j++ )
+		for ( int j = 0; j < NUM_INV_GRID_ELEM; j++ )
 		{
 			if ( plr[pnum].InvGrid[j] == plr[pnum]._pNumInv + 1 )
 			{
