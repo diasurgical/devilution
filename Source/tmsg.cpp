@@ -4,72 +4,74 @@
 
 TMsg *sgpTimedMsgHead;
 
-int __fastcall tmsg_get(unsigned char *pbMsg, char bLen)
+int __fastcall tmsg_get(unsigned char *pbMsg, unsigned int dwMaxLen)
 {
 	unsigned char *v2; // ebx
 	DWORD v3; // eax
 	TMsg *v4; // esi
-	size_t dwMaxLen; // edi
+	size_t v6; // edi
 
 	v2 = pbMsg;
 	if ( !sgpTimedMsgHead )
 		return 0;
 	v3 = GetTickCount();
 	v4 = sgpTimedMsgHead;
-	if ( (signed int)(*(_DWORD *)&sgpTimedMsgHead[1] - v3) >= 0 )
+	if ( (signed int)(sgpTimedMsgHead->hdr.dwTime - v3) >= 0 )
 		return 0;
-	//sgpTimedMsgHead = (TMsg *)*sgpTimedMsgHead; /* fix */
-	dwMaxLen = (unsigned char)v4[2].hdr.next;
-	memcpy(v2, (char *)&v4[2] + 1, dwMaxLen);
+	sgpTimedMsgHead = sgpTimedMsgHead->hdr.pNext;
+	v6 = v4->hdr.bLen;
+	memcpy(v2, v4->body, v6);
 	mem_free_dbg(v4);
-	return dwMaxLen;
+	return v6;
 }
 
-void __fastcall tmsg_add(unsigned char *pbMsg, char bLen)
+void __fastcall tmsg_add(unsigned char *pbMsg, unsigned char bLen)
 {
-	char v2; // bl
+	unsigned char v2; // bl
 	unsigned char *v3; // ebp
 	size_t v4; // edi
 	TMsg *v5; // eax
 	TMsg *v6; // esi
+	DWORD v7; // eax
 	TMsg *v8; // ecx
 	TMsg **v9; // eax
 
 	v2 = bLen;
 	v3 = pbMsg;
-	v4 = (unsigned char)bLen;
-	v5 = (TMsg *)DiabloAllocPtr((unsigned char)bLen + 12);
+	v4 = bLen;
+	v5 = (TMsg *)DiabloAllocPtr(bLen + 12);
 	v6 = v5;
-	// *v5 = 0; /* fix */
-	v6[2].hdr.next = v2;
-	v6[1].hdr.next = GetTickCount() + 500;
-	memcpy((char *)&v6[2] + 1, v3, v4);
+	v5->hdr.pNext = 0;
+	v7 = GetTickCount();
+	v6->hdr.bLen = v2;
+	v6->hdr.dwTime = v7 + 500;
+	memcpy(v6->body, v3, v4);
 	v8 = sgpTimedMsgHead;
 	v9 = &sgpTimedMsgHead;
-	/*while ( v8 )
+	while ( v8 )
 	{
-		v9 = (TMsg **)v8;
-		v8 = (TMsg *)*v8;
-	} fix */
+		v9 = &v8->hdr.pNext;
+		v8 = v8->hdr.pNext;
+	}
 	*v9 = v6;
 }
 
 void __cdecl tmsg_cleanup()
 {
 	TMsg *v0; // eax
-	//TMsg *v1; // esi
+	TMsg *v1; // esi
 
 	v0 = sgpTimedMsgHead;
 	if ( sgpTimedMsgHead )
 	{
-		/* do
+		do
 		{
-			v1 = (TMsg *)*v0;
+			v1 = v0->hdr.pNext;
 			sgpTimedMsgHead = 0;
 			mem_free_dbg(v0);
 			v0 = v1;
 			sgpTimedMsgHead = v1;
 		}
-		while ( v1 ); fix */
+		while ( v1 );
 	}
 }

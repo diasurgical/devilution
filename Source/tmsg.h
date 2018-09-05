@@ -4,8 +4,8 @@
 
 extern TMsg *sgpTimedMsgHead;
 
-int __fastcall tmsg_get(unsigned char *pbMsg, char bLen);
-void __fastcall tmsg_add(unsigned char *pbMsg, char bLen);
+int __fastcall tmsg_get(unsigned char *pbMsg, unsigned int dwMaxLen);
+void __fastcall tmsg_add(unsigned char *pbMsg, unsigned char bLen);
 void __cdecl tmsg_cleanup();
 
 #endif /* __TMSG_H__ */
