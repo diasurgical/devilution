@@ -2485,6 +2485,21 @@ enum inv_body_loc {
 	NUM_INVLOC,
 };
 
+enum inv_item {
+	INVITEM_HEAD = 0,
+	INVITEM_RING_LEFT = 1,
+	INVITEM_RING_RIGHT = 2,
+	INVITEM_AMULET = 3,
+	INVITEM_HAND_LEFT = 4,
+	INVITEM_HAND_RIGHT = 5,
+	INVITEM_CHEST = 6,
+	INVITEM_INV_FIRST = 7,
+	INVITEM_INV_LAST = 46,
+	INVITEM_BELT_FIRST = 47,
+	INVITEM_BELT_LAST = 54,
+	NUM_INVELEM
+};
+
 // identifiers for each of the inventory squares
 // see https://github.com/sanctuary/graphics/blob/master/inventory.png
 enum inv_xy_slot {

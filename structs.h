@@ -304,9 +304,9 @@ struct PlayerStruct
 	// TODO: Replace 7 with NUM_INVLOC, however VC6
 	// doesn't seem to allow enum members as array size...
 	ItemStruct InvBody[7];
-	ItemStruct InvList[NUM_INVELEMS];
+	ItemStruct InvList[NUM_INV_GRID_ELEM];
 	int _pNumInv;
-	char InvGrid[NUM_INVELEMS];
+	char InvGrid[NUM_INV_GRID_ELEM];
 	ItemStruct SpdList[8];
 	ItemStruct HoldItem;
 	int _pIMinDam;
