@@ -19,7 +19,7 @@ void __fastcall DDErrMsg(int error_code, int log_line_nr, char *log_file_path);
 void __fastcall DSErrMsg(int error_code, int log_line_nr, char *log_file_path);
 void __fastcall center_window(HWND hDlg);
 void __fastcall ErrDlg(int template_id, int error_code, char *log_file_path, int log_line_nr);
-bool __stdcall FuncDlg(HWND hDlg, UINT uMsg, WPARAM wParam, char *text);
+BOOL __stdcall FuncDlg(HWND hDlg, UINT uMsg, WPARAM wParam, char *text);
 void __fastcall TextDlg(HWND hDlg, char *text);
 void __fastcall ErrOkDlg(int template_id, int error_code, char *log_file_path, int log_line_nr);
 void __fastcall FileErrDlg(char *error);
