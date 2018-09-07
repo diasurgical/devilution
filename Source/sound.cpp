@@ -16,8 +16,8 @@ int sound_inf = 0x7F800000; // weak
 
 /* rdata */
 
-char gbMusicOn = 1; // weak
-char gbSoundOn = 1; // weak
+UCHAR gbMusicOn = 1; // weak
+UCHAR gbSoundOn = 1; // weak
 char gbDupSounds = 1; // weak
 int sgnMusicTrack = 6;
 char *sgszMusicTracks[6] =

@@ -3828,39 +3828,38 @@ void __fastcall M_UpdateLeader(int i)
 
 void __cdecl DoEnding()
 {
-	char v0; // al
-	char *v1; // ecx
-	char bMusicOn; // bl
-	int v3; // esi
-
-	if ( (unsigned char)gbMaxPlayers > 1u )
+	if ( gbMaxPlayers > 1 ) {
 		SNetLeaveGame(0x40000004);
+	}
+
 	music_stop();
-	if ( (unsigned char)gbMaxPlayers > 1u )
+
+	if ( gbMaxPlayers > 1 ) {
 		Sleep(1000);
-	v0 = plr[myplr]._pClass;
-	if ( v0 )
-	{
-		v1 = "gendata\\DiabVic1.smk";
-		if ( v0 != 2 )
-			v1 = "gendata\\DiabVic3.smk";
 	}
-	else
-	{
-		v1 = "gendata\\DiabVic2.smk";
+
+	if ( plr[myplr]._pClass == PC_WARRIOR ) {
+		play_movie("gendata\\DiabVic2.smk", 0);
+	} else if ( plr[myplr]._pClass == PC_SORCERER ) {
+		play_movie("gendata\\DiabVic1.smk", 0);
+	} else {
+		play_movie("gendata\\DiabVic3.smk", 0);
 	}
-	play_movie(v1, 0);
 	play_movie("gendata\\Diabend.smk", 0);
-	bMusicOn = gbMusicOn;
+
+	BOOL bMusicOn = gbMusicOn;
 	gbMusicOn = 1;
-	v3 = sound_get_or_set_music_volume(1);
+
+	int musicVolume = sound_get_or_set_music_volume(1);
 	sound_get_or_set_music_volume(0);
+
 	music_start(2);
 	loop_movie = 1;
 	play_movie("gendata\\loopdend.smk", 1);
 	loop_movie = 0;
 	music_stop();
-	sound_get_or_set_music_volume(v3);
+
+	sound_get_or_set_music_volume(musicVolume);
 	gbMusicOn = bMusicOn;
 }
 // 4A22D4: using guessed type char gbMusicOn;
