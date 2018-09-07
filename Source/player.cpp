@@ -3788,61 +3788,63 @@ BOOL __fastcall PM_DoBlock(int pnum)
 	return FALSE;
 }
 
-int __fastcall PM_DoSpell(int pnum)
+BOOL __fastcall PM_DoSpell(int pnum)
 {
-	int v1; // edi
-	int v2; // esi
-
-	v1 = pnum;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("PM_DoSpell: illegal player %d", pnum);
-	v2 = v1;
-	if ( plr[v1]._pVar8 == plr[v1]._pSFNum )
+	}
+
+	if ( plr[pnum]._pVar8 == plr[pnum]._pSFNum )
 	{
 		CastSpell(
-			v1,
-			plr[v2]._pSpell,
-			plr[v2].WorldX,
-			plr[v2].WorldY,
-			plr[v2]._pVar1,
-			plr[v2]._pVar2,
-			0,
-			plr[v2]._pVar4);
-		if ( !plr[v2]._pSplFrom )
-		{
-			if ( _LOBYTE(plr[v2]._pRSplType) == 2
-			  && !(plr[v2]._pScrlSpells[1] & ((unsigned __int64)((__int64)1 << (_LOBYTE(plr[v2]._pRSpell) - 1)) >> 32) | plr[v2]._pScrlSpells[0] & (unsigned int)((__int64)1 << (_LOBYTE(plr[v2]._pRSpell) - 1))) )
-			{
-				plr[v2]._pRSpell = -1;
-				_LOBYTE(plr[v2]._pRSplType) = 4;
-				drawpanflag = 255;
+			pnum,
+			plr[pnum]._pSpell,
+			plr[pnum].WorldX,
+			plr[pnum].WorldY,
+			plr[pnum]._pVar1,
+			plr[pnum]._pVar2,
+			FALSE,
+			plr[pnum]._pVar4
+		);
+
+		if ( !plr[pnum]._pSplFrom ) {
+			if ( plr[pnum]._pRSplType == RSPLTYPE_SCROLL) {
+				if ( !(*(UINT64 *)&plr[pnum]._pScrlSpells // TODO: remove cast when pScrlSpells is converted to UINT64
+					& (UINT64)1 << (plr[pnum]._pRSpell - 1))
+				) {
+					plr[pnum]._pRSpell = SPL_INVALID;
+					plr[pnum]._pRSplType = RSPLTYPE_INVALID;
+					drawpanflag = 255;
+				}
 			}
-			if ( _LOBYTE(plr[v2]._pRSplType) == 3
-			  && !(plr[v2]._pISpells[1] & ((unsigned __int64)((__int64)1 << (_LOBYTE(plr[v2]._pRSpell) - 1)) >> 32) | plr[v2]._pISpells[0] & (unsigned int)((__int64)1 << (_LOBYTE(plr[v2]._pRSpell) - 1))) )
-			{
-				plr[v2]._pRSpell = -1;
-				_LOBYTE(plr[v2]._pRSplType) = 4;
-				drawpanflag = 255;
+
+			if ( plr[pnum]._pRSplType == RSPLTYPE_CHARGES) {
+				if ( !(*(UINT64 *)&plr[pnum]._pISpells // TODO: remove cast when pISpells is converted to UINT64
+					& (UINT64)1 << (plr[pnum]._pRSpell - 1))
+				) {
+					plr[pnum]._pRSpell = SPL_INVALID;
+					plr[pnum]._pRSplType = RSPLTYPE_INVALID;
+					drawpanflag = 255;
+				}
 			}
 		}
 	}
-	++plr[v2]._pVar8;
-	if ( leveltype )
-	{
-		if ( plr[v2]._pAnimFrame == plr[v2]._pSFrames )
-		{
-			StartStand(v1, plr[v2]._pdir);
-			goto LABEL_16;
+
+	plr[pnum]._pVar8++;
+
+	if ( leveltype == DTYPE_TOWN ) {
+		if ( plr[pnum]._pVar8 > plr[pnum]._pSFrames ) {
+			StartWalkStand(pnum);
+			ClearPlrPVars(pnum);
+			return TRUE;
 		}
+	} else if ( plr[pnum]._pAnimFrame == plr[pnum]._pSFrames ) {
+		StartStand(pnum, plr[pnum]._pdir);
+		ClearPlrPVars(pnum);
+		return TRUE;
 	}
-	else if ( plr[v2]._pVar8 > plr[v2]._pSFrames )
-	{
-		StartWalkStand(v1);
-LABEL_16:
-		ClearPlrPVars(v1);
-		return 1;
-	}
-	return 0;
+
+	return FALSE;
 }
 // 52571C: using guessed type int drawpanflag;
 // 5BB1ED: using guessed type char leveltype;
