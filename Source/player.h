@@ -80,7 +80,7 @@ bool __fastcall PlrHitObj(int pnum, int mx, int my);
 int __fastcall PM_DoAttack(int pnum);
 int __fastcall PM_DoRangeAttack(int pnum);
 void __fastcall ShieldDur(int pnum);
-int __fastcall PM_DoBlock(int pnum);
+BOOL __fastcall PM_DoBlock(int pnum);
 int __fastcall PM_DoSpell(int pnum);
 int __fastcall PM_DoGotHit(int pnum);
 void __fastcall ArmorDur(int pnum);
