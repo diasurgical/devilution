@@ -1351,11 +1351,11 @@ void __fastcall L5drawRoom(int x, int y, int w, int h)
 	}
 }
 
-void __fastcall L5roomGen(int x, int y, int w, int h, bool dir)
+void __fastcall L5roomGen(int x, int y, int w, int h, BOOL dir)
 {
 	int v5; // eax
-	int v6; // ecx
-	int v7; // eax
+	BOOL v6; // ecx
+	BOOL v7; // eax
 	int v8; // ecx
 	int v9; // eax
 	int v11; // esi
@@ -1391,7 +1391,7 @@ void __fastcall L5roomGen(int x, int y, int w, int h, bool dir)
 		{
 			v5 = random(0, 4);
 			v6 = 0;
-			_LOBYTE(v6) = dir == 1 ? v5 != 0 : v5 == 0;
+			v6 = dir == 1 ? v5 != 0 : v5 == 0;
 			v7 = v6;
 			v8 = 0;
 			if ( !v7 )
@@ -1423,7 +1423,7 @@ void __fastcall L5roomGen(int x, int y, int w, int h, bool dir)
 				L5roomGen(v13, tya, v11, v12, 0);
 			if ( tha != 1 )
 				return;
-			*(_DWORD *)&dir = 0;
+			dir = 0;
 			h = v12;
 			w = v11;
 			v29 = txb;
@@ -1454,7 +1454,7 @@ void __fastcall L5roomGen(int x, int y, int w, int h, bool dir)
 			L5roomGen(tyb, v20, v18, v19, 1);
 		if ( thc != 1 )
 			break;
-		*(_DWORD *)&dir = 1;
+		dir = 1;
 		h = v19;
 		w = v18;
 		v29 = v20;

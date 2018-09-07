@@ -30,7 +30,7 @@ void __cdecl InitL5Dungeon();
 void __cdecl L5ClearFlags();
 void __cdecl L5firstRoom();
 void __fastcall L5drawRoom(int x, int y, int w, int h);
-void __fastcall L5roomGen(int x, int y, int w, int h, bool dir);
+void __fastcall L5roomGen(int x, int y, int w, int h, BOOL dir);
 bool __fastcall L5checkRoom(int x, int y, int width, int height);
 int __cdecl L5GetArea();
 void __cdecl L5makeDungeon();
