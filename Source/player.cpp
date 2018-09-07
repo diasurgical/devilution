@@ -3128,7 +3128,7 @@ LABEL_9:
 }
 // 5BB1ED: using guessed type char leveltype;
 
-bool __fastcall WeaponDur(int pnum, int durrnd)
+BOOL __fastcall WeaponDur(int pnum, int durrnd)
 {
 	unsigned int v2; // edi
 	unsigned int v3; // esi
@@ -3692,44 +3692,59 @@ LABEL_48:
 }
 // 484368: using guessed type int FriendlyMode;
 
-int __fastcall PM_DoRangeAttack(int pnum)
+BOOL __fastcall PM_DoRangeAttack(int pnum)
 {
-	int v1; // edi
-	int v2; // esi
-	int v3; // ecx
-	int v4; // eax
-	int v5; // eax
-	//int v6; // eax
-
-	v1 = pnum;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("PM_DoRangeAttack: illegal player %d", pnum);
-	v2 = v1;
-	v3 = plr[v1]._pIFlags;
-	v4 = plr[v1]._pAnimFrame;
-	if ( v3 & 0x20000 && v4 == 1 )
-		plr[v2]._pAnimFrame = 2;
-	if ( v3 & 0x40000 && (v4 == 1 || v4 == 3) )
-		++plr[v2]._pAnimFrame;
-	if ( plr[v2]._pAnimFrame != plr[v2]._pAFNum )
-		goto LABEL_21;
-	v5 = 0;
-	if ( v3 & 8 )
-		v5 = MIS_FARROW;
-	if ( v3 & 0x2000000 )
-		v5 = MIS_LARROW;
-	AddMissile(plr[v2].WorldX, plr[v2].WorldY, plr[v2]._pVar1, plr[v2]._pVar2, plr[v2]._pdir, v5, 0, v1, 4, 0);
-	PlaySfxLoc(PS_BFIRE, plr[v2].WorldX, plr[v2].WorldY);
-	//_LOBYTE(v6) = WeaponDur(v1, 40);
-	if ( !WeaponDur(v1, 40) )
-	{
-LABEL_21:
-		if ( plr[v2]._pAnimFrame < plr[v2]._pAFrames )
-			return 0;
 	}
-	StartStand(v1, plr[v2]._pdir);
-	ClearPlrPVars(v1);
-	return 1;
+
+	int animFrame = plr[pnum]._pAnimFrame;
+	if ( plr[pnum]._pIFlags & ISPL_QUICKATTACK && plr[pnum]._pAnimFrame == 1 ) {
+		plr[pnum]._pAnimFrame = animFrame + 1;
+	}
+
+	if ( plr[pnum]._pIFlags & ISPL_FASTATTACK && (animFrame == 1 || animFrame == 3) ) {
+		plr[pnum]._pAnimFrame++;
+	}
+	animFrame = plr[pnum]._pAnimFrame;
+
+	if ( animFrame == plr[pnum]._pAFNum ) {
+		int mistype = MIS_ARROW;
+		if ( plr[pnum]._pIFlags & ISPL_FIRE_ARROWS ) {
+			mistype = MIS_FARROW;
+		}
+		if ( plr[pnum]._pIFlags & ISPL_LIGHT_ARROWS ) {
+			mistype = MIS_LARROW;
+		}
+		AddMissile(
+			plr[pnum].WorldX,
+			plr[pnum].WorldY,
+			plr[pnum]._pVar1,
+			plr[pnum]._pVar2,
+			plr[pnum]._pdir,
+			mistype,
+			0,
+			pnum,
+			4,
+			0
+		);
+
+		PlaySfxLoc(PS_BFIRE, plr[pnum].WorldX, plr[pnum].WorldY);
+
+		if ( WeaponDur(pnum, 40) || plr[pnum]._pAnimFrame >= plr[pnum]._pAFrames ) {
+			StartStand(pnum, plr[pnum]._pdir);
+			ClearPlrPVars(pnum);
+			return TRUE;
+		}
+	}
+
+	if ( plr[pnum]._pAnimFrame >= plr[pnum]._pAFrames ) {
+		StartStand(pnum, plr[pnum]._pdir);
+		ClearPlrPVars(pnum);
+		return TRUE;
+	}
+
+	return FALSE;
 }
 
 void __fastcall ShieldDur(int pnum)
