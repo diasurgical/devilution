@@ -3734,69 +3734,58 @@ LABEL_21:
 
 void __fastcall ShieldDur(int pnum)
 {
-	int v1; // edi
-	int v2; // esi
-	int v3; // ecx
-	int v4; // ecx
-	int v5; // ecx
-	int v6; // ecx
-
-	v1 = pnum;
-	if ( pnum == myplr )
-	{
-		if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( pnum == myplr ) {
+		if ( (DWORD)pnum >= MAX_PLRS ) {
 			TermMsg("ShieldDur: illegal player %d", pnum);
-		v2 = v1;
-		if ( plr[v1].InvBody[4]._itype == ITYPE_SHIELD )
-		{
-			v3 = plr[v2].InvBody[4]._iDurability;
-			if ( v3 == 255 )
+		}
+
+		if ( plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_SHIELD ) {
+			if ( plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDurability == 255 ) {
 				return;
-			v4 = v3 - 1;
-			plr[v2].InvBody[4]._iDurability = v4;
-			if ( !v4 )
-			{
-				NetSendCmdDelItem(1u, 4u);
-				plr[v2].InvBody[4]._itype = ITYPE_NONE;
-				CalcPlrInv(v1, 1u);
+			}
+
+			plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDurability--;
+			if ( plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDurability == 0 ) {
+				NetSendCmdDelItem(TRUE, INVLOC_HAND_LEFT);
+				plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype = ITYPE_NONE;
+				CalcPlrInv(pnum, TRUE);
 			}
 		}
-		if ( plr[v2].InvBody[5]._itype == ITYPE_SHIELD )
-		{
-			v5 = plr[v2].InvBody[5]._iDurability;
-			if ( v5 != 255 )
-			{
-				v6 = v5 - 1;
-				plr[v2].InvBody[5]._iDurability = v6;
-				if ( !v6 )
-				{
-					NetSendCmdDelItem(1u, 5u);
-					plr[v2].InvBody[5]._itype = ITYPE_NONE;
-					CalcPlrInv(v1, 1u);
+
+		if ( plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_SHIELD ) {
+			if ( plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iDurability != 255 ) {
+				plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iDurability--;
+				if ( plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iDurability == 0 ) {
+					NetSendCmdDelItem(TRUE, INVLOC_HAND_RIGHT);
+					plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype = ITYPE_NONE;
+					CalcPlrInv(pnum, TRUE);
 				}
 			}
 		}
 	}
 }
 
-int __fastcall PM_DoBlock(int pnum)
+BOOL __fastcall PM_DoBlock(int pnum)
 {
-	int v1; // esi
-	int v2; // eax
-
-	v1 = pnum;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("PM_DoBlock: illegal player %d", pnum);
-	v2 = v1;
-	if ( plr[v1]._pIFlags & 0x1000000 && plr[v2]._pAnimFrame != 1 )
-		plr[v2]._pAnimFrame = plr[v2]._pBFrames;
-	if ( plr[v2]._pAnimFrame < plr[v2]._pBFrames )
-		return 0;
-	StartStand(v1, plr[v2]._pdir);
-	ClearPlrPVars(v1);
-	if ( !random(3, 10) )
-		ShieldDur(v1);
-	return 1;
+	}
+
+	if ( plr[pnum]._pIFlags & ISPL_FASTBLOCK && plr[pnum]._pAnimFrame != 1 ) {
+		plr[pnum]._pAnimFrame = plr[pnum]._pBFrames;
+	}
+
+	if ( plr[pnum]._pAnimFrame >= plr[pnum]._pBFrames ) {
+		StartStand(pnum, plr[pnum]._pdir);
+		ClearPlrPVars(pnum);
+
+		if ( !random(3, 10) ) {
+			ShieldDur(pnum);
+		}
+		return TRUE;
+	}
+
+	return FALSE;
 }
 
 int __fastcall PM_DoSpell(int pnum)
