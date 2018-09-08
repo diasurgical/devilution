@@ -3138,7 +3138,7 @@ void __fastcall DrawMain(int dwHgt, int draw_desc, int draw_hp, int draw_mana, i
 	signed int a4; // [esp+1Ch] [ebp-8h]
 
 	a4 = dwHgt;
-	if ( window_activated && lpDDSPrimary )
+	if ( gbActive && lpDDSPrimary )
 	{
 		if ( lpDDSPrimary->IsLost() == DDERR_SURFACELOST )
 		{
@@ -3226,7 +3226,7 @@ LABEL_17:
 #endif
 	}
 }
-// 634980: using guessed type int window_activated;
+// 634980: using guessed type int gbActive;
 // 679660: using guessed type char gbMaxPlayers;
 
 #ifdef _DEBUG
@@ -3237,7 +3237,7 @@ void __cdecl DrawFPS()
 	char String[12]; // [esp+8h] [ebp-10h]
 	HDC hdc; // [esp+14h] [ebp-4h]
 
-	if ( frameflag && window_activated )
+	if ( frameflag && gbActive )
 	{
 		++frameend;
 		v0 = GetTickCount();
