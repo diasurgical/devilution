@@ -3731,7 +3731,7 @@ BOOL __fastcall PM_DoRangeAttack(int pnum)
 
 		PlaySfxLoc(PS_BFIRE, plr[pnum].WorldX, plr[pnum].WorldY);
 
-		if ( WeaponDur(pnum, 40) || plr[pnum]._pAnimFrame >= plr[pnum]._pAFrames ) {
+		if ( WeaponDur(pnum, 40) ) {
 			StartStand(pnum, plr[pnum]._pdir);
 			ClearPlrPVars(pnum);
 			return TRUE;
@@ -3742,9 +3742,10 @@ BOOL __fastcall PM_DoRangeAttack(int pnum)
 		StartStand(pnum, plr[pnum]._pdir);
 		ClearPlrPVars(pnum);
 		return TRUE;
+	} else {
+		return FALSE;
 	}
 
-	return FALSE;
 }
 
 void __fastcall ShieldDur(int pnum)
