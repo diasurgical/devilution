@@ -8181,7 +8181,7 @@ void __fastcall MissToMonst(int i, int x, int y)
 
 	v3 = i;
 	v30 = x;
-	if ( (unsigned int)i >= 0x7D )
+	if ( (unsigned int)i >= MAXMISSILES )
 		TermMsg("MissToMonst: Invalid missile %d", i);
 	v4 = &missile[v3];
 	v5 = v4->_misource;

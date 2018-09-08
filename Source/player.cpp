@@ -2238,7 +2238,7 @@ void __fastcall RespawnDeadItem(ItemStruct *itm, int x, int y)
 	//unsigned int v6; // ecx
 
 	v3 = itm;
-	if ( numitems < 127 )
+	if ( numitems < MAXITEMS )
 	{
 		if ( FindGetItem(itm->IDidx, itm->_iCreateInfo, itm->_iSeed) >= 0 )
 		{
@@ -2251,7 +2251,7 @@ void __fastcall RespawnDeadItem(ItemStruct *itm, int x, int y)
 		//v6 = 4 * numitems;
 		itemactive[numitems] = v4;
 		v4 *= 368;
-		itemavail[0] = itemavail[-numitems + 126]; /* double check */
+		itemavail[0] = itemavail[-numitems + 126]; /* double check, MAXITEMS */
 		qmemcpy((char *)item + v4, v3, sizeof(ItemStruct));
 		*(int *)((char *)&item[0]._ix + v4) = x;
 		*(int *)((char *)&item[0]._iy + v4) = y;
