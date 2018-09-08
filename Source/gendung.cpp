@@ -33,7 +33,7 @@ char leveltype; // weak
 unsigned char currlevel; // idb
 char TransList[256];
 // TODO: probably unsigned char
-char nSolidTable[2049];
+BYTE nSolidTable[2049];
 int level_frame_count[2048];
 ScrollStruct ScrollInfo;
 void *pDungeonCels;
