@@ -229,7 +229,7 @@ void __fastcall CelDecDatLightEntry(unsigned char shift, char *LightIndex, char 
 	int tmp; // eax
 	char v11; // ch
 	char v12; // ch
-	char a1;
+	unsigned char a1;
 
 	v5 = shift & 1;
 	v6 = shift >> 1;
@@ -815,7 +815,7 @@ void __fastcall Cel2DecDatLightEntry(unsigned char shift, char *LightIndex, char
 	int tmp; // eax
 	char v11; // ch
 	char v12; // ch
-	char a1;
+	unsigned char a1;
 
 	v5 = shift & 1;
 	v6 = shift >> 1;
