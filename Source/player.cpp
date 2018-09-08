@@ -5371,131 +5371,99 @@ void __fastcall ModifyPlrVit(int pnum, int l)
 
 void __fastcall SetPlayerHitPoints(int pnum, int newhp)
 {
-	int v2; // esi
-	int v3; // edi
-	int v4; // eax
-	int v5; // ecx
-	bool v6; // zf
-
-	v2 = pnum;
-	v3 = newhp;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("SetPlayerHitPoints: illegal player %d", pnum);
-	v4 = v2;
-	v5 = plr[v2]._pMaxHPBase;
-	plr[v4]._pHitPoints = v3;
-	v6 = v2 == myplr;
-	plr[v4]._pHPBase = v3 + v5 - plr[v2]._pMaxHP;
-	if ( v6 )
+	}
+
+	plr[pnum]._pHitPoints = newhp;
+	plr[pnum]._pHPBase = newhp + plr[pnum]._pMaxHPBase - plr[pnum]._pMaxHP;
+
+	if ( pnum == myplr ) {
 		drawhpflag = 1;
+	}
 }
 
 void __fastcall SetPlrStr(int pnum, int v)
 {
-	int v2; // edi
-	int v3; // ebx
-	int v4; // esi
-	int v5; // eax
-	signed int v6; // ecx
-
-	v2 = pnum;
-	v3 = v;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("SetPlrStr: illegal player %d", pnum);
-	v4 = v2;
-	plr[v2]._pBaseStr = v3;
-	CalcPlrInv(v2, 1u);
-	if ( _LOBYTE(plr[v2]._pClass) == 1 )
-	{
-		v5 = plr[v4]._pLevel * (plr[v4]._pStrength + plr[v4]._pDexterity);
-		v6 = 200;
 	}
-	else
-	{
-		v5 = plr[v4]._pStrength * plr[v4]._pLevel;
-		v6 = 100;
+
+	plr[pnum]._pBaseStr = v;
+	CalcPlrInv(pnum, TRUE);
+
+	int dm;
+	if ( plr[pnum]._pClass == PC_ROGUE ) {
+		dm = plr[pnum]._pLevel * (plr[pnum]._pStrength + plr[pnum]._pDexterity) / 200;
+	} else {
+		dm = plr[pnum]._pLevel * plr[pnum]._pStrength / 100;
 	}
-	plr[v4]._pDamageMod = v5 / v6;
+
+	plr[pnum]._pDamageMod = dm;
 }
 
 void __fastcall SetPlrMag(int pnum, int v)
 {
-	int v2; // edi
-	int v3; // esi
-	int v4; // eax
-	int v5; // esi
-
-	v2 = pnum;
-	v3 = v;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("SetPlrMag: illegal player %d", pnum);
-	v4 = v2;
-	plr[v2]._pBaseMag = v3;
-	v5 = v3 << 6;
-	if ( _LOBYTE(plr[v2]._pClass) == 2 )
-		v5 *= 2;
-	plr[v4]._pMaxManaBase = v5;
-	plr[v4]._pMaxMana = v5;
-	CalcPlrInv(v2, 1u);
+	}
+
+	plr[pnum]._pBaseMag = v;
+
+	int m = v << 6;
+	if ( plr[pnum]._pClass == PC_SORCERER ) {
+		m *= 2;
+	}
+
+	plr[pnum]._pMaxManaBase = m;
+	plr[pnum]._pMaxMana = m;
+	CalcPlrInv(pnum, TRUE);
 }
 
 void __fastcall SetPlrDex(int pnum, int v)
 {
-	int v2; // edi
-	int v3; // ebx
-	int v4; // esi
-	int v5; // eax
-	signed int v6; // ecx
-
-	v2 = pnum;
-	v3 = v;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("SetPlrDex: illegal player %d", pnum);
-	v4 = v2;
-	plr[v2]._pBaseDex = v3;
-	CalcPlrInv(v2, 1u);
-	if ( _LOBYTE(plr[v2]._pClass) == 1 )
-	{
-		v5 = plr[v4]._pLevel * (plr[v4]._pStrength + plr[v4]._pDexterity);
-		v6 = 200;
 	}
-	else
-	{
-		v5 = plr[v4]._pStrength * plr[v4]._pLevel;
-		v6 = 100;
+
+	plr[pnum]._pBaseDex = v;
+	CalcPlrInv(pnum, TRUE);
+
+	int dm;
+	if ( plr[pnum]._pClass == PC_ROGUE ) {
+		dm = plr[pnum]._pLevel * (plr[pnum]._pStrength + plr[pnum]._pDexterity) / 200;
+	} else {
+		dm = plr[pnum]._pStrength * plr[pnum]._pLevel / 100;
 	}
-	plr[v4]._pDamageMod = v5 / v6;
+
+	plr[pnum]._pDamageMod = dm;
 }
 
 void __fastcall SetPlrVit(int pnum, int v)
 {
-	int v2; // edi
-	int v3; // esi
-	int v4; // eax
-	int v5; // esi
-
-	v2 = pnum;
-	v3 = v;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("SetPlrVit: illegal player %d", pnum);
-	v4 = v2;
-	plr[v2]._pBaseVit = v3;
-	v5 = v3 << 6;
-	if ( !_LOBYTE(plr[v2]._pClass) )
-		v5 *= 2;
-	plr[v4]._pHPBase = v5;
-	plr[v4]._pMaxHPBase = v5;
-	CalcPlrInv(v2, 1u);
+	}
+
+	plr[pnum]._pBaseVit = v;
+
+	int hp = v << 6;
+	if ( !_LOBYTE(plr[pnum]._pClass) ) {
+		hp *= 2;
+	}
+
+	plr[pnum]._pHPBase = hp;
+	plr[pnum]._pMaxHPBase = hp;
+	CalcPlrInv(pnum, TRUE);
 }
 
 void __fastcall InitDungMsgs(int pnum)
 {
-	int v1; // esi
-
-	v1 = pnum;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("InitDungMsgs: illegal player %d", pnum);
-	plr[v1].pDungMsgs = 0;
+	}
+
+	plr[pnum].pDungMsgs = 0;
 }
 
 void __cdecl PlayDungMsgs()
