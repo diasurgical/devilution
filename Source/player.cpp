@@ -1211,7 +1211,7 @@ void __fastcall InitPlayerLoc(int pnum, bool flag)
 	do
 		v14 |= *(unsigned short *)&v6[2 * v17++];
 	while ( v17 < 10 );
-	if ( v14 | dArch[v4][v5] | (unsigned char)nSolidTable[dPiece[0][v5 + 112 * v4]] )
+	if ( v14 | dArch[v4][v5] | nSolidTable[dPiece[0][v5 + 112 * v4]] )
 		plr[v3]._peflag = 1;
 	else
 		plr[v3]._peflag = 0;
@@ -1243,14 +1243,11 @@ void __fastcall InitPlayerLoc(int pnum, bool flag)
 
 BOOL __fastcall SolidLoc(int x, int y)
 {
-	BOOL result; // eax
+	if ( x < 0 || y < 0 || x >= 112 || y >= 112 ) {
+		return FALSE;
+	}
 
-	if ( x < 0 || y < 0 || x >= 112 || y >= 112 )
-		result = FALSE;
-	else
-		// TODO: remove cast when changing nSolidTable to unsigned char
-		result = (unsigned char)nSolidTable[dPiece[0][y + 112 * x]];
-	return result;
+	return nSolidTable[dPiece[0][y + 112 * x]];
 }
 
 bool __fastcall PlrDirOK(int pnum, int dir)

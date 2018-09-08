@@ -7590,24 +7590,17 @@ LABEL_24:
 	return v26 == (unsigned char)monster[v4].unpackfilesize;
 }
 
-bool __fastcall PosOkMissile(int x, int y)
+BOOL __fastcall PosOkMissile(int x, int y)
 {
-	int v2; // ecx
-	bool result; // al
-
-	v2 = x;
-	result = 0;
-	if ( !nMissileTable[dPiece[0][v2 * 112 + y]] && !(dFlags[v2][y] & 0x10) )
-		result = 1;
-	return result;
+	return !nMissileTable[dPiece[0][x * 112 + y]] && !(dFlags[x][y] & 0x10);
 }
 
-bool __fastcall CheckNoSolid(int x, int y)
+BOOL __fastcall CheckNoSolid(int x, int y)
 {
 	return nSolidTable[dPiece[0][y + 112 * x]] == 0;
 }
 
-bool __fastcall LineClearF(bool(__fastcall *Clear)(int, int), int x1, int y1, int x2, int y2)
+BOOL __fastcall LineClearF(BOOL(__fastcall *Clear)(int, int), int x1, int y1, int x2, int y2)
 {
 	int v5; // esi
 	int v6; // edi
@@ -7739,7 +7732,7 @@ bool __fastcall LineClearF(bool(__fastcall *Clear)(int, int), int x1, int y1, in
 	return 0;
 }
 
-bool __fastcall LineClear(int x1, int y1, int x2, int y2)
+BOOL __fastcall LineClear(int x1, int y1, int x2, int y2)
 {
 	return LineClearF(PosOkMissile, x1, y1, x2, y2);
 }
