@@ -2980,133 +2980,108 @@ BOOL __fastcall PM_DoWalk(int pnum)
 }
 // 5BB1ED: using guessed type char leveltype;
 
-int __fastcall PM_DoWalk2(int pnum)
+BOOL __fastcall PM_DoWalk2(int pnum)
 {
-	int v1; // ebx
-	int v2; // esi
-	int v3; // eax
-	int v4; // eax
-	int result; // eax
-
-	v1 = pnum;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("PM_DoWalk2: illegal player %d", pnum);
-	v2 = v1;
-	v3 = plr[v1]._pAnimFrame;
-	if ( v3 == 3 )
-		goto LABEL_8;
-	if ( plr[v2]._pWFrames != 8 )
-	{
-		if ( v3 != 4 )
-			goto LABEL_9;
-		goto LABEL_8;
 	}
-	if ( v3 == 7 )
-LABEL_8:
-		PlaySfxLoc(0, plr[v2].WorldX, plr[v2].WorldY);
-LABEL_9:
-	v4 = 8;
-	if ( currlevel )
-		v4 = PWVel[3][SLOBYTE(plr[v2]._pClass)];
-	if ( plr[v2]._pVar8 == v4 )
-	{
-		dPlayer[plr[v2]._pVar1][plr[v2]._pVar2] = 0;
-		if ( leveltype )
-		{
-			ChangeLightXY(plr[v2]._plid, plr[v2].WorldX, plr[v2].WorldY);
-			ChangeVisionXY(plr[v2]._pvid, plr[v2].WorldX, plr[v2].WorldY);
+
+	if ( plr[pnum]._pAnimFrame == 3
+		|| (plr[pnum]._pWFrames == 8 && plr[pnum]._pAnimFrame == 7)
+		|| (plr[pnum]._pWFrames != 8 && plr[pnum]._pAnimFrame == 4)
+	) {
+		PlaySfxLoc(PS_WALK1, plr[pnum].WorldX, plr[pnum].WorldY);
+	}
+
+	int vel = 8;
+	if ( currlevel ) {
+		vel = PWVel[3][plr[pnum]._pClass];
+	}
+
+	if ( plr[pnum]._pVar8 == vel ) {
+		dPlayer[plr[pnum]._pVar1][plr[pnum]._pVar2] = 0;
+		if ( leveltype != DTYPE_TOWN ) {
+			ChangeLightXY(plr[pnum]._plid, plr[pnum].WorldX, plr[pnum].WorldY);
+			ChangeVisionXY(plr[pnum]._pvid, plr[pnum].WorldX, plr[pnum].WorldY);
 		}
-		if ( v1 == myplr && ScrollInfo._sdir )
-		{
-			ViewX = plr[v2].WorldX - ScrollInfo._sdx;
-			ViewY = plr[v2].WorldY - ScrollInfo._sdy;
+
+		if ( pnum == myplr && ScrollInfo._sdir ) {
+			ViewX = plr[pnum].WorldX - ScrollInfo._sdx;
+			ViewY = plr[pnum].WorldY - ScrollInfo._sdy;
 		}
-		if ( plr[v2].walkpath[0] == -1 )
-			StartStand(v1, plr[v2]._pVar3);
-		else
-			StartWalkStand(v1);
-		ClearPlrPVars(v1);
-		if ( leveltype )
-			ChangeLightOff(plr[v2]._plid, 0, 0);
-		result = 1;
+
+		if ( plr[pnum].walkpath[0] != -1 ) {
+			StartWalkStand(pnum);
+		} else {
+			StartStand(pnum, plr[pnum]._pVar3);
+		}
+
+		ClearPlrPVars(pnum);
+
+		if ( leveltype != DTYPE_TOWN ) {
+			ChangeLightOff(plr[pnum]._plid, 0, 0);
+		}
+
+		return TRUE;
 	}
-	else
-	{
-		PM_ChangeOffset(v1);
-		result = 0;
-	}
-	return result;
+
+	PM_ChangeOffset(pnum);
+	return FALSE;
 }
 // 5BB1ED: using guessed type char leveltype;
 
-int __fastcall PM_DoWalk3(int pnum)
+BOOL __fastcall PM_DoWalk3(int pnum)
 {
-	int v1; // ebx
-	int v2; // esi
-	int v3; // eax
-	int v4; // eax
-	int v5; // edx
-	char *v6; // eax
-	int v7; // eax
-	bool v8; // zf
-	int result; // eax
-
-	v1 = pnum;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("PM_DoWalk3: illegal player %d", pnum);
-	v2 = v1;
-	v3 = plr[v1]._pAnimFrame;
-	if ( v3 == 3 )
-		goto LABEL_8;
-	if ( plr[v2]._pWFrames != 8 )
-	{
-		if ( v3 != 4 )
-			goto LABEL_9;
-		goto LABEL_8;
 	}
-	if ( v3 == 7 )
-LABEL_8:
-		PlaySfxLoc(0, plr[v2].WorldX, plr[v2].WorldY);
-LABEL_9:
-	v4 = 8;
-	if ( currlevel )
-		v4 = PWVel[3][SLOBYTE(plr[v2]._pClass)];
-	if ( plr[v2]._pVar8 == v4 )
-	{
-		v5 = plr[v2]._pVar1;
-		dPlayer[plr[v2].WorldX][plr[v2].WorldY] = 0;
-		v6 = &dFlags[plr[v2]._pVar4][plr[v2]._pVar5];
-		plr[v2].WorldX = v5;
-		*v6 &= 0xDFu;
-		v7 = plr[v2]._pVar2;
-		v8 = leveltype == DTYPE_TOWN;
-		dPlayer[v5][v7] = v1 + 1;
-		plr[v2].WorldY = v7;
-		if ( !v8 )
-		{
-			ChangeLightXY(plr[v2]._plid, v5, v7);
-			ChangeVisionXY(plr[v2]._pvid, plr[v2].WorldX, plr[v2].WorldY);
+
+	if ( plr[pnum]._pAnimFrame == 3
+		|| (plr[pnum]._pWFrames == 8 && plr[pnum]._pAnimFrame == 7)
+		|| (plr[pnum]._pWFrames != 8 && plr[pnum]._pAnimFrame == 4)
+	) {
+		PlaySfxLoc(PS_WALK1, plr[pnum].WorldX, plr[pnum].WorldY);
+	}
+
+	int vel = 8;
+	if ( currlevel ) {
+		vel = PWVel[3][plr[pnum]._pClass];
+	}
+
+	if ( plr[pnum]._pVar8 == vel ) {
+		dPlayer[plr[pnum].WorldX][plr[pnum].WorldY] = 0;
+		dFlags[plr[pnum]._pVar4][plr[pnum]._pVar5] &= 0xDFu;
+		plr[pnum].WorldX = plr[pnum]._pVar1;
+		plr[pnum].WorldY = plr[pnum]._pVar2;
+		dPlayer[plr[pnum]._pVar1][plr[pnum]._pVar2] = pnum + 1;
+
+		if ( leveltype != DTYPE_TOWN ) {
+			ChangeLightXY(plr[pnum]._plid, plr[pnum]._pVar1, plr[pnum]._pVar2);
+			ChangeVisionXY(plr[pnum]._pvid, plr[pnum].WorldX, plr[pnum].WorldY);
 		}
-		if ( v1 == myplr && ScrollInfo._sdir )
-		{
-			ViewX = plr[v2].WorldX - ScrollInfo._sdx;
-			ViewY = plr[v2].WorldY - ScrollInfo._sdy;
+
+		if ( pnum == myplr && ScrollInfo._sdir ) {
+			ViewX = plr[pnum].WorldX - ScrollInfo._sdx;
+			ViewY = plr[pnum].WorldY - ScrollInfo._sdy;
 		}
-		if ( plr[v2].walkpath[0] == -1 )
-			StartStand(v1, plr[v2]._pVar3);
-		else
-			StartWalkStand(v1);
-		ClearPlrPVars(v1);
-		if ( leveltype )
-			ChangeLightOff(plr[v2]._plid, 0, 0);
-		result = 1;
+
+		if ( plr[pnum].walkpath[0] != -1 ) {
+			StartWalkStand(pnum);
+		} else {
+			StartStand(pnum, plr[pnum]._pVar3);
+		}
+
+		ClearPlrPVars(pnum);
+
+		if ( leveltype != DTYPE_TOWN ) {
+			ChangeLightOff(plr[pnum]._plid, 0, 0);
+		}
+
+		return TRUE;
 	}
-	else
-	{
-		PM_ChangeOffset(v1);
-		result = 0;
-	}
-	return result;
+
+	PM_ChangeOffset(pnum);
+	return FALSE;
 }
 // 5BB1ED: using guessed type char leveltype;
 
