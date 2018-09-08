@@ -1168,13 +1168,12 @@ LABEL_33:
 
 void __cdecl InitMultiView()
 {
-	int v0; // eax
-
-	if ( (unsigned int)myplr >= MAX_PLRS )
+	if ( (DWORD)myplr >= MAX_PLRS ) {
 		TermMsg("InitPlayer: illegal player %d", myplr);
-	v0 = plr[myplr].WorldY;
+	}
+
 	ViewX = plr[myplr].WorldX;
-	ViewY = v0;
+	ViewY = plr[myplr].WorldY;
 }
 
 void __fastcall InitPlayerLoc(int pnum, bool flag)
@@ -1243,11 +1242,11 @@ void __fastcall InitPlayerLoc(int pnum, bool flag)
 
 BOOL __fastcall SolidLoc(int x, int y)
 {
-	if ( x < 0 || y < 0 || x >= 112 || y >= 112 ) {
+	if ( x < 0 || y < 0 || x >= MAXDUNX || y >= MAXDUNY ) {
 		return FALSE;
 	}
 
-	return nSolidTable[dPiece[0][y + 112 * x]];
+	return nSolidTable[dPiece[x][y]];
 }
 
 bool __fastcall PlrDirOK(int pnum, int dir)
