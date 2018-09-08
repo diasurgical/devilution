@@ -7592,12 +7592,12 @@ LABEL_24:
 
 BOOL __fastcall PosOkMissile(int x, int y)
 {
-	return !nMissileTable[dPiece[0][x * 112 + y]] && !(dFlags[x][y] & 0x10);
+	return !nMissileTable[dPiece[x][y]] && !(dFlags[x][y] & 0x10);
 }
 
 BOOL __fastcall CheckNoSolid(int x, int y)
 {
-	return nSolidTable[dPiece[0][y + 112 * x]] == 0;
+	return nSolidTable[dPiece[x][y]] == 0;
 }
 
 BOOL __fastcall LineClearF(BOOL(__fastcall *Clear)(int, int), int x1, int y1, int x2, int y2)
