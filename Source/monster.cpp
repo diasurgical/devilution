@@ -807,7 +807,7 @@ void __cdecl ClrAllMonsters()
 		ClearMVars(i);
 		Monst->mName = "Invalid Monster";
 		Monst->_mgoal = 0;
-		Monst->_mmode = 0;
+		Monst->_mmode = MM_STAND;
 		Monst->_mVar1 = 0;
 		Monst->_mVar2 = 0;
 		Monst->_mx = 0;
@@ -1112,7 +1112,7 @@ void __fastcall PlaceUniqueMonst(int uniqindex, int miniontype, int unpackfilesi
 		Monst->_mAnimData = Monst->MType->Anims[0].Frames[Monst->_mdir];
 		Monst->_mAnimFrame = random(88, Monst->_mAnimLen - 1) + 1;
 		Monst->_mFlags &= 0xFFFFFFFB;
-		Monst->_mmode = 0;
+		Monst->_mmode = MM_STAND;
 	}
 }
 
@@ -1886,7 +1886,7 @@ void __fastcall M_StartStand(int i, int md)
 	monster[v4]._mdir = v2;
 	monster[v4]._mVar1 = monster[v4]._mmode;
 	monster[v4]._mVar2 = 0;
-	monster[v4]._mmode = 0;
+	monster[v4]._mmode = MM_STAND;
 	v7 = monster[v4]._mx;
 	monster[v4]._mxoff = 0;
 	monster[v4]._myoff = 0;
@@ -3036,7 +3036,7 @@ void __fastcall M_TryM2MHit(int i, int mid, int hper, int mind, int maxd)
 	int v8; // ebx
 	//int v9; // eax
 	int v11; // eax
-	bool ret; // [esp+Ch] [ebp-Ch]
+	BOOL ret; // [esp+Ch] [ebp-Ch]
 	char v13[4]; // [esp+10h] [ebp-8h]
 	char arglist[4]; // [esp+14h] [ebp-4h]
 
@@ -3733,7 +3733,7 @@ void __fastcall M_Teleport(int i)
 	}
 	v15 = 0;
 	v3 = &monster[v1];
-	if ( v3->_mmode != 15 )
+	if ( v3->_mmode != MM_STONE )
 	{
 		v10 = (unsigned char)v3->_menemyx;
 		v12 = (unsigned char)v3->_menemyy;
@@ -4693,7 +4693,7 @@ void __fastcall MAI_Snake(int i)
 	esi3 = &monster[esi1];
 	pattern[0] = 1;
 	pattern[1] = 1;
-	v3 = esi3->_mmode == 0;
+	v3 = esi3->_mmode == MM_STAND;
 	micaster = esi3->_menemy;
 	if ( v3 && esi3->_msquelch )
 	{
@@ -4747,7 +4747,7 @@ void __fastcall MAI_Snake(int i)
 				{
 					PlayEffect(arglist, 0);
 					v26 = esi3->_my + 112 * esi3->_mx;
-					esi3->_mmode = 14;
+					esi3->_mmode = MM_CHARGE;
 					dMonster[0][v26] = -1 - v24;
 				}
 				goto LABEL_49;
@@ -4913,7 +4913,7 @@ void __fastcall MAI_Bat(int i)
 				if ( AddMissile(esi3->_mx, esi3->_my, v1, v2, midir, 20, micaster, arglist, 0, 0) != -1 )
 				{
 					v12 = esi3->_my + 112 * esi3->_mx;
-					esi3->_mmode = 14;
+					esi3->_mmode = MM_CHARGE;
 					dMonster[0][v12] = -1 - arglist;
 				}
 			}
@@ -5263,7 +5263,7 @@ void __fastcall MAI_Fireman(int i)
 	}
 	monster[esi3]._mdir = midir;
 	random(112, 100);
-	if ( monster[esi3]._mmode )
+	if ( monster[esi3]._mmode == MM_STAND )
 		return;
 	if ( abs(v6) < 2 && abs(v5) < 2 && _LOBYTE(monster[esi3]._mgoal) == 1 )
 	{
@@ -6603,7 +6603,7 @@ void __fastcall MAI_Rhino(int i)
 					if ( esi3->MData->snd_special )
 						PlayEffect(arglist, 3);
 					v20 = esi3->_my + 112 * esi3->_mx;
-					esi3->_mmode = 14;
+					esi3->_mmode = MM_CHARGE;
 					dMonster[0][v20] = -1 - arglist;
 				}
 			}
@@ -8802,37 +8802,26 @@ bool __fastcall CanTalkToMonst(int m)
 	return result;
 }
 
-bool __fastcall CheckMonsterHit(int m, bool *ret)
+BOOL __fastcall CheckMonsterHit(int m, BOOL *ret)
 {
-	int v2; // edi
-	bool *v3; // esi
-	int v4; // ecx
-	int v5; // eax
-	bool result; // al
-	unsigned char v7; // al
-
-	v2 = m;
-	v3 = ret;
-	if ( (unsigned int)m >= MAXMONSTERS )
+	if ( (DWORD)m >= MAXMONSTERS ) {
 		TermMsg("CheckMonsterHit: Invalid monster %d", m);
-	v4 = v2;
-	if ( monster[v2]._mAi == AI_GARG && (v5 = monster[v4]._mFlags, v5 & 4) )
-	{
-		_LOBYTE(v5) = v5 & 0xFB;
-		monster[v4]._mmode = MM_SATTACK;
-		monster[v4]._mFlags = v5;
-		result = 1;
-		*v3 = 1;
 	}
-	else
-	{
-		v7 = monster[v4].MType->mtype;
-		if ( v7 < MT_COUNSLR || v7 > MT_ADVOCATE || (result = 1, _LOBYTE(monster[v4]._mgoal) == 1) )
-			result = 0;
-		else
-			*v3 = 0;
+
+	if ( monster[m]._mAi == AI_GARG && monster[m]._mFlags & 4) {
+		monster[m]._mmode = MM_SATTACK;
+		monster[m]._mFlags &= 0xFFFFFFFB;
+		*ret = TRUE;
+		return TRUE;
 	}
-	return result;
+
+	if ( monster[m].MType->mtype < MT_COUNSLR || monster[m].MType->mtype > MT_ADVOCATE || monster[m]._mgoal == 1 ) {
+		return FALSE;
+	} else {
+		*ret = FALSE;
+	}
+
+	return TRUE;
 }
 
 int __fastcall encode_enemy(int m)

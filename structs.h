@@ -553,7 +553,7 @@ struct CMonster
 struct MonsterStruct // note: missing field _mAFNum
 {
 	int _mMTidx;
-	int _mmode;
+	int _mmode; /* MON_MODE */
 	unsigned char _mgoal;
 	int _mgoalvar1;
 	int _mgoalvar2;
