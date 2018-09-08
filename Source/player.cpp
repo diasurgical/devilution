@@ -3698,17 +3698,15 @@ BOOL __fastcall PM_DoRangeAttack(int pnum)
 		TermMsg("PM_DoRangeAttack: illegal player %d", pnum);
 	}
 
-	int animFrame = plr[pnum]._pAnimFrame;
-	if ( plr[pnum]._pIFlags & ISPL_QUICKATTACK && plr[pnum]._pAnimFrame == 1 ) {
-		plr[pnum]._pAnimFrame = animFrame + 1;
-	}
-
-	if ( plr[pnum]._pIFlags & ISPL_FASTATTACK && (animFrame == 1 || animFrame == 3) ) {
+	int origFrame = plr[pnum]._pAnimFrame;
+	if ( plr[pnum]._pIFlags & ISPL_QUICKATTACK && origFrame == 1 ) {
 		plr[pnum]._pAnimFrame++;
 	}
-	animFrame = plr[pnum]._pAnimFrame;
+	if ( plr[pnum]._pIFlags & ISPL_FASTATTACK && (origFrame == 1 || origFrame == 3) ) {
+		plr[pnum]._pAnimFrame++;
+	}
 
-	if ( animFrame == plr[pnum]._pAFNum ) {
+	if ( plr[pnum]._pAnimFrame == plr[pnum]._pAFNum ) {
 		int mistype = MIS_ARROW;
 		if ( plr[pnum]._pIFlags & ISPL_FIRE_ARROWS ) {
 			mistype = MIS_FARROW;
@@ -3742,7 +3740,8 @@ BOOL __fastcall PM_DoRangeAttack(int pnum)
 		StartStand(pnum, plr[pnum]._pdir);
 		ClearPlrPVars(pnum);
 		return TRUE;
-	} else {
+	}
+	else {
 		return FALSE;
 	}
 
