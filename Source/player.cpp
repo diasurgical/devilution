@@ -1157,7 +1157,7 @@ void __fastcall InitPlayerLoc(int pnum, bool flag)
 	do
 		v14 |= *(unsigned short *)&v6[2 * v17++];
 	while ( v17 < 10 );
-	if ( v14 | dArch[v4][v5] | nSolidTable[dPiece[0][v5 + 112 * v4]] )
+	if ( v14 | dArch[v4][v5] | nSolidTable[dPiece[v4][v5]] )
 		plr[v3]._peflag = 1;
 	else
 		plr[v3]._peflag = 0;
@@ -1330,15 +1330,12 @@ void __fastcall PlrDoTrans(int x, int y)
 
 void __fastcall SetPlayerOld(int pnum)
 {
-	int v1; // esi
-	int v2; // eax
-
-	v1 = pnum;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("SetPlayerOld: illegal player %d", pnum);
-	v2 = v1;
-	plr[v2]._poldx = plr[v1].WorldX;
-	plr[v2]._poldy = plr[v1].WorldY;
+	}
+
+	plr[pnum]._poldx = plr[pnum].WorldX;
+	plr[pnum]._poldy = plr[pnum].WorldY;
 }
 
 void __fastcall FixPlayerLocation(int pnum, int dir)
@@ -3461,20 +3458,22 @@ bool __fastcall PlrHitPlr(int pnum, char p)
 	return v30;
 }
 
-bool __fastcall PlrHitObj(int pnum, int mx, int my)
+BOOL __fastcall PlrHitObj(int pnum, int mx, int my)
 {
-	int oi; // edx
+	int oi;
 
-	if ( dObject[mx][my] <= 0 )
-		oi = -1 - dObject[mx][my];
-	else
+	if ( dObject[mx][my] > 0 ) {
 		oi = dObject[mx][my] - 1;
+	} else {
+		oi = -dObject[mx][my] - 1;
+	}
 
-	if ( object[oi]._oBreak != 1 )
-		return 0;
+	if ( object[oi]._oBreak == 1 ) {
+		BreakObject(pnum, oi);
+		return TRUE;
+	}
 
-	BreakObject(pnum, oi);
-	return 1;
+	return FALSE;
 }
 
 int __fastcall PM_DoAttack(int pnum)
@@ -3649,32 +3648,34 @@ BOOL __fastcall PM_DoRangeAttack(int pnum)
 
 void __fastcall ShieldDur(int pnum)
 {
-	if ( pnum == myplr ) {
-		if ( (DWORD)pnum >= MAX_PLRS ) {
-			TermMsg("ShieldDur: illegal player %d", pnum);
+	if ( pnum != myplr ) {
+		return;
+	}
+
+	if ( (DWORD)pnum >= MAX_PLRS ) {
+		TermMsg("ShieldDur: illegal player %d", pnum);
+	}
+
+	if ( plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_SHIELD ) {
+		if ( plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDurability == 255 ) {
+			return;
 		}
 
-		if ( plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_SHIELD ) {
-			if ( plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDurability == 255 ) {
-				return;
-			}
+		plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDurability--;
+		if ( plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDurability == 0 ) {
+			NetSendCmdDelItem(TRUE, INVLOC_HAND_LEFT);
+			plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype = ITYPE_NONE;
+			CalcPlrInv(pnum, TRUE);
+		}
+	}
 
-			plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDurability--;
-			if ( plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDurability == 0 ) {
-				NetSendCmdDelItem(TRUE, INVLOC_HAND_LEFT);
-				plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype = ITYPE_NONE;
+	if ( plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_SHIELD ) {
+		if ( plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iDurability != 255 ) {
+			plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iDurability--;
+			if ( plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iDurability == 0 ) {
+				NetSendCmdDelItem(TRUE, INVLOC_HAND_RIGHT);
+				plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype = ITYPE_NONE;
 				CalcPlrInv(pnum, TRUE);
-			}
-		}
-
-		if ( plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_SHIELD ) {
-			if ( plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iDurability != 255 ) {
-				plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iDurability--;
-				if ( plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iDurability == 0 ) {
-					NetSendCmdDelItem(TRUE, INVLOC_HAND_RIGHT);
-					plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype = ITYPE_NONE;
-					CalcPlrInv(pnum, TRUE);
-				}
 			}
 		}
 	}
@@ -4405,24 +4406,25 @@ LABEL_143:
 	}
 }
 
-bool __fastcall PlrDeathModeOK(int pnum)
+BOOL __fastcall PlrDeathModeOK(int pnum)
 {
-	int v1; // esi
-	bool result; // al
-	int v3; // esi
+	if ( pnum != myplr ) {
+		return TRUE;
+	}
 
-	v1 = pnum;
-	if ( pnum != myplr )
-		goto LABEL_10;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("PlrDeathModeOK: illegal player %d", pnum);
-	v3 = plr[v1]._pmode;
-	if ( v3 == PM_DEATH || v3 == PM_QUIT )
-LABEL_10:
-		result = 1;
-	else
-		result = v3 == PM_NEWLVL;
-	return result;
+	}
+
+	if (plr[pnum]._pmode == PM_DEATH) {
+		return TRUE;
+	} else if (plr[pnum]._pmode == PM_QUIT) {
+		return TRUE;
+	} else if (plr[pnum]._pmode == PM_NEWLVL) {
+		return TRUE;
+	}
+
+	return FALSE;
 }
 
 void __cdecl ValidatePlayer()
@@ -4636,33 +4638,38 @@ LABEL_38:
 
 void __fastcall CheckCheatStats(int pnum)
 {
-	int v1; // ecx
-	int *v2; // ecx
+	if ( plr[pnum]._pStrength > 750 ) {
+		plr[pnum]._pStrength = 750;
+	}
 
-	v1 = pnum;
-	if ( plr[v1]._pStrength > 750 )
-		plr[v1]._pStrength = 750;
-	if ( plr[v1]._pDexterity > 750 )
-		plr[v1]._pDexterity = 750;
-	if ( plr[v1]._pMagic > 750 )
-		plr[v1]._pMagic = 750;
-	if ( plr[v1]._pVitality > 750 )
-		plr[v1]._pVitality = 750;
-	if ( plr[v1]._pHitPoints > 128000 )
-		plr[v1]._pHitPoints = 128000;
-	v2 = &plr[v1]._pMana;
-	if ( *v2 > 128000 )
-		*v2 = 128000;
+	if ( plr[pnum]._pDexterity > 750 ) {
+		plr[pnum]._pDexterity = 750;
+	}
+
+	if ( plr[pnum]._pMagic > 750 ) {
+		plr[pnum]._pMagic = 750;
+	}
+
+	if ( plr[pnum]._pVitality > 750 ) {
+		plr[pnum]._pVitality = 750;
+	}
+
+	if ( plr[pnum]._pHitPoints > 128000 ) {
+		plr[pnum]._pHitPoints = 128000;
+	}
+
+	if ( plr[pnum]._pMana > 128000 ) {
+		plr[pnum]._pMana = 128000;
+	}
 }
 
 void __fastcall ClrPlrPath(int pnum)
 {
-	int v1; // esi
-
-	v1 = pnum;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("ClrPlrPath: illegal player %d", pnum);
-	memset(plr[v1].walkpath, -1, 0x19u);
+	}
+
+	memset(plr[pnum].walkpath, -1, sizeof(plr[pnum].walkpath));
 }
 
 BOOL __fastcall PosOkPlayer(int pnum, int px, int py)
@@ -5058,13 +5065,12 @@ void __fastcall SyncInitPlrPos(int pnum)
 
 void __fastcall SyncInitPlr(int pnum)
 {
-	int v1; // esi
-
-	v1 = pnum;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("SyncInitPlr: illegal player %d", pnum);
-	SetPlrAnims(v1);
-	SyncInitPlrPos(v1);
+	}
+
+	SetPlrAnims(pnum);
+	SyncInitPlrPos(pnum);
 }
 
 void __fastcall CheckStats(int pnum)
