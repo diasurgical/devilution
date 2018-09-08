@@ -8,8 +8,7 @@ int itemavail[MAXITEMS];
 ItemStruct curruitem;
 ItemGetRecordStruct itemrecord[MAXITEMS];
 ItemStruct item[MAXITEMS+1];
-char itemhold[3][3];
-char byte_641234[28]; /* check if part of above */
+int itemhold[3][3]; // BOOL
 unsigned char *Item2Frm[35];
 int UniqueItemFlag[128];
 int numitems;
@@ -1628,11 +1627,11 @@ bool __fastcall GetItemSpace(int x, int y, char inum)
 {
 	int v3; // eax
 	int v4; // edx
-	char (*v5)[3]; // edi
+	int (*v5)[3]; // edi
 	int v6; // ebx
-	char (*v7)[3]; // esi
+	int (*v7)[3]; // esi
 	signed int v9; // esi
-	char (*v10)[3]; // eax
+	int (*v10)[3]; // eax
 	int v11; // ecx
 	int v12; // eax
 	int v14; // ecx
@@ -1642,7 +1641,7 @@ bool __fastcall GetItemSpace(int x, int y, char inum)
 	int v18; // ecx
 	int v19; // [esp+8h] [ebp-Ch]
 	int v20; // [esp+Ch] [ebp-8h]
-	char (*v21)[3]; // [esp+10h] [ebp-4h]
+	int (*v21)[3]; // [esp+10h] [ebp-4h]
 
 	v3 = y;
 	v19 = y;
@@ -1660,15 +1659,15 @@ bool __fastcall GetItemSpace(int x, int y, char inum)
 				v7 = v21;
 				do
 				{
-					*(_DWORD *)v7 = ItemSpaceOk(v6, v4);
-					v7 += 4;
+					(*v7)[0] = ItemSpaceOk(v6, v4);
+					++v7;
 					++v6;
 				}
 				while ( v6 <= v20 + 1 );
 				v3 = v19;
 				x = v20;
 			}
-			v21 = (char (*)[3])((char *)v21 + 4);
+			v21 = (int (*)[3])((char *)v21 + 4);
 			++v4;
 		}
 		while ( v4 <= v3 + 1 );
@@ -1680,15 +1679,15 @@ bool __fastcall GetItemSpace(int x, int y, char inum)
 		v11 = 3;
 		do
 		{
-			if ( *(_DWORD *)v10 )
+			if ( (*v10)[0] )
 				v9 = 1;
-			v10 += 4;
+			++v10;
 			--v11;
 		}
 		while ( v11 );
-		v5 = (char (*)[3])((char *)v5 + 4);
+		v5 = (int (*)[3])((char *)v5 + 4);
 	}
-	while ( (signed int)v5 < (signed int)&itemhold[3][0] );
+	while ( (signed int)v5 < (signed int)itemhold[1] );
 	v12 = random(13, 15) + 1;
 	if ( !v9 )
 		return 0;
@@ -1698,7 +1697,7 @@ bool __fastcall GetItemSpace(int x, int y, char inum)
 	{
 		while ( 1 )
 		{
-			if ( *(_DWORD *)&itemhold[0][4 * (v15 + 2 * v14 + v14)] )
+			if ( itemhold[0][v15 + 2 * v14 + v14] )
 				--v12;
 			if ( v12 <= 0 )
 				break;
