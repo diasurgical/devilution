@@ -4,7 +4,7 @@
 
 extern _SNETVERSIONDATA fileinfo;
 extern int init_cpp_init_value; // weak
-extern int window_activated; // weak
+extern int gbActive; // weak
 extern char diablo_exe_path[260];
 extern void *unused_mpq;
 extern char patch_rt_mpq_path[260];
@@ -29,10 +29,10 @@ void *__fastcall init_test_access(char *mpq_path, char *mpq_name, char *reg_loc,
 char *__fastcall init_strip_trailing_slash(char *path);
 int __fastcall init_read_test_file(char *mpq_path, char *mpq_name, int flags, void **archive);
 void __cdecl init_get_file_info();
-LRESULT __stdcall init_palette(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
-void __fastcall init_activate_window(HWND hWnd, bool activated);
-LRESULT __stdcall init_redraw_window(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
-WNDPROC __stdcall SetWindowProc(WNDPROC func);
+LRESULT __stdcall MainWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+void __fastcall init_activate_window(HWND hWnd, bool bActive);
+LRESULT __stdcall WindowProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+WNDPROC __stdcall SetWindowProc(WNDPROC NewProc);
 
 /* data */
 extern int init_inf; // weak
