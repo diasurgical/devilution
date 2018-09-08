@@ -677,7 +677,7 @@ LRESULT __stdcall DisableInputWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
 			{
 				return 0;
 			}
-			return init_palette(hWnd, uMsg, wParam, lParam);
+			return MainWndProc(hWnd, uMsg, wParam, lParam);
 		}
 		if ( !sgbMouseDown )
 		{
@@ -703,7 +703,7 @@ LABEL_21:
 					sgbMouseDown = 0;
 				return 0;
 			}
-			return init_palette(hWnd, uMsg, wParam, lParam);
+			return MainWndProc(hWnd, uMsg, wParam, lParam);
 		}
 		v5 = sgbMouseDown == 2;
 LABEL_23:
@@ -781,7 +781,7 @@ LRESULT __stdcall GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 					gbGameLoopStartup = 1;
 					return 0;
 				}
-				return init_palette(hWnd, uMsg, wParam, lParam);
+				return MainWndProc(hWnd, uMsg, wParam, lParam);
 			}
 			MouseX = (unsigned short)lParam;
 			MouseY = (unsigned int)lParam >> 16;
@@ -816,7 +816,7 @@ LRESULT __stdcall GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		case WM_SYSKEYDOWN:
 			if ( PressSysKey(wParam) )
 				return 0;
-			return init_palette(hWnd, uMsg, wParam, lParam);
+			return MainWndProc(hWnd, uMsg, wParam, lParam);
 		case WM_SYSCOMMAND:
 			if ( wParam == SC_CLOSE )
 			{
@@ -824,10 +824,10 @@ LRESULT __stdcall GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				gbRunGameResult = 0;
 				return 0;
 			}
-			return init_palette(hWnd, uMsg, wParam, lParam);
+			return MainWndProc(hWnd, uMsg, wParam, lParam);
 	}
 	if ( uMsg != WM_MOUSEFIRST )
-		return init_palette(hWnd, uMsg, wParam, lParam);
+		return MainWndProc(hWnd, uMsg, wParam, lParam);
 	MouseX = (unsigned short)lParam;
 	MouseY = (unsigned int)lParam >> 16;
 	gmenu_on_mouse_move((unsigned short)lParam);

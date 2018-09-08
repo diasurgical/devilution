@@ -4,7 +4,7 @@
 
 _SNETVERSIONDATA fileinfo;
 int init_cpp_init_value; // weak
-int window_activated; // weak
+int gbActive; // weak
 char diablo_exe_path[260];
 void *unused_mpq;
 char patch_rt_mpq_path[260];
@@ -180,14 +180,14 @@ void __fastcall init_create_window(int nCmdShow)
 	memset(&wcex, 0, sizeof(wcex));
 	wcex.cbSize = sizeof(wcex);
 	wcex.style = CS_HREDRAW|CS_VREDRAW;
-	wcex.lpfnWndProc = init_redraw_window;
+	wcex.lpfnWndProc = WindowProc;
 	wcex.hInstance = ghInst;
-	wcex.hIcon = LoadIconA(ghInst, (LPCSTR)0x65);
-	wcex.hCursor = LoadCursorA(0, (LPCSTR)0x7F00);
+	wcex.hIcon = LoadIconA(ghInst, MAKEINTRESOURCE(IDI_ICON1));
+	wcex.hCursor = LoadCursorA(0, IDC_ARROW);
 	wcex.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
 	wcex.lpszMenuName = "DIABLO";
 	wcex.lpszClassName = "DIABLO";
-	wcex.hIconSm = (HICON)LoadImageA(ghInst, (LPCSTR)0x65, IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
+	wcex.hIconSm = (HICON)LoadImageA(ghInst, MAKEINTRESOURCE(IDI_ICON1), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
 	if ( !RegisterClassExA(&wcex) )
 		TermMsg("Unable to register window class");
 	if ( GetSystemMetrics(SM_CXSCREEN) >= 640 )
@@ -435,7 +435,7 @@ void __cdecl init_get_file_info()
 	}
 }
 
-LRESULT __stdcall init_palette(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
+LRESULT __stdcall MainWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
 	if ( Msg > WM_ERASEBKGND )
 	{
@@ -479,22 +479,22 @@ LRESULT __stdcall init_palette(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam
 }
 // 52571C: using guessed type int drawpanflag;
 
-void __fastcall init_activate_window(HWND hWnd, bool activated)
+void __fastcall init_activate_window(HWND hWnd, bool bActive)
 {
 	LONG dwNewLong; // eax
 
-	window_activated = activated;
-	UiAppActivate(activated);
+	gbActive = bActive;
+	UiAppActivate(bActive);
 	dwNewLong = GetWindowLongA(hWnd, GWL_STYLE);
 
-	if ( window_activated && fullscreen )
+	if ( gbActive && fullscreen )
 		dwNewLong &= ~WS_SYSMENU;
 	else
 		dwNewLong |= WS_SYSMENU;
 
 	SetWindowLongA(hWnd, GWL_STYLE, dwNewLong);
 
-	if ( window_activated )
+	if ( gbActive )
 	{
 		drawpanflag = 255;
 		ResetPal();
@@ -502,24 +502,24 @@ void __fastcall init_activate_window(HWND hWnd, bool activated)
 }
 // 484364: using guessed type int fullscreen;
 // 52571C: using guessed type int drawpanflag;
-// 634980: using guessed type int window_activated;
+// 634980: using guessed type int gbActive;
 
-LRESULT __stdcall init_redraw_window(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
+LRESULT __stdcall WindowProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
 	LRESULT result; // eax
 
 	if ( CurrentProc )
 		result = CurrentProc(hWnd, Msg, wParam, lParam);
 	else
-		result = init_palette(hWnd, Msg, wParam, lParam);
+		result = MainWndProc(hWnd, Msg, wParam, lParam);
 	return result;
 }
 
-WNDPROC __stdcall SetWindowProc(WNDPROC func)
+WNDPROC __stdcall SetWindowProc(WNDPROC NewProc)
 {
-	WNDPROC result; // eax
+	WNDPROC OldProc; // eax
 
-	result = CurrentProc;
-	CurrentProc = func;
-	return result;
+	OldProc = CurrentProc;
+	CurrentProc = NewProc;
+	return OldProc;
 }
