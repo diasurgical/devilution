@@ -8,7 +8,6 @@ Serious bugs (crash/fault)
 - TBA
 
 Minor bugs (noticeable but can be avoided)
-- Players sometimes have level 0 unusable skills
 - Server commands are broken and have been disabled `msgcmd.cpp`
 
 Code issues (incorrect code that still works)
