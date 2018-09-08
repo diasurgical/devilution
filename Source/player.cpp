@@ -5337,40 +5337,32 @@ void __fastcall ModifyPlrDex(int pnum, int l)
 
 void __fastcall ModifyPlrVit(int pnum, int l)
 {
-	int v2; // esi
-	int v3; // edi
-	int v4; // esi
-	char v5; // dl
-	int v6; // ecx
-	int v7; // eax
-	int v8; // eax
-	int v9; // edi
-	int p; // [esp+8h] [ebp-4h]
-
-	v2 = pnum;
-	v3 = l;
-	p = pnum;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("ModifyPlrVit: illegal player %d", pnum);
-	v4 = v2;
-	v5 = plr[v4]._pClass;
-	v6 = MaxStats[v5][3];
-	v7 = plr[v4]._pBaseVit;
-	if ( v7 + v3 > v6 )
-		v3 = v6 - v7;
-	plr[v4]._pVitality += v3;
-	v8 = v3 + v7;
-	v9 = v3 << 6;
-	plr[v4]._pBaseVit = v8;
-	if ( !v5 )
-		v9 *= 2;
-	plr[v4]._pHPBase += v9;
-	plr[v4]._pMaxHPBase += v9;
-	plr[v4]._pHitPoints += v9;
-	plr[v4]._pMaxHP += v9;
-	CalcPlrInv(p, 1u);
-	if ( p == myplr )
-		NetSendCmdParam1(0, CMD_SETVIT, plr[v4]._pBaseVit);
+	}
+
+	if ( plr[pnum]._pBaseVit + l > MaxStats[plr[pnum]._pClass][ATTRIB_VIT] ) {
+		l = MaxStats[plr[pnum]._pClass][ATTRIB_VIT] - plr[pnum]._pBaseVit;
+	}
+
+	plr[pnum]._pVitality += l;
+	plr[pnum]._pBaseVit += l;
+
+	int ms = l << 6;
+	if ( plr[pnum]._pClass == PC_WARRIOR ) {
+		ms *= 2;
+	}
+
+	plr[pnum]._pHPBase += ms;
+	plr[pnum]._pMaxHPBase += ms;
+	plr[pnum]._pHitPoints += ms;
+	plr[pnum]._pMaxHP += ms;
+
+	CalcPlrInv(pnum, TRUE);
+
+	if ( pnum == myplr ) {
+		NetSendCmdParam1(FALSE, CMD_SETVIT, plr[pnum]._pBaseVit);
+	}
 }
 
 void __fastcall SetPlayerHitPoints(int pnum, int newhp)
