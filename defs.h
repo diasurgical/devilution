@@ -36,6 +36,8 @@
 // from diablo 2 beta
 #define MAXEXP					2000000000
 
+#define PLR_NAME_LEN			32
+
 // Diablo uses a 256 color palette
 // Entry 0-127 (0x00-0x7F) are level specific
 // Entry 128-255 (0x80-0xFF) are global
