@@ -5314,28 +5314,25 @@ void __fastcall ModifyPlrMag(int pnum, int l)
 
 void __fastcall ModifyPlrDex(int pnum, int l)
 {
-	int v2; // ebx
-	int v3; // edi
-	int v4; // esi
-	int v5; // ecx
-	int v6; // eax
-
-	v2 = pnum;
-	v3 = l;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("ModifyPlrDex: illegal player %d", pnum);
-	v4 = v2;
-	v5 = MaxStats[SLOBYTE(plr[v2]._pClass)][2];
-	v6 = plr[v2]._pBaseDex;
-	if ( v6 + v3 > v5 )
-		v3 = v5 - v6;
-	plr[v4]._pDexterity += v3;
-	plr[v4]._pBaseDex = v3 + v6;
-	CalcPlrInv(v2, 1u);
-	if ( _LOBYTE(plr[v4]._pClass) == 1 )
-		plr[v4]._pDamageMod = plr[v4]._pLevel * (plr[v4]._pDexterity + plr[v4]._pStrength) / 200;
-	if ( v2 == myplr )
-		NetSendCmdParam1(0, CMD_SETDEX, plr[v4]._pBaseDex);
+	}
+
+	if ( plr[pnum]._pBaseDex + l > MaxStats[plr[pnum]._pClass][ATTRIB_DEX] ) {
+		l = MaxStats[plr[pnum]._pClass][ATTRIB_DEX] - plr[pnum]._pBaseDex;
+	}
+
+	plr[pnum]._pDexterity += l;
+	plr[pnum]._pBaseDex += l;
+	CalcPlrInv(pnum, 1);
+
+	if ( plr[pnum]._pClass == PC_ROGUE ) {
+		plr[pnum]._pDamageMod = plr[pnum]._pLevel * (plr[pnum]._pDexterity + plr[pnum]._pStrength) / 200;
+	}
+
+	if ( pnum == myplr ) {
+		NetSendCmdParam1(0, CMD_SETDEX, plr[pnum]._pBaseDex);
+	}
 }
 
 void __fastcall ModifyPlrVit(int pnum, int l)
