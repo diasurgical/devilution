@@ -22,7 +22,7 @@ void __fastcall GetMissileVel(int i, int sx, int sy, int dx, int dy, int v);
 void __fastcall PutMissile(int i);
 void __fastcall GetMissilePos(int i);
 void __fastcall MoveMissilePos(int i);
-bool __fastcall MonsterTrapHit(int m, int mindam, int maxdam, int dist, int t, int shift);
+BOOL __fastcall MonsterTrapHit(int m, int mindam, int maxdam, int dist, int t, int shift);
 bool __fastcall MonsterMHit(int pnum, int m, int mindam, int maxdam, int dist, int t, int shift);
 bool __fastcall PlayerMHit(int pnum, int m, int dist, int mind, int maxd, int mtype, int shift, int earflag);
 bool __fastcall Plr2PlrMHit(int pnum, int p, int mindam, int maxdam, int dist, int mtype, int shift);

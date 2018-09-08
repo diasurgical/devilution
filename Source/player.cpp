@@ -3199,7 +3199,7 @@ bool __fastcall PlrHitMonst(int pnum, int m)
 	int *v38; // ecx
 	int *v39; // ecx
 	int v40; // esi
-	bool ret; // [esp+Ch] [ebp-18h]
+	BOOL ret; // [esp+Ch] [ebp-18h]
 	bool v42; // [esp+10h] [ebp-14h]
 	int v48;
 	int v43; // [esp+14h] [ebp-10h]

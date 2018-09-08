@@ -1237,7 +1237,7 @@ LABEL_7:
 	}
 }
 
-bool __fastcall MonsterTrapHit(int m, int mindam, int maxdam, int dist, int t, int shift)
+BOOL __fastcall MonsterTrapHit(int m, int mindam, int maxdam, int dist, int t, int shift)
 {
 	int v6; // esi
 	int v8; // ecx
@@ -1280,8 +1280,9 @@ bool __fastcall MonsterTrapHit(int m, int mindam, int maxdam, int dist, int t, i
 	if ( v10 > 95 )
 		v10 = 95;
 	//_LOBYTE(v11) = CheckMonsterHit(arglist, (unsigned char *)&t);
-	if ( CheckMonsterHit(arglist, (bool *)&t) )
-		return t;
+	BOOL ret;
+	if ( CheckMonsterHit(arglist, &ret) )
+		return ret;
 #ifdef _DEBUG
 	if ( v14 >= v10 && !debug_mode_dollar_sign && !debug_mode_key_inverted_v && monster[v6]._mmode != MM_STONE )
 		return 0;
@@ -1346,7 +1347,7 @@ bool __fastcall MonsterMHit(int pnum, int m, int mindam, int maxdam, int dist, i
 	int v21; // edx
 	int v22; // eax
 	int v23; // [esp+Ch] [ebp-18h]
-	bool ret; // [esp+10h] [ebp-14h]
+	BOOL ret; // [esp+10h] [ebp-14h]
 	int v25; // [esp+14h] [ebp-10h]
 	int v26; // [esp+18h] [ebp-Ch]
 	int pnuma; // [esp+1Ch] [ebp-8h]
