@@ -294,111 +294,75 @@ void __fastcall InitPlayerGFX(int pnum)
 
 void __fastcall InitPlrGFXMem(int pnum)
 {
-	int v1; // esi
-	unsigned int v2; // ebp
-	unsigned int v3; // eax
-	char *v4; // ecx
-	int v5; // esi
-	unsigned char *v6; // eax
-	bool v7; // zf
-	unsigned int v8; // ebx
-	unsigned int v9; // eax
-	char *v10; // ecx
-	unsigned char *v11; // eax
-	unsigned char *v12; // eax
-	unsigned char *v13; // eax
-	unsigned char *v14; // eax
-	unsigned char *v15; // eax
-	unsigned char *v16; // eax
-	unsigned char *v17; // eax
-	unsigned char *v18; // eax
+	char *dir;
 
-	v1 = pnum;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("InitPlrGFXMem: illegal player %d", pnum);
-	if ( !(plr_gfx_flag & 1) )
-	{
-		plr_gfx_flag |= 1u;
-		v2 = GetPlrGFXSize("ST");
-		v3 = GetPlrGFXSize("AS");
-		v4 = "AS";
-		if ( v3 <= v2 )
-			v4 = "ST";
-		plr_sframe_size = GetPlrGFXSize(v4);
 	}
-	v5 = v1;
-	v6 = DiabloAllocPtr(plr_sframe_size);
-	v7 = (plr_gfx_flag & 2) == 0;
-	plr[v5]._pNData = v6;
-	if ( v7 )
-	{
-		plr_gfx_flag |= 2u;
-		v8 = GetPlrGFXSize("WL");
-		v9 = GetPlrGFXSize("AW");
-		v10 = "AW";
-		if ( v9 <= v8 )
-			v10 = "WL";
-		plr_wframe_size = GetPlrGFXSize(v10);
+
+	if ( !(plr_gfx_flag & 1) ) {
+		plr_gfx_flag |= 1;
+		if ( GetPlrGFXSize("AS") <= GetPlrGFXSize("ST") ) {
+			plr_sframe_size = GetPlrGFXSize("ST");
+		} else {
+			plr_sframe_size = GetPlrGFXSize("AS");
+		}
 	}
-	v11 = DiabloAllocPtr(plr_wframe_size);
-	v7 = (plr_gfx_flag & 4) == 0;
-	plr[v5]._pWData = v11;
-	if ( v7 )
-	{
-		plr_gfx_flag |= 4u;
+	plr[pnum]._pNData = DiabloAllocPtr(plr_sframe_size);
+
+	if ( !(plr_gfx_flag & 2) ) {
+		plr_gfx_flag |= 2;
+		if ( GetPlrGFXSize("AW") <= GetPlrGFXSize("WL") ) {
+			plr_wframe_size = GetPlrGFXSize("WL");
+		} else {
+			plr_wframe_size = GetPlrGFXSize("AW");
+		}
+	}
+	plr[pnum]._pWData = DiabloAllocPtr(plr_wframe_size);
+
+	if ( !(plr_gfx_flag & 4) ) {
+		plr_gfx_flag |= 4;
 		plr_aframe_size = GetPlrGFXSize("AT");
 	}
-	v12 = DiabloAllocPtr(plr_aframe_size);
-	v7 = (plr_gfx_flag & 8) == 0;
-	plr[v5]._pAData = v12;
-	if ( v7 )
-	{
-		plr_gfx_flag |= 8u;
+	plr[pnum]._pAData =  DiabloAllocPtr(plr_aframe_size);
+
+	if ( !(plr_gfx_flag & 8) ) {
+		plr_gfx_flag |= 8;
 		plr_hframe_size = GetPlrGFXSize("HT");
 	}
-	v13 = DiabloAllocPtr(plr_hframe_size);
-	v7 = (plr_gfx_flag & 0x10) == 0;
-	plr[v5]._pHData = v13;
-	if ( v7 )
-	{
-		plr_gfx_flag |= 0x10u;
+	plr[pnum]._pHData = DiabloAllocPtr(plr_hframe_size);
+
+	if ( !(plr_gfx_flag & 0x10) ) {
+		plr_gfx_flag |= 0x10;
 		plr_lframe_size = GetPlrGFXSize("LM");
 	}
-	v14 = DiabloAllocPtr(plr_lframe_size);
-	v7 = (plr_gfx_flag & 0x20) == 0;
-	plr[v5]._pLData = v14;
-	if ( v7 )
-	{
-		plr_gfx_flag |= 0x20u;
+	plr[pnum]._pLData = DiabloAllocPtr(plr_lframe_size);
+
+	if ( !(plr_gfx_flag & 0x20) ) {
+		plr_gfx_flag |= 0x20;
 		plr_fframe_size = GetPlrGFXSize("FM");
 	}
-	v15 = DiabloAllocPtr(plr_fframe_size);
-	v7 = (plr_gfx_flag & 0x40) == 0;
-	plr[v5]._pFData = v15;
-	if ( v7 )
-	{
-		plr_gfx_flag |= 0x40u;
+	plr[pnum]._pFData = DiabloAllocPtr(plr_fframe_size);
+
+	if ( !(plr_gfx_flag & 0x40) ) {
+		plr_gfx_flag |= 0x40;
 		plr_qframe_size = GetPlrGFXSize("QM");
 	}
-	v16 = DiabloAllocPtr(plr_qframe_size);
-	v7 = plr_gfx_flag >= 0;
-	plr[v5]._pTData = v16;
-	if ( v7 )
-	{
-		plr_gfx_flag |= 0x80u;
+	plr[pnum]._pTData = DiabloAllocPtr(plr_qframe_size);
+
+	if ( !(plr_gfx_flag & 0x80) ) {
+		plr_gfx_flag |= 0x80;
 		plr_dframe_size = GetPlrGFXSize("DT");
 	}
-	v17 = DiabloAllocPtr(plr_dframe_size);
-	v7 = (plr_gfx_bflag & 1) == 0;
-	plr[v5]._pDData = v17;
-	if ( v7 )
-	{
-		plr_gfx_bflag |= 1u;
+	plr[pnum]._pDData = DiabloAllocPtr(plr_dframe_size);
+
+	if ( !(plr_gfx_bflag & 1) ) {
+		plr_gfx_bflag |= 1;
 		plr_bframe_size = GetPlrGFXSize("BL");
 	}
-	v18 = DiabloAllocPtr(plr_bframe_size);
-	plr[v5]._pGFXLoad = 0;
-	plr[v5]._pBData = v18;
+	plr[pnum]._pBData = DiabloAllocPtr(plr_bframe_size);
+
+	plr[pnum]._pGFXLoad = 0;
 }
 // 686438: using guessed type char plr_gfx_flag;
 // 69B7BC: using guessed type char plr_gfx_bflag;
