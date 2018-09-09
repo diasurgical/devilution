@@ -688,7 +688,7 @@ void __fastcall DRLG_L4(int entry)
 			{
 				if ( !v23 )
 				{
-					v10 = DRLG_L4PlaceMiniSet((unsigned char *)L4USTAIRS, 1, 1, -1, -1, 1, 0);
+					v10 = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 1, 0);
 					if ( v10 )
 					{
 						if ( gbMaxPlayers != 1 || (v11 = (unsigned char *)L4PENTA, quests[5]._qactive == 2) )
@@ -697,7 +697,7 @@ void __fastcall DRLG_L4(int entry)
 					}
 					goto LABEL_35;
 				}
-				v10 = DRLG_L4PlaceMiniSet((unsigned char *)L4USTAIRS, 1, 1, -1, -1, 0, 0);
+				v10 = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 0, 0);
 				if ( v10 )
 				{
 					if ( gbMaxPlayers != 1 || (v12 = (unsigned char *)L4PENTA, quests[5]._qactive == 2) )
@@ -709,24 +709,24 @@ void __fastcall DRLG_L4(int entry)
 			{
 				if ( !v23 )
 				{
-					v10 = DRLG_L4PlaceMiniSet((unsigned char *)L4USTAIRS, 1, 1, -1, -1, 1, 0);
+					v10 = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 1, 0);
 					if ( v10 )
 					{
 						if ( currlevel != 16 )
-							v10 = DRLG_L4PlaceMiniSet((unsigned char *)L4DSTAIRS, 1, 1, -1, -1, 0, 1);
+							v10 = DRLG_L4PlaceMiniSet(L4DSTAIRS, 1, 1, -1, -1, 0, 1);
 						goto LABEL_31;
 					}
 LABEL_35:
 					++ViewX;
 					continue;
 				}
-				v10 = DRLG_L4PlaceMiniSet((unsigned char *)L4USTAIRS, 1, 1, -1, -1, 0, 0);
+				v10 = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 0, 0);
 				if ( v23 != 1 )
 				{
 					if ( v10 )
 					{
 						if ( currlevel != 16 )
-							v10 = DRLG_L4PlaceMiniSet((unsigned char *)L4DSTAIRS, 1, 1, -1, -1, 0, 1);
+							v10 = DRLG_L4PlaceMiniSet(L4DSTAIRS, 1, 1, -1, -1, 0, 1);
 LABEL_46:
 						if ( v10 )
 						{
@@ -734,7 +734,7 @@ LABEL_46:
 							{
 								v22 = 1;
 LABEL_34:
-								v10 = DRLG_L4PlaceMiniSet((unsigned char *)L4TWARP, 1, 1, -1, -1, v22, 6);
+								v10 = DRLG_L4PlaceMiniSet(L4TWARP, 1, 1, -1, -1, v22, 6);
 								goto LABEL_35;
 							}
 						}
@@ -744,9 +744,9 @@ LABEL_34:
 				if ( v10 )
 				{
 					if ( currlevel != 16 )
-						v10 = DRLG_L4PlaceMiniSet((unsigned char *)L4DSTAIRS, 1, 1, -1, -1, 1, 1);
+						v10 = DRLG_L4PlaceMiniSet(L4DSTAIRS, 1, 1, -1, -1, 1, 1);
 					if ( v10 && currlevel == 13 )
-						v10 = DRLG_L4PlaceMiniSet((unsigned char *)L4TWARP, 1, 1, -1, -1, 0, 6);
+						v10 = DRLG_L4PlaceMiniSet(L4TWARP, 1, 1, -1, -1, 0, 6);
 				}
 			}
 			++ViewY;
@@ -754,18 +754,18 @@ LABEL_34:
 		}
 		if ( !v23 )
 		{
-			v10 = DRLG_L4PlaceMiniSet((unsigned char *)L4USTAIRS, 1, 1, -1, -1, 1, 0);
+			v10 = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 1, 0);
 LABEL_31:
 			if ( !v10 || currlevel != 13 )
 				goto LABEL_35;
 			v22 = 0;
 			goto LABEL_34;
 		}
-		v10 = DRLG_L4PlaceMiniSet((unsigned char *)L4USTAIRS, 1, 1, -1, -1, 0, 0);
+		v10 = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 0, 0);
 		if ( v23 != 1 )
 			goto LABEL_46;
 		if ( v10 && currlevel == 13 )
-			v10 = DRLG_L4PlaceMiniSet((unsigned char *)L4TWARP, 1, 1, -1, -1, 0, 6);
+			v10 = DRLG_L4PlaceMiniSet(L4TWARP, 1, 1, -1, -1, 0, 6);
 		ViewX = 2 * setpc_x + 22;
 		ViewY = 2 * setpc_y + 22;
 	}
@@ -2832,181 +2832,167 @@ LABEL_12:
 	return 0;
 }
 
-bool __fastcall DRLG_L4PlaceMiniSet(unsigned char *miniset, int tmin, int tmax, int cx, int cy, int setview, int ldir)
+bool __fastcall DRLG_L4PlaceMiniSet(const unsigned char *miniset, int tmin, int tmax, int cx, int cy, int setview, int ldir)
 {
 	int v7; // ebx
 	int v8; // esi
 	int v9; // edi
 	int v10; // edx
-	int v11; // eax
-	int v13; // esi
-	int v14; // ebx
-	int v15; // ecx
-	int v16; // eax
-	int v18; // eax
-	int v20; // edi
+	int v11; // esi
+	int v12; // ebx
+	int v13; // edi
 	signed int i; // eax
-	int v22; // ecx
-	unsigned char v23; // dl
-	int v24; // eax
-	int v25; // edi
-	int v26; // edx
-	unsigned char v27; // bl
+	int v15; // ecx
+	unsigned char v16; // dl
+	int v17; // eax
+	int j; // ecx
+	int v19; // edi
+	int v20; // edx
+	char v21; // bl
 	bool result; // al
-	unsigned char *v29; // [esp+Ch] [ebp-28h]
-	int v30; // [esp+10h] [ebp-24h]
-	int v31; // [esp+14h] [ebp-20h]
-	int v32; // [esp+18h] [ebp-1Ch]
-	signed int v33; // [esp+1Ch] [ebp-18h]
-	int v34; // [esp+20h] [ebp-14h]
-	int v35; // [esp+24h] [ebp-10h]
-	int v36; // [esp+28h] [ebp-Ch]
+	const unsigned char *v23; // [esp+Ch] [ebp-28h]
+	int v24; // [esp+10h] [ebp-24h]
+	int v25; // [esp+14h] [ebp-20h]
+	int v26; // [esp+18h] [ebp-1Ch]
+	signed int v27; // [esp+1Ch] [ebp-18h]
+	int v28; // [esp+20h] [ebp-14h]
+	int v29; // [esp+24h] [ebp-10h]
+	int v30; // [esp+28h] [ebp-Ch]
 	int max; // [esp+2Ch] [ebp-8h]
-	//int v38; // [esp+30h] [ebp-4h]
-	int v39; // [esp+30h] [ebp-4h]
+	//int v32; // [esp+30h] [ebp-4h]
+	int v33; // [esp+30h] [ebp-4h]
 	int tmaxa; // [esp+3Ch] [ebp+8h]
 
 	v7 = miniset[1];
 	v8 = tmin;
 	v9 = *miniset;
-	v29 = miniset;
+	v23 = miniset;
 	v10 = tmax - tmin;
-	v34 = *miniset;
-	v35 = miniset[1];
+	v28 = *miniset;
+	v29 = miniset[1];
 	if ( v10 )
-	{
-		v30 = v8 + random(0, v10);
-	}
+		v24 = v8 + random(0, v10);
 	else
+		v24 = 1;
+	v25 = 0;
+	if ( v24 <= 0 )
 	{
-		v30 = 1;
-	}
-	v31 = 0;
-	if ( v30 <= 0 )
-	{
-		v13 = tmax;
-		v14 = 0; /* v38 */
+		v11 = tmax;
+		v12 = 0; /* v32 */
 	}
 	else
 	{
 		max = 40 - v9;
-		v36 = 40 - v7;
+		v30 = 40 - v7;
 		do
 		{
 			v11 = random(0, max);
-			v13 = v11;
-			v33 = 0;
-			v14 = random(0, v36);
-			v39 = v14;
+			v27 = 0;
+			v12 = random(0, v30);
+			v33 = v12;
 			do
 			{
-				if ( v33 >= 200 )
+				if ( v27 >= 200 )
 					return 0;
 				tmaxa = 1;
-				if ( v13 >= SP4x1 && v13 <= SP4x2 && v14 >= SP4y1 && v14 <= SP4y2 )
+				if ( v11 >= SP4x1 && v11 <= SP4x2 && v12 >= SP4y1 && v12 <= SP4y2 )
 					tmaxa = 0;
-				if ( cx != -1 )
+				if ( cx != -1 && v11 >= cx - v28 && v11 <= cx + 12 )
 				{
-					v15 = cx - v34;
-					if ( v13 >= cx - v34 && v13 <= cx + 12 )
-					{
-						v16 = random(0, max);
-						v13 = v16;
-						tmaxa = 0;
-						v39 = random(0, v36);
-						v14 = v39;
-					}
-				}
-				if ( cy != -1 && v14 >= cy - v35 && v14 <= cy + 12 )
-				{
-					v18 = random(0, max); /* cy - v35 */
-					v13 = v18;
+					v11 = random(0, max);
 					tmaxa = 0;
-					v39 = random(0, v36);
-					v14 = v39;
+					v33 = random(0, v30);
+					v12 = v33;
 				}
-				v20 = 0;
-				for ( i = 2; v20 < v35; ++v20 )
+				if ( cy != -1 && v12 >= cy - v29 && v12 <= cy + 12 )
+				{
+					v11 = random(0, max);
+					tmaxa = 0;
+					v33 = random(0, v30);
+					v12 = v33;
+				}
+				v13 = 0;
+				for ( i = 2; v13 < v29; ++v13 )
 				{
 					if ( tmaxa != 1 )
 						break;
-					v32 = 0;
-					if ( v34 > 0 )
+					v26 = 0;
+					if ( v28 > 0 )
 					{
-						v22 = v14 + v20 + 40 * v13;
+						v15 = v12 + v13 + 40 * v11;
 						do
 						{
 							if ( tmaxa != 1 )
 								break;
-							v23 = v29[i];
-							if ( v23 && dungeon[0][v22] != v23 )
+							v16 = v23[i];
+							if ( v16 && dungeon[0][v15] != v16 )
 								tmaxa = 0;
-							if ( dflags[0][v22] )
+							if ( dflags[0][v15] )
 								tmaxa = 0;
 							++i;
-							++v32;
-							v22 += 40;
+							++v26;
+							v15 += 40;
 						}
-						while ( v32 < v34 );
+						while ( v26 < v28 );
 					}
 				}
-				if ( !tmaxa && ++v13 == max )
+				if ( !tmaxa && ++v11 == max )
 				{
-					v13 = 0;
-					v39 = ++v14;
-					if ( v14 == v36 )
+					v11 = 0;
+					v33 = ++v12;
+					if ( v12 == v30 )
 					{
-						v39 = 0;
-						v14 = 0;
+						v33 = 0;
+						v12 = 0;
 					}
 				}
-				++v33;
+				++v27;
 			}
 			while ( !tmaxa );
-			if ( v33 >= 200 )
+			if ( v27 >= 200 )
 				return 0;
-			v24 = 0;
-			for ( miniset = (unsigned char *)(v34 * v35 + 2); v24 < v35; ++v24 )
+			v17 = 0;
+			for ( j = v28 * v29 + 2; v17 < v29; ++v17 )
 			{
-				v25 = v34;
-				if ( v34 > 0 )
+				v19 = v28;
+				if ( v28 > 0 )
 				{
-					v26 = v14 + v24 + 40 * v13;
+					v20 = v12 + v17 + 40 * v11;
 					do
 					{
-						v27 = v29[(_DWORD)miniset];
-						if ( v27 )
+						v21 = v23[j];
+						if ( v21 )
 						{
-							dflags[0][v26] |= 8u;
-							dungeon[0][v26] = v27;
+							dflags[0][v20] |= 8u;
+							dungeon[0][v20] = v21;
 						}
-						++miniset;
-						v26 += 40;
-						--v25;
+						++j;
+						v20 += 40;
+						--v19;
 					}
-					while ( v25 );
-					v14 = v39;
+					while ( v19 );
+					v12 = v33;
 				}
 			}
-			++v31;
+			++v25;
 		}
-		while ( v31 < v30 );
+		while ( v25 < v24 );
 	}
 	if ( currlevel == 15 )
 	{
-		quests[15]._qtx = v13 + 1;
-		quests[15]._qty = v14 + 1;
+		quests[15]._qtx = v11 + 1;
+		quests[15]._qty = v12 + 1;
 	}
 	result = 1;
 	if ( setview == 1 )
 	{
-		ViewX = 2 * v13 + 21;
-		ViewY = 2 * v14 + 22;
+		ViewX = 2 * v11 + 21;
+		ViewY = 2 * v12 + 22;
 	}
 	if ( !ldir )
 	{
-		LvlViewX = 2 * v13 + 21;
-		LvlViewY = 2 * v14 + 22;
+		LvlViewX = 2 * v11 + 21;
+		LvlViewY = 2 * v12 + 22;
 	}
 	return result;
 }
