@@ -1864,7 +1864,7 @@ void __fastcall RemoveInvItem(int pnum, int iv)
 			// BUGFIX: Cast the literal `1` to `UINT64` to make that bitshift 64bit
 			// this causes the last 4 skills to not reset correctly after use
 			if ( !(
-				*(UINT64 *)&plr[pnum]._pScrlSpells // TODO: remove cast when pScrlSpells is converted to UINT64
+				plr[pnum]._pScrlSpells64
 				& (1 << (plr[pnum]._pRSpell - 1))) )
 			{
 				plr[pnum]._pRSpell = SPL_INVALID;
@@ -1888,7 +1888,7 @@ void __fastcall RemoveSpdBarItem(int pnum, int iv)
 			// BUGFIX: Cast the literal `1` to `UINT64` to make that bitshift 64bit
 			// this causes the last 4 skills to not reset correctly after use
 			if ( !(
-				*(UINT64 *)&plr[pnum]._pScrlSpells // TODO: remove cast when pScrlSpells is converted to UINT64
+				plr[pnum]._pScrlSpells64
 				& (1 << (plr[pnum]._pRSpell - 1))) )
 			{
 				plr[pnum]._pRSpell = SPL_INVALID;

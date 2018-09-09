@@ -3777,7 +3777,7 @@ BOOL __fastcall PM_DoSpell(int pnum)
 
 		if ( !plr[pnum]._pSplFrom ) {
 			if ( plr[pnum]._pRSplType == RSPLTYPE_SCROLL) {
-				if ( !(*(UINT64 *)&plr[pnum]._pScrlSpells // TODO: remove cast when pScrlSpells is converted to UINT64
+				if ( !(plr[pnum]._pScrlSpells64
 					& (UINT64)1 << (plr[pnum]._pRSpell - 1))
 				) {
 					plr[pnum]._pRSpell = SPL_INVALID;
@@ -3787,7 +3787,7 @@ BOOL __fastcall PM_DoSpell(int pnum)
 			}
 
 			if ( plr[pnum]._pRSplType == RSPLTYPE_CHARGES) {
-				if ( !(*(UINT64 *)&plr[pnum]._pISpells // TODO: remove cast when pISpells is converted to UINT64
+				if ( !(plr[pnum]._pISpells64
 					& (UINT64)1 << (plr[pnum]._pRSpell - 1))
 				) {
 					plr[pnum]._pRSpell = SPL_INVALID;

@@ -934,8 +934,7 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 		plr[p]._pDamageMod = plr[p]._pLevel * plr[p]._pStrength / 100;
 	}
 
-	// TODO: switch to normal 64bit assignment/remove case
-	*(UINT64 *)&plr[p]._pISpells = spl;
+	plr[p]._pISpells64 = spl;
 
 	// check if the current RSplType is a valid/allowed spell
 	if ( plr[p]._pRSplType == RSPLTYPE_CHARGES
