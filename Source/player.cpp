@@ -5318,8 +5318,10 @@ void __fastcall ModifyPlrDex(int pnum, int l)
 		TermMsg("ModifyPlrDex: illegal player %d", pnum);
 	}
 
-	if ( plr[pnum]._pBaseDex + l > MaxStats[plr[pnum]._pClass][ATTRIB_DEX] ) {
-		l = MaxStats[plr[pnum]._pClass][ATTRIB_DEX] - plr[pnum]._pBaseDex;
+	int max = MaxStats[plr[pnum]._pClass][ATTRIB_DEX];
+	if ( plr[pnum]._pBaseDex + l > max )
+	{
+		l = max - plr[pnum]._pBaseDex;
 	}
 
 	plr[pnum]._pDexterity += l;
@@ -5341,8 +5343,10 @@ void __fastcall ModifyPlrVit(int pnum, int l)
 		TermMsg("ModifyPlrVit: illegal player %d", pnum);
 	}
 
-	if ( plr[pnum]._pBaseVit + l > MaxStats[plr[pnum]._pClass][ATTRIB_VIT] ) {
-		l = MaxStats[plr[pnum]._pClass][ATTRIB_VIT] - plr[pnum]._pBaseVit;
+	int max = MaxStats[plr[pnum]._pClass][ATTRIB_VIT];
+	if ( plr[pnum]._pBaseVit + l > max )
+	{
+		l = max - plr[pnum]._pBaseVit;
 	}
 
 	plr[pnum]._pVitality += l;
