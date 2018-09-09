@@ -7,7 +7,7 @@ char hero_names[MAX_CHARACTERS][PLR_NAME_LEN];
 bool gbValidSaveFile; // idb
 int save_prev_tc; // weak
 
-int pfile_inf = 0x7F800000; // weak
+const int pfile_inf = 0x7F800000; // weak
 
 struct pfile_cpp_init
 {
