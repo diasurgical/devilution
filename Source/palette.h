@@ -30,11 +30,11 @@ void __fastcall palette_update_quest_palette(int n);
 bool __cdecl palette_get_colour_cycling();
 void __fastcall palette_set_color_cycling(bool enabled);
 
-/* data */
-
-extern int palette_inf; // weak
-
 /* rdata */
+
+extern const int palette_inf; // weak
+
+/* data */
 
 extern int gamma_correction; // idb
 extern int color_cycling_enabled; // idb
