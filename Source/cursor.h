@@ -29,8 +29,8 @@ void __cdecl CheckTown();
 void __cdecl CheckRportal();
 void __cdecl CheckCursMove();
 
-/* data */
-extern int InvItemWidth[180];
-extern int InvItemHeight[180];
+/* rdata */
+extern const int InvItemWidth[180];
+extern const int InvItemHeight[180];
 
 #endif /* __CURSOR_H__ */
