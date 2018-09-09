@@ -12,7 +12,9 @@ static CRITICAL_SECTION sgMemCrit;
 int SeedCount; // weak
 int dword_52B99C; // bool valid - if x/y are in bounds
 
-int engine_inf = 0x7F800000; // weak
+const int engine_inf = 0x7F800000; // weak
+const int rand_increment = 1; // unused
+const int rand_multiplier = 0x015A4E35; // unused
 
 struct engine_cpp_init_1
 {
