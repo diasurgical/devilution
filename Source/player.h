@@ -24,7 +24,7 @@ void __fastcall SetPlayerGPtrs(BYTE *pData, BYTE **pAnim); /* unsigned char *+**
 void __fastcall LoadPlrGFX(int pnum, int gfxflag);
 void __fastcall InitPlayerGFX(int pnum);
 void __fastcall InitPlrGFXMem(int pnum);
-int __fastcall GetPlrGFXSize(char *szCel);
+DWORD __fastcall GetPlrGFXSize(char *szCel);
 void __fastcall FreePlayerGFX(int pnum);
 void __fastcall NewPlrAnim(int pnum, unsigned char *Peq, int numFrames, int Delay, int width);
 void __fastcall ClearPlrPVars(int pnum);
@@ -113,9 +113,9 @@ void __cdecl PlayDungMsgs();
 /* data */
 
 extern int player_inf;
-extern char ArmourChar[4];
-extern char WepChar[10];
-extern char CharChar[4];
+extern const char ArmourChar[4];
+extern const char WepChar[10];
+extern const char CharChar[4];
 
 /* rdata */
 
