@@ -71,8 +71,10 @@ void __fastcall Cl2DecDatLightTbl2(char *dst_buf, char *a2, int a3, int frame_wi
 void __fastcall Cl2DecodeFrm6(int screen_x, int screen_y, char *pCelBuff, int nCel, int frame_width, int a6, int a7);
 void __fastcall PlayInGameMovie(char *pszMovie);
 
-/* data */
+/* rdata */
 
-extern int engine_inf; // weak
+extern const int engine_inf; // weak
+extern const int rand_increment; // unused
+extern const int rand_multiplier; // unused
 
 #endif /* __ENGINE_H__ */
