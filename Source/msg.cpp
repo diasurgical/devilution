@@ -3463,12 +3463,12 @@ int __fastcall On_PLAYER_JOINLEVEL(struct TCmdLocParam1 *pCmd, int pnum)
 				plr[v4].plrlevel = v5;
 				if ( currlevel == plr[v4].plrlevel )
 				{
-					LoadPlrGFX(v2, 1);
+					LoadPlrGFX(v2, PFILE_STAND);
 					SyncInitPlr(v2);
 					if ( (signed int)(plr[v4]._pHitPoints & 0xFFFFFFC0) <= 0 )
 					{
 						plr[v4]._pgfxnum = 0;
-						LoadPlrGFX(v2, 128);
+						LoadPlrGFX(v2, PFILE_DEATH);
 						v6 = plr[v4]._pDWidth;
 						v7 = plr[v4]._pDAnim[0];
 						plr[v4]._pmode = PM_DEATH;

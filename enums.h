@@ -2524,3 +2524,17 @@ enum inv_xy_slot {
 	SLOTXY_BELT_LAST = 72,
 	NUM_XY_SLOTS = 73
 };
+
+enum player_graphic
+{
+	PFILE_STAND = 1 << 0,
+	PFILE_WALK = 1 << 1,
+	PFILE_ATTACK = 1 << 2,
+	PFILE_HIT = 1 << 3,
+	PFILE_LIGHTNING = 1 << 4,
+	PFILE_FIRE = 1 << 5,
+	PFILE_MAGIC = 1 << 6,
+	PFILE_DEATH = 1 << 7,
+	PFILE_BLOCK = 1 << 8,
+	PFILE_ALL = 0x17F
+};

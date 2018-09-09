@@ -1084,7 +1084,7 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 	{
 		plr[p]._pgfxnum = g;
 		plr[p]._pGFXLoad = 0;
-		LoadPlrGFX(p, 1);
+		LoadPlrGFX(p, PFILE_STAND);
 		SetPlrAnims(p);
 
 
