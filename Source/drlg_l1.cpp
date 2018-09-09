@@ -13,7 +13,7 @@ int VR2;
 int VR3;
 void *pSetPiece; // idb
 
-ShadowStruct SPATS[37] =
+const ShadowStruct SPATS[37] =
 {
   { 7, 13, 0, 13, 144, 0, 142 },
   { 16, 13, 0, 13, 144, 0, 142 },
@@ -53,7 +53,7 @@ ShadowStruct SPATS[37] =
   { 12, 13, 11, 0, 140, 147, 0 },
   { 3, 13, 11, 12, 150, 0, 0 }
 };
-unsigned char BSTYPES[206] =
+const unsigned char BSTYPES[206] =
 {
 	0,   1,   2,   3,   4,   5,   6,   7,   8,   9,
    10,  11,  12,  13,  14,  15,  16,  17,   0,   0,
@@ -77,7 +77,7 @@ unsigned char BSTYPES[206] =
    28,   1,   2,  25,  26,  22,  22,  25,  26,   0,
 	0,   0,   0,   0,   0,   0
 };
-unsigned char L5BTYPES[206] =
+const unsigned char L5BTYPES[206] =
 {
 	0,   1,   2,   3,   4,   5,   6,   7,   8,   9,
    10,  11,  12,  13,  14,  15,  16,  17,   0,   0,
@@ -101,13 +101,13 @@ unsigned char L5BTYPES[206] =
 	0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
 	0,   0,   0,   0,   0,   0
 };
-unsigned char STAIRSUP[] = { 4, 4, 13, 13, 13, 13, 2, 2, 2, 2, 13, 13, 13, 13, 13, 13, 13, 13, 0, 66, 6, 0, 63, 64, 65, 0, 0, 67, 68, 0, 0, 0, 0, 0 };
-unsigned char L5STAIRSUP[] = { 4, 4, 22, 22, 22, 22, 2, 2, 2, 2, 13, 13, 13, 13, 13, 13, 13, 13, 0, 66, 23, 0, 63, 64, 65, 0, 0, 67, 68, 0, 0, 0, 0, 0 };
-unsigned char STAIRSDOWN[] = { 4, 3, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 62, 57, 58, 0, 61, 59, 60, 0, 0, 0, 0, 0 };
-unsigned char LAMPS[] = { 2, 2, 13, 0, 13, 13, 129, 0, 130, 128 };
-unsigned char PWATERIN[] = { 6, 6, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 0, 0, 0, 0, 0, 0, 0, 202, 200, 200, 84, 0, 0, 199, 203, 203, 83, 0, 0, 85, 206, 80, 81, 0, 0, 0, 134, 135, 0, 0, 0, 0, 0, 0, 0, 0 };
+const unsigned char STAIRSUP[] = { 4, 4, 13, 13, 13, 13, 2, 2, 2, 2, 13, 13, 13, 13, 13, 13, 13, 13, 0, 66, 6, 0, 63, 64, 65, 0, 0, 67, 68, 0, 0, 0, 0, 0 };
+const unsigned char L5STAIRSUP[] = { 4, 4, 22, 22, 22, 22, 2, 2, 2, 2, 13, 13, 13, 13, 13, 13, 13, 13, 0, 66, 23, 0, 63, 64, 65, 0, 0, 67, 68, 0, 0, 0, 0, 0 };
+const unsigned char STAIRSDOWN[] = { 4, 3, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 62, 57, 58, 0, 61, 59, 60, 0, 0, 0, 0, 0 };
+const unsigned char LAMPS[] = { 2, 2, 13, 0, 13, 13, 129, 0, 130, 128 };
+const unsigned char PWATERIN[] = { 6, 6, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 0, 0, 0, 0, 0, 0, 0, 202, 200, 200, 84, 0, 0, 199, 203, 203, 83, 0, 0, 85, 206, 80, 81, 0, 0, 0, 134, 135, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-/* rdata */
+/* data */
 unsigned char L5ConvTbl[16] = { 22u, 13u, 1u, 13u, 2u, 13u, 13u, 13u, 4u, 13u, 1u, 13u, 2u, 13u, 16u, 13u };
 
 void __cdecl DRLG_Init_Globals()
@@ -615,11 +615,11 @@ void __fastcall DRLG_L5(int entry)
 		{
 			if ( v13 )
 			{
-				if ( DRLG_PlaceMiniSet(PWATERIN, 1, 1, 0, 0, 0, -1, 0) < 0 )
+				if ( DRLG_PlaceMiniSet((unsigned char *)PWATERIN, 1, 1, 0, 0, 0, -1, 0) < 0 )
 					v2 = 0;
 				--ViewY;
 			}
-			else if ( DRLG_PlaceMiniSet(PWATERIN, 1, 1, 0, 0, 1, -1, 0) < 0 )
+			else if ( DRLG_PlaceMiniSet((unsigned char *)PWATERIN, 1, 1, 0, 0, 1, -1, 0) < 0 )
 			{
 				v2 = 0;
 			}
@@ -628,10 +628,10 @@ void __fastcall DRLG_L5(int entry)
 		{
 			if ( !v13 )
 			{
-				v5 = DRLG_PlaceMiniSet(STAIRSUP, 1, 1, 0, 0, 1, -1, 0);
+				v5 = DRLG_PlaceMiniSet((unsigned char *)STAIRSUP, 1, 1, 0, 0, 1, -1, 0);
 				goto LABEL_21;
 			}
-			if ( DRLG_PlaceMiniSet(STAIRSUP, 1, 1, 0, 0, 0, -1, 0) < 0 )
+			if ( DRLG_PlaceMiniSet((unsigned char *)STAIRSUP, 1, 1, 0, 0, 0, -1, 0) < 0 )
 				v2 = 0;
 			if ( v13 == 1 )
 			{
@@ -645,16 +645,16 @@ LABEL_33:
 		}
 		if ( v13 )
 		{
-			if ( DRLG_PlaceMiniSet(L5STAIRSUP, 1, 1, 0, 0, 0, -1, 0) < 0
-			  || DRLG_PlaceMiniSet(STAIRSDOWN, 1, 1, 0, 0, 1, -1, 1) < 0 )
+			if ( DRLG_PlaceMiniSet((unsigned char *)L5STAIRSUP, 1, 1, 0, 0, 0, -1, 0) < 0
+			  || DRLG_PlaceMiniSet((unsigned char *)STAIRSDOWN, 1, 1, 0, 0, 1, -1, 1) < 0 )
 			{
 				v2 = 0;
 			}
 			goto LABEL_33;
 		}
-		if ( DRLG_PlaceMiniSet(L5STAIRSUP, 1, 1, 0, 0, 1, -1, 0) >= 0 )
+		if ( DRLG_PlaceMiniSet((unsigned char *)L5STAIRSUP, 1, 1, 0, 0, 1, -1, 0) >= 0 )
 		{
-			v5 = DRLG_PlaceMiniSet(STAIRSDOWN, 1, 1, 0, 0, 0, -1, 1);
+			v5 = DRLG_PlaceMiniSet((unsigned char *)STAIRSDOWN, 1, 1, 0, 0, 0, -1, 1);
 LABEL_21:
 			if ( v5 < 0 )
 				v2 = 0;
@@ -705,7 +705,7 @@ LABEL_34:
 	while ( v8 < 40 );
 	DRLG_L5Subs();
 	DRLG_L1Shadows();
-	DRLG_PlaceMiniSet(LAMPS, 5, 10, 0, 0, 0, -1, 4);
+	DRLG_PlaceMiniSet((unsigned char *)LAMPS, 5, 10, 0, 0, 0, -1, 4);
 	DRLG_L1Floor();
 	do
 	{
@@ -850,7 +850,7 @@ void __cdecl DRLG_L1Shadows()
 		v2 = 1;
 		do
 		{
-			v3 = &SPATS[0].s1;
+			v3 = (unsigned char *)&SPATS[0].s1;
 			sd[0][0] = BSTYPES[(unsigned char)v1[1]];
 			sd[1][0] = BSTYPES[(unsigned char)*(v1 - 39)];
 			sd[0][1] = BSTYPES[(unsigned char)*v1];

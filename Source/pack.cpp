@@ -4,7 +4,7 @@
 
 int pack_cpp_init_value; // weak
 
-int pack_inf = 0x7F800000; // weak
+const int pack_inf = 0x7F800000; // weak
 
 struct pack_cpp_init
 {

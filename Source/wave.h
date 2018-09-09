@@ -23,8 +23,8 @@ int __fastcall ReadWaveSection(MEMFILE *pMemFile, int a2, int *a3);
 void *__fastcall LoadWaveFile(HANDLE hsFile, WAVEFORMATEX *pwfx, int *a3);
 void __fastcall j_engine_mem_free(void *ptr);
 
-/* data */
+/* rdata */
 
-extern int wave_inf; // weak
+extern const int wave_inf; // weak
 
 #endif /* __WAVE_H__ */

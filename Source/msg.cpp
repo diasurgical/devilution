@@ -21,7 +21,7 @@ char gbBufferMsgs; // weak
 int dword_676198; // weak
 int msg_err_timer; // weak
 
-int msg_inf = 0x7F800000; // weak
+const int msg_inf = 0x7F800000; // weak
 
 struct msg_cpp_init
 {

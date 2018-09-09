@@ -15,8 +15,8 @@ void __cdecl InitPlrMsg();
 void __cdecl DrawPlrMsg();
 void __fastcall PrintPlrMsg(int no, int x, int y, char *str, int just);
 
-/* data */
+/* rdata */
 
-extern text_color text_color_from_player_num[2];
+extern const text_color text_color_from_player_num[2];
 
 #endif /* __PLRMSG_H__ */

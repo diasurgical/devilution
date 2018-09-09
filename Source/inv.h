@@ -48,11 +48,11 @@ void __cdecl DoTelekinesis();
 int __fastcall CalculateGold(int pnum);
 int __cdecl DropItemBeforeTrig();
 
-/* data */
-
-extern InvXY InvRect[73];
-
 /* rdata */
+
+extern const InvXY InvRect[73];
+
+/* data */
 
 extern int AP2x2Tbl[10]; // weak
 

@@ -12,14 +12,14 @@ void *pCowCels; // idb
 TownerStruct towner[16];
 
 
-int snSFX[3][3] =
+const int snSFX[3][3] =
 {
   { PS_WARR52, PS_ROGUE52, PS_MAGE52 },
   { PS_WARR49, PS_ROGUE49, PS_MAGE49 },
   { PS_WARR50, PS_ROGUE50, PS_MAGE50 }
 };
 
-/* rdata */
+/* data */
 
 char AnimOrder[6][148] =
 {

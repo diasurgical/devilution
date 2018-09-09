@@ -4,7 +4,7 @@
 
 int wave_cpp_init_value; // weak
 
-int wave_inf = 0x7F800000; // weak
+const int wave_inf = 0x7F800000; // weak
 
 struct wave_cpp_init
 {

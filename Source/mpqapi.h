@@ -39,11 +39,11 @@ bool __cdecl mpqapi_write_block_table();
 bool __cdecl mpqapi_write_hash_table();
 bool __cdecl mpqapi_can_seek();
 
-/* data */
-
-extern int mpqapi_inf; // weak
-
 /* rdata */
+
+extern const int mpqapi_inf; // weak
+
+/* data */
 
 extern HANDLE sghArchive; // idb
 

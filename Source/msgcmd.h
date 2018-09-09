@@ -24,8 +24,8 @@ void __fastcall msgcmd_event_type(ChatCmd *a1, int a2, int *a3, int a4, int a5);
 void __fastcall msgcmd_cleanup_chatcmd_1(ChatCmd *a1);
 void __fastcall msgcmd_cleanup_extern_msg(ServerCommand **extern_msgs);
 
-/* data */
+/* rdata */
 
-extern int msgcmd_inf; // weak
+extern const int msgcmd_inf; // weak
 
 #endif /* __MSGCMD_H__ */

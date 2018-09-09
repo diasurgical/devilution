@@ -45,8 +45,8 @@ void __fastcall pfile_strcpy(char *dst, char *src);
 char *__fastcall pfile_read(char *pszName, int *pdwLen);
 void __fastcall pfile_update(bool force_save);
 
-/* data */
+/* rdata */
 
-extern int pfile_inf; // weak
+extern const int pfile_inf; // weak
 
 #endif /* __PFILE_H__ */

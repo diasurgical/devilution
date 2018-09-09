@@ -7,7 +7,7 @@ void *pInvCels;
 int drawsbarflag; // idb
 int sgdwLastTime; // check name
 
-InvXY InvRect[73] =
+const InvXY InvRect[73] =
 {
   { 452, 31 },  // helmet
   { 480, 31 },  // helmet
@@ -84,7 +84,7 @@ InvXY InvRect[73] =
   { 408, 385 }  // belt
 };
 
-/* rdata */
+/* data */
 
 int AP2x2Tbl[10] = { 8, 28, 6, 26, 4, 24, 2, 22, 0, 20 }; // weak
 

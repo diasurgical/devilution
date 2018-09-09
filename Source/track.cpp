@@ -7,7 +7,7 @@ int track_cpp_init_value; // weak
 int sgdwLastWalk; // weak
 bool sgbIsWalking; // weak
 
-int track_inf = 0x7F800000; // weak
+const int track_inf = 0x7F800000; // weak
 
 struct track_cpp_init
 {

@@ -21,8 +21,8 @@ char L4dungeon[80][80];
 char dung[20][20];
 //int dword_52A4DC; // weak
 
-unsigned char L4ConvTbl[16] = { 30u, 6u, 1u, 6u, 2u, 6u, 6u, 6u, 9u, 6u, 1u, 6u, 2u, 6u, 3u, 6u };
-unsigned char L4USTAIRS[42] =
+const unsigned char L4ConvTbl[16] = { 30u, 6u, 1u, 6u, 2u, 6u, 6u, 6u, 9u, 6u, 1u, 6u, 2u, 6u, 3u, 6u };
+const unsigned char L4USTAIRS[42] =
 {
   4u,
   5u,
@@ -67,7 +67,7 @@ unsigned char L4USTAIRS[42] =
   0u,
   0u
 };
-unsigned char L4TWARP[42] =
+const unsigned char L4TWARP[42] =
 {
   4u,
   5u,
@@ -112,7 +112,7 @@ unsigned char L4TWARP[42] =
   0u,
   0u
 };
-unsigned char L4DSTAIRS[52] =
+const unsigned char L4DSTAIRS[52] =
 {
   5u,
   5u,
@@ -167,7 +167,7 @@ unsigned char L4DSTAIRS[52] =
   0u,
   0u
 };
-unsigned char L4PENTA[52] =
+const unsigned char L4PENTA[52] =
 {
   5u,
   5u,
@@ -222,7 +222,7 @@ unsigned char L4PENTA[52] =
   0u,
   0u
 };
-unsigned char L4PENTA2[52] =
+const unsigned char L4PENTA2[52] =
 {
   5u,
   5u,
@@ -277,7 +277,7 @@ unsigned char L4PENTA2[52] =
   0u,
   0u
 };
-unsigned char L4BTYPES[140] =
+const unsigned char L4BTYPES[140] =
 {
 	0,   1,   2,   3,   4,   5,   6,   7,   8,   9,
    10,  11,  12,  13,  14,  15,  16,  17,   0,   0,
@@ -688,20 +688,20 @@ void __fastcall DRLG_L4(int entry)
 			{
 				if ( !v23 )
 				{
-					v10 = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 1, 0);
+					v10 = DRLG_L4PlaceMiniSet((unsigned char *)L4USTAIRS, 1, 1, -1, -1, 1, 0);
 					if ( v10 )
 					{
-						if ( gbMaxPlayers != 1 || (v11 = L4PENTA, quests[5]._qactive == 2) )
-							v11 = L4PENTA2;
+						if ( gbMaxPlayers != 1 || (v11 = (unsigned char *)L4PENTA, quests[5]._qactive == 2) )
+							v11 = (unsigned char *)L4PENTA2;
 						v10 = DRLG_L4PlaceMiniSet(v11, 1, 1, -1, -1, 0, 1);
 					}
 					goto LABEL_35;
 				}
-				v10 = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 0, 0);
+				v10 = DRLG_L4PlaceMiniSet((unsigned char *)L4USTAIRS, 1, 1, -1, -1, 0, 0);
 				if ( v10 )
 				{
-					if ( gbMaxPlayers != 1 || (v12 = L4PENTA, quests[5]._qactive == 2) )
-						v12 = L4PENTA2;
+					if ( gbMaxPlayers != 1 || (v12 = (unsigned char *)L4PENTA, quests[5]._qactive == 2) )
+						v12 = (unsigned char *)L4PENTA2;
 					v10 = DRLG_L4PlaceMiniSet(v12, 1, 1, -1, -1, 1, 1);
 				}
 			}
@@ -709,24 +709,24 @@ void __fastcall DRLG_L4(int entry)
 			{
 				if ( !v23 )
 				{
-					v10 = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 1, 0);
+					v10 = DRLG_L4PlaceMiniSet((unsigned char *)L4USTAIRS, 1, 1, -1, -1, 1, 0);
 					if ( v10 )
 					{
 						if ( currlevel != 16 )
-							v10 = DRLG_L4PlaceMiniSet(L4DSTAIRS, 1, 1, -1, -1, 0, 1);
+							v10 = DRLG_L4PlaceMiniSet((unsigned char *)L4DSTAIRS, 1, 1, -1, -1, 0, 1);
 						goto LABEL_31;
 					}
 LABEL_35:
 					++ViewX;
 					continue;
 				}
-				v10 = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 0, 0);
+				v10 = DRLG_L4PlaceMiniSet((unsigned char *)L4USTAIRS, 1, 1, -1, -1, 0, 0);
 				if ( v23 != 1 )
 				{
 					if ( v10 )
 					{
 						if ( currlevel != 16 )
-							v10 = DRLG_L4PlaceMiniSet(L4DSTAIRS, 1, 1, -1, -1, 0, 1);
+							v10 = DRLG_L4PlaceMiniSet((unsigned char *)L4DSTAIRS, 1, 1, -1, -1, 0, 1);
 LABEL_46:
 						if ( v10 )
 						{
@@ -734,7 +734,7 @@ LABEL_46:
 							{
 								v22 = 1;
 LABEL_34:
-								v10 = DRLG_L4PlaceMiniSet(L4TWARP, 1, 1, -1, -1, v22, 6);
+								v10 = DRLG_L4PlaceMiniSet((unsigned char *)L4TWARP, 1, 1, -1, -1, v22, 6);
 								goto LABEL_35;
 							}
 						}
@@ -744,9 +744,9 @@ LABEL_34:
 				if ( v10 )
 				{
 					if ( currlevel != 16 )
-						v10 = DRLG_L4PlaceMiniSet(L4DSTAIRS, 1, 1, -1, -1, 1, 1);
+						v10 = DRLG_L4PlaceMiniSet((unsigned char *)L4DSTAIRS, 1, 1, -1, -1, 1, 1);
 					if ( v10 && currlevel == 13 )
-						v10 = DRLG_L4PlaceMiniSet(L4TWARP, 1, 1, -1, -1, 0, 6);
+						v10 = DRLG_L4PlaceMiniSet((unsigned char *)L4TWARP, 1, 1, -1, -1, 0, 6);
 				}
 			}
 			++ViewY;
@@ -754,18 +754,18 @@ LABEL_34:
 		}
 		if ( !v23 )
 		{
-			v10 = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 1, 0);
+			v10 = DRLG_L4PlaceMiniSet((unsigned char *)L4USTAIRS, 1, 1, -1, -1, 1, 0);
 LABEL_31:
 			if ( !v10 || currlevel != 13 )
 				goto LABEL_35;
 			v22 = 0;
 			goto LABEL_34;
 		}
-		v10 = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 0, 0);
+		v10 = DRLG_L4PlaceMiniSet((unsigned char *)L4USTAIRS, 1, 1, -1, -1, 0, 0);
 		if ( v23 != 1 )
 			goto LABEL_46;
 		if ( v10 && currlevel == 13 )
-			v10 = DRLG_L4PlaceMiniSet(L4TWARP, 1, 1, -1, -1, 0, 6);
+			v10 = DRLG_L4PlaceMiniSet((unsigned char *)L4TWARP, 1, 1, -1, -1, 0, 6);
 		ViewX = 2 * setpc_x + 22;
 		ViewY = 2 * setpc_y + 22;
 	}

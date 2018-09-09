@@ -8,7 +8,7 @@ int helpflag;
 int displayinghelp[22]; /* check, does nothing? */
 int HelpTop; // weak
 
-char gszHelpText[] =
+const char gszHelpText[] =
 {
 	"$Keyboard Shortcuts:|"
 	"F1:    Open Help Screen|"

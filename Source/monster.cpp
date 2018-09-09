@@ -16,11 +16,11 @@ int monstimgtot; // weak
 int uniquetrans;
 int nummtypes;
 
-int monster_inf = 0x7F800000; // weak
-char plr2monst[9] = { 0, 5, 3, 7, 1, 4, 6, 0, 2 };
-unsigned char counsmiss[4] = { MIS_FIREBOLT, MIS_CBOLT, MIS_LIGHTCTRL, MIS_FIREBALL };
+const int monster_inf = 0x7F800000; // weak
+const char plr2monst[9] = { 0, 5, 3, 7, 1, 4, 6, 0, 2 };
+const unsigned char counsmiss[4] = { MIS_FIREBOLT, MIS_CBOLT, MIS_LIGHTCTRL, MIS_FIREBALL };
 
-/* rdata */
+/* data */
 
 MonsterData monsterdata[112] =
 {
