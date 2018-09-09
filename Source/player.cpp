@@ -20,9 +20,9 @@ int deathdelay; // weak
 int plr_dframe_size; // idb
 
 int player_inf = 0x7F800000; // weak
-char ArmourChar[4] = { 'L', 'M', 'H', 0 };
-char WepChar[10] = { 'N', 'U', 'S', 'D', 'B', 'A', 'M', 'H', 'T', 0 };
-char CharChar[4] = { 'W', 'R', 'S', 0 };
+const char ArmourChar[4] = { 'L', 'M', 'H', 0 };
+const char WepChar[10] = { 'N', 'U', 'S', 'D', 'B', 'A', 'M', 'H', 'T', 0 };
+const char CharChar[4] = { 'W', 'R', 'S', 0 };
 
 /* rdata */
 
@@ -403,51 +403,33 @@ void __fastcall InitPlrGFXMem(int pnum)
 // 686438: using guessed type char plr_gfx_flag;
 // 69B7BC: using guessed type char plr_gfx_bflag;
 
-int __fastcall GetPlrGFXSize(char *szCel)
+DWORD __fastcall GetPlrGFXSize(char *szCel)
 {
-	unsigned int v1; // ebx
-	char *v2; // edi
-	char *v3; // esi
+	char prefix[16]; // [esp+10Ch] [ebp-24h]
 	char dwInitParam[256]; // [esp+Ch] [ebp-124h]
-	char v6[16]; // [esp+10Ch] [ebp-24h]
-	unsigned int v7; // [esp+11Ch] [ebp-14h]
-	char *v8; // [esp+120h] [ebp-10h]
-	void *a1; // [esp+124h] [ebp-Ch]
-	char **v10; // [esp+128h] [ebp-8h]
-	unsigned int v11; // [esp+12Ch] [ebp-4h]
+	void *file; // [esp+124h] [ebp-Ch]
+	DWORD size = 0; // [esp+11Ch] [ebp-14h]
+	DWORD result = 0;
+	int a = 0;
+	int w = 0;
 
-	v1 = 0;
-	v8 = szCel;
-	v11 = 0;
-	v10 = ClassStrTbl;
-	do
-	{
-		v2 = ArmourChar;
-		do
-		{
-			v3 = WepChar;
-			do
-			{
-				sprintf(v6, "%c%c%c", CharChar[v1], *v2, *v3);
-				sprintf(dwInitParam, "PlrGFX\\%s\\%s\\%s%s.CL2", *v10, v6, v6, v8);
-				if ( WOpenFile(dwInitParam, &a1, 1) )
-				{
-					v7 = WGetFileSize(a1, 0);
-					WCloseFile(a1);
-					if ( v11 <= v7 )
-						v11 = v7;
+	for (int c = 0; c < sizeof(ClassStrTbl) / sizeof(ClassStrTbl[0]); c++) {
+		for (a = 0; ArmourChar[a]; a++) {
+			for (w = 0; WepChar[w]; w++) {
+				sprintf(prefix, "%c%c%c", CharChar[c], ArmourChar[a], WepChar[w]);
+				sprintf(dwInitParam, "PlrGFX\\%s\\%s\\%s%s.CL2", ClassStrTbl[c], prefix, prefix, szCel);
+				if ( WOpenFile(dwInitParam, &file, TRUE) ) {
+					size = WGetFileSize(file, 0);
+					WCloseFile(file);
+					if ( result <= size ) {
+						result = size;
+					}
 				}
-				++v3;
 			}
-			while ( *v3 );
-			++v2;
 		}
-		while ( *v2 );
-		++v10;
-		++v1;
 	}
-	while ( v1 < 3 );
-	return v11;
+
+	return result;
 }
 
 void __fastcall FreePlayerGFX(int pnum)
