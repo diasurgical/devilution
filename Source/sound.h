@@ -34,11 +34,11 @@ void __fastcall sound_disable_music(bool disable);
 int __fastcall sound_get_or_set_music_volume(int volume);
 int __fastcall sound_get_or_set_sound_volume(int volume);
 
-/* data */
-
-extern int sound_inf; // weak
-
 /* rdata */
+
+extern const int sound_inf; // weak
+
+/* data */
 
 extern char gbMusicOn; // weak
 extern char gbSoundOn; // weak
