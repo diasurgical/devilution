@@ -3,7 +3,7 @@
 #define __PFILE_H__
 
 extern int pfile_cpp_init_value;
-extern char hero_names[320];
+extern char hero_names[MAX_CHARACTERS][PLR_NAME_LEN];
 extern bool gbValidSaveFile; // idb
 extern int save_prev_tc; // weak
 
