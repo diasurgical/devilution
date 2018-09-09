@@ -212,12 +212,19 @@ struct PlayerStruct
 	int _pSBkSpell;
 	char _pSBkSplType;
 	char _pSplLvl[64];
-	int remove_1; /* fix: remove and align 8 */
-	int _pMemSpells[2];
-	int _pAblSpells[2];
-	// should be UINT64
-	int _pScrlSpells[2];
-	char _pSpellFlags;
+	union {
+		UINT64 _pMemSpells64;
+		int _pMemSpells[2];
+	};
+	union {
+		UINT64 _pAblSpells64;
+		int _pAblSpells[2];
+	};
+	union {
+		UINT64 _pScrlSpells64;
+		int _pScrlSpells[2];
+	};
+	int _pSpellFlags;
 	int _pSplHotKey[4];
 	char _pSplTHotKey[4];
 	int _pwtype;
@@ -316,9 +323,10 @@ struct PlayerStruct
 	int _pIBonusToHit;
 	int _pIBonusAC;
 	int _pIBonusDamMod;
-	int remove_2; /* fix: remove and align 8 */
-	// TODO: switch to UINT64
-	int _pISpells[2];
+	union {
+		UINT64 _pISpells64;
+		int _pISpells[2];
+	};
 	int _pIFlags;
 	int _pIGetHit;
 	char _pISplLvlAdd;
@@ -1466,7 +1474,7 @@ struct PkPlayerStruct
 	int pManaBase;
 	int pMaxManaBase;
 	char pSplLvl[37];
-	int pMemSpells;
+	int pMemSpells; /* __int64 */
 	int pMemSpells2;
 	PkItemStruct InvBody[7];
 	PkItemStruct InvList[40];

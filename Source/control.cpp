@@ -2721,8 +2721,8 @@ int __fastcall GetSBookTrans(int ii, unsigned char townok)
 
 void __cdecl DrawSpellBook()
 {
-	int v0; // edi
-	int v1; // ebp
+	__int64 v0; // edi
+	__int64 v1; // ebp
 	int v2; // esi
 	char v3; // al
 	int v4; // eax
@@ -2739,13 +2739,12 @@ void __cdecl DrawSpellBook()
 	CelDecodeOnly(76 * sbooktab + 391, 508, pSBkBtnCel, sbooktab + 1, 76);
 	v9 = 1;
 	v8 = 214;
-	v0 = plr[myplr]._pISpells[0] | plr[myplr]._pMemSpells[0] | plr[myplr]._pAblSpells[0];
-	v1 = plr[myplr]._pISpells[1] | plr[myplr]._pMemSpells[1] | plr[myplr]._pAblSpells[1];
+	v0 = plr[myplr]._pISpells64 | plr[myplr]._pMemSpells64 | plr[myplr]._pAblSpells64;
 	do
 	{
 		v2 = SpellPages[0][v9 + 7 * sbooktab - 1]; // *(&attribute_inc_rects[3].h + v9 + 7 * sbooktab); /* check */
-		if ( v2 != -1
-		  && v1 & ((unsigned __int64)((__int64)1 << ((unsigned char)v2 - 1)) >> 32) | v0 & (unsigned int)((__int64)1 << ((unsigned char)v2 - 1)) )
+		v1 = (__int64)1 << (v2 - 1);
+		if ( v2 != -1 && (v1 & v0) )
 		{
 			v7 = GetSBookTrans(v2, 1u);
 			SetSpellTrans(v7);
