@@ -50,7 +50,7 @@ void __cdecl L4firstRoom();
 void __fastcall L4drawRoom(int x, int y, int width, int height);
 void __fastcall L4roomGen(int x, int y, int w, int h, int dir);
 bool __fastcall L4checkRoom(int x, int y, int width, int height);
-bool __fastcall DRLG_L4PlaceMiniSet(unsigned char *miniset, int tmin, int tmax, int cx, int cy, int setview, int ldir);
+bool __fastcall DRLG_L4PlaceMiniSet(const unsigned char *miniset, int tmin, int tmax, int cx, int cy, int setview, int ldir);
 void __cdecl DRLG_L4FloodTVal();
 void __fastcall DRLG_L4FTVR(int i, int j, int x, int y, int d);
 void __cdecl DRLG_L4TransFix();

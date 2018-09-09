@@ -542,23 +542,23 @@ void __fastcall DRLG_L3(int entry)
 			DRLG_L3MakeMegas();
 			if ( !entry )
 			{
-				genok = DRLG_L3PlaceMiniSet((unsigned char *)L3UP, 1, 1, -1, -1, 1, 0);
+				genok = DRLG_L3PlaceMiniSet(L3UP, 1, 1, -1, -1, 1, 0);
 				if ( genok )
 					continue;
-				genok = DRLG_L3PlaceMiniSet((unsigned char *)L3DOWN, 1, 1, -1, -1, 0, 1);
+				genok = DRLG_L3PlaceMiniSet(L3DOWN, 1, 1, -1, -1, 0, 1);
 				if ( genok )
 					continue;
 				if ( currlevel != 9 )
 					goto LABEL_24;
-				genok = DRLG_L3PlaceMiniSet((unsigned char *)L3HOLDWARP, 1, 1, -1, -1, 0, 6);
+				genok = DRLG_L3PlaceMiniSet(L3HOLDWARP, 1, 1, -1, -1, 0, 6);
 				goto LABEL_23;
 			}
-			genok = DRLG_L3PlaceMiniSet((unsigned char *)L3UP, 1, 1, -1, -1, 0, 0);
+			genok = DRLG_L3PlaceMiniSet(L3UP, 1, 1, -1, -1, 0, 0);
 			if ( entry == 1 )
 			{
 				if ( genok )
 					continue;
-				genok = DRLG_L3PlaceMiniSet((unsigned char *)L3DOWN, 1, 1, -1, -1, 1, 1);
+				genok = DRLG_L3PlaceMiniSet(L3DOWN, 1, 1, -1, -1, 1, 1);
 				ViewX += 2;
 				ViewY -= 2;
 				if ( genok )
@@ -567,7 +567,7 @@ void __fastcall DRLG_L3(int entry)
 					goto LABEL_24;
 				v24 = 0;
 LABEL_22:
-				genok = DRLG_L3PlaceMiniSet((unsigned char *)L3HOLDWARP, 1, 1, -1, -1, v24, 6);
+				genok = DRLG_L3PlaceMiniSet(L3HOLDWARP, 1, 1, -1, -1, v24, 6);
 LABEL_23:
 				if ( genok )
 					continue;
@@ -575,7 +575,7 @@ LABEL_23:
 			}
 			if ( genok )
 				continue;
-			genok = DRLG_L3PlaceMiniSet((unsigned char *)L3DOWN, 1, 1, -1, -1, 0, 1);
+			genok = DRLG_L3PlaceMiniSet(L3DOWN, 1, 1, -1, -1, 0, 1);
 			if ( genok )
 				continue;
 			if ( currlevel == 9 )
@@ -594,13 +594,13 @@ LABEL_24:
 	while ( !lavapool );
 	DRLG_L3PoolFix();
 	FixL3Warp();
-	DRLG_L3PlaceRndSet((unsigned char *)L3ISLE1, 70);
-	DRLG_L3PlaceRndSet((unsigned char *)L3ISLE2, 70);
-	DRLG_L3PlaceRndSet((unsigned char *)L3ISLE3, 30);
-	DRLG_L3PlaceRndSet((unsigned char *)L3ISLE4, 30);
-	DRLG_L3PlaceRndSet((unsigned char *)L3ISLE1, 100);
-	DRLG_L3PlaceRndSet((unsigned char *)L3ISLE2, 100);
-	DRLG_L3PlaceRndSet((unsigned char *)L3ISLE5, 90);
+	DRLG_L3PlaceRndSet(L3ISLE1, 70);
+	DRLG_L3PlaceRndSet(L3ISLE2, 70);
+	DRLG_L3PlaceRndSet(L3ISLE3, 30);
+	DRLG_L3PlaceRndSet(L3ISLE4, 30);
+	DRLG_L3PlaceRndSet(L3ISLE1, 100);
+	DRLG_L3PlaceRndSet(L3ISLE2, 100);
+	DRLG_L3PlaceRndSet(L3ISLE5, 90);
 	FixL3HallofHeroes();
 	DRLG_L3River();
 
@@ -616,33 +616,33 @@ LABEL_24:
 
 	DRLG_PlaceThemeRooms(5, 10, 7, 0, 0);
 	DRLG_L3Wood();
-	DRLG_L3PlaceRndSet((unsigned char *)L3TITE1, 10);
-	DRLG_L3PlaceRndSet((unsigned char *)L3TITE2, 10);
-	DRLG_L3PlaceRndSet((unsigned char *)L3TITE3, 10);
-	DRLG_L3PlaceRndSet((unsigned char *)L3TITE6, 20);
-	DRLG_L3PlaceRndSet((unsigned char *)L3TITE7, 20);
-	DRLG_L3PlaceRndSet((unsigned char *)L3TITE8, 20);
-	DRLG_L3PlaceRndSet((unsigned char *)L3TITE9, 20);
-	DRLG_L3PlaceRndSet((unsigned char *)L3TITE10, 20);
-	DRLG_L3PlaceRndSet((unsigned char *)L3TITE11, 30);
-	DRLG_L3PlaceRndSet((unsigned char *)L3TITE12, 20);
-	DRLG_L3PlaceRndSet((unsigned char *)L3TITE13, 20);
-	DRLG_L3PlaceRndSet((unsigned char *)L3CREV1, 30);
-	DRLG_L3PlaceRndSet((unsigned char *)L3CREV2, 30);
-	DRLG_L3PlaceRndSet((unsigned char *)L3CREV3, 30);
-	DRLG_L3PlaceRndSet((unsigned char *)L3CREV4, 30);
-	DRLG_L3PlaceRndSet((unsigned char *)L3CREV5, 30);
-	DRLG_L3PlaceRndSet((unsigned char *)L3CREV6, 30);
-	DRLG_L3PlaceRndSet((unsigned char *)L3CREV7, 30);
-	DRLG_L3PlaceRndSet((unsigned char *)L3CREV8, 30);
-	DRLG_L3PlaceRndSet((unsigned char *)L3CREV9, 30);
-	DRLG_L3PlaceRndSet((unsigned char *)L3CREV10, 30);
-	DRLG_L3PlaceRndSet((unsigned char *)L3CREV11, 30);
-	DRLG_L3PlaceRndSet((unsigned char *)L3XTRA1, 25);
-	DRLG_L3PlaceRndSet((unsigned char *)L3XTRA2, 25);
-	DRLG_L3PlaceRndSet((unsigned char *)L3XTRA3, 25);
-	DRLG_L3PlaceRndSet((unsigned char *)L3XTRA4, 25);
-	DRLG_L3PlaceRndSet((unsigned char *)L3XTRA5, 25);
+	DRLG_L3PlaceRndSet(L3TITE1, 10);
+	DRLG_L3PlaceRndSet(L3TITE2, 10);
+	DRLG_L3PlaceRndSet(L3TITE3, 10);
+	DRLG_L3PlaceRndSet(L3TITE6, 20);
+	DRLG_L3PlaceRndSet(L3TITE7, 20);
+	DRLG_L3PlaceRndSet(L3TITE8, 20);
+	DRLG_L3PlaceRndSet(L3TITE9, 20);
+	DRLG_L3PlaceRndSet(L3TITE10, 20);
+	DRLG_L3PlaceRndSet(L3TITE11, 30);
+	DRLG_L3PlaceRndSet(L3TITE12, 20);
+	DRLG_L3PlaceRndSet(L3TITE13, 20);
+	DRLG_L3PlaceRndSet(L3CREV1, 30);
+	DRLG_L3PlaceRndSet(L3CREV2, 30);
+	DRLG_L3PlaceRndSet(L3CREV3, 30);
+	DRLG_L3PlaceRndSet(L3CREV4, 30);
+	DRLG_L3PlaceRndSet(L3CREV5, 30);
+	DRLG_L3PlaceRndSet(L3CREV6, 30);
+	DRLG_L3PlaceRndSet(L3CREV7, 30);
+	DRLG_L3PlaceRndSet(L3CREV8, 30);
+	DRLG_L3PlaceRndSet(L3CREV9, 30);
+	DRLG_L3PlaceRndSet(L3CREV10, 30);
+	DRLG_L3PlaceRndSet(L3CREV11, 30);
+	DRLG_L3PlaceRndSet(L3XTRA1, 25);
+	DRLG_L3PlaceRndSet(L3XTRA2, 25);
+	DRLG_L3PlaceRndSet(L3XTRA3, 25);
+	DRLG_L3PlaceRndSet(L3XTRA4, 25);
+	DRLG_L3PlaceRndSet(L3XTRA5, 25);
 
 	for(i = 0; i < 40; i++)
 	{
@@ -1976,163 +1976,149 @@ void __cdecl DRLG_L3PoolFix()
 	while ( v0 < 40 );
 }
 
-int __fastcall DRLG_L3PlaceMiniSet(unsigned char *miniset, int tmin, int tmax, int cx, int cy, bool setview, int ldir)
+int __fastcall DRLG_L3PlaceMiniSet(const unsigned char *miniset, int tmin, int tmax, int cx, int cy, bool setview, int ldir)
 {
 	int v7; // ebx
 	int v8; // esi
 	int v9; // edi
 	int v10; // edx
-	int v11; // eax
-	int v13; // esi
-	signed int v14; // ebx
-	int v15; // ecx
-	int v16; // eax
-	int v18; // eax
-	int v20; // edi
+	int v11; // esi
+	signed int v12; // ebx
+	int v13; // edi
 	signed int i; // eax
-	int v22; // ecx
-	unsigned char v23; // dl
-	int v24; // eax
-	int v25; // edi
-	char *v26; // edx
-	unsigned char v27; // bl
-	unsigned char *v29; // [esp+Ch] [ebp-24h]
-	int v30; // [esp+10h] [ebp-20h]
-	int v31; // [esp+14h] [ebp-1Ch]
-	int v32; // [esp+18h] [ebp-18h]
-	signed int v33; // [esp+1Ch] [ebp-14h]
-	int v34; // [esp+20h] [ebp-10h]
-	int v35; // [esp+24h] [ebp-Ch]
-	int v36; // [esp+28h] [ebp-8h]
+	int v15; // ecx
+	unsigned char v16; // dl
+	int v17; // eax
+	int v18; // ecx
+	int v19; // edi
+	char *v20; // edx
+	char v21; // bl
+	const unsigned char *v23; // [esp+Ch] [ebp-24h]
+	int v24; // [esp+10h] [ebp-20h]
+	int v25; // [esp+14h] [ebp-1Ch]
+	int v26; // [esp+18h] [ebp-18h]
+	signed int v27; // [esp+1Ch] [ebp-14h]
+	int v28; // [esp+20h] [ebp-10h]
+	int v29; // [esp+24h] [ebp-Ch]
+	int v30; // [esp+28h] [ebp-8h]
 	int max; // [esp+2Ch] [ebp-4h]
 
 	v7 = miniset[1];
 	v8 = tmin;
 	v9 = *miniset;
-	v29 = miniset;
+	v23 = miniset;
 	v10 = tmax - tmin;
-	v34 = *miniset;
-	v35 = miniset[1];
+	v28 = *miniset;
+	v29 = miniset[1];
 	if ( v10 )
-	{
-		v30 = v8 + random(0, v10);
-	}
+		v24 = v8 + random(0, v10);
 	else
+		v24 = 1;
+	v25 = 0;
+	if ( v24 <= 0 )
 	{
-		v30 = 1;
-	}
-	v31 = 0;
-	if ( v30 <= 0 )
-	{
-		v13 = tmax;
+		v11 = tmax;
 	}
 	else
 	{
 		max = 40 - v9;
-		v36 = 40 - v7;
+		v30 = 40 - v7;
 		do
 		{
 			v11 = random(0, max);
-			v13 = v11;
-			v33 = 0;
-			tmax = random(0, v36);
+			v27 = 0;
+			tmax = random(0, v30);
 			while ( 1 )
 			{
-				if ( v33 >= 200 )
+				if ( v27 >= 200 )
 					return 1;
-				++v33;
-				v14 = 1;
-				if ( cx != -1 )
+				++v27;
+				v12 = 1;
+				if ( cx != -1 && v11 >= cx - v28 && v11 <= cx + 12 )
 				{
-					v15 = cx - v34;
-					if ( v13 >= cx - v34 && v13 <= cx + 12 )
-					{
-						v16 = random(0, max);
-						v13 = v16;
-						tmax = random(0, v36);
-						v14 = 0;
-					}
+					v11 = random(0, max);
+					tmax = random(0, v30);
+					v12 = 0;
 				}
-				if ( cy != -1 && tmax >= cy - v35 && tmax <= cy + 12 )
+				if ( cy != -1 && tmax >= cy - v29 && tmax <= cy + 12 )
 				{
-					v18 = random(0, max); /* cy - v35 */
-					v13 = v18;
-					tmax = random(0, v36);
-					v14 = 0;
+					v11 = random(0, max);
+					tmax = random(0, v30);
+					v12 = 0;
 				}
-				v20 = 0;
-				for ( i = 2; v20 < v35; ++v20 )
+				v13 = 0;
+				for ( i = 2; v13 < v29; ++v13 )
 				{
-					if ( v14 != 1 )
+					if ( v12 != 1 )
 						break;
-					v32 = 0;
-					if ( v34 > 0 )
+					v26 = 0;
+					if ( v28 > 0 )
 					{
-						v22 = tmax + v20 + 40 * v13;
+						v15 = tmax + v13 + 40 * v11;
 						do
 						{
-							if ( v14 != 1 )
+							if ( v12 != 1 )
 								break;
-							v23 = v29[i];
-							if ( v23 && dungeon[0][v22] != v23 )
-								v14 = 0;
-							if ( dflags[0][v22] )
-								v14 = 0;
+							v16 = v23[i];
+							if ( v16 && dungeon[0][v15] != v16 )
+								v12 = 0;
+							if ( dflags[0][v15] )
+								v12 = 0;
 							++i;
-							++v32;
-							v22 += 40;
+							++v26;
+							v15 += 40;
 						}
-						while ( v32 < v34 );
+						while ( v26 < v28 );
 					}
 				}
-				v24 = 0;
-				if ( v14 )
+				v17 = 0;
+				if ( v12 )
 					break;
-				if ( ++v13 == max )
+				if ( ++v11 == max )
 				{
-					v13 = 0;
-					if ( ++tmax == v36 )
+					v11 = 0;
+					if ( ++tmax == v30 )
 						tmax = 0;
 				}
 			}
-			if ( v33 >= 200 )
+			if ( v27 >= 200 )
 				return 1;
-			miniset = (unsigned char *)(v34 * v35 + 2);
-			if ( v35 > 0 )
+			v18 = v28 * v29 + 2;
+			if ( v29 > 0 )
 			{
 				do
 				{
-					v25 = v34;
-					if ( v34 > 0 )
+					v19 = v28;
+					if ( v28 > 0 )
 					{
-						v26 = &dungeon[v13][v24 + tmax];
+						v20 = &dungeon[v11][v17 + tmax];
 						do
 						{
-							v27 = v29[(_DWORD)miniset];
-							if ( v27 )
-								*v26 = v27;
-							++miniset;
-							v26 += 40;
-							--v25;
+							v21 = v23[v18];
+							if ( v21 )
+								*v20 = v21;
+							++v18;
+							v20 += 40;
+							--v19;
 						}
-						while ( v25 );
+						while ( v19 );
 					}
-					++v24;
+					++v17;
 				}
-				while ( v24 < v35 );
+				while ( v17 < v29 );
 			}
-			++v31;
+			++v25;
 		}
-		while ( v31 < v30 );
+		while ( v25 < v24 );
 	}
 	if ( setview == 1 )
 	{
-		ViewX = 2 * v13 + 17;
+		ViewX = 2 * v11 + 17;
 		ViewY = 2 * tmax + 19;
 	}
 	if ( !ldir )
 	{
-		LvlViewX = 2 * v13 + 17;
+		LvlViewX = 2 * v11 + 17;
 		LvlViewY = 2 * tmax + 19;
 	}
 	return 0;
@@ -2140,9 +2126,9 @@ int __fastcall DRLG_L3PlaceMiniSet(unsigned char *miniset, int tmin, int tmax, i
 // 5CF320: using guessed type int LvlViewY;
 // 5CF324: using guessed type int LvlViewX;
 
-void __fastcall DRLG_L3PlaceRndSet(unsigned char *miniset, int rndper)
+void __fastcall DRLG_L3PlaceRndSet(const unsigned char *miniset, int rndper)
 {
-	unsigned char *v2; // ebx
+	const unsigned char *v2; // ebx
 	int v3; // ecx
 	int v4; // eax
 	char *v5; // ecx
