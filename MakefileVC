@@ -31,12 +31,11 @@ else
 	VC6_LINK = wine $(VC6_BIN_DIR)/link.exe
 endif
 
-CFLAGS=/nologo /c /GX /W3 /O1 /I $(VC6_INC_DIR) /FD /MT /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /Fp"Diablo.pch" /YX /Gm
+CFLAGS=/nologo /c /GX /W3 /O1 /I $(VC6_INC_DIR) /FD /MT /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /Fp"Diablo.pch" /YX /Gm /Zi
 LINKFLAGS=/nologo /subsystem:windows /machine:I386 /incremental:no
 
 ifeq ($(MAKE_BUILD),pdb)
 	VC_LINK = $(VC6_LINK)
-	CFLAGS += /Zi
 	LINKFLAGS += /pdb:"Diablo.pdb" /LIBPATH:$(VC6_LIB_DIR) /debug
 else
 	VC_LINK=$(VC5_LINK)
