@@ -20,11 +20,12 @@ int deathdelay; // weak
 int plr_dframe_size; // idb
 
 int player_inf = 0x7F800000; // weak
+
+/* rdata */
+
 const char ArmourChar[4] = { 'L', 'M', 'H', 0 };
 const char WepChar[10] = { 'N', 'U', 'S', 'D', 'B', 'A', 'M', 'H', 'T', 0 };
 const char CharChar[4] = { 'W', 'R', 'S', 0 };
-
-/* rdata */
 
 int plrxoff[9] = { 0, 2, 0, 2, 1, 0, 1, 2, 1 };
 int plryoff[9] = { 0, 2, 2, 0, 1, 1, 0, 1, 2 };

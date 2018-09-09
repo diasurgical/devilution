@@ -113,12 +113,12 @@ void __cdecl PlayDungMsgs();
 /* data */
 
 extern int player_inf;
-extern const char ArmourChar[4];
-extern const char WepChar[10];
-extern const char CharChar[4];
 
 /* rdata */
 
+extern const char ArmourChar[4];
+extern const char WepChar[10];
+extern const char CharChar[4];
 extern int plrxoff[9];
 extern int plryoff[9];
 extern int plrxoff2[9];
