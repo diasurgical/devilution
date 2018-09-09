@@ -398,50 +398,40 @@ DWORD __fastcall GetPlrGFXSize(char *szCel)
 
 void __fastcall FreePlayerGFX(int pnum)
 {
-	int v1; // esi
-	int v2; // esi
-	void *v3; // ecx
-	void *v4; // ecx
-	void *v5; // ecx
-	void *v6; // ecx
-	void *v7; // ecx
-	void *v8; // ecx
-	void *v9; // ecx
-	void *v10; // ecx
-	void *v11; // ecx
+	void *ptr;
 
-	v1 = pnum;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("FreePlayerGFX: illegal player %d", pnum);
-	v2 = v1;
-	v3 = plr[v2]._pNData;
-	plr[v2]._pNData = 0;
-	mem_free_dbg(v3);
-	v4 = plr[v2]._pWData;
-	plr[v2]._pWData = 0;
-	mem_free_dbg(v4);
-	v5 = plr[v2]._pAData;
-	plr[v2]._pAData = 0;
-	mem_free_dbg(v5);
-	v6 = plr[v2]._pHData;
-	plr[v2]._pHData = 0;
-	mem_free_dbg(v6);
-	v7 = plr[v2]._pLData;
-	plr[v2]._pLData = 0;
-	mem_free_dbg(v7);
-	v8 = plr[v2]._pFData;
-	plr[v2]._pFData = 0;
-	mem_free_dbg(v8);
-	v9 = plr[v2]._pTData;
-	plr[v2]._pTData = 0;
-	mem_free_dbg(v9);
-	v10 = plr[v2]._pDData;
-	plr[v2]._pDData = 0;
-	mem_free_dbg(v10);
-	v11 = plr[v2]._pBData;
-	plr[v2]._pBData = 0;
-	mem_free_dbg(v11);
-	plr[v2]._pGFXLoad = 0;
+	}
+
+	ptr = plr[pnum]._pNData;
+	plr[pnum]._pNData = NULL;
+	mem_free_dbg(ptr);
+	ptr = plr[pnum]._pWData;
+	plr[pnum]._pWData = NULL;
+	mem_free_dbg(ptr);
+	ptr = plr[pnum]._pAData;
+	plr[pnum]._pAData = NULL;
+	mem_free_dbg(ptr);
+	ptr = plr[pnum]._pHData;
+	plr[pnum]._pHData = NULL;
+	mem_free_dbg(ptr);
+	ptr = plr[pnum]._pLData;
+	plr[pnum]._pLData = NULL;
+	mem_free_dbg(ptr);
+	ptr = plr[pnum]._pFData;
+	plr[pnum]._pFData = NULL;
+	mem_free_dbg(ptr);
+	ptr = plr[pnum]._pTData;
+	plr[pnum]._pTData = NULL;
+	mem_free_dbg(ptr);
+	ptr = plr[pnum]._pDData;
+	plr[pnum]._pDData = NULL;
+	mem_free_dbg(ptr);
+	ptr = plr[pnum]._pBData;
+	plr[pnum]._pBData = NULL;
+	mem_free_dbg(ptr);
+	plr[pnum]._pGFXLoad = 0;
 }
 
 void __fastcall NewPlrAnim(int pnum, unsigned char *Peq, int numFrames, int Delay, int width)
