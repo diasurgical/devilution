@@ -25,12 +25,12 @@ void __fastcall path_push_active_step(PATHNODE *pPath);
 PATHNODE *__cdecl path_pop_active_step();
 PATHNODE *__cdecl path_new_step();
 
-/* data */
-
-extern char pathxdir[8];
-extern char pathydir[8];
-
 /* rdata */
+
+extern const char pathxdir[8];
+extern const char pathydir[8];
+
+/* data */
 extern char path_directions[9];
 
 #endif /* __PATH_H__ */
