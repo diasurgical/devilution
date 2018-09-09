@@ -25,7 +25,7 @@ void __cdecl DRLG_FreeL1SP();
 void __fastcall DRLG_L5(int entry);
 void __fastcall DRLG_PlaceDoor(int x, int y);
 void __cdecl DRLG_L1Shadows();
-int __fastcall DRLG_PlaceMiniSet(unsigned char *miniset, int tmin, int tmax, int cx, int cy, bool setview, int noquad, int ldir);
+int __fastcall DRLG_PlaceMiniSet(const unsigned char *miniset, int tmin, int tmax, int cx, int cy, bool setview, int noquad, int ldir);
 void __cdecl InitL5Dungeon();
 void __cdecl L5ClearFlags();
 void __cdecl L5firstRoom();
