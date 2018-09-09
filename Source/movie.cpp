@@ -6,7 +6,7 @@ int movie_cpp_init_value; // weak
 char movie_playing; // weak
 int loop_movie; // weak
 
-int movie_inf = 0x7F800000; // weak
+const int movie_inf = 0x7F800000; // weak
 
 struct movie_cpp_init
 {
