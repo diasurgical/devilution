@@ -111,169 +111,120 @@ struct player_cpp_init
 // 47F204: using guessed type int player_inf;
 // 68643C: using guessed type int player_cpp_init_value;
 
-void __fastcall SetPlayerGPtrs(BYTE *pData, BYTE **pAnim)
+void __fastcall SetPlayerGPtrs(UCHAR *pData, UCHAR **pAnim)
 {
 	for ( int i = 0; i < 8; i++ ) {
 		pAnim[i] = pData + ((DWORD *)pData)[i];
 	}
 }
 
-void __fastcall LoadPlrGFX(int pnum, int gfxflag)
+void __fastcall LoadPlrGFX(int pnum, player_graphic gfxflag)
 {
-	int v2; // esi
-	PlayerStruct *v3; // esi
-	unsigned int v4; // ecx
-	char v5; // al
-	void *v6; // edi
-	char *v7; // ebx
-	int v8; // ecx
-	int v9; // ecx
-	int v10; // ecx
-	int v11; // ecx
-	int v12; // ecx
-	int v13; // ecx
-	char arglist[256]; // [esp+Ch] [ebp-120h]
-	char v15[16]; // [esp+10Ch] [ebp-20h]
-	int v16; // [esp+11Ch] [ebp-10h]
-	char *v17; // [esp+120h] [ebp-Ch]
-	unsigned int v18; // [esp+124h] [ebp-8h]
-	const char *v19; // [esp+128h] [ebp-4h]
-
-	v2 = pnum;
-	v16 = gfxflag;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("LoadPlrGFX: illegal player %d", pnum);
-	v3 = &plr[v2];
-	sprintf(
-		v15,
-		"%c%c%c",
-		CharChar[SLOBYTE(v3->_pClass)],
-		ArmourChar[v3->_pgfxnum >> 4],
-		WepChar[v3->_pgfxnum & 0xF]);
-	v4 = 1;
-	v17 = ClassStrTbl[SLOBYTE(v3->_pClass)];
-	v5 = leveltype;
-	v6 = v17;
-	v7 = v17;
-	v18 = 1;
-	do
-	{
-		if ( !(v4 & v16) )
-			goto LABEL_38;
-		if ( v4 <= 0x10 )
-		{
-			if ( v4 == 16 )
-			{
-				if ( !v5 )
-					goto LABEL_38;
-				v6 = v3->_pLData;
-				v19 = "LM";
-				v7 = (char *)v3->_pLAnim;
-			}
-			else
-			{
-				v8 = v4 - 1;
-				if ( v8 )
-				{
-					v9 = v8 - 1;
-					if ( v9 )
-					{
-						v10 = v9 - 2;
-						if ( v10 )
-						{
-							if ( v10 == 4 )
-							{
-								if ( !v5 )
-									goto LABEL_38;
-								v6 = v3->_pHData;
-								v19 = "HT";
-								v7 = (char *)v3->_pHAnim;
-							}
-							else
-							{
-LABEL_27:
-								TermMsg("PLR:2");
-							}
-						}
-						else
-						{
-							if ( !v5 )
-								goto LABEL_38;
-							v6 = v3->_pAData;
-							v19 = "AT";
-							v7 = (char *)v3->_pAAnim;
-						}
-					}
-					else
-					{
-						v19 = "AW";
-						if ( !v5 )
-							v19 = "WL";
-						v6 = v3->_pWData;
-						v7 = (char *)v3->_pWAnim;
-					}
-				}
-				else
-				{
-					v19 = "AS";
-					if ( !v5 )
-						v19 = "ST";
-					v6 = v3->_pNData;
-					v7 = (char *)v3->_pNAnim;
-				}
-			}
-LABEL_37:
-			sprintf(arglist, "PlrGFX\\%s\\%s\\%s%s.CL2", v17, v15, v15, v19);
-			LoadFileWithMem(arglist, v6);
-			SetPlayerGPtrs((BYTE *)v6, (BYTE **)v7);
-			v3->_pGFXLoad |= v18;
-			v5 = leveltype;
-			goto LABEL_38;
-		}
-		v11 = v4 - 32;
-		if ( !v11 )
-		{
-			if ( !v5 )
-				goto LABEL_38;
-			v6 = v3->_pFData;
-			v19 = "FM";
-			v7 = (char *)v3->_pFAnim;
-			goto LABEL_37;
-		}
-		v12 = v11 - 32;
-		if ( !v12 )
-		{
-			if ( !v5 )
-				goto LABEL_38;
-			v6 = v3->_pTData;
-			v19 = "QM";
-			v7 = (char *)v3->_pTAnim;
-			goto LABEL_37;
-		}
-		v13 = v12 - 64;
-		if ( !v13 )
-		{
-			if ( v3->_pgfxnum & 0xF )
-				goto LABEL_38;
-			v6 = v3->_pDData;
-			v19 = "DT";
-			v7 = (char *)v3->_pDAnim;
-			goto LABEL_37;
-		}
-		if ( v13 != 128 )
-			goto LABEL_27;
-		if ( v5 && v3->_pBlockFlag )
-		{
-			v6 = v3->_pBData;
-			v19 = "BL";
-			v7 = (char *)v3->_pBAnim;
-			goto LABEL_37;
-		}
-LABEL_38:
-		v4 = 2 * v18;
-		v18 *= 2;
 	}
-	while ( v18 <= 0x17F );
+
+	char prefix[16];
+	char pszName[256];
+	char *szCel;
+	PlayerStruct *p = &plr[pnum];
+	sprintf(prefix, "%c%c%c", CharChar[p->_pClass], ArmourChar[p->_pgfxnum >> 4], WepChar[p->_pgfxnum & 0xF]);
+	char *cs = ClassStrTbl[p->_pClass];
+	UCHAR *pData;
+	UCHAR *pAnim;
+
+	for (DWORD i = 1; i <= PFILE_ALL; i *= 2) {
+		if ( !(i & gfxflag) ) {
+			continue;
+		}
+
+		switch ( i ) {
+			case PFILE_STAND:
+				szCel = "AS";
+				if ( leveltype == DTYPE_TOWN ) {
+					szCel = "ST";
+				}
+				pData = p->_pNData;
+				pAnim = (UCHAR *)p->_pNAnim;
+				break;
+			case PFILE_WALK:
+				szCel = "AW";
+				if ( leveltype == DTYPE_TOWN ) {
+					szCel = "WL";
+				}
+				pData = p->_pWData;
+				pAnim = (UCHAR *)p->_pWAnim;
+				break;
+			case PFILE_ATTACK:
+				if ( leveltype == DTYPE_TOWN ) {
+					continue;
+				}
+				szCel = "AT";
+				pData = p->_pAData;
+				pAnim = (UCHAR *)p->_pAAnim;
+				break;
+			case PFILE_HIT:
+				if ( leveltype == DTYPE_TOWN ) {
+					continue;
+				}
+				szCel = "HT";
+				pData = p->_pHData;
+				pAnim = (UCHAR *)p->_pHAnim;
+				break;
+			case PFILE_LIGHTNING:
+				if ( leveltype == DTYPE_TOWN ) {
+					continue;
+				}
+				szCel = "LM";
+				pData = p->_pLData;
+				pAnim = (UCHAR *)p->_pLAnim;
+				break;
+			case PFILE_FIRE:
+				if ( leveltype == DTYPE_TOWN ) {
+					continue;
+				}
+				szCel = "FM";
+				pData = p->_pFData;
+				pAnim = (UCHAR *)p->_pFAnim;
+				break;
+			case PFILE_MAGIC:
+				if ( leveltype == DTYPE_TOWN ) {
+					continue;
+				}
+				szCel = "QM";
+				pData = p->_pTData;
+				pAnim = (UCHAR *)p->_pTAnim;
+				break;
+			case PFILE_DEATH:
+				if ( p->_pgfxnum & 0xF ) {
+					continue;
+				}
+				szCel = "DT";
+				pData = p->_pDData;
+				pAnim = (UCHAR *)p->_pDAnim;
+				break;
+			case PFILE_BLOCK:
+				if ( leveltype == DTYPE_TOWN ) {
+					continue;
+				}
+				if ( !p->_pBlockFlag ) {
+					continue;
+				}
+
+				szCel = "BL";
+				pData = p->_pBData;
+				pAnim = (UCHAR *)p->_pBAnim;
+				break;
+			default:
+				TermMsg("PLR:2");
+				break;
+		}
+
+		sprintf(pszName, "PlrGFX\\%s\\%s\\%s%s.CL2", cs, prefix, prefix, szCel);
+		LoadFileWithMem(pszName, pData);
+		SetPlayerGPtrs((UCHAR *)pData, (UCHAR **)pAnim);
+		p->_pGFXLoad |= i;
+	}
 }
 // 5BB1ED: using guessed type char leveltype;
 
@@ -285,9 +236,9 @@ void __fastcall InitPlayerGFX(int pnum)
 
 	if ( (DWORD)plr[pnum]._pHitPoints/64 == 0 ) {
 		plr[pnum]._pgfxnum = 0;
-		LoadPlrGFX(pnum, 0x80);
+		LoadPlrGFX(pnum, PFILE_DEATH);
 	} else {
-		LoadPlrGFX(pnum, 0x17F);
+		LoadPlrGFX(pnum, PFILE_ALL);
 	}
 }
 
@@ -367,7 +318,7 @@ void __fastcall InitPlrGFXMem(int pnum)
 DWORD __fastcall GetPlrGFXSize(char *szCel)
 {
 	char prefix[16]; // [esp+10Ch] [ebp-24h]
-	char dwInitParam[256]; // [esp+Ch] [ebp-124h]
+	char pszName[256]; // [esp+Ch] [ebp-124h]
 	void *file; // [esp+124h] [ebp-Ch]
 	DWORD size = 0; // [esp+11Ch] [ebp-14h]
 	DWORD result = 0;
@@ -378,8 +329,8 @@ DWORD __fastcall GetPlrGFXSize(char *szCel)
 		for (a = 0; ArmourChar[a]; a++) {
 			for (w = 0; WepChar[w]; w++) {
 				sprintf(prefix, "%c%c%c", CharChar[c], ArmourChar[a], WepChar[w]);
-				sprintf(dwInitParam, "PlrGFX\\%s\\%s\\%s%s.CL2", ClassStrTbl[c], prefix, prefix, szCel);
-				if ( WOpenFile(dwInitParam, &file, TRUE) ) {
+				sprintf(pszName, "PlrGFX\\%s\\%s\\%s%s.CL2", ClassStrTbl[c], prefix, prefix, szCel);
+				if ( WOpenFile(pszName, &file, TRUE) ) {
 					size = WGetFileSize(file, 0);
 					WCloseFile(file);
 					if ( result <= size ) {
@@ -1322,8 +1273,9 @@ void __fastcall StartStand(int pnum, int dir)
 	v4 = v2;
 	if ( !plr[v2]._pInvincible || plr[v4]._pHitPoints || v2 != myplr )
 	{
-		if ( !(plr[v4]._pGFXLoad & 1) )
-			LoadPlrGFX(v2, 1);
+		if ( !(plr[pnum]._pGFXLoad & PFILE_STAND) ) {
+			LoadPlrGFX(pnum, PFILE_STAND);
+		}
 		NewPlrAnim(v2, plr[0]._pNAnim[v3 + 5430 * v2], plr[v4]._pNFrames, 3, plr[v4]._pNWidth);
 		plr[v4]._pmode = PM_STAND;
 		FixPlayerLocation(v2, v3);
@@ -1513,17 +1465,14 @@ void __fastcall StartWalk(int pnum, int xvel, int yvel, int xadd, int yadd, int 
 		plr[v8]._pmode = PM_WALK;
 		dPlayer[v9][v10] = -1 - arglist;
 		plr[v8]._pxvel = v18;
-		v12 = (plr[v8]._pGFXLoad & 2) == 0;
 		plr[v8]._pyvel = yvel;
 		plr[v8]._pVar1 = xadd;
 		plr[v8]._pxoff = 0;
 		plr[v8]._pyoff = 0;
 		plr[v8]._pVar2 = yadd;
 		plr[v8]._pVar3 = EndDir;
-		if ( v12 )
-		{
-			LoadPlrGFX(arglist, 2);
-			v11 = arglist;
+		if ( !(plr[pnum]._pGFXLoad & PFILE_WALK) ) {
+			LoadPlrGFX(pnum, PFILE_WALK);
 		}
 		v13 = plr[v8]._pWWidth;
 		NewPlrAnim(v11, plr[0]._pWAnim[EndDir + 5430 * v11], plr[v8]._pWFrames, 0, v13);
@@ -1628,12 +1577,12 @@ void __fastcall StartWalk2(int pnum, int xvel, int yvel, int xoff, int yoff, int
 		plr[v10]._pxvel = v24;
 		plr[v10]._pyvel = yvel;
 		plr[v10]._pVar6 = xoff << 8;
-		v13 = (plr[v10]._pGFXLoad & 2) == 0;
 		plr[v10]._pmode = PM_WALK2;
 		plr[v10]._pVar7 = yoff << 8;
 		plr[v10]._pVar3 = EndDir;
-		if ( v13 )
-			LoadPlrGFX(arglist, PM_WALK2);
+		if ( !(plr[pnum]._pGFXLoad & PFILE_WALK) ) {
+			LoadPlrGFX(pnum, PFILE_WALK);
+		}
 		v18 = plr[v10]._pWWidth;
 		NewPlrAnim(arglist, plr[0]._pWAnim[EndDir + 5430 * arglist], plr[v10]._pWFrames, 0, v18);
 		plr[v10]._pVar8 = 0;
@@ -1746,12 +1695,12 @@ void __fastcall StartWalk3(int pnum, int xvel, int yvel, int xoff, int yoff, int
 		plr[v12]._pyvel = yvel;
 		plr[v12]._pVar1 = a6;
 		plr[v12]._pVar6 = xoff << 8;
-		v17 = (plr[v12]._pGFXLoad & 2) == 0;
 		plr[v12]._pVar7 = yoff << 8;
 		plr[v12]._pVar2 = v15;
 		plr[v12]._pVar3 = EndDir;
-		if ( v17 )
-			LoadPlrGFX(arglist, 2);
+		if ( !(plr[pnum]._pGFXLoad & PFILE_WALK) ) {
+			LoadPlrGFX(pnum, PFILE_WALK);
+		}
 		v20 = plr[v12]._pWWidth;
 		NewPlrAnim(arglist, plr[0]._pWAnim[EndDir + 5430 * arglist], plr[v12]._pWFrames, 0, v20);
 		plr[v12]._pdir = EndDir;
@@ -1805,8 +1754,9 @@ void __fastcall StartAttack(int pnum, int d)
 	v4 = v2;
 	if ( !plr[v2]._pInvincible || plr[v4]._pHitPoints || v2 != myplr )
 	{
-		if ( !(plr[v4]._pGFXLoad & 4) )
-			LoadPlrGFX(v2, 4);
+		if ( !(plr[pnum]._pGFXLoad & PFILE_ATTACK) ) {
+			LoadPlrGFX(pnum, PFILE_ATTACK);
+		}
 		v5 = plr[v4]._pAWidth;
 		NewPlrAnim(v2, plr[0]._pAAnim[v3 + 5430 * v2], plr[v4]._pAFrames, 0, v5);
 		plr[v4]._pmode = 4;
@@ -1833,8 +1783,9 @@ void __fastcall StartRangeAttack(int pnum, int d, int cx, int cy)
 	v5 = v4;
 	if ( !plr[v4]._pInvincible || plr[v5]._pHitPoints || v4 != myplr )
 	{
-		if ( !(plr[v5]._pGFXLoad & 4) )
-			LoadPlrGFX(v4, 4);
+		if ( !(plr[pnum]._pGFXLoad & PFILE_ATTACK) ) {
+			LoadPlrGFX(pnum, PFILE_ATTACK);
+		}
 		v6 = plr[v5]._pAWidth;
 		NewPlrAnim(v4, plr[0]._pAAnim[a2a + 5430 * v4], plr[v5]._pAFrames, 0, v6);
 		plr[v5]._pmode = PM_RATTACK;
@@ -1864,8 +1815,9 @@ void __fastcall StartPlrBlock(int pnum, int dir)
 	if ( !plr[v2]._pInvincible || plr[v4]._pHitPoints || v2 != myplr )
 	{
 		PlaySfxLoc(IS_ISWORD, plr[v4].WorldX, plr[v4].WorldY);
-		if ( !(plr[v4]._pGFXLoad & 0x100) )
-			LoadPlrGFX(v2, 256);
+		if ( !(plr[pnum]._pGFXLoad & PFILE_BLOCK) ) {
+			LoadPlrGFX(pnum, PFILE_BLOCK);
+		}
 		v5 = plr[v4]._pBWidth;
 		NewPlrAnim(v2, plr[0]._pBAnim[v3 + 5430 * v2], plr[v4]._pBFrames, 2, v5);
 		plr[v4]._pmode = PM_BLOCK;
@@ -1902,18 +1854,21 @@ void __fastcall StartSpell(int pnum, int d, int cx, int cy)
 		switch ( spelldata[plr[v5]._pSpell].sType )
 		{
 			case STYPE_FIRE:
-				if ( !(plr[v5]._pGFXLoad & 0x20) )
-					LoadPlrGFX(v4, 32);
+				if ( !(plr[pnum]._pGFXLoad & PFILE_FIRE) ) {
+					LoadPlrGFX(pnum, PFILE_FIRE);
+				}
 				v6 = plr[0]._pFAnim[a2 + 5430 * v4];
 				goto LABEL_20;
 			case STYPE_LIGHTNING:
-				if ( !(plr[v5]._pGFXLoad & 0x10) )
-					LoadPlrGFX(v4, 16);
+				if ( !(plr[pnum]._pGFXLoad & PFILE_LIGHTNING) ) {
+					LoadPlrGFX(pnum, PFILE_LIGHTNING);
+				}
 				v6 = plr[0]._pLAnim[a2 + 5430 * v4];
 				goto LABEL_20;
 			case STYPE_MAGIC:
-				if ( !(plr[v5]._pGFXLoad & 0x40) )
-					LoadPlrGFX(v4, 64);
+				if ( !(plr[pnum]._pGFXLoad & PFILE_MAGIC) ) {
+					LoadPlrGFX(pnum, PFILE_MAGIC);
+				}
 				v6 = plr[0]._pTAnim[a2 + 5430 * v4];
 LABEL_20:
 				v7 = plr[v5]._pSWidth;
@@ -2093,8 +2048,9 @@ LABEL_13:
 	if ( v4 >> 6 >= v8 || forcehit )
 	{
 		v9 = plr[v5]._pdir;
-		if ( !(plr[v5]._pGFXLoad & 8) )
-			LoadPlrGFX(v3, 8);
+		if ( !(plr[pnum]._pGFXLoad & PFILE_HIT) ) {
+			LoadPlrGFX(pnum, PFILE_HIT);
+		}
 		v10 = plr[v5]._pHWidth;
 		NewPlrAnim(v3, plr[0]._pHAnim[v9 + 5430 * v3], plr[v5]._pHFrames, 0, v10);
 		plr[v5]._pmode = PM_GOTHIT;
@@ -2193,8 +2149,9 @@ LABEL_18:
 		plr[v3 / 0x54D8]._pGFXLoad = 0;
 		SetPlrAnims(v2);
 	}
-	if ( SLOBYTE(plr[v3 / 0x54D8]._pGFXLoad) >= 0 )
-		LoadPlrGFX(v2, 128);
+	if ( !(plr[pnum]._pGFXLoad & PFILE_DEATH) ) {
+		LoadPlrGFX(pnum, PFILE_DEATH);
+	}
 	v6 = plr[v3 / 0x54D8]._pDWidth;
 	NewPlrAnim(v2, plr[0]._pDAnim[plr[v3 / 0x54D8]._pdir + v3 / 4], plr[v3 / 0x54D8]._pDFrames, 1, v6);
 	plr[v3 / 0x54D8]._pBlockFlag = 0;
