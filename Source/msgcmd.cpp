@@ -8,7 +8,7 @@ int msgcmd_cpp_init_value; // weak
 ChatCmd sgChat_Cmd;
 int sgdwMsgCmdTimer;
 
-int msgcmd_inf = 0x7F800000; // weak
+const int msgcmd_inf = 0x7F800000; // weak
 
 struct msgcmd_cpp_init_1
 {
