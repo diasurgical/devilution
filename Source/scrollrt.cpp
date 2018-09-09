@@ -23,9 +23,9 @@ char sgSaveBack[8192];
 int draw_monster_num; // weak
 int sgdwCursHgtOld; // idb
 
-int scrollrt_inf = 0x7F800000; // weak
+const int scrollrt_inf = 0x7F800000; // weak
 
-/* rdata */
+/* data */
 
 /* used in 1.00 debug */
 char *szMonModeAssert[18] =
