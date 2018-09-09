@@ -28,8 +28,8 @@ char gbDeltaSender; // weak
 int sgbNetInited; // weak
 int player_state[MAX_PLRS];
 
-int multi_inf = 0x7F800000; // weak
-event_type event_types[3] =
+const int multi_inf = 0x7F800000; // weak
+const int event_types[3] =
 {
   EVENT_TYPE_PLAYER_LEAVE_GAME,
   EVENT_TYPE_PLAYER_CREATE_GAME,
