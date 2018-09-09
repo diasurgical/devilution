@@ -294,8 +294,6 @@ void __fastcall InitPlayerGFX(int pnum)
 
 void __fastcall InitPlrGFXMem(int pnum)
 {
-	char *dir;
-
 	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("InitPlrGFXMem: illegal player %d", pnum);
 	}
