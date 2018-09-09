@@ -15,11 +15,11 @@ int __fastcall mainmenu_init_menu(int a1);
 int __cdecl mainmenu_multi_player();
 void __cdecl mainmenu_play_intro();
 
-/* data */
-
-extern int mainmenu_inf; // weak
-
 /* rdata */
+
+extern const int mainmenu_inf; // weak
+
+/* data */
 
 extern int menu_music_track_id; // idb
 

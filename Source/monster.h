@@ -163,13 +163,13 @@ bool __fastcall CheckMonsterHit(int m, bool *ret);
 int __fastcall encode_enemy(int m);
 void __fastcall decode_enemy(int m, int enemy);
 
-/* data */
-
-extern int monster_inf; // weak
-extern char plr2monst[9];
-extern unsigned char counsmiss[4];
-
 /* rdata */
+
+extern const int monster_inf; // weak
+extern const char plr2monst[9];
+extern const unsigned char counsmiss[4];
+
+/* data */
 
 extern MonsterData monsterdata[112];
 extern char MonstConvTbl[128];

@@ -11,8 +11,8 @@ void __fastcall VerifyGoldSeeds(PlayerStruct *pPlayer);
 void __fastcall UnPackPlayer(PkPlayerStruct *pPack, int pnum, bool killok);
 void __fastcall UnPackItem(PkItemStruct *is, ItemStruct *id);
 
-/* data */
+/* rdata */
 
-extern int pack_inf; // weak
+extern const int pack_inf; // weak
 
 #endif /* __PACK_H__ */

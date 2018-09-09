@@ -123,13 +123,13 @@ int __fastcall control_presskeys(int a1);
 void __cdecl control_press_enter();
 void __fastcall control_up_down(char a1);
 
-/* data */
-extern unsigned char fontframe[127];
-extern unsigned char fontkern[68];
-extern int lineoffset[25];
-extern unsigned char fontidx[256];
-
 /* rdata */
+extern const unsigned char fontframe[127];
+extern const unsigned char fontkern[68];
+extern const int lineoffset[25];
+extern const unsigned char fontidx[256];
+
+/* data */
 
 extern unsigned char SpellITbl[37];
 extern int PanBtnPos[8][5];

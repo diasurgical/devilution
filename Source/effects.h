@@ -29,12 +29,12 @@ void __fastcall priv_sound_init(int bLoadMask);
 void __cdecl sound_init();
 void __stdcall effects_play_sound(char *snd_file);
 
-/* data */
-
-extern int effects_inf; // weak
-extern char monster_action_sounds[]; // idb
-
 /* rdata */
+
+extern const int effects_inf; // weak
+extern const char monster_action_sounds[]; // idb
+
+/* data */
 
 extern TSFX sgSFX[NUM_SFX];
 

@@ -45,11 +45,11 @@ void __fastcall TownerTalk(int t);
 void __fastcall TalkToTowner(int p, int t);
 void __fastcall CowSFX(int pnum);
 
-/* data */
-
-extern int snSFX[3][3];
-
 /* rdata */
+
+extern const int snSFX[3][3];
+
+/* data */
 
 extern char AnimOrder[6][148];
 extern int TownCowX[3];

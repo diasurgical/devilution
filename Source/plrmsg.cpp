@@ -6,7 +6,7 @@ int plrmsg_ticks; // weak
 char plr_msg_slot; // weak
 _plrmsg plr_msgs[8];
 
-text_color text_color_from_player_num[2] = { COL_WHITE, COL_GOLD };
+const text_color text_color_from_player_num[2] = { COL_WHITE, COL_GOLD }; /* char [4] */
 
 void __fastcall plrmsg_delay(int a1)
 {

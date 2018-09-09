@@ -36,9 +36,9 @@ void __fastcall gmenu_slider_1(TMenuItem *pItem, int min, int max, int gamma);
 int __fastcall gmenu_slider_get(TMenuItem *pItem, int min, int max);
 void __fastcall gmenu_slider_3(TMenuItem *pItem, int dwTicks);
 
-/* data */
+/* rdata */
 
-extern unsigned char lfontframe[127];
-extern unsigned char lfontkern[56];
+extern const unsigned char lfontframe[127];
+extern const unsigned char lfontkern[56];
 
 #endif /* __GMENU_H__ */

@@ -57,13 +57,13 @@ void __cdecl DRLG_L4TransFix();
 void __cdecl DRLG_L4Corners();
 void __cdecl DRLG_L4Pass3();
 
-/* data */
-extern unsigned char L4ConvTbl[16];
-extern unsigned char L4USTAIRS[42];
-extern unsigned char L4TWARP[42];
-extern unsigned char L4DSTAIRS[52];
-extern unsigned char L4PENTA[52];
-extern unsigned char L4PENTA2[52];
-extern unsigned char L4BTYPES[140];
+/* rdata */
+extern const unsigned char L4ConvTbl[16];
+extern const unsigned char L4USTAIRS[42];
+extern const unsigned char L4TWARP[42];
+extern const unsigned char L4DSTAIRS[52];
+extern const unsigned char L4PENTA[52];
+extern const unsigned char L4PENTA2[52];
+extern const unsigned char L4BTYPES[140];
 
 #endif /* __DRLG_L4_H__ */
