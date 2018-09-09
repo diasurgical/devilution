@@ -17,6 +17,6 @@ void __fastcall PrintPlrMsg(int no, int x, int y, char *str, int just);
 
 /* rdata */
 
-extern const text_color text_color_from_player_num[2];
+extern const char text_color_from_player_num[5];
 
 #endif /* __PLRMSG_H__ */
