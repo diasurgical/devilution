@@ -114,8 +114,7 @@ struct player_cpp_init
 
 void __fastcall SetPlayerGPtrs(BYTE *pData, BYTE **pAnim)
 {
-	for ( int i = 0; i < 8; i++ )
-	{
+	for ( int i = 0; i < 8; i++ ) {
 		pAnim[i] = pData + ((DWORD *)pData)[i];
 	}
 }
@@ -492,15 +491,12 @@ void __fastcall SetPlrAnims(int pnum)
 	plr[pnum]._pDWidth = 128;
 	plr[pnum]._pBWidth = 96;
 
-	if ( leveltype == DTYPE_TOWN )
-	{
+	if ( leveltype == DTYPE_TOWN ) {
 		plr[pnum]._pNFrames = PlrGFXAnimLens[pc][7];
 		plr[pnum]._pWFrames = PlrGFXAnimLens[pc][8];
 		plr[pnum]._pDFrames = PlrGFXAnimLens[pc][4];
 		plr[pnum]._pSFrames = PlrGFXAnimLens[pc][5];
-	}
-	else
-	{
+	} else {
 		plr[pnum]._pNFrames = PlrGFXAnimLens[pc][0];
 		plr[pnum]._pWFrames = PlrGFXAnimLens[pc][2];
 		plr[pnum]._pAFrames = PlrGFXAnimLens[pc][1];
@@ -514,63 +510,41 @@ void __fastcall SetPlrAnims(int pnum)
 	plr[pnum]._pSFNum = PlrGFXAnimLens[pc][10];
 
 	int gn = plr[pnum]._pgfxnum & 0xF;
-	if ( pc == PC_WARRIOR )
-	{
-		if ( gn == 4 )
-		{
-			if ( leveltype != DTYPE_TOWN )
-			{
+	if ( pc == PC_WARRIOR ) {
+		if ( gn == 4 ) {
+			if ( leveltype != DTYPE_TOWN ) {
 				plr[pnum]._pNFrames = 8;
 			}
 			plr[pnum]._pAWidth = 96;
 			plr[pnum]._pAFNum = 11;
-		}
-		else if ( gn == 5 )
-		{
+		} else if ( gn == 5 ) {
 			plr[pnum]._pAFrames = 20;
 			plr[pnum]._pAFNum = 10;
-		}
-		else if ( gn == 8 )
-		{
+		} else if ( gn == 8 ) {
 			plr[pnum]._pAFrames = 16;
 			plr[pnum]._pAFNum = 11;
 		}
-	}
-	else if ( pc == PC_ROGUE )
-	{
-		if ( gn == 5 )
-		{
+	} else if ( pc == PC_ROGUE ) {
+		if ( gn == 5 ) {
 			plr[pnum]._pAFrames = 22;
 			plr[pnum]._pAFNum = 13;
-		}
-		else if ( gn == 4 )
-		{
+		} else if ( gn == 4 ) {
 			plr[pnum]._pAFrames = 12;
 			plr[pnum]._pAFNum = 7;
-		}
-		else if ( gn == 8 )
-		{
+		} else if ( gn == 8 ) {
 			plr[pnum]._pAFrames = 16;
 			plr[pnum]._pAFNum = 11;
 		}
-	}
-	else if ( pc == PC_SORCERER ) {
+	} else if ( pc == PC_SORCERER ) {
 		plr[pnum]._pSWidth = 128;
-		if ( gn == 0 )
-		{
+		if ( gn == 0 ) {
 			plr[pnum]._pAFrames = 20;
-		}
-		else if ( gn == 1 )
-		{
+		} else if ( gn == 1 ) {
 			plr[pnum]._pAFNum = 9;
-		}
-		else if ( gn == 4 )
-		{
+		} else if ( gn == 4 ) {
 			plr[pnum]._pAFrames = 20;
 			plr[pnum]._pAFNum = 16;
-		}
-		else if ( gn == 5 )
-		{
+		} else if ( gn == 5 ) {
 			plr[pnum]._pAFrames = 24;
 			plr[pnum]._pAFNum = 16;
 		}
@@ -613,32 +587,28 @@ void __fastcall CreatePlayer(int pnum, char c)
 	plr[pnum]._pClass = c;
 
 	char val = StrengthTbl[c];
-	if ( val < 0 )
-	{
+	if ( val < 0 ) {
 		val = 0;
 	}
 	plr[pnum]._pStrength = val;
 	plr[pnum]._pBaseStr = val;
 
 	val = MagicTbl[c];
-	if ( val < 0 )
-	{
+	if ( val < 0 ) {
 		val = 0;
 	}
 	plr[pnum]._pMagic = val;
 	plr[pnum]._pBaseMag = val;
 
 	val = DexterityTbl[c];
-	if ( val < 0 )
-	{
+	if ( val < 0 ) {
 		val = 0;
 	}
 	plr[pnum]._pDexterity = val;
 	plr[pnum]._pBaseDex = val;
 
 	val = VitalityTbl[c];
-	if ( val < 0 )
-	{
+	if ( val < 0 ) {
 		val = 0;
 	}
 	plr[pnum]._pVitality = val;
@@ -650,12 +620,9 @@ void __fastcall CreatePlayer(int pnum, char c)
 	plr[pnum].pLvlLoad = 0;
 	plr[pnum].pDiabloKillLevel = 0;
 
-	if ( c == PC_ROGUE )
-	{
+	if ( c == PC_ROGUE ) {
 		plr[pnum]._pDamageMod = plr[pnum]._pLevel * (plr[pnum]._pStrength + plr[pnum]._pDexterity) / 200;
-	}
-	else
-	{
+	} else {
 		plr[pnum]._pDamageMod = plr[pnum]._pStrength * plr[pnum]._pLevel / 100;
 	}
 
@@ -663,12 +630,10 @@ void __fastcall CreatePlayer(int pnum, char c)
 
 
 	plr[pnum]._pHitPoints = (val + 10) << 6;
-	if ( c == PC_WARRIOR )
-	{
+	if ( c == PC_WARRIOR ) {
 		plr[pnum]._pHitPoints *= 2;
 	}
-	if ( c == PC_ROGUE )
-	{
+	if ( c == PC_ROGUE ) {
 		plr[pnum]._pHitPoints += plr[pnum]._pHitPoints >> 1;
 	}
 
@@ -678,12 +643,10 @@ void __fastcall CreatePlayer(int pnum, char c)
 	plr[pnum]._pMaxHPBase = hp;
 
 	plr[pnum]._pMana = plr[pnum]._pMagic << 6;
-	if ( c == PC_SORCERER )
-	{
+	if ( c == PC_SORCERER ) {
 		plr[pnum]._pMana *= 2;
 	}
-	if ( c == PC_ROGUE )
-	{
+	if ( c == PC_ROGUE ) {
 		plr[pnum]._pMana += plr[pnum]._pMana >> 1;
 	}
 
@@ -704,72 +667,54 @@ void __fastcall CreatePlayer(int pnum, char c)
 	plr[pnum]._pLightRad = 10;
 	plr[pnum]._pInfraFlag = 0;
 
-	if ( c == PC_WARRIOR )
-	{
+	if ( c == PC_WARRIOR ) {
 		plr[pnum]._pAblSpells[0] = 0x2000000;
 		plr[pnum]._pAblSpells[1] = 0;
-	}
-	else if ( c == PC_ROGUE )
-	{
+	} else if ( c == PC_ROGUE ) {
 		plr[pnum]._pAblSpells[0] = 0x8000000;
 		plr[pnum]._pAblSpells[1] = 0;
-	}
-	else if ( c == PC_SORCERER )
-	{
+	} else if ( c == PC_SORCERER ) {
 		plr[pnum]._pAblSpells[0] = 0x4000000;
 		plr[pnum]._pAblSpells[1] = 0;
 	}
 
-	if ( c == PC_SORCERER )
-	{
+	if ( c == PC_SORCERER ) {
 		plr[pnum]._pMemSpells[0] = 1;
-	}
-	else
-	{
+	} else {
 		plr[pnum]._pMemSpells[0] = 0;
 	}
 	plr[pnum]._pMemSpells[1] = 0;
 
 	int i;
-	for ( i = 0; i < sizeof(plr[pnum]._pSplLvl); i++ )
-	{
+	for ( i = 0; i < sizeof(plr[pnum]._pSplLvl); i++ ) {
 		plr[pnum]._pSplLvl[i] = 0;
 	}
 
 	plr[pnum]._pSpellFlags = 0;
 
-	if ( plr[pnum]._pClass == PC_SORCERER )
-	{
+	if ( plr[pnum]._pClass == PC_SORCERER ) {
 		plr[pnum]._pSplLvl[1] = 2;
 	}
 
 	// interestingly, only the first three hotkeys are reset
 	// TODO: BUGFIX: clear all 4 hotkeys instead of 3 (demo leftover)
-	for ( i = 0; i < 3; i++ )
-	{
+	for ( i = 0; i < 3; i++ ) {
 		plr[pnum]._pSplHotKey[i] = -1;
 	}
 
-	if ( c == PC_WARRIOR )
-	{
+	if ( c == PC_WARRIOR ) {
 		plr[pnum]._pgfxnum = 3;
-	}
-	else if ( c == PC_ROGUE )
-	{
+	} else if ( c == PC_ROGUE ) {
 		plr[pnum]._pgfxnum = 4;
-	}
-	else if ( c == PC_SORCERER )
-	{
+	} else if ( c == PC_SORCERER ) {
 		plr[pnum]._pgfxnum = 8;
 	}
 
-	for ( i = 0; i < sizeof(plr[pnum]._pLvlVisited); i++ )
-	{
+	for ( i = 0; i < sizeof(plr[pnum]._pLvlVisited); i++ ) {
 		plr[pnum]._pLvlVisited[i] = 0;
 	}
 
-	for ( i = 0; i < sizeof(plr[pnum]._pSLvlVisited); i++ )
-	{
+	for ( i = 0; i < sizeof(plr[pnum]._pSLvlVisited); i++ ) {
 		plr[pnum]._pSLvlVisited[i] = 0;
 	}
 
@@ -3639,8 +3584,7 @@ BOOL __fastcall PM_DoRangeAttack(int pnum)
 		StartStand(pnum, plr[pnum]._pdir);
 		ClearPlrPVars(pnum);
 		return TRUE;
-	}
-	else {
+	} else {
 		return FALSE;
 	}
 
