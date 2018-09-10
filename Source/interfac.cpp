@@ -7,9 +7,9 @@ float interfac_cpp_init_value;
 int sgdwProgress;
 int progress_id; // idb
 
-int interfac_inf = 0x7F800000; // weak
-unsigned char progress_bar_colours[3] = { 138u, 43u, 254u };
-int progress_bar_screen_pos[3][2] = { { 53, 37 }, { 53, 421 }, { 53, 37 } };
+const int interfac_inf = 0x7F800000; // weak
+const unsigned char progress_bar_colours[3] = { 138u, 43u, 254u };
+const int progress_bar_screen_pos[3][2] = { { 53, 37 }, { 53, 421 }, { 53, 37 } };
 
 struct interfac_cpp_init
 {

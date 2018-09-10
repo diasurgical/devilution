@@ -61,11 +61,11 @@ void __cdecl DrawFPS();
 void __fastcall DoBlitScreen(int dwX, int dwY, int dwWdt, int dwHgt);
 void __cdecl DrawAndBlit();
 
-/* data */
-
-extern int scrollrt_inf; // weak
-
 /* rdata */
+
+extern const int scrollrt_inf; // weak
+
+/* data */
 
 /* used in 1.00 debug */
 extern char *szMonModeAssert[18];

@@ -125,13 +125,13 @@ void __fastcall NextItemRecord(int i);
 void __fastcall SetItemRecord(int dwSeed, int CI, int indx);
 void __fastcall PutItemRecord(int seed, int ci, int index);
 
-/* data */
-
-extern PLStruct PL_Prefix[84];
-extern PLStruct PL_Suffix[96];
-extern UItemStruct UniqueItemList[91];
-
 /* rdata */
+
+extern const PLStruct PL_Prefix[84];
+extern const PLStruct PL_Suffix[96];
+extern const UItemStruct UniqueItemList[91];
+
+/* data */
 
 
 extern ItemDataStruct AllItemsList[157];

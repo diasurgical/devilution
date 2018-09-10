@@ -5,9 +5,9 @@
 int mainmenu_cpp_init_value; // weak
 char chr_name_str[16];
 
-int mainmenu_inf = 0x7F800000; // weak
+const int mainmenu_inf = 0x7F800000; // weak
 
-/* rdata */
+/* data */
 
 int menu_music_track_id = 5; // idb
 

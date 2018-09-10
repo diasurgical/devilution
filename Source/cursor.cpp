@@ -22,8 +22,8 @@ int dword_4B8CCC; // weak
 int pcurs; // idb
 
 
-/* data */
-int InvItemWidth[180] =
+/* rdata */
+const int InvItemWidth[180] =
 {
   0,
   33,
@@ -206,7 +206,7 @@ int InvItemWidth[180] =
   56,
   56
 };
-int InvItemHeight[180] =
+const int InvItemHeight[180] =
 {
   0,
   29,

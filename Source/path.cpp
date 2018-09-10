@@ -20,10 +20,11 @@ PATHNODE *pnode_tblptr[300];
 PATHNODE *path_2_nodes;
 
 // for iterating over the 8 possible movement directions
-char pathxdir[8] = { -1, -1, 1, 1, -1, 0, 1, 0 };
-char pathydir[8] = { -1, 1, -1, 1, 0, -1, 0, 1 };
+const char pathxdir[8] = { -1, -1, 1, 1, -1, 0, 1, 0 };
+const char pathydir[8] = { -1, 1, -1, 1, 0, -1, 0, 1 };
 
-/* rdata */
+/* data */
+
 /* each step direction is assigned a number like this:
  *       dx
  *     -1 0 1

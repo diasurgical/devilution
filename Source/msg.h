@@ -158,8 +158,8 @@ int __fastcall On_NOVA(struct TCmdLoc *pCmd, int pnum);
 int __fastcall On_SETSHIELD(int unused, int pnum);
 int __fastcall On_REMSHIELD(int unused, int pnum);
 
-/* data */
+/* rdata */
 
-extern int msg_inf; // weak
+extern const int msg_inf; // weak
 
 #endif /* __MSG_H__ */

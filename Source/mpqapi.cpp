@@ -10,11 +10,11 @@ bool save_archive_modified; // weak
 _BLOCKENTRY *sgpBlockTbl;
 bool save_archive_open; // weak
 
-int mpqapi_inf = 0x7F800000; // weak
+const int mpqapi_inf = 0x7F800000; // weak
 
 //note: 32872 = 32768 + 104 (sizeof(TMPQHEADER))
 
-/* rdata */
+/* data */
 
 HANDLE sghArchive = (HANDLE)0xFFFFFFFF; // idb
 

@@ -34,8 +34,8 @@ void __cdecl nthread_cleanup();
 void __fastcall nthread_ignore_mutex(bool bStart);
 bool __cdecl nthread_has_500ms_passed();
 
-/* data */
+/* rdata */
 
-extern int nthread_inf; // weak
+extern const int nthread_inf; // weak
 
 #endif /* __NTHREAD_H__ */

@@ -12,9 +12,9 @@ HMODULE hDsound_dll; // idb
 void *sgpMusicTrack;
 IDirectSoundBuffer *sglpDSB;
 
-int sound_inf = 0x7F800000; // weak
+const int sound_inf = 0x7F800000; // weak
 
-/* rdata */
+/* data */
 
 UCHAR gbMusicOn = 1; // weak
 UCHAR gbSoundOn = 1; // weak

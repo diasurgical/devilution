@@ -15,7 +15,7 @@ void *option_cel;
 void *sgpLogo;
 int dword_63448C; // weak
 
-unsigned char lfontframe[127] =
+const unsigned char lfontframe[127] =
 {
 	0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
 	0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
@@ -31,7 +31,7 @@ unsigned char lfontframe[127] =
    14,  15,  16,  17,  18,  19,  20,  21,  22,  23,
    24,  25,  26,  20,   0,  21,   0
 };
-unsigned char lfontkern[56] =
+const unsigned char lfontkern[56] =
 {
    18,  33,  21,  26,  28,  19,  19,  26,  25,  11,
    12,  25,  19,  34,  28,  32,  20,  32,  28,  20,
