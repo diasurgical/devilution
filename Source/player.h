@@ -35,7 +35,7 @@ int __fastcall CalcStatDiff(int pnum);
 void __fastcall NextPlrLevel(int pnum);
 void __fastcall AddPlrExperience(int pnum, int lvl, int exp);
 void __fastcall AddPlrMonstExper(int lvl, int exp, char pmask);
-void __fastcall InitPlayer(int pnum, bool FirstTime);
+void __fastcall InitPlayer(int pnum, BOOL FirstTime);
 void __cdecl InitMultiView();
 void __fastcall InitPlayerLoc(int pnum, bool flag);
 BOOL __fastcall SolidLoc(int x, int y);

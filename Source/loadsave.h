@@ -4,7 +4,7 @@
 
 extern void *tbuff;
 
-void __fastcall LoadGame(bool firstflag);
+void __fastcall LoadGame(BOOL firstflag);
 char __cdecl BLoad();
 int __cdecl ILoad();
 int __cdecl ILoad_2();

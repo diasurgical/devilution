@@ -38,7 +38,7 @@ void __fastcall ChangeLight(int i, int x, int y, int r);
 void __cdecl ProcessLightList();
 void __cdecl SavePreLighting();
 void __cdecl InitVision();
-int __fastcall AddVision(int x, int y, int r, bool mine);
+int __fastcall AddVision(int x, int y, int r, BOOL mine);
 void __fastcall ChangeVisionRadius(int id, int r);
 void __fastcall ChangeVisionXY(int id, int x, int y);
 void __cdecl ProcessVisionList();

@@ -1913,7 +1913,7 @@ void __fastcall CreateLevel(int lvldir)
 }
 // 5BB1ED: using guessed type char leveltype;
 
-void __fastcall LoadGameLevel(bool firstflag, int lvldir)
+void __fastcall LoadGameLevel(BOOL firstflag, int lvldir)
 {
 	int v2; // ebp
 	bool visited; // edx
