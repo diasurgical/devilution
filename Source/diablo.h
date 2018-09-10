@@ -64,7 +64,7 @@ void __fastcall PressChar(int vkey);
 void __cdecl LoadLvlGFX();
 void __cdecl LoadAllGFX();
 void __fastcall CreateLevel(int lvldir);
-void __fastcall LoadGameLevel(bool firstflag, int lvldir);
+void __fastcall LoadGameLevel(BOOL firstflag, int lvldir);
 void __fastcall game_loop(bool bStartup);
 void __cdecl game_logic();
 void __fastcall timeout_cursor(bool bTimeout);

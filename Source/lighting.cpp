@@ -1598,7 +1598,7 @@ void __cdecl InitVision()
 // 5A5590: using guessed type char TransVal;
 // 642A0C: using guessed type int dovision;
 
-int __fastcall AddVision(int x, int y, int r, bool mine)
+int __fastcall AddVision(int x, int y, int r, BOOL mine)
 {
 	int vid; // eax
 	int v5; // esi
