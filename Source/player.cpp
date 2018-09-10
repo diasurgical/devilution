@@ -734,93 +734,63 @@ void __fastcall NextPlrLevel(int pnum)
 
 void __fastcall AddPlrExperience(int pnum, int lvl, int exp)
 {
-	int v3; // eax
-	int v4; // esi
-	int v5; // esi
-	char v6; // bl
-	int v7; // edi
-	signed int v8; // ecx
-	int v9; // ecx
-	int *v10; // eax
-	int v11; // eax
-	int v12; // ecx
-	int v13; // ecx
-	int v14; // esi
-	int arglist; // [esp+4h] [ebp-Ch]
-	int v16; // [esp+8h] [ebp-8h]
+	if ( pnum != myplr ) {
+		return;
+	}
 
-	v3 = myplr;
-	v4 = pnum;
-	v16 = lvl;
-	arglist = pnum;
-	if ( pnum == myplr )
-	{
-		if ( (unsigned int)myplr >= MAX_PLRS )
-		{
-			TermMsg("AddPlrExperience: illegal player %d", myplr);
-			v3 = myplr;
+	if ( (DWORD)myplr >= MAX_PLRS ) {
+		TermMsg("AddPlrExperience: illegal player %d", myplr);
+	}
+
+	if ( plr[myplr]._pHitPoints <= 0 ) {
+		return;
+	}
+
+	// Adjust xp based on difference in level between player and monster
+	exp *= 1 + ((double)lvl - plr[pnum]._pLevel) / 10;
+	if ( exp < 0 ) {
+		exp = 0;
+	}
+
+	// Prevent power leveling
+	if ( gbMaxPlayers > 1 ) {
+		int powerLvlCap = plr[pnum]._pLevel < 0 ? 0 : plr[pnum]._pLevel;
+		if ( powerLvlCap >= 50 ) {
+			powerLvlCap = 50;
 		}
-		if ( plr[v3]._pHitPoints > 0 )
-		{
-			v5 = v4;
-			v6 = plr[v5]._pLevel;
-			v7 = (signed __int64)((((double)v16 - (double)v6) * 0.1 + 1.0) * (double)exp);
-			if ( v7 < 0 )
-				v7 = 0;
-			if ( (unsigned char)gbMaxPlayers > 1u )
-			{
-				if ( v6 >= 0 )
-				{
-					v8 = v6;
-					if ( v6 >= 50 )
-						v8 = 50;
-				}
-				else
-				{
-					v8 = 0;
-				}
-				if ( v7 >= ExpLvlsTbl[v8] / 20 )
-					v7 = ExpLvlsTbl[v8] / 20;
-				v9 = 200 * v8;
-				if ( v7 >= v9 )
-					v7 = v9;
-			}
-			v10 = &plr[v5]._pExperience;
-			*v10 += v7;
-			if ( plr[v5]._pExperience > MAXEXP )
-				*v10 = MAXEXP;
-			v11 = *v10;
-			if ( v11 < ExpLvlsTbl[49] )
-			{
-				v12 = 0;
-				if ( v11 >= ExpLvlsTbl[0] )
-				{
-					do
-						++v12;
-					while ( v11 >= ExpLvlsTbl[v12] );
-				}
-				if ( v12 != v6 )
-				{
-					v13 = v12 - v6;
-					if ( v13 > 0 )
-					{
-						v14 = v13;
-						do
-						{
-							NextPlrLevel(arglist);
-							--v14;
-						}
-						while ( v14 );
-					}
-				}
-				NetSendCmdParam1(0, CMD_PLRLEVEL, plr[myplr]._pLevel);
-			}
-			else
-			{
-				plr[v5]._pLevel = 50;
-			}
+		// cap to 1/20 of current levels xp
+		if ( exp >= ExpLvlsTbl[powerLvlCap] / 20 ) {
+			exp = ExpLvlsTbl[powerLvlCap] / 20;
+		}
+		// cap to 200 * current level
+		int expCap = 200 * powerLvlCap;
+		if ( exp >= expCap ) {
+			exp = expCap;
 		}
 	}
+
+	plr[pnum]._pExperience += exp;
+	if ( (DWORD)plr[pnum]._pExperience > MAXEXP ) {
+		plr[pnum]._pExperience = MAXEXP;
+	}
+
+	if ( plr[pnum]._pExperience >= ExpLvlsTbl[49] ) {
+		plr[pnum]._pLevel = 50;
+		return;
+	}
+
+	// Increase player level if applicable
+	int newLvl = 0;
+	while ( plr[pnum]._pExperience >= ExpLvlsTbl[newLvl] ) {
+		newLvl++;
+	}
+	if ( newLvl != plr[pnum]._pLevel ) {
+		for ( int i = newLvl - plr[pnum]._pLevel; i > 0; i--) {
+			NextPlrLevel(pnum);
+		}
+	}
+
+	NetSendCmdParam1(FALSE, CMD_PLRLEVEL, plr[myplr]._pLevel);
 }
 // 679660: using guessed type char gbMaxPlayers;
 
