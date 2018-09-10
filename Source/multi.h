@@ -66,9 +66,9 @@ int __fastcall multi_init_multi(_SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *
 int __fastcall multi_upgrade(int *a1);
 void __fastcall multi_player_joins(int pnum, TCmdPlrInfoHdr *cmd, int a3);
 
-/* data */
+/* rdata */
 
-extern int multi_inf; // weak
-extern event_type event_types[3];
+extern const int multi_inf; // weak
+extern const int event_types[3];
 
 #endif /* __MULTI_H__ */

@@ -8,10 +8,10 @@ int sfxdnum;
 void *sfx_stream;
 TSFX *sfx_data_cur;
 
-int effects_inf = 0x7F800000; // weak
-char monster_action_sounds[] = { 'a', 'h', 'd', 's' }; // idb
+const int effects_inf = 0x7F800000; // weak
+const char monster_action_sounds[] = { 'a', 'h', 'd', 's' }; // idb
 
-/* rdata */
+/* data */
 
 TSFX sgSFX[NUM_SFX] =
 {

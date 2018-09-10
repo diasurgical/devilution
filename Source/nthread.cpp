@@ -20,9 +20,9 @@ int gdwLargestMsgSize; // weak
 int gdwNormalMsgSize; // weak
 int dword_679764; // weak
 
-int nthread_inf = 0x7F800000; // weak
+const int nthread_inf = 0x7F800000; // weak
 
-/* rdata */
+/* data */
 static HANDLE sghThread = (HANDLE)0xFFFFFFFF; // idb
 
 struct nthread_cpp_init_1

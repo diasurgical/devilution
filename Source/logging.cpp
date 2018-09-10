@@ -9,9 +9,9 @@ char log_buffer[388];
 LPCVOID lpAddress; // idb
 DWORD nNumberOfBytesToWrite; // idb
 
-int log_inf = 0x7F800000; // weak
+const int log_inf = 0x7F800000; // weak
 
-/* rdata */
+/* data */
 
 int log_not_created = 1; // weak
 HANDLE log_file = (HANDLE)0xFFFFFFFF; // idb

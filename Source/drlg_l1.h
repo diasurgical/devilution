@@ -25,7 +25,7 @@ void __cdecl DRLG_FreeL1SP();
 void __fastcall DRLG_L5(int entry);
 void __fastcall DRLG_PlaceDoor(int x, int y);
 void __cdecl DRLG_L1Shadows();
-int __fastcall DRLG_PlaceMiniSet(unsigned char *miniset, int tmin, int tmax, int cx, int cy, bool setview, int noquad, int ldir);
+int __fastcall DRLG_PlaceMiniSet(const unsigned char *miniset, int tmin, int tmax, int cx, int cy, bool setview, int noquad, int ldir);
 void __cdecl InitL5Dungeon();
 void __cdecl L5ClearFlags();
 void __cdecl L5firstRoom();
@@ -52,17 +52,17 @@ void __cdecl DRLG_L5TransFix();
 void __cdecl DRLG_L5DirtFix();
 void __cdecl DRLG_L5CornerFix();
 
-/* data */
-extern ShadowStruct SPATS[37];
-extern unsigned char BSTYPES[206];
-extern unsigned char L5BTYPES[206];
-extern unsigned char STAIRSUP[];
-extern unsigned char L5STAIRSUP[];
-extern unsigned char STAIRSDOWN[];
-extern unsigned char LAMPS[];
-extern unsigned char PWATERIN[];
-
 /* rdata */
+extern const ShadowStruct SPATS[37];
+extern const unsigned char BSTYPES[206];
+extern const unsigned char L5BTYPES[206];
+extern const unsigned char STAIRSUP[];
+extern const unsigned char L5STAIRSUP[];
+extern const unsigned char STAIRSDOWN[];
+extern const unsigned char LAMPS[];
+extern const unsigned char PWATERIN[];
+
+/* data */
 extern unsigned char L5ConvTbl[16];
 
 #endif /* __DRLG_L1_H__ */

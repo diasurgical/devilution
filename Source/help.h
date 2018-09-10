@@ -15,7 +15,7 @@ void __cdecl DisplayHelp();
 void __cdecl HelpScrollUp();
 void __cdecl HelpScrollDown();
 
-/* data */
-extern char gszHelpText[];
+/* rdata */
+extern const char gszHelpText[];
 
 #endif /* __HELP_H__ */

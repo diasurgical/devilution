@@ -15,9 +15,9 @@ void *patch_rt_mpq;
 int killed_mom_parent; // weak
 bool screensaver_enabled_prev;
 
-int init_inf = 0x7F800000; // weak
+const int init_inf = 0x7F800000; // weak
 
-/* rdata */
+/* data */
 
 char gszVersionNumber[260] = "internal version unknown";
 char gszProductName[260] = "Diablo v1.09";

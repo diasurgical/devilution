@@ -8,9 +8,9 @@ PALETTEENTRY system_palette[256];
 PALETTEENTRY orig_palette[256];
 UINT gdwPalEntries;
 
-int palette_inf = 0x7F800000; // weak
+const int palette_inf = 0x7F800000; // weak
 
-/* rdata */
+/* data */
 
 int gamma_correction = 100; // idb
 int color_cycling_enabled = 1; // idb

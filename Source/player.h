@@ -110,15 +110,15 @@ void __fastcall SetPlrVit(int pnum, int v);
 void __fastcall InitDungMsgs(int pnum);
 void __cdecl PlayDungMsgs();
 
-/* data */
-
-extern int player_inf;
-
 /* rdata */
 
+extern const int player_inf;
 extern const char ArmourChar[4];
 extern const char WepChar[10];
 extern const char CharChar[4];
+
+/* data */
+
 extern int plrxoff[9];
 extern int plryoff[9];
 extern int plrxoff2[9];

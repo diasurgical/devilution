@@ -12,8 +12,8 @@ void __cdecl track_process();
 void __fastcall track_repeat_walk(bool rep);
 bool __cdecl track_isscrolling();
 
-/* data */
+/* rdata */
 
-extern int track_inf; // weak
+extern const int track_inf; // weak
 
 #endif /* __TRACK_H__ */

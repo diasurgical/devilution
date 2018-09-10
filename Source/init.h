@@ -34,10 +34,10 @@ void __fastcall init_activate_window(HWND hWnd, bool bActive);
 LRESULT __stdcall WindowProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
 WNDPROC __stdcall SetWindowProc(WNDPROC NewProc);
 
-/* data */
-extern int init_inf; // weak
-
 /* rdata */
+extern const int init_inf; // weak
+
+/* data */
 
 extern char gszVersionNumber[260];
 extern char gszProductName[260];

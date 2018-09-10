@@ -6,7 +6,7 @@ int plrmsg_ticks; // weak
 char plr_msg_slot; // weak
 _plrmsg plr_msgs[8];
 
-text_color text_color_from_player_num[2] = { COL_WHITE, COL_GOLD };
+const char text_color_from_player_num[5] = { COL_WHITE, COL_WHITE, COL_WHITE, COL_WHITE, COL_GOLD };
 
 void __fastcall plrmsg_delay(int a1)
 {
@@ -140,7 +140,7 @@ LABEL_9:
 	do
 	{
 		if ( *v3 )
-			PrintPlrMsg(v0, v1, v2, v3, *((unsigned char *)text_color_from_player_num + (unsigned char)*(v3 - 1)));
+			PrintPlrMsg(v0, v1, v2, v3, (unsigned char)text_color_from_player_num[(unsigned char)*(v3 - 1)]);
 		v3 += 152;
 		v1 += 35;
 		--v4;
