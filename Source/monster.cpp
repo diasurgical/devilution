@@ -595,14 +595,13 @@ void __fastcall InitMonsterGFX(int monst)
 		Monsters[monst].Anims[anim].Delay = monsterdata[mtype].Rate[anim];
 	}
 
-
-	Monsters[monst].MData = &monsterdata[mtype];
 	Monsters[monst].flags_1 = monsterdata[mtype].flags;
 	Monsters[monst].flags_2 = (monsterdata[mtype].flags - 64) >> 1;
 	Monsters[monst].mMinHP = monsterdata[mtype].mMinHP;
 	Monsters[monst].mMaxHP = monsterdata[mtype].mMaxHP;
 	Monsters[monst].has_special = monsterdata[mtype].has_special;
 	Monsters[monst].mAFNum = monsterdata[mtype].mAFNum;
+	Monsters[monst].MData = &monsterdata[mtype];
 
 	if ( monsterdata[mtype].has_trans )
 	{
