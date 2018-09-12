@@ -1850,7 +1850,7 @@ void __fastcall AddL1Door(int i, int x, int y, int ot)
 	{
 		v9 = v5 + y;
 		v7 = dPiece[0][v5 + y];
-		v8 = dPiece[-4][v5 + y]; // *(_DWORD *)&dflags[28][4 * v9 + 32]; /* check */
+		v8 = dPiece[-1][v5 + y]; // *(_DWORD *)&dflags[28][4 * v9 + 32]; /* check */
 	}
 	object[v4]._oVar4 = 0;
 	object[v4]._oVar1 = v7;
@@ -3366,7 +3366,7 @@ void __fastcall OperateL1RDoor(int pnum, int oi, unsigned char sendflag)
 			ObjSetMicro(v5, v6, v7);
 			if ( object[v3]._oVar2 == 50 )
 			{
-				if ( dPiece[-4][v8] == 396 ) /* check *(_DWORD *)&dflags[28][4 * v8 + 32] == 396 ) */
+				if ( dPiece[-1][v8] == 396 ) /* check *(_DWORD *)&dflags[28][4 * v8 + 32] == 396 ) */
 					ObjSetMicro(v5 - 1, v6, 411);
 				else
 					ObjSetMicro(v5 - 1, v6, 50);
