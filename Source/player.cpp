@@ -133,7 +133,7 @@ void __fastcall LoadPlrGFX(int pnum, player_graphic gfxflag)
 	UCHAR *pData;
 	UCHAR *pAnim;
 
-	for (DWORD i = 1; i <= PFILE_ALL; i *= 2) {
+	for (DWORD i = 1; i <= PFILE_ALL; i <<= 1) {
 		if ( !(i & gfxflag) ) {
 			continue;
 		}
