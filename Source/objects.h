@@ -153,10 +153,10 @@ extern ObjDataStruct AllObjects[99];
 extern char *ObjMasterLoadList[56];
 extern int bxadd[8];
 extern int byadd[8];
-extern char *shrinestrs[26];
-extern unsigned char shrinemin[26];
-extern unsigned char shrinemax[26];
-extern unsigned char shrineavail[26];
+extern char *shrinestrs[NUM_SHRINETYPE];
+extern unsigned char shrinemin[NUM_SHRINETYPE];
+extern unsigned char shrinemax[NUM_SHRINETYPE];
+extern unsigned char shrineavail[NUM_SHRINETYPE];
 extern char *StoryBookName[9];
 extern int StoryText[3][3];
 

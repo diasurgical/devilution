@@ -293,7 +293,7 @@ char *ObjMasterLoadList[56] =
 };
 int bxadd[8] = { -1, 0, 1, -1, 1, -1, 0, 1 };
 int byadd[8] = { -1, -1, -1, 0, 0, 1, 1, 1 };
-char *shrinestrs[26] =
+char *shrinestrs[NUM_SHRINETYPE] =
 {
   "Mysterious",
   "Hidden",
@@ -322,20 +322,20 @@ char *shrinestrs[26] =
   "Glimmering",
   "Tainted"
 };
-unsigned char shrinemin[26] =
+unsigned char shrinemin[NUM_SHRINETYPE] =
 {
 	1,   1,   1,   1,   1,   1,   1,   1,   1,   1,
 	1,   1,   1,   1,   1,   1,   1,   1,   1,   1,
 	1,   1,   1,   1,   1,   1
 };
-unsigned char shrinemax[26] =
+unsigned char shrinemax[NUM_SHRINETYPE] =
 {
    16,  16,  16,  16,  16,  16,  16,   8,  16,  16,
    16,  16,  16,  16,  16,  16,  16,  16,  16,  16,
    16,  16,  16,  16,  16,  16
 };
 // 0 - sp+mp, 1 - sp only, 2 - mp only
-unsigned char shrineavail[26] =
+unsigned char shrineavail[NUM_SHRINETYPE] =
 {
 	0,   0,   1,   1,   0,   0,   0,   0,   1,   0,
 	0,   0,   0,   0,   0,   0,   0,   0,   2,   0,
@@ -4949,7 +4949,7 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 		v7 = object[v3]._oVar1;
 		switch ( v7 )
 		{
-			case 0:
+			case SHRINE_MYSTERIOUS:
 				if ( !v5 && arglist == myplr )
 				{
 					ModifyPlrStr(arglist, -1);
@@ -4987,7 +4987,7 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 					goto LABEL_221;
 				}
 				return;
-			case 1:
+			case SHRINE_HIDDEN:
 				v12 = 0;
 				if ( v5 || arglist != myplr )
 					return;
@@ -5076,7 +5076,7 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 LABEL_47:
 				_LOBYTE(v7) = 13;
 				goto LABEL_221;
-			case 2:
+			case SHRINE_GLOOMY:
 				if ( v5 )
 					return;
 				if ( arglist != myplr )
@@ -5123,7 +5123,7 @@ LABEL_47:
 					goto LABEL_73;
 				v7 = (int)&plr[v26].InvList[0]._iAC;
 				break;
-			case 3:
+			case SHRINE_WEIRD:
 				if ( v5 )
 					return;
 				if ( arglist != myplr )
@@ -5151,8 +5151,8 @@ LABEL_47:
 				}
 				_LOBYTE(v7) = 15;
 				goto LABEL_221;
-			case 4:
-			case 11:
+			case SHRINE_MAGICAL:
+			case SHRINE_MAGICAL2:
 				if ( v5 )
 					return;
 				AddMissile(
@@ -5170,7 +5170,7 @@ LABEL_47:
 					return;
 				_LOBYTE(v7) = 16;
 				goto LABEL_221;
-			case 5:
+			case SHRINE_STONE:
 				if ( v5 )
 					return;
 				if ( arglist != myplr )
@@ -5211,7 +5211,7 @@ LABEL_47:
 				while ( v44 );
 				v7 = 17;
 				goto LABEL_221;
-			case 6:
+			case SHRINE_RELIGIOUS:
 				if ( v5 )
 					return;
 				if ( arglist != myplr )
@@ -5249,7 +5249,7 @@ LABEL_47:
 				while ( v51 );
 				v7 = 18;
 				goto LABEL_221;
-			case 7:
+			case SHRINE_ENCHANTED:
 				if ( v5 || arglist != myplr )
 					return;
 				sfx_ida = 0;
@@ -5302,7 +5302,7 @@ LABEL_47:
 				}
 				_LOBYTE(v7) = 19;
 				goto LABEL_221;
-			case 8:
+			case SHRINE_THAUMATURGIC:
 				for ( j = 0; j < nobjects; ++j )
 				{
 					v63 = objectactive[j];
@@ -5322,7 +5322,7 @@ LABEL_47:
 					goto LABEL_280;
 				_LOBYTE(v7) = 20;
 				goto LABEL_221;
-			case 9:
+			case SHRINE_FASCINATING:
 				if ( v5 || arglist != myplr )
 					return;
 				v7 = 21720 * arglist;
@@ -5361,7 +5361,7 @@ LABEL_47:
 				}
 				_LOBYTE(v7) = 21;
 				goto LABEL_221;
-			case 10:
+			case SHRINE_CRYPTIC:
 				if ( v5 )
 					return;
 				v77 = arglist;
@@ -5382,7 +5382,7 @@ LABEL_47:
 				plr[v77]._pMana = plr[v77]._pMaxMana;
 				plr[v77]._pManaBase = plr[v77]._pMaxManaBase;
 				goto LABEL_221;
-			case 12:
+			case SHRINE_ELDRITCH:
 				if ( v5 )
 					return;
 				if ( arglist != myplr )
@@ -5458,14 +5458,14 @@ LABEL_47:
 				while ( !v56 );
 				_LOBYTE(v7) = 24;
 				goto LABEL_221;
-			case 13:
+			case SHRINE_EERIE:
 				if ( v5 || arglist != myplr )
 					return;
 				ModifyPlrMag(arglist, 2);
 				CheckStats(arglist);
 				_LOBYTE(v7) = 25;
 				goto LABEL_221;
-			case 14:
+			case SHRINE_DIVINE:
 				if ( v5 || arglist != myplr )
 					return;
 				v85 = object[v3]._ox;
@@ -5488,7 +5488,7 @@ LABEL_47:
 				plr[v87]._pHPBase = v7;
 				_LOBYTE(v7) = 26;
 				goto LABEL_221;
-			case 15:
+			case SHRINE_HOLY:
 				if ( v5 )
 					return;
 				v88 = 0;
@@ -5518,7 +5518,7 @@ LABEL_47:
 					return;
 				_LOBYTE(v7) = 27;
 				goto LABEL_221;
-			case 16:
+			case SHRINE_SACRED:
 				if ( v5 || arglist != myplr )
 					return;
 				v7 = 21720 * arglist;
@@ -5557,7 +5557,7 @@ LABEL_47:
 				}
 				_LOBYTE(v7) = 28;
 				goto LABEL_221;
-			case 17:
+			case SHRINE_SPIRITUAL:
 				if ( v5 || arglist != myplr )
 					return;
 				sfx_idd = 0;
@@ -5582,7 +5582,7 @@ LABEL_47:
 				while ( sfx_idd < 40 );
 				_LOBYTE(v7) = 29;
 				goto LABEL_221;
-			case 18:
+			case SHRINE_SPOOKY:
 				if ( v5 )
 					return;
 				if ( arglist == myplr )
@@ -5598,7 +5598,7 @@ LABEL_47:
 				plr[v110]._pMana = plr[v110]._pMaxMana;
 				plr[v110]._pManaBase = plr[v110]._pMaxManaBase;
 				goto LABEL_280;
-			case 19:
+			case SHRINE_ABANDONED:
 				if ( v5 || arglist != myplr )
 					return;
 				ModifyPlrDex(arglist, 2);
@@ -5607,7 +5607,7 @@ LABEL_47:
 					goto LABEL_280;
 				_LOBYTE(v7) = 32;
 				goto LABEL_221;
-			case 20:
+			case SHRINE_CREEPY:
 				if ( v5 || arglist != myplr )
 					return;
 				ModifyPlrStr(arglist, 2);
@@ -5616,7 +5616,7 @@ LABEL_47:
 					goto LABEL_280;
 				_LOBYTE(v7) = 33;
 				goto LABEL_221;
-			case 21:
+			case SHRINE_QUIET:
 				if ( v5 || arglist != myplr )
 					return;
 				ModifyPlrVit(arglist, 2);
@@ -5625,7 +5625,7 @@ LABEL_47:
 					goto LABEL_280;
 				_LOBYTE(v7) = 34;
 				goto LABEL_221;
-			case 22:
+			case SHRINE_SECLUDED:
 				if ( v5 )
 					return;
 				if ( arglist != myplr )
@@ -5647,7 +5647,7 @@ LABEL_47:
 				while ( v7 < 40 );
 				_LOBYTE(v7) = 35;
 				goto LABEL_221;
-			case 23:
+			case SHRINE_ORNATE:
 				if ( v5 || arglist != myplr )
 					return;
 				v7 = 21720 * arglist;
@@ -5686,7 +5686,7 @@ LABEL_47:
 				}
 				_LOBYTE(v7) = 36;
 				goto LABEL_221;
-			case 24:
+			case SHRINE_GLIMMERING:
 				if ( v5 || arglist != myplr )
 					return;
 				v125 = arglist;
@@ -5725,7 +5725,7 @@ LABEL_47:
 				while ( v131 );
 				v7 = 37;
 				goto LABEL_221;
-			case 25:
+			case SHRINE_TAINTED:
 				if ( v5 )
 					return;
 				if ( arglist == myplr )
