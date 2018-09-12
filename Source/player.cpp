@@ -133,7 +133,7 @@ void __fastcall LoadPlrGFX(int pnum, player_graphic gfxflag)
 	UCHAR *pData;
 	UCHAR *pAnim;
 
-	for (DWORD i = 1; i <= PFILE_ALL; i <<= 1) {
+	for (DWORD i = 1; i <= PFILE_NONDEATH; i <<= 1) {
 		if ( !(i & gfxflag) ) {
 			continue;
 		}
@@ -238,7 +238,7 @@ void __fastcall InitPlayerGFX(int pnum)
 		plr[pnum]._pgfxnum = 0;
 		LoadPlrGFX(pnum, PFILE_DEATH);
 	} else {
-		LoadPlrGFX(pnum, PFILE_ALL);
+		LoadPlrGFX(pnum, PFILE_NONDEATH);
 	}
 }
 

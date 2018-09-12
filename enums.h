@@ -2536,5 +2536,7 @@ enum player_graphic
 	PFILE_MAGIC = 1 << 6,
 	PFILE_DEATH = 1 << 7,
 	PFILE_BLOCK = 1 << 8,
-	PFILE_ALL = 0x17F
+	// everything except PFILE_DEATH
+	// 0b1_0111_1111
+	PFILE_NONDEATH = 0x17F
 };
