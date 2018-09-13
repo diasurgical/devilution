@@ -1005,132 +1005,50 @@ BOOL __fastcall SolidLoc(int x, int y)
 
 BOOL __fastcall PlrDirOK(int pnum, int dir)
 {
-	int v2; // esi
-	int v3; // ebx
-	int v4; // eax
-	int v5; // esi
-	int v6; // edi
-	int v7; // ebp
-	bool result; // eax
-	bool v9; // zf
-	int p; // [esp+10h] [ebp-4h]
-
-	v2 = pnum;
-	v3 = dir;
-	p = pnum;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("PlrDirOK: illegal player %d", pnum);
-	v4 = v2;
-	v5 = plr[v2].WorldX + offset_x[v3];
-	v6 = plr[v4].WorldY + offset_y[v3];
-	if ( v5 < 0 )
-		return 0;
-	v7 = 112 * v5 + v6;
-	if ( !dPiece[0][v7] || !PosOkPlayer(p, v5, v6) )
-		return 0;
-	result = 1;
-	if ( v3 == 6 )
-	{
-		if ( SolidLoc(v5, v6 + 1) )
-			return 0;
-		v9 = (dFlags[0][v7 + 1] & 0x20) == 0;
 	}
-	else
-	{
-		if ( v3 != 2 )
-			return result;
-		if ( SolidLoc(v5 + 1, v6) )
-			return 0;
-		v9 = (dFlags[1][v7] & 0x20) == 0;
+
+	int px = plr[pnum].WorldX + offset_x[dir];
+	int py = plr[pnum].WorldY + offset_y[dir];
+
+	if ( px < 0 || !dPiece[px][py] || !PosOkPlayer(pnum, px, py) ) {
+		return FALSE;
 	}
-	if ( v9 )
-		return 1;
-	return 0;
+
+	BOOL isOk = TRUE;
+	if ( dir == 6 ) {
+		isOk = !SolidLoc(px, py + 1) && !(dFlags[px][py + 1] & 32);
+	}
+
+	if ( isOk && dir == 2 ) {
+		isOk = !SolidLoc(px + 1, py) && !(dFlags[px + 1][py] & 32);
+	}
+
+	return isOk;
 }
 
 void __fastcall PlrClrTrans(int x, int y)
 {
-	int v2; // esi
-	int v3; // ebx
-	int v4; // edx
-	int v5; // edi
-	char *v6; // ecx
-	int v7; // eax
-	int v8; // ebp
-
-	v2 = y - 1;
-	v3 = y + 1;
-	if ( (unsigned char)(__OFSUB__(y - 1, y + 1) ^ 1) | (y - 1 == y + 1) )
-	{
-		v4 = x - 1;
-		v5 = x + 1;
-		do
-		{
-			if ( v4 <= v5 )
-			{
-				v6 = &dung_map[v4][v2];
-				v7 = v5 - v4 + 1;
-				do
-				{
-					v8 = *v6;
-					v6 += 112;
-					TransList[v8] = 0;
-					--v7;
-				}
-				while ( v7 );
-			}
-			++v2;
+	for ( int i = y - 1; i <= y + 1; i++ ) {
+		for ( int j = x - 1; j <= x + 1; j++ ) {
+			TransList[dung_map[j][i]] = 0;
 		}
-		while ( v2 <= v3 );
 	}
 }
 
 void __fastcall PlrDoTrans(int x, int y)
 {
-	int v2; // edi
-	int v3; // ebx
-	int v4; // eax
-	_BYTE *v5; // ecx
-	_DWORD *v6; // esi
-	int v7; // eax
-	int v8; // [esp+8h] [ebp-4h]
-
-	if ( leveltype == DTYPE_CATHEDRAL || leveltype == DTYPE_CATACOMBS )
-	{
-		v2 = y - 1;
-		if ( y - 1 <= y + 1 )
-		{
-			v3 = x - 1;
-			v8 = x + 1;
-			do
-			{
-				if ( v3 <= v8 )
-				{
-					v4 = v2 + 112 * v3;
-					v5 = (unsigned char *)dung_map + v4;
-					v6 = (_DWORD *)((char *)dPiece + 4 * v4);
-					v7 = v8 - v3 + 1;
-					do
-					{
-						if ( !nSolidTable[*v6] )
-						{
-							if ( *v5 )
-								TransList[(char)*v5] = 1;
-						}
-						v6 += 112;
-						v5 += 112;
-						--v7;
-					}
-					while ( v7 );
-				}
-				++v2;
-			}
-			while ( v2 <= y + 1 );
-		}
-	}
-	else
-	{
+	if ( leveltype != DTYPE_CATHEDRAL && leveltype != DTYPE_CATACOMBS ) {
 		TransList[1] = 1;
+	} else {
+		for ( int i = y - 1; i <= y + 1; i++ ) {
+			for ( int j = x - 1; j <= x + 1; j++ ) {
+				if ( !nSolidTable[dPiece[j][i]] && dung_map[j][i] ) {
+					TransList[dung_map[j][i]] = 1;
+				}
+			}
+		}
 	}
 }
 // 5BB1ED: using guessed type char leveltype;
