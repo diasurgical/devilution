@@ -1184,52 +1184,27 @@ void __fastcall PM_ChangeLightOff(int pnum)
 
 void __fastcall PM_ChangeOffset(int pnum)
 {
-	int v1; // esi
-	int v2; // eax
-	int v3; // edi
-	int v4; // ebx
-	int v5; // ecx
-	int *v6; // esi
-	int v7; // edi
-	int v8; // ebx
-	int v9; // edx
-	int v10; // edi
-	int v11; // edi
-	int v12; // edi
-	int v13; // ecx
-	int v14; // edx
-	int arglist; // [esp+8h] [ebp-8h]
-	int v16; // [esp+Ch] [ebp-4h]
-
-	v1 = pnum;
-	arglist = pnum;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("PM_ChangeOffset: illegal player %d", pnum);
-	v2 = v1;
-	v3 = plr[v1]._pVar6;
-	v4 = plr[v1]._pxvel;
-	v5 = v3;
-	v6 = &plr[v1]._pVar7;
-	v7 = v4 + v3;
-	v8 = plr[v2]._pyvel;
-	v9 = *v6;
-	v16 = v7;
-	plr[v2]._pVar6 = v7;
-	v10 = *v6;
-	++plr[v2]._pVar8;
-	v11 = v8 + v10;
-	*v6 = v11;
-	v12 = v11 >> 8;
-	plr[v2]._pxoff = v16 >> 8;
-	plr[v2]._pyoff = v12;
-	v13 = v5 >> 8;
-	v14 = v9 >> 8;
-	if ( arglist == myplr && ScrollInfo._sdir )
-	{
-		ScrollInfo._sxoff += v13 - (v16 >> 8);
-		ScrollInfo._syoff += v14 - v12;
 	}
-	PM_ChangeLightOff(arglist);
+
+	plr[pnum]._pVar8++;
+	int px = plr[pnum]._pVar6 >> 8;
+	int py = plr[pnum]._pVar7 >> 8;
+
+	plr[pnum]._pVar6 += plr[pnum]._pxvel;
+	plr[pnum]._pVar7 += plr[pnum]._pyvel;
+	plr[pnum]._pxoff = plr[pnum]._pVar6 >> 8;
+	plr[pnum]._pyoff = plr[pnum]._pVar7 >> 8;
+
+	int sx = px - (plr[pnum]._pVar6 >> 8);
+	int sy = py - (plr[pnum]._pVar7 >> 8);
+
+	if ( pnum == myplr && ScrollInfo._sdir ) {
+		ScrollInfo._sxoff += sx;
+		ScrollInfo._syoff += sy;
+	}
+	PM_ChangeLightOff(pnum);
 }
 
 void __fastcall StartWalk(int pnum, int xvel, int yvel, int xadd, int yadd, int EndDir, int sdir)
