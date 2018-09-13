@@ -943,7 +943,7 @@ void __fastcall InitPlayerLoc(int pnum, BOOL flag)
 	int v10; // edi
 	int v11; // ebx
 	char *v12; // eax
-	bool v13; // [esp+Ch] [ebp-Ch]
+	BOOL v13; // [esp+Ch] [ebp-Ch]
 	int v14; // [esp+10h] [ebp-8h]
 	int v15; // [esp+10h] [ebp-8h]
 	int v16; // [esp+10h] [ebp-8h]
@@ -1065,40 +1065,24 @@ void __fastcall SetPlayerOld(int pnum)
 
 void __fastcall FixPlayerLocation(int pnum, int dir)
 {
-	int v2; // edi
-	int v3; // ebx
-	int v4; // esi
-	int v5; // ecx
-	int v6; // eax
-	bool v7; // zf
-	int v8; // eax
-	int v9; // eax
-
-	v2 = pnum;
-	v3 = dir;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("FixPlayerLocation: illegal player %d", pnum);
-	v4 = v2;
-	v5 = plr[v2].WorldY;
-	v6 = plr[v2].WorldX;
-	plr[v4]._py = v5;
-	plr[v4]._ptargy = v5;
-	plr[v4]._px = v6;
-	plr[v4]._ptargx = v6;
-	plr[v4]._pxoff = 0;
-	plr[v4]._pyoff = 0;
-	InitPlayerLoc(v2, 0);
-	v7 = v2 == myplr;
-	plr[v4]._pdir = v3;
-	if ( v7 )
-	{
-		v8 = plr[v4].WorldX;
+	}
+
+	plr[pnum]._px = plr[pnum].WorldX;
+	plr[pnum]._py = plr[pnum].WorldY;
+	plr[pnum]._ptargx = plr[pnum].WorldX;
+	plr[pnum]._ptargy = plr[pnum].WorldY;
+	plr[pnum]._pxoff = 0;
+	plr[pnum]._pyoff = 0;
+	InitPlayerLoc(pnum, FALSE);
+	plr[pnum]._pdir = dir;
+	if ( pnum == myplr ) {
 		ScrollInfo._sxoff = 0;
-		ViewX = v8;
-		v9 = plr[v4].WorldY;
 		ScrollInfo._syoff = 0;
 		ScrollInfo._sdir = 0;
-		ViewY = v9;
+		ViewX = plr[pnum].WorldX;
+		ViewY = plr[pnum].WorldY;
 	}
 }
 
