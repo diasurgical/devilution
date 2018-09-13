@@ -1088,61 +1088,46 @@ void __fastcall FixPlayerLocation(int pnum, int dir)
 
 void __fastcall StartStand(int pnum, int dir)
 {
-	int v2; // ebx
-	int v3; // edi
-	int v4; // esi
-
-	v2 = pnum;
-	v3 = dir;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("StartStand: illegal player %d", pnum);
-	v4 = v2;
-	if ( !plr[v2]._pInvincible || plr[v4]._pHitPoints || v2 != myplr )
-	{
+	}
+
+	if ( !plr[pnum]._pInvincible || plr[pnum]._pHitPoints || pnum != myplr ) {
 		if ( !(plr[pnum]._pGFXLoad & PFILE_STAND) ) {
 			LoadPlrGFX(pnum, PFILE_STAND);
 		}
-		NewPlrAnim(v2, plr[0]._pNAnim[v3 + 5430 * v2], plr[v4]._pNFrames, 3, plr[v4]._pNWidth);
-		plr[v4]._pmode = PM_STAND;
-		FixPlayerLocation(v2, v3);
-		FixPlrWalkTags(v2);
-		dPlayer[plr[v4].WorldX][plr[v4].WorldY] = v2 + 1;
-		SetPlayerOld(v2);
-	}
-	else
-	{
-		SyncPlrKill(v2, -1);
+
+		NewPlrAnim(pnum, plr[pnum]._pNAnim[dir], plr[pnum]._pNFrames, 3, plr[pnum]._pNWidth);
+		plr[pnum]._pmode = PM_STAND;
+		FixPlayerLocation(pnum, dir);
+		FixPlrWalkTags(pnum);
+		dPlayer[plr[pnum].WorldX][plr[pnum].WorldY] = pnum + 1;
+		SetPlayerOld(pnum);
+	} else {
+		SyncPlrKill(pnum, -1);
 	}
 }
 
 void __fastcall StartWalkStand(int pnum)
 {
-	int v1; // edi
-	int v2; // esi
-	int v3; // eax
-	int v4; // eax
-	int v5; // eax
-
-	v1 = pnum;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("StartWalkStand: illegal player %d", pnum);
-	v2 = v1;
-	v3 = plr[v1].WorldX;
-	plr[v2]._pmode = 0;
-	plr[v2]._px = v3;
-	plr[v2]._py = plr[v1].WorldY;
-	plr[v2]._pxoff = 0;
-	plr[v2]._pyoff = 0;
-	InitPlayerLoc(v1, 0);
-	if ( v1 == myplr )
-	{
-		v4 = plr[v2].WorldX;
+	}
+
+	plr[pnum]._pmode = 0;
+	plr[pnum]._px = plr[pnum].WorldX;
+	plr[pnum]._py = plr[pnum].WorldY;
+	plr[pnum]._pxoff = 0;
+	plr[pnum]._pyoff = 0;
+
+	InitPlayerLoc(pnum, 0);
+
+	if ( pnum == myplr ) {
 		ScrollInfo._sxoff = 0;
-		ViewX = v4;
-		v5 = plr[v2].WorldY;
 		ScrollInfo._syoff = 0;
 		ScrollInfo._sdir = 0;
-		ViewY = v5;
+		ViewX = plr[pnum].WorldX;
+		ViewY = plr[pnum].WorldY;
 	}
 }
 
