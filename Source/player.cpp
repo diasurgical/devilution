@@ -1232,7 +1232,7 @@ void __fastcall StartWalk(int pnum, int xvel, int yvel, int xadd, int yadd, int 
 		ScrollInfo._sdy = plr[pnum].WorldY - ViewY;
 	}
 
-	dPlayer[px][py] = -1 - pnum;
+	dPlayer[px][py] = -(pnum + 1);
 	plr[pnum]._pmode = PM_WALK;
 	plr[pnum]._pxvel = xvel;
 	plr[pnum]._pyvel = yvel;
