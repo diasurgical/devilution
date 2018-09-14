@@ -1623,58 +1623,40 @@ void __fastcall RemovePlrFromMap(int pnum)
 	while ( v6 < 112 );
 }
 
-void __fastcall StartPlrHit(int pnum, int dam, unsigned char forcehit)
+void __fastcall StartPlrHit(int pnum, int dam, BOOL forcehit)
 {
-	int v3; // ebx
-	int v4; // edi
-	int v5; // esi
-	char v6; // al
-	int v7; // ecx
-	int v8; // eax
-	int v9; // edi
-	int v10; // ST08_4
-
-	v3 = pnum;
-	v4 = dam;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("StartPlrHit: illegal player %d", pnum);
-	v5 = v3;
-	if ( plr[v3]._pInvincible && !plr[v5]._pHitPoints && v3 == myplr )
-	{
-		SyncPlrKill(v3, -1);
+	}
+
+	if ( plr[pnum]._pInvincible && !plr[pnum]._pHitPoints && pnum == myplr ) {
+		SyncPlrKill(pnum, -1);
 		return;
 	}
-	v6 = plr[v5]._pClass;
-	switch ( v6 )
-	{
-		case PC_WARRIOR:
-			v7 = PS_WARR69;
-LABEL_13:
-			PlaySfxLoc(v7, plr[v5].WorldX, plr[v5].WorldY);
-			break;
-		case PC_ROGUE:
-			v7 = PS_ROGUE69;
-			goto LABEL_13;
-		case PC_SORCERER:
-			v7 = PS_MAGE69;
-			goto LABEL_13;
+
+	if ( plr[pnum]._pClass == PC_WARRIOR ) {
+		PlaySfxLoc(PS_WARR69, plr[pnum].WorldX, plr[pnum].WorldY);
+	} else if ( plr[pnum]._pClass == PC_ROGUE ) {
+		PlaySfxLoc(PS_ROGUE69, plr[pnum].WorldX, plr[pnum].WorldY);
+	} else if ( plr[pnum]._pClass == PC_SORCERER ) {
+		PlaySfxLoc(PS_MAGE69, plr[pnum].WorldX, plr[pnum].WorldY);
 	}
-	v8 = plr[v5]._pLevel;
+
 	drawhpflag = 1;
-	if ( v4 >> 6 >= v8 || forcehit )
-	{
-		v9 = plr[v5]._pdir;
+	if ( dam >> 6 >= plr[pnum]._pLevel || forcehit ) {
+		int dir = plr[pnum]._pdir;
+
 		if ( !(plr[pnum]._pGFXLoad & PFILE_HIT) ) {
 			LoadPlrGFX(pnum, PFILE_HIT);
 		}
-		v10 = plr[v5]._pHWidth;
-		NewPlrAnim(v3, plr[0]._pHAnim[v9 + 5430 * v3], plr[v5]._pHFrames, 0, v10);
-		plr[v5]._pmode = PM_GOTHIT;
-		FixPlayerLocation(v3, v9);
-		plr[v5]._pVar8 = 1;
-		FixPlrWalkTags(v3);
-		dPlayer[plr[v5].WorldX][plr[v5].WorldY] = v3 + 1;
-		SetPlayerOld(v3);
+		NewPlrAnim(pnum, plr[pnum]._pHAnim[dir], plr[pnum]._pHFrames, 0, plr[pnum]._pHWidth);
+
+		plr[pnum]._pmode = PM_GOTHIT;
+		FixPlayerLocation(pnum, dir);
+		plr[pnum]._pVar8 = 1;
+		FixPlrWalkTags(pnum);
+		dPlayer[plr[pnum].WorldX][plr[pnum].WorldY] = pnum + 1;
+		SetPlayerOld(pnum);
 	}
 }
 
