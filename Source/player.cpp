@@ -1197,12 +1197,9 @@ void __fastcall PM_ChangeOffset(int pnum)
 	plr[pnum]._pxoff = plr[pnum]._pVar6 >> 8;
 	plr[pnum]._pyoff = plr[pnum]._pVar7 >> 8;
 
-	int sx = px - (plr[pnum]._pVar6 >> 8);
-	int sy = py - (plr[pnum]._pVar7 >> 8);
-
 	if ( pnum == myplr && ScrollInfo._sdir ) {
-		ScrollInfo._sxoff += sx;
-		ScrollInfo._syoff += sy;
+		ScrollInfo._sxoff += px - plr[pnum]._pxoff;
+		ScrollInfo._syoff += py - plr[pnum]._pyoff;
 	}
 	PM_ChangeLightOff(pnum);
 }
