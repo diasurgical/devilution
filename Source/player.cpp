@@ -1552,7 +1552,7 @@ void __fastcall FixPlrWalkTags(int pnum)
 	}
 
 	int pNext = pnum + 1;
-	int pPrev = -1 - pnum;
+	int pPrev = -(pnum + 1);
 	int dx = plr[pnum]._poldx;
 	int dy = plr[pnum]._poldy;
 	for ( int y = dy - 1; y <= dy + 1; y++ ) {
