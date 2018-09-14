@@ -57,7 +57,7 @@ void __fastcall StartPlrBlock(int pnum, int dir);
 void __fastcall StartSpell(int pnum, int d, int cx, int cy);
 void __fastcall FixPlrWalkTags(int pnum);
 void __fastcall RemovePlrFromMap(int pnum);
-void __fastcall StartPlrHit(int pnum, int dam, unsigned char forcehit);
+void __fastcall StartPlrHit(int pnum, int dam, BOOL forcehit);
 void __fastcall RespawnDeadItem(ItemStruct *itm, int x, int y);
 void __fastcall StartPlayerKill(int pnum, int earflag);
 void __fastcall PlrDeadItem(int pnum, struct ItemStruct *itm, int xx, int yy);
