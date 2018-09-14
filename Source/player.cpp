@@ -1640,59 +1640,49 @@ void __fastcall StartPlrBlock(int pnum, int dir)
 
 void __fastcall StartSpell(int pnum, int d, int cx, int cy)
 {
-	int v4; // edi
-	int v5; // esi
-	unsigned char *v6; // edx
-	int v7; // ST08_4
-	int v8; // edx
-	int a2; // [esp+Ch] [ebp-4h]
-
-	v4 = pnum;
-	a2 = d;
 	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("StartSpell: illegal player %d", pnum);
-	v5 = v4;
-	if ( plr[v4]._pInvincible && !plr[v5]._pHitPoints && v4 == myplr )
-	{
-		SyncPlrKill(v4, -1);
+
+	if ( plr[pnum]._pInvincible && !plr[pnum]._pHitPoints && pnum == myplr ) {
+		SyncPlrKill(pnum, -1);
 		return;
 	}
-	if ( leveltype )
-	{
-		switch ( spelldata[plr[v5]._pSpell].sType )
+
+	if ( leveltype != DTYPE_TOWN ) {
+		switch ( spelldata[plr[pnum]._pSpell].sType )
 		{
 			case STYPE_FIRE:
 				if ( !(plr[pnum]._pGFXLoad & PFILE_FIRE) ) {
 					LoadPlrGFX(pnum, PFILE_FIRE);
 				}
-				v6 = plr[0]._pFAnim[a2 + 5430 * v4];
-				goto LABEL_20;
+				NewPlrAnim(pnum, plr[pnum]._pFAnim[d], plr[pnum]._pSFrames, 0, plr[pnum]._pSWidth);
+				break;
 			case STYPE_LIGHTNING:
 				if ( !(plr[pnum]._pGFXLoad & PFILE_LIGHTNING) ) {
 					LoadPlrGFX(pnum, PFILE_LIGHTNING);
 				}
-				v6 = plr[0]._pLAnim[a2 + 5430 * v4];
-				goto LABEL_20;
+				NewPlrAnim(pnum, plr[pnum]._pLAnim[d], plr[pnum]._pSFrames, 0, plr[pnum]._pSWidth);
+				break;
 			case STYPE_MAGIC:
 				if ( !(plr[pnum]._pGFXLoad & PFILE_MAGIC) ) {
 					LoadPlrGFX(pnum, PFILE_MAGIC);
 				}
-				v6 = plr[0]._pTAnim[a2 + 5430 * v4];
-LABEL_20:
-				v7 = plr[v5]._pSWidth;
-				NewPlrAnim(v4, v6, plr[v5]._pSFrames, 0, v7);
+				NewPlrAnim(pnum, plr[pnum]._pTAnim[d], plr[pnum]._pSFrames, 0, plr[pnum]._pSWidth);
 				break;
 		}
 	}
-	PlaySfxLoc((unsigned char)spelldata[plr[v5]._pSpell].sSFX, plr[v5].WorldX, plr[v5].WorldY);
-	plr[v5]._pmode = PM_SPELL;
-	FixPlayerLocation(v4, a2);
-	SetPlayerOld(v4);
-	v8 = plr[v5]._pSpell;
-	plr[v5]._pVar1 = cx;
-	plr[v5]._pVar2 = cy;
-	plr[v5]._pVar4 = GetSpellLevel(v4, v8);
-	plr[v5]._pVar8 = 1;
+
+	PlaySfxLoc(spelldata[plr[pnum]._pSpell].sSFX, plr[pnum].WorldX, plr[pnum].WorldY);
+
+	plr[pnum]._pmode = PM_SPELL;
+
+	FixPlayerLocation(pnum, d);
+	SetPlayerOld(pnum);
+
+	plr[pnum]._pVar1 = cx;
+	plr[pnum]._pVar2 = cy;
+	plr[pnum]._pVar4 = GetSpellLevel(pnum, plr[pnum]._pSpell);
+	plr[pnum]._pVar8 = 1;
 }
 // 5BB1ED: using guessed type char leveltype;
 
