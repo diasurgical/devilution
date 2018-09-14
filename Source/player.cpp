@@ -1573,92 +1573,69 @@ void __fastcall StartWalk3(int pnum, int xvel, int yvel, int xoff, int yoff, int
 
 void __fastcall StartAttack(int pnum, int d)
 {
-	int v2; // edi
-	int v3; // ebp
-	int v4; // esi
-	int v5; // ST08_4
-
-	v2 = pnum;
-	v3 = d;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("StartAttack: illegal player %d", pnum);
-	v4 = v2;
-	if ( !plr[v2]._pInvincible || plr[v4]._pHitPoints || v2 != myplr )
-	{
-		if ( !(plr[pnum]._pGFXLoad & PFILE_ATTACK) ) {
-			LoadPlrGFX(pnum, PFILE_ATTACK);
-		}
-		v5 = plr[v4]._pAWidth;
-		NewPlrAnim(v2, plr[0]._pAAnim[v3 + 5430 * v2], plr[v4]._pAFrames, 0, v5);
-		plr[v4]._pmode = 4;
-		FixPlayerLocation(v2, v3);
-		SetPlayerOld(v2);
 	}
-	else
-	{
-		SyncPlrKill(v2, -1);
+
+	if ( plr[pnum]._pInvincible && !plr[pnum]._pHitPoints && pnum == myplr ) {
+		SyncPlrKill(pnum, -1);
+		return;
 	}
+
+	if ( !(plr[pnum]._pGFXLoad & PFILE_ATTACK) ) {
+		LoadPlrGFX(pnum, PFILE_ATTACK);
+	}
+
+	NewPlrAnim(pnum, plr[pnum]._pAAnim[d], plr[pnum]._pAFrames, 0, plr[pnum]._pAWidth);
+	plr[pnum]._pmode = PM_ATTACK;
+	FixPlayerLocation(pnum, d);
+	SetPlayerOld(pnum);
 }
 
 void __fastcall StartRangeAttack(int pnum, int d, int cx, int cy)
 {
-	int v4; // edi
-	int v5; // esi
-	int v6; // ST08_4
-	int a2a; // [esp+8h] [ebp-4h]
-
-	v4 = pnum;
-	a2a = d;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("StartRangeAttack: illegal player %d", pnum);
-	v5 = v4;
-	if ( !plr[v4]._pInvincible || plr[v5]._pHitPoints || v4 != myplr )
-	{
-		if ( !(plr[pnum]._pGFXLoad & PFILE_ATTACK) ) {
-			LoadPlrGFX(pnum, PFILE_ATTACK);
-		}
-		v6 = plr[v5]._pAWidth;
-		NewPlrAnim(v4, plr[0]._pAAnim[a2a + 5430 * v4], plr[v5]._pAFrames, 0, v6);
-		plr[v5]._pmode = PM_RATTACK;
-		FixPlayerLocation(v4, a2a);
-		SetPlayerOld(v4);
-		plr[v5]._pVar1 = cx;
-		plr[v5]._pVar2 = cy;
 	}
-	else
-	{
-		SyncPlrKill(v4, -1);
+
+	if ( plr[pnum]._pInvincible && !plr[pnum]._pHitPoints && pnum == myplr ) {
+		SyncPlrKill(pnum, -1);
+		return;
 	}
+
+	if ( !(plr[pnum]._pGFXLoad & PFILE_ATTACK) ) {
+		LoadPlrGFX(pnum, PFILE_ATTACK);
+	}
+	NewPlrAnim(pnum, plr[pnum]._pAAnim[d], plr[pnum]._pAFrames, 0, plr[pnum]._pAWidth);
+
+	plr[pnum]._pmode = PM_RATTACK;
+	FixPlayerLocation(pnum, d);
+	SetPlayerOld(pnum);
+	plr[pnum]._pVar1 = cx;
+	plr[pnum]._pVar2 = cy;
 }
 
 void __fastcall StartPlrBlock(int pnum, int dir)
 {
-	int v2; // edi
-	int v3; // ebx
-	int v4; // esi
-	int v5; // ST08_4
-
-	v2 = pnum;
-	v3 = dir;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("StartPlrBlock: illegal player %d", pnum);
-	v4 = v2;
-	if ( !plr[v2]._pInvincible || plr[v4]._pHitPoints || v2 != myplr )
-	{
-		PlaySfxLoc(IS_ISWORD, plr[v4].WorldX, plr[v4].WorldY);
-		if ( !(plr[pnum]._pGFXLoad & PFILE_BLOCK) ) {
-			LoadPlrGFX(pnum, PFILE_BLOCK);
-		}
-		v5 = plr[v4]._pBWidth;
-		NewPlrAnim(v2, plr[0]._pBAnim[v3 + 5430 * v2], plr[v4]._pBFrames, 2, v5);
-		plr[v4]._pmode = PM_BLOCK;
-		FixPlayerLocation(v2, v3);
-		SetPlayerOld(v2);
 	}
-	else
-	{
-		SyncPlrKill(v2, -1);
+
+	if ( plr[pnum]._pInvincible && !plr[pnum]._pHitPoints && pnum == myplr ) {
+		SyncPlrKill(pnum, -1);
+		return;
 	}
+
+	PlaySfxLoc(IS_ISWORD, plr[pnum].WorldX, plr[pnum].WorldY);
+
+	if ( !(plr[pnum]._pGFXLoad & PFILE_BLOCK) ) {
+		LoadPlrGFX(pnum, PFILE_BLOCK);
+	}
+	NewPlrAnim(pnum, plr[pnum]._pBAnim[dir], plr[pnum]._pBFrames, 2, plr[pnum]._pBWidth);
+
+	plr[pnum]._pmode = PM_BLOCK;
+	FixPlayerLocation(pnum, dir);
+	SetPlayerOld(pnum);
 }
 
 void __fastcall StartSpell(int pnum, int d, int cx, int cy)
