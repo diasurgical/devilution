@@ -1547,66 +1547,25 @@ void __fastcall StartSpell(int pnum, int d, int cx, int cy)
 
 void __fastcall FixPlrWalkTags(int pnum)
 {
-	int v1; // esi
-	int v2; // edx
-	int v3; // ecx
-	int v4; // eax
-	int v5; // esi
-	int v6; // edi
-	int v7; // ebx
-	int v8; // edi
-	bool v9; // zf
-	bool v10; // sf
-	unsigned char v11; // of
-	int v12; // eax
-	int v13; // [esp+8h] [ebp-Ch]
-	int v14; // [esp+Ch] [ebp-8h]
-	char *v15; // [esp+10h] [ebp-4h]
-
-	v1 = pnum;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("FixPlrWalkTags: illegal player %d", pnum);
-	v13 = v1 + 1;
-	v2 = -1 - v1;
-	v3 = plr[v1]._poldx;
-	v4 = plr[v1]._poldy;
-	v5 = v4 - 1;
-	if ( (unsigned char)(__OFSUB__(v4 - 1, v4 + 1) ^ 1) | (v4 - 1 == v4 + 1) )
-	{
-		v6 = v3 + 1;
-		do
-		{
-			v7 = v3 - 1;
-			v14 = v3 - 1;
-			if ( v3 - 1 <= v6 )
-			{
-				v15 = &dPlayer[v7][v5];
-				do
-				{
-					if ( v7 >= 0 && v7 < 112 && v5 >= 0 && v5 < 112 )
-					{
-						v8 = *v15;
-						if ( v8 == v13 || v8 == v2 )
-							*v15 = 0;
-					}
-					v15 += 112;
-					v7 = v14 + 1;
-					v6 = v3 + 1;
-					v11 = __OFSUB__(v14 + 1, v3 + 1);
-					v9 = v14 + 1 == v3 + 1;
-					v10 = v14++ - v3 < 0;
-				}
-				while ( (unsigned char)(v10 ^ v11) | v9 );
-			}
-			++v5;
-		}
-		while ( v5 <= v4 + 1 );
 	}
-	if ( v3 >= 0 && v3 < 111 && v4 >= 0 && v4 < 111 )
-	{
-		v12 = 112 * v3 + v4;
-		dFlags[1][v12] &= 0xDFu;
-		dFlags[0][v12 + 1] &= 0xDFu;
+
+	int pNext = pnum + 1;
+	int pPrev = -1 - pnum;
+	int dx = plr[pnum]._poldx;
+	int dy = plr[pnum]._poldy;
+	for ( int y = dy - 1; y <= dy + 1; y++ ) {
+		for ( int x = dx - 1; x <= dx + 1; x++ ) {
+			if ( x >= 0 && x < MAXDUNX && y >= 0 && y < MAXDUNY && (dPlayer[x][y] == pNext || dPlayer[x][y] == pPrev) ) {
+				dPlayer[x][y] = 0;
+			}
+		}
+	}
+
+	if ( dx >= 0 && dx < MAXDUNX - 1 && dy >= 0 && dy < MAXDUNY -1 ) {
+		dFlags[dx + 1][dy] &= 0xDF;
+		dFlags[dx][dy + 1] &= 0xDF;
 	}
 }
 
