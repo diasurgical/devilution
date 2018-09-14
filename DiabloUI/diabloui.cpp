@@ -13,11 +13,12 @@
 #endif
 
 #include "..\defs.h"
+#include "..\enums.h"
 #include "..\structs.h"
 #include "diabloui.h"
 
-BOOL APIENTRY DllMain( HANDLE hModule, 
-                       DWORD  ul_reason_for_call, 
+BOOL APIENTRY DllMain( HANDLE hModule,
+                       DWORD  ul_reason_for_call,
                        LPVOID lpReserved
 					 )
 {
