@@ -1017,11 +1017,11 @@ BOOL __fastcall PlrDirOK(int pnum, int dir)
 	}
 
 	BOOL isOk = TRUE;
-	if ( dir == 6 ) {
+	if ( dir == DIR_E ) {
 		isOk = !SolidLoc(px, py + 1) && !(dFlags[px][py + 1] & 32);
 	}
 
-	if ( isOk && dir == 2 ) {
+	if ( isOk && dir == DIR_W ) {
 		isOk = !SolidLoc(px + 1, py) && !(dFlags[px + 1][py] & 32);
 	}
 
