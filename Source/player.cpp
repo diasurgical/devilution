@@ -932,65 +932,55 @@ void __cdecl InitMultiView()
 
 void __fastcall InitPlayerLoc(int pnum, BOOL flag)
 {
-	int v2; // esi
-	int v3; // esi
-	int v4; // edi
-	int v5; // ebx
-	char *v6; // eax
-	int v7; // ebx
-	int v8; // edi
-	char *v9; // eax
-	int v10; // edi
-	int v11; // ebx
-	char *v12; // eax
-	BOOL v13; // [esp+Ch] [ebp-Ch]
-	int v14; // [esp+10h] [ebp-8h]
-	int v15; // [esp+10h] [ebp-8h]
-	int v16; // [esp+10h] [ebp-8h]
-	signed int v17; // [esp+14h] [ebp-4h]
-	signed int v18; // [esp+14h] [ebp-4h]
-	signed int v19; // [esp+14h] [ebp-4h]
-
-	v2 = pnum;
-	v13 = flag;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("InitPlayer: illegal player %d", pnum);
-	v3 = v2;
-	v14 = 0;
-	v4 = plr[v3].WorldX - 1;
-	v5 = plr[v3].WorldY + 1;
-	v6 = (char *)dpiece_defs_map_1 + 32 * gendung_get_dpiece_num_from_coord(v4, v5);
-	v17 = 2;
-	do
-		v14 |= *(unsigned short *)&v6[2 * v17++];
-	while ( v17 < 10 );
-	if ( v14 | dArch[v4][v5] | nSolidTable[dPiece[v4][v5]] )
-		plr[v3]._peflag = 1;
-	else
-		plr[v3]._peflag = 0;
-	if ( v13 == 1 && plr[v3]._peflag == 1 )
-	{
-		v7 = plr[v3].WorldX;
-		v15 = 0;
-		v8 = plr[v3].WorldY + 2;
-		v9 = (char *)dpiece_defs_map_1 + 32 * gendung_get_dpiece_num_from_coord(plr[v3].WorldX, v8);
-		v18 = 2;
-		do
-			v15 |= *(unsigned short *)&v9[2 * v18++];
-		while ( v18 < 10 );
-		if ( !(v15 | dArch[v7][v8]) )
-		{
-			v16 = 0;
-			v10 = plr[v3].WorldX - 2;
-			v11 = plr[v3].WorldY + 1;
-			v12 = (char *)dpiece_defs_map_1 + 32 * gendung_get_dpiece_num_from_coord(v10, v11);
-			v19 = 2;
-			do
-				v16 |= *(unsigned short *)&v12[2 * v19++];
-			while ( v19 < 10 );
-			if ( v16 | dArch[v10][v11] )
-				plr[v3]._peflag = 2;
-		}
+	}
+
+	int x = plr[pnum].WorldX - 1;
+	int y = plr[pnum].WorldY + 1;
+	int bitflags = 0;
+	USHORT *pieces = (USHORT *)dpiece_defs_map_1 + 16 * gendung_get_dpiece_num_from_coord(x, y);
+
+	int i;
+	for ( i = 2; i < 10; i++ ) {
+		bitflags |= pieces[i];
+	}
+
+	if ( bitflags | nSolidTable[dPiece[x][y]] | dArch[x][y] ) {
+		plr[pnum]._peflag = 1;
+	}
+	else {
+		plr[pnum]._peflag = 0;
+	}
+
+	if ( flag != 1 || plr[pnum]._peflag != 1 ) {
+		return;
+	}
+
+	x = plr[pnum].WorldX;
+	y = plr[pnum].WorldY + 2;
+	bitflags = 0;
+	pieces = (USHORT *)dpiece_defs_map_1 + 16 * gendung_get_dpiece_num_from_coord(x, y);
+
+	for ( i = 2; i < 10; i++ ) {
+		bitflags |= pieces[i];
+	}
+
+	if ( bitflags | dArch[x][y] ) {
+		return;
+	}
+
+	x = plr[pnum].WorldX - 2;
+	y = plr[pnum].WorldY + 1;
+	bitflags = 0;
+	pieces = (USHORT *)dpiece_defs_map_1 + 16 * gendung_get_dpiece_num_from_coord(x, y);
+
+	for ( i = 2; i < 10; i++ ) {
+		bitflags |= pieces[i];
+	}
+
+	if ( bitflags | dArch[x][y] ) {
+		plr[pnum]._peflag = 2;
 	}
 }
 
