@@ -930,7 +930,7 @@ void __cdecl InitMultiView()
 	ViewY = plr[myplr].WorldY;
 }
 
-void __fastcall InitPlayerLoc(int pnum, bool flag)
+void __fastcall InitPlayerLoc(int pnum, BOOL flag)
 {
 	int v2; // esi
 	int v3; // esi
@@ -1003,7 +1003,7 @@ BOOL __fastcall SolidLoc(int x, int y)
 	return nSolidTable[dPiece[x][y]];
 }
 
-bool __fastcall PlrDirOK(int pnum, int dir)
+BOOL __fastcall PlrDirOK(int pnum, int dir)
 {
 	int v2; // esi
 	int v3; // ebx
@@ -1347,318 +1347,225 @@ void __fastcall PM_ChangeOffset(int pnum)
 
 void __fastcall StartWalk(int pnum, int xvel, int yvel, int xadd, int yadd, int EndDir, int sdir)
 {
-	int v7; // edi
-	int v8; // esi
-	int v9; // edi
-	int v10; // ebx
-	int v11; // ecx
-	bool v12; // zf
-	int v13; // ST08_4
-	int v14; // eax
-	bool v15; // sf
-	unsigned char v16; // of
-	int v17; // eax
-	int v18; // [esp+Ch] [ebp-8h]
-	int arglist; // [esp+10h] [ebp-4h]
-
-	v7 = pnum;
-	v18 = xvel;
-	arglist = pnum;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("StartWalk: illegal player %d", pnum);
-	v8 = v7;
-	if ( plr[v7]._pInvincible && !plr[v8]._pHitPoints && v7 == myplr )
-	{
-		SyncPlrKill(v7, -1);
+	}
+
+	if ( plr[pnum]._pInvincible && !plr[pnum]._pHitPoints && pnum == myplr ) {
+		SyncPlrKill(pnum, -1);
 		return;
 	}
-	SetPlayerOld(v7);
-	v9 = xadd + plr[v8].WorldX;
-	v10 = yadd + plr[v8].WorldY;
-	if ( PlrDirOK(arglist, EndDir) )
-	{
-		v11 = arglist;
-		plr[v8]._px = v9;
-		v12 = arglist == myplr;
-		plr[v8]._py = v10;
-		if ( v12 )
-		{
-			ScrollInfo._sdx = plr[v8].WorldX - ViewX;
-			ScrollInfo._sdy = plr[v8].WorldY - ViewY;
-		}
-		plr[v8]._pmode = PM_WALK;
-		dPlayer[v9][v10] = -1 - arglist;
-		plr[v8]._pxvel = v18;
-		plr[v8]._pyvel = yvel;
-		plr[v8]._pVar1 = xadd;
-		plr[v8]._pxoff = 0;
-		plr[v8]._pyoff = 0;
-		plr[v8]._pVar2 = yadd;
-		plr[v8]._pVar3 = EndDir;
-		if ( !(plr[pnum]._pGFXLoad & PFILE_WALK) ) {
-			LoadPlrGFX(pnum, PFILE_WALK);
-		}
-		v13 = plr[v8]._pWWidth;
-		NewPlrAnim(v11, plr[0]._pWAnim[EndDir + 5430 * v11], plr[v8]._pWFrames, 0, v13);
-		plr[v8]._pdir = EndDir;
-		plr[v8]._pVar6 = 0;
-		plr[v8]._pVar7 = 0;
-		plr[v8]._pVar8 = 0;
-		InitPlayerLoc(arglist, 0);
-		if ( arglist == myplr )
-		{
-			if ( zoomflag )
-			{
-				if ( abs(ScrollInfo._sdx) < 3 )
-				{
-					v14 = abs(ScrollInfo._sdy);
-					v16 = __OFSUB__(v14, 3);
-					v15 = v14 - 3 < 0;
-					goto LABEL_18;
-				}
-			}
-			else if ( abs(ScrollInfo._sdx) < 2 )
-			{
-				v17 = abs(ScrollInfo._sdy);
-				v16 = __OFSUB__(v17, 2);
-				v15 = v17 - 2 < 0;
-LABEL_18:
-				if ( v15 ^ v16 )
-				{
-					ScrollInfo._sdir = sdir;
-					return;
-				}
-				goto LABEL_20;
-			}
-LABEL_20:
+
+	SetPlayerOld(pnum);
+
+	int px = xadd + plr[pnum].WorldX;
+	int py = yadd + plr[pnum].WorldY;
+
+	if ( !PlrDirOK(pnum, EndDir) ) {
+		return;
+	}
+
+	plr[pnum]._px = px;
+	plr[pnum]._py = py;
+
+	if ( pnum == myplr ) {
+		ScrollInfo._sdx = plr[pnum].WorldX - ViewX;
+		ScrollInfo._sdy = plr[pnum].WorldY - ViewY;
+	}
+
+	dPlayer[px][py] = -1 - pnum;
+	plr[pnum]._pmode = PM_WALK;
+	plr[pnum]._pxvel = xvel;
+	plr[pnum]._pyvel = yvel;
+	plr[pnum]._pxoff = 0;
+	plr[pnum]._pyoff = 0;
+	plr[pnum]._pVar1 = xadd;
+	plr[pnum]._pVar2 = yadd;
+	plr[pnum]._pVar3 = EndDir;
+
+	if ( !(plr[pnum]._pGFXLoad & PFILE_WALK) ) {
+		LoadPlrGFX(pnum, PFILE_WALK);
+	}
+	NewPlrAnim(pnum, plr[pnum]._pWAnim[EndDir], plr[pnum]._pWFrames, 0, plr[pnum]._pWWidth);
+
+	plr[pnum]._pdir = EndDir;
+	plr[pnum]._pVar6 = 0;
+	plr[pnum]._pVar7 = 0;
+	plr[pnum]._pVar8 = 0;
+
+	InitPlayerLoc(pnum, FALSE);
+
+	if ( pnum != myplr ) {
+		return;
+	}
+
+	if ( zoomflag ) {
+		if ( abs(ScrollInfo._sdx) >= 3 || abs(ScrollInfo._sdy) >= 3 ) {
 			ScrollInfo._sdir = 0;
-			return;
+		} else {
+			ScrollInfo._sdir = sdir;
 		}
+	} else if ( abs(ScrollInfo._sdx) >= 2 || abs(ScrollInfo._sdy) >= 2 ) {
+		ScrollInfo._sdir = 0;
+	} else {
+		ScrollInfo._sdir = sdir;
 	}
 }
 // 52569C: using guessed type int zoomflag;
 
 void __fastcall StartWalk2(int pnum, int xvel, int yvel, int xoff, int yoff, int xadd, int yadd, int EndDir, int sdir)
 {
-	int v9; // edi
-	int v10; // esi
-	int v11; // ebx
-	int v12; // edi
-	bool v13; // zf
-	int v14; // eax
-	int v15; // ecx
-	int v16; // ecx
-	int v17; // ecx
-	int v18; // ST08_4
-	bool v19; // edx
-	int v20; // eax
-	bool v21; // sf
-	unsigned char v22; // of
-	int v23; // eax
-	int v24; // [esp+Ch] [ebp-8h]
-	int arglist; // [esp+10h] [ebp-4h]
-	int x; // [esp+28h] [ebp+14h]
-
-	v9 = pnum;
-	v24 = xvel;
-	arglist = pnum;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("StartWalk2: illegal player %d", pnum);
-	v10 = v9;
-	if ( plr[v9]._pInvincible && !plr[v10]._pHitPoints && v9 == myplr )
-	{
-		SyncPlrKill(v9, -1);
+	}
+
+	if ( plr[pnum]._pInvincible && !plr[pnum]._pHitPoints && pnum == myplr ) {
+		SyncPlrKill(pnum, -1);
 		return;
 	}
-	SetPlayerOld(v9);
-	v11 = xadd + plr[v10].WorldX;
-	v12 = yadd + plr[v10].WorldY;
-	x = xadd + plr[v10].WorldX;
-	if ( PlrDirOK(arglist, EndDir) )
-	{
-		plr[v10]._px = v11;
-		v13 = arglist == myplr;
-		plr[v10]._py = v12;
-		if ( v13 )
-		{
-			ScrollInfo._sdx = plr[v10].WorldX - ViewX;
-			ScrollInfo._sdy = plr[v10].WorldY - ViewY;
-		}
-		v14 = plr[v10].WorldY;
-		v15 = plr[v10].WorldX;
-		plr[v10]._pVar2 = v14;
-		dPlayer[v15][v14] = -1 - arglist;
-		v16 = plr[v10].WorldX;
-		plr[v10].WorldX = v11;
-		dPlayer[v11][v12] = arglist + 1;
-		plr[v10]._pVar1 = v16;
-		v17 = plr[v10]._plid;
-		plr[v10].WorldY = v12;
-		plr[v10]._pxoff = xoff;
-		plr[v10]._pyoff = yoff;
-		ChangeLightXY(v17, x, v12);
-		PM_ChangeLightOff(arglist);
-		plr[v10]._pxvel = v24;
-		plr[v10]._pyvel = yvel;
-		plr[v10]._pVar6 = xoff << 8;
-		plr[v10]._pmode = PM_WALK2;
-		plr[v10]._pVar7 = yoff << 8;
-		plr[v10]._pVar3 = EndDir;
-		if ( !(plr[pnum]._pGFXLoad & PFILE_WALK) ) {
-			LoadPlrGFX(pnum, PFILE_WALK);
-		}
-		v18 = plr[v10]._pWWidth;
-		NewPlrAnim(arglist, plr[0]._pWAnim[EndDir + 5430 * arglist], plr[v10]._pWFrames, 0, v18);
-		plr[v10]._pVar8 = 0;
-		v19 = 0;
-		plr[v10]._pdir = EndDir;
-		if ( EndDir == 7 )
-			v19 = 1;
-		InitPlayerLoc(arglist, v19);
-		if ( arglist == myplr )
-		{
-			if ( zoomflag )
-			{
-				if ( abs(ScrollInfo._sdx) < 3 )
-				{
-					v20 = abs(ScrollInfo._sdy);
-					v22 = __OFSUB__(v20, 3);
-					v21 = v20 - 3 < 0;
-					goto LABEL_20;
-				}
-			}
-			else if ( abs(ScrollInfo._sdx) < PM_WALK2 )
-			{
-				v23 = abs(ScrollInfo._sdy);
-				v22 = __OFSUB__(v23, 2);
-				v21 = v23 - PM_WALK2 < 0;
-LABEL_20:
-				if ( v21 ^ v22 )
-				{
-					ScrollInfo._sdir = sdir;
-					return;
-				}
-				goto LABEL_22;
-			}
-LABEL_22:
+
+	SetPlayerOld(pnum);
+	int px = xadd + plr[pnum].WorldX;
+	int py = yadd + plr[pnum].WorldY;
+
+	if ( !PlrDirOK(pnum, EndDir) ) {
+		return;
+	}
+
+	plr[pnum]._px = px;
+	plr[pnum]._py = py;
+
+	if ( pnum == myplr ) {
+		ScrollInfo._sdx = plr[pnum].WorldX - ViewX;
+		ScrollInfo._sdy = plr[pnum].WorldY - ViewY;
+	}
+
+	dPlayer[plr[pnum].WorldX][plr[pnum].WorldY] = -1 - pnum;
+	plr[pnum]._pVar1 = plr[pnum].WorldX;
+	plr[pnum]._pVar2 = plr[pnum].WorldY;
+	plr[pnum].WorldX = px;
+	plr[pnum].WorldY = py;
+	dPlayer[plr[pnum].WorldX][plr[pnum].WorldY] = pnum + 1;
+	plr[pnum]._pxoff = xoff;
+	plr[pnum]._pyoff = yoff;
+
+	ChangeLightXY(plr[pnum]._plid, plr[pnum].WorldX, plr[pnum].WorldY);
+	PM_ChangeLightOff(pnum);
+
+	plr[pnum]._pmode = PM_WALK2;
+	plr[pnum]._pxvel = xvel;
+	plr[pnum]._pyvel = yvel;
+	plr[pnum]._pVar6 = xoff << 8;
+	plr[pnum]._pVar7 = yoff << 8;
+	plr[pnum]._pVar3 = EndDir;
+
+	if ( !(plr[pnum]._pGFXLoad & PFILE_WALK) ) {
+		LoadPlrGFX(pnum, PFILE_WALK);
+	}
+	NewPlrAnim(pnum, plr[pnum]._pWAnim[EndDir], plr[pnum]._pWFrames, 0, plr[pnum]._pWWidth);
+
+	plr[pnum]._pdir = EndDir;
+	plr[pnum]._pVar8 = 0;
+
+	if ( EndDir == DIR_SE ) {
+		InitPlayerLoc(pnum, TRUE);
+	} else {
+		InitPlayerLoc(pnum, FALSE);
+	}
+
+	if ( pnum != myplr ) {
+		return;
+	}
+
+	if ( zoomflag ) {
+		if ( abs(ScrollInfo._sdx) >= 3 || abs(ScrollInfo._sdy) >= 3 ) {
 			ScrollInfo._sdir = 0;
-			return;
+		} else {
+			ScrollInfo._sdir = sdir;
 		}
+	} else if ( abs(ScrollInfo._sdx) >= 2 || abs(ScrollInfo._sdy) >= 2 ) {
+		ScrollInfo._sdir = 0;
+	} else {
+		ScrollInfo._sdir = sdir;
 	}
 }
 // 52569C: using guessed type int zoomflag;
 
 void __fastcall StartWalk3(int pnum, int xvel, int yvel, int xoff, int yoff, int xadd, int yadd, int mapx, int mapy, int EndDir, int sdir)
 {
-	int v11; // edi
-	int v12; // esi
-	int v13; // eax
-	int v14; // ecx
-	int v15; // ebx
-	int v16; // edi
-	bool v17; // zf
-	int v18; // edx
-	int v19; // ecx
-	int v20; // ST08_4
-	int v21; // eax
-	bool v22; // sf
-	unsigned char v23; // of
-	int v24; // eax
-	int v25; // [esp+10h] [ebp-8h]
-	int arglist; // [esp+14h] [ebp-4h]
-	int a6; // [esp+2Ch] [ebp+14h]
-	int x; // [esp+30h] [ebp+18h]
-	int y; // [esp+34h] [ebp+1Ch]
-
-	v11 = pnum;
-	v25 = xvel;
-	arglist = pnum;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("StartWalk3: illegal player %d", pnum);
-	v12 = v11;
-	if ( plr[v11]._pInvincible && !plr[v12]._pHitPoints && v11 == myplr )
-	{
-		SyncPlrKill(v11, -1);
+	}
+
+	if ( plr[pnum]._pInvincible && !plr[pnum]._pHitPoints && pnum == myplr ) {
+		SyncPlrKill(pnum, -1);
 		return;
 	}
-	SetPlayerOld(v11);
-	v13 = plr[v12].WorldX;
-	a6 = v13 + xadd;
-	v14 = plr[v12].WorldY;
-	v15 = v14 + yadd;
-	x = mapx + v13;
-	v16 = v14 + mapy;
-	y = v14 + mapy;
-	if ( PlrDirOK(arglist, EndDir) )
-	{
-		v17 = arglist == myplr;
-		plr[v12]._px = a6;
-		plr[v12]._py = v15;
-		if ( v17 )
-		{
-			ScrollInfo._sdx = plr[v12].WorldX - ViewX;
-			ScrollInfo._sdy = plr[v12].WorldY - ViewY;
-		}
-		v18 = plr[v12].WorldY;
-		v19 = plr[v12].WorldX;
-		plr[v12]._pVar5 = v16;
-		dPlayer[v19][v18] = -1 - arglist;
-		dPlayer[a6][v15] = -1 - arglist;
-		plr[v12]._pVar4 = x;
-		plr[v12]._pyoff = yoff;
-		dFlags[x][v16] |= 0x20u;
-		v17 = leveltype == DTYPE_TOWN;
-		plr[v12]._pxoff = xoff;
-		if ( !v17 )
-		{
-			ChangeLightXY(plr[v12]._plid, x, y);
-			PM_ChangeLightOff(arglist);
-		}
-		plr[v12]._pmode = PM_WALK3;
-		plr[v12]._pxvel = v25;
-		plr[v12]._pyvel = yvel;
-		plr[v12]._pVar1 = a6;
-		plr[v12]._pVar6 = xoff << 8;
-		plr[v12]._pVar7 = yoff << 8;
-		plr[v12]._pVar2 = v15;
-		plr[v12]._pVar3 = EndDir;
-		if ( !(plr[pnum]._pGFXLoad & PFILE_WALK) ) {
-			LoadPlrGFX(pnum, PFILE_WALK);
-		}
-		v20 = plr[v12]._pWWidth;
-		NewPlrAnim(arglist, plr[0]._pWAnim[EndDir + 5430 * arglist], plr[v12]._pWFrames, 0, v20);
-		plr[v12]._pdir = EndDir;
-		plr[v12]._pVar8 = 0;
-		InitPlayerLoc(arglist, 0);
-		if ( arglist == myplr )
-		{
-			if ( zoomflag )
-			{
-				if ( abs(ScrollInfo._sdx) < 3 )
-				{
-					v21 = abs(ScrollInfo._sdy);
-					v23 = __OFSUB__(v21, 3);
-					v22 = v21 - 3 < 0;
-					goto LABEL_20;
-				}
-			}
-			else if ( abs(ScrollInfo._sdx) < 2 )
-			{
-				v24 = abs(ScrollInfo._sdy);
-				v23 = __OFSUB__(v24, 2);
-				v22 = v24 - 2 < 0;
-LABEL_20:
-				if ( v22 ^ v23 )
-				{
-					ScrollInfo._sdir = sdir;
-					return;
-				}
-				goto LABEL_22;
-			}
-LABEL_22:
+
+	SetPlayerOld(pnum);
+	int px = xadd + plr[pnum].WorldX;
+	int py = yadd + plr[pnum].WorldY;
+	int x = mapx + plr[pnum].WorldX;
+	int y = mapy + plr[pnum].WorldY;
+
+	if ( !PlrDirOK(pnum, EndDir) ) {
+		return;
+	}
+
+	plr[pnum]._px = px;
+	plr[pnum]._py = py;
+
+	if ( pnum == myplr ) {
+		ScrollInfo._sdx = plr[pnum].WorldX - ViewX;
+		ScrollInfo._sdy = plr[pnum].WorldY - ViewY;
+	}
+
+	dPlayer[plr[pnum].WorldX][plr[pnum].WorldY] = -1 - pnum;
+	dPlayer[px][py] = -1 - pnum;
+	plr[pnum]._pVar4 = x;
+	plr[pnum]._pVar5 = y;
+	dFlags[x][y] |= 0x20;
+	plr[pnum]._pxoff = xoff;
+	plr[pnum]._pyoff = yoff;
+
+	if ( leveltype ) {
+		ChangeLightXY(plr[pnum]._plid, x, y);
+		PM_ChangeLightOff(pnum);
+	}
+
+	plr[pnum]._pmode = PM_WALK3;
+	plr[pnum]._pxvel = xvel;
+	plr[pnum]._pyvel = yvel;
+	plr[pnum]._pVar1 = px;
+	plr[pnum]._pVar2 = py;
+	plr[pnum]._pVar6 = xoff << 8;
+	plr[pnum]._pVar7 = yoff << 8;
+	plr[pnum]._pVar3 = EndDir;
+
+	if ( !(plr[pnum]._pGFXLoad & PFILE_WALK) ) {
+		LoadPlrGFX(pnum, PFILE_WALK);
+	}
+	NewPlrAnim(pnum, plr[pnum]._pWAnim[EndDir], plr[pnum]._pWFrames, 0, plr[pnum]._pWWidth);
+
+	plr[pnum]._pdir = EndDir;
+	plr[pnum]._pVar8 = 0;
+
+	InitPlayerLoc(pnum, 0);
+
+	if ( pnum != myplr ) {
+		return;
+	}
+
+	if ( zoomflag ) {
+		if ( abs(ScrollInfo._sdx) >= 3 || abs(ScrollInfo._sdy) >= 3 ) {
 			ScrollInfo._sdir = 0;
-			return;
+		} else {
+			ScrollInfo._sdir = sdir;
 		}
+	} else if ( abs(ScrollInfo._sdx) >= 2 || abs(ScrollInfo._sdy) >= 2 ) {
+		ScrollInfo._sdir = 0;
+	} else {
+		ScrollInfo._sdir = sdir;
 	}
 }
 // 52569C: using guessed type int zoomflag;
