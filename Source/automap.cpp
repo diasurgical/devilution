@@ -853,71 +853,72 @@ void __cdecl DrawAutomapGame()
 // 5CF31D: using guessed type char setlevel;
 // 679660: using guessed type char gbMaxPlayers;
 
-void __fastcall SetAutomapView(int xi, int yi)
+void __fastcall SetAutomapView(int x, int y)
 {
-	short maptype;
-	short solid;
-	DWORD x, y;
+	int xx = (x - 16) >> 1;
+	int yy = (y - 16) >> 1;
 
-	xi = (xi - 16) >> 1;
-	yi = (yi - 16) >> 1;
-
-	if ( xi < 0 || xi >= DMAXX || yi < 0 || yi >= DMAXY )
+	if ( xx < 0 || xx >= DMAXX || yy < 0 || yy >= DMAXY ) {
 		return;
+	}
 
-	x = (DWORD)xi;
-	y = (DWORD)yi;
-	automapview[x][y] = 1;
-	maptype = GetAutomapType(x, y, FALSE);
-	solid = maptype & 0x4000;
-	switch ( maptype & 0xF )
-	{
-	case 2:
-		if ( solid ) {
-			if (GetAutomapType(x, y+1, FALSE)==0x4007)
-				automapview[x][y+1] = 1;
-		} else if (GetAutomapType(x-1, y, FALSE)&0x4000)
-			automapview[x-1][y] = 1;
-		break;
-	case 3:
-		if (solid) {
-			if (GetAutomapType(x+1, y, FALSE)==0x4007)
-				automapview[x+1][y] = 1;
-		} else if (GetAutomapType(x, y-1, FALSE)&0x4000)
-			automapview[x][y-1] = 1;
-		break;
-	case 4:
-		if (solid) {
-			if (GetAutomapType(x, y+1, FALSE)==0x4007)
-				automapview[x][y+1] = 1;
-			if (GetAutomapType(x+1, y, FALSE)==0x4007)
-				automapview[x+1][y] = 1;
-		} else {
-			if (GetAutomapType(x-1, y, FALSE)&0x4000)
-				automapview[x-1][y] = 1;
-			if (GetAutomapType(x, y-1, FALSE)&0x4000)
-				automapview[x][y-1] = 1;
-			if (GetAutomapType(x-1, y-1, FALSE)&0x4000)
-				automapview[x-1][y-1] = 1;
-		}
-		break;
-	case 5:
-		if (solid) {
-			if (GetAutomapType(x, y-1, FALSE)&0x4000)
-				automapview[x][y-1] = 1;
-			if (GetAutomapType(x, y+1, FALSE)==0x4007)
-				automapview[x][y+1] = 1;
-		} else if (GetAutomapType(x-1, y, FALSE)&0x4000)
-			automapview[x-1][y] = 1;
-		break;
-	case 6:
-		if (solid) {
-			if (GetAutomapType(x-1, y, FALSE)&0x4000)
-				automapview[x-1][y] = 1;
-			if (GetAutomapType(x+1, y, FALSE)==0x4007)
-				automapview[x+1][y] = 1;
-		} else if (GetAutomapType(x, y-1, FALSE)&0x4000)
-			automapview[x][y-1] = 1;
+	automapview[xx][yy] = 1;
+
+	USHORT maptype = GetAutomapType(xx, yy, FALSE);
+	USHORT solid = maptype & 0x4000;
+
+	switch ( maptype & 0xF ) {
+		case 2:
+			if ( solid ) {
+				if ( GetAutomapType(xx, yy + 1, FALSE) == 0x4007 )
+					automapview[xx][yy + 1] = 1;
+			}
+			else if ( GetAutomapType(xx - 1, yy, FALSE) & 0x4000 )
+				automapview[xx - 1][yy] = 1;
+			break;
+		case 3:
+			if ( solid ) {
+				if ( GetAutomapType(xx + 1, yy, FALSE) == 0x4007 )
+					automapview[xx + 1][yy] = 1;
+			}
+			else if ( GetAutomapType(xx, yy - 1, FALSE) & 0x4000 )
+				automapview[xx][yy - 1] = 1;
+			break;
+		case 4:
+			if ( solid ) {
+				if ( GetAutomapType(xx, yy + 1, FALSE) == 0x4007 )
+					automapview[xx][yy + 1] = 1;
+				if ( GetAutomapType(xx + 1, yy, FALSE) == 0x4007 )
+					automapview[xx + 1][yy] = 1;
+			}
+			else {
+				if ( GetAutomapType(xx - 1, yy, FALSE) & 0x4000 )
+					automapview[xx - 1][yy] = 1;
+				if ( GetAutomapType(xx, yy - 1, FALSE) & 0x4000 )
+					automapview[xx][yy - 1] = 1;
+				if ( GetAutomapType(xx - 1, yy - 1, FALSE) & 0x4000 )
+					automapview[xx - 1][yy - 1] = 1;
+			}
+			break;
+		case 5:
+			if ( solid ) {
+				if ( GetAutomapType(xx, yy - 1, FALSE) & 0x4000 )
+					automapview[xx][yy - 1] = 1;
+				if ( GetAutomapType(xx, yy + 1, FALSE) == 0x4007 )
+					automapview[xx][yy + 1] = 1;
+			}
+			else if ( GetAutomapType(xx - 1, yy, FALSE) & 0x4000 )
+				automapview[xx - 1][yy] = 1;
+			break;
+		case 6:
+			if ( solid ) {
+				if ( GetAutomapType(xx - 1, yy, FALSE) & 0x4000 )
+					automapview[xx - 1][yy] = 1;
+				if ( GetAutomapType(xx + 1, yy, FALSE) == 0x4007 )
+					automapview[xx + 1][yy] = 1;
+			}
+			else if ( GetAutomapType(xx, yy - 1, FALSE) & 0x4000 )
+				automapview[xx][yy - 1] = 1;
 	}
 }
 
