@@ -740,7 +740,7 @@ char __fastcall multi_event_handler(int a1)
 		v4 = (int)v2(event_types[v3], multi_handle_events);
 		if ( !v4 && v1 )
 		{
-			v5 = GetLastErr();
+			v5 = TraceLastError();
 			TermMsg("SNetRegisterEventHandler:\n%s", v5);
 		}
 		++v3;
@@ -1002,7 +1002,7 @@ int __fastcall multi_init_single(_SNETPROGRAMDATA *client_info, _SNETPLAYERDATA 
 		//_LOBYTE(v5) = SNetCreateGame("local", "local", "local", 0, (char *)&sgGameInitInfo.dwSeed, 8, 1, "local", "local", (int *)&ui_info);
 		if ( !SNetCreateGame("local", "local", "local", 0, (char *)&sgGameInitInfo.dwSeed, 8, 1, "local", "local", (int *)&ui_info) )
 		{
-			v6 = GetLastErr();
+			v6 = TraceLastError();
 			TermMsg("SNetCreateGame1:\n%s", v6);
 		}
 		myplr = 0;
