@@ -1002,7 +1002,7 @@ void __fastcall NetSendCmdParam1(BOOL bHiPri, unsigned char bCmd, unsigned short
 		NetSendLoPri((unsigned char *)&cmd, 3u);
 }
 
-void __fastcall NetSendCmdParam2(unsigned char bHiPri, unsigned char bCmd, unsigned short wParam1, unsigned short wParam2)
+void __fastcall NetSendCmdParam2(BOOL bHiPri, unsigned char bCmd, unsigned short wParam1, unsigned short wParam2)
 {
 	TCmdParam2 cmd; // [esp+0h] [ebp-8h]
 

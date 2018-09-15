@@ -2206,51 +2206,41 @@ void __fastcall InitLevelChange(int pnum)
 
 void __fastcall StartNewLvl(int pnum, int fom, int lvl)
 {
-	int v3; // edi
-	unsigned int v4; // esi
-	unsigned int v5; // eax
-	HWND v6; // ST00_4
-
-	v3 = fom;
-	v4 = pnum;
 	InitLevelChange(pnum);
-	if ( v4 >= 4 )
-		TermMsg("StartNewLvl: illegal player %d", v4);
-	if ( v3 < WM_DIABNEXTLVL )
-	{
-LABEL_10:
-		TermMsg("StartNewLvl");
-		goto LABEL_11;
+
+	if ( (DWORD)pnum >= MAX_PLRS ) {
+		TermMsg("StartNewLvl: illegal player %d", pnum);
 	}
-	if ( v3 <= WM_DIABPREVLVL || v3 == WM_DIABRTNLVL )
-		goto LABEL_16;
-	if ( v3 != WM_DIABSETLVL )
-	{
-		if ( v3 != WM_DIABTOWNWARP )
-		{
-			if ( v3 != WM_DIABTWARPUP )
-			{
-				if ( v3 == WM_DIABRETOWN )
-					goto LABEL_11;
-				goto LABEL_10;
-			}
+
+	switch ( fom ) {
+		case WM_DIABNEXTLVL:
+		case WM_DIABPREVLVL:
+			plr[pnum].plrlevel = lvl;
+			break;
+		case WM_DIABRTNLVL:
+		case WM_DIABTOWNWARP:
+			plr[pnum].plrlevel = lvl;
+			break;
+		case WM_DIABSETLVL:
+			setlvlnum = lvl;
+			break;
+		case WM_DIABTWARPUP:
 			plr[myplr].pTownWarps |= 1 << (leveltype - 2);
-		}
-LABEL_16:
-		plr[v4].plrlevel = lvl;
-		goto LABEL_11;
+			plr[pnum].plrlevel = lvl;
+			break;
+		case WM_DIABRETOWN:
+			break;
+		default:
+			TermMsg("StartNewLvl");
 	}
-	setlvlnum = lvl;
-LABEL_11:
-	if ( v4 == myplr )
-	{
-		v5 = v4;
-		v6 = ghMainWnd;
-		plr[v5]._pmode = PM_NEWLVL;
-		plr[v5]._pInvincible = 1;
-		PostMessageA(v6, v3, 0, 0);
-		if ( (unsigned char)gbMaxPlayers > 1u )
-			NetSendCmdParam2(1u, CMD_NEWLVL, v3, lvl);
+
+	if ( pnum == myplr ) {
+		plr[pnum]._pmode = PM_NEWLVL;
+		plr[pnum]._pInvincible = TRUE;
+		PostMessageA(ghMainWnd, fom, 0, 0);
+		if ( gbMaxPlayers > 1 ) {
+			NetSendCmdParam2(TRUE, CMD_NEWLVL, fom, lvl);
+		}
 	}
 }
 // 5BB1ED: using guessed type char leveltype;
