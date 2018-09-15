@@ -2154,75 +2154,53 @@ LABEL_9:
 
 void __fastcall RemovePlrMissiles(int pnum)
 {
-	int v1; // ebx
-	int v2; // ebp
-	int v3; // ecx
-	int v4; // edi
-	int v5; // esi
-	int v6; // eax
-
-	v1 = 0;
-	v2 = pnum;
-	if ( currlevel && pnum == myplr && (monster[myplr]._mx != 1 || monster[myplr]._my) )
-	{
+	if ( currlevel != 0 && pnum == myplr && (monster[myplr]._mx != 1 || monster[myplr]._my != 0 ) ) {
 		M_StartKill(myplr, myplr);
 		AddDead(monster[myplr]._mx, monster[myplr]._my, monster[myplr].MType->mdeadval, (direction)monster[myplr]._mdir);
-		v3 = monster[myplr]._my + 112 * monster[myplr]._mx;
+		dMonster[monster[myplr]._mx][monster[myplr]._my] = 0;
 		monster[myplr]._mDelFlag = 1;
-		dMonster[0][v3] = 0;
 		DeleteMonsterList();
 	}
-	if ( nummissiles > 0 )
-	{
-		do
-		{
-			v4 = missileactive[v1];
-			v5 = missileactive[v1];
-			v6 = missile[v5]._mitype;
-			if ( v6 == MIS_STONE && missile[v5]._misource == v2 )
-				monster[missile[v5]._miVar2]._mmode = missile[v5]._miVar1;
-			if ( v6 == MIS_MANASHIELD && missile[v5]._misource == v2 )
-			{
-				ClearMissileSpot(v4);
-				DeleteMissile(v4, v1);
-			}
-			if ( missile[v5]._mitype == MIS_ETHEREALIZE && missile[v5]._misource == v2 )
-			{
-				ClearMissileSpot(v4);
-				DeleteMissile(v4, v1);
-			}
-			++v1;
+
+	for ( int mi = 0; mi < nummissiles; mi++ ) {
+		int am = missileactive[mi];
+		if ( missile[am]._mitype == MIS_STONE && missile[am]._misource == pnum ) {
+			monster[missile[am]._miVar2]._mmode = missile[am]._miVar1;
 		}
-		while ( v1 < nummissiles );
+		if ( missile[am]._mitype == MIS_MANASHIELD && missile[am]._misource == pnum ) {
+			ClearMissileSpot(am);
+			DeleteMissile(am, mi);
+		}
+		if ( missile[am]._mitype == MIS_ETHEREALIZE && missile[am]._misource == pnum ) {
+			ClearMissileSpot(am);
+			DeleteMissile(am, mi);
+		}
 	}
 }
 
 void __fastcall InitLevelChange(int pnum)
 {
-	int v1; // esi
-	int v2; // eax
-	bool v3; // zf
-
-	v1 = pnum;
 	RemovePlrMissiles(pnum);
-	if ( v1 == myplr && qtextflag )
-	{
+	if ( pnum == myplr && qtextflag ) {
 		qtextflag = 0;
 		sfx_stop();
 	}
-	RemovePlrFromMap(v1);
-	SetPlayerOld(v1);
-	if ( v1 == myplr )
+
+	RemovePlrFromMap(pnum);
+	SetPlayerOld(pnum);
+	if ( pnum == myplr ) {
 		dPlayer[plr[myplr].WorldX][plr[myplr].WorldY] = myplr + 1;
-	else
-		plr[v1]._pLvlVisited[plr[v1].plrlevel] = 1;
-	ClrPlrPath(v1);
-	v2 = v1;
-	plr[v2].destAction = -1;
-	v3 = v1 == myplr;
-	plr[v2]._pLvlChanging = 1;
-	if ( v3 )
-		plr[v2].pLvlLoad = 10;
+	} else {
+		plr[pnum]._pLvlVisited[plr[pnum].plrlevel] = 1;
+	}
+
+	ClrPlrPath(pnum);
+	plr[pnum].destAction = -1;
+	plr[pnum]._pLvlChanging = 1;
+
+	if ( pnum == myplr ) {
+		plr[pnum].pLvlLoad = 10;
+	}
 }
 // 646D00: using guessed type char qtextflag;
 
