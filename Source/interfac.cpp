@@ -24,12 +24,12 @@ void __cdecl interface_msg_pump()
 {
 	MSG Msg; // [esp+8h] [ebp-1Ch]
 
-	while ( PeekMessageA(&Msg, NULL, 0, 0, PM_REMOVE) )
+	while ( PeekMessage(&Msg, NULL, 0, 0, PM_REMOVE) )
 	{
 		if ( Msg.message != WM_QUIT )
 		{
 			TranslateMessage(&Msg);
-			DispatchMessageA(&Msg);
+			DispatchMessage(&Msg);
 		}
 	}
 }
