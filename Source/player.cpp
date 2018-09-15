@@ -1683,152 +1683,103 @@ void __fastcall RespawnDeadItem(ItemStruct *itm, int x, int y)
 
 void __fastcall StartPlayerKill(int pnum, int earflag)
 {
-	unsigned int v2; // edi
-	unsigned int v3; // esi
-	char v4; // al
-	int v5; // ecx
-	int v6; // ST0C_4
-	bool v7; // zf
-	int *v8; // eax
-	signed int v9; // ecx
-	char *v10; // eax
-	char v11; // al
-	short v12; // cx
-	short v13; // ax
-	int v14; // ecx
-	int v15; // eax
-	signed int v17; // ebx
-	int v18; // eax
-	ItemStruct ear; // [esp+Ch] [ebp-178h]
-	BOOL v20; // [esp+17Ch] [ebp-8h]
-	struct ItemStruct *itm; // [esp+180h] [ebp-4h]
+	struct ItemStruct *pi = (struct ItemStruct *)earflag;
+	ItemStruct ear;
+	int i;
+	PlayerStruct *p = &plr[pnum];
 
-	v2 = pnum;
-	v3 = 21720 * pnum;
-	itm = (struct ItemStruct *)earflag;
-	if ( plr[pnum]._pHitPoints <= 0 && plr[pnum]._pmode == PM_DEATH )
+	if ( plr[pnum]._pHitPoints <= 0 && plr[pnum]._pmode == PM_DEATH ) {
 		return;
-	if ( myplr == pnum )
-		NetSendCmdParam1(1u, CMD_PLRDEAD, earflag);
-	v20 = (unsigned char)gbMaxPlayers > 1u && plr[v3 / 0x54D8].plrlevel == 16;
-	if ( v2 >= 4 )
-		TermMsg("StartPlayerKill: illegal player %d", v2);
-	v4 = plr[v3 / 0x54D8]._pClass;
-	if ( v4 )
-	{
-		if ( v4 == 1 )
-		{
-			v5 = PS_ROGUE71;
-		}
-		else
-		{
-			if ( v4 != 2 )
-				goto LABEL_18;
-			v5 = PS_MAGE71;
-		}
-		PlaySfxLoc(v5, plr[v3 / 0x54D8].WorldX, plr[v3 / 0x54D8].WorldY);
-		goto LABEL_18;
 	}
-	PlaySfxLoc(PS_DEAD, plr[v3 / 0x54D8].WorldX, plr[v3 / 0x54D8].WorldY); /// BUGFIX: should use `PS_WARR71` like other classes
-LABEL_18:
-	if ( plr[v3 / 0x54D8]._pgfxnum )
-	{
-		plr[v3 / 0x54D8]._pgfxnum = 0;
-		plr[v3 / 0x54D8]._pGFXLoad = 0;
-		SetPlrAnims(v2);
+
+	if ( myplr == pnum ) {
+		NetSendCmdParam1(TRUE, CMD_PLRDEAD, earflag);
 	}
-	if ( !(plr[pnum]._pGFXLoad & PFILE_DEATH) ) {
+
+	BOOL diablolevel = gbMaxPlayers > 1 && p->plrlevel == 16;
+
+	if ( (DWORD)pnum >= 4 ) {
+		TermMsg("StartPlayerKill: illegal player %d", pnum);
+	}
+
+	if ( p->_pClass == PC_WARRIOR ) {
+		PlaySfxLoc(PS_DEAD, p->WorldX, p->WorldY); /// BUGFIX: should use `PS_WARR71` like other classes
+	} else if ( p->_pClass == PC_ROGUE ) {
+		PlaySfxLoc(PS_ROGUE71, p->WorldX, p->WorldY);
+	} else if ( p->_pClass == PC_SORCERER ) {
+		PlaySfxLoc(PS_MAGE71, p->WorldX, p->WorldY);
+	}
+
+	if ( p->_pgfxnum ) {
+		p->_pgfxnum = 0;
+		p->_pGFXLoad = 0;
+		SetPlrAnims(pnum);
+	}
+
+	if ( !(p->_pGFXLoad & PFILE_DEATH) ) {
 		LoadPlrGFX(pnum, PFILE_DEATH);
 	}
-	v6 = plr[v3 / 0x54D8]._pDWidth;
-	NewPlrAnim(v2, plr[0]._pDAnim[plr[v3 / 0x54D8]._pdir + v3 / 4], plr[v3 / 0x54D8]._pDFrames, 1, v6);
-	plr[v3 / 0x54D8]._pBlockFlag = 0;
-	plr[v3 / 0x54D8]._pmode = PM_DEATH;
-	plr[v3 / 0x54D8]._pInvincible = 1;
-	SetPlayerHitPoints(v2, 0);
-	v7 = v2 == myplr;
-	plr[v3 / 0x54D8]._pVar8 = 1;
-	if ( !v7 && !itm && !v20 )
-	{
-		v8 = &plr[v3 / 0x54D8].InvBody[0]._itype;
-		v9 = 7;
-		do
-		{
-			*v8 = -1;
-			v8 += 92;
-			--v9;
+	NewPlrAnim(pnum, p->_pDAnim[p->_pdir], p->_pDFrames, 1, p->_pDWidth);
+
+	p->_pBlockFlag = FALSE;
+	p->_pmode = PM_DEATH;
+	p->_pInvincible = TRUE;
+	SetPlayerHitPoints(pnum, 0);
+	p->_pVar8 = 1;
+	if ( pnum != myplr && !pi && !diablolevel ) {
+		for ( i = 0; i < NUM_INVLOC; i++ ) {
+			p->InvBody[i]._itype = ITYPE_NONE;
 		}
-		while ( v9 );
-		CalcPlrInv(v2, 0);
+		CalcPlrInv(pnum, 0);
 	}
-	if ( plr[v3 / 0x54D8].plrlevel == currlevel )
-	{
-		FixPlayerLocation(v2, plr[v3 / 0x54D8]._pdir);
-		RemovePlrFromMap(v2);
-		v10 = &dFlags[plr[v3 / 0x54D8].WorldX][plr[v3 / 0x54D8].WorldY];
-		*v10 |= 4u;
-		SetPlayerOld(v2);
-		if ( v2 == myplr )
-		{
+	if ( p->plrlevel == currlevel ) {
+		FixPlayerLocation(pnum, p->_pdir);
+		RemovePlrFromMap(pnum);
+		dFlags[p->WorldX][p->WorldY] |= 4;
+		SetPlayerOld(pnum);
+		if ( pnum == myplr ) {
 			drawhpflag = 1;
 			deathdelay = 30;
-			if ( pcurs >= CURSOR_FIRSTITEM )
-			{
-				PlrDeadItem(v2, &plr[v3 / 0x54D8].HoldItem, 0, 0);
+			if ( pcurs >= CURSOR_FIRSTITEM ) {
+				PlrDeadItem(pnum, &p->HoldItem, 0, 0);
 				SetCursor(CURSOR_HAND);
 			}
-			if ( !v20 )
-			{
-				DropHalfPlayersGold(v2);
-				if ( itm != (struct ItemStruct *)-1 )
-				{
-					if ( itm )
-					{
+			if ( !diablolevel ) {
+				DropHalfPlayersGold(pnum);
+				if ( pi != (struct ItemStruct *)-1 ) {
+					if ( pi ) {
 						SetPlrHandItem(&ear, IDI_EAR);
-						sprintf(ear._iName, "Ear of %s", plr[v3 / 0x54D8]._pName);
-						v11 = plr[v3 / 0x54D8]._pClass;
-						if ( v11 == 2 )
-						{
+						sprintf(ear._iName, "Ear of %s", p->_pName);
+						if ( p->_pClass == PC_SORCERER ) {
 							ear._iCurs = 19;
-						}
-						else if ( v11 )
-						{
-							if ( v11 == 1 )
-								ear._iCurs = 21;
-						}
-						else
-						{
+						} else if ( p->_pClass == PC_WARRIOR ) {
 							ear._iCurs = 20;
+						} else if ( p->_pClass == PC_ROGUE ) {
+							ear._iCurs = 21;
 						}
-						_LOBYTE(v12) = 0;
-						_HIBYTE(v12) = plr[v3 / 0x54D8]._pName[0];
-						v13 = v12 | plr[v3 / 0x54D8]._pName[1];
-						v14 = plr[v3 / 0x54D8]._pName[3];
-						ear._iCreateInfo = v13;
-						v15 = plr[v3 / 0x54D8]._pName[5] | ((plr[v3 / 0x54D8]._pName[4] | ((v14 | (plr[v3 / 0x54D8]._pName[2] << 8)) << 8)) << 8);
-						ear._ivalue = plr[v3 / 0x54D8]._pLevel;
-						ear._iSeed = v15;
-						if ( FindGetItem(IDI_EAR, *(int *)&ear._iCreateInfo, v15) == -1 )
-							PlrDeadItem(v2, &ear, 0, 0);
-					}
-					else
-					{
-						itm = plr[v3 / 0x54D8].InvBody;
-						v17 = 7;
-						do
-						{
-							v18 = ((_BYTE)--v17 + (unsigned char)plr[v3 / 0x54D8]._pdir) & 7;
-							PlrDeadItem(v2, itm, offset_x[v18], offset_y[v18]);
-							++itm;
+
+						ear._iCreateInfo = p->_pName[0] << 8 | p->_pName[1];
+						ear._iSeed = p->_pName[2] << 24 | p->_pName[3] << 16 | p->_pName[4] << 8 | p->_pName[5];
+						ear._ivalue = p->_pLevel;
+
+						if ( FindGetItem(IDI_EAR, ear._iCreateInfo, ear._iSeed) == -1 ) {
+							PlrDeadItem(pnum, &ear, 0, 0);
 						}
-						while ( v17 );
-						CalcPlrInv(v2, 0);
+					} else {
+						pi = p->InvBody;
+						int v18; // eax
+						for ( i = NUM_INVLOC; i; ) {
+							v18 = (--i + p->_pdir) & 7;
+							PlrDeadItem(pnum, pi, offset_x[v18], offset_y[v18]);
+							++pi;
+						}
+						CalcPlrInv(pnum, 0);
 					}
 				}
 			}
 		}
 	}
-	SetPlayerHitPoints(v2, 0);
+	SetPlayerHitPoints(pnum, 0);
 }
 // 679660: using guessed type char gbMaxPlayers;
 // 69B7C4: using guessed type int deathdelay;
