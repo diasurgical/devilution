@@ -106,14 +106,14 @@ void __cdecl dthread_start()
 		sghWorkToDoEvent = CreateEventA(NULL, TRUE, FALSE, NULL);
 		if ( !sghWorkToDoEvent )
 		{
-			v0 = GetLastErr();
+			v0 = TraceLastError();
 			TermMsg("dthread:1\n%s", v0);
 		}
 		byte_52A508 = 1;
 		sghThread = (HANDLE)_beginthreadex(NULL, 0, dthread_handler, NULL, 0, &glpDThreadId);
 		if ( sghThread == (HANDLE)-1 )
 		{
-			v1 = GetLastErr();
+			v1 = TraceLastError();
 			TermMsg("dthread2:\n%s", v1);
 		}
 	}
@@ -132,7 +132,7 @@ unsigned int __stdcall dthread_handler(void *a1)
 	{
 		if ( !sgpInfoHead && WaitForSingleObject(sghWorkToDoEvent, 0xFFFFFFFF) == -1 )
 		{
-			v1 = GetLastErr();
+			v1 = TraceLastError();
 			TermMsg("dthread4:\n%s", v1);
 		}
 		EnterCriticalSection(&sgMemCrit);
@@ -174,7 +174,7 @@ void __cdecl dthread_cleanup()
 		{
 			if ( WaitForSingleObject(sghThread, 0xFFFFFFFF) == -1 )
 			{
-				v0 = GetLastErr();
+				v0 = TraceLastError();
 				TermMsg("dthread3:\n(%s)", v0);
 			}
 			CloseHandle(sghThread);
