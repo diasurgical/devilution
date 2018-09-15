@@ -28,7 +28,7 @@ void __cdecl CaptureScreen()
 		CloseHandle(hObject);
 
 		if (!success)
-			DeleteFileA(FileName);
+			DeleteFile(FileName);
 
 		Sleep(300);
 		lpDDPalette->SetEntries(0, 0, 256, palette);
@@ -154,7 +154,7 @@ HANDLE __fastcall CaptureFile(char *dst_path)
 	}
 
 	sprintf(dst_path, "screen%02d.PCX", free_num);
-	return CreateFileA(dst_path, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	return CreateFile(dst_path, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 }
 
 void __fastcall RedPalette(PALETTEENTRY *pal)

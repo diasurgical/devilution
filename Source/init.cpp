@@ -83,7 +83,7 @@ void __cdecl init_run_office_from_start_menu()
 		v0 = GetDesktopWindow();
 		if ( !SHGetSpecialFolderLocation(v0, CSIDL_STARTMENU, &ppidl) )
 		{
-			SHGetPathFromIDListA(ppidl, pszPath);
+			SHGetPathFromIDList(ppidl, pszPath);
 			init_run_office(pszPath);
 		}
 	}
@@ -106,7 +106,7 @@ void __fastcall init_run_office(char *dir)
 		strcat(FileName, "*");
 	else
 		strcat(FileName, "\\*");
-	v2 = FindFirstFileA(FileName, &FindFileData);
+	v2 = FindFirstFile(FileName, &FindFileData);
 	if ( v2 != (HANDLE)-1 )
 	{
 		do
@@ -130,10 +130,10 @@ void __fastcall init_run_office(char *dir)
 			else if ( !_strcmpi(FindFileData.cFileName, "Microsoft Office Shortcut Bar.lnk") )
 			{
 				v4 = GetDesktopWindow();
-				ShellExecuteA(v4, "open", FindFileData.cFileName, &empty_string, v1, SW_SHOWNORMAL);
+				ShellExecute(v4, "open", FindFileData.cFileName, &empty_string, v1, SW_SHOWNORMAL);
 			}
 		}
-		while ( FindNextFileA(v2, &FindFileData) );
+		while ( FindNextFile(v2, &FindFileData) );
 		FindClose(v2);
 	}
 }
@@ -147,13 +147,16 @@ void __fastcall init_disable_screensaver(bool disable)
 	HKEY phkResult; // [esp+1Ch] [ebp-8h]
 	bool v6; // [esp+20h] [ebp-4h]
 
+	// BUGFIX: this is probably the worst possible way to do this. Alternatives: ExtEscape() with SETPOWERMANAGEMENT,
+	// SystemParametersInfo() with SPI_SETSCREENSAVEACTIVE/SPI_SETPOWEROFFACTIVE/SPI_SETLOWPOWERACTIVE
+
 	v6 = disable;
-	if ( !RegOpenKeyExA(HKEY_CURRENT_USER, "Control Panel\\Desktop", 0, KEY_READ|KEY_WRITE, &phkResult) )
+	if ( !RegOpenKeyEx(HKEY_CURRENT_USER, "Control Panel\\Desktop", 0, KEY_READ|KEY_WRITE, &phkResult) )
 	{
 		if ( v6 )
 		{
 			cbData = 16;
-			if ( !RegQueryValueExA(phkResult, "ScreenSaveActive", 0, &Type, (LPBYTE)Data, &cbData) )
+			if ( !RegQueryValueEx(phkResult, "ScreenSaveActive", 0, &Type, (LPBYTE)Data, &cbData) )
 				screensaver_enabled_prev = Data[0] != '0';
 			v1 = 0;
 		}
@@ -163,7 +166,7 @@ void __fastcall init_disable_screensaver(bool disable)
 		}
 		Data[1] = 0;
 		Data[0] = (v1 != 0) + '0';
-		RegSetValueExA(phkResult, "ScreenSaveActive", 0, REG_SZ, (const BYTE *)Data, 2u);
+		RegSetValueEx(phkResult, "ScreenSaveActive", 0, REG_SZ, (const BYTE *)Data, 2u);
 		RegCloseKey(phkResult);
 	}
 }
@@ -182,13 +185,13 @@ void __fastcall init_create_window(int nCmdShow)
 	wcex.style = CS_HREDRAW|CS_VREDRAW;
 	wcex.lpfnWndProc = WindowProc;
 	wcex.hInstance = ghInst;
-	wcex.hIcon = LoadIconA(ghInst, MAKEINTRESOURCE(IDI_ICON1));
-	wcex.hCursor = LoadCursorA(0, IDC_ARROW);
+	wcex.hIcon = LoadIcon(ghInst, MAKEINTRESOURCE(IDI_ICON1));
+	wcex.hCursor = LoadCursor(0, IDC_ARROW);
 	wcex.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
 	wcex.lpszMenuName = "DIABLO";
 	wcex.lpszClassName = "DIABLO";
-	wcex.hIconSm = (HICON)LoadImageA(ghInst, MAKEINTRESOURCE(IDI_ICON1), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
-	if ( !RegisterClassExA(&wcex) )
+	wcex.hIconSm = (HICON)LoadImage(ghInst, MAKEINTRESOURCE(IDI_ICON1), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
+	if ( !RegisterClassEx(&wcex) )
 		TermMsg("Unable to register window class");
 	if ( GetSystemMetrics(SM_CXSCREEN) >= 640 )
 		nWidth = GetSystemMetrics(SM_CXSCREEN);
@@ -198,7 +201,7 @@ void __fastcall init_create_window(int nCmdShow)
 		nHeight = GetSystemMetrics(SM_CYSCREEN);
 	else
 		nHeight = 480;
-	hWnd = CreateWindowExA(0, "DIABLO", "DIABLO", WS_POPUP, 0, 0, nWidth, nHeight, NULL, NULL, ghInst, NULL);
+	hWnd = CreateWindowEx(0, "DIABLO", "DIABLO", WS_POPUP, 0, 0, nWidth, nHeight, NULL, NULL, ghInst, NULL);
 	if ( !hWnd )
 		TermMsg("Unable to create main window");
 	ShowWindow(hWnd, SW_SHOWNORMAL); // nCmdShow used only in beta: ShowWindow(hWnd, nCmdShow)
@@ -218,7 +221,7 @@ void __cdecl init_kill_mom_parent()
 	v0 = init_find_mom_parent();
 	if ( v0 )
 	{
-		PostMessageA(v0, WM_CLOSE, 0, 0);
+		PostMessage(v0, WM_CLOSE, 0, 0);
 		killed_mom_parent = 1;
 	}
 }
@@ -235,7 +238,7 @@ HWND __cdecl init_find_mom_parent()
 		v1 = i;
 		if ( !i )
 			break;
-		GetClassNameA(i, ClassName, 255);
+		GetClassName(i, ClassName, 255);
 		if ( !_strcmpi(ClassName, "MOM Parent") )
 			break;
 	}
@@ -300,12 +303,12 @@ void *__fastcall init_test_access(char *mpq_path, char *mpq_name, char *reg_loc,
 
 	mpq_namea = mpq_name;
 	v5 = mpq_path;
-	if ( !GetCurrentDirectoryA(0x104u, Buffer) )
+	if ( !GetCurrentDirectory(0x104u, Buffer) )
 		TermMsg("Can't get program path");
 	init_strip_trailing_slash(Buffer);
 	if ( !SFileSetBasePath(Buffer) )
 		TermMsg("SFileSetBasePath");
-	if ( !GetModuleFileNameA(ghInst, Filename, 0x104u) )
+	if ( !GetModuleFileName(ghInst, Filename, 0x104u) )
 		TermMsg("Can't get program name");
 	v7 = strrchr(Filename, '\\');
 	if ( v7 )
@@ -378,7 +381,7 @@ int __fastcall init_read_test_file(char *mpq_path, char *mpq_name, int flags, vo
 
 	v4 = mpq_name;
 	mpq_patha = mpq_path;
-	v5 = GetLogicalDriveStringsA(0x104u, Buffer);
+	v5 = GetLogicalDriveStrings(0x104u, Buffer);
 	if ( !v5 || v5 > 0x104 )
 		return 0;
 	while ( *v4 == '\\' )
@@ -390,7 +393,7 @@ int __fastcall init_read_test_file(char *mpq_path, char *mpq_name, int flags, vo
 	{
 		v8 = v7;
 		v7 += strlen(v7) + 1;
-		if ( GetDriveTypeA(v8) == DRIVE_CDROM )
+		if ( GetDriveType(v8) == DRIVE_CDROM )
 		{
 			strcpy(mpq_patha, v8);
 			strcat(mpq_patha, v4);
@@ -412,16 +415,16 @@ void __cdecl init_get_file_info()
 	DWORD dwHandle; // [esp+Ch] [ebp-8h]
 	VS_FIXEDFILEINFO *lpBuffer; // [esp+10h] [ebp-4h]
 
-	if ( GetModuleFileNameA(ghInst, diablo_exe_path, 0x104u) )
+	if ( GetModuleFileName(ghInst, diablo_exe_path, 0x104u) )
 	{
-		v0 = GetFileVersionInfoSizeA(diablo_exe_path, &dwHandle);
+		v0 = GetFileVersionInfoSize(diablo_exe_path, &dwHandle);
 		v1 = v0;
 		if ( v0 )
 		{
 			v2 = DiabloAllocPtr(v0);
-			if ( GetFileVersionInfoA(diablo_exe_path, 0, v1, v2) )
+			if ( GetFileVersionInfo(diablo_exe_path, 0, v1, v2) )
 			{
-				if ( VerQueryValueA(v2, "\\", (LPVOID *)&lpBuffer, &uBytes) )
+				if ( VerQueryValue(v2, "\\", (LPVOID *)&lpBuffer, &uBytes) )
 					sprintf(
 						gszVersionNumber,
 						"version %d.%d.%d.%d",
@@ -475,7 +478,7 @@ LRESULT __stdcall MainWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 				return 0;
 		}
 	}
-	return DefWindowProcA(hWnd, Msg, wParam, lParam);
+	return DefWindowProc(hWnd, Msg, wParam, lParam);
 }
 // 52571C: using guessed type int drawpanflag;
 
@@ -485,14 +488,14 @@ void __fastcall init_activate_window(HWND hWnd, bool bActive)
 
 	gbActive = bActive;
 	UiAppActivate(bActive);
-	dwNewLong = GetWindowLongA(hWnd, GWL_STYLE);
+	dwNewLong = GetWindowLong(hWnd, GWL_STYLE);
 
 	if ( gbActive && fullscreen )
 		dwNewLong &= ~WS_SYSMENU;
 	else
 		dwNewLong |= WS_SYSMENU;
 
-	SetWindowLongA(hWnd, GWL_STYLE, dwNewLong);
+	SetWindowLong(hWnd, GWL_STYLE, dwNewLong);
 
 	if ( gbActive )
 	{

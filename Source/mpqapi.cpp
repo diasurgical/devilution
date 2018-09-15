@@ -38,14 +38,14 @@ bool __fastcall mpqapi_set_hidden(char *pszArchive, bool hidden)
 
 	v2 = pszArchive;
 	v3 = hidden;
-	v4 = GetFileAttributesA(pszArchive);
+	v4 = GetFileAttributes(pszArchive);
 	if ( v4 == -1 )
 		return GetLastError() == ERROR_FILE_NOT_FOUND;
 	v6 = v3 != 0 ? FILE_ATTRIBUTE_SYSTEM|FILE_ATTRIBUTE_HIDDEN : 0;
 	if ( v4 == v6 )
 		result = 1;
 	else
-		result = SetFileAttributesA(v2, v6);
+		result = SetFileAttributes(v2, v6);
 	return result;
 }
 
@@ -63,7 +63,7 @@ void __fastcall mpqapi_store_creation_time(char *pszArchive, int dwChar)
 	if ( gbMaxPlayers != 1 )
 	{
 		mpqapi_reg_load_modification_time(dst, 160);
-		v4 = FindFirstFileA(v3, &FindFileData);
+		v4 = FindFirstFile(v3, &FindFileData);
 		if ( v4 != (HANDLE)-1 )
 		{
 			FindClose(v4);
@@ -561,10 +561,10 @@ bool __fastcall mpqapi_open_archive(char *pszArchive, bool hidden, int dwChar) /
 		return 0;
 	v6 = (unsigned char)gbMaxPlayers > 1u ? FILE_FLAG_WRITE_THROUGH : 0;
 	save_archive_open = 0;
-	sghArchive = CreateFileA(v3, GENERIC_READ|GENERIC_WRITE, 0, NULL, OPEN_EXISTING, v6, NULL);
+	sghArchive = CreateFile(v3, GENERIC_READ|GENERIC_WRITE, 0, NULL, OPEN_EXISTING, v6, NULL);
 	if ( sghArchive == (HANDLE)-1 )
 	{
-		sghArchive = CreateFileA(lpFileName, GENERIC_READ|GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, v6 | (v4 != 0 ? FILE_ATTRIBUTE_SYSTEM|FILE_ATTRIBUTE_HIDDEN : 0), NULL);
+		sghArchive = CreateFile(lpFileName, GENERIC_READ|GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, v6 | (v4 != 0 ? FILE_ATTRIBUTE_SYSTEM|FILE_ATTRIBUTE_HIDDEN : 0), NULL);
 		if ( sghArchive == (HANDLE)-1 )
 			return 0;
 		save_archive_open = 1;
@@ -702,7 +702,7 @@ void __fastcall mpqapi_store_modified_time(char *pszArchive, int dwChar)
 	if ( gbMaxPlayers != 1 )
 	{
 		mpqapi_reg_load_modification_time(dst, 160);
-		v4 = FindFirstFileA(v3, &FindFileData);
+		v4 = FindFirstFile(v3, &FindFileData);
 		if ( v4 != (HANDLE)-1 )
 		{
 			FindClose(v4);

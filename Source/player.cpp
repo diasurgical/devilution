@@ -2237,7 +2237,7 @@ void __fastcall StartNewLvl(int pnum, int fom, int lvl)
 	if ( pnum == myplr ) {
 		plr[pnum]._pmode = PM_NEWLVL;
 		plr[pnum]._pInvincible = TRUE;
-		PostMessageA(ghMainWnd, fom, 0, 0);
+		PostMessage(ghMainWnd, fom, 0, 0);
 		if ( gbMaxPlayers > 1 ) {
 			NetSendCmdParam2(TRUE, CMD_NEWLVL, fom, lvl);
 		}
@@ -2271,7 +2271,7 @@ void __fastcall RestartTownLvl(int pnum)
 		plr[v2]._pmode = PM_NEWLVL;
 		v4 = ghMainWnd;
 		plr[v2]._pInvincible = 1;
-		PostMessageA(v4, WM_DIABRETOWN, 0, 0);
+		PostMessage(v4, WM_DIABRETOWN, 0, 0);
 	}
 }
 
@@ -2301,7 +2301,7 @@ void __fastcall StartWarpLvl(int pnum, int pidx)
 		plr[v5]._pmode = PM_NEWLVL;
 		v6 = ghMainWnd;
 		plr[v5]._pInvincible = 1;
-		PostMessageA(v6, WM_DIABWARPLVL, 0, 0);
+		PostMessage(v6, WM_DIABWARPLVL, 0, 0);
 	}
 }
 // 679660: using guessed type char gbMaxPlayers;

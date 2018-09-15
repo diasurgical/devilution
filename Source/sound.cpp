@@ -392,7 +392,7 @@ int __fastcall sound_DirectSoundCreate(GUID *guid, IDirectSound **DS, int always
 	v8 = guid;
 	if ( !hDsound_dll )
 	{
-		hDsound_dll = LoadLibraryA("dsound.dll");
+		hDsound_dll = LoadLibrary("dsound.dll");
 		if ( !hDsound_dll )
 		{
 			v4 = GetLastError();
