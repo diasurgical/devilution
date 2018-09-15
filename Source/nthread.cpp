@@ -75,7 +75,7 @@ void __fastcall nthread_terminate_game(char *pszFcn)
 		}
 		else
 		{
-			v3 = GetLastErr();
+			v3 = TraceLastError();
 			TermMsg("%s:\n%s", v1, v3);
 		}
 	}
@@ -193,7 +193,7 @@ void __fastcall nthread_start(bool set_turn_upper_bit)
 	caps.size = 36;
 	if ( !SNetGetProviderCaps(&caps) )
 	{
-		v3 = GetLastErr();
+		v3 = TraceLastError();
 		TermMsg("SNetGetProviderCaps:\n%s", v3);
 	}
 	gdwTurnsInTransit = caps.defaultturnsintransit;
@@ -232,7 +232,7 @@ void __fastcall nthread_start(bool set_turn_upper_bit)
 		sghThread = (HANDLE)_beginthreadex(NULL, 0, nthread_handler, NULL, 0, &glpNThreadId);
 		if ( sghThread == (HANDLE)-1 )
 		{
-			v6 = GetLastErr();
+			v6 = TraceLastError();
 			TermMsg("nthread2:\n%s", v6);
 		}
 		SetThreadPriority(sghThread, THREAD_PRIORITY_HIGHEST);
@@ -296,7 +296,7 @@ void __cdecl nthread_cleanup()
 			LeaveCriticalSection(&sgMemCrit);
 		if ( WaitForSingleObject(sghThread, 0xFFFFFFFF) == -1 )
 		{
-			v0 = GetLastErr();
+			v0 = TraceLastError();
 			TermMsg("nthread3:\n(%s)", v0);
 		}
 		CloseHandle(sghThread);
