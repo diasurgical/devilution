@@ -1530,18 +1530,18 @@ struct TMsg
 // mpqapi
 //////////////////////////////////////////////////
 
-struct TMPQHeader // _FILEHEADER
+struct _FILEHEADER
 {
-	int dwID;
-	int dwHeaderSize;
-	int dwArchiveSize;
-	short wFormatVersion;
-	short wSectorSize;
-	int dwHashTablePos;
-	int dwBlockTablePos;
-	int dwHashTableSize;
-	int dwBlockTableSize;
-	char field_20[72];
+	int signature;
+	int headersize;
+	int filesize;
+	short version;
+	short sectorsizeid;
+	int hashoffset;
+	int blockoffset;
+	int hashcount;
+	int blockcount;
+	char pad[72];
 };
 
 struct _HASHENTRY
