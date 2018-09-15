@@ -3,8 +3,8 @@
 #include "../types.h"
 
 short automaptype[512];
-int AMdword_4B7E40; // weak
-int AMdword_4B7E44; // weak
+static int MapX;
+static int MapY;
 bool automapflag; // idb
 char AMbyte_4B7E4C[32];
 char automapview[DMAXX][DMAXY];
@@ -201,181 +201,89 @@ void __cdecl AutomapZoomOut()
 
 void __cdecl DrawAutomap()
 {
-	int v0; // eax
-	int v1; // ecx
-	int v2; // edx
-	int v3; // edx
-	int v4; // ecx
-	int v5; // eax
-	int v6; // esi
-	int v7; // edx
-	int v8; // edx
-	int v9; // esi
-	int v10; // ebx
-	int v11; // edi
-	int v12; // esi
-	int v13; // edi
-	int v14; // esi
-	int v15; // ebp
-	short v16; // ax
-	int v17; // ebp
-	short v18; // ax
-	int v19; // [esp+0h] [ebp-18h]
-	int screen_x; // [esp+4h] [ebp-14h]
-	int screen_xa; // [esp+4h] [ebp-14h]
-	int v22; // [esp+8h] [ebp-10h]
-	int ty; // [esp+Ch] [ebp-Ch]
-	int tya; // [esp+Ch] [ebp-Ch]
-	int v25; // [esp+10h] [ebp-8h]
-	int screen_y; // [esp+14h] [ebp-4h]
+	int cells;
+	int screen_x;
+	int screen_y;
+	int i, j;
+	int mapx, mapy;
 
-	if ( leveltype != DTYPE_TOWN )
-	{
-		gpBufEnd = (unsigned char *)&gpBuffer->row[352];
-		v0 = AutoMapXOfs;
-		v1 = (ViewX - 16) >> 1;
-		v2 = AutoMapXOfs + v1;
-		if ( AutoMapXOfs + v1 < 0 )
-		{
-			do
-			{
-				++v0;
-				++v2;
-			}
-			while ( v2 < 0 );
-			AutoMapXOfs = v0;
-		}
-		v3 = v0 + v1;
-		if ( v0 + v1 >= 40 )
-		{
-			do
-			{
-				--v0;
-				--v3;
-			}
-			while ( v3 >= 40 );
-			AutoMapXOfs = v0;
-		}
-		v4 = v0 + v1;
-		AMdword_4B7E40 = v4;
-		v5 = AutoMapYOfs;
-		v6 = (ViewY - 16) >> 1;
-		v7 = AutoMapYOfs + v6;
-		if ( AutoMapYOfs + v6 < 0 )
-		{
-			do
-			{
-				++v5;
-				++v7;
-			}
-			while ( v7 < 0 );
-			AutoMapYOfs = v5;
-		}
-		v8 = v5 + v6;
-		if ( v5 + v6 >= 40 )
-		{
-			do
-			{
-				--v5;
-				--v8;
-			}
-			while ( v8 >= 40 );
-			AutoMapYOfs = v5;
-		}
-		v9 = v5 + v6;
-		AMdword_4B7E44 = v9;
-		v10 = AMbyte_4B7E4C[(AutoMapScale - 50) / 5];
-		if ( ScrollInfo._sxoff + ScrollInfo._syoff )
-			++v10;
-		v22 = v4 - v10;
-		v19 = v9 - 1;
-		if ( v10 & 1 )
-		{
-			v11 = 384 - AutoMapPosBits * ((v10 - 1) >> 1);
-			v12 = 336 - AutoMapXPos * ((v10 + 1) >> 1);
-		}
-		else
-		{
-			v11 = AutoMapXPos - AutoMapPosBits * (v10 >> 1) + 384;
-			v12 = 336 - AutoMapXPos * (v10 >> 1) - AutoMapYPos;
-		}
-		if ( ViewX & 1 )
-		{
-			v11 -= AutoMapYPos;
-			v12 -= AMPlayerX;
-		}
-		if ( ViewY & 1 )
-		{
-			v11 += AutoMapYPos;
-			v12 -= AMPlayerX;
-		}
-		v13 = (AutoMapScale * ScrollInfo._sxoff / 100 >> 1) + v11;
-		v14 = (AutoMapScale * ScrollInfo._syoff / 100 >> 1) + v12;
-		if ( invflag || sbookflag )
-			v13 -= 160;
-		if ( chrflag || questlog )
-			v13 += 160;
-		if ( v10 + 1 >= 0 )
-		{
-			v25 = v10 + 2;
-			do
-			{
-				v15 = 0;
-				screen_x = v13;
-				if ( v10 > 0 )
-				{
-					ty = v19;
-					do
-					{
-						v16 = GetAutomapType(v22 + v15, ty, 1);
-						if ( v16 )
-							DrawAutomapType(screen_x, v14, v16);
-						screen_x += AutoMapPosBits;
-						++v15;
-						--ty;
-					}
-					while ( v15 < v10 );
-				}
-				++v19;
-				screen_xa = 0;
-				v17 = v13 - AutoMapXPos;
-				screen_y = v14 + AutoMapYPos;
-				if ( v10 >= 0 )
-				{
-					tya = v19;
-					do
-					{
-						v18 = GetAutomapType(v22 + screen_xa, tya, 1);
-						if ( v18 )
-							DrawAutomapType(v17, screen_y, v18);
-						v17 += AutoMapPosBits;
-						++screen_xa;
-						--tya;
-					}
-					while ( screen_xa <= v10 );
-				}
-				++v22;
-				v14 += AutoMapXPos;
-				--v25;
-			}
-			while ( v25 );
-		}
-		DrawAutomapPlr();
+	if ( leveltype == DTYPE_TOWN ) {
 		DrawAutomapGame();
+		return;
 	}
-	else
-	{
-		DrawAutomapGame();
+
+	gpBufEnd = (unsigned char *)&gpBuffer->row[352];
+
+	MapX = (ViewX - 16) >> 1;
+	while ( MapX + AutoMapXOfs < 0 )
+		AutoMapXOfs++;
+	while ( MapX + AutoMapXOfs >= DMAXX )
+		AutoMapXOfs--;
+	MapX += AutoMapXOfs;
+
+	MapY = (ViewY - 16) >> 1;
+	while ( MapY + AutoMapYOfs < 0 )
+		AutoMapYOfs++;
+	while ( MapY + AutoMapYOfs >= DMAXY )
+		AutoMapYOfs--;
+	MapY += AutoMapYOfs;
+
+	cells = AMbyte_4B7E4C[(AutoMapScale - 50) / 5];
+	if ( ScrollInfo._sxoff + ScrollInfo._syoff )
+		++cells;
+	mapx = MapX - cells;
+	mapy = MapY - 1;
+
+	if ( cells & 1 ) {
+		screen_x = 384 - AutoMapPosBits * ((cells - 1) >> 1);
+		screen_y = 336 - AutoMapXPos * ((cells + 1) >> 1);
+	} else {
+		screen_x = 384 - AutoMapPosBits * (cells >> 1) + AutoMapXPos;
+		screen_y = 336 - AutoMapXPos * (cells >> 1) - AutoMapYPos;
 	}
+	if ( ViewX & 1 ) {
+		screen_x -= AutoMapYPos;
+		screen_y -= AMPlayerX;
+	}
+	if ( ViewY & 1 ) {
+		screen_x += AutoMapYPos;
+		screen_y -= AMPlayerX;
+	}
+
+	screen_x += AutoMapScale * ScrollInfo._sxoff / 100 >> 1;
+	screen_y += AutoMapScale * ScrollInfo._syoff / 100 >> 1;
+	if ( invflag || sbookflag ) {
+		screen_x -= 160;
+	}
+	if ( chrflag || questlog ) {
+		screen_x += 160;
+	}
+
+	for ( i = 0; i <= cells + 1; ++i ) {
+		int x = screen_x;
+		int y;
+
+		for ( j = 0; j < cells; ++j ) {
+			short maptype = GetAutomapType(mapx+j, mapy-j, TRUE);
+			if ( maptype )
+				DrawAutomapType(x, screen_y, maptype);
+			x += AutoMapPosBits;
+		}
+		++mapy;
+		x = screen_x - AutoMapXPos;
+		y = screen_y + AutoMapYPos;
+		for ( j = 0; j <= cells; ++j ) {
+			short maptype = GetAutomapType(mapx+j, mapy-j, TRUE);
+			if ( maptype )
+				DrawAutomapType(x, y, maptype);
+			x += AutoMapPosBits;
+		}
+		++mapx;
+		screen_y += AutoMapXPos;
+	}
+	DrawAutomapPlr();
+	DrawAutomapGame();
 }
-// 4B7E40: using guessed type int AMdword_4B7E40;
-// 4B7E44: using guessed type int AMdword_4B7E44;
-// 4B84B0: using guessed type int AutoMapXOfs;
-// 4B84B4: using guessed type int AutoMapYOfs;
-// 4B84B8: using guessed type int AutoMapPosBits;
-// 4B84BC: using guessed type int AutoMapXPos;
-// 4B84C0: using guessed type int AutoMapYPos;
-// 4B84C4: using guessed type int AMPlayerX;
 // 4B8968: using guessed type int sbookflag;
 // 5BB1ED: using guessed type char leveltype;
 // 69BD04: using guessed type int questlog;

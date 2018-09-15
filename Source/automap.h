@@ -3,8 +3,6 @@
 #define __AUTOMAP_H__
 
 extern short automaptype[512];
-extern int AMdword_4B7E40; // weak
-extern int AMdword_4B7E44; // weak
 extern bool automapflag; // idb
 extern char AMbyte_4B7E4C[32];
 extern char automapview[DMAXX][DMAXY];
