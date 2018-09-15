@@ -30,7 +30,7 @@ int __fastcall mpqapi_find_free_block(int size, int *block_size);
 void __fastcall mpqapi_rename(char *pszOld, char *pszNew);
 bool __fastcall mpqapi_has_file(char *pszName);
 bool __fastcall mpqapi_open_archive(char *pszArchive, bool hidden, int dwChar);
-bool __fastcall mpqapi_parse_archive_header(TMPQHeader *pHdr, int *pdwNextFileStart);
+bool __fastcall mpqapi_parse_archive_header(_FILEHEADER *pHdr, int *pdwNextFileStart);
 void __fastcall mpqapi_close_archive(char *pszArchive, bool bFree, int dwChar);
 void __fastcall mpqapi_store_modified_time(char *pszArchive, int dwChar);
 void __fastcall mpqapi_flush_and_close(char *pszArchive, bool bFree, int dwChar);
