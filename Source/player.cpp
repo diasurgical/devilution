@@ -2472,81 +2472,73 @@ BOOL __fastcall PM_DoWalk3(int pnum)
 
 BOOL __fastcall WeaponDur(int pnum, int durrnd)
 {
-	unsigned int v2; // edi
-	unsigned int v3; // esi
-	int v4; // ebp
-	int v5; // ecx
-	int v6; // ecx
-	int v7; // ecx
-	int v8; // ecx
-	int v9; // ecx
-	int v10; // ecx
-	int v11; // ecx
-	int v12; // ecx
+	if ( pnum != myplr ) {
+		return FALSE;
+	}
 
-	v2 = pnum;
-	if ( pnum != myplr )
-		return 0;
-	if ( random(3, durrnd) )
-		return 0;
-	if ( v2 >= 4 )
-		TermMsg("WeaponDur: illegal player %d", v2);
-	v3 = v2;
-	v4 = plr[v2].InvBody[4]._itype;
-	if ( v4 != ITYPE_NONE && plr[v3].InvBody[4]._iClass == 1 )
-	{
-		v5 = plr[v3].InvBody[4]._iDurability;
-		if ( v5 == 255 )
-			return 0;
-		v6 = v5 - 1;
-		plr[v3].InvBody[4]._iDurability = v6;
-		if ( !v6 )
-		{
-LABEL_22:
-			NetSendCmdDelItem(1u, 4u);
-			plr[v3].InvBody[4]._itype = -1;
-			goto LABEL_23;
+	if ( random(3, durrnd) != 0 ) {
+		return FALSE;
+	}
+
+	if ( (DWORD)pnum >= MAX_PLRS ) {
+		TermMsg("WeaponDur: illegal player %d", pnum);
+	}
+
+	if ( plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iClass == ICLASS_WEAPON ) {
+		if ( plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDurability == 255 ) {
+			return FALSE;
+		}
+
+		plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDurability--;
+		if ( plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDurability != 0) {
+			NetSendCmdDelItem(TRUE, INVLOC_HAND_LEFT);
+			plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype = ITYPE_NONE;
+			CalcPlrInv(pnum, TRUE);
+			return TRUE;
 		}
 	}
-	if ( plr[v3].InvBody[5]._itype != -1 && plr[v3].InvBody[5]._iClass == 1 )
-	{
-		v7 = plr[v3].InvBody[5]._iDurability;
-		if ( v7 == 255 )
-			return 0;
-		v8 = v7 - 1;
-		plr[v3].InvBody[5]._iDurability = v8;
-		if ( !v8 )
-		{
-LABEL_13:
-			NetSendCmdDelItem(1u, 5u);
-			plr[v3].InvBody[5]._itype = -1;
-LABEL_23:
-			CalcPlrInv(v2, 1u);
-			return 1;
+
+	if ( plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype != ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iClass == ICLASS_WEAPON ) {
+		if ( plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iDurability == 255 ) {
+			return FALSE;
+		}
+
+		plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iDurability--;
+		if ( plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iDurability != 0 ) {
+			NetSendCmdDelItem(TRUE, INVLOC_HAND_RIGHT);
+			plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype = ITYPE_NONE;
+			CalcPlrInv(pnum, TRUE);
+			return TRUE;
 		}
 	}
-	if ( v4 == -1 && plr[v3].InvBody[5]._itype == ITYPE_SHIELD )
-	{
-		v9 = plr[v3].InvBody[5]._iDurability;
-		if ( v9 == 255 )
-			return 0;
-		v10 = v9 - 1;
-		plr[v3].InvBody[5]._iDurability = v10;
-		if ( !v10 )
-			goto LABEL_13;
-	}
-	if ( plr[v3].InvBody[5]._itype == -1 && v4 == 5 )
-	{
-		v11 = plr[v3].InvBody[4]._iDurability;
-		if ( v11 != 255 )
-		{
-			v12 = v11 - 1;
-			plr[v3].InvBody[4]._iDurability = v12;
-			if ( !v12 )
-				goto LABEL_22;
+
+	if ( plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_SHIELD ) {
+		if ( plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iDurability == 255 ) {
+			return FALSE;
+		}
+
+		plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iDurability--;
+		if ( plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iDurability != 0 ) {
+			NetSendCmdDelItem(TRUE, INVLOC_HAND_RIGHT);
+			plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype = ITYPE_NONE;
+			CalcPlrInv(pnum, TRUE);
+			return TRUE;
 		}
 	}
-	return 0;
+
+	if ( plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_SHIELD ) {
+		if ( plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDurability != 255 ) {
+			plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDurability--;
+			if ( plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDurability != 0 ) {
+				NetSendCmdDelItem(TRUE, INVLOC_HAND_LEFT);
+				plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype = ITYPE_NONE;
+				CalcPlrInv(pnum, TRUE);
+				return TRUE;
+			}
+		}
+	}
+
+	return FALSE;
 }
 
 bool __fastcall PlrHitMonst(int pnum, int m)
