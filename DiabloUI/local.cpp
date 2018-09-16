@@ -354,7 +354,7 @@ LABEL_26:
 	SetFocus(v6);
 LABEL_21:
 	if ( v4 )
-		return CallWindowProcA((int (__stdcall *)(void))v4, hWnd, uMsg, wParam, lParam);
+		return CallWindowProcA(v4, hWnd, uMsg, wParam, lParam);
 	return DefWindowProcA(hWnd, uMsg, wParam, lParam);
 }
 
@@ -415,7 +415,7 @@ LRESULT __stdcall local_PostUiWndProc2(HWND hWnd, UINT uMsg, WPARAM wParam, LPAR
 			return 0;
 	}
 	if ( v4 )
-		return CallWindowProcA((int (__stdcall *)(void))v4, hWnd, uMsg, wParam, lParam);
+		return CallWindowProcA(v4, hWnd, uMsg, wParam, lParam);
 	return DefWindowProcA(hWnd, uMsg, wParam, lParam);
 }
 
