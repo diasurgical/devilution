@@ -169,8 +169,8 @@ docker run --rm -v $(pwd):/root/devilution --entrypoint "/usr/bin/wine" diasurgi
 
 ## Using devilution-comparer with Wine
 
-Install dependencies:
-1. `sudo pacman -S wine`
+Install dependencies if on Linux:
+1. Install Wine (e.g. `sudo pacman -S wine`)
 
 Install `devililution-comparer` from release (or from source below):
 1. Download and extract the latest release from https://github.com/diasurgical/devilution-comparer/releases
