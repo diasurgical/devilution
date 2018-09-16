@@ -112,21 +112,21 @@ unsigned char L5ConvTbl[16] = { 22u, 13u, 1u, 13u, 2u, 13u, 13u, 13u, 4u, 13u, 1
 
 void __cdecl DRLG_Init_Globals()
 {
-	char v0; // al
+	char c;
 
-	memset(dFlags, 0, 0x3100u);
-	memset(dPlayer, 0, 0x3100u);
-	memset(dMonster, 0, 0xC400u);
-	memset(dDead, 0, 0x3100u);
-	memset(dObject, 0, 0x3100u);
-	memset(dItem, 0, 0x3100u);
-	memset(dMissile, 0, 0x3100u);
-	memset(dArch, 0, 0x3100u);
-	if ( lightflag )
-		v0 = 0;
+	memset(dFlags, 0, sizeof(dFlags));
+	memset(dPlayer, 0, sizeof(dPlayer));
+	memset(dMonster, 0, sizeof(dMonster));
+	memset(dDead, 0, sizeof(dDead));
+	memset(dObject, 0, sizeof(dObject));
+	memset(dItem, 0, sizeof(dItem));
+	memset(dMissile, 0, sizeof(dMissile));
+	memset(dArch, 0, sizeof(dArch));
+	if ( lightflag == 0 )
+		c = light4flag != 0 ? 3 : 15;
 	else
-		v0 = light4flag == 0 ? 15 : 3;
-	memset(dTransVal, v0, 0x3100u);
+		c = 0;
+	memset(dTransVal, c, sizeof(dTransVal));
 }
 // 525728: using guessed type int light4flag;
 // 646A28: using guessed type int lightflag;
