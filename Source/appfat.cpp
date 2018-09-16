@@ -24,7 +24,7 @@ void operator delete(void *ptr) {
 	}
 }
 
-char *__fastcall GetErr(int error_code)
+char *__fastcall GetErrorStr(int error_code)
 {
 	int v1; // edi
 	unsigned int v2; // eax
@@ -35,11 +35,11 @@ char *__fastcall GetErr(int error_code)
 	v2 = ((unsigned int)error_code >> 16) & 0x1FFF;
 	if ( v2 == 0x0878 )
 	{
-		GetDSErr(error_code, sz_error_buf, 256);
+		TraceErrorDS(error_code, sz_error_buf, 256);
 	}
 	else if ( v2 == 0x0876 )
 	{
-		GetDDErr(error_code, sz_error_buf, 256);
+		TraceErrorDD(error_code, sz_error_buf, 256);
 	}
 	else
 	{
@@ -59,7 +59,7 @@ char *__fastcall GetErr(int error_code)
 
 #define CASE_ERROR(v, errName) case errName: v = #errName; break;
 
-void __fastcall GetDDErr(int error_code, char *error_buf, int error_buf_len)
+void __fastcall TraceErrorDD(int error_code, char *error_buf, int error_buf_len)
 {
 	const char *v3; // eax
 	char v4[20]; // [esp+0h] [ebp-14h]
@@ -171,7 +171,7 @@ void __fastcall GetDDErr(int error_code, char *error_buf, int error_buf_len)
 	strncpy(error_buf, v3, error_buf_len);
 }
 
-void __fastcall GetDSErr(int error_code, char *error_buf, int error_buf_len)
+void __fastcall TraceErrorDS(int error_code, char *error_buf, int error_buf_len)
 {
 	const char *v3; // eax
 	char v4[20]; // [esp+0h] [ebp-14h]
@@ -198,12 +198,12 @@ void __fastcall GetDSErr(int error_code, char *error_buf, int error_buf_len)
 	strncpy(error_buf, v3, error_buf_len);
 }
 
-char *__cdecl GetLastErr()
+char *__cdecl TraceLastError()
 {
 	int v0; // eax
 
 	v0 = GetLastError();
-	return GetErr(v0);
+	return GetErrorStr(v0);
 }
 
 void TermMsg(char *pszFmt, ...)
@@ -265,7 +265,7 @@ void __fastcall DDErrMsg(int error_code, int log_line_nr, char *log_file_path)
 	v3 = log_line_nr;
 	if ( error_code )
 	{
-		v4 = GetErr(error_code);
+		v4 = GetErrorStr(error_code);
 		TermMsg("Direct draw error (%s:%d)\n%s", log_file_path, v3, v4);
 	}
 }
@@ -278,7 +278,7 @@ void __fastcall DSErrMsg(int error_code, int log_line_nr, char *log_file_path)
 	v3 = log_line_nr;
 	if ( error_code )
 	{
-		v4 = GetErr(error_code);
+		v4 = GetErrorStr(error_code);
 		TermMsg("Direct sound error (%s:%d)\n%s", log_file_path, v3, v4);
 	}
 }
@@ -304,7 +304,7 @@ void __fastcall center_window(HWND hDlg)
 	ReleaseDC(hWnd, hdc);
 	if ( !SetWindowPos(hWnd, HWND_TOP, (v6 - v1) / 2, (v3 - v2) / 2, 0, 0, SWP_NOZORDER|SWP_NOSIZE) )
 	{
-		v4 = GetLastErr();
+		v4 = TraceLastError();
 		TermMsg("center_window: %s", v4);
 	}
 }
@@ -325,7 +325,7 @@ void __fastcall ErrDlg(int template_id, int error_code, char *log_file_path, int
 	v7 = strrchr(log_file_path, '\\');
 	if ( v7 )
 		v6 = v7 + 1;
-	v8 = GetErr(v4);
+	v8 = GetErrorStr(v4);
 	wsprintfA((LPSTR)dwInitParam, "%s\nat: %s line %d", v8, v6, log_line_nr);
 	if ( DialogBoxParamA(ghInst, MAKEINTRESOURCE(v5), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)dwInitParam) == -1 )
 		TermMsg("ErrDlg: %d", v5);
@@ -381,7 +381,7 @@ void __fastcall ErrOkDlg(int template_id, int error_code, char *log_file_path, i
 	v7 = strrchr(log_file_path, '\\');
 	if ( v7 )
 		v4 = v7 + 1;
-	v8 = GetErr(v5);
+	v8 = GetErrorStr(v5);
 	wsprintfA((LPSTR)dwInitParam, "%s\nat: %s line %d", v8, v4, log_line_nr);
 	DialogBoxParamA(ghInst, MAKEINTRESOURCE(v6), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)dwInitParam);
 }
