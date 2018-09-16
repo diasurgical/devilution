@@ -141,6 +141,8 @@ release.
 
 ## Comparing a function with the original exe
 
+### Using Riivaaja
+
 * Step 1:
 https://docs.docker.com/install/
 * Step 2:
@@ -151,10 +153,10 @@ Get the Diablo 1.09 exe
 If not on Windows Devilution-comparer requires Wine, either install Wine or use Riivaaja as a proxy (more on this later if you would like to go this route).
 * Step 5:
 
-### To get a function for comparison
+#### To get a function for comparison
 
 Build:
-`docker run --rm -ti -v $(pwd):/root/devilution -e MAKE_BUILD=pdb diasurgical/riivaaja`
+`docker run --rm -v $(pwd):/root/devilution -e MAKE_BUILD=pdb diasurgical/riivaaja`
 Generate diff:
 `devilution-comparer Diablo_original.exe Diablo.exe <function_name>`
 You can add `--no-mem-disp` if you want a cleaner output but this can also hide valuable details
@@ -169,10 +171,11 @@ docker run --rm -v $(pwd):/root/devilution --entrypoint "/usr/bin/wine" diasurgi
 
 (Don't forget to also set exec permissions on the file)
 
-## Using devilution-comparer with Wine
+### Using devilution-comparer with Wine
 
-Install dependencies not on Windows:
-1. Install Wine (e.g. `sudo pacman -S wine`)
+Install dependencies:
+1. Install Wine if not on Windows (e.g. `sudo pacman -S wine`)
+2. Install MS VC+ 5.10 and 6, SP 3. (for more information see [diasurgical/devil-nightly#15](https://github.com/diasurgical/devil-nightly/issues/15#issuecomment-416719426))
 
 Install `devililution-comparer` from release (or from source below):
 1. Download and extract the latest release from https://github.com/diasurgical/devilution-comparer/releases
