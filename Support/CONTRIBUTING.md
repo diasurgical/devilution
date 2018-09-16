@@ -169,7 +169,7 @@ docker run --rm -v $(pwd):/root/devilution --entrypoint "/usr/bin/wine" diasurgi
 
 ## Using devilution-comparer with Wine
 
-Install dependencies if on Linux:
+Install dependencies not on Windows:
 1. Install Wine (e.g. `sudo pacman -S wine`)
 
 Install `devililution-comparer` from release (or from source below):
