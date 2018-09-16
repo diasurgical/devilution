@@ -122,8 +122,8 @@ void __cdecl DRLG_Init_Globals()
 	memset(dItem, 0, sizeof(dItem));
 	memset(dMissile, 0, sizeof(dMissile));
 	memset(dArch, 0, sizeof(dArch));
-	if ( lightflag == 0 )
-		c = light4flag != 0 ? 3 : 15;
+	if ( !lightflag )
+		c = ( light4flag ) ? 3 : 15;
 	else
 		c = 0;
 	memset(dTransVal, c, sizeof(dTransVal));

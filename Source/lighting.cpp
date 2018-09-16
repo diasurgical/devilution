@@ -14,7 +14,7 @@ int dolighting; // weak
 char dung_map_rgba[16384]; /* int [64][64] short [64][128] char [64][256] */
 int visionid;
 char *pLightTbl; /* todo: struct? */
-int lightflag; // weak
+BOOL lightflag;
 
 char CrawlTable[2749] =
 {
