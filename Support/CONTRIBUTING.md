@@ -175,10 +175,10 @@ docker run -v $(pwd):/root/devilution --entrypoint "/usr/bin/wine" diasurgical/r
 Install dependencies:
 1. `sudo pacman -S wine`
 
-Install `devililution-comparer` from release:
+Install `devililution-comparer` from release (or from source below):
 1. Download and extract the latest release from https://github.com/diasurgical/devilution-comparer/releases
 
-Install `devililution-comparer` from source:
+Or install `devililution-comparer` from source:
 1. `git clone https://github.com/diasurgical/devililution-comparer`
 2. `cd devililution-comparer`
 3. `cargo build --release`
