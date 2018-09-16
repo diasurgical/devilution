@@ -152,20 +152,17 @@ If not on Windows Devilution-comparer requires Wine, either install Wine or use 
 * Step 5:
 To get a function for comparison
 Build:
-`docker run -ti -v $(pwd):/root/devilution -e MAKE_BUILD=pdb diasurgical/riivaaja`
+`docker run --rm -ti -v $(pwd):/root/devilution -e MAKE_BUILD=pdb diasurgical/riivaaja`
 Generate diff:
 `devilution-comparer Diablo_original.exe Diablo.exe <function_name>`
 You can add `--no-mem-disp` if you want a cleaner output but this can also hide valuable details
 This will generate a `orig.asm` and `compare.asm` that you can compare in your favorit `diff` application, in the folder that you can the command from.
 
-Note: A note on `docker run`, it will currently leave behind an image each time you run the command and may eventually exhaust your disk space, to reclaim the space you can run the following command:
-`docker system prune`
-
 To use riivaaja as instead of installing Wine create wine in your `$PATH` and add this content:
 
 ```bash
 #!/bin/sh
-docker run -v $(pwd):/root/devilution --entrypoint "/usr/bin/wine" diasurgical/riivaaja:stable $(basename $1) $2 $3
+docker run --rm -v $(pwd):/root/devilution --entrypoint "/usr/bin/wine" diasurgical/riivaaja:stable $(basename $1) $2 $3
 ```
 
 (Don't forget to also set exec permissions on the file)
