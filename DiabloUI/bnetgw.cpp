@@ -109,7 +109,7 @@ void UNKCALL BNetGW_100029BF(_DWORD *arg, int a2) { return; }
 } */
 
 // ref: 0x10002A07
-int UNKCALL BNetGW_10002A07(_DWORD *arg) { return 0; }
+void *UNKCALL BNetGW_10002A07(_DWORD *arg) { return 0; }
 /* {
 	_DWORD *v1; // esi
 	int v2; // edi

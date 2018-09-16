@@ -89,7 +89,7 @@ int __stdcall Progress_100094F4(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPara
 // 10010418: using guessed type int __stdcall SDlgKillTimer(_DWORD, _DWORD);
 
 // ref: 0x100095EC
-int Progress_100095EC() { return 0; }
+void *Progress_100095EC() { return 0; }
 /* {
 	int result; // eax
 
