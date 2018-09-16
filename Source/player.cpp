@@ -2116,40 +2116,24 @@ LABEL_28:
 
 void __fastcall SyncPlrKill(int pnum, int earflag)
 {
-	int v2; // esi
-	int v3; // ebx
-	int v4; // edx
-	int v5; // eax
-
-	v2 = pnum;
-	v3 = earflag;
-	if ( plr[pnum]._pHitPoints || currlevel )
-	{
-		v4 = 0;
-		if ( nummissiles <= 0 )
-		{
-LABEL_9:
-			SetPlayerHitPoints(pnum, 0);
-			StartPlayerKill(v2, v3);
-		}
-		else
-		{
-			while ( 1 )
-			{
-				v5 = missileactive[v4];
-				if ( missile[v5]._mitype == 13 && missile[v5]._misource == pnum && !missile[v5]._miDelFlag )
-					break;
-				if ( ++v4 >= nummissiles )
-					goto LABEL_9;
-			}
-			if ( v3 != -1 )
-				missile[missileactive[v4]]._miVar8 = v3;
-		}
-	}
-	else
-	{
+	if ( plr[pnum]._pHitPoints == 0 && currlevel == 0 ) {
 		SetPlayerHitPoints(pnum, 64);
+		return;
 	}
+
+	for ( int i = 0; i < nummissiles; i++ ) {
+		int ma = missileactive[i];
+		if ( missile[ma]._mitype == MIS_MANASHIELD && missile[ma]._misource == pnum && missile[ma]._miDelFlag == 0 ) {
+			if ( earflag != -1 ) {
+				missile[ma]._miVar8 = earflag;
+			}
+
+			return;
+		}
+	}
+
+	SetPlayerHitPoints(pnum, 0);
+	StartPlayerKill(pnum, earflag);
 }
 
 void __fastcall RemovePlrMissiles(int pnum)
