@@ -175,7 +175,7 @@ docker run --rm -v $(pwd):/root/devilution --entrypoint "/usr/bin/wine" diasurgi
 
 Install dependencies:
 1. Install Wine if not on Windows (e.g. `sudo pacman -S wine`)
-2. Install MS VC+ 5.10 and 6, SP 3. (for more information see [diasurgical/devil-nightly#15](https://github.com/diasurgical/devil-nightly/issues/15#issuecomment-416719426))
+2. Install MS VC+ 5 + SP3 and MS VC+ 6 + SP5 + PP. (for more information see the [building instructions](https://github.com/diasurgical/devil-nightly#building-with-visual-c-6) of the readme)
 
 Install `devililution-comparer` from release (or from source below):
 1. Download and extract the latest release from https://github.com/diasurgical/devilution-comparer/releases
