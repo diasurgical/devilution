@@ -1683,10 +1683,9 @@ void __fastcall RespawnDeadItem(ItemStruct *itm, int x, int y)
 
 void __fastcall StartPlayerKill(int pnum, int earflag)
 {
-	struct ItemStruct *pi = (struct ItemStruct *)earflag;
+	ItemStruct *pi;
 	ItemStruct ear;
 	int i;
-	PlayerStruct *p = &plr[pnum];
 
 	if ( plr[pnum]._pHitPoints <= 0 && plr[pnum]._pmode == PM_DEATH ) {
 		return;
@@ -1696,83 +1695,102 @@ void __fastcall StartPlayerKill(int pnum, int earflag)
 		NetSendCmdParam1(TRUE, CMD_PLRDEAD, earflag);
 	}
 
-	BOOL diablolevel = gbMaxPlayers > 1 && p->plrlevel == 16;
+	BOOL diablolevel = gbMaxPlayers > 1 && plr[pnum].plrlevel == 16;
 
 	if ( (DWORD)pnum >= 4 ) {
 		TermMsg("StartPlayerKill: illegal player %d", pnum);
 	}
 
-	if ( p->_pClass == PC_WARRIOR ) {
-		PlaySfxLoc(PS_DEAD, p->WorldX, p->WorldY); /// BUGFIX: should use `PS_WARR71` like other classes
-	} else if ( p->_pClass == PC_ROGUE ) {
-		PlaySfxLoc(PS_ROGUE71, p->WorldX, p->WorldY);
-	} else if ( p->_pClass == PC_SORCERER ) {
-		PlaySfxLoc(PS_MAGE71, p->WorldX, p->WorldY);
+	if ( plr[pnum]._pClass == PC_WARRIOR ) {
+		PlaySfxLoc(PS_DEAD, plr[pnum].WorldX, plr[pnum].WorldY); // BUGFIX: should use `PS_WARR71` like other classes
+	}
+	else if ( plr[pnum]._pClass == PC_ROGUE ) {
+		PlaySfxLoc(PS_ROGUE71, plr[pnum].WorldX, plr[pnum].WorldY);
+	}
+	else if ( plr[pnum]._pClass == PC_SORCERER ) {
+		PlaySfxLoc(PS_MAGE71, plr[pnum].WorldX, plr[pnum].WorldY);
 	}
 
-	if ( p->_pgfxnum ) {
-		p->_pgfxnum = 0;
-		p->_pGFXLoad = 0;
+	if ( plr[pnum]._pgfxnum ) {
+		plr[pnum]._pgfxnum = 0;
+		plr[pnum]._pGFXLoad = 0;
 		SetPlrAnims(pnum);
 	}
 
-	if ( !(p->_pGFXLoad & PFILE_DEATH) ) {
+	if ( !(plr[pnum]._pGFXLoad & PFILE_DEATH) ) {
 		LoadPlrGFX(pnum, PFILE_DEATH);
 	}
-	NewPlrAnim(pnum, p->_pDAnim[p->_pdir], p->_pDFrames, 1, p->_pDWidth);
 
-	p->_pBlockFlag = FALSE;
-	p->_pmode = PM_DEATH;
-	p->_pInvincible = TRUE;
+	NewPlrAnim(pnum, plr[pnum]._pDAnim[plr[pnum]._pdir], plr[pnum]._pDFrames, 1, plr[pnum]._pDWidth);
+
+	plr[pnum]._pBlockFlag = FALSE;
+	plr[pnum]._pmode = PM_DEATH;
+	plr[pnum]._pInvincible = TRUE;
 	SetPlayerHitPoints(pnum, 0);
-	p->_pVar8 = 1;
-	if ( pnum != myplr && !pi && !diablolevel ) {
+	plr[pnum]._pVar8 = 1;
+
+	if ( pnum != myplr && !earflag && !diablolevel ) {
 		for ( i = 0; i < NUM_INVLOC; i++ ) {
-			p->InvBody[i]._itype = ITYPE_NONE;
+			plr[pnum].InvBody[i]._itype = ITYPE_NONE;
 		}
 		CalcPlrInv(pnum, 0);
 	}
-	if ( p->plrlevel == currlevel ) {
-		FixPlayerLocation(pnum, p->_pdir);
+
+	if ( plr[pnum].plrlevel == currlevel ) {
+
+
+		FixPlayerLocation(pnum, plr[pnum]._pdir);
 		RemovePlrFromMap(pnum);
-		dFlags[p->WorldX][p->WorldY] |= 4;
+		dFlags[plr[pnum].WorldX][plr[pnum].WorldY] |= 4;
 		SetPlayerOld(pnum);
+
 		if ( pnum == myplr ) {
+
+
 			drawhpflag = 1;
 			deathdelay = 30;
+
 			if ( pcurs >= CURSOR_FIRSTITEM ) {
-				PlrDeadItem(pnum, &p->HoldItem, 0, 0);
+				PlrDeadItem(pnum, &plr[pnum].HoldItem, 0, 0);
 				SetCursor(CURSOR_HAND);
 			}
+
 			if ( !diablolevel ) {
+
+
 				DropHalfPlayersGold(pnum);
-				if ( pi != (struct ItemStruct *)-1 ) {
-					if ( pi ) {
+				if ( earflag != -1 ) {
+					if ( earflag != 0 ) {
 						SetPlrHandItem(&ear, IDI_EAR);
-						sprintf(ear._iName, "Ear of %s", p->_pName);
-						if ( p->_pClass == PC_SORCERER ) {
+						sprintf(ear._iName, "Ear of %s", plr[pnum]._pName);
+						if ( plr[pnum]._pClass == PC_SORCERER ) {
 							ear._iCurs = 19;
-						} else if ( p->_pClass == PC_WARRIOR ) {
+						}
+						else if ( plr[pnum]._pClass == PC_WARRIOR ) {
 							ear._iCurs = 20;
-						} else if ( p->_pClass == PC_ROGUE ) {
+						}
+						else if ( plr[pnum]._pClass == PC_ROGUE ) {
 							ear._iCurs = 21;
 						}
 
-						ear._iCreateInfo = p->_pName[0] << 8 | p->_pName[1];
-						ear._iSeed = p->_pName[2] << 24 | p->_pName[3] << 16 | p->_pName[4] << 8 | p->_pName[5];
-						ear._ivalue = p->_pLevel;
+						ear._iCreateInfo = plr[pnum]._pName[0] << 8 | plr[pnum]._pName[1];
+						ear._iSeed = plr[pnum]._pName[2] << 24 | plr[pnum]._pName[3] << 16 | plr[pnum]._pName[4] << 8 | plr[pnum]._pName[5];
+						ear._ivalue = plr[pnum]._pLevel;
 
 						if ( FindGetItem(IDI_EAR, ear._iCreateInfo, ear._iSeed) == -1 ) {
 							PlrDeadItem(pnum, &ear, 0, 0);
 						}
-					} else {
-						pi = p->InvBody;
-						int v18; // eax
-						for ( i = NUM_INVLOC; i; ) {
-							v18 = (--i + p->_pdir) & 7;
-							PlrDeadItem(pnum, pi, offset_x[v18], offset_y[v18]);
-							++pi;
+					}
+					else {
+						pi = &plr[pnum].InvBody[0];
+						i = NUM_INVLOC;
+						while ( i != 0 ) {
+							i--;
+							int pdd = (i + plr[pnum]._pdir) & NUM_INVLOC;
+							PlrDeadItem(pnum, pi, offset_x[pdd], offset_y[pdd]);
+							pi++;
 						}
+
 						CalcPlrInv(pnum, 0);
 					}
 				}
