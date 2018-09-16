@@ -191,3 +191,11 @@ Clone Devilution nightly, build and compare against the original Diablo binary:
 3. `cp /path/to/diablo-v1.09b.exe .`
 4. `../devilution-comparer/target/debug/devilution-comparer diablo-v1.09b.exe Diablo.exe <function name>` (replace `<function name>` with e.g. `InitMonsterTRN`)
 5. `code --diff orig.asm compare.asm` (or `diff -u orig.asm compare.asm`)
+
+To watch build directory for changes use the `-w` command line flag:
+
+```bash
+$ ./devilution-comparer -w diablo-v1.09b.exe Diablo.exe InitMonsterTRN
+Found InitMonsterTRN at 0x4322EC, size: 0x8C; orig size: 0x8C
+Started watching Diablo.pdb for changes. CTRL+C to quit.
+```
