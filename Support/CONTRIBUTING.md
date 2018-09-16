@@ -5,10 +5,10 @@ Devilution.
 
 ## Useful Repos
 
-* [diasurgical/scalpel](https://github.com/diasurgical/scalpel) - uploaded .SYM
-  files from each release of Diablo 1 on Playstation
-* [sanctuary/notes](https://github.com/sanctuary/notes) - documented
-  Windows-specific Diablo code
+* [diasurgical/scalpel](https://github.com/diasurgical/scalpel) - uploaded .SYM files from each release of Diablo 1 on Playstation
+* [diasurgical/devilution-comparer](https://github.com/diasurgical/devilution-comparer) - small helper tool to aid comparing functions between devilution and the original binary
+* [sanctuary/notes](https://github.com/sanctuary/notes) - documented Windows-specific Diablo code
+* [sanctuary/psx](https://github.com/sanctuary/psx) - .SYM files converted to C headers
 
 ## Software and Utils
 
@@ -138,3 +138,56 @@ release.
 135fab: $8013d11c 92 Block_end  line = 60
 135fb4: $8013d138 8e Function_end
 ```
+
+## Using devilution-comparer with Docker
+
+* Step 1:
+https://docs.docker.com/install/
+* Step 2:
+Download latest devilution-comparer: https://github.com/diasurgical/devilution-comparer/releases (build from src if on Mac)
+* Step 3:
+Get the Diablo 1.09 exe
+* Step 4:
+If not on Windows Devilution-comparer requires Wine, either install Wine or use Riivaaja as a proxy (more on this later if you would like to go this route).
+* Step 5:
+To get a function for comparison
+Build:
+`docker run -ti -v $(pwd):/root/devilution -e MAKE_BUILD=pdb diasurgical/riivaaja`
+Generate diff:
+`devilution-comparer Diablo_original.exe Diablo.exe <function_name>`
+You can add `--no-mem-disp` if you want a cleaner output but this can also hide valuable details
+This will generate a `orig.asm` and `compare.asm` that you can compare in your favorit `diff` application, in the folder that you can the command from.
+
+Note: A note on `docker run`, it will currently leave behind an image each time you run the command and may eventually exhaust your disk space, to reclaim the space you can run the following command:
+`docker system prune`
+
+To use riivaaja as instead of installing Wine create wine in your `$PATH` and add this content:
+
+```bash
+#!/bin/sh
+docker run -v $(pwd):/root/devilution --entrypoint "/usr/bin/wine" diasurgical/riivaaja:stable $(basename $1) $2 $3
+```
+
+(Don't forget to also set exec permissions on the file)
+
+## Using devilution-comparer with Wine
+
+Install dependencies:
+1. `sudo pacman -S wine`
+
+Install `devililution-comparer` from release:
+1. Download and extract the latest release from https://github.com/diasurgical/devilution-comparer/releases
+
+Install `devililution-comparer` from source:
+1. `git clone https://github.com/diasurgical/devililution-comparer`
+2. `cd devililution-comparer`
+3. `cargo build --release`
+4. `cp cvdump.exe target/release/`
+5. `cp comparer-config.toml target/release/`
+
+Clone Devilution nightly, build and compare against the original Diablo binary:
+1. `git clone https://github.com/diasurgical/devil-nightly`
+2. `make MAKE_BUILD=pdb -f MakefileVC`
+3. `cp /path/to/diablo-v1.09b.exe .`
+4. `../devilution-comparer/target/debug/devilution-comparer diablo-v1.09b.exe Diablo.exe <function name>` (replace `<function name>` with e.g. `InitMonsterTRN`)
+5. `code --diff orig.asm compare.asm` (or `diff -u orig.asm compare.asm`)
