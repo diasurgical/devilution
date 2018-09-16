@@ -24,7 +24,7 @@ extern char cineflag; // weak
 extern int drawpanflag; // weak
 extern int visiondebug; // weak
 extern int scrollflag; /* unused */
-extern int light4flag; // weak
+extern BOOL light4flag;
 extern int leveldebug; // weak
 extern int monstdebug; // weak
 extern int trigdebug; /* unused */
