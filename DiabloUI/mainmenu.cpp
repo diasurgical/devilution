@@ -118,7 +118,7 @@ LABEL_34:
 // 10029728: using guessed type int dword_10029728;
 
 // ref: 0x10008354
-int UNKCALL MainMenu_10008354(HWND hDlg) { return 0; }
+void UNKCALL MainMenu_10008354(HWND hDlg) { return; }
 /* {
 	HWND v1; // esi
 	_DWORD *v2; // eax
@@ -142,7 +142,7 @@ int UNKCALL MainMenu_10008391(void *arg) { return 0; }
 // 1002A118: using guessed type int dword_1002A118;
 
 // ref: 0x100083A8
-int UNKCALL MainMenu_100083A8(HWND hWnd) { return 0; }
+void UNKCALL MainMenu_100083A8(HWND hWnd) { return; }
 /* {
 	HWND v1; // esi
 	int v2; // eax

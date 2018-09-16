@@ -1,5 +1,5 @@
 // ref: 0x1000EF42
-int SelRegn_1000EF42() { return 0; }
+void *SelRegn_1000EF42() { return 0; }
 /* {
 	return SMemAlloc(136, "C:\\Src\\Diablo\\DiabloUI\\SelRegn.cpp", 76, 0);
 } */

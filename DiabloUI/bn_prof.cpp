@@ -667,7 +667,7 @@ void __fastcall bn_prof_10001ED0(char *a1, _BYTE *a2, int a3) { return; }
 // 10022258: using guessed type int dword_10022258;
 
 // ref: 0x10001F29
-int bn_prof_10001F29() { return 0; }
+void *bn_prof_10001F29() { return 0; }
 /* {
 	int result; // eax
 
@@ -689,7 +689,7 @@ int bn_prof_10001F29() { return 0; }
 // 10029434: using guessed type int dword_10029434;
 
 // ref: 0x10001F84
-int bn_prof_10001F84() { return 0; }
+BYTE *bn_prof_10001F84() { return 0; }
 /* {
 	int result; // eax
 
@@ -874,7 +874,7 @@ int bn_prof_100021C4() { return 0; }
 // 1002942C: using guessed type int dword_1002942C;
 
 // ref: 0x10002247
-int bn_prof_10002247() { return 0; }
+void *bn_prof_10002247() { return 0; }
 /* {
 	int result; // eax
 

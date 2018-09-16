@@ -1299,6 +1299,12 @@ bool __stdcall SNetSetBasePlayer(int);
 int __stdcall SNetInitializeProvider(unsigned long,struct _SNETPROGRAMDATA *,struct _SNETPLAYERDATA *,struct _SNETUIDATA *,struct _SNETVERSIONDATA *);
 int __stdcall SNetGetProviderCaps(struct _SNETCAPS *);
 int __stdcall SFileSetFilePointer(HANDLE,int,HANDLE,int);
+void __stdcall SDrawClearSurface(int a1);
+BOOL __stdcall SDlgSetBitmapI(HWND hWnd, int a2, char *src, int mask1, int flags, void *pBuff, int a7, int width, int height, int mask2);
+void __stdcall SDlgBeginPaint(HWND hWnd, char *a2);
+void __stdcall SDlgEndPaint(HWND hWnd, char *a2);
+void __stdcall SDlgSetSystemCursor(BYTE *a1, BYTE *a2, int *a3, int a4);
+void __stdcall SDlgSetCursor(HWND hWnd, HCURSOR a2, int a3, int *a4);
 
 #ifdef __GNUC__
 }

@@ -124,7 +124,7 @@ HWND UNKCALL SelYesNo_1000FBC7(HWND hDlg) { return 0; }
 // 1002A504: using guessed type int dword_1002A504;
 
 // ref: 0x1000FC1C
-int UNKCALL SelYesNo_1000FC1C(HWND hWnd) { return 0; }
+void UNKCALL SelYesNo_1000FC1C(HWND hWnd) { return; }
 /* {
 	HWND v1; // esi
 	HWND v2; // eax
