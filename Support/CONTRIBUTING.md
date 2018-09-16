@@ -139,7 +139,7 @@ release.
 135fb4: $8013d138 8e Function_end
 ```
 
-## Using devilution-comparer with Docker
+## Comparing a function with the original exe
 
 * Step 1:
 https://docs.docker.com/install/
@@ -150,15 +150,17 @@ Get the Diablo 1.09 exe
 * Step 4:
 If not on Windows Devilution-comparer requires Wine, either install Wine or use Riivaaja as a proxy (more on this later if you would like to go this route).
 * Step 5:
-To get a function for comparison
+
+### To get a function for comparison
+
 Build:
 `docker run --rm -ti -v $(pwd):/root/devilution -e MAKE_BUILD=pdb diasurgical/riivaaja`
 Generate diff:
 `devilution-comparer Diablo_original.exe Diablo.exe <function_name>`
 You can add `--no-mem-disp` if you want a cleaner output but this can also hide valuable details
-This will generate a `orig.asm` and `compare.asm` that you can compare in your favorit `diff` application, in the folder that you can the command from.
+This will generate an `orig.asm` and `compare.asm` that you can compare in your favorit `diff` application, in the folder that you can the command from.
 
-To use riivaaja as instead of installing Wine create wine in your `$PATH` and add this content:
+To use Riivaaja instead of installing Wine, create `wine` in your `$PATH` and add this content:
 
 ```bash
 #!/bin/sh
