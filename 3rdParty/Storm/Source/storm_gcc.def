@@ -69,7 +69,8 @@ EXPORTS
   ;Ordinal150                    @150 NONAME
   ;Ordinal151                    @151 NONAME
 
-  ;SDlgBeginPaint                @201 NONAME
+  SDlgBeginPaint                 @201 NONAME
+  SDlgBeginPaint@8               @201 NONAME
   ;SDlgBltToWindowI              @202 NONAME
   ;SDlgCheckTimers               @203 NONAME
   ;SDlgCreateDialogIndirectParam @204 NONAME
@@ -80,13 +81,17 @@ EXPORTS
   ;SDlgDialogBoxParam            @209 NONAME
   ;SDlgDrawBitmap                @210 NONAME
   SDlgEndDialog                 @211 NONAME
-  ;SDlgEndPaint                  @212 NONAME
+  SDlgEndPaint                  @212 NONAME
+  SDlgEndPaint@8                @212 NONAME
   ;SDlgKillTimer                 @213 NONAME
   ;SDlgSetBaseFont               @214 NONAME
-  ;SDlgSetBitmapI                @215 NONAME
+  SDlgSetBitmapI                @215 NONAME
+  SDlgSetBitmapI@40             @215 NONAME
   SDlgSetControlBitmaps         @216 NONAME
-  ;SDlgSetCursor                 @217 NONAME
-  ;SDlgSetSystemCursor           @218 NONAME
+  SDlgSetCursor                 @217 NONAME
+  SDlgSetCursor@16              @217 NONAME
+  SDlgSetSystemCursor           @218 NONAME
+  SDlgSetSystemCursor@16        @218 NONAME
   ;SDlgSetTimer                  @219 NONAME
   ;SDlgUpdateCursor              @220 NONAME
   SDlgBltToWindowE              @221 NONAME
@@ -185,7 +190,8 @@ EXPORTS
 
   SDrawAutoInitialize           @341 NONAME
   SDrawCaptureScreen            @342 NONAME
-  ;SDrawClearSurface             @343 NONAME
+  SDrawClearSurface             @343 NONAME
+  SDrawClearSurface@0           @343 NONAME
   SDrawDestroy                  @344 NONAME
   ;SDrawFlipPage                 @345 NONAME
   SDrawGetFrameWindow           @346 NONAME
