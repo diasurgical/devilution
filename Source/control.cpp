@@ -2887,7 +2887,7 @@ void __cdecl CheckSBook()
 			v0 = MouseY;
 		}
 	}
-	if ( v1 >= 327 && v1 < 633 && v0 >= 320 && v0 < 349 )
+	if ( v1 >= 327 && v1 < 633 && v0 >= 320 && v0 < 349 ) /// BUGFIX: change `< 633` to `< 631`
 		sbooktab = (v1 - 327) / 76;
 }
 // 4B8950: using guessed type int sbooktab;
