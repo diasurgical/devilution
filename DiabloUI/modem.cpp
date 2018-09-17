@@ -187,7 +187,7 @@ int __stdcall Modem_100086DE(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) 
 // 10010382: using guessed type _DWORD __stdcall SDrawGetFrameWindow();
 
 // ref: 0x1000879E
-_DWORD *UNKCALL Modem_1000879E(HWND hDlg) { return 0; }
+void **UNKCALL Modem_1000879E(HWND hDlg) { return 0; }
 /* {
 	HWND v1; // esi
 	_DWORD *v2; // eax

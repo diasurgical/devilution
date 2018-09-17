@@ -126,7 +126,7 @@ LABEL_16:
 // 10010382: using guessed type _DWORD __stdcall SDrawGetFrameWindow();
 
 // ref: 0x10009117
-_DWORD *UNKCALL OkCancel_10009117(HWND hWnd) { return 0; }
+void **UNKCALL OkCancel_10009117(HWND hWnd) { return 0; }
 /* {
 	_DWORD *result; // eax
 	_DWORD *v2; // esi
