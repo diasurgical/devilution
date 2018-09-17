@@ -168,7 +168,7 @@ HRESULT __fastcall dx_DirectDrawCreate(GUID *guid, IDirectDraw **DD, void *unkno
 	v8 = guid;
 	if ( !ghDiabMod )
 	{
-		ghDiabMod = LoadLibraryA("ddraw.dll");
+		ghDiabMod = LoadLibrary("ddraw.dll");
 		if ( !ghDiabMod )
 		{
 			v4 = GetLastError();
