@@ -3,10 +3,15 @@ VC5_DIR ?= $(HOME)/DevStudio_5.10/VC
 # The $(VS6_DIR) directory is a copy of the "Microsoft Visual Studio" directory.
 #
 # To get a working setup on Linux or other "portable" copies of VS,
-# the following DLLs have to be compied to the
+# the following DLLs have to be copied to the
 # $(VS6_DIR)/VC98/Bin directory.
 #
 #     - $(VS6_DIR)/Common/MSDev98/Bin/MSPDB60.DLL
+#
+# And to the $(VC5_DIR)/bin directory.
+#
+#     - $(VC5_DIR)/SharedIDE/bin/MSDIS100.DLL
+#     - $(VC5_DIR)/SharedIDE/bin/MSPDB50.DLL
 VS6_DIR ?= $(HOME)/VS6
 
 VC6_DIR     = $(VS6_DIR)/VC98
