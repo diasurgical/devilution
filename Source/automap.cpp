@@ -230,7 +230,7 @@ void __cdecl DrawAutomap()
 
 	cells = AMbyte_4B7E4C[(AutoMapScale - 50) / 5];
 	if ( ScrollInfo._sxoff + ScrollInfo._syoff )
-		++cells;
+		cells++;
 	mapx = MapX - cells;
 	mapy = MapY - 1;
 
@@ -259,26 +259,26 @@ void __cdecl DrawAutomap()
 		screen_x += 160;
 	}
 
-	for ( i = 0; i <= cells + 1; ++i ) {
+	for ( i = 0; i <= cells + 1; i++ ) {
 		int x = screen_x;
 		int y;
 
-		for ( j = 0; j < cells; ++j ) {
-			short maptype = GetAutomapType(mapx+j, mapy-j, TRUE);
+		for ( j = 0; j < cells; j++ ) {
+			short maptype = GetAutomapType(mapx + j, mapy - j, TRUE);
 			if ( maptype )
 				DrawAutomapType(x, screen_y, maptype);
 			x += AutoMapPosBits;
 		}
-		++mapy;
+		mapy++;
 		x = screen_x - AutoMapXPos;
 		y = screen_y + AutoMapYPos;
-		for ( j = 0; j <= cells; ++j ) {
-			short maptype = GetAutomapType(mapx+j, mapy-j, TRUE);
+		for ( j = 0; j <= cells; j++ ) {
+			short maptype = GetAutomapType(mapx + j, mapy - j, TRUE);
 			if ( maptype )
 				DrawAutomapType(x, y, maptype);
 			x += AutoMapPosBits;
 		}
-		++mapx;
+		mapx++;
 		screen_y += AutoMapXPos;
 	}
 	DrawAutomapPlr();
