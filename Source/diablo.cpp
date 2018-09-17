@@ -24,7 +24,7 @@ char cineflag; // weak
 int drawpanflag; // weak
 int visiondebug; // weak
 int scrollflag; /* unused */
-int light4flag; // weak
+BOOL light4flag;
 int leveldebug; // weak
 int monstdebug; // weak
 int trigdebug; /* unused */
@@ -1913,7 +1913,7 @@ void __fastcall CreateLevel(int lvldir)
 }
 // 5BB1ED: using guessed type char leveltype;
 
-void __fastcall LoadGameLevel(bool firstflag, int lvldir)
+void __fastcall LoadGameLevel(BOOL firstflag, int lvldir)
 {
 	int v2; // ebp
 	bool visited; // edx
