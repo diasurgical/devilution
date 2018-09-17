@@ -65,7 +65,7 @@ void __fastcall NetSendCmdPItem(unsigned char bHiPri, unsigned char bCmd, unsign
 void __fastcall NetSendCmdChItem(unsigned char bHiPri, unsigned char bLoc);
 void __fastcall NetSendCmdDelItem(BOOL bHiPri, unsigned char bLoc);
 void __fastcall NetSendCmdDItem(unsigned char bHiPri, int ii);
-void __fastcall NetSendCmdDamage(unsigned char bHiPri, unsigned char bPlr, unsigned int dwDam);
+void __fastcall NetSendCmdDamage(BOOL bHiPri, unsigned char bPlr, unsigned int dwDam);
 void __fastcall NetSendCmdString(int a1, const char *pszStr);
 void __fastcall RemovePlrPortal(int pnum);
 int __fastcall ParseCmd(int pnum, TCmd *pCmd);

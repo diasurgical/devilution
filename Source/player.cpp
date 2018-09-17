@@ -2747,126 +2747,95 @@ LABEL_85:
 	return v42;
 }
 
-bool __fastcall PlrHitPlr(int pnum, char p)
+BOOL __fastcall PlrHitPlr(int pnum, char p)
 {
-	char v2; // bl
-	unsigned int v3; // esi
-	//int v4; // ST04_4
-	int v5; // edi
-	//int v7; // ST04_4
-	unsigned int v8; // esi
-	int v9; // ecx
-	int v10; // eax
-	int v11; // ebx
-	int v12; // ebx
-	int v13; // eax
-	int v14; // eax
-	int v15; // ecx
-	int v16; // eax
-	int v17; // ebx
-	int v18; // eax
-	int v19; // ecx
-	int v20; // edi
-	int v21; // ebx
-	signed int v22; // edi
-	int v23; // eax
-	int v24; // edx
-	int *v25; // ecx
-	int *v26; // ecx
-	int v27; // esi
-	int v28; // [esp+Ch] [ebp-14h]
-	int v29; // [esp+10h] [ebp-10h]
-	bool v30; // [esp+14h] [ebp-Ch]
-	int arglist; // [esp+18h] [ebp-8h]
-	char bPlr; // [esp+1Ch] [ebp-4h]
-
-	v2 = p;
-	v3 = pnum;
-	bPlr = p;
-	v28 = pnum;
-	if ( (unsigned char)p >= 4u )
-	{
+	if ( (DWORD)p >= MAX_PLRS ) {
 		TermMsg("PlrHitPlr: illegal target player %d", p);
-		//pnum = v4;
 	}
-	arglist = v2;
-	v5 = v2;
-	v30 = 0;
-	if ( plr[v5]._pInvincible || plr[v5]._pSpellFlags & 1 )
-		return 0;
-	if ( v3 >= 4 )
-	{
-		TermMsg("PlrHitPlr: illegal attacking player %d", v3);
-		//pnum = v7;
+
+	BOOL rv = FALSE;
+
+	if ( plr[p]._pInvincible ) {
+		return rv;
 	}
-	v8 = v3;
-	v29 = random(4, 100);
-	v9 = (plr[v8]._pDexterity >> 1) - plr[v5]._pIBonusAC - plr[v5]._pIAC - plr[v5]._pDexterity / 5;
-	v10 = plr[v8]._pLevel;
-	v11 = v9 + v10 + 50;
-	if ( !_LOBYTE(plr[v8]._pClass) )
-		v11 = v9 + v10 + 70;
-	v12 = plr[v8]._pIBonusToHit + v11;
-	if ( v12 < 5 )
-		v12 = 5;
-	if ( v12 > 95 )
-		v12 = 95;
-	v13 = plr[v5]._pmode;
-	if ( v13 && v13 != 4 || !plr[v5]._pBlockFlag )
-	{
-		v14 = 100;
+
+	if ( plr[p]._pSpellFlags & 1 ) {
+		return rv;
 	}
-	else
-	{
-		v14 = random(5, 100);
+
+	if ( (DWORD)pnum >= MAX_PLRS ) {
+		TermMsg("PlrHitPlr: illegal attacking player %d", pnum);
 	}
-	v15 = plr[v5]._pDexterity + plr[v5]._pBaseToBlk + 2 * plr[v5]._pLevel - 2 * plr[v8]._pLevel;
-	if ( v15 < 0 )
-		v15 = 0;
-	if ( v15 > 100 )
-		v15 = 100;
-	if ( v29 < v12 )
-	{
-		if ( v14 >= v15 )
-		{
-			v17 = plr[v8]._pIMinDam;
-			v18 = random(5, plr[v8]._pIMaxDam - v17 + 1);
-			v19 = 100;
-			v20 = plr[v8]._pIBonusDamMod + plr[v8]._pDamageMod + (v17 + v18) * plr[v8]._pIBonusDam / 100 + v17 + v18;
-			if ( !_LOBYTE(plr[v8]._pClass) )
-			{
-				v21 = plr[v8]._pLevel;
-				if ( random(6, 100) < v21 )
-					v20 *= 2;
+
+	int hit = random(4, 100);
+
+	int hper = (plr[pnum]._pDexterity >> 1) + plr[pnum]._pLevel + 50 - (plr[p]._pIBonusAC + plr[p]._pIAC + plr[p]._pDexterity / 5);
+
+	if ( plr[pnum]._pClass == PC_WARRIOR ) {
+		hper += 20;
+	}
+	hper += plr[pnum]._pIBonusToHit;
+	if ( hper < 5 ) {
+		hper = 5;
+	}
+	if ( hper > 95 ) {
+		hper = 95;
+	}
+
+	int blk;
+	if ( (plr[p]._pmode == PM_STAND || plr[p]._pmode == PM_ATTACK) && plr[p]._pBlockFlag ) {
+		blk = random(5, 100);
+	} else {
+		blk = 100;
+	}
+
+	int blkper = plr[p]._pDexterity + plr[p]._pBaseToBlk + (plr[p]._pLevel << 1) - (plr[pnum]._pLevel << 1);
+	if ( blkper < 0 ) {
+		blkper = 0;
+	}
+	if ( blkper > 100 ) {
+		blkper = 100;
+	}
+
+	if ( hit < hper ) {
+		if ( blk < blkper ) {
+			int dir = GetDirection(plr[p].WorldX, plr[p].WorldY, plr[pnum].WorldX, plr[pnum].WorldY);
+			StartPlrBlock(p, dir);
+		} else {
+			int mind = plr[pnum]._pIMinDam;
+			int maxd = random(5, plr[pnum]._pIMaxDam - mind + 1);
+			int dam = maxd + mind;
+			dam += plr[pnum]._pDamageMod + plr[pnum]._pIBonusDamMod + dam * plr[pnum]._pIBonusDam / 100;
+
+			if ( plr[pnum]._pClass == PC_WARRIOR ) {
+				int lvl = plr[pnum]._pLevel;
+				if ( random(6, 100) < lvl) {
+					dam *= 2;
+				}
 			}
-			v22 = v20 << 6;
-			if ( plr[v8]._pIFlags & 2 )
-			{
-				v23 = random(7, v22 >> 3);
-				v24 = plr[v8]._pMaxHP;
-				v25 = &plr[v8]._pHitPoints;
-				*v25 += v23;
-				if ( plr[v8]._pHitPoints > v24 )
-					*v25 = v24;
-				v26 = &plr[v8]._pHPBase;
-				v27 = plr[v8]._pMaxHPBase;
-				*v26 += v23;
-				if ( *v26 > v27 )
-					*v26 = v27;
+			int skdam = dam * 64;
+			if ( plr[pnum]._pIFlags & ISPL_RNDSTEALLIFE ) {
+				int tac = random(7, skdam >> 3);
+				plr[pnum]._pHitPoints += tac;
+				if ( plr[pnum]._pHitPoints > plr[pnum]._pMaxHP ) {
+					plr[pnum]._pHitPoints = plr[pnum]._pMaxHP;
+				}
+				plr[pnum]._pHPBase += tac;
+				if ( plr[pnum]._pHPBase > plr[pnum]._pMaxHPBase ) {
+					plr[pnum]._pHPBase = plr[pnum]._pMaxHPBase;
+				}
 				drawhpflag = 1;
 			}
-			if ( v28 == myplr )
-				NetSendCmdDamage(1u, bPlr, v22);
-			StartPlrHit(arglist, v22, 0);
+			if ( pnum == myplr ) {
+				NetSendCmdDamage(TRUE, p, skdam);
+			}
+			StartPlrHit(p, skdam, FALSE);
 		}
-		else
-		{
-			v16 = GetDirection(plr[v5].WorldX, plr[v5].WorldY, plr[v8].WorldX, plr[v8].WorldY);
-			StartPlrBlock(arglist, v16);
-		}
-		v30 = 1;
+
+		rv = TRUE;
 	}
-	return v30;
+
+	return rv;
 }
 
 BOOL __fastcall PlrHitObj(int pnum, int mx, int my)
