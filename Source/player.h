@@ -75,7 +75,7 @@ BOOL __fastcall PM_DoWalk2(int pnum);
 BOOL __fastcall PM_DoWalk3(int pnum);
 BOOL __fastcall WeaponDur(int pnum, int durrnd);
 bool __fastcall PlrHitMonst(int pnum, int m);
-bool __fastcall PlrHitPlr(int pnum, char p);
+BOOL __fastcall PlrHitPlr(int pnum, char p);
 BOOL __fastcall PlrHitObj(int pnum, int mx, int my);
 int __fastcall PM_DoAttack(int pnum);
 BOOL __fastcall PM_DoRangeAttack(int pnum);
