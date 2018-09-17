@@ -86,7 +86,7 @@
       <ModuleDefinitionFile>diabloui.def</ModuleDefinitionFile>
       <OutputFile>.\WinRel\DiabloUI.dll</OutputFile>
       <ImportLibrary>.\WinRel\DiabloUI.lib</ImportLibrary>
-      <AdditionalDependencies>odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>../3rdParty/Storm/Source/WinRel/Storm.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -128,7 +128,7 @@
       <ModuleDefinitionFile>diabloui.def</ModuleDefinitionFile>
       <OutputFile>.\WinDebug\DiabloUI.dll</OutputFile>
       <ImportLibrary>.\WinDebug\DiabloUI.lib</ImportLibrary>
-      <AdditionalDependencies>odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>../3rdParty/Storm/Source/WinDebug/Storm.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
