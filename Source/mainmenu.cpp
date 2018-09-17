@@ -175,7 +175,7 @@ int __fastcall mainmenu_init_menu(int a1)
 
 int __cdecl mainmenu_multi_player()
 {
-	gbMaxPlayers = 4;
+	gbMaxPlayers = MAX_PLRS;
 	return mainmenu_init_menu(3);
 }
 // 679660: using guessed type char gbMaxPlayers;
