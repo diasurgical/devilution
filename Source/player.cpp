@@ -1683,16 +1683,12 @@ void __fastcall RespawnDeadItem(ItemStruct *itm, int x, int y)
 
 void __fastcall StartPlayerKill(int pnum, int earflag)
 {
-	ItemStruct *pi;
-	ItemStruct ear;
-	int i;
-
 	if ( plr[pnum]._pHitPoints <= 0 && plr[pnum]._pmode == PM_DEATH ) {
 		return;
 	}
 
 	if ( myplr == pnum ) {
-		NetSendCmdParam1(TRUE, CMD_PLRDEAD, earflag);
+		NetSendCmdParam1(TRUE, CMD_PLRDEAD, earflag);//23
 	}
 
 	BOOL diablolevel = gbMaxPlayers > 1 && plr[pnum].plrlevel == 16;
@@ -1703,11 +1699,9 @@ void __fastcall StartPlayerKill(int pnum, int earflag)
 
 	if ( plr[pnum]._pClass == PC_WARRIOR ) {
 		PlaySfxLoc(PS_DEAD, plr[pnum].WorldX, plr[pnum].WorldY); // BUGFIX: should use `PS_WARR71` like other classes
-	}
-	else if ( plr[pnum]._pClass == PC_ROGUE ) {
+	} else if ( plr[pnum]._pClass == PC_ROGUE ) {
 		PlaySfxLoc(PS_ROGUE71, plr[pnum].WorldX, plr[pnum].WorldY);
-	}
-	else if ( plr[pnum]._pClass == PC_SORCERER ) {
+	} else if ( plr[pnum]._pClass == PC_SORCERER ) {
 		PlaySfxLoc(PS_MAGE71, plr[pnum].WorldX, plr[pnum].WorldY);
 	}
 
@@ -1721,7 +1715,8 @@ void __fastcall StartPlayerKill(int pnum, int earflag)
 		LoadPlrGFX(pnum, PFILE_DEATH);
 	}
 
-	NewPlrAnim(pnum, plr[pnum]._pDAnim[plr[pnum]._pdir], plr[pnum]._pDFrames, 1, plr[pnum]._pDWidth);
+	PlayerStruct *p = &plr[pnum];
+	NewPlrAnim(pnum, p->_pDAnim[plr[pnum]._pdir], p->_pDFrames, 1, p->_pDWidth);
 
 	plr[pnum]._pBlockFlag = FALSE;
 	plr[pnum]._pmode = PM_DEATH;
@@ -1729,6 +1724,7 @@ void __fastcall StartPlayerKill(int pnum, int earflag)
 	SetPlayerHitPoints(pnum, 0);
 	plr[pnum]._pVar8 = 1;
 
+	int i;
 	if ( pnum != myplr && !earflag && !diablolevel ) {
 		for ( i = 0; i < NUM_INVLOC; i++ ) {
 			plr[pnum].InvBody[i]._itype = ITYPE_NONE;
@@ -1737,16 +1733,12 @@ void __fastcall StartPlayerKill(int pnum, int earflag)
 	}
 
 	if ( plr[pnum].plrlevel == currlevel ) {
-
-
 		FixPlayerLocation(pnum, plr[pnum]._pdir);
 		RemovePlrFromMap(pnum);
 		dFlags[plr[pnum].WorldX][plr[pnum].WorldY] |= 4;
 		SetPlayerOld(pnum);
 
 		if ( pnum == myplr ) {
-
-
 			drawhpflag = 1;
 			deathdelay = 30;
 
@@ -1756,20 +1748,17 @@ void __fastcall StartPlayerKill(int pnum, int earflag)
 			}
 
 			if ( !diablolevel ) {
-
-
 				DropHalfPlayersGold(pnum);
 				if ( earflag != -1 ) {
 					if ( earflag != 0 ) {
+						ItemStruct ear;
 						SetPlrHandItem(&ear, IDI_EAR);
 						sprintf(ear._iName, "Ear of %s", plr[pnum]._pName);
 						if ( plr[pnum]._pClass == PC_SORCERER ) {
 							ear._iCurs = 19;
-						}
-						else if ( plr[pnum]._pClass == PC_WARRIOR ) {
+						} else if ( plr[pnum]._pClass == PC_WARRIOR ) {
 							ear._iCurs = 20;
-						}
-						else if ( plr[pnum]._pClass == PC_ROGUE ) {
+						} else if ( plr[pnum]._pClass == PC_ROGUE ) {
 							ear._iCurs = 21;
 						}
 
@@ -1780,13 +1769,12 @@ void __fastcall StartPlayerKill(int pnum, int earflag)
 						if ( FindGetItem(IDI_EAR, ear._iCreateInfo, ear._iSeed) == -1 ) {
 							PlrDeadItem(pnum, &ear, 0, 0);
 						}
-					}
-					else {
-						pi = &plr[pnum].InvBody[0];
+					} else {
+						ItemStruct *pi = &plr[pnum].InvBody[0];
 						i = NUM_INVLOC;
 						while ( i != 0 ) {
 							i--;
-							int pdd = (i + plr[pnum]._pdir) & NUM_INVLOC;
+							int pdd = (i + plr[pnum]._pdir) & 7;
 							PlrDeadItem(pnum, pi, offset_x[pdd], offset_y[pdd]);
 							pi++;
 						}
