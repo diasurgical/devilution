@@ -4,7 +4,7 @@
 
 int movie_cpp_init_value; // weak
 char movie_playing; // weak
-int loop_movie; // weak
+BOOL loop_movie; // weak
 
 const int movie_inf = 0x7F800000; // weak
 
@@ -18,7 +18,7 @@ struct movie_cpp_init
 // 47F144: using guessed type int movie_inf;
 // 659AF4: using guessed type int movie_cpp_init_value;
 
-void __fastcall play_movie(char *pszMovie, bool user_can_close)
+void __fastcall play_movie(char *pszMovie, BOOL user_can_close)
 {
 	char *v2; // esi
 	WNDPROC saveProc; // edi
