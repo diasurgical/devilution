@@ -69,12 +69,11 @@ LINK32=link.exe
 # PROP Intermediate_Dir "Source/WinDebug"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
-<<<<<<< HEAD
-# ADD BASE CPP /nologo /MT /W3 /Gm /GX /Zi /O1 /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "NDEBUG" /YX /FD /c
-# ADD CPP /nologo /MTd /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD BASE MTL /nologo /D "_DEBUG" /D "NDEBUG" /mktyplib203 /o "NUL" /win32 /win32
+# ADD BASE CPP /nologo /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD CPP /nologo /MTd /W3 /Gm /GX /Zi /O1 /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
+# ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
+# ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
 # ADD BASE RSC /l 0x409 /d "_DEBUG"
->>>>>>> devilution/master
 # ADD RSC /l 0x409 /d "_DEBUG"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
