@@ -22,8 +22,8 @@ void __cdecl pfile_init_save_directory()
 {
 	char Buffer[260]; // [esp+4h] [ebp-104h]
 
-	if ( GetWindowsDirectoryA(Buffer, 0x104u)
-	  && (pfile_check_available_space(Buffer), GetModuleFileNameA(ghInst, Buffer, 0x104u)) )
+	if ( GetWindowsDirectory(Buffer, 0x104u)
+	  && (pfile_check_available_space(Buffer), GetModuleFileName(ghInst, Buffer, 0x104u)) )
 	{
 		pfile_check_available_space(Buffer);
 	}
@@ -58,7 +58,7 @@ void __fastcall pfile_check_available_space(char *pszDir)
 			break;
 		}
 	}
-	v4 = GetDiskFreeSpaceA(v1, &SectorsPerCluster, &BytesPerSector, &NumberOfFreeClusters, &TotalNumberOfClusters);
+	v4 = GetDiskFreeSpace(v1, &SectorsPerCluster, &BytesPerSector, &NumberOfFreeClusters, &TotalNumberOfClusters);
 	if ( !v4 )
 		goto LABEL_12;
 	if ( (signed __int64)(BytesPerSector * (unsigned __int64)SectorsPerCluster * NumberOfFreeClusters) < 0xA00000 )
@@ -161,7 +161,7 @@ void __fastcall pfile_get_save_path(char *pszBuf, int dwBufSize, int save_num)
 	v4 = "\\multi_%d.sv";
 	if ( (unsigned char)gbMaxPlayers <= 1u )
 		v4 = "\\single_%d.sv";
-	v5 = GetModuleFileNameA(ghInst, pszBuf, 0x104u);
+	v5 = GetModuleFileName(ghInst, pszBuf, 0x104u);
 	v6 = strrchr(v3, '\\');
 	if ( v6 )
 		*v6 = 0;
@@ -332,14 +332,14 @@ bool __stdcall pfile_ui_set_hero_infos(void (__stdcall *ui_add_hero_info)(_uiher
 						if ( (unsigned int)save_num >= MAX_CHARACTERS )
 							goto LABEL_13;
 					}
-					if ( CopyFileA(FileName, NewFileName, 1) )
+					if ( CopyFile(FileName, NewFileName, 1) )
 					{
 						SRegSaveString("Diablo\\Converted", v1, 0, NewFileName);
-						v4 = GetFileAttributesA(NewFileName);
+						v4 = GetFileAttributes(NewFileName);
 						if ( v4 != -1 )
 						{
 							_LOBYTE(v4) = v4 & 0xF9;
-							SetFileAttributesA(NewFileName, v4);
+							SetFileAttributes(NewFileName, v4);
 						}
 					}
 				}
@@ -386,7 +386,7 @@ char *__fastcall GetSaveDirectory(char *dst, int dst_size, int save_num)
 	if ( (unsigned char)gbMaxPlayers <= 1u )
 	{
 		v4 = "\\single_%d.sv";
-		v5 = GetModuleFileNameA(ghInst, dst, 0x104u);
+		v5 = GetModuleFileName(ghInst, dst, 0x104u);
 		v6 = strrchr(v3, '\\');
 		if ( v6 )
 			*v6 = '\0';
@@ -394,7 +394,7 @@ char *__fastcall GetSaveDirectory(char *dst, int dst_size, int save_num)
 	else
 	{
 		v4 = "\\dlinfo_%d.drv";
-		v5 = GetWindowsDirectoryA(dst, 0x104u);
+		v5 = GetWindowsDirectory(dst, 0x104u);
 	}
 	if ( !v5 )
 		TermMsg("Unable to get save directory");
@@ -446,7 +446,7 @@ bool __fastcall pfile_read_hero(void *archive, PkPlayerStruct *pPack)
 				goto LABEL_11;
 			if ( (unsigned char)gbMaxPlayers > 1u )
 			{
-				GetComputerNameA(password, &nSize);
+				GetComputerName(password, &nSize);
 				if ( !SFileSetFilePointer(file, 0, 0, 0) )
 				{
 					//_LOBYTE(v8) = SFileReadFile(file, v6, v4, (unsigned long *)&dwBytes, 0);
@@ -619,7 +619,7 @@ bool __stdcall pfile_delete_save(_uiheroinfo *hero_info)
 	{
 		hero_names[v1][0] = 0;
 		pfile_get_save_path(FileName, 260, v1);
-		DeleteFileA(FileName);
+		DeleteFile(FileName);
 	}
 	return 1;
 }
@@ -880,7 +880,7 @@ char *__fastcall pfile_read(char *pszName, int *pdwLen)
 	{
 		if ( (unsigned char)gbMaxPlayers > 1u )
 		{
-			GetComputerNameA(password, &nSize);
+			GetComputerName(password, &nSize);
 			if ( SFileSetFilePointer(file, 0, 0, 0) )
 				TermMsg("Unable to read save file");
 			//_LOBYTE(v11) = SFileReadFile(file, v9, *v2, (unsigned long *)&nread, 0);

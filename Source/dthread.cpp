@@ -103,7 +103,7 @@ void __cdecl dthread_start()
 
 	if ( gbMaxPlayers != 1 )
 	{
-		sghWorkToDoEvent = CreateEventA(NULL, TRUE, FALSE, NULL);
+		sghWorkToDoEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
 		if ( !sghWorkToDoEvent )
 		{
 			v0 = TraceLastError();

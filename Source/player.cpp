@@ -2881,7 +2881,7 @@ LABEL_11:
 		v6 = ghMainWnd;
 		plr[v5]._pmode = PM_NEWLVL;
 		plr[v5]._pInvincible = 1;
-		PostMessageA(v6, v3, 0, 0);
+		PostMessage(v6, v3, 0, 0);
 		if ( (unsigned char)gbMaxPlayers > 1u )
 			NetSendCmdParam2(1u, CMD_NEWLVL, v3, lvl);
 	}
@@ -2914,7 +2914,7 @@ void __fastcall RestartTownLvl(int pnum)
 		plr[v2]._pmode = PM_NEWLVL;
 		v4 = ghMainWnd;
 		plr[v2]._pInvincible = 1;
-		PostMessageA(v4, WM_DIABRETOWN, 0, 0);
+		PostMessage(v4, WM_DIABRETOWN, 0, 0);
 	}
 }
 
@@ -2944,7 +2944,7 @@ void __fastcall StartWarpLvl(int pnum, int pidx)
 		plr[v5]._pmode = PM_NEWLVL;
 		v6 = ghMainWnd;
 		plr[v5]._pInvincible = 1;
-		PostMessageA(v6, WM_DIABWARPLVL, 0, 0);
+		PostMessage(v6, WM_DIABWARPLVL, 0, 0);
 	}
 }
 // 679660: using guessed type char gbMaxPlayers;

@@ -43,8 +43,8 @@ char *__fastcall GetErrorStr(int error_code)
 	}
 	else
 	{
-		if ( !SErrGetErrorStr(error_code, sz_error_buf, 256) && !FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM, NULL, v1, 0x400u, sz_error_buf, 0x100u, NULL) )
-			wsprintfA(sz_error_buf, "unknown error 0x%08x", v1);
+		if ( !SErrGetErrorStr(error_code, sz_error_buf, 256) && !FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, NULL, v1, 0x400u, sz_error_buf, 0x100u, NULL) )
+			wsprintf(sz_error_buf, "unknown error 0x%08x", v1);
 	}
 	v4 = strlen(sz_error_buf);
 	for ( i = &sz_error_buf[v4-1]; v4 > 0; *i = 0 )
@@ -222,10 +222,10 @@ void __fastcall MsgBox(char *pszFmt, va_list va)
 {
 	char Text[256]; // [esp+0h] [ebp-100h]
 
-	wvsprintfA(Text, pszFmt, va);
+	wvsprintf(Text, pszFmt, va);
 	if ( ghMainWnd )
 		SetWindowPos(ghMainWnd, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOACTIVATE|SWP_NOMOVE|SWP_NOSIZE);
-	MessageBoxA(ghMainWnd, Text, "ERROR", MB_TASKMODAL|MB_ICONHAND);
+	MessageBox(ghMainWnd, Text, "ERROR", MB_TASKMODAL|MB_ICONHAND);
 }
 
 void __cdecl FreeDlg()
@@ -253,7 +253,7 @@ void DrawDlg(char *pszFmt, ...)
 	va_list arglist; // [esp+10Ch] [ebp+Ch]
 
 	va_start(arglist, pszFmt);
-	wvsprintfA(text, pszFmt, arglist);
+	wvsprintf(text, pszFmt, arglist);
 	SDrawMessageBox(text, "Diablo", MB_TASKMODAL|MB_ICONEXCLAMATION);
 }
 
@@ -326,8 +326,8 @@ void __fastcall ErrDlg(int template_id, int error_code, char *log_file_path, int
 	if ( v7 )
 		v6 = v7 + 1;
 	v8 = GetErrorStr(v4);
-	wsprintfA((LPSTR)dwInitParam, "%s\nat: %s line %d", v8, v6, log_line_nr);
-	if ( DialogBoxParamA(ghInst, MAKEINTRESOURCE(v5), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)dwInitParam) == -1 )
+	wsprintf((LPSTR)dwInitParam, "%s\nat: %s line %d", v8, v6, log_line_nr);
+	if ( DialogBoxParam(ghInst, MAKEINTRESOURCE(v5), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)dwInitParam) == -1 )
 		TermMsg("ErrDlg: %d", v5);
 	TermMsg(0);
 }
@@ -363,7 +363,7 @@ void __fastcall TextDlg(HWND hDlg, char *text)
 	v3 = hDlg;
 	center_window(hDlg);
 	if ( v2 )
-		SetDlgItemTextA(v3, 1000, v2);
+		SetDlgItemText(v3, 1000, v2);
 }
 
 void __fastcall ErrOkDlg(int template_id, int error_code, char *log_file_path, int log_line_nr)
@@ -382,8 +382,8 @@ void __fastcall ErrOkDlg(int template_id, int error_code, char *log_file_path, i
 	if ( v7 )
 		v4 = v7 + 1;
 	v8 = GetErrorStr(v5);
-	wsprintfA((LPSTR)dwInitParam, "%s\nat: %s line %d", v8, v4, log_line_nr);
-	DialogBoxParamA(ghInst, MAKEINTRESOURCE(v6), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)dwInitParam);
+	wsprintf((LPSTR)dwInitParam, "%s\nat: %s line %d", v8, v4, log_line_nr);
+	DialogBoxParam(ghInst, MAKEINTRESOURCE(v6), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)dwInitParam);
 }
 
 void __fastcall FileErrDlg(char *error)
@@ -394,7 +394,7 @@ void __fastcall FileErrDlg(char *error)
 	FreeDlg();
 	if ( !v1 )
 		v1 = &empty_string;
-	if ( DialogBoxParamA(ghInst, MAKEINTRESOURCE(IDD_DIALOG3), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)v1) == -1 )
+	if ( DialogBoxParam(ghInst, MAKEINTRESOURCE(IDD_DIALOG3), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)v1) == -1 )
 		TermMsg("FileErrDlg");
 	TermMsg(0);
 }
@@ -405,7 +405,7 @@ void __fastcall DiskFreeDlg(char *error)
 
 	v1 = error;
 	FreeDlg();
-	if ( DialogBoxParamA(ghInst, MAKEINTRESOURCE(IDD_DIALOG7), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)v1) == -1 )
+	if ( DialogBoxParam(ghInst, MAKEINTRESOURCE(IDD_DIALOG7), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)v1) == -1 )
 		TermMsg("DiskFreeDlg");
 	TermMsg(0);
 }
@@ -415,7 +415,7 @@ bool __cdecl InsertCDDlg()
 	int v0; // edi
 
 	ShowCursor(1);
-	v0 = DialogBoxParamA(ghInst, MAKEINTRESOURCE(IDD_DIALOG9), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)&empty_string);
+	v0 = DialogBoxParam(ghInst, MAKEINTRESOURCE(IDD_DIALOG9), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)&empty_string);
 	if ( v0 == -1 )
 		TermMsg("InsertCDDlg");
 	ShowCursor(0);
@@ -428,7 +428,7 @@ void __fastcall DirErrorDlg(char *error)
 
 	v1 = error;
 	FreeDlg();
-	if ( DialogBoxParamA(ghInst, MAKEINTRESOURCE(IDD_DIALOG11), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)v1) == -1 )
+	if ( DialogBoxParam(ghInst, MAKEINTRESOURCE(IDD_DIALOG11), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)v1) == -1 )
 		TermMsg("DirErrorDlg");
 	TermMsg(0);
 }

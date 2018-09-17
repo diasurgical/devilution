@@ -118,7 +118,7 @@ void __fastcall exception_hex_format(BYTE *ptr, unsigned int numBytes)
 
 void __fastcall exception_unknown_module(LPCVOID lpAddress, LPSTR lpModuleName, int iMaxLength, int *sectionNum, int *sectionOffset)
 {
-	lstrcpynA(lpModuleName, "*unknown*", iMaxLength);
+	lstrcpyn(lpModuleName, "*unknown*", iMaxLength);
 	*sectionNum = 0;
 	*sectionOffset = 0;
 
@@ -128,11 +128,11 @@ void __fastcall exception_unknown_module(LPCVOID lpAddress, LPSTR lpModuleName, 
 
 	PIMAGE_DOS_HEADER dosHeader = (PIMAGE_DOS_HEADER)memInfo.AllocationBase;
 	if ( !memInfo.AllocationBase )
-		dosHeader = (PIMAGE_DOS_HEADER)GetModuleHandleA(0);
+		dosHeader = (PIMAGE_DOS_HEADER)GetModuleHandle(0);
 
-	if (!GetModuleFileNameA((HMODULE)dosHeader, lpModuleName, iMaxLength))
+	if (!GetModuleFileName((HMODULE)dosHeader, lpModuleName, iMaxLength))
 	{
-		lstrcpynA(lpModuleName, "*unknown*", iMaxLength);
+		lstrcpyn(lpModuleName, "*unknown*", iMaxLength);
 		return;
 	}
 
@@ -222,13 +222,13 @@ char *__fastcall exception_get_error_type(DWORD dwMessageId, LPSTR lpString1, DW
 	CASE_EXCEPTION(v4, SINGLE_STEP);
 	CASE_EXCEPTION(v4, ACCESS_VIOLATION);
 	default:
-		HMODULE ntdll = GetModuleHandleA("NTDLL.DLL");
-		if (!FormatMessageA(FORMAT_MESSAGE_FROM_HMODULE | FORMAT_MESSAGE_IGNORE_INSERTS, ntdll, dwMessageId, 0, lpString1, nSize, NULL))
+		HMODULE ntdll = GetModuleHandle("NTDLL.DLL");
+		if (!FormatMessage(FORMAT_MESSAGE_FROM_HMODULE | FORMAT_MESSAGE_IGNORE_INSERTS, ntdll, dwMessageId, 0, lpString1, nSize, NULL))
 		{
 			v4 = "*unknown*";
 		}
 	}
-	lstrcpynA(lpString1, v4, nSize);
+	lstrcpyn(lpString1, v4, nSize);
 	return lpString1;
 }
 
