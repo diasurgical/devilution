@@ -53,8 +53,8 @@ void __fastcall NetSendCmdLoc(unsigned char bHiPri, unsigned char bCmd, unsigned
 void __fastcall NetSendCmdLocParam1(unsigned char bHiPri, unsigned char bCmd, unsigned char x, unsigned char y, int wParam1);
 void __fastcall NetSendCmdLocParam2(unsigned char bHiPri, unsigned char bCmd, unsigned char x, unsigned char y, int wParam1, int wParam2);
 void __fastcall NetSendCmdLocParam3(unsigned char bHiPri, unsigned char bCmd, unsigned char x, unsigned char y, int wParam1, int wParam2, int wParam3);
-void __fastcall NetSendCmdParam1(unsigned char bHiPri, unsigned char bCmd, unsigned short wParam1);
-void __fastcall NetSendCmdParam2(unsigned char bHiPri, unsigned char bCmd, unsigned short wParam1, unsigned short wParam2);
+void __fastcall NetSendCmdParam1(BOOL bHiPri, unsigned char bCmd, unsigned short wParam1);
+void __fastcall NetSendCmdParam2(BOOL bHiPri, unsigned char bCmd, unsigned short wParam1, unsigned short wParam2);
 void __fastcall NetSendCmdParam3(unsigned char bHiPri, unsigned char bCmd, unsigned short wParam1, unsigned short wParam2, int wParam3);
 void __fastcall NetSendCmdQuest(unsigned char bHiPri, unsigned char q);
 void __fastcall NetSendCmdGItem(unsigned char bHiPri, unsigned char bCmd, unsigned char mast, unsigned char pnum, int ii);
@@ -63,9 +63,9 @@ bool __fastcall NetSendCmdReq2(unsigned char bCmd, unsigned char mast, unsigned 
 void __fastcall NetSendCmdExtra(struct TCmdGItem *p);
 void __fastcall NetSendCmdPItem(unsigned char bHiPri, unsigned char bCmd, unsigned char x, unsigned char y);
 void __fastcall NetSendCmdChItem(unsigned char bHiPri, unsigned char bLoc);
-void __fastcall NetSendCmdDelItem(unsigned char bHiPri, unsigned char bLoc);
+void __fastcall NetSendCmdDelItem(BOOL bHiPri, unsigned char bLoc);
 void __fastcall NetSendCmdDItem(unsigned char bHiPri, int ii);
-void __fastcall NetSendCmdDamage(unsigned char bHiPri, unsigned char bPlr, unsigned int dwDam);
+void __fastcall NetSendCmdDamage(BOOL bHiPri, unsigned char bPlr, unsigned int dwDam);
 void __fastcall NetSendCmdString(int a1, const char *pszStr);
 void __fastcall RemovePlrPortal(int pnum);
 int __fastcall ParseCmd(int pnum, TCmd *pCmd);
