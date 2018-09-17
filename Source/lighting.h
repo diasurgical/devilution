@@ -14,7 +14,7 @@ extern int dolighting; // weak
 extern char dung_map_rgba[16384]; /* int [64][64] short [64][128] char [64][256] */
 extern int visionid;
 extern char *pLightTbl; /* todo: struct? */
-extern int lightflag; // weak
+extern BOOL lightflag;
 
 void __fastcall SetLightFX(int *x, int *y, short *s_r, short *s_g, int *s_b, int *d_r, int *d_g, int *d_b);
 void __fastcall DoLighting(int nXPos, int nYPos, int nRadius, int Lnum);
@@ -38,7 +38,7 @@ void __fastcall ChangeLight(int i, int x, int y, int r);
 void __cdecl ProcessLightList();
 void __cdecl SavePreLighting();
 void __cdecl InitVision();
-int __fastcall AddVision(int x, int y, int r, bool mine);
+int __fastcall AddVision(int x, int y, int r, BOOL mine);
 void __fastcall ChangeVisionRadius(int id, int r);
 void __fastcall ChangeVisionXY(int id, int x, int y);
 void __cdecl ProcessVisionList();
