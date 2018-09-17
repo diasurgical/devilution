@@ -26,7 +26,7 @@ char *SelHero_1000B7B3() { return 0; }
 } */
 
 // ref: 0x1000B7B9
-int SelHero_1000B7B9() { return 0; }
+void *SelHero_1000B7B9() { return 0; }
 /* {
 	return SMemAlloc(44, "C:\\Src\\Diablo\\DiabloUI\\SelHero.cpp", 123, 0);
 } */

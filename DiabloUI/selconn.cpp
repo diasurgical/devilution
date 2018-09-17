@@ -1,5 +1,5 @@
 // ref: 0x1000A082
-int SelConn_1000A082() { return 0; }
+void *SelConn_1000A082() { return 0; }
 /* {
 	return SMemAlloc(272, "C:\\Src\\Diablo\\DiabloUI\\SelConn.cpp", 124, 0);
 } */

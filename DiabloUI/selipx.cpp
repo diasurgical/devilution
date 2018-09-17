@@ -1,5 +1,5 @@
 // ref: 0x1000C610
-int SelIPX_1000C610() { return 0; }
+void *SelIPX_1000C610() { return 0; }
 /* {
 	return SMemAlloc(268, "C:\\Src\\Diablo\\DiabloUI\\SelIPX.cpp", 105, 0);
 } */
@@ -330,7 +330,7 @@ int UNKCALL SelIPX_1000CAC1(void *arg) { return 0; }
 // 10010340: using guessed type int __stdcall SMemFree(_DWORD, _DWORD, _DWORD, _DWORD);
 
 // ref: 0x1000CAD5
-int __stdcall SelIPX_1000CAD5(int a1, char *a2, char *a3) { return 0; }
+void *__stdcall SelIPX_1000CAD5(int a1, char *a2, char *a3) { return 0; }
 /* {
 	_DWORD *v3; // eax
 	int result; // eax

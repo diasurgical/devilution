@@ -1,5 +1,5 @@
 // ref: 0x10002E2B
-int Connect_10002E2B() { return 0; }
+void *Connect_10002E2B() { return 0; }
 /* {
 	int *v0; // edi
 	int result; // eax

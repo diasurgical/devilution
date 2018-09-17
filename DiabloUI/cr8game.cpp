@@ -218,7 +218,7 @@ HGDIOBJ __stdcall cr8game_10004506(HWND hDlg, UINT Msg, WPARAM wParam, HWND hWnd
 // 10029690: using guessed type char byte_10029690;
 
 // ref: 0x10004828
-int cr8game_10004828() { return 0; }
+BYTE *cr8game_10004828() { return 0; }
 /* {
 	int result; // eax
 
@@ -271,7 +271,7 @@ int UNKCALL cr8game_1000487F(HWND hWnd) { return 0; }
 // 100296B8: using guessed type int dword_100296B8;
 
 // ref: 0x10004914
-_DWORD *UNKCALL cr8game_10004914(HWND hDlg) { return 0; }
+void **UNKCALL cr8game_10004914(HWND hDlg) { return 0; }
 /* {
 	HWND v1; // ebp
 	signed int v2; // edi

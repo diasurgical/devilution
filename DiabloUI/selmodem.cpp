@@ -35,7 +35,7 @@ int __fastcall SelModem_1000E435(void *a1, int a2, int a3, char *a4, char *a5) {
 // 1002A4E8: using guessed type int dword_1002A4E8;
 
 // ref: 0x1000E497
-int __stdcall SelModem_1000E497(int a1, char *a2, char *a3) { return 0; }
+char *__stdcall SelModem_1000E497(int a1, char *a2, char *a3) { return 0; }
 /* {
 	int result; // eax
 	int v4; // esi
@@ -59,7 +59,7 @@ int __stdcall SelModem_1000E497(int a1, char *a2, char *a3) { return 0; }
 // 1002A4DC: using guessed type int dword_1002A4DC;
 
 // ref: 0x1000E4EC
-int SelModem_1000E4EC() { return 0; }
+void *SelModem_1000E4EC() { return 0; }
 /* {
 	return SMemAlloc(264, "C:\\Src\\Diablo\\DiabloUI\\SelModem.cpp", 72, 0);
 } */

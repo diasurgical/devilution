@@ -63,7 +63,7 @@ int Title_1000FEED() { return 0; }
 // 1002A588: using guessed type int dword_1002A588;
 
 // ref: 0x1000FF0F
-_DWORD *UNKCALL Title_1000FF0F(HWND hWnd) { return 0; }
+void **UNKCALL Title_1000FF0F(HWND hWnd) { return 0; }
 /* {
 	HWND v1; // esi
 	_DWORD *result; // eax
@@ -206,7 +206,7 @@ signed int Title_100100DC() { return 0; }
 // 1002A588: using guessed type int dword_1002A588;
 
 // ref: 0x100100E7
-_DWORD *UNKCALL Title_100100E7(HWND hWnd) { return 0; }
+void **UNKCALL Title_100100E7(HWND hWnd) { return 0; }
 /* {
 	HWND v1; // esi
 

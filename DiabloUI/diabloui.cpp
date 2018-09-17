@@ -15,6 +15,7 @@
 #include "..\defs.h"
 #include "..\enums.h"
 #include "..\structs.h"
+#include "..\3rdParty\Storm\Source\storm.h"
 #include "diabloui.h"
 
 #define UNKCALL     __fastcall
@@ -22,6 +23,9 @@
 #define USERPURGE   __fastcall
 
 //temporarily include everything directly
+#include "_temp_funcs.h"
+#include "_temp_data.cpp"
+
 #include "artfont.cpp"
 #include "bnetgw.cpp"
 #include "bn_prof.cpp"
@@ -146,12 +150,12 @@ BOOL __stdcall DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
 		{
 			// hInstance = hinstDLL;
 			DiabEdit_100057A6();
-			local_10007825();
+			local_InitUiPalette();
 		}
 	}
 	else
 	{
-		local_1000787D();
+		local_DelUiPalette();
 	}
 	return 1;
 }

@@ -118,7 +118,7 @@ signed int Fade_100073B4() { return 0; }
 // 10029C70: using guessed type int dword_10029C70;
 
 // ref: 0x100073C5
-int __fastcall Fade_100073C5(HWND hWnd, int a2) { return 0; }
+void __fastcall Fade_100073C5(HWND hWnd, int a2) { return; }
 /* {
 	int v2; // esi
 	HWND v3; // eax
