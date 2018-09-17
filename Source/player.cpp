@@ -2261,31 +2261,21 @@ void __fastcall RestartTownLvl(int pnum)
 
 void __fastcall StartWarpLvl(int pnum, int pidx)
 {
-	int v2; // edi
-	int v3; // esi
-	int *v4; // eax
-	int v5; // eax
-	HWND v6; // ST00_4
-
-	v2 = pidx;
-	v3 = pnum;
 	InitLevelChange(pnum);
-	if ( gbMaxPlayers != 1 )
-	{
-		v4 = &plr[v3].plrlevel;
-		if ( *v4 )
-			*v4 = 0;
-		else
-			*v4 = portal[v2].level;
+
+	if ( gbMaxPlayers != 1 ) {
+		if ( plr[pnum].plrlevel != 0 ) {
+			plr[pnum].plrlevel = 0;
+		} else {
+			plr[pnum].plrlevel = portal[pidx].level;
+		}
 	}
-	if ( v3 == myplr )
-	{
-		SetCurrentPortal(v2);
-		v5 = v3;
-		plr[v5]._pmode = PM_NEWLVL;
-		v6 = ghMainWnd;
-		plr[v5]._pInvincible = 1;
-		PostMessage(v6, WM_DIABWARPLVL, 0, 0);
+
+	if ( pnum == myplr ) {
+		SetCurrentPortal(pidx);
+		plr[pnum]._pmode = PM_NEWLVL;
+		plr[pnum]._pInvincible = TRUE;
+		PostMessage(ghMainWnd, WM_DIABWARPLVL, 0, 0);
 	}
 }
 // 679660: using guessed type char gbMaxPlayers;
