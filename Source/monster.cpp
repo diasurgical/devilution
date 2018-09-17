@@ -393,7 +393,7 @@ void __fastcall InitMonsterTRN(int monst, int special)
 				{
 					Cl2ApplyTrans(
 						v9->CMem,
-						(char *)Monsters[monst].trans_file,
+						Monsters[monst].trans_file,
 						*(int *)((char *)&Monsters[0].Anims[0].Rate + v8));
 					v9 = (AnimStruct *)((char *)v9 + 4);
 					--v10;
