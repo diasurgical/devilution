@@ -40,8 +40,8 @@ extern const int sound_inf; // weak
 
 /* data */
 
-extern char gbMusicOn; // weak
-extern char gbSoundOn; // weak
+extern UCHAR gbMusicOn;
+extern UCHAR gbSoundOn;
 extern char gbDupSounds; // weak
 extern int sgnMusicTrack;
 extern char *sgszMusicTracks[6];
