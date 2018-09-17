@@ -9,6 +9,8 @@ int pcursmonst; // idb
 int icursW28; // idb
 void *pCursCels;
 int icursH; // weak
+
+// inv_item value
 char pcursinvitem; // weak
 int icursW; // weak
 char pcursitem; // weak
