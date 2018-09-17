@@ -990,7 +990,7 @@ void __fastcall NetSendCmdLocParam3(unsigned char bHiPri, unsigned char bCmd, un
 		NetSendLoPri((unsigned char *)&cmd, 9u);
 }
 
-void __fastcall NetSendCmdParam1(unsigned char bHiPri, unsigned char bCmd, unsigned short wParam1)
+void __fastcall NetSendCmdParam1(BOOL bHiPri, unsigned char bCmd, unsigned short wParam1)
 {
 	TCmdParam1 cmd; // [esp+1h] [ebp-3h]
 
@@ -1002,7 +1002,7 @@ void __fastcall NetSendCmdParam1(unsigned char bHiPri, unsigned char bCmd, unsig
 		NetSendLoPri((unsigned char *)&cmd, 3u);
 }
 
-void __fastcall NetSendCmdParam2(unsigned char bHiPri, unsigned char bCmd, unsigned short wParam1, unsigned short wParam2)
+void __fastcall NetSendCmdParam2(BOOL bHiPri, unsigned char bCmd, unsigned short wParam1, unsigned short wParam2)
 {
 	TCmdParam2 cmd; // [esp+0h] [ebp-8h]
 
@@ -1254,7 +1254,7 @@ void __fastcall NetSendCmdChItem(unsigned char bHiPri, unsigned char bLoc)
 		NetSendLoPri((unsigned char *)&cmd, 0xBu);
 }
 
-void __fastcall NetSendCmdDelItem(unsigned char bHiPri, unsigned char bLoc)
+void __fastcall NetSendCmdDelItem(BOOL bHiPri, unsigned char bLoc)
 {
 	TCmdDelItem cmd; // [esp+2h] [ebp-2h]
 
@@ -1323,7 +1323,7 @@ void __fastcall NetSendCmdDItem(unsigned char bHiPri, int ii)
 		NetSendLoPri((unsigned char *)&cmd, 0x16u);
 }
 
-void __fastcall NetSendCmdDamage(unsigned char bHiPri, unsigned char bPlr, unsigned int dwDam)
+void __fastcall NetSendCmdDamage(BOOL bHiPri, unsigned char bPlr, unsigned int dwDam)
 {
 	TCmdDamage cmd; // [esp+0h] [ebp-8h]
 
@@ -3463,12 +3463,12 @@ int __fastcall On_PLAYER_JOINLEVEL(struct TCmdLocParam1 *pCmd, int pnum)
 				plr[v4].plrlevel = v5;
 				if ( currlevel == plr[v4].plrlevel )
 				{
-					LoadPlrGFX(v2, 1);
+					LoadPlrGFX(v2, PFILE_STAND);
 					SyncInitPlr(v2);
 					if ( (signed int)(plr[v4]._pHitPoints & 0xFFFFFFC0) <= 0 )
 					{
 						plr[v4]._pgfxnum = 0;
-						LoadPlrGFX(v2, 128);
+						LoadPlrGFX(v2, PFILE_DEATH);
 						v6 = plr[v4]._pDWidth;
 						v7 = plr[v4]._pDAnim[0];
 						plr[v4]._pmode = PM_DEATH;
