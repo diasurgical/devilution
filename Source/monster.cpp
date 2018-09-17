@@ -392,7 +392,7 @@ void __fastcall InitMonsterTRN(int monst, int special)
 				do
 				{
 					Cl2ApplyTrans(
-						(char *)v9->CMem,
+						v9->CMem,
 						(char *)Monsters[monst].trans_file,
 						*(int *)((char *)&Monsters[0].Anims[0].Rate + v8));
 					v9 = (AnimStruct *)((char *)v9 + 4);
@@ -697,7 +697,7 @@ void __fastcall InitMonsterGFX(int monst)
 	Monsters[v1].mAFNum = *(&monsterdata[0].mAFNum + v3);
 	if ( !v13 )
 	{
-		v15 = &Monsters[v1].trans_file;
+		v15 = (void **)&Monsters[v1].trans_file;
 		v16 = LoadFileInMem(*(char **)((char *)&monsterdata[0].TransFile + v3), 0);
 		v17 = *(int *)((char *)&monsterdata[0].has_special + v3);
 		v18 = mon_id;
@@ -6519,7 +6519,7 @@ void __fastcall MAI_Golum(int i)
 					M_StartAttack(arglist);
 					return;
 				}
-				v15 = &monster[v2]._pathcount;
+				v15 = (int *)&monster[v2]._pathcount;
 				if ( ++*(_BYTE *)v15 > 8u )
 					*(_BYTE *)v15 = 5;
 				v16 = M_CallWalk(arglist, plr[arglist]._pdir);
