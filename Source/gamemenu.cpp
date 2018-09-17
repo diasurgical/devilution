@@ -117,7 +117,7 @@ void __cdecl gamemenu_load_game()
 	InitDiabloMsg(10);
 	drawpanflag = 255;
 	DrawAndBlit();
-	LoadGame(0);
+	LoadGame(FALSE);
 	ClrDiabloMsg();
 	PaletteFadeOut(8);
 	deathflag = 0;

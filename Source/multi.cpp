@@ -21,7 +21,7 @@ int sglTimeoutStart; // weak
 int sgdwPlayerLeftReasonTbl[MAX_PLRS];
 char pkdata_678658[4100];
 unsigned int sgdwGameLoops; // idb
-char gbMaxPlayers; // weak
+UCHAR gbMaxPlayers; // weak
 char sgbTimeout; // weak
 char szPlayerName[128];
 char gbDeltaSender; // weak
@@ -1125,14 +1125,14 @@ void __fastcall multi_player_joins(int pnum, TCmdPlrInfoHdr *cmd, int a3)
 					if ( v7 )
 						v8 = "Player '%s' (level %d) is already in the game";
 					EventPlrMsg(v8, plr[v6]._pName, plr[v6]._pLevel);
-					LoadPlrGFX(v3, 1);
+					LoadPlrGFX(v3, PFILE_STAND);
 					SyncInitPlr(v3);
 					if ( plr[v6].plrlevel == currlevel )
 					{
 						if ( (signed int)(plr[v6]._pHitPoints & 0xFFFFFFC0) <= 0 )
 						{
 							plr[v6]._pgfxnum = 0;
-							LoadPlrGFX(v3, 128);
+							LoadPlrGFX(v3, PFILE_DEATH);
 							v9 = plr[v6]._pDWidth;
 							v10 = plr[v6]._pDAnim[0];
 							plr[v6]._pmode = 8;

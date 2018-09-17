@@ -147,6 +147,9 @@ void __fastcall init_disable_screensaver(bool disable)
 	HKEY phkResult; // [esp+1Ch] [ebp-8h]
 	bool v6; // [esp+20h] [ebp-4h]
 
+	// BUGFIX: this is probably the worst possible way to do this. Alternatives: ExtEscape() with SETPOWERMANAGEMENT,
+	// SystemParametersInfo() with SPI_SETSCREENSAVEACTIVE/SPI_SETPOWEROFFACTIVE/SPI_SETLOWPOWERACTIVE
+
 	v6 = disable;
 	if ( !RegOpenKeyEx(HKEY_CURRENT_USER, "Control Panel\\Desktop", 0, KEY_READ|KEY_WRITE, &phkResult) )
 	{

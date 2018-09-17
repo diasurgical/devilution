@@ -4,7 +4,7 @@
 
 void *tbuff;
 
-void __fastcall LoadGame(bool firstflag)
+void __fastcall LoadGame(BOOL firstflag)
 {
 	int v1; // esi
 	int v2; // edi

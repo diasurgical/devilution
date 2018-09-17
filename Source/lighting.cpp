@@ -14,7 +14,7 @@ int dolighting; // weak
 char dung_map_rgba[16384]; /* int [64][64] short [64][128] char [64][256] */
 int visionid;
 char *pLightTbl; /* todo: struct? */
-int lightflag; // weak
+BOOL lightflag;
 
 char CrawlTable[2749] =
 {
@@ -1598,7 +1598,7 @@ void __cdecl InitVision()
 // 5A5590: using guessed type char TransVal;
 // 642A0C: using guessed type int dovision;
 
-int __fastcall AddVision(int x, int y, int r, bool mine)
+int __fastcall AddVision(int x, int y, int r, BOOL mine)
 {
 	int vid; // eax
 	int v5; // esi

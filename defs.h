@@ -5,7 +5,9 @@
 
 #define LIGHTSIZE				6912 // 27 * 256
 
+// must be unsigned to generate unsigned comparisons with pnum
 #define MAX_PLRS				4
+
 #define MAX_CHARACTERS			10
 #define MAX_LVLMTYPES			16
 // #define MAX_PATH				260
@@ -27,9 +29,12 @@
 #define MDMAXX					40
 #define MDMAXY					40
 
+
+// number of inventory grid cells
+#define NUM_INV_GRID_ELEM			40
+#define INV_SLOT_SIZE_PX		28
+
 // todo: enums
-#define NUM_CLASSES				3
-#define NUM_INVLOC				7
 #define NUM_SFX					858
 #define NUMLEVELS				17
 

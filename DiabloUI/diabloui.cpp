@@ -13,6 +13,7 @@
 #endif
 
 #include "..\defs.h"
+#include "..\enums.h"
 #include "..\structs.h"
 #include "..\3rdParty\Storm\Source\storm.h"
 #include "diabloui.h"

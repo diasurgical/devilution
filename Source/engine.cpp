@@ -1273,7 +1273,7 @@ LABEL_14:
 	}
 }
 
-void __fastcall CelDecodeClr(char colour, int screen_x, int screen_y, char *pCelBuff, int frame, int frame_width, int a7, int direction)
+void __fastcall CelDecodeClr(BYTE colour, int screen_x, int screen_y, char *pCelBuff, int frame, int frame_width, int a7, int direction)
 {
 	char *v8; // ebx
 	int v9; // eax
@@ -1845,7 +1845,7 @@ int __cdecl GetRndSeed()
 // 52B97C: using guessed type int sglGameSeed;
 // 52B998: using guessed type int SeedCount;
 
-int __fastcall random(int idx, int v)
+int __fastcall random(BYTE idx, int v)
 {
 	if ( v <= 0 )
 		return 0;
@@ -1952,12 +1952,12 @@ void __fastcall LoadFileWithMem(char *pszName, void *buf)
 	WCloseFile(a1);
 }
 
-void __fastcall Cl2ApplyTrans(char *p, char *ttbl, int last_frame)
+void __fastcall Cl2ApplyTrans(unsigned char *p, unsigned char *ttbl, int last_frame)
 {
 	int v3; // eax
 	int v4; // edi
 	int v5; // esi
-	char *v6; // eax
+	unsigned char *v6; // eax
 	char v7; // bl
 	unsigned char v8; // bl
 	int v9; // edi
@@ -1984,7 +1984,7 @@ void __fastcall Cl2ApplyTrans(char *p, char *ttbl, int last_frame)
 						v9 = v8;
 						do
 						{
-							*v6 = ttbl[(unsigned char)*v6];
+							*v6 = ttbl[*v6];
 							++v6;
 							--v9;
 						}
@@ -1994,7 +1994,7 @@ void __fastcall Cl2ApplyTrans(char *p, char *ttbl, int last_frame)
 				else
 				{
 					--v5;
-					*v6 = ttbl[(unsigned char)*v6];
+					*v6 = ttbl[*v6];
 					++v6;
 				}
 			}
