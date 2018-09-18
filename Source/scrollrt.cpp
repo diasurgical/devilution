@@ -2791,7 +2791,7 @@ LABEL_23:
 LABEL_24:
 	v11 = (_WORD *)((char *)gpBuffer + a6b);
 	v12 = (char *)gpBuffer + a5a;
-	v13 = &gpBuffer->row_unused_1[1].col_unused_1[a6b];
+	v13 = (char *)&gpBuffer->ColRow[1][a6b];
 	v14 = 176;
 	do
 	{
@@ -2831,7 +2831,7 @@ void __cdecl ClearScreenBuffer()
 	lock_buf_priv();
 
 	for(i = 0; i < 480; i++)
-		memset(gpBuffer->row[i].pixels, 0, 640);
+		memset(gpBuffer->Screen.row[i].pixels, 0, 640);
 
 	unlock_buf_priv();
 }
@@ -3001,7 +3001,7 @@ void __cdecl scrollrt_draw_cursor_back_buffer()
 	{
 		v1 = sgdwCursY;
 		v2 = sgSaveBack;
-		v3 = &gpBuffer->row[sgdwCursY].pixels[sgdwCursX];
+		v3 = (char *)&gpBuffer->Screen.row[sgdwCursY].pixels[sgdwCursX];
 		v4 = sgdwCursHgt;
 		if ( sgdwCursHgt )
 		{
@@ -3085,7 +3085,7 @@ void __cdecl scrollrt_draw_cursor_item()
 				v14 = sgSaveBack;
 				v6 = 1 - v3 + v5;
 				sgdwCursHgt = v6;
-				v7 = &gpBuffer->row[v3].pixels[v2 & 0xFFFFFFFC];
+				v7 = (char *)&gpBuffer->Screen.row[v3].pixels[v2 & 0xFFFFFFFC];
 				if ( v6 )
 				{
 					v8 = v6;

@@ -7,7 +7,7 @@ int dx_cpp_init_value; // weak
 IDirectDraw *lpDDInterface;
 IDirectDrawPalette *lpDDPalette; // idb
 int sgdwLockCount;
-Screen *gpBuffer;
+WorkBuf *gpBuffer;
 IDirectDrawSurface *lpDDSBackBuf;
 IDirectDrawSurface *lpDDSPrimary;
 static CRITICAL_SECTION sgMemCrit;
@@ -186,12 +186,12 @@ HRESULT __fastcall dx_DirectDrawCreate(GUID *guid, IDirectDraw **DD, void *unkno
 
 void __cdecl lock_buf_priv()
 {
-	Screen *v0; // eax
+	WorkBuf *v0; // eax
 	int v1; // eax
 	DDSURFACEDESC v2; // [esp+0h] [ebp-6Ch]
 
 	EnterCriticalSection(&sgMemCrit);
-	v0 = (Screen *)sgpBackBuf;
+	v0 = (WorkBuf *)sgpBackBuf;
 	if ( sgpBackBuf )
 		goto LABEL_8;
 	if ( lpDDSBackBuf )
@@ -202,7 +202,7 @@ void __cdecl lock_buf_priv()
 		v1 = lpDDSBackBuf->Lock(NULL, &v2, DDLOCK_WAIT, NULL);
 		if ( v1 )
 			DDErrMsg(v1, 235, "C:\\Src\\Diablo\\Source\\dx.cpp");
-		v0 = (Screen *)v2.lpSurface;
+		v0 = (WorkBuf *)v2.lpSurface;
 		gpBufEnd += (unsigned int)v2.lpSurface;
 LABEL_8:
 		gpBuffer = v0;
@@ -217,7 +217,7 @@ LABEL_9:
 
 void __cdecl unlock_buf_priv()
 {
-	Screen *v0; // eax
+	WorkBuf *v0; // eax
 	int v1; // eax
 
 	if ( !sgdwLockCount )

@@ -97,7 +97,7 @@ void __cdecl DrawQTextBack()
 	signed int v6; // ecx
 
 	CelDecodeOnly(88, 487, pTextBoxCels, 1, 591);
-	v0 = &gpBuffer->row[324].pixels[27];
+	v0 = (char *)&gpBuffer->Screen.row[324].pixels[27];
 	v1 = 148;
 	do
 	{

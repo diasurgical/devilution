@@ -282,7 +282,7 @@ void __fastcall town_draw_lower(int x, int y, int sx, int sy, int a5, int some_f
 		{
 			v6 = sy;
 			v7 = &screen_y_times_768[sy];
-			a1 = (unsigned char *)&gpBuffer->row_unused_1[0].col_unused_1[*v7 + 32 + sx];
+			a1 = (unsigned char *)&gpBuffer->LinearBuf[*v7 + 32 + sx];
 			v25 = 1;
 			v8 = (char *)dpiece_defs_map_1 + 32 * gendung_get_dpiece_num_from_coord(x, y);
 			do
@@ -821,7 +821,7 @@ void __fastcall town_draw_upper(int x, int y, int sx, int sy, int a5, int a6, in
 	int v14; // esi
 	int v15; // edi
 	int v16; // eax
-	Screen *v17; // eax
+	WorkBuf *v17; // eax
 	unsigned char *v18; // ebx
 	char *v19; // edi
 	int v20; // eax
@@ -863,7 +863,7 @@ void __fastcall town_draw_upper(int x, int y, int sx, int sy, int a5, int a6, in
 			v11 = sy;
 			if ( !v10 )
 			{
-				a1 = (int *)&gpBuffer->row_unused_1[0].col_unused_1[sx + 32 + screen_y_times_768[sy]];
+				a1 = (int *)&gpBuffer->LinearBuf[sx + 32 + screen_y_times_768[sy]];
 				sxa = 0;
 				v12 = &dpiece_defs_map_1[0][0][16 * gendung_get_dpiece_num_from_coord(x, y) + 1];
 				do
@@ -1261,7 +1261,7 @@ LABEL_23:
 LABEL_24:
 	v11 = (_WORD *)((char *)gpBuffer + a5a);
 	v12 = (char *)gpBuffer + a6b;
-	v13 = &gpBuffer->row_unused_1[1].col_unused_1[a5a];
+	v13 = (char *)&gpBuffer->ColRow[1][a5a];
 	v14 = 176;
 	do
 	{

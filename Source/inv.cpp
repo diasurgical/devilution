@@ -343,9 +343,9 @@ void __cdecl DrawInv()
 			InvDrawSlotBack(631, 320, 56, 84);
 			light_table_index = 0;
 			cel_transparency_active = 1;
-			v26 = &gpBuffer->row[160].pixels[581];
+			v26 = (char *)&gpBuffer->Screen.row[160].pixels[581];
 			if ( v23 != 28 )
-				v26 = &gpBuffer->row[160].pixels[567];
+				v26 = (char *)&gpBuffer->Screen.row[160].pixels[567];
 			CelDecodeHdrLightTrans(v26, (char *)pCursCels, v22, v23, 0, 8);
 			cel_transparency_active = 0;
 		}

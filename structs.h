@@ -1262,9 +1262,9 @@ struct DeadStruct
 
 struct ScreenRow
 {
-	char col_unused_1[64];
-	char pixels[640];
-	char col_unused_2[64];
+	BYTE col_unused_1[64];
+	BYTE pixels[640];
+	BYTE col_unused_2[64];
 };
 
 struct Screen /* create union for work data vs visible data */
@@ -1272,6 +1272,12 @@ struct Screen /* create union for work data vs visible data */
 	ScreenRow row_unused_1[160];
 	ScreenRow row[480];
 	ScreenRow row_unused_2[16];
+};
+
+union WorkBuf {
+	BYTE LinearBuf[656 * 768];
+	BYTE ColRow[656][768];
+	struct Screen Screen;
 };
 
 //////////////////////////////////////////////////

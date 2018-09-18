@@ -971,7 +971,7 @@ void __fastcall DrawPanelBox(int x, int y, int w, int h, int sx, int sy)
 	unsigned int v11; // ecx
 
 	v6 = (char *)pBtmBuff + 640 * y + x;
-	v7 = &gpBuffer->row_unused_1[sy].col_unused_1[sx];
+	v7 = (char *)&gpBuffer->ColRow[sy][sx];
 	v8 = h;
 	do
 	{
@@ -1001,7 +1001,7 @@ void __fastcall SetFlaskHeight(char *buf, int min, int max, int c, int r)
 	int v7; // edx
 
 	v5 = &buf[88 * min];
-	v6 = &gpBuffer->row_unused_1[r].col_unused_1[c];
+	v6 = (char *)&gpBuffer->ColRow[r][c];
 	v7 = max - min;
 	do
 	{
@@ -2643,7 +2643,7 @@ void __cdecl RedBack()
 	v12 = v0 + 0x1200;
 	if ( leveltype == DTYPE_HELL )
 	{
-		v7 = gpBuffer->row[0].pixels;
+		v7 = (char *)gpBuffer->Screen.row[0].pixels;
 		_EBX = &pLightTbl[v12];
 		v9 = 352;
 		do
@@ -2665,7 +2665,7 @@ void __cdecl RedBack()
 	}
 	else
 	{
-		v1 = gpBuffer->row[0].pixels;
+		v1 = (char *)gpBuffer->Screen.row[0].pixels;
 		_EBX = &pLightTbl[v12];
 		v3 = 352;
 		do
