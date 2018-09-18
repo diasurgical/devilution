@@ -6,6 +6,28 @@
 extern "C" {
 #endif
 
+struct FontStruct
+{
+	unsigned char fontbin[258];
+	PALETTEENTRY fontpal[256];
+	BOOL active;
+};
+
+struct ProfileStruct
+{
+	char *name;
+	char field_4;
+	int msg;
+	int field_C;
+};
+
+struct ProfFntStruct
+{
+	int size;
+	char *fontname;
+	int field_8;
+};
+
 void __cdecl UiDestroy();
 void __stdcall UiTitleDialog(int a1);
 void __cdecl UiInitialize();
