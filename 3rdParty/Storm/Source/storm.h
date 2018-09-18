@@ -1306,8 +1306,10 @@ void __stdcall SDlgBeginPaint(HWND hWnd, char *a2);
 void __stdcall SDlgEndPaint(HWND hWnd, char *a2);
 void __stdcall SDlgSetSystemCursor(BYTE *a1, BYTE *a2, int *a3, int a4);
 void __stdcall SDlgSetCursor(HWND hWnd, HCURSOR a2, int a3, int *a4);
-BOOL __stdcall SDlgSetTimer(int a1, int a2, int a3, void (__stdcall *a4)(int));
+BOOL __stdcall SDlgSetTimer(int a1, int a2, int a3, void (__stdcall *a4)(int, int, int, int));
 BOOL __stdcall SDlgKillTimer(int a1, int a2);
+BOOL __stdcall SDlgDrawBitmap(HWND hWnd, int a2, int a3, int a4, int a5, int a6, int a7);
+BOOL __stdcall SDlgDialogBoxParam(HINSTANCE hInst, char *szDialog, int a3, WNDPROC func, int a5);
 
 #ifdef __GNUC__
 }
