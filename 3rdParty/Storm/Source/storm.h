@@ -894,6 +894,7 @@ BOOL STORMAPI STransPointInMask(HANDLE hTrans, int x, int y); // Name is a pure 
 BOOL STORMAPI STransCombineMasks(HANDLE hTransA, HANDLE hTransB, int left, int top, int flags, HANDLE * phTransResult);
 
 BOOL STORMAPI STransCreateE(void *pBuffer, int width, int height, int bpp, int a5, int bufferSize, HANDLE *phTransOut);
+BOOL STORMAPI STransCreateI(void *pBuffer, int width, int height, int bpp, int a5, int bufferSize, HANDLE *phTransOut);
 
 BOOL STORMAPI SVidDestroy();
 BOOL STORMAPI SVidGetSize(HANDLE video, int width, int height, int zero);
