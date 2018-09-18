@@ -43,48 +43,68 @@ SpellData spelldata[37] =
 	{ SPL_BONESPIRIT,  24,  STYPE_MAGIC,     "Bone Spirit",     NULL,             9,  7,  0, 0, 34,  IS_CAST2, { MIS_BONESPIRIT,  0,          0 }, 1, 12,  20, 60, 11500, 800 }
 };
 
-// int __fastcall GetManaAmount(int id, spell_id sn)
 int __fastcall GetManaAmount(int id, int sn)
 {
-	int adj; // mana adjust
-	int sl; // spell level
 	int i; // "raw" mana cost
 	int ma; // mana amount
 
-	adj = 0;
-	sl = plr[id]._pSplLvl[sn] + plr[id]._pISplLvlAdd - 1;
+	// mana adjust
+	int adj = 0;
+
+	// spell level
+	int sl = plr[id]._pSplLvl[sn] + plr[id]._pISplLvlAdd - 1;
+
 	if ( sl < 0 )
+	{
 		sl = 0;
+	}
 
 	if ( sl > 0 )
+	{
 		adj = sl * spelldata[sn].sManaAdj;
+	}
 	if ( sn == SPL_FIREBOLT )
+	{
 		adj >>= 1;
+	}
 	if ( sn == SPL_RESURRECT && sl > 0 )
+	{
 		adj = sl * (spelldata[SPL_RESURRECT].sManaCost / 8);
+	}
 
-	if ( spelldata[sn].sManaCost == 255 ) /* check sign */
-		i = plr[id]._pMaxManaBase;
+	if ( spelldata[sn].sManaCost == 255 ) // TODO: check sign
+	{
+		i = (BYTE)plr[id]._pMaxManaBase;
+	}
 	else
+	{
 		i = spelldata[sn].sManaCost;
+	}
 
 	ma = (i - adj) << 6;
 
 	if ( sn == SPL_HEAL )
+	{
 		ma = (spelldata[SPL_HEAL].sManaCost + 2 * plr[id]._pLevel - adj) << 6;
+	}
 	if ( sn == SPL_HEALOTHER )
+	{
 		ma = (spelldata[SPL_HEAL].sManaCost + 2 * plr[id]._pLevel - adj) << 6;
+	}
 
-	if ( plr[id]._pClass == 1 )
+	if ( plr[id]._pClass == PC_ROGUE )
+	{
 		ma -= ma >> 2;
+	}
 
 	if ( spelldata[sn].sMinMana > ma >> 6 )
+	{
 		ma = spelldata[sn].sMinMana << 6;
+	}
 
 	return ma * (100 - plr[id]._pISplCost) / 100;
 }
 
-// void __fastcall UseMana(int id, spell_id sn)
 void __fastcall UseMana(int id, int sn)
 {
 	int ma; // mana cost
@@ -110,23 +130,18 @@ void __fastcall UseMana(int id, int sn)
 			RemoveScroll(id);
 			break;
 		case RSPLTYPE_CHARGES:
-			// TODO: this should be inlined
 			UseStaffCharge(id);
 			break;
 		}
 	}
 }
 
-// BOOL __fastcall CheckSpell(int id, spell_id sn, spell_type st, BOOL manaonly)
-BOOL __fastcall CheckSpell(int id, int sn, int st, BOOL manaonly)
+BOOL __fastcall CheckSpell(int id, int sn, BYTE st, BOOL manaonly)
 {
 #ifdef _DEBUG
 	if ( debug_mode_key_inverted_v )
 		return true;
 #endif
-
-	// TODO: the first few instructions are encoded differently.
-	// It seems that the original compiler liked using EAX more.
 
 	BOOL result = true;
 	if ( !manaonly && pcurs != 1 )
@@ -135,16 +150,15 @@ BOOL __fastcall CheckSpell(int id, int sn, int st, BOOL manaonly)
 	}
 	else
 	{
-		// TODO: switch the type of st to spell_type, which would probably allow to remove the (_BYTE)
-		if ( (_BYTE)st != RSPLTYPE_SKILL )
+		if ( st != RSPLTYPE_SKILL )
 		{
 			if ( GetSpellLevel(id, sn) <= 0 )
 			{
-				return false;
+				result = false;
 			}
 			else
 			{
-				return plr[id]._pMana >= GetManaAmount(id, sn);
+				result = plr[id]._pMana >= GetManaAmount(id, sn);
 			}
 		}
 	}
@@ -152,63 +166,46 @@ BOOL __fastcall CheckSpell(int id, int sn, int st, BOOL manaonly)
 	return result;
 }
 
-// void __fastcall CastSpell(int id, spell_id spl, int sx, int sy, int dx, int dy, BOOL caster, int spllvl)
-void __fastcall CastSpell(int id, int spl, int sx, int sy, int dx, int dy, int caster, int spllvl)
+void __fastcall CastSpell(int id, int spl, int sx, int sy, int dx, int dy, BOOL caster, int spllvl)
 {
 
 	int dir; // missile direction
 
-	if ( caster )
+	// ugly switch, but generates the right code
+	switch ( caster )
 	{
-		if ( caster == 1 )
+		case TRUE:
 			dir = monster[id]._mdir;
+			break;
+		case FALSE:
+			// caster must be 0 already in this case, but oh well,
+			// it's needed to generate the right code
+			caster = 0;
+			dir = plr[id]._pdir;
 
-		// note: dir is uninitialized when caster != 0 && caster != 1.
-		// in older patches there was a
-		// else
-		//     dir = caster;
-		// here it seems, but it's completely gone in 1.09
-		// (traced the assembly manually to make sure IDA didn't miss something)
-	}
-	else
-	{
-		// see notes below.
-		// caster = 0;
-
-		dir = plr[id]._pdir;
-
-		if ( spl == SPL_FIREWALL )
-			dir = plr[id]._pVar3;
-
-		// note: logically, this line seems to make no sense, since caster has to be 0 to
-		// get into this branch, but every version back to the beta has this statement.
-
-		// note: based on the code generation and the position in the beta version, this has to be here,
-		// since only with the line here ebx is used as zero register in the whole function.
-		// e.g. the zero in AddMissile is a `push ebx` instead of `push 0`. Saves a single byte per change.
-		// Code flow wise it happens before the first statement in this else block.
-
-		// TODO: investigate after more functions have been cleaned up to see if some optimization changes cause this
-		caster = 0;
+			if ( spl == SPL_FIREWALL )
+			{
+				dir = plr[id]._pVar3;
+			}
+			break;
 	}
 
-	int i;
-	for ( i = 0; spelldata[spl].sMissiles[i] && i < 3; ++i )
+	for ( int i = 0; spelldata[spl].sMissiles[i] != MIS_ARROW && i < 3; i++ )
 	{
 		AddMissile(sx, sy, dx, dy, dir, spelldata[spl].sMissiles[i], caster, id, 0, spllvl);
 	}
 
-	if ( *spelldata[spl].sMissiles == MIS_TOWN )
+	if ( spelldata[spl].sMissiles[0] == MIS_TOWN )
+	{
 		UseMana(id, SPL_TOWN);
-	if ( *spelldata[spl].sMissiles == MIS_CBOLT )
+	}
+	if ( spelldata[spl].sMissiles[0] == MIS_CBOLT )
 	{
 		UseMana(id, SPL_CBOLT);
-		if ( (spllvl >> 1) + 3 > 0 )
+
+		for ( int i = 0; i < (spllvl >> 1) + 3; i++ )
 		{
-			for ( i = (spllvl >> 1) + 3; i > 0; --i )
-			{
-				AddMissile(sx, sy, dx, dy, dir, MIS_CBOLT, caster, id, 0, spllvl);
-			}
+			AddMissile(sx, sy, dx, dy, dir, MIS_CBOLT, caster, id, 0, spllvl);
 		}
 	}
 }
@@ -217,16 +214,18 @@ void __fastcall CastSpell(int id, int spl, int sx, int sy, int dx, int dy, int c
 // rid: target player index
 void __fastcall DoResurrect(int pnum, int rid)
 {
-
-	if ( (_BYTE)rid != LOBYTE(-1) )
+	if ( (char)rid != -1 )
+	{
 		AddMissile(plr[rid].WorldX, plr[rid].WorldY, plr[rid].WorldX, plr[rid].WorldY, 0, MIS_RESURRECTBEAM, 0, pnum, 0, 0);
+	}
 
 	if ( pnum == myplr )
-		NewCursor(CURSOR_HAND);
-
-	if ( (_BYTE)rid != LOBYTE(-1) && plr[rid]._pHitPoints == 0 )
 	{
+		NewCursor(CURSOR_HAND);
+	}
 
+	if ( (char)rid != -1 && plr[rid]._pHitPoints == 0 )
+	{
 		if ( rid == myplr )
 		{
 			deathflag = 0;
@@ -240,10 +239,12 @@ void __fastcall DoResurrect(int pnum, int rid)
 		plr[rid]._pInvincible = 0;
 		PlacePlayer(rid);
 
+		int hp = 640;
 		if ( plr[rid]._pMaxHPBase < 640 )
-			SetPlayerHitPoints(rid, plr[rid]._pMaxHPBase);
-		else
-			SetPlayerHitPoints(rid, 640);
+		{
+			hp = plr[rid]._pMaxHPBase;
+		}
+		SetPlayerHitPoints(rid, hp);
 
 		plr[rid]._pMana = 0;
 		plr[rid]._pHPBase = plr[rid]._pHitPoints + (plr[rid]._pMaxHPBase - plr[rid]._pMaxHP);
@@ -252,9 +253,13 @@ void __fastcall DoResurrect(int pnum, int rid)
 		CalcPlrInv(rid, TRUE);
 
 		if ( plr[rid].plrlevel == currlevel )
+		{
 			StartStand(rid, plr[rid]._pdir);
+		}
 		else
+		{
 			plr[rid]._pmode = 0;
+		}
 	}
 }
 
@@ -265,31 +270,35 @@ void __fastcall PlacePlayer(int pnum)
 
 	if ( plr[pnum].plrlevel == currlevel )
 	{
-		for ( unsigned int i = 0; i < 8; ++i )
+		for ( DWORD i = 0; i < 8; i++ )
 		{
 			nx = plr[pnum].WorldX + plrxoff2[i];
 			ny = plr[pnum].WorldY + plryoff2[i];
 
 			if ( PosOkPlayer(pnum, nx, ny) )
+			{
 				break;
+			}
 		}
 
 		if ( !PosOkPlayer(pnum, nx, ny) )
 		{
 			BOOL done = FALSE;
 
-			for ( int max = 1, min = -1; !done && min > -50; ++max, --min )
+			for ( int max = 1, min = -1; min > -50 && !done; max++, min-- )
 			{
-				for ( int y = min; y <= max && !done; ++y )
+				for ( int y = min; y <= max && !done; y++ )
 				{
-					ny = y + plr[pnum].WorldY;
+					ny = plr[pnum].WorldY + y;
 
-					for ( int x = min; x <= max && !done; ++x )
+					for ( int x = min; x <= max && !done; x++ )
 					{
-						nx = x + plr[pnum].WorldX;
+						nx = plr[pnum].WorldX + x;
 
 						if ( PosOkPlayer(pnum, nx, ny) )
+						{
 							done = TRUE;
+						}
 					}
 				}
 			}
@@ -310,40 +319,48 @@ void __fastcall PlacePlayer(int pnum)
 
 void __fastcall DoHealOther(int pnum, int rid)
 {
-	int i;
-	int j;
-
 	if ( pnum == myplr )
-		NewCursor(CURSOR_HAND);
-
-	if ( (_BYTE)rid != LOBYTE(-1) && (plr[rid]._pHitPoints >> 6) > 0 )
 	{
-		i = 0;
-		for ( j = (random(57, 10) + 1) << 6; i < plr[pnum]._pLevel; ++i )
+		NewCursor(CURSOR_HAND);
+	}
+
+	if ( (char)rid != -1 && (plr[rid]._pHitPoints >> 6) > 0 )
+	{
+		int hp = (random(57, 10) + 1) << 6;
+
+		for ( int i = 0; i < plr[pnum]._pLevel; i++ )
 		{
-			j += (random(57, 4) + 1) << 6;
+			hp += (random(57, 4) + 1) << 6;
 		}
 
-		for ( i = 0; i < GetSpellLevel(pnum, SPL_HEALOTHER); ++i )
+		for ( int j = 0; j < GetSpellLevel(pnum, SPL_HEALOTHER); ++j )
 		{
-			j += (random(57, 6) + 1) << 6;
+			hp += (random(57, 6) + 1) << 6;
 		}
 
-		if ( plr[pnum]._pClass == UI_WARRIOR )
-			j *= 2;
+		if ( plr[pnum]._pClass == PC_WARRIOR )
+		{
+			hp *= 2;
+		}
 
-		if ( plr[pnum]._pClass == UI_ROGUE )
-			j += j >> 1;
+		if ( plr[pnum]._pClass == PC_ROGUE )
+		{
+			hp += hp >> 1;
+		}
 
-		plr[rid]._pHitPoints += j;
+		plr[rid]._pHitPoints += hp;
 
 		if ( plr[rid]._pHitPoints > plr[rid]._pMaxHP )
+		{
 			plr[rid]._pHitPoints = plr[rid]._pMaxHP;
+		}
 
-		plr[rid]._pHPBase += j;
+		plr[rid]._pHPBase += hp;
 
 		if ( plr[rid]._pHPBase > plr[rid]._pMaxHPBase )
+		{
 			plr[rid]._pHPBase = plr[rid]._pMaxHPBase;
+		}
 
 		drawhpflag = 1;
 	}
