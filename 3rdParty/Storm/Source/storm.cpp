@@ -243,3 +243,5 @@ void __stdcall SDlgBeginPaint(HWND hWnd, char *a2) rVoid;
 void __stdcall SDlgEndPaint(HWND hWnd, char *a2) rVoid;
 void __stdcall SDlgSetSystemCursor(BYTE *a1, BYTE *a2, int *a3, int a4) rVoid;
 void __stdcall SDlgSetCursor(HWND hWnd, HCURSOR a2, int a3, int *a4) rVoid;
+BOOL __stdcall SDlgSetTimer(int a1, int a2, int a3, void (__stdcall *a4)(int)) rBool;
+BOOL __stdcall SDlgKillTimer(int a1, int a2) rBool;
