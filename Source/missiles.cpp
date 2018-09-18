@@ -1237,7 +1237,7 @@ LABEL_7:
 	}
 }
 
-bool __fastcall MonsterTrapHit(int m, int mindam, int maxdam, int dist, int t, int shift)
+BOOL __fastcall MonsterTrapHit(int m, int mindam, int maxdam, int dist, int t, int shift)
 {
 	int v6; // esi
 	int v8; // ecx
@@ -1280,8 +1280,9 @@ bool __fastcall MonsterTrapHit(int m, int mindam, int maxdam, int dist, int t, i
 	if ( v10 > 95 )
 		v10 = 95;
 	//_LOBYTE(v11) = CheckMonsterHit(arglist, (unsigned char *)&t);
-	if ( CheckMonsterHit(arglist, (bool *)&t) )
-		return t;
+	BOOL ret;
+	if ( CheckMonsterHit(arglist, &ret) )
+		return ret;
 #ifdef _DEBUG
 	if ( v14 >= v10 && !debug_mode_dollar_sign && !debug_mode_key_inverted_v && monster[v6]._mmode != MM_STONE )
 		return 0;
@@ -1346,7 +1347,7 @@ bool __fastcall MonsterMHit(int pnum, int m, int mindam, int maxdam, int dist, i
 	int v21; // edx
 	int v22; // eax
 	int v23; // [esp+Ch] [ebp-18h]
-	bool ret; // [esp+10h] [ebp-14h]
+	BOOL ret; // [esp+10h] [ebp-14h]
 	int v25; // [esp+14h] [ebp-10h]
 	int v26; // [esp+18h] [ebp-Ch]
 	int pnuma; // [esp+1Ch] [ebp-8h]
@@ -2119,7 +2120,10 @@ void __fastcall SetMissDir(int mi, int dir)
 	SetMissAnim(mi, _LOBYTE(missile[mi]._miAnimType));
 }
 
-void __fastcall LoadMissileGFX(int mi)
+// TODO: replace `int mi` parameter with `missile_graphic_id mi`
+// to enable the compiler to optimize int to char properly
+// check for example the calls in `InitMonsterGFX`
+void __fastcall LoadMissileGFX(BYTE mi)
 {
 	MisFileData *v1; // esi
 	unsigned char *v2; // eax
@@ -2695,7 +2699,7 @@ void __fastcall AddTeleport(int mi, int sx, int sy, int dx, int dy, int midir, i
 			v17 = v15;
 			v18 = dObject[0][v15];
 			v20 = v17 * 4;
-			if ( !(dMonster[0][v17] | v18 | v16 | (unsigned char)nSolidTable[dPiece[0][v17]]) )
+			if ( !(dMonster[0][v17] | v18 | v16 | nSolidTable[dPiece[0][v17]]) )
 				break;
 			v12 = v21;
 LABEL_10:
@@ -3036,7 +3040,7 @@ void __fastcall AddTown(int mi, int sx, int sy, int dx, int dy, int midir, int m
 					if ( v9 > 0 && v9 < 112 && v11 > 0 && v11 < 112 )
 					{
 						v15 = v11 + 112 * v9;
-						if ( !(dObject[0][v15] | dPlayer[0][v15] | dMissile[0][v15] | (unsigned char)nSolidTable[dPiece[0][v15]] | (unsigned char)nMissileTable[dPiece[0][v15]]) )
+						if ( !(dObject[0][v15] | dPlayer[0][v15] | dMissile[0][v15] | nSolidTable[dPiece[0][v15]] | (unsigned char)nMissileTable[dPiece[0][v15]]) )
 						{
 							//_LOBYTE(v16) = CheckIfTrig(v9, v11);
 							if ( !CheckIfTrig(v9, v11) )
@@ -3317,7 +3321,7 @@ void __fastcall AddGuardian(int mi, int sx, int sy, int dx, int dy, int midir, i
 			//_LOBYTE(v19) = LineClear(x1, sy, v17, v18);
 			if ( LineClear(x1, sy, v17, v18) )
 			{
-				if ( !(dMonster[0][v29 / 4] | dObject[0][v30] | dMissile[0][v30] | (unsigned char)nSolidTable[v31] | (unsigned char)nMissileTable[v31]) )
+				if ( !(dMonster[0][v29 / 4] | dObject[0][v30] | dMissile[0][v30] | nSolidTable[v31] | (unsigned char)nMissileTable[v31]) )
 					break;
 			}
 			v16 = v34;
@@ -4017,7 +4021,7 @@ void __fastcall AddFirewallC(int mi, int sx, int sy, int dx, int dy, int midir, 
 			//_LOBYTE(v15) = LineClear(x1, sy, v13, v14);
 			if ( LineClear(x1, sy, v13, v14) )
 			{
-				if ( (x1 != v13 || sy != v14) && !((unsigned char)nSolidTable[v17] | dObject[0][v18]) )
+				if ( (x1 != v13 || sy != v14) && !(nSolidTable[v17] | dObject[0][v18]) )
 					break;
 			}
 			v12 = v19;
@@ -4696,7 +4700,7 @@ void __fastcall MI_Golem(int i)
 			v17 = dPiece[0][v18];
 			if ( LineClear(v11, v10, v8, v9) )
 			{
-				if ( !(dMonster[0][v16 / 4] | (unsigned char)nSolidTable[v17] | dObject[0][v18]) )
+				if ( !(dMonster[0][v16 / 4] | nSolidTable[v17] | dObject[0][v18]) )
 					break;
 			}
 			v7 = v19;
