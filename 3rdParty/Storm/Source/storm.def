@@ -63,13 +63,13 @@ EXPORTS
   ;SDlgDrawBitmap                @210 NONAME
   SDlgEndDialog                 @211 NONAME
   SDlgEndPaint                  @212 NONAME
-  ;SDlgKillTimer                 @213 NONAME
+  SDlgKillTimer                 @213 NONAME
   ;SDlgSetBaseFont               @214 NONAME
   SDlgSetBitmapI                @215 NONAME
   SDlgSetControlBitmaps         @216 NONAME
   SDlgSetCursor                 @217 NONAME
   SDlgSetSystemCursor           @218 NONAME
-  ;SDlgSetTimer                  @219 NONAME
+  SDlgSetTimer                  @219 NONAME
   ;SDlgUpdateCursor              @220 NONAME
   SDlgBltToWindowE              @221 NONAME
   SDlgSetBitmapE                @222 NONAME

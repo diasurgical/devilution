@@ -83,7 +83,8 @@ EXPORTS
   SDlgEndDialog                 @211 NONAME
   SDlgEndPaint                  @212 NONAME
   SDlgEndPaint@8                @212 NONAME
-  ;SDlgKillTimer                 @213 NONAME
+  SDlgKillTimer                 @213 NONAME
+  SDlgKillTimer@8               @213 NONAME
   ;SDlgSetBaseFont               @214 NONAME
   SDlgSetBitmapI                @215 NONAME
   SDlgSetBitmapI@40             @215 NONAME
@@ -92,7 +93,8 @@ EXPORTS
   SDlgSetCursor@16              @217 NONAME
   SDlgSetSystemCursor           @218 NONAME
   SDlgSetSystemCursor@16        @218 NONAME
-  ;SDlgSetTimer                  @219 NONAME
+  SDlgSetTimer                  @219 NONAME
+  SDlgSetTimer@16               @219 NONAME
   ;SDlgUpdateCursor              @220 NONAME
   SDlgBltToWindowE              @221 NONAME
   SDlgSetBitmapE                @222 NONAME

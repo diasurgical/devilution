@@ -1,186 +1,157 @@
 // ref: 0x1000722B
-int __fastcall Fade_1000722B(int a1, int a2) { return 0; }
-/* {
-	int v2; // ebx
-	int v3; // edi
-	char *v4; // eax
-	char *v5; // ecx
+void __fastcall Fade_ApplyPaletteRange(int range1, int range2)
+{
+	tagPALETTEENTRY *v4; // eax MAPDST
 	BYTE *v6; // esi
 	BYTE v7; // al
 
-	v2 = a1;
-	v3 = a2;
-	v4 = local_10007895(0);
-	v5 = v4;
-	if ( v2 == v3 )
+	v4 = local_GetArtPalEntry(0);
+	if ( range1 == range2 )
 	{
-		memcpy(&pPalEntries, v4, 0x400u);
+		memcpy(fadepal, v4, 0x400u);
 	}
-	else if ( v3 )
+	else if ( range2 )
 	{
-		v6 = &pPalEntries.peGreen;
+		v6 = &fadepal[0].peGreen;
 		do
 		{
-			v7 = v3 * (unsigned char)*v5 / v2;
-			v5 += 4;
+			v7 = range2 * v4->peRed / range1;
+			++v4;
 			*(v6 - 1) = v7;
-			*v6 = v3 * (unsigned char)*(v5 - 3) / v2;
+			*v6 = range2 * v4[-1].peGreen / range1;
 			v6 += 4;
-			*(v6 - 3) = v3 * (unsigned char)*(v5 - 2) / v2;
+			*(v6 - 3) = range2 * v4[-1].peBlue / range1;
 		}
-		while ( (signed int)v6 < (signed int)&dword_10029C70 + 1 );
+		while ( (signed int)v6 < (signed int)&fadepal[256].peGreen );
 	}
 	else
 	{
-		memcpy(&pPalEntries, v4, 0x400u);
-		local_1000789D((char *)&pPalEntries);
+		memcpy(fadepal, v4, 0x400u);
+		local_ClearPalette(fadepal);
 	}
-	return SDrawUpdatePalette(0, 256, &pPalEntries, 1);
-} */
-// 100103FA: using guessed type int __stdcall SDrawUpdatePalette(_DWORD, _DWORD, _DWORD, _DWORD);
-// 10029C70: using guessed type int dword_10029C70;
+	SDrawUpdatePalette(0, 0x100u, fadepal, 1);
+}
 
 // ref: 0x100072BE
-int __fastcall Fade_100072BE(int a1) { return 0; }
-/* {
-	int v1; // ebx
-	char *v2; // eax
-	char *v3; // edi
+void __fastcall Fade_UpdatePaletteRange(int range)
+{
+	tagPALETTEENTRY *v2; // eax
+	tagPALETTEENTRY *v3; // edi
 	BYTE *v4; // ecx
-	char v5; // al
+	BYTE v5; // al
 	HPALETTE v6; // ebx
-	int v8; // [esp+10h] [ebp-4h]
+	int v7; // [esp+10h] [ebp-4h]
 
-	v1 = a1;
-	v2 = local_10007895(0);
-	memcpy(&pPalEntries, v2, 0x400u);
-	if ( v1 > 0 )
+	v2 = local_GetArtPalEntry(0);
+	memcpy(fadepal, v2, 0x400u);
+	if ( range > 0 )
 	{
-		v8 = v1;
+		v7 = range;
 		do
 		{
-			v3 = local_10007895(0);
-			v4 = &pPalEntries.peGreen;
+			v3 = local_GetArtPalEntry(0);
+			v4 = &fadepal[0].peGreen;
 			do
 			{
-				v5 = (unsigned char)*v3 / v1;
-				v3 += 4;
+				v5 = v3->peRed / range;
+				++v3;
 				*(v4 - 1) -= v5;
-				*v4 -= (unsigned char)*(v3 - 3) / v1;
+				*v4 -= v3[-1].peGreen / range;
 				v4 += 4;
-				*(v4 - 3) -= (unsigned char)*(v3 - 2) / v1;
+				*(v4 - 3) -= v3[-1].peBlue / range;
 			}
-			while ( (signed int)v4 < (signed int)&dword_10029C70 + 1 );
-			SDrawUpdatePalette(0, 256, &pPalEntries, 1);
-			--v8;
+			while ( (signed int)v4 < (signed int)&fadepal[256].peGreen );
+			SDrawUpdatePalette(0, 0x100u, fadepal, 1);
+			--v7;
 		}
-		while ( v8 );
+		while ( v7 );
 	}
-	local_1000789D((char *)&pPalEntries);
-	SDrawUpdatePalette(0, 256, &pPalEntries, 1);
-	local_1000811B();
-	SDrawClearSurface();
+	local_ClearPalette(fadepal);
+	SDrawUpdatePalette(0, 0x100u, fadepal, 1);
+	local_SetCursorDefault();
+	SDrawClearSurface(0);
 	v6 = (HPALETTE)GetStockObject(15);
-	GetPaletteEntries(v6, 0, 0xAu, &pPalEntries);
-	GetPaletteEntries(v6, 0xAu, 0xAu, &stru_10029C48);
-	return SDrawUpdatePalette(0, 256, &pPalEntries, 1);
-} */
-// 100103FA: using guessed type int __stdcall SDrawUpdatePalette(_DWORD, _DWORD, _DWORD, _DWORD);
-// 1001043C: using guessed type _DWORD __stdcall SDrawClearSurface();
-// 10029C70: using guessed type int dword_10029C70;
+	GetPaletteEntries(v6, 0, 0xAu, fadepal);
+	GetPaletteEntries(v6, 0xAu, 0xAu, &fadepal[246]);
+	SDrawUpdatePalette(0, 0x100u, fadepal, 1);
+}
+// 1001043C: using guessed type int __stdcall SDrawClearSurface(_DWORD);
 
 // ref: 0x1000739F
-signed int Fade_1000739F() { return 0; }
-/* {
-	signed int result; // eax
+BOOL __cdecl Fade_CheckRange5()
+{
+	BOOL result; // eax
 
 	result = 0;
-	if ( dword_10029C70 )
+	if ( sgbIsFading )
 	{
-		if ( dword_1002986C <= 5 )
+		if ( sgbFadeRange <= 5 )
 			result = 1;
 	}
 	return result;
-} */
-// 1002986C: using guessed type int dword_1002986C;
-// 10029C70: using guessed type int dword_10029C70;
+}
+// 10029C70: using guessed type int sgbIsFading;
 
 // ref: 0x100073B4
-signed int Fade_100073B4() { return 0; }
-/* {
-	signed int result; // eax
-
-	result = Fade_1000739F();
-	if ( result )
-		dword_10029C70 = 0;
-	return result;
-} */
-// 10029C70: using guessed type int dword_10029C70;
+void __cdecl Fade_Range5SetZero()
+{
+	if ( Fade_CheckRange5() )
+		sgbIsFading = 0;
+}
+// 10029C70: using guessed type int sgbIsFading;
 
 // ref: 0x100073C5
-void __fastcall Fade_100073C5(HWND hWnd, int a2) { return; }
-/* {
-	int v2; // esi
+void __fastcall Fade_NoInputAndArt(HWND hWnd, BOOL bShowCurs)
+{
 	HWND v3; // eax
-	int result; // eax
 
-	v2 = a2;
 	v3 = GetParent(hWnd);
-	result = local_10007F04(v3);
-	if ( v2 )
-		result = local_100080F1();
-	dword_10029C70 = 0;
-	dword_1002986C = 0;
-	return result;
-} */
-// 1002986C: using guessed type int dword_1002986C;
-// 10029C70: using guessed type int dword_10029C70;
+	local_DisableKeyWaitMouse(v3);
+	if ( bShowCurs )
+		local_SetCursorArt();
+	sgbIsFading = 0;
+	sgbFadeRange = 0;
+}
+// 10029C70: using guessed type int sgbIsFading;
 
 // ref: 0x100073EF
-BOOL UNKCALL Fade_100073EF(HWND hWnd) { return 0; }
-/* {
+void __fastcall Fade_SetInputWindow(HWND hWnd)
+{
 	HWND v1; // eax
 
 	v1 = GetParent(hWnd);
-	return local_10007F04(v1);
-} */
+	local_DisableKeyWaitMouse(v1);
+}
 
 // ref: 0x100073FD
-int UNKCALL Fade_100073FD(void *arg, int a2) { return 0; }
-/* {
-	int result; // eax
-
-	if ( !dword_10029C70 )
+void __fastcall Fade_SetFadeTimer(int nTime)
+{
+	if ( !sgbIsFading )
 	{
-		result = SDlgSetTimer(arg, 16, 50, Fade_10007420);
-		dword_10029C70 = 1;
+		SDlgSetTimer(nTime, 16, 50, Fade_TimerFunctionDlg);
+		sgbIsFading = 1;
 	}
-	return result;
-} */
-// 10010412: using guessed type int __stdcall SDlgSetTimer(_DWORD, _DWORD, _DWORD, _DWORD);
-// 10029C70: using guessed type int dword_10029C70;
+}
+// 10029C70: using guessed type int sgbIsFading;
 
 // ref: 0x10007420
-int __stdcall Fade_10007420(int a1, int a2, int a3, int a4) { return 0; }
-/* {
-	int result; // eax
-
-	if ( dword_1002986C > 5 )
-		return SDlgKillTimer(a1, 16);
-	result = Fade_1000722B(5, dword_1002986C);
-	++dword_1002986C;
-	return result;
-} */
-// 10010418: using guessed type int __stdcall SDlgKillTimer(_DWORD, _DWORD);
-// 1002986C: using guessed type int dword_1002986C;
+void __stdcall Fade_TimerFunctionDlg(int a1)
+{
+	if ( sgbFadeRange > 5 )
+	{
+		SDlgKillTimer(a1, 16);
+	}
+	else
+	{
+		Fade_ApplyPaletteRange(5, sgbFadeRange);
+		++sgbFadeRange;
+	}
+}
 
 // ref: 0x1000744D
-signed int Fade_1000744D() { return 0; }
-/* {
-	signed int result; // eax
-
-	result = 2139095040;
-	dword_10029868 = 2139095040;
-	return result;
-} */
-// 10029868: using guessed type int dword_10029868;
+void __cdecl Fade_cpp_init()
+{
+	fade_cpp_float = fade_cpp_float_value;
+}
+// 1001F428: using guessed type int fade_cpp_float_value;
+// 10029868: using guessed type int fade_cpp_float;
