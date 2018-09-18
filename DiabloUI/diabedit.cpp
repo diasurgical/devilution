@@ -1,57 +1,51 @@
 // ref: 0x10005765
-BOOL UNKCALL DiabEdit_10005765(HWND hWnd) { return 0; }
-/* {
-	HWND v1; // esi
+void __fastcall DiabEdit_DoPaintBMP(HWND hWnd)
+{
 	struct tagPAINTSTRUCT Paint; // [esp+4h] [ebp-40h]
 
-	v1 = hWnd;
 	BeginPaint(hWnd, &Paint);
-	SDlgDrawBitmap(v1, 1, 0, 0, 0, 0, 0);
-	return EndPaint(v1, &Paint);
-} */
-// 1001042A: using guessed type int __stdcall SDlgDrawBitmap(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
+	SDlgDrawBitmap(hWnd, 1, 0, 0, 0, 0, 0);
+	EndPaint(hWnd, &Paint);
+}
 
 // ref: 0x1000579B
-signed int DiabEdit_1000579B() { return 0; }
-/* {
-	signed int result; // eax
-
-	result = 2139095040;
-	dword_1002970C = 2139095040;
-	return result;
-} */
-// 1002970C: using guessed type int dword_1002970C;
+void __cdecl DiabEdit_cpp_init()
+{
+	DiabEdit_cpp_float = DiabEdit_cpp_float_value;
+}
+// 1001F40C: using guessed type int DiabEdit_cpp_float_value;
+// 1002970C: using guessed type int DiabEdit_cpp_float;
 
 // ref: 0x100057A6
-ATOM DiabEdit_100057A6() { return 0; }
-/* {
+void __cdecl DiabEdit_SetupWindow()
+{
 	WNDCLASSA WndClass; // [esp+0h] [ebp-28h]
 
 	memset(&WndClass, 0, 0x28u);
 	WndClass.style = 64;
-	WndClass.lpfnWndProc = (WNDPROC)DiabEdit_100057E8;
+	WndClass.lpfnWndProc = DiabEdit_WndProc;
 	WndClass.hInstance = GetModuleHandleA(0);
 	WndClass.lpszClassName = "DIABLOEDIT";
-	return RegisterClassA(&WndClass);
-} */
+	RegisterClassA(&WndClass);
+}
 
 // ref: 0x100057E8
-HANDLE __stdcall DiabEdit_100057E8(HWND hWnd, UINT Msg, HANDLE hData, LPARAM lParam) { return 0; }
-/* {
+LRESULT __stdcall DiabEdit_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
+{
 	if ( Msg <= 0x113 )
 	{
 		if ( Msg == 275 )
 		{
-			DiabEdit_1000594E((LPARAM)hWnd);
+			DiabEdit_GetCursorProp(hWnd);
 			return 0;
 		}
 		if ( Msg == 1 )
 		{
-			DiabEdit_10005B9F(hWnd);
+			DiabEdit_SetRestrictTimer(hWnd);
 		}
 		else if ( Msg == 2 )
 		{
-			DiabEdit_10005BE7(hWnd);
+			DiabEdit_RemoveAllProps(hWnd);
 		}
 		else
 		{
@@ -59,251 +53,215 @@ HANDLE __stdcall DiabEdit_100057E8(HWND hWnd, UINT Msg, HANDLE hData, LPARAM lPa
 			{
 				if ( Msg == 15 )
 				{
-					DiabEdit_10005765(hWnd);
+					DiabEdit_DoPaintBMP(hWnd);
 				}
 				else
 				{
 					if ( Msg == 135 )
-						return (HANDLE)129;
+						return 129;
 					if ( Msg != 256 )
 					{
 						if ( Msg == 258 )
-							DiabEdit_10005A0A(hWnd, (unsigned char)hData, lParam);
-						return (HANDLE)DefWindowProcA(hWnd, Msg, (WPARAM)hData, lParam);
+							DiabEdit_RestrictAndLimit(hWnd, wParam, lParam);
+						return DefWindowProcA(hWnd, Msg, wParam, lParam);
 					}
-					DiabEdit_10005AF4((LPARAM)hWnd, (int)hData, lParam);
+					DiabEdit_SetTextAndProp(hWnd, wParam, lParam);
 				}
 				return 0;
 			}
-			DiabEdit_1000591C((LPARAM)hWnd, 1u);
+			DiabEdit_SendWndCommand(hWnd, 1u);
 		}
-		return (HANDLE)DefWindowProcA(hWnd, Msg, (WPARAM)hData, lParam);
+		return DefWindowProcA(hWnd, Msg, wParam, lParam);
 	}
 	switch ( Msg )
 	{
 		case 0x201u:
 			SetFocus(hWnd);
-			return (HANDLE)DefWindowProcA(hWnd, Msg, (WPARAM)hData, lParam);
+			return DefWindowProcA(hWnd, Msg, wParam, lParam);
 		case 0x400u:
-			SetWindowTextA(hWnd, &byte_10029448);
-			DiabEdit_1000591C((LPARAM)hWnd, 3u);
+			SetWindowTextA(hWnd, &nullcharacter);
+			DiabEdit_SendWndCommand(hWnd, 3u);
 			return 0;
 		case 0x401u:
-			SetPropA(hWnd, "LIMIT", hData);
+			SetPropA(hWnd, "LIMIT", (HANDLE)wParam);
 			return 0;
 		case 0x402u:
-			return GetPropA(hWnd, "LIMIT");
+			return (LRESULT)GetPropA(hWnd, "LIMIT");
 	}
 	if ( Msg != 1027 )
 	{
 		if ( Msg == 1028 )
 		{
-			DiabEdit_10005B70(hWnd, (char *)lParam);
+			DiabEdit_SetRestrictString(hWnd, lParam);
 			return 0;
 		}
-		return (HANDLE)DefWindowProcA(hWnd, Msg, (WPARAM)hData, lParam);
+		return DefWindowProcA(hWnd, Msg, wParam, lParam);
 	}
-	return GetPropA(hWnd, "CURSOR");
-} */
+	return (LRESULT)GetPropA(hWnd, "CURSOR");
+}
 
 // ref: 0x1000591C
-LRESULT __fastcall DiabEdit_1000591C(LPARAM lParam, unsigned short a2) { return 0; }
-/* {
-	HWND v2; // esi
-	LPARAM v3; // ST0C_4
+void __fastcall DiabEdit_SendWndCommand(HWND hWnd, WORD a2)
+{
 	int v4; // ST08_4
 	HWND v5; // eax
 
-	v2 = (HWND)lParam;
-	v3 = lParam;
-	v4 = (a2 << 16) | (unsigned short)GetWindowLongA((HWND)lParam, -12);
-	v5 = GetParent(v2);
-	return SendMessageA(v5, 0x111u, v4, v3);
-} */
+	v4 = (a2 << 16) | (unsigned short)GetWindowLongA(hWnd, -12);
+	v5 = GetParent(hWnd);
+	SendMessageA(v5, 0x111u, v4, (LPARAM)hWnd);
+}
 
 // ref: 0x1000594E
-LRESULT UNKCALL DiabEdit_1000594E(LPARAM lParam) { return 0; }
-/* {
-	HWND v1; // ebx
-	LRESULT result; // eax
-	size_t v3; // eax
-	CHAR *v4; // esi
-	CHAR String; // [esp+Ch] [ebp-100h]
-	char v6[252]; // [esp+Dh] [ebp-FFh]
-	short v7; // [esp+109h] [ebp-3h]
-	char v8; // [esp+10Bh] [ebp-1h]
+void __fastcall DiabEdit_GetCursorProp(HWND hWnd)
+{
+	size_t v2; // eax
+	char *v3; // esi
+	char String[256]; // [esp+Ch] [ebp-100h]
 
-	v1 = (HWND)lParam;
-	String = byte_10029448;
-	memset(v6, 0, sizeof(v6));
-	v7 = 0;
-	v8 = 0;
-	if ( GetPropA((HWND)lParam, "CURSOR") )
+	String[0] = nullcharacter;
+	memset(&String[1], 0, 0xFCu);
+	*(_WORD *)&String[253] = 0;
+	String[255] = 0;
+	if ( GetPropA(hWnd, "CURSOR") )
 	{
-		SetPropA(v1, "CURSOR", 0);
-		result = DiabEdit_1000591C((LPARAM)v1, 3u);
+		SetPropA(hWnd, "CURSOR", 0);
+		DiabEdit_SendWndCommand(hWnd, 3u);
 	}
 	else
 	{
-		SetPropA(v1, "CURSOR", HANDLE_FLAG_INHERIT);
-		GetWindowTextA(v1, &String, 255);
-		HIBYTE(v7) = 0;
-		v3 = strlen(&String);
-		v6[v3] = 0;
-		v4 = &String + v3;
-		*(&String + v3) = 124;
-		SetWindowTextA(v1, &String);
-		DiabEdit_1000591C((LPARAM)v1, 3u);
-		*v4 = 0;
-		result = SetWindowTextA(v1, &String);
+		SetPropA(hWnd, "CURSOR", (void *)HANDLE_FLAG_INHERIT);
+		GetWindowTextA(hWnd, String, 255);
+		String[254] = 0;
+		v2 = strlen(String);
+		String[v2 + 1] = 0;
+		v3 = &String[v2];
+		String[v2] = 124;
+		SetWindowTextA(hWnd, String);
+		DiabEdit_SendWndCommand(hWnd, 3u);
+		*v3 = 0;
+		SetWindowTextA(hWnd, String);
 	}
-	return result;
-} */
-// 1000594E: using guessed type char var_FF[252];
+}
 
 // ref: 0x10005A0A
-char *__fastcall DiabEdit_10005A0A(HWND a1, unsigned char a2, int a3) { return 0; }
-/* {
-	char *result; // eax
-	unsigned char v4; // bl
+void __fastcall DiabEdit_RestrictAndLimit(HWND hWnd, WPARAM wParam, LPARAM lParam)
+{
+	unsigned char v3; // bl
+	char *v4; // eax
 	char v5; // cl
 	signed int v6; // eax
 	signed int v7; // esi
-	char v8; // [esp+7h] [ebp-105h]
-	CHAR String; // [esp+8h] [ebp-104h]
-	char v10[252]; // [esp+9h] [ebp-103h]
-	short v11; // [esp+105h] [ebp-7h]
-	char v12; // [esp+107h] [ebp-5h]
-	HWND hWnd; // [esp+108h] [ebp-4h]
+	//char v8; // [esp+7h] [ebp-105h]
+	char String[256]; // [esp+8h] [ebp-104h]
 
-	hWnd = a1;
-	String = byte_10029448;
-	result = 0;
-	v4 = a2;
-	memset(v10, 0, sizeof(v10));
-	v11 = 0;
-	v12 = 0;
-	if ( a2 == 8 )
+	String[0] = nullcharacter;
+	v3 = wParam;
+	memset(&String[1], 0, 0xFCu);
+	*(_WORD *)&String[253] = 0;
+	String[255] = 0;
+	if ( (_BYTE)wParam == 8 )
 		goto LABEL_9;
-	if ( a2 < 0x20u || a2 > 0x7Eu && a2 < 0xC0u )
-		return result;
-	result = (char *)GetPropA(hWnd, "RESTRICTED");
-	if ( !result || (v5 = *result) == 0 )
+	if ( (unsigned char)wParam < 0x20u || (unsigned char)wParam > 0x7Eu && (unsigned char)wParam < 0xC0u )
+		return;
+	v4 = (char *)GetPropA(hWnd, "RESTRICTED");
+	if ( !v4 || (v5 = *v4) == 0 )
 	{
 LABEL_9:
-		GetWindowTextA(hWnd, &String, 255);
-		HIBYTE(v11) = 0;
-		v6 = strlen(&String);
+		GetWindowTextA(hWnd, String, 255);
+		String[254] = 0;
+		v6 = strlen(String);
 		v7 = v6;
-		if ( v4 == 8 )
+		if ( v3 == 8 )
 		{
 			if ( v6 )
 			{
-				*(&v8 + v6) = 0;
+				String[v6-1] = 0; // *(&v8 + v6) = 0;
 				goto LABEL_14;
 			}
 		}
 		else if ( v6 < (signed int)GetPropA(hWnd, "LIMIT") )
 		{
-			*(&String + v7) = v4;
-			v10[v7] = 0;
+			String[v7] = v3;
+			String[v7 + 1] = 0;
 LABEL_14:
-			SetWindowTextA(hWnd, &String);
-			return (char *)DiabEdit_1000594E((LPARAM)hWnd);
+			SetWindowTextA(hWnd, String);
+			goto LABEL_15;
 		}
-		return (char *)DiabEdit_1000594E((LPARAM)hWnd);
+LABEL_15:
+		DiabEdit_GetCursorProp(hWnd);
+		return;
 	}
-	while ( v4 != v5 )
+	while ( v3 != v5 )
 	{
-		v5 = *++result;
-		if ( !*result )
+		v5 = *++v4;
+		if ( !*v4 )
 			goto LABEL_9;
 	}
-	return result;
-} */
-// 10005A0A: using guessed type char var_103[252];
+}
 
 // ref: 0x10005AF4
-int __fastcall DiabEdit_10005AF4(LPARAM lParam, int a2, int a3) { return 0; }
-/* {
-	HWND v3; // esi
-	int v4; // ebx
-	int result; // eax
-	char v6; // [esp+Bh] [ebp-101h]
-	CHAR String; // [esp+Ch] [ebp-100h]
-	char v8; // [esp+Dh] [ebp-FFh]
-	short v9; // [esp+109h] [ebp-3h]
-	char v10; // [esp+10Bh] [ebp-1h]
+void __fastcall DiabEdit_SetTextAndProp(HWND hWnd, WPARAM wParam, LPARAM lParam)
+{
+	WPARAM v4; // ebx
+	size_t v5; // eax
+	//char v6; // [esp+Bh] [ebp-101h]
+	char String[256]; // [esp+Ch] [ebp-100h]
 
-	v3 = (HWND)lParam;
-	String = byte_10029448;
-	memset(&v8, 0, 0xFCu);
-	v9 = 0;
-	v10 = 0;
-	v4 = a2;
-	GetWindowTextA((HWND)lParam, &String, 255);
-	HIBYTE(v9) = 0;
-	result = strlen(&String);
+	String[0] = nullcharacter;
+	memset(&String[1], 0, 0xFCu);
+	*(_WORD *)&String[253] = 0;
+	String[255] = 0;
+	v4 = wParam;
+	GetWindowTextA(hWnd, String, 255);
+	String[254] = 0;
+	v5 = strlen(String);
 	if ( v4 == 37 )
 	{
-		if ( result )
+		if ( v5 )
 		{
-			*(&v6 + result) = 0;
-			SetWindowTextA(v3, &String);
+			String[v5-1] = 0; // *(&v6 + v5) = 0;
+			SetWindowTextA(hWnd, String);
 		}
-		result = DiabEdit_1000594E((LPARAM)v3);
+		DiabEdit_GetCursorProp(hWnd);
 	}
-	return result;
-} */
+}
 
 // ref: 0x10005B70
-char *__fastcall DiabEdit_10005B70(HWND hWnd, char *a2) { return 0; }
-/* {
-	char *v2; // edi
-	char *result; // eax
-	char *v4; // esi
+void __fastcall DiabEdit_SetRestrictString(HWND hWnd, LPARAM lParam)
+{
+	const char *v2; // edi
+	char *v3; // eax MAPDST
 
-	v2 = a2;
-	result = (char *)GetPropA(hWnd, "RESTRICTED");
-	v4 = result;
-	if ( result )
+	v2 = (const char *)lParam;
+	v3 = (char *)GetPropA(hWnd, "RESTRICTED");
+	if ( v3 )
 	{
-		result = strncpy(result, v2, 0xFFu);
-		v4[255] = 0;
+		strncpy(v3, v2, 0xFFu);
+		v3[255] = 0;
 	}
-	return result;
-} */
+}
 
 // ref: 0x10005B9F
-BOOL UNKCALL DiabEdit_10005B9F(HWND hWnd) { return 0; }
-/* {
-	HWND v1; // esi
-	_BYTE *v2; // eax
+void __fastcall DiabEdit_SetRestrictTimer(HWND hWnd)
+{
+	unsigned char *v2; // eax
 
-	v1 = hWnd;
-	SDlgSetTimer(hWnd, 1, 500, 0);
-	SetPropA(v1, "CURSOR", 0);
-	v2 = (_BYTE *)SMemAlloc(256, "C:\\Src\\Diablo\\DiabloUI\\DiabEdit.cpp", 185, 0);
+	SDlgSetTimer((int)hWnd, 1, 500, 0);
+	SetPropA(hWnd, "CURSOR", 0);
+	v2 = (unsigned char *)SMemAlloc(0x100u, "C:\\Src\\Diablo\\DiabloUI\\DiabEdit.cpp", 185, 0);
 	*v2 = 0;
-	return SetPropA(v1, "RESTRICTED", v2);
-} */
-// 10010364: using guessed type int __stdcall SMemAlloc(_DWORD, _DWORD, _DWORD, _DWORD);
-// 10010412: using guessed type int __stdcall SDlgSetTimer(_DWORD, _DWORD, _DWORD, _DWORD);
+	SetPropA(hWnd, "RESTRICTED", v2);
+}
 
 // ref: 0x10005BE7
-HANDLE UNKCALL DiabEdit_10005BE7(HWND hWnd) { return 0; }
-/* {
-	HWND v1; // edi
-	HANDLE result; // eax
+void __fastcall DiabEdit_RemoveAllProps(HWND hWnd)
+{
+	HANDLE v2; // eax
 
-	v1 = hWnd;
-	SDlgKillTimer(hWnd, 1);
-	RemovePropA(v1, "LIMIT");
-	RemovePropA(v1, "CURSOR");
-	result = RemovePropA(v1, "RESTRICTED");
-	if ( result )
-		result = (HANDLE)SMemFree(result, "C:\\Src\\Diablo\\DiabloUI\\DiabEdit.cpp", 200, 0);
-	return result;
-} */
-// 10010340: using guessed type int __stdcall SMemFree(_DWORD, _DWORD, _DWORD, _DWORD);
-// 10010418: using guessed type int __stdcall SDlgKillTimer(_DWORD, _DWORD);
+	SDlgKillTimer((int)hWnd, 1);
+	RemovePropA(hWnd, "LIMIT");
+	RemovePropA(hWnd, "CURSOR");
+	v2 = RemovePropA(hWnd, "RESTRICTED");
+	if ( v2 )
+		SMemFree(v2, "C:\\Src\\Diablo\\DiabloUI\\DiabEdit.cpp", 200, 0);
+}
