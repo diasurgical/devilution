@@ -40,7 +40,7 @@ void __fastcall Doom_GetSetWndText(HWND hWnd, int msg, int nFont, int a4)
 		{
 			v6 = GetWindowLongA(v4, -21);
 			local_SetWndLongStr(v6, String);
-			SetWindowTextA(v4, (LPCSTR)&wndtext_pointer);
+			SetWindowTextA(v4, &nullcharacter);
 		}
 	}
 }
@@ -104,7 +104,7 @@ void __fastcall Doom_AllocAndSetBMP(HWND hWnd, int bmp_flags)
 	v3[2] = Rect.bottom;
 	*v3 = (DWORD)SMemAlloc(Rect.right * Rect.bottom, "C:\\Src\\Diablo\\DiabloUI\\Doom.cpp", 139, 0);
 	SetWindowLongA(hWnd, -21, (LONG)v3);
-	SDlgSetBitmapI(hWnd, 0, (char *)&wndtext_pointer, -1, bmp_flags, (void *)*v3, 0, v3[1], v3[2], -1);
+	SDlgSetBitmapI(hWnd, 0, &nullcharacter, -1, bmp_flags, (void *)*v3, 0, v3[1], v3[2], -1);
 }
 
 // ref: 0x1000678A
@@ -167,7 +167,7 @@ void __fastcall Doom_GetSetWndTxt2(HWND hWnd, int msg, int nFont, int a4)
 		{
 			v5 = GetWindowLongA(v4, -21);
 			local_SetWndLongStr(v5, String);
-			SetWindowTextA(v4, (LPCSTR)&wndtext_pointer);
+			SetWindowTextA(v4, &nullcharacter);
 		}
 	}
 }
@@ -208,7 +208,7 @@ void __fastcall Doom_GetSetWndTxt3(HWND hWnd, int msg, int nFont)
 		{
 			v6 = GetWindowLongA(v3, -21);
 			local_SetWndLongStr(v6, String);
-			SetWindowTextA(v3, (LPCSTR)&wndtext_pointer);
+			SetWindowTextA(v3, &nullcharacter);
 		}
 	}
 }
@@ -280,7 +280,7 @@ void __fastcall Doom_GetSetWndTxt4(HWND hWnd, int msg, int nFont)
 		{
 			v5 = GetWindowLongA(v3, -21);
 			local_SetWndLongStr(v5, String);
-			SetWindowTextA(v3, (LPCSTR)&wndtext_pointer);
+			SetWindowTextA(v3, &nullcharacter);
 		}
 	}
 }
