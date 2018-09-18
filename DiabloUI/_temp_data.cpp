@@ -8,10 +8,13 @@ ProfileStruct bnprofiles[4] =
 };
 int profilemsg1[6] = { 1125, 1127, 1129, 1131, 1133, 0 };
 int profilemsg2[6] = { 1126, 1128, 1130, 1132, 1134, 0 };
+int DiabEdit_cpp_float_value = 2139095040; // weak
+int DiabloUI_cpp_float_value = 2139095040; // weak
 int doom_cpp_float_value = 2139095040; // weak
 int fade_cpp_float_value = 2139095040; // weak
 int focus_cpp_float_value = 2139095040; // weak
 int local_cpp_float_value = 2139095040; // weak
+int Title_cpp_float_value = 2139095040; // weak
 int titlesnd_cpp_float_value = 2139095040; // weak
 int dword_10022258 = 4; // weak
 ProfFntStruct proffnts[4] =
@@ -87,7 +90,7 @@ int dword_10023260[3] = { 1056, 1054, 0 };
 int dword_1002326C[7] = { 1135, 1136, 1137, 1138, 1139, 1140, 0 };
 int dword_100232D4[2] = { 1026, 0 };
 int dword_100232DC[3] = { 1109, 2, 0 };
-int dword_10023340[2] = { 1067, 0 };
+int titlemsgtbl[2] = { 1067, 0 };
 
 //data+bss
 int artfont_cpp_float = 0; // weak
@@ -115,7 +118,7 @@ void *dword_1002942C; // idb
 int (__stdcall *dword_10029430)(_DWORD, _DWORD, _DWORD, _DWORD); // weak
 void *dword_10029434; // idb
 int dword_10029438[4]; // weak
-char *wndtext_pointer; /* check */
+char nullcharacter; /* check */
 HGDIOBJ dword_10029450; // idb
 int dword_10029454; // weak
 int dword_10029458; // weak
@@ -190,15 +193,15 @@ int dword_100296FC; // weak
 int dword_10029700; // weak
 void *dword_10029704; // idb
 int dword_10029708; // weak
-int dword_1002970C; // weak
-int dword_10029710; // weak
+int DiabEdit_cpp_float; // weak
+int DiabloUI_cpp_float; // weak
 int dword_10029714; // weak
-HINSTANCE hInstance; // idb
-int dword_1002971C; // weak
-int dword_10029720; // weak
-int dword_10029724; // weak
-int dword_10029728; // weak
-int dword_1002972C; // weak
+HINSTANCE ghUiInst; // idb
+int backbmp_flag1; // weak
+int backbmp_flag2; // weak
+int backbmp_flag3; // weak
+int app_is_active; // weak
+int sgbIsSpawn; // weak
 int dword_10029730; // weak
 int dword_10029738; // weak
 char byte_1002973C; // idb
@@ -345,8 +348,8 @@ int dword_1002A500; // weak
 int dword_1002A504; // weak
 int (*dword_1002A508)(void); // weak
 int dword_1002A50C; // weak
-HANDLE dword_1002A510; // idb
-int dword_1002A588; // weak
-int dword_1002A58C; // weak
+HANDLE titlePHTrans[30];
+int Title_cpp_float; // weak
+int titleTransIdx; // weak
 int titlesnd_cpp_float; // weak
 void (__stdcall *gfnSoundFunction)(char *file);

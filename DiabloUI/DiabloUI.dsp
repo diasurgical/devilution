@@ -89,5 +89,9 @@ LINK32=link.exe
 
 SOURCE=.\diabloui.cpp
 # End Source File
+# Begin Source File
+
+SOURCE=.\diabloui.res
+# End Source File
 # End Target
 # End Project

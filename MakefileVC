@@ -67,7 +67,7 @@ Diablo.exe: main_files $(PKWARE_OBJS) diablo.res DiabloUI/diabloui.lib 3rdParty/
 	$(VC_LINK) /OUT:$@ $(LINKFLAGS) $(OBJS) $(PKWARE_OBJS) diablo.res advapi32.lib gdi32.lib shell32.lib user32.lib version.lib DiabloUI/diabloui.lib 3rdParty/Storm/Source/storm.lib
 
 DiabloUI/diabloui.lib: $(DIABLOUI_OBJS) 3rdParty/Storm/Source/storm.lib
-	$(CL) $^ /link /LINK50COMPAT /nologo /dll /subsystem:windows /machine:I386 /LIBPATH:$(VC6_LIB_DIR) advapi32.lib gdi32.lib shell32.lib user32.lib version.lib 3rdParty/Storm/Source/storm.lib /def:"DiabloUI/diabloui.def" /out:DiabloUI/diabloui.dll
+	$(CL) $^ /link /LINK50COMPAT /nologo /dll /subsystem:windows /machine:I386 /LIBPATH:$(VC6_LIB_DIR) DiabloUI/diabloui.res advapi32.lib gdi32.lib shell32.lib user32.lib version.lib 3rdParty/Storm/Source/storm.lib /def:"DiabloUI/diabloui.def" /out:DiabloUI/diabloui.dll
 
 3rdParty/Storm/Source/storm.lib: $(STORM_OBJS)
 	$(CL) $^ /link /LINK50COMPAT /nologo /dll /subsystem:windows /machine:I386 /LIBPATH:$(VC6_LIB_DIR) /def:"3rdParty/Storm/Source/storm.def" /out:3rdParty/Storm/Source/storm.dll

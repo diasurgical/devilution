@@ -230,7 +230,7 @@ void __fastcall Focus_SetFocusTimer(HWND hWnd, const char *pszFileName)
 }
 
 // ref: 0x10007804
-void __stdcall Focus_SetFocusAndBlit(int hWnd)
+void __stdcall Focus_SetFocusAndBlit(int hWnd, int a2, int a3, int a4)
 {
 	HWND v1; // eax
 

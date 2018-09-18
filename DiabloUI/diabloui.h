@@ -29,10 +29,10 @@ struct ProfFntStruct
 };
 
 void __cdecl UiDestroy();
-void __stdcall UiTitleDialog(int a1);
+BOOL __stdcall UiTitleDialog(int a1);
 void __cdecl UiInitialize();
 void __stdcall UiCopyProtError(int a1);
-void __stdcall UiAppActivate(int a1);
+void __stdcall UiAppActivate(BOOL bActive);
 int __stdcall UiValidPlayerName(char *a1);
 int __stdcall UiSelHeroMultDialog(void *fninfo, void *fncreate, void *fnremove, void *fnstats, int *a5, int *a6, char *name);
 int __stdcall UiSelHeroSingDialog(void *fninfo, void *fncreate, void *fnremove, void *fnstats, int *a5, char *name, int *difficulty);

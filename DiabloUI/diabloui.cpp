@@ -66,11 +66,11 @@
 
 
 // ref: 0x10005C2A
-int DiabloUI_10005C2A() { return 0; }
-/* {
-	return dword_1002972C;
-} */
-// 1002972C: using guessed type int dword_1002972C;
+int __cdecl DiabloUI_GetSpawned()
+{
+	return sgbIsSpawn;
+}
+// 1002972C: using guessed type int sgbIsSpawn;
 
 // ref: 0x10005C30
 void __stdcall UiOnPaint(int a1)
@@ -79,67 +79,52 @@ void __stdcall UiOnPaint(int a1)
 }
 
 // ref: 0x10005C33
-int __stdcall UiSetBackgroundBitmap(int a1, int a2, int a3, int a4, int a5) { return 0; }
-/* {
-	dword_1002971C = a3;
-	dword_10029720 = a4;
-	dword_10029724 = a5;
-	return SDrawUpdatePalette(10, 236, a2 + 40, 0);
-} */
-// 100103FA: using guessed type int __stdcall SDrawUpdatePalette(_DWORD, _DWORD, _DWORD, _DWORD);
-// 1002971C: using guessed type int dword_1002971C;
-// 10029720: using guessed type int dword_10029720;
-// 10029724: using guessed type int dword_10029724;
+void __stdcall UiSetBackgroundBitmap(int a1, PALETTEENTRY *a2, int a3, int a4, int a5)
+{
+	backbmp_flag1 = a3;
+	backbmp_flag2 = a4;
+	backbmp_flag3 = a5;
+	SDrawUpdatePalette(0xAu, 0xECu, a2 + 10, 0);
+}
+// 1002971C: using guessed type int backbmp_flag1;
+// 10029720: using guessed type int backbmp_flag2;
+// 10029724: using guessed type int backbmp_flag3;
 
 // ref: 0x10005C67
-int __stdcall UiSetSpawned(int a1) { return 0; }
-/* {
-	int result; // eax
-
-	result = a1;
-	dword_1002972C = a1;
-	return result;
-} */
-// 1002972C: using guessed type int dword_1002972C;
+void __stdcall UiSetSpawned(BOOL bSpawned)
+{
+	sgbIsSpawn = bSpawned;
+}
+// 1002972C: using guessed type int sgbIsSpawn;
 
 // ref: 0x10005C73
-void __cdecl UiInitialize() { return; }
-//int UiInitialize() { return 0; }
-/* {
+void __cdecl UiInitialize()
+{
 	dword_10029714 = 1;
-	TitleSnd_1001030D();
-	artfont_10001098();
+	TitleSnd_InitSoundFunc();
+	artfont_InitAllFonts();
 	Connect_10002EC4();
-	local_10007FD0();
-	return bn_prof_100021C4();
-} */
+	local_LoadArtCursor();
+	bn_prof_100021C4();
+}
 // 10029714: using guessed type int dword_10029714;
 
 // ref: 0x10005C96
-void __cdecl UiDestroy() { return; }
-//int UiDestroy() { return 0; }
-/* {
-	int result; // eax
-
+void __cdecl UiDestroy()
+{
 	bn_prof_10002247();
-	local_100080AD();
-	result = Connect_10002E2B();
+	local_FreeArtCursor();
+	Connect_10002E2B();
 	dword_10029714 = 0;
-	return result;
-} */
+}
 // 10029714: using guessed type int dword_10029714;
 
 // ref: 0x10005CAD
-void __stdcall UiAppActivate(int a1) { return; }
-//int __stdcall UiAppActivate(int a1) { return 0; }
-/* {
-	int result; // eax
-
-	result = a1;
-	dword_10029728 = a1;
-	return result;
-} */
-// 10029728: using guessed type int dword_10029728;
+void __stdcall UiAppActivate(BOOL bActive)
+{
+	app_is_active = bActive;
+}
+// 10029728: using guessed type int app_is_active;
 
 // ref: 0x10005CB9
 BOOL __stdcall DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
@@ -148,8 +133,8 @@ BOOL __stdcall DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
 	{
 		if ( fdwReason == 1 )
 		{
-			// hInstance = hinstDLL;
-			DiabEdit_100057A6();
+			ghUiInst = hinstDLL;
+			DiabEdit_SetupWindow();
 			local_InitUiPalette();
 		}
 	}
@@ -161,12 +146,9 @@ BOOL __stdcall DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
 }
 
 // ref: 0x10005CEA
-signed int DiabloUI_10005CEA() { return 0; }
-/* {
-	signed int result; // eax
-
-	result = 2139095040;
-	dword_10029710 = 2139095040;
-	return result;
-} */
-// 10029710: using guessed type int dword_10029710;
+void __cdecl DiabloUI_cpp_init()
+{
+	DiabloUI_cpp_float = DiabloUI_cpp_float_value;
+}
+// 1001F410: using guessed type int DiabloUI_cpp_float_value;
+// 10029710: using guessed type int DiabloUI_cpp_float;

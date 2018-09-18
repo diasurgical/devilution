@@ -135,7 +135,7 @@ void __fastcall Fade_SetFadeTimer(int nTime)
 // 10029C70: using guessed type int sgbIsFading;
 
 // ref: 0x10007420
-void __stdcall Fade_TimerFunctionDlg(int a1)
+void __stdcall Fade_TimerFunctionDlg(int a1, int a2, int a3, int a4)
 {
 	if ( sgbFadeRange > 5 )
 	{
