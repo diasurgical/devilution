@@ -228,15 +228,16 @@ void __fastcall EntName_100071ED(HWND hWnd, unsigned int a2, int a3);
 signed int EntName_10007220();
 
 
-int __fastcall Fade_1000722B(int a1, int a2);
-int __fastcall Fade_100072BE(int a1);
-signed int Fade_1000739F();
-signed int Fade_100073B4();
-void __fastcall Fade_100073C5(HWND hWnd, int a2);
-BOOL UNKCALL Fade_100073EF(HWND hWnd);
-int __fastcall Fade_100073FD(int a1, int a2, int a3);
-int __stdcall Fade_10007420(int a1, int a2, int a3, int a4);
-signed int Fade_1000744D();
+void __fastcall Fade_ApplyPaletteRange(int range1, int range2);
+void __fastcall Fade_UpdatePaletteRange(int range);
+BOOL __cdecl Fade_CheckRange5();
+void __cdecl Fade_Range5SetZero();
+void __fastcall Fade_NoInputAndArt(HWND hWnd, BOOL bShowCurs);
+void __fastcall Fade_SetInputWindow(HWND hWnd);
+void __fastcall Fade_SetFadeTimer(int nTime);
+void __stdcall Fade_TimerFunctionDlg(int a1);
+void __cdecl j_Fade_cpp_init();
+void __cdecl Fade_cpp_init();
 
 
 int (__stdcall *UNKCALL Focus_10007458(void *arg))(_DWORD);

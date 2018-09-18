@@ -8,6 +8,7 @@ ProfileStruct bnprofiles[4] =
 };
 int profilemsg1[6] = { 1125, 1127, 1129, 1131, 1133, 0 };
 int profilemsg2[6] = { 1126, 1128, 1130, 1132, 1134, 0 };
+int fade_cpp_float_value = 2139095040; // weak
 int local_cpp_float_value = 2139095040; // weak
 int dword_10022258 = 4; // weak
 ProfFntStruct proffnts[4] =
@@ -210,10 +211,10 @@ LPSTR dword_10029858; // idb
 int dword_1002985C; // weak
 int dword_10029860; // weak
 LPSTR dword_10029864; // idb
-int dword_10029868; // weak
-int dword_1002986C; // weak
+int fade_cpp_float; // weak
+int sgbFadeRange; // idb
 tagPALETTEENTRY fadepal[256];
-int dword_10029C70; // weak
+int sgbIsFading; // weak
 HANDLE dword_10029C78; // idb
 int dword_10029C98; // weak
 int dword_10029C9C; // weak
