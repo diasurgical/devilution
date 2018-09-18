@@ -112,21 +112,21 @@ unsigned char L5ConvTbl[16] = { 22u, 13u, 1u, 13u, 2u, 13u, 13u, 13u, 4u, 13u, 1
 
 void __cdecl DRLG_Init_Globals()
 {
-	char v0; // al
+	char c;
 
-	memset(dFlags, 0, 0x3100u);
-	memset(dPlayer, 0, 0x3100u);
-	memset(dMonster, 0, 0xC400u);
-	memset(dDead, 0, 0x3100u);
-	memset(dObject, 0, 0x3100u);
-	memset(dItem, 0, 0x3100u);
-	memset(dMissile, 0, 0x3100u);
-	memset(dArch, 0, 0x3100u);
-	if ( lightflag )
-		v0 = 0;
+	memset(dFlags, 0, sizeof(dFlags));
+	memset(dPlayer, 0, sizeof(dPlayer));
+	memset(dMonster, 0, sizeof(dMonster));
+	memset(dDead, 0, sizeof(dDead));
+	memset(dObject, 0, sizeof(dObject));
+	memset(dItem, 0, sizeof(dItem));
+	memset(dMissile, 0, sizeof(dMissile));
+	memset(dArch, 0, sizeof(dArch));
+	if ( !lightflag )
+		c = ( light4flag ) ? 3 : 15;
 	else
-		v0 = light4flag == 0 ? 15 : 3;
-	memset(dTransVal, v0, 0x3100u);
+		c = 0;
+	memset(dTransVal, c, sizeof(dTransVal));
 }
 // 525728: using guessed type int light4flag;
 // 646A28: using guessed type int lightflag;
@@ -1344,11 +1344,11 @@ void __fastcall L5drawRoom(int x, int y, int w, int h)
 	}
 }
 
-void __fastcall L5roomGen(int x, int y, int w, int h, bool dir)
+void __fastcall L5roomGen(int x, int y, int w, int h, BOOL dir)
 {
 	int v5; // eax
-	int v6; // ecx
-	int v7; // eax
+	BOOL v6; // ecx
+	BOOL v7; // eax
 	int v8; // ecx
 	int v9; // eax
 	int v11; // esi
@@ -1384,7 +1384,7 @@ void __fastcall L5roomGen(int x, int y, int w, int h, bool dir)
 		{
 			v5 = random(0, 4);
 			v6 = 0;
-			_LOBYTE(v6) = dir == 1 ? v5 != 0 : v5 == 0;
+			v6 = dir == 1 ? v5 != 0 : v5 == 0;
 			v7 = v6;
 			v8 = 0;
 			if ( !v7 )
@@ -1416,7 +1416,7 @@ void __fastcall L5roomGen(int x, int y, int w, int h, bool dir)
 				L5roomGen(v13, tya, v11, v12, 0);
 			if ( tha != 1 )
 				return;
-			*(_DWORD *)&dir = 0;
+			dir = 0;
 			h = v12;
 			w = v11;
 			v29 = txb;
@@ -1447,7 +1447,7 @@ void __fastcall L5roomGen(int x, int y, int w, int h, bool dir)
 			L5roomGen(tyb, v20, v18, v19, 1);
 		if ( thc != 1 )
 			break;
-		*(_DWORD *)&dir = 1;
+		dir = 1;
 		h = v19;
 		w = v18;
 		v29 = v20;
