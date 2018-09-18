@@ -3,7 +3,7 @@ Microsoft Developer Studio Workspace File, Format Version 6.00
 
 ###############################################################################
 
-Project: "Diablo"=.\Diablo.dsp - Package Owner=<4>
+Project: "Diablo"=".\Diablo.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -21,7 +21,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "DiabloUI"=.\DiabloUI\DiabloUI.dsp - Package Owner=<4>
+Project: "DiabloUI"=".\DiabloUI\DiabloUI.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -36,7 +36,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "Storm"=.\3rdParty\Storm\Source\Storm.dsp - Package Owner=<4>
+Project: "Storm"=".\3rdParty\Storm\Source\Storm.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
