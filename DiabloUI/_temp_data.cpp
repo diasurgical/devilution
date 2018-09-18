@@ -8,8 +8,11 @@ ProfileStruct bnprofiles[4] =
 };
 int profilemsg1[6] = { 1125, 1127, 1129, 1131, 1133, 0 };
 int profilemsg2[6] = { 1126, 1128, 1130, 1132, 1134, 0 };
+int doom_cpp_float_value = 2139095040; // weak
 int fade_cpp_float_value = 2139095040; // weak
+int focus_cpp_float_value = 2139095040; // weak
 int local_cpp_float_value = 2139095040; // weak
+int titlesnd_cpp_float_value = 2139095040; // weak
 int dword_10022258 = 4; // weak
 ProfFntStruct proffnts[4] =
 {
@@ -112,7 +115,7 @@ void *dword_1002942C; // idb
 int (__stdcall *dword_10029430)(_DWORD, _DWORD, _DWORD, _DWORD); // weak
 void *dword_10029434; // idb
 int dword_10029438[4]; // weak
-char byte_10029448; // idb
+char *wndtext_pointer; /* check */
 HGDIOBJ dword_10029450; // idb
 int dword_10029454; // weak
 int dword_10029458; // weak
@@ -206,7 +209,7 @@ int dword_10029844; // weak
 void *dword_10029848; // idb
 int dword_1002984C; // weak
 int dword_10029850; // weak
-int dword_10029854; // weak
+int doom_cpp_float; // weak
 LPSTR dword_10029858; // idb
 int dword_1002985C; // weak
 int dword_10029860; // weak
@@ -215,14 +218,14 @@ int fade_cpp_float; // weak
 int sgbFadeRange; // idb
 tagPALETTEENTRY fadepal[256];
 int sgbIsFading; // weak
-HANDLE dword_10029C78; // idb
-int dword_10029C98; // weak
-int dword_10029C9C; // weak
-int dword_10029CA0; // weak
-int dword_10029CA4; // weak
+HANDLE SpinnerTransOut[8];
+int focus_spin_width; // idb
+int focus_spin_height; // weak
+int focus_cpp_float; // weak
+int sgbSpinnersLoaded; // weak
 int dword_10029CA8; // weak
 int dword_10029CAC; // weak
-int dword_10029CB0; // weak
+int sgnSpinnerFrame; // weak
 int local_cpp_float; // weak
 int gdwCursWidth; // weak
 int gdwCursHeight; // weak
@@ -345,5 +348,5 @@ int dword_1002A50C; // weak
 HANDLE dword_1002A510; // idb
 int dword_1002A588; // weak
 int dword_1002A58C; // weak
-int dword_1002A590; // weak
-int (__stdcall *dword_1002A594)(_DWORD); // weak
+int titlesnd_cpp_float; // weak
+void (__stdcall *gfnSoundFunction)(char *file);
