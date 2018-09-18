@@ -273,7 +273,8 @@ EXPORTS
   ;SReg430                       @430 NONAME
   STransBlt                     @431 NONAME
   STransBltUsingMask            @432 NONAME
-  ;STransCreateI                 @433 NONAME
+  STransCreateI                 @433 NONAME
+  STransCreateI@28              @433 NONAME
   STransDelete                  @434 NONAME
 
   STransDuplicate               @436 NONAME

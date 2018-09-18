@@ -1,16 +1,17 @@
-void UNKCALL artfont_10001058(char *arg);
-int artfont_10001098();
-int artfont_100010C8();
-int UNKCALL artfont_10001120(_DWORD *arg);
-signed int artfont_10001159();
-void __fastcall artfont_100011FB(int ecx0, int edx0, const char *a1);
-int artfont_100012F6();
-int artfont_10001310();
-int __fastcall artfont_10001329(unsigned char *a1);
-signed int artfont_1000136C();
-int __fastcall artfont_10001377(unsigned char *a1);
-BOOL __cdecl artfont_100013B3(void *location);
-void __fastcall artfont_100013CD(unsigned char *a1, _DWORD *a2, int a3, int a4);
+void __fastcall artfont_SetArtFont(int nFont);
+void __cdecl artfont_InitAllFonts();
+void __cdecl artfont_FreeAllFonts();
+void __fastcall artfont_FreeArtFont(FontStruct *pFont);
+BOOL __cdecl artfont_LoadAllFonts();
+void __fastcall artfont_LoadArtFont(FontStruct *pFont, const char *pszBinFile, const char *pszFileName);
+int __cdecl artfont_GetFontMaxHeight();
+int __cdecl artfont_GetFontDefWidth();
+int __fastcall artfont_GetFontWidth(char *str);
+void __cdecl j_artfont_cpp_init();
+void __cdecl artfont_cpp_init();
+int __fastcall artfont_GetFontBreak(char *str);
+void __cdecl artfont_delete_operator(void *ptr);
+void __fastcall artfont_PrintFontStr(char *str, DWORD **pSurface, int sx, int sy);
 
 
 signed int bn_prof_100014E8();
