@@ -143,27 +143,30 @@ signed int __fastcall credits_10005736(_BYTE *a1);
 int __fastcall credits_10005755(int a1, int a2);
 
 
-BOOL UNKCALL DiabEdit_10005765(HWND hWnd);
-signed int DiabEdit_1000579B();
-ATOM DiabEdit_100057A6();
-HANDLE __fastcall DiabEdit_100057E8(int a1, int a2, HWND hWnd, UINT Msg, HANDLE hData, LPARAM lParam);
-LRESULT __fastcall DiabEdit_1000591C(LPARAM lParam, unsigned short a2);
-LRESULT UNKCALL DiabEdit_1000594E(LPARAM lParam);
-char *__fastcall DiabEdit_10005A0A(HWND a1, unsigned char a2, int a3);
-int __fastcall DiabEdit_10005AF4(LPARAM lParam, int a2, int a3);
-char *__fastcall DiabEdit_10005B70(HWND hWnd, char *a2);
-BOOL __fastcall DiabEdit_10005B9F(HWND hWnd, int a2);
-HANDLE UNKCALL DiabEdit_10005BE7(HWND hWnd);
+void __fastcall DiabEdit_DoPaintBMP(HWND hWnd);
+void __cdecl j_DiabEdit_cpp_init();
+void __cdecl DiabEdit_cpp_init();
+void __cdecl DiabEdit_SetupWindow();
+LRESULT __stdcall DiabEdit_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+void __fastcall DiabEdit_SendWndCommand(HWND hWnd, WORD a2);
+void __fastcall DiabEdit_GetCursorProp(HWND hWnd);
+void __fastcall DiabEdit_RestrictAndLimit(HWND hWnd, WPARAM wParam, LPARAM lParam);
+void __fastcall DiabEdit_SetTextAndProp(HWND hWnd, WPARAM wParam, LPARAM lParam);
+void __fastcall DiabEdit_SetRestrictString(HWND hWnd, LPARAM lParam);
+void __fastcall DiabEdit_SetRestrictTimer(HWND hWnd);
+void __fastcall DiabEdit_RemoveAllProps(HWND hWnd);
 
 
-int DiabloUI_10005C2A();
-//int __stdcall UiSetBackgroundBitmap(int a1, int a2, int a3, int a4, int a5);
-//int __stdcall UiSetSpawned(int a1);
-//BOOL UiInitialize();
-//void *UiDestroy();
-//int __stdcall UiAppActivate(int a1);
+int __cdecl DiabloUI_GetSpawned();
+void __stdcall UiOnPaint(int a1);
+void __stdcall UiSetBackgroundBitmap(int a1, PALETTEENTRY *a2, int a3, int a4, int a5);
+void __stdcall UiSetSpawned(BOOL bSpawned);
+void __cdecl UiInitialize();
+void __cdecl UiDestroy();
+void __stdcall UiAppActivate(BOOL bActive);
 BOOL __stdcall DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved);
-signed int DiabloUI_10005CEA();
+void __cdecl j_DiabloUI_cpp_init();
+void __cdecl DiabloUI_cpp_init();
 
 
 signed int DirLink_10005CFA();
@@ -236,7 +239,7 @@ void __cdecl Fade_Range5SetZero();
 void __fastcall Fade_NoInputAndArt(HWND hWnd, BOOL bShowCurs);
 void __fastcall Fade_SetInputWindow(HWND hWnd);
 void __fastcall Fade_SetFadeTimer(int nTime);
-void __stdcall Fade_TimerFunctionDlg(int a1);
+void __stdcall Fade_TimerFunctionDlg(int a1, int a2, int a3, int a4);
 void __cdecl j_Fade_cpp_init();
 void __cdecl Fade_cpp_init();
 
@@ -253,7 +256,7 @@ void __cdecl j_Focus_cpp_init();
 void __cdecl Focus_cpp_init();
 void __fastcall Focus_LoadSpinner(const char *pszFileName);
 void __fastcall Focus_SetFocusTimer(HWND hWnd, const char *pszFileName);
-void __stdcall Focus_SetFocusAndBlit(int hWnd);
+void __stdcall Focus_SetFocusAndBlit(int hWnd, int a2, int a3, int a4);
 void __fastcall Focus_KillFocusTimer(HWND hWnd);
 
 
@@ -595,20 +598,21 @@ int __fastcall SelYesNo_1000FD77(int a1, UINT a2, int a3);
 signed int SelYesNo_1000FDE3();
 
 
-_DWORD *UNKCALL Title_1000FDEE(HWND hWnd);
-int Title_1000FEED();
-void **UNKCALL Title_1000FF0F(HWND hWnd);
-HWND UNKCALL Title_1000FF51(HWND arg);
-_DWORD *__fastcall Title_1000FFE8(HWND hWnd, const char *edx0);
-int __fastcall Title_1001009E(HWND hWnd, const char *a2, HWND hWnda);
-_DWORD *__stdcall Title_100100CB(HWND hWnd, int a2, int a3, int a4);
-signed int Title_100100DC();
-void **UNKCALL Title_100100E7(HWND hWnd);
-//signed int __stdcall UiTitleDialog(int a1);
-int __stdcall Title_10010126(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam); // idb
-void UNKCALL Title_10010235(HWND hDlg);
-int __fastcall Title_1001025A(HWND hWnd, int a2);
-int UNKCALL Title_100102D7(void *arg);
+void __fastcall Title_BlitTitleBuffer(HWND hWnd);
+void __cdecl Title_DeletePhTrans();
+void __fastcall Title_FreeTransMem(HWND hWnd);
+void __fastcall Title_SetTitleBMP(HWND hWnd);
+void __fastcall Title_LoadTitleImage(HWND hWnd, const char *pszFileName);
+void __fastcall Title_LoadImgSetTimer(HWND hWnd, const char *pszFileName);
+void __stdcall Title_BlitTitleBufFnc(int hWnd, int a2, int a3, int a4);
+void __cdecl j_Title_cpp_init();
+void __cdecl Title_cpp_init();
+void __fastcall Title_KillTitleTimer(HWND hWnd);
+BOOL __stdcall UiTitleDialog(int a1);
+LRESULT __stdcall Title_MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+void __fastcall Title_KillTimerAndFree(HWND hWnd);
+void __fastcall Title_LoadAllTitleImgs(HWND hWnd, int time);
+void __fastcall Title_KillAndFadeDlg(HWND hWnd);
 
 
 void __fastcall TitleSnd_SetSoundFunction(void (__stdcall *func)(char *file));

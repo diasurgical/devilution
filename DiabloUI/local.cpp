@@ -570,7 +570,7 @@ void __fastcall local_SetDiabloCursor(HWND hWnd)
 
 	v3 = 0;
 	local_SetCursorDefault();
-	v2 = LoadCursorA(hInstance, "DIABLOCURSOR");
+	v2 = LoadCursorA(ghUiInst, "DIABLOCURSOR");
 	SDlgSetCursor(hWnd, v2, 32512, &v3);
 }
 // 10010454: using guessed type int __stdcall SDlgSetCursor(_DWORD, _DWORD, _DWORD, _DWORD);
