@@ -78,8 +78,10 @@ EXPORTS
   SDlgDefDialogProc             @206 NONAME
 
   SDlgDialogBoxIndirectParam    @208 NONAME
-  ;SDlgDialogBoxParam            @209 NONAME
-  ;SDlgDrawBitmap                @210 NONAME
+  SDlgDialogBoxParam            @209 NONAME
+  SDlgDialogBoxParam@20         @209 NONAME
+  SDlgDrawBitmap                @210 NONAME
+  SDlgDrawBitmap@28             @210 NONAME
   SDlgEndDialog                 @211 NONAME
   SDlgEndPaint                  @212 NONAME
   SDlgEndPaint@8                @212 NONAME
