@@ -8,7 +8,7 @@ int itemavail[MAXITEMS];
 ItemStruct curruitem;
 ItemGetRecordStruct itemrecord[MAXITEMS];
 ItemStruct item[MAXITEMS+1];
-int itemhold[3][3]; // BOOL
+BOOL itemhold[3][3];
 unsigned char *Item2Frm[35];
 int UniqueItemFlag[128];
 int numitems;
@@ -754,354 +754,370 @@ void __cdecl InitItems()
 }
 // 5CF31D: using guessed type char setlevel;
 
-void __fastcall CalcPlrItemVals(int p, bool Loadgfx)
+void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 {
-	int v2; // eax
-	int v3; // ecx
-	int v4; // ebx
-	int v5; // esi
-	int *v6; // edi
-	int v7; // edx
-	int v8; // ecx
-	int v9; // eax
-	int v10; // edx
-	int v11; // eax
-	int *v12; // ecx
-	int *v13; // eax
-	int v14; // eax
-	int v15; // eax
-	signed int v16; // ecx
-	bool v17; // zf
-	signed int v18; // eax
-	signed int v19; // ecx
-	signed int v20; // ebx
-	char v21; // dl
-	int v22; // eax
-	int v23; // ecx
-	int v24; // eax
-	int v25; // eax
-	int v26; // edx
-	int v27; // edx
-	int v28; // eax
-	int v29; // ebx
-	int v30; // ecx
-	unsigned char *v31; // eax
-	int v32; // eax
-	int v33; // ecx
-	int i; // edx
-	int v35; // eax
-	signed int v36; // [esp-4h] [ebp-84h]
-	__int64 v37; // [esp+Ch] [ebp-74h]
-	BOOL v38; // [esp+14h] [ebp-6Ch]
-	signed int v39; // [esp+18h] [ebp-68h]
-	int v40; // [esp+1Ch] [ebp-64h]
-	int v41; // [esp+20h] [ebp-60h]
-	int v42; // [esp+24h] [ebp-5Ch]
-	int v43; // [esp+28h] [ebp-58h]
-	int v44; // [esp+2Ch] [ebp-54h]
-	int v45; // [esp+30h] [ebp-50h]
-	int v46; // [esp+34h] [ebp-4Ch]
-	signed int v47; // [esp+38h] [ebp-48h]
-	signed int v48; // [esp+3Ch] [ebp-44h]
-	signed int v49; // [esp+40h] [ebp-40h]
-	int v50; // [esp+44h] [ebp-3Ch]
-	char v51; // [esp+48h] [ebp-38h]
-	int v52; // [esp+4Ch] [ebp-34h]
-	int v53; // [esp+50h] [ebp-30h]
-	int v54; // [esp+54h] [ebp-2Ch]
-	int v55; // [esp+58h] [ebp-28h]
-	int v56; // [esp+5Ch] [ebp-24h]
-	int v57; // [esp+60h] [ebp-20h]
-	int v58; // [esp+64h] [ebp-1Ch]
-	int v59; // [esp+68h] [ebp-18h]
-	int v60; // [esp+6Ch] [ebp-14h]
-	int v61; // [esp+70h] [ebp-10h]
-	int arglist; // [esp+74h] [ebp-Ch]
-	int v63; // [esp+78h] [ebp-8h]
-	int v64; // [esp+78h] [ebp-8h]
-	signed int r; // [esp+7Ch] [ebp-4h]
+	int mind = 0; // min damage
+	int maxd = 0; // max damage
+	int tac = 0; // accuracy
 
-	v2 = 0;
-	arglist = p;
-	v3 = 0;
-	v4 = 0;
-	v5 = arglist;
-	v38 = Loadgfx;
-	v58 = 0;
-	v57 = 0;
-	v56 = 0;
-	v55 = 0;
-	v59 = 0;
-	v53 = 0;
-	v60 = 0;
-	v52 = 0;
-	v61 = 0;
-	v37 = (__int64)0;
-	v49 = 0;
-	v48 = 0;
-	v47 = 0;
-	v54 = 0;
-	r = 10;
-	v46 = 0;
-	v63 = 0;
-	v51 = 0;
-	v50 = 0;
-	v45 = 0;
-	v44 = 0;
-	v43 = 0;
-	v42 = 0;
-	v6 = &plr[arglist].InvBody[0]._iStatFlag;
-	v39 = 7;
-	do
+	int g;
+	int i;
+	int mi;
+
+	int bdam = 0; // bonus damage
+	int btohit = 0; // bonus chance to hit
+	int bac = 0; // bonus accuracy
+
+	int iflgs = 0; // item_special_effect flags
+
+	int sadd = 0; // added stregth
+	int madd = 0; // added magic
+	int dadd = 0; // added dexterity
+	int vadd = 0; // added vitality
+
+	UINT64 spl = 0; // bitarray for all enabled/active spells
+
+	signed int fr = 0; // fire resistance
+	signed int lr = 0; // lightning resistance
+	signed int mr = 0; // magic resistance
+
+	int dmod = 0; // bonus damage mod?
+	int ghit = 0; // (reduced) chance to get hit
+
+	signed int lrad = 10; // light radius
+
+	int ihp = 0; // increased HP
+	int imana = 0; // increased mana
+
+	int spllvladd = 0; // increased spell level
+	int enac = 0; // enhanced accuracy
+
+	int fmin = 0; // minimum fire damage
+	int fmax = 0; // maximum fire damage
+	int lmin = 0; // minimum lightning damage
+	int lmax = 0; // maximum lightning damage
+
+	// didn't find a use for t for now
+	// int t;
+
+	for ( i = 0; i < NUM_INVLOC; i++ )
 	{
-		if ( *(v6 - 87) != -1 && *v6 )
+		ItemStruct *itm = &plr[p].InvBody[i];
+		if ( itm->_itype != ITYPE_NONE && itm->_iStatFlag )
 		{
-			v3 += *(v6 - 38);
-			v58 += *(v6 - 36);
-			v2 += *(v6 - 37);
-			v7 = *(v6 - 33);
-			v40 = v3;
-			v41 = v2;
-			if ( v7 )
-				v37 |= (__int64)1 << ((unsigned char)v7 - 1);
-			if ( !*((_BYTE *)v6 - 296) || *(v6 - 75) )
+
+			mind += itm->_iMinDam;
+			tac += itm->_iAC;
+			maxd += itm->_iMaxDam;
+
+			if ( itm->_iSpell != SPL_NULL )
 			{
-				v57 += *(v6 - 28);
-				v56 += *(v6 - 27);
-				v8 = *(v6 - 26);
-				if ( v8 )
+				spl |= (unsigned __int64)1 << (itm->_iSpell - 1);
+			}
+
+			if ( !itm->_iMagical || itm->_iIdentified )
+			{
+				bdam += itm->_iPLDam;
+				btohit += itm->_iPLToHit;
+				if ( itm->_iPLAC )
 				{
-					v9 = v8 * *(v6 - 36) / 100;
-					if ( !v9 )
-						v9 = 1;
-					v55 += v9;
-					v2 = v41;
+					int tmpac = itm->_iPLAC * itm->_iAC / 100;
+					if ( tmpac == 0 )
+						tmpac = 1;
+					bac += tmpac;
 				}
-				v4 += *(v6 - 16);
-				v59 |= *(v6 - 35);
-				v53 += *(v6 - 25);
-				v60 += *(v6 - 24);
-				v52 += *(v6 - 23);
-				v61 += *(v6 - 22);
-				v49 += *(v6 - 21);
-				v48 += *(v6 - 20);
-				v47 += *(v6 - 19);
-				v54 += *(v6 - 15);
-				r += *(v6 - 14);
-				v46 += *(v6 - 17);
-				v63 += *(v6 - 18);
-				v51 += *((_BYTE *)v6 - 52);
-				v50 += *(v6 - 7);
-				v45 += *(v6 - 11);
-				v44 += *(v6 - 10);
-				v43 += *(v6 - 9);
-				v42 += *(v6 - 8);
-				v3 = v40;
+				dmod += itm->_iPLDamMod;
+				iflgs |= itm->_iFlags;
+				sadd += itm->_iPLStr;
+				madd += itm->_iPLMag;
+				dadd += itm->_iPLDex;
+				vadd += itm->_iPLVit;
+				fr += itm->_iPLFR;
+				lr += itm->_iPLLR;
+				mr += itm->_iPLMR;
+				ghit += itm->_iPLGetHit;
+				lrad += itm->_iPLLight;
+				ihp += itm->_iPLHP;
+				imana += itm->_iPLMana;
+				spllvladd += itm->_iSplLvlAdd;
+				enac += itm->_iPLEnAc;
+				fmin += itm->_iFMinDam;
+				fmax += itm->_iFMaxDam;
+				lmin += itm->_iLMinDam;
+				lmax += itm->_iLMaxDam;
 			}
 		}
-		v6 += 92;
-		--v39;
 	}
-	while ( v39 );
-	if ( !v3 && !v2 )
+
+	if ( mind == 0 && maxd == 0 )
 	{
-		v2 = 1;
-		v3 = 1;
-		if ( plr[v5].InvBody[4]._itype == ITYPE_SHIELD && plr[v5].InvBody[4]._iStatFlag )
-			v2 = 3;
-		if ( plr[v5].InvBody[5]._itype == ITYPE_SHIELD && plr[v5].InvBody[5]._iStatFlag )
-			v2 = 3;
-	}
-	plr[v5]._pIMaxDam = v2;
-	plr[v5]._pIAC = v58;
-	plr[v5]._pIBonusDam = v57;
-	plr[v5]._pIBonusToHit = v56;
-	plr[v5]._pIBonusAC = v55;
-	plr[v5]._pIFlags = v59;
-	plr[v5]._pIGetHit = v54;
-	plr[v5]._pIMinDam = v3;
-	plr[v5]._pIBonusDamMod = v4;
-	if ( r < 2 )
-		r = 2;
-	if ( r > 15 )
-		r = 15;
-	if ( plr[v5]._pLightRad != r && arglist == myplr )
-	{
-		ChangeLightRadius(plr[v5]._plid, r);
-		v10 = 10;
-		if ( r >= 10 )
-			v10 = r;
-		ChangeVisionRadius(plr[v5]._pvid, v10);
-		plr[v5]._pLightRad = r;
-	}
-	plr[v5]._pStrength = v53 + plr[v5]._pBaseStr;
-	v11 = myplr;
-	v12 = &plr[myplr]._pStrength;
-	if ( *v12 <= 0 )
-		*v12 = 0;
-	plr[v5]._pMagic = v60 + plr[v5]._pBaseMag;
-	if ( plr[v11]._pMagic <= 0 )
-		plr[v11]._pMagic = 0;
-	plr[v5]._pDexterity = v52 + plr[v5]._pBaseDex;
-	if ( plr[v11]._pDexterity <= 0 )
-		plr[v11]._pDexterity = 0;
-	v13 = &plr[v11]._pVitality;
-	plr[v5]._pVitality = v61 + plr[v5]._pBaseVit;
-	if ( *v13 <= 0 )
-		*v13 = 0;
-	v14 = plr[v5]._pLevel;
-	if ( _LOBYTE(plr[v5]._pClass) == 1 )
-	{
-		v15 = (plr[v5]._pStrength + plr[v5]._pDexterity) * v14;
-		v16 = 200;
-	}
-	else
-	{
-		v15 = plr[v5]._pStrength * v14;
-		v16 = 100;
-	}
-	v17 = _LOBYTE(plr[v5]._pRSplType) == 3;
-	plr[v5]._pISpells[0] = v37;
-	plr[v5]._pISpells[1] = HIDWORD(v37);
-	plr[v5]._pDamageMod = v15 / v16;
-	if ( v17 && !(v37 & ((__int64)1 << (_LOBYTE(plr[v5]._pRSpell) - 1))) )
-	{
-		plr[v5]._pRSpell = -1;
-		_LOBYTE(plr[v5]._pRSplType) = 4;
-		drawpanflag = 255;
-	}
-	plr[v5]._pISplLvlAdd = v51;
-	plr[v5]._pIEnAc = v50;
-	if ( v59 >= 0 )
-	{
-		v19 = v49;
-		v20 = v48;
-		v18 = v47;
-	}
-	else
-	{
-		v18 = 0;
-		v19 = 0;
-		v20 = 0;
-	}
-	if ( v18 > 75 )
-		_LOBYTE(v18) = 75;
-	plr[v5]._pMagResist = v18;
-	if ( v19 > 75 )
-		_LOBYTE(v19) = 75;
-	plr[v5]._pFireResist = v19;
-	if ( v20 > 75 )
-		_LOBYTE(v20) = 75;
-	v21 = plr[v5]._pClass;
-	v22 = v61;
-	plr[v5]._pLghtResist = v20;
-	if ( !v21 )
-		v22 = 2 * v61;
-	if ( v21 == 1 )
-		v22 += v22 >> 1;
-	v23 = (v22 << 6) + v46;
-	v24 = v60;
-	if ( v21 == 2 )
-		v24 = 2 * v60;
-	if ( v21 == 1 )
-		v24 += v24 >> 1;
-	v64 = (v24 << 6) + v63;
-	v25 = v23 + plr[v5]._pHPBase;
-	v26 = v23 + plr[v5]._pMaxHPBase;
-	plr[v5]._pHitPoints = v25;
-	v17 = arglist == myplr;
-	plr[v5]._pMaxHP = v26;
-	if ( v17 && (signed int)(v25 & 0xFFFFFFC0) <= 0 )
-		SetPlayerHitPoints(arglist, 0);
-	plr[v5]._pMana = v64 + plr[v5]._pManaBase;
-	plr[v5]._pMaxMana = v64 + plr[v5]._pMaxManaBase;
-	plr[v5]._pIFMinDam = v45;
-	plr[v5]._pIFMaxDam = v44;
-	plr[v5]._pILMinDam = v43;
-	plr[v5]._pILMaxDam = v42;
-	if ( v59 & 1 )
-		plr[v5]._pInfraFlag = 1;
-	else
-		plr[v5]._pInfraFlag = 0;
-	v27 = plr[v5].InvBody[4]._itype;
-	plr[v5]._pBlockFlag = 0;
-	v28 = 0;
-	plr[v5]._pwtype = 0;
-	if ( v27 != ITYPE_NONE && plr[v5].InvBody[4]._iClass == 1 && plr[v5].InvBody[4]._iStatFlag )
-		v28 = v27;
-	v29 = plr[v5].InvBody[5]._itype;
-	if ( v29 != ITYPE_NONE && plr[v5].InvBody[5]._iClass == 1 && plr[v5].InvBody[5]._iStatFlag )
-		v28 = plr[v5].InvBody[5]._itype;
-	switch ( v28 )
-	{
-		case ITYPE_SWORD:
-			v36 = 2;
-			goto LABEL_86;
-		case ITYPE_AXE:
-			v36 = 5;
-			goto LABEL_86;
-		case ITYPE_BOW:
-			plr[v5]._pwtype = 1;
-			v36 = 4;
-			goto LABEL_86;
-		case ITYPE_MACE:
-			v36 = 6;
-			goto LABEL_86;
-		case ITYPE_STAFF:
-			v36 = 8;
-LABEL_86:
-			v28 = v36;
-			break;
-	}
-	if ( v27 == ITYPE_SHIELD && plr[v5].InvBody[4]._iStatFlag )
-	{
-		plr[v5]._pBlockFlag = 1;
-		++v28;
-	}
-	if ( v29 == ITYPE_SHIELD && plr[v5].InvBody[5]._iStatFlag )
-	{
-		plr[v5]._pBlockFlag = 1;
-		++v28;
-	}
-	v30 = plr[v5].InvBody[6]._itype;
-	if ( v30 == ITYPE_MARMOR && plr[v5].InvBody[6]._iStatFlag )
-		v28 += 16;
-	if ( v30 == ITYPE_HARMOR && plr[v5].InvBody[6]._iStatFlag )
-		v28 += 32;
-	if ( plr[v5]._pgfxnum != v28 && v38 )
-	{
-		plr[v5]._pgfxnum = v28;
-		plr[v5]._pGFXLoad = 0;
-		LoadPlrGFX(arglist, 1);
-		SetPlrAnims(arglist);
-		v31 = plr[0]._pNAnim[plr[v5]._pdir + 5430 * arglist];
-		plr[v5]._pAnimFrame = 1;
-		plr[v5]._pAnimData = v31;
-		plr[v5]._pAnimLen = plr[v5]._pNFrames;
-		v32 = plr[v5]._pNWidth;
-		plr[v5]._pAnimWidth = v32;
-		plr[v5]._pAnimCnt = 0;
-		plr[v5]._pAnimDelay = 3;
-		plr[v5]._pAnimWidth2 = (v32 - 64) >> 1;
-	}
-	else
-	{
-		plr[v5]._pgfxnum = v28;
-	}
-	v33 = nummissiles;
-	for ( i = 0; i < v33; ++i )
-	{
-		v35 = missileactive[i];
-		if ( missile[v35]._mitype == 13 && missile[v35]._misource == arglist )
+		mind = 1;
+		maxd = 1;
+
+		if ( plr[p].InvBody[4]._itype == ITYPE_SHIELD && plr[p].InvBody[4]._iStatFlag )
 		{
-			missile[v35]._miVar1 = plr[v5]._pHitPoints;
-			missile[v35]._miVar2 = plr[v5]._pHPBase;
+			maxd = 3;
+		}
+
+		if ( plr[p].InvBody[5]._itype == ITYPE_SHIELD && plr[p].InvBody[5]._iStatFlag )
+		{
+			maxd = 3;
 		}
 	}
+
+	plr[p]._pIMaxDam = maxd;
+	plr[p]._pIAC = tac;
+	plr[p]._pIBonusDam = bdam;
+	plr[p]._pIBonusToHit = btohit;
+	plr[p]._pIBonusAC = bac;
+	plr[p]._pIFlags = iflgs;
+	plr[p]._pIGetHit = ghit;
+	plr[p]._pIMinDam = mind;
+	plr[p]._pIBonusDamMod = dmod;
+
+	if ( lrad < 2 )
+	{
+		lrad = 2;
+	}
+	if ( lrad > 15 )
+	{
+		lrad = 15;
+	}
+
+	if ( plr[p]._pLightRad != lrad && p == myplr )
+	{
+		ChangeLightRadius(plr[p]._plid, lrad);
+
+		int pvid = plr[p]._pvid;
+		if ( lrad >= 10 )
+		{
+			ChangeVisionRadius(pvid, lrad);
+		}
+		else
+		{
+			ChangeVisionRadius(pvid, 10);
+		}
+
+		plr[p]._pLightRad = lrad;
+	}
+
+	plr[p]._pStrength = sadd + plr[p]._pBaseStr;
+	if ( plr[myplr]._pStrength <= 0 )
+	{
+		plr[myplr]._pStrength = 0;
+	}
+
+	plr[p]._pMagic = madd + plr[p]._pBaseMag;
+	if ( plr[myplr]._pMagic <= 0 )
+	{
+		plr[myplr]._pMagic = 0;
+	}
+
+	plr[p]._pDexterity = dadd + plr[p]._pBaseDex;
+	if ( plr[myplr]._pDexterity <= 0 )
+	{
+		plr[myplr]._pDexterity = 0;
+	}
+
+	plr[p]._pVitality = vadd + plr[p]._pBaseVit;
+	if ( plr[myplr]._pVitality <= 0 )
+	{
+		plr[myplr]._pVitality = 0;
+	}
+
+	if ( plr[p]._pClass == PC_ROGUE )
+	{
+		plr[p]._pDamageMod = plr[p]._pLevel * (plr[p]._pStrength + plr[p]._pDexterity) / 200;
+	}
+	else
+	{
+		plr[p]._pDamageMod = plr[p]._pLevel * plr[p]._pStrength / 100;
+	}
+
+	plr[p]._pISpells64 = spl;
+
+	// check if the current RSplType is a valid/allowed spell
+	if ( plr[p]._pRSplType == RSPLTYPE_CHARGES
+		&& !(spl & ((UINT64)1 << (plr[p]._pRSpell - 1))) )
+	{
+		plr[p]._pRSpell = SPL_INVALID;
+		plr[p]._pRSplType = RSPLTYPE_INVALID;
+		drawpanflag = 255;
+	}
+
+	plr[p]._pISplLvlAdd = spllvladd;
+	plr[p]._pIEnAc = enac;
+
+	if ( iflgs & ISPL_ALLRESZERO )
+	{
+		// reset resistances to zero if the respective special effect is active
+		mr = 0;
+		fr = 0;
+		lr = 0;
+	}
+
+	if ( mr > 75 )
+	{
+		mr = 75;
+	}
+	plr[p]._pMagResist = mr;
+
+	if ( fr > 75 )
+	{
+		fr = 75;
+	}
+	plr[p]._pFireResist = fr;
+
+	if ( lr > 75 )
+	{
+		lr = 75;
+	}
+	plr[p]._pLghtResist = lr;
+
+	if ( plr[p]._pClass == PC_WARRIOR )
+	{
+		vadd *= 2;
+	}
+	if ( plr[p]._pClass == PC_ROGUE )
+	{
+		vadd += vadd >> 1;
+	}
+	ihp += (vadd << 6);
+
+	if ( plr[p]._pClass == PC_SORCERER )
+	{
+		madd *= 2;
+	}
+	if ( plr[p]._pClass == PC_ROGUE )
+	{
+		madd += madd >> 1;
+	}
+	imana += (madd << 6);
+
+	plr[p]._pHitPoints = ihp + plr[p]._pHPBase;
+	plr[p]._pMaxHP = ihp + plr[p]._pMaxHPBase;
+
+	if ( p == myplr && (plr[p]._pHitPoints >> 6) <= 0 )
+	{
+		SetPlayerHitPoints(p, 0);
+	}
+
+	plr[p]._pMana = imana + plr[p]._pManaBase;
+	plr[p]._pMaxMana = imana + plr[p]._pMaxManaBase;
+
+	plr[p]._pIFMinDam = fmin;
+	plr[p]._pIFMaxDam = fmax;
+	plr[p]._pILMinDam = lmin;
+	plr[p]._pILMaxDam = lmax;
+
+	if ( iflgs & ISPL_INFRAVISION )
+	{
+		plr[p]._pInfraFlag = 1;
+	}
+	else
+	{
+		plr[p]._pInfraFlag = 0;
+	}
+
+	plr[p]._pBlockFlag = 0;
+	plr[p]._pwtype = 0;
+
+	g = 0;
+
+	if ( plr[p].InvBody[4]._itype != ITYPE_NONE
+		&& plr[p].InvBody[4]._iClass == ICLASS_WEAPON
+		&& plr[p].InvBody[4]._iStatFlag )
+	{
+		g = plr[p].InvBody[4]._itype;
+	}
+
+	if ( plr[p].InvBody[5]._itype != ITYPE_NONE
+		&& plr[p].InvBody[5]._iClass == ICLASS_WEAPON
+		&& plr[p].InvBody[5]._iStatFlag )
+	{
+		g = plr[p].InvBody[5]._itype;
+	}
+
+	switch ( g )
+	{
+		case ITYPE_SWORD:
+			g = 2;
+			break;
+		case ITYPE_AXE:
+			g = 5;
+			break;
+		case ITYPE_BOW:
+			plr[p]._pwtype = 1;
+			g = 4;
+			break;
+		case ITYPE_MACE:
+			g = 6;
+			break;
+		case ITYPE_STAFF:
+			g = 8;
+			break;
+	}
+
+	if ( plr[p].InvBody[4]._itype == ITYPE_SHIELD && plr[p].InvBody[4]._iStatFlag )
+	{
+		plr[p]._pBlockFlag = 1;
+		g++;
+	}
+	if ( plr[p].InvBody[5]._itype == ITYPE_SHIELD && plr[p].InvBody[5]._iStatFlag )
+	{
+		plr[p]._pBlockFlag = 1;
+		g++;
+	}
+
+	if ( plr[p].InvBody[6]._itype == ITYPE_MARMOR && plr[p].InvBody[6]._iStatFlag )
+	{
+		// probably a flag set
+		g += 16;
+	}
+	if ( plr[p].InvBody[6]._itype == ITYPE_HARMOR && plr[p].InvBody[6]._iStatFlag )
+	{
+		// probably a flag set
+		g += 32;
+	}
+
+	if ( plr[p]._pgfxnum != g && Loadgfx )
+	{
+		plr[p]._pgfxnum = g;
+		plr[p]._pGFXLoad = 0;
+		LoadPlrGFX(p, PFILE_STAND);
+		SetPlrAnims(p);
+
+
+		int d = plr[p]._pdir;
+
+		// TODO: Add debug assert here ( plr[p]._pNAnim[d] != NULL )
+		plr[p]._pAnimData = plr[p]._pNAnim[d];
+
+		plr[p]._pAnimLen = plr[p]._pNFrames;
+		plr[p]._pAnimFrame = 1;
+		plr[p]._pAnimCnt = 0;
+		plr[p]._pAnimDelay = 3;
+		plr[p]._pAnimWidth = plr[p]._pNWidth;
+		plr[p]._pAnimWidth2 = (plr[p]._pNWidth - 64) >> 1;
+	}
+	else
+	{
+		plr[p]._pgfxnum = g;
+	}
+
+	for ( i = 0; i < nummissiles; i++ )
+	{
+		mi = missileactive[i];
+		if ( missile[mi]._mitype == 13 && missile[mi]._misource == p )
+		{
+			missile[mi]._miVar1 = plr[p]._pHitPoints;
+			missile[mi]._miVar2 = plr[p]._pHPBase;
+		}
+	}
+
 	drawmanaflag = 1;
 	drawhpflag = 1;
 }
-// 52571C: using guessed type int drawpanflag;
 
 void __fastcall CalcPlrScrolls(int p)
 {
@@ -1373,7 +1389,7 @@ void __fastcall CalcPlrBookVals(int p)
 	}
 }
 
-void __fastcall CalcPlrInv(int p, bool Loadgfx)
+void __fastcall CalcPlrInv(int p, BOOL Loadgfx)
 {
 	CalcPlrItemMin(p);
 	CalcSelfItems(p);
@@ -1391,10 +1407,13 @@ void __fastcall CalcPlrInv(int p, bool Loadgfx)
 
 void __fastcall SetPlrHandItem(ItemStruct *h, int idata)
 {
-	ItemDataStruct *pAllItem; // edi
+	ItemDataStruct *pAllItem;
 
 	pAllItem = &AllItemsList[idata];
-	memset(h, 0, 0x170u);
+
+	// zero-initialize struct
+	memset(h, 0, sizeof(*h));
+
 	h->_itype = pAllItem->itype;
 	h->_iCurs = pAllItem->iCurs;
 	strcpy(h->_iName, pAllItem->iName);
@@ -1408,7 +1427,9 @@ void __fastcall SetPlrHandItem(ItemStruct *h, int idata)
 	h->_iSpell = pAllItem->iSpell;
 
 	if ( pAllItem->iMiscId == IMISC_STAFF )
+	{
 		h->_iCharges = 40;
+	}
 
 	h->_iMaxCharges = h->_iCharges;
 	h->_iDurability = pAllItem->iDurability;
@@ -1417,10 +1438,10 @@ void __fastcall SetPlrHandItem(ItemStruct *h, int idata)
 	h->_iMinMag = pAllItem->iMinMag;
 	h->_iMinDex = pAllItem->iMinDex;
 	h->_ivalue = pAllItem->iValue;
+	h->_iIvalue = pAllItem->iValue;
 	h->_iPrePower = -1;
 	h->_iSufPower = -1;
 	h->_iMagical = 0;
-	h->_iIvalue = pAllItem->iValue;
 	h->IDidx = idata;
 }
 
@@ -1494,86 +1515,92 @@ void __fastcall SetPlrHandGoldCurs(ItemStruct *h)
 
 void __fastcall CreatePlrItems(int p)
 {
-	int v1; // ebx
-	int *v2; // eax
-	signed int v3; // ecx
-	int *v4; // eax
-	signed int v5; // ecx
-	int *v6; // eax
-	signed int v7; // ecx
-	int player_numa; // [esp+Ch] [ebp-4h]
+	int i;
+	ItemStruct *pi = plr[p].InvBody;
 
-	player_numa = p;
-	v1 = p;
-	v2 = &plr[p].InvBody[0]._itype;
-	v3 = 7;
-	do
+	for ( i = 0; i < NUM_INVLOC; i++ )
 	{
-		*v2 = -1;
-		v2 += 92;
-		--v3;
+		pi[i]._itype = ITYPE_NONE;
 	}
-	while ( v3 );
-	memset(plr[v1].InvGrid, 0, 0x28u);
-	v4 = &plr[v1].InvList[0]._itype;
-	v5 = 40;
-	do
+
+	// converting this to a for loop creates a `rep stosd` instruction,
+	// so this probably actually was a memset
+	memset(&plr[p].InvGrid, 0, sizeof(plr[p].InvGrid));
+
+	pi = plr[p].InvList;
+	for ( i = 0; i < NUM_INV_GRID_ELEM; i++ )
 	{
-		*v4 = -1;
-		v4 += 92;
-		--v5;
+		pi[i]._itype = ITYPE_NONE;
 	}
-	while ( v5 );
-	plr[v1]._pNumInv = 0;
-	v6 = &plr[v1].SpdList[0]._itype;
-	v7 = 8;
-	do
+
+	plr[p]._pNumInv = 0;
+
+	pi = plr[p].SpdList;
+	// TODO: define/const for that 8
+	for ( i = 0; i < 8; i++ )
 	{
-		*v6 = -1;
-		v6 += 92;
-		--v7;
+		pi[i]._itype = ITYPE_NONE;
 	}
-	while ( v7 );
-	switch ( _LOBYTE(plr[v1]._pClass) )
+
+	switch ( plr[p]._pClass )
 	{
-		case UI_WARRIOR:
-			SetPlrHandItem(&plr[v1].InvBody[4], IDI_WARRIOR);
-			GetPlrHandSeed(&plr[v1].InvBody[4]);
-			SetPlrHandItem(&plr[v1].InvBody[5], IDI_WARRSHLD);
-			GetPlrHandSeed(&plr[v1].InvBody[5]);
-			SetPlrHandItem(&plr[v1].HoldItem, IDI_WARRCLUB);
-			GetPlrHandSeed(&plr[v1].HoldItem);
-			AutoPlace(player_numa, 0, 1, 3, 1);
-			goto LABEL_13;
-		case UI_ROGUE:
-			SetPlrHandItem(&plr[v1].InvBody[4], IDI_ROGUE);
-			GetPlrHandSeed(&plr[v1].InvBody[4]);
-LABEL_13:
-			SetPlrHandItem(plr[v1].SpdList, IDI_HEAL);
-			GetPlrHandSeed(plr[v1].SpdList);
-			SetPlrHandItem(&plr[v1].SpdList[1], IDI_HEAL);
-			goto LABEL_14;
-		case UI_SORCERER:
-			SetPlrHandItem(&plr[v1].InvBody[4], IDI_SORCEROR);
-			GetPlrHandSeed(&plr[v1].InvBody[4]);
-			SetPlrHandItem(plr[v1].SpdList, IDI_MANA);
-			GetPlrHandSeed(plr[v1].SpdList);
-			SetPlrHandItem(&plr[v1].SpdList[1], IDI_MANA);
-LABEL_14:
-			GetPlrHandSeed(&plr[v1].SpdList[1]);
+		case PC_WARRIOR:
+			SetPlrHandItem(&plr[p].InvBody[INVLOC_HAND_LEFT], IDI_WARRIOR);
+			GetPlrHandSeed(&plr[p].InvBody[INVLOC_HAND_LEFT]);
+
+			SetPlrHandItem(&plr[p].InvBody[INVLOC_HAND_RIGHT], IDI_WARRSHLD);
+			GetPlrHandSeed(&plr[p].InvBody[INVLOC_HAND_RIGHT]);
+
+			// TODO: Add debug logic from 1.00 here
+
+			SetPlrHandItem(&plr[p].HoldItem, IDI_WARRCLUB);
+			GetPlrHandSeed(&plr[p].HoldItem);
+			AutoPlace(p, 0, 1, 3, 1);
+
+			SetPlrHandItem(&plr[p].SpdList[0], IDI_HEAL);
+			GetPlrHandSeed(&plr[p].SpdList[0]);
+
+			SetPlrHandItem(&plr[p].SpdList[1], IDI_HEAL);
+			GetPlrHandSeed(&plr[p].SpdList[1]);
+			break;
+		case PC_ROGUE:
+			SetPlrHandItem(&plr[p].InvBody[INVLOC_HAND_LEFT], IDI_ROGUE);
+			GetPlrHandSeed(&plr[p].InvBody[INVLOC_HAND_LEFT]);
+
+			SetPlrHandItem(&plr[p].SpdList[0], IDI_HEAL);
+			GetPlrHandSeed(&plr[p].SpdList[0]);
+
+			SetPlrHandItem(&plr[p].SpdList[1], IDI_HEAL);
+			GetPlrHandSeed(&plr[p].SpdList[1]);
+			break;
+		case PC_SORCERER:
+			SetPlrHandItem(&plr[p].InvBody[INVLOC_HAND_LEFT], IDI_SORCEROR);
+			GetPlrHandSeed(&plr[p].InvBody[INVLOC_HAND_LEFT]);
+
+			SetPlrHandItem(&plr[p].SpdList[0], IDI_MANA);
+			GetPlrHandSeed(&plr[p].SpdList[0]);
+
+			SetPlrHandItem(&plr[p].SpdList[1], IDI_MANA);
+			GetPlrHandSeed(&plr[p].SpdList[1]);
 			break;
 	}
-	SetPlrHandItem(&plr[v1].HoldItem, IDI_GOLD);
-	GetPlrHandSeed(&plr[v1].HoldItem);
-	plr[v1].HoldItem._iCurs = 4;
-	plr[v1].HoldItem._ivalue = 100;
-	plr[v1]._pGold = 100;
-	qmemcpy((char *)&plr[0].InvList[plr[v1]._pNumInv++] + v1 * 21720, &plr[v1].HoldItem, 0x170u);
-	plr[v1].InvGrid[30] = plr[v1]._pNumInv;
-	CalcPlrItemVals(player_numa, 0);
+
+	SetPlrHandItem(&plr[p].HoldItem, IDI_GOLD);
+	GetPlrHandSeed(&plr[p].HoldItem);
+
+	// TODO: Add debug logic from 1.00 here
+
+	plr[p].HoldItem._iCurs = CURSOR_RECHARGE;
+	plr[p].HoldItem._ivalue = 100;
+	plr[p]._pGold = 100;
+
+	plr[p].InvList[plr[p]._pNumInv++] = plr[p].HoldItem;
+	plr[p].InvGrid[30] = plr[p]._pNumInv;
+
+	CalcPlrItemVals(p, FALSE);
 }
 
-bool __fastcall ItemSpaceOk(int i, int j)
+BOOL __fastcall ItemSpaceOk(int i, int j)
 {
 	int v2; // eax
 	int v3; // esi
@@ -1627,11 +1654,11 @@ bool __fastcall GetItemSpace(int x, int y, char inum)
 {
 	int v3; // eax
 	int v4; // edx
-	int (*v5)[3]; // edi
+	BOOL *v5; // edi
 	int v6; // ebx
-	int (*v7)[3]; // esi
+	BOOL *v7; // esi
 	signed int v9; // esi
-	int (*v10)[3]; // eax
+	BOOL *v10; // eax
 	int v11; // ecx
 	int v12; // eax
 	int v14; // ecx
@@ -1641,16 +1668,16 @@ bool __fastcall GetItemSpace(int x, int y, char inum)
 	int v18; // ecx
 	int v19; // [esp+8h] [ebp-Ch]
 	int v20; // [esp+Ch] [ebp-8h]
-	int (*v21)[3]; // [esp+10h] [ebp-4h]
+	BOOL *v21; // [esp+10h] [ebp-4h]
 
 	v3 = y;
 	v19 = y;
 	v4 = y - 1;
 	v20 = x;
-	v5 = itemhold;
+	v5 = itemhold[0];
 	if ( v4 <= v19 + 1 )
 	{
-		v21 = itemhold;
+		v21 = itemhold[0];
 		do
 		{
 			v6 = x - 1;
@@ -1659,15 +1686,15 @@ bool __fastcall GetItemSpace(int x, int y, char inum)
 				v7 = v21;
 				do
 				{
-					(*v7)[0] = ItemSpaceOk(v6, v4);
-					++v7;
+					*v7 = ItemSpaceOk(v6, v4);
+					v7 += 3;
 					++v6;
 				}
 				while ( v6 <= v20 + 1 );
 				v3 = v19;
 				x = v20;
 			}
-			v21 = (int (*)[3])((char *)v21 + 4);
+			++v21;
 			++v4;
 		}
 		while ( v4 <= v3 + 1 );
@@ -1679,15 +1706,15 @@ bool __fastcall GetItemSpace(int x, int y, char inum)
 		v11 = 3;
 		do
 		{
-			if ( (*v10)[0] )
+			if ( *v10 )
 				v9 = 1;
-			++v10;
+			v10 += 3;
 			--v11;
 		}
 		while ( v11 );
-		v5 = (int (*)[3])((char *)v5 + 4);
+		++v5;
 	}
-	while ( (signed int)v5 < (signed int)itemhold[1] );
+	while ( v5 < itemhold[1] );
 	v12 = random(13, 15) + 1;
 	if ( !v9 )
 		return 0;
@@ -1697,7 +1724,7 @@ bool __fastcall GetItemSpace(int x, int y, char inum)
 	{
 		while ( 1 )
 		{
-			if ( itemhold[0][v15 + 2 * v14 + v14] )
+			if (itemhold[v14][v15])
 				--v12;
 			if ( v12 <= 0 )
 				break;
@@ -4372,7 +4399,6 @@ void __fastcall PrintItemDur(ItemStruct *x)
 void __fastcall UseItem(int p, int Mid, int spl)
 {
 	int v3; // esi
-	int v4; // edx
 	int v5; // edx
 	int v6; // edx
 	int v7; // edx
@@ -4387,8 +4413,6 @@ void __fastcall UseItem(int p, int Mid, int spl)
 	int *v16; // eax
 	int *v17; // eax
 	int v18; // esi
-	int v19; // esi
-	int v20; // edx
 	int v21; // edx
 	int v22; // edx
 	int v23; // edx
@@ -4428,7 +4452,6 @@ void __fastcall UseItem(int p, int Mid, int spl)
 	int *v57; // eax
 	int *v58; // eax
 	int v59; // esi
-	int v60; // edx
 	int v61; // esi
 	int v62; // edi
 	unsigned int v63; // edi
@@ -4438,49 +4461,40 @@ void __fastcall UseItem(int p, int Mid, int spl)
 	int *v67; // eax
 	int *v68; // eax
 	int v69; // esi
-	int v70; // edx
 	int pa; // [esp+Ch] [ebp-4h]
 
 	v3 = p;
 	pa = p;
 	if ( Mid > 28 )
 	{
-		v70 = Mid - 42;
-		if ( !v70 )
+		if ( Mid == IMISC_MAPOFDOOM )
 		{
 			doom_init();
-			return;
+		} else if ( Mid == IMISC_SPECELIX ) {
+			ModifyPlrStr(p, 3);
+			ModifyPlrMag(v3, 3);
+			ModifyPlrDex(v3, 3);
+			ModifyPlrVit(v3, 3);
 		}
-		if ( v70 != 2 )
-			return;
-		ModifyPlrStr(p, 3);
-		ModifyPlrMag(v3, 3);
-		ModifyPlrDex(v3, 3);
-		v60 = 3;
-LABEL_82:
-		ModifyPlrVit(v3, v60);
 		return;
 	}
-	if ( Mid == 28 )
+	if ( Mid == IMISC_HEAL_1C )
 		goto LABEL_71;
 	if ( Mid <= 12 )
 	{
-		if ( Mid == 12 )
+		if ( Mid == IMISC_ELIXDEX )
 		{
 			ModifyPlrDex(p, 1);
 			return;
 		}
-		v4 = Mid - 2;
-		if ( !v4 )
+		if ( Mid == IMISC_FULLHEAL )
 		{
-			v19 = p;
-			plr[v19]._pHitPoints = plr[v19]._pMaxHP;
-			plr[v19]._pHPBase = plr[p]._pMaxHPBase;
-LABEL_25:
+			plr[p]._pHitPoints = plr[p]._pMaxHP;
+			plr[p]._pHPBase = plr[p]._pMaxHPBase;
 			drawhpflag = 1;
 			return;
 		}
-		v5 = v4 - 1;
+		v5 = Mid - 3;
 		if ( v5 )
 		{
 			v6 = v5 - 3;
@@ -4555,15 +4569,15 @@ LABEL_71:
 		*v68 += v65;
 		if ( *v68 > v69 )
 			*v68 = v69;
-		goto LABEL_25;
+		drawhpflag = 1;
+		return;
 	}
-	v20 = Mid - 13;
-	if ( !v20 )
+	if ( Mid == IMISC_ELIXVIT )
 	{
-		v60 = 1;
-		goto LABEL_82;
+		ModifyPlrVit(v3, 1);
+		return;
 	}
-	v21 = v20 - 5;
+	v21 = Mid - 18;
 	if ( v21 )
 	{
 		v22 = v21 - 1;
