@@ -1,15 +1,15 @@
 // ref: 0x10001058
-void UNKCALL artfont_10001058(char *arg) { return; }
-/* {
+void __fastcall artfont_SetArtFont(int nFont)
+{
 	int v1; // ecx
 	int v2; // ecx
 	int v3; // ecx
 	int v4; // ecx
 	int v5; // ecx
 
-	if ( arg )
+	if ( nFont )
 	{
-		v1 = (int)(arg - 2);
+		v1 = nFont - 2;
 		if ( v1 )
 		{
 			v2 = v1 - 1;
@@ -25,382 +25,328 @@ void UNKCALL artfont_10001058(char *arg) { return; }
 						if ( v5 )
 						{
 							if ( v5 == 1 )
-								dword_100270C0 = (int)&unk_10028EF8;
+								sgpCurrFont = &font42y;
 							else
-								dword_100270C0 = (int)&unk_100275D0;
+								sgpCurrFont = &font16s;
 						}
 						else
 						{
-							dword_100270C0 = (int)&unk_10026BB8;
+							sgpCurrFont = &font42g;
 						}
 					}
 					else
 					{
-						dword_100270C0 = (int)&unk_100289F0;
+						sgpCurrFont = &font30s;
 					}
 				}
 				else
 				{
-					dword_100270C0 = (int)&unk_100270C8;
+					sgpCurrFont = &font30g;
 				}
 			}
 			else
 			{
-				dword_100270C0 = (int)&unk_10027AD8;
+				sgpCurrFont = &font24s;
 			}
 		}
 		else
 		{
-			dword_100270C0 = (int)&unk_100284E8;
+			sgpCurrFont = &font24g;
 		}
 	}
 	else
 	{
-		dword_100270C0 = (int)&unk_10027FE0;
+		sgpCurrFont = &font16g;
 	}
-} */
-// 100270C0: using guessed type int dword_100270C0;
+}
 
 // ref: 0x10001098
-int artfont_10001098() { return 0; }
-/* {
-	int result; // eax
-
-	result = 0;
-	dword_100270BC = 0;
-	dword_100293FC = 0;
-	dword_100275CC = 0;
-	dword_10028EF4 = 0;
-	dword_100289EC = 0;
-	dword_10027FDC = 0;
-	dword_100284E4 = 0;
-	dword_10027AD4 = 0;
-	dword_100270C0 = 0;
-	return result;
-} */
-// 100270BC: using guessed type int dword_100270BC;
-// 100270C0: using guessed type int dword_100270C0;
-// 100275CC: using guessed type int dword_100275CC;
-// 10027AD4: using guessed type int dword_10027AD4;
-// 10027FDC: using guessed type int dword_10027FDC;
-// 100284E4: using guessed type int dword_100284E4;
-// 100289EC: using guessed type int dword_100289EC;
-// 10028EF4: using guessed type int dword_10028EF4;
-// 100293FC: using guessed type int dword_100293FC;
+void __cdecl artfont_InitAllFonts()
+{
+	font42g.active = 0;
+	font42y.active = 0;
+	font30g.active = 0;
+	font30s.active = 0;
+	font24g.active = 0;
+	font24s.active = 0;
+	font16g.active = 0;
+	font16s.active = 0;
+	sgpCurrFont = 0;
+}
 
 // ref: 0x100010C8
-int artfont_100010C8() { return 0; }
-/* {
-	int result; // eax
-
-	artfont_10001120(&unk_10026BB8);
-	artfont_10001120(&unk_10028EF8);
-	artfont_10001120(&unk_100270C8);
-	artfont_10001120(&unk_100289F0);
-	artfont_10001120(&unk_100284E8);
-	artfont_10001120(&unk_10027AD8);
-	artfont_10001120(&unk_10027FE0);
-	result = artfont_10001120(&unk_100275D0);
-	dword_100270C0 = 0;
-	return result;
-} */
-// 100270C0: using guessed type int dword_100270C0;
+void __cdecl artfont_FreeAllFonts()
+{
+	artfont_FreeArtFont(&font42g);
+	artfont_FreeArtFont(&font42y);
+	artfont_FreeArtFont(&font30g);
+	artfont_FreeArtFont(&font30s);
+	artfont_FreeArtFont(&font24g);
+	artfont_FreeArtFont(&font24s);
+	artfont_FreeArtFont(&font16g);
+	artfont_FreeArtFont(&font16s);
+	sgpCurrFont = 0;
+}
 
 // ref: 0x10001120
-int UNKCALL artfont_10001120(_DWORD *arg) { return 0; }
-/* {
-	_DWORD *v1; // edi
-	int *v2; // esi
+void __fastcall artfont_FreeArtFont(FontStruct *pFont)
+{
+	HANDLE *v2; // esi
 	signed int v3; // ebx
-	int result; // eax
 
-	v1 = arg;
-	if ( arg[321] )
+	if ( pFont->active )
 	{
-		v2 = arg + 65;
+		v2 = (HANDLE *)pFont->fontpal;
 		v3 = 256;
 		do
 		{
-			result = *v2;
 			if ( *v2 )
 			{
-				result = STransDelete(*v2);
+				STransDelete(*v2);
 				*v2 = 0;
 			}
 			++v2;
 			--v3;
 		}
 		while ( v3 );
-		v1[321] = 0;
+		pFont->active = 0;
 	}
-	return result;
-} */
-// 1001033A: using guessed type int __stdcall STransDelete(_DWORD);
+}
 
 // ref: 0x10001159
-signed int artfont_10001159() { return 0; }
-/* {
-	artfont_100011FB((int)&unk_100270C8, (int)"ui_art\\font30.bin", (int)"ui_art\\font30g.pcx");
-	artfont_100011FB((int)&unk_100289F0, (int)"ui_art\\font30.bin", (int)"ui_art\\font30s.pcx");
-	artfont_100011FB((int)&unk_100284E8, (int)"ui_art\\font24.bin", (int)"ui_art\\font24g.pcx");
-	artfont_100011FB((int)&unk_10027AD8, (int)"ui_art\\font24.bin", (int)"ui_art\\font24s.pcx");
-	artfont_100011FB((int)&unk_10027FE0, (int)"ui_art\\font16.bin", (int)"ui_art\\font16g.pcx");
-	artfont_100011FB((int)&unk_100275D0, (int)"ui_art\\font16.bin", (int)"ui_art\\font16s.pcx");
-	artfont_100011FB((int)&unk_10026BB8, (int)"ui_art\\font42.bin", (int)"ui_art\\font42g.pcx");
-	artfont_100011FB((int)&unk_10028EF8, (int)"ui_art\\font42.bin", (int)"ui_art\\font42y.pcx");
+BOOL __cdecl artfont_LoadAllFonts()
+{
+	artfont_LoadArtFont(&font30g, "ui_art\\font30.bin", "ui_art\\font30g.pcx");
+	artfont_LoadArtFont(&font30s, "ui_art\\font30.bin", "ui_art\\font30s.pcx");
+	artfont_LoadArtFont(&font24g, "ui_art\\font24.bin", "ui_art\\font24g.pcx");
+	artfont_LoadArtFont(&font24s, "ui_art\\font24.bin", "ui_art\\font24s.pcx");
+	artfont_LoadArtFont(&font16g, "ui_art\\font16.bin", "ui_art\\font16g.pcx");
+	artfont_LoadArtFont(&font16s, "ui_art\\font16.bin", "ui_art\\font16s.pcx");
+	artfont_LoadArtFont(&font42g, "ui_art\\font42.bin", "ui_art\\font42g.pcx");
+	artfont_LoadArtFont(&font42y, "ui_art\\font42.bin", "ui_art\\font42y.pcx");
 	return 1;
-} */
+}
 
 // ref: 0x100011FB
-void __fastcall artfont_100011FB(int a1, int a2, int a3) { return; }
-/* {
-	int v3; // esi
-	int v4; // eax
+void __fastcall artfont_LoadArtFont(FontStruct *pFont, const char *pszBinFile, const char *pszFileName)
+{
+	LONG v4; // eax
 	signed int v5; // edi
 	unsigned char v6; // al
 	int v7; // ecx
-	int v8; // [esp+8h] [ebp-20h]
-	int v9; // [esp+Ch] [ebp-1Ch]
-	int v10; // [esp+10h] [ebp-18h]
-	int v11; // [esp+14h] [ebp-14h]
-	int v12; // [esp+18h] [ebp-10h]
-	int v13; // [esp+1Ch] [ebp-Ch]
-	int v14; // [esp+20h] [ebp-8h]
-	int v15; // [esp+24h] [ebp-4h]
-	int v16; // [esp+30h] [ebp+8h]
+	int a5[4]; // [esp+8h] [ebp-20h]
+	DWORD size[2]; // [esp+18h] [ebp-10h]
+	BYTE *pBuffer; // [esp+20h] [ebp-8h]
+	HANDLE phFile; // [esp+24h] [ebp-4h]
+	HANDLE *a1a; // [esp+30h] [ebp+8h]
 
-	v3 = a1;
-	if ( !*(_DWORD *)(a1 + 1284) && SFileOpenFile(a2, &v15) )
+	if ( !pFont->active && SFileOpenFile(pszBinFile, &phFile) )
 	{
-		v4 = SFileGetFileSize(v15, 0);
-		if ( SFileReadFile(v15, v3, v4, 0, 0) )
+		v4 = SFileGetFileSize(phFile, 0);
+		if ( SFileReadFile(phFile, pFont, v4, 0, 0) )
 		{
-			SFileCloseFile(v15);
-			local_100078BE(a3, &v14, &v12);
-			memset((void *)(v3 + 260), 0, 0x400u);
-			if ( v14 )
+			SFileCloseFile(phFile);
+			local_LoadArtImage(pszFileName, &pBuffer, size);
+			memset(pFont->fontpal, 0, 0x400u);
+			if ( pBuffer )
 			{
 				v5 = 0;
-				v16 = v3 + 260;
+				a1a = (HANDLE *)pFont->fontpal;
 				do
 				{
-					v6 = *(_BYTE *)(v3 + v5 + 2);
+					v6 = pFont->fontbin[v5 + 2];
 					if ( v6 )
 					{
-						v7 = *(unsigned char *)(v3 + 1);
-						v10 = v6;
-						v9 = v5 * v7;
-						v8 = 0;
-						v11 = v7 + v5 * v7 - 1;
-						STransCreateI(v14, v12, v13, 8, &v8, 16777248, v16);
+						v7 = pFont->fontbin[1];
+						a5[2] = v6;
+						a5[1] = v5 * v7;
+						a5[0] = 0;
+						a5[3] = v7 + v5 * v7 - 1;
+						STransCreateI(pBuffer, size[0], size[1], 8, (int)a5, 16777248, a1a);
 					}
-					v16 += 4;
+					++a1a;
 					++v5;
 				}
 				while ( v5 <= 256 );
-				*(_DWORD *)(v3 + 1284) = 1;
-				SMemFree(v14, "C:\\Src\\Diablo\\DiabloUI\\artfont.cpp", 206, 0);
+				pFont->active = 1;
+				SMemFree(pBuffer, "C:\\Src\\Diablo\\DiabloUI\\artfont.cpp", 206, 0);
 			}
 		}
 		else
 		{
-			SFileCloseFile(v15);
+			SFileCloseFile(phFile);
 		}
 	}
-} */
-// 10010340: using guessed type int __stdcall SMemFree(_DWORD, _DWORD, _DWORD, _DWORD);
-// 10010346: using guessed type int __stdcall STransCreateI(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
-// 1001034C: using guessed type int __stdcall SFileCloseFile(_DWORD);
-// 10010352: using guessed type int __stdcall SFileReadFile(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
-// 10010358: using guessed type int __stdcall SFileGetFileSize(_DWORD, _DWORD);
-// 1001035E: using guessed type int __stdcall SFileOpenFile(_DWORD, _DWORD);
+}
 
 // ref: 0x100012F6
-int artfont_100012F6() { return 0; }
-/* {
+int __cdecl artfont_GetFontMaxHeight()
+{
 	int result; // eax
 
-	if ( dword_100270C0 && *(_DWORD *)(dword_100270C0 + 1284) )
-		result = *(unsigned char *)(dword_100270C0 + 1);
+	if ( sgpCurrFont && sgpCurrFont->active )
+		result = sgpCurrFont->fontbin[1];
 	else
 		result = 0;
 	return result;
-} */
-// 100270C0: using guessed type int dword_100270C0;
+}
 
 // ref: 0x10001310
-int artfont_10001310() { return 0; }
-/* {
+int __cdecl artfont_GetFontDefWidth()
+{
 	int result; // eax
 
-	if ( dword_100270C0 && *(_DWORD *)(dword_100270C0 + 1284) )
-		result = *(unsigned char *)dword_100270C0;
+	if ( sgpCurrFont && sgpCurrFont->active )
+		result = sgpCurrFont->fontbin[0];
 	else
 		result = 0;
 	return result;
-} */
-// 100270C0: using guessed type int dword_100270C0;
+}
 
 // ref: 0x10001329
-int __fastcall artfont_10001329(unsigned char *a1) { return 0; }
-/* {
+int __fastcall artfont_GetFontWidth(char *str)
+{
 	int result; // eax
 	unsigned char i; // bl
 	unsigned char v3; // bl
 	int v4; // esi
 
 	result = 0;
-	if ( !dword_100270C0 || !*(_DWORD *)(dword_100270C0 + 1284) )
+	if ( !sgpCurrFont || !sgpCurrFont->active )
 		return 0;
-	for ( i = *a1; *a1; i = *a1 )
+	for ( i = *str; *str; i = *str )
 	{
-		v3 = *(_BYTE *)(i + dword_100270C0 + 2);
+		v3 = sgpCurrFont->fontbin[i + 2];
 		if ( v3 )
 			v4 = v3;
 		else
-			v4 = *(unsigned char *)dword_100270C0;
+			v4 = sgpCurrFont->fontbin[0];
 		result += v4;
-		++a1;
+		++str;
 	}
 	return result;
-} */
-// 100270C0: using guessed type int dword_100270C0;
+}
 
 // ref: 0x1000136C
-signed int artfont_1000136C() { return 0; }
-/* {
-	signed int result; // eax
-
-	result = 2139095040;
-	dword_10026BB0 = 2139095040;
-	return result;
-} */
-// 10026BB0: using guessed type int dword_10026BB0;
+void __cdecl artfont_cpp_init()
+{
+	artfont_cpp_float = 2139095040;
+}
+// 10026BB0: using guessed type int artfont_cpp_float;
 
 // ref: 0x10001377
-int __fastcall artfont_10001377(unsigned char *a1) { return 0; }
-/* {
+int __fastcall artfont_GetFontBreak(char *str)
+{
 	int result; // eax
 	unsigned char v2; // dl
 	unsigned char v3; // dl
 
 	result = 0;
-	if ( !dword_100270C0 || !*(_DWORD *)(dword_100270C0 + 1284) )
+	if ( !sgpCurrFont || !sgpCurrFont->active )
 		return 0;
 	while ( 1 )
 	{
-		v3 = *a1;
-		if ( !*a1 )
+		v3 = *str;
+		if ( !*str )
 			break;
-		if ( v3 == 10 )
+		if ( v3 == '\n' )
 			break;
-		if ( v3 == 32 )
+		if ( v3 == ' ' )
 			break;
-		v2 = *(_BYTE *)(v3 + dword_100270C0 + 2);
+		v2 = sgpCurrFont->fontbin[v3 + 2];
 		if ( !v2 )
 			break;
 		result += v2;
-		++a1;
+		++str;
 	}
 	return result;
-} */
-// 100270C0: using guessed type int dword_100270C0;
+}
 
 // ref: 0x100013B3
-int __cdecl artfont_100013B3(int a1) { return 0; }
-/* {
-	int result; // eax
-
-	if ( a1 )
-		result = SMemFree(a1, "delete", -1, 0);
-	return result;
-} */
-// 10010340: using guessed type int __stdcall SMemFree(_DWORD, _DWORD, _DWORD, _DWORD);
+void __cdecl artfont_delete_operator(void *ptr)
+{
+	if ( ptr )
+		SMemFree(ptr, "delete", -1, 0);
+}
 
 // ref: 0x100013CD
-void __fastcall artfont_100013CD(unsigned char *a1, _DWORD *a2, int a3, int a4) { return; }
-/* {
-	_DWORD *v4; // ebx
-	unsigned char *v5; // esi
+void __fastcall artfont_PrintFontStr(char *str, DWORD **pSurface, int sx, int sy)
+{
+	FontStruct *v5; // esi
 	unsigned char v6; // cl
 	int v7; // edi
 	unsigned char v8; // dl
 	int v9; // edi
-	int v10; // ecx
-	int v11; // [esp+Ch] [ebp-8h]
-	int v12; // [esp+Ch] [ebp-8h]
-	unsigned char *v13; // [esp+10h] [ebp-4h]
+	DWORD *v10; // ecx
+	HANDLE hTrans; // [esp+Ch] [ebp-8h]
+	HANDLE hTransa; // [esp+Ch] [ebp-8h]
 
-	v4 = a2;
-	v13 = a1;
-	if ( a2 )
+	if ( pSurface )
 	{
-		if ( *a2 )
+		if ( *pSurface )
 		{
-			v5 = (unsigned char *)dword_100270C0;
-			if ( dword_100270C0 )
+			v5 = sgpCurrFont;
+			if ( sgpCurrFont )
 			{
-				if ( *(_DWORD *)(dword_100270C0 + 1284) )
+				if ( sgpCurrFont->active )
 				{
-					if ( a3 < 0 )
-						a3 = 0;
-					if ( a4 < 0 )
-						a4 = 0;
-					v6 = *a1;
-					if ( *v13 )
+					if ( sx < 0 )
+						sx = 0;
+					if ( sy < 0 )
+						sy = 0;
+					v6 = *str;
+					if ( *str )
 					{
 						while ( 1 )
 						{
-							v11 = a4 + v5[1];
-							if ( a4 + v5[1] > v4[2] )
+							hTrans = (HANDLE)(sy + v5->fontbin[1]);
+							if ( sy + v5->fontbin[1] > (signed int)pSurface[2] )
 								return;
-							if ( v6 == 10 )
+							if ( v6 == '\n' )
 								break;
 							v7 = v6;
-							v8 = v5[v6 + 2];
+							v8 = v5->fontbin[v6 + 2];
 							if ( !v8 )
 							{
-								v9 = *v5;
-								if ( a3 + v9 + artfont_10001377(++v13) < v4[1] )
+								v9 = v5->fontbin[0];
+								if ( sx + v9 + artfont_GetFontBreak(++str) < (signed int)pSurface[1] )
 								{
-									a3 += v9;
+									sx += v9;
 								}
 								else
 								{
-									a3 = 0;
-									a4 = v11;
+									sx = 0;
+									sy = (int)hTrans;
 								}
 								goto LABEL_23;
 							}
-							v12 = *(_DWORD *)&v5[4 * v6 + 260];
-							if ( *(_DWORD *)&v5[4 * v6 + 260] )
+							hTransa = (HANDLE)&v5->fontpal[v6];
+							if ( hTransa ) /* check */
 							{
-								v10 = v4[1];
-								if ( a3 + v8 <= v10 )
+								v10 = pSurface[1];
+								if ( sx + v8 <= (signed int)v10 )
 								{
-									STransBlt(*v4, a3, a4, v10, v12);
-									v5 = (unsigned char *)dword_100270C0;
-									a3 += *(unsigned char *)(v7 + dword_100270C0 + 2);
+									STransBlt(*pSurface, sx, sy, (int)v10, hTransa);
+									v5 = sgpCurrFont;
+									sx += sgpCurrFont->fontbin[v7 + 2];
 									goto LABEL_22;
 								}
-								a3 = 0;
-								a4 += v5[1];
+								sx = 0;
+								sy += v5->fontbin[1];
 							}
 LABEL_23:
-							v6 = *v13;
-							if ( !*v13 )
+							v6 = *str;
+							if ( !*str )
 								return;
 						}
-						a3 = 0;
-						a4 += v5[1];
+						sx = 0;
+						sy += v5->fontbin[1];
 LABEL_22:
-						++v13;
+						++str;
 						goto LABEL_23;
 					}
 				}
 			}
 		}
 	}
-} */
-// 1001036A: using guessed type int __stdcall STransBlt(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
-// 100270C0: using guessed type int dword_100270C0;
+}
