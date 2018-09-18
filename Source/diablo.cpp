@@ -281,7 +281,6 @@ bool __cdecl diablo_get_not_running()
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	HINSTANCE v4; // esi
-	//int v11; // ecx
 	char Filename[260]; // [esp+8h] [ebp-10Ch]
 	char value_name[8]; // [esp+10Ch] [ebp-8h]
 
@@ -331,7 +330,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		UiTitleDialog(7);
 		BlackPalette();
 #endif
-		mainmenu_action(0); /* v11 fix unused arg */
+		mainmenu_loop();
 		UiDestroy();
 		SaveGamma();
 		if ( ghMainWnd )
