@@ -96,7 +96,7 @@ void __fastcall artfont_FreeArtFont(FontStruct *pFont)
 
 	if ( pFont->active )
 	{
-		v2 = (HANDLE *)pFont->fontpal;
+		v2 = pFont->fonttrans;
 		v3 = 256;
 		do
 		{
@@ -147,11 +147,11 @@ void __fastcall artfont_LoadArtFont(FontStruct *pFont, const char *pszBinFile, c
 		{
 			SFileCloseFile(phFile);
 			local_LoadArtImage(pszFileName, &pBuffer, size);
-			memset(pFont->fontpal, 0, 0x400u);
+			memset(pFont->fonttrans, 0, 0x400u);
 			if ( pBuffer )
 			{
 				v5 = 0;
-				a1a = (HANDLE *)pFont->fontpal;
+				a1a = pFont->fonttrans;
 				do
 				{
 					v6 = pFont->fontbin[v5 + 2];
@@ -320,8 +320,8 @@ void __fastcall artfont_PrintFontStr(char *str, DWORD **pSurface, int sx, int sy
 								}
 								goto LABEL_23;
 							}
-							hTransa = (HANDLE)&v5->fontpal[v6];
-							if ( hTransa ) /* check */
+							hTransa = v5->fonttrans[v6];
+							if ( v5->fonttrans[v6] )
 							{
 								v10 = pSurface[1];
 								if ( sx + v8 <= (signed int)v10 )
