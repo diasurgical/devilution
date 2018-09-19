@@ -132,15 +132,16 @@ int __fastcall CreaDung_100051D8(int a1, int a2, int a3, int a4, int a5, int a6,
 signed int CreaStat_10005287();
 
 
-signed int credits_10005297();
-//signed int __stdcall UiCreditsDialog(int a1);
-int __fastcall credits_100052C7(int a1, int a2, HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
-HGLOBAL __fastcall credits_100053D9(HWND hWnd, int a2);
-int __fastcall credits_1000543A(HWND a1, int a2);
-BOOL UNKCALL credits_100055C0(HWND hWnd);
-signed int UNKCALL credits_10005660(void *arg);
-signed int __fastcall credits_10005736(_BYTE *a1);
-int __fastcall credits_10005755(int a1, int a2);
+void __cdecl j_credits_cpp_init();
+void __cdecl credits_cpp_init();
+BOOL __stdcall UiCreditsDialog(int a1);
+LRESULT __stdcall credits_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+void __fastcall credits_FreeCreditResrc(HWND hWnd);
+void __fastcall credits_LoadImgCreditTxt(HWND hWnd, LPARAM lParam);
+void __fastcall credits_CalcPosROP3(HWND hWnd);
+void __fastcall credits_PrintCredLines(HWND hWnd);
+int __fastcall credits_GetCredLineBreak(char *str);
+char *__fastcall credits_GetAdjustText(char *str, int len);
 
 
 void __fastcall DiabEdit_DoPaintBMP(HWND hWnd);
