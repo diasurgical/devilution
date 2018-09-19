@@ -36,7 +36,7 @@ void __stdcall UiAppActivate(BOOL bActive);
 int __stdcall UiValidPlayerName(char *a1);
 int __stdcall UiSelHeroMultDialog(void *fninfo, void *fncreate, void *fnremove, void *fnstats, int *a5, int *a6, char *name);
 int __stdcall UiSelHeroSingDialog(void *fninfo, void *fncreate, void *fnremove, void *fnstats, int *a5, char *name, int *difficulty);
-void __stdcall UiCreditsDialog(int a1);
+BOOL __stdcall UiCreditsDialog(int a1);
 BOOL __stdcall UiMainMenuDialog(char *name, int *pdwResult, void (__stdcall *fnSound)(char *file), int a4);
 int __stdcall UiProgressDialog(HWND window, char *msg, int a3, void *fnfunc, int a5);
 int __cdecl UiProfileGetString();
