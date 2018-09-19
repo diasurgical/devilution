@@ -1,5 +1,5 @@
 // ref: 0x1000E1C2
-int __stdcall SelLoad_1000E1C2(HWND hDlg, UINT Msg, WPARAM wParam, LPARAM lParam) { return 0; }
+LRESULT __stdcall SelLoad_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) { return 0; }
 /* {
 	HWND v4; // eax
 	LONG v5; // edx

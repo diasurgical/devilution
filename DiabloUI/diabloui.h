@@ -9,7 +9,7 @@ extern "C" {
 struct FontStruct
 {
 	unsigned char fontbin[258];
-	PALETTEENTRY fontpal[256];
+	HANDLE fonttrans[256];
 	BOOL active;
 };
 
@@ -33,11 +33,11 @@ BOOL __stdcall UiTitleDialog(int a1);
 void __cdecl UiInitialize();
 void __stdcall UiCopyProtError(int a1);
 void __stdcall UiAppActivate(BOOL bActive);
-int __stdcall UiValidPlayerName(char *a1);
-int __stdcall UiSelHeroMultDialog(void *fninfo, void *fncreate, void *fnremove, void *fnstats, int *a5, int *a6, char *name);
-int __stdcall UiSelHeroSingDialog(void *fninfo, void *fncreate, void *fnremove, void *fnstats, int *a5, char *name, int *difficulty);
-void __stdcall UiCreditsDialog(int a1);
-int __stdcall UiMainMenuDialog(char *name, int *a2, void *fnSound, int a4);
+BOOL __fastcall UiValidPlayerName(char *name); /* check __stdcall */
+BOOL __stdcall UiSelHeroMultDialog(BOOL (__stdcall *fninfo)(BOOL (__stdcall *fninfofunc)(_uiheroinfo *)), BOOL (__stdcall *fncreate)(_uiheroinfo *), BOOL (__stdcall *fnremove)(_uiheroinfo *), BOOL (__stdcall *fnstats)(int, _uidefaultstats *), int *dlgresult, int *a6, char *name);
+BOOL __stdcall UiSelHeroSingDialog(BOOL (__stdcall *fninfo)(BOOL (__stdcall *fninfofunc)(_uiheroinfo *)), BOOL (__stdcall *fncreate)(_uiheroinfo *), BOOL (__stdcall *fnremove)(_uiheroinfo *), BOOL (__stdcall *fnstats)(int, _uidefaultstats *), int *dlgresult, char *name, int *difficulty);
+BOOL __stdcall UiCreditsDialog(int a1);
+BOOL __stdcall UiMainMenuDialog(char *name, int *pdwResult, void (__stdcall *fnSound)(char *file), int a4);
 int __stdcall UiProgressDialog(HWND window, char *msg, int a3, void *fnfunc, int a5);
 int __cdecl UiProfileGetString();
 void __cdecl UiProfileCallback();

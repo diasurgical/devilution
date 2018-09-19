@@ -1,5 +1,5 @@
 // ref: 0x10006F7C
-int __stdcall EntName_10006F7C(HWND hDlg, UINT Msg, WPARAM wParam, LPARAM lParam) { return 0; }
+LRESULT __stdcall EntName_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) { return 0; }
 /* {
 	int v4; // edx
 	HWND v5; // eax

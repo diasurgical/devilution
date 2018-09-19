@@ -8,12 +8,16 @@ ProfileStruct bnprofiles[4] =
 };
 int profilemsg1[6] = { 1125, 1127, 1129, 1131, 1133, 0 };
 int profilemsg2[6] = { 1126, 1128, 1130, 1132, 1134, 0 };
+int credits_cpp_float_value = 2139095040; // weak
 int DiabEdit_cpp_float_value = 2139095040; // weak
 int DiabloUI_cpp_float_value = 2139095040; // weak
 int doom_cpp_float_value = 2139095040; // weak
 int fade_cpp_float_value = 2139095040; // weak
 int focus_cpp_float_value = 2139095040; // weak
 int local_cpp_float_value = 2139095040; // weak
+int mainmenu_cpp_float_value = 2139095040; // weak
+int SelHero_cpp_float_value = 2139095040; // weak
+int SelYesNo_cpp_float_value = 2139095040; // weak
 int Title_cpp_float_value = 2139095040; // weak
 int titlesnd_cpp_float_value = 2139095040; // weak
 int dword_10022258 = 4; // weak
@@ -43,8 +47,8 @@ int dword_10022B10[2] = { 1116, 0 };
 int dword_10022B34[2] = { 1038, 0 };
 int dword_10022B3C[3] = { 1056, 1054, 0 };
 int dword_10022B48[2] = { 1065, 0 };
-int dword_10022BE0[2] = { 1042, 0 };
-int dword_10022BE8[6] = { 1044, 1001, 1002, 1003, 2, 0 };
+int menumsgs_1option[2] = { 1042, 0 };
+int menumsgs_5options[6] = { 1044, 1001, 1002, 1003, 2, 0 };
 int dword_10022C4C[2] = { 1038, 0 };
 int dword_10022C54[2] = { 1080, 0 };
 int dword_10022C5C[2] = { 1108, 0 };
@@ -63,9 +67,9 @@ char *off_10022F8C[4] = { "Entry1", "Entry2", "Entry3", "Entry4" };
 int dword_10022F9C[2] = { 1038, 0 };
 int dword_10022FA4[3] = { 1056, 1054, 0 };
 int dword_10022FB0[7] = { 1117, 1118, 1119, 1120, 1121, 1122, 0 };
-int dword_10023000[2] = { 1038, 0 };
-int dword_10023008[6] = { 1057, 1058, 1059, 1060, 1061, 0 };
-int dword_10023020[6] = { 1014, 1018, 1017, 1016, 1015, 0 };
+int selhero_msgtbl_string[2] = { 1038, 0 };
+int selhero_msgtbl_3[6] = { 1057, 1058, 1059, 1060, 1061, 0 };
+int selhero_msgtbl_info[6] = { 1014, 1018, 1017, 1016, 1015, 0 };
 int dword_100230F0[3] = { 1038, 1080, 0 };
 int dword_100230FC[2] = { 1097, 0 };
 int dword_10023104[2] = { 1098, 0 };
@@ -88,8 +92,8 @@ int dword_10023250[2] = { 1142, 0 };
 int dword_10023258[2] = { 1146, 0 };
 int dword_10023260[3] = { 1056, 1054, 0 };
 int dword_1002326C[7] = { 1135, 1136, 1137, 1138, 1139, 1140, 0 };
-int dword_100232D4[2] = { 1026, 0 };
-int dword_100232DC[3] = { 1109, 2, 0 };
+int yesno_msgtbl2[2] = { 1026, 0 };
+int yesno_msgtbl1[3] = { 1109, 2, 0 };
 int titlemsgtbl[2] = { 1067, 0 };
 
 //data+bss
@@ -184,18 +188,18 @@ int dword_100296D4; // weak
 int dword_100296D8; // weak
 int dword_100296DC; // weak
 int dword_100296E0; // weak
-int dword_100296E8; // weak
-int dword_100296EC; // weak
-HGLOBAL dword_100296F0; // idb
-int dword_100296F4; // weak
-int dword_100296F8; // weak
-int dword_100296FC; // weak
-int dword_10029700; // weak
-void *dword_10029704; // idb
-int dword_10029708; // weak
+int credittext_size; // weak
+int credits_cpp_float; // weak
+HGLOBAL credittext_rsrc; // idb
+int credit_vertical_pos2; // idb
+int credit_horz_pos; // idb
+int credit_vertical_pos1; // weak
+int credit_line_count; // weak
+void *credit_back_img; // idb
+HANDLE creditsobj; // idb
 int DiabEdit_cpp_float; // weak
 int DiabloUI_cpp_float; // weak
-int dword_10029714; // weak
+int sgbUiIsInitialized; // weak
 HINSTANCE ghUiInst; // idb
 int backbmp_flag1; // weak
 int backbmp_flag2; // weak
@@ -236,9 +240,9 @@ tagPALETTEENTRY artpal[256];
 HGDIOBJ objPalette; // idb
 BYTE *gpCursorArt;
 BYTE *gpCursorArt2;
-int dword_1002A0D4; // weak
-char byte_1002A0D8; // idb
-int dword_1002A118; // weak
+int mainmenu_cpp_float; // weak
+char menu_version_str[64];
+int menu_item_timer; // weak
 int dword_1002A120; // weak
 int dword_1002A124; // weak
 int dword_1002A128; // weak
@@ -295,30 +299,27 @@ char byte_1002A380[128]; // weak
 int dword_1002A400; // weak
 int dword_1002A404; // weak
 int dword_1002A408; // weak
-int (__stdcall *dword_1002A410)(_DWORD, _DWORD); // weak
-int dword_1002A414; // weak
-DWORD dword_1002A418; // idb
-int dword_1002A41C; // idb
-int dword_1002A420; // weak
-int dword_1002A424; // weak
-int dword_1002A428; // weak
-CHAR byte_1002A42C[8]; // idb
-int (__stdcall *dword_1002A434)(_DWORD); // weak
-int (__stdcall *dword_1002A438)(_DWORD); // weak
-CHAR byte_1002A43C[4]; // idb
-char byte_1002A440; // idb
-int (UNKCALL *dword_1002A450)(_DWORD, _DWORD); // weak
-CHAR byte_1002A454[4]; // idb
-int dword_1002A458; // weak
-int dword_1002A45C; // weak
-char byte_1002A460; // weak
-char byte_1002A464[18]; // idb
-char byte_1002A476; // weak
-int dword_1002A484; // weak
-int dword_1002A48C; // weak
-CHAR byte_1002A490[4]; // idb
-CHAR byte_1002A494[4]; // idb
-BYTE *dword_1002A498; // idb
+BOOL (__stdcall *selhero_fnstats)(int, _uidefaultstats *);
+int SelHero_cpp_float; // weak
+DWORD selhero_width; // idb
+int selhero_height; // idb
+int selhero_difficulty; // weak
+int selhero_hero_hassaved; // weak
+int selhero_numheroesleft; // weak
+char selhero_herolevel[4];
+BOOL (__stdcall *selhero_fnremove)(_uiheroinfo *);
+BOOL (__stdcall *selhero_fninfo)(BOOL (__stdcall *fninfo)(_uiheroinfo *));
+char selhero_heromag[4];
+char selhero_heronamestr[16];
+BOOL (__stdcall *selhero_fncreate)(_uiheroinfo *);
+char selhero_herodex[4];
+_uiheroinfo *sgpHeroInfo;
+int selhero_is_created; // weak
+_uiheroinfo heroinfo_create;
+int selhero_is_good; // idb
+char selhero_herostr[4];
+char selhero_herovit[4];
+BYTE *selhero_buffer;
 int dword_1002A49C; // weak
 void *dword_1002A4A0; // idb
 int dword_1002A4A4; // weak
@@ -339,15 +340,15 @@ int dword_1002A4DC; // weak
 int dword_1002A4E0; // weak
 int dword_1002A4E4; // weak
 int dword_1002A4E8; // weak
-int dword_1002A4EC; // weak
+_uiheroinfo *dword_1002A4EC; // idb
 int dword_1002A4F0; // weak
 int dword_1002A4F4; // idb
-LPCSTR dword_1002A4F8; // idb
-int dword_1002A4FC; // weak
-int dword_1002A500; // weak
-int dword_1002A504; // weak
-int (*dword_1002A508)(void); // weak
-int dword_1002A50C; // weak
+char *yesno_dialog_string;
+int SelYesNo_cpp_float; // weak
+int yesno_remove_focus; // weak
+char *yesno_hero_name;
+int (*YesNoFunc)(void); // weak
+int yesno_is_popup; // weak
 HANDLE titlePHTrans[30];
 int Title_cpp_float; // weak
 int titleTransIdx; // weak
