@@ -292,15 +292,16 @@ void __cdecl local_SetCursorDefault();
 void __fastcall local_SetDiabloCursor(HWND hWnd);
 
 
-signed int MainMenu_10008164();
-//int __stdcall UiMainMenuDialog(char *, int, int, int); // idb
-int __fastcall MainMenu_100081E3(int a1, int a2, HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
-void UNKCALL MainMenu_10008354(HWND hDlg);
-int __fastcall MainMenu_10008391(int a1, int a2);
-void UNKCALL MainMenu_100083A8(HWND hWnd);
-int __fastcall MainMenu_1000845A(int a1, int a2, int a3);
-BOOL MainMenu_100084D5();
-LRESULT __fastcall MainMenu_100084FA(HWND hWnd, int a2);
+void __cdecl j_MainMenu_cpp_init();
+void __cdecl MainMenu_cpp_init();
+BOOL __stdcall UiMainMenuDialog(char *name, int *pdwResult, void (__stdcall *fnSound)(char *file), int a4);
+LRESULT __stdcall MainMenu_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+void __fastcall MainMenu_KillAndFreeMenu(HWND hWnd);
+void __fastcall MainMenu_SetMenuTimer(HWND hWnd);
+void __fastcall MainMenu_LoadMenuGFX(HWND hWnd);
+void __fastcall MainMenu_DoOptions(HWND hWnd, int option, int PlaySelect);
+BOOL __cdecl MainMenu_CheckEnoughMemory();
+void __fastcall MainMenu_CheckWParamFocus(HWND hWnd, WPARAM wParam);
 
 
 int Modem_1000855D();
