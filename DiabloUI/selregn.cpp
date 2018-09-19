@@ -6,14 +6,14 @@ void *SelRegn_1000EF42() { return 0; }
 // 10010364: using guessed type int __stdcall SMemAlloc(_DWORD, _DWORD, _DWORD, _DWORD);
 
 // ref: 0x1000EF56
-_DWORD *__fastcall SelRegn_1000EF56(int a1, _DWORD *a2) { return 0; }
-/* {
-	_DWORD *result; // eax
+_uiheroinfo *__fastcall SelRegn_SetNextHero(_uiheroinfo *pNext, _uiheroinfo *pCurrent)
+{
+	_uiheroinfo *result; // eax
 
-	result = a2;
-	*a2 = a1;
+	result = pCurrent;
+	pCurrent->next = pNext;
 	return result;
-} */
+}
 
 // ref: 0x1000EF60
 signed int SelRegn_1000EF60() { return 0; }

@@ -358,13 +358,15 @@ void UNKCALL Progress_100098C5(HWND hWnd);
 BOOL UNKCALL Progress_1000991C(HWND hWnd);
 
 
-signed int Sbar_100099B5();
-int UNKCALL Sbar_100099C0(HWND hWnd); // idb
-int __fastcall Sbar_100099DC(HWND hWnd, LONG a2, int a3);
-HWND __fastcall Sbar_10009A99(HWND hDlg, int nIDDlgItem, int a3, int a4);
-HWND __fastcall Sbar_10009BF1(HWND hDlg, int nIDDlgItem);
-signed int Sbar_10009CC7();
-HWND __fastcall Sbar_10009CD2(HWND hDlg, int nIDDlgItem);
+void __cdecl j_Sbar_cpp_init();
+void __cdecl Sbar_cpp_init();
+BOOL __fastcall Sbar_CheckIfNextHero(HWND hWnd);
+int __fastcall Sbar_NumScrollLines(HWND hWnd, int width, int height);
+void __fastcall Sbar_DrawScrollBar(HWND hWnd, int nIDDlgItem, int width, int height);
+void __fastcall Sbar_LoadScrBarGFX(HWND hWnd, int nIDDlgItem);
+void __cdecl j_Sbar_cpp_init2();
+void __cdecl Sbar_cpp_init2();
+void __fastcall Sbar_FreeScrollBar(HWND hWnd, int nIDDlgItem);
 
 
 LRESULT __stdcall SelClass_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam); // idb
@@ -503,26 +505,27 @@ int __fastcall SelIPX_1000D5B0(int a1, int a2);
 HWND __fastcall SelIPX_1000D696(HWND hDlg, int a2, int height);
 
 
-signed int SelList_1000D769();
-LRESULT __stdcall SelList_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam); // idb
-HWND UNKCALL SelList_1000D916(HWND hDlg);
-HWND __fastcall SelList_1000D964(HWND hDlg, int nIDDlgItem);
-HWND UNKCALL SelList_1000D9CF(HWND hDlg);
-int UNKCALL SelList_1000D9F4(HWND hWnd); // idb
-int UNKCALL SelList_1000DA2D(void *arg);
-int UNKCALL SelList_1000DA48(void *arg);
-int UNKCALL SelList_1000DA55(HWND hWnd); // idb
-int __fastcall SelList_1000DB2C(HWND a1, const char *a2);
-void UNKCALL SelList_1000DBAC(HWND hDlg);
-LRESULT __stdcall SelList_1000DBFE(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
-HWND UNKCALL SelList_1000DD36(HWND hWnd);
-HWND UNKCALL SelList_1000DDA7(HWND hWnd);
-HWND UNKCALL SelList_1000DE18(HWND hWnd);
-_DWORD *UNKCALL SelList_1000DEDD(char *arg);
-HWND UNKCALL SelList_1000DEF4(HWND hWnd);
-HWND UNKCALL SelList_1000DFAB(HWND hWnd);
-HWND UNKCALL SelList_1000E043(HWND hWnd);
-int __fastcall SelList_1000E0CA(HWND hWnd, int, int); // idb
+void __cdecl j_SelList_cpp_init();
+void __cdecl SelList_cpp_init();
+LRESULT __stdcall SelList_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+void __fastcall SelList_DeleteFreeProcs(HWND hWnd);
+void __fastcall SelList_GetHeroStats(HWND hWnd, int nIDDlgItem);
+void __fastcall SelList_CountHeroList(HWND hWnd);
+int __fastcall SelList_GetNextHeroLong(HWND hWnd);
+void __fastcall SelList_LoadFocus16(HWND hWnd);
+void __fastcall SelList_KillFocus16(HWND hWnd);
+void __fastcall SelList_ShowListWindow(HWND hWnd);
+void __fastcall SelList_SetHeroDlgLong(HWND hWnd, _uiheroinfo *pInfo);
+void __fastcall SelList_DoListOldProc(HWND hWnd);
+LRESULT __stdcall SelList_OldListWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+void __fastcall SelList_ShiftHeroDlgItems(HWND hWnd);
+void __fastcall SelList_ShiftHeroDlgItm2(HWND hWnd);
+void __fastcall SelList_HeroesWithBigDialogs(HWND hWnd);
+_uiheroinfo *__fastcall SelList_GetHeroFromNum(int heronum);
+void __fastcall SelList_HeroesWithHugeDlg(HWND hWnd);
+void __fastcall SelList_HeroDlgWithSound(HWND hWnd);
+void __fastcall SelList_HeroDlgWithSnd2(HWND hWnd);
+void __fastcall SelList_ChooseDlgFromSize(HWND hWnd, int width, int height);
 
 
 LRESULT __stdcall SelLoad_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam); // idb
@@ -563,7 +566,7 @@ HWND __fastcall SelModem_1000EE78(HWND hWnd, int a2, int height);
 
 
 void *SelRegn_1000EF42();
-_DWORD *__fastcall SelRegn_1000EF56(int a1, _DWORD *a2);
+_uiheroinfo *__fastcall SelRegn_SetNextHero(_uiheroinfo *pNext, _uiheroinfo *pCurrent);
 signed int SelRegn_1000EF60();
 int __stdcall SelRegn_1000EF6B(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam); // idb
 HWND __fastcall SelRegn_1000F0D7(HWND hDlg, int nIDDlgItem);
