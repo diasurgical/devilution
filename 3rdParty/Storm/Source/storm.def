@@ -187,7 +187,7 @@ EXPORTS
   ;SGdiRectangle                 @388 NONAME
   SGdiSelectObject              @389 NONAME
   SGdiSetPitch                  @390 NONAME
-  ;SGdiTextOut                   @391 NONAME
+  SGdiTextOut                   @391 NONAME
   ;SGdi392                       @392 NONAME
   Ordinal393                    @393 NONAME
 

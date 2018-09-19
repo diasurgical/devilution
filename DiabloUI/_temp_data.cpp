@@ -8,6 +8,7 @@ ProfileStruct bnprofiles[4] =
 };
 int profilemsg1[6] = { 1125, 1127, 1129, 1131, 1133, 0 };
 int profilemsg2[6] = { 1126, 1128, 1130, 1132, 1134, 0 };
+int credits_cpp_float_value = 2139095040; // weak
 int DiabEdit_cpp_float_value = 2139095040; // weak
 int DiabloUI_cpp_float_value = 2139095040; // weak
 int doom_cpp_float_value = 2139095040; // weak
@@ -185,18 +186,18 @@ int dword_100296D4; // weak
 int dword_100296D8; // weak
 int dword_100296DC; // weak
 int dword_100296E0; // weak
-int dword_100296E8; // weak
-int dword_100296EC; // weak
-HGLOBAL dword_100296F0; // idb
-int dword_100296F4; // weak
-int dword_100296F8; // weak
-int dword_100296FC; // weak
-int dword_10029700; // weak
-void *dword_10029704; // idb
-int dword_10029708; // weak
+int credittext_size; // weak
+int credits_cpp_float; // weak
+HGLOBAL credittext_rsrc; // idb
+int credit_vertical_pos2; // idb
+int credit_horz_pos; // idb
+int credit_vertical_pos1; // weak
+int credit_line_count; // weak
+void *credit_back_img; // idb
+HANDLE creditsobj; // idb
 int DiabEdit_cpp_float; // weak
 int DiabloUI_cpp_float; // weak
-int dword_10029714; // weak
+int sgbUiIsInitialized; // weak
 HINSTANCE ghUiInst; // idb
 int backbmp_flag1; // weak
 int backbmp_flag2; // weak
