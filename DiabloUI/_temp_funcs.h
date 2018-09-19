@@ -198,7 +198,7 @@ void __cdecl Doom_cpp_init();
 void __fastcall Doom_ParseWndProcs(HWND hWnd, int *msgtbl, int a3, int a4);
 void __fastcall Doom_GetSetWndText(HWND hWnd, int msg, int nFont, int a4);
 void __fastcall Doom_PrintStrWithSpin(HWND hWnd, BOOL a2);
-void __fastcall Doom_AllocAndSetBMP(HWND hWnd, int bmp_flags);
+void __fastcall Doom_AllocAndSetBMP(HWND hWnd, int a2, int bmp_flags); /* check args, __stdcall? */
 void __fastcall Doom_GetWindowROP3(HWND hWnd1, HWND hWnd2);
 void __fastcall Doom_ParseWndProc2(HWND hWnd, int *msgtbl, int a3, int a4);
 void __fastcall Doom_GetSetWndTxt2(HWND hWnd, int msg, int nFont, int a4);

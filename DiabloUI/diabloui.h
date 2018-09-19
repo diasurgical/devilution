@@ -9,7 +9,7 @@ extern "C" {
 struct FontStruct
 {
 	unsigned char fontbin[258];
-	PALETTEENTRY fontpal[256];
+	HANDLE fonttrans[256];
 	BOOL active;
 };
 
