@@ -10,7 +10,7 @@ signed int SelList_1000D769() { return 0; }
 // 1002A4C0: using guessed type int dword_1002A4C0;
 
 // ref: 0x1000D774
-int __stdcall SelList_1000D774(HWND hDlg, UINT Msg, WPARAM wParam, LPARAM lParam) { return 0; }
+LRESULT __stdcall SelList_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) { return 0; }
 /* {
 	HWND v4; // eax
 	char *v5; // eax

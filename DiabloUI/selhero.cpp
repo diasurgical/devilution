@@ -1,85 +1,71 @@
 // ref: 0x1000B7A0
-int SelHero_1000B7A0() { return 0; }
-/* {
-	return dword_1002A458;
-} */
-// 1002A458: using guessed type int dword_1002A458;
+_uiheroinfo *__cdecl SelHero_GetCurrentHeroInfo()
+{
+	return sgpHeroInfo;
+}
 
 // ref: 0x1000B7A6
-int SelHero_1000B7A6() { return 0; }
-/* {
-	return dword_1002A428;
-} */
-// 1002A428: using guessed type int dword_1002A428;
+int __cdecl SelHero_GetNumHeroesLeft()
+{
+	return selhero_numheroesleft;
+}
+// 1002A428: using guessed type int selhero_numheroesleft;
 
 // ref: 0x1000B7AC
-void UNKCALL SelHero_1000B7AC(void *arg) { return; }
-/* {
-	dword_1002A420 = (int)arg;
-} */
-// 1002A420: using guessed type int dword_1002A420;
+void __fastcall SelHero_SetHeroDifficulty(int diff)
+{
+	selhero_difficulty = diff;
+}
+// 1002A420: using guessed type int selhero_difficulty;
 
 // ref: 0x1000B7B3
-char *SelHero_1000B7B3() { return 0; }
-/* {
-	return &byte_1002A440;
-} */
+char *__cdecl SelHero_GetHeroNameStr()
+{
+	return selhero_heronamestr;
+}
 
 // ref: 0x1000B7B9
-void *SelHero_1000B7B9() { return 0; }
-/* {
-	return SMemAlloc(44, "C:\\Src\\Diablo\\DiabloUI\\SelHero.cpp", 123, 0);
-} */
-// 10010364: using guessed type int __stdcall SMemAlloc(_DWORD, _DWORD, _DWORD, _DWORD);
+_uiheroinfo *__cdecl SelHero_AllocHeroInfo()
+{
+	return (_uiheroinfo *)SMemAlloc(0x2Cu, "C:\\Src\\Diablo\\DiabloUI\\SelHero.cpp", 123, 0);
+}
 
 // ref: 0x1000B7CA
-int SelHero_1000B7CA() { return 0; }
-/* {
-	return dword_1002A48C;
-} */
-// 1002A48C: using guessed type int dword_1002A48C;
+int __cdecl SelHero_GetHeroIsGood()
+{
+	return selhero_is_good;
+}
 
 // ref: 0x1000B7D0
-int __fastcall SelHero_1000B7D0(int a1, int a2) { return 0; }
-/* {
-	return dword_1002A410(a1, a2);
-} */
-// 1002A410: using guessed type int (__stdcall *dword_1002A410)(_DWORD, _DWORD);
+int __fastcall SelHero_SetClassStats(int heroclass, _uidefaultstats *pStats)
+{
+	return selhero_fnstats(heroclass, pStats);
+}
 
 // ref: 0x1000B7DE
-signed int SelHero_1000B7DE() { return 0; }
-/* {
-	signed int result; // eax
-
-	result = 2139095040;
-	dword_1002A414 = 2139095040;
-	return result;
-} */
-// 1002A414: using guessed type int dword_1002A414;
+void __cdecl SelHero_cpp_init()
+{
+	SelHero_cpp_float = SelHero_cpp_float_value;
+}
+// 1001F460: using guessed type int SelHero_cpp_float_value;
+// 1002A414: using guessed type int SelHero_cpp_float;
 
 // ref: 0x1000B899
-int __fastcall SelHero_1000B899(HWND hDlg, int a2) { return 0; }
-/* {
-	int v2; // ebx
+void __fastcall SelHero_SetStaticBMP(HWND hWnd, int adjust_size)
+{
 	HWND v3; // esi
 	struct tagRECT Rect; // [esp+8h] [ebp-10h]
 
-	v2 = a2;
-	v3 = GetDlgItem(hDlg, 1040);
+	v3 = GetDlgItem(hWnd, 1040);
 	InvalidateRect(v3, 0, 0);
 	GetClientRect(v3, &Rect);
-	local_10007A68(&Rect, 0, v2 * Rect.bottom);
-	return SDlgSetBitmapI(v3, 0, "Static", -1, 1, dword_1002A498, &Rect, dword_1002A418, dword_1002A41C, -1);
-} */
-// 10010400: using guessed type int __stdcall SDlgSetBitmapI(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
-// 1002A418: using guessed type int dword_1002A418;
-// 1002A41C: using guessed type int dword_1002A41C;
-// 1002A498: using guessed type int dword_1002A498;
+	local_AdjustRectSize(&Rect, 0, adjust_size * Rect.bottom);
+	SDlgSetBitmapI(v3, 0, "Static", -1, 1, selhero_buffer, (int)&Rect, selhero_width, selhero_height, -1);
+}
 
 // ref: 0x1000B905
-int __fastcall SelHero_1000B905(HWND hDlg, int a2) { return 0; }
-/* {
-	HWND v2; // ebp
+void __fastcall SelHero_PrintHeroInfo(HWND hWnd, _uiheroinfo *pInfo)
+{
 	HWND v3; // eax
 	int v4; // eax
 	HWND v5; // eax
@@ -90,255 +76,218 @@ int __fastcall SelHero_1000B905(HWND hDlg, int a2) { return 0; }
 	int v10; // eax
 	HWND v11; // eax
 	int v12; // eax
-	int result; // eax
-	int v14; // esi
-	HWND v15; // edi
-	HWND v16; // ebp
-	int v17; // eax
-	HWND hWnd; // ST1C_4
-	int v19; // eax
-	HWND v20; // ST1C_4
-	int v21; // eax
-	HWND v22; // ST1C_4
-	int v23; // eax
-	HWND v24; // ST1C_4
-	int v25; // eax
-	HWND hDlga; // [esp+Ch] [ebp-4h]
+	HWND v15; // ebp
+	int v16; // eax
+	HWND v17; // ST1C_4
+	int v18; // eax
+	HWND v19; // ST1C_4
+	int v20; // eax
+	HWND v21; // ST1C_4
+	int v22; // eax
+	HWND v23; // ST1C_4
+	int v24; // eax
 
-	v14 = a2;
-	v15 = hDlg;
-	hDlga = hDlg;
-	if ( *(_WORD *)(a2 + 20) )
+	if ( pInfo->level )
 	{
-		dword_1002A424 = *(_DWORD *)(a2 + 36);
-		strcpy(&byte_1002A440, (const char *)(a2 + 4));
-		v16 = GetDlgItem(v15, 1014);
-		wsprintfA(byte_1002A42C, "%d", *(unsigned short *)(v14 + 20));
-		v17 = GetWindowLongA(v16, -21);
-		local_10007FA4(v17, byte_1002A42C);
-		hWnd = GetDlgItem(hDlga, 1018);
-		wsprintfA(byte_1002A490, "%d", *(unsigned short *)(v14 + 24));
-		v19 = GetWindowLongA(hWnd, -21);
-		local_10007FA4(v19, byte_1002A490);
-		v20 = GetDlgItem(hDlga, 1017);
-		wsprintfA(byte_1002A43C, "%d", *(unsigned short *)(v14 + 26));
-		v21 = GetWindowLongA(v20, -21);
-		local_10007FA4(v21, byte_1002A43C);
-		v22 = GetDlgItem(hDlga, 1016);
-		wsprintfA(byte_1002A454, "%d", *(unsigned short *)(v14 + 28));
-		v23 = GetWindowLongA(v22, -21);
-		local_10007FA4(v23, byte_1002A454);
-		v24 = GetDlgItem(hDlga, 1015);
-		wsprintfA(byte_1002A494, "%d", *(unsigned short *)(v14 + 30));
-		v25 = GetWindowLongA(v24, -21);
-		local_10007FA4(v25, byte_1002A494);
-		SelHero_1000B899(hDlga, *(unsigned char *)(v14 + 22));
-		result = Doom_10006A13(hDlga, (int *)&unk_10023020, 1);
+		selhero_hero_hassaved = pInfo->hassaved;
+		strcpy(selhero_heronamestr, pInfo->name);
+		v15 = GetDlgItem(hWnd, 1014);
+		wsprintfA(selhero_herolevel, "%d", pInfo->level);
+		v16 = GetWindowLongA(v15, -21);
+		local_SetWndLongStr(v16, selhero_herolevel);
+		v17 = GetDlgItem(hWnd, 1018);
+		wsprintfA(selhero_herostr, "%d", pInfo->strength);
+		v18 = GetWindowLongA(v17, -21);
+		local_SetWndLongStr(v18, selhero_herostr);
+		v19 = GetDlgItem(hWnd, 1017);
+		wsprintfA(selhero_heromag, "%d", pInfo->magic);
+		v20 = GetWindowLongA(v19, -21);
+		local_SetWndLongStr(v20, selhero_heromag);
+		v21 = GetDlgItem(hWnd, 1016);
+		wsprintfA(selhero_herodex, "%d", pInfo->dexterity);
+		v22 = GetWindowLongA(v21, -21);
+		local_SetWndLongStr(v22, selhero_herodex);
+		v23 = GetDlgItem(hWnd, 1015);
+		wsprintfA(selhero_herovit, "%d", pInfo->vitality);
+		v24 = GetWindowLongA(v23, -21);
+		local_SetWndLongStr(v24, selhero_herovit);
+		SelHero_SetStaticBMP(hWnd, pInfo->heroclass);
+		Doom_ParseWndProc4(hWnd, selhero_msgtbl_info, 1);
 	}
 	else
 	{
-		dword_1002A424 = 0;
-		byte_1002A440 = 0;
-		v2 = hDlg;
-		v3 = GetDlgItem(hDlg, 1014);
+		selhero_hero_hassaved = 0;
+		selhero_heronamestr[0] = 0;
+		v3 = GetDlgItem(hWnd, 1014);
 		v4 = GetWindowLongA(v3, -21);
-		local_10007FA4(v4, "--");
-		v5 = GetDlgItem(v2, 1018);
+		local_SetWndLongStr(v4, "--");
+		v5 = GetDlgItem(hWnd, 1018);
 		v6 = GetWindowLongA(v5, -21);
-		local_10007FA4(v6, "--");
-		v7 = GetDlgItem(v2, 1017);
+		local_SetWndLongStr(v6, "--");
+		v7 = GetDlgItem(hWnd, 1017);
 		v8 = GetWindowLongA(v7, -21);
-		local_10007FA4(v8, "--");
-		v9 = GetDlgItem(v2, 1016);
+		local_SetWndLongStr(v8, "--");
+		v9 = GetDlgItem(hWnd, 1016);
 		v10 = GetWindowLongA(v9, -21);
-		local_10007FA4(v10, "--");
-		v11 = GetDlgItem(v2, 1015);
+		local_SetWndLongStr(v10, "--");
+		v11 = GetDlgItem(hWnd, 1015);
 		v12 = GetWindowLongA(v11, -21);
-		local_10007FA4(v12, "--");
-		SelHero_1000B899(v2, 3);
-		result = Doom_10006A13(v2, (int *)&unk_10023020, 1);
+		local_SetWndLongStr(v12, "--");
+		SelHero_SetStaticBMP(hWnd, 3);
+		Doom_ParseWndProc4(hWnd, selhero_msgtbl_info, 1);
 	}
-	return result;
-} */
-// 1002A424: using guessed type int dword_1002A424;
+}
+// 1002A424: using guessed type int selhero_hero_hassaved;
 
 // ref: 0x1000BA7B
-HWND __fastcall SelHero_1000BA7B(HWND hDlg, const char *a2) { return 0; }
-/* {
-	HWND v2; // esi
-	const char *v3; // edi
-	HWND result; // eax
+void __fastcall SelHero_SetStringWithMsg(HWND hWnd, const char *str)
+{
+	HWND v4; // eax
 	int v5; // eax
 
-	v2 = hDlg;
-	v3 = a2;
-	result = GetDlgItem(hDlg, 1038);
-	if ( result )
+	v4 = GetDlgItem(hWnd, 1038);
+	if ( v4 )
 	{
-		v5 = GetWindowLongA(result, -21);
-		local_10007FA4(v5, v3);
-		result = (HWND)Doom_10006A13(v2, (int *)&unk_10023000, 5);
+		v5 = GetWindowLongA(v4, -21);
+		local_SetWndLongStr(v5, str);
+		Doom_ParseWndProc4(hWnd, selhero_msgtbl_string, 5);
 	}
-	return result;
-} */
+}
 
 // ref: 0x1000BAB4
-char *UNKCALL SelHero_1000BAB4(char *arg) { return 0; }
-/* {
+BOOL __fastcall SelHero_IsNameReserved(char *name)
+{
 	UINT v1; // esi
-	char *result; // eax
-	CHAR SrcStr; // [esp+4h] [ebp-90h]
-	CHAR Buffer; // [esp+84h] [ebp-10h]
+	BOOL result; // eax
+	char SrcStr[128]; // [esp+4h] [ebp-90h]
+	char Buffer[16]; // [esp+84h] [ebp-10h]
 
-	strcpy(&SrcStr, arg);
-	_strlwr(&SrcStr);
+	strcpy(SrcStr, name);
+	_strlwr(SrcStr);
 	v1 = 19;
 	while ( 1 )
 	{
-		LoadStringA(hInstance, v1, &Buffer, 15);
-		SelHero_1000BB26(&Buffer);
-		_strlwr(&Buffer);
-		result = strstr(&SrcStr, &Buffer);
+		LoadStringA(ghUiInst, v1, Buffer, 15);
+		SelHero_SetLastNamePos(Buffer);
+		_strlwr(Buffer);
+		result = (BOOL)strstr(SrcStr, Buffer);
 		if ( result )
 			break;
 		if ( (signed int)++v1 > 26 )
 			return result;
 	}
-	return (char *)1;
-} */
+	return 1;
+}
 
 // ref: 0x1000BB26
-char __fastcall SelHero_1000BB26(char *a1) { return 0; }
-/* {
-	char result; // al
-
-	while ( 1 )
-	{
-		result = *a1;
-		if ( !*a1 )
-			break;
-		*a1++ = result - 1;
-	}
-	return result;
-} */
+void __fastcall SelHero_SetLastNamePos(char *name)
+{
+	while ( *name )
+		--*name++;
+}
 
 // ref: 0x1000BB34
-int __fastcall SelHero_1000BB34(char *a1, char *a2) { return 0; }
-/* {
-	char *v2; // esi
-	char *v3; // edi
+BOOL __fastcall SelHero_NameHasChar(char *name, char *illegalchrs)
+{
 	char v5; // al
 
-	v2 = a1;
-	v3 = a2;
-	if ( strpbrk(a1, ",<>%&\\\"?*#/:") || strpbrk(v2, v3) )
+	if ( strpbrk(name, ",<>%&\\\"?*#/:") || strpbrk(name, illegalchrs) )
 		return 1;
 	while ( 1 )
 	{
-		v5 = *v2;
-		if ( !*v2 )
+		v5 = *name;
+		if ( !*name )
 			break;
 		if ( (unsigned char)v5 < 0x20u || (unsigned char)v5 > 0x7Eu && (unsigned char)v5 < 0xC0u )
 			return 1;
-		++v2;
+		++name;
 	}
 	return 0;
-} */
+}
 
 // ref: 0x1000BB75
-int __stdcall UiValidPlayerName(char *arg) { return 0; }
-/* {
-	char *v1; // esi
-	signed int v2; // edi
+BOOL __fastcall UiValidPlayerName(char *name)
+{
+	BOOL v2; // edi
 
-	v1 = arg;
 	v2 = 1;
-	if ( !strlen(arg) )
+	if ( !strlen(name) )
 		v2 = 0;
-	if ( dword_1002A48C == 1 && (SelHero_1000BAB4(v1) || SelHero_1000BB34(v1, " ")) )
+	if ( selhero_is_good == 1 && (SelHero_IsNameReserved(name) || SelHero_NameHasChar(name, " ")) )
 		v2 = 0;
 	return v2;
-} */
-// 1002A48C: using guessed type int dword_1002A48C;
+}
 
 // ref: 0x1000BBB4
-int __stdcall UiSelHeroMultDialog(void *fninfo, void *fncreate, void *fnremove, void *fnstats, int *a5, int *a6, char *name) { return 0; }
-/* {
+BOOL __stdcall UiSelHeroMultDialog(BOOL (__stdcall *fninfo)(BOOL (__stdcall *fninfofunc)(_uiheroinfo *)), BOOL (__stdcall *fncreate)(_uiheroinfo *), BOOL (__stdcall *fnremove)(_uiheroinfo *), BOOL (__stdcall *fnstats)(int, _uidefaultstats *), int *dlgresult, int *a6, char *name)
+{
 	int v7; // eax
 	int v8; // eax
 
-	artfont_10001159();
-	dword_1002A438 = (int (__stdcall *)(_DWORD))a1;
-	dword_1002A450 = (int (UNKCALL *)(_DWORD, _DWORD))a2;
-	dword_1002A434 = (int (__stdcall *)(_DWORD))a3;
-	dword_1002A410 = (int (__stdcall *)(_DWORD, _DWORD))a4;
-	dword_1002A458 = 0;
-	dword_1002A48C = 1;
-	dword_1002A45C = 0;
-	v7 = SDrawGetFrameWindow();
-	v8 = SDlgDialogBoxParam(hInstance, "SELHERO_DIALOG", v7, SelHero_1000BC46, 0);
-	if ( a5 )
-		*(_DWORD *)a5 = v8;
-	if ( a7 )
-		strcpy(a7, &byte_1002A440);
+	artfont_LoadAllFonts();
+	selhero_fninfo = fninfo;
+	selhero_fncreate = fncreate;
+	selhero_fnremove = fnremove;
+	selhero_fnstats = fnstats;
+	sgpHeroInfo = 0;
+	selhero_is_good = 1;
+	selhero_is_created = 0;
+	v7 = (int)SDrawGetFrameWindow();
+	v8 = SDlgDialogBoxParam(ghUiInst, "SELHERO_DIALOG", v7, SelHero_WndProc, 0);
+	if ( dlgresult )
+		*dlgresult = v8;
+	if ( name )
+		strcpy(name, selhero_heronamestr);
 	if ( a6 )
-		*(_DWORD *)a6 = dword_1002A45C;
+		*a6 = selhero_is_created;
 	return 1;
-} */
-// 10010370: using guessed type int __stdcall SDlgDialogBoxParam(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
+}
 // 10010382: using guessed type _DWORD __stdcall SDrawGetFrameWindow();
-// 1002A410: using guessed type int (__stdcall *dword_1002A410)(_DWORD, _DWORD);
-// 1002A434: using guessed type int (__stdcall *dword_1002A434)(_DWORD);
-// 1002A438: using guessed type int (__stdcall *dword_1002A438)(_DWORD);
-// 1002A450: using guessed type int (UNKCALL *dword_1002A450)(_DWORD, _DWORD);
-// 1002A458: using guessed type int dword_1002A458;
-// 1002A45C: using guessed type int dword_1002A45C;
-// 1002A48C: using guessed type int dword_1002A48C;
+// 1002A45C: using guessed type int selhero_is_created;
 
 // ref: 0x1000BC46
-int __stdcall SelHero_1000BC46(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) { return 0; }
-/* {
+LRESULT __stdcall SelHero_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
+{
 	HWND v4; // eax
 	int v6; // edx
 	HWND v7; // ecx
 	signed int v8; // [esp-4h] [ebp-8h]
-	int v9; // [esp+0h] [ebp-4h]
 
 	if ( Msg > 0xBD2 )
 	{
 		switch ( Msg )
 		{
 			case 0xBD3u:
-				SelHero_1000C21A(hWnd);
+				SelHero_DoSelLoad(hWnd);
 				return 0;
 			case 0xBD4u:
-				SelHero_1000C269(hWnd);
+				SelHero_DoSelDiff(hWnd);
 				return 0;
 			case 0xBD5u:
 				v7 = hWnd;
-				if ( dword_1002A48C != 1 )
+				if ( selhero_is_good != 1 )
 				{
 					v8 = 2;
 					goto LABEL_30;
 				}
 				break;
 			case 0xBD6u:
-				strcpy(&byte_1002A440, byte_1002A464);
+				strcpy(selhero_heronamestr, heroinfo_create.name);
 				v6 = 1;
 				v7 = hWnd;
-				if ( dword_1002A48C != 1 )
+				if ( selhero_is_good != 1 )
 				{
-					dword_1002A420 = 0;
+					selhero_difficulty = 0;
 LABEL_31:
-					SelHero_1000C3E2((int)v7, v6);
+					SelHero_DoHeroEndFade(v7, v6);
 					return 0;
 				}
 				break;
 			case 0xBD7u:
-				SelHero_1000BDAD(hWnd);
+				SelHero_DoStuffWithStrings(hWnd);
 				return 0;
 			default:
-				return SDlgDefDialogProc(hWnd, Msg, wParam, lParam);
+				return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 		}
 		v8 = 3;
 LABEL_30:
@@ -347,206 +296,195 @@ LABEL_30:
 	}
 	if ( Msg == 3026 )
 	{
-		SelHero_1000C09B(hWnd);
+		SelHero_DoEnterName(hWnd);
 		return 0;
 	}
 	if ( Msg == 2 )
 	{
-		SelHero_1000C364(hWnd);
-		return SDlgDefDialogProc(hWnd, Msg, wParam, lParam);
+		SelHero_DeleteAndFree(hWnd);
+		return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 	}
 	if ( Msg <= 0x103 )
-		return SDlgDefDialogProc(hWnd, Msg, wParam, lParam);
+		return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 	if ( Msg <= 0x105 )
 	{
 		v4 = (HWND)SDrawGetFrameWindow();
 		SendMessageA(v4, Msg, wParam, lParam);
-		return SDlgDefDialogProc(hWnd, Msg, wParam, lParam);
+		return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 	}
 	switch ( Msg )
 	{
 		case 0x110u:
-			SelHero_1000C3FF(hWnd);
+			SelHero_LoadHeroGFX(hWnd);
 			PostMessageA(hWnd, 0x7E8u, 0, 0);
 			return 0;
 		case 0x7E8u:
-			if ( !Fade_1000739F() )
-				Fade_100073FD(hWnd, v9);
+			if ( !Fade_CheckRange5() )
+				Fade_SetFadeTimer((int)hWnd);
 			return 0;
 		case 0xBD0u:
-			SelHero_1000BF6D(hWnd);
+			SelHero_DoHeroSelList(hWnd);
 			return 0;
 	}
 	if ( Msg != 3025 )
-		return SDlgDefDialogProc(hWnd, Msg, wParam, lParam);
-	SelHero_1000BFF9(hWnd);
+		return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
+	SelHero_DoHeroSelClass(hWnd);
 	return 0;
-} */
-// 1001037C: using guessed type int __stdcall SDlgDefDialogProc(_DWORD, _DWORD, _DWORD, _DWORD);
+}
 // 10010382: using guessed type _DWORD __stdcall SDrawGetFrameWindow();
-// 1002A420: using guessed type int dword_1002A420;
-// 1002A48C: using guessed type int dword_1002A48C;
+// 1002A420: using guessed type int selhero_difficulty;
 
 // ref: 0x1000BDAD
-BOOL UNKCALL SelHero_1000BDAD(HWND arg) { return 0; }
-/* {
-	const char *v1; // eax
-	CHAR v3; // [esp+Ch] [ebp-B4h]
-	CHAR v4; // [esp+5Ch] [ebp-64h]
-	CHAR Buffer; // [esp+9Ch] [ebp-24h]
-	HWND hWnd; // [esp+BCh] [ebp-4h]
+void __fastcall SelHero_DoStuffWithStrings(HWND hWnd)
+{
+	_uiheroinfo *v1; // eax
+	char dialogstr[80]; // [esp+Ch] [ebp-B4h]
+	char string64[64]; // [esp+5Ch] [ebp-64h]
+	char Buffer[32]; // [esp+9Ch] [ebp-24h]
 
-	hWnd = arg;
-	if ( SelHero_1000B7CA() == 1 )
-		LoadStringA(hInstance, 0x23u, &Buffer, 31);
+	if ( SelHero_GetHeroIsGood() == 1 )
+		LoadStringA(ghUiInst, 0x23u, Buffer, 31);
 	else
-		LoadStringA(hInstance, 0x22u, &Buffer, 31);
-	LoadStringA(hInstance, 7u, &v4, 63);
-	wsprintfA(&v3, &v4, &byte_1002A440);
-	if ( SelYesNo_1000FA49((int)hWnd, &v3, (int)&Buffer, 1) != 2 )
+		LoadStringA(ghUiInst, 0x22u, Buffer, 31);
+	LoadStringA(ghUiInst, 7u, string64, 63);
+	wsprintfA(dialogstr, string64, selhero_heronamestr);
+	if ( SelYesNo_YesNoDialog(hWnd, dialogstr, Buffer, 1) != 2 )
 	{
-		v1 = SelHero_1000BF4A((const char *)dword_1002A458, &byte_1002A440);
+		v1 = SelHero_GetHeroSlotFromName(sgpHeroInfo, selhero_heronamestr);
 		if ( v1 )
 		{
-			if ( dword_1002A434(v1) )
+			if ( selhero_fnremove(v1) )
 			{
-				dword_1002A458 = (int)SelHero_1000BEDB((int *)dword_1002A458, &byte_1002A440);
-				--dword_1002A428;
-				LoadStringA(hInstance, 0x1Eu, &v4, 15);
-				if ( !strcmp(&v4, (const char *)(dword_1002A458 + 4)) )
-					return PostMessageA(hWnd, 0xBD1u, 0, 0);
-				SelHero_1000B905(hWnd, dword_1002A458);
+				sgpHeroInfo = SelHero_GetNextHeroFromStr(sgpHeroInfo, selhero_heronamestr);
+				--selhero_numheroesleft;
+				LoadStringA(ghUiInst, 0x1Eu, string64, 15);
+				if ( !strcmp(string64, sgpHeroInfo->name) )
+				{
+					PostMessageA(hWnd, 0xBD1u, 0, 0);
+					return;
+				}
+				SelHero_PrintHeroInfo(hWnd, sgpHeroInfo);
 			}
 			else
 			{
-				LoadStringA(hInstance, 0x11u, &v4, 63);
-				SelYesNo_1000FD39((int)hWnd, &v4, (int)&Buffer, 1);
+				LoadStringA(ghUiInst, 0x11u, string64, 63);
+				SelYesNo_SelOkDialog(hWnd, string64, Buffer, 1);
 			}
 		}
 	}
-	return PostMessageA(hWnd, 0xBD0u, 0, 0);
-} */
-// 1002A428: using guessed type int dword_1002A428;
-// 1002A434: using guessed type int (__stdcall *dword_1002A434)(_DWORD);
-// 1002A458: using guessed type int dword_1002A458;
+	PostMessageA(hWnd, 0xBD0u, 0, 0);
+}
+// 1002A428: using guessed type int selhero_numheroesleft;
 
 // ref: 0x1000BEDB
-int *__fastcall SelHero_1000BEDB(int *a1, char *a2) { return 0; }
-/* {
-	int *v2; // ebx
-	_DWORD *v3; // ebp
-	_DWORD *v4; // edi
-	int *v5; // esi
-	char *v7; // [esp+10h] [ebp-4h]
+_uiheroinfo *__fastcall SelHero_GetNextHeroFromStr(_uiheroinfo *pInfo, char *name)
+{
+	_uiheroinfo *v3; // ebp
+	_uiheroinfo *v4; // edi
 
-	v2 = a1;
 	v3 = 0;
 	v4 = 0;
-	v7 = a2;
-	v5 = a1;
-	if ( a1 )
+	if ( pInfo )
 	{
 		while ( !v4 )
 		{
-			if ( !strcmp((const char *)v5 + 4, v7) )
+			if ( !strcmp(pInfo->name, name) )
 			{
-				v4 = v5;
+				v4 = pInfo;
 			}
 			else
 			{
-				v3 = v5;
-				v5 = (int *)*v5;
+				v3 = pInfo;
+				pInfo = pInfo->next;
 			}
-			if ( !v5 )
+			if ( !pInfo )
 			{
 				if ( !v4 )
-					return v2;
+					return pInfo;
 				break;
 			}
 		}
 		if ( v3 )
-			*v3 = *v4;
+			v3->next = v4->next;
 		else
-			v2 = (int *)*v4;
-		SelHero_1000BF33(v4);
+			pInfo = v4->next;
+		SelHero_FreeSomeMemory(v4);
 	}
-	return v2;
-} */
+	return pInfo;
+}
 
 // ref: 0x1000BF33
-int UNKCALL SelHero_1000BF33(void *arg) { return 0; }
-/* {
-	int result; // eax
-
-	if ( arg )
-		result = SMemFree(arg, "C:\\Src\\Diablo\\DiabloUI\\SelHero.cpp", 131, 0);
-	return result;
-} */
-// 10010340: using guessed type int __stdcall SMemFree(_DWORD, _DWORD, _DWORD, _DWORD);
+void __fastcall SelHero_FreeSomeMemory(void *ptr)
+{
+	if ( ptr )
+		SMemFree(ptr, "C:\\Src\\Diablo\\DiabloUI\\SelHero.cpp", 131, 0);
+}
 
 // ref: 0x1000BF4A
-const char *__fastcall SelHero_1000BF4A(const char *a1, const char *a2) { return 0; }
-/* {
-	const char *v2; // edi
-	const char *i; // esi
+_uiheroinfo *__fastcall SelHero_GetHeroSlotFromName(_uiheroinfo *pInfo, const char *name)
+{
+	_uiheroinfo *i; // esi
 
-	v2 = a2;
-	for ( i = a1; i && _strcmpi(i + 4, v2); i = *(const char **)i )
+	for ( i = pInfo; i && _strcmpi(i->name, name); i = i->next )
 		;
 	return i;
-} */
+}
 
 // ref: 0x1000BF6D
-int UNKCALL SelHero_1000BF6D(HWND hWnd) { return 0; }
-/* {
-	HWND v1; // esi
-	int v2; // eax
-	int v4; // edx
+void __fastcall SelHero_DoHeroSelList(HWND hWnd)
+{
+	BOOL v2; // eax
+	int v3; // edx
 
-	v1 = hWnd;
-	v2 = SDlgDialogBoxParam(hInstance, "SELLIST_DIALOG", hWnd, SelList_1000D774, 0);
+	v2 = SDlgDialogBoxParam(ghUiInst, "SELLIST_DIALOG", (int)hWnd, SelList_WndProc, 0);
 	if ( v2 == 1 )
 	{
-		if ( !strlen(&byte_1002A440) )
-			return PostMessageA(v1, 0xBD1u, 0, 0);
-		if ( dword_1002A48C == 1 )
-			return PostMessageA(v1, 0xBD5u, 0, 0);
-		if ( dword_1002A424 )
-			return PostMessageA(v1, 0xBD3u, 0, 0);
-		dword_1002A420 = 0;
-		v4 = 1;
-		return SelHero_1000C3E2((int)v1, v4);
+		if ( !strlen(selhero_heronamestr) )
+		{
+			PostMessageA(hWnd, 0xBD1u, 0, 0);
+			return;
+		}
+		if ( selhero_is_good == 1 )
+		{
+			PostMessageA(hWnd, 0xBD5u, 0, 0);
+			return;
+		}
+		if ( selhero_hero_hassaved )
+		{
+			PostMessageA(hWnd, 0xBD3u, 0, 0);
+			return;
+		}
+		selhero_difficulty = 0;
+		v3 = 1;
+LABEL_13:
+		SelHero_DoHeroEndFade(hWnd, v3);
+		return;
 	}
 	if ( v2 != 1006 )
 	{
-		v4 = 4;
-		return SelHero_1000C3E2((int)v1, v4);
+		v3 = 4;
+		goto LABEL_13;
 	}
-	return PostMessageA(v1, 0xBD7u, 0, 0);
-} */
-// 10010370: using guessed type int __stdcall SDlgDialogBoxParam(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
-// 1002A420: using guessed type int dword_1002A420;
-// 1002A424: using guessed type int dword_1002A424;
-// 1002A48C: using guessed type int dword_1002A48C;
+	PostMessageA(hWnd, 0xBD7u, 0, 0);
+}
+// 1002A420: using guessed type int selhero_difficulty;
+// 1002A424: using guessed type int selhero_hero_hassaved;
 
 // ref: 0x1000BFF9
-int UNKCALL SelHero_1000BFF9(HWND hWnd) { return 0; }
-/* {
-	HWND v1; // esi
-	int v2; // eax
+void __fastcall SelHero_DoHeroSelClass(HWND hWnd)
+{
+	BOOL v2; // eax
 	int v3; // eax
-	int result; // eax
-	CHAR Buffer; // [esp+8h] [ebp-20h]
+	char Buffer[32]; // [esp+8h] [ebp-20h]
 
-	v1 = hWnd;
-	v2 = SDlgDialogBoxParam(hInstance, "SELCLASS_DIALOG", hWnd, SelClass_10009D66, 0);
+	v2 = SDlgDialogBoxParam(ghUiInst, "SELCLASS_DIALOG", (int)hWnd, SelClass_WndProc, 0);
 	if ( v2 == -1 || v2 == 2 )
 	{
-		LoadStringA(hInstance, 0x1Eu, &Buffer, 31);
-		if ( !strcmp(&Buffer, (const char *)(dword_1002A458 + 4)) )
-			result = SelHero_1000C3E2((int)v1, 4);
+		LoadStringA(ghUiInst, 0x1Eu, Buffer, 31);
+		if ( !strcmp(Buffer, sgpHeroInfo->name) )
+			SelHero_DoHeroEndFade(hWnd, 4);
 		else
-			result = PostMessageA(v1, 0xBD0u, 0, 0);
+			PostMessageA(hWnd, 0xBD0u, 0, 0);
 	}
 	else
 	{
@@ -554,204 +492,184 @@ int UNKCALL SelHero_1000BFF9(HWND hWnd) { return 0; }
 		if ( v3 )
 		{
 			if ( v3 == 1 )
-				byte_1002A476 = 2;
+				heroinfo_create.heroclass = 2;
 			else
-				byte_1002A476 = 0;
+				heroinfo_create.heroclass = 0;
 		}
 		else
 		{
-			byte_1002A476 = 1;
+			heroinfo_create.heroclass = 1;
 		}
-		result = PostMessageA(v1, 0xBD2u, 0, 0);
+		PostMessageA(hWnd, 0xBD2u, 0, 0);
 	}
-	return result;
-} */
-// 10010370: using guessed type int __stdcall SDlgDialogBoxParam(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
-// 1002A458: using guessed type int dword_1002A458;
-// 1002A476: using guessed type char byte_1002A476;
+}
 
 // ref: 0x1000C09B
-int UNKCALL SelHero_1000C09B(HWND hWnd) { return 0; }
-/* {
-	HWND v1; // esi
-	int result; // eax
-	char v3; // [esp+8h] [ebp-10h]
-	char v4; // [esp+17h] [ebp-1h]
+void __fastcall SelHero_DoEnterName(HWND hWnd)
+{
+	char namestr[16]; // [esp+8h] [ebp-10h]
 
-	v1 = hWnd;
-	if ( SDlgDialogBoxParam(hInstance, "ENTERNAME_DIALOG", hWnd, EntName_10006F7C, &v3) != 1 )
-		return PostMessageA(v1, 0xBD1u, 0, 0);
-	v4 = 0;
-	if ( SelHero_1000C0F9((int)v1, &v3) )
-		result = PostMessageA(v1, 0xBD6u, 0, 0);
+	if ( SDlgDialogBoxParam(ghUiInst, "ENTERNAME_DIALOG", (int)hWnd, EntName_WndProc, (int)namestr) == 1 )
+	{
+		namestr[15] = 0;
+		if ( SelHero_CreateHero(hWnd, namestr) )
+			PostMessageA(hWnd, 0xBD6u, 0, 0);
+		else
+			PostMessageA(hWnd, 0xBD2u, 0, 0);
+	}
 	else
-		result = PostMessageA(v1, 0xBD2u, 0, 0);
-	return result;
-} */
-// 10010370: using guessed type int __stdcall SDlgDialogBoxParam(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
+	{
+		PostMessageA(hWnd, 0xBD1u, 0, 0);
+	}
+}
 
 // ref: 0x1000C0F9
-signed int __fastcall SelHero_1000C0F9(int a1, char *a2) { return 0; }
-/* {
-	const char *v2; // edi
-	int v3; // ST0C_4
-	CHAR v5; // [esp+Ch] [ebp-138h]
-	CHAR v6; // [esp+9Ch] [ebp-A8h]
-	CHAR Buffer; // [esp+11Ch] [ebp-28h]
-	int v8; // [esp+13Ch] [ebp-8h]
-	char *v9; // [esp+140h] [ebp-4h]
+BOOL __fastcall SelHero_CreateHero(HWND hWnd, char *name)
+{
+	_uiheroinfo *v2; // edi
+	char dialogstr[144]; // [esp+Ch] [ebp-138h]
+	char v5[128]; // [esp+9Ch] [ebp-A8h]
+	char Buffer[32]; // [esp+11Ch] [ebp-28h]
 
-	v9 = a2;
-	v8 = a1;
-	if ( SelHero_1000B7CA() == 1 )
-		LoadStringA(hInstance, 0x20u, &Buffer, 31);
+	if ( SelHero_GetHeroIsGood() == 1 )
+		LoadStringA(ghUiInst, 0x20u, Buffer, 31);
 	else
-		LoadStringA(hInstance, 0x1Fu, &Buffer, 31);
-	if ( !UiValidPlayerName(v9) )
+		LoadStringA(ghUiInst, 0x1Fu, Buffer, 31);
+	if ( !UiValidPlayerName(name) )
 	{
-		LoadStringA(hInstance, 0xFu, &v6, 127);
-		SelYesNo_1000FD39(v8, &v6, (int)&Buffer, 1);
+		LoadStringA(ghUiInst, 0xFu, v5, 127);
+		SelYesNo_SelOkDialog(hWnd, v5, Buffer, 1);
 		return 0;
 	}
-	v2 = SelHero_1000BF4A((const char *)dword_1002A458, v9);
+	v2 = SelHero_GetHeroSlotFromName(sgpHeroInfo, name);
 	if ( v2 )
 	{
-		LoadStringA(hInstance, 8u, &v6, 127);
-		wsprintfA(&v5, &v6, v2 + 4);
-		if ( SelYesNo_1000FA49(v8, &v5, (int)&Buffer, 1) == 2 )
+		LoadStringA(ghUiInst, 8u, v5, 127);
+		wsprintfA(dialogstr, v5, v2->name);
+		if ( SelYesNo_YesNoDialog(hWnd, dialogstr, Buffer, 1) == 2 )
 			return 0;
 	}
-	strcpy(byte_1002A464, v9);
-	dword_1002A484 = 0;
-	if ( !dword_1002A450(v3, &unk_1002A460) )
+	strcpy(heroinfo_create.name, name);
+	heroinfo_create.hassaved = 0;
+	if ( !selhero_fncreate(&heroinfo_create) )
 	{
-		LoadStringA(hInstance, 0x10u, &v6, 127);
-		OkCancel_1000930A(v8, (int)&v6, 1);
+		LoadStringA(ghUiInst, 0x10u, v5, 127);
+		OkCancel_1000930A((int)hWnd, (int)v5, 1);
 		return 0;
 	}
-	dword_1002A45C = 1;
+	selhero_is_created = 1;
 	return 1;
-} */
-// 1002A450: using guessed type int (UNKCALL *dword_1002A450)(_DWORD, _DWORD);
-// 1002A458: using guessed type int dword_1002A458;
-// 1002A45C: using guessed type int dword_1002A45C;
-// 1002A484: using guessed type int dword_1002A484;
+}
+// 1002A45C: using guessed type int selhero_is_created;
 
 // ref: 0x1000C21A
-BOOL UNKCALL SelHero_1000C21A(HWND hWnd) { return 0; }
-/* {
-	HWND v1; // esi
-	int v2; // eax
+void __fastcall SelHero_DoSelLoad(HWND hWnd)
+{
+	BOOL v2; // eax
 
-	v1 = hWnd;
-	v2 = SDlgDialogBoxParam(hInstance, "SELLOAD_DIALOG", hWnd, SelLoad_1000E1C2, 0);
+	v2 = SDlgDialogBoxParam(ghUiInst, "SELLOAD_DIALOG", (int)hWnd, SelLoad_WndProc, 0);
 	if ( v2 == -1 || v2 == 2 )
-		return PostMessageA(v1, 0xBD0u, 0, 0);
-	if ( v2 == 1106 )
-		return PostMessageA(v1, 0xBD5u, 0, 0);
-	return PostMessageA(v1, 0xBD4u, 0, 0);
-} */
-// 10010370: using guessed type int __stdcall SDlgDialogBoxParam(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
+	{
+		PostMessageA(hWnd, 0xBD0u, 0, 0);
+	}
+	else if ( v2 == 1106 )
+	{
+		PostMessageA(hWnd, 0xBD5u, 0, 0);
+	}
+	else
+	{
+		PostMessageA(hWnd, 0xBD4u, 0, 0);
+	}
+}
 
 // ref: 0x1000C269
-int UNKCALL SelHero_1000C269(HWND hWnd) { return 0; }
-/* {
-	HWND v1; // ebx
-	int v2; // ecx
-	const char *v4; // eax
-	int v5; // eax
-	CHAR Buffer; // [esp+4h] [ebp-208h]
-	char v7; // [esp+104h] [ebp-108h]
-	char v8; // [esp+184h] [ebp-88h]
-	char v9; // [esp+204h] [ebp-8h]
-	char v10; // [esp+208h] [ebp-4h]
+void __fastcall SelHero_DoSelDiff(HWND hWnd)
+{
+	_uiheroinfo *v3; // eax
+	int v4; // eax
+	char Buffer[256]; // [esp+4h] [ebp-208h]
+	char v6[128]; // [esp+104h] [ebp-108h]
+	char v7[128]; // [esp+184h] [ebp-88h]
+	_gamedata gameData; // [esp+204h] [ebp-8h]
 
-	v1 = hWnd;
-	if ( !SelHero_1000B7CA() )
+	if ( !SelHero_GetHeroIsGood() )
 	{
-		SelHero_1000B7AC(0);
-		v2 = (int)v1;
-		return SelHero_1000C3E2(v2, 1);
+		SelHero_SetHeroDifficulty(0);
+LABEL_3:
+		SelHero_DoHeroEndFade(hWnd, 1);
+		return;
 	}
 	CreaDung_10004C33((void *)1);
-	if ( SDlgDialogBoxParam(hInstance, "SELDIFF_DIALOG", v1, CreaDung_10004C4A, dword_1002A48C) != 1 )
-		return PostMessageA(v1, 0xBD3u, 0, 0);
-	v4 = SelHero_1000BF4A((const char *)dword_1002A458, &byte_1002A440);
-	UiCreatePlayerDescription((int)v4, 1145195599, (int)&v8);
-	v10 = dword_1002A420;
-	Connect_10003E0C((int)&v9, &byte_1002A440, &v8, &v7, 128);
-	v5 = UiAuthCallback(2, (int)&byte_1002A440, &v8, 0, &v7, &Buffer, 256);
-	v2 = (int)v1;
-	if ( v5 )
-		return SelHero_1000C3E2(v2, 1);
-	SelYesNo_1000FD39((int)v1, &Buffer, 0, 1);
-	return PostMessageA(v1, 0xBD4u, 0, 0);
-} */
-// 10010370: using guessed type int __stdcall SDlgDialogBoxParam(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
-// 1002A420: using guessed type int dword_1002A420;
-// 1002A458: using guessed type int dword_1002A458;
-// 1002A48C: using guessed type int dword_1002A48C;
+	if ( SDlgDialogBoxParam(ghUiInst, "SELDIFF_DIALOG", (int)hWnd, (WNDPROC)CreaDung_10004C4A, selhero_is_good) == 1 )
+	{
+		v3 = SelHero_GetHeroSlotFromName(sgpHeroInfo, selhero_heronamestr);
+		UiCreatePlayerDescription(v3, 'DBLO', v7);
+		gameData.bDiff = selhero_difficulty;
+		Connect_10003E0C((int)&gameData, selhero_heronamestr, v7, v6, 128);
+		/* temp, fix */
+		//v4 = UiAuthCallback(2, (int)selhero_heronamestr, v7, 0, v6, Buffer, 256);
+		if ( v4 )
+			goto LABEL_3;
+		SelYesNo_SelOkDialog(hWnd, Buffer, 0, 1);
+		PostMessageA(hWnd, 0xBD4u, 0, 0);
+	}
+	else
+	{
+		PostMessageA(hWnd, 0xBD3u, 0, 0);
+	}
+}
+// 1002A420: using guessed type int selhero_difficulty;
 
 // ref: 0x1000C364
-void UNKCALL SelHero_1000C364(HWND hDlg) { return; }
-/* {
-	HWND v1; // esi
-	_DWORD *v2; // eax
+void __fastcall SelHero_DeleteAndFree(HWND hWnd)
+{
+	void **v2; // eax
 
-	v1 = hDlg;
-	Doom_10006C53(hDlg, (int *)&unk_10023020);
-	Doom_10006C53(v1, (int *)&unk_10023008);
-	Doom_10006C53(v1, (int *)&unk_10023000);
-	Title_100100E7(v1);
-	SelHero_1000C3CE((_DWORD *)dword_1002A458);
-	if ( dword_1002A498 )
+	Doom_DeleteFreeProcs(hWnd, selhero_msgtbl_info);
+	Doom_DeleteFreeProcs(hWnd, selhero_msgtbl_3);
+	Doom_DeleteFreeProcs(hWnd, selhero_msgtbl_string);
+	Title_KillTitleTimer(hWnd);
+	SelHero_FreeAllHeroes(sgpHeroInfo);
+	if ( selhero_buffer )
 	{
-		SMemFree(dword_1002A498, "C:\\Src\\Diablo\\DiabloUI\\SelHero.cpp", 744, 0);
-		dword_1002A498 = 0;
+		SMemFree(selhero_buffer, "C:\\Src\\Diablo\\DiabloUI\\SelHero.cpp", 744, 0);
+		selhero_buffer = 0;
 	}
-	v2 = (_DWORD *)GetWindowLongA(v1, -21);
-	local_10007F72(v2);
-} */
-// 10010340: using guessed type int __stdcall SMemFree(_DWORD, _DWORD, _DWORD, _DWORD);
-// 1002A458: using guessed type int dword_1002A458;
-// 1002A498: using guessed type int dword_1002A498;
+	v2 = (void **)GetWindowLongA(hWnd, -21);
+	local_FreeMemPtr(v2);
+}
 
 // ref: 0x1000C3CE
-int __fastcall SelHero_1000C3CE(_DWORD *a1) { return 0; }
-/* {
-	_DWORD *v1; // esi
-	int result; // eax
+void __fastcall SelHero_FreeAllHeroes(_uiheroinfo *pInfo)
+{
+	_uiheroinfo *v1; // esi
 
-	if ( a1 )
+	if ( pInfo )
 	{
 		do
 		{
-			v1 = (_DWORD *)*a1;
-			result = SelHero_1000BF33(a1);
-			a1 = v1;
+			v1 = pInfo->next;
+			SelHero_FreeSomeMemory(pInfo);
+			pInfo = v1;
 		}
 		while ( v1 );
 	}
-	return result;
-} */
+}
 
 // ref: 0x1000C3E2
-int __fastcall SelHero_1000C3E2(int a1, int a2) { return 0; }
-/* {
-	int v2; // edi
-	int v3; // esi
+void __fastcall SelHero_DoHeroEndFade(HWND hWnd, int a2)
+{
+	void *v2; // edi
 
-	v2 = a2;
-	v3 = a1;
-	Fade_100073B4();
-	Fade_100072BE(10);
-	return SDlgEndDialog(v3, v2);
-} */
-// 10010376: using guessed type int __stdcall SDlgEndDialog(_DWORD, _DWORD);
+	v2 = (void *)a2;
+	Fade_Range5SetZero();
+	Fade_UpdatePaletteRange(10);
+	SDlgEndDialog(hWnd, v2);
+}
 
 // ref: 0x1000C3FF
-int UNKCALL SelHero_1000C3FF(HWND hWnd) { return 0; }
-/* {
+void __fastcall SelHero_LoadHeroGFX(HWND hWnd)
+{
 	HWND v1; // eax
 	int v2; // eax
 	HWND v3; // eax
@@ -762,132 +680,110 @@ int UNKCALL SelHero_1000C3FF(HWND hWnd) { return 0; }
 	int v8; // eax
 	HWND v9; // eax
 	int v10; // eax
-	HWND v12; // esi
-	int v13; // eax
-	int *v14; // edi
-	void *v15; // [esp+0h] [ebp-8h]
-	HWND v16; // [esp+0h] [ebp-8h]
+	DWORD *v12; // eax MAPDST
 
-	v12 = hWnd;
-	SelHero_1000C49F(hWnd, v15);
-	v13 = local_10007F46();
-	v14 = (int *)v13;
-	if ( v13 )
+	SelHero_SelectHeroRegion(hWnd);
+	v12 = local_AllocWndLongData();
+	if ( v12 )
 	{
-		SetWindowLongA(v12, -21, v13);
-		local_10007944((int)v12, 0, &byte_10029448, -1, 1, (int)"ui_art\\selhero.pcx", v14, v14 + 1, 0);
-		Fade_100073C5(v12, 1);
+		SetWindowLongA(hWnd, -21, (LONG)v12);
+		local_LoadArtWithPal(hWnd, 0, &nullcharacter, -1, 1, "ui_art\\selhero.pcx", (BYTE **)v12, v12 + 1, 0);
+		Fade_NoInputAndArt(hWnd, 1);
 	}
-	local_100078BE((int)"ui_art\\heros.pcx", &dword_1002A498, &dword_1002A418);
-	SetActiveWindow(v12);
-	Title_1001009E(v12, (int)"ui_art\\smlogo.pcx", v16);
-	Doom_100068AB(v12, (int *)&unk_10023000, 5);
-	Doom_100068AB(v12, (int *)&unk_10023008, 1);
-	Doom_100068AB(v12, (int *)&unk_10023020, 1);
-	dword_1002A424 = 0;
-	byte_1002A440 = 0;
-	v1 = GetDlgItem(v12, 1014);
+	local_LoadArtImage("ui_art\\heros.pcx", &selhero_buffer, &selhero_width);
+	SetActiveWindow(hWnd);
+	Title_LoadImgSetTimer(hWnd, "ui_art\\smlogo.pcx");
+	Doom_ParseWndProc3(hWnd, selhero_msgtbl_string, 5);
+	Doom_ParseWndProc3(hWnd, selhero_msgtbl_3, 1);
+	Doom_ParseWndProc3(hWnd, selhero_msgtbl_info, 1);
+	selhero_hero_hassaved = 0;
+	selhero_heronamestr[0] = 0;
+	v1 = GetDlgItem(hWnd, 1014);
 	v2 = GetWindowLongA(v1, -21);
-	local_10007FA4(v2, "--");
-	v3 = GetDlgItem(v12, 1018);
+	local_SetWndLongStr(v2, "--");
+	v3 = GetDlgItem(hWnd, 1018);
 	v4 = GetWindowLongA(v3, -21);
-	local_10007FA4(v4, "--");
-	v5 = GetDlgItem(v12, 1017);
+	local_SetWndLongStr(v4, "--");
+	v5 = GetDlgItem(hWnd, 1017);
 	v6 = GetWindowLongA(v5, -21);
-	local_10007FA4(v6, "--");
-	v7 = GetDlgItem(v12, 1016);
+	local_SetWndLongStr(v6, "--");
+	v7 = GetDlgItem(hWnd, 1016);
 	v8 = GetWindowLongA(v7, -21);
-	local_10007FA4(v8, "--");
-	v9 = GetDlgItem(v12, 1015);
+	local_SetWndLongStr(v8, "--");
+	v9 = GetDlgItem(hWnd, 1015);
 	v10 = GetWindowLongA(v9, -21);
-	local_10007FA4(v10, "--");
-	SelHero_1000B899(v12, 3);
-	return Doom_10006A13(v12, (int *)&unk_10023020, 1);
-} */
-// 1002A418: using guessed type int dword_1002A418;
-// 1002A424: using guessed type int dword_1002A424;
-// 1002A498: using guessed type int dword_1002A498;
+	local_SetWndLongStr(v10, "--");
+	SelHero_SetStaticBMP(hWnd, 3);
+	Doom_ParseWndProc4(hWnd, selhero_msgtbl_info, 1);
+}
+// 1002A424: using guessed type int selhero_hero_hassaved;
 
 // ref: 0x1000C49F
-BOOL UNKCALL SelHero_1000C49F(HWND hWnd, void *a2) { return 0; }
-/* {
-	HWND v2; // ebx
-	int v3; // esi
-	BOOL result; // eax
-	int v5; // [esp+10h] [ebp-44h]
-	CHAR Buffer; // [esp+14h] [ebp-40h]
+void __fastcall SelHero_SelectHeroRegion(HWND hWnd)
+{
+	_uiheroinfo *v2; // esi
+	_uiheroinfo *v3; // [esp+10h] [ebp-44h]
+	char Buffer[64]; // [esp+14h] [ebp-40h]
 
-	v2 = hWnd;
-	v3 = SelHero_1000B7B9();
-	*(_DWORD *)v3 = 0;
-	LoadStringA(hInstance, 0x1Eu, (LPSTR)(v3 + 4), 15);
-	*(_WORD *)(v3 + 20) = 0;
-	dword_1002A458 = (int)SelRegn_1000EF56(dword_1002A458, (_DWORD *)v3);
-	v5 = dword_1002A458;
-	dword_1002A428 = 1;
-	if ( !dword_1002A438(SelHero_1000C541) )
+	v2 = SelHero_AllocHeroInfo();
+	v2->next = 0;
+	LoadStringA(ghUiInst, 0x1Eu, v2->name, 15);
+	v2->level = 0;
+	sgpHeroInfo = (_uiheroinfo *)SelRegn_1000EF56((int)sgpHeroInfo, (unsigned int *)v2);
+	v3 = sgpHeroInfo;
+	selhero_numheroesleft = 1;
+	if ( !selhero_fninfo(SelHero_GetHeroInfo) )
 	{
-		LoadStringA(hInstance, 0x12u, &Buffer, 64);
-		OkCancel_1000930A((int)v2, (int)&Buffer, 1);
+		LoadStringA(ghUiInst, 0x12u, Buffer, 64);
+		OkCancel_1000930A((int)hWnd, (int)Buffer, 1);
 	}
-	if ( v5 == dword_1002A458 )
-		result = PostMessageA(v2, 0xBD1u, 0, 0);
+	if ( v3 == sgpHeroInfo )
+		PostMessageA(hWnd, 0xBD1u, 0, 0);
 	else
-		result = PostMessageA(v2, 0xBD0u, 0, 0);
-	return result;
-} */
-// 1002A428: using guessed type int dword_1002A428;
-// 1002A438: using guessed type int (__stdcall *dword_1002A438)(_DWORD);
-// 1002A458: using guessed type int dword_1002A458;
+		PostMessageA(hWnd, 0xBD0u, 0, 0);
+}
+// 1002A428: using guessed type int selhero_numheroesleft;
 
 // ref: 0x1000C541
-signed int __stdcall SelHero_1000C541(void *a1) { return 0; }
-/* {
-	_DWORD *v1; // esi
-	_DWORD *v2; // eax
+BOOL __stdcall SelHero_GetHeroInfo(_uiheroinfo *pInfo)
+{
+	_uiheroinfo *v1; // esi
+	_uiheroinfo *v2; // eax
 
-	v1 = (_DWORD *)SelHero_1000B7B9();
-	memcpy(v1, a1, 0x2Cu);
-	*v1 = 0;
-	v2 = SelRegn_1000EF56(dword_1002A458, v1);
-	++dword_1002A428;
-	dword_1002A458 = (int)v2;
+	v1 = SelHero_AllocHeroInfo();
+	memcpy(v1, pInfo, 0x2Cu);
+	v1->next = 0;
+	v2 = (_uiheroinfo *)SelRegn_1000EF56((int)sgpHeroInfo, (unsigned int *)v1);
+	++selhero_numheroesleft;
+	sgpHeroInfo = v2;
 	return 1;
-} */
-// 1002A428: using guessed type int dword_1002A428;
-// 1002A458: using guessed type int dword_1002A458;
+}
+// 1002A428: using guessed type int selhero_numheroesleft;
 
 // ref: 0x1000C57A
-int __stdcall UiSelHeroSingDialog(void *fninfo, void *fncreate, void *fnremove, void *fnstats, int *a5, char *name, int *difficulty) { return 0; }
-/* {
+BOOL __stdcall UiSelHeroSingDialog(BOOL (__stdcall *fninfo)(BOOL (__stdcall *fninfofunc)(_uiheroinfo *)), BOOL (__stdcall *fncreate)(_uiheroinfo *), BOOL (__stdcall *fnremove)(_uiheroinfo *), BOOL (__stdcall *fnstats)(int, _uidefaultstats *), int *dlgresult, char *name, int *difficulty)
+{
 	int v7; // eax
 	int v8; // edi
 
-	artfont_10001159();
-	dword_1002A438 = (int (__stdcall *)(_DWORD))a1;
-	dword_1002A450 = (int (UNKCALL *)(_DWORD, _DWORD))a2;
-	dword_1002A434 = (int (__stdcall *)(_DWORD))a3;
-	dword_1002A410 = (int (__stdcall *)(_DWORD, _DWORD))a4;
-	dword_1002A458 = 0;
-	dword_1002A48C = 0;
-	v7 = SDrawGetFrameWindow();
-	v8 = SDlgDialogBoxParam(hInstance, "SELHERO_DIALOG", v7, SelHero_1000BC46, 0);
-	if ( a5 )
-		*(_DWORD *)a5 = v8;
-	if ( a6 )
-		strcpy(a6, &byte_1002A440);
-	if ( a7 )
-		*(_DWORD *)a7 = dword_1002A420;
+	artfont_LoadAllFonts();
+	selhero_fninfo = fninfo;
+	selhero_fncreate = fncreate;
+	selhero_fnremove = fnremove;
+	selhero_fnstats = fnstats;
+	sgpHeroInfo = 0;
+	selhero_is_good = 0;
+	v7 = (int)SDrawGetFrameWindow();
+	v8 = SDlgDialogBoxParam(ghUiInst, "SELHERO_DIALOG", v7, SelHero_WndProc, 0);
+	if ( dlgresult )
+		*dlgresult = v8;
+	if ( name )
+		strcpy(name, selhero_heronamestr);
+	if ( difficulty )
+		*difficulty = selhero_difficulty;
 	if ( v8 != 4 )
-		artfont_100010C8();
+		artfont_FreeAllFonts();
 	return 1;
-} */
-// 10010370: using guessed type int __stdcall SDlgDialogBoxParam(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
+}
 // 10010382: using guessed type _DWORD __stdcall SDrawGetFrameWindow();
-// 1002A410: using guessed type int (__stdcall *dword_1002A410)(_DWORD, _DWORD);
-// 1002A420: using guessed type int dword_1002A420;
-// 1002A434: using guessed type int (__stdcall *dword_1002A434)(_DWORD);
-// 1002A438: using guessed type int (__stdcall *dword_1002A438)(_DWORD);
-// 1002A450: using guessed type int (UNKCALL *dword_1002A450)(_DWORD, _DWORD);
-// 1002A458: using guessed type int dword_1002A458;
-// 1002A48C: using guessed type int dword_1002A48C;
+// 1002A420: using guessed type int selhero_difficulty;
