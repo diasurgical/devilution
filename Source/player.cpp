@@ -3105,7 +3105,7 @@ BOOL __fastcall PM_DoSpell(int pnum)
 		if ( !plr[pnum]._pSplFrom ) {
 			if ( plr[pnum]._pRSplType == RSPLTYPE_SCROLL) {
 				if ( !(plr[pnum]._pScrlSpells64
-					& (UINT64)1 << (plr[pnum]._pRSpell - 1))
+					& (unsigned __int64)1 << (plr[pnum]._pRSpell - 1))
 				) {
 					plr[pnum]._pRSpell = SPL_INVALID;
 					plr[pnum]._pRSplType = RSPLTYPE_INVALID;
@@ -3115,7 +3115,7 @@ BOOL __fastcall PM_DoSpell(int pnum)
 
 			if ( plr[pnum]._pRSplType == RSPLTYPE_CHARGES) {
 				if ( !(plr[pnum]._pISpells64
-					& (UINT64)1 << (plr[pnum]._pRSpell - 1))
+					& (unsigned __int64)1 << (plr[pnum]._pRSpell - 1))
 				) {
 					plr[pnum]._pRSpell = SPL_INVALID;
 					plr[pnum]._pRSplType = RSPLTYPE_INVALID;
