@@ -3,7 +3,7 @@
 # based on https://github.com/k3rn31p4nic/travis-ci-discord-webhook
 
 # Only run for commits/builds on master, not for PRs for now
-if [[ "$TRAVIS_BRANCH" != "master" || $TRAVIS_PULL_REQUEST != "false" ]]; then
+if [[ "$TRAVIS_BRANCH" != "nightly" || $TRAVIS_PULL_REQUEST != "false" ]]; then
   exit
 fi
 
