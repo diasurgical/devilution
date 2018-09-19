@@ -31,7 +31,7 @@ void __fastcall Doom_GetSetWndText(HWND hWnd, int msg, int nFont, int a4)
 	v5 = hWnd;
 	if ( msg )
 	{
-		Doom_AllocAndSetBMP(hWnd, 1521);
+		Doom_AllocAndSetBMP(hWnd, msg, 1521);
 		Doom_GetWindowROP3(v5, v4);
 		artfont_SetArtFont(nFont);
 		Doom_PrintStrWithSpin(v4, a4);
@@ -93,18 +93,18 @@ void __fastcall Doom_PrintStrWithSpin(HWND hWnd, BOOL a2)
 }
 
 // ref: 0x10006719
-void __fastcall Doom_AllocAndSetBMP(HWND hWnd, int bmp_flags)
+void __fastcall Doom_AllocAndSetBMP(HWND hWnd, int a2, int bmp_flags)
 {
-	DWORD *v3; // esi
+	DWORD *v4; // esi
 	struct tagRECT Rect; // [esp+8h] [ebp-10h]
 
-	GetClientRect(hWnd, &Rect);
-	v3 = local_AllocWndLongData();
-	v3[1] = Rect.right;
-	v3[2] = Rect.bottom;
-	*v3 = (DWORD)SMemAlloc(Rect.right * Rect.bottom, "C:\\Src\\Diablo\\DiabloUI\\Doom.cpp", 139, 0);
-	SetWindowLongA(hWnd, -21, (LONG)v3);
-	SDlgSetBitmapI(hWnd, 0, &nullcharacter, -1, bmp_flags, (void *)*v3, 0, v3[1], v3[2], -1);
+	GetClientRect((HWND)a2, &Rect);
+	v4 = local_AllocWndLongData();
+	v4[1] = Rect.right;
+	v4[2] = Rect.bottom;
+	*v4 = (DWORD)SMemAlloc(Rect.right * Rect.bottom, "C:\\Src\\Diablo\\DiabloUI\\Doom.cpp", 139, 0);
+	SetWindowLongA((HWND)a2, -21, (LONG)v4);
+	SDlgSetBitmapI((HWND)a2, 0, &nullcharacter, -1, bmp_flags, (void *)*v4, 0, v4[1], v4[2], -1);
 }
 
 // ref: 0x1000678A
@@ -198,7 +198,7 @@ void __fastcall Doom_GetSetWndTxt3(HWND hWnd, int msg, int nFont)
 	v4 = hWnd;
 	if ( msg )
 	{
-		Doom_AllocAndSetBMP(hWnd, 1);
+		Doom_AllocAndSetBMP(hWnd, msg, 1);
 		Doom_GetWindowROP3(v4, v3);
 		artfont_SetArtFont(nFont);
 		v5 = GetWindowLongA(v3, -16);
@@ -306,7 +306,7 @@ void __fastcall Doom_GetSetWndTxt5(HWND hWnd, int msg, int nFont)
 	v3 = (HWND)msg;
 	if ( msg )
 	{
-		Doom_AllocAndSetBMP(hWnd, 1);
+		Doom_AllocAndSetBMP(hWnd, msg, 1);
 		Doom_GetWindowROP3(hWnd, v3);
 		artfont_SetArtFont(nFont);
 		Doom_PrintTextMsg403(v3);
