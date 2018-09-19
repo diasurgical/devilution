@@ -288,7 +288,7 @@ char __fastcall game_2_ui_class(PlayerStruct *p)
 	return result;
 }
 
-bool __stdcall pfile_ui_set_hero_infos(void (__stdcall *ui_add_hero_info)(_uiheroinfo *))
+BOOL __stdcall pfile_ui_set_hero_infos(BOOL (__stdcall *ui_add_hero_info)(_uiheroinfo *))
 {
 	char *v1; // esi
 	//int v2; // eax
@@ -507,7 +507,7 @@ bool __fastcall pfile_archive_contains_game(void *hsArchive)
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-bool __stdcall pfile_ui_set_class_stats(int player_class_nr, _uidefaultstats *class_stats)
+BOOL __stdcall pfile_ui_set_class_stats(int player_class_nr, _uidefaultstats *class_stats)
 {
 	int v2; // eax
 
@@ -530,7 +530,7 @@ int __fastcall pfile_get_player_class(int player_class_nr)
 	return result;
 }
 
-bool __stdcall pfile_ui_save_create(_uiheroinfo *heroinfo)
+BOOL __stdcall pfile_ui_save_create(_uiheroinfo *heroinfo)
 {
 	unsigned int v1; // edi
 	//int v3; // eax
@@ -609,7 +609,7 @@ LABEL_10:
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-bool __stdcall pfile_delete_save(_uiheroinfo *hero_info)
+BOOL __stdcall pfile_delete_save(_uiheroinfo *hero_info)
 {
 	unsigned int v1; // eax
 	char FileName[260]; // [esp+0h] [ebp-104h]
