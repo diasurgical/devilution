@@ -14,6 +14,7 @@ int doom_cpp_float_value = 2139095040; // weak
 int fade_cpp_float_value = 2139095040; // weak
 int focus_cpp_float_value = 2139095040; // weak
 int local_cpp_float_value = 2139095040; // weak
+int mainmenu_cpp_float_value = 2139095040; // weak
 int Title_cpp_float_value = 2139095040; // weak
 int titlesnd_cpp_float_value = 2139095040; // weak
 int dword_10022258 = 4; // weak
@@ -43,8 +44,8 @@ int dword_10022B10[2] = { 1116, 0 };
 int dword_10022B34[2] = { 1038, 0 };
 int dword_10022B3C[3] = { 1056, 1054, 0 };
 int dword_10022B48[2] = { 1065, 0 };
-int dword_10022BE0[2] = { 1042, 0 };
-int dword_10022BE8[6] = { 1044, 1001, 1002, 1003, 2, 0 };
+int menumsgs_1option[2] = { 1042, 0 };
+int menumsgs_5options[6] = { 1044, 1001, 1002, 1003, 2, 0 };
 int dword_10022C4C[2] = { 1038, 0 };
 int dword_10022C54[2] = { 1080, 0 };
 int dword_10022C5C[2] = { 1108, 0 };
@@ -236,9 +237,9 @@ tagPALETTEENTRY artpal[256];
 HGDIOBJ objPalette; // idb
 BYTE *gpCursorArt;
 BYTE *gpCursorArt2;
-int dword_1002A0D4; // weak
-char byte_1002A0D8; // idb
-int dword_1002A118; // weak
+int mainmenu_cpp_float; // weak
+char menu_version_str[64];
+int menu_item_timer; // weak
 int dword_1002A120; // weak
 int dword_1002A124; // weak
 int dword_1002A128; // weak
