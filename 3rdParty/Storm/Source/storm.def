@@ -134,7 +134,7 @@ EXPORTS
   ;SBltGetSCode                  @312 NONAME
   SBltROP3                      @313 NONAME
   SBltROP3Clipped               @314 NONAME
-  ;SBltROP3Tiled                 @315 NONAME
+  SBltROP3Tiled                 @315 NONAME
 
   SBmpDecodeImage               @321 NONAME
 
