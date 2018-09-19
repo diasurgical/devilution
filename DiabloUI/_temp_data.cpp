@@ -16,7 +16,10 @@ int fade_cpp_float_value = 2139095040; // weak
 int focus_cpp_float_value = 2139095040; // weak
 int local_cpp_float_value = 2139095040; // weak
 int mainmenu_cpp_float_value = 2139095040; // weak
+int Sbar_cpp_float_value = 2139095040; // weak
+int Sbar_cpp_float_value2 = 2139095040; // weak
 int SelHero_cpp_float_value = 2139095040; // weak
+int SelList_cpp_float_value = 2139095040; // weak
 int SelYesNo_cpp_float_value = 2139095040; // weak
 int Title_cpp_float_value = 2139095040; // weak
 int titlesnd_cpp_float_value = 2139095040; // weak
@@ -75,10 +78,10 @@ int dword_100230FC[2] = { 1097, 0 };
 int dword_10023104[2] = { 1098, 0 };
 int dword_1002310C[3] = { 1056, 1054, 0 };
 int dword_10023118[7] = { 1088, 1089, 1090, 1091, 1092, 1093, 0 };
-int dword_10023174[2] = { 1038, 0 };
-int dword_1002317C[3] = { 1056, 1054, 0 };
-int dword_10023188[2] = { 1006, 0 };
-int dword_10023190[7] = { 1047, 1048, 1049, 1050, 1051, 1052, 0 };
+int sellist_msgtbl1[2] = { 1038, 0 };
+int sellist_msgtbl2[3] = { 1056, 1054, 0 };
+int sellist_msgtbl3[2] = { 1006, 0 };
+int sellist_msgtbl4[7] = { 1047, 1048, 1049, 1050, 1051, 1052, 0 };
 int dword_100231AC[2] = { 1038, 0 };
 int dword_100231B4[3] = { 1056, 1054, 0 };
 int dword_100231C0[3] = { 1106, 1107, 0 };
@@ -279,8 +282,8 @@ BYTE *dword_1002A31C; // idb
 BYTE *dword_1002A320; // idb
 BYTE *dword_1002A324; // idb
 void *dword_1002A328; // idb
-int dword_1002A338; // weak
-int dword_1002A344; // weak
+int Sbar_cpp_float; // weak
+int Sbar_cpp_float2; // weak
 int dword_1002A348; // weak
 int dword_1002A34C; // idb
 int dword_1002A350; // weak
@@ -329,8 +332,8 @@ int dword_1002A4B0; // weak
 int dword_1002A4B4; // weak
 int dword_1002A4B8; // idb
 int dword_1002A4BC; // weak
-int dword_1002A4C0; // weak
-int dword_1002A4C4; // weak
+int SelList_cpp_float; // weak
+_uiheroinfo *sellist_pheroinfo;
 int dword_1002A4C8; // weak
 int dword_1002A4CC; // weak
 int dword_1002A4D0; // weak

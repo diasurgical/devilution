@@ -729,7 +729,7 @@ void __fastcall SelHero_SelectHeroRegion(HWND hWnd)
 	v2->next = 0;
 	LoadStringA(ghUiInst, 0x1Eu, v2->name, 15);
 	v2->level = 0;
-	sgpHeroInfo = (_uiheroinfo *)SelRegn_1000EF56((int)sgpHeroInfo, (unsigned int *)v2);
+	sgpHeroInfo = SelRegn_SetNextHero(sgpHeroInfo, v2);
 	v3 = sgpHeroInfo;
 	selhero_numheroesleft = 1;
 	if ( !selhero_fninfo(SelHero_GetHeroInfo) )
@@ -753,7 +753,7 @@ BOOL __stdcall SelHero_GetHeroInfo(_uiheroinfo *pInfo)
 	v1 = SelHero_AllocHeroInfo();
 	memcpy(v1, pInfo, 0x2Cu);
 	v1->next = 0;
-	v2 = (_uiheroinfo *)SelRegn_1000EF56((int)sgpHeroInfo, (unsigned int *)v1);
+	v2 = SelRegn_SetNextHero(sgpHeroInfo, v1);
 	++selhero_numheroesleft;
 	sgpHeroInfo = v2;
 	return 1;
