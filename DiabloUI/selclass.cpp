@@ -1,5 +1,5 @@
 // ref: 0x10009D66
-int __stdcall SelClass_10009D66(HWND hDlg, UINT Msg, WPARAM wParam, LPARAM lParam) { return 0; }
+LRESULT __stdcall SelClass_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) { return 0; }
 /* {
 	HWND v4; // eax
 	LONG v5; // edx
