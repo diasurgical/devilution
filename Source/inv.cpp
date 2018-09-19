@@ -1980,7 +1980,7 @@ void __fastcall CheckQuestItem(int pnum)
 	v2 = plr[v1].HoldItem.IDidx;
 	if ( v2 == IDI_OPTAMULET )
 		quests[8]._qactive = 3;
-	if ( v2 == IDI_MUSHROOM && quests[1]._qactive == 2 && quests[1]._qvar1 == 3 )
+	if ( v2 == IDI_MUSHROOM && quests[QTYPE_BLKM]._qactive == 2 && quests[QTYPE_BLKM]._qvar1 == QS_MUSHSPAWNED )
 	{
 		v3 = plr[v1]._pClass;
 		sfxdelay = IDI_OPTAMULET;
@@ -1999,7 +1999,7 @@ void __fastcall CheckQuestItem(int pnum)
 		{
 			sfxdnum = PS_WARR95;
 		}
-		quests[1]._qvar1 = 4;
+		quests[QTYPE_BLKM]._qvar1 = QS_MUSHPICKED;
 	}
 	if ( v2 == IDI_ANVIL )
 	{

@@ -1496,7 +1496,7 @@ void __cdecl InitObjects()
 		GetRndSeed();
 		if ( currlevel == 9 && gbMaxPlayers == 1 )
 			AddSlainHero();
-		if ( currlevel == quests[1]._qlevel && quests[1]._qactive == 1 )
+		if ( currlevel == quests[QTYPE_BLKM]._qlevel && quests[QTYPE_BLKM]._qactive == 1 )
 			AddMushPatch();
 		if ( currlevel == 4 )
 			AddStoryBooks();
@@ -4350,7 +4350,7 @@ void __fastcall OperateMushPatch(int pnum, int i)
 	int xx; // [esp+8h] [ebp-8h]
 	int yy; // [esp+Ch] [ebp-4h]
 
-	if ( quests[1]._qactive != 2 || quests[1]._qvar1 < 2u )
+	if ( quests[QTYPE_BLKM]._qactive != 2 || quests[QTYPE_BLKM]._qvar1 < QS_TOMEGIVEN )
 	{
 		if ( !deltaload && pnum == myplr )
 		{
@@ -4388,8 +4388,8 @@ void __fastcall OperateMushPatch(int pnum, int i)
 			if ( v3 )
 			{
 				GetSuperItemLoc(object[v2]._ox, object[v2]._oy, &xx, &yy);
-				SpawnQuestItem(17, xx, yy, 0, 0);
-				quests[1]._qvar1 = 3;
+				SpawnQuestItem(IDI_MUSHROOM, xx, yy, 0, 0);
+				quests[QTYPE_BLKM]._qvar1 = QS_MUSHSPAWNED;
 			}
 		}
 	}

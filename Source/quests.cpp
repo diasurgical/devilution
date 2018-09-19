@@ -18,22 +18,22 @@ int ReturnLvl; // idb
 
 QuestData questlist[MAXQUESTS] =
 {
-  { 5, -1, DTYPE_NONE, 0, 100, 0, 0, QUEST_INFRA5, "The Magic Rock" },
-  { 9, -1, DTYPE_NONE, 1, 100, 0, 0, QUEST_MUSH8, "Black Mushroom" },
-  { 4, -1, DTYPE_NONE, 2, 100, 0, 0, QUEST_GARBUD1, "Gharbad The Weak" },
-  { 8, -1, DTYPE_NONE, 3, 100, 0, 0, QUEST_ZHAR1, "Zhar the Mad" },
-  { 14, -1, DTYPE_NONE, 4, 100, 0, 0, QUEST_VEIL9, "Lachdanan" },
-  { 15, -1, DTYPE_NONE, 5, 100, 0, 1, QUEST_VILE3, "Diablo" },
-  { 2, 2, DTYPE_NONE, 6, 100, 0, 1, QUEST_BUTCH9, "The Butcher" },
-  { 4, -1, DTYPE_NONE, 7, 100, 0, 0, QUEST_BANNER2, "Ogden's Sign" },
-  { 7, -1, DTYPE_NONE, 8, 100, 0, 0, QUEST_BLINDING, "Halls of the Blind" },
-  { 5, -1, DTYPE_NONE, 9, 100, 0, 0, QUEST_BLOODY, "Valor" },
-  { 10, -1, DTYPE_NONE, 10, 100, 0, 0, QUEST_ANVIL5, "Anvil of Fury" },
-  { 13, -1, DTYPE_NONE, 11, 100, 0, 0, QUEST_BLOODWAR, "Warlord of Blood" },
-  { 3, 3, DTYPE_CATHEDRAL, 12, 100, 1, 1, QUEST_KING2, "The Curse of King Leoric" },
-  { 2, -1, DTYPE_CAVES, 13, 100, 4, 0, QUEST_POISON3, "Poisoned Water Supply" },
-  { 6, -1, DTYPE_CATACOMBS, 14, 100, 2, 0, QUEST_BONER, "The Chamber of Bone" },
-  { 15, 15, DTYPE_CATHEDRAL, 15, 100, 5, 1, QUEST_VILE1, "Archbishop Lazarus" }
+  { 5, -1, DTYPE_NONE, QTYPE_INFRA, 100, 0, 0, QUEST_INFRA5, "The Magic Rock" },
+  { 9, -1, DTYPE_NONE, QTYPE_BLKM, 100, 0, 0, QUEST_MUSH8, "Black Mushroom" },
+  { 4, -1, DTYPE_NONE, QTYPE_GARB, 100, 0, 0, QUEST_GARBUD1, "Gharbad The Weak" },
+  { 8, -1, DTYPE_NONE, QTYPE_ZHAR, 100, 0, 0, QUEST_ZHAR1, "Zhar the Mad" },
+  { 14, -1, DTYPE_NONE, QTYPE_VEIL, 100, 0, 0, QUEST_VEIL9, "Lachdanan" },
+  { 15, -1, DTYPE_NONE, QTYPE_MOD, 100, 0, 1, QUEST_VILE3, "Diablo" },
+  { 2, 2, DTYPE_NONE, QTYPE_BUTCH, 100, 0, 1, QUEST_BUTCH9, "The Butcher" },
+  { 4, -1, DTYPE_NONE, QTYPE_BOL, 100, 0, 0, QUEST_BANNER2, "Ogden's Sign" },
+  { 7, -1, DTYPE_NONE, QTYPE_BLIND, 100, 0, 0, QUEST_BLINDING, "Halls of the Blind" },
+  { 5, -1, DTYPE_NONE, QTYPE_BLOOD, 100, 0, 0, QUEST_BLOODY, "Valor" },
+  { 10, -1, DTYPE_NONE, QTYPE_ANVIL, 100, 0, 0, QUEST_ANVIL5, "Anvil of Fury" },
+  { 13, -1, DTYPE_NONE, QTYPE_WARLRD, 100, 0, 0, QUEST_BLOODWAR, "Warlord of Blood" },
+  { 3, 3, DTYPE_CATHEDRAL, QTYPE_KING, 100, 1, 1, QUEST_KING2, "The Curse of King Leoric" },
+  { 2, -1, DTYPE_CAVES, QTYPE_PW, 100, 4, 0, QUEST_POISON3, "Poisoned Water Supply" },
+  { 6, -1, DTYPE_CATACOMBS, QTYPE_BONE, 100, 2, 0, QUEST_BONER, "The Chamber of Bone" },
+  { 15, 15, DTYPE_CATHEDRAL, QTYPE_VB, 100, 5, 1, QUEST_VILE1, "Archbishop Lazarus" }
 };
 char questxoff[7] = { 0, -1, 0, -1, -2, -1, -2 };
 char questyoff[7] = { 0, 0, -1, -1, -1, -2, -2 };
@@ -1044,27 +1044,27 @@ void __cdecl ResyncQuests()
 			TransVal = v6;
 		}
 	}
-	if ( currlevel == quests[1]._qlevel )
+	if ( currlevel == quests[QTYPE_BLKM]._qlevel )
 	{
-		if ( quests[1]._qactive == 1 )
+		if ( quests[QTYPE_BLKM]._qactive == 1 )
 		{
-			if ( !quests[1]._qvar1 )
+			if ( !quests[QTYPE_BLKM]._qvar1 )
 			{
-				SpawnQuestItem(19, 0, 0, 5, 1);
-				quests[1]._qvar1 = 1;
+				SpawnQuestItem(IDI_FUNGALTM, 0, 0, 5, 1);
+				quests[QTYPE_BLKM]._qvar1 = QS_TOMESPAWNED;
 			}
 		}
-		else if ( quests[1]._qactive == 2 )
+		else if ( quests[QTYPE_BLKM]._qactive == 2 )
 		{
-			if ( quests[1]._qvar1 < 5u )
+			if ( quests[QTYPE_BLKM]._qvar1 < QS_MUSHGIVEN )
 			{
-				if ( quests[1]._qvar1 >= 7u )
-					Qtalklist[1]._qblkm = -1;
+				if ( quests[QTYPE_BLKM]._qvar1 >= QS_BRAINGIVEN )
+					Qtalklist[TOWN_HEALER]._qblkm = -1;
 			}
 			else
 			{
-				Qtalklist[6]._qblkm = -1;
-				Qtalklist[1]._qblkm = 123;
+				Qtalklist[TOWN_WITCH]._qblkm = -1;
+				Qtalklist[TOWN_HEALER]._qblkm = QUEST_MUSH3;
 			}
 		}
 	}

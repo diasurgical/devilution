@@ -1158,14 +1158,14 @@ LABEL_53:
 	{
 		if ( v2 == GetActiveTowner(TOWN_WITCH) )
 		{
-			if ( quests[1]._qactive == 1 )
+			if ( quests[QTYPE_BLKM]._qactive == 1 )
 			{
 				if ( PlrHasItem(v3, IDI_FUNGALTM, &inv_item_num) )
 				{
 					RemoveInvItem(v3, inv_item_num);
-					quests[1]._qactive = 2;
-					quests[1]._qlog = 1;
-					quests[1]._qvar1 = 2;
+					quests[QTYPE_BLKM]._qactive = 2;
+					quests[QTYPE_BLKM]._qlog = 1;
+					quests[QTYPE_BLKM]._qvar1 = QS_TOMEGIVEN;
 					v17 = QUEST_MUSH8;
 LABEL_105:
 					towner[v7]._tVar1 = v3;
@@ -1175,25 +1175,25 @@ LABEL_105:
 					goto LABEL_106;
 				}
 			}
-			else if ( quests[1]._qactive == 2 )
+			else if ( quests[QTYPE_BLKM]._qactive == 2 )
 			{
-				if ( quests[1]._qvar1 >= 2u && quests[1]._qvar1 <= 4u )
+				if ( quests[QTYPE_BLKM]._qvar1 >= QS_TOMEGIVEN && quests[QTYPE_BLKM]._qvar1 <= QS_MUSHPICKED )
 				{
 					if ( PlrHasItem(v3, IDI_MUSHROOM, &inv_item_num) )
 					{
 						RemoveInvItem(v3, inv_item_num);
-						Qtalklist[6]._qblkm = -1;
-						quests[1]._qvar1 = 5;
-						Qtalklist[1]._qblkm = 123;
+						Qtalklist[TOWN_WITCH]._qblkm = -1;
+						quests[QTYPE_BLKM]._qvar1 = QS_MUSHGIVEN;
+						Qtalklist[TOWN_HEALER]._qblkm = QUEST_MUSH3;
 						v17 = QUEST_MUSH10;
 					}
 					else
 					{
 						v17 = QUEST_MUSH9;
-						if ( quests[1]._qmsg == QUEST_MUSH9 )
+						if ( quests[QTYPE_BLKM]._qmsg == QUEST_MUSH9 )
 							goto LABEL_106;
 					}
-					quests[1]._qmsg = v17;
+					quests[QTYPE_BLKM]._qmsg = v17;
 					goto LABEL_105;
 				}
 				Item = PlrHasItem(v3, IDI_SPECELIX, &inv_item_num);
@@ -1202,16 +1202,16 @@ LABEL_105:
 					towner[v7]._tbtcnt = 150;
 					towner[v7]._tVar1 = v3;
 					InitQTextMsg(QUEST_MUSH12);
-					quests[1]._qactive = 3;
+					quests[QTYPE_BLKM]._qactive = 3;
 					towner[v7]._tMsgSaid = 1;
 					AllItemsList[Item->IDidx].iUsable = 1;
 				}
 				else if ( PlrHasItem(v3, IDI_BRAIN, &inv_item_num) )
 				{
 					v17 = QUEST_MUSH11;
-					if ( quests[1]._qvar2 != QUEST_MUSH11 )
+					if ( quests[QTYPE_BLKM]._qvar2 != QUEST_MUSH11 )
 					{
-						quests[1]._qvar2 = QUEST_MUSH11;
+						quests[QTYPE_BLKM]._qvar2 = QUEST_MUSH11;
 						goto LABEL_105;
 					}
 				}
@@ -1284,13 +1284,13 @@ LABEL_126:
 				}
 			}
 LABEL_127:
-			if ( quests[1]._qactive == 2 && quests[1]._qmsg == QUEST_MUSH10 && PlrHasItem(v3, IDI_BRAIN, &inv_item_num) )
+			if ( quests[QTYPE_BLKM]._qactive == 2 && quests[QTYPE_BLKM]._qmsg == QUEST_MUSH10 && PlrHasItem(v3, IDI_BRAIN, &inv_item_num) )
 			{
 				RemoveInvItem(v3, inv_item_num);
 				SpawnQuestItem(IDI_SPECELIX, towner[v7]._tx, towner[v7]._ty + 1, 0, 0);
 				InitQTextMsg(QUEST_MUSH4);
-				Qtalklist[1]._qblkm = -1;
-				quests[1]._qvar1 = 7;
+				Qtalklist[TOWN_HEALER]._qblkm = -1;
+				quests[QTYPE_BLKM]._qvar1 = QS_BRAINGIVEN;
 			}
 LABEL_131:
 			if ( !qtextflag )
