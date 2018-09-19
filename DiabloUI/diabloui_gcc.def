@@ -2,7 +2,7 @@ LIBRARY "DiabloUI"
 
 EXPORTS
 	UiValidPlayerName              @1
-	UiValidPlayerName@4            @1
+	@UiValidPlayerName@4           @1
 	UiAppActivate                  @2
 	UiAppActivate@4                @2
 	UiArtCallback                  @3

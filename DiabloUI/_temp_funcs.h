@@ -225,7 +225,7 @@ int __fastcall EntDial_10006F16(HWND hDlg, int, int); // idb
 signed int EntDial_10006F71();
 
 
-int __stdcall EntName_10006F7C(HWND hDlg, UINT Msg, WPARAM wParam, LPARAM lParam); // idb
+LRESULT __stdcall EntName_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam); // idb
 HWND UNKCALL EntName_1000709E(HWND hDlg);
 int UNKCALL EntName_100070DB(HWND hWnd); // idb
 int __fastcall EntName_100071AC(HWND hDlg, int a2);
@@ -367,7 +367,7 @@ signed int Sbar_10009CC7();
 HWND __fastcall Sbar_10009CD2(HWND hDlg, int nIDDlgItem);
 
 
-int __stdcall SelClass_10009D66(HWND hDlg, UINT Msg, WPARAM wParam, LPARAM lParam); // idb
+LRESULT __stdcall SelClass_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam); // idb
 HWND UNKCALL SelClass_10009EC0(HWND hDlg);
 int UNKCALL SelClass_10009EFD(HWND hWnd); // idb
 int __fastcall SelClass_10009FA2(HWND hWnd, int a2);
@@ -429,40 +429,41 @@ int SelGame_1000B67E();
 signed int SelGame_1000B795();
 
 
-int SelHero_1000B7A0();
-int SelHero_1000B7A6();
-void UNKCALL SelHero_1000B7AC(void *arg);
-char *SelHero_1000B7B3();
-void *SelHero_1000B7B9();
-int SelHero_1000B7CA();
-int __fastcall SelHero_1000B7D0(int a1, int a2);
-signed int SelHero_1000B7DE();
-BOOL __fastcall SelHero_1000B899(HWND hDlg, int a2);
-int __fastcall SelHero_1000B905(HWND hDlg, int a2);
-HWND __fastcall SelHero_1000BA7B(HWND hDlg, const char *a2);
-char *UNKCALL SelHero_1000BAB4(char *arg);
-char __fastcall SelHero_1000BB26(char *a1);
-int __fastcall SelHero_1000BB34(char *, char *); // idb
-//int UNKCALL UiValidPlayerName(char *); // idb
-//int __stdcall UiSelHeroMultDialog(int, int, int, int, int, int, char *); // idb
-int __stdcall SelHero_1000BC46(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam); // idb
-BOOL UNKCALL SelHero_1000BDAD(HWND arg);
-int *__fastcall SelHero_1000BEDB(int *a1, char *a2);
-BOOL UNKCALL SelHero_1000BF33(void *location);
-const char *__fastcall SelHero_1000BF4A(const char *a1, const char *a2);
-int UNKCALL SelHero_1000BF6D(HWND hWnd); // idb
-int UNKCALL SelHero_1000BFF9(HWND hWnd); // idb
-int UNKCALL SelHero_1000C09B(HWND hWnd); // idb
-signed int __fastcall SelHero_1000C0F9(int a1, char *a2);
-BOOL UNKCALL SelHero_1000C21A(HWND hWnd);
-int UNKCALL SelHero_1000C269(HWND hWnd); // idb
-void UNKCALL SelHero_1000C364(HWND hDlg);
-BOOL __fastcall SelHero_1000C3CE(_DWORD *a1);
-int __fastcall SelHero_1000C3E2(int a1, int a2);
-int UNKCALL SelHero_1000C3FF(HWND hWnd); // idb
-BOOL UNKCALL SelHero_1000C49F(HWND hWnd, void *a2);
-signed int __stdcall SelHero_1000C541(void *a1);
-//int __stdcall UiSelHeroSingDialog(int, int, int, int, int, char *, int); // idb
+_uiheroinfo *__cdecl SelHero_GetCurrentHeroInfo();
+int __cdecl SelHero_GetNumHeroesLeft();
+void __fastcall SelHero_SetHeroDifficulty(int diff);
+char *__cdecl SelHero_GetHeroNameStr();
+_uiheroinfo *__cdecl SelHero_AllocHeroInfo();
+int __cdecl SelHero_GetHeroIsGood();
+int __fastcall SelHero_SetClassStats(int heroclass, _uidefaultstats *pStats);
+void __cdecl j_SelHero_cpp_init();
+void __cdecl SelHero_cpp_init();
+void __fastcall SelHero_SetStaticBMP(HWND hWnd, int adjust_size);
+void __fastcall SelHero_PrintHeroInfo(HWND hWnd, _uiheroinfo *pInfo);
+void __fastcall SelHero_SetStringWithMsg(HWND hWnd, const char *str);
+BOOL __fastcall SelHero_IsNameReserved(char *name);
+void __fastcall SelHero_SetLastNamePos(char *name);
+BOOL __fastcall SelHero_NameHasChar(char *name, char *illegalchrs);
+BOOL __fastcall UiValidPlayerName(char *name);
+BOOL __stdcall UiSelHeroMultDialog(BOOL (__stdcall *fninfo)(BOOL (__stdcall *fninfofunc)(_uiheroinfo *)), BOOL (__stdcall *fncreate)(_uiheroinfo *), BOOL (__stdcall *fnremove)(_uiheroinfo *), BOOL (__stdcall *fnstats)(int, _uidefaultstats *), int *dlgresult, int *a6, char *name);
+LRESULT __stdcall SelHero_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+void __fastcall SelHero_DoStuffWithStrings(HWND hWnd);
+_uiheroinfo *__fastcall SelHero_GetNextHeroFromStr(_uiheroinfo *pInfo, char *name);
+void __fastcall SelHero_FreeSomeMemory(void *ptr);
+_uiheroinfo *__fastcall SelHero_GetHeroSlotFromName(_uiheroinfo *pInfo, const char *name);
+void __fastcall SelHero_DoHeroSelList(HWND hWnd);
+void __fastcall SelHero_DoHeroSelClass(HWND hWnd);
+void __fastcall SelHero_DoEnterName(HWND hWnd);
+BOOL __fastcall SelHero_CreateHero(HWND hWnd, char *name);
+void __fastcall SelHero_DoSelLoad(HWND hWnd);
+void __fastcall SelHero_DoSelDiff(HWND hWnd);
+void __fastcall SelHero_DeleteAndFree(HWND hWnd);
+void __fastcall SelHero_FreeAllHeroes(_uiheroinfo *pInfo);
+void __fastcall SelHero_DoHeroEndFade(HWND hWnd, int a2);
+void __fastcall SelHero_LoadHeroGFX(HWND hWnd);
+void __fastcall SelHero_SelectHeroRegion(HWND hWnd);
+BOOL __stdcall SelHero_GetHeroInfo(_uiheroinfo *pInfo);
+BOOL __stdcall UiSelHeroSingDialog(BOOL (__stdcall *fninfo)(BOOL (__stdcall *fninfofunc)(_uiheroinfo *)), BOOL (__stdcall *fncreate)(_uiheroinfo *), BOOL (__stdcall *fnremove)(_uiheroinfo *), BOOL (__stdcall *fnstats)(int, _uidefaultstats *), int *dlgresult, char *name, int *difficulty);
 
 
 void *SelIPX_1000C610();
@@ -503,7 +504,7 @@ HWND __fastcall SelIPX_1000D696(HWND hDlg, int a2, int height);
 
 
 signed int SelList_1000D769();
-int __stdcall SelList_1000D774(HWND hDlg, UINT Msg, WPARAM wParam, LPARAM lParam); // idb
+LRESULT __stdcall SelList_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam); // idb
 HWND UNKCALL SelList_1000D916(HWND hDlg);
 HWND __fastcall SelList_1000D964(HWND hDlg, int nIDDlgItem);
 HWND UNKCALL SelList_1000D9CF(HWND hDlg);
@@ -524,7 +525,7 @@ HWND UNKCALL SelList_1000E043(HWND hWnd);
 int __fastcall SelList_1000E0CA(HWND hWnd, int, int); // idb
 
 
-int __stdcall SelLoad_1000E1C2(HWND hDlg, UINT Msg, WPARAM wParam, LPARAM lParam); // idb
+LRESULT __stdcall SelLoad_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam); // idb
 HWND UNKCALL SelLoad_1000E30E(HWND hDlg);
 int UNKCALL SelLoad_1000E34B(HWND hWnd); // idb
 int __fastcall SelLoad_1000E3E2(int a1, LONG a2);
@@ -590,14 +591,15 @@ HWND __fastcall SelRegn_1000F929(HWND hWnd, int a2, int height);
 //signed int __stdcall UiSelectRegion(_DWORD *a1);
 
 
-int __fastcall SelYesNo_1000FA49(int a1, const CHAR *a2, int a3, int a4);
-int __stdcall SelYesNo_1000FA87(HWND hDlg, UINT Msg, WPARAM wParam, LPARAM lParam); // idb
-HWND UNKCALL SelYesNo_1000FBC7(HWND hDlg);
-void UNKCALL SelYesNo_1000FC1C(HWND hWnd);
-int __fastcall SelYesNo_1000FCF6(int a1, LONG a2);
-int __fastcall SelYesNo_1000FD39(int a1, const CHAR *a2, int a3, int a4);
-int __fastcall SelYesNo_1000FD77(int a1, UINT a2, int a3);
-signed int SelYesNo_1000FDE3();
+int __fastcall SelYesNo_YesNoDialog(HWND hWnd, char *dialogstr, char *hero, int nofocus); /* void */
+LRESULT __stdcall SelYesNo_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+void __fastcall SelYesNo_RemoveYNDialog(HWND hWnd);
+void __fastcall SelYesNo_LoadSelYN_GFX(HWND hWnd);
+void __fastcall SelYesNo_DoSelectYesNo(HWND hWnd, int option);
+int __fastcall SelYesNo_SelOkDialog(HWND hWnd, char *dialogstr, char *hero, int nofocus); /* void */
+int __fastcall SelYesNo_SpawnErrDialog(HWND hWnd, int string_rsrc, int is_popup); /* void */
+void __cdecl j_SelYesNo_cpp_init();
+void __cdecl SelYesNo_cpp_init();
 
 
 void __fastcall Title_BlitTitleBuffer(HWND hWnd);
