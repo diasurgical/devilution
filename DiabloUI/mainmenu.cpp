@@ -167,14 +167,14 @@ void __fastcall MainMenu_DoOptions(HWND hWnd, int option, int PlaySelect)
 	SDlgKillTimer((int)hWnd, 3);
 	if ( DiabloUI_GetSpawned() && option == 3 )
 	{
-		SelYesNo_1000FD77((int)hWnd, 0x46u, 1);
+		SelYesNo_SpawnErrDialog(hWnd, 70, 1);
 LABEL_7:
 		SDlgSetTimer((int)hWnd, 3, 1000 * menu_item_timer, 0);
 		return;
 	}
 	if ( option == 2 && !MainMenu_CheckEnoughMemory() )
 	{
-		SelYesNo_1000FD77((int)hWnd, 0x4Eu, 1);
+		SelYesNo_SpawnErrDialog(hWnd, 78, 1);
 		goto LABEL_7;
 	}
 	Fade_Range5SetZero();
