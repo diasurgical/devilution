@@ -3,9 +3,9 @@ LIBRARY      "Storm"
 EXPORTS
   SNetCreateGame                @101 NONAME
   SNetDestroy                   @102 NONAME
-  SNetEnumProviders             @103 NONAME
-  ;SNetEnumDevices               @104 NONAME
-  SNetEnumGames                 @105 NONAME
+  ;SNetEnumDevices               @103 NONAME
+  ;SNetEnumGames                 @104 NONAME
+  ;SNetEnumProviders             @105 NONAME
   SNetDropPlayer                @106 NONAME
   SNetGetGameInfo               @107 NONAME
   ;SNetGetNetworkLatency         @108 NONAME
