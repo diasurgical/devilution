@@ -492,14 +492,12 @@ void __cdecl local_LoadArtCursor()
 		gpCursorArt2 = (BYTE *)SMemAlloc(dwHeight * dwWidth, "C:\\Src\\Diablo\\DiabloUI\\local.cpp", 554, 0);
 		if ( SBmpLoadImage("ui_art\\cursor.pcx", 0, gpCursorArt, dwHeight * dwWidth, 0, 0, 0) )
 		{
-			gdwCursWidth = dwWidth;
-			gdwCursHeight = dwHeight;
+			gdwCursData[0] = dwWidth;
+			gdwCursData[1] = dwHeight;
 			local_InitArtCursor();
 		}
 	}
 }
-// 10029CC0: using guessed type int gdwCursWidth;
-// 10029CC4: using guessed type int gdwCursHeight;
 
 // ref: 0x10008062
 void __cdecl local_InitArtCursor()
@@ -515,7 +513,7 @@ void __cdecl local_InitArtCursor()
 	{
 		if ( gpCursorArt )
 		{
-			for ( i = 0; i < gdwCursWidth * gdwCursHeight; ++i )
+			for ( i = 0; i < gdwCursData[0] * gdwCursData[1]; ++i )
 			{
 				v3 = *v1++;
 				if ( v3 )
@@ -527,8 +525,6 @@ void __cdecl local_InitArtCursor()
 		}
 	}
 }
-// 10029CC0: using guessed type int gdwCursWidth;
-// 10029CC4: using guessed type int gdwCursHeight;
 
 // ref: 0x100080AD
 void __cdecl local_FreeArtCursor()
@@ -550,10 +546,9 @@ void __cdecl local_SetCursorArt()
 {
 	if ( !gpCursorArt )
 		local_LoadArtCursor();
-	SDlgSetSystemCursor(gpCursorArt2, gpCursorArt, &gdwCursWidth, 32512);
+	SDlgSetSystemCursor(gpCursorArt2, gpCursorArt, (int *)gdwCursData, 32512);
 }
 // 1001044E: using guessed type int __stdcall SDlgSetSystemCursor(_DWORD, _DWORD, _DWORD, _DWORD);
-// 10029CC0: using guessed type int gdwCursWidth;
 
 // ref: 0x1000811B
 void __cdecl local_SetCursorDefault()
