@@ -71,65 +71,70 @@ char *__stdcall BNetGW_10002DEB(char *a1, unsigned int a2);
 char *__stdcall BNetGW_10002E0B(char *a1, unsigned int a2);
 
 
-void *Connect_10002E2B();
-signed int Connect_10002EC4();
-//BOOL __stdcall UiArtCallback(int a1, unsigned int a2, PALETTEENTRY *pPalette, void *pBuffer, DWORD dwBuffersize, DWORD *pdwWidth, DWORD *dwHeight, DWORD *pdwBpp);
-signed int Connect_100033D1();
-//BOOL __stdcall UiGetDataCallback(int a1, int a2, void *a3, int a4, int a5);
-//int __stdcall UiSoundCallback(int a1, int a2, int a3);
-//int __stdcall UiAuthCallback(int, int, char *, char, char *, LPSTR lpBuffer, int cchBufferMax); // idb
-//int __stdcall UiDrawDescCallback(int, COLORREF color, LPCSTR lpString, char *, int, UINT align, time_t, int); // idb
-//signed int __stdcall UiCategoryCallback(int a1, int a2, int a3, int a4, int a5, _DWORD *a6, _DWORD *a7);
-int UNKCALL Connect_10003D04(char *); // idb
-int __fastcall Connect_10003DAF(char *a1, int a2, int a3, int a4);
-char *__fastcall Connect_10003E0C(int a1, const char *a2, char *a3, char *a4, int a5);
-signed int __fastcall Connect_10003E61(const char *a1, _BYTE *a2);
-int __fastcall Connect_10003F6F(int a1, int a2, size_t a3);
-//int __stdcall UiCreateGameCriteria(int, char *); // idb
-//signed int __stdcall UiCreatePlayerDescription(int a1, int a2, int a3);
-//int __stdcall UiSetupPlayerInfo(int a1, int a2, int a3);
-int __fastcall Connect_10004028(int a1, int a2, int a3, int a4);
+void __cdecl Connect_FreeConnectData();
+BOOL __cdecl Connect_LoadGFXAndStuff();
+BOOL __stdcall UiArtCallback(int game_type, unsigned int art_code, PALETTEENTRY *pPalette, void *pBuffer, DWORD dwBuffersize, DWORD *pdwWidth, DWORD *pdwHeight, DWORD *pdwBpp);
+void __cdecl j_Connect_cpp_init();
+void __cdecl Connect_cpp_init();
+BOOL __stdcall UiGetDataCallback(int game_type, int data_code, void *a3, int a4, int a5);
+BOOL __stdcall UiSoundCallback(int a1, int type, int a3);
+BOOL __stdcall UiAuthCallback(int a1, char *a2, char *a3, char a4, char *a5, LPSTR lpBuffer, int cchBufferMax);
+BOOL __stdcall UiDrawDescCallback(int arg0, COLORREF color, LPCSTR lpString, char *a4, int a5, UINT align, time_t a7, HDC *a8);
+BOOL __stdcall UiCategoryCallback(int a1, int a2, int a3, int a4, int a5, _DWORD *a6, _DWORD *a7);
+int __fastcall Connect_GetRankFromLevel(char *str);
+BOOL __fastcall Connect_DiffFromString(char *str, _gamedata *gamedata, int a3, int a4);
+void __fastcall Connect_SetDiffString(_gamedata *gamedata, const char *str1, char *str2, char *str3, int size);
+BOOL __fastcall Connect_GetHeroInfoConc(const char *a1, _uiheroinfo *pInfo);
+void __fastcall Connect_MakeDescString(_uiheroinfo *a1, char *name, size_t size);
+void __stdcall UiCreateGameCriteria(_uiheroinfo *pInfo, char *str);
+BOOL __stdcall UiCreatePlayerDescription(_uiheroinfo *info, int mode, char *desc);
+void __stdcall UiSetupPlayerInfo(char *infostr, _uiheroinfo *pInfo, int type);
+void __fastcall Connect_CopyPlrDescStrings(char *str1, int size1, char *str2, int size2);
 
 
-//signed int __stdcall UiCopyProtError(int *a1);
-int __stdcall CopyProt_100040AF(int, UINT Msg, WPARAM wParam, LPARAM lParam); // idb
-HGLOBAL CopyProt_10004173();
-signed int __fastcall CopyProt_100041B5(HWND a1, const CHAR *edx0);
-int __fastcall CopyProt_1000430C(int a1, int a2);
-signed int CopyProt_10004329();
+BOOL __stdcall UiCopyProtError(int *pdwResult);
+LRESULT __stdcall CopyProt_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+void __cdecl CopyProt_FreeCopyResrcs();
+BOOL __fastcall CopyProt_LoadCopyStuff(HWND hWnd, int a2);
+void __fastcall CopyProt_EndCopyDlg(HWND hWnd, int a2);
+void __cdecl j_CopyProt_cpp_init();
+void __cdecl CopyProt_cpp_init();
 
 
-signed int cr8game_10004339();
-int UNKCALL cr8game_10004344(HWND arg);
-//int __stdcall UiCreateGameCallback(int a1, int a2, int a3, int a4, int a5, int a6);
-HGDIOBJ __stdcall cr8game_10004506(HWND hDlg, UINT Msg, WPARAM wParam, HWND hWnd);
-BYTE *cr8game_10004828();
-BOOL __fastcall cr8game_1000487F(HWND hWnd);
-void **UNKCALL cr8game_10004914(HWND hDlg);
-_DWORD *UNKCALL cr8game_1000497F(HWND arg);
-_DWORD *__fastcall cr8game_10004A34(HWND hWnd, int a2, int a3);
-LRESULT UNKCALL cr8game_10004A93(HWND hDlg);
-_DWORD *__fastcall cr8game_10004ABA(HWND hDlg, int a2);
-BOOL __fastcall cr8game_10004B02(HWND hWnd, int a2, int a3);
-int UNKCALL cr8game_10004B3F(char *); // idb
-HFONT UNKCALL cr8game_10004BA8(HWND hWnd);
+void __cdecl j_cr8game_cpp_init();
+void __cdecl cr8game_cpp_init();
+BOOL __fastcall cr8game_GetSnetCreaGame(HWND hWnd);
+BOOL __stdcall UiCreateGameCallback(int a1, int a2, int a3, int a4, int a5, int a6);
+LRESULT __stdcall cr8game_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+void __cdecl cr8game_FreeCreaStuff();
+BOOL __fastcall cr8game_LoadCreaGFX(HWND hWnd);
+void __fastcall cr8game_FreeMainMem(HWND hWnd);
+void __fastcall cr8game_AllocMainMem(HWND hWnd);
+void __fastcall cr8game_DoAROP3Blit(HWND hWnd, int frame, int size);
+void __fastcall cr8game_SendMessageF5(HWND hWnd);
+void __fastcall cr8game_BlitCr8Dialog(HWND hWnd, int a2);
+void __fastcall cr8game_SetWindowStr(HWND hWnd, int dlgitem, int a3);
+int __fastcall cr8game_CheckValidGameName(char *name);
+HFONT __fastcall cr8game_GetCr8Object(HWND hWnd);
 
 
-void UNKCALL CreaDung_10004C33(void *arg);
-signed int CreaDung_10004C3F();
-int __stdcall CreaDung_10004C4A(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam); // idb
-int __fastcall CreaDung_10004D75(HWND a1, int a2);
-void UNKCALL CreaDung_10004E2E(HWND hDlg);
-int UNKCALL CreaDung_10004E8B(HWND hWnd); // idb
-int __fastcall CreaDung_10004F40(int a1, int a2);
-HWND USERCALL CreaDung_10004F5D(HWND a1, int a2);
-HWND UNKCALL CreaDung_10005037(HWND arg);
-HWND USERPURGE CreaDung_1000517E(HWND hWnd, int a2, int a3, int height);
-int __fastcall CreaDung_100051D8(int a1, int a2, int a3, int a4, int a5, int a6, int a7, int a8);
+void __fastcall CreaDung_SetDelSpin(int a1);
+void __cdecl j_CreaDung_cpp_init();
+void __cdecl CreaDung_cpp_init();
+LRESULT __stdcall CreaDung_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+void __fastcall CreaDung_ParseDungProcs(HWND hWnd, int dlg);
+void __fastcall CreaDung_FreeDungProcs(HWND hWnd);
+void __fastcall CreaDung_LoadDungGFX(HWND hWnd);
+void __fastcall CreaDung_PlaySndAndKill(HWND hWnd, int a2);
+void __fastcall CreaDung_DoAllPlaySnd(HWND hWnd);
+void __fastcall CreaDung_DoSnetCreaGame(HWND hWnd);
+void __fastcall CreaDung_CheckDlgForSnd(HWND hWnd, int a2, int a3);
+BOOL __fastcall CreaDung_SelDungDiff(int a1, int a2, int a3, int a4, int a5, int a6, int a7, int a8);
 
 
-//signed int __stdcall UiGetDefaultStats(int a1, _WORD *a2);
-signed int CreaStat_10005287();
+BOOL __stdcall UiGetDefaultStats(int pclass, _uidefaultstats *pStats);
+void __cdecl j_CreaStat_cpp_init();
+void __cdecl CreaStat_cpp_init();
 
 
 void __cdecl j_credits_cpp_init();
@@ -337,14 +342,15 @@ void UNKCALL ModmStat_10008EBF(HWND hDlg);
 signed int ModmStat_10008F26();
 
 
-int __fastcall OkCancel_10008F31(HWND hWnd, const CHAR *a2);
-signed int OkCancel_10008FEC();
-HGDIOBJ __stdcall OkCancel_10008FF7(HWND a1, UINT Msg, WPARAM wParam, HWND hWnd);
-void **UNKCALL OkCancel_10009117(HWND hWnd);
-signed int __fastcall OkCancel_10009161(HWND a1, int a2);
-int __fastcall OkCancel_100092F5(int a1, int a2);
-int __fastcall OkCancel_1000930A(int a1, int a2, int a3);
-//LPCSTR __stdcall UiMessageBoxCallback(HWND hWnd, LPCSTR lpText, LPCSTR lpCaption, UINT uType);
+BOOL __fastcall OkCancel_DrawString(HWND hWnd, char *str);
+void __cdecl j_OkCancel_cpp_init();
+void __cdecl OkCancel_cpp_init();
+LRESULT __stdcall OkCancel_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+void __fastcall OkCancel_FreeDlgBmp(HWND hWnd);
+BOOL __fastcall OkCancel_LoadOkCancGFX(HWND hWnd, DWORD *lParam);
+void __fastcall OkCancel_PlaySndEndDlg(HWND hWnd, int a2);
+void __fastcall OkCancel_DoOkDialog(HWND hWnd, char *str, int a3);
+void __stdcall UiMessageBoxCallback(HWND hWnd, char *lpText, LPCSTR lpCaption, UINT uType);
 
 
 signed int Progress_10009480();
@@ -528,11 +534,12 @@ void __fastcall SelList_HeroDlgWithSnd2(HWND hWnd);
 void __fastcall SelList_ChooseDlgFromSize(HWND hWnd, int width, int height);
 
 
-LRESULT __stdcall SelLoad_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam); // idb
-HWND UNKCALL SelLoad_1000E30E(HWND hDlg);
-int UNKCALL SelLoad_1000E34B(HWND hWnd); // idb
-int __fastcall SelLoad_1000E3E2(int a1, LONG a2);
-signed int SelLoad_1000E41A();
+LRESULT __stdcall SelLoad_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+void __fastcall SelLoad_DeleteProcsAndSpin(HWND hWnd);
+void __fastcall SelLoad_LoadFocusAndMsg(HWND hWnd);
+void __fastcall SelLoad_SelectSndLoad(HWND hWnd, int a2);
+void __cdecl j_SelLoad_cpp_init();
+void __cdecl SelLoad_cpp_init();
 
 
 signed int SelModem_1000E42A();

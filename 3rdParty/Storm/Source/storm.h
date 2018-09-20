@@ -464,6 +464,7 @@ BOOL STORMAPI SDlgSetControlBitmaps(HWND parentwindow, int *id, int a3, char *bu
 BOOL STORMAPI SDlgSetSystemCursor(void *lpSrcBuffer, void *p_a2, LPSIZE lpSize, LPCSTR lpCursorName);
 */
 
+BOOL STORMAPI SDlgBltToWindowI(HWND hWnd, HRGN a2, char *a3, int a4, void *buffer, RECT *rct, SIZE *size, int a8, int a9, DWORD rop);
 BOOL STORMAPI SDlgBltToWindowE(HWND hWnd, HRGN a2, char *a3, int a4, void *buffer, RECT *rct, SIZE *size, int a8, int a9, DWORD rop);
 BOOL STORMAPI SDlgSetBitmapE(HWND hWnd, int a2, char *src, int mask1, int flags, int a6, int a7, int width, int a9, int mask2);
 
@@ -1128,7 +1129,7 @@ SStrHash(
       DWORD flags = 0,
       DWORD Seed  = 0);
 
-int   STORMAPI SStrNCat(char *dest, const char *src, DWORD max_length);
+int   STORMAPI SStrPack(char *dest, const char *src, DWORD max_length);
 
 /*  SStrLen @ 506
  *
