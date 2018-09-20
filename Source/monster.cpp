@@ -1046,7 +1046,7 @@ void __fastcall PlaceUniqueMonst(int uniqindex, int miniontype, int unpackfilesi
 			Monst->mtalkmsg = 0;
 		}
 
-		if ( Monst->_mAi != AI_LAZURUS || quests[15]._qvar1 <= 3 )
+		if ( Monst->_mAi != AI_LAZURUS || quests[QTYPE_VB]._qvar1 <= 3 )
 		{
 			if ( Monst->mtalkmsg )
 			{
@@ -1126,7 +1126,7 @@ void __cdecl PlaceQuestMonsters()
 			PlaceUniqueMonst(9, 0, 0);
 		}
 
-		if ( currlevel == quests[12]._qlevel && gbMaxPlayers != 1 )
+		if ( currlevel == quests[QTYPE_KING]._qlevel && gbMaxPlayers != 1 )
 		{
 			skeltype = 0;
 
@@ -1178,10 +1178,10 @@ void __cdecl PlaceQuestMonsters()
 		}
 		if ( QuestStatus(QTYPE_ZHAR) && zharlib == -1 )
 		{
-			quests[3]._qactive = 0;
+			quests[QTYPE_ZHAR]._qactive = 0;
 		}
 
-		if ( currlevel == quests[15]._qlevel && gbMaxPlayers != 1 )
+		if ( currlevel == quests[QTYPE_VB]._qlevel && gbMaxPlayers != 1 )
 		{
 			AddMonsterType(UniqMonst[4].mtype, 4);
 			AddMonsterType(UniqMonst[5].mtype, 4);
@@ -1520,30 +1520,30 @@ void __cdecl PlaceUniques()
 		v7 = v4 - 1;
 		if ( !v0 )
 		{
-			if ( quests[2]._qactive )
+			if ( quests[QTYPE_GARB]._qactive )
 				goto LABEL_23;
 			v3 = 0;
 		}
 		if ( v0 == 2 )
 		{
-			if ( quests[3]._qactive )
+			if ( quests[QTYPE_ZHAR]._qactive )
 				goto LABEL_23;
 			v3 = 0;
 		}
 		if ( v0 == 3 )
 		{
-			if ( quests[7]._qactive )
+			if ( quests[QTYPE_BOL]._qactive )
 				goto LABEL_23;
 			v3 = 0;
 		}
 		if ( v0 != 7 )
 		{
 		LABEL_20:
-			if ( v0 == 8 && !quests[11]._qactive )
+			if ( v0 == 8 && !quests[QTYPE_WARLRD]._qactive )
 				v3 = 0;
 			goto LABEL_23;
 		}
-		if ( !quests[4]._qactive )
+		if ( !quests[QTYPE_VEIL]._qactive )
 		{
 			v3 = 0;
 			goto LABEL_20;
@@ -2374,7 +2374,7 @@ void __fastcall M_DiabloDeath(int i, unsigned char sendmsg)
 	v2 = sendmsg;
 	v3 = i;
 	PlaySFX(USFX_DIABLOD);
-	quests[5]._qactive = 3;
+	quests[QTYPE_MOD]._qactive = 3;
 	if ( v2 )
 		NetSendCmdQuest(1u, 5u);
 	gbProcessPlayers = 0;
@@ -2518,8 +2518,8 @@ void __fastcall MonstStartKill(int i, int pnum, unsigned char sendmsg)
 	monster[v5]._mhitpoints = 0;
 	++monstkills[v7];
 	SetRndSeed(v6);
-	//_LOBYTE(v8) = QuestStatus(2);
-	if ( QuestStatus(2) && monster[v5].mName == UniqMonst[0].mName )
+	//_LOBYTE(v8) = QuestStatus(QTYPE_GARB);
+	if ( QuestStatus(QTYPE_GARB) && monster[v5].mName == UniqMonst[0].mName )
 	{
 		CreateTypeItem(monster[v5]._mx + 1, monster[v5]._my + 1, 1u, 4, 0, 1, 0);
 	}
@@ -3631,8 +3631,8 @@ int __fastcall M_DoTalk(int i)
 		{
 			v4 = monster[v2].mtalkmsg;
 			if ( v4 == QUEST_GARBUD1 )
-				quests[2]._qactive = 2;
-			quests[2]._qlog = 1;
+				quests[QTYPE_GARB]._qactive = 2;
+			quests[QTYPE_GARB]._qlog = 1;
 			if ( v4 == QUEST_GARBUD2 && !(monster[v2]._mFlags & 0x40) )
 			{
 				SpawnItem(v1, monster[v2]._mx + 1, monster[v2]._my + 1, 1u);
@@ -3645,8 +3645,8 @@ int __fastcall M_DoTalk(int i)
 		{
 			v5 = monster[v2]._my + 1;
 			v6 = monster[v2]._mx + 1;
-			quests[3]._qactive = 2;
-			quests[3]._qlog = 1;
+			quests[QTYPE_ZHAR]._qactive = 2;
+			quests[QTYPE_ZHAR]._qlog = 1;
 			CreateTypeItem(v6, v5, 0, 0, 24, 1, 0);
 			monster[v2]._mFlags |= 0x40u;
 		}
@@ -3659,12 +3659,12 @@ int __fastcall M_DoTalk(int i)
 				TransVal = 9;
 				DRLG_MRectTrans(setpc_x, setpc_y, (setpc_w >> 1) + setpc_x + 4, setpc_y + (setpc_h >> 1));
 				TransVal = v7;
-				quests[7]._qvar1 = 2;
-				if ( quests[7]._qactive == 1 )
-					quests[7]._qactive = 2;
+				quests[QTYPE_BOL]._qvar1 = 2;
+				if ( quests[QTYPE_BOL]._qactive == 1 )
+					quests[QTYPE_BOL]._qactive = 2;
 				monster[v2]._mFlags |= 0x40u;
 			}
-			if ( quests[7]._qvar1 < 2u )
+			if ( quests[QTYPE_BOL]._qvar1 < 2u )
 			{
 				sprintf(tempstr, "SS Talk = %i, Flags = %i", monster[v2].mtalkmsg, monster[v2]._mFlags);
 				TermMsg(tempstr);
@@ -3675,8 +3675,8 @@ int __fastcall M_DoTalk(int i)
 			v8 = monster[v2].mtalkmsg;
 			if ( v8 == QUEST_VEIL9 )
 			{
-				quests[4]._qactive = 2;
-				quests[4]._qlog = 1;
+				quests[QTYPE_VEIL]._qactive = 2;
+				quests[QTYPE_VEIL]._qlog = 1;
 			}
 			if ( v8 == QUEST_VEIL11 && !(monster[v2]._mFlags & 0x40) )
 			{
@@ -3686,12 +3686,12 @@ int __fastcall M_DoTalk(int i)
 		}
 		v9 = monster[v2].mName;
 		if ( v9 == UniqMonst[8].mName )
-			quests[11]._qvar1 = 2;
+			quests[QTYPE_WARLRD]._qvar1 = 2;
 		if ( v9 == UniqMonst[4].mName && gbMaxPlayers != 1 )
 		{
 			monster[v2]._msquelch = -1;
 			monster[v2].mtalkmsg = 0;
-			quests[15]._qvar1 = 6;
+			quests[QTYPE_VB]._qvar1 = 6;
 			_LOBYTE(monster[v2]._mgoal) = 1;
 		}
 	}
@@ -6947,7 +6947,7 @@ void __fastcall MAI_SnotSpil(int i)
 			monster[v2].mtalkmsg = QUEST_BANNER11;
 			_LOBYTE(monster[v2]._mgoal) = 6;
 		}
-		if ( monster[v2].mtalkmsg == QUEST_BANNER11 && quests[7]._qvar1 == 3 )
+		if ( monster[v2].mtalkmsg == QUEST_BANNER11 && quests[QTYPE_BOL]._qvar1 == 3 )
 		{
 			monster[v2].mtalkmsg = 0;
 			_LOBYTE(monster[v2]._mgoal) = 1;
@@ -6960,14 +6960,14 @@ void __fastcall MAI_SnotSpil(int i)
 				if ( !effect_is_playing(USFX_SNOT3) && _LOBYTE(monster[v2]._mgoal) == 7 )
 				{
 					ObjChangeMap(setpc_x, setpc_y, setpc_w + setpc_x + 1, setpc_h + setpc_y + 1);
-					quests[7]._qvar1 = 3;
+					quests[QTYPE_BOL]._qvar1 = 3;
 					RedoPlayerVision();
 					monster[v2]._msquelch = -1;
 					monster[v2].mtalkmsg = 0;
 					_LOBYTE(monster[v2]._mgoal) = 1;
 				}
 			}
-			if ( quests[7]._qvar1 == 3 )
+			if ( quests[QTYPE_BOL]._qvar1 == 3 )
 			{
 				v7 = monster[v2]._mgoal;
 				if ( v7 == 1 || v7 == 5 )
@@ -7014,7 +7014,7 @@ void __fastcall MAI_Lazurus(int i)
 				{
 					PlayInGameMovie("gendata\\fprst3.smk");
 					monster[v2]._mmode = MM_TALK;
-					quests[15]._qvar1 = 5;
+					quests[QTYPE_VB]._qvar1 = 5;
 				}
 				if ( monster[v2].mtalkmsg == QUEST_VILE13 )
 				{
@@ -7025,7 +7025,7 @@ void __fastcall MAI_Lazurus(int i)
 						RedoPlayerVision();
 						monster[v2]._msquelch = -1;
 						monster[v2].mtalkmsg = 0;
-						quests[15]._qvar1 = 6;
+						quests[QTYPE_VB]._qvar1 = 6;
 						_LOBYTE(monster[v2]._mgoal) = 1;
 					}
 				}
@@ -7033,7 +7033,7 @@ void __fastcall MAI_Lazurus(int i)
 			if ( gbMaxPlayers != 1 )
 			{
 			LABEL_29:
-				if ( monster[v2].mtalkmsg == QUEST_VILE13 && _LOBYTE(monster[v2]._mgoal) == 6 && quests[15]._qvar1 <= 3u )
+				if ( monster[v2].mtalkmsg == QUEST_VILE13 && _LOBYTE(monster[v2]._mgoal) == 6 && quests[QTYPE_VB]._qvar1 <= 3u )
 					monster[v2]._mmode = MM_TALK;
 			}
 		}
@@ -7074,7 +7074,7 @@ void __fastcall MAI_Lazhelp(int i)
 		{
 			if ( gbMaxPlayers == 1 )
 			{
-				if ( quests[15]._qvar1 <= 5u )
+				if ( quests[QTYPE_VB]._qvar1 <= 5u )
 				{
 					_LOBYTE(monster[v2]._mgoal) = 6;
 					goto LABEL_10;
@@ -7124,7 +7124,7 @@ void __fastcall MAI_Lachdanan(int i)
 				if ( !effect_is_playing(USFX_LACH3) && _LOBYTE(monster[v2]._mgoal) == 7 )
 				{
 					monster[v2].mtalkmsg = 0;
-					quests[4]._qactive = 3;
+					quests[QTYPE_VEIL]._qactive = 3;
 					M_StartKill(v1, -1);
 				}
 			}
@@ -8710,16 +8710,16 @@ void __fastcall TalktoMonster(int i)
 	v2->_mmode = MM_TALK;
 	if ( v3 == AI_SNOTSPIL || v3 == AI_LACHDAN )
 	{
-		//_LOBYTE(v5) = QuestStatus(7);
-		if ( QuestStatus(7) && quests[7]._qvar1 == 2 && PlrHasItem(v4, IDI_BANNER, &inv_item_num) )
+		//_LOBYTE(v5) = QuestStatus(QTYPE_BOL);
+		if ( QuestStatus(QTYPE_BOL) && quests[QTYPE_BOL]._qvar1 == 2 && PlrHasItem(v4, IDI_BANNER, &inv_item_num) )
 		{
 			RemoveInvItem(v4, inv_item_num);
-			quests[7]._qactive = 3;
+			quests[QTYPE_BOL]._qactive = 3;
 			v2->mtalkmsg = QUEST_BANNER12;
 			_LOBYTE(v2->_mgoal) = 6;
 		}
-		//_LOBYTE(v6) = QuestStatus(4);
-		if ( QuestStatus(4) && v2->mtalkmsg >= (signed int)QUEST_VEIL9 )
+		//_LOBYTE(v6) = QuestStatus(QTYPE_VEIL);
+		if ( QuestStatus(QTYPE_VEIL) && v2->mtalkmsg >= (signed int)QUEST_VEIL9 )
 		{
 			if ( PlrHasItem(v4, IDI_GLDNELIX, &inv_item_num) )
 			{

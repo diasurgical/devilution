@@ -534,17 +534,17 @@ void __fastcall CreateL5Dungeon(int rseed, int entry)
 void __cdecl DRLG_LoadL1SP()
 {
 	setloadflag = 0;
-	if ( QuestStatus(6) )
+	if ( QuestStatus(QTYPE_BUTCH) )
 	{
 		pSetPiece = LoadFileInMem("Levels\\L1Data\\rnd6.DUN", 0);
 		setloadflag = 1;
 	}
-	if ( QuestStatus(12) && gbMaxPlayers == 1 )
+	if ( QuestStatus(QTYPE_KING) && gbMaxPlayers == 1 )
 	{
 		pSetPiece = LoadFileInMem("Levels\\L1Data\\SKngDO.DUN", 0);
 		setloadflag = 1;
 	}
-	if ( QuestStatus(7) )
+	if ( QuestStatus(QTYPE_BOL) )
 	{
 		pSetPiece = LoadFileInMem("Levels\\L1Data\\Banner2.DUN", 0);
 		setloadflag = 1;
@@ -610,7 +610,7 @@ void __fastcall DRLG_L5(int entry)
 		L5ClearFlags();
 		DRLG_L5FloodTVal();
 		v2 = 1;
-		if ( QuestStatus(13) )
+		if ( QuestStatus(QTYPE_PW) )
 		{
 			if ( v13 )
 			{
@@ -623,7 +623,7 @@ void __fastcall DRLG_L5(int entry)
 				v2 = 0;
 			}
 		}
-		if ( QuestStatus(7) )
+		if ( QuestStatus(QTYPE_BOL) )
 		{
 			if ( !v13 )
 			{
@@ -966,8 +966,8 @@ int __fastcall DRLG_PlaceMiniSet(const unsigned char *miniset, int tmin, int tma
 		DRLG_MRectTrans(sx, sy + 2, sx + 5, sy + 4);
 		TransVal = t;
 
-		quests[13]._qtx = 2 * sx + 21;
-		quests[13]._qty = 2 * sy + 22;
+		quests[QTYPE_PW]._qtx = 2 * sx + 21;
+		quests[QTYPE_PW]._qty = 2 * sy + 22;
 	}
 
 	if(setview == TRUE) {

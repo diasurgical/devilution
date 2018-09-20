@@ -2140,7 +2140,7 @@ LABEL_72:
 	//do
 	//	_LOBYTE(v19) = IncProgress();
 	while ( !IncProgress() );
-	if ( setlevel && setlvlnum == SL_SKELKING && quests[12]._qactive == 2 )
+	if ( setlevel && setlvlnum == SL_SKELKING && quests[QTYPE_KING]._qactive == 2 )
 		PlaySFX(USFX_SKING1);
 }
 // 525738: using guessed type int setseed;

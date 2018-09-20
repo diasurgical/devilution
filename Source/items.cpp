@@ -743,9 +743,9 @@ void __cdecl InitItems()
 	if ( !setlevel )
 	{
 		GetRndSeed();
-		if ( QuestStatus(0) )
+		if ( QuestStatus(QTYPE_INFRA) )
 			SpawnRock();
-		if ( QuestStatus(10) )
+		if ( QuestStatus(QTYPE_ANVIL) )
 			SpawnQuestItem(16, 2 * setpc_x + 27, 2 * setpc_y + 27, 0, 1);
 		if ( currlevel > 0u && currlevel < 0x10u )
 			AddInitItems();

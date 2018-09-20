@@ -1979,7 +1979,7 @@ void __fastcall CheckQuestItem(int pnum)
 	v1 = pnum;
 	v2 = plr[v1].HoldItem.IDidx;
 	if ( v2 == IDI_OPTAMULET )
-		quests[8]._qactive = 3;
+		quests[QTYPE_BLIND]._qactive = 3;
 	if ( v2 == IDI_MUSHROOM && quests[QTYPE_BLKM]._qactive == 2 && quests[QTYPE_BLKM]._qvar1 == QS_MUSHSPAWNED )
 	{
 		v3 = plr[v1]._pClass;
@@ -2003,12 +2003,12 @@ void __fastcall CheckQuestItem(int pnum)
 	}
 	if ( v2 == IDI_ANVIL )
 	{
-		if ( quests[10]._qactive == 1 )
+		if ( quests[QTYPE_ANVIL]._qactive == 1 )
 		{
-			quests[10]._qactive = 2;
-			quests[10]._qvar1 = 1;
+			quests[QTYPE_ANVIL]._qactive = 2;
+			quests[QTYPE_ANVIL]._qvar1 = 1;
 		}
-		if ( quests[10]._qlog == 1 )
+		if ( quests[QTYPE_ANVIL]._qlog == 1 )
 		{
 			sfxdelay = IDI_OPTAMULET;
 			v4 = plr[myplr]._pClass;
@@ -2051,12 +2051,12 @@ void __fastcall CheckQuestItem(int pnum)
 	}
 	if ( v2 == IDI_ROCK )
 	{
-		if ( quests[0]._qactive == 1 )
+		if ( quests[QTYPE_INFRA]._qactive == 1 )
 		{
-			quests[0]._qactive = 2;
-			quests[0]._qvar1 = 1;
+			quests[QTYPE_INFRA]._qactive = 2;
+			quests[QTYPE_INFRA]._qvar1 = 1;
 		}
-		if ( quests[0]._qlog == 1 )
+		if ( quests[QTYPE_INFRA]._qlog == 1 )
 		{
 			sfxdelay = IDI_OPTAMULET;
 			v6 = plr[myplr]._pClass;
@@ -2079,7 +2079,7 @@ void __fastcall CheckQuestItem(int pnum)
 	}
 	if ( v2 == IDI_ARMOFVAL )
 	{
-		quests[9]._qactive = 3;
+		quests[QTYPE_BLOOD]._qactive = 3;
 		sfxdelay = 20;
 		v7 = plr[myplr]._pClass;
 		if ( v7 )

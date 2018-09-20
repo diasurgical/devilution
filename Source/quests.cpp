@@ -145,9 +145,9 @@ void __cdecl InitQuests()
 	{
 		SetRndSeed(glSeedTbl[15]);
 		if ( random(0, 2) )
-			quests[13]._qactive = 0;
+			quests[QTYPE_PW]._qactive = 0;
 		else
-			quests[12]._qactive = 0;
+			quests[QTYPE_KING]._qactive = 0;
 		v13 = random(0, 3);
 		quests[QuestGroup1[v13]]._qactive = 0;
 		v15 = random(0, 3);
@@ -162,13 +162,13 @@ void __cdecl InitQuests()
 	if ( questdebug != -1 )
 		quests[questdebug]._qactive = 2;
 #endif
-	if ( !quests[12]._qactive )
-		quests[12]._qvar2 = 2;
-	if ( !quests[0]._qactive )
-		quests[0]._qvar2 = 2;
-	quests[7]._qvar1 = 1;
+	if ( !quests[QTYPE_KING]._qactive )
+		quests[QTYPE_KING]._qvar2 = 2;
+	if ( !quests[QTYPE_INFRA]._qactive )
+		quests[QTYPE_INFRA]._qvar2 = 2;
+	quests[QTYPE_BOL]._qvar1 = 1;
 	if ( v0 != 1 )
-		quests[15]._qvar1 = 2;
+		quests[QTYPE_VB]._qvar1 = 2;
 }
 // 679660: using guessed type char gbMaxPlayers;
 // 69BD04: using guessed type int questlog;
@@ -180,54 +180,54 @@ void __cdecl CheckQuests()
 	unsigned char *v1; // esi
 	unsigned char v2; // cl
 
-	//_LOBYTE(v0) = QuestStatus(15);
-	if ( QuestStatus(15) )
+	//_LOBYTE(v0) = QuestStatus(QTYPE_VB);
+	if ( QuestStatus(QTYPE_VB) )
 	{
 		if ( gbMaxPlayers == 1 )
 			goto LABEL_6;
-		if ( quests[15]._qvar1 == 2 )
+		if ( quests[QTYPE_VB]._qvar1 == 2 )
 		{
 			AddObject(OBJ_ALTBOY, 2 * setpc_x + 20, 2 * setpc_y + 22);
-			quests[15]._qvar1 = 3;
+			quests[QTYPE_VB]._qvar1 = 3;
 			NetSendCmdQuest(1u, 0xFu);
 		}
 	}
 	if ( gbMaxPlayers != 1 )
 		return;
 LABEL_6:
-	if ( currlevel == quests[15]._qlevel && !setlevel && quests[15]._qvar1 >= 2u )
+	if ( currlevel == quests[QTYPE_VB]._qlevel && !setlevel && quests[QTYPE_VB]._qvar1 >= 2u )
 	{
-		if ( quests[15]._qactive != 2 && quests[15]._qactive != 3 )
+		if ( quests[QTYPE_VB]._qactive != 2 && quests[QTYPE_VB]._qactive != 3 )
 			goto LABEL_29;
-		if ( !quests[15]._qvar2 || quests[15]._qvar2 == 2 )
+		if ( !quests[QTYPE_VB]._qvar2 || quests[QTYPE_VB]._qvar2 == 2 )
 		{
-			quests[15]._qtx = 2 * quests[15]._qtx + 16;
-			quests[15]._qty = 2 * quests[15]._qty + 16;
-			AddMissile(quests[15]._qtx, quests[15]._qty, quests[15]._qtx, quests[15]._qty, 0, 65, 0, myplr, 0, 0);
-			quests[15]._qvar2 = 1;
-			if ( quests[15]._qactive == 2 )
-				quests[15]._qvar1 = 3;
+			quests[QTYPE_VB]._qtx = 2 * quests[QTYPE_VB]._qtx + 16;
+			quests[QTYPE_VB]._qty = 2 * quests[QTYPE_VB]._qty + 16;
+			AddMissile(quests[QTYPE_VB]._qtx, quests[QTYPE_VB]._qty, quests[QTYPE_VB]._qtx, quests[QTYPE_VB]._qty, 0, 65, 0, myplr, 0, 0);
+			quests[QTYPE_VB]._qvar2 = 1;
+			if ( quests[QTYPE_VB]._qactive == 2 )
+				quests[QTYPE_VB]._qvar1 = 3;
 		}
 	}
-	if ( quests[15]._qactive == 3 )
+	if ( quests[QTYPE_VB]._qactive == 3 )
 	{
 		if ( !setlevel )
 			goto LABEL_29;
-		if ( setlvlnum == SL_VILEBETRAYER && quests[15]._qvar2 == 4 )
+		if ( setlvlnum == SL_VILEBETRAYER && quests[QTYPE_VB]._qvar2 == 4 )
 		{
 			AddMissile(35, 32, 35, 32, 0, 65, 0, myplr, 0, 0);
-			quests[15]._qvar2 = 3;
+			quests[QTYPE_VB]._qvar2 = 3;
 		}
 	}
 	if ( setlevel )
 	{
-		if ( setlvlnum == quests[13]._qslvl
-		  && quests[13]._qactive != 1
-		  && leveltype == quests[13]._qlvltype
+		if ( setlvlnum == quests[QTYPE_PW]._qslvl
+		  && quests[QTYPE_PW]._qactive != 1
+		  && leveltype == quests[QTYPE_PW]._qlvltype
 		  && nummonsters == 4
-		  && quests[13]._qactive != 3 )
+		  && quests[QTYPE_PW]._qactive != 3 )
 		{
-			quests[13]._qactive = 3;
+			quests[QTYPE_PW]._qactive = 3;
 			PlaySfxLoc(IS_QUESTDN, plr[myplr].WorldX, plr[myplr].WorldY);
 			LoadPalette("Levels\\L3Data\\L3pwater.pal");
 			WaterDone = 32;
@@ -341,7 +341,7 @@ void __fastcall CheckQuestKill(int m, unsigned char sendmsg)
 	v3 = monster[v2].MType->mtype;
 	if ( v3 == MT_SKING )
 	{
-		quests[12]._qactive = 3;
+		quests[QTYPE_KING]._qactive = 3;
 		sfxdelay = 30;
 		v4 = plr[myplr]._pClass;
 		if ( v4 )
@@ -374,7 +374,7 @@ LABEL_10:
 			v7 = monster[v2].mName;
 			if ( v7 == UniqMonst[0].mName )
 			{
-				quests[2]._qactive = 3;
+				quests[QTYPE_GARB]._qactive = 3;
 				sfxdelay = 30;
 				v8 = plr[myplr]._pClass;
 				if ( v8 )
@@ -396,7 +396,7 @@ LABEL_10:
 			}
 			if ( v7 == UniqMonst[2].mName )
 			{
-				quests[3]._qactive = 3;
+				quests[QTYPE_ZHAR]._qactive = 3;
 				sfxdelay = 30;
 				v9 = plr[myplr]._pClass;
 				if ( v9 )
@@ -420,10 +420,10 @@ LABEL_10:
 			{
 				if ( gbMaxPlayers != 1 )
 				{
-					quests[15]._qactive = 3;
-					quests[15]._qvar1 = 7;
+					quests[QTYPE_VB]._qactive = 3;
+					quests[QTYPE_VB]._qvar1 = 7;
 					sfxdelay = 30;
-					quests[5]._qactive = 2;
+					quests[QTYPE_MOD]._qactive = 2;
 					v10 = 0;
 					v11 = dPiece;
 					do
@@ -475,12 +475,12 @@ LABEL_10:
 				}
 				if ( v7 == UniqMonst[4].mName && gbMaxPlayers == 1 )
 				{
-					quests[15]._qactive = 3;
+					quests[QTYPE_VB]._qactive = 3;
 					sfxdelay = 30;
 					InitVPTriggers();
-					quests[15]._qvar1 = 7;
-					quests[15]._qvar2 = 4;
-					quests[5]._qactive = 2;
+					quests[QTYPE_VB]._qvar1 = 7;
+					quests[QTYPE_VB]._qvar2 = 4;
+					quests[QTYPE_MOD]._qactive = 2;
 					AddMissile(35, 32, 35, 32, 0, 65, 0, myplr, 0, 0);
 					v16 = plr[myplr]._pClass;
 					if ( v16 )
@@ -503,7 +503,7 @@ LABEL_10:
 			}
 			if ( v7 == UniqMonst[8].mName )
 			{
-				quests[11]._qactive = 3;
+				quests[QTYPE_WARLRD]._qactive = 3;
 				sfxdelay = 30;
 				v17 = plr[myplr]._pClass;
 				if ( v17 )
@@ -524,7 +524,7 @@ LABEL_10:
 			}
 			return;
 		}
-		quests[6]._qactive = 3;
+		quests[QTYPE_BUTCH]._qactive = 3;
 		sfxdelay = 30;
 		v6 = plr[myplr]._pClass;
 		if ( v6 )
@@ -922,20 +922,20 @@ void __cdecl SetReturnLvlPos()
 	switch ( setlvlnum )
 	{
 		case SL_SKELKING:
-			ReturnLvlX = quests[12]._qtx + 1;
-			ReturnLvlY = quests[12]._qty;
-			v0 = (unsigned char)quests[12]._qlevel;
+			ReturnLvlX = quests[QTYPE_KING]._qtx + 1;
+			ReturnLvlY = quests[QTYPE_KING]._qty;
+			v0 = (unsigned char)quests[QTYPE_KING]._qlevel;
 			goto LABEL_9;
 		case SL_BONECHAMB:
 			ReturnLvlT = 2;
-			ReturnLvlX = quests[14]._qtx + 1;
-			ReturnLvlY = quests[14]._qty;
-			v0 = (unsigned char)quests[14]._qlevel;
+			ReturnLvlX = quests[QTYPE_BONE]._qtx + 1;
+			ReturnLvlY = quests[QTYPE_BONE]._qty;
+			v0 = (unsigned char)quests[QTYPE_BONE]._qlevel;
 			goto LABEL_10;
 		case SL_POISONWATER:
-			ReturnLvlX = quests[13]._qtx;
-			ReturnLvlY = quests[13]._qty + 1;
-			v0 = (unsigned char)quests[13]._qlevel;
+			ReturnLvlX = quests[QTYPE_PW]._qtx;
+			ReturnLvlY = quests[QTYPE_PW]._qty + 1;
+			v0 = (unsigned char)quests[QTYPE_PW]._qlevel;
 LABEL_9:
 			ReturnLvlT = 1;
 			goto LABEL_10;
@@ -943,9 +943,9 @@ LABEL_9:
 	if ( setlvlnum != 5 )
 		return;
 	ReturnLvlT = 4;
-	ReturnLvlX = quests[15]._qtx + 1;
-	ReturnLvlY = quests[15]._qty - 1;
-	v0 = (unsigned char)quests[15]._qlevel;
+	ReturnLvlX = quests[QTYPE_VB]._qtx + 1;
+	ReturnLvlY = quests[QTYPE_VB]._qty - 1;
+	v0 = (unsigned char)quests[QTYPE_VB]._qlevel;
 LABEL_10:
 	ReturnLvl = v0;
 }
@@ -953,8 +953,8 @@ LABEL_10:
 
 void __cdecl GetReturnLvlPos()
 {
-	if ( quests[15]._qactive == 3 )
-		quests[15]._qvar2 = 2;
+	if ( quests[QTYPE_VB]._qactive == 3 )
+		quests[QTYPE_VB]._qvar2 = 2;
 	ViewX = ReturnLvlX;
 	ViewY = ReturnLvlY;
 	currlevel = ReturnLvl;
@@ -964,26 +964,26 @@ void __cdecl GetReturnLvlPos()
 
 void __cdecl ResyncMPQuests()
 {
-	if ( quests[12]._qactive == 1
-	  && currlevel >= (unsigned char)quests[12]._qlevel - 1
-	  && currlevel <= (unsigned char)quests[12]._qlevel + 1 )
+	if ( quests[QTYPE_KING]._qactive == 1
+	  && currlevel >= (unsigned char)quests[QTYPE_KING]._qlevel - 1
+	  && currlevel <= (unsigned char)quests[QTYPE_KING]._qlevel + 1 )
 	{
-		quests[12]._qactive = 2;
+		quests[QTYPE_KING]._qactive = 2;
 		NetSendCmdQuest(1u, 0xCu);
 	}
-	if ( quests[6]._qactive == 1
-	  && currlevel >= (unsigned char)quests[6]._qlevel - 1
-	  && currlevel <= (unsigned char)quests[6]._qlevel + 1 )
+	if ( quests[QTYPE_BUTCH]._qactive == 1
+	  && currlevel >= (unsigned char)quests[QTYPE_BUTCH]._qlevel - 1
+	  && currlevel <= (unsigned char)quests[QTYPE_BUTCH]._qlevel + 1 )
 	{
-		quests[6]._qactive = 2;
+		quests[QTYPE_BUTCH]._qactive = 2;
 		NetSendCmdQuest(1u, 6u);
 	}
-	if ( quests[15]._qactive == 1 && currlevel == (unsigned char)quests[15]._qlevel - 1 )
+	if ( quests[QTYPE_VB]._qactive == 1 && currlevel == (unsigned char)quests[QTYPE_VB]._qlevel - 1 )
 	{
-		quests[15]._qactive = 2;
+		quests[QTYPE_VB]._qactive = 2;
 		NetSendCmdQuest(1u, 0xFu);
 	}
-	if ( QuestStatus(15) )
+	if ( QuestStatus(QTYPE_VB) )
 		AddObject(OBJ_ALTBOY, 2 * setpc_x + 20, 2 * setpc_y + 22);
 }
 
@@ -998,10 +998,10 @@ void __cdecl ResyncQuests()
 	char v6; // bl
 	int k; // esi
 
-	if ( setlevel && setlvlnum == quests[13]._qslvl && quests[13]._qactive != 1 && leveltype == quests[13]._qlvltype )
+	if ( setlevel && setlvlnum == quests[QTYPE_PW]._qslvl && quests[QTYPE_PW]._qactive != 1 && leveltype == quests[QTYPE_PW]._qlvltype )
 	{
 		v0 = "Levels\\L3Data\\L3pwater.pal";
-		if ( quests[13]._qactive != 3 )
+		if ( quests[QTYPE_PW]._qactive != 3 )
 			v0 = "Levels\\L3Data\\L3pfoul.pal";
 		LoadPalette(v0);
 		v1 = 0;
@@ -1009,16 +1009,16 @@ void __cdecl ResyncQuests()
 			palette_update_quest_palette(v1++);
 		while ( v1 <= 32 );
 	}
-	//_LOBYTE(v2) = QuestStatus(7);
-	if ( QuestStatus(7) )
+	//_LOBYTE(v2) = QuestStatus(QTYPE_BOL);
+	if ( QuestStatus(QTYPE_BOL) )
 	{
-		if ( quests[7]._qvar1 == 1 )
+		if ( quests[QTYPE_BOL]._qvar1 == 1 )
 			ObjChangeMapResync(
 				setpc_w + setpc_x - 2,
 				setpc_h + setpc_y - 2,
 				setpc_w + setpc_x + 1,
 				setpc_h + setpc_y + 1);
-		if ( quests[7]._qvar1 == 2 )
+		if ( quests[QTYPE_BOL]._qvar1 == 2 )
 		{
 			ObjChangeMapResync(
 				setpc_w + setpc_x - 2,
@@ -1033,7 +1033,7 @@ void __cdecl ResyncQuests()
 			DRLG_MRectTrans(setpc_x, setpc_y, (setpc_w >> 1) + setpc_x + 4, setpc_y + (setpc_h >> 1));
 			TransVal = v4;
 		}
-		if ( quests[7]._qvar1 == 3 )
+		if ( quests[QTYPE_BOL]._qvar1 == 3 )
 		{
 			ObjChangeMapResync(setpc_x, setpc_y, setpc_w + setpc_x + 1, setpc_h + setpc_y + 1);
 			for ( j = 0; j < nobjects; ++j )
@@ -1068,28 +1068,28 @@ void __cdecl ResyncQuests()
 			}
 		}
 	}
-	if ( currlevel == (unsigned char)quests[4]._qlevel + 1 && quests[4]._qactive == 2 && !quests[4]._qvar1 )
+	if ( currlevel == (unsigned char)quests[QTYPE_VEIL]._qlevel + 1 && quests[QTYPE_VEIL]._qactive == 2 && !quests[QTYPE_VEIL]._qvar1 )
 	{
-		quests[4]._qvar1 = 1;
+		quests[QTYPE_VEIL]._qvar1 = 1;
 		SpawnQuestItem(15, 0, 0, 5, 1);
 	}
 	if ( setlevel && setlvlnum == 5 )
 	{
-		if ( quests[15]._qvar1 >= 4u )
+		if ( quests[QTYPE_VB]._qvar1 >= 4u )
 			ObjChangeMapResync(1, 11, 20, 18);
-		if ( quests[15]._qvar1 >= 6u )
+		if ( quests[QTYPE_VB]._qvar1 >= 6u )
 			ObjChangeMapResync(1, 18, 20, 24);
-		if ( quests[15]._qvar1 >= 7u )
+		if ( quests[QTYPE_VB]._qvar1 >= 7u )
 			InitVPTriggers();
 		for ( k = 0; k < nobjects; ++k )
 			SyncObjectAnim(objectactive[k]);
 	}
-	if ( currlevel == quests[15]._qlevel
+	if ( currlevel == quests[QTYPE_VB]._qlevel
 	  && !setlevel
-	  && (quests[15]._qvar2 == 1 || quests[15]._qvar2 >= 3u)
-	  && (quests[15]._qactive == 2 || quests[15]._qactive == 3) )
+	  && (quests[QTYPE_VB]._qvar2 == 1 || quests[QTYPE_VB]._qvar2 >= 3u)
+	  && (quests[QTYPE_VB]._qactive == 2 || quests[QTYPE_VB]._qactive == 3) )
 	{
-		quests[15]._qvar2 = 2;
+		quests[QTYPE_VB]._qvar2 = 2;
 	}
 }
 // 5A5590: using guessed type char TransVal;
