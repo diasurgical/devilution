@@ -2517,7 +2517,7 @@ BOOL __fastcall WeaponDur(int pnum, int durrnd)
 	return FALSE;
 }
 
-bool __fastcall PlrHitMonst(int pnum, int m)
+BOOL __fastcall PlrHitMonst(int pnum, int m)
 {
 	int v2; // ebx
 	unsigned int v3; // esi
@@ -2858,118 +2858,89 @@ BOOL __fastcall PlrHitObj(int pnum, int mx, int my)
 	return FALSE;
 }
 
-int __fastcall PM_DoAttack(int pnum)
+BOOL __fastcall PM_DoAttack(int pnum)
 {
-	int v1; // esi
-	int v2; // esi
-	int v3; // ecx
-	int v4; // eax
-	int v5; // eax
-	int v6; // ebx
-	int v7; // edi
-	int v8; // eax
-	int v9; // edx
-	int v10; // ecx
-	//int v11; // eax
-	int v12; // edx
-	int v13; // eax
-	bool v14; // eax
-	int v15; // edx
-	char v16; // al
-	//int v17; // eax
-	int v19; // [esp+Ch] [ebp-8h]
-	int arglist; // [esp+10h] [ebp-4h]
-
-	v1 = pnum;
-	arglist = pnum;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("PM_DoAttack: illegal player %d", pnum);
-	v2 = v1;
-	v3 = plr[v2]._pIFlags;
-	v4 = plr[v2]._pAnimFrame;
-	if ( v3 & 0x20000 && v4 == 1 ) // quick attack
-		plr[v2]._pAnimFrame = 2;
-	if ( v3 & 0x40000 && (v4 == 1 || v4 == 3) ) // fast attack
-		++plr[v2]._pAnimFrame;
-	if ( v3 & 0x80000 && (v4 == 1 || v4 == 3 || v4 == 5) ) // faster attack
-		++plr[v2]._pAnimFrame;
-	if ( v3 & 0x100000 && (v4 == 1 || v4 == 4) ) // fastest attack
-		plr[v2]._pAnimFrame += 2;
-	if ( plr[v2]._pAnimFrame == plr[v2]._pAFNum - 1 )
-		PlaySfxLoc(PS_SWING, plr[v2].WorldX, plr[v2].WorldY);
-	if ( plr[v2]._pAnimFrame != plr[v2]._pAFNum )
-		goto LABEL_49;
-	v5 = plr[v2]._pdir;
-	v6 = plr[v2].WorldX + offset_x[v5];
-	v7 = plr[v2].WorldY + offset_y[v5];
-	v8 = v7 + 112 * v6;
-	v19 = v8;
-	v9 = dMonster[0][v8];
-	if ( !v9 )
-	{
-LABEL_29:
-		if ( plr[v2]._pIFlags & 0x10 )
-		{
-			AddMissile(v6, v7, 1, 0, 0, MIS_WEAPEXP, 0, arglist, 0, 0);
-			v8 = v19;
-		}
-		if ( plr[v2]._pIFlags & 0x20 )
-		{
-			AddMissile(v6, v7, 2, 0, 0, MIS_WEAPEXP, 0, arglist, 0, 0);
-			v8 = v19;
-		}
-		v12 = dMonster[0][v8];
-		if ( v12 )
-		{
-			if ( v12 <= 0 )
-				v13 = -1 - v12;
-			else
-				v13 = v12 - 1;
-			v14 = PlrHitMonst(arglist, v13);
-			goto LABEL_46;
-		}
-		v15 = (unsigned char)dPlayer[0][v8];
-		if ( (_BYTE)v15 && !FriendlyMode )
-		{
-			if ( (char)v15 <= 0 )
-				v16 = -1 - v15;
-			else
-				v16 = v15 - 1;
-			v14 = PlrHitPlr(arglist, v16);
-LABEL_46:
-			if ( v14 )
-			{
-				//_LOBYTE(v17) = WeaponDur(arglist, 30);
-				if ( WeaponDur(arglist, 30) )
-					goto LABEL_48;
+	}
+
+	int frame = plr[pnum]._pAnimFrame;
+	if ( plr[pnum]._pIFlags & ISPL_QUICKATTACK && frame == 1 ) {
+		plr[pnum]._pAnimFrame++;
+	}
+	if ( plr[pnum]._pIFlags & ISPL_FASTATTACK && (frame == 1 || frame == 3) ) {
+		plr[pnum]._pAnimFrame++;
+	}
+	if ( plr[pnum]._pIFlags & ISPL_FASTERATTACK && (frame == 1 || frame == 3 || frame == 5) ) {
+		plr[pnum]._pAnimFrame++;
+	}
+	if ( plr[pnum]._pIFlags & ISPL_FASTESTATTACK && (frame == 1 || frame == 4) ) {
+		plr[pnum]._pAnimFrame += 2;
+	}
+	if ( plr[pnum]._pAnimFrame == plr[pnum]._pAFNum - 1 ) {
+		PlaySfxLoc(PS_SWING, plr[pnum].WorldX, plr[pnum].WorldY);
+	}
+
+	if ( plr[pnum]._pAnimFrame == plr[pnum]._pAFNum ) {
+		int dir = plr[pnum]._pdir;
+		int dx = plr[pnum].WorldX + offset_x[dir];
+		int dy = plr[pnum].WorldY + offset_y[dir];
+
+		int m;
+		if (dMonster[dx][dy]) {
+			if ( dMonster[dx][dy] > 0 ) {
+				m = dMonster[dx][dy] - 1;
+			} else {
+				m = -(dMonster[dx][dy] + 1);
 			}
-			goto LABEL_49;
+			if ( CanTalkToMonst(m) ) {
+				plr[pnum]._pVar1 = 0;
+				return FALSE;
+			}
 		}
-		if ( dObject[0][v8] > 0 )
-		{
-			v14 = PlrHitObj(arglist, v6, v7);
-			goto LABEL_46;
+
+		if ( plr[pnum]._pIFlags & ISPL_FIREDAM ) {
+			AddMissile(dx, dy, 1, 0, 0, MIS_WEAPEXP, 0, pnum, 0, 0);
 		}
-LABEL_49:
-		if ( plr[v2]._pAnimFrame != plr[v2]._pAFrames )
-			return 0;
-LABEL_48:
-		StartStand(arglist, plr[v2]._pdir);
-		ClearPlrPVars(arglist);
-		return 1;
+		if ( plr[pnum]._pIFlags & ISPL_LIGHTDAM ) {
+			AddMissile(dx, dy, 2, 0, 0, MIS_WEAPEXP, 0, pnum, 0, 0);
+		}
+
+		BOOL didhit = FALSE;
+		if ( dMonster[dx][dy] ) {
+			m = dMonster[dx][dy];
+			if ( dMonster[dx][dy] > 0 ) {
+				m = dMonster[dx][dy] - 1;
+			} else {
+				m = -(dMonster[dx][dy] + 1);
+			}
+			didhit = PlrHitMonst(pnum, m);
+		} else if ( dPlayer[dx][dy] && !FriendlyMode ) {
+			UCHAR p = dPlayer[dx][dy];
+			if ( dPlayer[dx][dy] > 0 ) {
+				p = dPlayer[dx][dy] - 1;
+			} else {
+				p = -(dPlayer[dx][dy] + 1);
+			}
+			didhit = PlrHitPlr(pnum, p);
+		} else if ( dObject[dx][dy] > 0 ) {
+			didhit = PlrHitObj(pnum, dx, dy);
+		}
+
+		if ( didhit && WeaponDur(pnum, 30) ) {
+			StartStand(pnum, plr[pnum]._pdir);
+			ClearPlrPVars(pnum);
+			return TRUE;
+		}
 	}
-	if ( v9 <= 0 )
-		v10 = -1 - v9;
-	else
-		v10 = v9 - 1;
-	//_LOBYTE(v11) = CanTalkToMonst(v10);
-	if ( !CanTalkToMonst(v10) )
-	{
-		v8 = v19;
-		goto LABEL_29;
+
+	if ( plr[pnum]._pAnimFrame == plr[pnum]._pAFrames ) {
+		StartStand(pnum, plr[pnum]._pdir);
+		ClearPlrPVars(pnum);
+		return TRUE;
+	} else {
+		return FALSE;
 	}
-	plr[v2]._pVar1 = 0;
-	return 0;
 }
 // 484368: using guessed type int FriendlyMode;
 
@@ -3024,7 +2995,6 @@ BOOL __fastcall PM_DoRangeAttack(int pnum)
 	} else {
 		return FALSE;
 	}
-
 }
 
 void __fastcall ShieldDur(int pnum)

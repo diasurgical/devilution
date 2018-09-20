@@ -58,7 +58,7 @@ int frameend;
 int framerate;
 int framestart;
 #endif
-int FriendlyMode = 1; // weak
+BOOL FriendlyMode = FALSE;
 char *spszMsgTbl[4] =
 {
   "I need help! Come Here!",
