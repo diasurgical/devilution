@@ -280,7 +280,7 @@ void __cdecl init_archives()
 #ifdef COPYPROT
 		if ( diabdat_mpq )
 			break;
-		UiCopyProtError((int)&v1);
+		UiCopyProtError(&v1);
 		if ( v1 == COPYPROT_CANCEL )
 			FileErrDlg("diabdat.mpq");
 	}

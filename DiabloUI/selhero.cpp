@@ -554,7 +554,7 @@ BOOL __fastcall SelHero_CreateHero(HWND hWnd, char *name)
 	if ( !selhero_fncreate(&heroinfo_create) )
 	{
 		LoadStringA(ghUiInst, 0x10u, v5, 127);
-		OkCancel_1000930A((int)hWnd, (int)v5, 1);
+		OkCancel_DoOkDialog(hWnd, v5, 1);
 		return 0;
 	}
 	selhero_is_created = 1;
@@ -599,15 +599,14 @@ LABEL_3:
 		SelHero_DoHeroEndFade(hWnd, 1);
 		return;
 	}
-	CreaDung_10004C33((void *)1);
-	if ( SDlgDialogBoxParam(ghUiInst, "SELDIFF_DIALOG", (int)hWnd, (WNDPROC)CreaDung_10004C4A, selhero_is_good) == 1 )
+	CreaDung_SetDelSpin(1);
+	if ( SDlgDialogBoxParam(ghUiInst, "SELDIFF_DIALOG", (int)hWnd, CreaDung_WndProc, selhero_is_good) == 1 )
 	{
 		v3 = SelHero_GetHeroSlotFromName(sgpHeroInfo, selhero_heronamestr);
 		UiCreatePlayerDescription(v3, 'DBLO', v7);
 		gameData.bDiff = selhero_difficulty;
-		Connect_10003E0C((int)&gameData, selhero_heronamestr, v7, v6, 128);
-		/* temp, fix */
-		//v4 = UiAuthCallback(2, (int)selhero_heronamestr, v7, 0, v6, Buffer, 256);
+		Connect_SetDiffString(&gameData, selhero_heronamestr, v7, v6, 128);
+		v4 = UiAuthCallback(2, selhero_heronamestr, v7, 0, v6, Buffer, 256);
 		if ( v4 )
 			goto LABEL_3;
 		SelYesNo_SelOkDialog(hWnd, Buffer, 0, 1);
@@ -735,7 +734,7 @@ void __fastcall SelHero_SelectHeroRegion(HWND hWnd)
 	if ( !selhero_fninfo(SelHero_GetHeroInfo) )
 	{
 		LoadStringA(ghUiInst, 0x12u, Buffer, 64);
-		OkCancel_1000930A((int)hWnd, (int)Buffer, 1);
+		OkCancel_DoOkDialog(hWnd, Buffer, 1);
 	}
 	if ( v3 == sgpHeroInfo )
 		PostMessageA(hWnd, 0xBD1u, 0, 0);

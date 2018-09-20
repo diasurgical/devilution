@@ -103,7 +103,7 @@ void __cdecl UiInitialize()
 	sgbUiIsInitialized = 1;
 	TitleSnd_InitSoundFunc();
 	artfont_InitAllFonts();
-	Connect_10002EC4();
+	Connect_LoadGFXAndStuff();
 	local_LoadArtCursor();
 	bn_prof_100021C4();
 }
@@ -114,7 +114,7 @@ void __cdecl UiDestroy()
 {
 	bn_prof_10002247();
 	local_FreeArtCursor();
-	Connect_10002E2B();
+	Connect_FreeConnectData();
 	sgbUiIsInitialized = 0;
 }
 // 10029714: using guessed type int sgbUiIsInitialized;
