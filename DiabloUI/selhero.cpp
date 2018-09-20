@@ -60,7 +60,7 @@ void __fastcall SelHero_SetStaticBMP(HWND hWnd, int adjust_size)
 	InvalidateRect(v3, 0, 0);
 	GetClientRect(v3, &Rect);
 	local_AdjustRectSize(&Rect, 0, adjust_size * Rect.bottom);
-	SDlgSetBitmapI(v3, 0, "Static", -1, 1, selhero_buffer, (int)&Rect, selhero_width, selhero_height, -1);
+	SDlgSetBitmapI(v3, 0, "Static", -1, 1, selhero_buffer, (int)&Rect, selhero_sizedata[0], selhero_sizedata[1], -1);
 }
 
 // ref: 0x1000B905
@@ -690,7 +690,7 @@ void __fastcall SelHero_LoadHeroGFX(HWND hWnd)
 		local_LoadArtWithPal(hWnd, 0, &nullcharacter, -1, 1, "ui_art\\selhero.pcx", (BYTE **)v12, v12 + 1, 0);
 		Fade_NoInputAndArt(hWnd, 1);
 	}
-	local_LoadArtImage("ui_art\\heros.pcx", &selhero_buffer, &selhero_width);
+	local_LoadArtImage("ui_art\\heros.pcx", &selhero_buffer, selhero_sizedata);
 	SetActiveWindow(hWnd);
 	Title_LoadImgSetTimer(hWnd, "ui_art\\smlogo.pcx");
 	Doom_ParseWndProc3(hWnd, selhero_msgtbl_string, 5);
