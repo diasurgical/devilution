@@ -329,7 +329,7 @@ BOOL __stdcall UiGetDataCallback(int game_type, int data_code, void *a3, int a4,
 					goto LABEL_24;
 				if ( (unsigned int)a4 >= 0x10 )
 				{
-					memcpy(a3, connect_some16data, 0x10u);
+					memcpy(a3, connect_subnet_ip, 0x10u);
 					goto LABEL_24;
 				}
 				return 0;

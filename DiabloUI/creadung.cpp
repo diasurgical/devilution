@@ -46,7 +46,7 @@ LRESULT __stdcall CreaDung_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lP
 						Focus_DoBlitSpinIncFrame(hWnd, (HWND)lParam);
 						CreaDung_ParseDungProcs(hWnd, (unsigned short)wParam);
 					}
-					else if ( wParam == 327681 )
+					else if ( HIWORD(wParam) == 5 || (_WORD)wParam == 1 )
 					{
 						CreaDung_DoAllPlaySnd(hWnd);
 					}

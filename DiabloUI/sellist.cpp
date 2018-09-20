@@ -49,7 +49,7 @@ LRESULT __stdcall SelList_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPa
 			if ( HIWORD(wParam) != 6 )
 			{
 				v6 = 1;
-				if ( wParam != 327681 )
+				if ( HIWORD(wParam) != 5 && (_WORD)wParam != 1 )
 				{
 					v6 = 2;
 					if ( (_WORD)wParam != 2 )

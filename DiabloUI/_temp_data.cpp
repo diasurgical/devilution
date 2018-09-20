@@ -17,6 +17,7 @@ int credits_cpp_float_value = 2139095040; // weak
 int DiabEdit_cpp_float_value = 2139095040; // weak
 int DiabloUI_cpp_float_value = 2139095040; // weak
 int doom_cpp_float_value = 2139095040; // weak
+int EntName_cpp_float_value = 2139095040; // weak
 int fade_cpp_float_value = 2139095040; // weak
 int focus_cpp_float_value = 2139095040; // weak
 int local_cpp_float_value = 2139095040; // weak
@@ -24,6 +25,7 @@ int mainmenu_cpp_float_value = 2139095040; // weak
 int OkCancel_cpp_float_value = 2139095040; // weak
 int Sbar_cpp_float_value = 2139095040; // weak
 int Sbar_cpp_float_value2 = 2139095040; // weak
+int SelClass_cpp_float_value = 2139095040; // weak
 int SelHero_cpp_float_value = 2139095040; // weak
 int SelList_cpp_float_value = 2139095040; // weak
 int SelLoad_cpp_float_value = 2139095040; // weak
@@ -38,7 +40,13 @@ ProfFntStruct proffnts[4] =
   { 10, "Arial", 700 },
   { 13, "Time New Roman", 400 }
 };
-unsigned char connect_some16data[16] = { 13u, 0u, 0u, 0u, 128u, 128u, 128u, 0u, 14u, 0u, 0u, 0u, 255u, 255u, 255u, 0u };
+unsigned char connect_subnet_ip[4][4] =
+{
+  {  13,   0,   0, 0 }, // 13.0.0.0
+  { 128, 128, 128, 0 }, // 128.128.128.0
+  {  14,   0,   0, 0 }, // 14.0.0.0
+  { 255, 255, 255, 0 }  // 255.255.255.0
+};
 int creadung_msgtbl1[3] = { 1038, 1080, 0 };
 int creadung_msgtbl2[2] = { 1097, 0 };
 int creadung_msgtbl3[2] = { 1099, 0 };
@@ -55,9 +63,9 @@ int dword_10022AA4[4] = { 1084, 1085, 1086, 0 };
 int dword_10022AFC[2] = { 1038, 0 };
 int dword_10022B04[3] = { 1056, 1054, 0 };
 int dword_10022B10[2] = { 1116, 0 };
-int dword_10022B34[2] = { 1038, 0 };
-int dword_10022B3C[3] = { 1056, 1054, 0 };
-int dword_10022B48[2] = { 1065, 0 };
+int entname_msgtbl1[2] = { 1038, 0 };
+int entname_msgtbl2[3] = { 1056, 1054, 0 };
+int entname_msgtbl3[2] = { 1065, 0 };
 int menumsgs_1option[2] = { 1042, 0 };
 int menumsgs_5options[6] = { 1044, 1001, 1002, 1003, 2, 0 };
 int dword_10022C4C[2] = { 1038, 0 };
@@ -65,9 +73,9 @@ int dword_10022C54[2] = { 1080, 0 };
 int dword_10022C5C[2] = { 1108, 0 };
 int dword_10022CAC[2] = { 1026, 0 };
 int dword_10022CB4[2] = { 2, 0 };
-int dword_10022EB4[2] = { 1038, 0 };
-int dword_10022EBC[3] = { 1056, 1054, 0 };
-int dword_10022EC8[4] = { 1062, 1063, 1064, 0 };
+int selclass_msgtbl1[2] = { 1038, 0 };
+int selclass_msgtbl2[3] = { 1056, 1054, 0 };
+int selclass_msgtbl3[4] = { 1062, 1063, 1064, 0 };
 int dword_10022ED8[3] = { 1038, 1080, 0 };
 int dword_10022EE4[3] = { 1143, 1147, 0 };
 int dword_10022EF0[4] = { 1081, 1076, 1144, 0 };
@@ -227,8 +235,8 @@ int dword_10029850; // weak
 int doom_cpp_float; // weak
 LPSTR dword_10029858; // idb
 int dword_1002985C; // weak
-int dword_10029860; // weak
-LPSTR dword_10029864; // idb
+int EntName_cpp_float; // weak
+char *entname_charname;
 int fade_cpp_float; // weak
 int sgbFadeRange; // idb
 tagPALETTEENTRY fadepal[256];
@@ -242,8 +250,7 @@ int dword_10029CA8; // weak
 int dword_10029CAC; // weak
 int sgnSpinnerFrame; // weak
 int local_cpp_float; // weak
-int gdwCursWidth; // weak
-int gdwCursHeight; // weak
+DWORD gdwCursData[2]; // weak
 tagPALETTEENTRY artpal[256];
 HGDIOBJ objPalette; // idb
 BYTE *gpCursorArt;
@@ -289,7 +296,7 @@ BYTE *dword_1002A324; // idb
 void *dword_1002A328; // idb
 int Sbar_cpp_float; // weak
 int Sbar_cpp_float2; // weak
-int dword_1002A348; // weak
+int SelClass_cpp_float; // weak
 int dword_1002A34C; // idb
 int dword_1002A350; // weak
 int dword_1002A354; // weak
