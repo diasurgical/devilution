@@ -57,6 +57,7 @@ BOOL STORMAPI SDlgEndDialog(HWND hDlg, HANDLE nResult) rBool;
 
 BOOL STORMAPI SDlgSetControlBitmaps(HWND parentwindow, int *id, int a3, char *buffer2, char *buffer, int flags, int mask) rBool;
 
+BOOL STORMAPI SDlgBltToWindowI(HWND hWnd, HRGN a2, char *a3, int a4, void *buffer, RECT *rct, SIZE *size, int a8, int a9, DWORD rop) rBool;
 BOOL STORMAPI SDlgBltToWindowE(HWND hWnd, HRGN a2, char *a3, int a4, void *buffer, RECT *rct, SIZE *size, int a8, int a9, DWORD rop) rBool;
 BOOL STORMAPI SDlgSetBitmapE(HWND hWnd, int a2, char *src, int mask1, int flags, int a6, int a7, int width, int a9, int mask2) rBool;
 
@@ -191,7 +192,7 @@ int  STORMAPI SMemCmp(void *location1, void *location2, DWORD size) rInt;
 
 int   STORMAPI SStrCopy(char *dest, const char *src, int max_length) rInt;
 DWORD STORMAPI SStrHash(const char *string, DWORD flags, DWORD Seed) rInt;
-int   STORMAPI SStrNCat(char *dest, const char *src, DWORD max_length) rInt;
+int   STORMAPI SStrPack(char *dest, const char *src, DWORD max_length) rInt;
 
 int STORMAPI SStrLen(const char* string) rInt;
 

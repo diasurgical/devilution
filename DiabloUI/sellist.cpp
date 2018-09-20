@@ -56,7 +56,7 @@ LRESULT __stdcall SelList_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPa
 						return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 				}
 LABEL_25:
-				OkCancel_100092F5((int)hWnd, v6);
+				OkCancel_PlaySndEndDlg(hWnd, v6);
 				return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 			}
 			Focus_CheckPlayMove(lParam);
@@ -681,7 +681,7 @@ void __fastcall SelList_ChooseDlgFromSize(HWND hWnd, int width, int height)
 	{
 		v7 = 1;
 LABEL_3:
-		OkCancel_100092F5((int)hWnd, v7);
+		OkCancel_PlaySndEndDlg(hWnd, v7);
 		return;
 	}
 	v8 = GetDlgItem(hWnd, 1054);

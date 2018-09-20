@@ -8,6 +8,11 @@ ProfileStruct bnprofiles[4] =
 };
 int profilemsg1[6] = { 1125, 1127, 1129, 1131, 1133, 0 };
 int profilemsg2[6] = { 1126, 1128, 1130, 1132, 1134, 0 };
+int Connect_cpp_float_value = 2139095040; // weak
+int CopyProt_cpp_float_value = 2139095040; // weak
+int cr8game_cpp_float_value = 2139095040; // weak
+int CreaDung_cpp_float_value = 2139095040; // weak
+int CreaStat_cpp_float_value = 2139095040; // weak
 int credits_cpp_float_value = 2139095040; // weak
 int DiabEdit_cpp_float_value = 2139095040; // weak
 int DiabloUI_cpp_float_value = 2139095040; // weak
@@ -16,10 +21,12 @@ int fade_cpp_float_value = 2139095040; // weak
 int focus_cpp_float_value = 2139095040; // weak
 int local_cpp_float_value = 2139095040; // weak
 int mainmenu_cpp_float_value = 2139095040; // weak
+int OkCancel_cpp_float_value = 2139095040; // weak
 int Sbar_cpp_float_value = 2139095040; // weak
 int Sbar_cpp_float_value2 = 2139095040; // weak
 int SelHero_cpp_float_value = 2139095040; // weak
 int SelList_cpp_float_value = 2139095040; // weak
+int SelLoad_cpp_float_value = 2139095040; // weak
 int SelYesNo_cpp_float_value = 2139095040; // weak
 int Title_cpp_float_value = 2139095040; // weak
 int titlesnd_cpp_float_value = 2139095040; // weak
@@ -31,11 +38,12 @@ ProfFntStruct proffnts[4] =
   { 10, "Arial", 700 },
   { 13, "Time New Roman", 400 }
 };
-int dword_100228DC[3] = { 1038, 1080, 0 };
-int dword_100228E8[2] = { 1097, 0 };
-int dword_100228F0[2] = { 1099, 0 };
-int dword_100228F8[3] = { 1056, 1054, 0 };
-int dword_10022904[4] = { 1094, 1095, 1096, 0 };
+unsigned char connect_some16data[16] = { 13u, 0u, 0u, 0u, 128u, 128u, 128u, 0u, 14u, 0u, 0u, 0u, 255u, 255u, 255u, 0u };
+int creadung_msgtbl1[3] = { 1038, 1080, 0 };
+int creadung_msgtbl2[2] = { 1097, 0 };
+int creadung_msgtbl3[2] = { 1099, 0 };
+int creadung_msgtbl4[3] = { 1056, 1054, 0 };
+int creadung_msgtbl5[4] = { 1094, 1095, 1096, 0 };
 short defstats[3][4] = { { 30, 15, 20, 30 }, { 25, 20, 30, 20 }, { 15, 35, 25, 20 } };
 int dword_10022A2C[3] = { 1038, 1080, 0 };
 int dword_10022A38[2] = { 1097, 0 };
@@ -82,9 +90,9 @@ int sellist_msgtbl1[2] = { 1038, 0 };
 int sellist_msgtbl2[3] = { 1056, 1054, 0 };
 int sellist_msgtbl3[2] = { 1006, 0 };
 int sellist_msgtbl4[7] = { 1047, 1048, 1049, 1050, 1051, 1052, 0 };
-int dword_100231AC[2] = { 1038, 0 };
-int dword_100231B4[3] = { 1056, 1054, 0 };
-int dword_100231C0[3] = { 1106, 1107, 0 };
+int selload_msgtbl1[2] = { 1038, 0 };
+int selload_msgtbl2[3] = { 1056, 1054, 0 };
+int selload_msgtbl3[3] = { 1106, 1107, 0 };
 int dword_100231CC[2] = { 1038, 0 };
 int dword_100231D4[3] = { 1080, 1097, 0 };
 int dword_100231E0[2] = { 1123, 0 };
@@ -136,61 +144,58 @@ int dword_10029478; // weak
 int dword_10029480; // weak
 int dword_10029488; // weak
 int dword_1002948C; // weak
-int dword_100294A0; // weak
-int dword_100294A4; // weak
-DWORD dword_100294A8; // idb
-char byte_100294B0[128]; // idb
-char byte_10029530[128]; // weak
-int dword_100295B0; // weak
-DWORD dword_100295B8; // idb
-int dword_100295BC; // weak
-int dword_100295C0; // weak
-DWORD dword_100295C8; // idb
-int dword_100295CC; // weak
-int dword_100295D0; // weak
-int dword_100295D4; // weak
-BYTE *dword_100295D8; // idb
-BYTE *dword_100295DC; // idb
-BYTE *dword_100295E0; // idb
-void *dword_100295E4; // idb
-int dword_100295E8[10]; // idb
-int dword_10029610; // weak
-int dword_10029614; // weak
-HGLOBAL dword_10029618; // idb
-HGLOBAL dword_1002961C; // idb
-int dword_10029620; // weak
-HGLOBAL dword_10029624; // idb
-HGDIOBJ dword_10029628; // idb
-int dword_1002962C; // weak
-int dword_10029630; // weak
-int dword_10029634; // weak
-int dword_10029638; // weak
-int dword_1002963C; // weak
-int dword_10029640; // weak
-int dword_10029644; // weak
-char byte_10029648; // weak
-char byte_1002964C; // weak
-HWND dword_10029650; // idb
-HWND dword_10029654; // idb
-int dword_10029658; // weak
-DWORD dword_10029660; // idb
-int dword_10029668; // weak
-int dword_1002966C; // weak
-char byte_10029670; // idb
-char byte_10029690[32]; // weak
-BYTE *dword_100296B0;
-BYTE *dword_100296B4; // idb
-BYTE *dword_100296B8; // idb
-int dword_100296BC; // weak
-int dword_100296C0; // weak
-int dword_100296C4; // weak
-int dword_100296C8; // weak
-int dword_100296CC; // weak
-int dword_100296D0; // weak
-int dword_100296D4; // weak
-int dword_100296D8; // weak
-int dword_100296DC; // weak
-int dword_100296E0; // weak
+int Connect_cpp_float; // weak
+int special_frames; // weak
+DWORD heroport_data[2];
+char connect_categorystr[128];
+char connect_plrinfostr[128];
+int heronum_frames2; // weak
+DWORD special_data[2];
+int heroport_frames; // weak
+DWORD heronum_data[2];
+int heronum_frames; // idb
+int connect_draw_height; // idb
+BYTE *connect_data1; // idb
+BYTE *connect_data2; // idb
+BYTE *connect_data3; // idb
+void *connect_data4; // idb
+HANDLE connect_trans[10];
+char *connect_charname;
+int connect_color_text; // weak
+HGLOBAL copyprot_popupart; // idb
+HGLOBAL copyprot_artpal; // idb
+int CopyProt_cpp_float; // weak
+HGLOBAL copyprot_btnart; // idb
+HGDIOBJ cr8game_hobject; // idb
+int cr8game_cpp_float; // weak
+int cr8_playercount; // weak
+DWORD *cr8_somegamestruct;
+int cr8_dword_10029638; // weak
+int cr8_dword_1002963C; // weak
+int cr8_dword_10029640; // weak
+int *cr8game_playerID; // idb
+_gamedata cr8_gamedata;
+HWND cr8_sendmsg1; // idb
+HWND cr8_sendmsg2; // idb
+int cr8_dword_10029658; // weak
+DWORD cr8diffbtns_size[2];
+int cr8_dword_10029668; // weak
+int cr8_dword_1002966C; // idb
+char cr8_gamename[32];
+char cr8_gamepassword[32];
+BYTE *cr8_creat_bg_ptr;
+BYTE *cr8_but_xsm_ptr; // idb
+BYTE *cr8_diffbtns_ptr; // idb
+int creadung_playername; // weak
+int *creadung_playerID; // idb
+int CreaDung_cpp_float; // weak
+int creadung_dword_100296C8; // weak
+int creadung_delspinners; // weak
+DWORD *crea_somegamestruct;
+int creadung_lasterror; // weak
+int creadung_dword_100296D8; // weak
+char *creadung_gamename;
+int CreaStat_cpp_float; // weak
 int credittext_size; // weak
 int credits_cpp_float; // weak
 HGLOBAL credittext_rsrc; // idb
@@ -266,7 +271,7 @@ int dword_1002A258; // weak
 int dword_1002A25C; // weak
 int (*dword_1002A260)(void); // weak
 char byte_1002A264; // idb
-int dword_1002A2E4; // weak
+int OkCancel_cpp_float; // weak
 int dword_1002A2E8; // weak
 int dword_1002A2EC; // weak
 int dword_1002A2F0; // weak
@@ -333,7 +338,7 @@ int dword_1002A4B8; // idb
 int dword_1002A4BC; // weak
 int SelList_cpp_float; // weak
 _uiheroinfo *sellist_pheroinfo;
-int dword_1002A4C8; // weak
+int SelLoad_cpp_float; // weak
 int dword_1002A4CC; // weak
 int dword_1002A4D0; // weak
 void *dword_1002A4D4; // idb

@@ -1,28 +1,26 @@
 // ref: 0x10004054
-void __stdcall UiCopyProtError(int a1) { return; }
-//signed int __stdcall UiCopyProtError(int *a1) { return 0; }
-/* {
+BOOL __stdcall UiCopyProtError(int *pdwResult)
+{
 	int v1; // eax
 	int v2; // eax
-	CHAR Buffer; // [esp+0h] [ebp-80h]
+	char Buffer[128]; // [esp+0h] [ebp-80h]
 
-	if ( DiabloUI_10005C2A() )
-		LoadStringA(hInstance, 0x3Fu, &Buffer, 127);
+	if ( DiabloUI_GetSpawned() )
+		LoadStringA(ghUiInst, 0x3Fu, Buffer, 127);
 	else
-		LoadStringA(hInstance, 0x1Bu, &Buffer, 127);
-	v1 = SDrawGetFrameWindow();
-	v2 = SDlgDialogBoxParam(hInstance, "OKCANCEL_DIALOG", v1, CopyProt_100040AF, &Buffer);
-	if ( a1 )
-		*a1 = v2;
+		LoadStringA(ghUiInst, 0x1Bu, Buffer, 127);
+	v1 = (int)SDrawGetFrameWindow();
+	v2 = SDlgDialogBoxParam(ghUiInst, "OKCANCEL_DIALOG", v1, CopyProt_WndProc, (int)Buffer);
+	if ( pdwResult )
+		*pdwResult = v2;
 	return 1;
-} */
-// 10010370: using guessed type int __stdcall SDlgDialogBoxParam(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
+}
 // 10010382: using guessed type _DWORD __stdcall SDrawGetFrameWindow();
 
 // ref: 0x100040AF
-int __stdcall CopyProt_100040AF(int a1, UINT Msg, WPARAM wParam, LPARAM lParam) { return 0; }
-/* {
-	int v4; // ecx
+LRESULT __stdcall CopyProt_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
+{
+	HWND v4; // ecx
 	int v5; // edx
 	HWND v6; // eax
 	LONG v7; // eax
@@ -30,31 +28,31 @@ int __stdcall CopyProt_100040AF(int a1, UINT Msg, WPARAM wParam, LPARAM lParam) 
 
 	if ( Msg == 2 )
 	{
-		CopyProt_10004173();
-		Fade_100072BE(10);
-		return SDlgDefDialogProc(a1, Msg, wParam, lParam);
+		CopyProt_FreeCopyResrcs();
+		Fade_UpdatePaletteRange(10);
+		return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 	}
 	if ( Msg <= 0x103 )
-		return SDlgDefDialogProc(a1, Msg, wParam, lParam);
+		return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 	if ( Msg <= 0x105 )
 	{
 		v9 = (HWND)SDrawGetFrameWindow();
 		SendMessageA(v9, Msg, wParam, lParam);
-		return SDlgDefDialogProc(a1, Msg, wParam, lParam);
+		return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 	}
 	if ( Msg == 272 )
 	{
-		CopyProt_100041B5((HWND)a1, (const CHAR *)lParam);
+		CopyProt_LoadCopyStuff(hWnd, lParam);
 		return 1;
 	}
 	if ( Msg != 273 )
-		return SDlgDefDialogProc(a1, Msg, wParam, lParam);
+		return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 	switch ( (unsigned short)wParam )
 	{
 		case 1u:
 			v6 = GetFocus();
 			v7 = GetWindowLongA(v6, -12);
-			v4 = a1;
+			v4 = hWnd;
 			if ( v7 == 1109 )
 			{
 				v5 = 1;
@@ -62,119 +60,98 @@ int __stdcall CopyProt_100040AF(int a1, UINT Msg, WPARAM wParam, LPARAM lParam) 
 			}
 			goto LABEL_12;
 		case 2u:
-			v4 = a1;
+			v4 = hWnd;
 LABEL_12:
 			v5 = 2;
 			goto LABEL_13;
 		case 0x455u:
-			v4 = a1;
+			v4 = hWnd;
 			v5 = 1;
 LABEL_13:
-			CopyProt_1000430C(v4, v5);
+			CopyProt_EndCopyDlg(v4, v5);
 			break;
 	}
-	return SDlgDefDialogProc(a1, Msg, wParam, lParam);
-} */
-// 1001037C: using guessed type int __stdcall SDlgDefDialogProc(_DWORD, _DWORD, _DWORD, _DWORD);
+	return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
+}
 // 10010382: using guessed type _DWORD __stdcall SDrawGetFrameWindow();
 
 // ref: 0x10004173
-HGLOBAL CopyProt_10004173() { return 0; }
-/* {
-	HGLOBAL result; // eax
-
-	if ( hResData )
+void __cdecl CopyProt_FreeCopyResrcs()
+{
+	if ( copyprot_artpal )
 	{
-		FreeResource(hResData);
-		hResData = 0;
+		FreeResource(copyprot_artpal);
+		copyprot_artpal = 0;
 	}
-	if ( dword_10029624 )
+	if ( copyprot_btnart )
 	{
-		FreeResource(dword_10029624);
-		dword_10029624 = 0;
+		FreeResource(copyprot_btnart);
+		copyprot_btnart = 0;
 	}
-	result = dword_10029618;
-	if ( dword_10029618 )
+	if ( copyprot_popupart )
 	{
-		result = (HGLOBAL)FreeResource(dword_10029618);
-		dword_10029618 = 0;
+		FreeResource(copyprot_popupart);
+		copyprot_popupart = 0;
 	}
-	return result;
-} */
+}
 
 // ref: 0x100041B5
-signed int __fastcall CopyProt_100041B5(HWND a1, const CHAR *a2) { return 0; }
-/* {
+BOOL __fastcall CopyProt_LoadCopyStuff(HWND hWnd, int a2)
+{
 	HRSRC v2; // eax
 	HRSRC v3; // eax
 	HRSRC v4; // eax
-	LPVOID v5; // edi
-	LPVOID v6; // ebx
+	void *v5; // edi
+	void *v6; // ebx
 	HWND v7; // eax
-	char v9; // [esp+Ch] [ebp-420h]
-	int v10; // [esp+40Ch] [ebp-20h]
-	int v11; // [esp+410h] [ebp-1Ch]
-	int v12; // [esp+414h] [ebp-18h]
-	int v13; // [esp+418h] [ebp-14h]
-	int v14; // [esp+41Ch] [ebp-10h]
+	PALETTEENTRY pPalEntries[256]; // [esp+Ch] [ebp-420h]
+	int msgs[3]; // [esp+40Ch] [ebp-20h]
+	DWORD data[2]; // [esp+418h] [ebp-14h]
 	LPCSTR lpString; // [esp+420h] [ebp-Ch]
-	void *v16; // [esp+424h] [ebp-8h]
-	HWND hDlg; // [esp+428h] [ebp-4h]
+	void *v13; // [esp+424h] [ebp-8h]
 
-	v12 = 0;
-	lpString = a2;
-	hDlg = a1;
-	v13 = 112;
-	v14 = 140;
-	v10 = 1109;
-	v11 = 2;
-	v2 = FindResourceA(hInstance, "IDR_POPUPART", "ART_FILES");
-	dword_10029618 = LoadResource(hInstance, v2);
-	v3 = FindResourceA(hInstance, "IDR_BTNART", "ART_FILES");
-	dword_10029624 = LoadResource(hInstance, v3);
-	v4 = FindResourceA(hInstance, "IDR_ARTPAL", "ART_FILES");
-	hResData = LoadResource(hInstance, v4);
-	v5 = LockResource(dword_10029618);
-	v6 = LockResource(dword_10029624);
-	v16 = LockResource(hResData);
+	msgs[2] = 0;
+	lpString = (LPCSTR)a2;
+	data[0] = 112;
+	data[1] = 140;
+	msgs[0] = 1109;
+	msgs[1] = 2;
+	v2 = FindResourceA(ghUiInst, "IDR_POPUPART", "ART_FILES");
+	copyprot_popupart = LoadResource(ghUiInst, v2);
+	v3 = FindResourceA(ghUiInst, "IDR_BTNART", "ART_FILES");
+	copyprot_btnart = LoadResource(ghUiInst, v3);
+	v4 = FindResourceA(ghUiInst, "IDR_ARTPAL", "ART_FILES");
+	copyprot_artpal = LoadResource(ghUiInst, v4);
+	v5 = LockResource(copyprot_popupart);
+	v6 = LockResource(copyprot_btnart);
+	v13 = LockResource(copyprot_artpal);
 	if ( v5 )
-		SDlgSetBitmapI(hDlg, 0, &byte_10029448, -1, 1, v5, 0, 284, 148, -1);
+		SDlgSetBitmapI(hWnd, 0, &nullcharacter, -1, 1, v5, 0, 284, 148, -1);
 	ShowCursor(1);
-	Fade_100073EF(hDlg);
+	Fade_SetInputWindow(hWnd);
 	if ( v6 )
-		local_10007B1B(hDlg, &v10, (int)v6, &v13);
-	if ( v16 )
+		local_FitButtonDlg(hWnd, msgs, v6, data);
+	if ( v13 )
 	{
-		memcpy(&v9, v16, 0x400u);
-		SDrawUpdatePalette(0, 256, &v9, 1);
+		memcpy(pPalEntries, v13, 0x400u);
+		SDrawUpdatePalette(0, 0x100u, pPalEntries, 1);
 	}
-	v7 = GetDlgItem(hDlg, 1026);
+	v7 = GetDlgItem(hWnd, 1026);
 	SetWindowTextA(v7, lpString);
 	return 1;
-} */
-// 100103FA: using guessed type int __stdcall SDrawUpdatePalette(_DWORD, _DWORD, _DWORD, _DWORD);
-// 10010400: using guessed type int __stdcall SDlgSetBitmapI(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
+}
 
 // ref: 0x1000430C
-int __fastcall CopyProt_1000430C(int a1, int a2) { return 0; }
-/* {
-	int v2; // esi
-	int v3; // edi
-
-	v2 = a2;
-	v3 = a1;
+void __fastcall CopyProt_EndCopyDlg(HWND hWnd, int a2)
+{
 	ShowCursor(0);
-	return SDlgEndDialog(v3, v2);
-} */
-// 10010376: using guessed type int __stdcall SDlgEndDialog(_DWORD, _DWORD);
+	SDlgEndDialog(hWnd, (HANDLE)a2);
+}
 
 // ref: 0x10004329
-signed int CopyProt_10004329() { return 0; }
-/* {
-	signed int result; // eax
-
-	result = 2139095040;
-	dword_10029620 = 2139095040;
-	return result;
-} */
-// 10029620: using guessed type int dword_10029620;
+void __cdecl CopyProt_cpp_init()
+{
+	CopyProt_cpp_float = CopyProt_cpp_float_value;
+}
+// 1001F3F8: using guessed type int CopyProt_cpp_float_value;
+// 10029620: using guessed type int CopyProt_cpp_float;
