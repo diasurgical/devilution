@@ -62,7 +62,7 @@ LABEL_21:
 		if ( HIWORD(wParam) != 6 )
 		{
 			v5 = 1;
-			if ( wParam == 327681 )
+			if ( HIWORD(wParam) == 5 || (_WORD)wParam == 1 )
 				goto LABEL_19;
 			if ( (_WORD)wParam != 2 )
 				return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);

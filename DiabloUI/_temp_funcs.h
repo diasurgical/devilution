@@ -230,12 +230,13 @@ int __fastcall EntDial_10006F16(HWND hDlg, int, int); // idb
 signed int EntDial_10006F71();
 
 
-LRESULT __stdcall EntName_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam); // idb
-HWND UNKCALL EntName_1000709E(HWND hDlg);
-int UNKCALL EntName_100070DB(HWND hWnd); // idb
-int __fastcall EntName_100071AC(HWND hDlg, int a2);
-void __fastcall EntName_100071ED(HWND hWnd, unsigned int a2, int a3);
-signed int EntName_10007220();
+LRESULT __stdcall EntName_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+void __fastcall EntName_DelEntNameMsgs(HWND hWnd);
+void __fastcall EntName_LoadFocusChkName(HWND hWnd);
+void __fastcall EntName_SetCharName(HWND hWnd, int a2);
+void __fastcall EntName_GetMessageName(HWND hWnd, unsigned int a2, int a3);
+void __cdecl j_EntName_cpp_init();
+void __cdecl EntName_cpp_init();
 
 
 void __fastcall Fade_ApplyPaletteRange(int range1, int range2);
@@ -375,12 +376,13 @@ void __cdecl Sbar_cpp_init2();
 void __fastcall Sbar_FreeScrollBar(HWND hWnd, int nIDDlgItem);
 
 
-LRESULT __stdcall SelClass_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam); // idb
-HWND UNKCALL SelClass_10009EC0(HWND hDlg);
-int UNKCALL SelClass_10009EFD(HWND hWnd); // idb
-int __fastcall SelClass_10009FA2(HWND hWnd, int a2);
-int __fastcall SelClass_1000A00D(int a1, LONG a2);
-signed int SelClass_1000A077();
+LRESULT __stdcall SelClass_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+void __fastcall SelClass_FreeClassMsgTbl(HWND hWnd);
+void __fastcall SelClass_LoadClassFocus(HWND hWnd);
+void __fastcall SelClass_SetDefaultStats(HWND hWnd, int a2);
+void __fastcall SelClass_CheckClassSpawn(HWND hWnd, int a2);
+void __cdecl j_SelClass_cpp_init();
+void __cdecl SelClass_cpp_init();
 
 
 void *SelConn_1000A082();
