@@ -816,7 +816,7 @@ BOOL __fastcall Connect_DiffFromString(char *str, _gamedata *gamedata, int a3, i
 		v9 = v8 + 1;
 		if ( a3 )
 			*(_DWORD *)a3 = (unsigned int)v9;
-		v10 = strchr(v9, 13);
+		v10 = (char *)strchr(v9, 13);
 		if ( v10 )
 		{
 			*v10 = 0;
