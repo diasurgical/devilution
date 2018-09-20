@@ -2464,7 +2464,7 @@ BOOL __fastcall WeaponDur(int pnum, int durrnd)
 		}
 
 		plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDurability--;
-		if ( plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDurability != 0) {
+		if ( plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDurability == 0) {
 			NetSendCmdDelItem(TRUE, INVLOC_HAND_LEFT);
 			plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype = ITYPE_NONE;
 			CalcPlrInv(pnum, TRUE);
@@ -2478,7 +2478,7 @@ BOOL __fastcall WeaponDur(int pnum, int durrnd)
 		}
 
 		plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iDurability--;
-		if ( plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iDurability != 0 ) {
+		if ( plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iDurability == 0 ) {
 			NetSendCmdDelItem(TRUE, INVLOC_HAND_RIGHT);
 			plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype = ITYPE_NONE;
 			CalcPlrInv(pnum, TRUE);
@@ -2492,7 +2492,7 @@ BOOL __fastcall WeaponDur(int pnum, int durrnd)
 		}
 
 		plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iDurability--;
-		if ( plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iDurability != 0 ) {
+		if ( plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iDurability == 0 ) {
 			NetSendCmdDelItem(TRUE, INVLOC_HAND_RIGHT);
 			plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype = ITYPE_NONE;
 			CalcPlrInv(pnum, TRUE);
@@ -2501,14 +2501,16 @@ BOOL __fastcall WeaponDur(int pnum, int durrnd)
 	}
 
 	if ( plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_SHIELD ) {
-		if ( plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDurability != 255 ) {
-			plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDurability--;
-			if ( plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDurability != 0 ) {
-				NetSendCmdDelItem(TRUE, INVLOC_HAND_LEFT);
-				plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype = ITYPE_NONE;
-				CalcPlrInv(pnum, TRUE);
-				return TRUE;
-			}
+		if ( plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDurability == 255 ) {
+			return FALSE;
+		}
+
+		plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDurability--;
+		if ( plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDurability == 0 ) {
+			NetSendCmdDelItem(TRUE, INVLOC_HAND_LEFT);
+			plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype = ITYPE_NONE;
+			CalcPlrInv(pnum, TRUE);
+			return TRUE;
 		}
 	}
 
