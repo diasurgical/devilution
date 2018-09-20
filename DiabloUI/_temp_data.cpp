@@ -304,8 +304,7 @@ int dword_1002A404; // weak
 int dword_1002A408; // weak
 BOOL (__stdcall *selhero_fnstats)(int, _uidefaultstats *);
 int SelHero_cpp_float; // weak
-DWORD selhero_width; // idb
-int selhero_height; // idb
+DWORD selhero_sizedata[2]; // idb
 int selhero_difficulty; // weak
 int selhero_hero_hassaved; // weak
 int selhero_numheroesleft; // weak
