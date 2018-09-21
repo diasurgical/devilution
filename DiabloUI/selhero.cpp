@@ -379,9 +379,11 @@ void __fastcall SelHero_DoStuffWithStrings(HWND hWnd)
 // ref: 0x1000BEDB
 _uiheroinfo *__fastcall SelHero_GetNextHeroFromStr(_uiheroinfo *pInfo, char *name)
 {
+	_uiheroinfo *v2; // ebx
 	_uiheroinfo *v3; // ebp
 	_uiheroinfo *v4; // edi
 
+	v2 = pInfo;
 	v3 = 0;
 	v4 = 0;
 	if ( pInfo )
@@ -400,17 +402,17 @@ _uiheroinfo *__fastcall SelHero_GetNextHeroFromStr(_uiheroinfo *pInfo, char *nam
 			if ( !pInfo )
 			{
 				if ( !v4 )
-					return pInfo;
+					return v2;
 				break;
 			}
 		}
 		if ( v3 )
 			v3->next = v4->next;
 		else
-			pInfo = v4->next;
+			v2 = v4->next;
 		SelHero_FreeSomeMemory(v4);
 	}
-	return pInfo;
+	return v2;
 }
 
 // ref: 0x1000BF33
