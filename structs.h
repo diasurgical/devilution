@@ -1000,7 +1000,7 @@ struct DJunk
 struct TMegaPkt
 {
 	TMegaPkt *pNext;
-	int dwSpaceLeft;
+	DWORD dwSpaceLeft;
 	unsigned char data[32000];
 };
 

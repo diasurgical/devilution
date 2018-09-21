@@ -43,27 +43,21 @@ void __fastcall msg_send_drop_pkt(int pnum, int reason)
 	msg_send_packet(pnum, &cmd, 6);
 }
 
-void __fastcall msg_send_packet(int pnum, void *packet, int dwSize)
+void __fastcall msg_send_packet(int pnum, const void *packet, DWORD dwSize)
 {
-	void *v3; // edi
-	TMegaPkt *v4; // eax
-	TFakeCmdPlr cmd; // [esp+Ah] [ebp-2h]
-
-	v3 = packet;
 	if ( pnum != sgnCurrMegaPlayer )
 	{
+		TFakeCmdPlr cmd;
 		sgnCurrMegaPlayer = pnum;
 		cmd.bCmd = FAKE_CMD_SETID;
 		cmd.bPlr = pnum;
-		msg_send_packet(pnum, &cmd, 2);
+		msg_send_packet(pnum, &cmd, sizeof(cmd));
 	}
-	v4 = sgpCurrPkt;
-	if ( sgpCurrPkt->dwSpaceLeft < (unsigned int)dwSize )
-	{
+
+	if ( sgpCurrPkt->dwSpaceLeft < dwSize )
 		msg_get_next_packet();
-		v4 = sgpCurrPkt;
-	}
-	memcpy((char *)&v4[1] - v4->dwSpaceLeft, v3, dwSize);
+
+	memcpy(&sgpCurrPkt->data[sizeof(sgpCurrPkt->data) - sgpCurrPkt->dwSpaceLeft], packet, dwSize);
 	sgpCurrPkt->dwSpaceLeft -= dwSize;
 }
 // 65AB24: using guessed type int sgnCurrMegaPlayer;
