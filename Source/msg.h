@@ -23,7 +23,7 @@ extern int msg_err_timer; // weak
 
 void __cdecl msg_cpp_init();
 void __fastcall msg_send_drop_pkt(int pnum, int reason);
-void __fastcall msg_send_packet(int pnum, void *packet, int dwSize);
+void __fastcall msg_send_packet(int pnum, const void *packet, DWORD dwSize);
 TMegaPkt *__cdecl msg_get_next_packet();
 int __cdecl msg_wait_resync();
 void __cdecl msg_free_packets();
