@@ -29,10 +29,12 @@
 #define MDMAXX					40
 #define MDMAXY					40
 
-
 // number of inventory grid cells
 #define NUM_INV_GRID_ELEM			40
 #define INV_SLOT_SIZE_PX		28
+
+// Item indestructible durability
+#define DUR_INDESTRUCTIBLE		255
 
 // todo: enums
 #define NUM_SFX					858
