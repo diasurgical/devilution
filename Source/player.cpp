@@ -2858,7 +2858,7 @@ BOOL __fastcall PlrHitObj(int pnum, int mx, int my)
 	return FALSE;
 }
 
-int __fastcall PM_DoAttack(int pnum)
+BOOL __fastcall PM_DoAttack(int pnum)
 {
 	int v1; // esi
 	int v2; // esi
@@ -3146,7 +3146,7 @@ BOOL __fastcall PM_DoSpell(int pnum)
 // 52571C: using guessed type int drawpanflag;
 // 5BB1ED: using guessed type char leveltype;
 
-int __fastcall PM_DoGotHit(int pnum)
+BOOL __fastcall PM_DoGotHit(int pnum)
 {
 	int v1; // esi
 	int v2; // eax
@@ -3233,7 +3233,7 @@ LABEL_23:
 	}
 }
 
-int __fastcall PM_DoDeath(int pnum)
+BOOL __fastcall PM_DoDeath(int pnum)
 {
 	int v1; // edi
 	int v2; // esi
@@ -3889,131 +3889,100 @@ void __cdecl ValidatePlayer()
 
 void __cdecl ProcessPlayers()
 {
-	int v0; // eax
-	int v1; // eax
-	unsigned char *v2; // ecx
-	char v3; // al
-	int v4; // ebp
-	int *v5; // esi
-	int v6; // eax
-	//int v7; // eax
-	int v8; // eax
-	int v9; // eax
-	int v10; // eax
-	int v11; // edi
-	int v12; // eax
-	char *v13; // eax
-	char *v14; // eax
-
-	v0 = myplr;
-	if ( (unsigned int)myplr >= 4 )
-	{
+	if ( (DWORD)myplr >= MAX_PLRS ) {
 		TermMsg("ProcessPlayers: illegal player %d", myplr);
-		v0 = myplr;
 	}
-	v1 = v0;
-	v2 = &plr[v1].pLvlLoad;
-	v3 = plr[v1].pLvlLoad;
-	if ( v3 )
-		*v2 = v3 - 1;
-	v4 = 0;
-	if ( sfxdelay > 0 && !--sfxdelay )
-		PlaySFX(sfxdnum);
+
+	if ( plr[myplr].pLvlLoad ) {
+		plr[myplr].pLvlLoad = plr[myplr].pLvlLoad - 1;
+	}
+
+	if ( sfxdelay > 0 ) {
+		sfxdelay--;
+		if ( sfxdelay == 0 ) {
+			PlaySFX(sfxdnum);
+		}
+	}
+
 	ValidatePlayer();
-	v5 = &plr[0]._pHitPoints;
-	do
-	{
-		v6 = (int)(v5 - 89);
-		if ( *((_BYTE *)v5 - 379) && currlevel == *(_DWORD *)v6 && (v4 == myplr || !*(_BYTE *)(v6 + 267)) )
-		{
-			CheckCheatStats(v4);
-			//_LOBYTE(v7) = PlrDeathModeOK(v4);
-			if ( !PlrDeathModeOK(v4) && (signed int)(*v5 & 0xFFFFFFC0) <= 0 )
-				SyncPlrKill(v4, -1);
-			if ( v4 == myplr )
-			{
-				if ( v5[5294] & 0x40 && currlevel )
-				{
-					*v5 -= 4;
-					v8 = *v5;
-					*(v5 - 2) -= 4;
-					if ( (signed int)(v8 & 0xFFFFFFC0) <= 0 )
-						SyncPlrKill(v4, 0);
+
+	for ( int pnum = 0; pnum < MAX_PLRS; pnum++ ) {
+		if ( plr[pnum].plractive && currlevel == plr[pnum].plrlevel && (pnum == myplr || !plr[pnum]._pLvlChanging) ) {
+			CheckCheatStats(pnum);
+
+			if ( !PlrDeathModeOK(pnum) && (plr[pnum]._pHitPoints >> 6) <= 0 ) {
+				SyncPlrKill(pnum, -1);
+			}
+
+			if ( pnum == myplr ) {
+				if ( plr[pnum]._pIFlags & ISPL_DRAINLIFE ) {
+					plr[pnum]._pHitPoints -= 4;
+					plr[pnum]._pHPBase -= 4;
+					if ( (plr[pnum]._pHitPoints >> 6) <= 0 ) {
+						SyncPlrKill(pnum, 0);
+					}
 					drawhpflag = 1;
 				}
-				if ( *((_BYTE *)v5 + 21179) & 8 )
-				{
-					v9 = v5[3];
-					if ( v9 > 0 )
-					{
-						v10 = v9 - v5[5];
-						v5[5] = 0;
-						drawmanaflag = 1;
-						v5[3] = v10;
-					}
+				if ( plr[pnum]._pIFlags & ISPL_NOMANA && plr[pnum]._pManaBase > 0 ) {
+					plr[pnum]._pManaBase -= plr[pnum]._pMana;
+					plr[pnum]._pMana = 0;
+					drawmanaflag = 1;
 				}
 			}
-			v11 = 0;
-			do
-			{
-				switch ( *(v5 - 102) )
+
+			BOOL tplayer = FALSE;
+			do {
+				switch ( plr[pnum]._pmode )
 				{
 					case PM_STAND:
-						v12 = PM_DoStand(v4);
-						goto LABEL_38;
+						tplayer = PM_DoStand(pnum);
+						break;
 					case PM_WALK:
-						v12 = PM_DoWalk(v4);
-						goto LABEL_38;
+						tplayer = PM_DoWalk(pnum);
+						break;
 					case PM_WALK2:
-						v12 = PM_DoWalk2(v4);
-						goto LABEL_38;
+						tplayer = PM_DoWalk2(pnum);
+						break;
 					case PM_WALK3:
-						v12 = PM_DoWalk3(v4);
-						goto LABEL_38;
+						tplayer = PM_DoWalk3(pnum);
+						break;
 					case PM_ATTACK:
-						v12 = PM_DoAttack(v4);
-						goto LABEL_38;
+						tplayer = PM_DoAttack(pnum);
+						break;
 					case PM_RATTACK:
-						v12 = PM_DoRangeAttack(v4);
-						goto LABEL_38;
+						tplayer = PM_DoRangeAttack(pnum);
+						break;
 					case PM_BLOCK:
-						v12 = PM_DoBlock(v4);
-						goto LABEL_38;
+						tplayer = PM_DoBlock(pnum);
+						break;
 					case PM_GOTHIT:
-						v12 = PM_DoGotHit(v4);
-						goto LABEL_38;
+						tplayer = PM_DoGotHit(pnum);
+						break;
 					case PM_DEATH:
-						v12 = PM_DoDeath(v4);
-						goto LABEL_38;
+						tplayer = PM_DoDeath(pnum);
+						break;
 					case PM_SPELL:
-						v12 = PM_DoSpell(v4);
-						goto LABEL_38;
+						tplayer = PM_DoSpell(pnum);
+						break;
 					case PM_NEWLVL:
-						v12 = PM_DoStand(v4);
-LABEL_38:
-						v11 = v12;
+						tplayer = PM_DoStand(pnum);
 						break;
 					default:
 						break;
 				}
-				CheckNewPath(v4);
-			}
-			while ( v11 );
-			v13 = (char *)(v5 - 69);
-			++*(_DWORD *)v13;
-			if ( *(v5 - 69) > *(v5 - 70) )
-			{
-				*(_DWORD *)v13 = 0;
-				v14 = (char *)(v5 - 67);
-				++*(_DWORD *)v14;
-				if ( *(v5 - 67) > *(v5 - 68) )
-					*(_DWORD *)v14 = 1;
+				CheckNewPath(pnum);
+			} while ( tplayer );
+
+			plr[pnum]._pAnimCnt++;
+			if ( plr[pnum]._pAnimDelay < plr[pnum]._pAnimCnt ) {
+				plr[pnum]._pAnimCnt = 0;
+				plr[pnum]._pAnimFrame++;
+				if ( plr[pnum]._pAnimLen < plr[pnum]._pAnimFrame ) {
+					plr[pnum]._pAnimFrame = 1;
+				}
 			}
 		}
-		v5 += 5430;
-		++v4;
 	}
-	while ( (signed int)v5 < (signed int)&plr[MAX_PLRS]._pHitPoints );
 }
 // 52A554: using guessed type int sfxdelay;
 
