@@ -3235,34 +3235,31 @@ LABEL_23:
 
 BOOL __fastcall PM_DoDeath(int pnum)
 {
-	int v1; // edi
-	int v2; // esi
-	int v3; // ecx
-	int v4; // eax
-	int v5; // eax
-
-	v1 = pnum;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("PM_DoDeath: illegal player %d", pnum);
-	v2 = v1;
-	if ( plr[v1]._pVar8 >= 2 * plr[v1]._pDFrames )
-	{
-		if ( deathdelay > 1 && v1 == myplr && --deathdelay == 1 )
-		{
-			deathflag = 1;
-			if ( gbMaxPlayers == 1 )
-				gamemenu_previous();
-		}
-		v3 = plr[v2].WorldY;
-		plr[v2]._pAnimFrame = plr[v2]._pAnimLen;
-		v4 = plr[v2].WorldX;
-		plr[v2]._pAnimDelay = 10000;
-		dFlags[v4][v3] |= 4u;
 	}
-	v5 = plr[v2]._pVar8;
-	if ( v5 < 100 )
-		plr[v2]._pVar8 = v5 + 1;
-	return 0;
+
+	if ( plr[pnum]._pVar8 >= 2 * plr[pnum]._pDFrames ) {
+		if ( deathdelay > 1 && pnum == myplr ) {
+			deathdelay--;
+			if ( deathdelay == 1 ) {
+				deathflag = 1;
+				if ( gbMaxPlayers == 1 ) {
+					gamemenu_previous();
+				}
+			}
+		}
+
+		plr[pnum]._pAnimFrame = plr[pnum]._pAnimLen;
+		plr[pnum]._pAnimDelay = 10000;
+		dFlags[plr[pnum].WorldX][plr[pnum].WorldY] |= 4;
+	}
+
+	if ( plr[pnum]._pVar8 < 100 ) {
+		plr[pnum]._pVar8++;
+	}
+
+	return FALSE;
 }
 // 679660: using guessed type char gbMaxPlayers;
 // 69B7C4: using guessed type int deathdelay;
