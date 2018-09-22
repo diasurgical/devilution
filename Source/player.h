@@ -82,7 +82,7 @@ BOOL __fastcall PM_DoRangeAttack(int pnum);
 void __fastcall ShieldDur(int pnum);
 BOOL __fastcall PM_DoBlock(int pnum);
 BOOL __fastcall PM_DoSpell(int pnum);
-int __fastcall PM_DoGotHit(int pnum);
+BOOL __fastcall PM_DoGotHit(int pnum);
 void __fastcall ArmorDur(int pnum);
 int __fastcall PM_DoDeath(int pnum);
 void __fastcall CheckNewPath(int pnum);
