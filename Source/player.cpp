@@ -4303,57 +4303,49 @@ LABEL_53:
 
 void __fastcall SyncPlrAnim(int pnum)
 {
-	int v1; // esi
-	int v2; // eax
-	int v3; // ecx
-	unsigned char *v4; // ecx
-	int v5; // edx
-
-	v1 = pnum;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("SyncPlrAnim: illegal player %d", pnum);
-	v2 = v1;
-	v3 = plr[v1]._pdir;
-	switch ( plr[v1]._pmode )
-	{
+	}
+
+	int dir = plr[pnum]._pdir;
+	switch ( plr[pnum]._pmode ) {
+		case PM_BLOCK:
+			plr[pnum]._pAnimData = plr[pnum]._pBAnim[dir];
+			break;
+		case PM_GOTHIT:
+			plr[pnum]._pAnimData = plr[pnum]._pHAnim[dir];
+			break;
+		case PM_DEATH:
+			plr[pnum]._pAnimData = plr[pnum]._pDAnim[dir];
+			break;
+		case PM_SPELL:
+			int sType;
+			if ( pnum == myplr ) {
+				sType = spelldata[plr[pnum]._pSpell].sType;
+			} else {
+				sType = STYPE_FIRE;
+			}
+			if ( sType == STYPE_FIRE )
+				plr[pnum]._pAnimData = plr[pnum]._pFAnim[dir];
+			if ( sType == STYPE_LIGHTNING )
+				plr[pnum]._pAnimData = plr[pnum]._pLAnim[dir];
+			if ( sType == STYPE_MAGIC ) {
+				plr[pnum]._pAnimData = plr[pnum]._pTAnim[dir];
+			}
+			break;
 		case PM_STAND:
 		case PM_NEWLVL:
 		case PM_QUIT:
-			v4 = plr[0]._pNAnim[v3 + 5430 * v1];
-			goto LABEL_19;
+			plr[pnum]._pAnimData = plr[pnum]._pNAnim[dir];
+			break;
 		case PM_WALK:
 		case PM_WALK2:
 		case PM_WALK3:
-			v4 = plr[0]._pWAnim[v3 + 5430 * v1];
-			goto LABEL_19;
+			plr[pnum]._pAnimData = plr[pnum]._pWAnim[dir];
+			break;
 		case PM_ATTACK:
 		case PM_RATTACK:
-			v4 = plr[0]._pAAnim[v3 + 5430 * v1];
-			goto LABEL_19;
-		case PM_BLOCK:
-			v4 = plr[0]._pBAnim[v3 + 5430 * v1];
-			goto LABEL_19;
-		case PM_GOTHIT:
-			v4 = plr[0]._pHAnim[v3 + 5430 * v1];
-			goto LABEL_19;
-		case PM_DEATH:
-			v4 = plr[0]._pDAnim[v3 + 5430 * v1];
-			goto LABEL_19;
-		case PM_SPELL:
-			if ( v1 == myplr )
-				v5 = (unsigned char)spelldata[plr[v2]._pSpell].sType;
-			else
-				v5 = 0;
-			if ( !v5 )
-				plr[v2]._pAnimData = plr[0]._pFAnim[v3 + 5430 * v1];
-			if ( v5 == STYPE_LIGHTNING )
-				plr[v2]._pAnimData = plr[0]._pLAnim[v3 + 5430 * v1];
-			if ( v5 == STYPE_MAGIC )
-			{
-				v4 = plr[0]._pTAnim[v3 + 5430 * v1];
-LABEL_19:
-				plr[v2]._pAnimData = v4;
-			}
+			plr[pnum]._pAnimData = plr[pnum]._pAAnim[dir];
 			break;
 		default:
 			TermMsg("SyncPlrAnim");
