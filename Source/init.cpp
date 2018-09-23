@@ -518,7 +518,7 @@ LRESULT __stdcall WindowProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 	return result;
 }
 
-WNDPROC __stdcall SetWindowProc(WNDPROC NewProc)
+WNDPROC __fastcall SetWindowProc(WNDPROC NewProc)
 {
 	WNDPROC OldProc; // eax
 
