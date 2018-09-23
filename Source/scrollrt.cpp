@@ -3338,8 +3338,8 @@ void __cdecl DrawAndBlit()
 	{
 		if ( drawpanflag == 255 )
 		{
-			drawhpflag = 1;
-			drawmanaflag = 1;
+			drawhpflag = TRUE;
+			drawmanaflag = TRUE;
 			drawbtnflag = 1;
 			drawsbarflag = 1;
 			ddsdesc = 0;
@@ -3381,8 +3381,8 @@ void __cdecl DrawAndBlit()
 		lock_buf_priv();
 		scrollrt_draw_cursor_back_buffer();
 		unlock_buf_priv();
-		drawhpflag = 0;
-		drawmanaflag = 0;
+		drawhpflag = FALSE;
+		drawmanaflag = FALSE;
 		drawbtnflag = 0;
 		drawsbarflag = 0;
 	}
