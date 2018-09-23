@@ -4806,7 +4806,7 @@ void __cdecl PlayDungMsgs()
 		TermMsg("PlayDungMsgs: illegal player %d", myplr);
 	}
 
-	if ( currlevel == 1 && !plr[myplr]._pLvlVisited[1] && gbMaxPlayers == 1 && !(plr[myplr].pDungMsgs & 0x1) ) {
+	if ( currlevel == 1 && !plr[myplr]._pLvlVisited[1] && gbMaxPlayers == 1 && !(plr[myplr].pDungMsgs & DMSG_CATHEDRAL) ) {
 		sfxdelay = 40;
 		if ( plr[myplr]._pClass == PC_WARRIOR ) {
 			sfxdnum = PS_WARR97;
@@ -4815,8 +4815,8 @@ void __cdecl PlayDungMsgs()
 		} else if ( plr[myplr]._pClass == PC_SORCERER ) {
 			sfxdnum = PS_MAGE97;
 		}
-		plr[myplr].pDungMsgs = plr[myplr].pDungMsgs | 0x1;
-	} else if ( currlevel == 5 && !plr[myplr]._pLvlVisited[5] && gbMaxPlayers == 1 && !(plr[myplr].pDungMsgs & 0x2) ) {
+		plr[myplr].pDungMsgs = plr[myplr].pDungMsgs | DMSG_CATHEDRAL;
+	} else if ( currlevel == 5 && !plr[myplr]._pLvlVisited[5] && gbMaxPlayers == 1 && !(plr[myplr].pDungMsgs & DMSG_CATACOMBS) ) {
 		sfxdelay = 40;
 		if ( plr[myplr]._pClass == PC_WARRIOR ) {
 			sfxdnum = PS_WARR96B;
@@ -4825,8 +4825,8 @@ void __cdecl PlayDungMsgs()
 		} else if ( plr[myplr]._pClass == PC_SORCERER ) {
 			sfxdnum = PS_MAGE96;
 		}
-		plr[myplr].pDungMsgs |= 0x2;
-	} else if ( currlevel == 9 && !plr[myplr]._pLvlVisited[9] && gbMaxPlayers == 1 && !(plr[myplr].pDungMsgs & 0x4) ) {
+		plr[myplr].pDungMsgs |= DMSG_CATACOMBS;
+	} else if ( currlevel == 9 && !plr[myplr]._pLvlVisited[9] && gbMaxPlayers == 1 && !(plr[myplr].pDungMsgs & DMSG_CAVES) ) {
 		sfxdelay = 40;
 		if ( plr[myplr]._pClass == PC_WARRIOR ) {
 			sfxdnum = PS_WARR98;
@@ -4835,8 +4835,8 @@ void __cdecl PlayDungMsgs()
 		} else if ( plr[myplr]._pClass == PC_SORCERER ) {
 			sfxdnum = PS_MAGE98;
 		}
-		plr[myplr].pDungMsgs |= 0x4;
-	} else if ( currlevel == 13 && !plr[myplr]._pLvlVisited[13] && gbMaxPlayers == 1 && !(plr[myplr].pDungMsgs & 0x8) ) {
+		plr[myplr].pDungMsgs |= DMSG_CAVES;
+	} else if ( currlevel == 13 && !plr[myplr]._pLvlVisited[13] && gbMaxPlayers == 1 && !(plr[myplr].pDungMsgs & DMSG_HELL) ) {
 		sfxdelay = 40;
 		if ( plr[myplr]._pClass == PC_WARRIOR ) {
 			sfxdnum = PS_WARR99;
@@ -4845,13 +4845,13 @@ void __cdecl PlayDungMsgs()
 		} else if ( plr[myplr]._pClass == PC_SORCERER ) {
 			sfxdnum = PS_MAGE99;
 		}
-		plr[myplr].pDungMsgs |= 0x8;
-	} else if ( currlevel == 16 && !plr[myplr]._pLvlVisited[15] && gbMaxPlayers == 1 && !(plr[myplr].pDungMsgs & 0x10) ) {
+		plr[myplr].pDungMsgs |= DMSG_HELL;
+	} else if ( currlevel == 16 && !plr[myplr]._pLvlVisited[15] && gbMaxPlayers == 1 && !(plr[myplr].pDungMsgs & DMSG_DIABLO) ) {
 		sfxdelay = 40;
 		if ( plr[myplr]._pClass == PC_WARRIOR || plr[myplr]._pClass == PC_ROGUE || plr[myplr]._pClass == PC_SORCERER ) {
 			sfxdnum = PS_DIABLVLINT;
 		}
-		plr[myplr].pDungMsgs |= 0x10;
+		plr[myplr].pDungMsgs |= DMSG_DIABLO;
 	} else {
 		sfxdelay = 0;
 	}
