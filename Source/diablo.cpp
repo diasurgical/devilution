@@ -338,7 +338,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		SaveGamma();
 		if ( ghMainWnd )
 		{
+#ifndef FASTER
 			Sleep(300);
+#endif
 			DestroyWindow(ghMainWnd);
 		}
 	}

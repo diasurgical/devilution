@@ -244,7 +244,9 @@ void __fastcall SetFadeLevel(int fadeval)
 			system_palette[i].peGreen = (fadeval * logical_palette[i].peGreen) >> 8;
 			system_palette[i].peBlue = (fadeval * logical_palette[i].peBlue) >> 8;
 		}
+#ifndef FASTER
 		Sleep(3);
+#endif
 		lpDDInterface->WaitForVerticalBlank(DDWAITVB_BLOCKBEGIN, NULL);
 		palette_update();
 	}
@@ -256,8 +258,10 @@ void __fastcall PaletteFadeIn(int fr)
 
 	ApplyGamma(logical_palette, orig_palette, 256);
 
+#ifndef FASTER
 	for(i = 0; i < 256; i += fr)
 		SetFadeLevel(i);
+#endif
 
 	SetFadeLevel(256);
 	memcpy(logical_palette, orig_palette, 0x400u);
@@ -270,8 +274,10 @@ void __fastcall PaletteFadeOut(int fr)
 
 	if ( sgbFadedIn )
 	{
+#ifndef FASTER
 		for(i = 256; i > 0; i -= fr)
 			SetFadeLevel(i);
+#endif
 
 		SetFadeLevel(0);
 		sgbFadedIn = 0;
