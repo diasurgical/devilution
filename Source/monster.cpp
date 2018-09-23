@@ -833,8 +833,8 @@ void __cdecl ClrAllMonsters()
 
 BOOL __fastcall MonstPlace(int xp, int yp)
 {
-	if ( xp < 0 || xp >= 112
-		|| yp < 0 || yp >= 112
+	if ( xp < 0 || xp >= MAXDUNX
+		|| yp < 0 || yp >= MAXDUNY
 		|| dMonster[xp][yp]
 		|| dPlayer[xp][yp] )
 	{
@@ -843,13 +843,12 @@ BOOL __fastcall MonstPlace(int xp, int yp)
 
 	char f = dFlags[xp][yp];
 
-	// TODO: Add enum values here
-	if ( f & 2 )
+	if ( f & DFLAG_VISIBLE )
 	{
 		return FALSE;
 	}
 
-	if ( f & 8 )
+	if ( f & DFLAG_POPULATED )
 	{
 		return FALSE;
 	}
@@ -2053,7 +2052,7 @@ void __fastcall M_StartWalk3(int i, int xvel, int yvel, int xoff, int yoff, int 
 	monster[v10]._moldy = monster[v10]._my;
 	monster[v10]._mfutx = a6a;
 	monster[v10]._mxvel = v17;
-	dFlags[v13][v14] |= 0x10u;
+	dFlags[v13][v14] |= DFLAG_MONSTER;
 	v16 = monster[v10].MType;
 	monster[v10]._myvel = yvel;
 	monster[v10]._mfuty = a7a;
@@ -2245,9 +2244,9 @@ void __fastcall M_ClearSquares(int i)
 		while ( v4 <= v2 + 1 );
 	}
 	if ( v1 + 1 < 112 )
-		dFlags[v1 + 1][v2] &= 0xEFu;
+		dFlags[v1 + 1][v2] &= ~DFLAG_MONSTER;
 	if ( v5 < 112 )
-		dFlags[v1][v2 + 1] &= 0xEFu;
+		dFlags[v1][v2 + 1] &= ~DFLAG_MONSTER;
 }
 
 void __fastcall M_GetKnockback(int i)
@@ -2998,7 +2997,7 @@ int __fastcall M_DoWalk3(int i)
 		v7 = monster[v2]._mVar1;
 		monster[v2]._mx = v7;
 		v8 = &dFlags[monster[v2]._mVar4][v6];
-		*v8 &= 0xEFu;
+		*v8 &= ~DFLAG_MONSTER;
 		v9 = monster[v2]._uniqtype == 0;
 		dMonster[0][v4 + 112 * v7] = v1 + 1;
 		if ( !v9 )
@@ -4485,7 +4484,7 @@ void __fastcall MAI_Zombie(int i)
 	if ( v3->_mmode == MM_STAND )
 	{
 		v4 = v3->_my;
-		if ( dFlags[v3->_mx][v4] & 2 )
+		if ( dFlags[v3->_mx][v4] & DFLAG_VISIBLE )
 		{
 			v5 = v3->_mx - (unsigned char)v3->_menemyx;
 			v6 = v4 - (unsigned char)v3->_menemyy;
@@ -6836,13 +6835,13 @@ void __fastcall MAI_Garbud(int i)
 		v5 = monster[v2].mtalkmsg;
 		if ( v5 < (signed int)QUEST_GARBUD4
 			&& v5 >(signed int)QUEST_DOOM10
-			&& !(dFlags[v4][v3] & 2)
+			&& !(dFlags[v4][v3] & DFLAG_VISIBLE)
 			&& _LOBYTE(monster[v2]._mgoal) == 7 )
 		{
 			_LOBYTE(monster[v2]._mgoal) = 6;
 			monster[v2].mtalkmsg = v5 + 1;
 		}
-		if ( dFlags[v4][v3] & 2 )
+		if ( dFlags[v4][v3] & DFLAG_VISIBLE )
 		{
 			if ( monster[v2].mtalkmsg == QUEST_GARBUD4 )
 			{
@@ -6888,12 +6887,12 @@ void __fastcall MAI_Zhar(int i)
 		v3 = monster[v2]._my;
 		v4 = monster[v2]._mx;
 		v11 = M_GetDir(v1);
-		if ( monster[v2].mtalkmsg == QUEST_ZHAR1 && !(dFlags[v4][v3] & 2) && _LOBYTE(monster[v2]._mgoal) == 7 )
+		if ( monster[v2].mtalkmsg == QUEST_ZHAR1 && !(dFlags[v4][v3] & DFLAG_VISIBLE) && _LOBYTE(monster[v2]._mgoal) == 7 )
 		{
 			monster[v2].mtalkmsg = QUEST_ZHAR2;
 			_LOBYTE(monster[v2]._mgoal) = 6;
 		}
-		if ( dFlags[v4][v3] & 2 )
+		if ( dFlags[v4][v3] & DFLAG_VISIBLE )
 		{
 			v5 = monster[v2]._mx - (unsigned char)monster[v2]._menemyx;
 			v6 = monster[v2]._my - (unsigned char)monster[v2]._menemyy;
@@ -6943,7 +6942,7 @@ void __fastcall MAI_SnotSpil(int i)
 		v3 = monster[v2]._my;
 		v4 = monster[v2]._mx;
 		v5 = M_GetDir(v1);
-		if ( monster[v2].mtalkmsg == QUEST_BANNER10 && !(dFlags[v4][v3] & 2) && _LOBYTE(monster[v2]._mgoal) == 7 )
+		if ( monster[v2].mtalkmsg == QUEST_BANNER10 && !(dFlags[v4][v3] & DFLAG_VISIBLE) && _LOBYTE(monster[v2]._mgoal) == 7 )
 		{
 			monster[v2].mtalkmsg = QUEST_BANNER11;
 			_LOBYTE(monster[v2]._mgoal) = 6;
@@ -6953,7 +6952,7 @@ void __fastcall MAI_SnotSpil(int i)
 			monster[v2].mtalkmsg = 0;
 			_LOBYTE(monster[v2]._mgoal) = 1;
 		}
-		if ( dFlags[v4][v3] & 2 )
+		if ( dFlags[v4][v3] & DFLAG_VISIBLE )
 		{
 			if ( monster[v2].mtalkmsg == QUEST_BANNER12 )
 			{
@@ -7005,7 +7004,7 @@ void __fastcall MAI_Lazurus(int i)
 		v3 = monster[v2]._my;
 		v4 = monster[v2]._mx;
 		v5 = M_GetDir(v1);
-		if ( dFlags[v4][v3] & 2 )
+		if ( dFlags[v4][v3] & DFLAG_VISIBLE )
 		{
 			if ( gbMaxPlayers != 1 )
 				goto LABEL_29;
@@ -7071,7 +7070,7 @@ void __fastcall MAI_Lazhelp(int i)
 		v3 = monster[v2]._my;
 		v4 = monster[v2]._mx;
 		v5 = M_GetDir(ia);
-		if ( dFlags[v4][v3] & 2 )
+		if ( dFlags[v4][v3] & DFLAG_VISIBLE )
 		{
 			if ( gbMaxPlayers == 1 )
 			{
@@ -7112,12 +7111,12 @@ void __fastcall MAI_Lachdanan(int i)
 		v3 = monster[v2]._my;
 		v4 = monster[v2]._mx;
 		v6 = M_GetDir(v1);
-		if ( monster[v2].mtalkmsg == QUEST_VEIL9 && !(dFlags[v4][v3] & 2) && _LOBYTE(monster[v2]._mgoal) == 7 )
+		if ( monster[v2].mtalkmsg == QUEST_VEIL9 && !(dFlags[v4][v3] & DFLAG_VISIBLE) && _LOBYTE(monster[v2]._mgoal) == 7 )
 		{
 			monster[v2].mtalkmsg = QUEST_VEIL10;
 			_LOBYTE(monster[v2]._mgoal) = 6;
 		}
-		if ( dFlags[v4][v3] & 2 )
+		if ( dFlags[v4][v3] & DFLAG_VISIBLE )
 		{
 			if ( monster[v2].mtalkmsg == QUEST_VEIL11 )
 			{
@@ -7157,7 +7156,7 @@ void __fastcall MAI_Warlord(int i)
 		v3 = monster[v2]._my;
 		v4 = monster[v2]._mx;
 		v5 = M_GetDir(v1);
-		if ( dFlags[v4][v3] & 2 && monster[v2].mtalkmsg == QUEST_WARLRD9 )
+		if ( dFlags[v4][v3] & DFLAG_VISIBLE && monster[v2].mtalkmsg == QUEST_WARLRD9 )
 		{
 			if ( _LOBYTE(monster[v2]._mgoal) == 6 )
 				monster[v2]._mmode = MM_TALK;
@@ -7270,7 +7269,7 @@ void __cdecl ProcessMonsters()
 			}
 		}
 		v4 = &dFlags[monster[v1]._mx][monster[v1]._my];
-		if ( *v4 & 2 && !monster[v1]._msquelch && monster[v1].MType->mtype == MT_CLEAVER )
+		if ( *v4 & DFLAG_VISIBLE && !monster[v1]._msquelch && monster[v1].MType->mtype == MT_CLEAVER )
 			PlaySFX(USFX_CLEAVER);
 		if ( monster[v1]._mFlags & 0x10 )
 		{
@@ -7291,7 +7290,7 @@ void __cdecl ProcessMonsters()
 			if ( v9 >= MAX_PLRS )
 				TermMsg("Illegal enemy player %d for monster \"%s\"", v9, monster[v1].mName);
 			v10 = monster[v1]._menemy;
-			v11 = (*v4 & 2) == 0;
+			v11 = (*v4 & DFLAG_VISIBLE) == 0;
 			v12 = (char *)&plr[v10]._px;
 			v13 = (char *)&plr[v10]._py;
 			monster[v1]._menemyx = *v12;
@@ -7499,7 +7498,7 @@ bool __fastcall DirOK(int i, int mdir)
 	{
 		if ( !SolidLoc(v6, v7 + 1) )
 		{
-			v8 = (dFlags[v6][v7 + 1] & 0x10) == 0;
+			v8 = (dFlags[v6][v7 + 1] & DFLAG_MONSTER) == 0;
 			goto LABEL_18;
 		}
 		return 0;
@@ -7508,7 +7507,7 @@ bool __fastcall DirOK(int i, int mdir)
 	{
 		if ( SolidLoc(v6 + 1, v7) )
 			return 0;
-		v8 = (dFlags[v6 + 1][v7] & 0x10) == 0;
+		v8 = (dFlags[v6 + 1][v7] & DFLAG_MONSTER) == 0;
 	}
 	else
 	{
@@ -7591,7 +7590,7 @@ LABEL_24:
 
 BOOL __fastcall PosOkMissile(int x, int y)
 {
-	return !nMissileTable[dPiece[x][y]] && !(dFlags[x][y] & 0x10);
+	return !nMissileTable[dPiece[x][y]] && !(dFlags[x][y] & DFLAG_MONSTER);
 }
 
 BOOL __fastcall CheckNoSolid(int x, int y)

@@ -449,7 +449,7 @@ bool __fastcall RndLocOk(int xp, int yp)
 	v2 = xp;
 	v3 = v2 * 112 + yp;
 	result = 0;
-	if ( !dMonster[0][v3] && !dPlayer[v2][yp] && !dObject[v2][yp] && !(dFlags[v2][yp] & 8) )
+	if ( !dMonster[0][v3] && !dPlayer[v2][yp] && !dObject[v2][yp] && !(dFlags[v2][yp] & DFLAG_POPULATED) )
 	{
 		v4 = dPiece[0][v3];
 		if ( !nSolidTable[v4] && (leveltype != 1 || v4 <= 126 || v4 >= 144) )
@@ -932,7 +932,7 @@ void __fastcall AddL3Objs(int x1, int y1, int x2, int y2)
 
 bool __fastcall WallTrapLocOk(int xp, int yp)
 {
-	return (~dFlags[xp][yp] & 8u) >> 3;
+	return (~dFlags[xp][yp] & DFLAG_POPULATED) >> 3;
 }
 
 void __cdecl AddL2Torches()
@@ -999,7 +999,7 @@ bool __fastcall TorchLocOK(int xp, int yp)
 	bool result; // al
 
 	v2 = xp;
-	if ( dFlags[v2][yp] & 8 )
+	if ( dFlags[v2][yp] & DFLAG_POPULATED )
 		result = 0;
 	else
 		result = nTrapTable[dPiece[0][yp + v2 * 112]] != 0;

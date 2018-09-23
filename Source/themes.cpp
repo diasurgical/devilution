@@ -481,7 +481,7 @@ LABEL_5:
 			{
 				if ( dung_map[0][v6] == tv )
 				{
-					if ( dFlags[0][v6] & 8 )
+					if ( dFlags[0][v6] & DFLAG_POPULATED )
 						return 0;
 					++v3;
 				}
@@ -690,7 +690,7 @@ void __cdecl HoldThemeRooms()
 					do
 					{
 						if ( dung_map[0][v4] == v2 )
-							dFlags[0][v4] |= 8u;
+							dFlags[0][v4] |= DFLAG_POPULATED;
 						v4 += 112;
 						--v5;
 					}

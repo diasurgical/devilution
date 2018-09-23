@@ -1008,11 +1008,11 @@ BOOL __fastcall PlrDirOK(int pnum, int dir)
 
 	BOOL isOk = TRUE;
 	if ( dir == DIR_E ) {
-		isOk = !SolidLoc(px, py + 1) && !(dFlags[px][py + 1] & 32);
+		isOk = !SolidLoc(px, py + 1) && !(dFlags[px][py + 1] & DFLAG_PLAYER);
 	}
 
 	if ( isOk && dir == DIR_W ) {
-		isOk = !SolidLoc(px + 1, py) && !(dFlags[px + 1][py] & 32);
+		isOk = !SolidLoc(px + 1, py) && !(dFlags[px + 1][py] & DFLAG_PLAYER);
 	}
 
 	return isOk;
@@ -1373,7 +1373,7 @@ void __fastcall StartWalk3(int pnum, int xvel, int yvel, int xoff, int yoff, int
 	dPlayer[px][py] = -1 - pnum;
 	plr[pnum]._pVar4 = x;
 	plr[pnum]._pVar5 = y;
-	dFlags[x][y] |= 0x20;
+	dFlags[x][y] |= DFLAG_PLAYER;
 	plr[pnum]._pxoff = xoff;
 	plr[pnum]._pyoff = yoff;
 
@@ -1554,8 +1554,8 @@ void __fastcall FixPlrWalkTags(int pnum)
 	}
 
 	if ( dx >= 0 && dx < MAXDUNX - 1 && dy >= 0 && dy < MAXDUNY -1 ) {
-		dFlags[dx + 1][dy] &= 0xDF;
-		dFlags[dx][dy + 1] &= 0xDF;
+		dFlags[dx + 1][dy] &= ~DFLAG_PLAYER;
+		dFlags[dx][dy + 1] &= ~DFLAG_PLAYER;
 	}
 }
 
@@ -1585,7 +1585,7 @@ void __fastcall RemovePlrFromMap(int pnum)
 			{
 				v5 = dFlags[1][v3];
 				if ( v5 & 0x20 )
-					dFlags[1][v3] = v5 & 0xDF;
+					dFlags[1][v3] = v5 & ~DFLAG_PLAYER;
 			}
 			v3 += 112;
 			--v4;
@@ -1766,7 +1766,7 @@ LABEL_18:
 		FixPlayerLocation(v2, plr[v3 / 0x54D8]._pdir);
 		RemovePlrFromMap(v2);
 		v10 = &dFlags[plr[v3 / 0x54D8].WorldX][plr[v3 / 0x54D8].WorldY];
-		*v10 |= 4u;
+		*v10 |= DFLAG_DEAD_PLAYER;
 		SetPlayerOld(v2);
 		if ( v2 == myplr )
 		{
@@ -2409,7 +2409,7 @@ BOOL __fastcall PM_DoWalk3(int pnum)
 
 	if ( plr[pnum]._pVar8 == vel ) {
 		dPlayer[plr[pnum].WorldX][plr[pnum].WorldY] = 0;
-		dFlags[plr[pnum]._pVar4][plr[pnum]._pVar5] &= 0xDF;
+		dFlags[plr[pnum]._pVar4][plr[pnum]._pVar5] &= ~DFLAG_PLAYER;
 		plr[pnum].WorldX = plr[pnum]._pVar1;
 		plr[pnum].WorldY = plr[pnum]._pVar2;
 		dPlayer[plr[pnum]._pVar1][plr[pnum]._pVar2] = pnum + 1;
@@ -3252,7 +3252,7 @@ BOOL __fastcall PM_DoDeath(int pnum)
 
 		plr[pnum]._pAnimFrame = plr[pnum]._pAnimLen;
 		plr[pnum]._pAnimDelay = 10000;
-		dFlags[plr[pnum].WorldX][plr[pnum].WorldY] |= 4;
+		dFlags[plr[pnum].WorldX][plr[pnum].WorldY] |= DFLAG_DEAD_PLAYER;
 	}
 
 	if ( plr[pnum]._pVar8 < 100 ) {

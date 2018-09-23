@@ -1142,7 +1142,7 @@ void __fastcall multi_player_joins(int pnum, TCmdPlrInfoHdr *cmd, int a3)
 							plr[v6]._pVar8 = 2 * v11;
 							v13 = plr[v6].WorldX;
 							plr[v6]._pAnimFrame = v12;
-							dFlags[v13][plr[v6].WorldY] |= 4u;
+							dFlags[v13][plr[v6].WorldY] |= DFLAG_DEAD_PLAYER;
 						}
 						else
 						{

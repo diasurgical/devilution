@@ -468,7 +468,7 @@ void __fastcall LoadL2Dungeon(char *sFileName, int vx, int vy)
 					v14 = *v12;
 					if ( *v12 )
 					{
-						dflags[0][v13] |= 0x80u;
+						dflags[0][v13] |= DFLAG_EXPLORED;
 						dungeon[0][v13] = v14;
 					}
 					else
@@ -717,7 +717,7 @@ void __fastcall LoadPreL2Dungeon(char *sFileName, int vx, int vy)
 					v12 = *v10;
 					if ( *v10 )
 					{
-						dflags[0][v11] |= 0x80u;
+						dflags[0][v11] |= DFLAG_EXPLORED;
 						dungeon[0][v11] = v12;
 					}
 					else
@@ -1582,7 +1582,7 @@ void __fastcall DRLG_L2SetRoom(int rx1, int ry1)
 					v5 = *v7;
 					if ( *v7 )
 					{
-						dflags[0][v4] |= 0x80u;
+						dflags[0][v4] |= DFLAG_EXPLORED;
 						dungeon[0][v4] = v5;
 					}
 					else
@@ -2014,7 +2014,7 @@ void __fastcall DefineRoom(int nX1, int nY1, int nX2, int nY2, int ForceHW)
 				i = nY2;
 				do
 				{
-					*ForceHWa |= 0x80u;
+					*ForceHWa |= DFLAG_EXPLORED;
 					v9 = v14-- == 1;
 					ForceHWa += 40;
 				}

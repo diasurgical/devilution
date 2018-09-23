@@ -111,7 +111,7 @@ void __cdecl InitAutomap()
 		v15 = 112;
 		do
 		{
-			*v14 &= 0x7Fu;
+			*v14 &= ~DFLAG_EXPLORED;
 			v14 += 112;
 			--v15;
 		}

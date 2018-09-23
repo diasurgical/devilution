@@ -1131,7 +1131,7 @@ void __fastcall PutMissile(int i)
 	if ( !missile[v1]._miDelFlag )
 	{
 		v4 = v3 + 112 * v2;
-		dFlags[0][v4] |= 1u;
+		dFlags[0][v4] |= DFLAG_MISSILE;
 		v5 = (unsigned char *)dMissile + v4;
 		if ( *v5 )
 			*v5 = -1;
@@ -2337,7 +2337,7 @@ void __cdecl InitMissiles()
 		v8 = 112;
 		do
 		{
-			*v7 &= 0xFEu;
+			*v7 &= ~DFLAG_MISSILE;
 			v7 += 112;
 			--v8;
 		}
@@ -7368,7 +7368,7 @@ void __cdecl ProcessMissiles()
 	for ( i = 0; i < v0; dMissile[0][v2] = 0 )
 	{
 		v2 = 112 * missile[missileactive[i]]._mix + missile[missileactive[i]]._miy;
-		dFlags[0][v2] &= 0xFEu;
+		dFlags[0][v2] &= ~DFLAG_MISSILE;
 		++i;
 	}
 	v3 = 0;
@@ -7490,6 +7490,6 @@ void __cdecl missiles_process_charge()
 
 void __fastcall ClearMissileSpot(int mi)
 {
-	dFlags[missile[mi]._mix][missile[mi]._miy] &= 0xFE;
+	dFlags[missile[mi]._mix][missile[mi]._miy] &= ~DFLAG_MISSILE;
 	dMissile[missile[mi]._mix][missile[mi]._miy] = 0;
 }

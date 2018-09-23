@@ -36,8 +36,8 @@ void __cdecl CheckDungeonClear()
 			if ( dPlayer[i][j] )
 				TermMsg("Players not cleared");
 
-			dMonsDbg[currlevel][i][j] = dFlags[i][j] & 2;
-			dFlagDbg[currlevel][i][j] = dFlags[i][j] & 8;
+			dMonsDbg[currlevel][i][j] = dFlags[i][j] & DFLAG_VISIBLE;
+			dFlagDbg[currlevel][i][j] = dFlags[i][j] & DFLAG_POPULATED;
 		}
 	}
 }

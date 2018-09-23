@@ -834,7 +834,7 @@ void __cdecl DRLG_SetPC()
 			v6 = &dFlags[v3][v0 + i];
 			do
 			{
-				*v6 |= 8u;
+				*v6 |= DFLAG_POPULATED;
 				v6 += 112;
 				--v5;
 			}
@@ -867,7 +867,7 @@ void __fastcall Make_SetPC(int x, int y, int w, int h)
 			v9 = &dFlags[v6][wa + i];
 			do
 			{
-				*v9 |= 8u;
+				*v9 |= DFLAG_POPULATED;
 				v9 += 112;
 				--v8;
 			}
@@ -1379,10 +1379,10 @@ void __cdecl DRLG_HoldThemeRooms()
 						{
 							v6 = v3 + v4;
 							v4 += 224;
-							dFlags[0][v6] |= 8u;
-							dFlags[1][v6] |= 8u;
-							dFlags[0][v6 + 1] |= 8u;
-							dFlags[1][v6 + 1] |= 8u;
+							dFlags[0][v6] |= DFLAG_POPULATED;
+							dFlags[1][v6] |= DFLAG_POPULATED;
+							dFlags[0][v6 + 1] |= DFLAG_POPULATED;
+							dFlags[1][v6 + 1] |= DFLAG_POPULATED;
 							--v5;
 						}
 						while ( v5 );

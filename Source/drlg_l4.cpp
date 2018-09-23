@@ -352,7 +352,7 @@ void __fastcall DRLG_L4SetSPRoom(int rx1, int ry1)
 					v5 = *v7;
 					if ( *v7 )
 					{
-						dflags[0][v4] |= 0x80u;
+						dflags[0][v4] |= DFLAG_EXPLORED;
 						dungeon[0][v4] = v5;
 					}
 					else
@@ -451,7 +451,7 @@ void __fastcall DRLG_L4SetRoom(unsigned char *pSetPiece, int rx1, int ry1)
 					v7 = *v5;
 					if ( *v5 )
 					{
-						dflags[0][v6] |= 0x80u;
+						dflags[0][v6] |= DFLAG_EXPLORED;
 						dungeon[0][v6] = v7;
 					}
 					else
@@ -2963,7 +2963,7 @@ bool __fastcall DRLG_L4PlaceMiniSet(const unsigned char *miniset, int tmin, int 
 						v21 = v23[j];
 						if ( v21 )
 						{
-							dflags[0][v20] |= 8u;
+							dflags[0][v20] |= DFLAG_POPULATED;
 							dungeon[0][v20] = v21;
 						}
 						++j;

@@ -267,7 +267,7 @@ int __cdecl DRLG_L3Anvil()
 			v11 = L3ANVIL[v7];
 			if ( v11 )
 				dungeon[0][v9] = v11;
-			dflags[0][v9] |= 0x80u;
+			dflags[0][v9] |= DFLAG_EXPLORED;
 			++v7;
 			v9 += 40;
 			--v10;
