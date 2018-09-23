@@ -4302,83 +4302,51 @@ LABEL_19:
 
 void __fastcall SyncInitPlrPos(int pnum)
 {
-	int v1; // esi
-	bool v2; // zf
-	unsigned int v3; // eax
-	int v4; // ebx
-	int v5; // edi
-	int v6; // eax
-	signed int v7; // [esp+Ch] [ebp-18h]
-	int p; // [esp+10h] [ebp-14h]
-	int v9; // [esp+14h] [ebp-10h]
-	signed int v10; // [esp+18h] [ebp-Ch]
-	signed int v11; // [esp+1Ch] [ebp-8h]
-	unsigned int i; // [esp+20h] [ebp-4h]
-	signed int v13; // [esp+20h] [ebp-4h]
+	plr[pnum]._ptargx = plr[pnum].WorldX;
+	plr[pnum]._ptargy = plr[pnum].WorldY;
 
-	p = pnum;
-	v1 = pnum;
-	v2 = gbMaxPlayers == 1;
-	plr[v1]._ptargx = plr[pnum].WorldX;
-	plr[v1]._ptargy = plr[pnum].WorldY;
-	if ( !v2 && plr[v1].plrlevel == currlevel )
-	{
-		v3 = 0;
-		for ( i = 0; ; v3 = i )
-		{
-			v4 = plr[v1].WorldX + *(int *)((char *)plrxoff2 + v3);
-			v5 = plr[v1].WorldY + *(int *)((char *)plryoff2 + v3);
-			if ( PosOkPlayer(p, v4, v5) )
-				break;
-			i += 4;
-			if ( i >= 0x20 )
-				break;
+	if ( gbMaxPlayers == 1 || plr[pnum].plrlevel != currlevel ) {
+		return;
+	}
+
+	int x;
+	int y;
+	for ( DWORD i = 0; i < 8; i++ ) {
+		x = plr[pnum].WorldX + plrxoff2[i];
+		y = plr[pnum].WorldY + plryoff2[i];
+		if ( PosOkPlayer(pnum, x, y) ) {
+			break;
 		}
-		if ( !PosOkPlayer(p, v4, v5) )
-		{
-			v11 = 0;
-			v6 = -1;
-			v13 = 1;
-			v7 = -1;
-			do
-			{
-				if ( v11 )
-					break;
-				v9 = v6;
-				while ( v6 <= v13 && !v11 )
-				{
-					v5 = v9 + plr[v1].WorldY;
-					v10 = v7;
-					do
-					{
-						if ( v11 )
-							break;
-						v4 = v10 + plr[v1].WorldX;
-						if ( PosOkPlayer(p, v10 + plr[v1].WorldX, v5) && !PosOkPortal(currlevel, v4, v5) )
-							v11 = 1;
-						++v10;
+	}
+
+	if ( !PosOkPlayer(pnum, x, y) ) {
+		BOOL posOk = FALSE;
+		int xx;
+		int yy;
+		for ( int range = 1; range < 50 && !posOk; range++ ) {
+			for ( yy = -range; yy <= range && !posOk; yy++ ) {
+				y = yy + plr[pnum].WorldY;
+				for ( xx = -range; xx <= range && !posOk; xx++ ) {
+					x = xx + plr[pnum].WorldX;
+					if ( PosOkPlayer(pnum, x, y) && !PosOkPortal(currlevel, x, y) ) {
+						posOk = TRUE;
 					}
-					while ( v10 <= v13 );
-					v6 = ++v9;
 				}
-				++v13;
-				v6 = v7-- - 1;
 			}
-			while ( v7 > -50 );
 		}
-		plr[v1].WorldX = v4;
-		v2 = p == myplr;
-		plr[v1].WorldY = v5;
-		dPlayer[v4][v5] = p + 1;
-		if ( v2 )
-		{
-			plr[v1]._px = v4;
-			plr[v1]._py = v5;
-			plr[v1]._ptargx = v4;
-			plr[v1]._ptargy = v5;
-			ViewX = v4;
-			ViewY = v5;
-		}
+	}
+
+	plr[pnum].WorldX = x;
+	plr[pnum].WorldY = y;
+	dPlayer[x][y] = pnum + 1;
+
+	if ( pnum == myplr ) {
+		plr[pnum]._px = x;
+		plr[pnum]._py = y;
+		plr[pnum]._ptargx = x;
+		plr[pnum]._ptargy = y;
+		ViewX = x;
+		ViewY = y;
 	}
 }
 // 679660: using guessed type char gbMaxPlayers;

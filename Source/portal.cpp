@@ -196,7 +196,7 @@ void __cdecl GetPortalLvlPos()
 	}
 }
 
-bool __fastcall PosOkPortal(int lvl, int x, int y)
+BOOL __fastcall PosOkPortal(int lvl, int x, int y)
 {
 	int *v3; // eax
 
