@@ -4802,164 +4802,59 @@ void __fastcall InitDungMsgs(int pnum)
 
 void __cdecl PlayDungMsgs()
 {
-	int v0; // eax
-	int v1; // eax
-	char v2; // cl
-	char v3; // dl
-	char v4; // cl
-	char v5; // cl
-	char v6; // dl
-	char v7; // cl
-	char v8; // dl
-	char v9; // cl
-	char v10; // dl
-	char v11; // cl
-	char v12; // dl
-
-	v0 = myplr;
-	if ( (unsigned int)myplr >= 4 )
-	{
+	if ( (DWORD)myplr >= MAX_PLRS ) {
 		TermMsg("PlayDungMsgs: illegal player %d", myplr);
-		v0 = myplr;
 	}
-	switch ( currlevel )
-	{
-		case 1u:
-			v1 = v0;
-			if ( !plr[v1]._pLvlVisited[1] && gbMaxPlayers == currlevel )
-			{
-				v2 = plr[v1].pDungMsgs;
-				if ( !(v2 & 1) )
-				{
-					v3 = plr[v1]._pClass;
-					sfxdelay = 40;
-					if ( v3 )
-					{
-						if ( v3 == 1 )
-						{
-							sfxdnum = PS_ROGUE97;
-						}
-						else if ( v3 == 2 )
-						{
-							sfxdnum = PS_MAGE97;
-						}
-					}
-					else
-					{
-						sfxdnum = PS_WARR97;
-					}
-					v4 = v2 | 1;
-LABEL_14:
-					plr[v1].pDungMsgs = v4;
-					return;
-				}
-			}
-			break;
-		case 5u:
-			v1 = v0;
-			if ( !plr[v1]._pLvlVisited[5] && gbMaxPlayers == 1 )
-			{
-				v5 = plr[v1].pDungMsgs;
-				if ( !(v5 & 2) )
-				{
-					v6 = plr[v1]._pClass;
-					sfxdelay = 40;
-					if ( v6 )
-					{
-						if ( v6 == 1 )
-						{
-							sfxdnum = PS_ROGUE96;
-						}
-						else if ( v6 == 2 )
-						{
-							sfxdnum = PS_MAGE96;
-						}
-					}
-					else
-					{
-						sfxdnum = PS_WARR96B;
-					}
-					v4 = v5 | 2;
-					goto LABEL_14;
-				}
-			}
-			break;
-		case 9u:
-			v1 = v0;
-			if ( !plr[v1]._pLvlVisited[9] && gbMaxPlayers == 1 )
-			{
-				v7 = plr[v1].pDungMsgs;
-				if ( !(v7 & 4) )
-				{
-					v8 = plr[v1]._pClass;
-					sfxdelay = 40;
-					if ( v8 )
-					{
-						if ( v8 == 1 )
-						{
-							sfxdnum = PS_ROGUE98;
-						}
-						else if ( v8 == 2 )
-						{
-							sfxdnum = PS_MAGE98;
-						}
-					}
-					else
-					{
-						sfxdnum = PS_WARR98;
-					}
-					v4 = v7 | 4;
-					goto LABEL_14;
-				}
-			}
-			break;
-		case 13u:
-			v1 = v0;
-			if ( !plr[v1]._pLvlVisited[13] && gbMaxPlayers == 1 )
-			{
-				v9 = plr[v1].pDungMsgs;
-				if ( !(v9 & 8) )
-				{
-					v10 = plr[v1]._pClass;
-					sfxdelay = 40;
-					if ( v10 )
-					{
-						if ( v10 == 1 )
-						{
-							sfxdnum = PS_ROGUE99;
-						}
-						else if ( v10 == 2 )
-						{
-							sfxdnum = PS_MAGE99;
-						}
-					}
-					else
-					{
-						sfxdnum = PS_WARR99;
-					}
-					v4 = v9 | 8;
-					goto LABEL_14;
-				}
-			}
-			break;
-		case 16u:
-			v1 = v0;
-			if ( !plr[v1]._pLvlVisited[15] && gbMaxPlayers == 1 )
-			{
-				v11 = plr[v1].pDungMsgs;
-				if ( !(v11 & 0x10) )
-				{
-					v12 = plr[v1]._pClass;
-					sfxdelay = 40;
-					if ( !v12 || v12 == 1 || v12 == 2 )
-						sfxdnum = PS_DIABLVLINT;
-					v4 = v11 | 0x10;
-					goto LABEL_14;
-				}
-			}
-			break;
+
+	if ( currlevel == 1 && !plr[myplr]._pLvlVisited[1] && gbMaxPlayers == 1 && !(plr[myplr].pDungMsgs & 0x1) ) {
+		sfxdelay = 40;
+		if ( plr[myplr]._pClass == PC_WARRIOR ) {
+			sfxdnum = PS_WARR97;
+		} else if ( plr[myplr]._pClass == PC_ROGUE ) {
+			sfxdnum = PS_ROGUE97;
+		} else if ( plr[myplr]._pClass == PC_SORCERER ) {
+			sfxdnum = PS_MAGE97;
+		}
+		plr[myplr].pDungMsgs = plr[myplr].pDungMsgs | 0x1;
+	} else if ( currlevel == 5 && !plr[myplr]._pLvlVisited[5] && gbMaxPlayers == 1 && !(plr[myplr].pDungMsgs & 0x2) ) {
+		sfxdelay = 40;
+		if ( plr[myplr]._pClass == PC_WARRIOR ) {
+			sfxdnum = PS_WARR96B;
+		} else if ( plr[myplr]._pClass == PC_ROGUE ) {
+			sfxdnum = PS_ROGUE96;
+		} else if ( plr[myplr]._pClass == PC_SORCERER ) {
+			sfxdnum = PS_MAGE96;
+		}
+		plr[myplr].pDungMsgs |= 0x2;
+	} else if ( currlevel == 9 && !plr[myplr]._pLvlVisited[9] && gbMaxPlayers == 1 && !(plr[myplr].pDungMsgs & 0x4) ) {
+		sfxdelay = 40;
+		if ( plr[myplr]._pClass == PC_WARRIOR ) {
+			sfxdnum = PS_WARR98;
+		} else if ( plr[myplr]._pClass == PC_ROGUE ) {
+			sfxdnum = PS_ROGUE98;
+		} else if ( plr[myplr]._pClass == PC_SORCERER ) {
+			sfxdnum = PS_MAGE98;
+		}
+		plr[myplr].pDungMsgs |= 0x4;
+	} else if ( currlevel == 13 && !plr[myplr]._pLvlVisited[13] && gbMaxPlayers == 1 && !(plr[myplr].pDungMsgs & 0x8) ) {
+		sfxdelay = 40;
+		if ( plr[myplr]._pClass == PC_WARRIOR ) {
+			sfxdnum = PS_WARR99;
+		} else if ( plr[myplr]._pClass == PC_ROGUE ) {
+			sfxdnum = PS_ROGUE99;
+		} else if ( plr[myplr]._pClass == PC_SORCERER ) {
+			sfxdnum = PS_MAGE99;
+		}
+		plr[myplr].pDungMsgs |= 0x8;
+	} else if ( currlevel == 16 && !plr[myplr]._pLvlVisited[15] && gbMaxPlayers == 1 && !(plr[myplr].pDungMsgs & 0x10) ) {
+		sfxdelay = 40;
+		if ( plr[myplr]._pClass == PC_WARRIOR || plr[myplr]._pClass == PC_ROGUE || plr[myplr]._pClass == PC_SORCERER ) {
+			sfxdnum = PS_DIABLVLINT;
+		}
+		plr[myplr].pDungMsgs |= 0x10;
+	} else {
+		sfxdelay = 0;
 	}
-	sfxdelay = 0;
 }
 // 52A554: using guessed type int sfxdelay;
 // 679660: using guessed type char gbMaxPlayers;
