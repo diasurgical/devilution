@@ -2,6 +2,7 @@
 
 #include "../types.h"
 
+#ifndef NO_GLOBALS
 int itemactive[MAXITEMS];
 int uitemflag;
 int itemavail[MAXITEMS];
@@ -13,7 +14,7 @@ unsigned char *Item2Frm[35];
 int UniqueItemFlag[128];
 int numitems;
 int gnNumGetRecords;
-
+#endif
 
 const PLStruct PL_Prefix[84] =
 {

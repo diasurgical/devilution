@@ -2,11 +2,13 @@
 
 #include "../types.h"
 
+#ifndef NO_GLOBALS
 PALETTEENTRY logical_palette[256];
 int palette_cpp_init_value; // weak
 PALETTEENTRY system_palette[256];
 PALETTEENTRY orig_palette[256];
 UINT gdwPalEntries;
+#endif
 
 const int palette_inf = 0x7F800000; // weak
 

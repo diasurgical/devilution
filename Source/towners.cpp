@@ -2,6 +2,7 @@
 
 #include "../types.h"
 
+#ifndef NO_GLOBALS
 int storeflag; // weak
 int sgnCowMsg; // weak
 int numtowners; // idb
@@ -10,6 +11,7 @@ int bannerflag; // weak // unused 0x6AAC28
 int boyloadflag; // weak
 void *pCowCels; // idb
 TownerStruct towner[16];
+#endif
 
 
 const int snSFX[3][3] =

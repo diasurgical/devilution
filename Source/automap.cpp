@@ -2,9 +2,12 @@
 
 #include "../types.h"
 
+#ifndef NO_GLOBALS
 USHORT automaptype[512];
-static int MapX;
-static int MapY;
+#endif
+STATIC int MapX;
+STATIC int MapY;
+#ifndef NO_GLOBALS
 bool automapflag; // idb
 char AMbyte_4B7E4C[32];
 char automapview[DMAXX][DMAXY];
@@ -16,6 +19,7 @@ int AutoMapXPos; // weak
 int AutoMapYPos; // weak
 int AMPlayerX; // weak
 int AMPlayerY; // weak
+#endif
 
 // color used to draw the player's arrow
 #define COLOR_PLAYER      (PAL8_ORANGE+1)

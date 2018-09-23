@@ -2,8 +2,11 @@
 
 #include "../types.h"
 
+#ifndef NO_GLOBALS
 void *sgpBackBuf;
+#endif
 int dx_cpp_init_value; // weak
+#ifndef NO_GLOBALS
 IDirectDraw *lpDDInterface;
 IDirectDrawPalette *lpDDPalette; // idb
 int sgdwLockCount;
@@ -14,6 +17,7 @@ static CRITICAL_SECTION sgMemCrit;
 char gbBackBuf; // weak
 char gbEmulate; // weak
 HMODULE ghDiabMod; // idb
+#endif
 
 int dx_inf = 0x7F800000; // weak
 

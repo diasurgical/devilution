@@ -3,6 +3,8 @@
 #include "../types.h"
 
 float sound_cpp_init_value;
+
+#ifndef NO_GLOBALS
 LPDIRECTSOUNDBUFFER DSBs[8];
 LPDIRECTSOUND sglpDS;
 char gbSndInited;
@@ -11,6 +13,7 @@ int sglSoundVolume;
 HMODULE hDsound_dll; // idb
 HANDLE sgpMusicTrack;
 LPDIRECTSOUNDBUFFER sglpDSB;
+#endif
 
 const int sound_inf = 0x7F800000; // weak
 

@@ -2,9 +2,11 @@
 
 #include "../types.h"
 
+#ifndef NO_GLOBALS
 int plrmsg_ticks; // weak
 char plr_msg_slot; // weak
 _plrmsg plr_msgs[8];
+#endif
 
 const char text_color_from_player_num[5] = { COL_WHITE, COL_WHITE, COL_WHITE, COL_WHITE, COL_GOLD };
 

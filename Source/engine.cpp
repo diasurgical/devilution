@@ -2,15 +2,20 @@
 
 #include "../types.h"
 
+#ifndef NO_GLOBALS
 int engine_cpp_init_value; // weak
+
 char gbPixelCol; // automap pixel color 8-bit (palette entry)
 int dword_52B970; // bool flip - if y < x
 int orgseed; // weak
 int sgnWidth;
 int sglGameSeed; // weak
-static CRITICAL_SECTION sgMemCrit;
+#endif
+STATIC CRITICAL_SECTION sgMemCrit;
+#ifndef NO_GLOBALS
 int SeedCount; // weak
 int dword_52B99C; // bool valid - if x/y are in bounds
+#endif
 
 const int engine_inf = 0x7F800000; // weak
 const int rand_increment = 1; // unused

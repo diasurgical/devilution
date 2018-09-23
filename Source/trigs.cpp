@@ -2,9 +2,11 @@
 
 #include "../types.h"
 
+#ifndef NO_GLOBALS
 int trigflag[MAXTRIGGERS];
 TriggerStruct trigs[MAXTRIGGERS];
 int TWarpFrom; // weak
+#endif
 
 int TownDownList[11] = { 716, 715, 719, 720, 721, 723, 724, 725, 726, 727, -1 };
 int TownWarp1List[13] =

@@ -4,8 +4,10 @@
 
 int doom_quest_time; // weak
 int doom_stars_drawn; // weak
+#ifndef NO_GLOBALS
 void *pDoomCel;
 int doomflag; // weak
+#endif
 int DoomQuestState; // idb
 
 /*

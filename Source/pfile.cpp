@@ -5,9 +5,11 @@
 #define PASSWORD_SINGLE    "xrgyrkj1"
 #define PASSWORD_MULTI     "szqnlsk1"
 
-static int pfile_cpp_init_value;
-static char hero_names[MAX_CHARACTERS][PLR_NAME_LEN];
+STATIC int pfile_cpp_init_value;
+STATIC char hero_names[MAX_CHARACTERS][PLR_NAME_LEN];
+#ifndef NO_GLOBALS
 BOOL gbValidSaveFile; // idb
+#endif
 
 const int pfile_inf = 0x7F800000; // weak
 

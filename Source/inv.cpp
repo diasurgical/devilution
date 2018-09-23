@@ -2,10 +2,12 @@
 
 #include "../types.h"
 
+#ifndef NO_GLOBALS
 BOOL invflag;
 void *pInvCels;
 int drawsbarflag; // idb
 int sgdwLastTime; // check name
+#endif
 
 const InvXY InvRect[73] =
 {

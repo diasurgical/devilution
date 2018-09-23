@@ -2,6 +2,7 @@
 
 #include "../types.h"
 
+#ifndef NO_GLOBALS
 int diabquad1x; // weak
 int diabquad1y; // weak
 int diabquad3x; // idb
@@ -20,6 +21,7 @@ int SP4y2; // weak
 char L4dungeon[80][80];
 char dung[20][20];
 //int dword_52A4DC; // weak
+#endif
 
 const unsigned char L4ConvTbl[16] = { 30u, 6u, 1u, 6u, 2u, 6u, 6u, 6u, 9u, 6u, 1u, 6u, 2u, 6u, 3u, 6u };
 const unsigned char L4USTAIRS[42] =

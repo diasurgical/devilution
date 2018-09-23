@@ -2,11 +2,13 @@
 
 #include "../types.h"
 
+#ifndef NO_GLOBALS
 int help_select_line; // weak
 int dword_634494; // weak
 int helpflag;
 int displayinghelp[22]; /* check, does nothing? */
 int HelpTop; // weak
+#endif
 
 const char gszHelpText[] =
 {

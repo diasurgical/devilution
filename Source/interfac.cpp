@@ -2,10 +2,12 @@
 
 #include "../types.h"
 
+#ifndef NO_GLOBALS
 void *sgpBackCel;
 float interfac_cpp_init_value;
 int sgdwProgress;
 int progress_id; // idb
+#endif
 
 const int interfac_inf = 0x7F800000; // weak
 const unsigned char progress_bar_colours[3] = { 138u, 43u, 254u };

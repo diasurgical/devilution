@@ -2,6 +2,7 @@
 
 #include "../types.h"
 
+#ifndef NO_GLOBALS
 int numthemes; // idb
 bool armorFlag; // weak
 int ThemeGoodIn[4];
@@ -18,6 +19,7 @@ ThemeStruct themes[MAXTHEMES];
 bool pFountainFlag; // weak
 bool bFountainFlag; // weak
 bool bCrossFlag; // weak
+#endif
 
 int ThemeGood[4] = { THEME_GOATSHRINE, THEME_SHRINE, THEME_SKELROOM, THEME_LIBRARY };
 

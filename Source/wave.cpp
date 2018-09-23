@@ -2,7 +2,9 @@
 
 #include "../types.h"
 
+#ifndef NO_GLOBALS
 int wave_cpp_init_value; // weak
+#endif
 
 const int wave_inf = 0x7F800000; // weak
 

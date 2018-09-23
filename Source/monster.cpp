@@ -2,9 +2,9 @@
 
 #include "../types.h"
 
+#ifndef NO_GLOBALS
 // Tracks which missile files are already loaded
 int MissileFileFlag;
-
 int monster_cpp_init_value; // weak
 int monstkills[MAXMONSTERS];
 int monstactive[MAXMONSTERS];
@@ -17,6 +17,7 @@ CMonster Monsters[16];
 int monstimgtot; // weak
 int uniquetrans;
 int nummtypes;
+#endif
 
 const int monster_inf = 0x7F800000; // weak
 const char plr2monst[9] = { 0, 5, 3, 7, 1, 4, 6, 0, 2 };

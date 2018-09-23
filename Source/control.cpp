@@ -2,6 +2,7 @@
 
 #include "../types.h"
 
+#ifndef NO_GLOBALS
 char sgbNextTalkSave; // weak
 char sgbTalkSavePos; // weak
 void *pDurIcons;
@@ -56,6 +57,7 @@ void *pSpellCels;
 int panbtndown; // weak
 void *pTalkPanel; // idb
 int spselflag; // weak
+#endif
 
 const unsigned char fontframe[127] =
 {

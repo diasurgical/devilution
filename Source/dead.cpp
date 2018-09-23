@@ -2,9 +2,11 @@
 
 #include "../types.h"
 
+#ifndef NO_GLOBALS
 int spurtndx; // weak
 DeadStruct dead[MAXDEAD];
 int stonendx;
+#endif
 
 void __cdecl InitDead()
 {

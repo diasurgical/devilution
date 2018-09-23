@@ -2,6 +2,7 @@
 
 #include "../types.h"
 
+#ifndef NO_GLOBALS
 short level_frame_types[2048];
 int themeCount;
 char nTransTable[2049];
@@ -68,6 +69,7 @@ char dMissile[MAXDUNX][MAXDUNY];
 int dminx; // weak
 int dminy; // weak
 short dpiece_defs_map_2[16][MAXDUNX][MAXDUNY];
+#endif
 
 void __cdecl FillSolidBlockTbls()
 {

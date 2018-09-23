@@ -2,6 +2,7 @@
 
 #include "../types.h"
 
+#ifndef NO_GLOBALS
 void *optbar_cel;
 bool byte_634464; // weak
 void *PentSpin_cel;
@@ -14,6 +15,7 @@ TMenuItem *dword_634480; // idb
 void *option_cel;
 void *sgpLogo;
 int dword_63448C; // weak
+#endif
 
 const unsigned char lfontframe[127] =
 {

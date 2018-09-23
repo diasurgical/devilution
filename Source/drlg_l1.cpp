@@ -2,6 +2,7 @@
 
 #include "../types.h"
 
+#ifndef NO_GLOBALS
 char L5dungeon[80][80];
 char mydflags[40][40];
 int setloadflag; // weak
@@ -12,6 +13,7 @@ int VR1;
 int VR2;
 int VR3;
 void *pSetPiece; // idb
+#endif
 
 const ShadowStruct SPATS[37] =
 {

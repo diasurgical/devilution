@@ -2,7 +2,9 @@
 
 #include "../types.h"
 
+#ifndef NO_GLOBALS
 int diablo_cpp_init_value; // weak
+
 HWND ghMainWnd;
 int glMid1Seed[NUMLEVELS];
 int glMid2Seed[NUMLEVELS];
@@ -34,6 +36,7 @@ int PauseMode; // weak
 int sgnTimeoutCurs;
 char sgbMouseDown; // weak
 int color_cycle_timer; // weak
+#endif
 
 int diablo_inf = 0x7F800000; // weak
 

@@ -2,6 +2,7 @@
 
 #include "../types.h"
 
+#ifndef NO_GLOBALS
 int plr_lframe_size; // idb
 int plr_wframe_size; // idb
 UCHAR plr_gfx_flag = 0;
@@ -18,6 +19,7 @@ UCHAR plr_gfx_bflag = 0;
 int plr_sframe_size; // idb
 int deathdelay; // weak
 int plr_dframe_size; // idb
+#endif
 
 const int player_inf = 0x7F800000; // weak
 const char ArmourChar[4] = { 'L', 'M', 'H', 0 };

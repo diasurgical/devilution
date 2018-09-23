@@ -5,9 +5,12 @@
 // +Infinity after initialization of appfat.cpp.
 float appfat_cpp_init_value;
 
+#ifndef NO_GLOBALS
 char sz_error_buf[256];
 int terminating; // weak
 int cleanup_thread_id; // weak
+#endif
+
 char empty_string;
 
 // appfat_cpp_init initializes the C++ runtime of appfat.cpp.

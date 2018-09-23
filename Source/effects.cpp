@@ -2,11 +2,14 @@
 
 #include "../types.h"
 
+#ifndef NO_GLOBALS
 int effects_cpp_init_value; // weak
+
 int sfxdelay; // weak
 int sfxdnum;
 void *sfx_stream;
 TSFX *sfx_data_cur;
+#endif
 
 const int effects_inf = 0x7F800000; // weak
 const char monster_action_sounds[] = { 'a', 'h', 'd', 's' }; // idb

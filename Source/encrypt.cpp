@@ -2,7 +2,9 @@
 
 #include "../types.h"
 
+#ifndef NO_GLOBALS
 int hashtable[1280];
+#endif
 
 void __fastcall Decrypt(void *block, int size, int key)
 {

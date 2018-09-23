@@ -2,6 +2,7 @@
 
 #include "../types.h"
 
+#ifndef NO_GLOBALS
 int sgdwOwnerWait; // weak
 int msg_cpp_init_value; // weak
 int sgdwRecvOffset; // idb
@@ -20,6 +21,7 @@ int deltaload; // weak
 char gbBufferMsgs; // weak
 int dword_676198; // weak
 int msg_err_timer; // weak
+#endif
 
 const int msg_inf = 0x7F800000; // weak
 

@@ -2,6 +2,7 @@
 
 #include "../types.h"
 
+#ifndef NO_GLOBALS
 int qtopline; // idb
 int questlog; // weak
 void *pQLogCel;
@@ -15,6 +16,7 @@ int ReturnLvlX; // idb
 int ReturnLvlT; // idb
 int ALLQUESTS; // idb
 int ReturnLvl; // idb
+#endif
 
 QuestData questlist[MAXQUESTS] =
 {

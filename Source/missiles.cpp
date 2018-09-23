@@ -2,6 +2,7 @@
 
 #include "../types.h"
 
+#ifndef NO_GLOBALS
 int missileactive[MAXMISSILES];
 int missileavail[MAXMISSILES];
 MissileStruct missile[MAXMISSILES];
@@ -10,6 +11,7 @@ int ManashieldFlag;
 ChainStruct chain[MAXMISSILES];
 int MissilePreFlag; // weak
 int numchains; // weak
+#endif
 
 MissileData missiledata[68] =
 {

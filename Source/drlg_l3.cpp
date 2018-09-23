@@ -2,10 +2,12 @@
 
 #include "../types.h"
 
+#ifndef NO_GLOBALS
 char lavapool; // weak
 int abyssx; // weak
 int lockoutcnt; // weak
 char lockout[40][40];
+#endif
 
 const unsigned char L3ConvTbl[16] = { 8, 11, 3, 10, 1, 9, 12, 12, 6, 13, 4, 13, 2, 14, 5, 7 };
 const unsigned char L3UP[20] = { 3, 3, 8, 8, 0, 10, 10, 0, 7, 7, 0, 51, 50, 0, 48, 49, 0, 0, 0, 0 };

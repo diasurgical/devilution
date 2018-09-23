@@ -2,6 +2,7 @@
 
 #include "../types.h"
 
+#ifndef NO_GLOBALS
 int light_table_index; // weak
 int screen_y_times_768[1024];
 int scrollrt_cpp_init_value; // weak
@@ -22,6 +23,7 @@ int (__fastcall *DrawPlrProc)(int player_num, int x, int y, int screen_x, int sc
 char sgSaveBack[8192];
 int draw_monster_num; // weak
 int sgdwCursHgtOld; // idb
+#endif
 
 const int scrollrt_inf = 0x7F800000; // weak
 

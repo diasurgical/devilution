@@ -2,6 +2,7 @@
 
 #include "../types.h"
 
+#ifndef NO_GLOBALS
 int trapid; // weak
 int trapdir; // weak
 unsigned char *pObjCels[40];
@@ -13,6 +14,7 @@ int objectavail[MAXOBJECTS];
 ObjectStruct object[MAXOBJECTS];
 int InitObjFlag; // weak
 int numobjfiles; // weak
+#endif
 
 int ObjTypeConv[113] =
 {

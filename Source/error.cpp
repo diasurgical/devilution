@@ -2,10 +2,12 @@
 
 #include "../types.h"
 
+#ifndef NO_GLOBALS
 char msgtable[80];
 char msgdelay; // weak
 char msgflag; // weak
 char msgcnt; // weak
+#endif
 
 char *MsgStrings[44] =
 {

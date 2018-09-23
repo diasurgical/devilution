@@ -2,6 +2,7 @@
 
 #include "../types.h"
 
+#ifndef NO_GLOBALS
 int stextup; // weak
 int storenumh; // weak
 int stextlhold; // weak
@@ -35,6 +36,7 @@ ItemStruct smithitem[20];
 int stextdown; // weak
 char stextscrlubtn; // weak
 char stextflag; // weak
+#endif
 
 int SStringY[24] =
 {

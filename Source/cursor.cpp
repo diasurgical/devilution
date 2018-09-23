@@ -2,6 +2,7 @@
 
 #include "../types.h"
 
+#ifndef NO_GLOBALS
 int cursH; // weak
 int icursH28; // idb
 int cursW; // idb
@@ -20,7 +21,7 @@ int cursmx;
 int cursmy;
 int dword_4B8CCC; // weak
 int pcurs; // idb
-
+#endif
 
 /* rdata */
 const int InvItemWidth[180] =

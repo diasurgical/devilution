@@ -2,11 +2,13 @@
 
 #include "../types.h"
 
+#ifndef NO_GLOBALS
 short sync_word_6AA708[MAXMONSTERS];
 int syncmonsters; // weak
 short sync_word_6AA89C[MAXMONSTERS];
 int syncitems;
 int sgnSyncPInv; // weak
+#endif
 
 int __fastcall sync_all_monsters(TSyncHeader *packet, int size)
 {

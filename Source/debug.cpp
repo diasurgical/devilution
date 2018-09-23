@@ -2,9 +2,11 @@
 
 #include "../types.h"
 
+#ifndef NO_GLOBALS
 void *pSquareCel;
 char dMonsDbg[NUMLEVELS][MAXDUNX][MAXDUNY];
 char dFlagDbg[NUMLEVELS][MAXDUNX][MAXDUNY];
+#endif
 
 void __cdecl LoadDebugGFX()
 {

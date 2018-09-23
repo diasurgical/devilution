@@ -2,13 +2,16 @@
 
 #include "../types.h"
 
+#ifndef NO_GLOBALS
 int mpqapi_cpp_init_value; // weak
+
 int sgdwMpqOffset; // idb
 char mpq_buf[4096];
 _HASHENTRY *sgpHashTbl;
 bool save_archive_modified; // weak
 _BLOCKENTRY *sgpBlockTbl;
 bool save_archive_open; // weak
+#endif
 
 const int mpqapi_inf = 0x7F800000; // weak
 
@@ -16,7 +19,9 @@ const int mpqapi_inf = 0x7F800000; // weak
 
 /* data */
 
+#ifndef NO_GLOBALS
 HANDLE sghArchive = (HANDLE)0xFFFFFFFF; // idb
+#endif
 
 struct mpqapi_cpp_init
 {

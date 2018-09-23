@@ -2,8 +2,11 @@
 
 #include "../types.h"
 
+#ifndef NO_GLOBALS
 int mainmenu_cpp_init_value; // weak
+
 char chr_name_str[16];
+#endif
 
 const int mainmenu_inf = 0x7F800000; // weak
 

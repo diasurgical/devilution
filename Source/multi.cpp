@@ -2,6 +2,7 @@
 
 #include "../types.h"
 
+#ifndef NO_GLOBALS
 char gbSomebodyWonGameKludge; // weak
 char pkdata_6761C0[4100];
 char szPlayerDescript[128];
@@ -27,6 +28,7 @@ char szPlayerName[128];
 char gbDeltaSender; // weak
 int sgbNetInited; // weak
 int player_state[MAX_PLRS];
+#endif
 
 const int multi_inf = 0x7F800000; // weak
 const int event_types[3] =

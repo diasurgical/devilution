@@ -2,6 +2,7 @@
 
 #include "../types.h"
 
+#ifndef NO_GLOBALS
 int qtexty; // weak
 char *qtextptr;
 int qtextSpd; // weak
@@ -10,6 +11,7 @@ int scrolltexty; // weak
 int sgLastScroll; // weak
 void *pMedTextCels;
 void *pTextBoxCels;
+#endif
 
 const unsigned char mfontframe[127] =
 {

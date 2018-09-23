@@ -2,10 +2,12 @@
 
 #include "../types.h"
 
+#ifndef NO_GLOBALS
 bool sgbIsScrolling; // weak
 int track_cpp_init_value; // weak
 int sgdwLastWalk; // weak
 bool sgbIsWalking; // weak
+#endif
 
 const int track_inf = 0x7F800000; // weak
 

@@ -2,7 +2,9 @@
 
 #include "../types.h"
 
+#ifndef NO_GLOBALS
 TMsg *sgpTimedMsgHead;
+#endif
 
 int __fastcall tmsg_get(unsigned char *pbMsg, unsigned int dwMaxLen)
 {

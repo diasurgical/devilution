@@ -4,9 +4,11 @@
 
 /* TODO: decompile and fix, commands are NOT deleted properly */
 
+#ifndef NO_GLOBALS
 int msgcmd_cpp_init_value; // weak
 ChatCmd sgChat_Cmd;
 int sgdwMsgCmdTimer;
+#endif
 
 const int msgcmd_inf = 0x7F800000; // weak
 
