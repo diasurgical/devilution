@@ -4503,86 +4503,62 @@ void __fastcall CheckStats(int pnum)
 
 void __fastcall ModifyPlrStr(int pnum, int l)
 {
-	int v2; // esi
-	int v3; // edi
-	int v4; // esi
-	char v5; // dl
-	int v6; // ecx
-	int v7; // eax
-	int v8; // ebx
-	int v9; // eax
-	signed int v10; // ecx
-	int p; // [esp+8h] [ebp-4h]
-
-	v2 = pnum;
-	v3 = l;
-	p = pnum;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("ModifyPlrStr: illegal player %d", pnum);
-	v4 = v2;
-	v5 = plr[v4]._pClass;
-	v6 = plr[v4]._pBaseStr;
-	v7 = MaxStats[v5][0];
-	if ( v6 + v3 > v7 )
-		v3 = v7 - v6;
-	plr[v4]._pBaseStr = v3 + v6;
-	plr[v4]._pStrength += v3;
-	v8 = plr[v4]._pStrength;
-	if ( v5 == 1 )
-	{
-		v9 = plr[v4]._pLevel * (v8 + plr[v4]._pDexterity);
-		v10 = 200;
 	}
-	else
-	{
-		v9 = v8 * plr[v4]._pLevel;
-		v10 = 100;
+
+	int max = MaxStats[plr[pnum]._pClass][ATTRIB_STR];
+	if ( plr[pnum]._pBaseStr + l > max ) {
+		l = max - plr[pnum]._pBaseStr;
 	}
-	plr[v4]._pDamageMod = v9 / v10;
-	CalcPlrInv(p, 1u);
-	if ( p == myplr )
-		NetSendCmdParam1(0, CMD_SETSTR, plr[v4]._pBaseStr);
+
+	plr[pnum]._pStrength += l;
+	plr[pnum]._pBaseStr += l;
+
+	if ( plr[pnum]._pClass == PC_ROGUE ) {
+		plr[pnum]._pDamageMod = plr[pnum]._pLevel * (plr[pnum]._pStrength + plr[pnum]._pDexterity) / 200;
+	} else {
+		plr[pnum]._pDamageMod = plr[pnum]._pLevel * plr[pnum]._pStrength / 100;
+	}
+
+	CalcPlrInv(pnum, TRUE);
+
+	if ( pnum == myplr ) {
+		NetSendCmdParam1(FALSE, CMD_SETSTR, plr[pnum]._pBaseStr); //60
+	}
 }
 
 void __fastcall ModifyPlrMag(int pnum, int l)
 {
-	int v2; // esi
-	int v3; // edi
-	int v4; // esi
-	char v5; // dl
-	int v6; // ecx
-	int v7; // eax
-	int v8; // eax
-	int v9; // edi
-	int p; // [esp+8h] [ebp-4h]
-
-	v2 = pnum;
-	v3 = l;
-	p = pnum;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("ModifyPlrMag: illegal player %d", pnum);
-	v4 = v2;
-	v5 = plr[v4]._pClass;
-	v6 = MaxStats[v5][1];
-	v7 = plr[v4]._pBaseMag;
-	if ( v7 + v3 > v6 )
-		v3 = v6 - v7;
-	plr[v4]._pMagic += v3;
-	v8 = v3 + v7;
-	v9 = v3 << 6;
-	plr[v4]._pBaseMag = v8;
-	if ( v5 == 2 )
-		v9 *= 2;
-	plr[v4]._pMaxManaBase += v9;
-	plr[v4]._pMaxMana += v9;
-	if ( !(plr[v4]._pIFlags & 0x8000000) )
-	{
-		plr[v4]._pManaBase += v9;
-		plr[v4]._pMana += v9;
 	}
-	CalcPlrInv(p, 1u);
-	if ( p == myplr )
-		NetSendCmdParam1(0, CMD_SETMAG, plr[v4]._pBaseMag);
+
+	int max = MaxStats[plr[pnum]._pClass][ATTRIB_MAG];
+	if ( plr[pnum]._pBaseMag + l > max ) {
+		l = max - plr[pnum]._pBaseMag;
+	}
+
+	plr[pnum]._pMagic += l;
+	plr[pnum]._pBaseMag += l;
+
+	int ms = l << 6;
+	if ( plr[pnum]._pClass == PC_SORCERER ) {
+		ms *= 2;
+	}
+
+	plr[pnum]._pMaxManaBase += ms;
+	plr[pnum]._pMaxMana += ms;
+	if ( !(plr[pnum]._pIFlags & ISPL_NOMANA) ) {
+		plr[pnum]._pManaBase += ms;
+		plr[pnum]._pMana += ms;
+	}
+
+	CalcPlrInv(pnum, TRUE);
+
+	if ( pnum == myplr ) {
+		NetSendCmdParam1(FALSE, CMD_SETMAG, plr[pnum]._pBaseMag);
+	}
 }
 
 void __fastcall ModifyPlrDex(int pnum, int l)
@@ -4592,21 +4568,20 @@ void __fastcall ModifyPlrDex(int pnum, int l)
 	}
 
 	int max = MaxStats[plr[pnum]._pClass][ATTRIB_DEX];
-	if ( plr[pnum]._pBaseDex + l > max )
-	{
+	if ( plr[pnum]._pBaseDex + l > max ) {
 		l = max - plr[pnum]._pBaseDex;
 	}
 
 	plr[pnum]._pDexterity += l;
 	plr[pnum]._pBaseDex += l;
-	CalcPlrInv(pnum, 1);
+	CalcPlrInv(pnum, TRUE);
 
 	if ( plr[pnum]._pClass == PC_ROGUE ) {
 		plr[pnum]._pDamageMod = plr[pnum]._pLevel * (plr[pnum]._pDexterity + plr[pnum]._pStrength) / 200;
 	}
 
 	if ( pnum == myplr ) {
-		NetSendCmdParam1(0, CMD_SETDEX, plr[pnum]._pBaseDex);
+		NetSendCmdParam1(FALSE, CMD_SETDEX, plr[pnum]._pBaseDex);
 	}
 }
 
@@ -4617,8 +4592,7 @@ void __fastcall ModifyPlrVit(int pnum, int l)
 	}
 
 	int max = MaxStats[plr[pnum]._pClass][ATTRIB_VIT];
-	if ( plr[pnum]._pBaseVit + l > max )
-	{
+	if ( plr[pnum]._pBaseVit + l > max ) {
 		l = max - plr[pnum]._pBaseVit;
 	}
 
@@ -4721,7 +4695,7 @@ void __fastcall SetPlrVit(int pnum, int v)
 	plr[pnum]._pBaseVit = v;
 
 	int hp = v << 6;
-	if ( !_LOBYTE(plr[pnum]._pClass) ) {
+	if ( plr[pnum]._pClass == PC_WARRIOR ) {
 		hp *= 2;
 	}
 
