@@ -2692,7 +2692,7 @@ int __fastcall InvPutItem(int pnum, int x, int y)
 	v15 = itemavail[0];
 	dItem[xa][v5] = _LOBYTE(itemavail[0]) + 1;
 	yc = v15;
-	v16 = &itemavail[-numitems + 126];
+	v16 = &itemavail[MAXITEMS - numitems - 1];
 	itemactive[numitems] = v15;
 	itemavail[0] = *v16;
 	v17 = v15;
@@ -2812,7 +2812,7 @@ int __fastcall SyncPutItem(int pnum, int x, int y, int idx, int icreateinfo, int
 	v25 = itemavail[0];
 	ic = itemavail[0];
 	dItem[v13][v15] = _LOBYTE(itemavail[0]) + 1;
-	v26 = &itemavail[-numitems + 126];
+	v26 = &itemavail[MAXITEMS - numitems - 1];
 	itemactive[numitems] = v25;
 	itemavail[0] = *v26;
 	if ( idx == IDI_EAR )

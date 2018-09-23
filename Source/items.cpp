@@ -680,7 +680,7 @@ void __cdecl AddInitItems()
 		{
 			ii = itemavail[0];
 			itemactive[numitems] = itemavail[0];
-			itemavail[0] = itemavail[-numitems + 126];
+			itemavail[0] = itemavail[MAXITEMS - numitems - 1];
 			do
 			{
 				xx = random(12, 80) + 16;
@@ -2991,7 +2991,7 @@ void __fastcall SpawnUnique(int uid, int x, int y)
 		GetSuperItemSpace(x, y, itemavail[0]);
 		itype = 0;
 		itemactive[numitems] = ii;
-		itemavail[0] = itemavail[-numitems + 126]; /* MAXITEMS */
+		itemavail[0] = itemavail[MAXITEMS - numitems - 1];
 
 		if ( AllItemsList[0].iItemId != UniqueItemList[uid].UIItemId )
 		{
@@ -3115,7 +3115,7 @@ LABEL_13:
 		ii = itemavail[0];
 		GetSuperItemSpace(x, y, itemavail[0]);
 		itemactive[numitems] = ii;
-		itemavail[0] = itemavail[-numitems + 126]; /* MAXITEMS */
+		itemavail[0] = itemavail[MAXITEMS - numitems - 1];
 
 		if ( !monster[m]._uniqtype )
 			SetupAllItems(ii, idx, GetRndSeed(), monster[m].MData->mLevel, 1, onlygood, 0, 0);
@@ -3140,7 +3140,7 @@ void __fastcall CreateItem(int uid, int x, int y)
 		GetSuperItemSpace(x, y, itemavail[0]);
 		idx = 0;
 		itemactive[numitems] = ii;
-		itemavail[0] = itemavail[-numitems + 126]; /* MAXITEMS */
+		itemavail[0] = itemavail[MAXITEMS - numitems - 1];
 
 		if ( AllItemsList[0].iItemId != UniqueItemList[uid].UIItemId )
 		{
@@ -3174,7 +3174,7 @@ void __fastcall CreateRndItem(int x, int y, unsigned char onlygood, unsigned cha
 		ii = itemavail[0];
 		GetSuperItemSpace(x, y, itemavail[0]);
 		itemactive[numitems] = ii;
-		itemavail[0] = itemavail[-numitems + 126]; /* MAXITEMS */
+		itemavail[0] = itemavail[MAXITEMS - numitems - 1];
 		SetupAllItems(ii, idx, GetRndSeed(), 2 * currlevel, 1, onlygood, 0, delta);
 
 		if ( sendmsg )
@@ -3214,7 +3214,7 @@ void __fastcall CreateRndUseful(int pnum, int x, int y, unsigned char sendmsg)
 		ii = itemavail[0];
 		GetSuperItemSpace(x, y, itemavail[0]);
 		itemactive[numitems] = ii;
-		itemavail[0] = itemavail[-numitems + 126]; /* MAXITEMS */
+		itemavail[0] = itemavail[MAXITEMS - numitems - 1];
 		SetupAllUseful(ii, GetRndSeed(), currlevel);
 
 		if ( sendmsg )
@@ -3239,7 +3239,7 @@ void __fastcall CreateTypeItem(int x, int y, unsigned char onlygood, int itype, 
 		ii = itemavail[0];
 		GetSuperItemSpace(x, y, itemavail[0]);
 		itemactive[numitems] = ii;
-		itemavail[0] = itemavail[-numitems + 126]; /* MAXITEMS */
+		itemavail[0] = itemavail[MAXITEMS - numitems - 1];
 		SetupAllItems(ii, idx, GetRndSeed(), 2 * currlevel, 1, onlygood, 0, delta);
 
 		if ( sendmsg )
@@ -3393,7 +3393,7 @@ LABEL_13:
 		item[v13]._ix = x;
 		itemactive[numitems] = v12;
 		item[v13]._iy = y;
-		itemavail[0] = itemavail[-numitems + 126]; /* double check, MAXITEMS */
+		itemavail[0] = itemavail[MAXITEMS - numitems - 1];
 		dItem[x][y] = v12 + 1;
 		GetItemAttrs(v12, itemid, currlevel);
 		SetupItem(v12);
@@ -3443,7 +3443,7 @@ void __cdecl SpawnRock()
 		v4 = itemavail[0];
 		v5 = v2;
 		v6 = itemavail[0];
-		v7 = &itemavail[-numitems + 126];
+		v7 = &itemavail[MAXITEMS - numitems - 1];
 		itemactive[numitems] = itemavail[0];
 		v8 = object[v5]._ox;
 		item[v6]._ix = v8;
@@ -5548,7 +5548,7 @@ void __fastcall CreateMagicItem(int x, int y, int imisc, int icurs, int sendmsg,
 		ii = itemavail[0];
 		GetSuperItemSpace(x, y, itemavail[0]);
 		itemactive[numitems] = ii;
-		itemavail[0] = itemavail[-numitems + 126]; /* MAXITEMS */
+		itemavail[0] = itemavail[MAXITEMS - numitems - 1];
 		idx = RndTypeItems(imisc, 0);
 		do
 		{

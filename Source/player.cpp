@@ -1671,7 +1671,7 @@ void __fastcall RespawnDeadItem(ItemStruct *itm, int x, int y)
 		//v6 = 4 * numitems;
 		itemactive[numitems] = v4;
 		v4 *= 368;
-		itemavail[0] = itemavail[-numitems + 126]; /* double check, MAXITEMS */
+		itemavail[0] = itemavail[MAXITEMS - numitems - 1];
 		qmemcpy((char *)item + v4, v3, sizeof(ItemStruct));
 		*(int *)((char *)&item[0]._ix + v4) = x;
 		*(int *)((char *)&item[0]._iy + v4) = y;
