@@ -1489,7 +1489,7 @@ void __fastcall StartPlrBlock(int pnum, int dir)
 
 void __fastcall StartSpell(int pnum, int d, int cx, int cy)
 {
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS )
 		TermMsg("StartSpell: illegal player %d", pnum);
 
 	if ( plr[pnum]._pInvincible && !plr[pnum]._pHitPoints && pnum == myplr ) {
@@ -2409,7 +2409,7 @@ BOOL __fastcall PM_DoWalk3(int pnum)
 
 	if ( plr[pnum]._pVar8 == vel ) {
 		dPlayer[plr[pnum].WorldX][plr[pnum].WorldY] = 0;
-		dFlags[plr[pnum]._pVar4][plr[pnum]._pVar5] &= 0xDFu;
+		dFlags[plr[pnum]._pVar4][plr[pnum]._pVar5] &= 0xDF;
 		plr[pnum].WorldX = plr[pnum]._pVar1;
 		plr[pnum].WorldY = plr[pnum]._pVar2;
 		dPlayer[plr[pnum]._pVar1][plr[pnum]._pVar2] = pnum + 1;
