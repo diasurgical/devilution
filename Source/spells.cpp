@@ -235,7 +235,7 @@ void __fastcall DoResurrect(int pnum, int rid)
 		}
 
 		ClrPlrPath(rid);
-		plr[rid].destAction = -1;
+		plr[rid].destAction = ACTION_NONE;
 		plr[rid]._pInvincible = 0;
 		PlacePlayer(rid);
 

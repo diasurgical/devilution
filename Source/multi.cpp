@@ -981,7 +981,7 @@ void __cdecl SetupLocalCoords()
 	plr[myplr]._pLvlChanging = 1;
 	plr[myplr].pLvlLoad = 0;
 	plr[myplr]._pmode = PM_NEWLVL;
-	plr[myplr].destAction = -1;
+	plr[myplr].destAction = ACTION_NONE;
 }
 // 52572C: using guessed type int leveldebug;
 // 5BB1ED: using guessed type char leveltype;

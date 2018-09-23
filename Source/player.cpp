@@ -875,7 +875,7 @@ void __fastcall InitPlayer(int pnum, BOOL FirstTime)
 		plr[pnum]._px = plr[pnum].WorldX;
 		plr[pnum]._py = plr[pnum].WorldY;
 		plr[pnum].walkpath[0] = -1;
-		plr[pnum].destAction = -1;
+		plr[pnum].destAction = ACTION_NONE;
 
 		if ( pnum == myplr ) {
 			plr[pnum]._plid = AddLight(plr[pnum].WorldX, plr[pnum].WorldY, plr[pnum]._pLightRad);
@@ -2049,7 +2049,7 @@ void __fastcall InitLevelChange(int pnum)
 	}
 
 	ClrPlrPath(pnum);
-	plr[pnum].destAction = -1;
+	plr[pnum].destAction = ACTION_NONE;
 	plr[pnum]._pLvlChanging = 1;
 
 	if ( pnum == myplr ) {
@@ -3152,35 +3152,35 @@ void __fastcall CheckNewPath(int pnum)
 	if ( (unsigned int)pnum >= MAX_PLRS )
 		TermMsg("CheckNewPath: illegal player %d", pnum);
 	v2 = v1;
-	if ( plr[v1].destAction == 20 )
+	if ( plr[v1].destAction == ACTION_ATTACKMON )
 		MakePlrPath(v1, monster[plr[v2].destParam1]._mfutx, monster[plr[v2].destParam1]._mfuty, 0);
-	if ( plr[v2].destAction == 21 )
+	if ( plr[v2].destAction == ACTION_ATTACKPLR )
 		MakePlrPath(v1, plr[plr[v2].destParam1]._px, plr[plr[v2].destParam1]._py, 0);
 	if ( plr[v2].walkpath[0] == -1 )
 	{
 		v18 = plr[v2].destAction;
-		if ( v18 == -1 )
+		if ( v18 == ACTION_NONE )
 			return;
 		v19 = plr[v2]._pmode;
 		if ( v19 == PM_STAND )
 		{
 			switch ( v18 )
 			{
-				case 9:
+				case ACTION_ATTACK:
 					v20 = GetDirection(plr[v2].WorldX, plr[v2].WorldY, plr[v2].destParam1, plr[v2].destParam2);
 					goto LABEL_52;
-				case 10:
+				case ACTION_RATTACK:
 					v30 = plr[v2].WorldY;
 					v31 = plr[v2].WorldX;
 					v32 = &plr[v2].destParam2;
 					v33 = &plr[v2].destParam1;
 					goto LABEL_59;
-				case 12:
+				case ACTION_SPELL:
 					v39 = GetDirection(plr[v2].WorldX, plr[v2].WorldY, plr[v2].destParam1, plr[v2].destParam2);
 					StartSpell(p, v39, plr[v2].destParam1, plr[v2].destParam2);
 					v40 = plr[v2].destParam3;
 					goto LABEL_66;
-				case 13:
+				case ACTION_OPERATE:
 					v46 = plr[v2].destParam1;
 					arglista = v46;
 					v47 = v46;
@@ -3197,7 +3197,7 @@ void __fastcall CheckNewPath(int pnum)
 					if ( object[v47]._oBreak != 1 )
 						goto LABEL_73;
 					goto LABEL_80;
-				case 14:
+				case ACTION_DISARM:
 					v50 = plr[v2].destParam1;
 					arglista = v50;
 					v47 = v50;
@@ -3227,7 +3227,7 @@ LABEL_73:
 						OperateObject(p, arglista, 0);
 					}
 					break;
-				case 15:
+				case ACTION_PICKUPITEM:
 					if ( v1 == myplr )
 					{
 						v53 = plr[v2].destParam1;
@@ -3241,7 +3241,7 @@ LABEL_73:
 						}
 					}
 					break;
-				case 16:
+				case ACTION_PICKUPAITEM:
 					if ( v1 == myplr )
 					{
 						v57 = plr[v2].destParam1;
@@ -3252,15 +3252,15 @@ LABEL_73:
 							NetSendCmdGItem(1u, CMD_REQUESTAGITEM, myplr, myplr, v57);
 					}
 					break;
-				case 17:
+				case ACTION_TALK:
 					if ( v1 == myplr )
 						TalkToTowner(v1, plr[v2].destParam1);
 					break;
-				case 18:
+				case ACTION_OPERATETK:
 					if ( object[plr[v2].destParam1]._oBreak != 1 )
 						OperateObject(v1, plr[v2].destParam1, 1u);
 					break;
-				case 20:
+				case ACTION_ATTACKMON:
 					v21 = plr[v2].destParam1;
 					v22 = plr[v2].destParam1;
 					v23 = abs(plr[v2].WorldX - monster[v22]._mfutx);
@@ -3272,7 +3272,7 @@ LABEL_73:
 					if ( v25 && v25 != QUEST_VILE14 )
 						goto LABEL_56;
 					goto LABEL_81;
-				case 21:
+				case ACTION_ATTACKPLR:
 					v26 = plr[v2].destParam1;
 					v27 = abs(plr[v2].WorldX - plr[v26]._px);
 					v28 = abs(plr[v2].WorldY - plr[v26]._py);
@@ -3282,7 +3282,7 @@ LABEL_73:
 LABEL_52:
 					v29 = v1;
 					goto LABEL_82;
-				case 22:
+				case ACTION_RATTACKMON:
 					v21 = plr[v2].destParam1;
 					v34 = plr[v2].destParam1;
 					v35 = GetDirection(plr[v2]._px, plr[v2]._py, monster[v34]._mfutx, monster[v34]._mfuty);
@@ -3293,7 +3293,7 @@ LABEL_56:
 					else
 						StartRangeAttack(p, v35, monster[v34]._mfutx, monster[v34]._mfuty);
 					break;
-				case 23:
+				case ACTION_RATTACKPLR:
 					v30 = plr[v2]._py;
 					v37 = plr[v2].destParam1;
 					v31 = plr[v2]._px;
@@ -3303,12 +3303,12 @@ LABEL_59:
 					v38 = GetDirection(v31, v30, *v33, *v32);
 					StartRangeAttack(p, v38, *v33, *v32);
 					break;
-				case 24:
+				case ACTION_SPELLMON:
 					v41 = plr[v2].destParam1;
 					v42 = &monster[v41]._mfuty;
 					v43 = &monster[v41]._mfutx;
 					goto LABEL_65;
-				case 25:
+				case ACTION_SPELLPLR:
 					v44 = plr[v2].destParam1;
 					v42 = &plr[v44]._py;
 					v43 = &plr[v44]._px;
@@ -3317,7 +3317,7 @@ LABEL_65:
 					StartSpell(p, v45, *v43, *v42);
 					v40 = plr[v2].destParam2;
 					goto LABEL_66;
-				case 26:
+				case ACTION_SPELLWALL:
 					StartSpell(v1, plr[v2].destParam3, plr[v2].destParam1, plr[v2].destParam2);
 					plr[v2]._pVar3 = plr[v2].destParam3;
 					v40 = plr[v2].destParam4;
@@ -3334,16 +3334,16 @@ LABEL_66:
 		{
 			switch ( v18 )
 			{
-				case 9:
+				case ACTION_ATTACK:
 					v61 = GetDirection(plr[v2]._px, plr[v2]._py, plr[v2].destParam1, plr[v2].destParam2);
 LABEL_105:
 					v62 = v1;
 LABEL_106:
 					StartAttack(v62, v61);
 LABEL_107:
-					plr[v2].destAction = -1;
+					plr[v2].destAction = ACTION_NONE;
 					break;
-				case 20:
+				case ACTION_ATTACKMON:
 					v63 = plr[v2].destParam1;
 					v64 = abs(plr[v2].WorldX - monster[v63]._mfutx);
 					v65 = abs(plr[v2].WorldY - monster[v63]._mfuty);
@@ -3351,7 +3351,7 @@ LABEL_107:
 						goto LABEL_107;
 					v61 = GetDirection(plr[v2]._px, plr[v2]._py, monster[v63]._mfutx, monster[v63]._mfuty);
 					goto LABEL_105;
-				case 21:
+				case ACTION_ATTACKPLR:
 					v66 = plr[v2].destParam1;
 					v67 = abs(plr[v2].WorldX - plr[v66]._px);
 					v68 = abs(plr[v2].WorldY - plr[v66]._py);
@@ -3360,7 +3360,7 @@ LABEL_107:
 					v61 = GetDirection(plr[v2]._px, plr[v2]._py, plr[v66]._px, plr[v66]._py);
 					v62 = p;
 					goto LABEL_106;
-				case 13:
+				case ACTION_OPERATE:
 					v69 = plr[v2].destParam1;
 					arglistb = v69;
 					v70 = v69;
@@ -3392,20 +3392,20 @@ LABEL_107:
 			v74 = plr[v2].destAction;
 			switch ( v74 )
 			{
-				case 10:
+				case ACTION_RATTACK:
 					v75 = &plr[v2].destParam2;
 					v76 = &plr[v2].destParam1;
 LABEL_133:
 					v79 = GetDirection(plr[v2].WorldX, plr[v2].WorldY, *v76, *v75);
 					StartRangeAttack(p, v79, *v76, *v75);
-					plr[v2].destAction = -1;
+					plr[v2].destAction = ACTION_NONE;
 					break;
-				case 22:
+				case ACTION_RATTACKMON:
 					v77 = plr[v2].destParam1;
 					v75 = &monster[v77]._mfuty;
 					v76 = &monster[v77]._mfutx;
 					goto LABEL_133;
-				case 23:
+				case ACTION_RATTACKPLR:
 					v78 = plr[v2].destParam1;
 					v75 = &plr[v78]._py;
 					v76 = &plr[v78]._px;
@@ -3417,16 +3417,16 @@ LABEL_133:
 			v80 = plr[v2].destAction;
 			switch ( v80 )
 			{
-				case 12:
+				case ACTION_SPELL:
 					v81 = &plr[v2].destParam2;
 					v82 = &plr[v2].destParam1;
 					break;
-				case 24:
+				case ACTION_SPELLMON:
 					v83 = plr[v2].destParam1;
 					v81 = &monster[v83]._mfuty;
 					v82 = &monster[v83]._mfutx;
 					break;
-				case 25:
+				case ACTION_SPELLPLR:
 					v84 = plr[v2].destParam1;
 					v81 = &plr[v84]._py;
 					v82 = &plr[v84]._px;
@@ -3445,10 +3445,10 @@ LABEL_133:
 		if ( v1 == myplr )
 		{
 			v3 = plr[v2].destAction;
-			if ( v3 == 20 || v3 == 21 )
+			if ( v3 == ACTION_ATTACKMON || v3 == ACTION_ATTACKPLR )
 			{
 				v4 = plr[v2].destParam1;
-				v5 = v3 == 20;
+				v5 = v3 == ACTION_ATTACKMON;
 				v6 = plr[v2]._px;
 				arglist = plr[v2].destParam1;
 				if ( v5 )
@@ -3479,7 +3479,7 @@ LABEL_133:
 						TalktoMonster(arglist);
 					else
 						StartAttack(p, v11);
-					plr[v2].destAction = -1;
+					plr[v2].destAction = ACTION_NONE;
 				}
 			}
 		}
@@ -3553,7 +3553,7 @@ LABEL_32:
 		{
 			StartStand(p, plr[v2]._pdir);
 LABEL_143:
-			plr[v2].destAction = -1;
+			plr[v2].destAction = ACTION_NONE;
 			return;
 		}
 	}
