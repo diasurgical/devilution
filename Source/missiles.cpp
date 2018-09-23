@@ -1718,7 +1718,7 @@ LABEL_70:
 				if ( v27 != 2 )
 				{
 LABEL_78:
-					drawhpflag = 1;
+					drawhpflag = TRUE;
 					return 1;
 				}
 				v28 = PS_MAGE69;
@@ -3563,7 +3563,7 @@ void __fastcall AddFlare(int mi, int sx, int sy, int dx, int dy, int midir, int 
 	{
 		UseMana(id, 35);
 		v14 = id;
-		drawhpflag = 1;
+		drawhpflag = TRUE;
 		plr[v14]._pHPBase -= 320;
 		plr[v14]._pHitPoints -= 320;
 		if ( plr[id]._pHitPoints <= 0 )
@@ -3898,7 +3898,7 @@ void __fastcall AddHeal(int mi, int sx, int sy, int dx, int dy, int midir, int m
 		*v17 = v18;
 	UseMana(id, 2);
 	missile[i]._miDelFlag = 1;
-	drawhpflag = 1;
+	drawhpflag = TRUE;
 }
 
 void __fastcall AddHealOther(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
@@ -4452,7 +4452,7 @@ void __fastcall AddBoneSpirit(int mi, int sx, int sy, int dx, int dy, int midir,
 	{
 		UseMana(id, 36);
 		v13 = id;
-		drawhpflag = 1;
+		drawhpflag = TRUE;
 		plr[v13]._pHPBase -= 384;
 		plr[v13]._pHitPoints -= 384;
 		if ( plr[id]._pHitPoints <= 0 )
@@ -5716,8 +5716,8 @@ void __fastcall MI_Manashield(int i)
 	}
 	if ( v10 < 0 )
 		v10 = 0;
-	drawmanaflag = 1;
-	drawhpflag = 1;
+	drawmanaflag = TRUE;
+	drawhpflag = TRUE;
 	if ( v8 >= v10 )
 	{
 		plr[v2]._pHitPoints = v9;

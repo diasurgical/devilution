@@ -2862,7 +2862,7 @@ void __fastcall Obj_BCrossDamage(int i)
 			{
 				SyncPlrKill(myplr, 0);
 LABEL_15:
-				drawhpflag = 1;
+				drawhpflag = TRUE;
 				return;
 			}
 			v5 = plr[v1]._pClass;

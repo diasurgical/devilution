@@ -6,7 +6,7 @@ extern char sgbNextTalkSave; // weak
 extern char sgbTalkSavePos; // weak
 extern void *pDurIcons;
 extern void *pChrButtons;
-extern int drawhpflag; // idb
+extern BOOL drawhpflag; // idb
 extern int dropGoldFlag; // weak
 extern int panbtn[8];
 extern int chrbtn[4];
@@ -16,7 +16,7 @@ extern void *pChrPanel;
 extern int lvlbtndown; // weak
 extern char sgszTalkSave[8][80];
 extern int dropGoldValue; // idb
-extern int drawmanaflag; // idb
+extern BOOL drawmanaflag; // idb
 extern int chrbtnactive; // weak
 extern char sgszTalkMsg[80];
 extern void *pPanelText;

@@ -6,7 +6,7 @@ char sgbNextTalkSave; // weak
 char sgbTalkSavePos; // weak
 void *pDurIcons;
 void *pChrButtons;
-int drawhpflag; // idb
+BOOL drawhpflag; // idb
 int dropGoldFlag; // weak
 int panbtn[8];
 int chrbtn[4];
@@ -16,7 +16,7 @@ void *pChrPanel;
 int lvlbtndown; // weak
 char sgszTalkSave[8][80];
 int dropGoldValue; // idb
-int drawmanaflag; // idb
+BOOL drawmanaflag; // idb
 int chrbtnactive; // weak
 char sgszTalkMsg[80];
 void *pPanelText;
@@ -1218,8 +1218,8 @@ void __cdecl InitControlPan()
 	pDurIcons = LoadFileInMem("Items\\DurIcons.CEL", 0);
 	strcpy(infostr, &empty_string);
 	ClearPanel();
-	drawhpflag = 1;
-	drawmanaflag = 1;
+	drawhpflag = TRUE;
+	drawmanaflag = TRUE;
 	chrflag = 0;
 	spselflag = 0;
 	pSpellBkCel = LoadFileInMem("Data\\SpellBk.CEL", 0);

@@ -121,7 +121,7 @@ void __fastcall UseMana(int id, int sn)
 				ma = GetManaAmount(id, sn);
 				plr[id]._pMana -= ma;
 				plr[id]._pManaBase -= ma;
-				drawmanaflag = 1;
+				drawmanaflag = TRUE;
 #ifdef _DEBUG
 			}
 #endif
@@ -230,8 +230,8 @@ void __fastcall DoResurrect(int pnum, int rid)
 		{
 			deathflag = 0;
 			gamemenu_off();
-			drawhpflag = 1;
-			drawmanaflag = 1;
+			drawhpflag = TRUE;
+			drawmanaflag = TRUE;
 		}
 
 		ClrPlrPath(rid);
@@ -362,6 +362,6 @@ void __fastcall DoHealOther(int pnum, int rid)
 			plr[rid]._pHPBase = plr[rid]._pMaxHPBase;
 		}
 
-		drawhpflag = 1;
+		drawhpflag = TRUE;
 	}
 }

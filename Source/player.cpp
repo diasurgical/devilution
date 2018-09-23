@@ -711,7 +711,7 @@ void __fastcall NextPlrLevel(int pnum)
 	plr[pnum]._pHPBase = plr[pnum]._pMaxHPBase;
 
 	if ( pnum == myplr ) {
-		drawhpflag = 1;
+		drawhpflag = TRUE;
 	}
 
 	int mana = c != PC_WARRIOR ? 128 : 64;
@@ -727,7 +727,7 @@ void __fastcall NextPlrLevel(int pnum)
 	}
 
 	if ( pnum == myplr ) {
-		drawmanaflag = 1;
+		drawmanaflag = TRUE;
 	}
 }
 // 679660: using guessed type char gbMaxPlayers;
@@ -1632,7 +1632,7 @@ void __fastcall StartPlrHit(int pnum, int dam, BOOL forcehit)
 		PlaySfxLoc(PS_MAGE69, plr[pnum].WorldX, plr[pnum].WorldY);
 	}
 
-	drawhpflag = 1;
+	drawhpflag = TRUE;
 	if ( dam >> 6 >= plr[pnum]._pLevel || forcehit ) {
 		int dir = plr[pnum]._pdir;
 
@@ -1770,7 +1770,7 @@ LABEL_18:
 		SetPlayerOld(v2);
 		if ( v2 == myplr )
 		{
-			drawhpflag = 1;
+			drawhpflag = TRUE;
 			deathdelay = 30;
 			if ( pcurs >= CURSOR_FIRSTITEM )
 			{
@@ -2668,7 +2668,7 @@ LABEL_40:
 			if ( plr[v9]._pHPBase > v30 )
 				*v31 = v30;
 			v5 = v43;
-			drawhpflag = 1;
+			drawhpflag = TRUE;
 		}
 		else
 		{
@@ -2694,7 +2694,7 @@ LABEL_40:
 				*v36 = v35;
 			v5 = v43;
 			v32 = v46;
-			drawmanaflag = 1;
+			drawmanaflag = TRUE;
 		}
 		if ( v32 & 0x18000 )
 		{
@@ -2714,7 +2714,7 @@ LABEL_40:
 				*v39 = v40;
 			BYTE1(v32) = BYTE1(v46);
 			v5 = v43;
-			drawhpflag = 1;
+			drawhpflag = TRUE;
 		}
 		if ( v32 & 0x100 )
 			*(int *)((char *)&monster[0]._mFlags + v5) |= 8u;
@@ -2826,7 +2826,7 @@ BOOL __fastcall PlrHitPlr(int pnum, char p)
 				if ( plr[pnum]._pHPBase > plr[pnum]._pMaxHPBase ) {
 					plr[pnum]._pHPBase = plr[pnum]._pMaxHPBase;
 				}
-				drawhpflag = 1;
+				drawhpflag = TRUE;
 			}
 			if ( pnum == myplr ) {
 				NetSendCmdDamage(TRUE, p, skdam);
@@ -3894,7 +3894,7 @@ void __cdecl ProcessPlayers()
 	}
 
 	if ( plr[myplr].pLvlLoad ) {
-		plr[myplr].pLvlLoad = plr[myplr].pLvlLoad - 1;
+		plr[myplr].pLvlLoad--;
 	}
 
 	if ( sfxdelay > 0 ) {
@@ -3921,12 +3921,12 @@ void __cdecl ProcessPlayers()
 					if ( (plr[pnum]._pHitPoints >> 6) <= 0 ) {
 						SyncPlrKill(pnum, 0);
 					}
-					drawhpflag = 1;
+					drawhpflag = TRUE;
 				}
 				if ( plr[pnum]._pIFlags & ISPL_NOMANA && plr[pnum]._pManaBase > 0 ) {
 					plr[pnum]._pManaBase -= plr[pnum]._pMana;
 					plr[pnum]._pMana = 0;
-					drawmanaflag = 1;
+					drawmanaflag = TRUE;
 				}
 			}
 
@@ -4682,7 +4682,7 @@ void __fastcall SetPlayerHitPoints(int pnum, int newhp)
 	plr[pnum]._pHPBase = newhp + plr[pnum]._pMaxHPBase - plr[pnum]._pMaxHP;
 
 	if ( pnum == myplr ) {
-		drawhpflag = 1;
+		drawhpflag = TRUE;
 	}
 }
 

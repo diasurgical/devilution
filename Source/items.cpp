@@ -1115,8 +1115,8 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 		}
 	}
 
-	drawmanaflag = 1;
-	drawhpflag = 1;
+	drawmanaflag = TRUE;
+	drawhpflag = TRUE;
 }
 
 void __fastcall CalcPlrScrolls(int p)
@@ -2434,14 +2434,14 @@ LABEL_79:
 			if ( param1 == 5 )
 				BYTE1(item[v8]._iFlags) |= 0x40u;
 LABEL_92:
-			drawmanaflag = 1;
+			drawmanaflag = TRUE;
 			break;
 		case IPL_STEALLIFE:
 			if ( param1 == 3 )
 				BYTE1(item[v8]._iFlags) |= 0x80u;
 			if ( param1 == 5 )
 				BYTE2(item[v8]._iFlags) |= 1u;
-			drawhpflag = 1;
+			drawhpflag = TRUE;
 			break;
 		case IPL_TARGAC:
 			v11 = &item[v8]._iPLEnAc;
@@ -4491,7 +4491,7 @@ void __fastcall UseItem(int p, int Mid, int spl)
 		{
 			plr[p]._pHitPoints = plr[p]._pMaxHP;
 			plr[p]._pHPBase = plr[p]._pMaxHPBase;
-			drawhpflag = 1;
+			drawhpflag = TRUE;
 			return;
 		}
 		v5 = Mid - 3;
@@ -4521,7 +4521,7 @@ void __fastcall UseItem(int p, int Mid, int spl)
 				plr[v9]._pMana = plr[v9]._pMaxMana;
 				plr[v9]._pManaBase = plr[v9]._pMaxManaBase;
 LABEL_41:
-				drawmanaflag = 1;
+				drawmanaflag = TRUE;
 				return;
 			}
 			v10 = p;
@@ -4569,7 +4569,7 @@ LABEL_71:
 		*v68 += v65;
 		if ( *v68 > v69 )
 			*v68 = v69;
-		drawhpflag = 1;
+		drawhpflag = TRUE;
 		return;
 	}
 	if ( Mid == IMISC_ELIXVIT )
@@ -4659,11 +4659,11 @@ LABEL_71:
 		plr[v40]._pHitPoints = plr[p]._pMaxHP;
 		plr[v40]._pHPBase = plr[p]._pMaxHPBase;
 		v36 = (plr[p]._pIFlags & 0x8000000) == 0;
-		drawhpflag = 1;
+		drawhpflag = TRUE;
 		if ( v36 )
 		{
 			v41 = plr[v40]._pMaxMana;
-			drawmanaflag = 1;
+			drawmanaflag = TRUE;
 			plr[v40]._pMana = v41;
 			plr[v40]._pManaBase = plr[v40]._pMaxManaBase;
 		}
@@ -4691,7 +4691,7 @@ LABEL_71:
 			*v50 = v49;
 		v51 = plr[v42]._pMaxMana >> 8;
 		v52 = plr[v42]._pMaxMana >> 8;
-		drawhpflag = 1;
+		drawhpflag = TRUE;
 		v53 = (v51 & 0xFFFFFFFE) + 2 * random(40, v52);
 		v54 = plr[v42]._pClass;
 		v55 = 32 * v53;
@@ -4711,7 +4711,7 @@ LABEL_71:
 			*v58 += v55;
 			if ( *v58 > v59 )
 				*v58 = v59;
-			drawmanaflag = 1;
+			drawmanaflag = TRUE;
 		}
 	}
 }
