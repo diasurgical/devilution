@@ -265,7 +265,7 @@ enum item_cursor_graphic {
 	ICURS_COMPOSITE_STAFF             = 166,
 	ICURS_SHORT_BATTLE_BOW            = 167,
 	ICURS_GOLD                        = 168,
-}
+};
 
 enum _sfx_id
 {

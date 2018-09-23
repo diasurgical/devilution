@@ -4449,7 +4449,6 @@ void __fastcall OperateSlainHero(int pnum, int i, unsigned char sendmsg)
 	int v4; // esi
 	int v5; // eax
 	bool v6; // zf
-	char v7; // cl
 	int v8; // ecx
 
 	v3 = i;
