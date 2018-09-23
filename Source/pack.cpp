@@ -50,7 +50,7 @@ void __fastcall PackPlayer(PkPlayerStruct *pPack, int pnum, bool manashield)
 	pPack->pMemSpells = pPlayer->_pMemSpells[0];
 	pPack->pMemSpells2 = pPlayer->_pMemSpells[1];
 
-	for(i = 0; i < 37; i++)
+	for(i = 0; i < MAX_SPELLS; i++)
 		pPack->pSplLvl[i] = pPlayer->_pSplLvl[i];
 
 	pki = pPack->InvBody;
@@ -199,7 +199,7 @@ void __fastcall UnPackPlayer(PkPlayerStruct *pPack, int pnum, bool killok)
 	pPlayer->_pMemSpells[0] = pPack->pMemSpells;
 	pPlayer->_pMemSpells[1] = pPack->pMemSpells2;
 
-	for(i = 0; i < 37; i++)
+	for(i = 0; i < MAX_SPELLS; i++)
 		pPlayer->_pSplLvl[i] = pPack->pSplLvl[i];
 
 	pki = pPack->InvBody;

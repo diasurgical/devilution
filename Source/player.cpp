@@ -3810,81 +3810,51 @@ BOOL __fastcall PlrDeathModeOK(int pnum)
 
 void __cdecl ValidatePlayer()
 {
-	int v0; // edi
-	int v1; // esi
-	char *v2; // eax
-	int v3; // ecx
-	int v4; // ecx
-	int *v5; // eax
-	int v6; // eax
-	int v7; // edx
-	int v8; // edx
-	int v9; // edx
-	int v10; // eax
-	int *v11; // ebx
-	signed int v12; // edi
-	char *v13; // eax
-	__int64 v14; // [esp+Ch] [ebp-8h]
+	__int64 msk = 0;
 
-	v0 = 0;
-	v14 = (__int64)0;
-	if ( (unsigned int)myplr >= 4 )
+	if ( (DWORD)myplr >= MAX_PLRS ) {
 		TermMsg("ValidatePlayer: illegal player %d", myplr);
-	v1 = myplr;
-	v2 = &plr[myplr]._pLevel;
-	if ( *v2 > 50 )
-		*v2 = 50;
-	v3 = plr[v1]._pNextExper;
-	if ( plr[v1]._pExperience > v3 )
-		plr[v1]._pExperience = v3;
-	v4 = 0;
-	if ( plr[v1]._pNumInv > 0 )
-	{
-		v5 = &plr[v1].InvList[0]._ivalue;
-		do
-		{
-			if ( *(v5 - 47) == 11 )
-			{
-				if ( *v5 > 5000 )
-					*v5 = 5000;
-				v4 += *v5;
+	}
+	if ( plr[myplr]._pLevel > 50 )
+		plr[myplr]._pLevel = 50;
+	if ( plr[myplr]._pExperience > plr[myplr]._pNextExper )
+		plr[myplr]._pExperience = plr[myplr]._pNextExper;
+
+	int gt = 0;
+	for ( int i = 0; i < plr[myplr]._pNumInv; i++ ) {
+		if ( plr[myplr].InvList[i]._itype == ITYPE_GOLD ) {
+			if ( plr[myplr].InvList[i]._ivalue > 5000 ) {
+				plr[myplr].InvList[i]._ivalue = 5000;
 			}
-			++v0;
-			v5 += 92;
+			gt += plr[myplr].InvList[i]._ivalue;
 		}
-		while ( v0 < plr[v1]._pNumInv );
 	}
-	if ( v4 != plr[v1]._pGold )
-		plr[v1]._pGold = v4;
-	v6 = SLOBYTE(plr[v1]._pClass);
-	v7 = MaxStats[v6][0];
-	if ( plr[v1]._pBaseStr > v7 )
-		plr[v1]._pBaseStr = v7;
-	v8 = MaxStats[v6][1];
-	if ( plr[v1]._pBaseMag > v8 )
-		plr[v1]._pBaseMag = v8;
-	v9 = MaxStats[v6][2];
-	if ( plr[v1]._pBaseDex > v9 )
-		plr[v1]._pBaseDex = v9;
-	v10 = MaxStats[v6][3];
-	if ( plr[v1]._pBaseVit > v10 )
-		plr[v1]._pBaseVit = v10;
-	v11 = &spelldata[1].sBookLvl;
-	v12 = 1;
-	do
-	{
-		if ( *v11 != -1 )
-		{
-			v14 |= (__int64)1 << ((unsigned char)v12 - 1);
-			v13 = &plr[v1]._pSplLvl[v12];
-			if ( *v13 > 15 )
-				*v13 = 15;
+	if ( gt != plr[myplr]._pGold )
+		plr[myplr]._pGold = gt;
+
+	int pc = plr[myplr]._pClass;
+	if ( plr[myplr]._pBaseStr > MaxStats[pc][ATTRIB_STR] ) {
+		plr[myplr]._pBaseStr = MaxStats[pc][ATTRIB_STR];
+	}
+	if ( plr[myplr]._pBaseMag > MaxStats[pc][ATTRIB_MAG] ) {
+		plr[myplr]._pBaseMag = MaxStats[pc][ATTRIB_MAG];
+	}
+	if ( plr[myplr]._pBaseDex > MaxStats[pc][ATTRIB_DEX] ) {
+		plr[myplr]._pBaseDex = MaxStats[pc][ATTRIB_DEX];
+	}
+	if ( plr[myplr]._pBaseVit > MaxStats[pc][ATTRIB_VIT] ) {
+		plr[myplr]._pBaseVit = MaxStats[pc][ATTRIB_VIT];
+	}
+
+	for ( int b = 1; b < MAX_SPELLS; b++) {
+		if ( spelldata[b].sBookLvl != -1 ) {
+			msk |= (__int64)1 << (b - 1);
+			if ( plr[myplr]._pSplLvl[b] > 15 )
+				plr[myplr]._pSplLvl[b] = 15;
 		}
-		v11 += 14;
-		++v12;
 	}
-	while ( (signed int)v11 < (signed int)&spelldata[37].sBookLvl );
-	*(_QWORD *)plr[v1]._pMemSpells &= v14;
+
+	plr[myplr]._pMemSpells64 &= msk;
 }
 
 void __cdecl ProcessPlayers()

@@ -2,7 +2,7 @@
 
 #include "../types.h"
 
-SpellData spelldata[37] =
+SpellData spelldata[MAX_SPELLS] =
 {
 	{ 0,               0,   0,               NULL,              NULL,             0,  0,  0, 0, 0,   0,        { 0,               0,          0 }, 0, 0,   40, 80, 0,     0 },
 	{ SPL_FIREBOLT,    6,   STYPE_FIRE,      "Firebolt",        "Firebolt",       1,  1,  1, 0, 15,  IS_CAST2, { MIS_FIREBOLT,    0,          0 }, 1, 3,   40, 80, 1000,  50 },

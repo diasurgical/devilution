@@ -5287,10 +5287,10 @@ LABEL_47:
 						v57 *= 2;
 						++v59;
 					}
-					while ( v59 <= 37 );
+					while ( v59 <= MAX_SPELLS );
 					do
 					{
-						v60 = random(0, 37);
+						v60 = random(0, MAX_SPELLS);
 						v7 = v60;
 					}
 					while ( !(plr[v53]._pMemSpells[1] & ((unsigned __int64)((__int64)1 << v60) >> 32) | plr[v53]._pMemSpells[0] & (unsigned int)((__int64)1 << v60)) );

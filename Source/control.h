@@ -131,7 +131,7 @@ extern const unsigned char fontidx[256];
 
 /* data */
 
-extern unsigned char SpellITbl[37];
+extern unsigned char SpellITbl[MAX_SPELLS];
 extern int PanBtnPos[8][5];
 extern char *PanBtnHotKey[8];
 extern char *PanBtnStr[8];
