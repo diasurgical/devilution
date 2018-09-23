@@ -1367,7 +1367,7 @@ struct _SNETUIDATA
 	void (__cdecl *profilecallback)();
 	int profilefields;
 	void (__cdecl *profilebitmapcallback)();
-	void (__cdecl *selectnamecallback)();
+	void (__cdecl *selectnamecallback)(int u1, int u2, int u3, int u4, int mode, char *cname, int clen, char *cdesc, int cdlen, int *multi);
 	void (__cdecl *changenamecallback)();
 };
 
