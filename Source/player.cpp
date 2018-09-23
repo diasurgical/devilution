@@ -3846,13 +3846,14 @@ void __cdecl ValidatePlayer()
 		plr[myplr]._pBaseVit = MaxStats[pc][ATTRIB_VIT];
 	}
 
-	for ( int b = 1; b < 37; b++) {
+	for ( int b = 1; b < MAX_SPELLS; b++) {
 		if ( spelldata[b].sBookLvl != -1 ) {
 			msk |= (__int64)1 << (b - 1);
 			if ( plr[myplr]._pSplLvl[b] > 15 )
 				plr[myplr]._pSplLvl[b] = 15;
 		}
 	}
+
 	plr[myplr]._pMemSpells64 &= msk;
 }
 

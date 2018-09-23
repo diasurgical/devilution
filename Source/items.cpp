@@ -1883,7 +1883,7 @@ void __fastcall GetBookSpell(int i, int lvl)
 	v3 = i;
 	if ( !lvl )
 		v2 = lvl + 1;
-	v4 = random(14, 37) + 1;
+	v4 = random(14, MAX_SPELLS) + 1;
 LABEL_13:
 	v6 = 1;
 	while ( v4 > 0 )
@@ -1902,7 +1902,7 @@ LABEL_13:
 			if ( v6 == SPL_HEALOTHER )
 				v6 = SPL_FLARE;
 		}
-		if ( v6 == 37 )
+		if ( v6 == MAX_SPELLS )
 			goto LABEL_13;
 	}
 	v7 = v3;
@@ -2017,7 +2017,7 @@ void __fastcall GetStaffSpell(int i, int lvl, unsigned char onlygood)
 		l = lvl >> 1;
 		if ( !l )
 			l = 1;
-		rv = random(18, 37) + 1;
+		rv = random(18, MAX_SPELLS) + 1;
 LABEL_15:
 		s = 1;
 		while ( rv > 0 )
@@ -2035,7 +2035,7 @@ LABEL_15:
 				if ( s == SPL_HEALOTHER )
 					s = SPL_FLARE;
 			}
-			if ( s == 37 )
+			if ( s == MAX_SPELLS )
 				goto LABEL_15;
 		}
 		sprintf(istr, "%s of %s", item[i]._iName, spelldata[bs].sNameText);

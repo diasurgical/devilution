@@ -143,7 +143,7 @@ const unsigned char fontidx[256] =
 
 /* data */
 
-unsigned char SpellITbl[37] =
+unsigned char SpellITbl[MAX_SPELLS] =
 {
 	1,   1,   2,   3,   4,   5,   6,   7,   8,   9,
    28,  13,  12,  18,  16,  14,  18,  19,  11,  20,
@@ -611,7 +611,7 @@ LABEL_68:
 			v26 *= (__int64)2;
 			v23 = v4;
 		}
-		while ( (signed int)v20 < (signed int)&spelldata[37].sTownSpell );
+		while ( (signed int)v20 < (signed int)&spelldata[MAX_SPELLS].sTownSpell );
 		if ( v25 && v17 != 636 )
 			v17 -= 56;
 		if ( v17 == 20 )
@@ -1382,7 +1382,7 @@ void __cdecl DoSpeedBook()
 				++v10;
 				v7 = v4;
 			}
-			while ( v10 < 37 );
+			while ( v10 < MAX_SPELLS );
 			if ( v3 && v13 != 636 )
 				v13 -= 56;
 			if ( v13 == 20 )
@@ -2748,11 +2748,11 @@ void __cdecl DrawSpellBook()
 		{
 			v7 = GetSBookTrans(v2, 1u);
 			SetSpellTrans(v7);
-			DrawSpellCel(395, v8 + 1, (char *)pSBkIconCels, (char)SpellITbl[v2], 37);
+			DrawSpellCel(395, v8 + 1, (char *)pSBkIconCels, (char)SpellITbl[v2], MAX_SPELLS);
 			if ( v2 == plr[myplr]._pRSpell && v7 == _LOBYTE(plr[myplr]._pRSplType) )
 			{
 				SetSpellTrans(0);
-				DrawSpellCel(395, v8 + 1, (char *)pSBkIconCels, 43, 37);
+				DrawSpellCel(395, v8 + 1, (char *)pSBkIconCels, 43, MAX_SPELLS);
 			}
 			PrintSBookStr(10, v8 - 22, 0, spelldata[v2].sNameText, 0);
 			v3 = GetSBookTrans(v2, 0);

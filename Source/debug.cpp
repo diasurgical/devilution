@@ -105,7 +105,7 @@ void __cdecl MaxSpellsCheat()
 {
 	int i; // ebp
 
-	for(i = 1; i < 37; i++)
+	for(i = 1; i < MAX_SPELLS; i++)
 	{
 		if ( spelldata[i].sBookLvl != -1 )
 		{
