@@ -1688,7 +1688,7 @@ void __fastcall StartPlayerKill(int pnum, int earflag)
 	}
 
 	if ( myplr == pnum ) {
-		NetSendCmdParam1(TRUE, CMD_PLRDEAD, earflag);//23
+		NetSendCmdParam1(TRUE, CMD_PLRDEAD, earflag);
 	}
 
 	BOOL diablolevel = gbMaxPlayers > 1 && plr[pnum].plrlevel == 16;
@@ -1755,11 +1755,11 @@ void __fastcall StartPlayerKill(int pnum, int earflag)
 						SetPlrHandItem(&ear, IDI_EAR);
 						sprintf(ear._iName, "Ear of %s", plr[pnum]._pName);
 						if ( plr[pnum]._pClass == PC_SORCERER ) {
-							ear._iCurs = 19;
+							ear._iCurs = ICURS_EAR_SORCEROR;
 						} else if ( plr[pnum]._pClass == PC_WARRIOR ) {
-							ear._iCurs = 20;
+							ear._iCurs = ICURS_EAR_WARRIOR;
 						} else if ( plr[pnum]._pClass == PC_ROGUE ) {
-							ear._iCurs = 21;
+							ear._iCurs = ICURS_EAR_ROGUE;
 						}
 
 						ear._iCreateInfo = plr[pnum]._pName[0] << 8 | plr[pnum]._pName[1];

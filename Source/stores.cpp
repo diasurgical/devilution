@@ -2537,13 +2537,13 @@ void __fastcall SetGoldCurs(int pnum, int i)
 	if ( plr[pnum].InvList[i]._ivalue < 2500 )
 	{
 		if ( plr[pnum].InvList[i]._ivalue > 1000 )
-			plr[pnum].InvList[i]._iCurs = 5;
+			plr[pnum].InvList[i]._iCurs = ICURS_GOLD_MEDIUM;
 		else
-			plr[pnum].InvList[i]._iCurs = 4;
+			plr[pnum].InvList[i]._iCurs = ICURS_GOLD_SMALL;
 	}
 	else
 	{
-		plr[pnum].InvList[i]._iCurs = 6;
+		plr[pnum].InvList[i]._iCurs = ICURS_GOLD_LARGE;
 	}
 }
 
@@ -2552,13 +2552,13 @@ void __fastcall SetSpdbarGoldCurs(int pnum, int i)
 	if ( plr[pnum].SpdList[i]._ivalue < 2500 )
 	{
 		if ( plr[pnum].SpdList[i]._ivalue > 1000 )
-			plr[pnum].SpdList[i]._iCurs = 5;
+			plr[pnum].SpdList[i]._iCurs = ICURS_GOLD_MEDIUM;
 		else
-			plr[pnum].SpdList[i]._iCurs = 4;
+			plr[pnum].SpdList[i]._iCurs = ICURS_GOLD_SMALL;
 	}
 	else
 	{
-		plr[pnum].SpdList[i]._iCurs = 6;
+		plr[pnum].SpdList[i]._iCurs = ICURS_GOLD_LARGE;
 	}
 }
 

@@ -3061,14 +3061,14 @@ void __fastcall control_set_gold_curs(int pnum)
 		v5 = v2 - 1000 < 0;
 		v3 = &plr[v1].HoldItem._iCurs;
 		if ( (unsigned char)(v5 ^ v6) | v4 )
-			*v3 = 4;
+			*v3 = ICURS_GOLD_SMALL;
 		else
-			*v3 = 5;
+			*v3 = ICURS_GOLD_MEDIUM;
 	}
 	else
 	{
 		v3 = &plr[v1].HoldItem._iCurs;
-		plr[v1].HoldItem._iCurs = 6;
+		plr[v1].HoldItem._iCurs = ICURS_GOLD_LARGE;
 	}
 	SetCursor(*v3 + 12);
 }
