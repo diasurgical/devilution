@@ -3,9 +3,13 @@
 #ifndef _TYPES_H
 #define _TYPES_H
 
-#define WIN32_LEAN_AND_MEAN
 
 #include "resource.h"
+
+#ifdef MINIWIN
+#include "miniwin.h"
+#else
+#define WIN32_LEAN_AND_MEAN
 
 #include <windows.h>
 #include <mmsystem.h>
@@ -18,6 +22,7 @@
 #include <process.h>
 #include <shlobj.h>
 #include <shellapi.h>
+#endif
 
 #ifdef __GNUC__
 #include <ctype.h>

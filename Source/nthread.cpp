@@ -35,6 +35,7 @@ struct nthread_cpp_init_1
 // 47F164: using guessed type int nthread_inf;
 // 679700: using guessed type int nthread_cpp_init_value;
 
+#ifndef MINIWIN
 struct nthread_cpp_init_2
 {
 	nthread_cpp_init_2()
@@ -43,6 +44,7 @@ struct nthread_cpp_init_2
 		nthread_cleanup_mutex_atexit();
 	}
 } _nthread_cpp_init_2;
+#endif
 
 void __cdecl nthread_init_mutex()
 {

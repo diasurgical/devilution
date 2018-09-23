@@ -1859,6 +1859,7 @@ int __fastcall random(BYTE idx, int v)
 	return (GetRndSeed() >> 16) % v;
 }
 
+#ifndef MINIWIN
 struct engine_cpp_init_2
 {
 	engine_cpp_init_2()
@@ -1867,6 +1868,7 @@ struct engine_cpp_init_2
 		mem_atexit_mutex();
 	}
 } _engine_cpp_init_2;
+#endif
 
 void __cdecl mem_init_mutex()
 {

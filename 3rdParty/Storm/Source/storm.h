@@ -3,10 +3,14 @@
 #ifndef __BLIZZARD_STORM_HEADER
 #define __BLIZZARD_STORM_HEADER
 
+#ifndef MINIWIN
 #include <windows.h>
 #include <winuser.h>
 #include <winsock.h>
 #include <ddraw.h>
+#else
+#include "miniwin.h"
+#endif
 
 // Note to self: Linker error => forgot a return value in cpp
 
