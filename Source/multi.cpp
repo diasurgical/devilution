@@ -834,7 +834,7 @@ int __fastcall NetInit(int bSinglePlayer, int *pfExitProgram)
 		UiData.authcallback = (void (__cdecl *)())UiAuthCallback;
 		UiData.getdatacallback = (void (__cdecl *)())UiGetDataCallback;
 		UiData.categorycallback = (void (__cdecl *)())UiCategoryCallback;
-		UiData.selectnamecallback = (void (__cdecl *)())mainmenu_select_hero_dialog;
+		UiData.selectnamecallback = mainmenu_select_hero_dialog;
 		UiData.changenamecallback = (void (__cdecl *)())mainmenu_create_hero;
 		UiData.profilebitmapcallback = UiProfileDraw;
 		UiData.profilecallback = UiProfileCallback;
