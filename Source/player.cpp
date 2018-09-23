@@ -711,7 +711,7 @@ void __fastcall NextPlrLevel(int pnum)
 	plr[pnum]._pHPBase = plr[pnum]._pMaxHPBase;
 
 	if ( pnum == myplr ) {
-		drawhpflag = 1;
+		drawhpflag = TRUE;
 	}
 
 	int mana = c != PC_WARRIOR ? 128 : 64;
@@ -727,7 +727,7 @@ void __fastcall NextPlrLevel(int pnum)
 	}
 
 	if ( pnum == myplr ) {
-		drawmanaflag = 1;
+		drawmanaflag = TRUE;
 	}
 }
 // 679660: using guessed type char gbMaxPlayers;
@@ -1489,7 +1489,7 @@ void __fastcall StartPlrBlock(int pnum, int dir)
 
 void __fastcall StartSpell(int pnum, int d, int cx, int cy)
 {
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS )
 		TermMsg("StartSpell: illegal player %d", pnum);
 
 	if ( plr[pnum]._pInvincible && !plr[pnum]._pHitPoints && pnum == myplr ) {
@@ -1632,7 +1632,7 @@ void __fastcall StartPlrHit(int pnum, int dam, BOOL forcehit)
 		PlaySfxLoc(PS_MAGE69, plr[pnum].WorldX, plr[pnum].WorldY);
 	}
 
-	drawhpflag = 1;
+	drawhpflag = TRUE;
 	if ( dam >> 6 >= plr[pnum]._pLevel || forcehit ) {
 		int dir = plr[pnum]._pdir;
 
@@ -1739,7 +1739,7 @@ void __fastcall StartPlayerKill(int pnum, int earflag)
 		SetPlayerOld(pnum);
 
 		if ( pnum == myplr ) {
-			drawhpflag = 1;
+			drawhpflag = TRUE;
 			deathdelay = 30;
 
 			if ( pcurs >= CURSOR_FIRSTITEM ) {
@@ -2366,7 +2366,7 @@ BOOL __fastcall PM_DoWalk3(int pnum)
 
 	if ( plr[pnum]._pVar8 == vel ) {
 		dPlayer[plr[pnum].WorldX][plr[pnum].WorldY] = 0;
-		dFlags[plr[pnum]._pVar4][plr[pnum]._pVar5] &= 0xDFu;
+		dFlags[plr[pnum]._pVar4][plr[pnum]._pVar5] &= 0xDF;
 		plr[pnum].WorldX = plr[pnum]._pVar1;
 		plr[pnum].WorldY = plr[pnum]._pVar2;
 		dPlayer[plr[pnum]._pVar1][plr[pnum]._pVar2] = pnum + 1;
@@ -2421,7 +2421,7 @@ BOOL __fastcall WeaponDur(int pnum, int durrnd)
 		}
 
 		plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDurability--;
-		if ( plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDurability != 0) {
+		if ( plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDurability == 0) {
 			NetSendCmdDelItem(TRUE, INVLOC_HAND_LEFT);
 			plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype = ITYPE_NONE;
 			CalcPlrInv(pnum, TRUE);
@@ -2435,7 +2435,7 @@ BOOL __fastcall WeaponDur(int pnum, int durrnd)
 		}
 
 		plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iDurability--;
-		if ( plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iDurability != 0 ) {
+		if ( plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iDurability == 0 ) {
 			NetSendCmdDelItem(TRUE, INVLOC_HAND_RIGHT);
 			plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype = ITYPE_NONE;
 			CalcPlrInv(pnum, TRUE);
@@ -2449,7 +2449,7 @@ BOOL __fastcall WeaponDur(int pnum, int durrnd)
 		}
 
 		plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iDurability--;
-		if ( plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iDurability != 0 ) {
+		if ( plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iDurability == 0 ) {
 			NetSendCmdDelItem(TRUE, INVLOC_HAND_RIGHT);
 			plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype = ITYPE_NONE;
 			CalcPlrInv(pnum, TRUE);
@@ -2458,14 +2458,16 @@ BOOL __fastcall WeaponDur(int pnum, int durrnd)
 	}
 
 	if ( plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_SHIELD ) {
-		if ( plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDurability != 255 ) {
-			plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDurability--;
-			if ( plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDurability != 0 ) {
-				NetSendCmdDelItem(TRUE, INVLOC_HAND_LEFT);
-				plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype = ITYPE_NONE;
-				CalcPlrInv(pnum, TRUE);
-				return TRUE;
-			}
+		if ( plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDurability == 255 ) {
+			return FALSE;
+		}
+
+		plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDurability--;
+		if ( plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDurability == 0 ) {
+			NetSendCmdDelItem(TRUE, INVLOC_HAND_LEFT);
+			plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype = ITYPE_NONE;
+			CalcPlrInv(pnum, TRUE);
+			return TRUE;
 		}
 	}
 
@@ -2623,7 +2625,7 @@ LABEL_40:
 			if ( plr[v9]._pHPBase > v30 )
 				*v31 = v30;
 			v5 = v43;
-			drawhpflag = 1;
+			drawhpflag = TRUE;
 		}
 		else
 		{
@@ -2649,7 +2651,7 @@ LABEL_40:
 				*v36 = v35;
 			v5 = v43;
 			v32 = v46;
-			drawmanaflag = 1;
+			drawmanaflag = TRUE;
 		}
 		if ( v32 & 0x18000 )
 		{
@@ -2669,7 +2671,7 @@ LABEL_40:
 				*v39 = v40;
 			BYTE1(v32) = BYTE1(v46);
 			v5 = v43;
-			drawhpflag = 1;
+			drawhpflag = TRUE;
 		}
 		if ( v32 & 0x100 )
 			*(int *)((char *)&monster[0]._mFlags + v5) |= 8u;
@@ -2781,7 +2783,7 @@ BOOL __fastcall PlrHitPlr(int pnum, char p)
 				if ( plr[pnum]._pHPBase > plr[pnum]._pMaxHPBase ) {
 					plr[pnum]._pHPBase = plr[pnum]._pMaxHPBase;
 				}
-				drawhpflag = 1;
+				drawhpflag = TRUE;
 			}
 			if ( pnum == myplr ) {
 				NetSendCmdDamage(TRUE, p, skdam);
@@ -2813,7 +2815,7 @@ BOOL __fastcall PlrHitObj(int pnum, int mx, int my)
 	return FALSE;
 }
 
-int __fastcall PM_DoAttack(int pnum)
+BOOL __fastcall PM_DoAttack(int pnum)
 {
 	int v1; // esi
 	int v2; // esi
@@ -3062,7 +3064,7 @@ BOOL __fastcall PM_DoSpell(int pnum)
 		if ( !plr[pnum]._pSplFrom ) {
 			if ( plr[pnum]._pRSplType == RSPLTYPE_SCROLL) {
 				if ( !(plr[pnum]._pScrlSpells64
-					& (UINT64)1 << (plr[pnum]._pRSpell - 1))
+					& (unsigned __int64)1 << (plr[pnum]._pRSpell - 1))
 				) {
 					plr[pnum]._pRSpell = SPL_INVALID;
 					plr[pnum]._pRSplType = RSPLTYPE_INVALID;
@@ -3072,7 +3074,7 @@ BOOL __fastcall PM_DoSpell(int pnum)
 
 			if ( plr[pnum]._pRSplType == RSPLTYPE_CHARGES) {
 				if ( !(plr[pnum]._pISpells64
-					& (UINT64)1 << (plr[pnum]._pRSpell - 1))
+					& (unsigned __int64)1 << (plr[pnum]._pRSpell - 1))
 				) {
 					plr[pnum]._pRSpell = SPL_INVALID;
 					plr[pnum]._pRSplType = RSPLTYPE_INVALID;
@@ -3101,7 +3103,7 @@ BOOL __fastcall PM_DoSpell(int pnum)
 // 52571C: using guessed type int drawpanflag;
 // 5BB1ED: using guessed type char leveltype;
 
-int __fastcall PM_DoGotHit(int pnum)
+BOOL __fastcall PM_DoGotHit(int pnum)
 {
 	int v1; // esi
 	int v2; // eax
@@ -3188,7 +3190,7 @@ LABEL_23:
 	}
 }
 
-int __fastcall PM_DoDeath(int pnum)
+BOOL __fastcall PM_DoDeath(int pnum)
 {
 	int v1; // edi
 	int v2; // esi
@@ -3765,210 +3767,149 @@ BOOL __fastcall PlrDeathModeOK(int pnum)
 
 void __cdecl ValidatePlayer()
 {
-	int v0; // edi
-	int v1; // esi
-	char *v2; // eax
-	int v3; // ecx
-	int v4; // ecx
-	int *v5; // eax
-	int v6; // eax
-	int v7; // edx
-	int v8; // edx
-	int v9; // edx
-	int v10; // eax
-	int *v11; // ebx
-	signed int v12; // edi
-	char *v13; // eax
-	__int64 v14; // [esp+Ch] [ebp-8h]
+	__int64 msk = 0;
 
-	v0 = 0;
-	v14 = (__int64)0;
-	if ( (unsigned int)myplr >= 4 )
+	if ( (DWORD)myplr >= MAX_PLRS ) {
 		TermMsg("ValidatePlayer: illegal player %d", myplr);
-	v1 = myplr;
-	v2 = &plr[myplr]._pLevel;
-	if ( *v2 > 50 )
-		*v2 = 50;
-	v3 = plr[v1]._pNextExper;
-	if ( plr[v1]._pExperience > v3 )
-		plr[v1]._pExperience = v3;
-	v4 = 0;
-	if ( plr[v1]._pNumInv > 0 )
-	{
-		v5 = &plr[v1].InvList[0]._ivalue;
-		do
-		{
-			if ( *(v5 - 47) == 11 )
-			{
-				if ( *v5 > 5000 )
-					*v5 = 5000;
-				v4 += *v5;
+	}
+	if ( plr[myplr]._pLevel > 50 )
+		plr[myplr]._pLevel = 50;
+	if ( plr[myplr]._pExperience > plr[myplr]._pNextExper )
+		plr[myplr]._pExperience = plr[myplr]._pNextExper;
+
+	int gt = 0;
+	for ( int i = 0; i < plr[myplr]._pNumInv; i++ ) {
+		if ( plr[myplr].InvList[i]._itype == ITYPE_GOLD ) {
+			if ( plr[myplr].InvList[i]._ivalue > 5000 ) {
+				plr[myplr].InvList[i]._ivalue = 5000;
 			}
-			++v0;
-			v5 += 92;
+			gt += plr[myplr].InvList[i]._ivalue;
 		}
-		while ( v0 < plr[v1]._pNumInv );
 	}
-	if ( v4 != plr[v1]._pGold )
-		plr[v1]._pGold = v4;
-	v6 = SLOBYTE(plr[v1]._pClass);
-	v7 = MaxStats[v6][0];
-	if ( plr[v1]._pBaseStr > v7 )
-		plr[v1]._pBaseStr = v7;
-	v8 = MaxStats[v6][1];
-	if ( plr[v1]._pBaseMag > v8 )
-		plr[v1]._pBaseMag = v8;
-	v9 = MaxStats[v6][2];
-	if ( plr[v1]._pBaseDex > v9 )
-		plr[v1]._pBaseDex = v9;
-	v10 = MaxStats[v6][3];
-	if ( plr[v1]._pBaseVit > v10 )
-		plr[v1]._pBaseVit = v10;
-	v11 = &spelldata[1].sBookLvl;
-	v12 = 1;
-	do
-	{
-		if ( *v11 != -1 )
-		{
-			v14 |= (__int64)1 << ((unsigned char)v12 - 1);
-			v13 = &plr[v1]._pSplLvl[v12];
-			if ( *v13 > 15 )
-				*v13 = 15;
+	if ( gt != plr[myplr]._pGold )
+		plr[myplr]._pGold = gt;
+
+	int pc = plr[myplr]._pClass;
+	if ( plr[myplr]._pBaseStr > MaxStats[pc][ATTRIB_STR] ) {
+		plr[myplr]._pBaseStr = MaxStats[pc][ATTRIB_STR];
+	}
+	if ( plr[myplr]._pBaseMag > MaxStats[pc][ATTRIB_MAG] ) {
+		plr[myplr]._pBaseMag = MaxStats[pc][ATTRIB_MAG];
+	}
+	if ( plr[myplr]._pBaseDex > MaxStats[pc][ATTRIB_DEX] ) {
+		plr[myplr]._pBaseDex = MaxStats[pc][ATTRIB_DEX];
+	}
+	if ( plr[myplr]._pBaseVit > MaxStats[pc][ATTRIB_VIT] ) {
+		plr[myplr]._pBaseVit = MaxStats[pc][ATTRIB_VIT];
+	}
+
+	for ( int b = 1; b < MAX_SPELLS; b++) {
+		if ( spelldata[b].sBookLvl != -1 ) {
+			msk |= (__int64)1 << (b - 1);
+			if ( plr[myplr]._pSplLvl[b] > 15 )
+				plr[myplr]._pSplLvl[b] = 15;
 		}
-		v11 += 14;
-		++v12;
 	}
-	while ( (signed int)v11 < (signed int)&spelldata[37].sBookLvl );
-	*(_QWORD *)plr[v1]._pMemSpells &= v14;
+
+	plr[myplr]._pMemSpells64 &= msk;
 }
 
 void __cdecl ProcessPlayers()
 {
-	int v0; // eax
-	int v1; // eax
-	unsigned char *v2; // ecx
-	char v3; // al
-	int v4; // ebp
-	int *v5; // esi
-	int v6; // eax
-	//int v7; // eax
-	int v8; // eax
-	int v9; // eax
-	int v10; // eax
-	int v11; // edi
-	int v12; // eax
-	char *v13; // eax
-	char *v14; // eax
-
-	v0 = myplr;
-	if ( (unsigned int)myplr >= 4 )
-	{
+	if ( (DWORD)myplr >= MAX_PLRS ) {
 		TermMsg("ProcessPlayers: illegal player %d", myplr);
-		v0 = myplr;
 	}
-	v1 = v0;
-	v2 = &plr[v1].pLvlLoad;
-	v3 = plr[v1].pLvlLoad;
-	if ( v3 )
-		*v2 = v3 - 1;
-	v4 = 0;
-	if ( sfxdelay > 0 && !--sfxdelay )
-		PlaySFX(sfxdnum);
+
+	if ( plr[myplr].pLvlLoad ) {
+		plr[myplr].pLvlLoad--;
+	}
+
+	if ( sfxdelay > 0 ) {
+		sfxdelay--;
+		if ( sfxdelay == 0 ) {
+			PlaySFX(sfxdnum);
+		}
+	}
+
 	ValidatePlayer();
-	v5 = &plr[0]._pHitPoints;
-	do
-	{
-		v6 = (int)(v5 - 89);
-		if ( *((_BYTE *)v5 - 379) && currlevel == *(_DWORD *)v6 && (v4 == myplr || !*(_BYTE *)(v6 + 267)) )
-		{
-			CheckCheatStats(v4);
-			//_LOBYTE(v7) = PlrDeathModeOK(v4);
-			if ( !PlrDeathModeOK(v4) && (signed int)(*v5 & 0xFFFFFFC0) <= 0 )
-				SyncPlrKill(v4, -1);
-			if ( v4 == myplr )
-			{
-				if ( v5[5294] & 0x40 && currlevel )
-				{
-					*v5 -= 4;
-					v8 = *v5;
-					*(v5 - 2) -= 4;
-					if ( (signed int)(v8 & 0xFFFFFFC0) <= 0 )
-						SyncPlrKill(v4, 0);
-					drawhpflag = 1;
-				}
-				if ( *((_BYTE *)v5 + 21179) & 8 )
-				{
-					v9 = v5[3];
-					if ( v9 > 0 )
-					{
-						v10 = v9 - v5[5];
-						v5[5] = 0;
-						drawmanaflag = 1;
-						v5[3] = v10;
+
+	for ( int pnum = 0; pnum < MAX_PLRS; pnum++ ) {
+		if ( plr[pnum].plractive && currlevel == plr[pnum].plrlevel && (pnum == myplr || !plr[pnum]._pLvlChanging) ) {
+			CheckCheatStats(pnum);
+
+			if ( !PlrDeathModeOK(pnum) && (plr[pnum]._pHitPoints >> 6) <= 0 ) {
+				SyncPlrKill(pnum, -1);
+			}
+
+			if ( pnum == myplr ) {
+				if ( plr[pnum]._pIFlags & ISPL_DRAINLIFE ) {
+					plr[pnum]._pHitPoints -= 4;
+					plr[pnum]._pHPBase -= 4;
+					if ( (plr[pnum]._pHitPoints >> 6) <= 0 ) {
+						SyncPlrKill(pnum, 0);
 					}
+					drawhpflag = TRUE;
+				}
+				if ( plr[pnum]._pIFlags & ISPL_NOMANA && plr[pnum]._pManaBase > 0 ) {
+					plr[pnum]._pManaBase -= plr[pnum]._pMana;
+					plr[pnum]._pMana = 0;
+					drawmanaflag = TRUE;
 				}
 			}
-			v11 = 0;
-			do
-			{
-				switch ( *(v5 - 102) )
+
+			BOOL tplayer = FALSE;
+			do {
+				switch ( plr[pnum]._pmode )
 				{
 					case PM_STAND:
-						v12 = PM_DoStand(v4);
-						goto LABEL_38;
+						tplayer = PM_DoStand(pnum);
+						break;
 					case PM_WALK:
-						v12 = PM_DoWalk(v4);
-						goto LABEL_38;
+						tplayer = PM_DoWalk(pnum);
+						break;
 					case PM_WALK2:
-						v12 = PM_DoWalk2(v4);
-						goto LABEL_38;
+						tplayer = PM_DoWalk2(pnum);
+						break;
 					case PM_WALK3:
-						v12 = PM_DoWalk3(v4);
-						goto LABEL_38;
+						tplayer = PM_DoWalk3(pnum);
+						break;
 					case PM_ATTACK:
-						v12 = PM_DoAttack(v4);
-						goto LABEL_38;
+						tplayer = PM_DoAttack(pnum);
+						break;
 					case PM_RATTACK:
-						v12 = PM_DoRangeAttack(v4);
-						goto LABEL_38;
+						tplayer = PM_DoRangeAttack(pnum);
+						break;
 					case PM_BLOCK:
-						v12 = PM_DoBlock(v4);
-						goto LABEL_38;
+						tplayer = PM_DoBlock(pnum);
+						break;
 					case PM_GOTHIT:
-						v12 = PM_DoGotHit(v4);
-						goto LABEL_38;
+						tplayer = PM_DoGotHit(pnum);
+						break;
 					case PM_DEATH:
-						v12 = PM_DoDeath(v4);
-						goto LABEL_38;
+						tplayer = PM_DoDeath(pnum);
+						break;
 					case PM_SPELL:
-						v12 = PM_DoSpell(v4);
-						goto LABEL_38;
+						tplayer = PM_DoSpell(pnum);
+						break;
 					case PM_NEWLVL:
-						v12 = PM_DoStand(v4);
-LABEL_38:
-						v11 = v12;
+						tplayer = PM_DoStand(pnum);
 						break;
 					default:
 						break;
 				}
-				CheckNewPath(v4);
-			}
-			while ( v11 );
-			v13 = (char *)(v5 - 69);
-			++*(_DWORD *)v13;
-			if ( *(v5 - 69) > *(v5 - 70) )
-			{
-				*(_DWORD *)v13 = 0;
-				v14 = (char *)(v5 - 67);
-				++*(_DWORD *)v14;
-				if ( *(v5 - 67) > *(v5 - 68) )
-					*(_DWORD *)v14 = 1;
+				CheckNewPath(pnum);
+			} while ( tplayer );
+
+			plr[pnum]._pAnimCnt++;
+			if ( plr[pnum]._pAnimDelay < plr[pnum]._pAnimCnt ) {
+				plr[pnum]._pAnimCnt = 0;
+				plr[pnum]._pAnimFrame++;
+				if ( plr[pnum]._pAnimLen < plr[pnum]._pAnimFrame ) {
+					plr[pnum]._pAnimFrame = 1;
+				}
 			}
 		}
-		v5 += 5430;
-		++v4;
 	}
-	while ( (signed int)v5 < (signed int)&plr[MAX_PLRS]._pHitPoints );
 }
 // 52A554: using guessed type int sfxdelay;
 
@@ -4318,83 +4259,51 @@ LABEL_19:
 
 void __fastcall SyncInitPlrPos(int pnum)
 {
-	int v1; // esi
-	bool v2; // zf
-	unsigned int v3; // eax
-	int v4; // ebx
-	int v5; // edi
-	int v6; // eax
-	signed int v7; // [esp+Ch] [ebp-18h]
-	int p; // [esp+10h] [ebp-14h]
-	int v9; // [esp+14h] [ebp-10h]
-	signed int v10; // [esp+18h] [ebp-Ch]
-	signed int v11; // [esp+1Ch] [ebp-8h]
-	unsigned int i; // [esp+20h] [ebp-4h]
-	signed int v13; // [esp+20h] [ebp-4h]
+	plr[pnum]._ptargx = plr[pnum].WorldX;
+	plr[pnum]._ptargy = plr[pnum].WorldY;
 
-	p = pnum;
-	v1 = pnum;
-	v2 = gbMaxPlayers == 1;
-	plr[v1]._ptargx = plr[pnum].WorldX;
-	plr[v1]._ptargy = plr[pnum].WorldY;
-	if ( !v2 && plr[v1].plrlevel == currlevel )
-	{
-		v3 = 0;
-		for ( i = 0; ; v3 = i )
-		{
-			v4 = plr[v1].WorldX + *(int *)((char *)plrxoff2 + v3);
-			v5 = plr[v1].WorldY + *(int *)((char *)plryoff2 + v3);
-			if ( PosOkPlayer(p, v4, v5) )
-				break;
-			i += 4;
-			if ( i >= 0x20 )
-				break;
+	if ( gbMaxPlayers == 1 || plr[pnum].plrlevel != currlevel ) {
+		return;
+	}
+
+	int x;
+	int y;
+	for ( DWORD i = 0; i < 8; i++ ) {
+		x = plr[pnum].WorldX + plrxoff2[i];
+		y = plr[pnum].WorldY + plryoff2[i];
+		if ( PosOkPlayer(pnum, x, y) ) {
+			break;
 		}
-		if ( !PosOkPlayer(p, v4, v5) )
-		{
-			v11 = 0;
-			v6 = -1;
-			v13 = 1;
-			v7 = -1;
-			do
-			{
-				if ( v11 )
-					break;
-				v9 = v6;
-				while ( v6 <= v13 && !v11 )
-				{
-					v5 = v9 + plr[v1].WorldY;
-					v10 = v7;
-					do
-					{
-						if ( v11 )
-							break;
-						v4 = v10 + plr[v1].WorldX;
-						if ( PosOkPlayer(p, v10 + plr[v1].WorldX, v5) && !PosOkPortal(currlevel, v4, v5) )
-							v11 = 1;
-						++v10;
+	}
+
+	if ( !PosOkPlayer(pnum, x, y) ) {
+		BOOL posOk = FALSE;
+		int xx;
+		int yy;
+		for ( int range = 1; range < 50 && !posOk; range++ ) {
+			for ( yy = -range; yy <= range && !posOk; yy++ ) {
+				y = yy + plr[pnum].WorldY;
+				for ( xx = -range; xx <= range && !posOk; xx++ ) {
+					x = xx + plr[pnum].WorldX;
+					if ( PosOkPlayer(pnum, x, y) && !PosOkPortal(currlevel, x, y) ) {
+						posOk = TRUE;
 					}
-					while ( v10 <= v13 );
-					v6 = ++v9;
 				}
-				++v13;
-				v6 = v7-- - 1;
 			}
-			while ( v7 > -50 );
 		}
-		plr[v1].WorldX = v4;
-		v2 = p == myplr;
-		plr[v1].WorldY = v5;
-		dPlayer[v4][v5] = p + 1;
-		if ( v2 )
-		{
-			plr[v1]._px = v4;
-			plr[v1]._py = v5;
-			plr[v1]._ptargx = v4;
-			plr[v1]._ptargy = v5;
-			ViewX = v4;
-			ViewY = v5;
-		}
+	}
+
+	plr[pnum].WorldX = x;
+	plr[pnum].WorldY = y;
+	dPlayer[x][y] = pnum + 1;
+
+	if ( pnum == myplr ) {
+		plr[pnum]._px = x;
+		plr[pnum]._py = y;
+		plr[pnum]._ptargx = x;
+		plr[pnum]._ptargy = y;
+		ViewX = x;
+		ViewY = y;
 	}
 }
 // 679660: using guessed type char gbMaxPlayers;
@@ -4519,86 +4428,62 @@ void __fastcall CheckStats(int pnum)
 
 void __fastcall ModifyPlrStr(int pnum, int l)
 {
-	int v2; // esi
-	int v3; // edi
-	int v4; // esi
-	char v5; // dl
-	int v6; // ecx
-	int v7; // eax
-	int v8; // ebx
-	int v9; // eax
-	signed int v10; // ecx
-	int p; // [esp+8h] [ebp-4h]
-
-	v2 = pnum;
-	v3 = l;
-	p = pnum;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("ModifyPlrStr: illegal player %d", pnum);
-	v4 = v2;
-	v5 = plr[v4]._pClass;
-	v6 = plr[v4]._pBaseStr;
-	v7 = MaxStats[v5][0];
-	if ( v6 + v3 > v7 )
-		v3 = v7 - v6;
-	plr[v4]._pBaseStr = v3 + v6;
-	plr[v4]._pStrength += v3;
-	v8 = plr[v4]._pStrength;
-	if ( v5 == 1 )
-	{
-		v9 = plr[v4]._pLevel * (v8 + plr[v4]._pDexterity);
-		v10 = 200;
 	}
-	else
-	{
-		v9 = v8 * plr[v4]._pLevel;
-		v10 = 100;
+
+	int max = MaxStats[plr[pnum]._pClass][ATTRIB_STR];
+	if ( plr[pnum]._pBaseStr + l > max ) {
+		l = max - plr[pnum]._pBaseStr;
 	}
-	plr[v4]._pDamageMod = v9 / v10;
-	CalcPlrInv(p, 1u);
-	if ( p == myplr )
-		NetSendCmdParam1(0, CMD_SETSTR, plr[v4]._pBaseStr);
+
+	plr[pnum]._pStrength += l;
+	plr[pnum]._pBaseStr += l;
+
+	if ( plr[pnum]._pClass == PC_ROGUE ) {
+		plr[pnum]._pDamageMod = plr[pnum]._pLevel * (plr[pnum]._pStrength + plr[pnum]._pDexterity) / 200;
+	} else {
+		plr[pnum]._pDamageMod = plr[pnum]._pLevel * plr[pnum]._pStrength / 100;
+	}
+
+	CalcPlrInv(pnum, TRUE);
+
+	if ( pnum == myplr ) {
+		NetSendCmdParam1(FALSE, CMD_SETSTR, plr[pnum]._pBaseStr); //60
+	}
 }
 
 void __fastcall ModifyPlrMag(int pnum, int l)
 {
-	int v2; // esi
-	int v3; // edi
-	int v4; // esi
-	char v5; // dl
-	int v6; // ecx
-	int v7; // eax
-	int v8; // eax
-	int v9; // edi
-	int p; // [esp+8h] [ebp-4h]
-
-	v2 = pnum;
-	v3 = l;
-	p = pnum;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("ModifyPlrMag: illegal player %d", pnum);
-	v4 = v2;
-	v5 = plr[v4]._pClass;
-	v6 = MaxStats[v5][1];
-	v7 = plr[v4]._pBaseMag;
-	if ( v7 + v3 > v6 )
-		v3 = v6 - v7;
-	plr[v4]._pMagic += v3;
-	v8 = v3 + v7;
-	v9 = v3 << 6;
-	plr[v4]._pBaseMag = v8;
-	if ( v5 == 2 )
-		v9 *= 2;
-	plr[v4]._pMaxManaBase += v9;
-	plr[v4]._pMaxMana += v9;
-	if ( !(plr[v4]._pIFlags & 0x8000000) )
-	{
-		plr[v4]._pManaBase += v9;
-		plr[v4]._pMana += v9;
 	}
-	CalcPlrInv(p, 1u);
-	if ( p == myplr )
-		NetSendCmdParam1(0, CMD_SETMAG, plr[v4]._pBaseMag);
+
+	int max = MaxStats[plr[pnum]._pClass][ATTRIB_MAG];
+	if ( plr[pnum]._pBaseMag + l > max ) {
+		l = max - plr[pnum]._pBaseMag;
+	}
+
+	plr[pnum]._pMagic += l;
+	plr[pnum]._pBaseMag += l;
+
+	int ms = l << 6;
+	if ( plr[pnum]._pClass == PC_SORCERER ) {
+		ms *= 2;
+	}
+
+	plr[pnum]._pMaxManaBase += ms;
+	plr[pnum]._pMaxMana += ms;
+	if ( !(plr[pnum]._pIFlags & ISPL_NOMANA) ) {
+		plr[pnum]._pManaBase += ms;
+		plr[pnum]._pMana += ms;
+	}
+
+	CalcPlrInv(pnum, TRUE);
+
+	if ( pnum == myplr ) {
+		NetSendCmdParam1(FALSE, CMD_SETMAG, plr[pnum]._pBaseMag);
+	}
 }
 
 void __fastcall ModifyPlrDex(int pnum, int l)
@@ -4608,21 +4493,20 @@ void __fastcall ModifyPlrDex(int pnum, int l)
 	}
 
 	int max = MaxStats[plr[pnum]._pClass][ATTRIB_DEX];
-	if ( plr[pnum]._pBaseDex + l > max )
-	{
+	if ( plr[pnum]._pBaseDex + l > max ) {
 		l = max - plr[pnum]._pBaseDex;
 	}
 
 	plr[pnum]._pDexterity += l;
 	plr[pnum]._pBaseDex += l;
-	CalcPlrInv(pnum, 1);
+	CalcPlrInv(pnum, TRUE);
 
 	if ( plr[pnum]._pClass == PC_ROGUE ) {
 		plr[pnum]._pDamageMod = plr[pnum]._pLevel * (plr[pnum]._pDexterity + plr[pnum]._pStrength) / 200;
 	}
 
 	if ( pnum == myplr ) {
-		NetSendCmdParam1(0, CMD_SETDEX, plr[pnum]._pBaseDex);
+		NetSendCmdParam1(FALSE, CMD_SETDEX, plr[pnum]._pBaseDex);
 	}
 }
 
@@ -4633,8 +4517,7 @@ void __fastcall ModifyPlrVit(int pnum, int l)
 	}
 
 	int max = MaxStats[plr[pnum]._pClass][ATTRIB_VIT];
-	if ( plr[pnum]._pBaseVit + l > max )
-	{
+	if ( plr[pnum]._pBaseVit + l > max ) {
 		l = max - plr[pnum]._pBaseVit;
 	}
 
@@ -4668,7 +4551,7 @@ void __fastcall SetPlayerHitPoints(int pnum, int newhp)
 	plr[pnum]._pHPBase = newhp + plr[pnum]._pMaxHPBase - plr[pnum]._pMaxHP;
 
 	if ( pnum == myplr ) {
-		drawhpflag = 1;
+		drawhpflag = TRUE;
 	}
 }
 
@@ -4737,7 +4620,7 @@ void __fastcall SetPlrVit(int pnum, int v)
 	plr[pnum]._pBaseVit = v;
 
 	int hp = v << 6;
-	if ( !_LOBYTE(plr[pnum]._pClass) ) {
+	if ( plr[pnum]._pClass == PC_WARRIOR ) {
 		hp *= 2;
 	}
 

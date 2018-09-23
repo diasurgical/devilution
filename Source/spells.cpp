@@ -2,7 +2,7 @@
 
 #include "../types.h"
 
-SpellData spelldata[37] =
+SpellData spelldata[MAX_SPELLS] =
 {
 	{ 0,               0,   0,               NULL,              NULL,             0,  0,  0, 0, 0,   0,        { 0,               0,          0 }, 0, 0,   40, 80, 0,     0 },
 	{ SPL_FIREBOLT,    6,   STYPE_FIRE,      "Firebolt",        "Firebolt",       1,  1,  1, 0, 15,  IS_CAST2, { MIS_FIREBOLT,    0,          0 }, 1, 3,   40, 80, 1000,  50 },
@@ -121,7 +121,7 @@ void __fastcall UseMana(int id, int sn)
 				ma = GetManaAmount(id, sn);
 				plr[id]._pMana -= ma;
 				plr[id]._pManaBase -= ma;
-				drawmanaflag = 1;
+				drawmanaflag = TRUE;
 #ifdef _DEBUG
 			}
 #endif
@@ -230,8 +230,8 @@ void __fastcall DoResurrect(int pnum, int rid)
 		{
 			deathflag = 0;
 			gamemenu_off();
-			drawhpflag = 1;
-			drawmanaflag = 1;
+			drawhpflag = TRUE;
+			drawmanaflag = TRUE;
 		}
 
 		ClrPlrPath(rid);
@@ -362,6 +362,6 @@ void __fastcall DoHealOther(int pnum, int rid)
 			plr[rid]._pHPBase = plr[rid]._pMaxHPBase;
 		}
 
-		drawhpflag = 1;
+		drawhpflag = TRUE;
 	}
 }

@@ -1,62 +1,32 @@
 // ref: 0x10001058
 void __fastcall artfont_SetArtFont(int nFont)
 {
-	int v1; // ecx
-	int v2; // ecx
-	int v3; // ecx
-	int v4; // ecx
-	int v5; // ecx
-
-	if ( nFont )
+	switch ( nFont )
 	{
-		v1 = nFont - 2;
-		if ( v1 )
-		{
-			v2 = v1 - 1;
-			if ( v2 )
-			{
-				v3 = v2 - 1;
-				if ( v3 )
-				{
-					v4 = v3 - 1;
-					if ( v4 )
-					{
-						v5 = v4 - 1;
-						if ( v5 )
-						{
-							if ( v5 == 1 )
-								sgpCurrFont = &font42y;
-							else
-								sgpCurrFont = &font16s;
-						}
-						else
-						{
-							sgpCurrFont = &font42g;
-						}
-					}
-					else
-					{
-						sgpCurrFont = &font30s;
-					}
-				}
-				else
-				{
-					sgpCurrFont = &font30g;
-				}
-			}
-			else
-			{
-				sgpCurrFont = &font24s;
-			}
-		}
-		else
-		{
+		case 0:
+			sgpCurrFont = &font16g;
+			break;
+		case 2:
 			sgpCurrFont = &font24g;
-		}
-	}
-	else
-	{
-		sgpCurrFont = &font16g;
+			break;
+		case 3:
+			sgpCurrFont = &font24s;
+			break;
+		case 4:
+			sgpCurrFont = &font30g;
+			break;
+		case 5:
+			sgpCurrFont = &font30s;
+			break;
+		case 6:
+			sgpCurrFont = &font42g;
+			break;
+		case 7:
+			sgpCurrFont = &font42y;
+			break;
+		default:
+			sgpCurrFont = &font16s;
+			break;
 	}
 }
 
@@ -96,7 +66,7 @@ void __fastcall artfont_FreeArtFont(FontStruct *pFont)
 
 	if ( pFont->active )
 	{
-		v2 = (HANDLE *)pFont->fontpal;
+		v2 = pFont->fonttrans;
 		v3 = 256;
 		do
 		{
@@ -147,11 +117,11 @@ void __fastcall artfont_LoadArtFont(FontStruct *pFont, const char *pszBinFile, c
 		{
 			SFileCloseFile(phFile);
 			local_LoadArtImage(pszFileName, &pBuffer, size);
-			memset(pFont->fontpal, 0, 0x400u);
+			memset(pFont->fonttrans, 0, 0x400u);
 			if ( pBuffer )
 			{
 				v5 = 0;
-				a1a = (HANDLE *)pFont->fontpal;
+				a1a = pFont->fonttrans;
 				do
 				{
 					v6 = pFont->fontbin[v5 + 2];
@@ -320,8 +290,8 @@ void __fastcall artfont_PrintFontStr(char *str, DWORD **pSurface, int sx, int sy
 								}
 								goto LABEL_23;
 							}
-							hTransa = (HANDLE)&v5->fontpal[v6];
-							if ( hTransa ) /* check */
+							hTransa = v5->fonttrans[v6];
+							if ( v5->fonttrans[v6] )
 							{
 								v10 = pSurface[1];
 								if ( sx + v8 <= (signed int)v10 )

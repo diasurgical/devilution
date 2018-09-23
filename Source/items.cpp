@@ -775,7 +775,7 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 	int dadd = 0; // added dexterity
 	int vadd = 0; // added vitality
 
-	UINT64 spl = 0; // bitarray for all enabled/active spells
+	unsigned __int64 spl = 0; // bitarray for all enabled/active spells
 
 	signed int fr = 0; // fire resistance
 	signed int lr = 0; // lightning resistance
@@ -938,7 +938,7 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 
 	// check if the current RSplType is a valid/allowed spell
 	if ( plr[p]._pRSplType == RSPLTYPE_CHARGES
-		&& !(spl & ((UINT64)1 << (plr[p]._pRSpell - 1))) )
+		&& !(spl & ((unsigned __int64)1 << (plr[p]._pRSpell - 1))) )
 	{
 		plr[p]._pRSpell = SPL_INVALID;
 		plr[p]._pRSplType = RSPLTYPE_INVALID;
@@ -1115,8 +1115,8 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 		}
 	}
 
-	drawmanaflag = 1;
-	drawhpflag = 1;
+	drawmanaflag = TRUE;
+	drawhpflag = TRUE;
 }
 
 void __fastcall CalcPlrScrolls(int p)
@@ -1883,7 +1883,7 @@ void __fastcall GetBookSpell(int i, int lvl)
 	v3 = i;
 	if ( !lvl )
 		v2 = lvl + 1;
-	v4 = random(14, 37) + 1;
+	v4 = random(14, MAX_SPELLS) + 1;
 LABEL_13:
 	v6 = 1;
 	while ( v4 > 0 )
@@ -1902,7 +1902,7 @@ LABEL_13:
 			if ( v6 == SPL_HEALOTHER )
 				v6 = SPL_FLARE;
 		}
-		if ( v6 == 37 )
+		if ( v6 == MAX_SPELLS )
 			goto LABEL_13;
 	}
 	v7 = v3;
@@ -2017,7 +2017,7 @@ void __fastcall GetStaffSpell(int i, int lvl, unsigned char onlygood)
 		l = lvl >> 1;
 		if ( !l )
 			l = 1;
-		rv = random(18, 37) + 1;
+		rv = random(18, MAX_SPELLS) + 1;
 LABEL_15:
 		s = 1;
 		while ( rv > 0 )
@@ -2035,7 +2035,7 @@ LABEL_15:
 				if ( s == SPL_HEALOTHER )
 					s = SPL_FLARE;
 			}
-			if ( s == 37 )
+			if ( s == MAX_SPELLS )
 				goto LABEL_15;
 		}
 		sprintf(istr, "%s of %s", item[i]._iName, spelldata[bs].sNameText);
@@ -2434,14 +2434,14 @@ LABEL_79:
 			if ( param1 == 5 )
 				BYTE1(item[v8]._iFlags) |= 0x40u;
 LABEL_92:
-			drawmanaflag = 1;
+			drawmanaflag = TRUE;
 			break;
 		case IPL_STEALLIFE:
 			if ( param1 == 3 )
 				BYTE1(item[v8]._iFlags) |= 0x80u;
 			if ( param1 == 5 )
 				BYTE2(item[v8]._iFlags) |= 1u;
-			drawhpflag = 1;
+			drawhpflag = TRUE;
 			break;
 		case IPL_TARGAC:
 			v11 = &item[v8]._iPLEnAc;
@@ -4489,7 +4489,7 @@ void __fastcall UseItem(int p, int Mid, int spl)
 		{
 			plr[p]._pHitPoints = plr[p]._pMaxHP;
 			plr[p]._pHPBase = plr[p]._pMaxHPBase;
-			drawhpflag = 1;
+			drawhpflag = TRUE;
 			return;
 		}
 		v5 = Mid - 3;
@@ -4519,7 +4519,7 @@ void __fastcall UseItem(int p, int Mid, int spl)
 				plr[v9]._pMana = plr[v9]._pMaxMana;
 				plr[v9]._pManaBase = plr[v9]._pMaxManaBase;
 LABEL_41:
-				drawmanaflag = 1;
+				drawmanaflag = TRUE;
 				return;
 			}
 			v10 = p;
@@ -4567,7 +4567,7 @@ LABEL_71:
 		*v68 += v65;
 		if ( *v68 > v69 )
 			*v68 = v69;
-		drawhpflag = 1;
+		drawhpflag = TRUE;
 		return;
 	}
 	if ( Mid == IMISC_ELIXVIT )
@@ -4657,11 +4657,11 @@ LABEL_71:
 		plr[v40]._pHitPoints = plr[p]._pMaxHP;
 		plr[v40]._pHPBase = plr[p]._pMaxHPBase;
 		v36 = (plr[p]._pIFlags & 0x8000000) == 0;
-		drawhpflag = 1;
+		drawhpflag = TRUE;
 		if ( v36 )
 		{
 			v41 = plr[v40]._pMaxMana;
-			drawmanaflag = 1;
+			drawmanaflag = TRUE;
 			plr[v40]._pMana = v41;
 			plr[v40]._pManaBase = plr[v40]._pMaxManaBase;
 		}
@@ -4689,7 +4689,7 @@ LABEL_71:
 			*v50 = v49;
 		v51 = plr[v42]._pMaxMana >> 8;
 		v52 = plr[v42]._pMaxMana >> 8;
-		drawhpflag = 1;
+		drawhpflag = TRUE;
 		v53 = (v51 & 0xFFFFFFFE) + 2 * random(40, v52);
 		v54 = plr[v42]._pClass;
 		v55 = 32 * v53;
@@ -4709,7 +4709,7 @@ LABEL_71:
 			*v58 += v55;
 			if ( *v58 > v59 )
 				*v58 = v59;
-			drawmanaflag = 1;
+			drawmanaflag = TRUE;
 		}
 	}
 }

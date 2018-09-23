@@ -3202,7 +3202,7 @@ int __fastcall On_PLRDAMAGE(struct TCmdDamage *pCmd, int pnum)
 				v4 = plr[myplr]._pHitPoints;
 				if ( (signed int)(v4 & 0xFFFFFFC0) > 0 )
 				{
-					drawhpflag = 1;
+					drawhpflag = TRUE;
 					plr[v3]._pHitPoints = v4 - pCmd->dwDam;
 					v5 = &plr[v3]._pHPBase;
 					*v5 -= pCmd->dwDam;

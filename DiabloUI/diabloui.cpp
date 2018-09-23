@@ -100,24 +100,24 @@ void __stdcall UiSetSpawned(BOOL bSpawned)
 // ref: 0x10005C73
 void __cdecl UiInitialize()
 {
-	dword_10029714 = 1;
+	sgbUiIsInitialized = 1;
 	TitleSnd_InitSoundFunc();
 	artfont_InitAllFonts();
-	Connect_10002EC4();
+	Connect_LoadGFXAndStuff();
 	local_LoadArtCursor();
 	bn_prof_100021C4();
 }
-// 10029714: using guessed type int dword_10029714;
+// 10029714: using guessed type int sgbUiIsInitialized;
 
 // ref: 0x10005C96
 void __cdecl UiDestroy()
 {
 	bn_prof_10002247();
 	local_FreeArtCursor();
-	Connect_10002E2B();
-	dword_10029714 = 0;
+	Connect_FreeConnectData();
+	sgbUiIsInitialized = 0;
 }
-// 10029714: using guessed type int dword_10029714;
+// 10029714: using guessed type int sgbUiIsInitialized;
 
 // ref: 0x10005CAD
 void __stdcall UiAppActivate(BOOL bActive)

@@ -7,9 +7,7 @@
 
 BOOL STORMAPI SNetCreateGame(const char *pszGameName, const char *pszGamePassword, const char *pszGameStatString, DWORD dwGameType, char *GameTemplateData, int GameTemplateSize, int playerCount, char *creatorName, char *a11, int *playerID) rBool;
 BOOL STORMAPI SNetDestroy() rBool;
-BOOL STORMAPI SNetEnumProviders(int (STORMAPI *callback)(DWORD, DWORD, DWORD, DWORD), int mincaps) rBool;
 
-BOOL STORMAPI SNetEnumGames(int (STORMAPI *callback)(DWORD, DWORD, DWORD), int *hintnextcall) rBool;
 BOOL STORMAPI SNetDropPlayer(int playerid, DWORD flags) rBool;
 BOOL STORMAPI SNetGetGameInfo(int type, void *dst, size_t length, size_t *byteswritten) rBool;
 
@@ -57,6 +55,7 @@ BOOL STORMAPI SDlgEndDialog(HWND hDlg, HANDLE nResult) rBool;
 
 BOOL STORMAPI SDlgSetControlBitmaps(HWND parentwindow, int *id, int a3, char *buffer2, char *buffer, int flags, int mask) rBool;
 
+BOOL STORMAPI SDlgBltToWindowI(HWND hWnd, HRGN a2, char *a3, int a4, void *buffer, RECT *rct, SIZE *size, int a8, int a9, DWORD rop) rBool;
 BOOL STORMAPI SDlgBltToWindowE(HWND hWnd, HRGN a2, char *a3, int a4, void *buffer, RECT *rct, SIZE *size, int a8, int a9, DWORD rop) rBool;
 BOOL STORMAPI SDlgSetBitmapE(HWND hWnd, int a2, char *src, int mask1, int flags, int a6, int a7, int width, int a9, int mask2) rBool;
 
@@ -93,6 +92,7 @@ BOOL STORMAPI SFileLoadFileEx(void *hArchive, char *filename, int a3, int a4, in
 
 BOOL STORMAPI SBltROP3(void *lpDstBuffer, void *lpSrcBuffer, int width, int height, int a5, int a6, int a7, DWORD rop) rBool;
 BOOL STORMAPI SBltROP3Clipped(void *lpDstBuffer, RECT *lpDstRect, POINT *lpDstPt, int a4, void *lpSrcBuffer, RECT *lpSrcRect, POINT *lpSrcPt, int a8, int a9, DWORD rop) rBool;
+BOOL STORMAPI SBltROP3Tiled(void *lpDstBuffer, RECT *lpDstRect, POINT *lpDstPt, int a4, void *lpSrcBuffer, RECT *lpSrcRect, POINT *lpSrcPt, int a8, int a9, DWORD rop) rBool;
 
 BOOL STORMAPI SBmpDecodeImage(DWORD dwImgType, void *pSrcBuffer, DWORD dwSrcBuffersize, PALETTEENTRY *pPalette, void *pDstBuffer, DWORD dwDstBuffersize, DWORD *pdwWidth, DWORD *pdwHeight, DWORD *pdwBpp) rBool;
 
@@ -190,7 +190,7 @@ int  STORMAPI SMemCmp(void *location1, void *location2, DWORD size) rInt;
 
 int   STORMAPI SStrCopy(char *dest, const char *src, int max_length) rInt;
 DWORD STORMAPI SStrHash(const char *string, DWORD flags, DWORD Seed) rInt;
-int   STORMAPI SStrNCat(char *dest, const char *src, DWORD max_length) rInt;
+int   STORMAPI SStrPack(char *dest, const char *src, DWORD max_length) rInt;
 
 int STORMAPI SStrLen(const char* string) rInt;
 
@@ -247,3 +247,4 @@ BOOL __stdcall SDlgSetTimer(int a1, int a2, int a3, void (__stdcall *a4)(int, in
 BOOL __stdcall SDlgKillTimer(int a1, int a2) rBool;
 BOOL __stdcall SDlgDrawBitmap(HWND hWnd, int a2, int a3, int a4, int a5, int a6, int a7) rBool;
 BOOL __stdcall SDlgDialogBoxParam(HINSTANCE hInst, char *szDialog, int a3, WNDPROC func, int a5) rBool;
+BOOL __stdcall SGdiTextOut(void *pBuffer, int x, int y, int mask, char *str, int len) rBool;

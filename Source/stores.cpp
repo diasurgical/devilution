@@ -3744,7 +3744,7 @@ LABEL_12:
 	}
 	if ( plr[myplr]._pHitPoints != plr[myplr]._pMaxHP )
 		PlaySFX(IS_CAST8);
-	drawhpflag = 1;
+	drawhpflag = TRUE;
 	v1 = myplr;
 	plr[v1]._pHitPoints = plr[myplr]._pMaxHP;
 	plr[v1]._pHPBase = plr[v1]._pMaxHPBase;
