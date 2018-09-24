@@ -92,7 +92,7 @@ void __cdecl ProcessPlayers();
 void __fastcall CheckCheatStats(int pnum);
 void __fastcall ClrPlrPath(int pnum);
 BOOL __fastcall PosOkPlayer(int pnum, int px, int py);
-void __fastcall MakePlrPath(int pnum, int xx, int yy, unsigned char endspace);
+void __fastcall MakePlrPath(int pnum, int xx, int yy, BOOL endspace);
 void __fastcall CheckPlrSpell();
 void __fastcall SyncPlrAnim(int pnum);
 void __fastcall SyncInitPlrPos(int pnum);

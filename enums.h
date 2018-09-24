@@ -1929,6 +1929,18 @@ enum direction
 	DIR_OMNI = 0x8,
 };
 
+enum _scroll_direction
+{
+	SDIR_N = 0x1,
+	SDIR_NE = 0x2,
+	SDIR_E = 0x3,
+	SDIR_SE = 0x4,
+	SDIR_S = 0x5,
+	SDIR_SW = 0x6,
+	SDIR_W = 0x7,
+	SDIR_NW = 0x8,
+};
+
 enum interface_mode
 {
 	WM_DIAB = 0x401,

@@ -6290,7 +6290,7 @@ void __fastcall OperateLazStand(int pnum, int i)
 // 646D00: using guessed type char qtextflag;
 // 676190: using guessed type int deltaload;
 
-void __fastcall OperateObject(int pnum, int i, unsigned char TeleFlag)
+void __fastcall OperateObject(int pnum, int i, BOOL TeleFlag)
 {
 	int v3; // esi
 	int v4; // edi

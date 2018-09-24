@@ -907,7 +907,7 @@ void __cdecl DeltaLoadLevel()
 // 676190: using guessed type int deltaload;
 // 679660: using guessed type char gbMaxPlayers;
 
-void __fastcall NetSendCmd(unsigned char bHiPri, unsigned char bCmd)
+void __fastcall NetSendCmd(BOOL bHiPri, unsigned char bCmd)
 {
 	TCmd cmd; // [esp+3h] [ebp-1h]
 
@@ -932,7 +932,7 @@ void __fastcall NetSendCmdGolem(unsigned char mx, unsigned char my, unsigned cha
 	NetSendLoPri((unsigned char *)&cmd, 0xAu);
 }
 
-void __fastcall NetSendCmdLoc(unsigned char bHiPri, unsigned char bCmd, unsigned char x, unsigned char y)
+void __fastcall NetSendCmdLoc(BOOL bHiPri, unsigned char bCmd, unsigned char x, unsigned char y)
 {
 	TCmdLoc cmd; // [esp+1h] [ebp-3h]
 
@@ -945,7 +945,7 @@ void __fastcall NetSendCmdLoc(unsigned char bHiPri, unsigned char bCmd, unsigned
 		NetSendLoPri((unsigned char *)&cmd, 3u);
 }
 
-void __fastcall NetSendCmdLocParam1(unsigned char bHiPri, unsigned char bCmd, unsigned char x, unsigned char y, int wParam1)
+void __fastcall NetSendCmdLocParam1(BOOL bHiPri, unsigned char bCmd, unsigned char x, unsigned char y, int wParam1)
 {
 	TCmdLocParam1 cmd; // [esp+0h] [ebp-8h]
 
@@ -959,7 +959,7 @@ void __fastcall NetSendCmdLocParam1(unsigned char bHiPri, unsigned char bCmd, un
 		NetSendLoPri((unsigned char *)&cmd, 5u);
 }
 
-void __fastcall NetSendCmdLocParam2(unsigned char bHiPri, unsigned char bCmd, unsigned char x, unsigned char y, int wParam1, int wParam2)
+void __fastcall NetSendCmdLocParam2(BOOL bHiPri, unsigned char bCmd, unsigned char x, unsigned char y, int wParam1, int wParam2)
 {
 	TCmdLocParam2 cmd; // [esp+0h] [ebp-8h]
 
@@ -974,7 +974,7 @@ void __fastcall NetSendCmdLocParam2(unsigned char bHiPri, unsigned char bCmd, un
 		NetSendLoPri((unsigned char *)&cmd, 7u);
 }
 
-void __fastcall NetSendCmdLocParam3(unsigned char bHiPri, unsigned char bCmd, unsigned char x, unsigned char y, int wParam1, int wParam2, int wParam3)
+void __fastcall NetSendCmdLocParam3(BOOL bHiPri, unsigned char bCmd, unsigned char x, unsigned char y, int wParam1, int wParam2, int wParam3)
 {
 	TCmdLocParam3 cmd; // [esp+0h] [ebp-Ch]
 
@@ -1015,7 +1015,7 @@ void __fastcall NetSendCmdParam2(BOOL bHiPri, unsigned char bCmd, unsigned short
 		NetSendLoPri((unsigned char *)&cmd, 5u);
 }
 
-void __fastcall NetSendCmdParam3(unsigned char bHiPri, unsigned char bCmd, unsigned short wParam1, unsigned short wParam2, int wParam3)
+void __fastcall NetSendCmdParam3(BOOL bHiPri, unsigned char bCmd, unsigned short wParam1, unsigned short wParam2, int wParam3)
 {
 	TCmdParam3 cmd; // [esp+0h] [ebp-8h]
 
@@ -1029,7 +1029,7 @@ void __fastcall NetSendCmdParam3(unsigned char bHiPri, unsigned char bCmd, unsig
 		NetSendLoPri((unsigned char *)&cmd, 7u);
 }
 
-void __fastcall NetSendCmdQuest(unsigned char bHiPri, unsigned char q)
+void __fastcall NetSendCmdQuest(BOOL bHiPri, unsigned char q)
 {
 	int v2; // eax
 	char v3; // dl
@@ -1049,7 +1049,7 @@ void __fastcall NetSendCmdQuest(unsigned char bHiPri, unsigned char q)
 		NetSendLoPri((unsigned char *)&cmd, 5u);
 }
 
-void __fastcall NetSendCmdGItem(unsigned char bHiPri, unsigned char bCmd, unsigned char mast, unsigned char pnum, int ii)
+void __fastcall NetSendCmdGItem(BOOL bHiPri, unsigned char bCmd, unsigned char mast, unsigned char pnum, int ii)
 {
 	int v5; // eax
 	bool v6; // zf
@@ -1177,7 +1177,7 @@ void __fastcall NetSendCmdExtra(struct TCmdGItem *p)
 	NetSendHiPri((unsigned char *)&cmd, 0x1Eu);
 }
 
-void __fastcall NetSendCmdPItem(unsigned char bHiPri, unsigned char bCmd, unsigned char x, unsigned char y)
+void __fastcall NetSendCmdPItem(BOOL bHiPri, unsigned char bCmd, unsigned char x, unsigned char y)
 {
 	int v4; // eax
 	short *v5; // edx
@@ -1234,7 +1234,7 @@ void __fastcall NetSendCmdPItem(unsigned char bHiPri, unsigned char bCmd, unsign
 		NetSendLoPri((unsigned char *)&cmd, 0x16u);
 }
 
-void __fastcall NetSendCmdChItem(unsigned char bHiPri, unsigned char bLoc)
+void __fastcall NetSendCmdChItem(BOOL bHiPri, unsigned char bLoc)
 {
 	short v2; // dx
 	char v3; // al
@@ -1266,7 +1266,7 @@ void __fastcall NetSendCmdDelItem(BOOL bHiPri, unsigned char bLoc)
 		NetSendLoPri((unsigned char *)&cmd, 2u);
 }
 
-void __fastcall NetSendCmdDItem(unsigned char bHiPri, int ii)
+void __fastcall NetSendCmdDItem(BOOL bHiPri, int ii)
 {
 	int v2; // eax
 	short *v3; // edx
