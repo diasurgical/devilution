@@ -2379,7 +2379,7 @@ void __fastcall SaveItemPower(int i, int power, int param1, int param2, int minv
 			item[v36]._iDurability = item[v36]._iMaxDur;
 			break;
 		case IPL_INDESTRUCTIBLE:
-			v38 = 255;
+			v38 = DUR_INDESTRUCTIBLE;
 			goto LABEL_119;
 		case IPL_LIGHT:
 			v28 = param1;
@@ -3011,7 +3011,7 @@ void __fastcall SpawnUnique(int uid, int x, int y)
 
 void __fastcall ItemRndDur(int ii)
 {
-	if ( item[ii]._iDurability && item[ii]._iDurability != 255 )
+	if ( item[ii]._iDurability && item[ii]._iDurability != DUR_INDESTRUCTIBLE )
 		item[ii]._iDurability = random(0, item[ii]._iMaxDur >> 1) + (item[ii]._iMaxDur >> 2) + 1;
 }
 

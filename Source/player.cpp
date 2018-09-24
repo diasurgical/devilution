@@ -2416,7 +2416,7 @@ BOOL __fastcall WeaponDur(int pnum, int durrnd)
 	}
 
 	if ( plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iClass == ICLASS_WEAPON ) {
-		if ( plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDurability == 255 ) {
+		if ( plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDurability == DUR_INDESTRUCTIBLE ) {
 			return FALSE;
 		}
 
@@ -2430,7 +2430,7 @@ BOOL __fastcall WeaponDur(int pnum, int durrnd)
 	}
 
 	if ( plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype != ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iClass == ICLASS_WEAPON ) {
-		if ( plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iDurability == 255 ) {
+		if ( plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iDurability == DUR_INDESTRUCTIBLE ) {
 			return FALSE;
 		}
 
@@ -2444,7 +2444,7 @@ BOOL __fastcall WeaponDur(int pnum, int durrnd)
 	}
 
 	if ( plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_SHIELD ) {
-		if ( plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iDurability == 255 ) {
+		if ( plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iDurability == DUR_INDESTRUCTIBLE ) {
 			return FALSE;
 		}
 
@@ -2458,7 +2458,7 @@ BOOL __fastcall WeaponDur(int pnum, int durrnd)
 	}
 
 	if ( plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_SHIELD ) {
-		if ( plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDurability == 255 ) {
+		if ( plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDurability == DUR_INDESTRUCTIBLE ) {
 			return FALSE;
 		}
 
@@ -2965,7 +2965,7 @@ void __fastcall ShieldDur(int pnum)
 	}
 
 	if ( plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_SHIELD ) {
-		if ( plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDurability == 255 ) {
+		if ( plr[pnum].InvBody[INVLOC_HAND_LEFT]._iDurability == DUR_INDESTRUCTIBLE ) {
 			return;
 		}
 
@@ -2978,7 +2978,7 @@ void __fastcall ShieldDur(int pnum)
 	}
 
 	if ( plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_SHIELD ) {
-		if ( plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iDurability != 255 ) {
+		if ( plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iDurability != DUR_INDESTRUCTIBLE ) {
 			plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iDurability--;
 			if ( plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iDurability == 0 ) {
 				NetSendCmdDelItem(TRUE, INVLOC_HAND_RIGHT);
@@ -3075,89 +3075,79 @@ BOOL __fastcall PM_DoSpell(int pnum)
 
 BOOL __fastcall PM_DoGotHit(int pnum)
 {
-	int v1; // esi
-	int v2; // eax
-	int v3; // edx
-	int v4; // ecx
-
-	v1 = pnum;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("PM_DoGotHit: illegal player %d", pnum);
-	v2 = v1;
-	v3 = plr[v1]._pIFlags;
-	v4 = plr[v1]._pAnimFrame;
-	if ( v3 & 0x200000 && v4 == 3 )
-		plr[v2]._pAnimFrame = 4;
-	if ( v3 & 0x400000 && (v4 == 3 || v4 == 5) )
-		++plr[v2]._pAnimFrame;
-	if ( v3 & 0x800000 && (v4 == 1 || v4 == 3 || v4 == 5) )
-		++plr[v2]._pAnimFrame;
-	if ( plr[v2]._pAnimFrame < plr[v2]._pHFrames )
-		return 0;
-	StartStand(v1, plr[v2]._pdir);
-	ClearPlrPVars(v1);
-	if ( random(3, 4) )
-		ArmorDur(v1);
-	return 1;
+	}
+
+	int frame = plr[pnum]._pAnimFrame;
+	if ( plr[pnum]._pIFlags & ISPL_FASTRECOVER && frame == 3 ) {
+		plr[pnum]._pAnimFrame = 4;
+	}
+	if ( plr[pnum]._pIFlags & ISPL_FASTERRECOVER && (frame == 3 || frame == 5) ) {
+		plr[pnum]._pAnimFrame++;
+	}
+	if ( plr[pnum]._pIFlags & ISPL_FASTESTRECOVER && (frame == 1 || frame == 3 || frame == 5) ) {
+		plr[pnum]._pAnimFrame++;
+	}
+
+	if ( plr[pnum]._pAnimFrame < plr[pnum]._pHFrames ) {
+		return FALSE;
+	}
+
+	StartStand(pnum, plr[pnum]._pdir);
+	ClearPlrPVars(pnum);
+	if ( random(3, 4) ) {
+		ArmorDur(pnum);
+	}
+
+	return TRUE;
 }
 
 void __fastcall ArmorDur(int pnum)
 {
-	int v1; // ebp
-	//int v2; // ST04_4
-	PlayerStruct *v3; // esi
-	int v4; // eax
-	int v5; // edi
-	int v6; // esi
-	int v7; // ecx
-	int v8; // ecx
-	unsigned char v9; // dl
-
-	v1 = pnum;
-	if ( pnum == myplr )
-	{
-		if ( (unsigned int)pnum >= MAX_PLRS )
-		{
-			TermMsg("ArmorDur: illegal player %d", pnum);
-			//pnum = v2;
-		}
-		v3 = &plr[v1];
-		if ( v3->InvBody[6]._itype != -1 || v3->InvBody[0]._itype != -1 )
-		{
-			v4 = random(8, 3);
-			v5 = v3->InvBody[6]._itype;
-			if ( v5 == -1 )
-				goto LABEL_23;
-			if ( v3->InvBody[0]._itype == -1 )
-				v4 = 1;
-			if ( v5 == -1 )
-			{
-LABEL_23:
-				if ( v3->InvBody[0]._itype != -1 )
-					v4 = 0;
-			}
-			if ( v4 )
-				v6 = (int)&v3->InvBody[6];
-			else
-				v6 = (int)v3->InvBody;
-			v7 = *(_DWORD *)(v6 + 236);
-			if ( v7 != 255 )
-			{
-				v8 = v7 - 1;
-				*(_DWORD *)(v6 + 236) = v8;
-				if ( !v8 )
-				{
-					if ( v4 )
-						v9 = 6;
-					else
-						v9 = 0;
-					NetSendCmdDelItem(1u, v9);
-					*(_DWORD *)(v6 + 8) = -1;
-					CalcPlrInv(v1, 1u);
-				}
-			}
-		}
+	if ( pnum != myplr ) {
+		return;
 	}
+
+	if ( (DWORD)pnum >= MAX_PLRS ) {
+		TermMsg("ArmorDur: illegal player %d", pnum);
+	}
+
+	PlayerStruct *p = &plr[pnum];
+	if ( p->InvBody[INVLOC_CHEST]._itype == ITYPE_NONE && p->InvBody[INVLOC_HEAD]._itype == ITYPE_NONE ) {
+		return;
+	}
+
+	int a = random(8, 3);
+	if ( p->InvBody[INVLOC_CHEST]._itype != ITYPE_NONE && p->InvBody[INVLOC_HEAD]._itype == ITYPE_NONE ) {
+		a = 1;
+	}
+	if ( p->InvBody[INVLOC_CHEST]._itype == ITYPE_NONE && p->InvBody[INVLOC_HEAD]._itype != ITYPE_NONE ) {
+		a = 0;
+	}
+
+	ItemStruct *pi;
+	if ( a != 0 ) {
+		pi = &p->InvBody[INVLOC_CHEST];
+	} else {
+		pi = &p->InvBody[INVLOC_HEAD];
+	}
+	if ( pi->_iDurability == DUR_INDESTRUCTIBLE ) {
+		return;
+	}
+
+	pi->_iDurability--;
+	if ( pi->_iDurability != 0 ) {
+		return;
+	}
+
+	if ( a != 0 ) {
+		NetSendCmdDelItem(TRUE, INVLOC_CHEST);
+	} else {
+		NetSendCmdDelItem(TRUE, INVLOC_HEAD);
+	}
+	pi->_itype = ITYPE_NONE;
+	CalcPlrInv(pnum, TRUE);
 }
 
 BOOL __fastcall PM_DoDeath(int pnum)
