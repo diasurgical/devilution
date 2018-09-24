@@ -1773,6 +1773,15 @@ enum dflag
 	DFLAG_EXPLORED		= 0x80,
 };
 
+enum dungeon_message
+{
+	DMSG_CATHEDRAL = 1 << 0,
+	DMSG_CATACOMBS = 1 << 1,
+	DMSG_CAVES = 1 << 2,
+	DMSG_HELL = 1 << 3,
+	DMSG_DIABLO = 1 << 4,
+};
+
 enum magic_type
 {
 	STYPE_FIRE = 0x0,
