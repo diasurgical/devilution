@@ -519,7 +519,7 @@ struct MonsterData
 	unsigned char mAFNum2;
 	unsigned char mMinDamage2;
 	unsigned char mMaxDamage2;
-	char mArmorClass;
+	unsigned char mArmorClass;
 	char mMonstClass;
 	unsigned short mMagicRes;
 	unsigned short mMagicRes2;
@@ -613,7 +613,7 @@ struct MonsterStruct // note: missing field _mAFNum
 	unsigned char mHit2;
 	unsigned char mMinDamage2;
 	unsigned char mMaxDamage2;
-	char mArmorClass;
+	unsigned char mArmorClass;
 	char falign_CB;
 	unsigned short mMagicRes;
 	int mtalkmsg;
