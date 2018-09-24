@@ -124,7 +124,7 @@ void __fastcall RemovePortalMissile(int id)
 		mi = missileactive[i];
 		if ( missile[mi]._mitype == MIS_TOWN && missile[mi]._misource == id )
 		{
-			dFlags[missile[mi]._mix][missile[mi]._miy] &= 0xFE;
+			dFlags[missile[mi]._mix][missile[mi]._miy] &= ~DFLAG_MISSILE;
 			dMissile[missile[mi]._mix][missile[mi]._miy] = 0;
 
 			if ( portal[id].level )

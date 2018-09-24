@@ -1101,7 +1101,7 @@ void __cdecl Freeupstairs()
 				v5 = 5;
 				do
 				{
-					*v4 |= 8u;
+					*v4 |= DFLAG_POPULATED;
 					v4 += 112;
 					--v5;
 				}

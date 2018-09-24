@@ -658,7 +658,7 @@ bool __fastcall ItemPlace(int xp, int yp)
 
 	v2 = xp;
 	v3 = v2 * 112 + yp;
-	if ( dMonster[0][v3] || dPlayer[v2][yp] || dItem[v2][yp] || dObject[v2][yp] || dFlags[v2][yp] & 8 )
+	if ( dMonster[0][v3] || dPlayer[v2][yp] || dItem[v2][yp] || dObject[v2][yp] || dFlags[v2][yp] & DFLAG_POPULATED )
 		result = 0;
 	else
 		result = nSolidTable[dPiece[0][v3]] == 0;

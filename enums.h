@@ -1652,6 +1652,18 @@ enum dungeon_type
 	DTYPE_NONE = 0xFF,
 };
 
+enum dflag
+{
+	DFLAG_MISSILE		= 0x01,
+	DFLAG_VISIBLE		= 0x02,
+	DFLAG_DEAD_PLAYER	= 0x04,
+	DFLAG_POPULATED		= 0x08,
+	DFLAG_MONSTER		= 0x10,
+	DFLAG_PLAYER		= 0x20,
+	DFLAG_LIT			= 0x40,
+	DFLAG_EXPLORED		= 0x80,
+};
+
 enum magic_type
 {
 	STYPE_FIRE = 0x0,

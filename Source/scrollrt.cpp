@@ -297,7 +297,7 @@ void __fastcall DrawDeadPlayer(int x, int y, int sx, int sy, int a5, int a6, boo
 		DrawPlrProc = (int (__fastcall *)(int, int, int, int, int, void *, int, int, int, int))DrawPlayer;
 	v8 = &plr[0]._pHitPoints;
 	v9 = &dFlags[x][y];
-	*v9 &= 0xFBu;
+	*v9 &= ~DFLAG_DEAD_PLAYER;
 	player_num = 0;
 	do
 	{
@@ -309,7 +309,7 @@ void __fastcall DrawDeadPlayer(int x, int y, int sx, int sy, int a5, int a6, boo
 		v11 = *(v8 - 67);
 		if ( v11 < 1 || (unsigned int)*v10 > 0x32 || v11 > *v10 )
 			break;
-		*v9 |= 4u;
+		*v9 |= DFLAG_DEAD_PLAYER;
 		DrawPlrProc(player_num, xa, v7, sx + *(v8 - 78) - *(v8 - 65), sy + *(v8 - 77), v10, v11, *(v8 - 66), a5, a6);
 LABEL_14:
 		++player_num;
@@ -331,7 +331,7 @@ void __fastcall DrawPlayer(int pnum, int x, int y, int px, int py, unsigned char
 	v11 = myplr;
 	v13 = pnum;
 	ya = (int)v10;
-	if ( *v10 & 0x40 || plr[myplr]._pInfraFlag || !setlevel && !currlevel )
+	if ( *v10 & DFLAG_LIT || plr[myplr]._pInfraFlag || !setlevel && !currlevel )
 	{
 		v12 = (char *)animdata;
 		if ( animdata )
@@ -358,7 +358,7 @@ void __fastcall DrawPlayer(int pnum, int x, int y, int px, int py, unsigned char
 							a9,
 							a10);
 				}
-				else if ( !(*v10 & 0x40) || plr[v11]._pInfraFlag && light_table_index > 8 )
+				else if ( !(*v10 & DFLAG_LIT) || plr[v11]._pInfraFlag && light_table_index > 8 )
 				{
 					Cl2DecodeFrm3(px, py, v12, animframe, animwidth, a9, a10, 1);
 					if ( plr[v13].pManaShield )
@@ -412,7 +412,7 @@ void __fastcall DrawClippedPlayer(int pnum, int x, int y, int px, int py, unsign
 	v11 = myplr;
 	v13 = pnum;
 	ya = (int)v10;
-	if ( *v10 & 0x40 || plr[myplr]._pInfraFlag )
+	if ( *v10 & DFLAG_LIT || plr[myplr]._pInfraFlag )
 	{
 		v12 = (char *)animdata;
 		if ( animdata )
@@ -439,7 +439,7 @@ void __fastcall DrawClippedPlayer(int pnum, int x, int y, int px, int py, unsign
 							a9,
 							a10);
 				}
-				else if ( !(*v10 & 0x40) || plr[v11]._pInfraFlag && light_table_index > 8 )
+				else if ( !(*v10 & DFLAG_LIT) || plr[v11]._pInfraFlag && light_table_index > 8 )
 				{
 					Cl2DecodeFrm5(px, py, v12, animframe, animwidth, a9, a10, 1);
 					if ( plr[v13].pManaShield )
@@ -969,9 +969,9 @@ void __fastcall scrollrt_draw_clipped_dungeon(char *a1, int sx, int sy, int a4, 
 	v45 = v8;
 	v40 = *v10;
 	v41 = *(v10 - 1);
-	if ( visiondebug && v50 & 0x40 )
+	if ( visiondebug && v50 & DFLAG_LIT )
 		Cel2DecodeHdrOnly(dst_buf, (char *)pSquareCel, 1, 64, 0, 8);
-	if ( MissilePreFlag && v50 & 1 )
+	if ( MissilePreFlag && v50 & DFLAG_MISSILE )
 		DrawClippedMissile(a1a, sy, a4, a5, 0, 8, 1);
 	if ( light_table_index < lightmax )
 	{
@@ -1015,7 +1015,7 @@ void __fastcall scrollrt_draw_clipped_dungeon(char *a1, int sx, int sy, int a4, 
 			}
 		}
 	}
-	if ( v50 & 0x20 )
+	if ( v50 & DFLAG_PLAYER )
 	{
 		v20 = -1 - v45;
 		if ( v20 < 4 )
@@ -1044,7 +1044,7 @@ void __fastcall scrollrt_draw_clipped_dungeon(char *a1, int sx, int sy, int a4, 
 			}
 		}
 	}
-	if ( v50 & 0x10 && (v50 & 0x40 || plr[myplr]._pInfraFlag) && v41 < 0 )
+	if ( v50 & DFLAG_MONSTER && (v50 & DFLAG_LIT || plr[myplr]._pInfraFlag) && v41 < 0 )
 	{
 		v23 = -1 - v41;
 		draw_monster_num = -1 - v41;
@@ -1192,7 +1192,7 @@ void __fastcall DrawClippedMonster(int x, int y, int a3, int a4, int mon_id, int
 			v9 = monster[v7]._mAnimFrame;
 			if ( v9 >= 1 && (unsigned int)*v8 <= 0x32 && v9 <= *v8 )
 			{
-				if ( dFlags[x][y] & 0x40 )
+				if ( dFlags[x][y] & DFLAG_LIT )
 				{
 					v10 = 0;
 					mon_ida = 0;
@@ -1635,9 +1635,9 @@ void __fastcall scrollrt_draw_clipped_dungeon_2(char *buffer, int x, int y, int 
 	v48 = v10;
 	v43 = *v12;
 	v44 = *(v12 - 1);
-	if ( visiondebug && v53 & 0x40 )
+	if ( visiondebug && v53 & DFLAG_LIT )
 		Cel2DecodeHdrOnly(dst_buf, (char *)pSquareCel, 1, 64, a5, 8);
-	if ( MissilePreFlag && v53 & 1 )
+	if ( MissilePreFlag && v53 & DFLAG_MISSILE )
 	{
 		v13 = sx;
 		DrawClippedMissile(a1, y, sx, sy, a5, 8, 1);
@@ -1688,7 +1688,7 @@ void __fastcall scrollrt_draw_clipped_dungeon_2(char *buffer, int x, int y, int 
 			}
 		}
 	}
-	if ( v53 & 0x20 )
+	if ( v53 & DFLAG_PLAYER )
 	{
 		v23 = -1 - v48;
 		if ( v23 < 4 )
@@ -1717,7 +1717,7 @@ void __fastcall scrollrt_draw_clipped_dungeon_2(char *buffer, int x, int y, int 
 			}
 		}
 	}
-	if ( v53 & 0x10 && (v53 & 0x40 || plr[myplr]._pInfraFlag) && v44 < 0 )
+	if ( v53 & DFLAG_MONSTER && (v53 & DFLAG_LIT || plr[myplr]._pInfraFlag) && v44 < 0 )
 	{
 		v26 = -1 - v44;
 		draw_monster_num = -1 - v44;
@@ -1744,7 +1744,7 @@ void __fastcall scrollrt_draw_clipped_dungeon_2(char *buffer, int x, int y, int 
 			}
 		}
 	}
-	if ( v53 & 4 )
+	if ( v53 & DFLAG_DEAD_PLAYER )
 		DrawDeadPlayer(a1, y, v13, sy, a5, 8, 1);
 	if ( v51 > 0 )
 	{
@@ -1775,7 +1775,7 @@ void __fastcall scrollrt_draw_clipped_dungeon_2(char *buffer, int x, int y, int 
 			}
 		}
 	}
-	if ( v43 > 0 && (v53 & 0x40 || plr[myplr]._pInfraFlag) )
+	if ( v43 > 0 && (v53 & DFLAG_LIT || plr[myplr]._pInfraFlag) )
 	{
 		v34 = v43 - 1;
 		draw_monster_num = v43 - 1;
@@ -1802,7 +1802,7 @@ void __fastcall scrollrt_draw_clipped_dungeon_2(char *buffer, int x, int y, int 
 			}
 		}
 	}
-	if ( v53 & 1 )
+	if ( v53 & DFLAG_MISSILE )
 		DrawClippedMissile(a1, y, v13, sy, a5, 8, 0);
 	if ( v50 && light_table_index < lightmax )
 		DrawClippedObject(a1, y, v13, sy, 0, a5, 8);
@@ -2244,9 +2244,9 @@ void __fastcall scrollrt_draw_dungeon(char *buffer, int x, int y, int a4, int a5
 	v47 = v10;
 	v42 = *v12;
 	v43 = *(v12 - 1);
-	if ( visiondebug && v52 & 0x40 )
+	if ( visiondebug && v52 & DFLAG_LIT )
 		CelDecodeHdrOnly(dst_buf, (char *)pSquareCel, 1, 64, 0, a5);
-	if ( MissilePreFlag && v52 & 1 )
+	if ( MissilePreFlag && v52 & DFLAG_MISSILE )
 		DrawMissile(xa, y, sx, sy, 0, a5, 1);
 	if ( light_table_index < lightmax )
 	{
@@ -2290,7 +2290,7 @@ void __fastcall scrollrt_draw_dungeon(char *buffer, int x, int y, int a4, int a5
 			}
 		}
 	}
-	if ( v52 & 0x20 )
+	if ( v52 & DFLAG_PLAYER )
 	{
 		v22 = -1 - v47;
 		if ( v22 < 4 )
@@ -2319,7 +2319,7 @@ void __fastcall scrollrt_draw_dungeon(char *buffer, int x, int y, int a4, int a5
 			}
 		}
 	}
-	if ( v52 & 0x10 && (v52 & 0x40 || plr[myplr]._pInfraFlag) && v43 < 0 )
+	if ( v52 & DFLAG_MONSTER && (v52 & DFLAG_LIT || plr[myplr]._pInfraFlag) && v43 < 0 )
 	{
 		v25 = -1 - v43;
 		draw_monster_num = -1 - v43;
@@ -2345,7 +2345,7 @@ void __fastcall scrollrt_draw_dungeon(char *buffer, int x, int y, int a4, int a5
 			}
 		}
 	}
-	if ( v52 & 4 )
+	if ( v52 & DFLAG_DEAD_PLAYER )
 		DrawDeadPlayer(xa, y, sx, sy, 0, a5, 0);
 	if ( v50 > 0 )
 	{
@@ -2376,7 +2376,7 @@ void __fastcall scrollrt_draw_dungeon(char *buffer, int x, int y, int a4, int a5
 			}
 		}
 	}
-	if ( v42 > 0 && (v52 & 0x40 || plr[myplr]._pInfraFlag) )
+	if ( v42 > 0 && (v52 & DFLAG_LIT || plr[myplr]._pInfraFlag) )
 	{
 		v33 = v42 - 1;
 		draw_monster_num = v42 - 1;
@@ -2402,7 +2402,7 @@ void __fastcall scrollrt_draw_dungeon(char *buffer, int x, int y, int a4, int a5
 			}
 		}
 	}
-	if ( v52 & 1 )
+	if ( v52 & DFLAG_MISSILE )
 		DrawMissile(xa, y, sx, sy, 0, a5, 0);
 	if ( v49 && light_table_index < lightmax )
 		DrawObject(xa, y, sx, sy, 0, 0, a5);
@@ -2467,7 +2467,7 @@ void __fastcall DrawMonster(int x, int y, int a3, int a4, int mon_id, int a6, in
 			v9 = monster[v7]._mAnimFrame;
 			if ( v9 >= 1 && (unsigned int)*v8 <= 0x32 && v9 <= *v8 )
 			{
-				if ( dFlags[x][y] & 0x40 )
+				if ( dFlags[x][y] & DFLAG_LIT )
 				{
 					v10 = 0;
 					mon_ida = 0;

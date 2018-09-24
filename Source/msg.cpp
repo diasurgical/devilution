@@ -3478,7 +3478,7 @@ int __fastcall On_PLAYER_JOINLEVEL(struct TCmdLocParam1 *pCmd, int pnum)
 						plr[v4]._pVar8 = 2 * v8;
 						v10 = plr[v4].WorldX;
 						plr[v4]._pAnimFrame = v9;
-						dFlags[v10][plr[v4].WorldY] |= 4u;
+						dFlags[v10][plr[v4].WorldY] |= DFLAG_DEAD_PLAYER;
 					}
 					else
 					{

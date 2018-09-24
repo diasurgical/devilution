@@ -2047,7 +2047,7 @@ LABEL_55:
 		for(i = 0; i < 112; i++)
 		{
 			for(j = 0; j < 112; j++)
-				dFlags[i][j] |= 0x40;
+				dFlags[i][j] |= DFLAG_LIT;
 		}
 
 		InitTowners();
@@ -2113,7 +2113,7 @@ LABEL_72:
 		if ( plr[i].plractive && plr[i].plrlevel == currlevel && (!plr[i]._pLvlChanging || i == myplr) )
 		{
 			if ( plr[i]._pHitPoints <= 0 )
-				dFlags[plr[i].WorldX][plr[i].WorldY] |= 4;
+				dFlags[plr[i].WorldX][plr[i].WorldY] |= DFLAG_DEAD_PLAYER;
 			else if ( gbMaxPlayers == 1 )
 				dPlayer[plr[i].WorldX][plr[i].WorldY] = i + 1;
 			else
