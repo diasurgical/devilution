@@ -4,7 +4,7 @@
 
 extern int pfile_cpp_init_value;
 extern char hero_names[MAX_CHARACTERS][PLR_NAME_LEN];
-extern bool gbValidSaveFile; // idb
+extern BOOL gbValidSaveFile; // idb
 extern int save_prev_tc; // weak
 
 void __cdecl pfile_cpp_init();
@@ -19,14 +19,14 @@ void __fastcall pfile_flush(bool is_single_player, int save_num);
 bool __fastcall pfile_create_player_description(char *dst, int len);
 int __fastcall pfile_create_save_file(char *name_1, char *name_2);
 void __cdecl pfile_flush_W();
-void __fastcall game_2_ui_player(PlayerStruct *p, _uiheroinfo *heroinfo, bool bHasSaveFile);
+void __fastcall game_2_ui_player(PlayerStruct *p, _uiheroinfo *heroinfo, BOOL bHasSaveFile);
 char __fastcall game_2_ui_class(PlayerStruct *p);
 BOOL __stdcall pfile_ui_set_hero_infos(BOOL (__stdcall *ui_add_hero_info)(_uiheroinfo *));
 char *__fastcall GetSaveDirectory(char *dst, int dst_size, int save_num);
 bool __fastcall pfile_read_hero(void *archive, PkPlayerStruct *pPack);
 void *__fastcall pfile_open_save_archive(int *unused, int save_num);
 void __fastcall pfile_SFileCloseArchive(void *hsArchive);
-bool __fastcall pfile_archive_contains_game(void *hsArchive);
+BOOL __fastcall pfile_archive_contains_game(void *hsArchive);
 BOOL __stdcall pfile_ui_set_class_stats(int player_class_nr, _uidefaultstats *class_stats);
 int __fastcall pfile_get_player_class(int player_class_nr);
 BOOL __stdcall pfile_ui_save_create(_uiheroinfo *heroinfo);

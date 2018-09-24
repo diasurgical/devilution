@@ -4,7 +4,7 @@
 
 int pfile_cpp_init_value;
 char hero_names[MAX_CHARACTERS][PLR_NAME_LEN];
-bool gbValidSaveFile; // idb
+BOOL gbValidSaveFile; // idb
 int save_prev_tc; // weak
 
 const int pfile_inf = 0x7F800000; // weak
@@ -254,7 +254,7 @@ void __cdecl pfile_flush_W()
 	pfile_flush(1, v0);
 }
 
-void __fastcall game_2_ui_player(PlayerStruct *p, _uiheroinfo *heroinfo, bool bHasSaveFile)
+void __fastcall game_2_ui_player(PlayerStruct *p, _uiheroinfo *heroinfo, BOOL bHasSaveFile)
 {
 	_uiheroinfo *v3; // esi
 	PlayerStruct *v4; // edi
@@ -491,19 +491,19 @@ void __fastcall pfile_SFileCloseArchive(void *hsArchive)
 	SFileCloseArchive(hsArchive);
 }
 
-bool __fastcall pfile_archive_contains_game(void *hsArchive)
+BOOL __fastcall pfile_archive_contains_game(void *hsArchive)
 {
 	//int v1; // eax
 	void *file; // [esp+0h] [ebp-4h]
 
 	file = hsArchive;
 	if ( gbMaxPlayers != 1 )
-		return 0;
+		return FALSE;
 	//_LOBYTE(v1) = SFileOpenFileEx(hsArchive, "game", 0, &file);
 	if ( !SFileOpenFileEx(hsArchive, "game", 0, &file) )
-		return 0;
+		return FALSE;
 	SFileCloseFile(file);
-	return 1;
+	return TRUE;
 }
 // 679660: using guessed type char gbMaxPlayers;
 
@@ -639,7 +639,7 @@ void __cdecl pfile_read_player_from_save()
 	if ( !pfile_read_hero(v1, &pkplr) )
 		TermMsg("Unable to load character");
 	UnPackPlayer(&pkplr, myplr, 0);
-	*(_DWORD *)&gbValidSaveFile = pfile_archive_contains_game(v1);
+	gbValidSaveFile = pfile_archive_contains_game(v1);
 	pfile_SFileCloseArchive(v1);
 }
 

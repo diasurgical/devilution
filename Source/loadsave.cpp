@@ -872,7 +872,7 @@ void __cdecl SaveGame()
 	v44 = codec_get_encoded_len((_BYTE *)tbuff - (_BYTE *)ptr);
 	pfile_write_save_file(v45, v43, (_BYTE *)tbuff - (_BYTE *)v43, v44);
 	mem_free_dbg(v43);
-	*(_DWORD *)&gbValidSaveFile = 1;
+	gbValidSaveFile = TRUE;
 	pfile_rename_temp_to_perm();
 	pfile_write_hero();
 }

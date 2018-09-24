@@ -126,8 +126,8 @@ int __fastcall diablo_init_menu(int a1, int bSinglePlayer)
 		if ( !NetInit(v2, &pfExitProgram) )
 			break;
 		byte_678640 = 0;
-		if ( (v3 || !*(_DWORD *)&gbValidSaveFile)
-		  && (InitLevels(), InitQuests(), InitPortals(), InitDungMsgs(myplr), !*(_DWORD *)&gbValidSaveFile)
+		if ( (v3 || !gbValidSaveFile)
+		  && (InitLevels(), InitQuests(), InitPortals(), InitDungMsgs(myplr), !gbValidSaveFile)
 		  || (v4 = WM_DIABLOADGAME, !dword_5256E8) )
 		{
 			v4 = WM_DIABNEWGAME;
