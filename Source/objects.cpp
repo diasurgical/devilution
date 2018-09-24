@@ -5187,7 +5187,7 @@ LABEL_47:
 					while ( v41 < plr[v38]._pNumInv );
 				}
 				v43 = &plr[v38].SpdList[0]._iMaxCharges;
-				v44 = 8;
+				v44 = MAXBELTITEMS;
 				do
 				{
 					if ( *(v43 - 56) == 10 )
@@ -5226,7 +5226,7 @@ LABEL_47:
 					while ( v48 < plr[v45]._pNumInv );
 				}
 				v50 = &plr[v45].SpdList[0]._iDurability;
-				v51 = 8;
+				v51 = MAXBELTITEMS;
 				do
 				{
 					*v50 = v50[1];
@@ -5411,7 +5411,7 @@ LABEL_47:
 					while ( sfx_idb < plr[v78]._pNumInv );
 				}
 				v82 = &plr[v78].SpdList[0]._iMiscId;
-				v141 = 8;
+				v141 = MAXBELTITEMS;
 				sfx_idc = &plr[v78].SpdList[0]._iMiscId;
 				do
 				{
@@ -5701,7 +5701,7 @@ LABEL_47:
 					while ( v128 < plr[v125]._pNumInv );
 				}
 				v130 = &plr[v125].SpdList[0]._iIdentified;
-				v131 = 8;
+				v131 = MAXBELTITEMS;
 				do
 				{
 					if ( *((_BYTE *)v130 + 4) && !*v130 )

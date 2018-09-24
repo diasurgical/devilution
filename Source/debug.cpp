@@ -92,7 +92,7 @@ void __cdecl TakeGoldCheat()
 			RemoveInvItem(myplr, ig - 1);
 	}
 
-	for(i = 0; i < 8; i++)
+	for(i = 0; i < MAXBELTITEMS; i++)
 	{
 		if ( plr[myplr].SpdList[i]._itype == ITYPE_GOLD )
 			plr[myplr].SpdList[i]._itype = -1;

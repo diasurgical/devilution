@@ -18,6 +18,7 @@
 #define MAXDUNX					112
 #define MAXDUNY					112
 #define MAXITEMS				127
+#define MAXBELTITEMS			8
 #define MAXMISSILES				125
 #define MAXMONSTERS				200
 #define MAXMULTIQUESTS			4

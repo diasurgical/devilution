@@ -1153,7 +1153,7 @@ void __fastcall CalcPlrScrolls(int p)
 		while ( v4 );
 	}
 	v6 = &plr[v1].SpdList[0]._iMiscId;
-	v7 = 8;
+	v7 = MAXBELTITEMS;
 	do
 	{
 		if ( *(v6 - 53) != -1 && (*v6 == IMISC_SCROLL || *v6 == IMISC_SCROLLT) && v6[34] )
@@ -1297,7 +1297,7 @@ void __fastcall CalcPlrItemMin(int pnum)
 		while ( v4 );
 	}
 	v6 = v2->SpdList;
-	v7 = 8;
+	v7 = MAXBELTITEMS;
 	do
 	{
 		if ( v6->_itype != -1 )
@@ -1536,8 +1536,7 @@ void __fastcall CreatePlrItems(int p)
 	plr[p]._pNumInv = 0;
 
 	pi = plr[p].SpdList;
-	// TODO: define/const for that 8
-	for ( i = 0; i < 8; i++ )
+	for ( i = 0; i < MAXBELTITEMS; i++ )
 	{
 		pi[i]._itype = ITYPE_NONE;
 	}

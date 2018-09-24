@@ -1875,199 +1875,112 @@ LABEL_14:
 
 void __fastcall DropHalfPlayersGold(int pnum)
 {
-	int v1; // ebx
-	int v2; // esi
-	int v3; // edi
-	int v4; // ecx
-	int v5; // eax
-	int v6; // ecx
-	int v7; // eax
-	int v8; // edx
-	int v9; // ecx
-	int v10; // eax
-	int v11; // edx
-	int v12; // ecx
-	int v13; // eax
-	int v14; // [esp+Ch] [ebp-8h]
-	int v15; // [esp+Ch] [ebp-8h]
-	int v16; // [esp+Ch] [ebp-8h]
-	int v17; // [esp+Ch] [ebp-8h]
-	signed int i; // [esp+10h] [ebp-4h]
-	signed int ia; // [esp+10h] [ebp-4h]
-	signed int ib; // [esp+10h] [ebp-4h]
-	signed int ic; // [esp+10h] [ebp-4h]
-
-	v1 = pnum;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("DropHalfPlayersGold: illegal player %d", pnum);
-	v2 = v1;
-	v3 = plr[v1]._pGold >> 1;
-	i = 0;
-	while ( v3 > 0 )
-	{
-		v4 = 368 * i + v2 * 21720;
-		v14 = v4;
-		if ( *(int *)((char *)&plr[0].SpdList[0]._itype + v4) == ITYPE_GOLD )
-		{
-			v5 = *(int *)((char *)&plr[0].SpdList[0]._ivalue + v4);
-			if ( v5 != 5000 )
-			{
-				if ( v3 >= v5 )
-				{
-					v3 -= v5;
-					RemoveSpdBarItem(v1, i);
-					SetPlrHandItem(&plr[v2].HoldItem, IDI_GOLD);
-					GetGoldSeed(v1, &plr[v2].HoldItem);
-					SetPlrHandGoldCurs(&plr[v2].HoldItem);
-					plr[v2].HoldItem._ivalue = *(int *)((char *)&plr[0].SpdList[0]._ivalue + v14);
-					PlrDeadItem(v1, &plr[v2].HoldItem, 0, 0);
+	}
+
+	int i;
+	int hGold = plr[pnum]._pGold >> 1;
+	for ( i = 0; i < MAXBELTITEMS && hGold > 0; i++ ) {
+		if ( plr[pnum].SpdList[i]._itype == ITYPE_GOLD && plr[pnum].SpdList[i]._ivalue != 5000 ) {
+			if ( hGold < plr[pnum].SpdList[i]._ivalue ) {
+				plr[pnum].SpdList[i]._ivalue -= hGold;
+				SetSpdbarGoldCurs(pnum, i);
+				SetPlrHandItem(&plr[pnum].HoldItem, IDI_GOLD);
+				GetGoldSeed(pnum, &plr[pnum].HoldItem);
+				SetPlrHandGoldCurs(&plr[pnum].HoldItem);
+				plr[pnum].HoldItem._ivalue = hGold;
+				PlrDeadItem(pnum, &plr[pnum].HoldItem, 0, 0);
+				hGold = 0;
+			} else {
+				hGold -= plr[pnum].SpdList[i]._ivalue;
+				RemoveSpdBarItem(pnum, i);
+				SetPlrHandItem(&plr[pnum].HoldItem, IDI_GOLD);
+				GetGoldSeed(pnum, &plr[pnum].HoldItem);
+				SetPlrHandGoldCurs(&plr[pnum].HoldItem);
+				plr[pnum].HoldItem._ivalue = plr[pnum].SpdList[i]._ivalue;
+				PlrDeadItem(pnum, &plr[pnum].HoldItem, 0, 0);
+				i = -1;
+			}
+		}
+	}
+	if ( hGold > 0 ) {
+		for ( i = 0; i < MAXBELTITEMS && hGold > 0; i++ ) {
+			if ( plr[pnum].SpdList[i]._itype == ITYPE_GOLD ) {
+				if ( hGold < plr[pnum].SpdList[i]._ivalue ) {
+					plr[pnum].SpdList[i]._ivalue -= hGold;
+					SetSpdbarGoldCurs(pnum, i);
+					SetPlrHandItem(&plr[pnum].HoldItem, IDI_GOLD);
+					GetGoldSeed(pnum, &plr[pnum].HoldItem);
+					SetPlrHandGoldCurs(&plr[pnum].HoldItem);
+					plr[pnum].HoldItem._ivalue = hGold;
+					PlrDeadItem(pnum, &plr[pnum].HoldItem, 0, 0);
+					hGold = 0;
+				} else {
+					hGold -= plr[pnum].SpdList[i]._ivalue;
+					RemoveSpdBarItem(pnum, i);
+					SetPlrHandItem(&plr[pnum].HoldItem, IDI_GOLD);
+					GetGoldSeed(pnum, &plr[pnum].HoldItem);
+					SetPlrHandGoldCurs(&plr[pnum].HoldItem);
+					plr[pnum].HoldItem._ivalue = plr[pnum].SpdList[i]._ivalue;
+					PlrDeadItem(pnum, &plr[pnum].HoldItem, 0, 0);
 					i = -1;
 				}
-				else
-				{
-					*(int *)((char *)&plr[0].SpdList[0]._ivalue + v4) = v5 - v3;
-					SetSpdbarGoldCurs(v1, i);
-					SetPlrHandItem(&plr[v2].HoldItem, IDI_GOLD);
-					GetGoldSeed(v1, &plr[v2].HoldItem);
-					SetPlrHandGoldCurs(&plr[v2].HoldItem);
-					plr[v2].HoldItem._ivalue = v3;
-					v3 = 0;
-					PlrDeadItem(v1, &plr[v2].HoldItem, 0, 0);
-				}
 			}
-		}
-		if ( ++i >= 8 )
-		{
-			if ( v3 > 0 )
-			{
-				ia = 0;
-				do
-				{
-					if ( v3 <= 0 )
-						break;
-					v6 = 368 * ia + v2 * 21720;
-					v15 = v6;
-					if ( *(int *)((char *)&plr[0].SpdList[0]._itype + v6) == ITYPE_GOLD )
-					{
-						v7 = *(int *)((char *)&plr[0].SpdList[0]._ivalue + v6);
-						if ( v3 >= v7 )
-						{
-							v3 -= v7;
-							RemoveSpdBarItem(v1, ia);
-							SetPlrHandItem(&plr[v2].HoldItem, IDI_GOLD);
-							GetGoldSeed(v1, &plr[v2].HoldItem);
-							SetPlrHandGoldCurs(&plr[v2].HoldItem);
-							plr[v2].HoldItem._ivalue = *(int *)((char *)&plr[0].SpdList[0]._ivalue + v15);
-							PlrDeadItem(v1, &plr[v2].HoldItem, 0, 0);
-							ia = -1;
-						}
-						else
-						{
-							*(int *)((char *)&plr[0].SpdList[0]._ivalue + v6) = v7 - v3;
-							SetSpdbarGoldCurs(v1, ia);
-							SetPlrHandItem(&plr[v2].HoldItem, IDI_GOLD);
-							GetGoldSeed(v1, &plr[v2].HoldItem);
-							SetPlrHandGoldCurs(&plr[v2].HoldItem);
-							plr[v2].HoldItem._ivalue = v3;
-							v3 = 0;
-							PlrDeadItem(v1, &plr[v2].HoldItem, 0, 0);
-						}
-					}
-					++ia;
-				}
-				while ( ia < 8 );
-			}
-			break;
 		}
 	}
-	v8 = 0;
 	drawpanflag = 255;
-	if ( v3 > 0 )
-	{
-		ib = 0;
-		if ( plr[v2]._pNumInv <= 0 )
-		{
-LABEL_28:
-			if ( v3 > 0 )
-			{
-				v11 = 0;
-				for ( ic = 0; ic < plr[v2]._pNumInv; v11 = ic++ + 1 )
-				{
-					if ( v3 <= 0 )
-						break;
-					v12 = 368 * v11 + v2 * 21720;
-					v17 = v12;
-					if ( *(int *)((char *)&plr[0].InvList[0]._itype + v12) == ITYPE_GOLD )
-					{
-						v13 = *(int *)((char *)&plr[0].InvList[0]._ivalue + v12);
-						if ( v3 >= v13 )
-						{
-							v3 -= v13;
-							RemoveInvItem(v1, v11);
-							SetPlrHandItem(&plr[v2].HoldItem, IDI_GOLD);
-							GetGoldSeed(v1, &plr[v2].HoldItem);
-							SetPlrHandGoldCurs(&plr[v2].HoldItem);
-							plr[v2].HoldItem._ivalue = *(int *)((char *)&plr[0].InvList[0]._ivalue + v17);
-							PlrDeadItem(v1, &plr[v2].HoldItem, 0, 0);
-							ic = -1;
-						}
-						else
-						{
-							*(int *)((char *)&plr[0].InvList[0]._ivalue + v12) = v13 - v3;
-							SetGoldCurs(v1, v11);
-							SetPlrHandItem(&plr[v2].HoldItem, IDI_GOLD);
-							GetGoldSeed(v1, &plr[v2].HoldItem);
-							SetPlrHandGoldCurs(&plr[v2].HoldItem);
-							plr[v2].HoldItem._ivalue = v3;
-							v3 = 0;
-							PlrDeadItem(v1, &plr[v2].HoldItem, 0, 0);
-						}
-					}
+	if ( hGold > 0 ) {
+		for ( i = 0; i < plr[pnum]._pNumInv && hGold > 0; i++ ) {
+			if ( plr[pnum].InvList[i]._itype == ITYPE_GOLD && plr[pnum].InvList[i]._ivalue != 5000 ) {
+				if ( hGold < plr[pnum].InvList[i]._ivalue ) {
+					plr[pnum].InvList[i]._ivalue -= hGold;
+					SetGoldCurs(pnum, i);
+					SetPlrHandItem(&plr[pnum].HoldItem, IDI_GOLD);
+					GetGoldSeed(pnum, &plr[pnum].HoldItem);
+					SetPlrHandGoldCurs(&plr[pnum].HoldItem);
+					plr[pnum].HoldItem._ivalue = hGold;
+					PlrDeadItem(pnum, &plr[pnum].HoldItem, 0, 0);
+					hGold = 0;
+				} else {
+					hGold -= plr[pnum].InvList[i]._ivalue;
+					RemoveInvItem(pnum, i);
+					SetPlrHandItem(&plr[pnum].HoldItem, IDI_GOLD);
+					GetGoldSeed(pnum, &plr[pnum].HoldItem);
+					SetPlrHandGoldCurs(&plr[pnum].HoldItem);
+					plr[pnum].HoldItem._ivalue = plr[pnum].InvList[i]._ivalue;
+					PlrDeadItem(pnum, &plr[pnum].HoldItem, 0, 0);
+					i = -1;
 				}
-			}
-		}
-		else
-		{
-			while ( v3 > 0 )
-			{
-				v9 = 368 * v8 + v2 * 21720;
-				v16 = v9;
-				if ( *(int *)((char *)&plr[0].InvList[0]._itype + v9) == ITYPE_GOLD )
-				{
-					v10 = *(int *)((char *)&plr[0].InvList[0]._ivalue + v9);
-					if ( v10 != 5000 )
-					{
-						if ( v3 >= v10 )
-						{
-							v3 -= v10;
-							RemoveInvItem(v1, v8);
-							SetPlrHandItem(&plr[v2].HoldItem, IDI_GOLD);
-							GetGoldSeed(v1, &plr[v2].HoldItem);
-							SetPlrHandGoldCurs(&plr[v2].HoldItem);
-							plr[v2].HoldItem._ivalue = *(int *)((char *)&plr[0].InvList[0]._ivalue + v16);
-							PlrDeadItem(v1, &plr[v2].HoldItem, 0, 0);
-							ib = -1;
-						}
-						else
-						{
-							*(int *)((char *)&plr[0].InvList[0]._ivalue + v9) = v10 - v3;
-							SetGoldCurs(v1, v8);
-							SetPlrHandItem(&plr[v2].HoldItem, IDI_GOLD);
-							GetGoldSeed(v1, &plr[v2].HoldItem);
-							SetPlrHandGoldCurs(&plr[v2].HoldItem);
-							plr[v2].HoldItem._ivalue = v3;
-							v3 = 0;
-							PlrDeadItem(v1, &plr[v2].HoldItem, 0, 0);
-						}
-					}
-				}
-				v8 = ib++ + 1;
-				if ( ib >= plr[v2]._pNumInv )
-					goto LABEL_28;
 			}
 		}
 	}
-	plr[v2]._pGold = CalculateGold(v1);
+	if ( hGold > 0 ) {
+		for ( i = 0; i < plr[pnum]._pNumInv && hGold > 0; i++ ) {
+			if ( plr[pnum].InvList[i]._itype == ITYPE_GOLD ) {
+				if ( hGold < plr[pnum].InvList[i]._ivalue ) {
+					plr[pnum].InvList[i]._ivalue -= hGold;
+					SetGoldCurs(pnum, i);
+					SetPlrHandItem(&plr[pnum].HoldItem, IDI_GOLD);
+					GetGoldSeed(pnum, &plr[pnum].HoldItem);
+					SetPlrHandGoldCurs(&plr[pnum].HoldItem);
+					plr[pnum].HoldItem._ivalue = hGold;
+					PlrDeadItem(pnum, &plr[pnum].HoldItem, 0, 0);
+					hGold = 0;
+				} else {
+					hGold -= plr[pnum].InvList[i]._ivalue;
+					RemoveInvItem(pnum, i);
+					SetPlrHandItem(&plr[pnum].HoldItem, IDI_GOLD);
+					GetGoldSeed(pnum, &plr[pnum].HoldItem);
+					SetPlrHandGoldCurs(&plr[pnum].HoldItem);
+					plr[pnum].HoldItem._ivalue = plr[pnum].InvList[i]._ivalue;
+					PlrDeadItem(pnum, &plr[pnum].HoldItem, 0, 0);
+					i = -1;
+				}
+			}
+		}
+	}
+	plr[pnum]._pGold = CalculateGold(pnum);
 }
 // 52571C: using guessed type int drawpanflag;
 

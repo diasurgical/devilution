@@ -72,7 +72,7 @@ void __fastcall PackPlayer(PkPlayerStruct *pPack, int pnum, bool manashield)
 	pki = pPack->SpdList;
 	pi = pPlayer->SpdList;
 
-	for(i = 0; i < 8; i++)
+	for(i = 0; i < MAXBELTITEMS; i++)
 		PackItem(pki++, pi++);
 
 	pPack->pDiabloKillLevel = pPlayer->pDiabloKillLevel;
@@ -223,7 +223,7 @@ void __fastcall UnPackPlayer(PkPlayerStruct *pPack, int pnum, bool killok)
 	pki = pPack->SpdList;
 	pi = pPlayer->SpdList;
 
-	for(i = 0; i < 8; i++)
+	for(i = 0; i < MAXBELTITEMS; i++)
 		UnPackItem(pki++, pi++);
 
 	if ( pnum == myplr )
