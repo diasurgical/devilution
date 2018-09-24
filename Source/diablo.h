@@ -95,7 +95,7 @@ extern int frameend;
 extern int framerate;
 extern int framestart;
 #endif
-extern int FriendlyMode; // weak
+extern BOOL FriendlyMode;
 extern char *spszMsgTbl[4]; // weak
 extern char *spszMsgKeyTbl[4]; // weak
 

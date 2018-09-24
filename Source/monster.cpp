@@ -8783,21 +8783,17 @@ void __fastcall SpawnGolum(int i, int x, int y, int mi)
 	}
 }
 
-bool __fastcall CanTalkToMonst(int m)
+BOOL __fastcall CanTalkToMonst(int m)
 {
-	int v1; // esi
-	char v2; // al
-	bool result; // al
-
-	v1 = m;
-	if ( (unsigned int)m >= MAXMONSTERS )
+	if ( (DWORD)m >= MAXMONSTERS ) {
 		TermMsg("CanTalkToMonst: Invalid monster %d", m);
-	v2 = monster[v1]._mgoal;
-	if ( v2 == 6 )
-		result = 1;
-	else
-		result = v2 == 7;
-	return result;
+	}
+
+	if (monster[m]._mgoal == 6) {
+		return TRUE;
+	}
+
+	return monster[m]._mgoal == 7;
 }
 
 BOOL __fastcall CheckMonsterHit(int m, BOOL *ret)
