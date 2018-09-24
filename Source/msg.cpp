@@ -99,7 +99,7 @@ int __cdecl msg_wait_resync()
 	sgbRecvCmd = CMD_DLEVEL_END;
 	gbBufferMsgs = 1;
 	sgdwOwnerWait = GetTickCount();
-	v0 = UiProgressDialog(ghMainWnd, "Waiting for game data...", 1, msg_wait_for_turns, 20);
+	v0 = UiProgressDialog(ghMainWnd, "Waiting for game data...", 1, (void*)msg_wait_for_turns, 20);
 	gbBufferMsgs = 0;
 	if ( !v0 )
 		goto LABEL_6;
