@@ -1392,7 +1392,7 @@ void __cdecl S_StartWSell()
 		}
 	}
 
-	for(i = 0; i < 8; i++)
+	for(i = 0; i < MAXBELTITEMS; i++)
 	{
 		if ( plr[myplr].SpdList[i]._itype != -1 && WitchSellOk(~i) )
 		{
@@ -2615,7 +2615,7 @@ void __fastcall TakePlrsMoney(int cost)
 				}
 			}
 		}
-		if ( ++v4 >= 8 )
+		if ( ++v4 >= MAXBELTITEMS )
 		{
 			if ( v1 > 0 )
 			{
@@ -2645,7 +2645,7 @@ void __fastcall TakePlrsMoney(int cost)
 					}
 					++v8;
 				}
-				while ( v8 < 8 );
+				while ( v8 < MAXBELTITEMS );
 			}
 			break;
 		}

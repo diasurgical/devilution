@@ -546,7 +546,7 @@ LABEL_32:
 								while ( v12 );
 							}
 							v14 = &plr[v10].SpdList[0]._iMiscId;
-							v15 = 8;
+							v15 = MAXBELTITEMS;
 							do
 							{
 								if ( *(v14 - 53) != -1
@@ -1593,7 +1593,7 @@ LABEL_54:
 					}
 					v8 = v12;
 					v9 = &plr[v5].SpdList[0]._iMiscId;
-					v10 = 8;
+					v10 = MAXBELTITEMS;
 					do
 					{
 						if ( *(v9 - 53) != -1 && (*v9 == IMISC_SCROLL || *v9 == IMISC_SCROLLT) && v9[1] == v4 )

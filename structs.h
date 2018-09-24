@@ -312,7 +312,7 @@ struct PlayerStruct
 	ItemStruct InvList[NUM_INV_GRID_ELEM];
 	int _pNumInv;
 	char InvGrid[NUM_INV_GRID_ELEM];
-	ItemStruct SpdList[8];
+	ItemStruct SpdList[MAXBELTITEMS];
 	ItemStruct HoldItem;
 	int _pIMinDam;
 	int _pIMaxDam;
@@ -1478,7 +1478,7 @@ struct PkPlayerStruct
 	PkItemStruct InvList[40];
 	char InvGrid[40];
 	char _pNumInv;
-	PkItemStruct SpdList[8];
+	PkItemStruct SpdList[MAXBELTITEMS];
 	char pTownWarps;
 	char pDungMsgs;
 	char pLvlLoad;

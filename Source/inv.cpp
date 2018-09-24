@@ -539,7 +539,7 @@ void __cdecl DrawInvBelt()
 			v0 += 368;
 			v13 = v0;
 		}
-		while ( v11 < 8 );
+		while ( v11 < MAXBELTITEMS );
 	}
 }
 // 4B8960: using guessed type int talkflag;
@@ -741,7 +741,7 @@ LABEL_25:
 		{
 			++v11;
 			v12 += 92;
-			if ( v11 >= 8 )
+			if ( v11 >= MAXBELTITEMS )
 				goto LABEL_24;
 		}
 		v6 = 1;
@@ -3009,7 +3009,7 @@ LABEL_8:
 		{
 			++v5;
 			v6 += 92;
-			if ( v5 >= 8 )
+			if ( v5 >= MAXBELTITEMS )
 				return;
 		}
 		RemoveSpdBarItem(p, v5);
@@ -3052,7 +3052,7 @@ LABEL_11:
 		{
 			++v4;
 			v5 += 92;
-			if ( v4 >= 8 )
+			if ( v4 >= MAXBELTITEMS )
 				return 0;
 		}
 	}
@@ -3309,7 +3309,7 @@ int __fastcall CalculateGold(int pnum)
 	result = 0;
 	v2 = pnum;
 	v3 = &plr[v2].SpdList[0]._ivalue;
-	v4 = 8;
+	v4 = MAXBELTITEMS;
 	do
 	{
 		if ( *(v3 - 47) == 11 )
