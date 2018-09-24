@@ -786,7 +786,7 @@ void __cdecl DeltaLoadLevel()
 				{
 					v14 = itemavail[0];
 					v33 = itemavail[0];
-					v15 = &itemavail[-numitems + 126];
+					v15 = &itemavail[MAXITEMS - numitems - 1];
 					itemactive[numitems] = itemavail[0];
 					v16 = *(short *)((char *)&sgLevels[0].item[0].wIndx + v13);
 					itemavail[0] = *v15;
