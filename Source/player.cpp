@@ -3928,110 +3928,51 @@ void __fastcall SyncInitPlr(int pnum)
 
 void __fastcall CheckStats(int pnum)
 {
-	int v1; // esi
-	int v2; // eax
-	char v3; // cl
-	signed int v4; // esi
-	signed int v5; // edi
-	int v6; // edx
-	int v7; // ecx
-	int v8; // edx
-	int v9; // ecx
-	int v10; // edx
-	int v11; // ecx
-	int v12; // edx
-	int v13; // ecx
-	//signed int v14; // [esp+Ch] [ebp-4h]
-
-	v1 = pnum;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("CheckStats: illegal player %d", pnum);
-	v2 = v1;
-	v3 = plr[v1]._pClass;
-	if ( v3 )
-	{
-		if ( v3 == 1 )
-		{
-			v4 = 1;
-		}
-		else if ( v3 == 2 )
-		{
-			v4 = 2;
-		}
-		/*else
-		{
-			v4 = v14;
-		}*/
 	}
-	else
-	{
-		v4 = 0;
+
+	int c;
+	if ( plr[pnum]._pClass == PC_WARRIOR ) {
+		c = PC_WARRIOR;
+	} else if ( plr[pnum]._pClass == PC_ROGUE ) {
+		c = PC_ROGUE;
+	} else if ( plr[pnum]._pClass == PC_SORCERER ) {
+		c = PC_SORCERER;
 	}
-	v5 = 0;
-	do
-	{
-		if ( v5 )
-		{
-			switch ( v5 )
-			{
-				case ATTRIB_MAG:
-					v10 = plr[v2]._pBaseMag;
-					v11 = MaxStats[v4][1];
-					if ( v10 <= v11 )
-					{
-						if ( v10 < 0 )
-							plr[v2]._pBaseMag = 0;
-					}
-					else
-					{
-						plr[v2]._pBaseMag = v11;
-					}
-					break;
-				case ATTRIB_DEX:
-					v8 = plr[v2]._pBaseDex;
-					v9 = MaxStats[v4][2];
-					if ( v8 <= v9 )
-					{
-						if ( v8 < 0 )
-							plr[v2]._pBaseDex = 0;
-					}
-					else
-					{
-						plr[v2]._pBaseDex = v9;
-					}
-					break;
-				case ATTRIB_VIT:
-					v6 = plr[v2]._pBaseVit;
-					v7 = MaxStats[v4][3];
-					if ( v6 <= v7 )
-					{
-						if ( v6 < 0 )
-							plr[v2]._pBaseVit = 0;
-					}
-					else
-					{
-						plr[v2]._pBaseVit = v7;
-					}
-					break;
-			}
+
+	for (int i = 0; i < 4; i++ ) {
+		switch (i) {
+			case ATTRIB_STR:
+				if ( plr[pnum]._pBaseStr > MaxStats[c][ATTRIB_STR] ) {
+					plr[pnum]._pBaseStr = MaxStats[c][ATTRIB_STR];
+				} else if ( plr[pnum]._pBaseStr < 0 ) {
+					plr[pnum]._pBaseStr = 0;
+				}
+				break;
+			case ATTRIB_MAG:
+				if ( plr[pnum]._pBaseMag > MaxStats[c][ATTRIB_MAG] ) {
+					plr[pnum]._pBaseMag = MaxStats[c][ATTRIB_MAG];
+				} else if ( plr[pnum]._pBaseMag < 0 ) {
+					plr[pnum]._pBaseMag = 0;
+				}
+				break;
+			case ATTRIB_DEX:
+				if ( plr[pnum]._pBaseDex > MaxStats[c][ATTRIB_DEX] ) {
+					plr[pnum]._pBaseDex = MaxStats[c][ATTRIB_DEX];
+				} else if ( plr[pnum]._pBaseDex < 0 ) {
+					plr[pnum]._pBaseDex = 0;
+				}
+				break;
+			case ATTRIB_VIT:
+				if ( plr[pnum]._pBaseVit > MaxStats[c][ATTRIB_VIT] ) {
+					plr[pnum]._pBaseVit = MaxStats[c][ATTRIB_VIT];
+				} else if ( plr[pnum]._pBaseVit < 0 ) {
+					plr[pnum]._pBaseVit = 0;
+				}
+				break;
 		}
-		else
-		{
-			v12 = plr[v2]._pBaseStr;
-			v13 = MaxStats[v4][0];
-			if ( v12 <= v13 )
-			{
-				if ( v12 < 0 )
-					plr[v2]._pBaseStr = 0;
-			}
-			else
-			{
-				plr[v2]._pBaseStr = v13;
-			}
-		}
-		++v5;
 	}
-	while ( v5 < 4 );
 }
 
 void __fastcall ModifyPlrStr(int pnum, int l)
