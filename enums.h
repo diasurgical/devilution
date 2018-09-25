@@ -2700,3 +2700,23 @@ enum shrine_type {
 	SHRINE_TAINTED = 25,
 	NUM_SHRINETYPE
 };
+
+enum action_id {
+	ACTION_NONE = -1,
+	ACTION_ATTACK = 9,
+	ACTION_RATTACK = 10,
+	ACTION_SPELL = 12,
+	ACTION_OPERATE = 13,
+	ACTION_DISARM = 14,
+	ACTION_PICKUPITEM = 15,  // put item in hand (inventory screen open)
+	ACTION_PICKUPAITEM = 16, // put item in inventory
+	ACTION_TALK = 17,
+	ACTION_OPERATETK = 18, // operate via telekinesis
+	ACTION_ATTACKMON = 20,
+	ACTION_ATTACKPLR = 21,
+	ACTION_RATTACKMON = 22,
+	ACTION_RATTACKPLR = 23,
+	ACTION_SPELLMON = 24,
+	ACTION_SPELLPLR = 25,
+	ACTION_SPELLWALL = 26,
+};

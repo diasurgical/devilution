@@ -1764,7 +1764,7 @@ int __fastcall On_WALKXY(struct TCmdLoc *pCmd, int pnum)
 		{
 			ClrPlrPath(pnum);
 			MakePlrPath(v2, (unsigned char)v3->x, (unsigned char)v3->y, 1u);
-			plr[v4].destAction = -1;
+			plr[v4].destAction = ACTION_NONE;
 		}
 	}
 	return 3;
@@ -1855,7 +1855,7 @@ int __fastcall On_SBSPELL(struct TCmdParam1 *pCmd, int pnum)
 			plr[v2]._pSpell = (unsigned short)pCmd->wParam1;
 			plr[v2]._pSplType = plr[v2]._pSBkSplType;
 			plr[v2]._pSplFrom = 1;
-			plr[v2].destAction = 12;
+			plr[v2].destAction = ACTION_SPELL;
 		}
 		else
 		{
@@ -1895,7 +1895,7 @@ int __fastcall On_GOTOGETITEM(struct TCmdLocParam1 *pCmd, int pnum)
 		if ( currlevel == plr[pnum].plrlevel )
 		{
 			MakePlrPath(pnum, (unsigned char)pCmd->x, (unsigned char)pCmd->y, 0);
-			plr[v3].destAction = 15;
+			plr[v3].destAction = ACTION_PICKUPITEM;
 			plr[v3].destParam1 = (unsigned short)v2->wParam1;
 		}
 	}
@@ -2127,7 +2127,7 @@ int __fastcall On_GOTOAGETITEM(struct TCmdLocParam1 *pCmd, int pnum)
 		if ( currlevel == plr[pnum].plrlevel )
 		{
 			MakePlrPath(pnum, (unsigned char)pCmd->x, (unsigned char)pCmd->y, 0);
-			plr[v3].destAction = 16;
+			plr[v3].destAction = ACTION_PICKUPAITEM;
 			plr[v3].destParam1 = (unsigned short)v2->wParam1;
 		}
 	}
@@ -2493,7 +2493,7 @@ int __fastcall On_ATTACKXY(struct TCmdLoc *pCmd, int pnum)
 		if ( currlevel == plr[pnum].plrlevel )
 		{
 			MakePlrPath(pnum, (unsigned char)pCmd->x, (unsigned char)pCmd->y, 0);
-			plr[v3].destAction = 9;
+			plr[v3].destAction = ACTION_ATTACK;
 			plr[v3].destParam1 = (unsigned char)v2->x;
 			plr[v3].destParam2 = (unsigned char)v2->y;
 		}
@@ -2514,7 +2514,7 @@ int __fastcall On_SATTACKXY(struct TCmdLoc *pCmd, int pnum)
 		if ( currlevel == plr[pnum].plrlevel )
 		{
 			ClrPlrPath(pnum);
-			plr[v3].destAction = 9;
+			plr[v3].destAction = ACTION_ATTACK;
 			plr[v3].destParam1 = (unsigned char)v2->x;
 			plr[v3].destParam2 = (unsigned char)v2->y;
 		}
@@ -2535,7 +2535,7 @@ int __fastcall On_RATTACKXY(struct TCmdLoc *pCmd, int pnum)
 		if ( currlevel == plr[pnum].plrlevel )
 		{
 			ClrPlrPath(pnum);
-			plr[v3].destAction = 10;
+			plr[v3].destAction = ACTION_RATTACK;
 			plr[v3].destParam1 = (unsigned char)v2->x;
 			plr[v3].destParam2 = (unsigned char)v2->y;
 		}
@@ -2559,7 +2559,7 @@ int __fastcall On_SPELLXYD(struct TCmdLocParam3 *pCmd, int pnum)
 			if ( currlevel || *(_DWORD *)&spelldata[(unsigned short)pCmd->wParam1].sTownSpell )
 			{
 				ClrPlrPath(pnum);
-				plr[v3].destAction = 26;
+				plr[v3].destAction = ACTION_SPELLWALL;
 				plr[v3].destParam1 = (unsigned char)v2->x;
 				plr[v3].destParam2 = (unsigned char)v2->y;
 				plr[v3].destParam3 = (unsigned short)v2->wParam2;
@@ -2594,7 +2594,7 @@ int __fastcall On_SPELLXY(struct TCmdLocParam2 *pCmd, int pnum)
 			if ( currlevel || *(_DWORD *)&spelldata[(unsigned short)pCmd->wParam1].sTownSpell )
 			{
 				ClrPlrPath(pnum);
-				plr[v3].destAction = 12;
+				plr[v3].destAction = ACTION_SPELL;
 				plr[v3].destParam1 = (unsigned char)v2->x;
 				plr[v3].destParam2 = (unsigned char)v2->y;
 				plr[v3].destParam3 = (unsigned short)v2->wParam2;
@@ -2627,7 +2627,7 @@ int __fastcall On_TSPELLXY(struct TCmdLocParam2 *pCmd, int pnum)
 			if ( currlevel || *(_DWORD *)&spelldata[(unsigned short)pCmd->wParam1].sTownSpell )
 			{
 				ClrPlrPath(pnum);
-				plr[v3].destAction = 12;
+				plr[v3].destAction = ACTION_SPELL;
 				plr[v3].destParam1 = (unsigned char)v2->x;
 				plr[v3].destParam2 = (unsigned char)v2->y;
 				plr[v3].destParam3 = (unsigned short)v2->wParam2;
@@ -2662,7 +2662,7 @@ int __fastcall On_OPOBJXY(struct TCmdLocParam1 *pCmd, int pnum)
 				MakePlrPath(pnum, (unsigned char)pCmd->x, (unsigned char)pCmd->y, 0);
 			else
 				MakePlrPath(pnum, (unsigned char)pCmd->x, (unsigned char)pCmd->y, 1u);
-			plr[v3].destAction = 13;
+			plr[v3].destAction = ACTION_OPERATE;
 			plr[v3].destParam1 = (unsigned short)v2->wParam1;
 		}
 	}
@@ -2687,7 +2687,7 @@ int __fastcall On_DISARMXY(struct TCmdLocParam1 *pCmd, int pnum)
 				MakePlrPath(pnum, (unsigned char)pCmd->x, (unsigned char)pCmd->y, 0);
 			else
 				MakePlrPath(pnum, (unsigned char)pCmd->x, (unsigned char)pCmd->y, 1u);
-			plr[v3].destAction = 14;
+			plr[v3].destAction = ACTION_DISARM;
 			plr[v3].destParam1 = (unsigned short)v2->wParam1;
 		}
 	}
@@ -2704,7 +2704,7 @@ int __fastcall On_OPOBJT(struct TCmdParam1 *pCmd, int pnum)
 		v2 = pnum;
 		if ( currlevel == plr[pnum].plrlevel )
 		{
-			plr[v2].destAction = 18;
+			plr[v2].destAction = ACTION_OPERATETK;
 			plr[v2].destParam1 = (unsigned short)pCmd->wParam1;
 		}
 	}
@@ -2735,7 +2735,7 @@ int __fastcall On_ATTACKID(struct TCmdParam1 *pCmd, int pnum)
 					monster[(unsigned short)v3->wParam1]._mfutx,
 					monster[(unsigned short)v3->wParam1]._mfuty,
 					0);
-			plr[v4].destAction = 20;
+			plr[v4].destAction = ACTION_ATTACKMON;
 			plr[v4].destParam1 = (unsigned short)v3->wParam1;
 		}
 	}
@@ -2755,7 +2755,7 @@ int __fastcall On_ATTACKPID(struct TCmdParam1 *pCmd, int pnum)
 		if ( currlevel == plr[pnum].plrlevel )
 		{
 			MakePlrPath(pnum, plr[(unsigned short)pCmd->wParam1]._px, plr[(unsigned short)pCmd->wParam1]._py, 0);
-			plr[v3].destAction = 21;
+			plr[v3].destAction = ACTION_ATTACKPLR;
 			plr[v3].destParam1 = (unsigned short)v2->wParam1;
 		}
 	}
@@ -2775,7 +2775,7 @@ int __fastcall On_RATTACKID(struct TCmdParam1 *pCmd, int pnum)
 		if ( currlevel == plr[pnum].plrlevel )
 		{
 			ClrPlrPath(pnum);
-			plr[v3].destAction = 22;
+			plr[v3].destAction = ACTION_RATTACKMON;
 			plr[v3].destParam1 = (unsigned short)v2->wParam1;
 		}
 	}
@@ -2795,7 +2795,7 @@ int __fastcall On_RATTACKPID(struct TCmdParam1 *pCmd, int pnum)
 		if ( currlevel == plr[pnum].plrlevel )
 		{
 			ClrPlrPath(pnum);
-			plr[v3].destAction = 23;
+			plr[v3].destAction = ACTION_RATTACKPLR;
 			plr[v3].destParam1 = (unsigned short)v2->wParam1;
 		}
 	}
@@ -2818,7 +2818,7 @@ int __fastcall On_SPELLID(struct TCmdLocParam2 *pCmd, int pnum)
 			if ( currlevel || *(_DWORD *)&spelldata[(unsigned short)pCmd->wParam1].sTownSpell )
 			{
 				ClrPlrPath(pnum);
-				plr[v3].destAction = 24;
+				plr[v3].destAction = ACTION_SPELLMON;
 				plr[v3].destParam1 = *(unsigned short *)&v2->x;
 				plr[v3].destParam2 = (unsigned short)v2->wParam2;
 				v4 = (unsigned short)v2->wParam1;
@@ -2851,7 +2851,7 @@ int __fastcall On_SPELLPID(struct TCmdLocParam2 *pCmd, int pnum)
 			if ( currlevel || *(_DWORD *)&spelldata[(unsigned short)pCmd->wParam1].sTownSpell )
 			{
 				ClrPlrPath(pnum);
-				plr[v3].destAction = 25;
+				plr[v3].destAction = ACTION_SPELLPLR;
 				plr[v3].destParam1 = *(unsigned short *)&v2->x;
 				plr[v3].destParam2 = (unsigned short)v2->wParam2;
 				v4 = (unsigned short)v2->wParam1;
@@ -2883,7 +2883,7 @@ int __fastcall On_TSPELLID(struct TCmdLocParam2 *pCmd, int pnum)
 			if ( currlevel || *(_DWORD *)&spelldata[(unsigned short)pCmd->wParam1].sTownSpell )
 			{
 				ClrPlrPath(pnum);
-				plr[v3].destAction = 24;
+				plr[v3].destAction = ACTION_SPELLMON;
 				plr[v3].destParam1 = *(unsigned short *)&v2->x;
 				plr[v3].destParam2 = (unsigned short)v2->wParam2;
 				plr[v3]._pSpell = (unsigned short)v2->wParam1;
@@ -2914,7 +2914,7 @@ int __fastcall On_TSPELLPID(struct TCmdLocParam2 *pCmd, int pnum)
 			if ( currlevel || *(_DWORD *)&spelldata[(unsigned short)pCmd->wParam1].sTownSpell )
 			{
 				ClrPlrPath(pnum);
-				plr[v3].destAction = 25;
+				plr[v3].destAction = ACTION_SPELLPLR;
 				plr[v3].destParam1 = *(unsigned short *)&v2->x;
 				plr[v3].destParam2 = (unsigned short)v2->wParam2;
 				plr[v3]._pSpell = (unsigned short)v2->wParam1;
@@ -2985,7 +2985,7 @@ int __fastcall On_TALKXY(struct TCmdLocParam1 *pCmd, int pnum)
 		if ( currlevel == plr[pnum].plrlevel )
 		{
 			MakePlrPath(pnum, (unsigned char)pCmd->x, (unsigned char)pCmd->y, 0);
-			plr[v3].destAction = 17;
+			plr[v3].destAction = ACTION_TALK;
 			plr[v3].destParam1 = (unsigned short)v2->wParam1;
 		}
 	}
@@ -3808,7 +3808,7 @@ int __fastcall On_NOVA(struct TCmdLoc *pCmd, int pnum)
 			plr[v3]._pSpell = SPL_NOVA;
 			plr[v3]._pSplType = 4;
 			plr[v3]._pSplFrom = 3;
-			plr[v3].destAction = 12;
+			plr[v3].destAction = ACTION_SPELL;
 			plr[v3].destParam1 = (unsigned char)v2->x;
 			plr[v3].destParam2 = (unsigned char)v2->y;
 		}

@@ -169,7 +169,7 @@ void __fastcall UnPackPlayer(PkPlayerStruct *pPack, int pnum, bool killok)
 	pPlayer->_ptargy = (unsigned char)pPack->targy;
 	pPlayer->plrlevel = (unsigned char)pPack->plrlevel;
 	ClrPlrPath(pnum);
-	pPlayer->destAction = -1;
+	pPlayer->destAction = ACTION_NONE;
 	strcpy(pPlayer->_pName, pPack->pName);
 	_LOBYTE(pPlayer->_pClass) = pPack->pClass;
 	InitPlayer(pnum, TRUE);

@@ -4618,7 +4618,7 @@ LABEL_71:
 					plr[v33]._pSpell = spl;
 					plr[v33]._pSplType = 4;
 					plr[v33]._pSplFrom = 3;
-					plr[v33].destAction = 12;
+					plr[v33].destAction = ACTION_SPELL;
 					plr[v33].destParam2 = v34;
 					return;
 				}
@@ -4636,7 +4636,7 @@ LABEL_71:
 					plr[v38]._pSpell = spl;
 					plr[v38]._pSplType = 4;
 					plr[v38]._pSplFrom = 3;
-					plr[v38].destAction = 12;
+					plr[v38].destAction = ACTION_SPELL;
 					plr[v38].destParam1 = v37;
 					plr[v38].destParam2 = v39;
 					if ( v36 && spl == SPL_NOVA )
