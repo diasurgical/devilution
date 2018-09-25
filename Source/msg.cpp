@@ -945,7 +945,7 @@ void __fastcall NetSendCmdLoc(BOOL bHiPri, unsigned char bCmd, unsigned char x, 
 		NetSendLoPri((unsigned char *)&cmd, 3u);
 }
 
-void __fastcall NetSendCmdLocParam1(BOOL bHiPri, unsigned char bCmd, unsigned char x, unsigned char y, int wParam1)
+void __fastcall NetSendCmdLocParam1(BOOL bHiPri, unsigned char bCmd, unsigned char x, unsigned char y, unsigned short wParam1)
 {
 	TCmdLocParam1 cmd; // [esp+0h] [ebp-8h]
 
@@ -959,7 +959,7 @@ void __fastcall NetSendCmdLocParam1(BOOL bHiPri, unsigned char bCmd, unsigned ch
 		NetSendLoPri((unsigned char *)&cmd, 5u);
 }
 
-void __fastcall NetSendCmdLocParam2(BOOL bHiPri, unsigned char bCmd, unsigned char x, unsigned char y, int wParam1, int wParam2)
+void __fastcall NetSendCmdLocParam2(BOOL bHiPri, unsigned char bCmd, unsigned char x, unsigned char y, unsigned short wParam1, unsigned short wParam2)
 {
 	TCmdLocParam2 cmd; // [esp+0h] [ebp-8h]
 
@@ -974,7 +974,7 @@ void __fastcall NetSendCmdLocParam2(BOOL bHiPri, unsigned char bCmd, unsigned ch
 		NetSendLoPri((unsigned char *)&cmd, 7u);
 }
 
-void __fastcall NetSendCmdLocParam3(BOOL bHiPri, unsigned char bCmd, unsigned char x, unsigned char y, int wParam1, int wParam2, int wParam3)
+void __fastcall NetSendCmdLocParam3(BOOL bHiPri, unsigned char bCmd, unsigned char x, unsigned char y, unsigned short wParam1, unsigned short wParam2, unsigned short wParam3)
 {
 	TCmdLocParam3 cmd; // [esp+0h] [ebp-Ch]
 
@@ -1015,7 +1015,7 @@ void __fastcall NetSendCmdParam2(BOOL bHiPri, unsigned char bCmd, unsigned short
 		NetSendLoPri((unsigned char *)&cmd, 5u);
 }
 
-void __fastcall NetSendCmdParam3(BOOL bHiPri, unsigned char bCmd, unsigned short wParam1, unsigned short wParam2, int wParam3)
+void __fastcall NetSendCmdParam3(BOOL bHiPri, unsigned char bCmd, unsigned short wParam1, unsigned short wParam2, unsigned short wParam3)
 {
 	TCmdParam3 cmd; // [esp+0h] [ebp-8h]
 

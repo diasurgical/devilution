@@ -140,13 +140,13 @@ BOOL __fastcall CheckSpell(int id, int sn, BYTE st, BOOL manaonly)
 {
 #ifdef _DEBUG
 	if ( debug_mode_key_inverted_v )
-		return true;
+		return TRUE;
 #endif
 
-	BOOL result = true;
+	BOOL result = TRUE;
 	if ( !manaonly && pcurs != 1 )
 	{
-		result = false;
+		result = FALSE;
 	}
 	else
 	{
@@ -154,7 +154,7 @@ BOOL __fastcall CheckSpell(int id, int sn, BYTE st, BOOL manaonly)
 		{
 			if ( GetSpellLevel(id, sn) <= 0 )
 			{
-				result = false;
+				result = FALSE;
 			}
 			else
 			{

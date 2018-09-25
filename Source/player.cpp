@@ -3665,149 +3665,85 @@ LABEL_15:
 
 void __fastcall CheckPlrSpell()
 {
-	int v0; // ecx
-	int v1; // eax
-	int v2; // edx
-	char v3; // al
-	int v4; // ecx
-	char v5; // al
-	int v6; // eax
-	int v7; // edx
-	int v8; // esi
-	int v9; // ST10_4
-	int v10; // eax
-	int v11; // eax
-	int v12; // eax
-	int v13; // ST10_4
-	int v14; // eax
-	char v15; // al
-
-	v0 = myplr;
-	if ( (unsigned int)myplr >= 4 )
-	{
+	if ( (DWORD)myplr >= MAX_PLRS ) {
 		TermMsg("CheckPlrSpell: illegal player %d", myplr);
-		v0 = myplr;
 	}
-	v1 = 21720 * v0;
-	v2 = plr[v0]._pRSpell;
-	if ( v2 != -1 )
-	{
-		if ( leveltype == DTYPE_TOWN && !*(_DWORD *)&spelldata[v2].sTownSpell )
-		{
-			v5 = *((_BYTE *)&plr[0]._pClass + v1);
-			switch ( v5 )
-			{
-				case PC_WARRIOR:
-					v4 = PS_WARR27;
-					goto LABEL_53;
-				case PC_ROGUE:
-					v4 = PS_ROGUE27;
-					goto LABEL_53;
-				case PC_SORCERER:
-					v4 = PS_MAGE27;
-					goto LABEL_53;
-			}
-			return;
+
+	int rspell = plr[myplr]._pRSpell;
+	if ( rspell == SPL_INVALID ) {
+		if ( plr[myplr]._pClass == PC_WARRIOR ) {
+			PlaySFX(PS_WARR34);
+		} else if ( plr[myplr]._pClass == PC_ROGUE ) {
+			PlaySFX(PS_ROGUE34);
+		} else if ( plr[myplr]._pClass == PC_SORCERER ) {
+			PlaySFX(PS_MAGE34);
 		}
-		if ( pcurs != CURSOR_HAND
-		  || MouseY >= 352
-		  || (chrflag && MouseX < 320 || invflag && MouseX > 320)
-		  && v2 != 2
-		  && v2 != 5
-		  && v2 != 26
-		  && v2 != 9
-		  && v2 != 27 )
-		{
-			return;
-		}
-		_LOBYTE(v1) = *((_BYTE *)&plr[0]._pRSplType + v1);
-		if ( (v1 & 0x80u) != 0 )
-			goto LABEL_46;
-		if ( (char)v1 <= 1 )
-		{
-			v6 = CheckSpell(v0, v2, v1, 0);
-		}
-		else
-		{
-			if ( (_BYTE)v1 != 2 )
-			{
-				if ( (_BYTE)v1 == 3 )
-				{
-					v6 = UseStaff();
-					goto LABEL_36;
-				}
-LABEL_46:
-				if ( _LOBYTE(plr[v0]._pRSplType) == 1 )
-				{
-					v15 = plr[v0]._pClass;
-					switch ( v15 )
-					{
-						case PC_WARRIOR:
-							v4 = PS_WARR35;
-							goto LABEL_53;
-						case PC_ROGUE:
-							v4 = PS_ROGUE35;
-							goto LABEL_53;
-						case PC_SORCERER:
-							v4 = PS_MAGE35;
-							goto LABEL_53;
-					}
-				}
-				return;
-			}
-			v6 = UseScroll();
-		}
-LABEL_36:
-		v0 = myplr;
-		if ( v6 )
-		{
-			v7 = plr[myplr]._pRSpell;
-			if ( v7 == 6 )
-			{
-				v8 = GetDirection(plr[myplr].WorldX, plr[myplr].WorldY, cursmx, cursmy);
-				v9 = GetSpellLevel(myplr, plr[myplr]._pRSpell);
-				v10 = 21720 * myplr;
-				_LOWORD(v10) = plr[myplr]._pRSpell;
-				NetSendCmdLocParam3(1u, CMD_SPELLXYD, cursmx, cursmy, v10, v8, v9);
-			}
-			else if ( pcursmonst == -1 )
-			{
-				if ( pcursplr == -1 )
-				{
-					v13 = GetSpellLevel(myplr, v7);
-					v14 = 21720 * myplr;
-					_LOWORD(v14) = plr[myplr]._pRSpell;
-					NetSendCmdLocParam2(1u, CMD_SPELLXY, cursmx, cursmy, v14, v13);
-				}
-				else
-				{
-					v12 = GetSpellLevel(myplr, v7);
-					NetSendCmdParam3(1u, CMD_SPELLPID, pcursplr, plr[myplr]._pRSpell, v12);
-				}
-			}
-			else
-			{
-				v11 = GetSpellLevel(myplr, v7);
-				NetSendCmdParam3(1u, CMD_SPELLID, pcursmonst, plr[myplr]._pRSpell, v11);
-			}
-			return;
-		}
-		goto LABEL_46;
+		return;
 	}
-	v3 = *((_BYTE *)&plr[0]._pClass + v1);
-	switch ( v3 )
-	{
-		case PC_WARRIOR:
-			v4 = PS_WARR34;
-LABEL_53:
-			PlaySFX(v4);
-			return;
-		case PC_ROGUE:
-			v4 = PS_ROGUE34;
-			goto LABEL_53;
-		case PC_SORCERER:
-			v4 = PS_MAGE34;
-			goto LABEL_53;
+
+	if ( leveltype == DTYPE_TOWN && !spelldata[rspell].sTownSpell ) {
+		if ( plr[myplr]._pClass == PC_WARRIOR ) {
+			PlaySFX(PS_WARR27);
+		} else if ( plr[myplr]._pClass == PC_ROGUE ) {
+			PlaySFX(PS_ROGUE27);
+		} else if ( plr[myplr]._pClass == PC_SORCERER ) {
+			PlaySFX(PS_MAGE27);
+		}
+		return;
+	}
+
+	if ( pcurs != CURSOR_HAND
+	  || MouseY >= 352
+	  || (chrflag && MouseX < 320 || invflag && MouseX > 320)
+	  && rspell != SPL_HEAL
+	  && rspell != SPL_IDENTIFY
+	  && rspell != SPL_REPAIR
+	  && rspell != SPL_INFRA
+	  && rspell != SPL_RECHARGE
+	) {
+		return;
+	}
+
+	BOOL addflag = FALSE;
+	switch ( plr[myplr]._pRSplType ) {
+		case RSPLTYPE_SKILL:
+		case RSPLTYPE_SPELL:
+			addflag = CheckSpell(myplr, rspell, plr[myplr]._pRSplType, FALSE);
+			break;
+		case RSPLTYPE_SCROLL:
+			addflag = UseScroll();
+			break;
+		case RSPLTYPE_CHARGES:
+			addflag = UseStaff();
+			break;
+	}
+
+	if ( addflag ) {
+		if ( plr[myplr]._pRSpell == SPL_FIREWALL ) {
+			int sd = GetDirection(plr[myplr].WorldX, plr[myplr].WorldY, cursmx, cursmy);
+			int sl = GetSpellLevel(myplr, plr[myplr]._pRSpell);
+			NetSendCmdLocParam3(TRUE, CMD_SPELLXYD, cursmx, cursmy, plr[myplr]._pRSpell, sd, sl);
+		} else if ( pcursmonst != -1 ) {
+			int sl = GetSpellLevel(myplr, plr[myplr]._pRSpell);
+			NetSendCmdParam3(TRUE, CMD_SPELLID, pcursmonst, plr[myplr]._pRSpell, sl);
+		} else if ( pcursplr != -1 ) {
+			int sl = GetSpellLevel(myplr, plr[myplr]._pRSpell);
+			NetSendCmdParam3(TRUE, CMD_SPELLPID, pcursplr, plr[myplr]._pRSpell, sl);
+		} else {//145
+			int sl = GetSpellLevel(myplr, plr[myplr]._pRSpell);
+			NetSendCmdLocParam2(TRUE, CMD_SPELLXY, cursmx, cursmy, plr[myplr]._pRSpell, sl);
+		}
+		return;
+	}
+
+	if ( plr[myplr]._pRSplType == RSPLTYPE_SPELL ) {
+		if ( plr[myplr]._pClass == PC_WARRIOR ) {
+			PlaySFX(PS_WARR35);
+		} else if ( plr[myplr]._pClass == PC_ROGUE ) {
+			PlaySFX(PS_ROGUE35);
+		} else if ( plr[myplr]._pClass == PC_SORCERER ) {
+			PlaySFX(PS_MAGE35);
+		}
 	}
 }
 // 4B8CC2: using guessed type char pcursplr;
