@@ -8,28 +8,18 @@ if(EXISTS "${ORIGINAL_EXE}")
         message(FATAL_ERROR "MD5 of EXE is not correct (${MD5SUM})")
     endif()
 
-    find_program(ASM NAMES nasm yasm)
+    enable_language(ASM_NASM)
 
-    set(HARNESS_OBJECT "${CMAKE_BINARY_DIR}/harness.o")
     set(HARNESS_ASM "${CMAKE_SOURCE_DIR}/Absolute/harness.asm")
 
-    add_library(harness OBJECT ${HARNESS_OBJECT})
-    target_compile_options(harness PUBLIC -no-pie)
-    target_compile_definitions(harness INTERFACE -DNO_GLOBALS)
-    # For some reason, HARNESS_OBJECT needs to be added here even though it's in the sources above
-    target_link_libraries(harness INTERFACE
-        ${HARNESS_OBJECT}
-        -L${CMAKE_SOURCE_DIR}/Absolute -Tdefault.ld
-    )
+    # This can not be an OBJECT library since those can not have link flags on older versions of cmake
+    add_library(harness STATIC ${HARNESS_ASM})
+    target_compile_options(harness PRIVATE -f elf -DEXE=\"${ORIGINAL_EXE}\")
 
-    add_custom_command(
-            COMMENT Assembling
-            OUTPUT ${HARNESS_OBJECT}
-            MAIN_DEPENDENCY ${HARNESS_ASM}
-            COMMAND ${ASM}
-            -f elf -DEXE=\\"${ORIGINAL_EXE}\\"
-            -o ${HARNESS_OBJECT}
-            ${HARNESS_ASM}
+    target_compile_options(harness INTERFACE -no-pie)
+    target_compile_definitions(harness INTERFACE -DNO_GLOBALS)
+    target_link_libraries(harness INTERFACE
+        -L${CMAKE_SOURCE_DIR}/Absolute -Tdefault.ld
     )
 else()
     message(STATUS "Original .exe not found at ${ORIGINAL_EXE}")

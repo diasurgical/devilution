@@ -31,7 +31,8 @@ endif()
 string(APPEND CMAKE_CXX_FLAGS_DEBUG " -fno-omit-frame-pointer")
 if(NOT CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     # Clang/LLVM optimizations break everything
-    string(APPEND CMAKE_CXX_FLAGS_DEBUG " -Og")
+#    string(APPEND CMAKE_CXX_FLAGS_DEBUG " -Og")
+#    string(APPEND CMAKE_CXX_FLAGS_DEBUG " -fvar-tracking-assignments -ggdb -gdwarf-4")
 endif()
 
 set(SOURCES
@@ -148,6 +149,7 @@ set(STUB_SOURCES
 include(CMake/SDL2_fixed.cmake)
 include(CMake/sanitize.cmake)
 include(CMake/absolute.cmake)
+include(CMake/CodeCoverage.cmake)
 
 include_directories(${SDL2_INCLUDE_DIRS})
 
@@ -190,7 +192,8 @@ if(TARGET harness)
     add_executable(devil-harness
         ${SOURCES}
         ${STUB_SOURCES}
-        Stub/main_harness.cpp
+        # Stub/main_harness.cpp
+        Stub/main_test_harness.cpp
         Absolute/absolute.cpp
         Absolute/hook.cpp
     )
@@ -211,10 +214,20 @@ add_executable(devil-sanitize
 
 target_compile_options(devil-sanitize PRIVATE
     ${SANITIZE_OPTIONS}
+    ${COVERAGE_COMPILER_FLAGS}
 )
 
 target_link_libraries(devil-sanitize PUBLIC
     m
     ${SDL2_LIBRARIES}
     ${SANITIZE_OPTIONS}
+    ${COVERAGE_COMPILER_FLAGS}
 )
+
+if(COVERAGE_COMPILER_FLAGS)
+    SETUP_TARGET_FOR_COVERAGE_GCOVR_HTML(
+        NAME devil-sanitize-coverage
+        EXECUTABLE devil-sanitize
+        DEPENDENCIES devil-sanitize
+    )
+endif()
