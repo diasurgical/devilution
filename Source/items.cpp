@@ -2108,7 +2108,7 @@ void __fastcall GetItemAttrs(int i, int idata, int lvl)
 	item[i]._iSplLvlAdd = 0;
 	item[i]._iPrePower = -1;
 	item[i]._iSufPower = -1;
-	item[i]._iRequest = 0;
+	item[i]._iRequest = FALSE;
 	item[i]._iFMinDam = 0;
 	item[i]._iFMaxDam = 0;
 	item[i]._iLMinDam = 0;
@@ -3472,7 +3472,7 @@ void __fastcall RespawnItem(int i, bool FlipFlag)
 	item[i]._iAnimLen = il;
 	item[i]._iAnimData = Item2Frm[it];
 	item[i]._iPostDraw = 0;
-	item[i]._iRequest = 0;
+	item[i]._iRequest = FALSE;
 
 	if ( FlipFlag )
 	{
