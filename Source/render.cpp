@@ -80,6 +80,132 @@ int WorldTbl17_2[17] = { 0, 32, 60, 88, 112, 136, 156, 176, 192, 208, 220, 232, 
 	|/
 */
 
+inline void asm_cel_light_edge(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src);
+inline void asm_cel_light_square(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src);
+inline void asm_trans_light_cel_0_2(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src);
+inline void asm_trans_light_edge_0_2(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src);
+inline void asm_trans_light_square_0_2(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src);
+inline void asm_trans_light_cel_1_3(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src);
+inline void asm_trans_light_edge_1_3(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src);
+inline void asm_trans_light_square_1_3(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src);
+
+inline void asm_cel_light_edge(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src)
+{
+	unsigned char l = w >> 1;
+
+	if ( w & 1 )
+	{
+		dst[0] = tbl[src[0]];
+		src++;
+		dst++;
+	}
+	if ( l & 1 )
+	{
+		dst[0] = tbl[src[0]];
+		dst[1] = tbl[src[1]];
+		src += 2;
+		dst += 2;
+	}
+
+	asm_cel_light_square(l >> 1, tbl, dst, src);
+}
+
+inline void asm_cel_light_square(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src)
+{
+	for ( ; w; --w )
+	{
+		dst[0] = tbl[src[0]];
+		dst[1] = tbl[src[1]];
+		dst[2] = tbl[src[2]];
+		dst[3] = tbl[src[3]];
+		src += 4;
+		dst += 4;
+	}
+}
+
+inline void asm_trans_light_cel_0_2(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src)
+{
+	if ( !(w & 1) )
+	{
+		asm_trans_light_edge_1_3(w >> 1, tbl, dst, src);
+	}
+	else
+	{
+		src++;
+		dst++;
+		asm_trans_light_edge_0_2(w >> 1, tbl, dst, src);
+	}
+}
+
+inline void asm_trans_light_edge_0_2(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src)
+{
+	unsigned char l = w >> 1;
+
+	if ( w & 1 )
+	{
+		dst[0] = tbl[src[0]];
+		src += 2;
+		dst += 2;
+	}
+	if ( l )
+	{
+		asm_trans_light_square_0_2(l, tbl, dst, src);
+	}
+}
+
+inline void asm_trans_light_square_0_2(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src)
+{
+	for ( ; w; --w )
+	{
+		dst[0] = tbl[src[0]];
+		dst[2] = tbl[src[2]];
+		src += 4;
+		dst += 4;
+	}
+}
+
+inline void asm_trans_light_cel_1_3(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src)
+{
+	if ( !(w & 1) )
+	{
+		asm_trans_light_edge_0_2(w >> 1, tbl, dst, src);
+	}
+	else
+	{
+		dst[0] = tbl[src[0]];
+		src++;
+		dst++;
+		asm_trans_light_edge_1_3(w >> 1, tbl, dst, src);
+	}
+}
+
+inline void asm_trans_light_edge_1_3(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src)
+{
+	unsigned char l = w >> 1;
+
+	if ( w & 1 )
+	{
+		dst[1] = tbl[src[1]];
+		src += 2;
+		dst += 2;
+	}
+	if ( l )
+	{
+		asm_trans_light_square_1_3(l, tbl, dst, src);
+	}
+}
+
+inline void asm_trans_light_square_1_3(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src)
+{
+	for ( ; w; --w )
+	{
+		dst[1] = tbl[src[1]];
+		dst[3] = tbl[src[3]];
+		src += 4;
+		dst += 4;
+	}
+}
+
 void __fastcall drawTopArchesUpperScreen(unsigned char *pbDst)
 {
 	unsigned char *dst; // edi MAPDST
@@ -122,29 +248,11 @@ void __fastcall drawTopArchesUpperScreen(unsigned char *pbDst)
 					{
 						if ( dst < gpBufEnd )
 							break;
-						j = 8;
-						do
-						{
-							dst[1] = tbl[src[1]];
-							dst[3] = tbl[src[3]];
-							src += 4;
-							dst += 4;
-							--j;
-						}
-						while ( j );
+						asm_trans_light_square_1_3(8, tbl, dst, src);
 						dst -= 800;
 						if ( dst < gpBufEnd )
 							break;
-						j = 8;
-						do
-						{
-							dst[0] = tbl[src[0]];
-							dst[2] = tbl[src[2]];
-							src += 4;
-							dst += 4;
-							--j;
-						}
-						while ( j );
+						asm_trans_light_square_0_2(8, tbl, dst, src);
 						dst -= 800;
 						--i;
 					}
@@ -173,102 +281,11 @@ void __fastcall drawTopArchesUpperScreen(unsigned char *pbDst)
 								return;
 							if ( ((unsigned char)dst & 1) == WorldBoolFlag )
 							{
-								chk_sh_and = width >> 1;
-								if ( width & 1 )
-								{
-									++src;
-									++dst;
-									n_draw_shift = width >> 2;
-									if ( chk_sh_and & 1 )
-									{
-										dst[0] = tbl[src[0]];
-										src += 2;
-										dst += 2;
-									}
-									if ( (_BYTE)n_draw_shift )
-									{
-										do
-										{
-											dst[0] = tbl[src[0]];
-											dst[2] = tbl[src[2]];
-											src += 4;
-											dst += 4;
-											--n_draw_shift;
-										}
-										while ( n_draw_shift );
-									}
-								}
-								else
-								{
-									n_draw_shift = width >> 2;
-									if ( chk_sh_and & 1 )
-									{
-										dst[1] = tbl[src[1]];
-										src += 2;
-										dst += 2;
-									}
-									if ( (_BYTE)n_draw_shift )
-									{
-										do
-										{
-											dst[1] = tbl[src[1]];
-											dst[3] = tbl[src[3]];
-											src += 4;
-											dst += 4;
-											--n_draw_shift;
-										}
-										while ( n_draw_shift );
-									}
-								}
+								asm_trans_light_cel_0_2(width, tbl, dst, src);
 							}
 							else
 							{
-								chk_sh_and = width >> 1;
-								if ( width & 1 )
-								{
-									*dst++ = tbl[*src++];
-									n_draw_shift = width >> 2;
-									if ( chk_sh_and & 1 )
-									{
-										dst[1] = tbl[src[1]];
-										src += 2;
-										dst += 2;
-									}
-									if ( (_BYTE)n_draw_shift )
-									{
-										do
-										{
-											dst[1] = tbl[src[1]];
-											dst[3] = tbl[src[3]];
-											src += 4;
-											dst += 4;
-											--n_draw_shift;
-										}
-										while ( n_draw_shift );
-									}
-								}
-								else
-								{
-									n_draw_shift = width >> 2;
-									if ( chk_sh_and & 1 )
-									{
-										dst[0] = tbl[src[0]];
-										src += 2;
-										dst += 2;
-									}
-									if ( (_BYTE)n_draw_shift )
-									{
-										do
-										{
-											dst[0] = tbl[src[0]];
-											dst[2] = tbl[src[2]];
-											src += 4;
-											dst += 4;
-											--n_draw_shift;
-										}
-										while ( n_draw_shift );
-									}
-								}
+								asm_trans_light_cel_1_3(width, tbl, dst, src);
 							}
 							yy_32 -= width;
 						}
@@ -286,108 +303,15 @@ LABEL_67:
 					while ( dst >= gpBufEnd )
 					{
 						dst += xx_32;
-						x_minus = 32 - xx_32;
+						src += (32 - (_BYTE)xx_32) & 2;
 						WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 						if ( WorldBoolFlag )
 						{
-							src += x_minus & 2;
-							chk_sh_and = x_minus >> 1;
-							if ( x_minus & 1 )
-							{
-								++src;
-								++dst;
-								n_draw_shift = chk_sh_and >> 1;
-								if ( chk_sh_and & 1 )
-								{
-									dst[0] = tbl[src[0]];
-									src += 2;
-									dst += 2;
-								}
-								if ( (_BYTE)n_draw_shift )
-								{
-									do
-									{
-										dst[0] = tbl[src[0]];
-										dst[2] = tbl[src[2]];
-										src += 4;
-										dst += 4;
-										--n_draw_shift;
-									}
-									while ( n_draw_shift );
-								}
-							}
-							else
-							{
-								n_draw_shift = chk_sh_and >> 1;
-								if ( chk_sh_and & 1 )
-								{
-									dst[1] = tbl[src[1]];
-									src += 2;
-									dst += 2;
-								}
-								if ( (_BYTE)n_draw_shift )
-								{
-									do
-									{
-										dst[1] = tbl[src[1]];
-										dst[3] = tbl[src[3]];
-										src += 4;
-										dst += 4;
-										--n_draw_shift;
-									}
-									while ( n_draw_shift );
-								}
-							}
+							asm_trans_light_cel_0_2(32 - xx_32, tbl, dst, src);
 						}
 						else
 						{
-							src += x_minus & 2;
-							chk_sh_and = x_minus >> 1;
-							if ( x_minus & 1 )
-							{
-								*dst++ = tbl[*src++];
-								n_draw_shift = chk_sh_and >> 1;
-								if ( chk_sh_and & 1 )
-								{
-									dst[1] = tbl[src[1]];
-									src += 2;
-									dst += 2;
-								}
-								if ( (_BYTE)n_draw_shift )
-								{
-									do
-									{
-										dst[1] = tbl[src[1]];
-										dst[3] = tbl[src[3]];
-										src += 4;
-										dst += 4;
-										--n_draw_shift;
-									}
-									while ( n_draw_shift );
-								}
-							}
-							else
-							{
-								n_draw_shift = chk_sh_and >> 1;
-								if ( chk_sh_and & 1 )
-								{
-									dst[0] = tbl[src[0]];
-									src += 2;
-									dst += 2;
-								}
-								if ( (_BYTE)n_draw_shift )
-								{
-									do
-									{
-										dst[0] = tbl[src[0]];
-										dst[2] = tbl[src[2]];
-										src += 4;
-										dst += 4;
-										--n_draw_shift;
-									}
-									while ( n_draw_shift );
-								}
-							}
+							asm_trans_light_cel_1_3(32 - xx_32, tbl, dst, src);
 						}
 						dst -= 800;
 						xx_32 -= 2;
@@ -399,108 +323,15 @@ LABEL_67:
 								if ( dst < gpBufEnd )
 									break;
 								dst += yy_32;
-								y_minus = 32 - yy_32;
+								src += (32 - (_BYTE)yy_32) & 2;
 								WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 								if ( WorldBoolFlag )
 								{
-									src += y_minus & 2;
-									chk_sh_and = y_minus >> 1;
-									if ( y_minus & 1 )
-									{
-										++src;
-										++dst;
-										n_draw_shift = chk_sh_and >> 1;
-										if ( chk_sh_and & 1 )
-										{
-											dst[0] = tbl[src[0]];
-											src += 2;
-											dst += 2;
-										}
-										if ( (_BYTE)n_draw_shift )
-										{
-											do
-											{
-												dst[0] = tbl[src[0]];
-												dst[2] = tbl[src[2]];
-												src += 4;
-												dst += 4;
-												--n_draw_shift;
-											}
-											while ( n_draw_shift );
-										}
-									}
-									else
-									{
-										n_draw_shift = chk_sh_and >> 1;
-										if ( chk_sh_and & 1 )
-										{
-											dst[1] = tbl[src[1]];
-											src += 2;
-											dst += 2;
-										}
-										if ( (_BYTE)n_draw_shift )
-										{
-											do
-											{
-												dst[1] = tbl[src[1]];
-												dst[3] = tbl[src[3]];
-												src += 4;
-												dst += 4;
-												--n_draw_shift;
-											}
-											while ( n_draw_shift );
-										}
-									}
+									asm_trans_light_cel_0_2(32 - yy_32, tbl, dst, src);
 								}
 								else
 								{
-									src += y_minus & 2;
-									chk_sh_and = y_minus >> 1;
-									if ( y_minus & 1 )
-									{
-										*dst++ = tbl[*src++];
-										n_draw_shift = chk_sh_and >> 1;
-										if ( chk_sh_and & 1 )
-										{
-											dst[1] = tbl[src[1]];
-											src += 2;
-											dst += 2;
-										}
-										if ( (_BYTE)n_draw_shift )
-										{
-											do
-											{
-												dst[1] = tbl[src[1]];
-												dst[3] = tbl[src[3]];
-												src += 4;
-												dst += 4;
-												--n_draw_shift;
-											}
-											while ( n_draw_shift );
-										}
-									}
-									else
-									{
-										n_draw_shift = chk_sh_and >> 1;
-										if ( chk_sh_and & 1 )
-										{
-											dst[0] = tbl[src[0]];
-											src += 2;
-											dst += 2;
-										}
-										if ( (_BYTE)n_draw_shift )
-										{
-											do
-											{
-												dst[0] = tbl[src[0]];
-												dst[2] = tbl[src[2]];
-												src += 4;
-												dst += 4;
-												--n_draw_shift;
-											}
-											while ( n_draw_shift );
-										}
-									}
+									asm_trans_light_cel_1_3(32 - yy_32, tbl, dst, src);
 								}
 								dst -= 800;
 								yy_32 += 2;
@@ -515,109 +346,16 @@ LABEL_67:
 					xx_32 = 30;
 					while ( dst >= gpBufEnd )
 					{
-						x_minus = 32 - xx_32;
 						WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 						if ( WorldBoolFlag )
 						{
-							chk_sh_and = x_minus >> 1;
-							if ( x_minus & 1 )
-							{
-								++src;
-								++dst;
-								n_draw_shift = chk_sh_and >> 1;
-								if ( chk_sh_and & 1 )
-								{
-									dst[0] = tbl[src[0]];
-									src += 2;
-									dst += 2;
-								}
-								if ( (_BYTE)n_draw_shift )
-								{
-									do
-									{
-										dst[0] = tbl[src[0]];
-										dst[2] = tbl[src[2]];
-										src += 4;
-										dst += 4;
-										--n_draw_shift;
-									}
-									while ( n_draw_shift );
-								}
-							}
-							else
-							{
-								n_draw_shift = chk_sh_and >> 1;
-								if ( chk_sh_and & 1 )
-								{
-									dst[1] = tbl[src[1]];
-									src += 2;
-									dst += 2;
-								}
-								if ( (_BYTE)n_draw_shift )
-								{
-									do
-									{
-										dst[1] = tbl[src[1]];
-										dst[3] = tbl[src[3]];
-										src += 4;
-										dst += 4;
-										--n_draw_shift;
-									}
-									while ( n_draw_shift );
-								}
-							}
-							src += (unsigned char)src & 2;
+							asm_trans_light_cel_0_2(32 - xx_32, tbl, dst, src);
 						}
 						else
 						{
-							chk_sh_and = x_minus >> 1;
-							if ( x_minus & 1 )
-							{
-								*dst++ = tbl[*src++];
-								n_draw_shift = chk_sh_and >> 1;
-								if ( chk_sh_and & 1 )
-								{
-									dst[1] = tbl[src[1]];
-									src += 2;
-									dst += 2;
-								}
-								if ( (_BYTE)n_draw_shift )
-								{
-									do
-									{
-										dst[1] = tbl[src[1]];
-										dst[3] = tbl[src[3]];
-										src += 4;
-										dst += 4;
-										--n_draw_shift;
-									}
-									while ( n_draw_shift );
-								}
-							}
-							else
-							{
-								n_draw_shift = chk_sh_and >> 1;
-								if ( chk_sh_and & 1 )
-								{
-									dst[0] = tbl[src[0]];
-									src += 2;
-									dst += 2;
-								}
-								if ( (_BYTE)n_draw_shift )
-								{
-									do
-									{
-										dst[0] = tbl[src[0]];
-										dst[2] = tbl[src[2]];
-										src += 4;
-										dst += 4;
-										--n_draw_shift;
-									}
-									while ( n_draw_shift );
-								}
-							}
-							src += (unsigned char)src & 2;
+							asm_trans_light_cel_1_3(32 - xx_32, tbl, dst, src);
 						}
+						src += (unsigned char)src & 2;
 						dst = &dst[xx_32 - 800];
 						xx_32 -= 2;
 						if ( xx_32 < 0 )
@@ -627,109 +365,16 @@ LABEL_67:
 							{
 								if ( dst < gpBufEnd )
 									break;
-								y_minus = 32 - yy_32;
 								WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 								if ( WorldBoolFlag )
 								{
-									chk_sh_and = y_minus >> 1;
-									if ( y_minus & 1 )
-									{
-										++src;
-										++dst;
-										n_draw_shift = chk_sh_and >> 1;
-										if ( chk_sh_and & 1 )
-										{
-											dst[0] = tbl[src[0]];
-											src += 2;
-											dst += 2;
-										}
-										if ( (_BYTE)n_draw_shift )
-										{
-											do
-											{
-												dst[0] = tbl[src[0]];
-												dst[2] = tbl[src[2]];
-												src += 4;
-												dst += 4;
-												--n_draw_shift;
-											}
-											while ( n_draw_shift );
-										}
-									}
-									else
-									{
-										n_draw_shift = chk_sh_and >> 1;
-										if ( chk_sh_and & 1 )
-										{
-											dst[1] = tbl[src[1]];
-											src += 2;
-											dst += 2;
-										}
-										if ( (_BYTE)n_draw_shift )
-										{
-											do
-											{
-												dst[1] = tbl[src[1]];
-												dst[3] = tbl[src[3]];
-												src += 4;
-												dst += 4;
-												--n_draw_shift;
-											}
-											while ( n_draw_shift );
-										}
-									}
-									src += (unsigned char)src & 2;
+									asm_trans_light_cel_0_2(32 - yy_32, tbl, dst, src);
 								}
 								else
 								{
-									chk_sh_and = y_minus >> 1;
-									if ( y_minus & 1 )
-									{
-										*dst++ = tbl[*src++];
-										n_draw_shift = chk_sh_and >> 1;
-										if ( chk_sh_and & 1 )
-										{
-											dst[1] = tbl[src[1]];
-											src += 2;
-											dst += 2;
-										}
-										if ( (_BYTE)n_draw_shift )
-										{
-											do
-											{
-												dst[1] = tbl[src[1]];
-												dst[3] = tbl[src[3]];
-												src += 4;
-												dst += 4;
-												--n_draw_shift;
-											}
-											while ( n_draw_shift );
-										}
-									}
-									else
-									{
-										n_draw_shift = chk_sh_and >> 1;
-										if ( chk_sh_and & 1 )
-										{
-											dst[0] = tbl[src[0]];
-											src += 2;
-											dst += 2;
-										}
-										if ( (_BYTE)n_draw_shift )
-										{
-											do
-											{
-												dst[0] = tbl[src[0]];
-												dst[2] = tbl[src[2]];
-												src += 4;
-												dst += 4;
-												--n_draw_shift;
-											}
-											while ( n_draw_shift );
-										}
-									}
-									src += (unsigned char)src & 2;
+									asm_trans_light_cel_1_3(32 - yy_32, tbl, dst, src);
 								}
+								src += (unsigned char)src & 2;
 								dst = &dst[yy_32 - 800];
 								yy_32 += 2;
 							}
@@ -744,108 +389,15 @@ LABEL_67:
 					while ( dst >= gpBufEnd )
 					{
 						dst += xx_32;
-						x_minus = 32 - xx_32;
+						src += (32 - (_BYTE)xx_32) & 2;
 						WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 						if ( WorldBoolFlag )
 						{
-							src += x_minus & 2;
-							chk_sh_and = x_minus >> 1;
-							if ( x_minus & 1 )
-							{
-								++src;
-								++dst;
-								n_draw_shift = chk_sh_and >> 1;
-								if ( chk_sh_and & 1 )
-								{
-									dst[0] = tbl[src[0]];
-									src += 2;
-									dst += 2;
-								}
-								if ( (_BYTE)n_draw_shift )
-								{
-									do
-									{
-										dst[0] = tbl[src[0]];
-										dst[2] = tbl[src[2]];
-										src += 4;
-										dst += 4;
-										--n_draw_shift;
-									}
-									while ( n_draw_shift );
-								}
-							}
-							else
-							{
-								n_draw_shift = chk_sh_and >> 1;
-								if ( chk_sh_and & 1 )
-								{
-									dst[1] = tbl[src[1]];
-									src += 2;
-									dst += 2;
-								}
-								if ( (_BYTE)n_draw_shift )
-								{
-									do
-									{
-										dst[1] = tbl[src[1]];
-										dst[3] = tbl[src[3]];
-										src += 4;
-										dst += 4;
-										--n_draw_shift;
-									}
-									while ( n_draw_shift );
-								}
-							}
+							asm_trans_light_cel_0_2(32 - xx_32, tbl, dst, src);
 						}
 						else
 						{
-							src += x_minus & 2;
-							chk_sh_and = x_minus >> 1;
-							if ( x_minus & 1 )
-							{
-								*dst++ = tbl[*src++];
-								n_draw_shift = chk_sh_and >> 1;
-								if ( chk_sh_and & 1 )
-								{
-									dst[1] = tbl[src[1]];
-									src += 2;
-									dst += 2;
-								}
-								if ( (_BYTE)n_draw_shift )
-								{
-									do
-									{
-										dst[1] = tbl[src[1]];
-										dst[3] = tbl[src[3]];
-										src += 4;
-										dst += 4;
-										--n_draw_shift;
-									}
-									while ( n_draw_shift );
-								}
-							}
-							else
-							{
-								n_draw_shift = chk_sh_and >> 1;
-								if ( chk_sh_and & 1 )
-								{
-									dst[0] = tbl[src[0]];
-									src += 2;
-									dst += 2;
-								}
-								if ( (_BYTE)n_draw_shift )
-								{
-									do
-									{
-										dst[0] = tbl[src[0]];
-										dst[2] = tbl[src[2]];
-										src += 4;
-										dst += 4;
-										--n_draw_shift;
-									}
-									while ( n_draw_shift );
-								}
-							}
+							asm_trans_light_cel_1_3(32 - xx_32, tbl, dst, src);
 						}
 						dst -= 800;
 						xx_32 -= 2;
@@ -856,29 +408,11 @@ LABEL_67:
 							{
 								if ( dst < gpBufEnd )
 									break;
-								j = 8;
-								do
-								{
-									dst[1] = tbl[src[1]];
-									dst[3] = tbl[src[3]];
-									src += 4;
-									dst += 4;
-									--j;
-								}
-								while ( j );
+								asm_trans_light_square_1_3(8, tbl, dst, src);
 								dst -= 800;
 								if ( dst < gpBufEnd )
 									break;
-								j = 8;
-								do
-								{
-									dst[0] = tbl[src[0]];
-									dst[2] = tbl[src[2]];
-									src += 4;
-									dst += 4;
-									--j;
-								}
-								while ( j );
+								asm_trans_light_square_0_2(8, tbl, dst, src);
 								dst -= 800;
 								--i;
 							}
@@ -892,109 +426,16 @@ LABEL_67:
 					xx_32 = 30;
 					while ( dst >= gpBufEnd )
 					{
-						x_minus = 32 - xx_32;
 						WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 						if ( WorldBoolFlag )
 						{
-							chk_sh_and = x_minus >> 1;
-							if ( x_minus & 1 )
-							{
-								++src;
-								++dst;
-								n_draw_shift = chk_sh_and >> 1;
-								if ( chk_sh_and & 1 )
-								{
-									dst[0] = tbl[src[0]];
-									src += 2;
-									dst += 2;
-								}
-								if ( (_BYTE)n_draw_shift )
-								{
-									do
-									{
-										dst[0] = tbl[src[0]];
-										dst[2] = tbl[src[2]];
-										src += 4;
-										dst += 4;
-										--n_draw_shift;
-									}
-									while ( n_draw_shift );
-								}
-							}
-							else
-							{
-								n_draw_shift = chk_sh_and >> 1;
-								if ( chk_sh_and & 1 )
-								{
-									dst[1] = tbl[src[1]];
-									src += 2;
-									dst += 2;
-								}
-								if ( (_BYTE)n_draw_shift )
-								{
-									do
-									{
-										dst[1] = tbl[src[1]];
-										dst[3] = tbl[src[3]];
-										src += 4;
-										dst += 4;
-										--n_draw_shift;
-									}
-									while ( n_draw_shift );
-								}
-							}
-							src += (unsigned char)src & 2;
+							asm_trans_light_cel_0_2(32 - xx_32, tbl, dst, src);
 						}
 						else
 						{
-							chk_sh_and = x_minus >> 1;
-							if ( x_minus & 1 )
-							{
-								*dst++ = tbl[*src++];
-								n_draw_shift = chk_sh_and >> 1;
-								if ( chk_sh_and & 1 )
-								{
-									dst[1] = tbl[src[1]];
-									src += 2;
-									dst += 2;
-								}
-								if ( (_BYTE)n_draw_shift )
-								{
-									do
-									{
-										dst[1] = tbl[src[1]];
-										dst[3] = tbl[src[3]];
-										src += 4;
-										dst += 4;
-										--n_draw_shift;
-									}
-									while ( n_draw_shift );
-								}
-							}
-							else
-							{
-								n_draw_shift = chk_sh_and >> 1;
-								if ( chk_sh_and & 1 )
-								{
-									dst[0] = tbl[src[0]];
-									src += 2;
-									dst += 2;
-								}
-								if ( (_BYTE)n_draw_shift )
-								{
-									do
-									{
-										dst[0] = tbl[src[0]];
-										dst[2] = tbl[src[2]];
-										src += 4;
-										dst += 4;
-										--n_draw_shift;
-									}
-									while ( n_draw_shift );
-								}
-							}
-							src += (unsigned char)src & 2;
+							asm_trans_light_cel_1_3(32 - xx_32, tbl, dst, src);
 						}
+						src += (unsigned char)src & 2;
 						dst = &dst[xx_32 - 800];
 						xx_32 -= 2;
 						if ( xx_32 < 0 )
@@ -1004,29 +445,11 @@ LABEL_67:
 							{
 								if ( dst < gpBufEnd )
 									break;
-								j = 8;
-								do
-								{
-									dst[1] = tbl[src[1]];
-									dst[3] = tbl[src[3]];
-									src += 4;
-									dst += 4;
-									--j;
-								}
-								while ( j );
+								asm_trans_light_square_1_3(8, tbl, dst, src);
 								dst -= 800;
 								if ( dst < gpBufEnd )
 									break;
-								j = 8;
-								do
-								{
-									dst[0] = tbl[src[0]];
-									dst[2] = tbl[src[2]];
-									src += 4;
-									dst += 4;
-									--j;
-								}
-								while ( j );
+								asm_trans_light_square_0_2(8, tbl, dst, src);
 								dst -= 800;
 								--i;
 							}
@@ -2986,9 +2409,6 @@ void __fastcall drawUpperScreen(unsigned char *pbDst)
 	unsigned char *tbl; // ebx
 	unsigned char *src; // esi MAPDST
 	short cel_type_16; // ax MAPDST
-	char base_4; // cl MAPDST
-	char x_minus; // cl MAPDST
-	char y_minus; // cl
 	signed int xx_32; // ebp MAPDST
 	signed int yy_32; // edx MAPDST
 	unsigned int width; // eax MAPDST
@@ -3319,18 +2739,7 @@ LABEL_133:
 					{
 						if ( dst < gpBufEnd )
 							break;
-						base_4 = 32;
-						do
-						{
-							dst[0] = tbl[src[0]];
-							dst[1] = tbl[src[1]];
-							dst[2] = tbl[src[2]];
-							dst[3] = tbl[src[3]];
-							src += 4;
-							dst += 4;
-							base_4 -= 4;
-						}
-						while ( base_4 >= 4 );
+						asm_cel_light_square(8, tbl, dst, src);
 						dst -= 800;
 						--xx_32;
 					}
@@ -3357,26 +2766,7 @@ LABEL_133:
 							yy_32 -= width;
 							if ( dst < gpBufEnd )
 								return;
-							for ( base_4 = width; base_4 >= 4; base_4 -= 4 )
-							{
-								dst[0] = tbl[src[0]];
-								dst[1] = tbl[src[1]];
-								dst[2] = tbl[src[2]];
-								dst[3] = tbl[src[3]];
-								src += 4;
-								dst += 4;
-							}
-							if ( base_4 >= 2 )
-							{
-								dst[0] = tbl[src[0]];
-								dst[1] = tbl[src[1]];
-								src += 2;
-								dst += 2;
-							}
-							if ( base_4 & 1 )
-							{
-								*dst++ = tbl[*src++];
-							}
+							asm_cel_light_edge(width, tbl, dst, src);
 						}
 						while ( yy_32 );
 LABEL_58:
@@ -3390,29 +2780,8 @@ LABEL_58:
 					while ( dst >= gpBufEnd )
 					{
 						dst += xx_32;
-						x_minus = 32 - xx_32;
 						src += (32 - (_BYTE)xx_32) & 2;
-						if ( (char)(32 - xx_32) >= 4 )
-						{
-							do
-							{
-								dst[0] = tbl[src[0]];
-								dst[1] = tbl[src[1]];
-								dst[2] = tbl[src[2]];
-								dst[3] = tbl[src[3]];
-								src += 4;
-								dst += 4;
-								x_minus -= 4;
-							}
-							while ( x_minus >= 4 );
-						}
-						if ( x_minus >= 2 )
-						{
-							dst[0] = tbl[src[0]];
-							dst[1] = tbl[src[1]];
-							src += 2;
-							dst += 2;
-						}
+						asm_cel_light_edge(32 - xx_32, tbl, dst, src);
 						dst -= 800;
 						xx_32 -= 2;
 						if ( xx_32 < 0 )
@@ -3423,29 +2792,8 @@ LABEL_58:
 								if ( dst < gpBufEnd )
 									break;
 								dst += yy_32;
-								y_minus = 32 - yy_32;
 								src += (32 - (_BYTE)yy_32) & 2;
-								if ( (char)(32 - yy_32) >= 4 )
-								{
-									do
-									{
-										dst[0] = tbl[src[0]];
-										dst[1] = tbl[src[1]];
-										dst[2] = tbl[src[2]];
-										dst[3] = tbl[src[3]];
-										src += 4;
-										dst += 4;
-										y_minus -= 4;
-									}
-									while ( y_minus >= 4 );
-								}
-								if ( y_minus >= 2 )
-								{
-									dst[0] = tbl[src[0]];
-									dst[1] = tbl[src[1]];
-									src += 2;
-									dst += 2;
-								}
+								asm_cel_light_edge(32 - yy_32, tbl, dst, src);
 								dst -= 800;
 								yy_32 += 2;
 							}
@@ -3458,22 +2806,7 @@ LABEL_58:
 					xx_32 = 30;
 					while ( dst >= gpBufEnd )
 					{
-						for ( base_4 = 32 - xx_32; base_4 >= 4; base_4 -= 4 )
-						{
-							dst[0] = tbl[src[0]];
-							dst[1] = tbl[src[1]];
-							dst[2] = tbl[src[2]];
-							dst[3] = tbl[src[3]];
-							src += 4;
-							dst += 4;
-						}
-						if ( base_4 >= 2 )
-						{
-							dst[0] = tbl[src[0]];
-							dst[1] = tbl[src[1]];
-							src += 2;
-							dst += 2;
-						}
+						asm_cel_light_edge(32 - xx_32, tbl, dst, src);
 						src += (unsigned char)src & 2;
 						dst = &dst[xx_32 - 800];
 						xx_32 -= 2;
@@ -3484,22 +2817,7 @@ LABEL_58:
 							{
 								if ( dst < gpBufEnd )
 									break;
-								for ( base_4 = 32 - yy_32; base_4 >= 4; base_4 -= 4 )
-								{
-									dst[0] = tbl[src[0]];
-									dst[1] = tbl[src[1]];
-									dst[2] = tbl[src[2]];
-									dst[3] = tbl[src[3]];
-									src += 4;
-									dst += 4;
-								}
-								if ( base_4 >= 2 )
-								{
-									dst[0] = tbl[src[0]];
-									dst[1] = tbl[src[1]];
-									src += 2;
-									dst += 2;
-								}
+								asm_cel_light_edge(32 - yy_32, tbl, dst, src);
 								src += (unsigned char)src & 2;
 								dst = &dst[yy_32 - 800];
 								yy_32 += 2;
@@ -3514,29 +2832,8 @@ LABEL_58:
 					while ( dst >= gpBufEnd )
 					{
 						dst += xx_32;
-						x_minus = 32 - xx_32;
 						src += (32 - (_BYTE)xx_32) & 2;
-						if ( (char)(32 - xx_32) >= 4 )
-						{
-							do
-							{
-								dst[0] = tbl[src[0]];
-								dst[1] = tbl[src[1]];
-								dst[2] = tbl[src[2]];
-								dst[3] = tbl[src[3]];
-								src += 4;
-								dst += 4;
-								x_minus -= 4;
-							}
-							while ( x_minus >= 4 );
-						}
-						if ( x_minus >= 2 )
-						{
-							dst[0] = tbl[src[0]];
-							dst[1] = tbl[src[1]];
-							src += 2;
-							dst += 2;
-						}
+						asm_cel_light_edge(32 - xx_32, tbl, dst, src);
 						dst -= 800;
 						xx_32 -= 2;
 						if ( xx_32 < 0 )
@@ -3546,18 +2843,7 @@ LABEL_58:
 							{
 								if ( dst < gpBufEnd )
 									break;
-								base_4 = 32;
-								do
-								{
-									dst[0] = tbl[src[0]];
-									dst[1] = tbl[src[1]];
-									dst[2] = tbl[src[2]];
-									dst[3] = tbl[src[3]];
-									src += 4;
-									dst += 4;
-									base_4 -= 4;
-								}
-								while ( base_4 >= 4 );
+								asm_cel_light_square(8, tbl, dst, src);
 								dst -= 800;
 								--yy_32;
 							}
@@ -3570,22 +2856,7 @@ LABEL_58:
 					xx_32 = 30;
 					while ( dst >= gpBufEnd )
 					{
-						for ( base_4 = 32 - xx_32; base_4 >= 4; base_4 -= 4 )
-						{
-							dst[0] = tbl[src[0]];
-							dst[1] = tbl[src[1]];
-							dst[2] = tbl[src[2]];
-							dst[3] = tbl[src[3]];
-							src += 4;
-							dst += 4;
-						}
-						if ( base_4 >= 2 )
-						{
-							dst[0] = tbl[src[0]];
-							dst[1] = tbl[src[1]];
-							src += 2;
-							dst += 2;
-						}
+						asm_cel_light_edge(32 - xx_32, tbl, dst, src);
 						src += (unsigned char)src & 2;
 						dst = &dst[xx_32 - 800];
 						xx_32 -= 2;
@@ -3596,18 +2867,7 @@ LABEL_58:
 							{
 								if ( dst < gpBufEnd )
 									break;
-								base_4 = 32;
-								do
-								{
-									dst[0] = tbl[src[0]];
-									dst[1] = tbl[src[1]];
-									dst[2] = tbl[src[2]];
-									dst[3] = tbl[src[3]];
-									src += 4;
-									dst += 4;
-									base_4 -= 4;
-								}
-								while ( base_4 >= 4 );
+								asm_cel_light_square(8, tbl, dst, src);
 								dst -= 800;
 								--yy_32;
 							}
@@ -3914,7 +3174,6 @@ void __fastcall drawTopArchesLowerScreen(unsigned char *pbDst)
 	short cel_type_16; // ax MAPDST
 	signed int tile_42_45; // eax MAPDST
 	unsigned int world_tbl; // ecx MAPDST
-	int world_192; // eax MAPDST
 	unsigned int width; // eax MAPDST
 	unsigned int chk_sh_and; // ecx MAPDST
 	int xx_32; // edx MAPDST
@@ -4542,16 +3801,7 @@ LABEL_430:
 				{
 					if ( dst < gpBufEnd )
 					{
-						j = 8;
-						do
-						{
-							dst[1] = tbl[src[1]];
-							dst[3] = tbl[src[3]];
-							src += 4;
-							dst += 4;
-							--j;
-						}
-						while ( j );
+						asm_trans_light_square_1_3(8, tbl, dst, src);
 					}
 					else
 					{
@@ -4561,16 +3811,7 @@ LABEL_430:
 					dst -= 800;
 					if ( dst < gpBufEnd )
 					{
-						j = 8;
-						do
-						{
-							dst[0] = tbl[src[0]];
-							dst[2] = tbl[src[2]];
-							src += 4;
-							dst += 4;
-							--j;
-						}
-						while ( j );
+						asm_trans_light_square_0_2(8, tbl, dst, src);
 					}
 					else
 					{
@@ -4606,102 +3847,11 @@ LABEL_430:
 						{
 							if ( ((unsigned char)dst & 1) == WorldBoolFlag )
 							{
-								chk_sh_and = width >> 1;
-								if ( width & 1 )
-								{
-									++src;
-									++dst;
-									n_draw_shift = width >> 2;
-									if ( chk_sh_and & 1 )
-									{
-										dst[0] = tbl[src[0]];
-										src += 2;
-										dst += 2;
-									}
-									if ( (_BYTE)n_draw_shift )
-									{
-										do
-										{
-											dst[0] = tbl[src[0]];
-											dst[2] = tbl[src[2]];
-											src += 4;
-											dst += 4;
-											--n_draw_shift;
-										}
-										while ( n_draw_shift );
-									}
-								}
-								else
-								{
-									n_draw_shift = width >> 2;
-									if ( chk_sh_and & 1 )
-									{
-										dst[1] = tbl[src[1]];
-										src += 2;
-										dst += 2;
-									}
-									if ( (_BYTE)n_draw_shift )
-									{
-										do
-										{
-											dst[1] = tbl[src[1]];
-											dst[3] = tbl[src[3]];
-											src += 4;
-											dst += 4;
-											--n_draw_shift;
-										}
-										while ( n_draw_shift );
-									}
-								}
+								asm_trans_light_cel_0_2(width, tbl, dst, src);
 							}
 							else
 							{
-								chk_sh_and = width >> 1;
-								if ( width & 1 )
-								{
-									*dst++ = tbl[*src++];
-									n_draw_shift = width >> 2;
-									if ( chk_sh_and & 1 )
-									{
-										dst[1] = tbl[src[1]];
-										src += 2;
-										dst += 2;
-									}
-									if ( (_BYTE)n_draw_shift )
-									{
-										do
-										{
-											dst[1] = tbl[src[1]];
-											dst[3] = tbl[src[3]];
-											src += 4;
-											dst += 4;
-											--n_draw_shift;
-										}
-										while ( n_draw_shift );
-									}
-								}
-								else
-								{
-									n_draw_shift = width >> 2;
-									if ( chk_sh_and & 1 )
-									{
-										dst[0] = tbl[src[0]];
-										src += 2;
-										dst += 2;
-									}
-									if ( (_BYTE)n_draw_shift )
-									{
-										do
-										{
-											dst[0] = tbl[src[0]];
-											dst[2] = tbl[src[2]];
-											src += 4;
-											dst += 4;
-											--n_draw_shift;
-										}
-										while ( n_draw_shift );
-									}
-								}
+								asm_trans_light_cel_1_3(width, tbl, dst, src);
 							}
 						}
 						else
@@ -4737,117 +3887,23 @@ LABEL_98:
 								return;
 							world_tbl = WorldTbl3x16[tile_42_45];
 							src += WorldTbl17_2[world_tbl >> 2];
-							world_192 = 192 * world_tbl;
+							dst -= 192 * world_tbl;
 							world_tbl >>= 1;
-							dst -= world_192;
 							yy_32 = world_tbl + 2;
 							WorldBoolFlag += world_tbl >> 1;
 						}
 						do
 						{
 							dst += yy_32;
-							y_minus = 32 - yy_32;
+							src += (32 - (_BYTE)yy_32) & 2;
 							WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 							if ( WorldBoolFlag )
 							{
-								src += y_minus & 2;
-								chk_sh_and = y_minus >> 1;
-								if ( y_minus & 1 )
-								{
-									++src;
-									++dst;
-									n_draw_shift = chk_sh_and >> 1;
-									if ( chk_sh_and & 1 )
-									{
-										dst[0] = tbl[src[0]];
-										src += 2;
-										dst += 2;
-									}
-									if ( (_BYTE)n_draw_shift )
-									{
-										do
-										{
-											dst[0] = tbl[src[0]];
-											dst[2] = tbl[src[2]];
-											src += 4;
-											dst += 4;
-											--n_draw_shift;
-										}
-										while ( n_draw_shift );
-									}
-								}
-								else
-								{
-									n_draw_shift = chk_sh_and >> 1;
-									if ( chk_sh_and & 1 )
-									{
-										dst[1] = tbl[src[1]];
-										src += 2;
-										dst += 2;
-									}
-									if ( (_BYTE)n_draw_shift )
-									{
-										do
-										{
-											dst[1] = tbl[src[1]];
-											dst[3] = tbl[src[3]];
-											src += 4;
-											dst += 4;
-											--n_draw_shift;
-										}
-										while ( n_draw_shift );
-									}
-								}
+								asm_trans_light_cel_0_2(32 - yy_32, tbl, dst, src);
 							}
 							else
 							{
-								src += y_minus & 2;
-								chk_sh_and = y_minus >> 1;
-								if ( y_minus & 1 )
-								{
-									*dst++ = tbl[*src++];
-									n_draw_shift = chk_sh_and >> 1;
-									if ( chk_sh_and & 1 )
-									{
-										dst[1] = tbl[src[1]];
-										src += 2;
-										dst += 2;
-									}
-									if ( (_BYTE)n_draw_shift )
-									{
-										do
-										{
-											dst[1] = tbl[src[1]];
-											dst[3] = tbl[src[3]];
-											src += 4;
-											dst += 4;
-											--n_draw_shift;
-										}
-										while ( n_draw_shift );
-									}
-								}
-								else
-								{
-									n_draw_shift = chk_sh_and >> 1;
-									if ( chk_sh_and & 1 )
-									{
-										dst[0] = tbl[src[0]];
-										src += 2;
-										dst += 2;
-									}
-									if ( (_BYTE)n_draw_shift )
-									{
-										do
-										{
-											dst[0] = tbl[src[0]];
-											dst[2] = tbl[src[2]];
-											src += 4;
-											dst += 4;
-											--n_draw_shift;
-										}
-										while ( n_draw_shift );
-									}
-								}
+								asm_trans_light_cel_1_3(32 - yy_32, tbl, dst, src);
 							}
 							dst -= 800;
 							yy_32 += 2;
@@ -4857,117 +3913,23 @@ LABEL_98:
 					}
 					world_tbl = WorldTbl3x16[tile_42_45];
 					src += WorldTbl17_1[world_tbl >> 2];
-					world_192 = 192 * world_tbl;
+					dst -= 192 * world_tbl;
 					world_tbl >>= 1;
-					dst -= world_192;
 					xx_32 = 30 - world_tbl;
 					WorldBoolFlag += world_tbl >> 1;
 				}
 				do
 				{
 					dst += xx_32;
-					x_minus = 32 - xx_32;
+					src += (32 - (_BYTE)xx_32) & 2;
 					WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 					if ( WorldBoolFlag )
 					{
-						src += x_minus & 2;
-						chk_sh_and = x_minus >> 1;
-						if ( x_minus & 1 )
-						{
-							++src;
-							++dst;
-							n_draw_shift = chk_sh_and >> 1;
-							if ( chk_sh_and & 1 )
-							{
-								dst[0] = tbl[src[0]];
-								src += 2;
-								dst += 2;
-							}
-							if ( (_BYTE)n_draw_shift )
-							{
-								do
-								{
-									dst[0] = tbl[src[0]];
-									dst[2] = tbl[src[2]];
-									src += 4;
-									dst += 4;
-									--n_draw_shift;
-								}
-								while ( n_draw_shift );
-							}
-						}
-						else
-						{
-							n_draw_shift = chk_sh_and >> 1;
-							if ( chk_sh_and & 1 )
-							{
-								dst[1] = tbl[src[1]];
-								src += 2;
-								dst += 2;
-							}
-							if ( (_BYTE)n_draw_shift )
-							{
-								do
-								{
-									dst[1] = tbl[src[1]];
-									dst[3] = tbl[src[3]];
-									src += 4;
-									dst += 4;
-									--n_draw_shift;
-								}
-								while ( n_draw_shift );
-							}
-						}
+						asm_trans_light_cel_0_2(32 - xx_32, tbl, dst, src);
 					}
 					else
 					{
-						src += x_minus & 2;
-						chk_sh_and = x_minus >> 1;
-						if ( x_minus & 1 )
-						{
-							*dst++ = tbl[*src++];
-							n_draw_shift = chk_sh_and >> 1;
-							if ( chk_sh_and & 1 )
-							{
-								dst[1] = tbl[src[1]];
-								src += 2;
-								dst += 2;
-							}
-							if ( (_BYTE)n_draw_shift )
-							{
-								do
-								{
-									dst[1] = tbl[src[1]];
-									dst[3] = tbl[src[3]];
-									src += 4;
-									dst += 4;
-									--n_draw_shift;
-								}
-								while ( n_draw_shift );
-							}
-						}
-						else
-						{
-							n_draw_shift = chk_sh_and >> 1;
-							if ( chk_sh_and & 1 )
-							{
-								dst[0] = tbl[src[0]];
-								src += 2;
-								dst += 2;
-							}
-							if ( (_BYTE)n_draw_shift )
-							{
-								do
-								{
-									dst[0] = tbl[src[0]];
-									dst[2] = tbl[src[2]];
-									src += 4;
-									dst += 4;
-									--n_draw_shift;
-								}
-								while ( n_draw_shift );
-							}
-						}
+						asm_trans_light_cel_1_3(32 - xx_32, tbl, dst, src);
 					}
 					dst -= 800;
 					xx_32 -= 2;
@@ -4993,117 +3955,23 @@ LABEL_154:
 								return;
 							world_tbl = WorldTbl3x16[tile_42_45];
 							src += WorldTbl17_2[world_tbl >> 2];
-							world_192 = 192 * world_tbl;
+							dst -= 192 * world_tbl;
 							world_tbl >>= 1;
-							dst -= world_192;
 							yy_32 = world_tbl + 2;
 							WorldBoolFlag += world_tbl >> 1;
 						}
 						do
 						{
-							y_minus = 32 - yy_32;
 							WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 							if ( WorldBoolFlag )
 							{
-								chk_sh_and = y_minus >> 1;
-								if ( y_minus & 1 )
-								{
-									++src;
-									++dst;
-									n_draw_shift = chk_sh_and >> 1;
-									if ( chk_sh_and & 1 )
-									{
-										dst[0] = tbl[src[0]];
-										src += 2;
-										dst += 2;
-									}
-									if ( (_BYTE)n_draw_shift )
-									{
-										do
-										{
-											dst[0] = tbl[src[0]];
-											dst[2] = tbl[src[2]];
-											src += 4;
-											dst += 4;
-											--n_draw_shift;
-										}
-										while ( n_draw_shift );
-									}
-								}
-								else
-								{
-									n_draw_shift = chk_sh_and >> 1;
-									if ( chk_sh_and & 1 )
-									{
-										dst[1] = tbl[src[1]];
-										src += 2;
-										dst += 2;
-									}
-									if ( (_BYTE)n_draw_shift )
-									{
-										do
-										{
-											dst[1] = tbl[src[1]];
-											dst[3] = tbl[src[3]];
-											src += 4;
-											dst += 4;
-											--n_draw_shift;
-										}
-										while ( n_draw_shift );
-									}
-								}
-								src += (unsigned char)src & 2;
+								asm_trans_light_cel_0_2(32 - yy_32, tbl, dst, src);
 							}
 							else
 							{
-								chk_sh_and = y_minus >> 1;
-								if ( y_minus & 1 )
-								{
-									*dst++ = tbl[*src++];
-									n_draw_shift = chk_sh_and >> 1;
-									if ( chk_sh_and & 1 )
-									{
-										dst[1] = tbl[src[1]];
-										src += 2;
-										dst += 2;
-									}
-									if ( (_BYTE)n_draw_shift )
-									{
-										do
-										{
-											dst[1] = tbl[src[1]];
-											dst[3] = tbl[src[3]];
-											src += 4;
-											dst += 4;
-											--n_draw_shift;
-										}
-										while ( n_draw_shift );
-									}
-								}
-								else
-								{
-									n_draw_shift = chk_sh_and >> 1;
-									if ( chk_sh_and & 1 )
-									{
-										dst[0] = tbl[src[0]];
-										src += 2;
-										dst += 2;
-									}
-									if ( (_BYTE)n_draw_shift )
-									{
-										do
-										{
-											dst[0] = tbl[src[0]];
-											dst[2] = tbl[src[2]];
-											src += 4;
-											dst += 4;
-											--n_draw_shift;
-										}
-										while ( n_draw_shift );
-									}
-								}
-								src += (unsigned char)src & 2;
+								asm_trans_light_cel_1_3(32 - yy_32, tbl, dst, src);
 							}
+							src += (unsigned char)src & 2;
 							dst = &dst[yy_32 - 800];
 							yy_32 += 2;
 						}
@@ -5112,117 +3980,23 @@ LABEL_154:
 					}
 					world_tbl = WorldTbl3x16[tile_42_45];
 					src += WorldTbl17_1[world_tbl >> 2];
-					world_192 = 192 * world_tbl;
+					dst -= 192 * world_tbl;
 					world_tbl >>= 1;
-					dst -= world_192;
 					xx_32 = 30 - world_tbl;
 					WorldBoolFlag += world_tbl >> 1;
 				}
 				do
 				{
-					x_minus = 32 - xx_32;
 					WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 					if ( WorldBoolFlag )
 					{
-						chk_sh_and = x_minus >> 1;
-						if ( x_minus & 1 )
-						{
-							++src;
-							++dst;
-							n_draw_shift = chk_sh_and >> 1;
-							if ( chk_sh_and & 1 )
-							{
-								dst[0] = tbl[src[0]];
-								src += 2;
-								dst += 2;
-							}
-							if ( (_BYTE)n_draw_shift )
-							{
-								do
-								{
-									dst[0] = tbl[src[0]];
-									dst[2] = tbl[src[2]];
-									src += 4;
-									dst += 4;
-									--n_draw_shift;
-								}
-								while ( n_draw_shift );
-							}
-						}
-						else
-						{
-							n_draw_shift = chk_sh_and >> 1;
-							if ( chk_sh_and & 1 )
-							{
-								dst[1] = tbl[src[1]];
-								src += 2;
-								dst += 2;
-							}
-							if ( (_BYTE)n_draw_shift )
-							{
-								do
-								{
-									dst[1] = tbl[src[1]];
-									dst[3] = tbl[src[3]];
-									src += 4;
-									dst += 4;
-									--n_draw_shift;
-								}
-								while ( n_draw_shift );
-							}
-						}
-						src += (unsigned char)src & 2;
+						asm_trans_light_cel_0_2(32 - xx_32, tbl, dst, src);
 					}
 					else
 					{
-						chk_sh_and = x_minus >> 1;
-						if ( x_minus & 1 )
-						{
-							*dst++ = tbl[*src++];
-							n_draw_shift = chk_sh_and >> 1;
-							if ( chk_sh_and & 1 )
-							{
-								dst[1] = tbl[src[1]];
-								src += 2;
-								dst += 2;
-							}
-							if ( (_BYTE)n_draw_shift )
-							{
-								do
-								{
-									dst[1] = tbl[src[1]];
-									dst[3] = tbl[src[3]];
-									src += 4;
-									dst += 4;
-									--n_draw_shift;
-								}
-								while ( n_draw_shift );
-							}
-						}
-						else
-						{
-							n_draw_shift = chk_sh_and >> 1;
-							if ( chk_sh_and & 1 )
-							{
-								dst[0] = tbl[src[0]];
-								src += 2;
-								dst += 2;
-							}
-							if ( (_BYTE)n_draw_shift )
-							{
-								do
-								{
-									dst[0] = tbl[src[0]];
-									dst[2] = tbl[src[2]];
-									src += 4;
-									dst += 4;
-									--n_draw_shift;
-								}
-								while ( n_draw_shift );
-							}
-						}
-						src += (unsigned char)src & 2;
+						asm_trans_light_cel_1_3(32 - xx_32, tbl, dst, src);
 					}
+					src += (unsigned char)src & 2;
 					dst = &dst[xx_32 - 800];
 					xx_32 -= 2;
 				}
@@ -5244,16 +4018,7 @@ LABEL_210:
 						{
 							if ( dst < gpBufEnd )
 							{
-								j = 8;
-								do
-								{
-									dst[1] = tbl[src[1]];
-									dst[3] = tbl[src[3]];
-									src += 4;
-									dst += 4;
-									--j;
-								}
-								while ( j );
+								asm_trans_light_square_1_3(8, tbl, dst, src);
 							}
 							else
 							{
@@ -5263,16 +4028,7 @@ LABEL_210:
 							dst -= 800;
 							if ( dst < gpBufEnd )
 							{
-								j = 8;
-								do
-								{
-									dst[0] = tbl[src[0]];
-									dst[2] = tbl[src[2]];
-									src += 4;
-									dst += 4;
-									--j;
-								}
-								while ( j );
+								asm_trans_light_square_0_2(8, tbl, dst, src);
 							}
 							else
 							{
@@ -5287,117 +4043,23 @@ LABEL_210:
 					}
 					world_tbl = WorldTbl3x16[tile_42_45];
 					src += WorldTbl17_1[world_tbl >> 2];
-					world_192 = 192 * world_tbl;
+					dst -= 192 * world_tbl;
 					world_tbl >>= 1;
-					dst -= world_192;
 					xx_32 = 30 - world_tbl;
 					WorldBoolFlag += world_tbl >> 1;
 				}
 				do
 				{
 					dst += xx_32;
-					x_minus = 32 - xx_32;
+					src += (32 - (_BYTE)xx_32) & 2;
 					WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 					if ( WorldBoolFlag )
 					{
-						src += x_minus & 2;
-						chk_sh_and = x_minus >> 1;
-						if ( x_minus & 1 )
-						{
-							++src;
-							++dst;
-							n_draw_shift = chk_sh_and >> 1;
-							if ( chk_sh_and & 1 )
-							{
-								dst[0] = tbl[src[0]];
-								src += 2;
-								dst += 2;
-							}
-							if ( (_BYTE)n_draw_shift )
-							{
-								do
-								{
-									dst[0] = tbl[src[0]];
-									dst[2] = tbl[src[2]];
-									src += 4;
-									dst += 4;
-									--n_draw_shift;
-								}
-								while ( n_draw_shift );
-							}
-						}
-						else
-						{
-							n_draw_shift = chk_sh_and >> 1;
-							if ( chk_sh_and & 1 )
-							{
-								dst[1] = tbl[src[1]];
-								src += 2;
-								dst += 2;
-							}
-							if ( (_BYTE)n_draw_shift )
-							{
-								do
-								{
-									dst[1] = tbl[src[1]];
-									dst[3] = tbl[src[3]];
-									src += 4;
-									dst += 4;
-									--n_draw_shift;
-								}
-								while ( n_draw_shift );
-							}
-						}
+						asm_trans_light_cel_0_2(32 - xx_32, tbl, dst, src);
 					}
 					else
 					{
-						src += x_minus & 2;
-						chk_sh_and = x_minus >> 1;
-						if ( x_minus & 1 )
-						{
-							*dst++ = tbl[*src++];
-							n_draw_shift = chk_sh_and >> 1;
-							if ( chk_sh_and & 1 )
-							{
-								dst[1] = tbl[src[1]];
-								src += 2;
-								dst += 2;
-							}
-							if ( (_BYTE)n_draw_shift )
-							{
-								do
-								{
-									dst[1] = tbl[src[1]];
-									dst[3] = tbl[src[3]];
-									src += 4;
-									dst += 4;
-									--n_draw_shift;
-								}
-								while ( n_draw_shift );
-							}
-						}
-						else
-						{
-							n_draw_shift = chk_sh_and >> 1;
-							if ( chk_sh_and & 1 )
-							{
-								dst[0] = tbl[src[0]];
-								src += 2;
-								dst += 2;
-							}
-							if ( (_BYTE)n_draw_shift )
-							{
-								do
-								{
-									dst[0] = tbl[src[0]];
-									dst[2] = tbl[src[2]];
-									src += 4;
-									dst += 4;
-									--n_draw_shift;
-								}
-								while ( n_draw_shift );
-							}
-						}
+						asm_trans_light_cel_1_3(32 - xx_32, tbl, dst, src);
 					}
 					dst -= 800;
 					xx_32 -= 2;
@@ -5420,16 +4082,7 @@ LABEL_249:
 						{
 							if ( dst < gpBufEnd )
 							{
-								j = 8;
-								do
-								{
-									dst[1] = tbl[src[1]];
-									dst[3] = tbl[src[3]];
-									src += 4;
-									dst += 4;
-									--j;
-								}
-								while ( j );
+								asm_trans_light_square_1_3(8, tbl, dst, src);
 							}
 							else
 							{
@@ -5439,16 +4092,7 @@ LABEL_249:
 							dst -= 800;
 							if ( dst < gpBufEnd )
 							{
-								j = 8;
-								do
-								{
-									dst[0] = tbl[src[0]];
-									dst[2] = tbl[src[2]];
-									src += 4;
-									dst += 4;
-									--j;
-								}
-								while ( j );
+								asm_trans_light_square_0_2(8, tbl, dst, src);
 							}
 							else
 							{
@@ -5463,117 +4107,23 @@ LABEL_249:
 					}
 					world_tbl = WorldTbl3x16[tile_42_45];
 					src += WorldTbl17_1[world_tbl >> 2];
-					world_192 = 192 * world_tbl;
+					dst -= 192 * world_tbl;
 					world_tbl >>= 1;
-					dst -= world_192;
 					xx_32 = 30 - world_tbl;
 					WorldBoolFlag += world_tbl >> 1;
 				}
 				do
 				{
-					x_minus = 32 - xx_32;
 					WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 					if ( WorldBoolFlag )
 					{
-						chk_sh_and = x_minus >> 1;
-						if ( x_minus & 1 )
-						{
-							++src;
-							++dst;
-							n_draw_shift = chk_sh_and >> 1;
-							if ( chk_sh_and & 1 )
-							{
-								dst[0] = tbl[src[0]];
-								src += 2;
-								dst += 2;
-							}
-							if ( (_BYTE)n_draw_shift )
-							{
-								do
-								{
-									dst[0] = tbl[src[0]];
-									dst[2] = tbl[src[2]];
-									src += 4;
-									dst += 4;
-									--n_draw_shift;
-								}
-								while ( n_draw_shift );
-							}
-						}
-						else
-						{
-							n_draw_shift = chk_sh_and >> 1;
-							if ( chk_sh_and & 1 )
-							{
-								dst[1] = tbl[src[1]];
-								src += 2;
-								dst += 2;
-							}
-							if ( (_BYTE)n_draw_shift )
-							{
-								do
-								{
-									dst[1] = tbl[src[1]];
-									dst[3] = tbl[src[3]];
-									src += 4;
-									dst += 4;
-									--n_draw_shift;
-								}
-								while ( n_draw_shift );
-							}
-						}
-						src += (unsigned char)src & 2;
+						asm_trans_light_cel_0_2(32 - xx_32, tbl, dst, src);
 					}
 					else
 					{
-						chk_sh_and = x_minus >> 1;
-						if ( x_minus & 1 )
-						{
-							*dst++ = tbl[*src++];
-							n_draw_shift = chk_sh_and >> 1;
-							if ( chk_sh_and & 1 )
-							{
-								dst[1] = tbl[src[1]];
-								src += 2;
-								dst += 2;
-							}
-							if ( (_BYTE)n_draw_shift )
-							{
-								do
-								{
-									dst[1] = tbl[src[1]];
-									dst[3] = tbl[src[3]];
-									src += 4;
-									dst += 4;
-									--n_draw_shift;
-								}
-								while ( n_draw_shift );
-							}
-						}
-						else
-						{
-							n_draw_shift = chk_sh_and >> 1;
-							if ( chk_sh_and & 1 )
-							{
-								dst[0] = tbl[src[0]];
-								src += 2;
-								dst += 2;
-							}
-							if ( (_BYTE)n_draw_shift )
-							{
-								do
-								{
-									dst[0] = tbl[src[0]];
-									dst[2] = tbl[src[2]];
-									src += 4;
-									dst += 4;
-									--n_draw_shift;
-								}
-								while ( n_draw_shift );
-							}
-						}
-						src += (unsigned char)src & 2;
+						asm_trans_light_cel_1_3(32 - xx_32, tbl, dst, src);
 					}
+					src += (unsigned char)src & 2;
 					dst = &dst[xx_32 - 800];
 					xx_32 -= 2;
 				}
@@ -5752,9 +4302,8 @@ LABEL_308:
 							return;
 						world_tbl = WorldTbl3x16[tile_42_45];
 						src += WorldTbl17_2[world_tbl >> 2];
-						world_192 = 192 * world_tbl;
+						dst -= 192 * world_tbl;
 						world_tbl >>= 1;
-						dst -= world_192;
 						yy_32 = world_tbl + 2;
 						WorldBoolFlag += world_tbl >> 1;
 					}
@@ -5816,9 +4365,8 @@ LABEL_308:
 				}
 				world_tbl = WorldTbl3x16[tile_42_45];
 				src += WorldTbl17_1[world_tbl >> 2];
-				world_192 = 192 * world_tbl;
+				dst -= 192 * world_tbl;
 				world_tbl >>= 1;
-				dst -= world_192;
 				xx_32 = 30 - world_tbl;
 				WorldBoolFlag += world_tbl >> 1;
 			}
@@ -5886,9 +4434,8 @@ LABEL_308:
 			{
 				world_tbl = WorldTbl3x16[tile_42_45];
 				src += WorldTbl17_1[world_tbl >> 2];
-				world_192 = 192 * world_tbl;
+				dst -= 192 * world_tbl;
 				world_tbl >>= 1;
-				dst -= world_192;
 				xx_32 = 30 - world_tbl;
 				WorldBoolFlag += world_tbl >> 1;
 				do
@@ -5945,9 +4492,8 @@ LABEL_336:
 					return;
 				world_tbl = WorldTbl3x16[tile_42_45];
 				src += WorldTbl17_2[world_tbl >> 2];
-				world_192 = 192 * world_tbl;
+				dst -= 192 * world_tbl;
 				world_tbl >>= 1;
-				dst -= world_192;
 				yy_32 = world_tbl + 2;
 				WorldBoolFlag += world_tbl >> 1;
 			}
@@ -6051,9 +4597,8 @@ LABEL_364:
 				}
 				world_tbl = WorldTbl3x16[tile_42_45];
 				src += WorldTbl17_1[world_tbl >> 2];
-				world_192 = 192 * world_tbl;
+				dst -= 192 * world_tbl;
 				world_tbl >>= 1;
-				dst -= world_192;
 				xx_32 = 30 - world_tbl;
 				WorldBoolFlag += world_tbl >> 1;
 			}
@@ -6170,9 +4715,8 @@ LABEL_389:
 				}
 				world_tbl = WorldTbl3x16[tile_42_45];
 				src += WorldTbl17_1[world_tbl >> 2];
-				world_192 = 192 * world_tbl;
+				dst -= 192 * world_tbl;
 				world_tbl >>= 1;
-				dst -= world_192;
 				xx_32 = 30 - world_tbl;
 				WorldBoolFlag += world_tbl >> 1;
 			}
@@ -7372,9 +5916,6 @@ void __fastcall drawLowerScreen(unsigned char *pbDst)
 	short cel_type_16; // ax MAPDST
 	int xx_32; // edx MAPDST
 	int yy_32; // ebp MAPDST
-	char block_4; // cl MAPDST
-	int x_minus; // ecx MAPDST
-	int y_minus; // ecx MAPDST
 	unsigned int chk_sh_and; // ecx MAPDST
 	signed int tile_42_45; // eax MAPDST
 	unsigned int world_tbl; // ecx MAPDST
@@ -7763,18 +6304,7 @@ LABEL_232:
 					{
 						if ( dst < gpBufEnd )
 						{
-							j = 8;
-							do
-							{
-								dst[0] = tbl[src[0]];
-								dst[1] = tbl[src[1]];
-								dst[2] = tbl[src[2]];
-								dst[3] = tbl[src[3]];
-								src += 4;
-								dst += 4;
-								--j;
-							}
-							while ( j );
+							asm_cel_light_square(8, tbl, dst, src);
 						}
 						else
 						{
@@ -7799,26 +6329,7 @@ LABEL_232:
 								yy_32 -= width;
 								if ( dst < gpBufEnd )
 								{
-									for ( block_4 = width; block_4 >= 4; block_4 -= 4 )
-									{
-										dst[0] = tbl[src[0]];
-										dst[1] = tbl[src[1]];
-										dst[2] = tbl[src[2]];
-										dst[3] = tbl[src[3]];
-										src += 4;
-										dst += 4;
-									}
-									if ( block_4 >= 2 )
-									{
-										dst[0] = tbl[src[0]];
-										dst[1] = tbl[src[1]];
-										src += 2;
-										dst += 2;
-									}
-									if ( block_4 & 1 )
-									{
-										*dst++ = tbl[*src++];
-									}
+									asm_cel_light_edge(width, tbl, dst, src);
 								}
 								else
 								{
@@ -7863,14 +6374,8 @@ LABEL_68:
 							do
 							{
 								dst += yy_32;
-								y_minus = 32 - yy_32;
 								src += (32 - (_BYTE)yy_32) & 2;
-								do
-								{
-									*dst++ = tbl[*src++];
-									--y_minus;
-								}
-								while ( y_minus );
+								asm_cel_light_edge(32 - yy_32, tbl, dst, src);
 								yy_32 += 2;
 								dst -= 800;
 							}
@@ -7885,14 +6390,8 @@ LABEL_68:
 					do
 					{
 						dst += xx_32;
-						x_minus = 32 - xx_32;
 						src += (32 - (_BYTE)xx_32) & 2;
-						do
-						{
-							*dst++ = tbl[*src++];
-							--x_minus;
-						}
-						while ( x_minus );
+						asm_cel_light_edge(32 - xx_32, tbl, dst, src);
 						dst -= 800;
 						xx_32 -= 2;
 					}
@@ -7921,13 +6420,7 @@ LABEL_83:
 							}
 							do
 							{
-								y_minus = 32 - yy_32;
-								do
-								{
-									*dst++ = tbl[*src++];
-									--y_minus;
-								}
-								while ( y_minus );
+								asm_cel_light_edge(32 - yy_32, tbl, dst, src);
 								src += (unsigned char)src & 2;
 								dst = &dst[yy_32 - 800];
 								yy_32 += 2;
@@ -7942,13 +6435,7 @@ LABEL_83:
 					}
 					do
 					{
-						x_minus = 32 - xx_32;
-						do
-						{
-							*dst++ = tbl[*src++];
-							--x_minus;
-						}
-						while ( x_minus );
+						asm_cel_light_edge(32 - xx_32, tbl, dst, src);
 						src += (unsigned char)src & 2;
 						dst = &dst[xx_32 - 800];
 						xx_32 -= 2;
@@ -7970,18 +6457,7 @@ LABEL_100:
 							{
 								if ( dst < gpBufEnd )
 								{
-									block_4 = 32;
-									do
-									{
-										dst[0] = tbl[src[0]];
-										dst[1] = tbl[src[1]];
-										dst[2] = tbl[src[2]];
-										dst[3] = tbl[src[3]];
-										src += 4;
-										dst += 4;
-										block_4 -= 4;
-									}
-									while ( block_4 >= 4 );
+									asm_cel_light_square(8, tbl, dst, src);
 								}
 								else
 								{
@@ -8002,29 +6478,8 @@ LABEL_100:
 					do
 					{
 						dst += xx_32;
-						block_4 = 32 - xx_32;
 						src += (32 - (_BYTE)xx_32) & 2;
-						if ( (char)(32 - xx_32) >= 4 )
-						{
-							do
-							{
-								dst[0] = tbl[src[0]];
-								dst[1] = tbl[src[1]];
-								dst[2] = tbl[src[2]];
-								dst[3] = tbl[src[3]];
-								src += 4;
-								dst += 4;
-								block_4 -= 4;
-							}
-							while ( block_4 >= 4 );
-						}
-						if ( block_4 >= 2 )
-						{
-							dst[0] = tbl[src[0]];
-							dst[1] = tbl[src[1]];
-							src += 2;
-							dst += 2;
-						}
+						asm_cel_light_edge(32 - xx_32, tbl, dst, src);
 						dst -= 800;
 						xx_32 -= 2;
 					}
@@ -8045,18 +6500,7 @@ LABEL_116:
 							{
 								if ( dst < gpBufEnd )
 								{
-									block_4 = 32;
-									do
-									{
-										dst[0] = tbl[src[0]];
-										dst[1] = tbl[src[1]];
-										dst[2] = tbl[src[2]];
-										dst[3] = tbl[src[3]];
-										src += 4;
-										dst += 4;
-										block_4 -= 4;
-									}
-									while ( block_4 >= 4 );
+									asm_cel_light_square(8, tbl, dst, src);
 								}
 								else
 								{
@@ -8076,22 +6520,7 @@ LABEL_116:
 					}
 					do
 					{
-						for ( block_4 = 32 - xx_32; block_4 >= 4; block_4 -= 4 )
-						{
-							dst[0] = tbl[src[0]];
-							dst[1] = tbl[src[1]];
-							dst[2] = tbl[src[2]];
-							dst[3] = tbl[src[3]];
-							src += 4;
-							dst += 4;
-						}
-						if ( block_4 >= 2 )
-						{
-							dst[0] = tbl[src[0]];
-							dst[1] = tbl[src[1]];
-							src += 2;
-							dst += 2;
-						}
+						asm_cel_light_edge(32 - xx_32, tbl, dst, src);
 						src += (unsigned char)src & 2;
 						dst = &dst[xx_32 - 800];
 						xx_32 -= 2;
