@@ -1376,7 +1376,7 @@ LABEL_42:
 	}
 	_LOBYTE(v2) = error_id;
 	InitDiabloMsg(v2);
-	NetSendCmdLoc(1u, 1u, x, y);
+	NetSendCmdLoc(1u, CMD_WALKXY, x, y);
 }
 // 679660: using guessed type char gbMaxPlayers;
 // 6ABB30: using guessed type int TWarpFrom;
