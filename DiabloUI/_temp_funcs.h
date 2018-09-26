@@ -191,12 +191,13 @@ signed int __stdcall DirLink_1000632B(int a1, char *a2, char *a3);
 HWND __fastcall DirLink_10006359(HWND hWnd, int a2, int height);
 
 
-//signed int __stdcall UiBetaDisclaimer(int a1);
-int __stdcall disclaim_100063DA(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam); // idb
-void UNKCALL disclaim_100064C9(HWND hDlg);
-int UNKCALL disclaim_100064F3(HWND hWnd); // idb
-int UNKCALL disclaim_10006552(void *arg);
-signed int disclaim_10006571();
+BOOL __stdcall UiBetaDisclaimer(int a1);
+LRESULT __stdcall disclaim_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+void __fastcall disclaim_DelDisclaimProcs(HWND hWnd);
+void __fastcall disclaim_LoadDisclaimGFX(HWND hWnd);
+void __fastcall disclaim_FadeFromDisclaim(HWND hWnd);
+void __cdecl j_disclaim_cpp_init();
+void __cdecl disclaim_cpp_init();
 
 
 void __cdecl j_Doom_cpp_init();

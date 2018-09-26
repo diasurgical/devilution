@@ -56,6 +56,7 @@ BOOL __stdcall UiCreatePlayerDescription(_uiheroinfo *info, int mode, char *desc
 void __stdcall UiSetupPlayerInfo(char *infostr, _uiheroinfo *pInfo, int type);
 void __stdcall UiCreateGameCriteria(_uiheroinfo *pInfo, char *str);
 BOOL __stdcall UiGetDefaultStats(int pclass, _uidefaultstats *pStats);
+BOOL __stdcall UiBetaDisclaimer(int a1);
 
 #ifdef __GNUC__
 }

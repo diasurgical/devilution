@@ -16,6 +16,7 @@ int CreaStat_cpp_float_value = 2139095040; // weak
 int credits_cpp_float_value = 2139095040; // weak
 int DiabEdit_cpp_float_value = 2139095040; // weak
 int DiabloUI_cpp_float_value = 2139095040; // weak
+int disclaim_cpp_float_value = 2139095040; // weak
 int doom_cpp_float_value = 2139095040; // weak
 int EntName_cpp_float_value = 2139095040; // weak
 int fade_cpp_float_value = 2139095040; // weak
@@ -58,8 +59,8 @@ int dword_10022A38[2] = { 1097, 0 };
 int dword_10022A40[2] = { 1102, 0 };
 int dword_10022A48[3] = { 1056, 1054, 0 };
 int dword_10022A54[3] = { 1100, 1101, 0 };
-int dword_10022A98[3] = { 1082, 1083, 0 };
-int dword_10022AA4[4] = { 1084, 1085, 1086, 0 };
+int disclaim_msgtbl1[3] = { 1082, 1083, 0 };
+int disclaim_msgtbl2[4] = { 1084, 1085, 1086, 0 };
 int dword_10022AFC[2] = { 1038, 0 };
 int dword_10022B04[3] = { 1056, 1054, 0 };
 int dword_10022B10[2] = { 1116, 0 };
@@ -231,7 +232,7 @@ int dword_10029840; // weak
 int dword_10029844; // weak
 void *dword_10029848; // idb
 int dword_1002984C; // weak
-int dword_10029850; // weak
+int disclaim_cpp_float; // weak
 int doom_cpp_float; // weak
 LPSTR dword_10029858; // idb
 int dword_1002985C; // weak
