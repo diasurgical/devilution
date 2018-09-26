@@ -465,7 +465,7 @@ void __fastcall DrawAutomapType(int screen_x, int screen_y, USHORT automap_type)
 			y2 = screen_y + AMPlayerX;
 
 			DrawLine(screen_x, y1, screen_x - AMPlayerX, y1 - AMPlayerY, COLOR_DIM);
-			DrawLine(x1, screen_y, screen_x + AMPlayerX, screen_y + AMPlayerY, COLOR_DIM);
+			DrawLine(x1, screen_y, x1 + AMPlayerX, screen_y + AMPlayerY, COLOR_DIM);
 			DrawLine(x2, y1, x1, y2, COLOR_BRIGHT);
 			DrawLine(x2, y1, screen_x, y2, COLOR_BRIGHT);
 			DrawLine(x2, screen_y, x1, y2, COLOR_BRIGHT);
