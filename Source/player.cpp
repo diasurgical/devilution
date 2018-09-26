@@ -2940,7 +2940,7 @@ BOOL __fastcall PM_DoGotHit(int pnum)
 
 	int frame = plr[pnum]._pAnimFrame;
 	if ( plr[pnum]._pIFlags & ISPL_FASTRECOVER && frame == 3 ) {
-		plr[pnum]._pAnimFrame = 4;
+		plr[pnum]._pAnimFrame++;
 	}
 	if ( plr[pnum]._pIFlags & ISPL_FASTERRECOVER && (frame == 3 || frame == 5) ) {
 		plr[pnum]._pAnimFrame++;
@@ -2949,17 +2949,17 @@ BOOL __fastcall PM_DoGotHit(int pnum)
 		plr[pnum]._pAnimFrame++;
 	}
 
-	if ( plr[pnum]._pAnimFrame < plr[pnum]._pHFrames ) {
-		return FALSE;
+	if ( plr[pnum]._pAnimFrame >= plr[pnum]._pHFrames ) {
+		StartStand(pnum, plr[pnum]._pdir);
+		ClearPlrPVars(pnum);
+		if ( random(3, 4) ) {
+			ArmorDur(pnum);
+		}
+
+		return TRUE;
 	}
 
-	StartStand(pnum, plr[pnum]._pdir);
-	ClearPlrPVars(pnum);
-	if ( random(3, 4) ) {
-		ArmorDur(pnum);
-	}
-
-	return TRUE;
+	return FALSE;
 }
 
 void __fastcall ArmorDur(int pnum)
