@@ -3569,32 +3569,55 @@ void __fastcall ClrPlrPath(int pnum)
 
 BOOL __fastcall PosOkPlayer(int pnum, int px, int py)
 {
-	char v8; // cl
-	unsigned int v9; // ecx
-	int v10; // esi
-	char v11; // al
-	char v12; // cl
-	bool result; // eax
+	if ( px < 0 || px >= MAXDUNX || py < 0 || py >= MAXDUNY ) {
+		return FALSE;
+	}
 
-	result = 0;
-	if ( px >= 0 && px < 112 && py >= 0 && py < 112 && !SolidLoc(px, py) )
-	{
-		if ( dPiece[px][py] )
-		{
-			v8 = dPlayer[px][py];
-			if ( !v8 || (v8 <= 0 ? (v9 = -1 - v8) : (v9 = v8 - 1), v9 == pnum || v9 >= 4 || !plr[v9]._pHitPoints) )
-			{
-				v10 = dMonster[px][py];
-				if ( !v10 || currlevel && v10 > 0 && (signed int)(monster[v10-1]._mhitpoints & 0xFFFFFFC0) <= 0 ) /* fix */
-				{
-					v11 = dObject[px][py];
-					if ( !v11 || (v11 <= 0 ? (v12 = -1 - v11) : (v12 = v11 - 1), !object[v12]._oSolidFlag) )
-						result = 1;
-				}
-			}
+	if ( SolidLoc(px, py) ) {
+		return FALSE;
+	}
+
+	if ( !dPiece[px][py] ) {
+		return FALSE;
+	}
+
+	if ( dPlayer[px][py] ) {
+		DWORD p;
+		if ( dPlayer[px][py] > 0 ) {
+			p = dPlayer[px][py] - 1;
+		} else {
+			p = -(dPlayer[px][py] + 1);
+		}
+		if ( p != pnum && p < MAX_PLRS && plr[p]._pHitPoints ) {
+			return FALSE;
 		}
 	}
-	return result;
+
+	if ( dMonster[px][py] ) {
+		if ( !currlevel ) {
+			return FALSE;
+		}
+		if ( dMonster[px][py] <= 0 ) {
+			return FALSE;
+		}
+		if ( (monster[dMonster[px][py] - 1]._mhitpoints >> 6) > 0 ) {
+			return FALSE;
+		}
+	}
+
+	if ( dObject[px][py] ) {
+		char bv;
+		if ( dObject[px][py] > 0 ) {
+			bv = dObject[px][py] - 1;
+		} else {
+			bv = -(dObject[px][py] + 1);
+		}
+		if ( object[bv]._oSolidFlag ) {
+			return FALSE;
+		}
+	}
+
+	return TRUE;
 }
 
 void __fastcall MakePlrPath(int pnum, int xx, int yy, BOOL endspace)
