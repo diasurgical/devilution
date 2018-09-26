@@ -299,7 +299,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	}
 	ShowCursor(FALSE);
 	srand(GetTickCount());
-	encrypt_init_lookup_table();
+	InitHash();
 	exception_get_filter();
 	if ( !diablo_find_window("DIABLO") && diablo_get_not_running() )
 	{
