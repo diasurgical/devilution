@@ -797,7 +797,7 @@ void __fastcall AddPlrExperience(int pnum, int lvl, int exp)
 void __fastcall AddPlrMonstExper(int lvl, int exp, char pmask)
 {
 	int totplrs = 0;
-	for (int i = 0; i < 4; i++ ) {
+	for (int i = 0; i < MAX_PLRS; i++ ) {
 		if ( (1 << i) & pmask ) {
 			totplrs++;
 		}
@@ -1693,7 +1693,7 @@ void __fastcall StartPlayerKill(int pnum, int earflag)
 
 	BOOL diablolevel = gbMaxPlayers > 1 && plr[pnum].plrlevel == 16;
 
-	if ( (DWORD)pnum >= 4 ) {
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("StartPlayerKill: illegal player %d", pnum);
 	}
 
@@ -2111,7 +2111,7 @@ void __fastcall RestartTownLvl(int pnum)
 
 	v1 = pnum;
 	InitLevelChange(pnum);
-	if ( v1 >= 4 )
+	if ( v1 >= MAX_PLRS )
 		TermMsg("RestartTownLvl: illegal player %d", v1);
 	v2 = v1;
 	plr[v2].plrlevel = 0;
