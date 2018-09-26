@@ -396,7 +396,7 @@ int __fastcall msg_comp_level(char *buffer, int size)
 
 	v2 = buffer;
 	v3 = size - (_DWORD)buffer - 1;
-	v4 = encrypt_compress(buffer + 1, v3);
+	v4 = PkwareCompress(buffer + 1, v3);
 	*v2 = v3 != v4;
 	return v4 + 1;
 }
@@ -1598,7 +1598,7 @@ void __fastcall DeltaImportData(unsigned char cmd, int recv_offset)
 
 	v2 = cmd;
 	if ( sgRecvBuf[0] )
-		encrypt_decompress(&sgRecvBuf[1], recv_offset, 4721);
+		PkwareDecompress(&sgRecvBuf[1], recv_offset, 4721);
 	if ( v2 == CMD_DLEVEL_JUNK )
 	{
 		DeltaImportJunk((int)&sgRecvBuf[1]);

@@ -259,9 +259,9 @@ int __fastcall mpqapi_get_hash_index_of_path(char *pszName) // FetchHandle
 	short v4; // ax
 
 	v1 = pszName;
-	v2 = encrypt_hash(pszName, 2); // MPQ_HASH_NAME_B
-	v3 = encrypt_hash(v1, 1); // MPQ_HASH_NAME_A
-	v4 = encrypt_hash(v1, 0); // MPQ_HASH_TABLE_INDEX
+	v2 = Hash(pszName, 2); // MPQ_HASH_NAME_B
+	v3 = Hash(v1, 1); // MPQ_HASH_NAME_A
+	v4 = Hash(v1, 0); // MPQ_HASH_TABLE_INDEX
 	return mpqapi_get_hash_index(v4, v3, v2, 0);
 }
 
@@ -343,9 +343,9 @@ _BLOCKENTRY *__fastcall mpqapi_add_file(char *pszName, _BLOCKENTRY *pBlk, int bl
 
 	v12 = pBlk;
 	v3 = pszName;
-	v4 = encrypt_hash(pszName, 0);
-	v5 = encrypt_hash(v3, 1);
-	v11 = encrypt_hash(v3, 2);
+	v4 = Hash(pszName, 0);
+	v5 = Hash(v3, 1);
+	v11 = Hash(v3, 2);
 	if ( mpqapi_get_hash_index(v4, v5, v11, 0) != -1 )
 		TermMsg("Hash collision between \"%s\" and existing file\n", v3);
 	v6 = 2048;
@@ -409,7 +409,7 @@ bool __fastcall mpqapi_write_file_contents(char *pszName, char *pbData, int dwLe
 			break;
 		v4 = v7 + 1;
 	}
-	encrypt_hash(v4, 3);
+	Hash(v4, 3);
 	v8 = dwLen;
 	v9 = pBlk;
 	size = 4 * ((unsigned int)(dwLen + 4095) >> 12) + 4;
@@ -433,7 +433,7 @@ bool __fastcall mpqapi_write_file_contents(char *pszName, char *pbData, int dwLe
 			dwLen = 4096;
 		memcpy(mpq_buf, v17, dwLen);
 		v17 += dwLen;
-		dwLen = encrypt_compress(mpq_buf, dwLen);
+		dwLen = PkwareCompress(mpq_buf, dwLen);
 		if ( !v18 )
 		{
 			nNumberOfBytesToWrite = size;
@@ -556,7 +556,7 @@ bool __fastcall mpqapi_open_archive(char *pszArchive, bool hidden, int dwChar) /
 	v3 = pszArchive;
 	v4 = hidden;
 	lpFileName = pszArchive;
-	encrypt_init_lookup_table();
+	InitHash();
 	if ( !mpqapi_set_hidden(v3, v4) )
 		return 0;
 	v6 = (unsigned char)gbMaxPlayers > 1u ? FILE_FLAG_WRITE_THROUGH : 0;
@@ -588,8 +588,8 @@ LABEL_15:
 			{
 				goto LABEL_15;
 			}
-			v8 = encrypt_hash("(block table)", 3);
-			encrypt_decrypt_block(sgpBlockTbl, 0x8000, v8);
+			v8 = Hash("(block table)", 3);
+			Decrypt(sgpBlockTbl, 0x8000, v8);
 		}
 		sgpHashTbl = (_HASHENTRY *)DiabloAllocPtr(0x8000);
 		memset(sgpHashTbl, 255, 0x8000u);
@@ -600,8 +600,8 @@ LABEL_15:
 			{
 				goto LABEL_15;
 			}
-			v10 = encrypt_hash("(hash table)", 3);
-			encrypt_decrypt_block(sgpHashTbl, 0x8000, v10);
+			v10 = Hash("(hash table)", 3);
+			Decrypt(sgpHashTbl, 0x8000, v10);
 		}
 	}
 	return 1;
@@ -767,11 +767,11 @@ bool __cdecl mpqapi_write_block_table()
 
 	if ( SetFilePointer(sghArchive, 104, NULL, FILE_BEGIN) == -1 )
 		return 0;
-	v1 = encrypt_hash("(block table)", 3);
-	encrypt_encrypt_block(sgpBlockTbl, 0x8000, v1);
+	v1 = Hash("(block table)", 3);
+	Encrypt(sgpBlockTbl, 0x8000, v1);
 	v2 = WriteFile(sghArchive, sgpBlockTbl, 0x8000u, &NumberOfBytesWritten, 0);
-	v3 = encrypt_hash("(block table)", 3);
-	encrypt_decrypt_block(sgpBlockTbl, 0x8000, v3);
+	v3 = Hash("(block table)", 3);
+	Decrypt(sgpBlockTbl, 0x8000, v3);
 	return v2 && NumberOfBytesWritten == 0x8000;
 }
 
@@ -784,11 +784,11 @@ bool __cdecl mpqapi_write_hash_table()
 
 	if ( SetFilePointer(sghArchive, 32872, NULL, FILE_BEGIN) == -1 )
 		return 0;
-	v1 = encrypt_hash("(hash table)", 3);
-	encrypt_encrypt_block(sgpHashTbl, 0x8000, v1);
+	v1 = Hash("(hash table)", 3);
+	Encrypt(sgpHashTbl, 0x8000, v1);
 	v2 = WriteFile(sghArchive, sgpHashTbl, 0x8000u, &NumberOfBytesWritten, 0);
-	v3 = encrypt_hash("(hash table)", 3);
-	encrypt_decrypt_block(sgpHashTbl, 0x8000, v3);
+	v3 = Hash("(hash table)", 3);
+	Decrypt(sgpHashTbl, 0x8000, v3);
 	return v2 && NumberOfBytesWritten == 0x8000;
 }
 
