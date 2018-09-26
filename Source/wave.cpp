@@ -84,7 +84,7 @@ int __fastcall WOpenFile(char *dwInitParam, HANDLE *phsFile, int a3)
 	return 0;
 }
 
-char __fastcall WReadFile(HANDLE hsFile, char *buf, int a3)
+void __fastcall WReadFile(HANDLE hsFile, char *buf, int a3)
 {
 	char *v3; // ebx
 	HANDLE v4; // edi
@@ -103,7 +103,6 @@ char __fastcall WReadFile(HANDLE hsFile, char *buf, int a3)
 			break;
 		WGetFileArchive(v4, &a2a, 0);
 	}
-	return v5;
 }
 
 int __fastcall WSetFilePointer(HANDLE file1, int offset, HANDLE file2, int whence)
