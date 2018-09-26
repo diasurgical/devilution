@@ -359,3 +359,6 @@ ASALocalRun/
 *.pubxml.user
 
 # End of https://www.gitignore.io/api/visualstudio
+
+# build directories as might be used by cmake users
+/build*
