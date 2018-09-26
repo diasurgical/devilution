@@ -4,7 +4,7 @@
 
 extern int plr_lframe_size; // idb
 extern int plr_wframe_size; // idb
-extern char plr_gfx_flag; // weak
+extern UCHAR plr_gfx_flag;
 extern int player_cpp_init_value; // weak
 extern int plr_aframe_size; // idb
 extern int myplr;
@@ -14,7 +14,7 @@ extern int plr_qframe_size; // idb
 extern int deathflag; // idb
 extern int plr_hframe_size; // idb
 extern int plr_bframe_size; // idb
-extern char plr_gfx_bflag; // weak
+extern UCHAR plr_gfx_bflag;
 extern int plr_sframe_size; // idb
 extern int deathdelay; // weak
 extern int plr_dframe_size; // idb
