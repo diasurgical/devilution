@@ -2,7 +2,7 @@
 
 #include "../types.h"
 
-short automaptype[512];
+USHORT automaptype[512];
 static int MapX;
 static int MapY;
 bool automapflag; // idb
@@ -16,6 +16,24 @@ int AutoMapXPos; // weak
 int AutoMapYPos; // weak
 int AMPlayerX; // weak
 int AMPlayerY; // weak
+
+// color used to draw the player's arrow
+#define COLOR_PLAYER      (PAL8_ORANGE+1)
+// color for bright map lines (doors, stairs etc.)
+#define COLOR_BRIGHT      PAL8_YELLOW
+// color for dim map lines/dots
+#define COLOR_DIM         (PAL16_YELLOW+8)
+
+#define MAPFLAG_TYPE      0x000F
+// these are in the second byte
+#define MAPFLAG_VERTDOOR   0x01
+#define MAPFLAG_HORZDOOR   0x02
+#define MAPFLAG_VERTARCH   0x04
+#define MAPFLAG_HORZARCH   0x08
+#define MAPFLAG_VERTGRATE  0x10
+#define MAPFLAG_HORZGRATE  0x20
+#define MAPFLAG_SQUARE     0x40
+#define MAPFLAG_STAIRS     0x80
 
 void __cdecl InitAutomapOnce()
 {
@@ -264,7 +282,7 @@ void __cdecl DrawAutomap()
 		int y;
 
 		for ( j = 0; j < cells; j++ ) {
-			short maptype = GetAutomapType(mapx + j, mapy - j, TRUE);
+			USHORT maptype = GetAutomapType(mapx + j, mapy - j, TRUE);
 			if ( maptype )
 				DrawAutomapType(x, screen_y, maptype);
 			x += AutoMapPosBits;
@@ -273,7 +291,7 @@ void __cdecl DrawAutomap()
 		x = screen_x - AutoMapXPos;
 		y = screen_y + AutoMapYPos;
 		for ( j = 0; j <= cells; j++ ) {
-			short maptype = GetAutomapType(mapx + j, mapy - j, TRUE);
+			USHORT maptype = GetAutomapType(mapx + j, mapy - j, TRUE);
 			if ( maptype )
 				DrawAutomapType(x, y, maptype);
 			x += AutoMapPosBits;
@@ -289,241 +307,190 @@ void __cdecl DrawAutomap()
 // 69BD04: using guessed type int questlog;
 // 69CF0C: using guessed type int gpBufEnd;
 
-void __fastcall DrawAutomapType(int screen_x, int screen_y, short automap_type)
+void __fastcall DrawAutomapType(int screen_x, int screen_y, USHORT automap_type)
 {
-	short v3; // al
-	int v4; // ebx
-	int v5; // edi
-	int a3; // ST2C_4
-	int a1; // ST28_4
-	int a2; // ST24_4
-	int v9; // edx
-	int v10; // ST28_4
-	int v11; // ST2C_4
-	int v12; // ST24_4
-	int v13; // ST2C_4
-	int v14; // ST28_4
-	int v15; // ST24_4
-	int v16; // ST28_4
-	int v17; // ST24_4
-	int v18; // ST2C_4
-	int v19; // ST2C_4
-	int v20; // ST28_4
-	int v21; // ST24_4
-	int v22; // ST28_4
-	int v23; // ST2C_4
-	int v24; // ST24_4
-	int v25; // ST28_4
-	int v26; // ST24_4
-	int v27; // ST2C_4
-	int v28; // [esp-Ch] [ebp-34h]
-	int v29; // [esp-8h] [ebp-30h]
-	signed int v30; // [esp+Ch] [ebp-1Ch]
-	signed int v31; // [esp+10h] [ebp-18h]
-	signed int v32; // [esp+14h] [ebp-14h]
-	char v33; // [esp+27h] [ebp-1h]
-	int automap_typea; // [esp+30h] [ebp+8h]
-	int automap_typeb; // [esp+30h] [ebp+8h]
-	int automap_typec; // [esp+30h] [ebp+8h]
-	int automap_typed; // [esp+30h] [ebp+8h]
-	int automap_typee; // [esp+30h] [ebp+8h]
-	int automap_typef; // [esp+30h] [ebp+8h]
-	int automap_typeg; // [esp+30h] [ebp+8h]
+	BOOL do_vert;
+	BOOL do_horz;
+	BOOL do_cave_horz;
+	BOOL do_cave_vert;
+	int x1, y1, x2, y2;
 
-	v3 = automap_type;
-	v4 = screen_x;
-	v5 = screen_y;
-	v33 = _HIBYTE(automap_type);
-	if ( automap_type & 0x4000 )
-	{
-		ENG_set_pixel(screen_x, screen_y, 200);
-		ENG_set_pixel(v4 - AMPlayerX, v5 - AMPlayerY, 200);
-		ENG_set_pixel(v4 - AMPlayerX, AMPlayerY + v5, 200);
-		ENG_set_pixel(AMPlayerX + v4, v5 - AMPlayerY, 200);
-		ENG_set_pixel(AMPlayerX + v4, AMPlayerY + v5, 200);
-		ENG_set_pixel(v4 - AutoMapYPos, v5, 200);
-		ENG_set_pixel(AutoMapYPos + v4, v5, 200);
-		ENG_set_pixel(v4, v5 - AMPlayerX, 200);
-		ENG_set_pixel(v4, AMPlayerX + v5, 200);
-		ENG_set_pixel(v4 + AMPlayerX - AutoMapXPos, AMPlayerY + v5, 200);
-		ENG_set_pixel(v4 + AutoMapXPos - AMPlayerX, AMPlayerY + v5, 200);
-		ENG_set_pixel(v4 - AutoMapYPos, AMPlayerX + v5, 200);
-		ENG_set_pixel(AutoMapYPos + v4, AMPlayerX + v5, 200);
-		ENG_set_pixel(v4 - AMPlayerX, v5 + AutoMapYPos - AMPlayerY, 200);
-		ENG_set_pixel(AMPlayerX + v4, v5 + AutoMapYPos - AMPlayerY, 200);
-		ENG_set_pixel(v4, AutoMapYPos + v5, 200);
-		v3 = automap_type;
+	UCHAR flags = automap_type >> 8;
+
+	if ( flags & MAPFLAG_SQUARE ) {
+		ENG_set_pixel(screen_x, screen_y, COLOR_DIM);
+		ENG_set_pixel(screen_x - AMPlayerX, screen_y - AMPlayerY, COLOR_DIM);
+		ENG_set_pixel(screen_x - AMPlayerX, screen_y + AMPlayerY, COLOR_DIM);
+		ENG_set_pixel(screen_x + AMPlayerX, screen_y - AMPlayerY, COLOR_DIM);
+		ENG_set_pixel(screen_x + AMPlayerX, screen_y + AMPlayerY, COLOR_DIM);
+		ENG_set_pixel(screen_x - AutoMapYPos, screen_y, COLOR_DIM);
+		ENG_set_pixel(screen_x + AutoMapYPos, screen_y, COLOR_DIM);
+		ENG_set_pixel(screen_x, screen_y - AMPlayerX, COLOR_DIM);
+		ENG_set_pixel(screen_x, screen_y + AMPlayerX, COLOR_DIM);
+		ENG_set_pixel(screen_x + AMPlayerX - AutoMapXPos, screen_y + AMPlayerY, COLOR_DIM);
+		ENG_set_pixel(screen_x - AMPlayerX + AutoMapXPos, screen_y + AMPlayerY, COLOR_DIM);
+		ENG_set_pixel(screen_x - AutoMapYPos, screen_y + AMPlayerX, COLOR_DIM);
+		ENG_set_pixel(screen_x + AutoMapYPos, screen_y + AMPlayerX, COLOR_DIM);
+		ENG_set_pixel(screen_x - AMPlayerX, screen_y + AutoMapYPos - AMPlayerY, COLOR_DIM);
+		ENG_set_pixel(screen_x + AMPlayerX, screen_y + AutoMapYPos - AMPlayerY, COLOR_DIM);
+		ENG_set_pixel(screen_x, screen_y + AutoMapYPos, COLOR_DIM);
 	}
-	if ( automap_type < 0 )
-	{
-		DrawLine(v4 - AMPlayerX, v5 - AMPlayerX - AMPlayerY, v4 + AMPlayerX + AutoMapYPos, AMPlayerY + v5, 144);
-		DrawLine(v4 - AutoMapYPos, v5 - AMPlayerX, AutoMapYPos + v4, AMPlayerX + v5, 144);
-		DrawLine(v4 - AutoMapYPos - AMPlayerX, v5 - AMPlayerY, AMPlayerX + v4, v5 + AMPlayerX + AMPlayerY, 144);
-		DrawLine(v4 - AutoMapXPos, v5, v4, v5 + AutoMapYPos, 144);
-		v3 = automap_type;
+
+	if ( flags & MAPFLAG_STAIRS ) {
+		DrawLine(screen_x - AMPlayerX, screen_y - AMPlayerX - AMPlayerY, screen_x + AMPlayerX + AutoMapYPos, screen_y + AMPlayerY, COLOR_BRIGHT);
+		DrawLine(screen_x - AutoMapYPos, screen_y - AMPlayerX, screen_x + AutoMapYPos, screen_y + AMPlayerX, COLOR_BRIGHT);
+		DrawLine(screen_x - AutoMapYPos - AMPlayerX, screen_y - AMPlayerY, screen_x + AMPlayerX, screen_y + AMPlayerX + AMPlayerY, COLOR_BRIGHT);
+		DrawLine(screen_x - AutoMapXPos, screen_y, screen_x, screen_y + AutoMapYPos, COLOR_BRIGHT);
 	}
-	v31 = 0;
-	v30 = 0;
-	v32 = 0;
-	switch ( v3 & 0xF )
-	{
-		case 1:
-			a3 = v4 - AutoMapYPos + AutoMapXPos;
-			a1 = v4 - AutoMapYPos;
-			a2 = v5 - AutoMapYPos;
-			automap_typea = v5 - AMPlayerX;
-			DrawLine(v4, v5 - AutoMapYPos, v4 - AutoMapYPos, v5 - AMPlayerX, 200);
-			DrawLine(v4, a2, a3, automap_typea, 200);
-			DrawLine(v4, v5, a1, automap_typea, 200);
-			v9 = v5;
-			v29 = automap_typea;
-			v28 = a3;
-			goto LABEL_36;
+
+	do_vert = FALSE;
+	do_horz = FALSE;
+	do_cave_horz = FALSE;
+	do_cave_vert = FALSE;
+	switch ( automap_type & MAPFLAG_TYPE ) {
+		case 1: // stand-alone column or other unpassable object
+			x1 = screen_x - AutoMapYPos;
+			y1 = screen_y - AutoMapYPos;
+			x2 = x1 + AutoMapXPos;
+			y2 = screen_y - AMPlayerX;
+			DrawLine(screen_x, y1, x1, y2, COLOR_DIM);
+			DrawLine(screen_x, y1, x2, y2, COLOR_DIM);
+			DrawLine(screen_x, screen_y, x1, y2, COLOR_DIM);
+			DrawLine(screen_x, screen_y, x2, y2, COLOR_DIM);
+			return;
 		case 2:
 		case 5:
-			goto LABEL_8;
+			do_vert = TRUE;
+			break;
+		case 4:
+			do_vert = TRUE;
+			do_horz = TRUE;
+			break;
 		case 3:
 		case 6:
-			goto LABEL_17;
-		case 4:
-			v31 = 1;
-			goto LABEL_8;
-		case 7:
-			goto LABEL_25;
-		case 8:
-			v30 = 1;
-LABEL_8:
-			if ( automap_type & 0x100 )
-			{
-				v10 = v4 - AutoMapXPos;
-				v11 = v4 - AutoMapYPos;
-				v12 = v5 - AutoMapYPos;
-				automap_typeb = v5 - AMPlayerX;
-				DrawLine(v4, v5 - AutoMapYPos, v4 - AMPlayerX, v5 - AutoMapYPos + AMPlayerY, 200);
-				DrawLine(v10, v5, v10 + AMPlayerX, v5 - AMPlayerY, 200);
-				DrawLine(v11, v12, v10, automap_typeb, 144);
-				DrawLine(v11, v12, v4, automap_typeb, 144);
-				DrawLine(v11, v5, v10, automap_typeb, 144);
-				DrawLine(v11, v5, v4, automap_typeb, 144);
-			}
-			if ( v33 & 0x10 )
-			{
-				DrawLine(v4 - AutoMapYPos, v5 - AMPlayerX, v4 - AutoMapXPos, v5, 200);
-				v33 |= 4u;
-			}
-			if ( v33 & 4 )
-			{
-				v13 = v4 - AutoMapYPos + AutoMapXPos;
-				v14 = v4 - AutoMapYPos;
-				v15 = v5 - AutoMapYPos;
-				automap_typec = v5 - AMPlayerX;
-				DrawLine(v4, v5 - AutoMapYPos, v4 - AutoMapYPos, v5 - AMPlayerX, 200);
-				DrawLine(v4, v15, v13, automap_typec, 200);
-				DrawLine(v4, v5, v14, automap_typec, 200);
-				DrawLine(v4, v5, v13, automap_typec, 200);
-			}
-			if ( !(v33 & 0x15) )
-				DrawLine(v4, v5 - AutoMapYPos, v4 - AutoMapXPos, v5, 200);
-			if ( v31 )
-				goto LABEL_17;
-			goto LABEL_25;
-		case 9:
-			v32 = 1;
-LABEL_17:
-			if ( v33 & 2 )
-			{
-				v16 = AutoMapYPos + v4;
-				v17 = v5 - AutoMapYPos;
-				v18 = v4 + AutoMapXPos;
-				automap_typed = v5 - AMPlayerX;
-				DrawLine(v4, v5 - AutoMapYPos, v4 + AMPlayerX, v5 - AutoMapYPos + AMPlayerY, 200);
-				DrawLine(v18, v5, v18 - AMPlayerX, v5 - AMPlayerY, 200);
-				DrawLine(v16, v17, v4, automap_typed, 144);
-				DrawLine(v16, v17, v18, automap_typed, 144);
-				DrawLine(v16, v5, v4, automap_typed, 144);
-				DrawLine(v16, v5, v18, automap_typed, 144);
-			}
-			if ( v33 & 0x20 )
-			{
-				DrawLine(AutoMapYPos + v4, v5 - AMPlayerX, v4 + AutoMapXPos, v5, 200);
-				v33 |= 8u;
-			}
-			if ( v33 & 8 )
-			{
-				v19 = v4 - AutoMapYPos + AutoMapXPos;
-				v20 = v4 - AutoMapYPos;
-				v21 = v5 - AutoMapYPos;
-				automap_typee = v5 - AMPlayerX;
-				DrawLine(v4, v5 - AutoMapYPos, v4 - AutoMapYPos, v5 - AMPlayerX, 200);
-				DrawLine(v4, v21, v19, automap_typee, 200);
-				DrawLine(v4, v5, v20, automap_typee, 200);
-				DrawLine(v4, v5, v19, automap_typee, 200);
-			}
-			if ( !(v33 & 0x2A) )
-				DrawLine(v4, v5 - AutoMapYPos, v4 + AutoMapXPos, v5, 200);
-LABEL_25:
-			if ( v30 )
-				goto LABEL_26;
-			goto LABEL_32;
-		case 0xA:
-			goto LABEL_26;
-		case 0xB:
-			goto LABEL_33;
-		case 0xC:
-			v32 = 1;
-LABEL_26:
-			if ( v33 & 1 )
-			{
-				v22 = v4 - AutoMapXPos;
-				v23 = v4 - AutoMapYPos;
-				v24 = AutoMapYPos + v5;
-				automap_typef = AMPlayerX + v5;
-				DrawLine(v4, AutoMapYPos + v5, v4 - AMPlayerX, AutoMapYPos + v5 - AMPlayerY, 200);
-				DrawLine(v22, v5, v22 + AMPlayerX, v5 + AMPlayerY, 200);
-				DrawLine(v23, v24, v22, automap_typef, 144);
-				DrawLine(v23, v24, v4, automap_typef, 144);
-				DrawLine(v23, v5, v22, automap_typef, 144);
-				DrawLine(v23, v5, v4, automap_typef, 144);
-			}
-			else
-			{
-				DrawLine(v4, AutoMapYPos + v5, v4 - AutoMapXPos, v5, 200);
-			}
-LABEL_32:
-			if ( v32 )
-			{
-LABEL_33:
-				if ( v33 & 2 )
-				{
-					v25 = AutoMapYPos + v4;
-					v26 = AutoMapYPos + v5;
-					v27 = v4 + AutoMapXPos;
-					automap_typeg = AMPlayerX + v5;
-					DrawLine(v4, AutoMapYPos + v5, v4 + AMPlayerX, AutoMapYPos + v5 - AMPlayerY, 200);
-					DrawLine(v27, v5, v27 - AMPlayerX, v5 + AMPlayerY, 200);
-					DrawLine(v25, v26, v4, automap_typeg, 144);
-					DrawLine(v25, v26, v27, automap_typeg, 144);
-					DrawLine(v25, v5, v4, automap_typeg, 144);
-					DrawLine(v25, v5, v27, automap_typeg, 144);
-				}
-				else
-				{
-					v29 = v5;
-					v28 = v4 + AutoMapXPos;
-					v9 = AutoMapYPos + v5;
-LABEL_36:
-					DrawLine(v4, v9, v28, v29, 200);
-				}
-			}
+			do_horz = TRUE;
 			break;
-		default:
-			return;
+		case 8:
+			do_vert = TRUE;
+			do_cave_horz = TRUE;
+			break;
+		case 9:
+			do_horz = TRUE;
+			do_cave_vert = TRUE;
+			break;
+		case 10:
+			do_cave_horz = TRUE;
+			break;
+		case 11:
+			do_cave_vert = TRUE;
+			break;
+		case 12:
+			do_cave_horz = TRUE;
+			do_cave_vert = TRUE;
+			break;
+	}
+
+	if ( do_vert ) { // right-facing obstacle
+		if ( flags & MAPFLAG_VERTDOOR ) { // two wall segments with a door in the middle
+			x1 = screen_x - AutoMapXPos;
+			x2 = screen_x - AutoMapYPos;
+			y1 = screen_y - AutoMapYPos;
+			y2 = screen_y - AMPlayerX;
+
+			DrawLine(screen_x, y1, screen_x - AMPlayerX, y1 + AMPlayerY, COLOR_DIM);
+			DrawLine(x1, screen_y, x1 + AMPlayerX, screen_y - AMPlayerY, COLOR_DIM);
+			DrawLine(x2, y1, x1, y2, COLOR_BRIGHT);
+			DrawLine(x2, y1, screen_x, y2, COLOR_BRIGHT);
+			DrawLine(x2, screen_y, x1, y2, COLOR_BRIGHT);
+			DrawLine(x2, screen_y, screen_x, y2, COLOR_BRIGHT);
+		}
+		if ( flags & MAPFLAG_VERTGRATE ) { // right-facing half-wall
+			DrawLine(screen_x - AutoMapYPos, screen_y - AMPlayerX, screen_x - AutoMapXPos, screen_y, COLOR_DIM);
+			flags |= MAPFLAG_VERTARCH;
+		}
+		if ( flags & MAPFLAG_VERTARCH ) { // window or passable column
+			x1 = screen_x - AutoMapYPos;
+			y1 = screen_y - AutoMapYPos;
+			x2 = x1 + AutoMapXPos;
+			y2 = screen_y - AMPlayerX;
+
+			DrawLine(screen_x, y1, x1, y2, COLOR_DIM);
+			DrawLine(screen_x, y1, x2, y2, COLOR_DIM);
+			DrawLine(screen_x, screen_y, x1, y2, COLOR_DIM);
+			DrawLine(screen_x, screen_y, x2, y2, COLOR_DIM);
+		}
+		if ( !( flags & (MAPFLAG_VERTDOOR | MAPFLAG_VERTGRATE | MAPFLAG_VERTARCH )) )
+			DrawLine(screen_x, screen_y - AutoMapYPos, screen_x - AutoMapXPos, screen_y, COLOR_DIM);
+	}
+
+	if ( do_horz ) { // left-facing obstacle
+		if ( flags & MAPFLAG_HORZDOOR ) {
+			x1 = screen_x + AutoMapYPos;
+			x2 = screen_x + AutoMapXPos;
+			y1 = screen_y - AutoMapYPos;
+			y2 = screen_y - AMPlayerX;
+
+			DrawLine(screen_x, y1, screen_x + AMPlayerX, y1 + AMPlayerY, COLOR_DIM);
+			DrawLine(x2, screen_y, x2 - AMPlayerX, screen_y - AMPlayerY, COLOR_DIM);
+			DrawLine(x1, y1, screen_x, y2, COLOR_BRIGHT);
+			DrawLine(x1, y1, x2, y2, COLOR_BRIGHT);
+			DrawLine(x1, screen_y, screen_x, y2, COLOR_BRIGHT);
+			DrawLine(x1, screen_y, x2, y2, COLOR_BRIGHT);
+		}
+		if ( flags & MAPFLAG_HORZGRATE ) {
+			DrawLine(screen_x + AutoMapYPos, screen_y - AMPlayerX, screen_x + AutoMapXPos, screen_y, COLOR_DIM);
+			flags |= MAPFLAG_HORZARCH;
+		}
+		if ( flags & MAPFLAG_HORZARCH ) {
+			x1 = screen_x - AutoMapYPos;
+			y1 = screen_y - AutoMapYPos;
+			x2 = x1 + AutoMapXPos;
+			y2 = screen_y - AMPlayerX;
+
+			DrawLine(screen_x, y1, x1, y2, COLOR_DIM);
+			DrawLine(screen_x, y1, x2, y2, COLOR_DIM);
+			DrawLine(screen_x, screen_y, x1, y2, COLOR_DIM);
+			DrawLine(screen_x, screen_y, x2, y2, COLOR_DIM);
+		}
+		if ( !( flags & ( MAPFLAG_HORZDOOR | MAPFLAG_HORZGRATE | MAPFLAG_HORZARCH )) )
+			DrawLine(screen_x, screen_y - AutoMapYPos, screen_x + AutoMapXPos, screen_y, COLOR_DIM);
+	}
+
+	// for caves the horz/vert flags are switched
+	if ( do_cave_horz ) {
+		if ( flags & MAPFLAG_VERTDOOR ) {
+			x1 = screen_x - AutoMapXPos;
+			x2 = screen_x - AutoMapYPos;
+			y1 = screen_y + AutoMapYPos;
+			y2 = screen_y + AMPlayerX;
+
+			DrawLine(screen_x, y1, screen_x - AMPlayerX, y1 - AMPlayerY, COLOR_DIM);
+			DrawLine(x1, screen_y, screen_x + AMPlayerX, screen_y + AMPlayerY, COLOR_DIM);
+			DrawLine(x2, y1, x1, y2, COLOR_BRIGHT);
+			DrawLine(x2, y1, screen_x, y2, COLOR_BRIGHT);
+			DrawLine(x2, screen_y, x1, y2, COLOR_BRIGHT);
+			DrawLine(x2, screen_y, screen_x, y2, COLOR_BRIGHT);
+		} else
+			DrawLine(screen_x, screen_y + AutoMapYPos, screen_x - AutoMapXPos, screen_y, COLOR_DIM);
+	}
+
+	if ( do_cave_vert ) {
+		if ( flags & MAPFLAG_HORZDOOR ) {
+			x1 = screen_x + AutoMapYPos;
+			x2 = screen_x + AutoMapXPos;
+			y1 = screen_y + AutoMapYPos;
+			y2 = screen_y + AMPlayerX;
+
+			DrawLine(screen_x, y1, screen_x + AMPlayerX, y1 - AMPlayerY, COLOR_DIM);
+			DrawLine(x2, screen_y, x2 - AMPlayerX, screen_y + AMPlayerY, COLOR_DIM);
+			DrawLine(x1, y1, screen_x, y2, COLOR_BRIGHT);
+			DrawLine(x1, y1, x2, y2, COLOR_BRIGHT);
+			DrawLine(x1, screen_y, screen_x, y2, COLOR_BRIGHT);
+			DrawLine(x1, screen_y, x2, y2, COLOR_BRIGHT);
+		} else
+			DrawLine(screen_x, screen_y + AutoMapYPos, screen_x + AutoMapXPos, screen_y, COLOR_DIM);
 	}
 }
-// 4B84BC: using guessed type int AutoMapXPos;
-// 4B84C0: using guessed type int AutoMapYPos;
-// 4B84C4: using guessed type int AMPlayerX;
-// 4B84C8: using guessed type int AMPlayerY;
 
 void __cdecl DrawAutomapPlr()
 {
@@ -678,12 +645,12 @@ LABEL_25:
 // 4B8968: using guessed type int sbookflag;
 // 69BD04: using guessed type int questlog;
 
-short __fastcall GetAutomapType(int x, int y, BOOL view)
+USHORT __fastcall GetAutomapType(int x, int y, BOOL view)
 {
 	int v3; // edi
 	int v4; // esi
 	int v6; // eax
-	short v7; // bp
+	USHORT v7; // bp
 
 	v3 = y;
 	v4 = x;
@@ -717,9 +684,9 @@ short __fastcall GetAutomapType(int x, int y, BOOL view)
 	if ( !automapview[0][v6] && view )
 		return 0;
 	v7 = automaptype[(unsigned char)dungeon[0][v6]];
-	if ( v7 == 7 && ((unsigned short)GetAutomapType(x - 1, y, 0) >> 8) & 8 )
+	if ( v7 == 7 && (GetAutomapType(x - 1, y, 0) >> 8) & 8 )
 	{
-		if ( ((unsigned short)GetAutomapType(v4, v3 - 1, 0) >> 8) & 4 )
+		if ( (GetAutomapType(v4, v3 - 1, 0) >> 8) & 4 )
 			v7 = 1;
 	}
 	return v7;

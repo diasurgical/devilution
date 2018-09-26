@@ -1460,14 +1460,14 @@ LABEL_28:
 }
 // 69CF0C: using guessed type int gpBufEnd;
 
-void __fastcall ENG_set_pixel(int screen_x, int screen_y, char pixel)
+void __fastcall ENG_set_pixel(int screen_x, int screen_y, UCHAR pixel)
 {
-	char *v3; // edi
+	UCHAR *v3; // edi
 
 	if ( screen_y >= 0 && screen_y < 640 && screen_x >= 64 && screen_x < 704 )
 	{
-		v3 = (char *)gpBuffer + screen_y_times_768[screen_y] + screen_x;
-		if ( v3 < (char *)gpBufEnd )
+		v3 = (UCHAR *)gpBuffer + screen_y_times_768[screen_y] + screen_x;
+		if ( v3 < gpBufEnd )
 			*v3 = pixel;
 	}
 }
@@ -1499,7 +1499,7 @@ LABEL_14:
 // 52B99C: using guessed type int dword_52B99C;
 // 69CF0C: using guessed type int gpBufEnd;
 
-void __fastcall DrawLine(int x0, int y0, int x1, int y1, char col)
+void __fastcall DrawLine(int x0, int y0, int x1, int y1, UCHAR col)
 {
 	int v5; // ST18_4
 	int v6; // ST2C_4
