@@ -2553,7 +2553,6 @@ enum _ui_classes
 
 enum _walk_path
 {
-	WALK_NONE = 0x0,
 	WALK_NE = 0x1,
 	WALK_NW = 0x2,
 	WALK_SE = 0x3,
@@ -2562,6 +2561,7 @@ enum _walk_path
 	WALK_E = 0x6,
 	WALK_S = 0x7,
 	WALK_W = 0x8,
+	WALK_NONE = 0xFFFFFFFF,
 };
 
 enum item_class {

@@ -874,7 +874,7 @@ void __fastcall InitPlayer(int pnum, BOOL FirstTime)
 
 		plr[pnum]._px = plr[pnum].WorldX;
 		plr[pnum]._py = plr[pnum].WorldY;
-		plr[pnum].walkpath[0] = -1;
+		plr[pnum].walkpath[0] = WALK_NONE;
 		plr[pnum].destAction = ACTION_NONE;
 
 		if ( pnum == myplr ) {
@@ -2190,7 +2190,7 @@ BOOL __fastcall PM_DoWalk(int pnum)
 			ViewY = plr[pnum].WorldY - ScrollInfo._sdy;
 		}
 
-		if ( plr[pnum].walkpath[0] != -1 ) {
+		if ( plr[pnum].walkpath[0] != WALK_NONE ) {
 			StartWalkStand(pnum);
 		} else {
 			StartStand(pnum, plr[pnum]._pVar3);
@@ -2240,7 +2240,7 @@ BOOL __fastcall PM_DoWalk2(int pnum)
 			ViewY = plr[pnum].WorldY - ScrollInfo._sdy;
 		}
 
-		if ( plr[pnum].walkpath[0] != -1 ) {
+		if ( plr[pnum].walkpath[0] != WALK_NONE ) {
 			StartWalkStand(pnum);
 		} else {
 			StartStand(pnum, plr[pnum]._pVar3);
@@ -2295,7 +2295,7 @@ BOOL __fastcall PM_DoWalk3(int pnum)
 			ViewY = plr[pnum].WorldY - ScrollInfo._sdy;
 		}
 
-		if ( plr[pnum].walkpath[0] != -1 ) {
+		if ( plr[pnum].walkpath[0] != WALK_NONE ) {
 			StartWalkStand(pnum);
 		} else {
 			StartStand(pnum, plr[pnum]._pVar3);
@@ -3564,7 +3564,7 @@ void __fastcall ClrPlrPath(int pnum)
 		TermMsg("ClrPlrPath: illegal player %d", pnum);
 	}
 
-	memset(plr[pnum].walkpath, -1, sizeof(plr[pnum].walkpath));
+	memset(plr[pnum].walkpath, WALK_NONE, sizeof(plr[pnum].walkpath));
 }
 
 BOOL __fastcall PosOkPlayer(int pnum, int px, int py)
@@ -3622,68 +3622,60 @@ BOOL __fastcall PosOkPlayer(int pnum, int px, int py)
 
 void __fastcall MakePlrPath(int pnum, int xx, int yy, BOOL endspace)
 {
-	int v4; // esi
-	int v5; // ebx
-	int v6; // esi
-	int v7; // edi
-	int v8; // eax
-	int v9; // eax
-	int v10; // ecx
-	int a2; // [esp+Ch] [ebp-4h]
-
-	v4 = pnum;
-	v5 = xx;
-	a2 = pnum;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS ) {
 		TermMsg("MakePlrPath: illegal player %d", pnum);
-	v6 = v4;
-	v7 = yy;
-	v8 = plr[v6]._px;
-	plr[v6]._ptargx = v5;
-	plr[v6]._ptargy = yy;
-	if ( v8 != v5 || plr[v6]._py != yy )
-	{
-		v9 = FindPath(PosOkPlayer, a2, v8, plr[v6]._py, v5, yy, plr[v6].walkpath);
-		if ( v9 )
-		{
-			if ( !endspace )
-			{
-				v10 = plr[v6].walkpath[--v9]; /* *((char *)&plr[v6]._pmode + v9-- + 3) */
-				switch ( v10 )
-				{
-					case 1: // N
-						goto LABEL_12;
-					case 2: // W
-						++v5;
-						break;
-					case 3: // E
-						--v5;
-						break;
-					case 4: // S
-						goto LABEL_15;
-					case 5: // NW
-						++v5;
-						goto LABEL_12;
-					case 6: // NE
-						--v5;
-LABEL_12:
-						v7 = yy + 1;
-						break;
-					case 7: // SE
-						--v5;
-						goto LABEL_15;
-					case 8: // SW
-						++v5;
-LABEL_15:
-						v7 = yy - 1;
-						break;
-				}
-				plr[v6]._ptargx = v5;
-				plr[v6]._ptargy = v7;
-			}
-			plr[v6].walkpath[v9] = -1;
-		}
 	}
+
+	plr[pnum]._ptargx = xx;
+	plr[pnum]._ptargy = yy;
+	if ( plr[pnum]._px == xx && plr[pnum]._py == yy ) {
+		return;
+	}
+
+	int path = FindPath(PosOkPlayer, pnum, plr[pnum]._px, plr[pnum]._py, xx, yy, plr[pnum].walkpath);
+	if ( !path ) {
+		return;
+	}
+
+	if ( !endspace ) {
+		path--;
+
+		switch ( plr[pnum].walkpath[path] ) {
+			case WALK_NE:
+				yy++;
+				break;
+			case WALK_NW:
+				xx++;
+				break;
+			case WALK_SE:
+				xx--;
+				break;
+			case WALK_SW:
+				yy--;
+				break;
+			case WALK_N:
+				xx++;
+				yy++;
+				break;
+			case WALK_E:
+				xx--;
+				yy++;
+				break;
+			case WALK_S:
+				xx--;
+				yy--;
+				break;
+			case WALK_W:
+				xx++;
+				yy--;
+				break;
+		}
+
+		plr[pnum]._ptargx = xx;
+		plr[pnum]._ptargy = yy;
+	}
+
+	plr[pnum].walkpath[path] = WALK_NONE;
 }
 
 void __fastcall CheckPlrSpell()
