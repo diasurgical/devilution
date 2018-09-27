@@ -1,20 +1,18 @@
 // ref: 0x100063B3
-signed int __stdcall UiBetaDisclaimer(int a1) { return 0; }
-/* {
+BOOL __stdcall UiBetaDisclaimer(int a1)
+{
 	int v1; // eax
 
-	v1 = SDrawGetFrameWindow();
-	SDlgDialogBoxParam(hInstance, "DISCLAIMER_DIALOG", v1, disclaim_100063DA, a1);
+	v1 = (int)SDrawGetFrameWindow();
+	SDlgDialogBoxParam(ghUiInst, "DISCLAIMER_DIALOG", v1, disclaim_WndProc, a1);
 	return 1;
-} */
-// 10010370: using guessed type int __stdcall SDlgDialogBoxParam(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
+}
 // 10010382: using guessed type _DWORD __stdcall SDrawGetFrameWindow();
 
 // ref: 0x100063DA
-int __stdcall disclaim_100063DA(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) { return 0; }
-/* {
+LRESULT __stdcall disclaim_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
+{
 	HWND v5; // eax
-	int v6; // [esp+0h] [ebp-8h]
 
 	if ( Msg > 0x111 )
 	{
@@ -23,15 +21,15 @@ int __stdcall disclaim_100063DA(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPara
 			if ( Msg == 528 )
 			{
 				if ( (_WORD)wParam == 513 || (_WORD)wParam == 516 )
-					disclaim_10006552(hWnd);
+					disclaim_FadeFromDisclaim(hWnd);
 			}
 			else if ( Msg == 2024 )
 			{
-				if ( !Fade_1000739F() )
-					Fade_100073FD(hWnd, v6);
+				if ( !Fade_CheckRange5() )
+					Fade_SetFadeTimer((int)hWnd);
 				return 0;
 			}
-			return SDlgDefDialogProc(hWnd, Msg, wParam, lParam);
+			return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 		}
 	}
 	else if ( Msg != 273 )
@@ -49,77 +47,63 @@ int __stdcall disclaim_100063DA(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPara
 					}
 					else if ( Msg == 272 )
 					{
-						disclaim_100064F3(hWnd);
+						disclaim_LoadDisclaimGFX(hWnd);
 						PostMessageA(hWnd, 0x7E8u, 0, 0);
 						return 1;
 					}
 				}
-				return SDlgDefDialogProc(hWnd, Msg, wParam, lParam);
+				return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 			}
 			goto LABEL_21;
 		}
-		disclaim_100064C9(hWnd);
-		return SDlgDefDialogProc(hWnd, Msg, wParam, lParam);
+		disclaim_DelDisclaimProcs(hWnd);
+		return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 	}
 LABEL_21:
-	disclaim_10006552(hWnd);
+	disclaim_FadeFromDisclaim(hWnd);
 	return 0;
-} */
-// 1001037C: using guessed type int __stdcall SDlgDefDialogProc(_DWORD, _DWORD, _DWORD, _DWORD);
+}
 // 10010382: using guessed type _DWORD __stdcall SDrawGetFrameWindow();
 
 // ref: 0x100064C9
-void UNKCALL disclaim_100064C9(HWND hDlg) { return; }
-/* {
-	HWND v1; // esi
-	_DWORD *v2; // eax
+void __fastcall disclaim_DelDisclaimProcs(HWND hWnd)
+{
+	void **v2; // eax
 
-	v1 = hDlg;
-	Doom_10006C53(hDlg, (int *)&unk_10022AA4);
-	Doom_10006C53(v1, (int *)&unk_10022A98);
-	v2 = (_DWORD *)GetWindowLongA(v1, -21);
-	local_10007F72(v2);
-} */
+	Doom_DeleteFreeProcs(hWnd, disclaim_msgtbl2);
+	Doom_DeleteFreeProcs(hWnd, disclaim_msgtbl1);
+	v2 = (void **)GetWindowLongA(hWnd, -21);
+	local_FreeMemPtr(v2);
+}
 
 // ref: 0x100064F3
-int UNKCALL disclaim_100064F3(HWND hWnd) { return 0; }
-/* {
-	HWND v1; // edi
-	int v2; // eax
-	int *v3; // esi
+void __fastcall disclaim_LoadDisclaimGFX(HWND hWnd)
+{
+	DWORD *v2; // eax MAPDST
 
-	v1 = hWnd;
-	v2 = local_10007F46();
-	v3 = (int *)v2;
+	v2 = local_AllocWndLongData();
 	if ( v2 )
 	{
-		SetWindowLongA(v1, -21, v2);
-		local_10007944((int)v1, 0, &byte_10029448, -1, 1, (int)"ui_art\\disclaim.pcx", v3, v3 + 1, 0);
-		Fade_100073C5(v1, 0);
+		SetWindowLongA(hWnd, -21, (LONG)v2);
+		local_LoadArtWithPal(hWnd, 0, &nullcharacter, -1, 1, "ui_art\\disclaim.pcx", (BYTE **)v2, v2 + 1, 0);
+		Fade_NoInputAndArt(hWnd, 0);
 	}
-	Doom_100068AB(v1, (int *)&unk_10022A98, 5);
-	return Doom_100068AB(v1, (int *)&unk_10022AA4, 2);
-} */
+	Doom_ParseWndProc3(hWnd, disclaim_msgtbl1, 5);
+	Doom_ParseWndProc3(hWnd, disclaim_msgtbl2, 2);
+}
 
 // ref: 0x10006552
-int UNKCALL disclaim_10006552(void *arg) { return 0; }
-/* {
-	void *v1; // esi
-
-	v1 = arg;
-	Fade_100073B4();
-	Fade_100072BE(10);
-	return SDlgEndDialog(v1, 1);
-} */
-// 10010376: using guessed type int __stdcall SDlgEndDialog(_DWORD, _DWORD);
+void __fastcall disclaim_FadeFromDisclaim(HWND hWnd)
+{
+	Fade_Range5SetZero();
+	Fade_UpdatePaletteRange(10);
+	SDlgEndDialog(hWnd, (void *)HANDLE_FLAG_INHERIT);
+}
 
 // ref: 0x10006571
-signed int disclaim_10006571() { return 0; }
-/* {
-	signed int result; // eax
-
-	result = 2139095040;
-	dword_10029850 = 2139095040;
-	return result;
-} */
-// 10029850: using guessed type int dword_10029850;
+void __cdecl disclaim_cpp_init()
+{
+	disclaim_cpp_float = disclaim_cpp_float_value;
+}
+// 1001F418: using guessed type int disclaim_cpp_float_value;
+// 10029850: using guessed type int disclaim_cpp_float;
