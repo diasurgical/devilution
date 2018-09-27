@@ -606,22 +606,18 @@ void __fastcall CreatePlayer(int pnum, char c)
 	plr[pnum]._pInfraFlag = 0;
 
 	if ( c == PC_WARRIOR ) {
-		plr[pnum]._pAblSpells[0] = 0x2000000;
-		plr[pnum]._pAblSpells[1] = 0;
+		plr[pnum]._pAblSpells64 = (__int64)1 << SPL_REPAIR - 1;
 	} else if ( c == PC_ROGUE ) {
-		plr[pnum]._pAblSpells[0] = 0x8000000;
-		plr[pnum]._pAblSpells[1] = 0;
+		plr[pnum]._pAblSpells64 = (__int64)1 << SPL_DISARM - 1;
 	} else if ( c == PC_SORCERER ) {
-		plr[pnum]._pAblSpells[0] = 0x4000000;
-		plr[pnum]._pAblSpells[1] = 0;
+		plr[pnum]._pAblSpells64 = (__int64)1 << SPL_RECHARGE - 1;
 	}
 
-	if ( c == PC_SORCERER ) {
-		plr[pnum]._pMemSpells[0] = 1;
+	if ( c == PC_SORCERER) {
+		plr[pnum]._pMemSpells64 = 1;
 	} else {
-		plr[pnum]._pMemSpells[0] = 0;
+		plr[pnum]._pMemSpells64 = 0;
 	}
-	plr[pnum]._pMemSpells[1] = 0;
 
 	int i;
 	for ( i = 0; i < sizeof(plr[pnum]._pSplLvl); i++ ) {
@@ -652,8 +648,8 @@ void __fastcall CreatePlayer(int pnum, char c)
 		plr[pnum]._pLvlVisited[i] = 0;
 	}
 
-	for ( i = 0; i < sizeof(plr[pnum]._pSLvlVisited); i++ ) {
-		plr[pnum]._pSLvlVisited[i] = 0;
+	for ( i = 0; i < 10; i++ ) {
+		plr[pnum]._pSLvlVisited[i] = 0; // TODO double check size of _pSLvlVisited
 	}
 
 	plr[pnum]._pLvlChanging = 0;

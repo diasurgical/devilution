@@ -224,7 +224,7 @@ struct PlayerStruct
 		unsigned __int64 _pScrlSpells64;
 		int _pScrlSpells[2];
 	};
-	int _pSpellFlags;
+	UCHAR _pSpellFlags;
 	int _pSplHotKey[4];
 	char _pSplTHotKey[4];
 	int _pwtype;
