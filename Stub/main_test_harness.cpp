@@ -21,7 +21,7 @@ static void init()
 
 	init_archives();
 
-	encrypt_init_lookup_table();
+	InitHash();
 	diablo_init_screen();
 
 	InitLightTable();

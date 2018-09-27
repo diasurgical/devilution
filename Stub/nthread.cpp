@@ -27,7 +27,7 @@ void __cdecl nthread_cleanup()
 	DUMMY();
 }
 
-void __fastcall nthread_terminate_game(char *pszFcn)
+void __fastcall nthread_terminate_game(const char *pszFcn)
 {
 	UNIMPLEMENTED();
 }

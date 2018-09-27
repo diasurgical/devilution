@@ -1093,29 +1093,29 @@ incbin EXE, 0x152D8, 7
 global d_effects_play_sound:function 100
 d_effects_play_sound:
 incbin EXE, 0x152DF, 100
-global d_encrypt_decrypt_block:function 76
-d_encrypt_decrypt_block:
+global d_Decrypt:function 76
+d_Decrypt:
 incbin EXE, 0x15343, 76
-global d_encrypt_encrypt_block:function 80
-d_encrypt_encrypt_block:
+global d_Encrypt:function 80
+d_Encrypt:
 incbin EXE, 0x1538F, 80
-global d_encrypt_hash:function 79
-d_encrypt_hash:
+global d_Hash:function 79
+d_Hash:
 incbin EXE, 0x153DF, 79
-global d_encrypt_init_lookup_table:function 111
-d_encrypt_init_lookup_table:
+global d_InitHash:function 111
+d_InitHash:
 incbin EXE, 0x1542E, 111
-global d_encrypt_compress:function 150
-d_encrypt_compress:
+global d_PkwareCompress:function 150
+d_PkwareCompress:
 incbin EXE, 0x1549D, 150
-global d_encrypt_pkware_read:function 52
-d_encrypt_pkware_read:
+global d_PkwareBufferRead:function 52
+d_PkwareBufferRead:
 incbin EXE, 0x15533, 52
-global d_encrypt_pkware_write:function 39
-d_encrypt_pkware_write:
+global d_PkwareBufferWrite:function 39
+d_PkwareBufferWrite:
 incbin EXE, 0x15567, 39
-global d_encrypt_decompress:function 110
-d_encrypt_decompress:
+global d_PkwareDecompress:function 110
+d_PkwareDecompress:
 incbin EXE, 0x1558E, 110
 global d_j_engine_cpp_init_1:function 5
 d_j_engine_cpp_init_1:
@@ -7270,8 +7270,8 @@ resb 4
 global sfx_data_cur:data 4
 sfx_data_cur:
 resb 4
-global encrypt_table:data 5124
-encrypt_table:
+global hashtable:data 5124
+hashtable:
 resb 5124
 global engine_cpp_init_value:data 4
 engine_cpp_init_value:
