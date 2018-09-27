@@ -62,10 +62,10 @@ void __fastcall Encrypt(void *block, int size, int key)
 	}
 }
 
-int __fastcall Hash(char *s, int type)
+int __fastcall Hash(const char *s, int type)
 {
 	int v2; // ebp
-	char *v3; // ebx
+	const char *v3; // ebx
 	signed int v4; // esi
 	int v5; // edi
 	int v6; // ST00_4

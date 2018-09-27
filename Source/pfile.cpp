@@ -568,7 +568,7 @@ BOOL __stdcall pfile_ui_save_create(_uiheroinfo *heroinfo)
 	return 1;
 }
 
-bool __stdcall pfile_get_file_name(int lvl, char *dst)
+BOOL __stdcall pfile_get_file_name(int lvl, char *dst)
 {
 	int v2; // ecx
 	bool v3; // zf
@@ -713,7 +713,7 @@ void __cdecl pfile_remove_temp_files()
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-bool __stdcall GetTempSaveNames(int dwIndex, char *szTemp)
+BOOL __stdcall GetTempSaveNames(int dwIndex, char *szTemp)
 {
 	int v2; // eax
 	const char *v3; // ecx
