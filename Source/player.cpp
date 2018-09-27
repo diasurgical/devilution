@@ -1541,13 +1541,13 @@ void __fastcall FixPlrWalkTags(int pnum)
 		TermMsg("FixPlrWalkTags: illegal player %d", pnum);
 	}
 
-	int pNext = pnum + 1;
-	int pNextI = -(pnum + 1);
+	int pp = pnum + 1;
+	int pn = -(pnum + 1);
 	int dx = plr[pnum]._poldx;
 	int dy = plr[pnum]._poldy;
 	for ( int y = dy - 1; y <= dy + 1; y++ ) {
 		for ( int x = dx - 1; x <= dx + 1; x++ ) {
-			if ( x >= 0 && x < MAXDUNX && y >= 0 && y < MAXDUNY && (dPlayer[x][y] == pNext || dPlayer[x][y] == pNextI) ) {
+			if ( x >= 0 && x < MAXDUNX && y >= 0 && y < MAXDUNY && (dPlayer[x][y] == pp || dPlayer[x][y] == pn) ) {
 				dPlayer[x][y] = 0;
 			}
 		}
@@ -1562,19 +1562,19 @@ void __fastcall FixPlrWalkTags(int pnum)
 void __fastcall RemovePlrFromMap(int pnum)
 {
 	int x, y;
-	int pNext = pnum + 1;
-	int pNextI = -(pnum + 1);
+	int pp = pnum + 1;
+	int pn = -(pnum + 1);
 
 	for(y = 1; y < MAXDUNY; y++)
-		for (x = 1; x < MAXDUNX; x++)
-			if ( dPlayer[x+1][y-1] == pNextI || dPlayer[x][y] == pNextI )
-				if ( dFlags[x][y] & DFLAG_PLAYER )
+		for(x = 1; x < MAXDUNX; x++)
+			if(dPlayer[x][y-1] == pn || dPlayer[x-1][y] == pn)
+				if(dFlags[x][y] & DFLAG_PLAYER)
 					dFlags[x][y] &= ~DFLAG_PLAYER;
 
 	for(y = 0; y < MAXDUNY; y++)
-		for (x = 0; x < MAXDUNX; x++)
-			if ( dFlags[x][y] == pNext || dFlags[x][y] == pNextI )
-				dFlags[x][y] = 0;
+		for(x = 0; x < MAXDUNX; x++)
+			if(dPlayer[x][y] == pp || dPlayer[x][y] == pn)
+				dPlayer[x][y] = 0;
 }
 
 void __fastcall StartPlrHit(int pnum, int dam, BOOL forcehit)
@@ -2112,11 +2112,6 @@ void __fastcall StartWarpLvl(int pnum, int pidx)
 // 679660: using guessed type char gbMaxPlayers;
 
 BOOL __fastcall PM_DoStand(int pnum)
-{
-	return FALSE;
-}
-
-BOOL __fastcall PM_DoNewLvl(int pnum)
 {
 	return FALSE;
 }
@@ -3004,6 +2999,11 @@ BOOL __fastcall PM_DoDeath(int pnum)
 }
 // 679660: using guessed type char gbMaxPlayers;
 // 69B7C4: using guessed type int deathdelay;
+
+BOOL __fastcall PM_DoNewLvl(int pnum)
+{
+	return FALSE;
+}
 
 void __fastcall CheckNewPath(int pnum)
 {
