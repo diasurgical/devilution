@@ -2,6 +2,7 @@
 
 #include "../types.h"
 
+// BUGFIX: only the first 256 elements are ever read
 USHORT automaptype[512];
 static int MapX;
 static int MapY;
@@ -188,9 +189,9 @@ void __cdecl AutomapZoomIn()
 		AutoMapScale += 5;
 		AutoMapPosBits = (AutoMapScale << 6) / 100;
 		AutoMapXPos = AutoMapPosBits >> 1;
-		AutoMapYPos = AutoMapPosBits >> 2;
-		AMPlayerX = AutoMapPosBits >> 3;
-		AMPlayerY = AutoMapPosBits >> 4;
+		AutoMapYPos = AutoMapXPos >> 1;
+		AMPlayerX = AutoMapYPos >> 1;
+		AMPlayerY = AMPlayerX >> 1;
 	}
 }
 // 4B84B8: using guessed type int AutoMapPosBits;
@@ -206,9 +207,9 @@ void __cdecl AutomapZoomOut()
 		AutoMapScale -= 5;
 		AutoMapPosBits = (AutoMapScale << 6) / 100;
 		AutoMapXPos = AutoMapPosBits >> 1;
-		AutoMapYPos = AutoMapPosBits >> 2;
-		AMPlayerX = AutoMapPosBits >> 3;
-		AMPlayerY = AutoMapPosBits >> 4;
+		AutoMapYPos = AutoMapXPos >> 1;
+		AMPlayerX = AutoMapYPos >> 1;
+		AMPlayerY = AMPlayerX >> 1;
 	}
 }
 // 4B84B8: using guessed type int AutoMapPosBits;
@@ -647,86 +648,54 @@ LABEL_25:
 
 USHORT __fastcall GetAutomapType(int x, int y, BOOL view)
 {
-	int v3; // edi
-	int v4; // esi
-	int v6; // eax
-	USHORT v7; // bp
-
-	v3 = y;
-	v4 = x;
-	if ( view )
-	{
-		if ( x == -1 && y >= 0 && y < 40 && automapview[0][y] )
-		{
-			x = 0;
-			return ~GetAutomapType(x, y, 0) & 0x4000;
-		}
-		if ( y == -1 )
-		{
+	if ( view ) {
+		if ( x == -1 && y >= 0 && y < DMAXY && automapview[0][y] )
+			return ~GetAutomapType(0, y, FALSE) & (MAPFLAG_SQUARE << 8);
+		if ( y == -1 ) {
 			if ( x < 0 )
 				return 0;
-			if ( x < 40 && automapview[x][0] )
-			{
-				y = 0;
-				return ~GetAutomapType(x, y, 0) & 0x4000;
-			}
+			if ( x < DMAXX && automapview[x][0] )
+				return ~GetAutomapType(x, 0, FALSE) & (MAPFLAG_SQUARE << 8);
 		}
 	}
-	if ( x < 0 )
-		return 0;
-	if ( x >= 40 )
-		return 0;
-	if ( y < 0 )
-		return 0;
-	if ( y >= 40 )
-		return 0;
-	v6 = y + 40 * x;
-	if ( !automapview[0][v6] && view )
-		return 0;
-	v7 = automaptype[(unsigned char)dungeon[0][v6]];
-	if ( v7 == 7 && (GetAutomapType(x - 1, y, 0) >> 8) & 8 )
-	{
-		if ( (GetAutomapType(v4, v3 - 1, 0) >> 8) & 4 )
-			v7 = 1;
+
+	if ( x >= 0 && x < DMAXX && y >= 0 && y < DMAXY ) {
+		if ( automapview[x][y] || !view ) {
+			USHORT type = automaptype[(UCHAR)dungeon[x][y]];
+			if ( type == 7 && GetAutomapType(x - 1, y, FALSE) & (MAPFLAG_HORZARCH << 8)
+				&& GetAutomapType(x, y - 1, FALSE) & (MAPFLAG_VERTARCH << 8) ) {
+				type = 1;
+			}
+			return type;
+		}
 	}
-	return v7;
+	return 0;
 }
 
 void __cdecl DrawAutomapGame()
 {
-	int v0; // esi
-	char *v1; // eax
-	char *v2; // eax
-	char v3[256]; // [esp+4h] [ebp-100h]
+	char desc[256];
+	int nextline = 20;
 
-	v0 = 20;
-	if ( (unsigned char)gbMaxPlayers > 1u )
-	{
-		v1 = strcpy(v3, "game: ");
-		strcat(v1, szPlayerName);
-		PrintGameStr(8, 20, v3, 3);
-		v0 = 35;
-		if ( szPlayerDescript[0] )
-		{
-			v2 = strcpy(v3, "password: ");
-			strcat(v2, szPlayerDescript);
-			PrintGameStr(8, 35, v3, 3);
-			v0 = 50;
+	if ( gbMaxPlayers > 1 ) {
+		strcat(strcpy(desc, "game: "), szPlayerName);
+		PrintGameStr(8, 20, desc, COL_GOLD);
+		nextline = 35;
+		if ( szPlayerDescript[0] ) {
+			strcat(strcpy(desc, "password: "), szPlayerDescript);
+			PrintGameStr(8, 35, desc, COL_GOLD);
+			nextline = 50;
 		}
 	}
 	if ( setlevel )
-	{
-		PrintGameStr(8, v0, quest_level_names[(unsigned char)setlvlnum], 3);
-	}
-	else if ( currlevel )
-	{
-		sprintf(v3, "Level: %i", currlevel);
-		PrintGameStr(8, v0, v3, 3);
+		PrintGameStr(8, nextline, quest_level_names[(UCHAR)setlvlnum], COL_GOLD);
+	else if ( currlevel ) {
+		sprintf(desc, "Level: %i", currlevel);
+		PrintGameStr(8, nextline, desc, COL_GOLD);
 	}
 }
 // 5CCB10: using guessed type char setlvlnum;
 // 5CF31D: using guessed type char setlevel;
-// 679660: using guessed type char gbMaxPlayers;
 
 void __fastcall SetAutomapView(int x, int y)
 {
@@ -803,9 +772,9 @@ void __cdecl AutomapZoomReset()
 	AutoMapYOfs = 0;
 	AutoMapPosBits = (AutoMapScale << 6) / 100;
 	AutoMapXPos = AutoMapPosBits >> 1;
-	AutoMapYPos = AutoMapPosBits >> 2;
-	AMPlayerX = AutoMapPosBits >> 3;
-	AMPlayerY = AutoMapPosBits >> 4;
+	AutoMapYPos = AutoMapXPos >> 1;
+	AMPlayerX = AutoMapYPos >> 1;
+	AMPlayerY = AMPlayerX >> 1;
 }
 // 4B84B0: using guessed type int AutoMapXOfs;
 // 4B84B4: using guessed type int AutoMapYOfs;
