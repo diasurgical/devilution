@@ -279,6 +279,7 @@ function(SETUP_TARGET_FOR_COVERAGE_GCOVR_HTML)
 
         # Running gcovr
         COMMAND ${GCOVR_PATH} --html --html-details
+            --delete
             -r ${PROJECT_SOURCE_DIR} ${GCOVR_EXCLUDES}
             --object-directory=${PROJECT_BINARY_DIR}
             -o ${Coverage_NAME}/index.html

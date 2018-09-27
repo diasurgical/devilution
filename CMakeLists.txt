@@ -193,10 +193,13 @@ if(TARGET harness)
         ${SOURCES}
         ${STUB_SOURCES}
         # Stub/main_harness.cpp
-        Stub/main_test_harness.cpp
+        Stub/main_test.cpp
         Absolute/absolute.cpp
         Absolute/hook.cpp
+        Stub/test_utils.cpp
     )
+
+    target_compile_definitions(devil-harness PUBLIC -DHAVE_HARNESS)
 
     target_link_libraries(devil-harness PUBLIC
         m
@@ -210,6 +213,8 @@ add_executable(devil-sanitize
     ${SOURCES}
     ${STUB_SOURCES}
     Stub/main_test.cpp
+    Stub/test_utils.cpp
+    Stub/sanitize.cpp
 )
 
 target_compile_options(devil-sanitize PRIVATE
