@@ -2,7 +2,7 @@
 
 #include "../types.h"
 
-int invflag;
+BOOL invflag;
 void *pInvCels;
 int drawsbarflag; // idb
 int sgdwLastTime; // check name
@@ -3029,7 +3029,7 @@ LABEL_8:
 	CalcPlrScrolls(p);
 }
 
-bool __cdecl UseScroll()
+BOOL __cdecl UseScroll()
 {
 	int v0; // eax
 	int v1; // esi
@@ -3039,7 +3039,7 @@ bool __cdecl UseScroll()
 	int *v5; // ecx
 
 	if ( pcurs != CURSOR_HAND || leveltype == DTYPE_TOWN && !*(_DWORD *)&spelldata[plr[myplr]._pRSpell].sTownSpell )
-		return 0;
+		return FALSE;
 	v0 = myplr;
 	v1 = 0;
 	v2 = plr[myplr]._pNumInv;
@@ -3053,7 +3053,7 @@ LABEL_11:
 			++v4;
 			v5 += 92;
 			if ( v4 >= MAXBELTITEMS )
-				return 0;
+				return FALSE;
 		}
 	}
 	else
@@ -3067,7 +3067,7 @@ LABEL_11:
 				goto LABEL_11;
 		}
 	}
-	return 1;
+	return TRUE;
 }
 // 5BB1ED: using guessed type char leveltype;
 
@@ -3090,12 +3090,12 @@ void __fastcall UseStaffCharge(int pnum)
 	}
 }
 
-bool __cdecl UseStaff()
+BOOL __cdecl UseStaff()
 {
 	int v0; // eax
-	bool result; // al
+	BOOL result; // al
 
-	result = 0;
+	result = FALSE;
 	if ( pcurs == CURSOR_HAND )
 	{
 		v0 = myplr;
@@ -3104,7 +3104,7 @@ bool __cdecl UseStaff()
 			&& plr[v0].InvBody[4]._iSpell == plr[v0]._pRSpell
 			&& plr[v0].InvBody[4]._iCharges > 0 )
 		{
-			result = 1;
+			result = TRUE;
 		}
 	}
 	return result;

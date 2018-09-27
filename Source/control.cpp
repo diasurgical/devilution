@@ -424,7 +424,7 @@ void __cdecl DrawSpellList()
 	int v17; // [esp+Ch] [ebp-34h]
 	__int32 xp; // [esp+10h] [ebp-30h]
 	__int32 yp; // [esp+14h] [ebp-2Ch]
-	unsigned char *v20; // [esp+18h] [ebp-28h]
+	BOOL *v20; // [esp+18h] [ebp-28h]
 	__int32 nCel; // [esp+1Ch] [ebp-24h]
 	int v22; // [esp+20h] [ebp-20h]
 	__int32 v23; // [esp+24h] [ebp-1Ch]
