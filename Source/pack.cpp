@@ -16,7 +16,7 @@ struct pack_cpp_init
 // 47F168: using guessed type int pack_inf;
 // 67D7C8: using guessed type int pack_cpp_init_value;
 
-void __fastcall PackPlayer(PkPlayerStruct *pPack, int pnum, bool manashield)
+void __fastcall PackPlayer(PkPlayerStruct *pPack, int pnum, BOOL manashield)
 {
 	PlayerStruct *pPlayer; // edi
 	int i; // [esp+8h] [ebp-Ch]

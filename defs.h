@@ -67,7 +67,9 @@
 #define PAL16_RED		224
 #define PAL16_GRAY		240
 
-
+#ifndef INVALID_FILE_ATTRIBUTES
+#define INVALID_FILE_ATTRIBUTES ((DWORD)-1)
+#endif
 
 
 
