@@ -2104,29 +2104,25 @@ void __fastcall StartNewLvl(int pnum, int fom, int lvl)
 
 void __fastcall RestartTownLvl(int pnum)
 {
-	unsigned int v1; // edi
-	unsigned int v2; // esi
-	int v3; // eax
-	HWND v4; // ST00_4
-
-	v1 = pnum;
 	InitLevelChange(pnum);
-	if ( v1 >= MAX_PLRS )
-		TermMsg("RestartTownLvl: illegal player %d", v1);
-	v2 = v1;
-	plr[v2].plrlevel = 0;
-	plr[v2]._pInvincible = 0;
-	SetPlayerHitPoints(v1, 64);
-	v3 = plr[v2]._pMaxManaBase - plr[v2]._pMaxMana;
-	plr[v2]._pMana = 0;
-	plr[v2]._pManaBase = v3;
-	CalcPlrInv(v1, 0);
-	if ( v1 == myplr )
-	{
-		plr[v2]._pmode = PM_NEWLVL;
-		v4 = ghMainWnd;
-		plr[v2]._pInvincible = 1;
-		PostMessage(v4, WM_DIABRETOWN, 0, 0);
+	if ( (DWORD)pnum >= MAX_PLRS ) {
+		TermMsg("RestartTownLvl: illegal player %d", pnum);
+	}
+
+	plr[pnum].plrlevel = 0;
+	plr[pnum]._pInvincible = FALSE;
+
+	SetPlayerHitPoints(pnum, 64);
+
+	plr[pnum]._pMana = 0;
+	plr[pnum]._pManaBase = plr[pnum]._pMaxManaBase - plr[pnum]._pMaxMana;
+
+	CalcPlrInv(pnum, FALSE);
+
+	if ( pnum == myplr ) {
+		plr[pnum]._pmode = PM_NEWLVL;
+		plr[pnum]._pInvincible = TRUE;
+		PostMessage(ghMainWnd, WM_DIABRETOWN, 0, 0);
 	}
 }
 
