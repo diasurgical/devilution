@@ -6622,7 +6622,7 @@ void __fastcall BreakCrux(int i)
 	object[v1]._oAnimFlag = 1;
 	object[v1]._oAnimFrame = 1;
 	object[v1]._oAnimDelay = 1;
-	object[v1]._oSolidFlag = 1;
+	object[v1]._oSolidFlag = TRUE;
 	object[v1]._oMissFlag = 1;
 	if ( v2 <= 0 )
 		goto LABEL_15;
@@ -6692,7 +6692,7 @@ void __fastcall BreakBarrel(int pnum, int i, int dam, unsigned char forcebreak, 
 			object[v5]._oAnimFlag = 1;
 			object[v5]._oAnimFrame = 1;
 			object[v5]._oAnimDelay = 1;
-			object[v5]._oSolidFlag = 0;
+			object[v5]._oSolidFlag = FALSE;
 			object[v5]._oMissFlag = 1;
 			object[v5]._oSelFlag = 0;
 			object[v5]._oPreFlag = 1;

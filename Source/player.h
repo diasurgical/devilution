@@ -70,6 +70,7 @@ void __fastcall StartNewLvl(int pnum, int fom, int lvl);
 void __fastcall RestartTownLvl(int pnum);
 void __fastcall StartWarpLvl(int pnum, int pidx);
 BOOL __fastcall PM_DoStand(int pnum);
+BOOL __fastcall PM_DoNewLvl(int pnum);
 BOOL __fastcall PM_DoWalk(int pnum);
 BOOL __fastcall PM_DoWalk2(int pnum);
 BOOL __fastcall PM_DoWalk3(int pnum);

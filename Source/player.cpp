@@ -2156,6 +2156,11 @@ BOOL __fastcall PM_DoStand(int pnum)
 	return FALSE;
 }
 
+BOOL __fastcall PM_DoNewLvl(int pnum)
+{
+	return FALSE;
+}
+
 BOOL __fastcall PM_DoWalk(int pnum)
 {
 	if ( (DWORD)pnum >= MAX_PLRS ) {
@@ -3440,7 +3445,7 @@ void __cdecl ProcessPlayers()
 		TermMsg("ProcessPlayers: illegal player %d", myplr);
 	}
 
-	if ( plr[myplr].pLvlLoad ) {
+	if ( plr[myplr].pLvlLoad > 0 ) {
 		plr[myplr].pLvlLoad--;
 	}
 
@@ -3462,7 +3467,7 @@ void __cdecl ProcessPlayers()
 			}
 
 			if ( pnum == myplr ) {
-				if ( plr[pnum]._pIFlags & ISPL_DRAINLIFE ) {
+				if ( (plr[pnum]._pIFlags & ISPL_DRAINLIFE) && currlevel ) {
 					plr[pnum]._pHitPoints -= 4;
 					plr[pnum]._pHPBase -= 4;
 					if ( (plr[pnum]._pHitPoints >> 6) <= 0 ) {
@@ -3479,8 +3484,7 @@ void __cdecl ProcessPlayers()
 
 			BOOL tplayer = FALSE;
 			do {
-				switch ( plr[pnum]._pmode )
-				{
+				switch ( plr[pnum]._pmode ) {
 					case PM_STAND:
 						tplayer = PM_DoStand(pnum);
 						break;
@@ -3502,27 +3506,27 @@ void __cdecl ProcessPlayers()
 					case PM_BLOCK:
 						tplayer = PM_DoBlock(pnum);
 						break;
+					case PM_SPELL:
+						tplayer = PM_DoSpell(pnum);
+						break;
 					case PM_GOTHIT:
 						tplayer = PM_DoGotHit(pnum);
 						break;
 					case PM_DEATH:
 						tplayer = PM_DoDeath(pnum);
 						break;
-					case PM_SPELL:
-						tplayer = PM_DoSpell(pnum);
-						break;
 					case PM_NEWLVL:
-						tplayer = PM_DoStand(pnum);
+						tplayer = PM_DoNewLvl(pnum);
 						break;
 				}
 				CheckNewPath(pnum);
 			} while ( tplayer );
 
 			plr[pnum]._pAnimCnt++;
-			if ( plr[pnum]._pAnimDelay < plr[pnum]._pAnimCnt ) {
+			if ( plr[pnum]._pAnimCnt > plr[pnum]._pAnimDelay ) {
 				plr[pnum]._pAnimCnt = 0;
 				plr[pnum]._pAnimFrame++;
-				if ( plr[pnum]._pAnimLen < plr[pnum]._pAnimFrame ) {
+				if ( plr[pnum]._pAnimFrame > plr[pnum]._pAnimLen ) {
 					plr[pnum]._pAnimFrame = 1;
 				}
 			}

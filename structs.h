@@ -661,7 +661,7 @@ struct ObjDataStruct
 	int oAnimDelay;
 	int oAnimLen;
 	int oAnimWidth;
-	int oSolidFlag;
+	BOOL oSolidFlag;
 	int oMissFlag;
 	int oLightFlag;
 	char oBreak;
@@ -685,7 +685,7 @@ struct ObjectStruct
 	int _oAnimWidth2;
 	int _oDelFlag;
 	char _oBreak; // check
-	int _oSolidFlag;
+	BOOL _oSolidFlag;
 	int _oMissFlag;
 	char _oSelFlag; // check
 	int _oPreFlag;
