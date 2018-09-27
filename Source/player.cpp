@@ -1542,12 +1542,12 @@ void __fastcall FixPlrWalkTags(int pnum)
 	}
 
 	int pNext = pnum + 1;
-	int pPrev = -(pnum + 1);
+	int pNextI = -(pnum + 1);
 	int dx = plr[pnum]._poldx;
 	int dy = plr[pnum]._poldy;
 	for ( int y = dy - 1; y <= dy + 1; y++ ) {
 		for ( int x = dx - 1; x <= dx + 1; x++ ) {
-			if ( x >= 0 && x < MAXDUNX && y >= 0 && y < MAXDUNY && (dPlayer[x][y] == pNext || dPlayer[x][y] == pPrev) ) {
+			if ( x >= 0 && x < MAXDUNX && y >= 0 && y < MAXDUNY && (dPlayer[x][y] == pNext || dPlayer[x][y] == pNextI) ) {
 				dPlayer[x][y] = 0;
 			}
 		}
@@ -1561,56 +1561,20 @@ void __fastcall FixPlrWalkTags(int pnum)
 
 void __fastcall RemovePlrFromMap(int pnum)
 {
-	int v1; // esi
-	signed int v2; // edi
-	signed int v3; // edx
-	signed int v4; // ebx
-	char v5; // al
-	signed int v6; // edx
-	_BYTE *v7; // eax
-	signed int v8; // edi
-	int v9; // ecx
-	int v10; // [esp+Ch] [ebp-4h]
+	int x, y;
+	int pNext = pnum + 1;
+	int pNextI = -(pnum + 1);
 
-	v1 = -1 - pnum;
-	v10 = pnum + 1;
-	v2 = 1;
-	do
-	{
-		v3 = v2;
-		v4 = 111;
-		do
-		{
-			if ( dPlayer[0][v3 + 111] == v1 || dPlayer[0][v3] == v1 )
-			{
-				v5 = dFlags[1][v3];
-				if ( v5 & 0x20 )
-					dFlags[1][v3] = v5 & ~DFLAG_PLAYER;
-			}
-			v3 += 112;
-			--v4;
-		}
-		while ( v4 );
-		++v2;
-	}
-	while ( v2 < 112 );
-	v6 = 0;
-	do
-	{
-		v7 = (unsigned char *)dPlayer + v6;
-		v8 = 112;
-		do
-		{
-			v9 = (char)*v7;
-			if ( v9 == v10 || v9 == v1 )
-				*v7 = 0;
-			v7 += 112;
-			--v8;
-		}
-		while ( v8 );
-		++v6;
-	}
-	while ( v6 < 112 );
+	for(y = 1; y < MAXDUNY; y++)
+		for (x = 1; x < MAXDUNX; x++)
+			if ( dPlayer[x+1][y-1] == pNextI || dPlayer[x][y] == pNextI )
+				if ( dFlags[x][y] & DFLAG_PLAYER )
+					dFlags[x][y] &= ~DFLAG_PLAYER;
+
+	for(y = 0; y < MAXDUNY; y++)
+		for (x = 0; x < MAXDUNX; x++)
+			if ( dFlags[x][y] == pNext || dFlags[x][y] == pNextI )
+				dFlags[x][y] = 0;
 }
 
 void __fastcall StartPlrHit(int pnum, int dam, BOOL forcehit)
