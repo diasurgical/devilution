@@ -3038,7 +3038,7 @@ BOOL __cdecl UseScroll()
 	signed int v4; // esi
 	int *v5; // ecx
 
-	if ( pcurs != CURSOR_HAND || leveltype == DTYPE_TOWN && !*(_DWORD *)&spelldata[plr[myplr]._pRSpell].sTownSpell )
+	if ( pcurs != CURSOR_HAND || leveltype == DTYPE_TOWN && !spelldata[plr[myplr]._pRSpell].sTownSpell )
 		return FALSE;
 	v0 = myplr;
 	v1 = 0;
@@ -3249,8 +3249,8 @@ int __fastcall UseInvItem(int pnum, int cii)
 			dropGoldFlag = 0;
 			dropGoldValue = 0;
 		}
-		if ( v9 == 21 && !currlevel && !*(_DWORD *)&spelldata[v6[56]].sTownSpell
-			|| v9 == 22 && !currlevel && !*(_DWORD *)&spelldata[v6[56]].sTownSpell )
+		if ( v9 == 21 && !currlevel && !spelldata[v6[56]].sTownSpell
+			|| v9 == 22 && !currlevel && !spelldata[v6[56]].sTownSpell )
 		{
 			return 1;
 		}

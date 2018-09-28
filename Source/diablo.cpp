@@ -1745,7 +1745,7 @@ LABEL_27:
 				case 'a':
 					if ( debug_mode_key_inverted_v )
 					{
-						spelldata[SPL_TELEPORT].sTownSpell = 1;
+						spelldata[SPL_TELEPORT].sTownSpell = TRUE;
 						plr[myplr]._pSplLvl[plr[myplr]._pSpell]++;
 					}
 					return;

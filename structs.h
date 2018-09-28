@@ -1065,7 +1065,7 @@ struct SpellData
 	char *sSkillText;
 	int sBookLvl;
 	int sStaffLvl;
-	int sTargeted;
+	BOOL sTargeted;
 	BOOL sTownSpell;
 	int sMinInt;
 	unsigned char sSFX;
