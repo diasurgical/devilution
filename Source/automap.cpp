@@ -88,7 +88,7 @@ void __cdecl InitAutomap()
 		++v1;
 	}
 	while ( v1 < 31 );
-	memset(automaptype, 0, 0x400u);
+	memset(automaptype, 0, sizeof(automaptype));
 	switch ( leveltype )
 	{
 		case DTYPE_CATHEDRAL:
@@ -121,7 +121,7 @@ void __cdecl InitAutomap()
 		automaptype[i] = v8;
 	}
 	mem_free_dbg(v7);
-	memset(automapview, 0, 0x640u);
+	memset(automapview, 0, sizeof(automapview));
 	v13 = 0;
 	do
 	{

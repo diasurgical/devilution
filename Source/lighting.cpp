@@ -1373,11 +1373,11 @@ void __cdecl ToggleLighting()
 	lightflag ^= 1;
 	if ( lightflag )
 	{
-		memset(dTransVal, 0, 0x3100u);
+		memset(dTransVal, 0, sizeof(dTransVal));
 	}
 	else
 	{
-		memcpy(dTransVal, dTransVal2, 0x3100u);
+		memcpy(dTransVal, dTransVal2, sizeof(dTransVal));
 		for(i = 0; i < 4; i++)
 		{
 			if ( plr[i].plractive )

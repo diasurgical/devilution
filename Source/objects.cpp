@@ -375,7 +375,7 @@ void __cdecl InitObjectGFX()
 	unsigned char fileload[56]; // [esp+4h] [ebp-58h]
 	char filestr[32]; // [esp+3Ch] [ebp-20h]
 
-	memset(fileload, 0, 0x38u);
+	memset(fileload, 0, sizeof(fileload));
 	if ( AllObjects[0].oload != -1 )
 	{
 		v0 = AllObjects;

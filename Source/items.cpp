@@ -647,7 +647,7 @@ void __cdecl InitItemGFX()
 		++v0;
 	}
 	while ( v0 < 35 );
-	memset(UniqueItemFlag, 0, 0x200u);
+	memset(UniqueItemFlag, 0, sizeof(UniqueItemFlag));
 }
 
 bool __fastcall ItemPlace(int xp, int yp)
@@ -2913,7 +2913,7 @@ int __fastcall CheckUnique(int i, int lvl, int uper, bool recreate)
 	if ( random(28, 100) > uper )
 		return -1;
 	numu = 0;
-	memset(uok, 0, 0x80u);
+	memset(uok, 0, sizeof(uok));
 
 	if ( UniqueItemList[0].UIItemId == -1 )
 		return -1;
