@@ -1437,7 +1437,9 @@ void __cdecl L5AddWall()
 
 int __fastcall L5HWallOk(int i, int j)
 {
-	for(int x = 1; dungeon[i+x][j] == 13; x++) {
+	int x;
+
+	for(x = 1; dungeon[i+x][j] == 13; x++) {
 		if(dungeon[i+x][j-1] != 13 || dungeon[i+x][j+1] != 13 || mydflags[i+x][j])
 			break;
 	}
@@ -1460,7 +1462,9 @@ int __fastcall L5HWallOk(int i, int j)
 
 int __fastcall L5VWallOk(int i, int j)
 {
-	for(int y = 1; dungeon[i][j+y] == 13; y++) {
+	int y;
+
+	for(y = 1; dungeon[i][j+y] == 13; y++) {
 		if(dungeon[i-1][j+y] != 13 || dungeon[i+1][j+y] != 13 || mydflags[i][j+y])
 			break;
 	}
