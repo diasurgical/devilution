@@ -308,7 +308,7 @@ BOOL __stdcall pfile_ui_set_hero_infos(BOOL (__stdcall *ui_add_hero_info)(_uiher
 	LPCSTR lpSrcStr; // [esp+7C0h] [ebp-8h]
 	int save_num; // [esp+7C4h] [ebp-4h]
 
-	memset(hero_names, 0, 0x140u);
+	memset(hero_names, 0, sizeof(hero_names));
 	if ( (unsigned char)gbMaxPlayers > 1u )
 	{
 		lpSrcStr = 0;

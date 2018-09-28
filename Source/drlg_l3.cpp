@@ -659,7 +659,7 @@ void __cdecl InitL3Dungeon()
 	int i; // edx
 	int j; // ecx
 
-	memset(dungeon, 0, 0x640u);
+	memset(dungeon, 0, sizeof(dungeon));
 
 	for(i = 0; i < 40; i++)
 	{

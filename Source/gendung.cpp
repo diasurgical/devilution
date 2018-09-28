@@ -78,11 +78,11 @@ void __cdecl FillSolidBlockTbls()
 	unsigned char v4; // bl
 	int size; // [esp+8h] [ebp-4h]
 
-	memset(nBlockTable, 0, 0x801u);
-	memset(nSolidTable, 0, 0x801u);
-	memset(nTransTable, 0, 0x801u);
-	memset(nMissileTable, 0, 0x801u);
-	memset(nTrapTable, 0, 0x801u);
+	memset(nBlockTable, 0, sizeof(nBlockTable));
+	memset(nSolidTable, 0, sizeof(nSolidTable));
+	memset(nTransTable, 0, sizeof(nTransTable));
+	memset(nMissileTable, 0, sizeof(nMissileTable));
+	memset(nTrapTable, 0, sizeof(nTrapTable));
 	if ( leveltype != DTYPE_TOWN )
 	{
 		switch ( leveltype )
@@ -674,8 +674,8 @@ void __cdecl SetDungeonMicros()
 
 void __cdecl DRLG_InitTrans()
 {
-	memset(dung_map, 0, 0x3100u);
-	memset(TransList, 0, 0x100u);
+	memset(dung_map, 0, sizeof(dung_map));
+	memset(TransList, 0, sizeof(TransList));
 	TransVal = 1;
 }
 // 5A5590: using guessed type char TransVal;
@@ -913,8 +913,8 @@ bool __fastcall DRLG_WillThemeRoomFit(int floor, int x, int y, int minSize, int 
 		return 0;
 	if ( !SkipThemeRoom(x, y) )
 		return 0;
-	memset(xArray, 0, 0x50u);
-	memset(yArray, 0, 0x50u);
+	memset(xArray, 0, sizeof(xArray));
+	memset(yArray, 0, sizeof(yArray));
 	if ( maxSize > 0 )
 	{
 		v10 = 40 * v7;
@@ -1279,7 +1279,7 @@ void __fastcall DRLG_PlaceThemeRooms(int minSize, int maxSize, int floor, int fr
 	maxSize2 = maxSize;
 	minSize2 = minSize;
 	themeCount = 0;
-	memset(themeLoc, 0, 0x14u);
+	memset(themeLoc, 0, sizeof(*themeLoc));
 	do
 	{
 		x = 0;
