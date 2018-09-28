@@ -1,4 +1,6 @@
+#include "Stub/asserts.h"
 #include <assert.h>
+#include <cstdio>
 #include <sys/mman.h>
 
 #include "hook.h"
@@ -27,6 +29,6 @@ static int hook_unprotect(void *address, size_t size)
 
 void hook(void *at, void *to)
 {
-	assert(hook_unprotect(at, sizeof(hook_jmp_rel32)) == 0);
+	ASSERT(hook_unprotect(at, sizeof(hook_jmp_rel32)) == 0);
 	hook_assemble_jump(at, to);
 }

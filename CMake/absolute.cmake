@@ -16,7 +16,7 @@ if(EXISTS "${ORIGINAL_EXE}")
     add_library(harness STATIC ${HARNESS_ASM})
     target_compile_options(harness PRIVATE -f elf -DEXE=\"${ORIGINAL_EXE}\")
 
-    target_compile_options(harness INTERFACE -no-pie)
+    target_compile_options(harness INTERFACE -fno-pie -fno-pic)
     target_compile_definitions(harness INTERFACE -DNO_GLOBALS)
     target_link_libraries(harness INTERFACE
         -L${CMAKE_SOURCE_DIR}/Absolute -Tdefault.ld

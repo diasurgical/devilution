@@ -165,6 +165,8 @@ add_definitions(
 
 # Ignore serious warnings due to "quality" of decompiled code
 add_compile_options(-fpermissive -Wno-write-strings -Wno-multichar)
+# Disable optimizations that can break non-standards-conforming code
+add_compile_options(-fno-aggressive-loop-optimizations -fno-strict-aliasing)
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     # Style issues
@@ -188,6 +190,9 @@ target_link_libraries(devilution PUBLIC
 )
 
 # Build with harness enabled (conflicts with sanitizers)
+add_library(sanitize_coverage STATIC Stub/sanitize_coverage.cpp)
+target_compile_options(sanitize_coverage PRIVATE -O2 -fno-pie -fno-pic)
+
 if(TARGET harness)
     add_executable(devil-harness
         ${SOURCES}
@@ -199,11 +204,14 @@ if(TARGET harness)
         Stub/test_utils.cpp
     )
 
+    target_compile_options(devil-harness PRIVATE -fsanitize-coverage=trace-pc)
+
     target_compile_definitions(devil-harness PUBLIC -DHAVE_HARNESS)
 
     target_link_libraries(devil-harness PUBLIC
         m
         harness
+        sanitize_coverage
         ${SDL2_LIBRARIES}
     )
 endif()
@@ -224,6 +232,7 @@ target_compile_options(devil-sanitize PRIVATE
 
 target_link_libraries(devil-sanitize PUBLIC
     m
+    sanitize_coverage
     ${SDL2_LIBRARIES}
     ${SANITIZE_OPTIONS}
     ${COVERAGE_COMPILER_FLAGS}
