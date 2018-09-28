@@ -2,76 +2,48 @@
 
 #include "../types.h"
 
-TMsg *sgpTimedMsgHead;
+static TMsg *sgpTimedMsgHead;
 
-int __fastcall tmsg_get(unsigned char *pbMsg, unsigned int dwMaxLen)
+int __fastcall tmsg_get(UCHAR *pbMsg, DWORD dwMaxLen)
 {
-	unsigned char *v2; // ebx
-	DWORD v3; // eax
-	TMsg *v4; // esi
-	size_t v6; // edi
+	int len;
+	TMsg *head;
 
-	v2 = pbMsg;
 	if ( !sgpTimedMsgHead )
 		return 0;
-	v3 = GetTickCount();
-	v4 = sgpTimedMsgHead;
-	if ( (signed int)(sgpTimedMsgHead->hdr.dwTime - v3) >= 0 )
+
+	if ( (int)(sgpTimedMsgHead->hdr.dwTime - GetTickCount()) >= 0 )
 		return 0;
-	sgpTimedMsgHead = sgpTimedMsgHead->hdr.pNext;
-	v6 = v4->hdr.bLen;
-	memcpy(v2, v4->body, v6);
-	mem_free_dbg(v4);
-	return v6;
+	head = sgpTimedMsgHead;
+	sgpTimedMsgHead = head->hdr.pNext;
+	len = head->hdr.bLen;
+	// BUGFIX: ignores dwMaxLen
+	memcpy(pbMsg, head->body, len);
+	mem_free_dbg(head);
+	return len;
 }
 
-void __fastcall tmsg_add(unsigned char *pbMsg, unsigned char bLen)
+void __fastcall tmsg_add(UCHAR *pbMsg, UCHAR bLen)
 {
-	unsigned char v2; // bl
-	unsigned char *v3; // ebp
-	size_t v4; // edi
-	TMsg *v5; // eax
-	TMsg *v6; // esi
-	DWORD v7; // eax
-	TMsg *v8; // ecx
-	TMsg **v9; // eax
+	TMsg **tail;
 
-	v2 = bLen;
-	v3 = pbMsg;
-	v4 = bLen;
-	v5 = (TMsg *)DiabloAllocPtr(bLen + 12);
-	v6 = v5;
-	v5->hdr.pNext = 0;
-	v7 = GetTickCount();
-	v6->hdr.bLen = v2;
-	v6->hdr.dwTime = v7 + 500;
-	memcpy(v6->body, v3, v4);
-	v8 = sgpTimedMsgHead;
-	v9 = &sgpTimedMsgHead;
-	while ( v8 )
-	{
-		v9 = &v8->hdr.pNext;
-		v8 = v8->hdr.pNext;
-	}
-	*v9 = v6;
+	TMsg *msg = (TMsg*)DiabloAllocPtr(bLen + sizeof(*msg));
+	msg->hdr.pNext = NULL;
+	msg->hdr.dwTime = GetTickCount() + 500;
+	msg->hdr.bLen = bLen;
+	memcpy(msg->body, pbMsg, bLen);
+	for ( tail = &sgpTimedMsgHead; *tail; tail = &(*tail)->hdr.pNext );
+	*tail = msg;
 }
 
-void __cdecl tmsg_cleanup()
+void* __cdecl tmsg_cleanup()
 {
-	TMsg *v0; // eax
-	TMsg *v1; // esi
-
-	v0 = sgpTimedMsgHead;
-	if ( sgpTimedMsgHead )
-	{
-		do
-		{
-			v1 = v0->hdr.pNext;
-			sgpTimedMsgHead = 0;
-			mem_free_dbg(v0);
-			v0 = v1;
-			sgpTimedMsgHead = v1;
-		}
-		while ( v1 );
+	while ( sgpTimedMsgHead ) {
+		TMsg *next = sgpTimedMsgHead->hdr.pNext;
+		TMsg *head = sgpTimedMsgHead;
+		sgpTimedMsgHead = NULL;
+		mem_free_dbg(head);
+		sgpTimedMsgHead = next;
 	}
+	return sgpTimedMsgHead;
 }
