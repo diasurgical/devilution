@@ -2,10 +2,13 @@
 
 #include "../types.h"
 
-int pfile_cpp_init_value;
-char hero_names[MAX_CHARACTERS][PLR_NAME_LEN];
+#define PASSWORD_SINGLE    "xrgyrkj1"
+#define PASSWORD_MULTI     "szqnlsk1"
+
+static int pfile_cpp_init_value;
+static char hero_names[MAX_CHARACTERS][PLR_NAME_LEN];
 BOOL gbValidSaveFile; // idb
-int save_prev_tc; // weak
+static int save_prev_tc; // weak
 
 const int pfile_inf = 0x7F800000; // weak
 
@@ -35,37 +38,30 @@ void __cdecl pfile_init_save_directory()
 
 void __fastcall pfile_check_available_space(char *pszDir)
 {
-	char *v1; // edi
-	char *v2; // eax
-	char v3; // cl
-	BOOL v4; // esi
-	DWORD TotalNumberOfClusters; // [esp+8h] [ebp-10h]
-	DWORD NumberOfFreeClusters; // [esp+Ch] [ebp-Ch]
-	DWORD BytesPerSector; // [esp+10h] [ebp-8h]
-	DWORD SectorsPerCluster; // [esp+14h] [ebp-4h]
+	char *s;
+	BOOL hasSpace;
+	DWORD TotalNumberOfClusters;
+	DWORD NumberOfFreeClusters;
+	DWORD BytesPerSector;
+	DWORD SectorsPerCluster;
 
-	v1 = pszDir;
-	v2 = pszDir;
-	while ( 1 )
-	{
-		v3 = *v2;
-		if ( !*v2 )
-			break;
-		++v2;
-		if ( v3 == '\\' )
-		{
-			*v2 = '\0';
-			break;
-		}
+	s = pszDir;
+	while ( *s ) {
+		if ( *s++ != '\\' )
+			continue;
+		*s = '\0';
+		break;
 	}
-	v4 = GetDiskFreeSpace(v1, &SectorsPerCluster, &BytesPerSector, &NumberOfFreeClusters, &TotalNumberOfClusters);
-	if ( !v4 )
-		goto LABEL_12;
-	if ( (signed __int64)(BytesPerSector * (unsigned __int64)SectorsPerCluster * NumberOfFreeClusters) < 0xA00000 )
-		v4 = 0;
-	if ( !v4 )
-LABEL_12:
-		DiskFreeDlg(v1);
+
+	hasSpace = GetDiskFreeSpace(pszDir, &SectorsPerCluster, &BytesPerSector, &NumberOfFreeClusters, &TotalNumberOfClusters);
+	if ( hasSpace ) {
+		// 10MB is the amount hardcoded in the error dialog
+		if ( (__int64)SectorsPerCluster * BytesPerSector * NumberOfFreeClusters < (__int64)(10 << 20) )
+			hasSpace = FALSE;
+	}
+
+	if ( !hasSpace )
+		DiskFreeDlg(pszDir);
 }
 
 void __cdecl pfile_write_hero()
@@ -87,45 +83,34 @@ void __cdecl pfile_write_hero()
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-int __fastcall pfile_get_save_num_from_name(char *name)
+DWORD __fastcall pfile_get_save_num_from_name(const char *name)
 {
-	char *v1; // ebx
-	unsigned int v2; // esi
+	DWORD i;
 
-	v1 = name;
-	v2 = 0;
-	do
-	{
-		if ( !_strcmpi(hero_names[v2], v1) )
+	for ( i=0; i < MAX_CHARACTERS; i++ ) {
+		if ( !_strcmpi(hero_names[i], name) )
 			break;
-		++v2;
 	}
-	while ( v2 < MAX_CHARACTERS );
-	return v2;
+
+	return i;
 }
 
-void __fastcall pfile_encode_hero(PkPlayerStruct *pPack)
+void __fastcall pfile_encode_hero(const PkPlayerStruct *pPack)
 {
-	int v1; // ebx
-	void *v2; // edi
-	char password[16]; // [esp+Ch] [ebp-14h]
-	void *v4; // [esp+1Ch] [ebp-4h]
+	char *packed;
+	DWORD packed_len;
+	char password[16] = PASSWORD_SINGLE;
 
-	strcpy(password, "xrgyrkj1");
-	*(_DWORD *)&password[9] = 0;
-	*(_WORD *)&password[13] = 0;
-	v4 = pPack;
-	password[15] = 0;
-	if ( (unsigned char)gbMaxPlayers > 1u )
-		strcpy(password, "szqnlsk1");
-	v1 = codec_get_encoded_len(1266);
-	v2 = DiabloAllocPtr(v1);
-	memcpy(v2, v4, 0x4F2u);
-	codec_encode(v2, 1266, v1, password);
-	mpqapi_write_file("hero", (char *)v2, v1);
-	mem_free_dbg(v2);
+	if ( gbMaxPlayers > 1 )
+		strcpy(password, PASSWORD_MULTI);
+
+	packed_len = codec_get_encoded_len(sizeof(*pPack));
+	packed = (char*)DiabloAllocPtr(packed_len);
+	memcpy(packed, pPack, sizeof(*pPack));
+	codec_encode(packed, sizeof(*pPack), packed_len, password);
+	mpqapi_write_file("hero", packed, packed_len);
+	mem_free_dbg(packed);
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 bool __fastcall pfile_open_archive(bool a1, int save_num)
 {
@@ -149,40 +134,36 @@ bool __fastcall pfile_open_archive(bool a1, int save_num)
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-void __fastcall pfile_get_save_path(char *pszBuf, int dwBufSize, int save_num)
+void __fastcall pfile_get_save_path(char *pszBuf, DWORD dwBufSize, DWORD save_num)
 {
-	char *v3; // esi
-	const char *v4; // ebx
-	DWORD v5; // edi
-	char *v6; // eax
-	char v7[260]; // [esp+8h] [ebp-104h]
+	DWORD plen;
+	char *s;
+	char path[MAX_PATH];
+	const char *fmt = "\\multi_%d.sv";
 
-	v3 = pszBuf;
-	v4 = "\\multi_%d.sv";
-	if ( (unsigned char)gbMaxPlayers <= 1u )
-		v4 = "\\single_%d.sv";
-	v5 = GetModuleFileName(ghInst, pszBuf, 0x104u);
-	v6 = strrchr(v3, '\\');
-	if ( v6 )
-		*v6 = 0;
-	if ( !v5 )
+	if ( gbMaxPlayers <= 1 )
+		fmt = "\\single_%d.sv";
+
+	// BUGFIX: ignores dwBufSize and uses MAX_PATH instead
+	plen = GetModuleFileName(ghInst, pszBuf, MAX_PATH);
+	s = strrchr(pszBuf, '\\');
+	if ( s )
+		*s = '\0';
+
+	if ( !plen )
 		TermMsg("Unable to get save directory");
-	sprintf(v7, v4, save_num);
-	strcat(v3, v7);
-	_strlwr(v3);
+
+	sprintf(path, fmt, save_num);
+	strcat(pszBuf, path);
+	_strlwr(pszBuf);
 }
-// 679660: using guessed type char gbMaxPlayers;
 
-void __fastcall pfile_flush(bool is_single_player, int save_num)
+void __fastcall pfile_flush(BOOL is_single_player, DWORD save_num)
 {
-	int v2; // esi
-	bool v3; // di
-	char FileName[260]; // [esp+8h] [ebp-104h]
+	char FileName[MAX_PATH];
 
-	v2 = save_num;
-	v3 = is_single_player;
-	pfile_get_save_path(FileName, 260, save_num);
-	mpqapi_flush_and_close(FileName, v3, v2);
+	pfile_get_save_path(FileName, sizeof(FileName), save_num);
+	mpqapi_flush_and_close(FileName, is_single_player, save_num);
 }
 
 bool __fastcall pfile_create_player_description(char *dst, int len)
@@ -254,38 +235,34 @@ void __cdecl pfile_flush_W()
 	pfile_flush(1, v0);
 }
 
-void __fastcall game_2_ui_player(PlayerStruct *p, _uiheroinfo *heroinfo, BOOL bHasSaveFile)
+void __fastcall game_2_ui_player(const PlayerStruct *p, _uiheroinfo *heroinfo, BOOL bHasSaveFile)
 {
-	_uiheroinfo *v3; // esi
-	PlayerStruct *v4; // edi
-	char v5; // al
-
-	v3 = heroinfo;
-	v4 = p;
-	memset(heroinfo, 0, 0x2Cu);
-	strncpy(v3->name, v4->_pName, 0xFu);
-	v3->name[15] = 0;
-	v3->level = v4->_pLevel;
-	v3->heroclass = game_2_ui_class(v4);
-	v3->strength = v4->_pStrength;
-	v3->magic = v4->_pMagic;
-	v3->dexterity = v4->_pDexterity;
-	v3->vitality = v4->_pVitality;
-	v3->gold = v4->_pGold;
-	v3->hassaved = bHasSaveFile;
-	v5 = v4->pDiabloKillLevel;
-	v3->spawned = 0;
-	v3->herorank = v5;
+	memset(heroinfo, 0, sizeof(*heroinfo));
+	strncpy(heroinfo->name, p->_pName, sizeof(heroinfo->name) - 1);
+	heroinfo->name[sizeof(heroinfo->name) - 1] = '\0';
+	heroinfo->level = p->_pLevel;
+	heroinfo->heroclass = game_2_ui_class(p);
+	heroinfo->strength = p->_pStrength;
+	heroinfo->magic = p->_pMagic;
+	heroinfo->dexterity = p->_pDexterity;
+	heroinfo->vitality = p->_pVitality;
+	heroinfo->gold = p->_pGold;
+	heroinfo->hassaved = bHasSaveFile;
+	heroinfo->herorank = (unsigned char)p->pDiabloKillLevel;
+	heroinfo->spawned = 0;
 }
 
-char __fastcall game_2_ui_class(PlayerStruct *p)
+UCHAR __fastcall game_2_ui_class(const PlayerStruct *p)
 {
-	char result; // al
+	UCHAR uiclass;
+	if ( p->_pClass == PC_WARRIOR )
+		uiclass = UI_WARRIOR;
+	else if ( p->_pClass == PC_ROGUE )
+		uiclass = UI_ROGUE;
+	else
+		uiclass = UI_SORCERER;
 
-	result = p->_pClass;
-	if ( result )
-		result = (result != 1) + 1;
-	return result;
+	return uiclass;
 }
 
 BOOL __stdcall pfile_ui_set_hero_infos(BOOL (__stdcall *ui_add_hero_info)(_uiheroinfo *))
