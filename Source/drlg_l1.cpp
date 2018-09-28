@@ -510,18 +510,17 @@ void __fastcall LoadPreL1Dungeon(char *sFileName, int vx, int vy)
 
 void __fastcall CreateL5Dungeon(int rseed, int entry)
 {
-	int v2; // esi
-
-	v2 = entry;
 	SetRndSeed(rseed);
+
 	dminx = 16;
 	dminy = 16;
 	dmaxx = 96;
 	dmaxy = 96;
+
 	DRLG_InitTrans();
 	DRLG_InitSetPC();
 	DRLG_LoadL1SP();
-	DRLG_L5(v2);
+	DRLG_L5(entry);
 	DRLG_L1Pass3();
 	DRLG_FreeL1SP();
 	DRLG_InitL1Vals();
@@ -727,238 +726,152 @@ LABEL_34:
 
 void __fastcall DRLG_PlaceDoor(int x, int y)
 {
-	int v2; // edi
-	char *v3; // eax
-	char v4; // al
-	char v5; // dl
-	char *v6; // eax
-	char v7; // bl
-	char *v8; // [esp+Ch] [ebp-8h]
+	if((mydflags[x][y] & 0x80) == 0) { /* todo: unsigned */
+		unsigned char df = mydflags[x][y] & 0x7F;
+		unsigned char c = dungeon[x][y];
 
-	v2 = y;
-	v3 = &mydflags[x][y];
-	v8 = v3;
-	v4 = *v3;
-	if ( v4 < 0 )
-		goto LABEL_57;
-	v5 = v4 & 0x7F;
-	v6 = &dungeon[x][v2];
-	v7 = *v6;
-	if ( v5 == 1 )
-	{
-		if ( v2 != 1 )
-		{
-			if ( v7 == 2 )
-				*v6 = 26;
-			if ( v7 == 7 )
-				*v6 = 31;
-			if ( v7 == 14 )
-				*v6 = 42;
-			if ( v7 == 4 )
-				*v6 = 43;
+		if(df == 1) {
+			if(y != 1 && c == 2)
+				dungeon[x][y] = 26;
+			if(y != 1 && c == 7)
+				dungeon[x][y] = 31;
+			if(y != 1 && c == 14)
+				dungeon[x][y] = 42;
+			if(y != 1 && c == 4)
+				dungeon[x][y] = 43;
+			if(x != 1 && c == 1)
+				dungeon[x][y] = 25;
+			if(x != 1 && c == 10)
+				dungeon[x][y] = 40;
+			if(x != 1 && c == 6)
+				dungeon[x][y] = 30;
 		}
-		if ( x == 1 )
-			goto LABEL_57;
-		if ( v7 == 1 )
-			*v6 = 25;
-		if ( v7 == 10 )
-			*v6 = 40;
-		if ( v7 != 6 )
-			goto LABEL_57;
-		*v6 = 30;
-	}
-	if ( v5 != 2 )
-		goto LABEL_36;
-	if ( x != 1 )
-	{
-		if ( v7 == 1 )
-			*v6 = 25;
-		if ( v7 == 6 )
-			*v6 = 30;
-		if ( v7 == 10 )
-			*v6 = 40;
-		if ( v7 == 4 )
-			*v6 = 41;
-	}
-	if ( v2 != 1 )
-	{
-		if ( v7 == 2 )
-			*v6 = 26;
-		if ( v7 == 14 )
-			*v6 = 42;
-		if ( v7 == 7 )
-		{
-			*v6 = 31;
-LABEL_36:
-			if ( v5 == 3 )
-			{
-				if ( x != 1 )
-				{
-					if ( v2 != 1 && v7 == 4 )
-						*v6 = 28;
-					if ( v7 == 10 )
-						*v6 = 40;
-				}
-				if ( v2 != 1 )
-				{
-					if ( v7 == 14 )
-						*v6 = 42;
-					if ( v7 == 2 )
-						*v6 = 26;
-				}
-				if ( x != 1 && v7 == 1 )
-					*v6 = 25;
-				if ( v2 != 1 && v7 == 7 )
-					*v6 = 31;
-				if ( x != 1 && v7 == 6 )
-					*v6 = 30;
-			}
-			goto LABEL_57;
+		if(df == 2) {
+			if(x != 1 && c == 1)
+				dungeon[x][y] = 25;
+			if(x != 1 && c == 6)
+				dungeon[x][y] = 30;
+			if(x != 1 && c == 10)
+				dungeon[x][y] = 40;
+			if(x != 1 && c == 4)
+				dungeon[x][y] = 41;
+			if(y != 1 && c == 2)
+				dungeon[x][y] = 26;
+			if(y != 1 && c == 14)
+				dungeon[x][y] = 42;
+			if(y != 1 && c == 7)
+				dungeon[x][y] = 31;
+		}
+		if(df == 3) {
+			if(x != 1 && y != 1 && c == 4)
+				dungeon[x][y] = 28;
+			if(x != 1 && c == 10)
+				dungeon[x][y] = 40;
+			if(y != 1 && c == 14)
+				dungeon[x][y] = 42;
+			if(y != 1 && c == 2)
+				dungeon[x][y] = 26;
+			if(x != 1 && c == 1)
+				dungeon[x][y] = 25;
+			if(y != 1 && c == 7)
+				dungeon[x][y] = 31;
+			if(x != 1 && c == 6)
+				dungeon[x][y] = 30;
 		}
 	}
-LABEL_57:
-	*v8 = -128;
+
+	mydflags[x][y] = 0x80;
 }
 
 void __cdecl DRLG_L1Shadows()
 {
-	signed int v0; // ebx
-	char *v1; // eax
-	signed int v2; // edx
-	unsigned char *v3; // esi
-	signed int v4; // edi
-	char v5; // cl
-	char v6; // cl
-	char v7; // cl
-	char v8; // cl
-	char v9; // cl
-	signed int v10; // edi
-	signed int v11; // eax
-	signed int v12; // esi
-	char v13; // cl
-	char v14; // dl
-	char v15; // cl
-	char v16; // dl
-	char v17; // cl
-	char v18; // dl
+	int x, y;
 	unsigned char sd[2][2];
+	unsigned char tnv3;
 
-	v0 = 1;
-	do
-	{
-		v1 = &dungeon[0][v0 + 39];
-		v2 = 1;
-		do
-		{
-			v3 = (unsigned char *)&SPATS[0].s1;
-			sd[0][0] = BSTYPES[(unsigned char)v1[1]];
-			sd[1][0] = BSTYPES[(unsigned char)*(v1 - 39)];
-			sd[0][1] = BSTYPES[(unsigned char)*v1];
-			sd[1][1] = BSTYPES[(unsigned char)*(v1 - 40)];
-			do
-			{
-				if ( *(v3 - 1) == sd[0][0] )
-				{
-					v4 = 1;
-					if ( *v3 && *v3 != sd[1][1] )
-						v4 = 0;
-					v5 = v3[1];
-					if ( v5 && v5 != sd[0][1] )
-						v4 = 0;
-					v6 = v3[2];
-					if ( v6 && v6 != sd[1][0] )
-						v4 = 0;
-					if ( v4 == 1 )
-					{
-						v7 = v3[3];
-						if ( v7 && !mydflags[v2 - 1][v0 - 1] ) /* !L5dungeon[79][v2 + 39 + v0] ) */
-							*(v1 - 40) = v7;
-						v8 = v3[4];
-						if ( v8 && !mydflags[v2][v0 - 1] ) /* !L5dungeon[79][v2 + 79 + v0] ) */
-							*v1 = v8;
-						v9 = v3[5];
-						if ( v9 && !mydflags[v2 - 1][v0] ) /* !L5dungeon[79][v2 + 40 + v0] ) */
-							*(v1 - 39) = v9;
+	for(y = 1; y < DMAXY; y++) {
+		for(x = 1; x < DMAXX; x++) {
+			sd[0][0] = BSTYPES[(unsigned char)dungeon[x][y]];
+			sd[1][0] = BSTYPES[(unsigned char)dungeon[x-1][y]];
+			sd[0][1] = BSTYPES[(unsigned char)dungeon[x][y-1]];
+			sd[1][1] = BSTYPES[(unsigned char)dungeon[x-1][y-1]];
+
+			for(int i = 0; i < 37; i++) {
+				if(SPATS[i].strig == sd[0][0]) {
+					BOOL patflag = TRUE;
+					if(SPATS[i].s1 && SPATS[i].s1 != sd[1][1])
+						patflag = FALSE;
+					if(SPATS[i].s2 && SPATS[i].s2 != sd[0][1])
+						patflag = FALSE;
+					if(SPATS[i].s3 && SPATS[i].s3 != sd[1][0])
+						patflag = FALSE;
+					if(patflag == TRUE) {
+						if(SPATS[i].nv1 && !mydflags[x-1][y-1])
+							dungeon[x-1][y-1] = SPATS[i].nv1;
+						if(SPATS[i].nv2 && !mydflags[x][y-1])
+							dungeon[x][y-1] = SPATS[i].nv2;
+						if(SPATS[i].nv3) {
+							if(!mydflags[x-1][y])
+								dungeon[x-1][y] = SPATS[i].nv3;
+						}
 					}
 				}
-				v3 += 7;
 			}
-			while ( (signed int)v3 < (signed int)&SPATS[37].s1 );
-			++v2;
-			v1 += 40;
 		}
-		while ( v2 < 40 );
-		++v0;
 	}
-	while ( v0 < 40 );
-	v10 = 1;
-	do
-	{
-		v11 = v10;
-		v12 = 39;
-		do
-		{
-			if ( dungeon[0][v11] == -117 && !mydflags[0][v11] )
-			{
-				v13 = dungeon[1][v11];
-				v14 = -117;
-				if ( v13 == 29 )
-					v14 = -115;
-				if ( v13 == 32 )
-					v14 = -115;
-				if ( v13 == 35 )
-					v14 = -115;
-				if ( v13 == 37 )
-					v14 = -115;
-				if ( v13 == 38 )
-					v14 = -115;
-				if ( v13 == 39 )
-					v14 = -115;
-				dungeon[0][v11] = v14;
+
+	for(y = 1; y < DMAXY; y++) {
+		for(x = 1; x < DMAXX; x++) {
+			if((unsigned char)dungeon[x-1][y] == 139 && !mydflags[x-1][y]) {
+				tnv3 = 139;
+				if(dungeon[x][y] == 29)
+					tnv3 = 141;
+				if(dungeon[x][y] == 32)
+					tnv3 = 141;
+				if(dungeon[x][y] == 35)
+					tnv3 = 141;
+				if(dungeon[x][y] == 37)
+					tnv3 = 141;
+				if(dungeon[x][y] == 38)
+					tnv3 = 141;
+				if(dungeon[x][y] == 39)
+					tnv3 = 141;
+				dungeon[x-1][y] = tnv3;
 			}
-			if ( dungeon[0][v11] == -107 && !mydflags[0][v11] )
-			{
-				v15 = dungeon[1][v11];
-				v16 = -107;
-				if ( v15 == 29 )
-					v16 = -103;
-				if ( v15 == 32 )
-					v16 = -103;
-				if ( v15 == 35 )
-					v16 = -103;
-				if ( v15 == 37 )
-					v16 = -103;
-				if ( v15 == 38 )
-					v16 = -103;
-				if ( v15 == 39 )
-					v16 = -103;
-				dungeon[0][v11] = v16;
+			if((unsigned char)dungeon[x-1][y] == 149 && !mydflags[x-1][y]) {
+				tnv3 = 149;
+				if(dungeon[x][y] == 29)
+					tnv3 = 153;
+				if(dungeon[x][y] == 32)
+					tnv3 = 153;
+				if(dungeon[x][y] == 35)
+					tnv3 = 153;
+				if(dungeon[x][y] == 37)
+					tnv3 = 153;
+				if(dungeon[x][y] == 38)
+					tnv3 = 153;
+				if(dungeon[x][y] == 39)
+					tnv3 = 153;
+				dungeon[x-1][y] = tnv3;
 			}
-			if ( dungeon[0][v11] == -108 && !mydflags[0][v11] )
-			{
-				v17 = dungeon[1][v11];
-				v18 = -108;
-				if ( v17 == 29 )
-					v18 = -102;
-				if ( v17 == 32 )
-					v18 = -102;
-				if ( v17 == 35 )
-					v18 = -102;
-				if ( v17 == 37 )
-					v18 = -102;
-				if ( v17 == 38 )
-					v18 = -102;
-				if ( v17 == 39 )
-					v18 = -102;
-				dungeon[0][v11] = v18;
+			if((unsigned char)dungeon[x-1][y] == 148 && !mydflags[x-1][y]) {
+				tnv3 = 148;
+				if(dungeon[x][y] == 29)
+					tnv3 = 154;
+				if(dungeon[x][y] == 32)
+					tnv3 = 154;
+				if(dungeon[x][y] == 35)
+					tnv3 = 154;
+				if(dungeon[x][y] == 37)
+					tnv3 = 154;
+				if(dungeon[x][y] == 38)
+					tnv3 = 154;
+				if(dungeon[x][y] == 39)
+					tnv3 = 154;
+				dungeon[x-1][y] = tnv3;
 			}
-			v11 += 40;
-			--v12;
 		}
-		while ( v12 );
-		++v10;
 	}
-	while ( v10 < 40 );
 }
 
 int __fastcall DRLG_PlaceMiniSet(const unsigned char *miniset, int tmin, int tmax, int cx, int cy, bool setview, int noquad, int ldir)
@@ -1179,167 +1092,116 @@ LABEL_57:
 
 void __cdecl InitL5Dungeon()
 {
-	signed int v0; // edx
-	signed int v1; // eax
-	signed int v2; // ecx
-
-	v0 = 0;
-	do
-	{
-		v1 = v0;
-		v2 = 40;
-		do
-		{
-			dungeon[0][v1] = 0;
-			mydflags[0][v1] = 0;
-			v1 += 40;
-			--v2;
+	for(int j = 0; j < DMAXY; j++) {
+		for(int i = 0; i < DMAXX; i++) {
+			dungeon[i][j] = 0;
+			mydflags[i][j] = 0;
 		}
-		while ( v2 );
-		++v0;
 	}
-	while ( v0 < 40 );
 }
 
 void __cdecl L5ClearFlags()
 {
-	signed int v0; // ecx
-	_BYTE *v1; // eax
-	signed int v2; // edx
-
-	v0 = 0;
-	do
-	{
-		v1 = (unsigned char *)mydflags + v0;
-		v2 = 40;
-		do
-		{
-			*v1 &= 0xBFu;
-			v1 += 40;
-			--v2;
+	for(int j = 0; j < DMAXY; j++) {
+		for(int i = 0; i < DMAXX; i++) {
+			mydflags[i][j] &= 0xBF;
 		}
-		while ( v2 );
-		++v0;
 	}
-	while ( v0 < 40 );
 }
 
 void __cdecl L5firstRoom()
 {
-	signed int v0; // ebx
-	signed int v1; // ebp
-	signed int i; // ecx
-	char *v3; // eax
-	signed int v4; // ebp
-	signed int v5; // ebx
-	int v6; // ebp
-	char *v7; // eax
+	if(random(0, 2) == 0) {
+		int ys = 1;
+		int ye = 39;
 
-	if ( random(0, 2) )
-	{
-		v4 = 39;
-		v5 = 1;
-		HR1 = random(0, 2);
-		HR2 = random(0, 2);
-		HR3 = random(0, 2);
-		if ( HR1 + HR3 <= 1 )
-			HR2 = 1;
-		if ( HR1 )
-			L5drawRoom(1, 15, 10, 10);
-		else
-			v5 = 18;
-		if ( HR2 )
-			L5drawRoom(15, 15, 10, 10);
-		if ( HR3 )
-			L5drawRoom(29, 15, 10, 10);
-		else
-			v4 = 22;
-		if ( v5 < v4 )
-		{
-			v6 = v4 - v5;
-			v7 = &dungeon[v5][18];
-			do
-			{
-				*(v7 - 1) = 1;
-				*v7 = 1;
-				v7[1] = 1;
-				v7[2] = 1;
-				v7[3] = 1;
-				v7[4] = 1;
-				v7 += 40;
-				--v6;
-			}
-			while ( v6 );
-		}
-		if ( HR1 )
-			L5roomGen(1, 15, 10, 10, 1);
-		if ( HR2 )
-			L5roomGen(15, 15, 10, 10, 1);
-		if ( HR3 )
-			L5roomGen(29, 15, 10, 10, 1);
-		VR3 = 0;
-		VR2 = 0;
-		VR1 = 0;
-	}
-	else
-	{
-		v0 = 39;
-		v1 = 1;
 		VR1 = random(0, 2);
 		VR2 = random(0, 2);
 		VR3 = random(0, 2);
-		if ( VR1 + VR3 <= 1 )
+
+		if(VR1 + VR3 <= 1)
 			VR2 = 1;
-		if ( VR1 )
+		if(VR1)
 			L5drawRoom(15, 1, 10, 10);
 		else
-			v1 = 18;
-		if ( VR2 )
+			ys = 18;
+
+		if(VR2)
 			L5drawRoom(15, 15, 10, 10);
-		if ( VR3 )
+		if(VR3)
 			L5drawRoom(15, 29, 10, 10);
 		else
-			v0 = 22;
-		for ( i = v1; i < v0; v3[160] = 1 )
-		{
-			v3 = &dungeon[18][i++];
-			*(v3 - 40) = 1;
-			*v3 = 1;
-			v3[40] = 1;
-			v3[80] = 1;
-			v3[120] = 1;
+			ye = 22;
+
+		for(int y = ys; y < ye; y++) {
+			dungeon[17][y] = 1;
+			dungeon[18][y] = 1;
+			dungeon[19][y] = 1;
+			dungeon[20][y] = 1;
+			dungeon[21][y] = 1;
+			dungeon[22][y] = 1;
 		}
-		if ( VR1 )
+
+		if(VR1)
 			L5roomGen(15, 1, 10, 10, 0);
-		if ( VR2 )
+		if(VR2)
 			L5roomGen(15, 15, 10, 10, 0);
-		if ( VR3 )
+		if(VR3)
 			L5roomGen(15, 29, 10, 10, 0);
+
 		HR3 = 0;
 		HR2 = 0;
 		HR1 = 0;
+	}
+	else {
+		int xs = 1;
+		int xe = 39;
+
+		HR1 = random(0, 2);
+		HR2 = random(0, 2);
+		HR3 = random(0, 2);
+
+		if(HR1 + HR3 <= 1)
+			HR2 = 1;
+		if(HR1)
+			L5drawRoom(1, 15, 10, 10);
+		else
+			xs = 18;
+
+		if(HR2)
+			L5drawRoom(15, 15, 10, 10);
+		if(HR3)
+			L5drawRoom(29, 15, 10, 10);
+		else
+			xe = 22;
+
+		for(int x = xs; x < xe; x++) {
+			dungeon[x][17] = 1;
+			dungeon[x][18] = 1;
+			dungeon[x][19] = 1;
+			dungeon[x][20] = 1;
+			dungeon[x][21] = 1;
+			dungeon[x][22] = 1;
+		}
+
+		if(HR1)
+			L5roomGen(1, 15, 10, 10, 1);
+		if(HR2)
+			L5roomGen(15, 15, 10, 10, 1);
+		if(HR3)
+			L5roomGen(29, 15, 10, 10, 1);
+
+		VR3 = 0;
+		VR2 = 0;
+		VR1 = 0;
 	}
 }
 
 void __fastcall L5drawRoom(int x, int y, int w, int h)
 {
-	int i; // esi
-	int v5; // edi
-	char *v6; // eax
-
-	for ( i = 0; i < h; ++i )
-	{
-		if ( w > 0 )
-		{
-			v5 = w;
-			v6 = &dungeon[x][i + y];
-			do
-			{
-				*v6 = 1;
-				v6 += 40;
-				--v5;
-			}
-			while ( v5 );
+	for(int j = 0; j < h; j++) {
+		for(int i = 0; i < w; i++) {
+			dungeon[x+i][y+j] = 1;
 		}
 	}
 }
@@ -1454,62 +1316,31 @@ void __fastcall L5roomGen(int x, int y, int w, int h, BOOL dir)
 	}
 }
 
-bool __fastcall L5checkRoom(int x, int y, int width, int height)
+BOOL __fastcall L5checkRoom(int x, int y, int width, int height)
 {
-	int v4; // eax
-	int v5; // ebx
-	char *v6; // edi
-	int v8; // [esp+Ch] [ebp-4h]
+	for(int j = 0; j < height; j++) {
+		for(int i = 0; i < width; i++) {
+			if(i+x < 0 || i+x >= DMAXX || j+y < 0 || j+y >= DMAXY)
+				return FALSE;
+			if(dungeon[i+x][j+y])
+				return FALSE;
+		}
+	}
 
-	v4 = 0;
-	if ( height <= 0 )
-		return 1;
-	while ( 1 )
-	{
-		v8 = 0;
-		if ( width > 0 )
-			break;
-LABEL_10:
-		if ( ++v4 >= height )
-			return 1;
-	}
-	v5 = x;
-	v6 = &dungeon[x][v4 + y];
-	while ( v5 >= 0 && v5 < 40 && v4 + y >= 0 && v4 + y < 40 && !*v6 )
-	{
-		++v8;
-		v6 += 40;
-		++v5;
-		if ( v8 >= width )
-			goto LABEL_10;
-	}
-	return 0;
+	return TRUE;
 }
 
 int __cdecl L5GetArea()
 {
-	int rv; // eax
-	signed int i; // edx
-	_BYTE *v2; // ecx
-	signed int j; // esi
+	int rv = 0;
 
-	rv = 0;
-	i = 0;
-	do
-	{
-		v2 = (unsigned char *)dungeon + i;
-		j = 40;
-		do
-		{
-			if ( *v2 == 1 )
-				++rv;
-			v2 += 40;
-			--j;
+	for(int j = 0; j < DMAXY; j++) {
+		for(int i = 0; i < DMAXX; i++) {
+			if(dungeon[i][j] == 1)
+				rv++;
 		}
-		while ( j );
-		++i;
 	}
-	while ( i < 40 );
+
 	return rv;
 }
 
@@ -1546,374 +1377,211 @@ void __cdecl L5makeDungeon()
 
 void __cdecl L5makeDmt()
 {
-	signed int v0; // ecx
-	_BYTE *v1; // eax
-	signed int v2; // edx
-	signed int v3; // esi
-	char (*v4)[40]; // ecx
-	char *v5; // eax
-	signed int v6; // edi
-	int v7; // edx
-	int v8; // ebx
-	char (*v9)[40]; // [esp+0h] [ebp-4h]
+	int i, j, dmtx, dmty;
 
-	v0 = 0;
-	do
-	{
-		v1 = (unsigned char *)dungeon + v0;
-		v2 = 40;
-		do
-		{
-			*v1 = 22;
-			v1 += 40;
-			--v2;
+	for(j = 0; j < DMAXY; j++) {
+		for(i = 0; i < DMAXX; i++) {
+			dungeon[i][j] = 22;
 		}
-		while ( v2 );
-		++v0;
 	}
-	while ( v0 < 40 );
-	v3 = 1;
-	v9 = dungeon;
-	do
-	{
-		v4 = v9;
-		v5 = &L5dungeon[1][v3 + 1];
-		v6 = 39;
-		do
-		{
-			v7 = (unsigned char)v5[80];
-			v8 = (unsigned char)*v5;
-			v5 += 160;
-			*(_BYTE *)v4 = L5ConvTbl[2 * ((unsigned char)*(v5 - 81) + 2 * (v8 + 2 * v7))
-								   + (unsigned char)*(v5 - 161)];
-			++v4;
-			--v6;
+
+	for(j = 0, dmty = 1; dmty <= 77; j++, dmty += 2) {
+		for(i = 0, dmtx = 1; dmtx <= 77; i++, dmtx += 2) {
+			dungeon[i][j] = L5ConvTbl[8 * (unsigned char)L5dungeon[dmtx+1][dmty+1] /* todo: unsigned */
+									+ 4 * (unsigned char)L5dungeon[dmtx][dmty+1]
+									+ 2 * (unsigned char)L5dungeon[dmtx+1][dmty]
+									+ (unsigned char)L5dungeon[dmtx][dmty]];
 		}
-		while ( v6 );
-		v9 = (char (*)[40])((char *)v9 + 1);
-		v3 += 2;
 	}
-	while ( v3 <= 77 );
 }
 
 void __cdecl L5AddWall()
 {
-	int v0; // edi
-	int v1; // esi
-	int v2; // ebx
-	int v3; // eax
-	int v4; // eax
-	int v5; // eax
-	int v6; // eax
-	int v7; // eax
-	int v8; // eax
-
-	v0 = 0;
-	do
-	{
-		v1 = 0;
-		v2 = v0;
-		do
-		{
-			if ( !mydflags[0][v2] )
-			{
-				if ( dungeon[0][v2] == 3 )
-				{
-					if ( random(0, 100) < 100 )
-					{
-						v3 = L5HWallOk(v1, v0);
-						if ( v3 != -1 )
-							L5HorizWall(v1, v0, 2, v3);
-					}
-					if ( dungeon[0][v2] == 3 && random(0, 100) < 100 )
-					{
-						v4 = L5VWallOk(v1, v0);
-						if ( v4 != -1 )
-							L5VertWall(v1, v0, 1, v4);
-					}
+	for(int j = 0; j < DMAXY; j++) {
+		for(int i = 0; i < DMAXX; i++) {
+			if(!mydflags[i][j]) {
+				if(dungeon[i][j] == 3 && random(0, 100) < 100) {
+					int x = L5HWallOk(i, j);
+					if(x != -1)
+						L5HorizWall(i, j, 2, x);
 				}
-				if ( dungeon[0][v2] == 6 && random(0, 100) < 100 )
-				{
-					v5 = L5HWallOk(v1, v0);
-					if ( v5 != -1 )
-						L5HorizWall(v1, v0, 4, v5);
+				if(dungeon[i][j] == 3 && random(0, 100) < 100) {
+					int y = L5VWallOk(i, j);
+					if(y != -1)
+						L5VertWall(i, j, 1, y);
 				}
-				if ( dungeon[0][v2] == 7 && random(0, 100) < 100 )
-				{
-					v6 = L5VWallOk(v1, v0);
-					if ( v6 != -1 )
-						L5VertWall(v1, v0, 4, v6);
+				if(dungeon[i][j] == 6 && random(0, 100) < 100) {
+					int x = L5HWallOk(i, j);
+					if(x != -1)
+						L5HorizWall(i, j, 4, x);
 				}
-				if ( dungeon[0][v2] == 2 && random(0, 100) < 100 )
-				{
-					v7 = L5HWallOk(v1, v0);
-					if ( v7 != -1 )
-						L5HorizWall(v1, v0, 2, v7);
+				if(dungeon[i][j] == 7 && random(0, 100) < 100) {
+					int y = L5VWallOk(i, j);
+					if(y != -1)
+						L5VertWall(i, j, 4, y);
 				}
-				if ( dungeon[0][v2] == 1 && random(0, 100) < 100 )
-				{
-					v8 = L5VWallOk(v1, v0);
-					if ( v8 != -1 )
-						L5VertWall(v1, v0, 1, v8);
+				if(dungeon[i][j] == 2 && random(0, 100) < 100) {
+					int x = L5HWallOk(i, j);
+					if(x != -1)
+						L5HorizWall(i, j, 2, x);
+				}
+				if(dungeon[i][j] == 1 && random(0, 100) < 100) {
+					int y = L5VWallOk(i, j);
+					if(y != -1)
+						L5VertWall(i, j, 1, y);
 				}
 			}
-			++v1;
-			v2 += 40;
 		}
-		while ( v1 < 40 );
-		++v0;
 	}
-	while ( v0 < 40 );
 }
 
 int __fastcall L5HWallOk(int i, int j)
 {
-	int v2; // esi
-	char *v3; // edi
-	int v4; // eax
-	char *v5; // ebx
-	signed int wallok; // eax
-	char v7; // dl
-	int result; // eax
-	int v9; // [esp+8h] [ebp-4h]
-
-	v2 = 8 * (5 * i + 5);
-	v9 = 1;
-	v3 = (char *)dungeon + v2 + j;
-	if ( *v3 == 13 )
-	{
-		v4 = 8 * (5 * i + 5);
-		v5 = &dungeon[i + 1][j];
-		do
-		{
-			if ( *(v3 - 1) != 13 )
-				break;
-			if ( dungeon[0][v2 + 1 + j] != 13 )
-				break;
-			if ( mydflags[0][v2 + j] )
-				break;
-			++v9;
-			v5 += 40;
-			v4 += 40;
-			v3 = v5;
-			v2 = v4;
-		}
-		while ( *v5 == 13 );
+	for(int x = 1; dungeon[i+x][j] == 13; x++) {
+		if(dungeon[i+x][j-1] != 13 || dungeon[i+x][j+1] != 13 || mydflags[i+x][j])
+			break;
 	}
-	wallok = 0;
-	v7 = dungeon[v9 + i][j];
-	if ( (unsigned char)v7 >= 3u && (unsigned char)v7 <= 7u )
-		wallok = 1;
-	if ( (unsigned char)v7 >= 0x10u && (unsigned char)v7 <= 0x18u )
-		wallok = 1;
-	if ( v7 == 22 )
-		wallok = 0;
-	if ( v9 == 1 )
-		wallok = 0;
-	if ( wallok )
-		result = v9;
+
+	BOOL wallok = FALSE;
+	if((unsigned char)dungeon[i+x][j] >= 3 && (unsigned char)dungeon[i+x][j] <= 7) /* todo: unsigned */
+		wallok = TRUE;
+	if((unsigned char)dungeon[i+x][j] >= 16 && (unsigned char)dungeon[i+x][j] <= 24)
+		wallok = TRUE;
+	if(dungeon[i+x][j] == 22)
+		wallok = FALSE;
+	if(x == 1)
+		wallok = FALSE;
+
+	if(wallok)
+		return x;
 	else
-		result = -1;
-	return result;
+		return -1;
 }
 
 int __fastcall L5VWallOk(int i, int j)
 {
-	int v2; // ecx
-	int result; // eax
-	char *v4; // esi
-	signed int wallok; // esi
-	char v6; // dl
-
-	v2 = i;
-	result = 1;
-	if ( dungeon[v2][j + 1] == 13 )
-	{
-		v4 = &dungeon[v2][j];
-		do
-		{
-			if ( v4[result - 40] != 13 )
-				break;
-			if ( dungeon[v2 + 1][result + j] != 13 )
-				break;
-			if ( mydflags[v2][result + j] )
-				break;
-			++result;
-		}
-		while ( v4[result] == 13 );
+	for(int y = 1; dungeon[i][j+y] == 13; y++) {
+		if(dungeon[i-1][j+y] != 13 || dungeon[i+1][j+y] != 13 || mydflags[i][j+y])
+			break;
 	}
-	wallok = 0;
-	v6 = dungeon[0][result + v2 * 40 + j];
-	if ( (unsigned char)v6 >= 3u && (unsigned char)v6 <= 7u )
-		wallok = 1;
-	if ( (unsigned char)v6 >= 0x10u && (unsigned char)v6 <= 0x18u )
-		wallok = 1;
-	if ( v6 == 22 )
-		wallok = 0;
-	if ( result == 1 )
-		wallok = 0;
-	if ( !wallok )
-		result = -1;
-	return result;
+
+	BOOL wallok = FALSE;
+	if((unsigned char)dungeon[i][j+y] >= 3 && (unsigned char)dungeon[i][j+y] <= 7) /* todo: unsigned */
+		wallok = TRUE;
+	if((unsigned char)dungeon[i][j+y] >= 16 && (unsigned char)dungeon[i][j+y] <= 24)
+		wallok = TRUE;
+	if(dungeon[i][j+y] == 22)
+		wallok = FALSE;
+	if(y == 1)
+		wallok = FALSE;
+
+	if(wallok)
+		return y;
+	else
+		return -1;
 }
 
 void __fastcall L5HorizWall(int i, int j, char p, int dx)
 {
-	int v4; // edi
-	int v5; // esi
-	int v6; // eax
-	char v8; // bl
-	int v9; // eax
-	int v10; // ecx
-	char *v11; // edi
-	int v12; // eax
-	int v13; // eax
-	int v14; // eax
-	int v15; // [esp+8h] [ebp-8h]
-	char v16; // [esp+Fh] [ebp-1h]
+	int xx;
+	char wt, dt;
 
-	v4 = j;
-	v5 = i;
-	v15 = j;
-	v6 = random(0, 4);
-	if ( v6 >= 0 )
-	{
-		if ( v6 <= 1 )
-		{
-			v16 = 2;
-		}
-		else if ( v6 == 2 )
-		{
-			v16 = 12;
-			if ( p == 2 )
-				_LOBYTE(p) = 12;
-			if ( p == 4 )
-				_LOBYTE(p) = 10;
-		}
-		else if ( v6 == 3 )
-		{
-			v16 = 36;
-			if ( p == 2 )
-				_LOBYTE(p) = 36;
-			if ( p == 4 )
-				_LOBYTE(p) = 27;
-		}
+	switch(random(0, 4)) {
+		case 0:
+		case 1:
+			dt = 2;
+			break;
+		case 2:
+			dt = 12;
+			if(p == 2)
+				p = 12;
+			if(p == 4)
+				p = 10;
+			break;
+		case 3:
+			dt = 36;
+			if(p == 2)
+				p = 36;
+			if(p == 4)
+				p = 27;
+			break;
+		default:
+			break;
 	}
-	v8 = random(0, 6) != 5 ? 26 : 12;
-	if ( v16 == 12 )
-		v8 = 12;
-	v9 = v4 + 40 * v5;
-	dungeon[0][v9] = p;
-	v10 = dx;
-	if ( dx > 1 )
-	{
-		v11 = &dungeon[1][v9];
-		v12 = dx - 1;
-		do
-		{
-			*v11 = v16;
-			v11 += 40;
-			--v12;
-		}
-		while ( v12 );
-		v4 = v15;
-	}
-	v13 = random(0, dx - 1) + 1;
-	if ( v8 == 12 )
-	{
-		dungeon[v5 + v13][v4] = 12;
-	}
+
+	if(random(0, 6) == 5)
+		wt = 12;
 	else
-	{
-		v14 = v4 + 40 * (v5 + v13);
-		mydflags[0][v14] |= 1u;
-		dungeon[0][v14] = 2;
+		wt = 26;
+	if(dt == 12)
+		wt = 12;
+
+	dungeon[i][j] = p;
+
+	for(xx = 1; xx < dx; xx++) {
+		dungeon[i+xx][j] = dt;
+	}
+
+	xx = random(0, dx-1) + 1;
+
+	if(wt == 12) {
+		dungeon[i+xx][j] = wt;
+	}
+	else {
+		dungeon[i+xx][j] = 2;
+		mydflags[i+xx][j] |= 1;
 	}
 }
 
 void __fastcall L5VertWall(int i, int j, char p, int dy)
 {
-	int v4; // edi
-	int v5; // esi
-	int v6; // eax
-	int v8; // eax
-	int v9; // ebx
-	int v10; // esi
-	int v11; // ecx
-	char *v12; // edi
-	int v13; // eax
-	unsigned int v14; // ecx
-	int v15; // edx
-	int v16; // eax
-	int v17; // eax
-	int v18; // [esp+8h] [ebp-8h]
-	char v19; // [esp+Eh] [ebp-2h]
-	char v20; // [esp+Fh] [ebp-1h]
+	int yy;
+	char wt, dt;
 
-	v4 = j;
-	v5 = i;
-	v18 = j;
-	v6 = random(0, 4);
-	if ( v6 >= 0 )
-	{
-		if ( v6 <= 1 )
-		{
-			v20 = 1;
-		}
-		else if ( v6 == 2 )
-		{
-			v20 = 11;
-			if ( p == 1 )
-				_LOBYTE(p) = 11;
-			if ( p == 4 )
-				_LOBYTE(p) = 14;
-		}
-		else if ( v6 == 3 )
-		{
-			v20 = 35;
-			if ( p == 1 )
-				_LOBYTE(p) = 35;
-			if ( p == 4 )
-				_LOBYTE(p) = 37;
-		}
+	switch(random(0, 4)) {
+		case 0:
+		case 1:
+			dt = 1;
+			break;
+		case 2:
+			dt = 11;
+			if(p == 1)
+				p = 11;
+			if(p == 4)
+				p = 14;
+			break;
+		case 3:
+			dt = 35;
+			if(p == 1)
+				p = 35;
+			if(p == 4)
+				p = 37;
+			break;
+		default:
+			break;
 	}
-	v8 = random(0, 6);
-	v9 = 5 - v8;
-	_LOBYTE(v9) = v8 != 5 ? 25 : 11;
-	v19 = v8 != 5 ? 25 : 11;
-	if ( v20 == 11 )
-	{
-		_LOBYTE(v9) = 11;
-		v19 = 11;
-	}
-	v10 = v5;
-	dungeon[v10][v4] = p;
-	v11 = dy;
-	if ( dy > 1 )
-	{
-		v12 = &dungeon[v10][v4 + 1];
-		_LOBYTE(v9) = v20;
-		BYTE1(v9) = v20;
-		v13 = v9 << 16;
-		_LOWORD(v13) = v9;
-		_LOBYTE(v9) = v19;
-		v14 = (unsigned int)(dy - 1) >> 2;
-		memset32(v12, v13, v14);
-		memset(&v12[4 * v14], v13, ((_BYTE)dy - 1) & 3);
-		v11 = dy;
-		v4 = v18;
-	}
-	v15 = v11 - 1;
-	v16 = random(0, v15) + 1;
-	if ( (_BYTE)v9 == 11 )
-	{
-		dungeon[0][v16 + v10 * 40 + v4] = 11;
-	}
+
+	if(random(0, 6) == 5)
+		wt = 11;
 	else
-	{
-		v17 = v16 + v10 * 40 + v4;
-		mydflags[0][v17] |= 2u;
-		dungeon[0][v17] = 1;
+		wt = 25;
+	if(dt == 11)
+		wt = 11;
+
+	dungeon[i][j] = p;
+
+	for(yy = 1; yy < dy; yy++) {
+		dungeon[i][j+yy] = dt;
+	}
+
+	yy = random(0, dy-1) + 1;
+
+	if(wt == 11) {
+		dungeon[i][j+yy] = wt;
+	}
+	else {
+		dungeon[i][j+yy] = 1;
+		mydflags[i][j+yy] |= 2;
 	}
 }
 
@@ -2027,70 +1695,41 @@ void __cdecl L5tileFix()
 
 void __cdecl DRLG_L5Subs()
 {
-	signed int v0; // edi
-	int v1; // esi
-	unsigned char v2; // bl
-	int v3; // eax
-	signed int v4; // ecx
-	signed int v5; // [esp+Ch] [ebp-4h]
-
-	v0 = 0;
-	do
-	{
-		v1 = v0 - 1;
-		v5 = 40;
-		do
-		{
-			if ( !random(0, 4) )
+	for(int y = 0; y < DMAXY; y++) {
+		for(int x = 0; x < DMAXX; x++) {
+			if(!random(0, 4))
 			{
-				v2 = L5BTYPES[(unsigned char)dungeon[0][v1 + 1]];
-				if ( v2 )
+				unsigned char c = L5BTYPES[(unsigned char)dungeon[x][y]]; /* todo: changed to unsigned */
+
+				if(c && !mydflags[x][y])
 				{
-					if ( !mydflags[0][v1 + 1] )
-					{
-						v3 = random(0, 16);
-						v4 = -1;
-						if ( v3 >= 0 )
-						{
-							do
-							{
-								if ( ++v4 == 206 )
-									v4 = 0;
-								if ( v2 == L5BTYPES[v4] )
-									--v3;
-							}
-							while ( v3 >= 0 );
-							if ( v4 == 89 )
-							{
-								if ( L5BTYPES[(unsigned char)dungeon[0][v1]] == 79 && !mydflags[0][v1] )
-								{
-									dungeon[0][v1] = 90;
-									goto LABEL_22;
-								}
-								v4 = 79;
-							}
-							if ( v4 == 91 )
-							{
-								if ( L5BTYPES[(unsigned char)dungeon[1][v1 + 1]] != 80 || mydflags[1][v1 + 1] )
-									_LOBYTE(v4) = 80;
-								else
-									dungeon[1][v1 + 1] = 92;
-							}
-						}
-LABEL_22:
-						dungeon[0][v1 + 1] = v4;
-						goto LABEL_23;
+					int rv = random(0, 16);
+					int i = -1;
+
+					while(rv >= 0) {
+						if(++i == sizeof(L5BTYPES))
+							i = 0;
+						if(c == L5BTYPES[i])
+							rv--;
 					}
+
+					if(i == 89) {
+						if(L5BTYPES[(unsigned char)dungeon[x][y-1]] != 79 || mydflags[x][y-1])
+							i = 79;
+						else
+							dungeon[x][y-1] = 90;
+					}
+					if(i == 91) {
+						if(L5BTYPES[(unsigned char)dungeon[x+1][y]] != 80 || mydflags[x+1][y])
+							i = 80;
+						else
+							dungeon[x+1][y] = 92;
+					}
+					dungeon[x][y] = i;
 				}
 			}
-LABEL_23:
-			v1 += 40;
-			--v5;
 		}
-		while ( v5 );
-		++v0;
 	}
-	while ( v0 < 40 );
 }
 
 void __cdecl L5FillChambers()
@@ -2374,90 +2013,47 @@ void __fastcall DRLG_L5GChamber(int sx, int sy, bool topflag, bool bottomflag, b
 
 void __fastcall DRLG_L5GHall(int x1, int y1, int x2, int y2)
 {
-	int v4; // eax
-	char *v5; // edx
-	int v6; // eax
-	char *v7; // ecx
+	int i;
 
-	if ( y1 == y2 )
+	if(y1 == y2)
 	{
-		if ( x1 < x2 )
-		{
-			v4 = x2 - x1;
-			v5 = &dungeon[x1][y1 + 3];
-			do
-			{
-				*(v5 - 3) = 12;
-				*v5 = 12;
-				v5 += 40;
-				--v4;
-			}
-			while ( v4 );
+		for(i = x1; i < x2; i++) {
+			dungeon[i][y1] = 12;
+			dungeon[i][y1+3] = 12;
 		}
 	}
 	else
 	{
-		v6 = y1;
-		if ( y1 < y2 )
-		{
-			v7 = dungeon[x1 + 3];
-			do
-			{
-				v7[v6 - 120] = 11;
-				v7[v6++] = 11;
-			}
-			while ( v6 < y2 );
+		for(i = y1; i < y2; i++) {
+			dungeon[x1][i] = 11;
+			dungeon[x1+3][i] = 11;
 		}
 	}
 }
 
 void __fastcall DRLG_L5SetRoom(int rx1, int ry1)
 {
-	int v2; // edi
-	int v3; // esi
-	int v4; // eax
-	char v5; // bl
-	int v6; // [esp+8h] [ebp-Ch]
-	char *v7; // [esp+Ch] [ebp-8h]
-	int v8; // [esp+10h] [ebp-4h]
+	int rw = *(unsigned char *)pSetPiece; /* todo: BYTE */
+	int rh = *((unsigned char *)pSetPiece+2);
 
-	v8 = 0;
-	v2 = *((unsigned char *)pSetPiece + 2);
-	v3 = *(unsigned char *)pSetPiece;
 	setpc_x = rx1;
 	setpc_y = ry1;
-	setpc_w = v3;
-	setpc_h = v2;
-	v7 = (char *)pSetPiece + 4;
-	if ( v2 > 0 )
-	{
-		do
-		{
-			if ( v3 > 0 )
-			{
-				v6 = v3;
-				v4 = ry1 + v8 + 40 * rx1;
-				do
-				{
-					v5 = *v7;
-					if ( *v7 )
-					{
-						mydflags[0][v4] |= 0x80u;
-						dungeon[0][v4] = v5;
-					}
-					else
-					{
-						dungeon[0][v4] = 13;
-					}
-					v7 += 2;
-					v4 += 40;
-					--v6;
-				}
-				while ( v6 );
+	setpc_w = rw;
+	setpc_h = rh;
+
+	unsigned char *sp = (unsigned char *)pSetPiece+4;
+
+	for(int j = 0; j < rh; j++) {
+		for(int i = 0; i < rw; i++) {
+			if(*sp) {
+				dungeon[rx1+i][ry1+j] = *sp;
+				mydflags[rx1+i][ry1+j] |= 0x80;
 			}
-			++v8;
+			else {
+				dungeon[rx1+i][ry1+j] = 13;
+			}
+			sp += 2;
 		}
-		while ( v8 < v2 );
 	}
 }
 // 5CF330: using guessed type int setpc_h;
@@ -2465,244 +2061,125 @@ void __fastcall DRLG_L5SetRoom(int rx1, int ry1)
 
 void __cdecl DRLG_L5FloodTVal()
 {
-	int v0; // ebx
-	int v1; // esi
-	char *v2; // edi
-	_BYTE *v3; // [esp+Ch] [ebp-Ch]
-	signed int x; // [esp+10h] [ebp-8h]
-	signed int tx; // [esp+14h] [ebp-4h]
+	int yy = 16;
 
-	v0 = 16;
-	v1 = 0;
-	do
+	for(int j = 0; j < DMAXY; j++)
 	{
-		tx = 0;
-		x = 16;
-		v2 = &dung_map[16][v0];
-		v3 = (unsigned char *)dungeon + v1;
-		do
+		int xx = 16;
+
+		for(int i = 0; i < DMAXX; i++)
 		{
-			if ( *v3 == 13 && !*v2 )
-			{
-				DRLG_L5FTVR(tx, v1, x, v0, 0);
-				++TransVal;
+			if(dungeon[i][j] == 13 && !dung_map[xx][yy]) {
+				DRLG_L5FTVR(i, j, xx, yy, 0);
+				TransVal++;
 			}
-			x += 2;
-			v3 += 40;
-			v2 += 224;
-			++tx;
+			xx += 2;
 		}
-		while ( tx < 40 );
-		v0 += 2;
-		++v1;
+		yy += 2;
 	}
-	while ( v1 < 40 );
 }
 // 5A5590: using guessed type char TransVal;
 
 void __fastcall DRLG_L5FTVR(int i, int j, int x, int y, int d)
 {
-	int v5; // ebx
-	int v6; // esi
-	int v7; // edi
-	int v8; // edx
-	int v9; // ecx
-	int v10; // ebx
-	int v11; // eax
-	int v12; // edi
-	char v13; // al
-	char v14; // al
-	int v15; // ecx
-	int v16; // ecx
-	int v17; // ecx
-	int v18; // ecx
-	int v19; // [esp+Ch] [ebp-14h]
-	int v20; // [esp+10h] [ebp-10h]
-	int v21; // [esp+14h] [ebp-Ch]
-	int tya; // [esp+18h] [ebp-8h]
-	int txa; // [esp+1Ch] [ebp-4h]
-	int ya; // [esp+2Ch] [ebp+Ch]
-
-	v5 = x;
-	v6 = y;
-	v7 = j;
-	v8 = i;
-	v9 = 112 * x + y;
-	tya = v7;
-	v21 = v8;
-	if ( !dung_map[0][v9] )
-	{
-		v19 = x;
-		txa = v8 - 1;
-		v10 = x - 2;
-		v11 = 40 * v8;
-		ya = v7 - 1;
-		v12 = v6 - 2;
-		for ( v20 = 40 * v8; dungeon[0][v11 + tya] == 13; v11 = v20 )
-		{
-			v13 = TransVal;
-			dung_map[0][v9] = TransVal;
-			dung_map[1][v9] = v13;
-			dung_map[0][v9 + 1] = v13;
-			dung_map[1][v9 + 1] = v13;
-			DRLG_L5FTVR(txa + 2, tya, v10 + 4, v6, 1);
-			DRLG_L5FTVR(txa, tya, v10, v6, 2);
-			DRLG_L5FTVR(v21, ya + 2, x, v12 + 4, 3);
-			DRLG_L5FTVR(v21, ya, x, v12, 4);
-			DRLG_L5FTVR(txa, ya, v10, v12, 5);
-			DRLG_L5FTVR(txa + 2, ya, v10 + 4, v12, 6);
-			DRLG_L5FTVR(txa, ya + 2, v10, v12 + 4, 7);
-			v19 += 2;
-			v20 += 40;
-			d = 8;
-			x += 2;
-			v6 += 2;
-			v12 += 2;
-			v10 += 2;
-			++tya;
-			++ya;
-			++v21;
-			++txa;
-			v9 = v19 * 112 + v6;
-			if ( dung_map[v19][v6] )
-				break;
+	if(dung_map[x][y] || dungeon[i][j] != 13) {
+		if(d == 1) {
+			dung_map[x][y] = TransVal;
+			dung_map[x][y+1] = TransVal;
 		}
-		v5 = x;
+		if(d == 2) {
+			dung_map[x+1][y] = TransVal;
+			dung_map[x+1][y+1] = TransVal;
+		}
+		if(d == 3) {
+			dung_map[x][y] = TransVal;
+			dung_map[x+1][y] = TransVal;
+		}
+		if(d == 4) {
+			dung_map[x][y+1] = TransVal;
+			dung_map[x+1][y+1] = TransVal;
+		}
+		if(d == 5)
+			dung_map[x+1][y+1] = TransVal;
+		if(d == 6)
+			dung_map[x][y+1] = TransVal;
+		if(d == 7)
+			dung_map[x+1][y] = TransVal;
+		if(d == 8)
+			dung_map[x][y] = TransVal;
 	}
-	v14 = TransVal;
-	if ( d == 1 )
-	{
-		v15 = v6 + 112 * v5;
-		dung_map[0][v15] = TransVal;
-		dung_map[0][v15 + 1] = v14;
+	else {
+		dung_map[x][y] = TransVal;
+		dung_map[x+1][y] = TransVal;
+		dung_map[x][y+1] = TransVal;
+		dung_map[x+1][y+1] = TransVal;
+		DRLG_L5FTVR(i+1, j, x+2, y, 1);
+		DRLG_L5FTVR(i-1, j, x-2, y, 2);
+		DRLG_L5FTVR(i, j+1, x, y+2, 3);
+		DRLG_L5FTVR(i, j-1, x, y-2, 4);
+		DRLG_L5FTVR(i-1, j-1, x-2, y-2, 5);
+		DRLG_L5FTVR(i+1, j-1, x+2, y-2, 6);
+		DRLG_L5FTVR(i-1, j+1, x-2, y+2, 7);
+		DRLG_L5FTVR(i+1, j+1, x+2, y+2, 8);
 	}
-	if ( d == 2 )
-	{
-		v16 = v6 + 112 * v5;
-		dung_map[1][v16] = v14;
-		dung_map[1][v16 + 1] = v14;
-	}
-	if ( d == 3 )
-	{
-		v17 = v6 + 112 * v5;
-		dung_map[0][v17] = v14;
-		dung_map[1][v17] = v14;
-	}
-	if ( d == 4 )
-	{
-		v18 = v6 + 112 * v5;
-		dung_map[0][v18 + 1] = v14;
-		dung_map[1][v18 + 1] = v14;
-	}
-	if ( d == 5 )
-		dung_map[v5 + 1][v6 + 1] = v14;
-	if ( d == 6 )
-		dung_map[v5][v6 + 1] = v14;
-	if ( d == 7 )
-		dung_map[v5 + 1][v6] = v14;
-	if ( d == 8 )
-		dung_map[v5][v6] = v14;
 }
 // 5A5590: using guessed type char TransVal;
 
 void __cdecl DRLG_L5TransFix()
 {
-	signed int v0; // esi
-	char *v1; // eax
-	char *v2; // ecx
-	signed int v3; // edi
-	char v4; // bl
-	char v5; // dl
-	char v6; // dl
-	char v7; // dl
-	char v8; // dl
-	char v9; // dl
-	char *v10; // [esp+Ch] [ebp-4h]
+	int yy = 16;
 
-	v0 = 0;
-	v10 = &dung_map[16][16]; /* check */
-	do
+	for(int j = 0; j < DMAXY; j++)
 	{
-		v1 = v10;
-		v2 = (char *)dungeon + v0;
-		v3 = 40;
-		do
+		int xx = 16;
+
+		for(int i = 0; i < DMAXX; i++)
 		{
-			v4 = *v2;
-			if ( *v2 == 23 && *(v2 - 1) == 18 )
-			{
-				v5 = *v1;
-				v1[112] = *v1;
-				v1[113] = v5;
+			if(dungeon[i][j] == 23 && dungeon[i][j-1] == 18) {
+				dung_map[xx+1][yy] = dung_map[xx][yy];
+				dung_map[xx+1][yy+1] = dung_map[xx][yy];
 			}
-			if ( v4 == 24 && v2[40] == 19 )
-			{
-				v6 = *v1;
-				v1[1] = *v1;
-				v1[113] = v6;
+			if(dungeon[i][j] == 24 && dungeon[i+1][j] == 19) {
+				dung_map[xx][yy+1] = dung_map[xx][yy];
+				dung_map[xx+1][yy+1] = dung_map[xx][yy];
 			}
-			if ( v4 == 18 )
-			{
-				v7 = *v1;
-				v1[112] = *v1;
-				v1[113] = v7;
+			if(dungeon[i][j] == 18) {
+				dung_map[xx+1][yy] = dung_map[xx][yy];
+				dung_map[xx+1][yy+1] = dung_map[xx][yy];
 			}
-			if ( v4 == 19 )
-			{
-				v8 = *v1;
-				v1[1] = *v1;
-				v1[113] = v8;
+			if(dungeon[i][j] == 19) {
+				dung_map[xx][yy+1] = dung_map[xx][yy];
+				dung_map[xx+1][yy+1] = dung_map[xx][yy];
 			}
-			if ( v4 == 20 )
-			{
-				v9 = *v1;
-				v1[112] = *v1;
-				v1[1] = v9;
-				v1[113] = v9;
+			if(dungeon[i][j] == 20) {
+				dung_map[xx+1][yy] = dung_map[xx][yy];
+				dung_map[xx][yy+1] = dung_map[xx][yy];
+				dung_map[xx+1][yy+1] = dung_map[xx][yy];
 			}
-			v1 += 224;
-			v2 += 40;
-			--v3;
+			xx += 2;
 		}
-		while ( v3 );
-		v10 += 2;
-		++v0;
+		yy += 2;
 	}
-	while ( v0 < 40 );
 }
 
 void __cdecl DRLG_L5DirtFix()
 {
-	signed int v0; // ecx
-	char *v1; // eax
-	signed int v2; // edx
-
-	v0 = 0;
-	do
-	{
-		v1 = (char *)dungeon + v0;
-		v2 = 40;
-		do
-		{
-			if ( *v1 == 21 && v1[40] != 19 )
-				*v1 = -54;
-			if ( *v1 == 19 && v1[40] != 19 )
-				*v1 = -56;
-			if ( *v1 == 24 && v1[40] != 19 )
-				*v1 = -51;
-			if ( *v1 == 18 && v1[1] != 18 )
-				*v1 = -57;
-			if ( *v1 == 21 && v1[1] != 18 )
-				*v1 = -54;
-			if ( *v1 == 23 && v1[1] != 18 )
-				*v1 = -52;
-			v1 += 40;
-			--v2;
+	for(int j = 0; j < DMAXY; j++) {
+		for(int i = 0; i < DMAXX; i++) {
+			if(dungeon[i][j] == 21 && dungeon[i+1][j] != 19)
+				dungeon[i][j] = 202;
+			if(dungeon[i][j] == 19 && dungeon[i+1][j] != 19)
+				dungeon[i][j] = 200;
+			if(dungeon[i][j] == 24 && dungeon[i+1][j] != 19)
+				dungeon[i][j] = 205;
+			if(dungeon[i][j] == 18 && dungeon[i][j+1] != 18)
+				dungeon[i][j] = 199;
+			if(dungeon[i][j] == 21 && dungeon[i][j+1] != 18)
+				dungeon[i][j] = 202;
+			if(dungeon[i][j] == 23 && dungeon[i][j+1] != 18)
+				dungeon[i][j] = 204;
 		}
-		while ( v2 );
-		++v0;
 	}
-	while ( v0 < 40 );
 }
 
 void __cdecl DRLG_L5CornerFix()
