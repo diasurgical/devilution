@@ -4,7 +4,7 @@
 
 int plr_lframe_size; // idb
 int plr_wframe_size; // idb
-char plr_gfx_flag; // weak
+UCHAR plr_gfx_flag = 0;
 int player_cpp_init_value; // weak
 int plr_aframe_size; // idb
 int myplr;
@@ -14,7 +14,7 @@ int plr_qframe_size; // idb
 int deathflag; // idb
 int plr_hframe_size; // idb
 int plr_bframe_size; // idb
-char plr_gfx_bflag; // weak
+UCHAR plr_gfx_bflag = 0;
 int plr_sframe_size; // idb
 int deathdelay; // weak
 int plr_dframe_size; // idb
@@ -248,64 +248,64 @@ void __fastcall InitPlrGFXMem(int pnum)
 		TermMsg("InitPlrGFXMem: illegal player %d", pnum);
 	}
 
-	if ( !(plr_gfx_flag & 1) ) {
-		plr_gfx_flag |= 1;
-		if ( GetPlrGFXSize("AS") <= GetPlrGFXSize("ST") ) {
-			plr_sframe_size = GetPlrGFXSize("ST");
+	if ( !(plr_gfx_flag & 0x1) ) {//STAND
+		plr_gfx_flag |= 0x1;
+		if ( GetPlrGFXSize("ST") > GetPlrGFXSize("AS") ) {
+			plr_sframe_size = GetPlrGFXSize("ST");//TOWN
 		} else {
-			plr_sframe_size = GetPlrGFXSize("AS");
+			plr_sframe_size = GetPlrGFXSize("AS");//DUNGION
 		}
 	}
 	plr[pnum]._pNData = DiabloAllocPtr(plr_sframe_size);
 
-	if ( !(plr_gfx_flag & 2) ) {
-		plr_gfx_flag |= 2;
-		if ( GetPlrGFXSize("AW") <= GetPlrGFXSize("WL") ) {
-			plr_wframe_size = GetPlrGFXSize("WL");
+	if ( !(plr_gfx_flag & 0x2) ) {//WALK
+		plr_gfx_flag |= 0x2;
+		if ( GetPlrGFXSize("WL") > GetPlrGFXSize("AW") ) {
+			plr_wframe_size = GetPlrGFXSize("WL");//TOWN
 		} else {
-			plr_wframe_size = GetPlrGFXSize("AW");
+			plr_wframe_size = GetPlrGFXSize("AW");//DUNGION
 		}
 	}
 	plr[pnum]._pWData = DiabloAllocPtr(plr_wframe_size);
 
-	if ( !(plr_gfx_flag & 4) ) {
-		plr_gfx_flag |= 4;
+	if ( !(plr_gfx_flag & 0x4) ) {//ATTACK
+		plr_gfx_flag |= 0x4;
 		plr_aframe_size = GetPlrGFXSize("AT");
 	}
 	plr[pnum]._pAData =  DiabloAllocPtr(plr_aframe_size);
 
-	if ( !(plr_gfx_flag & 8) ) {
-		plr_gfx_flag |= 8;
+	if ( !(plr_gfx_flag & 0x8) ) {//HIT
+		plr_gfx_flag |= 0x8;
 		plr_hframe_size = GetPlrGFXSize("HT");
 	}
 	plr[pnum]._pHData = DiabloAllocPtr(plr_hframe_size);
 
-	if ( !(plr_gfx_flag & 0x10) ) {
+	if ( !(plr_gfx_flag & 0x10) ) {//LIGHTNING
 		plr_gfx_flag |= 0x10;
 		plr_lframe_size = GetPlrGFXSize("LM");
 	}
 	plr[pnum]._pLData = DiabloAllocPtr(plr_lframe_size);
 
-	if ( !(plr_gfx_flag & 0x20) ) {
+	if ( !(plr_gfx_flag & 0x20) ) {//FIRE
 		plr_gfx_flag |= 0x20;
 		plr_fframe_size = GetPlrGFXSize("FM");
 	}
 	plr[pnum]._pFData = DiabloAllocPtr(plr_fframe_size);
 
-	if ( !(plr_gfx_flag & 0x40) ) {
+	if ( !(plr_gfx_flag & 0x40) ) {//MAGIC
 		plr_gfx_flag |= 0x40;
 		plr_qframe_size = GetPlrGFXSize("QM");
 	}
 	plr[pnum]._pTData = DiabloAllocPtr(plr_qframe_size);
 
-	if ( !(plr_gfx_flag & 0x80) ) {
+	if ( !(plr_gfx_flag & 0x80) ) {//DEATH
 		plr_gfx_flag |= 0x80;
 		plr_dframe_size = GetPlrGFXSize("DT");
 	}
 	plr[pnum]._pDData = DiabloAllocPtr(plr_dframe_size);
 
-	if ( !(plr_gfx_bflag & 1) ) {
-		plr_gfx_bflag |= 1;
+	if ( !(plr_gfx_bflag & 0x1) ) {//BLOCK
+		plr_gfx_bflag |= 0x1;
 		plr_bframe_size = GetPlrGFXSize("BL");
 	}
 	plr[pnum]._pBData = DiabloAllocPtr(plr_bframe_size);
