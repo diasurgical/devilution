@@ -340,7 +340,7 @@ void __fastcall DoHealOther(int pnum, int rid)
 
 		if ( plr[pnum]._pClass == PC_WARRIOR )
 		{
-			hp *= 2;
+			hp <<= 1;
 		}
 
 		if ( plr[pnum]._pClass == PC_ROGUE )
