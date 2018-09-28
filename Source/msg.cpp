@@ -1849,7 +1849,7 @@ int __fastcall On_SBSPELL(struct TCmdParam1 *pCmd, int pnum)
 
 	if ( gbBufferMsgs != 1 )
 	{
-		if ( currlevel || *(_DWORD *)&spelldata[(unsigned short)pCmd->wParam1].sTownSpell )
+		if ( currlevel || spelldata[(unsigned short)pCmd->wParam1].sTownSpell )
 		{
 			v2 = pnum;
 			plr[v2]._pSpell = (unsigned short)pCmd->wParam1;
@@ -2556,7 +2556,7 @@ int __fastcall On_SPELLXYD(struct TCmdLocParam3 *pCmd, int pnum)
 		v3 = pnum;
 		if ( currlevel == plr[pnum].plrlevel )
 		{
-			if ( currlevel || *(_DWORD *)&spelldata[(unsigned short)pCmd->wParam1].sTownSpell )
+			if ( currlevel || spelldata[(unsigned short)pCmd->wParam1].sTownSpell )
 			{
 				ClrPlrPath(pnum);
 				plr[v3].destAction = ACTION_SPELLWALL;
@@ -2591,7 +2591,7 @@ int __fastcall On_SPELLXY(struct TCmdLocParam2 *pCmd, int pnum)
 		v3 = pnum;
 		if ( currlevel == plr[pnum].plrlevel )
 		{
-			if ( currlevel || *(_DWORD *)&spelldata[(unsigned short)pCmd->wParam1].sTownSpell )
+			if ( currlevel || spelldata[(unsigned short)pCmd->wParam1].sTownSpell )
 			{
 				ClrPlrPath(pnum);
 				plr[v3].destAction = ACTION_SPELL;
@@ -2624,7 +2624,7 @@ int __fastcall On_TSPELLXY(struct TCmdLocParam2 *pCmd, int pnum)
 		v3 = pnum;
 		if ( currlevel == plr[pnum].plrlevel )
 		{
-			if ( currlevel || *(_DWORD *)&spelldata[(unsigned short)pCmd->wParam1].sTownSpell )
+			if ( currlevel || spelldata[(unsigned short)pCmd->wParam1].sTownSpell )
 			{
 				ClrPlrPath(pnum);
 				plr[v3].destAction = ACTION_SPELL;
@@ -2815,7 +2815,7 @@ int __fastcall On_SPELLID(struct TCmdLocParam2 *pCmd, int pnum)
 		v3 = pnum;
 		if ( currlevel == plr[pnum].plrlevel )
 		{
-			if ( currlevel || *(_DWORD *)&spelldata[(unsigned short)pCmd->wParam1].sTownSpell )
+			if ( currlevel || spelldata[(unsigned short)pCmd->wParam1].sTownSpell )
 			{
 				ClrPlrPath(pnum);
 				plr[v3].destAction = ACTION_SPELLMON;
@@ -2848,7 +2848,7 @@ int __fastcall On_SPELLPID(struct TCmdLocParam2 *pCmd, int pnum)
 		v3 = pnum;
 		if ( currlevel == plr[pnum].plrlevel )
 		{
-			if ( currlevel || *(_DWORD *)&spelldata[(unsigned short)pCmd->wParam1].sTownSpell )
+			if ( currlevel || spelldata[(unsigned short)pCmd->wParam1].sTownSpell )
 			{
 				ClrPlrPath(pnum);
 				plr[v3].destAction = ACTION_SPELLPLR;
@@ -2880,7 +2880,7 @@ int __fastcall On_TSPELLID(struct TCmdLocParam2 *pCmd, int pnum)
 		v3 = pnum;
 		if ( currlevel == plr[pnum].plrlevel )
 		{
-			if ( currlevel || *(_DWORD *)&spelldata[(unsigned short)pCmd->wParam1].sTownSpell )
+			if ( currlevel || spelldata[(unsigned short)pCmd->wParam1].sTownSpell )
 			{
 				ClrPlrPath(pnum);
 				plr[v3].destAction = ACTION_SPELLMON;
@@ -2911,7 +2911,7 @@ int __fastcall On_TSPELLPID(struct TCmdLocParam2 *pCmd, int pnum)
 		v3 = pnum;
 		if ( currlevel == plr[pnum].plrlevel )
 		{
-			if ( currlevel || *(_DWORD *)&spelldata[(unsigned short)pCmd->wParam1].sTownSpell )
+			if ( currlevel || spelldata[(unsigned short)pCmd->wParam1].sTownSpell )
 			{
 				ClrPlrPath(pnum);
 				plr[v3].destAction = ACTION_SPELLPLR;

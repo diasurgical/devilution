@@ -391,7 +391,7 @@ void __cdecl DrawSpell()
 		if ( v4 <= 0 )
 			v2 = 4;
 	}
-	if ( !currlevel && v2 != 4 && !*(_DWORD *)&spelldata[v3].sTownSpell )
+	if ( !currlevel && v2 != 4 && !spelldata[v3].sTownSpell )
 		v2 = 4;
 	if ( plr[v0]._pRSpell < 0 )
 		v2 = 4;
@@ -498,7 +498,7 @@ LABEL_10:
 			{
 				v9 = nCel;
 			}
-			if ( !currlevel && !*(_DWORD *)v20 )
+			if ( !currlevel && !*v20 )
 				SetSpellTrans(4);
 			DrawSpellCel(v17, xp, (char *)pSpellCels, (char)SpellITbl[v4], 56);
 			if ( MouseX >= v17 - 64 && MouseX < v17 - 64 + 56 && MouseY >= v22 && MouseY < v22 + 56 )
@@ -606,7 +606,7 @@ LABEL_66:
 				v17 = 636;
 			}
 LABEL_68:
-			v20 += 56;
+			v20 += 14;
 			++v4;
 			v26 *= (__int64)2;
 			v23 = v4;
@@ -2713,7 +2713,7 @@ int __fastcall GetSBookTrans(int ii, unsigned char townok)
 		if ( (char)(plr[myplr]._pISplLvlAdd + plr[myplr]._pSplLvl[v2]) <= 0 )
 			v6 = 4;
 	}
-	if ( v7 && !currlevel && v6 != 4 && !*(_DWORD *)&spelldata[v2].sTownSpell )
+	if ( v7 && !currlevel && v6 != 4 && !spelldata[v2].sTownSpell )
 		v6 = 4;
 	_LOBYTE(result) = v6;
 	return result;
