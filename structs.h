@@ -1533,7 +1533,7 @@ struct TMsgHdr
 {
 	TMsg *pNext;
 	DWORD dwTime;
-	UCHAR bLen;
+	BYTE bLen;
 };
 
 struct TMsg

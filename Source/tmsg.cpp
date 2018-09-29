@@ -4,7 +4,7 @@
 
 static TMsg *sgpTimedMsgHead;
 
-int __fastcall tmsg_get(UCHAR *pbMsg, DWORD dwMaxLen)
+int __fastcall tmsg_get(BYTE *pbMsg, DWORD dwMaxLen)
 {
 	int len;
 	TMsg *head;
@@ -23,7 +23,7 @@ int __fastcall tmsg_get(UCHAR *pbMsg, DWORD dwMaxLen)
 	return len;
 }
 
-void __fastcall tmsg_add(UCHAR *pbMsg, UCHAR bLen)
+void __fastcall tmsg_add(BYTE *pbMsg, BYTE bLen)
 {
 	TMsg **tail;
 
