@@ -3460,7 +3460,7 @@ void __cdecl SpawnRock()
 	}
 }
 
-void __fastcall RespawnItem(int i, bool FlipFlag)
+void __fastcall RespawnItem(int i, BOOL FlipFlag)
 {
 	int it; // ecx
 	int il; // eax

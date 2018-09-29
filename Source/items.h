@@ -66,7 +66,7 @@ void __fastcall RecreateItem(int ii, int idx, unsigned short ic, int iseed, int 
 void __fastcall RecreateEar(int ii, unsigned short ic, int iseed, unsigned char Id, int dur, int mdur, int ch, int mch, int ivalue, int ibuff);
 void __fastcall SpawnQuestItem(int itemid, int x, int y, int randarea, int selflag);
 void __cdecl SpawnRock();
-void __fastcall RespawnItem(int i, bool FlipFlag);
+void __fastcall RespawnItem(int i, BOOL FlipFlag);
 void __fastcall DeleteItem(int ii, int i);
 void __cdecl ItemDoppel();
 void __cdecl ProcessItems();

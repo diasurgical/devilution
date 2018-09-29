@@ -1119,53 +1119,37 @@ void __fastcall StartWalkStand(int pnum)
 
 void __fastcall PM_ChangeLightOff(int pnum)
 {
-	int v1; // esi
-	int v2; // esi
-	signed int v3; // ebx
-	int v4; // edi
-	int v5; // edx
-	LightListStruct *v6; // eax
-	int v7; // ecx
-	int v8; // edx
-	signed int v9; // edi
-	int v10; // ebx
-	int v11; // edx
-	int v12; // ecx
-	int v13; // ebp
-	int ly; // [esp+10h] [ebp-Ch]
-	int lx; // [esp+18h] [ebp-4h]
+	int x, y;
+	int lx, ly;
+	int offx, offy;
+	const LightListStruct *l;
 
-	v1 = pnum;
-	if ( (unsigned int)pnum >= MAX_PLRS )
+	if ( (DWORD)pnum >= MAX_PLRS )
 		TermMsg("PM_ChangeLightOff: illegal player %d", pnum);
-	v2 = v1;
-	v3 = -1;
-	v4 = plr[v2]._pxoff;
-	v5 = 2 * plr[v2]._pyoff;
-	v6 = &LightList[plr[v2]._plid];
-	v7 = v4 + v5;
-	v8 = v5 - v4;
-	if ( v7 >= 0 )
-	{
-		v9 = 1;
-	}
-	else
-	{
-		v9 = -1;
-		v7 = -v7;
-	}
-	if ( v8 >= 0 )
-		v3 = 1;
-	else
-		v8 = -v8;
-	v10 = v3 * (v8 >> 3);
-	v11 = 8 * v6->_ly;
-	ly = v11 + v10;
-	lx = v9 * (v7 >> 3);
-	v12 = 8 * v6->_lx;
-	v13 = v11 + v6->_yoff;
-	if ( abs(lx - v6->_xoff) >= 3 || abs(ly - v13) >= 3 )
-		ChangeLightOff(plr[v2]._plid, lx, v10);
+
+	l = &LightList[plr[pnum]._plid];
+	ly = -1;
+	x = 2 * plr[pnum]._py + plr[pnum]._px;
+	y = 2 * plr[pnum]._py - plr[pnum]._px;
+	if (x < 0) {
+		lx = -1;
+		x = -x;
+	} else
+		lx = 1;
+	if (y < 0) {
+		y = -y;
+	} else
+		ly = 1;
+
+	y = (y >> 3) * ly;
+	ly = y + (l->_ly << 3);
+	x = (x >> 3) * lx;
+	offy = l->_yoff + (l->_ly << 3);
+	lx = x + (l->_lx << 3);
+	offx = l->_xoff + (l->_lx << 3);
+
+	if ( abs(lx - offx) >= 3 || abs(ly - offy) >= 3 )
+		ChangeLightOff(plr[pnum]._plid, x, y);
 }
 
 void __fastcall PM_ChangeOffset(int pnum)
@@ -1612,32 +1596,22 @@ void __fastcall StartPlrHit(int pnum, int dam, BOOL forcehit)
 
 void __fastcall RespawnDeadItem(ItemStruct *itm, int x, int y)
 {
-	ItemStruct *v3; // ebx
-	int v4; // eax
-	int i; // ST10_4
-	//unsigned int v6; // ecx
-
-	v3 = itm;
-	if ( numitems < MAXITEMS )
-	{
-		if ( FindGetItem(itm->IDidx, itm->_iCreateInfo, itm->_iSeed) >= 0 )
-		{
+	if ( numitems < MAXITEMS ) {
+		int ii;
+		if ( FindGetItem(itm->IDidx, itm->_iCreateInfo, itm->_iSeed) >= 0 ) {
 			DrawInvMsg("A duplicate item has been detected.  Destroying duplicate...");
-			SyncGetItem(x, y, v3->IDidx, v3->_iCreateInfo, v3->_iSeed);
+			SyncGetItem(x, y, itm->IDidx, itm->_iCreateInfo, itm->_iSeed);
 		}
-		v4 = itemavail[0];
-		i = itemavail[0];
-		dItem[x][y] = _LOBYTE(itemavail[0]) + 1;
-		//v6 = 4 * numitems;
-		itemactive[numitems] = v4;
-		v4 *= 368;
+		ii = itemavail[0];
+		dItem[x][y] = ii + 1;
+		itemactive[numitems] = ii;
 		itemavail[0] = itemavail[MAXITEMS - numitems - 1];
-		qmemcpy((char *)item + v4, v3, sizeof(ItemStruct));
-		*(int *)((char *)&item[0]._ix + v4) = x;
-		*(int *)((char *)&item[0]._iy + v4) = y;
-		RespawnItem(i, 1);
-		++numitems;
-		v3->_itype = -1;
+		item[ii] = *itm;
+		item[ii]._ix = x;
+		item[ii]._iy = y;
+		RespawnItem(ii, TRUE);
+		numitems++;
+		itm->_itype = ITYPE_NONE;
 	}
 }
 
@@ -1752,84 +1726,37 @@ void __fastcall StartPlayerKill(int pnum, int earflag)
 
 void __fastcall PlrDeadItem(int pnum, struct ItemStruct *itm, int xx, int yy)
 {
-	int v4; // edi
-	int v5; // edi
-	int v6; // esi
-	int v7; // ebx
-	int v8; // eax
-	int v9; // ST04_4
-	ItemStruct *v10; // esi
-	int v11; // eax
-	int v12; // ebx
-	int v13; // esi
-	//int v14; // eax
-	int v15; // edx
-	unsigned char v16; // [esp-8h] [ebp-24h]
-	unsigned char v17; // [esp-4h] [ebp-20h]
-	int x; // [esp+Ch] [ebp-10h]
-	ItemStruct *pItem; // [esp+10h] [ebp-Ch]
-	int v20; // [esp+14h] [ebp-8h]
-	int v21; // [esp+14h] [ebp-8h]
-	int v22; // [esp+18h] [ebp-4h]
-	int xxa; // [esp+24h] [ebp+8h]
-	int yya; // [esp+28h] [ebp+Ch]
+	int x, y;
+	int i, j;
 
-	pItem = itm;
-	v4 = pnum;
-	if ( itm->_itype != -1 )
-	{
-		if ( (unsigned int)pnum >= MAX_PLRS )
-			TermMsg("PlrDeadItem: illegal player %d", pnum);
-		v5 = v4;
-		v6 = yy + plr[v5].WorldY;
-		v7 = xx + plr[v5].WorldX;
-		v20 = yy + plr[v5].WorldY;
-		if ( (xx || yy) && (v8 = ItemSpaceOk(v7, v6), v8) )
-		{
-			v9 = v6;
-			v10 = pItem;
-			RespawnDeadItem(pItem, v7, v9);
-			v17 = v20;
-			v16 = v7;
-		}
-		else
-		{
-			yya = -1;
-			xxa = 1;
-			while ( 1 )
-			{
-				v11 = yya;
-				v21 = yya;
-LABEL_14:
-				if ( v11 <= xxa )
-					break;
-				++xxa;
-				if ( --yya <= -50 )
+	if ( itm->_itype == ITYPE_NONE )
+		return;
+
+	if ( (unsigned int)pnum >= MAX_PLRS )
+		TermMsg("PlrDeadItem: illegal player %d", pnum);
+
+	x = xx + plr[pnum].WorldX;
+	y = yy + plr[pnum].WorldY;
+	if ( (xx || yy) && ItemSpaceOk(x, y) ) {
+		RespawnDeadItem(itm, x, y);
+		plr[pnum].HoldItem = *itm;
+		NetSendCmdPItem(FALSE, CMD_RESPAWNITEM, x, y);
+		return;
+	}
+
+	for ( yy = -1, xx = 1; yy != -50; xx++, yy-- ) {
+		for ( j = yy; j <= xx; j++ ) {
+			y = j + plr[pnum].WorldY;
+			for ( i = yy; i <= xx; i++ ) {
+				x = i + plr[pnum].WorldX;
+				if ( ItemSpaceOk(x, y) ) {
+					RespawnDeadItem(itm, x, y);
+					plr[pnum].HoldItem = *itm;
+					NetSendCmdPItem(FALSE, CMD_RESPAWNITEM, x, y);
 					return;
-			}
-			v12 = v21 + plr[v5].WorldY;
-			v22 = yya;
-			while ( 1 )
-			{
-				v13 = v22 + plr[v5].WorldX;
-				x = v22 + plr[v5].WorldX;
-				//_LOBYTE(v14) = ItemSpaceOk(v13, v12);
-				if ( ItemSpaceOk(v13, v12) )
-					break;
-				if ( ++v22 > xxa )
-				{
-					v11 = ++v21;
-					goto LABEL_14;
 				}
 			}
-			v15 = v13;
-			v10 = pItem;
-			RespawnDeadItem(pItem, v15, v12);
-			v17 = v12;
-			v16 = x;
 		}
-		qmemcpy(&plr[v5].HoldItem, v10, sizeof(plr[v5].HoldItem));
-		NetSendCmdPItem(0, CMD_RESPAWNITEM, v16, v17);
 	}
 }
 
