@@ -83,9 +83,9 @@ void __cdecl pfile_write_hero()
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-DWORD __fastcall pfile_get_save_num_from_name(const char *name)
+unsigned int __fastcall pfile_get_save_num_from_name(const char *name)
 {
-	DWORD i;
+	unsigned int i;
 
 	for ( i=0; i < MAX_CHARACTERS; i++ ) {
 		if ( !_strcmpi(hero_names[i], name) )
@@ -134,7 +134,7 @@ bool __fastcall pfile_open_archive(bool a1, int save_num)
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-void __fastcall pfile_get_save_path(char *pszBuf, DWORD dwBufSize, DWORD save_num)
+void __fastcall pfile_get_save_path(char *pszBuf, DWORD dwBufSize, unsigned int save_num)
 {
 	DWORD plen;
 	char *s;
@@ -158,7 +158,7 @@ void __fastcall pfile_get_save_path(char *pszBuf, DWORD dwBufSize, DWORD save_nu
 	_strlwr(pszBuf);
 }
 
-void __fastcall pfile_flush(BOOL is_single_player, DWORD save_num)
+void __fastcall pfile_flush(BOOL is_single_player, unsigned int save_num)
 {
 	char FileName[MAX_PATH];
 
@@ -252,9 +252,9 @@ void __fastcall game_2_ui_player(const PlayerStruct *p, _uiheroinfo *heroinfo, B
 	heroinfo->spawned = 0;
 }
 
-UCHAR __fastcall game_2_ui_class(const PlayerStruct *p)
+unsigned char __fastcall game_2_ui_class(const PlayerStruct *p)
 {
-	UCHAR uiclass;
+	unsigned char uiclass;
 	if ( p->_pClass == PC_WARRIOR )
 		uiclass = UI_WARRIOR;
 	else if ( p->_pClass == PC_ROGUE )
