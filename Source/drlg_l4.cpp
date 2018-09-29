@@ -298,7 +298,7 @@ const unsigned char L4BTYPES[140] =
 void __cdecl DRLG_LoadL4SP()
 {
 	setloadflag_2 = 0;
-	if ( QuestStatus(11) )
+	if ( QuestStatus(QTYPE_WARLRD) )
 	{
 		pSetPiece_2 = (char *)LoadFileInMem("Levels\\L4Data\\Warlord.DUN", 0);
 		setloadflag_2 = 1;
@@ -651,8 +651,8 @@ void __fastcall DRLG_L4(int entry)
 		L4tileFix();
 		if ( currlevel == 16 )
 			L4SaveQuads();
-		//_LOBYTE(v2) = QuestStatus(11);
-		if ( (QuestStatus(11) || currlevel == quests[15]._qlevel && gbMaxPlayers != 1) && SP4x1 < SP4x2 )
+		//_LOBYTE(v2) = QuestStatus(QTYPE_WARLRD);
+		if ( (QuestStatus(QTYPE_WARLRD) || currlevel == quests[QTYPE_VB]._qlevel && gbMaxPlayers != 1) && SP4x1 < SP4x2 )
 		{
 			v3 = SP4x1;
 			v24 = SP4x2 - SP4x1;
@@ -681,8 +681,8 @@ void __fastcall DRLG_L4(int entry)
 			DRLG_L4SetSPRoom(SP4x1, SP4y1);
 		if ( currlevel == 16 )
 			DRLG_LoadDiabQuads(1);
-		//_LOBYTE(v9) = QuestStatus(11);
-		if ( !QuestStatus(11) )
+		//_LOBYTE(v9) = QuestStatus(QTYPE_WARLRD);
+		if ( !QuestStatus(QTYPE_WARLRD) )
 		{
 			if ( currlevel == 15 )
 			{
@@ -691,7 +691,7 @@ void __fastcall DRLG_L4(int entry)
 					v10 = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 1, 0);
 					if ( v10 )
 					{
-						if ( gbMaxPlayers != 1 || (v11 = (unsigned char *)L4PENTA, quests[5]._qactive == 2) )
+						if ( gbMaxPlayers != 1 || (v11 = (unsigned char *)L4PENTA, quests[QTYPE_MOD]._qactive == 2) )
 							v11 = (unsigned char *)L4PENTA2;
 						v10 = DRLG_L4PlaceMiniSet(v11, 1, 1, -1, -1, 0, 1);
 					}
@@ -700,7 +700,7 @@ void __fastcall DRLG_L4(int entry)
 				v10 = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 0, 0);
 				if ( v10 )
 				{
-					if ( gbMaxPlayers != 1 || (v12 = (unsigned char *)L4PENTA, quests[5]._qactive == 2) )
+					if ( gbMaxPlayers != 1 || (v12 = (unsigned char *)L4PENTA, quests[QTYPE_MOD]._qactive == 2) )
 						v12 = (unsigned char *)L4PENTA2;
 					v10 = DRLG_L4PlaceMiniSet(v12, 1, 1, -1, -1, 1, 1);
 				}
@@ -777,8 +777,8 @@ LABEL_31:
 	DRLG_L4Corners();
 	DRLG_L4Subs();
 	DRLG_Init_Globals();
-	//_LOBYTE(v13) = QuestStatus(11);
-	if ( QuestStatus(11) )
+	//_LOBYTE(v13) = QuestStatus(QTYPE_WARLRD);
+	if ( QuestStatus(QTYPE_WARLRD) )
 	{
 		do
 		{
@@ -2617,8 +2617,8 @@ void __cdecl L4firstRoom()
 	}
 	else
 	{
-		if ( (currlevel != quests[11]._qlevel || !quests[11]._qactive)
-		  && (currlevel != quests[15]._qlevel || gbMaxPlayers == 1) )
+		if ( (currlevel != quests[QTYPE_WARLRD]._qlevel || !quests[QTYPE_WARLRD]._qactive)
+		  && (currlevel != quests[QTYPE_VB]._qlevel || gbMaxPlayers == 1) )
 		{
 			v0 = random(0, 5) + 2;
 			v1 = random(0, 5) + 2;
@@ -2642,8 +2642,8 @@ LABEL_10:
 		l4holdx = v2;
 		l4holdy = v5;
 	}
-	//_LOBYTE(v6) = QuestStatus(11);
-	if ( QuestStatus(11) || currlevel == quests[15]._qlevel && gbMaxPlayers != 1 )
+	//_LOBYTE(v6) = QuestStatus(QTYPE_WARLRD);
+	if ( QuestStatus(QTYPE_WARLRD) || currlevel == quests[QTYPE_VB]._qlevel && gbMaxPlayers != 1 )
 	{
 		SP4x1 = v2 + 1;
 		SP4y1 = v5 + 1;
@@ -2980,8 +2980,8 @@ bool __fastcall DRLG_L4PlaceMiniSet(const unsigned char *miniset, int tmin, int 
 	}
 	if ( currlevel == 15 )
 	{
-		quests[15]._qtx = v11 + 1;
-		quests[15]._qty = v12 + 1;
+		quests[QTYPE_VB]._qtx = v11 + 1;
+		quests[QTYPE_VB]._qty = v12 + 1;
 	}
 	result = 1;
 	if ( setview == 1 )

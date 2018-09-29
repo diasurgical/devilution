@@ -2412,6 +2412,18 @@ enum quest_id
 	QTYPE_INVALID = 0xFFFFFFFF,
 };
 
+enum quest_mush_state
+{
+	QS_INIT = 0,
+	QS_TOMESPAWNED = 1,
+	QS_TOMEGIVEN = 2,
+	QS_MUSHSPAWNED = 3,
+	QS_MUSHPICKED = 4,
+	QS_MUSHGIVEN = 5,
+	QS_BRAINSPAWNED = 6,
+	QS_BRAINGIVEN = 7
+};
+
 enum talk_id
 {
 	STORE_NONE = 0x0,

@@ -239,7 +239,7 @@ void __cdecl InitL2Triggers()
 		v6 = v5;
 		do
 		{
-			if ( (*v6)[0] == 267 && (v0 != quests[14]._qtx || v7 != quests[14]._qty) )
+			if ( (*v6)[0] == 267 && (v0 != quests[QTYPE_BONE]._qtx || v7 != quests[QTYPE_BONE]._qty) )
 			{
 				++trigflag[4];
 				v8 += 4;
@@ -428,7 +428,7 @@ void __cdecl InitL4Triggers()
 		v8 = &trigs[trigflag[4]]._ty;
 		do
 		{
-			if ( (*v6)[0] == 370 && quests[15]._qactive == 3 )
+			if ( (*v6)[0] == 370 && quests[QTYPE_VB]._qactive == 3 )
 			{
 				++trigflag[4];
 				*(v8 - 1) = v7;
@@ -1133,7 +1133,7 @@ unsigned char __cdecl ForceSKingTrig()
 		if ( *v1 == -1 )
 			return 0;
 	}
-	sprintf(infostr, "Back to Level %i", (unsigned char)quests[12]._qlevel);
+	sprintf(infostr, "Back to Level %i", (unsigned char)quests[QTYPE_KING]._qlevel);
 	cursmx = trigs[0]._tx;
 	cursmy = trigs[0]._ty;
 	return 1;
@@ -1155,7 +1155,7 @@ unsigned char __cdecl ForceSChambTrig()
 		if ( *v1 == -1 )
 			return 0;
 	}
-	sprintf(infostr, "Back to Level %i", (unsigned char)quests[14]._qlevel);
+	sprintf(infostr, "Back to Level %i", (unsigned char)quests[QTYPE_BONE]._qlevel);
 	cursmx = trigs[0]._tx;
 	cursmy = trigs[0]._ty;
 	return 1;
@@ -1177,7 +1177,7 @@ unsigned char __cdecl ForcePWaterTrig()
 		if ( *v1 == -1 )
 			return 0;
 	}
-	sprintf(infostr, "Back to Level %i", (unsigned char)quests[13]._qlevel);
+	sprintf(infostr, "Back to Level %i", (unsigned char)quests[QTYPE_PW]._qlevel);
 	cursmx = trigs[0]._tx;
 	cursmy = trigs[0]._ty;
 	return 1;

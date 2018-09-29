@@ -780,7 +780,7 @@ void __fastcall CreateL2Dungeon(int rseed, int entry)
 	{
 		if ( currlevel == 7 )
 		{
-			if ( quests[8]._qactive )
+			if ( quests[QTYPE_BLIND]._qactive )
 				goto LABEL_10;
 			currlevel = 6;
 			CreateL2Dungeon(glSeedTbl[6], 4);
@@ -788,7 +788,7 @@ void __fastcall CreateL2Dungeon(int rseed, int entry)
 		}
 		if ( currlevel == 8 )
 		{
-			if ( quests[8]._qactive )
+			if ( quests[QTYPE_BLIND]._qactive )
 			{
 				v4 = glSeedTbl[7];
 				currlevel = 7;
@@ -828,19 +828,19 @@ void __cdecl DRLG_LoadL2SP()
 	char *v1; // ecx
 
 	setloadflag_2 = 0;
-	if ( QuestStatus(8) )
+	if ( QuestStatus(QTYPE_BLIND) )
 	{
 		v1 = "Levels\\L2Data\\Blind2.DUN";
 	}
 	else
 	{
-		if ( QuestStatus(9) )
+		if ( QuestStatus(QTYPE_BLOOD) )
 		{
 			v1 = "Levels\\L2Data\\Blood1.DUN";
 		}
 		else
 		{
-			if ( !QuestStatus(14) )
+			if ( !QuestStatus(QTYPE_BONE) )
 				return;
 			v1 = "Levels\\L2Data\\Bonestr2.DUN";
 		}
@@ -1665,7 +1665,7 @@ bool __cdecl CreateDungeon()
 	v2 = 0;
 	if ( currlevel == 5 )
 	{
-		if ( !quests[9]._qactive )
+		if ( !quests[QTYPE_BLOOD]._qactive )
 			goto LABEL_12;
 		v1 = 20;
 		v0 = 14;
@@ -1674,13 +1674,13 @@ bool __cdecl CreateDungeon()
 	{
 		if ( currlevel == 6 )
 		{
-			if ( !quests[14]._qactive )
+			if ( !quests[QTYPE_BONE]._qactive )
 				goto LABEL_12;
 			v12 = 10;
 		}
 		else
 		{
-			if ( currlevel != 7 || !quests[8]._qactive )
+			if ( currlevel != 7 || !quests[QTYPE_BLIND]._qactive )
 				goto LABEL_12;
 			v12 = 15;
 		}

@@ -743,9 +743,9 @@ void __cdecl InitItems()
 	if ( !setlevel )
 	{
 		GetRndSeed();
-		if ( QuestStatus(0) )
+		if ( QuestStatus(QTYPE_INFRA) )
 			SpawnRock();
-		if ( QuestStatus(10) )
+		if ( QuestStatus(QTYPE_ANVIL) )
 			SpawnQuestItem(16, 2 * setpc_x + 27, 2 * setpc_y + 27, 0, 1);
 		if ( currlevel > 0u && currlevel < 0x10u )
 			AddInitItems();
@@ -3085,10 +3085,10 @@ void __fastcall SpawnItem(int m, int x, int y, unsigned char sendmsg)
 
 	if ( !monster[m]._uniqtype && ((monster[m].MData->mTreasure & 0x8000) == 0 || gbMaxPlayers == 1) )
 	{
-		if ( quests[1]._qactive == 2 && quests[1]._qvar1 == 5 )
+		if ( quests[QTYPE_BLKM]._qactive == 2 && quests[QTYPE_BLKM]._qvar1 == QS_MUSHGIVEN )
 		{
-			idx = 18; // Brain
-			quests[1]._qvar1 = 6;
+			idx = IDI_BRAIN;
+			quests[QTYPE_BLKM]._qvar1 = QS_BRAINSPAWNED;
 			goto LABEL_13;
 		}
 		idx = RndItem(m);
