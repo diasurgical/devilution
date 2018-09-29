@@ -222,33 +222,19 @@ void __fastcall LoadL1Dungeon(char *sFileName, int vx, int vy)
 
 void __cdecl DRLG_L1Floor()
 {
-	signed int i; // edi
-	signed int v1; // esi
-	signed int j; // ebx
-	int rv; // eax
-
-	i = 0;
-	do
-	{
-		v1 = i;
-		j = 40;
-		do
-		{
-			if ( !mydflags[0][v1] && dungeon[0][v1] == 13 )
+	for(int j = 0; j < DMAXY; j++) {
+		for(int i = 0; i < DMAXX; i++) {
+			if(mydflags[i][j] == 0 && dungeon[i][j] == 13)
 			{
-				rv = random(0, 3);
-				if ( rv == 1 )
-					dungeon[0][v1] = -94;
-				if ( rv == 2 )
-					dungeon[0][v1] = -93;
+				long rv = random(0, 3);
+
+				if(rv == 1)
+					dungeon[i][j] = 162;
+				if(rv == 2)
+					dungeon[i][j] = 163;
 			}
-			v1 += 40;
-			--j;
 		}
-		while ( j );
-		++i;
 	}
-	while ( i < 40 );
 }
 
 void __cdecl DRLG_L1Pass3()
@@ -1641,190 +1627,112 @@ void __cdecl DRLG_L5Subs()
 
 void __cdecl L5FillChambers()
 {
-	int v0; // edi
-	int v1; // edi
-	int v2; // edx
-	int v3; // ecx
-	int v4; // edi
-	signed int v5; // [esp-4h] [ebp-10h]
+	int c;
 
-	v0 = 1;
-	if ( HR1 )
+	if(HR1)
 		DRLG_L5GChamber(0, 14, 0, 0, 0, 1);
-	if ( !HR2 )
-		goto LABEL_16;
-	if ( HR1 )
-	{
-		if ( !HR3 )
+
+	if(HR2) {
+		if(HR1 && !HR3)
 			DRLG_L5GChamber(14, 14, 0, 0, 1, 0);
-		if ( HR1 )
-			goto LABEL_111;
-	}
-	if ( HR3 )
-		DRLG_L5GChamber(14, 14, 0, 0, 0, 1);
-	if ( HR1 )
-	{
-LABEL_111:
-		if ( HR3 )
+		if(!HR1 && HR3)
+			DRLG_L5GChamber(14, 14, 0, 0, 0, 1);
+		if(HR1 && HR3)
 			DRLG_L5GChamber(14, 14, 0, 0, 1, 1);
-		if ( HR1 )
-		{
-LABEL_16:
-			if ( !HR3 )
-				goto LABEL_18;
-			goto LABEL_17;
-		}
+		if(!HR1 && !HR3)
+			DRLG_L5GChamber(14, 14, 0, 0, 0, 0);
 	}
-	if ( !HR3 )
-	{
-		DRLG_L5GChamber(14, 14, 0, 0, 0, 0);
-		goto LABEL_16;
-	}
-LABEL_17:
-	DRLG_L5GChamber(28, 14, 0, 0, 1, 0);
-LABEL_18:
-	if ( HR1 )
-	{
-		if ( !HR2 )
-			goto LABEL_24;
+
+	if(HR3)
+		DRLG_L5GChamber(28, 14, 0, 0, 1, 0);
+	if(HR1 && HR2)
 		DRLG_L5GHall(12, 18, 14, 18);
-	}
-	if ( HR2 && HR3 )
+	if(HR2 && HR3)
 		DRLG_L5GHall(26, 18, 28, 18);
-LABEL_24:
-	if ( HR1 && !HR2 && HR3 )
+	if(HR1 && !HR2 && HR3)
 		DRLG_L5GHall(12, 18, 28, 18);
-	if ( VR1 )
+	if(VR1)
 		DRLG_L5GChamber(14, 0, 0, 1, 0, 0);
-	if ( !VR2 )
-		goto LABEL_43;
-	if ( VR1 )
-	{
-		if ( !VR3 )
+
+	if(VR2) {
+		if(VR1 && !VR3)
 			DRLG_L5GChamber(14, 14, 1, 0, 0, 0);
-		if ( VR1 )
-			goto LABEL_112;
-	}
-	if ( VR3 )
-		DRLG_L5GChamber(14, 14, 0, 1, 0, 0);
-	if ( VR1 )
-	{
-LABEL_112:
-		if ( VR3 )
+		if(!VR1 && VR3)
+			DRLG_L5GChamber(14, 14, 0, 1, 0, 0);
+		if(VR1 && VR3)
 			DRLG_L5GChamber(14, 14, 1, 1, 0, 0);
-		if ( VR1 )
-		{
-LABEL_43:
-			if ( !VR3 )
-				goto LABEL_45;
-			goto LABEL_44;
-		}
+		if(!VR1 && !VR3)
+			DRLG_L5GChamber(14, 14, 0, 0, 0, 0);
 	}
-	if ( !VR3 )
-	{
-		DRLG_L5GChamber(14, 14, 0, 0, 0, 0);
-		goto LABEL_43;
-	}
-LABEL_44:
-	DRLG_L5GChamber(14, 28, 1, 0, 0, 0);
-LABEL_45:
-	if ( VR1 )
-	{
-		if ( !VR2 )
-			goto LABEL_51;
+
+	if(VR3)
+		DRLG_L5GChamber(14, 28, 1, 0, 0, 0);
+	if(VR1 && VR2)
 		DRLG_L5GHall(18, 12, 18, 14);
-	}
-	if ( VR2 && VR3 )
+	if(VR2 && VR3)
 		DRLG_L5GHall(18, 26, 18, 28);
-LABEL_51:
-	if ( VR1 && !VR2 && VR3 )
+	if(VR1 && !VR2 && VR3)
 		DRLG_L5GHall(18, 12, 18, 28);
-	if ( setloadflag )
-	{
-		if ( !VR1 && !VR2 && !VR3 )
-		{
-			if ( HR1 )
-				goto LABEL_113;
-			if ( HR2 && HR3 )
-			{
-				if ( random(0, 2) )
-					v0 = 2;
-				if ( HR1 )
-				{
-LABEL_113:
-					if ( HR2 && !HR3 && random(0, 2) )
-						v0 = 0;
-					if ( HR1 )
-					{
-						if ( !HR2 && HR3 )
-							v0 = random(0, 2) != 0 ? 0 : 2;
-						if ( HR1 && HR2 )
-						{
-							if ( HR3 )
-								v0 = random(0, 3);
-						}
-					}
-				}
+
+	if(setloadflag) {
+		if(VR1 || VR2 || VR3) {
+			c = 1;
+			if(!VR1 && VR2 && VR3 && random(0, 2))
+				c = 2;
+			if(VR1 && VR2 && !VR3 && random(0, 2))
+				c = 0;
+
+			if(VR1 && !VR2 && VR3) {
+				if(random(0, 2))
+					c = 0;
+				else
+					c = 2;
 			}
-			if ( !v0 )
-			{
-				v3 = 2;
-				v2 = 16;
-				goto LABEL_108;
-			}
-			v1 = v0 - 1;
-			if ( v1 )
-			{
-				if ( v1 != 1 )
-					return;
-				v2 = 16;
-				v5 = 30;
-				goto LABEL_107;
-			}
-LABEL_81:
-			v3 = 16;
-			v2 = 16;
-LABEL_108:
-			DRLG_L5SetRoom(v3, v2);
-			return;
-		}
-		if ( VR1 )
-			goto LABEL_114;
-		if ( VR2 && VR3 )
-		{
-			if ( random(0, 2) )
-				v0 = 2;
-			if ( VR1 )
-			{
-LABEL_114:
-				if ( VR2 && !VR3 && random(0, 2) )
-					v0 = 0;
-				if ( VR1 )
-				{
-					if ( !VR2 && VR3 )
-						v0 = random(0, 2) != 0 ? 0 : 2;
-					if ( VR1 && VR2 && VR3 )
-						v0 = random(0, 3);
-				}
+
+			if(VR1 && VR2 && VR3)
+				c = random(0, 3);
+
+			switch(c) {
+				case 0:
+					DRLG_L5SetRoom(16, 2);
+					break;
+				case 1:
+					DRLG_L5SetRoom(16, 16);
+					break;
+				case 2:
+					DRLG_L5SetRoom(16, 30);
+					break;
 			}
 		}
-		if ( v0 )
-		{
-			v4 = v0 - 1;
-			if ( !v4 )
-				goto LABEL_81;
-			if ( v4 != 1 )
-				return;
-			v2 = 30;
+		else {
+			c = 1;
+			if(!HR1 && HR2 && HR3 && random(0, 2))
+				c = 2;
+			if(HR1 && HR2 && !HR3 && random(0, 2))
+				c = 0;
+
+			if(HR1 && !HR2 && HR3) {
+				if(random(0, 2))
+					c = 0;
+				else
+					c = 2;
+			}
+
+			if(HR1 && HR2 && HR3)
+				c = random(0, 3);
+
+			switch(c) {
+				case 0:
+					DRLG_L5SetRoom(2, 16);
+					break;
+				case 1:
+					DRLG_L5SetRoom(16, 16);
+					break;
+				case 2:
+					DRLG_L5SetRoom(30, 16);
+					break;
+			}
 		}
-		else
-		{
-			v2 = 2;
-		}
-		v5 = 16;
-LABEL_107:
-		v3 = v5;
-		goto LABEL_108;
 	}
 }
 // 5276A4: using guessed type int setloadflag;
