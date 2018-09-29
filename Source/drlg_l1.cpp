@@ -874,217 +874,120 @@ void __cdecl DRLG_L1Shadows()
 	}
 }
 
-int __fastcall DRLG_PlaceMiniSet(const unsigned char *miniset, int tmin, int tmax, int cx, int cy, bool setview, int noquad, int ldir)
+int __fastcall DRLG_PlaceMiniSet(const unsigned char *miniset, int tmin, int tmax, int cx, int cy, BOOL setview, int noquad, int ldir)
 {
-	unsigned char *v8; // ebx
-	int v9; // edi
-	int v10; // esi
-	int v11; // edx
-	int v12; // esi
-	int v13; // edi
-	int v14; // ebx
-	signed int v15; // edx
-	int v16; // eax
-	unsigned char v17; // cl
-	int v18; // ebx
-	int result; // eax
-	int v20; // eax
-	char *v21; // ecx
-	char v22; // dl
-	char v23; // bl
-	bool v24; // zf
-	bool v25; // sf
-	unsigned char v26; // of
-	int v27; // [esp-4h] [ebp-34h]
-	int v28; // [esp+Ch] [ebp-24h]
-	const unsigned char *v29; // [esp+10h] [ebp-20h]
-	int v30; // [esp+14h] [ebp-1Ch]
-	int v31; // [esp+18h] [ebp-18h]
-	int v32; // [esp+1Ch] [ebp-14h]
-	int v33; // [esp+20h] [ebp-10h]
-	int max; // [esp+24h] [ebp-Ch]
-	int v35; // [esp+28h] [ebp-8h]
-	int v36; // [esp+2Ch] [ebp-4h]
-	int tmaxa; // [esp+38h] [ebp+8h]
-	int tmaxb; // [esp+38h] [ebp+8h]
+	int xx, yy, sx, sy;
+	int ii;
+	int numt;
 
-	v8 = (unsigned char *)miniset;
-	v9 = *miniset;
-	v10 = tmin;
-	v11 = tmax - tmin;
-	v29 = miniset;
-	v35 = *miniset;
-	v36 = miniset[1];
-	if ( v11 )
-		v30 = v10 + random(0, v11);
+	int sw = miniset[0];
+	int sh = miniset[1];
+
+	if(tmax - tmin == 0)
+		numt = 1;
 	else
-		v30 = 1;
-	v31 = 0;
-	if ( v30 > 0 )
-	{
-		max = 40 - v9;
-		v28 = 40 - v36;
-		while ( 1 )
-		{
-			v12 = random(0, max);
-			v32 = 0;
-			v13 = random(0, v28);
-			while ( 1 )
-			{
-				tmaxa = 1;
-				if ( cx != -1 && v12 >= cx - v35 && v12 <= cx + 12 )
-				{
-					++v12;
-					tmaxa = 0;
-				}
-				if ( cy != -1 && v13 >= cy - v36 && v13 <= cy + 12 )
-				{
-					++v13;
-					tmaxa = 0;
-				}
-				v14 = 0;
-				switch ( noquad )
-				{
-					case 0:
-						if ( v12 >= cx )
-							goto LABEL_29;
-						goto LABEL_27;
-					case 1:
-						if ( v12 <= cx )
-							goto LABEL_29;
-LABEL_27:
-						if ( v13 >= cy )
-							goto LABEL_29;
-LABEL_28:
-						tmaxa = 0;
-						goto LABEL_29;
-					case 2:
-						if ( v12 >= cx )
-							goto LABEL_29;
-LABEL_22:
-						if ( v13 <= cy )
-							goto LABEL_29;
-						goto LABEL_28;
-				}
-				if ( noquad == 3 && v12 > cx )
-					goto LABEL_22;
-LABEL_29:
-				v15 = 2;
-				if ( v36 > 0 )
-				{
-					do
-					{
-						if ( tmaxa != 1 )
-							break;
-						v33 = 0;
-						if ( v35 > 0 )
-						{
-							v16 = v13 + v14 + 40 * v12;
-							do
-							{
-								if ( tmaxa != 1 )
-									break;
-								v17 = v29[v15];
-								if ( v17 && dungeon[0][v16] != v17 )
-									tmaxa = 0;
-								if ( mydflags[0][v16] )
-									tmaxa = 0;
-								++v15;
-								++v33;
-								v16 += 40;
-							}
-							while ( v33 < v35 );
-						}
-						++v14;
-					}
-					while ( v14 < v36 );
-				}
-				v18 = 0;
-				if ( tmaxa )
+		numt = random(0, tmax - tmin) + tmin;
+
+	for(int i = 0; i < numt; i++) {
+		sx = random(0, 40 - sw);
+		sy = random(0, 40 - sh);
+		BOOL abort = FALSE;
+		int found = 0;
+
+		while(abort == FALSE) {
+			abort = TRUE;
+			if(cx != -1 && sx >= cx - sw && sx <= cx + 12) {
+				sx++;
+				abort = FALSE;
+			}
+			if(cy != -1 && sy >= cy - sh && sy <= cy + 12) {
+				sy++;
+				abort = FALSE;
+			}
+
+			switch(noquad) {
+				case 0:
+					if(sx < cx && sy < cy)
+						abort = FALSE;
 					break;
-				if ( ++v12 == max )
-				{
-					v12 = 0;
-					if ( ++v13 == v28 )
-						v13 = 0;
+				case 1:
+					if(sx > cx && sy < cy)
+						abort = FALSE;
+					break;
+				case 2:
+					if(sx < cx && sy > cy)
+						abort = FALSE;
+					break;
+				case 3:
+					if(sx > cx && sy > cy)
+						abort = FALSE;
+					break;
+				default:
+					break;
+			}
+
+			ii = 2;
+
+			for(yy = 0; yy < sh && abort == TRUE; yy++) {
+				for(xx = 0; xx < sw && abort == TRUE; xx++) {
+					if(miniset[ii] && (unsigned char)dungeon[xx + sx][sy + yy] != miniset[ii])
+						abort = FALSE;
+					if(mydflags[xx + sx][sy + yy])
+						abort = FALSE;
+					ii++;
 				}
-				if ( ++v32 > 4000 )
+			}
+
+			if(abort == FALSE) {
+				if(++sx == 40 - sw) {
+					sx = 0;
+					if(++sy == 40 - sh)
+						sy = 0;
+				}
+				if(++found > 4000)
 					return -1;
 			}
-			v20 = v35 * v36 + 2;
-			if ( v36 > 0 )
-			{
-				do
-				{
-					if ( v35 > 0 )
-					{
-						tmaxb = v35;
-						v21 = &dungeon[v12][v18 + v13];
-						do
-						{
-							v22 = v29[v20];
-							if ( v22 )
-								*v21 = v22;
-							++v20;
-							v21 += 40;
-							--tmaxb;
-						}
-						while ( tmaxb );
-					}
-					++v18;
-				}
-				while ( v18 < v36 );
-			}
-			if ( ++v31 >= v30 )
-			{
-				v8 = (unsigned char *)v29;
-				goto LABEL_57;
+		}
+
+		ii = sw * sh + 2;
+
+		for(yy = 0; yy < sh; yy++) {
+			for(xx = 0; xx < sw; xx++) {
+				if(miniset[ii])
+					dungeon[xx + sx][sy + yy] = miniset[ii];
+				ii++;
 			}
 		}
 	}
-	v12 = cx;
-	v13 = cx;
-LABEL_57:
-	if ( v8 == PWATERIN )
-	{
-		v23 = TransVal;
+
+	if(miniset == PWATERIN) {
+		int t = TransVal;
 		TransVal = 0;
-		DRLG_MRectTrans(v12, v13 + 2, v12 + 5, v13 + 4);
-		TransVal = v23;
-		quests[13]._qtx = 2 * v12 + 21;
-		quests[13]._qty = 2 * v13 + 22;
+		DRLG_MRectTrans(sx, sy + 2, sx + 5, sy + 4);
+		TransVal = t;
+
+		quests[13]._qtx = 2 * sx + 21;
+		quests[13]._qty = 2 * sy + 22;
 	}
-	result = 1;
-	if ( setview == 1 )
-	{
-		ViewX = 2 * v12 + 19;
-		ViewY = 2 * v13 + 20;
+
+	if(setview == TRUE) {
+		ViewX = 2 * sx + 19;
+		ViewY = 2 * sy + 20;
 	}
-	if ( !ldir )
-	{
-		LvlViewX = 2 * v12 + 19;
-		LvlViewY = 2 * v13 + 20;
+
+	if(ldir == 0) {
+		LvlViewX = 2 * sx + 19;
+		LvlViewY = 2 * sy + 20;
 	}
-	v26 = __OFSUB__(v12, cx);
-	v24 = v12 == cx;
-	v25 = v12 - cx < 0;
-	if ( v12 < cx )
-	{
-		if ( v13 < cy )
-			return 0;
-		v26 = __OFSUB__(v12, cx);
-		v24 = v12 == cx;
-		v25 = v12 - cx < 0;
-	}
-	if ( (unsigned char)(v25 ^ v26) | v24 || v13 >= cy )
-	{
-		if ( v12 >= cx || v13 <= cy )
-			v27 = 3;
-		else
-			v27 = 2;
-		result = v27;
-	}
-	return result;
+
+	if(sx < cx && sy < cy)
+		return 0;
+	if(sx > cx && sy < cy)
+		return 1;
+	if(sx < cx && sy > cy)
+		return 2;
+	else
+		return 3;
 }
 // 5A5590: using guessed type char TransVal;
 // 5CF320: using guessed type int LvlViewY;
