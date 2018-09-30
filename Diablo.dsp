@@ -408,6 +408,295 @@ SOURCE=.\Diablo.rc
 # Begin Group "Header Files"
 
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
+
+# Begin Source File
+
+SOURCE=.\defs.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\enums.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\structs.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\types.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\appfat.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\automap.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\capture.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\codec.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\control.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\cursor.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\dead.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\debug.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\diablo.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\doom.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\drlg_l1.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\drlg_l2.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\drlg_l3.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\drlg_l4.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\dthread.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\dx.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\effects.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\encrypt.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\engine.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\error.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\fault.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\gamemenu.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\gendung.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\gmenu.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\help.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\init.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\interfac.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\inv.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\items.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\lighting.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\loadsave.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\logging.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\mainmenu.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\minitext.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\missiles.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\monster.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\movie.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\mpqapi.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\msg.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\msgcmd.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\multi.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\nthread.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\objects.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\pack.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\palette.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\path.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\pfile.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\player.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\plrmsg.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\portal.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\quests.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\render.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\restrict.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\scrollrt.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\setmaps.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\sha.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\sound.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\spells.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\stores.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\sync.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\textdat.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\themes.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\tmsg.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\town.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\towners.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\track.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\trigs.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\wave.h
+# End Source File
 # Begin Source File
 
 SOURCE=.\resource.h
