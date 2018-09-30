@@ -1011,50 +1011,35 @@ void __fastcall PlaySFX(int psfx)
 	PlaySFX_priv(&sgSFX[v1], 0, 0, 0);
 }
 
-void __fastcall PlaySFX_priv(TSFX *pSFX, char loc, int x, int y)
+void __fastcall PlaySFX_priv(TSFX *pSFX, BOOL loc, int x, int y)
 {
-	int v4; // edi
-	TSFX *v5; // esi
-	TSnd *v6; // ecx
-	//int v7; // eax
-	TSnd *v8; // ecx
-	int volume_delta; // [esp+Ch] [ebp-8h]
-	int pan; // [esp+10h] [ebp-4h]
-
-	v4 = loc;
-	v5 = pSFX;
-	if ( !plr[myplr].pLvlLoad || gbMaxPlayers == 1 )
-	{
-		if ( gbSndInited )
-		{
-			if ( gbSoundOn )
-			{
-				if ( !gbBufferMsgs )
-				{
-					if ( pSFX->bFlags & 3 || (v6 = pSFX->pSnd) == 0 || !snd_playing(v6) )
-					{
-						pan = 0;
-						volume_delta = 0;
-						if ( !v4 || calc_snd_position(x, y, &volume_delta, &pan) )
-						{
-							if ( v5->bFlags & 1 )
-							{
-								stream_play(v5, volume_delta, pan);
-							}
-							else
-							{
-								if ( !v5->pSnd )
-									v5->pSnd = sound_file_load(v5->pszName);
-								v8 = v5->pSnd;
-								if ( v8 )
-									snd_play_snd(v8, volume_delta, pan);
-							}
-						}
-					}
-				}
-			}
-		}
+	if ( plr[myplr].pLvlLoad && gbMaxPlayers != 1 ) {
+		return;
 	}
+	if ( !gbSndInited || !gbSoundOn || gbBufferMsgs ) {
+		return;
+	}
+
+	if ( !(pSFX->bFlags & 3) && pSFX->pSnd != 0 && snd_playing(pSFX->pSnd) ) {
+		return;
+	}
+
+	int lPan = 0;
+	int lVolume = 0;
+	if ( loc && !calc_snd_position(x, y, &lVolume, &lPan) ) {
+		return;
+	}
+
+	if ( pSFX->bFlags & 1 ) {
+		stream_play(pSFX, lVolume, lPan);
+		return;
+	}
+
+	if ( !pSFX->pSnd )
+		pSFX->pSnd = sound_file_load(pSFX->pszName);
+
+	if ( pSFX->pSnd )
+		snd_play_snd(pSFX->pSnd, lVolume, lPan);
 }
 // 4A22D5: using guessed type char gbSoundOn;
 // 676194: using guessed type char gbBufferMsgs;
@@ -1062,32 +1047,18 @@ void __fastcall PlaySFX_priv(TSFX *pSFX, char loc, int x, int y)
 
 void __fastcall stream_play(TSFX *pSFX, int lVolume, int lPan)
 {
-	int v3; // esi
-	TSFX *v4; // edi
-	int v5; // esi
-	//int v6; // eax
-	//int v7; // eax
-
-	v3 = lVolume;
-	v4 = pSFX;
 	sfx_stop();
-	v5 = sound_get_or_set_sound_volume(1) + v3;
-	if ( v5 >= -1600 )
-	{
-		if ( v5 > 0 )
-			v5 = 0;
-		//_LOBYTE(v6) = SFileOpenFile(v4->pszName, &sfx_stream);
-		if ( SFileOpenFile(v4->pszName, &sfx_stream) )
-		{
-			//_LOBYTE(v7) = SFileDdaBeginEx(sfx_stream, 0x40000, 0, 0, v5, lPan, 0);
-			if ( SFileDdaBeginEx(sfx_stream, 0x40000, 0, 0, v5, lPan, 0) )
-				sfx_data_cur = v4;
-			else
-				sfx_stop();
-		}
-		else
-		{
+	lVolume += sound_get_or_set_sound_volume(1);
+	if ( lVolume >= -1600 ) {
+		if ( lVolume > 0 )
+			lVolume = 0;
+		if ( !SFileOpenFile(pSFX->pszName, &sfx_stream) ) {
 			sfx_stream = 0;
+		} else {
+			if ( !SFileDdaBeginEx(sfx_stream, 0x40000, 0, 0, lVolume, lPan, 0) )
+				sfx_stop();
+			else
+				sfx_data_cur = pSFX;
 		}
 	}
 }
