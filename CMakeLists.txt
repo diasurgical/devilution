@@ -13,7 +13,7 @@ include(CMake/out_of_tree.cmake)
 # This *must* be included before calling `project()`, due to setting early compiler flags.
 include(CMake/32bit.cmake)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
 project(devil-miniwin
@@ -189,10 +189,24 @@ target_link_libraries(devilution PUBLIC
     ${SDL2_LIBRARIES}
 )
 
-# Build with harness enabled (conflicts with sanitizers)
+# Coverage tracing library (compiled separately so it itself is not traced & can be optimized)
 add_library(sanitize_coverage STATIC Stub/sanitize_coverage.cpp)
 target_compile_options(sanitize_coverage PRIVATE -O2 -fno-pie -fno-pic)
 
+cmake_push_check_state()
+set(SANITIZE_COVERAGE_FLAGS -fsanitize-coverage=trace-pc)
+set(CMAKE_REQUIRED_FLAGS ${SANITIZE_COVERAGE_FLAGS})
+check_cxx_source_compiles([[extern "C" void __sanitizer_cov_trace_pc(void) {} int main() { return 0; }]] HAS_SANITIZE_COVERAGE)
+cmake_pop_check_state()
+
+
+# xxhash fast hashing library
+add_library(xxhash STATIC 3rdParty/xxhash/xxhash.c)
+set_source_files_properties(3rdParty/xxhash/xxhash.c PROPERTIES LANGUAGE CXX)
+target_include_directories(xxhash PUBLIC 3rdParty/xxhash)
+target_compile_options(xxhash PRIVATE -O3 -fno-pie -fno-pic)
+
+# Build with harness enabled (conflicts with sanitizers)
 if(TARGET harness)
     add_executable(devil-harness
         ${SOURCES}
@@ -204,13 +218,17 @@ if(TARGET harness)
         Stub/test_utils.cpp
     )
 
-    target_compile_options(devil-harness PRIVATE -fsanitize-coverage=trace-pc)
+    if(HAS_SANITIZE_COVERAGE)
+        target_compile_options(devil-harness PRIVATE ${SANITIZE_COVERAGE_FLAGS})
+        target_compile_definitions(devil-harness PRIVATE -DHAVE_SANITIZE_COVERGE)
+    endif()
 
     target_compile_definitions(devil-harness PUBLIC -DHAVE_HARNESS)
 
     target_link_libraries(devil-harness PUBLIC
         m
         harness
+        xxhash
         sanitize_coverage
         ${SDL2_LIBRARIES}
     )
@@ -232,6 +250,7 @@ target_compile_options(devil-sanitize PRIVATE
 
 target_link_libraries(devil-sanitize PUBLIC
     m
+    xxhash
     sanitize_coverage
     ${SDL2_LIBRARIES}
     ${SANITIZE_OPTIONS}

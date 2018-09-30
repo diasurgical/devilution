@@ -125,7 +125,7 @@ BOOL STORMAPI SFileGetFileArchive(HANDLE hFile, HANDLE archive)
 BOOL STORMAPI SFileOpenFile(const char *filename, HANDLE *phFile)
 {
 	BOOL result;
-	eprintf("%s: %s\n", __FUNCTION__, filename);
+	//eprintf("%s: %s\n", __FUNCTION__, filename);
 
 	result = SFileOpenFileEx((HANDLE)patch_rt_mpq, filename, 0, phFile);
 	if (!result) {
