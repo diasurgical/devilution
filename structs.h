@@ -534,7 +534,7 @@ struct CMonster
 	// TODO: Add enum for place flags
 	unsigned char mPlaceFlags;
 	AnimStruct Anims[6];
-	TSnd *Snds[8];
+	TSnd *Snds[4][2];
 	int flags_1; // width
 	int flags_2; // width 2
 	unsigned char mMinHP;
