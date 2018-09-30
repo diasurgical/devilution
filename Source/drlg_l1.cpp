@@ -550,44 +550,33 @@ void __cdecl DRLG_FreeL1SP()
 
 void __fastcall DRLG_L5(int entry)
 {
-	signed int v1; // esi
-	signed int v2; // edi
-	int v5; // eax
-	int v6; // ebx
-	int v7; // edi
-	int v8; // edi
-	int v9; // ebp
-	_BYTE *v10; // ebx
-	signed int v11; // eax
-	signed int v12; // ecx
-	int v13; // [esp+10h] [ebp-8h]
-	int v14; // [esp+10h] [ebp-8h]
-	int v15; // [esp+14h] [ebp-4h]
-	_BYTE *v16; // [esp+14h] [ebp-4h]
+	int i, j;
+	long minarea;
+	BOOL doneflag;
 
-	v13 = entry;
-	if ( currlevel == 1 )
-	{
-		v15 = 533;
+	switch(currlevel) {
+		case 1:
+			minarea = 533;
+			break;
+		case 2:
+			minarea = 693;
+			break;
+		case 3:
+		case 4:
+			minarea = 761;
+			break;
+		default:
+			break;
 	}
-	else if ( currlevel == 2 )
-	{
-		v15 = 693;
-	}
-	else if ( currlevel > 2u && currlevel <= 4u )
-	{
-		v15 = 761;
-	}
-	v1 = 0;
-	while ( 1 )
-	{
+
+	do {
 		DRLG_InitTrans();
-		do
-		{
+
+		do {
 			InitL5Dungeon();
 			L5firstRoom();
-		}
-		while ( L5GetArea() < v15 );
+		} while(L5GetArea() < minarea);
+
 		L5makeDungeon();
 		L5makeDmt();
 		L5FillChambers();
@@ -595,117 +584,85 @@ void __fastcall DRLG_L5(int entry)
 		L5AddWall();
 		L5ClearFlags();
 		DRLG_L5FloodTVal();
-		v2 = 1;
-		if ( QuestStatus(QTYPE_PW) )
-		{
-			if ( v13 )
-			{
-				if ( DRLG_PlaceMiniSet(PWATERIN, 1, 1, 0, 0, 0, -1, 0) < 0 )
-					v2 = 0;
-				--ViewY;
+
+		doneflag = TRUE;
+
+		if(QuestStatus(QTYPE_PW)) {
+			if(entry == 0) {
+				if(DRLG_PlaceMiniSet(PWATERIN, 1, 1, 0, 0, 1, -1, 0) < 0)
+					doneflag = FALSE;
 			}
-			else if ( DRLG_PlaceMiniSet(PWATERIN, 1, 1, 0, 0, 1, -1, 0) < 0 )
-			{
-				v2 = 0;
+			else {
+				if(DRLG_PlaceMiniSet(PWATERIN, 1, 1, 0, 0, 0, -1, 0) < 0)
+					doneflag = FALSE;
+				ViewY--;
 			}
 		}
-		if ( QuestStatus(QTYPE_BOL) )
-		{
-			if ( !v13 )
-			{
-				v5 = DRLG_PlaceMiniSet(STAIRSUP, 1, 1, 0, 0, 1, -1, 0);
-				goto LABEL_21;
+		if(QuestStatus(QTYPE_BOL)) {
+			if(entry == 0) {
+				if(DRLG_PlaceMiniSet(STAIRSUP, 1, 1, 0, 0, 1, -1, 0) < 0)
+					doneflag = FALSE;
 			}
-			if ( DRLG_PlaceMiniSet(STAIRSUP, 1, 1, 0, 0, 0, -1, 0) < 0 )
-				v2 = 0;
-			if ( v13 == 1 )
-			{
-				ViewX = 2 * setpc_x + 20;
-				ViewY = 2 * setpc_y + 28;
-				goto LABEL_34;
+			else {
+				if(DRLG_PlaceMiniSet(STAIRSUP, 1, 1, 0, 0, 0, -1, 0) < 0)
+					doneflag = FALSE;
+				if(entry == 1) {
+					ViewX = 2 * setpc_x + 20;
+					ViewY = 2 * setpc_y + 28;
+				}
+				else {
+					ViewY--;
+				}
 			}
-LABEL_33:
-			--ViewY;
-			goto LABEL_34;
 		}
-		if ( v13 )
-		{
-			if ( DRLG_PlaceMiniSet(L5STAIRSUP, 1, 1, 0, 0, 0, -1, 0) < 0
-			  || DRLG_PlaceMiniSet(STAIRSDOWN, 1, 1, 0, 0, 1, -1, 1) < 0 )
-			{
-				v2 = 0;
-			}
-			goto LABEL_33;
+		else if(entry == 0) {
+			if(DRLG_PlaceMiniSet(L5STAIRSUP, 1, 1, 0, 0, 1, -1, 0) < 0)
+				doneflag = FALSE;
+			else if(DRLG_PlaceMiniSet(STAIRSDOWN, 1, 1, 0, 0, 0, -1, 1) < 0)
+				doneflag = FALSE;
 		}
-		if ( DRLG_PlaceMiniSet(L5STAIRSUP, 1, 1, 0, 0, 1, -1, 0) >= 0 )
-		{
-			v5 = DRLG_PlaceMiniSet(STAIRSDOWN, 1, 1, 0, 0, 0, -1, 1);
-LABEL_21:
-			if ( v5 < 0 )
-				v2 = 0;
-LABEL_34:
-			if ( v2 )
-				break;
+		else {
+			if(DRLG_PlaceMiniSet(L5STAIRSUP, 1, 1, 0, 0, 0, -1, 0) < 0)
+				doneflag = FALSE;
+			else if(DRLG_PlaceMiniSet(STAIRSDOWN, 1, 1, 0, 0, 1, -1, 1) < 0)
+				doneflag = FALSE;
+			ViewY--;
+		}
+	} while(doneflag == FALSE);
+
+	for(j = 0; j < DMAXY; j++) {
+		for(i = 0; i < DMAXX; i++) {
+			if(dungeon[i][j] == 64) {
+				int xx = 2 * i + 16; /* todo: fix loop */
+				int yy = 2 * j + 16;
+				DRLG_CopyTrans(xx, yy+1, xx, yy);
+				DRLG_CopyTrans(xx+1, yy+1, xx+1, yy);
+			}
 		}
 	}
-	v14 = 0;
-	v6 = 16;
-	do
-	{
-		v7 = 16;
-		v16 = (unsigned char *)dungeon + v14;
-		do
-		{
-			if ( *v16 == 64 )
-			{
-				DRLG_CopyTrans(v7, v6 + 1, v7, v6);
-				DRLG_CopyTrans(v7 + 1, v6 + 1, v7 + 1, v6);
-			}
-			v16 += 40;
-			v7 += 2;
-		}
-		while ( v7 < 96 );
-		++v14;
-		v6 += 2;
-	}
-	while ( v6 < 96 );
+
 	DRLG_L5TransFix();
 	DRLG_L5DirtFix();
 	DRLG_L5CornerFix();
-	v8 = 0;
-	do
-	{
-		v9 = 0;
-		v10 = (unsigned char *)mydflags + v8;
-		do
-		{
-			if ( *v10 & 0x7F )
-				DRLG_PlaceDoor(v9, v8);
-			++v9;
-			v10 += 40;
+
+	for(j = 0; j < DMAXY; j++) {
+		for(i = 0; i < DMAXX; i++) {
+			if(mydflags[i][j] & 0x7F)
+				DRLG_PlaceDoor(i, j);
 		}
-		while ( v9 < 40 );
-		++v8;
 	}
-	while ( v8 < 40 );
+
 	DRLG_L5Subs();
 	DRLG_L1Shadows();
 	DRLG_PlaceMiniSet(LAMPS, 5, 10, 0, 0, 0, -1, 4);
 	DRLG_L1Floor();
-	do
-	{
-		v11 = v1;
-		v12 = 40;
-		do
-		{
-			pdungeon[0][v11] = dungeon[0][v11];
-			v11 += 40;
-			--v12;
+
+	for(j = 0; j < DMAXY; j++) {
+		for(i = 0; i < DMAXX; i++) {
+			pdungeon[i][j] = dungeon[i][j];
 		}
-		while ( v12 );
-		++v1;
 	}
-	while ( v1 < 40 );
+
 	DRLG_Init_Globals();
 	DRLG_CheckQuests(setpc_x, setpc_y);
 }
