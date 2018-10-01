@@ -912,7 +912,7 @@ void __cdecl sfx_stop()
 void __fastcall InitMonsterSND(int monst)
 {
 	TSnd *pSnd;
-	char name[260];
+	char name[MAX_PATH];
 	char *path;
 
 	if ( !gbSndInited ) {
@@ -991,7 +991,7 @@ BOOL __fastcall calc_snd_position(int x, int y, int *plVolume, int *plPan)
 	if ( abs(pan) > 6400 )
 		return FALSE;
 
-	int volume = max(abs(x), abs(y));
+	int volume = abs(x) > abs(y) ? abs(x) : abs(y);
 	volume <<= 6;
 	*plVolume = volume;
 
