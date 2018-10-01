@@ -1115,40 +1115,17 @@ void __fastcall PlaySfxLoc(int psfx, int x, int y)
 
 void __cdecl FreeMonsterSnd()
 {
-	TSnd **v0; // esi
-	signed int v1; // ebx
-	signed int v2; // edi
-	int v3; // [esp+0h] [ebp-8h]
-	TSnd **v4; // [esp+4h] [ebp-4h]
-
-	snd_update(1);
+	snd_update(TRUE);
 	sfx_stop();
 	sound_stop();
-	v3 = 0;
-	if ( nummtypes > 0 )
-	{
-		v4 = Monsters[0].Snds[0];
-		do
-		{
-			v0 = v4;
-			v1 = 4;
-			do
-			{
-				v2 = 2;
-				do
-				{
-					snd_stop_snd(*v0);
-					++v0;
-					--v2;
-				}
-				while ( v2 );
-				--v1;
+
+	for ( int i = 0; i < nummtypes; i++ ) {
+		for ( int j = 0; j < 4; j++ ) {
+			for ( int k = 0; k < 2; k++ ) {
+				snd_stop_snd(Monsters[i].Snds[j][k]);
 			}
-			while ( v1 );
-			++v3;
-			v4 += 82;
+
 		}
-		while ( v3 < nummtypes );
 	}
 }
 
