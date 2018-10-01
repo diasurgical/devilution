@@ -1052,113 +1052,60 @@ void __fastcall L5drawRoom(int x, int y, int w, int h)
 	}
 }
 
-void __fastcall L5roomGen(int x, int y, int w, int h, BOOL dir)
+void __fastcall L5roomGen(int x, int y, int w, int h, int dir)
 {
-	int v5; // eax
-	BOOL v6; // ecx
-	BOOL v7; // eax
-	int v8; // ecx
-	int v9; // eax
-	int v11; // esi
-	int v12; // edi
-	int v13; // ebx
-	int v14; // eax
-	int v15; // eax
-	int v16; // eax
-	int v18; // esi
-	int v19; // edi
-	int v20; // ebx
-	int v21; // eax
-	int v22; // eax
-	int tya; // [esp+Ch] [ebp-10h]
-	int tyb; // [esp+Ch] [ebp-10h]
-	int v25; // [esp+10h] [ebp-Ch]
-	int v26; // [esp+10h] [ebp-Ch]
-	int txa; // [esp+14h] [ebp-8h]
-	int txb; // [esp+14h] [ebp-8h]
-	int v29; // [esp+18h] [ebp-4h]
-	int twa; // [esp+24h] [ebp+8h]
-	int tha; // [esp+28h] [ebp+Ch]
-	int thb; // [esp+28h] [ebp+Ch]
-	int thc; // [esp+28h] [ebp+Ch]
-	signed int dir_horiza; // [esp+2Ch] [ebp+10h]
-	signed int dir_horizb; // [esp+2Ch] [ebp+10h]
+	int num;
+	BOOL ran, ran2;
+	int width, height, rx, ry, ry2;
+	int cw, ch, cx1, cy1, cx2;
 
-	v29 = y;
-	txa = x;
-	while ( 1 )
-	{
-		while ( 1 )
-		{
-			v5 = random(0, 4);
-			v6 = 0;
-			v6 = dir == 1 ? v5 != 0 : v5 == 0;
-			v7 = v6;
-			v8 = 0;
-			if ( !v7 )
-				break;
-			if ( v7 != 1 )
-				return;
-			dir_horiza = 0;
-			twa = w / 2;
-			do
-			{
-				v9 = random(0, 5);
-				v11 = (v9 + 2) & 0xFFFFFFFE;
-				v12 = (random(0, 5) + 2) & 0xFFFFFFFE;
-				v13 = txa + twa - v11 / 2;
-				tya = v29 - v12;
-				v14 = L5checkRoom(v13 - 1, v29 - v12 - 1, v11 + 2, v12 + 1);
-				++dir_horiza;
-				v25 = v14;
-			}
-			while ( !v14 && dir_horiza < 20 );
-			if ( v14 == 1 )
-				L5drawRoom(v13, tya, v11, v12);
-			txb = v29 + h;
-			v15 = L5checkRoom(v13 - 1, v29 + h, v11 + 2, v12 + 1);
-			tha = v15;
-			if ( v15 == 1 )
-				L5drawRoom(v13, txb, v11, v12);
-			if ( v25 == 1 )
-				L5roomGen(v13, tya, v11, v12, 0);
-			if ( tha != 1 )
-				return;
-			dir = 0;
-			h = v12;
-			w = v11;
-			v29 = txb;
-			txa = v13;
-		}
-		dir_horizb = 0;
-		thb = h / 2;
-		do
-		{
-			v16 = random(0, 5);
-			v18 = (v16 + 2) & 0xFFFFFFFE;
-			v19 = (random(0, 5) + 2) & 0xFFFFFFFE;
-			v20 = v29 + thb - v19 / 2;
-			tyb = txa - v18;
-			v21 = L5checkRoom(txa - v18 - 1, v20 - 1, v19 + 2, v18 + 1);
-			++dir_horizb;
-			v26 = v21;
-		}
-		while ( !v21 && dir_horizb < 20 );
-		if ( v21 == 1 )
-			L5drawRoom(tyb, v20, v18, v19);
-		txa += w;
-		v22 = L5checkRoom(txa, v20 - 1, v18 + 1, v19 + 2);
-		thc = v22;
-		if ( v22 == 1 )
-			L5drawRoom(txa, v20, v18, v19);
-		if ( v26 == 1 )
-			L5roomGen(tyb, v20, v18, v19, 1);
-		if ( thc != 1 )
+	int dirProb = random(0, 4);
+
+	switch(dir == 1 ? dirProb != 0 : dirProb == 0) {
+		case FALSE:
+			num = 0;
+			do {
+				cw = (random(0, 5) + 2) & 0xFFFFFFFE;
+				ch = (random(0, 5) + 2) & 0xFFFFFFFE;
+				cy1 = h/2 + y - ch/2;
+				cx1 = x-cw;
+				ran = L5checkRoom(cx1-1, cy1-1, ch+2, cw+1); /// BUGFIX: swap args 3 and 4 ("ch+2" and "cw+1")
+				num++;
+			} while(ran == FALSE && num < 20);
+
+			if(ran == TRUE)
+				L5drawRoom(cx1, cy1, cw, ch);
+			cx2 = x+w;
+			ran2 = L5checkRoom(cx2, cy1-1, cw+1, ch+2);
+			if(ran2 == TRUE)
+				L5drawRoom(cx2, cy1, cw, ch);
+			if(ran == TRUE)
+				L5roomGen(cx1, cy1, cw, ch, 1);
+			if(ran2 == TRUE)
+				L5roomGen(cx2, cy1, cw, ch, 1);
 			break;
-		dir = 1;
-		h = v19;
-		w = v18;
-		v29 = v20;
+		case TRUE:
+			num = 0;
+			do {
+				width = (random(0, 5) + 2) & 0xFFFFFFFE;
+				height = (random(0, 5) + 2) & 0xFFFFFFFE;
+				rx = w/2 + x - width/2;
+				ry = y-height;
+				ran = L5checkRoom(rx-1, ry-1, width+2, height+1);
+				num++;
+			} while(ran == FALSE && num < 20);
+
+			if(ran == TRUE)
+				L5drawRoom(rx, ry, width, height);
+			ry2 = y+h;
+			ran2 = L5checkRoom(rx-1, ry2, width+2, height+1);
+			if(ran2 == TRUE)
+				L5drawRoom(rx, ry2, width, height);
+			if(ran == TRUE)
+				L5roomGen(rx, ry, width, height, 0);
+			if(ran2 == TRUE)
+				L5roomGen(rx, ry2, width, height, 0);
+			break;
 	}
 }
 
@@ -1233,10 +1180,11 @@ void __cdecl L5makeDmt()
 
 	for(j = 0, dmty = 1; dmty <= 77; j++, dmty += 2) {
 		for(i = 0, dmtx = 1; dmtx <= 77; i++, dmtx += 2) {
-			dungeon[i][j] = L5ConvTbl[8 * (unsigned char)L5dungeon[dmtx+1][dmty+1] /* todo: unsigned */
-									+ 4 * (unsigned char)L5dungeon[dmtx][dmty+1]
-									+ 2 * (unsigned char)L5dungeon[dmtx+1][dmty]
-									+ (unsigned char)L5dungeon[dmtx][dmty]];
+			int val = (unsigned char)L5dungeon[dmtx+1][dmty+1]; /* todo: unsigned */
+			val = 2 * val + (unsigned char)L5dungeon[dmtx][dmty+1];
+			val = 2 * val + (unsigned char)L5dungeon[dmtx+1][dmty];
+			val = 2 * val + (unsigned char)L5dungeon[dmtx][dmty];
+			dungeon[i][j] = L5ConvTbl[val];
 		}
 	}
 }
