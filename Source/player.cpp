@@ -606,11 +606,11 @@ void __fastcall CreatePlayer(int pnum, char c)
 	plr[pnum]._pInfraFlag = 0;
 
 	if ( c == PC_WARRIOR ) {
-		plr[pnum]._pAblSpells64 = (__int64)1 << SPL_REPAIR - 1;
+		plr[pnum]._pAblSpells64 = (__int64)1 << (SPL_REPAIR - 1);
 	} else if ( c == PC_ROGUE ) {
-		plr[pnum]._pAblSpells64 = (__int64)1 << SPL_DISARM - 1;
+		plr[pnum]._pAblSpells64 = (__int64)1 << (SPL_DISARM - 1);
 	} else if ( c == PC_SORCERER ) {
-		plr[pnum]._pAblSpells64 = (__int64)1 << SPL_RECHARGE - 1;
+		plr[pnum]._pAblSpells64 = (__int64)1 << (SPL_RECHARGE - 1);
 	}
 
 	if ( c == PC_SORCERER) {

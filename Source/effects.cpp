@@ -894,7 +894,7 @@ BOOL __fastcall effect_is_playing(int nSFX)
 	v2 = v1->pSnd;
 	if ( v2 )
 		return snd_playing(v2);
-	if ( v1->bFlags & 1 )
+	if ( v1->bFlags & SFX_STREAM )
 		return v1 == sfx_data_cur;
 	return FALSE;
 }
@@ -1011,50 +1011,35 @@ void __fastcall PlaySFX(int psfx)
 	PlaySFX_priv(&sgSFX[v1], 0, 0, 0);
 }
 
-void __fastcall PlaySFX_priv(TSFX *pSFX, char loc, int x, int y)
+void __fastcall PlaySFX_priv(TSFX *pSFX, BOOL loc, int x, int y)
 {
-	int v4; // edi
-	TSFX *v5; // esi
-	TSnd *v6; // ecx
-	//int v7; // eax
-	TSnd *v8; // ecx
-	int volume_delta; // [esp+Ch] [ebp-8h]
-	int pan; // [esp+10h] [ebp-4h]
-
-	v4 = loc;
-	v5 = pSFX;
-	if ( !plr[myplr].pLvlLoad || gbMaxPlayers == 1 )
-	{
-		if ( gbSndInited )
-		{
-			if ( gbSoundOn )
-			{
-				if ( !gbBufferMsgs )
-				{
-					if ( pSFX->bFlags & 3 || (v6 = pSFX->pSnd) == 0 || !snd_playing(v6) )
-					{
-						pan = 0;
-						volume_delta = 0;
-						if ( !v4 || calc_snd_position(x, y, &volume_delta, &pan) )
-						{
-							if ( v5->bFlags & 1 )
-							{
-								stream_play(v5, volume_delta, pan);
-							}
-							else
-							{
-								if ( !v5->pSnd )
-									v5->pSnd = sound_file_load(v5->pszName);
-								v8 = v5->pSnd;
-								if ( v8 )
-									snd_play_snd(v8, volume_delta, pan);
-							}
-						}
-					}
-				}
-			}
-		}
+	if ( plr[myplr].pLvlLoad && gbMaxPlayers != 1 ) {
+		return;
 	}
+	if ( !gbSndInited || !gbSoundOn || gbBufferMsgs ) {
+		return;
+	}
+
+	if ( !(pSFX->bFlags & (SFX_STREAM | SFX_MISC)) && pSFX->pSnd != 0 && snd_playing(pSFX->pSnd) ) {
+		return;
+	}
+
+	int lPan = 0;
+	int lVolume = 0;
+	if ( loc && !calc_snd_position(x, y, &lVolume, &lPan) ) {
+		return;
+	}
+
+	if ( pSFX->bFlags & SFX_STREAM ) {
+		stream_play(pSFX, lVolume, lPan);
+		return;
+	}
+
+	if ( !pSFX->pSnd )
+		pSFX->pSnd = sound_file_load(pSFX->pszName);
+
+	if ( pSFX->pSnd )
+		snd_play_snd(pSFX->pSnd, lVolume, lPan);
 }
 // 4A22D5: using guessed type char gbSoundOn;
 // 676194: using guessed type char gbBufferMsgs;
@@ -1062,32 +1047,18 @@ void __fastcall PlaySFX_priv(TSFX *pSFX, char loc, int x, int y)
 
 void __fastcall stream_play(TSFX *pSFX, int lVolume, int lPan)
 {
-	int v3; // esi
-	TSFX *v4; // edi
-	int v5; // esi
-	//int v6; // eax
-	//int v7; // eax
-
-	v3 = lVolume;
-	v4 = pSFX;
 	sfx_stop();
-	v5 = sound_get_or_set_sound_volume(1) + v3;
-	if ( v5 >= -1600 )
-	{
-		if ( v5 > 0 )
-			v5 = 0;
-		//_LOBYTE(v6) = SFileOpenFile(v4->pszName, &sfx_stream);
-		if ( SFileOpenFile(v4->pszName, &sfx_stream) )
-		{
-			//_LOBYTE(v7) = SFileDdaBeginEx(sfx_stream, 0x40000, 0, 0, v5, lPan, 0);
-			if ( SFileDdaBeginEx(sfx_stream, 0x40000, 0, 0, v5, lPan, 0) )
-				sfx_data_cur = v4;
-			else
-				sfx_stop();
-		}
-		else
-		{
+	lVolume += sound_get_or_set_sound_volume(1);
+	if ( lVolume >= VOLUME_MIN ) {
+		if ( lVolume > VOLUME_MAX )
+			lVolume = VOLUME_MAX;
+		if ( !SFileOpenFile(pSFX->pszName, &sfx_stream) ) {
 			sfx_stream = 0;
+		} else {
+			if ( !SFileDdaBeginEx(sfx_stream, 0x40000, 0, 0, lVolume, lPan, 0) )
+				sfx_stop();
+			else
+				sfx_data_cur = pSFX;
 		}
 	}
 }
@@ -1144,40 +1115,17 @@ void __fastcall PlaySfxLoc(int psfx, int x, int y)
 
 void __cdecl FreeMonsterSnd()
 {
-	TSnd **v0; // esi
-	signed int v1; // ebx
-	signed int v2; // edi
-	int v3; // [esp+0h] [ebp-8h]
-	TSnd **v4; // [esp+4h] [ebp-4h]
-
-	snd_update(1);
+	snd_update(TRUE);
 	sfx_stop();
 	sound_stop();
-	v3 = 0;
-	if ( nummtypes > 0 )
-	{
-		v4 = Monsters[0].Snds[0];
-		do
-		{
-			v0 = v4;
-			v1 = 4;
-			do
-			{
-				v2 = 2;
-				do
-				{
-					snd_stop_snd(*v0);
-					++v0;
-					--v2;
-				}
-				while ( v2 );
-				--v1;
+
+	for ( int i = 0; i < nummtypes; i++ ) {
+		for ( int j = 0; j < 4; j++ ) {
+			for ( int k = 0; k < 2; k++ ) {
+				snd_stop_snd(Monsters[i].Snds[j][k]);
 			}
-			while ( v1 );
-			++v3;
-			v4 += 82;
+
 		}
-		while ( v3 < nummtypes );
 	}
 }
 
@@ -1286,10 +1234,13 @@ void __fastcall priv_sound_init(int bLoadMask)
 	TSnd *v5; // eax
 	unsigned char v6; // [esp+0h] [ebp-4h]
 
+
+
+
 	if ( gbSndInited )
 	{
-		v1 = bLoadMask & 0x70;
-		v2 = bLoadMask & 0x70 ^ bLoadMask;
+		v1 = bLoadMask & (SFX_ROGUE | SFX_WARRIOR | SFX_SORCEROR);
+		v2 = bLoadMask & (SFX_ROGUE | SFX_WARRIOR | SFX_SORCEROR) ^ bLoadMask;
 		v3 = 0;
 		v6 = v2;
 		do
@@ -1297,7 +1248,7 @@ void __fastcall priv_sound_init(int bLoadMask)
 			if ( !sgSFX[v3].pSnd )
 			{
 				v4 = sgSFX[v3].bFlags;
-				if ( !(v4 & 1) && (!v2 || v4 & v2) && (!(v4 & 0x70) || v4 & v1) )
+				if ( !(v4 & SFX_STREAM) && (!v2 || v4 & v2) && (!(v4 & (SFX_ROGUE | SFX_WARRIOR | SFX_SORCEROR)) || v4 & v1) )
 				{
 					v5 = sound_file_load(sgSFX[v3].pszName);
 					v2 = v6;
