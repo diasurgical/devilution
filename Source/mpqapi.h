@@ -15,6 +15,7 @@ bool __fastcall mpqapi_set_hidden(char *pszArchive, bool hidden);
 void __fastcall mpqapi_store_creation_time(const char *pszArchive, int dwChar);
 bool __fastcall mpqapi_reg_load_modification_time(char *dst, int size);
 void __fastcall mpqapi_xor_buf(char *pbData);
+void __fastcall mpqapi_update_multi_creation_time(DWORD dwChar);
 bool __fastcall mpqapi_reg_store_modification_time(char *pbData, int dwLen);
 _BLOCKENTRY *__fastcall j_mpqapi_remove_hash_entry(char *pszName);
 void __fastcall mpqapi_remove_hash_entry(const char *pszName);

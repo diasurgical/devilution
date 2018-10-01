@@ -116,7 +116,7 @@ BOOL __fastcall pfile_open_archive(BOOL a1, unsigned int save_num)
 		return TRUE;
 
 	if ( a1 && gbMaxPlayers > 1 )
-		MI_Dummy(save_num); // some eliminated function...
+		mpqapi_update_multi_creation_time(save_num);
 	return FALSE;
 }
 

@@ -123,6 +123,10 @@ void __fastcall mpqapi_xor_buf(char *pbData)
 	while ( v3 );
 }
 
+void __fastcall mpqapi_update_multi_creation_time(DWORD dwChar)
+{
+}
+
 bool __fastcall mpqapi_reg_store_modification_time(char *pbData, int dwLen)
 {
 	int v2; // ebx
