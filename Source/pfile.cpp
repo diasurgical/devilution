@@ -8,7 +8,6 @@
 static int pfile_cpp_init_value;
 static char hero_names[MAX_CHARACTERS][PLR_NAME_LEN];
 BOOL gbValidSaveFile; // idb
-static int save_prev_tc; // weak
 
 const int pfile_inf = 0x7F800000; // weak
 
@@ -23,17 +22,19 @@ struct pfile_cpp_init
 
 void __cdecl pfile_init_save_directory()
 {
-	char Buffer[260]; // [esp+4h] [ebp-104h]
+	DWORD len;
+	char Buffer[MAX_PATH];
 
-	if ( GetWindowsDirectory(Buffer, 0x104u)
-	  && (pfile_check_available_space(Buffer), GetModuleFileName(ghInst, Buffer, 0x104u)) )
-	{
+	len = GetWindowsDirectory(Buffer, sizeof(Buffer));
+	if ( len ) {
 		pfile_check_available_space(Buffer);
+		len = GetModuleFileName(ghInst, Buffer, sizeof(Buffer));
 	}
-	else
-	{
+
+	if ( !len )
 		TermMsg("Unable to initialize save directory");
-	}
+	else
+		pfile_check_available_space(Buffer);
 }
 
 void __fastcall pfile_check_available_space(char *pszDir)
@@ -66,22 +67,16 @@ void __fastcall pfile_check_available_space(char *pszDir)
 
 void __cdecl pfile_write_hero()
 {
-	int v0; // eax
-	int v1; // esi
-	//int v2; // eax
-	PkPlayerStruct pkplr; // [esp+4h] [ebp-4F4h]
+	unsigned int save_num;
+	PkPlayerStruct pkplr;
 
-	v0 = pfile_get_save_num_from_name(plr[myplr]._pName);
-	v1 = v0;
-	//_LOBYTE(v2) = pfile_open_archive(1, v0);
-	if ( pfile_open_archive(1, v0) )
-	{
+	save_num = pfile_get_save_num_from_name(plr[myplr]._pName);
+	if (pfile_open_archive(TRUE, save_num)) {
 		PackPlayer(&pkplr, myplr, gbMaxPlayers == 1);
 		pfile_encode_hero(&pkplr);
-		pfile_flush(gbMaxPlayers == 1, v1);
+		pfile_flush(gbMaxPlayers == 1, save_num);
 	}
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 unsigned int __fastcall pfile_get_save_num_from_name(const char *name)
 {
@@ -112,27 +107,18 @@ void __fastcall pfile_encode_hero(const PkPlayerStruct *pPack)
 	mem_free_dbg(packed);
 }
 
-bool __fastcall pfile_open_archive(bool a1, int save_num)
+BOOL __fastcall pfile_open_archive(BOOL a1, unsigned int save_num)
 {
-	int v2; // esi
-	BOOL v3; // edi
-	//int v4; // eax
-	char FileName[260]; // [esp+8h] [ebp-104h]
+	char FileName[MAX_PATH];
 
-	v2 = save_num;
-	v3 = a1;
-	pfile_get_save_path(FileName, 260, save_num);
-	//_LOBYTE(v4) = mpqapi_open_archive(FileName, 0, v2);
-	if ( mpqapi_open_archive(FileName, 0, v2) )
-		return 1;
-	if ( v3 )
-	{
-		if ( (unsigned char)gbMaxPlayers > 1u )
-			MI_Dummy(v2);
-	}
-	return 0;
+	pfile_get_save_path(FileName, sizeof(FileName), save_num);
+	if ( mpqapi_open_archive(FileName, FALSE, save_num) )
+		return TRUE;
+
+	if ( a1 && gbMaxPlayers > 1 )
+		mpqapi_update_multi_creation_time(save_num);
+	return FALSE;
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 void __fastcall pfile_get_save_path(char *pszBuf, DWORD dwBufSize, unsigned int save_num)
 {
@@ -229,10 +215,7 @@ int __fastcall pfile_create_save_file(char *name_1, char *name_2)
 
 void __cdecl pfile_flush_W()
 {
-	int v0; // eax
-
-	v0 = pfile_get_save_num_from_name(plr[myplr]._pName);
-	pfile_flush(1, v0);
+	pfile_flush(TRUE, pfile_get_save_num_from_name(plr[myplr]._pName));
 }
 
 void __fastcall game_2_ui_player(const PlayerStruct *p, _uiheroinfo *heroinfo, BOOL bHasSaveFile)
@@ -351,138 +334,104 @@ LABEL_13:
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-char *__fastcall GetSaveDirectory(char *dst, int dst_size, int save_num)
+char *__fastcall GetSaveDirectory(char *dst, int dst_size, unsigned int save_num)
 {
-	char *v3; // esi
-	const char *v4; // ebx
-	DWORD v5; // edi
-	char *v6; // eax
-	char path_buf[260]; // [esp+Ch] [ebp-104h]
+	DWORD dirLen;
+	char FileName[MAX_PATH];
+	const char *savename;
 
-	v3 = dst;
-	if ( (unsigned char)gbMaxPlayers <= 1u )
-	{
-		v4 = "\\single_%d.sv";
-		v5 = GetModuleFileName(ghInst, dst, 0x104u);
-		v6 = strrchr(v3, '\\');
-		if ( v6 )
-			*v6 = '\0';
+	// BUGFIX: ignores dst_size and uses MAX_PATH instead
+	if ( gbMaxPlayers > 1 ) {
+		savename = "\\dlinfo_%d.drv";
+		dirLen = GetWindowsDirectory(dst, MAX_PATH);
+	} else {
+		char *s;
+		savename = "\\single_%d.sv";
+		dirLen = GetModuleFileName(ghInst, dst, MAX_PATH);
+		s = strrchr(dst, '\\');
+		if ( s )
+			*s = '\0';
 	}
-	else
-	{
-		v4 = "\\dlinfo_%d.drv";
-		v5 = GetWindowsDirectory(dst, 0x104u);
-	}
-	if ( !v5 )
+
+	if ( !dirLen )
 		TermMsg("Unable to get save directory");
-	sprintf(path_buf, v4, save_num);
-	strcat(v3, path_buf);
-	return _strlwr(v3);
+
+	sprintf(FileName, savename, save_num);
+	strcat(dst, FileName);
+	return _strlwr(dst);
 }
-// 679660: using guessed type char gbMaxPlayers;
 
-bool __fastcall pfile_read_hero(void *archive, PkPlayerStruct *pPack)
+BOOL __fastcall pfile_read_hero(void *archive, PkPlayerStruct *pPack)
 {
-	BOOL v2; // eax
-	int dwSize; // eax
-	int v4; // edi
-	char *v5; // eax
-	char *v6; // esi
-	//int v7; // eax
-	//int v8; // eax
-	char password[16]; // [esp+4h] [ebp-24h]
-	void *v11; // [esp+14h] [ebp-14h]
-	DWORD nSize; // [esp+18h] [ebp-10h]
-	int v13; // [esp+1Ch] [ebp-Ch]
-	int dwBytes; // [esp+20h] [ebp-8h]
-	void *file; // [esp+24h] [ebp-4h]
+	HANDLE file;
 
-	v11 = pPack;
-	v2 = SFileOpenFileEx(archive, "hero", 0, &file);
-	if ( v2 )
-	{
-		strcpy(password, "xrgyrkj1");
-		v13 = 0;
-		*(_DWORD *)&password[9] = 0;
-		*(_WORD *)&password[13] = 0;
-		password[15] = 0;
-		nSize = 16;
-		if ( (unsigned char)gbMaxPlayers > 1u )
-			strcpy(password, "szqnlsk1");
-		dwSize = SFileGetFileSize((int *)file, 0);
-		v4 = dwSize;
-		if ( !dwSize )
-			goto LABEL_15;
-		v5 = (char *)DiabloAllocPtr(dwSize);
-		v6 = v5;
-		//_LOBYTE(v7) = SFileReadFile(file, v5, v4, (unsigned long *)&dwBytes, 0);
-		if ( SFileReadFile(file, v5, v4, (unsigned long *)&dwBytes, 0) )
-		{
-			dwBytes = codec_decode(v6, v4, password);
-			if ( dwBytes )
-				goto LABEL_11;
-			if ( (unsigned char)gbMaxPlayers > 1u )
-			{
-				GetComputerName(password, &nSize);
-				if ( !SFileSetFilePointer(file, 0, 0, 0) )
-				{
-					//_LOBYTE(v8) = SFileReadFile(file, v6, v4, (unsigned long *)&dwBytes, 0);
-					if ( SFileReadFile(file, v6, v4, (unsigned long *)&dwBytes, 0) )
-					{
-						dwBytes = codec_decode(v6, v4, password);
-LABEL_11:
-						if ( dwBytes == 1266 )
-						{
-							memcpy(v11, v6, 0x4F2u);
-							v13 = 1;
-						}
-						goto LABEL_13;
-					}
+	if ( !SFileOpenFileEx(archive, "hero", 0, &file) )
+		return FALSE;
+	else {
+		DWORD dwlen;
+		BOOL ret = FALSE;
+		char password[16] = PASSWORD_SINGLE;
+		DWORD nSize = 16;
+
+		if ( gbMaxPlayers > 1 )
+			strcpy(password, PASSWORD_MULTI);
+
+		dwlen = SFileGetFileSize(file, NULL);
+		if ( dwlen ) {
+			DWORD read;
+			unsigned char *buf = DiabloAllocPtr(dwlen);
+			if ( SFileReadFile(file, buf, dwlen, &read, NULL) ) {
+				BOOL decoded = TRUE;
+				read = codec_decode(buf, dwlen, password);
+				if ( !read && gbMaxPlayers > 1 ) {
+					GetComputerName(password, &nSize);
+					if ( SFileSetFilePointer(file, 0, NULL, 0) || !SFileReadFile(file, buf, dwlen, &read, NULL) )
+						decoded = FALSE;
+					else
+						read = codec_decode(buf, dwlen, password);
+				}
+				if ( decoded && read == sizeof(*pPack) ) {
+					memcpy(pPack, buf, sizeof(*pPack));
+					ret = TRUE;
 				}
 			}
+			if ( buf )
+				mem_free_dbg(buf);
 		}
-LABEL_13:
-		if ( v6 )
-			mem_free_dbg(v6);
-LABEL_15:
 		SFileCloseFile(file);
-		v2 = v13;
+		return ret;
 	}
-	return v2;
 }
-// 679660: using guessed type char gbMaxPlayers;
 
-void *__fastcall pfile_open_save_archive(int *unused, int save_num)
+HANDLE __fastcall pfile_open_save_archive(int *unused, unsigned int save_num)
 {
-	//int v2; // eax
-	char SrcStr[260]; // [esp+0h] [ebp-108h]
-	void *archive; // [esp+104h] [ebp-4h]
+	char SrcStr[MAX_PATH];
+	HANDLE archive;
 
-	pfile_get_save_path(SrcStr, 260, save_num);
-	//_LOBYTE(v2) = SFileOpenArchive(SrcStr, 0x7000, 0, &archive);
-	return SFileOpenArchive(SrcStr, 0x7000, 0, &archive) != 0 ? archive : NULL;
+	pfile_get_save_path(SrcStr, sizeof(SrcStr), save_num);
+	if ( SFileOpenArchive(SrcStr, 0x7000, 0, &archive) )
+		return archive;
+	return NULL;
 }
 
-void __fastcall pfile_SFileCloseArchive(void *hsArchive)
+void __fastcall pfile_SFileCloseArchive(HANDLE hsArchive)
 {
 	SFileCloseArchive(hsArchive);
 }
 
-BOOL __fastcall pfile_archive_contains_game(void *hsArchive)
+BOOL __fastcall pfile_archive_contains_game(HANDLE hsArchive)
 {
-	//int v1; // eax
-	void *file; // [esp+0h] [ebp-4h]
+	HANDLE file;
 
-	file = hsArchive;
 	if ( gbMaxPlayers != 1 )
 		return FALSE;
-	//_LOBYTE(v1) = SFileOpenFileEx(hsArchive, "game", 0, &file);
+
 	if ( !SFileOpenFileEx(hsArchive, "game", 0, &file) )
 		return FALSE;
+
 	SFileCloseFile(file);
 	return TRUE;
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 BOOL __stdcall pfile_ui_set_class_stats(int player_class_nr, _uidefaultstats *class_stats)
 {
@@ -496,15 +445,17 @@ BOOL __stdcall pfile_ui_set_class_stats(int player_class_nr, _uidefaultstats *cl
 	return 1;
 }
 
-int __fastcall pfile_get_player_class(int player_class_nr)
+char __fastcall pfile_get_player_class(unsigned int player_class_nr)
 {
-	int result; // eax
+	char pc_class;
 
-	if ( player_class_nr )
-		_LOBYTE(result) = (player_class_nr != 1) + 1;
+	if ( player_class_nr == UI_WARRIOR )
+		pc_class = PC_WARRIOR;
+	else if ( player_class_nr == UI_ROGUE )
+		pc_class = PC_ROGUE;
 	else
-		_LOBYTE(result) = 0;
-	return result;
+		pc_class = PC_SORCERER;
+	return pc_class;
 }
 
 BOOL __stdcall pfile_ui_save_create(_uiheroinfo *heroinfo)
@@ -545,46 +496,30 @@ BOOL __stdcall pfile_ui_save_create(_uiheroinfo *heroinfo)
 	return 1;
 }
 
-BOOL __stdcall pfile_get_file_name(int lvl, char *dst)
+BOOL __stdcall pfile_get_file_name(DWORD lvl, char *dst)
 {
-	int v2; // ecx
-	bool v3; // zf
-	const char *v4; // eax
+	const char *fmt;
 
-	v2 = lvl;
-	if ( (unsigned char)gbMaxPlayers > 1u )
-	{
-		v3 = lvl == 0;
-		goto LABEL_10;
+	if ( gbMaxPlayers > 1 ) {
+		if ( lvl )
+			return FALSE;
+		fmt = "hero";
+	} else {
+		if ( lvl < 17 )
+			fmt = "perml%02d";
+		else if ( lvl < 34 ) {
+			lvl -= 17;
+			fmt = "perms%02d";
+		} else if ( lvl == 34 )
+			fmt = "game";
+		else if ( lvl == 35 )
+			fmt = "hero";
+		else
+			return FALSE;
 	}
-	if ( (unsigned int)lvl < 0x11 )
-	{
-		v4 = "perml%02d";
-LABEL_12:
-		sprintf(dst, v4, v2);
-		return 1;
-	}
-	if ( (unsigned int)lvl < 0x22 )
-	{
-		v2 = lvl - 17;
-		v4 = "perms%02d";
-		goto LABEL_12;
-	}
-	if ( lvl == 34 )
-	{
-		v4 = "game";
-		goto LABEL_12;
-	}
-	v3 = lvl == 35;
-LABEL_10:
-	if ( v3 )
-	{
-		v4 = "hero";
-		goto LABEL_12;
-	}
-	return 0;
+	sprintf(dst, fmt, lvl);
+	return TRUE;
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 BOOL __stdcall pfile_delete_save(_uiheroinfo *hero_info)
 {
@@ -690,26 +625,20 @@ void __cdecl pfile_remove_temp_files()
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-BOOL __stdcall GetTempSaveNames(int dwIndex, char *szTemp)
+BOOL __stdcall GetTempSaveNames(DWORD dwIndex, char *szTemp)
 {
-	int v2; // eax
-	const char *v3; // ecx
+	const char *fmt;
 
-	v2 = dwIndex;
-	if ( (unsigned int)dwIndex < 0x11 )
-	{
-		v3 = "templ%02d";
-LABEL_5:
-		sprintf(szTemp, v3, v2);
-		return 1;
-	}
-	if ( (unsigned int)dwIndex < 0x22 )
-	{
-		v2 = dwIndex - 17;
-		v3 = "temps%02d";
-		goto LABEL_5;
-	}
-	return 0;
+	if ( dwIndex < 17 )
+		fmt = "templ%02d";
+	else if ( dwIndex < 34 ) {
+		dwIndex -= 17;
+		fmt = "temps%02d";
+	} else
+		return FALSE;
+
+	sprintf(szTemp, fmt, dwIndex);
+	return TRUE;
 }
 
 void __cdecl pfile_rename_temp_to_perm()
@@ -749,26 +678,20 @@ void __cdecl pfile_rename_temp_to_perm()
 	pfile_flush(1, v1);
 }
 
-bool __stdcall GetPermSaveNames(int dwIndex, char *szPerm)
+BOOL __stdcall GetPermSaveNames(DWORD dwIndex, char *szPerm)
 {
-	int v2; // eax
-	const char *v3; // ecx
+	const char *fmt;
 
-	v2 = dwIndex;
-	if ( (unsigned int)dwIndex < 0x11 )
-	{
-		v3 = "perml%02d";
-LABEL_5:
-		sprintf(szPerm, v3, v2);
-		return 1;
-	}
-	if ( (unsigned int)dwIndex < 0x22 )
-	{
-		v2 = dwIndex - 17;
-		v3 = "perms%02d";
-		goto LABEL_5;
-	}
-	return 0;
+	if ( dwIndex < 17 )
+		fmt = "perml%02d";
+	else if ( dwIndex < 34 ) {
+		dwIndex -= 17;
+		fmt = "perms%02d";
+	} else
+		return FALSE;
+
+	sprintf(szPerm, fmt, dwIndex);
+	return TRUE;
 }
 
 void __fastcall pfile_write_save_file(char *pszName, void *pbData, int dwLen, int qwLen)
@@ -799,7 +722,7 @@ void __fastcall pfile_write_save_file(char *pszName, void *pbData, int dwLen, in
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-void __fastcall pfile_strcpy(char *dst, char *src)
+void __fastcall pfile_strcpy(char *dst, const char *src)
 {
 	strcpy(dst, src);
 }
@@ -872,21 +795,16 @@ char *__fastcall pfile_read(char *pszName, int *pdwLen)
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-void __fastcall pfile_update(bool force_save)
+void __fastcall pfile_update(BOOL force_save)
 {
-	BOOL v1; // esi
-	DWORD v2; // eax
+	// BUGFIX: these tick values should be treated as unsigned to handle overflows correctly
+	static int save_prev_tc;
 
-	v1 = force_save;
-	if ( gbMaxPlayers != 1 )
-	{
-		v2 = GetTickCount();
-		if ( v1 || (signed int)(v2 - save_prev_tc) > 60000 )
-		{
-			save_prev_tc = v2;
+	if (gbMaxPlayers != 1) {
+		int tick = GetTickCount();
+		if(force_save || tick - save_prev_tc > 60000) {
+			save_prev_tc = tick;
 			pfile_write_hero();
 		}
 	}
 }
-// 679660: using guessed type char gbMaxPlayers;
-// 686428: using guessed type int save_prev_tc;
