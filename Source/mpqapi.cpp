@@ -294,12 +294,12 @@ int __fastcall mpqapi_get_hash_index(short index, int hash_a, int hash_b, int lo
 	return i;
 }
 
-void __fastcall mpqapi_remove_hash_entries(BOOL (__stdcall *fnGetName)(int, char *))
+void __fastcall mpqapi_remove_hash_entries(BOOL (__stdcall *fnGetName)(DWORD, char *))
 {
-	BOOL (__stdcall *v1)(int, char *); // edi
-	signed int v2; // esi
+	BOOL (__stdcall *v1)(DWORD, char *); // edi
+	DWORD v2; // esi
 	BOOL i; // eax
-	int v4; // eax
+	DWORD v4; // eax
 	char v5[260]; // [esp+8h] [ebp-104h]
 
 	v1 = fnGetName;
