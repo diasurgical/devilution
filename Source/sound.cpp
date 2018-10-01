@@ -110,10 +110,10 @@ void __fastcall snd_play_snd(TSnd *pSnd, int lVolume, int lPan)
 	}
 
 	lVolume += sglSoundVolume;
-	if ( lVolume < -1600 ) {
-		lVolume = -1600;
-	} else if ( lVolume > 0 ) {
-		lVolume = 0;
+	if ( lVolume < VOLUME_MIN ) {
+		lVolume = VOLUME_MIN;
+	} else if ( lVolume > VOLUME_MAX ) {
+		lVolume = VOLUME_MAX;
 	}
 	DSB->SetVolume(lVolume);
 
@@ -246,10 +246,10 @@ void __fastcall sound_file_cleanup(TSnd *sound_file)
 void __fastcall snd_init(HWND hWnd)
 {
 	sound_load_volume("Sound Volume", &sglSoundVolume);
-	gbSoundOn = sglSoundVolume > -1600;
+	gbSoundOn = sglSoundVolume > VOLUME_MIN;
 
 	sound_load_volume("Music Volume", &sglMusicVolume);
-	gbMusicOn = sglMusicVolume > -1600;
+	gbMusicOn = sglMusicVolume > VOLUME_MIN;
 
 	if ( sound_DirectSoundCreate(NULL, &sglpDS, NULL) != DS_OK )
 		sglpDS = NULL;
@@ -269,14 +269,14 @@ void __fastcall sound_load_volume(char *value_name, int *value)
 {
 	int v = *value;
 	if ( !SRegLoadValue("Diablo", value_name, 0, &v) ) {
-		v = 0;
+		v = VOLUME_MAX;
 	}
 	*value = v;
 
-	if ( *value < -1600 ) {
-		*value = -1600;
-	} else if ( *value > 0 ) {
-		*value = 0;
+	if ( *value < VOLUME_MIN ) {
+		*value = VOLUME_MIN;
+	} else if ( *value > VOLUME_MAX ) {
+		*value = VOLUME_MAX;
 	}
 	*value -= *value % 100;
 }

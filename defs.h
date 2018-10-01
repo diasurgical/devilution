@@ -38,6 +38,9 @@
 // Item indestructible durability
 #define DUR_INDESTRUCTIBLE		255
 
+#define VOLUME_MIN				-1600
+#define VOLUME_MAX				0
+
 // todo: enums
 #define NUM_SFX					858
 #define NUMLEVELS				17

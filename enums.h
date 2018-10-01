@@ -1129,6 +1129,17 @@ enum _sfx_id
 	USFX_DIABLOD = 0x359,
 };
 
+enum sfx_flag {
+	SFX_STREAM   = 0x01,
+	SFX_MISC     = 0x02,
+	SFX_UI       = 0x04,
+	SFX_08       = 0x08,
+	SFX_ROGUE    = 0x10,
+	SFX_WARRIOR  = 0x20,
+	SFX_SORCEROR = 0x40,
+	SFX_LOADED   = 0x80,
+};
+
 enum item_equip_type
 {
 	ILOC_NONE = 0x0,
