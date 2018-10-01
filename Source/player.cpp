@@ -1744,7 +1744,7 @@ void __fastcall PlrDeadItem(int pnum, struct ItemStruct *itm, int xx, int yy)
 		return;
 	}
 
-	for ( yy = -1, xx = 1; yy != -50; xx++, yy-- ) {
+	for ( yy = -1, xx = 1; yy > -50; xx++, yy-- ) {
 		for ( j = yy; j <= xx; j++ ) {
 			y = j + plr[pnum].WorldY;
 			for ( i = yy; i <= xx; i++ ) {
