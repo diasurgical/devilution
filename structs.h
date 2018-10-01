@@ -467,7 +467,7 @@ struct TSnd
 	int len;
 	int offset;
 	char *sound_path;
-	IDirectSoundBuffer *DSB;
+	LPDIRECTSOUNDBUFFER DSB;
 	int start_tc;
 };
 
