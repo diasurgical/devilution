@@ -1170,62 +1170,36 @@ void __cdecl sound_update()
 
 void __cdecl effects_cleanup_sfx()
 {
-	unsigned int v0; // edi
-	TSnd *v1; // ecx
-
 	FreeMonsterSnd();
-	v0 = 0;
-	do
-	{
-		v1 = sgSFX[v0].pSnd;
-		if ( v1 )
-		{
-			sound_file_cleanup(v1);
-			sgSFX[v0].pSnd = 0;
+
+	for ( DWORD i = 0; i < NUM_SFX; i++ ) {
+		if ( sgSFX[i].pSnd ) {
+			sound_file_cleanup(sgSFX[i].pSnd);
+			sgSFX[i].pSnd = 0;
 		}
-		++v0;
 	}
-	while ( v0 < NUM_SFX );
 }
 
 void __cdecl stream_update()
 {
-	char v0; // bl
-	char v1; // al
+	UCHAR mask = 0;
+	if ( gbMaxPlayers > 1 ) {
+		mask = SFX_WARRIOR | SFX_ROGUE | SFX_SORCEROR;
+	} else  if ( plr[myplr]._pClass == PC_WARRIOR ) {
+		mask = SFX_WARRIOR;
+	} else if ( plr[myplr]._pClass == PC_ROGUE ) {
+		mask = SFX_ROGUE;
+	} else if ( plr[myplr]._pClass == PC_SORCERER ) {
+		mask = SFX_SORCEROR;
+	} else {
+		TermMsg("effects:1");
+	}
 
-	v0 = 0;
-	if ( (unsigned char)gbMaxPlayers <= 1u )
-	{
-		v1 = plr[myplr]._pClass;
-		if ( v1 )
-		{
-			if ( v1 == 1 )
-			{
-				v0 = 16;
-			}
-			else if ( v1 == 2 )
-			{
-				v0 = 64;
-			}
-			else
-			{
-				TermMsg("effects:1");
-			}
-		}
-		else
-		{
-			v0 = 32;
-		}
-	}
-	else
-	{
-		v0 = 112;
-	}
-	priv_sound_init(v0);
+	priv_sound_init(mask);
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-void __fastcall priv_sound_init(int bLoadMask)
+void __fastcall priv_sound_init(UCHAR bLoadMask)
 {
 	unsigned char v1; // bl
 	unsigned char v2; // cl
@@ -1233,9 +1207,6 @@ void __fastcall priv_sound_init(int bLoadMask)
 	unsigned char v4; // al
 	TSnd *v5; // eax
 	unsigned char v6; // [esp+0h] [ebp-4h]
-
-
-
 
 	if ( gbSndInited )
 	{
@@ -1263,7 +1234,7 @@ void __fastcall priv_sound_init(int bLoadMask)
 
 void __cdecl sound_init()
 {
-	priv_sound_init(4);
+	priv_sound_init(SFX_UI);
 }
 
 void __stdcall effects_play_sound(char *snd_file)
