@@ -1120,6 +1120,7 @@ void __fastcall StartWalkStand(int pnum)
 void __fastcall PM_ChangeLightOff(int pnum)
 {
 	int x, y;
+	int xmul, ymul;
 	int lx, ly;
 	int offx, offy;
 	const LightListStruct *l;
@@ -1128,28 +1129,29 @@ void __fastcall PM_ChangeLightOff(int pnum)
 		TermMsg("PM_ChangeLightOff: illegal player %d", pnum);
 
 	l = &LightList[plr[pnum]._plid];
-	ly = -1;
+	ymul = -1;
 	x = 2 * plr[pnum]._py + plr[pnum]._px;
 	y = 2 * plr[pnum]._py - plr[pnum]._px;
 	if (x < 0) {
-		lx = -1;
+		xmul = -1;
 		x = -x;
 	} else
-		lx = 1;
+		xmul = 1;
 	if (y < 0) {
 		y = -y;
 	} else
-		ly = 1;
+		ymul = 1;
 
-	y = (y >> 3) * ly;
-	ly = y + (l->_ly << 3);
-	x = (x >> 3) * lx;
-	offy = l->_yoff + (l->_ly << 3);
+	x = (x >> 3) * xmul;
+	y = (y >> 3) * ymul;
 	lx = x + (l->_lx << 3);
+	ly = y + (l->_ly << 3);
 	offx = l->_xoff + (l->_lx << 3);
+	offy = l->_yoff + (l->_ly << 3);
 
-	if ( abs(lx - offx) >= 3 || abs(ly - offy) >= 3 )
-		ChangeLightOff(plr[pnum]._plid, x, y);
+	if ( abs(lx - offx) < 3 && abs(ly - offy) < 3 )
+		return;
+	ChangeLightOff(plr[pnum]._plid, x, y);
 }
 
 void __fastcall PM_ChangeOffset(int pnum)
