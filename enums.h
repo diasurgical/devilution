@@ -2573,7 +2573,7 @@ enum _walk_path
 	WALK_E = 0x6,
 	WALK_S = 0x7,
 	WALK_W = 0x8,
-	WALK_NONE = 0xFFFFFFFF,
+	WALK_NONE = -1,
 };
 
 enum item_class {
