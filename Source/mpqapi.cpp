@@ -315,9 +315,9 @@ void __fastcall mpqapi_remove_hash_entries(BOOL (__stdcall *fnGetName)(DWORD, ch
 	}
 }
 
-BOOL __fastcall mpqapi_write_file(const char *pszName, const char *pbData, DWORD dwLen)
+BOOL __fastcall mpqapi_write_file(const char *pszName, const BYTE *pbData, DWORD dwLen)
 {
-	const char *v3; // edi
+	const BYTE *v3; // edi
 	const char *v4; // esi
 	_BLOCKENTRY *v5; // eax
 
@@ -379,7 +379,7 @@ _BLOCKENTRY *__fastcall mpqapi_add_file(const char *pszName, _BLOCKENTRY *pBlk, 
 	return v12;
 }
 
-bool __fastcall mpqapi_write_file_contents(const char *pszName, const char *pbData, int dwLen, _BLOCKENTRY *pBlk)
+bool __fastcall mpqapi_write_file_contents(const char *pszName, const BYTE *pbData, int dwLen, _BLOCKENTRY *pBlk)
 {
 	const char *v4; // esi
 	const char *v5; // eax
@@ -393,7 +393,7 @@ bool __fastcall mpqapi_write_file_contents(const char *pszName, const char *pbDa
 	unsigned int v14; // eax
 	int v15; // ecx
 	int size; // [esp+Ch] [ebp-10h]
-	const char *v17; // [esp+10h] [ebp-Ch]
+	const BYTE *v17; // [esp+10h] [ebp-Ch]
 	int v18; // [esp+14h] [ebp-8h]
 	DWORD nNumberOfBytesToWrite; // [esp+18h] [ebp-4h]
 
