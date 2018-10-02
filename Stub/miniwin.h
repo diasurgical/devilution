@@ -378,6 +378,7 @@ typedef struct _WIN32_FIND_DATAA *LPWIN32_FIND_DATAA;
 typedef void *LPOVERLAPPED;
 
 #define OFS_MAXPATHNAME 128
+#define MAX_PATH 260
 
 typedef struct _OFSTRUCT {
 	BYTE cBytes;
@@ -540,7 +541,7 @@ HFILE WINAPI OpenFile(LPCSTR lpFileName, LPOFSTRUCT lpReOpenBuff, UINT uStyle);
 // Total fakes
 //
 typedef struct {
-} SOCKADDR, GUID;
+} SOCKADDR, GUID, *LPGUID;
 
 typedef struct {
 	DWORD cb;

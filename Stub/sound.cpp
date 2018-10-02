@@ -23,7 +23,7 @@ void __cdecl music_stop()
 	DUMMY();
 }
 
-bool __fastcall snd_playing(TSnd *pSnd)
+BOOL __fastcall snd_playing(TSnd *pSnd)
 {
 	UNIMPLEMENTED();
 }
@@ -60,7 +60,7 @@ int __fastcall sound_get_or_set_music_volume(int volume)
 	return volume;
 }
 
-void __fastcall snd_update(bool bStopAll)
+void __fastcall snd_update(BOOL bStopAll)
 {
 	DUMMY_PRINT("stopall: %d", bStopAll);
 }
