@@ -32,7 +32,7 @@
 #define MDMAXY					40
 
 // number of inventory grid cells
-#define NUM_INV_GRID_ELEM			40
+#define NUM_INV_GRID_ELEM		40
 #define INV_SLOT_SIZE_PX		28
 
 // Item indestructible durability
@@ -49,6 +49,10 @@
 #define MAXEXP					2000000000
 
 #define PLR_NAME_LEN			32
+
+// 256 kilobytes + 3 bytes (demo leftover) for file magic (262147)
+// final game uses 4-byte magic instead of 3
+#define FILEBUFF				((256*1024)+3)
 
 // Diablo uses a 256 color palette
 // Entry 0-127 (0x00-0x7F) are level specific
