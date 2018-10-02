@@ -1201,34 +1201,32 @@ void __cdecl stream_update()
 
 void __fastcall priv_sound_init(UCHAR bLoadMask)
 {
-	unsigned char v1; // bl
-	unsigned char v2; // cl
-	unsigned int v3; // esi
-	unsigned char v4; // al
-	TSnd *v5; // eax
-	unsigned char v6; // [esp+0h] [ebp-4h]
+	if ( !gbSndInited ) {
+		return;
+	}
 
-	if ( gbSndInited )
-	{
-		v1 = bLoadMask & (SFX_ROGUE | SFX_WARRIOR | SFX_SORCEROR);
-		v2 = bLoadMask & (SFX_ROGUE | SFX_WARRIOR | SFX_SORCEROR) ^ bLoadMask;
-		v3 = 0;
-		v6 = v2;
-		do
-		{
-			if ( !sgSFX[v3].pSnd )
-			{
-				v4 = sgSFX[v3].bFlags;
-				if ( !(v4 & SFX_STREAM) && (!v2 || v4 & v2) && (!(v4 & (SFX_ROGUE | SFX_WARRIOR | SFX_SORCEROR)) || v4 & v1) )
-				{
-					v5 = sound_file_load(sgSFX[v3].pszName);
-					v2 = v6;
-					sgSFX[v3].pSnd = v5;
-				}
-			}
-			++v3;
+	UCHAR pc = bLoadMask & (SFX_ROGUE | SFX_WARRIOR | SFX_SORCEROR);
+	bLoadMask ^= pc;
+
+	for ( DWORD i = 0; i < NUM_SFX; i++ ) {
+		if ( sgSFX[i].pSnd ) {
+			continue;
 		}
-		while ( v3 < NUM_SFX );
+
+		UCHAR bFlags = sgSFX[i].bFlags;
+		if ( bFlags & SFX_STREAM ) {
+			continue;
+		}
+
+		if ( bLoadMask && !(bFlags & bLoadMask) ) {
+			continue;
+		}
+
+		if ( bFlags & (SFX_ROGUE | SFX_WARRIOR | SFX_SORCEROR) && !(bFlags & pc) ) {
+			continue;
+		}
+
+		sgSFX[i].pSnd = sound_file_load(sgSFX[i].pszName);
 	}
 }
 
