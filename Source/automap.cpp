@@ -5,9 +5,9 @@
 USHORT automaptype[512];
 static int MapX;
 static int MapY;
-bool automapflag; // idb
+BOOL automapflag; // idb
 char AMbyte_4B7E4C[32];
-char automapview[DMAXX][DMAXY];
+unsigned char automapview[DMAXX][DMAXY];
 int AutoMapScale; // idb
 int AutoMapXOfs; // weak
 int AutoMapYOfs; // weak

@@ -2,13 +2,13 @@
 #ifndef __LOADSAVE_H__
 #define __LOADSAVE_H__
 
-extern void *tbuff;
+extern unsigned char *tbuff;
 
 void __fastcall LoadGame(BOOL firstflag);
 char __cdecl BLoad();
+int __cdecl WLoad();
 int __cdecl ILoad();
-int __cdecl ILoad_2();
-bool __cdecl OLoad();
+BOOL __cdecl OLoad();
 void __fastcall LoadPlayer(int i);
 void __fastcall LoadMonster(int i);
 void __fastcall LoadMissile(int i);
@@ -21,9 +21,9 @@ void __fastcall LoadVision(int i);
 void __fastcall LoadPortal(int i);
 void __cdecl SaveGame();
 void __fastcall BSave(char v);
+void __fastcall WSave(int v);
 void __fastcall ISave(int v);
-void __fastcall ISave_2(int v);
-void __fastcall OSave(unsigned char v);
+void __fastcall OSave(BOOL v);
 void __fastcall SavePlayer(int i);
 void __fastcall SaveMonster(int i);
 void __fastcall SaveMissile(int i);
