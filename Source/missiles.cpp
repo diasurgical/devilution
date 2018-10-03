@@ -5318,8 +5318,8 @@ void __fastcall MI_Fireball(int i)
 				CheckMissileCol(ia, v5, v5, 0, tx - 1, ty, 1);
 			if ( !CheckBlock(fx, fy, tx - 1, ty + 1) )
 				CheckMissileCol(ia, v5, v5, 0, tx - 1, ty + 1, 1);
-			if ( !CheckBlock(fx, fy, ty - 2, ty - 1) )
-				CheckMissileCol(ia, v5, v5, 0, 0, ty - 1, 1);
+			if ( !CheckBlock(fx, fy, tx - 1, ty - 1) )
+				CheckMissileCol(ia, v5, v5, 0, tx - 1, ty - 1, 1);
 			v13 = 112 * tx + ty;
 			if ( !TransList[dung_map[0][v13]] /* check */
 			  || missile[v1]._mixvel < 0
