@@ -354,7 +354,7 @@ struct PlayerStruct
 	unsigned char *_pHData;
 	unsigned char *_pDData;
 	unsigned char *_pBData;
-	int unused_54D4;
+	void *pReserved;
 };
 
 //////////////////////////////////////////////////
