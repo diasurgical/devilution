@@ -9,12 +9,6 @@ void __fastcall LoadGame(BOOL firstflag)
 	int i, j;
 	int dwLen;
 	char szName[MAX_PATH];
-	int v1;
-	int v2;
-	int v3;
-	int v42;
-	int v43;
-	int v45;
 
 	FreeGameMem();
 	pfile_remove_temp_files();
@@ -29,14 +23,14 @@ void __fastcall LoadGame(BOOL firstflag)
 	setlvlnum = WLoad();
 	currlevel = WLoad();
 	leveltype = WLoad();
-	v1 = WLoad();
-	v2 = WLoad();
+	int _ViewX = WLoad();
+	int _ViewY = WLoad();
 	invflag = OLoad();
 	chrflag = OLoad();
-	v3 = WLoad();
-	v43 = WLoad();
-	v45 = WLoad();
-	v42 = WLoad();
+	int _nummonsters = WLoad();
+	int _numitems = WLoad();
+	int _nummissiles = WLoad();
+	int _nobjects = WLoad();
 
 	for(i = 0; i < NUMLEVELS; i++) {
 		glSeedTbl[i] = ILoad();
@@ -54,12 +48,12 @@ void __fastcall LoadGame(BOOL firstflag)
 	SyncInitPlr(myplr);
 	SyncPlrAnim(myplr);
 
-	ViewX = v1;
-	ViewY = v2;
-	nummonsters = v3;
-	numitems = v43;
-	nummissiles = v45;
-	nobjects = v42;
+	ViewX = _ViewX;
+	ViewY = _ViewY;
+	nummonsters = _nummonsters;
+	numitems = _numitems;
+	nummissiles = _nummissiles;
+	nobjects = _nobjects;
 
 	for(i = 0; i < MAXMONSTERS; i++)
 		monstkills[i] = ILoad();
@@ -174,7 +168,7 @@ void __fastcall LoadGame(BOOL firstflag)
 	ProcessVisionList();
 	missiles_process_charge();
 	ResetPal();
-	SetCursor(1);
+	SetCursor(CURSOR_HAND);
 	gbProcessPlayers = 1;
 }
 // 5256A0: using guessed type int gbProcessPlayers;
@@ -366,7 +360,7 @@ void __cdecl SaveGame()
 	}
 	for(j = 0; j < MAXDUNY; j++) {
 		for(i = 0; i < MAXDUNX; i++)
-			BSave(dFlags[i][j] & 0xF8);
+			BSave(dFlags[i][j] & ~(DFLAG_MISSILE|DFLAG_VISIBLE|DFLAG_DEAD_PLAYER));
 	}
 	for(j = 0; j < MAXDUNY; j++) {
 		for(i = 0; i < MAXDUNX; i++)
@@ -567,7 +561,7 @@ void __cdecl SaveLevel()
 
 	for(j = 0; j < MAXDUNY; j++) {
 		for(i = 0; i < MAXDUNX; i++)
-			BSave(dFlags[i][j] & 0xF8);
+			BSave(dFlags[i][j] & ~(DFLAG_MISSILE|DFLAG_VISIBLE|DFLAG_DEAD_PLAYER));
 	}
 	for(j = 0; j < MAXDUNY; j++) {
 		for(i = 0; i < MAXDUNX; i++)
