@@ -1942,6 +1942,7 @@ enum direction
 
 enum _scroll_direction
 {
+	SDIR_NONE = 0x0,
 	SDIR_N = 0x1,
 	SDIR_NE = 0x2,
 	SDIR_E = 0x3,

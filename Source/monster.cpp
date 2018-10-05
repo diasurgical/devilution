@@ -737,7 +737,7 @@ void __fastcall InitMonster(int i, int rd, int mtype, int x, int y)
 	monster[i]._uniqtype = 0;
 	monster[i]._msquelch = 0;
 	monster[i].field_18 = 0;
-	monster[i]._mDelFlag = 0;
+	monster[i]._mDelFlag = FALSE;
 	monster[i]._mRndSeed = GetRndSeed();
 	monster[i]._mAISeed = GetRndSeed();
 	monster[i].mWhoHit = 0;
@@ -824,7 +824,7 @@ void __cdecl ClrAllMonsters()
 		Monst->_mAnimLen = 0;
 		Monst->_mAnimFrame = 0;
 		Monst->_mFlags = 0;
-		Monst->_mDelFlag = 0;
+		Monst->_mDelFlag = FALSE;
 		Monst->_menemy = random(89, gbActivePlayers);
 		Monst->_menemyx = plr[Monst->_menemy]._px;
 		Monst->_menemyy = plr[Monst->_menemy]._py;
@@ -3874,7 +3874,7 @@ void __cdecl PrepDoEnding()
 
 	gbSoundOn = sgbSaveSoundOn;
 	gbRunGame = 0;
-	deathflag = 0;
+	deathflag = FALSE;
 	v0 = &plr[myplr].pDiabloKillLevel;
 	v1 = gnDifficulty + 1;
 	cineflag = 1;
@@ -3958,7 +3958,7 @@ int __fastcall M_DoDeath(int i)
 			v10 = v3->mdeadval;
 		AddDead(monster[v2]._mx, monster[v2]._my, v10, (direction)monster[v2]._mdir);
 		v11 = monster[v2]._my + 112 * monster[v2]._mx;
-		monster[v2]._mDelFlag = 1;
+		monster[v2]._mDelFlag = TRUE;
 		dMonster[0][v11] = 0;
 		M_UpdateLeader(v1);
 	}
@@ -4032,7 +4032,7 @@ int __fastcall M_DoStone(int i)
 	if ( !monster[v1]._mhitpoints )
 	{
 		v3 = monster[v2]._mx;
-		monster[v2]._mDelFlag = 1;
+		monster[v2]._mDelFlag = TRUE;
 		dMonster[0][monster[v2]._my + 112 * v3] = 0;
 	}
 	return 0;

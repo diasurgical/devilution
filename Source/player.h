@@ -11,7 +11,7 @@ extern int myplr;
 extern PlayerStruct plr[MAX_PLRS];
 extern int plr_fframe_size; // idb
 extern int plr_qframe_size; // idb
-extern int deathflag; // idb
+extern BOOL deathflag; // idb
 extern int plr_hframe_size; // idb
 extern int plr_bframe_size; // idb
 extern UCHAR plr_gfx_bflag;

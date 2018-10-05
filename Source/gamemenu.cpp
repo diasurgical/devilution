@@ -91,10 +91,10 @@ void __cdecl gamemenu_new_game()
 		plr[i]._pInvincible = 1;
 	}
 
-	deathflag = 0;
+	deathflag = FALSE;
 	drawpanflag = 255;
 	scrollrt_draw_game_screen(1);
-	gbRunGame = 0;
+	gbRunGame = FALSE;
 	gamemenu_off();
 }
 // 525650: using guessed type int gbRunGame;
@@ -120,7 +120,7 @@ void __cdecl gamemenu_load_game()
 	LoadGame(FALSE);
 	ClrDiabloMsg();
 	PaletteFadeOut(8);
-	deathflag = 0;
+	deathflag = FALSE;
 	drawpanflag = 255;
 	DrawAndBlit();
 	PaletteFadeIn(8);

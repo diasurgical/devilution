@@ -784,7 +784,7 @@ void __fastcall TownCtrlMsg(int i)
 			towner[i]._tbtcnt = 0;
 		if ( !towner[i]._tbtcnt )
 		{
-			qtextflag = 0;
+			qtextflag = FALSE;
 			sfx_stop();
 		}
 	}

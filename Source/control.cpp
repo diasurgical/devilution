@@ -1674,7 +1674,7 @@ void __cdecl CheckBtnUp()
 							DoAutoMap();
 							break;
 						case PANBTN_MAINMENU:
-							qtextflag = 0;
+							qtextflag = FALSE;
 							gamemenu_handle_previous();
 							v6 = 0;
 							break;

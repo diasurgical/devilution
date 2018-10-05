@@ -618,7 +618,7 @@ int __cdecl PressEscKey()
 	}
 	if ( qtextflag )
 	{
-		qtextflag = 0;
+		qtextflag = FALSE;
 		sfx_stop();
 	}
 	else
@@ -897,7 +897,7 @@ bool __fastcall LeftMouseDown(int a1)
 	}
 	if ( qtextflag )
 	{
-		qtextflag = 0;
+		qtextflag = FALSE;
 		sfx_stop();
 		return 0;
 	}
@@ -1294,7 +1294,7 @@ LABEL_113:
 								spselflag = 0;
 								if ( qtextflag && leveltype == DTYPE_TOWN)
 								{
-									qtextflag = 0;
+									qtextflag = FALSE;
 									sfx_stop();
 								}
 								questlog = 0;
@@ -1418,7 +1418,7 @@ LABEL_106:
 										spselflag = 0;
 										if ( qtextflag && leveltype == DTYPE_TOWN )
 										{
-											qtextflag = 0;
+											qtextflag = FALSE;
 											sfx_stop();
 										}
 										questlog = 0;

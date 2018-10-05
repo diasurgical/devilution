@@ -2251,7 +2251,7 @@ void __cdecl STextESC()
 
 	if ( qtextflag )
 	{
-		qtextflag = 0;
+		qtextflag = FALSE;
 		if ( leveltype == DTYPE_TOWN )
 			sfx_stop();
 	}
@@ -4048,7 +4048,7 @@ void __cdecl STextEnter()
 {
 	if ( qtextflag )
 	{
-		qtextflag = 0;
+		qtextflag = FALSE;
 		if ( leveltype == DTYPE_TOWN )
 			sfx_stop();
 	}
@@ -4147,7 +4147,7 @@ void __cdecl CheckStoreBtn()
 
 	if ( qtextflag )
 	{
-		qtextflag = 0;
+		qtextflag = FALSE;
 		if ( leveltype == DTYPE_TOWN )
 			sfx_stop();
 	}
