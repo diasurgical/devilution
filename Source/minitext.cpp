@@ -60,7 +60,7 @@ void __cdecl InitQuestText()
 
 	pMedTextCels = LoadFileInMem("Data\\MedTextS.CEL", 0);
 	v0 = LoadFileInMem("Data\\TextBox.CEL", 0);
-	qtextflag = 0;
+	qtextflag = FALSE;
 	pTextBoxCels = v0;
 }
 // 646D00: using guessed type char qtextflag;
@@ -71,7 +71,7 @@ void __fastcall InitQTextMsg(int m)
 	{
 		questlog = 0;
 		qtextptr = alltext[m].txtstr;
-		qtextflag = 1;
+		qtextflag = TRUE;
 		qtexty = 500;
 		sgLastScroll = qscroll_spd_tbl[alltext[m].txtspd - 1]; /* double check offset */
 		scrolltexty = sgLastScroll;
@@ -314,7 +314,7 @@ LABEL_35:
 	qtexty += 38;
 	qtextptr = v13;
 	if ( *v13 == 124 )
-		qtextflag = 0;
+		qtextflag = FALSE;
 }
 // 646CF4: using guessed type int qtexty;
 // 646CFC: using guessed type int qtextSpd;

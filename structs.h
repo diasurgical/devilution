@@ -579,7 +579,7 @@ struct MonsterStruct // note: missing field _mAFNum
 	int _mAnimLen;
 	int _mAnimFrame;
 	int _meflag;
-	int _mDelFlag;
+	BOOL _mDelFlag;
 	int _mVar1;
 	int _mVar2;
 	int _mVar3;

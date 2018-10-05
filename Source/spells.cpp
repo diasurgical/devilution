@@ -228,7 +228,7 @@ void __fastcall DoResurrect(int pnum, int rid)
 	{
 		if ( rid == myplr )
 		{
-			deathflag = 0;
+			deathflag = FALSE;
 			gamemenu_off();
 			drawhpflag = TRUE;
 			drawmanaflag = TRUE;

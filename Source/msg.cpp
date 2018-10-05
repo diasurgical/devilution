@@ -3620,7 +3620,7 @@ int __fastcall On_RETOWN(struct TCmd *pCmd, int pnum)
 	{
 		if ( pnum == myplr )
 		{
-			deathflag = 0;
+			deathflag = FALSE;
 			gamemenu_off();
 		}
 		RestartTownLvl(v2);
