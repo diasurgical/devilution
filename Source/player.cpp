@@ -1598,23 +1598,25 @@ void __fastcall StartPlrHit(int pnum, int dam, BOOL forcehit)
 
 void __fastcall RespawnDeadItem(ItemStruct *itm, int x, int y)
 {
-	if ( numitems < MAXITEMS ) {
-		int ii;
-		if ( FindGetItem(itm->IDidx, itm->_iCreateInfo, itm->_iSeed) >= 0 ) {
-			DrawInvMsg("A duplicate item has been detected.  Destroying duplicate...");
-			SyncGetItem(x, y, itm->IDidx, itm->_iCreateInfo, itm->_iSeed);
-		}
-		ii = itemavail[0];
-		dItem[x][y] = ii + 1;
-		itemactive[numitems] = ii;
-		itemavail[0] = itemavail[MAXITEMS - numitems - 1];
-		item[ii] = *itm;
-		item[ii]._ix = x;
-		item[ii]._iy = y;
-		RespawnItem(ii, TRUE);
-		numitems++;
-		itm->_itype = ITYPE_NONE;
+	if ( numitems >= MAXITEMS ) {
+		return;
 	}
+
+	if ( FindGetItem(itm->IDidx, itm->_iCreateInfo, itm->_iSeed) >= 0 ) {
+		DrawInvMsg("A duplicate item has been detected.  Destroying duplicate...");
+		SyncGetItem(x, y, itm->IDidx, itm->_iCreateInfo, itm->_iSeed);
+	}
+
+	int i = itemavail[0];
+	dItem[x][y] = i + 1;
+	itemavail[0] = itemavail[MAXITEMS - numitems - 1];
+	itemactive[numitems] = i;
+	item[i] = *itm;
+	item[i]._ix = x;
+	item[i]._iy = y;
+	RespawnItem(i, TRUE);
+	numitems++;
+	itm->_itype = ITYPE_NONE;
 }
 
 void __fastcall StartPlayerKill(int pnum, int earflag)
