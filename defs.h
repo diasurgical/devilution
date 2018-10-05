@@ -54,6 +54,9 @@
 // final game uses 4-byte magic instead of 3
 #define FILEBUFF				((256*1024)+3)
 
+// Diablo Retail Version Game ID
+#define GAME_ID					((int)'DRTL')
+
 // Diablo uses a 256 color palette
 // Entry 0-127 (0x00-0x7F) are level specific
 // Entry 128-255 (0x80-0xFF) are global
