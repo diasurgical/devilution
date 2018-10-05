@@ -747,7 +747,7 @@ void __fastcall ToggleSpell(int slot)
 }
 // 52571C: using guessed type int drawpanflag;
 
-void __fastcall CPrintString(int No, unsigned char pszStr, int Just)
+void __fastcall CPrintString(int No, unsigned int glyph, unsigned char col)
 {
 	int *v3; // ebx
 	char *v4; // esi
@@ -771,13 +771,13 @@ void __fastcall CPrintString(int No, unsigned char pszStr, int Just)
 	int v22; // ecx
 	char v23; // al
 
-	v3 = (int *)((char *)pPanelText + 4 * pszStr);
+	v3 = (int *)((char *)pPanelText + 4 * glyph);
 	v4 = (char *)pPanelText + *v3;
 	v5 = (char *)gpBuffer + No;
 	v6 = (int)&v4[v3[1] - *v3];
-	if ( (_BYTE)Just )
+	if ( (_BYTE)col )
 	{
-		if ( (unsigned char)Just == 1 )
+		if ( (unsigned char)col == 1 )
 		{
 			do
 			{
@@ -819,7 +819,7 @@ LABEL_28:
 			}
 			while ( (char *)v6 != v4 );
 		}
-		else if ( (unsigned char)Just == 2 )
+		else if ( (unsigned char)col == 2 )
 		{
 			do
 			{
