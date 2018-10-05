@@ -887,15 +887,13 @@ struct effects_cpp_init
 
 BOOL __fastcall effect_is_playing(int nSFX)
 {
-	TSFX *v1; // eax
-	TSnd *v2; // ecx
+	TSFX *sfx = &sgSFX[nSFX];
+	if ( sfx->pSnd )
+		return snd_playing(sfx->pSnd);
 
-	v1 = &sgSFX[nSFX];
-	v2 = v1->pSnd;
-	if ( v2 )
-		return snd_playing(v2);
-	if ( v1->bFlags & SFX_STREAM )
-		return v1 == sfx_data_cur;
+	if ( sfx->bFlags & SFX_STREAM )
+		return sfx == sfx_data_cur;
+
 	return FALSE;
 }
 
@@ -1005,10 +1003,8 @@ BOOL __fastcall calc_snd_position(int x, int y, int *plVolume, int *plPan)
 
 void __fastcall PlaySFX(int psfx)
 {
-	int v1; // eax
-
-	v1 = RndSFX(psfx);
-	PlaySFX_priv(&sgSFX[v1], 0, 0, 0);
+	psfx = RndSFX(psfx);
+	PlaySFX_priv(&sgSFX[psfx], 0, 0, 0);
 }
 
 void __fastcall PlaySFX_priv(TSFX *pSFX, BOOL loc, int x, int y)
@@ -1098,19 +1094,15 @@ LABEL_19:
 
 void __fastcall PlaySfxLoc(int psfx, int x, int y)
 {
-	int v3; // esi
-	int v4; // eax
-	TSnd *v5; // ecx
+	psfx = RndSFX(psfx);
 
-	v3 = x;
-	v4 = RndSFX(psfx);
-	if ( v4 >= 0 && v4 <= 3 )
-	{
-		v5 = sgSFX[v4].pSnd;
-		if ( v5 )
-			v5->start_tc = 0;
+	if ( psfx >= 0 && psfx <= 3 ) {
+		TSnd *pSnd = sgSFX[psfx].pSnd;
+		if ( pSnd )
+			pSnd->start_tc = 0;
 	}
-	PlaySFX_priv(&sgSFX[v4], 1, v3, y);
+
+	PlaySFX_priv(&sgSFX[psfx], 1, x, y);
 }
 
 void __cdecl FreeMonsterSnd()
@@ -1237,26 +1229,18 @@ void __cdecl sound_init()
 
 void __stdcall effects_play_sound(char *snd_file)
 {
-	int v1; // edi
-	unsigned int v2; // esi
-	TSnd **v3; // esi
-	//int v4; // eax
-
-	if ( gbSndInited && gbSoundOn )
-	{
-		v1 = 0;
-		v2 = 0;
-		while ( _strcmpi(sgSFX[v2].pszName, snd_file) || !sgSFX[v2].pSnd )
-		{
-			++v2;
-			++v1;
-			if ( v2 >= NUM_SFX )
-				return;
-		}
-		v3 = &sgSFX[v1].pSnd;
-		//_LOBYTE(v4) = snd_playing(*v3);
-		if ( !snd_playing(*v3) )
-			snd_play_snd(*v3, 0, 0);
+	if ( !gbSndInited || !gbSoundOn ) {
+		return;
 	}
+
+	for ( DWORD i = 0; i < NUM_SFX; i++ ) {
+		if ( !_strcmpi(sgSFX[i].pszName, snd_file) && sgSFX[i].pSnd ) {
+			if ( !snd_playing(sgSFX[i].pSnd) )
+				snd_play_snd(sgSFX[i].pSnd, 0, 0);
+
+			return;
+		}
+	}
+
 }
 // 4A22D5: using guessed type char gbSoundOn;
