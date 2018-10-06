@@ -1629,8 +1629,8 @@ struct MEMFILE
 
 struct _plrmsg
 {
-	int time;
-	char player;
+	DWORD time;
+	unsigned char player;
 	char str[144];
 };
 
