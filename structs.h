@@ -1255,7 +1255,7 @@ struct DeadStruct
 	int _deadFrame;
 	int _deadWidth;
 	int _deadWidth2;
-	int _deadtrans;
+	char _deadtrans;
 };
 
 //////////////////////////////////////////////////
