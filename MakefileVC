@@ -49,8 +49,8 @@ endif
 
 all: Diablo.exe
 
-# fix compilation order to match the VC6 workspace files
-DIABLO_SRC=$(sort $(filter-out Source/render.cpp, $(wildcard Source/*.cpp)))
+# fix compilation order to match the VC6 workspace files and exclude local assembly functions
+DIABLO_SRC=$(sort $(filter-out Source/_asm.cpp Source/render.cpp, $(wildcard Source/*.cpp)))
 DIABLO_SRC += Source/render.cpp
 OBJS=$(DIABLO_SRC:.cpp=.obj)
 
