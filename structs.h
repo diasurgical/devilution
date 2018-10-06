@@ -1534,13 +1534,15 @@ struct TMsg;
 struct TMsgHdr
 {
 	TMsg *pNext;
-	unsigned int dwTime;
-	unsigned char bLen;
+	DWORD dwTime;
+	BYTE bLen;
 };
 
 struct TMsg
 {
 	TMsgHdr hdr;
+	// this is actually alignment padding, but the message body is appended to the struct
+	// so it's convenient to use byte-alignment and name it "body"
 	unsigned char body[3];
 };
 #pragma pack(pop)
