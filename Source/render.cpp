@@ -82,6 +82,7 @@ int WorldTbl17_2[17] = { 0, 32, 60, 88, 112, 136, 156, 176, 192, 208, 220, 232, 
 
 inline void asm_cel_light_edge(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src);
 inline void asm_cel_light_square(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src);
+inline void asm_cel_light_mask(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src, unsigned int mask);
 inline void asm_trans_light_cel_0_2(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src);
 inline void asm_trans_light_edge_0_2(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src);
 inline void asm_trans_light_square_0_2(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src);
@@ -120,6 +121,15 @@ inline void asm_cel_light_square(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&
 		dst[3] = tbl[src[3]];
 		src += 4;
 		dst += 4;
+	}
+}
+
+inline void asm_cel_light_mask(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src, unsigned int mask)
+{
+	for ( ; w; --w, src++, dst++, mask *= 2 )
+	{
+		if ( mask & 0x80000000 )
+			dst[0] = tbl[src[0]];
 	}
 }
 
@@ -1810,18 +1820,7 @@ LABEL_129:
 					{
 						if ( dst < gpBufEnd )
 							break;
-						left_shift = *gpDrawMask;
-						i = 32;
-						do
-						{
-							if ( left_shift & 0x80000000 )
-								dst[0] = tbl[src[0]];
-							left_shift *= 2;
-							++src;
-							++dst;
-							--i;
-						}
-						while ( i );
+						asm_cel_light_mask(32, tbl, dst, src, *gpDrawMask);
 						dst -= 800;
 						--gpDrawMask;
 						--xx_32;
@@ -1852,19 +1851,7 @@ LABEL_129:
 							yy_32 -= width;
 							if ( dst < gpBufEnd )
 								return;
-							and80_i = width;
-							left_shift = gdwCurrentMask;
-							do
-							{
-								if ( left_shift & 0x80000000 )
-									dst[0] = tbl[src[0]];
-								left_shift *= 2;
-								++src;
-								++dst;
-								--and80_i;
-							}
-							while ( and80_i );
-							gdwCurrentMask = left_shift;
+							asm_cel_light_mask(width, tbl, dst, src, gdwCurrentMask);
 						}
 						while ( yy_32 );
 LABEL_50:
@@ -1879,28 +1866,8 @@ LABEL_50:
 					while ( dst >= gpBufEnd )
 					{
 						dst += xx_32;
-						n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
-						if ( (32 - xx_32) & 2 )
-						{
-							dst[0] = tbl[src[2]];
-							dst[1] = tbl[src[3]];
-							src += 4;
-							dst += 2;
-						}
-						if ( n_draw_shift )
-						{
-							do
-							{
-								dst[0] = tbl[src[0]];
-								dst[1] = tbl[src[1]];
-								dst[2] = tbl[src[2]];
-								dst[3] = tbl[src[3]];
-								src += 4;
-								dst += 4;
-								--n_draw_shift;
-							}
-							while ( n_draw_shift );
-						}
+						src += (32 - (_BYTE)xx_32) & 2;
+						asm_cel_light_edge(32 - xx_32, tbl, dst, src);
 						dst -= 800;
 						xx_32 -= 2;
 						if ( xx_32 < 0 )
@@ -1911,28 +1878,8 @@ LABEL_50:
 								if ( dst < gpBufEnd )
 									break;
 								dst += yy_32;
-								n_draw_shift = (unsigned int)(32 - yy_32) >> 2;
-								if ( (32 - yy_32) & 2 )
-								{
-									dst[0] = tbl[src[2]];
-									dst[1] = tbl[src[3]];
-									src += 4;
-									dst += 2;
-								}
-								if ( n_draw_shift )
-								{
-									do
-									{
-										dst[0] = tbl[src[0]];
-										dst[1] = tbl[src[1]];
-										dst[2] = tbl[src[2]];
-										dst[3] = tbl[src[3]];
-										src += 4;
-										dst += 4;
-										--n_draw_shift;
-									}
-									while ( n_draw_shift );
-								}
+								src += (32 - (_BYTE)yy_32) & 2;
+								asm_cel_light_edge(32 - yy_32, tbl, dst, src);
 								dst -= 800;
 								yy_32 += 2;
 							}
@@ -1945,22 +1892,8 @@ LABEL_50:
 					xx_32 = 30;
 					while ( dst >= gpBufEnd )
 					{
-						for ( n_draw_shift = (unsigned int)(32 - xx_32) >> 2; n_draw_shift; --n_draw_shift )
-						{
-							dst[0] = tbl[src[0]];
-							dst[1] = tbl[src[1]];
-							dst[2] = tbl[src[2]];
-							dst[3] = tbl[src[3]];
-							src += 4;
-							dst += 4;
-						}
-						if ( (32 - (_BYTE)xx_32) & 2 )
-						{
-							dst[0] = tbl[src[0]];
-							dst[1] = tbl[src[1]];
-							src += 4;
-							dst += 2;
-						}
+						asm_cel_light_edge(32 - xx_32, tbl, dst, src);
+						src += (unsigned char)src & 2;
 						dst = &dst[xx_32 - 800];
 						xx_32 -= 2;
 						if ( xx_32 < 0 )
@@ -1970,22 +1903,8 @@ LABEL_50:
 							{
 								if ( dst < gpBufEnd )
 									break;
-								for ( n_draw_shift = (unsigned int)(32 - yy_32) >> 2; n_draw_shift; --n_draw_shift )
-								{
-									dst[0] = tbl[src[0]];
-									dst[1] = tbl[src[1]];
-									dst[2] = tbl[src[2]];
-									dst[3] = tbl[src[3]];
-									src += 4;
-									dst += 4;
-								}
-								if ( (32 - (_BYTE)yy_32) & 2 )
-								{
-									dst[0] = tbl[src[0]];
-									dst[1] = tbl[src[1]];
-									src += 4;
-									dst += 2;
-								}
+								asm_cel_light_edge(32 - yy_32, tbl, dst, src);
+								src += (unsigned char)src & 2;
 								dst = &dst[yy_32 - 800];
 								yy_32 += 2;
 							}
@@ -1999,28 +1918,8 @@ LABEL_50:
 					while ( dst >= gpBufEnd )
 					{
 						dst += xx_32;
-						n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
-						if ( (32 - xx_32) & 2 )
-						{
-							dst[0] = tbl[src[2]];
-							dst[1] = tbl[src[3]];
-							src += 4;
-							dst += 2;
-						}
-						if ( n_draw_shift )
-						{
-							do
-							{
-								dst[0] = tbl[src[0]];
-								dst[1] = tbl[src[1]];
-								dst[2] = tbl[src[2]];
-								dst[3] = tbl[src[3]];
-								src += 4;
-								dst += 4;
-								--n_draw_shift;
-							}
-							while ( n_draw_shift );
-						}
+						src += (32 - (_BYTE)xx_32) & 2;
+						asm_cel_light_edge(32 - xx_32, tbl, dst, src);
 						dst -= 800;
 						xx_32 -= 2;
 						if ( xx_32 < 0 )
@@ -2031,19 +1930,8 @@ LABEL_50:
 							{
 								if ( dst < gpBufEnd )
 									break;
-								left_shift = *gpDrawMask;
-								i = 32;
 								src += (unsigned char)src & 2;
-								do
-								{
-									if ( left_shift & 0x80000000 )
-										dst[0] = tbl[src[0]];
-									left_shift *= 2;
-									++src;
-									++dst;
-									--i;
-								}
-								while ( i );
+								asm_cel_light_mask(32, tbl, dst, src, *gpDrawMask);
 								dst -= 800;
 								--gpDrawMask;
 								--yy_32;
@@ -2057,22 +1945,8 @@ LABEL_50:
 					xx_32 = 30;
 					while ( dst >= gpBufEnd )
 					{
-						for ( n_draw_shift = (unsigned int)(32 - xx_32) >> 2; n_draw_shift; --n_draw_shift )
-						{
-							dst[0] = tbl[src[0]];
-							dst[1] = tbl[src[1]];
-							dst[2] = tbl[src[2]];
-							dst[3] = tbl[src[3]];
-							src += 4;
-							dst += 4;
-						}
-						if ( (32 - (_BYTE)xx_32) & 2 )
-						{
-							dst[0] = tbl[src[0]];
-							dst[1] = tbl[src[1]];
-							src += 4;
-							dst += 2;
-						}
+						asm_cel_light_edge(32 - xx_32, tbl, dst, src);
+						src += (unsigned char)src & 2;
 						dst = &dst[xx_32 - 800];
 						xx_32 -= 2;
 						if ( xx_32 < 0 )
@@ -2083,18 +1957,7 @@ LABEL_50:
 							{
 								if ( dst < gpBufEnd )
 									break;
-								left_shift = *gpDrawMask;
-								i = 32;
-								do
-								{
-									if ( left_shift & 0x80000000 )
-										dst[0] = tbl[src[0]];
-									left_shift *= 2;
-									++src;
-									++dst;
-									--i;
-								}
-								while ( i );
+								asm_cel_light_mask(32, tbl, dst, src, *gpDrawMask);
 								src += (unsigned char)src & 2;
 								dst -= 800;
 								--gpDrawMask;
@@ -5142,18 +5005,7 @@ LABEL_252:
 					{
 						if ( dst < gpBufEnd )
 						{
-							left_shift = *gpDrawMask;
-							i = 32;
-							do
-							{
-								if ( left_shift & 0x80000000 )
-									dst[0] = tbl[src[0]];
-								left_shift *= 2;
-								++src;
-								++dst;
-								--i;
-							}
-							while ( i );
+							asm_cel_light_mask(32, tbl, dst, src, *gpDrawMask);
 						}
 						else
 						{
@@ -5182,19 +5034,7 @@ LABEL_252:
 								yy_32 -= width;
 								if ( dst < gpBufEnd )
 								{
-									and80_i = width;
-									left_shift = gdwCurrentMask;
-									do
-									{
-										if ( left_shift & 0x80000000 )
-											dst[0] = tbl[src[0]];
-										left_shift *= 2;
-										++src;
-										++dst;
-										--and80_i;
-									}
-									while ( and80_i );
-									gdwCurrentMask = left_shift;
+									asm_cel_light_mask(width, tbl, dst, src, gdwCurrentMask);
 								}
 								else
 								{
@@ -5242,30 +5082,10 @@ LABEL_62:
 							do
 							{
 								dst += yy_32;
-								n_draw_shift = (unsigned int)(32 - yy_32) >> 2;
-								if ( (32 - yy_32) & 2 )
-								{
-									dst[0] = tbl[src[2]];
-									dst[1] = tbl[src[3]];
-									src += 4;
-									dst += 2;
-								}
-								if ( n_draw_shift )
-								{
-									do
-									{
-										dst[0] = tbl[src[0]];
-										dst[1] = tbl[src[1]];
-										dst[2] = tbl[src[2]];
-										dst[3] = tbl[src[3]];
-										src += 4;
-										dst += 4;
-										--n_draw_shift;
-									}
-									while ( n_draw_shift );
-								}
-								dst -= 800;
+								src += (32 - (_BYTE)yy_32) & 2;
+								asm_cel_light_edge(32 - yy_32, tbl, dst, src);
 								yy_32 += 2;
+								dst -= 800;
 							}
 							while ( yy_32 != 32 );
 							return;
@@ -5278,28 +5098,8 @@ LABEL_62:
 					do
 					{
 						dst += xx_32;
-						n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
-						if ( (32 - xx_32) & 2 )
-						{
-							dst[0] = tbl[src[2]];
-							dst[1] = tbl[src[3]];
-							src += 4;
-							dst += 2;
-						}
-						if ( n_draw_shift )
-						{
-							do
-							{
-								dst[0] = tbl[src[0]];
-								dst[1] = tbl[src[1]];
-								dst[2] = tbl[src[2]];
-								dst[3] = tbl[src[3]];
-								src += 4;
-								dst += 4;
-								--n_draw_shift;
-							}
-							while ( n_draw_shift );
-						}
+						src += (32 - (_BYTE)xx_32) & 2;
+						asm_cel_light_edge(32 - xx_32, tbl, dst, src);
 						dst -= 800;
 						xx_32 -= 2;
 					}
@@ -5328,22 +5128,9 @@ LABEL_80:
 							}
 							do
 							{
-								for ( n_draw_shift = (unsigned int)(32 - yy_32) >> 2; n_draw_shift; --n_draw_shift )
-								{
-									dst[0] = tbl[src[0]];
-									dst[1] = tbl[src[1]];
-									dst[2] = tbl[src[2]];
-									dst[3] = tbl[src[3]];
-									src += 4;
-									dst += 4;
-								}
-								if ( (32 - (_BYTE)yy_32) & 2 )
-								{
-									dst[0] = tbl[src[0]];
-									dst[1] = tbl[src[1]];
-									src += 2; /// BUGFIX: change to `src += 4`
-									dst += 2;
-								}
+								asm_cel_light_edge(32 - yy_32, tbl, dst, src);
+								/// BUGFIX: uncomment this line
+								// src += (unsigned char)src & 2;
 								dst = &dst[yy_32 - 800];
 								yy_32 += 2;
 							}
@@ -5357,22 +5144,8 @@ LABEL_80:
 					}
 					do
 					{
-						for ( n_draw_shift = (unsigned int)(32 - xx_32) >> 2; n_draw_shift; --n_draw_shift )
-						{
-							dst[0] = tbl[src[0]];
-							dst[1] = tbl[src[1]];
-							dst[2] = tbl[src[2]];
-							dst[3] = tbl[src[3]];
-							src += 4;
-							dst += 4;
-						}
-						if ( (32 - (_BYTE)xx_32) & 2 )
-						{
-							dst[0] = tbl[src[0]];
-							dst[1] = tbl[src[1]];
-							src += 4;
-							dst += 2;
-						}
+						asm_cel_light_edge(32 - xx_32, tbl, dst, src);
+						src += (unsigned char)src & 2;
 						dst = &dst[xx_32 - 800];
 						xx_32 -= 2;
 					}
@@ -5394,18 +5167,7 @@ LABEL_98:
 							{
 								if ( dst < gpBufEnd )
 								{
-									left_shift = *gpDrawMask;
-									i = 32;
-									do
-									{
-										if ( left_shift & 0x80000000 )
-											dst[0] = tbl[src[0]];
-										left_shift *= 2;
-										++src;
-										++dst;
-										--i;
-									}
-									while ( i );
+									asm_cel_light_mask(32, tbl, dst, src, *gpDrawMask);
 								}
 								else
 								{
@@ -5427,28 +5189,8 @@ LABEL_98:
 					do
 					{
 						dst += xx_32;
-						n_draw_shift = (unsigned int)(32 - xx_32) >> 2;
-						if ( (32 - xx_32) & 2 )
-						{
-							dst[0] = tbl[src[2]];
-							dst[1] = tbl[src[3]];
-							src += 4;
-							dst += 2;
-						}
-						if ( n_draw_shift )
-						{
-							do
-							{
-								dst[0] = tbl[src[0]];
-								dst[1] = tbl[src[1]];
-								dst[2] = tbl[src[2]];
-								dst[3] = tbl[src[3]];
-								src += 4;
-								dst += 4;
-								--n_draw_shift;
-							}
-							while ( n_draw_shift );
-						}
+						src += (32 - (_BYTE)xx_32) & 2;
+						asm_cel_light_edge(32 - xx_32, tbl, dst, src);
 						dst -= 800;
 						xx_32 -= 2;
 					}
@@ -5470,18 +5212,7 @@ LABEL_117:
 							{
 								if ( dst < gpBufEnd )
 								{
-									left_shift = *gpDrawMask;
-									i = 32;
-									do
-									{
-										if ( left_shift & 0x80000000 )
-											dst[0] = tbl[src[0]];
-										left_shift *= 2;
-										++src;
-										++dst;
-										--i;
-									}
-									while ( i );
+									asm_cel_light_mask(32, tbl, dst, src, *gpDrawMask);
 									src += (unsigned char)src & 2;
 								}
 								else
@@ -5503,22 +5234,8 @@ LABEL_117:
 					}
 					do
 					{
-						for ( n_draw_shift = (unsigned int)(32 - xx_32) >> 2; n_draw_shift; --n_draw_shift )
-						{
-							dst[0] = tbl[src[0]];
-							dst[1] = tbl[src[1]];
-							dst[2] = tbl[src[2]];
-							dst[3] = tbl[src[3]];
-							src += 4;
-							dst += 4;
-						}
-						if ( (32 - (_BYTE)xx_32) & 2 )
-						{
-							dst[0] = tbl[src[0]];
-							dst[1] = tbl[src[1]];
-							src += 4;
-							dst += 2;
-						}
+						asm_cel_light_edge(32 - xx_32, tbl, dst, src);
+						src += (unsigned char)src & 2;
 						dst = &dst[xx_32 - 800];
 						xx_32 -= 2;
 					}
