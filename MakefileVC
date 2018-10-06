@@ -49,6 +49,9 @@ endif
 
 all: Diablo.exe
 
+debug: CFLAGS += /D "_DEBUG"
+debug: Diablo.exe
+
 # fix compilation order to match the VC6 workspace files
 DIABLO_SRC=$(sort $(filter-out Source/render.cpp, $(wildcard Source/*.cpp)))
 DIABLO_SRC += Source/render.cpp
