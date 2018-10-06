@@ -1,15 +1,15 @@
 // black/void
-inline void asm_cel_black_edge(unsigned char w, BYTE *&dst);
-inline void asm_cel_black_square(unsigned char w, BYTE *&dst);
-inline void asm_trans_black_mask(unsigned char w, BYTE *&dst, unsigned int mask);
-inline void asm_trans_black_cel_0_2(unsigned char w, BYTE *&dst);
-inline void asm_trans_black_edge_0_2(unsigned char w, BYTE *&dst);
-inline void asm_trans_black_square_0_2(unsigned char w, BYTE *&dst);
-inline void asm_trans_black_cel_1_3(unsigned char w, BYTE *&dst);
-inline void asm_trans_black_edge_1_3(unsigned char w, BYTE *&dst);
-inline void asm_trans_black_square_1_3(unsigned char w, BYTE *&dst);
+static inline void asm_cel_black_edge(unsigned char w, BYTE *&dst);
+static inline void asm_cel_black_square(unsigned char w, BYTE *&dst);
+static inline void asm_trans_black_mask(unsigned char w, BYTE *&dst, unsigned int mask);
+static inline void asm_trans_black_cel_0_2(unsigned char w, BYTE *&dst);
+static inline void asm_trans_black_edge_0_2(unsigned char w, BYTE *&dst);
+static inline void asm_trans_black_square_0_2(unsigned char w, BYTE *&dst);
+static inline void asm_trans_black_cel_1_3(unsigned char w, BYTE *&dst);
+static inline void asm_trans_black_edge_1_3(unsigned char w, BYTE *&dst);
+static inline void asm_trans_black_square_1_3(unsigned char w, BYTE *&dst);
 
-inline void asm_cel_black_edge(unsigned char w, BYTE *&dst)
+static inline void asm_cel_black_edge(unsigned char w, BYTE *&dst)
 {
 	unsigned char l = w >> 1;
 
@@ -28,7 +28,7 @@ inline void asm_cel_black_edge(unsigned char w, BYTE *&dst)
 	asm_cel_black_square(l >> 1, dst);
 }
 
-inline void asm_cel_black_square(unsigned char w, BYTE *&dst)
+static inline void asm_cel_black_square(unsigned char w, BYTE *&dst)
 {
 	for ( ; w; --w )
 	{
@@ -40,7 +40,7 @@ inline void asm_cel_black_square(unsigned char w, BYTE *&dst)
 	}
 }
 
-inline void asm_trans_black_mask(unsigned char w, BYTE *&dst, unsigned int mask)
+static inline void asm_trans_black_mask(unsigned char w, BYTE *&dst, unsigned int mask)
 {
 	for ( ; w; --w, dst++, mask *= 2 )
 	{
@@ -49,7 +49,7 @@ inline void asm_trans_black_mask(unsigned char w, BYTE *&dst, unsigned int mask)
 	}
 }
 
-inline void asm_trans_black_cel_0_2(unsigned char w, BYTE *&dst)
+static inline void asm_trans_black_cel_0_2(unsigned char w, BYTE *&dst)
 {
 	if ( !(w & 1) )
 	{
@@ -62,7 +62,7 @@ inline void asm_trans_black_cel_0_2(unsigned char w, BYTE *&dst)
 	}
 }
 
-inline void asm_trans_black_edge_0_2(unsigned char w, BYTE *&dst)
+static inline void asm_trans_black_edge_0_2(unsigned char w, BYTE *&dst)
 {
 	unsigned char l = w >> 1;
 
@@ -77,7 +77,7 @@ inline void asm_trans_black_edge_0_2(unsigned char w, BYTE *&dst)
 	}
 }
 
-inline void asm_trans_black_square_0_2(unsigned char w, BYTE *&dst)
+static inline void asm_trans_black_square_0_2(unsigned char w, BYTE *&dst)
 {
 	for ( ; w; --w )
 	{
@@ -87,7 +87,7 @@ inline void asm_trans_black_square_0_2(unsigned char w, BYTE *&dst)
 	}
 }
 
-inline void asm_trans_black_cel_1_3(unsigned char w, BYTE *&dst)
+static inline void asm_trans_black_cel_1_3(unsigned char w, BYTE *&dst)
 {
 	if ( !(w & 1) )
 	{
@@ -101,7 +101,7 @@ inline void asm_trans_black_cel_1_3(unsigned char w, BYTE *&dst)
 	}
 }
 
-inline void asm_trans_black_edge_1_3(unsigned char w, BYTE *&dst)
+static inline void asm_trans_black_edge_1_3(unsigned char w, BYTE *&dst)
 {
 	unsigned char l = w >> 1;
 
@@ -116,7 +116,7 @@ inline void asm_trans_black_edge_1_3(unsigned char w, BYTE *&dst)
 	}
 }
 
-inline void asm_trans_black_square_1_3(unsigned char w, BYTE *&dst)
+static inline void asm_trans_black_square_1_3(unsigned char w, BYTE *&dst)
 {
 	for ( ; w; --w )
 	{
@@ -127,17 +127,17 @@ inline void asm_trans_black_square_1_3(unsigned char w, BYTE *&dst)
 }
 
 // without lighting
-inline void asm_cel_solid_edge(unsigned char w, BYTE *&dst, BYTE *&src);
-inline void asm_cel_solid_square(unsigned char w, BYTE *&dst, BYTE *&src);
-inline void asm_trans_solid_mask(unsigned char w, BYTE *&dst, BYTE *&src, unsigned int mask);
-inline void asm_trans_solid_cel_0_2(unsigned char w, BYTE *&dst, BYTE *&src);
-inline void asm_trans_solid_edge_0_2(unsigned char w, BYTE *&dst, BYTE *&src);
-inline void asm_trans_solid_square_0_2(unsigned char w, BYTE *&dst, BYTE *&src);
-inline void asm_trans_solid_cel_1_3(unsigned char w, BYTE *&dst, BYTE *&src);
-inline void asm_trans_solid_edge_1_3(unsigned char w, BYTE *&dst, BYTE *&src);
-inline void asm_trans_solid_square_1_3(unsigned char w, BYTE *&dst, BYTE *&src);
+static inline void asm_cel_solid_edge(unsigned char w, BYTE *&dst, BYTE *&src);
+static inline void asm_cel_solid_square(unsigned char w, BYTE *&dst, BYTE *&src);
+static inline void asm_trans_solid_mask(unsigned char w, BYTE *&dst, BYTE *&src, unsigned int mask);
+static inline void asm_trans_solid_cel_0_2(unsigned char w, BYTE *&dst, BYTE *&src);
+static inline void asm_trans_solid_edge_0_2(unsigned char w, BYTE *&dst, BYTE *&src);
+static inline void asm_trans_solid_square_0_2(unsigned char w, BYTE *&dst, BYTE *&src);
+static inline void asm_trans_solid_cel_1_3(unsigned char w, BYTE *&dst, BYTE *&src);
+static inline void asm_trans_solid_edge_1_3(unsigned char w, BYTE *&dst, BYTE *&src);
+static inline void asm_trans_solid_square_1_3(unsigned char w, BYTE *&dst, BYTE *&src);
 
-inline void asm_cel_solid_edge(unsigned char w, BYTE *&dst, BYTE *&src)
+static inline void asm_cel_solid_edge(unsigned char w, BYTE *&dst, BYTE *&src)
 {
 	unsigned char l = w >> 1;
 
@@ -158,7 +158,7 @@ inline void asm_cel_solid_edge(unsigned char w, BYTE *&dst, BYTE *&src)
 	asm_cel_solid_square(l >> 1, dst, src);
 }
 
-inline void asm_cel_solid_square(unsigned char w, BYTE *&dst, BYTE *&src)
+static inline void asm_cel_solid_square(unsigned char w, BYTE *&dst, BYTE *&src)
 {
 	for ( ; w; --w )
 	{
@@ -171,7 +171,7 @@ inline void asm_cel_solid_square(unsigned char w, BYTE *&dst, BYTE *&src)
 	}
 }
 
-inline void asm_trans_solid_mask(unsigned char w, BYTE *&dst, BYTE *&src, unsigned int mask)
+static inline void asm_trans_solid_mask(unsigned char w, BYTE *&dst, BYTE *&src, unsigned int mask)
 {
 	for ( ; w; --w, src++, dst++, mask *= 2 )
 	{
@@ -180,7 +180,7 @@ inline void asm_trans_solid_mask(unsigned char w, BYTE *&dst, BYTE *&src, unsign
 	}
 }
 
-inline void asm_trans_solid_cel_0_2(unsigned char w, BYTE *&dst, BYTE *&src)
+static inline void asm_trans_solid_cel_0_2(unsigned char w, BYTE *&dst, BYTE *&src)
 {
 	if ( !(w & 1) )
 	{
@@ -194,7 +194,7 @@ inline void asm_trans_solid_cel_0_2(unsigned char w, BYTE *&dst, BYTE *&src)
 	}
 }
 
-inline void asm_trans_solid_edge_0_2(unsigned char w, BYTE *&dst, BYTE *&src)
+static inline void asm_trans_solid_edge_0_2(unsigned char w, BYTE *&dst, BYTE *&src)
 {
 	unsigned char l = w >> 1;
 
@@ -210,7 +210,7 @@ inline void asm_trans_solid_edge_0_2(unsigned char w, BYTE *&dst, BYTE *&src)
 	}
 }
 
-inline void asm_trans_solid_square_0_2(unsigned char w, BYTE *&dst, BYTE *&src)
+static inline void asm_trans_solid_square_0_2(unsigned char w, BYTE *&dst, BYTE *&src)
 {
 	for ( ; w; --w )
 	{
@@ -221,7 +221,7 @@ inline void asm_trans_solid_square_0_2(unsigned char w, BYTE *&dst, BYTE *&src)
 	}
 }
 
-inline void asm_trans_solid_cel_1_3(unsigned char w, BYTE *&dst, BYTE *&src)
+static inline void asm_trans_solid_cel_1_3(unsigned char w, BYTE *&dst, BYTE *&src)
 {
 	if ( !(w & 1) )
 	{
@@ -236,7 +236,7 @@ inline void asm_trans_solid_cel_1_3(unsigned char w, BYTE *&dst, BYTE *&src)
 	}
 }
 
-inline void asm_trans_solid_edge_1_3(unsigned char w, BYTE *&dst, BYTE *&src)
+static inline void asm_trans_solid_edge_1_3(unsigned char w, BYTE *&dst, BYTE *&src)
 {
 	unsigned char l = w >> 1;
 
@@ -252,7 +252,7 @@ inline void asm_trans_solid_edge_1_3(unsigned char w, BYTE *&dst, BYTE *&src)
 	}
 }
 
-inline void asm_trans_solid_square_1_3(unsigned char w, BYTE *&dst, BYTE *&src)
+static inline void asm_trans_solid_square_1_3(unsigned char w, BYTE *&dst, BYTE *&src)
 {
 	for ( ; w; --w )
 	{
@@ -264,17 +264,17 @@ inline void asm_trans_solid_square_1_3(unsigned char w, BYTE *&dst, BYTE *&src)
 }
 
 // with lighting
-inline void asm_cel_light_edge(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src);
-inline void asm_cel_light_square(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src);
-inline void asm_trans_light_mask(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src, unsigned int mask);
-inline void asm_trans_light_cel_0_2(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src);
-inline void asm_trans_light_edge_0_2(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src);
-inline void asm_trans_light_square_0_2(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src);
-inline void asm_trans_light_cel_1_3(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src);
-inline void asm_trans_light_edge_1_3(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src);
-inline void asm_trans_light_square_1_3(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src);
+static inline void asm_cel_light_edge(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src);
+static inline void asm_cel_light_square(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src);
+static inline void asm_trans_light_mask(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src, unsigned int mask);
+static inline void asm_trans_light_cel_0_2(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src);
+static inline void asm_trans_light_edge_0_2(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src);
+static inline void asm_trans_light_square_0_2(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src);
+static inline void asm_trans_light_cel_1_3(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src);
+static inline void asm_trans_light_edge_1_3(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src);
+static inline void asm_trans_light_square_1_3(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src);
 
-inline void asm_cel_light_edge(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src)
+static inline void asm_cel_light_edge(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src)
 {
 	unsigned char l = w >> 1;
 
@@ -295,7 +295,7 @@ inline void asm_cel_light_edge(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&sr
 	asm_cel_light_square(l >> 1, tbl, dst, src);
 }
 
-inline void asm_cel_light_square(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src)
+static inline void asm_cel_light_square(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src)
 {
 	for ( ; w; --w )
 	{
@@ -308,7 +308,7 @@ inline void asm_cel_light_square(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&
 	}
 }
 
-inline void asm_trans_light_mask(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src, unsigned int mask)
+static inline void asm_trans_light_mask(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src, unsigned int mask)
 {
 	for ( ; w; --w, src++, dst++, mask *= 2 )
 	{
@@ -317,7 +317,7 @@ inline void asm_trans_light_mask(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&
 	}
 }
 
-inline void asm_trans_light_cel_0_2(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src)
+static inline void asm_trans_light_cel_0_2(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src)
 {
 	if ( !(w & 1) )
 	{
@@ -331,7 +331,7 @@ inline void asm_trans_light_cel_0_2(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE
 	}
 }
 
-inline void asm_trans_light_edge_0_2(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src)
+static inline void asm_trans_light_edge_0_2(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src)
 {
 	unsigned char l = w >> 1;
 
@@ -347,7 +347,7 @@ inline void asm_trans_light_edge_0_2(unsigned char w, BYTE *tbl, BYTE *&dst, BYT
 	}
 }
 
-inline void asm_trans_light_square_0_2(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src)
+static inline void asm_trans_light_square_0_2(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src)
 {
 	for ( ; w; --w )
 	{
@@ -358,7 +358,7 @@ inline void asm_trans_light_square_0_2(unsigned char w, BYTE *tbl, BYTE *&dst, B
 	}
 }
 
-inline void asm_trans_light_cel_1_3(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src)
+static inline void asm_trans_light_cel_1_3(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src)
 {
 	if ( !(w & 1) )
 	{
@@ -373,7 +373,7 @@ inline void asm_trans_light_cel_1_3(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE
 	}
 }
 
-inline void asm_trans_light_edge_1_3(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src)
+static inline void asm_trans_light_edge_1_3(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src)
 {
 	unsigned char l = w >> 1;
 
@@ -389,7 +389,7 @@ inline void asm_trans_light_edge_1_3(unsigned char w, BYTE *tbl, BYTE *&dst, BYT
 	}
 }
 
-inline void asm_trans_light_square_1_3(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src)
+static inline void asm_trans_light_square_1_3(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src)
 {
 	for ( ; w; --w )
 	{
