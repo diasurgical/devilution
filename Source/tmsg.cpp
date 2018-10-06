@@ -32,8 +32,9 @@ void __fastcall tmsg_add(BYTE *pbMsg, BYTE bLen)
     msg->hdr.dwTime = GetTickCount() + 500;
     msg->hdr.bLen = bLen;
     memcpy(msg->body, pbMsg, bLen);
-    for (tail = &sgpTimedMsgHead; *tail; tail = &(*tail)->hdr.pNext)
+    for (tail = &sgpTimedMsgHead; *tail; tail = &(*tail)->hdr.pNext) {
         ;
+    }
     *tail = msg;
 }
 
