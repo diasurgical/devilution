@@ -1167,7 +1167,7 @@ void __cdecl effects_cleanup_sfx()
 	for ( DWORD i = 0; i < NUM_SFX; i++ ) {
 		if ( sgSFX[i].pSnd ) {
 			sound_file_cleanup(sgSFX[i].pSnd);
-			sgSFX[i].pSnd = 0;
+			sgSFX[i].pSnd = NULL;
 		}
 	}
 }

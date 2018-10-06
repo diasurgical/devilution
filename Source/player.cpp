@@ -905,8 +905,8 @@ void __fastcall InitPlayer(int pnum, BOOL FirstTime)
 	plr[pnum]._pInvincible = FALSE;
 
 	if ( pnum == myplr ) {
-		deathdelay = FALSE;
-		deathflag = 0;
+		deathdelay = 0;
+		deathflag = FALSE;
 		ScrollInfo._sxoff = 0;
 		ScrollInfo._syoff = 0;
 		ScrollInfo._sdir = 0;
