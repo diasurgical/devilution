@@ -887,15 +887,13 @@ struct effects_cpp_init
 
 BOOL __fastcall effect_is_playing(int nSFX)
 {
-	TSFX *v1; // eax
-	TSnd *v2; // ecx
+	TSFX *sfx = &sgSFX[nSFX];
+	if ( sfx->pSnd )
+		return snd_playing(sfx->pSnd);
 
-	v1 = &sgSFX[nSFX];
-	v2 = v1->pSnd;
-	if ( v2 )
-		return snd_playing(v2);
-	if ( v1->bFlags & SFX_STREAM )
-		return v1 == sfx_data_cur;
+	if ( sfx->bFlags & SFX_STREAM )
+		return sfx == sfx_data_cur;
+
 	return FALSE;
 }
 
@@ -1005,10 +1003,8 @@ BOOL __fastcall calc_snd_position(int x, int y, int *plVolume, int *plPan)
 
 void __fastcall PlaySFX(int psfx)
 {
-	int v1; // eax
-
-	v1 = RndSFX(psfx);
-	PlaySFX_priv(&sgSFX[v1], 0, 0, 0);
+	psfx = RndSFX(psfx);
+	PlaySFX_priv(&sgSFX[psfx], 0, 0, 0);
 }
 
 void __fastcall PlaySFX_priv(TSFX *pSFX, BOOL loc, int x, int y)
@@ -1098,19 +1094,15 @@ LABEL_19:
 
 void __fastcall PlaySfxLoc(int psfx, int x, int y)
 {
-	int v3; // esi
-	int v4; // eax
-	TSnd *v5; // ecx
+	psfx = RndSFX(psfx);
 
-	v3 = x;
-	v4 = RndSFX(psfx);
-	if ( v4 >= 0 && v4 <= 3 )
-	{
-		v5 = sgSFX[v4].pSnd;
-		if ( v5 )
-			v5->start_tc = 0;
+	if ( psfx >= 0 && psfx <= 3 ) {
+		TSnd *pSnd = sgSFX[psfx].pSnd;
+		if ( pSnd )
+			pSnd->start_tc = 0;
 	}
-	PlaySFX_priv(&sgSFX[v4], 1, v3, y);
+
+	PlaySFX_priv(&sgSFX[psfx], 1, x, y);
 }
 
 void __cdecl FreeMonsterSnd()
@@ -1170,124 +1162,85 @@ void __cdecl sound_update()
 
 void __cdecl effects_cleanup_sfx()
 {
-	unsigned int v0; // edi
-	TSnd *v1; // ecx
-
 	FreeMonsterSnd();
-	v0 = 0;
-	do
-	{
-		v1 = sgSFX[v0].pSnd;
-		if ( v1 )
-		{
-			sound_file_cleanup(v1);
-			sgSFX[v0].pSnd = 0;
+
+	for ( DWORD i = 0; i < NUM_SFX; i++ ) {
+		if ( sgSFX[i].pSnd ) {
+			sound_file_cleanup(sgSFX[i].pSnd);
+			sgSFX[i].pSnd = 0;
 		}
-		++v0;
 	}
-	while ( v0 < NUM_SFX );
 }
 
 void __cdecl stream_update()
 {
-	char v0; // bl
-	char v1; // al
+	UCHAR mask = 0;
+	if ( gbMaxPlayers > 1 ) {
+		mask = SFX_WARRIOR | SFX_ROGUE | SFX_SORCEROR;
+	} else  if ( plr[myplr]._pClass == PC_WARRIOR ) {
+		mask = SFX_WARRIOR;
+	} else if ( plr[myplr]._pClass == PC_ROGUE ) {
+		mask = SFX_ROGUE;
+	} else if ( plr[myplr]._pClass == PC_SORCERER ) {
+		mask = SFX_SORCEROR;
+	} else {
+		TermMsg("effects:1");
+	}
 
-	v0 = 0;
-	if ( (unsigned char)gbMaxPlayers <= 1u )
-	{
-		v1 = plr[myplr]._pClass;
-		if ( v1 )
-		{
-			if ( v1 == 1 )
-			{
-				v0 = 16;
-			}
-			else if ( v1 == 2 )
-			{
-				v0 = 64;
-			}
-			else
-			{
-				TermMsg("effects:1");
-			}
-		}
-		else
-		{
-			v0 = 32;
-		}
-	}
-	else
-	{
-		v0 = 112;
-	}
-	priv_sound_init(v0);
+	priv_sound_init(mask);
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-void __fastcall priv_sound_init(int bLoadMask)
+void __fastcall priv_sound_init(UCHAR bLoadMask)
 {
-	unsigned char v1; // bl
-	unsigned char v2; // cl
-	unsigned int v3; // esi
-	unsigned char v4; // al
-	TSnd *v5; // eax
-	unsigned char v6; // [esp+0h] [ebp-4h]
+	if ( !gbSndInited ) {
+		return;
+	}
 
+	UCHAR pc = bLoadMask & (SFX_ROGUE | SFX_WARRIOR | SFX_SORCEROR);
+	bLoadMask ^= pc;
 
-
-
-	if ( gbSndInited )
-	{
-		v1 = bLoadMask & (SFX_ROGUE | SFX_WARRIOR | SFX_SORCEROR);
-		v2 = bLoadMask & (SFX_ROGUE | SFX_WARRIOR | SFX_SORCEROR) ^ bLoadMask;
-		v3 = 0;
-		v6 = v2;
-		do
-		{
-			if ( !sgSFX[v3].pSnd )
-			{
-				v4 = sgSFX[v3].bFlags;
-				if ( !(v4 & SFX_STREAM) && (!v2 || v4 & v2) && (!(v4 & (SFX_ROGUE | SFX_WARRIOR | SFX_SORCEROR)) || v4 & v1) )
-				{
-					v5 = sound_file_load(sgSFX[v3].pszName);
-					v2 = v6;
-					sgSFX[v3].pSnd = v5;
-				}
-			}
-			++v3;
+	for ( DWORD i = 0; i < NUM_SFX; i++ ) {
+		if ( sgSFX[i].pSnd ) {
+			continue;
 		}
-		while ( v3 < NUM_SFX );
+
+		UCHAR bFlags = sgSFX[i].bFlags;
+		if ( bFlags & SFX_STREAM ) {
+			continue;
+		}
+
+		if ( bLoadMask && !(bFlags & bLoadMask) ) {
+			continue;
+		}
+
+		if ( bFlags & (SFX_ROGUE | SFX_WARRIOR | SFX_SORCEROR) && !(bFlags & pc) ) {
+			continue;
+		}
+
+		sgSFX[i].pSnd = sound_file_load(sgSFX[i].pszName);
 	}
 }
 
 void __cdecl sound_init()
 {
-	priv_sound_init(4);
+	priv_sound_init(SFX_UI);
 }
 
 void __stdcall effects_play_sound(char *snd_file)
 {
-	int v1; // edi
-	unsigned int v2; // esi
-	TSnd **v3; // esi
-	//int v4; // eax
-
-	if ( gbSndInited && gbSoundOn )
-	{
-		v1 = 0;
-		v2 = 0;
-		while ( _strcmpi(sgSFX[v2].pszName, snd_file) || !sgSFX[v2].pSnd )
-		{
-			++v2;
-			++v1;
-			if ( v2 >= NUM_SFX )
-				return;
-		}
-		v3 = &sgSFX[v1].pSnd;
-		//_LOBYTE(v4) = snd_playing(*v3);
-		if ( !snd_playing(*v3) )
-			snd_play_snd(*v3, 0, 0);
+	if ( !gbSndInited || !gbSoundOn ) {
+		return;
 	}
+
+	for ( DWORD i = 0; i < NUM_SFX; i++ ) {
+		if ( !_strcmpi(sgSFX[i].pszName, snd_file) && sgSFX[i].pSnd ) {
+			if ( !snd_playing(sgSFX[i].pSnd) )
+				snd_play_snd(sgSFX[i].pSnd, 0, 0);
+
+			return;
+		}
+	}
+
 }
 // 4A22D5: using guessed type char gbSoundOn;

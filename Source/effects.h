@@ -25,7 +25,7 @@ void __cdecl sound_stop();
 void __cdecl sound_update();
 void __cdecl effects_cleanup_sfx();
 void __cdecl stream_update();
-void __fastcall priv_sound_init(int bLoadMask);
+void __fastcall priv_sound_init(UCHAR bLoadMask);
 void __cdecl sound_init();
 void __stdcall effects_play_sound(char *snd_file);
 

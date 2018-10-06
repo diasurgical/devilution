@@ -471,12 +471,14 @@ struct TSnd
 	int start_tc;
 };
 
+#pragma pack(push, 1)
 struct TSFX
 {
 	unsigned char bFlags;
 	char *pszName;
 	TSnd *pSnd;
 };
+#pragma pack(pop)
 
 //////////////////////////////////////////////////
 // monster
