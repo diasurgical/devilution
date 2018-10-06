@@ -445,40 +445,40 @@ void __fastcall SetPlrAnims(int pnum)
 
     int gn = plr[pnum]._pgfxnum & 0xF;
     if (pc == PC_WARRIOR) {
-        if (gn == 4) {
+        if (gn == ANIM_ID_BOW) {
             if (leveltype != DTYPE_TOWN) {
                 plr[pnum]._pNFrames = 8;
             }
             plr[pnum]._pAWidth = 96;
             plr[pnum]._pAFNum = 11;
-        } else if (gn == 5) {
+        } else if (gn == ANIM_ID_AXE) {
             plr[pnum]._pAFrames = 20;
             plr[pnum]._pAFNum = 10;
-        } else if (gn == 8) {
+        } else if (gn == ANIM_ID_STAFF) {
             plr[pnum]._pAFrames = 16;
             plr[pnum]._pAFNum = 11;
         }
     } else if (pc == PC_ROGUE) {
-        if (gn == 5) {
+        if (gn == ANIM_ID_AXE) {
             plr[pnum]._pAFrames = 22;
             plr[pnum]._pAFNum = 13;
-        } else if (gn == 4) {
+        } else if (gn == ANIM_ID_BOW) {
             plr[pnum]._pAFrames = 12;
             plr[pnum]._pAFNum = 7;
-        } else if (gn == 8) {
+        } else if (gn == ANIM_ID_STAFF) {
             plr[pnum]._pAFrames = 16;
             plr[pnum]._pAFNum = 11;
         }
     } else if (pc == PC_SORCERER) {
         plr[pnum]._pSWidth = 128;
-        if (gn == 0) {
+        if (gn == ANIM_ID_UNARMED) {
             plr[pnum]._pAFrames = 20;
-        } else if (gn == 1) {
+        } else if (gn == ANIM_ID_UNARMED_SHIELD) {
             plr[pnum]._pAFNum = 9;
-        } else if (gn == 4) {
+        } else if (gn == ANIM_ID_BOW) {
             plr[pnum]._pAFrames = 20;
             plr[pnum]._pAFNum = 16;
-        } else if (gn == 5) {
+        } else if (gn == ANIM_ID_AXE) {
             plr[pnum]._pAFrames = 24;
             plr[pnum]._pAFNum = 16;
         }
@@ -632,11 +632,11 @@ void __fastcall CreatePlayer(int pnum, char c)
     }
 
     if (c == PC_WARRIOR) {
-        plr[pnum]._pgfxnum = 3;
+        plr[pnum]._pgfxnum = ANIM_ID_SWORD_SHIELD;
     } else if (c == PC_ROGUE) {
-        plr[pnum]._pgfxnum = 4;
+        plr[pnum]._pgfxnum = ANIM_ID_BOW;
     } else if (c == PC_SORCERER) {
-        plr[pnum]._pgfxnum = 8;
+        plr[pnum]._pgfxnum = ANIM_ID_STAFF;
     }
 
     for (i = 0; i < sizeof(plr[pnum]._pLvlVisited); i++) {
@@ -813,7 +813,7 @@ void __fastcall InitPlayer(int pnum, BOOL FirstTime)
         plr[pnum]._pSpell = SPL_INVALID;
         plr[pnum]._pRSplType = RSPLTYPE_INVALID;
         plr[pnum]._pSplType = RSPLTYPE_INVALID;
-        if ((plr[pnum]._pgfxnum & 0xF) == 4) {
+        if ((plr[pnum]._pgfxnum & 0xF) == ANIM_ID_BOW) {
             plr[pnum]._pwtype = TRUE;
         } else {
             plr[pnum]._pwtype = FALSE;
@@ -1708,7 +1708,7 @@ void __fastcall StartPlayerKill(int pnum, int earflag)
                             PlrDeadItem(pnum, &ear, 0, 0);
                         }
                     } else {
-                        ItemStruct *pi = &plr[pnum].InvBody[0];
+                        ItemStruct *pi = &plr[pnum].InvBody[INVLOC_HEAD];
                         i = NUM_INVLOC;
                         while (i != 0) {
                             i--;

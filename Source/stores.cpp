@@ -1135,31 +1135,31 @@ void __cdecl S_StartSRepair()
 	while ( (signed int)v1 < (signed int)&storehold[48]._itype );
 	v2 = myplr;
 	v3 = myplr;
-	if ( plr[myplr].InvBody[0]._itype != -1 && plr[v3].InvBody[0]._iDurability != plr[v3].InvBody[0]._iMaxDur )
+	if ( plr[myplr].InvBody[INVLOC_HEAD]._itype != -1 && plr[v3].InvBody[INVLOC_HEAD]._iDurability != plr[v3].InvBody[INVLOC_HEAD]._iMaxDur )
 	{
 		v12 = 1;
 		AddStoreHoldRepair(plr[v3].InvBody, -1);
 		v2 = myplr;
 	}
 	v4 = v2;
-	if ( plr[v2].InvBody[6]._itype != -1 && plr[v4].InvBody[6]._iDurability != plr[v4].InvBody[6]._iMaxDur )
+	if ( plr[v2].InvBody[INVLOC_CHEST]._itype != -1 && plr[v4].InvBody[INVLOC_CHEST]._iDurability != plr[v4].InvBody[INVLOC_CHEST]._iMaxDur )
 	{
 		v12 = 1;
-		AddStoreHoldRepair(&plr[v4].InvBody[6], -2);
+		AddStoreHoldRepair(&plr[v4].InvBody[INVLOC_CHEST], -2);
 		v2 = myplr;
 	}
 	v5 = v2;
-	if ( plr[v2].InvBody[4]._itype != -1 && plr[v5].InvBody[4]._iDurability != plr[v5].InvBody[4]._iMaxDur )
+	if ( plr[v2].InvBody[INVLOC_HAND_LEFT]._itype != -1 && plr[v5].InvBody[INVLOC_HAND_LEFT]._iDurability != plr[v5].InvBody[INVLOC_HAND_LEFT]._iMaxDur )
 	{
 		v12 = 1;
-		AddStoreHoldRepair(&plr[v5].InvBody[4], -3);
+		AddStoreHoldRepair(&plr[v5].InvBody[INVLOC_HAND_LEFT], -3);
 		v2 = myplr;
 	}
 	v6 = v2;
-	if ( plr[v2].InvBody[5]._itype != -1 && plr[v6].InvBody[5]._iDurability != plr[v6].InvBody[5]._iMaxDur )
+	if ( plr[v2].InvBody[INVLOC_HAND_RIGHT]._itype != -1 && plr[v6].InvBody[INVLOC_HAND_RIGHT]._iDurability != plr[v6].InvBody[INVLOC_HAND_RIGHT]._iMaxDur )
 	{
 		v12 = 1;
-		AddStoreHoldRepair(&plr[v6].InvBody[5], -4);
+		AddStoreHoldRepair(&plr[v6].InvBody[INVLOC_HAND_RIGHT], -4);
 		v2 = myplr;
 	}
 	v7 = 21720 * v2;
@@ -1501,10 +1501,10 @@ void __cdecl S_StartWRecharge()
 	}
 	while ( (signed int)v0 < (signed int)&storehold[48]._itype );
 	v1 = myplr;
-	if ( plr[myplr].InvBody[4]._itype == ITYPE_STAFF && plr[v1].InvBody[4]._iCharges != plr[v1].InvBody[4]._iMaxCharges )
+	if ( plr[myplr].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_STAFF && plr[v1].InvBody[INVLOC_HAND_LEFT]._iCharges != plr[v1].InvBody[INVLOC_HAND_LEFT]._iMaxCharges )
 	{
 		v8 = 1;
-		qmemcpy(&v4, &plr[v1].InvBody[4], sizeof(v4));
+		qmemcpy(&v4, &plr[v1].InvBody[INVLOC_HAND_LEFT], sizeof(v4));
 		AddStoreHoldRecharge(v4, -1);
 	}
 	v2 = plr[v1]._pNumInv;
@@ -1861,40 +1861,40 @@ void __cdecl S_StartSIdentify()
 		qmemcpy(&itm, plr[myplr].InvBody, sizeof(ItemStruct));
 		AddStoreHoldId(itm, -1);
 	}
-	if ( IdItemOk(&plr[myplr].InvBody[6]) )
+	if ( IdItemOk(&plr[myplr].InvBody[INVLOC_CHEST]) )
 	{
 		idok = 1;
-		qmemcpy(&itm, &plr[myplr].InvBody[6], sizeof(ItemStruct));
+		qmemcpy(&itm, &plr[myplr].InvBody[INVLOC_CHEST], sizeof(ItemStruct));
 		AddStoreHoldId(itm, -2);
 	}
-	if ( IdItemOk(&plr[myplr].InvBody[4]) )
+	if ( IdItemOk(&plr[myplr].InvBody[INVLOC_HAND_LEFT]) )
 	{
 		idok = 1;
-		qmemcpy(&itm, &plr[myplr].InvBody[4], sizeof(ItemStruct));
+		qmemcpy(&itm, &plr[myplr].InvBody[INVLOC_HAND_LEFT], sizeof(ItemStruct));
 		AddStoreHoldId(itm, -3);
 	}
-	if ( IdItemOk(&plr[myplr].InvBody[5]) )
+	if ( IdItemOk(&plr[myplr].InvBody[INVLOC_HAND_RIGHT]) )
 	{
 		idok = 1;
-		qmemcpy(&itm, &plr[myplr].InvBody[5], sizeof(ItemStruct));
+		qmemcpy(&itm, &plr[myplr].InvBody[INVLOC_HAND_RIGHT], sizeof(ItemStruct));
 		AddStoreHoldId(itm, -4);
 	}
-	if ( IdItemOk(&plr[myplr].InvBody[1]) )
+	if ( IdItemOk(&plr[myplr].InvBody[INVLOC_RING_LEFT]) )
 	{
 		idok = 1;
-		qmemcpy(&itm, &plr[myplr].InvBody[1], sizeof(ItemStruct));
+		qmemcpy(&itm, &plr[myplr].InvBody[INVLOC_RING_LEFT], sizeof(ItemStruct));
 		AddStoreHoldId(itm, -5);
 	}
-	if ( IdItemOk(&plr[myplr].InvBody[2]) )
+	if ( IdItemOk(&plr[myplr].InvBody[INVLOC_RING_RIGHT]) )
 	{
 		idok = 1;
-		qmemcpy(&itm, &plr[myplr].InvBody[2], sizeof(ItemStruct));
+		qmemcpy(&itm, &plr[myplr].InvBody[INVLOC_RING_RIGHT], sizeof(ItemStruct));
 		AddStoreHoldId(itm, -6);
 	}
-	if ( IdItemOk(&plr[myplr].InvBody[3]) )
+	if ( IdItemOk(&plr[myplr].InvBody[INVLOC_AMULET]) )
 	{
 		idok = 1;
-		qmemcpy(&itm, &plr[myplr].InvBody[3], sizeof(ItemStruct));
+		qmemcpy(&itm, &plr[myplr].InvBody[INVLOC_AMULET], sizeof(ItemStruct));
 		AddStoreHoldId(itm, -7);
 	}
 
@@ -3153,13 +3153,13 @@ void __cdecl SmithRepairItem()
 	else
 	{
 		if ( i == -1 )
-			plr[myplr].InvBody[0]._iDurability = plr[myplr].InvBody[0]._iMaxDur;
+			plr[myplr].InvBody[INVLOC_HEAD]._iDurability = plr[myplr].InvBody[INVLOC_HEAD]._iMaxDur;
 		if ( i == -2 )
-			plr[myplr].InvBody[6]._iDurability = plr[myplr].InvBody[6]._iMaxDur;
+			plr[myplr].InvBody[INVLOC_CHEST]._iDurability = plr[myplr].InvBody[INVLOC_CHEST]._iMaxDur;
 		if ( i == -3 )
-			plr[myplr].InvBody[4]._iDurability = plr[myplr].InvBody[4]._iMaxDur;
+			plr[myplr].InvBody[INVLOC_HAND_LEFT]._iDurability = plr[myplr].InvBody[INVLOC_HAND_LEFT]._iMaxDur;
 		if ( i == -4 )
-			plr[myplr].InvBody[5]._iDurability = plr[myplr].InvBody[5]._iMaxDur;
+			plr[myplr].InvBody[INVLOC_HAND_RIGHT]._iDurability = plr[myplr].InvBody[INVLOC_HAND_RIGHT]._iMaxDur;
 	}
 }
 // 69F108: using guessed type int stextup;
@@ -3378,7 +3378,7 @@ void __cdecl WitchRechargeItem()
 	if ( i >= 0 )
 		plr[myplr].InvList[i]._iCharges = plr[myplr].InvList[i]._iMaxCharges;
 	else
-		plr[myplr].InvBody[4]._iCharges = plr[myplr].InvBody[4]._iMaxCharges;
+		plr[myplr].InvBody[INVLOC_HAND_LEFT]._iCharges = plr[myplr].InvBody[INVLOC_HAND_LEFT]._iMaxCharges;
 
 	CalcPlrInv(myplr, 1u);
 }
@@ -3628,19 +3628,19 @@ void __cdecl StoryIdItem()
 	else
 	{
 		if ( v0 == -1 )
-			plr[myplr].InvBody[0]._iIdentified = 1;
+			plr[myplr].InvBody[INVLOC_HEAD]._iIdentified = 1;
 		if ( v0 == -2 )
-			plr[v1].InvBody[6]._iIdentified = 1;
+			plr[v1].InvBody[INVLOC_CHEST]._iIdentified = 1;
 		if ( v0 == -3 )
-			plr[v1].InvBody[4]._iIdentified = 1;
+			plr[v1].InvBody[INVLOC_HAND_LEFT]._iIdentified = 1;
 		if ( v0 == -4 )
-			plr[v1].InvBody[5]._iIdentified = 1;
+			plr[v1].InvBody[INVLOC_HAND_RIGHT]._iIdentified = 1;
 		if ( v0 == -5 )
-			plr[v1].InvBody[1]._iIdentified = 1;
+			plr[v1].InvBody[INVLOC_RING_LEFT]._iIdentified = 1;
 		if ( v0 == -6 )
-			plr[v1].InvBody[2]._iIdentified = 1;
+			plr[v1].InvBody[INVLOC_RING_RIGHT]._iIdentified = 1;
 		if ( v0 == -7 )
-			plr[v1].InvBody[3]._iIdentified = 1;
+			plr[v1].InvBody[INVLOC_AMULET]._iIdentified = 1;
 	}
 	v2 = v1;
 	plr[v2].HoldItem._iIdentified = 1;

@@ -854,12 +854,12 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 		mind = 1;
 		maxd = 1;
 
-		if ( plr[p].InvBody[4]._itype == ITYPE_SHIELD && plr[p].InvBody[4]._iStatFlag )
+		if ( plr[p].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_SHIELD && plr[p].InvBody[INVLOC_HAND_LEFT]._iStatFlag )
 		{
 			maxd = 3;
 		}
 
-		if ( plr[p].InvBody[5]._itype == ITYPE_SHIELD && plr[p].InvBody[5]._iStatFlag )
+		if ( plr[p].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_SHIELD && plr[p].InvBody[INVLOC_HAND_RIGHT]._iStatFlag )
 		{
 			maxd = 3;
 		}
@@ -1024,60 +1024,58 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 
 	g = 0;
 
-	if ( plr[p].InvBody[4]._itype != ITYPE_NONE
-		&& plr[p].InvBody[4]._iClass == ICLASS_WEAPON
-		&& plr[p].InvBody[4]._iStatFlag )
+	if ( plr[p].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE
+		&& plr[p].InvBody[INVLOC_HAND_LEFT]._iClass == ICLASS_WEAPON
+		&& plr[p].InvBody[INVLOC_HAND_LEFT]._iStatFlag )
 	{
-		g = plr[p].InvBody[4]._itype;
+		g = plr[p].InvBody[INVLOC_HAND_LEFT]._itype;
 	}
 
-	if ( plr[p].InvBody[5]._itype != ITYPE_NONE
-		&& plr[p].InvBody[5]._iClass == ICLASS_WEAPON
-		&& plr[p].InvBody[5]._iStatFlag )
+	if ( plr[p].InvBody[INVLOC_HAND_RIGHT]._itype != ITYPE_NONE
+		&& plr[p].InvBody[INVLOC_HAND_RIGHT]._iClass == ICLASS_WEAPON
+		&& plr[p].InvBody[INVLOC_HAND_RIGHT]._iStatFlag )
 	{
-		g = plr[p].InvBody[5]._itype;
+		g = plr[p].InvBody[INVLOC_HAND_RIGHT]._itype;
 	}
 
 	switch ( g )
 	{
 		case ITYPE_SWORD:
-			g = 2;
+			g = ANIM_ID_SWORD;
 			break;
 		case ITYPE_AXE:
-			g = 5;
+			g = ANIM_ID_AXE;
 			break;
 		case ITYPE_BOW:
 			plr[p]._pwtype = 1;
-			g = 4;
+			g = ANIM_ID_BOW;
 			break;
 		case ITYPE_MACE:
-			g = 6;
+			g = ANIM_ID_MACE;
 			break;
 		case ITYPE_STAFF:
-			g = 8;
+			g = ANIM_ID_STAFF;
 			break;
 	}
 
-	if ( plr[p].InvBody[4]._itype == ITYPE_SHIELD && plr[p].InvBody[4]._iStatFlag )
+	if ( plr[p].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_SHIELD && plr[p].InvBody[INVLOC_HAND_LEFT]._iStatFlag )
 	{
 		plr[p]._pBlockFlag = 1;
 		g++;
 	}
-	if ( plr[p].InvBody[5]._itype == ITYPE_SHIELD && plr[p].InvBody[5]._iStatFlag )
+	if ( plr[p].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_SHIELD && plr[p].InvBody[INVLOC_HAND_RIGHT]._iStatFlag )
 	{
 		plr[p]._pBlockFlag = 1;
 		g++;
 	}
 
-	if ( plr[p].InvBody[6]._itype == ITYPE_MARMOR && plr[p].InvBody[6]._iStatFlag )
+	if ( plr[p].InvBody[INVLOC_CHEST]._itype == ITYPE_MARMOR && plr[p].InvBody[INVLOC_CHEST]._iStatFlag )
 	{
-		// probably a flag set
-		g += 16;
+		g += ANIM_ID_MEDIUM_ARMOR;
 	}
-	if ( plr[p].InvBody[6]._itype == ITYPE_HARMOR && plr[p].InvBody[6]._iStatFlag )
+	if ( plr[p].InvBody[INVLOC_CHEST]._itype == ITYPE_HARMOR && plr[p].InvBody[INVLOC_CHEST]._iStatFlag )
 	{
-		// probably a flag set
-		g += 32;
+		g += ANIM_ID_HEAVY_ARMOR;
 	}
 
 	if ( plr[p]._pgfxnum != g && Loadgfx )
@@ -1186,12 +1184,12 @@ void __fastcall CalcPlrStaff(int pnum)
 	signed __int64 v3; // rax
 
 	v1 = pnum;
-	v2 = plr[pnum].InvBody[4]._itype == ITYPE_NONE;
+	v2 = plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_NONE;
 	plr[v1]._pISpells[0] = 0;
 	plr[v1]._pISpells[1] = 0;
-	if ( !v2 && plr[v1].InvBody[4]._iStatFlag && plr[v1].InvBody[4]._iCharges > 0 )
+	if ( !v2 && plr[v1].InvBody[INVLOC_HAND_LEFT]._iStatFlag && plr[v1].InvBody[INVLOC_HAND_LEFT]._iCharges > 0 )
 	{
-		v3 = (__int64)1 << (_LOBYTE(plr[v1].InvBody[4]._iSpell) - 1);
+		v3 = (__int64)1 << (_LOBYTE(plr[v1].InvBody[INVLOC_HAND_LEFT]._iSpell) - 1);
 		plr[v1]._pISpells[0] = v3;
 		plr[v1]._pISpells[1] = HIDWORD(v3);
 	}
@@ -1216,7 +1214,7 @@ void __fastcall CalcSelfItems(int pnum)
 	v2 = 0;
 	v3 = 0;
 	v4 = 0;
-	v5 = &v1->InvBody[0]._iStatFlag;
+	v5 = &v1->InvBody[INVLOC_HEAD]._iStatFlag;
 	v6 = 7;
 	do
 	{
@@ -1239,7 +1237,7 @@ void __fastcall CalcSelfItems(int pnum)
 	do
 	{
 		v9 = 0;
-		v8 = &v1->InvBody[0]._iMinStr;
+		v8 = &v1->InvBody[INVLOC_HEAD]._iMinStr;
 		v10 = 7;
 		do
 		{

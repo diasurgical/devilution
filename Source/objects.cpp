@@ -4980,7 +4980,7 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 					return;
 				v13 = arglist;
 				v14 = 7;
-				v15 = &plr[arglist].InvBody[0]._itype;
+				v15 = &plr[arglist].InvBody[INVLOC_HEAD]._itype;
 				v7 = 7;
 				do
 				{
@@ -4992,7 +4992,7 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 				while ( v7 );
 				if ( v12 <= 0 )
 					goto LABEL_47;
-				v16 = &plr[v13].InvBody[0]._iMaxDur;
+				v16 = &plr[v13].InvBody[INVLOC_HEAD]._iMaxDur;
 				do
 				{
 					if ( *(v16 - 58) != -1 )
@@ -5018,7 +5018,7 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 				while ( 1 )
 				{
 					v18 = 0;
-					v19 = &plr[v13].InvBody[0]._iMaxDur;
+					v19 = &plr[v13].InvBody[INVLOC_HEAD]._iMaxDur;
 					v20 = 7;
 					do
 					{
@@ -5039,9 +5039,9 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 						goto LABEL_47;
 					v21 = random(0, 7);
 					v7 = v13 * 21720 + 368 * v21;
-					if ( *(int *)((char *)&plr[0].InvBody[0]._itype + v7) != -1 )
+					if ( *(int *)((char *)&plr[0].InvBody[INVLOC_HEAD]._itype + v7) != -1 )
 					{
-						v7 = *(int *)((char *)&plr[0].InvBody[0]._iMaxDur + v7);
+						v7 = *(int *)((char *)&plr[0].InvBody[INVLOC_HEAD]._iMaxDur + v7);
 						if ( v7 != 255 )
 						{
 							if ( v7 )
@@ -5050,8 +5050,8 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 					}
 				}
 				v22 = 368 * v21 + v13 * 21720;
-				v23 = (int *)((char *)&plr[0].InvBody[0]._iDurability + v22);
-				v7 = (int)&plr[0].InvBody[0]._iMaxDur + v22;
+				v23 = (int *)((char *)&plr[0].InvBody[INVLOC_HEAD]._iDurability + v22);
+				v7 = (int)&plr[0].InvBody[INVLOC_HEAD]._iMaxDur + v22;
 				*v23 -= 20;
 				v24 = *v23;
 				*(_DWORD *)v7 -= 20;
@@ -5069,39 +5069,39 @@ LABEL_47:
 				if ( arglist != myplr )
 					goto LABEL_280;
 				v26 = arglist;
-				if ( plr[arglist].InvBody[0]._itype != ITYPE_NONE )
-					plr[v26].InvBody[0]._iAC += 2;
-				if ( plr[v26].InvBody[6]._itype != ITYPE_NONE )
-					plr[v26].InvBody[6]._iAC += 2;
-				v27 = plr[v26].InvBody[4]._itype;
+				if ( plr[arglist].InvBody[INVLOC_HEAD]._itype != ITYPE_NONE )
+					plr[v26].InvBody[INVLOC_HEAD]._iAC += 2;
+				if ( plr[v26].InvBody[INVLOC_CHEST]._itype != ITYPE_NONE )
+					plr[v26].InvBody[INVLOC_CHEST]._iAC += 2;
+				v27 = plr[v26].InvBody[INVLOC_HAND_LEFT]._itype;
 				if ( v27 != ITYPE_NONE )
 				{
 					if ( v27 == ITYPE_SHIELD )
 					{
-						plr[v26].InvBody[4]._iAC += 2;
+						plr[v26].InvBody[INVLOC_HAND_LEFT]._iAC += 2;
 					}
 					else
 					{
-						v28 = plr[v26].InvBody[4]._iMinDam;
-						v29 = &plr[v26].InvBody[4]._iMaxDam;
+						v28 = plr[v26].InvBody[INVLOC_HAND_LEFT]._iMinDam;
+						v29 = &plr[v26].InvBody[INVLOC_HAND_LEFT]._iMaxDam;
 						--*v29;
-						if ( plr[v26].InvBody[4]._iMaxDam < v28 )
+						if ( plr[v26].InvBody[INVLOC_HAND_LEFT]._iMaxDam < v28 )
 							*v29 = v28;
 					}
 				}
-				v7 = plr[v26].InvBody[5]._itype;
+				v7 = plr[v26].InvBody[INVLOC_HAND_RIGHT]._itype;
 				if ( v7 != ITYPE_NONE )
 				{
 					if ( v7 == ITYPE_SHIELD )
 					{
-						plr[v26].InvBody[5]._iAC += 2;
+						plr[v26].InvBody[INVLOC_HAND_RIGHT]._iAC += 2;
 					}
 					else
 					{
-						v30 = plr[v26].InvBody[5]._iMinDam;
-						v7 = (int)&plr[v26].InvBody[5]._iMaxDam;
+						v30 = plr[v26].InvBody[INVLOC_HAND_RIGHT]._iMinDam;
+						v7 = (int)&plr[v26].InvBody[INVLOC_HAND_RIGHT]._iMaxDam;
 						--*(_DWORD *)v7;
-						if ( plr[v26].InvBody[5]._iMaxDam < v30 )
+						if ( plr[v26].InvBody[INVLOC_HAND_RIGHT]._iMaxDam < v30 )
 							*(_DWORD *)v7 = v30;
 					}
 				}
@@ -5116,12 +5116,12 @@ LABEL_47:
 				if ( arglist != myplr )
 					goto LABEL_280;
 				v34 = arglist;
-				v35 = plr[arglist].InvBody[4]._itype;
+				v35 = plr[arglist].InvBody[INVLOC_HAND_LEFT]._itype;
 				if ( v35 != ITYPE_NONE && v35 != ITYPE_SHIELD )
-					++plr[v34].InvBody[4]._iMaxDam;
-				v7 = plr[v34].InvBody[5]._itype;
+					++plr[v34].InvBody[INVLOC_HAND_LEFT]._iMaxDam;
+				v7 = plr[v34].InvBody[INVLOC_HAND_RIGHT]._itype;
 				if ( v7 != ITYPE_NONE && v7 != ITYPE_SHIELD )
-					++plr[v34].InvBody[5]._iMaxDam;
+					++plr[v34].InvBody[INVLOC_HAND_RIGHT]._iMaxDam;
 				v36 = 0;
 				if ( plr[v34]._pNumInv > 0 )
 				{
@@ -5163,7 +5163,7 @@ LABEL_47:
 				if ( arglist != myplr )
 					goto LABEL_280;
 				v38 = arglist;
-				v39 = &plr[arglist].InvBody[0]._iMaxCharges;
+				v39 = &plr[arglist].InvBody[INVLOC_HEAD]._iMaxCharges;
 				v40 = 7;
 				do
 				{
@@ -5204,7 +5204,7 @@ LABEL_47:
 				if ( arglist != myplr )
 					goto LABEL_280;
 				v45 = arglist;
-				v46 = &plr[arglist].InvBody[0]._iDurability;
+				v46 = &plr[arglist].InvBody[INVLOC_HEAD]._iDurability;
 				v47 = 7;
 				do
 				{
@@ -5677,7 +5677,7 @@ LABEL_47:
 				if ( v5 || arglist != myplr )
 					return;
 				v125 = arglist;
-				v126 = &plr[arglist].InvBody[0]._iIdentified;
+				v126 = &plr[arglist].InvBody[INVLOC_HEAD]._iIdentified;
 				v127 = 7;
 				do
 				{
@@ -7265,7 +7265,7 @@ void __fastcall GetObjectStr(int i)
 			_LOBYTE(infoclr) = 2;
 		}
 	}
-}
+} 
 // 4B883C: using guessed type int infoclr;
 // 5CCB10: using guessed type char setlvlnum;
 // 5CF31D: using guessed type char setlevel;
