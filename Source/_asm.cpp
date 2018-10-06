@@ -1,3 +1,5 @@
+#include "../types.h"
+
 // black/void
 inline void asm_cel_black_edge(unsigned char w, BYTE *&dst);
 inline void asm_cel_black_square(unsigned char w, BYTE *&dst);
