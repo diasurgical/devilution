@@ -184,6 +184,10 @@ HRESULT __fastcall dx_DirectDrawCreate(GUID *guid, IDirectDraw **DD, void *unkno
 	return ((int (__stdcall *)(GUID *, IDirectDraw **, void *))v5)(v8, v3, unknown);
 }
 
+void __fastcall j_lock_buf_priv(char a1) {
+	lock_buf_priv();
+}
+
 void __cdecl lock_buf_priv()
 {
 	Screen *v0; // eax
@@ -214,6 +218,10 @@ LABEL_9:
 	++sgdwLockCount;
 }
 // 69CF0C: using guessed type int gpBufEnd;
+
+void __fastcall j_unlock_buf_priv(char a1) {
+	unlock_buf_priv();
+}
 
 void __cdecl unlock_buf_priv()
 {
