@@ -49,7 +49,7 @@ void __cdecl DrawCutscene()
 {
 	unsigned int v0; // esi
 
-	lock_buf_priv();
+	j_lock_buf_priv(1);
 	CelDecodeOnly(64, 639, sgpBackCel, 1, 640);
 	v0 = 0;
 	if ( sgdwProgress )
@@ -61,7 +61,7 @@ void __cdecl DrawCutscene()
 				progress_id);
 		while ( v0 < sgdwProgress );
 	}
-	unlock_buf_priv();
+	j_unlock_buf_priv(1);
 	drawpanflag = 255;
 	scrollrt_draw_game_screen(0);
 }

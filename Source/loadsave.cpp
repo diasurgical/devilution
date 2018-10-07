@@ -7,13 +7,13 @@ unsigned char *tbuff;
 void __fastcall LoadGame(BOOL firstflag)
 {
 	int i, j;
-	int dwLen;
+	DWORD dwLen;
 	char szName[MAX_PATH];
 
 	FreeGameMem();
 	pfile_remove_temp_files();
 	pfile_get_game_name(szName);
-	unsigned char *LoadBuff = (unsigned char *)pfile_read(szName, &dwLen);
+	BYTE *LoadBuff = pfile_read(szName, &dwLen);
 	tbuff = LoadBuff;
 
 	if(ILoad() != 'RETL')
@@ -281,8 +281,8 @@ void __cdecl SaveGame()
 	int i, j;
 	char szName[MAX_PATH];
 
-	int dwLen = codec_get_encoded_len(FILEBUFF);
-	unsigned char *SaveBuff = DiabloAllocPtr(dwLen);
+	DWORD dwLen = codec_get_encoded_len(FILEBUFF);
+	BYTE *SaveBuff = DiabloAllocPtr(dwLen);
 	tbuff = SaveBuff;
 
 	ISave('RETL');
@@ -612,11 +612,11 @@ void __cdecl SaveLevel()
 void __cdecl LoadLevel()
 {
 	int i, j;
-	int dwLen;
+	DWORD dwLen;
 	char szName[MAX_PATH];
 
 	GetPermLevelNames(szName);
-	unsigned char *LoadBuff = (unsigned char *)pfile_read(szName, &dwLen);
+	BYTE *LoadBuff = pfile_read(szName, &dwLen);
 	tbuff = LoadBuff;
 
 	if(leveltype) {

@@ -10,6 +10,9 @@ int sgdwLockCount;
 Screen *gpBuffer;
 IDirectDrawSurface *lpDDSBackBuf;
 IDirectDrawSurface *lpDDSPrimary;
+#ifdef _DEBUG
+int locktbl[256];
+#endif
 static CRITICAL_SECTION sgMemCrit;
 char gbBackBuf; // weak
 char gbEmulate; // weak
@@ -184,6 +187,13 @@ HRESULT __fastcall dx_DirectDrawCreate(GUID *guid, IDirectDraw **DD, void *unkno
 	return ((int (__stdcall *)(GUID *, IDirectDraw **, void *))v5)(v8, v3, unknown);
 }
 
+void __fastcall j_lock_buf_priv(BYTE idx) {
+#ifdef _DEBUG
+	++locktbl[idx];
+#endif
+	lock_buf_priv();
+}
+
 void __cdecl lock_buf_priv()
 {
 	Screen *v0; // eax
@@ -214,6 +224,15 @@ LABEL_9:
 	++sgdwLockCount;
 }
 // 69CF0C: using guessed type int gpBufEnd;
+
+void __fastcall j_unlock_buf_priv(BYTE idx) {
+#ifdef _DEBUG
+	if ( !locktbl[idx] )
+		TermMsg("Draw lock underflow: 0x%x", idx);
+	--locktbl[idx];
+#endif
+	unlock_buf_priv();
+}
 
 void __cdecl unlock_buf_priv()
 {

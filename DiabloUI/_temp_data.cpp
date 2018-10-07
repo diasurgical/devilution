@@ -315,7 +315,7 @@ char byte_1002A380[128]; // weak
 int dword_1002A400; // weak
 int dword_1002A404; // weak
 int dword_1002A408; // weak
-BOOL (__stdcall *selhero_fnstats)(int, _uidefaultstats *);
+BOOL (__stdcall *selhero_fnstats)(unsigned int, _uidefaultstats *);
 int SelHero_cpp_float; // weak
 DWORD selhero_sizedata[2]; // idb
 int selhero_difficulty; // weak

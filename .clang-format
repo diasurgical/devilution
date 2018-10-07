@@ -1,0 +1,8 @@
+{
+    BasedOnStyle: webkit,
+    AlignTrailingComments: true,
+    AllowShortBlocksOnASingleLine: true,
+    AllowShortFunctionsOnASingleLine: None,
+    PointerAlignment: Right,
+    AlignConsecutiveAssignments: true,
+}
