@@ -168,7 +168,7 @@ void __fastcall town_draw_clipped_town(void *unused, int x, int y, int sx, int s
 		v11 = sx - item[v10]._iAnimWidth2;
 		if ( v9 == pcursitem )
 			CelDrawHdrClrHL(
-				181,
+				ICOL_BLUE,
 				v11,
 				sy,
 				(char *)item[v10]._iAnimData,
@@ -468,7 +468,7 @@ void __fastcall town_draw_clipped_town_2(int x, int y, int a3, int a4, int a5, i
 		v13 = sx - item[v12]._iAnimWidth2;
 		if ( v11 == pcursitem )
 			CelDrawHdrClrHL(
-				181,
+				ICOL_BLUE,
 				v13,
 				sy,
 				(char *)item[v12]._iAnimData,
@@ -760,7 +760,7 @@ void __fastcall town_draw_town_all(void *buffer, int x, int y, int a4, int dir, 
 		id = dItem[x][y] - 1;
 		xx = sx - item[id]._iAnimWidth2;
 		if ( id == pcursitem )
-			CelDecodeClr(181, xx, sy, (char *)item[id]._iAnimData, item[id]._iAnimFrame, item[id]._iAnimWidth, 0, dir);
+			CelDecodeClr(ICOL_BLUE, xx, sy, (char *)item[id]._iAnimData, item[id]._iAnimFrame, item[id]._iAnimWidth, 0, dir);
 		CelDrawHdrOnly(xx, sy, (char *)item[id]._iAnimData, item[id]._iAnimFrame, item[id]._iAnimWidth, 0, dir);
 	}
 	if ( dFlags[x][y] & DFLAG_MONSTER )

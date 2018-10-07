@@ -170,12 +170,12 @@ void __cdecl DrawInv()
 
 		if ( pcursinvitem == INVITEM_HEAD )
 		{
-			int colour = 197;
+			int colour = ICOL_WHITE;
 			if ( plr[myplr].InvBody[INVLOC_HEAD]._iMagical != ITEM_QUALITY_NORMAL ) {
-				colour = 181;
+				colour = ICOL_BLUE;
 			}
 			if ( !plr[myplr].InvBody[INVLOC_HEAD]._iStatFlag ) {
-				colour = 229;
+				colour = ICOL_RED;
 			}
 			CelDecodeClr(colour, 517, 219, (char *)pCursCels, frame, frame_width, 0, 8);
 		}
@@ -199,14 +199,12 @@ void __cdecl DrawInv()
 
 		if ( pcursinvitem == INVITEM_RING_LEFT )
 		{
-			int colour = 197;
-			if ( plr[myplr].InvBody[INVLOC_RING_LEFT]._iMagical != ITEM_QUALITY_NORMAL )
-			{
-				colour = 181;
+			int colour = ICOL_WHITE;
+			if ( plr[myplr].InvBody[INVLOC_RING_LEFT]._iMagical != ITEM_QUALITY_NORMAL ) {
+				colour = ICOL_BLUE;
 			}
-			if ( !plr[myplr].InvBody[INVLOC_RING_LEFT]._iStatFlag )
-			{
-				colour = 229;
+			if ( !plr[myplr].InvBody[INVLOC_RING_LEFT]._iStatFlag ) {
+				colour = ICOL_RED;
 			}
 			CelDecodeClr(colour, 432, 365, (char *)pCursCels, frame, frame_width, 0, 8);
 		}
@@ -230,14 +228,12 @@ void __cdecl DrawInv()
 
 		if ( pcursinvitem == INVITEM_RING_RIGHT )
 		{
-			int colour = 197;
-			if ( plr[myplr].InvBody[INVLOC_RING_RIGHT]._iMagical != ITEM_QUALITY_NORMAL )
-			{
-				colour = 181;
+			int colour = ICOL_WHITE;
+			if ( plr[myplr].InvBody[INVLOC_RING_RIGHT]._iMagical != ITEM_QUALITY_NORMAL ) {
+				colour = ICOL_BLUE;
 			}
-			if ( !plr[myplr].InvBody[INVLOC_RING_RIGHT]._iStatFlag )
-			{
-				colour = 229;
+			if ( !plr[myplr].InvBody[INVLOC_RING_RIGHT]._iStatFlag ) {
+				colour = ICOL_RED;
 			}
 			CelDecodeClr(colour, 633, 365, (char *)pCursCels, frame, frame_width, 0, 8);
 		}
@@ -261,14 +257,12 @@ void __cdecl DrawInv()
 
 		if ( pcursinvitem == INVITEM_AMULET )
 		{
-			int colour = 197;
-			if ( plr[myplr].InvBody[INVLOC_AMULET]._iMagical != ITEM_QUALITY_NORMAL )
-			{
-				colour = 181;
+			int colour = ICOL_WHITE;
+			if ( plr[myplr].InvBody[INVLOC_AMULET]._iMagical != ITEM_QUALITY_NORMAL ) {
+				colour = ICOL_BLUE;
 			}
-			if ( !plr[myplr].InvBody[INVLOC_AMULET]._iStatFlag )
-			{
-				colour = 229;
+			if ( !plr[myplr].InvBody[INVLOC_AMULET]._iStatFlag ) {
+				colour = ICOL_RED;
 			}
 			CelDecodeClr(colour, 589, 220, (char *)pCursCels, frame, frame_width, 0, 8);
 		}
@@ -295,14 +289,12 @@ void __cdecl DrawInv()
 
 		if ( pcursinvitem == INVITEM_HAND_LEFT )
 		{
-			int colour = 197;
-			if ( plr[myplr].InvBody[INVLOC_HAND_LEFT]._iMagical != ITEM_QUALITY_NORMAL )
-			{
-				colour = 181;
+			int colour = ICOL_WHITE;
+			if ( plr[myplr].InvBody[INVLOC_HAND_LEFT]._iMagical != ITEM_QUALITY_NORMAL ) {
+				colour = ICOL_BLUE;
 			}
-			if ( !plr[myplr].InvBody[INVLOC_HAND_LEFT]._iStatFlag )
-			{
-				colour = 229;
+			if ( !plr[myplr].InvBody[INVLOC_HAND_LEFT]._iStatFlag ) {
+				colour = ICOL_RED;
 			}
 			CelDecodeClr(colour, screen_x, screen_y, (char *)pCursCels, frame, frame_width, 0, 8);
 		}
@@ -343,14 +335,12 @@ void __cdecl DrawInv()
 
 		if ( pcursinvitem == INVITEM_HAND_RIGHT )
 		{
-			int colour = 197;
-			if ( plr[myplr].InvBody[INVLOC_HAND_RIGHT]._iMagical != ITEM_QUALITY_NORMAL )
-			{
-				colour = 181;
+			int colour = ICOL_WHITE;
+			if ( plr[myplr].InvBody[INVLOC_HAND_RIGHT]._iMagical != ITEM_QUALITY_NORMAL ) {
+				colour = ICOL_BLUE;
 			}
-			if ( !plr[myplr].InvBody[INVLOC_HAND_RIGHT]._iStatFlag )
-			{
-				colour = 229;
+			if ( !plr[myplr].InvBody[INVLOC_HAND_RIGHT]._iStatFlag ) {
+				colour = ICOL_RED;
 			}
 			CelDecodeClr(colour, screen_x, screen_y, (char *)pCursCels, frame, frame_width, 0, 8);
 		}
@@ -366,33 +356,26 @@ void __cdecl DrawInv()
 	}
 
 
-	if ( plr[myplr].InvBody[INVLOC_CHEST]._itype != ITYPE_NONE )
-	{
+	if ( plr[myplr].InvBody[INVLOC_CHEST]._itype != ITYPE_NONE ) {
 		InvDrawSlotBack(517, 320, 2 * INV_SLOT_SIZE_PX, 3 * INV_SLOT_SIZE_PX);
 
 		int frame = plr[myplr].InvBody[INVLOC_CHEST]._iCurs + 12;
 		int frame_width = InvItemWidth[frame];
 
-		if ( pcursinvitem == INVITEM_CHEST )
-		{
-			int colour = 197;
-			if ( plr[myplr].InvBody[INVLOC_CHEST]._iMagical != ITEM_QUALITY_NORMAL )
-			{
-				colour = 181;
+		if ( pcursinvitem == INVITEM_CHEST ) {
+			int colour = ICOL_WHITE;
+			if ( plr[myplr].InvBody[INVLOC_CHEST]._iMagical != ITEM_QUALITY_NORMAL ) {
+				colour = ICOL_BLUE;
 			}
-			if ( !plr[myplr].InvBody[INVLOC_CHEST]._iStatFlag )
-			{
-				colour = 229;
+			if ( !plr[myplr].InvBody[INVLOC_CHEST]._iStatFlag ) {
+				colour = ICOL_RED;
 			}
 			CelDecodeClr(colour, 517, 320, (char *)pCursCels, frame, frame_width, 0, 8);
 		}
 
-		if ( plr[myplr].InvBody[INVLOC_CHEST]._iStatFlag )
-		{
+		if ( plr[myplr].InvBody[INVLOC_CHEST]._iStatFlag ) {
 			CelDrawHdrOnly(517, 320, (char *)pCursCels, frame, frame_width, 0, 8);
-		}
-		else
-		{
+		} else {
 			CelDrawHdrLightRed(517, 320, (char *)pCursCels, frame, frame_width, 0, 8, 1);
 		}
 	}
@@ -421,14 +404,12 @@ void __cdecl DrawInv()
 			int frame_width = InvItemWidth[frame];
 			if ( pcursinvitem == ii + INVITEM_INV_FIRST )
 			{
-				int colour = 197;
-				if ( plr[myplr].InvList[ii]._iMagical != ITEM_QUALITY_NORMAL )
-				{
-					colour = 181;
+				int colour = ICOL_WHITE;
+				if ( plr[myplr].InvList[ii]._iMagical != ITEM_QUALITY_NORMAL ) {
+					colour = ICOL_BLUE;
 				}
-				if ( !plr[myplr].InvList[ii]._iStatFlag )
-				{
-					colour = 229;
+				if ( !plr[myplr].InvList[ii]._iStatFlag ) {
+					colour = ICOL_RED;
 				}
 				CelDecodeClr(
 					colour,
@@ -2869,7 +2850,7 @@ int __cdecl CheckInvHLight()
 	if ( (unsigned int)v0 >= 0x49 )
 		goto LABEL_37;
 	v9 = -1;
-	_LOBYTE(infoclr) = 0;
+	infoclr = COL_WHITE;
 	v2 = 0;
 	v3 = &plr[myplr];
 	ClearPanel();
@@ -2961,9 +2942,9 @@ LABEL_36:
 	{
 		if ( v2->_iMagical == ITEM_QUALITY_MAGIC )
 		{
-			_LOBYTE(infoclr) = 1;
+			infoclr = COL_BLUE;
 		} else if ( v2->_iMagical == ITEM_QUALITY_UNIQUE ) {
-			_LOBYTE(infoclr) = 3;
+			infoclr = COL_GOLD;
 		}
 		strcpy(infostr, v2->_iName);
 		if ( v2->_iIdentified )

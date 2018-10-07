@@ -1841,6 +1841,12 @@ enum text_color {
     COL_GOLD  = 0x3,
 };
 
+enum item_color {
+    ICOL_WHITE = PAL16_YELLOW + 5,
+    ICOL_BLUE  = PAL16_BLUE + 5,
+    ICOL_RED   = PAL16_RED + 5,
+};
+
 enum _difficulty {
     DIFF_NORMAL      = 0x0,
     DIFF_NIGHTMARE   = 0x1,
