@@ -2205,7 +2205,7 @@ void __fastcall AutoGetItem(int pnum, int ii)
 		else
 		{
 			v4 = 0;
-			if ( (!(plr[v3]._pgfxnum & 0xF) || (plr[v3]._pgfxnum & 0xF) == ANIM_ID_UNARMED_SHIELD) && plr[v3]._pmode <= PM_WALK3 )
+			if ( ((plr[v3]._pgfxnum & 0xF) == ANIM_ID_UNARMED || (plr[v3]._pgfxnum & 0xF) == ANIM_ID_UNARMED_SHIELD) && plr[v3]._pmode <= PM_WALK3 )
 			{
 				if ( plr[v3].HoldItem._iStatFlag )
 				{
