@@ -854,12 +854,12 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 		mind = 1;
 		maxd = 1;
 
-		if ( plr[p].InvBody[4]._itype == ITYPE_SHIELD && plr[p].InvBody[4]._iStatFlag )
+		if ( plr[p].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_SHIELD && plr[p].InvBody[INVLOC_HAND_LEFT]._iStatFlag )
 		{
 			maxd = 3;
 		}
 
-		if ( plr[p].InvBody[5]._itype == ITYPE_SHIELD && plr[p].InvBody[5]._iStatFlag )
+		if ( plr[p].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_SHIELD && plr[p].InvBody[INVLOC_HAND_RIGHT]._iStatFlag )
 		{
 			maxd = 3;
 		}
@@ -1024,60 +1024,58 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 
 	g = 0;
 
-	if ( plr[p].InvBody[4]._itype != ITYPE_NONE
-		&& plr[p].InvBody[4]._iClass == ICLASS_WEAPON
-		&& plr[p].InvBody[4]._iStatFlag )
+	if ( plr[p].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE
+		&& plr[p].InvBody[INVLOC_HAND_LEFT]._iClass == ICLASS_WEAPON
+		&& plr[p].InvBody[INVLOC_HAND_LEFT]._iStatFlag )
 	{
-		g = plr[p].InvBody[4]._itype;
+		g = plr[p].InvBody[INVLOC_HAND_LEFT]._itype;
 	}
 
-	if ( plr[p].InvBody[5]._itype != ITYPE_NONE
-		&& plr[p].InvBody[5]._iClass == ICLASS_WEAPON
-		&& plr[p].InvBody[5]._iStatFlag )
+	if ( plr[p].InvBody[INVLOC_HAND_RIGHT]._itype != ITYPE_NONE
+		&& plr[p].InvBody[INVLOC_HAND_RIGHT]._iClass == ICLASS_WEAPON
+		&& plr[p].InvBody[INVLOC_HAND_RIGHT]._iStatFlag )
 	{
-		g = plr[p].InvBody[5]._itype;
+		g = plr[p].InvBody[INVLOC_HAND_RIGHT]._itype;
 	}
 
 	switch ( g )
 	{
 		case ITYPE_SWORD:
-			g = 2;
+			g = ANIM_ID_SWORD;
 			break;
 		case ITYPE_AXE:
-			g = 5;
+			g = ANIM_ID_AXE;
 			break;
 		case ITYPE_BOW:
 			plr[p]._pwtype = 1;
-			g = 4;
+			g = ANIM_ID_BOW;
 			break;
 		case ITYPE_MACE:
-			g = 6;
+			g = ANIM_ID_MACE;
 			break;
 		case ITYPE_STAFF:
-			g = 8;
+			g = ANIM_ID_STAFF;
 			break;
 	}
 
-	if ( plr[p].InvBody[4]._itype == ITYPE_SHIELD && plr[p].InvBody[4]._iStatFlag )
+	if ( plr[p].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_SHIELD && plr[p].InvBody[INVLOC_HAND_LEFT]._iStatFlag )
 	{
 		plr[p]._pBlockFlag = 1;
 		g++;
 	}
-	if ( plr[p].InvBody[5]._itype == ITYPE_SHIELD && plr[p].InvBody[5]._iStatFlag )
+	if ( plr[p].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_SHIELD && plr[p].InvBody[INVLOC_HAND_RIGHT]._iStatFlag )
 	{
 		plr[p]._pBlockFlag = 1;
 		g++;
 	}
 
-	if ( plr[p].InvBody[6]._itype == ITYPE_MARMOR && plr[p].InvBody[6]._iStatFlag )
+	if ( plr[p].InvBody[INVLOC_CHEST]._itype == ITYPE_MARMOR && plr[p].InvBody[INVLOC_CHEST]._iStatFlag )
 	{
-		// probably a flag set
-		g += 16;
+		g += ANIM_ID_MEDIUM_ARMOR;
 	}
-	if ( plr[p].InvBody[6]._itype == ITYPE_HARMOR && plr[p].InvBody[6]._iStatFlag )
+	if ( plr[p].InvBody[INVLOC_CHEST]._itype == ITYPE_HARMOR && plr[p].InvBody[INVLOC_CHEST]._iStatFlag )
 	{
-		// probably a flag set
-		g += 32;
+		g += ANIM_ID_HEAVY_ARMOR;
 	}
 
 	if ( plr[p]._pgfxnum != g && Loadgfx )
@@ -1186,12 +1184,12 @@ void __fastcall CalcPlrStaff(int pnum)
 	signed __int64 v3; // rax
 
 	v1 = pnum;
-	v2 = plr[pnum].InvBody[4]._itype == ITYPE_NONE;
+	v2 = plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_NONE;
 	plr[v1]._pISpells[0] = 0;
 	plr[v1]._pISpells[1] = 0;
-	if ( !v2 && plr[v1].InvBody[4]._iStatFlag && plr[v1].InvBody[4]._iCharges > 0 )
+	if ( !v2 && plr[v1].InvBody[INVLOC_HAND_LEFT]._iStatFlag && plr[v1].InvBody[INVLOC_HAND_LEFT]._iCharges > 0 )
 	{
-		v3 = (__int64)1 << (_LOBYTE(plr[v1].InvBody[4]._iSpell) - 1);
+		v3 = (__int64)1 << (_LOBYTE(plr[v1].InvBody[INVLOC_HAND_LEFT]._iSpell) - 1);
 		plr[v1]._pISpells[0] = v3;
 		plr[v1]._pISpells[1] = HIDWORD(v3);
 	}
@@ -1216,7 +1214,7 @@ void __fastcall CalcSelfItems(int pnum)
 	v2 = 0;
 	v3 = 0;
 	v4 = 0;
-	v5 = &v1->InvBody[0]._iStatFlag;
+	v5 = &v1->InvBody[INVLOC_HEAD]._iStatFlag;
 	v6 = 7;
 	do
 	{
@@ -1239,7 +1237,7 @@ void __fastcall CalcSelfItems(int pnum)
 	do
 	{
 		v9 = 0;
-		v8 = &v1->InvBody[0]._iMinStr;
+		v8 = &v1->InvBody[INVLOC_HEAD]._iMinStr;
 		v10 = 7;
 		do
 		{
@@ -2726,7 +2724,7 @@ void __fastcall SetupItem(int i)
 	il = ItemAnimLs[it];
 	item[i]._iAnimData = Item2Frm[it];
 	item[i]._iAnimLen = il;
-	item[i]._iIdentified = 0;
+	item[i]._iIdentified = FALSE;
 	item[i]._iPostDraw = 0;
 
 	if ( !plr[myplr].pLvlLoad )
@@ -3618,7 +3616,7 @@ void __fastcall CheckIdentify(int pnum, int cii)
 	ItemStruct *pi; // esi
 
 	pi = &plr[pnum].InvBody[cii];
-	pi->_iIdentified = 1;
+	pi->_iIdentified = TRUE;
 
 	CalcPlrInv(pnum, 1);
 
@@ -4839,7 +4837,7 @@ void __fastcall SpawnSmith(int lvl)
 			while ( item[0]._iIvalue > 140000 );
 			qmemcpy(v4, item, sizeof(ItemStruct));
 			v4->_iCreateInfo = lvl | 0x400;
-			v4->_iIdentified = 1;
+			v4->_iIdentified = TRUE;
 			v4->_iStatFlag = StoreStatOk(v4);
 			++v4;
 			if ( !--v9 )
@@ -4924,7 +4922,7 @@ void __fastcall SpawnOnePremium(int i, int plvl)
 	while ( item[0]._iIvalue > 140000 );
 	qmemcpy(&premiumitem[i], item, sizeof(ItemStruct));
 	premiumitem[i]._iCreateInfo = plvl | 0x800;
-	premiumitem[i]._iIdentified = 1;
+	premiumitem[i]._iIdentified = TRUE;
 	premiumitem[i]._iStatFlag = StoreStatOk(&premiumitem[i]);
 	qmemcpy(item, &holditem, sizeof(ItemStruct));
 }
@@ -5123,7 +5121,7 @@ void __fastcall SpawnWitch(int lvl)
 			if ( item[0]._iIvalue <= 140000 )
 			{
 				qmemcpy(itm, item, sizeof(ItemStruct));
-				itm->_iIdentified = 1;
+				itm->_iIdentified = TRUE;
 				itm->_iCreateInfo = lvl | 0x2000;
 				WitchBookLevel(ii);
 				++ii;
@@ -5185,7 +5183,7 @@ void __fastcall SpawnBoy(int lvl)
 		while ( item[0]._iIvalue > 90000 );
 		qmemcpy(&boyitem, item, sizeof(boyitem));
 		boyitem._iCreateInfo = lvl | 0x10;
-		boyitem._iIdentified = 1;
+		boyitem._iIdentified = TRUE;
 		boyitem._iStatFlag = StoreStatOk(&boyitem);
 		boylevel = lvl >> 1;
 	}
@@ -5355,7 +5353,7 @@ void __fastcall SpawnHealer(int lvl)
 			GetItemAttrs(0, RndHealerItem(lvl) - 1, lvl);
 			qmemcpy(v4, item, sizeof(ItemStruct));
 			v4->_iCreateInfo = lvl | 0x4000;
-			v4->_iIdentified = 1;
+			v4->_iIdentified = TRUE;
 			v4->_iStatFlag = StoreStatOk(v4);
 			++v4;
 			--v10;
@@ -5388,7 +5386,7 @@ void __fastcall RecreateSmithItem(int ii, int idx, int plvl, int iseed)
 	GetItemAttrs(ii, RndSmithItem(plvl) - 1, plvl);
 	item[ii]._iSeed = iseed;
 	item[ii]._iCreateInfo = plvl | 0x400;
-	item[ii]._iIdentified = 1;
+	item[ii]._iIdentified = TRUE;
 }
 
 void __fastcall RecreatePremiumItem(int ii, int idx, int lvl, int iseed)
@@ -5401,7 +5399,7 @@ void __fastcall RecreatePremiumItem(int ii, int idx, int lvl, int iseed)
 	GetItemBonus(ii, itype, lvl >> 1, lvl, 1);
 	item[ii]._iCreateInfo = lvl | 0x800;
 	item[ii]._iSeed = iseed;
-	item[ii]._iIdentified = 1;
+	item[ii]._iIdentified = TRUE;
 }
 
 void __fastcall RecreateBoyItem(int ii, int idx, int lvl, int iseed)
@@ -5414,7 +5412,7 @@ void __fastcall RecreateBoyItem(int ii, int idx, int lvl, int iseed)
 	GetItemBonus(ii, itype, lvl, 2 * lvl, 1);
 	item[ii]._iCreateInfo = lvl | 0x1000;
 	item[ii]._iSeed = iseed;
-	item[ii]._iIdentified = 1;
+	item[ii]._iIdentified = TRUE;
 }
 
 void __fastcall RecreateWitchItem(int ii, int idx, int lvl, int iseed)
@@ -5439,7 +5437,7 @@ void __fastcall RecreateWitchItem(int ii, int idx, int lvl, int iseed)
 	}
 	item[ii]._iCreateInfo = lvl | 0x2000;
 	item[ii]._iSeed = iseed;
-	item[ii]._iIdentified = 1;
+	item[ii]._iIdentified = TRUE;
 }
 
 void __fastcall RecreateHealerItem(int ii, int idx, int lvl, int iseed)
@@ -5452,7 +5450,7 @@ void __fastcall RecreateHealerItem(int ii, int idx, int lvl, int iseed)
 	GetItemAttrs(ii, idx, lvl);
 	item[ii]._iCreateInfo = lvl | 0x4000;
 	item[ii]._iSeed = iseed;
-	item[ii]._iIdentified = 1;
+	item[ii]._iIdentified = TRUE;
 }
 
 void __fastcall RecreateTownItem(int ii, int idx, unsigned short icreateinfo, int iseed, int ivalue)

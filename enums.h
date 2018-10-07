@@ -2658,6 +2658,24 @@ enum player_graphic {
     PFILE_NONDEATH = 0x17F
 };
 
+enum anim_weapon_id {
+    ANIM_ID_UNARMED        = 0x00,
+    ANIM_ID_UNARMED_SHIELD = 0x01,
+    ANIM_ID_SWORD          = 0x02,
+    ANIM_ID_SWORD_SHIELD   = 0x03,
+    ANIM_ID_BOW            = 0x04,
+    ANIM_ID_AXE            = 0x05,
+    ANIM_ID_MACE           = 0x06,
+    ANIM_ID_MACE_SHIELD    = 0x07,
+    ANIM_ID_STAFF          = 0x08
+};
+
+enum anim_armor_id {
+    ANIM_ID_LIGHT_ARMOR  = 0x00,
+    ANIM_ID_MEDIUM_ARMOR = 0x10,
+    ANIM_ID_HEAVY_ARMOR  = 0x20
+};
+
 enum shrine_type {
     SHRINE_MYSTERIOUS   = 0,
     SHRINE_HIDDEN       = 1,

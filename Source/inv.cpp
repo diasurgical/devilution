@@ -900,27 +900,27 @@ int __fastcall WeaponAutoPlace(int pnum)
 	v1 = pnum;
 	if ( plr[pnum].HoldItem._iLoc == ILOC_TWOHAND )
 	{
-		if ( plr[v1].InvBody[4]._itype != -1 || plr[v1].InvBody[5]._itype != -1 )
+		if ( plr[v1].InvBody[INVLOC_HAND_LEFT]._itype != -1 || plr[v1].InvBody[INVLOC_HAND_RIGHT]._itype != -1 )
 			return 0;
 LABEL_12:
 		NetSendCmdChItem(1u, 4u);
 		v4 = &plr[v1].HoldItem;
-		v5 = &plr[v1].InvBody[4];
+		v5 = &plr[v1].InvBody[INVLOC_HAND_LEFT];
 		goto LABEL_13;
 	}
-	v2 = plr[v1].InvBody[4]._itype;
-	if ( v2 != -1 && plr[v1].InvBody[4]._iClass == 1 )
+	v2 = plr[v1].InvBody[INVLOC_HAND_LEFT]._itype;
+	if ( v2 != -1 && plr[v1].InvBody[INVLOC_HAND_LEFT]._iClass == 1 )
 		return 0;
-	v3 = plr[v1].InvBody[5]._itype;
-	if ( v3 != -1 && plr[v1].InvBody[5]._iClass == 1 )
+	v3 = plr[v1].InvBody[INVLOC_HAND_RIGHT]._itype;
+	if ( v3 != -1 && plr[v1].InvBody[INVLOC_HAND_RIGHT]._iClass == 1 )
 		return 0;
 	if ( v2 == -1 )
 		goto LABEL_12;
-	if ( v3 == -1 && plr[v1].InvBody[4]._iLoc != ILOC_TWOHAND )
+	if ( v3 == -1 && plr[v1].InvBody[INVLOC_HAND_LEFT]._iLoc != ILOC_TWOHAND )
 	{
 		NetSendCmdChItem(1u, 5u);
 		v4 = &plr[v1].HoldItem;
-		v5 = &plr[v1].InvBody[5];
+		v5 = &plr[v1].InvBody[INVLOC_HAND_RIGHT];
 LABEL_13:
 		result = 1;
 		qmemcpy(v5, v4, sizeof(ItemStruct));
@@ -1113,75 +1113,75 @@ LABEL_93:
 				case ILOC_ONEHAND:
 					if ( v10 > 12 )
 					{
-						if ( plr[v3].InvBody[5]._itype == ITYPE_NONE )
+						if ( plr[v3].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_NONE )
 						{
-							v25 = plr[v3].InvBody[4]._itype;
+							v25 = plr[v3].InvBody[INVLOC_HAND_LEFT]._itype;
 							if ( v25 == ITYPE_NONE )
 								goto LABEL_232;
-							if ( plr[v3].InvBody[4]._iLoc == ILOC_TWOHAND )
+							if ( plr[v3].InvBody[INVLOC_HAND_LEFT]._iLoc == ILOC_TWOHAND )
 							{
 								NetSendCmdDelItem(0, 4u);
 								NetSendCmdChItem(0, 5u);
-								SwapItem(&plr[v3].InvBody[5], &plr[v3].InvBody[4]);
-								v23 = &plr[v3].InvBody[5];
+								SwapItem(&plr[v3].InvBody[INVLOC_HAND_RIGHT], &plr[v3].InvBody[INVLOC_HAND_LEFT]);
+								v23 = &plr[v3].InvBody[INVLOC_HAND_RIGHT];
 LABEL_99:
 								v24 = SwapItem(v23, &plr[v3].HoldItem);
 LABEL_172:
 								cursor_ida = v24;
 								goto LABEL_226;
 							}
-							if ( v25 == ITYPE_NONE || plr[v3].InvBody[4]._iClass != plr[v3].HoldItem._iClass )
+							if ( v25 == ITYPE_NONE || plr[v3].InvBody[INVLOC_HAND_LEFT]._iClass != plr[v3].HoldItem._iClass )
 							{
 LABEL_232:
 								NetSendCmdChItem(0, 5u);
-								v22 = &plr[v3].InvBody[5];
+								v22 = &plr[v3].InvBody[INVLOC_HAND_RIGHT];
 LABEL_158:
 								qmemcpy(v22, &plr[v3].HoldItem, sizeof(ItemStruct));
 								goto LABEL_226;
 							}
 						}
-						else if ( plr[v3].InvBody[4]._itype == ITYPE_NONE
-							   || plr[v3].InvBody[4]._iClass != plr[v3].HoldItem._iClass )
+						else if ( plr[v3].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_NONE
+							   || plr[v3].InvBody[INVLOC_HAND_LEFT]._iClass != plr[v3].HoldItem._iClass )
 						{
 							goto LABEL_114;
 						}
 					}
 					else
 					{
-						if ( plr[v3].InvBody[4]._itype == ITYPE_NONE )
+						if ( plr[v3].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_NONE )
 						{
-							if ( plr[v3].InvBody[5]._itype != ITYPE_NONE
-							  && plr[v3].InvBody[5]._iClass == plr[v3].HoldItem._iClass )
+							if ( plr[v3].InvBody[INVLOC_HAND_RIGHT]._itype != ITYPE_NONE
+							  && plr[v3].InvBody[INVLOC_HAND_RIGHT]._iClass == plr[v3].HoldItem._iClass )
 							{
 LABEL_114:
 								NetSendCmdChItem(0, 5u);
-								v23 = &plr[v3].InvBody[5];
+								v23 = &plr[v3].InvBody[INVLOC_HAND_RIGHT];
 								goto LABEL_99;
 							}
 							NetSendCmdChItem(0, 4u);
-							v22 = &plr[v3].InvBody[4];
+							v22 = &plr[v3].InvBody[INVLOC_HAND_LEFT];
 							goto LABEL_158;
 						}
-						if ( plr[v3].InvBody[5]._itype != ITYPE_NONE
-						  && plr[v3].InvBody[5]._iClass == plr[v3].HoldItem._iClass )
+						if ( plr[v3].InvBody[INVLOC_HAND_RIGHT]._itype != ITYPE_NONE
+						  && plr[v3].InvBody[INVLOC_HAND_RIGHT]._iClass == plr[v3].HoldItem._iClass )
 						{
 							goto LABEL_114;
 						}
 					}
 					NetSendCmdChItem(0, 4u);
-					v23 = &plr[v3].InvBody[4];
+					v23 = &plr[v3].InvBody[INVLOC_HAND_LEFT];
 					goto LABEL_99;
 				case ILOC_TWOHAND:
 					NetSendCmdDelItem(0, 5u);
-					if ( plr[v3].InvBody[4]._itype == ITYPE_NONE )
+					if ( plr[v3].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_NONE )
 						goto LABEL_147;
-					v26 = plr[v3].InvBody[5]._itype;
+					v26 = plr[v3].InvBody[INVLOC_HAND_RIGHT]._itype;
 					if ( v26 == -1 )
 						goto LABEL_146;
 					qmemcpy(&tempitem, &plr[v3].HoldItem, sizeof(tempitem));
-					v27 = &plr[v3].InvBody[5];
+					v27 = &plr[v3].InvBody[INVLOC_HAND_RIGHT];
 					if ( v26 != 5 )
-						v27 = &plr[v3].InvBody[4];
+						v27 = &plr[v3].InvBody[INVLOC_HAND_LEFT];
 					v28 = p;
 					qmemcpy(&plr[v3].HoldItem, v27, sizeof(plr[v3].HoldItem));
 					v29 = plr[v3].HoldItem._iCurs + 12;
@@ -1208,33 +1208,33 @@ LABEL_114:
 						SetICursor(v33);
 					if ( !v67 )
 						return;
-					if ( plr[v3].InvBody[5]._itype == ITYPE_SHIELD )
-						plr[v3].InvBody[5]._itype = ITYPE_NONE;
+					if ( plr[v3].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_SHIELD )
+						plr[v3].InvBody[INVLOC_HAND_RIGHT]._itype = ITYPE_NONE;
 					else
-						plr[v3].InvBody[4]._itype = ITYPE_NONE;
+						plr[v3].InvBody[INVLOC_HAND_LEFT]._itype = ITYPE_NONE;
 LABEL_146:
-					if ( plr[v3].InvBody[4]._itype != ITYPE_NONE )
+					if ( plr[v3].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE )
 						goto LABEL_149;
 LABEL_147:
-					if ( plr[v3].InvBody[5]._itype == ITYPE_NONE )
+					if ( plr[v3].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_NONE )
 					{
 						NetSendCmdChItem(0, 4u);
-						qmemcpy(&plr[v3].InvBody[4], &plr[v3].HoldItem, sizeof(plr[v3].InvBody[4]));
+						qmemcpy(&plr[v3].InvBody[INVLOC_HAND_LEFT], &plr[v3].HoldItem, sizeof(plr[v3].InvBody[INVLOC_HAND_LEFT]));
 					}
 					else
 					{
 LABEL_149:
 						NetSendCmdChItem(0, 4u);
-						if ( plr[v3].InvBody[4]._itype == ITYPE_NONE )
-							SwapItem(&plr[v3].InvBody[4], &plr[v3].InvBody[5]);
-						cursor_ida = SwapItem(&plr[v3].InvBody[4], &plr[v3].HoldItem);
+						if ( plr[v3].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_NONE )
+							SwapItem(&plr[v3].InvBody[INVLOC_HAND_LEFT], &plr[v3].InvBody[INVLOC_HAND_RIGHT]);
+						cursor_ida = SwapItem(&plr[v3].InvBody[INVLOC_HAND_LEFT], &plr[v3].HoldItem);
 					}
-					if ( plr[v3].InvBody[4]._itype == ITYPE_STAFF )
+					if ( plr[v3].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_STAFF )
 					{
-						v34 = plr[v3].InvBody[4]._iSpell;
+						v34 = plr[v3].InvBody[INVLOC_HAND_LEFT]._iSpell;
 						if ( v34 )
 						{
-							if ( plr[v3].InvBody[4]._iCharges > 0 )
+							if ( plr[v3].InvBody[INVLOC_HAND_LEFT]._iCharges > 0 )
 							{
 								plr[v3]._pRSpell = v34;
 								_LOBYTE(plr[v3]._pRSplType) = 3;
@@ -1245,16 +1245,16 @@ LABEL_149:
 					goto LABEL_226;
 				case ILOC_ARMOR:
 					NetSendCmdChItem(0, 6u);
-					if ( plr[v3].InvBody[6]._itype == ITYPE_NONE )
+					if ( plr[v3].InvBody[INVLOC_CHEST]._itype == ITYPE_NONE )
 					{
-						v22 = &plr[v3].InvBody[6];
+						v22 = &plr[v3].InvBody[INVLOC_CHEST];
 						goto LABEL_158;
 					}
-					v23 = &plr[v3].InvBody[6];
+					v23 = &plr[v3].InvBody[INVLOC_CHEST];
 					goto LABEL_99;
 				case ILOC_HELM:
 					NetSendCmdChItem(0, 0);
-					if ( plr[v3].InvBody[0]._itype == ITYPE_NONE )
+					if ( plr[v3].InvBody[INVLOC_HEAD]._itype == ITYPE_NONE )
 					{
 						v22 = plr[v3].InvBody;
 						goto LABEL_158;
@@ -1265,32 +1265,32 @@ LABEL_149:
 					if ( v10 == 4 )
 					{
 						NetSendCmdChItem(0, 1u);
-						if ( plr[v3].InvBody[1]._itype == ITYPE_NONE )
+						if ( plr[v3].InvBody[INVLOC_RING_LEFT]._itype == ITYPE_NONE )
 						{
-							v22 = &plr[v3].InvBody[1];
+							v22 = &plr[v3].InvBody[INVLOC_RING_LEFT];
 							goto LABEL_158;
 						}
-						v23 = &plr[v3].InvBody[1];
+						v23 = &plr[v3].InvBody[INVLOC_RING_LEFT];
 					}
 					else
 					{
 						NetSendCmdChItem(0, 2u);
-						if ( plr[v3].InvBody[2]._itype == ITYPE_NONE )
+						if ( plr[v3].InvBody[INVLOC_RING_RIGHT]._itype == ITYPE_NONE )
 						{
-							v22 = &plr[v3].InvBody[2];
+							v22 = &plr[v3].InvBody[INVLOC_RING_RIGHT];
 							goto LABEL_158;
 						}
-						v23 = &plr[v3].InvBody[2];
+						v23 = &plr[v3].InvBody[INVLOC_RING_RIGHT];
 					}
 					goto LABEL_99;
 				case ILOC_AMULET:
 					NetSendCmdChItem(0, 3u);
-					if ( plr[v3].InvBody[3]._itype == ITYPE_NONE )
+					if ( plr[v3].InvBody[INVLOC_AMULET]._itype == ITYPE_NONE )
 					{
-						v22 = &plr[v3].InvBody[3];
+						v22 = &plr[v3].InvBody[INVLOC_AMULET];
 						goto LABEL_158;
 					}
-					v23 = &plr[v3].InvBody[3];
+					v23 = &plr[v3].InvBody[INVLOC_AMULET];
 					goto LABEL_99;
 				case ILOC_UNEQUIPABLE:
 					v35 = plr[v3].HoldItem._itype;
@@ -2205,7 +2205,7 @@ void __fastcall AutoGetItem(int pnum, int ii)
 		else
 		{
 			v4 = 0;
-			if ( (!(plr[v3]._pgfxnum & 0xF) || (plr[v3]._pgfxnum & 0xF) == 1) && plr[v3]._pmode <= PM_WALK3 )
+			if ( ((plr[v3]._pgfxnum & 0xF) == ANIM_ID_UNARMED || (plr[v3]._pgfxnum & 0xF) == ANIM_ID_UNARMED_SHIELD) && plr[v3]._pmode <= PM_WALK3 )
 			{
 				if ( plr[v3].HoldItem._iStatFlag )
 				{
@@ -2214,7 +2214,7 @@ void __fastcall AutoGetItem(int pnum, int ii)
 						v4 = WeaponAutoPlace(v2);
 						if ( v4 )
 						{
-							CalcPlrInv(v2, 1u);
+							CalcPlrInv(v2, TRUE);
 							goto LABEL_71;
 						}
 					}
@@ -2823,7 +2823,7 @@ int __fastcall SyncPutItem(int pnum, int x, int y, int idx, int icreateinfo, int
 	{
 		RecreateItem(v25, idx, icreateinfo, iseed, ivalue);
 		if ( Id )
-			item[ic]._iIdentified = 1;
+			item[ic]._iIdentified = TRUE;
 		v27 = ic;
 		item[v27]._iDurability = dur;
 		item[v27]._iMaxDur = mdur;
@@ -2885,21 +2885,21 @@ int __cdecl CheckInvHLight()
 	{
 		case 4:
 			v9 = 1;
-			v2 = &v3->InvBody[1];
+			v2 = &v3->InvBody[INVLOC_RING_LEFT];
 			goto LABEL_36;
 		case 5:
 			v9 = 2;
-			v2 = &v3->InvBody[2];
+			v2 = &v3->InvBody[INVLOC_RING_RIGHT];
 			goto LABEL_36;
 		case 6:
 			v9 = 3;
-			v2 = &v3->InvBody[3];
+			v2 = &v3->InvBody[INVLOC_AMULET];
 			goto LABEL_36;
 	}
 	if ( v0 >= 7 && v0 <= 12 )
 	{
 		v9 = 4;
-		v2 = &v3->InvBody[4];
+		v2 = &v3->InvBody[INVLOC_HAND_LEFT];
 		goto LABEL_36;
 	}
 	if ( v0 < 13 || v0 > 18 )
@@ -2907,7 +2907,7 @@ int __cdecl CheckInvHLight()
 		if ( v0 >= 19 && v0 <= 24 )
 		{
 			v9 = 6;
-			v2 = &v3->InvBody[6];
+			v2 = &v3->InvBody[INVLOC_CHEST];
 			goto LABEL_36;
 		}
 		if ( v0 < 25 || v0 > 64 )
@@ -2939,11 +2939,11 @@ LABEL_37:
 		_LOBYTE(result) = -1;
 		return result;
 	}
-	v2 = &v3->InvBody[4];
-	if ( v3->InvBody[4]._itype == -1 || v3->InvBody[4]._iLoc != 2 )
+	v2 = &v3->InvBody[INVLOC_HAND_LEFT];
+	if ( v3->InvBody[INVLOC_HAND_LEFT]._itype == -1 || v3->InvBody[INVLOC_HAND_LEFT]._iLoc != 2 )
 	{
 		v9 = 5;
-		v2 = &v3->InvBody[5];
+		v2 = &v3->InvBody[INVLOC_HAND_RIGHT];
 	}
 	else
 	{
@@ -3077,11 +3077,11 @@ void __fastcall UseStaffCharge(int pnum)
 	int *v2; // eax
 
 	v1 = pnum;
-	if ( plr[pnum].InvBody[4]._itype != ITYPE_NONE
-		&& plr[v1].InvBody[4]._iMiscId == IMISC_STAFF
-		&& plr[v1].InvBody[4]._iSpell == plr[v1]._pRSpell )
+	if ( plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE
+		&& plr[v1].InvBody[INVLOC_HAND_LEFT]._iMiscId == IMISC_STAFF
+		&& plr[v1].InvBody[INVLOC_HAND_LEFT]._iSpell == plr[v1]._pRSpell )
 	{
-		v2 = &plr[v1].InvBody[4]._iCharges;
+		v2 = &plr[v1].InvBody[INVLOC_HAND_LEFT]._iCharges;
 		if ( *v2 > 0 )
 		{
 			--*v2;
@@ -3099,10 +3099,10 @@ BOOL __cdecl UseStaff()
 	if ( pcurs == CURSOR_HAND )
 	{
 		v0 = myplr;
-		if ( plr[myplr].InvBody[4]._itype != ITYPE_NONE
-			&& plr[v0].InvBody[4]._iMiscId == IMISC_STAFF
-			&& plr[v0].InvBody[4]._iSpell == plr[v0]._pRSpell
-			&& plr[v0].InvBody[4]._iCharges > 0 )
+		if ( plr[myplr].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE
+			&& plr[v0].InvBody[INVLOC_HAND_LEFT]._iMiscId == IMISC_STAFF
+			&& plr[v0].InvBody[INVLOC_HAND_LEFT]._iSpell == plr[v0]._pRSpell
+			&& plr[v0].InvBody[INVLOC_HAND_LEFT]._iCharges > 0 )
 		{
 			result = TRUE;
 		}

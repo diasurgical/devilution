@@ -568,10 +568,10 @@ LABEL_32:
 							break;
 						case RSPLTYPE_CHARGES:
 							sprintf(infostr, "Staff of %s", spelldata[pSpell].sNameText);
-							if ( plr[myplr].InvBody[4]._iCharges == 1 )
+							if ( plr[myplr].InvBody[INVLOC_HAND_LEFT]._iCharges == 1 )
 								strcpy(tempstr, "1 Charge");
 							else
-								sprintf(tempstr, "%i Charges", plr[myplr].InvBody[4]._iCharges);
+								sprintf(tempstr, "%i Charges", plr[myplr].InvBody[INVLOC_HAND_LEFT]._iCharges);
 							goto LABEL_32;
 					}
 				}
@@ -1610,10 +1610,10 @@ LABEL_54:
 				case RSPLTYPE_CHARGES:
 					sprintf(tempstr, "Staff of %s", spelldata[v4].sNameText);
 					AddPanelString(tempstr, 1);
-					if ( plr[myplr].InvBody[4]._iCharges == 1 )
+					if ( plr[myplr].InvBody[INVLOC_HAND_LEFT]._iCharges == 1 )
 						strcpy(tempstr, "1 Charge");
 					else
-						sprintf(tempstr, "%i Charges", plr[myplr].InvBody[4]._iCharges);
+						sprintf(tempstr, "%i Charges", plr[myplr].InvBody[INVLOC_HAND_LEFT]._iCharges);
 					goto LABEL_54;
 			}
 		}
@@ -2119,7 +2119,7 @@ void __cdecl DrawChr()
 	v30 = plr[v2]._pIMinDam;
 	v30 += plr[v2]._pIBonusDamMod + v30 * v3 / 100;
 	v4 = plr[v2]._pDamageMod;
-	v5 = plr[v2].InvBody[4]._itype == ITYPE_BOW;
+	v5 = plr[v2].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_BOW;
 	v29 = plr[v2]._pDamageMod;
 	if ( v5 && _LOBYTE(plr[v2]._pClass) != 1 )
 		v4 >>= 1;
@@ -2127,7 +2127,7 @@ void __cdecl DrawChr()
 	v6 = plr[v2]._pIBonusDam;
 	v28 = plr[v2]._pIMaxDam;
 	v7 = plr[v2]._pIBonusDamMod + v28 * v6 / 100 + v28;
-	if ( plr[v2].InvBody[4]._itype != ITYPE_BOW || _LOBYTE(plr[v2]._pClass) == 1 )
+	if ( plr[v2].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_BOW || _LOBYTE(plr[v2]._pClass) == 1 )
 		v8 = v29 + v7;
 	else
 		v8 = (v29 >> 1) + v7;
@@ -2551,9 +2551,9 @@ void __cdecl DrawDurIcon()
 			v0 = 336;
 		v1 = &plr[myplr];
 		v2 = DrawDurIcon4Item(v1->InvBody, v0, 4);
-		v3 = DrawDurIcon4Item(&v1->InvBody[6], v2, 3);
-		v4 = DrawDurIcon4Item(&v1->InvBody[4], v3, 0);
-		DrawDurIcon4Item(&v1->InvBody[5], v4, 0);
+		v3 = DrawDurIcon4Item(&v1->InvBody[INVLOC_CHEST], v2, 3);
+		v4 = DrawDurIcon4Item(&v1->InvBody[INVLOC_HAND_LEFT], v3, 0);
+		DrawDurIcon4Item(&v1->InvBody[INVLOC_HAND_RIGHT], v4, 0);
 	}
 }
 // 4B8968: using guessed type int sbookflag;
@@ -2760,7 +2760,7 @@ void __cdecl DrawSpellBook()
 			{
 				if ( v3 == 3 )
 				{
-					sprintf(tempstr, "Staff (%i charges)", plr[myplr].InvBody[4]._iCharges);
+					sprintf(tempstr, "Staff (%i charges)", plr[myplr].InvBody[INVLOC_HAND_LEFT]._iCharges);
 				}
 				else
 				{
