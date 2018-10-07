@@ -322,20 +322,13 @@ void __fastcall CheckQuestKill(int m, unsigned char sendmsg)
 {
 	int v2; // ecx
 	char v3; // al
-	char v4; // al
 	unsigned char v5; // dl
-	char v6; // al
 	char *v7; // ecx
-	char v8; // al
-	char v9; // al
 	int v10; // edi
 	int (*v11)[112]; // esi
 	signed int v12; // ecx
 	int *v13; // eax
 	int (*v14)[112]; // ebx
-	char v15; // al
-	char v16; // al
-	char v17; // al
 
 	v2 = m;
 	v3 = monster[v2].MType->mtype;

@@ -1474,13 +1474,10 @@ void __cdecl InitObjects()
 	//int v4; // eax
 	//int v5; // eax
 	//int v6; // eax
-	char v7; // al
 	signed int v8; // ebx
 	unsigned char *v9; // esi
 	//int v10; // eax
-	char v11; // al
 	//int v12; // eax
-	char v13; // al
 	unsigned char *v14; // esi
 	//int v15; // eax
 	//int v16; // [esp+0h] [ebp-4h]
@@ -2809,7 +2806,6 @@ void __fastcall Obj_BCrossDamage(int i)
 	bool v2; // zf
 	int v3; // ecx
 	int v4; // edx
-	char v5; // al
 	int v6; // ecx
 	int damage[4]; // [esp+4h] [ebp-18h]
 	int v8; // [esp+18h] [ebp-4h]
@@ -4166,7 +4162,6 @@ void __fastcall OperateSChambBk(int pnum, int i)
 {
 	int v2; // esi
 	int j; // edi
-	char v4; // al
 	signed int v5; // ecx
 	//int speech_id; // [esp+4h] [ebp-4h]
 
@@ -4296,7 +4291,6 @@ void __fastcall OperateMushPatch(int pnum, int i)
 {
 	int v2; // esi
 	bool v3; // zf
-	char v4; // al
 	int v5; // ecx
 	int xx; // [esp+8h] [ebp-8h]
 	int yy; // [esp+Ch] [ebp-4h]
@@ -4338,7 +4332,6 @@ void __fastcall OperateMushPatch(int pnum, int i)
 
 void __fastcall OperateInnSignChest(int pnum, int i)
 {
-	char v2; // al
 	int v3; // ecx
 	int v4; // esi
 	bool v5; // zf

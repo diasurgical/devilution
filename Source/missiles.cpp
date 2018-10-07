@@ -1307,7 +1307,6 @@ bool __fastcall MonsterMHit(int pnum, int m, int mindam, int maxdam, int dist, i
 	int v11; // eax
 	int v12; // esi
 	int v13; // ebx
-	char v14; // al
 	int v15; // eax
 	//int v16; // eax
 	int v19; // ebx
@@ -1485,8 +1484,6 @@ bool __fastcall PlayerMHit(int pnum, int m, int dist, int mind, int maxd, int mt
 	int v24; // edi
 	int v25; // ecx
 	int v26; // eax
-	char v27; // al
-	int v28; // ecx
 	int v29; // eax
 	int v30; // eax
 	int v32; // [esp+Ch] [ebp-14h]
@@ -1701,8 +1698,6 @@ bool __fastcall Plr2PlrMHit(int pnum, int p, int mindam, int maxdam, int dist, i
 	bool v15; // sf
 	int v16; // ecx
 	int v17; // ebx
-	char v18; // al
-	int v19; // ecx
 	int v20; // eax
 	int v22; // [esp+Ch] [ebp-14h]
 	int v23; // [esp+10h] [ebp-10h]
@@ -1829,7 +1824,7 @@ LABEL_14:
 			PlaySfxLoc(PS_WARR69, plr[v10].WorldX, plr[v10].WorldY);
 		} else if ( plr[v10]._pClass == PC_ROGUE ) {
 			PlaySfxLoc(PS_ROGUE69, plr[v10].WorldX, plr[v10].WorldY);
-		} else if ( plr[v10]._pClass == PC_SORCERER )
+		} else if ( plr[v10]._pClass == PC_SORCERER ) {
 			PlaySfxLoc(PS_MAGE69, plr[v10].WorldX, plr[v10].WorldY);
 		}
 		return 1;
@@ -2295,7 +2290,6 @@ void __fastcall AddLArrow(int mi, int sx, int sy, int dx, int dy, int midir, int
 	int v10; // ebx
 	int v11; // edi
 	int v12; // eax
-	char v13; // dl
 	int v14; // eax
 	int v15; // esi
 	int v16; // [esp-4h] [ebp-14h]
@@ -2337,7 +2331,6 @@ void __fastcall AddArrow(int mi, int sx, int sy, int dx, int dy, int midir, int 
 	int v10; // esi
 	int v11; // edi
 	int v12; // eax
-	char v13; // cl
 	int v14; // esi
 	int v15; // eax
 	int x1; // [esp+8h] [ebp-8h]
@@ -3788,7 +3781,6 @@ void __fastcall AddHeal(int mi, int sx, int sy, int dx, int dy, int midir, int m
 	signed int v10; // ebx
 	int v12; // edi
 	int i; // ebx
-	char v14; // al
 	int v15; // ecx
 	int *v16; // eax
 	int *v17; // eax

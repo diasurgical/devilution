@@ -1265,7 +1265,6 @@ void __cdecl CheckTriggers()
 	int v4; // edx
 	signed int v5; // edx
 	int v6; // eax
-	char v7; // al
 	int v8; // ecx
 	int v9; // [esp-4h] [ebp-20h]
 	int x; // [esp+Ch] [ebp-10h]

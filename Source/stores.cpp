@@ -734,7 +734,6 @@ void __fastcall S_ScrollSBuy(int idx)
 void __fastcall PrintStoreItem(ItemStruct *x, int l, char iclr)
 {
 	ItemStruct *v3; // esi
-	bool v4; // zf
 	char v5; // cl
 	char v6; // cl
 	int v7; // eax
