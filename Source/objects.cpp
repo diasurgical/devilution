@@ -1532,21 +1532,12 @@ void __cdecl InitObjects()
 			//_LOBYTE(v6) = QuestStatus(QTYPE_BLIND);
 			if ( QuestStatus(QTYPE_BLIND) )
 			{
-				v7 = plr[myplr]._pClass;
-				if ( v7 )
-				{
-					if ( v7 == 1 )
-					{
-						v8 = QUEST_RBLINDING;
-					}
-					else
-					{
-						v8 = QUEST_MBLINDING;
-					}
-				}
-				else
-				{
+				if ( plr[myplr]._pClass == PC_WARRIOR ) {
 					v8 = QUEST_BLINDING;
+				} else if ( plr[myplr]._pClass == PC_ROGUE ) {
+					v8 = QUEST_RBLINDING;
+				} else if ( plr[myplr]._pClass == PC_SORCERER ) {
+					v8 = QUEST_MBLINDING;
 				}
 				quests[QTYPE_BLIND]._qmsg = v8;
 				AddBookLever(0, 0, 112, 112, setpc_x, setpc_y, setpc_w + setpc_x + 1, setpc_h + setpc_y + 1, v8);
@@ -1557,21 +1548,12 @@ void __cdecl InitObjects()
 			//_LOBYTE(v10) = QuestStatus(QTYPE_BLOOD);
 			if ( QuestStatus(QTYPE_BLOOD) )
 			{
-				v11 = plr[myplr]._pClass;
-				if ( v11 )
-				{
-					if ( v11 == 1 )
-					{
-						v8 = QUEST_RBLOODY;
-					}
-					else if ( v11 == 2 )
-					{
-						v8 = QUEST_MBLOODY;
-					}
-				}
-				else
-				{
+				if ( plr[myplr]._pClass == PC_WARRIOR ) {
 					v8 = QUEST_BLOODY;
+				} else if ( plr[myplr]._pClass == PC_ROGUE ) {
+					v8 = QUEST_RBLOODY;
+				} else if ( plr[myplr]._pClass == PC_SORCERER ) {
+					v8 = QUEST_MBLOODY;
 				}
 				quests[QTYPE_BLOOD]._qmsg = v8;
 				AddBookLever(0, 0, 112, 112, setpc_x, setpc_y + 3, setpc_x + 2, setpc_y + 7, v8);
@@ -1589,21 +1571,12 @@ void __cdecl InitObjects()
 			//_LOBYTE(v12) = QuestStatus(QTYPE_WARLRD);
 			if ( QuestStatus(QTYPE_WARLRD) )
 			{
-				v13 = plr[myplr]._pClass;
-				if ( v13 )
-				{
-					if ( v13 == 1 )
-					{
-						v8 = QUEST_RBLOODWAR;
-					}
-					else if ( v13 == 2 )
-					{
-						v8 = QUEST_MBLOODWAR;
-					}
-				}
-				else
-				{
+				if ( plr[myplr]._pClass == PC_WARRIOR ) {
 					v8 = QUEST_BLOODWAR;
+				} else if ( plr[myplr]._pClass == PC_ROGUE ) {
+					v8 = QUEST_RBLOODWAR;
+				} else if ( plr[myplr]._pClass == PC_SORCERER ) {
+					v8 = QUEST_MBLOODWAR;
 				}
 				quests[QTYPE_WARLRD]._qmsg = v8;
 				AddBookLever(0, 0, 112, 112, setpc_x, setpc_y, setpc_x + setpc_w, setpc_y + setpc_h, v8);
@@ -2865,23 +2838,12 @@ LABEL_15:
 				drawhpflag = TRUE;
 				return;
 			}
-			v5 = plr[v1]._pClass;
-			if ( v5 )
-			{
-				if ( v5 == 1 )
-				{
-					v6 = PS_ROGUE68;
-				}
-				else
-				{
-					if ( v5 != 2 )
-						goto LABEL_15;
-					v6 = PS_MAGE68;
-				}
-			}
-			else
-			{
+			if ( plr[myplr]._pClass == PC_WARRIOR ) {
 				v6 = PS_WARR68;
+			} else if ( plr[myplr]._pClass == PC_ROGUE ) {
+				v6 = PS_ROGUE68;
+			} else if ( plr[myplr]._pClass == PC_SORCERER ) {
+				v6 = PS_MAGE68;
 			}
 			PlaySfxLoc(v6, plr[v1].WorldX, plr[v1].WorldY);
 			goto LABEL_15;
@@ -4223,23 +4185,12 @@ void __fastcall OperateSChambBk(int pnum, int i)
 			quests[QTYPE_BONE]._qactive = 2;
 			quests[QTYPE_BONE]._qlog = 1;
 		}
-		v4 = plr[myplr]._pClass;
-		if ( v4 )
-		{
-			if ( v4 == 1 )
-			{
-				v5 = QUEST_RBONER;
-			}
-			else
-			{
-				v5 = QUEST_MBONER;
-				//if ( v4 != 2 )
-					//v5 = speech_id;
-			}
-		}
-		else
-		{
+		if ( plr[myplr]._pClass == PC_WARRIOR ) {
 			v5 = QUEST_BONER;
+		} else if ( plr[myplr]._pClass == PC_ROGUE ) {
+			v5 = QUEST_RBONER;
+		} else if ( plr[myplr]._pClass == PC_SORCERER ) {
+			v5 = QUEST_MBONER;
 		}
 		quests[QTYPE_BONE]._qmsg = v5;
 		InitQTextMsg(v5);
@@ -4354,23 +4305,12 @@ void __fastcall OperateMushPatch(int pnum, int i)
 	{
 		if ( !deltaload && pnum == myplr )
 		{
-			v4 = plr[myplr]._pClass;
-			if ( v4 )
-			{
-				if ( v4 == 1 )
-				{
-					v5 = PS_ROGUE13;
-				}
-				else
-				{
-					if ( v4 != 2 )
-						return;
-					v5 = PS_MAGE13;
-				}
-			}
-			else
-			{
+			if ( plr[myplr]._pClass == PC_WARRIOR ) {
 				v5 = PS_WARR13;
+			} else if ( plr[myplr]._pClass == PC_ROGUE ) {
+				v5 = PS_ROGUE13;
+			} else if ( plr[myplr]._pClass == PC_SORCERER ) {
+				v5 = PS_MAGE13;
 			}
 			PlaySFX(v5);
 		}
@@ -4424,18 +4364,17 @@ void __fastcall OperateInnSignChest(int pnum, int i)
 	}
 	else if ( !deltaload && pnum == myplr )
 	{
-		v2 = plr[myplr]._pClass;
-		switch ( v2 )
+		switch ( plr[myplr]._pClass )
 		{
-			case UI_WARRIOR:
+			case PC_WARRIOR:
 				v3 = PS_WARR24;
 LABEL_8:
 				PlaySFX(v3);
 				return;
-			case UI_ROGUE:
+			case PC_ROGUE:
 				v3 = PS_ROGUE24;
 				goto LABEL_8;
-			case UI_SORCERER:
+			case PC_SORCERER:
 				v3 = PS_MAGE24;
 				goto LABEL_8;
 		}

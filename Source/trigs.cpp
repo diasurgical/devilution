@@ -1359,9 +1359,7 @@ LABEL_33:
 		StartNewLvl(myplr, *v0, v9);
 		goto LABEL_34;
 	}
-	v7 = plr[myplr]._pClass;
-	switch ( v7 )
-	{
+	switch ( plr[myplr]._pClass ) {
 		case UI_WARRIOR:
 			v8 = PS_WARR43;
 			goto LABEL_42;

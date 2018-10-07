@@ -1111,13 +1111,12 @@ LABEL_39:
 		{
 			if ( quests[QTYPE_BUTCH]._qvar1 == 1 )
 			{
-				v11 = _LOBYTE(plr[v6]._pClass) == 0;
 				towner[v7]._tbtcnt = 150;
 				towner[v7]._tVar1 = v3;
 				quests[QTYPE_BUTCH]._qvar1 = 1;
-				if ( v11 && (v12 = PS_WARR8, !effect_is_playing(PS_WARR8))
-				  || _LOBYTE(plr[v6]._pClass) == 1 && (v12 = PS_ROGUE8, !effect_is_playing(PS_ROGUE8))
-				  || _LOBYTE(plr[v6]._pClass) == 2 && (v12 = PS_MAGE8, !effect_is_playing(PS_MAGE8)) )
+				if ( plr[v6]._pClass == PC_WARRIOR && (v12 = PS_WARR8, !effect_is_playing(PS_WARR8))
+				  || plr[v6]._pClass == PC_ROGUE && (v12 = PS_ROGUE8, !effect_is_playing(PS_ROGUE8))
+				  || plr[v6]._pClass == PC_SORCERER && (v12 = PS_MAGE8, !effect_is_playing(PS_MAGE8)) )
 				{
 					PlaySFX(v12);
 				}

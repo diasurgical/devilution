@@ -1569,29 +1569,16 @@ LABEL_78:
 LABEL_81:
 	if ( !v12 )
 		return;
-	if ( v69 == ILOC_UNEQUIPABLE || v69 == ILOC_BELT || plr[v3].HoldItem._iStatFlag )
-		goto LABEL_92;
-	v19 = plr[v3]._pClass;
-	if ( !v19 )
-	{
-		v20 = PS_WARR13;
-		goto LABEL_89;
-	}
-	if ( v19 != 1 )
-	{
-		if ( v19 != 2 )
-			return;
-		PlaySFX(PS_MAGE13);
-		v12 = 0;
-		v10 = v68;
-LABEL_92:
-		if ( !v12 )
-			return;
+	if ( v69 == ILOC_UNEQUIPABLE || v69 == ILOC_BELT || plr[v3].HoldItem._iStatFlag ) {
 		goto LABEL_93;
 	}
-	v20 = PS_ROGUE13;
-LABEL_89:
-	PlaySFX(v20);
+	if ( plr[v3]._pClass == PC_WARRIOR ) {
+		PlaySFX(PS_WARR13);
+	} else if ( plr[v3]._pClass == PC_ROGUE ) {
+		PlaySFX(PS_ROGUE13);
+	} else if ( plr[v3]._pClass == PC_SORCERER ) {
+		PlaySFX(PS_MAGE13);
+	}
 }
 // 4B8C9C: using guessed type int cursH;
 // 4B8CB4: using guessed type int icursH;
@@ -1982,22 +1969,13 @@ void __fastcall CheckQuestItem(int pnum)
 		quests[QTYPE_BLIND]._qactive = 3;
 	if ( v2 == IDI_MUSHROOM && quests[QTYPE_BLKM]._qactive == 2 && quests[QTYPE_BLKM]._qvar1 == QS_MUSHSPAWNED )
 	{
-		v3 = plr[v1]._pClass;
 		sfxdelay = IDI_OPTAMULET;
-		if ( v3 )
-		{
-			if ( v3 == 1 )
-			{
-				sfxdnum = PS_ROGUE95;
-			}
-			else if ( v3 == 2 )
-			{
-				sfxdnum = PS_MAGE95;
-			}
-		}
-		else
-		{
+		if ( plr[v1]._pClass == PC_WARRIOR ) {
 			sfxdnum = PS_WARR95;
+		} else if ( plr[v1]._pClass == PC_ROGUE ) {
+			sfxdnum = PS_ROGUE95;
+		} else if ( plr[v1]._pClass == PC_SORCERER ) {
+			sfxdnum = PS_MAGE95;
 		}
 		quests[QTYPE_BLKM]._qvar1 = QS_MUSHPICKED;
 	}
@@ -2008,45 +1986,26 @@ void __fastcall CheckQuestItem(int pnum)
 			quests[QTYPE_ANVIL]._qactive = 2;
 			quests[QTYPE_ANVIL]._qvar1 = 1;
 		}
-		if ( quests[QTYPE_ANVIL]._qlog == 1 )
-		{
+		if ( quests[QTYPE_ANVIL]._qlog == 1 ) {
 			sfxdelay = IDI_OPTAMULET;
-			v4 = plr[myplr]._pClass;
-			if ( v4 )
-			{
-				if ( v4 == 1 )
-				{
-					sfxdnum = PS_ROGUE89;
-				}
-				else if ( v4 == 2 )
-				{
-					sfxdnum = PS_MAGE89;
-				}
-			}
-			else
-			{
+			if ( plr[v1]._pClass == PC_WARRIOR ) {
 				sfxdnum = PS_WARR89;
+			} else if ( plr[v1]._pClass == PC_ROGUE ) {
+				sfxdnum = PS_ROGUE89;
+			} else if ( plr[v1]._pClass == PC_SORCERER ) {
+				sfxdnum = PS_MAGE89;
 			}
 		}
 	}
 	if ( v2 == IDI_GLDNELIX )
 	{
 		sfxdelay = 30;
-		v5 = plr[myplr]._pClass;
-		if ( v5 )
-		{
-			if ( v5 == 1 )
-			{
-				sfxdnum = PS_ROGUE88;
-			}
-			else if ( v5 == 2 )
-			{
-				sfxdnum = PS_MAGE88;
-			}
-		}
-		else
-		{
+		if ( plr[v1]._pClass == PC_WARRIOR ) {
 			sfxdnum = PS_WARR88;
+		} else if ( plr[v1]._pClass == PC_ROGUE ) {
+			sfxdnum = PS_ROGUE88;
+		} else if ( plr[v1]._pClass == PC_SORCERER ) {
+			sfxdnum = PS_MAGE88;
 		}
 	}
 	if ( v2 == IDI_ROCK )
@@ -2056,24 +2015,14 @@ void __fastcall CheckQuestItem(int pnum)
 			quests[QTYPE_INFRA]._qactive = 2;
 			quests[QTYPE_INFRA]._qvar1 = 1;
 		}
-		if ( quests[QTYPE_INFRA]._qlog == 1 )
-		{
+		if ( quests[QTYPE_INFRA]._qlog == 1 ) {
 			sfxdelay = IDI_OPTAMULET;
-			v6 = plr[myplr]._pClass;
-			if ( v6 )
-			{
-				if ( v6 == 1 )
-				{
-					sfxdnum = PS_ROGUE87;
-				}
-				else if ( v6 == 2 )
-				{
-					sfxdnum = PS_MAGE87;
-				}
-			}
-			else
-			{
+			if ( plr[v1]._pClass == PC_WARRIOR ) {
 				sfxdnum = PS_WARR87;
+			} else if ( plr[v1]._pClass == PC_ROGUE ) {
+				sfxdnum = PS_ROGUE87;
+			} else if ( plr[v1]._pClass == PC_SORCERER ) {
+				sfxdnum = PS_MAGE87;
 			}
 		}
 	}
@@ -2081,21 +2030,12 @@ void __fastcall CheckQuestItem(int pnum)
 	{
 		quests[QTYPE_BLOOD]._qactive = 3;
 		sfxdelay = 20;
-		v7 = plr[myplr]._pClass;
-		if ( v7 )
-		{
-			if ( v7 == 1 )
-			{
-				sfxdnum = PS_ROGUE91;
-			}
-			else if ( v7 == 2 )
-			{
-				sfxdnum = PS_MAGE91;
-			}
-		}
-		else
-		{
+		if ( plr[v1]._pClass == PC_WARRIOR ) {
 			sfxdnum = PS_WARR91;
+		} else if ( plr[v1]._pClass == PC_ROGUE ) {
+			sfxdnum = PS_ROGUE91;
+		} else if ( plr[v1]._pClass == PC_SORCERER ) {
+			sfxdnum = PS_MAGE91;
 		}
 	}
 }
@@ -2410,20 +2350,20 @@ LABEL_71:
 		}
 		if ( v2 == myplr )
 		{
-			v12 = plr[v3]._pClass;
-			switch ( v12 )
+			switch ( plr[v3]._pClass )
 			{
-				case UI_WARRIOR:
+				case PC_WARRIOR:
 					v13 = random(0, 3) + PS_WARR14;
-LABEL_84:
 					PlaySFX(v13);
 					break;
-				case UI_ROGUE:
+				case PC_ROGUE:
 					v13 = random(0, 3) + PS_ROGUE14;
-					goto LABEL_84;
-				case UI_SORCERER:
+					PlaySFX(v13);
+					break;
+				case PC_SORCERER:
 					v13 = random(0, 3) + PS_MAGE14;
-					goto LABEL_84;
+					PlaySFX(v13);
+					break;
 			}
 		}
 		qmemcpy(&plr[v3].HoldItem, &item[v28], sizeof(plr[v3].HoldItem));
@@ -3172,44 +3112,26 @@ int __fastcall UseInvItem(int pnum, int cii)
 		}
 		if ( v6[90] == 17 )
 		{
-			v12 = plr[v2]._pClass;
 			sfxdelay = 10;
-			if ( v12 )
-			{
-				if ( v12 == 1 )
-				{
-					sfxdnum = PS_ROGUE95;
-				}
-				else if ( v12 == 2 )
-				{
-					sfxdnum = PS_MAGE95;
-				}
-			}
-			else
-			{
+			if ( plr[v2]._pClass == PC_WARRIOR ) {
 				sfxdnum = PS_WARR95;
+			} else if ( plr[v2]._pClass == PC_ROGUE ) {
+				sfxdnum = PS_ROGUE95;
+			} else if ( plr[v2]._pClass == PC_SORCERER ) {
+				sfxdnum = PS_MAGE95;
 			}
 			return 1;
 		}
 		if ( v6[90] == 19 )
 		{
 			PlaySFX(IS_IBOOK);
-			v11 = plr[v2]._pClass;
 			sfxdelay = 10;
-			if ( v11 )
-			{
-				if ( v11 == 1 )
-				{
-					sfxdnum = PS_ROGUE29;
-				}
-				else if ( v11 == 2 )
-				{
-					sfxdnum = PS_MAGE29;
-				}
-			}
-			else
-			{
+			if ( plr[v2]._pClass == PC_WARRIOR ) {
 				sfxdnum = PS_WARR29;
+			} else if ( plr[v2]._pClass == PC_ROGUE ) {
+				sfxdnum = PS_ROGUE29;
+			} else if ( plr[v2]._pClass == PC_SORCERER ) {
+				sfxdnum = PS_MAGE29;
 			}
 			return 1;
 		}
@@ -3217,25 +3139,13 @@ int __fastcall UseInvItem(int pnum, int cii)
 			return 0;
 		if ( !v6[89] )
 		{
-			v7 = plr[v2]._pClass;
-			if ( v7 )
-			{
-				if ( v7 == 1 )
-				{
-					v8 = PS_ROGUE13;
-				}
-				else
-				{
-					if ( v7 != 2 )
-						return 1;
-					v8 = PS_MAGE13;
-				}
+			if ( plr[v2]._pClass == PC_WARRIOR ) {
+				PlaySFX(PS_WARR13);
+			} else if ( plr[v2]._pClass == PC_ROGUE ) {
+				PlaySFX(PS_ROGUE13);
+			} else if ( plr[v2]._pClass == PC_SORCERER ) {
+				PlaySFX(PS_MAGE13);
 			}
-			else
-			{
-				v8 = PS_WARR13;
-			}
-			PlaySFX(v8);
 			return 1;
 		}
 		v9 = v6[55];

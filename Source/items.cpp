@@ -4522,11 +4522,10 @@ LABEL_41:
 			v10 = p;
 			v11 = plr[v10]._pMaxMana >> 8;
 			v12 = (v11 & 0xFFFFFFFE) + 2 * random(40, v11);
-			v13 = plr[v10]._pClass;
 			v14 = 32 * v12;
-			if ( v13 == 2 )
+			if ( plr[v10]._pClass == PC_SORCERER )
 				v14 *= 2;
-			if ( v13 == 1 )
+			if ( plr[v10]._pClass == PC_ROGUE )
 				v14 += v14 >> 1;
 			if ( !(plr[v10]._pIFlags & 0x8000000) )
 			{
@@ -4548,11 +4547,10 @@ LABEL_71:
 		v61 = p;
 		v62 = plr[v61]._pMaxHP >> 8;
 		v63 = (v62 & 0xFFFFFFFE) + 2 * random(39, v62);
-		v64 = plr[v61]._pClass;
 		v65 = 32 * v63;
-		if ( !v64 )
+		if ( plr[v61]._pClass == PC_WARRIOR )
 			v65 *= 2;
-		if ( v64 == 1 )
+		if ( plr[v61]._pClass == PC_ROGUE )
 			v65 += v65 >> 1;
 		v66 = plr[v61]._pMaxHP;
 		v67 = &plr[v61]._pHitPoints;
@@ -4668,11 +4666,10 @@ LABEL_71:
 		v42 = p;
 		v43 = plr[v42]._pMaxHP >> 8;
 		v44 = (v43 & 0xFFFFFFFE) + 2 * random(39, v43);
-		v45 = plr[v42]._pClass;
 		v46 = 32 * v44;
-		if ( !v45 )
+		if ( plr[v42]._pClass == PC_WARRIOR )
 			v46 *= 2;
-		if ( v45 == 1 )
+		if ( plr[v42]._pClass == PC_ROGUE )
 			v46 += v46 >> 1;
 		v47 = plr[v42]._pMaxHP;
 		v48 = &plr[v42]._pHitPoints;
@@ -4688,11 +4685,10 @@ LABEL_71:
 		v52 = plr[v42]._pMaxMana >> 8;
 		drawhpflag = TRUE;
 		v53 = (v51 & 0xFFFFFFFE) + 2 * random(40, v52);
-		v54 = plr[v42]._pClass;
 		v55 = 32 * v53;
-		if ( v54 == 2 )
+		if ( plr[v42]._pClass == PC_SORCERER )
 			v55 *= 2;
-		if ( v54 == 1 )
+		if ( plr[v42]._pClass == PC_ROGUE )
 			v55 += v55 >> 1;
 		if ( !(plr[v42]._pIFlags & 0x8000000) )
 		{

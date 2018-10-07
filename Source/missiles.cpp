@@ -505,12 +505,11 @@ void __fastcall GetDamageAmt(int i, int *mind, int *maxd)
 			v6 = plr[v3]._pLevel + v4 + 1;
 			*mind = v6;
 			v7 = myplr;
-			if ( !_LOBYTE(plr[myplr]._pClass) )
-			{
+			if ( plr[myplr]._pClass == PC_WARRIOR ) {
 				*mind = 2 * v6;
 				v7 = myplr;
 			}
-			if ( _LOBYTE(plr[v7]._pClass) == 1 )
+			if ( plr[v7]._pClass == PC_ROGUE )
 				*mind += *mind >> 1;
 			v8 = maxd;
 			v9 = 0;
@@ -735,12 +734,11 @@ LABEL_43:
 			v26 = plr[v3]._pLevel + v4 + 1;
 			*mind = v26;
 			v27 = myplr;
-			if ( !_LOBYTE(plr[myplr]._pClass) )
-			{
+			if ( plr[myplr]._pClass == PC_WARRIOR ) {
 				*mind = 2 * v26;
 				v27 = myplr;
 			}
-			if ( _LOBYTE(plr[v27]._pClass) == 1 )
+			if ( plr[v27]._pClass == PC_ROGUE )
 				*mind += *mind >> 1;
 			v8 = maxd;
 			v28 = 0;
@@ -757,9 +755,9 @@ LABEL_43:
 LABEL_65:
 			if ( v4 > 0 )
 				*v8 += 6 * v4;
-			if ( !_LOBYTE(plr[myplr]._pClass) )
+			if ( plr[myplr]._pClass == PC_WARRIOR )
 				*v8 *= 2;
-			if ( _LOBYTE(plr[myplr]._pClass) == 1 )
+			if ( plr[myplr]._pClass == PC_ROGUE )
 				*v8 += *v8 >> 1;
 LABEL_71:
 			*mind = -1;
@@ -1364,8 +1362,7 @@ bool __fastcall MonsterMHit(int pnum, int m, int mindam, int maxdam, int dist, i
 			- (dist * dist >> 1)
 			+ plr[pnuma]._pIEnAc
 			+ 50;
-		v14 = plr[pnuma]._pClass;
-		if ( v14 == 1 )
+		if ( plr[pnuma]._pClass == PC_ROGUE )
 			v13 = plr[v12]._pDexterity
 				+ plr[v12]._pIBonusToHit
 				+ plr[v12]._pLevel
@@ -1373,7 +1370,7 @@ bool __fastcall MonsterMHit(int pnum, int m, int mindam, int maxdam, int dist, i
 				- (dist * dist >> 1)
 				+ plr[pnuma]._pIEnAc
 				+ 70;
-		if ( !v14 )
+		if ( plr[pnuma]._pClass == PC_WARRIOR )
 			v13 += 10;
 	}
 	else
@@ -1381,7 +1378,7 @@ bool __fastcall MonsterMHit(int pnum, int m, int mindam, int maxdam, int dist, i
 		v12 = pnuma;
 		v15 = 2 * SLOBYTE(monster[v7].mLevel);
 		v13 = plr[pnuma]._pMagic - v15 - dist + 50;
-		if ( _LOBYTE(plr[pnuma]._pClass) == 2 )
+		if ( plr[pnuma]._pClass == PC_SORCERER )
 			v13 = plr[v12]._pMagic - v15 - dist + 70;
 	}
 	if ( v13 < 5 )
@@ -1411,7 +1408,7 @@ bool __fastcall MonsterMHit(int pnum, int m, int mindam, int maxdam, int dist, i
 	if ( !missiledata[v23].mType )
 	{
 		v20 = plr[v12]._pIBonusDamMod + v19 * plr[v12]._pIBonusDam / 100 + v19;
-		if ( _LOBYTE(plr[v12]._pClass) == 1 )
+		if ( plr[v12]._pClass == PC_ROGUE )
 			v19 = plr[v12]._pDamageMod + v20;
 		else
 			v19 = (plr[v12]._pDamageMod >> 1) + v20;
@@ -1676,30 +1673,17 @@ LABEL_70:
 			SyncPlrKill(v24, earflag);
 			return 1;
 		}
-		v27 = plr[v9]._pClass;
-		if ( v27 )
-		{
-			if ( v27 == 1 )
-			{
-				v28 = PS_ROGUE69;
-			}
-			else
-			{
-				if ( v27 != 2 )
-				{
-LABEL_78:
-					drawhpflag = TRUE;
-					return 1;
-				}
-				v28 = PS_MAGE69;
-			}
+
+		if ( plr[v9]._pClass == PC_WARRIOR ) {
+			PlaySfxLoc(PS_WARR69, plr[v9].WorldX, plr[v9].WorldY);
+		} else if ( plr[v9]._pClass == PC_ROGUE ) {
+			PlaySfxLoc(PS_ROGUE69, plr[v9].WorldX, plr[v9].WorldY);
+		} else if ( plr[v9]._pClass == PC_SORCERER ) {
+			PlaySfxLoc(PS_MAGE69, plr[v9].WorldX, plr[v9].WorldY);
 		}
-		else
-		{
-			v28 = PS_WARR69;
-		}
-		PlaySfxLoc(v28, plr[v9].WorldX, plr[v9].WorldY);
-		goto LABEL_78;
+
+		drawhpflag = TRUE;
+		return 1;
 	}
 	return 0;
 }
@@ -1760,7 +1744,7 @@ LABEL_14:
 		v10 = v26;
 		v12 = 2 * plr[v7]._pLevel;
 		v11 = plr[v26]._pMagic - v12 - dist + 50;
-		if ( _LOBYTE(plr[v26]._pClass) == 2 )
+		if ( plr[v26]._pClass == PC_SORCERER )
 			v11 = plr[v10]._pMagic - v12 - dist + 70;
 	}
 	else
@@ -1773,10 +1757,9 @@ LABEL_14:
 			- plr[v7]._pIBonusAC
 			- plr[v7]._pIAC;
 		v11 = v12 + plr[v26]._pDexterity + 50;
-		_LOBYTE(v12) = plr[v26]._pClass;
-		if ( (_BYTE)v12 == 1 )
+		if ( plr[v26]._pClass == PC_ROGUE )
 			v11 += 20;
-		if ( !(_BYTE)v12 )
+		if ( plr[v26]._pClass == PC_WARRIOR )
 			v11 += 10;
 	}
 	if ( v11 < 5 )
@@ -1842,25 +1825,13 @@ LABEL_14:
 		}
 		if ( v26 == myplr )
 			NetSendCmdDamage(1u, arglist, v17 - v27 * v17 / 100);
-		v18 = plr[v10]._pClass;
-		if ( v18 )
-		{
-			if ( v18 == 1 )
-			{
-				v19 = PS_ROGUE69;
-			}
-			else
-			{
-				if ( v18 != 2 )
-					return 1;
-				v19 = PS_MAGE69;
-			}
+		if ( plr[v10]._pClass == PC_WARRIOR ) {
+			PlaySfxLoc(PS_WARR69, plr[v10].WorldX, plr[v10].WorldY);
+		} else if ( plr[v10]._pClass == PC_ROGUE ) {
+			PlaySfxLoc(PS_ROGUE69, plr[v10].WorldX, plr[v10].WorldY);
+		} else if ( plr[v10]._pClass == PC_SORCERER )
+			PlaySfxLoc(PS_MAGE69, plr[v10].WorldX, plr[v10].WorldY);
 		}
-		else
-		{
-			v19 = PS_WARR69;
-		}
-		PlaySfxLoc(v19, plr[v10].WorldX, plr[v10].WorldY);
 		return 1;
 	}
 	return 0;
@@ -2341,23 +2312,16 @@ void __fastcall AddLArrow(int mi, int sx, int sy, int dx, int dy, int midir, int
 	}
 	if ( (_BYTE)mienemy )
 	{
-		v16 = 32;
-		goto LABEL_11;
+		GetMissileVel(mi, v10, sy, v9, v11, 32);
 	}
 	v12 = id;
-	v13 = plr[id]._pClass;
-	if ( v13 == 1 )
-	{
+	if ( plr[id]._pClass == PC_ROGUE ) {
 		v16 = (plr[v12]._pLevel >> 2) + 31;
-LABEL_11:
 		GetMissileVel(mi, v10, sy, v9, v11, v16);
-		goto LABEL_12;
-	}
-	if ( v13 )
+	} else if ( plr[id]._pClass == PC_SORCERER )
 		GetMissileVel(mi, v10, sy, v9, v11, 32);
 	else
 		GetMissileVel(mi, v10, sy, v9, v11, (plr[v12]._pLevel >> 3) + 31);
-LABEL_12:
 	v14 = GetDirection16(v10, sy, v9, v11);
 	SetMissDir(mia, v14);
 	v15 = mia;
@@ -2401,10 +2365,9 @@ void __fastcall AddArrow(int mi, int sx, int sy, int dx, int dy, int midir, int 
 		{
 			v12 = random(64, 32) + 16;
 		}
-		v13 = plr[v11]._pClass;
-		if ( v13 == 1 )
+		if ( plr[v11]._pClass == PC_ROGUE )
 			v12 += (plr[v11]._pLevel - 1) >> 2;
-		if ( !v13 )
+		if ( plr[v11]._pClass == PC_WARRIOR )
 			v12 += (plr[v11]._pLevel - 1) >> 3;
 		GetMissileVel(i, x1, sy, v10, v9, v12);
 	}
@@ -3851,10 +3814,9 @@ void __fastcall AddHeal(int mi, int sx, int sy, int dx, int dy, int midir, int m
 	{
 		v12 += (random(57, 6) + 1) << 6;
 	}
-	v14 = plr[v9]._pClass;
-	if ( !v14 )
+	if ( plr[v9]._pClass == PC_WARRIOR )
 		v12 *= 2;
-	if ( v14 == 1 )
+	if ( plr[v9]._pClass == PC_ROGUE )
 		v12 += v12 >> 1;
 	v15 = plr[v9]._pMaxHP;
 	v16 = &plr[v9]._pHitPoints;

@@ -1227,21 +1227,12 @@ void __cdecl InitControlPan()
 	pSBkIconCels = LoadFileInMem("Data\\SpellI2.CEL", 0);
 	sbooktab = 0;
 	sbookflag = 0;
-	v4 = plr[myplr]._pClass;
-	if ( v4 )
-	{
-		if ( v4 == UI_ROGUE )
-		{
-			SpellPages[0][0] = SPL_DISARM;
-		}
-		else if ( v4 == UI_SORCERER )
-		{
-			SpellPages[0][0] = SPL_RECHARGE;
-		}
-	}
-	else
-	{
+	if ( plr[myplr]._pClass == PC_WARRIOR ) {
 		SpellPages[0][0] = SPL_REPAIR;
+	} else if ( plr[myplr]._pClass == PC_ROGUE ) {
+		SpellPages[0][0] = SPL_DISARM;
+	} else if ( plr[myplr]._pClass == PC_SORCERER ) {
+		SpellPages[0][0] = SPL_RECHARGE;
 	}
 	pQLogCel = LoadFileInMem("Data\\Quest.CEL", 0);
 	v5 = LoadFileInMem("CtrlPan\\Golddrop.cel", 0);
@@ -2060,21 +2051,12 @@ void __cdecl DrawChr()
 
 	CelDecodeOnly(64, 511, pChrPanel, 1, 320);
 	ADD_PlrStringXY(20, 32, 151, plr[myplr]._pName, 0);
-	v0 = plr[myplr]._pClass;
-	if ( v0 )
-	{
-		if ( v0 == 1 )
-		{
-			ADD_PlrStringXY(168, 32, 299, "Rogue", 0); /* should use ClassStrTbl ? */
-		}
-		else if ( v0 == 2 )
-		{
-			ADD_PlrStringXY(168, 32, 299, "Sorceror", 0);
-		}
-	}
-	else
-	{
+	if ( plr[myplr]._pClass == PC_WARRIOR ) {
 		ADD_PlrStringXY(168, 32, 299, "Warrior", 0);
+	} else if ( plr[myplr]._pClass == PC_ROGUE ) {
+		ADD_PlrStringXY(168, 32, 299, "Rogue", 0); /* should use ClassStrTbl ? */
+	} else if ( plr[myplr]._pClass == PC_SORCERER ) {
+		ADD_PlrStringXY(168, 32, 299, "Sorceror", 0);
 	}
 	sprintf(a4, "%i", plr[myplr]._pLevel);
 	ADD_PlrStringXY(66, 69, 109, a4, 0);
@@ -2121,13 +2103,13 @@ void __cdecl DrawChr()
 	v4 = plr[v2]._pDamageMod;
 	v5 = plr[v2].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_BOW;
 	v29 = plr[v2]._pDamageMod;
-	if ( v5 && _LOBYTE(plr[v2]._pClass) != 1 )
+	if ( v5 && plr[v2]._pClass != PC_ROGUE )
 		v4 >>= 1;
 	v30 += v4;
 	v6 = plr[v2]._pIBonusDam;
 	v28 = plr[v2]._pIMaxDam;
 	v7 = plr[v2]._pIBonusDamMod + v28 * v6 / 100 + v28;
-	if ( plr[v2].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_BOW || _LOBYTE(plr[v2]._pClass) == 1 )
+	if ( plr[v2].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_BOW || plr[v2]._pClass == PC_ROGUE )
 		v8 = v29 + v7;
 	else
 		v8 = (v29 >> 1) + v7;
@@ -2174,22 +2156,22 @@ void __cdecl DrawChr()
 	ADD_PlrStringXY(257, 332, 300, a4, a5[0]);
 	a5[0] = 0;
 	sprintf(a4, "%i", plr[myplr]._pBaseStr);
-	if ( MaxStats[SLOBYTE(plr[myplr]._pClass)][0] == plr[myplr]._pBaseStr )
+	if ( MaxStats[plr[myplr]._pClass][0] == plr[myplr]._pBaseStr )
 		a5[0] = 3;
 	ADD_PlrStringXY(95, 155, 126, a4, a5[0]);
 	a5[0] = 0;
 	sprintf(a4, "%i", plr[myplr]._pBaseMag);
-	if ( MaxStats[SLOBYTE(plr[myplr]._pClass)][1] == plr[myplr]._pBaseMag )
+	if ( MaxStats[plr[myplr]._pClass][1] == plr[myplr]._pBaseMag )
 		a5[0] = 3;
 	ADD_PlrStringXY(95, 183, 126, a4, a5[0]);
 	a5[0] = 0;
 	sprintf(a4, "%i", plr[myplr]._pBaseDex);
-	if ( MaxStats[SLOBYTE(plr[myplr]._pClass)][2] == plr[myplr]._pBaseDex )
+	if ( MaxStats[plr[myplr]._pClass][2] == plr[myplr]._pBaseDex )
 		a5[0] = 3;
 	ADD_PlrStringXY(95, 211, 126, a4, a5[0]);
 	a5[0] = 0;
 	sprintf(a4, "%i", plr[myplr]._pBaseVit);
-	if ( MaxStats[SLOBYTE(plr[myplr]._pClass)][3] == plr[myplr]._pBaseVit )
+	if ( MaxStats[plr[myplr]._pClass][3] == plr[myplr]._pBaseVit )
 		a5[0] = 3;
 	ADD_PlrStringXY(95, 239, 126, a4, a5[0]);
 	a5[0] = 0;
@@ -2243,7 +2225,7 @@ void __cdecl DrawChr()
 	{
 		sprintf(a4, "%i", v21);
 		ADD_PlrStringXY(95, 266, 126, a4, 2);
-		v22 = SLOBYTE(plr[myplr]._pClass);
+		v22 = plr[myplr]._pClass;
 		if ( plr[myplr]._pBaseStr < MaxStats[v22][0] )
 			CelDecodeOnly(201, 319, pChrButtons, chrbtn[0] + 2, 41);
 		if ( plr[myplr]._pBaseMag < MaxStats[v22][1] )
@@ -2427,7 +2409,7 @@ void __cdecl CheckChrBtns()
 		if ( plr[myplr]._pStatPts )
 		{
 			v2 = MouseX;
-			v3 = SLOBYTE(plr[v1]._pClass);
+			v3 = plr[v1]._pClass;
 			while ( 1 )
 			{
 				if ( !v0 )
