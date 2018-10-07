@@ -1,3 +1,9 @@
+enum item_quality {
+    ITEM_QUALITY_NORMAL = 0,
+    ITEM_QUALITY_MAGIC  = 1,
+    ITEM_QUALITY_UNIQUE = 2,
+};
+
 enum unique_base_item {
     UITYPE_NONE        = 0x0,
     UITYPE_SHORTBOW    = 0x1,

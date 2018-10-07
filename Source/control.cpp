@@ -1898,10 +1898,9 @@ LABEL_32:
 			else
 				v5 = plr[v2].HoldItem._iName;
 			strcpy(infostr, v5);
-			v6 = plr[myplr].HoldItem._iMagical;
-			if ( v6 == 1 )
+			if ( plr[myplr].HoldItem._iMagical == ITEM_QUALITY_MAGIC )
 				_LOBYTE(infoclr) = 1;
-			if ( v6 == 2 )
+			if ( plr[myplr].HoldItem._iMagical == ITEM_QUALITY_UNIQUE )
 				_LOBYTE(infoclr) = 3;
 		}
 		else

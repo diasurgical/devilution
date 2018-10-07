@@ -815,7 +815,7 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 				spl |= (unsigned __int64)1 << (itm->_iSpell - 1);
 			}
 
-			if ( !itm->_iMagical || itm->_iIdentified )
+			if ( itm->_iMagical == ITEM_QUALITY_NORMAL || itm->_iIdentified )
 			{
 				bdam += itm->_iPLDam;
 				btohit += itm->_iPLToHit;
@@ -1439,7 +1439,7 @@ void __fastcall SetPlrHandItem(ItemStruct *h, int idata)
 	h->_iIvalue = pAllItem->iValue;
 	h->_iPrePower = -1;
 	h->_iSufPower = -1;
-	h->_iMagical = 0;
+	h->_iMagical = ITEM_QUALITY_NORMAL;
 	h->IDidx = idata;
 }
 
@@ -1966,7 +1966,7 @@ void __fastcall GetStaffPower(int i, int lvl, int bs, unsigned char onlygood)
 				strcpy(v17, istr);
 				v10 = ia;
 				v11 = PL_Prefix[v5].PLMultVal;
-				item[v9]._iMagical = 1;
+				item[v9]._iMagical = ITEM_QUALITY_MAGIC;
 				SaveItemPower(
 					v10,
 					PL_Prefix[v5].PLPower,
@@ -1991,7 +1991,7 @@ void __fastcall GetStaffPower(int i, int lvl, int bs, unsigned char onlygood)
 		}
 		sprintf(istr, "%s of %s", v13, spelldata[bs].sNameText);
 		strcpy(v13, istr);
-		if ( !item[v12]._iMagical )
+		if ( item[v12]._iMagical == ITEM_QUALITY_NORMAL )
 			strcpy(item[v12]._iName, v13);
 	}
 	CalcItemValue(ia);
@@ -2077,7 +2077,7 @@ void __fastcall GetItemAttrs(int i, int idata, int lvl)
 	item[i]._iSpell = AllItemsList[idata].iSpell;
 	item[i]._ivalue = AllItemsList[idata].iValue;
 	item[i]._iIvalue = AllItemsList[idata].iValue;
-	item[i]._iMagical = 0;
+	item[i]._iMagical = ITEM_QUALITY_NORMAL;
 	item[i]._iDurability = AllItemsList[idata].iDurability;
 	item[i]._iMaxDur = AllItemsList[idata].iDurability;
 	item[i]._iVAdd1 = 0;
@@ -2607,7 +2607,7 @@ void __fastcall GetItemPower(int i, int minlvl, int maxlvl, int flgs, int onlygo
 				preidx = l[random(23, v11)];
 				sprintf(istr, "%s %s", PL_Prefix[preidx].PLName, item[i]._iIName);
 				strcpy(item[i]._iIName, istr);
-				item[i]._iMagical = 1;
+				item[i]._iMagical = ITEM_QUALITY_MAGIC;
 				SaveItemPower(
 					i,
 					PL_Prefix[preidx].PLPower,
@@ -2642,7 +2642,7 @@ void __fastcall GetItemPower(int i, int minlvl, int maxlvl, int flgs, int onlygo
 				sufidx = l[random(23, v11)];
 				sprintf(istr, "%s of %s", item[i]._iIName, PL_Suffix[sufidx].PLName);
 				strcpy(item[i]._iIName, istr);
-				item[i]._iMagical = 1;
+				item[i]._iMagical = ITEM_QUALITY_MAGIC;
 				SaveItemPower(
 					i,
 					PL_Suffix[sufidx].PLPower,
@@ -2974,7 +2974,7 @@ void __fastcall GetUniqueItem(int i, int uid)
 
 	item[i]._iCreateInfo |= 0x0200;
 	item[i]._iUid = uid;
-	item[i]._iMagical = 2;
+	item[i]._iMagical = ITEM_QUALITY_UNIQUE;
 }
 
 void __fastcall SpawnUnique(int uid, int x, int y)
@@ -3069,7 +3069,7 @@ void __fastcall SetupAllItems(int ii, int idx, int iseed, int lvl, int uper, int
 				item[ii]._iCreateInfo |= 0x0200;
 			}
 		}
-		if ( item[ii]._iMagical != 2 )
+		if ( item[ii]._iMagical != ITEM_QUALITY_UNIQUE )
 			ItemRndDur(ii);
 	}
 	SetupItem(ii);
@@ -3151,7 +3151,7 @@ void __fastcall CreateItem(int uid, int x, int y)
 		GetUniqueItem(ii, uid);
 		SetupItem(ii);
 		++numitems;
-		item[ii]._iMagical = 2;
+		item[ii]._iMagical = ITEM_QUALITY_UNIQUE;
 	}
 }
 // 422290: could not find valid save-restore pair for esi
@@ -3603,9 +3603,9 @@ void __fastcall GetItemStr(int i)
 		else
 			strcpy(infostr, item[i]._iIName);
 
-		if ( item[i]._iMagical == 1 )
+		if ( item[i]._iMagical ==ITEM_QUALITY_MAGIC )
 			infoclr = COL_BLUE;
-		if ( item[i]._iMagical == 2 )
+		if ( item[i]._iMagical == ITEM_QUALITY_UNIQUE )
 			infoclr = COL_GOLD;
 	}
 }
@@ -4305,7 +4305,7 @@ void __fastcall PrintItemDetails(ItemStruct *x)
 		PrintItemPower(v3, v1);
 		AddPanelString(tempstr, 1);
 	}
-	if ( v1->_iMagical == 2 )
+	if ( v1->_iMagical == ITEM_QUALITY_UNIQUE )
 	{
 		AddPanelString("unique item", 1);
 		uitemflag = 1;
@@ -4351,7 +4351,7 @@ void __fastcall PrintItemDur(ItemStruct *x)
 			sprintf(tempstr, "Charges: %i/%i", v1->_iCharges, v1->_iMaxCharges);
 			AddPanelString(tempstr, 1);
 		}
-		if ( v1->_iMagical )
+		if ( v1->_iMagical != ITEM_QUALITY_NORMAL )
 			AddPanelString("Not Identified", 1);
 	}
 	if ( v1->_iClass == 2 )
@@ -4361,7 +4361,7 @@ void __fastcall PrintItemDur(ItemStruct *x)
 		else
 			sprintf(tempstr, "armor: %i  Dur: %i/%i", v1->_iAC, v1->_iDurability, v1->_iMaxDur);
 		AddPanelString(tempstr, 1);
-		if ( v1->_iMagical )
+		if ( v1->_iMagical != ITEM_QUALITY_NORMAL )
 			AddPanelString("Not Identified", 1);
 		if ( v1->_iMiscId == IMISC_STAFF && v1->_iMaxCharges )
 		{

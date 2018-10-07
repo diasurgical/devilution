@@ -750,7 +750,7 @@ void __fastcall PrintStoreItem(ItemStruct *x, int l, char iclr)
 	y = l;
 	if ( x->_iIdentified )
 	{
-		if ( x->_iMagical != 2 )
+		if ( x->_iMagical != ITEM_QUALITY_UNIQUE )
 		{
 			v5 = x->_iPrePower;
 			if ( v5 != -1 )
@@ -814,7 +814,7 @@ void __fastcall PrintStoreItem(ItemStruct *x, int l, char iclr)
 	}
 	v11 = y;
 	AddSText(40, y, 0, sstr, iclr, 0);
-	if ( v3->_iMagical == 2 )
+	if ( v3->_iMagical == ITEM_QUALITY_UNIQUE )
 	{
 		if ( v3->_iIdentified )
 			AddSText(40, v11 + 1, 0, "Unique Item", iclr, 0);
@@ -1053,7 +1053,7 @@ void __cdecl S_StartSSell()
 			sellok = 1;
 			qmemcpy(&storehold[storenumh], &plr[myplr].InvList[i], sizeof(ItemStruct));
 
-			if ( storehold[storenumh]._iMagical && storehold[storenumh]._iIdentified )
+			if ( storehold[storenumh]._iMagical != ITEM_QUALITY_NORMAL && storehold[storenumh]._iIdentified )
 				storehold[storenumh]._ivalue = storehold[storenumh]._iIvalue;
 
 			if ( !(storehold[storenumh]._ivalue >>= 2) )
@@ -1214,19 +1214,17 @@ void __fastcall AddStoreHoldRepair(ItemStruct *itm, int i)
 {
 	int v2; // ebx
 	ItemStruct *v3; // ebp
-	int v4; // ecx
 	int v5; // eax
 
 	v2 = storenumh;
 	v3 = &storehold[storenumh];
 	qmemcpy(&storehold[storenumh], itm, sizeof(ItemStruct));
-	v4 = (unsigned char)v3->_iMagical;
-	if ( (_BYTE)v4 && v3->_iIdentified )
+	if ( v3->_iMagical != ITEM_QUALITY_NORMAL && v3->_iIdentified )
 		v3->_ivalue = 30 * v3->_iIvalue / 100;
 	v5 = v3->_ivalue * (100 * (v3->_iMaxDur - v3->_iDurability) / v3->_iMaxDur) / 100;
 	if ( !v5 )
 	{
-		if ( (_BYTE)v4 && v3->_iIdentified )
+		if ( v3->_iMagical != ITEM_QUALITY_NORMAL && v3->_iIdentified )
 			return;
 		v5 = 1;
 	}
@@ -1380,7 +1378,7 @@ void __cdecl S_StartWSell()
 			sellok = 1;
 			qmemcpy(&storehold[storenumh], &plr[myplr].InvList[i], sizeof(ItemStruct));
 
-			if ( storehold[storenumh]._iMagical && storehold[storenumh]._iIdentified )
+			if ( storehold[storenumh]._iMagical != ITEM_QUALITY_NORMAL && storehold[storenumh]._iIdentified )
 				storehold[storenumh]._ivalue = storehold[storenumh]._iIvalue;
 
 			if ( !(storehold[storenumh]._ivalue >>= 2) )
@@ -1398,7 +1396,7 @@ void __cdecl S_StartWSell()
 			sellok = 1;
 			qmemcpy(&storehold[storenumh], &plr[myplr].SpdList[i], sizeof(ItemStruct));
 
-			if ( storehold[storenumh]._iMagical && storehold[storenumh]._iIdentified )
+			if ( storehold[storenumh]._iMagical != ITEM_QUALITY_NORMAL && storehold[storenumh]._iIdentified )
 				storehold[storenumh]._ivalue = storehold[storenumh]._iIvalue;
 
 			if ( !(storehold[storenumh]._ivalue >>= 2) )
@@ -1584,25 +1582,25 @@ void __cdecl S_StartConfirm()
 	ClearSText(5, 23);
 	iclr = COL_WHITE;
 
-	if ( plr[myplr].HoldItem._iMagical )
+	if ( plr[myplr].HoldItem._iMagical != ITEM_QUALITY_NORMAL )
 		iclr = COL_BLUE;
 	if ( !plr[myplr].HoldItem._iStatFlag )
 		iclr = COL_RED;
 
-	idprint = plr[myplr].HoldItem._iMagical != 0;
+	idprint = plr[myplr].HoldItem._iMagical != ITEM_QUALITY_NORMAL;
 
 	if ( stextshold == STORE_SIDENTIFY )
-		idprint = 0;
-	if ( plr[myplr].HoldItem._iMagical && !plr[myplr].HoldItem._iIdentified )
+		idprint = FALSE;
+	if ( plr[myplr].HoldItem._iMagical != ITEM_QUALITY_NORMAL && !plr[myplr].HoldItem._iIdentified )
 	{
 		if ( stextshold == STORE_SSELL )
-			idprint = 0;
+			idprint = FALSE;
 		if ( stextshold == STORE_WSELL )
-			idprint = 0;
+			idprint = FALSE;
 		if ( stextshold == STORE_SREPAIR )
-			idprint = 0;
+			idprint = FALSE;
 		if ( stextshold == STORE_WRECHARGE )
-			idprint = 0;
+			idprint = FALSE;
 	}
 	if ( idprint )
 		AddSText(20, 8, 0, plr[myplr].HoldItem._iIName, iclr, 0);
@@ -1695,11 +1693,11 @@ void __cdecl S_StartBBoy()
 	AddSLine(21);
 	iclr = COL_WHITE;
 
-	if ( boyitem._iMagical )
+	if ( boyitem._iMagical != ITEM_QUALITY_NORMAL )
 		iclr = COL_BLUE;
 	if ( !boyitem._iStatFlag )
 		iclr = COL_RED;
-	if ( boyitem._iMagical )
+	if ( boyitem._iMagical != ITEM_QUALITY_NORMAL )
 		AddSText(20, 10, 0, boyitem._iIName, iclr, 1);
 	else
 		AddSText(20, 10, 0, boyitem._iName, iclr, 1);
@@ -1825,7 +1823,7 @@ bool __fastcall IdItemOk(ItemStruct *i)
 	result = 0;
 	if ( i->_itype != -1 )
 	{
-		if ( i->_iMagical )
+		if ( i->_iMagical != ITEM_QUALITY_NORMAL )
 			result = !i->_iIdentified;
 	}
 	return result;
@@ -1944,7 +1942,7 @@ void __cdecl S_StartIdShow()
 	ClearSText(5, 23);
 	iclr = COL_WHITE;
 
-	if ( plr[myplr].HoldItem._iMagical )
+	if ( plr[myplr].HoldItem._iMagical != ITEM_QUALITY_NORMAL )
 		iclr = COL_BLUE;
 	if ( !plr[myplr].HoldItem._iStatFlag )
 		iclr = COL_RED;
@@ -2737,7 +2735,7 @@ void __cdecl SmithBuyItem()
 	bool v3; // zf
 
 	TakePlrsMoney(plr[myplr].HoldItem._iIvalue);
-	if ( !plr[myplr].HoldItem._iMagical )
+	if ( plr[myplr].HoldItem._iMagical == ITEM_QUALITY_NORMAL )
 		plr[myplr].HoldItem._iIdentified = FALSE;
 	StoreAutoPlace();
 	idx = stextvhold + ((stextlhold - stextup) >> 2);
@@ -2833,7 +2831,7 @@ void __cdecl SmithBuyPItem()
 	int i; // edx
 
 	TakePlrsMoney(plr[myplr].HoldItem._iIvalue);
-	if ( !plr[myplr].HoldItem._iMagical )
+	if ( plr[myplr].HoldItem._iMagical == ITEM_QUALITY_NORMAL )
 		plr[myplr].HoldItem._iIdentified = FALSE;
 	StoreAutoPlace();
 	xx = 0;
@@ -3510,7 +3508,7 @@ void __cdecl HealerBuyItem()
 		v4 = myplr;
 	}
 	TakePlrsMoney(plr[v4].HoldItem._iIvalue);
-	if ( !plr[myplr].HoldItem._iMagical )
+	if ( plr[myplr].HoldItem._iMagical == ITEM_QUALITY_NORMAL )
 		plr[myplr].HoldItem._iIdentified = FALSE;
 	StoreAutoPlace();
 	if ( gbMaxPlayers == 1 )

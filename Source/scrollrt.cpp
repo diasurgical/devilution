@@ -3110,7 +3110,7 @@ void __cdecl scrollrt_draw_cursor_item()
 				else
 				{
 					v11 = 197;
-					if ( plr[myplr].HoldItem._iMagical )
+					if ( plr[myplr].HoldItem._iMagical != ITEM_QUALITY_NORMAL )
 						v11 = 181;
 					if ( !plr[myplr].HoldItem._iStatFlag )
 						v11 = 229;

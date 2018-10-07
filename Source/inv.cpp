@@ -171,12 +171,10 @@ void __cdecl DrawInv()
 		if ( pcursinvitem == INVITEM_HEAD )
 		{
 			int colour = 197;
-			if ( plr[myplr].InvBody[INVLOC_HEAD]._iMagical )
-			{
+			if ( plr[myplr].InvBody[INVLOC_HEAD]._iMagical != ITEM_QUALITY_NORMAL ) {
 				colour = 181;
 			}
-			if ( !plr[myplr].InvBody[INVLOC_HEAD]._iStatFlag )
-			{
+			if ( !plr[myplr].InvBody[INVLOC_HEAD]._iStatFlag ) {
 				colour = 229;
 			}
 			CelDecodeClr(colour, 517, 219, (char *)pCursCels, frame, frame_width, 0, 8);
@@ -202,7 +200,7 @@ void __cdecl DrawInv()
 		if ( pcursinvitem == INVITEM_RING_LEFT )
 		{
 			int colour = 197;
-			if ( plr[myplr].InvBody[INVLOC_RING_LEFT]._iMagical )
+			if ( plr[myplr].InvBody[INVLOC_RING_LEFT]._iMagical != ITEM_QUALITY_NORMAL )
 			{
 				colour = 181;
 			}
@@ -233,7 +231,7 @@ void __cdecl DrawInv()
 		if ( pcursinvitem == INVITEM_RING_RIGHT )
 		{
 			int colour = 197;
-			if ( plr[myplr].InvBody[INVLOC_RING_RIGHT]._iMagical )
+			if ( plr[myplr].InvBody[INVLOC_RING_RIGHT]._iMagical != ITEM_QUALITY_NORMAL )
 			{
 				colour = 181;
 			}
@@ -264,7 +262,7 @@ void __cdecl DrawInv()
 		if ( pcursinvitem == INVITEM_AMULET )
 		{
 			int colour = 197;
-			if ( plr[myplr].InvBody[INVLOC_AMULET]._iMagical )
+			if ( plr[myplr].InvBody[INVLOC_AMULET]._iMagical != ITEM_QUALITY_NORMAL )
 			{
 				colour = 181;
 			}
@@ -298,7 +296,7 @@ void __cdecl DrawInv()
 		if ( pcursinvitem == INVITEM_HAND_LEFT )
 		{
 			int colour = 197;
-			if ( plr[myplr].InvBody[INVLOC_HAND_LEFT]._iMagical )
+			if ( plr[myplr].InvBody[INVLOC_HAND_LEFT]._iMagical != ITEM_QUALITY_NORMAL )
 			{
 				colour = 181;
 			}
@@ -346,7 +344,7 @@ void __cdecl DrawInv()
 		if ( pcursinvitem == INVITEM_HAND_RIGHT )
 		{
 			int colour = 197;
-			if ( plr[myplr].InvBody[INVLOC_HAND_RIGHT]._iMagical )
+			if ( plr[myplr].InvBody[INVLOC_HAND_RIGHT]._iMagical != ITEM_QUALITY_NORMAL )
 			{
 				colour = 181;
 			}
@@ -378,7 +376,7 @@ void __cdecl DrawInv()
 		if ( pcursinvitem == INVITEM_CHEST )
 		{
 			int colour = 197;
-			if ( plr[myplr].InvBody[INVLOC_CHEST]._iMagical )
+			if ( plr[myplr].InvBody[INVLOC_CHEST]._iMagical != ITEM_QUALITY_NORMAL )
 			{
 				colour = 181;
 			}
@@ -424,7 +422,7 @@ void __cdecl DrawInv()
 			if ( pcursinvitem == ii + INVITEM_INV_FIRST )
 			{
 				int colour = 197;
-				if ( plr[myplr].InvList[ii]._iMagical )
+				if ( plr[myplr].InvList[ii]._iMagical != ITEM_QUALITY_NORMAL )
 				{
 					colour = 181;
 				}
@@ -2961,13 +2959,10 @@ LABEL_36:
 	}
 	else
 	{
-		v8 = v2->_iMagical;
-		if ( v8 == 1 )
+		if ( v2->_iMagical == ITEM_QUALITY_MAGIC )
 		{
 			_LOBYTE(infoclr) = 1;
-		}
-		else if ( v8 == 2 )
-		{
+		} else if ( v2->_iMagical == ITEM_QUALITY_UNIQUE ) {
 			_LOBYTE(infoclr) = 3;
 		}
 		strcpy(infostr, v2->_iName);
