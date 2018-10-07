@@ -2823,7 +2823,7 @@ int __fastcall SyncPutItem(int pnum, int x, int y, int idx, int icreateinfo, int
 	{
 		RecreateItem(v25, idx, icreateinfo, iseed, ivalue);
 		if ( Id )
-			item[ic]._iIdentified = 1;
+			item[ic]._iIdentified = TRUE;
 		v27 = ic;
 		item[v27]._iDurability = dur;
 		item[v27]._iMaxDur = mdur;

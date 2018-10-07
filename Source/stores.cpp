@@ -747,9 +747,8 @@ void __fastcall PrintStoreItem(ItemStruct *x, int l, char iclr)
 
 	sstr[0] = 0;
 	v3 = x;
-	v4 = x->_iIdentified == 0;
 	y = l;
-	if ( !v4 )
+	if ( x->_iIdentified )
 	{
 		if ( x->_iMagical != 2 )
 		{
@@ -1827,7 +1826,7 @@ bool __fastcall IdItemOk(ItemStruct *i)
 	if ( i->_itype != -1 )
 	{
 		if ( i->_iMagical )
-			result = i->_iIdentified == 0;
+			result = !i->_iIdentified;
 	}
 	return result;
 }
@@ -2739,7 +2738,7 @@ void __cdecl SmithBuyItem()
 
 	TakePlrsMoney(plr[myplr].HoldItem._iIvalue);
 	if ( !plr[myplr].HoldItem._iMagical )
-		plr[myplr].HoldItem._iIdentified = 0;
+		plr[myplr].HoldItem._iIdentified = FALSE;
 	StoreAutoPlace();
 	idx = stextvhold + ((stextlhold - stextup) >> 2);
 	if ( idx == 19 )
@@ -2835,7 +2834,7 @@ void __cdecl SmithBuyPItem()
 
 	TakePlrsMoney(plr[myplr].HoldItem._iIvalue);
 	if ( !plr[myplr].HoldItem._iMagical )
-		plr[myplr].HoldItem._iIdentified = 0;
+		plr[myplr].HoldItem._iIdentified = FALSE;
 	StoreAutoPlace();
 	xx = 0;
 	idx = (stextlhold - stextup) >> 2;
@@ -3512,7 +3511,7 @@ void __cdecl HealerBuyItem()
 	}
 	TakePlrsMoney(plr[v4].HoldItem._iIvalue);
 	if ( !plr[myplr].HoldItem._iMagical )
-		plr[myplr].HoldItem._iIdentified = 0;
+		plr[myplr].HoldItem._iIdentified = FALSE;
 	StoreAutoPlace();
 	if ( gbMaxPlayers == 1 )
 	{
@@ -3623,27 +3622,27 @@ void __cdecl StoryIdItem()
 	v1 = myplr;
 	if ( v0 >= 0 )
 	{
-		plr[myplr].InvList[v0]._iIdentified = 1;
+		plr[myplr].InvList[v0]._iIdentified = TRUE;
 	}
 	else
 	{
 		if ( v0 == -1 )
-			plr[myplr].InvBody[INVLOC_HEAD]._iIdentified = 1;
+			plr[myplr].InvBody[INVLOC_HEAD]._iIdentified = TRUE;
 		if ( v0 == -2 )
-			plr[v1].InvBody[INVLOC_CHEST]._iIdentified = 1;
+			plr[v1].InvBody[INVLOC_CHEST]._iIdentified = TRUE;
 		if ( v0 == -3 )
-			plr[v1].InvBody[INVLOC_HAND_LEFT]._iIdentified = 1;
+			plr[v1].InvBody[INVLOC_HAND_LEFT]._iIdentified = TRUE;
 		if ( v0 == -4 )
-			plr[v1].InvBody[INVLOC_HAND_RIGHT]._iIdentified = 1;
+			plr[v1].InvBody[INVLOC_HAND_RIGHT]._iIdentified = TRUE;
 		if ( v0 == -5 )
-			plr[v1].InvBody[INVLOC_RING_LEFT]._iIdentified = 1;
+			plr[v1].InvBody[INVLOC_RING_LEFT]._iIdentified = TRUE;
 		if ( v0 == -6 )
-			plr[v1].InvBody[INVLOC_RING_RIGHT]._iIdentified = 1;
+			plr[v1].InvBody[INVLOC_RING_RIGHT]._iIdentified = TRUE;
 		if ( v0 == -7 )
-			plr[v1].InvBody[INVLOC_AMULET]._iIdentified = 1;
+			plr[v1].InvBody[INVLOC_AMULET]._iIdentified = TRUE;
 	}
 	v2 = v1;
-	plr[v2].HoldItem._iIdentified = 1;
+	plr[v2].HoldItem._iIdentified = TRUE;
 	TakePlrsMoney(plr[v2].HoldItem._iIvalue);
 	CalcPlrInv(myplr, 1u);
 }

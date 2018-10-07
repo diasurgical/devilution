@@ -2724,7 +2724,7 @@ void __fastcall SetupItem(int i)
 	il = ItemAnimLs[it];
 	item[i]._iAnimData = Item2Frm[it];
 	item[i]._iAnimLen = il;
-	item[i]._iIdentified = 0;
+	item[i]._iIdentified = FALSE;
 	item[i]._iPostDraw = 0;
 
 	if ( !plr[myplr].pLvlLoad )
@@ -3616,7 +3616,7 @@ void __fastcall CheckIdentify(int pnum, int cii)
 	ItemStruct *pi; // esi
 
 	pi = &plr[pnum].InvBody[cii];
-	pi->_iIdentified = 1;
+	pi->_iIdentified = TRUE;
 
 	CalcPlrInv(pnum, 1);
 
@@ -4837,7 +4837,7 @@ void __fastcall SpawnSmith(int lvl)
 			while ( item[0]._iIvalue > 140000 );
 			qmemcpy(v4, item, sizeof(ItemStruct));
 			v4->_iCreateInfo = lvl | 0x400;
-			v4->_iIdentified = 1;
+			v4->_iIdentified = TRUE;
 			v4->_iStatFlag = StoreStatOk(v4);
 			++v4;
 			if ( !--v9 )
@@ -4922,7 +4922,7 @@ void __fastcall SpawnOnePremium(int i, int plvl)
 	while ( item[0]._iIvalue > 140000 );
 	qmemcpy(&premiumitem[i], item, sizeof(ItemStruct));
 	premiumitem[i]._iCreateInfo = plvl | 0x800;
-	premiumitem[i]._iIdentified = 1;
+	premiumitem[i]._iIdentified = TRUE;
 	premiumitem[i]._iStatFlag = StoreStatOk(&premiumitem[i]);
 	qmemcpy(item, &holditem, sizeof(ItemStruct));
 }
@@ -5121,7 +5121,7 @@ void __fastcall SpawnWitch(int lvl)
 			if ( item[0]._iIvalue <= 140000 )
 			{
 				qmemcpy(itm, item, sizeof(ItemStruct));
-				itm->_iIdentified = 1;
+				itm->_iIdentified = TRUE;
 				itm->_iCreateInfo = lvl | 0x2000;
 				WitchBookLevel(ii);
 				++ii;
@@ -5183,7 +5183,7 @@ void __fastcall SpawnBoy(int lvl)
 		while ( item[0]._iIvalue > 90000 );
 		qmemcpy(&boyitem, item, sizeof(boyitem));
 		boyitem._iCreateInfo = lvl | 0x10;
-		boyitem._iIdentified = 1;
+		boyitem._iIdentified = TRUE;
 		boyitem._iStatFlag = StoreStatOk(&boyitem);
 		boylevel = lvl >> 1;
 	}
@@ -5353,7 +5353,7 @@ void __fastcall SpawnHealer(int lvl)
 			GetItemAttrs(0, RndHealerItem(lvl) - 1, lvl);
 			qmemcpy(v4, item, sizeof(ItemStruct));
 			v4->_iCreateInfo = lvl | 0x4000;
-			v4->_iIdentified = 1;
+			v4->_iIdentified = TRUE;
 			v4->_iStatFlag = StoreStatOk(v4);
 			++v4;
 			--v10;
@@ -5386,7 +5386,7 @@ void __fastcall RecreateSmithItem(int ii, int idx, int plvl, int iseed)
 	GetItemAttrs(ii, RndSmithItem(plvl) - 1, plvl);
 	item[ii]._iSeed = iseed;
 	item[ii]._iCreateInfo = plvl | 0x400;
-	item[ii]._iIdentified = 1;
+	item[ii]._iIdentified = TRUE;
 }
 
 void __fastcall RecreatePremiumItem(int ii, int idx, int lvl, int iseed)
@@ -5399,7 +5399,7 @@ void __fastcall RecreatePremiumItem(int ii, int idx, int lvl, int iseed)
 	GetItemBonus(ii, itype, lvl >> 1, lvl, 1);
 	item[ii]._iCreateInfo = lvl | 0x800;
 	item[ii]._iSeed = iseed;
-	item[ii]._iIdentified = 1;
+	item[ii]._iIdentified = TRUE;
 }
 
 void __fastcall RecreateBoyItem(int ii, int idx, int lvl, int iseed)
@@ -5412,7 +5412,7 @@ void __fastcall RecreateBoyItem(int ii, int idx, int lvl, int iseed)
 	GetItemBonus(ii, itype, lvl, 2 * lvl, 1);
 	item[ii]._iCreateInfo = lvl | 0x1000;
 	item[ii]._iSeed = iseed;
-	item[ii]._iIdentified = 1;
+	item[ii]._iIdentified = TRUE;
 }
 
 void __fastcall RecreateWitchItem(int ii, int idx, int lvl, int iseed)
@@ -5437,7 +5437,7 @@ void __fastcall RecreateWitchItem(int ii, int idx, int lvl, int iseed)
 	}
 	item[ii]._iCreateInfo = lvl | 0x2000;
 	item[ii]._iSeed = iseed;
-	item[ii]._iIdentified = 1;
+	item[ii]._iIdentified = TRUE;
 }
 
 void __fastcall RecreateHealerItem(int ii, int idx, int lvl, int iseed)
@@ -5450,7 +5450,7 @@ void __fastcall RecreateHealerItem(int ii, int idx, int lvl, int iseed)
 	GetItemAttrs(ii, idx, lvl);
 	item[ii]._iCreateInfo = lvl | 0x4000;
 	item[ii]._iSeed = iseed;
-	item[ii]._iIdentified = 1;
+	item[ii]._iIdentified = TRUE;
 }
 
 void __fastcall RecreateTownItem(int ii, int idx, unsigned short icreateinfo, int iseed, int ivalue)

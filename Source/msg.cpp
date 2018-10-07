@@ -812,7 +812,7 @@ void __cdecl DeltaLoadLevel()
 						RecreateItem(v14, v16, v13, v18, v17);
 						v19 = v8 + 4721 * currlevel;
 						if ( *(&sgLevels[0].item[0].bId + v19) )
-							item[v14]._iIdentified = 1;
+							item[v14]._iIdentified = TRUE;
 						v20 = v14;
 						item[v20]._iDurability = *((unsigned char *)&sgLevels[0].item[0].bDur + v19);
 						item[v20]._iMaxDur = *((unsigned char *)&sgLevels[0].item[0].bMDur + v19);
