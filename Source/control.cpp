@@ -679,70 +679,30 @@ void __fastcall SetSpeedSpell(int slot)
 
 void __fastcall ToggleSpell(int slot)
 {
-	int v1; // eax
-	int v2; // edx
-	int v3; // esi
-	char *v4; // eax
-	int v5; // eax
-	int v6; // eax
-	int v7; // eax
-	int v8; // ebx
-	int v9; // edi
-	//int v10; // [esp+4h] [ebp-Ch]
-	char *v11; // [esp+8h] [ebp-8h]
-	int v12; // [esp+Ch] [ebp-4h]
+	if ( plr[myplr]._pSplHotKey[slot] == -1 ) {
+		return;
+	}
 
-	v1 = slot + 5430 * myplr;
-	v2 = plr[0]._pSplHotKey[v1];
-	v12 = plr[0]._pSplHotKey[v1];
-	if ( v2 != -1 )
-	{
-		v3 = myplr;
-		v4 = &plr[myplr]._pSplTHotKey[slot];
-		v11 = v4;
-		v5 = *v4;
-		if ( v5 )
-		{
-			v6 = v5 - 1;
-			if ( v6 )
-			{
-				v7 = v6 - 1;
-				if ( v7 )
-				{
-					if ( v7 == 1 )
-					{
-						v8 = plr[v3]._pISpells[0];
-						v9 = plr[v3]._pISpells[1];
-					}
-					else
-					{
-						v9 = (int)v11;
-						v8 = plr[myplr]._pSplHotKey[slot]; /* check */
-					}
-				}
-				else
-				{
-					v8 = plr[v3]._pScrlSpells[0];
-					v9 = plr[v3]._pScrlSpells[1];
-				}
-			}
-			else
-			{
-				v8 = plr[v3]._pMemSpells[0];
-				v9 = plr[v3]._pMemSpells[1];
-			}
-		}
-		else
-		{
-			v8 = plr[v3]._pAblSpells[0];
-			v9 = plr[v3]._pAblSpells[1];
-		}
-		if ( v9 & ((unsigned __int64)((__int64)1 << ((unsigned char)v2 - 1)) >> 32) | v8 & (unsigned int)((__int64)1 << ((unsigned char)v2 - 1)) )
-		{
-			drawpanflag = 255;
-			plr[v3]._pRSpell = v12;
-			_LOBYTE(plr[v3]._pRSplType) = *v11;
-		}
+	unsigned __int64 spells;
+	switch ( plr[myplr]._pSplTHotKey[slot] ) {
+		case RSPLTYPE_SKILL:
+			spells = plr[myplr]._pAblSpells64;
+			break;
+		case RSPLTYPE_SPELL:
+			spells = plr[myplr]._pMemSpells64;
+			break;
+		case RSPLTYPE_SCROLL:
+			spells = plr[myplr]._pScrlSpells64;
+			break;
+		case RSPLTYPE_CHARGES:
+			spells = plr[myplr]._pISpells64;
+			break;
+	}
+
+	if ( spells & 1i64 << (plr[myplr]._pSplHotKey[slot] - 1) ) {
+		plr[myplr]._pRSpell = plr[myplr]._pSplHotKey[slot];
+		plr[myplr]._pRSplType = plr[myplr]._pSplTHotKey[slot];
+		drawpanflag = 255;
 	}
 }
 // 52571C: using guessed type int drawpanflag;
