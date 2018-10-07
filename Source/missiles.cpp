@@ -1046,7 +1046,7 @@ void __fastcall DeleteMissile(int mi, int i)
 	{
 		v4 = missile[mi]._misource;
 		if ( v4 == myplr )
-			NetSendCmd(1u, CMD_REMSHIELD);
+			NetSendCmd(TRUE, CMD_REMSHIELD);
 		plr[v4].pManaShield = 0;
 	}
 	v5 = nummissiles - 1;
@@ -1808,7 +1808,7 @@ LABEL_14:
 			if ( v24 >= v16 )
 			{
 				if ( v26 == myplr )
-					NetSendCmdDamage(1u, arglist, v17);
+					NetSendCmdDamage(TRUE, arglist, v17);
 				StartPlrHit(arglist, v17, 0);
 			}
 			else
@@ -1819,7 +1819,7 @@ LABEL_14:
 			return 1;
 		}
 		if ( v26 == myplr )
-			NetSendCmdDamage(1u, arglist, v17 - v27 * v17 / 100);
+			NetSendCmdDamage(TRUE, arglist, v17 - v27 * v17 / 100);
 		if ( plr[v10]._pClass == PC_WARRIOR ) {
 			PlaySfxLoc(PS_WARR69, plr[v10].WorldX, plr[v10].WorldY);
 		} else if ( plr[v10]._pClass == PC_ROGUE ) {
@@ -3021,13 +3021,13 @@ LABEL_14:
 			_LOWORD(v21) = (unsigned char)leveltype;
 			v22 = v21;
 			_LOWORD(v21) = (unsigned char)setlvlnum;
-			NetSendCmdLocParam3(1u, CMD_ACTIVATEPORTAL, v9, v11, v21, v22, 1);
+			NetSendCmdLocParam3(TRUE, CMD_ACTIVATEPORTAL, v9, v11, v21, v22, 1);
 		}
 		else
 		{
 			_LOWORD(v20) = (unsigned char)leveltype;
 			_LOWORD(v21) = currlevel;
-			NetSendCmdLocParam3(1u, CMD_ACTIVATEPORTAL, v9, v11, v21, v20, 0);
+			NetSendCmdLocParam3(TRUE, CMD_ACTIVATEPORTAL, v9, v11, v21, v20, 0);
 		}
 	}
 }
@@ -3145,7 +3145,7 @@ void __fastcall AddManashield(int mi, int sx, int sy, int dx, int dy, int midir,
 	if ( !(_BYTE)mienemy )
 		UseMana(id, 11);
 	if ( id == myplr )
-		NetSendCmd(1u, CMD_SETSHIELD);
+		NetSendCmd(TRUE, CMD_SETSHIELD);
 	plr[id].pManaShield = 1;
 }
 
@@ -5476,7 +5476,7 @@ void __fastcall MI_Town(int i)
 				ClrPlrPath(arglist);
 				if ( arglist == myplr )
 				{
-					NetSendCmdParam1(1u, CMD_WARP, missile[v1]._misource);
+					NetSendCmdParam1(TRUE, CMD_WARP, missile[v1]._misource);
 					*(v3 - 13) = 10;
 				}
 			}
@@ -5682,7 +5682,7 @@ LABEL_31:
 	if ( v7 )
 	{
 		missile[v1]._miDelFlag = 1;
-		NetSendCmd(1u, CMD_ENDSHIELD);
+		NetSendCmd(TRUE, CMD_ENDSHIELD);
 	}
 LABEL_33:
 	PutMissile(ia);

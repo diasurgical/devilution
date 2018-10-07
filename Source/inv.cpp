@@ -903,7 +903,7 @@ int __fastcall WeaponAutoPlace(int pnum)
 		if ( plr[v1].InvBody[INVLOC_HAND_LEFT]._itype != -1 || plr[v1].InvBody[INVLOC_HAND_RIGHT]._itype != -1 )
 			return 0;
 LABEL_12:
-		NetSendCmdChItem(1u, 4u);
+		NetSendCmdChItem(TRUE, 4u);
 		v4 = &plr[v1].HoldItem;
 		v5 = &plr[v1].InvBody[INVLOC_HAND_LEFT];
 		goto LABEL_13;
@@ -918,7 +918,7 @@ LABEL_12:
 		goto LABEL_12;
 	if ( v3 == -1 && plr[v1].InvBody[INVLOC_HAND_LEFT]._iLoc != ILOC_TWOHAND )
 	{
-		NetSendCmdChItem(1u, 5u);
+		NetSendCmdChItem(TRUE, 5u);
 		v4 = &plr[v1].HoldItem;
 		v5 = &plr[v1].InvBody[INVLOC_HAND_RIGHT];
 LABEL_13:
@@ -959,8 +959,6 @@ void __fastcall CheckInvPaste(int pnum, int mx, int my)
 	int v16; // esi
 	int v17; // ecx
 	int v18; // edx
-	char v19; // al
-	int v20; // ecx
 	int v21; // esi
 	ItemStruct *v22; // edi
 	ItemStruct *v23; // ecx
@@ -1120,8 +1118,8 @@ LABEL_93:
 								goto LABEL_232;
 							if ( plr[v3].InvBody[INVLOC_HAND_LEFT]._iLoc == ILOC_TWOHAND )
 							{
-								NetSendCmdDelItem(0, 4u);
-								NetSendCmdChItem(0, 5u);
+								NetSendCmdDelItem(FALSE, 4u);
+								NetSendCmdChItem(FALSE, 5u);
 								SwapItem(&plr[v3].InvBody[INVLOC_HAND_RIGHT], &plr[v3].InvBody[INVLOC_HAND_LEFT]);
 								v23 = &plr[v3].InvBody[INVLOC_HAND_RIGHT];
 LABEL_99:
@@ -1133,7 +1131,7 @@ LABEL_172:
 							if ( v25 == ITYPE_NONE || plr[v3].InvBody[INVLOC_HAND_LEFT]._iClass != plr[v3].HoldItem._iClass )
 							{
 LABEL_232:
-								NetSendCmdChItem(0, 5u);
+								NetSendCmdChItem(FALSE, 5u);
 								v22 = &plr[v3].InvBody[INVLOC_HAND_RIGHT];
 LABEL_158:
 								qmemcpy(v22, &plr[v3].HoldItem, sizeof(ItemStruct));
@@ -1154,11 +1152,11 @@ LABEL_158:
 							  && plr[v3].InvBody[INVLOC_HAND_RIGHT]._iClass == plr[v3].HoldItem._iClass )
 							{
 LABEL_114:
-								NetSendCmdChItem(0, 5u);
+								NetSendCmdChItem(FALSE, 5u);
 								v23 = &plr[v3].InvBody[INVLOC_HAND_RIGHT];
 								goto LABEL_99;
 							}
-							NetSendCmdChItem(0, 4u);
+							NetSendCmdChItem(FALSE, 4u);
 							v22 = &plr[v3].InvBody[INVLOC_HAND_LEFT];
 							goto LABEL_158;
 						}
@@ -1168,11 +1166,11 @@ LABEL_114:
 							goto LABEL_114;
 						}
 					}
-					NetSendCmdChItem(0, 4u);
+					NetSendCmdChItem(FALSE, 4u);
 					v23 = &plr[v3].InvBody[INVLOC_HAND_LEFT];
 					goto LABEL_99;
 				case ILOC_TWOHAND:
-					NetSendCmdDelItem(0, 5u);
+					NetSendCmdDelItem(FALSE, 5u);
 					if ( plr[v3].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_NONE )
 						goto LABEL_147;
 					v26 = plr[v3].InvBody[INVLOC_HAND_RIGHT]._itype;
@@ -1218,13 +1216,13 @@ LABEL_146:
 LABEL_147:
 					if ( plr[v3].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_NONE )
 					{
-						NetSendCmdChItem(0, 4u);
+						NetSendCmdChItem(FALSE, 4u);
 						qmemcpy(&plr[v3].InvBody[INVLOC_HAND_LEFT], &plr[v3].HoldItem, sizeof(plr[v3].InvBody[INVLOC_HAND_LEFT]));
 					}
 					else
 					{
 LABEL_149:
-						NetSendCmdChItem(0, 4u);
+						NetSendCmdChItem(FALSE, 4u);
 						if ( plr[v3].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_NONE )
 							SwapItem(&plr[v3].InvBody[INVLOC_HAND_LEFT], &plr[v3].InvBody[INVLOC_HAND_RIGHT]);
 						cursor_ida = SwapItem(&plr[v3].InvBody[INVLOC_HAND_LEFT], &plr[v3].HoldItem);
@@ -1244,7 +1242,7 @@ LABEL_149:
 					}
 					goto LABEL_226;
 				case ILOC_ARMOR:
-					NetSendCmdChItem(0, 6u);
+					NetSendCmdChItem(FALSE, 6u);
 					if ( plr[v3].InvBody[INVLOC_CHEST]._itype == ITYPE_NONE )
 					{
 						v22 = &plr[v3].InvBody[INVLOC_CHEST];
@@ -1253,7 +1251,7 @@ LABEL_149:
 					v23 = &plr[v3].InvBody[INVLOC_CHEST];
 					goto LABEL_99;
 				case ILOC_HELM:
-					NetSendCmdChItem(0, 0);
+					NetSendCmdChItem(FALSE, 0);
 					if ( plr[v3].InvBody[INVLOC_HEAD]._itype == ITYPE_NONE )
 					{
 						v22 = plr[v3].InvBody;
@@ -1264,7 +1262,7 @@ LABEL_149:
 				case ILOC_RING:
 					if ( v10 == 4 )
 					{
-						NetSendCmdChItem(0, 1u);
+						NetSendCmdChItem(FALSE, 1u);
 						if ( plr[v3].InvBody[INVLOC_RING_LEFT]._itype == ITYPE_NONE )
 						{
 							v22 = &plr[v3].InvBody[INVLOC_RING_LEFT];
@@ -1274,7 +1272,7 @@ LABEL_149:
 					}
 					else
 					{
-						NetSendCmdChItem(0, 2u);
+						NetSendCmdChItem(FALSE, 2u);
 						if ( plr[v3].InvBody[INVLOC_RING_RIGHT]._itype == ITYPE_NONE )
 						{
 							v22 = &plr[v3].InvBody[INVLOC_RING_RIGHT];
@@ -1284,7 +1282,7 @@ LABEL_149:
 					}
 					goto LABEL_99;
 				case ILOC_AMULET:
-					NetSendCmdChItem(0, 3u);
+					NetSendCmdChItem(FALSE, 3u);
 					if ( plr[v3].InvBody[INVLOC_AMULET]._itype == ITYPE_NONE )
 					{
 						v22 = &plr[v3].InvBody[INVLOC_AMULET];
@@ -1957,11 +1955,6 @@ void __fastcall CheckQuestItem(int pnum)
 {
 	int v1; // ecx
 	int v2; // esi
-	char v3; // cl
-	char v4; // cl
-	char v5; // cl
-	char v6; // cl
-	char v7; // al
 
 	v1 = pnum;
 	v2 = plr[v1].HoldItem.IDidx;
@@ -2061,7 +2054,7 @@ void __fastcall InvGetItem(int pnum, int ii)
 	if ( dItem[item[ii]._ix][item[ii]._iy] )
 	{
 		if ( myplr == pnum && pcurs >= CURSOR_FIRSTITEM )
-			NetSendCmdPItem(1u, CMD_SYNCPUTITEM, plr[myplr].WorldX, plr[myplr].WorldY);
+			NetSendCmdPItem(TRUE, CMD_SYNCPUTITEM, plr[myplr].WorldX, plr[myplr].WorldY);
 		_HIBYTE(item[v2]._iCreateInfo) &= 0x7Fu;
 		qmemcpy(&plr[pnuma].HoldItem, &item[v2], sizeof(plr[pnuma].HoldItem));
 		CheckQuestItem(pnuma);
@@ -2102,7 +2095,6 @@ void __fastcall AutoGetItem(int pnum, int ii)
 	int v9; // edi
 	int v10; // edx
 	int v11; // ecx
-	char v12; // al
 	int v13; // ecx
 	int iia; // [esp+10h] [ebp-18h]
 	signed int iib; // [esp+10h] [ebp-18h]
@@ -2368,7 +2360,7 @@ LABEL_71:
 		}
 		qmemcpy(&plr[v3].HoldItem, &item[v28], sizeof(plr[v3].HoldItem));
 		RespawnItem(i, 1);
-		NetSendCmdPItem(1u, CMD_RESPAWNITEM, item[v28]._ix, item[v28]._iy);
+		NetSendCmdPItem(TRUE, CMD_RESPAWNITEM, item[v28]._ix, item[v28]._iy);
 		plr[v3].HoldItem._itype = ITYPE_NONE;
 	}
 }
@@ -2788,7 +2780,7 @@ int __cdecl CheckInvHLight()
 	int v5; // ebx
 	int v6; // edi
 	char *v7; // eax
-	char v8; // al
+	char v8;
 	char v9; // [esp+Fh] [ebp-1h]
 
 	v0 = 0;
@@ -3076,12 +3068,8 @@ int __fastcall UseInvItem(int pnum, int cii)
 	int v4; // ebx
 	int v5; // ebp
 	_DWORD *v6; // edi
-	char v7; // al
-	int v8; // ecx
 	int v9; // eax
 	int v10; // ecx
-	char v11; // al
-	char v12; // al
 	int p; // [esp+10h] [ebp-8h]
 	signed int v14; // [esp+14h] [ebp-4h]
 
@@ -3197,11 +3185,11 @@ LABEL_39:
 void __cdecl DoTelekinesis()
 {
 	if ( pcursobj != -1 )
-		NetSendCmdParam1(1u, CMD_OPOBJT, pcursobj);
+		NetSendCmdParam1(TRUE, CMD_OPOBJT, pcursobj);
 	if ( pcursitem != -1 )
-		NetSendCmdGItem(1u, CMD_REQUESTAGITEM, myplr, myplr, pcursitem);
+		NetSendCmdGItem(TRUE, CMD_REQUESTAGITEM, myplr, myplr, pcursitem);
 	if ( pcursmonst != -1 && !M_Talker(pcursmonst) && !monster[pcursmonst].mtalkmsg )
-		NetSendCmdParam1(1u, CMD_KNOCKBACK, pcursmonst);
+		NetSendCmdParam1(TRUE, CMD_KNOCKBACK, pcursmonst);
 	SetCursor(CURSOR_HAND);
 }
 // 4B8CC0: using guessed type char pcursitem;
@@ -3252,7 +3240,7 @@ int __cdecl DropItemBeforeTrig()
 {
 	if ( !TryInvPut() )
 		return 0;
-	NetSendCmdPItem(1u, CMD_PUTITEM, cursmx, cursmy);
+	NetSendCmdPItem(TRUE, CMD_PUTITEM, cursmx, cursmy);
 	SetCursor(CURSOR_HAND);
 	return 1;
 }

@@ -161,7 +161,7 @@ void __cdecl gamemenu_save_game()
 
 void __cdecl gamemenu_restart_town()
 {
-	NetSendCmd(1u, CMD_RETOWN);
+	NetSendCmd(TRUE, CMD_RETOWN);
 }
 
 void __cdecl gamemenu_options()

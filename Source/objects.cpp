@@ -2830,7 +2830,6 @@ void __fastcall Obj_BCrossDamage(int i)
 			if ( (signed int)(plr[v1]._pHitPoints & 0xFFFFFFC0) <= 0 )
 			{
 				SyncPlrKill(myplr, 0);
-LABEL_15:
 				drawhpflag = TRUE;
 				return;
 			}
@@ -2842,7 +2841,7 @@ LABEL_15:
 				v6 = PS_MAGE68;
 			}
 			PlaySfxLoc(v6, plr[v1].WorldX, plr[v1].WorldY);
-			goto LABEL_15;
+			drawhpflag = TRUE;
 		}
 	}
 }
@@ -3317,7 +3316,7 @@ void __fastcall OperateL1RDoor(int pnum, int oi, unsigned char sendflag)
 				return;
 			}
 			if ( v9 == myplr && sendflag )
-				NetSendCmdParam1(1u, CMD_CLOSEDOOR, param1);
+				NetSendCmdParam1(TRUE, CMD_CLOSEDOOR, param1);
 			v7 = object[v3]._oVar1;
 			object[v3]._oVar4 = 0;
 			object[v3]._oSelFlag = 3;
@@ -3339,7 +3338,7 @@ void __fastcall OperateL1RDoor(int pnum, int oi, unsigned char sendflag)
 		else
 		{
 			if ( pnum == myplr && sendflag )
-				NetSendCmdParam1(1u, CMD_OPENDOOR, oi);
+				NetSendCmdParam1(TRUE, CMD_OPENDOOR, oi);
 			if ( !deltaload )
 				PlaySfxLoc(IS_DOOROPEN, object[v3]._ox, object[v3]._oy);
 			ObjSetMicro(v5, v6, 395);
@@ -3389,7 +3388,7 @@ void __fastcall OperateL1LDoor(int pnum, int oi, unsigned char sendflag)
 				return;
 			}
 			if ( v9 == myplr && sendflag )
-				NetSendCmdParam1(1u, CMD_CLOSEDOOR, param1);
+				NetSendCmdParam1(TRUE, CMD_CLOSEDOOR, param1);
 			v7 = object[v3]._oVar1;
 			object[v3]._oVar4 = 0;
 			object[v3]._oSelFlag = 3;
@@ -3411,7 +3410,7 @@ void __fastcall OperateL1LDoor(int pnum, int oi, unsigned char sendflag)
 		else
 		{
 			if ( pnum == myplr && sendflag )
-				NetSendCmdParam1(1u, CMD_OPENDOOR, oi);
+				NetSendCmdParam1(TRUE, CMD_OPENDOOR, oi);
 			if ( !deltaload )
 				PlaySfxLoc(IS_DOOROPEN, object[v3]._ox, object[v3]._oy);
 			if ( object[v3]._oVar1 == 214 )
@@ -3461,7 +3460,7 @@ void __fastcall OperateL2RDoor(int pnum, int oi, unsigned char sendflag)
 				return;
 			}
 			if ( v7 == myplr && sendflag )
-				NetSendCmdParam1(1u, CMD_CLOSEDOOR, param1);
+				NetSendCmdParam1(TRUE, CMD_CLOSEDOOR, param1);
 			object[v3]._oVar4 = 0;
 			object[v3]._oSelFlag = 3;
 			ObjSetMicro(v8, v5, 540);
@@ -3471,7 +3470,7 @@ void __fastcall OperateL2RDoor(int pnum, int oi, unsigned char sendflag)
 		else
 		{
 			if ( pnum == myplr && sendflag )
-				NetSendCmdParam1(1u, CMD_OPENDOOR, oi);
+				NetSendCmdParam1(TRUE, CMD_OPENDOOR, oi);
 			if ( !deltaload )
 				PlaySfxLoc(IS_DOOROPEN, object[v3]._ox, object[v3]._oy);
 			ObjSetMicro(v8, v5, 17);
@@ -3515,7 +3514,7 @@ void __fastcall OperateL2LDoor(int pnum, int oi, unsigned char sendflag)
 				return;
 			}
 			if ( v7 == myplr && sendflag )
-				NetSendCmdParam1(1u, CMD_CLOSEDOOR, param1);
+				NetSendCmdParam1(TRUE, CMD_CLOSEDOOR, param1);
 			object[v3]._oVar4 = 0;
 			object[v3]._oSelFlag = 3;
 			ObjSetMicro(v8, v5, 538);
@@ -3525,7 +3524,7 @@ void __fastcall OperateL2LDoor(int pnum, int oi, unsigned char sendflag)
 		else
 		{
 			if ( pnum == myplr && sendflag )
-				NetSendCmdParam1(1u, CMD_OPENDOOR, oi);
+				NetSendCmdParam1(TRUE, CMD_OPENDOOR, oi);
 			if ( !deltaload )
 				PlaySfxLoc(IS_DOOROPEN, object[v3]._ox, object[v3]._oy);
 			ObjSetMicro(v8, v5, 13);
@@ -3569,7 +3568,7 @@ void __fastcall OperateL3RDoor(int pnum, int oi, unsigned char sendflag)
 				return;
 			}
 			if ( v7 == myplr && sendflag )
-				NetSendCmdParam1(1u, CMD_CLOSEDOOR, param1);
+				NetSendCmdParam1(TRUE, CMD_CLOSEDOOR, param1);
 			object[v3]._oVar4 = 0;
 			object[v3]._oSelFlag = 3;
 			ObjSetMicro(v8, v5, 534);
@@ -3579,7 +3578,7 @@ void __fastcall OperateL3RDoor(int pnum, int oi, unsigned char sendflag)
 		else
 		{
 			if ( pnum == myplr && sendflag )
-				NetSendCmdParam1(1u, CMD_OPENDOOR, oi);
+				NetSendCmdParam1(TRUE, CMD_OPENDOOR, oi);
 			if ( !deltaload )
 				PlaySfxLoc(IS_DOOROPEN, object[v3]._ox, object[v3]._oy);
 			ObjSetMicro(v8, v5, 541);
@@ -3623,7 +3622,7 @@ void __fastcall OperateL3LDoor(int pnum, int oi, unsigned char sendflag)
 				return;
 			}
 			if ( v7 == myplr && sendflag )
-				NetSendCmdParam1(1u, CMD_CLOSEDOOR, param1);
+				NetSendCmdParam1(TRUE, CMD_CLOSEDOOR, param1);
 			object[v3]._oVar4 = 0;
 			object[v3]._oSelFlag = 3;
 			ObjSetMicro(v8, v5, 531);
@@ -3633,7 +3632,7 @@ void __fastcall OperateL3LDoor(int pnum, int oi, unsigned char sendflag)
 		else
 		{
 			if ( pnum == myplr && sendflag )
-				NetSendCmdParam1(1u, CMD_OPENDOOR, oi);
+				NetSendCmdParam1(TRUE, CMD_OPENDOOR, oi);
 			if ( !deltaload )
 				PlaySfxLoc(IS_DOOROPEN, object[v3]._ox, object[v3]._oy);
 			ObjSetMicro(v8, v5, 538);
@@ -3965,7 +3964,7 @@ void __fastcall OperateLever(int pnum, int i)
 LABEL_17:
 			ObjChangeMap(object[v2]._oVar1, object[v2]._oVar2, object[v2]._oVar3, object[v2]._oVar4);
 		if ( v8 == myplr )
-			NetSendCmdParam1(0, CMD_OPERATEOBJ, param1);
+			NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, param1);
 	}
 }
 // 676190: using guessed type int deltaload;
@@ -4152,7 +4151,7 @@ void __fastcall OperateBookLever(int pnum, int i)
 		object[v2]._oAnimFrame = object[v2]._oVar6;
 		InitQTextMsg(v12);
 		if ( v13 == myplr )
-			NetSendCmdParam1(0, CMD_OPERATEOBJ, param1);
+			NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, param1);
 	}
 }
 // 5A5590: using guessed type char TransVal;
@@ -4279,7 +4278,7 @@ LABEL_25:
 			object[v3]._oTrapFlag = 0;
 LABEL_26:
 			if ( param1 == myplr )
-				NetSendCmdParam2(0, CMD_PLROPOBJ, param1, param2);
+				NetSendCmdParam2(FALSE, CMD_PLROPOBJ, param1, param2);
 			return;
 		}
 	}
@@ -4332,7 +4331,6 @@ void __fastcall OperateMushPatch(int pnum, int i)
 
 void __fastcall OperateInnSignChest(int pnum, int i)
 {
-	int v3; // ecx
 	int v4; // esi
 	bool v5; // zf
 	int xx; // [esp+8h] [ebp-8h]
@@ -4354,22 +4352,17 @@ void __fastcall OperateInnSignChest(int pnum, int i)
 				SpawnQuestItem(IDI_BANNER, xx, yy, 0, 0);
 			}
 		}
-	}
-	else if ( !deltaload && pnum == myplr )
-	{
-		switch ( plr[myplr]._pClass )
-		{
+	} else if ( !deltaload && pnum == myplr ) {
+		switch ( plr[myplr]._pClass ) {
 			case PC_WARRIOR:
-				v3 = PS_WARR24;
-LABEL_8:
-				PlaySFX(v3);
-				return;
+				PlaySFX(PS_WARR24);
+				break;
 			case PC_ROGUE:
-				v3 = PS_ROGUE24;
-				goto LABEL_8;
+				PlaySFX(PS_ROGUE24);
+				break;
 			case PC_SORCERER:
-				v3 = PS_MAGE24;
-				goto LABEL_8;
+				PlaySFX(PS_MAGE24);
+				break;
 		}
 	}
 }
@@ -4404,7 +4397,7 @@ void __fastcall OperateSlainHero(int pnum, int i, unsigned char sendmsg)
 			PlaySfxLoc(v8, plr[myplr].WorldX, plr[myplr].WorldY);
 
 			if ( v4 == myplr )
-				NetSendCmdParam1(0, CMD_OPERATEOBJ, v3);
+				NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, v3);
 			return;
 		}
 	}
@@ -4491,7 +4484,7 @@ void __fastcall OperateSarc(int pnum, int i, unsigned char sendmsg)
 			if ( object[v4]._oVar1 >= 8 )
 				SpawnSkeleton(object[v4]._oVar2, object[v4]._ox, object[v4]._oy);
 			if ( v7 == myplr )
-				NetSendCmdParam1(0, CMD_OPERATEOBJ, v3);
+				NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, v3);
 		}
 		else
 		{
@@ -5704,7 +5697,7 @@ LABEL_280:
 				CalcPlrInv(arglist, 1u);
 				drawpanflag = 255;
 				if ( arglist == myplr )
-					NetSendCmdParam2(0, CMD_PLROPOBJ, arglist, param2);
+					NetSendCmdParam2(FALSE, CMD_PLROPOBJ, arglist, param2);
 				return;
 			}
 		}
@@ -5746,7 +5739,7 @@ void __fastcall OperateSkelBook(int pnum, int i, unsigned char sendmsg)
 			else
 				CreateTypeItem(v8, v9, 0, ITYPE_MISC, 24, sendmsg, 0);
 			if ( v10 == myplr )
-				NetSendCmdParam1(0, CMD_OPERATEOBJ, v3);
+				NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, v3);
 		}
 	}
 }
@@ -5786,7 +5779,7 @@ void __fastcall OperateBookCase(int pnum, int i, unsigned char sendmsg)
 				monster[4]._mmode = MM_TALK;
 			}
 			if ( v4 == myplr )
-				NetSendCmdParam1(0, CMD_OPERATEOBJ, v3);
+				NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, v3);
 		}
 	}
 }
@@ -5813,7 +5806,7 @@ void __fastcall OperateDecap(int pnum, int i, unsigned char sendmsg)
 			SetRndSeed(object[v4]._oRndSeed);
 			CreateRndItem(object[v4]._ox, object[v4]._oy, 0, sendmsg, 0);
 			if ( v5 == myplr )
-				NetSendCmdParam1(0, CMD_OPERATEOBJ, v3);
+				NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, v3);
 		}
 	}
 }
@@ -5868,7 +5861,7 @@ void __fastcall OperateArmorStand(int pnum, int i, unsigned char sendmsg)
 			CreateTypeItem(object[v4]._ox, object[v4]._oy, 1u, v9, 0, v10, 0);
 LABEL_15:
 			if ( v11 == myplr )
-				NetSendCmdParam1(0, CMD_OPERATEOBJ, v3);
+				NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, v3);
 			return;
 		}
 	}
@@ -6045,7 +6038,7 @@ LABEL_38:
 					2 * (unsigned char)leveltype);
 				v5 = 1;
 				if ( v4 == myplr )
-					NetSendCmdParam1(0, CMD_OPERATEOBJ, v2);
+					NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, v2);
 			}
 			break;
 		default:
@@ -6102,7 +6095,7 @@ LABEL_38:
 				CheckStats(v4);
 				v5 = 1;
 				if ( v4 == myplr )
-					NetSendCmdParam1(0, CMD_OPERATEOBJ, param1);
+					NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, param1);
 			}
 			break;
 	}
@@ -6174,7 +6167,7 @@ LABEL_12:
 		else
 			CreateTypeItem(v11, v12, 1u, v9, 0, sendmsg, 0);
 		if ( v14 == myplr )
-			NetSendCmdParam1(0, CMD_OPERATEOBJ, v3);
+			NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, v3);
 	}
 }
 // 5BB1ED: using guessed type char leveltype;
@@ -6196,7 +6189,7 @@ void __fastcall OperateStoryBook(int pnum, int i)
 		object[v3]._oAnimFrame = object[v3]._oVar4;
 		PlaySfxLoc(IS_ISCROL, v5, v4);
 		InitQTextMsg(object[v3]._oVar2);
-		NetSendCmdParam1(0, CMD_OPERATEOBJ, v2);
+		NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, v2);
 	}
 }
 // 646D00: using guessed type char qtextflag;
@@ -6688,7 +6681,7 @@ void __fastcall BreakBarrel(int pnum, int i, int dam, unsigned char forcebreak, 
 						SpawnSkeleton(object[v5]._oVar4, object[v5]._ox, object[v5]._oy);
 				}
 				if ( param1 == myplr )
-					NetSendCmdParam2(0, CMD_BREAKOBJ, param1, param2);
+					NetSendCmdParam2(FALSE, CMD_BREAKOBJ, param1, param2);
 			}
 			else
 			{

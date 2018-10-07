@@ -1048,7 +1048,7 @@ void __fastcall TalkToTowner(int p, int t)
 				towner[v7]._tVar1 = v3;
 				InitQTextMsg(QUEST_KING2);
 				towner[v7]._tMsgSaid = 1;
-				NetSendCmdQuest(1u, 0xCu);
+				NetSendCmdQuest(TRUE, 0xCu);
 			}
 			if ( quests[QTYPE_KING]._qactive == 3 && quests[QTYPE_KING]._qvar2 == 1 && !towner[v7]._tMsgSaid )
 			{
@@ -1058,7 +1058,7 @@ void __fastcall TalkToTowner(int p, int t)
 				towner[v7]._tVar1 = v3;
 				InitQTextMsg(QUEST_KING4);
 				towner[v7]._tMsgSaid = 1;
-				NetSendCmdQuest(1u, 0xCu);
+				NetSendCmdQuest(TRUE, 0xCu);
 			}
 		}
 		if ( gbMaxPlayers == 1 && plr[v6]._pLvlVisited[3] && quests[QTYPE_BOL]._qactive )
@@ -1150,7 +1150,7 @@ LABEL_53:
 		towner[v7]._tVar2 = 3;
 		InitQTextMsg(QUEST_BUTCH9);
 		towner[v7]._tMsgSaid = 1;
-		NetSendCmdQuest(1u, 6u);
+		NetSendCmdQuest(TRUE, 6u);
 		return;
 	}
 	if ( v2 != GetActiveTowner(0) )
@@ -1362,7 +1362,7 @@ LABEL_131:
 				quests[QTYPE_VB]._qlog = 1;
 				v19 = 15;
 LABEL_153:
-				NetSendCmdQuest(1u, v19);
+				NetSendCmdQuest(TRUE, v19);
 				goto LABEL_154;
 			}
 		}
@@ -1373,7 +1373,7 @@ LABEL_153:
 			towner[v7]._tVar1 = v3;
 			InitQTextMsg(QUEST_VILE3);
 			towner[v7]._tMsgSaid = 1;
-			NetSendCmdQuest(1u, 0xFu);
+			NetSendCmdQuest(TRUE, 0xFu);
 			quests[QTYPE_VB]._qlog = 1;
 			v19 = 5;
 			goto LABEL_153;

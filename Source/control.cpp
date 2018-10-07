@@ -1159,7 +1159,6 @@ void __cdecl InitControlPan()
 	void *v1; // ecx
 	void *v2; // ecx
 	void *v3; // ecx
-	char v4; // al
 	unsigned char *v5; // eax
 
 	v0 = 0x16800;
@@ -2016,7 +2015,6 @@ void __fastcall PrintGameStr(int x, int y, char *str, int color)
 
 void __cdecl DrawChr()
 {
-	char v0; // al
 	int v1; // ecx
 	int v2; // ecx
 	int v3; // eax
@@ -2506,7 +2504,7 @@ void __cdecl ReleaseChrBtns()
 					{
 						v5 = CMD_ADDSTR;
 					}
-					NetSendCmdParam1(1u, v5, 1u);
+					NetSendCmdParam1(TRUE, v5, 1u);
 					--plr[myplr]._pStatPts;
 				}
 			}
@@ -3238,10 +3236,9 @@ void __cdecl control_release_talk_btn()
 
 void __cdecl control_reset_talk_msg()
 {
-	int v0; // edi
 	signed int v1; // ecx
 
-	v0 = 0;
+	BOOL v0 = FALSE;
 	v1 = 0;
 	do
 	{

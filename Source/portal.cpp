@@ -167,7 +167,7 @@ void __cdecl GetPortalLevel()
 
 		if ( portalindex == myplr )
 		{
-			NetSendCmd(1, CMD_DEACTIVATEPORTAL);
+			NetSendCmd(TRUE, CMD_DEACTIVATEPORTAL);
 			DeactivatePortal(portalindex);
 		}
 	}

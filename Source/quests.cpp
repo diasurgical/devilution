@@ -189,7 +189,7 @@ void __cdecl CheckQuests()
 		{
 			AddObject(OBJ_ALTBOY, 2 * setpc_x + 20, 2 * setpc_y + 22);
 			quests[QTYPE_VB]._qvar1 = 3;
-			NetSendCmdQuest(1u, 0xFu);
+			NetSendCmdQuest(TRUE, 0xFu);
 		}
 	}
 	if ( gbMaxPlayers != 1 )
@@ -318,7 +318,7 @@ BOOL __fastcall QuestStatus(int i)
 // 5CF31D: using guessed type char setlevel;
 // 679660: using guessed type char gbMaxPlayers;
 
-void __fastcall CheckQuestKill(int m, unsigned char sendmsg)
+void __fastcall CheckQuestKill(int m, BOOL sendmsg)
 {
 	int v2; // ecx
 	char v3; // al
@@ -348,7 +348,7 @@ void __fastcall CheckQuestKill(int m, unsigned char sendmsg)
 		{
 			v5 = 12;
 LABEL_10:
-			NetSendCmdQuest(1u, v5);
+			NetSendCmdQuest(TRUE, v5);
 			return;
 		}
 	}
@@ -425,7 +425,7 @@ LABEL_10:
 					}
 					if ( sendmsg )
 					{
-						NetSendCmdQuest(1u, 0xFu);
+						NetSendCmdQuest(TRUE, 0xFu);
 						v5 = 5;
 						goto LABEL_10;
 					}
@@ -900,19 +900,19 @@ void __cdecl ResyncMPQuests()
 	  && currlevel <= (unsigned char)quests[QTYPE_KING]._qlevel + 1 )
 	{
 		quests[QTYPE_KING]._qactive = 2;
-		NetSendCmdQuest(1u, 0xCu);
+		NetSendCmdQuest(TRUE, 0xCu);
 	}
 	if ( quests[QTYPE_BUTCH]._qactive == 1
 	  && currlevel >= (unsigned char)quests[QTYPE_BUTCH]._qlevel - 1
 	  && currlevel <= (unsigned char)quests[QTYPE_BUTCH]._qlevel + 1 )
 	{
 		quests[QTYPE_BUTCH]._qactive = 2;
-		NetSendCmdQuest(1u, 6u);
+		NetSendCmdQuest(TRUE, 6u);
 	}
 	if ( quests[QTYPE_VB]._qactive == 1 && currlevel == (unsigned char)quests[QTYPE_VB]._qlevel - 1 )
 	{
 		quests[QTYPE_VB]._qactive = 2;
-		NetSendCmdQuest(1u, 0xFu);
+		NetSendCmdQuest(TRUE, 0xFu);
 	}
 	if ( QuestStatus(QTYPE_VB) )
 		AddObject(OBJ_ALTBOY, 2 * setpc_x + 20, 2 * setpc_y + 22);

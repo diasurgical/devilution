@@ -1109,20 +1109,18 @@ void __fastcall NetSendCmdGItem(BOOL bHiPri, unsigned char bCmd, unsigned char m
 		NetSendLoPri((unsigned char *)&cmd, 0x1Eu);
 }
 
-void __fastcall NetSendCmdGItem2(unsigned char usonly, unsigned char bCmd, unsigned char mast, unsigned char pnum, struct TCmdGItem *p)
+void __fastcall NetSendCmdGItem2(BOOL usonly, unsigned char bCmd, unsigned char mast, unsigned char pnum, struct TCmdGItem *p)
 {
 	unsigned char v5; // bl
-	int v6; // esi
 	int v7; // eax
 	TCmdGItem cmd; // [esp+8h] [ebp-20h]
 
 	v5 = bCmd;
-	v6 = usonly;
 	memcpy(&cmd, p, 0x1Eu);
 	cmd.bPnum = pnum;
 	cmd.bCmd = v5;
 	cmd.bMaster = mast;
-	if ( !v6 )
+	if ( !usonly )
 	{
 		cmd.dwTime = 0;
 		NetSendHiPri((unsigned char *)&cmd, 0x1Eu);
@@ -1930,7 +1928,7 @@ int __fastcall On_REQUESTGITEM(struct TCmdGItem *pCmd, int pnum)
 				}
 				else
 				{
-					NetSendCmdGItem2(0, CMD_GETITEM, myplr, v8, v2);
+					NetSendCmdGItem2(FALSE, CMD_GETITEM, myplr, v8, v2);
 					if ( (unsigned char)v2->bPnum == myplr )
 						InvGetItem(myplr, v7);
 					else
@@ -1989,7 +1987,7 @@ int __fastcall On_GETITEM(struct TCmdGItem *pCmd, int pnum)
 		v4 = FindGetItem((unsigned short)pCmd->wIndx, pCmd->wCI, pCmd->dwSeed);
 		if ( !delta_get_item(v2, v2->bLevel) )
 		{
-			NetSendCmdGItem2(1u, CMD_GETITEM, v2->bMaster, v2->bPnum, v2);
+			NetSendCmdGItem2(TRUE, CMD_GETITEM, v2->bMaster, v2->bPnum, v2);
 			return 30;
 		}
 		v6 = v2->bLevel;
@@ -2162,7 +2160,7 @@ int __fastcall On_REQUESTAGITEM(struct TCmdGItem *pCmd, int pnum)
 				}
 				else
 				{
-					NetSendCmdGItem2(0, CMD_AGETITEM, myplr, v8, v2);
+					NetSendCmdGItem2(FALSE, CMD_AGETITEM, myplr, v8, v2);
 					if ( (unsigned char)v2->bPnum == myplr )
 						AutoGetItem(myplr, (unsigned char)v2->bCursitem);
 					else
@@ -2201,7 +2199,7 @@ int __fastcall On_AGETITEM(struct TCmdGItem *pCmd, int pnum)
 		FindGetItem((unsigned short)pCmd->wIndx, pCmd->wCI, pCmd->dwSeed);
 		if ( !delta_get_item(v2, v2->bLevel) )
 		{
-			NetSendCmdGItem2(1u, CMD_AGETITEM, v2->bMaster, v2->bPnum, v2);
+			NetSendCmdGItem2(TRUE, CMD_AGETITEM, v2->bMaster, v2->bPnum, v2);
 			return 30;
 		}
 		v4 = v2->bLevel;

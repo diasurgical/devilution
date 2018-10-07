@@ -36,7 +36,7 @@ void __cdecl track_process()
 				if ( v1 - sgdwLastWalk >= 300 )
 				{
 					sgdwLastWalk = v1;
-					NetSendCmdLoc(1u, CMD_WALKXY, cursmx, cursmy);
+					NetSendCmdLoc(TRUE, CMD_WALKXY, cursmx, cursmy);
 					if ( !sgbIsScrolling )
 						sgbIsScrolling = 1;
 				}
@@ -57,7 +57,7 @@ void __fastcall track_repeat_walk(bool rep)
 		{
 			sgbIsScrolling = 0;
 			sgdwLastWalk = GetTickCount() - 50;
-			NetSendCmdLoc(1u, CMD_WALKXY, cursmx, cursmy);
+			NetSendCmdLoc(TRUE, CMD_WALKXY, cursmx, cursmy);
 		}
 		else if ( sgbIsScrolling )
 		{

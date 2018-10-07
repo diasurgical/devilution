@@ -226,7 +226,7 @@ LABEL_41:
 	PaletteFadeOut(8);
 	FreeInterface();
 	SetWindowProc(saveProc);
-	NetSendCmdLocParam1(1u, CMD_PLAYER_JOINLEVEL, plr[myplr].WorldX, plr[myplr].WorldY, plr[myplr].plrlevel);
+	NetSendCmdLocParam1(TRUE, CMD_PLAYER_JOINLEVEL, plr[myplr].WorldX, plr[myplr].WorldY, plr[myplr].plrlevel);
 	plrmsg_delay(0);
 	ResetPal();
 	if ( gbSomebodyWonGameKludge && plr[myplr].plrlevel == 16 )

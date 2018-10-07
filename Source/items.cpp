@@ -1214,7 +1214,7 @@ void __fastcall CalcSelfItems(int pnum)
 	v2 = 0;
 	v3 = 0;
 	v4 = 0;
-	v5 = &v1->InvBody[INVLOC_HEAD]._iStatFlag;
+	v5 = &v1->InvBody[0]._iStatFlag;
 	v6 = 7;
 	do
 	{
@@ -1237,7 +1237,7 @@ void __fastcall CalcSelfItems(int pnum)
 	do
 	{
 		v9 = 0;
-		v8 = &v1->InvBody[INVLOC_HEAD]._iMinStr;
+		v8 = &v1->InvBody[0]._iMinStr;
 		v10 = 7;
 		do
 		{
@@ -3075,7 +3075,7 @@ void __fastcall SetupAllItems(int ii, int idx, int iseed, int lvl, int uper, int
 	SetupItem(ii);
 }
 
-void __fastcall SpawnItem(int m, int x, int y, unsigned char sendmsg)
+void __fastcall SpawnItem(int m, int x, int y, BOOL sendmsg)
 {
 	int ii; // edi
 	int onlygood; // [esp+Ch] [ebp-Ch]
@@ -3121,7 +3121,7 @@ LABEL_13:
 
 		++numitems;
 		if ( sendmsg )
-			NetSendCmdDItem(0, ii);
+			NetSendCmdDItem(FALSE, ii);
 	}
 }
 // 679660: using guessed type char gbMaxPlayers;
@@ -3175,7 +3175,7 @@ void __fastcall CreateRndItem(int x, int y, unsigned char onlygood, unsigned cha
 		SetupAllItems(ii, idx, GetRndSeed(), 2 * currlevel, 1, onlygood, 0, delta);
 
 		if ( sendmsg )
-			NetSendCmdDItem(0, ii);
+			NetSendCmdDItem(FALSE, ii);
 		if ( delta )
 			DeltaAddItem(ii);
 
@@ -3215,7 +3215,7 @@ void __fastcall CreateRndUseful(int pnum, int x, int y, unsigned char sendmsg)
 		SetupAllUseful(ii, GetRndSeed(), currlevel);
 
 		if ( sendmsg )
-			NetSendCmdDItem(0, ii);
+			NetSendCmdDItem(FALSE, ii);
 
 		++numitems;
 	}
@@ -3240,7 +3240,7 @@ void __fastcall CreateTypeItem(int x, int y, unsigned char onlygood, int itype, 
 		SetupAllItems(ii, idx, GetRndSeed(), 2 * currlevel, 1, onlygood, 0, delta);
 
 		if ( sendmsg )
-			NetSendCmdDItem(0, ii);
+			NetSendCmdDItem(FALSE, ii);
 		if ( delta )
 			DeltaAddItem(ii);
 
@@ -4402,7 +4402,6 @@ void __fastcall UseItem(int p, int Mid, int spl)
 	int v10; // esi
 	int v11; // edi
 	unsigned int v12; // edi
-	char v13; // al
 	int v14; // edi
 	int v15; // ecx
 	int *v16; // eax
@@ -4432,7 +4431,6 @@ void __fastcall UseItem(int p, int Mid, int spl)
 	int v42; // esi
 	int v43; // edi
 	unsigned int v44; // edi
-	char v45; // al
 	int v46; // edi
 	int v47; // ecx
 	int *v48; // eax
@@ -4441,7 +4439,6 @@ void __fastcall UseItem(int p, int Mid, int spl)
 	int v51; // edi
 	int v52; // edx
 	unsigned int v53; // edi
-	char v54; // al
 	int v55; // edi
 	int v56; // ecx
 	int *v57; // eax
@@ -4450,7 +4447,6 @@ void __fastcall UseItem(int p, int Mid, int spl)
 	int v61; // esi
 	int v62; // edi
 	unsigned int v63; // edi
-	char v64; // al
 	int v65; // edi
 	int v66; // ecx
 	int *v67; // eax
@@ -4636,7 +4632,7 @@ LABEL_71:
 					plr[v38].destParam1 = v37;
 					plr[v38].destParam2 = v39;
 					if ( v36 && spl == SPL_NOVA )
-						NetSendCmdLoc(1u, CMD_NOVA, v37, v39);
+						NetSendCmdLoc(TRUE, CMD_NOVA, v37, v39);
 					return;
 				}
 			}
@@ -5522,7 +5518,7 @@ void __fastcall CreateSpellBook(int x, int y, int ispell, bool sendmsg, int delt
 		}
 		while ( !done );
 		if ( sendmsg )
-			NetSendCmdDItem(0, ii);
+			NetSendCmdDItem(FALSE, ii);
 		if ( delta )
 			DeltaAddItem(ii);
 		++numitems;
@@ -5553,7 +5549,7 @@ void __fastcall CreateMagicItem(int x, int y, int imisc, int icurs, int sendmsg,
 		}
 		while ( !done );
 		if ( sendmsg )
-			NetSendCmdDItem(0, ii);
+			NetSendCmdDItem(FALSE, ii);
 		if ( delta )
 			DeltaAddItem(ii);
 		++numitems;
