@@ -699,7 +699,7 @@ void __fastcall ToggleSpell(int slot)
 			break;
 	}
 
-	if ( spells & 1i64 << (plr[myplr]._pSplHotKey[slot] - 1) ) {
+	if ( spells & (__int64)1 << (plr[myplr]._pSplHotKey[slot] - 1) ) {
 		plr[myplr]._pRSpell = plr[myplr]._pSplHotKey[slot];
 		plr[myplr]._pRSplType = plr[myplr]._pSplTHotKey[slot];
 		drawpanflag = 255;
@@ -1102,6 +1102,7 @@ void __cdecl InitControlPan()
 	void *v1; // ecx
 	void *v2; // ecx
 	void *v3; // ecx
+	char v4;
 	unsigned char *v5; // eax
 
 	v0 = 0x16800;
@@ -1240,94 +1241,53 @@ void __cdecl DrawCtrlPan()
 
 void __cdecl DoSpeedBook()
 {
-	int v0; // eax
-	signed int v1; // ebx
-	bool v2; // zf
-	unsigned __int64 v3; // rdi
-	unsigned int v4; // ecx
-	//unsigned int v5; // [esp+4h] [ebp-20h]
-	//unsigned int v6; // [esp+8h] [ebp-1Ch]
-	unsigned int v7; // [esp+8h] [ebp-1Ch]
-	int X; // [esp+Ch] [ebp-18h]
-	int Y; // [esp+10h] [ebp-14h]
-	signed int v10; // [esp+14h] [ebp-10h]
-	int v11; // [esp+18h] [ebp-Ch]
-	signed int v12; // [esp+1Ch] [ebp-8h]
-	signed int v13; // [esp+20h] [ebp-4h]
+	unsigned __int64 spells, spell;
 
-	v0 = myplr;
-	v13 = 636;
-	v1 = 1;
-	v2 = plr[myplr]._pRSpell == -1;
 	spselflag = 1;
-	v12 = 495;
-	X = 600;
-	Y = 307;
-	if ( !v2 )
-	{
-		v11 = 0;
-		//v3 = __PAIR__(v5, v6);
-		while ( 1 )
-		{
-			if ( v11 )
-			{
-				switch ( v11 )
-				{
-					case RSPLTYPE_SPELL:
-						HIDWORD(v3) = plr[v0]._pMemSpells[0];
-						LODWORD(v3) = plr[v0]._pMemSpells[1];
-						break;
-					case RSPLTYPE_SCROLL:
-						HIDWORD(v3) = plr[v0]._pScrlSpells[0];
-						LODWORD(v3) = plr[v0]._pScrlSpells[1];
-						break;
-					case RSPLTYPE_CHARGES:
-						HIDWORD(v3) = plr[v0]._pISpells[0];
-						LODWORD(v3) = plr[v0]._pISpells[1];
-						break;
-				}
+	int xo = 636;
+	int yo = 495;
+	int X = 600;
+	int Y = 307;
+	if ( plr[myplr]._pRSpell != -1 ) {
+		for ( int i = 0; i < 4; i++ ) {
+			switch ( i ) {
+				case RSPLTYPE_SKILL:
+					spells = plr[myplr]._pAblSpells64;
+					break;
+				case RSPLTYPE_SPELL:
+					spells = plr[myplr]._pMemSpells64;
+					break;
+				case RSPLTYPE_SCROLL:
+					spells = plr[myplr]._pScrlSpells64;
+					break;
+				case RSPLTYPE_CHARGES:
+					spells = plr[myplr]._pISpells64;
+					break;
 			}
-			else
-			{
-				HIDWORD(v3) = plr[v0]._pAblSpells[0];
-				LODWORD(v3) = plr[v0]._pAblSpells[1];
-			}
-			v7 = 0;
-			v10 = 1;
-			do
-			{
-				if ( (unsigned int)v3 & v7 | HIDWORD(v3) & v1 )
-				{
-					if ( v10 == plr[v0]._pRSpell && v11 == SLOBYTE(plr[v0]._pRSplType) )
-					{
-						X = v13 - 36;
-						Y = v12 - 188;
+			spell = (__int64)1;
+			for ( int j = 1; j < MAX_SPELLS; j++ ) {
+				if ( spell & spells ) {
+					if ( j == plr[myplr]._pRSpell && i == plr[myplr]._pRSplType ) {
+						X = xo - 36;
+						Y = yo - 188;
 					}
-					v13 -= 56;
-					if ( v13 == 20 )
-					{
-						v12 -= 56;
-						v13 = 636;
+					xo -= 56;
+					if ( xo == 20 ) {
+						xo = 636;
+						yo -= 56;
 					}
 				}
-				v4 = __PAIR__(v7, v1) >> 31;
-				v1 *= 2;
-				++v10;
-				v7 = v4;
+				spell <<= (__int64)1;
 			}
-			while ( v10 < MAX_SPELLS );
-			if ( v3 && v13 != 636 )
-				v13 -= 56;
-			if ( v13 == 20 )
-			{
-				v12 -= 56;
-				v13 = 636;
+			if ( spells && xo != 636 )
+				xo -= 56;
+			if ( xo == 20 ) {
+				xo = 636;
+				yo -= 56;
 			}
-			if ( ++v11 >= 4 )
-				break;
-			v1 = 1;
 		}
 	}
+
 	SetCursorPos(X, Y);
 }
 // 4B8C98: using guessed type int spselflag;
@@ -1753,7 +1713,7 @@ void __cdecl DrawInfoBox()
 	int v3; // esi
 	char *v4; // eax
 	const char *v5; // eax
-	char v6; // al
+	char v6;
 	signed int v7; // edi
 	signed int v8; // ebp
 	int v9; // esi
@@ -2061,38 +2021,38 @@ void __cdecl DrawChr()
 		MY_PlrStringXY(258, 239, 301, a4, a5[0], 0);
 	v9 = plr[myplr]._pMagResist;
 	a5[0] = v9 != 0;
-	if ( v9 >= 75 )
+	if ( v9 < 75 )
 	{
-		a5[0] = 3;
-		sprintf(a4, "MAX");
+		sprintf(a4, "%i%%", v9);
 	}
 	else
 	{
-		sprintf(a4, "%i%%", v9);
+		a5[0] = 3;
+		sprintf(a4, "MAX");
 	}
 	ADD_PlrStringXY(257, 276, 300, a4, a5[0]);
 	v10 = plr[myplr]._pFireResist;
 	a5[0] = v10 != 0;
-	if ( v10 >= 75 )
+	if ( v10 < 75 )
 	{
-		a5[0] = 3;
-		sprintf(a4, "MAX");
+		sprintf(a4, "%i%%", v10);
 	}
 	else
 	{
-		sprintf(a4, "%i%%", v10);
+		a5[0] = 3;
+		sprintf(a4, "MAX");
 	}
 	ADD_PlrStringXY(257, 304, 300, a4, a5[0]);
 	v11 = plr[myplr]._pLghtResist;
 	a5[0] = v11 != 0;
 	if ( v11 >= 75 )
 	{
-		a5[0] = 3;
-		sprintf(a4, "MAX");
+		sprintf(a4, "%i%%", v11);
 	}
 	else
 	{
-		sprintf(a4, "%i%%", v11);
+		a5[0] = 3;
+		sprintf(a4, "MAX");
 	}
 	ADD_PlrStringXY(257, 332, 300, a4, a5[0]);
 	a5[0] = 0;
@@ -2777,11 +2737,11 @@ void __cdecl CheckSBook()
 	if ( MouseX >= 331 && MouseX < 368 && MouseY >= 18 && MouseY < 314 ) {
 		int spell = SpellPages[sbooktab][(MouseY - 18) / 43];
 		if ( spell != -1 ) {
-			if ( 1i64 << (spell - 1) & (plr[myplr]._pAblSpells64 | plr[myplr]._pMemSpells64 | plr[myplr]._pISpells64)) {
+			if ( (__int64)1 << (spell - 1) & (plr[myplr]._pAblSpells64 | plr[myplr]._pMemSpells64 | plr[myplr]._pISpells64)) {
 				char splType = RSPLTYPE_SPELL;
-				if ( 1i64 << (spell - 1) & plr[myplr]._pISpells64 )
+				if ( (__int64)1 << (spell - 1) & plr[myplr]._pISpells64 )
 					splType = RSPLTYPE_CHARGES;
-				if ( 1i64 << (spell - 1) & plr[myplr]._pAblSpells64 )
+				if ( (__int64)1 << (spell - 1) & plr[myplr]._pAblSpells64 )
 					splType = RSPLTYPE_SKILL;
 				plr[myplr]._pRSpell = spell;
 				plr[myplr]._pRSplType = splType;
@@ -2789,7 +2749,7 @@ void __cdecl CheckSBook()
 			}
 		}
 	}
-	if ( MouseX >= 327 && MouseX < 633 && MouseY >= 320 && MouseY < 349 )
+	if ( MouseX >= 327 && MouseX < 633 && MouseY >= 320 && MouseY < 349 ) /// BUGFIX: change `< 633` to `< 631`
 		sbooktab = (MouseX - 327) / 76;
 }
 // 4B8950: using guessed type int sbooktab;
