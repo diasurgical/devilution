@@ -1396,8 +1396,7 @@ struct PkPlayerStruct {
     int pManaBase;
     int pMaxManaBase;
     char pSplLvl[MAX_SPELLS];
-    int pMemSpells; /* __int64 */
-    int pMemSpells2;
+    unsigned __int64 pMemSpells;
     PkItemStruct InvBody[7];
     PkItemStruct InvList[40];
     char InvGrid[40];
