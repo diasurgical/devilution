@@ -47,8 +47,7 @@ void __fastcall PackPlayer(PkPlayerStruct *pPack, int pnum, BOOL manashield)
 	pPack->pMaxHPBase = pPlayer->_pMaxHPBase;
 	pPack->pManaBase = pPlayer->_pManaBase;
 	pPack->pMaxManaBase = pPlayer->_pMaxManaBase;
-	pPack->pMemSpells = pPlayer->_pMemSpells[0];
-	pPack->pMemSpells2 = pPlayer->_pMemSpells[1];
+	pPack->pMemSpells = pPlayer->_pMemSpells64;
 
 	for(i = 0; i < MAX_SPELLS; i++)
 		pPack->pSplLvl[i] = pPlayer->_pSplLvl[i];
@@ -196,8 +195,7 @@ void __fastcall UnPackPlayer(PkPlayerStruct *pPack, int pnum, bool killok)
 	}
 	pPlayer->_pMaxManaBase = pPack->pMaxManaBase;
 	pPlayer->_pManaBase = pPack->pManaBase;
-	pPlayer->_pMemSpells[0] = pPack->pMemSpells;
-	pPlayer->_pMemSpells[1] = pPack->pMemSpells2;
+	pPlayer->_pMemSpells64 = pPack->pMemSpells;
 
 	for(i = 0; i < MAX_SPELLS; i++)
 		pPlayer->_pSplLvl[i] = pPack->pSplLvl[i];
