@@ -2774,44 +2774,23 @@ LABEL_14:
 
 void __cdecl CheckSBook()
 {
-	signed int v0; // ecx
-	signed int v1; // esi
-	int v2; // eax
-	int v3; // esi
-	signed __int64 v4; // rax
-	char v5; // cl
-	__int64 v6; // [esp+8h] [ebp-10h]
-	int v7; // [esp+10h] [ebp-8h]
-
-	v0 = MouseY;
-	v1 = MouseX;
-	if ( MouseX >= 331 && MouseX < 368 && MouseY >= 18 && MouseY < 314 )
-	{
-		v2 = SpellPages[0][7 * sbooktab + (MouseY - 18) / 43];
-		v7 = SpellPages[0][7 * sbooktab + (MouseY - 18) / 43];
-		if ( v2 != -1 )
-		{
-			v3 = myplr;
-			LODWORD(v6) = plr[myplr]._pAblSpells[0];
-			HIDWORD(v6) = plr[myplr]._pAblSpells[1];
-			v4 = (__int64)1 << ((unsigned char)v2 - 1);
-			if ( HIDWORD(v4) & (HIDWORD(v6) | plr[myplr]._pISpells[1] | plr[myplr]._pMemSpells[1]) | (unsigned int)v4 & ((unsigned int)v6 | plr[myplr]._pISpells[0] | plr[myplr]._pMemSpells[0]) )
-			{
-				v5 = 3;
-				if ( !(plr[v3]._pISpells[1] & HIDWORD(v4) | plr[v3]._pISpells[0] & (unsigned int)v4) )
-					v5 = 1;
-				if ( v6 & v4 )
-					v5 = 0;
+	if ( MouseX >= 331 && MouseX < 368 && MouseY >= 18 && MouseY < 314 ) {
+		int spell = SpellPages[sbooktab][(MouseY - 18) / 43];
+		if ( spell != -1 ) {
+			if ( 1i64 << (spell - 1) & (plr[myplr]._pAblSpells64 | plr[myplr]._pMemSpells64 | plr[myplr]._pISpells64)) {
+				char splType = RSPLTYPE_SPELL;
+				if ( 1i64 << (spell - 1) & plr[myplr]._pISpells64 )
+					splType = RSPLTYPE_CHARGES;
+				if ( 1i64 << (spell - 1) & plr[myplr]._pAblSpells64 )
+					splType = RSPLTYPE_SKILL;
+				plr[myplr]._pRSpell = spell;
+				plr[myplr]._pRSplType = splType;
 				drawpanflag = 255;
-				plr[v3]._pRSpell = v7;
-				_LOBYTE(plr[v3]._pRSplType) = v5;
 			}
-			v1 = MouseX;
-			v0 = MouseY;
 		}
 	}
-	if ( v1 >= 327 && v1 < 633 && v0 >= 320 && v0 < 349 ) /// BUGFIX: change `< 633` to `< 631`
-		sbooktab = (v1 - 327) / 76;
+	if ( MouseX >= 327 && MouseX < 633 && MouseY >= 320 && MouseY < 349 )
+		sbooktab = (MouseX - 327) / 76;
 }
 // 4B8950: using guessed type int sbooktab;
 // 52571C: using guessed type int drawpanflag;
