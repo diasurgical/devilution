@@ -1164,13 +1164,13 @@ void __fastcall CalcPlrScrolls(int p)
 		--v7;
 	}
 	while ( v7 );
-	if ( _LOBYTE(plr[v1]._pRSplType) == 2 )
+	if ( _LOBYTE(plr[v1]._pRSplType) == RSPLTYPE_SCROLL )
 	{
 		v9 = 1 << (_LOBYTE(plr[v1]._pRSpell) - 1);
 		if ( !(plr[v1]._pScrlSpells[1] & HIDWORD(v9) | plr[v1]._pScrlSpells[0] & (unsigned int)v9) )
 		{
 			plr[v1]._pRSpell = -1;
-			_LOBYTE(plr[v1]._pRSplType) = 4;
+			_LOBYTE(plr[v1]._pRSplType) = RSPLTYPE_INVALID;
 			drawpanflag = 255;
 		}
 	}

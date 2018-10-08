@@ -288,7 +288,7 @@ void __fastcall SetSpellTrans(char t)
 	signed int v9; // eax
 	char *v10; // ecx
 
-	if ( !t )
+	if ( t == RSPLTYPE_SKILL )
 	{
 		v1 = 0;
 		do
@@ -308,7 +308,7 @@ void __fastcall SetSpellTrans(char t)
 	byte_4B8B88[255] = 0;
 	switch ( t )
 	{
-		case 1:
+		case RSPLTYPE_SPELL:
 			byte_4B8B88[144] = -79;
 			byte_4B8B88[145] = -77;
 			byte_4B8B88[146] = -75;
@@ -322,7 +322,7 @@ void __fastcall SetSpellTrans(char t)
 			}
 			while ( v9 < 192 );
 			break;
-		case 2:
+		case RSPLTYPE_SCROLL:
 			byte_4B8B88[144] = -95;
 			byte_4B8B88[145] = -93;
 			byte_4B8B88[146] = -91;
@@ -335,7 +335,7 @@ void __fastcall SetSpellTrans(char t)
 			}
 			while ( v7 < 176 );
 			break;
-		case 3:
+		case RSPLTYPE_CHARGES:
 			byte_4B8B88[144] = -47;
 			byte_4B8B88[145] = -45;
 			byte_4B8B88[146] = -43;
@@ -348,7 +348,7 @@ void __fastcall SetSpellTrans(char t)
 			}
 			while ( v5 < 224 );
 			break;
-		case 4:
+		case RSPLTYPE_INVALID:
 			byte_4B8B88[144] = -15;
 			byte_4B8B88[145] = -13;
 			byte_4B8B88[146] = -11;
@@ -383,18 +383,18 @@ void __cdecl DrawSpell()
 	v3 = v1;
 	v6 = plr[myplr]._pRSpell;
 	v4 = plr[myplr]._pISplLvlAdd + plr[myplr]._pSplLvl[v1];
-	if ( v2 == 1 && v1 != -1 )
+	if ( v2 == RSPLTYPE_SPELL && v1 != -1 )
 	{
-		if ( !CheckSpell(myplr, v1, 1, 1) )
-			v2 = 4;
+		if ( !CheckSpell(myplr, v1, RSPLTYPE_SPELL, TRUE) )
+			v2 = RSPLTYPE_INVALID;
 		v0 = myplr;
 		if ( v4 <= 0 )
-			v2 = 4;
+			v2 = RSPLTYPE_INVALID;
 	}
-	if ( !currlevel && v2 != 4 && !spelldata[v3].sTownSpell )
-		v2 = 4;
+	if ( !currlevel && v2 != RSPLTYPE_INVALID && !spelldata[v3].sTownSpell )
+		v2 = RSPLTYPE_INVALID;
 	if ( plr[v0]._pRSpell < 0 )
-		v2 = 4;
+		v2 = RSPLTYPE_INVALID;
 	SetSpellTrans(v2);
 	if ( v6 == -1 )
 		DrawSpellCel(629, 631, (char *)pSpellCels, 27, 56);
@@ -438,14 +438,14 @@ void __cdecl DrawSpellList()
 	xp = 495;
 	ClearPanel();
 	v0 = myplr;
-	v1 = 0;
+	v1 = RSPLTYPE_SKILL;
 	v24 = 0;
 	do
 	{
 		switch ( v1 )
 		{
 			case RSPLTYPE_SKILL:
-				SetSpellTrans(0);
+				SetSpellTrans(RSPLTYPE_SKILL);
 				yp = 46;
 				v2 = plr[v0]._pAblSpells[0];
 				v3 = plr[v0]._pAblSpells[1];
@@ -456,13 +456,13 @@ void __cdecl DrawSpellList()
 				v3 = plr[v0]._pMemSpells[1];
 				goto LABEL_10;
 			case RSPLTYPE_SCROLL:
-				SetSpellTrans(2);
+				SetSpellTrans(RSPLTYPE_SCROLL);
 				yp = 44;
 				v2 = plr[v0]._pScrlSpells[0];
 				v3 = plr[v0]._pScrlSpells[1];
 				goto LABEL_10;
 			case RSPLTYPE_CHARGES:
-				SetSpellTrans(3);
+				SetSpellTrans(RSPLTYPE_CHARGES);
 				yp = 45;
 				v2 = plr[v0]._pISpells[0];
 				v3 = plr[v0]._pISpells[1];
@@ -492,14 +492,14 @@ LABEL_10:
 					nCel = 0;
 					v9 = 0;
 				}
-				SetSpellTrans(v9 <= 0 ? 4 : 1);
+				SetSpellTrans(v9 <= 0 ? RSPLTYPE_INVALID : RSPLTYPE_SPELL);
 			}
 			else
 			{
 				v9 = nCel;
 			}
 			if ( !currlevel && !*v20 )
-				SetSpellTrans(4);
+				SetSpellTrans(RSPLTYPE_INVALID);
 			DrawSpellCel(v17, xp, (char *)pSpellCels, (char)SpellITbl[v4], 56);
 			if ( MouseX >= v17 - 64 && MouseX < v17 - 64 + 56 && MouseY >= v22 && MouseY < v22 + 56 )
 			{
@@ -1113,7 +1113,7 @@ void __cdecl InitControlPan()
 	pPanelText = LoadFileInMem("CtrlPan\\SmalText.CEL", 0);
 	pChrPanel = LoadFileInMem("Data\\Char.CEL", 0);
 	pSpellCels = LoadFileInMem("CtrlPan\\SpelIcon.CEL", 0);
-	SetSpellTrans(0);
+	SetSpellTrans(RSPLTYPE_SKILL);
 	pStatusPanel = LoadFileInMem("CtrlPan\\Panel8.CEL", 0);
 	CelDecodeRect((char *)pBtmBuff, 0, 143, 640, (char *)pStatusPanel, 1, 640);
 	v1 = pStatusPanel;
@@ -2615,19 +2615,19 @@ void __cdecl DrawSpellBook()
 		v1 = (__int64)1 << (v2 - 1);
 		if ( v2 != -1 && (v1 & v0) )
 		{
-			v7 = GetSBookTrans(v2, 1u);
+			v7 = GetSBookTrans(v2, TRUE);
 			SetSpellTrans(v7);
 			DrawSpellCel(395, v8 + 1, (char *)pSBkIconCels, (char)SpellITbl[v2], MAX_SPELLS);
 			if ( v2 == plr[myplr]._pRSpell && v7 == _LOBYTE(plr[myplr]._pRSplType) )
 			{
-				SetSpellTrans(0);
+				SetSpellTrans(RSPLTYPE_SKILL);
 				DrawSpellCel(395, v8 + 1, (char *)pSBkIconCels, 43, MAX_SPELLS);
 			}
 			PrintSBookStr(10, v8 - 22, 0, spelldata[v2].sNameText, 0);
-			v3 = GetSBookTrans(v2, 0);
-			if ( v3 )
+			v3 = GetSBookTrans(v2, FALSE);
+			if ( v3 != RSPLTYPE_SKILL )
 			{
-				if ( v3 == 3 )
+				if ( v3 == RSPLTYPE_CHARGES )
 				{
 					sprintf(tempstr, "Staff (%i charges)", plr[myplr].InvBody[INVLOC_HAND_LEFT]._iCharges);
 				}
