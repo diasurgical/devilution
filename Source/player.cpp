@@ -1708,7 +1708,7 @@ void __fastcall StartPlayerKill(int pnum, int earflag)
                             PlrDeadItem(pnum, &ear, 0, 0);
                         }
                     } else {
-                        ItemStruct *pi = &plr[pnum].InvBody[INVLOC_HEAD];
+                        ItemStruct *pi = &plr[pnum].InvBody[0];
                         i = NUM_INVLOC;
                         while (i != 0) {
                             i--;

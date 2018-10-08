@@ -1159,7 +1159,6 @@ void __cdecl InitControlPan()
 	void *v1; // ecx
 	void *v2; // ecx
 	void *v3; // ecx
-	char v4; // al
 	unsigned char *v5; // eax
 
 	v0 = 0x16800;
@@ -1227,21 +1226,12 @@ void __cdecl InitControlPan()
 	pSBkIconCels = LoadFileInMem("Data\\SpellI2.CEL", 0);
 	sbooktab = 0;
 	sbookflag = 0;
-	v4 = plr[myplr]._pClass;
-	if ( v4 )
-	{
-		if ( v4 == UI_ROGUE )
-		{
-			SpellPages[0][0] = SPL_DISARM;
-		}
-		else if ( v4 == UI_SORCERER )
-		{
-			SpellPages[0][0] = SPL_RECHARGE;
-		}
-	}
-	else
-	{
+	if ( plr[myplr]._pClass == PC_WARRIOR ) {
 		SpellPages[0][0] = SPL_REPAIR;
+	} else if ( plr[myplr]._pClass == PC_ROGUE ) {
+		SpellPages[0][0] = SPL_DISARM;
+	} else if ( plr[myplr]._pClass == PC_SORCERER ) {
+		SpellPages[0][0] = SPL_RECHARGE;
 	}
 	pQLogCel = LoadFileInMem("Data\\Quest.CEL", 0);
 	v5 = LoadFileInMem("CtrlPan\\Golddrop.cel", 0);
@@ -2025,7 +2015,6 @@ void __fastcall PrintGameStr(int x, int y, char *str, int color)
 
 void __cdecl DrawChr()
 {
-	char v0; // al
 	int v1; // ecx
 	int v2; // ecx
 	int v3; // eax
@@ -2060,21 +2049,12 @@ void __cdecl DrawChr()
 
 	CelDecodeOnly(64, 511, pChrPanel, 1, 320);
 	ADD_PlrStringXY(20, 32, 151, plr[myplr]._pName, 0);
-	v0 = plr[myplr]._pClass;
-	if ( v0 )
-	{
-		if ( v0 == 1 )
-		{
-			ADD_PlrStringXY(168, 32, 299, "Rogue", 0); /* should use ClassStrTbl ? */
-		}
-		else if ( v0 == 2 )
-		{
-			ADD_PlrStringXY(168, 32, 299, "Sorceror", 0);
-		}
-	}
-	else
-	{
+	if ( plr[myplr]._pClass == PC_WARRIOR ) {
 		ADD_PlrStringXY(168, 32, 299, "Warrior", 0);
+	} else if ( plr[myplr]._pClass == PC_ROGUE ) {
+		ADD_PlrStringXY(168, 32, 299, "Rogue", 0); /* should use ClassStrTbl ? */
+	} else if ( plr[myplr]._pClass == PC_SORCERER ) {
+		ADD_PlrStringXY(168, 32, 299, "Sorceror", 0);
 	}
 	sprintf(a4, "%i", plr[myplr]._pLevel);
 	ADD_PlrStringXY(66, 69, 109, a4, 0);
@@ -2121,13 +2101,13 @@ void __cdecl DrawChr()
 	v4 = plr[v2]._pDamageMod;
 	v5 = plr[v2].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_BOW;
 	v29 = plr[v2]._pDamageMod;
-	if ( v5 && _LOBYTE(plr[v2]._pClass) != 1 )
+	if ( v5 && plr[v2]._pClass != PC_ROGUE )
 		v4 >>= 1;
 	v30 += v4;
 	v6 = plr[v2]._pIBonusDam;
 	v28 = plr[v2]._pIMaxDam;
 	v7 = plr[v2]._pIBonusDamMod + v28 * v6 / 100 + v28;
-	if ( plr[v2].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_BOW || _LOBYTE(plr[v2]._pClass) == 1 )
+	if ( plr[v2].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_BOW || plr[v2]._pClass == PC_ROGUE )
 		v8 = v29 + v7;
 	else
 		v8 = (v29 >> 1) + v7;
@@ -2174,22 +2154,22 @@ void __cdecl DrawChr()
 	ADD_PlrStringXY(257, 332, 300, a4, a5[0]);
 	a5[0] = 0;
 	sprintf(a4, "%i", plr[myplr]._pBaseStr);
-	if ( MaxStats[SLOBYTE(plr[myplr]._pClass)][0] == plr[myplr]._pBaseStr )
+	if ( MaxStats[plr[myplr]._pClass][ATTRIB_STR] == plr[myplr]._pBaseStr )
 		a5[0] = 3;
 	ADD_PlrStringXY(95, 155, 126, a4, a5[0]);
 	a5[0] = 0;
 	sprintf(a4, "%i", plr[myplr]._pBaseMag);
-	if ( MaxStats[SLOBYTE(plr[myplr]._pClass)][1] == plr[myplr]._pBaseMag )
+	if ( MaxStats[plr[myplr]._pClass][ATTRIB_MAG] == plr[myplr]._pBaseMag )
 		a5[0] = 3;
 	ADD_PlrStringXY(95, 183, 126, a4, a5[0]);
 	a5[0] = 0;
 	sprintf(a4, "%i", plr[myplr]._pBaseDex);
-	if ( MaxStats[SLOBYTE(plr[myplr]._pClass)][2] == plr[myplr]._pBaseDex )
+	if ( MaxStats[plr[myplr]._pClass][ATTRIB_DEX] == plr[myplr]._pBaseDex )
 		a5[0] = 3;
 	ADD_PlrStringXY(95, 211, 126, a4, a5[0]);
 	a5[0] = 0;
 	sprintf(a4, "%i", plr[myplr]._pBaseVit);
-	if ( MaxStats[SLOBYTE(plr[myplr]._pClass)][3] == plr[myplr]._pBaseVit )
+	if ( MaxStats[plr[myplr]._pClass][ATTRIB_VIT] == plr[myplr]._pBaseVit )
 		a5[0] = 3;
 	ADD_PlrStringXY(95, 239, 126, a4, a5[0]);
 	a5[0] = 0;
@@ -2243,14 +2223,14 @@ void __cdecl DrawChr()
 	{
 		sprintf(a4, "%i", v21);
 		ADD_PlrStringXY(95, 266, 126, a4, 2);
-		v22 = SLOBYTE(plr[myplr]._pClass);
-		if ( plr[myplr]._pBaseStr < MaxStats[v22][0] )
+		v22 = plr[myplr]._pClass;
+		if ( plr[myplr]._pBaseStr < MaxStats[v22][ATTRIB_STR] )
 			CelDecodeOnly(201, 319, pChrButtons, chrbtn[0] + 2, 41);
-		if ( plr[myplr]._pBaseMag < MaxStats[v22][1] )
+		if ( plr[myplr]._pBaseMag < MaxStats[v22][ATTRIB_MAG] )
 			CelDecodeOnly(201, 347, pChrButtons, chrbtn[1] + 4, 41);
-		if ( plr[myplr]._pBaseDex < MaxStats[v22][2] )
+		if ( plr[myplr]._pBaseDex < MaxStats[v22][ATTRIB_DEX] )
 			CelDecodeOnly(201, 376, pChrButtons, chrbtn[2] + 6, 41);
-		if ( plr[myplr]._pBaseVit < MaxStats[v22][3] )
+		if ( plr[myplr]._pBaseVit < MaxStats[v22][ATTRIB_VIT] )
 			CelDecodeOnly(201, 404, pChrButtons, chrbtn[3] + 8, 41);
 	}
 	v23 = plr[myplr]._pMaxHP;
@@ -2427,21 +2407,21 @@ void __cdecl CheckChrBtns()
 		if ( plr[myplr]._pStatPts )
 		{
 			v2 = MouseX;
-			v3 = SLOBYTE(plr[v1]._pClass);
+			v3 = plr[v1]._pClass;
 			while ( 1 )
 			{
 				if ( !v0 )
 				{
 					v9 = plr[v1]._pBaseStr;
-					v6 = __OFSUB__(v9, MaxStats[v3][0]);
-					v5 = v9 - MaxStats[v3][0] < 0;
+					v6 = __OFSUB__(v9, MaxStats[v3][ATTRIB_STR]);
+					v5 = v9 - MaxStats[v3][ATTRIB_STR] < 0;
 					goto LABEL_12;
 				}
 				if ( v0 == 1 )
 				{
 					v8 = plr[v1]._pBaseMag;
-					v6 = __OFSUB__(v8, MaxStats[v3][1]);
-					v5 = v8 - MaxStats[v3][1] < 0;
+					v6 = __OFSUB__(v8, MaxStats[v3][ATTRIB_MAG]);
+					v5 = v8 - MaxStats[v3][ATTRIB_MAG] < 0;
 					goto LABEL_12;
 				}
 				if ( v0 == 2 )
@@ -2449,8 +2429,8 @@ void __cdecl CheckChrBtns()
 				if ( v0 == 3 )
 				{
 					v4 = plr[v1]._pBaseVit;
-					v6 = __OFSUB__(v4, MaxStats[v3][3]);
-					v5 = v4 - MaxStats[v3][3] < 0;
+					v6 = __OFSUB__(v4, MaxStats[v3][ATTRIB_VIT]);
+					v5 = v4 - MaxStats[v3][ATTRIB_VIT] < 0;
 LABEL_12:
 					if ( v5 ^ v6 )
 					{
@@ -2471,8 +2451,8 @@ LABEL_12:
 					return;
 			}
 			v7 = plr[v1]._pBaseDex;
-			v6 = __OFSUB__(v7, MaxStats[v3][2]);
-			v5 = v7 - MaxStats[v3][2] < 0;
+			v6 = __OFSUB__(v7, MaxStats[v3][ATTRIB_DEX]);
+			v5 = v7 - MaxStats[v3][ATTRIB_DEX] < 0;
 			goto LABEL_12;
 		}
 	}
@@ -2524,7 +2504,7 @@ void __cdecl ReleaseChrBtns()
 					{
 						v5 = CMD_ADDSTR;
 					}
-					NetSendCmdParam1(1u, v5, 1u);
+					NetSendCmdParam1(TRUE, v5, 1u);
 					--plr[myplr]._pStatPts;
 				}
 			}
@@ -3256,10 +3236,9 @@ void __cdecl control_release_talk_btn()
 
 void __cdecl control_reset_talk_msg()
 {
-	int v0; // edi
 	signed int v1; // ecx
 
-	v0 = 0;
+	BOOL v0 = FALSE;
 	v1 = 0;
 	do
 	{

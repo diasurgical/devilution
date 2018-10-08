@@ -189,7 +189,7 @@ void __cdecl CheckQuests()
 		{
 			AddObject(OBJ_ALTBOY, 2 * setpc_x + 20, 2 * setpc_y + 22);
 			quests[QTYPE_VB]._qvar1 = 3;
-			NetSendCmdQuest(1u, 0xFu);
+			NetSendCmdQuest(TRUE, 0xFu);
 		}
 	}
 	if ( gbMaxPlayers != 1 )
@@ -318,24 +318,17 @@ BOOL __fastcall QuestStatus(int i)
 // 5CF31D: using guessed type char setlevel;
 // 679660: using guessed type char gbMaxPlayers;
 
-void __fastcall CheckQuestKill(int m, unsigned char sendmsg)
+void __fastcall CheckQuestKill(int m, BOOL sendmsg)
 {
 	int v2; // ecx
 	char v3; // al
-	char v4; // al
 	unsigned char v5; // dl
-	char v6; // al
 	char *v7; // ecx
-	char v8; // al
-	char v9; // al
 	int v10; // edi
 	int (*v11)[112]; // esi
 	signed int v12; // ecx
 	int *v13; // eax
 	int (*v14)[112]; // ebx
-	char v15; // al
-	char v16; // al
-	char v17; // al
 
 	v2 = m;
 	v3 = monster[v2].MType->mtype;
@@ -343,27 +336,19 @@ void __fastcall CheckQuestKill(int m, unsigned char sendmsg)
 	{
 		quests[QTYPE_KING]._qactive = 3;
 		sfxdelay = 30;
-		v4 = plr[myplr]._pClass;
-		if ( v4 )
-		{
-			if ( v4 == 1 )
-			{
-				sfxdnum = PS_ROGUE82;
-			}
-			else if ( v4 == 2 )
-			{
-				sfxdnum = PS_MAGE82;
-			}
-		}
-		else
-		{
+		if ( plr[myplr]._pClass == PC_WARRIOR ) {
 			sfxdnum = PS_WARR82;
+		} else if ( plr[myplr]._pClass == PC_ROGUE ) {
+			sfxdnum = PS_ROGUE82;
+		} else if ( plr[myplr]._pClass == PC_SORCERER ) {
+			sfxdnum = PS_MAGE82;
 		}
+
 		if ( sendmsg )
 		{
 			v5 = 12;
 LABEL_10:
-			NetSendCmdQuest(1u, v5);
+			NetSendCmdQuest(TRUE, v5);
 			return;
 		}
 	}
@@ -376,21 +361,12 @@ LABEL_10:
 			{
 				quests[QTYPE_GARB]._qactive = 3;
 				sfxdelay = 30;
-				v8 = plr[myplr]._pClass;
-				if ( v8 )
-				{
-					if ( v8 == 1 )
-					{
-						sfxdnum = PS_ROGUE61;
-					}
-					else if ( v8 == 2 )
-					{
-						sfxdnum = PS_MAGE61;
-					}
-				}
-				else
-				{
+				if ( plr[myplr]._pClass == PC_WARRIOR ) {
 					sfxdnum = PS_WARR61;
+				} else if ( plr[myplr]._pClass == PC_ROGUE ) {
+					sfxdnum = PS_ROGUE61;
+				} else if ( plr[myplr]._pClass == PC_SORCERER ) {
+					sfxdnum = PS_MAGE61;
 				}
 				return;
 			}
@@ -398,21 +374,12 @@ LABEL_10:
 			{
 				quests[QTYPE_ZHAR]._qactive = 3;
 				sfxdelay = 30;
-				v9 = plr[myplr]._pClass;
-				if ( v9 )
-				{
-					if ( v9 == 1 )
-					{
-						sfxdnum = PS_ROGUE62;
-					}
-					else if ( v9 == 2 )
-					{
-						sfxdnum = PS_MAGE62;
-					}
-				}
-				else
-				{
+				if ( plr[myplr]._pClass == PC_WARRIOR ) {
 					sfxdnum = PS_WARR62;
+				} else if ( plr[myplr]._pClass == PC_ROGUE ) {
+					sfxdnum = PS_ROGUE62;
+				} else if ( plr[myplr]._pClass == PC_SORCERER ) {
+					sfxdnum = PS_MAGE62;
 				}
 				return;
 			}
@@ -449,25 +416,16 @@ LABEL_10:
 						++v10;
 					}
 					while ( (signed int)v11 < (signed int)dPiece[1] );
-					v15 = plr[myplr]._pClass;
-					if ( v15 )
-					{
-						if ( v15 == 1 )
-						{
-							sfxdnum = PS_ROGUE83;
-						}
-						else if ( v15 == 2 )
-						{
-							sfxdnum = PS_MAGE83;
-						}
-					}
-					else
-					{
+					if ( plr[myplr]._pClass == PC_WARRIOR ) {
 						sfxdnum = PS_WARR83;
+					} else if ( plr[myplr]._pClass == PC_ROGUE ) {
+						sfxdnum = PS_ROGUE83;
+					} else if ( plr[myplr]._pClass == PC_SORCERER ) {
+						sfxdnum = PS_MAGE83;
 					}
 					if ( sendmsg )
 					{
-						NetSendCmdQuest(1u, 0xFu);
+						NetSendCmdQuest(TRUE, 0xFu);
 						v5 = 5;
 						goto LABEL_10;
 					}
@@ -482,21 +440,12 @@ LABEL_10:
 					quests[QTYPE_VB]._qvar2 = 4;
 					quests[QTYPE_MOD]._qactive = 2;
 					AddMissile(35, 32, 35, 32, 0, 65, 0, myplr, 0, 0);
-					v16 = plr[myplr]._pClass;
-					if ( v16 )
-					{
-						if ( v16 == 1 )
-						{
-							sfxdnum = PS_ROGUE83;
-						}
-						else if ( v16 == 2 )
-						{
-							sfxdnum = PS_MAGE83;
-						}
-					}
-					else
-					{
+					if ( plr[myplr]._pClass == PC_WARRIOR ) {
 						sfxdnum = PS_WARR83;
+					} else if ( plr[myplr]._pClass == PC_ROGUE ) {
+						sfxdnum = PS_ROGUE83;
+					} else if ( plr[myplr]._pClass == PC_SORCERER ) {
+						sfxdnum = PS_MAGE83;
 					}
 					return;
 				}
@@ -505,42 +454,24 @@ LABEL_10:
 			{
 				quests[QTYPE_WARLRD]._qactive = 3;
 				sfxdelay = 30;
-				v17 = plr[myplr]._pClass;
-				if ( v17 )
-				{
-					if ( v17 == 1 )
-					{
-						sfxdnum = PS_ROGUE94;
-					}
-					else if ( v17 == 2 )
-					{
-						sfxdnum = PS_MAGE94;
-					}
-				}
-				else
-				{
+				if ( plr[myplr]._pClass == PC_WARRIOR ) {
 					sfxdnum = PS_WARR94;
+				} else if ( plr[myplr]._pClass == PC_ROGUE ) {
+					sfxdnum = PS_ROGUE94;
+				} else if ( plr[myplr]._pClass == PC_SORCERER ) {
+					sfxdnum = PS_MAGE94;
 				}
 			}
 			return;
 		}
 		quests[QTYPE_BUTCH]._qactive = 3;
 		sfxdelay = 30;
-		v6 = plr[myplr]._pClass;
-		if ( v6 )
-		{
-			if ( v6 == 1 )
-			{
-				sfxdnum = PS_ROGUE80;
-			}
-			else if ( v6 == 2 )
-			{
-				sfxdnum = PS_MAGE80;
-			}
-		}
-		else
-		{
+		if ( plr[myplr]._pClass == PC_WARRIOR ) {
 			sfxdnum = PS_WARR80;
+		} else if ( plr[myplr]._pClass == PC_ROGUE ) {
+			sfxdnum = PS_ROGUE80;
+		} else if ( plr[myplr]._pClass == PC_SORCERER ) {
+			sfxdnum = PS_MAGE80;
 		}
 		if ( sendmsg )
 		{
@@ -969,19 +900,19 @@ void __cdecl ResyncMPQuests()
 	  && currlevel <= (unsigned char)quests[QTYPE_KING]._qlevel + 1 )
 	{
 		quests[QTYPE_KING]._qactive = 2;
-		NetSendCmdQuest(1u, 0xCu);
+		NetSendCmdQuest(TRUE, 0xCu);
 	}
 	if ( quests[QTYPE_BUTCH]._qactive == 1
 	  && currlevel >= (unsigned char)quests[QTYPE_BUTCH]._qlevel - 1
 	  && currlevel <= (unsigned char)quests[QTYPE_BUTCH]._qlevel + 1 )
 	{
 		quests[QTYPE_BUTCH]._qactive = 2;
-		NetSendCmdQuest(1u, 6u);
+		NetSendCmdQuest(TRUE, 6u);
 	}
 	if ( quests[QTYPE_VB]._qactive == 1 && currlevel == (unsigned char)quests[QTYPE_VB]._qlevel - 1 )
 	{
 		quests[QTYPE_VB]._qactive = 2;
-		NetSendCmdQuest(1u, 0xFu);
+		NetSendCmdQuest(TRUE, 0xFu);
 	}
 	if ( QuestStatus(QTYPE_VB) )
 		AddObject(OBJ_ALTBOY, 2 * setpc_x + 20, 2 * setpc_y + 22);

@@ -1265,8 +1265,6 @@ void __cdecl CheckTriggers()
 	int v4; // edx
 	signed int v5; // edx
 	int v6; // eax
-	char v7; // al
-	int v8; // ecx
 	int v9; // [esp-4h] [ebp-20h]
 	int x; // [esp+Ch] [ebp-10h]
 	int y; // [esp+10h] [ebp-Ch]
@@ -1359,24 +1357,20 @@ LABEL_33:
 		StartNewLvl(myplr, *v0, v9);
 		goto LABEL_34;
 	}
-	v7 = plr[myplr]._pClass;
-	switch ( v7 )
-	{
-		case UI_WARRIOR:
-			v8 = PS_WARR43;
-			goto LABEL_42;
-		case UI_ROGUE:
-			v8 = PS_ROGUE43;
-			goto LABEL_42;
-		case UI_SORCERER:
-			v8 = PS_MAGE43;
-LABEL_42:
-			PlaySFX(v8);
+	switch ( plr[myplr]._pClass ) {
+		case PC_WARRIOR:
+			PlaySFX(PS_WARR43);
+			break;
+		case PC_ROGUE:
+			PlaySFX(PS_ROGUE43);
+			break;
+		case PC_SORCERER:
+			PlaySFX(PS_MAGE43);
 			break;
 	}
 	_LOBYTE(v2) = error_id;
 	InitDiabloMsg(v2);
-	NetSendCmdLoc(1u, CMD_WALKXY, x, y);
+	NetSendCmdLoc(TRUE, CMD_WALKXY, x, y);
 }
 // 679660: using guessed type char gbMaxPlayers;
 // 6ABB30: using guessed type int TWarpFrom;

@@ -58,7 +58,7 @@ void __fastcall NetSendCmdParam2(BOOL bHiPri, unsigned char bCmd, unsigned short
 void __fastcall NetSendCmdParam3(BOOL bHiPri, unsigned char bCmd, unsigned short wParam1, unsigned short wParam2, unsigned short wParam3);
 void __fastcall NetSendCmdQuest(BOOL bHiPri, unsigned char q);
 void __fastcall NetSendCmdGItem(BOOL bHiPri, unsigned char bCmd, unsigned char mast, unsigned char pnum, int ii);
-void __fastcall NetSendCmdGItem2(unsigned char usonly, unsigned char bCmd, unsigned char mast, unsigned char pnum, struct TCmdGItem *p);
+void __fastcall NetSendCmdGItem2(BOOL usonly, unsigned char bCmd, unsigned char mast, unsigned char pnum, struct TCmdGItem *p);
 bool __fastcall NetSendCmdReq2(unsigned char bCmd, unsigned char mast, unsigned char pnum, struct TCmdGItem *p);
 void __fastcall NetSendCmdExtra(struct TCmdGItem *p);
 void __fastcall NetSendCmdPItem(BOOL bHiPri, unsigned char bCmd, unsigned char x, unsigned char y);

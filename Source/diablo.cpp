@@ -921,7 +921,7 @@ bool __fastcall LeftMouseDown(int a1)
 	{
 		if ( !TryInvPut() )
 			return 0;
-		NetSendCmdPItem(1u, CMD_PUTITEM, cursmx, cursmy);
+		NetSendCmdPItem(TRUE, CMD_PUTITEM, cursmx, cursmy);
 LABEL_48:
 		SetCursor(CURSOR_HAND);
 		return 0;
@@ -938,7 +938,7 @@ LABEL_48:
 		if ( pcursitem != -1 && pcurs == 1 && v1 != 5 )
 		{
 			_LOWORD(v8) = pcursitem;
-			NetSendCmdLocParam1(1u, (invflag == 0) + CMD_GOTOGETITEM, cursmx, cursmy, v8);
+			NetSendCmdLocParam1(TRUE, (invflag == 0) + CMD_GOTOGETITEM, cursmx, cursmy, v8);
 LABEL_96:
 			if ( pcursitem != -1 )
 				return 0;
@@ -949,7 +949,7 @@ LABEL_96:
 		{
 			if ( v1 != 5 || v7 && object[pcursobj]._oBreak == 1 )
 			{
-				NetSendCmdLocParam1(1u, (pcurs == 5) + CMD_OPOBJXY, cursmx, cursmy, pcursobj);
+				NetSendCmdLocParam1(TRUE, (pcurs == 5) + CMD_OPOBJXY, cursmx, cursmy, pcursobj);
 				goto LABEL_95;
 			}
 		}
@@ -959,7 +959,7 @@ LABEL_96:
 			{
 				v9 = CMD_RATTACKXY;
 LABEL_84:
-				NetSendCmdLoc(1u, v9, cursmx, cursmy);
+				NetSendCmdLoc(TRUE, v9, cursmx, cursmy);
 				goto LABEL_95;
 			}
 			if ( pcursmonst != -1 )
@@ -969,7 +969,7 @@ LABEL_84:
 				{
 					v11 = CMD_RATTACKID;
 LABEL_89:
-					NetSendCmdParam1(1u, v11, v15);
+					NetSendCmdParam1(TRUE, v11, v15);
 					goto LABEL_96;
 				}
 LABEL_88:
@@ -993,7 +993,7 @@ LABEL_88:
 				v12 = pcursmonst;
 				v13 = CMD_ATTACKID;
 LABEL_94:
-				NetSendCmdParam1(1u, v13, v12);
+				NetSendCmdParam1(TRUE, v13, v12);
 LABEL_95:
 				if ( v1 == 5 )
 					return 0;
@@ -1015,10 +1015,10 @@ LABEL_95:
 	if ( pcursitem != -1 && pcurs == 1 )
 	{
 		_LOWORD(v3) = pcursitem;
-		NetSendCmdLocParam1(1u, (invflag == 0) + CMD_GOTOGETITEM, cursmx, cursmy, v3);
+		NetSendCmdLocParam1(TRUE, (invflag == 0) + CMD_GOTOGETITEM, cursmx, cursmy, v3);
 	}
 	if ( pcursmonst != -1 )
-		NetSendCmdLocParam1(1u, CMD_TALKXY, cursmx, cursmy, pcursmonst);
+		NetSendCmdLocParam1(TRUE, CMD_TALKXY, cursmx, cursmy, pcursmonst);
 	v6 = pcursitem == -1;
 LABEL_98:
 	if ( v6 && pcursmonst == -1 && pcursplr == -1 )
@@ -1055,7 +1055,7 @@ bool __cdecl TryIconCurs()
 		case CURSOR_RESURRECT:
 			v0 = CMD_RESURRECT;
 LABEL_3:
-			NetSendCmdParam1(1u, v0, pcursplr);
+			NetSendCmdParam1(TRUE, v0, pcursplr);
 			return 1;
 		case CURSOR_HEALOTHER:
 			v0 = CMD_HEALOTHER;
@@ -1095,18 +1095,18 @@ LABEL_26:
 					v4 = GetSpellLevel(myplr, v1);
 					v5 = 21720 * myplr;
 					_LOWORD(v5) = plr[myplr]._pTSpell;
-					NetSendCmdLocParam2(1u, CMD_TSPELLXY, cursmx, cursmy, v5, v4);
+					NetSendCmdLocParam2(TRUE, CMD_TSPELLXY, cursmx, cursmy, v5, v4);
 				}
 				else
 				{
 					v3 = GetSpellLevel(myplr, v1);
-					NetSendCmdParam3(1u, CMD_TSPELLPID, pcursplr, plr[myplr]._pTSpell, v3);
+					NetSendCmdParam3(TRUE, CMD_TSPELLPID, pcursplr, plr[myplr]._pTSpell, v3);
 				}
 			}
 			else
 			{
 				v2 = GetSpellLevel(myplr, v1);
-				NetSendCmdParam3(1u, CMD_TSPELLID, pcursmonst, plr[myplr]._pTSpell, v2);
+				NetSendCmdParam3(TRUE, CMD_TSPELLID, pcursmonst, plr[myplr]._pTSpell, v2);
 			}
 			goto LABEL_26;
 	}
@@ -1571,7 +1571,7 @@ void __fastcall PressChar(int vkey)
 #ifdef _DEBUG
 					if ( debug_mode_key_inverted_v || debug_mode_key_w )
 					{
-						NetSendCmd(1, CMD_CHEAT_EXPERIENCE);
+						NetSendCmd(TRUE, CMD_CHEAT_EXPERIENCE);
 						return;
 					}
 #endif

@@ -1048,7 +1048,7 @@ void __fastcall TalkToTowner(int p, int t)
 				towner[v7]._tVar1 = v3;
 				InitQTextMsg(QUEST_KING2);
 				towner[v7]._tMsgSaid = 1;
-				NetSendCmdQuest(1u, 0xCu);
+				NetSendCmdQuest(TRUE, 0xCu);
 			}
 			if ( quests[QTYPE_KING]._qactive == 3 && quests[QTYPE_KING]._qvar2 == 1 && !towner[v7]._tMsgSaid )
 			{
@@ -1058,7 +1058,7 @@ void __fastcall TalkToTowner(int p, int t)
 				towner[v7]._tVar1 = v3;
 				InitQTextMsg(QUEST_KING4);
 				towner[v7]._tMsgSaid = 1;
-				NetSendCmdQuest(1u, 0xCu);
+				NetSendCmdQuest(TRUE, 0xCu);
 			}
 		}
 		if ( gbMaxPlayers == 1 && plr[v6]._pLvlVisited[3] && quests[QTYPE_BOL]._qactive )
@@ -1111,13 +1111,12 @@ LABEL_39:
 		{
 			if ( quests[QTYPE_BUTCH]._qvar1 == 1 )
 			{
-				v11 = _LOBYTE(plr[v6]._pClass) == 0;
 				towner[v7]._tbtcnt = 150;
 				towner[v7]._tVar1 = v3;
 				quests[QTYPE_BUTCH]._qvar1 = 1;
-				if ( v11 && (v12 = PS_WARR8, !effect_is_playing(PS_WARR8))
-				  || _LOBYTE(plr[v6]._pClass) == 1 && (v12 = PS_ROGUE8, !effect_is_playing(PS_ROGUE8))
-				  || _LOBYTE(plr[v6]._pClass) == 2 && (v12 = PS_MAGE8, !effect_is_playing(PS_MAGE8)) )
+				if ( plr[v6]._pClass == PC_WARRIOR && (v12 = PS_WARR8, !effect_is_playing(PS_WARR8))
+				  || plr[v6]._pClass == PC_ROGUE && (v12 = PS_ROGUE8, !effect_is_playing(PS_ROGUE8))
+				  || plr[v6]._pClass == PC_SORCERER && (v12 = PS_MAGE8, !effect_is_playing(PS_MAGE8)) )
 				{
 					PlaySFX(v12);
 				}
@@ -1151,7 +1150,7 @@ LABEL_53:
 		towner[v7]._tVar2 = 3;
 		InitQTextMsg(QUEST_BUTCH9);
 		towner[v7]._tMsgSaid = 1;
-		NetSendCmdQuest(1u, 6u);
+		NetSendCmdQuest(TRUE, 6u);
 		return;
 	}
 	if ( v2 != GetActiveTowner(0) )
@@ -1363,7 +1362,7 @@ LABEL_131:
 				quests[QTYPE_VB]._qlog = 1;
 				v19 = 15;
 LABEL_153:
-				NetSendCmdQuest(1u, v19);
+				NetSendCmdQuest(TRUE, v19);
 				goto LABEL_154;
 			}
 		}
@@ -1374,7 +1373,7 @@ LABEL_153:
 			towner[v7]._tVar1 = v3;
 			InitQTextMsg(QUEST_VILE3);
 			towner[v7]._tMsgSaid = 1;
-			NetSendCmdQuest(1u, 0xFu);
+			NetSendCmdQuest(TRUE, 0xFu);
 			quests[QTYPE_VB]._qlog = 1;
 			v19 = 5;
 			goto LABEL_153;
