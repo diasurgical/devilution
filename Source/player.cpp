@@ -1126,8 +1126,8 @@ void __fastcall PM_ChangeLightOff(int pnum)
 
     l = &LightList[plr[pnum]._plid];
     ymul = -1;
-    x = 2 * plr[pnum]._py + plr[pnum]._px;
-    y = 2 * plr[pnum]._py - plr[pnum]._px;
+    x = 2 * plr[pnum]._pyoff + plr[pnum]._pxoff;
+    y = 2 * plr[pnum]._pyoff - plr[pnum]._pxoff;
     if (x < 0) {
         xmul = -1;
         x = -x;
