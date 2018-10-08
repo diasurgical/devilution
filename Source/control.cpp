@@ -29,7 +29,7 @@ int pnumlines; // idb
 int pinfoflag; // weak
 int talkbtndown[3];
 int pSpell; // weak
-void *pManaBuff;
+char *pManaBuff;
 int infoclr; // weak
 int sgbPlrTalkTbl; // weak // should be char [4]
 void *pGBoxBuff;
@@ -1039,67 +1039,60 @@ void __cdecl UpdateLifeFlask()
 
 void __cdecl DrawManaFlask()
 {
-	int v0; // eax
-	int v1; // esi
-	int v2; // esi
+	int filled = plr[myplr]._pManaPer;
+	if ( filled > 80 )
+		filled = 80;
+	filled = 80 - filled;
+	if ( filled > 11 )
+		filled = 11;
+	filled += 2;
 
-	v0 = plr[myplr]._pManaPer;
-	if ( v0 > 80 )
-		v0 = 80;
-	v1 = 80 - v0;
-	if ( 80 - v0 > 11 )
-		v1 = 11;
-	v2 = v1 + 2;
-	DrawFlask(pManaBuff, 88, 277, gpBuffer, 383771, v2);
-	if ( v2 != 13 )
-		DrawFlask(pBtmBuff, 640, 640 * v2 + 2395, gpBuffer, 768 * v2 + 383771, 13 - v2);
+	DrawFlask(pManaBuff, 88, 277, gpBuffer, 383771, filled);
+	if ( filled != 13 )
+		DrawFlask(pBtmBuff, 640, 640 * filled + 2395, gpBuffer, 768 * filled + 383771, 13 - filled);
 }
 
 void __cdecl control_update_life_mana()
 {
-	int v0; // esi
-	signed __int64 v1; // rax
-	int v2; // [esp+4h] [ebp-8h]
-	int v3; // [esp+8h] [ebp-4h]
-
-	v0 = myplr;
-	v3 = plr[myplr]._pMaxMana;
-	v2 = plr[myplr]._pMana;
-	if ( plr[myplr]._pMaxMana < 0 )
-		v3 = 0;
-	if ( plr[myplr]._pMana < 0 )
-		v2 = 0;
-	if ( v3 )
-		v1 = (signed __int64)((double)v2 / (double)v3 * 80.0);
+	int manaPer;
+	int maxMana = plr[myplr]._pMaxMana;
+	int mana = plr[myplr]._pMana;
+	if ( maxMana < 0 )
+		maxMana = 0;
+	if ( mana < 0 )
+		mana = 0;
+	if ( maxMana == 0 )
+		manaPer = 0;
 	else
-		LODWORD(v1) = 0;
-	plr[v0]._pManaPer = v1;
-	plr[v0]._pHPPer = (signed __int64)((double)plr[v0]._pHitPoints / (double)plr[v0]._pMaxHP * 80.0);
+		manaPer = (double)mana / (double)maxMana * 80.0;
+	plr[myplr]._pManaPer = manaPer;
+	plr[myplr]._pHPPer = (double)plr[myplr]._pHitPoints / (double)plr[myplr]._pMaxHP * 80.0;
 }
 
 void __cdecl UpdateManaFlask()
 {
-	signed int v0; // edi
-	int v1; // [esp+8h] [ebp-8h]
-	int v2; // [esp+Ch] [ebp-4h]
+	int filled;
+	int maxMana = plr[myplr]._pMaxMana;
+	int mana = plr[myplr]._pMana;
+	if ( maxMana < 0 )
+		maxMana = 0;
+	if ( mana < 0 )
+		mana = 0;
 
-	v2 = plr[myplr]._pMaxMana;
-	v1 = plr[myplr]._pMana;
-	if ( plr[myplr]._pMaxMana < 0 )
-		v2 = 0;
-	if ( plr[myplr]._pMana < 0 )
-		v1 = 0;
-	if ( v2 )
-		v0 = (signed __int64)((double)v1 / (double)v2 * 80.0);
+	if ( maxMana == 0 )
+		filled = 0;
 	else
-		v0 = 0;
-	plr[myplr]._pManaPer = v0;
-	if ( v0 > 69 )
-		v0 = 69;
-	if ( v0 != 69 )
-		SetFlaskHeight((char *)pManaBuff, 16, 85 - v0, 528, 512);
-	if ( v0 )
-		DrawPanelBox(464, 85 - v0, 0x58u, v0, 528, 581 - v0);
+		filled = (double)mana / (double)maxMana * 80.0;
+
+	plr[myplr]._pManaPer = filled;
+
+	if ( filled > 69 )
+		filled = 69;
+	if ( filled != 69 )
+		SetFlaskHeight(pManaBuff, 16, 85 - filled, 528, 512);
+	if ( filled )
+		DrawPanelBox(464, 85 - filled, 88, filled, 528, 581 - filled);
+
 	DrawSpell();
 }
 
@@ -1116,9 +1109,9 @@ void __cdecl InitControlPan()
 		v0 = 0x2D000;
 	pBtmBuff = DiabloAllocPtr(v0);
 	memset(pBtmBuff, 0, v0);
-	pManaBuff = DiabloAllocPtr(0x1E40);
+	pManaBuff = (char *)DiabloAllocPtr(0x1E40);
 	memset(pManaBuff, 0, 0x1E40u);
-	pLifeBuff = DiabloAllocPtr(0x1E40);
+	pLifeBuff = (char *)DiabloAllocPtr(0x1E40);
 	memset(pLifeBuff, 0, 0x1E40u);
 	pPanelText = LoadFileInMem("CtrlPan\\SmalText.CEL", 0);
 	pChrPanel = LoadFileInMem("Data\\Char.CEL", 0);
@@ -1130,8 +1123,8 @@ void __cdecl InitControlPan()
 	pStatusPanel = 0;
 	mem_free_dbg(v1);
 	pStatusPanel = LoadFileInMem("CtrlPan\\P8Bulbs.CEL", 0);
-	CelDecodeRect((char *)pLifeBuff, 0, 87, 88, (char *)pStatusPanel, 1, 88);
-	CelDecodeRect((char *)pManaBuff, 0, 87, 88, (char *)pStatusPanel, 2, 88);
+	CelDecodeRect(pLifeBuff, 0, 87, 88, (char *)pStatusPanel, 1, 88);
+	CelDecodeRect(pManaBuff, 0, 87, 88, (char *)pStatusPanel, 2, 88);
 	v2 = pStatusPanel;
 	pStatusPanel = 0;
 	mem_free_dbg(v2);

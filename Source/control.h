@@ -21,7 +21,7 @@ extern int chrbtnactive; // weak
 extern char sgszTalkMsg[80];
 extern void *pPanelText;
 extern int frame_4B8800; // idb
-extern void *pLifeBuff;
+extern char *pLifeBuff;
 extern void *pBtmBuff;
 extern void *pTalkBtns;
 extern int pstrjust[4];
@@ -29,7 +29,7 @@ extern int pnumlines; // idb
 extern int pinfoflag; // weak
 extern int talkbtndown[3];
 extern int pSpell; // weak
-extern void *pManaBuff;
+extern char *pManaBuff;
 extern int infoclr; // weak
 extern int sgbPlrTalkTbl; // weak // should be char [4]
 extern void *pGBoxBuff;
