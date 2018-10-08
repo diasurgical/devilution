@@ -2567,34 +2567,24 @@ void __cdecl RedBack()
 // 525728: using guessed type int light4flag;
 // 5BB1ED: using guessed type char leveltype;
 
-int __fastcall GetSBookTrans(int ii, unsigned char townok)
+char __fastcall GetSBookTrans(int ii, BOOL townok)
 {
-	int v2; // edi
-	int v3; // esi
-	int result; // eax
-	char v6; // [esp+13h] [ebp-5h]
-	int v7; // [esp+14h] [ebp-4h]
+	char result = RSPLTYPE_SPELL;
+	if ( (__int64)1 << (ii - 1) & plr[myplr]._pISpells64 )
+		result = RSPLTYPE_CHARGES;
+	if ( 1 << (ii - 1) & plr[myplr]._pAblSpells64 )
+		result = RSPLTYPE_SKILL;
 
-	v2 = ii;
-	v7 = townok;
-	v6 = 1;
-	v3 = myplr;
-	if ( ((unsigned __int64)((__int64)1 << ((unsigned char)ii - 1)) >> 32) & plr[v3]._pISpells[1] | (unsigned int)((__int64)1 << ((unsigned char)ii - 1)) & plr[v3]._pISpells[0] )
-		v6 = 3;
-	result = plr[v3]._pAblSpells[1] & (1 << (ii - 1) >> 31) | plr[v3]._pAblSpells[0] & (1 << (ii - 1));
-	if ( result )
-		v6 = 0;
-	if ( v6 == 1 )
-	{
-		if ( !CheckSpell(myplr, ii, 1, 1) )
-			v6 = 4;
-		//result = 21720 * myplr;
-		if ( (char)(plr[myplr]._pISplLvlAdd + plr[myplr]._pSplLvl[v2]) <= 0 )
-			v6 = 4;
+	if ( result == RSPLTYPE_SPELL ) {
+		if ( !CheckSpell(myplr, ii, RSPLTYPE_SPELL, TRUE) )
+			result = RSPLTYPE_INVALID;
+		if ( (char)(plr[myplr]._pISplLvlAdd + plr[myplr]._pSplLvl[ii]) <= 0 )
+			result = RSPLTYPE_INVALID;
 	}
-	if ( v7 && !currlevel && v6 != 4 && !spelldata[v2].sTownSpell )
-		v6 = 4;
-	_LOBYTE(result) = v6;
+
+	if ( townok && currlevel == 0 && result != RSPLTYPE_INVALID && !spelldata[ii].sTownSpell )
+		result = RSPLTYPE_INVALID;
+
 	return result;
 }
 

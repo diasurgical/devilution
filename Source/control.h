@@ -102,7 +102,7 @@ void __cdecl ReleaseChrBtns();
 void __cdecl DrawDurIcon();
 int __fastcall DrawDurIcon4Item(ItemStruct *pItem, int x, int c);
 void __cdecl RedBack();
-int __fastcall GetSBookTrans(int ii, unsigned char townok);
+char __fastcall GetSBookTrans(int ii, BOOL townok);
 void __cdecl DrawSpellBook();
 void __fastcall PrintSBookStr(int x, int y, bool cjustflag, char *pszStr, int bright);
 void __cdecl CheckSBook();
