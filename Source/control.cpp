@@ -21,7 +21,7 @@ int chrbtnactive; // weak
 char sgszTalkMsg[80];
 void *pPanelText;
 int frame_4B8800; // idb
-void *pLifeBuff;
+char *pLifeBuff;
 void *pBtmBuff;
 void *pTalkBtns;
 int pstrjust[4];
@@ -1007,44 +1007,34 @@ void __fastcall DrawFlask(void *a1, int a2, int a3, void *a4, int a5, int a6)
 
 void __cdecl DrawLifeFlask()
 {
-	signed __int64 v0; // rax
-	signed int v1; // esi
-	int v2; // esi
+	int filled = (double)plr[myplr]._pHitPoints / (double)plr[myplr]._pMaxHP * 80.0;
+	plr[myplr]._pHPPer = filled;
 
-	v0 = (signed __int64)((double)plr[myplr]._pHitPoints / (double)plr[myplr]._pMaxHP * 80.0);
-	plr[myplr]._pHPPer = v0;
-	if ( (signed int)v0 > 80 )
-		LODWORD(v0) = 80;
-	v1 = 80 - v0;
-	if ( 80 - (signed int)v0 > 11 )
-		v1 = 11;
-	v2 = v1 + 2;
-	DrawFlask(pLifeBuff, 88, 277, gpBuffer, 383405, v2);
-	if ( v2 != 13 )
-		DrawFlask(pBtmBuff, 640, 640 * v2 + 2029, gpBuffer, 768 * v2 + 383405, 13 - v2);
+	if ( filled > 80 )
+		filled = 80;
+	filled = 80 - filled;
+	if ( filled > 11 )
+		filled = 11;
+	filled += 2;
+
+	DrawFlask(pLifeBuff, 88, 277, gpBuffer, 383405, filled);
+	if ( filled != 13 )
+		DrawFlask(pBtmBuff, 640, 640 * filled + 2029, gpBuffer, 768 * filled + 383405, 13 - filled);
 }
 
 void __cdecl UpdateLifeFlask()
 {
-	signed __int64 v0; // rax
-	signed int v1; // edi
+	int filled = (double)plr[myplr]._pHitPoints / (double)plr[myplr]._pMaxHP * 80.0;
+	plr[myplr]._pHPPer = filled;
 
-	v0 = (signed __int64)((double)plr[myplr]._pHitPoints / (double)plr[myplr]._pMaxHP * 80.0);
-	v1 = v0;
-	plr[myplr]._pHPPer = v0;
-	if ( (signed int)v0 > 69 )
-	{
-		v1 = 69;
-LABEL_8:
-		DrawPanelBox(96, 85 - v1, 0x58u, v1, 160, 581 - v1);
-		return;
-	}
-	if ( (signed int)v0 < 0 )
-		v1 = 0;
-	if ( v1 != 69 )
-		SetFlaskHeight((char *)pLifeBuff, 16, 85 - v1, 160, 512);
-	if ( v1 )
-		goto LABEL_8;
+	if ( filled > 69 )
+		filled = 69;
+	else if ( filled < 0 )
+		filled = 0;
+	if ( filled != 69 )
+		SetFlaskHeight(pLifeBuff, 16, 85 - filled, 160, 512);
+	if ( filled )
+		DrawPanelBox(96, 85 - filled, 88, filled, 160, 581 - filled);
 }
 
 void __cdecl DrawManaFlask()
