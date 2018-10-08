@@ -120,7 +120,7 @@ void __fastcall town_draw_clipped_e_flag(void *buffer, int x, int y, int sx, int
 		level_cel_block = *(unsigned short *)&v6[2 * v7 + 2];
 		if ( v9 )
 			drawLowerScreen(a1 + 32);
-		a1 -= 24576;
+		a1 -= 768 * 32;
 		v7 += 2;
 	}
 	while ( v7 < 12 );
@@ -292,7 +292,7 @@ void __fastcall town_draw_lower(int x, int y, int sx, int sy, int a5, int some_f
 				if ( v9 )
 					drawLowerScreen(a1);
 				v25 += 2;
-				a1 -= 24576;
+				a1 -= 768 * 32;
 			}
 			while ( v25 < 17 );
 			town_draw_clipped_town((char *)gpBuffer + *v7 + sx, xa, ya, sx, sy, 0);
@@ -320,7 +320,7 @@ void __fastcall town_draw_lower(int x, int y, int sx, int sy, int a5, int some_f
 		a1a = v10;
 		do
 		{
-			if ( y >= 0 && y < 112 && v12 >= 0 && v12 < 12544 && (level_cel_block = dPiece[0][v12 + y]) != 0 )
+			if ( y >= 0 && y < 112 && v12 >= 0 && v12 < MAXDUNX * MAXDUNY && (level_cel_block = dPiece[0][v12 + y]) != 0 )
 			{
 				v13 = (unsigned char *)gpBuffer + *v11 + sx;
 				v14 = (char *)dpiece_defs_map_1 + 32 * gendung_get_dpiece_num_from_coord(xa, ya);
@@ -336,7 +336,7 @@ void __fastcall town_draw_lower(int x, int y, int sx, int sy, int a5, int some_f
 					if ( v16 )
 						drawLowerScreen(v13 + 32);
 					v26 += 2;
-					v13 -= 24576;
+					v13 -= 768 * 32;
 				}
 				while ( v26 < 16 );
 				town_draw_clipped_town((char *)gpBuffer + *v11 + sx, xa, ya, sx, sy, 1);
@@ -372,7 +372,7 @@ void __fastcall town_draw_lower(int x, int y, int sx, int sy, int a5, int some_f
 				if ( v21 )
 					drawLowerScreen(v19);
 				v27 += 2;
-				v19 -= 24576;
+				v19 -= 768 * 32;
 			}
 			while ( v27 < 16 );
 			town_draw_clipped_town((char *)gpBuffer + *v18 + sx, xa, ya, sx, sy, 0);
@@ -400,7 +400,7 @@ void __fastcall town_draw_clipped_e_flag_2(void *buffer, int x, int y, int a4, i
 	xa = x;
 	v12 = buffer;
 	if ( a4 )
-		v8 = (unsigned char *)buffer + 24576 * a4;
+		v8 = (unsigned char *)buffer + 768 * 32 * a4;
 	else
 		v8 = (unsigned char *)buffer;
 	a4a = 0;
@@ -418,7 +418,7 @@ void __fastcall town_draw_clipped_e_flag_2(void *buffer, int x, int y, int a4, i
 			if ( v11 )
 				drawLowerScreen(v8 + 32);
 		}
-		v8 -= 24576;
+		v8 -= 768 * 32;
 		++a4a;
 		v9 += 2;
 	}
@@ -605,7 +605,7 @@ void __fastcall town_draw_lower_2(int x, int y, int sx, int sy, int a5, int a6, 
 						if ( level_cel_block )
 							drawLowerScreen(a1);
 					}
-					a1 -= 24576;
+					a1 -= 768 * 32;
 					++sxa;
 					v10 = v23 + 2;
 					v23 += 2;
@@ -636,9 +636,9 @@ LABEL_18:
 		v24 = v12;
 		do
 		{
-			if ( ya >= 0 && ya < 112 && v14 >= 0 && v14 < 12544 && (level_cel_block = dPiece[0][v14 + ya]) != 0 )
+			if ( ya >= 0 && ya < 112 && v14 >= 0 && v14 < MAXDUNX * MAXDUNY && (level_cel_block = dPiece[0][v14 + ya]) != 0 )
 			{
-				a1a = (unsigned char *)gpBuffer + *v13 + v11 - 24576;
+				a1a = (unsigned char *)gpBuffer + *v13 + v11 - 768 * 32;
 				sxb = 0;
 				v15 = &dpiece_defs_map_1[0][0][16 * gendung_get_dpiece_num_from_coord(xa, ya) + 3];
 				do
@@ -654,7 +654,7 @@ LABEL_18:
 						if ( v17 )
 							drawLowerScreen(a1a + 32);
 					}
-					a1a -= 24576;
+					a1a -= 768 * 32;
 					++sxb;
 					v15 += 2;
 				}
@@ -683,7 +683,7 @@ LABEL_18:
 		if ( ya >= 0 && ya < 112 && xa >= 0 && xa < 112 && (level_cel_block = dPiece[0][ya + 112 * xa]) != 0 )
 		{
 			v20 = &screen_y_times_768[v8];
-			a1b = (unsigned char *)gpBuffer + *v20 + v11 - 24576;
+			a1b = (unsigned char *)gpBuffer + *v20 + v11 - 768 * 32;
 			sxc = 0;
 			v21 = &dpiece_defs_map_1[0][0][16 * gendung_get_dpiece_num_from_coord(xa, ya) + 2];
 			do
@@ -695,7 +695,7 @@ LABEL_18:
 					if ( v22 )
 						drawLowerScreen(a1b);
 				}
-				a1b -= 24576;
+				a1b -= 768 * 32;
 				++sxc;
 				v21 += 2;
 			}
@@ -739,7 +739,7 @@ void __fastcall town_draw_e_flag(void *buffer, int x, int y, int a4, int dir, in
 			if ( v11 )
 				drawUpperScreen(a1 + 32);
 		}
-		a1 -= 24576;
+		a1 -= 768 * 32;
 		++v9;
 	}
 	while ( v9 < 7 );
@@ -901,7 +901,7 @@ LABEL_19:
 		a5a = 112 * xa;
 		do
 		{
-			if ( v7 < 0 || v7 >= 112 || v15 < 0 || v15 >= 12544 )
+			if ( v7 < 0 || v7 >= 112 || v15 < 0 || v15 >= MAXDUNX * MAXDUNY )
 			{
 				v17 = gpBuffer;
 			}
@@ -929,7 +929,7 @@ LABEL_19:
 							if ( v21 )
 								drawUpperScreen(v18 + 32);
 						}
-						v18 -= 24576;
+						v18 -= 768 * 32;
 						++sxb;
 					}
 					while ( sxb < 7 );
@@ -978,7 +978,7 @@ LABEL_36:
 						if ( v26 )
 							drawUpperScreen(v24);
 					}
-					v24 -= 24576;
+					v24 -= 768 * 32;
 					++sxc;
 				}
 				while ( sxc < 7 );

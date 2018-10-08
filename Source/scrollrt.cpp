@@ -789,7 +789,7 @@ LABEL_23:
 		do
 		{
 			--v46;
-			if ( sya < 0 || v22 >= 12544 )
+			if ( sya < 0 || v22 >= MAXDUNX * MAXDUNY )
 				break;
 			if ( sya < 112 && v22 >= 0 )
 			{
@@ -1461,7 +1461,7 @@ void __fastcall scrollrt_draw_lower_2(int x, int y, int sx, int sy, int a5, int 
 		do
 		{
 			--v25;
-			if ( v13 >= 12544 || v7 < 0 )
+			if ( v13 >= MAXDUNX * MAXDUNY || v7 < 0 )
 				break;
 			if ( v7 < 112 && v13 >= 0 )
 			{
@@ -2066,7 +2066,7 @@ void __fastcall scrollrt_draw_upper(int x, int y, int sx, int sy, int a5, int a6
 		v40 = a5;
 		do
 		{
-			if ( v7 >= 0 && v7 < 112 && v20 >= 0 && v20 < 12544 )
+			if ( v7 >= 0 && v7 < 112 && v20 >= 0 && v20 < MAXDUNX * MAXDUNY )
 			{
 				v21 = dPiece[0][v20 + v7];
 				light_table_index = dTransVal[0][v20 + v7];

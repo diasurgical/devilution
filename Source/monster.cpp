@@ -7549,7 +7549,7 @@ LABEL_24:
 		{
 			for ( j = v23; j <= v15; ++j )
 			{
-				if ( j >= 0 && j < 112 && v16 >= 0 && v16 < 12544 )
+				if ( j >= 0 && j < 112 && v16 >= 0 && v16 < MAXDUNX * MAXDUNY )
 				{
 					v18 = dMonster[0][v16 + j];
 					v19 = v18 == 0;
