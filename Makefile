@@ -17,7 +17,7 @@ endif
 CXXFLAGS=-fpermissive -Wno-write-strings
 CPPFLAGS=-MMD -MF $*.d
 LDLIBS=-lgdi32 -lversion -ldiabloui -lstorm
-LDFLAGS=-L./ -static-libgcc -mwindows
+LDFLAGS=-L./ -static-libgcc -static-libstdc++ -mwindows
 
 all: devilution.exe
 

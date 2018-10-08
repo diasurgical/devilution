@@ -51,7 +51,8 @@ typedef struct _WSIZE
   WORD  cy;
 } WSIZE, *PWSIZE;
 
-
+// flags for memory allocation
+#define SMEM_CLEAR        (1<<3)
 
 // Game states
 #define GAMESTATE_PRIVATE 0x01
@@ -794,9 +795,9 @@ void*
 STORMAPI
 SMemAlloc(
     size_t amount,
-    char  *logfilename,
+    const char  *logfilename,
     int   logline,
-    char  defaultValue = 0);
+    int   flags = 0);
 
 #define SMAlloc(amount) SMemAlloc((amount), __FILE__, __LINE__)
 
@@ -817,7 +818,7 @@ BOOL
 STORMAPI
 SMemFree(
     void *location,
-    char *logfilename,
+    const char *logfilename,
     int  logline,
     char defaultValue = 0);
 
@@ -844,9 +845,9 @@ STORMAPI
 SMemReAlloc(
     void    *location,
     size_t  amount,
-    char    *logfilename,
+    const char    *logfilename,
     int     logline,
-    char    defaultValue = 0);
+    int     flags = 0);
 
 #define SMReAlloc(loc,s) SMemReAlloc((loc),(s), __FILE__, __LINE__)
 

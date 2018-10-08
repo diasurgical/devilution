@@ -2,271 +2,332 @@
 
 #include "../types.h"
 
-/* TODO: decompile and fix, commands are NOT deleted properly */
+#include <new>      // for placement new
+#include <stddef.h> // for offsetof
+#include <typeinfo> // for typeid
 
-int msgcmd_cpp_init_value; // weak
-ChatCmd sgChat_Cmd;
-int sgdwMsgCmdTimer;
+#ifdef _DEBUG
+#include <assert.h>
+#define ASSERT assert
+#else
+#define ASSERT
+#endif
 
-const int msgcmd_inf = 0x7F800000; // weak
+#define COMMAND_LEN 128
 
-struct msgcmd_cpp_init_1
+#define OBJECT_NAME(obj) (((const char *)&typeid(obj)) + 8)
+
+static float msgcmd_init_cpp_value = INFINITY;
+
+/* Intrusive double-linked list implementation,
+ * based on https://github.com/webcoyote/coho/blob/master/Base/List.h
+ */
+
+/******************************************************************************
+*
+*   List definition macros
+*
+***/
+
+// Define a field within a structure that will be used to link it into a list
+#define LIST_LINK(T) TLink<T>
+
+template <class T>
+class TLink;
+
+/******************************************************************************
+*
+*   TList
+*
+***/
+
+//=============================================================================
+template <class T>
+class TList {
+public:
+    TList();
+    ~TList();
+
+    void UnlinkAll();
+    void DeleteAll();
+
+    T *Head();
+
+    enum InsertPos {
+        NONE = 0,
+        AFTER,
+        BEFORE
+    };
+
+    void Insert(T *node, InsertPos pos, T *ref);
+    T *Remove(T *node);
+    T *Create(InsertPos pos = BEFORE, size_t extra = 0, int memflags = 0);
+
+private:
+    size_t m_offset;
+    TLink<T> m_link;
+
+    TLink<T> *GetLinkFromNode(T *node) const;
+
+    // Hide copy-constructor and assignment operator
+    TList(const TList &);
+    TList &operator=(const TList &);
+
+    // replacement new/delete operators for Storm objects
+    static __forceinline T *SNew(size_t extralen, int flags)
+    {
+        void *obj = SMemAlloc(sizeof(T) + extralen, OBJECT_NAME(T), SLOG_OBJECT, flags | SMEM_CLEAR);
+        return new (obj) T();
+    }
+
+    static __forceinline void SDelete(T *node)
+    {
+        //node->~T();
+        node->scalar_destruct();
+        SMemFree(node, OBJECT_NAME(T), SLOG_OBJECT);
+    }
+};
+
+//=============================================================================
+template <class T>
+TList<T>::~TList()
 {
-	msgcmd_cpp_init_1()
-	{
-		msgcmd_cpp_init_value = msgcmd_inf;
-	}
-} _msgcmd_cpp_init_1;
-// 47F150: using guessed type int msgcmd_inf;
-// 6761A0: using guessed type int msgcmd_cpp_init_value;
-
-struct msgcmd_cpp_init_2
-{
-	msgcmd_cpp_init_2()
-	{
-		msgcmd_init_event();
-		msgcmd_cleanup_chatcmd_atexit();
-	}
-} _msgcmd_cpp_init_2;
-
-void __cdecl msgcmd_init_event()
-{
-	msgcmd_init_chatcmd(&sgChat_Cmd);
+    // BUGFIX: Unlinking does not free memory, should use DeleteAll()
+    UnlinkAll();
 }
 
-void __cdecl msgcmd_cleanup_chatcmd_atexit()
+//=============================================================================
+template <class T>
+TList<T>::TList()
 {
-	atexit(msgcmd_cleanup_chatcmd);
+    size_t offset = offsetof(T, m_Link);
+    // Mark this node as the end of the list, with the link offset set
+    m_link.m_prevLink = &m_link;
+    m_offset = offset;
+    m_link.m_nextNode = (T *)~((size_t)&m_link - offset);
 }
 
-void __cdecl msgcmd_cleanup_chatcmd()
+//=============================================================================
+template <class T>
+void TList<T>::DeleteAll()
 {
-	msgcmd_cleanup_chatcmd_1(&sgChat_Cmd);
-	msgcmd_cleanup_extern_msg(sgChat_Cmd.extern_msgs);
+    while (T *node = m_link.Next())
+        SDelete(node);
 }
+
+//=============================================================================
+template <class T>
+__forceinline T *TList<T>::Head()
+{
+    return m_link.Next();
+}
+
+//=============================================================================
+template <class T>
+__forceinline TLink<T> *TList<T>::GetLinkFromNode(T *node) const
+{
+    //    ASSERT(m_offset != (size_t) -1);
+    //    return (TLink<T> *) ((size_t) node + m_offset);
+    return &node->m_Link;
+}
+
+template <class T>
+T *TList<T>::Remove(T *node)
+{
+    TLink<T> *link = node ? &node->m_Link : &m_link;
+    T *next = link->Next();
+    SDelete(node);
+    return next;
+}
+
+template <class T>
+T *TList<T>::Create(InsertPos pos, size_t extra, int memflags)
+{
+    T *node = SNew(extra, memflags);
+    if (pos != NONE)
+        Insert(node, pos, NULL);
+    return node;
+}
+
+template <class T>
+void TList<T>::Insert(T *node, InsertPos pos, T *ref)
+{
+    TLink<T> *reflink;
+    TLink<T> *i = node ? GetLinkFromNode(node) : &m_link;
+    if (i->IsLinked())
+        i->Unlink();
+
+    reflink = ref ? GetLinkFromNode(ref) : &m_link;
+
+    switch (pos) {
+    case AFTER:
+        i->InsertAfter(node, reflink, m_offset);
+        break;
+    case BEFORE:
+        i->InsertBefore(node, reflink);
+    }
+}
+
+//=============================================================================
+template <class T>
+void TList<T>::UnlinkAll()
+{
+    for (;;) {
+        T *node = m_link.Next();
+        if ((int)node <= 0)
+            break;
+        node->m_Link.Unlink();
+    }
+}
+
+/******************************************************************************
+*
+*   TLink
+*
+***/
+
+//=============================================================================
+template <class T>
+class TLink {
+public:
+    TLink()
+        : m_prevLink(NULL)
+        , m_nextNode(NULL)
+    {
+    }
+    ~TLink()
+    {
+        Unlink();
+    }
+
+    bool IsLinked() const
+    {
+        return m_prevLink != NULL;
+    }
+    void Unlink();
+
+    T *Next()
+    {
+        if ((int)m_nextNode <= 0)
+            return NULL;
+        return m_nextNode;
+    }
+
+    TLink<T> *NextLink(size_t offset = -1)
+    {
+        if ((int)m_nextNode <= 0)
+            return (TLink<T> *)~((size_t)m_nextNode);
+
+        if ((int)offset < 0) {
+            // Calculate the offset from a node pointer to a link structure
+            offset = (size_t)this - (size_t)m_prevLink->m_nextNode;
+        }
+
+        // Get the link field for the next node
+        return (TLink<T> *)((size_t)m_nextNode + offset);
+    }
+
+    void InsertBefore(T *node, TLink<T> *nextLink)
+    {
+        TLink<T> *p = nextLink->m_prevLink;
+        m_prevLink = p;
+        m_nextNode = p->m_nextNode;
+
+        p->m_nextNode = node;
+        nextLink->m_prevLink = this;
+    }
+
+    __forceinline void InsertAfter(T *node, TLink<T> *prevLink, const size_t &offset)
+    {
+        m_prevLink = prevLink;
+        m_nextNode = prevLink->m_nextNode;
+
+        prevLink->NextLink(offset)->m_prevLink = this;
+        prevLink->m_nextNode = node;
+    }
+
+private:
+    TLink<T> *m_prevLink; // pointer to the previous >link field<
+    T *m_nextNode;        // pointer to the next >object<
+
+    // Hide copy-constructor and assignment operator
+    TLink(const TLink &);
+    TLink &operator=(const TLink &);
+
+    friend class TList<T>;
+};
+
+//=============================================================================
+template <class T>
+void TLink<T>::Unlink()
+{
+    if (IsLinked()) {
+        NextLink()->m_prevLink = m_prevLink;
+        m_prevLink->m_nextNode = m_nextNode;
+
+        m_prevLink = NULL;
+        m_nextNode = NULL;
+    }
+}
+
+struct EXTERNMESSAGE {
+    LIST_LINK(EXTERNMESSAGE)
+    m_Link;
+    char command[COMMAND_LEN];
+    ~EXTERNMESSAGE()
+    {
+        // BUGFIX: this is already called by m_Link's destructor
+        m_Link.Unlink();
+    }
+    // compiler won't emit a scalar destructor, fake it
+    void *scalar_destruct(char release = 0);
+};
+
+static TList<EXTERNMESSAGE> sgChat_Cmd;
 
 void __cdecl msgcmd_cmd_cleanup()
 {
-	msgcmd_free_event(&sgChat_Cmd);
+    sgChat_Cmd.DeleteAll();
 }
 
 void __cdecl msgcmd_send_chat()
 {
-	ServerCommand *v0; // esi
-	int v1; // eax
+    DWORD tick;
+    struct EXTERNMESSAGE *msg = sgChat_Cmd.Head();
 
-	if ( (signed int)sgChat_Cmd.extern_msgs[1] > 0 )
-	{
-		v0 = sgChat_Cmd.extern_msgs[1];
-		v1 = GetTickCount();
-		if ( (unsigned int)(v1 - sgdwMsgCmdTimer) >= 2000 )
-		{
-			sgdwMsgCmdTimer = v1;
-			SNetSendServerChatCommand(v0->command);
-			msgcmd_delete_server_cmd_W(&sgChat_Cmd, v0);
-		}
-	}
+    if (msg) {
+        static DWORD sgdwMsgCmdTimer;
+        tick = GetTickCount();
+        if (tick - sgdwMsgCmdTimer >= 2000) {
+            sgdwMsgCmdTimer = tick;
+            SNetSendServerChatCommand(msg->command);
+            sgChat_Cmd.Remove(msg);
+        }
+    }
 }
 
-bool __fastcall msgcmd_add_server_cmd_W(char *chat_message)
+BOOL __fastcall msgcmd_add_server_cmd_W(const char *chat_message)
 {
-	if ( *chat_message != '/' )
-		return 0;
-	msgcmd_add_server_cmd(chat_message);
-	return 1;
+    if (chat_message[0] != '/')
+        return FALSE;
+    msgcmd_add_server_cmd(chat_message);
+    return TRUE;
 }
 
-void __fastcall msgcmd_add_server_cmd(char *command)
+void __fastcall msgcmd_add_server_cmd(const char *command)
 {
-	char *v1; // edi
-	size_t v2; // eax
-	int v3; // edx
-	size_t v4; // esi
-	ChatCmd *v5; // eax
-
-	v1 = command;
-	v2 = strlen(command);
-	if ( v2 )
-	{
-		v4 = v2 + 1;
-		if ( v2 + 1 <= 0x80 )
-		{
-			v5 = msgcmd_alloc_event(&sgChat_Cmd, v3, 2, 0, 0);
-			memcpy(&v5->extern_msgs[1], v1, v4);
-		}
-	}
+    size_t len = strlen(command);
+    if (len && ++len <= COMMAND_LEN) {
+        struct EXTERNMESSAGE *msg = sgChat_Cmd.Create();
+        memcpy(msg->command, command, len);
+    }
 }
 
-void __fastcall msgcmd_init_chatcmd(ChatCmd *chat_cmd)
+void *EXTERNMESSAGE::scalar_destruct(char release)
 {
-	ServerCommand **v1; // edx
-
-	v1 = chat_cmd->extern_msgs;
-	*v1 = 0;
-	v1[1] = 0;
-	*v1 = (ServerCommand *)v1;
-	chat_cmd->next = 0;
-	chat_cmd->extern_msgs[1] = (ServerCommand *)~(unsigned int)chat_cmd->extern_msgs;
-}
-
-void __fastcall msgcmd_free_event(ChatCmd *a1)
-{
-	int v1; // edx
-	ChatCmd *v2; // edi
-	ChatCmd *v3; // esi
-
-	v2 = a1;
-	while ( 1 )
-	{
-		v3 = (ChatCmd *)v2->extern_msgs[1];
-		if ( (signed int)v3 <= 0 )
-			break;
-		msgcmd_remove_event(v3, v1);
-		SMemFree(v3, ".?AUEXTERNMESSAGE@@", -2, 0);
-	}
-}
-
-bool __fastcall msgcmd_delete_server_cmd_W(ChatCmd *cmd, ServerCommand *extern_msg)
-{
-	char *v2; // eax
-	ServerCommand *v3; // eax
-	bool v4; // si
-	ChatCmd *ptr; // [esp+Ch] [ebp+4h]
-
-	v2 = (char *)ptr;
-	if ( !ptr )
-		v2 = (char *)cmd->extern_msgs;
-	v3 = (ServerCommand *)*((_DWORD *)v2 + 1);
-	if ( (signed int)v3 > 0 )
-		v4 = (char)v3;
-	else
-		v4 = 0;
-	msgcmd_remove_event(ptr, (int)extern_msg);
-	SMemFree(ptr, ".?AUEXTERNMESSAGE@@", -2, 0);
-	return v4;
-}
-
-ChatCmd *__fastcall msgcmd_alloc_event(ChatCmd *a1, int a2, int a3, int a4, int a5)
-{
-	int v5; // eax
-	ChatCmd *v6; // edi
-	ChatCmd *v7; // eax
-	int v8; // edx
-	ChatCmd *v9; // esi
-
-	v5 = a5;
-	_LOBYTE(v5) = a5 | 8;
-	v6 = a1;
-	v7 = (ChatCmd *)SMemAlloc(a4 + 136, ".?AUEXTERNMESSAGE@@", -2, v5);
-	if ( v7 )
-	{
-		v7->next = 0;
-		v7->extern_msgs[0] = 0;
-		v9 = v7;
-	}
-	else
-	{
-		v9 = 0;
-	}
-	if ( a3 )
-		msgcmd_event_type(v6, v8, (int *)v9, a3, 0);
-	return v9;
-}
-
-void __fastcall msgcmd_remove_event(ChatCmd *a1, int a2)
-{
-	ServerCommand **v2; // esi
-
-	v2 = (ServerCommand **)a1;
-	msgcmd_cleanup_extern_msg((ServerCommand **)a1);
-	msgcmd_cleanup_extern_msg(v2);
-	if ( a2 & 1 )
-	{
-		if ( v2 )
-			SMemFree(v2, "delete", -1, 0);
-	}
-}
-
-void __fastcall msgcmd_event_type(ChatCmd *a1, int a2, int *a3, int a4, int a5)
-{
-	ChatCmd *v5; // edi
-	int *v6; // esi
-	int *v7; // eax
-	int v8; // ecx
-	int v9; // edx
-	int v10; // ecx
-	int v11; // edx
-
-	v5 = a1;
-	v6 = a3;
-	if ( !a3 )
-		v6 = (int *)a1->extern_msgs;
-	if ( *v6 )
-		msgcmd_cleanup_extern_msg((ServerCommand **)v6);
-	v7 = (int *)a5;
-	if ( !a5 )
-		v7 = (int *)v5->extern_msgs;
-	if ( a4 == 1 )
-	{
-		*v6 = (int)v7;
-		v6[1] = v7[1];
-		v9 = v7[1];
-		v10 = (int)v5->next;
-		if ( v9 > 0 )
-		{
-			if ( v10 < 0 )
-				v10 = (int)v7 - *(_DWORD *)(*v7 + 4);
-			v11 = v10 + v9;
-		}
-		else
-		{
-			v11 = ~v9;
-		}
-		*(_DWORD *)v11 = (unsigned int)v6;
-		v7[1] = (int)a3;
-	}
-	else if ( a4 == 2 )
-	{
-		v8 = *v7;
-		*v6 = *v7;
-		v6[1] = *(_DWORD *)(v8 + 4);
-		*(_DWORD *)(v8 + 4) = (unsigned int)a3;
-		*v7 = (int)v6;
-	}
-}
-
-void __fastcall msgcmd_cleanup_chatcmd_1(ChatCmd *a1)
-{
-	ChatCmd *v1; // esi
-	ServerCommand **v2; // ecx
-
-	v1 = a1;
-	while ( 1 )
-	{
-		v2 = (ServerCommand **)v1->extern_msgs[1];
-		if ( (signed int)v2 <= 0 )
-			break;
-		msgcmd_cleanup_extern_msg(v2);
-	}
-}
-
-void __fastcall msgcmd_cleanup_extern_msg(ServerCommand **extern_msgs)
-{
-	ServerCommand *v1; // esi
-	signed int v2; // edx
-	int v3; // edx
-
-	v1 = *extern_msgs;
-	if ( *extern_msgs )
-	{
-		v2 = (signed int)extern_msgs[1];
-		if ( v2 > 0 )
-			v3 = (int)extern_msgs + v2 - v1->field_4;
-		else
-			v3 = ~v2;
-		*(_DWORD *)v3 = (unsigned int)v1;
-		(*extern_msgs)->field_4 = (int)extern_msgs[1];
-		*extern_msgs = 0;
-		extern_msgs[1] = 0;
-	}
+    this->~EXTERNMESSAGE();
+    if (release & 1 && this) {
+        SMemFree(this, "delete", SLOG_FUNCTION);
+    }
+    return this;
 }

@@ -1569,17 +1569,3 @@ struct TDataInfo {
     unsigned char *pbSize;
 };
 
-//////////////////////////////////////////////////
-// msgcmd
-//////////////////////////////////////////////////
-
-struct ServerCommand {
-    int field_0;
-    int field_4;
-    char command[128];
-};
-
-struct ChatCmd {
-    struct ChatCmd *next;
-    ServerCommand *extern_msgs[2];
-};
