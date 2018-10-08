@@ -1145,19 +1145,9 @@ void __fastcall CalcPlrScrolls(int p)
 
 void __fastcall CalcPlrStaff(int pnum)
 {
-	int v1; // esi
-	bool v2; // zf
-	signed __int64 v3; // rax
-
-	v1 = pnum;
-	v2 = plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_NONE;
-	plr[v1]._pISpells[0] = 0;
-	plr[v1]._pISpells[1] = 0;
-	if ( !v2 && plr[v1].InvBody[INVLOC_HAND_LEFT]._iStatFlag && plr[v1].InvBody[INVLOC_HAND_LEFT]._iCharges > 0 )
-	{
-		v3 = (__int64)1 << (_LOBYTE(plr[v1].InvBody[INVLOC_HAND_LEFT]._iSpell) - 1);
-		plr[v1]._pISpells[0] = v3;
-		plr[v1]._pISpells[1] = HIDWORD(v3);
+	plr[pnum]._pISpells64 = 0;
+	if ( plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iStatFlag && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iCharges > 0 ) {
+		plr[pnum]._pISpells64 |= (__int64)1 << (plr[pnum].InvBody[INVLOC_HAND_LEFT]._iSpell - 1);
 	}
 }
 
