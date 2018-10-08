@@ -406,8 +406,6 @@ void __cdecl DrawSpellList()
 {
 	int v0; // esi
 	signed int v1; // edi
-	int v2; // ecx
-	int v3; // eax
 	signed int v4; // ebp
 	int v5; // eax
 	int v6; // esi
@@ -447,27 +445,21 @@ void __cdecl DrawSpellList()
 			case RSPLTYPE_SKILL:
 				SetSpellTrans(RSPLTYPE_SKILL);
 				yp = 46;
-				v2 = plr[v0]._pAblSpells[0];
-				v3 = plr[v0]._pAblSpells[1];
-				goto LABEL_10;
+				v25 = plr[v0]._pAblSpells64;
+				break;
 			case RSPLTYPE_SPELL:
 				yp = 47;
-				v2 = plr[v0]._pMemSpells[0];
-				v3 = plr[v0]._pMemSpells[1];
-				goto LABEL_10;
+				v25 = plr[v0]._pMemSpells64;
+				break;
 			case RSPLTYPE_SCROLL:
 				SetSpellTrans(RSPLTYPE_SCROLL);
 				yp = 44;
-				v2 = plr[v0]._pScrlSpells[0];
-				v3 = plr[v0]._pScrlSpells[1];
-				goto LABEL_10;
+				v25 = plr[v0]._pScrlSpells64;
+				break;
 			case RSPLTYPE_CHARGES:
 				SetSpellTrans(RSPLTYPE_CHARGES);
 				yp = 45;
-				v2 = plr[v0]._pISpells[0];
-				v3 = plr[v0]._pISpells[1];
-LABEL_10:
-				v25 = __PAIR__(v3, v2);
+				v25 = plr[v0]._pISpells64;
 				break;
 		}
 		v20 = &spelldata[1].sTownSpell;
@@ -1098,7 +1090,6 @@ void __cdecl InitControlPan()
 	void *v1; // ecx
 	void *v2; // ecx
 	void *v3; // ecx
-	char v4;
 	unsigned char *v5; // eax
 
 	v0 = 144 * 640;
