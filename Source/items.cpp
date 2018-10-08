@@ -1119,58 +1119,24 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 
 void __fastcall CalcPlrScrolls(int p)
 {
-	int v1; // esi
-	int v2; // eax
-	int *v3; // edi
-	int v4; // ebx
-	signed __int64 v5; // rax
-	int *v6; // edi
-	signed int v7; // ebx
-	signed __int64 v8; // rax
-	__int64 v9; // rax
+	plr[p]._pScrlSpells64 = 0;
+	for (int i = 0; i < plr[p]._pNumInv; i++ ) {
+		if ( plr[p].InvList[i]._itype != ITYPE_NONE && (plr[p].InvList[i]._iMiscId == IMISC_SCROLL || plr[p].InvList[i]._iMiscId == IMISC_SCROLLT) ) {
+			if ( plr[p].InvList[i]._iStatFlag )
+				plr[p]._pScrlSpells64 |= (__int64)1 << (plr[p].InvList[i]._iSpell - 1);
+		}
+	}
 
-	v1 = p;
-	v2 = plr[p]._pNumInv;
-	plr[v1]._pScrlSpells[0] = 0;
-	plr[v1]._pScrlSpells[1] = 0;
-	if ( v2 > 0 )
-	{
-		v3 = &plr[v1].InvList[0]._iMiscId;
-		v4 = v2;
-		do
-		{
-			if ( *(v3 - 53) != -1 && (*v3 == IMISC_SCROLL || *v3 == IMISC_SCROLLT) && v3[34] )
-			{
-				v5 = (__int64)1 << (*((_BYTE *)v3 + 4) - 1);
-				plr[v1]._pScrlSpells[0] |= v5;
-				plr[v1]._pScrlSpells[1] |= HIDWORD(v5);
-			}
-			v3 += 92;
-			--v4;
+	for (int j = 0; j < MAXBELTITEMS; j++) {
+		if ( plr[p].SpdList[j]._itype != ITYPE_NONE && (plr[p].SpdList[j]._iMiscId == IMISC_SCROLL || plr[p].SpdList[j]._iMiscId == IMISC_SCROLLT) ) {
+			if ( plr[p].SpdList[j]._iStatFlag )
+				plr[p]._pScrlSpells64 |= (__int64)1 << (plr[p].SpdList[j]._iSpell - 1);
 		}
-		while ( v4 );
 	}
-	v6 = &plr[v1].SpdList[0]._iMiscId;
-	v7 = MAXBELTITEMS;
-	do
-	{
-		if ( *(v6 - 53) != -1 && (*v6 == IMISC_SCROLL || *v6 == IMISC_SCROLLT) && v6[34] )
-		{
-			v8 = (__int64)1 << (*((_BYTE *)v6 + 4) - 1);
-			plr[v1]._pScrlSpells[0] |= v8;
-			plr[v1]._pScrlSpells[1] |= HIDWORD(v8);
-		}
-		v6 += 92;
-		--v7;
-	}
-	while ( v7 );
-	if ( _LOBYTE(plr[v1]._pRSplType) == 2 )
-	{
-		v9 = 1 << (_LOBYTE(plr[v1]._pRSpell) - 1);
-		if ( !(plr[v1]._pScrlSpells[1] & HIDWORD(v9) | plr[v1]._pScrlSpells[0] & (unsigned int)v9) )
-		{
-			plr[v1]._pRSpell = -1;
-			_LOBYTE(plr[v1]._pRSplType) = 4;
+	if ( plr[p]._pRSplType == RSPLTYPE_SCROLL ) {
+		if ( !(plr[p]._pScrlSpells64 & 1 << (plr[p]._pRSpell - 1)) ) {
+			plr[p]._pRSpell = SPL_INVALID;
+			plr[p]._pRSplType = RSPLTYPE_INVALID;
 			drawpanflag = 255;
 		}
 	}
