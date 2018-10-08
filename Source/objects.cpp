@@ -4029,7 +4029,7 @@ LABEL_17:
 			if ( !v6 )
 			{
 				if ( setlvlnum == SL_BONECHAMB ) {
-					plr[myplr]._pMemSpells64 |= 0x10;
+					plr[myplr]._pMemSpells64 |= (__int64)1 << (SPL_GUARDIAN - 1);
 					if ( plr[pnum]._pSplLvl[SPL_GUARDIAN] < 15 )
 						plr[myplr]._pSplLvl[SPL_GUARDIAN]++;
 					quests[QTYPE_BONE]._qactive = 3;
@@ -4720,12 +4720,12 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 	int *v49; // ecx
 	int *v50; // eax
 	signed int v51; // ecx
-	signed int v52; // edi
+	__int64 v52; // edi
 	int v53; // esi
 	int v54; // ebx
 	int v55; // eax
 	bool v56; // zf
-	signed int v57; // ebx
+	__int64 v57; // ebx
 	unsigned int v58; // edi
 	signed int v59; // edx
 	int v60; // ebx
@@ -5151,37 +5151,28 @@ LABEL_47:
 				if ( v5 || arglist != myplr )
 					return;
 				sfx_ida = 0;
-				v138 = 0;
 				v52 = 1;
 				v53 = arglist;
-				v54 = plr[arglist]._pMemSpells[1];
-				v139 = 37;
+				v139 = MAX_SPELLS;
 				do
 				{
-					v7 = v138 & v54;
-					if ( v138 & v54 | v52 & plr[arglist]._pMemSpells[0] )
+					if ( v52 & plr[arglist]._pMemSpells64 )
 						++sfx_ida;
-					v55 = __PAIR__((unsigned int)v138, v52) >> 31;
 					v52 *= 2;
 					v56 = v139-- == 1;
-					v138 = v55;
 				}
 				while ( !v56 );
 				v57 = 1;
 				if ( sfx_ida > 1 )
 				{
-					v58 = 0;
 					v59 = 1;
 					do
 					{
-						v7 = v58 & plr[v53]._pMemSpells[1];
-						if ( v7 | v57 & plr[v53]._pMemSpells[0] )
-						{
+						if ( v57 & plr[v53]._pMemSpells64 ) {
 							v7 = (int)&plr[v53]._pSplLvl[v59];
 							if ( *(_BYTE *)v7 < 15 )
 								++*(_BYTE *)v7;
 						}
-						v58 = __PAIR__(v58, v57) >> 31;
 						v57 *= 2;
 						++v59;
 					}
@@ -5189,9 +5180,8 @@ LABEL_47:
 					do
 					{
 						v60 = random(0, MAX_SPELLS);
-						v7 = v60;
 					}
-					while ( !(plr[v53]._pMemSpells[1] & ((unsigned __int64)((__int64)1 << v60) >> 32) | plr[v53]._pMemSpells[0] & (unsigned int)((__int64)1 << v60)) );
+					while ( !(plr[v53]._pMemSpells64 & ((__int64)1 << v60)) );
 					v61 = &plr[v53]._pSplLvl[v60 + 1];
 					if ( *v61 < 2 )
 						*v61 = 0;
@@ -5224,10 +5214,7 @@ LABEL_47:
 				if ( v5 || arglist != myplr )
 					return;
 				v7 = 21720 * arglist;
-				v65 = plr[arglist]._pMemSpells;
-				v66 = plr[arglist]._pMemSpells[1];
-				*v65 |= 1u;
-				v65[1] = v66;
+				plr[arglist]._pMemSpells64 |= (__int64)1 << (SPL_FIREBOLT - 1);
 				v67 = plr[arglist]._pSplLvl[1];
 				if ( v67 < 15 )
 					plr[0]._pSplLvl[v7 + 1] = v67 + 1;
@@ -5420,10 +5407,7 @@ LABEL_47:
 				if ( v5 || arglist != myplr )
 					return;
 				v7 = 21720 * arglist;
-				v94 = plr[arglist]._pMemSpells;
-				v95 = plr[arglist]._pMemSpells[1];
-				*((_BYTE *)v94 + 3) |= 0x20u;
-				v94[1] = v95;
+				plr[arglist]._pMemSpells64 |= (__int64)1 << (SPL_CBOLT - 1);
 				v96 = plr[arglist]._pSplLvl[30];
 				if ( v96 < 15 )
 					plr[0]._pSplLvl[v7 + 30] = v96 + 1;
@@ -5549,10 +5533,7 @@ LABEL_47:
 				if ( v5 || arglist != myplr )
 					return;
 				v7 = 21720 * arglist;
-				v113 = plr[arglist]._pMemSpells;
-				v114 = plr[arglist]._pMemSpells[1];
-				*((_BYTE *)v113 + 3) |= 0x40u;
-				v113[1] = v114;
+				plr[arglist]._pMemSpells64 |= (__int64)1 << (SPL_HBOLT - 1);
 				v115 = plr[arglist]._pSplLvl[31];
 				if ( v115 < 15 )
 					plr[0]._pSplLvl[v7 + 31] = v115 + 1;
