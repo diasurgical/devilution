@@ -4581,7 +4581,7 @@ LABEL_71:
 					if ( v24 != 2 )
 						return;
 					v25 = p;
-					*(_QWORD *)plr[p]._pMemSpells |= (__int64)1 << ((unsigned char)spl - 1);
+					plr[p]._pMemSpells64 |= (__int64)1 << (spl - 1);
 					v26 = &plr[p]._pSplLvl[spl];
 					if ( *v26 < 15 )
 						++*v26;

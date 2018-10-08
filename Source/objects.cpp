@@ -3971,24 +3971,17 @@ LABEL_17:
 
 void __fastcall OperateBook(int pnum, int i)
 {
-	int esi1; // esi
 	int v3; // edx
 	signed int v4; // ecx
 	int v5; // eax
 	bool v6; // zf
-	int v7; // ecx
-	int *v8; // eax
 	int j; // esi
-	int v10; // [esp+Ch] [ebp-14h]
 	signed int v11; // [esp+10h] [ebp-10h]
 	signed int v1; // [esp+14h] [ebp-Ch]
 	signed int v2; // [esp+18h] [ebp-8h]
 	int v14; // [esp+1Ch] [ebp-4h]
 
-	esi1 = i;
-	v3 = pnum;
-	v10 = pnum;
-	if ( !object[esi1]._oSelFlag )
+	if ( !object[i]._oSelFlag )
 		return;
 	if ( !setlevel || setlvlnum != SL_VILEBETRAYER )
 		goto LABEL_17;
@@ -4020,41 +4013,34 @@ void __fastcall OperateBook(int pnum, int i)
 			if ( v4 )
 			{
 				++object[dObject[35][36]-1]._oVar5; // ++objectavail[30 * dObject[35][36] + 123]; /* fix */
-				AddMissile(plr[v3].WorldX, plr[v3].WorldY, v1, v2, plr[v3]._pdir, MIS_RNDTELEPORT, 0, v3, 0, 0);
+				AddMissile(plr[pnum].WorldX, plr[pnum].WorldY, v1, v2, plr[pnum]._pdir, MIS_RNDTELEPORT, 0, pnum, 0, 0);
 				v11 = 1;
 				v4 = 0;
 			}
 			if ( ++v14 >= nobjects )
 				break;
-			v3 = v10;
 		}
 		if ( v11 )
 		{
-			v3 = v10;
 LABEL_17:
-			++object[esi1]._oAnimFrame;
+			++object[i]._oAnimFrame;
 			v6 = setlevel == 0;
-			object[esi1]._oSelFlag = 0;
+			object[i]._oSelFlag = 0;
 			if ( !v6 )
 			{
-				if ( setlvlnum == SL_BONECHAMB )
-				{
-					v7 = 21720 * myplr;
-					v8 = plr[myplr]._pMemSpells;
-					*((_BYTE *)v8 + 1) |= 0x10u;
-					v8[1] = v8[1];
-					if ( plr[v3]._pSplLvl[SPL_GUARDIAN] < 15 )
-						++plr[0]._pSplLvl[v7 + SPL_GUARDIAN];
+				if ( setlvlnum == SL_BONECHAMB ) {
+					plr[myplr]._pMemSpells64 |= 0x10;
+					if ( plr[pnum]._pSplLvl[SPL_GUARDIAN] < 15 )
+						plr[myplr]._pSplLvl[SPL_GUARDIAN]++;
 					quests[QTYPE_BONE]._qactive = 3;
 					if ( !deltaload )
-						PlaySfxLoc(IS_QUESTDN, object[esi1]._ox, object[esi1]._oy);
-					_LOBYTE(v7) = 43;
-					InitDiabloMsg(v7);
+						PlaySfxLoc(IS_QUESTDN, object[i]._ox, object[i]._oy);
+					InitDiabloMsg(43);
 					AddMissile(
 						plr[myplr].WorldX,
 						plr[myplr].WorldY,
-						object[esi1]._ox - 2,
-						object[esi1]._oy - 4,
+						object[i]._ox - 2,
+						object[i]._oy - 4,
 						plr[myplr]._pdir,
 						MIS_GUARDIAN,
 						0,
@@ -4067,10 +4053,10 @@ LABEL_17:
 					if ( setlvlnum == SL_VILEBETRAYER )
 					{
 						ObjChangeMapResync(
-							object[esi1]._oVar1,
-							object[esi1]._oVar2,
-							object[esi1]._oVar3,
-							object[esi1]._oVar4);
+							object[i]._oVar1,
+							object[i]._oVar2,
+							object[i]._oVar3,
+							object[i]._oVar4);
 						for ( j = 0; j < nobjects; ++j )
 							SyncObjectAnim(objectactive[j]);
 					}
