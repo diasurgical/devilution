@@ -2930,7 +2930,7 @@ void __fastcall control_drop_gold(int vkey)
 	char v6[6]; // [esp+8h] [ebp-8h]
 
 	v1 = vkey;
-	if ( (signed int)(plr[myplr]._pHitPoints & 0xFFFFFFC0) <= 0 )
+	if ( plr[myplr]._pHitPoints >> 6 <= 0 )
 	{
 		dropGoldFlag = 0;
 		dropGoldValue = 0;

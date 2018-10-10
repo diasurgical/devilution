@@ -1223,7 +1223,7 @@ BOOL __fastcall MonsterTrapHit(int m, int mindam, int maxdam, int dist, int t, i
 	v6 = m;
 	v15 = mindam;
 	if ( monster[m].mtalkmsg
-	  || (signed int)(monster[v6]._mhitpoints & 0xFFFFFFC0) <= 0
+	  || monster[v6]._mhitpoints >> 6 <= 0
 	  || monster[v6].MType->mtype == MT_ILLWEAV && _LOBYTE(monster[v6]._mgoal) == 2 )
 	{
 		return 0;
@@ -1269,7 +1269,7 @@ BOOL __fastcall MonsterTrapHit(int m, int mindam, int maxdam, int dist, int t, i
 	if ( debug_mode_dollar_sign || debug_mode_key_inverted_v )
 		monster[v6]._mhitpoints = 0;
 #endif
-	if ( (signed int)(monster[v6]._mhitpoints & 0xFFFFFFC0) > 0 )
+	if ( monster[v6]._mhitpoints >> 6 > 0 )
 	{
 		if ( v16 )
 		{
@@ -1327,7 +1327,7 @@ bool __fastcall MonsterMHit(int pnum, int m, int mindam, int maxdam, int dist, i
 	v8 = monster[m].mtalkmsg == 0;
 	pnuma = pnum;
 	if ( !v8
-	  || (signed int)(monster[v7]._mhitpoints & 0xFFFFFFC0) <= 0
+	  || monster[v7]._mhitpoints >> 6 <= 0
 	  || t == 53 && monster[v7].MType->mtype != MT_DIABLO && monster[v7].MData->mMonstClass )
 	{
 		return 0;
@@ -1422,7 +1422,7 @@ bool __fastcall MonsterMHit(int pnum, int m, int mindam, int maxdam, int dist, i
 	v22 = plr[v12]._pIFlags;
 	if ( v22 & 8 )
 		monster[v7]._mFlags |= 8u;
-	if ( (signed int)(monster[v7]._mhitpoints & 0xFFFFFFC0) > 0 )
+	if ( monster[v7]._mhitpoints >> 6 > 0 )
 	{
 		if ( v26 )
 		{
@@ -1496,7 +1496,7 @@ bool __fastcall PlayerMHit(int pnum, int m, int dist, int mind, int maxd, int mt
 	arglist = pnum;
 	v9 = pnum;
 	v34 = m;
-	if ( (signed int)(plr[pnum]._pHitPoints & 0xFFFFFFC0) <= 0
+	if ( plr[pnum]._pHitPoints >> 6 <= 0
 	  || plr[v9]._pInvincible
 	  || plr[v9]._pSpellFlags & 1 && !missiledata[mtype].mType )
 	{
@@ -1644,7 +1644,7 @@ LABEL_50:
 				plr[v9]._pHitPoints = v30;
 				plr[v9]._pHPBase = plr[v9]._pMaxHPBase;
 			}
-			if ( (signed int)(plr[v9]._pHitPoints & 0xFFFFFFC0) > 0 )
+			if ( plr[v9]._pHitPoints >> 6 > 0 )
 			{
 				StartPlrHit(arglist, v21, 0);
 				return 1;
@@ -1664,7 +1664,7 @@ LABEL_50:
 			plr[v9]._pHitPoints = v26;
 			plr[v9]._pHPBase = plr[v9]._pMaxHPBase;
 		}
-		if ( (signed int)(plr[v9]._pHitPoints & 0xFFFFFFC0) <= 0 )
+		if ( plr[v9]._pHitPoints >> 6 <= 0 )
 		{
 LABEL_70:
 			SyncPlrKill(v24, earflag);
@@ -4542,7 +4542,7 @@ int __fastcall Sentfire(int i, int sx, int sy)
 	if ( LineClear(missile[i]._mix, missile[i]._miy, sx, sy) )
 	{
 		v7 = dMonster[0][sy + 112 * v4];
-		if ( v7 > 0 && (signed int)(monster[v7-1]._mhitpoints & 0xFFFFFFC0) > 0 && v7 - 1 > 3 ) /* fix monstactive */
+		if ( v7 > 0 && monster[v7-1]._mhitpoints >> 6 > 0 && v7 - 1 > 3 ) /* fix monstactive */
 		{
 			v8 = GetDirection(missile[v3]._mix, missile[v3]._miy, v4, sy);
 			v9 = missile[v3]._misource;
@@ -5668,7 +5668,7 @@ LABEL_26:
 	plr[v2]._pManaBase = v12;
 	if ( v13 )
 		SetPlayerHitPoints(arglist, 0);
-	if ( plr[v2]._pHitPoints & 0xFFFFFFC0 )
+	if ( plr[v2]._pHitPoints >> 6 )
 		goto LABEL_26;
 	if ( arglist == myplr )
 	{

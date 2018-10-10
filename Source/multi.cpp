@@ -367,7 +367,7 @@ int __cdecl multi_handle_delta()
 
 	if ( gbGameDestroyed )
 	{
-		gbRunGame = 0;
+		gbRunGame = FALSE;
 		return 0;
 	}
 	v0 = 0;
@@ -495,7 +495,7 @@ void __cdecl multi_begin_timeout()
 		}
 		else
 		{
-			gbRunGame = 0;
+			gbRunGame = FALSE;
 		}
 	}
 }
@@ -1129,7 +1129,7 @@ void __fastcall multi_player_joins(int pnum, TCmdPlrInfoHdr *cmd, int a3)
 					SyncInitPlr(v3);
 					if ( plr[v6].plrlevel == currlevel )
 					{
-						if ( (signed int)(plr[v6]._pHitPoints & 0xFFFFFFC0) <= 0 )
+						if ( plr[v6]._pHitPoints >> 6 <= 0 )
 						{
 							plr[v6]._pgfxnum = 0;
 							LoadPlrGFX(v3, PFILE_DEATH);

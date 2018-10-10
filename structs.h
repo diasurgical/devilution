@@ -337,7 +337,7 @@ struct PlayerStruct {
     unsigned char pManaShield;
     char bReserved[3];
     short wReserved[8];
-    int pDiabloKillLevel;
+    DWORD pDiabloKillLevel;
     int dwReserved[7];
     unsigned char *_pNData;
     unsigned char *_pWData;

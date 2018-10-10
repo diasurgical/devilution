@@ -11,7 +11,7 @@ extern int MouseY; // idb
 extern int MouseX; // idb
 extern bool gbGameLoopStartup; // idb
 extern int glSeedTbl[NUMLEVELS];
-extern int gbRunGame; // weak
+extern BOOL gbRunGame; // weak
 extern int glMid3Seed[NUMLEVELS];
 extern int gbRunGameResult; // weak
 extern int zoomflag; // weak

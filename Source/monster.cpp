@@ -3041,7 +3041,7 @@ void __fastcall M_TryM2MHit(int i, int mid, int hper, int mind, int maxd)
 	v7 = v5;
 	if ( !monster[v5].MType )
 		TermMsg("M_TryM2MHit: Monster %d \"%s\" MType NULL", v5, monster[v7].mName);
-	if ( (signed int)(monster[v7]._mhitpoints & 0xFFFFFFC0) > 0
+	if ( monster[v7]._mhitpoints >> 6 > 0
 		&& (monster[v7].MType->mtype != MT_ILLWEAV || _LOBYTE(monster[v7]._mgoal) != 2) )
 	{
 		v8 = random(4, 100);
@@ -3052,7 +3052,7 @@ void __fastcall M_TryM2MHit(int i, int mid, int hper, int mind, int maxd)
 		{
 			v11 = (mind + random(5, maxd - mind + 1)) << 6;
 			monster[v7]._mhitpoints -= v11;
-			if ( (signed int)(monster[v7]._mhitpoints & 0xFFFFFFC0) > 0 )
+			if ( monster[v7]._mhitpoints >> 6 > 0 )
 			{
 				if ( monster[v7]._mmode == MM_STONE )
 				{
@@ -3126,7 +3126,7 @@ void __fastcall M_TryH2HHit(int i, int pnum, int Hit, int MinDam, int MaxDam)
 		return;
 	}
 	v7 = plr_num;
-	if ( (signed int)(plr[plr_num]._pHitPoints & 0xFFFFFFC0) > 0 && !plr[v7]._pInvincible && !(plr[v7]._pSpellFlags & 1) )
+	if ( plr[plr_num]._pHitPoints >> 6 > 0 && !plr[v7]._pInvincible && !(plr[v7]._pSpellFlags & 1) )
 	{
 		v8 = abs(monster[v6]._mx - plr[v7].WorldX);
 		v9 = abs(monster[v6]._my - plr[v7].WorldY);
@@ -3249,7 +3249,7 @@ void __fastcall M_TryH2HHit(int i, int pnum, int Hit, int MinDam, int MaxDam)
 					{
 						v30 = (random(99, 3) + 1) << 6;
 						monster[v6]._mhitpoints -= v30;
-						if ( (signed int)(monster[v6]._mhitpoints & 0xFFFFFFC0) > 0 )
+						if ( monster[v6]._mhitpoints >> 6 > 0 )
 							M_StartHit(arglist, plr_num, v30);
 						else
 							M_StartKill(arglist, plr_num);
@@ -3262,7 +3262,7 @@ void __fastcall M_TryH2HHit(int i, int pnum, int Hit, int MinDam, int MaxDam)
 						plr[v7]._pHitPoints = v31;
 						plr[v7]._pHPBase = plr[v7]._pMaxHPBase;
 					}
-					if ( (signed int)(plr[v7]._pHitPoints & 0xFFFFFFC0) > 0 )
+					if ( plr[v7]._pHitPoints >> 6 > 0 )
 					{
 						StartPlrHit(plr_num, v29, 0);
 						if ( SLOBYTE(monster[v6]._mFlags) < 0 )
@@ -3858,38 +3858,27 @@ void __cdecl DoEnding()
 
 void __cdecl PrepDoEnding()
 {
-	int *v0; // eax
-	int v1; // ecx
-	int *v2; // eax
-	bool v3; // cf
-	bool v4; // zf
-
 	gbSoundOn = sgbSaveSoundOn;
-	gbRunGame = 0;
+	gbRunGame = FALSE;
 	deathflag = FALSE;
-	v0 = &plr[myplr].pDiabloKillLevel;
-	v1 = gnDifficulty + 1;
-	cineflag = 1;
-	if ( *v0 > (unsigned int)(gnDifficulty + 1) )
-		v1 = *v0;
-	*v0 = v1;
-	v2 = &plr[0]._pHitPoints;
-	do
-	{
-		v3 = (unsigned char)gbMaxPlayers < 1u;
-		v4 = gbMaxPlayers == 1;
-		*(v2 - 102) = 11;
-		*((_BYTE *)v2 - 91) = 1;
-		if ( !v3 && !v4 )
-		{
-			if ( !(*v2 & 0xFFFFFFC0) )
-				*v2 = 64;
-			if ( !(v2[5] & 0xFFFFFFC0) )
-				v2[5] = 64;
+	cineflag = TRUE;
+
+	DWORD *killLevel = &plr[myplr].pDiabloKillLevel;
+	int newKillLevel = gnDifficulty + 1;
+	if ( *killLevel > newKillLevel )
+		newKillLevel = *killLevel;
+	plr[myplr].pDiabloKillLevel = newKillLevel;
+
+	for ( int i = 0; i < MAX_PLRS; i++ ) {
+		plr[i]._pmode = PM_QUIT;
+		plr[i]._pBlockFlag = TRUE;
+		if ( gbMaxPlayers > 1 ) {
+			if ( plr[i]._pHitPoints >> 6 == 0 )
+				plr[i]._pHitPoints = 64;
+			if ( plr[i]._pMana >> 6 == 0 )
+				plr[i]._pMana = 64;
 		}
-		v2 += 5430;
 	}
-	while ( (signed int)v2 < (signed int)&plr[4]._pHitPoints );
 }
 // 4A22D5: using guessed type char gbSoundOn;
 // 525650: using guessed type int gbRunGame;
@@ -7251,7 +7240,7 @@ void __cdecl ProcessMonsters()
 		if ( !(monster[v1]._mFlags & 8) )
 		{
 			v2 = monster[v1]._mhitpoints;
-			if ( v2 < monster[v1]._mmaxhp && (signed int)(v2 & 0xFFFFFFC0) > 0 )
+			if ( v2 < monster[v1]._mmaxhp && v2 >> 6 > 0 )
 			{
 				v3 = SLOBYTE(monster[v1].mLevel);
 				if ( (char)v3 > 1 )
@@ -8005,7 +7994,7 @@ void __fastcall M_FallenFear(int x, int y)
 				&& v4
 				&& abs(x1 - monster[v5]._mx) < 5
 				&& abs(y1 - monster[v5]._my) < 5
-				&& (signed int)(monster[v5]._mhitpoints & 0xFFFFFFC0) > 0 )
+				&& monster[v5]._mhitpoints >> 6 > 0 )
 			{
 				_LOBYTE(monster[v5]._mgoal) = 2;
 				monster[v5]._mgoalvar1 = v4;

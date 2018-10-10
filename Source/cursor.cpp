@@ -1061,7 +1061,7 @@ LABEL_296:
 	{
 		v17 = v15 <= 0 ? -1 - v15 : v15 - 1;
 		if ( v17 == dword_4B8CCC
-		  && (signed int)(monster[v17]._mhitpoints & 0xFFFFFFC0) > 0
+		  && monster[v17]._mhitpoints >> 6 > 0
 		  && monster[v17].MData->mSelFlag & 4 )
 		{
 			v11 = v17;
@@ -1076,7 +1076,7 @@ LABEL_74:
 	{
 		v19 = v18 <= 0 ? -1 - v18 : v18 - 1;
 		if ( v19 == dword_4B8CCC
-		  && (signed int)(monster[v19]._mhitpoints & 0xFFFFFFC0) > 0
+		  && monster[v19]._mhitpoints >> 6 > 0
 		  && monster[v19].MData->mSelFlag & 4 )
 		{
 			v11 = v19;
@@ -1092,7 +1092,7 @@ LABEL_74:
 		{
 			v21 = v22 <= 0 ? -1 - v22 : v22 - 1;
 			if ( v21 == dword_4B8CCC
-			  && (signed int)(monster[v21]._mhitpoints & 0xFFFFFFC0) > 0
+			  && monster[v21]._mhitpoints >> 6 > 0
 			  && monster[v21].MData->mSelFlag & 2 )
 			{
 				cursmx = v6;
@@ -1108,7 +1108,7 @@ LABEL_74:
 		{
 			v21 = v20 <= 0 ? -1 - v20 : v20 - 1;
 			if ( v21 == dword_4B8CCC
-			  && (signed int)(monster[v21]._mhitpoints & 0xFFFFFFC0) > 0
+			  && monster[v21]._mhitpoints >> 6 > 0
 			  && monster[v21].MData->mSelFlag & 2 )
 			{
 				cursmy = v8;
@@ -1126,7 +1126,7 @@ LABEL_103:
 	{
 		v24 = v23 <= 0 ? -1 - v23 : v23 - 1;
 		if ( v24 == dword_4B8CCC
-		  && (signed int)(monster[v24]._mhitpoints & 0xFFFFFFC0) > 0
+		  && monster[v24]._mhitpoints >> 6 > 0
 		  && monster[v24].MData->mSelFlag & 1 )
 		{
 			v11 = v24;
@@ -1140,7 +1140,7 @@ LABEL_103:
 	{
 		v26 = v25 <= 0 ? -1 - v25 : v25 - 1;
 		if ( v26 == dword_4B8CCC
-		  && (signed int)(monster[v26]._mhitpoints & 0xFFFFFFC0) > 0
+		  && monster[v26]._mhitpoints >> 6 > 0
 		  && monster[v26].MData->mSelFlag & 2 )
 		{
 			v11 = v26;
@@ -1177,7 +1177,7 @@ LABEL_128:
 			if ( v32 && dFlags[1][v27 + 2 + v8] & DFLAG_LIT )
 			{
 				v30 = v32 <= 0 ? -1 - v32 : v32 - 1;
-				if ( (signed int)(monster[v30]._mhitpoints & 0xFFFFFFC0) > 0 && monster[v30].MData->mSelFlag & 4 )
+				if ( monster[v30]._mhitpoints >> 6 > 0 && monster[v30].MData->mSelFlag & 4 )
 				{
 					cursmx = v6 + 1;
 					v31 = v8 + 2;
@@ -1192,7 +1192,7 @@ LABEL_128:
 			if ( v29 && dFlags[2][v27 + 1 + v8] & DFLAG_LIT )
 			{
 				v30 = v29 <= 0 ? -1 - v29 : v29 - 1;
-				if ( (signed int)(monster[v30]._mhitpoints & 0xFFFFFFC0) > 0 && monster[v30].MData->mSelFlag & 4 )
+				if ( monster[v30]._mhitpoints >> 6 > 0 && monster[v30].MData->mSelFlag & 4 )
 				{
 					cursmx = v6 + 2;
 					v31 = v8 + 1;
@@ -1208,7 +1208,7 @@ LABEL_146:
 		if ( v33 && dFlags[2][v27 + 2 + v8] & DFLAG_LIT )
 		{
 			v34 = v33 <= 0 ? -1 - v33 : v33 - 1;
-			if ( (signed int)(monster[v34]._mhitpoints & 0xFFFFFFC0) > 0 && monster[v34].MData->mSelFlag & 4 )
+			if ( monster[v34]._mhitpoints >> 6 > 0 && monster[v34].MData->mSelFlag & 4 )
 			{
 				pcursmonst = v34;
 				cursmx = v6 + 2;
@@ -1221,7 +1221,7 @@ LABEL_146:
 			if ( v37 && dFlags[0][v27 + 1 + v8] & DFLAG_LIT )
 			{
 				v36 = v37 <= 0 ? -1 - v37 : v37 - 1;
-				if ( (signed int)(monster[v36]._mhitpoints & 0xFFFFFFC0) > 0 && monster[v36].MData->mSelFlag & 2 )
+				if ( monster[v36]._mhitpoints >> 6 > 0 && monster[v36].MData->mSelFlag & 2 )
 				{
 					cursmx = v6;
 					cursmy = v8 + 1;
@@ -1235,7 +1235,7 @@ LABEL_146:
 			if ( v35 && dFlags[1][v27 + v8] & DFLAG_LIT )
 			{
 				v36 = v35 <= 0 ? -1 - v35 : v35 - 1;
-				if ( (signed int)(monster[v36]._mhitpoints & 0xFFFFFFC0) > 0 && monster[v36].MData->mSelFlag & 2 )
+				if ( monster[v36]._mhitpoints >> 6 > 0 && monster[v36].MData->mSelFlag & 2 )
 				{
 					cursmy = v8;
 					cursmx = v6 + 1;
@@ -1250,7 +1250,7 @@ LABEL_172:
 		if ( v38 && dFlags[0][v27 + v8] & DFLAG_LIT )
 		{
 			v39 = v38 <= 0 ? -1 - v38 : v38 - 1;
-			if ( (signed int)(monster[v39]._mhitpoints & 0xFFFFFFC0) > 0 && monster[v39].MData->mSelFlag & 1 )
+			if ( monster[v39]._mhitpoints >> 6 > 0 && monster[v39].MData->mSelFlag & 1 )
 			{
 				cursmx = v6;
 				cursmy = v8;
@@ -1261,7 +1261,7 @@ LABEL_172:
 		if ( v40 && dFlags[1][v27 + 1 + v8] & DFLAG_LIT )
 		{
 			v41 = v40 <= 0 ? -1 - v40 : v40 - 1;
-			if ( (signed int)(monster[v41]._mhitpoints & 0xFFFFFFC0) > 0 && monster[v41].MData->mSelFlag & 2 )
+			if ( monster[v41]._mhitpoints >> 6 > 0 && monster[v41].MData->mSelFlag & 2 )
 			{
 				pcursmonst = v41;
 				cursmx = v6 + 1;
