@@ -1129,7 +1129,7 @@ void __fastcall multi_player_joins(int pnum, TCmdPlrInfoHdr *cmd, int a3)
 					SyncInitPlr(v3);
 					if ( plr[v6].plrlevel == currlevel )
 					{
-						if ( (signed int)(plr[v6]._pHitPoints & 0xFFFFFFC0) <= 0 )
+						if ( plr[v6]._pHitPoints >> 6 <= 0 )
 						{
 							plr[v6]._pgfxnum = 0;
 							LoadPlrGFX(v3, PFILE_DEATH);

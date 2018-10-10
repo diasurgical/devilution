@@ -3153,7 +3153,7 @@ int __fastcall On_MONSTDAMAGE(struct TCmdLocParam1 *pCmd, int pnum)
 			{
 				*v6 -= (unsigned short)v3->wParam1;
 				v7 = &monster[*(unsigned short *)&v3->x]._mhitpoints;
-				if ( (signed int)(*v7 & 0xFFFFFFC0) < 64 )
+				if ( *v7 >> 6 < 64 )
 					*v7 = 64;
 				delta_monster_hp(*(unsigned short *)&v3->x, monster[*(unsigned short *)&v3->x]._mhitpoints, *v4);
 			}
@@ -3197,11 +3197,10 @@ int __fastcall On_PLRDAMAGE(struct TCmdDamage *pCmd, int pnum)
 			if ( gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel && pCmd->dwDam <= 0x2EE00u )
 			{
 				v3 = myplr;
-				v4 = plr[myplr]._pHitPoints;
-				if ( (signed int)(v4 & 0xFFFFFFC0) > 0 )
+				if ( plr[myplr]._pHitPoints >> 6 > 0 )
 				{
 					drawhpflag = TRUE;
-					plr[v3]._pHitPoints = v4 - pCmd->dwDam;
+					plr[v3]._pHitPoints = plr[myplr]._pHitPoints - pCmd->dwDam;
 					v5 = &plr[v3]._pHPBase;
 					*v5 -= pCmd->dwDam;
 					v6 = plr[v3]._pMaxHP;
@@ -3210,7 +3209,7 @@ int __fastcall On_PLRDAMAGE(struct TCmdDamage *pCmd, int pnum)
 						plr[v3]._pHitPoints = v6;
 						*v5 = plr[v3]._pMaxHPBase;
 					}
-					if ( (signed int)(plr[v3]._pHitPoints & 0xFFFFFFC0) <= 0 )
+					if ( plr[v3]._pHitPoints >> 6 <= 0 )
 						SyncPlrKill(v2, 1);
 				}
 			}
@@ -3463,7 +3462,7 @@ int __fastcall On_PLAYER_JOINLEVEL(struct TCmdLocParam1 *pCmd, int pnum)
 				{
 					LoadPlrGFX(v2, PFILE_STAND);
 					SyncInitPlr(v2);
-					if ( (signed int)(plr[v4]._pHitPoints & 0xFFFFFFC0) <= 0 )
+					if ( plr[v4]._pHitPoints >> 6 <= 0 )
 					{
 						plr[v4]._pgfxnum = 0;
 						LoadPlrGFX(v2, PFILE_DEATH);

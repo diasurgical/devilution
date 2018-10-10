@@ -2827,7 +2827,7 @@ void __fastcall Obj_BCrossDamage(int i)
 			v4 = damage[(unsigned char)leveltype-1];
 			plr[v1]._pHitPoints -= v4;
 			plr[v1]._pHPBase -= v4;
-			if ( (signed int)(plr[v1]._pHitPoints & 0xFFFFFFC0) <= 0 )
+			if ( plr[v1]._pHitPoints >> 6 <= 0 )
 			{
 				SyncPlrKill(myplr, 0);
 				drawhpflag = TRUE;
@@ -5457,12 +5457,12 @@ LABEL_47:
 				*(int *)((char *)&plr[0]._pMaxManaBase + v7) = v98 - v101;
 				v105 = v104 - v101;
 				*(int *)((char *)&plr[0]._pMaxMana + v7) = v105;
-				if ( (signed int)(sfx_idf & 0xFFFFFFC0) <= 0 )
+				if ( sfx_idf >> 6 <= 0 )
 				{
 					*(int *)((char *)&plr[0]._pManaBase + v7) = 0;
 					*(int *)((char *)&plr[0]._pMana + v7) = v100;
 				}
-				if ( (signed int)(v105 & 0xFFFFFFC0) <= 0 )
+				if ( v105 >> 6 <= 0 )
 				{
 					*(int *)((char *)&plr[0]._pMaxManaBase + v7) = 0;
 					*(int *)((char *)&plr[0]._pMaxMana + v7) = v102;
@@ -5586,12 +5586,12 @@ LABEL_47:
 				*(int *)((char *)&plr[0]._pMaxManaBase + v7) = v117 - v120;
 				v124 = v123 - v120;
 				*(int *)((char *)&plr[0]._pMaxMana + v7) = v124;
-				if ( (signed int)(sfx_idg & 0xFFFFFFC0) <= 0 )
+				if ( sfx_idg >> 6 <= 0 )
 				{
 					*(int *)((char *)&plr[0]._pManaBase + v7) = 0;
 					*(int *)((char *)&plr[0]._pMana + v7) = v119;
 				}
-				if ( (signed int)(v124 & 0xFFFFFFC0) <= 0 )
+				if ( v124 >> 6 <= 0 )
 				{
 					*(int *)((char *)&plr[0]._pMaxManaBase + v7) = 0;
 					*(int *)((char *)&plr[0]._pMaxMana + v7) = v121;
