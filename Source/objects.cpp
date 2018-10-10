@@ -5215,12 +5215,12 @@ LABEL_47:
 					return;
 				v7 = 21720 * arglist;
 				plr[arglist]._pMemSpells64 |= (__int64)1 << (SPL_FIREBOLT - 1);
-				v67 = plr[arglist]._pSplLvl[1];
+				v67 = plr[arglist]._pSplLvl[SPL_FIREBOLT];
 				if ( v67 < 15 )
-					plr[0]._pSplLvl[v7 + 1] = v67 + 1;
-				v68 = plr[0]._pSplLvl[v7 + 1];
+					plr[0]._pSplLvl[v7 + SPL_FIREBOLT] = v67 + 1;
+				v68 = plr[0]._pSplLvl[v7 + SPL_FIREBOLT];
 				if ( v68 < 15 )
-					plr[0]._pSplLvl[v7 + 1] = v68 + 1;
+					plr[0]._pSplLvl[v7 + SPL_FIREBOLT] = v68 + 1;
 				v69 = *(int *)((char *)&plr[0]._pMaxManaBase + v7);
 				v70 = *(int *)((char *)&plr[0]._pManaBase + v7);
 				v71 = *(int *)((char *)&plr[0]._pMana + v7) - v70;
@@ -5408,12 +5408,12 @@ LABEL_47:
 					return;
 				v7 = 21720 * arglist;
 				plr[arglist]._pMemSpells64 |= (__int64)1 << (SPL_CBOLT - 1);
-				v96 = plr[arglist]._pSplLvl[30];
+				v96 = plr[arglist]._pSplLvl[SPL_CBOLT];
 				if ( v96 < 15 )
-					plr[0]._pSplLvl[v7 + 30] = v96 + 1;
-				v97 = plr[0]._pSplLvl[v7 + 30];
+					plr[0]._pSplLvl[v7 + SPL_CBOLT] = v96 + 1;
+				v97 = plr[0]._pSplLvl[v7 + SPL_CBOLT];
 				if ( v97 < 15 )
-					plr[0]._pSplLvl[v7 + 30] = v97 + 1;
+					plr[0]._pSplLvl[v7 + SPL_CBOLT] = v97 + 1;
 				v98 = *(int *)((char *)&plr[0]._pMaxManaBase + v7);
 				v99 = *(int *)((char *)&plr[0]._pManaBase + v7);
 				v100 = *(int *)((char *)&plr[0]._pMana + v7) - v99;
@@ -5534,12 +5534,12 @@ LABEL_47:
 					return;
 				v7 = 21720 * arglist;
 				plr[arglist]._pMemSpells64 |= (__int64)1 << (SPL_HBOLT - 1);
-				v115 = plr[arglist]._pSplLvl[31];
+				v115 = plr[arglist]._pSplLvl[SPL_HBOLT];
 				if ( v115 < 15 )
-					plr[0]._pSplLvl[v7 + 31] = v115 + 1;
-				v116 = plr[0]._pSplLvl[v7 + 31];
+					plr[0]._pSplLvl[v7 + SPL_HBOLT] = v115 + 1;
+				v116 = plr[0]._pSplLvl[v7 + SPL_HBOLT];
 				if ( v116 < 15 )
-					plr[0]._pSplLvl[v7 + 31] = v116 + 1;
+					plr[0]._pSplLvl[v7 + SPL_HBOLT] = v116 + 1;
 				v117 = *(int *)((char *)&plr[0]._pMaxManaBase + v7);
 				v118 = *(int *)((char *)&plr[0]._pManaBase + v7);
 				v119 = *(int *)((char *)&plr[0]._pMana + v7) - v118;
