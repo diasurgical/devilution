@@ -622,7 +622,7 @@ void __fastcall CreatePlayer(int pnum, char c)
     plr[pnum]._pSpellFlags = 0;
 
     if (plr[pnum]._pClass == PC_SORCERER) {
-        plr[pnum]._pSplLvl[1] = 2;
+        plr[pnum]._pSplLvl[SPL_FIREBOLT] = 2;
     }
 
     // interestingly, only the first three hotkeys are reset
