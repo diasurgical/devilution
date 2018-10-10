@@ -3858,38 +3858,27 @@ void __cdecl DoEnding()
 
 void __cdecl PrepDoEnding()
 {
-	int *v0; // eax
-	int v1; // ecx
-	int *v2; // eax
-	bool v3; // cf
-	bool v4; // zf
-
 	gbSoundOn = sgbSaveSoundOn;
-	gbRunGame = 0;
+	gbRunGame = FALSE;
 	deathflag = FALSE;
-	v0 = &plr[myplr].pDiabloKillLevel;
-	v1 = gnDifficulty + 1;
-	cineflag = 1;
-	if ( *v0 > (unsigned int)(gnDifficulty + 1) )
-		v1 = *v0;
-	*v0 = v1;
-	v2 = &plr[0]._pHitPoints;
-	do
-	{
-		v3 = (unsigned char)gbMaxPlayers < 1u;
-		v4 = gbMaxPlayers == 1;
-		*(v2 - 102) = 11;
-		*((_BYTE *)v2 - 91) = 1;
-		if ( !v3 && !v4 )
-		{
-			if ( !(*v2 & 0xFFFFFFC0) )
-				*v2 = 64;
-			if ( !(v2[5] & 0xFFFFFFC0) )
-				v2[5] = 64;
+	cineflag = TRUE;
+
+	DWORD *killLevel = &plr[myplr].pDiabloKillLevel;
+	int newKillLevel = gnDifficulty + 1;
+	if ( *killLevel > newKillLevel )
+		newKillLevel = *killLevel;
+	plr[myplr].pDiabloKillLevel = newKillLevel;
+
+	for ( int i = 0; i < MAX_PLRS; i++ ) {
+		plr[i]._pmode = PM_QUIT;
+		plr[i]._pBlockFlag = TRUE;
+		if ( gbMaxPlayers > 1 ) {
+			if ( plr[i]._pHitPoints >> 6 == 0 )
+				plr[i]._pHitPoints = 64;
+			if ( plr[i]._pMana >> 6 == 0 )
+				plr[i]._pMana = 64;
 		}
-		v2 += 5430;
 	}
-	while ( (signed int)v2 < (signed int)&plr[4]._pHitPoints );
 }
 // 4A22D5: using guessed type char gbSoundOn;
 // 525650: using guessed type int gbRunGame;

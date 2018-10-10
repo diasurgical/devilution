@@ -367,7 +367,7 @@ int __cdecl multi_handle_delta()
 
 	if ( gbGameDestroyed )
 	{
-		gbRunGame = 0;
+		gbRunGame = FALSE;
 		return 0;
 	}
 	v0 = 0;
@@ -495,7 +495,7 @@ void __cdecl multi_begin_timeout()
 		}
 		else
 		{
-			gbRunGame = 0;
+			gbRunGame = FALSE;
 		}
 	}
 }

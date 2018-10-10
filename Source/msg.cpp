@@ -3185,7 +3185,6 @@ int __fastcall On_PLRDAMAGE(struct TCmdDamage *pCmd, int pnum)
 {
 	int v2; // edi
 	int v3; // eax
-	int v4; // esi
 	int *v5; // esi
 	int v6; // ecx
 

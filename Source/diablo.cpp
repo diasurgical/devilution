@@ -11,7 +11,7 @@ int MouseY; // idb
 int MouseX; // idb
 bool gbGameLoopStartup; // idb
 int glSeedTbl[NUMLEVELS];
-int gbRunGame; // weak
+BOOL gbRunGame; // weak
 int glMid3Seed[NUMLEVELS];
 int gbRunGameResult; // weak
 int zoomflag; // weak
@@ -161,7 +161,7 @@ void __fastcall run_game_loop(int uMsg)
 	saveProc = SetWindowProc(GM_Game);
 	control_update_life_mana();
 	msg_process_net_packets();
-	gbRunGame = 1;
+	gbRunGame = TRUE;
 	gbProcessPlayers = 1;
 	gbRunGameResult = 1;
 	drawpanflag = 255;
@@ -181,7 +181,7 @@ void __fastcall run_game_loop(int uMsg)
 				if ( msg.message == WM_QUIT )
 				{
 					gbRunGameResult = 0;
-					gbRunGame = 0;
+					gbRunGame = FALSE;
 					break;
 				}
 				TranslateMessage(&msg);
@@ -221,7 +221,7 @@ void __fastcall run_game_loop(int uMsg)
 	free_game();
 	if ( cineflag )
 	{
-		cineflag = 0;
+		cineflag = FALSE;
 		DoEnding();
 	}
 }
@@ -234,7 +234,7 @@ void __fastcall run_game_loop(int uMsg)
 
 void __fastcall start_game(int uMsg)
 {
-	cineflag = 0;
+	cineflag = FALSE;
 	zoomflag = 1;
 	InitCursor();
 	InitLightTable();
@@ -819,7 +819,7 @@ LRESULT __stdcall GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		case WM_SYSCOMMAND:
 			if ( wParam == SC_CLOSE )
 			{
-				gbRunGame = 0;
+				gbRunGame = FALSE;
 				gbRunGameResult = 0;
 				return 0;
 			}
