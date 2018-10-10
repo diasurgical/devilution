@@ -1642,20 +1642,13 @@ int __fastcall AddMonster(int x, int y, int dir, int mtype, int InMap)
 
 void __fastcall NewMonsterAnim(int i, AnimStruct *anim, int md)
 {
-	MonsterStruct *v3; // eax
-	int v4; // esi
-	int v5; // edx
-
-	v3 = &monster[i];
-	v3->_mAnimData = anim->Frames[md];
-	v4 = anim->Rate;
-	v3->_mAnimCnt = 0;
-	v3->_mAnimLen = v4;
-	v3->_mAnimFrame = 1;
-	v5 = anim->Delay;
-	v3->_mFlags &= 0xFFFFFFF9;
-	v3->_mAnimDelay = v5;
-	v3->_mdir = md;
+	monster[i]._mAnimData = anim->Frames[md];
+	monster[i]._mAnimCnt = 0;
+	monster[i]._mAnimLen = anim->Rate;
+	monster[i]._mAnimFrame = 1;
+	monster[i]._mFlags &= 0xFFFFFFF9;
+	monster[i]._mAnimDelay = anim->Delay;
+	monster[i]._mdir = md;
 }
 
 bool __fastcall M_Ranged(int i)
