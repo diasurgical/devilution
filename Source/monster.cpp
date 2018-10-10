@@ -1651,26 +1651,22 @@ void __fastcall NewMonsterAnim(int i, AnimStruct *anim, int md)
 	monster[i]._mdir = md;
 }
 
-bool __fastcall M_Ranged(int i)
+BOOL __fastcall M_Ranged(int i)
 {
-	char v1; // cl
-
-	v1 = monster[i]._mAi;
-	return v1 == AI_SKELBOW || v1 == AI_GOATBOW || v1 == AI_SUCC || v1 == AI_LAZHELP;
+	char ai = monster[i]._mAi;
+	return ai == AI_SKELBOW || ai == AI_GOATBOW || ai == AI_SUCC || ai == AI_LAZHELP;
 }
 
-bool __fastcall M_Talker(int i)
+BOOL __fastcall M_Talker(int i)
 {
-	char v1; // cl
-
-	v1 = monster[i]._mAi;
-	return v1 == AI_LAZURUS
-		|| v1 == AI_WARLORD
-		|| v1 == AI_GARBUD
-		|| v1 == AI_ZHAR
-		|| v1 == AI_SNOTSPIL
-		|| v1 == AI_LACHDAN
-		|| v1 == AI_LAZHELP;
+	char ai = monster[i]._mAi;
+	return ai == AI_LAZURUS
+		|| ai == AI_WARLORD
+		|| ai == AI_GARBUD
+		|| ai == AI_ZHAR
+		|| ai == AI_SNOTSPIL
+		|| ai == AI_LACHDAN
+		|| ai == AI_LAZHELP;
 }
 
 void __fastcall M_Enemy(int i)
@@ -1819,11 +1815,7 @@ void __fastcall M_Enemy(int i)
 
 int __fastcall M_GetDir(int i)
 {
-	return GetDirection(
-		monster[i]._mx,
-		monster[i]._my,
-		(unsigned char)monster[i]._menemyx,
-		(unsigned char)monster[i]._menemyy);
+	return GetDirection(monster[i]._mx, monster[i]._my, monster[i]._menemyx, monster[i]._menemyy);
 }
 
 void __fastcall M_CheckEFlag(int i)
