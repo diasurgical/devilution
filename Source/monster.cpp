@@ -1621,16 +1621,10 @@ void __fastcall SetMapMonsters(unsigned char *pMap, int startx, int starty)
 
 void __fastcall DeleteMonster(int i)
 {
-	int *v1; // ecx
-	int *v2; // eax
-	int v3; // edx
-
-	--nummonsters;
-	v1 = &monstactive[i];
-	v2 = &monstactive[nummonsters];
-	v3 = *v2;
-	*v2 = *v1;
-	*v1 = v3;
+	nummonsters--;
+	int temp = monstactive[nummonsters];
+	monstactive[nummonsters] = monstactive[i];
+	monstactive[i] = temp;
 }
 
 int __fastcall AddMonster(int x, int y, int dir, int mtype, int InMap)
