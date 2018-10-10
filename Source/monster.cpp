@@ -800,7 +800,7 @@ void __cdecl ClrAllMonsters()
 {
 	MonsterStruct *Monst;
 
-	for ( int i = 0; i < 200; i++ )
+	for ( int i = 0; i < MAXMONSTERS; i++ )
 	{
 		Monst = &monster[i];
 		ClearMVars(i);
@@ -1629,15 +1629,15 @@ void __fastcall DeleteMonster(int i)
 
 int __fastcall AddMonster(int x, int y, int dir, int mtype, int InMap)
 {
-	int i; // esi
+	if ( nummonsters < MAXMONSTERS ) {
+		int i = monstactive[nummonsters++];
+		if ( InMap )
+			dMonster[x][y] = i + 1;
+		InitMonster(i, dir, mtype, x, y);
+		return i;
+	}
 
-	if ( nummonsters >= MAXMONSTERS )
-		return -1;
-	i = monstactive[nummonsters++];
-	if ( InMap )
-		dMonster[x][y] = i + 1;
-	InitMonster(i, dir, mtype, x, y);
-	return i;
+	return -1;
 }
 
 void __fastcall NewMonsterAnim(int i, AnimStruct *anim, int md)
