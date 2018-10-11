@@ -48,11 +48,11 @@ Make sure to enable these when installing (or modify your installation):
 ### Building with MinGW
 - Execute `make MINGW32=1` for **MinGW32** or `make` for **MinGW64**. Optionally add `debug` to build with debug features.
 
-To compile with MinGW64 on different platforms, refer to the respective documentation: [Linux](Support/INSTALL_linux.md) | [Windows](Support/INSTALL_windows.md) | [Mac](Support/INSTALL_mac.md).
+To compile with MinGW64 on different platforms, refer to the respective documentation: [Linux](docs/INSTALL_linux.md) | [Windows](docs/INSTALL_windows.md) | [Mac](docs/INSTALL_mac.md).
 
-[Debug Build Features](Support/debug.md)
-| [Compatibility Matrix](Support/compatibility_matrix.md)
-| [Troubleshooting](Support/troubleshooting.md)
+[Debug Build Features](docs/debug.md)
+| [Compatibility Matrix](docs/compatibility_matrix.md)
+| [Troubleshooting](docs/troubleshooting.md)
 
 # Installing
 Once compiled, the Devilution binary will serve as a replacement for `Diablo.exe`. The following files from the original game patched to 1.09(b) need to be present: `DIABDAT.MPQ`, `DiabloUI.dll`, `SmackW32.dll`, `Standard.snp`, and `Storm.dll`. If `COPYPROT` was defined when compiling, the Diablo CD will also be required.
@@ -63,7 +63,7 @@ Additionally, Strange Bytes' [DirectDraw patch](http://www.strangebytes.com/inde
 TODO
 
 # Contributing
-[Guidelines](Support/CONTRIBUTING.md)
+[Guidelines](docs/CONTRIBUTING.md)
 
 # Modding
 Here are some screenshots of a few things I tinkered around with, to demonstrate the relative ease of improving the game:
