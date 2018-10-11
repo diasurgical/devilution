@@ -1878,16 +1878,13 @@ void __fastcall M_StartStand(int i, int md)
 
 void __fastcall M_StartDelay(int i, int len)
 {
-	int v2; // eax
+	if ( len <= 0 ) {
+		return;
+	}
 
-	if ( len > 0 )
-	{
-		v2 = i;
-		if ( monster[i]._mAi != AI_LAZURUS )
-		{
-			monster[v2]._mVar2 = len;
-			monster[v2]._mmode = MM_DELAY;
-		}
+	if ( monster[i]._mAi != AI_LAZURUS ) {
+		monster[i]._mVar2 = len;
+		monster[i]._mmode = MM_DELAY;
 	}
 }
 
