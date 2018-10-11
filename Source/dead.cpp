@@ -13,7 +13,7 @@ void __cdecl InitDead()
 	int i, j;
 	int mtypes[MAXMONSTERS];
 	int idx;
-	
+
 	for ( i = 0; i < MAXMONSTERS; i++ )
 		mtypes[i] = 0;
 
@@ -21,8 +21,8 @@ void __cdecl InitDead()
 	for (i=0; i < nummtypes; i++) {
 		if (!mtypes[Monsters[i].mtype]) {
 			for ( j=0; j < 8; j++)
-				dead[idx]._deadData[j] = Monsters[i].Anims[4].Frames[j];
-			dead[idx]._deadFrame = Monsters[i].Anims[4].Rate;
+				dead[idx]._deadData[j] = Monsters[i].Anims[MA_DEATH].Frames[j];
+			dead[idx]._deadFrame = Monsters[i].Anims[MA_DEATH].Rate;
 			dead[idx]._deadWidth = Monsters[i].flags_1;
 			dead[idx]._deadWidth2 = Monsters[i].flags_2;
 			dead[idx]._deadtrans = 0;
@@ -53,8 +53,8 @@ void __cdecl InitDead()
 		int ii = monstactive[i];
 		if ( monster[ii]._uniqtype ) {
 			for (j=0; j < 8; j++)
-				dead[idx]._deadData[j] = monster[ii].MType->Anims[4].Frames[j];
-			dead[idx]._deadFrame = monster[ii].MType->Anims[4].Rate;
+				dead[idx]._deadData[j] = monster[ii].MType->Anims[MA_DEATH].Frames[j];
+			dead[idx]._deadFrame = monster[ii].MType->Anims[MA_DEATH].Rate;
 			dead[idx]._deadWidth = monster[ii].MType->flags_1;
 			dead[idx]._deadWidth2 = monster[ii].MType->flags_2;
 			dead[idx]._deadtrans = monster[ii]._uniqtrans + 4;

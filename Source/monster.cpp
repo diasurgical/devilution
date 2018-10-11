@@ -702,11 +702,11 @@ void __fastcall InitMonster(int i, int rd, int mtype, int x, int y)
 	monster[i].mName = monst->MData->mName;
 	monster[i].MType = monst;
 	monster[i].MData = monst->MData;
-	monster[i]._mAnimData = monst->Anims[0].Frames[rd];
-	monster[i]._mAnimDelay = monst->Anims[0].Delay;
-	monster[i]._mAnimCnt = random(88, monst->Anims[0].Delay - 1);
-	monster[i]._mAnimLen = monst->Anims[0].Rate;
-	monster[i]._mAnimFrame = random(88, monst->Anims[0].Rate - 1) + 1;
+	monster[i]._mAnimData = monst->Anims[MA_STAND].Frames[rd];
+	monster[i]._mAnimDelay = monst->Anims[MA_STAND].Delay;
+	monster[i]._mAnimCnt = random(88, monst->Anims[MA_STAND].Delay - 1);
+	monster[i]._mAnimLen = monst->Anims[MA_STAND].Rate;
+	monster[i]._mAnimFrame = random(88, monst->Anims[MA_STAND].Rate - 1) + 1;
 
 	if ( monst->mtype == MT_DIABLO )
 	{
@@ -758,7 +758,7 @@ void __fastcall InitMonster(int i, int rd, int mtype, int x, int y)
 
 	if ( monster[i]._mAi == AI_GARG )
 	{
-		monster[i]._mAnimData = monst->Anims[5].Frames[rd];
+		monster[i]._mAnimData = monst->Anims[MA_SPECIAL].Frames[rd];
 		monster[i]._mAnimFrame = 1;
 		monster[i]._mFlags |= 4u;
 		monster[i]._mmode = MM_SATTACK;
@@ -800,7 +800,7 @@ void __cdecl ClrAllMonsters()
 {
 	MonsterStruct *Monst;
 
-	for ( int i = 0; i < 200; i++ )
+	for ( int i = 0; i < MAXMONSTERS; i++ )
 	{
 		Monst = &monster[i];
 		ClearMVars(i);
@@ -1107,7 +1107,7 @@ void __fastcall PlaceUniqueMonst(int uniqindex, int miniontype, int unpackfilesi
 
 	if ( Monst->_mAi != AI_GARG )
 	{
-		Monst->_mAnimData = Monst->MType->Anims[0].Frames[Monst->_mdir];
+		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Frames[Monst->_mdir];
 		Monst->_mAnimFrame = random(88, Monst->_mAnimLen - 1) + 1;
 		Monst->_mFlags &= 0xFFFFFFFB;
 		Monst->_mmode = MM_STAND;
@@ -1271,7 +1271,7 @@ void __fastcall PlaceGroup(int mtype, int num, int leaderf, int leader)
 
 				if ( monster[nummonsters]._mAi != AI_GARG )
 				{
-					monster[nummonsters]._mAnimData = monster[nummonsters].MType->Anims[0].Frames[monster[nummonsters]._mdir];
+					monster[nummonsters]._mAnimData = monster[nummonsters].MType->Anims[MA_STAND].Frames[monster[nummonsters]._mdir];
 					monster[nummonsters]._mAnimFrame = random(88, monster[nummonsters]._mAnimLen - 1) + 1;
 					monster[nummonsters]._mFlags &= 0xFFFFFFFB;
 					monster[nummonsters]._mmode = MM_STAND;
@@ -1621,69 +1621,52 @@ void __fastcall SetMapMonsters(unsigned char *pMap, int startx, int starty)
 
 void __fastcall DeleteMonster(int i)
 {
-	int *v1; // ecx
-	int *v2; // eax
-	int v3; // edx
-
-	--nummonsters;
-	v1 = &monstactive[i];
-	v2 = &monstactive[nummonsters];
-	v3 = *v2;
-	*v2 = *v1;
-	*v1 = v3;
+	nummonsters--;
+	int temp = monstactive[nummonsters];
+	monstactive[nummonsters] = monstactive[i];
+	monstactive[i] = temp;
 }
 
 int __fastcall AddMonster(int x, int y, int dir, int mtype, int InMap)
 {
-	int i; // esi
+	if ( nummonsters < MAXMONSTERS ) {
+		int i = monstactive[nummonsters++];
+		if ( InMap )
+			dMonster[x][y] = i + 1;
+		InitMonster(i, dir, mtype, x, y);
+		return i;
+	}
 
-	if ( nummonsters >= MAXMONSTERS )
-		return -1;
-	i = monstactive[nummonsters++];
-	if ( InMap )
-		dMonster[x][y] = i + 1;
-	InitMonster(i, dir, mtype, x, y);
-	return i;
+	return -1;
 }
 
 void __fastcall NewMonsterAnim(int i, AnimStruct *anim, int md)
 {
-	MonsterStruct *v3; // eax
-	int v4; // esi
-	int v5; // edx
-
-	v3 = &monster[i];
-	v3->_mAnimData = anim->Frames[md];
-	v4 = anim->Rate;
-	v3->_mAnimCnt = 0;
-	v3->_mAnimLen = v4;
-	v3->_mAnimFrame = 1;
-	v5 = anim->Delay;
-	v3->_mFlags &= 0xFFFFFFF9;
-	v3->_mAnimDelay = v5;
-	v3->_mdir = md;
+	monster[i]._mAnimData = anim->Frames[md];
+	monster[i]._mAnimCnt = 0;
+	monster[i]._mAnimLen = anim->Rate;
+	monster[i]._mAnimFrame = 1;
+	monster[i]._mFlags &= 0xFFFFFFF9;
+	monster[i]._mAnimDelay = anim->Delay;
+	monster[i]._mdir = md;
 }
 
-bool __fastcall M_Ranged(int i)
+BOOL __fastcall M_Ranged(int i)
 {
-	char v1; // cl
-
-	v1 = monster[i]._mAi;
-	return v1 == AI_SKELBOW || v1 == AI_GOATBOW || v1 == AI_SUCC || v1 == AI_LAZHELP;
+	char ai = monster[i]._mAi;
+	return ai == AI_SKELBOW || ai == AI_GOATBOW || ai == AI_SUCC || ai == AI_LAZHELP;
 }
 
-bool __fastcall M_Talker(int i)
+BOOL __fastcall M_Talker(int i)
 {
-	char v1; // cl
-
-	v1 = monster[i]._mAi;
-	return v1 == AI_LAZURUS
-		|| v1 == AI_WARLORD
-		|| v1 == AI_GARBUD
-		|| v1 == AI_ZHAR
-		|| v1 == AI_SNOTSPIL
-		|| v1 == AI_LACHDAN
-		|| v1 == AI_LAZHELP;
+	char ai = monster[i]._mAi;
+	return ai == AI_LAZURUS
+		|| ai == AI_WARLORD
+		|| ai == AI_GARBUD
+		|| ai == AI_ZHAR
+		|| ai == AI_SNOTSPIL
+		|| ai == AI_LACHDAN
+		|| ai == AI_LAZHELP;
 }
 
 void __fastcall M_Enemy(int i)
@@ -1832,11 +1815,7 @@ void __fastcall M_Enemy(int i)
 
 int __fastcall M_GetDir(int i)
 {
-	return GetDirection(
-		monster[i]._mx,
-		monster[i]._my,
-		(unsigned char)monster[i]._menemyx,
-		(unsigned char)monster[i]._menemyy);
+	return GetDirection(monster[i]._mx, monster[i]._my, monster[i]._menemyx, monster[i]._menemyy);
 }
 
 void __fastcall M_CheckEFlag(int i)
@@ -1877,9 +1856,9 @@ void __fastcall M_StartStand(int i, int md)
 	ClearMVars(i);
 	v4 = v3;
 	v5 = monster[v3].MType;
-	v6 = &v5->Anims[1];
+	v6 = &v5->Anims[MA_WALK];
 	if ( v5->mtype != MT_GOLEM )
-		v6 = v5->Anims;
+		v6 = &v5->Anims[MA_STAND];
 	NewMonsterAnim(v3, v6, v2);
 	monster[v4]._mdir = v2;
 	monster[v4]._mVar1 = monster[v4]._mmode;
@@ -1899,74 +1878,52 @@ void __fastcall M_StartStand(int i, int md)
 
 void __fastcall M_StartDelay(int i, int len)
 {
-	int v2; // eax
+	if ( len <= 0 ) {
+		return;
+	}
 
-	if ( len > 0 )
-	{
-		v2 = i;
-		if ( monster[i]._mAi != AI_LAZURUS )
-		{
-			monster[v2]._mVar2 = len;
-			monster[v2]._mmode = MM_DELAY;
-		}
+	if ( monster[i]._mAi != AI_LAZURUS ) {
+		monster[i]._mVar2 = len;
+		monster[i]._mmode = MM_DELAY;
 	}
 }
 
 void __fastcall M_StartSpStand(int i, int md)
 {
-	int v2; // ebx
-	int v3; // esi
-	int v4; // edi
-	int v5; // eax
-	int v6; // ecx
-
-	v2 = i;
-	v3 = i;
-	v4 = md;
-	NewMonsterAnim(i, &monster[i].MType->Anims[5], md);
-	v5 = monster[v3]._mx;
-	v6 = monster[v3]._my;
-	monster[v3]._mxoff = 0;
-	monster[v3]._myoff = 0;
-	monster[v3]._mdir = v4;
-	monster[v3]._mmode = MM_SPSTAND;
-	monster[v3]._mfutx = v5;
-	monster[v3]._mfuty = v6;
-	monster[v3]._moldx = v5;
-	monster[v3]._moldy = v6;
-	M_CheckEFlag(v2);
+	NewMonsterAnim(i, &monster[i].MType->Anims[MA_SPECIAL], md);
+	monster[i]._mmode = MM_SPSTAND;
+	monster[i]._mxoff = 0;
+	monster[i]._myoff = 0;
+	monster[i]._mfutx = monster[i]._mx;
+	monster[i]._mfuty = monster[i]._my;
+	monster[i]._moldx = monster[i]._mx;
+	monster[i]._moldy = monster[i]._my;
+	monster[i]._mdir = md;
+	M_CheckEFlag(i);
 }
 
 void __fastcall M_StartWalk(int i, int xvel, int yvel, int xadd, int yadd, int EndDir)
 {
-	int v6; // ST18_4
-	int v7; // esi
-	int v8; // eax
-	int v9; // ecx
-	CMonster *v10; // edx
+	int fx = xadd + monster[i]._mx;
+	int fy = yadd + monster[i]._my;
 
-	v6 = i;
-	v7 = i;
-	v8 = monster[i]._mx;
-	monster[v7]._moldx = v8;
-	v9 = monster[i]._my;
-	monster[v7]._mfuty = v9 + yadd;
-	monster[v7]._mxvel = xvel;
-	monster[v7]._myvel = yvel;
-	monster[v7]._mVar1 = xadd;
-	monster[v7]._mVar2 = yadd;
-	dMonster[0][v9 + yadd + 112 * (v8 + xadd)] = -1 - v6;
-	v10 = monster[v7].MType;
-	monster[v7]._moldy = v9;
-	monster[v7]._mmode = MM_WALK;
-	monster[v7]._mfutx = v8 + xadd;
-	monster[v7]._mVar3 = EndDir;
-	monster[v7]._mdir = EndDir;
-	NewMonsterAnim(v6, &v10->Anims[1], EndDir);
-	monster[v7]._mVar6 = 0;
-	monster[v7]._mVar7 = 0;
-	monster[v7]._mVar8 = 0;
-	M_CheckEFlag(v6);
+	dMonster[fx][fy] = -(i + 1);
+	monster[i]._mmode = MM_WALK;
+	monster[i]._moldx = monster[i]._mx;
+	monster[i]._moldy = monster[i]._my;
+	monster[i]._mfutx = fx;
+	monster[i]._mfuty = fy;
+	monster[i]._mxvel = xvel;
+	monster[i]._myvel = yvel;
+	monster[i]._mVar1 = xadd;
+	monster[i]._mVar2 = yadd;
+	monster[i]._mVar3 = EndDir;
+	monster[i]._mdir = EndDir;
+	NewMonsterAnim(i, &monster[i].MType->Anims[MA_WALK], EndDir);
+	monster[i]._mVar6 = 0;
+	monster[i]._mVar7 = 0;
+	monster[i]._mVar8 = 0;
+	M_CheckEFlag(i);
 }
 
 void __fastcall M_StartWalk2(int i, int xvel, int yvel, int xoff, int yoff, int xadd, int yadd, int EndDir)
@@ -2011,7 +1968,7 @@ void __fastcall M_StartWalk2(int i, int xvel, int yvel, int xoff, int yoff, int 
 	monster[v8]._mmode = MM_WALK2;
 	monster[v8]._mVar3 = EndDir;
 	monster[v8]._mdir = EndDir;
-	NewMonsterAnim(ia, &v14->Anims[1], EndDir);
+	NewMonsterAnim(ia, &v14->Anims[MA_WALK], EndDir);
 	monster[v8]._mVar8 = 0;
 	monster[v8]._mVar6 = 16 * xoff;
 	monster[v8]._mVar7 = 16 * yoff;
@@ -2063,7 +2020,7 @@ void __fastcall M_StartWalk3(int i, int xvel, int yvel, int xoff, int yoff, int 
 	monster[v10]._mmode = MM_WALK3;
 	monster[v10]._mVar3 = EndDir;
 	monster[v10]._mdir = EndDir;
-	NewMonsterAnim(ia, &v16->Anims[1], EndDir);
+	NewMonsterAnim(ia, &v16->Anims[MA_WALK], EndDir);
 	monster[v10]._mVar8 = 0;
 	monster[v10]._mVar6 = 16 * xoff;
 	monster[v10]._mVar7 = 16 * yoff;
@@ -2081,7 +2038,7 @@ void __fastcall M_StartAttack(int i)
 	v1 = i;
 	v2 = M_GetDir(i);
 	v3 = v1;
-	NewMonsterAnim(v1, &monster[v1].MType->Anims[2], v2);
+	NewMonsterAnim(v1, &monster[v1].MType->Anims[MA_ATTACK], v2);
 	v4 = monster[v1]._my;
 	v5 = monster[v1]._mx;
 	monster[v3]._mxoff = 0;
@@ -2108,7 +2065,7 @@ void __fastcall M_StartRAttack(int i, int missile_type, int dam)
 	v4 = i;
 	v5 = M_GetDir(i);
 	v6 = v4;
-	NewMonsterAnim(v4, &monster[v4].MType->Anims[2], v5);
+	NewMonsterAnim(v4, &monster[v4].MType->Anims[MA_ATTACK], v5);
 	v7 = monster[v4]._my;
 	monster[v6]._mxoff = 0;
 	monster[v6]._myoff = 0;
@@ -2137,7 +2094,7 @@ void __fastcall M_StartRSpAttack(int i, int missile_type, int dam)
 	v4 = i;
 	v5 = M_GetDir(i);
 	v6 = v4;
-	NewMonsterAnim(v4, &monster[v4].MType->Anims[5], v5);
+	NewMonsterAnim(v4, &monster[v4].MType->Anims[MA_SPECIAL], v5);
 	monster[v6]._mmode = MM_RSPATTACK;
 	monster[v6]._mVar2 = 0;
 	monster[v6]._mVar3 = dam;
@@ -2165,7 +2122,7 @@ void __fastcall M_StartSpAttack(int i)
 	v1 = i;
 	v2 = M_GetDir(i);
 	v3 = v1;
-	NewMonsterAnim(v1, &monster[v1].MType->Anims[5], v2);
+	NewMonsterAnim(v1, &monster[v1].MType->Anims[MA_SPECIAL], v2);
 	v4 = monster[v1]._my;
 	v5 = monster[v1]._mx;
 	monster[v3]._mxoff = 0;
@@ -2188,7 +2145,7 @@ void __fastcall M_StartEat(int i)
 
 	v1 = i;
 	v2 = i;
-	NewMonsterAnim(i, &monster[i].MType->Anims[5], monster[i]._mdir);
+	NewMonsterAnim(i, &monster[i].MType->Anims[MA_SPECIAL], monster[i]._mdir);
 	v3 = monster[v2]._my;
 	v4 = monster[v2]._mx;
 	monster[v2]._mxoff = 0;
@@ -2269,7 +2226,7 @@ void __fastcall M_GetKnockback(int i)
 	{
 		M_ClearSquares(v1);
 		v5 = monster[v2]._mdir;
-		v6 = &monster[v2].MType->Anims[3];
+		v6 = &monster[v2].MType->Anims[MA_GOTHIT];
 		v7 = offset_y[v3];
 		monster[v2]._moldx += offset_x[v3];
 		monster[v2]._moldy += v7;
@@ -2334,7 +2291,7 @@ void __fastcall M_StartHit(int i, int pnum, int dam)
 		}
 		if ( monster[v5]._mmode != MM_STONE )
 		{
-			NewMonsterAnim(v4, &monster[v5].MType->Anims[3], monster[v5]._mdir);
+			NewMonsterAnim(v4, &monster[v5].MType->Anims[MA_GOTHIT], monster[v5]._mdir);
 			v9 = monster[v5]._moldy;
 			v10 = monster[v5]._moldx;
 			monster[v5]._mxoff = 0;
@@ -2386,7 +2343,7 @@ void __fastcall M_DiabloDeath(int i, BOOL sendmsg)
 		if ( v5 != v15 && monster[v3]._msquelch )
 		{
 			v6 = v5;
-			NewMonsterAnim(monstactive[v4], &monster[v5].MType->Anims[4], monster[v5]._mdir);
+			NewMonsterAnim(monstactive[v4], &monster[v5].MType->Anims[MA_DEATH], monster[v5]._mdir);
 			v7 = monster[v5]._moldy;
 			monster[v6]._mxoff = 0;
 			monster[v6]._myoff = 0;
@@ -2470,7 +2427,7 @@ void __fastcall M2MStartHit(int mid, int i, int dam)
 			v8 = monster[v5].MType;
 			if ( v8->mtype != MT_GOLEM )
 			{
-				NewMonsterAnim(v3, &v8->Anims[3], monster[v5]._mdir);
+				NewMonsterAnim(v3, &v8->Anims[MA_GOTHIT], monster[v5]._mdir);
 				monster[v5]._mmode = MM_GOTHIT;
 			}
 			v9 = monster[v5]._moldy;
@@ -2535,7 +2492,7 @@ void __fastcall MonstStartKill(int i, int pnum, BOOL sendmsg)
 		v9 = monster[v5]._mdir;
 	else
 		v9 = M_GetDir(v3);
-	v10 = &monster[v5].MType->Anims[4];
+	v10 = &monster[v5].MType->Anims[MA_DEATH];
 	monster[v5]._mdir = v9;
 	NewMonsterAnim(v3, v10, v9);
 	v11 = monster[v5]._moldy;
@@ -2603,7 +2560,7 @@ void __fastcall M2MStartKill(int i, int mid)
 	if ( v7->mtype == MT_GOLEM )
 		v8 = 0;
 	monster[v4]._mdir = v8;
-	NewMonsterAnim(v3, &v7->Anims[4], v8);
+	NewMonsterAnim(v3, &v7->Anims[MA_DEATH], v8);
 	v9 = monster[v4]._moldy;
 	v10 = monster[v4]._moldx;
 	monster[v4]._my = v9;
@@ -2696,7 +2653,7 @@ void __fastcall M_StartFadein(int i, int md, BOOL backwards)
 	v5 = v3;
 	if ( !monster[v5].MType )
 		TermMsg("M_StartFadein: Monster %d \"%s\" MType NULL", arglist, monster[v5].mName);
-	NewMonsterAnim(arglist, &monster[v5].MType->Anims[5], v4);
+	NewMonsterAnim(arglist, &monster[v5].MType->Anims[MA_SPECIAL], v4);
 	v6 = monster[v5]._my;
 	v7 = monster[v5]._mx;
 	monster[v5]._mfuty = v6;
@@ -2735,7 +2692,7 @@ void __fastcall M_StartFadeout(int i, int md, BOOL backwards)
 	v5 = &monster[v3].MType;
 	if ( !*v5 )
 		TermMsg("M_StartFadeout: Monster %d \"%s\" MType NULL", v3, monster[v4].mName);
-	NewMonsterAnim(v3, &(*v5)->Anims[5], mda);
+	NewMonsterAnim(v3, &(*v5)->Anims[MA_SPECIAL], mda);
 	v6 = monster[v4]._my;
 	v7 = monster[v4]._mx;
 	monster[v4]._mfuty = v6;
@@ -2770,9 +2727,9 @@ void __fastcall M_StartHeal(int i)
 	if ( !monster[v1].MType )
 		TermMsg("M_StartHeal: Monster %d \"%s\" MType NULL", v1, monster[v2].mName);
 	v3 = monster[v2].MType;
-	v4 = v3->Anims[5].Frames[monster[v2]._mdir];
+	v4 = v3->Anims[MA_SPECIAL].Frames[monster[v2]._mdir];
 	monster[v2]._mAnimData = v4;
-	v5 = v3->Anims[5].Rate;
+	v5 = v3->Anims[MA_SPECIAL].Rate;
 	monster[v2]._mFlags |= 2u;
 	monster[v2]._mAnimFrame = v5;
 	monster[v2]._mmode = MM_HEAL;
@@ -2839,9 +2796,9 @@ int __fastcall M_DoStand(int i)
 	v3 = monster[v2].MType;
 	v4 = monster[v2]._mdir;
 	if ( v3->mtype == MT_GOLEM )
-		v5 = v3->Anims[1].Frames[v4];
+		v5 = v3->Anims[MA_WALK].Frames[v4];
 	else
-		v5 = v3->Anims[0].Frames[v4];
+		v5 = v3->Anims[MA_STAND].Frames[v4];
 	monster[v2]._mAnimData = v5;
 	if ( monster[v2]._mAnimFrame == monster[v2]._mAnimLen )
 		M_Enemy(v1);
@@ -2873,7 +2830,7 @@ int __fastcall M_DoWalk(int i)
 	if ( !monster[v1].MType )
 		TermMsg("M_DoWalk: Monster %d \"%s\" MType NULL", v1, monster[v2].mName);
 	v4 = monster[v2]._mVar8;
-	if ( v4 == monster[v2].MType->Anims[1].Rate )
+	if ( v4 == monster[v2].MType->Anims[MA_WALK].Rate )
 	{
 		v5 = monster[v2]._my;
 		v6 = monster[v2]._mx;
@@ -2925,7 +2882,7 @@ int __fastcall M_DoWalk2(int i)
 	if ( !monster[v1].MType )
 		TermMsg("M_DoWalk2: Monster %d \"%s\" MType NULL", v1, monster[v2].mName);
 	v3 = monster[v2]._mVar8;
-	if ( v3 == monster[v2].MType->Anims[1].Rate )
+	if ( v3 == monster[v2].MType->Anims[MA_WALK].Rate )
 	{
 		v4 = monster[v2]._uniqtype == 0;
 		dMonster[0][monster[v2]._mVar2 + 112 * monster[v2]._mVar1] = 0;
@@ -2979,7 +2936,7 @@ int __fastcall M_DoWalk3(int i)
 	if ( !monster[v1].MType )
 		TermMsg("M_DoWalk3: Monster %d \"%s\" MType NULL", v1, monster[v2].mName);
 	v3 = monster[v2]._mVar8;
-	if ( v3 == monster[v2].MType->Anims[1].Rate )
+	if ( v3 == monster[v2].MType->Anims[MA_WALK].Rate )
 	{
 		v4 = monster[v2]._mVar2;
 		v5 = monster[v2]._my + 112 * monster[v2]._mx;
@@ -3983,7 +3940,7 @@ int __fastcall M_DoDelay(int i)
 		TermMsg("M_DoDelay: Monster %d \"%s\" MType NULL", v1, monster[v2].mName);
 	v3 = M_GetDir(v1);
 	v4 = monster[v2]._mAi == AI_LAZURUS;
-	monster[v2]._mAnimData = monster[v2].MType->Anims[0].Frames[v3];
+	monster[v2]._mAnimData = monster[v2].MType->Anims[MA_STAND].Frames[v3];
 	if ( v4 )
 	{
 		v5 = monster[v2]._mVar2;
@@ -4042,7 +3999,7 @@ void __fastcall M_WalkDir(int i, int md)
 	v3 = md;
 	if ( (DWORD)i >= MAXMONSTERS )
 		TermMsg("M_WalkDir: Invalid monster %d", i);
-	v4 = monster[v2].MType->Anims[1].Rate - 1;
+	v4 = monster[v2].MType->Anims[MA_WALK].Rate - 1;
 	switch ( v3 )
 	{
 	case DIR_S:
@@ -4499,7 +4456,7 @@ void __fastcall MAI_Zombie(int i)
 				M_StartAttack(arglist);
 			}
 			if ( v3->_mmode == MM_STAND )
-				v3->_mAnimData = v3->MType->Anims[0].Frames[v3->_mdir];
+				v3->_mAnimData = v3->MType->Anims[MA_STAND].Frames[v3->_mdir];
 		}
 	}
 }
@@ -4571,7 +4528,7 @@ void __fastcall MAI_SkelSd(int i)
 		}
 	LABEL_16:
 		if ( v2->_mmode == MM_STAND )
-			v2->_mAnimData = v2->MType->Anims[0].Frames[v7];
+			v2->_mAnimData = v2->MType->Anims[MA_STAND].Frames[v7];
 	}
 }
 
@@ -4701,7 +4658,7 @@ void __fastcall MAI_Snake(int i)
 					M_StartAttack(arglist);
 				LABEL_49:
 					if ( esi3->_mmode == MM_STAND )
-						esi3->_mAnimData = esi3->MType->Anims[0].Frames[esi3->_mdir];
+						esi3->_mAnimData = esi3->MType->Anims[MA_STAND].Frames[esi3->_mdir];
 					return;
 				}
 				v17 = 10 - (unsigned char)esi3->_mint + random(105, 10);
@@ -4921,7 +4878,7 @@ void __fastcall MAI_Bat(int i)
 				}
 			}
 			if ( esi3->_mmode == MM_STAND )
-				esi3->_mAnimData = esi3->MType->Anims[0].Frames[midir];
+				esi3->_mAnimData = esi3->MType->Anims[MA_STAND].Frames[midir];
 		}
 	}
 }
@@ -4992,7 +4949,7 @@ void __fastcall MAI_SkelBow(int i)
 			}
 		}
 		if ( v2->_mmode == MM_STAND )
-			v2->_mAnimData = v2->MType->Anims[0].Frames[v17];
+			v2->_mAnimData = v2->MType->Anims[MA_STAND].Frames[v17];
 	}
 }
 
@@ -5046,7 +5003,7 @@ void __fastcall MAI_Fat(int i)
 			}
 		}
 		if ( v2->_mmode == MM_STAND )
-			v2->_mAnimData = v2->MType->Anims[0].Frames[md];
+			v2->_mAnimData = v2->MType->Anims[MA_STAND].Frames[md];
 	}
 }
 
@@ -5142,7 +5099,7 @@ void __fastcall MAI_Sneak(int i)
 			if ( v2->_mmode == MM_STAND )
 			{
 				if ( abs(v17) >= 2 || abs(v4) >= 2 || v15 >= 4 * (unsigned char)v2->_mint + 10 )
-					v2->_mAnimData = v2->MType->Anims[0].Frames[md];
+					v2->_mAnimData = v2->MType->Anims[MA_STAND].Frames[md];
 				else
 					M_StartAttack(arglist);
 			}
@@ -5412,7 +5369,7 @@ void __fastcall MAI_Cleaver(int i)
 		else
 			M_StartAttack(arglist);
 		if ( v2->_mmode == MM_STAND )
-			v2->_mAnimData = v2->MType->Anims[0].Frames[v7];
+			v2->_mAnimData = v2->MType->Anims[MA_STAND].Frames[v7];
 	}
 }
 
@@ -5536,7 +5493,7 @@ void __fastcall MAI_Round(int i, unsigned char special)
 			}
 		}
 		if ( v3->_mmode == MM_STAND )
-			v3->_mAnimData = v3->MType->Anims[0].Frames[md];
+			v3->_mAnimData = v3->MType->Anims[MA_STAND].Frames[md];
 	}
 }
 
@@ -5613,7 +5570,7 @@ void __fastcall MAI_Ranged(int i, int missile_type, unsigned char special)
 				}
 				else
 				{
-					monster[v4]._mAnimData = monster[v4].MType->Anims[0].Frames[v20];
+					monster[v4]._mAnimData = monster[v4].MType->Anims[MA_STAND].Frames[v20];
 				}
 			}
 		}
@@ -6460,7 +6417,7 @@ void __fastcall MAI_SkelKing(int i)
 			}
 		}
 		if ( v2->_mmode == MM_STAND )
-			v2->_mAnimData = v2->MType->Anims[0].Frames[md];
+			v2->_mAnimData = v2->MType->Anims[MA_STAND].Frames[md];
 	}
 }
 // 679660: using guessed type char gbMaxPlayers;
@@ -6614,7 +6571,7 @@ void __fastcall MAI_Rhino(int i)
 			}
 		}
 		if ( esi3->_mmode == MM_STAND )
-			esi3->_mAnimData = esi3->MType->Anims[0].Frames[esi3->_mdir];
+			esi3->_mAnimData = esi3->MType->Anims[MA_STAND].Frames[esi3->_mdir];
 	}
 }
 
@@ -6839,7 +6796,7 @@ void __fastcall MAI_Garbud(int i)
 			MAI_Round(arglist, 1u);
 		monster[v2]._mdir = v8;
 		if ( monster[v2]._mmode == MM_STAND )
-			monster[v2]._mAnimData = monster[v2].MType->Anims[0].Frames[v8];
+			monster[v2]._mAnimData = monster[v2].MType->Anims[MA_STAND].Frames[v8];
 	}
 }
 
@@ -6897,7 +6854,7 @@ void __fastcall MAI_Zhar(int i)
 			MAI_Counselor(arglist);
 		monster[v2]._mdir = v11;
 		if ( monster[v2]._mmode == MM_STAND )
-			monster[v2]._mAnimData = monster[v2].MType->Anims[0].Frames[v11];
+			monster[v2]._mAnimData = monster[v2].MType->Anims[MA_STAND].Frames[v11];
 	}
 }
 
@@ -6956,7 +6913,7 @@ void __fastcall MAI_SnotSpil(int i)
 		}
 		monster[v2]._mdir = v5;
 		if ( monster[v2]._mmode == MM_STAND )
-			monster[v2]._mAnimData = monster[v2].MType->Anims[0].Frames[v5];
+			monster[v2]._mAnimData = monster[v2].MType->Anims[MA_STAND].Frames[v5];
 	}
 }
 // 5CF330: using guessed type int setpc_h;
@@ -7026,7 +6983,7 @@ void __fastcall MAI_Lazurus(int i)
 		monster[v2]._mdir = v5;
 		v8 = monster[v2]._mmode;
 		if ( v8 == MM_STAND || v8 == MM_TALK )
-			monster[v2]._mAnimData = monster[v2].MType->Anims[0].Frames[v5];
+			monster[v2]._mAnimData = monster[v2].MType->Anims[MA_STAND].Frames[v5];
 	}
 }
 // 679660: using guessed type char gbMaxPlayers;
@@ -7068,7 +7025,7 @@ void __fastcall MAI_Lazhelp(int i)
 			MAI_Succ(ia);
 		monster[v2]._mdir = v5;
 		if ( monster[v2]._mmode == MM_STAND )
-			monster[v2]._mAnimData = monster[v2].MType->Anims[0].Frames[v5];
+			monster[v2]._mAnimData = monster[v2].MType->Anims[MA_STAND].Frames[v5];
 	}
 }
 // 679660: using guessed type char gbMaxPlayers;
@@ -7111,7 +7068,7 @@ void __fastcall MAI_Lachdanan(int i)
 		}
 		monster[v2]._mdir = v6;
 		if ( monster[v2]._mmode == MM_STAND )
-			monster[v2]._mAnimData = monster[v2].MType->Anims[0].Frames[v6];
+			monster[v2]._mAnimData = monster[v2].MType->Anims[MA_STAND].Frames[v6];
 	}
 }
 
@@ -7153,7 +7110,7 @@ void __fastcall MAI_Warlord(int i)
 		monster[v2]._mdir = v5;
 		v7 = monster[v2]._mmode;
 		if ( v7 == MM_STAND || v7 == MM_TALK )
-			monster[v2]._mAnimData = monster[v2].MType->Anims[0].Frames[v5];
+			monster[v2]._mAnimData = monster[v2].MType->Anims[MA_STAND].Frames[v5];
 	}
 }
 
@@ -7883,22 +7840,22 @@ void __fastcall SyncMonsterAnim(int i)
 		case MM_STAND:
 		case MM_DELAY:
 		case MM_TALK:
-			v10 = v5->Anims[0].Frames[v9];
+			v10 = v5->Anims[MA_STAND].Frames[v9];
 			goto LABEL_13;
 		case MM_WALK:
 		case MM_WALK2:
 		case MM_WALK3:
-			v10 = v5->Anims[1].Frames[v9];
+			v10 = v5->Anims[MA_WALK].Frames[v9];
 			goto LABEL_13;
 		case MM_ATTACK:
 		case MM_RATTACK:
-			v10 = v5->Anims[2].Frames[v9];
+			v10 = v5->Anims[MA_ATTACK].Frames[v9];
 			goto LABEL_13;
 		case MM_GOTHIT:
-			v10 = v5->Anims[3].Frames[v9];
+			v10 = v5->Anims[MA_GOTHIT].Frames[v9];
 			goto LABEL_13;
 		case MM_DEATH:
-			v10 = v5->Anims[4].Frames[v9];
+			v10 = v5->Anims[MA_DEATH].Frames[v9];
 			goto LABEL_13;
 		case MM_SATTACK:
 		case MM_FADEIN:
@@ -7906,21 +7863,21 @@ void __fastcall SyncMonsterAnim(int i)
 		case MM_SPSTAND:
 		case MM_RSPATTACK:
 		case MM_HEAL:
-			v10 = v5->Anims[5].Frames[v9];
+			v10 = v5->Anims[MA_SPECIAL].Frames[v9];
 LABEL_13:
 			monster[v2]._mAnimData = v10;
 			return;
 		case MM_CHARGE:
-			v11 = v5->Anims[2].Frames[v9];
+			v11 = v5->Anims[MA_ATTACK].Frames[v9];
 			monster[v2]._mAnimFrame = 1;
 			monster[v2]._mAnimData = v11;
-			v12 = v5->Anims[2].Rate;
+			v12 = v5->Anims[MA_ATTACK].Rate;
 			break;
 		default:
-			v13 = v5->Anims[0].Frames[v9];
+			v13 = v5->Anims[MA_STAND].Frames[v9];
 			monster[v2]._mAnimFrame = 1;
 			monster[v2]._mAnimData = v13;
-			v12 = v5->Anims[0].Rate;
+			v12 = v5->Anims[MA_STAND].Rate;
 			break;
 	}
 	monster[v2]._mAnimLen = v12;

@@ -3373,12 +3373,12 @@ void __fastcall AddRhino(int mi, int sx, int sy, int dx, int dy, int midir, int 
 	v11 = v10->mtype;
 	if ( v10->mtype < MT_HORNED || v11 > MT_OBLORD )
 	{
-		if ( v11 < MT_NSNAKE || (v12 = &v10->Anims[2], v11 > MT_GSNAKE) )
-			v12 = &v10->Anims[1];
+		if ( v11 < MT_NSNAKE || (v12 = &v10->Anims[MA_ATTACK], v11 > MT_GSNAKE) )
+			v12 = &v10->Anims[MA_WALK];
 	}
 	else
 	{
-		v12 = &v10->Anims[5];
+		v12 = &v10->Anims[MA_SPECIAL];
 	}
 	GetMissileVel(i, sx, sy, dx, dy, 18);
 	v13 = i;
@@ -3419,7 +3419,7 @@ void __fastcall miss_null_32(int mi, int sx, int sy, int dx, int dy, int midir, 
 
 	v9 = id;
 	v10 = mi;
-	v11 = &monster[id].MType->Anims[1];
+	v11 = &monster[id].MType->Anims[MA_WALK];
 	GetMissileVel(mi, sx, sy, dx, dy, 16);
 	v12 = v10;
 	missile[v12]._mimfnum = midir;
@@ -6439,7 +6439,7 @@ void __fastcall mi_null_32(int i)
 		missile[v2]._miyvel = -missile[v2]._miyvel;
 		v14 = opposite[v13];
 		missile[v2]._mimfnum = v14;
-		v15 = monster[v4].MType->Anims[1].Frames[v14];
+		v15 = monster[v4].MType->Anims[MA_WALK].Frames[v14];
 		++missile[v2]._miVar2;
 		missile[v2]._miAnimData = v15;
 		if ( v10 > 0 )
@@ -7399,13 +7399,13 @@ void __cdecl missiles_process_charge()
 			if ( v5->mtype < MT_HORNED || v6 > MT_OBLORD )
 			{
 				if ( v6 < MT_NSNAKE || v6 > MT_GSNAKE )
-					v7 = &v5->Anims[1];
+					v7 = &v5->Anims[MA_WALK];
 				else
-					v7 = &v5->Anims[2];
+					v7 = &v5->Anims[MA_ATTACK];
 			}
 			else
 			{
-				v7 = &v5->Anims[5];
+				v7 = &v5->Anims[MA_SPECIAL];
 			}
 			missile[v2]._miAnimData = v7->Frames[v3];
 		}

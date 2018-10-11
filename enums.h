@@ -1863,6 +1863,15 @@ enum MON_MODE {
     MM_TALK      = 17,
 };
 
+enum MON_ANIM {
+    MA_STAND     = 0,
+    MA_WALK      = 1,
+    MA_ATTACK    = 2,
+    MA_GOTHIT    = 3,
+    MA_DEATH     = 4,
+    MA_SPECIAL   = 5,
+};
+
 enum PLR_MODE {
     PM_STAND   = 0,
     PM_WALK    = 1,
