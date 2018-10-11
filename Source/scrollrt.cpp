@@ -1009,7 +1009,7 @@ void __fastcall scrollrt_draw_clipped_dungeon(char *a1, int sx, int sy, int a4, 
 				{
 					v19 = a4 - v16->_iAnimWidth2;
 					if ( v49 - 1 == pcursitem )
-						CelDrawHdrClrHL(181, v19, a5, v17, v16->_iAnimFrame, v16->_iAnimWidth, 0, 8);
+						CelDrawHdrClrHL(ICOL_BLUE, v19, a5, v17, v16->_iAnimFrame, v16->_iAnimWidth, 0, 8);
 					Cel2DecodeHdrLight(v19, a5, (char *)v16->_iAnimData, v16->_iAnimFrame, v16->_iAnimWidth, 0, 8);
 				}
 			}
@@ -1146,7 +1146,7 @@ void __fastcall scrollrt_draw_clipped_dungeon(char *a1, int sx, int sy, int a4, 
 					{
 						v39 = a4 - v36->_iAnimWidth2;
 						if ( v49 - 1 == pcursitem )
-							CelDrawHdrClrHL(181, v39, a5, v37, v36->_iAnimFrame, v36->_iAnimWidth, 0, 8);
+							CelDrawHdrClrHL(ICOL_BLUE, v39, a5, v37, v36->_iAnimFrame, v36->_iAnimWidth, 0, 8);
 						Cel2DecodeHdrLight(
 							v39,
 							a5,
@@ -1682,7 +1682,7 @@ void __fastcall scrollrt_draw_clipped_dungeon_2(char *buffer, int x, int y, int 
 				{
 					v22 = v13 - v19->_iAnimWidth2;
 					if ( v52 - 1 == pcursitem )
-						CelDrawHdrClrHL(181, v22, sy, v20, v19->_iAnimFrame, v19->_iAnimWidth, a5, 8);
+						CelDrawHdrClrHL(ICOL_BLUE, v22, sy, v20, v19->_iAnimFrame, v19->_iAnimWidth, a5, 8);
 					Cel2DecodeHdrLight(v22, sy, (char *)v19->_iAnimData, v19->_iAnimFrame, v19->_iAnimWidth, a5, 8);
 				}
 			}
@@ -1821,7 +1821,7 @@ void __fastcall scrollrt_draw_clipped_dungeon_2(char *buffer, int x, int y, int 
 					{
 						v42 = v13 - v39->_iAnimWidth2;
 						if ( v52 - 1 == pcursitem )
-							CelDrawHdrClrHL(181, v42, sy, v40, v41, v39->_iAnimWidth, a5, 8);
+							CelDrawHdrClrHL(ICOL_BLUE, v42, sy, v40, v41, v39->_iAnimWidth, a5, 8);
 						Cel2DecodeHdrLight(
 							v42,
 							sy,
@@ -2284,7 +2284,7 @@ void __fastcall scrollrt_draw_dungeon(char *buffer, int x, int y, int a4, int a5
 				{
 					v21 = sx - v18->_iAnimWidth2;
 					if ( v51 - 1 == pcursitem )
-						CelDecodeClr(181, v21, sy, v19, v18->_iAnimFrame, v18->_iAnimWidth, 0, a5);
+						CelDecodeClr(ICOL_BLUE, v21, sy, v19, v18->_iAnimFrame, v18->_iAnimWidth, 0, a5);
 					CelDecodeHdrLightOnly(v21, sy, (char *)v18->_iAnimData, v18->_iAnimFrame, v18->_iAnimWidth, 0, a5);
 				}
 			}
@@ -2421,7 +2421,7 @@ void __fastcall scrollrt_draw_dungeon(char *buffer, int x, int y, int a4, int a5
 					{
 						v41 = sx - v38->_iAnimWidth2;
 						if ( v51 - 1 == pcursitem )
-							CelDecodeClr(181, v41, sy, v39, v38->_iAnimFrame, v38->_iAnimWidth, 0, a5);
+							CelDecodeClr(ICOL_BLUE, v41, sy, v39, v38->_iAnimFrame, v38->_iAnimWidth, 0, a5);
 						CelDecodeHdrLightOnly(
 							v41,
 							sy,
@@ -3039,7 +3039,7 @@ void __cdecl scrollrt_draw_cursor_item()
 	int v8; // ebp
 	int v9; // edi
 	int v10; // esi
-	signed int v11; // ebx
+	signed int colour; // ebx
 	int v12; // edi
 	int v13; // edx
 	char *v14; // [esp+10h] [ebp-4h]
@@ -3109,15 +3109,15 @@ void __cdecl scrollrt_draw_cursor_item()
 				}
 				else
 				{
-					v11 = 197;
-					if ( plr[myplr].HoldItem._iMagical )
-						v11 = 181;
+					colour = ICOL_WHITE;
+					if ( plr[myplr].HoldItem._iMagical != ITEM_QUALITY_NORMAL )
+						colour = ICOL_BLUE;
 					if ( !plr[myplr].HoldItem._iStatFlag )
-						v11 = 229;
+						colour = ICOL_RED;
 					v12 = v9 + 64;
-					CelDrawHdrClrHL(v11, v12, v1 + v10 + 159, (char *)pCursCels, pcurs, v0, 0, 8);
+					CelDrawHdrClrHL(colour, v12, v1 + v10 + 159, (char *)pCursCels, pcurs, v0, 0, 8);
 					v13 = cursH + v10 + 159;
-					if ( v11 == 229 )
+					if ( colour == ICOL_RED )
 						Cel2DrawHdrLightRed(v12, v13, (char *)pCursCels, pcurs, cursW, 0, 8, 1);
 					else
 						Cel2DrawHdrOnly(v12, v13, (char *)pCursCels, pcurs, cursW, 0, 8);

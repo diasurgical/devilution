@@ -7181,13 +7181,11 @@ void __fastcall GetObjectStr(int i)
 		default:
 			break;
 	}
-	if ( _LOBYTE(plr[myplr]._pClass) == 1 )
-	{
-		if ( object[v1]._oTrapFlag )
-		{
+	if ( plr[myplr]._pClass == PC_ROGUE ) {
+		if ( object[v1]._oTrapFlag ) {
 			sprintf(tempstr, "Trapped %s", infostr);
 			strcpy(infostr, tempstr);
-			_LOBYTE(infoclr) = 2;
+			infoclr = COL_RED;
 		}
 	}
 }

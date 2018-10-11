@@ -1415,7 +1415,7 @@ void __cdecl CheckPanelInfo()
 						sprintf(tempstr, "Hotkey : %s", PanBtnHotKey[v0]);
 						AddPanelString(tempstr, 1);
 					}
-					_LOBYTE(infoclr) = 0;
+					infoclr = COL_WHITE;
 					panelflag = 1;
 					pinfoflag = 1;
 				}
@@ -1427,7 +1427,7 @@ void __cdecl CheckPanelInfo()
 	if ( !spselflag && MouseX >= 565 && MouseX < 621 && MouseY >= 416 && MouseY < 472 )
 	{
 		strcpy(infostr, "Select current spell button");
-		_LOBYTE(infoclr) = 0;
+		infoclr = COL_WHITE;
 		panelflag = 1;
 		pinfoflag = 1;
 		strcpy(tempstr, "Hotkey : 's'");
@@ -1714,11 +1714,11 @@ void __cdecl DrawInfoBox()
 		if ( spselflag )
 		{
 LABEL_32:
-			_LOBYTE(infoclr) = 0;
+			infoclr = COL_WHITE;
 			goto LABEL_33;
 		}
 		infostr[0] = 0;
-		_LOBYTE(infoclr) = 0;
+		infoclr = COL_WHITE;
 		ClearPanel();
 	}
 	if ( v1 || v0 )
@@ -1733,12 +1733,12 @@ LABEL_32:
 		{
 			if ( leveltype != DTYPE_TOWN)
 			{
-				_LOBYTE(infoclr) = 0;
+				infoclr = COL_WHITE;
 				strcpy(infostr, monster[pcursmonst].mName);
 				ClearPanel();
 				if ( monster[pcursmonst]._uniqtype )
 				{
-					_LOBYTE(infoclr) = 3;
+					infoclr = COL_GOLD;
 					PrintUniqueHistory();
 				}
 				else
@@ -1753,7 +1753,7 @@ LABEL_32:
 		}
 		if ( pcursplr != -1 )
 		{
-			_LOBYTE(infoclr) = 3;
+			infoclr = COL_GOLD;
 			strcpy(infostr, plr[pcursplr]._pName);
 			ClearPanel();
 			sprintf(tempstr, "Level : %i", plr[pcursplr]._pLevel);
@@ -1778,11 +1778,10 @@ LABEL_32:
 			else
 				v5 = plr[v2].HoldItem._iName;
 			strcpy(infostr, v5);
-			v6 = plr[myplr].HoldItem._iMagical;
-			if ( v6 == 1 )
-				_LOBYTE(infoclr) = 1;
-			if ( v6 == 2 )
-				_LOBYTE(infoclr) = 3;
+			if ( plr[myplr].HoldItem._iMagical == ITEM_QUALITY_MAGIC )
+				infoclr = COL_BLUE;
+			if ( plr[myplr].HoldItem._iMagical == ITEM_QUALITY_UNIQUE )
+				infoclr = COL_GOLD;
 		}
 		else
 		{
@@ -1875,8 +1874,7 @@ LABEL_14:
 		{
 			if ( v4 < 288 )
 			{
-				_LOBYTE(v9) = infoclr;
-				CPrintString(width, v10, v9);
+				CPrintString(width, v10, infoclr);
 			}
 		}
 		width += fontkern[v10] + 2;

@@ -1,3 +1,9 @@
+enum item_quality {
+    ITEM_QUALITY_NORMAL = 0,
+    ITEM_QUALITY_MAGIC  = 1,
+    ITEM_QUALITY_UNIQUE = 2,
+};
+
 enum unique_base_item {
     UITYPE_NONE        = 0x0,
     UITYPE_SHORTBOW    = 0x1,
@@ -1833,6 +1839,12 @@ enum text_color {
     COL_BLUE  = 0x1,
     COL_RED   = 0x2,
     COL_GOLD  = 0x3,
+};
+
+enum item_color {
+    ICOL_WHITE = PAL16_YELLOW + 5,
+    ICOL_BLUE  = PAL16_BLUE + 5,
+    ICOL_RED   = PAL16_RED + 5,
 };
 
 enum _difficulty {
