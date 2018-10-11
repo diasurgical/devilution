@@ -21,7 +21,7 @@ int chrbtnactive; // weak
 char sgszTalkMsg[80];
 void *pPanelText;
 int frame_4B8800; // idb
-void *pLifeBuff;
+char *pLifeBuff;
 void *pBtmBuff;
 void *pTalkBtns;
 int pstrjust[4];
@@ -29,7 +29,7 @@ int pnumlines; // idb
 int pinfoflag; // weak
 int talkbtndown[3];
 int pSpell; // weak
-void *pManaBuff;
+char *pManaBuff;
 int infoclr; // weak
 int sgbPlrTalkTbl; // weak // should be char [4]
 void *pGBoxBuff;
@@ -85,31 +85,31 @@ const unsigned char fontkern[68] =
 };
 const int lineoffset[25] =
 {
-  456433,
-  24576,
-  24576,
-  24576,
-  24756,
-  447217,
-  465649,
-  24576,
-  24576,
-  24576,
-  442609,
-  456433,
-  470257,
-  24576,
-  24576,
-  439537,
-  451057,
-  461809,
-  473329,
-  24576,
-  438001,
-  447217,
-  456433,
-  465649,
-  474097
+  768 * 594 + 241,
+  768 * 32,
+  768 * 32,
+  768 * 32,
+  768 * 32 + 180,
+  768 * 582 + 241,
+  768 * 606 + 241,
+  768 * 32,
+  768 * 32,
+  768 * 32,
+  768 * 576 + 241,
+  768 * 594 + 241,
+  768 * 612 + 241,
+  768 * 32,
+  768 * 32,
+  768 * 572 + 241,
+  768 * 587 + 241,
+  768 * 601 + 241,
+  768 * 616 + 241,
+  768 * 32,
+  768 * 570 + 241,
+  768 * 582 + 241,
+  768 * 594 + 241,
+  768 * 606 + 241,
+  768 * 617 + 241
 };
 const unsigned char fontidx[256] =
 {
@@ -288,7 +288,7 @@ void __fastcall SetSpellTrans(char t)
 	signed int v9; // eax
 	char *v10; // ecx
 
-	if ( !t )
+	if ( t == RSPLTYPE_SKILL )
 	{
 		v1 = 0;
 		do
@@ -308,7 +308,7 @@ void __fastcall SetSpellTrans(char t)
 	byte_4B8B88[255] = 0;
 	switch ( t )
 	{
-		case 1:
+		case RSPLTYPE_SPELL:
 			byte_4B8B88[144] = -79;
 			byte_4B8B88[145] = -77;
 			byte_4B8B88[146] = -75;
@@ -322,7 +322,7 @@ void __fastcall SetSpellTrans(char t)
 			}
 			while ( v9 < 192 );
 			break;
-		case 2:
+		case RSPLTYPE_SCROLL:
 			byte_4B8B88[144] = -95;
 			byte_4B8B88[145] = -93;
 			byte_4B8B88[146] = -91;
@@ -335,7 +335,7 @@ void __fastcall SetSpellTrans(char t)
 			}
 			while ( v7 < 176 );
 			break;
-		case 3:
+		case RSPLTYPE_CHARGES:
 			byte_4B8B88[144] = -47;
 			byte_4B8B88[145] = -45;
 			byte_4B8B88[146] = -43;
@@ -348,7 +348,7 @@ void __fastcall SetSpellTrans(char t)
 			}
 			while ( v5 < 224 );
 			break;
-		case 4:
+		case RSPLTYPE_INVALID:
 			byte_4B8B88[144] = -15;
 			byte_4B8B88[145] = -13;
 			byte_4B8B88[146] = -11;
@@ -383,18 +383,18 @@ void __cdecl DrawSpell()
 	v3 = v1;
 	v6 = plr[myplr]._pRSpell;
 	v4 = plr[myplr]._pISplLvlAdd + plr[myplr]._pSplLvl[v1];
-	if ( v2 == 1 && v1 != -1 )
+	if ( v2 == RSPLTYPE_SPELL && v1 != -1 )
 	{
-		if ( !CheckSpell(myplr, v1, 1, 1) )
-			v2 = 4;
+		if ( !CheckSpell(myplr, v1, RSPLTYPE_SPELL, TRUE) )
+			v2 = RSPLTYPE_INVALID;
 		v0 = myplr;
 		if ( v4 <= 0 )
-			v2 = 4;
+			v2 = RSPLTYPE_INVALID;
 	}
-	if ( !currlevel && v2 != 4 && !spelldata[v3].sTownSpell )
-		v2 = 4;
+	if ( !currlevel && v2 != RSPLTYPE_INVALID && !spelldata[v3].sTownSpell )
+		v2 = RSPLTYPE_INVALID;
 	if ( plr[v0]._pRSpell < 0 )
-		v2 = 4;
+		v2 = RSPLTYPE_INVALID;
 	SetSpellTrans(v2);
 	if ( v6 == -1 )
 		DrawSpellCel(629, 631, (char *)pSpellCels, 27, 56);
@@ -406,8 +406,6 @@ void __cdecl DrawSpellList()
 {
 	int v0; // esi
 	signed int v1; // edi
-	int v2; // ecx
-	int v3; // eax
 	signed int v4; // ebp
 	int v5; // eax
 	int v6; // esi
@@ -438,36 +436,30 @@ void __cdecl DrawSpellList()
 	xp = 495;
 	ClearPanel();
 	v0 = myplr;
-	v1 = 0;
+	v1 = RSPLTYPE_SKILL;
 	v24 = 0;
 	do
 	{
 		switch ( v1 )
 		{
 			case RSPLTYPE_SKILL:
-				SetSpellTrans(0);
+				SetSpellTrans(RSPLTYPE_SKILL);
 				yp = 46;
-				v2 = plr[v0]._pAblSpells[0];
-				v3 = plr[v0]._pAblSpells[1];
-				goto LABEL_10;
+				v25 = plr[v0]._pAblSpells64;
+				break;
 			case RSPLTYPE_SPELL:
 				yp = 47;
-				v2 = plr[v0]._pMemSpells[0];
-				v3 = plr[v0]._pMemSpells[1];
-				goto LABEL_10;
+				v25 = plr[v0]._pMemSpells64;
+				break;
 			case RSPLTYPE_SCROLL:
-				SetSpellTrans(2);
+				SetSpellTrans(RSPLTYPE_SCROLL);
 				yp = 44;
-				v2 = plr[v0]._pScrlSpells[0];
-				v3 = plr[v0]._pScrlSpells[1];
-				goto LABEL_10;
+				v25 = plr[v0]._pScrlSpells64;
+				break;
 			case RSPLTYPE_CHARGES:
-				SetSpellTrans(3);
+				SetSpellTrans(RSPLTYPE_CHARGES);
 				yp = 45;
-				v2 = plr[v0]._pISpells[0];
-				v3 = plr[v0]._pISpells[1];
-LABEL_10:
-				v25 = __PAIR__(v3, v2);
+				v25 = plr[v0]._pISpells64;
 				break;
 		}
 		v20 = &spelldata[1].sTownSpell;
@@ -492,14 +484,14 @@ LABEL_10:
 					nCel = 0;
 					v9 = 0;
 				}
-				SetSpellTrans(v9 <= 0 ? 4 : 1);
+				SetSpellTrans(v9 <= 0 ? RSPLTYPE_INVALID : RSPLTYPE_SPELL);
 			}
 			else
 			{
 				v9 = nCel;
 			}
 			if ( !currlevel && !*v20 )
-				SetSpellTrans(4);
+				SetSpellTrans(RSPLTYPE_INVALID);
 			DrawSpellCel(v17, xp, (char *)pSpellCels, (char)SpellITbl[v4], 56);
 			if ( MouseX >= v17 - 64 && MouseX < v17 - 64 + 56 && MouseY >= v22 && MouseY < v22 + 56 )
 			{
@@ -583,7 +575,7 @@ LABEL_32:
 				v16 = 0;
 				do
 				{
-					if ( plr[0]._pSplHotKey[v16 + 5430 * v0] == pSpell && plr[v0]._pSplTHotKey[v16] == pSplType )
+					if ( plr[v0]._pSplHotKey[v16] == pSpell && plr[v0]._pSplTHotKey[v16] == pSplType )
 					{
 						DrawSpellCel(v17, xp, (char *)pSpellCels, v16 + 48, 56);
 						sprintf(tempstr, "Spell Hot Key #F%i", v16 + 5);
@@ -648,30 +640,26 @@ void __cdecl SetSpell()
 void __fastcall SetSpeedSpell(int slot)
 {
 	int v1; // esi
-	int v2; // eax
 	signed int v3; // ebp
-	int v4; // edx
 	int v5; // ebx
 	int *v6; // edi
 
 	v1 = pSpell;
 	if ( pSpell != -1 )
 	{
-		v2 = myplr;
 		v3 = 0;
-		v4 = myplr;
 		v5 = pSplType;
 		v6 = plr[myplr]._pSplHotKey;
 		do
 		{
-			if ( *v6 == v1 && plr[v4]._pSplTHotKey[v3] == v5 )
+			if ( *v6 == v1 && plr[myplr]._pSplTHotKey[v3] == v5 )
 				*v6 = -1;
 			++v3;
 			++v6;
 		}
 		while ( v3 < 4 );
-		plr[0]._pSplHotKey[slot + 5430 * v2] = v1;
-		plr[v4]._pSplTHotKey[slot] = v5;
+		plr[myplr]._pSplHotKey[slot] = v1;
+		plr[myplr]._pSplTHotKey[slot] = v5;
 	}
 }
 // 4B8834: using guessed type int pSpell;
@@ -679,70 +667,30 @@ void __fastcall SetSpeedSpell(int slot)
 
 void __fastcall ToggleSpell(int slot)
 {
-	int v1; // eax
-	int v2; // edx
-	int v3; // esi
-	char *v4; // eax
-	int v5; // eax
-	int v6; // eax
-	int v7; // eax
-	int v8; // ebx
-	int v9; // edi
-	//int v10; // [esp+4h] [ebp-Ch]
-	char *v11; // [esp+8h] [ebp-8h]
-	int v12; // [esp+Ch] [ebp-4h]
+	if ( plr[myplr]._pSplHotKey[slot] == -1 ) {
+		return;
+	}
 
-	v1 = slot + 5430 * myplr;
-	v2 = plr[0]._pSplHotKey[v1];
-	v12 = plr[0]._pSplHotKey[v1];
-	if ( v2 != -1 )
-	{
-		v3 = myplr;
-		v4 = &plr[myplr]._pSplTHotKey[slot];
-		v11 = v4;
-		v5 = *v4;
-		if ( v5 )
-		{
-			v6 = v5 - 1;
-			if ( v6 )
-			{
-				v7 = v6 - 1;
-				if ( v7 )
-				{
-					if ( v7 == 1 )
-					{
-						v8 = plr[v3]._pISpells[0];
-						v9 = plr[v3]._pISpells[1];
-					}
-					else
-					{
-						v9 = (int)v11;
-						v8 = plr[myplr]._pSplHotKey[slot]; /* check */
-					}
-				}
-				else
-				{
-					v8 = plr[v3]._pScrlSpells[0];
-					v9 = plr[v3]._pScrlSpells[1];
-				}
-			}
-			else
-			{
-				v8 = plr[v3]._pMemSpells[0];
-				v9 = plr[v3]._pMemSpells[1];
-			}
-		}
-		else
-		{
-			v8 = plr[v3]._pAblSpells[0];
-			v9 = plr[v3]._pAblSpells[1];
-		}
-		if ( v9 & ((unsigned __int64)((__int64)1 << ((unsigned char)v2 - 1)) >> 32) | v8 & (unsigned int)((__int64)1 << ((unsigned char)v2 - 1)) )
-		{
-			drawpanflag = 255;
-			plr[v3]._pRSpell = v12;
-			_LOBYTE(plr[v3]._pRSplType) = *v11;
-		}
+	unsigned __int64 spells;
+	switch ( plr[myplr]._pSplTHotKey[slot] ) {
+		case RSPLTYPE_SKILL:
+			spells = plr[myplr]._pAblSpells64;
+			break;
+		case RSPLTYPE_SPELL:
+			spells = plr[myplr]._pMemSpells64;
+			break;
+		case RSPLTYPE_SCROLL:
+			spells = plr[myplr]._pScrlSpells64;
+			break;
+		case RSPLTYPE_CHARGES:
+			spells = plr[myplr]._pISpells64;
+			break;
+	}
+
+	if ( spells & (__int64)1 << (plr[myplr]._pSplHotKey[slot] - 1) ) {
+		plr[myplr]._pRSpell = plr[myplr]._pSplHotKey[slot];
+		plr[myplr]._pRSplType = plr[myplr]._pSplTHotKey[slot];
+		drawpanflag = 255;
 	}
 }
 // 52571C: using guessed type int drawpanflag;
@@ -1047,109 +995,92 @@ void __fastcall DrawFlask(void *a1, int a2, int a3, void *a4, int a5, int a6)
 
 void __cdecl DrawLifeFlask()
 {
-	signed __int64 v0; // rax
-	signed int v1; // esi
-	int v2; // esi
+	int filled = (double)plr[myplr]._pHitPoints / (double)plr[myplr]._pMaxHP * 80.0;
+	plr[myplr]._pHPPer = filled;
 
-	v0 = (signed __int64)((double)plr[myplr]._pHitPoints / (double)plr[myplr]._pMaxHP * 80.0);
-	plr[myplr]._pHPPer = v0;
-	if ( (signed int)v0 > 80 )
-		LODWORD(v0) = 80;
-	v1 = 80 - v0;
-	if ( 80 - (signed int)v0 > 11 )
-		v1 = 11;
-	v2 = v1 + 2;
-	DrawFlask(pLifeBuff, 88, 277, gpBuffer, 383405, v2);
-	if ( v2 != 13 )
-		DrawFlask(pBtmBuff, 640, 640 * v2 + 2029, gpBuffer, 768 * v2 + 383405, 13 - v2);
+	if ( filled > 80 )
+		filled = 80;
+	filled = 80 - filled;
+	if ( filled > 11 )
+		filled = 11;
+	filled += 2;
+
+	DrawFlask(pLifeBuff, 88, 277, gpBuffer, 768 * 499 + 173, filled);
+	if ( filled != 13 )
+		DrawFlask(pBtmBuff, 640, 640 * filled + 2029, gpBuffer, 768 * filled + 768 * 499 + 173, 13 - filled);
 }
 
 void __cdecl UpdateLifeFlask()
 {
-	signed __int64 v0; // rax
-	signed int v1; // edi
+	int filled = (double)plr[myplr]._pHitPoints / (double)plr[myplr]._pMaxHP * 80.0;
+	plr[myplr]._pHPPer = filled;
 
-	v0 = (signed __int64)((double)plr[myplr]._pHitPoints / (double)plr[myplr]._pMaxHP * 80.0);
-	v1 = v0;
-	plr[myplr]._pHPPer = v0;
-	if ( (signed int)v0 > 69 )
-	{
-		v1 = 69;
-LABEL_8:
-		DrawPanelBox(96, 85 - v1, 0x58u, v1, 160, 581 - v1);
-		return;
-	}
-	if ( (signed int)v0 < 0 )
-		v1 = 0;
-	if ( v1 != 69 )
-		SetFlaskHeight((char *)pLifeBuff, 16, 85 - v1, 160, 512);
-	if ( v1 )
-		goto LABEL_8;
+	if ( filled > 69 )
+		filled = 69;
+	else if ( filled < 0 )
+		filled = 0;
+	if ( filled != 69 )
+		SetFlaskHeight(pLifeBuff, 16, 85 - filled, 160, 512);
+	if ( filled )
+		DrawPanelBox(96, 85 - filled, 88, filled, 160, 581 - filled);
 }
 
 void __cdecl DrawManaFlask()
 {
-	int v0; // eax
-	int v1; // esi
-	int v2; // esi
+	int filled = plr[myplr]._pManaPer;
+	if ( filled > 80 )
+		filled = 80;
+	filled = 80 - filled;
+	if ( filled > 11 )
+		filled = 11;
+	filled += 2;
 
-	v0 = plr[myplr]._pManaPer;
-	if ( v0 > 80 )
-		v0 = 80;
-	v1 = 80 - v0;
-	if ( 80 - v0 > 11 )
-		v1 = 11;
-	v2 = v1 + 2;
-	DrawFlask(pManaBuff, 88, 277, gpBuffer, 383771, v2);
-	if ( v2 != 13 )
-		DrawFlask(pBtmBuff, 640, 640 * v2 + 2395, gpBuffer, 768 * v2 + 383771, 13 - v2);
+	DrawFlask(pManaBuff, 88, 277, gpBuffer, 768 * 499 + 173 + 366, filled);
+	if ( filled != 13 )
+		DrawFlask(pBtmBuff, 640, 640 * filled + 2029 + 366, gpBuffer, 768 * filled + 768 * 499 + 173 + 366, 13 - filled);
 }
 
 void __cdecl control_update_life_mana()
 {
-	int v0; // esi
-	signed __int64 v1; // rax
-	int v2; // [esp+4h] [ebp-8h]
-	int v3; // [esp+8h] [ebp-4h]
-
-	v0 = myplr;
-	v3 = plr[myplr]._pMaxMana;
-	v2 = plr[myplr]._pMana;
-	if ( plr[myplr]._pMaxMana < 0 )
-		v3 = 0;
-	if ( plr[myplr]._pMana < 0 )
-		v2 = 0;
-	if ( v3 )
-		v1 = (signed __int64)((double)v2 / (double)v3 * 80.0);
+	int manaPer;
+	int maxMana = plr[myplr]._pMaxMana;
+	int mana = plr[myplr]._pMana;
+	if ( maxMana < 0 )
+		maxMana = 0;
+	if ( mana < 0 )
+		mana = 0;
+	if ( maxMana == 0 )
+		manaPer = 0;
 	else
-		LODWORD(v1) = 0;
-	plr[v0]._pManaPer = v1;
-	plr[v0]._pHPPer = (signed __int64)((double)plr[v0]._pHitPoints / (double)plr[v0]._pMaxHP * 80.0);
+		manaPer = (double)mana / (double)maxMana * 80.0;
+	plr[myplr]._pManaPer = manaPer;
+	plr[myplr]._pHPPer = (double)plr[myplr]._pHitPoints / (double)plr[myplr]._pMaxHP * 80.0;
 }
 
 void __cdecl UpdateManaFlask()
 {
-	signed int v0; // edi
-	int v1; // [esp+8h] [ebp-8h]
-	int v2; // [esp+Ch] [ebp-4h]
+	int filled;
+	int maxMana = plr[myplr]._pMaxMana;
+	int mana = plr[myplr]._pMana;
+	if ( maxMana < 0 )
+		maxMana = 0;
+	if ( mana < 0 )
+		mana = 0;
 
-	v2 = plr[myplr]._pMaxMana;
-	v1 = plr[myplr]._pMana;
-	if ( plr[myplr]._pMaxMana < 0 )
-		v2 = 0;
-	if ( plr[myplr]._pMana < 0 )
-		v1 = 0;
-	if ( v2 )
-		v0 = (signed __int64)((double)v1 / (double)v2 * 80.0);
+	if ( maxMana == 0 )
+		filled = 0;
 	else
-		v0 = 0;
-	plr[myplr]._pManaPer = v0;
-	if ( v0 > 69 )
-		v0 = 69;
-	if ( v0 != 69 )
-		SetFlaskHeight((char *)pManaBuff, 16, 85 - v0, 528, 512);
-	if ( v0 )
-		DrawPanelBox(464, 85 - v0, 0x58u, v0, 528, 581 - v0);
+		filled = (double)mana / (double)maxMana * 80.0;
+
+	plr[myplr]._pManaPer = filled;
+
+	if ( filled > 69 )
+		filled = 69;
+	if ( filled != 69 )
+		SetFlaskHeight(pLifeBuff, 16, 85 - filled, 160 + 368, 512);
+	if ( filled )
+		DrawPanelBox(96 + 368, 85 - filled, 88, filled, 160 + 368, 581 - filled);
+
 	DrawSpell();
 }
 
@@ -1161,27 +1092,27 @@ void __cdecl InitControlPan()
 	void *v3; // ecx
 	unsigned char *v5; // eax
 
-	v0 = 0x16800;
+	v0 = 144 * 640;
 	if ( gbMaxPlayers != 1 )
-		v0 = 0x2D000;
+		v0 = 288 * 640;
 	pBtmBuff = DiabloAllocPtr(v0);
 	memset(pBtmBuff, 0, v0);
-	pManaBuff = DiabloAllocPtr(0x1E40);
-	memset(pManaBuff, 0, 0x1E40u);
-	pLifeBuff = DiabloAllocPtr(0x1E40);
-	memset(pLifeBuff, 0, 0x1E40u);
+	pManaBuff = (char *)DiabloAllocPtr(0x1E40);
+	memset(pManaBuff, 0, 0x1E40);
+	pLifeBuff = (char *)DiabloAllocPtr(0x1E40);
+	memset(pLifeBuff, 0, 0x1E40);
 	pPanelText = LoadFileInMem("CtrlPan\\SmalText.CEL", 0);
 	pChrPanel = LoadFileInMem("Data\\Char.CEL", 0);
 	pSpellCels = LoadFileInMem("CtrlPan\\SpelIcon.CEL", 0);
-	SetSpellTrans(0);
+	SetSpellTrans(RSPLTYPE_SKILL);
 	pStatusPanel = LoadFileInMem("CtrlPan\\Panel8.CEL", 0);
 	CelDecodeRect((char *)pBtmBuff, 0, 143, 640, (char *)pStatusPanel, 1, 640);
 	v1 = pStatusPanel;
 	pStatusPanel = 0;
 	mem_free_dbg(v1);
 	pStatusPanel = LoadFileInMem("CtrlPan\\P8Bulbs.CEL", 0);
-	CelDecodeRect((char *)pLifeBuff, 0, 87, 88, (char *)pStatusPanel, 1, 88);
-	CelDecodeRect((char *)pManaBuff, 0, 87, 88, (char *)pStatusPanel, 2, 88);
+	CelDecodeRect(pLifeBuff, 0, 87, 88, (char *)pStatusPanel, 1, 88);
+	CelDecodeRect(pManaBuff, 0, 87, 88, (char *)pStatusPanel, 2, 88);
 	v2 = pStatusPanel;
 	pStatusPanel = 0;
 	mem_free_dbg(v2);
@@ -1257,7 +1188,7 @@ void __cdecl InitControlPan()
 
 void __cdecl ClearCtrlPan()
 {
-	DrawPanelBox(0, sgbPlrTalkTbl + 16, 0x280u, 0x80u, 64, 512);
+	DrawPanelBox(0, sgbPlrTalkTbl + 16, 640, 128, 64, 512);
 	DrawInfoBox();
 }
 // 4B8840: using guessed type int sgbPlrTalkTbl;
@@ -1277,7 +1208,7 @@ void __cdecl DrawCtrlPan()
 		if ( panbtn[v0] )
 			CelDecodeOnly(v2 + 64, v1[1] + 178, pPanelButtons, v0 + 1, 71);
 		else
-			DrawPanelBox(v2, v1[1] - 336, 0x47u, 0x14u, v2 + 64, v1[1] + 160);
+			DrawPanelBox(v2, v1[1] - 336, 71, 20, v2 + 64, v1[1] + 160);
 		++v0;
 		v1 += 5;
 	}
@@ -1297,94 +1228,53 @@ void __cdecl DrawCtrlPan()
 
 void __cdecl DoSpeedBook()
 {
-	int v0; // eax
-	signed int v1; // ebx
-	bool v2; // zf
-	unsigned __int64 v3; // rdi
-	unsigned int v4; // ecx
-	//unsigned int v5; // [esp+4h] [ebp-20h]
-	//unsigned int v6; // [esp+8h] [ebp-1Ch]
-	unsigned int v7; // [esp+8h] [ebp-1Ch]
-	int X; // [esp+Ch] [ebp-18h]
-	int Y; // [esp+10h] [ebp-14h]
-	signed int v10; // [esp+14h] [ebp-10h]
-	int v11; // [esp+18h] [ebp-Ch]
-	signed int v12; // [esp+1Ch] [ebp-8h]
-	signed int v13; // [esp+20h] [ebp-4h]
+	unsigned __int64 spells, spell;
 
-	v0 = myplr;
-	v13 = 636;
-	v1 = 1;
-	v2 = plr[myplr]._pRSpell == -1;
 	spselflag = 1;
-	v12 = 495;
-	X = 600;
-	Y = 307;
-	if ( !v2 )
-	{
-		v11 = 0;
-		//v3 = __PAIR__(v5, v6);
-		while ( 1 )
-		{
-			if ( v11 )
-			{
-				switch ( v11 )
-				{
-					case RSPLTYPE_SPELL:
-						HIDWORD(v3) = plr[v0]._pMemSpells[0];
-						LODWORD(v3) = plr[v0]._pMemSpells[1];
-						break;
-					case RSPLTYPE_SCROLL:
-						HIDWORD(v3) = plr[v0]._pScrlSpells[0];
-						LODWORD(v3) = plr[v0]._pScrlSpells[1];
-						break;
-					case RSPLTYPE_CHARGES:
-						HIDWORD(v3) = plr[v0]._pISpells[0];
-						LODWORD(v3) = plr[v0]._pISpells[1];
-						break;
-				}
+	int xo = 636;
+	int yo = 495;
+	int X = 600;
+	int Y = 307;
+	if ( plr[myplr]._pRSpell != -1 ) {
+		for ( int i = 0; i < 4; i++ ) {
+			switch ( i ) {
+				case RSPLTYPE_SKILL:
+					spells = plr[myplr]._pAblSpells64;
+					break;
+				case RSPLTYPE_SPELL:
+					spells = plr[myplr]._pMemSpells64;
+					break;
+				case RSPLTYPE_SCROLL:
+					spells = plr[myplr]._pScrlSpells64;
+					break;
+				case RSPLTYPE_CHARGES:
+					spells = plr[myplr]._pISpells64;
+					break;
 			}
-			else
-			{
-				HIDWORD(v3) = plr[v0]._pAblSpells[0];
-				LODWORD(v3) = plr[v0]._pAblSpells[1];
-			}
-			v7 = 0;
-			v10 = 1;
-			do
-			{
-				if ( (unsigned int)v3 & v7 | HIDWORD(v3) & v1 )
-				{
-					if ( v10 == plr[v0]._pRSpell && v11 == SLOBYTE(plr[v0]._pRSplType) )
-					{
-						X = v13 - 36;
-						Y = v12 - 188;
+			spell = (__int64)1;
+			for ( int j = 1; j < MAX_SPELLS; j++ ) {
+				if ( spell & spells ) {
+					if ( j == plr[myplr]._pRSpell && i == plr[myplr]._pRSplType ) {
+						X = xo - 36;
+						Y = yo - 188;
 					}
-					v13 -= 56;
-					if ( v13 == 20 )
-					{
-						v12 -= 56;
-						v13 = 636;
+					xo -= 56;
+					if ( xo == 20 ) {
+						xo = 636;
+						yo -= 56;
 					}
 				}
-				v4 = __PAIR__(v7, v1) >> 31;
-				v1 *= 2;
-				++v10;
-				v7 = v4;
+				spell <<= (__int64)1;
 			}
-			while ( v10 < MAX_SPELLS );
-			if ( v3 && v13 != 636 )
-				v13 -= 56;
-			if ( v13 == 20 )
-			{
-				v12 -= 56;
-				v13 = 636;
+			if ( spells && xo != 636 )
+				xo -= 56;
+			if ( xo == 20 ) {
+				xo = 636;
+				yo -= 56;
 			}
-			if ( ++v11 >= 4 )
-				break;
-			v1 = 1;
 		}
 	}
+
 	SetCursorPos(X, Y);
 }
 // 4B8C98: using guessed type int spselflag;
@@ -1810,13 +1700,13 @@ void __cdecl DrawInfoBox()
 	int v3; // esi
 	char *v4; // eax
 	const char *v5; // eax
-	char v6; // al
+	char v6;
 	signed int v7; // edi
 	signed int v8; // ebp
 	int v9; // esi
 	char *v10; // ebx
 
-	DrawPanelBox(177, 62, 0x120u, 0x3Cu, 241, 558);
+	DrawPanelBox(177, 62, 288, 60, 241, 558);
 	v0 = trigflag[3];
 	v1 = spselflag;
 	if ( !panelflag && !trigflag[3] && pcursinvitem == -1 )
@@ -2118,38 +2008,38 @@ void __cdecl DrawChr()
 		MY_PlrStringXY(258, 239, 301, a4, a5[0], 0);
 	v9 = plr[myplr]._pMagResist;
 	a5[0] = v9 != 0;
-	if ( v9 >= 75 )
+	if ( v9 < 75 )
 	{
-		a5[0] = 3;
-		sprintf(a4, "MAX");
+		sprintf(a4, "%i%%", v9);
 	}
 	else
 	{
-		sprintf(a4, "%i%%", v9);
+		a5[0] = 3;
+		sprintf(a4, "MAX");
 	}
 	ADD_PlrStringXY(257, 276, 300, a4, a5[0]);
 	v10 = plr[myplr]._pFireResist;
 	a5[0] = v10 != 0;
-	if ( v10 >= 75 )
+	if ( v10 < 75 )
 	{
-		a5[0] = 3;
-		sprintf(a4, "MAX");
+		sprintf(a4, "%i%%", v10);
 	}
 	else
 	{
-		sprintf(a4, "%i%%", v10);
+		a5[0] = 3;
+		sprintf(a4, "MAX");
 	}
 	ADD_PlrStringXY(257, 304, 300, a4, a5[0]);
 	v11 = plr[myplr]._pLghtResist;
 	a5[0] = v11 != 0;
 	if ( v11 >= 75 )
 	{
-		a5[0] = 3;
-		sprintf(a4, "MAX");
+		sprintf(a4, "%i%%", v11);
 	}
 	else
 	{
-		sprintf(a4, "%i%%", v11);
+		a5[0] = 3;
+		sprintf(a4, "MAX");
 	}
 	ADD_PlrStringXY(257, 332, 300, a4, a5[0]);
 	a5[0] = 0;
@@ -2620,7 +2510,7 @@ void __cdecl RedBack()
 
 	v0 = -(light4flag != 0);
 	_LOWORD(v0) = v0 & 0xF400;
-	v12 = v0 + 0x1200;
+	v12 = v0 + 768 * 6;
 	if ( leveltype == DTYPE_HELL )
 	{
 		v7 = gpBuffer->row[0].pixels;
@@ -2632,7 +2522,7 @@ void __cdecl RedBack()
 			do
 			{
 				_EAX = *v7;
-				if ( (unsigned char)*v7 >= 0x20u )
+				if ( (unsigned char)*v7 >= 32 )
 					ASM_XLAT(_EAX,_EBX);
 				*v7++ = _EAX;
 				--v10;
@@ -2668,34 +2558,24 @@ void __cdecl RedBack()
 // 525728: using guessed type int light4flag;
 // 5BB1ED: using guessed type char leveltype;
 
-int __fastcall GetSBookTrans(int ii, unsigned char townok)
+char __fastcall GetSBookTrans(int ii, BOOL townok)
 {
-	int v2; // edi
-	int v3; // esi
-	int result; // eax
-	char v6; // [esp+13h] [ebp-5h]
-	int v7; // [esp+14h] [ebp-4h]
+	char result = RSPLTYPE_SPELL;
+	if ( (__int64)1 << (ii - 1) & plr[myplr]._pISpells64 )
+		result = RSPLTYPE_CHARGES;
+	if ( 1 << (ii - 1) & plr[myplr]._pAblSpells64 )
+		result = RSPLTYPE_SKILL;
 
-	v2 = ii;
-	v7 = townok;
-	v6 = 1;
-	v3 = myplr;
-	if ( ((unsigned __int64)((__int64)1 << ((unsigned char)ii - 1)) >> 32) & plr[v3]._pISpells[1] | (unsigned int)((__int64)1 << ((unsigned char)ii - 1)) & plr[v3]._pISpells[0] )
-		v6 = 3;
-	result = plr[v3]._pAblSpells[1] & (1 << (ii - 1) >> 31) | plr[v3]._pAblSpells[0] & (1 << (ii - 1));
-	if ( result )
-		v6 = 0;
-	if ( v6 == 1 )
-	{
-		if ( !CheckSpell(myplr, ii, 1, 1) )
-			v6 = 4;
-		result = 21720 * myplr;
-		if ( (char)(plr[myplr]._pISplLvlAdd + plr[myplr]._pSplLvl[v2]) <= 0 )
-			v6 = 4;
+	if ( result == RSPLTYPE_SPELL ) {
+		if ( !CheckSpell(myplr, ii, RSPLTYPE_SPELL, TRUE) )
+			result = RSPLTYPE_INVALID;
+		if ( (char)(plr[myplr]._pISplLvlAdd + plr[myplr]._pSplLvl[ii]) <= 0 )
+			result = RSPLTYPE_INVALID;
 	}
-	if ( v7 && !currlevel && v6 != 4 && !spelldata[v2].sTownSpell )
-		v6 = 4;
-	_LOBYTE(result) = v6;
+
+	if ( townok && currlevel == 0 && result != RSPLTYPE_INVALID && !spelldata[ii].sTownSpell )
+		result = RSPLTYPE_INVALID;
+
 	return result;
 }
 
@@ -2726,19 +2606,19 @@ void __cdecl DrawSpellBook()
 		v1 = (__int64)1 << (v2 - 1);
 		if ( v2 != -1 && (v1 & v0) )
 		{
-			v7 = GetSBookTrans(v2, 1u);
+			v7 = GetSBookTrans(v2, TRUE);
 			SetSpellTrans(v7);
 			DrawSpellCel(395, v8 + 1, (char *)pSBkIconCels, (char)SpellITbl[v2], MAX_SPELLS);
 			if ( v2 == plr[myplr]._pRSpell && v7 == _LOBYTE(plr[myplr]._pRSplType) )
 			{
-				SetSpellTrans(0);
+				SetSpellTrans(RSPLTYPE_SKILL);
 				DrawSpellCel(395, v8 + 1, (char *)pSBkIconCels, 43, MAX_SPELLS);
 			}
 			PrintSBookStr(10, v8 - 22, 0, spelldata[v2].sNameText, 0);
-			v3 = GetSBookTrans(v2, 0);
-			if ( v3 )
+			v3 = GetSBookTrans(v2, FALSE);
+			if ( v3 != RSPLTYPE_SKILL )
 			{
-				if ( v3 == 3 )
+				if ( v3 == RSPLTYPE_CHARGES )
 				{
 					sprintf(tempstr, "Staff (%i charges)", plr[myplr].InvBody[INVLOC_HAND_LEFT]._iCharges);
 				}
@@ -2831,44 +2711,23 @@ LABEL_14:
 
 void __cdecl CheckSBook()
 {
-	signed int v0; // ecx
-	signed int v1; // esi
-	int v2; // eax
-	int v3; // esi
-	signed __int64 v4; // rax
-	char v5; // cl
-	__int64 v6; // [esp+8h] [ebp-10h]
-	int v7; // [esp+10h] [ebp-8h]
-
-	v0 = MouseY;
-	v1 = MouseX;
-	if ( MouseX >= 331 && MouseX < 368 && MouseY >= 18 && MouseY < 314 )
-	{
-		v2 = SpellPages[0][7 * sbooktab + (MouseY - 18) / 43];
-		v7 = SpellPages[0][7 * sbooktab + (MouseY - 18) / 43];
-		if ( v2 != -1 )
-		{
-			v3 = myplr;
-			LODWORD(v6) = plr[myplr]._pAblSpells[0];
-			HIDWORD(v6) = plr[myplr]._pAblSpells[1];
-			v4 = (__int64)1 << ((unsigned char)v2 - 1);
-			if ( HIDWORD(v4) & (HIDWORD(v6) | plr[myplr]._pISpells[1] | plr[myplr]._pMemSpells[1]) | (unsigned int)v4 & ((unsigned int)v6 | plr[myplr]._pISpells[0] | plr[myplr]._pMemSpells[0]) )
-			{
-				v5 = 3;
-				if ( !(plr[v3]._pISpells[1] & HIDWORD(v4) | plr[v3]._pISpells[0] & (unsigned int)v4) )
-					v5 = 1;
-				if ( v6 & v4 )
-					v5 = 0;
+	if ( MouseX >= 331 && MouseX < 368 && MouseY >= 18 && MouseY < 314 ) {
+		int spell = SpellPages[sbooktab][(MouseY - 18) / 43];
+		if ( spell != -1 ) {
+			if ( (__int64)1 << (spell - 1) & (plr[myplr]._pAblSpells64 | plr[myplr]._pMemSpells64 | plr[myplr]._pISpells64)) {
+				char splType = RSPLTYPE_SPELL;
+				if ( (__int64)1 << (spell - 1) & plr[myplr]._pISpells64 )
+					splType = RSPLTYPE_CHARGES;
+				if ( (__int64)1 << (spell - 1) & plr[myplr]._pAblSpells64 )
+					splType = RSPLTYPE_SKILL;
+				plr[myplr]._pRSpell = spell;
+				plr[myplr]._pRSplType = splType;
 				drawpanflag = 255;
-				plr[v3]._pRSpell = v7;
-				_LOBYTE(plr[v3]._pRSplType) = v5;
 			}
-			v1 = MouseX;
-			v0 = MouseY;
 		}
 	}
-	if ( v1 >= 327 && v1 < 633 && v0 >= 320 && v0 < 349 ) /// BUGFIX: change `< 633` to `< 631`
-		sbooktab = (v1 - 327) / 76;
+	if ( MouseX >= 327 && MouseX < 633 && MouseY >= 320 && MouseY < 349 ) /// BUGFIX: change `< 633` to `< 631`
+		sbooktab = (MouseX - 327) / 76;
 }
 // 4B8950: using guessed type int sbooktab;
 // 52571C: using guessed type int drawpanflag;
@@ -2996,7 +2855,7 @@ void __fastcall control_remove_gold(int pnum, int gold_index)
 	if ( gold_index > 46 )
 	{
 		v6 = gold_index - 47;
-		v7 = (unsigned int *)((char *)&plr[0].SpdList[v6]._ivalue + v3 * 21720);
+		v7 = (unsigned int *)((char *)&plr[v3].SpdList[v6]._ivalue);
 		*v7 -= dropGoldValue;
 		if ( *v7 <= 0 )
 			RemoveSpdBarItem(pnum, v6);
@@ -3006,7 +2865,7 @@ void __fastcall control_remove_gold(int pnum, int gold_index)
 	else
 	{
 		v4 = gold_index - 7;
-		v5 = (unsigned int *)((char *)&plr[0].InvList[v4]._ivalue + v3 * 21720);
+		v5 = (unsigned int *)((char *)&plr[v3].InvList[v4]._ivalue);
 		*v5 -= dropGoldValue;
 		if ( *v5 <= 0 )
 			RemoveInvItem(pnum, v4);
@@ -3070,25 +2929,25 @@ void __cdecl DrawTalkPan()
 	v0 = 0;
 	if ( talkflag )
 	{
-		DrawPanelBox(175, sgbPlrTalkTbl + 20, 0x126u, 5u, 239, 516);
+		DrawPanelBox(175, sgbPlrTalkTbl + 20, 294, 5, 239, 516);
 		v1 = 293;
 		do
 		{
-			DrawPanelBox((v0 >> 1) + 175, sgbPlrTalkTbl + v0 + 25, v1, 1u, (v0 >> 1) + 239, v0 + 521);
+			DrawPanelBox((v0 >> 1) + 175, sgbPlrTalkTbl + v0 + 25, v1, 1, (v0 >> 1) + 239, v0 + 521);
 			++v0;
 			--v1;
 		}
 		while ( v1 > 283 );
-		DrawPanelBox(185, sgbPlrTalkTbl + 35, 0x112u, 0x1Eu, 249, 531);
-		DrawPanelBox(180, sgbPlrTalkTbl + 65, 0x11Cu, 5u, 244, 561);
+		DrawPanelBox(185, sgbPlrTalkTbl + 35, 274, 30, 249, 531);
+		DrawPanelBox(180, sgbPlrTalkTbl + 65, 284, 5, 244, 561);
 		v2 = 0;
 		do
 		{
-			DrawPanelBox(180, sgbPlrTalkTbl + v2 + 70, v2 + 284, 1u, 244, v2 + 566);
+			DrawPanelBox(180, sgbPlrTalkTbl + v2 + 70, v2 + 284, 1, 244, v2 + 566);
 			++v2;
 		}
 		while ( v2 < 10 );
-		DrawPanelBox(170, sgbPlrTalkTbl + 80, 0x136u, 0x37u, 234, 576);
+		DrawPanelBox(170, sgbPlrTalkTbl + 80, 310, 55, 234, 576);
 		v3 = sgszTalkMsg;
 		v4 = 0;
 		do

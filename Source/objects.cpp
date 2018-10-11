@@ -5409,7 +5409,7 @@ LABEL_47:
 					v89 = random(159, 112);
 					v91 = v89;
 					v92 = random(159, 112);
-					if ( ++v88 > 12544 )
+					if ( ++v88 > MAXDUNX * MAXDUNY )
 						break;
 					v7 = v92 + 112 * v91;
 					v93 = v92 + 112 * v91;
@@ -7190,7 +7190,7 @@ void __fastcall GetObjectStr(int i)
 			_LOBYTE(infoclr) = 2;
 		}
 	}
-} 
+}
 // 4B883C: using guessed type int infoclr;
 // 5CCB10: using guessed type char setlvlnum;
 // 5CF31D: using guessed type char setlevel;

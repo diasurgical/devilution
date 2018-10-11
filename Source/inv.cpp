@@ -1235,7 +1235,7 @@ LABEL_149:
 							if ( plr[v3].InvBody[INVLOC_HAND_LEFT]._iCharges > 0 )
 							{
 								plr[v3]._pRSpell = v34;
-								_LOBYTE(plr[v3]._pRSplType) = 3;
+								_LOBYTE(plr[v3]._pRSplType) = RSPLTYPE_CHARGES;
 								drawpanflag = 255;
 							}
 						}

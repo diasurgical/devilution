@@ -21,7 +21,7 @@ extern int chrbtnactive; // weak
 extern char sgszTalkMsg[80];
 extern void *pPanelText;
 extern int frame_4B8800; // idb
-extern void *pLifeBuff;
+extern char *pLifeBuff;
 extern void *pBtmBuff;
 extern void *pTalkBtns;
 extern int pstrjust[4];
@@ -29,7 +29,7 @@ extern int pnumlines; // idb
 extern int pinfoflag; // weak
 extern int talkbtndown[3];
 extern int pSpell; // weak
-extern void *pManaBuff;
+extern char *pManaBuff;
 extern int infoclr; // weak
 extern int sgbPlrTalkTbl; // weak // should be char [4]
 extern void *pGBoxBuff;
@@ -102,7 +102,7 @@ void __cdecl ReleaseChrBtns();
 void __cdecl DrawDurIcon();
 int __fastcall DrawDurIcon4Item(ItemStruct *pItem, int x, int c);
 void __cdecl RedBack();
-int __fastcall GetSBookTrans(int ii, unsigned char townok);
+char __fastcall GetSBookTrans(int ii, BOOL townok);
 void __cdecl DrawSpellBook();
 void __fastcall PrintSBookStr(int x, int y, bool cjustflag, char *pszStr, int bright);
 void __cdecl CheckSBook();
