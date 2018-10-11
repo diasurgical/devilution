@@ -1895,234 +1895,146 @@ void __fastcall M_StartWalk(int i, int xvel, int yvel, int xadd, int yadd, int E
 
 void __fastcall M_StartWalk2(int i, int xvel, int yvel, int xoff, int yoff, int xadd, int yadd, int EndDir)
 {
-	int v8; // esi
-	int v9; // edx
-	int v10; // ecx
-	int v11; // eax
-	int v12; // eax
-	bool v13; // zf
-	CMonster *v14; // edx
-	int v15; // [esp+Ch] [ebp-8h]
-	int ia; // [esp+10h] [ebp-4h]
-	int EndDira; // [esp+28h] [ebp+14h]
+	int fx = xadd + monster[i]._mx;
+	int fy = yadd + monster[i]._my;
 
-	v15 = xvel;
-	ia = i;
-	v8 = i;
-	v9 = xadd + monster[i]._mx;
-	EndDira = monster[i]._mx;
-	v10 = monster[i]._my;
-	v11 = monster[v8]._my;
-	monster[v8]._mVar2 = v10;
-	dMonster[0][v10 + 112 * EndDira] = -1 - ia;
-	monster[v8]._mVar1 = EndDira;
-	monster[v8]._moldx = EndDira;
-	v12 = yadd + v11;
-	monster[v8]._moldy = v10;
-	v13 = monster[v8]._uniqtype == 0;
-	monster[v8]._mx = v9;
-	monster[v8]._my = v12;
-	monster[v8]._mfutx = v9;
-	monster[v8]._mfuty = v12;
-	dMonster[0][v12 + 112 * v9] = ia + 1;
-	if ( !v13 )
-		ChangeLightXY((unsigned char)monster[v8].mlid, v9, v12);
-	v14 = monster[v8].MType;
-	monster[v8]._mxvel = v15;
-	monster[v8]._myvel = yvel;
-	monster[v8]._mxoff = xoff;
-	monster[v8]._myoff = yoff;
-	monster[v8]._mmode = MM_WALK2;
-	monster[v8]._mVar3 = EndDir;
-	monster[v8]._mdir = EndDir;
-	NewMonsterAnim(ia, &v14->Anims[MA_WALK], EndDir);
-	monster[v8]._mVar8 = 0;
-	monster[v8]._mVar6 = 16 * xoff;
-	monster[v8]._mVar7 = 16 * yoff;
-	M_CheckEFlag(ia);
+	dMonster[monster[i]._mx][monster[i]._my] = -(i + 1);
+	monster[i]._mVar1 = monster[i]._mx;
+	monster[i]._mVar2 = monster[i]._my;
+	monster[i]._moldx = monster[i]._mx;
+	monster[i]._moldy = monster[i]._my;
+	monster[i]._mx = fx;
+	monster[i]._my = fy;
+	monster[i]._mfutx = fx;
+	monster[i]._mfuty = fy;
+	dMonster[fx][fy] = i + 1;
+	if ( monster[i]._uniqtype )
+		ChangeLightXY(monster[i].mlid, monster[i]._mx, monster[i]._my);
+	monster[i]._mxoff = xoff;
+	monster[i]._myoff = yoff;
+	monster[i]._mmode = MM_WALK2;
+	monster[i]._mxvel = xvel;
+	monster[i]._myvel = yvel;
+	monster[i]._mVar3 = EndDir;
+	monster[i]._mdir = EndDir;
+	NewMonsterAnim(i, &monster[i].MType->Anims[MA_WALK], EndDir);
+	monster[i]._mVar6 = 16 * xoff;
+	monster[i]._mVar7 = 16 * yoff;
+	monster[i]._mVar8 = 0;
+	M_CheckEFlag(i);
 }
 
 void __fastcall M_StartWalk3(int i, int xvel, int yvel, int xoff, int yoff, int xadd, int yadd, int mapx, int mapy, int EndDir)
 {
-	int v10; // esi
-	int v11; // ebx
-	int v12; // edi
-	int v13; // edi
-	int v14; // ebx
-	int v15; // ecx
-	CMonster *v16; // edx
-	int v17; // [esp+Ch] [ebp-8h]
-	int ia; // [esp+10h] [ebp-4h]
-	int a6a; // [esp+28h] [ebp+14h]
-	int a7a; // [esp+2Ch] [ebp+18h]
+	int fx = xadd + monster[i]._mx;
+	int fy = yadd + monster[i]._my;
+	int x = mapx + monster[i]._mx;
+	int y = mapy + monster[i]._my;
 
-	ia = i;
-	v10 = i;
-	v11 = monster[i]._my;
-	v12 = monster[i]._mx;
-	v17 = xvel;
-	a6a = v12 + xadd;
-	a7a = v11 + yadd;
-	v13 = mapx + v12;
-	v14 = mapy + v11;
 	if ( monster[i]._uniqtype )
-		ChangeLightXY((unsigned char)monster[v10].mlid, v13, v14);
-	v15 = monster[v10]._my + 112 * monster[v10]._mx;
-	monster[v10]._mVar4 = v13;
-	dMonster[0][v15] = -1 - ia;
-	monster[v10]._mVar5 = v14;
-	dMonster[0][a7a + 112 * a6a] = -1 - ia;
-	monster[v10]._moldx = monster[v10]._mx;
-	monster[v10]._moldy = monster[v10]._my;
-	monster[v10]._mfutx = a6a;
-	monster[v10]._mxvel = v17;
-	dFlags[v13][v14] |= DFLAG_MONSTER;
-	v16 = monster[v10].MType;
-	monster[v10]._myvel = yvel;
-	monster[v10]._mfuty = a7a;
-	monster[v10]._mVar1 = a6a;
-	monster[v10]._mVar2 = a7a;
-	monster[v10]._mxoff = xoff;
-	monster[v10]._myoff = yoff;
-	monster[v10]._mmode = MM_WALK3;
-	monster[v10]._mVar3 = EndDir;
-	monster[v10]._mdir = EndDir;
-	NewMonsterAnim(ia, &v16->Anims[MA_WALK], EndDir);
-	monster[v10]._mVar8 = 0;
-	monster[v10]._mVar6 = 16 * xoff;
-	monster[v10]._mVar7 = 16 * yoff;
-	M_CheckEFlag(ia);
+		ChangeLightXY(monster[i].mlid, x, y);
+
+	dMonster[monster[i]._mx][monster[i]._my] = -(i + 1);
+	dMonster[fx][fy] = -(i + 1);
+	monster[i]._mVar4 = x;
+	monster[i]._mVar5 = y;
+	dFlags[x][y] |= DFLAG_MONSTER;
+	monster[i]._moldx = monster[i]._mx;
+	monster[i]._moldy = monster[i]._my;
+	monster[i]._mfutx = fx;
+	monster[i]._mfuty = fy;
+	monster[i]._mxoff = xoff;
+	monster[i]._myoff = yoff;
+	monster[i]._mmode = MM_WALK3;
+	monster[i]._mxvel = xvel;
+	monster[i]._myvel = yvel;
+	monster[i]._mVar1 = fx;
+	monster[i]._mVar2 = fy;
+	monster[i]._mVar3 = EndDir;
+	monster[i]._mdir = EndDir;
+	NewMonsterAnim(i, &monster[i].MType->Anims[MA_WALK], EndDir);
+	monster[i]._mVar6 = 16 * xoff;
+	monster[i]._mVar7 = 16 * yoff;
+	monster[i]._mVar8 = 0;
+	M_CheckEFlag(i);
 }
 
 void __fastcall M_StartAttack(int i)
 {
-	int v1; // edi
-	int v2; // ebx
-	int v3; // esi
-	int v4; // ecx
-	int v5; // eax
-
-	v1 = i;
-	v2 = M_GetDir(i);
-	v3 = v1;
-	NewMonsterAnim(v1, &monster[v1].MType->Anims[MA_ATTACK], v2);
-	v4 = monster[v1]._my;
-	v5 = monster[v1]._mx;
-	monster[v3]._mxoff = 0;
-	monster[v3]._myoff = 0;
-	monster[v3]._mfuty = v4;
-	monster[v3]._moldy = v4;
-	monster[v3]._mmode = MM_ATTACK;
-	monster[v3]._mfutx = v5;
-	monster[v3]._moldx = v5;
-	monster[v3]._mdir = v2;
-	M_CheckEFlag(v1);
+	int md = M_GetDir(i);
+	NewMonsterAnim(i, &monster[i].MType->Anims[MA_ATTACK], md);
+	monster[i]._mmode = MM_ATTACK;
+	monster[i]._mxoff = 0;
+	monster[i]._myoff = 0;
+	monster[i]._mfutx = monster[i]._mx;
+	monster[i]._mfuty = monster[i]._my;
+	monster[i]._moldx = monster[i]._mx;
+	monster[i]._moldy = monster[i]._my;
+	monster[i]._mdir = md;
+	M_CheckEFlag(i);
 }
 
 void __fastcall M_StartRAttack(int i, int missile_type, int dam)
 {
-	int v3; // ebp
-	int v4; // edi
-	int v5; // ebx
-	int v6; // esi
-	int v7; // ecx
-	int v8; // eax
-
-	v3 = missile_type;
-	v4 = i;
-	v5 = M_GetDir(i);
-	v6 = v4;
-	NewMonsterAnim(v4, &monster[v4].MType->Anims[MA_ATTACK], v5);
-	v7 = monster[v4]._my;
-	monster[v6]._mxoff = 0;
-	monster[v6]._myoff = 0;
-	monster[v6]._mVar2 = dam;
-	v8 = monster[v4]._mx;
-	monster[v6]._mfuty = v7;
-	monster[v6]._moldy = v7;
-	monster[v6]._mmode = MM_RATTACK;
-	monster[v6]._mVar1 = v3;
-	monster[v6]._mfutx = v8;
-	monster[v6]._moldx = v8;
-	monster[v6]._mdir = v5;
-	M_CheckEFlag(v4);
+	int md = M_GetDir(i);
+	NewMonsterAnim(i, &monster[i].MType->Anims[MA_ATTACK], md);
+	monster[i]._mmode = MM_RATTACK;
+	monster[i]._mVar1 = missile_type;
+	monster[i]._mVar2 = dam;
+	monster[i]._mxoff = 0;
+	monster[i]._myoff = 0;
+	monster[i]._mfutx = monster[i]._mx;
+	monster[i]._mfuty = monster[i]._my;
+	monster[i]._moldx = monster[i]._mx;
+	monster[i]._moldy = monster[i]._my;
+	monster[i]._mdir = md;
+	M_CheckEFlag(i);
 }
 
 void __fastcall M_StartRSpAttack(int i, int missile_type, int dam)
 {
-	int v3; // ebp
-	int v4; // edi
-	int v5; // ebx
-	int v6; // esi
-	int v7; // ecx
-	int v8; // eax
-
-	v3 = missile_type;
-	v4 = i;
-	v5 = M_GetDir(i);
-	v6 = v4;
-	NewMonsterAnim(v4, &monster[v4].MType->Anims[MA_SPECIAL], v5);
-	monster[v6]._mmode = MM_RSPATTACK;
-	monster[v6]._mVar2 = 0;
-	monster[v6]._mVar3 = dam;
-	v7 = monster[v4]._my;
-	monster[v6]._mxoff = 0;
-	monster[v6]._myoff = 0;
-	v8 = monster[v4]._mx;
-	monster[v6]._mfuty = v7;
-	monster[v6]._moldy = v7;
-	monster[v6]._mVar1 = v3;
-	monster[v6]._mfutx = v8;
-	monster[v6]._moldx = v8;
-	monster[v6]._mdir = v5;
-	M_CheckEFlag(v4);
+	int md = M_GetDir(i);
+	NewMonsterAnim(i, &monster[i].MType->Anims[MA_SPECIAL], md);
+	monster[i]._mmode = MM_RSPATTACK;
+	monster[i]._mVar1 = missile_type;
+	monster[i]._mVar2 = 0;
+	monster[i]._mVar3 = dam;
+	monster[i]._mxoff = 0;
+	monster[i]._myoff = 0;
+	monster[i]._mfutx = monster[i]._mx;
+	monster[i]._mfuty = monster[i]._my;
+	monster[i]._moldx = monster[i]._mx;
+	monster[i]._moldy = monster[i]._my;
+	monster[i]._mdir = md;
+	M_CheckEFlag(i);
 }
 
 void __fastcall M_StartSpAttack(int i)
 {
-	int v1; // edi
-	int v2; // ebx
-	int v3; // esi
-	int v4; // ecx
-	int v5; // eax
-
-	v1 = i;
-	v2 = M_GetDir(i);
-	v3 = v1;
-	NewMonsterAnim(v1, &monster[v1].MType->Anims[MA_SPECIAL], v2);
-	v4 = monster[v1]._my;
-	v5 = monster[v1]._mx;
-	monster[v3]._mxoff = 0;
-	monster[v3]._myoff = 0;
-	monster[v3]._mfuty = v4;
-	monster[v3]._moldy = v4;
-	monster[v3]._mmode = MM_SATTACK;
-	monster[v3]._mfutx = v5;
-	monster[v3]._moldx = v5;
-	monster[v3]._mdir = v2;
-	M_CheckEFlag(v1);
+	int md = M_GetDir(i);
+	NewMonsterAnim(i, &monster[i].MType->Anims[MA_SPECIAL], md);
+	monster[i]._mmode = MM_SATTACK;
+	monster[i]._mxoff = 0;
+	monster[i]._myoff = 0;
+	monster[i]._mfutx = monster[i]._mx;
+	monster[i]._mfuty = monster[i]._my;
+	monster[i]._moldx = monster[i]._mx;
+	monster[i]._moldy = monster[i]._my;
+	monster[i]._mdir = md;
+	M_CheckEFlag(i);
 }
 
 void __fastcall M_StartEat(int i)
 {
-	int v1; // edi
-	int v2; // esi
-	int v3; // ecx
-	int v4; // eax
-
-	v1 = i;
-	v2 = i;
 	NewMonsterAnim(i, &monster[i].MType->Anims[MA_SPECIAL], monster[i]._mdir);
-	v3 = monster[v2]._my;
-	v4 = monster[v2]._mx;
-	monster[v2]._mxoff = 0;
-	monster[v2]._myoff = 0;
-	monster[v2]._mfuty = v3;
-	monster[v2]._moldy = v3;
-	monster[v2]._mmode = MM_SATTACK;
-	monster[v2]._mfutx = v4;
-	monster[v2]._moldx = v4;
-	M_CheckEFlag(v1);
+	monster[i]._mmode = MM_SATTACK;
+	monster[i]._mxoff = 0;
+	monster[i]._myoff = 0;
+	monster[i]._mfutx = monster[i]._mx;
+	monster[i]._mfuty = monster[i]._my;
+	monster[i]._moldx = monster[i]._mx;
+	monster[i]._moldy = monster[i]._my;
+	M_CheckEFlag(i);
 }
 
 void __fastcall M_ClearSquares(int i)
