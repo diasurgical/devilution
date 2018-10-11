@@ -1904,34 +1904,26 @@ void __fastcall M_StartSpStand(int i, int md)
 
 void __fastcall M_StartWalk(int i, int xvel, int yvel, int xadd, int yadd, int EndDir)
 {
-	int v6; // ST18_4
-	int v7; // esi
-	int v8; // eax
-	int v9; // ecx
-	CMonster *v10; // edx
+	int fx = xadd + monster[i]._mx;
+	int fy = yadd + monster[i]._my;
 
-	v6 = i;
-	v7 = i;
-	v8 = monster[i]._mx;
-	monster[v7]._moldx = v8;
-	v9 = monster[i]._my;
-	monster[v7]._mfuty = v9 + yadd;
-	monster[v7]._mxvel = xvel;
-	monster[v7]._myvel = yvel;
-	monster[v7]._mVar1 = xadd;
-	monster[v7]._mVar2 = yadd;
-	dMonster[0][v9 + yadd + 112 * (v8 + xadd)] = -1 - v6;
-	v10 = monster[v7].MType;
-	monster[v7]._moldy = v9;
-	monster[v7]._mmode = MM_WALK;
-	monster[v7]._mfutx = v8 + xadd;
-	monster[v7]._mVar3 = EndDir;
-	monster[v7]._mdir = EndDir;
-	NewMonsterAnim(v6, &v10->Anims[1], EndDir);
-	monster[v7]._mVar6 = 0;
-	monster[v7]._mVar7 = 0;
-	monster[v7]._mVar8 = 0;
-	M_CheckEFlag(v6);
+	dMonster[fx][fy] = -(i + 1);
+	monster[i]._mmode = MM_WALK;
+	monster[i]._moldx = monster[i]._mx;
+	monster[i]._moldy = monster[i]._my;
+	monster[i]._mfutx = fx;
+	monster[i]._mfuty = fy;
+	monster[i]._mxvel = xvel;
+	monster[i]._myvel = yvel;
+	monster[i]._mVar1 = xadd;
+	monster[i]._mVar2 = yadd;
+	monster[i]._mVar3 = EndDir;
+	monster[i]._mdir = EndDir;
+	NewMonsterAnim(i, &monster[i].MType->Anims[MA_WALK], EndDir);
+	monster[i]._mVar6 = 0;
+	monster[i]._mVar7 = 0;
+	monster[i]._mVar8 = 0;
+	M_CheckEFlag(i);
 }
 
 void __fastcall M_StartWalk2(int i, int xvel, int yvel, int xoff, int yoff, int xadd, int yadd, int EndDir)
