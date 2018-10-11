@@ -1890,27 +1890,16 @@ void __fastcall M_StartDelay(int i, int len)
 
 void __fastcall M_StartSpStand(int i, int md)
 {
-	int v2; // ebx
-	int v3; // esi
-	int v4; // edi
-	int v5; // eax
-	int v6; // ecx
-
-	v2 = i;
-	v3 = i;
-	v4 = md;
 	NewMonsterAnim(i, &monster[i].MType->Anims[5], md);
-	v5 = monster[v3]._mx;
-	v6 = monster[v3]._my;
-	monster[v3]._mxoff = 0;
-	monster[v3]._myoff = 0;
-	monster[v3]._mdir = v4;
-	monster[v3]._mmode = MM_SPSTAND;
-	monster[v3]._mfutx = v5;
-	monster[v3]._mfuty = v6;
-	monster[v3]._moldx = v5;
-	monster[v3]._moldy = v6;
-	M_CheckEFlag(v2);
+	monster[i]._mmode = MM_SPSTAND;
+	monster[i]._mxoff = 0;
+	monster[i]._myoff = 0;
+	monster[i]._mfutx = monster[i]._mx;
+	monster[i]._mfuty = monster[i]._my;
+	monster[i]._moldx = monster[i]._mx;
+	monster[i]._moldy = monster[i]._my;
+	monster[i]._mdir = md;
+	M_CheckEFlag(i);
 }
 
 void __fastcall M_StartWalk(int i, int xvel, int yvel, int xadd, int yadd, int EndDir)
