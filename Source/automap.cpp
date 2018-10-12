@@ -38,7 +38,7 @@ int AMPlayerY;      // weak
 
 void __cdecl InitAutomapOnce()
 {
-    automapflag = 0;
+    automapflag = FALSE;
     AutoMapScale = 50;
     AutoMapPosBits = 32;
     AutoMapXPos = 16;
@@ -46,11 +46,6 @@ void __cdecl InitAutomapOnce()
     AMPlayerX = 4;
     AMPlayerY = 2;
 }
-// 4B84B8: using guessed type int AutoMapPosBits;
-// 4B84BC: using guessed type int AutoMapXPos;
-// 4B84C0: using guessed type int AutoMapYPos;
-// 4B84C4: using guessed type int AMPlayerX;
-// 4B84C8: using guessed type int AMPlayerY;
 
 void __cdecl InitAutomap()
 {
@@ -137,42 +132,32 @@ void __cdecl StartAutomap()
 {
     AutoMapXOfs = 0;
     AutoMapYOfs = 0;
-    automapflag = 1;
+    automapflag = TRUE;
 }
-// 4B84B0: using guessed type int AutoMapXOfs;
-// 4B84B4: using guessed type int AutoMapYOfs;
 
 void __cdecl AutomapUp()
 {
     --AutoMapXOfs;
     --AutoMapYOfs;
 }
-// 4B84B0: using guessed type int AutoMapXOfs;
-// 4B84B4: using guessed type int AutoMapYOfs;
 
 void __cdecl AutomapDown()
 {
     ++AutoMapXOfs;
     ++AutoMapYOfs;
 }
-// 4B84B0: using guessed type int AutoMapXOfs;
-// 4B84B4: using guessed type int AutoMapYOfs;
 
 void __cdecl AutomapLeft()
 {
     --AutoMapXOfs;
     ++AutoMapYOfs;
 }
-// 4B84B0: using guessed type int AutoMapXOfs;
-// 4B84B4: using guessed type int AutoMapYOfs;
 
 void __cdecl AutomapRight()
 {
     ++AutoMapXOfs;
     --AutoMapYOfs;
 }
-// 4B84B0: using guessed type int AutoMapXOfs;
-// 4B84B4: using guessed type int AutoMapYOfs;
 
 void __cdecl AutomapZoomIn()
 {
@@ -185,11 +170,6 @@ void __cdecl AutomapZoomIn()
         AMPlayerY = AMPlayerX >> 1;
     }
 }
-// 4B84B8: using guessed type int AutoMapPosBits;
-// 4B84BC: using guessed type int AutoMapXPos;
-// 4B84C0: using guessed type int AutoMapYPos;
-// 4B84C4: using guessed type int AMPlayerX;
-// 4B84C8: using guessed type int AMPlayerY;
 
 void __cdecl AutomapZoomOut()
 {
@@ -202,11 +182,6 @@ void __cdecl AutomapZoomOut()
         AMPlayerY = AMPlayerX >> 1;
     }
 }
-// 4B84B8: using guessed type int AutoMapPosBits;
-// 4B84BC: using guessed type int AutoMapXPos;
-// 4B84C0: using guessed type int AutoMapYPos;
-// 4B84C4: using guessed type int AMPlayerX;
-// 4B84C8: using guessed type int AMPlayerY;
 
 void __cdecl DrawAutomap()
 {
@@ -485,152 +460,74 @@ void __fastcall DrawAutomapType(int screen_x, int screen_y, USHORT automap_type)
 
 void __cdecl DrawAutomapPlr()
 {
-    int v0;  // ebx
-    int v1;  // eax
-    int v2;  // ecx
-    int v3;  // esi
-    int v4;  // edi
-    int v5;  // edx
-    int v6;  // ecx
-    int v7;  // eax
-    int v8;  // ecx
-    int v9;  // [esp-Ch] [ebp-20h]
-    int v10; // [esp-8h] [ebp-1Ch]
-    int v11; // [esp+Ch] [ebp-8h]
-    int v12; // [esp+10h] [ebp-4h]
+    int posx, posy;
+    int x, y;
 
-    v0 = myplr;
     if (plr[myplr]._pmode == PM_WALK3) {
-        v1 = plr[v0]._px;
-        v2 = plr[v0]._py;
-        if (plr[v0]._pdir == 2)
-            ++v1;
+        x = plr[myplr]._px;
+        y = plr[myplr]._py;
+        if (plr[myplr]._pdir == DIR_W)
+            x++;
         else
-            ++v2;
+            y++;
     } else {
-        v1 = plr[v0].WorldX;
-        v2 = plr[v0].WorldY;
+        x = plr[myplr].WorldX;
+        y = plr[myplr].WorldY;
     }
-    v11 = v1 - 2 * AutoMapXOfs - ViewX;
-    v12 = v2 - 2 * AutoMapYOfs - ViewY;
-    v3 = (AutoMapScale * ScrollInfo._sxoff / 100 >> 1)
-        + (AutoMapScale * plr[v0]._pxoff / 100 >> 1)
-        + AutoMapYPos * (v11 - v12)
-        + 384;
+    posx = x - 2 * AutoMapXOfs - ViewX;
+    posy = y - 2 * AutoMapYOfs - ViewY;
+
+    x = (plr[myplr]._pxoff * AutoMapScale / 100 >> 1) + (ScrollInfo._sxoff * AutoMapScale / 100 >> 1) + (posx - posy) * AutoMapYPos + 384;
+    y = (plr[myplr]._pyoff * AutoMapScale / 100 >> 1) + (ScrollInfo._syoff * AutoMapScale / 100 >> 1) + (posx + posy) * AMPlayerX + 336;
+
     if (invflag || sbookflag)
-        v3 = (AutoMapScale * ScrollInfo._sxoff / 100 >> 1)
-            + (AutoMapScale * plr[v0]._pxoff / 100 >> 1)
-            + AutoMapYPos * (v11 - v12)
-            + 224;
+        x -= 160;
     if (chrflag || questlog)
-        v3 += 160;
-    v4 = AMPlayerX * (v12 + v11)
-        + (AutoMapScale * ScrollInfo._syoff / 100 >> 1)
-        + (AutoMapScale * plr[v0]._pyoff / 100 >> 1)
-        + 336
-        - AMPlayerX;
-    switch (plr[v0]._pdir) {
-    case DIR_S:
-        DrawLine(v3, v4, v3, v4 + AutoMapYPos, 153);
-        DrawLine(v3, AutoMapYPos + v4, v3 + AMPlayerY, v4 + AMPlayerX, 153);
-        v10 = v4 + AMPlayerX;
-        v9 = v3 - AMPlayerY;
-        v5 = AutoMapYPos + v4;
-        goto LABEL_19;
-    case DIR_SW:
-        DrawLine(
-            v3,
-            AMPlayerX * (v12 + v11)
-                + (AutoMapScale * ScrollInfo._syoff / 100 >> 1)
-                + (AutoMapScale * plr[v0]._pyoff / 100 >> 1)
-                + 336
-                - AMPlayerX,
-            v3 - AutoMapYPos,
-            AMPlayerX * (v12 + v11)
-                + (AutoMapScale * ScrollInfo._syoff / 100 >> 1)
-                + (AutoMapScale * plr[v0]._pyoff / 100 >> 1)
-                + 336,
-            153);
-        DrawLine(v3 - AutoMapYPos, AMPlayerX + v4, v3 - AMPlayerY - AMPlayerX, v4, 153);
-        v7 = AMPlayerX;
-        v8 = v3;
-        v5 = AMPlayerX + v4;
-        v10 = AMPlayerX + v4;
-        goto LABEL_23;
-    case DIR_W:
-        DrawLine(v3, v4, v3 - AutoMapYPos, v4, 153);
-        DrawLine(v3 - AutoMapYPos, v4, v3 - AMPlayerX, v4 - AMPlayerY, 153);
-        v5 = v4;
-        v10 = v4 + AMPlayerY;
-        v9 = v3 - AMPlayerX;
-        goto LABEL_24;
-    case DIR_NW:
-        DrawLine(v3, v4, v3 - AutoMapYPos, v4 - AMPlayerX, 153);
-        DrawLine(v3 - AutoMapYPos, v4 - AMPlayerX, v3 - AMPlayerX, v4 - AMPlayerX, 153);
-        v7 = AMPlayerX;
-        v8 = v3 - AMPlayerY;
-        v10 = v4;
-        v5 = v4 - AMPlayerX;
-    LABEL_23:
-        v9 = v8 - v7;
-    LABEL_24:
-        v6 = v3 - AutoMapYPos;
-        goto LABEL_25;
+        x += 160;
+    y -= AMPlayerX;
+
+    switch (plr[myplr]._pdir) {
     case DIR_N:
-        DrawLine(v3, v4, v3, v4 - AutoMapYPos, 153);
-        DrawLine(v3, v4 - AutoMapYPos, v3 - AMPlayerY, v4 - AMPlayerX, 153);
-        v10 = v4 - AMPlayerX;
-        v5 = v4 - AutoMapYPos;
-        v9 = v3 + AMPlayerY;
-    LABEL_19:
-        v6 = v3;
-        goto LABEL_25;
+        DrawLine(x, y, x, y - AutoMapYPos, COLOR_PLAYER);
+        DrawLine(x, y - AutoMapYPos, x - AMPlayerY, y - AMPlayerX, COLOR_PLAYER);
+        DrawLine(x, y - AutoMapYPos, x + AMPlayerY, y - AMPlayerX, COLOR_PLAYER);
+        break;
     case DIR_NE:
-        DrawLine(v3, v4, v3 + AutoMapYPos, v4 - AMPlayerX, 153);
-        DrawLine(AutoMapYPos + v3, v4 - AMPlayerX, v3 + AMPlayerX, v4 - AMPlayerX, 153);
-        v10 = v4;
-        v9 = v3 + AMPlayerX + AMPlayerY;
-        v5 = v4 - AMPlayerX;
-        goto LABEL_17;
+        DrawLine(x, y, x + AutoMapYPos, y - AMPlayerX, COLOR_PLAYER);
+        DrawLine(x + AutoMapYPos, y - AMPlayerX, x + AMPlayerX, y - AMPlayerX, COLOR_PLAYER);
+        DrawLine(x + AutoMapYPos, y - AMPlayerX, x + AMPlayerX + AMPlayerY, y, COLOR_PLAYER);
+        break;
     case DIR_E:
-        DrawLine(v3, v4, v3 + AutoMapYPos, v4, 153);
-        DrawLine(AutoMapYPos + v3, v4, v3 + AMPlayerX, v4 - AMPlayerY, 153);
-        DrawLine(AutoMapYPos + v3, v4, v3 + AMPlayerX, v4 + AMPlayerY, 153);
+        DrawLine(x, y, x + AutoMapYPos, y, COLOR_PLAYER);
+        DrawLine(x + AutoMapYPos, y, x + AMPlayerX, y - AMPlayerY, COLOR_PLAYER);
+        DrawLine(x + AutoMapYPos, y, x + AMPlayerX, y + AMPlayerY, COLOR_PLAYER);
         break;
     case DIR_SE:
-        DrawLine(
-            v3,
-            AMPlayerX * (v12 + v11)
-                + (AutoMapScale * ScrollInfo._syoff / 100 >> 1)
-                + (AutoMapScale * plr[v0]._pyoff / 100 >> 1)
-                + 336
-                - AMPlayerX,
-            v3 + AutoMapYPos,
-            AMPlayerX * (v12 + v11)
-                + (AutoMapScale * ScrollInfo._syoff / 100 >> 1)
-                + (AutoMapScale * plr[v0]._pyoff / 100 >> 1)
-                + 336,
-            153);
-        DrawLine(AutoMapYPos + v3, AMPlayerX + v4, v3 + AMPlayerX + AMPlayerY, v4, 153);
-        v5 = AMPlayerX + v4;
-        v10 = AMPlayerX + v4;
-        v9 = v3 + AMPlayerX;
-    LABEL_17:
-        v6 = AutoMapYPos + v3;
-    LABEL_25:
-        DrawLine(v6, v5, v9, v10, 153);
+        DrawLine(x, y, x + AutoMapYPos, y + AMPlayerX, COLOR_PLAYER);
+        DrawLine(x + AutoMapYPos, y + AMPlayerX, x + AMPlayerX + AMPlayerY, y, COLOR_PLAYER);
+        DrawLine(x + AutoMapYPos, y + AMPlayerX, x + AMPlayerX, y + AMPlayerX, COLOR_PLAYER);
         break;
-    default:
-        return;
+    case DIR_S:
+        DrawLine(x, y, x, y + AutoMapYPos, COLOR_PLAYER);
+        DrawLine(x, y + AutoMapYPos, x + AMPlayerY, y + AMPlayerX, COLOR_PLAYER);
+        DrawLine(x, y + AutoMapYPos, x - AMPlayerY, y + AMPlayerX, COLOR_PLAYER);
+        break;
+    case DIR_SW:
+        DrawLine(x, y, x - AutoMapYPos, y + AMPlayerX, COLOR_PLAYER);
+        DrawLine(x - AutoMapYPos, y + AMPlayerX, x - AMPlayerY - AMPlayerX, y, COLOR_PLAYER);
+        DrawLine(x - AutoMapYPos, y + AMPlayerX, x - AMPlayerX, y + AMPlayerX, COLOR_PLAYER);
+        break;
+    case DIR_W:
+        DrawLine(x, y, x - AutoMapYPos, y, COLOR_PLAYER);
+        DrawLine(x - AutoMapYPos, y, x - AMPlayerX, y - AMPlayerY, COLOR_PLAYER);
+        DrawLine(x - AutoMapYPos, y, x - AMPlayerX, y + AMPlayerY, COLOR_PLAYER);
+        break;
+    case DIR_NW:
+        DrawLine(x, y, x - AutoMapYPos, y - AMPlayerX, COLOR_PLAYER);
+        DrawLine(x - AutoMapYPos, y - AMPlayerX, x - AMPlayerX, y - AMPlayerX, COLOR_PLAYER);
+        DrawLine(x - AutoMapYPos, y - AMPlayerX, x - AMPlayerY - AMPlayerX, y, COLOR_PLAYER);
     }
 }
-// 4B84B0: using guessed type int AutoMapXOfs;
-// 4B84B4: using guessed type int AutoMapYOfs;
-// 4B84C0: using guessed type int AutoMapYPos;
-// 4B84C4: using guessed type int AMPlayerX;
-// 4B84C8: using guessed type int AMPlayerY;
-// 4B8968: using guessed type int sbookflag;
-// 69BD04: using guessed type int questlog;
 
 USHORT __fastcall GetAutomapType(int x, int y, BOOL view)
 {
@@ -757,10 +654,3 @@ void __cdecl AutomapZoomReset()
     AMPlayerX = AutoMapYPos >> 1;
     AMPlayerY = AMPlayerX >> 1;
 }
-// 4B84B0: using guessed type int AutoMapXOfs;
-// 4B84B4: using guessed type int AutoMapYOfs;
-// 4B84B8: using guessed type int AutoMapPosBits;
-// 4B84BC: using guessed type int AutoMapXPos;
-// 4B84C0: using guessed type int AutoMapYPos;
-// 4B84C4: using guessed type int AMPlayerX;
-// 4B84C8: using guessed type int AMPlayerY;
