@@ -2115,62 +2115,39 @@ void __fastcall M_GetKnockback(int i)
 
 void __fastcall M_StartHit(int i, int pnum, int dam)
 {
-	int v3; // ebx
-	int v4; // edi
-	int v5; // esi
-	unsigned char v6; // al
-	char v7; // al
-	unsigned char v8; // al
-	int v9; // ecx
-	int v10; // eax
-
-	v3 = pnum;
-	v4 = i;
 	if ( pnum >= 0 )
 		monster[i].mWhoHit |= 1 << pnum;
-	if ( pnum == myplr )
-	{
+	if ( pnum == myplr ) {
 		delta_monster_hp(i, monster[i]._mhitpoints, currlevel);
-		NetSendCmdParam2(FALSE, CMD_MONSTDAMAGE, v4, dam);
+		NetSendCmdParam2(FALSE, CMD_MONSTDAMAGE, i, dam);
 	}
-	PlayEffect(v4, 1);
-	v5 = v4;
-	v6 = monster[v4].MType->mtype;
-	if ( v6 >= MT_SNEAK && v6 <= MT_ILLWEAV || dam >> 6 >= SLOBYTE(monster[v5].mLevel) + 3 )
-	{
-		if ( v3 >= 0 )
-		{
-			monster[v5]._mFlags &= 0xFFFFFFEF;
-			monster[v5]._menemy = v3;
-			v7 = plr[v3]._py;
-			monster[v5]._menemyx = plr[v3]._px;
-			monster[v5]._menemyy = v7;
-			monster[v5]._mdir = M_GetDir(v4);
+	PlayEffect(i, 1);
+	if ( monster[i].MType->mtype >= MT_SNEAK && monster[i].MType->mtype <= MT_ILLWEAV || dam >> 6 >= monster[i].mLevel + 3 ) {
+		if ( pnum >= 0 ) {
+			monster[i]._mFlags &= 0xFFFFFFEF;
+			monster[i]._menemy = pnum;
+			monster[i]._menemyx = plr[pnum]._px;
+			monster[i]._menemyy  = plr[pnum]._py;
+			monster[i]._mdir = M_GetDir(i);
 		}
-		v8 = monster[v5].MType->mtype;
-		if ( v8 == MT_BLINK )
-		{
-			M_Teleport(v4);
+		if ( monster[i].MType->mtype == MT_BLINK ) {
+			M_Teleport(i);
 		}
-		else if ( v8 >= MT_NSCAV && v8 <= MT_YSCAV )
-		{
-			_LOBYTE(monster[v5]._mgoal) = 1;
+		else if ( monster[i].MType->mtype >= MT_NSCAV && monster[i].MType->mtype <= MT_YSCAV ) {
+			monster[i]._mgoal = 1;
 		}
-		if ( monster[v5]._mmode != MM_STONE )
-		{
-			NewMonsterAnim(v4, &monster[v5].MType->Anims[MA_GOTHIT], monster[v5]._mdir);
-			v9 = monster[v5]._moldy;
-			v10 = monster[v5]._moldx;
-			monster[v5]._mxoff = 0;
-			monster[v5]._myoff = 0;
-			monster[v5]._my = v9;
-			monster[v5]._mfuty = v9;
-			monster[v5]._mmode = MM_GOTHIT;
-			monster[v5]._mx = v10;
-			monster[v5]._mfutx = v10;
-			M_CheckEFlag(v4);
-			M_ClearSquares(v4);
-			dMonster[0][monster[v5]._my + 112 * monster[v5]._mx] = v4 + 1;
+		if ( monster[i]._mmode != MM_STONE ) {
+			NewMonsterAnim(i, &monster[i].MType->Anims[MA_GOTHIT], monster[i]._mdir);
+			monster[i]._mmode = MM_GOTHIT;
+			monster[i]._mxoff = 0;
+			monster[i]._myoff = 0;
+			monster[i]._mx = monster[i]._moldx;
+			monster[i]._my = monster[i]._moldy;
+			monster[i]._mfutx = monster[i]._moldx;
+			monster[i]._mfuty = monster[i]._moldy;
+			M_CheckEFlag(i);
+			M_ClearSquares(i);
+			dMonster[monster[i]._mx][monster[i]._my] = i + 1;
 		}
 	}
 }
