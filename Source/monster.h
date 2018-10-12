@@ -136,7 +136,7 @@ void __fastcall MAI_Warlord(int i);
 void __cdecl DeleteMonsterList();
 void __cdecl ProcessMonsters();
 void __cdecl FreeMonsters();
-bool __fastcall DirOK(int i, int mdir);
+BOOL __fastcall DirOK(int i, int mdir);
 BOOL __fastcall PosOkMissile(int x, int y);
 BOOL __fastcall CheckNoSolid(int x, int y);
 BOOL __fastcall LineClearF(BOOL (__fastcall *Clear)(int, int), int x1, int y1, int x2, int y2);

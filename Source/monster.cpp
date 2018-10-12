@@ -2061,41 +2061,22 @@ void __fastcall M_ClearSquares(int i)
 
 void __fastcall M_GetKnockback(int i)
 {
-	int v1; // edi
-	int v2; // esi
-	int v3; // ebx
-	//int v4; // eax
-	int v5; // ST00_4
-	AnimStruct *v6; // edx
-	int v7; // eax
-	int v8; // ecx
-	int v9; // eax
-
-	v1 = i;
-	v2 = i;
-	v3 = ((unsigned char)monster[i]._mdir - 4) & 7;
-	//_LOBYTE(v4) = DirOK(i, v3);
-	if ( DirOK(i, v3) )
-	{
-		M_ClearSquares(v1);
-		v5 = monster[v2]._mdir;
-		v6 = &monster[v2].MType->Anims[MA_GOTHIT];
-		v7 = offset_y[v3];
-		monster[v2]._moldx += offset_x[v3];
-		monster[v2]._moldy += v7;
-		NewMonsterAnim(v1, v6, v5);
-		v8 = monster[v2]._moldy;
-		v9 = monster[v2]._moldx;
-		monster[v2]._mxoff = 0;
-		monster[v2]._myoff = 0;
-		monster[v2]._my = v8;
-		monster[v2]._mfuty = v8;
-		monster[v2]._mmode = MM_GOTHIT;
-		monster[v2]._mx = v9;
-		monster[v2]._mfutx = v9;
-		M_CheckEFlag(v1);
-		M_ClearSquares(v1);
-		dMonster[0][monster[v2]._my + 112 * monster[v2]._mx] = v1 + 1;
+	int d = (monster[i]._mdir - 4) & 7;
+	if ( DirOK(i, d) ) {
+		M_ClearSquares(i);
+		monster[i]._moldx += offset_x[d];
+		monster[i]._moldy += offset_y[d];
+		NewMonsterAnim(i, &monster[i].MType->Anims[MA_GOTHIT], monster[i]._mdir);
+		monster[i]._mmode = MM_GOTHIT;
+		monster[i]._mxoff = 0;
+		monster[i]._myoff = 0;
+		monster[i]._mx = monster[i]._moldx;
+		monster[i]._my = monster[i]._moldy;
+		monster[i]._mfutx = monster[i]._moldx;
+		monster[i]._mfuty = monster[i]._moldy;
+		M_CheckEFlag(i);
+		M_ClearSquares(i);
+		dMonster[monster[i]._mx][monster[i]._my] = i + 1;
 	}
 }
 
@@ -7239,7 +7220,7 @@ void __cdecl FreeMonsters()
 	FreeMissiles2();
 }
 
-bool __fastcall DirOK(int i, int mdir)
+BOOL __fastcall DirOK(int i, int mdir)
 {
 	int v2; // ebx
 	int v3; // esi
