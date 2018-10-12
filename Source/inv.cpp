@@ -1828,7 +1828,7 @@ void __fastcall RemoveInvItem(int pnum, int iv)
 			// BUGFIX: Cast the literal `1` to `unsigned __int64` to make that bitshift 64bit
 			// this causes the last 4 skills to not reset correctly after use
 			if ( !(
-				plr[pnum]._pScrlSpells64
+				plr[pnum]._pScrlSpells
 				& (1 << (plr[pnum]._pRSpell - 1))) )
 			{
 				plr[pnum]._pRSpell = SPL_INVALID;
@@ -1852,7 +1852,7 @@ void __fastcall RemoveSpdBarItem(int pnum, int iv)
 			// BUGFIX: Cast the literal `1` to `unsigned __int64` to make that bitshift 64bit
 			// this causes the last 4 skills to not reset correctly after use
 			if ( !(
-				plr[pnum]._pScrlSpells64
+				plr[pnum]._pScrlSpells
 				& (1 << (plr[pnum]._pRSpell - 1))) )
 			{
 				plr[pnum]._pRSpell = SPL_INVALID;
@@ -2759,7 +2759,6 @@ int __cdecl CheckInvHLight()
 	int v5; // ebx
 	int v6; // edi
 	char *v7; // eax
-	char v8;
 	char v9; // [esp+Fh] [ebp-1h]
 
 	v0 = 0;

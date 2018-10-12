@@ -934,7 +934,7 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 		plr[p]._pDamageMod = plr[p]._pLevel * plr[p]._pStrength / 100;
 	}
 
-	plr[p]._pISpells64 = spl;
+	plr[p]._pISpells = spl;
 
 	// check if the current RSplType is a valid/allowed spell
 	if ( plr[p]._pRSplType == RSPLTYPE_CHARGES
@@ -1119,22 +1119,22 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 
 void __fastcall CalcPlrScrolls(int p)
 {
-	plr[p]._pScrlSpells64 = 0;
+	plr[p]._pScrlSpells = 0;
 	for (int i = 0; i < plr[p]._pNumInv; i++ ) {
 		if ( plr[p].InvList[i]._itype != ITYPE_NONE && (plr[p].InvList[i]._iMiscId == IMISC_SCROLL || plr[p].InvList[i]._iMiscId == IMISC_SCROLLT) ) {
 			if ( plr[p].InvList[i]._iStatFlag )
-				plr[p]._pScrlSpells64 |= (__int64)1 << (plr[p].InvList[i]._iSpell - 1);
+				plr[p]._pScrlSpells |= (__int64)1 << (plr[p].InvList[i]._iSpell - 1);
 		}
 	}
 
 	for (int j = 0; j < MAXBELTITEMS; j++) {
 		if ( plr[p].SpdList[j]._itype != ITYPE_NONE && (plr[p].SpdList[j]._iMiscId == IMISC_SCROLL || plr[p].SpdList[j]._iMiscId == IMISC_SCROLLT) ) {
 			if ( plr[p].SpdList[j]._iStatFlag )
-				plr[p]._pScrlSpells64 |= (__int64)1 << (plr[p].SpdList[j]._iSpell - 1);
+				plr[p]._pScrlSpells |= (__int64)1 << (plr[p].SpdList[j]._iSpell - 1);
 		}
 	}
 	if ( plr[p]._pRSplType == RSPLTYPE_SCROLL ) {
-		if ( !(plr[p]._pScrlSpells64 & 1 << (plr[p]._pRSpell - 1)) ) {
+		if ( !(plr[p]._pScrlSpells & 1 << (plr[p]._pRSpell - 1)) ) {
 			plr[p]._pRSpell = SPL_INVALID;
 			plr[p]._pRSplType = RSPLTYPE_INVALID;
 			drawpanflag = 255;
@@ -1145,9 +1145,9 @@ void __fastcall CalcPlrScrolls(int p)
 
 void __fastcall CalcPlrStaff(int pnum)
 {
-	plr[pnum]._pISpells64 = 0;
+	plr[pnum]._pISpells = 0;
 	if ( plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iStatFlag && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iCharges > 0 ) {
-		plr[pnum]._pISpells64 |= (__int64)1 << (plr[pnum].InvBody[INVLOC_HAND_LEFT]._iSpell - 1);
+		plr[pnum]._pISpells |= (__int64)1 << (plr[pnum].InvBody[INVLOC_HAND_LEFT]._iSpell - 1);
 	}
 }
 
@@ -4537,7 +4537,7 @@ LABEL_71:
 					if ( v24 != 2 )
 						return;
 					v25 = p;
-					plr[p]._pMemSpells64 |= (__int64)1 << (spl - 1);
+					plr[p]._pMemSpells |= (__int64)1 << (spl - 1);
 					v26 = &plr[p]._pSplLvl[spl];
 					if ( *v26 < 15 )
 						++*v26;

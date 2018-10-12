@@ -601,17 +601,17 @@ void __fastcall CreatePlayer(int pnum, char c)
     plr[pnum]._pInfraFlag = 0;
 
     if (c == PC_WARRIOR) {
-        plr[pnum]._pAblSpells64 = (__int64)1 << (SPL_REPAIR - 1);
+        plr[pnum]._pAblSpells = (__int64)1 << (SPL_REPAIR - 1);
     } else if (c == PC_ROGUE) {
-        plr[pnum]._pAblSpells64 = (__int64)1 << (SPL_DISARM - 1);
+        plr[pnum]._pAblSpells = (__int64)1 << (SPL_DISARM - 1);
     } else if (c == PC_SORCERER) {
-        plr[pnum]._pAblSpells64 = (__int64)1 << (SPL_RECHARGE - 1);
+        plr[pnum]._pAblSpells = (__int64)1 << (SPL_RECHARGE - 1);
     }
 
     if (c == PC_SORCERER) {
-        plr[pnum]._pMemSpells64 = 1;
+        plr[pnum]._pMemSpells = 1;
     } else {
-        plr[pnum]._pMemSpells64 = 0;
+        plr[pnum]._pMemSpells = 0;
     }
 
     int i;
@@ -878,22 +878,22 @@ void __fastcall InitPlayer(int pnum, BOOL FirstTime)
     }
 
     if (plr[pnum]._pClass == PC_WARRIOR) {
-        plr[pnum]._pAblSpells64 = 1 << (SPL_REPAIR - 1);
+        plr[pnum]._pAblSpells = 1 << (SPL_REPAIR - 1);
     } else if (plr[pnum]._pClass == PC_ROGUE) {
-        plr[pnum]._pAblSpells64 = 1 << (SPL_DISARM - 1);
+        plr[pnum]._pAblSpells = 1 << (SPL_DISARM - 1);
     } else if (plr[pnum]._pClass == PC_SORCERER) {
-        plr[pnum]._pAblSpells64 = 1 << (SPL_RECHARGE - 1);
+        plr[pnum]._pAblSpells = 1 << (SPL_RECHARGE - 1);
     }
 
 #ifdef _DEBUG
     if (debug_mode_dollar_sign && FirstTime) {
-        plr[pnum]._pMemSpells64 |= 1 << (SPL_TELEPORT - 1);
+        plr[pnum]._pMemSpells |= 1 << (SPL_TELEPORT - 1);
         if (!plr[myplr]._pSplLvl[SPL_TELEPORT]) {
             plr[myplr]._pSplLvl[SPL_TELEPORT] = 1;
         }
     }
     if (debug_mode_key_inverted_v && FirstTime) {
-        plr[pnum]._pMemSpells64 = SPL_INVALID;
+        plr[pnum]._pMemSpells = SPL_INVALID;
     }
 #endif
 
@@ -2773,7 +2773,7 @@ BOOL __fastcall PM_DoSpell(int pnum)
 
         if (!plr[pnum]._pSplFrom) {
             if (plr[pnum]._pRSplType == RSPLTYPE_SCROLL) {
-                if (!(plr[pnum]._pScrlSpells64
+                if (!(plr[pnum]._pScrlSpells
                         & (unsigned __int64)1 << (plr[pnum]._pRSpell - 1))) {
                     plr[pnum]._pRSpell = SPL_INVALID;
                     plr[pnum]._pRSplType = RSPLTYPE_INVALID;
@@ -2782,7 +2782,7 @@ BOOL __fastcall PM_DoSpell(int pnum)
             }
 
             if (plr[pnum]._pRSplType == RSPLTYPE_CHARGES) {
-                if (!(plr[pnum]._pISpells64
+                if (!(plr[pnum]._pISpells
                         & (unsigned __int64)1 << (plr[pnum]._pRSpell - 1))) {
                     plr[pnum]._pRSpell = SPL_INVALID;
                     plr[pnum]._pRSplType = RSPLTYPE_INVALID;
@@ -3315,7 +3315,7 @@ void __cdecl ValidatePlayer()
         }
     }
 
-    plr[myplr]._pMemSpells64 &= msk;
+    plr[myplr]._pMemSpells &= msk;
 }
 
 void __cdecl ProcessPlayers()
