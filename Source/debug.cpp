@@ -105,7 +105,7 @@ void __cdecl MaxSpellsCheat()
 {
 	for(int i = 1; i < MAX_SPELLS; i++) {
 		if ( spelldata[i].sBookLvl != -1 ) {
-			plr[myplr]._pMemSpells64 |= (__int64)1 << (i - 1);
+			plr[myplr]._pMemSpells |= (__int64)1 << (i - 1);
 			plr[myplr]._pSplLvl[i] = 10;
 		}
 	}
@@ -113,7 +113,7 @@ void __cdecl MaxSpellsCheat()
 
 void __fastcall SetSpellLevelCheat(char spl, int spllvl)
 {
-	plr[myplr]._pMemSpells64 |= (__int64)1 << (spl - 1);
+	plr[myplr]._pMemSpells |= (__int64)1 << (spl - 1);
 	plr[myplr]._pSplLvl[spl] = spllvl;
 }
 

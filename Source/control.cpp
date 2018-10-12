@@ -445,21 +445,21 @@ void __cdecl DrawSpellList()
 			case RSPLTYPE_SKILL:
 				SetSpellTrans(RSPLTYPE_SKILL);
 				yp = 46;
-				v25 = plr[v0]._pAblSpells64;
+				v25 = plr[v0]._pAblSpells;
 				break;
 			case RSPLTYPE_SPELL:
 				yp = 47;
-				v25 = plr[v0]._pMemSpells64;
+				v25 = plr[v0]._pMemSpells;
 				break;
 			case RSPLTYPE_SCROLL:
 				SetSpellTrans(RSPLTYPE_SCROLL);
 				yp = 44;
-				v25 = plr[v0]._pScrlSpells64;
+				v25 = plr[v0]._pScrlSpells;
 				break;
 			case RSPLTYPE_CHARGES:
 				SetSpellTrans(RSPLTYPE_CHARGES);
 				yp = 45;
-				v25 = plr[v0]._pISpells64;
+				v25 = plr[v0]._pISpells;
 				break;
 		}
 		v20 = &spelldata[1].sTownSpell;
@@ -674,16 +674,16 @@ void __fastcall ToggleSpell(int slot)
 	unsigned __int64 spells;
 	switch ( plr[myplr]._pSplTHotKey[slot] ) {
 		case RSPLTYPE_SKILL:
-			spells = plr[myplr]._pAblSpells64;
+			spells = plr[myplr]._pAblSpells;
 			break;
 		case RSPLTYPE_SPELL:
-			spells = plr[myplr]._pMemSpells64;
+			spells = plr[myplr]._pMemSpells;
 			break;
 		case RSPLTYPE_SCROLL:
-			spells = plr[myplr]._pScrlSpells64;
+			spells = plr[myplr]._pScrlSpells;
 			break;
 		case RSPLTYPE_CHARGES:
-			spells = plr[myplr]._pISpells64;
+			spells = plr[myplr]._pISpells;
 			break;
 	}
 
@@ -1239,16 +1239,16 @@ void __cdecl DoSpeedBook()
 		for ( int i = 0; i < 4; i++ ) {
 			switch ( i ) {
 				case RSPLTYPE_SKILL:
-					spells = plr[myplr]._pAblSpells64;
+					spells = plr[myplr]._pAblSpells;
 					break;
 				case RSPLTYPE_SPELL:
-					spells = plr[myplr]._pMemSpells64;
+					spells = plr[myplr]._pMemSpells;
 					break;
 				case RSPLTYPE_SCROLL:
-					spells = plr[myplr]._pScrlSpells64;
+					spells = plr[myplr]._pScrlSpells;
 					break;
 				case RSPLTYPE_CHARGES:
-					spells = plr[myplr]._pISpells64;
+					spells = plr[myplr]._pISpells;
 					break;
 			}
 			spell = (__int64)1;
@@ -1700,7 +1700,6 @@ void __cdecl DrawInfoBox()
 	int v3; // esi
 	char *v4; // eax
 	const char *v5; // eax
-	char v6;
 	signed int v7; // edi
 	signed int v8; // ebp
 	int v9; // esi
@@ -2559,9 +2558,9 @@ void __cdecl RedBack()
 char __fastcall GetSBookTrans(int ii, BOOL townok)
 {
 	char result = RSPLTYPE_SPELL;
-	if ( (__int64)1 << (ii - 1) & plr[myplr]._pISpells64 )
+	if ( (__int64)1 << (ii - 1) & plr[myplr]._pISpells )
 		result = RSPLTYPE_CHARGES;
-	if ( 1 << (ii - 1) & plr[myplr]._pAblSpells64 )
+	if ( 1 << (ii - 1) & plr[myplr]._pAblSpells )
 		result = RSPLTYPE_SKILL;
 
 	if ( result == RSPLTYPE_SPELL ) {
@@ -2597,7 +2596,7 @@ void __cdecl DrawSpellBook()
 	CelDecodeOnly(76 * sbooktab + 391, 508, pSBkBtnCel, sbooktab + 1, 76);
 	v9 = 1;
 	v8 = 214;
-	v0 = plr[myplr]._pISpells64 | plr[myplr]._pMemSpells64 | plr[myplr]._pAblSpells64;
+	v0 = plr[myplr]._pISpells | plr[myplr]._pMemSpells | plr[myplr]._pAblSpells;
 	do
 	{
 		v2 = SpellPages[0][v9 + 7 * sbooktab - 1]; // *(&attribute_inc_rects[3].h + v9 + 7 * sbooktab); /* check */
@@ -2712,11 +2711,11 @@ void __cdecl CheckSBook()
 	if ( MouseX >= 331 && MouseX < 368 && MouseY >= 18 && MouseY < 314 ) {
 		int spell = SpellPages[sbooktab][(MouseY - 18) / 43];
 		if ( spell != -1 ) {
-			if ( (__int64)1 << (spell - 1) & (plr[myplr]._pAblSpells64 | plr[myplr]._pMemSpells64 | plr[myplr]._pISpells64)) {
+			if ( (__int64)1 << (spell - 1) & (plr[myplr]._pAblSpells | plr[myplr]._pMemSpells | plr[myplr]._pISpells)) {
 				char splType = RSPLTYPE_SPELL;
-				if ( (__int64)1 << (spell - 1) & plr[myplr]._pISpells64 )
+				if ( (__int64)1 << (spell - 1) & plr[myplr]._pISpells )
 					splType = RSPLTYPE_CHARGES;
-				if ( (__int64)1 << (spell - 1) & plr[myplr]._pAblSpells64 )
+				if ( (__int64)1 << (spell - 1) & plr[myplr]._pAblSpells )
 					splType = RSPLTYPE_SKILL;
 				plr[myplr]._pRSpell = spell;
 				plr[myplr]._pRSplType = splType;

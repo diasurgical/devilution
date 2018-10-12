@@ -206,18 +206,9 @@ struct PlayerStruct {
     int _pSBkSpell;
     char _pSBkSplType;
     char _pSplLvl[64];
-    union {
-        unsigned __int64 _pMemSpells64;
-        int _pMemSpells[2];
-    };
-    union {
-        unsigned __int64 _pAblSpells64;
-        int _pAblSpells[2];
-    };
-    union {
-        unsigned __int64 _pScrlSpells64;
-        int _pScrlSpells[2];
-    };
+    unsigned __int64 _pMemSpells;
+    unsigned __int64 _pAblSpells;
+    unsigned __int64 _pScrlSpells;
     UCHAR _pSpellFlags;
     int _pSplHotKey[4];
     char _pSplTHotKey[4];
@@ -315,10 +306,7 @@ struct PlayerStruct {
     int _pIBonusToHit;
     int _pIBonusAC;
     int _pIBonusDamMod;
-    union {
-        unsigned __int64 _pISpells64;
-        int _pISpells[2];
-    };
+    unsigned __int64 _pISpells;
     int _pIFlags;
     int _pIGetHit;
     char _pISplLvlAdd;
