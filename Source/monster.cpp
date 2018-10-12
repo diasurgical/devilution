@@ -2072,50 +2072,24 @@ void __fastcall M_StartEat(int i)
 
 void __fastcall M_ClearSquares(int i)
 {
-	int v1; // edx
-	int v2; // eax
-	int v3; // esi
-	int v4; // ecx
-	int v5; // edi
-	int v6; // [esp+8h] [ebp-Ch]
-	_DWORD *v7; // [esp+Ch] [ebp-8h]
-	int v8; // [esp+10h] [ebp-4h]
+	int mx = monster[i]._moldx;
+	int my = monster[i]._moldy;
+	int m1 = -1 - i;
+	int m2 = i + 1;
 
-	v1 = monster[i]._moldx;
-	v2 = monster[i]._moldy;
-	v3 = -1 - i;
-	v6 = i + 1;
-	v4 = v2 - 1;
-	v5 = v2 + 1;
-	if ( (unsigned char)(__OFSUB__(v2 - 1, v2 + 1) ^ 1) | (v2 - 1 == v2 + 1) )
-	{
-		do
-		{
-			if ( v4 >= 0 && v4 < 112 )
-			{
-				v8 = v1 - 1;
-				if ( (unsigned char)(__OFSUB__(v1 - 1, v1 + 1) ^ 1) | (v1 - 1 == v1 + 1) )
-				{
-					v7 = (_DWORD *)((char *)dMonster + 4 * (v4 + 112 * (v1 - 1)));
-					do
-					{
-						if ( v8 >= 0 && v8 < 112 && (*v7 == v3 || *v7 == v6) )
-							*v7 = 0;
-						++v8;
-						v7 += 112;
-					}
-					while ( v8 <= v1 + 1 );
-				}
+	for ( int y = my - 1; y <= my + 1; y++ ) {
+		if ( y >= 0 && y < MAXDUNY ) {
+			for ( int x = mx - 1; x <= mx + 1; x++ ) {
+				if ( x >= 0 && x < MAXDUNX && (dMonster[x][y] == m1 || dMonster[x][y] == m2) )
+					dMonster[x][y] = 0;
 			}
-			++v4;
-			v5 = v2 + 1;
 		}
-		while ( v4 <= v2 + 1 );
 	}
-	if ( v1 + 1 < 112 )
-		dFlags[v1 + 1][v2] &= ~DFLAG_MONSTER;
-	if ( v5 < 112 )
-		dFlags[v1][v2 + 1] &= ~DFLAG_MONSTER;
+
+	if ( mx + 1 < MAXDUNX )
+		dFlags[mx + 1][my] &= ~DFLAG_MONSTER;
+	if ( my + 1 < MAXDUNY )
+		dFlags[mx][my + 1] &= ~DFLAG_MONSTER;
 }
 
 void __fastcall M_GetKnockback(int i)
