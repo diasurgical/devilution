@@ -679,12 +679,12 @@ struct ObjectStruct {
 //////////////////////////////////////////////////
 
 struct PortalStruct {
-    int open;
+    BOOL open;
     int x;
     int y;
     int level;
     int ltype;
-    int setlvl;
+    BOOL setlvl;
 };
 
 //////////////////////////////////////////////////
