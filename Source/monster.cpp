@@ -1843,37 +1843,23 @@ void __fastcall M_CheckEFlag(int i)
 
 void __fastcall M_StartStand(int i, int md)
 {
-	int v2; // ebx
-	int v3; // edi
-	int v4; // esi
-	CMonster *v5; // eax
-	AnimStruct *v6; // edx
-	int v7; // eax
-	int v8; // ecx
-
-	v2 = md;
-	v3 = i;
 	ClearMVars(i);
-	v4 = v3;
-	v5 = monster[v3].MType;
-	v6 = &v5->Anims[MA_WALK];
-	if ( v5->mtype != MT_GOLEM )
-		v6 = &v5->Anims[MA_STAND];
-	NewMonsterAnim(v3, v6, v2);
-	monster[v4]._mdir = v2;
-	monster[v4]._mVar1 = monster[v4]._mmode;
-	monster[v4]._mVar2 = 0;
-	monster[v4]._mmode = MM_STAND;
-	v7 = monster[v4]._mx;
-	monster[v4]._mxoff = 0;
-	monster[v4]._myoff = 0;
-	v8 = monster[v4]._my;
-	monster[v4]._mfuty = v8;
-	monster[v4]._moldy = v8;
-	monster[v4]._mfutx = v7;
-	monster[v4]._moldx = v7;
-	M_CheckEFlag(v3);
-	M_Enemy(v3);
+	if ( monster[i].MType->mtype == MT_GOLEM )
+		NewMonsterAnim(i, &monster[i].MType->Anims[MA_WALK], md);
+	else
+		NewMonsterAnim(i, &monster[i].MType->Anims[MA_STAND], md);
+	monster[i]._mVar1 = monster[i]._mmode;
+	monster[i]._mVar2 = 0;
+	monster[i]._mmode = MM_STAND;
+	monster[i]._mxoff = 0;
+	monster[i]._myoff = 0;
+	monster[i]._mfutx = monster[i]._mx;
+	monster[i]._mfuty = monster[i]._my;
+	monster[i]._moldx = monster[i]._mx;
+	monster[i]._moldy = monster[i]._my;
+	monster[i]._mdir = md;
+	M_CheckEFlag(i);
+	M_Enemy(i);
 }
 
 void __fastcall M_StartDelay(int i, int len)
