@@ -169,7 +169,7 @@ void __fastcall LoadGame(BOOL firstflag)
 	missiles_process_charge();
 	ResetPal();
 	SetCursor(CURSOR_HAND);
-	gbProcessPlayers = 1;
+	gbProcessPlayers = TRUE;
 }
 // 5256A0: using guessed type int gbProcessPlayers;
 // 5BB1ED: using guessed type char leveltype;

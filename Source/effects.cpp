@@ -975,7 +975,6 @@ void __fastcall PlayEffect(int i, int mode)
 
 	snd_play_snd(snd, lVolume, lPan);
 }
-// 4A22D5: using guessed type char gbSoundOn;
 // 676194: using guessed type char gbBufferMsgs;
 
 BOOL __fastcall calc_snd_position(int x, int y, int *plVolume, int *plPan)
@@ -1037,7 +1036,6 @@ void __fastcall PlaySFX_priv(TSFX *pSFX, BOOL loc, int x, int y)
 	if ( pSFX->pSnd )
 		snd_play_snd(pSFX->pSnd, lVolume, lPan);
 }
-// 4A22D5: using guessed type char gbSoundOn;
 // 676194: using guessed type char gbBufferMsgs;
 // 679660: using guessed type char gbMaxPlayers;
 
@@ -1243,4 +1241,3 @@ void __stdcall effects_play_sound(char *snd_file)
 	}
 
 }
-// 4A22D5: using guessed type char gbSoundOn;

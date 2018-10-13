@@ -261,11 +261,11 @@ void __fastcall gamemenu_sound_volume(int a1)
 
 	if ( a1 ) {
 		if ( gbSoundOn ) {
-			gbSoundOn = 0;
+			gbSoundOn = FALSE;
 			FreeMonsterSnd();
 			v1 = VOLUME_MIN;
 		} else {
-			gbSoundOn = 1;
+			gbSoundOn = TRUE;
 		}
 		sound_get_or_set_sound_volume(VOLUME_MAX);
 	} else {
@@ -273,17 +273,16 @@ void __fastcall gamemenu_sound_volume(int a1)
 		sound_get_or_set_sound_volume(v2);
 		if ( v2 == VOLUME_MIN ) {
 			if ( gbSoundOn ) {
-				gbSoundOn = 0;
+				gbSoundOn = FALSE;
 				FreeMonsterSnd();
 			}
 		} else if ( !gbSoundOn ) {
-			gbSoundOn = 1;
+			gbSoundOn = TRUE;
 		}
 	}
 	PlaySFX(IS_TITLEMOV);
 	gamemenu_get_sound();
 }
-// 4A22D5: using guessed type char gbSoundOn;
 
 void __fastcall gamemenu_gamma(int a1)
 {
