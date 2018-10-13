@@ -1077,7 +1077,7 @@ void __cdecl UpdateManaFlask()
 	if ( filled > 69 )
 		filled = 69;
 	if ( filled != 69 )
-		SetFlaskHeight(pLifeBuff, 16, 85 - filled, 160 + 368, 512);
+		SetFlaskHeight(pManaBuff, 16, 85 - filled, 160 + 368, 512);
 	if ( filled )
 		DrawPanelBox(96 + 368, 85 - filled, 88, filled, 160 + 368, 581 - filled);
 
