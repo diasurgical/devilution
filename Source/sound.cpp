@@ -17,7 +17,7 @@ const int sound_inf = 0x7F800000; // weak
 /* data */
 
 UCHAR gbMusicOn = 1;  // weak
-UCHAR gbSoundOn = 1;  // weak
+UCHAR gbSoundOn = TRUE;
 char gbDupSounds = 1; // weak
 int sgnMusicTrack = 6;
 char *sgszMusicTracks[NUM_MUSIC] = {
@@ -127,7 +127,6 @@ void __fastcall snd_play_snd(TSnd *pSnd, int lVolume, int lPan)
 
     pSnd->start_tc = tc;
 }
-// 4A22D5: using guessed type char gbSoundOn;
 
 LPDIRECTSOUNDBUFFER __fastcall sound_dup_channel(LPDIRECTSOUNDBUFFER DSB)
 {
@@ -258,8 +257,6 @@ void __fastcall snd_init(HWND hWnd)
 
     gbSndInited = sglpDS != NULL;
 }
-// 4A22D4: using guessed type char gbMusicOn;
-// 4A22D5: using guessed type char gbSoundOn;
 
 void __fastcall sound_load_volume(char *value_name, int *value)
 {

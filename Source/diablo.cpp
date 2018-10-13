@@ -15,7 +15,7 @@ BOOL gbRunGame; // weak
 int glMid3Seed[NUMLEVELS];
 int gbRunGameResult; // weak
 int zoomflag; // weak
-int gbProcessPlayers; // weak
+BOOL gbProcessPlayers; // weak
 int glEndSeed[NUMLEVELS];
 int dword_5256E8; // weak
 HINSTANCE ghInst; // idb
@@ -162,7 +162,7 @@ void __fastcall run_game_loop(int uMsg)
 	control_update_life_mana();
 	msg_process_net_packets();
 	gbRunGame = TRUE;
-	gbProcessPlayers = 1;
+	gbProcessPlayers = TRUE;
 	gbRunGameResult = 1;
 	drawpanflag = 255;
 	DrawAndBlit();
