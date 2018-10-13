@@ -499,11 +499,11 @@ struct MonsterData {
     char mAi;
     int mFlags;
     unsigned char mInt;
-    unsigned char mHit;
+    unsigned char mHit; // BUGFIX: Some monsteres overflow this value on high dificaulty
     unsigned char mAFNum;
     unsigned char mMinDamage;
     unsigned char mMaxDamage;
-    unsigned char mHit2;
+    unsigned char mHit2; // BUGFIX: Some monsteres overflow this value on high dificaulty
     unsigned char mAFNum2;
     unsigned char mMinDamage2;
     unsigned char mMaxDamage2;
