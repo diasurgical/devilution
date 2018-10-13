@@ -2229,62 +2229,46 @@ void __fastcall M_DiabloDeath(int i, BOOL sendmsg)
 
 void __fastcall M2MStartHit(int mid, int i, int dam)
 {
-	int v3; // edi
-	int v4; // ebx
-	int v5; // esi
-	CMonster *v6; // eax
-	char v7; // al
-	CMonster *v8; // eax
-	int v9; // ecx
-	int v10; // eax
-	int v11; // [esp+Ch] [ebp-4h]
-
-	v3 = mid;
-	v4 = i;
-	v11 = i;
-	if ( (unsigned int)mid >= MAXMONSTERS )
+	if ( (DWORD)mid >= MAXMONSTERS ) {
 		TermMsg("Invalid monster %d getting hit by monster", mid);
-	v5 = v3;
-	if ( !monster[v3].MType )
-		TermMsg("Monster %d \"%s\" getting hit by monster: MType NULL", v3, monster[v5].mName);
-	if ( v4 >= 0 )
-		monster[v4].mWhoHit |= 1 << v4;
-	delta_monster_hp(v3, monster[v5]._mhitpoints, currlevel);
-	NetSendCmdParam2(FALSE, CMD_MONSTDAMAGE, v3, dam);
-	PlayEffect(v3, 1);
-	v6 = monster[v5].MType;
-	if ( v6->mtype >= MT_SNEAK && v6->mtype <= MT_ILLWEAV || dam >> 6 >= SLOBYTE(monster[v5].mLevel) + 3 )
-	{
-		if ( v11 >= 0 )
-			monster[v5]._mdir = ((unsigned char)monster[v11]._mdir - 4) & 7;
-		v7 = v6->mtype;
-		if ( v7 == 39 )
-		{
-			M_Teleport(v3);
+	}
+
+	if ( !monster[mid].MType ) {
+		TermMsg("Monster %d \"%s\" getting hit by monster: MType NULL", mid, monster[mid].mName);
+	}
+
+	if ( i >= 0 )
+		monster[i].mWhoHit |= 1 << i;
+
+	delta_monster_hp(mid, monster[mid]._mhitpoints, currlevel);
+	NetSendCmdParam2(FALSE, CMD_MONSTDAMAGE, mid, dam);
+	PlayEffect(mid, 1);
+
+	if ( monster[mid].MType->mtype >= MT_SNEAK && monster[mid].MType->mtype <= MT_ILLWEAV || dam >> 6 >= monster[mid].mLevel + 3 ) {
+		if ( i >= 0 )
+			monster[mid]._mdir = (monster[i]._mdir - 4) & 7;
+
+		if ( monster[mid].MType->mtype == MT_FAMILIAR ) {
+			M_Teleport(mid);
+		} else if ( monster[mid].MType->mtype >= MT_NSCAV && monster[mid].MType->mtype <= MT_YSCAV ) {
+			monster[mid]._mgoal = 1;
 		}
-		else if ( v7 >= MT_NSCAV && v7 <= MT_YSCAV )
-		{
-			_LOBYTE(monster[v5]._mgoal) = 1;
-		}
-		if ( monster[v5]._mmode != MM_STONE )
-		{
-			v8 = monster[v5].MType;
-			if ( v8->mtype != MT_GOLEM )
-			{
-				NewMonsterAnim(v3, &v8->Anims[MA_GOTHIT], monster[v5]._mdir);
-				monster[v5]._mmode = MM_GOTHIT;
+
+		if ( monster[mid]._mmode != MM_STONE ) {
+			if ( monster[mid].MType->mtype != MT_GOLEM ) {
+				NewMonsterAnim(mid, &monster[mid].MType->Anims[MA_GOTHIT], monster[mid]._mdir);
+				monster[mid]._mmode = MM_GOTHIT;
 			}
-			v9 = monster[v5]._moldy;
-			v10 = monster[v5]._moldx;
-			monster[v5]._mxoff = 0;
-			monster[v5]._myoff = 0;
-			monster[v5]._my = v9;
-			monster[v5]._mfuty = v9;
-			monster[v5]._mx = v10;
-			monster[v5]._mfutx = v10;
-			M_CheckEFlag(v3);
-			M_ClearSquares(v3);
-			dMonster[0][monster[v5]._my + 112 * monster[v5]._mx] = v3 + 1;
+
+			monster[mid]._mxoff = 0;
+			monster[mid]._myoff = 0;
+			monster[mid]._mx = monster[mid]._moldx;
+			monster[mid]._my = monster[mid]._moldy;
+			monster[mid]._mfutx = monster[mid]._moldx;
+			monster[mid]._mfuty = monster[mid]._moldy;
+			M_CheckEFlag(mid);
+			M_ClearSquares(mid);
+			dMonster[monster[mid]._mx][monster[mid]._my] = mid + 1;
 		}
 	}
 }
