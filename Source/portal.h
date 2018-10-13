@@ -4,16 +4,15 @@
 
 extern PortalStruct portal[MAXPORTAL];
 extern int portalindex;
-// int END_portalstruct; // weak
 
 void __cdecl InitPortals();
-void __fastcall SetPortalStats(int i, int o, int x, int y, int lvl, int lvltype);
+void __fastcall SetPortalStats(int i, BOOL o, int x, int y, int lvl, int lvltype);
 void __fastcall AddWarpMissile(int i, int x, int y);
 void __cdecl SyncPortals();
 void __fastcall AddInTownPortal(int i);
-void __fastcall ActivatePortal(int i, int x, int y, int lvl, int lvltype, int sp);
+void __fastcall ActivatePortal(int i, int x, int y, int lvl, int lvltype, BOOL sp);
 void __fastcall DeactivatePortal(int i);
-bool __fastcall PortalOnLevel(int i);
+BOOL __fastcall PortalOnLevel(int i);
 void __fastcall RemovePortalMissile(int id);
 void __fastcall SetCurrentPortal(int p);
 void __cdecl GetPortalLevel();
