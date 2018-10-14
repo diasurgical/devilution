@@ -2380,36 +2380,26 @@ void __fastcall M_StartKill(int i, int pnum)
 
 void __fastcall M_SyncStartKill(int i, int x, int y, int pnum)
 {
-	int v4; // esi
-	int v5; // ebx
-	int v6; // esi
-	int arglist; // [esp+Ch] [ebp-4h]
-
-	v4 = i;
-	v5 = x;
-	arglist = i;
 	if ( (DWORD)i >= MAXMONSTERS )
 		TermMsg("M_SyncStartKill: Invalid monster %d", i);
-	v6 = v4;
-	if ( monster[v6]._mhitpoints && monster[v6]._mmode != MM_DEATH )
-	{
-		if ( !dMonster[0][y + 112 * v5] )
-		{
-			M_ClearSquares(arglist);
-			monster[v6]._mx = v5;
-			monster[v6]._my = y;
-			monster[v6]._moldx = v5;
-			monster[v6]._moldy = y;
-		}
-		if ( monster[v6]._mmode == MM_STONE )
-		{
-			MonstStartKill(arglist, pnum, FALSE);
-			monster[v6]._mmode = MM_STONE;
-		}
-		else
-		{
-			MonstStartKill(arglist, pnum, FALSE);
-		}
+
+	if ( monster[i]._mhitpoints == 0 || monster[i]._mmode == MM_DEATH ) {
+		return;
+	}
+
+	if ( !dMonster[x][y] ) {
+		M_ClearSquares(i);
+		monster[i]._mx = x;
+		monster[i]._my = y;
+		monster[i]._moldx = x;
+		monster[i]._moldy = y;
+	}
+
+	if ( monster[i]._mmode == MM_STONE ) {
+		MonstStartKill(i, pnum, FALSE);
+		monster[i]._mmode = MM_STONE;
+	} else {
+		MonstStartKill(i, pnum, FALSE);
 	}
 }
 
