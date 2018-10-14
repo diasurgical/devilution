@@ -2235,9 +2235,9 @@ void __fastcall MonstStartKill(int i, int pnum, BOOL sendmsg)
 
 	if ( pnum >= 0 )
 		monster[i].mWhoHit |= 1 << pnum;
-	if ( pnum < 4 && i > 4 )//32
-		AddPlrMonstExper(monster[i].mLevel, monster[i].mExp, monster[i].mWhoHit);//28
-	monstkills[monster[i].MType->mtype]++;//44
+	if ( pnum < 4 && i > 4 )
+		AddPlrMonstExper(monster[i].mLevel, monster[i].mExp, monster[i].mWhoHit);
+	monstkills[monster[i].MType->mtype]++;
 	monster[i]._mhitpoints = 0;
 	SetRndSeed(monster[i]._mRndSeed);
 	if ( QuestStatus(QTYPE_GARB) && monster[i].mName == UniqMonst[0].mName ) {
@@ -2275,67 +2275,54 @@ void __fastcall MonstStartKill(int i, int pnum, BOOL sendmsg)
 
 void __fastcall M2MStartKill(int i, int mid)
 {
-	signed int v2; // ebx
-	signed int v3; // edi
-	signed int v4; // esi
-	int v5; // ecx
-	int v6; // eax
-	CMonster *v7; // ecx
-	int v8; // eax
-	int v9; // ecx
-	int v10; // eax
-	unsigned char v11; // al
-
-	v2 = i;
-	v3 = mid;
-	if ( (DWORD)i >= MAXMONSTERS )
-	{
+	if ( (DWORD)i >= MAXMONSTERS ) {
 		TermMsg("M2MStartKill: Invalid monster (attacker) %d", i);
-		TermMsg("M2MStartKill: Invalid monster (killed) %d", v3);
+		TermMsg("M2MStartKill: Invalid monster (killed) %d", mid);
 	}
-	if ( !monster[v2].MType )
-		TermMsg("M2MStartKill: Monster %d \"%s\" MType NULL", v3, monster[v3].mName);
-	v4 = v3;
-	delta_kill_monster(v3, monster[v3]._mx, monster[v3]._my, currlevel);
-	NetSendCmdLocParam1(FALSE, CMD_MONSTDEATH, monster[v4]._mx, monster[v4]._my, v3);
-	monster[v4].mWhoHit |= 1 << v2;
-	if ( v2 < 4 )
-		AddPlrMonstExper(SLOBYTE(monster[v4].mLevel), (unsigned short)monster[v4].mExp, monster[v3].mWhoHit);
-	v5 = monster[v4]._mRndSeed;
-	v6 = monster[v4].MType->mtype;
-	monster[v4]._mhitpoints = 0;
-	++monstkills[v6];
-	SetRndSeed(v5);
-	if ( v3 >= 4 )
-		SpawnItem(v3, monster[v4]._mx, monster[v4]._my, 1u);
-	if ( monster[v4].MType->mtype == MT_DIABLO )
-		M_DiabloDeath(v3, TRUE);
+	if ( !monster[i].MType )
+		TermMsg("M2MStartKill: Monster %d \"%s\" MType NULL", mid, monster[mid].mName);
+
+	delta_kill_monster(mid, monster[mid]._mx, monster[mid]._my, currlevel);
+	NetSendCmdLocParam1(FALSE, CMD_MONSTDEATH, monster[mid]._mx, monster[mid]._my, mid);
+
+	monster[mid].mWhoHit |= 1 << i;
+	if ( i < 4 )
+		AddPlrMonstExper(monster[mid].mLevel, monster[mid].mExp, monster[mid].mWhoHit);
+
+	monstkills[monster[mid].MType->mtype]++;
+	monster[mid]._mhitpoints = 0;
+	SetRndSeed(monster[mid]._mRndSeed);
+
+	if ( mid >= 4 )
+		SpawnItem(mid, monster[mid]._mx, monster[mid]._my, TRUE);
+
+	if ( monster[mid].MType->mtype == MT_DIABLO )
+		M_DiabloDeath(mid, TRUE);
 	else
-		PlayEffect(v2, 2);
-	PlayEffect(v3, 2);
-	v7 = monster[v4].MType;
-	v8 = ((unsigned char)monster[v2]._mdir - 4) & 7;
-	if ( v7->mtype == MT_GOLEM )
-		v8 = 0;
-	monster[v4]._mdir = v8;
-	NewMonsterAnim(v3, &v7->Anims[MA_DEATH], v8);
-	v9 = monster[v4]._moldy;
-	v10 = monster[v4]._moldx;
-	monster[v4]._my = v9;
-	monster[v4]._mfuty = v9;
-	monster[v4]._mmode = MM_DEATH;
-	monster[v4]._mxoff = 0;
-	monster[v4]._myoff = 0;
-	monster[v4]._mx = v10;
-	monster[v4]._mfutx = v10;
-	M_CheckEFlag(v3);
-	M_ClearSquares(v3);
-	dMonster[0][monster[v4]._my + 112 * monster[v4]._mx] = v3 + 1;
-	CheckQuestKill(v3, 1u);
-	M_FallenFear(monster[v4]._mx, monster[v4]._my);
-	v11 = monster[v4].MType->mtype;
-	if ( v11 >= MT_NACID && v11 <= MT_XACID )
-		AddMissile(monster[v4]._mx, monster[v4]._my, 0, 0, 0, 59, 1, v3, (unsigned char)monster[v4]._mint + 1, 0);
+		PlayEffect(i, 2);
+
+	PlayEffect(mid, 2);
+
+	int md = (monster[i]._mdir - 4) & 7;
+	if ( monster[mid].MType->mtype == MT_GOLEM )
+		md = 0;
+
+	monster[mid]._mdir = md;
+	NewMonsterAnim(mid, &monster[mid].MType->Anims[MA_DEATH], md);
+	monster[mid]._mmode = MM_DEATH;
+	monster[mid]._mxoff = 0;
+	monster[mid]._myoff = 0;
+	monster[mid]._mx = monster[mid]._moldx;
+	monster[mid]._my = monster[mid]._moldy;
+	monster[mid]._mfutx = monster[mid]._moldx;
+	monster[mid]._mfuty = monster[mid]._moldy;
+	M_CheckEFlag(mid);
+	M_ClearSquares(mid);
+	dMonster[monster[mid]._mx][monster[mid]._my] = mid + 1;
+	CheckQuestKill(mid, TRUE);
+	M_FallenFear(monster[mid]._mx, monster[mid]._my);
+	if ( monster[mid].MType->mtype >= MT_NACID && monster[mid].MType->mtype <= MT_XACID )
+		AddMissile(monster[mid]._mx, monster[mid]._my, 0, 0, 0, MIS_ACIDPUD, 1, mid, monster[mid]._mint + 1, 0);
 }
 
 void __fastcall M_StartKill(int i, int pnum)
