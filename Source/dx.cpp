@@ -186,34 +186,34 @@ void __fastcall j_lock_buf_priv(BYTE idx) {
 
 void __cdecl lock_buf_priv()
 {
-	Screen *v0; // eax
-	int v1; // eax
-	DDSURFACEDESC v2; // [esp+0h] [ebp-6Ch]
-
 	EnterCriticalSection(&sgMemCrit);
-	v0 = (Screen *)sgpBackBuf;
-	if ( sgpBackBuf )
-		goto LABEL_8;
-	if ( lpDDSBackBuf )
-	{
-		if ( sgdwLockCount )
-			goto LABEL_9;
-		v2.dwSize = sizeof(v2);
-		v1 = lpDDSBackBuf->Lock(NULL, &v2, DDLOCK_WAIT, NULL);
-		if ( v1 )
-			DDErrMsg(v1, 235, "C:\\Src\\Diablo\\Source\\dx.cpp");
-		v0 = (Screen *)v2.lpSurface;
-		gpBufEnd += (unsigned int)v2.lpSurface;
-LABEL_8:
-		gpBuffer = v0;
-		goto LABEL_9;
+	if ( sgpBackBuf ) {
+		gpBuffer = (Screen *)sgpBackBuf;
+		sgdwLockCount++;
+		return;
 	}
-	Sleep(20000);
-	TermMsg("lock_buf_priv");
-LABEL_9:
-	++sgdwLockCount;
+
+	if ( !lpDDSBackBuf ) {
+		Sleep(20000);
+		TermMsg("lock_buf_priv");
+		sgdwLockCount++;
+		return;
+	}
+
+	if ( sgdwLockCount ) {
+		sgdwLockCount++;
+		return;
+	}
+	DDSURFACEDESC ddsd;
+	ddsd.dwSize = sizeof(ddsd);
+	HRESULT error_code = lpDDSBackBuf->Lock(NULL, &ddsd, DDLOCK_WAIT, NULL);
+	if ( error_code != DD_OK )
+		DDErrMsg(error_code, 235, "C:\\Src\\Diablo\\Source\\dx.cpp");
+
+	gpBufEnd += (int)ddsd.lpSurface;
+	gpBuffer = (Screen *)ddsd.lpSurface;
+	sgdwLockCount++;
 }
-// 69CF0C: using guessed type int gpBufEnd;
 
 void __fastcall j_unlock_buf_priv(BYTE idx) {
 #ifdef _DEBUG
@@ -236,14 +236,13 @@ void __cdecl unlock_buf_priv()
 		gpBufEnd -= (int)gpBuffer;
 		gpBuffer = NULL;
 		if ( !sgpBackBuf ) {
-			int error_code = lpDDSBackBuf->Unlock(NULL);
+			HRESULT error_code = lpDDSBackBuf->Unlock(NULL);
 			if ( error_code != DD_OK )
 				DDErrMsg(error_code, 273, "C:\\Src\\Diablo\\Source\\dx.cpp");
 		}
 	}
 	LeaveCriticalSection(&sgMemCrit);
 }
-// 69CF0C: using guessed type int gpBufEnd;
 
 void __cdecl dx_cleanup()
 {
