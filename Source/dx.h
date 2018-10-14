@@ -22,7 +22,7 @@ void __cdecl dx_cleanup_mutex();
 void __fastcall dx_init(HWND hWnd);
 void __cdecl dx_create_back_buffer();
 void __cdecl dx_create_primary_surface();
-HRESULT __fastcall dx_DirectDrawCreate(GUID *guid, IDirectDraw **DD, void *unknown);
+HRESULT __fastcall dx_DirectDrawCreate(LPGUID guid, LPDIRECTDRAW *lplpDD, LPUNKNOWN pUnkOuter);
 void __fastcall j_lock_buf_priv(BYTE idx);
 void __cdecl lock_buf_priv();
 void __fastcall j_unlock_buf_priv(BYTE idx);
