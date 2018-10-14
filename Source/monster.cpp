@@ -2370,42 +2370,27 @@ void __fastcall M_SyncStartKill(int i, int x, int y, int pnum)
 
 void __fastcall M_StartFadein(int i, int md, BOOL backwards)
 {
-	int v3; // esi
-	int v4; // ebx
-	int v5; // esi
-	int v6; // ecx
-	int v7; // eax
-	int *v8; // eax
-	int arglist; // [esp+Ch] [ebp-4h]
-
-	v3 = i;
-	v4 = md;
-	arglist = i;
 	if ( (DWORD)i >= MAXMONSTERS ) {
 		TermMsg("M_StartFadein: Invalid monster %d", i);
 	}
 
-	v5 = v3;
-	if ( !monster[v5].MType )
-		TermMsg("M_StartFadein: Monster %d \"%s\" MType NULL", arglist, monster[v5].mName);
-	NewMonsterAnim(arglist, &monster[v5].MType->Anims[MA_SPECIAL], v4);
-	v6 = monster[v5]._my;
-	v7 = monster[v5]._mx;
-	monster[v5]._mfuty = v6;
-	monster[v5]._moldy = v6;
-	monster[v5]._mmode = MM_FADEIN;
-	monster[v5]._mxoff = 0;
-	monster[v5]._myoff = 0;
-	monster[v5]._mfutx = v7;
-	monster[v5]._moldx = v7;
-	M_CheckEFlag(arglist);
-	v8 = &monster[v5]._mFlags;
-	monster[v5]._mdir = v4;
-	*v8 &= 0xFFFFFFFE;
-	if ( backwards )
-	{
-		*v8 = monster[v5]._mFlags | 2;
-		monster[v5]._mAnimFrame = monster[v5]._mAnimLen;
+	if ( !monster[i].MType )
+		TermMsg("M_StartFadein: Monster %d \"%s\" MType NULL", i, monster[i].mName);
+
+	NewMonsterAnim(i, &monster[i].MType->Anims[MA_SPECIAL], md);
+	monster[i]._mmode = MM_FADEIN;
+	monster[i]._mxoff = 0;
+	monster[i]._myoff = 0;
+	monster[i]._mfutx = monster[i]._mx;
+	monster[i]._mfuty = monster[i]._my;
+	monster[i]._moldx = monster[i]._mx;
+	monster[i]._moldy = monster[i]._my;
+	M_CheckEFlag(i);
+	monster[i]._mdir = md;
+	monster[i]._mFlags &= ~0x1;
+	if ( backwards ) {
+		monster[i]._mFlags = monster[i]._mFlags | 0x2;
+		monster[i]._mAnimFrame = monster[i]._mAnimLen;
 	}
 }
 
