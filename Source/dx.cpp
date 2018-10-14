@@ -147,16 +147,14 @@ void __cdecl dx_create_back_buffer()
 
 void __cdecl dx_create_primary_surface()
 {
-	int v0; // eax
-	DDSURFACEDESC v1; // [esp+0h] [ebp-6Ch]
-
-	memset(&v1, 0, sizeof(v1));
-	v1.dwSize = sizeof(v1);
-	v1.dwFlags = DDSD_CAPS;
-	v1.ddsCaps.dwCaps = DDSCAPS_PRIMARYSURFACE;
-	v0 = lpDDInterface->CreateSurface(&v1, &lpDDSPrimary, NULL);
-	if ( v0 )
-		ErrDlg(IDD_DIALOG1, v0, "C:\\Src\\Diablo\\Source\\dx.cpp", 109);
+	DDSURFACEDESC ddsd;
+	memset(&ddsd, 0, sizeof(ddsd));
+	ddsd.dwSize = sizeof(ddsd);
+	ddsd.dwFlags = DDSD_CAPS;
+	ddsd.ddsCaps.dwCaps = DDSCAPS_PRIMARYSURFACE;
+	HRESULT error_code = lpDDInterface->CreateSurface(&ddsd, &lpDDSPrimary, NULL);
+	if ( error_code != DD_OK )
+		ErrDlg(IDD_DIALOG1, error_code, "C:\\Src\\Diablo\\Source\\dx.cpp", 109);
 }
 
 HRESULT __fastcall dx_DirectDrawCreate(LPGUID guid, LPDIRECTDRAW *lplpDD, LPUNKNOWN pUnkOuter)
