@@ -22,9 +22,9 @@ void __fastcall ErrDlg(int template_id, int error_code, char *log_file_path, int
 BOOL __stdcall FuncDlg(HWND hDlg, UINT uMsg, WPARAM wParam, char *text);
 void __fastcall TextDlg(HWND hDlg, char *text);
 void __fastcall ErrOkDlg(int template_id, int error_code, char *log_file_path, int log_line_nr);
-void __fastcall FileErrDlg(char *error);
+void __fastcall FileErrDlg(const char *error);
 void __fastcall DiskFreeDlg(char *error);
-bool __cdecl InsertCDDlg();
+BOOL __cdecl InsertCDDlg();
 void __fastcall DirErrorDlg(char *error);
 
 #endif /* __APPFAT_H__ */
