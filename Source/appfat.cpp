@@ -388,9 +388,9 @@ void __fastcall ErrOkDlg(int template_id, int error_code, char *log_file_path, i
 	DialogBoxParam(ghInst, MAKEINTRESOURCE(v6), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)dwInitParam);
 }
 
-void __fastcall FileErrDlg(char *error)
+void __fastcall FileErrDlg(const char *error)
 {
-	char *v1; // esi
+	const char *v1; // esi
 
 	v1 = error;
 	FreeDlg();
@@ -412,7 +412,7 @@ void __fastcall DiskFreeDlg(char *error)
 	TermMsg(0);
 }
 
-bool __cdecl InsertCDDlg()
+BOOL __cdecl InsertCDDlg()
 {
 	int v0; // edi
 

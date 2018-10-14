@@ -438,10 +438,14 @@ struct MissileStruct {
 // effects/sound
 //////////////////////////////////////////////////
 
+struct riff_section {
+    unsigned int len;
+    int offset;
+};
+
 struct TSnd {
     WAVEFORMATEX fmt;
-    int len;
-    int offset;
+    riff_section chunk;
     char *sound_path;
     LPDIRECTSOUNDBUFFER DSB;
     int start_tc;
@@ -1516,13 +1520,13 @@ struct STextStruct {
 //////////////////////////////////////////////////
 
 struct MEMFILE {
-    int end;
-    int offset;
-    int buf_len;
-    int dist;
-    int bytes_to_read;
-    char *buf;
-    int file;
+    DWORD end;
+    LONG offset;
+    DWORD buf_len;
+    DWORD dist;
+    DWORD bytes_to_read;
+    BYTE *buf;
+    HANDLE file;
 };
 
 //////////////////////////////////////////////////
