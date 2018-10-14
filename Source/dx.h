@@ -2,7 +2,7 @@
 #ifndef __DX_H__
 #define __DX_H__
 
-extern void *sgpBackBuf;
+extern Screen *sgpBackBuf;
 extern int dx_cpp_init_value; // weak
 extern IDirectDraw *lpDDInterface;
 extern IDirectDrawPalette *lpDDPalette; // idb
