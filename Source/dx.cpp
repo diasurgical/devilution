@@ -286,18 +286,23 @@ void __cdecl dx_cleanup()
 
 void __cdecl dx_reinit()
 {
-	int v0; // esi
-
 	EnterCriticalSection(&sgMemCrit);
 	ClearCursor();
-	v0 = sgdwLockCount;
+	int lockCount = sgdwLockCount;
+
 	while ( sgdwLockCount )
 		unlock_buf_priv();
+
 	dx_cleanup();
+
 	drawpanflag = 255;
+
 	dx_init(ghMainWnd);
-	for ( ; v0; --v0 )
+
+	while (lockCount) {
 		lock_buf_priv();
+		lockCount--;
+	}
+
 	LeaveCriticalSection(&sgMemCrit);
 }
-// 52571C: using guessed type int drawpanflag;
