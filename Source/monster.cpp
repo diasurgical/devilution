@@ -2333,10 +2333,10 @@ void __fastcall M_StartKill(int i, int pnum)
 
 	if ( myplr == pnum ) {
 		delta_kill_monster(i, monster[i]._mx, monster[i]._my, currlevel);
-		if ( i == pnum ) {
-			NetSendCmdLocParam1(FALSE, CMD_KILLGOLEM, monster[i]._mx, monster[i]._my, currlevel);
-		} else {
+		if ( i != pnum ) {
 			NetSendCmdLocParam1(FALSE, CMD_MONSTDEATH, monster[i]._mx, monster[i]._my, i);
+		} else {
+			NetSendCmdLocParam1(FALSE, CMD_KILLGOLEM, monster[i]._mx, monster[i]._my, currlevel);
 		}
 	}
 
