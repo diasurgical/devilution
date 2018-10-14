@@ -2,7 +2,7 @@
 
 #include "../types.h"
 
-void *sgpBackBuf;
+Screen *sgpBackBuf;
 int dx_cpp_init_value; // weak
 LPDIRECTDRAW lpDDInterface;
 IDirectDrawPalette *lpDDPalette; // idb
@@ -104,43 +104,38 @@ void __fastcall dx_init(HWND hWnd)
 
 void __cdecl dx_create_back_buffer()
 {
-	int v0; // eax
-	int v1; // eax
-	int v2; // eax
-	int v3; // eax
-	DDSURFACEDESC v4; // [esp+Ch] [ebp-70h]
-	DDSCAPS v5; // [esp+78h] [ebp-4h]
+	DDSCAPS caps;
+	HRESULT error_code = lpDDSPrimary->GetCaps(&caps);
+	if ( error_code != DD_OK )
+		DDErrMsg(error_code, 59, "C:\\Src\\Diablo\\Source\\dx.cpp");
 
-	v0 = lpDDSPrimary->GetCaps(&v5);
-	if ( v0 )
-		DDErrMsg(v0, 59, "C:\\Src\\Diablo\\Source\\dx.cpp");
-	if ( !gbBackBuf )
-	{
-		v4.dwSize = 108;
-		v1 = lpDDSPrimary->Lock(NULL, &v4, DDLOCK_WRITEONLY|DDLOCK_WAIT, NULL);
-		if ( !v1 )
-		{
+	DDSURFACEDESC ddsd;
+	if ( gbBackBuf == NULL ) {
+		ddsd.dwSize = sizeof(ddsd);
+		error_code = lpDDSPrimary->Lock(NULL, &ddsd, DDLOCK_WRITEONLY|DDLOCK_WAIT, NULL);
+		if ( error_code == DD_OK ) {
 			lpDDSPrimary->Unlock(NULL);
-			sgpBackBuf = DiabloAllocPtr(0x7B000);
+			sgpBackBuf = (Screen *)DiabloAllocPtr(sizeof(Screen));
 			return;
 		}
-		if ( v1 != DDERR_CANTLOCKSURFACE )
-			ErrDlg(IDD_DIALOG1, v1, "C:\\Src\\Diablo\\Source\\dx.cpp", 81);
+		if ( error_code != DDERR_CANTLOCKSURFACE )
+			ErrDlg(IDD_DIALOG1, error_code, "C:\\Src\\Diablo\\Source\\dx.cpp", 81);
 	}
-	memset(&v4, 0, sizeof(v4));
-	v4.dwWidth = 768;
-	v4.lPitch = 768;
-	v4.dwSize = sizeof(v4);
-	v4.dwFlags = DDSD_PIXELFORMAT|DDSD_PITCH|DDSD_WIDTH|DDSD_HEIGHT|DDSD_CAPS;
-	v4.ddsCaps.dwCaps = DDSCAPS_SYSTEMMEMORY|DDSCAPS_OFFSCREENPLAIN;
-	v4.dwHeight = 656;
-	v4.ddpfPixelFormat.dwSize = 32;
-	v2 = lpDDSPrimary->GetPixelFormat(&v4.ddpfPixelFormat);
-	if ( v2 )
-		ErrDlg(IDD_DIALOG1, v2, "C:\\Src\\Diablo\\Source\\dx.cpp", 94);
-	v3 = lpDDInterface->CreateSurface(&v4, &lpDDSBackBuf, NULL);
-	if ( v3 )
-		ErrDlg(IDD_DIALOG1, v3, "C:\\Src\\Diablo\\Source\\dx.cpp", 96);
+
+	memset(&ddsd, 0, sizeof(ddsd));
+	ddsd.dwWidth = 768;
+	ddsd.lPitch = 768;
+	ddsd.dwSize = sizeof(ddsd);
+	ddsd.dwFlags = DDSD_PIXELFORMAT|DDSD_PITCH|DDSD_WIDTH|DDSD_HEIGHT|DDSD_CAPS;
+	ddsd.ddsCaps.dwCaps = DDSCAPS_SYSTEMMEMORY|DDSCAPS_OFFSCREENPLAIN;
+	ddsd.dwHeight = 656;
+	ddsd.ddpfPixelFormat.dwSize = sizeof(ddsd.ddpfPixelFormat);
+	error_code = lpDDSPrimary->GetPixelFormat(&ddsd.ddpfPixelFormat);
+	if ( error_code != DD_OK )
+		ErrDlg(IDD_DIALOG1, error_code, "C:\\Src\\Diablo\\Source\\dx.cpp", 94);
+	error_code = lpDDInterface->CreateSurface(&ddsd, &lpDDSBackBuf, NULL);
+	if ( error_code != DD_OK )
+		ErrDlg(IDD_DIALOG1, error_code, "C:\\Src\\Diablo\\Source\\dx.cpp", 96);
 }
 // 52A548: using guessed type char gbBackBuf;
 
@@ -184,20 +179,20 @@ void __fastcall j_lock_buf_priv(BYTE idx) {
 void __cdecl lock_buf_priv()
 {
 	EnterCriticalSection(&sgMemCrit);
-	if ( sgpBackBuf ) {
-		gpBuffer = (Screen *)sgpBackBuf;
+	if ( sgpBackBuf != NULL ) {
+		gpBuffer = sgpBackBuf;
 		sgdwLockCount++;
 		return;
 	}
 
-	if ( !lpDDSBackBuf ) {
+	if ( lpDDSBackBuf == NULL ) {
 		Sleep(20000);
 		TermMsg("lock_buf_priv");
 		sgdwLockCount++;
 		return;
 	}
 
-	if ( sgdwLockCount ) {
+	if ( sgdwLockCount != 0 ) {
 		sgdwLockCount++;
 		return;
 	}
@@ -223,16 +218,16 @@ void __fastcall j_unlock_buf_priv(BYTE idx) {
 
 void __cdecl unlock_buf_priv()
 {
-	if ( !sgdwLockCount )
+	if ( sgdwLockCount == 0 )
 		TermMsg("draw main unlock error");
 	if ( !gpBuffer )
 		TermMsg("draw consistency error");
 
 	sgdwLockCount--;
-	if ( !sgdwLockCount ) {
+	if ( sgdwLockCount == 0 ) {
 		gpBufEnd -= (int)gpBuffer;
 		gpBuffer = NULL;
-		if ( !sgpBackBuf ) {
+		if ( sgpBackBuf == NULL ) {
 			HRESULT error_code = lpDDSBackBuf->Unlock(NULL);
 			if ( error_code != DD_OK )
 				DDErrMsg(error_code, 273, "C:\\Src\\Diablo\\Source\\dx.cpp");
@@ -243,22 +238,21 @@ void __cdecl unlock_buf_priv()
 
 void __cdecl dx_cleanup()
 {
-	void *v0; // ecx
+	Screen *v0; // ecx
 
 	if ( ghMainWnd )
 		ShowWindow(ghMainWnd, SW_HIDE);
 	SDrawDestroy();
 	EnterCriticalSection(&sgMemCrit);
-	if ( sgpBackBuf )
-	{
+	if ( sgpBackBuf != NULL ) {
 		v0 = sgpBackBuf;
 		sgpBackBuf = 0;
 		mem_free_dbg(v0);
 	}
-	else if ( lpDDSBackBuf )
+	else if ( lpDDSBackBuf != NULL )
 	{
 		lpDDSBackBuf->Release();
-		lpDDSBackBuf = 0;
+		lpDDSBackBuf = NULL;
 	}
 	sgdwLockCount = 0;
 	gpBuffer = 0;
@@ -286,7 +280,7 @@ void __cdecl dx_reinit()
 	ClearCursor();
 	int lockCount = sgdwLockCount;
 
-	while ( sgdwLockCount )
+	while ( sgdwLockCount != 0 )
 		unlock_buf_priv();
 
 	dx_cleanup();
@@ -295,7 +289,7 @@ void __cdecl dx_reinit()
 
 	dx_init(ghMainWnd);
 
-	while (lockCount) {
+	while (lockCount != 0) {
 		lock_buf_priv();
 		lockCount--;
 	}
