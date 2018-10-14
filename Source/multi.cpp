@@ -405,7 +405,6 @@ int __cdecl multi_handle_delta()
 	multi_mon_seeds();
 	return 1;
 }
-// 525650: using guessed type int gbRunGame;
 // 678628: using guessed type int dword_678628;
 // 67862D: using guessed type char gbGameDestroyed;
 // 679661: using guessed type char sgbTimeout;
@@ -499,7 +498,6 @@ void __cdecl multi_begin_timeout()
 		}
 	}
 }
-// 525650: using guessed type int gbRunGame;
 // 67862D: using guessed type char gbGameDestroyed;
 // 678644: using guessed type int sglTimeoutStart;
 // 679661: using guessed type char sgbTimeout;

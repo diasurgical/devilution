@@ -97,7 +97,6 @@ void __cdecl gamemenu_new_game()
 	gbRunGame = FALSE;
 	gamemenu_off();
 }
-// 525650: using guessed type int gbRunGame;
 // 52571C: using guessed type int drawpanflag;
 
 void __cdecl gamemenu_quit_game()
@@ -218,12 +217,12 @@ void __fastcall gamemenu_music_volume(int a1)
 	{
 		if ( gbMusicOn )
 		{
-			gbMusicOn = 0;
+			gbMusicOn = FALSE;
 			music_stop();
 			sound_get_or_set_music_volume(VOLUME_MIN);
 			goto LABEL_11;
 		}
-		gbMusicOn = 1;
+		gbMusicOn = TRUE;
 		sound_get_or_set_music_volume(VOLUME_MAX);
 LABEL_10:
 		music_start((unsigned char)leveltype);
@@ -235,18 +234,17 @@ LABEL_10:
 	{
 		if ( gbMusicOn )
 			goto LABEL_11;
-		gbMusicOn = 1;
+		gbMusicOn = TRUE;
 		goto LABEL_10;
 	}
 	if ( gbMusicOn )
 	{
-		gbMusicOn = 0;
+		gbMusicOn = FALSE;
 		music_stop();
 	}
 LABEL_11:
 	gamemenu_get_music();
 }
-// 4A22D4: using guessed type char gbMusicOn;
 // 5BB1ED: using guessed type char leveltype;
 
 int __fastcall gamemenu_slider_music_sound(TMenuItem *menu_item)

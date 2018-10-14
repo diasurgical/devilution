@@ -8,7 +8,7 @@ extern LPDIRECTSOUND sglpDS;
 extern char gbSndInited;
 extern int sglMusicVolume;
 extern int sglSoundVolume;
-extern HMODULE hDsound_dll; // idb
+extern HMODULE hDsound_dll;
 extern void *sgpMusicTrack;
 extern IDirectSoundBuffer *sglpDSB;
 
@@ -40,9 +40,9 @@ extern const int sound_inf; // weak
 
 /* data */
 
-extern UCHAR gbMusicOn;
-extern UCHAR gbSoundOn;
-extern char gbDupSounds; // weak
+extern BYTE gbMusicOn;
+extern BYTE gbSoundOn;
+extern BYTE gbDupSounds;
 extern int sgnMusicTrack;
 extern char *sgszMusicTracks[6];
 extern char unk_volume[4][2];

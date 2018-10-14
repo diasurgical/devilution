@@ -2334,7 +2334,7 @@ void __fastcall M_DiabloDeath(int i, BOOL sendmsg)
 	quests[QTYPE_MOD]._qactive = 3;
 	if ( v2 )
 		NetSendCmdQuest(TRUE, 5u);
-	gbProcessPlayers = 0;
+	gbProcessPlayers = FALSE;
 	_LOBYTE(sgbSaveSoundOn) = gbSoundOn;
 	v4 = 0;
 	for ( j = 0; j < nummonsters; ++j )
@@ -2379,8 +2379,6 @@ void __fastcall M_DiabloDeath(int i, BOOL sendmsg)
 	monster[v3]._mVar5 = (signed __int64)((double)(v12 - v13) / v11);
 	monster[v3]._mVar6 = (signed __int64)((double)(v14 - (monster[v3]._my << 16)) / v11);
 }
-// 4A22D5: using guessed type char gbSoundOn;
-// 5256A0: using guessed type int gbProcessPlayers;
 // 64D32C: using guessed type int sgbSaveSoundOn;
 
 void __fastcall M2MStartHit(int mid, int i, int dam)
@@ -3795,7 +3793,7 @@ void __cdecl DoEnding()
 	play_movie("gendata\\Diabend.smk", 0);
 
 	BOOL bMusicOn = gbMusicOn;
-	gbMusicOn = 1;
+	gbMusicOn = TRUE;
 
 	int musicVolume = sound_get_or_set_music_volume(1);
 	sound_get_or_set_music_volume(0);
@@ -3809,8 +3807,6 @@ void __cdecl DoEnding()
 	sound_get_or_set_music_volume(musicVolume);
 	gbMusicOn = bMusicOn;
 }
-// 4A22D4: using guessed type char gbMusicOn;
-// 659AFC: using guessed type int loop_movie;
 // 679660: using guessed type char gbMaxPlayers;
 
 void __cdecl PrepDoEnding()
@@ -3837,8 +3833,6 @@ void __cdecl PrepDoEnding()
 		}
 	}
 }
-// 4A22D5: using guessed type char gbSoundOn;
-// 525650: using guessed type int gbRunGame;
 // 525718: using guessed type char cineflag;
 // 64D32C: using guessed type int sgbSaveSoundOn;
 // 679660: using guessed type char gbMaxPlayers;

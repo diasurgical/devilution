@@ -11,11 +11,11 @@ extern int MouseY; // idb
 extern int MouseX; // idb
 extern bool gbGameLoopStartup; // idb
 extern int glSeedTbl[NUMLEVELS];
-extern BOOL gbRunGame; // weak
+extern BOOL gbRunGame;
 extern int glMid3Seed[NUMLEVELS];
 extern int gbRunGameResult; // weak
 extern int zoomflag; // weak
-extern BOOL gbProcessPlayers; // weak
+extern BOOL gbProcessPlayers;
 extern int glEndSeed[NUMLEVELS];
 extern int dword_5256E8; // weak
 extern HINSTANCE ghInst; // idb

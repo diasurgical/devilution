@@ -3,8 +3,8 @@
 #define __MOVIE_H__
 
 extern int movie_cpp_init_value; // weak
-extern char movie_playing; // weak
-extern BOOL loop_movie; // weak
+extern BYTE movie_playing;
+extern BOOL loop_movie;
 
 void __cdecl movie_cpp_init();
 void __fastcall play_movie(char *pszMovie, BOOL user_can_close);
