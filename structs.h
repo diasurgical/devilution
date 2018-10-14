@@ -459,12 +459,11 @@ struct TSFX {
 // monster
 //////////////////////////////////////////////////
 
-struct AnimStruct // note: wrong names
-{
-    unsigned char *CMem;
-    unsigned char *Frames[8]; // probably Data[8]
+struct AnimStruct {
+    BYTE *CMem;
+    BYTE *Data[8];
+    int Frames;
     int Rate;
-    int Delay;
 };
 
 struct MonsterData {
