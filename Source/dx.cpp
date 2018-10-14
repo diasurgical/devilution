@@ -100,7 +100,6 @@ void __fastcall dx_init(HWND hWnd)
 	dx_create_back_buffer();
 	SDrawManualInitialize(hWnda, lpDDInterface, lpDDSPrimary, 0, 0, lpDDSBackBuf, lpDDPalette, 0);
 }
-// 484364: using guessed type int fullscreen;
 // 52A549: using guessed type char gbEmulate;
 
 void __cdecl dx_create_back_buffer()

@@ -503,7 +503,6 @@ void __fastcall init_activate_window(HWND hWnd, bool bActive)
 		ResetPal();
 	}
 }
-// 484364: using guessed type int fullscreen;
 // 52571C: using guessed type int drawpanflag;
 // 634980: using guessed type int gbActive;
 

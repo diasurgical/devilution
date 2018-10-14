@@ -76,7 +76,7 @@ extern int diablo_inf; // weak
 
 /* rdata */
 
-extern int fullscreen; // weak
+extern BOOL fullscreen;
 #ifdef _DEBUG
 extern int showintrodebug;
 extern int questdebug;

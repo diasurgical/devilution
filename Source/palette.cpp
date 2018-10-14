@@ -99,7 +99,6 @@ void __cdecl LoadSysPal()
 		ReleaseDC(NULL, hDC);
 	}
 }
-// 484364: using guessed type int fullscreen;
 
 void __fastcall LoadPalette(char *pszFileName)
 {
@@ -176,7 +175,6 @@ void __cdecl palette_update()
 		SDrawUpdatePalette(v0, v1, &system_palette[v0], 0);
 	}
 }
-// 484364: using guessed type int fullscreen;
 
 void __fastcall ApplyGamma(PALETTEENTRY *dst, PALETTEENTRY *src, int n)
 {
