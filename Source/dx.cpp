@@ -226,23 +226,19 @@ void __fastcall j_unlock_buf_priv(BYTE idx) {
 
 void __cdecl unlock_buf_priv()
 {
-	Screen *v0; // eax
-	int v1; // eax
-
 	if ( !sgdwLockCount )
 		TermMsg("draw main unlock error");
 	if ( !gpBuffer )
 		TermMsg("draw consistency error");
-	if ( !--sgdwLockCount )
-	{
-		v0 = gpBuffer;
-		gpBuffer = 0;
-		gpBufEnd -= (signed int)v0;
-		if ( !sgpBackBuf )
-		{
-			v1 = lpDDSBackBuf->Unlock(NULL);
-			if ( v1 )
-				DDErrMsg(v1, 273, "C:\\Src\\Diablo\\Source\\dx.cpp");
+
+	sgdwLockCount--;
+	if ( !sgdwLockCount ) {
+		gpBufEnd -= (int)gpBuffer;
+		gpBuffer = NULL;
+		if ( !sgpBackBuf ) {
+			int error_code = lpDDSBackBuf->Unlock(NULL);
+			if ( error_code != DD_OK )
+				DDErrMsg(error_code, 273, "C:\\Src\\Diablo\\Source\\dx.cpp");
 		}
 	}
 	LeaveCriticalSection(&sgMemCrit);
