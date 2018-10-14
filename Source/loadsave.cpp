@@ -171,7 +171,6 @@ void __fastcall LoadGame(BOOL firstflag)
 	SetCursor(CURSOR_HAND);
 	gbProcessPlayers = TRUE;
 }
-// 5256A0: using guessed type int gbProcessPlayers;
 // 5BB1ED: using guessed type char leveltype;
 // 5CF31D: using guessed type char setlevel;
 

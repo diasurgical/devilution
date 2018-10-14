@@ -8,7 +8,7 @@ LPDIRECTSOUND sglpDS;
 char gbSndInited;
 int sglMusicVolume;
 int sglSoundVolume;
-HMODULE hDsound_dll; // idb
+HMODULE hDsound_dll;
 HANDLE sgpMusicTrack;
 LPDIRECTSOUNDBUFFER sglpDSB;
 
@@ -16,9 +16,9 @@ const int sound_inf = 0x7F800000; // weak
 
 /* data */
 
-UCHAR gbMusicOn = 1;  // weak
-UCHAR gbSoundOn = TRUE;
-char gbDupSounds = 1; // weak
+BYTE gbMusicOn = TRUE;
+BYTE gbSoundOn = TRUE;
+BYTE gbDupSounds = TRUE;
 int sgnMusicTrack = 6;
 char *sgszMusicTracks[NUM_MUSIC] = {
     "Music\\DTowne.wav",
@@ -146,7 +146,6 @@ LPDIRECTSOUNDBUFFER __fastcall sound_dup_channel(LPDIRECTSOUNDBUFFER DSB)
 
     return NULL;
 }
-// 4A22D6: using guessed type char gbDupSounds;
 
 BOOL __fastcall sound_file_reload(TSnd *sound_file, LPDIRECTSOUNDBUFFER DSB)
 {
@@ -380,7 +379,6 @@ void __fastcall music_start(int nTrack)
         }
     }
 }
-// 4A22D4: using guessed type char gbMusicOn;
 
 void __fastcall sound_disable_music(BOOL disable)
 {

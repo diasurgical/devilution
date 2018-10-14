@@ -3388,6 +3388,5 @@ void __cdecl DrawAndBlit()
 	}
 }
 // 4B8960: using guessed type int talkflag;
-// 525650: using guessed type int gbRunGame;
 // 52571C: using guessed type int drawpanflag;
 // 5BB1ED: using guessed type char leveltype;

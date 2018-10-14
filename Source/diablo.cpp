@@ -11,11 +11,11 @@ int MouseY; // idb
 int MouseX; // idb
 bool gbGameLoopStartup; // idb
 int glSeedTbl[NUMLEVELS];
-BOOL gbRunGame; // weak
+BOOL gbRunGame;
 int glMid3Seed[NUMLEVELS];
 int gbRunGameResult; // weak
 int zoomflag; // weak
-BOOL gbProcessPlayers; // weak
+BOOL gbProcessPlayers;
 int glEndSeed[NUMLEVELS];
 int dword_5256E8; // weak
 HINSTANCE ghInst; // idb
@@ -225,9 +225,7 @@ void __fastcall run_game_loop(int uMsg)
 		DoEnding();
 	}
 }
-// 525650: using guessed type int gbRunGame;
 // 525698: using guessed type int gbRunGameResult;
-// 5256A0: using guessed type int gbProcessPlayers;
 // 525718: using guessed type char cineflag;
 // 52571C: using guessed type int drawpanflag;
 // 679660: using guessed type char gbMaxPlayers;
@@ -364,7 +362,7 @@ void __fastcall diablo_parse_flags(char *args)
 		}
 		else if ( !_strcmpi("ds_noduplicates", args) )
 		{
-			gbDupSounds = 0;
+			gbDupSounds = FALSE;
 			args += strlen("ds_noduplicates");
 		}
 		else
@@ -464,7 +462,6 @@ void __fastcall diablo_parse_flags(char *args)
 		}
 	}
 }
-// 4A22D6: using guessed type char gbDupSounds;
 // 52A548: using guessed type char gbBackBuf;
 // 52A549: using guessed type char gbEmulate;
 
@@ -832,7 +829,6 @@ LRESULT __stdcall GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	gmenu_on_mouse_move((unsigned short)lParam);
 	return 0;
 }
-// 525650: using guessed type int gbRunGame;
 // 525698: using guessed type int gbRunGameResult;
 // 52571C: using guessed type int drawpanflag;
 // 525748: using guessed type char sgbMouseDown;
@@ -2180,7 +2176,6 @@ void __fastcall game_loop(bool bStartup)
 		timeout_cursor(1);
 	}
 }
-// 525650: using guessed type int gbRunGame;
 // 679660: using guessed type char gbMaxPlayers;
 
 void __cdecl game_logic()
@@ -2233,7 +2228,6 @@ void __cdecl game_logic()
 		}
 	}
 }
-// 5256A0: using guessed type int gbProcessPlayers;
 // 525718: using guessed type char cineflag;
 // 52571C: using guessed type int drawpanflag;
 // 525740: using guessed type int PauseMode;

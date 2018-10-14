@@ -3,8 +3,8 @@
 #include "../types.h"
 
 int movie_cpp_init_value; // weak
-char movie_playing;       // weak
-BOOL loop_movie;          // weak
+BYTE movie_playing;
+BOOL loop_movie;
 
 const int movie_inf = 0x7F800000; // weak
 
@@ -54,8 +54,6 @@ void __fastcall play_movie(char *pszMovie, BOOL user_can_close)
     sound_disable_music(FALSE);
 }
 // 634980: using guessed type int gbActive;
-// 659AF8: using guessed type int movie_playing;
-// 659AFC: using guessed type int loop_movie;
 
 LRESULT __stdcall MovieWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
@@ -76,4 +74,3 @@ LRESULT __stdcall MovieWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam
 
     return MainWndProc(hWnd, Msg, wParam, lParam);
 }
-// 659AF8: using guessed type int movie_playing;
