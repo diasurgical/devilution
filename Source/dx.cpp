@@ -4,7 +4,7 @@
 
 void *sgpBackBuf;
 int dx_cpp_init_value; // weak
-IDirectDraw *lpDDInterface;
+LPDIRECTDRAW lpDDInterface;
 IDirectDrawPalette *lpDDPalette; // idb
 int sgdwLockCount;
 Screen *gpBuffer;
@@ -159,32 +159,22 @@ void __cdecl dx_create_primary_surface()
 		ErrDlg(IDD_DIALOG1, v0, "C:\\Src\\Diablo\\Source\\dx.cpp", 109);
 }
 
-HRESULT __fastcall dx_DirectDrawCreate(GUID *guid, IDirectDraw **DD, void *unknown)
+HRESULT __fastcall dx_DirectDrawCreate(LPGUID guid, LPDIRECTDRAW *lplpDD, LPUNKNOWN pUnkOuter)
 {
-	IDirectDraw **v3; // ebp
-	int v4; // eax
-	FARPROC v5; // ebx
-	int v6; // eax
-	GUID *v8; // [esp+10h] [ebp-4h]
-
-	v3 = DD;
-	v8 = guid;
-	if ( !ghDiabMod )
-	{
+	if (ghDiabMod == NULL) {
 		ghDiabMod = LoadLibrary("ddraw.dll");
-		if ( !ghDiabMod )
-		{
-			v4 = GetLastError();
-			ErrDlg(IDD_DIALOG4, v4, "C:\\Src\\Diablo\\Source\\dx.cpp", 122);
+		if (ghDiabMod == NULL) {
+			ErrDlg(IDD_DIALOG4, GetLastError(), "C:\\Src\\Diablo\\Source\\dx.cpp", 122);
 		}
 	}
-	v5 = GetProcAddress(ghDiabMod, "DirectDrawCreate");
-	if ( !v5 )
-	{
-		v6 = GetLastError();
-		ErrDlg(IDD_DIALOG4, v6, "C:\\Src\\Diablo\\Source\\dx.cpp", 127);
+
+	HRESULT(WINAPI * DirectDrawCreate)
+	(LPGUID lpGuid, LPDIRECTDRAW * lplpDD, LPUNKNOWN pUnkOuter);
+	DirectDrawCreate = (HRESULT(WINAPI *)(LPGUID, LPDIRECTDRAW *, LPUNKNOWN))GetProcAddress(ghDiabMod, "DirectDrawCreate");
+	if (DirectDrawCreate == NULL) {
+		ErrDlg(IDD_DIALOG4, GetLastError(), "C:\\Src\\Diablo\\Source\\dx.cpp", 127);
 	}
-	return ((int (__stdcall *)(GUID *, IDirectDraw **, void *))v5)(v8, v3, unknown);
+	return DirectDrawCreate(guid, lplpDD, pUnkOuter);
 }
 
 void __fastcall j_lock_buf_priv(BYTE idx) {
