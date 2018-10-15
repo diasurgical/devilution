@@ -1878,6 +1878,7 @@ void msg_errorf(char *pszFmt, ...)
 		vsprintf(v2, pszFmt, va);
 		ErrorPlrMsg(v2);
 	}
+	va_end(va);
 }
 // 67619C: using guessed type int msg_err_timer;
 

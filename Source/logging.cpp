@@ -178,6 +178,7 @@ void log_printf(const char *pszFmt, ...)
 	va_start(va, pszFmt);
 	EnterCriticalSection(&sgMemCrit);
 	_vsnprintf(v3, 0x200u, pszFmt, va);
+	va_end(va);
 	v3[511] = 0;
 	v1 = strlen(v3);
 	if ( v1 + nNumberOfBytesToWrite > 0x1000 )
