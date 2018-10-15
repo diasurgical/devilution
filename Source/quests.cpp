@@ -1247,7 +1247,7 @@ void __cdecl QuestlogESC()
 // 69BE90: using guessed type int qline;
 // 69BED4: using guessed type int numqlines;
 
-void __fastcall SetMultiQuest(int q, int s, unsigned char l, int v1)
+void __fastcall SetMultiQuest(int q, int s, int l, int v1)
 {
 	int v4; // eax
 	unsigned char *v5; // ecx

@@ -2,36 +2,24 @@
 
 #include "../types.h"
 
-int sgdwOwnerWait; // weak
-int msg_cpp_init_value; // weak
-int sgdwRecvOffset; // idb
-int sgnCurrMegaPlayer; // weak
-DLevel sgLevels[NUMLEVELS];
-char sbLastCmd; // weak
-TMegaPkt *sgpCurrPkt;
-char sgRecvBuf[4722];
-unsigned char sgbRecvCmd; // idb
-LocalLevel sgLocals[NUMLEVELS];
-DJunk sgJunk;
-TMegaPkt *sgpMegaPkt;
-char sgbDeltaChanged; // weak
-char sgbDeltaChunks; // weak
-int deltaload; // weak
-char gbBufferMsgs; // weak
-int dword_676198; // weak
-int msg_err_timer; // weak
+static DWORD sgdwOwnerWait;
+static DWORD sgdwRecvOffset;
+static int sgnCurrMegaPlayer;
+static DLevel sgLevels[NUMLEVELS];
+static BYTE sbLastCmd;
+static TMegaPkt *sgpCurrPkt;
+static char sgRecvBuf[sizeof(DLevel)+1];
+static BYTE sgbRecvCmd;
+static LocalLevel sgLocals[NUMLEVELS];
+static DJunk sgJunk;
+static TMegaPkt *sgpMegaPkt;
+static BYTE sgbDeltaChanged;
+static BYTE sgbDeltaChunks;
+int deltaload;
+BYTE gbBufferMsgs;
+int pkt_counter;
 
-const int msg_inf = 0x7F800000; // weak
-
-struct msg_cpp_init
-{
-	msg_cpp_init()
-	{
-		msg_cpp_init_value = msg_inf;
-	}
-} _msg_cpp_init;
-// 47F14C: using guessed type int msg_inf;
-// 65AB1C: using guessed type int msg_cpp_init_value;
+static float msg_cpp_init_value = INFINITY;
 
 void __fastcall msg_send_drop_pkt(int pnum, int reason)
 {
@@ -43,9 +31,9 @@ void __fastcall msg_send_drop_pkt(int pnum, int reason)
 	msg_send_packet(pnum, &cmd, 6);
 }
 
-void __fastcall msg_send_packet(int pnum, void *packet, int dwSize)
+void __fastcall msg_send_packet(int pnum, const void *packet, DWORD dwSize)
 {
-	void *v3; // edi
+	const void *v3; // edi
 	TMegaPkt *v4; // eax
 	TFakeCmdPlr cmd; // [esp+Ah] [ebp-2h]
 
@@ -89,7 +77,7 @@ TMegaPkt *__cdecl msg_get_next_packet()
 	return result;
 }
 
-int __cdecl msg_wait_resync()
+BOOL __cdecl msg_wait_resync()
 {
 	int v0; // eax
 
@@ -145,7 +133,7 @@ int __cdecl msg_wait_for_turns()
 	//int v0; // eax
 	//int v2; // eax
 	int recieved; // [esp+0h] [ebp-8h]
-	int turns; // [esp+4h] [ebp-4h]
+	DWORD turns; // [esp+4h] [ebp-4h]
 
 	if ( !sgbDeltaChunks )
 	{
@@ -247,7 +235,7 @@ void __fastcall DeltaExportData(int pnum)
 	void *v5; // eax
 	void *v6; // eax
 	int v7; // eax
-	char *v8; // eax
+	void *v8; // eax
 	int v9; // eax
 	int player_num; // [esp+0h] [ebp-Ch]
 	int v11; // [esp+4h] [ebp-8h]
@@ -265,13 +253,13 @@ void __fastcall DeltaExportData(int pnum)
 			v4 = DeltaExportItem(v3, &v2[-2794]);
 			v5 = DeltaExportObject(v4, v2);
 			v6 = DeltaExportMonster(v5, &v2[127]);
-			v7 = msg_comp_level(v1, (int)v6);
+			v7 = msg_comp_level(v1, v6);
 			dthread_send_delta(player_num, (_BYTE)v11++ + CMD_DLEVEL_0, v1, v7);
 			v2 += 4721;
 		}
 		while ( (signed int)v2 < (signed int)&sgLevels[NUMLEVELS].object );
-		v8 = DeltaExportJunk((char *)v3);
-		v9 = msg_comp_level(v1, (int)v8);
+		v8 = DeltaExportJunk(v3);
+		v9 = msg_comp_level(v1, v8);
 		dthread_send_delta(player_num, CMD_DLEVEL_JUNK, v1, v9);
 		mem_free_dbg(v1);
 	}
@@ -343,7 +331,7 @@ void *__fastcall DeltaExportMonster(void *dst, void *src)
 	return v3;
 }
 
-char *__fastcall DeltaExportJunk(char *a1)
+void *__fastcall DeltaExportJunk(void *dst)
 {
 	char *v1; // ebx
 	DJunk *v2; // edi
@@ -351,7 +339,7 @@ char *__fastcall DeltaExportJunk(char *a1)
 	unsigned char *v4; // edi
 	int *v5; // ebp
 
-	v1 = a1;
+	v1 = (char*)dst;
 	v2 = &sgJunk;
 	v3 = sgJunk.quests;
 	do
@@ -388,15 +376,15 @@ char *__fastcall DeltaExportJunk(char *a1)
 	return v1;
 }
 
-int __fastcall msg_comp_level(char *buffer, int size)
+int __fastcall msg_comp_level(char *begin, void *end)
 {
 	char *v2; // esi
 	int v3; // edi
 	int v4; // eax
 
-	v2 = buffer;
-	v3 = size - (_DWORD)buffer - 1;
-	v4 = PkwareCompress(buffer + 1, v3);
+	v2 = begin;
+	v3 = (char*)end - begin - 1;
+	v4 = PkwareCompress(begin + 1, v3);
 	*v2 = v3 != v4;
 	return v4 + 1;
 }
@@ -412,7 +400,7 @@ void __cdecl delta_init()
 // 67618C: using guessed type char sgbDeltaChanged;
 // 676190: using guessed type int deltaload;
 
-void __fastcall delta_kill_monster(int mi, unsigned char x, unsigned char y, unsigned char bLevel)
+void __fastcall delta_kill_monster(int mi, BYTE x, BYTE y, BYTE bLevel)
 {
 	DMonsterStr *v4; // eax
 	char v5; // cl
@@ -431,7 +419,7 @@ void __fastcall delta_kill_monster(int mi, unsigned char x, unsigned char y, uns
 // 67618C: using guessed type char sgbDeltaChanged;
 // 679660: using guessed type char gbMaxPlayers;
 
-void __fastcall delta_monster_hp(int mi, int hp, unsigned char bLevel)
+void __fastcall delta_monster_hp(int mi, int hp, BYTE bLevel)
 {
 	DMonsterStr *v3; // eax
 
@@ -446,7 +434,7 @@ void __fastcall delta_monster_hp(int mi, int hp, unsigned char bLevel)
 // 67618C: using guessed type char sgbDeltaChanged;
 // 679660: using guessed type char gbMaxPlayers;
 
-void __fastcall delta_sync_monster(TCmdLocParam1 *packet, char level)
+void __fastcall delta_sync_monster(TCmdLocParam1 *packet, BYTE level)
 {
 	DMonsterStr *v2; // eax
 	char v3; // dl
@@ -468,7 +456,7 @@ void __fastcall delta_sync_monster(TCmdLocParam1 *packet, char level)
 // 67618C: using guessed type char sgbDeltaChanged;
 // 679660: using guessed type char gbMaxPlayers;
 
-void __fastcall delta_sync_golem(TCmdGolem *pG, int pnum, int bLevel)
+void __fastcall delta_sync_golem(TCmdGolem *pG, int pnum, BYTE bLevel)
 {
 	DMonsterStr *v3; // eax
 	char v4; // dl
@@ -489,7 +477,7 @@ void __fastcall delta_sync_golem(TCmdGolem *pG, int pnum, int bLevel)
 // 67618C: using guessed type char sgbDeltaChanged;
 // 679660: using guessed type char gbMaxPlayers;
 
-void __fastcall delta_leave_sync(unsigned char bLevel)
+void __fastcall delta_leave_sync(BYTE bLevel)
 {
 	unsigned char v1; // bl
 	bool v2; // zf
@@ -535,12 +523,12 @@ void __fastcall delta_leave_sync(unsigned char bLevel)
 // 67618C: using guessed type char sgbDeltaChanged;
 // 679660: using guessed type char gbMaxPlayers;
 
-bool __fastcall delta_portal_inited(int i)
+BOOL __fastcall delta_portal_inited(int i)
 {
 	return sgJunk.portal[i].x == LOBYTE(-1);
 }
 
-bool __fastcall delta_quest_inited(int i)
+BOOL __fastcall delta_quest_inited(int i)
 {
 	return sgJunk.quests[i].qstate != LOBYTE(-1);
 }
@@ -907,7 +895,7 @@ void __cdecl DeltaLoadLevel()
 // 676190: using guessed type int deltaload;
 // 679660: using guessed type char gbMaxPlayers;
 
-void __fastcall NetSendCmd(BOOL bHiPri, unsigned char bCmd)
+void __fastcall NetSendCmd(BOOL bHiPri, BYTE bCmd)
 {
 	TCmd cmd; // [esp+3h] [ebp-1h]
 
@@ -918,7 +906,7 @@ void __fastcall NetSendCmd(BOOL bHiPri, unsigned char bCmd)
 		NetSendLoPri((unsigned char *)&cmd, 1u);
 }
 
-void __fastcall NetSendCmdGolem(unsigned char mx, unsigned char my, unsigned char dir, unsigned char menemy, int hp, int cl)
+void __fastcall NetSendCmdGolem(BYTE mx, BYTE my, BYTE dir, BYTE menemy, int hp, int cl)
 {
 	TCmdGolem cmd; // [esp+0h] [ebp-Ch]
 
@@ -932,7 +920,7 @@ void __fastcall NetSendCmdGolem(unsigned char mx, unsigned char my, unsigned cha
 	NetSendLoPri((unsigned char *)&cmd, 0xAu);
 }
 
-void __fastcall NetSendCmdLoc(BOOL bHiPri, unsigned char bCmd, unsigned char x, unsigned char y)
+void __fastcall NetSendCmdLoc(BOOL bHiPri, BYTE bCmd, BYTE x, BYTE y)
 {
 	TCmdLoc cmd; // [esp+1h] [ebp-3h]
 
@@ -945,7 +933,7 @@ void __fastcall NetSendCmdLoc(BOOL bHiPri, unsigned char bCmd, unsigned char x, 
 		NetSendLoPri((unsigned char *)&cmd, 3u);
 }
 
-void __fastcall NetSendCmdLocParam1(BOOL bHiPri, unsigned char bCmd, unsigned char x, unsigned char y, unsigned short wParam1)
+void __fastcall NetSendCmdLocParam1(BOOL bHiPri, BYTE bCmd, BYTE x, BYTE y, WORD wParam1)
 {
 	TCmdLocParam1 cmd; // [esp+0h] [ebp-8h]
 
@@ -959,7 +947,7 @@ void __fastcall NetSendCmdLocParam1(BOOL bHiPri, unsigned char bCmd, unsigned ch
 		NetSendLoPri((unsigned char *)&cmd, 5u);
 }
 
-void __fastcall NetSendCmdLocParam2(BOOL bHiPri, unsigned char bCmd, unsigned char x, unsigned char y, unsigned short wParam1, unsigned short wParam2)
+void __fastcall NetSendCmdLocParam2(BOOL bHiPri, BYTE bCmd, BYTE x, BYTE y, WORD wParam1, WORD wParam2)
 {
 	TCmdLocParam2 cmd; // [esp+0h] [ebp-8h]
 
@@ -974,7 +962,7 @@ void __fastcall NetSendCmdLocParam2(BOOL bHiPri, unsigned char bCmd, unsigned ch
 		NetSendLoPri((unsigned char *)&cmd, 7u);
 }
 
-void __fastcall NetSendCmdLocParam3(BOOL bHiPri, unsigned char bCmd, unsigned char x, unsigned char y, unsigned short wParam1, unsigned short wParam2, unsigned short wParam3)
+void __fastcall NetSendCmdLocParam3(BOOL bHiPri, BYTE bCmd, BYTE x, BYTE y, WORD wParam1, WORD wParam2, WORD wParam3)
 {
 	TCmdLocParam3 cmd; // [esp+0h] [ebp-Ch]
 
@@ -990,7 +978,7 @@ void __fastcall NetSendCmdLocParam3(BOOL bHiPri, unsigned char bCmd, unsigned ch
 		NetSendLoPri((unsigned char *)&cmd, 9u);
 }
 
-void __fastcall NetSendCmdParam1(BOOL bHiPri, unsigned char bCmd, unsigned short wParam1)
+void __fastcall NetSendCmdParam1(BOOL bHiPri, BYTE bCmd, WORD wParam1)
 {
 	TCmdParam1 cmd; // [esp+1h] [ebp-3h]
 
@@ -1002,7 +990,7 @@ void __fastcall NetSendCmdParam1(BOOL bHiPri, unsigned char bCmd, unsigned short
 		NetSendLoPri((unsigned char *)&cmd, 3u);
 }
 
-void __fastcall NetSendCmdParam2(BOOL bHiPri, unsigned char bCmd, unsigned short wParam1, unsigned short wParam2)
+void __fastcall NetSendCmdParam2(BOOL bHiPri, BYTE bCmd, WORD wParam1, WORD wParam2)
 {
 	TCmdParam2 cmd; // [esp+0h] [ebp-8h]
 
@@ -1015,7 +1003,7 @@ void __fastcall NetSendCmdParam2(BOOL bHiPri, unsigned char bCmd, unsigned short
 		NetSendLoPri((unsigned char *)&cmd, 5u);
 }
 
-void __fastcall NetSendCmdParam3(BOOL bHiPri, unsigned char bCmd, unsigned short wParam1, unsigned short wParam2, unsigned short wParam3)
+void __fastcall NetSendCmdParam3(BOOL bHiPri, BYTE bCmd, WORD wParam1, WORD wParam2, WORD wParam3)
 {
 	TCmdParam3 cmd; // [esp+0h] [ebp-8h]
 
@@ -1029,7 +1017,7 @@ void __fastcall NetSendCmdParam3(BOOL bHiPri, unsigned char bCmd, unsigned short
 		NetSendLoPri((unsigned char *)&cmd, 7u);
 }
 
-void __fastcall NetSendCmdQuest(BOOL bHiPri, unsigned char q)
+void __fastcall NetSendCmdQuest(BOOL bHiPri, BYTE q)
 {
 	int v2; // eax
 	char v3; // dl
@@ -1049,7 +1037,7 @@ void __fastcall NetSendCmdQuest(BOOL bHiPri, unsigned char q)
 		NetSendLoPri((unsigned char *)&cmd, 5u);
 }
 
-void __fastcall NetSendCmdGItem(BOOL bHiPri, unsigned char bCmd, unsigned char mast, unsigned char pnum, int ii)
+void __fastcall NetSendCmdGItem(BOOL bHiPri, BYTE bCmd, BYTE mast, BYTE pnum, int ii)
 {
 	int v5; // eax
 	bool v6; // zf
@@ -1109,7 +1097,7 @@ void __fastcall NetSendCmdGItem(BOOL bHiPri, unsigned char bCmd, unsigned char m
 		NetSendLoPri((unsigned char *)&cmd, 0x1Eu);
 }
 
-void __fastcall NetSendCmdGItem2(BOOL usonly, unsigned char bCmd, unsigned char mast, unsigned char pnum, struct TCmdGItem *p)
+void __fastcall NetSendCmdGItem2(BOOL usonly, BYTE bCmd, BYTE mast, BYTE pnum, struct TCmdGItem *p)
 {
 	unsigned char v5; // bl
 	int v7; // eax
@@ -1139,7 +1127,7 @@ void __fastcall NetSendCmdGItem2(BOOL usonly, unsigned char bCmd, unsigned char 
 	multi_msg_add(&cmd.bCmd, 0x1Eu);
 }
 
-bool __fastcall NetSendCmdReq2(unsigned char bCmd, unsigned char mast, unsigned char pnum, struct TCmdGItem *p)
+bool __fastcall NetSendCmdReq2(BYTE bCmd, BYTE mast, BYTE pnum, struct TCmdGItem *p)
 {
 	unsigned char v4; // bl
 	int v5; // eax
@@ -1175,7 +1163,7 @@ void __fastcall NetSendCmdExtra(struct TCmdGItem *p)
 	NetSendHiPri((unsigned char *)&cmd, 0x1Eu);
 }
 
-void __fastcall NetSendCmdPItem(BOOL bHiPri, unsigned char bCmd, unsigned char x, unsigned char y)
+void __fastcall NetSendCmdPItem(BOOL bHiPri, BYTE bCmd, BYTE x, BYTE y)
 {
 	int v4; // eax
 	short *v5; // edx
@@ -1232,7 +1220,7 @@ void __fastcall NetSendCmdPItem(BOOL bHiPri, unsigned char bCmd, unsigned char x
 		NetSendLoPri((unsigned char *)&cmd, 0x16u);
 }
 
-void __fastcall NetSendCmdChItem(BOOL bHiPri, unsigned char bLoc)
+void __fastcall NetSendCmdChItem(BOOL bHiPri, BYTE bLoc)
 {
 	short v2; // dx
 	char v3; // al
@@ -1252,7 +1240,7 @@ void __fastcall NetSendCmdChItem(BOOL bHiPri, unsigned char bLoc)
 		NetSendLoPri((unsigned char *)&cmd, 0xBu);
 }
 
-void __fastcall NetSendCmdDelItem(BOOL bHiPri, unsigned char bLoc)
+void __fastcall NetSendCmdDelItem(BOOL bHiPri, BYTE bLoc)
 {
 	TCmdDelItem cmd; // [esp+2h] [ebp-2h]
 
@@ -1321,7 +1309,7 @@ void __fastcall NetSendCmdDItem(BOOL bHiPri, int ii)
 		NetSendLoPri((unsigned char *)&cmd, 0x16u);
 }
 
-void __fastcall NetSendCmdDamage(BOOL bHiPri, unsigned char bPlr, unsigned int dwDam)
+void __fastcall NetSendCmdDamage(BOOL bHiPri, BYTE bPlr, DWORD dwDam)
 {
 	TCmdDamage cmd; // [esp+0h] [ebp-8h]
 
@@ -1334,7 +1322,7 @@ void __fastcall NetSendCmdDamage(BOOL bHiPri, unsigned char bPlr, unsigned int d
 		NetSendLoPri((unsigned char *)&cmd, 6u);
 }
 
-void __fastcall NetSendCmdString(int a1, const char *pszStr)
+void __fastcall NetSendCmdString(int player_mask, const char *pszStr)
 {
 	const char *v2; // esi
 	int v3; // edi
@@ -1342,7 +1330,7 @@ void __fastcall NetSendCmdString(int a1, const char *pszStr)
 	TCmdString cmd; // [esp+Ch] [ebp-54h]
 
 	v2 = pszStr;
-	v3 = a1;
+	v3 = player_mask;
 	dwStrLen = strlen(pszStr);
 	cmd.bCmd = CMD_STRING;
 	strcpy(cmd.str, v2);
@@ -1417,13 +1405,13 @@ int __fastcall ParseCmd(int pnum, TCmd *pCmd)
 		case CMD_RATTACKPID:
 			return On_RATTACKPID((struct TCmdParam1 *)v3, pnum);
 		case CMD_SPELLID:
-			return On_SPELLID((struct TCmdLocParam2 *)v3, pnum);
+			return On_SPELLID((struct TCmdParam3 *)v3, pnum);
 		case CMD_SPELLPID:
-			return On_SPELLPID((struct TCmdLocParam2 *)v3, pnum);
+			return On_SPELLPID((struct TCmdParam3 *)v3, pnum);
 		case CMD_TSPELLID:
-			return On_TSPELLID((struct TCmdLocParam2 *)v3, pnum);
+			return On_TSPELLID((struct TCmdParam3 *)v3, pnum);
 		case CMD_TSPELLPID:
-			return On_TSPELLPID((struct TCmdLocParam2 *)v3, pnum);
+			return On_TSPELLPID((struct TCmdParam3 *)v3, pnum);
 		case CMD_RESURRECT:
 			return On_RESURRECT((struct TCmdParam1 *)v3, pnum);
 		case CMD_OPOBJT:
@@ -1443,18 +1431,18 @@ int __fastcall ParseCmd(int pnum, TCmd *pCmd)
 			return On_CHEAT_SPELL_LEVEL(v3, pnum);
 #else
 		case CMD_CHEAT_EXPERIENCE:
-			return On_DEBUG();
+			return On_DEBUG(v3);
 		case CMD_CHEAT_SPELL_LEVEL:
-			return On_DEBUG();
+			return On_DEBUG(v3);
 #endif
 		case CMD_DEBUG:
-			return On_DEBUG();
+			return On_DEBUG(v3);
 		case CMD_SYNCDATA:
 			return On_SYNCDATA(v3, pnum);
 		case CMD_MONSTDEATH:
 			return On_MONSTDEATH((struct TCmdLocParam1 *)v3, pnum);
 		case CMD_MONSTDAMAGE:
-			return On_MONSTDAMAGE((struct TCmdLocParam1 *)v3, pnum);
+			return On_MONSTDAMAGE((struct TCmdParam2 *)v3, pnum);
 		case CMD_PLRDEAD:
 			return On_PLRDEAD((struct TCmdParam1 *)v3, pnum);
 		case CMD_REQUESTGITEM:
@@ -1492,7 +1480,7 @@ int __fastcall ParseCmd(int pnum, TCmd *pCmd)
 		case CMD_SATTACKXY:
 			return On_SATTACKXY((struct TCmdLoc *)v3, pnum);
 		case CMD_ACTIVATEPORTAL:
-			return On_ACTIVATEPORTAL((DJunk *)v3, pnum);
+			return On_ACTIVATEPORTAL((struct TCmdLocParam3 *)v3, pnum);
 		case CMD_DEACTIVATEPORTAL:
 			return On_DEACTIVATEPORTAL(v3, pnum);
 		case CMD_HEALOTHER:
@@ -1520,15 +1508,15 @@ int __fastcall ParseCmd(int pnum, TCmd *pCmd)
 		case CMD_SYNCQUEST:
 			return On_SYNCQUEST((struct TCmdQuest *)v3, pnum);
 		case CMD_ENDSHIELD:
-			return On_ENDSHIELD((int)v3, pnum);
+			return On_ENDSHIELD(v3, pnum);
 		case CMD_AWAKEGOLEM:
 			return On_AWAKEGOLEM((struct TCmdGolem *)v3, pnum);
 		case CMD_NOVA:
 			return On_NOVA((struct TCmdLoc *)v3, pnum);
 		case CMD_SETSHIELD:
-			return On_SETSHIELD((int)v3, pnum);
+			return On_SETSHIELD(v3, pnum);
 		case CMD_REMSHIELD:
-			return On_REMSHIELD((int)v3, pnum);
+			return On_REMSHIELD(v3, pnum);
 		default:
 			if ( v5 < CMD_DLEVEL_0 || v5 > CMD_DLEVEL_END )
 			{
@@ -1587,7 +1575,7 @@ LABEL_100:
 // 67618D: using guessed type char sgbDeltaChunks;
 // 6796E4: using guessed type char gbDeltaSender;
 
-void __fastcall DeltaImportData(unsigned char cmd, int recv_offset)
+void __fastcall DeltaImportData(BYTE cmd, DWORD recv_offset)
 {
 	unsigned char v2; // bl
 	int v3; // esi
@@ -1599,7 +1587,7 @@ void __fastcall DeltaImportData(unsigned char cmd, int recv_offset)
 		PkwareDecompress(&sgRecvBuf[1], recv_offset, 4721);
 	if ( v2 == CMD_DLEVEL_JUNK )
 	{
-		DeltaImportJunk((int)&sgRecvBuf[1]);
+		DeltaImportJunk(&sgRecvBuf[1]);
 	}
 	else if ( v2 < CMD_DLEVEL_0 || v2 > CMD_DLEVEL_16 )
 	{
@@ -1683,7 +1671,7 @@ void *__fastcall DeltaImportMonster(void *src, void *dst)
 	return v3;
 }
 
-char __fastcall DeltaImportJunk(int a1)
+void __fastcall DeltaImportJunk(void *src)
 {
 	_BYTE *v1; // ebx
 	int v2; // edi
@@ -1693,7 +1681,7 @@ char __fastcall DeltaImportJunk(int a1)
 	unsigned char *v6; // edi
 	int *v7; // ebp
 
-	v1 = (_BYTE *)a1;
+	v1 = (_BYTE *)src;
 	v2 = 0;
 	v3 = &sgJunk;
 	do
@@ -1739,7 +1727,6 @@ char __fastcall DeltaImportJunk(int a1)
 		v6 += 24;
 	}
 	while ( (signed int)v7 < (signed int)&questlist[16]._qflags );
-	return result;
 }
 
 int __fastcall On_SYNCDATA(void *packet, int pnum)
@@ -1864,8 +1851,9 @@ int __fastcall On_SBSPELL(struct TCmdParam1 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-void msg_errorf(char *pszFmt, ...)
+void msg_errorf(const char *pszFmt, ...)
 {
+	static DWORD msg_err_timer;
 	DWORD v1; // eax
 	char v2[256]; // [esp+0h] [ebp-100h]
 	va_list va; // [esp+10Ch] [ebp+Ch]
@@ -1879,7 +1867,6 @@ void msg_errorf(char *pszFmt, ...)
 		ErrorPlrMsg(v2);
 	}
 }
-// 67619C: using guessed type int msg_err_timer;
 
 int __fastcall On_GOTOGETITEM(struct TCmdLocParam1 *pCmd, int pnum)
 {
@@ -1948,7 +1935,7 @@ int __fastcall On_REQUESTGITEM(struct TCmdGItem *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-bool __fastcall i_own_level(int nReqLevel)
+BOOL __fastcall i_own_level(int nReqLevel)
 {
 	int v1; // edx
 	unsigned char *v2; // eax
@@ -2039,7 +2026,7 @@ int __fastcall On_GETITEM(struct TCmdGItem *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-bool __fastcall delta_get_item(struct TCmdGItem *pI, unsigned char bLevel)
+BOOL __fastcall delta_get_item(struct TCmdGItem *pI, BYTE bLevel)
 {
 	struct TCmdGItem *v2; // esi
 	signed int v3; // ecx
@@ -2333,7 +2320,7 @@ int __fastcall On_PUTITEM(struct TCmdPItem *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-void __fastcall delta_put_item(struct TCmdPItem *pI, int x, int y, unsigned char bLevel)
+void __fastcall delta_put_item(struct TCmdPItem *pI, int x, int y, BYTE bLevel)
 {
 	struct TCmdPItem *v4; // ebx
 	int v5; // eax
@@ -2801,9 +2788,9 @@ int __fastcall On_RATTACKPID(struct TCmdParam1 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-int __fastcall On_SPELLID(struct TCmdLocParam2 *pCmd, int pnum)
+int __fastcall On_SPELLID(struct TCmdParam3 *pCmd, int pnum)
 {
-	struct TCmdLocParam2 *v2; // edi
+	struct TCmdParam3 *v2; // edi
 	int v3; // esi
 	int v4; // eax
 
@@ -2813,13 +2800,13 @@ int __fastcall On_SPELLID(struct TCmdLocParam2 *pCmd, int pnum)
 		v3 = pnum;
 		if ( currlevel == plr[pnum].plrlevel )
 		{
-			if ( currlevel || spelldata[(unsigned short)pCmd->wParam1].sTownSpell )
+			if ( currlevel || spelldata[(unsigned short)pCmd->wParam2].sTownSpell )
 			{
 				ClrPlrPath(pnum);
 				plr[v3].destAction = ACTION_SPELLMON;
-				plr[v3].destParam1 = *(unsigned short *)&v2->x;
-				plr[v3].destParam2 = (unsigned short)v2->wParam2;
-				v4 = (unsigned short)v2->wParam1;
+				plr[v3].destParam1 = pCmd->wParam1;
+				plr[v3].destParam2 = (unsigned short)v2->wParam3;
+				v4 = (unsigned short)v2->wParam2;
 				plr[v3]._pSplFrom = 0;
 				plr[v3]._pSpell = v4;
 				plr[v3]._pSplType = plr[v3]._pRSplType;
@@ -2834,9 +2821,9 @@ int __fastcall On_SPELLID(struct TCmdLocParam2 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-int __fastcall On_SPELLPID(struct TCmdLocParam2 *pCmd, int pnum)
+int __fastcall On_SPELLPID(struct TCmdParam3 *pCmd, int pnum)
 {
-	struct TCmdLocParam2 *v2; // edi
+	struct TCmdParam3 *v2; // edi
 	int v3; // esi
 	int v4; // eax
 
@@ -2846,13 +2833,13 @@ int __fastcall On_SPELLPID(struct TCmdLocParam2 *pCmd, int pnum)
 		v3 = pnum;
 		if ( currlevel == plr[pnum].plrlevel )
 		{
-			if ( currlevel || spelldata[(unsigned short)pCmd->wParam1].sTownSpell )
+			if ( currlevel || spelldata[(unsigned short)pCmd->wParam2].sTownSpell )
 			{
 				ClrPlrPath(pnum);
 				plr[v3].destAction = ACTION_SPELLPLR;
-				plr[v3].destParam1 = *(unsigned short *)&v2->x;
-				plr[v3].destParam2 = (unsigned short)v2->wParam2;
-				v4 = (unsigned short)v2->wParam1;
+				plr[v3].destParam1 = v2->wParam1;
+				plr[v3].destParam2 = (unsigned short)v2->wParam3;
+				v4 = (unsigned short)v2->wParam2;
 				plr[v3]._pSplFrom = 0;
 				plr[v3]._pSpell = v4;
 				plr[v3]._pSplType = plr[v3]._pRSplType;
@@ -2867,9 +2854,9 @@ int __fastcall On_SPELLPID(struct TCmdLocParam2 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-int __fastcall On_TSPELLID(struct TCmdLocParam2 *pCmd, int pnum)
+int __fastcall On_TSPELLID(struct TCmdParam3 *pCmd, int pnum)
 {
-	struct TCmdLocParam2 *v2; // edi
+	struct TCmdParam3 *v2; // edi
 	int v3; // esi
 
 	v2 = pCmd;
@@ -2878,13 +2865,13 @@ int __fastcall On_TSPELLID(struct TCmdLocParam2 *pCmd, int pnum)
 		v3 = pnum;
 		if ( currlevel == plr[pnum].plrlevel )
 		{
-			if ( currlevel || spelldata[(unsigned short)pCmd->wParam1].sTownSpell )
+			if ( currlevel || spelldata[(unsigned short)pCmd->wParam2].sTownSpell )
 			{
 				ClrPlrPath(pnum);
 				plr[v3].destAction = ACTION_SPELLMON;
-				plr[v3].destParam1 = *(unsigned short *)&v2->x;
-				plr[v3].destParam2 = (unsigned short)v2->wParam2;
-				plr[v3]._pSpell = (unsigned short)v2->wParam1;
+				plr[v3].destParam1 = v2->wParam1;
+				plr[v3].destParam2 = (unsigned short)v2->wParam3;
+				plr[v3]._pSpell = (unsigned short)v2->wParam2;
 				plr[v3]._pSplType = plr[v3]._pTSplType;
 				plr[v3]._pSplFrom = 2;
 			}
@@ -2898,9 +2885,9 @@ int __fastcall On_TSPELLID(struct TCmdLocParam2 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-int __fastcall On_TSPELLPID(struct TCmdLocParam2 *pCmd, int pnum)
+int __fastcall On_TSPELLPID(struct TCmdParam3 *pCmd, int pnum)
 {
-	struct TCmdLocParam2 *v2; // edi
+	struct TCmdParam3 *v2; // edi
 	int v3; // esi
 
 	v2 = pCmd;
@@ -2909,13 +2896,13 @@ int __fastcall On_TSPELLPID(struct TCmdLocParam2 *pCmd, int pnum)
 		v3 = pnum;
 		if ( currlevel == plr[pnum].plrlevel )
 		{
-			if ( currlevel || spelldata[(unsigned short)pCmd->wParam1].sTownSpell )
+			if ( currlevel || spelldata[(unsigned short)pCmd->wParam2].sTownSpell )
 			{
 				ClrPlrPath(pnum);
 				plr[v3].destAction = ACTION_SPELLPLR;
-				plr[v3].destParam1 = *(unsigned short *)&v2->x;
-				plr[v3].destParam2 = (unsigned short)v2->wParam2;
-				plr[v3]._pSpell = (unsigned short)v2->wParam1;
+				plr[v3].destParam1 = v2->wParam1;
+				plr[v3].destParam2 = (unsigned short)v2->wParam3;
+				plr[v3]._pSpell = (unsigned short)v2->wParam2;
 				plr[v3]._pSplType = plr[v3]._pTSplType;
 				plr[v3]._pSplFrom = 2;
 			}
@@ -3126,10 +3113,10 @@ LABEL_16:
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-int __fastcall On_MONSTDAMAGE(struct TCmdLocParam1 *pCmd, int pnum)
+int __fastcall On_MONSTDAMAGE(struct TCmdParam2 *pCmd, int pnum)
 {
 	int v2; // edi
-	struct TCmdLocParam1 *v3; // edx
+	struct TCmdParam2 *v3; // edx
 	unsigned char *v4; // ebx
 	char *v5; // esi
 	int *v6; // ecx
@@ -3146,16 +3133,16 @@ int __fastcall On_MONSTDAMAGE(struct TCmdLocParam1 *pCmd, int pnum)
 		v4 = (unsigned char *)&plr[v2].plrlevel;
 		if ( currlevel == *(_DWORD *)v4 )
 		{
-			v5 = &monster[*(unsigned short *)&pCmd->x].mWhoHit;
+			v5 = &monster[pCmd->wParam1].mWhoHit;
 			*v5 |= 1 << v2;
-			v6 = &monster[*(unsigned short *)&pCmd->x]._mhitpoints;
+			v6 = &monster[pCmd->wParam1]._mhitpoints;
 			if ( *v6 )
 			{
-				*v6 -= (unsigned short)v3->wParam1;
-				v7 = &monster[*(unsigned short *)&v3->x]._mhitpoints;
+				*v6 -= (unsigned short)v3->wParam2;
+				v7 = &monster[v3->wParam1]._mhitpoints;
 				if ( *v7 >> 6 < 64 )
 					*v7 = 64;
-				delta_monster_hp(*(unsigned short *)&v3->x, monster[*(unsigned short *)&v3->x]._mhitpoints, *v4);
+				delta_monster_hp(v3->wParam1, monster[v3->wParam1]._mhitpoints, *v4);
 			}
 		}
 	}
@@ -3239,7 +3226,7 @@ int __fastcall On_OPENDOOR(struct TCmdParam1 *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-void __fastcall delta_sync_object(int oi, unsigned char bCmd, unsigned char bLevel)
+void __fastcall delta_sync_object(int oi, BYTE bCmd, BYTE bLevel)
 {
 	if ( gbMaxPlayers != 1 )
 	{
@@ -3492,17 +3479,14 @@ int __fastcall On_PLAYER_JOINLEVEL(struct TCmdLocParam1 *pCmd, int pnum)
 // 676194: using guessed type char gbBufferMsgs;
 // 67862C: using guessed type char gbActivePlayers;
 
-int __fastcall On_ACTIVATEPORTAL(DJunk *pCmd, int pnum)
+int __fastcall On_ACTIVATEPORTAL(struct TCmdLocParam3 *pCmd, int pnum)
 {
 	signed int v2; // ebx
 	int v3; // edi
-	DJunk *v4; // esi
+	struct TCmdLocParam3 *v4; // esi
 	int v5; // eax
 	int v6; // edx
 	int v7; // ecx
-	int v8; // ST0C_4
-	int v9; // ST08_4
-	int v10; // ST04_4
 
 	v2 = 1;
 	v3 = pnum;
@@ -3515,11 +3499,11 @@ int __fastcall On_ACTIVATEPORTAL(DJunk *pCmd, int pnum)
 	{
 		ActivatePortal(
 			pnum,
-			(unsigned char)pCmd->portal[0].y,
-			(unsigned char)pCmd->portal[0].level,
-			*(unsigned short *)&pCmd->portal[0].ltype,
-			*(unsigned short *)&pCmd->portal[1].x,
-			*(unsigned short *)&pCmd->portal[1].level);
+			pCmd->x,
+			pCmd->y,
+			pCmd->wParam1,
+			pCmd->wParam2,
+			pCmd->wParam3);
 		if ( v3 != myplr )
 		{
 			if ( currlevel )
@@ -3543,7 +3527,7 @@ int __fastcall On_ACTIVATEPORTAL(DJunk *pCmd, int pnum)
 					while ( v7 < nummissiles );
 					if ( v2 )
 LABEL_19:
-						AddWarpMissile(v3, (unsigned char)v4->portal[0].y, (unsigned char)v4->portal[0].level);
+						AddWarpMissile(v3, v4->x, v4->y);
 				}
 				else
 				{
@@ -3555,21 +3539,13 @@ LABEL_19:
 				AddInTownPortal(v3);
 			}
 		}
-		_LOBYTE(v5) = v4->portal[1].level;
-		_LOBYTE(v6) = v4->portal[0].y;
-		v8 = v5;
-		_LOBYTE(v5) = v4->portal[1].x;
-		v9 = v5;
-		_LOBYTE(v5) = v4->portal[0].ltype;
-		v10 = v5;
-		_LOBYTE(v5) = v4->portal[0].level;
-		delta_open_portal(v3, v6, v5, v10, v9, v8);
+		delta_open_portal(v3, v4->x, v4->y, v4->wParam1, v4->wParam2, v4->wParam3);
 	}
 	return 9;
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-void __fastcall delta_open_portal(int pnum, int x, int y, int bLevel, int bLType, int bSetLvl)
+void __fastcall delta_open_portal(int pnum, BYTE x, BYTE y, BYTE bLevel, BYTE bLType, BYTE bSetLvl)
 {
 	int v6; // eax
 
@@ -3733,7 +3709,7 @@ int __fastcall On_SYNCQUEST(struct TCmdQuest *pCmd, int pnum)
 // 67618C: using guessed type char sgbDeltaChanged;
 // 676194: using guessed type char gbBufferMsgs;
 
-int __fastcall On_ENDSHIELD(int a1, int pnum)
+int __fastcall On_ENDSHIELD(struct TCmd *pCmd, int pnum)
 {
 	int v2; // ebx
 	int i; // esi
@@ -3784,7 +3760,7 @@ int __fastcall On_CHEAT_SPELL_LEVEL(struct TCmd *pCmd, int pnum)
 }
 #endif
 
-int __cdecl On_DEBUG()
+int __cdecl On_DEBUG(struct TCmd *pCmd)
 {
 	return 1;
 }
@@ -3813,7 +3789,7 @@ int __fastcall On_NOVA(struct TCmdLoc *pCmd, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-int __fastcall On_SETSHIELD(int unused, int pnum)
+int __fastcall On_SETSHIELD(struct TCmd *pCmd, int pnum)
 {
 	int result; // eax
 
@@ -3824,7 +3800,7 @@ int __fastcall On_SETSHIELD(int unused, int pnum)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-int __fastcall On_REMSHIELD(int unused, int pnum)
+int __fastcall On_REMSHIELD(struct TCmd *pCmd, int pnum)
 {
 	int result; // eax
 

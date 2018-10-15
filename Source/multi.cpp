@@ -21,10 +21,10 @@ int sglTimeoutStart; // weak
 int sgdwPlayerLeftReasonTbl[MAX_PLRS];
 char pkdata_678658[4100];
 unsigned int sgdwGameLoops; // idb
-UCHAR gbMaxPlayers; // weak
+BYTE gbMaxPlayers; // weak
 char sgbTimeout; // weak
 char szPlayerName[128];
-char gbDeltaSender; // weak
+BYTE gbDeltaSender; // weak
 int sgbNetInited; // weak
 int player_state[MAX_PLRS];
 
@@ -121,7 +121,7 @@ void __fastcall NetRecvPlrData(TPkt *pkt)
 	pkt->hdr.bdex = plr[myplr]._pBaseDex;
 }
 
-void __fastcall NetSendHiPri(unsigned char *pbMsg, unsigned char bLen)
+void __fastcall NetSendHiPri(BYTE *pbMsg, BYTE bLen)
 {
 	unsigned char *v2; // edi
 	unsigned char v3; // bl
@@ -552,7 +552,7 @@ void __cdecl multi_process_network_packets()
 	{
 		do
 		{
-			++dword_676198;
+			++pkt_counter;
 			multi_clear_left_tbl();
 			v1 = pkt;
 			v2 = pkt;
@@ -627,7 +627,7 @@ void __cdecl multi_process_network_packets()
 		nthread_terminate_game("SNetReceiveMsg");
 }
 // 676194: using guessed type char gbBufferMsgs;
-// 676198: using guessed type int dword_676198;
+// 676198: using guessed type int pkt_counter;
 
 void __fastcall multi_handle_all_packets(int players, TPkt *packet, int a3)
 {
@@ -775,7 +775,7 @@ void __stdcall multi_handle_events(_SNETEVENT *pEvt)
 				gbSomebodyWonGameKludge = 1;
 			sgbSendDeltaTbl[pEvt->playerid] = 0;
 			dthread_remove_player(pEvt->playerid);
-			if ( (unsigned char)gbDeltaSender == pEvt->playerid )
+			if ( gbDeltaSender == pEvt->playerid )
 				gbDeltaSender = 4;
 			break;
 		case EVENT_TYPE_PLAYER_MESSAGE:

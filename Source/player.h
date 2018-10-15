@@ -133,7 +133,7 @@ extern int VitalityTbl[3];
 extern int ToBlkTbl[3];
 extern char *ClassStrTblOld[3];
 extern int MaxStats[3][4];
-extern int ExpLvlsTbl[51];
+extern int ExpLvlsTbl[MAXCHARLEVEL];
 extern char *ClassStrTbl[3];
 extern unsigned char fix[9];
 

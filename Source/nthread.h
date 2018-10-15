@@ -7,7 +7,7 @@ extern char byte_679704; // weak
 extern int gdwMsgLenTbl[4];
 extern int gdwDeltaBytesSec; // weak
 extern char nthread_should_run; // weak
-extern int gdwTurnsInTransit; // weak
+extern DWORD gdwTurnsInTransit; // weak
 extern int glpMsgTbl[4];
 extern unsigned int glpNThreadId;
 extern char sgbSyncCountdown; // weak
@@ -30,7 +30,7 @@ void __fastcall nthread_start(bool set_turn_upper_bit);
 unsigned int __stdcall nthread_handler(void *a1);
 void __cdecl nthread_cleanup();
 void __fastcall nthread_ignore_mutex(bool bStart);
-bool __cdecl nthread_has_500ms_passed();
+BOOL __cdecl nthread_has_500ms_passed();
 
 /* rdata */
 
