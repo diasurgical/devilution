@@ -214,6 +214,7 @@ void TermMsg(char *pszFmt, ...)
 	FreeDlg();
 	if ( pszFmt )
 		MsgBox(pszFmt, arglist);
+	va_end(arglist);
 	init_cleanup(0);
 	exit(1);
 }
@@ -254,6 +255,7 @@ void DrawDlg(char *pszFmt, ...)
 
 	va_start(arglist, pszFmt);
 	wvsprintf(text, pszFmt, arglist);
+	va_end(arglist);
 	SDrawMessageBox(text, "Diablo", MB_TASKMODAL|MB_ICONEXCLAMATION);
 }
 
