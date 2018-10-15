@@ -50,7 +50,7 @@ void __fastcall NetSendCmdChItem(BOOL bHiPri, BYTE bLoc);
 void __fastcall NetSendCmdDelItem(BOOL bHiPri, BYTE bLoc);
 void __fastcall NetSendCmdDItem(BOOL bHiPri, int ii);
 void __fastcall NetSendCmdDamage(BOOL bHiPri, BYTE bPlr, DWORD dwDam);
-void __fastcall NetSendCmdString(int player_mask, const char *pszStr);
+void __fastcall NetSendCmdString(int pmask, const char *pszStr);
 void __fastcall RemovePlrPortal(int pnum);
 int __fastcall ParseCmd(int pnum, TCmd *pCmd);
 void __fastcall DeltaImportData(BYTE cmd, DWORD recv_offset);

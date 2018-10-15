@@ -1322,7 +1322,7 @@ void __fastcall NetSendCmdDamage(BOOL bHiPri, BYTE bPlr, DWORD dwDam)
 		NetSendLoPri((unsigned char *)&cmd, 6u);
 }
 
-void __fastcall NetSendCmdString(int player_mask, const char *pszStr)
+void __fastcall NetSendCmdString(int pmask, const char *pszStr)
 {
 	const char *v2; // esi
 	int v3; // edi
@@ -1330,7 +1330,7 @@ void __fastcall NetSendCmdString(int player_mask, const char *pszStr)
 	TCmdString cmd; // [esp+Ch] [ebp-54h]
 
 	v2 = pszStr;
-	v3 = player_mask;
+	v3 = pmask;
 	dwStrLen = strlen(pszStr);
 	cmd.bCmd = CMD_STRING;
 	strcpy(cmd.str, v2);
