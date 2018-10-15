@@ -5512,7 +5512,7 @@ void __fastcall CreateMagicItem(int x, int y, int imisc, int icurs, int sendmsg,
 	}
 }
 
-bool __fastcall GetItemRecord(int dwSeed, int CI, int indx)
+bool __fastcall GetItemRecord(int dwSeed, WORD CI, int indx)
 {
 	int v3; // edi
 	int *v4; // ebx
@@ -5569,7 +5569,7 @@ void __fastcall NextItemRecord(int i)
 	}
 }
 
-void __fastcall SetItemRecord(int dwSeed, int CI, int indx)
+void __fastcall SetItemRecord(int dwSeed, WORD CI, int indx)
 {
 	int i; // ecx
 
@@ -5583,7 +5583,7 @@ void __fastcall SetItemRecord(int dwSeed, int CI, int indx)
 	}
 }
 
-void __fastcall PutItemRecord(int seed, int ci, int index)
+void __fastcall PutItemRecord(int seed, WORD ci, int index)
 {
 	int v3; // edi
 	int *v4; // ebx

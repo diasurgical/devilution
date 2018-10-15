@@ -43,7 +43,7 @@ int VitalityTbl[3] = { 25, 20, 20 };
 int ToBlkTbl[3] = { 30, 20, 10 };
 char *ClassStrTblOld[3] = { "Warrior", "Rogue", "Sorceror" }; // unused
 int MaxStats[3][4] = { { 250, 50, 60, 100 }, { 55, 70, 250, 80 }, { 45, 250, 85, 80 } };
-int ExpLvlsTbl[51] = {
+int ExpLvlsTbl[MAXCHARLEVEL] = {
     0,
     2000,
     4620,

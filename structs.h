@@ -693,218 +693,218 @@ struct PortalStruct {
 
 #pragma pack(push, 1)
 struct TCmd {
-    unsigned char bCmd;
+    BYTE bCmd;
 };
 
 struct TCmdLoc {
-    unsigned char bCmd;
-    unsigned char x;
-    unsigned char y;
+    BYTE bCmd;
+    BYTE x;
+    BYTE y;
 };
 
 struct TCmdLocParam1 {
-    unsigned char bCmd;
-    unsigned char x;
-    unsigned char y;
-    unsigned short wParam1;
+    BYTE bCmd;
+    BYTE x;
+    BYTE y;
+    WORD wParam1;
 };
 
 struct TCmdLocParam2 {
-    unsigned char bCmd;
-    unsigned char x;
-    unsigned char y;
-    unsigned short wParam1;
-    unsigned short wParam2;
+    BYTE bCmd;
+    BYTE x;
+    BYTE y;
+    WORD wParam1;
+    WORD wParam2;
 };
 
 struct TCmdLocParam3 {
-    unsigned char bCmd;
-    unsigned char x;
-    unsigned char y;
-    unsigned short wParam1;
-    unsigned short wParam2;
-    unsigned short wParam3;
+    BYTE bCmd;
+    BYTE x;
+    BYTE y;
+    WORD wParam1;
+    WORD wParam2;
+    WORD wParam3;
 };
 
 struct TCmdParam1 {
-    unsigned char bCmd;
-    unsigned short wParam1;
+    BYTE bCmd;
+    WORD wParam1;
 };
 
 struct TCmdParam2 {
-    unsigned char bCmd;
-    unsigned short wParam1;
-    unsigned short wParam2;
+    BYTE bCmd;
+    WORD wParam1;
+    WORD wParam2;
 };
 
 struct TCmdParam3 {
-    unsigned char bCmd;
-    unsigned short wParam1;
-    unsigned short wParam2;
-    unsigned short wParam3;
+    BYTE bCmd;
+    WORD wParam1;
+    WORD wParam2;
+    WORD wParam3;
 };
 
 struct TCmdGolem {
-    unsigned char bCmd;
-    unsigned char _mx;
-    unsigned char _my;
-    unsigned char _mdir;
-    unsigned char _menemy;
+    BYTE bCmd;
+    BYTE _mx;
+    BYTE _my;
+    BYTE _mdir;
+    BYTE _menemy;
     int _mhitpoints;
-    unsigned char _currlevel;
+    BYTE _currlevel;
 };
 
 struct TCmdQuest {
-    unsigned char bCmd;
-    unsigned char q;
-    unsigned char qstate;
-    unsigned char qlog;
-    unsigned char qvar1;
+    BYTE bCmd;
+    BYTE q;
+    BYTE qstate;
+    BYTE qlog;
+    BYTE qvar1;
 };
 
 struct TCmdGItem {
-    unsigned char bCmd;
-    unsigned char bMaster;
-    unsigned char bPnum;
-    unsigned char bCursitem;
-    unsigned char bLevel;
-    unsigned char x;
-    unsigned char y;
-    unsigned short wIndx;
-    unsigned short wCI;
-    int dwSeed;
-    unsigned char bId;
-    unsigned char bDur;
-    unsigned char bMDur;
-    unsigned char bCh;
-    unsigned char bMCh;
-    unsigned short wValue;
-    int dwBuff;
-    int dwTime;
+    BYTE bCmd;
+    BYTE bMaster;
+    BYTE bPnum;
+    BYTE bCursitem;
+    BYTE bLevel;
+    BYTE x;
+    BYTE y;
+    WORD wIndx;
+    WORD wCI;
+    DWORD dwSeed;
+    BYTE bId;
+    BYTE bDur;
+    BYTE bMDur;
+    BYTE bCh;
+    BYTE bMCh;
+    WORD wValue;
+    DWORD dwBuff;
+    DWORD dwTime;
 };
 
 struct TCmdPItem {
-    char bCmd; /* unsigned */
-    unsigned char x;
-    unsigned char y;
-    unsigned short wIndx;
-    unsigned short wCI;
-    int dwSeed;
-    unsigned char bId;
-    unsigned char bDur;
-    unsigned char bMDur;
-    unsigned char bCh;
-    unsigned char bMCh;
-    unsigned short wValue;
-    int dwBuff;
+    BYTE bCmd;
+    BYTE x;
+    BYTE y;
+    WORD wIndx;
+    WORD wCI;
+    DWORD dwSeed;
+    BYTE bId;
+    BYTE bDur;
+    BYTE bMDur;
+    BYTE bCh;
+    BYTE bMCh;
+    WORD wValue;
+    DWORD dwBuff;
 };
 
 struct TCmdChItem {
-    unsigned char bCmd;
-    unsigned char bLoc;
-    unsigned short wIndx;
-    unsigned short wCI;
-    int dwSeed;
-    unsigned char bId;
+    BYTE bCmd;
+    BYTE bLoc;
+    WORD wIndx;
+    WORD wCI;
+    DWORD dwSeed;
+    BYTE bId;
 };
 
 struct TCmdDelItem {
-    unsigned char bCmd;
-    unsigned char bLoc;
+    BYTE bCmd;
+    BYTE bLoc;
 };
 
 struct TCmdDamage {
-    unsigned char bCmd;
-    unsigned char bPlr;
-    int dwDam;
+    BYTE bCmd;
+    BYTE bPlr;
+    DWORD dwDam;
 };
 
 struct TCmdPlrInfoHdr {
-    unsigned char bCmd;
-    unsigned short wOffset;
-    unsigned short wBytes;
+    BYTE bCmd;
+    WORD wOffset;
+    WORD wBytes;
 };
 
 struct TCmdString {
-    unsigned char bCmd;
-    char str[80];
+    BYTE bCmd;
+    char str[MAX_SEND_STR_LEN];
 };
 
 struct TFakeCmdPlr {
-    unsigned char bCmd;
-    unsigned char bPlr;
+    BYTE bCmd;
+    BYTE bPlr;
 };
 
 struct TFakeDropPlr {
-    unsigned char bCmd;
-    unsigned char bPlr;
-    int dwReason;
+    BYTE bCmd;
+    BYTE bPlr;
+    DWORD dwReason;
 };
 
 struct TSyncHeader {
-    unsigned char bCmd;
-    unsigned char bLevel;
-    unsigned short wLen;
-    unsigned char bObjId;
-    unsigned char bObjCmd;
-    unsigned char bItemI;
-    unsigned char bItemX;
-    unsigned char bItemY;
-    unsigned short wItemIndx;
-    unsigned short wItemCI;
-    int dwItemSeed;
-    unsigned char bItemId;
-    unsigned char bItemDur;
-    unsigned char bItemMDur;
-    unsigned char bItemCh;
-    unsigned char bItemMCh;
-    unsigned short wItemVal;
-    unsigned int dwItemBuff;
-    unsigned char bPInvLoc;
-    unsigned short wPInvIndx;
-    unsigned short wPInvCI;
-    int dwPInvSeed;
-    unsigned char bPInvId;
+    BYTE bCmd;
+    BYTE bLevel;
+    WORD wLen;
+    BYTE bObjId;
+    BYTE bObjCmd;
+    BYTE bItemI;
+    BYTE bItemX;
+    BYTE bItemY;
+    WORD wItemIndx;
+    WORD wItemCI;
+    DWORD dwItemSeed;
+    BYTE bItemId;
+    BYTE bItemDur;
+    BYTE bItemMDur;
+    BYTE bItemCh;
+    BYTE bItemMCh;
+    WORD wItemVal;
+    DWORD dwItemBuff;
+    BYTE bPInvLoc;
+    WORD wPInvIndx;
+    WORD wPInvCI;
+    DWORD dwPInvSeed;
+    BYTE bPInvId;
 };
 
 struct TSyncMonster {
-    unsigned char _mndx;
-    unsigned char _mx;
-    unsigned char _my;
-    unsigned char _menemy;
-    unsigned char _mdelta;
+    BYTE _mndx;
+    BYTE _mx;
+    BYTE _my;
+    BYTE _menemy;
+    BYTE _mdelta;
 };
 
 struct TPktHdr {
-    unsigned char px;
-    unsigned char py;
-    unsigned char targx;
-    unsigned char targy;
+    BYTE px;
+    BYTE py;
+    BYTE targx;
+    BYTE targy;
     int php;
     int pmhp;
-    unsigned char bstr;
-    unsigned char bmag;
-    unsigned char bdex;
-    unsigned short wCheck;
-    unsigned short wLen;
+    BYTE bstr;
+    BYTE bmag;
+    BYTE bdex;
+    WORD wCheck;
+    WORD wLen;
 };
 
 struct TPkt {
     TPktHdr hdr;
-    unsigned char body[493];
+    BYTE body[493];
 };
 
 struct DMonsterStr {
-    char _mx; /* these might be unsigned */
-    char _my;
-    char _mdir;
-    char _menemy;
-    char _mactive;
+    BYTE _mx;
+    BYTE _my;
+    BYTE _mdir;
+    BYTE _menemy;
+    BYTE _mactive;
     int _mhitpoints;
 };
 
 struct DObjectStr {
-    unsigned char bCmd;
+    BYTE bCmd;
 };
 
 struct DLevel {
@@ -914,21 +914,21 @@ struct DLevel {
 };
 
 struct LocalLevel {
-    unsigned char automapsv[40][40];
+    BYTE automapsv[40][40];
 };
 
 struct DPortal {
-    unsigned char x;
-    unsigned char y;
-    unsigned char level;
-    unsigned char ltype;
-    unsigned char setlvl;
+    BYTE x;
+    BYTE y;
+    BYTE level;
+    BYTE ltype;
+    BYTE setlvl;
 };
 
 struct MultiQuests {
-    unsigned char qstate;
-    unsigned char qlog;
-    unsigned char qvar1;
+    BYTE qstate;
+    BYTE qlog;
+    BYTE qvar1;
 };
 
 struct DJunk {
@@ -939,8 +939,8 @@ struct DJunk {
 
 struct TMegaPkt {
     TMegaPkt *pNext;
-    int dwSpaceLeft;
-    unsigned char data[32000];
+    DWORD dwSpaceLeft;
+    BYTE data[32000];
 };
 
 //////////////////////////////////////////////////

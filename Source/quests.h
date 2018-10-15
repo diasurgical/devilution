@@ -40,7 +40,7 @@ void __cdecl QuestlogUp();
 void __cdecl QuestlogDown();
 void __cdecl QuestlogEnter();
 void __cdecl QuestlogESC();
-void __fastcall SetMultiQuest(int q, int s, unsigned char l, int v1);
+void __fastcall SetMultiQuest(int q, int s, int l, int v1);
 
 /* rdata */
 extern QuestData questlist[MAXQUESTS];
