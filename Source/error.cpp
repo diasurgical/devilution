@@ -3,9 +3,9 @@
 #include "../types.h"
 
 char msgtable[80];
-char msgdelay; // weak
-char msgflag; // weak
-char msgcnt; // weak
+char msgdelay;
+char msgflag;
+char msgcnt;
 
 char *MsgStrings[44] =
 {
@@ -69,18 +69,15 @@ void __fastcall InitDiabloMsg(char e)
 	msgflag = msgtable[0];
 	msgdelay = 70;
 }
-// 52B9F0: using guessed type char msgdelay;
-// 52B9F1: using guessed type char msgflag;
-// 52B9F2: using guessed type char msgcnt;
 
 void __cdecl ClrDiabloMsg()
 {
+	for (int i = 0; i < sizeof(msgtable); i++)
+		msgtable[i] = 0;
+
 	msgflag = 0;
 	msgcnt = 0;
-	memset(msgtable, 0, sizeof(msgtable));
 }
-// 52B9F1: using guessed type char msgflag;
-// 52B9F2: using guessed type char msgcnt;
 
 void __cdecl DrawDiabloMsg()
 {
@@ -197,6 +194,3 @@ LABEL_27:
 			msgflag = msgtable[msgcnt];
 	}
 }
-// 52B9F0: using guessed type char msgdelay;
-// 52B9F1: using guessed type char msgflag;
-// 52B9F2: using guessed type char msgcnt;
