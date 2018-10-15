@@ -9,7 +9,7 @@ char msgcnt; // weak
 
 char *MsgStrings[44] =
 {
-  &empty_string,
+  "",
   "No automap available in town",
   "No multiplayer functions in demo",
   "Direct Sound Creation Failed",
@@ -57,30 +57,17 @@ char *MsgStrings[44] =
 
 void __fastcall InitDiabloMsg(char e)
 {
-	int i; // edx
-	bool v2; // sf
-	unsigned char v3; // of
+	for ( int i = 0; i < msgcnt; i++ ) {
+		if ( msgtable[i] == e )
+			return;
+	}
 
-	i = 0;
-	if ( msgcnt <= 0 )
-	{
-LABEL_4:
-		v3 = __OFSUB__(msgcnt, 80);
-		v2 = (char)(msgcnt - 80) < 0;
-		msgtable[msgcnt] = e;
-		if ( v2 ^ v3 )
-			++msgcnt;
-		msgdelay = 70;
-		msgflag = msgtable[0];
-	}
-	else
-	{
-		while ( msgtable[i] != e )
-		{
-			if ( ++i >= msgcnt )
-				goto LABEL_4;
-		}
-	}
+	msgtable[msgcnt] = e;
+	if ( msgcnt < (BYTE)sizeof(msgtable) )
+		msgcnt++;
+
+	msgflag = msgtable[0];
+	msgdelay = 70;
 }
 // 52B9F0: using guessed type char msgdelay;
 // 52B9F1: using guessed type char msgflag;
