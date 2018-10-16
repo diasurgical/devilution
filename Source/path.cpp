@@ -207,32 +207,23 @@ BOOL __fastcall path_solid_pieces(PATHNODE *pPath, int dx, int dy)
  *
  * return 0 if we ran out of preallocated nodes to use, else 1
  */
-int __fastcall path_get_path(BOOL (__fastcall *PosOk)(int, int, int), int PosOkArg, PATHNODE *pPath, int x, int y)
+BOOL __fastcall path_get_path(BOOL (__fastcall *PosOk)(int, int, int), int PosOkArg, PATHNODE *pPath, int x, int y)
 {
-	int dir; // eax
-	int dx; // esi
-	int dy; // edi
-	int i; // [esp+14h] [ebp-4h]
+	int dx, dy;
+	int i;
+	BOOL ok;
 
-	dir = 0;
-	for ( i = 0; ; dir = i )
-	{
-		dx = pPath->x + pathxdir[dir];
-		dy = pPath->y + pathydir[dir];
-		if ( !PosOk(PosOkArg, dx, dy) )
-			break;
-		if ( path_solid_pieces(pPath, dx, dy) )
-			goto LABEL_8;
-LABEL_9:
-		if ( ++i >= 8 )
-			return 1;
+	for ( i = 0; i < 8; i++ ) {
+		dx = pPath->x + pathxdir[i];
+		dy = pPath->y + pathydir[i];
+		ok = PosOk(PosOkArg, dx, dy);
+		if ( ok && path_solid_pieces(pPath, dx, dy) || !ok && dx == x && dy == y ) {
+			if ( !path_parent_path(pPath, dx, dy, x, y) )
+				return FALSE;
+		}
 	}
-	if ( dx != x || dy != y )
-		goto LABEL_9;
-LABEL_8:
-	if ( path_parent_path(pPath, dx, dy, x, y) )
-		goto LABEL_9;
-	return 0;
+
+	return TRUE;
 }
 
 /* add a step from pPath to (dx,dy), return 1 if successful, and update the
