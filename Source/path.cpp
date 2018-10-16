@@ -119,21 +119,12 @@ int __fastcall FindPath(BOOL (__fastcall *PosOk)(int, int, int), int PosOkArg, i
 /* heuristic, estimated cost from (sx,sy) to (dx,dy) */
 int __fastcall path_get_h_cost(int sx, int sy, int dx, int dy)
 {
-	int min, max;
 	int delta_x = abs(sx - dx);
 	int delta_y = abs(sy - dy);
 
-	if ( delta_x < delta_y ) {
-		min = delta_x;
-	} else {
-		min = delta_y;
-	}
+	int min = delta_x < delta_y ? delta_x : delta_y;
+	int max = delta_x > delta_y ? delta_x : delta_y;
 
-	if ( delta_x > delta_y ) {
-		max = delta_x;
-	} else {
-		max = delta_y;
-	}
 	// see path_check_equal for why this is times 2
 	return 2 * (min + max);
 }
@@ -275,7 +266,7 @@ BOOL __fastcall path_parent_path(PATHNODE *pPath, int dx, int dy, int sx, int sy
 			// case 3: (dx,dy) is totally new
 			dxdy = path_new_step();
 			if ( !dxdy )
-				return 0;
+				return FALSE;
 			dxdy->Parent = pPath;
 			dxdy->g = next_g;
 			dxdy->h = path_get_h_cost(dx, dy, sx, sy);
@@ -292,7 +283,7 @@ BOOL __fastcall path_parent_path(PATHNODE *pPath, int dx, int dy, int sx, int sy
 			pPath->Child[i] = dxdy;
 		}
 	}
-	return 1;
+	return TRUE;
 }
 
 /* return a node for (dx,dy) on the frontier, or NULL if not found */
@@ -317,16 +308,24 @@ PATHNODE *__fastcall path_get_node2(int dx, int dy)
  * distance) */
 void __fastcall path_next_node(PATHNODE *pPath)
 {
-	if ( path_2_nodes->NextNode ) {
-		while ( path_2_nodes->NextNode ) {
-			if ( path_2_nodes->NextNode->f >= pPath->f )
+	PATHNODE *current; // edx
+	PATHNODE *next; // eax
+
+	current = path_2_nodes;
+	next = path_2_nodes->NextNode;
+	if ( next )
+	{
+		do
+		{
+			if ( next->f >= pPath->f )
 				break;
-			path_2_nodes = path_2_nodes->NextNode;
-			path_2_nodes->NextNode = path_2_nodes->NextNode->NextNode;
+			current = next;
+			next = next->NextNode;
 		}
-		pPath->NextNode = path_2_nodes->NextNode;
+		while ( next );
+		pPath->NextNode = next;
 	}
-	path_2_nodes->NextNode = pPath;
+	current->NextNode = pPath;
 }
 
 /* update all path costs using depth-first search starting at pPath */
