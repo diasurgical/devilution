@@ -231,40 +231,35 @@ BOOL __fastcall path_get_path(BOOL (__fastcall *PosOk)(int, int, int), int PosOk
  *
  * return 1 if step successfully added, 0 if we ran out of nodes to use
  */
-int __fastcall path_parent_path(PATHNODE *pPath, int dx, int dy, int sx, int sy)
+BOOL __fastcall path_parent_path(PATHNODE *pPath, int dx, int dy, int sx, int sy)
 {
-	PATHNODE *pPath2; // edi, pointless copy
-	int next_g; // ebx
+	int next_g;
 
-	PATHNODE *dxdy_frontier; // esi
-	signed int empty_slot1; // eax
-	struct PATHNODE **pPath_child_ptr1; // ecx
-	char dxdy_h; // al
+	PATHNODE *dxdy_frontier;
+	int empty_slot1;
+	struct PATHNODE **pPath_child_ptr1;
+	char dxdy_h;
 
-	PATHNODE *dxdy_visited; // esi
-	signed int empty_slot2; // eax
-	struct PATHNODE **pPath_child_ptr2; // ecx
-	char dxdy_f; // al
+	PATHNODE *dxdy_visited;
+	int empty_slot2;
+	struct PATHNODE **pPath_child_ptr2;
+	char dxdy_f;
 
-	PATHNODE *result; // eax
-	PATHNODE *dxdy_new; // esi
-	char h_new; // al
-	signed int empty_slot3; // ecx
-	struct PATHNODE **pPath_child_ptr3; // eax
+	PATHNODE *result;
+	PATHNODE *dxdy_new;
+	char h_new;
+	int empty_slot3;
+	struct PATHNODE **pPath_child_ptr3;
 
-	int dx2; // [esp+Ch] [ebp-4h], pointless copy
-
-	dx2 = dx;
-	pPath2 = pPath;
 	next_g = pPath->g + path_check_equal(pPath, dx, dy);
 
 	// 3 cases to consider
 	// case 1: (dx,dy) is already on the frontier
-	dxdy_frontier = path_get_node1(dx2, dy);
+	dxdy_frontier = path_get_node1(dx, dy);
 	if ( dxdy_frontier )
 	{
 		empty_slot1 = 0;
-		pPath_child_ptr1 = pPath2->Child;
+		pPath_child_ptr1 = pPath->Child;
 		do
 		{
 			if ( !*pPath_child_ptr1 )
@@ -273,14 +268,14 @@ int __fastcall path_parent_path(PATHNODE *pPath, int dx, int dy, int sx, int sy)
 			++pPath_child_ptr1;
 		}
 		while ( empty_slot1 < 8 );
-		pPath2->Child[empty_slot1] = dxdy_frontier;
+		pPath->Child[empty_slot1] = dxdy_frontier;
 		if ( next_g < dxdy_frontier->g )
 		{
-			if ( path_solid_pieces(pPath2, dx2, dy) )
+			if ( path_solid_pieces(pPath, dx, dy) )
 			{
 				// we'll explore it later, just update
 				dxdy_h = dxdy_frontier->h;
-				dxdy_frontier->Parent = pPath2;
+				dxdy_frontier->Parent = pPath;
 				dxdy_frontier->g = next_g;
 				dxdy_frontier->f = next_g + dxdy_h;
 			}
@@ -289,11 +284,11 @@ int __fastcall path_parent_path(PATHNODE *pPath, int dx, int dy, int sx, int sy)
 	else
 	{
 		// case 2: (dx,dy) was already visited
-		dxdy_visited = path_get_node2(dx2, dy);
+		dxdy_visited = path_get_node2(dx, dy);
 		if ( dxdy_visited )
 		{
 			empty_slot2 = 0;
-			pPath_child_ptr2 = pPath2->Child;
+			pPath_child_ptr2 = pPath->Child;
 			do
 			{
 				if ( !*pPath_child_ptr2 )
@@ -302,12 +297,12 @@ int __fastcall path_parent_path(PATHNODE *pPath, int dx, int dy, int sx, int sy)
 				++pPath_child_ptr2;
 			}
 			while ( empty_slot2 < 8 );
-			pPath2->Child[empty_slot2] = dxdy_visited;
-			if ( next_g < dxdy_visited->g && path_solid_pieces(pPath2, dx2, dy) )
+			pPath->Child[empty_slot2] = dxdy_visited;
+			if ( next_g < dxdy_visited->g && path_solid_pieces(pPath, dx, dy) )
 			{
 				// update the node
 				dxdy_f = next_g + dxdy_visited->h;
-				dxdy_visited->Parent = pPath2;
+				dxdy_visited->Parent = pPath;
 				dxdy_visited->g = next_g;
 				dxdy_visited->f = dxdy_f;
 				// already explored, so re-update others starting from that node
@@ -321,17 +316,17 @@ int __fastcall path_parent_path(PATHNODE *pPath, int dx, int dy, int sx, int sy)
 			dxdy_new = result;
 			if ( !result )
 				return 0;
-			result->Parent = pPath2;
+			result->Parent = pPath;
 			result->g = next_g;
-			h_new = path_get_h_cost(dx2, dy, sx, sy);
+			h_new = path_get_h_cost(dx, dy, sx, sy);
 			dxdy_new->h = h_new;
 			dxdy_new->f = next_g + h_new;
-			dxdy_new->x = dx2;
+			dxdy_new->x = dx;
 			dxdy_new->y = dy;
 			// add it to the frontier
 			path_next_node(dxdy_new);
 			empty_slot3 = 0;
-			pPath_child_ptr3 = pPath2->Child;
+			pPath_child_ptr3 = pPath->Child;
 			do
 			{
 				if ( !*pPath_child_ptr3 )
@@ -340,7 +335,7 @@ int __fastcall path_parent_path(PATHNODE *pPath, int dx, int dy, int sx, int sy)
 				++pPath_child_ptr3;
 			}
 			while ( empty_slot3 < 8 );
-			pPath2->Child[empty_slot3] = dxdy_new;
+			pPath->Child[empty_slot3] = dxdy_new;
 		}
 	}
 	return 1;
