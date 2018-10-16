@@ -234,108 +234,66 @@ BOOL __fastcall path_get_path(BOOL (__fastcall *PosOk)(int, int, int), int PosOk
 BOOL __fastcall path_parent_path(PATHNODE *pPath, int dx, int dy, int sx, int sy)
 {
 	int next_g;
-
-	PATHNODE *dxdy_frontier;
-	int empty_slot1;
-	struct PATHNODE **pPath_child_ptr1;
-	char dxdy_h;
-
-	PATHNODE *dxdy_visited;
-	int empty_slot2;
-	struct PATHNODE **pPath_child_ptr2;
-	char dxdy_f;
-
-	PATHNODE *result;
-	PATHNODE *dxdy_new;
+	PATHNODE *dxdy;
+	int i;
 	char h_new;
-	int empty_slot3;
-	struct PATHNODE **pPath_child_ptr3;
 
 	next_g = pPath->g + path_check_equal(pPath, dx, dy);
 
 	// 3 cases to consider
 	// case 1: (dx,dy) is already on the frontier
-	dxdy_frontier = path_get_node1(dx, dy);
-	if ( dxdy_frontier )
-	{
-		empty_slot1 = 0;
-		pPath_child_ptr1 = pPath->Child;
-		do
-		{
-			if ( !*pPath_child_ptr1 )
+	dxdy = path_get_node1(dx, dy);
+	if ( dxdy ) {
+		for ( i = 0; i < 8; i++ ) {
+			if ( !pPath->Child[i] )
 				break;
-			++empty_slot1;
-			++pPath_child_ptr1;
 		}
-		while ( empty_slot1 < 8 );
-		pPath->Child[empty_slot1] = dxdy_frontier;
-		if ( next_g < dxdy_frontier->g )
-		{
-			if ( path_solid_pieces(pPath, dx, dy) )
-			{
+		pPath->Child[i] = dxdy;
+		if ( next_g < dxdy->g ) {
+			if ( path_solid_pieces(pPath, dx, dy) ) {
 				// we'll explore it later, just update
-				dxdy_h = dxdy_frontier->h;
-				dxdy_frontier->Parent = pPath;
-				dxdy_frontier->g = next_g;
-				dxdy_frontier->f = next_g + dxdy_h;
+				dxdy->Parent = pPath;
+				dxdy->g = next_g;
+				dxdy->f = next_g + dxdy->h;
 			}
 		}
-	}
-	else
-	{
+	} else {
 		// case 2: (dx,dy) was already visited
-		dxdy_visited = path_get_node2(dx, dy);
-		if ( dxdy_visited )
-		{
-			empty_slot2 = 0;
-			pPath_child_ptr2 = pPath->Child;
-			do
-			{
-				if ( !*pPath_child_ptr2 )
+		dxdy = path_get_node2(dx, dy);
+		if ( dxdy ) {
+			for ( i = 0; i < 8; i++ ) {
+				if ( !pPath->Child[i] )
 					break;
-				++empty_slot2;
-				++pPath_child_ptr2;
 			}
-			while ( empty_slot2 < 8 );
-			pPath->Child[empty_slot2] = dxdy_visited;
-			if ( next_g < dxdy_visited->g && path_solid_pieces(pPath, dx, dy) )
+			pPath->Child[i] = dxdy;
+			if ( next_g < dxdy->g && path_solid_pieces(pPath, dx, dy) )
 			{
 				// update the node
-				dxdy_f = next_g + dxdy_visited->h;
-				dxdy_visited->Parent = pPath;
-				dxdy_visited->g = next_g;
-				dxdy_visited->f = dxdy_f;
+				dxdy->Parent = pPath;
+				dxdy->g = next_g;
+				dxdy->f = next_g + dxdy->h;
 				// already explored, so re-update others starting from that node
-				path_set_coords(dxdy_visited);
+				path_set_coords(dxdy);
 			}
-		}
-		else
-		{
+		} else {
 			// case 3: (dx,dy) is totally new
-			result = path_new_step();
-			dxdy_new = result;
-			if ( !result )
+			dxdy = path_new_step();
+			if ( !dxdy )
 				return 0;
-			result->Parent = pPath;
-			result->g = next_g;
-			h_new = path_get_h_cost(dx, dy, sx, sy);
-			dxdy_new->h = h_new;
-			dxdy_new->f = next_g + h_new;
-			dxdy_new->x = dx;
-			dxdy_new->y = dy;
+			dxdy->Parent = pPath;
+			dxdy->g = next_g;
+			dxdy->h = path_get_h_cost(dx, dy, sx, sy);
+			dxdy->f = next_g + dxdy->h;
+			dxdy->x = dx;
+			dxdy->y = dy;
 			// add it to the frontier
-			path_next_node(dxdy_new);
-			empty_slot3 = 0;
-			pPath_child_ptr3 = pPath->Child;
-			do
-			{
-				if ( !*pPath_child_ptr3 )
+			path_next_node(dxdy);
+
+			for ( i = 0;i < 8; i++ ) {
+				if ( !pPath->Child[i] )
 					break;
-				++empty_slot3;
-				++pPath_child_ptr3;
 			}
-			while ( empty_slot3 < 8 );
-			pPath->Child[empty_slot3] = dxdy_new;
+			pPath->Child[i] = dxdy;
 		}
 	}
 	return 1;
