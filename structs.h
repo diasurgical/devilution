@@ -1421,7 +1421,7 @@ struct PkPlayerStruct {
 struct PATHNODE {
     char f;
     char h;
-    short g;
+    char g;
     int x;
     int y;
     struct PATHNODE *Parent;
