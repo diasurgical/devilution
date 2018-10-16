@@ -119,24 +119,23 @@ int __fastcall FindPath(BOOL (__fastcall *PosOk)(int, int, int), int PosOkArg, i
 /* heuristic, estimated cost from (sx,sy) to (dx,dy) */
 int __fastcall path_get_h_cost(int sx, int sy, int dx, int dy)
 {
-	int y;
-	int delta_x;
-	int delta_y;
-	int min_delta;
+	int min, max;
+	int delta_x = abs(sx - dx);
+	int delta_y = abs(sy - dy);
 
-	y = sy;
-	delta_x = abs(sx - dx);
-	delta_y = abs(y - dy);
-	// this is a pointless swap, it's just 2(delta_x+delta_y)
-	min_delta = delta_x;
-	if ( delta_x >= delta_y )
-	{
-		min_delta = delta_y;
-		if ( delta_x > delta_y )
-			delta_y = delta_x;
+	if ( delta_x < delta_y ) {
+		min = delta_x;
+	} else {
+		min = delta_y;
+	}
+
+	if ( delta_x > delta_y ) {
+		max = delta_x;
+	} else {
+		max = delta_y;
 	}
 	// see path_check_equal for why this is times 2
-	return 2 * (min_delta + delta_y);
+	return 2 * (min + max);
 }
 
 /* return 2 if pPath is horizontally/vertically aligned with (dx,dy), else 3
@@ -147,13 +146,10 @@ int __fastcall path_get_h_cost(int sx, int sy, int dx, int dy)
  */
 int __fastcall path_check_equal(PATHNODE *pPath, int dx, int dy)
 {
-	int result;
-
 	if ( pPath->x == dx || pPath->y == dy )
-		result = 2;
-	else
-		result = 3;
-	return result;
+		return 2;
+
+	return 3;
 }
 
 /* get the next node on the A* frontier to explore (estimated to be closest to
