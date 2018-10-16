@@ -182,53 +182,24 @@ PATHNODE *__cdecl GetNextPath()
  *
  *  return true if step is allowed
  */
-bool __fastcall path_solid_pieces(PATHNODE *pPath, int dx, int dy)
+BOOL __fastcall path_solid_pieces(PATHNODE *pPath, int dx, int dy)
 {
-	bool result; // eax
-	int dir; // ecx
-	int tile1; // ecx
-	int tile2; // edx
-
-	result = 1;
-	// this maps the four corner directions to 0,1,2,3
-	dir = path_directions[3 * (dy - pPath->y) - pPath->x + 4 + dx] - 5;
-	// and this is basically a switch
-	if ( !dir ) // (-1,-1)->0
-	{
-		result = 0;
-		if ( nSolidTable[dPiece[dx][dy + 1]] )
-			return result;
-		tile1 = dPiece[dx + 1][dy];
-		goto LABEL_13;
+	BOOL rv = TRUE;
+	switch ( path_directions[3 * (dy - pPath->y) + 3 - pPath->x + 1 + dx] ) {
+		case 5:
+			rv = !nSolidTable[dPiece[dx][dy + 1]] && !nSolidTable[dPiece[dx + 1][dy]];
+			break;
+		case 6:
+			rv = !nSolidTable[dPiece[dx][dy + 1]] && !nSolidTable[dPiece[dx - 1][dy]];
+			break;
+		case 7:
+			rv = !nSolidTable[dPiece[dx][dy - 1]] && !nSolidTable[dPiece[dx - 1][dy]];
+			break;
+		case 8:
+			rv = !nSolidTable[dPiece[dx + 1][dy]] && !nSolidTable[dPiece[dx][dy - 1]];
+			break;
 	}
-	if ( !--dir ) // (1,-1)->1
-	{
-		tile2 = dPiece[dx][dy + 1];
-		goto LABEL_9;
-	}
-	if ( !--dir ) // (1,1)->2
-	{
-		tile2 = dPiece[dx][dy-1]; /* check */
-LABEL_9:
-		result = 0;
-		if ( nSolidTable[tile2] )
-			return result;
-		tile1 = dPiece[dx-1][dy]; /* check */
-		goto LABEL_13;
-	}
-	if ( dir == 1 ) // (-1,1)->3
-	{
-		result = 0;
-		if ( !nSolidTable[dPiece[dx + 1][dy]] )
-		{
-			tile1 = dPiece[dx][dy-1]; /* check */
-LABEL_13:
-			if ( !nSolidTable[tile1] )
-				result = 1;
-			return result;
-		}
-	}
-	return result;
+	return rv;
 }
 
 /* perform a single step of A* bread-first search by trying to step in every
