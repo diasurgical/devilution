@@ -317,24 +317,16 @@ PATHNODE *__fastcall path_get_node2(int dx, int dy)
  * distance) */
 void __fastcall path_next_node(PATHNODE *pPath)
 {
-	PATHNODE *current; // edx
-	PATHNODE *next; // eax
-
-	current = path_2_nodes;
-	next = path_2_nodes->NextNode;
-	if ( next )
-	{
-		do
-		{
-			if ( next->f >= pPath->f )
+	if ( path_2_nodes->NextNode ) {
+		while ( path_2_nodes->NextNode ) {
+			if ( path_2_nodes->NextNode->f >= pPath->f )
 				break;
-			current = next;
-			next = next->NextNode;
+			path_2_nodes = path_2_nodes->NextNode;
+			path_2_nodes->NextNode = path_2_nodes->NextNode->NextNode;
 		}
-		while ( next );
-		pPath->NextNode = next;
+		pPath->NextNode = path_2_nodes->NextNode;
 	}
-	current->NextNode = pPath;
+	path_2_nodes->NextNode = pPath;
 }
 
 /* update all path costs using depth-first search starting at pPath */
@@ -376,27 +368,27 @@ void __fastcall path_set_coords(PATHNODE *pPath)
 /* push pPath onto the pnode_tblptr stack */
 void __fastcall path_push_active_step(PATHNODE *pPath)
 {
-	int stack_index; // eax
-
-	stack_index = gdwCurPathStep++;
+	int stack_index = gdwCurPathStep;
+	gdwCurPathStep++;
 	pnode_tblptr[stack_index] = pPath;
 }
 
 /* pop and return a node from the pnode_tblptr stack */
 PATHNODE *__cdecl path_pop_active_step()
 {
-	return pnode_tblptr[--gdwCurPathStep];
+	gdwCurPathStep--;
+	return pnode_tblptr[gdwCurPathStep];
 }
 
 /* zero one of the preallocated nodes and return a pointer to it, or NULL if
  * none are available */
 PATHNODE *__cdecl path_new_step()
 {
-	PATHNODE *new_node; // esi
-
 	if ( gdwCurNodes == 300 )
-		return 0;
-	new_node = &path_nodes[gdwCurNodes++];
-	memset(new_node, 0, 0x34u);
+		return NULL;
+
+	PATHNODE *new_node = &path_nodes[gdwCurNodes];
+	gdwCurNodes++;
+	memset(new_node, 0, sizeof(PATHNODE));
 	return new_node;
 }
