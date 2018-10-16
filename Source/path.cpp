@@ -298,24 +298,18 @@ BOOL __fastcall path_parent_path(PATHNODE *pPath, int dx, int dy, int sx, int sy
 /* return a node for (dx,dy) on the frontier, or NULL if not found */
 PATHNODE *__fastcall path_get_node1(int dx, int dy)
 {
-	PATHNODE *result; // eax
-
-	result = path_2_nodes;
-	do
+	PATHNODE *result = path_2_nodes;
+	while ( result && (result->x != dx || result->y != dy) )
 		result = result->NextNode;
-	while ( result && (result->x != dx || result->y != dy) );
 	return result;
 }
 
 /* return a node for (dx,dy) if it was visited, or NULL if not found */
 PATHNODE *__fastcall path_get_node2(int dx, int dy)
 {
-	PATHNODE *result; // eax
-
-	result = pnode_ptr;
-	do
+	PATHNODE *result = pnode_ptr;
+	while ( result && (result->x != dx || result->y != dy) )
 		result = result->NextNode;
-	while ( result && (result->x != dx || result->y != dy) );
 	return result;
 }
 
