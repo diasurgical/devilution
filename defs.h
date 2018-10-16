@@ -4,6 +4,7 @@
 #define DMAXY					40
 
 #define LIGHTSIZE				6912 // 27 * 256
+#define ROW_PITCH				768
 
 // must be unsigned to generate unsigned comparisons with pnum
 #define MAX_PLRS				4

@@ -4006,51 +4006,13 @@ LABEL_104:
 
 void __cdecl DrawUBack()
 {
-	char *v0; // edi
-	signed int v1; // edx
-	signed int v2; // ecx
-	int v3; // edi
-	signed int v4; // ecx
-	_BYTE *v5; // edi
-	signed int v6; // ecx
-
 	CelDecodeOnly(88, 487, pSTextBoxCels, 1, 271);
-	v0 = &gpBuffer->row[324].pixels[27];
-	v1 = 148;
-	do
-	{
-		v2 = 132;
-		do
-		{
-			*v0 = 0;
-			v0 += 2;
-			--v2;
-		}
-		while ( v2 );
-		*v0 = 0;
-		v3 = (int)(v0 - 1032);
-		v4 = 132;
-		do
-		{
-			v5 = (_BYTE *)(v3 + 1);
-			*v5 = 0;
-			v3 = (int)(v5 + 1);
-			--v4;
-		}
-		while ( v4 );
-		v0 = (char *)(v3 - 1032);
-		--v1;
-	}
-	while ( v1 );
-	v6 = 132;
-	do
-	{
-		*v0 = 0;
-		v0 += 2;
-		--v6;
-	}
-	while ( v6 );
-	*v0 = 0;
+
+#define TRANS_RECT_X 27
+#define TRANS_RECT_Y 28
+#define TRANS_RECT_WIDTH 265
+#define TRANS_RECT_HEIGHT 297
+#include "asm_trans_rect.inc"
 }
 
 void __fastcall PrintUString(int x, int y, int cjustflag, char *str, int col)

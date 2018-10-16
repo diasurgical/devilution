@@ -99,12 +99,6 @@ void __cdecl DrawDiabloMsg()
 {
 	int v0; // esi
 	signed int v1; // edi
-	char *v2; // edi
-	signed int v3; // edx
-	signed int v4; // ecx
-	int v5; // edi
-	signed int v6; // ecx
-	_BYTE *v7; // edi
 	int v8; // edi
 	signed int v9; // ebx
 	signed int v10; // eax
@@ -141,32 +135,13 @@ void __cdecl DrawDiabloMsg()
 		--v1;
 	}
 	while ( v1 );
-	v2 = &gpBuffer->row[203].pixels[104];
-	v3 = 27;
-	do
-	{
-		v4 = 216;
-		do
-		{
-			*v2 = 0;
-			v2 += 2;
-			--v4;
-		}
-		while ( v4 );
-		v5 = (int)(v2 - 1200);
-		v6 = 216;
-		do
-		{
-			v7 = (_BYTE *)(v5 + 1);
-			*v7 = 0;
-			v5 = (int)(v7 + 1);
-			--v6;
-		}
-		while ( v6 );
-		v2 = (char *)(v5 - 1200);
-		--v3;
-	}
-	while ( v3 );
+
+#define TRANS_RECT_X 104
+#define TRANS_RECT_Y 150
+#define TRANS_RECT_WIDTH 432
+#define TRANS_RECT_HEIGHT 54
+#include "asm_trans_rect.inc"
+
 	strcpy(tempstr, MsgStrings[msgflag]);
 	v8 = screen_y_times_768[342] + 165;
 	v9 = strlen(tempstr);
