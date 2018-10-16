@@ -332,35 +332,26 @@ void __fastcall path_next_node(PATHNODE *pPath)
 /* update all path costs using depth-first search starting at pPath */
 void __fastcall path_set_coords(PATHNODE *pPath)
 {
-	PATHNODE *PathOld; // edi
-	PATHNODE *PathAct; // esi
-	char next_g; // al
-	int i; // [esp+0h] [ebp-8h]
-	PATHNODE **child_ptr; // [esp+4h] [ebp-4h]
+	PATHNODE *PathOld;
+	PATHNODE *PathAct;
+	int i;
 
 	path_push_active_step(pPath);
-	while ( gdwCurPathStep )
-	{
+	while ( gdwCurPathStep ) {
 		PathOld = path_pop_active_step();
-		child_ptr = PathOld->Child;
-		for(i = 0; i < 8; i++)
-		{
-			PathAct = *child_ptr;
-			if ( !*child_ptr )
+		for(i = 0; i < 8; i++) {
+			PathAct = PathOld->Child[i];
+			if ( !PathAct )
 				break;
 
-			if ( PathOld->g + path_check_equal(PathOld, PathAct->x, PathAct->y) < PathAct->g )
-			{
-				if ( path_solid_pieces(PathOld, PathAct->x, PathAct->y) )
-				{
+			if ( PathOld->g + path_check_equal(PathOld, PathAct->x, PathAct->y) < PathAct->g ) {
+				if ( path_solid_pieces(PathOld, PathAct->x, PathAct->y) ) {
 					PathAct->Parent = PathOld;
-					next_g = PathOld->g + path_check_equal(PathOld, PathAct->x, PathAct->y);
-					PathAct->g = next_g;
-					PathAct->f = next_g + PathAct->h;
+					PathAct->g = PathOld->g + path_check_equal(PathOld, PathAct->x, PathAct->y);
+					PathAct->f = PathAct->g + PathAct->h;
 					path_push_active_step(PathAct);
 				}
 			}
-			++child_ptr;
 		}
 	}
 }
