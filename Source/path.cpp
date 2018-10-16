@@ -119,10 +119,10 @@ int __fastcall FindPath(BOOL (__fastcall *PosOk)(int, int, int), int PosOkArg, i
 /* heuristic, estimated cost from (sx,sy) to (dx,dy) */
 int __fastcall path_get_h_cost(int sx, int sy, int dx, int dy)
 {
-	int y; // esi
-	int delta_x; // edi
-	int delta_y; // eax
-	int min_delta; // ecx
+	int y;
+	int delta_x;
+	int delta_y;
+	int min_delta;
 
 	y = sy;
 	delta_x = abs(sx - dx);
@@ -147,7 +147,7 @@ int __fastcall path_get_h_cost(int sx, int sy, int dx, int dy)
  */
 int __fastcall path_check_equal(PATHNODE *pPath, int dx, int dy)
 {
-	int result; // [esp-4h] [ebp-4h]
+	int result;
 
 	if ( pPath->x == dx || pPath->y == dy )
 		result = 2;
@@ -161,15 +161,16 @@ int __fastcall path_check_equal(PATHNODE *pPath, int dx, int dy)
  */
 PATHNODE *__cdecl GetNextPath()
 {
-	PATHNODE *result; // eax
+	PATHNODE *result;
 
 	result = path_2_nodes->NextNode;
-	if ( result )
-	{
-		path_2_nodes->NextNode = result->NextNode;
-		result->NextNode = pnode_ptr->NextNode;
-		pnode_ptr->NextNode = result;
+	if ( !result ) {
+		return result;
 	}
+
+	path_2_nodes->NextNode = result->NextNode;
+	result->NextNode = pnode_ptr->NextNode;
+	pnode_ptr->NextNode = result;
 	return result;
 }
 
