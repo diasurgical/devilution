@@ -50,7 +50,7 @@ int numpanbtns; // weak
 void *pStatusPanel;
 char panelstr[256];
 int panelflag; // weak
-char byte_4B8B88[256];
+unsigned char splTrans[256];
 int initialDropGoldValue; // idb
 void *pSpellCels;
 int panbtndown; // weak
@@ -203,13 +203,13 @@ void __fastcall DrawSpellCel(int xp, int yp, char *Trans, int nCel, int w)
 	unsigned int v15; // ecx
 	int v18; // [esp+Ch] [ebp-Ch]
 	int _EAX;
-	char *_EBX;
+	unsigned char *_EBX;
 
 	v5 = &Trans[4 * nCel];
 	v6 = &Trans[*(_DWORD *)v5];
 	v7 = (char *)gpBuffer + screen_y_times_768[yp] + xp;
 	v18 = (int)&v6[*((_DWORD *)v5 + 1) - *(_DWORD *)v5];
-	_EBX = byte_4B8B88;
+	_EBX = splTrans;
 	do
 	{
 		v9 = w;
@@ -277,94 +277,57 @@ LABEL_12:
 
 void __fastcall SetSpellTrans(char t)
 {
-	signed int v1; // eax
-	signed int v2; // eax
-	signed int v3; // eax
-	char *v4; // ecx
-	signed int v5; // eax
-	char *v6; // ecx
-	signed int v7; // eax
-	char *v8; // ecx
-	signed int v9; // eax
-	char *v10; // ecx
+	int i;
 
-	if ( t == RSPLTYPE_SKILL )
-	{
-		v1 = 0;
-		do
-		{
-			byte_4B8B88[v1] = v1;
-			++v1;
-		}
-		while ( v1 < 128 );
+	if (t == RSPLTYPE_SKILL) {
+		for (i = 0; i < 128; i++)
+			splTrans[i] = i;
 	}
-	v2 = 128;
-	do
-	{
-		byte_4B8B88[v2] = v2;
-		++v2;
-	}
-	while ( v2 < 256 );
-	byte_4B8B88[255] = 0;
-	switch ( t )
-	{
+	for (i = 128; i < 256; i++)
+		splTrans[i] = i;
+	splTrans[255] = 0;
+
+	switch (t) {
 		case RSPLTYPE_SPELL:
-			byte_4B8B88[144] = -79;
-			byte_4B8B88[145] = -77;
-			byte_4B8B88[146] = -75;
-			v9 = 176;
-			do
-			{
-				v10 = &byte_4B8B88[v9 + 32];
-				byte_4B8B88[v9 - 16] = v9;
-				*(v10 - 16) = v9;
-				*v10 = v9++;
+			splTrans[PAL8_YELLOW] = PAL16_BLUE+1;
+			splTrans[PAL8_YELLOW+1] = PAL16_BLUE+3;
+			splTrans[PAL8_YELLOW+2] = PAL16_BLUE+5;
+			for (i = PAL16_BLUE; i < PAL16_BLUE+16; i++) {
+				splTrans[PAL16_BEIGE -PAL16_BLUE+i] = i;
+				splTrans[PAL16_YELLOW-PAL16_BLUE+i] = i;
+				splTrans[PAL16_ORANGE-PAL16_BLUE+i] = i;
 			}
-			while ( v9 < 192 );
-			break;
+			return;
 		case RSPLTYPE_SCROLL:
-			byte_4B8B88[144] = -95;
-			byte_4B8B88[145] = -93;
-			byte_4B8B88[146] = -91;
-			v7 = 160;
-			do
-			{
-				v8 = &byte_4B8B88[v7 + 48];
-				*(v8 - 16) = v7;
-				*v8 = v7++;
+			splTrans[PAL8_YELLOW] = PAL16_BEIGE+1;
+			splTrans[PAL8_YELLOW+1] = PAL16_BEIGE+3;
+			splTrans[PAL8_YELLOW+2] = PAL16_BEIGE+5;
+			for (i = PAL16_BEIGE; i < PAL16_BEIGE+16; i++) {
+				splTrans[PAL16_YELLOW-PAL16_BEIGE+i] = i;
+				splTrans[PAL16_ORANGE-PAL16_BEIGE+i] = i;
 			}
-			while ( v7 < 176 );
-			break;
+			return;
 		case RSPLTYPE_CHARGES:
-			byte_4B8B88[144] = -47;
-			byte_4B8B88[145] = -45;
-			byte_4B8B88[146] = -43;
-			v5 = 208;
-			do
-			{
-				v6 = &byte_4B8B88[v5 - 16];
-				*(v6 - 32) = v5;
-				*v6 = v5++;
+			splTrans[PAL8_YELLOW] = PAL16_ORANGE+1;
+			splTrans[PAL8_YELLOW+1] = PAL16_ORANGE+3;
+			splTrans[PAL8_YELLOW+2] = PAL16_ORANGE+5;
+			for (i = PAL16_ORANGE; i < PAL16_ORANGE+16; i++) {
+				splTrans[PAL16_BEIGE -PAL16_ORANGE+i] = i;
+				splTrans[PAL16_YELLOW-PAL16_ORANGE+i] = i;
 			}
-			while ( v5 < 224 );
-			break;
+			return;
 		case RSPLTYPE_INVALID:
-			byte_4B8B88[144] = -15;
-			byte_4B8B88[145] = -13;
-			byte_4B8B88[146] = -11;
-			v3 = 240;
-			do
-			{
-				v4 = &byte_4B8B88[v3 - 48];
-				*(v4 - 32) = v3;
-				*v4 = v3;
-				v4[16] = v3++;
+			splTrans[PAL8_YELLOW] = PAL16_GRAY+1;
+			splTrans[PAL8_YELLOW+1] = PAL16_GRAY+3;
+			splTrans[PAL8_YELLOW+2] = PAL16_GRAY+5;
+			for (i = PAL16_GRAY; i < PAL16_GRAY+15; i++) {
+				splTrans[PAL16_BEIGE -PAL16_GRAY+i] = i;
+				splTrans[PAL16_YELLOW-PAL16_GRAY+i] = i;
+				splTrans[PAL16_ORANGE-PAL16_GRAY+i] = i;
 			}
-			while ( v3 < 255 );
-			byte_4B8B88[175] = 0;
-			byte_4B8B88[207] = 0;
-			byte_4B8B88[223] = 0;
-			break;
+			splTrans[PAL16_BEIGE+15] = 0;
+			splTrans[PAL16_YELLOW+15] = 0;
+			splTrans[PAL16_ORANGE+15] = 0;
 	}
 }
 

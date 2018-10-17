@@ -50,7 +50,7 @@ extern int numpanbtns; // weak
 extern void *pStatusPanel;
 extern char panelstr[256];
 extern int panelflag; // weak
-extern char byte_4B8B88[256];
+extern unsigned char spell_trans[256];
 extern int initialDropGoldValue; // idb
 extern void *pSpellCels;
 extern int panbtndown; // weak
