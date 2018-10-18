@@ -82,8 +82,7 @@ private:
 
     static __forceinline void SDelete(T *node)
     {
-        //node->~T();
-        node->scalar_destruct();
+        node->~T();
         SMemFree(node, OBJECT_NAME(T), SLOG_OBJECT);
     }
 };
@@ -271,16 +270,17 @@ void TLink<T>::Unlink()
 }
 
 struct EXTERNMESSAGE {
-    LIST_LINK(EXTERNMESSAGE)
-    m_Link;
+    LIST_LINK(EXTERNMESSAGE) m_Link;
     char command[COMMAND_LEN];
     ~EXTERNMESSAGE()
     {
         // BUGFIX: this is already called by m_Link's destructor
         m_Link.Unlink();
     }
-    // compiler won't emit a scalar destructor, fake it
-    void *scalar_destruct(char release = 0);
+    static void operator delete(void *p) {
+        if (p)
+            SMemFree(p, "delete", SLOG_FUNCTION);
+    }
 };
 
 static TList<EXTERNMESSAGE> sgChat_Cmd;
@@ -323,11 +323,3 @@ void __fastcall msgcmd_add_server_cmd(const char *command)
     }
 }
 
-void *EXTERNMESSAGE::scalar_destruct(char release)
-{
-    this->~EXTERNMESSAGE();
-    if (release & 1 && this) {
-        SMemFree(this, "delete", SLOG_FUNCTION);
-    }
-    return this;
-}
