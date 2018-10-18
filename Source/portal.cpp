@@ -20,8 +20,8 @@ void __cdecl InitPortals()
 
 void __fastcall SetPortalStats(int i, BOOL o, int x, int y, int lvl, int lvltype)
 {
-    portal[i].x = x;
     portal[i].setlvl = FALSE;
+    portal[i].x = x;
     portal[i].y = y;
     portal[i].open = o;
     portal[i].level = lvl;
