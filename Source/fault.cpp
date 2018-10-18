@@ -32,7 +32,7 @@ LONG __stdcall TopLevelExceptionFilter(PEXCEPTION_POINTERS ExceptionInfo)
     log_dump_computer_info();
     PEXCEPTION_RECORD xcpt = ExceptionInfo->ExceptionRecord;
 
-    char szExceptionNameBuf[MAX_PATH]; // [esp+Ch] [ebp-210h]
+    char szExceptionNameBuf[MAX_PATH];
     char *pszExceptionName = exception_get_error_type(ExceptionInfo->ExceptionRecord->ExceptionCode, szExceptionNameBuf, sizeof(szExceptionNameBuf));
     log_printf("Exception code: %08X %s\r\n", xcpt->ExceptionCode, pszExceptionName);
 
@@ -60,7 +60,7 @@ LONG __stdcall TopLevelExceptionFilter(PEXCEPTION_POINTERS ExceptionInfo)
     exception_call_stack((void *)ctx->Eip, (STACK_FRAME *)ctx->Ebp);
 
     log_printf("Stack bytes:\r\n");
-    exception_hex_format((BYTE *)ctx->Esp, 0);
+    exception_hex_format((BYTE *)ctx->Esp, 768);
 
     log_printf("Code bytes:\r\n");
     exception_hex_format((BYTE *)ctx->Eip, 16);
@@ -75,12 +75,14 @@ LONG __stdcall TopLevelExceptionFilter(PEXCEPTION_POINTERS ExceptionInfo)
 
 void __fastcall exception_hex_format(BYTE *ptr, unsigned int numBytes)
 {
-    int i;
+    DWORD i;
 
     while (numBytes > 0) {
-        unsigned int bytesRead = 16;
+        DWORD bytesRead;
         if (numBytes < 16)
             bytesRead = numBytes;
+        else
+            bytesRead = 16;
 
         if (IsBadReadPtr(ptr, bytesRead))
             break;
@@ -96,8 +98,8 @@ void __fastcall exception_hex_format(BYTE *ptr, unsigned int numBytes)
                 log_printf(" ");
         }
 
-        for (i = 0; i < bytesRead; ++i) {
-            char c;
+        for (i = 0; i < bytesRead; i++) {
+            BYTE c;
             if (isprint(ptr[i]))
                 c = ptr[i];
             else
@@ -118,7 +120,7 @@ void __fastcall exception_unknown_module(LPCVOID lpAddress, LPSTR lpModuleName, 
     *sectionNum = 0;
     *sectionOffset = 0;
 
-    MEMORY_BASIC_INFORMATION memInfo; // [esp+Ch] [ebp-24h]
+    MEMORY_BASIC_INFORMATION memInfo;
     if (!VirtualQuery(lpAddress, &memInfo, sizeof(memInfo)))
         return;
 
@@ -136,10 +138,10 @@ void __fastcall exception_unknown_module(LPCVOID lpAddress, LPSTR lpModuleName, 
         if (ntOffset) {
             PIMAGE_NT_HEADERS ntHeader = (PIMAGE_NT_HEADERS)((DWORD)dosHeader + ntOffset);
             if (ntHeader->Signature == IMAGE_NT_SIGNATURE) {
-                DWORD numSections = ntHeader->FileHeader.NumberOfSections;
-                DWORD moduleOffset = (_BYTE *)lpAddress - (_BYTE *)dosHeader;
                 PIMAGE_SECTION_HEADER section = IMAGE_FIRST_SECTION(ntHeader);
-                for (int i = 0; i < numSections; ++i, ++section) {
+                DWORD numSections = ntHeader->FileHeader.NumberOfSections;
+                DWORD moduleOffset = (BYTE *)lpAddress - (BYTE *)dosHeader;
+                for (int i = 0; i < numSections; i++, section++) {
                     DWORD sectionSize = section->SizeOfRawData;
                     DWORD sectionAddress = section->VirtualAddress;
                     if (section->SizeOfRawData <= section->Misc.VirtualSize)
@@ -167,16 +169,16 @@ void __fastcall exception_call_stack(void *instr, STACK_FRAME *stackFrame)
         exception_unknown_module(instr, szModuleName, MAX_PATH, &sectionNumber, &sectionOffset);
         log_printf("%08X %08X %04X:%08X %s\r\n", instr, stackFrame, sectionNumber, sectionOffset, szModuleName);
 
-        if (IsBadWritePtr(stackFrame, 8u))
+        if (IsBadWritePtr(stackFrame, 8))
             break;
 
         instr = stackFrame->pCallRet;
         oldStackFrame = stackFrame;
         stackFrame = stackFrame->pNext;
 
-        if ((int)stackFrame % 4 != 0)
+        if ((DWORD)stackFrame % 4 != 0)
             break;
-    } while (stackFrame > oldStackFrame && !IsBadWritePtr(stackFrame, 8u));
+    } while (stackFrame > oldStackFrame && !IsBadWritePtr(stackFrame, 8));
 
     log_printf("\r\n");
 }
