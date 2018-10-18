@@ -1991,7 +1991,6 @@ void __fastcall StartNewLvl(int pnum, int fom, int lvl)
     }
 }
 // 5BB1ED: using guessed type char leveltype;
-// 5CCB10: using guessed type char setlvlnum;
 // 679660: using guessed type char gbMaxPlayers;
 
 void __fastcall RestartTownLvl(int pnum)

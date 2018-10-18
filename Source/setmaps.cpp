@@ -139,7 +139,7 @@ void __fastcall DRLG_SetMapTrans(char *sFileName)
 
 void __cdecl LoadSetMap()
 {
-	switch ( (UCHAR)setlvlnum )
+	switch ( setlvlnum )
 	{
 		case SL_SKELKING:
 			if ( quests[QTYPE_KING]._qactive == 1 )
@@ -203,4 +203,3 @@ void __cdecl LoadSetMap()
 			break;
 	}
 }
-// 5CCB10: using guessed type char setlvlnum;

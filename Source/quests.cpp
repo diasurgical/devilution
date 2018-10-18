@@ -264,7 +264,6 @@ LABEL_29:
 	}
 }
 // 5BB1ED: using guessed type char leveltype;
-// 5CCB10: using guessed type char setlvlnum;
 // 5CF31C: using guessed type char setlvltype;
 // 5CF31D: using guessed type char setlevel;
 // 679660: using guessed type char gbMaxPlayers;
@@ -880,7 +879,6 @@ LABEL_9:
 LABEL_10:
 	ReturnLvl = v0;
 }
-// 5CCB10: using guessed type char setlvlnum;
 
 void __cdecl GetReturnLvlPos()
 {
@@ -1025,7 +1023,6 @@ void __cdecl ResyncQuests()
 }
 // 5A5590: using guessed type char TransVal;
 // 5BB1ED: using guessed type char leveltype;
-// 5CCB10: using guessed type char setlvlnum;
 // 5CF31D: using guessed type char setlevel;
 // 5CF330: using guessed type int setpc_h;
 // 5CF334: using guessed type int setpc_w;

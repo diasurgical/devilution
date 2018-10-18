@@ -173,7 +173,6 @@ void __fastcall LoadGame(BOOL firstflag)
 }
 // 5256A0: using guessed type int gbProcessPlayers;
 // 5BB1ED: using guessed type char leveltype;
-// 5CCB10: using guessed type char setlvlnum;
 // 5CF31D: using guessed type char setlevel;
 
 char __cdecl BLoad()
@@ -287,7 +286,7 @@ void __cdecl SaveGame()
 
 	ISave('RETL');
 	OSave((unsigned char)setlevel);
-	WSave((unsigned char)setlvlnum);
+	WSave(setlvlnum);
 	WSave(currlevel);
 	WSave((unsigned char)leveltype);
 	WSave(ViewX);
@@ -419,7 +418,6 @@ void __cdecl SaveGame()
 	pfile_write_hero();
 }
 // 5BB1ED: using guessed type char leveltype;
-// 5CCB10: using guessed type char setlvlnum;
 // 5CF31D: using guessed type char setlevel;
 
 void __fastcall BSave(char v)
@@ -603,10 +601,9 @@ void __cdecl SaveLevel()
 	if(setlevel == 0)
 		plr[myplr]._pLvlVisited[currlevel] = 1;
 	else
-		plr[myplr]._pSLvlVisited[(unsigned char)setlvlnum] = 1;
+		plr[myplr]._pSLvlVisited[setlvlnum] = 1;
 }
 // 5BB1ED: using guessed type char leveltype;
-// 5CCB10: using guessed type char setlvlnum;
 // 5CF31D: using guessed type char setlevel;
 
 void __cdecl LoadLevel()

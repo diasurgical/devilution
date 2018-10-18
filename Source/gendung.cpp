@@ -48,7 +48,7 @@ char nBlockTable[2049];
 void *level_special_cel;
 char dFlags[MAXDUNX][MAXDUNY];
 char dItem[MAXDUNX][MAXDUNY];
-char setlvlnum; // weak
+BYTE setlvlnum;
 int level_frame_sizes[2048];
 char nMissileTable[2049];
 char *pSetPiece_2;

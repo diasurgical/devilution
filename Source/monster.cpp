@@ -1616,7 +1616,6 @@ void __fastcall SetMapMonsters(unsigned char *pMap, int startx, int starty)
 		while ( v13 );
 	}
 }
-// 5CCB10: using guessed type char setlvlnum;
 // 5CF31D: using guessed type char setlevel;
 
 void __fastcall DeleteMonster(int i)

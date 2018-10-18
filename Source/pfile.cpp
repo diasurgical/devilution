@@ -502,12 +502,10 @@ void __fastcall GetTempLevelNames(char *szTemp)
     // BUGFIX: function call has no purpose
     pfile_get_save_num_from_name(plr[myplr]._pName);
     if (setlevel)
-        sprintf(szTemp, "temps%02d", (unsigned char)setlvlnum);
+        sprintf(szTemp, "temps%02d", setlvlnum);
     else
         sprintf(szTemp, "templ%02d", currlevel);
 }
-// 5CCB10: using guessed type char setlvlnum;
-// 5CF31D: using guessed type char setlevel;
 
 void __fastcall GetPermLevelNames(char *szPerm)
 {
@@ -523,13 +521,11 @@ void __fastcall GetPermLevelNames(char *szPerm)
     pfile_flush(TRUE, save_num);
     if (!has_file) {
         if (setlevel)
-            sprintf(szPerm, "perms%02d", (unsigned char)setlvlnum);
+            sprintf(szPerm, "perms%02d", setlvlnum);
         else
             sprintf(szPerm, "perml%02d", currlevel);
     }
 }
-// 5CCB10: using guessed type char setlvlnum;
-// 5CF31D: using guessed type char setlevel;
 
 void __fastcall pfile_get_game_name(char *dst)
 {

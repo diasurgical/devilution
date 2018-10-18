@@ -1253,7 +1253,6 @@ LABEL_24:
 	}
 }
 // 5BB1ED: using guessed type char leveltype;
-// 5CCB10: using guessed type char setlvlnum;
 // 5CF31D: using guessed type char setlevel;
 
 void __cdecl CheckTriggers()

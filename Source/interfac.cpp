@@ -380,4 +380,3 @@ LABEL_31:
 			goto LABEL_33;
 	}
 }
-// 5CCB10: using guessed type char setlvlnum;

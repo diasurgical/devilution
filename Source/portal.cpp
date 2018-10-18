@@ -58,13 +58,12 @@ void __cdecl SyncPortals()
         else {
             int lvl = currlevel;
             if (setlevel)
-                lvl = (unsigned char)setlvlnum;
+                lvl = setlvlnum;
             if (portal[i].level == lvl)
                 AddWarpMissile(i, portal[i].x, portal[i].y);
         }
     }
 }
-// 5CCB10: using guessed type char setlvlnum;
 // 5CF31D: using guessed type char setlevel;
 
 void __fastcall AddInTownPortal(int i)
@@ -155,7 +154,6 @@ void __cdecl GetPortalLevel()
 	}
 }
 // 5BB1ED: using guessed type char leveltype;
-// 5CCB10: using guessed type char setlvlnum;
 // 5CF31D: using guessed type char setlevel;
 
 void __cdecl GetPortalLvlPos()

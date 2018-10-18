@@ -2115,7 +2115,6 @@ void __fastcall AddVilebook(int i)
 			object[i]._oAnimFrame = 4;
 	}
 }
-// 5CCB10: using guessed type char setlvlnum;
 // 5CF31D: using guessed type char setlevel;
 
 void __fastcall AddMagicCircle(int i)
@@ -4065,7 +4064,6 @@ LABEL_17:
 		}
 	}
 }
-// 5CCB10: using guessed type char setlvlnum;
 // 5CF31D: using guessed type char setlevel;
 // 676190: using guessed type int deltaload;
 
@@ -7146,5 +7144,4 @@ void __fastcall GetObjectStr(int i)
 	}
 }
 // 4B883C: using guessed type int infoclr;
-// 5CCB10: using guessed type char setlvlnum;
 // 5CF31D: using guessed type char setlevel;

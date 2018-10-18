@@ -2094,7 +2094,7 @@ LABEL_53:
 
 	InitMultiView();
 	IncProgress();
-	if ( firstflag || lvldir == 4 || !plr[myplr]._pSLvlVisited[(unsigned char)setlvlnum] )
+	if ( firstflag || lvldir == 4 || !plr[myplr]._pSLvlVisited[setlvlnum] )
 	{
 		InitItems();
 		SavePreLighting();
@@ -2145,7 +2145,6 @@ LABEL_72:
 }
 // 525738: using guessed type int setseed;
 // 5BB1ED: using guessed type char leveltype;
-// 5CCB10: using guessed type char setlvlnum;
 // 5CF31D: using guessed type char setlevel;
 // 679660: using guessed type char gbMaxPlayers;
 

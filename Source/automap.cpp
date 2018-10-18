@@ -688,13 +688,12 @@ void __cdecl DrawAutomapGame()
 		}
 	}
 	if ( setlevel )
-		PrintGameStr(8, nextline, quest_level_names[(UCHAR)setlvlnum], COL_GOLD);
+		PrintGameStr(8, nextline, quest_level_names[setlvlnum], COL_GOLD);
 	else if ( currlevel ) {
 		sprintf(desc, "Level: %i", currlevel);
 		PrintGameStr(8, nextline, desc, COL_GOLD);
 	}
 }
-// 5CCB10: using guessed type char setlvlnum;
 // 5CF31D: using guessed type char setlevel;
 
 void __fastcall SetAutomapView(int x, int y)

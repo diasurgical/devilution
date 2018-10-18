@@ -2482,7 +2482,6 @@ LABEL_12:
 		}
 	}
 }
-// 5CCB10: using guessed type char setlvlnum;
 // 5CF31D: using guessed type char setlevel;
 
 void __fastcall AddFirebolt(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int id, int dam)
@@ -3020,7 +3019,7 @@ LABEL_14:
 		{
 			_LOWORD(v21) = (unsigned char)leveltype;
 			v22 = v21;
-			_LOWORD(v21) = (unsigned char)setlvlnum;
+			_LOWORD(v21) = setlvlnum;
 			NetSendCmdLocParam3(TRUE, CMD_ACTIVATEPORTAL, v9, v11, v21, v22, 1);
 		}
 		else
@@ -3032,7 +3031,6 @@ LABEL_14:
 	}
 }
 // 5BB1ED: using guessed type char leveltype;
-// 5CCB10: using guessed type char setlvlnum;
 // 5CF31D: using guessed type char setlevel;
 
 void __fastcall AddFlash(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
