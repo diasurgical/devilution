@@ -21,7 +21,7 @@ void __cdecl InitPortals()
 void __fastcall SetPortalStats(int i, BOOL o, int x, int y, int lvl, int lvltype)
 {
     portal[i].x = x;
-    portal[i].setlvl = 0;
+    portal[i].setlvl = FALSE;
     portal[i].y = y;
     portal[i].open = o;
     portal[i].level = lvl;
@@ -39,7 +39,7 @@ void __fastcall AddWarpMissile(int i, int x, int y)
     if (mi != -1) {
         SetMissDir(mi, 1);
 
-        if (currlevel)
+        if (currlevel != 0)
             missile[mi]._mlid = AddLight(missile[mi]._mix, missile[mi]._miy, 15);
 
         missiledata[MIS_TOWN].mlSFX = LS_SENTINEL;
@@ -53,7 +53,7 @@ void __cdecl SyncPortals()
     for (i = 0; i < MAXPORTAL; i++) {
         if (!portal[i].open)
             continue;
-        if (!currlevel)
+        if (currlevel == 0)
             AddWarpMissile(i, WarpDropX[i], WarpDropY[i]);
         else {
             int lvl = currlevel;
@@ -76,7 +76,7 @@ void __fastcall ActivatePortal(int i, int x, int y, int lvl, int lvltype, BOOL s
 {
     portal[i].open = TRUE;
 
-    if (lvl) {
+    if (lvl != 0) {
         portal[i].x = x;
         portal[i].y = y;
         portal[i].level = lvl;
@@ -103,7 +103,7 @@ void __fastcall RemovePortalMissile(int id)
     int i;
     int mi;
 
-    for (i = 0; i < nummissiles; ++i) {
+    for (i = 0; i < nummissiles; i++) {
         mi = missileactive[i];
         if (missile[mi]._mitype == MIS_TOWN && missile[mi]._misource == id) {
             dFlags[missile[mi]._mix][missile[mi]._miy] &= ~DFLAG_MISSILE;
@@ -160,7 +160,7 @@ void __cdecl GetPortalLevel()
 
 void __cdecl GetPortalLvlPos()
 {
-    if (!currlevel) {
+    if (currlevel == 0) {
         ViewX = WarpDropX[portalindex] + 1;
         ViewY = WarpDropY[portalindex] + 1;
     } else {
