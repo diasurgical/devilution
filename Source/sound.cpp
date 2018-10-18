@@ -161,8 +161,8 @@ BOOL __fastcall sound_file_reload(TSnd *sound_file, LPDIRECTSOUNDBUFFER DSB)
     BOOL rv = FALSE;
 
     WOpenFile(sound_file->sound_path, &file, 0);
-    WSetFilePointer(file, sound_file->chunk.offset, 0, 0);
-    if (DSB->Lock(0, sound_file->chunk.len, &buf1, &size1, &buf2, &size2, 0) == DS_OK) {
+	WSetFilePointer(file, sound_file->chunk.dwOffset, 0, 0);
+	if (DSB->Lock(0, sound_file->chunk.dwSize, &buf1, &size1, &buf2, &size2, 0) == DS_OK) {
         WReadFile(file, buf1, size1);
         if (DSB->Unlock(buf1, size1, buf2, size2) == DS_OK) {
             rv = TRUE;
@@ -194,11 +194,11 @@ TSnd *__fastcall sound_file_load(char *path)
 
     LPVOID buf1, buf2;
     DWORD size1, size2;
-    HRESULT error_code = pSnd->DSB->Lock(0, pSnd->chunk.len, &buf1, &size1, &buf2, &size2, 0);
+	HRESULT error_code = pSnd->DSB->Lock(0, pSnd->chunk.dwSize, &buf1, &size1, &buf2, &size2, 0);
     if (error_code != DS_OK)
         DSErrMsg(error_code, 318, "C:\\Src\\Diablo\\Source\\SOUND.CPP");
 
-    memcpy(buf1, (char *)wave_file + pSnd->chunk.offset, size1);
+	memcpy(buf1, (char *)wave_file + pSnd->chunk.dwOffset, size1);
 
     error_code = pSnd->DSB->Unlock(buf1, size1, buf2, size2);
     if (error_code != DS_OK)
@@ -216,7 +216,7 @@ void __fastcall sound_CreateSoundBuffer(TSnd *sound_file)
     DSBUFFERDESC DSB;
     memset(&DSB, 0, sizeof(DSBUFFERDESC));
 
-    DSB.dwBufferBytes = sound_file->chunk.len;
+	DSB.dwBufferBytes = sound_file->chunk.dwSize;
     DSB.lpwfxFormat = &sound_file->fmt;
     DSB.dwSize = sizeof(DSBUFFERDESC);
     DSB.dwFlags = DSBCAPS_CTRLVOLUME | DSBCAPS_CTRLPAN | DSBCAPS_STATIC;

@@ -11,11 +11,11 @@ int __fastcall WSetFilePointer(HANDLE file1, int offset, HANDLE file2, int whenc
 BOOL __fastcall LoadWaveFormat(HANDLE hsFile, WAVEFORMATEX *pwfx);
 void *__fastcall AllocateMemFile(HANDLE hsFile, MEMFILE *pMemFile, DWORD dwPos);
 void __fastcall FreeMemFile(MEMFILE *pMemFile);
-BOOL __fastcall ReadWaveFile(MEMFILE *pMemFile, WAVEFORMATEX *pwfx, riff_section *chunk);
+BOOL __fastcall ReadWaveFile(MEMFILE *pMemFile, WAVEFORMATEX *pwfx, CKINFO *chunk);
 BOOL __fastcall ReadMemFile(MEMFILE *pMemFile, void *lpBuf, size_t length);
 void __fastcall FillMemFile(MEMFILE *pMemFile);
 int __fastcall SeekMemFile(MEMFILE *pMemFile, LONG lDist, DWORD dwMethod);
-BOOL __fastcall ReadWaveSection(MEMFILE *pMemFile, DWORD id, riff_section *chunk);
-void *__fastcall LoadWaveFile(HANDLE hsFile, WAVEFORMATEX *pwfx, riff_section *chunk);
+BOOL __fastcall ReadWaveSection(MEMFILE *pMemFile, DWORD id, CKINFO *chunk);
+void *__fastcall LoadWaveFile(HANDLE hsFile, WAVEFORMATEX *pwfx, CKINFO *chunk);
 
 #endif /* __WAVE_H__ */

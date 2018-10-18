@@ -438,14 +438,14 @@ struct MissileStruct {
 // effects/sound
 //////////////////////////////////////////////////
 
-struct riff_section {
-    unsigned int len;
-    int offset;
+struct CKINFO {
+    DWORD dwSize;
+    DWORD dwOffset;
 };
 
 struct TSnd {
     WAVEFORMATEX fmt;
-    riff_section chunk;
+    CKINFO chunk;
     char *sound_path;
     LPDIRECTSOUNDBUFFER DSB;
     int start_tc;
