@@ -8,18 +8,16 @@ char dFlagDbg[NUMLEVELS][MAXDUNX][MAXDUNY];
 
 void __cdecl LoadDebugGFX()
 {
-	if ( visiondebug )
-		pSquareCel = LoadFileInMem("Data\\Square.CEL", 0);
+    if (visiondebug)
+        pSquareCel = LoadFileInMem("Data\\Square.CEL", 0);
 }
 // 525720: using guessed type int visiondebug;
 
 void __cdecl FreeDebugGFX()
 {
-	void *v0; // ecx
-
-	v0 = pSquareCel;
-	pSquareCel = 0;
-	mem_free_dbg(v0);
+    void *temp = pSquareCel;
+    pSquareCel = NULL;
+    mem_free_dbg(temp);
 }
 
 void __cdecl CheckDungeonClear()
