@@ -113,10 +113,10 @@ void __fastcall FreeMemFile(MEMFILE *pMemFile)
 	mem_free_dbg(mem);
 }
 
-BOOL __fastcall ReadWaveFile(MEMFILE *pMemFile, WAVEFORMATEX *pwfx, riff_section *chunk)
+BOOL __fastcall ReadWaveFile(MEMFILE *pMemFile, WAVEFORMATEX *pwfx, CKINFO *chunk)
 {
 	MMCKINFO hdr;
-	riff_section fmt;
+	CKINFO fmt;
 	PCMWAVEFORMAT wf;
 
 	if (!ReadMemFile(pMemFile, &hdr, 12))
@@ -125,11 +125,11 @@ BOOL __fastcall ReadWaveFile(MEMFILE *pMemFile, WAVEFORMATEX *pwfx, riff_section
 		return FALSE;
 	if (!ReadWaveSection(pMemFile, MAKEFOURCC('f','m','t',' '), &fmt))
 		return FALSE;
-	if (fmt.len < sizeof(PCMWAVEFORMAT))
+	if (fmt.dwSize < sizeof(PCMWAVEFORMAT))
 		return FALSE;
 	if (!ReadMemFile(pMemFile, &wf, sizeof(wf)))
 		return FALSE;
-	if (SeekMemFile(pMemFile, fmt.len-sizeof(wf), FILE_CURRENT) == -1)
+	if (SeekMemFile(pMemFile, fmt.dwSize-sizeof(wf), FILE_CURRENT) == -1)
 		return FALSE;
 
 	pwfx->cbSize = 0;
@@ -191,7 +191,7 @@ int __fastcall SeekMemFile(MEMFILE *pMemFile, LONG lDist, DWORD dwMethod)
 	return pMemFile->offset;
 }
 
-BOOL __fastcall ReadWaveSection(MEMFILE *pMemFile, DWORD id, riff_section *chunk)
+BOOL __fastcall ReadWaveSection(MEMFILE *pMemFile, DWORD id, CKINFO *chunk)
 {
 	DWORD hdr[2];
 
@@ -204,12 +204,12 @@ BOOL __fastcall ReadWaveSection(MEMFILE *pMemFile, DWORD id, riff_section *chunk
 			return FALSE;
 	}
 
-	chunk->len = hdr[1];
-	chunk->offset = SeekMemFile(pMemFile, 0, FILE_CURRENT);
-	return chunk->offset != -1;
+	chunk->dwSize = hdr[1];
+	chunk->dwOffset = SeekMemFile(pMemFile, 0, FILE_CURRENT);
+	return chunk->dwOffset != (DWORD)-1;
 }
 
-void *__fastcall LoadWaveFile(HANDLE hsFile, WAVEFORMATEX *pwfx, riff_section *chunk)
+void *__fastcall LoadWaveFile(HANDLE hsFile, WAVEFORMATEX *pwfx, CKINFO *chunk)
 {
 	MEMFILE wave_file;
 
