@@ -2,29 +2,29 @@
 
 #include "../types.h"
 
-int doom_quest_time;  // weak
-int doom_stars_drawn; // weak
+int doom_quest_time;
+int doom_stars_drawn;
 void *pDoomCel;
-int doomflag;       // weak
-int DoomQuestState; // idb
+BOOL doomflag;
+int DoomQuestState;
 
 /*
 void __cdecl doom_reset_state()
 {
-	if ( DoomQuestState <= 0 ) {
-		DoomQuestState = 0;
-	}
+    if (DoomQuestState <= 0) {
+        DoomQuestState = 0;
+    }
 }
 
 void __cdecl doom_play_movie()
 {
-	if ( DoomQuestState < 36001 ) {
-		DoomQuestState++;
-		if ( DoomQuestState == 36001 ) {
-			PlayInGameMovie("gendata\\doom.smk");
-			DoomQuestState++;
-		}
-	}
+    if (DoomQuestState < 36001) {
+        DoomQuestState++;
+        if (DoomQuestState == 36001) {
+            PlayInGameMovie("gendata\\doom.smk");
+            DoomQuestState++;
+        }
+    }
 }
 */
 
@@ -60,26 +60,22 @@ void __cdecl doom_load_graphics()
     }
     LoadFileWithMem(tempstr, pDoomCel);
 }
-// 525750: using guessed type int doom_quest_time;
 
 void __cdecl doom_init()
 {
-    doomflag = 1;
+    doomflag = TRUE;
     doom_alloc_cel();
     doom_quest_time = doom_get_frame_from_time() == 31 ? 31 : 0;
     doom_load_graphics();
 }
-// 525750: using guessed type int doom_quest_time;
-// 52575C: using guessed type int doomflag;
 
 void __cdecl doom_close()
 {
     if (doomflag) {
-        doomflag = 0;
+        doomflag = FALSE;
         doom_cleanup();
     }
 }
-// 52575C: using guessed type int doomflag;
 
 void __cdecl doom_draw()
 {
@@ -101,6 +97,3 @@ void __cdecl doom_draw()
 
     CelDecodeOnly(64, 511, pDoomCel, 1, 640);
 }
-// 525750: using guessed type int doom_quest_time;
-// 525754: using guessed type int doom_stars_drawn;
-// 52575C: using guessed type int doomflag;

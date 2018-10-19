@@ -2,22 +2,22 @@
 
 #include "../types.h"
 
-int plr_lframe_size; // idb
-int plr_wframe_size; // idb
+int plr_lframe_size;
+int plr_wframe_size;
 UCHAR plr_gfx_flag = 0;
-int player_cpp_init_value; // weak
-int plr_aframe_size;       // idb
+int player_cpp_init_value;
+int plr_aframe_size;
 int myplr;
 PlayerStruct plr[MAX_PLRS];
-int plr_fframe_size; // idb
-int plr_qframe_size; // idb
-BOOL deathflag;      // idb
-int plr_hframe_size; // idb
-int plr_bframe_size; // idb
+int plr_fframe_size;
+int plr_qframe_size;
+BOOL deathflag;
+int plr_hframe_size;
+int plr_bframe_size;
 UCHAR plr_gfx_bflag = 0;
-int plr_sframe_size; // idb
-int deathdelay;      // weak
-int plr_dframe_size; // idb
+int plr_sframe_size;
+int deathdelay;
+int plr_dframe_size;
 
 const int player_inf = 0x7F800000; // weak
 const char ArmourChar[4] = { 'L', 'M', 'H', 0 };
@@ -35,14 +35,23 @@ char PlrGFXAnimLens[3][11] = {
     { 8, 18, 8, 4, 20, 16, 7, 20, 8, 10, 12 },
     { 8, 16, 8, 6, 20, 12, 8, 20, 8, 12, 8 }
 };
-int PWVel[4][3] = { { 2048, 1024, 512 }, { 2048, 1024, 512 }, { 2048, 1024, 512 }, { 8, 8, 8 } };
+int PWVel[4][3] = {
+    { 2048, 1024, 512 },
+    { 2048, 1024, 512 },
+    { 2048, 1024, 512 },
+    { 8, 8, 8 }
+};
 int StrengthTbl[3] = { 30, 20, 15 };
 int MagicTbl[3] = { 10, 15, 35 };
 int DexterityTbl[3] = { 20, 30, 15 };
 int VitalityTbl[3] = { 25, 20, 20 };
 int ToBlkTbl[3] = { 30, 20, 10 };
 char *ClassStrTblOld[3] = { "Warrior", "Rogue", "Sorceror" }; // unused
-int MaxStats[3][4] = { { 250, 50, 60, 100 }, { 55, 70, 250, 80 }, { 45, 250, 85, 80 } };
+int MaxStats[3][4] = {
+    { 250, 50, 60, 100 },
+    { 55, 70, 250, 80 },
+    { 45, 250, 85, 80 }
+};
 int ExpLvlsTbl[MAXCHARLEVEL] = {
     0,
     2000,
@@ -309,8 +318,6 @@ void __fastcall InitPlrGFXMem(int pnum)
 
     plr[pnum]._pGFXLoad = 0;
 }
-// 686438: using guessed type char plr_gfx_flag;
-// 69B7BC: using guessed type char plr_gfx_bflag;
 
 DWORD __fastcall GetPlrGFXSize(char *szCel)
 {
@@ -721,7 +728,6 @@ void __fastcall NextPlrLevel(int pnum)
         drawmanaflag = TRUE;
     }
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 void __fastcall AddPlrExperience(int pnum, int lvl, int exp)
 {
@@ -783,7 +789,6 @@ void __fastcall AddPlrExperience(int pnum, int lvl, int exp)
 
     NetSendCmdParam1(FALSE, CMD_PLRLEVEL, plr[myplr]._pLevel);
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 void __fastcall AddPlrMonstExper(int lvl, int exp, char pmask)
 {
@@ -908,9 +913,7 @@ void __fastcall InitPlayer(int pnum, BOOL FirstTime)
         ScrollInfo._sdir = 0;
     }
 }
-// 44B83C: could not find valid save-restore pair for edi
 // 52572C: using guessed type int leveldebug;
-// 69B7C4: using guessed type int deathdelay;
 
 void __cdecl InitMultiView()
 {
@@ -1725,8 +1728,6 @@ void __fastcall StartPlayerKill(int pnum, int earflag)
     }
     SetPlayerHitPoints(pnum, 0);
 }
-// 679660: using guessed type char gbMaxPlayers;
-// 69B7C4: using guessed type int deathdelay;
 
 void __fastcall PlrDeadItem(int pnum, struct ItemStruct *itm, int xx, int yy)
 {
@@ -1991,7 +1992,6 @@ void __fastcall StartNewLvl(int pnum, int fom, int lvl)
     }
 }
 // 5BB1ED: using guessed type char leveltype;
-// 679660: using guessed type char gbMaxPlayers;
 
 void __fastcall RestartTownLvl(int pnum)
 {
@@ -2036,7 +2036,6 @@ void __fastcall StartWarpLvl(int pnum, int pidx)
         PostMessage(ghMainWnd, WM_DIABWARPLVL, 0, 0);
     }
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 BOOL __fastcall PM_DoStand(int pnum)
 {
@@ -2641,7 +2640,6 @@ BOOL __fastcall PM_DoAttack(int pnum)
         return FALSE;
     }
 }
-// 484368: using guessed type int FriendlyMode;
 
 BOOL __fastcall PM_DoRangeAttack(int pnum)
 {
@@ -2915,7 +2913,6 @@ BOOL __fastcall PM_DoDeath(int pnum)
 
     return FALSE;
 }
-// 679660: using guessed type char gbMaxPlayers;
 // 69B7C4: using guessed type int deathdelay;
 
 BOOL __fastcall PM_DoNewLvl(int pnum)
@@ -3742,7 +3739,6 @@ void __fastcall SyncInitPlrPos(int pnum)
         ViewY = y;
     }
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 void __fastcall SyncInitPlr(int pnum)
 {
@@ -4072,4 +4068,3 @@ void __cdecl PlayDungMsgs()
     }
 }
 // 52A554: using guessed type int sfxdelay;
-// 679660: using guessed type char gbMaxPlayers;
