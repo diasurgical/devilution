@@ -3,7 +3,8 @@
 #include "../types.h"
 
 SpellData spelldata[MAX_SPELLS] = {
-//    sName,     sManaCost, sType,           sNameText,         sSkillText, sBookLvl, sStaffLvl, sTargeted, sTownSpell, sMinInt, sSFX,     sMissiles[3],                      sManaAdj, sMinMana, sStaffMin, sStaffMax, sBookCost, sStaffCost
+    // clang-format off
+    // sName,    sManaCost, sType,           sNameText,         sSkillText, sBookLvl, sStaffLvl, sTargeted, sTownSpell, sMinInt, sSFX,     sMissiles[3],                      sManaAdj, sMinMana, sStaffMin, sStaffMax, sBookCost, sStaffCost
     { 0,                 0, 0,               NULL,              NULL,              0,         0, FALSE,     FALSE,            0, 0,        { 0,               0,          0 },       0,        0,        40,        80,         0,          0 },
     { SPL_FIREBOLT,      6, STYPE_FIRE,      "Firebolt",        "Firebolt",        1,         1, TRUE,      FALSE,           15, IS_CAST2, { MIS_FIREBOLT,    0,          0 },       1,        3,        40,        80,      1000,         50 },
     { SPL_HEAL,          5, STYPE_MAGIC,     "Healing",         NULL,              1,         1, FALSE,     TRUE,            17, IS_CAST8, { MIS_HEAL,        0,          0 },       3,        1,        20,        40,      1000,         50 },
@@ -41,6 +42,7 @@ SpellData spelldata[MAX_SPELLS] = {
     { SPL_HEALOTHER,     5, STYPE_MAGIC,     "Heal Other",      NULL,              1,         1, FALSE,     TRUE,            17, IS_CAST8, { MIS_HEALOTHER,   0,          0 },       3,        1,        20,        40,      1000,         50 },
     { SPL_FLARE,        25, STYPE_MAGIC,     "Blood Star",      NULL,             14,        13, FALSE,     FALSE,           70, IS_CAST2, { MIS_FLARE,       0,          0 },       2,       14,        20,        60,     27500,       1800 },
     { SPL_BONESPIRIT,   24, STYPE_MAGIC,     "Bone Spirit",     NULL,              9,         7, FALSE,     FALSE,           34, IS_CAST2, { MIS_BONESPIRIT,  0,          0 },       1,       12,        20,        60,     11500,        800 }
+    // clang-format on
 };
 
 int __fastcall GetManaAmount(int id, int sn)

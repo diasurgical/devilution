@@ -24,280 +24,281 @@ const unsigned char counsmiss[4] = { MIS_FIREBOLT, MIS_CBOLT, MIS_LIGHTCTRL, MIS
 
 /* data */
 
-MonsterData monsterdata[112] =
-{
-	{ 128, 799,  "Monsters\\Zombie\\Zombie%c.CL2",  0, "Monsters\\Zombie\\Zombie%c%i.WAV",  0, 0, NULL,							  { 11, 24, 12, 6,  16, 0  }, { 4, 0, 0, 0, 0, 0 }, "Zombie",				  1,  3,  1,  4,	7,	AI_ZOMBIE,	0,   0, 10,  8,  2,  5,  0,   0,  0,  0,  5,  MC_UNDEAD, 72,  72,  0,	 3, 54	},
-	{ 128, 799,  "Monsters\\Zombie\\Zombie%c.CL2",  0, "Monsters\\Zombie\\Zombie%c%i.WAV",  0, 1, "Monsters\\Zombie\\Bluered.TRN",   { 11, 24, 12, 6,  16, 0  }, { 4, 0, 0, 0, 0, 0 }, "Ghoul",				   2,  4,  2,  7,	11,   AI_ZOMBIE,	0,   1, 10,  8,  3,  10, 0,   0,  0,  0,  10, MC_UNDEAD, 72,  72,  0,	 3, 58	},
-	{ 128, 799,  "Monsters\\Zombie\\Zombie%c.CL2",  0, "Monsters\\Zombie\\Zombie%c%i.WAV",  0, 1, "Monsters\\Zombie\\Grey.TRN",	  { 11, 24, 12, 6,  16, 0  }, { 4, 0, 0, 0, 0, 0 }, "Rotting Carcass",		 2,  6,  4,  15,   25,   AI_ZOMBIE,	0,   2, 25,  8,  5,  15, 0,   0,  0,  0,  15, MC_UNDEAD, 72,  74,  0,	 3, 136   },
-	{ 128, 799,  "Monsters\\Zombie\\Zombie%c.CL2",  0, "Monsters\\Zombie\\Zombie%c%i.WAV",  0, 1, "Monsters\\Zombie\\Yellow.TRN",	{ 11, 24, 12, 6,  16, 0  }, { 4, 0, 0, 0, 0, 0 }, "Black Death",			 4,  8,  6,  25,   40,   AI_ZOMBIE,	0,   3, 30,  8,  6,  22, 0,   0,  0,  0,  20, MC_UNDEAD, 72,  76,  0,	 3, 240   },
-	{ 128, 543,  "Monsters\\FalSpear\\Phall%c.CL2", 1, "Monsters\\FalSpear\\Phall%c%i.WAV", 1, 1, "Monsters\\FalSpear\\FallenT.TRN", { 11, 11, 13, 11, 18, 13 }, { 3, 0, 0, 0, 0, 0 }, "Fallen One",			  1,  3,  1,  1,	4,	AI_FALLEN,	0,   0, 15,  7,  1,  3,  0,   5,  0,  0,  0,  MC_ANIMAL, 0,   0,   0,	 3, 46	},
-	{ 128, 543,  "Monsters\\FalSpear\\Phall%c.CL2", 1, "Monsters\\FalSpear\\Phall%c%i.WAV", 1, 1, "Monsters\\FalSpear\\Dark.TRN",	{ 11, 11, 13, 11, 18, 13 }, { 3, 0, 0, 0, 0, 0 }, "Carver",				  2,  5,  3,  4,	8,	AI_FALLEN,	0,   2, 20,  7,  2,  5,  0,   5,  0,  0,  5,  MC_ANIMAL, 0,   0,   0,	 3, 80	},
-	{ 128, 543,  "Monsters\\FalSpear\\Phall%c.CL2", 1, "Monsters\\FalSpear\\Phall%c%i.WAV", 1, 0, NULL,							  { 11, 11, 13, 11, 18, 13 }, { 3, 0, 0, 0, 0, 0 }, "Devil Kin",			   3,  7,  5,  12,   24,   AI_FALLEN,	0,   2, 25,  7,  3,  7,  0,   5,  0,  0,  10, MC_ANIMAL, 0,   2,   0,	 3, 155   },
-	{ 128, 543,  "Monsters\\FalSpear\\Phall%c.CL2", 1, "Monsters\\FalSpear\\Phall%c%i.WAV", 1, 1, "Monsters\\FalSpear\\Blue.TRN",	{ 11, 11, 13, 11, 18, 13 }, { 3, 0, 0, 0, 0, 0 }, "Dark One",				5,  9,  7,  20,   36,   AI_FALLEN,	0,   3, 30,  7,  4,  8,  0,   5,  0,  0,  15, MC_ANIMAL, 64,  68,  0,	 3, 255   },
-	{ 128, 553,  "Monsters\\SkelAxe\\SklAx%c.CL2",  1, "Monsters\\SkelAxe\\SklAx%c%i.WAV",  0, 1, "Monsters\\SkelAxe\\White.TRN",	{ 12, 8,  13, 6,  17, 16 }, { 5, 0, 0, 0, 0, 0 }, "Skeleton",				1,  3,  1,  2,	4,	AI_SKELSD,	0,   0, 20,  8,  1,  4,  0,   0,  0,  0,  0,  MC_UNDEAD, 72,  72,  0,	 3, 64	},
-	{ 128, 553,  "Monsters\\SkelAxe\\SklAx%c.CL2",  1, "Monsters\\SkelAxe\\SklAx%c%i.WAV",  0, 1, "Monsters\\SkelAxe\\Skelt.TRN",	{ 12, 8,  13, 6,  17, 16 }, { 4, 0, 0, 0, 0, 0 }, "Corpse Axe",			  2,  5,  2,  4,	7,	AI_SKELSD,	0,   1, 25,  8,  3,  5,  0,   0,  0,  0,  0,  MC_UNDEAD, 72,  72,  0,	 3, 68	},
-	{ 128, 553,  "Monsters\\SkelAxe\\SklAx%c.CL2",  1, "Monsters\\SkelAxe\\SklAx%c%i.WAV",  0, 0, NULL,							  { 12, 8,  13, 6,  17, 16 }, { 2, 0, 0, 0, 0, 0 }, "Burning Dead",			2,  6,  4,  8,	12,   AI_SKELSD,	0,   2, 30,  8,  3,  7,  0,   0,  0,  0,  5,  MC_UNDEAD, 74,  88,  0,	 3, 154   },
-	{ 128, 553,  "Monsters\\SkelAxe\\SklAx%c.CL2",  1, "Monsters\\SkelAxe\\SklAx%c%i.WAV",  0, 1, "Monsters\\SkelAxe\\Black.TRN",	{ 12, 8,  13, 6,  17, 16 }, { 3, 0, 0, 0, 0, 0 }, "Horror",				  4,  8,  6,  12,   20,   AI_SKELSD,	0,   3, 35,  8,  4,  9,  0,   0,  0,  0,  15, MC_UNDEAD, 76,  76,  0,	 3, 264   },
-	{ 128, 623,  "Monsters\\FalSword\\Fall%c.CL2",  1, "Monsters\\FalSword\\Fall%c%i.WAV",  1, 1, "Monsters\\FalSword\\FallenT.TRN", { 12, 12, 13, 11, 14, 15 }, { 3, 0, 0, 0, 0, 0 }, "Fallen One",			  1,  3,  1,  2,	5,	AI_FALLEN,	0,   0, 15,  8,  1,  4,  0,   5,  0,  0,  10, MC_ANIMAL, 0,   0,   0,	 3, 52	},
-	{ 128, 623,  "Monsters\\FalSword\\Fall%c.CL2",  1, "Monsters\\FalSword\\Fall%c%i.WAV",  1, 1, "Monsters\\FalSword\\Dark.TRN",	{ 12, 12, 13, 11, 14, 15 }, { 3, 0, 0, 0, 0, 0 }, "Carver",				  2,  5,  3,  5,	9,	AI_FALLEN,	0,   1, 20,  8,  2,  7,  0,   5,  0,  0,  15, MC_ANIMAL, 0,   0,   0,	 3, 90	},
-	{ 128, 623,  "Monsters\\FalSword\\Fall%c.CL2",  1, "Monsters\\FalSword\\Fall%c%i.WAV",  1, 0, NULL,							  { 12, 12, 13, 11, 14, 15 }, { 3, 0, 0, 0, 0, 0 }, "Devil Kin",			   3,  7,  5,  16,   24,   AI_FALLEN,	0,   2, 25,  8,  4,  10, 0,   5,  0,  0,  20, MC_ANIMAL, 0,   2,   0,	 3, 180   },
-	{ 128, 623,  "Monsters\\FalSword\\Fall%c.CL2",  1, "Monsters\\FalSword\\Fall%c%i.WAV",  1, 1, "Monsters\\FalSword\\Blue.TRN",	{ 12, 12, 13, 11, 14, 15 }, { 3, 0, 0, 0, 0, 0 }, "Dark One",				5,  9,  7,  24,   36,   AI_FALLEN,	0,   3, 30,  8,  4,  12, 0,   5,  0,  0,  25, MC_ANIMAL, 64,  68,  0,	 3, 280   },
-	{ 128, 410,  "Monsters\\Scav\\Scav%c.CL2",	  1, "Monsters\\Scav\\Scav%c%i.WAV",	  0, 0, NULL,							  { 12, 8,  12, 6,  20, 11 }, { 2, 0, 0, 0, 0, 0 }, "Scavenger",			   1,  4,  2,  3,	6,	AI_SCAV,	  0,   0, 20,  7,  1,  5,  0,   0,  0,  0,  10, MC_ANIMAL, 0,   2,   0,	 3, 80	},
-	{ 128, 410,  "Monsters\\Scav\\Scav%c.CL2",	  1, "Monsters\\Scav\\Scav%c%i.WAV",	  0, 1, "Monsters\\Scav\\ScavBr.TRN",	  { 12, 8,  12, 6,  20, 11 }, { 2, 0, 0, 0, 0, 0 }, "Plague Eater",			3,  6,  4,  12,   24,   AI_SCAV,	  0,   1, 30,  7,  1,  8,  0,   0,  0,  0,  20, MC_ANIMAL, 0,   4,   0,	 3, 188   },
-	{ 128, 410,  "Monsters\\Scav\\Scav%c.CL2",	  1, "Monsters\\Scav\\Scav%c%i.WAV",	  0, 1, "Monsters\\Scav\\ScavBe.TRN",	  { 12, 8,  12, 6,  20, 11 }, { 2, 0, 0, 0, 0, 0 }, "Shadow Beast",			4,  8,  6,  24,   36,   AI_SCAV,	  0,   2, 35,  7,  3,  12, 0,   0,  0,  0,  25, MC_ANIMAL, 64,  66,  0,	 3, 375   },
-	{ 128, 410,  "Monsters\\Scav\\Scav%c.CL2",	  1, "Monsters\\Scav\\Scav%c%i.WAV",	  0, 1, "Monsters\\Scav\\ScavW.TRN",	   { 12, 8,  12, 6,  20, 11 }, { 2, 0, 0, 0, 0, 0 }, "Bone Gasher",			 6,  10, 8,  28,   40,   AI_SCAV,	  0,   3, 35,  7,  5,  15, 0,   0,  0,  0,  30, MC_ANIMAL, 65,  68,  0,	 3, 552   },
-	{ 128, 567,  "Monsters\\SkelBow\\SklBw%c.CL2",  1, "Monsters\\SkelBow\\SklBw%c%i.WAV",  0, 1, "Monsters\\SkelBow\\White.TRN",	{ 9,  8,  16, 5,  16, 16 }, { 4, 0, 0, 0, 0, 0 }, "Skeleton",				2,  5,  3,  2,	4,	AI_SKELBOW,   0,   0, 15,  12, 1,  2,  0,   0,  0,  0,  0,  MC_UNDEAD, 72,  72,  0,	 3, 110   },
-	{ 128, 567,  "Monsters\\SkelBow\\SklBw%c.CL2",  1, "Monsters\\SkelBow\\SklBw%c%i.WAV",  0, 1, "Monsters\\SkelBow\\Skelt.TRN",	{ 9,  8,  16, 5,  16, 16 }, { 4, 0, 0, 0, 0, 0 }, "Corpse Bow",			  3,  7,  5,  8,	16,   AI_SKELBOW,   0,   1, 25,  12, 1,  4,  0,   0,  0,  0,  0,  MC_UNDEAD, 72,  72,  0,	 3, 210   },
-	{ 128, 567,  "Monsters\\SkelBow\\SklBw%c.CL2",  1, "Monsters\\SkelBow\\SklBw%c%i.WAV",  0, 0, NULL,							  { 9,  8,  16, 5,  16, 16 }, { 2, 0, 0, 0, 0, 0 }, "Burning Dead",			5,  9,  7,  10,   24,   AI_SKELBOW,   0,   2, 30,  12, 1,  6,  0,   0,  0,  0,  5,  MC_UNDEAD, 74,  88,  0,	 3, 364   },
-	{ 128, 567,  "Monsters\\SkelBow\\SklBw%c.CL2",  1, "Monsters\\SkelBow\\SklBw%c%i.WAV",  0, 1, "Monsters\\SkelBow\\Black.TRN",	{ 9,  8,  16, 5,  16, 16 }, { 3, 0, 0, 0, 0, 0 }, "Horror",				  7,  11, 9,  15,   45,   AI_SKELBOW,   0,   3, 35,  12, 2,  9,  0,   0,  0,  0,  15, MC_UNDEAD, 76,  76,  0,	 3, 594   },
-	{ 128, 575,  "Monsters\\SkelSd\\SklSr%c.CL2",   1, "Monsters\\SkelSd\\SklSr%c%i.WAV",   1, 1, "Monsters\\SkelSd\\White.TRN",	 { 13, 8,  12, 7,  15, 16 }, { 4, 0, 0, 0, 0, 0 }, "Skeleton Captain",		1,  4,  2,  3,	6,	AI_SKELSD,	0,   0, 20,  8,  2,  7,  0,   0,  0,  0,  10, MC_UNDEAD, 72,  72,  0,	 3, 90	},
-	{ 128, 575,  "Monsters\\SkelSd\\SklSr%c.CL2",   1, "Monsters\\SkelSd\\SklSr%c%i.WAV",   0, 1, "Monsters\\SkelSd\\Skelt.TRN",	 { 13, 8,  12, 7,  15, 16 }, { 4, 0, 0, 0, 0, 0 }, "Corpse Captain",		  2,  6,  4,  12,   20,   AI_SKELSD,	0,   1, 30,  8,  3,  9,  0,   0,  0,  0,  5,  MC_UNDEAD, 72,  72,  0,	 3, 200   },
-	{ 128, 575,  "Monsters\\SkelSd\\SklSr%c.CL2",   1, "Monsters\\SkelSd\\SklSr%c%i.WAV",   0, 0, NULL,							  { 13, 8,  12, 7,  15, 16 }, { 4, 0, 0, 0, 0, 0 }, "Burning Dead Captain",	4,  8,  6,  16,   30,   AI_SKELSD,	0,   2, 35,  8,  4,  10, 0,   0,  0,  0,  15, MC_UNDEAD, 74,  88,  0,	 3, 393   },
-	{ 128, 575,  "Monsters\\SkelSd\\SklSr%c.CL2",   1, "Monsters\\SkelSd\\SklSr%c%i.WAV",   0, 1, "Monsters\\SkelSd\\Black.TRN",	 { 13, 8,  12, 7,  15, 16 }, { 4, 0, 0, 0, 0, 0 }, "Horror Captain",		  6,  10, 8,  35,   50,   AI_SKELSD,	256, 3, 40,  8,  5,  14, 0,   0,  0,  0,  30, MC_UNDEAD, 76,  76,  0,	 3, 604   },
-	{ 128, 2000, "Monsters\\TSneak\\TSneak%c.CL2",  0, "Monsters\\TSneak\\Sneakl%c%i.WAV",  0, 0, NULL,							  { 13, 13, 15, 11, 16, 0  }, { 2, 0, 0, 0, 0, 0 }, "Invisible Lord",		  14, 14, 14, 278,  278,  AI_SKELSD,	256, 3, 65,  8,  16, 30, 0,   0,  0,  0,  60, MC_DEMON,  71,  71,  0,	 3, 2000  },
-	{ 128, 992,  "Monsters\\Sneak\\Sneak%c.CL2",	1, "Monsters\\Sneak\\Sneak%c%i.WAV",	0, 0, NULL,							  { 16, 8,  12, 8,  24, 15 }, { 2, 0, 0, 0, 0, 0 }, "Hidden",				  3,  8,  5,  8,	24,   AI_SNEAK,	 1,   0, 35,  8,  3,  6,  0,   0,  0,  0,  25, MC_DEMON,  0,   64,  0,	 3, 278   },
-	{ 128, 992,  "Monsters\\Sneak\\Sneak%c.CL2",	1, "Monsters\\Sneak\\Sneak%c%i.WAV",	0, 1, "Monsters\\Sneak\\Sneakv2.TRN",	{ 16, 8,  12, 8,  24, 15 }, { 2, 0, 0, 0, 0, 0 }, "Stalker",				 8,  12, 9,  30,   45,   AI_SNEAK,	 257, 1, 40,  8,  8,  16, 0,   0,  0,  0,  30, MC_DEMON,  0,   64,  0,	 3, 630   },
-	{ 128, 992,  "Monsters\\Sneak\\Sneak%c.CL2",	1, "Monsters\\Sneak\\Sneak%c%i.WAV",	0, 1, "Monsters\\Sneak\\Sneakv3.TRN",	{ 16, 8,  12, 8,  24, 15 }, { 2, 0, 0, 0, 0, 0 }, "Unseen",				  10, 14, 11, 35,   50,   AI_SNEAK,	 257, 2, 45,  8,  12, 20, 0,   0,  0,  0,  30, MC_DEMON,  65,  72,  0,	 3, 935   },
-	{ 128, 992,  "Monsters\\Sneak\\Sneak%c.CL2",	1, "Monsters\\Sneak\\Sneak%c%i.WAV",	0, 1, "Monsters\\Sneak\\Sneakv1.TRN",	{ 16, 8,  12, 8,  24, 15 }, { 2, 0, 0, 0, 0, 0 }, "Illusion Weaver",		 14, 18, 13, 40,   60,   AI_SNEAK,	 257, 3, 60,  8,  16, 24, 0,   0,  0,  0,  30, MC_DEMON,  3,   74,  0,	 3, 1500  },
-	{ 160, 2000, "Monsters\\GoatLord\\GoatL%c.CL2", 0, "Monsters\\GoatLord\\Goatl%c%i.WAV", 0, 0, NULL,							  { 13, 13, 14, 9,  16, 0  }, { 2, 0, 0, 0, 0, 0 }, "Lord Sayter",			 13, 13, 12, 351,  351,  AI_SKELSD,	256, 3, 80,  8,  14, 24, 0,   0,  0,  0,  60, MC_DEMON,  67,  67,  0,	 3, 1500  },
-	{ 128, 1030, "Monsters\\GoatMace\\Goat%c.CL2",  1, "Monsters\\GoatMace\\Goat%c%i.WAV",  0, 0, NULL,							  { 12, 8,  12, 6,  20, 12 }, { 2, 0, 0, 0, 1, 0 }, "Flesh Clan",			  6,  10, 8,  30,   45,   AI_GOATMC,	768, 0, 50,  8,  4,  10, 0,   0,  0,  0,  40, MC_DEMON,  0,   0,   0,	 3, 460   },
-	{ 128, 1030, "Monsters\\GoatMace\\Goat%c.CL2",  1, "Monsters\\GoatMace\\Goat%c%i.WAV",  0, 1, "Monsters\\GoatMace\\Beige.TRN",   { 12, 8,  12, 6,  20, 12 }, { 2, 0, 0, 0, 1, 0 }, "Stone Clan",			  8,  12, 10, 40,   55,   AI_GOATMC,	768, 1, 60,  8,  6,  12, 0,   0,  0,  0,  40, MC_DEMON,  65,  72,  0,	 3, 685   },
-	{ 128, 1030, "Monsters\\GoatMace\\Goat%c.CL2",  1, "Monsters\\GoatMace\\Goat%c%i.WAV",  0, 1, "Monsters\\GoatMace\\Red.TRN",	 { 12, 8,  12, 6,  20, 12 }, { 2, 0, 0, 0, 1, 0 }, "Fire Clan",			   10, 14, 12, 50,   65,   AI_GOATMC,	768, 2, 70,  8,  8,  16, 0,   0,  0,  0,  45, MC_DEMON,  2,   16,  0,	 3, 906   },
-	{ 128, 1030, "Monsters\\GoatMace\\Goat%c.CL2",  1, "Monsters\\GoatMace\\Goat%c%i.WAV",  0, 1, "Monsters\\GoatMace\\Gray.TRN",	{ 12, 8,  12, 6,  20, 12 }, { 2, 0, 0, 0, 1, 0 }, "Night Clan",			  12, 16, 14, 55,   70,   AI_GOATMC,	768, 3, 80,  8,  10, 20, 15,  0,  30, 30, 50, MC_DEMON,  65,  72,  0,	 3, 1190  },
-	{ 96,  364,  "Monsters\\Bat\\Bat%c.CL2",		0, "Monsters\\Bat\\Bat%c%i.WAV",		0, 1, "Monsters\\Bat\\red.trn",		  { 9,  13, 10, 9,  13, 0  }, { 0, 0, 0, 0, 0, 0 }, "Fiend",				   2,  5,  3,  3,	6,	AI_BAT,	   0,   0, 35,  5,  1,  6,  0,   0,  0,  0,  0,  MC_ANIMAL, 0,   0,   16384, 6, 102   },
-	{ 96,  364,  "Monsters\\Bat\\Bat%c.CL2",		0, "Monsters\\Bat\\Bat%c%i.WAV",		0, 0, NULL,							  { 9,  13, 10, 9,  13, 0  }, { 0, 0, 0, 0, 0, 0 }, "Blink",				   5,  9,  7,  12,   28,   AI_BAT,	   0,   1, 45,  5,  1,  8,  0,   0,  0,  0,  15, MC_ANIMAL, 0,   0,   16384, 6, 340   },
-	{ 96,  364,  "Monsters\\Bat\\Bat%c.CL2",		0, "Monsters\\Bat\\Bat%c%i.WAV",		0, 1, "Monsters\\Bat\\grey.trn",		 { 9,  13, 10, 9,  13, 0  }, { 0, 0, 0, 0, 0, 0 }, "Gloom",				   7,  11, 9,  28,   36,   AI_BAT,	   256, 2, 70,  5,  4,  12, 0,   0,  0,  0,  35, MC_ANIMAL, 1,   65,  16384, 6, 509   },
-	{ 96,  364,  "Monsters\\Bat\\Bat%c.CL2",		0, "Monsters\\Bat\\Bat%c%i.WAV",		0, 1, "Monsters\\Bat\\orange.trn",	   { 9,  13, 10, 9,  13, 0  }, { 0, 0, 0, 0, 0, 0 }, "Familiar",				11, 15, 13, 20,   35,   AI_BAT,	   256, 3, 50,  5,  4,  16, 0,   0,  0,  0,  35, MC_DEMON,  33,  97,  16384, 6, 448   },
-	{ 128, 1040, "Monsters\\GoatBow\\GoatB%c.CL2",  0, "Monsters\\GoatBow\\GoatB%c%i.WAV",  0, 0, NULL,							  { 12, 8,  16, 6,  20, 0  }, { 3, 0, 0, 0, 0, 0 }, "Flesh Clan",			  6,  10, 8,  20,   35,   AI_GOATBOW,   512, 0, 35,  13, 1,  7,  0,   0,  0,  0,  35, MC_DEMON,  0,   0,   0,	 3, 448   },
-	{ 128, 1040, "Monsters\\GoatBow\\GoatB%c.CL2",  0, "Monsters\\GoatBow\\GoatB%c%i.WAV",  0, 1, "Monsters\\GoatBow\\Beige.TRN",	{ 12, 8,  16, 6,  20, 0  }, { 3, 0, 0, 0, 0, 0 }, "Stone Clan",			  8,  12, 10, 30,   40,   AI_GOATBOW,   512, 1, 40,  13, 2,  9,  0,   0,  0,  0,  35, MC_DEMON,  65,  72,  0,	 3, 645   },
-	{ 128, 1040, "Monsters\\GoatBow\\GoatB%c.CL2",  0, "Monsters\\GoatBow\\GoatB%c%i.WAV",  0, 1, "Monsters\\GoatBow\\Red.TRN",	  { 12, 8,  16, 6,  20, 0  }, { 3, 0, 0, 0, 0, 0 }, "Fire Clan",			   10, 14, 12, 40,   50,   AI_GOATBOW,   768, 2, 45,  13, 3,  11, 0,   0,  0,  0,  35, MC_DEMON,  2,   16,  0,	 3, 822   },
-	{ 128, 1040, "Monsters\\GoatBow\\GoatB%c.CL2",  0, "Monsters\\GoatBow\\GoatB%c%i.WAV",  0, 1, "Monsters\\GoatBow\\Gray.TRN",	 { 12, 8,  16, 6,  20, 0  }, { 3, 0, 0, 0, 0, 0 }, "Night Clan",			  12, 16, 14, 50,   65,   AI_GOATBOW,   768, 3, 50,  13, 4,  13, 15,  0,  0,  0,  40, MC_DEMON,  65,  72,  0,	 3, 1092  },
-	{ 128, 716,  "Monsters\\Acid\\Acid%c.CL2",	  1, "Monsters\\Acid\\Acid%c%i.WAV",	  1, 0, NULL,							  { 13, 8,  12, 8,  16, 12 }, { 0, 0, 0, 0, 0, 0 }, "Acid Beast",			  10, 14, 11, 40,   66,   AI_ACID,	  0,   0, 40,  8,  4,  12, 25,  8,  0,  0,  30, MC_ANIMAL, 128, 136, 0,	 3, 846   },
-	{ 128, 716,  "Monsters\\Acid\\Acid%c.CL2",	  1, "Monsters\\Acid\\Acid%c%i.WAV",	  1, 1, "Monsters\\Acid\\AcidBlk.TRN",	 { 13, 8,  12, 8,  16, 12 }, { 0, 0, 0, 0, 0, 0 }, "Poison Spitter",		  14, 18, 15, 60,   85,   AI_ACID,	  0,   1, 45,  8,  4,  16, 25,  8,  0,  0,  30, MC_ANIMAL, 128, 136, 0,	 3, 1248  },
-	{ 128, 716,  "Monsters\\Acid\\Acid%c.CL2",	  1, "Monsters\\Acid\\Acid%c%i.WAV",	  1, 1, "Monsters\\Acid\\AcidB.TRN",	   { 13, 8,  12, 8,  16, 12 }, { 0, 0, 0, 0, 0, 0 }, "Pit Beast",			   18, 22, 21, 80,   110,  AI_ACID,	  0,   2, 55,  8,  8,  18, 35,  8,  0,  0,  35, MC_ANIMAL, 129, 140, 0,	 3, 2060  },
-	{ 128, 716,  "Monsters\\Acid\\Acid%c.CL2",	  1, "Monsters\\Acid\\Acid%c%i.WAV",	  1, 1, "Monsters\\Acid\\AcidR.TRN",	   { 13, 8,  12, 8,  16, 12 }, { 0, 0, 0, 0, 0, 0 }, "Lava Maw",				22, 27, 25, 100,  150,  AI_ACID,	  0,   3, 65,  8,  10, 20, 40,  8,  0,  0,  35, MC_ANIMAL, 145, 152, 0,	 3, 2940  },
-	{ 160, 1010, "Monsters\\SKing\\SKing%c.CL2",	1, "Monsters\\SKing\\SKing%c%i.WAV",	1, 1, "Monsters\\SkelAxe\\White.TRN",	{ 8,  6,  16, 6,  16, 6  }, { 2, 0, 0, 0, 0, 2 }, "Skeleton King",		   6,  6,  9,  140,  140,  AI_SKELKING,  768, 3, 60,  8,  6,  16, 0,   0,  0,  0,  70, MC_UNDEAD, 78,  120, 32769, 7, 570   },
-	{ 128, 980,  "Monsters\\FatC\\FatC%c.CL2",	  0, "Monsters\\FatC\\FatC%c%i.WAV",	  0, 0, NULL,							  { 10, 8,  12, 6,  16, 0  }, { 1, 0, 0, 0, 0, 0 }, "The Butcher",			 0,  0,  1,  320,  320,  AI_CLEAVER,   0,   3, 50,  8,  6,  12, 0,   0,  0,  0,  50, MC_DEMON,  6,   49,  32768, 3, 710   },
-	{ 128, 1130, "Monsters\\Fat\\Fat%c.CL2",		1, "Monsters\\Fat\\Fat%c%i.WAV",		0, 0, NULL,							  { 8,  10, 15, 6,  16, 10 }, { 4, 0, 0, 0, 0, 0 }, "Overlord",				8,  12, 10, 60,   80,   AI_FAT,	   0,   0, 55,  8,  6,  12, 0,   0,  0,  0,  55, MC_DEMON,  0,   2,   0,	 3, 635   },
-	{ 128, 1130, "Monsters\\Fat\\Fat%c.CL2",		1, "Monsters\\Fat\\Fat%c%i.WAV",		0, 1, "Monsters\\Fat\\Blue.TRN",		 { 8,  10, 15, 6,  16, 10 }, { 4, 0, 0, 0, 0, 0 }, "Mud Man",				 13, 17, 14, 100,  125,  AI_FAT,	   256, 1, 60,  8,  8,  16, 0,   0,  0,  0,  60, MC_DEMON,  0,   32,  0,	 3, 1165  },
-	{ 128, 1130, "Monsters\\Fat\\Fat%c.CL2",		1, "Monsters\\Fat\\Fat%c%i.WAV",		0, 1, "Monsters\\Fat\\FatB.TRN",		 { 8,  10, 15, 6,  16, 10 }, { 4, 0, 0, 0, 0, 0 }, "Toad Demon",			  15, 19, 16, 135,  160,  AI_FAT,	   256, 2, 70,  8,  8,  16, 40,  0,  8,  20, 65, MC_DEMON,  8,   12,  0,	 3, 1380  },
-	{ 128, 1130, "Monsters\\Fat\\Fat%c.CL2",		1, "Monsters\\Fat\\Fat%c%i.WAV",		0, 1, "Monsters\\Fat\\FatF.TRN",		 { 8,  10, 15, 6,  16, 10 }, { 4, 0, 0, 0, 0, 0 }, "Flayed One",			  19, 23, 20, 160,  200,  AI_FAT,	   256, 3, 85,  8,  10, 20, 0,   0,  0,  0,  70, MC_DEMON,  17,  24,  0,	 3, 2058  },
-	{ 160, 2420, "Monsters\\Worm\\Worm%c.CL2",	  0, "Monsters\\Fat\\Fat%c%i.WAV",		0, 0, NULL,							  { 13, 13, 13, 11, 19, 0  }, { 0, 0, 0, 0, 0, 0 }, "Wyrm",					9,  13, 11, 60,   90,   AI_SKELSD,	0,   0, 40,  8,  4,  10, 0,   0,  0,  0,  25, MC_ANIMAL, 1,   1,   0,	 3, 660   },
-	{ 160, 2420, "Monsters\\Worm\\Worm%c.CL2",	  0, "Monsters\\Fat\\Fat%c%i.WAV",		0, 0, NULL,							  { 13, 13, 13, 11, 19, 0  }, { 0, 0, 0, 0, 0, 0 }, "Cave Slug",			   11, 15, 13, 75,   110,  AI_SKELSD,	0,   1, 50,  8,  6,  13, 0,   0,  0,  0,  30, MC_ANIMAL, 1,   1,   0,	 3, 994   },
-	{ 160, 2420, "Monsters\\Worm\\Worm%c.CL2",	  0, "Monsters\\Fat\\Fat%c%i.WAV",		0, 0, NULL,							  { 13, 13, 13, 11, 19, 0  }, { 0, 0, 0, 0, 0, 0 }, "Devil Wyrm",			  13, 17, 15, 100,  140,  AI_SKELSD,	0,   2, 55,  8,  8,  16, 0,   0,  0,  0,  30, MC_ANIMAL, 3,   3,   0,	 3, 1320  },
-	{ 160, 2420, "Monsters\\Worm\\Worm%c.CL2",	  0, "Monsters\\Fat\\Fat%c%i.WAV",		0, 0, NULL,							  { 13, 13, 13, 11, 19, 0  }, { 0, 0, 0, 0, 0, 0 }, "Devourer",				15, 19, 17, 125,  200,  AI_SKELSD,	0,   3, 60,  8,  10, 20, 0,   0,  0,  0,  35, MC_ANIMAL, 67,  67,  0,	 3, 1827  },
-	{ 128, 1680, "Monsters\\Magma\\Magma%c.CL2",	1, "Monsters\\Magma\\Magma%c%i.WAV",	1, 0, NULL,							  { 8,  10, 14, 7,  18, 18 }, { 2, 0, 0, 0, 1, 0 }, "Magma Demon",			 14, 17, 13, 50,   70,   AI_MAGMA,	 768, 0, 45,  4,  2,  10, 50,  13, 0,  0,  45, MC_DEMON,  10,  24,  0,	 7, 1076  },
-	{ 128, 1680, "Monsters\\Magma\\Magma%c.CL2",	1, "Monsters\\Magma\\Magma%c%i.WAV",	1, 1, "Monsters\\Magma\\Yellow.TRN",	 { 8,  10, 14, 7,  18, 18 }, { 2, 0, 0, 0, 1, 0 }, "Blood Stone",			 15, 19, 14, 55,   75,   AI_MAGMA,	 768, 1, 50,  4,  2,  12, 50,  14, 0,  0,  45, MC_DEMON,  24,  24,  0,	 7, 1309  },
-	{ 128, 1680, "Monsters\\Magma\\Magma%c.CL2",	1, "Monsters\\Magma\\Magma%c%i.WAV",	1, 1, "Monsters\\Magma\\Blue.TRN",	   { 8,  10, 14, 7,  18, 18 }, { 2, 0, 0, 0, 1, 0 }, "Hell Stone",			  16, 20, 16, 60,   80,   AI_MAGMA,	 768, 2, 60,  4,  2,  20, 60,  14, 0,  0,  50, MC_DEMON,  24,  24,  0,	 7, 1680  },
-	{ 128, 1680, "Monsters\\Magma\\Magma%c.CL2",	1, "Monsters\\Magma\\Magma%c%i.WAV",	1, 1, "Monsters\\Magma\\Wierd.TRN",	  { 8,  10, 14, 7,  18, 18 }, { 2, 0, 0, 0, 1, 0 }, "Lava Lord",			   17, 21, 18, 70,   85,   AI_MAGMA,	 768, 3, 75,  4,  4,  24, 60,  14, 0,  0,  60, MC_DEMON,  24,  24,  0,	 7, 2124  },
-	{ 160, 1630, "Monsters\\Rhino\\Rhino%c.CL2",	1, "Monsters\\Rhino\\Rhino%c%i.WAV",	1, 0, NULL,							  { 8,  8,  14, 6,  16, 6  }, { 2, 0, 0, 0, 0, 0 }, "Horned Demon",			12, 16, 13, 40,   80,   AI_RHINO,	 768, 0, 60,  7,  2,  16, 100, 0,  5,  32, 40, MC_ANIMAL, 0,   2,   0,	 7, 1172  },
-	{ 160, 1630, "Monsters\\Rhino\\Rhino%c.CL2",	1, "Monsters\\Rhino\\Rhino%c%i.WAV",	1, 1, "Monsters\\Rhino\\Orange.TRN",	 { 8,  8,  14, 6,  16, 6  }, { 2, 0, 0, 0, 0, 0 }, "Mud Runner",			  14, 18, 15, 50,   90,   AI_RHINO,	 768, 1, 70,  7,  6,  18, 100, 0,  12, 36, 45, MC_ANIMAL, 0,   2,   0,	 7, 1404  },
-	{ 160, 1630, "Monsters\\Rhino\\Rhino%c.CL2",	1, "Monsters\\Rhino\\Rhino%c%i.WAV",	1, 1, "Monsters\\Rhino\\Blue.TRN",	   { 8,  8,  14, 6,  16, 6  }, { 2, 0, 0, 0, 0, 0 }, "Frost Charger",		   16, 20, 17, 60,   100,  AI_RHINO,	 768, 2, 80,  7,  8,  20, 100, 0,  20, 40, 50, MC_ANIMAL, 12,  12,  0,	 7, 1720  },
-	{ 160, 1630, "Monsters\\Rhino\\Rhino%c.CL2",	1, "Monsters\\Rhino\\Rhino%c%i.WAV",	1, 1, "Monsters\\Rhino\\RhinoB.TRN",	 { 8,  8,  14, 6,  16, 6  }, { 2, 0, 0, 0, 0, 0 }, "Obsidian Lord",		   18, 22, 19, 70,   110,  AI_RHINO,	 768, 3, 90,  7,  10, 22, 100, 0,  20, 50, 55, MC_ANIMAL, 12,  56,  0,	 7, 1809  },
-	{ 128, 1740, "Monsters\\Demskel\\Demskl%c.CL2", 1, "Monsters\\Thin\\Thin%c%i.WAV",	  1, 0, "Monsters\\Thin\\Thinv3.TRN",	  { 10, 8,  20, 6,  24, 16 }, { 3, 0, 0, 0, 0, 0 }, "Bone Demon",			  10, 14, 12, 70,   70,   AI_STORM,	 0,   0, 60,  8,  6,  14, 12,  0,  0,  0,  50, MC_DEMON,  72,  72,  0,	 7, 1344  },
-	{ 160, 1740, "Monsters\\Thin\\Thin%c.CL2",	  1, "Monsters\\Thin\\Thin%c%i.WAV",	  1, 1, "Monsters\\Thin\\Thinv3.TRN",	  { 8,  8,  18, 4,  17, 14 }, { 3, 0, 0, 0, 0, 0 }, "Red Death",			   14, 18, 16, 96,   96,   AI_STORM,	 0,   1, 75,  5,  10, 20, 0,   0,  0,  0,  60, MC_DEMON,  24,  24,  0,	 7, 2168  },
-	{ 160, 1740, "Monsters\\Thin\\Thin%c.CL2",	  1, "Monsters\\Thin\\Thin%c%i.WAV",	  1, 1, "Monsters\\Thin\\Thinv3.TRN",	  { 8,  8,  18, 4,  17, 14 }, { 3, 0, 0, 0, 0, 0 }, "Litch Demon",			 16, 20, 18, 110,  110,  AI_STORM,	 0,   2, 80,  5,  10, 24, 0,   0,  0,  0,  45, MC_DEMON,  104, 104, 0,	 7, 2736  },
-	{ 160, 1740, "Monsters\\Thin\\Thin%c.CL2",	  1, "Monsters\\Thin\\Thin%c%i.WAV",	  1, 1, "Monsters\\Thin\\Thinv3.TRN",	  { 8,  8,  18, 4,  17, 14 }, { 3, 0, 0, 0, 0, 0 }, "Undead Balrog",		   20, 24, 22, 130,  130,  AI_STORM,	 0,   3, 85,  5,  12, 30, 0,   0,  0,  0,  65, MC_DEMON,  78,  78,  0,	 7, 3575  },
-	{ 128, 1460, "Monsters\\Fireman\\FireM%c.CL2",  1, "Monsters\\Acid\\Acid%c%i.WAV",	  0, 0, NULL,							  { 14, 19, 20, 8,  14, 23 }, { 0, 0, 0, 0, 0, 0 }, "Incinerator",			 14, 18, 16, 30,   45,   AI_FIREMAN,   0,   0, 75,  8,  8,  16, 0,   0,  0,  0,  25, MC_DEMON,  24,  24,  0,	 3, 1888  },
-	{ 128, 1460, "Monsters\\Fireman\\FireM%c.CL2",  1, "Monsters\\Acid\\Acid%c%i.WAV",	  0, 0, NULL,							  { 14, 19, 20, 8,  14, 23 }, { 0, 0, 0, 0, 0, 0 }, "Flame Lord",			  16, 20, 18, 40,   55,   AI_FIREMAN,   0,   1, 75,  8,  10, 20, 0,   0,  0,  0,  25, MC_DEMON,  24,  24,  0,	 3, 2250  },
-	{ 128, 1460, "Monsters\\Fireman\\FireM%c.CL2",  1, "Monsters\\Acid\\Acid%c%i.WAV",	  0, 0, NULL,							  { 14, 19, 20, 8,  14, 23 }, { 0, 0, 0, 0, 0, 0 }, "Doom Fire",			   18, 22, 20, 50,   65,   AI_FIREMAN,   0,   2, 80,  8,  12, 24, 0,   0,  0,  0,  30, MC_DEMON,  28,  28,  0,	 3, 2740  },
-	{ 128, 1460, "Monsters\\Fireman\\FireM%c.CL2",  1, "Monsters\\Acid\\Acid%c%i.WAV",	  0, 0, NULL,							  { 14, 19, 20, 8,  14, 23 }, { 0, 0, 0, 0, 0, 0 }, "Hell Burner",			 20, 24, 22, 60,   80,   AI_FIREMAN,   0,   3, 85,  8,  15, 30, 0,   0,  0,  0,  30, MC_DEMON,  28,  28,  0,	 3, 3355  },
-	{ 160, 1740, "Monsters\\Thin\\Thin%c.CL2",	  1, "Monsters\\Thin\\Thin%c%i.WAV",	  1, 1, "Monsters\\Thin\\Thinv3.TRN",	  { 8,  8,  18, 4,  17, 14 }, { 3, 0, 0, 0, 0, 0 }, "Red Storm",			   17, 21, 18, 55,   110,  AI_STORM,	 768, 0, 80,  5,  8,  18, 75,  8,  4,  16, 30, MC_DEMON,  12,  40,  0,	 7, 2160  },
-	{ 160, 1740, "Monsters\\Thin\\Thin%c.CL2",	  1, "Monsters\\Thin\\Thin%c%i.WAV",	  1, 0, NULL,							  { 8,  8,  18, 4,  17, 14 }, { 3, 0, 0, 0, 0, 0 }, "Storm Rider",			 19, 23, 20, 60,   120,  AI_STORM,	 768, 1, 80,  5,  8,  18, 80,  8,  4,  16, 30, MC_DEMON,  33,  40,  0,	 7, 2391  },
-	{ 160, 1740, "Monsters\\Thin\\Thin%c.CL2",	  1, "Monsters\\Thin\\Thin%c%i.WAV",	  1, 1, "Monsters\\Thin\\Thinv2.TRN",	  { 8,  8,  18, 4,  17, 14 }, { 3, 0, 0, 0, 0, 0 }, "Storm Lord",			  21, 25, 22, 75,   135,  AI_STORM,	 768, 2, 85,  5,  12, 24, 75,  8,  4,  16, 35, MC_DEMON,  33,  40,  0,	 7, 2775  },
-	{ 160, 1740, "Monsters\\Thin\\Thin%c.CL2",	  1, "Monsters\\Thin\\Thin%c%i.WAV",	  1, 1, "Monsters\\Thin\\Thinv1.TRN",	  { 8,  8,  18, 4,  17, 14 }, { 3, 0, 0, 0, 0, 0 }, "Maelstorm",			   23, 27, 24, 90,   150,  AI_STORM,	 768, 3, 90,  5,  12, 28, 75,  8,  4,  16, 40, MC_DEMON,  97,  104, 0,	 7, 3177  },
-	{ 128, 1650, "Monsters\\BigFall\\Fallg%c.CL2",  1, "Monsters\\BigFall\\Bfal%c%i.WAV",   0, 0, NULL,							  { 10, 8,  11, 8,  17, 0  }, { 0, 0, 0, 0, 2, 2 }, "Devil Kin Brute",		 20, 20, 24, 160,  220,  AI_SKELSD,	768, 3, 100, 6,  18, 24, 0,   0,  0,  0,  75, MC_ANIMAL, 0,   0,   0,	 6, 2000  },
-	{ 160, 1650, "Monsters\\Gargoyle\\Gargo%c.CL2", 1, "Monsters\\Gargoyle\\Gargo%c%i.WAV", 0, 0, NULL,							  { 14, 14, 14, 10, 18, 14 }, { 0, 0, 0, 0, 0, 2 }, "Winged-Demon",			8,  12, 9,  45,   60,   AI_GARG,	  512, 0, 50,  7,  10, 16, 0,   0,  0,  0,  45, MC_DEMON,  74,  88,  0,	 6, 662   },
-	{ 160, 1650, "Monsters\\Gargoyle\\Gargo%c.CL2", 1, "Monsters\\Gargoyle\\Gargo%c%i.WAV", 0, 1, "Monsters\\Gargoyle\\GarE.TRN",	{ 14, 14, 14, 10, 18, 14 }, { 0, 0, 0, 0, 0, 2 }, "Gargoyle",				12, 16, 13, 60,   90,   AI_GARG,	  512, 1, 65,  7,  10, 16, 0,   0,  0,  0,  45, MC_DEMON,  76,  104, 0,	 6, 1205  },
-	{ 160, 1650, "Monsters\\Gargoyle\\Gargo%c.CL2", 1, "Monsters\\Gargoyle\\Gargo%c%i.WAV", 0, 1, "Monsters\\Gargoyle\\GargBr.TRN",  { 14, 14, 14, 10, 18, 14 }, { 0, 0, 0, 0, 0, 0 }, "Blood Claw",			  16, 20, 19, 75,   125,  AI_GARG,	  512, 2, 80,  7,  14, 22, 0,   0,  0,  0,  50, MC_DEMON,  88,  92,  0,	 6, 1873  },
-	{ 160, 1650, "Monsters\\Gargoyle\\Gargo%c.CL2", 1, "Monsters\\Gargoyle\\Gargo%c%i.WAV", 0, 1, "Monsters\\Gargoyle\\GargB.TRN",   { 14, 14, 14, 10, 18, 14 }, { 0, 0, 0, 0, 0, 0 }, "Death Wing",			  18, 22, 23, 90,   150,  AI_GARG,	  512, 3, 95,  7,  16, 28, 0,   0,  0,  0,  60, MC_DEMON,  104, 106, 0,	 6, 2278  },
-	{ 160, 2220, "Monsters\\Mega\\Mega%c.CL2",	  1, "Monsters\\Mega\\Mega%c%i.WAV",	  1, 0, NULL,							  { 6,  7,  14, 1,  24, 5  }, { 3, 0, 0, 0, 2, 0 }, "Slayer",				  19, 23, 20, 120,  140,  AI_MEGA,	  768, 0, 100, 8,  12, 20, 0,   3,  0,  0,  60, MC_DEMON,  17,  17,  0,	 7, 2300  },
-	{ 160, 2220, "Monsters\\Mega\\Mega%c.CL2",	  1, "Monsters\\Mega\\Mega%c%i.WAV",	  1, 1, "Monsters\\Mega\\Guard.TRN",	   { 6,  7,  14, 1,  24, 5  }, { 3, 0, 0, 0, 2, 0 }, "Guardian",				21, 25, 22, 140,  160,  AI_MEGA,	  768, 1, 110, 8,  14, 22, 0,   3,  0,  0,  65, MC_DEMON,  17,  17,  0,	 7, 2714  },
-	{ 160, 2220, "Monsters\\Mega\\Mega%c.CL2",	  1, "Monsters\\Mega\\Mega%c%i.WAV",	  1, 1, "Monsters\\Mega\\Vtexl.TRN",	   { 6,  7,  14, 1,  24, 5  }, { 3, 0, 0, 0, 2, 0 }, "Vortex Lord",			 23, 26, 24, 160,  180,  AI_MEGA,	  768, 2, 120, 8,  18, 24, 0,   3,  0,  0,  70, MC_DEMON,  81,  85,  0,	 7, 3252  },
-	{ 160, 2220, "Monsters\\Mega\\Mega%c.CL2",	  1, "Monsters\\Mega\\Mega%c%i.WAV",	  1, 1, "Monsters\\Mega\\Balr.TRN",		{ 6,  7,  14, 1,  24, 5  }, { 3, 0, 0, 0, 2, 0 }, "Balrog",				  25, 29, 26, 180,  200,  AI_MEGA,	  768, 3, 130, 8,  22, 30, 0,   3,  0,  0,  75, MC_DEMON,  81,  85,  0,	 7, 3643  },
-	{ 160, 1270, "Monsters\\Snake\\Snake%c.CL2",	0, "Monsters\\Snake\\Snake%c%i.WAV",	0, 0, NULL,							  { 12, 11, 13, 5,  18, 0  }, { 2, 0, 0, 0, 1, 0 }, "Cave Viper",			  20, 24, 21, 100,  150,  AI_SNAKE,	 256, 0, 90,  8,  8,  20, 0,   0,  0,  0,  60, MC_DEMON,  8,   8,   0,	 7, 2725  },
-	{ 160, 1270, "Monsters\\Snake\\Snake%c.CL2",	0, "Monsters\\Snake\\Snake%c%i.WAV",	0, 1, "Monsters\\Snake\\SnakR.TRN",	  { 12, 11, 13, 5,  18, 0  }, { 2, 0, 0, 0, 1, 0 }, "Fire Drake",			  22, 26, 23, 120,  170,  AI_SNAKE,	 256, 1, 105, 8,  12, 24, 0,   0,  0,  0,  65, MC_DEMON,  10,  24,  0,	 7, 3139  },
-	{ 160, 1270, "Monsters\\Snake\\Snake%c.CL2",	0, "Monsters\\Snake\\Snake%c%i.WAV",	0, 1, "Monsters\\Snake\\Snakg.TRN",	  { 12, 11, 13, 5,  18, 0  }, { 2, 0, 0, 0, 1, 0 }, "Gold Viper",			  24, 27, 25, 140,  180,  AI_SNAKE,	 256, 2, 120, 8,  15, 26, 0,   0,  0,  0,  70, MC_DEMON,  12,  12,  0,	 7, 3540  },
-	{ 160, 1270, "Monsters\\Snake\\Snake%c.CL2",	0, "Monsters\\Snake\\Snake%c%i.WAV",	0, 1, "Monsters\\Snake\\Snakb.TRN",	  { 12, 11, 13, 5,  18, 0  }, { 2, 0, 0, 0, 1, 0 }, "Azure Drake",			 28, 30, 27, 160,  200,  AI_SNAKE,	 256, 3, 130, 8,  18, 30, 0,   0,  0,  0,  75, MC_DEMON,  6,   42,  0,	 7, 3791  },
-	{ 160, 2120, "Monsters\\Black\\Black%c.CL2",	0, "Monsters\\Black\\Black%c%i.WAV",	0, 0, NULL,							  { 8,  8,  16, 4,  24, 0  }, { 2, 0, 0, 0, 0, 0 }, "Black Knight",			23, 27, 24, 150,  150,  AI_SKELSD,	256, 0, 110, 8,  15, 20, 0,   0,  0,  0,  75, MC_DEMON,  69,  97,  0,	 7, 3360  },
-	{ 160, 2120, "Monsters\\Black\\Black%c.CL2",	0, "Monsters\\Black\\Black%c%i.WAV",	0, 1, "Monsters\\Black\\BlkKntRT.TRN",   { 8,  8,  16, 4,  24, 0  }, { 2, 0, 0, 0, 0, 0 }, "Doom Guard",			  25, 29, 26, 165,  165,  AI_SKELSD,	256, 0, 130, 8,  18, 25, 0,   0,  0,  0,  75, MC_DEMON,  67,  81,  0,	 7, 3650  },
-	{ 160, 2120, "Monsters\\Black\\Black%c.CL2",	0, "Monsters\\Black\\Black%c%i.WAV",	0, 1, "Monsters\\Black\\BlkKntBT.TRN",   { 8,  8,  16, 4,  24, 0  }, { 2, 0, 0, 0, 0, 0 }, "Steel Lord",			  27, 30, 28, 180,  180,  AI_SKELSD,	256, 1, 120, 8,  20, 30, 0,   0,  0,  0,  80, MC_DEMON,  85,  92,  0,	 7, 4252  },
-	{ 160, 2120, "Monsters\\Black\\Black%c.CL2",	0, "Monsters\\Black\\Black%c%i.WAV",	0, 1, "Monsters\\Black\\BlkKntBe.TRN",   { 8,  8,  16, 4,  24, 0  }, { 2, 0, 0, 0, 0, 0 }, "Blood Knight",			24, 26, 30, 200,  200,  AI_SKELSD,	256, 1, 130, 8,  25, 35, 0,   0,  0,  0,  85, MC_DEMON,  106, 106, 0,	 7, 5130  },
-	{ 96,  484,  "Monsters\\Unrav\\Unrav%c.CL2",	0, "Monsters\\Acid\\Acid%c%i.WAV",	  0, 0, NULL,							  { 10, 10, 12, 5,  16, 0  }, { 0, 0, 0, 0, 0, 0 }, "Unraveler",			   26, 28, 25, 70,   150,  AI_SKELSD,	0,   0, 75,  7,  10, 20, 0,   0,  0,  0,  70, MC_UNDEAD, 106, 106, 0,	 3, 3812  },
-	{ 96,  484,  "Monsters\\Unrav\\Unrav%c.CL2",	0, "Monsters\\Acid\\Acid%c%i.WAV",	  0, 0, NULL,							  { 10, 10, 12, 5,  16, 0  }, { 0, 0, 0, 0, 0, 0 }, "Hollow One",			  28, 30, 27, 135,  240,  AI_SKELSD,	0,   1, 75,  7,  12, 24, 0,   0,  0,  0,  75, MC_UNDEAD, 92,  92,  0,	 3, 4374  },
-	{ 96,  484,  "Monsters\\Unrav\\Unrav%c.CL2",	0, "Monsters\\Acid\\Acid%c%i.WAV",	  0, 0, NULL,							  { 10, 10, 12, 5,  16, 0  }, { 0, 0, 0, 0, 0, 0 }, "Pain Master",			 27, 30, 29, 110,  200,  AI_SKELSD,	0,   2, 80,  7,  16, 30, 0,   0,  0,  0,  80, MC_UNDEAD, 92,  92,  0,	 3, 5147  },
-	{ 96,  484,  "Monsters\\Unrav\\Unrav%c.CL2",	0, "Monsters\\Acid\\Acid%c%i.WAV",	  0, 0, NULL,							  { 10, 10, 12, 5,  16, 0  }, { 0, 0, 0, 0, 0, 0 }, "Reality Weaver",		  28, 30, 30, 135,  240,  AI_SKELSD,	0,   3, 85,  7,  20, 35, 0,   0,  0,  0,  85, MC_UNDEAD, 113, 113, 0,	 3, 5925  },
-	{ 128, 980,  "Monsters\\Succ\\Scbs%c.CL2",	  0, "Monsters\\Succ\\Scbs%c%i.WAV",	  0, 0, NULL,							  { 14, 8,  16, 7,  24, 0  }, { 0, 0, 0, 0, 0, 0 }, "Succubus",				22, 26, 24, 120,  150,  AI_SUCC,	  512, 0, 100, 10, 1,  20, 0,   0,  0,  0,  60, MC_DEMON,  1,   10,  0,	 3, 3696  },
-	{ 128, 980,  "Monsters\\Succ\\Scbs%c.CL2",	  0, "Monsters\\Succ\\Scbs%c%i.WAV",	  0, 1, "Monsters\\Succ\\Succb.TRN",	   { 14, 8,  16, 7,  24, 0  }, { 0, 0, 0, 0, 0, 0 }, "Snow Witch",			  25, 28, 26, 135,  175,  AI_SUCC,	  512, 1, 110, 10, 1,  24, 0,   0,  0,  0,  65, MC_DEMON,  68,  76,  0,	 3, 4084  },
-	{ 128, 980,  "Monsters\\Succ\\Scbs%c.CL2",	  0, "Monsters\\Succ\\Scbs%c%i.WAV",	  0, 1, "Monsters\\Succ\\Succrw.TRN",	  { 14, 8,  16, 7,  24, 0  }, { 0, 0, 0, 0, 0, 0 }, "Hell Spawn",			  27, 30, 28, 150,  200,  AI_SUCC,	  768, 2, 115, 10, 1,  30, 0,   0,  0,  0,  75, MC_DEMON,  33,  28,  0,	 3, 4480  },
-	{ 128, 980,  "Monsters\\Succ\\Scbs%c.CL2",	  0, "Monsters\\Succ\\Scbs%c%i.WAV",	  0, 1, "Monsters\\Succ\\Succbw.TRN",	  { 14, 8,  16, 7,  24, 0  }, { 0, 0, 0, 0, 0, 0 }, "Soul Burner",			 28, 30, 30, 140,  225,  AI_SUCC,	  768, 3, 120, 10, 1,  35, 0,   0,  0,  0,  85, MC_DEMON,  21,  56,  0,	 3, 4644  },
-	{ 128, 2000, "Monsters\\Mage\\Mage%c.CL2",	  1, "Monsters\\Mage\\Mage%c%i.WAV",	  0, 0, NULL,							  { 12, 1,  20, 8,  28, 20 }, { 0, 0, 0, 0, 0, 0 }, "Counselor",			   24, 26, 25, 70,   70,   AI_COUNSLR,   512, 0, 90,  8,  8,  20, 0,   0,  0,  0,  0,  MC_DEMON,  7,   7,   0,	 7, 4070  },
-	{ 128, 2000, "Monsters\\Mage\\Mage%c.CL2",	  1, "Monsters\\Mage\\Mage%c%i.WAV",	  0, 1, "Monsters\\Mage\\Cnselg.TRN",	  { 12, 1,  20, 8,  28, 20 }, { 0, 0, 0, 0, 0, 0 }, "Magistrate",			  26, 28, 27, 85,   85,   AI_COUNSLR,   512, 1, 100, 8,  10, 24, 0,   0,  0,  0,  0,  MC_DEMON,  85,  92,  0,	 7, 4478  },
-	{ 128, 2000, "Monsters\\Mage\\Mage%c.CL2",	  1, "Monsters\\Mage\\Mage%c%i.WAV",	  0, 1, "Monsters\\Mage\\Cnselgd.TRN",	 { 12, 1,  20, 8,  28, 20 }, { 0, 0, 0, 0, 0, 0 }, "Cabalist",				28, 30, 29, 120,  120,  AI_COUNSLR,   512, 2, 110, 8,  14, 30, 0,   0,  0,  0,  0,  MC_DEMON,  99,  106, 0,	 7, 4929  },
-	{ 128, 2000, "Monsters\\Mage\\Mage%c.CL2",	  1, "Monsters\\Mage\\Mage%c%i.WAV",	  0, 1, "Monsters\\Mage\\Cnselbk.TRN",	 { 12, 1,  20, 8,  28, 20 }, { 0, 0, 0, 0, 0, 0 }, "Advocate",				30, 30, 30, 145,  145,  AI_COUNSLR,   512, 3, 120, 8,  15, 25, 0,   0,  0,  0,  0,  MC_DEMON,  106, 120, 0,	 7, 4968  },
-	{ 96,  386,  "Monsters\\Golem\\Golem%c.CL2",	1, "Monsters\\Golem\\Golm%c%i.WAV",	 0, 0, NULL,							  { 0,  16, 12, 0,  12, 20 }, { 0, 0, 0, 0, 0, 0 }, "Golem",				   0,  0,  12, 1,	1,	AI_GOLUM,	 512, 0, 0,   7,  1,  1,  0,   0,  0,  0,  1,  MC_DEMON,  0,   0,   0,	 0, 0	 },
-	{ 160, 2000, "Monsters\\Diablo\\Diablo%c.CL2",  1, "Monsters\\Diablo\\Diablo%c%i.WAV",  1, 0, NULL,							  { 16, 6,  16, 6,  16, 16 }, { 0, 0, 0, 0, 0, 0 }, "The Dark Lord",		   50, 50, 30, 1666, 1666, AI_DIABLO,	896, 3, 220, 4,  30, 60, 0,   11, 0,  0,  70, MC_DEMON,  78,  78,  0,	 7, 31666 },
-	{ 128, 1060, "Monsters\\DarkMage\\Dmage%c.CL2", 1, "Monsters\\DarkMage\\Dmag%c%i.WAV",  0, 0, NULL,							  { 6,  1,  21, 6,  23, 18 }, { 0, 0, 0, 0, 0, 0 }, "The Arch-Litch Malignus", 30, 30, 30, 160,  160,  AI_COUNSLR,   512, 3, 120, 8,  20, 40, 0,   0,  0,  0,  70, MC_DEMON,  71,  120, 0,	 7, 4968  }
+MonsterData monsterdata[112] = {
+    // clang-format off
+    // flags, mType, GraphicType,             has_special, sndfile,                   snd_special, has_trans, TransFile,                         Frames[6],                  Rate[6],              mName,               mMinDLvl, mMaxDLvl, mLevel, mMinHP, mMaxHP, mAi,      mFlags, mInt, mHit, mAFNum, mMinDamage, mMaxDamage, mHit2, mAFNum2, mMinDamage2, mMaxDamage2, mArmorClass, mMonstClass, mMagicRes, mMagicRes2, mTreasure, mSelFlag,  mExp
+    {    128,   799, "Monsters\\Zombie\\Zombie%c.CL2",  0, "Monsters\\Zombie\\Zombie%c%i.WAV",  0,         0, NULL,                              { 11, 24, 12,  6, 16,  0 }, { 4, 0, 0, 0, 0, 0 }, "Zombie",                   1,        3,      1,      4,      7, AI_ZOMBIE,     0,    0,   10,      8,          2,          5,     0,       0,           0,           0,           5, MC_UNDEAD,          72,         72,         0,        3,    54 },
+    {    128,   799, "Monsters\\Zombie\\Zombie%c.CL2",  0, "Monsters\\Zombie\\Zombie%c%i.WAV",  0,         1, "Monsters\\Zombie\\Bluered.TRN",   { 11, 24, 12,  6, 16,  0 }, { 4, 0, 0, 0, 0, 0 }, "Ghoul",                    2,        4,      2,      7,     11, AI_ZOMBIE,     0,    1,   10,      8,          3,         10,     0,       0,           0,           0,          10, MC_UNDEAD,          72,         72,         0,        3,    58 },
+    {    128,   799, "Monsters\\Zombie\\Zombie%c.CL2",  0, "Monsters\\Zombie\\Zombie%c%i.WAV",  0,         1, "Monsters\\Zombie\\Grey.TRN",      { 11, 24, 12,  6, 16,  0 }, { 4, 0, 0, 0, 0, 0 }, "Rotting Carcass",          2,        6,      4,     15,     25, AI_ZOMBIE,     0,    2,   25,      8,          5,         15,     0,       0,           0,           0,          15, MC_UNDEAD,          72,         74,         0,        3,   136 },
+    {    128,   799, "Monsters\\Zombie\\Zombie%c.CL2",  0, "Monsters\\Zombie\\Zombie%c%i.WAV",  0,         1, "Monsters\\Zombie\\Yellow.TRN",    { 11, 24, 12,  6, 16,  0 }, { 4, 0, 0, 0, 0, 0 }, "Black Death",              4,        8,      6,     25,     40, AI_ZOMBIE,     0,    3,   30,      8,          6,         22,     0,       0,           0,           0,          20, MC_UNDEAD,          72,         76,         0,        3,   240 },
+    {    128,   543, "Monsters\\FalSpear\\Phall%c.CL2", 1, "Monsters\\FalSpear\\Phall%c%i.WAV", 1,         1, "Monsters\\FalSpear\\FallenT.TRN", { 11, 11, 13, 11, 18, 13 }, { 3, 0, 0, 0, 0, 0 }, "Fallen One",               1,        3,      1,      1,      4, AI_FALLEN,     0,    0,   15,      7,          1,          3,     0,       5,           0,           0,           0, MC_ANIMAL,           0,          0,         0,        3,    46 },
+    {    128,   543, "Monsters\\FalSpear\\Phall%c.CL2", 1, "Monsters\\FalSpear\\Phall%c%i.WAV", 1,         1, "Monsters\\FalSpear\\Dark.TRN",    { 11, 11, 13, 11, 18, 13 }, { 3, 0, 0, 0, 0, 0 }, "Carver",                   2,        5,      3,      4,      8, AI_FALLEN,     0,    2,   20,      7,          2,          5,     0,       5,           0,           0,           5, MC_ANIMAL,           0,          0,         0,        3,    80 },
+    {    128,   543, "Monsters\\FalSpear\\Phall%c.CL2", 1, "Monsters\\FalSpear\\Phall%c%i.WAV", 1,         0, NULL,                              { 11, 11, 13, 11, 18, 13 }, { 3, 0, 0, 0, 0, 0 }, "Devil Kin",                3,        7,      5,     12,     24, AI_FALLEN,     0,    2,   25,      7,          3,          7,     0,       5,           0,           0,          10, MC_ANIMAL,           0,          2,         0,        3,   155 },
+    {    128,   543, "Monsters\\FalSpear\\Phall%c.CL2", 1, "Monsters\\FalSpear\\Phall%c%i.WAV", 1,         1, "Monsters\\FalSpear\\Blue.TRN",    { 11, 11, 13, 11, 18, 13 }, { 3, 0, 0, 0, 0, 0 }, "Dark One",                 5,        9,      7,     20,     36, AI_FALLEN,     0,    3,   30,      7,          4,          8,     0,       5,           0,           0,          15, MC_ANIMAL,          64,         68,         0,        3,   255 },
+    {    128,   553, "Monsters\\SkelAxe\\SklAx%c.CL2",  1, "Monsters\\SkelAxe\\SklAx%c%i.WAV",  0,         1, "Monsters\\SkelAxe\\White.TRN",    { 12,  8, 13,  6, 17, 16 }, { 5, 0, 0, 0, 0, 0 }, "Skeleton",                 1,        3,      1,      2,      4, AI_SKELSD,     0,    0,   20,      8,          1,          4,     0,       0,           0,           0,           0, MC_UNDEAD,          72,         72,         0,        3,    64 },
+    {    128,   553, "Monsters\\SkelAxe\\SklAx%c.CL2",  1, "Monsters\\SkelAxe\\SklAx%c%i.WAV",  0,         1, "Monsters\\SkelAxe\\Skelt.TRN",    { 12,  8, 13,  6, 17, 16 }, { 4, 0, 0, 0, 0, 0 }, "Corpse Axe",               2,        5,      2,      4,      7, AI_SKELSD,     0,    1,   25,      8,          3,          5,     0,       0,           0,           0,           0, MC_UNDEAD,          72,         72,         0,        3,    68 },
+    {    128,   553, "Monsters\\SkelAxe\\SklAx%c.CL2",  1, "Monsters\\SkelAxe\\SklAx%c%i.WAV",  0,         0, NULL,                              { 12,  8, 13,  6, 17, 16 }, { 2, 0, 0, 0, 0, 0 }, "Burning Dead",             2,        6,      4,      8,     12, AI_SKELSD,     0,    2,   30,      8,          3,          7,     0,       0,           0,           0,           5, MC_UNDEAD,          74,         88,         0,        3,   154 },
+    {    128,   553, "Monsters\\SkelAxe\\SklAx%c.CL2",  1, "Monsters\\SkelAxe\\SklAx%c%i.WAV",  0,         1, "Monsters\\SkelAxe\\Black.TRN",    { 12,  8, 13,  6, 17, 16 }, { 3, 0, 0, 0, 0, 0 }, "Horror",                   4,        8,      6,     12,     20, AI_SKELSD,     0,    3,   35,      8,          4,          9,     0,       0,           0,           0,          15, MC_UNDEAD,          76,         76,         0,        3,   264 },
+    {    128,   623, "Monsters\\FalSword\\Fall%c.CL2",  1, "Monsters\\FalSword\\Fall%c%i.WAV",  1,         1, "Monsters\\FalSword\\FallenT.TRN", { 12, 12, 13, 11, 14, 15 }, { 3, 0, 0, 0, 0, 0 }, "Fallen One",               1,        3,      1,      2,      5, AI_FALLEN,     0,    0,   15,      8,          1,          4,     0,       5,           0,           0,          10, MC_ANIMAL,           0,          0,         0,        3,    52 },
+    {    128,   623, "Monsters\\FalSword\\Fall%c.CL2",  1, "Monsters\\FalSword\\Fall%c%i.WAV",  1,         1, "Monsters\\FalSword\\Dark.TRN",    { 12, 12, 13, 11, 14, 15 }, { 3, 0, 0, 0, 0, 0 }, "Carver",                   2,        5,      3,      5,      9, AI_FALLEN,     0,    1,   20,      8,          2,          7,     0,       5,           0,           0,          15, MC_ANIMAL,           0,          0,         0,        3,    90 },
+    {    128,   623, "Monsters\\FalSword\\Fall%c.CL2",  1, "Monsters\\FalSword\\Fall%c%i.WAV",  1,         0, NULL,                              { 12, 12, 13, 11, 14, 15 }, { 3, 0, 0, 0, 0, 0 }, "Devil Kin",                3,        7,      5,     16,     24, AI_FALLEN,     0,    2,   25,      8,          4,         10,     0,       5,           0,           0,          20, MC_ANIMAL,           0,          2,         0,        3,   180 },
+    {    128,   623, "Monsters\\FalSword\\Fall%c.CL2",  1, "Monsters\\FalSword\\Fall%c%i.WAV",  1,         1, "Monsters\\FalSword\\Blue.TRN",    { 12, 12, 13, 11, 14, 15 }, { 3, 0, 0, 0, 0, 0 }, "Dark One",                 5,        9,      7,     24,     36, AI_FALLEN,     0,    3,   30,      8,          4,         12,     0,       5,           0,           0,          25, MC_ANIMAL,          64,         68,         0,        3,   280 },
+    {    128,   410, "Monsters\\Scav\\Scav%c.CL2",      1, "Monsters\\Scav\\Scav%c%i.WAV",      0,         0, NULL,                              { 12,  8, 12,  6, 20, 11 }, { 2, 0, 0, 0, 0, 0 }, "Scavenger",                1,        4,      2,      3,      6, AI_SCAV,       0,    0,   20,      7,          1,          5,     0,       0,           0,           0,          10, MC_ANIMAL,           0,          2,         0,        3,    80 },
+    {    128,   410, "Monsters\\Scav\\Scav%c.CL2",      1, "Monsters\\Scav\\Scav%c%i.WAV",      0,         1, "Monsters\\Scav\\ScavBr.TRN",      { 12,  8, 12,  6, 20, 11 }, { 2, 0, 0, 0, 0, 0 }, "Plague Eater",             3,        6,      4,     12,     24, AI_SCAV,       0,    1,   30,      7,          1,          8,     0,       0,           0,           0,          20, MC_ANIMAL,           0,          4,         0,        3,   188 },
+    {    128,   410, "Monsters\\Scav\\Scav%c.CL2",      1, "Monsters\\Scav\\Scav%c%i.WAV",      0,         1, "Monsters\\Scav\\ScavBe.TRN",      { 12,  8, 12,  6, 20, 11 }, { 2, 0, 0, 0, 0, 0 }, "Shadow Beast",             4,        8,      6,     24,     36, AI_SCAV,       0,    2,   35,      7,          3,         12,     0,       0,           0,           0,          25, MC_ANIMAL,          64,         66,         0,        3,   375 },
+    {    128,   410, "Monsters\\Scav\\Scav%c.CL2",      1, "Monsters\\Scav\\Scav%c%i.WAV",      0,         1, "Monsters\\Scav\\ScavW.TRN",       { 12,  8, 12,  6, 20, 11 }, { 2, 0, 0, 0, 0, 0 }, "Bone Gasher",              6,       10,      8,     28,     40, AI_SCAV,       0,    3,   35,      7,          5,         15,     0,       0,           0,           0,          30, MC_ANIMAL,          65,         68,         0,        3,   552 },
+    {    128,   567, "Monsters\\SkelBow\\SklBw%c.CL2",  1, "Monsters\\SkelBow\\SklBw%c%i.WAV",  0,         1, "Monsters\\SkelBow\\White.TRN",    {  9,  8, 16,  5, 16, 16 }, { 4, 0, 0, 0, 0, 0 }, "Skeleton",                 2,        5,      3,      2,      4, AI_SKELBOW,    0,    0,   15,     12,          1,          2,     0,       0,           0,           0,           0, MC_UNDEAD,          72,         72,         0,        3,   110 },
+    {    128,   567, "Monsters\\SkelBow\\SklBw%c.CL2",  1, "Monsters\\SkelBow\\SklBw%c%i.WAV",  0,         1, "Monsters\\SkelBow\\Skelt.TRN",    {  9,  8, 16,  5, 16, 16 }, { 4, 0, 0, 0, 0, 0 }, "Corpse Bow",               3,        7,      5,      8,     16, AI_SKELBOW,    0,    1,   25,     12,          1,          4,     0,       0,           0,           0,           0, MC_UNDEAD,          72,         72,         0,        3,   210 },
+    {    128,   567, "Monsters\\SkelBow\\SklBw%c.CL2",  1, "Monsters\\SkelBow\\SklBw%c%i.WAV",  0,         0, NULL,                              {  9,  8, 16,  5, 16, 16 }, { 2, 0, 0, 0, 0, 0 }, "Burning Dead",             5,        9,      7,     10,     24, AI_SKELBOW,    0,    2,   30,     12,          1,          6,     0,       0,           0,           0,           5, MC_UNDEAD,          74,         88,         0,        3,   364 },
+    {    128,   567, "Monsters\\SkelBow\\SklBw%c.CL2",  1, "Monsters\\SkelBow\\SklBw%c%i.WAV",  0,         1, "Monsters\\SkelBow\\Black.TRN",    {  9,  8, 16,  5, 16, 16 }, { 3, 0, 0, 0, 0, 0 }, "Horror",                   7,       11,      9,     15,     45, AI_SKELBOW,    0,    3,   35,     12,          2,          9,     0,       0,           0,           0,          15, MC_UNDEAD,          76,         76,         0,        3,   594 },
+    {    128,   575, "Monsters\\SkelSd\\SklSr%c.CL2",   1, "Monsters\\SkelSd\\SklSr%c%i.WAV",   1,         1, "Monsters\\SkelSd\\White.TRN",     { 13,  8, 12,  7, 15, 16 }, { 4, 0, 0, 0, 0, 0 }, "Skeleton Captain",         1,        4,      2,      3,      6, AI_SKELSD,     0,    0,   20,      8,          2,          7,     0,       0,           0,           0,          10, MC_UNDEAD,          72,         72,         0,        3,    90 },
+    {    128,   575, "Monsters\\SkelSd\\SklSr%c.CL2",   1, "Monsters\\SkelSd\\SklSr%c%i.WAV",   0,         1, "Monsters\\SkelSd\\Skelt.TRN",     { 13,  8, 12,  7, 15, 16 }, { 4, 0, 0, 0, 0, 0 }, "Corpse Captain",           2,        6,      4,     12,     20, AI_SKELSD,     0,    1,   30,      8,          3,          9,     0,       0,           0,           0,           5, MC_UNDEAD,          72,         72,         0,        3,   200 },
+    {    128,   575, "Monsters\\SkelSd\\SklSr%c.CL2",   1, "Monsters\\SkelSd\\SklSr%c%i.WAV",   0,         0, NULL,                              { 13,  8, 12,  7, 15, 16 }, { 4, 0, 0, 0, 0, 0 }, "Burning Dead Captain",     4,        8,      6,     16,     30, AI_SKELSD,     0,    2,   35,      8,          4,         10,     0,       0,           0,           0,          15, MC_UNDEAD,          74,         88,         0,        3,   393 },
+    {    128,   575, "Monsters\\SkelSd\\SklSr%c.CL2",   1, "Monsters\\SkelSd\\SklSr%c%i.WAV",   0,         1, "Monsters\\SkelSd\\Black.TRN",     { 13,  8, 12,  7, 15, 16 }, { 4, 0, 0, 0, 0, 0 }, "Horror Captain",           6,       10,      8,     35,     50, AI_SKELSD,   256,    3,   40,      8,          5,         14,     0,       0,           0,           0,          30, MC_UNDEAD,          76,         76,         0,        3,   604 },
+    {    128,  2000, "Monsters\\TSneak\\TSneak%c.CL2",  0, "Monsters\\TSneak\\Sneakl%c%i.WAV",  0,         0, NULL,                              { 13, 13, 15, 11, 16,  0 }, { 2, 0, 0, 0, 0, 0 }, "Invisible Lord",          14,       14,     14,    278,    278, AI_SKELSD,   256,    3,   65,      8,         16,         30,     0,       0,           0,           0,          60, MC_DEMON,           71,         71,         0,        3,  2000 },
+    {    128,   992, "Monsters\\Sneak\\Sneak%c.CL2",    1, "Monsters\\Sneak\\Sneak%c%i.WAV",    0,         0, NULL,                              { 16,  8, 12,  8, 24, 15 }, { 2, 0, 0, 0, 0, 0 }, "Hidden",                   3,        8,      5,      8,     24, AI_SNEAK,      1,    0,   35,      8,          3,          6,     0,       0,           0,           0,          25, MC_DEMON,            0,         64,         0,        3,   278 },
+    {    128,   992, "Monsters\\Sneak\\Sneak%c.CL2",    1, "Monsters\\Sneak\\Sneak%c%i.WAV",    0,         1, "Monsters\\Sneak\\Sneakv2.TRN",    { 16,  8, 12,  8, 24, 15 }, { 2, 0, 0, 0, 0, 0 }, "Stalker",                  8,       12,      9,     30,     45, AI_SNEAK,    257,    1,   40,      8,          8,         16,     0,       0,           0,           0,          30, MC_DEMON,            0,         64,         0,        3,   630 },
+    {    128,   992, "Monsters\\Sneak\\Sneak%c.CL2",    1, "Monsters\\Sneak\\Sneak%c%i.WAV",    0,         1, "Monsters\\Sneak\\Sneakv3.TRN",    { 16,  8, 12,  8, 24, 15 }, { 2, 0, 0, 0, 0, 0 }, "Unseen",                  10,       14,     11,     35,     50, AI_SNEAK,    257,    2,   45,      8,         12,         20,     0,       0,           0,           0,          30, MC_DEMON,           65,         72,         0,        3,   935 },
+    {    128,   992, "Monsters\\Sneak\\Sneak%c.CL2",    1, "Monsters\\Sneak\\Sneak%c%i.WAV",    0,         1, "Monsters\\Sneak\\Sneakv1.TRN",    { 16,  8, 12,  8, 24, 15 }, { 2, 0, 0, 0, 0, 0 }, "Illusion Weaver",         14,       18,     13,     40,     60, AI_SNEAK,    257,    3,   60,      8,         16,         24,     0,       0,           0,           0,          30, MC_DEMON,            3,         74,         0,        3,  1500 },
+    {    160,  2000, "Monsters\\GoatLord\\GoatL%c.CL2", 0, "Monsters\\GoatLord\\Goatl%c%i.WAV", 0,         0, NULL,                              { 13, 13, 14,  9, 16,  0 }, { 2, 0, 0, 0, 0, 0 }, "Lord Sayter",             13,       13,     12,    351,    351, AI_SKELSD,   256,    3,   80,      8,         14,         24,     0,       0,           0,           0,          60, MC_DEMON,           67,         67,         0,        3,  1500 },
+    {    128,  1030, "Monsters\\GoatMace\\Goat%c.CL2",  1, "Monsters\\GoatMace\\Goat%c%i.WAV",  0,         0, NULL,                              { 12,  8, 12,  6, 20, 12 }, { 2, 0, 0, 0, 1, 0 }, "Flesh Clan",               6,       10,      8,     30,     45, AI_GOATMC,   768,    0,   50,      8,          4,         10,     0,       0,           0,           0,          40, MC_DEMON,            0,          0,         0,        3,   460 },
+    {    128,  1030, "Monsters\\GoatMace\\Goat%c.CL2",  1, "Monsters\\GoatMace\\Goat%c%i.WAV",  0,         1, "Monsters\\GoatMace\\Beige.TRN",   { 12,  8, 12,  6, 20, 12 }, { 2, 0, 0, 0, 1, 0 }, "Stone Clan",               8,       12,     10,     40,     55, AI_GOATMC,   768,    1,   60,      8,          6,         12,     0,       0,           0,           0,          40, MC_DEMON,           65,         72,         0,        3,   685 },
+    {    128,  1030, "Monsters\\GoatMace\\Goat%c.CL2",  1, "Monsters\\GoatMace\\Goat%c%i.WAV",  0,         1, "Monsters\\GoatMace\\Red.TRN",     { 12,  8, 12,  6, 20, 12 }, { 2, 0, 0, 0, 1, 0 }, "Fire Clan",               10,       14,     12,     50,     65, AI_GOATMC,   768,    2,   70,      8,          8,         16,     0,       0,           0,           0,          45, MC_DEMON,            2,         16,         0,        3,   906 },
+    {    128,  1030, "Monsters\\GoatMace\\Goat%c.CL2",  1, "Monsters\\GoatMace\\Goat%c%i.WAV",  0,         1, "Monsters\\GoatMace\\Gray.TRN",    { 12,  8, 12,  6, 20, 12 }, { 2, 0, 0, 0, 1, 0 }, "Night Clan",              12,       16,     14,     55,     70, AI_GOATMC,   768,    3,   80,      8,         10,         20,    15,       0,          30,          30,          50, MC_DEMON,           65,         72,         0,        3,  1190 },
+    {     96,   364, "Monsters\\Bat\\Bat%c.CL2",        0, "Monsters\\Bat\\Bat%c%i.WAV",        0,         1, "Monsters\\Bat\\red.trn",          {  9, 13, 10,  9, 13,  0 }, { 0, 0, 0, 0, 0, 0 }, "Fiend",                    2,        5,      3,      3,      6, AI_BAT,        0,    0,   35,      5,          1,          6,     0,       0,           0,           0,           0, MC_ANIMAL,           0,          0,    0x4000,        6,   102 },
+    {     96,   364, "Monsters\\Bat\\Bat%c.CL2",        0, "Monsters\\Bat\\Bat%c%i.WAV",        0,         0, NULL,                              {  9, 13, 10,  9, 13,  0 }, { 0, 0, 0, 0, 0, 0 }, "Blink",                    5,        9,      7,     12,     28, AI_BAT,        0,    1,   45,      5,          1,          8,     0,       0,           0,           0,          15, MC_ANIMAL,           0,          0,    0x4000,        6,   340 },
+    {     96,   364, "Monsters\\Bat\\Bat%c.CL2",        0, "Monsters\\Bat\\Bat%c%i.WAV",        0,         1, "Monsters\\Bat\\grey.trn",         {  9, 13, 10,  9, 13,  0 }, { 0, 0, 0, 0, 0, 0 }, "Gloom",                    7,       11,      9,     28,     36, AI_BAT,      256,    2,   70,      5,          4,         12,     0,       0,           0,           0,          35, MC_ANIMAL,           1,         65,    0x4000,        6,   509 },
+    {     96,   364, "Monsters\\Bat\\Bat%c.CL2",        0, "Monsters\\Bat\\Bat%c%i.WAV",        0,         1, "Monsters\\Bat\\orange.trn",       {  9, 13, 10,  9, 13,  0 }, { 0, 0, 0, 0, 0, 0 }, "Familiar",                11,       15,     13,     20,     35, AI_BAT,      256,    3,   50,      5,          4,         16,     0,       0,           0,           0,          35, MC_DEMON,           33,         97,    0x4000,        6,   448 },
+    {    128,  1040, "Monsters\\GoatBow\\GoatB%c.CL2",  0, "Monsters\\GoatBow\\GoatB%c%i.WAV",  0,         0, NULL,                              { 12,  8, 16,  6, 20,  0 }, { 3, 0, 0, 0, 0, 0 }, "Flesh Clan",               6,       10,      8,     20,     35, AI_GOATBOW,  512,    0,   35,     13,          1,          7,     0,       0,           0,           0,          35, MC_DEMON,            0,          0,         0,        3,   448 },
+    {    128,  1040, "Monsters\\GoatBow\\GoatB%c.CL2",  0, "Monsters\\GoatBow\\GoatB%c%i.WAV",  0,         1, "Monsters\\GoatBow\\Beige.TRN",    { 12,  8, 16,  6, 20,  0 }, { 3, 0, 0, 0, 0, 0 }, "Stone Clan",               8,       12,     10,     30,     40, AI_GOATBOW,  512,    1,   40,     13,          2,          9,     0,       0,           0,           0,          35, MC_DEMON,           65,         72,         0,        3,   645 },
+    {    128,  1040, "Monsters\\GoatBow\\GoatB%c.CL2",  0, "Monsters\\GoatBow\\GoatB%c%i.WAV",  0,         1, "Monsters\\GoatBow\\Red.TRN",      { 12,  8, 16,  6, 20,  0 }, { 3, 0, 0, 0, 0, 0 }, "Fire Clan",               10,       14,     12,     40,     50, AI_GOATBOW,  768,    2,   45,     13,          3,         11,     0,       0,           0,           0,          35, MC_DEMON,            2,         16,         0,        3,   822 },
+    {    128,  1040, "Monsters\\GoatBow\\GoatB%c.CL2",  0, "Monsters\\GoatBow\\GoatB%c%i.WAV",  0,         1, "Monsters\\GoatBow\\Gray.TRN",     { 12,  8, 16,  6, 20,  0 }, { 3, 0, 0, 0, 0, 0 }, "Night Clan",              12,       16,     14,     50,     65, AI_GOATBOW,  768,    3,   50,     13,          4,         13,    15,       0,           0,           0,          40, MC_DEMON,           65,         72,         0,        3,  1092 },
+    {    128,   716, "Monsters\\Acid\\Acid%c.CL2",      1, "Monsters\\Acid\\Acid%c%i.WAV",      1,         0, NULL,                              { 13,  8, 12,  8, 16, 12 }, { 0, 0, 0, 0, 0, 0 }, "Acid Beast",              10,       14,     11,     40,     66, AI_ACID,       0,    0,   40,      8,          4,         12,    25,       8,           0,           0,          30, MC_ANIMAL,         128,        136,         0,        3,   846 },
+    {    128,   716, "Monsters\\Acid\\Acid%c.CL2",      1, "Monsters\\Acid\\Acid%c%i.WAV",      1,         1, "Monsters\\Acid\\AcidBlk.TRN",     { 13,  8, 12,  8, 16, 12 }, { 0, 0, 0, 0, 0, 0 }, "Poison Spitter",          14,       18,     15,     60,     85, AI_ACID,       0,    1,   45,      8,          4,         16,    25,       8,           0,           0,          30, MC_ANIMAL,         128,        136,         0,        3,  1248 },
+    {    128,   716, "Monsters\\Acid\\Acid%c.CL2",      1, "Monsters\\Acid\\Acid%c%i.WAV",      1,         1, "Monsters\\Acid\\AcidB.TRN",       { 13,  8, 12,  8, 16, 12 }, { 0, 0, 0, 0, 0, 0 }, "Pit Beast",               18,       22,     21,     80,    110, AI_ACID,       0,    2,   55,      8,          8,         18,    35,       8,           0,           0,          35, MC_ANIMAL,         129,        140,         0,        3,  2060 },
+    {    128,   716, "Monsters\\Acid\\Acid%c.CL2",      1, "Monsters\\Acid\\Acid%c%i.WAV",      1,         1, "Monsters\\Acid\\AcidR.TRN",       { 13,  8, 12,  8, 16, 12 }, { 0, 0, 0, 0, 0, 0 }, "Lava Maw",                22,       27,     25,    100,    150, AI_ACID,       0,    3,   65,      8,         10,         20,    40,       8,           0,           0,          35, MC_ANIMAL,         145,        152,         0,        3,  2940 },
+    {    160,  1010, "Monsters\\SKing\\SKing%c.CL2",    1, "Monsters\\SKing\\SKing%c%i.WAV",    1,         1, "Monsters\\SkelAxe\\White.TRN",    {  8,  6, 16,  6, 16,  6 }, { 2, 0, 0, 0, 0, 2 }, "Skeleton King",            6,        6,      9,    140,    140, AI_SKELKING, 768,    3,   60,      8,          6,         16,     0,       0,           0,           0,          70, MC_UNDEAD,          78,        120,    0x8001,        7,   570 },
+    {    128,   980, "Monsters\\FatC\\FatC%c.CL2",      0, "Monsters\\FatC\\FatC%c%i.WAV",      0,         0, NULL,                              { 10,  8, 12,  6, 16,  0 }, { 1, 0, 0, 0, 0, 0 }, "The Butcher",              0,        0,      1,    320,    320, AI_CLEAVER,    0,    3,   50,      8,          6,         12,     0,       0,           0,           0,          50, MC_DEMON,            6,         49,    0x8000,        3,   710 },
+    {    128,  1130, "Monsters\\Fat\\Fat%c.CL2",        1, "Monsters\\Fat\\Fat%c%i.WAV",        0,         0, NULL,                              {  8, 10, 15,  6, 16, 10 }, { 4, 0, 0, 0, 0, 0 }, "Overlord",                 8,       12,     10,     60,     80, AI_FAT,        0,    0,   55,      8,          6,         12,     0,       0,           0,           0,          55, MC_DEMON,            0,          2,         0,        3,   635 },
+    {    128,  1130, "Monsters\\Fat\\Fat%c.CL2",        1, "Monsters\\Fat\\Fat%c%i.WAV",        0,         1, "Monsters\\Fat\\Blue.TRN",         {  8, 10, 15,  6, 16, 10 }, { 4, 0, 0, 0, 0, 0 }, "Mud Man",                 13,       17,     14,    100,    125, AI_FAT,      256,    1,   60,      8,          8,         16,     0,       0,           0,           0,          60, MC_DEMON,            0,         32,         0,        3,  1165 },
+    {    128,  1130, "Monsters\\Fat\\Fat%c.CL2",        1, "Monsters\\Fat\\Fat%c%i.WAV",        0,         1, "Monsters\\Fat\\FatB.TRN",         {  8, 10, 15,  6, 16, 10 }, { 4, 0, 0, 0, 0, 0 }, "Toad Demon",              15,       19,     16,    135,    160, AI_FAT,      256,    2,   70,      8,          8,         16,    40,       0,           8,          20,          65, MC_DEMON,            8,         12,         0,        3,  1380 },
+    {    128,  1130, "Monsters\\Fat\\Fat%c.CL2",        1, "Monsters\\Fat\\Fat%c%i.WAV",        0,         1, "Monsters\\Fat\\FatF.TRN",         {  8, 10, 15,  6, 16, 10 }, { 4, 0, 0, 0, 0, 0 }, "Flayed One",              19,       23,     20,    160,    200, AI_FAT,      256,    3,   85,      8,         10,         20,     0,       0,           0,           0,          70, MC_DEMON,           17,         24,         0,        3,  2058 },
+    {    160,  2420, "Monsters\\Worm\\Worm%c.CL2",      0, "Monsters\\Fat\\Fat%c%i.WAV",        0,         0, NULL,                              { 13, 13, 13, 11, 19,  0 }, { 0, 0, 0, 0, 0, 0 }, "Wyrm",                     9,       13,     11,     60,     90, AI_SKELSD,     0,    0,   40,      8,          4,         10,     0,       0,           0,           0,          25, MC_ANIMAL,           1,          1,         0,        3,   660 },
+    {    160,  2420, "Monsters\\Worm\\Worm%c.CL2",      0, "Monsters\\Fat\\Fat%c%i.WAV",        0,         0, NULL,                              { 13, 13, 13, 11, 19,  0 }, { 0, 0, 0, 0, 0, 0 }, "Cave Slug",               11,       15,     13,     75,    110, AI_SKELSD,     0,    1,   50,      8,          6,         13,     0,       0,           0,           0,          30, MC_ANIMAL,           1,          1,         0,        3,   994 },
+    {    160,  2420, "Monsters\\Worm\\Worm%c.CL2",      0, "Monsters\\Fat\\Fat%c%i.WAV",        0,         0, NULL,                              { 13, 13, 13, 11, 19,  0 }, { 0, 0, 0, 0, 0, 0 }, "Devil Wyrm",              13,       17,     15,    100,    140, AI_SKELSD,     0,    2,   55,      8,          8,         16,     0,       0,           0,           0,          30, MC_ANIMAL,           3,          3,         0,        3,  1320 },
+    {    160,  2420, "Monsters\\Worm\\Worm%c.CL2",      0, "Monsters\\Fat\\Fat%c%i.WAV",        0,         0, NULL,                              { 13, 13, 13, 11, 19,  0 }, { 0, 0, 0, 0, 0, 0 }, "Devourer",                15,       19,     17,    125,    200, AI_SKELSD,     0,    3,   60,      8,         10,         20,     0,       0,           0,           0,          35, MC_ANIMAL,          67,         67,         0,        3,  1827 },
+    {    128,  1680, "Monsters\\Magma\\Magma%c.CL2",    1, "Monsters\\Magma\\Magma%c%i.WAV",    1,         0, NULL,                              {  8, 10, 14,  7, 18, 18 }, { 2, 0, 0, 0, 1, 0 }, "Magma Demon",             14,       17,     13,     50,     70, AI_MAGMA,    768,    0,   45,      4,          2,         10,    50,      13,           0,           0,          45, MC_DEMON,           10,         24,         0,        7,  1076 },
+    {    128,  1680, "Monsters\\Magma\\Magma%c.CL2",    1, "Monsters\\Magma\\Magma%c%i.WAV",    1,         1, "Monsters\\Magma\\Yellow.TRN",     {  8, 10, 14,  7, 18, 18 }, { 2, 0, 0, 0, 1, 0 }, "Blood Stone",             15,       19,     14,     55,     75, AI_MAGMA,    768,    1,   50,      4,          2,         12,    50,      14,           0,           0,          45, MC_DEMON,           24,         24,         0,        7,  1309 },
+    {    128,  1680, "Monsters\\Magma\\Magma%c.CL2",    1, "Monsters\\Magma\\Magma%c%i.WAV",    1,         1, "Monsters\\Magma\\Blue.TRN",       {  8, 10, 14,  7, 18, 18 }, { 2, 0, 0, 0, 1, 0 }, "Hell Stone",              16,       20,     16,     60,     80, AI_MAGMA,    768,    2,   60,      4,          2,         20,    60,      14,           0,           0,          50, MC_DEMON,           24,         24,         0,        7,  1680 },
+    {    128,  1680, "Monsters\\Magma\\Magma%c.CL2",    1, "Monsters\\Magma\\Magma%c%i.WAV",    1,         1, "Monsters\\Magma\\Wierd.TRN",      {  8, 10, 14,  7, 18, 18 }, { 2, 0, 0, 0, 1, 0 }, "Lava Lord",               17,       21,     18,     70,     85, AI_MAGMA,    768,    3,   75,      4,          4,         24,    60,      14,           0,           0,          60, MC_DEMON,           24,         24,         0,        7,  2124 },
+    {    160,  1630, "Monsters\\Rhino\\Rhino%c.CL2",    1, "Monsters\\Rhino\\Rhino%c%i.WAV",    1,         0, NULL,                              {  8,  8, 14,  6, 16,  6 }, { 2, 0, 0, 0, 0, 0 }, "Horned Demon",            12,       16,     13,     40,     80, AI_RHINO,    768,    0,   60,      7,          2,         16,   100,       0,           5,          32,          40, MC_ANIMAL,           0,          2,         0,        7,  1172 },
+    {    160,  1630, "Monsters\\Rhino\\Rhino%c.CL2",    1, "Monsters\\Rhino\\Rhino%c%i.WAV",    1,         1, "Monsters\\Rhino\\Orange.TRN",     {  8,  8, 14,  6, 16,  6 }, { 2, 0, 0, 0, 0, 0 }, "Mud Runner",              14,       18,     15,     50,     90, AI_RHINO,    768,    1,   70,      7,          6,         18,   100,       0,          12,          36,          45, MC_ANIMAL,           0,          2,         0,        7,  1404 },
+    {    160,  1630, "Monsters\\Rhino\\Rhino%c.CL2",    1, "Monsters\\Rhino\\Rhino%c%i.WAV",    1,         1, "Monsters\\Rhino\\Blue.TRN",       {  8,  8, 14,  6, 16,  6 }, { 2, 0, 0, 0, 0, 0 }, "Frost Charger",           16,       20,     17,     60,    100, AI_RHINO,    768,    2,   80,      7,          8,         20,   100,       0,          20,          40,          50, MC_ANIMAL,          12,         12,         0,        7,  1720 },
+    {    160,  1630, "Monsters\\Rhino\\Rhino%c.CL2",    1, "Monsters\\Rhino\\Rhino%c%i.WAV",    1,         1, "Monsters\\Rhino\\RhinoB.TRN",     {  8,  8, 14,  6, 16,  6 }, { 2, 0, 0, 0, 0, 0 }, "Obsidian Lord",           18,       22,     19,     70,    110, AI_RHINO,    768,    3,   90,      7,         10,         22,   100,       0,          20,          50,          55, MC_ANIMAL,          12,         56,         0,        7,  1809 },
+    {    128,  1740, "Monsters\\Demskel\\Demskl%c.CL2", 1, "Monsters\\Thin\\Thin%c%i.WAV",      1,         0, "Monsters\\Thin\\Thinv3.TRN",      { 10,  8, 20,  6, 24, 16 }, { 3, 0, 0, 0, 0, 0 }, "Bone Demon",              10,       14,     12,     70,     70, AI_STORM,      0,    0,   60,      8,          6,         14,    12,       0,           0,           0,          50, MC_DEMON,           72,         72,         0,        7,  1344 },
+    {    160,  1740, "Monsters\\Thin\\Thin%c.CL2",      1, "Monsters\\Thin\\Thin%c%i.WAV",      1,         1, "Monsters\\Thin\\Thinv3.TRN",      {  8,  8, 18,  4, 17, 14 }, { 3, 0, 0, 0, 0, 0 }, "Red Death",               14,       18,     16,     96,     96, AI_STORM,      0,    1,   75,      5,         10,         20,     0,       0,           0,           0,          60, MC_DEMON,           24,         24,         0,        7,  2168 },
+    {    160,  1740, "Monsters\\Thin\\Thin%c.CL2",      1, "Monsters\\Thin\\Thin%c%i.WAV",      1,         1, "Monsters\\Thin\\Thinv3.TRN",      {  8,  8, 18,  4, 17, 14 }, { 3, 0, 0, 0, 0, 0 }, "Litch Demon",             16,       20,     18,    110,    110, AI_STORM,      0,    2,   80,      5,         10,         24,     0,       0,           0,           0,          45, MC_DEMON,          104,        104,         0,        7,  2736 },
+    {    160,  1740, "Monsters\\Thin\\Thin%c.CL2",      1, "Monsters\\Thin\\Thin%c%i.WAV",      1,         1, "Monsters\\Thin\\Thinv3.TRN",      {  8,  8, 18,  4, 17, 14 }, { 3, 0, 0, 0, 0, 0 }, "Undead Balrog",           20,       24,     22,    130,    130, AI_STORM,      0,    3,   85,      5,         12,         30,     0,       0,           0,           0,          65, MC_DEMON,           78,         78,         0,        7,  3575 },
+    {    128,  1460, "Monsters\\Fireman\\FireM%c.CL2",  1, "Monsters\\Acid\\Acid%c%i.WAV",      0,         0, NULL,                              { 14, 19, 20,  8, 14, 23 }, { 0, 0, 0, 0, 0, 0 }, "Incinerator",             14,       18,     16,     30,     45, AI_FIREMAN,    0,    0,   75,      8,          8,         16,     0,       0,           0,           0,          25, MC_DEMON,           24,         24,         0,        3,  1888 },
+    {    128,  1460, "Monsters\\Fireman\\FireM%c.CL2",  1, "Monsters\\Acid\\Acid%c%i.WAV",      0,         0, NULL,                              { 14, 19, 20,  8, 14, 23 }, { 0, 0, 0, 0, 0, 0 }, "Flame Lord",              16,       20,     18,     40,     55, AI_FIREMAN,    0,    1,   75,      8,         10,         20,     0,       0,           0,           0,          25, MC_DEMON,           24,         24,         0,        3,  2250 },
+    {    128,  1460, "Monsters\\Fireman\\FireM%c.CL2",  1, "Monsters\\Acid\\Acid%c%i.WAV",      0,         0, NULL,                              { 14, 19, 20,  8, 14, 23 }, { 0, 0, 0, 0, 0, 0 }, "Doom Fire",               18,       22,     20,     50,     65, AI_FIREMAN,    0,    2,   80,      8,         12,         24,     0,       0,           0,           0,          30, MC_DEMON,           28,         28,         0,        3,  2740 },
+    {    128,  1460, "Monsters\\Fireman\\FireM%c.CL2",  1, "Monsters\\Acid\\Acid%c%i.WAV",      0,         0, NULL,                              { 14, 19, 20,  8, 14, 23 }, { 0, 0, 0, 0, 0, 0 }, "Hell Burner",             20,       24,     22,     60,     80, AI_FIREMAN,    0,    3,   85,      8,         15,         30,     0,       0,           0,           0,          30, MC_DEMON,           28,         28,         0,        3,  3355 },
+    {    160,  1740, "Monsters\\Thin\\Thin%c.CL2",      1, "Monsters\\Thin\\Thin%c%i.WAV",      1,         1, "Monsters\\Thin\\Thinv3.TRN",      {  8,  8, 18,  4, 17, 14 }, { 3, 0, 0, 0, 0, 0 }, "Red Storm",               17,       21,     18,     55,    110, AI_STORM,    768,    0,   80,      5,          8,         18,    75,       8,           4,          16,          30, MC_DEMON,           12,         40,         0,        7,  2160 },
+    {    160,  1740, "Monsters\\Thin\\Thin%c.CL2",      1, "Monsters\\Thin\\Thin%c%i.WAV",      1,         0, NULL,                              {  8,  8, 18,  4, 17, 14 }, { 3, 0, 0, 0, 0, 0 }, "Storm Rider",             19,       23,     20,     60,    120, AI_STORM,    768,    1,   80,      5,          8,         18,    80,       8,           4,          16,          30, MC_DEMON,           33,         40,         0,        7,  2391 },
+    {    160,  1740, "Monsters\\Thin\\Thin%c.CL2",      1, "Monsters\\Thin\\Thin%c%i.WAV",      1,         1, "Monsters\\Thin\\Thinv2.TRN",      {  8,  8, 18,  4, 17, 14 }, { 3, 0, 0, 0, 0, 0 }, "Storm Lord",              21,       25,     22,     75,    135, AI_STORM,    768,    2,   85,      5,         12,         24,    75,       8,           4,          16,          35, MC_DEMON,           33,         40,         0,        7,  2775 },
+    {    160,  1740, "Monsters\\Thin\\Thin%c.CL2",      1, "Monsters\\Thin\\Thin%c%i.WAV",      1,         1, "Monsters\\Thin\\Thinv1.TRN",      {  8,  8, 18,  4, 17, 14 }, { 3, 0, 0, 0, 0, 0 }, "Maelstorm",               23,       27,     24,     90,    150, AI_STORM,    768,    3,   90,      5,         12,         28,    75,       8,           4,          16,          40, MC_DEMON,           97,        104,         0,        7,  3177 },
+    {    128,  1650, "Monsters\\BigFall\\Fallg%c.CL2",  1, "Monsters\\BigFall\\Bfal%c%i.WAV",   0,         0, NULL,                              { 10,  8, 11,  8, 17,  0 }, { 0, 0, 0, 0, 2, 2 }, "Devil Kin Brute",         20,       20,     24,    160,    220, AI_SKELSD,   768,    3,  100,      6,         18,         24,     0,       0,           0,           0,          75, MC_ANIMAL,           0,          0,         0,        6,  2000 },
+    {    160,  1650, "Monsters\\Gargoyle\\Gargo%c.CL2", 1, "Monsters\\Gargoyle\\Gargo%c%i.WAV", 0,         0, NULL,                              { 14, 14, 14, 10, 18, 14 }, { 0, 0, 0, 0, 0, 2 }, "Winged-Demon",             8,       12,      9,     45,     60, AI_GARG,     512,    0,   50,      7,         10,         16,     0,       0,           0,           0,          45, MC_DEMON,           74,         88,         0,        6,   662 },
+    {    160,  1650, "Monsters\\Gargoyle\\Gargo%c.CL2", 1, "Monsters\\Gargoyle\\Gargo%c%i.WAV", 0,         1, "Monsters\\Gargoyle\\GarE.TRN",    { 14, 14, 14, 10, 18, 14 }, { 0, 0, 0, 0, 0, 2 }, "Gargoyle",                12,       16,     13,     60,     90, AI_GARG,     512,    1,   65,      7,         10,         16,     0,       0,           0,           0,          45, MC_DEMON,           76,        104,         0,        6,  1205 },
+    {    160,  1650, "Monsters\\Gargoyle\\Gargo%c.CL2", 1, "Monsters\\Gargoyle\\Gargo%c%i.WAV", 0,         1, "Monsters\\Gargoyle\\GargBr.TRN",  { 14, 14, 14, 10, 18, 14 }, { 0, 0, 0, 0, 0, 0 }, "Blood Claw",              16,       20,     19,     75,    125, AI_GARG,     512,    2,   80,      7,         14,         22,     0,       0,           0,           0,          50, MC_DEMON,           88,         92,         0,        6,  1873 },
+    {    160,  1650, "Monsters\\Gargoyle\\Gargo%c.CL2", 1, "Monsters\\Gargoyle\\Gargo%c%i.WAV", 0,         1, "Monsters\\Gargoyle\\GargB.TRN",   { 14, 14, 14, 10, 18, 14 }, { 0, 0, 0, 0, 0, 0 }, "Death Wing",              18,       22,     23,     90,    150, AI_GARG,     512,    3,   95,      7,         16,         28,     0,       0,           0,           0,          60, MC_DEMON,          104,        106,         0,        6,  2278 },
+    {    160,  2220, "Monsters\\Mega\\Mega%c.CL2",      1, "Monsters\\Mega\\Mega%c%i.WAV",      1,         0, NULL,                              {  6,  7, 14,  1, 24,  5 }, { 3, 0, 0, 0, 2, 0 }, "Slayer",                  19,       23,     20,    120,    140, AI_MEGA,     768,    0,  100,      8,         12,         20,     0,       3,           0,           0,          60, MC_DEMON,           17,         17,         0,        7,  2300 },
+    {    160,  2220, "Monsters\\Mega\\Mega%c.CL2",      1, "Monsters\\Mega\\Mega%c%i.WAV",      1,         1, "Monsters\\Mega\\Guard.TRN",       {  6,  7, 14,  1, 24,  5 }, { 3, 0, 0, 0, 2, 0 }, "Guardian",                21,       25,     22,    140,    160, AI_MEGA,     768,    1,  110,      8,         14,         22,     0,       3,           0,           0,          65, MC_DEMON,           17,         17,         0,        7,  2714 },
+    {    160,  2220, "Monsters\\Mega\\Mega%c.CL2",      1, "Monsters\\Mega\\Mega%c%i.WAV",      1,         1, "Monsters\\Mega\\Vtexl.TRN",       {  6,  7, 14,  1, 24,  5 }, { 3, 0, 0, 0, 2, 0 }, "Vortex Lord",             23,       26,     24,    160,    180, AI_MEGA,     768,    2,  120,      8,         18,         24,     0,       3,           0,           0,          70, MC_DEMON,           81,         85,         0,        7,  3252 },
+    {    160,  2220, "Monsters\\Mega\\Mega%c.CL2",      1, "Monsters\\Mega\\Mega%c%i.WAV",      1,         1, "Monsters\\Mega\\Balr.TRN",        {  6,  7, 14,  1, 24,  5 }, { 3, 0, 0, 0, 2, 0 }, "Balrog",                  25,       29,     26,    180,    200, AI_MEGA,     768,    3,  130,      8,         22,         30,     0,       3,           0,           0,          75, MC_DEMON,           81,         85,         0,        7,  3643 },
+    {    160,  1270, "Monsters\\Snake\\Snake%c.CL2",    0, "Monsters\\Snake\\Snake%c%i.WAV",    0,         0, NULL,                              { 12, 11, 13,  5, 18,  0 }, { 2, 0, 0, 0, 1, 0 }, "Cave Viper",              20,       24,     21,    100,    150, AI_SNAKE,    256,    0,   90,      8,          8,         20,     0,       0,           0,           0,          60, MC_DEMON,            8,          8,         0,        7,  2725 },
+    {    160,  1270, "Monsters\\Snake\\Snake%c.CL2",    0, "Monsters\\Snake\\Snake%c%i.WAV",    0,         1, "Monsters\\Snake\\SnakR.TRN",      { 12, 11, 13,  5, 18,  0 }, { 2, 0, 0, 0, 1, 0 }, "Fire Drake",              22,       26,     23,    120,    170, AI_SNAKE,    256,    1,  105,      8,         12,         24,     0,       0,           0,           0,          65, MC_DEMON,           10,         24,         0,        7,  3139 },
+    {    160,  1270, "Monsters\\Snake\\Snake%c.CL2",    0, "Monsters\\Snake\\Snake%c%i.WAV",    0,         1, "Monsters\\Snake\\Snakg.TRN",      { 12, 11, 13,  5, 18,  0 }, { 2, 0, 0, 0, 1, 0 }, "Gold Viper",              24,       27,     25,    140,    180, AI_SNAKE,    256,    2,  120,      8,         15,         26,     0,       0,           0,           0,          70, MC_DEMON,           12,         12,         0,        7,  3540 },
+    {    160,  1270, "Monsters\\Snake\\Snake%c.CL2",    0, "Monsters\\Snake\\Snake%c%i.WAV",    0,         1, "Monsters\\Snake\\Snakb.TRN",      { 12, 11, 13,  5, 18,  0 }, { 2, 0, 0, 0, 1, 0 }, "Azure Drake",             28,       30,     27,    160,    200, AI_SNAKE,    256,    3,  130,      8,         18,         30,     0,       0,           0,           0,          75, MC_DEMON,            6,         42,         0,        7,  3791 },
+    {    160,  2120, "Monsters\\Black\\Black%c.CL2",    0, "Monsters\\Black\\Black%c%i.WAV",    0,         0, NULL,                              {  8,  8, 16,  4, 24,  0 }, { 2, 0, 0, 0, 0, 0 }, "Black Knight",            23,       27,     24,    150,    150, AI_SKELSD,   256,    0,  110,      8,         15,         20,     0,       0,           0,           0,          75, MC_DEMON,           69,         97,         0,        7,  3360 },
+    {    160,  2120, "Monsters\\Black\\Black%c.CL2",    0, "Monsters\\Black\\Black%c%i.WAV",    0,         1, "Monsters\\Black\\BlkKntRT.TRN",   {  8,  8, 16,  4, 24,  0 }, { 2, 0, 0, 0, 0, 0 }, "Doom Guard",              25,       29,     26,    165,    165, AI_SKELSD,   256,    0,  130,      8,         18,         25,     0,       0,           0,           0,          75, MC_DEMON,           67,         81,         0,        7,  3650 },
+    {    160,  2120, "Monsters\\Black\\Black%c.CL2",    0, "Monsters\\Black\\Black%c%i.WAV",    0,         1, "Monsters\\Black\\BlkKntBT.TRN",   {  8,  8, 16,  4, 24,  0 }, { 2, 0, 0, 0, 0, 0 }, "Steel Lord",              27,       30,     28,    180,    180, AI_SKELSD,   256,    1,  120,      8,         20,         30,     0,       0,           0,           0,          80, MC_DEMON,           85,         92,         0,        7,  4252 },
+    {    160,  2120, "Monsters\\Black\\Black%c.CL2",    0, "Monsters\\Black\\Black%c%i.WAV",    0,         1, "Monsters\\Black\\BlkKntBe.TRN",   {  8,  8, 16,  4, 24,  0 }, { 2, 0, 0, 0, 0, 0 }, "Blood Knight",            24,       26,     30,    200,    200, AI_SKELSD,   256,    1,  130,      8,         25,         35,     0,       0,           0,           0,          85, MC_DEMON,          106,        106,         0,        7,  5130 },
+    {     96,   484, "Monsters\\Unrav\\Unrav%c.CL2",    0, "Monsters\\Acid\\Acid%c%i.WAV",      0,         0, NULL,                              { 10, 10, 12,  5, 16,  0 }, { 0, 0, 0, 0, 0, 0 }, "Unraveler",               26,       28,     25,     70,    150, AI_SKELSD,     0,    0,   75,      7,         10,         20,     0,       0,           0,           0,          70, MC_UNDEAD,         106,        106,         0,        3,  3812 },
+    {     96,   484, "Monsters\\Unrav\\Unrav%c.CL2",    0, "Monsters\\Acid\\Acid%c%i.WAV",      0,         0, NULL,                              { 10, 10, 12,  5, 16,  0 }, { 0, 0, 0, 0, 0, 0 }, "Hollow One",              28,       30,     27,    135,    240, AI_SKELSD,     0,    1,   75,      7,         12,         24,     0,       0,           0,           0,          75, MC_UNDEAD,          92,         92,         0,        3,  4374 },
+    {     96,   484, "Monsters\\Unrav\\Unrav%c.CL2",    0, "Monsters\\Acid\\Acid%c%i.WAV",      0,         0, NULL,                              { 10, 10, 12,  5, 16,  0 }, { 0, 0, 0, 0, 0, 0 }, "Pain Master",             27,       30,     29,    110,    200, AI_SKELSD,     0,    2,   80,      7,         16,         30,     0,       0,           0,           0,          80, MC_UNDEAD,          92,         92,         0,        3,  5147 },
+    {     96,   484, "Monsters\\Unrav\\Unrav%c.CL2",    0, "Monsters\\Acid\\Acid%c%i.WAV",      0,         0, NULL,                              { 10, 10, 12,  5, 16,  0 }, { 0, 0, 0, 0, 0, 0 }, "Reality Weaver",          28,       30,     30,    135,    240, AI_SKELSD,     0,    3,   85,      7,         20,         35,     0,       0,           0,           0,          85, MC_UNDEAD,         113,        113,         0,        3,  5925 },
+    {    128,   980, "Monsters\\Succ\\Scbs%c.CL2",      0, "Monsters\\Succ\\Scbs%c%i.WAV",      0,         0, NULL,                              { 14,  8, 16,  7, 24,  0 }, { 0, 0, 0, 0, 0, 0 }, "Succubus",                22,       26,     24,    120,    150, AI_SUCC,     512,    0,  100,     10,          1,         20,     0,       0,           0,           0,          60, MC_DEMON,            1,         10,         0,        3,  3696 },
+    {    128,   980, "Monsters\\Succ\\Scbs%c.CL2",      0, "Monsters\\Succ\\Scbs%c%i.WAV",      0,         1, "Monsters\\Succ\\Succb.TRN",       { 14,  8, 16,  7, 24,  0 }, { 0, 0, 0, 0, 0, 0 }, "Snow Witch",              25,       28,     26,    135,    175, AI_SUCC,     512,    1,  110,     10,          1,         24,     0,       0,           0,           0,          65, MC_DEMON,           68,         76,         0,        3,  4084 },
+    {    128,   980, "Monsters\\Succ\\Scbs%c.CL2",      0, "Monsters\\Succ\\Scbs%c%i.WAV",      0,         1, "Monsters\\Succ\\Succrw.TRN",      { 14,  8, 16,  7, 24,  0 }, { 0, 0, 0, 0, 0, 0 }, "Hell Spawn",              27,       30,     28,    150,    200, AI_SUCC,     768,    2,  115,     10,          1,         30,     0,       0,           0,           0,          75, MC_DEMON,           33,         28,         0,        3,  4480 },
+    {    128,   980, "Monsters\\Succ\\Scbs%c.CL2",      0, "Monsters\\Succ\\Scbs%c%i.WAV",      0,         1, "Monsters\\Succ\\Succbw.TRN",      { 14,  8, 16,  7, 24,  0 }, { 0, 0, 0, 0, 0, 0 }, "Soul Burner",             28,       30,     30,    140,    225, AI_SUCC,     768,    3,  120,     10,          1,         35,     0,       0,           0,           0,          85, MC_DEMON,           21,         56,         0,        3,  4644 },
+    {    128,  2000, "Monsters\\Mage\\Mage%c.CL2",      1, "Monsters\\Mage\\Mage%c%i.WAV",      0,         0, NULL,                              { 12,  1, 20,  8, 28, 20 }, { 0, 0, 0, 0, 0, 0 }, "Counselor",               24,       26,     25,     70,     70, AI_COUNSLR,  512,    0,   90,      8,          8,         20,     0,       0,           0,           0,           0, MC_DEMON,            7,          7,         0,        7,  4070 },
+    {    128,  2000, "Monsters\\Mage\\Mage%c.CL2",      1, "Monsters\\Mage\\Mage%c%i.WAV",      0,         1, "Monsters\\Mage\\Cnselg.TRN",      { 12,  1, 20,  8, 28, 20 }, { 0, 0, 0, 0, 0, 0 }, "Magistrate",              26,       28,     27,     85,     85, AI_COUNSLR,  512,    1,  100,      8,         10,         24,     0,       0,           0,           0,           0, MC_DEMON,           85,         92,         0,        7,  4478 },
+    {    128,  2000, "Monsters\\Mage\\Mage%c.CL2",      1, "Monsters\\Mage\\Mage%c%i.WAV",      0,         1, "Monsters\\Mage\\Cnselgd.TRN",     { 12,  1, 20,  8, 28, 20 }, { 0, 0, 0, 0, 0, 0 }, "Cabalist",                28,       30,     29,    120,    120, AI_COUNSLR,  512,    2,  110,      8,         14,         30,     0,       0,           0,           0,           0, MC_DEMON,           99,        106,         0,        7,  4929 },
+    {    128,  2000, "Monsters\\Mage\\Mage%c.CL2",      1, "Monsters\\Mage\\Mage%c%i.WAV",      0,         1, "Monsters\\Mage\\Cnselbk.TRN",     { 12,  1, 20,  8, 28, 20 }, { 0, 0, 0, 0, 0, 0 }, "Advocate",                30,       30,     30,    145,    145, AI_COUNSLR,  512,    3,  120,      8,         15,         25,     0,       0,           0,           0,           0, MC_DEMON,          106,        120,         0,        7,  4968 },
+    {     96,   386, "Monsters\\Golem\\Golem%c.CL2",    1, "Monsters\\Golem\\Golm%c%i.WAV",     0,         0, NULL,                              {  0, 16, 12,  0, 12, 20 }, { 0, 0, 0, 0, 0, 0 }, "Golem",                    0,        0,     12,      1,      1, AI_GOLUM,    512,    0,    0,      7,          1,          1,     0,       0,           0,           0,           1, MC_DEMON,            0,          0,         0,        0,     0 },
+    {    160,  2000, "Monsters\\Diablo\\Diablo%c.CL2",  1, "Monsters\\Diablo\\Diablo%c%i.WAV",  1,         0, NULL,                              { 16,  6, 16,  6, 16, 16 }, { 0, 0, 0, 0, 0, 0 }, "The Dark Lord",           50,       50,     30,   1666,   1666, AI_DIABLO,   896,    3,  220,      4,         30,         60,     0,      11,           0,           0,          70, MC_DEMON,           78,         78,         0,        7, 31666 },
+    {    128,  1060, "Monsters\\DarkMage\\Dmage%c.CL2", 1, "Monsters\\DarkMage\\Dmag%c%i.WAV",  0,         0, NULL,                              {  6,  1, 21,  6, 23, 18 }, { 0, 0, 0, 0, 0, 0 }, "The Arch-Litch Malignus", 30,       30,     30,    160,    160, AI_COUNSLR,  512,    3,  120,      8,         20,         40,     0,       0,           0,           0,          70, MC_DEMON,           71,        120,         0,        7,  4968 }
+    // clang-format on
 };
-char MonstConvTbl[128] =
-{
-	0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
-	10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
-	20, 21, 22, 23, 24, 25, 26, 27, 29, 30,
-	31, 32, 34, 35, 36, 37, 38, 40, 39, 41,
-	42, 43, 44, 45, 46, 47, 48, 49, 50, 52,
-	53, 54, 55, 56, 57, 59, 58, 60, 61, 62,
-	63, 64, 65, 66, 67, 68, 69, 70, 71, 0,
-	0, 0, 0, 72, 73, 74, 75, 0, 0, 0,
-	0, 77, 76, 78, 79, 81, 82, 83, 84, 85,
-	86, 87, 88, 89, 90, 92, 91, 93, 94, 95,
-	96, 97, 98, 99, 100, 101, 102, 103, 104, 105,
-	106, 107, 108, 0, 110, 0, 109, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 80, 111
+char MonstConvTbl[128] = {
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+    10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+    20, 21, 22, 23, 24, 25, 26, 27, 29, 30,
+    31, 32, 34, 35, 36, 37, 38, 40, 39, 41,
+    42, 43, 44, 45, 46, 47, 48, 49, 50, 52,
+    53, 54, 55, 56, 57, 59, 58, 60, 61, 62,
+    63, 64, 65, 66, 67, 68, 69, 70, 71, 0,
+    0, 0, 0, 72, 73, 74, 75, 0, 0, 0,
+    0, 77, 76, 78, 79, 81, 82, 83, 84, 85,
+    86, 87, 88, 89, 90, 92, 91, 93, 94, 95,
+    96, 97, 98, 99, 100, 101, 102, 103, 104, 105,
+    106, 107, 108, 0, 110, 0, 109, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 80, 111
 };
 
-unsigned char MonstAvailTbl[112] =
-{
-	1,   1,   1,   1,   1,   1,   1,   1,   1,   1,
-	1,   1,   1,   1,   1,   1,   1,   1,   1,   1,
-	1,   1,   1,   1,   1,   1,   1,   1,   0,   2,
-	2,   2,   2,   0,   2,   2,   2,   2,   1,   1,
-	1,   1,   2,   2,   2,   2,   2,   2,   2,   2,
-	0,   0,   2,   2,   2,   2,   0,   0,   0,   0,
-	2,   2,   2,   2,   2,   2,   2,   2,   0,   0,
-	0,   0,   0,   0,   0,   0,   2,   2,   2,   2,
-	0,   2,   2,   2,   2,   2,   2,   2,   2,   2,
-	2,   2,   2,   2,   2,   2,   2,   0,   0,   0,
-	0,   2,   2,   2,   2,   2,   2,   2,   2,   0,
-	0,   0
+unsigned char MonstAvailTbl[112] = {
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 0, 2,
+    2, 2, 2, 0, 2, 2, 2, 2, 1, 1,
+    1, 1, 2, 2, 2, 2, 2, 2, 2, 2,
+    0, 0, 2, 2, 2, 2, 0, 0, 0, 0,
+    2, 2, 2, 2, 2, 2, 2, 2, 0, 0,
+    0, 0, 0, 0, 0, 0, 2, 2, 2, 2,
+    0, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+    2, 2, 2, 2, 2, 2, 2, 0, 0, 0,
+    0, 2, 2, 2, 2, 2, 2, 2, 2, 0,
+    0, 0
 };
-UniqMonstStruct UniqMonst[98] =
-{
-	{ MT_NGOATMC,  "Gharbad the Weak",		 "BSDB",	4,  120,  AI_GARBUD,   3, 8,  16, 96,  0,  0,   0, QUEST_GARBUD1  },
-	{ MT_SKING,	"Skeleton King",			"GENRL",   0,  240,  AI_SKELKING, 3, 6,  16, 78,  1,  0,   0, 0			  },
-	{ MT_COUNSLR,  "Zhar the Mad",			 "GENERAL", 8,  360,  AI_ZHAR,	 3, 16, 40, 14,  0,  0,   0, QUEST_ZHAR1	},
-	{ MT_BFALLSP,  "Snotspill",				"BNG",	 4,  220,  AI_SNOTSPIL, 3, 10, 18, 4,   0,  0,   0, QUEST_BANNER10 },
-	{ MT_ADVOCATE, "Arch-Bishop Lazarus",	  "GENERAL", 0,  600,  AI_LAZURUS,  3, 30, 50, 78,  0,  0,   0, QUEST_VILE13   },
-	{ MT_HLSPWN,   "Red Vex",				  "REDV",	0,  400,  AI_LAZHELP,  3, 30, 50, 74,  0,  0,   0, QUEST_VILE13   },
-	{ MT_HLSPWN,   "BlackJade",				"BLKJD",   0,  400,  AI_LAZHELP,  3, 30, 50, 76,  0,  0,   0, QUEST_VILE13   },
-	{ MT_RBLACK,   "Lachdanan",				"BHKA",	14, 500,  AI_LACHDAN,  3, 0,  0,  0,   0,  0,   0, QUEST_VEIL9	},
-	{ MT_BTBLACK,  "Warlord of Blood",		 "GENERAL", 13, 850,  AI_WARLORD,  3, 35, 50, 120, 0,  0,   0, QUEST_WARLRD9  },
-	{ MT_CLEAVER,  "The Butcher",			  "GENRL",   0,  220,  AI_CLEAVER,  3, 6,  12, 70,  0,  0,   0, 0			  },
-	{ MT_TSKELAX,  "Bonehead Keenaxe",		 "BHKA",	2,  91,   AI_SKELSD,   2, 4,  10, 72,  7,  100, 0, 0			  },
-	{ MT_RFALLSD,  "Bladeskin the Slasher",	"BSTS",	2,  51,   AI_FALLEN,   0, 6,  18, 2,   11, 45,  0, 0			  },
-	{ MT_NZOMBIE,  "Soulpus",				  "GENERAL", 2,  133,  AI_ZOMBIE,   0, 4,  8,  6,   0,  0,   0, 0			  },
-	{ MT_RFALLSP,  "Pukerat the Unclean",	  "PTU",	 2,  77,   AI_FALLEN,   3, 1,  5,  2,   0,  0,   0, 0			  },
-	{ MT_WSKELAX,  "Boneripper",			   "BR",	  2,  54,   AI_BAT,	  0, 6,  15, 88,  3,  0,   0, 0			  },
-	{ MT_NZOMBIE,  "Rotfeast the Hungry",	  "ETH",	 2,  85,   AI_SKELSD,   3, 4,  12, 72,  3,  0,   0, 0			  },
-	{ MT_DFALLSD,  "Gutshank the Quick",	   "GTQ",	 3,  66,   AI_BAT,	  2, 6,  16, 2,   3,  0,   0, 0			  },
-	{ MT_TSKELSD,  "Brokenhead Bangshield",	"BHBS",	3,  108,  AI_SKELSD,   3, 12, 20, 76,  3,  0,   0, 0			  },
-	{ MT_YFALLSP,  "Bongo",					"BNG",	 3,  178,  AI_FALLEN,   3, 9,  21, 0,   3,  0,   0, 0			  },
-	{ MT_BZOMBIE,  "Rotcarnage",			   "RCRN",	3,  102,  AI_ZOMBIE,   3, 9,  24, 76,  11, 45,  0, 0			  },
-	{ MT_NSCAV,	"Shadowbite",			   "SHBT",	2,  60,   AI_SKELSD,   3, 3,  20, 16,  3,  0,   0, 0			  },
-	{ MT_WSKELBW,  "Deadeye",				  "DE",	  2,  49,   AI_GOATBOW,  0, 6,  9,  74,  0,  0,   0, 0			  },
-	{ MT_RSKELAX,  "Madeye the Dead",		  "MTD",	 4,  75,   AI_BAT,	  0, 9,  21, 24,  11, 30,  0, 0			  },
-	{ MT_BSCAV,	"El Chupacabras",		   "GENERAL", 3,  120,  AI_GOATMC,   0, 10, 18, 2,   3,  30,  0, 0			  },
-	{ MT_TSKELBW,  "Skullfire",				"SKFR",	3,  125,  AI_GOATBOW,  1, 6,  10, 16,  0,  100, 0, 0			  },
-	{ MT_SNEAK,	"Warpskull",				"TSPO",	3,  117,  AI_SNEAK,	2, 6,  18, 6,   3,  0,   0, 0			  },
-	{ MT_GZOMBIE,  "Goretongue",			   "PMR",	 3,  156,  AI_SKELSD,   1, 15, 30, 72,  0,  0,   0, 0			  },
-	{ MT_WSCAV,	"Pulsecrawler",			 "BHKA",	4,  150,  AI_SCAV,	 0, 16, 20, 20,  11, 45,  0, 0			  },
-	{ MT_BLINK,	"Moonbender",			   "GENERAL", 4,  135,  AI_BAT,	  0, 9,  27, 16,  3,  0,   0, 0			  },
-	{ MT_BLINK,	"Wrathraven",			   "GENERAL", 5,  135,  AI_BAT,	  2, 9,  22, 16,  3,  0,   0, 0			  },
-	{ MT_YSCAV,	"Spineeater",			   "GENERAL", 4,  180,  AI_SCAV,	 1, 18, 25, 96,  3,  0,   0, 0			  },
-	{ MT_RSKELBW,  "Blackash the Burning",	 "BASHTB",  4,  120,  AI_GOATBOW,  0, 6,  16, 24,  3,  0,   0, 0			  },
-	{ MT_BFALLSD,  "Shadowcrow",			   "GENERAL", 5,  270,  AI_SNEAK,	2, 12, 25, 0,   3,  0,   0, 0			  },
-	{ MT_LRDSAYTR, "Blightstone the Weak",	 "BHKA",	4,  360,  AI_SKELSD,   0, 4,  12, 12,  7,  70,  0, 0			  },
-	{ MT_FAT,	  "Bilefroth the Pit Master", "BFTP",	6,  210,  AI_BAT,	  1, 16, 23, 28,  3,  0,   0, 0			  },
-	{ MT_NGOATBW,  "Bloodskin Darkbow",		"BSDB",	5,  207,  AI_GOATBOW,  0, 3,  16, 6,   11, 55,  0, 0			  },
-	{ MT_GLOOM,	"Foulwing",				 "DB",	  5,  246,  AI_RHINO,	3, 12, 28, 2,   3,  0,   0, 0			  },
-	{ MT_XSKELSD,  "Shadowdrinker",			"SHDR",	5,  300,  AI_SNEAK,	1, 18, 26, 78,  8,  45,  0, 0			  },
-	{ MT_UNSEEN,   "Hazeshifter",			  "BHKA",	5,  285,  AI_SNEAK,	3, 18, 30, 96,  3,  0,   0, 0			  },
-	{ MT_NACID,	"Deathspit",				"BFDS",	6,  303,  AI_ACIDUNIQ, 0, 12, 32, 6,   3,  0,   0, 0			  },
-	{ MT_RGOATMC,  "Bloodgutter",			  "BGBL",	6,  315,  AI_BAT,	  1, 24, 34, 16,  3,  0,   0, 0			  },
-	{ MT_BGOATMC,  "Deathshade Fleshmaul",	 "DSFM",	6,  276,  AI_RHINO,	0, 12, 24, 10,  8,  65,  0, 0			  },
-	{ MT_WYRM,	 "Warmaggot the Mad",		"GENERAL", 6,  246,  AI_BAT,	  3, 15, 30, 4,   3,  0,   0, 0			  },
-	{ MT_STORM,	"Glasskull the Jagged",	 "BHKA",	7,  354,  AI_STORM,	0, 18, 30, 88,  3,  0,   0, 0			  },
-	{ MT_RGOATBW,  "Blightfire",			   "BLF",	 7,  321,  AI_SUCC,	 2, 13, 21, 16,  3,  0,   0, 0			  },
-	{ MT_GARGOYLE, "Nightwing the Cold",	   "GENERAL", 7,  342,  AI_BAT,	  1, 18, 26, 76,  3,  0,   0, 0			  },
-	{ MT_GGOATBW,  "Gorestone",				"GENERAL", 7,  303,  AI_GOATBOW,  1, 15, 28, 68,  7,  70,  0, 0			  },
-	{ MT_BMAGMA,   "Bronzefist Firestone",	 "GENERAL", 8,  360,  AI_MAGMA,	0, 30, 36, 10,  3,  0,   0, 0			  },
-	{ MT_INCIN,	"Wrathfire the Doomed",	 "WFTD",	8,  270,  AI_SKELSD,   2, 20, 30, 14,  3,  0,   0, 0			  },
-	{ MT_NMAGMA,   "Firewound the Grim",	   "BHKA",	8,  303,  AI_MAGMA,	0, 18, 22, 10,  3,  0,   0, 0			  },
-	{ MT_MUDMAN,   "Baron Sludge",			 "BSM",	 8,  315,  AI_SNEAK,	3, 25, 34, 78,  11, 75,  0, 0			  },
-	{ MT_GGOATMC,  "Blighthorn Steelmace",	 "BHSM",	7,  250,  AI_RHINO,	0, 20, 28, 4,   11, 45,  0, 0			  },
-	{ MT_RACID,	"Chaoshowler",			  "GENERAL", 8,  240,  AI_ACIDUNIQ, 0, 12, 20, 0,   3,  0,   0, 0			  },
-	{ MT_REDDTH,   "Doomgrin the Rotting",	 "GENERAL", 8,  405,  AI_STORM,	3, 25, 50, 78,  3,  0,   0, 0			  },
-	{ MT_FLAMLRD,  "Madburner",				"GENERAL", 9,  270,  AI_STORM,	0, 20, 40, 56,  3,  0,   0, 0			  },
-	{ MT_LTCHDMN,  "Bonesaw the Litch",		"GENERAL", 9,  495,  AI_STORM,	2, 30, 55, 78,  3,  0,   0, 0			  },
-	{ MT_MUDRUN,   "Breakspine",			   "GENERAL", 9,  351,  AI_RHINO,	0, 25, 34, 2,   3,  0,   0, 0			  },
-	{ MT_REDDTH,   "Devilskull Sharpbone",	 "GENERAL", 9,  444,  AI_STORM,	1, 25, 40, 16,  3,  0,   0, 0			  },
-	{ MT_STORM,	"Brokenstorm",			  "GENERAL", 9,  411,  AI_STORM,	2, 25, 36, 32,  3,  0,   0, 0			  },
-	{ MT_RSTORM,   "Stormbane",				"GENERAL", 9,  555,  AI_STORM,	3, 30, 30, 32,  3,  0,   0, 0			  },
-	{ MT_TOAD,	 "Oozedrool",				"GENERAL", 9,  483,  AI_FAT,	  3, 25, 30, 4,   3,  0,   0, 0			  },
-	{ MT_BLOODCLW, "Goldblight of the Flame",  "GENERAL", 10, 405,  AI_GARG,	 0, 15, 35, 24,  11, 80,  0, 0			  },
-	{ MT_OBLORD,   "Blackstorm",			   "GENERAL", 10, 525,  AI_RHINO,	3, 20, 40, 40,  11, 90,  0, 0			  },
-	{ MT_RACID,	"Plaguewrath",			  "GENERAL", 10, 450,  AI_ACIDUNIQ, 2, 20, 30, 74,  3,  0,   0, 0			  },
-	{ MT_RSTORM,   "The Flayer",			   "GENERAL", 10, 501,  AI_STORM,	1, 20, 35, 99,  3,  0,   0, 0			  },
-	{ MT_FROSTC,   "Bluehorn",				 "GENERAL", 11, 477,  AI_RHINO,	1, 25, 30, 10,  11, 90,  0, 0			  },
-	{ MT_HELLBURN, "Warpfire Hellspawn",	   "GENERAL", 11, 525,  AI_FIREMAN,  3, 10, 40, 17,  3,  0,   0, 0			  },
-	{ MT_NSNAKE,   "Fangspeir",				"GENERAL", 11, 444,  AI_SKELSD,   1, 15, 32, 80,  3,  0,   0, 0			  },
-	{ MT_UDEDBLRG, "Festerskull",			  "GENERAL", 11, 600,  AI_STORM,	2, 15, 30, 72,  3,  0,   0, 0			  },
-	{ MT_NBLACK,   "Lionskull the Bent",	   "GENERAL", 12, 525,  AI_SKELSD,   2, 25, 25, 120, 3,  0,   0, 0			  },
-	{ MT_COUNSLR,  "Blacktongue",			  "GENERAL", 12, 360,  AI_COUNSLR,  3, 15, 30, 66,  3,  0,   0, 0			  },
-	{ MT_DEATHW,   "Viletouch",				"GENERAL", 12, 525,  AI_GARG,	 3, 20, 40, 96,  3,  0,   0, 0			  },
-	{ MT_RSNAKE,   "Viperflame",			   "GENERAL", 12, 570,  AI_SKELSD,   1, 25, 35, 20,  3,  0,   0, 0			  },
-	{ MT_BSNAKE,   "Fangskin",				 "BHKA",	14, 681,  AI_SKELSD,   2, 15, 50, 12,  3,  0,   0, 0			  },
-	{ MT_SUCCUBUS, "Witchfire the Unholy",	 "GENERAL", 12, 444,  AI_SUCC,	 3, 10, 20, 28,  3,  0,   0, 0			  },
-	{ MT_BALROG,   "Blackskull",			   "BHKA",	13, 750,  AI_SKELSD,   3, 25, 40, 12,  3,  0,   0, 0			  },
-	{ MT_UNRAV,	"Soulslash",				"GENERAL", 12, 450,  AI_SKELSD,   0, 25, 25, 72,  3,  0,   0, 0			  },
-	{ MT_VTEXLRD,  "Windspawn",				"GENERAL", 12, 711,  AI_SKELSD,   1, 35, 40, 24,  3,  0,   0, 0			  },
-	{ MT_GSNAKE,   "Lord of the Pit",		  "GENERAL", 13, 762,  AI_SKELSD,   2, 25, 42, 66,  3,  0,   0, 0			  },
-	{ MT_RTBLACK,  "Rustweaver",			   "GENERAL", 13, 400,  AI_SKELSD,   3, 1,  60, 120, 0,  0,   0, 0			  },
-	{ MT_HOLOWONE, "Howlingire the Shade",	 "GENERAL", 13, 450,  AI_SKELSD,   2, 40, 75, 6,   3,  0,   0, 0			  },
-	{ MT_MAEL,	 "Doomcloud",				"GENERAL", 13, 612,  AI_STORM,	1, 1,  60, 34,  0,  0,   0, 0			  },
-	{ MT_PAINMSTR, "Bloodmoon Soulfire",	   "GENERAL", 13, 684,  AI_SKELSD,   1, 15, 40, 14,  3,  0,   0, 0			  },
-	{ MT_SNOWWICH, "Witchmoon",				"GENERAL", 13, 310,  AI_SUCC,	 3, 30, 40, 4,   0,  0,   0, 0			  },
-	{ MT_VTEXLRD,  "Gorefeast",				"GENERAL", 13, 771,  AI_SKELSD,   3, 20, 55, 66,  0,  0,   0, 0			  },
-	{ MT_RTBLACK,  "Graywar the Slayer",	   "GENERAL", 14, 672,  AI_SKELSD,   1, 30, 50, 68,  0,  0,   0, 0			  },
-	{ MT_MAGISTR,  "Dreadjudge",			   "GENERAL", 14, 540,  AI_COUNSLR,  1, 30, 40, 14,  3,  0,   0, 0			  },
-	{ MT_HLSPWN,   "Stareye the Witch",		"GENERAL", 14, 726,  AI_SUCC,	 2, 30, 50, 16,  0,  0,   0, 0			  },
-	{ MT_BTBLACK,  "Steelskull the Hunter",	"GENERAL", 14, 831,  AI_SKELSD,   3, 40, 50, 68,  0,  0,   0, 0			  },
-	{ MT_RBLACK,   "Sir Gorash",			   "GENERAL", 16, 1050, AI_SKELSD,   1, 20, 60, 64,  0,  0,   0, 0			  },
-	{ MT_CABALIST, "The Vizier",			   "GENERAL", 15, 850,  AI_COUNSLR,  2, 25, 40, 16,  3,  0,   0, 0			  },
-	{ MT_REALWEAV, "Zamphir",				  "GENERAL", 15, 891,  AI_SKELSD,   2, 30, 50, 78,  3,  0,   0, 0			  },
-	{ MT_HLSPWN,   "Bloodlust",				"GENERAL", 15, 825,  AI_SUCC,	 1, 20, 55, 104, 0,  0,   0, 0			  },
-	{ MT_HLSPWN,   "Webwidow",				 "GENERAL", 16, 774,  AI_SUCC,	 1, 20, 50, 88,  0,  0,   0, 0			  },
-	{ MT_SOLBRNR,  "Fleshdancer",			  "GENERAL", 16, 999,  AI_SUCC,	 3, 30, 50, 74,  0,  0,   0, 0			  },
-	{ MT_OBLORD,   "Grimspike",				"GENERAL", 19, 534,  AI_SNEAK,	1, 25, 40, 74,  3,  0,   0, 0			  },
-	{ MT_STORML,   "Doomlock",				 "GENERAL", 28, 534,  AI_SNEAK,	1, 35, 55, 78,  3,  0,   0, 0			  },
-	{ -1,		  NULL,					   NULL,	  0,  0,	0,		   0, 0,  0,  0,   0,  0,   0, 0			  }
+UniqMonstStruct UniqMonst[98] = {
+    // clang-format off
+    // mtype,       mName,                      mMode, mlevel, mmaxhp, mAi,      mint, mMinDamage, mMaxDamage, mMagicRes, mUnqAttr, mUnqVar1, mUnqVar2, mtalkmsg
+    {  MT_NGOATMC,  "Gharbad the Weak",         "BSDB",     4,    120, AI_GARBUD,   3,          8,         16,        96,        0,        0,        0, QUEST_GARBUD1  },
+    {  MT_SKING,    "Skeleton King",            "GENRL",    0,    240, AI_SKELKING, 3,          6,         16,        78,        1,        0,        0, 0              },
+    {  MT_COUNSLR,  "Zhar the Mad",             "GENERAL",  8,    360, AI_ZHAR,     3,         16,         40,        14,        0,        0,        0, QUEST_ZHAR1    },
+    {  MT_BFALLSP,  "Snotspill",                "BNG",      4,    220, AI_SNOTSPIL, 3,         10,         18,         4,        0,        0,        0, QUEST_BANNER10 },
+    {  MT_ADVOCATE, "Arch-Bishop Lazarus",      "GENERAL",  0,    600, AI_LAZURUS,  3,         30,         50,        78,        0,        0,        0, QUEST_VILE13   },
+    {  MT_HLSPWN,   "Red Vex",                  "REDV",     0,    400, AI_LAZHELP,  3,         30,         50,        74,        0,        0,        0, QUEST_VILE13   },
+    {  MT_HLSPWN,   "BlackJade",                "BLKJD",    0,    400, AI_LAZHELP,  3,         30,         50,        76,        0,        0,        0, QUEST_VILE13   },
+    {  MT_RBLACK,   "Lachdanan",                "BHKA",    14,    500, AI_LACHDAN,  3,          0,          0,         0,        0,        0,        0, QUEST_VEIL9    },
+    {  MT_BTBLACK,  "Warlord of Blood",         "GENERAL", 13,    850, AI_WARLORD,  3,         35,         50,       120,        0,        0,        0, QUEST_WARLRD9  },
+    {  MT_CLEAVER,  "The Butcher",              "GENRL",    0,    220, AI_CLEAVER,  3,          6,         12,        70,        0,        0,        0, 0              },
+    {  MT_TSKELAX,  "Bonehead Keenaxe",         "BHKA",     2,     91, AI_SKELSD,   2,          4,         10,        72,        7,      100,        0, 0              },
+    {  MT_RFALLSD,  "Bladeskin the Slasher",    "BSTS",     2,     51, AI_FALLEN,   0,          6,         18,         2,       11,       45,        0, 0              },
+    {  MT_NZOMBIE,  "Soulpus",                  "GENERAL",  2,    133, AI_ZOMBIE,   0,          4,          8,         6,        0,        0,        0, 0              },
+    {  MT_RFALLSP,  "Pukerat the Unclean",      "PTU",      2,     77, AI_FALLEN,   3,          1,          5,         2,        0,        0,        0, 0              },
+    {  MT_WSKELAX,  "Boneripper",               "BR",       2,     54, AI_BAT,      0,          6,         15,        88,        3,        0,        0, 0              },
+    {  MT_NZOMBIE,  "Rotfeast the Hungry",      "ETH",      2,     85, AI_SKELSD,   3,          4,         12,        72,        3,        0,        0, 0              },
+    {  MT_DFALLSD,  "Gutshank the Quick",       "GTQ",      3,     66, AI_BAT,      2,          6,         16,         2,        3,        0,        0, 0              },
+    {  MT_TSKELSD,  "Brokenhead Bangshield",    "BHBS",     3,    108, AI_SKELSD,   3,         12,         20,        76,        3,        0,        0, 0              },
+    {  MT_YFALLSP,  "Bongo",                    "BNG",      3,    178, AI_FALLEN,   3,          9,         21,         0,        3,        0,        0, 0              },
+    {  MT_BZOMBIE,  "Rotcarnage",               "RCRN",     3,    102, AI_ZOMBIE,   3,          9,         24,        76,       11,       45,        0, 0              },
+    {  MT_NSCAV,    "Shadowbite",               "SHBT",     2,     60, AI_SKELSD,   3,          3,         20,        16,        3,        0,        0, 0              },
+    {  MT_WSKELBW,  "Deadeye",                  "DE",       2,     49, AI_GOATBOW,  0,          6,          9,        74,        0,        0,        0, 0              },
+    {  MT_RSKELAX,  "Madeye the Dead",          "MTD",      4,     75, AI_BAT,      0,          9,         21,        24,       11,       30,        0, 0              },
+    {  MT_BSCAV,    "El Chupacabras",           "GENERAL",  3,    120, AI_GOATMC,   0,         10,         18,         2,        3,       30,        0, 0              },
+    {  MT_TSKELBW,  "Skullfire",                "SKFR",     3,    125, AI_GOATBOW,  1,          6,         10,        16,        0,      100,        0, 0              },
+    {  MT_SNEAK,    "Warpskull",                "TSPO",     3,    117, AI_SNEAK,    2,          6,         18,         6,        3,        0,        0, 0              },
+    {  MT_GZOMBIE,  "Goretongue",               "PMR",      3,    156, AI_SKELSD,   1,         15,         30,        72,        0,        0,        0, 0              },
+    {  MT_WSCAV,    "Pulsecrawler",             "BHKA",     4,    150, AI_SCAV,     0,         16,         20,        20,       11,       45,        0, 0              },
+    {  MT_BLINK,    "Moonbender",               "GENERAL",  4,    135, AI_BAT,      0,          9,         27,        16,        3,        0,        0, 0              },
+    {  MT_BLINK,    "Wrathraven",               "GENERAL",  5,    135, AI_BAT,      2,          9,         22,        16,        3,        0,        0, 0              },
+    {  MT_YSCAV,    "Spineeater",               "GENERAL",  4,    180, AI_SCAV,     1,         18,         25,        96,        3,        0,        0, 0              },
+    {  MT_RSKELBW,  "Blackash the Burning",     "BASHTB",   4,    120, AI_GOATBOW,  0,          6,         16,        24,        3,        0,        0, 0              },
+    {  MT_BFALLSD,  "Shadowcrow",               "GENERAL",  5,    270, AI_SNEAK,    2,         12,         25,         0,        3,        0,        0, 0              },
+    {  MT_LRDSAYTR, "Blightstone the Weak",     "BHKA",     4,    360, AI_SKELSD,   0,          4,         12,        12,        7,       70,        0, 0              },
+    {  MT_FAT,      "Bilefroth the Pit Master", "BFTP",     6,    210, AI_BAT,      1,         16,         23,        28,        3,        0,        0, 0              },
+    {  MT_NGOATBW,  "Bloodskin Darkbow",        "BSDB",     5,    207, AI_GOATBOW,  0,          3,         16,         6,       11,       55,        0, 0              },
+    {  MT_GLOOM,    "Foulwing",                 "DB",       5,    246, AI_RHINO,    3,         12,         28,         2,        3,        0,        0, 0              },
+    {  MT_XSKELSD,  "Shadowdrinker",            "SHDR",     5,    300, AI_SNEAK,    1,         18,         26,        78,        8,       45,        0, 0              },
+    {  MT_UNSEEN,   "Hazeshifter",              "BHKA",     5,    285, AI_SNEAK,    3,         18,         30,        96,        3,        0,        0, 0              },
+    {  MT_NACID,    "Deathspit",                "BFDS",     6,    303, AI_ACIDUNIQ, 0,         12,         32,         6,        3,        0,        0, 0              },
+    {  MT_RGOATMC,  "Bloodgutter",              "BGBL",     6,    315, AI_BAT,      1,         24,         34,        16,        3,        0,        0, 0              },
+    {  MT_BGOATMC,  "Deathshade Fleshmaul",     "DSFM",     6,    276, AI_RHINO,    0,         12,         24,        10,        8,       65,        0, 0              },
+    {  MT_WYRM,     "Warmaggot the Mad",        "GENERAL",  6,    246, AI_BAT,      3,         15,         30,         4,        3,        0,        0, 0              },
+    {  MT_STORM,    "Glasskull the Jagged",     "BHKA",     7,    354, AI_STORM,    0,         18,         30,        88,        3,        0,        0, 0              },
+    {  MT_RGOATBW,  "Blightfire",               "BLF",      7,    321, AI_SUCC,     2,         13,         21,        16,        3,        0,        0, 0              },
+    {  MT_GARGOYLE, "Nightwing the Cold",       "GENERAL",  7,    342, AI_BAT,      1,         18,         26,        76,        3,        0,        0, 0              },
+    {  MT_GGOATBW,  "Gorestone",                "GENERAL",  7,    303, AI_GOATBOW,  1,         15,         28,        68,        7,       70,        0, 0              },
+    {  MT_BMAGMA,   "Bronzefist Firestone",     "GENERAL",  8,    360, AI_MAGMA,    0,         30,         36,        10,        3,        0,        0, 0              },
+    {  MT_INCIN,    "Wrathfire the Doomed",     "WFTD",     8,    270, AI_SKELSD,   2,         20,         30,        14,        3,        0,        0, 0              },
+    {  MT_NMAGMA,   "Firewound the Grim",       "BHKA",     8,    303, AI_MAGMA,    0,         18,         22,        10,        3,        0,        0, 0              },
+    {  MT_MUDMAN,   "Baron Sludge",             "BSM",      8,    315, AI_SNEAK,    3,         25,         34,        78,       11,       75,        0, 0              },
+    {  MT_GGOATMC,  "Blighthorn Steelmace",     "BHSM",     7,    250, AI_RHINO,    0,         20,         28,         4,       11,       45,        0, 0              },
+    {  MT_RACID,    "Chaoshowler",              "GENERAL",  8,    240, AI_ACIDUNIQ, 0,         12,         20,         0,        3,        0,        0, 0              },
+    {  MT_REDDTH,   "Doomgrin the Rotting",     "GENERAL",  8,    405, AI_STORM,    3,         25,         50,        78,        3,        0,        0, 0              },
+    {  MT_FLAMLRD,  "Madburner",                "GENERAL",  9,    270, AI_STORM,    0,         20,         40,        56,        3,        0,        0, 0              },
+    {  MT_LTCHDMN,  "Bonesaw the Litch",        "GENERAL",  9,    495, AI_STORM,    2,         30,         55,        78,        3,        0,        0, 0              },
+    {  MT_MUDRUN,   "Breakspine",               "GENERAL",  9,    351, AI_RHINO,    0,         25,         34,         2,        3,        0,        0, 0              },
+    {  MT_REDDTH,   "Devilskull Sharpbone",     "GENERAL",  9,    444, AI_STORM,    1,         25,         40,        16,        3,        0,        0, 0              },
+    {  MT_STORM,    "Brokenstorm",              "GENERAL",  9,    411, AI_STORM,    2,         25,         36,        32,        3,        0,        0, 0              },
+    {  MT_RSTORM,   "Stormbane",                "GENERAL",  9,    555, AI_STORM,    3,         30,         30,        32,        3,        0,        0, 0              },
+    {  MT_TOAD,     "Oozedrool",                "GENERAL",  9,    483, AI_FAT,      3,         25,         30,         4,        3,        0,        0, 0              },
+    {  MT_BLOODCLW, "Goldblight of the Flame",  "GENERAL", 10,    405, AI_GARG,     0,         15,         35,        24,       11,       80,        0, 0              },
+    {  MT_OBLORD,   "Blackstorm",               "GENERAL", 10,    525, AI_RHINO,    3,         20,         40,        40,       11,       90,        0, 0              },
+    {  MT_RACID,    "Plaguewrath",              "GENERAL", 10,    450, AI_ACIDUNIQ, 2,         20,         30,        74,        3,        0,        0, 0              },
+    {  MT_RSTORM,   "The Flayer",               "GENERAL", 10,    501, AI_STORM,    1,         20,         35,        99,        3,        0,        0, 0              },
+    {  MT_FROSTC,   "Bluehorn",                 "GENERAL", 11,    477, AI_RHINO,    1,         25,         30,        10,       11,       90,        0, 0              },
+    {  MT_HELLBURN, "Warpfire Hellspawn",       "GENERAL", 11,    525, AI_FIREMAN,  3,         10,         40,        17,        3,        0,        0, 0              },
+    {  MT_NSNAKE,   "Fangspeir",                "GENERAL", 11,    444, AI_SKELSD,   1,         15,         32,        80,        3,        0,        0, 0              },
+    {  MT_UDEDBLRG, "Festerskull",              "GENERAL", 11,    600, AI_STORM,    2,         15,         30,        72,        3,        0,        0, 0              },
+    {  MT_NBLACK,   "Lionskull the Bent",       "GENERAL", 12,    525, AI_SKELSD,   2,         25,         25,       120,        3,        0,        0, 0              },
+    {  MT_COUNSLR,  "Blacktongue",              "GENERAL", 12,    360, AI_COUNSLR,  3,         15,         30,        66,        3,        0,        0, 0              },
+    {  MT_DEATHW,   "Viletouch",                "GENERAL", 12,    525, AI_GARG,     3,         20,         40,        96,        3,        0,        0, 0              },
+    {  MT_RSNAKE,   "Viperflame",               "GENERAL", 12,    570, AI_SKELSD,   1,         25,         35,        20,        3,        0,        0, 0              },
+    {  MT_BSNAKE,   "Fangskin",                 "BHKA",    14,    681, AI_SKELSD,   2,         15,         50,        12,        3,        0,        0, 0              },
+    {  MT_SUCCUBUS, "Witchfire the Unholy",     "GENERAL", 12,    444, AI_SUCC,     3,         10,         20,        28,        3,        0,        0, 0              },
+    {  MT_BALROG,   "Blackskull",               "BHKA",    13,    750, AI_SKELSD,   3,         25,         40,        12,        3,        0,        0, 0              },
+    {  MT_UNRAV,    "Soulslash",                "GENERAL", 12,    450, AI_SKELSD,   0,         25,         25,        72,        3,        0,        0, 0              },
+    {  MT_VTEXLRD,  "Windspawn",                "GENERAL", 12,    711, AI_SKELSD,   1,         35,         40,        24,        3,        0,        0, 0              },
+    {  MT_GSNAKE,   "Lord of the Pit",          "GENERAL", 13,    762, AI_SKELSD,   2,         25,         42,        66,        3,        0,        0, 0              },
+    {  MT_RTBLACK,  "Rustweaver",               "GENERAL", 13,    400, AI_SKELSD,   3,          1,         60,       120,        0,        0,        0, 0              },
+    {  MT_HOLOWONE, "Howlingire the Shade",     "GENERAL", 13,    450, AI_SKELSD,   2,         40,         75,         6,        3,        0,        0, 0              },
+    {  MT_MAEL,     "Doomcloud",                "GENERAL", 13,    612, AI_STORM,    1,          1,         60,        34,        0,        0,        0, 0              },
+    {  MT_PAINMSTR, "Bloodmoon Soulfire",       "GENERAL", 13,    684, AI_SKELSD,   1,         15,         40,        14,        3,        0,        0, 0              },
+    {  MT_SNOWWICH, "Witchmoon",                "GENERAL", 13,    310, AI_SUCC,     3,         30,         40,         4,        0,        0,        0, 0              },
+    {  MT_VTEXLRD,  "Gorefeast",                "GENERAL", 13,    771, AI_SKELSD,   3,         20,         55,        66,        0,        0,        0, 0              },
+    {  MT_RTBLACK,  "Graywar the Slayer",       "GENERAL", 14,    672, AI_SKELSD,   1,         30,         50,        68,        0,        0,        0, 0              },
+    {  MT_MAGISTR,  "Dreadjudge",               "GENERAL", 14,    540, AI_COUNSLR,  1,         30,         40,        14,        3,        0,        0, 0              },
+    {  MT_HLSPWN,   "Stareye the Witch",        "GENERAL", 14,    726, AI_SUCC,     2,         30,         50,        16,        0,        0,        0, 0              },
+    {  MT_BTBLACK,  "Steelskull the Hunter",    "GENERAL", 14,    831, AI_SKELSD,   3,         40,         50,        68,        0,        0,        0, 0              },
+    {  MT_RBLACK,   "Sir Gorash",               "GENERAL", 16,   1050, AI_SKELSD,   1,         20,         60,        64,        0,        0,        0, 0              },
+    {  MT_CABALIST, "The Vizier",               "GENERAL", 15,    850, AI_COUNSLR,  2,         25,         40,        16,        3,        0,        0, 0              },
+    {  MT_REALWEAV, "Zamphir",                  "GENERAL", 15,    891, AI_SKELSD,   2,         30,         50,        78,        3,        0,        0, 0              },
+    {  MT_HLSPWN,   "Bloodlust",                "GENERAL", 15,    825, AI_SUCC,     1,         20,         55,       104,        0,        0,        0, 0              },
+    {  MT_HLSPWN,   "Webwidow",                 "GENERAL", 16,    774, AI_SUCC,     1,         20,         50,        88,        0,        0,        0, 0              },
+    {  MT_SOLBRNR,  "Fleshdancer",              "GENERAL", 16,    999, AI_SUCC,     3,         30,         50,        74,        0,        0,        0, 0              },
+    {  MT_OBLORD,   "Grimspike",                "GENERAL", 19,    534, AI_SNEAK,    1,         25,         40,        74,        3,        0,        0, 0              },
+    {  MT_STORML,   "Doomlock",                 "GENERAL", 28,    534, AI_SNEAK,    1,         35,         55,        78,        3,        0,        0, 0              },
+    {  -1,          NULL,                       NULL,       0,      0, 0,           0,          0,          0,         0,        0,        0,        0, 0              }
+    // clang-format on
 };
-int MWVel[24][3] =
-{
-  { 256, 512, 1024 },
-  { 128, 256, 512 },
-  { 85, 170, 341 },
-  { 64, 128, 256 },
-  { 51, 102, 204 },
-  { 42, 85, 170 },
-  { 36, 73, 146 },
-  { 32, 64, 128 },
-  { 28, 56, 113 },
-  { 26, 51, 102 },
-  { 23, 46, 93 },
-  { 21, 42, 85 },
-  { 19, 39, 78 },
-  { 18, 36, 73 },
-  { 17, 34, 68 },
-  { 16, 32, 64 },
-  { 15, 30, 60 },
-  { 14, 28, 57 },
-  { 13, 26, 54 },
-  { 12, 25, 51 },
-  { 12, 24, 48 },
-  { 11, 23, 46 },
-  { 11, 22, 44 },
-  { 10, 21, 42 }
+int MWVel[24][3] = {
+    { 256, 512, 1024 },
+    { 128, 256, 512 },
+    { 85, 170, 341 },
+    { 64, 128, 256 },
+    { 51, 102, 204 },
+    { 42, 85, 170 },
+    { 36, 73, 146 },
+    { 32, 64, 128 },
+    { 28, 56, 113 },
+    { 26, 51, 102 },
+    { 23, 46, 93 },
+    { 21, 42, 85 },
+    { 19, 39, 78 },
+    { 18, 36, 73 },
+    { 17, 34, 68 },
+    { 16, 32, 64 },
+    { 15, 30, 60 },
+    { 14, 28, 57 },
+    { 13, 26, 54 },
+    { 12, 25, 51 },
+    { 12, 24, 48 },
+    { 11, 23, 46 },
+    { 11, 22, 44 },
+    { 10, 21, 42 }
 };
 char animletter[7] = "nwahds";
 int left[8] = { 7, 0, 1, 2, 3, 4, 5, 6 };
@@ -313,129 +314,118 @@ int rnd20[4] = { 20, 30, 40, 50 };
 int rnd60[4] = { 60, 70, 80, 90 };
 //
 
-void(__fastcall *AiProc[])(int i) =
-{
-  &MAI_Zombie,
-  &MAI_Fat,
-  &MAI_SkelSd,
-  &MAI_SkelBow,
-  &MAI_Scav,
-  &MAI_Rhino,
-  &MAI_GoatMc,
-  &MAI_GoatBow,
-  &MAI_Fallen,
-  &MAI_Magma,
-  &MAI_SkelKing,
-  &MAI_Bat,
-  &MAI_Garg,
-  &MAI_Cleaver,
-  &MAI_Succ,
-  &MAI_Sneak,
-  &MAI_Storm,
-  &MAI_Fireman,
-  &MAI_Garbud,
-  &MAI_Acid,
-  &MAI_AcidUniq,
-  &MAI_Golum,
-  &MAI_Zhar,
-  &MAI_SnotSpil,
-  &MAI_Snake,
-  &MAI_Counselor,
-  &MAI_Mega,
-  &MAI_Diablo,
-  &MAI_Lazurus,
-  &MAI_Lazhelp,
-  &MAI_Lachdanan,
-  &MAI_Warlord
+void(__fastcall *AiProc[])(int i) = {
+    &MAI_Zombie,
+    &MAI_Fat,
+    &MAI_SkelSd,
+    &MAI_SkelBow,
+    &MAI_Scav,
+    &MAI_Rhino,
+    &MAI_GoatMc,
+    &MAI_GoatBow,
+    &MAI_Fallen,
+    &MAI_Magma,
+    &MAI_SkelKing,
+    &MAI_Bat,
+    &MAI_Garg,
+    &MAI_Cleaver,
+    &MAI_Succ,
+    &MAI_Sneak,
+    &MAI_Storm,
+    &MAI_Fireman,
+    &MAI_Garbud,
+    &MAI_Acid,
+    &MAI_AcidUniq,
+    &MAI_Golum,
+    &MAI_Zhar,
+    &MAI_SnotSpil,
+    &MAI_Snake,
+    &MAI_Counselor,
+    &MAI_Mega,
+    &MAI_Diablo,
+    &MAI_Lazurus,
+    &MAI_Lazhelp,
+    &MAI_Lachdanan,
+    &MAI_Warlord
 };
 
-struct monster_cpp_init
-{
-	monster_cpp_init()
-	{
-		monster_cpp_init_value = monster_inf;
-	}
+struct monster_cpp_init {
+    monster_cpp_init()
+    {
+        monster_cpp_init_value = monster_inf;
+    }
 } _monster_cpp_init;
 // 47F130: using guessed type int monster_inf;
 // 64CCE4: using guessed type int monster_cpp_init_value;
 
 void __fastcall InitMonsterTRN(int monst, BOOL special)
 {
-	BYTE *f = Monsters[monst].trans_file;
-	for ( int i = 0; i < 256; i++ )
-	{
-		if ( *f == 255 )
-		{
-			*f = 0;
-		}
-		f++;
-	}
+    BYTE *f = Monsters[monst].trans_file;
+    for (int i = 0; i < 256; i++) {
+        if (*f == 255) {
+            *f = 0;
+        }
+        f++;
+    }
 
-	int n = special ? 6 : 5;
-	for ( int j = 0; j < n; ++j )
-	{
-		if ( j != 1 || Monsters[monst].mtype < MT_COUNSLR || Monsters[monst].mtype > MT_ADVOCATE )
-		{
-			for ( int k = 0; k < 8; k++ )
-			{
-				Cl2ApplyTrans(
-					Monsters[monst].Anims[j].Data[k],
-					Monsters[monst].trans_file,
-					Monsters[monst].Anims[j].Frames);
-			}
-		}
-	}
+    int n = special ? 6 : 5;
+    for (int j = 0; j < n; ++j) {
+        if (j != 1 || Monsters[monst].mtype < MT_COUNSLR || Monsters[monst].mtype > MT_ADVOCATE) {
+            for (int k = 0; k < 8; k++) {
+                Cl2ApplyTrans(
+                    Monsters[monst].Anims[j].Data[k],
+                    Monsters[monst].trans_file,
+                    Monsters[monst].Anims[j].Frames);
+            }
+        }
+    }
 }
 
 void __cdecl InitLevelMonsters()
 {
-	int i;
+    int i;
 
-	nummtypes = 0;
-	monstimgtot = 0;
-	MissileFileFlag = 0;
+    nummtypes = 0;
+    monstimgtot = 0;
+    MissileFileFlag = 0;
 
-	for ( i = 0; i < MAX_LVLMTYPES; i++ )
-	{
-		Monsters[i].mPlaceFlags = 0;
-	}
+    for (i = 0; i < MAX_LVLMTYPES; i++) {
+        Monsters[i].mPlaceFlags = 0;
+    }
 
-	ClrAllMonsters();
-	nummonsters = 0;
-	totalmonsters = MAXMONSTERS;
+    ClrAllMonsters();
+    nummonsters = 0;
+    totalmonsters = MAXMONSTERS;
 
-	for ( i = 0; i < MAXMONSTERS; i++ )
-	{
-		monstactive[i] = i;
-	}
+    for (i = 0; i < MAXMONSTERS; i++) {
+        monstactive[i] = i;
+    }
 
-	uniquetrans = 0;
+    uniquetrans = 0;
 }
 
 int __fastcall AddMonsterType(int type, int placeflag)
 {
-	BOOL done = FALSE;
-	int i;
+    BOOL done = FALSE;
+    int i;
 
-	for ( i = 0; i < nummtypes && !done; i++ )
-	{
-		done = Monsters[i].mtype == type;
-	}
+    for (i = 0; i < nummtypes && !done; i++) {
+        done = Monsters[i].mtype == type;
+    }
 
-	i--;
+    i--;
 
-	if ( !done )
-	{
-		i = nummtypes;
-		nummtypes++;
-		Monsters[i].mtype = type;
-		monstimgtot += monsterdata[type].mType;
-		InitMonsterGFX(i);
-		InitMonsterSND(i);
-	}
+    if (!done) {
+        i = nummtypes;
+        nummtypes++;
+        Monsters[i].mtype = type;
+        monstimgtot += monsterdata[type].mType;
+        InitMonsterGFX(i);
+        InitMonsterSND(i);
+    }
 
-	Monsters[i].mPlaceFlags |= placeflag;
-	return i;
+    Monsters[i].mPlaceFlags |= placeflag;
+    return i;
 }
 
 void __cdecl GetLevelMTypes()
@@ -560,240 +550,218 @@ void __cdecl GetLevelMTypes()
 
 void __fastcall InitMonsterGFX(int monst)
 {
-	int mtype = (unsigned char)Monsters[monst].mtype;
-	char strBuff[256];
+    int mtype = (unsigned char)Monsters[monst].mtype;
+    char strBuff[256];
 
-	for ( int anim = 0; anim < 6; anim++ )
-	{
-		if ( (animletter[anim] != 's' || monsterdata[mtype].has_special) && monsterdata[mtype].Frames[anim] > 0 )
-		{
-			sprintf(strBuff, monsterdata[mtype].GraphicType, animletter[anim]);
+    for (int anim = 0; anim < 6; anim++) {
+        if ((animletter[anim] != 's' || monsterdata[mtype].has_special) && monsterdata[mtype].Frames[anim] > 0) {
+            sprintf(strBuff, monsterdata[mtype].GraphicType, animletter[anim]);
 
-			unsigned char* celBuf = LoadFileInMem(strBuff, NULL);
-			Monsters[monst].Anims[anim].CMem = celBuf;
+            unsigned char *celBuf = LoadFileInMem(strBuff, NULL);
+            Monsters[monst].Anims[anim].CMem = celBuf;
 
-			if ( Monsters[monst].mtype != MT_GOLEM || (animletter[anim] != 's' && animletter[anim] != 'd') )
-			{
+            if (Monsters[monst].mtype != MT_GOLEM || (animletter[anim] != 's' && animletter[anim] != 'd')) {
 
-				for ( int i = 0; i < 8; i++ )
-				{
-					Monsters[monst].Anims[anim].Data[i] =
-						&celBuf[((int *)celBuf)[i]];
-				}
-			}
-			else
-			{
-				for ( int i = 0; i < 8; i++ )
-				{
-					Monsters[monst].Anims[anim].Data[i] = celBuf;
-				}
-			}
-		}
+                for (int i = 0; i < 8; i++) {
+                    Monsters[monst].Anims[anim].Data[i] = &celBuf[((int *)celBuf)[i]];
+                }
+            } else {
+                for (int i = 0; i < 8; i++) {
+                    Monsters[monst].Anims[anim].Data[i] = celBuf;
+                }
+            }
+        }
 
-		// TODO: either the AnimStruct members have wrong naming or the MonsterData ones it seems
-		Monsters[monst].Anims[anim].Frames = monsterdata[mtype].Frames[anim];
-		Monsters[monst].Anims[anim].Rate = monsterdata[mtype].Rate[anim];
-	}
+        // TODO: either the AnimStruct members have wrong naming or the MonsterData ones it seems
+        Monsters[monst].Anims[anim].Frames = monsterdata[mtype].Frames[anim];
+        Monsters[monst].Anims[anim].Rate = monsterdata[mtype].Rate[anim];
+    }
 
-	Monsters[monst].flags_1 = monsterdata[mtype].flags;
-	Monsters[monst].flags_2 = (monsterdata[mtype].flags - 64) >> 1;
-	Monsters[monst].mMinHP = monsterdata[mtype].mMinHP;
-	Monsters[monst].mMaxHP = monsterdata[mtype].mMaxHP;
-	Monsters[monst].has_special = monsterdata[mtype].has_special;
-	Monsters[monst].mAFNum = monsterdata[mtype].mAFNum;
-	Monsters[monst].MData = &monsterdata[mtype];
+    Monsters[monst].flags_1 = monsterdata[mtype].flags;
+    Monsters[monst].flags_2 = (monsterdata[mtype].flags - 64) >> 1;
+    Monsters[monst].mMinHP = monsterdata[mtype].mMinHP;
+    Monsters[monst].mMaxHP = monsterdata[mtype].mMaxHP;
+    Monsters[monst].has_special = monsterdata[mtype].has_special;
+    Monsters[monst].mAFNum = monsterdata[mtype].mAFNum;
+    Monsters[monst].MData = &monsterdata[mtype];
 
-	if ( monsterdata[mtype].has_trans )
-	{
-		Monsters[monst].trans_file = LoadFileInMem(monsterdata[mtype].TransFile, NULL);
-		InitMonsterTRN(monst, monsterdata[mtype].has_special);
+    if (monsterdata[mtype].has_trans) {
+        Monsters[monst].trans_file = LoadFileInMem(monsterdata[mtype].TransFile, NULL);
+        InitMonsterTRN(monst, monsterdata[mtype].has_special);
 
-		void *trans_file = Monsters[monst].trans_file;
-		Monsters[monst].trans_file = NULL;
+        void *trans_file = Monsters[monst].trans_file;
+        Monsters[monst].trans_file = NULL;
 
-		mem_free_dbg(trans_file);
-	}
+        mem_free_dbg(trans_file);
+    }
 
-	if ( mtype >= MT_NMAGMA && mtype <= MT_WMAGMA && !(MissileFileFlag & 1) )
-	{
-		MissileFileFlag |= 1;
-		LoadMissileGFX(MFILE_MAGBALL);
-	}
-	if ( mtype >= MT_STORM && mtype <= MT_MAEL && !(MissileFileFlag & 2) )
-	{
-		MissileFileFlag |= 2;
-		LoadMissileGFX(MFILE_THINLGHT);
-	}
-	if ( mtype == MT_SUCCUBUS )
-	{
-		if ( MissileFileFlag & 4 ) return;
+    if (mtype >= MT_NMAGMA && mtype <= MT_WMAGMA && !(MissileFileFlag & 1)) {
+        MissileFileFlag |= 1;
+        LoadMissileGFX(MFILE_MAGBALL);
+    }
+    if (mtype >= MT_STORM && mtype <= MT_MAEL && !(MissileFileFlag & 2)) {
+        MissileFileFlag |= 2;
+        LoadMissileGFX(MFILE_THINLGHT);
+    }
+    if (mtype == MT_SUCCUBUS) {
+        if (MissileFileFlag & 4)
+            return;
 
-		MissileFileFlag |= 4;
-		LoadMissileGFX(MFILE_FLARE);
-		LoadMissileGFX(MFILE_FLAREEXP);
-	}
-	if ( mtype == MT_SNOWWICH )
-	{
-		if ( MissileFileFlag & 0x20 ) return;
+        MissileFileFlag |= 4;
+        LoadMissileGFX(MFILE_FLARE);
+        LoadMissileGFX(MFILE_FLAREEXP);
+    }
+    if (mtype == MT_SNOWWICH) {
+        if (MissileFileFlag & 0x20)
+            return;
 
-		MissileFileFlag |= 0x20;
-		LoadMissileGFX(MFILE_SCUBMISB);
-		LoadMissileGFX(MFILE_SCBSEXPB);
-	}
-	if ( mtype == MT_HLSPWN )
-	{
-		if ( MissileFileFlag & 0x40 ) return;
+        MissileFileFlag |= 0x20;
+        LoadMissileGFX(MFILE_SCUBMISB);
+        LoadMissileGFX(MFILE_SCBSEXPB);
+    }
+    if (mtype == MT_HLSPWN) {
+        if (MissileFileFlag & 0x40)
+            return;
 
-		MissileFileFlag |= 0x40;
-		LoadMissileGFX(MFILE_SCUBMISD);
-		LoadMissileGFX(MFILE_SCBSEXPD);
-	}
-	if ( mtype == MT_SOLBRNR )
-	{
-		if ( MissileFileFlag & 0x80 ) return;
+        MissileFileFlag |= 0x40;
+        LoadMissileGFX(MFILE_SCUBMISD);
+        LoadMissileGFX(MFILE_SCBSEXPD);
+    }
+    if (mtype == MT_SOLBRNR) {
+        if (MissileFileFlag & 0x80)
+            return;
 
-		MissileFileFlag |= 0x80;
-		LoadMissileGFX(MFILE_SCUBMISC);
-		LoadMissileGFX(MFILE_SCBSEXPC);
-	}
-	if ( mtype >= MT_INCIN && mtype <= MT_HELLBURN && !(MissileFileFlag & 8) )
-	{
-		MissileFileFlag |= 8;
-		LoadMissileGFX(MFILE_KRULL);
-	}
-	if ( mtype >= MT_NACID && mtype <= MT_XACID && !(MissileFileFlag & 0x10) )
-	{
-		MissileFileFlag |= 0x10;
-		LoadMissileGFX(MFILE_ACIDBF);
-		LoadMissileGFX(MFILE_ACIDSPLA);
-		LoadMissileGFX(MFILE_ACIDPUD);
-	}
-	if ( mtype == MT_DIABLO )
-	{
-		LoadMissileGFX(MFILE_FIREPLAR);
-	}
+        MissileFileFlag |= 0x80;
+        LoadMissileGFX(MFILE_SCUBMISC);
+        LoadMissileGFX(MFILE_SCBSEXPC);
+    }
+    if (mtype >= MT_INCIN && mtype <= MT_HELLBURN && !(MissileFileFlag & 8)) {
+        MissileFileFlag |= 8;
+        LoadMissileGFX(MFILE_KRULL);
+    }
+    if (mtype >= MT_NACID && mtype <= MT_XACID && !(MissileFileFlag & 0x10)) {
+        MissileFileFlag |= 0x10;
+        LoadMissileGFX(MFILE_ACIDBF);
+        LoadMissileGFX(MFILE_ACIDSPLA);
+        LoadMissileGFX(MFILE_ACIDPUD);
+    }
+    if (mtype == MT_DIABLO) {
+        LoadMissileGFX(MFILE_FIREPLAR);
+    }
 }
 
 void __fastcall ClearMVars(int i)
 {
-	monster[i]._mVar1 = 0;
-	monster[i]._mVar2 = 0;
-	monster[i]._mVar3 = 0;
-	monster[i]._mVar4 = 0;
-	monster[i]._mVar5 = 0;
-	monster[i]._mVar6 = 0;
-	monster[i]._mVar7 = 0;
-	monster[i]._mVar8 = 0;
+    monster[i]._mVar1 = 0;
+    monster[i]._mVar2 = 0;
+    monster[i]._mVar3 = 0;
+    monster[i]._mVar4 = 0;
+    monster[i]._mVar5 = 0;
+    monster[i]._mVar6 = 0;
+    monster[i]._mVar7 = 0;
+    monster[i]._mVar8 = 0;
 }
 
 void __fastcall InitMonster(int i, int rd, int mtype, int x, int y)
 {
-	CMonster *monst = &Monsters[mtype];
+    CMonster *monst = &Monsters[mtype];
 
-	monster[i]._mdir = rd;
-	monster[i]._mx = x;
-	monster[i]._my = y;
-	monster[i]._mfutx = x;
-	monster[i]._mfuty = y;
-	monster[i]._moldx = x;
-	monster[i]._moldy = y;
-	monster[i]._mmode = MM_STAND;
-	monster[i]._mMTidx = mtype;
-	monster[i].mName = monst->MData->mName;
-	monster[i].MType = monst;
-	monster[i].MData = monst->MData;
-	monster[i]._mAnimData = monst->Anims[MA_STAND].Data[rd];
-	monster[i]._mAnimDelay = monst->Anims[MA_STAND].Rate;
-	monster[i]._mAnimCnt = random(88, monst->Anims[MA_STAND].Rate - 1);
-	monster[i]._mAnimLen = monst->Anims[MA_STAND].Frames;
-	monster[i]._mAnimFrame = random(88, monst->Anims[MA_STAND].Frames - 1) + 1;
+    monster[i]._mdir = rd;
+    monster[i]._mx = x;
+    monster[i]._my = y;
+    monster[i]._mfutx = x;
+    monster[i]._mfuty = y;
+    monster[i]._moldx = x;
+    monster[i]._moldy = y;
+    monster[i]._mmode = MM_STAND;
+    monster[i]._mMTidx = mtype;
+    monster[i].mName = monst->MData->mName;
+    monster[i].MType = monst;
+    monster[i].MData = monst->MData;
+    monster[i]._mAnimData = monst->Anims[MA_STAND].Data[rd];
+    monster[i]._mAnimDelay = monst->Anims[MA_STAND].Rate;
+    monster[i]._mAnimCnt = random(88, monst->Anims[MA_STAND].Rate - 1);
+    monster[i]._mAnimLen = monst->Anims[MA_STAND].Frames;
+    monster[i]._mAnimFrame = random(88, monst->Anims[MA_STAND].Frames - 1) + 1;
 
-	if ( monst->mtype == MT_DIABLO )
-	{
-		monster[i]._mmaxhp = (random(88, 1) + 1666) << 6;
-	}
-	else
-	{
-		monster[i]._mmaxhp = (monst->mMinHP + random(88, monst->mMaxHP - monst->mMinHP + 1)) << 6;
-	}
+    if (monst->mtype == MT_DIABLO) {
+        monster[i]._mmaxhp = (random(88, 1) + 1666) << 6;
+    } else {
+        monster[i]._mmaxhp = (monst->mMinHP + random(88, monst->mMaxHP - monst->mMinHP + 1)) << 6;
+    }
 
-	if ( gbMaxPlayers == 1 )
-	{
-		monster[i]._mmaxhp >>= 1;
-		if ( monster[i]._mmaxhp < 64 )
-		{
-			monster[i]._mmaxhp = 64;
-		}
-	}
+    if (gbMaxPlayers == 1) {
+        monster[i]._mmaxhp >>= 1;
+        if (monster[i]._mmaxhp < 64) {
+            monster[i]._mmaxhp = 64;
+        }
+    }
 
-	monster[i]._mhitpoints = monster[i]._mmaxhp;
-	monster[i]._mAi = monst->MData->mAi;
-	monster[i]._mint = monst->MData->mInt;
-	monster[i]._mgoal = 1;
-	monster[i]._mgoalvar1 = 0;
-	monster[i]._mgoalvar2 = 0;
-	monster[i]._mgoalvar3 = 0;
-	monster[i]._pathcount = 0;
-	monster[i]._uniqtype = 0;
-	monster[i]._msquelch = 0;
-	monster[i].field_18 = 0;
-	monster[i]._mDelFlag = FALSE;
-	monster[i]._mRndSeed = GetRndSeed();
-	monster[i]._mAISeed = GetRndSeed();
-	monster[i].mWhoHit = 0;
-	monster[i].mLevel = monst->MData->mLevel;
-	monster[i].mExp = monst->MData->mExp;
-	monster[i].mHit = monst->MData->mHit;
-	monster[i].mMinDamage = monst->MData->mMinDamage;
-	monster[i].mMaxDamage = monst->MData->mMaxDamage;
-	monster[i].mHit2 = monst->MData->mHit2;
-	monster[i].mMinDamage2 = monst->MData->mMinDamage2;
-	monster[i].mMaxDamage2 = monst->MData->mMaxDamage2;
-	monster[i].mArmorClass = monst->MData->mArmorClass;
-	monster[i].mMagicRes = monst->MData->mMagicRes;
-	monster[i].leader = 0;
-	monster[i].leaderflag = 0;
-	monster[i]._mFlags = monst->MData->mFlags;
-	monster[i].mtalkmsg = 0;
+    monster[i]._mhitpoints = monster[i]._mmaxhp;
+    monster[i]._mAi = monst->MData->mAi;
+    monster[i]._mint = monst->MData->mInt;
+    monster[i]._mgoal = 1;
+    monster[i]._mgoalvar1 = 0;
+    monster[i]._mgoalvar2 = 0;
+    monster[i]._mgoalvar3 = 0;
+    monster[i]._pathcount = 0;
+    monster[i]._uniqtype = 0;
+    monster[i]._msquelch = 0;
+    monster[i].field_18 = 0;
+    monster[i]._mDelFlag = FALSE;
+    monster[i]._mRndSeed = GetRndSeed();
+    monster[i]._mAISeed = GetRndSeed();
+    monster[i].mWhoHit = 0;
+    monster[i].mLevel = monst->MData->mLevel;
+    monster[i].mExp = monst->MData->mExp;
+    monster[i].mHit = monst->MData->mHit;
+    monster[i].mMinDamage = monst->MData->mMinDamage;
+    monster[i].mMaxDamage = monst->MData->mMaxDamage;
+    monster[i].mHit2 = monst->MData->mHit2;
+    monster[i].mMinDamage2 = monst->MData->mMinDamage2;
+    monster[i].mMaxDamage2 = monst->MData->mMaxDamage2;
+    monster[i].mArmorClass = monst->MData->mArmorClass;
+    monster[i].mMagicRes = monst->MData->mMagicRes;
+    monster[i].leader = 0;
+    monster[i].leaderflag = 0;
+    monster[i]._mFlags = monst->MData->mFlags;
+    monster[i].mtalkmsg = 0;
 
-	if ( monster[i]._mAi == AI_GARG )
-	{
-		monster[i]._mAnimData = monst->Anims[MA_SPECIAL].Data[rd];
-		monster[i]._mAnimFrame = 1;
-		monster[i]._mFlags |= 4u;
-		monster[i]._mmode = MM_SATTACK;
-	}
+    if (monster[i]._mAi == AI_GARG) {
+        monster[i]._mAnimData = monst->Anims[MA_SPECIAL].Data[rd];
+        monster[i]._mAnimFrame = 1;
+        monster[i]._mFlags |= 4u;
+        monster[i]._mmode = MM_SATTACK;
+    }
 
-	if ( gnDifficulty == DIFF_NIGHTMARE )
-	{
-		monster[i].mLevel += 15;
-		monster[i].mHit += 85;
-		monster[i].mHit2 += 85;
-		monster[i]._mmaxhp = 3 * monster[i]._mmaxhp + 64;
-		monster[i]._mhitpoints = monster[i]._mmaxhp;
-		monster[i].mExp = 2 * (monster[i].mExp + 1000);
-		monster[i].mMinDamage = 2 * (monster[i].mMinDamage + 2);
-		monster[i].mMaxDamage = 2 * (monster[i].mMaxDamage + 2);
-		monster[i].mMinDamage2 = 2 * (monster[i].mMinDamage2 + 2);
-		monster[i].mMaxDamage2 = 2 * (monster[i].mMaxDamage2 + 2);
-		monster[i].mArmorClass += 50;
-	}
+    if (gnDifficulty == DIFF_NIGHTMARE) {
+        monster[i].mLevel += 15;
+        monster[i].mHit += 85;
+        monster[i].mHit2 += 85;
+        monster[i]._mmaxhp = 3 * monster[i]._mmaxhp + 64;
+        monster[i]._mhitpoints = monster[i]._mmaxhp;
+        monster[i].mExp = 2 * (monster[i].mExp + 1000);
+        monster[i].mMinDamage = 2 * (monster[i].mMinDamage + 2);
+        monster[i].mMaxDamage = 2 * (monster[i].mMaxDamage + 2);
+        monster[i].mMinDamage2 = 2 * (monster[i].mMinDamage2 + 2);
+        monster[i].mMaxDamage2 = 2 * (monster[i].mMaxDamage2 + 2);
+        monster[i].mArmorClass += 50;
+    }
 
-	if ( gnDifficulty == DIFF_HELL )
-	{
-		monster[i].mLevel += 30;
-		monster[i]._mmaxhp = 4 * monster[i]._mmaxhp + 192;
-		monster[i]._mhitpoints = monster[i]._mmaxhp;
-		monster[i].mHit += 120;
-		monster[i].mHit2 += 120;
-		monster[i].mExp = 4 * (monster[i].mExp + 1000);
-		monster[i].mMinDamage = 4 * monster[i].mMinDamage + 6;
-		monster[i].mMaxDamage = 4 * monster[i].mMaxDamage + 6;
-		monster[i].mMinDamage2 = 4 * monster[i].mMinDamage2 + 6;
-		monster[i].mMaxDamage2 = 4 * monster[i].mMaxDamage2 + 6;
-		monster[i].mArmorClass += 80;
-		monster[i].mMagicRes = monst->MData->mMagicRes2;
-	}
+    if (gnDifficulty == DIFF_HELL) {
+        monster[i].mLevel += 30;
+        monster[i]._mmaxhp = 4 * monster[i]._mmaxhp + 192;
+        monster[i]._mhitpoints = monster[i]._mmaxhp;
+        monster[i].mHit += 120;
+        monster[i].mHit2 += 120;
+        monster[i].mExp = 4 * (monster[i].mExp + 1000);
+        monster[i].mMinDamage = 4 * monster[i].mMinDamage + 6;
+        monster[i].mMaxDamage = 4 * monster[i].mMaxDamage + 6;
+        monster[i].mMinDamage2 = 4 * monster[i].mMinDamage2 + 6;
+        monster[i].mMaxDamage2 = 4 * monster[i].mMaxDamage2 + 6;
+        monster[i].mArmorClass += 80;
+        monster[i].mMagicRes = monst->MData->mMagicRes2;
+    }
 }
 
 void __cdecl ClrAllMonsters()
