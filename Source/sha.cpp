@@ -121,11 +121,16 @@ void __fastcall SHA1ProcessMessageBlock(SHA1Context *context)
 
 void __fastcall SHA1Reset(int n)
 {
-	sgSHA1[n].count[0] = 0;
-	sgSHA1[n].count[1] = 0;
-	sgSHA1[n].state[0] = 0x67452301;
-	sgSHA1[n].state[1] = 0xEFCDAB89;
-	sgSHA1[n].state[2] = 0x98BADCFE;
-	sgSHA1[n].state[3] = 0x10325476;
-	sgSHA1[n].state[4] = 0xC3D2E1F0;
+    SHA1Init(&sgSHA1[n]);
+}
+
+void __fastcall SHA1Init(SHA1Context *context)
+{
+    context->count[0] = 0;
+    context->count[1] = 0;
+    context->state[0] = 0x67452301;
+    context->state[1] = 0xEFCDAB89;
+    context->state[2] = 0x98BADCFE;
+    context->state[3] = 0x10325476;
+    context->state[4] = 0xC3D2E1F0;
 }
