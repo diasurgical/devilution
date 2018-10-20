@@ -43,7 +43,7 @@ void __fastcall NetSendCmdParam3(BOOL bHiPri, BYTE bCmd, WORD wParam1, WORD wPar
 void __fastcall NetSendCmdQuest(BOOL bHiPri, BYTE q);
 void __fastcall NetSendCmdGItem(BOOL bHiPri, BYTE bCmd, BYTE mast, BYTE pnum, int ii);
 void __fastcall NetSendCmdGItem2(BOOL usonly, BYTE bCmd, BYTE mast, BYTE pnum, struct TCmdGItem *p);
-bool __fastcall NetSendCmdReq2(BYTE bCmd, BYTE mast, BYTE pnum, struct TCmdGItem *p);
+BOOL __fastcall NetSendCmdReq2(BYTE bCmd, BYTE mast, BYTE pnum, struct TCmdGItem *p);
 void __fastcall NetSendCmdExtra(struct TCmdGItem *p);
 void __fastcall NetSendCmdPItem(BOOL bHiPri, BYTE bCmd, BYTE x, BYTE y);
 void __fastcall NetSendCmdChItem(BOOL bHiPri, BYTE bLoc);
@@ -131,6 +131,7 @@ int __fastcall On_SETDEX(struct TCmdParam1 *pCmd, int pnum);
 int __fastcall On_SETMAG(struct TCmdParam1 *pCmd, int pnum);
 int __fastcall On_SETVIT(struct TCmdParam1 *pCmd, int pnum);
 int __fastcall On_STRING(struct TCmdString *pCmd, int pnum);
+int __fastcall On_STRING2(int pnum, struct TCmdString *pCmd);
 int __fastcall On_SYNCQUEST(struct TCmdQuest *pCmd, int pnum);
 int __fastcall On_ENDSHIELD(struct TCmd *pCmd, int pnum);
 #ifdef _DEBUG

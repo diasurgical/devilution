@@ -120,7 +120,7 @@ void __cdecl RecalcStoreStats();
 int __cdecl ItemNoFlippy();
 void __fastcall CreateSpellBook(int x, int y, int ispell, bool sendmsg, int delta);
 void __fastcall CreateMagicItem(int x, int y, int imisc, int icurs, int sendmsg, int delta);
-bool __fastcall GetItemRecord(int dwSeed, WORD CI, int indx);
+BOOL __fastcall GetItemRecord(int dwSeed, WORD CI, int indx);
 void __fastcall NextItemRecord(int i);
 void __fastcall SetItemRecord(int dwSeed, WORD CI, int indx);
 void __fastcall PutItemRecord(int seed, WORD ci, int index);

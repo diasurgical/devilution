@@ -36,7 +36,7 @@ int __fastcall CanPut(int i, int j);
 int __cdecl TryInvPut();
 void __fastcall DrawInvMsg(char *msg);
 int __fastcall InvPutItem(int pnum, int x, int y);
-int __fastcall SyncPutItem(int pnum, int x, int y, int idx, int icreateinfo, int iseed, int Id, int dur, int mdur, int ch, int mch, int ivalue, unsigned int ibuff);
+int __fastcall SyncPutItem(int pnum, int x, int y, int idx, WORD icreateinfo, int iseed, int Id, int dur, int mdur, int ch, int mch, int ivalue, unsigned int ibuff);
 int __cdecl CheckInvHLight();
 void __fastcall RemoveScroll(int pnum);
 BOOL __cdecl UseScroll();
