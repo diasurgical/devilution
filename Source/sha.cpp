@@ -29,32 +29,18 @@ void __fastcall SHA1Calculate(int n, const char *data, char Message_Digest[SHA1H
 
 void __fastcall SHA1Input(SHA1Context *context, const char *message_array, int len)
 {
-	SHA1Context *v3; // esi
-	const char *v4; // ebx
-	int v5; // ecx
-	int v6; // edx
-	unsigned int v7; // ebp
+    int count = context->count[0] + 8 * len;
+    if ( count < context->count[0] )
+        context->count[1]++;
 
-	v3 = context;
-	v4 = message_array;
-	v5 = context->count[0];
-	v6 = v5 + 8 * len;
-	if ( v6 < v5 )
-		++v3->count[1];
-	v3->count[0] = v6;
-	v3->count[1] += len >> 29;
-	if ( len >= 64 )
-	{
-		v7 = (unsigned int)len >> 6;
-		do
-		{
-			memcpy(v3->buffer, v4, 0x40u);
-			SHA1ProcessMessageBlock(v3);
-			v4 += 64;
-			--v7;
-		}
-		while ( v7 );
-	}
+    context->count[0] = count;
+    context->count[1] += len >> 29;
+
+    for (int i = len; i >= 64; i -= 64) {
+        memcpy(context->buffer, message_array, sizeof(context->buffer));
+        SHA1ProcessMessageBlock(context);
+        message_array += 64;
+    }
 }
 
 void __fastcall SHA1ProcessMessageBlock(SHA1Context *context)
