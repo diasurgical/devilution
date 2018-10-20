@@ -1992,7 +1992,7 @@ void __cdecl DrawChr()
 	ADD_PlrStringXY(257, 304, 300, a4, a5[0]);
 	v11 = plr[myplr]._pLghtResist;
 	a5[0] = v11 != 0;
-	if ( v11 >= 75 )
+	if ( v11 < 75 )
 	{
 		sprintf(a4, "%i%%", v11);
 	}
