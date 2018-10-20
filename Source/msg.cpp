@@ -1127,7 +1127,7 @@ void __fastcall NetSendCmdGItem2(BOOL usonly, BYTE bCmd, BYTE mast, BYTE pnum, s
 	multi_msg_add(&cmd.bCmd, 0x1Eu);
 }
 
-bool __fastcall NetSendCmdReq2(BYTE bCmd, BYTE mast, BYTE pnum, struct TCmdGItem *p)
+BOOL __fastcall NetSendCmdReq2(BYTE bCmd, BYTE mast, BYTE pnum, struct TCmdGItem *p)
 {
 	unsigned char v4; // bl
 	int v5; // eax
@@ -1736,120 +1736,69 @@ int __fastcall On_SYNCDATA(void *packet, int pnum)
 
 int __fastcall On_WALKXY(struct TCmdLoc *pCmd, int pnum)
 {
-	int v2; // ebx
-	struct TCmdLoc *v3; // edi
-	int v4; // esi
-
-	v2 = pnum;
-	v3 = pCmd;
-	if ( gbBufferMsgs != 1 )
-	{
-		v4 = pnum;
-		if ( currlevel == plr[pnum].plrlevel )
-		{
-			ClrPlrPath(pnum);
-			MakePlrPath(v2, (unsigned char)v3->x, (unsigned char)v3->y, 1u);
-			plr[v4].destAction = ACTION_NONE;
-		}
+	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
+		ClrPlrPath(pnum);
+		MakePlrPath(pnum, pCmd->x, pCmd->y, TRUE);
+		plr[pnum].destAction = ACTION_NONE;
 	}
-	return 3;
+
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_ADDSTR(struct TCmdParam1 *pCmd, int pnum)
 {
-	unsigned short v2; // cx
+	if (gbBufferMsgs == 1)
+		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
+	else if (pCmd->wParam1 <= 256)
+		ModifyPlrStr(pnum, pCmd->wParam1);
 
-	if ( gbBufferMsgs == 1 )
-	{
-		msg_send_packet(pnum, pCmd, 3);
-	}
-	else
-	{
-		v2 = pCmd->wParam1;
-		if ( v2 <= 0x100u )
-			ModifyPlrStr(pnum, v2);
-	}
-	return 3;
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_ADDMAG(struct TCmdParam1 *pCmd, int pnum)
 {
-	unsigned short v2; // cx
+	if (gbBufferMsgs == 1)
+		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
+	else if (pCmd->wParam1 <= 256)
+		ModifyPlrMag(pnum, pCmd->wParam1);
 
-	if ( gbBufferMsgs == 1 )
-	{
-		msg_send_packet(pnum, pCmd, 3);
-	}
-	else
-	{
-		v2 = pCmd->wParam1;
-		if ( v2 <= 0x100u )
-			ModifyPlrMag(pnum, v2);
-	}
-	return 3;
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_ADDDEX(struct TCmdParam1 *pCmd, int pnum)
 {
-	unsigned short v2; // cx
+	if (gbBufferMsgs == 1)
+		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
+	else if (pCmd->wParam1 <= 256)
+		ModifyPlrDex(pnum, pCmd->wParam1);
 
-	if ( gbBufferMsgs == 1 )
-	{
-		msg_send_packet(pnum, pCmd, 3);
-	}
-	else
-	{
-		v2 = pCmd->wParam1;
-		if ( v2 <= 0x100u )
-			ModifyPlrDex(pnum, v2);
-	}
-	return 3;
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_ADDVIT(struct TCmdParam1 *pCmd, int pnum)
 {
-	unsigned short v2; // cx
+	if (gbBufferMsgs == 1)
+		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
+	else if (pCmd->wParam1 <= 256)
+		ModifyPlrVit(pnum, pCmd->wParam1);
 
-	if ( gbBufferMsgs == 1 )
-	{
-		msg_send_packet(pnum, pCmd, 3);
-	}
-	else
-	{
-		v2 = pCmd->wParam1;
-		if ( v2 <= 0x100u )
-			ModifyPlrVit(pnum, v2);
-	}
-	return 3;
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_SBSPELL(struct TCmdParam1 *pCmd, int pnum)
 {
-	int v2; // eax
-
-	if ( gbBufferMsgs != 1 )
-	{
-		if ( currlevel || spelldata[(unsigned short)pCmd->wParam1].sTownSpell )
-		{
-			v2 = pnum;
-			plr[v2]._pSpell = (unsigned short)pCmd->wParam1;
-			plr[v2]._pSplType = plr[v2]._pSBkSplType;
-			plr[v2]._pSplFrom = 1;
-			plr[v2].destAction = ACTION_SPELL;
-		}
-		else
-		{
+	if (gbBufferMsgs != 1) {
+		if (currlevel || spelldata[pCmd->wParam1].sTownSpell) {
+			plr[pnum]._pSpell = pCmd->wParam1;
+			plr[pnum]._pSplType = plr[pnum]._pSBkSplType;
+			plr[pnum]._pSplFrom = 1;
+			plr[pnum].destAction = ACTION_SPELL;
+		} else
 			msg_errorf("%s has cast an illegal spell.", plr[pnum]._pName);
-		}
 	}
-	return 3;
+
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 void msg_errorf(const char *pszFmt, ...)
 {
@@ -1871,70 +1820,34 @@ void msg_errorf(const char *pszFmt, ...)
 
 int __fastcall On_GOTOGETITEM(struct TCmdLocParam1 *pCmd, int pnum)
 {
-	struct TCmdLocParam1 *v2; // edi
-	int v3; // esi
-
-	v2 = pCmd;
-	if ( gbBufferMsgs != 1 )
-	{
-		v3 = pnum;
-		if ( currlevel == plr[pnum].plrlevel )
-		{
-			MakePlrPath(pnum, (unsigned char)pCmd->x, (unsigned char)pCmd->y, 0);
-			plr[v3].destAction = ACTION_PICKUPITEM;
-			plr[v3].destParam1 = (unsigned short)v2->wParam1;
-		}
+	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
+		MakePlrPath(pnum, pCmd->x, pCmd->y, FALSE);
+		plr[pnum].destAction = ACTION_PICKUPITEM;
+		plr[pnum].destParam1 = pCmd->wParam1;
 	}
-	return 5;
+
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_REQUESTGITEM(struct TCmdGItem *pCmd, int pnum)
 {
-	struct TCmdGItem *v2; // esi
-	int v4; // edx
-	int v5; // edx
-	int v7; // edi
-	unsigned char v8; // al
-	int v9; // edx
-
-	v2 = pCmd;
-	if ( gbBufferMsgs != 1 )
-	{
-		if ( i_own_level(plr[pnum].plrlevel) )
-		{
-			_LOWORD(v4) = v2->wCI;
-			if ( GetItemRecord(v2->dwSeed, v4, (unsigned short)v2->wIndx) )
-			{
-				_LOWORD(v5) = v2->wCI;
-				v7 = FindGetItem((unsigned short)v2->wIndx, v5, v2->dwSeed);
-				v8 = v2->bPnum;
-				if ( v7 == -1 )
-				{
-					if ( !NetSendCmdReq2(CMD_REQUESTGITEM, myplr, v8, v2) )
-						NetSendCmdExtra(v2);
-				}
+	if (gbBufferMsgs != 1 && i_own_level(plr[pnum].plrlevel)) {
+		if (GetItemRecord(pCmd->dwSeed, pCmd->wCI, pCmd->wIndx)) {
+			int ii = FindGetItem(pCmd->wIndx, pCmd->wCI, pCmd->dwSeed);
+			if (ii != -1) {
+				NetSendCmdGItem2(FALSE, CMD_GETITEM, myplr, pCmd->bPnum, pCmd);
+				if (pCmd->bPnum != myplr)
+					SyncGetItem(pCmd->x, pCmd->y, pCmd->wIndx, pCmd->wCI, pCmd->dwSeed);
 				else
-				{
-					NetSendCmdGItem2(FALSE, CMD_GETITEM, myplr, v8, v2);
-					if ( (unsigned char)v2->bPnum == myplr )
-						InvGetItem(myplr, v7);
-					else
-						SyncGetItem(
-							(unsigned char)v2->x,
-							(unsigned char)v2->y,
-							(unsigned short)v2->wIndx,
-							v2->wCI,
-							v2->dwSeed);
-					_LOWORD(v9) = v2->wCI;
-					SetItemRecord(v2->dwSeed, v9, (unsigned short)v2->wIndx);
-				}
-			}
+					InvGetItem(myplr, ii);
+				SetItemRecord(pCmd->dwSeed, pCmd->wCI, pCmd->wIndx);
+			} else if (!NetSendCmdReq2(CMD_REQUESTGITEM, myplr, pCmd->bPnum, pCmd))
+				NetSendCmdExtra(pCmd);
 		}
 	}
-	return 30;
+
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 BOOL __fastcall i_own_level(int nReqLevel)
 {
@@ -1957,75 +1870,29 @@ BOOL __fastcall i_own_level(int nReqLevel)
 
 int __fastcall On_GETITEM(struct TCmdGItem *pCmd, int pnum)
 {
-	struct TCmdGItem *v2; // esi
-	int v4; // edi
-	char v6; // al
-	int v7; // ecx
-	int v8; // edx
-	int v9; // eax
-	int v10; // edx
+	if (gbBufferMsgs == 1)
+		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
+	else {
+		int ii = FindGetItem(pCmd->wIndx, pCmd->wCI, pCmd->dwSeed);
+		if (delta_get_item(pCmd, pCmd->bLevel)) {
+			 if ((currlevel == pCmd->bLevel || pCmd->bPnum == myplr) && pCmd->bMaster != myplr) {
+				if (pCmd->bPnum == myplr) {
+					if (currlevel != pCmd->bLevel) {
+						ii = SyncPutItem(myplr, plr[myplr].WorldX, plr[myplr].WorldY, pCmd->wIndx, pCmd->wCI, pCmd->dwSeed, pCmd->bId, pCmd->bDur, pCmd->bMDur, pCmd->bCh, pCmd->bMCh, pCmd->wValue, pCmd->dwBuff);
+						if (ii != -1)
+							InvGetItem(myplr, ii);
+					}
+					else
+						InvGetItem(myplr, ii);
+				} else
+					SyncGetItem(pCmd->x, pCmd->y, pCmd->wIndx, pCmd->wCI, pCmd->dwSeed);
+			}
+		} else
+			NetSendCmdGItem2(TRUE, CMD_GETITEM, pCmd->bMaster, pCmd->bPnum, pCmd);
+	}
 
-	v2 = pCmd;
-	if ( gbBufferMsgs == 1 )
-	{
-		msg_send_packet((unsigned short)pnum, pCmd, 30);
-	}
-	else
-	{
-		v4 = FindGetItem((unsigned short)pCmd->wIndx, pCmd->wCI, pCmd->dwSeed);
-		if ( !delta_get_item(v2, v2->bLevel) )
-		{
-			NetSendCmdGItem2(TRUE, CMD_GETITEM, v2->bMaster, v2->bPnum, v2);
-			return 30;
-		}
-		v6 = v2->bLevel;
-		v7 = myplr;
-		if ( (currlevel == v6 || (unsigned char)v2->bPnum == myplr) && (unsigned char)v2->bMaster != myplr )
-		{
-			if ( (unsigned char)v2->bPnum != myplr )
-			{
-				SyncGetItem(
-					(unsigned char)v2->x,
-					(unsigned char)v2->y,
-					(unsigned short)v2->wIndx,
-					v2->wCI,
-					v2->dwSeed);
-				return 30;
-			}
-			if ( currlevel == v6 )
-			{
-				v10 = v4;
-			}
-			else
-			{
-				v8 = (unsigned char)v2->bId;
-				_LOWORD(v8) = v2->wCI;
-				v9 = SyncPutItem(
-						 myplr,
-						 plr[myplr].WorldX,
-						 plr[myplr].WorldY,
-						 (unsigned short)v2->wIndx,
-						 v8,
-						 v2->dwSeed,
-						 (unsigned char)v2->bId,
-						 (unsigned char)v2->bDur,
-						 (unsigned char)v2->bMDur,
-						 (unsigned char)v2->bCh,
-						 (unsigned char)v2->bMCh,
-						 (unsigned short)v2->wValue,
-						 v2->dwBuff);
-				if ( v9 == -1 )
-					return 30;
-				v7 = myplr;
-				v10 = v9;
-			}
-			InvGetItem(v7, v10);
-			return 30;
-		}
-	}
-	return 30;
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 BOOL __fastcall delta_get_item(struct TCmdGItem *pI, BYTE bLevel)
 {
@@ -2103,223 +1970,98 @@ LABEL_15:
 
 int __fastcall On_GOTOAGETITEM(struct TCmdLocParam1 *pCmd, int pnum)
 {
-	struct TCmdLocParam1 *v2; // edi
-	int v3; // esi
-
-	v2 = pCmd;
-	if ( gbBufferMsgs != 1 )
-	{
-		v3 = pnum;
-		if ( currlevel == plr[pnum].plrlevel )
-		{
-			MakePlrPath(pnum, (unsigned char)pCmd->x, (unsigned char)pCmd->y, 0);
-			plr[v3].destAction = ACTION_PICKUPAITEM;
-			plr[v3].destParam1 = (unsigned short)v2->wParam1;
-		}
+	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
+		MakePlrPath(pnum, pCmd->x, pCmd->y, FALSE);
+		plr[pnum].destAction = ACTION_PICKUPAITEM;
+		plr[pnum].destParam1 = pCmd->wParam1;
 	}
-	return 5;
+
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_REQUESTAGITEM(struct TCmdGItem *pCmd, int pnum)
 {
-	struct TCmdGItem *v2; // esi
-	int v4; // edx
-	int v5; // edx
-	int v7; // zf
-	unsigned char v8; // al
-	int v9; // edx
-
-	v2 = pCmd;
-	if ( gbBufferMsgs != 1 )
-	{
-		if ( i_own_level(plr[pnum].plrlevel) )
-		{
-			_LOWORD(v4) = v2->wCI;
-			if ( GetItemRecord(v2->dwSeed, v4, (unsigned short)v2->wIndx) )
-			{
-				_LOWORD(v5) = v2->wCI;
-				v7 = FindGetItem((unsigned short)v2->wIndx, v5, v2->dwSeed);
-				v8 = v2->bPnum;
-				if ( v7 == -1 )
-				{
-					if ( !NetSendCmdReq2(CMD_REQUESTAGITEM, myplr, v8, v2) )
-						NetSendCmdExtra(v2);
-				}
+	if (gbBufferMsgs != 1 && i_own_level(plr[pnum].plrlevel)) {
+		if (GetItemRecord(pCmd->dwSeed, pCmd->wCI, pCmd->wIndx)) {
+			int ii = FindGetItem(pCmd->wIndx, pCmd->wCI, pCmd->dwSeed);
+			if (ii != -1) {
+				NetSendCmdGItem2(FALSE, CMD_AGETITEM, myplr, pCmd->bPnum, pCmd);
+				if (pCmd->bPnum != myplr)
+					SyncGetItem(pCmd->x, pCmd->y, pCmd->wIndx, pCmd->wCI, pCmd->dwSeed);
 				else
-				{
-					NetSendCmdGItem2(FALSE, CMD_AGETITEM, myplr, v8, v2);
-					if ( (unsigned char)v2->bPnum == myplr )
-						AutoGetItem(myplr, (unsigned char)v2->bCursitem);
-					else
-						SyncGetItem(
-							(unsigned char)v2->x,
-							(unsigned char)v2->y,
-							(unsigned short)v2->wIndx,
-							v2->wCI,
-							v2->dwSeed);
-					_LOWORD(v9) = v2->wCI;
-					SetItemRecord(v2->dwSeed, v9, (unsigned short)v2->wIndx);
-				}
-			}
+					AutoGetItem(myplr, pCmd->bCursitem);
+				SetItemRecord(pCmd->dwSeed, pCmd->wCI, pCmd->wIndx);
+			} else if (!NetSendCmdReq2(CMD_REQUESTAGITEM, myplr, pCmd->bPnum, pCmd))
+				NetSendCmdExtra(pCmd);
 		}
 	}
-	return 30;
+
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_AGETITEM(struct TCmdGItem *pCmd, int pnum)
 {
-	struct TCmdGItem *v2; // esi
-	char v4; // al
-	int v5; // ecx
-	int v6; // edx
-	int v7; // eax
-	int v8; // edx
+	if (gbBufferMsgs == 1)
+		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
+	else {
+		FindGetItem(pCmd->wIndx, pCmd->wCI, pCmd->dwSeed);
+		if (delta_get_item(pCmd, pCmd->bLevel)) {
+			if ((currlevel == pCmd->bLevel || pCmd->bPnum == myplr) && pCmd->bMaster != myplr) {
+				if (pCmd->bPnum == myplr) {
+					if (currlevel != pCmd->bLevel) {
+						int ii = SyncPutItem(myplr, plr[myplr].WorldX, plr[myplr].WorldY, pCmd->wIndx, pCmd->wCI, pCmd->dwSeed, pCmd->bId, pCmd->bDur, pCmd->bMDur, pCmd->bCh, pCmd->bMCh, pCmd->wValue, pCmd->dwBuff);
+						if (ii != -1)
+							AutoGetItem(myplr, ii);
+					} else
+						AutoGetItem(myplr, pCmd->bCursitem);
+				} else
+					SyncGetItem(pCmd->x, pCmd->y, pCmd->wIndx, pCmd->wCI, pCmd->dwSeed);
+			}
+		}
+		else
+			NetSendCmdGItem2(TRUE, CMD_AGETITEM, pCmd->bMaster, pCmd->bPnum, pCmd);
+	}
 
-	v2 = pCmd;
-	if ( gbBufferMsgs == 1 )
-	{
-		msg_send_packet((unsigned short)pnum, pCmd, 30);
-	}
-	else
-	{
-		FindGetItem((unsigned short)pCmd->wIndx, pCmd->wCI, pCmd->dwSeed);
-		if ( !delta_get_item(v2, v2->bLevel) )
-		{
-			NetSendCmdGItem2(TRUE, CMD_AGETITEM, v2->bMaster, v2->bPnum, v2);
-			return 30;
-		}
-		v4 = v2->bLevel;
-		v5 = myplr;
-		if ( (currlevel == v4 || (unsigned char)v2->bPnum == myplr) && (unsigned char)v2->bMaster != myplr )
-		{
-			if ( (unsigned char)v2->bPnum != myplr )
-			{
-				SyncGetItem(
-					(unsigned char)v2->x,
-					(unsigned char)v2->y,
-					(unsigned short)v2->wIndx,
-					v2->wCI,
-					v2->dwSeed);
-				return 30;
-			}
-			if ( currlevel == v4 )
-			{
-				v8 = (unsigned char)v2->bCursitem;
-			}
-			else
-			{
-				v6 = (unsigned char)v2->bId;
-				_LOWORD(v6) = v2->wCI;
-				v7 = SyncPutItem(
-						 myplr,
-						 plr[myplr].WorldX,
-						 plr[myplr].WorldY,
-						 (unsigned short)v2->wIndx,
-						 v6,
-						 v2->dwSeed,
-						 (unsigned char)v2->bId,
-						 (unsigned char)v2->bDur,
-						 (unsigned char)v2->bMDur,
-						 (unsigned char)v2->bCh,
-						 (unsigned char)v2->bMCh,
-						 (unsigned short)v2->wValue,
-						 v2->dwBuff);
-				if ( v7 == -1 )
-					return 30;
-				v5 = myplr;
-				v8 = v7;
-			}
-			AutoGetItem(v5, v8);
-			return 30;
-		}
-	}
-	return 30;
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_ITEMEXTRA(struct TCmdGItem *pCmd, int pnum)
 {
-	int v2; // edi
-	struct TCmdGItem *v3; // esi
-
-	v2 = pnum;
-	v3 = pCmd;
-	if ( gbBufferMsgs == 1 )
-	{
-		msg_send_packet(pnum, pCmd, 30);
-	}
-	else
-	{
+	if (gbBufferMsgs == 1)
+		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
+	else {
 		delta_get_item(pCmd, pCmd->bLevel);
-		if ( currlevel == plr[v2].plrlevel )
-			SyncGetItem(
-				(unsigned char)v3->x,
-				(unsigned char)v3->y,
-				(unsigned short)v3->wIndx,
-				v3->wCI,
-				v3->dwSeed);
+		if (currlevel == plr[pnum].plrlevel)
+			SyncGetItem(pCmd->x, pCmd->y, pCmd->wIndx, pCmd->wCI, pCmd->dwSeed);
 	}
-	return 30;
+
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_PUTITEM(struct TCmdPItem *pCmd, int pnum)
 {
-	int v2; // edi
-	struct TCmdPItem *v3; // esi
-	unsigned char *v4; // ebx
-	int v5; // edx
-	int v6; // eax
-	int v7; // edx
-	int v8; // ebp
+	if (gbBufferMsgs == 1)
+		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
+	else if (currlevel == plr[pnum].plrlevel) {
+		int ii;
+		if (pnum == myplr)
+			ii = InvPutItem(pnum, pCmd->x, pCmd->y);
+		else
+			ii = SyncPutItem(pnum, pCmd->x, pCmd->y, pCmd->wIndx, pCmd->wCI, pCmd->dwSeed, pCmd->bId, pCmd->bDur, pCmd->bMDur, pCmd->bCh, pCmd->bMCh, pCmd->wValue, pCmd->dwBuff);
+		if (ii != -1) {
+			PutItemRecord(pCmd->dwSeed, pCmd->wCI, pCmd->wIndx);
+			delta_put_item(pCmd, item[ii]._ix, item[ii]._iy, plr[pnum].plrlevel);
+			check_update_plr(pnum);
+		}
+		return sizeof(*pCmd);
+	} else {
+		PutItemRecord(pCmd->dwSeed, pCmd->wCI, pCmd->wIndx);
+		delta_put_item(pCmd, pCmd->x, pCmd->y, plr[pnum].plrlevel);
+		check_update_plr(pnum);
+	}
 
-	v2 = pnum;
-	v3 = pCmd;
-	if ( gbBufferMsgs == 1 )
-	{
-		msg_send_packet(pnum, pCmd, 22);
-		return 22;
-	}
-	v4 = (unsigned char *)&plr[pnum].plrlevel;
-	if ( currlevel != *(_DWORD *)v4 )
-	{
-		_LOWORD(pnum) = pCmd->wCI;
-		PutItemRecord(pCmd->dwSeed, pnum, (unsigned short)pCmd->wIndx);
-		delta_put_item(v3, (unsigned char)v3->x, (unsigned char)v3->y, *v4);
-		check_update_plr(v2);
-		return 22;
-	}
-	v5 = (unsigned char)pCmd->x;
-	if ( v2 == myplr )
-		v6 = InvPutItem(v2, v5, (unsigned char)pCmd->y);
-	else
-		v6 = SyncPutItem(
-				 v2,
-				 v5,
-				 (unsigned char)pCmd->y,
-				 (unsigned short)pCmd->wIndx,
-				 (unsigned short)pCmd->wCI,
-				 pCmd->dwSeed,
-				 (unsigned char)pCmd->bId,
-				 (unsigned char)pCmd->bDur,
-				 (unsigned char)pCmd->bMDur,
-				 (unsigned char)pCmd->bCh,
-				 (unsigned char)pCmd->bMCh,
-				 (unsigned short)pCmd->wValue,
-				 pCmd->dwBuff);
-	v8 = v6;
-	if ( v6 != -1 )
-	{
-		_LOWORD(v7) = v3->wCI;
-		PutItemRecord(v3->dwSeed, v7, (unsigned short)v3->wIndx);
-		delta_put_item(v3, item[v8]._ix, item[v8]._iy, *v4);
-		check_update_plr(v2);
-	}
-	return 22;
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 void __fastcall delta_put_item(struct TCmdPItem *pI, int x, int y, BYTE bLevel)
 {
@@ -2384,848 +2126,471 @@ void __fastcall check_update_plr(int pnum)
 
 int __fastcall On_SYNCPUTITEM(struct TCmdPItem *pCmd, int pnum)
 {
-	int v2; // ebx
-	struct TCmdPItem *v3; // esi
-	unsigned char *v4; // edi
-	int v5; // edx
-	int v6; // ebp
+	if (gbBufferMsgs == 1)
+		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
+	else if (currlevel == plr[pnum].plrlevel) {
+		int ii = SyncPutItem(pnum, pCmd->x, pCmd->y, pCmd->wIndx, pCmd->wCI, pCmd->dwSeed, pCmd->bId, pCmd->bDur, pCmd->bMDur, pCmd->bCh, pCmd->bMCh, pCmd->wValue, pCmd->dwBuff);
+		if (ii != -1) {
+			PutItemRecord(pCmd->dwSeed, pCmd->wCI, pCmd->wIndx);
+			delta_put_item(pCmd, item[ii]._ix, item[ii]._iy, plr[pnum].plrlevel);
+			check_update_plr(pnum);
+		}
+		return sizeof(*pCmd);
+	} else {
+		PutItemRecord(pCmd->dwSeed, pCmd->wCI, pCmd->wIndx);
+		delta_put_item(pCmd, pCmd->x, pCmd->y, plr[pnum].plrlevel);
+		check_update_plr(pnum);
+	}
 
-	v2 = pnum;
-	v3 = pCmd;
-	if ( gbBufferMsgs == 1 )
-	{
-		msg_send_packet(pnum, pCmd, 22);
-		return 22;
-	}
-	v4 = (unsigned char *)&plr[pnum].plrlevel;
-	if ( currlevel != *(_DWORD *)v4 )
-	{
-		_LOWORD(pnum) = pCmd->wCI;
-		PutItemRecord(pCmd->dwSeed, pnum, (unsigned short)pCmd->wIndx);
-		delta_put_item(v3, (unsigned char)v3->x, (unsigned char)v3->y, *v4);
-		check_update_plr(v2);
-		return 22;
-	}
-	v6 = SyncPutItem(
-			 pnum,
-			 (unsigned char)pCmd->x,
-			 (unsigned char)pCmd->y,
-			 (unsigned short)pCmd->wIndx,
-			 (unsigned short)pCmd->wCI,
-			 pCmd->dwSeed,
-			 (unsigned char)pCmd->bId,
-			 (unsigned char)pCmd->bDur,
-			 (unsigned char)pCmd->bMDur,
-			 (unsigned char)pCmd->bCh,
-			 (unsigned char)pCmd->bMCh,
-			 (unsigned short)pCmd->wValue,
-			 pCmd->dwBuff);
-	if ( v6 != -1 )
-	{
-		_LOWORD(v5) = v3->wCI;
-		PutItemRecord(v3->dwSeed, v5, (unsigned short)v3->wIndx);
-		delta_put_item(v3, item[v6]._ix, item[v6]._iy, *v4);
-		check_update_plr(v2);
-	}
-	return 22;
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_RESPAWNITEM(struct TCmdPItem *pCmd, int pnum)
 {
-	struct TCmdPItem *v2; // esi
-	unsigned char *v3; // edi
+	if (gbBufferMsgs == 1)
+		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
+	else {
+		if ( currlevel == plr[pnum].plrlevel && pnum != myplr)
+			SyncPutItem(pnum, pCmd->x, pCmd->y, pCmd->wIndx, pCmd->wCI, pCmd->dwSeed, pCmd->bId, pCmd->bDur, pCmd->bMDur, pCmd->bCh, pCmd->bMCh, pCmd->wValue, pCmd->dwBuff);
+		PutItemRecord(pCmd->dwSeed, pCmd->wCI, pCmd->wIndx);
+		delta_put_item(pCmd, pCmd->x, pCmd->y, plr[pnum].plrlevel);
+	}
 
-	v2 = pCmd;
-	if ( gbBufferMsgs == 1 )
-	{
-		msg_send_packet(pnum, pCmd, 22);
-	}
-	else
-	{
-		v3 = (unsigned char *)&plr[pnum].plrlevel;
-		if ( currlevel == *(_DWORD *)v3 && pnum != myplr )
-			SyncPutItem(
-				pnum,
-				(unsigned char)pCmd->x,
-				(unsigned char)pCmd->y,
-				(unsigned short)pCmd->wIndx,
-				(unsigned short)pCmd->wCI,
-				pCmd->dwSeed,
-				(unsigned char)pCmd->bId,
-				(unsigned char)pCmd->bDur,
-				(unsigned char)pCmd->bMDur,
-				(unsigned char)pCmd->bCh,
-				(unsigned char)pCmd->bMCh,
-				(unsigned short)pCmd->wValue,
-				pCmd->dwBuff);
-		_LOWORD(pnum) = v2->wCI;
-		PutItemRecord(v2->dwSeed, pnum, (unsigned short)v2->wIndx);
-		delta_put_item(v2, (unsigned char)v2->x, (unsigned char)v2->y, *v3);
-	}
-	return 22;
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_ATTACKXY(struct TCmdLoc *pCmd, int pnum)
 {
-	struct TCmdLoc *v2; // edi
-	int v3; // esi
-
-	v2 = pCmd;
-	if ( gbBufferMsgs != 1 )
-	{
-		v3 = pnum;
-		if ( currlevel == plr[pnum].plrlevel )
-		{
-			MakePlrPath(pnum, (unsigned char)pCmd->x, (unsigned char)pCmd->y, 0);
-			plr[v3].destAction = ACTION_ATTACK;
-			plr[v3].destParam1 = (unsigned char)v2->x;
-			plr[v3].destParam2 = (unsigned char)v2->y;
-		}
+	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
+		MakePlrPath(pnum, pCmd->x, pCmd->y, FALSE);
+		plr[pnum].destAction = ACTION_ATTACK;
+		plr[pnum].destParam1 = pCmd->x;
+		plr[pnum].destParam2 = pCmd->y;
 	}
-	return 3;
+
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_SATTACKXY(struct TCmdLoc *pCmd, int pnum)
 {
-	struct TCmdLoc *v2; // edi
-	int v3; // esi
-
-	v2 = pCmd;
-	if ( gbBufferMsgs != 1 )
-	{
-		v3 = pnum;
-		if ( currlevel == plr[pnum].plrlevel )
-		{
-			ClrPlrPath(pnum);
-			plr[v3].destAction = ACTION_ATTACK;
-			plr[v3].destParam1 = (unsigned char)v2->x;
-			plr[v3].destParam2 = (unsigned char)v2->y;
-		}
+	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
+		ClrPlrPath(pnum);
+		plr[pnum].destAction = ACTION_ATTACK;
+		plr[pnum].destParam1 = pCmd->x;
+		plr[pnum].destParam2 = pCmd->y;
 	}
-	return 3;
+
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_RATTACKXY(struct TCmdLoc *pCmd, int pnum)
 {
-	struct TCmdLoc *v2; // edi
-	int v3; // esi
-
-	v2 = pCmd;
-	if ( gbBufferMsgs != 1 )
-	{
-		v3 = pnum;
-		if ( currlevel == plr[pnum].plrlevel )
-		{
-			ClrPlrPath(pnum);
-			plr[v3].destAction = ACTION_RATTACK;
-			plr[v3].destParam1 = (unsigned char)v2->x;
-			plr[v3].destParam2 = (unsigned char)v2->y;
-		}
+	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
+		ClrPlrPath(pnum);
+		plr[pnum].destAction = ACTION_RATTACK;
+		plr[pnum].destParam1 = pCmd->x;
+		plr[pnum].destParam2 = pCmd->y;
 	}
-	return 3;
+
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_SPELLXYD(struct TCmdLocParam3 *pCmd, int pnum)
 {
-	struct TCmdLocParam3 *v2; // edi
-	int v3; // esi
-	int v4; // eax
-
-	v2 = pCmd;
-	if ( gbBufferMsgs != 1 )
-	{
-		v3 = pnum;
-		if ( currlevel == plr[pnum].plrlevel )
-		{
-			if ( currlevel || spelldata[(unsigned short)pCmd->wParam1].sTownSpell )
-			{
-				ClrPlrPath(pnum);
-				plr[v3].destAction = ACTION_SPELLWALL;
-				plr[v3].destParam1 = (unsigned char)v2->x;
-				plr[v3].destParam2 = (unsigned char)v2->y;
-				plr[v3].destParam3 = (unsigned short)v2->wParam2;
-				plr[v3].destParam4 = (unsigned short)v2->wParam3;
-				v4 = (unsigned short)v2->wParam1;
-				plr[v3]._pSplFrom = 0;
-				plr[v3]._pSpell = v4;
-				plr[v3]._pSplType = plr[v3]._pRSplType;
-			}
-			else
-			{
-				msg_errorf("%s has cast an illegal spell.", plr[v3]._pName);
-			}
-		}
+	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
+		if (currlevel || spelldata[pCmd->wParam1].sTownSpell) {
+			ClrPlrPath(pnum);
+			plr[pnum].destAction = ACTION_SPELLWALL;
+			plr[pnum].destParam1 = pCmd->x;
+			plr[pnum].destParam2 = pCmd->y;
+			plr[pnum].destParam3 = pCmd->wParam2;
+			plr[pnum].destParam4 = pCmd->wParam3;
+			plr[pnum]._pSpell = pCmd->wParam1;
+			plr[pnum]._pSplType = plr[pnum]._pRSplType;
+			plr[pnum]._pSplFrom = 0;
+		} else
+			msg_errorf("%s has cast an illegal spell.", plr[pnum]._pName);
 	}
-	return 9;
+
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_SPELLXY(struct TCmdLocParam2 *pCmd, int pnum)
 {
-	struct TCmdLocParam2 *v2; // edi
-	int v3; // esi
-	int v4; // eax
-
-	v2 = pCmd;
-	if ( gbBufferMsgs != 1 )
-	{
-		v3 = pnum;
-		if ( currlevel == plr[pnum].plrlevel )
-		{
-			if ( currlevel || spelldata[(unsigned short)pCmd->wParam1].sTownSpell )
-			{
-				ClrPlrPath(pnum);
-				plr[v3].destAction = ACTION_SPELL;
-				plr[v3].destParam1 = (unsigned char)v2->x;
-				plr[v3].destParam2 = (unsigned char)v2->y;
-				plr[v3].destParam3 = (unsigned short)v2->wParam2;
-				v4 = (unsigned short)v2->wParam1;
-				plr[v3]._pSplFrom = 0;
-				plr[v3]._pSpell = v4;
-				plr[v3]._pSplType = plr[v3]._pRSplType;
-			}
-			else
-			{
-				msg_errorf("%s has cast an illegal spell.", plr[v3]._pName);
-			}
-		}
+	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
+		if (currlevel || spelldata[pCmd->wParam1].sTownSpell) {
+			ClrPlrPath(pnum);
+			plr[pnum].destAction = ACTION_SPELL;
+			plr[pnum].destParam1 = pCmd->x;
+			plr[pnum].destParam2 = pCmd->y;
+			plr[pnum].destParam3 = pCmd->wParam2;
+			plr[pnum]._pSpell = pCmd->wParam1;
+			plr[pnum]._pSplType = plr[pnum]._pRSplType;
+			plr[pnum]._pSplFrom = 0;
+		} else
+			msg_errorf("%s has cast an illegal spell.", plr[pnum]._pName);
 	}
-	return 7;
+
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_TSPELLXY(struct TCmdLocParam2 *pCmd, int pnum)
 {
-	struct TCmdLocParam2 *v2; // edi
-	int v3; // esi
-
-	v2 = pCmd;
-	if ( gbBufferMsgs != 1 )
-	{
-		v3 = pnum;
-		if ( currlevel == plr[pnum].plrlevel )
-		{
-			if ( currlevel || spelldata[(unsigned short)pCmd->wParam1].sTownSpell )
-			{
-				ClrPlrPath(pnum);
-				plr[v3].destAction = ACTION_SPELL;
-				plr[v3].destParam1 = (unsigned char)v2->x;
-				plr[v3].destParam2 = (unsigned char)v2->y;
-				plr[v3].destParam3 = (unsigned short)v2->wParam2;
-				plr[v3]._pSpell = (unsigned short)v2->wParam1;
-				plr[v3]._pSplType = plr[v3]._pTSplType;
-				plr[v3]._pSplFrom = 2;
-			}
-			else
-			{
-				msg_errorf("%s has cast an illegal spell.", plr[v3]._pName);
-			}
-		}
+	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
+		if (currlevel || spelldata[pCmd->wParam1].sTownSpell) {
+			ClrPlrPath(pnum);
+			plr[pnum].destAction = ACTION_SPELL;
+			plr[pnum].destParam1 = pCmd->x;
+			plr[pnum].destParam2 = pCmd->y;
+			plr[pnum].destParam3 = pCmd->wParam2;
+			plr[pnum]._pSpell = pCmd->wParam1;
+			plr[pnum]._pSplType = plr[pnum]._pTSplType;
+			plr[pnum]._pSplFrom = 2;
+		} else
+			msg_errorf("%s has cast an illegal spell.", plr[pnum]._pName);
 	}
-	return 7;
+
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_OPOBJXY(struct TCmdLocParam1 *pCmd, int pnum)
 {
-	struct TCmdLocParam1 *v2; // esi
-	int v3; // edi
-	int v4; // eax
-
-	v2 = pCmd;
-	if ( gbBufferMsgs != 1 )
-	{
-		v3 = pnum;
-		if ( currlevel == plr[pnum].plrlevel )
-		{
-			v4 = (unsigned short)pCmd->wParam1;
-			if ( object[v4]._oSolidFlag || object[v4]._oDoorFlag )
-				MakePlrPath(pnum, (unsigned char)pCmd->x, (unsigned char)pCmd->y, 0);
-			else
-				MakePlrPath(pnum, (unsigned char)pCmd->x, (unsigned char)pCmd->y, 1u);
-			plr[v3].destAction = ACTION_OPERATE;
-			plr[v3].destParam1 = (unsigned short)v2->wParam1;
-		}
+	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
+		if (object[pCmd->wParam1]._oSolidFlag || object[pCmd->wParam1]._oDoorFlag)
+			MakePlrPath(pnum, pCmd->x, pCmd->y, FALSE);
+		else
+			MakePlrPath(pnum, pCmd->x, pCmd->y, TRUE);
+		plr[pnum].destAction = ACTION_OPERATE;
+		plr[pnum].destParam1 = pCmd->wParam1;
 	}
-	return 5;
+
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_DISARMXY(struct TCmdLocParam1 *pCmd, int pnum)
 {
-	struct TCmdLocParam1 *v2; // esi
-	int v3; // edi
-	int v4; // eax
-
-	v2 = pCmd;
-	if ( gbBufferMsgs != 1 )
-	{
-		v3 = pnum;
-		if ( currlevel == plr[pnum].plrlevel )
-		{
-			v4 = (unsigned short)pCmd->wParam1;
-			if ( object[v4]._oSolidFlag || object[v4]._oDoorFlag )
-				MakePlrPath(pnum, (unsigned char)pCmd->x, (unsigned char)pCmd->y, 0);
-			else
-				MakePlrPath(pnum, (unsigned char)pCmd->x, (unsigned char)pCmd->y, 1u);
-			plr[v3].destAction = ACTION_DISARM;
-			plr[v3].destParam1 = (unsigned short)v2->wParam1;
-		}
+	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
+		if (object[pCmd->wParam1]._oSolidFlag || object[pCmd->wParam1]._oDoorFlag)
+			MakePlrPath(pnum, pCmd->x, pCmd->y, FALSE);
+		else
+			MakePlrPath(pnum, pCmd->x, pCmd->y, TRUE);
+		plr[pnum].destAction = ACTION_DISARM;
+		plr[pnum].destParam1 = pCmd->wParam1;
 	}
-	return 5;
+
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_OPOBJT(struct TCmdParam1 *pCmd, int pnum)
 {
-	int v2; // eax
-
-	if ( gbBufferMsgs != 1 )
-	{
-		v2 = pnum;
-		if ( currlevel == plr[pnum].plrlevel )
-		{
-			plr[v2].destAction = ACTION_OPERATETK;
-			plr[v2].destParam1 = (unsigned short)pCmd->wParam1;
-		}
+	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
+		plr[pnum].destAction = ACTION_OPERATETK;
+		plr[pnum].destParam1 = pCmd->wParam1;
 	}
-	return 3;
+
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_ATTACKID(struct TCmdParam1 *pCmd, int pnum)
 {
-	int v2; // ebp
-	struct TCmdParam1 *v3; // edi
-	int v4; // esi
-	int v5; // ebx
-	int v6; // eax
-
-	v2 = pnum;
-	v3 = pCmd;
-	if ( gbBufferMsgs != 1 )
-	{
-		v4 = pnum;
-		if ( currlevel == plr[pnum].plrlevel )
-		{
-			v5 = abs(plr[v4].WorldX - monster[(unsigned short)pCmd->wParam1]._mfutx);
-			v6 = abs(plr[v4].WorldY - monster[(unsigned short)v3->wParam1]._mfuty);
-			if ( v5 > 1 || v6 > 1 )
-				MakePlrPath(
-					v2,
-					monster[(unsigned short)v3->wParam1]._mfutx,
-					monster[(unsigned short)v3->wParam1]._mfuty,
-					0);
-			plr[v4].destAction = ACTION_ATTACKMON;
-			plr[v4].destParam1 = (unsigned short)v3->wParam1;
-		}
+	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
+		int distx = abs(plr[pnum].WorldX - monster[pCmd->wParam1]._mfutx);
+		int disty = abs(plr[pnum].WorldY - monster[pCmd->wParam1]._mfuty);
+		if (distx > 1 || disty > 1)
+			MakePlrPath(pnum, monster[pCmd->wParam1]._mfutx, monster[pCmd->wParam1]._mfuty, FALSE);
+		plr[pnum].destAction = ACTION_ATTACKMON;
+		plr[pnum].destParam1 = pCmd->wParam1;
 	}
-	return 3;
+
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_ATTACKPID(struct TCmdParam1 *pCmd, int pnum)
 {
-	struct TCmdParam1 *v2; // edi
-	int v3; // esi
-
-	v2 = pCmd;
-	if ( gbBufferMsgs != 1 )
-	{
-		v3 = pnum;
-		if ( currlevel == plr[pnum].plrlevel )
-		{
-			MakePlrPath(pnum, plr[(unsigned short)pCmd->wParam1]._px, plr[(unsigned short)pCmd->wParam1]._py, 0);
-			plr[v3].destAction = ACTION_ATTACKPLR;
-			plr[v3].destParam1 = (unsigned short)v2->wParam1;
-		}
+	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
+		MakePlrPath(pnum, plr[pCmd->wParam1]._px, plr[pCmd->wParam1]._py, FALSE);
+		plr[pnum].destAction = ACTION_ATTACKPLR;
+		plr[pnum].destParam1 = pCmd->wParam1;
 	}
-	return 3;
+
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_RATTACKID(struct TCmdParam1 *pCmd, int pnum)
 {
-	struct TCmdParam1 *v2; // edi
-	int v3; // esi
-
-	v2 = pCmd;
-	if ( gbBufferMsgs != 1 )
-	{
-		v3 = pnum;
-		if ( currlevel == plr[pnum].plrlevel )
-		{
-			ClrPlrPath(pnum);
-			plr[v3].destAction = ACTION_RATTACKMON;
-			plr[v3].destParam1 = (unsigned short)v2->wParam1;
-		}
+	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
+		ClrPlrPath(pnum);
+		plr[pnum].destAction = ACTION_RATTACKMON;
+		plr[pnum].destParam1 = pCmd->wParam1;
 	}
-	return 3;
+
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_RATTACKPID(struct TCmdParam1 *pCmd, int pnum)
 {
-	struct TCmdParam1 *v2; // edi
-	int v3; // esi
-
-	v2 = pCmd;
-	if ( gbBufferMsgs != 1 )
-	{
-		v3 = pnum;
-		if ( currlevel == plr[pnum].plrlevel )
-		{
-			ClrPlrPath(pnum);
-			plr[v3].destAction = ACTION_RATTACKPLR;
-			plr[v3].destParam1 = (unsigned short)v2->wParam1;
-		}
+	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
+		ClrPlrPath(pnum);
+		plr[pnum].destAction = ACTION_RATTACKPLR;
+		plr[pnum].destParam1 = pCmd->wParam1;
 	}
-	return 3;
+
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_SPELLID(struct TCmdParam3 *pCmd, int pnum)
 {
-	struct TCmdParam3 *v2; // edi
-	int v3; // esi
-	int v4; // eax
-
-	v2 = pCmd;
-	if ( gbBufferMsgs != 1 )
-	{
-		v3 = pnum;
-		if ( currlevel == plr[pnum].plrlevel )
-		{
-			if ( currlevel || spelldata[(unsigned short)pCmd->wParam2].sTownSpell )
-			{
-				ClrPlrPath(pnum);
-				plr[v3].destAction = ACTION_SPELLMON;
-				plr[v3].destParam1 = pCmd->wParam1;
-				plr[v3].destParam2 = (unsigned short)v2->wParam3;
-				v4 = (unsigned short)v2->wParam2;
-				plr[v3]._pSplFrom = 0;
-				plr[v3]._pSpell = v4;
-				plr[v3]._pSplType = plr[v3]._pRSplType;
-			}
-			else
-			{
-				msg_errorf("%s has cast an illegal spell.", plr[v3]._pName);
-			}
-		}
+	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
+		if (currlevel || spelldata[pCmd->wParam2].sTownSpell) {
+			ClrPlrPath(pnum);
+			plr[pnum].destAction = ACTION_SPELLMON;
+			plr[pnum].destParam1 = pCmd->wParam1;
+			plr[pnum].destParam2 = pCmd->wParam3;
+			plr[pnum]._pSpell = pCmd->wParam2;
+			plr[pnum]._pSplType = plr[pnum]._pRSplType;
+			plr[pnum]._pSplFrom = 0;
+		} else
+			msg_errorf("%s has cast an illegal spell.", plr[pnum]._pName);
 	}
-	return 7;
+
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_SPELLPID(struct TCmdParam3 *pCmd, int pnum)
 {
-	struct TCmdParam3 *v2; // edi
-	int v3; // esi
-	int v4; // eax
-
-	v2 = pCmd;
-	if ( gbBufferMsgs != 1 )
-	{
-		v3 = pnum;
-		if ( currlevel == plr[pnum].plrlevel )
-		{
-			if ( currlevel || spelldata[(unsigned short)pCmd->wParam2].sTownSpell )
-			{
-				ClrPlrPath(pnum);
-				plr[v3].destAction = ACTION_SPELLPLR;
-				plr[v3].destParam1 = v2->wParam1;
-				plr[v3].destParam2 = (unsigned short)v2->wParam3;
-				v4 = (unsigned short)v2->wParam2;
-				plr[v3]._pSplFrom = 0;
-				plr[v3]._pSpell = v4;
-				plr[v3]._pSplType = plr[v3]._pRSplType;
-			}
-			else
-			{
-				msg_errorf("%s has cast an illegal spell.", plr[v3]._pName);
-			}
-		}
+	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
+		if (currlevel || spelldata[pCmd->wParam2].sTownSpell) {
+			ClrPlrPath(pnum);
+			plr[pnum].destAction = ACTION_SPELLPLR;
+			plr[pnum].destParam1 = pCmd->wParam1;
+			plr[pnum].destParam2 = pCmd->wParam3;
+			plr[pnum]._pSpell = pCmd->wParam2;
+			plr[pnum]._pSplType = plr[pnum]._pRSplType;
+			plr[pnum]._pSplFrom = 0;
+		} else
+			msg_errorf("%s has cast an illegal spell.", plr[pnum]._pName);
 	}
-	return 7;
+
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_TSPELLID(struct TCmdParam3 *pCmd, int pnum)
 {
-	struct TCmdParam3 *v2; // edi
-	int v3; // esi
-
-	v2 = pCmd;
-	if ( gbBufferMsgs != 1 )
-	{
-		v3 = pnum;
-		if ( currlevel == plr[pnum].plrlevel )
-		{
-			if ( currlevel || spelldata[(unsigned short)pCmd->wParam2].sTownSpell )
-			{
-				ClrPlrPath(pnum);
-				plr[v3].destAction = ACTION_SPELLMON;
-				plr[v3].destParam1 = v2->wParam1;
-				plr[v3].destParam2 = (unsigned short)v2->wParam3;
-				plr[v3]._pSpell = (unsigned short)v2->wParam2;
-				plr[v3]._pSplType = plr[v3]._pTSplType;
-				plr[v3]._pSplFrom = 2;
-			}
-			else
-			{
-				msg_errorf("%s has cast an illegal spell.", plr[v3]._pName);
-			}
-		}
+	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
+		if (currlevel || spelldata[pCmd->wParam2].sTownSpell) {
+			ClrPlrPath(pnum);
+			plr[pnum].destAction = ACTION_SPELLMON;
+			plr[pnum].destParam1 = pCmd->wParam1;
+			plr[pnum].destParam2 = pCmd->wParam3;
+			plr[pnum]._pSpell = pCmd->wParam2;
+			plr[pnum]._pSplType = plr[pnum]._pTSplType;
+			plr[pnum]._pSplFrom = 2;
+		} else
+			msg_errorf("%s has cast an illegal spell.", plr[pnum]._pName);
 	}
-	return 7;
+
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_TSPELLPID(struct TCmdParam3 *pCmd, int pnum)
 {
-	struct TCmdParam3 *v2; // edi
-	int v3; // esi
-
-	v2 = pCmd;
-	if ( gbBufferMsgs != 1 )
-	{
-		v3 = pnum;
-		if ( currlevel == plr[pnum].plrlevel )
-		{
-			if ( currlevel || spelldata[(unsigned short)pCmd->wParam2].sTownSpell )
-			{
-				ClrPlrPath(pnum);
-				plr[v3].destAction = ACTION_SPELLPLR;
-				plr[v3].destParam1 = v2->wParam1;
-				plr[v3].destParam2 = (unsigned short)v2->wParam3;
-				plr[v3]._pSpell = (unsigned short)v2->wParam2;
-				plr[v3]._pSplType = plr[v3]._pTSplType;
-				plr[v3]._pSplFrom = 2;
-			}
-			else
-			{
-				msg_errorf("%s has cast an illegal spell.", plr[v3]._pName);
-			}
-		}
+	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
+		if (currlevel || spelldata[pCmd->wParam2].sTownSpell) {
+			ClrPlrPath(pnum);
+			plr[pnum].destAction = ACTION_SPELLPLR;
+			plr[pnum].destParam1 = pCmd->wParam1;
+			plr[pnum].destParam2 = pCmd->wParam3;
+			plr[pnum]._pSpell = pCmd->wParam2;
+			plr[pnum]._pSplType = plr[pnum]._pTSplType;
+			plr[pnum]._pSplFrom = 2;
+		} else
+			msg_errorf("%s has cast an illegal spell.", plr[pnum]._pName);
 	}
-	return 7;
+
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_KNOCKBACK(struct TCmdParam1 *pCmd, int pnum)
 {
-	int v2; // edi
-	struct TCmdParam1 *v3; // esi
-
-	v2 = pnum;
-	v3 = pCmd;
-	if ( gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel )
-	{
-		M_GetKnockback((unsigned short)pCmd->wParam1);
-		M_StartHit((unsigned short)v3->wParam1, v2, 0);
+	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
+		M_GetKnockback(pCmd->wParam1);
+		M_StartHit(pCmd->wParam1, pnum, 0);
 	}
-	return 3;
+
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_RESURRECT(struct TCmdParam1 *pCmd, int pnum)
 {
-	int v2; // esi
+	if (gbBufferMsgs == 1)
+		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
+	else {
+		DoResurrect(pnum, pCmd->wParam1);
+		check_update_plr(pnum);
+	}
 
-	v2 = pnum;
-	if ( gbBufferMsgs == 1 )
-	{
-		msg_send_packet(pnum, pCmd, 3);
-	}
-	else
-	{
-		DoResurrect(pnum, (unsigned short)pCmd->wParam1);
-		check_update_plr(v2);
-	}
-	return 3;
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_HEALOTHER(struct TCmdParam1 *pCmd, int pnum)
 {
-	if ( gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel )
-		DoHealOther(pnum, (unsigned short)pCmd->wParam1);
-	return 3;
+	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel)
+		DoHealOther(pnum, pCmd->wParam1);
+
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_TALKXY(struct TCmdLocParam1 *pCmd, int pnum)
 {
-	struct TCmdLocParam1 *v2; // edi
-	int v3; // esi
-
-	v2 = pCmd;
-	if ( gbBufferMsgs != 1 )
-	{
-		v3 = pnum;
-		if ( currlevel == plr[pnum].plrlevel )
-		{
-			MakePlrPath(pnum, (unsigned char)pCmd->x, (unsigned char)pCmd->y, 0);
-			plr[v3].destAction = ACTION_TALK;
-			plr[v3].destParam1 = (unsigned short)v2->wParam1;
-		}
+	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
+		MakePlrPath(pnum, pCmd->x, pCmd->y, FALSE);
+		plr[pnum].destAction = ACTION_TALK;
+		plr[pnum].destParam1 = pCmd->wParam1;
 	}
-	return 5;
+
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_NEWLVL(struct TCmdParam2 *pCmd, int pnum)
 {
-	if ( gbBufferMsgs == 1 )
-	{
-		msg_send_packet(pnum, pCmd, 5);
-	}
-	else if ( pnum != myplr )
-	{
-		StartNewLvl(pnum, (unsigned short)pCmd->wParam1, (unsigned short)pCmd->wParam2);
-	}
-	return 5;
+	if (gbBufferMsgs == 1)
+		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
+	else if (pnum != myplr)
+		StartNewLvl(pnum, pCmd->wParam1, pCmd->wParam2);
+
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_WARP(struct TCmdParam1 *pCmd, int pnum)
 {
-	int v2; // esi
-
-	v2 = pnum;
-	if ( gbBufferMsgs == 1 )
-	{
-		msg_send_packet(pnum, pCmd, 3);
-	}
-	else
-	{
-		StartWarpLvl(pnum, (unsigned short)pCmd->wParam1);
-		if ( v2 == myplr && pcurs >= CURSOR_FIRSTITEM )
-		{
-			qmemcpy(&item[127], &plr[myplr].HoldItem, sizeof(ItemStruct));
-			AutoGetItem(myplr, 127);
+	if (gbBufferMsgs == 1)
+		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
+	else {
+		StartWarpLvl(pnum, pCmd->wParam1);
+		if (pnum == myplr && pcurs >= CURSOR_FIRSTITEM) {
+			item[MAXITEMS] = plr[myplr].HoldItem;
+			AutoGetItem(myplr, MAXITEMS);
 		}
 	}
-	return 3;
+
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_MONSTDEATH(struct TCmdLocParam1 *pCmd, int pnum)
 {
-	struct TCmdLocParam1 *v2; // esi
-	unsigned char *v3; // edi
+	if (gbBufferMsgs == 1)
+		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
+	else if (pnum != myplr) {
+		if (currlevel == plr[pnum].plrlevel)
+			M_SyncStartKill(pCmd->wParam1, pCmd->x, pCmd->y, pnum);
+		delta_kill_monster(pCmd->wParam1, pCmd->x, pCmd->y, plr[pnum].plrlevel);
+	}
 
-	v2 = pCmd;
-	if ( gbBufferMsgs == 1 )
-	{
-		msg_send_packet(pnum, pCmd, 5);
-	}
-	else if ( pnum != myplr )
-	{
-		v3 = (unsigned char *)&plr[pnum].plrlevel;
-		if ( currlevel == *(_DWORD *)v3 )
-			M_SyncStartKill((unsigned short)pCmd->wParam1, (unsigned char)pCmd->x, (unsigned char)pCmd->y, pnum);
-		delta_kill_monster((unsigned short)v2->wParam1, v2->x, v2->y, *v3);
-	}
-	return 5;
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_KILLGOLEM(struct TCmdLocParam1 *pCmd, int pnum)
 {
-	int v2; // edi
-	struct TCmdLocParam1 *v3; // esi
+	if (gbBufferMsgs == 1)
+		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
+	else if (pnum != myplr) {
+		if (currlevel == pCmd->wParam1)
+			M_SyncStartKill(pnum, pCmd->x, pCmd->y, pnum);
+		delta_kill_monster(pnum, pCmd->x, pCmd->y, plr[pnum].plrlevel);
+	}
 
-	v2 = pnum;
-	v3 = pCmd;
-	if ( gbBufferMsgs == 1 )
-	{
-		msg_send_packet(pnum, pCmd, 5);
-	}
-	else if ( pnum != myplr )
-	{
-		if ( currlevel == pCmd->wParam1 )
-			M_SyncStartKill(pnum, (unsigned char)pCmd->x, (unsigned char)pCmd->y, pnum);
-		delta_kill_monster(v2, v3->x, v3->y, plr[v2].plrlevel);
-	}
-	return 5;
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_AWAKEGOLEM(struct TCmdGolem *pCmd, int pnum)
 {
-	int v2; // esi
-	int v3; // eax
-	signed int v4; // ebp
-	int v5; // edi
-	int v6; // edx
-
-	v2 = pnum;
-	if ( gbBufferMsgs == 1 )
-	{
-		msg_send_packet(pnum, pCmd, 10);
-	}
-	else
-	{
-		v3 = 21720 * pnum;
-		if ( currlevel == plr[pnum].plrlevel )
-		{
-			if ( pnum != myplr )
-			{
-				v4 = 1;
-				v5 = 0;
-				if ( nummissiles <= 0 )
-					goto LABEL_16;
-				do
-				{
-					v6 = missileactive[v5];
-					if ( missile[v6]._mitype == MIS_GOLEM && missile[v6]._misource == v2 )
-						v4 = 0;
-					++v5;
-				}
-				while ( v5 < nummissiles );
-				if ( v4 )
-LABEL_16:
-					AddMissile(
-						*(int *)((char *)&plr[0].WorldX + v3),
-						*(int *)((char *)&plr[0].WorldY + v3),
-						(unsigned char)pCmd->_mx,
-						(unsigned char)pCmd->_my,
-						(unsigned char)pCmd->_mdir,
-						MIS_GOLEM,
-						0,
-						v2,
-						0,
-						1);
+	if (gbBufferMsgs == 1)
+		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
+	else if (currlevel != plr[pnum].plrlevel)
+		delta_sync_golem(pCmd, pnum, pCmd->_currlevel);
+	else if (pnum != myplr) {
+		int i;
+		// check if this player already has an active golem
+		BOOL addGolem = TRUE;
+		for (i=0; i < nummissiles; i++) {
+			int mi = missileactive[i];
+			if (missile[mi]._mitype == MIS_GOLEM && missile[mi]._misource == pnum) {
+				addGolem = FALSE;
+				// BUGFIX: break, don't need to check the rest
 			}
 		}
-		else
-		{
-			_LOBYTE(v3) = pCmd->_currlevel;
-			delta_sync_golem(pCmd, pnum, v3);
-		}
+		if (addGolem)
+			AddMissile(plr[pnum].WorldX, plr[pnum].WorldY, pCmd->_mx, pCmd->_my, pCmd->_mdir, MIS_GOLEM, 0, pnum, 0, 1);
 	}
-	return 10;
+
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_MONSTDAMAGE(struct TCmdParam2 *pCmd, int pnum)
 {
-	int v2; // edi
-	struct TCmdParam2 *v3; // edx
-	unsigned char *v4; // ebx
-	char *v5; // esi
-	int *v6; // ecx
-	int *v7; // eax
+	if (gbBufferMsgs == 1)
+		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
+	else if (pnum != myplr) {
+		if (currlevel == plr[pnum].plrlevel) {
+			monster[pCmd->wParam1].mWhoHit |= 1 << pnum;
 
-	v2 = pnum;
-	v3 = pCmd;
-	if ( gbBufferMsgs == 1 )
-	{
-		msg_send_packet(v2, pCmd, 5);
-	}
-	else if ( v2 != myplr )
-	{
-		v4 = (unsigned char *)&plr[v2].plrlevel;
-		if ( currlevel == *(_DWORD *)v4 )
-		{
-			v5 = &monster[pCmd->wParam1].mWhoHit;
-			*v5 |= 1 << v2;
-			v6 = &monster[pCmd->wParam1]._mhitpoints;
-			if ( *v6 )
-			{
-				*v6 -= (unsigned short)v3->wParam2;
-				v7 = &monster[v3->wParam1]._mhitpoints;
-				if ( *v7 >> 6 < 64 )
-					*v7 = 64;
-				delta_monster_hp(v3->wParam1, monster[v3->wParam1]._mhitpoints, *v4);
+			if (monster[pCmd->wParam1]._mhitpoints) {
+				monster[pCmd->wParam1]._mhitpoints -= pCmd->wParam2;
+				if ((monster[pCmd->wParam1]._mhitpoints >> 6) < 1)
+					monster[pCmd->wParam1]._mhitpoints = 1 << 6;
+				delta_monster_hp(pCmd->wParam1, monster[pCmd->wParam1]._mhitpoints, plr[pnum].plrlevel);
 			}
 		}
 	}
-	return 5;
+
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_PLRDEAD(struct TCmdParam1 *pCmd, int pnum)
 {
-	if ( gbBufferMsgs == 1 )
-	{
-		msg_send_packet(pnum, pCmd, 3);
-	}
-	else if ( pnum == myplr )
-	{
-		check_update_plr(pnum);
-	}
+	if (gbBufferMsgs == 1)
+		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
+	else if (pnum != myplr)
+		StartPlayerKill(pnum, pCmd->wParam1);
 	else
-	{
-		StartPlayerKill(pnum, (unsigned short)pCmd->wParam1);
-	}
-	return 3;
+		check_update_plr(pnum);
+
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_PLRDAMAGE(struct TCmdDamage *pCmd, int pnum)
 {
-	int v2; // edi
-	int v3; // eax
-	int *v5; // esi
-	int v6; // ecx
-
-	v2 = myplr;
-	if ( (unsigned char)pCmd->bPlr == myplr )
-	{
-		if ( currlevel )
-		{
-			if ( gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel && pCmd->dwDam <= 0x2EE00u )
-			{
-				v3 = myplr;
-				if ( plr[myplr]._pHitPoints >> 6 > 0 )
-				{
-					drawhpflag = TRUE;
-					plr[v3]._pHitPoints = plr[myplr]._pHitPoints - pCmd->dwDam;
-					v5 = &plr[v3]._pHPBase;
-					*v5 -= pCmd->dwDam;
-					v6 = plr[v3]._pMaxHP;
-					if ( plr[v3]._pHitPoints > v6 )
-					{
-						plr[v3]._pHitPoints = v6;
-						*v5 = plr[v3]._pMaxHPBase;
-					}
-					if ( plr[v3]._pHitPoints >> 6 <= 0 )
-						SyncPlrKill(v2, 1);
+	if (pCmd->bPlr == myplr && currlevel) {
+		if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel && pCmd->dwDam <= 192000) {
+			if ((plr[myplr]._pHitPoints >> 6) > 0) {
+				drawhpflag = TRUE;
+				plr[myplr]._pHitPoints -= pCmd->dwDam;
+				plr[myplr]._pHPBase -= pCmd->dwDam;
+				if (plr[myplr]._pHitPoints > plr[myplr]._pMaxHP) {
+					plr[myplr]._pHitPoints = plr[myplr]._pMaxHP;
+					plr[myplr]._pHPBase = plr[myplr]._pMaxHPBase;
 				}
+				if ((plr[myplr]._pHitPoints >> 6) <= 0)
+					SyncPlrKill(myplr, 1);
 			}
 		}
 	}
-	return 6;
+
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_OPENDOOR(struct TCmdParam1 *pCmd, int pnum)
 {
-	struct TCmdParam1 *v2; // edi
-	unsigned char *v3; // esi
+	if (gbBufferMsgs == 1)
+		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
+	else {
+		if (currlevel == plr[pnum].plrlevel)
+			SyncOpObject(pnum, CMD_OPENDOOR, pCmd->wParam1);
+		delta_sync_object(pCmd->wParam1, CMD_OPENDOOR, plr[pnum].plrlevel);
+	}
 
-	v2 = pCmd;
-	if ( gbBufferMsgs == 1 )
-	{
-		msg_send_packet(pnum, pCmd, 3);
-	}
-	else
-	{
-		v3 = (unsigned char *)&plr[pnum].plrlevel;
-		if ( currlevel == *(_DWORD *)v3 )
-			SyncOpObject(pnum, CMD_OPENDOOR, (unsigned short)pCmd->wParam1);
-		delta_sync_object((unsigned short)v2->wParam1, 0x2Bu, *v3);
-	}
-	return 3;
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 void __fastcall delta_sync_object(int oi, BYTE bCmd, BYTE bLevel)
 {
@@ -3240,311 +2605,182 @@ void __fastcall delta_sync_object(int oi, BYTE bCmd, BYTE bLevel)
 
 int __fastcall On_CLOSEDOOR(struct TCmdParam1 *pCmd, int pnum)
 {
-	struct TCmdParam1 *v2; // edi
-	unsigned char *v3; // esi
+	if (gbBufferMsgs == 1)
+		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
+	else {
+		if (currlevel == plr[pnum].plrlevel)
+			SyncOpObject(pnum, CMD_CLOSEDOOR, pCmd->wParam1);
+		delta_sync_object(pCmd->wParam1, CMD_CLOSEDOOR, plr[pnum].plrlevel);
+	}
 
-	v2 = pCmd;
-	if ( gbBufferMsgs == 1 )
-	{
-		msg_send_packet(pnum, pCmd, 3);
-	}
-	else
-	{
-		v3 = (unsigned char *)&plr[pnum].plrlevel;
-		if ( currlevel == *(_DWORD *)v3 )
-			SyncOpObject(pnum, CMD_CLOSEDOOR, (unsigned short)pCmd->wParam1);
-		delta_sync_object((unsigned short)v2->wParam1, 0x2Cu, *v3);
-	}
-	return 3;
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_OPERATEOBJ(struct TCmdParam1 *pCmd, int pnum)
 {
-	struct TCmdParam1 *v2; // edi
-	unsigned char *v3; // esi
+	if (gbBufferMsgs == 1)
+		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
+	else {
+		if ( currlevel == plr[pnum].plrlevel)
+			SyncOpObject(pnum, CMD_OPERATEOBJ, pCmd->wParam1);
+		delta_sync_object(pCmd->wParam1, CMD_OPERATEOBJ, plr[pnum].plrlevel);
+	}
 
-	v2 = pCmd;
-	if ( gbBufferMsgs == 1 )
-	{
-		msg_send_packet(pnum, pCmd, 3);
-	}
-	else
-	{
-		v3 = (unsigned char *)&plr[pnum].plrlevel;
-		if ( currlevel == *(_DWORD *)v3 )
-			SyncOpObject(pnum, CMD_OPERATEOBJ, (unsigned short)pCmd->wParam1);
-		delta_sync_object((unsigned short)v2->wParam1, 0x2Du, *v3);
-	}
-	return 3;
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_PLROPOBJ(struct TCmdParam2 *pCmd, int pnum)
 {
-	struct TCmdParam2 *v2; // esi
-	unsigned char *v3; // edi
+	if (gbBufferMsgs == 1)
+		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
+	else {
+		if (currlevel == plr[pnum].plrlevel)
+			SyncOpObject(pCmd->wParam1, CMD_PLROPOBJ, pCmd->wParam2);
+		delta_sync_object(pCmd->wParam2, CMD_PLROPOBJ, plr[pnum].plrlevel);
+	}
 
-	v2 = pCmd;
-	if ( gbBufferMsgs == 1 )
-	{
-		msg_send_packet(pnum, pCmd, 5);
-	}
-	else
-	{
-		v3 = (unsigned char *)&plr[pnum].plrlevel;
-		if ( currlevel == *(_DWORD *)v3 )
-			SyncOpObject((unsigned short)pCmd->wParam1, CMD_PLROPOBJ, (unsigned short)pCmd->wParam2);
-		delta_sync_object((unsigned short)v2->wParam2, 0x2Eu, *v3);
-	}
-	return 5;
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_BREAKOBJ(struct TCmdParam2 *pCmd, int pnum)
 {
-	struct TCmdParam2 *v2; // esi
-	unsigned char *v3; // edi
+	if (gbBufferMsgs == 1)
+		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
+	else {
+		if (currlevel == plr[pnum].plrlevel)
+			SyncBreakObj(pCmd->wParam1, pCmd->wParam2);
+		delta_sync_object(pCmd->wParam2, CMD_BREAKOBJ, plr[pnum].plrlevel);
+	}
 
-	v2 = pCmd;
-	if ( gbBufferMsgs == 1 )
-	{
-		msg_send_packet(pnum, pCmd, 5);
-	}
-	else
-	{
-		v3 = (unsigned char *)&plr[pnum].plrlevel;
-		if ( currlevel == *(_DWORD *)v3 )
-			SyncBreakObj((unsigned short)pCmd->wParam1, (unsigned short)pCmd->wParam2);
-		delta_sync_object((unsigned short)v2->wParam2, 0x2Fu, *v3);
-	}
-	return 5;
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_CHANGEPLRITEMS(struct TCmdChItem *pCmd, int pnum)
 {
-	int v2; // eax
-	int v3; // edx
-	int v4; // ST04_4
-	int v5; // edx
+	if (gbBufferMsgs == 1)
+		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
+	else if (pnum != myplr)
+		CheckInvSwap(pnum, pCmd->bLoc, pCmd->wIndx, pCmd->wCI, pCmd->dwSeed, pCmd->bId);
 
-	v2 = pnum;
-	if ( gbBufferMsgs == 1 )
-	{
-		msg_send_packet(pnum, pCmd, 11);
-	}
-	else if ( pnum != myplr )
-	{
-		v3 = (unsigned char)pCmd->bId;
-		_LOWORD(v3) = pCmd->wCI;
-		v4 = v3;
-		v5 = (unsigned short)pCmd->wIndx;
-		_LOBYTE(v5) = pCmd->bLoc;
-		CheckInvSwap(v2, v5, (unsigned short)pCmd->wIndx, v4, pCmd->dwSeed, (unsigned char)pCmd->bId);
-	}
-	return 11;
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_DELPLRITEMS(struct TCmdDelItem *pCmd, int pnum)
 {
-	int v2; // eax
+	if (gbBufferMsgs == 1)
+		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
+	else if (pnum != myplr)
+		inv_update_rem_item(pnum, pCmd->bLoc);
 
-	v2 = pnum;
-	if ( gbBufferMsgs == 1 )
-	{
-		msg_send_packet(pnum, pCmd, 2);
-	}
-	else if ( pnum != myplr )
-	{
-		_LOBYTE(pnum) = pCmd->bLoc;
-		inv_update_rem_item(v2, pnum);
-	}
-	return 2;
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_PLRLEVEL(struct TCmdParam1 *pCmd, int pnum)
 {
-	if ( gbBufferMsgs == 1 )
-	{
-		msg_send_packet(pnum, pCmd, 3);
-	}
-	else if ( pCmd->wParam1 <= 0x33u && pnum != myplr )
-	{
+	if (gbBufferMsgs == 1)
+		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
+	else if (pCmd->wParam1 <= MAXCHARLEVEL && pnum != myplr)
 		plr[pnum]._pLevel = pCmd->wParam1;
-	}
-	return 3;
+
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_DROPITEM(struct TCmdPItem *pCmd, int pnum)
 {
-	if ( gbBufferMsgs == 1 )
-		msg_send_packet(pnum, pCmd, 22);
+	if (gbBufferMsgs == 1)
+		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
 	else
-		delta_put_item(pCmd, (unsigned char)pCmd->x, (unsigned char)pCmd->y, plr[pnum].plrlevel);
-	return 22;
+		delta_put_item(pCmd, pCmd->x, pCmd->y, plr[pnum].plrlevel);
+
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_SEND_PLRINFO(struct TCmdPlrInfoHdr *pCmd, int pnum)
 {
-	struct TCmdPlrInfoHdr *v2; // esi
-
-	v2 = pCmd;
-	if ( gbBufferMsgs == 1 )
-		msg_send_packet(pnum, pCmd, (unsigned short)pCmd->wBytes + 5);
+	if (gbBufferMsgs == 1)
+		msg_send_packet(pnum, pCmd, pCmd->wBytes + sizeof(*pCmd));
 	else
-		multi_player_joins(pnum, pCmd, pCmd->bCmd == 2);
-	return (unsigned short)v2->wBytes + 5;
+		multi_player_joins(pnum, pCmd, pCmd->bCmd == CMD_ACK_PLRINFO);
+
+	return pCmd->wBytes + sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_ACK_PLRINFO(struct TCmdPlrInfoHdr *pCmd, int pnum)
 {
-  return On_SEND_PLRINFO(pCmd, pnum);
+	return On_SEND_PLRINFO(pCmd, pnum);
 }
 
 int __fastcall On_PLAYER_JOINLEVEL(struct TCmdLocParam1 *pCmd, int pnum)
 {
-	int v2; // ebx
-	struct TCmdLocParam1 *v3; // edi
-	int v4; // esi
-	int v5; // ecx
-	int v6; // ST08_4
-	unsigned char *v7; // edx
-	int v8; // eax
-	int v9; // ecx
-	int v10; // eax
-	int v11; // eax
-
-	v2 = pnum;
-	v3 = pCmd;
-	if ( gbBufferMsgs == 1 )
-	{
-		msg_send_packet(pnum, pCmd, 5);
-	}
-	else
-	{
-		v4 = pnum;
+	if (gbBufferMsgs == 1)
+		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
+	else {
 		plr[pnum]._pLvlChanging = 0;
-		if ( plr[pnum]._pName[0] && !plr[v4].plractive )
-		{
-			plr[v4].plractive = 1;
-			++gbActivePlayers;
-			EventPlrMsg("Player '%s' (level %d) just joined the game", plr[pnum]._pName, plr[v4]._pLevel);
+		if (plr[pnum]._pName[0] && !plr[pnum].plractive) {
+			plr[pnum].plractive = 1;
+			gbActivePlayers++;
+			EventPlrMsg("Player '%s' (level %d) just joined the game", plr[pnum]._pName, plr[pnum]._pLevel);
 		}
-		if ( plr[v4].plractive )
-		{
-			if ( myplr != v2 )
-			{
-				plr[v4].WorldX = (unsigned char)v3->x;
-				plr[v4].WorldY = (unsigned char)v3->y;
-				v5 = (unsigned short)v3->wParam1;
-				plr[v4]._pGFXLoad = 0;
-				plr[v4].plrlevel = v5;
-				if ( currlevel == plr[v4].plrlevel )
-				{
-					LoadPlrGFX(v2, PFILE_STAND);
-					SyncInitPlr(v2);
-					if ( plr[v4]._pHitPoints >> 6 <= 0 )
-					{
-						plr[v4]._pgfxnum = 0;
-						LoadPlrGFX(v2, PFILE_DEATH);
-						v6 = plr[v4]._pDWidth;
-						v7 = plr[v4]._pDAnim[0];
-						plr[v4]._pmode = PM_DEATH;
-						NewPlrAnim(v2, v7, plr[v4]._pDFrames, 1, v6);
-						v8 = plr[v4]._pAnimLen;
-						v9 = v8 - 1;
-						plr[v4]._pVar8 = 2 * v8;
-						v10 = plr[v4].WorldX;
-						plr[v4]._pAnimFrame = v9;
-						dFlags[v10][plr[v4].WorldY] |= DFLAG_DEAD_PLAYER;
-					}
-					else
-					{
-						StartStand(v2, 0);
-					}
-					v11 = AddVision(plr[v4].WorldX, plr[v4].WorldY, plr[v4]._pLightRad, v2 == myplr);
-					plr[v4]._plid = -1;
-					plr[v4]._pvid = v11;
+
+		if (plr[pnum].plractive && myplr != pnum) {
+			plr[pnum].WorldX = pCmd->x;
+			plr[pnum].WorldY = pCmd->y;
+			plr[pnum].plrlevel = pCmd->wParam1;
+			plr[pnum]._pGFXLoad = 0;
+			if (currlevel == plr[pnum].plrlevel) {
+				LoadPlrGFX(pnum, PFILE_STAND);
+				SyncInitPlr(pnum);
+				if ((plr[pnum]._pHitPoints >> 6) > 0)
+					StartStand(pnum, 0);
+				else {
+					plr[pnum]._pgfxnum = 0;
+					LoadPlrGFX(pnum, PFILE_DEATH);
+					plr[pnum]._pmode = PM_DEATH;
+					NewPlrAnim(pnum, plr[pnum]._pDAnim[0], plr[pnum]._pDFrames, 1, plr[pnum]._pDWidth);
+					plr[pnum]._pAnimFrame = plr[pnum]._pAnimLen - 1;
+					plr[pnum]._pVar8 = plr[pnum]._pAnimLen << 1;
+					dFlags[plr[pnum].WorldX][plr[pnum].WorldY] |= DFLAG_DEAD_PLAYER;
 				}
+
+				plr[pnum]._pvid = AddVision(plr[pnum].WorldX, plr[pnum].WorldY, plr[pnum]._pLightRad, pnum == myplr);
+				plr[pnum]._plid = -1;
 			}
 		}
 	}
-	return 5;
+
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 // 67862C: using guessed type char gbActivePlayers;
 
 int __fastcall On_ACTIVATEPORTAL(struct TCmdLocParam3 *pCmd, int pnum)
 {
-	signed int v2; // ebx
-	int v3; // edi
-	struct TCmdLocParam3 *v4; // esi
-	int v5; // eax
-	int v6; // edx
-	int v7; // ecx
-
-	v2 = 1;
-	v3 = pnum;
-	v4 = pCmd;
-	if ( gbBufferMsgs == 1 )
-	{
-		msg_send_packet(pnum, pCmd, 9);
-	}
-	else
-	{
-		ActivatePortal(
-			pnum,
-			pCmd->x,
-			pCmd->y,
-			pCmd->wParam1,
-			pCmd->wParam2,
-			pCmd->wParam3);
-		if ( v3 != myplr )
-		{
-			if ( currlevel )
-			{
-				if ( currlevel == plr[v3].plrlevel )
-				{
-					v6 = nummissiles;
-					v7 = 0;
-					if ( nummissiles <= 0 )
-						goto LABEL_19;
-					do
-					{
-						v5 = 176 * missileactive[v7];
-						if ( *(int *)((char *)&missile[0]._mitype + v5) == MIS_TOWN
-						  && *(int *)((char *)&missile[0]._misource + v5) == v3 )
-						{
-							v2 = 0;
-						}
-						++v7;
+	if (gbBufferMsgs == 1)
+		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
+	else {
+		ActivatePortal(pnum, pCmd->x, pCmd->y, pCmd->wParam1, pCmd->wParam2, pCmd->wParam3);
+		if (pnum != myplr) {
+			if (!currlevel)
+				AddInTownPortal(pnum);
+			else if (currlevel == plr[pnum].plrlevel) {
+				int i;
+				BOOL addPortal = TRUE;
+				for (i=0; i < nummissiles; i++) {
+					int mi = missileactive[i];
+					if (missile[mi]._mitype == MIS_TOWN && missile[mi]._misource == pnum) {
+						addPortal = FALSE;
+						// BUGFIX: break
 					}
-					while ( v7 < nummissiles );
-					if ( v2 )
-LABEL_19:
-						AddWarpMissile(v3, v4->x, v4->y);
 				}
-				else
-				{
-					RemovePortalMissile(v3);
-				}
-			}
-			else
-			{
-				AddInTownPortal(v3);
-			}
+				if (addPortal)
+					AddWarpMissile(pnum, pCmd->x, pCmd->y);
+			} else
+				RemovePortalMissile(pnum);
 		}
-		delta_open_portal(v3, v4->x, v4->y, v4->wParam1, v4->wParam2, v4->wParam3);
+		delta_open_portal(pnum, pCmd->x, pCmd->y, pCmd->wParam1, pCmd->wParam2, pCmd->wParam3);
 	}
-	return 9;
+
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 void __fastcall delta_open_portal(int pnum, BYTE x, BYTE y, BYTE bLevel, BYTE bLType, BYTE bSetLvl)
 {
@@ -3562,252 +2798,172 @@ void __fastcall delta_open_portal(int pnum, BYTE x, BYTE y, BYTE bLevel, BYTE bL
 
 int __fastcall On_DEACTIVATEPORTAL(struct TCmd *pCmd, int pnum)
 {
-	int v2; // esi
+	if (gbBufferMsgs == 1)
+		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
+	else {
+		if (PortalOnLevel(pnum))
+			RemovePortalMissile(pnum);
+		DeactivatePortal(pnum);
+		RemovePlrPortal(pnum);
+	}
 
-	v2 = pnum;
-	if ( gbBufferMsgs == 1 )
-	{
-		msg_send_packet(pnum, pCmd, 1);
-	}
-	else
-	{
-		if ( PortalOnLevel(pnum) )
-			RemovePortalMissile(v2);
-		DeactivatePortal(v2);
-		RemovePlrPortal(v2);
-	}
-	return 1;
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_RETOWN(struct TCmd *pCmd, int pnum)
 {
-	int v2; // esi
-
-	v2 = pnum;
-	if ( gbBufferMsgs == 1 )
-	{
-		msg_send_packet(pnum, pCmd, 1);
-	}
-	else
-	{
-		if ( pnum == myplr )
-		{
+	if (gbBufferMsgs == 1)
+		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
+	else {
+		if (pnum == myplr) {
 			deathflag = FALSE;
 			gamemenu_off();
 		}
-		RestartTownLvl(v2);
+		RestartTownLvl(pnum);
 	}
-	return 1;
+
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_SETSTR(struct TCmdParam1 *pCmd, int pnum)
 {
-	unsigned short v2; // cx
+	if (gbBufferMsgs == 1)
+		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
+	else if (pCmd->wParam1 <= 750 && pnum != myplr)
+		SetPlrStr(pnum, pCmd->wParam1);
 
-	if ( gbBufferMsgs == 1 )
-	{
-		msg_send_packet(pnum, pCmd, 3);
-	}
-	else
-	{
-		v2 = pCmd->wParam1;
-		if ( v2 <= 0x2EEu && pnum != myplr )
-			SetPlrStr(pnum, v2);
-	}
-	return 3;
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_SETDEX(struct TCmdParam1 *pCmd, int pnum)
 {
-	unsigned short v2; // cx
+	if (gbBufferMsgs == 1)
+		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
+	else if (pCmd->wParam1 <= 750 && pnum != myplr)
+		SetPlrDex(pnum, pCmd->wParam1);
 
-	if ( gbBufferMsgs == 1 )
-	{
-		msg_send_packet(pnum, pCmd, 3);
-	}
-	else
-	{
-		v2 = pCmd->wParam1;
-		if ( v2 <= 0x2EEu && pnum != myplr )
-			SetPlrDex(pnum, v2);
-	}
-	return 3;
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_SETMAG(struct TCmdParam1 *pCmd, int pnum)
 {
-	unsigned short v2; // cx
+	if (gbBufferMsgs == 1)
+		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
+	else if (pCmd->wParam1 <= 750 && pnum != myplr)
+		SetPlrMag(pnum, pCmd->wParam1);
 
-	if ( gbBufferMsgs == 1 )
-	{
-		msg_send_packet(pnum, pCmd, 3);
-	}
-	else
-	{
-		v2 = pCmd->wParam1;
-		if ( v2 <= 0x2EEu && pnum != myplr )
-			SetPlrMag(pnum, v2);
-	}
-	return 3;
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_SETVIT(struct TCmdParam1 *pCmd, int pnum)
 {
-	unsigned short v2; // cx
+	if (gbBufferMsgs == 1)
+		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
+	else if (pCmd->wParam1 <= 750 && pnum != myplr)
+		SetPlrVit(pnum, pCmd->wParam1);
 
-	if ( gbBufferMsgs == 1 )
-	{
-		msg_send_packet(pnum, pCmd, 3);
-	}
-	else
-	{
-		v2 = pCmd->wParam1;
-		if ( v2 <= 0x2EEu && pnum != myplr )
-			SetPlrVit(pnum, v2);
-	}
-	return 3;
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_STRING(struct TCmdString *pCmd, int pnum)
 {
-	const char *v2; // esi
-	int v3; // edi
-	size_t v4; // ebx
-
-	v2 = pCmd->str;
-	v3 = pnum;
-	v4 = strlen(pCmd->str);
-	if ( !gbBufferMsgs )
-		SendPlrMsg(v3, v2);
-	return v4 + 2;
+	return On_STRING2(pnum, pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
+
+int __fastcall On_STRING2(int pnum, struct TCmdString *pCmd)
+{
+	int len = strlen(pCmd->str);
+	if (!gbBufferMsgs)
+		SendPlrMsg(pnum, pCmd->str);
+
+	return len + 2; // length of string + nul terminator + sizeof(pCmd->bCmd)
+}
 
 int __fastcall On_SYNCQUEST(struct TCmdQuest *pCmd, int pnum)
 {
-	if ( gbBufferMsgs == 1 )
-	{
-		msg_send_packet(pnum, pCmd, 5);
-	}
-	else
-	{
-		if ( pnum != myplr )
-			SetMultiQuest(
-				(unsigned char)pCmd->q,
-				(unsigned char)pCmd->qstate,
-				pCmd->qlog,
-				(unsigned char)pCmd->qvar1);
+	if (gbBufferMsgs == 1)
+		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
+	else {
+		if (pnum != myplr)
+			SetMultiQuest(pCmd->q, pCmd->qstate, pCmd->qlog, pCmd->qvar1);
 		sgbDeltaChanged = 1;
 	}
-	return 5;
+
+	return sizeof(*pCmd);
 }
-// 67618C: using guessed type char sgbDeltaChanged;
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_ENDSHIELD(struct TCmd *pCmd, int pnum)
 {
-	int v2; // ebx
-	int i; // esi
-	int v4; // edi
-	int v5; // eax
-
-	v2 = pnum;
-	if ( gbBufferMsgs != 1 && pnum != myplr && currlevel == plr[pnum].plrlevel )
-	{
-		for ( i = 0; i < nummissiles; ++i )
-		{
-			v4 = missileactive[i];
-			v5 = missileactive[i];
-			if ( missile[v5]._mitype == MIS_MANASHIELD && missile[v5]._misource == v2 )
-			{
-				ClearMissileSpot(missileactive[i]);
-				DeleteMissile(v4, i);
+	if (gbBufferMsgs != 1 && pnum != myplr && currlevel == plr[pnum].plrlevel) {
+		int i;
+		for (i = 0; i < nummissiles; i++) {
+			int mi = missileactive[i];
+			if (missile[mi]._mitype == MIS_MANASHIELD && missile[mi]._misource == pnum) {
+				ClearMissileSpot(mi);
+				DeleteMissile(mi, i);
 			}
 		}
 	}
-	return 1;
+
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 #ifdef _DEBUG
 int __fastcall On_CHEAT_EXPERIENCE(struct TCmd *pCmd, int pnum)
 {
-	if ( gbBufferMsgs == 1 )
-	{
-		msg_send_packet(pnum, pCmd, 1);
-	}
-	else if ( plr[pnum]._pLevel < 50 )
-	{
+	if (gbBufferMsgs == 1)
+		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
+	else if (plr[pnum]._pLevel < MAXCHARLEVEL-1) {
 		plr[pnum]._pExperience = plr[pnum]._pNextExper;
 		NextPlrLevel(pnum);
 	}
-	return 1;
+
+	return sizeof(*pCmd);
 }
 
 int __fastcall On_CHEAT_SPELL_LEVEL(struct TCmd *pCmd, int pnum)
 {
-	if ( gbBufferMsgs == 1 )
-		msg_send_packet(pnum, pCmd, 1);
+	if (gbBufferMsgs == 1)
+		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
 	else
 		plr[pnum]._pSplLvl[plr[pnum]._pRSpell]++;
 
-	return 1;
+	return sizeof(*pCmd);
 }
 #endif
 
 int __cdecl On_DEBUG(struct TCmd *pCmd)
 {
-	return 1;
+	return sizeof(*pCmd);
 }
 
 int __fastcall On_NOVA(struct TCmdLoc *pCmd, int pnum)
 {
-	struct TCmdLoc *v2; // edi
-	int v3; // esi
-
-	v2 = pCmd;
-	if ( gbBufferMsgs != 1 )
-	{
-		v3 = pnum;
-		if ( currlevel == plr[pnum].plrlevel && pnum != myplr )
-		{
-			ClrPlrPath(pnum);
-			plr[v3]._pSpell = SPL_NOVA;
-			plr[v3]._pSplType = 4;
-			plr[v3]._pSplFrom = 3;
-			plr[v3].destAction = ACTION_SPELL;
-			plr[v3].destParam1 = (unsigned char)v2->x;
-			plr[v3].destParam2 = (unsigned char)v2->y;
-		}
+	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel && pnum != myplr) {
+		ClrPlrPath(pnum);
+		plr[pnum]._pSpell = SPL_NOVA;
+		plr[pnum]._pSplType = 4;
+		plr[pnum]._pSplFrom = 3;
+		plr[pnum].destAction = ACTION_SPELL;
+		plr[pnum].destParam1 = pCmd->x;
+		plr[pnum].destParam2 = pCmd->y;
 	}
-	return 3;
+
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_SETSHIELD(struct TCmd *pCmd, int pnum)
 {
-	int result; // eax
-
-	result = 1;
-	if ( gbBufferMsgs != 1 )
+	if (gbBufferMsgs != 1)
 		plr[pnum].pManaShield = 1;
-	return result;
+
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 int __fastcall On_REMSHIELD(struct TCmd *pCmd, int pnum)
 {
-	int result; // eax
-
-	result = 1;
-	if ( gbBufferMsgs != 1 )
+	if (gbBufferMsgs != 1)
 		plr[pnum].pManaShield = 0;
-	return result;
+
+	return sizeof(*pCmd);
 }
-// 676194: using guessed type char gbBufferMsgs;

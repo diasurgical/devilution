@@ -2616,7 +2616,7 @@ int __fastcall InvPutItem(int pnum, int x, int y)
 	return yc;
 }
 
-int __fastcall SyncPutItem(int pnum, int x, int y, int idx, int icreateinfo, int iseed, int Id, int dur, int mdur, int ch, int mch, int ivalue, unsigned int ibuff)
+int __fastcall SyncPutItem(int pnum, int x, int y, int idx, WORD icreateinfo, int iseed, int Id, int dur, int mdur, int ch, int mch, int ivalue, unsigned int ibuff)
 {
 	int v13; // ebx
 	int v14; // edi

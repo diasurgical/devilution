@@ -5512,7 +5512,7 @@ void __fastcall CreateMagicItem(int x, int y, int imisc, int icurs, int sendmsg,
 	}
 }
 
-bool __fastcall GetItemRecord(int dwSeed, WORD CI, int indx)
+BOOL __fastcall GetItemRecord(int dwSeed, WORD CI, int indx)
 {
 	int v3; // edi
 	int *v4; // ebx
