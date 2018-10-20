@@ -30,7 +30,7 @@ void __fastcall SHA1Calculate(int n, const char *data, char Message_Digest[SHA1H
 void __fastcall SHA1Input(SHA1Context *context, const char *message_array, int len)
 {
     int count = context->count[0] + 8 * len;
-    if ( count < context->count[0] )
+    if (count < context->count[0])
         context->count[1]++;
 
     context->count[0] = count;
@@ -50,7 +50,9 @@ void __fastcall SHA1ProcessMessageBlock(SHA1Context *context)
     int W[80];
     int A, B, C, D, E;
 
-    qmemcpy(W, context->buffer, sizeof(context->buffer));
+    DWORD *buf = (DWORD *)context->buffer;
+    for (i = 0; i < 16; i++)
+        W[i] = buf[i];
 
     for (i = 16; i < 80; i++) {
         W[i] = W[i - 16] ^ W[i - 14] ^ W[i - 8] ^ W[i - 3];
