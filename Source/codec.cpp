@@ -37,7 +37,7 @@ int __fastcall codec_decode(void *pbSrcDst, int size, char *pszPassword)
 				++v7;
 			}
 			while ( v7 < 64 );
-			SHA1Calculate(0, v9, 0);
+			SHA1Calculate(0, v9, NULL);
 			memset(dst, 0, sizeof(dst));
 			memcpy(v4, v9, 0x40u);
 			v4 += 64;
@@ -66,58 +66,37 @@ LABEL_14:
 
 void __fastcall codec_init_key(int unused, char *pszPassword)
 {
-	char *v2; // edi
-	char *v3; // esi
-	int v4; // eax
-	signed int v5; // ecx
-	char v6; // dl
-	unsigned int v7; // ecx
-	signed int v8; // esi
-	char v9[136]; // [esp+Ch] [ebp-E0h]
-	char v10[64]; // [esp+94h] [ebp-58h]
-	char dst[20]; // [esp+D4h] [ebp-18h]
-	int v12; // [esp+E8h] [ebp-4h]
+    int i;
+    char key[136]; // last 64 bytes are the SHA1
+    char pw[64];
+    char digest[SHA1HashSize];
 
-	v2 = pszPassword;
-	srand(0x7058u);
-	v3 = v9;
-	v12 = 136;
-	do
-	{
-		*v3++ = rand();
-		--v12;
-	}
-	while ( v12 );
-	v4 = 0;
-	v5 = 0;
-	do
-	{
-		if ( !v2[v4] )
-			v4 = 0;
-		v6 = v2[v4++];
-		v10[v5++] = v6;
-	}
-	while ( v5 < 64 );
-	SHA1Reset(0);
-	SHA1Calculate(0, v10, dst);
-	SHA1Clear();
-	v7 = 0;
-	do
-	{
-		v9[v7] ^= dst[(signed int)v7 % 20];
-		++v7;
-	}
-	while ( v7 < 0x88 );
-	memset(v10, 0, sizeof(v10));
-	memset(dst, 0, sizeof(dst));
-	v8 = 0;
-	do
-	{
-		SHA1Reset(v8);
-		SHA1Calculate(v8++, &v9[72], 0);
-	}
-	while ( v8 < 3 );
-	memset(v9, 0, sizeof(v9));
+    srand(0x7058);
+
+    char *keyInit = key;
+    for (i = 0; i < 136; i++) {
+        *keyInit = rand();
+        keyInit++;
+    }
+    int ch = 0;
+    for (i = 0; i < 64; i++) {
+        if (!pszPassword[ch])
+            ch = 0;
+        pw[i] = pszPassword[ch];
+        ch++;
+    }
+    SHA1Reset(0);
+    SHA1Calculate(0, pw, digest);
+    SHA1Clear();
+    for (i = 0; (DWORD)i < 136; i++)
+        key[i] ^= digest[i % 20];
+    memset(pw, 0, sizeof(pw));
+    memset(digest, 0, sizeof(digest));
+    for (int n = 0; n < 3; n++) {
+        SHA1Reset(n);
+        SHA1Calculate(n, &key[72], NULL);
+    }
+    memset(key, 0, sizeof(key));
 }
 // 4035DB: using guessed type char var_E0[72];
 // 4035DB: using guessed type char var_58[64];
@@ -158,7 +137,7 @@ void __fastcall codec_encode(void *pbSrcDst, int size, int size_64, char *pszPas
 			if ( v6 < 0x40 )
 				memset(&v9[v6], 0, 64 - v6);
 			SHA1Result(0, dst);
-			SHA1Calculate(0, v9, 0);
+			SHA1Calculate(0, v9, NULL);
 			v7 = 0;
 			do
 			{
