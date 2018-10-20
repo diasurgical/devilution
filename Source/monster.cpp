@@ -1894,7 +1894,7 @@ void __fastcall M_StartWalk2(int i, int xvel, int yvel, int xoff, int yoff, int 
 	monster[i]._mfutx = fx;
 	monster[i]._mfuty = fy;
 	dMonster[fx][fy] = i + 1;
-	if ( monster[i]._uniqtype )
+	if ( monster[i]._uniqtype != 0 )
 		ChangeLightXY(monster[i].mlid, monster[i]._mx, monster[i]._my);
 	monster[i]._mxoff = xoff;
 	monster[i]._myoff = yoff;
@@ -1917,7 +1917,7 @@ void __fastcall M_StartWalk3(int i, int xvel, int yvel, int xoff, int yoff, int 
 	int x = mapx + monster[i]._mx;
 	int y = mapy + monster[i]._my;
 
-	if ( monster[i]._uniqtype )
+	if ( monster[i]._uniqtype != 0 )
 		ChangeLightXY(monster[i].mlid, x, y);
 
 	dMonster[monster[i]._mx][monster[i]._my] = -(i + 1);
@@ -2184,7 +2184,7 @@ void __fastcall M2MStartHit(int mid, int i, int dam)
 		TermMsg("Invalid monster %d getting hit by monster", mid);
 	}
 
-	if ( !monster[mid].MType ) {
+	if ( monster[mid].MType = NULL ) {
 		TermMsg("Monster %d \"%s\" getting hit by monster: MType NULL", mid, monster[mid].mName);
 	}
 
@@ -2352,7 +2352,7 @@ void __fastcall M_SyncStartKill(int i, int x, int y, int pnum)
 		return;
 	}
 
-	if ( !dMonster[x][y] ) {
+	if ( dMonster[x][y] == 0 ) {
 		M_ClearSquares(i);
 		monster[i]._mx = x;
 		monster[i]._my = y;
@@ -2374,7 +2374,7 @@ void __fastcall M_StartFadein(int i, int md, BOOL backwards)
 		TermMsg("M_StartFadein: Invalid monster %d", i);
 	}
 
-	if ( !monster[i].MType )
+	if ( monster[i].MType == NULL )
 		TermMsg("M_StartFadein: Monster %d \"%s\" MType NULL", i, monster[i].mName);
 
 	NewMonsterAnim(i, &monster[i].MType->Anims[MA_SPECIAL], md);
@@ -2389,7 +2389,7 @@ void __fastcall M_StartFadein(int i, int md, BOOL backwards)
 	monster[i]._mdir = md;
 	monster[i]._mFlags &= ~0x1;
 	if ( backwards ) {
-		monster[i]._mFlags = monster[i]._mFlags | 0x2;
+		monster[i]._mFlags |= 0x2;
 		monster[i]._mAnimFrame = monster[i]._mAnimLen;
 	}
 }
@@ -2399,7 +2399,7 @@ void __fastcall M_StartFadeout(int i, int md, BOOL backwards)
 	if ( (DWORD)i >= MAXMONSTERS )
 		TermMsg("M_StartFadeout: Invalid monster %d", i);
 
-	if ( !monster[i].MType )
+	if ( monster[i].MType == NULL )
 		TermMsg("M_StartFadeout: Monster %d \"%s\" MType NULL", i, monster[i].mName);
 
 	NewMonsterAnim(i, &monster[i].MType->Anims[MA_SPECIAL], md);
@@ -2430,7 +2430,7 @@ void __fastcall M_StartHeal(int i)
 	if ( (DWORD)i >= MAXMONSTERS )
 		TermMsg("M_StartHeal: Invalid monster %d", i);
 	v2 = v1;
-	if ( !monster[v1].MType )
+	if ( monster[v1].MType == NULL )
 		TermMsg("M_StartHeal: Monster %d \"%s\" MType NULL", v1, monster[v2].mName);
 	v3 = monster[v2].MType;
 	v4 = v3->Anims[MA_SPECIAL].Data[monster[v2]._mdir];
@@ -2497,7 +2497,7 @@ int __fastcall M_DoStand(int i)
 	if ( (DWORD)i >= MAXMONSTERS )
 		TermMsg("M_DoStand: Invalid monster %d", i);
 	v2 = v1;
-	if ( !monster[v1].MType )
+	if ( monster[v1].MType == NULL )
 		TermMsg("M_DoStand: Monster %d \"%s\" MType NULL", v1, monster[v2].mName);
 	v3 = monster[v2].MType;
 	v4 = monster[v2]._mdir;
@@ -2533,7 +2533,7 @@ int __fastcall M_DoWalk(int i)
 		TermMsg("M_DoWalk: Invalid monster %d", i);
 	v2 = v1;
 	v3 = 0;
-	if ( !monster[v1].MType )
+	if ( monster[v1].MType == NULL )
 		TermMsg("M_DoWalk: Monster %d \"%s\" MType NULL", v1, monster[v2].mName);
 	v4 = monster[v2]._mVar8;
 	if ( v4 == monster[v2].MType->Anims[MA_WALK].Frames )
@@ -2564,7 +2564,7 @@ int __fastcall M_DoWalk(int i)
 		monster[v2]._mxoff = v12;
 		monster[v2]._myoff = v13;
 	}
-	if ( monster[v2]._uniqtype )
+	if ( monster[v2]._uniqtype != 0 )
 		M_ChangeLightOffset(v1);
 	return v3;
 }
@@ -2585,7 +2585,7 @@ int __fastcall M_DoWalk2(int i)
 	if ( (DWORD)i >= MAXMONSTERS )
 		TermMsg("M_DoWalk2: Invalid monster %d", i);
 	v2 = v1;
-	if ( !monster[v1].MType )
+	if ( monster[v1].MType == NULL )
 		TermMsg("M_DoWalk2: Monster %d \"%s\" MType NULL", v1, monster[v2].mName);
 	v3 = monster[v2]._mVar8;
 	if ( v3 == monster[v2].MType->Anims[MA_WALK].Frames )
@@ -2613,7 +2613,7 @@ int __fastcall M_DoWalk2(int i)
 		}
 		v5 = 0;
 	}
-	if ( monster[v2]._uniqtype )
+	if ( monster[v2]._uniqtype != 0 )
 		M_ChangeLightOffset(v1);
 	return v5;
 }
@@ -2639,7 +2639,7 @@ int __fastcall M_DoWalk3(int i)
 	if ( (DWORD)i >= MAXMONSTERS )
 		TermMsg("M_DoWalk3: Invalid monster %d", i);
 	v2 = v1;
-	if ( !monster[v1].MType )
+	if ( monster[v1].MType == NULL )
 		TermMsg("M_DoWalk3: Monster %d \"%s\" MType NULL", v1, monster[v2].mName);
 	v3 = monster[v2]._mVar8;
 	if ( v3 == monster[v2].MType->Anims[MA_WALK].Frames )
@@ -2676,7 +2676,7 @@ int __fastcall M_DoWalk3(int i)
 		}
 		v10 = 0;
 	}
-	if ( monster[v2]._uniqtype )
+	if ( monster[v2]._uniqtype != 0 )
 		M_ChangeLightOffset(v1);
 	return v10;
 }
@@ -2702,7 +2702,7 @@ void __fastcall M_TryM2MHit(int i, int mid, int hper, int mind, int maxd)
 		//i = v6;
 	}
 	v7 = v5;
-	if ( !monster[v5].MType )
+	if ( monster[v5].MType == NULL )
 		TermMsg("M_TryM2MHit: Monster %d \"%s\" MType NULL", v5, monster[v7].mName);
 	if ( monster[v7]._mhitpoints >> 6 > 0
 		&& (monster[v7].MType->mtype != MT_ILLWEAV || _LOBYTE(monster[v7]._mgoal) != 2) )
@@ -2781,7 +2781,7 @@ void __fastcall M_TryH2HHit(int i, int pnum, int Hit, int MinDam, int MaxDam)
 	if ( (DWORD)i >= MAXMONSTERS )
 		TermMsg("M_TryH2HHit: Invalid monster %d", i);
 	v6 = v5;
-	if ( !monster[v5].MType )
+	if ( monster[v5].MType == NULL )
 		TermMsg("M_TryH2HHit: Monster %d \"%s\" MType NULL", v5, monster[v6].mName);
 	if ( monster[v6]._mFlags & 0x10 )
 	{
@@ -2977,10 +2977,10 @@ int __fastcall M_DoAttack(int i)
 		TermMsg("M_DoAttack: Invalid monster %d", i);
 	v2 = v1;
 	v3 = &monster[v1].MType;
-	if ( !*v3 )
+	if ( *v3 == NULL )
 	{
 		TermMsg("M_DoAttack: Monster %d \"%s\" MType NULL", v1, monster[v2].mName);
-		if ( !*v3 )
+		if ( *v3 == NULL )
 			TermMsg("M_DoAttack: Monster %d \"%s\" MData NULL", v1, monster[v2].mName);
 	}
 	if ( monster[v2]._mAnimFrame == monster[v2].MData->mAFNum )
@@ -3038,10 +3038,10 @@ int __fastcall M_DoRAttack(int i)
 		TermMsg("M_DoRAttack: Invalid monster %d", i);
 	v2 = v1;
 	v3 = &monster[v1].MType;
-	if ( !*v3 )
+	if ( *v3 == NULL )
 	{
 		TermMsg("M_DoRAttack: Monster %d \"%s\" MType NULL", v1, monster[v2].mName);
-		if ( !*v3 )
+		if ( *v3 == NULL )
 			TermMsg("M_DoRAttack: Monster %d \"%s\" MData NULL", v1, monster[v2].mName);
 	}
 	if ( monster[v2]._mAnimFrame == monster[v2].MData->mAFNum )
@@ -3093,10 +3093,10 @@ int __fastcall M_DoRSpAttack(int i)
 	v2 = v1;
 	v3 = &monster[v1].MType;
 	v4 = *v3 == 0;
-	if ( !*v3 )
+	if ( *v3 == NULL )
 	{
 		TermMsg("M_DoRSpAttack: Monster %d \"%s\" MType NULL", v1, monster[v2].mName);
-		v4 = *v3 == 0;
+		v4 = *v3 == NULL;
 	}
 	if ( v4 )
 		TermMsg("M_DoRSpAttack: Monster %d \"%s\" MData NULL", v1, monster[v2].mName);
@@ -3148,10 +3148,10 @@ int __fastcall M_DoSAttack(int i)
 	v2 = v1;
 	v3 = &monster[v1].MType;
 	v4 = *v3 == 0;
-	if ( !*v3 )
+	if ( *v3 != NULL )
 	{
 		TermMsg("M_DoSAttack: Monster %d \"%s\" MType NULL", v1, monster[v2].mName);
-		v4 = *v3 == 0;
+		v4 = *v3 == NULL;
 	}
 	if ( v4 )
 		TermMsg("M_DoSAttack: Monster %d \"%s\" MData NULL", v1, monster[v2].mName);
@@ -3446,7 +3446,7 @@ int __fastcall M_DoGotHit(int i)
 	if ( (DWORD)i >= MAXMONSTERS )
 		TermMsg("M_DoGotHit: Invalid monster %d", i);
 	v2 = v1;
-	if ( !monster[v1].MType )
+	if ( monster[v1].MType == NULL )
 		TermMsg("M_DoGotHit: Monster %d \"%s\" MType NULL", v1, monster[v2].mName);
 	if ( monster[v2]._mAnimFrame != monster[v2]._mAnimLen )
 		return 0;
@@ -3563,7 +3563,7 @@ int __fastcall M_DoDeath(int i)
 	if ( (DWORD)i >= MAXMONSTERS )
 		TermMsg("M_DoDeath: Invalid monster %d", i);
 	v2 = v1;
-	if ( !monster[v1].MType )
+	if ( monster[v1].MType == NULL )
 		TermMsg("M_DoDeath: Monster %d \"%s\" MType NULL", v1, monster[v2].mName);
 	v3 = monster[v2].MType;
 	v4 = ++monster[v2]._mVar1;
@@ -3592,7 +3592,7 @@ int __fastcall M_DoDeath(int i)
 	}
 	else if ( monster[v2]._mAnimFrame == monster[v2]._mAnimLen )
 	{
-		if ( monster[v2]._uniqtype )
+		if ( monster[v2]._uniqtype != 0 )
 			v10 = monster[v2]._udeadval;
 		else
 			v10 = v3->mdeadval;
@@ -3614,7 +3614,7 @@ int __fastcall M_DoSpStand(int i)
 	if ( (DWORD)i >= MAXMONSTERS )
 		TermMsg("M_DoSpStand: Invalid monster %d", i);
 	v2 = v1;
-	if ( !monster[v1].MType )
+	if ( monster[v1].MType == NULL )
 		TermMsg("M_DoSpStand: Monster %d \"%s\" MType NULL", v1, monster[v2].mName);
 	if ( monster[v2]._mAnimFrame == monster[v2].MData->mAFNum2 )
 		PlayEffect(v1, 3);
@@ -3638,7 +3638,7 @@ int __fastcall M_DoDelay(int i)
 	if ( (DWORD)i >= MAXMONSTERS )
 		TermMsg("M_DoDelay: Invalid monster %d", i);
 	v2 = v1;
-	if ( !monster[v1].MType )
+	if ( monster[v1].MType == NULL )
 		TermMsg("M_DoDelay: Monster %d \"%s\" MType NULL", v1, monster[v2].mName);
 	v3 = M_GetDir(v1);
 	v4 = monster[v2]._mAi == AI_LAZURUS;
@@ -3831,7 +3831,7 @@ void __fastcall GroupUnity(int i)
 	}
 LABEL_18:
 	v8 = monster[v2]._uniqtype;
-	if ( v8 )
+	if ( v8 != 0 )
 	{
 		if ( UniqMonst[v8 - 1].mUnqAttr & 2 )
 		{
@@ -4572,7 +4572,7 @@ void __fastcall MAI_Bat(int i)
 				v14 = esi3->MType;
 				esi3->_mgoalvar1 = 0;
 				_LOBYTE(esi3->_mgoal) = 2;
-				if ( v14->mtype == 41 )
+				if ( v14->mtype == MT_FAMILIAR )
 				{
 					v15 = (unsigned char)esi3->_menemyx;
 					v16 = random(109, 10);
@@ -7181,7 +7181,7 @@ LABEL_24:
 		return 1;
 	}
 	v12 = monster[v4]._uniqtype;
-	if ( !v12 || !(UniqMonst[v12 - 1].mUnqAttr & 2) )
+	if ( v12 == 0 || !(UniqMonst[v12 - 1].mUnqAttr & 2) )
 		return 1;
 	v26 = 0;
 	v13 = v6 - 3;
@@ -7530,7 +7530,7 @@ void __fastcall SyncMonsterAnim(int i)
 	v6 = monster[v2]._uniqtype;
 	monster[v2].MType = v5;
 	monster[v2].MData = v4;
-	if ( v6 )
+	if ( v6 != 0 )
 		v7 = UniqMonst[v6 - 1].mName;
 	else
 		v7 = v4->mName;
