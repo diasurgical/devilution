@@ -39,9 +39,9 @@ extern void *pDungeonCels;
 extern int speed_cel_frame_num_from_light_index_frame_num[16][128];
 extern THEME_LOC themeLoc[MAXTHEMES];
 extern char dPlayer[MAXDUNX][MAXDUNY];
-extern int dword_5C2FF8; // weak
-extern int dword_5C2FFC; // weak
-extern int scr_pix_width; // weak
+extern int dword_5C2FF8;   // weak
+extern int dword_5C2FFC;   // weak
+extern int scr_pix_width;  // weak
 extern int scr_pix_height; // weak
 extern char dArch[MAXDUNX][MAXDUNY];
 extern char nBlockTable[2049];
@@ -53,17 +53,17 @@ extern int level_frame_sizes[2048];
 extern char nMissileTable[2049];
 extern char *pSetPiece_2;
 extern char setlvltype; // weak
-extern char setlevel; // weak
-extern int LvlViewY; // weak
-extern int LvlViewX; // weak
-extern int dmaxx; // weak
-extern int dmaxy; // weak
-extern int setpc_h; // weak
-extern int setpc_w; // weak
-extern int setpc_x; // idb
-extern int ViewX; // idb
-extern int ViewY; // idb
-extern int setpc_y; // idb
+extern char setlevel;   // weak
+extern int LvlViewY;    // weak
+extern int LvlViewX;    // weak
+extern int dmaxx;       // weak
+extern int dmaxy;       // weak
+extern int setpc_h;     // weak
+extern int setpc_w;     // weak
+extern int setpc_x;     // idb
+extern int ViewX;       // idb
+extern int ViewY;       // idb
+extern int setpc_y;     // idb
 extern char dMissile[MAXDUNX][MAXDUNY];
 extern int dminx; // weak
 extern int dminy; // weak

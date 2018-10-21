@@ -39,9 +39,9 @@ void *pDungeonCels;
 int speed_cel_frame_num_from_light_index_frame_num[16][128];
 THEME_LOC themeLoc[MAXTHEMES];
 char dPlayer[MAXDUNX][MAXDUNY];
-int dword_5C2FF8; // weak
-int dword_5C2FFC; // weak
-int scr_pix_width; // weak
+int dword_5C2FF8;   // weak
+int dword_5C2FFC;   // weak
+int scr_pix_width;  // weak
 int scr_pix_height; // weak
 char dArch[MAXDUNX][MAXDUNY];
 char nBlockTable[2049];
@@ -53,17 +53,17 @@ int level_frame_sizes[2048];
 char nMissileTable[2049];
 char *pSetPiece_2;
 char setlvltype; // weak
-char setlevel; // weak
-int LvlViewY; // weak
-int LvlViewX; // weak
-int dmaxx; // weak
-int dmaxy; // weak
-int setpc_h; // weak
-int setpc_w; // weak
-int setpc_x; // idb
-int ViewX; // idb
-int ViewY; // idb
-int setpc_y; // idb
+char setlevel;   // weak
+int LvlViewY;    // weak
+int LvlViewX;    // weak
+int dmaxx;       // weak
+int dmaxy;       // weak
+int setpc_h;     // weak
+int setpc_w;     // weak
+int setpc_x;     // idb
+int ViewX;       // idb
+int ViewY;       // idb
+int setpc_y;     // idb
 char dMissile[MAXDUNX][MAXDUNY];
 int dminx; // weak
 int dminy; // weak

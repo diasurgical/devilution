@@ -2,8 +2,8 @@
 #ifndef __DRLG_L3_H__
 #define __DRLG_L3_H__
 
-extern char lavapool; // weak
-extern int abyssx; // weak
+extern char lavapool;  // weak
+extern int abyssx;     // weak
 extern int lockoutcnt; // weak
 extern char lockout[40][40];
 
@@ -82,6 +82,6 @@ extern const unsigned char L3XTRA5[4];
 extern const unsigned char L3ANVIL[244];
 extern const unsigned char L3SpawnTbl1[15]; /* local spawntable? */
 extern const unsigned char L3SpawnTbl2[15]; /* local spawntable? */
-extern const unsigned char L3PoolSub[15]; /* local poolsub? */
+extern const unsigned char L3PoolSub[15];   /* local poolsub? */
 
 #endif /* __DRLG_L3_H__ */

@@ -13,10 +13,10 @@ extern int diabquad4y; // idb
 extern int hallok[20];
 extern int l4holdx; // weak
 extern int l4holdy; // weak
-extern int SP4x1; // idb
-extern int SP4x2; // weak
-extern int SP4y1; // idb
-extern int SP4y2; // weak
+extern int SP4x1;   // idb
+extern int SP4x2;   // weak
+extern int SP4y1;   // idb
+extern int SP4y2;   // weak
 extern char L4dungeon[80][80];
 extern char dung[20][20];
 //int dword_52A4DC; // weak
