@@ -3,10 +3,10 @@
 #define __CONTROL_H__
 
 extern char sgbNextTalkSave; // weak
-extern char sgbTalkSavePos; // weak
+extern char sgbTalkSavePos;  // weak
 extern void *pDurIcons;
 extern void *pChrButtons;
-extern BOOL drawhpflag; // idb
+extern BOOL drawhpflag;  // idb
 extern int dropGoldFlag; // weak
 extern int panbtn[8];
 extern int chrbtn[4];
@@ -17,7 +17,7 @@ extern int lvlbtndown; // weak
 extern char sgszTalkSave[8][80];
 extern int dropGoldValue; // idb
 extern BOOL drawmanaflag; // idb
-extern int chrbtnactive; // weak
+extern int chrbtnactive;  // weak
 extern char sgszTalkMsg[80];
 extern void *pPanelText;
 extern int frame_4B8800; // idb
@@ -30,16 +30,16 @@ extern int pinfoflag; // weak
 extern int talkbtndown[3];
 extern int pSpell; // weak
 extern char *pManaBuff;
-extern int infoclr; // weak
+extern int infoclr;       // weak
 extern int sgbPlrTalkTbl; // weak // should be char [4]
 extern void *pGBoxBuff;
 extern void *pSBkBtnCel;
 extern char tempstr[260];
-extern int sbooktab; // weak
-extern int pSplType; // weak
-extern int frame; // idb
+extern int sbooktab;             // weak
+extern int pSplType;             // weak
+extern int frame;                // idb
 extern int initialDropGoldIndex; // idb
-extern int talkflag; // weak
+extern int talkflag;             // weak
 extern void *pSBkIconCels;
 extern int sbookflag; // weak
 extern int chrflag;
@@ -53,9 +53,9 @@ extern int panelflag; // weak
 extern unsigned char spell_trans[256];
 extern int initialDropGoldValue; // idb
 extern void *pSpellCels;
-extern int panbtndown; // weak
+extern int panbtndown;   // weak
 extern void *pTalkPanel; // idb
-extern int spselflag; // weak
+extern int spselflag;    // weak
 
 void __fastcall DrawSpellCel(int xp, int yp, char *Trans, int nCel, int w);
 void __fastcall SetSpellTrans(char t);
