@@ -9,7 +9,7 @@ extern TMenuItem *sgpCurrItem;
 extern void *BigTGold_cel;
 extern int dword_634474; // weak
 extern char byte_634478; // weak
-extern void (__cdecl *dword_63447C)();
+extern void(__cdecl *dword_63447C)();
 extern TMenuItem *dword_634480; // idb
 extern void *option_cel;
 extern void *sgpLogo;
@@ -20,7 +20,7 @@ void __fastcall gmenu_print_text(int x, int y, char *pszStr);
 void __cdecl FreeGMenu();
 void __cdecl gmenu_init_menu();
 BOOL __cdecl gmenu_exception();
-void __fastcall gmenu_call_proc(TMenuItem *pItem, void (__cdecl *gmFunc)());
+void __fastcall gmenu_call_proc(TMenuItem *pItem, void(__cdecl *gmFunc)());
 void __fastcall gmenu_up_down(int a1);
 void __cdecl gmenu_draw();
 void __fastcall gmenu_draw_menu_item(TMenuItem *pItem, int a2);
