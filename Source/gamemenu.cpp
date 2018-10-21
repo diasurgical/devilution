@@ -31,20 +31,19 @@ char *color_cycling_toggle_names[] = { "Color Cycling Off", "Color Cycling On" }
 
 void __cdecl gamemenu_previous()
 {
-    void(__cdecl * v0)(); // edx
-    TMenuItem *v1;        // ecx
+    void(__cdecl * proc)();
+    TMenuItem *item;
 
     if (gbMaxPlayers == 1) {
-        v0 = gamemenu_enable_single;
-        v1 = sgSingleMenu;
+        proc = gamemenu_enable_single;
+        item = sgSingleMenu;
     } else {
-        v0 = gamemenu_enable_multi;
-        v1 = sgMultiMenu;
+        proc = gamemenu_enable_multi;
+        item = sgMultiMenu;
     }
-    gmenu_call_proc(v1, v0);
+    gmenu_call_proc(item, proc);
     PressEscKey();
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 void __cdecl gamemenu_enable_single()
 {
@@ -64,7 +63,7 @@ void __cdecl gamemenu_enable_multi()
 
 void __cdecl gamemenu_off()
 {
-    gmenu_call_proc(0, 0);
+    gmenu_call_proc(0, NULL);
 }
 
 void __cdecl gamemenu_handle_previous()
@@ -77,16 +76,14 @@ void __cdecl gamemenu_handle_previous()
 
 void __cdecl gamemenu_new_game()
 {
-    int i; // eax
-
-    for (i = 0; i < 4; i++) {
+    for (int i = 0; i < MAX_PLRS; i++) {
         plr[i]._pmode = PM_QUIT;
-        plr[i]._pInvincible = 1;
+        plr[i]._pInvincible = TRUE;
     }
 
     deathflag = FALSE;
     drawpanflag = 255;
-    scrollrt_draw_game_screen(1);
+    scrollrt_draw_game_screen(TRUE);
     gbRunGame = FALSE;
     gamemenu_off();
 }
@@ -95,18 +92,15 @@ void __cdecl gamemenu_new_game()
 void __cdecl gamemenu_quit_game()
 {
     gamemenu_new_game();
-    gbRunGameResult = 0;
+    gbRunGameResult = FALSE;
 }
-// 525698: using guessed type int gbRunGameResult;
 
 void __cdecl gamemenu_load_game()
 {
-    WNDPROC saveProc; // edi
-
-    saveProc = SetWindowProc(DisableInputWndProc);
+    WNDPROC saveProc = SetWindowProc(DisableInputWndProc);
     gamemenu_off();
-    SetCursor(0);
-    InitDiabloMsg(10);
+    SetCursor(CURSOR_NONE);
+    InitDiabloMsg(EMSG_LOADING);
     drawpanflag = 255;
     DrawAndBlit();
     LoadGame(FALSE);
@@ -124,16 +118,14 @@ void __cdecl gamemenu_load_game()
 
 void __cdecl gamemenu_save_game()
 {
-    WNDPROC saveProc; // edi
-
     if (pcurs == CURSOR_HAND) {
         if (plr[myplr]._pmode == PM_DEATH || deathflag) {
             gamemenu_off();
         } else {
-            saveProc = SetWindowProc(DisableInputWndProc);
-            SetCursor(0);
+            WNDPROC saveProc = SetWindowProc(DisableInputWndProc);
+            SetCursor(CURSOR_NONE);
             gamemenu_off();
-            InitDiabloMsg(11);
+            InitDiabloMsg(EMSG_SAVING);
             drawpanflag = 255;
             DrawAndBlit();
             SaveGame();
@@ -158,7 +150,7 @@ void __cdecl gamemenu_options()
     gamemenu_get_sound();
     gamemenu_get_gamma();
     gamemenu_get_color_cycling();
-    gmenu_call_proc(sgOptionMenu, 0);
+    gmenu_call_proc(sgOptionMenu, NULL);
 }
 
 void __cdecl gamemenu_get_music()
@@ -166,15 +158,15 @@ void __cdecl gamemenu_get_music()
     gamemenu_sound_music_toggle(music_toggle_names, sgOptionMenu, sound_get_or_set_music_volume(1));
 }
 
-void __fastcall gamemenu_sound_music_toggle(char **names, TMenuItem *menu_item, int gamma)
+void __fastcall gamemenu_sound_music_toggle(char **names, TMenuItem *menu_item, int volume)
 {
     if (gbSndInited) {
         menu_item->dwFlags |= 0xC0000000;
         menu_item->pszStr = *names;
         gmenu_slider_3(menu_item, 17);
-        gmenu_slider_1(menu_item, VOLUME_MIN, VOLUME_MAX, gamma);
+        gmenu_slider_1(menu_item, VOLUME_MIN, VOLUME_MAX, volume);
     } else {
-        menu_item->dwFlags &= 0x3F000000;
+        menu_item->dwFlags &= 0x3FFFFFFF;
         menu_item->pszStr = names[1];
     }
 }
@@ -186,7 +178,7 @@ void __cdecl gamemenu_get_sound()
 
 void __cdecl gamemenu_get_color_cycling()
 {
-    sgOptionMenu[3].pszStr = color_cycling_toggle_names[palette_get_colour_cycling()];
+    sgOptionMenu[3].pszStr = color_cycling_toggle_names[palette_get_colour_cycling() & 1];
 }
 
 void __cdecl gamemenu_get_gamma()
@@ -195,63 +187,67 @@ void __cdecl gamemenu_get_gamma()
     gmenu_slider_1(&sgOptionMenu[2], 30, 100, UpdateGamma(0));
 }
 
-void __fastcall gamemenu_music_volume(int a1)
+void __fastcall gamemenu_music_volume(int volume)
 {
-    int v1; // esi
-
-    if (a1) {
+    if (volume) {
         if (gbMusicOn) {
             gbMusicOn = FALSE;
             music_stop();
             sound_get_or_set_music_volume(VOLUME_MIN);
-            goto LABEL_11;
+            gamemenu_get_music();
+            return;
         }
         gbMusicOn = TRUE;
         sound_get_or_set_music_volume(VOLUME_MAX);
-    LABEL_10:
-        music_start((unsigned char)leveltype);
-        goto LABEL_11;
+        music_start(leveltype);
+        gamemenu_get_music();
+        return;
     }
-    v1 = gamemenu_slider_music_sound(sgOptionMenu);
-    sound_get_or_set_music_volume(v1);
-    if (v1 != VOLUME_MIN) {
-        if (gbMusicOn)
-            goto LABEL_11;
-        gbMusicOn = TRUE;
-        goto LABEL_10;
+
+    volume = gamemenu_slider_music_sound(sgOptionMenu);
+    sound_get_or_set_music_volume(volume);
+
+    if (volume == VOLUME_MIN) {
+
+        if (gbMusicOn) {
+            gbMusicOn = FALSE;
+            music_stop();
+        }
+
+        gamemenu_get_music();
+        return;
     }
+
     if (gbMusicOn) {
-        gbMusicOn = FALSE;
-        music_stop();
+        gamemenu_get_music();
+        return;
     }
-LABEL_11:
+
+    gbMusicOn = TRUE;
+    music_start(leveltype);
     gamemenu_get_music();
 }
-// 5BB1ED: using guessed type char leveltype;
 
 int __fastcall gamemenu_slider_music_sound(TMenuItem *menu_item)
 {
     return gmenu_slider_get(menu_item, VOLUME_MIN, VOLUME_MAX);
 }
 
-void __fastcall gamemenu_sound_volume(int a1)
+void __fastcall gamemenu_sound_volume(int volume)
 {
-    int v1; // ecx
-    int v2; // esi
-
-    if (a1) {
+    if (volume) {
         if (gbSoundOn) {
             gbSoundOn = FALSE;
             FreeMonsterSnd();
-            v1 = VOLUME_MIN;
+            sound_get_or_set_sound_volume(VOLUME_MIN);
         } else {
             gbSoundOn = TRUE;
+            sound_get_or_set_sound_volume(VOLUME_MAX);
         }
-        sound_get_or_set_sound_volume(VOLUME_MAX);
     } else {
-        v2 = gamemenu_slider_music_sound(&sgOptionMenu[1]);
-        sound_get_or_set_sound_volume(v2);
-        if (v2 == VOLUME_MIN) {
+        volume = gamemenu_slider_music_sound(&sgOptionMenu[1]);
+        sound_get_or_set_sound_volume(volume);
+        if (volume == VOLUME_MIN) {
             if (gbSoundOn) {
                 gbSoundOn = FALSE;
                 FreeMonsterSnd();
@@ -264,19 +260,18 @@ void __fastcall gamemenu_sound_volume(int a1)
     gamemenu_get_sound();
 }
 
-void __fastcall gamemenu_gamma(int a1)
+void __fastcall gamemenu_gamma(int gamma)
 {
-    int v1; // eax
-    int v2; // eax
-
-    if (a1) {
-        v1 = -(UpdateGamma(0) != 30);
-        _LOBYTE(v1) = v1 & 0xBA;
-        v2 = v1 + 100;
+    if (gamma) {
+        if (UpdateGamma(0) == 30)
+            gamma = 100;
+        else
+            gamma = 30;
     } else {
-        v2 = gamemenu_slider_gamma();
+        gamma = gamemenu_slider_gamma();
     }
-    UpdateGamma(v2);
+
+    UpdateGamma(gamma);
     gamemenu_get_gamma();
 }
 
