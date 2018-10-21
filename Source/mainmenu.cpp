@@ -44,64 +44,65 @@ void __stdcall mainmenu_create_hero(char *a1, char *a2)
 		pfile_create_save_file(a1, a2);
 }
 
-int __stdcall mainmenu_select_hero_dialog(int u1, int u2, int u3, int u4, int mode, char *cname, int clen, char *cdesc, int cdlen, int *multi) /* fix args */
+int __stdcall mainmenu_select_hero_dialog(
+    const struct _SNETPROGRAMDATA *u1,
+    const struct _SNETPLAYERDATA *u2,
+    const struct _SNETUIDATA *u3,
+    const struct _SNETVERSIONDATA *u4,
+    DWORD mode,
+    char *cname, DWORD clen,
+    char *cdesc, DWORD cdlen,
+    BOOL *multi)
 {
-	int v10; // eax
-	int a6; // [esp+8h] [ebp-8h]
-	int a5; // [esp+Ch] [ebp-4h]
+    int v10; // eax
+    int a6;  // [esp+8h] [ebp-8h]
+    int a5;  // [esp+Ch] [ebp-4h]
 
-	a6 = 1;
-	a5 = 0;
-	if ( gbMaxPlayers == 1 )
-	{
-		if ( !UiSelHeroSingDialog(
-				  pfile_ui_set_hero_infos,
-				  pfile_ui_save_create,
-				  pfile_delete_save,
-				  pfile_ui_set_class_stats,
-				  &a5,
-				  chr_name_str,
-				  &gnDifficulty) )
-			TermMsg("Unable to display SelHeroSing");
-		if ( a5 == 2 )
-		{
-			dword_5256E8 = 1;
-			goto LABEL_6;
-		}
-		dword_5256E8 = 0;
-	}
-	else if ( !UiSelHeroMultDialog(
-				   pfile_ui_set_hero_infos,
-				   pfile_ui_save_create,
-				   pfile_delete_save,
-				   pfile_ui_set_class_stats,
-				   &a5,
-				   &a6,
-				   chr_name_str) )
-	{
-		TermMsg("Can't load multiplayer dialog");
-	}
-	if ( a5 == 4 )
-	{
-		SErrSetLastError(1223);
-		return 0;
-	}
+    a6 = 1;
+    a5 = 0;
+    if (gbMaxPlayers == 1) {
+        if (!UiSelHeroSingDialog(
+                pfile_ui_set_hero_infos,
+                pfile_ui_save_create,
+                pfile_delete_save,
+                pfile_ui_set_class_stats,
+                &a5,
+                chr_name_str,
+                &gnDifficulty))
+            TermMsg("Unable to display SelHeroSing");
+        if (a5 == 2) {
+            dword_5256E8 = 1;
+            goto LABEL_6;
+        }
+        dword_5256E8 = 0;
+    } else if (!UiSelHeroMultDialog(
+                   pfile_ui_set_hero_infos,
+                   pfile_ui_save_create,
+                   pfile_delete_save,
+                   pfile_ui_set_class_stats,
+                   &a5,
+                   &a6,
+                   chr_name_str)) {
+        TermMsg("Can't load multiplayer dialog");
+    }
+    if (a5 == 4) {
+        SErrSetLastError(1223);
+        return 0;
+    }
 LABEL_6:
-	pfile_create_player_description(cdesc, cdlen);
-	if ( multi )
-	{
-		if ( mode == 'BNET' )
-			v10 = a6 || !plr[myplr].pBattleNet;
-		else
-			v10 = a6;
-		*multi = v10;
-	}
-	if ( cname )
-	{
-		if ( clen )
-			SStrCopy(cname, chr_name_str, clen);
-	}
-	return 1;
+    pfile_create_player_description(cdesc, cdlen);
+    if (multi) {
+        if (mode == 'BNET')
+            v10 = a6 || !plr[myplr].pBattleNet;
+        else
+            v10 = a6;
+        *multi = v10;
+    }
+    if (cname) {
+        if (clen)
+            SStrCopy(cname, chr_name_str, clen);
+    }
+    return 1;
 }
 // 5256E8: using guessed type int dword_5256E8;
 // 679660: using guessed type char gbMaxPlayers;

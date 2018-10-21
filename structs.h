@@ -1288,7 +1288,16 @@ struct _SNETUIDATA {
     void(__cdecl *profilecallback)();
     int profilefields;
     void(__cdecl *profilebitmapcallback)();
-    void(__cdecl *selectnamecallback)();
+    int(__stdcall *selectnamecallback)(
+        const struct _SNETPROGRAMDATA *,
+        const struct _SNETPLAYERDATA *,
+        const struct _SNETUIDATA *,
+        const struct _SNETVERSIONDATA *,
+        DWORD provider, /* e.g. 'IPXN', 'BNET' etc. */
+        char *, DWORD,  /* character name will be copied here */
+        char *, DWORD,  /* character "description" will be copied here (used to advertise games) */
+        BOOL *          /* new character? - unsure about this */
+    );
     void(__cdecl *changenamecallback)();
 };
 
