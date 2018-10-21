@@ -8,11 +8,11 @@ void *SelRegn_1000EF42() { return 0; }
 // ref: 0x1000EF56
 _uiheroinfo *__fastcall SelRegn_SetNextHero(_uiheroinfo *pNext, _uiheroinfo *pCurrent)
 {
-	_uiheroinfo *result; // eax
+    _uiheroinfo *result; // eax
 
-	result = pCurrent;
-	pCurrent->next = pNext;
-	return result;
+    result         = pCurrent;
+    pCurrent->next = pNext;
+    return result;
 }
 
 // ref: 0x1000EF60
