@@ -3,6 +3,10 @@
 This guide outlines useful resources, tools and processes for contribution to
 Devilution.
 
+## Code style guide
+
+The code style guide is evolving with the project and can be found [here](https://github.com/diasurgical/devilution/wiki/Code-style-guide).
+
 ## Useful Repos
 
 * [diasurgical/scalpel](https://github.com/diasurgical/scalpel) - uploaded .SYM files from each release of Diablo 1 on Playstation

@@ -490,11 +490,11 @@ struct MonsterData {
     char mAi;
     int mFlags;
     unsigned char mInt;
-    unsigned char mHit;
+    unsigned char mHit; // BUGFIX: Some monsters overflow this value on high dificulty
     unsigned char mAFNum;
     unsigned char mMinDamage;
     unsigned char mMaxDamage;
-    unsigned char mHit2;
+    unsigned char mHit2; // BUGFIX: Some monsters overflow this value on high dificulty
     unsigned char mAFNum2;
     unsigned char mMinDamage2;
     unsigned char mMaxDamage2;
@@ -1288,7 +1288,16 @@ struct _SNETUIDATA {
     void(__cdecl *profilecallback)();
     int profilefields;
     void(__cdecl *profilebitmapcallback)();
-    void(__cdecl *selectnamecallback)();
+    int(__stdcall *selectnamecallback)(
+        const struct _SNETPROGRAMDATA *,
+        const struct _SNETPLAYERDATA *,
+        const struct _SNETUIDATA *,
+        const struct _SNETVERSIONDATA *,
+        DWORD provider, /* e.g. 'IPXN', 'BNET' etc. */
+        char *, DWORD,  /* character name will be copied here */
+        char *, DWORD,  /* character "description" will be copied here (used to advertise games) */
+        BOOL *          /* new character? - unsure about this */
+    );
     void(__cdecl *changenamecallback)();
 };
 
@@ -1412,7 +1421,7 @@ struct PkPlayerStruct {
 struct PATHNODE {
     char f;
     char h;
-    short g;
+    char g;
     int x;
     int y;
     struct PATHNODE *Parent;

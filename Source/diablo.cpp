@@ -39,7 +39,7 @@ int diablo_inf = 0x7F800000; // weak
 
 /* rdata */
 
-int fullscreen = 1; // weak
+BOOL fullscreen = TRUE;
 #ifdef _DEBUG
 int showintrodebug = 1;
 int questdebug = -1;
@@ -448,7 +448,7 @@ void __fastcall diablo_parse_flags(char *args)
 					debug_mode_key_w = 1;
 					break;
 				case 'x':
-					fullscreen = 0;
+					fullscreen = FALSE;
 					break;
 				default:
 					break;
@@ -2273,5 +2273,4 @@ void __cdecl diablo_color_cyc_logic()
 		}
 	}
 }
-// 484364: using guessed type int fullscreen;
 // 52574C: using guessed type int color_cycle_timer;

@@ -3146,7 +3146,7 @@ void __fastcall DrawMain(int dwHgt, int draw_desc, int draw_hp, int draw_mana, i
 			ResetPal();
 			a4 = 480;
 		}
-		if ( !lpDDSBackBuf )
+		if ( lpDDSBackBuf == NULL )
 		{
 			v6 = 1;
 LABEL_8:
@@ -3211,7 +3211,7 @@ LABEL_17:
 			if ( sgdwCursWdt )
 				DoBlitScreen(sgdwCursX, sgdwCursY, sgdwCursWdt, sgdwCursHgt);
 		}
-		if ( !lpDDSBackBuf )
+		if ( lpDDSBackBuf == NULL )
 		{
 			v9 = lpDDSPrimary->Unlock(NULL);
 			if ( v9 != DDERR_SURFACELOST )
@@ -3278,7 +3278,7 @@ void __fastcall DoBlitScreen(int dwX, int dwY, int dwWdt, int dwHgt)
 
 	v4 = dwY;
 	v5 = dwX;
-	if ( lpDDSBackBuf )
+	if ( lpDDSBackBuf != NULL )
 	{
 		Rect.left = dwX + 64;
 		Rect.right = dwX + 64 + dwWdt - 1;
