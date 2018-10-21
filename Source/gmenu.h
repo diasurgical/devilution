@@ -19,7 +19,7 @@ void __cdecl gmenu_draw_pause();
 void __fastcall gmenu_print_text(int x, int y, char *pszStr);
 void __cdecl FreeGMenu();
 void __cdecl gmenu_init_menu();
-bool __cdecl gmenu_exception();
+BOOL __cdecl gmenu_exception();
 void __fastcall gmenu_call_proc(TMenuItem *pItem, void (__cdecl *gmFunc)());
 void __fastcall gmenu_up_down(int a1);
 void __cdecl gmenu_draw();

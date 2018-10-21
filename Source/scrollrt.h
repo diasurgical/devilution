@@ -51,7 +51,7 @@ void __cdecl ClearScreenBuffer();
 void __cdecl ScrollView();
 void __cdecl EnableFrameCount();
 #endif
-void __fastcall scrollrt_draw_game_screen(bool draw_cursor);
+void __fastcall scrollrt_draw_game_screen(BOOL draw_cursor);
 void __cdecl scrollrt_draw_cursor_back_buffer();
 void __cdecl scrollrt_draw_cursor_item();
 void __fastcall DrawMain(int dwHgt, int draw_desc, int draw_hp, int draw_mana, int draw_sbar, int draw_btn);

@@ -457,7 +457,6 @@ bool __fastcall RndLocOk(int xp, int yp)
 	}
 	return result;
 }
-// 5BB1ED: using guessed type char leveltype;
 
 void __fastcall InitRndLocObj(int min, int max, int objtype)
 {
@@ -1141,7 +1140,6 @@ void __cdecl AddChestTraps()
 	}
 	while ( v0 < 112 );
 }
-// 5BB1ED: using guessed type char leveltype;
 
 void __fastcall LoadMapObjects(unsigned char *pMap, int startx, int starty, int x1, int y1, int w, int h, int leveridx)
 {
@@ -1592,12 +1590,11 @@ void __cdecl InitObjects()
 		InitRndLocObj(1, 5, 7);
 		if ( leveltype != 4 )
 			AddObjTraps();
-		if ( (unsigned char)leveltype > 1u )
+		if ( leveltype > 1u )
 			AddChestTraps();
 		InitObjFlag = 0;
 	}
 }
-// 5BB1ED: using guessed type char leveltype;
 // 5CF330: using guessed type int setpc_h;
 // 5CF334: using guessed type int setpc_w;
 // 679660: using guessed type char gbMaxPlayers;
@@ -1707,7 +1704,6 @@ void __fastcall SetMapObjects(unsigned char *pMap, int startx, int starty)
 	}
 	InitObjFlag = 0;
 }
-// 5BB1ED: using guessed type char leveltype;
 // 67D7C0: using guessed type int InitObjFlag;
 // 67D7C4: using guessed type int numobjfiles;
 // 4427C5: using guessed type int var_10C[56];
@@ -2820,10 +2816,10 @@ void __fastcall Obj_BCrossDamage(int i)
 	{
 		v3 = plr[v1]._pFireResist;
 		if ( v3 > 0 )
-			damage[(unsigned char)leveltype-1] -= v3 * damage[(unsigned char)leveltype-1] / 100;
+			damage[leveltype-1] -= v3 * damage[leveltype-1] / 100;
 		if ( plr[v1].WorldX == object[v8]._ox && plr[v1].WorldY == object[v8]._oy - 1 )
 		{
-			v4 = damage[(unsigned char)leveltype-1];
+			v4 = damage[leveltype-1];
 			plr[v1]._pHitPoints -= v4;
 			plr[v1]._pHPBase -= v4;
 			if ( plr[v1]._pHitPoints >> 6 <= 0 )
@@ -2844,7 +2840,6 @@ void __fastcall Obj_BCrossDamage(int i)
 		}
 	}
 }
-// 5BB1ED: using guessed type char leveltype;
 
 void __cdecl ProcessObjects()
 {
@@ -3021,7 +3016,6 @@ void __fastcall ObjSetMicro(int dx, int dy, int pn)
 		while ( v6 < 10 );
 	}
 }
-// 5BB1ED: using guessed type char leveltype;
 
 void __fastcall objects_set_door_piece(int x, int y)
 {
@@ -3838,7 +3832,6 @@ void __fastcall ObjChangeMap(int x1, int y1, int x2, int y2)
 		AddL2Objs(2 * v6 + 16, v9, v8, y_end); /* v10 */
 	}
 }
-// 5BB1ED: using guessed type char leveltype;
 
 void __fastcall ObjChangeMapResync(int x1, int y1, int x2, int y2)
 {
@@ -3876,7 +3869,6 @@ void __fastcall ObjChangeMapResync(int x1, int y1, int x2, int y2)
 	if ( leveltype == DTYPE_CATACOMBS )
 		ObjL2Special(2 * v6 + 16, 2 * v5 + 16, 2 * x2 + 17, 2 * v4 + 17);
 }
-// 5BB1ED: using guessed type char leveltype;
 
 void __fastcall OperateL1Door(int pnum, int i, unsigned char sendflag)
 {
@@ -4033,7 +4025,7 @@ LABEL_17:
 					quests[QTYPE_BONE]._qactive = 3;
 					if ( !deltaload )
 						PlaySfxLoc(IS_QUESTDN, object[i]._ox, object[i]._oy);
-					InitDiabloMsg(43);
+					InitDiabloMsg(EMSG_BONECHAMB);
 					AddMissile(
 						plr[myplr].WorldX,
 						plr[myplr].WorldY,
@@ -4868,7 +4860,7 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 						ModifyPlrStr(arglist, 6);
 					}
 					CheckStats(arglist);
-					_LOBYTE(v7) = 12;
+					_LOBYTE(v7) = EMSG_SHRINE_MYSTERIOUS;
 					goto LABEL_221;
 				}
 				return;
@@ -4959,7 +4951,7 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 				if ( v25 <= 0 )
 					*(_DWORD *)v7 = 1;
 LABEL_47:
-				_LOBYTE(v7) = 13;
+				_LOBYTE(v7) = EMSG_SHRINE_HIDDEN;
 				goto LABEL_221;
 			case SHRINE_GLOOMY:
 				if ( v5 )
@@ -5034,7 +5026,7 @@ LABEL_47:
 					}
 					while ( v36 < plr[v34]._pNumInv );
 				}
-				_LOBYTE(v7) = 15;
+				_LOBYTE(v7) = EMSG_SHRINE_WEIRD;
 				goto LABEL_221;
 			case SHRINE_MAGICAL:
 			case SHRINE_MAGICAL2:
@@ -5050,10 +5042,10 @@ LABEL_47:
 					-1,
 					arglist,
 					0,
-					2 * (unsigned char)leveltype);
+					2 * leveltype);
 				if ( arglist != myplr )
 					return;
-				_LOBYTE(v7) = 16;
+				_LOBYTE(v7) = EMSG_SHRINE_MAGICAL;
 				goto LABEL_221;
 			case SHRINE_STONE:
 				if ( v5 )
@@ -5094,7 +5086,7 @@ LABEL_47:
 					--v44;
 				}
 				while ( v44 );
-				v7 = 17;
+				v7 = EMSG_SHRINE_STONE;
 				goto LABEL_221;
 			case SHRINE_RELIGIOUS:
 				if ( v5 )
@@ -5132,7 +5124,7 @@ LABEL_47:
 					--v51;
 				}
 				while ( v51 );
-				v7 = 18;
+				v7 = EMSG_SHRINE_RELIGIOUS;
 				goto LABEL_221;
 			case SHRINE_ENCHANTED:
 				if ( v5 || arglist != myplr )
@@ -5175,7 +5167,7 @@ LABEL_47:
 					else
 						*v61 -= 2;
 				}
-				_LOBYTE(v7) = 19;
+				_LOBYTE(v7) = EMSG_SHRINE_ENCHANTED;
 				goto LABEL_221;
 			case SHRINE_THAUMATURGIC:
 				for ( j = 0; j < nobjects; ++j )
@@ -5195,7 +5187,7 @@ LABEL_47:
 					return;
 				if ( arglist != myplr )
 					goto LABEL_280;
-				_LOBYTE(v7) = 20;
+				_LOBYTE(v7) = EMSG_SHRINE_THAUMATURGIC;
 				goto LABEL_221;
 			case SHRINE_FASCINATING:
 				if ( v5 || arglist != myplr )
@@ -5231,7 +5223,7 @@ LABEL_47:
 					*(int *)((char *)&plr[0]._pMaxManaBase + v7) = 0;
 					*(int *)((char *)&plr[0]._pMaxMana + v7) = v73;
 				}
-				_LOBYTE(v7) = 21;
+				_LOBYTE(v7) = EMSG_SHRINE_FASCINATING;
 				goto LABEL_221;
 			case SHRINE_CRYPTIC:
 				if ( v5 )
@@ -5247,10 +5239,10 @@ LABEL_47:
 					-1,
 					arglist,
 					0,
-					2 * (unsigned char)leveltype);
+					2 * leveltype);
 				if ( arglist != myplr )
 					return;
-				_LOBYTE(v7) = 22;
+				_LOBYTE(v7) = EMSG_SHRINE_CRYPTIC;
 				plr[v77]._pMana = plr[v77]._pMaxMana;
 				plr[v77]._pManaBase = plr[v77]._pMaxManaBase;
 				goto LABEL_221;
@@ -5328,14 +5320,14 @@ LABEL_47:
 					sfx_idc = v82;
 				}
 				while ( !v56 );
-				_LOBYTE(v7) = 24;
+				_LOBYTE(v7) = EMSG_SHRINE_ELDRITCH;
 				goto LABEL_221;
 			case SHRINE_EERIE:
 				if ( v5 || arglist != myplr )
 					return;
 				ModifyPlrMag(arglist, 2);
 				CheckStats(arglist);
-				_LOBYTE(v7) = 25;
+				_LOBYTE(v7) = EMSG_SHRINE_EERIE;
 				goto LABEL_221;
 			case SHRINE_DIVINE:
 				if ( v5 || arglist != myplr )
@@ -5358,7 +5350,7 @@ LABEL_47:
 				plr[v87]._pHitPoints = plr[arglist]._pMaxHP;
 				v7 = plr[arglist]._pMaxHPBase;
 				plr[v87]._pHPBase = v7;
-				_LOBYTE(v7) = 26;
+				_LOBYTE(v7) = EMSG_SHRINE_DIVINE;
 				goto LABEL_221;
 			case SHRINE_HOLY:
 				if ( v5 )
@@ -5385,10 +5377,10 @@ LABEL_47:
 					-1,
 					arglist,
 					0,
-					2 * (unsigned char)leveltype);
+					2 * leveltype);
 				if ( arglist != myplr )
 					return;
-				_LOBYTE(v7) = 27;
+				_LOBYTE(v7) = EMSG_SHRINE_HOLY;
 				goto LABEL_221;
 			case SHRINE_SACRED:
 				if ( v5 || arglist != myplr )
@@ -5424,7 +5416,7 @@ LABEL_47:
 					*(int *)((char *)&plr[0]._pMaxManaBase + v7) = 0;
 					*(int *)((char *)&plr[0]._pMaxMana + v7) = v102;
 				}
-				_LOBYTE(v7) = 28;
+				_LOBYTE(v7) = EMSG_SHRINE_SACRED;
 				goto LABEL_221;
 			case SHRINE_SPIRITUAL:
 				if ( v5 || arglist != myplr )
@@ -5435,7 +5427,7 @@ LABEL_47:
 				{
 					if ( !plr[v106].InvGrid[sfx_idd] )
 					{
-						v107 = 5 * (unsigned char)leveltype + random(160, 10 * (unsigned char)leveltype);
+						v107 = 5 * leveltype + random(160, 10 * leveltype);
 						v108 = plr[v106]._pNumInv;
 						v109 = v106 * 21720 + 368 * v108;
 						qmemcpy((char *)plr[0].InvList + v109, &golditem, 0x170u);
@@ -5449,18 +5441,17 @@ LABEL_47:
 					++sfx_idd;
 				}
 				while ( sfx_idd < 40 );
-				_LOBYTE(v7) = 29;
+				_LOBYTE(v7) = EMSG_SHRINE_SPIRITUAL;
 				goto LABEL_221;
 			case SHRINE_SPOOKY:
 				if ( v5 )
 					return;
 				if ( arglist == myplr )
 				{
-					_LOBYTE(v7) = 30;
+					_LOBYTE(v7) = EMSG_SHRINE_SPOOKY1;
 					goto LABEL_221;
 				}
-				_LOBYTE(v7) = 31;
-				InitDiabloMsg(v7);
+				InitDiabloMsg(EMSG_SHRINE_SPOOKY2);
 				v110 = myplr;
 				plr[v110]._pHitPoints = plr[myplr]._pMaxHP;
 				plr[v110]._pHPBase = plr[v110]._pMaxHPBase;
@@ -5474,7 +5465,7 @@ LABEL_47:
 				CheckStats(arglist);
 				if ( arglist != myplr )
 					goto LABEL_280;
-				_LOBYTE(v7) = 32;
+				_LOBYTE(v7) = EMSG_SHRINE_ABANDONED;
 				goto LABEL_221;
 			case SHRINE_CREEPY:
 				if ( v5 || arglist != myplr )
@@ -5483,7 +5474,7 @@ LABEL_47:
 				CheckStats(arglist);
 				if ( arglist != myplr )
 					goto LABEL_280;
-				_LOBYTE(v7) = 33;
+				_LOBYTE(v7) = EMSG_SHRINE_CREEPY;
 				goto LABEL_221;
 			case SHRINE_QUIET:
 				if ( v5 || arglist != myplr )
@@ -5492,7 +5483,7 @@ LABEL_47:
 				CheckStats(arglist);
 				if ( arglist != myplr )
 					goto LABEL_280;
-				_LOBYTE(v7) = 34;
+				_LOBYTE(v7) = EMSG_SHRINE_QUIET;
 				goto LABEL_221;
 			case SHRINE_SECLUDED:
 				if ( v5 )
@@ -5514,7 +5505,7 @@ LABEL_47:
 					++v7;
 				}
 				while ( v7 < 40 );
-				_LOBYTE(v7) = 35;
+				_LOBYTE(v7) = EMSG_SHRINE_SECLUDED;
 				goto LABEL_221;
 			case SHRINE_ORNATE:
 				if ( v5 || arglist != myplr )
@@ -5550,7 +5541,7 @@ LABEL_47:
 					*(int *)((char *)&plr[0]._pMaxManaBase + v7) = 0;
 					*(int *)((char *)&plr[0]._pMaxMana + v7) = v121;
 				}
-				_LOBYTE(v7) = 36;
+				_LOBYTE(v7) = EMSG_SHRINE_ORNATE;
 				goto LABEL_221;
 			case SHRINE_GLIMMERING:
 				if ( v5 || arglist != myplr )
@@ -5589,18 +5580,17 @@ LABEL_47:
 					--v131;
 				}
 				while ( v131 );
-				v7 = 37;
+				v7 = EMSG_SHRINE_GLIMMERING;
 				goto LABEL_221;
 			case SHRINE_TAINTED:
 				if ( v5 )
 					return;
 				if ( arglist == myplr )
 				{
-					_LOBYTE(v7) = 38;
+					_LOBYTE(v7) = EMSG_SHRINE_TAINTED1;
 					goto LABEL_221;
 				}
-				_LOBYTE(v7) = 39;
-				InitDiabloMsg(v7);
+				InitDiabloMsg(EMSG_SHRINE_TAINTED2);
 				v133 = random(155, 4);
 				v134 = 1;
 				v135 = 2 * (v133 == 1) - 1;
@@ -5659,7 +5649,6 @@ LABEL_280:
 }
 // 4B84DC: using guessed type int dropGoldFlag;
 // 52571C: using guessed type int drawpanflag;
-// 5BB1ED: using guessed type char leveltype;
 // 676190: using guessed type int deltaload;
 
 void __fastcall OperateSkelBook(int pnum, int i, unsigned char sendmsg)
@@ -5989,7 +5978,7 @@ LABEL_38:
 					-1,
 					v4,
 					0,
-					2 * (unsigned char)leveltype);
+					2 * leveltype);
 				v5 = 1;
 				if ( v4 == myplr )
 					NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, v2);
@@ -6057,7 +6046,6 @@ LABEL_38:
 	return v5;
 }
 // 52571C: using guessed type int drawpanflag;
-// 5BB1ED: using guessed type char leveltype;
 // 676190: using guessed type int deltaload;
 
 void __fastcall OperateWeaponRack(int pnum, int i, unsigned char sendmsg)
@@ -6116,7 +6104,7 @@ LABEL_12:
 	{
 		v11 = object[v4]._ox;
 		v12 = object[v4]._oy;
-		if ( (unsigned char)leveltype <= 1u )
+		if ( leveltype <= 1u )
 			CreateTypeItem(v11, v12, 0, v9, 0, sendmsg, 0);
 		else
 			CreateTypeItem(v11, v12, 1u, v9, 0, sendmsg, 0);
@@ -6124,7 +6112,6 @@ LABEL_12:
 			NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, v3);
 	}
 }
-// 5BB1ED: using guessed type char leveltype;
 // 676190: using guessed type int deltaload;
 
 void __fastcall OperateStoryBook(int pnum, int i)

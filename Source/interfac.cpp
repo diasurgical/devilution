@@ -233,7 +233,6 @@ LABEL_41:
 		PrepDoEnding();
 	gbSomebodyWonGameKludge = 0;
 }
-// 5BB1ED: using guessed type char leveltype;
 // 5CF31C: using guessed type char setlvltype;
 // 5CF31D: using guessed type char setlevel;
 // 6761B8: using guessed type char gbSomebodyWonGameKludge;

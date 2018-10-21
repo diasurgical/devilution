@@ -29,7 +29,7 @@ extern char block_lvid[2049];
 //char byte_5B78EB;
 extern char dung_map[MAXDUNX][MAXDUNY];
 extern char nTrapTable[2049];
-extern char leveltype; // weak
+extern BYTE leveltype;
 extern unsigned char currlevel; // idb
 extern char TransList[256];
 extern BYTE nSolidTable[2049];

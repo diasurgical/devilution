@@ -171,7 +171,6 @@ void __fastcall LoadGame(BOOL firstflag)
 	SetCursor(CURSOR_HAND);
 	gbProcessPlayers = TRUE;
 }
-// 5BB1ED: using guessed type char leveltype;
 // 5CF31D: using guessed type char setlevel;
 
 char __cdecl BLoad()
@@ -416,7 +415,6 @@ void __cdecl SaveGame()
 	pfile_rename_temp_to_perm();
 	pfile_write_hero();
 }
-// 5BB1ED: using guessed type char leveltype;
 // 5CF31D: using guessed type char setlevel;
 
 void __fastcall BSave(char v)
@@ -602,7 +600,6 @@ void __cdecl SaveLevel()
 	else
 		plr[myplr]._pSLvlVisited[setlvlnum] = 1;
 }
-// 5BB1ED: using guessed type char leveltype;
 // 5CF31D: using guessed type char setlevel;
 
 void __cdecl LoadLevel()
@@ -697,5 +694,4 @@ void __cdecl LoadLevel()
 
 	mem_free_dbg(LoadBuff);
 }
-// 5BB1ED: using guessed type char leveltype;
 // 642A18: using guessed type int dolighting;

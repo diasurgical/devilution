@@ -13,11 +13,11 @@ bool gbGameLoopStartup; // idb
 int glSeedTbl[NUMLEVELS];
 BOOL gbRunGame;
 int glMid3Seed[NUMLEVELS];
-int gbRunGameResult; // weak
+BOOL gbRunGameResult;
 int zoomflag; // weak
 BOOL gbProcessPlayers;
 int glEndSeed[NUMLEVELS];
-int dword_5256E8; // weak
+BOOL dword_5256E8;
 HINSTANCE ghInst; // idb
 int DebugMonsters[10];
 char cineflag; // weak
@@ -122,7 +122,7 @@ int __fastcall diablo_init_menu(int a1, int bSinglePlayer)
 	while ( 1 )
 	{
 		pfExitProgram = 0;
-		dword_5256E8 = 0;
+		dword_5256E8 = FALSE;
 		if ( !NetInit(v2, &pfExitProgram) )
 			break;
 		byte_678640 = 0;
@@ -143,8 +143,6 @@ LABEL_11:
 	SNetDestroy();
 	return gbRunGameResult;
 }
-// 525698: using guessed type int gbRunGameResult;
-// 5256E8: using guessed type int dword_5256E8;
 // 678640: using guessed type char byte_678640;
 
 void __fastcall run_game_loop(int uMsg)
@@ -163,7 +161,7 @@ void __fastcall run_game_loop(int uMsg)
 	msg_process_net_packets();
 	gbRunGame = TRUE;
 	gbProcessPlayers = TRUE;
-	gbRunGameResult = 1;
+	gbRunGameResult = TRUE;
 	drawpanflag = 255;
 	DrawAndBlit();
 	PaletteFadeIn(8);
@@ -180,7 +178,7 @@ void __fastcall run_game_loop(int uMsg)
 			{
 				if ( msg.message == WM_QUIT )
 				{
-					gbRunGameResult = 0;
+					gbRunGameResult = FALSE;
 					gbRunGame = FALSE;
 					break;
 				}
@@ -225,7 +223,6 @@ void __fastcall run_game_loop(int uMsg)
 		DoEnding();
 	}
 }
-// 525698: using guessed type int gbRunGameResult;
 // 525718: using guessed type char cineflag;
 // 52571C: using guessed type int drawpanflag;
 // 679660: using guessed type char gbMaxPlayers;
@@ -817,7 +814,7 @@ LRESULT __stdcall GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			if ( wParam == SC_CLOSE )
 			{
 				gbRunGame = FALSE;
-				gbRunGameResult = 0;
+				gbRunGameResult = FALSE;
 				return 0;
 			}
 			return MainWndProc(hWnd, uMsg, wParam, lParam);
@@ -829,7 +826,6 @@ LRESULT __stdcall GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	gmenu_on_mouse_move((unsigned short)lParam);
 	return 0;
 }
-// 525698: using guessed type int gbRunGameResult;
 // 52571C: using guessed type int drawpanflag;
 // 525748: using guessed type char sgbMouseDown;
 // 679660: using guessed type char gbMaxPlayers;
@@ -1032,7 +1028,6 @@ LABEL_98:
 // 4B8CC2: using guessed type char pcursplr;
 // 525740: using guessed type int PauseMode;
 // 52575C: using guessed type int doomflag;
-// 5BB1ED: using guessed type char leveltype;
 // 646D00: using guessed type char qtextflag;
 // 69BD04: using guessed type int questlog;
 // 6AA705: using guessed type char stextflag;
@@ -1448,7 +1443,6 @@ LABEL_101:
 // 4B8C98: using guessed type int spselflag;
 // 525740: using guessed type int PauseMode;
 // 52B9F0: using guessed type char msgdelay;
-// 5BB1ED: using guessed type char leveltype;
 // 646D00: using guessed type char qtextflag;
 // 69BD04: using guessed type int questlog;
 // 6AA705: using guessed type char stextflag;
@@ -1851,7 +1845,6 @@ void __cdecl LoadLvlGFX()
 			return;
 	}
 }
-// 5BB1ED: using guessed type char leveltype;
 
 void __cdecl LoadAllGFX()
 {
@@ -1906,7 +1899,6 @@ void __fastcall CreateLevel(int lvldir)
 
 	LoadRndLvlPal(hnd);
 }
-// 5BB1ED: using guessed type char leveltype;
 
 void __fastcall LoadGameLevel(BOOL firstflag, int lvldir)
 {
@@ -2132,7 +2124,7 @@ LABEL_72:
 		ProcessLightList();
 		ProcessVisionList();
 	}
-	music_start((unsigned char)leveltype);
+	music_start(leveltype);
 	//do
 	//	_LOBYTE(v19) = IncProgress();
 	while ( !IncProgress() );
@@ -2140,7 +2132,6 @@ LABEL_72:
 		PlaySFX(USFX_SKING1);
 }
 // 525738: using guessed type int setseed;
-// 5BB1ED: using guessed type char leveltype;
 // 5CF31D: using guessed type char setlevel;
 // 679660: using guessed type char gbMaxPlayers;
 
@@ -2231,7 +2222,6 @@ void __cdecl game_logic()
 // 525718: using guessed type char cineflag;
 // 52571C: using guessed type int drawpanflag;
 // 525740: using guessed type int PauseMode;
-// 5BB1ED: using guessed type char leveltype;
 // 679660: using guessed type char gbMaxPlayers;
 
 void __fastcall timeout_cursor(bool bTimeout)
@@ -2284,4 +2274,3 @@ void __cdecl diablo_color_cyc_logic()
 	}
 }
 // 52574C: using guessed type int color_cycle_timer;
-// 5BB1ED: using guessed type char leveltype;

@@ -13,7 +13,7 @@ const int palette_inf = 0x7F800000; // weak
 /* data */
 
 int gamma_correction = 100; // idb
-int color_cycling_enabled = 1; // idb
+BOOL color_cycling_enabled = TRUE;
 bool sgbFadedIn = 1;
 
 struct palette_cpp_init
@@ -29,7 +29,7 @@ struct palette_cpp_init
 void __cdecl SaveGamma()
 {
 	SRegSaveValue("Diablo", "Gamma Correction", 0, gamma_correction);
-	SRegSaveValue("Diablo", "Color Cycling", 0, color_cycling_enabled);
+	SRegSaveValue("Diablo", "Color Cycling", FALSE, color_cycling_enabled);
 }
 
 void __cdecl palette_init()
@@ -69,7 +69,7 @@ void __cdecl LoadGamma()
 	if ( SRegLoadValue("Diablo", "Color Cycling", 0, &value) )
 		v3 = value;
 	else
-		v3 = 1;
+		v3 = TRUE;
 	color_cycling_enabled = v3;
 }
 

@@ -1327,7 +1327,7 @@ void __cdecl DoAutoMap()
 	}
 	else
 	{
-		InitDiabloMsg(1);
+		InitDiabloMsg(EMSG_NO_AUTOMAP_IN_TOWN);
 	}
 }
 // 679660: using guessed type char gbMaxPlayers;
@@ -1786,7 +1786,6 @@ LABEL_33:
 // 4B8CC0: using guessed type char pcursitem;
 // 4B8CC1: using guessed type char pcursobj;
 // 4B8CC2: using guessed type char pcursplr;
-// 5BB1ED: using guessed type char leveltype;
 
 void __fastcall control_print_info_str(int y, char *str, bool center, int lines)
 {
@@ -2516,7 +2515,6 @@ void __cdecl RedBack()
 	}
 }
 // 525728: using guessed type int light4flag;
-// 5BB1ED: using guessed type char leveltype;
 
 char __fastcall GetSBookTrans(int ii, BOOL townok)
 {

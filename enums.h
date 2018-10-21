@@ -1784,6 +1784,53 @@ enum dungeon_message {
     DMSG_DIABLO    = 1 << 4,
 };
 
+enum diablo_message {
+    EMSG_NONE                   = 0,
+    EMSG_NO_AUTOMAP_IN_TOWN     = 1,
+    EMSG_NO_MULTIPLAYER_IN_DEMO = 2,
+    EMSG_DIRECT_SOUND_FAILED    = 3,
+    EMSG_NOT_IN_SHAREWARE       = 4,
+    EMSG_NO_SPACE_TO_SAVE       = 5,
+    EMSG_NO_PAUSE_IN_TOWN       = 6,
+    EMSG_COPY_TO_HDD            = 7,
+    EMSG_DESYNC                 = 8,
+    EMSG_NO_PAUSE_IN_MP         = 9,
+    EMSG_LOADING                = 10,
+    EMSG_SAVING                 = 11,
+    EMSG_SHRINE_MYSTERIOUS      = 12,
+    EMSG_SHRINE_HIDDEN          = 13,
+    EMSG_SHRINE_GLOOMY          = 14,
+    EMSG_SHRINE_WEIRD           = 15,
+    EMSG_SHRINE_MAGICAL         = 16,
+    EMSG_SHRINE_STONE           = 17,
+    EMSG_SHRINE_RELIGIOUS       = 18,
+    EMSG_SHRINE_ENCHANTED       = 19,
+    EMSG_SHRINE_THAUMATURGIC    = 20,
+    EMSG_SHRINE_FASCINATING     = 21,
+    EMSG_SHRINE_CRYPTIC         = 22,
+    EMSG_SHRINE_UNUSED          = 23,
+    EMSG_SHRINE_ELDRITCH        = 24,
+    EMSG_SHRINE_EERIE           = 25,
+    EMSG_SHRINE_DIVINE          = 26,
+    EMSG_SHRINE_HOLY            = 27,
+    EMSG_SHRINE_SACRED          = 28,
+    EMSG_SHRINE_SPIRITUAL       = 29,
+    EMSG_SHRINE_SPOOKY1         = 30,
+    EMSG_SHRINE_SPOOKY2         = 31,
+    EMSG_SHRINE_ABANDONED       = 32,
+    EMSG_SHRINE_CREEPY          = 33,
+    EMSG_SHRINE_QUIET           = 34,
+    EMSG_SHRINE_SECLUDED        = 35,
+    EMSG_SHRINE_ORNATE          = 36,
+    EMSG_SHRINE_GLIMMERING      = 37,
+    EMSG_SHRINE_TAINTED1        = 38,
+    EMSG_SHRINE_TAINTED2        = 39,
+    EMSG_REQUIRES_LVL_8         = 40,
+    EMSG_REQUIRES_LVL_13        = 41,
+    EMSG_REQUIRES_LVL_17        = 42,
+    EMSG_BONECHAMB              = 43,
+};
+
 enum magic_type {
     STYPE_FIRE      = 0x0,
     STYPE_LIGHTNING = 0x1,
@@ -1876,12 +1923,12 @@ enum MON_MODE {
 };
 
 enum MON_ANIM {
-    MA_STAND     = 0,
-    MA_WALK      = 1,
-    MA_ATTACK    = 2,
-    MA_GOTHIT    = 3,
-    MA_DEATH     = 4,
-    MA_SPECIAL   = 5,
+    MA_STAND   = 0,
+    MA_WALK    = 1,
+    MA_ATTACK  = 2,
+    MA_GOTHIT  = 3,
+    MA_DEATH   = 4,
+    MA_SPECIAL = 5,
 };
 
 enum PLR_MODE {

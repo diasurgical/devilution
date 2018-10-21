@@ -2,46 +2,27 @@
 
 #include "../types.h"
 
-int mainmenu_cpp_init_value; // weak
+static float mainmenu_cpp_init_value = INFINITY;
 char chr_name_str[16];
-
-const int mainmenu_inf = 0x7F800000; // weak
 
 /* data */
 
-int menu_music_track_id = 5; // idb
-
-struct mainmenu_cpp_init
-{
-	mainmenu_cpp_init()
-	{
-		mainmenu_cpp_init_value = mainmenu_inf;
-	}
-} _mainmenu_cpp_init;
-// 47F074: using guessed type int mainmenu_inf;
-// 646CE0: using guessed type int mainmenu_cpp_init_value;
+int menu_music_track_id = 5;
 
 void __cdecl mainmenu_refresh_music()
 {
-	int v0; // eax
-
-	music_start(menu_music_track_id);
-	v0 = menu_music_track_id;
-	do
-	{
-		if ( ++v0 == 6 )
-			v0 = 0;
-	}
-	while ( !v0 || v0 == 1 );
-	menu_music_track_id = v0;
+    music_start(menu_music_track_id);
+    do {
+        menu_music_track_id++;
+        if (menu_music_track_id == 6)
+            menu_music_track_id = 0;
+    } while (!menu_music_track_id || menu_music_track_id == 1);
 }
 
-void __stdcall mainmenu_create_hero(char *a1, char *a2)
+void __stdcall mainmenu_create_hero(char *name_1, char *name_2)
 {
-	// char *v2; // [esp-14h] [ebp-14h]
-
-	if ( UiValidPlayerName(a1) ) /* v2 */
-		pfile_create_save_file(a1, a2);
+    if (UiValidPlayerName(name_1))
+        pfile_create_save_file(name_1, name_2);
 }
 
 int __stdcall mainmenu_select_hero_dialog(
@@ -54,12 +35,8 @@ int __stdcall mainmenu_select_hero_dialog(
     char *cdesc, DWORD cdlen,
     BOOL *multi)
 {
-    int v10; // eax
-    int a6;  // [esp+8h] [ebp-8h]
-    int a5;  // [esp+Ch] [ebp-4h]
-
-    a6 = 1;
-    a5 = 0;
+    int a6 = 1;
+    int a5 = 0;
     if (gbMaxPlayers == 1) {
         if (!UiSelHeroSingDialog(
                 pfile_ui_set_hero_infos,
@@ -70,11 +47,12 @@ int __stdcall mainmenu_select_hero_dialog(
                 chr_name_str,
                 &gnDifficulty))
             TermMsg("Unable to display SelHeroSing");
-        if (a5 == 2) {
-            dword_5256E8 = 1;
-            goto LABEL_6;
-        }
-        dword_5256E8 = 0;
+
+        if (a5 == 2)
+            dword_5256E8 = TRUE;
+        else
+            dword_5256E8 = FALSE;
+
     } else if (!UiSelHeroMultDialog(
                    pfile_ui_set_hero_infos,
                    pfile_ui_save_create,
@@ -89,23 +67,19 @@ int __stdcall mainmenu_select_hero_dialog(
         SErrSetLastError(1223);
         return 0;
     }
-LABEL_6:
+
     pfile_create_player_description(cdesc, cdlen);
     if (multi) {
         if (mode == 'BNET')
-            v10 = a6 || !plr[myplr].pBattleNet;
+            *multi = a6 || !plr[myplr].pBattleNet;
         else
-            v10 = a6;
-        *multi = v10;
+            *multi = a6;
     }
-    if (cname) {
-        if (clen)
-            SStrCopy(cname, chr_name_str, clen);
-    }
+    if (cname && clen)
+        SStrCopy(cname, chr_name_str, clen);
+
     return 1;
 }
-// 5256E8: using guessed type int dword_5256E8;
-// 679660: using guessed type char gbMaxPlayers;
 
 void __cdecl mainmenu_loop()
 {
@@ -151,38 +125,36 @@ LABEL_16:
 }
 // 634980: using guessed type int gbActive;
 
-int __cdecl mainmenu_single_player()
+BOOL __cdecl mainmenu_single_player()
 {
-	gbMaxPlayers = 1;
-	return mainmenu_init_menu(1);
+    gbMaxPlayers = 1;
+    return mainmenu_init_menu(1);
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-int __fastcall mainmenu_init_menu(int a1)
+BOOL __fastcall mainmenu_init_menu(int type)
 {
-	int v1; // esi
-	int v3; // esi
+    if (type == 4)
+        return 1;
 
-	v1 = a1;
-	if ( a1 == 4 )
-		return 1;
-	music_stop();
-	v3 = diablo_init_menu(v1 != 2, v1 != 3);
-	if ( v3 )
-		mainmenu_refresh_music();
-	return v3;
+    music_stop();
+
+    int success = diablo_init_menu(type != 2, type != 3);
+    if (success)
+        mainmenu_refresh_music();
+
+    return success;
 }
 
-int __cdecl mainmenu_multi_player()
+BOOL __cdecl mainmenu_multi_player()
 {
-	gbMaxPlayers = MAX_PLRS;
-	return mainmenu_init_menu(3);
+    gbMaxPlayers = MAX_PLRS;
+    return mainmenu_init_menu(3);
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 void __cdecl mainmenu_play_intro()
 {
-	music_stop();
-	play_movie("gendata\\diablo1.smk", 1);
-	mainmenu_refresh_music();
+    music_stop();
+    play_movie("gendata\\diablo1.smk", 1);
+    mainmenu_refresh_music();
 }

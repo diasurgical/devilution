@@ -982,7 +982,6 @@ void __cdecl SetupLocalCoords()
 	plr[myplr].destAction = ACTION_NONE;
 }
 // 52572C: using guessed type int leveldebug;
-// 5BB1ED: using guessed type char leveltype;
 // 5CF31D: using guessed type char setlevel;
 // 679660: using guessed type char gbMaxPlayers;
 
