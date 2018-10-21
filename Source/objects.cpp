@@ -4033,7 +4033,7 @@ LABEL_17:
 					quests[QTYPE_BONE]._qactive = 3;
 					if ( !deltaload )
 						PlaySfxLoc(IS_QUESTDN, object[i]._ox, object[i]._oy);
-					InitDiabloMsg(43);
+					InitDiabloMsg(EMSG_BONECHAMB);
 					AddMissile(
 						plr[myplr].WorldX,
 						plr[myplr].WorldY,
@@ -4868,7 +4868,7 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 						ModifyPlrStr(arglist, 6);
 					}
 					CheckStats(arglist);
-					_LOBYTE(v7) = 12;
+					_LOBYTE(v7) = EMSG_SHRINE_MYSTERIOUS;
 					goto LABEL_221;
 				}
 				return;
@@ -4959,7 +4959,7 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 				if ( v25 <= 0 )
 					*(_DWORD *)v7 = 1;
 LABEL_47:
-				_LOBYTE(v7) = 13;
+				_LOBYTE(v7) = EMSG_SHRINE_HIDDEN;
 				goto LABEL_221;
 			case SHRINE_GLOOMY:
 				if ( v5 )
@@ -5034,7 +5034,7 @@ LABEL_47:
 					}
 					while ( v36 < plr[v34]._pNumInv );
 				}
-				_LOBYTE(v7) = 15;
+				_LOBYTE(v7) = EMSG_SHRINE_WEIRD;
 				goto LABEL_221;
 			case SHRINE_MAGICAL:
 			case SHRINE_MAGICAL2:
@@ -5053,7 +5053,7 @@ LABEL_47:
 					2 * (unsigned char)leveltype);
 				if ( arglist != myplr )
 					return;
-				_LOBYTE(v7) = 16;
+				_LOBYTE(v7) = EMSG_SHRINE_MAGICAL;
 				goto LABEL_221;
 			case SHRINE_STONE:
 				if ( v5 )
@@ -5094,7 +5094,7 @@ LABEL_47:
 					--v44;
 				}
 				while ( v44 );
-				v7 = 17;
+				v7 = EMSG_SHRINE_STONE;
 				goto LABEL_221;
 			case SHRINE_RELIGIOUS:
 				if ( v5 )
@@ -5132,7 +5132,7 @@ LABEL_47:
 					--v51;
 				}
 				while ( v51 );
-				v7 = 18;
+				v7 = EMSG_SHRINE_RELIGIOUS;
 				goto LABEL_221;
 			case SHRINE_ENCHANTED:
 				if ( v5 || arglist != myplr )
@@ -5175,7 +5175,7 @@ LABEL_47:
 					else
 						*v61 -= 2;
 				}
-				_LOBYTE(v7) = 19;
+				_LOBYTE(v7) = EMSG_SHRINE_ENCHANTED;
 				goto LABEL_221;
 			case SHRINE_THAUMATURGIC:
 				for ( j = 0; j < nobjects; ++j )
@@ -5195,7 +5195,7 @@ LABEL_47:
 					return;
 				if ( arglist != myplr )
 					goto LABEL_280;
-				_LOBYTE(v7) = 20;
+				_LOBYTE(v7) = EMSG_SHRINE_THAUMATURGIC;
 				goto LABEL_221;
 			case SHRINE_FASCINATING:
 				if ( v5 || arglist != myplr )
@@ -5231,7 +5231,7 @@ LABEL_47:
 					*(int *)((char *)&plr[0]._pMaxManaBase + v7) = 0;
 					*(int *)((char *)&plr[0]._pMaxMana + v7) = v73;
 				}
-				_LOBYTE(v7) = 21;
+				_LOBYTE(v7) = EMSG_SHRINE_FASCINATING;
 				goto LABEL_221;
 			case SHRINE_CRYPTIC:
 				if ( v5 )
@@ -5250,7 +5250,7 @@ LABEL_47:
 					2 * (unsigned char)leveltype);
 				if ( arglist != myplr )
 					return;
-				_LOBYTE(v7) = 22;
+				_LOBYTE(v7) = EMSG_SHRINE_CRYPTIC;
 				plr[v77]._pMana = plr[v77]._pMaxMana;
 				plr[v77]._pManaBase = plr[v77]._pMaxManaBase;
 				goto LABEL_221;
@@ -5328,14 +5328,14 @@ LABEL_47:
 					sfx_idc = v82;
 				}
 				while ( !v56 );
-				_LOBYTE(v7) = 24;
+				_LOBYTE(v7) = EMSG_SHRINE_ELDRITCH;
 				goto LABEL_221;
 			case SHRINE_EERIE:
 				if ( v5 || arglist != myplr )
 					return;
 				ModifyPlrMag(arglist, 2);
 				CheckStats(arglist);
-				_LOBYTE(v7) = 25;
+				_LOBYTE(v7) = EMSG_SHRINE_EERIE;
 				goto LABEL_221;
 			case SHRINE_DIVINE:
 				if ( v5 || arglist != myplr )
@@ -5358,7 +5358,7 @@ LABEL_47:
 				plr[v87]._pHitPoints = plr[arglist]._pMaxHP;
 				v7 = plr[arglist]._pMaxHPBase;
 				plr[v87]._pHPBase = v7;
-				_LOBYTE(v7) = 26;
+				_LOBYTE(v7) = EMSG_SHRINE_DIVINE;
 				goto LABEL_221;
 			case SHRINE_HOLY:
 				if ( v5 )
@@ -5388,7 +5388,7 @@ LABEL_47:
 					2 * (unsigned char)leveltype);
 				if ( arglist != myplr )
 					return;
-				_LOBYTE(v7) = 27;
+				_LOBYTE(v7) = EMSG_SHRINE_HOLY;
 				goto LABEL_221;
 			case SHRINE_SACRED:
 				if ( v5 || arglist != myplr )
@@ -5424,7 +5424,7 @@ LABEL_47:
 					*(int *)((char *)&plr[0]._pMaxManaBase + v7) = 0;
 					*(int *)((char *)&plr[0]._pMaxMana + v7) = v102;
 				}
-				_LOBYTE(v7) = 28;
+				_LOBYTE(v7) = EMSG_SHRINE_SACRED;
 				goto LABEL_221;
 			case SHRINE_SPIRITUAL:
 				if ( v5 || arglist != myplr )
@@ -5449,18 +5449,17 @@ LABEL_47:
 					++sfx_idd;
 				}
 				while ( sfx_idd < 40 );
-				_LOBYTE(v7) = 29;
+				_LOBYTE(v7) = EMSG_SHRINE_SPIRITUAL;
 				goto LABEL_221;
 			case SHRINE_SPOOKY:
 				if ( v5 )
 					return;
 				if ( arglist == myplr )
 				{
-					_LOBYTE(v7) = 30;
+					_LOBYTE(v7) = EMSG_SHRINE_SPOOKY1;
 					goto LABEL_221;
 				}
-				_LOBYTE(v7) = 31;
-				InitDiabloMsg(v7);
+				InitDiabloMsg(EMSG_SHRINE_SPOOKY2);
 				v110 = myplr;
 				plr[v110]._pHitPoints = plr[myplr]._pMaxHP;
 				plr[v110]._pHPBase = plr[v110]._pMaxHPBase;
@@ -5474,7 +5473,7 @@ LABEL_47:
 				CheckStats(arglist);
 				if ( arglist != myplr )
 					goto LABEL_280;
-				_LOBYTE(v7) = 32;
+				_LOBYTE(v7) = EMSG_SHRINE_ABANDONED;
 				goto LABEL_221;
 			case SHRINE_CREEPY:
 				if ( v5 || arglist != myplr )
@@ -5483,7 +5482,7 @@ LABEL_47:
 				CheckStats(arglist);
 				if ( arglist != myplr )
 					goto LABEL_280;
-				_LOBYTE(v7) = 33;
+				_LOBYTE(v7) = EMSG_SHRINE_CREEPY;
 				goto LABEL_221;
 			case SHRINE_QUIET:
 				if ( v5 || arglist != myplr )
@@ -5492,7 +5491,7 @@ LABEL_47:
 				CheckStats(arglist);
 				if ( arglist != myplr )
 					goto LABEL_280;
-				_LOBYTE(v7) = 34;
+				_LOBYTE(v7) = EMSG_SHRINE_QUIET;
 				goto LABEL_221;
 			case SHRINE_SECLUDED:
 				if ( v5 )
@@ -5514,7 +5513,7 @@ LABEL_47:
 					++v7;
 				}
 				while ( v7 < 40 );
-				_LOBYTE(v7) = 35;
+				_LOBYTE(v7) = EMSG_SHRINE_SECLUDED;
 				goto LABEL_221;
 			case SHRINE_ORNATE:
 				if ( v5 || arglist != myplr )
@@ -5550,7 +5549,7 @@ LABEL_47:
 					*(int *)((char *)&plr[0]._pMaxManaBase + v7) = 0;
 					*(int *)((char *)&plr[0]._pMaxMana + v7) = v121;
 				}
-				_LOBYTE(v7) = 36;
+				_LOBYTE(v7) = EMSG_SHRINE_ORNATE;
 				goto LABEL_221;
 			case SHRINE_GLIMMERING:
 				if ( v5 || arglist != myplr )
@@ -5589,18 +5588,17 @@ LABEL_47:
 					--v131;
 				}
 				while ( v131 );
-				v7 = 37;
+				v7 = EMSG_SHRINE_GLIMMERING;
 				goto LABEL_221;
 			case SHRINE_TAINTED:
 				if ( v5 )
 					return;
 				if ( arglist == myplr )
 				{
-					_LOBYTE(v7) = 38;
+					_LOBYTE(v7) = EMSG_SHRINE_TAINTED1;
 					goto LABEL_221;
 				}
-				_LOBYTE(v7) = 39;
-				InitDiabloMsg(v7);
+				InitDiabloMsg(EMSG_SHRINE_TAINTED2);
 				v133 = random(155, 4);
 				v134 = 1;
 				v135 = 2 * (v133 == 1) - 1;

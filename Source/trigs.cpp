@@ -1332,21 +1332,21 @@ LABEL_34:
 		v5 = 1;
 		x = plr[myplr].WorldX;
 		_LOBYTE(y) = v3 + 1;
-		_LOBYTE(error_id) = 40;
+		_LOBYTE(error_id) = EMSG_REQUIRES_LVL_8;
 	}
 	if ( v0[1] == 9 && plr[v1]._pLevel < 13 )
 	{
 		v5 = 1;
 		_LOBYTE(x) = v2 + 1;
 		y = plr[v1].WorldY;
-		_LOBYTE(error_id) = 41;
+		_LOBYTE(error_id) = EMSG_REQUIRES_LVL_13;
 	}
 	if ( v0[1] == 13 && plr[v1]._pLevel < 17 )
 	{
 		x = plr[myplr].WorldX;
 		v5 = 1;
 		_LOBYTE(y) = v3 + 1;
-		_LOBYTE(error_id) = 42;
+		_LOBYTE(error_id) = EMSG_REQUIRES_LVL_17;
 	}
 	if ( !v5 )
 	{

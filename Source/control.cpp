@@ -1327,7 +1327,7 @@ void __cdecl DoAutoMap()
 	}
 	else
 	{
-		InitDiabloMsg(1);
+		InitDiabloMsg(EMSG_NO_AUTOMAP_IN_TOWN);
 	}
 }
 // 679660: using guessed type char gbMaxPlayers;
