@@ -7,17 +7,17 @@
 
 #include "resource.h"
 
-#include <windows.h>
-#include <mmsystem.h>
-#include <stdio.h>
 #include <ddraw.h>
 #include <dsound.h>
 #include <io.h>
 #include <math.h>
-#include <time.h>
+#include <mmsystem.h>
 #include <process.h>
-#include <shlobj.h>
 #include <shellapi.h>
+#include <shlobj.h>
+#include <stdio.h>
+#include <time.h>
+#include <windows.h>
 
 #ifdef __GNUC__
 #include <ctype.h>
@@ -25,24 +25,24 @@
 
 // tell Visual C++ to shut the hell up
 #ifdef _MSC_VER
-#pragma warning (disable : 4309) // truncation of constant value
-#pragma warning (disable : 4305) // truncation of int
-#pragma warning (disable : 4018) // signed/unsigned mismatch
-#pragma warning (disable : 4700) // used without having been initialized
-#pragma warning (disable : 4804) // unsafe use of type 'bool' in operation
-#pragma warning (disable : 4805) // unsafe bool mix
-#pragma warning (disable : 4244) // conversion loss
-#pragma warning (disable : 4800) // bool perf
-#pragma warning (disable : 4146) // negative unsigned
+#pragma warning(disable : 4309) // truncation of constant value
+#pragma warning(disable : 4305) // truncation of int
+#pragma warning(disable : 4018) // signed/unsigned mismatch
+#pragma warning(disable : 4700) // used without having been initialized
+#pragma warning(disable : 4804) // unsafe use of type 'bool' in operation
+#pragma warning(disable : 4805) // unsafe bool mix
+#pragma warning(disable : 4244) // conversion loss
+#pragma warning(disable : 4800) // bool perf
+#pragma warning(disable : 4146) // negative unsigned
 #endif
 
 #include "defs.h"
 #include "enums.h"
 #include "structs.h"
 
-#include "DiabloUI/diabloui.h"
-#include "3rdParty/Storm/Source/storm.h"
 #include "3rdParty/PKWare/pkware.h"
+#include "3rdParty/Storm/Source/storm.h"
+#include "DiabloUI/diabloui.h"
 
 // If defined, use copy protection [Default -> Defined]
 //#define COPYPROT
@@ -57,9 +57,8 @@
 // Will be replaced with [rep movsd] if optimization is used
 #define FAST_MEMCPY
 
-
 /* temp macro for asm XLAT */
-#define ASM_XLAT(eax,ebx) eax = (eax & 0xFFFFFF00) + LOBYTE(ebx[LOBYTE(eax)])
+#define ASM_XLAT(eax, ebx) eax = (eax & 0xFFFFFF00) + LOBYTE(ebx[LOBYTE(eax)])
 
 // header files
 #include "Source/appfat.h"

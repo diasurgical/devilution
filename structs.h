@@ -1297,7 +1297,7 @@ struct _SNETUIDATA {
         char *, DWORD,  /* character name will be copied here */
         char *, DWORD,  /* character "description" will be copied here (used to advertise games) */
         BOOL *          /* new character? - unsure about this */
-    );
+        );
     void(__cdecl *changenamecallback)();
 };
 
