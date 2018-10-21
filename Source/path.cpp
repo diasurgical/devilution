@@ -216,7 +216,6 @@ BOOL __fastcall path_parent_path(PATHNODE *pPath, int dx, int dy, int sx, int sy
     int next_g;
     PATHNODE *dxdy;
     int i;
-    char h_new;
 
     next_g = pPath->g + path_check_equal(pPath, dx, dy);
 
