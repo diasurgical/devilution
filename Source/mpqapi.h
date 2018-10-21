@@ -3,7 +3,7 @@
 #define __MPQAPI_H__
 
 extern int mpqapi_cpp_init_value; // weak
-extern int sgdwMpqOffset; // idb
+extern int sgdwMpqOffset;         // idb
 extern char mpq_buf[4096];
 extern _HASHENTRY *sgpHashTbl;
 extern bool save_archive_modified; // weak
@@ -23,7 +23,7 @@ void __fastcall mpqapi_free_block(int block_offset, int block_size);
 _BLOCKENTRY *__fastcall mpqapi_new_block(int *block_index);
 int __fastcall mpqapi_get_hash_index_of_path(const char *pszName);
 int __fastcall mpqapi_get_hash_index(short index, int hash_a, int hash_b, int locale);
-void __fastcall mpqapi_remove_hash_entries(BOOL (__stdcall *fnGetName)(DWORD, char *));
+void __fastcall mpqapi_remove_hash_entries(BOOL(__stdcall *fnGetName)(DWORD, char *));
 BOOL __fastcall mpqapi_write_file(const char *pszName, const BYTE *pbData, DWORD dwLen);
 _BLOCKENTRY *__fastcall mpqapi_add_file(const char *pszName, _BLOCKENTRY *pBlk, int block_index);
 bool __fastcall mpqapi_write_file_contents(const char *pszName, const BYTE *pbData, int dwLen, _BLOCKENTRY *pBlk);

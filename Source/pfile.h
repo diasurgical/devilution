@@ -17,7 +17,7 @@ BOOL __fastcall pfile_create_save_file(const char *name_1, const char *name_2);
 void __cdecl pfile_flush_W();
 void __fastcall game_2_ui_player(const PlayerStruct *p, _uiheroinfo *heroinfo, BOOL bHasSaveFile);
 unsigned char __fastcall game_2_ui_class(const PlayerStruct *p);
-BOOL __stdcall pfile_ui_set_hero_infos(BOOL (__stdcall *ui_add_hero_info)(_uiheroinfo *));
+BOOL __stdcall pfile_ui_set_hero_infos(BOOL(__stdcall *ui_add_hero_info)(_uiheroinfo *));
 char *__fastcall GetSaveDirectory(char *dst, int dst_size, unsigned int save_num);
 BOOL __fastcall pfile_read_hero(HANDLE archive, PkPlayerStruct *pPack);
 HANDLE __fastcall pfile_open_save_archive(int *unused, unsigned int save_num);
