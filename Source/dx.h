@@ -10,8 +10,8 @@ extern int sgdwLockCount;
 extern Screen *gpBuffer;
 extern IDirectDrawSurface *lpDDSBackBuf;
 extern IDirectDrawSurface *lpDDSPrimary;
-extern char gbBackBuf; // weak
-extern char gbEmulate; // weak
+extern char gbBackBuf;    // weak
+extern char gbEmulate;    // weak
 extern HMODULE ghDiabMod; // idb
 
 void __cdecl dx_cpp_init_1();
