@@ -1295,5 +1295,4 @@ LABEL_172:
 // 4B8CCC: using guessed type int dword_4B8CCC;
 // 52569C: using guessed type int zoomflag;
 // 52575C: using guessed type int doomflag;
-// 5BB1ED: using guessed type char leveltype;
 // 69BD04: using guessed type int questlog;

@@ -898,7 +898,6 @@ LABEL_23:
 		}
 	}
 }
-// 5BB1ED: using guessed type char leveltype;
 // 69BEF8: using guessed type int light_table_index;
 // 69CF14: using guessed type int level_cel_block;
 // 69CF20: using guessed type char arch_draw_type;
@@ -2958,7 +2957,7 @@ void __cdecl EnableFrameCount()
 }
 #endif
 
-void __fastcall scrollrt_draw_game_screen(bool draw_cursor)
+void __fastcall scrollrt_draw_game_screen(BOOL draw_cursor)
 {
 	int dwHgt; // edi
 
@@ -3389,4 +3388,3 @@ void __cdecl DrawAndBlit()
 }
 // 4B8960: using guessed type int talkflag;
 // 52571C: using guessed type int drawpanflag;
-// 5BB1ED: using guessed type char leveltype;

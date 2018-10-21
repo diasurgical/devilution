@@ -2322,7 +2322,6 @@ LABEL_18:
 		}
 	}
 }
-// 5BB1ED: using guessed type char leveltype;
 // 646D00: using guessed type char qtextflag;
 // 69F110: using guessed type int stextlhold;
 // 6A8A24: using guessed type int stextvhold;
@@ -4127,7 +4126,6 @@ void __cdecl STextEnter()
 		}
 	}
 }
-// 5BB1ED: using guessed type char leveltype;
 // 646D00: using guessed type char qtextflag;
 // 69F110: using guessed type int stextlhold;
 // 6A8A24: using guessed type int stextvhold;
@@ -4218,7 +4216,6 @@ void __cdecl CheckStoreBtn()
 		}
 	}
 }
-// 5BB1ED: using guessed type char leveltype;
 // 646D00: using guessed type char qtextflag;
 // 6A09E0: using guessed type char stextsize;
 // 6A6BB8: using guessed type int stextscrl;

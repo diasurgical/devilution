@@ -2976,7 +2976,6 @@ LABEL_11:
 	}
 	return TRUE;
 }
-// 5BB1ED: using guessed type char leveltype;
 
 void __fastcall UseStaffCharge(int pnum)
 {

@@ -1363,7 +1363,6 @@ void __cdecl MakeLightTable()
 	while ( (signed int)v43 < (signed int)&dung_map_rgba[16384] );
 }
 // 525728: using guessed type int light4flag;
-// 5BB1ED: using guessed type char leveltype;
 
 #ifdef _DEBUG
 void __cdecl ToggleLighting()
@@ -1750,4 +1749,3 @@ void __cdecl lighting_color_cycling()
 	}
 }
 // 525728: using guessed type int light4flag;
-// 5BB1ED: using guessed type char leveltype;

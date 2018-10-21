@@ -13,7 +13,7 @@ extern bool gbGameLoopStartup; // idb
 extern int glSeedTbl[NUMLEVELS];
 extern BOOL gbRunGame;
 extern int glMid3Seed[NUMLEVELS];
-extern int gbRunGameResult; // weak
+extern BOOL gbRunGameResult;
 extern int zoomflag; // weak
 extern BOOL gbProcessPlayers;
 extern int glEndSeed[NUMLEVELS];

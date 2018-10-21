@@ -29,7 +29,7 @@ char block_lvid[2049];
 //char byte_5B78EB;
 char dung_map[MAXDUNX][MAXDUNY];
 char nTrapTable[2049];
-char leveltype; // weak
+BYTE leveltype;
 unsigned char currlevel; // idb
 char TransList[256];
 UCHAR nSolidTable[2049];
@@ -134,7 +134,6 @@ LABEL_13:
 	}
 	mem_free_dbg(v0);
 }
-// 5BB1ED: using guessed type char leveltype;
 
 void __cdecl gendung_418D91()
 {
@@ -492,7 +491,6 @@ LABEL_66:
 }
 // 525728: using guessed type int light4flag;
 // 53CD4C: using guessed type int nlevel_frames;
-// 5BB1ED: using guessed type char leveltype;
 
 void __fastcall gendung_4191BF(int frames)
 {
@@ -666,7 +664,6 @@ void __cdecl SetDungeonMicros()
 	}
 }
 // 52569C: using guessed type int zoomflag;
-// 5BB1ED: using guessed type char leveltype;
 // 5C2FF8: using guessed type int dword_5C2FF8;
 // 5C2FFC: using guessed type int dword_5C2FFC;
 // 5C3000: using guessed type int scr_pix_width;
@@ -1250,7 +1247,6 @@ LABEL_53:
 		}
 	}
 }
-// 5BB1ED: using guessed type char leveltype;
 
 void __fastcall DRLG_PlaceThemeRooms(int minSize, int maxSize, int floor, int freq, int rndSize)
 {
@@ -1341,7 +1337,6 @@ void __fastcall DRLG_PlaceThemeRooms(int minSize, int maxSize, int floor, int fr
 	while ( v5 < 40 );
 }
 // 5A5590: using guessed type char TransVal;
-// 5BB1ED: using guessed type char leveltype;
 
 void __cdecl DRLG_HoldThemeRooms()
 {
@@ -1435,5 +1430,4 @@ void __cdecl InitLevels()
 	}
 }
 // 52572C: using guessed type int leveldebug;
-// 5BB1ED: using guessed type char leveltype;
 // 5CF31D: using guessed type char setlevel;

@@ -117,7 +117,7 @@ void __cdecl gmenu_init_menu()
 // 634478: using guessed type char byte_634478;
 // 63448C: using guessed type int dword_63448C;
 
-bool __cdecl gmenu_exception()
+BOOL __cdecl gmenu_exception()
 {
 	return dword_634480 != 0;
 }

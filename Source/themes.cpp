@@ -198,7 +198,6 @@ bool __fastcall TFit_SkelRoom(int t)
 	themeVar1 = i;
 	return TFit_Obj5(t);
 }
-// 5BB1ED: using guessed type char leveltype;
 
 bool __fastcall TFit_GoatShrine(int t)
 {
@@ -278,7 +277,6 @@ bool __fastcall TFit_Obj3(int t)
 	}
 	return 0;
 }
-// 5BB1ED: using guessed type char leveltype;
 
 bool __fastcall CheckThemeReqs(int t)
 {
@@ -361,7 +359,6 @@ LABEL_16:
 	}
 	return 0;
 }
-// 5BB1ED: using guessed type char leveltype;
 // 6AAA58: using guessed type int mFountainFlag;
 // 6AAA5C: using guessed type int cauldronFlag;
 // 6AAA60: using guessed type int tFountainFlag;
@@ -534,7 +531,6 @@ LABEL_16:
 	}
 	return 0;
 }
-// 5BB1ED: using guessed type char leveltype;
 
 void __cdecl InitThemes()
 {
@@ -653,7 +649,6 @@ LABEL_23:
 		}
 	}
 }
-// 5BB1ED: using guessed type char leveltype;
 // 6AAA3C: using guessed type int armorFlag;
 // 6AAA50: using guessed type int weaponFlag;
 // 6AAA54: using guessed type int treasureFlag;
@@ -706,7 +701,6 @@ void __cdecl HoldThemeRooms()
 		}
 	}
 }
-// 5BB1ED: using guessed type char leveltype;
 
 void __fastcall PlaceThemeMonsts(int t, int f)
 {
@@ -778,7 +772,6 @@ void __fastcall Theme_Barrel(int t)
 
 	PlaceThemeMonsts(t, monstrnd[leveltype-1]);
 }
-// 5BB1ED: using guessed type char leveltype;
 
 void __fastcall Theme_Shrine(int t)
 {
@@ -803,7 +796,6 @@ void __fastcall Theme_Shrine(int t)
 	}
 	PlaceThemeMonsts(t, monstrnd[leveltype-1]);
 }
-// 5BB1ED: using guessed type char leveltype;
 
 void __fastcall Theme_MonstPit(int t)
 {
@@ -839,7 +831,6 @@ void __fastcall Theme_MonstPit(int t)
 	ItemNoFlippy();
 	PlaceThemeMonsts(t, monstrnd[leveltype-1]);
 }
-// 5BB1ED: using guessed type char leveltype;
 
 void __fastcall Theme_SkelRoom(int t)
 {
@@ -895,7 +886,6 @@ void __fastcall Theme_SkelRoom(int t)
 	if ( !dObject[xp][yp + 3] )
 		AddObject(OBJ_SKELBOOK, xp, yp + 2);
 }
-// 5BB1ED: using guessed type char leveltype;
 
 void __fastcall Theme_Treasure(int t)
 {
@@ -938,7 +928,6 @@ void __fastcall Theme_Treasure(int t)
 	}
 	PlaceThemeMonsts(t, monstrnd[leveltype-1]);
 }
-// 5BB1ED: using guessed type char leveltype;
 
 void __fastcall Theme_Library(int t)
 {
@@ -1015,7 +1004,6 @@ void __fastcall Theme_Library(int t)
 	if ( !QuestStatus(QTYPE_ZHAR) || ta != zharlib )
 		PlaceThemeMonsts(ta, monstrnd[leveltype-1]);
 }
-// 5BB1ED: using guessed type char leveltype;
 // 6AAA64: using guessed type int zharlib;
 
 void __fastcall Theme_Torture(int t)
@@ -1068,7 +1056,6 @@ void __fastcall Theme_Torture(int t)
 	while ( (signed int)v8 < (signed int)&dPiece[1][111] );
 	PlaceThemeMonsts(v1, monstrnd[leveltype-1]);
 }
-// 5BB1ED: using guessed type char leveltype;
 
 void __fastcall Theme_BloodFountain(int t)
 {
@@ -1082,7 +1069,6 @@ void __fastcall Theme_BloodFountain(int t)
 	AddObject(OBJ_BLOODFTN, themex, themey);
 	PlaceThemeMonsts(t, monstrnd[leveltype-1]);
 }
-// 5BB1ED: using guessed type char leveltype;
 
 void __fastcall Theme_Decap(int t)
 {
@@ -1134,7 +1120,6 @@ void __fastcall Theme_Decap(int t)
 	while ( (signed int)v8 < (signed int)&dPiece[1][111] );
 	PlaceThemeMonsts(v1, monstrnd[leveltype-1]);
 }
-// 5BB1ED: using guessed type char leveltype;
 
 void __fastcall Theme_PurifyingFountain(int t)
 {
@@ -1148,7 +1133,6 @@ void __fastcall Theme_PurifyingFountain(int t)
 	AddObject(OBJ_PURIFYINGFTN, themex, themey);
 	PlaceThemeMonsts(t, monstrnd[leveltype-1]);
 }
-// 5BB1ED: using guessed type char leveltype;
 
 void __fastcall Theme_ArmorStand(int t)
 {
@@ -1206,7 +1190,6 @@ void __fastcall Theme_ArmorStand(int t)
 	PlaceThemeMonsts(ta, monstrnd[leveltype-1]);
 	armorFlag = 0;
 }
-// 5BB1ED: using guessed type char leveltype;
 // 6AAA3C: using guessed type int armorFlag;
 
 void __fastcall Theme_GoatShrine(int t)
@@ -1266,7 +1249,6 @@ void __fastcall Theme_Cauldron(int t)
 	AddObject(OBJ_CAULDRON, themex, themey);
 	PlaceThemeMonsts(t, monstrnd[leveltype-1]);
 }
-// 5BB1ED: using guessed type char leveltype;
 
 void __fastcall Theme_MurkyFountain(int t)
 {
@@ -1280,7 +1262,6 @@ void __fastcall Theme_MurkyFountain(int t)
 	AddObject(OBJ_MURKYFTN, themex, themey);
 	PlaceThemeMonsts(t, monstrnd[leveltype-1]);
 }
-// 5BB1ED: using guessed type char leveltype;
 
 void __fastcall Theme_TearFountain(int t)
 {
@@ -1294,7 +1275,6 @@ void __fastcall Theme_TearFountain(int t)
 	AddObject(OBJ_TEARFTN, themex, themey);
 	PlaceThemeMonsts(t, monstrnd[leveltype-1]);
 }
-// 5BB1ED: using guessed type char leveltype;
 
 void __fastcall Theme_BrnCross(int t)
 {
@@ -1347,7 +1327,6 @@ void __fastcall Theme_BrnCross(int t)
 	PlaceThemeMonsts(ta, monstrnd[leveltype-1]);
 	bCrossFlag = 1;
 }
-// 5BB1ED: using guessed type char leveltype;
 // 6AAC10: using guessed type int bCrossFlag;
 
 void __fastcall Theme_WeaponRack(int t)
@@ -1406,7 +1385,6 @@ void __fastcall Theme_WeaponRack(int t)
 	PlaceThemeMonsts(ta, monstrnd[leveltype-1]);
 	weaponFlag = 0;
 }
-// 5BB1ED: using guessed type char leveltype;
 // 6AAA50: using guessed type int weaponFlag;
 
 void __cdecl UpdateL4Trans()
@@ -1497,5 +1475,4 @@ void __cdecl CreateThemeRooms()
 			UpdateL4Trans();
 	}
 }
-// 5BB1ED: using guessed type char leveltype;
 // 67D7C0: using guessed type int InitObjFlag;

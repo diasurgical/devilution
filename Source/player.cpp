@@ -232,7 +232,6 @@ void __fastcall LoadPlrGFX(int pnum, player_graphic gfxflag)
         p->_pGFXLoad |= i;
     }
 }
-// 5BB1ED: using guessed type char leveltype;
 
 void __fastcall InitPlayerGFX(int pnum)
 {
@@ -491,7 +490,6 @@ void __fastcall SetPlrAnims(int pnum)
         }
     }
 }
-// 5BB1ED: using guessed type char leveltype;
 
 void __fastcall ClearPlrRVars(PlayerStruct *p)
 {
@@ -1035,7 +1033,6 @@ void __fastcall PlrDoTrans(int x, int y)
         }
     }
 }
-// 5BB1ED: using guessed type char leveltype;
 
 void __fastcall SetPlayerOld(int pnum)
 {
@@ -1404,7 +1401,6 @@ void __fastcall StartWalk3(int pnum, int xvel, int yvel, int xoff, int yoff, int
     }
 }
 // 52569C: using guessed type int zoomflag;
-// 5BB1ED: using guessed type char leveltype;
 
 void __fastcall StartAttack(int pnum, int d)
 {
@@ -1518,7 +1514,6 @@ void __fastcall StartSpell(int pnum, int d, int cx, int cy)
     plr[pnum]._pVar4 = GetSpellLevel(pnum, plr[pnum]._pSpell);
     plr[pnum]._pVar8 = 1;
 }
-// 5BB1ED: using guessed type char leveltype;
 
 void __fastcall FixPlrWalkTags(int pnum)
 {
@@ -1991,8 +1986,6 @@ void __fastcall StartNewLvl(int pnum, int fom, int lvl)
         }
     }
 }
-// 5BB1ED: using guessed type char leveltype;
-
 void __fastcall RestartTownLvl(int pnum)
 {
     InitLevelChange(pnum);
@@ -2092,7 +2085,6 @@ BOOL __fastcall PM_DoWalk(int pnum)
     PM_ChangeOffset(pnum);
     return FALSE;
 }
-// 5BB1ED: using guessed type char leveltype;
 
 BOOL __fastcall PM_DoWalk2(int pnum)
 {
@@ -2141,7 +2133,6 @@ BOOL __fastcall PM_DoWalk2(int pnum)
     PM_ChangeOffset(pnum);
     return FALSE;
 }
-// 5BB1ED: using guessed type char leveltype;
 
 BOOL __fastcall PM_DoWalk3(int pnum)
 {
@@ -2195,7 +2186,6 @@ BOOL __fastcall PM_DoWalk3(int pnum)
     PM_ChangeOffset(pnum);
     return FALSE;
 }
-// 5BB1ED: using guessed type char leveltype;
 
 BOOL __fastcall WeaponDur(int pnum, int durrnd)
 {
@@ -2806,7 +2796,6 @@ BOOL __fastcall PM_DoSpell(int pnum)
     return FALSE;
 }
 // 52571C: using guessed type int drawpanflag;
-// 5BB1ED: using guessed type char leveltype;
 
 BOOL __fastcall PM_DoGotHit(int pnum)
 {
@@ -3636,7 +3625,6 @@ void __fastcall CheckPlrSpell()
     }
 }
 // 4B8CC2: using guessed type char pcursplr;
-// 5BB1ED: using guessed type char leveltype;
 
 void __fastcall SyncPlrAnim(int pnum)
 {

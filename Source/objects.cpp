@@ -457,7 +457,6 @@ bool __fastcall RndLocOk(int xp, int yp)
 	}
 	return result;
 }
-// 5BB1ED: using guessed type char leveltype;
 
 void __fastcall InitRndLocObj(int min, int max, int objtype)
 {
@@ -1141,7 +1140,6 @@ void __cdecl AddChestTraps()
 	}
 	while ( v0 < 112 );
 }
-// 5BB1ED: using guessed type char leveltype;
 
 void __fastcall LoadMapObjects(unsigned char *pMap, int startx, int starty, int x1, int y1, int w, int h, int leveridx)
 {
@@ -1592,12 +1590,11 @@ void __cdecl InitObjects()
 		InitRndLocObj(1, 5, 7);
 		if ( leveltype != 4 )
 			AddObjTraps();
-		if ( (unsigned char)leveltype > 1u )
+		if ( leveltype > 1u )
 			AddChestTraps();
 		InitObjFlag = 0;
 	}
 }
-// 5BB1ED: using guessed type char leveltype;
 // 5CF330: using guessed type int setpc_h;
 // 5CF334: using guessed type int setpc_w;
 // 679660: using guessed type char gbMaxPlayers;
@@ -1707,7 +1704,6 @@ void __fastcall SetMapObjects(unsigned char *pMap, int startx, int starty)
 	}
 	InitObjFlag = 0;
 }
-// 5BB1ED: using guessed type char leveltype;
 // 67D7C0: using guessed type int InitObjFlag;
 // 67D7C4: using guessed type int numobjfiles;
 // 4427C5: using guessed type int var_10C[56];
@@ -2820,10 +2816,10 @@ void __fastcall Obj_BCrossDamage(int i)
 	{
 		v3 = plr[v1]._pFireResist;
 		if ( v3 > 0 )
-			damage[(unsigned char)leveltype-1] -= v3 * damage[(unsigned char)leveltype-1] / 100;
+			damage[leveltype-1] -= v3 * damage[leveltype-1] / 100;
 		if ( plr[v1].WorldX == object[v8]._ox && plr[v1].WorldY == object[v8]._oy - 1 )
 		{
-			v4 = damage[(unsigned char)leveltype-1];
+			v4 = damage[leveltype-1];
 			plr[v1]._pHitPoints -= v4;
 			plr[v1]._pHPBase -= v4;
 			if ( plr[v1]._pHitPoints >> 6 <= 0 )
@@ -2844,7 +2840,6 @@ void __fastcall Obj_BCrossDamage(int i)
 		}
 	}
 }
-// 5BB1ED: using guessed type char leveltype;
 
 void __cdecl ProcessObjects()
 {
@@ -3021,7 +3016,6 @@ void __fastcall ObjSetMicro(int dx, int dy, int pn)
 		while ( v6 < 10 );
 	}
 }
-// 5BB1ED: using guessed type char leveltype;
 
 void __fastcall objects_set_door_piece(int x, int y)
 {
@@ -3838,7 +3832,6 @@ void __fastcall ObjChangeMap(int x1, int y1, int x2, int y2)
 		AddL2Objs(2 * v6 + 16, v9, v8, y_end); /* v10 */
 	}
 }
-// 5BB1ED: using guessed type char leveltype;
 
 void __fastcall ObjChangeMapResync(int x1, int y1, int x2, int y2)
 {
@@ -3876,7 +3869,6 @@ void __fastcall ObjChangeMapResync(int x1, int y1, int x2, int y2)
 	if ( leveltype == DTYPE_CATACOMBS )
 		ObjL2Special(2 * v6 + 16, 2 * v5 + 16, 2 * x2 + 17, 2 * v4 + 17);
 }
-// 5BB1ED: using guessed type char leveltype;
 
 void __fastcall OperateL1Door(int pnum, int i, unsigned char sendflag)
 {
@@ -5050,7 +5042,7 @@ LABEL_47:
 					-1,
 					arglist,
 					0,
-					2 * (unsigned char)leveltype);
+					2 * leveltype);
 				if ( arglist != myplr )
 					return;
 				_LOBYTE(v7) = EMSG_SHRINE_MAGICAL;
@@ -5247,7 +5239,7 @@ LABEL_47:
 					-1,
 					arglist,
 					0,
-					2 * (unsigned char)leveltype);
+					2 * leveltype);
 				if ( arglist != myplr )
 					return;
 				_LOBYTE(v7) = EMSG_SHRINE_CRYPTIC;
@@ -5385,7 +5377,7 @@ LABEL_47:
 					-1,
 					arglist,
 					0,
-					2 * (unsigned char)leveltype);
+					2 * leveltype);
 				if ( arglist != myplr )
 					return;
 				_LOBYTE(v7) = EMSG_SHRINE_HOLY;
@@ -5435,7 +5427,7 @@ LABEL_47:
 				{
 					if ( !plr[v106].InvGrid[sfx_idd] )
 					{
-						v107 = 5 * (unsigned char)leveltype + random(160, 10 * (unsigned char)leveltype);
+						v107 = 5 * leveltype + random(160, 10 * leveltype);
 						v108 = plr[v106]._pNumInv;
 						v109 = v106 * 21720 + 368 * v108;
 						qmemcpy((char *)plr[0].InvList + v109, &golditem, 0x170u);
@@ -5657,7 +5649,6 @@ LABEL_280:
 }
 // 4B84DC: using guessed type int dropGoldFlag;
 // 52571C: using guessed type int drawpanflag;
-// 5BB1ED: using guessed type char leveltype;
 // 676190: using guessed type int deltaload;
 
 void __fastcall OperateSkelBook(int pnum, int i, unsigned char sendmsg)
@@ -5987,7 +5978,7 @@ LABEL_38:
 					-1,
 					v4,
 					0,
-					2 * (unsigned char)leveltype);
+					2 * leveltype);
 				v5 = 1;
 				if ( v4 == myplr )
 					NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, v2);
@@ -6055,7 +6046,6 @@ LABEL_38:
 	return v5;
 }
 // 52571C: using guessed type int drawpanflag;
-// 5BB1ED: using guessed type char leveltype;
 // 676190: using guessed type int deltaload;
 
 void __fastcall OperateWeaponRack(int pnum, int i, unsigned char sendmsg)
@@ -6114,7 +6104,7 @@ LABEL_12:
 	{
 		v11 = object[v4]._ox;
 		v12 = object[v4]._oy;
-		if ( (unsigned char)leveltype <= 1u )
+		if ( leveltype <= 1u )
 			CreateTypeItem(v11, v12, 0, v9, 0, sendmsg, 0);
 		else
 			CreateTypeItem(v11, v12, 1u, v9, 0, sendmsg, 0);
@@ -6122,7 +6112,6 @@ LABEL_12:
 			NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, v3);
 	}
 }
-// 5BB1ED: using guessed type char leveltype;
 // 676190: using guessed type int deltaload;
 
 void __fastcall OperateStoryBook(int pnum, int i)

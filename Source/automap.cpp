@@ -139,7 +139,6 @@ void __cdecl InitAutomap()
 	}
 	while ( v13 < 112 );
 }
-// 5BB1ED: using guessed type char leveltype;
 
 void __cdecl StartAutomap()
 {
@@ -304,7 +303,6 @@ void __cdecl DrawAutomap()
 	DrawAutomapGame();
 }
 // 4B8968: using guessed type int sbookflag;
-// 5BB1ED: using guessed type char leveltype;
 // 69BD04: using guessed type int questlog;
 // 69CF0C: using guessed type int gpBufEnd;
 

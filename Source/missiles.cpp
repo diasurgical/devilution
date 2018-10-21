@@ -3017,20 +3017,19 @@ LABEL_14:
 	{
 		if ( setlevel )
 		{
-			_LOWORD(v21) = (unsigned char)leveltype;
+			_LOWORD(v21) = leveltype;
 			v22 = v21;
 			_LOWORD(v21) = setlvlnum;
 			NetSendCmdLocParam3(TRUE, CMD_ACTIVATEPORTAL, v9, v11, v21, v22, 1);
 		}
 		else
 		{
-			_LOWORD(v20) = (unsigned char)leveltype;
+			_LOWORD(v20) = leveltype;
 			_LOWORD(v21) = currlevel;
 			NetSendCmdLocParam3(TRUE, CMD_ACTIVATEPORTAL, v9, v11, v21, v20, 0);
 		}
 	}
 }
-// 5BB1ED: using guessed type char leveltype;
 // 5CF31D: using guessed type char setlevel;
 
 void __fastcall AddFlash(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
@@ -6232,7 +6231,6 @@ void __fastcall MI_Teleport(int i)
 		missile[v1]._miDelFlag = 1;
 	}
 }
-// 5BB1ED: using guessed type char leveltype;
 
 void __fastcall MI_Stone(int i)
 {
