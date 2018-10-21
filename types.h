@@ -7,17 +7,17 @@
 
 #include "resource.h"
 
+#include <windows.h>
+#include <mmsystem.h>
+#include <stdio.h>
 #include <ddraw.h>
 #include <dsound.h>
 #include <io.h>
 #include <math.h>
-#include <mmsystem.h>
-#include <process.h>
-#include <shellapi.h>
-#include <shlobj.h>
-#include <stdio.h>
 #include <time.h>
-#include <windows.h>
+#include <process.h>
+#include <shlobj.h>
+#include <shellapi.h>
 
 #ifdef __GNUC__
 #include <ctype.h>
