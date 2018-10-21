@@ -3,9 +3,9 @@
 #define __LOGGING_H__
 
 extern int log_cpp_init_value; // weak
-extern CHAR FileName[260]; // idb
+extern CHAR FileName[260];     // idb
 extern char log_buffer[388];
-extern LPCVOID lpAddress; // idb
+extern LPCVOID lpAddress;           // idb
 extern DWORD nNumberOfBytesToWrite; // idb
 
 void __cdecl log_cpp_init_1();
@@ -26,6 +26,6 @@ extern const int log_inf; // weak
 /* data */
 
 extern int log_not_created; // weak
-extern HANDLE log_file; // idb
+extern HANDLE log_file;     // idb
 
 #endif /* __LOGGING_H__ */

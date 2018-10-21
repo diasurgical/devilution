@@ -3,8 +3,8 @@
 #define __FAULT_H__
 
 struct STACK_FRAME {
-	STACK_FRAME *pNext;
-	void *pCallRet;
+    STACK_FRAME *pNext;
+    void *pCallRet;
 };
 
 //int dword_52B9F4;
