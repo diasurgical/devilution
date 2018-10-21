@@ -3,7 +3,7 @@
 #include "../types.h"
 
 // BUGFIX: only the first 256 elements are ever read
-USHORT automaptype[512];
+WORD automaptype[512];
 static int MapX;
 static int MapY;
 BOOL automapflag; // idb
@@ -247,7 +247,7 @@ void __cdecl DrawAutomap()
         int y;
 
         for (j = 0; j < cells; j++) {
-            USHORT maptype = GetAutomapType(mapx + j, mapy - j, TRUE);
+            WORD maptype = GetAutomapType(mapx + j, mapy - j, TRUE);
             if (maptype)
                 DrawAutomapType(x, screen_y, maptype);
             x += AutoMapPosBits;
@@ -256,7 +256,7 @@ void __cdecl DrawAutomap()
         x = screen_x - AutoMapXPos;
         y = screen_y + AutoMapYPos;
         for (j = 0; j <= cells; j++) {
-            USHORT maptype = GetAutomapType(mapx + j, mapy - j, TRUE);
+            WORD maptype = GetAutomapType(mapx + j, mapy - j, TRUE);
             if (maptype)
                 DrawAutomapType(x, y, maptype);
             x += AutoMapPosBits;
@@ -271,7 +271,7 @@ void __cdecl DrawAutomap()
 // 69BD04: using guessed type int questlog;
 // 69CF0C: using guessed type int gpBufEnd;
 
-void __fastcall DrawAutomapType(int screen_x, int screen_y, USHORT automap_type)
+void __fastcall DrawAutomapType(int screen_x, int screen_y, WORD automap_type)
 {
     BOOL do_vert;
     BOOL do_horz;
@@ -279,7 +279,7 @@ void __fastcall DrawAutomapType(int screen_x, int screen_y, USHORT automap_type)
     BOOL do_cave_vert;
     int x1, y1, x2, y2;
 
-    UCHAR flags = automap_type >> 8;
+    BYTE flags = automap_type >> 8;
 
     if (flags & MAPFLAG_SQUARE) {
         ENG_set_pixel(screen_x, screen_y, COLOR_DIM);
@@ -527,7 +527,7 @@ void __cdecl DrawAutomapPlr()
     }
 }
 
-USHORT __fastcall GetAutomapType(int x, int y, BOOL view)
+WORD __fastcall GetAutomapType(int x, int y, BOOL view)
 {
     if (view) {
         if (x == -1 && y >= 0 && y < DMAXY && automapview[0][y])
@@ -542,7 +542,7 @@ USHORT __fastcall GetAutomapType(int x, int y, BOOL view)
 
     if (x >= 0 && x < DMAXX && y >= 0 && y < DMAXY) {
         if (automapview[x][y] || !view) {
-            USHORT type = automaptype[(UCHAR)dungeon[x][y]];
+            WORD type = automaptype[(BYTE)dungeon[x][y]];
             if (type == 7 && GetAutomapType(x - 1, y, FALSE) & (MAPFLAG_HORZARCH << 8)
                 && GetAutomapType(x, y - 1, FALSE) & (MAPFLAG_VERTARCH << 8)) {
                 type = 1;
@@ -569,13 +569,12 @@ void __cdecl DrawAutomapGame()
         }
     }
     if (setlevel)
-        PrintGameStr(8, nextline, quest_level_names[(UCHAR)setlvlnum], COL_GOLD);
+        PrintGameStr(8, nextline, quest_level_names[(BYTE)setlvlnum], COL_GOLD);
     else if (currlevel) {
         sprintf(desc, "Level: %i", currlevel);
         PrintGameStr(8, nextline, desc, COL_GOLD);
     }
 }
-// 5CF31D: using guessed type char setlevel;
 
 void __fastcall SetAutomapView(int x, int y)
 {
@@ -588,8 +587,8 @@ void __fastcall SetAutomapView(int x, int y)
 
     automapview[xx][yy] = 1;
 
-    USHORT maptype = GetAutomapType(xx, yy, FALSE);
-    USHORT solid = maptype & 0x4000;
+    WORD maptype = GetAutomapType(xx, yy, FALSE);
+    WORD solid = maptype & 0x4000;
 
     switch (maptype & 0xF) {
     case 2:
