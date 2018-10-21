@@ -491,7 +491,7 @@ void __fastcall delta_leave_sync(BYTE bLevel)
 	if ( gbMaxPlayers != 1 )
 	{
 		v2 = currlevel == 0;
-		if ( !currlevel )
+		if ( currlevel == 0 )
 		{
 			v3 = GetRndSeed();
 			v2 = currlevel == 0;
@@ -680,7 +680,7 @@ void __cdecl DeltaLoadLevel()
 	if ( gbMaxPlayers != 1 )
 	{
 		deltaload = 1;
-		if ( currlevel )
+		if ( currlevel != 0 )
 		{
 			v0 = 0;
 			if ( nummonsters > 0 )
@@ -862,7 +862,7 @@ void __cdecl DeltaLoadLevel()
 			v32 = v8;
 		}
 		while ( v8 < 2794 );
-		if ( currlevel )
+		if ( currlevel != 0 )
 		{
 			v28 = 0;
 			do
@@ -1788,7 +1788,7 @@ int __fastcall On_ADDVIT(struct TCmdParam1 *pCmd, int pnum)
 int __fastcall On_SBSPELL(struct TCmdParam1 *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1) {
-		if (currlevel || spelldata[pCmd->wParam1].sTownSpell) {
+		if (currlevel != 0 || spelldata[pCmd->wParam1].sTownSpell) {
 			plr[pnum]._pSpell = pCmd->wParam1;
 			plr[pnum]._pSplType = plr[pnum]._pSBkSplType;
 			plr[pnum]._pSplFrom = 1;
@@ -2198,7 +2198,7 @@ int __fastcall On_RATTACKXY(struct TCmdLoc *pCmd, int pnum)
 int __fastcall On_SPELLXYD(struct TCmdLocParam3 *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
-		if (currlevel || spelldata[pCmd->wParam1].sTownSpell) {
+		if (currlevel != 0 || spelldata[pCmd->wParam1].sTownSpell) {
 			ClrPlrPath(pnum);
 			plr[pnum].destAction = ACTION_SPELLWALL;
 			plr[pnum].destParam1 = pCmd->x;
@@ -2218,7 +2218,7 @@ int __fastcall On_SPELLXYD(struct TCmdLocParam3 *pCmd, int pnum)
 int __fastcall On_SPELLXY(struct TCmdLocParam2 *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
-		if (currlevel || spelldata[pCmd->wParam1].sTownSpell) {
+		if (currlevel != 0 || spelldata[pCmd->wParam1].sTownSpell) {
 			ClrPlrPath(pnum);
 			plr[pnum].destAction = ACTION_SPELL;
 			plr[pnum].destParam1 = pCmd->x;
@@ -2237,7 +2237,7 @@ int __fastcall On_SPELLXY(struct TCmdLocParam2 *pCmd, int pnum)
 int __fastcall On_TSPELLXY(struct TCmdLocParam2 *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
-		if (currlevel || spelldata[pCmd->wParam1].sTownSpell) {
+		if (currlevel != 0 || spelldata[pCmd->wParam1].sTownSpell) {
 			ClrPlrPath(pnum);
 			plr[pnum].destAction = ACTION_SPELL;
 			plr[pnum].destParam1 = pCmd->x;
@@ -2341,7 +2341,7 @@ int __fastcall On_RATTACKPID(struct TCmdParam1 *pCmd, int pnum)
 int __fastcall On_SPELLID(struct TCmdParam3 *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
-		if (currlevel || spelldata[pCmd->wParam2].sTownSpell) {
+		if (currlevel != 0 || spelldata[pCmd->wParam2].sTownSpell) {
 			ClrPlrPath(pnum);
 			plr[pnum].destAction = ACTION_SPELLMON;
 			plr[pnum].destParam1 = pCmd->wParam1;
@@ -2359,7 +2359,7 @@ int __fastcall On_SPELLID(struct TCmdParam3 *pCmd, int pnum)
 int __fastcall On_SPELLPID(struct TCmdParam3 *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
-		if (currlevel || spelldata[pCmd->wParam2].sTownSpell) {
+		if (currlevel != 0 || spelldata[pCmd->wParam2].sTownSpell) {
 			ClrPlrPath(pnum);
 			plr[pnum].destAction = ACTION_SPELLPLR;
 			plr[pnum].destParam1 = pCmd->wParam1;
@@ -2377,7 +2377,7 @@ int __fastcall On_SPELLPID(struct TCmdParam3 *pCmd, int pnum)
 int __fastcall On_TSPELLID(struct TCmdParam3 *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
-		if (currlevel || spelldata[pCmd->wParam2].sTownSpell) {
+		if (currlevel != 0 || spelldata[pCmd->wParam2].sTownSpell) {
 			ClrPlrPath(pnum);
 			plr[pnum].destAction = ACTION_SPELLMON;
 			plr[pnum].destParam1 = pCmd->wParam1;
@@ -2395,7 +2395,7 @@ int __fastcall On_TSPELLID(struct TCmdParam3 *pCmd, int pnum)
 int __fastcall On_TSPELLPID(struct TCmdParam3 *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
-		if (currlevel || spelldata[pCmd->wParam2].sTownSpell) {
+		if (currlevel != 0 || spelldata[pCmd->wParam2].sTownSpell) {
 			ClrPlrPath(pnum);
 			plr[pnum].destAction = ACTION_SPELLPLR;
 			plr[pnum].destParam1 = pCmd->wParam1;
@@ -2560,7 +2560,7 @@ int __fastcall On_PLRDEAD(struct TCmdParam1 *pCmd, int pnum)
 
 int __fastcall On_PLRDAMAGE(struct TCmdDamage *pCmd, int pnum)
 {
-	if (pCmd->bPlr == myplr && currlevel) {
+	if (pCmd->bPlr == myplr && currlevel != 0) {
 		if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel && pCmd->dwDam <= 192000) {
 			if ((plr[myplr]._pHitPoints >> 6) > 0) {
 				drawhpflag = TRUE;
@@ -2759,7 +2759,7 @@ int __fastcall On_ACTIVATEPORTAL(struct TCmdLocParam3 *pCmd, int pnum)
 	else {
 		ActivatePortal(pnum, pCmd->x, pCmd->y, pCmd->wParam1, pCmd->wParam2, pCmd->wParam3);
 		if (pnum != myplr) {
-			if (!currlevel)
+			if (currlevel == 0)
 				AddInTownPortal(pnum);
 			else if (currlevel == plr[pnum].plrlevel) {
 				int i;
