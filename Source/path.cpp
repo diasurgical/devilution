@@ -3,7 +3,7 @@
 #include "../types.h"
 
 // preallocated nodes, search is terminated after 300 nodes are visited
-PATHNODE path_nodes[300];
+PATHNODE path_nodes[MAXPATHNODES];
 // size of the pnode_tblptr stack
 int gdwCurPathStep;
 // the number of in-use nodes in path_nodes
@@ -15,7 +15,7 @@ int pnode_vals[25];
 // a linked list of all visited nodes
 PATHNODE *pnode_ptr;
 // a stack for recursively searching nodes
-PATHNODE *pnode_tblptr[300];
+PATHNODE *pnode_tblptr[MAXPATHNODES];
 // a linked list of the A* frontier, sorted by distance
 PATHNODE *path_2_nodes;
 
@@ -151,7 +151,7 @@ PATHNODE *__cdecl GetNextPath()
 	PATHNODE *result;
 
 	result = path_2_nodes->NextNode;
-	if ( !result ) {
+	if ( result == NULL ) {
 		return result;
 	}
 
@@ -230,9 +230,9 @@ BOOL __fastcall path_parent_path(PATHNODE *pPath, int dx, int dy, int sx, int sy
 	// 3 cases to consider
 	// case 1: (dx,dy) is already on the frontier
 	dxdy = path_get_node1(dx, dy);
-	if ( dxdy ) {
+	if ( dxdy != NULL ) {
 		for ( i = 0; i < 8; i++ ) {
-			if ( !pPath->Child[i] )
+			if ( pPath->Child[i] == NULL )
 				break;
 		}
 		pPath->Child[i] = dxdy;
@@ -247,9 +247,9 @@ BOOL __fastcall path_parent_path(PATHNODE *pPath, int dx, int dy, int sx, int sy
 	} else {
 		// case 2: (dx,dy) was already visited
 		dxdy = path_get_node2(dx, dy);
-		if ( dxdy ) {
+		if ( dxdy != NULL ) {
 			for ( i = 0; i < 8; i++ ) {
-				if ( !pPath->Child[i] )
+				if ( pPath->Child[i] == NULL )
 					break;
 			}
 			pPath->Child[i] = dxdy;
@@ -265,7 +265,7 @@ BOOL __fastcall path_parent_path(PATHNODE *pPath, int dx, int dy, int sx, int sy
 		} else {
 			// case 3: (dx,dy) is totally new
 			dxdy = path_new_step();
-			if ( !dxdy )
+			if ( dxdy == NULL )
 				return FALSE;
 			dxdy->Parent = pPath;
 			dxdy->g = next_g;
@@ -276,8 +276,8 @@ BOOL __fastcall path_parent_path(PATHNODE *pPath, int dx, int dy, int sx, int sy
 			// add it to the frontier
 			path_next_node(dxdy);
 
-			for ( i = 0;i < 8; i++ ) {
-				if ( !pPath->Child[i] )
+			for ( i = 0; i < 8; i++ ) {
+				if ( pPath->Child[i] == NULL )
 					break;
 			}
 			pPath->Child[i] = dxdy;
@@ -290,7 +290,7 @@ BOOL __fastcall path_parent_path(PATHNODE *pPath, int dx, int dy, int sx, int sy
 PATHNODE *__fastcall path_get_node1(int dx, int dy)
 {
 	PATHNODE *result = path_2_nodes;
-	while ( result && (result->x != dx || result->y != dy) )
+	while ( result != NULL && (result->x != dx || result->y != dy) )
 		result = result->NextNode;
 	return result;
 }
@@ -299,7 +299,7 @@ PATHNODE *__fastcall path_get_node1(int dx, int dy)
 PATHNODE *__fastcall path_get_node2(int dx, int dy)
 {
 	PATHNODE *result = pnode_ptr;
-	while ( result && (result->x != dx || result->y != dy) )
+    while (result != NULL && (result->x != dx || result->y != dy))
 		result = result->NextNode;
 	return result;
 }
@@ -313,7 +313,7 @@ void __fastcall path_next_node(PATHNODE *pPath)
 
 	current = path_2_nodes;
 	next = path_2_nodes->NextNode;
-	if ( next )
+	if ( next != NULL )
 	{
 		do
 		{
@@ -321,8 +321,7 @@ void __fastcall path_next_node(PATHNODE *pPath)
 				break;
 			current = next;
 			next = next->NextNode;
-		}
-		while ( next );
+		} while (next != NULL);
 		pPath->NextNode = next;
 	}
 	current->NextNode = pPath;
@@ -340,7 +339,7 @@ void __fastcall path_set_coords(PATHNODE *pPath)
 		PathOld = path_pop_active_step();
 		for(i = 0; i < 8; i++) {
 			PathAct = PathOld->Child[i];
-			if ( !PathAct )
+			if ( PathAct == NULL )
 				break;
 
 			if ( PathOld->g + path_check_equal(PathOld, PathAct->x, PathAct->y) < PathAct->g ) {
@@ -374,7 +373,7 @@ PATHNODE *__cdecl path_pop_active_step()
  * none are available */
 PATHNODE *__cdecl path_new_step()
 {
-	if ( gdwCurNodes == 300 )
+    if ( gdwCurNodes == MAXPATHNODES )
 		return NULL;
 
 	PATHNODE *new_node = &path_nodes[gdwCurNodes];
