@@ -6,14 +6,14 @@ extern WORD automaptype[512];
 extern BOOL automapflag; // idb
 extern char AMbyte_4B7E4C[32];
 extern unsigned char automapview[DMAXX][DMAXY];
-extern int AutoMapScale; // idb
-extern int AutoMapXOfs; // weak
-extern int AutoMapYOfs; // weak
+extern int AutoMapScale;   // idb
+extern int AutoMapXOfs;    // weak
+extern int AutoMapYOfs;    // weak
 extern int AutoMapPosBits; // weak
-extern int AutoMapXPos; // weak
-extern int AutoMapYPos; // weak
-extern int AMPlayerX; // weak
-extern int AMPlayerY; // weak
+extern int AutoMapXPos;    // weak
+extern int AutoMapYPos;    // weak
+extern int AMPlayerX;      // weak
+extern int AMPlayerY;      // weak
 
 void __cdecl InitAutomapOnce();
 void __cdecl InitAutomap();

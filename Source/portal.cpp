@@ -123,35 +123,28 @@ void __fastcall SetCurrentPortal(int p)
 
 void __cdecl GetPortalLevel()
 {
-	if ( currlevel )
-	{
-		setlevel = 0;
-		currlevel = 0;
-		leveltype = 0;
-		plr[myplr].plrlevel = 0;
-	}
-	else
-	{
-		if ( portal[portalindex].setlvl )
-		{
-			setlevel = 1;
-			setlvlnum = portal[portalindex].level;
-		}
-		else
-		{
-			setlevel = 0;
-		}
+    if (currlevel) {
+        setlevel = 0;
+        currlevel = 0;
+        leveltype = 0;
+        plr[myplr].plrlevel = 0;
+    } else {
+        if (portal[portalindex].setlvl) {
+            setlevel = 1;
+            setlvlnum = portal[portalindex].level;
+        } else {
+            setlevel = 0;
+        }
 
-		currlevel = portal[portalindex].level;
-		leveltype = portal[portalindex].ltype;
-		plr[myplr].plrlevel = portal[portalindex].level;
+        currlevel = portal[portalindex].level;
+        leveltype = portal[portalindex].ltype;
+        plr[myplr].plrlevel = portal[portalindex].level;
 
-		if ( portalindex == myplr )
-		{
-			NetSendCmd(TRUE, CMD_DEACTIVATEPORTAL);
-			DeactivatePortal(portalindex);
-		}
-	}
+        if (portalindex == myplr) {
+            NetSendCmd(TRUE, CMD_DEACTIVATEPORTAL);
+            DeactivatePortal(portalindex);
+        }
+    }
 }
 // 5CF31D: using guessed type char setlevel;
 

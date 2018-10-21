@@ -10,12 +10,12 @@ extern PATHNODE *pnode_ptr;
 extern PATHNODE *pnode_tblptr[300];
 extern PATHNODE *path_2_nodes;
 
-int __fastcall FindPath(BOOL (__fastcall *PosOk)(int, int, int), int PosOkArg, int sx, int sy, int dx, int dy, char *path);
+int __fastcall FindPath(BOOL(__fastcall *PosOk)(int, int, int), int PosOkArg, int sx, int sy, int dx, int dy, char *path);
 int __fastcall path_get_h_cost(int sx, int sy, int dx, int dy);
 int __fastcall path_check_equal(PATHNODE *pPath, int dx, int dy);
 PATHNODE *__cdecl GetNextPath();
 BOOL __fastcall path_solid_pieces(PATHNODE *pPath, int dx, int dy);
-BOOL __fastcall path_get_path(BOOL (__fastcall *PosOk)(int, int, int), int PosOkArg, PATHNODE *pPath, int x, int y);
+BOOL __fastcall path_get_path(BOOL(__fastcall *PosOk)(int, int, int), int PosOkArg, PATHNODE *pPath, int x, int y);
 BOOL __fastcall path_parent_path(PATHNODE *pPath, int dx, int dy, int sx, int sy);
 PATHNODE *__fastcall path_get_node1(int dx, int dy);
 PATHNODE *__fastcall path_get_node2(int dx, int dy);
