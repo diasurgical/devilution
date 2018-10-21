@@ -17,7 +17,7 @@ BOOL gbRunGameResult;
 int zoomflag; // weak
 BOOL gbProcessPlayers;
 int glEndSeed[NUMLEVELS];
-int dword_5256E8; // weak
+BOOL dword_5256E8;
 HINSTANCE ghInst; // idb
 int DebugMonsters[10];
 char cineflag; // weak
@@ -122,7 +122,7 @@ int __fastcall diablo_init_menu(int a1, int bSinglePlayer)
 	while ( 1 )
 	{
 		pfExitProgram = 0;
-		dword_5256E8 = 0;
+		dword_5256E8 = FALSE;
 		if ( !NetInit(v2, &pfExitProgram) )
 			break;
 		byte_678640 = 0;
@@ -143,7 +143,6 @@ LABEL_11:
 	SNetDestroy();
 	return gbRunGameResult;
 }
-// 5256E8: using guessed type int dword_5256E8;
 // 678640: using guessed type char byte_678640;
 
 void __fastcall run_game_loop(int uMsg)

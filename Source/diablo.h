@@ -17,7 +17,7 @@ extern BOOL gbRunGameResult;
 extern int zoomflag; // weak
 extern BOOL gbProcessPlayers;
 extern int glEndSeed[NUMLEVELS];
-extern int dword_5256E8; // weak
+extern BOOL dword_5256E8;
 extern HINSTANCE ghInst; // idb
 extern int DebugMonsters[10];
 extern char cineflag; // weak
