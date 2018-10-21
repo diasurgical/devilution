@@ -51,6 +51,8 @@
 
 #define PLR_NAME_LEN			32
 
+#define MAXPATHNODES			300
+
 // 256 kilobytes + 3 bytes (demo leftover) for file magic (262147)
 // final game uses 4-byte magic instead of 3
 #define FILEBUFF				((256*1024)+3)
