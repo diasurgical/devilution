@@ -7,7 +7,7 @@ extern int uitemflag;
 extern int itemavail[MAXITEMS];
 extern ItemStruct curruitem;
 extern ItemGetRecordStruct itemrecord[MAXITEMS];
-extern ItemStruct item[MAXITEMS+1];
+extern ItemStruct item[MAXITEMS + 1];
 extern BOOL itemhold[3][3];
 extern unsigned char *Item2Frm[35];
 extern int UniqueItemFlag[128];
@@ -132,7 +132,6 @@ extern const PLStruct PL_Suffix[96];
 extern const UItemStruct UniqueItemList[91];
 
 /* data */
-
 
 extern ItemDataStruct AllItemsList[157];
 extern unsigned char ItemCAnimTbl[169];
