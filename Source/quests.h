@@ -8,13 +8,13 @@ extern void *pQLogCel;
 extern QuestStruct quests[MAXQUESTS];
 extern int qline; // weak
 extern int qlist[MAXQUESTS];
-extern int numqlines; // weak
-extern int WaterDone; // idb
+extern int numqlines;  // weak
+extern int WaterDone;  // idb
 extern int ReturnLvlY; // idb
 extern int ReturnLvlX; // idb
 extern int ReturnLvlT; // idb
-extern int ALLQUESTS; // idb
-extern int ReturnLvl; // idb
+extern int ALLQUESTS;  // idb
+extern int ReturnLvl;  // idb
 
 void __cdecl InitQuests();
 void __cdecl CheckQuests();
