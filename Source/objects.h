@@ -2,13 +2,13 @@
 #ifndef __OBJECTS_H__
 #define __OBJECTS_H__
 
-extern int trapid; // weak
+extern int trapid;  // weak
 extern int trapdir; // weak
 extern unsigned char *pObjCels[40];
 extern char ObjFileList[40];
 extern int objectactive[MAXOBJECTS];
 extern int nobjects; // idb
-extern int leverid; // idb
+extern int leverid;  // idb
 extern int objectavail[MAXOBJECTS];
 extern ObjectStruct object[MAXOBJECTS];
 extern int InitObjFlag; // weak
