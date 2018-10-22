@@ -110,11 +110,6 @@ int __fastcall PkwareCompress(void *buf, int size)
     unsigned char *v3;  // esi
     int v4;             // ecx
     unsigned char *v5;  // edi
-    TDataInfo param;    //{
-    unsigned char *v2;  // ebx
-    unsigned char *v3;  // esi
-    int v4;             // ecx
-    unsigned char *v5;  // edi
     TDataInfo param;    // [esp+Ch] [ebp-20h]
     unsigned int type;  // [esp+20h] [ebp-Ch]
     unsigned int dsize; // [esp+24h] [ebp-8h]
