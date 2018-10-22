@@ -2307,7 +2307,7 @@ void __fastcall Obj_Circle(int i)
 			ObjChangeMapResync(object[v1]._oVar1, v6, object[v1]._oVar3, v5);
 			if (quests[QTYPE_VB]._qactive == 2)
 				quests[QTYPE_VB]._qvar1 = 4;
-			AddMissile(plr[myplr].WorldX, plr[myplr].WorldY, 35, 46, plr[myplr]._pdir, 3, 0, myplr, 0, 0);
+			AddMissile(plr[myplr].WorldX, plr[myplr].WorldY, 35, 46, plr[myplr]._pdir, MIS_RNDTELEPORT, 0, myplr, 0, 0);
 			track_repeat_walk(0);
 			sgbMouseDown = 0;
 			ReleaseCapture();
@@ -3843,13 +3843,13 @@ void __fastcall OperateChest(int pnum, int i, unsigned char sendmsg)
 						v10 = sendmsg;
 						goto LABEL_25;
 					}
-					v11 = 42;
+					v11 = MIS_NOVA;
 				} else {
-					v11 = 27;
+					v11 = MIS_FARROW;
 				}
 				v10 = v11;
 			} else {
-				v10 = 0;
+				v10 = MIS_ARROW;
 			}
 		LABEL_25:
 			AddMissile(object[v3]._ox, object[v3]._oy, plr[param1].WorldX, plr[param1].WorldY, v7, v10, 1, -1, 0, 0);
@@ -4562,7 +4562,7 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 			    plr[arglist].WorldX,
 			    plr[arglist].WorldY,
 			    plr[arglist]._pdir,
-			    13,
+			    MIS_MANASHIELD,
 			    -1,
 			    arglist,
 			    0,
@@ -4734,7 +4734,7 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 			    plr[arglist].WorldX,
 			    plr[arglist].WorldY,
 			    plr[arglist]._pdir,
-			    42,
+			    MIS_NOVA,
 			    -1,
 			    arglist,
 			    0,
@@ -4856,7 +4856,7 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 			    v91,
 			    v92,
 			    plr[arglist]._pdir,
-			    3,
+			    MIS_RNDTELEPORT,
 			    -1,
 			    arglist,
 			    0,
@@ -5406,7 +5406,7 @@ bool __fastcall OperateFountains(int pnum, int i)
 			    plr[v4].WorldX,
 			    plr[v4].WorldY,
 			    plr[v4]._pdir,
-			    39,
+			    MIS_INFRA,
 			    -1,
 			    v4,
 			    0,

@@ -1049,7 +1049,7 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 
 	for (i = 0; i < nummissiles; i++) {
 		mi = missileactive[i];
-		if (missile[mi]._mitype == 13 && missile[mi]._misource == p) {
+		if (missile[mi]._mitype == MIS_MANASHIELD && missile[mi]._misource == p) {
 			missile[mi]._miVar1 = plr[p]._pHitPoints;
 			missile[mi]._miVar2 = plr[p]._pHPBase;
 		}
