@@ -120,27 +120,30 @@ BYTE *__fastcall CaptureEnc(BYTE *src, BYTE *dst, int width)
 
 HANDLE __fastcall CaptureFile(char *dst_path)
 {
-    bool num_used[100] = { false };
-
+    bool num_used[100];
+    int free_num;
     _finddata_t finder;
+
+    memset(num_used, FALSE, sizeof(num_used));
     int hFind = _findfirst("screen??.PCX", &finder);
     if (hFind != -1) {
         do {
             if (isdigit(finder.name[6]) && isdigit(finder.name[7])) {
-                num_used[10 * (finder.name[6] - '0') + (finder.name[7] - '0')] = true;
+                free_num = 10 * (finder.name[6] - '0');
+                free_num += (finder.name[7] - '0');
+                num_used[free_num] = TRUE;
             }
         } while (_findnext(hFind, &finder) == 0);
     }
 
-    int free_num = 0;
-    while (num_used[free_num]) {
-        ++free_num;
-        if (free_num >= 100)
-            return INVALID_HANDLE_VALUE;
+    for (free_num = 0; free_num < 100; free_num++) {
+        if (!num_used[free_num]) {
+            sprintf(dst_path, "screen%02d.PCX", free_num);
+            return CreateFile(dst_path, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+        }
     }
 
-    sprintf(dst_path, "screen%02d.PCX", free_num);
-    return CreateFile(dst_path, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+    return INVALID_HANDLE_VALUE;
 }
 
 void __fastcall RedPalette(PALETTEENTRY *pal)
