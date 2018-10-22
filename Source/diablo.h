@@ -7,8 +7,8 @@ extern HWND ghMainWnd;
 extern int glMid1Seed[NUMLEVELS];
 extern int glMid2Seed[NUMLEVELS];
 extern int gnLevelTypeTbl[NUMLEVELS];
-extern int MouseY; // idb
-extern int MouseX; // idb
+extern int MouseY;             // idb
+extern int MouseX;             // idb
 extern bool gbGameLoopStartup; // idb
 extern int glSeedTbl[NUMLEVELS];
 extern BOOL gbRunGame;
@@ -20,19 +20,19 @@ extern int glEndSeed[NUMLEVELS];
 extern BOOL dword_5256E8;
 extern HINSTANCE ghInst; // idb
 extern int DebugMonsters[10];
-extern char cineflag; // weak
+extern char cineflag;   // weak
 extern int drawpanflag; // weak
 extern int visiondebug; // weak
-extern int scrollflag; /* unused */
+extern int scrollflag;  /* unused */
 extern BOOL light4flag;
-extern int leveldebug; // weak
-extern int monstdebug; // weak
-extern int trigdebug; /* unused */
-extern int setseed; // weak
+extern int leveldebug;      // weak
+extern int monstdebug;      // weak
+extern int trigdebug;       /* unused */
+extern int setseed;         // weak
 extern int debugmonsttypes; // weak
-extern int PauseMode; // weak
+extern int PauseMode;       // weak
 extern int sgnTimeoutCurs;
-extern char sgbMouseDown; // weak
+extern char sgbMouseDown;     // weak
 extern int color_cycle_timer; // weak
 
 void __cdecl diablo_cpp_init();
@@ -96,7 +96,7 @@ extern int framerate;
 extern int framestart;
 #endif
 extern BOOL FriendlyMode;
-extern char *spszMsgTbl[4]; // weak
+extern char *spszMsgTbl[4];    // weak
 extern char *spszMsgKeyTbl[4]; // weak
 
 #endif /* __DIABLO_H__ */
