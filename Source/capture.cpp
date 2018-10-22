@@ -14,7 +14,7 @@ void __cdecl CaptureScreen()
         RedPalette(palette);
 
         j_lock_buf_priv(2);
-        bool success = CaptureHdr(hObject, 640, 480);
+        BOOL success = CaptureHdr(hObject, 640, 480);
         if (success) {
             success = CapturePix(hObject, 640, 480, 768, (BYTE *)gpBuffer->row[0].pixels);
             if (success) {
@@ -32,7 +32,7 @@ void __cdecl CaptureScreen()
     }
 }
 
-bool __fastcall CaptureHdr(HANDLE hFile, short width, short height)
+BOOL __fastcall CaptureHdr(HANDLE hFile, short width, short height)
 {
     PCXHeader Buffer;
     memset(&Buffer, 0, sizeof(Buffer));
@@ -52,7 +52,7 @@ bool __fastcall CaptureHdr(HANDLE hFile, short width, short height)
     return WriteFile(hFile, &Buffer, sizeof(Buffer), &lpNumBytes, NULL) && lpNumBytes == sizeof(Buffer);
 }
 
-bool __fastcall CapturePal(HANDLE hFile, PALETTEENTRY *palette)
+BOOL __fastcall CapturePal(HANDLE hFile, PALETTEENTRY *palette)
 {
     char *v3;
     char Buffer[769];
@@ -72,7 +72,7 @@ bool __fastcall CapturePal(HANDLE hFile, PALETTEENTRY *palette)
     return WriteFile(hFile, Buffer, sizeof(Buffer), &lpNumBytes, NULL) && lpNumBytes == sizeof(Buffer);
 }
 
-bool __fastcall CapturePix(HANDLE hFile, WORD width, WORD height, WORD stride, BYTE *pixels)
+BOOL __fastcall CapturePix(HANDLE hFile, WORD width, WORD height, WORD stride, BYTE *pixels)
 {
     int writeSize;
     DWORD lpNumBytes;
@@ -81,14 +81,15 @@ bool __fastcall CapturePix(HANDLE hFile, WORD width, WORD height, WORD stride, B
     do {
         if (!height) {
             mem_free_dbg(pBuffer);
-            return 1;
+            return TRUE;
         }
         height--;
         BYTE *pBufferEnd = CaptureEnc(pixels, pBuffer, width);
         pixels += stride;
         writeSize = pBufferEnd - pBuffer;
     } while (WriteFile(hFile, pBuffer, writeSize, &lpNumBytes, 0) && lpNumBytes == writeSize);
-    return 0;
+
+    return FALSE;
 }
 
 BYTE *__fastcall CaptureEnc(BYTE *src, BYTE *dst, int width)
