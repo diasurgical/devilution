@@ -1574,11 +1574,11 @@ struct PCXHeader {
 //////////////////////////////////////////////////
 
 struct TDataInfo {
-    unsigned char *pbInBuff;
-    unsigned char *pbInBuffEnd;
-    unsigned char *pbOutBuff;
-    unsigned char *pbOutBuffEnd;
-    unsigned char *pbSize;
+    BYTE *srcData;
+    DWORD srcOffset;
+    BYTE *destData;
+    DWORD destOffset;
+    DWORD size;
 };
 
 //////////////////////////////////////////////////
