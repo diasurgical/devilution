@@ -2,13 +2,13 @@
 #ifndef __TOWNERS_H__
 #define __TOWNERS_H__
 
-extern int storeflag; // weak
-extern int sgnCowMsg; // weak
-extern int numtowners; // idb
+extern int storeflag;     // weak
+extern int sgnCowMsg;     // weak
+extern int numtowners;    // idb
 extern int sgdwCowClicks; // weak
-extern int bannerflag; // weak // unused 0x6AAC28
-extern int boyloadflag; // weak
-extern void *pCowCels; // idb
+extern int bannerflag;    // weak // unused 0x6AAC28
+extern int boyloadflag;   // weak
+extern void *pCowCels;    // idb
 extern TownerStruct towner[16];
 
 int __fastcall GetActiveTowner(int t);

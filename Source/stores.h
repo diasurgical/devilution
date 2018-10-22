@@ -2,39 +2,39 @@
 #ifndef __STORES_H__
 #define __STORES_H__
 
-extern int stextup; // weak
-extern int storenumh; // weak
+extern int stextup;    // weak
+extern int storenumh;  // weak
 extern int stextlhold; // weak
 extern ItemStruct boyitem;
 extern int stextshold; // idb
 extern ItemStruct premiumitem[6];
 extern void *pSTextBoxCels;
 extern int premiumlevel; // idb
-extern int talker; // weak
+extern int talker;       // weak
 extern STextStruct stext[24];
-extern char stextsize; // weak
-extern int stextsmax; // weak
+extern char stextsize;  // weak
+extern int stextsmax;   // weak
 extern int InStoreFlag; // idb
 extern ItemStruct storehold[48];
 extern int gossipstart; // weak
 extern ItemStruct witchitem[20];
-extern int stextscrl; // weak
+extern int stextscrl;  // weak
 extern int numpremium; // idb
 extern ItemStruct healitem[20];
 extern ItemStruct golditem;
 extern char storehidx[48];
 extern void *pSTextSlidCels;
-extern int stextvhold; // weak
-extern int stextsel; // weak
+extern int stextvhold;     // weak
+extern int stextsel;       // weak
 extern char stextscrldbtn; // weak
-extern int gossipend; // weak
+extern int gossipend;      // weak
 extern void *pCelBuff;
 extern int stextsval; // idb
-extern int boylevel; // weak
+extern int boylevel;  // weak
 extern ItemStruct smithitem[20];
-extern int stextdown; // weak
+extern int stextdown;      // weak
 extern char stextscrlubtn; // weak
-extern char stextflag; // weak
+extern char stextflag;     // weak
 
 void __cdecl InitStores();
 void __cdecl SetupTownStores();
