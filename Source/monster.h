@@ -2,7 +2,7 @@
 #ifndef __MONSTER_H__
 #define __MONSTER_H__
 
-extern int MissileFileFlag; // weak
+extern int MissileFileFlag;        // weak
 extern int monster_cpp_init_value; // weak
 extern int monstkills[MAXMONSTERS];
 extern int monstactive[MAXMONSTERS];
@@ -139,9 +139,9 @@ void __cdecl FreeMonsters();
 BOOL __fastcall DirOK(int i, int mdir);
 BOOL __fastcall PosOkMissile(int x, int y);
 BOOL __fastcall CheckNoSolid(int x, int y);
-BOOL __fastcall LineClearF(BOOL (__fastcall *Clear)(int, int), int x1, int y1, int x2, int y2);
+BOOL __fastcall LineClearF(BOOL(__fastcall *Clear)(int, int), int x1, int y1, int x2, int y2);
 BOOL __fastcall LineClear(int x1, int y1, int x2, int y2);
-BOOL __fastcall LineClearF1(BOOL (__fastcall *Clear)(int, int, int), int monst, int x1, int y1, int x2, int y2);
+BOOL __fastcall LineClearF1(BOOL(__fastcall *Clear)(int, int, int), int monst, int x1, int y1, int x2, int y2);
 void __fastcall SyncMonsterAnim(int i);
 void __fastcall M_FallenFear(int x, int y);
 void __fastcall PrintMonstHistory(int mt);
@@ -190,6 +190,6 @@ extern int rnd20[4];
 extern int rnd60[4];
 //
 
-extern void (__fastcall *AiProc[])(int i);
+extern void(__fastcall *AiProc[])(int i);
 
 #endif /* __MONSTER_H__ */
