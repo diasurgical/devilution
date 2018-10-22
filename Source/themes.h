@@ -2,22 +2,22 @@
 #ifndef __THEMES_H__
 #define __THEMES_H__
 
-extern int numthemes; // idb
+extern int numthemes;  // idb
 extern bool armorFlag; // weak
 extern int ThemeGoodIn[4];
-extern bool weaponFlag; // weak
-extern bool treasureFlag; // weak
+extern bool weaponFlag;    // weak
+extern bool treasureFlag;  // weak
 extern bool mFountainFlag; // weak
-extern bool cauldronFlag; // weak
+extern bool cauldronFlag;  // weak
 extern bool tFountainFlag; // weak
-extern int zharlib; // weak
-extern int themex; // idb
-extern int themey; // idb
-extern int themeVar1; // idb
+extern int zharlib;        // weak
+extern int themex;         // idb
+extern int themey;         // idb
+extern int themeVar1;      // idb
 extern ThemeStruct themes[MAXTHEMES];
 extern bool pFountainFlag; // weak
 extern bool bFountainFlag; // weak
-extern bool bCrossFlag; // weak
+extern bool bCrossFlag;    // weak
 
 bool __fastcall TFit_Shrine(int i);
 bool __fastcall TFit_Obj5(int t);
