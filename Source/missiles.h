@@ -9,7 +9,7 @@ extern int nummissiles; // idb
 extern int ManashieldFlag;
 extern ChainStruct chain[MAXMISSILES];
 extern int MissilePreFlag; // weak
-extern int numchains; // weak
+extern int numchains;      // weak
 
 void __fastcall GetDamageAmt(int i, int *mind, int *maxd);
 int __fastcall CheckBlock(int fx, int fy, int tx, int ty);
