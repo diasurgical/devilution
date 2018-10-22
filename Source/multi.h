@@ -10,13 +10,13 @@ extern PkPlayerStruct netplr[MAX_PLRS];
 extern char sgbPlayerTurnBitTbl[MAX_PLRS];
 extern char sgbPlayerLeftGameTbl[MAX_PLRS];
 extern int multi_cpp_init_value; // weak
-extern int sgbSentThisCycle; // idb
-extern int dword_678628; // weak
-extern char gbActivePlayers; // weak
-extern char gbGameDestroyed; // weak
+extern int sgbSentThisCycle;     // idb
+extern int dword_678628;         // weak
+extern char gbActivePlayers;     // weak
+extern char gbGameDestroyed;     // weak
 extern char sgbSendDeltaTbl[MAX_PLRS];
 extern _gamedata sgGameInitInfo;
-extern char byte_678640; // weak
+extern char byte_678640;    // weak
 extern int sglTimeoutStart; // weak
 extern int sgdwPlayerLeftReasonTbl[MAX_PLRS];
 extern char pkdata_678658[4100];
@@ -25,7 +25,7 @@ extern BYTE gbMaxPlayers;
 extern char sgbTimeout; // weak
 extern char szPlayerName[128];
 extern BYTE gbDeltaSender; // weak
-extern int sgbNetInited; // weak
+extern int sgbNetInited;   // weak
 extern int player_state[MAX_PLRS];
 
 void __cdecl multi_cpp_init();
