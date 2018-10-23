@@ -37,14 +37,14 @@ BOOL __fastcall CaptureHdr(HANDLE hFile, short width, short height)
     PCXHeader Buffer;
     memset(&Buffer, 0, sizeof(Buffer));
 
-    Buffer.xmax = width - 1;
-    Buffer.vertRes = height;
     Buffer.manufacturer = 10;
     Buffer.version = 5;
     Buffer.encoding = 1;
     Buffer.bitsPerPixel = 8;
+    Buffer.xmax = width - 1;
     Buffer.ymax = height - 1;
     Buffer.horzRes = width;
+    Buffer.vertRes = height;
     Buffer.numColorPlanes = 1;
     Buffer.bytesPerScanLine = width;
 
@@ -95,26 +95,32 @@ BOOL __fastcall CapturePix(HANDLE hFile, WORD width, WORD height, WORD stride, B
 BYTE *__fastcall CaptureEnc(BYTE *src, BYTE *dst, int width)
 {
     do {
-        BYTE rlePixel = *src++;
-        --width;
-
+        BYTE rlePixel = *src;
+        *src++;
         int rleLength = 1;
+
+        width--;
+
         while (rlePixel == *src) {
             if (rleLength >= 63)
                 break;
             if (!width)
                 break;
-            ++rleLength;
+            rleLength++;
 
-            --width;
-            ++src;
+            width--;
+            src++;
         }
 
-        if (rlePixel > 0xBF || rleLength > 1) {
-            *dst++ = rleLength | 0xC0;
+        if (rleLength > 1 || rlePixel > 0xBF) {
+            *dst = rleLength | 0xC0;
+            *dst++;
         }
-        *dst++ = rlePixel;
+
+        *dst = rlePixel;
+        *dst++;
     } while (width);
+
     return dst;
 }
 
