@@ -2257,63 +2257,45 @@ void __fastcall M_StartFadeout(int i, int md, BOOL backwards)
 
 void __fastcall M_StartHeal(int i)
 {
-	int v1;            // edi
-	int v2;            // esi
-	CMonster *v3;      // eax
-	unsigned char *v4; // ecx
-	int v5;            // eax
-
-	v1 = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_StartHeal: Invalid monster %d", i);
-	v2 = v1;
-	if (monster[v1].MType == NULL)
-		TermMsg("M_StartHeal: Monster %d \"%s\" MType NULL", v1, monster[v2].mName);
-	v3 = monster[v2].MType;
-	v4 = v3->Anims[MA_SPECIAL].Data[monster[v2]._mdir];
-	monster[v2]._mAnimData = v4;
-	v5 = v3->Anims[MA_SPECIAL].Frames;
-	monster[v2]._mFlags |= 2u;
-	monster[v2]._mAnimFrame = v5;
-	monster[v2]._mmode = MM_HEAL;
-	monster[v2]._mVar1 = monster[v2]._mmaxhp / (16 * (random(97, 5) + 4));
+	if (monster[i].MType == NULL)
+		TermMsg("M_StartHeal: Monster %d \"%s\" MType NULL", i, monster[i].mName);
+
+	MonsterStruct *Monst = &monster[i];
+	Monst->_mAnimData = Monst->MType->Anims[MA_SPECIAL].Data[Monst->_mdir];
+	Monst->_mAnimFrame = Monst->MType->Anims[MA_SPECIAL].Frames;
+	Monst->_mFlags |= 2;
+	Monst->_mmode = MM_HEAL;
+	Monst->_mVar1 = Monst->_mmaxhp / (16 * (random(97, 5) + 4));
 }
 
 void __fastcall M_ChangeLightOffset(int monst)
 {
-	int v1;        // esi
-	int v2;        // ecx
-	int v3;        // eax
-	int v4;        // esi
-	int v5;        // edx
-	int v6;        // eax
-	signed int v7; // esi
-	int v8;        // edx
-	signed int v9; // esi
-
-	v1 = monst;
-	if ((unsigned int)monst >= MAXMONSTERS)
+	if ((DWORD)monst >= MAXMONSTERS)
 		TermMsg("M_ChangeLightOffset: Invalid monster %d", monst);
-	v2 = v1;
-	v3 = monster[v1]._myoff;
-	v4 = monster[v1]._mxoff;
-	v3 *= 2;
-	v5 = v4 + v3;
-	v6 = v3 - v4;
-	if (v5 >= 0) {
-		v7 = 1;
+
+	int lx = monster[monst]._mxoff + 2 * monster[monst]._myoff;
+	int ly = 2 * monster[monst]._myoff - monster[monst]._mxoff;
+
+	int sign;
+	if (lx < 0) {
+		sign = -1;
+		lx = -lx;
 	} else {
-		v7 = -1;
-		v5 = -v5;
+		sign = 1;
 	}
-	v8 = v7 * (v5 >> 3);
-	if (v6 >= 0) {
-		v9 = 1;
+
+	int _mxoff = sign * (lx >> 3);
+	int _myoff;
+	if (ly < 0) {
+		_myoff = -1;
+		ly = -ly;
 	} else {
-		v9 = -1;
-		v6 = -v6;
+		_myoff = 1;
 	}
-	ChangeLightOff((unsigned char)monster[v2].mlid, v8, v9 * (v6 >> 3));
+
+	ChangeLightOff(monster[monst].mlid, _mxoff, _myoff * (ly >> 3));
 }
 
 int __fastcall M_DoStand(int i)
