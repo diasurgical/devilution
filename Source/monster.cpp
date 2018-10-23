@@ -2300,29 +2300,23 @@ void __fastcall M_ChangeLightOffset(int monst)
 
 int __fastcall M_DoStand(int i)
 {
-	int v1;            // edi
-	int v2;            // esi
-	CMonster *v3;      // eax
-	int v4;            // ecx
-	unsigned char *v5; // eax
+    if ((DWORD)i >= MAXMONSTERS)
+        TermMsg("M_DoStand: Invalid monster %d", i);
+    if (monster[i].MType == NULL)
+        TermMsg("M_DoStand: Monster %d \"%s\" MType NULL", i, monster[i].mName);
 
-	v1 = i;
-	if ((DWORD)i >= MAXMONSTERS)
-		TermMsg("M_DoStand: Invalid monster %d", i);
-	v2 = v1;
-	if (monster[v1].MType == NULL)
-		TermMsg("M_DoStand: Monster %d \"%s\" MType NULL", v1, monster[v2].mName);
-	v3 = monster[v2].MType;
-	v4 = monster[v2]._mdir;
-	if (v3->mtype == MT_GOLEM)
-		v5 = v3->Anims[MA_WALK].Data[v4];
-	else
-		v5 = v3->Anims[MA_STAND].Data[v4];
-	monster[v2]._mAnimData = v5;
-	if (monster[v2]._mAnimFrame == monster[v2]._mAnimLen)
-		M_Enemy(v1);
-	++monster[v2]._mVar2;
-	return 0;
+    MonsterStruct *Monst = &monster[i];
+    if (Monst->MType->mtype == MT_GOLEM)
+        Monst->_mAnimData = Monst->MType->Anims[MA_WALK].Data[Monst->_mdir];
+    else
+        Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[Monst->_mdir];
+
+    if (Monst->_mAnimFrame == Monst->_mAnimLen)
+        M_Enemy(i);
+
+    Monst->_mVar2++;
+
+    return FALSE;
 }
 
 int __fastcall M_DoWalk(int i)

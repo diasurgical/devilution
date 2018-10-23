@@ -66,7 +66,7 @@ void __fastcall M_StartFadein(int i, int md, BOOL backwards);
 void __fastcall M_StartFadeout(int i, int md, BOOL backwards);
 void __fastcall M_StartHeal(int i);
 void __fastcall M_ChangeLightOffset(int monst);
-int __fastcall M_DoStand(int i);
+BOOL __fastcall M_DoStand(int i);
 int __fastcall M_DoWalk(int i);
 int __fastcall M_DoWalk2(int i);
 int __fastcall M_DoWalk3(int i);
