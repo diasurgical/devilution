@@ -8,13 +8,15 @@ int drawsbarflag; // idb
 int sgdwLastTime; // check name
 
 const InvXY InvRect[73] = {
-    { 452, 31 },  // helmet
-    { 480, 31 },  // helmet
-    { 452, 59 },  // helmet
-    { 480, 59 },  // helmet
+    // clang-format off
+    //  X,   Y
+    { 452,  31 }, // helmet
+    { 480,  31 }, // helmet
+    { 452,  59 }, // helmet
+    { 480,  59 }, // helmet
     { 365, 205 }, // left ring
     { 567, 205 }, // right ring
-    { 524, 59 },  // amulet
+    { 524,  59 }, // amulet
     { 337, 104 }, // left hand
     { 366, 104 }, // left hand
     { 337, 132 }, // left hand
@@ -81,6 +83,7 @@ const InvXY InvRect[73] = {
     { 350, 385 }, // belt
     { 379, 385 }, // belt
     { 408, 385 }  // belt
+    // clang-format on
 };
 
 /* data */
