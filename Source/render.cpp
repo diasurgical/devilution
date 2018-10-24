@@ -4896,6 +4896,8 @@ LABEL_252:
 								if ( dst < gpBufEnd )
 								{
 									asm_trans_light_mask(width, tbl, dst, src, gdwCurrentMask);
+									for (and80_i = width; and80_i; --and80_i, gdwCurrentMask *= 2) {
+									}
 								}
 								else
 								{
