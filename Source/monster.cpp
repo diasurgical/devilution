@@ -2036,7 +2036,7 @@ void __fastcall M2MStartHit(int mid, int i, int dam)
         if (i >= 0)
             monster[mid]._mdir = (monster[i]._mdir - 4) & 7;
 
-        if (monster[mid].MType->mtype == MT_FAMILIAR) {
+        if (monster[mid].MType->mtype == MT_BLINK) {
             M_Teleport(mid);
         } else if (monster[mid].MType->mtype >= MT_NSCAV && monster[mid].MType->mtype <= MT_YSCAV) {
             monster[mid]._mgoal = 1;
