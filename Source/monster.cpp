@@ -2319,162 +2319,102 @@ int __fastcall M_DoStand(int i)
 	return FALSE;
 }
 
-int __fastcall M_DoWalk(int i)
+BOOL __fastcall M_DoWalk(int i)
 {
-	int v1;  // ebx
-	int v2;  // esi
-	int v3;  // edi
-	int v4;  // eax
-	int v5;  // edi
-	int v6;  // ecx
-	int v7;  // edx
-	int v8;  // eax
-	bool v9; // zf
-	int v10; // ecx
-	int v11; // edx
-	int v12; // eax
-	int v13; // ecx
+    if ((DWORD)i >= MAXMONSTERS)
+        TermMsg("M_DoWalk: Invalid monster %d", i);
 
-	v1 = i;
-	if ((DWORD)i >= MAXMONSTERS)
-		TermMsg("M_DoWalk: Invalid monster %d", i);
-	v2 = v1;
-	v3 = 0;
-	if (monster[v1].MType == NULL)
-		TermMsg("M_DoWalk: Monster %d \"%s\" MType NULL", v1, monster[v2].mName);
-	v4 = monster[v2]._mVar8;
-	if (v4 == monster[v2].MType->Anims[MA_WALK].Frames) {
-		v5 = monster[v2]._my;
-		v6 = monster[v2]._mx;
-		dMonster[0][v5 + 112 * monster[v2]._mx] = 0;
-		v7 = v6 + monster[v2]._mVar1;
-		monster[v2]._mx = v7;
-		v8 = v5 + monster[v2]._mVar2;
-		v9 = monster[v2]._uniqtype == 0;
-		monster[v2]._my = v8;
-		dMonster[0][v8 + 112 * v7] = v1 + 1;
-		if (!v9)
-			ChangeLightXY((unsigned char)monster[v2].mlid, v7, v8);
-		M_StartStand(v1, monster[v2]._mdir);
-		v3 = 1;
-	} else if (!monster[v2]._mAnimCnt) {
-		v10 = monster[v2]._mxvel;
-		v11 = monster[v2]._myvel;
-		monster[v2]._mVar8 = v4 + 1;
-		monster[v2]._mVar6 += v10;
-		v12 = monster[v2]._mVar6 >> 4;
-		monster[v2]._mVar7 += v11;
-		v13 = monster[v2]._mVar7 >> 4;
-		monster[v2]._mxoff = v12;
-		monster[v2]._myoff = v13;
-	}
-	if (monster[v2]._uniqtype != 0)
-		M_ChangeLightOffset(v1);
-	return v3;
+    if (monster[i].MType == NULL)
+        TermMsg("M_DoWalk: Monster %d \"%s\" MType NULL", i, monster[i].mName);
+
+    BOOL rv = FALSE;
+    if (monster[i]._mVar8 == monster[i].MType->Anims[MA_WALK].Frames) {
+        dMonster[monster[i]._mx][monster[i]._my] = 0;
+        monster[i]._mx += monster[i]._mVar1;
+        monster[i]._my += monster[i]._mVar2;
+        dMonster[monster[i]._mx][monster[i]._my] = i + 1;
+        if (monster[i]._uniqtype != 0)
+            ChangeLightXY(monster[i].mlid, monster[i]._mx, monster[i]._my);
+        M_StartStand(i, monster[i]._mdir);
+        rv = TRUE;
+    } else if (!monster[i]._mAnimCnt) {
+        monster[i]._mVar8++;
+        monster[i]._mVar6 += monster[i]._mxvel;
+        monster[i]._mVar7 += monster[i]._myvel;
+        monster[i]._mxoff = monster[i]._mVar6 >> 4;
+        monster[i]._myoff = monster[i]._mVar7 >> 4;
+    }
+
+    if (monster[i]._uniqtype != 0)
+        M_ChangeLightOffset(i);
+
+    return rv;
 }
 
-int __fastcall M_DoWalk2(int i)
+BOOL __fastcall M_DoWalk2(int i)
 {
-	int v1;  // ebp
-	int v2;  // esi
-	int v3;  // eax
-	bool v4; // zf
-	int v5;  // edi
-	int v6;  // ecx
-	int v7;  // edx
-	int v8;  // eax
-	int v9;  // ecx
+    if ((DWORD)i >= MAXMONSTERS)
+        TermMsg("M_DoWalk2: Invalid monster %d", i);
 
-	v1 = i;
-	if ((DWORD)i >= MAXMONSTERS)
-		TermMsg("M_DoWalk2: Invalid monster %d", i);
-	v2 = v1;
-	if (monster[v1].MType == NULL)
-		TermMsg("M_DoWalk2: Monster %d \"%s\" MType NULL", v1, monster[v2].mName);
-	v3 = monster[v2]._mVar8;
-	if (v3 == monster[v2].MType->Anims[MA_WALK].Frames) {
-		v4 = monster[v2]._uniqtype == 0;
-		dMonster[0][monster[v2]._mVar2 + 112 * monster[v2]._mVar1] = 0;
-		if (!v4)
-			ChangeLightXY((unsigned char)monster[v2].mlid, monster[v2]._mx, monster[v2]._my);
-		M_StartStand(v1, monster[v2]._mdir);
-		v5 = 1;
-	} else {
-		if (!monster[v2]._mAnimCnt) {
-			v6 = monster[v2]._mxvel;
-			v7 = monster[v2]._myvel;
-			monster[v2]._mVar8 = v3 + 1;
-			monster[v2]._mVar6 += v6;
-			v8 = monster[v2]._mVar6 >> 4;
-			monster[v2]._mVar7 += v7;
-			v9 = monster[v2]._mVar7 >> 4;
-			monster[v2]._mxoff = v8;
-			monster[v2]._myoff = v9;
-		}
-		v5 = 0;
-	}
-	if (monster[v2]._uniqtype != 0)
-		M_ChangeLightOffset(v1);
-	return v5;
+    if (monster[i].MType == NULL)
+        TermMsg("M_DoWalk2: Monster %d \"%s\" MType NULL", i, monster[i].mName);
+
+    BOOL rv;
+    if (monster[i]._mVar8 == monster[i].MType->Anims[MA_WALK].Frames) {
+        dMonster[monster[i]._mVar1][monster[i]._mVar2] = 0;
+        if (monster[i]._uniqtype != 0)
+            ChangeLightXY(monster[i].mlid, monster[i]._mx, monster[i]._my);
+        M_StartStand(i, monster[i]._mdir);
+        rv = TRUE;
+    } else {
+        if (!monster[i]._mAnimCnt) {
+            monster[i]._mVar8++;
+            monster[i]._mVar6 += monster[i]._mxvel;
+            monster[i]._mVar7 += monster[i]._myvel;
+            monster[i]._mxoff = monster[i]._mVar6 >> 4;
+            monster[i]._myoff = monster[i]._mVar7 >> 4;
+        }
+        rv = FALSE;
+    }
+    if (monster[i]._uniqtype != 0)
+        M_ChangeLightOffset(i);
+
+    return rv;
 }
 
-int __fastcall M_DoWalk3(int i)
+BOOL __fastcall M_DoWalk3(int i)
 {
-	int v1;   // ebp
-	int v2;   // esi
-	int v3;   // eax
-	int v4;   // edi
-	int v5;   // edx
-	int v6;   // ecx
-	int v7;   // edx
-	char *v8; // eax
-	bool v9;  // zf
-	int v10;  // edi
-	int v11;  // ecx
-	int v12;  // edx
-	int v13;  // eax
-	int v14;  // ecx
+    if ((DWORD)i >= MAXMONSTERS)
+        TermMsg("M_DoWalk3: Invalid monster %d", i);
 
-	v1 = i;
-	if ((DWORD)i >= MAXMONSTERS)
-		TermMsg("M_DoWalk3: Invalid monster %d", i);
-	v2 = v1;
-	if (monster[v1].MType == NULL)
-		TermMsg("M_DoWalk3: Monster %d \"%s\" MType NULL", v1, monster[v2].mName);
-	v3 = monster[v2]._mVar8;
-	if (v3 == monster[v2].MType->Anims[MA_WALK].Frames) {
-		v4 = monster[v2]._mVar2;
-		v5 = monster[v2]._my + 112 * monster[v2]._mx;
-		monster[v2]._my = v4;
-		v6 = monster[v2]._mVar5;
-		dMonster[0][v5] = 0;
-		v7 = monster[v2]._mVar1;
-		monster[v2]._mx = v7;
-		v8 = &dFlags[monster[v2]._mVar4][v6];
-		*v8 &= ~DFLAG_MONSTER;
-		v9 = monster[v2]._uniqtype == 0;
-		dMonster[0][v4 + 112 * v7] = v1 + 1;
-		if (!v9)
-			ChangeLightXY((unsigned char)monster[v2].mlid, v7, v4);
-		M_StartStand(v1, monster[v2]._mdir);
-		v10 = 1;
-	} else {
-		if (!monster[v2]._mAnimCnt) {
-			v11 = monster[v2]._mxvel;
-			v12 = monster[v2]._myvel;
-			monster[v2]._mVar8 = v3 + 1;
-			monster[v2]._mVar6 += v11;
-			v13 = monster[v2]._mVar6 >> 4;
-			monster[v2]._mVar7 += v12;
-			v14 = monster[v2]._mVar7 >> 4;
-			monster[v2]._mxoff = v13;
-			monster[v2]._myoff = v14;
-		}
-		v10 = 0;
-	}
-	if (monster[v2]._uniqtype != 0)
-		M_ChangeLightOffset(v1);
-	return v10;
+    if (monster[i].MType == NULL)
+        TermMsg("M_DoWalk3: Monster %d \"%s\" MType NULL", i, monster[i].mName);
+
+    BOOL rv;
+    if (monster[i]._mVar8 == monster[i].MType->Anims[MA_WALK].Frames) {
+        dMonster[monster[i]._mx][monster[i]._my] = 0;
+        monster[i]._mx = monster[i]._mVar1;
+        monster[i]._my = monster[i]._mVar2;
+        dFlags[monster[i]._mVar4][monster[i]._mVar5] &= ~DFLAG_MONSTER;
+        dMonster[monster[i]._mx][monster[i]._my] = i + 1;
+        if ( monster[i]._uniqtype )
+            ChangeLightXY(monster[i].mlid, monster[i]._mx, monster[i]._my);
+        M_StartStand(i, monster[i]._mdir);
+        rv = TRUE;
+    } else {
+        if (!monster[i]._mAnimCnt) {
+            monster[i]._mVar8++;
+            monster[i]._mVar6 += monster[i]._mxvel;
+            monster[i]._mVar7 += monster[i]._myvel;
+            monster[i]._mxoff = monster[i]._mVar6 >> 4;
+            monster[i]._myoff = monster[i]._mVar7 >> 4;
+        }
+        rv = FALSE;
+    }
+    if (monster[i]._uniqtype != 0)
+        M_ChangeLightOffset(i);
+
+    return rv;
 }
 
 void __fastcall M_TryM2MHit(int i, int mid, int hper, int mind, int maxd)
