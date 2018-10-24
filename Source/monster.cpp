@@ -2300,23 +2300,23 @@ void __fastcall M_ChangeLightOffset(int monst)
 
 int __fastcall M_DoStand(int i)
 {
-    if ((DWORD)i >= MAXMONSTERS)
-        TermMsg("M_DoStand: Invalid monster %d", i);
-    if (monster[i].MType == NULL)
-        TermMsg("M_DoStand: Monster %d \"%s\" MType NULL", i, monster[i].mName);
+	if ((DWORD)i >= MAXMONSTERS)
+		TermMsg("M_DoStand: Invalid monster %d", i);
+	if (monster[i].MType == NULL)
+		TermMsg("M_DoStand: Monster %d \"%s\" MType NULL", i, monster[i].mName);
 
-    MonsterStruct *Monst = &monster[i];
-    if (Monst->MType->mtype == MT_GOLEM)
-        Monst->_mAnimData = Monst->MType->Anims[MA_WALK].Data[Monst->_mdir];
-    else
-        Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[Monst->_mdir];
+	MonsterStruct *Monst = &monster[i];
+	if (Monst->MType->mtype == MT_GOLEM)
+		Monst->_mAnimData = Monst->MType->Anims[MA_WALK].Data[Monst->_mdir];
+	else
+		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[Monst->_mdir];
 
-    if (Monst->_mAnimFrame == Monst->_mAnimLen)
-        M_Enemy(i);
+	if (Monst->_mAnimFrame == Monst->_mAnimLen)
+		M_Enemy(i);
 
-    Monst->_mVar2++;
+	Monst->_mVar2++;
 
-    return FALSE;
+	return FALSE;
 }
 
 int __fastcall M_DoWalk(int i)
@@ -2876,36 +2876,24 @@ int __fastcall M_DoRSpAttack(int i)
 	return 1;
 }
 
-int __fastcall M_DoSAttack(int i)
+BOOL __fastcall M_DoSAttack(int i)
 {
-	int v1;        // ebx
-	int v2;        // esi
-	CMonster **v3; // edi
-	bool v4;       // zf
-
-	v1 = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_DoSAttack: Invalid monster %d", i);
-	v2 = v1;
-	v3 = &monster[v1].MType;
-	v4 = *v3 == NULL;
-	if (*v3 == NULL) {
-		TermMsg("M_DoSAttack: Monster %d \"%s\" MType NULL", v1, monster[v2].mName);
-		v4 = *v3 == NULL;
+	if (monster[i].MType == NULL)
+		TermMsg("M_DoSAttack: Monster %d \"%s\" MType NULL", i, monster[i].mName);
+	if (monster[i].MType == NULL) // BUGFIX: should check MData
+		TermMsg("M_DoSAttack: Monster %d \"%s\" MData NULL", i, monster[i].mName);
+
+	if (monster[i]._mAnimFrame == monster[i].MData->mAFNum2)
+		M_TryH2HHit(i, monster[i]._menemy, monster[i].mHit2, monster[i].mMinDamage2, monster[i].mMaxDamage2);
+
+	if (monster[i]._mAnimFrame == monster[i]._mAnimLen) {
+		M_StartStand(i, monster[i]._mdir);
+		return TRUE;
 	}
-	if (v4)
-		TermMsg("M_DoSAttack: Monster %d \"%s\" MData NULL", v1, monster[v2].mName);
-	if (monster[v2]._mAnimFrame == monster[v2].MData->mAFNum2)
-		M_TryH2HHit(
-		    v1,
-		    monster[v2]._menemy,
-		    (unsigned char)monster[v2].mHit2,
-		    (unsigned char)monster[v2].mMinDamage2,
-		    (unsigned char)monster[v2].mMaxDamage2);
-	if (monster[v2]._mAnimFrame != monster[v2]._mAnimLen)
-		return 0;
-	M_StartStand(v1, monster[v2]._mdir);
-	return 1;
+
+	return FALSE;
 }
 
 int __fastcall M_DoFadein(int i)

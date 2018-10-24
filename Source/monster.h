@@ -75,7 +75,7 @@ void __fastcall M_TryH2HHit(int i, int pnum, int Hit, int MinDam, int MaxDam);
 int __fastcall M_DoAttack(int i);
 int __fastcall M_DoRAttack(int i);
 int __fastcall M_DoRSpAttack(int i);
-int __fastcall M_DoSAttack(int i);
+BOOL __fastcall M_DoSAttack(int i);
 int __fastcall M_DoFadein(int i);
 int __fastcall M_DoFadeout(int i);
 int __fastcall M_DoHeal(int i);
