@@ -6,7 +6,7 @@ static inline void asm_trans_light_square_0_2(unsigned char w, BYTE *tbl, BYTE *
 static inline void asm_trans_light_cel_1_3(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src);
 static inline void asm_trans_light_edge_1_3(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src);
 static inline void asm_trans_light_square_1_3(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src);
-static inline void asm_trans_light_mask(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src, unsigned int mask);
+static inline unsigned int asm_trans_light_mask(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src, unsigned int mask);
 
 static inline void asm_cel_light_edge(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src)
 {
@@ -110,10 +110,12 @@ static inline void asm_trans_light_square_1_3(unsigned char w, BYTE *tbl, BYTE *
     }
 }
 
-static inline void asm_trans_light_mask(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src, unsigned int mask)
+static inline unsigned int asm_trans_light_mask(unsigned char w, BYTE *tbl, BYTE *&dst, BYTE *&src, unsigned int mask)
 {
     for (; w; --w, src++, dst++, mask *= 2) {
         if (mask & 0x80000000)
             dst[0] = tbl[src[0]];
     }
+
+	return mask;
 }
