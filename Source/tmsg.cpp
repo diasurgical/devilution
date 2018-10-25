@@ -6,46 +6,46 @@ static TMsg *sgpTimedMsgHead;
 
 int __fastcall tmsg_get(BYTE *pbMsg, DWORD dwMaxLen)
 {
-    int len;
-    TMsg *head;
+	int len;
+	TMsg *head;
 
-    if (!sgpTimedMsgHead)
-        return 0;
+	if (!sgpTimedMsgHead)
+		return 0;
 
-    if ((int)(sgpTimedMsgHead->hdr.dwTime - GetTickCount()) >= 0)
-        return 0;
-    head = sgpTimedMsgHead;
-    sgpTimedMsgHead = head->hdr.pNext;
-    len = head->hdr.bLen;
-    // BUGFIX: ignores dwMaxLen
-    memcpy(pbMsg, head->body, len);
-    mem_free_dbg(head);
-    return len;
+	if ((int)(sgpTimedMsgHead->hdr.dwTime - GetTickCount()) >= 0)
+		return 0;
+	head = sgpTimedMsgHead;
+	sgpTimedMsgHead = head->hdr.pNext;
+	len = head->hdr.bLen;
+	// BUGFIX: ignores dwMaxLen
+	memcpy(pbMsg, head->body, len);
+	mem_free_dbg(head);
+	return len;
 }
 
 void __fastcall tmsg_add(BYTE *pbMsg, BYTE bLen)
 {
-    TMsg **tail;
+	TMsg **tail;
 
-    TMsg *msg = (TMsg *)DiabloAllocPtr(bLen + sizeof(*msg));
-    msg->hdr.pNext = NULL;
-    msg->hdr.dwTime = GetTickCount() + 500;
-    msg->hdr.bLen = bLen;
-    memcpy(msg->body, pbMsg, bLen);
-    for (tail = &sgpTimedMsgHead; *tail; tail = &(*tail)->hdr.pNext) {
-        ;
-    }
-    *tail = msg;
+	TMsg *msg = (TMsg *)DiabloAllocPtr(bLen + sizeof(*msg));
+	msg->hdr.pNext = NULL;
+	msg->hdr.dwTime = GetTickCount() + 500;
+	msg->hdr.bLen = bLen;
+	memcpy(msg->body, pbMsg, bLen);
+	for (tail = &sgpTimedMsgHead; *tail; tail = &(*tail)->hdr.pNext) {
+		;
+	}
+	*tail = msg;
 }
 
 void *__cdecl tmsg_cleanup()
 {
-    while (sgpTimedMsgHead) {
-        TMsg *next = sgpTimedMsgHead->hdr.pNext;
-        TMsg *head = sgpTimedMsgHead;
-        sgpTimedMsgHead = NULL;
-        mem_free_dbg(head);
-        sgpTimedMsgHead = next;
-    }
-    return sgpTimedMsgHead;
+	while (sgpTimedMsgHead) {
+		TMsg *next = sgpTimedMsgHead->hdr.pNext;
+		TMsg *head = sgpTimedMsgHead;
+		sgpTimedMsgHead = NULL;
+		mem_free_dbg(head);
+		sgpTimedMsgHead = next;
+	}
+	return sgpTimedMsgHead;
 }

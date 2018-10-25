@@ -14,7 +14,7 @@ const char monster_action_sounds[] = { 'a', 'h', 'd', 's' }; // idb
 /* data */
 
 TSFX sgSFX[NUM_SFX] = {
-    // clang-format off
+	// clang-format off
     // bFlags, pszName,                       pSnd
     {       2, "Sfx\\Misc\\Walk1.wav",        NULL },
     {       2, "Sfx\\Misc\\Walk2.wav",        NULL },
@@ -874,364 +874,364 @@ TSFX sgSFX[NUM_SFX] = {
     {       1, "Sfx\\Monsters\\Zhar01.wav",   NULL },
     {       1, "Sfx\\Monsters\\Zhar02.wav",   NULL },
     {       1, "Sfx\\Monsters\\DiabloD.wav",  NULL }
-    // clang-format on
+	// clang-format on
 };
 
 struct effects_cpp_init {
-    effects_cpp_init()
-    {
-        effects_cpp_init_value = effects_inf;
-    }
+	effects_cpp_init()
+	{
+		effects_cpp_init_value = effects_inf;
+	}
 } _effects_cpp_init;
 // 47A468: using guessed type int effects_inf;
 // 52A550: using guessed type int effects_cpp_init_value;
 
 BOOL __fastcall effect_is_playing(int nSFX)
 {
-    TSFX *sfx = &sgSFX[nSFX];
-    if (sfx->pSnd)
-        return snd_playing(sfx->pSnd);
+	TSFX *sfx = &sgSFX[nSFX];
+	if (sfx->pSnd)
+		return snd_playing(sfx->pSnd);
 
-    if (sfx->bFlags & SFX_STREAM)
-        return sfx == sfx_data_cur;
+	if (sfx->bFlags & SFX_STREAM)
+		return sfx == sfx_data_cur;
 
-    return FALSE;
+	return FALSE;
 }
 
 void __cdecl sfx_stop()
 {
-    if (sfx_stream) {
-        SFileDdaEnd(sfx_stream);
-        SFileCloseFile(sfx_stream);
-        sfx_stream = NULL;
-        sfx_data_cur = NULL;
-    }
+	if (sfx_stream) {
+		SFileDdaEnd(sfx_stream);
+		SFileCloseFile(sfx_stream);
+		sfx_stream = NULL;
+		sfx_data_cur = NULL;
+	}
 }
 
 void __fastcall InitMonsterSND(int monst)
 {
-    TSnd *pSnd;
-    char name[MAX_PATH];
-    char *path;
+	TSnd *pSnd;
+	char name[MAX_PATH];
+	char *path;
 
-    if (!gbSndInited) {
-        return;
-    }
+	if (!gbSndInited) {
+		return;
+	}
 
-    int mtype = Monsters[monst].mtype;
-    for (int i = 0; i < 4; i++) {
-        if (monster_action_sounds[i] != 's' || monsterdata[mtype].snd_special) {
-            for (int j = 0; j < 2; j++) {
-                sprintf(name, monsterdata[mtype].sndfile, monster_action_sounds[i], j + 1);
-                path = (char *)DiabloAllocPtr(strlen(name) + 1);
-                strcpy(path, name);
-                pSnd = sound_file_load(path);
-                Monsters[monst].Snds[i][j] = pSnd;
-                if (!pSnd)
-                    mem_free_dbg(path);
-            }
-        }
-    }
+	int mtype = Monsters[monst].mtype;
+	for (int i = 0; i < 4; i++) {
+		if (monster_action_sounds[i] != 's' || monsterdata[mtype].snd_special) {
+			for (int j = 0; j < 2; j++) {
+				sprintf(name, monsterdata[mtype].sndfile, monster_action_sounds[i], j + 1);
+				path = (char *)DiabloAllocPtr(strlen(name) + 1);
+				strcpy(path, name);
+				pSnd = sound_file_load(path);
+				Monsters[monst].Snds[i][j] = pSnd;
+				if (!pSnd)
+					mem_free_dbg(path);
+			}
+		}
+	}
 }
 
 void __cdecl FreeEffects()
 {
-    for (int i = 0; i < nummtypes; i++) {
-        int mtype = Monsters[i].mtype;
-        for (int j = 0; j < 4; ++j) {
-            for (int k = 0; k < 2; ++k) {
-                TSnd *pSnd = Monsters[i].Snds[j][k];
-                if (pSnd) {
-                    Monsters[i].Snds[j][k] = NULL;
-                    char *file = pSnd->sound_path;
-                    pSnd->sound_path = NULL;
-                    sound_file_cleanup(pSnd);
-                    mem_free_dbg(file);
-                }
-            }
-        }
-    }
+	for (int i = 0; i < nummtypes; i++) {
+		int mtype = Monsters[i].mtype;
+		for (int j = 0; j < 4; ++j) {
+			for (int k = 0; k < 2; ++k) {
+				TSnd *pSnd = Monsters[i].Snds[j][k];
+				if (pSnd) {
+					Monsters[i].Snds[j][k] = NULL;
+					char *file = pSnd->sound_path;
+					pSnd->sound_path = NULL;
+					sound_file_cleanup(pSnd);
+					mem_free_dbg(file);
+				}
+			}
+		}
+	}
 }
 
 void __fastcall PlayEffect(int i, int mode)
 {
-    if (plr[myplr].pLvlLoad) {
-        return;
-    }
+	if (plr[myplr].pLvlLoad) {
+		return;
+	}
 
-    int sndIdx = random(164, 2);
-    if (!gbSndInited || !gbSoundOn || gbBufferMsgs) {
-        return;
-    }
+	int sndIdx = random(164, 2);
+	if (!gbSndInited || !gbSoundOn || gbBufferMsgs) {
+		return;
+	}
 
-    int mi = monster[i]._mMTidx;
-    TSnd *snd = Monsters[mi].Snds[mode][sndIdx];
-    if (!snd || snd_playing(snd)) {
-        return;
-    }
+	int mi = monster[i]._mMTidx;
+	TSnd *snd = Monsters[mi].Snds[mode][sndIdx];
+	if (!snd || snd_playing(snd)) {
+		return;
+	}
 
-    int lVolume, lPan;
-    if (!calc_snd_position(monster[i]._mx, monster[i]._my, &lVolume, &lPan))
-        return;
+	int lVolume, lPan;
+	if (!calc_snd_position(monster[i]._mx, monster[i]._my, &lVolume, &lPan))
+		return;
 
-    snd_play_snd(snd, lVolume, lPan);
+	snd_play_snd(snd, lVolume, lPan);
 }
 // 676194: using guessed type char gbBufferMsgs;
 
 BOOL __fastcall calc_snd_position(int x, int y, int *plVolume, int *plPan)
 {
-    x -= plr[myplr].WorldX;
-    y -= plr[myplr].WorldY;
+	x -= plr[myplr].WorldX;
+	y -= plr[myplr].WorldY;
 
-    int pan = (x - y) << 8;
-    *plPan = pan;
+	int pan = (x - y) << 8;
+	*plPan = pan;
 
-    if (abs(pan) > 6400)
-        return FALSE;
+	if (abs(pan) > 6400)
+		return FALSE;
 
-    int volume = abs(x) > abs(y) ? abs(x) : abs(y);
-    volume <<= 6;
-    *plVolume = volume;
+	int volume = abs(x) > abs(y) ? abs(x) : abs(y);
+	volume <<= 6;
+	*plVolume = volume;
 
-    if (volume >= 6400)
-        return FALSE;
+	if (volume >= 6400)
+		return FALSE;
 
-    *plVolume = -volume;
+	*plVolume = -volume;
 
-    return TRUE;
+	return TRUE;
 }
 
 void __fastcall PlaySFX(int psfx)
 {
-    psfx = RndSFX(psfx);
-    PlaySFX_priv(&sgSFX[psfx], 0, 0, 0);
+	psfx = RndSFX(psfx);
+	PlaySFX_priv(&sgSFX[psfx], 0, 0, 0);
 }
 
 void __fastcall PlaySFX_priv(TSFX *pSFX, BOOL loc, int x, int y)
 {
-    if (plr[myplr].pLvlLoad && gbMaxPlayers != 1) {
-        return;
-    }
-    if (!gbSndInited || !gbSoundOn || gbBufferMsgs) {
-        return;
-    }
+	if (plr[myplr].pLvlLoad && gbMaxPlayers != 1) {
+		return;
+	}
+	if (!gbSndInited || !gbSoundOn || gbBufferMsgs) {
+		return;
+	}
 
-    if (!(pSFX->bFlags & (SFX_STREAM | SFX_MISC)) && pSFX->pSnd != 0 && snd_playing(pSFX->pSnd)) {
-        return;
-    }
+	if (!(pSFX->bFlags & (SFX_STREAM | SFX_MISC)) && pSFX->pSnd != 0 && snd_playing(pSFX->pSnd)) {
+		return;
+	}
 
-    int lPan = 0;
-    int lVolume = 0;
-    if (loc && !calc_snd_position(x, y, &lVolume, &lPan)) {
-        return;
-    }
+	int lPan = 0;
+	int lVolume = 0;
+	if (loc && !calc_snd_position(x, y, &lVolume, &lPan)) {
+		return;
+	}
 
-    if (pSFX->bFlags & SFX_STREAM) {
-        stream_play(pSFX, lVolume, lPan);
-        return;
-    }
+	if (pSFX->bFlags & SFX_STREAM) {
+		stream_play(pSFX, lVolume, lPan);
+		return;
+	}
 
-    if (!pSFX->pSnd)
-        pSFX->pSnd = sound_file_load(pSFX->pszName);
+	if (!pSFX->pSnd)
+		pSFX->pSnd = sound_file_load(pSFX->pszName);
 
-    if (pSFX->pSnd)
-        snd_play_snd(pSFX->pSnd, lVolume, lPan);
+	if (pSFX->pSnd)
+		snd_play_snd(pSFX->pSnd, lVolume, lPan);
 }
 // 676194: using guessed type char gbBufferMsgs;
 // 679660: using guessed type char gbMaxPlayers;
 
 void __fastcall stream_play(TSFX *pSFX, int lVolume, int lPan)
 {
-    sfx_stop();
-    lVolume += sound_get_or_set_sound_volume(1);
-    if (lVolume >= VOLUME_MIN) {
-        if (lVolume > VOLUME_MAX)
-            lVolume = VOLUME_MAX;
-        if (!SFileOpenFile(pSFX->pszName, &sfx_stream)) {
-            sfx_stream = 0;
-        } else {
-            if (!SFileDdaBeginEx(sfx_stream, 0x40000, 0, 0, lVolume, lPan, 0))
-                sfx_stop();
-            else
-                sfx_data_cur = pSFX;
-        }
-    }
+	sfx_stop();
+	lVolume += sound_get_or_set_sound_volume(1);
+	if (lVolume >= VOLUME_MIN) {
+		if (lVolume > VOLUME_MAX)
+			lVolume = VOLUME_MAX;
+		if (!SFileOpenFile(pSFX->pszName, &sfx_stream)) {
+			sfx_stream = 0;
+		} else {
+			if (!SFileDdaBeginEx(sfx_stream, 0x40000, 0, 0, lVolume, lPan, 0))
+				sfx_stop();
+			else
+				sfx_data_cur = pSFX;
+		}
+	}
 }
 
 int __fastcall RndSFX(int psfx)
 {
-    int v1; // esi
-    int v3; // [esp-4h] [ebp-8h]
+	int v1; // esi
+	int v3; // [esp-4h] [ebp-8h]
 
-    v1 = psfx;
-    switch (psfx) {
-    case PS_WARR69:
-        goto LABEL_12;
-    case PS_WARR14:
-    case PS_WARR15:
-    case PS_WARR16:
-        goto LABEL_19;
-    case PS_MAGE69:
-    case PS_ROGUE69:
-    case PS_SWING:
-    case LS_ACID:
-    case IS_FMAG:
-    case IS_MAGIC:
-    case IS_BHIT:
-    LABEL_12:
-        v3 = 2;
-    LABEL_15:
-        return v1 + random(165, v3);
-    case PS_WARR2:
-    LABEL_19:
-        v3 = 3;
-        goto LABEL_15;
-    }
-    return psfx;
+	v1 = psfx;
+	switch (psfx) {
+	case PS_WARR69:
+		goto LABEL_12;
+	case PS_WARR14:
+	case PS_WARR15:
+	case PS_WARR16:
+		goto LABEL_19;
+	case PS_MAGE69:
+	case PS_ROGUE69:
+	case PS_SWING:
+	case LS_ACID:
+	case IS_FMAG:
+	case IS_MAGIC:
+	case IS_BHIT:
+	LABEL_12:
+		v3 = 2;
+	LABEL_15:
+		return v1 + random(165, v3);
+	case PS_WARR2:
+	LABEL_19:
+		v3 = 3;
+		goto LABEL_15;
+	}
+	return psfx;
 }
 
 void __fastcall PlaySfxLoc(int psfx, int x, int y)
 {
-    psfx = RndSFX(psfx);
+	psfx = RndSFX(psfx);
 
-    if (psfx >= 0 && psfx <= 3) {
-        TSnd *pSnd = sgSFX[psfx].pSnd;
-        if (pSnd)
-            pSnd->start_tc = 0;
-    }
+	if (psfx >= 0 && psfx <= 3) {
+		TSnd *pSnd = sgSFX[psfx].pSnd;
+		if (pSnd)
+			pSnd->start_tc = 0;
+	}
 
-    PlaySFX_priv(&sgSFX[psfx], 1, x, y);
+	PlaySFX_priv(&sgSFX[psfx], 1, x, y);
 }
 
 void __cdecl FreeMonsterSnd()
 {
-    snd_update(TRUE);
-    sfx_stop();
-    sound_stop();
+	snd_update(TRUE);
+	sfx_stop();
+	sound_stop();
 
-    for (int i = 0; i < nummtypes; i++) {
-        for (int j = 0; j < 4; j++) {
-            for (int k = 0; k < 2; k++) {
-                snd_stop_snd(Monsters[i].Snds[j][k]);
-            }
-        }
-    }
+	for (int i = 0; i < nummtypes; i++) {
+		for (int j = 0; j < 4; j++) {
+			for (int k = 0; k < 2; k++) {
+				snd_stop_snd(Monsters[i].Snds[j][k]);
+			}
+		}
+	}
 }
 
 void __cdecl sound_stop()
 {
-    int i; // edi
+	int i; // edi
 
-    for (i = 0; i < NUM_SFX; i++) {
-        if (sgSFX[i].pSnd)
-            snd_stop_snd(sgSFX[i].pSnd);
-    }
+	for (i = 0; i < NUM_SFX; i++) {
+		if (sgSFX[i].pSnd)
+			snd_stop_snd(sgSFX[i].pSnd);
+	}
 }
 
 void __cdecl sound_update()
 {
-    //int v0; // ebp
-    //unsigned int v1; // ecx
-    //	int v2; // eax
-    unsigned int v3; // [esp-Ch] [ebp-Ch]
-    unsigned int v4; // [esp-8h] [ebp-8h]
-    //int v5; // [esp-4h] [ebp-4h]
+	//int v0; // ebp
+	//unsigned int v1; // ecx
+	//	int v2; // eax
+	unsigned int v3; // [esp-Ch] [ebp-Ch]
+	unsigned int v4; // [esp-8h] [ebp-8h]
+	//int v5; // [esp-4h] [ebp-4h]
 
-    if (gbSndInited) {
-        snd_update(0);
-        //v5 = v0;
-        //v4 = v1;
-        //v3 = v1;
-        if (sfx_stream) {
-            //_LOBYTE(v2) = SFileDdaGetPos(sfx_stream, (int)&v4, (int)&v3);
-            if (SFileDdaGetPos(sfx_stream, (int)&v4, (int)&v3)) {
-                if (v4 >= v3)
-                    sfx_stop();
-            }
-        }
-    }
+	if (gbSndInited) {
+		snd_update(0);
+		//v5 = v0;
+		//v4 = v1;
+		//v3 = v1;
+		if (sfx_stream) {
+			//_LOBYTE(v2) = SFileDdaGetPos(sfx_stream, (int)&v4, (int)&v3);
+			if (SFileDdaGetPos(sfx_stream, (int)&v4, (int)&v3)) {
+				if (v4 >= v3)
+					sfx_stop();
+			}
+		}
+	}
 }
 // 415DBA: could not find valid save-restore pair for ebp
 
 void __cdecl effects_cleanup_sfx()
 {
-    FreeMonsterSnd();
+	FreeMonsterSnd();
 
-    for (DWORD i = 0; i < NUM_SFX; i++) {
-        if (sgSFX[i].pSnd) {
-            sound_file_cleanup(sgSFX[i].pSnd);
-            sgSFX[i].pSnd = NULL;
-        }
-    }
+	for (DWORD i = 0; i < NUM_SFX; i++) {
+		if (sgSFX[i].pSnd) {
+			sound_file_cleanup(sgSFX[i].pSnd);
+			sgSFX[i].pSnd = NULL;
+		}
+	}
 }
 
 void __cdecl stream_update()
 {
-    UCHAR mask = 0;
-    if (gbMaxPlayers > 1) {
-        mask = SFX_WARRIOR | SFX_ROGUE | SFX_SORCEROR;
-    } else if (plr[myplr]._pClass == PC_WARRIOR) {
-        mask = SFX_WARRIOR;
-    } else if (plr[myplr]._pClass == PC_ROGUE) {
-        mask = SFX_ROGUE;
-    } else if (plr[myplr]._pClass == PC_SORCERER) {
-        mask = SFX_SORCEROR;
-    } else {
-        TermMsg("effects:1");
-    }
+	UCHAR mask = 0;
+	if (gbMaxPlayers > 1) {
+		mask = SFX_WARRIOR | SFX_ROGUE | SFX_SORCEROR;
+	} else if (plr[myplr]._pClass == PC_WARRIOR) {
+		mask = SFX_WARRIOR;
+	} else if (plr[myplr]._pClass == PC_ROGUE) {
+		mask = SFX_ROGUE;
+	} else if (plr[myplr]._pClass == PC_SORCERER) {
+		mask = SFX_SORCEROR;
+	} else {
+		TermMsg("effects:1");
+	}
 
-    priv_sound_init(mask);
+	priv_sound_init(mask);
 }
 // 679660: using guessed type char gbMaxPlayers;
 
 void __fastcall priv_sound_init(UCHAR bLoadMask)
 {
-    if (!gbSndInited) {
-        return;
-    }
+	if (!gbSndInited) {
+		return;
+	}
 
-    UCHAR pc = bLoadMask & (SFX_ROGUE | SFX_WARRIOR | SFX_SORCEROR);
-    bLoadMask ^= pc;
+	UCHAR pc = bLoadMask & (SFX_ROGUE | SFX_WARRIOR | SFX_SORCEROR);
+	bLoadMask ^= pc;
 
-    for (DWORD i = 0; i < NUM_SFX; i++) {
-        if (sgSFX[i].pSnd) {
-            continue;
-        }
+	for (DWORD i = 0; i < NUM_SFX; i++) {
+		if (sgSFX[i].pSnd) {
+			continue;
+		}
 
-        UCHAR bFlags = sgSFX[i].bFlags;
-        if (bFlags & SFX_STREAM) {
-            continue;
-        }
+		UCHAR bFlags = sgSFX[i].bFlags;
+		if (bFlags & SFX_STREAM) {
+			continue;
+		}
 
-        if (bLoadMask && !(bFlags & bLoadMask)) {
-            continue;
-        }
+		if (bLoadMask && !(bFlags & bLoadMask)) {
+			continue;
+		}
 
-        if (bFlags & (SFX_ROGUE | SFX_WARRIOR | SFX_SORCEROR) && !(bFlags & pc)) {
-            continue;
-        }
+		if (bFlags & (SFX_ROGUE | SFX_WARRIOR | SFX_SORCEROR) && !(bFlags & pc)) {
+			continue;
+		}
 
-        sgSFX[i].pSnd = sound_file_load(sgSFX[i].pszName);
-    }
+		sgSFX[i].pSnd = sound_file_load(sgSFX[i].pszName);
+	}
 }
 
 void __cdecl sound_init()
 {
-    priv_sound_init(SFX_UI);
+	priv_sound_init(SFX_UI);
 }
 
 void __stdcall effects_play_sound(char *snd_file)
 {
-    if (!gbSndInited || !gbSoundOn) {
-        return;
-    }
+	if (!gbSndInited || !gbSoundOn) {
+		return;
+	}
 
-    for (DWORD i = 0; i < NUM_SFX; i++) {
-        if (!_strcmpi(sgSFX[i].pszName, snd_file) && sgSFX[i].pSnd) {
-            if (!snd_playing(sgSFX[i].pSnd))
-                snd_play_snd(sgSFX[i].pSnd, 0, 0);
+	for (DWORD i = 0; i < NUM_SFX; i++) {
+		if (!_strcmpi(sgSFX[i].pszName, snd_file) && sgSFX[i].pSnd) {
+			if (!snd_playing(sgSFX[i].pSnd))
+				snd_play_snd(sgSFX[i].pSnd, 0, 0);
 
-            return;
-        }
-    }
+			return;
+		}
+	}
 }

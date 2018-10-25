@@ -30,70 +30,70 @@ void __cdecl doom_play_movie()
 
 int __cdecl doom_get_frame_from_time()
 {
-    if (DoomQuestState == 36001) {
-        return 31;
-    }
+	if (DoomQuestState == 36001) {
+		return 31;
+	}
 
-    return DoomQuestState / 1200;
+	return DoomQuestState / 1200;
 }
 
 void __cdecl doom_alloc_cel()
 {
-    pDoomCel = DiabloAllocPtr(229376);
+	pDoomCel = DiabloAllocPtr(229376);
 }
 
 void __cdecl doom_cleanup()
 {
-    void *ptr = pDoomCel;
-    pDoomCel = NULL;
-    mem_free_dbg(ptr);
+	void *ptr = pDoomCel;
+	pDoomCel = NULL;
+	mem_free_dbg(ptr);
 }
 
 void __cdecl doom_load_graphics()
 {
-    if (doom_quest_time == 31) {
-        strcpy(tempstr, "Items\\Map\\MapZDoom.CEL");
-    } else if (doom_quest_time < 10) {
-        sprintf(tempstr, "Items\\Map\\MapZ000%i.CEL", doom_quest_time);
-    } else {
-        sprintf(tempstr, "Items\\Map\\MapZ00%i.CEL", doom_quest_time);
-    }
-    LoadFileWithMem(tempstr, pDoomCel);
+	if (doom_quest_time == 31) {
+		strcpy(tempstr, "Items\\Map\\MapZDoom.CEL");
+	} else if (doom_quest_time < 10) {
+		sprintf(tempstr, "Items\\Map\\MapZ000%i.CEL", doom_quest_time);
+	} else {
+		sprintf(tempstr, "Items\\Map\\MapZ00%i.CEL", doom_quest_time);
+	}
+	LoadFileWithMem(tempstr, pDoomCel);
 }
 
 void __cdecl doom_init()
 {
-    doomflag = TRUE;
-    doom_alloc_cel();
-    doom_quest_time = doom_get_frame_from_time() == 31 ? 31 : 0;
-    doom_load_graphics();
+	doomflag = TRUE;
+	doom_alloc_cel();
+	doom_quest_time = doom_get_frame_from_time() == 31 ? 31 : 0;
+	doom_load_graphics();
 }
 
 void __cdecl doom_close()
 {
-    if (doomflag) {
-        doomflag = FALSE;
-        doom_cleanup();
-    }
+	if (doomflag) {
+		doomflag = FALSE;
+		doom_cleanup();
+	}
 }
 
 void __cdecl doom_draw()
 {
-    if (!doomflag) {
-        return;
-    }
+	if (!doomflag) {
+		return;
+	}
 
-    if (doom_quest_time != 31) {
-        doom_stars_drawn++;
-        if (doom_stars_drawn >= 5) {
-            doom_stars_drawn = 0;
-            doom_quest_time++;
-            if (doom_quest_time > doom_get_frame_from_time()) {
-                doom_quest_time = 0;
-            }
-            doom_load_graphics();
-        }
-    }
+	if (doom_quest_time != 31) {
+		doom_stars_drawn++;
+		if (doom_stars_drawn >= 5) {
+			doom_stars_drawn = 0;
+			doom_quest_time++;
+			if (doom_quest_time > doom_get_frame_from_time()) {
+				doom_quest_time = 0;
+			}
+			doom_load_graphics();
+		}
+	}
 
-    CelDecodeOnly(64, 511, pDoomCel, 1, 640);
+	CelDecodeOnly(64, 511, pDoomCel, 1, 640);
 }
