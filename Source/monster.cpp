@@ -2021,7 +2021,7 @@ void __fastcall M2MStartHit(int mid, int i, int dam)
         TermMsg("Invalid monster %d getting hit by monster", mid);
     }
 
-    if (monster[mid].MType = NULL) {
+    if (monster[mid].MType == NULL) {
         TermMsg("Monster %d \"%s\" getting hit by monster: MType NULL", mid, monster[mid].mName);
     }
 
@@ -2036,7 +2036,7 @@ void __fastcall M2MStartHit(int mid, int i, int dam)
         if (i >= 0)
             monster[mid]._mdir = (monster[i]._mdir - 4) & 7;
 
-        if (monster[mid].MType->mtype == MT_FAMILIAR) {
+        if (monster[mid].MType->mtype == MT_BLINK) {
             M_Teleport(mid);
         } else if (monster[mid].MType->mtype >= MT_NSCAV && monster[mid].MType->mtype <= MT_YSCAV) {
             monster[mid]._mgoal = 1;
@@ -2912,8 +2912,8 @@ int __fastcall M_DoSAttack(int i)
         TermMsg("M_DoSAttack: Invalid monster %d", i);
     v2 = v1;
     v3 = &monster[v1].MType;
-    v4 = *v3 == 0;
-    if (*v3 != NULL) {
+    v4 = *v3 == NULL;
+    if (*v3 == NULL) {
         TermMsg("M_DoSAttack: Monster %d \"%s\" MType NULL", v1, monster[v2].mName);
         v4 = *v3 == NULL;
     }
