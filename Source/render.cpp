@@ -1712,7 +1712,7 @@ LABEL_129:
 							yy_32 -= width;
 							if ( dst < gpBufEnd )
 								return;
-							asm_trans_light_mask(width, tbl, dst, src, gdwCurrentMask);
+							gdwCurrentMask = asm_trans_light_mask(width, tbl, dst, src, gdwCurrentMask);
 						}
 						while ( yy_32 );
 LABEL_50:
@@ -4895,7 +4895,7 @@ LABEL_252:
 								yy_32 -= width;
 								if ( dst < gpBufEnd )
 								{
-									asm_trans_light_mask(width, tbl, dst, src, gdwCurrentMask);
+									gdwCurrentMask = asm_trans_light_mask(width, tbl, dst, src, gdwCurrentMask);
 								}
 								else
 								{
