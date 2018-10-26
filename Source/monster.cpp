@@ -2419,52 +2419,36 @@ BOOL __fastcall M_DoWalk3(int i)
 
 void __fastcall M_TryM2MHit(int i, int mid, int hper, int mind, int maxd)
 {
-	int v5; // edi
-	//int v6; // ST08_4
-	int v7; // esi
-	int v8; // ebx
-	//int v9; // eax
-	int v11;         // eax
-	BOOL ret;        // [esp+Ch] [ebp-Ch]
-	char v13[4];     // [esp+10h] [ebp-8h]
-	char arglist[4]; // [esp+14h] [ebp-4h]
-
-	v5 = mid;
-	*(_DWORD *)arglist = mid;
-	*(_DWORD *)v13 = i;
-	if ((unsigned int)mid >= MAXMONSTERS) {
-		TermMsg("M_TryM2MHit: Invalid monster %d", mid);
-		//i = v6;
-	}
-	v7 = v5;
-	if (monster[v5].MType == NULL)
-		TermMsg("M_TryM2MHit: Monster %d \"%s\" MType NULL", v5, monster[v7].mName);
-	if (monster[v7]._mhitpoints >> 6 > 0
-	    && (monster[v7].MType->mtype != MT_ILLWEAV || _LOBYTE(monster[v7]._mgoal) != 2)) {
-		v8 = random(4, 100);
-		if (monster[v7]._mmode == MM_STONE)
-			v8 = 0;
-		//_LOBYTE(v9) = CheckMonsterHit(*(int *)arglist, &ret);
-		if (!CheckMonsterHit(*(int *)arglist, &ret) && v8 < hper) {
-			v11 = (mind + random(5, maxd - mind + 1)) << 6;
-			monster[v7]._mhitpoints -= v11;
-			if (monster[v7]._mhitpoints >> 6 > 0) {
-				if (monster[v7]._mmode == MM_STONE) {
-					M2MStartHit(*(int *)arglist, *(int *)v13, v11);
-					goto LABEL_15;
-				}
-				M2MStartHit(*(int *)arglist, *(int *)v13, v11);
-			} else {
-				if (monster[v7]._mmode == MM_STONE) {
-					M2MStartKill(*(int *)v13, *(int *)arglist);
-				LABEL_15:
-					monster[v7]._mmode = MM_STONE;
-					return;
-				}
-				M2MStartKill(*(int *)v13, *(int *)arglist);
-			}
-		}
-	}
+    if ((DWORD)mid >= MAXMONSTERS) {
+        TermMsg("M_TryM2MHit: Invalid monster %d", mid);
+    }
+    if (monster[mid].MType == NULL)
+        TermMsg("M_TryM2MHit: Monster %d \"%s\" MType NULL", mid, monster[mid].mName);
+    if (monster[mid]._mhitpoints >> 6 > 0 && (monster[mid].MType->mtype != MT_ILLWEAV || monster[mid]._mgoal != 2)) {
+        int hit = random(4, 100);
+        if (monster[mid]._mmode == MM_STONE)
+            hit = 0;
+        BOOL ret;
+        if (!CheckMonsterHit(mid, &ret) && hit < hper) {
+            int dam = (mind + random(5, maxd - mind + 1)) << 6;
+            monster[mid]._mhitpoints -= dam;
+            if (monster[mid]._mhitpoints >> 6 <= 0) {
+                if (monster[mid]._mmode == MM_STONE) {
+                    M2MStartKill(i, mid);
+                    monster[mid]._mmode = MM_STONE;
+                } else {
+                    M2MStartKill(i, mid);
+                }
+            } else {
+                if (monster[mid]._mmode == MM_STONE) {
+                    M2MStartHit(mid, i, dam);
+                    monster[mid]._mmode = MM_STONE;
+                } else {
+                    M2MStartHit(mid, i, dam);
+                }
+            }
+        }
+    }
 }
 
 void __fastcall M_TryH2HHit(int i, int pnum, int Hit, int MinDam, int MaxDam)
