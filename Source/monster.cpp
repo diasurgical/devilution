@@ -4276,7 +4276,7 @@ void __fastcall MAI_SkelBow(int i)
 			if (random(110, 100) < 2 * (unsigned char)v2->_mint + 3) {
 				//_LOBYTE(v16) = LineClear(v2->_mx, v2->_my, v14, v15);
 				if (LineClear(v2->_mx, v2->_my, v14, v15))
-					M_StartRAttack(arglist, 0, 4);
+					M_StartRAttack(arglist, MIS_ARROW, 4);
 			}
 		}
 		if (v2->_mmode == MM_STAND)
@@ -4476,11 +4476,11 @@ void __fastcall MAI_Fireman(int i)
 		} else {
 			//_LOBYTE(v11) = LineClear(monster[esi3]._mx, monster[esi3]._my, v1, v2);
 			if (LineClear(monster[esi3]._mx, monster[esi3]._my, v1, v2)) {
-				M_StartRAttack(arglist, 51, 4);
+				M_StartRAttack(arglist, MIS_KRULL, 4);
 			} else {
 				//_LOBYTE(v11) = LineClear(monster[esi3]._mx, monster[esi3]._my, v1, v2);
 				if (LineClear(monster[esi3]._mx, monster[esi3]._my, v1, v2)) {
-					M_StartRAttack(arglist, 51, 4);
+					M_StartRAttack(arglist, MIS_KRULL, 4);
 				} else {
 					v13 = random(112, 10);
 					M_StartDelay(arglist, v13 + 5);
@@ -4837,17 +4837,17 @@ void __fastcall MAI_Ranged(int i, int missile_type, unsigned char special)
 
 void __fastcall MAI_GoatBow(int i)
 {
-	MAI_Ranged(i, 0, 0);
+	MAI_Ranged(i, MIS_ARROW, 0);
 }
 
 void __fastcall MAI_Succ(int i)
 {
-	MAI_Ranged(i, 24, 0);
+	MAI_Ranged(i, MIS_FLARE, 0);
 }
 
 void __fastcall MAI_AcidUniq(int i)
 {
-	MAI_Ranged(i, 57, 1u);
+	MAI_Ranged(i, MIS_ACID, 1u);
 }
 
 void __fastcall MAI_Scav(int i)
@@ -5162,22 +5162,22 @@ void __fastcall MAI_RoundRanged(int i, int missile_type, unsigned char checkdoor
 
 void __fastcall MAI_Magma(int i)
 {
-	MAI_RoundRanged(i, 21, 1u, 4, 0);
+	MAI_RoundRanged(i, MIS_MAGMABALL, 1u, 4, 0);
 }
 
 void __fastcall MAI_Storm(int i)
 {
-	MAI_RoundRanged(i, 22, 1u, 4, 0);
+	MAI_RoundRanged(i, MIS_LIGHTCTRL2, 1u, 4, 0);
 }
 
 void __fastcall MAI_Acid(int i)
 {
-	MAI_RoundRanged(i, 57, 0, 4, 1);
+	MAI_RoundRanged(i, MIS_ACID, 0, 4, 1);
 }
 
 void __fastcall MAI_Diablo(int i)
 {
-	MAI_RoundRanged(i, 67, 0, 40, 0);
+	MAI_RoundRanged(i, MIS_DIABAPOCA, 0, 40, 0);
 }
 
 void __fastcall MAI_RR2(int i, int mistype, int dam)
@@ -5333,7 +5333,7 @@ void __fastcall MAI_RR2(int i, int mistype, int dam)
 
 void __fastcall MAI_Mega(int i)
 {
-	MAI_RR2(i, 49, 0);
+	MAI_RR2(i, MIS_FLAMEC, 0);
 }
 
 void __fastcall MAI_Golum(int i)

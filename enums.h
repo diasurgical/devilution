@@ -1187,11 +1187,11 @@ enum missile_id {
     MIS_DOOMSERP      = 0x1C,
     MIS_FIREWALLA     = 0x1D,
     MIS_STONE         = 0x1E,
-    MIS_NONE          = 0x1F, // Unused?
+    MIS_NULL_1F       = 0x1F,
     MIS_INVISIBL      = 0x20,
     MIS_GOLEM         = 0x21,
     MIS_ETHEREALIZE   = 0x22,
-    MIS_BLODBUR       = 0x23, // Blood ritual?
+    MIS_BLODBUR       = 0x23,
     MIS_BOOM          = 0x24,
     MIS_HEAL          = 0x25,
     MIS_FIREWALLC     = 0x26,

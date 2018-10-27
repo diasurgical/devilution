@@ -45,7 +45,7 @@ MissileData missiledata[68] = {
 	{  MIS_DOOMSERP,      NULL,              NULL,              0,     1,       3, MFILE_DOOM,     LS_DSERP,    -1          },
 	{  MIS_FIREWALLA,     &miss_null_1D,     &MI_Firewall,      1,     2,       1, MFILE_FIREWAL,  -1,          -1          },
 	{  MIS_STONE,         &AddStone,         &MI_Stone,         0,     1,       3, MFILE_NONE,     LS_SCURIMP,  -1          },
-	{  MIS_NONE,          &miss_null_1F,     &MI_Dummy,         1,     1,       0, MFILE_NONE,     -1,          -1          },
+	{  MIS_NULL_1F,       &miss_null_1F,     &MI_Dummy,         1,     1,       0, MFILE_NONE,     -1,          -1          },
 	{  MIS_INVISIBL,      NULL,              NULL,              0,     1,       0, MFILE_NONE,     LS_INVISIBL, -1          },
 	{  MIS_GOLEM,         &AddGolem,         &MI_Golem,         0,     1,       0, MFILE_NONE,     LS_GOLUM,    -1          },
 	{  MIS_ETHEREALIZE,   &AddEtherealize,   &MI_Etherealize,   1,     1,       0, MFILE_ETHRSHLD, LS_ETHEREAL, -1          },
