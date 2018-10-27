@@ -869,7 +869,7 @@ LABEL_40:
 				cursmy = v8;
 			}
 			if (v59 != -1) {
-				if (monster[v59]._mFlags & 0x20)
+				if (monster[v59]._mFlags & MFLAG_GOLEM)
 					pcursmonst = -1;
 			}
 			return;
@@ -1063,7 +1063,7 @@ LABEL_103:
 	}
 	if (v11 == -1)
 		goto LABEL_128;
-	if (monster[v11]._mFlags & 1) {
+	if (monster[v11]._mFlags & MFLAG_HIDDEN) {
 		v11 = -1;
 		cursmx = v6;
 		pcursmonst = -1;
@@ -1071,7 +1071,7 @@ LABEL_103:
 	}
 	if (v11 == -1)
 		goto LABEL_128;
-	if (monster[v11]._mFlags & 0x20) {
+	if (monster[v11]._mFlags & MFLAG_GOLEM) {
 		v11 = -1;
 		pcursmonst = -1;
 	}
@@ -1160,7 +1160,7 @@ LABEL_103:
 		v42 = pcursmonst;
 		if (pcursmonst == -1)
 			goto LABEL_207;
-		if (monster[pcursmonst]._mFlags & 1) {
+		if (monster[pcursmonst]._mFlags & MFLAG_HIDDEN) {
 			v42 = -1;
 			cursmx = v6;
 			pcursmonst = -1;
@@ -1168,7 +1168,7 @@ LABEL_103:
 		}
 		if (v42 == -1)
 			goto LABEL_207;
-		if (monster[v42]._mFlags & 0x20)
+		if (monster[v42]._mFlags & MFLAG_GOLEM)
 			goto LABEL_205;
 		goto LABEL_206;
 	}

@@ -2406,7 +2406,7 @@ BOOL __fastcall PlrHitMonst(int pnum, int m)
 			drawhpflag = TRUE;
 		}
 		if (plr[pnum]._pIFlags & ISPL_NOHEALPLR) {
-			monster[m]._mFlags |= 8;
+			monster[m]._mFlags |= MFLAG_NOHEAL;
 		}
 #ifdef _DEBUG
 		if (debug_mode_dollar_sign || debug_mode_key_inverted_v) {
