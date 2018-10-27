@@ -72,7 +72,7 @@ BOOL __fastcall M_DoWalk2(int i);
 BOOL __fastcall M_DoWalk3(int i);
 void __fastcall M_TryM2MHit(int i, int mid, int hper, int mind, int maxd);
 void __fastcall M_TryH2HHit(int i, int pnum, int Hit, int MinDam, int MaxDam);
-int __fastcall M_DoAttack(int i);
+BOOL __fastcall M_DoAttack(int i);
 BOOL __fastcall M_DoRAttack(int i);
 int __fastcall M_DoRSpAttack(int i);
 BOOL __fastcall M_DoSAttack(int i);
