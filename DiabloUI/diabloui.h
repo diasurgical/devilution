@@ -7,22 +7,22 @@ extern "C" {
 #endif
 
 struct FontStruct {
-    unsigned char fontbin[258];
-    HANDLE fonttrans[256];
-    BOOL active;
+	unsigned char fontbin[258];
+	HANDLE fonttrans[256];
+	BOOL active;
 };
 
 struct ProfileStruct {
-    char *name;
-    char field_4;
-    int msg;
-    int field_C;
+	char *name;
+	char field_4;
+	int msg;
+	int field_C;
 };
 
 struct ProfFntStruct {
-    int size;
-    char *fontname;
-    int field_8;
+	int size;
+	char *fontname;
+	int field_8;
 };
 
 void __cdecl UiDestroy();

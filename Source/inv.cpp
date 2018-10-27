@@ -9,80 +9,80 @@ int sgdwLastTime; // check name
 
 const InvXY InvRect[73] = {
 	// clang-format off
-    //  X,   Y
-    { 452,  31 }, // helmet
-    { 480,  31 }, // helmet
-    { 452,  59 }, // helmet
-    { 480,  59 }, // helmet
-    { 365, 205 }, // left ring
-    { 567, 205 }, // right ring
-    { 524,  59 }, // amulet
-    { 337, 104 }, // left hand
-    { 366, 104 }, // left hand
-    { 337, 132 }, // left hand
-    { 366, 132 }, // left hand
-    { 337, 160 }, // left hand
-    { 366, 160 }, // left hand
-    { 567, 104 }, // right hand
-    { 596, 104 }, // right hand
-    { 567, 132 }, // right hand
-    { 596, 132 }, // right hand
-    { 567, 160 }, // right hand
-    { 596, 160 }, // right hand
-    { 452, 104 }, // chest
-    { 480, 104 }, // chest
-    { 452, 132 }, // chest
-    { 480, 132 }, // chest
-    { 452, 160 }, // chest
-    { 480, 160 }, // chest
-    { 337, 250 }, // inv row 1
-    { 366, 250 }, // inv row 1
-    { 394, 250 }, // inv row 1
-    { 423, 250 }, // inv row 1
-    { 451, 250 }, // inv row 1
-    { 480, 250 }, // inv row 1
-    { 509, 250 }, // inv row 1
-    { 538, 250 }, // inv row 1
-    { 567, 250 }, // inv row 1
-    { 596, 250 }, // inv row 1
-    { 337, 279 }, // inv row 2
-    { 366, 279 }, // inv row 2
-    { 394, 279 }, // inv row 2
-    { 423, 279 }, // inv row 2
-    { 451, 279 }, // inv row 2
-    { 480, 279 }, // inv row 2
-    { 509, 279 }, // inv row 2
-    { 538, 279 }, // inv row 2
-    { 567, 279 }, // inv row 2
-    { 596, 279 }, // inv row 2
-    { 337, 308 }, // inv row 3
-    { 366, 308 }, // inv row 3
-    { 394, 308 }, // inv row 3
-    { 423, 308 }, // inv row 3
-    { 451, 308 }, // inv row 3
-    { 480, 308 }, // inv row 3
-    { 509, 308 }, // inv row 3
-    { 538, 308 }, // inv row 3
-    { 567, 308 }, // inv row 3
-    { 596, 308 }, // inv row 3
-    { 337, 336 }, // inv row 4
-    { 366, 336 }, // inv row 4
-    { 394, 336 }, // inv row 4
-    { 423, 336 }, // inv row 4
-    { 451, 336 }, // inv row 4
-    { 480, 336 }, // inv row 4
-    { 509, 336 }, // inv row 4
-    { 538, 336 }, // inv row 4
-    { 567, 336 }, // inv row 4
-    { 596, 336 }, // inv row 4
-    { 205, 385 }, // belt
-    { 234, 385 }, // belt
-    { 263, 385 }, // belt
-    { 292, 385 }, // belt
-    { 321, 385 }, // belt
-    { 350, 385 }, // belt
-    { 379, 385 }, // belt
-    { 408, 385 }  // belt
+	//  X,   Y
+	{ 452,  31 }, // helmet
+	{ 480,  31 }, // helmet
+	{ 452,  59 }, // helmet
+	{ 480,  59 }, // helmet
+	{ 365, 205 }, // left ring
+	{ 567, 205 }, // right ring
+	{ 524,  59 }, // amulet
+	{ 337, 104 }, // left hand
+	{ 366, 104 }, // left hand
+	{ 337, 132 }, // left hand
+	{ 366, 132 }, // left hand
+	{ 337, 160 }, // left hand
+	{ 366, 160 }, // left hand
+	{ 567, 104 }, // right hand
+	{ 596, 104 }, // right hand
+	{ 567, 132 }, // right hand
+	{ 596, 132 }, // right hand
+	{ 567, 160 }, // right hand
+	{ 596, 160 }, // right hand
+	{ 452, 104 }, // chest
+	{ 480, 104 }, // chest
+	{ 452, 132 }, // chest
+	{ 480, 132 }, // chest
+	{ 452, 160 }, // chest
+	{ 480, 160 }, // chest
+	{ 337, 250 }, // inv row 1
+	{ 366, 250 }, // inv row 1
+	{ 394, 250 }, // inv row 1
+	{ 423, 250 }, // inv row 1
+	{ 451, 250 }, // inv row 1
+	{ 480, 250 }, // inv row 1
+	{ 509, 250 }, // inv row 1
+	{ 538, 250 }, // inv row 1
+	{ 567, 250 }, // inv row 1
+	{ 596, 250 }, // inv row 1
+	{ 337, 279 }, // inv row 2
+	{ 366, 279 }, // inv row 2
+	{ 394, 279 }, // inv row 2
+	{ 423, 279 }, // inv row 2
+	{ 451, 279 }, // inv row 2
+	{ 480, 279 }, // inv row 2
+	{ 509, 279 }, // inv row 2
+	{ 538, 279 }, // inv row 2
+	{ 567, 279 }, // inv row 2
+	{ 596, 279 }, // inv row 2
+	{ 337, 308 }, // inv row 3
+	{ 366, 308 }, // inv row 3
+	{ 394, 308 }, // inv row 3
+	{ 423, 308 }, // inv row 3
+	{ 451, 308 }, // inv row 3
+	{ 480, 308 }, // inv row 3
+	{ 509, 308 }, // inv row 3
+	{ 538, 308 }, // inv row 3
+	{ 567, 308 }, // inv row 3
+	{ 596, 308 }, // inv row 3
+	{ 337, 336 }, // inv row 4
+	{ 366, 336 }, // inv row 4
+	{ 394, 336 }, // inv row 4
+	{ 423, 336 }, // inv row 4
+	{ 451, 336 }, // inv row 4
+	{ 480, 336 }, // inv row 4
+	{ 509, 336 }, // inv row 4
+	{ 538, 336 }, // inv row 4
+	{ 567, 336 }, // inv row 4
+	{ 596, 336 }, // inv row 4
+	{ 205, 385 }, // belt
+	{ 234, 385 }, // belt
+	{ 263, 385 }, // belt
+	{ 292, 385 }, // belt
+	{ 321, 385 }, // belt
+	{ 350, 385 }, // belt
+	{ 379, 385 }, // belt
+	{ 408, 385 }  // belt
 	// clang-format on
 };
 

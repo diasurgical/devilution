@@ -1,9 +1,9 @@
 //rdata
 ProfileStruct bnprofiles[4] = {
-    { "profile\\sex", '\x01', 1128, 8 },
-    { "profile\\age", '\x01', 1130, 4 },
-    { "profile\\location", '\x01', 1132, 40 },
-    { "profile\\description", '\x01', 1134, 200 }
+	{ "profile\\sex", '\x01', 1128, 8 },
+	{ "profile\\age", '\x01', 1130, 4 },
+	{ "profile\\location", '\x01', 1132, 40 },
+	{ "profile\\description", '\x01', 1134, 200 }
 };
 int profilemsg1[6]           = { 1125, 1127, 1129, 1131, 1133, 0 };
 int profilemsg2[6]           = { 1126, 1128, 1130, 1132, 1134, 0 };
@@ -34,16 +34,16 @@ int Title_cpp_float_value    = 2139095040; // weak
 int titlesnd_cpp_float_value = 2139095040; // weak
 int dword_10022258           = 4;          // weak
 ProfFntStruct proffnts[4]    = {
-    { 8, "Arial", 400 },
-    { 10, "Arial", 400 },
-    { 10, "Arial", 700 },
-    { 13, "Time New Roman", 400 }
+	{ 8, "Arial", 400 },
+	{ 10, "Arial", 400 },
+	{ 10, "Arial", 700 },
+	{ 13, "Time New Roman", 400 }
 };
 unsigned char connect_subnet_ip[4][4] = {
-    { 13, 0, 0, 0 },      // 13.0.0.0
-    { 128, 128, 128, 0 }, // 128.128.128.0
-    { 14, 0, 0, 0 },      // 14.0.0.0
-    { 255, 255, 255, 0 }  // 255.255.255.0
+	{ 13, 0, 0, 0 },      // 13.0.0.0
+	{ 128, 128, 128, 0 }, // 128.128.128.0
+	{ 14, 0, 0, 0 },      // 14.0.0.0
+	{ 255, 255, 255, 0 }  // 255.255.255.0
 };
 int creadung_msgtbl1[3]      = { 1038, 1080, 0 };
 int creadung_msgtbl2[2]      = { 1097, 0 };
