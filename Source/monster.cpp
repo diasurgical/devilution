@@ -2701,53 +2701,45 @@ int __fastcall M_DoAttack(int i)
 	return 1;
 }
 
-int __fastcall M_DoRAttack(int i)
+BOOL __fastcall M_DoRAttack(int i)
 {
-	int v1;        // ebx
-	int v2;        // esi
-	CMonster **v3; // edi
-	int v4;        // eax
-	int v5;        // eax
-	int v6;        // edi
-
-	v1 = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_DoRAttack: Invalid monster %d", i);
-	v2 = v1;
-	v3 = &monster[v1].MType;
-	if (*v3 == NULL) {
-		TermMsg("M_DoRAttack: Monster %d \"%s\" MType NULL", v1, monster[v2].mName);
-		if (*v3 == NULL)
-			TermMsg("M_DoRAttack: Monster %d \"%s\" MData NULL", v1, monster[v2].mName);
-	}
-	if (monster[v2]._mAnimFrame == monster[v2].MData->mAFNum) {
-		v4 = monster[v2]._mVar1;
-		if (v4 != -1) {
-			v5 = 2 * (v4 == 52) + 1;
-			if (v5 > 0) {
-				v6 = v5;
-				do {
-					AddMissile(
-					    monster[v2]._mx,
-					    monster[v2]._my,
-					    (unsigned char)monster[v2]._menemyx,
-					    (unsigned char)monster[v2]._menemyy,
-					    monster[v2]._mdir,
-					    monster[v2]._mVar1,
-					    1,
-					    v1,
-					    monster[v2]._mVar2,
-					    0);
-					--v6;
-				} while (v6);
+	if (monster[i].MType == NULL)
+		TermMsg("M_DoRAttack: Monster %d \"%s\" MType NULL", i, monster[i].mName);
+	if (monster[i].MType == NULL) // BUGFIX: should check MData
+		TermMsg("M_DoRAttack: Monster %d \"%s\" MData NULL", i, monster[i].mName);
+
+	if (monster[i]._mAnimFrame == monster[i].MData->mAFNum) {
+		if (monster[i]._mVar1 != -1) {
+			int multimissiles;
+			if (monster[i]._mVar1 != MIS_CBOLT)
+				multimissiles = 1;
+			else
+				multimissiles = 3;
+			for (int mi = 0; mi < multimissiles; mi++) {
+				AddMissile(
+				    monster[i]._mx,
+				    monster[i]._my,
+				    monster[i]._menemyx,
+				    monster[i]._menemyy,
+				    monster[i]._mdir,
+				    monster[i]._mVar1,
+				    1,
+				    i,
+				    monster[i]._mVar2,
+				    0);
 			}
 		}
-		PlayEffect(v1, 0);
+		PlayEffect(i, 0);
 	}
-	if (monster[v2]._mAnimFrame != monster[v2]._mAnimLen)
-		return 0;
-	M_StartStand(v1, monster[v2]._mdir);
-	return 1;
+
+	if (monster[i]._mAnimFrame == monster[i]._mAnimLen) {
+		M_StartStand(i, monster[i]._mdir);
+		return TRUE;
+	}
+
+	return FALSE;
 }
 
 int __fastcall M_DoRSpAttack(int i)
