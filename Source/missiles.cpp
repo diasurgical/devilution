@@ -12,74 +12,77 @@ int MissilePreFlag; // weak
 int numchains;      // weak
 
 MissileData missiledata[68] = {
-	{ MIS_ARROW, &AddArrow, &MI_Arrow, 1, 0u, 0u, MFILE_ARROWS, -1, -1 },
-	{ MIS_FIREBOLT, &AddFirebolt, &MI_Firebolt, 1, 1u, 1u, MFILE_FIREBA, LS_FBOLT1, LS_FIRIMP2 },
-	{ MIS_GUARDIAN, &AddGuardian, &MI_Guardian, 1, 1u, 0u, MFILE_GUARD, LS_GUARD, LS_GUARDLAN },
-	{ MIS_RNDTELEPORT, &AddRndTeleport, &MI_Teleport, 0, 1u, 0u, MFILE_NONE, LS_TELEPORT, -1 },
-	{ MIS_LIGHTBALL, &AddLightball, &MI_Lightball, 1, 1u, 2u, MFILE_LGHNING, -1, -1 },
-	{ MIS_FIREWALL, &AddFirewall, &MI_Firewall, 1, 1u, 1u, MFILE_FIREWAL, LS_WALLLOOP, LS_FIRIMP2 },
-	{ MIS_FIREBALL, &AddFireball, &MI_Fireball, 1, 1u, 1u, MFILE_FIREBA, LS_FBOLT1, LS_FIRIMP2 },
-	{ MIS_LIGHTCTRL, &AddLightctrl, &MI_Lightctrl, 0, 1u, 2u, MFILE_LGHNING, -1, -1 },
-	{ MIS_LIGHTNING, &AddLightning, &MI_Lightning, 1, 1u, 2u, MFILE_LGHNING, LS_LNING1, LS_ELECIMP1 },
-	{ MIS_MISEXP, &AddMisexp, &MI_Misexp, 1, 2u, 0u, MFILE_MAGBLOS, -1, -1 },
-	{ MIS_TOWN, &AddTown, &MI_Town, 1, 1u, 3u, MFILE_PORTAL, LS_SENTINEL, LS_ELEMENTL },
-	{ MIS_FLASH, &AddFlash, &MI_Flash, 1, 1u, 3u, MFILE_BLUEXFR, LS_NOVA, LS_ELECIMP1 },
-	{ MIS_FLASH2, &AddFlash2, &MI_Flash2, 1, 1u, 3u, MFILE_BLUEXBK, -1, -1 },
-	{ MIS_MANASHIELD, &AddManashield, &MI_SetManashield, 0, 1u, 3u, MFILE_MANASHLD, LS_MSHIELD, -1 },
-	{ MIS_FIREMOVE, &AddFiremove, &MI_Firemove, 1, 1u, 1u, MFILE_FIREWAL, -1, -1 },
-	{ MIS_CHAIN, &AddChain, &MI_Chain, 1, 1u, 2u, MFILE_LGHNING, LS_LNING1, LS_ELECIMP1 },
-	{ MIS_NULL_10, NULL, NULL, 1, 1u, 2u, MFILE_LGHNING, -1, -1 },
-	{ MIS_NULL_11, &miss_null_11, &mi_null_11, 1, 2u, 0u, MFILE_BLOOD, LS_BLODSTAR, LS_BLSIMPT },
-	{ MIS_NULL_12, &miss_null_12, &mi_null_11, 1, 2u, 0u, MFILE_BONE, -1, -1 },
-	{ MIS_NULL_13, &miss_null_13, &mi_null_11, 1, 2u, 0u, MFILE_METLHIT, -1, -1 },
-	{ MIS_RHINO, &AddRhino, &MI_Rhino, 1, 2u, 0u, MFILE_NONE, -1, -1 },
-	{ MIS_MAGMABALL, &AddMagmaball, &MI_Firebolt, 1, 1u, 1u, MFILE_MAGBALL, -1, -1 },
-	{ MIS_LIGHTCTRL2, &AddLightctrl, &MI_Lightctrl, 0, 1u, 2u, MFILE_THINLGHT, -1, -1 },
-	{ MIS_LIGHTNING2, &AddLightning, &MI_Lightning, 1, 1u, 2u, MFILE_THINLGHT, -1, -1 },
-	{ MIS_FLARE, &AddFlare, &MI_Firebolt, 1, 1u, 3u, MFILE_FLARE, -1, -1 },
-	{ MIS_MISEXP2, &AddMisexp, &MI_Misexp, 1, 2u, 3u, MFILE_FLAREEXP, -1, -1 },
-	{ MIS_TELEPORT, &AddTeleport, &MI_Teleport, 0, 1u, 0u, MFILE_NONE, LS_ELEMENTL, -1 },
-	{ MIS_FARROW, &AddLArrow, &MI_LArrow, 1, 0u, 1u, MFILE_FARROW, -1, -1 },
-	{ MIS_DOOMSERP, NULL, NULL, 0, 1u, 3u, MFILE_DOOM, LS_DSERP, -1 },
-	{ MIS_NULL_1D, &miss_null_1D, &MI_Firewall, 1, 2u, 1u, MFILE_FIREWAL, -1, -1 },
-	{ MIS_STONE, &AddStone, &MI_Stone, 0, 1u, 3u, MFILE_NONE, LS_SCURIMP, -1 },
-	{ MIS_NULL_1F, &miss_null_1F, &MI_Dummy, 1, 1u, 0u, MFILE_NONE, -1, -1 },
-	{ MIS_INVISIBL, NULL, NULL, 0, 1u, 0u, MFILE_NONE, LS_INVISIBL, -1 },
-	{ MIS_GOLEM, &AddGolem, &MI_Golem, 0, 1u, 0u, MFILE_NONE, LS_GOLUM, -1 },
-	{ MIS_ETHEREALIZE, &AddEtherealize, &MI_Etherealize, 1, 1u, 0u, MFILE_ETHRSHLD, LS_ETHEREAL, -1 },
-	{ MIS_NULL_23, &miss_null_23, &mi_null_11, 1, 2u, 0u, MFILE_BLODBUR, -1, -1 },
-	{ MIS_BOOM, &AddBoom, &MI_Boom, 1, 2u, 0u, MFILE_NEWEXP, -1, -1 },
-	{ MIS_HEAL, &AddHeal, &MI_Dummy, 0, 1u, 0u, MFILE_NONE, -1, -1 },
-	{ MIS_FIREWALLC, &AddFirewallC, &MI_FirewallC, 0, 1u, 1u, MFILE_FIREWAL, -1, -1 },
-	{ MIS_INFRA, &AddInfra, &MI_Infra, 0, 1u, 0u, MFILE_NONE, LS_INFRAVIS, -1 },
-	{ MIS_IDENTIFY, &AddIdentify, &MI_Dummy, 0, 1u, 0u, MFILE_NONE, -1, -1 },
-	{ MIS_WAVE, &AddWave, &MI_Wave, 1, 1u, 1u, MFILE_FIREWAL, LS_FLAMWAVE, -1 },
-	{ MIS_NOVA, &AddNova, &MI_Nova, 1, 1u, 2u, MFILE_LGHNING, LS_NOVA, -1 },
-	{ MIS_BLODBOIL, &miss_null_1F, &MI_Blodboil, 1, 1u, 0u, MFILE_NONE, -1, LS_BLODBOIL },
-	{ MIS_APOCA, &AddApoca, &MI_Apoca, 1, 1u, 3u, MFILE_NEWEXP, LS_APOC, -1 },
-	{ MIS_REPAIR, &AddRepair, &MI_Dummy, 0, 2u, 0u, MFILE_NONE, -1, -1 },
-	{ MIS_RECHARGE, &AddRecharge, &MI_Dummy, 0, 2u, 0u, MFILE_NONE, -1, -1 },
-	{ MIS_DISARM, &AddDisarm, &MI_Dummy, 0, 2u, 0u, MFILE_NONE, LS_TRAPDIS, -1 },
-	{ MIS_FLAME, &AddFlame, &MI_Flame, 1, 1u, 1u, MFILE_INFERNO, LS_SPOUTSTR, -1 },
-	{ MIS_FLAMEC, &AddFlamec, &MI_Flamec, 0, 1u, 1u, MFILE_NONE, -1, -1 },
-	{ MIS_NULL_32, &miss_null_32, &mi_null_32, 1, 2u, 0u, MFILE_NONE, -1, -1 },
-	{ MIS_NULL_33, &miss_null_33, &mi_null_33, 1, 0u, 1u, MFILE_KRULL, -1, -1 },
-	{ MIS_CBOLT, &AddCbolt, &MI_Cbolt, 1, 1u, 2u, MFILE_MINILTNG, LS_CBOLT, -1 },
-	{ MIS_HBOLT, &AddHbolt, &MI_Hbolt, 1, 1u, 0u, MFILE_HOLY, LS_HOLYBOLT, LS_ELECIMP1 },
-	{ MIS_RESURRECT, &AddResurrect, &MI_Dummy, 0, 1u, 3u, MFILE_NONE, -1, LS_RESUR },
-	{ MIS_TELEKINESIS, &AddTelekinesis, &MI_Dummy, 0, 1u, 0u, MFILE_NONE, LS_ETHEREAL, -1 },
-	{ MIS_LARROW, &AddLArrow, &MI_LArrow, 1, 0u, 2u, MFILE_LARROW, -1, -1 },
-	{ MIS_ACID, &AddAcid, &MI_Firebolt, 1, 1u, 4u, MFILE_ACIDBF, LS_ACID, -1 },
-	{ MIS_MISEXP3, &AddMisexp, &MI_Acidsplat, 1, 2u, 4u, MFILE_ACIDSPLA, -1, -1 },
-	{ MIS_ACIDPUD, &AddAcidpud, &MI_Acidpud, 1, 2u, 4u, MFILE_ACIDPUD, LS_PUDDLE, -1 },
-	{ MIS_HEALOTHER, &AddHealOther, &MI_Dummy, 0, 1u, 0u, MFILE_NONE, -1, -1 },
-	{ MIS_ELEMENT, &AddElement, &MI_Element, 1, 1u, 1u, MFILE_FIRERUN, LS_ELEMENTL, -1 },
-	{ MIS_RESURRECTBEAM, &AddResurrectBeam, &MI_ResurrectBeam, 1, 1u, 0u, MFILE_RESSUR1, -1, -1 },
-	{ MIS_BONESPIRIT, &AddBoneSpirit, &MI_Bonespirit, 1, 1u, 3u, MFILE_SKLBALL, LS_BONESP, LS_BSIMPCT },
-	{ MIS_WEAPEXP, &AddWeapexp, &MI_Weapexp, 1, 2u, 0u, MFILE_NONE, -1, -1 },
-	{ MIS_RPORTAL, &AddRportal, &MI_Rportal, 1, 2u, 0u, MFILE_RPORTAL, LS_SENTINEL, LS_ELEMENTL },
-	{ MIS_BOOM2, &AddBoom, &MI_Boom, 1, 2u, 0u, MFILE_FIREPLAR, -1, -1 },
-	{ MIS_DIABAPOCA, &AddDiabApoca, &MI_Dummy, 0, 2u, 0u, MFILE_NONE, -1, -1 }
+	// clang-format off
+	// mName,             mAddProc,          mProc,         mDraw, mType, mResist, mFileNum,       miSFX,       mlSFX;
+	{  MIS_ARROW,         &AddArrow,         &MI_Arrow,         1,     0,       0, MFILE_ARROWS,   -1,          -1          },
+	{  MIS_FIREBOLT,      &AddFirebolt,      &MI_Firebolt,      1,     1,       1, MFILE_FIREBA,   LS_FBOLT1,   LS_FIRIMP2  },
+	{  MIS_GUARDIAN,      &AddGuardian,      &MI_Guardian,      1,     1,       0, MFILE_GUARD,    LS_GUARD,    LS_GUARDLAN },
+	{  MIS_RNDTELEPORT,   &AddRndTeleport,   &MI_Teleport,      0,     1,       0, MFILE_NONE,     LS_TELEPORT, -1          },
+	{  MIS_LIGHTBALL,     &AddLightball,     &MI_Lightball,     1,     1,       2, MFILE_LGHNING,  -1,          -1          },
+	{  MIS_FIREWALL,      &AddFirewall,      &MI_Firewall,      1,     1,       1, MFILE_FIREWAL,  LS_WALLLOOP, LS_FIRIMP2  },
+	{  MIS_FIREBALL,      &AddFireball,      &MI_Fireball,      1,     1,       1, MFILE_FIREBA,   LS_FBOLT1,   LS_FIRIMP2  },
+	{  MIS_LIGHTCTRL,     &AddLightctrl,     &MI_Lightctrl,     0,     1,       2, MFILE_LGHNING,  -1,          -1          },
+	{  MIS_LIGHTNING,     &AddLightning,     &MI_Lightning,     1,     1,       2, MFILE_LGHNING,  LS_LNING1,   LS_ELECIMP1 },
+	{  MIS_MISEXP,        &AddMisexp,        &MI_Misexp,        1,     2,       0, MFILE_MAGBLOS,  -1,          -1          },
+	{  MIS_TOWN,          &AddTown,          &MI_Town,          1,     1,       3, MFILE_PORTAL,   LS_SENTINEL, LS_ELEMENTL },
+	{  MIS_FLASH,         &AddFlash,         &MI_Flash,         1,     1,       3, MFILE_BLUEXFR,  LS_NOVA,     LS_ELECIMP1 },
+	{  MIS_FLASH2,        &AddFlash2,        &MI_Flash2,        1,     1,       3, MFILE_BLUEXBK,  -1,          -1          },
+	{  MIS_MANASHIELD,    &AddManashield,    &MI_SetManashield, 0,     1,       3, MFILE_MANASHLD, LS_MSHIELD,  -1          },
+	{  MIS_FIREMOVE,      &AddFiremove,      &MI_Firemove,      1,     1,       1, MFILE_FIREWAL,  -1,          -1          },
+	{  MIS_CHAIN,         &AddChain,         &MI_Chain,         1,     1,       2, MFILE_LGHNING,  LS_LNING1,   LS_ELECIMP1 },
+	{  MIS_SENTINAL,      NULL,              NULL,              1,     1,       2, MFILE_LGHNING,  -1,          -1          },
+	{  MIS_BLODSTAR,      &miss_null_11,     &mi_null_11,       1,     2,       0, MFILE_BLOOD,    LS_BLODSTAR, LS_BLSIMPT  },
+	{  MIS_BONE,          &miss_null_12,     &mi_null_11,       1,     2,       0, MFILE_BONE,     -1,          -1          },
+	{  MIS_METLHIT,       &miss_null_13,     &mi_null_11,       1,     2,       0, MFILE_METLHIT,  -1,          -1          },
+	{  MIS_RHINO,         &AddRhino,         &MI_Rhino,         1,     2,       0, MFILE_NONE,     -1,          -1          },
+	{  MIS_MAGMABALL,     &AddMagmaball,     &MI_Firebolt,      1,     1,       1, MFILE_MAGBALL,  -1,          -1          },
+	{  MIS_LIGHTCTRL2,    &AddLightctrl,     &MI_Lightctrl,     0,     1,       2, MFILE_THINLGHT, -1,          -1          },
+	{  MIS_LIGHTNING2,    &AddLightning,     &MI_Lightning,     1,     1,       2, MFILE_THINLGHT, -1,          -1          },
+	{  MIS_FLARE,         &AddFlare,         &MI_Firebolt,      1,     1,       3, MFILE_FLARE,    -1,          -1          },
+	{  MIS_MISEXP2,       &AddMisexp,        &MI_Misexp,        1,     2,       3, MFILE_FLAREEXP, -1,          -1          },
+	{  MIS_TELEPORT,      &AddTeleport,      &MI_Teleport,      0,     1,       0, MFILE_NONE,     LS_ELEMENTL, -1          },
+	{  MIS_FARROW,        &AddLArrow,        &MI_LArrow,        1,     0,       1, MFILE_FARROW,   -1,          -1          },
+	{  MIS_DOOMSERP,      NULL,              NULL,              0,     1,       3, MFILE_DOOM,     LS_DSERP,    -1          },
+	{  MIS_FIREWALLA,     &miss_null_1D,     &MI_Firewall,      1,     2,       1, MFILE_FIREWAL,  -1,          -1          },
+	{  MIS_STONE,         &AddStone,         &MI_Stone,         0,     1,       3, MFILE_NONE,     LS_SCURIMP,  -1          },
+	{  MIS_NULL_1F,       &miss_null_1F,     &MI_Dummy,         1,     1,       0, MFILE_NONE,     -1,          -1          },
+	{  MIS_INVISIBL,      NULL,              NULL,              0,     1,       0, MFILE_NONE,     LS_INVISIBL, -1          },
+	{  MIS_GOLEM,         &AddGolem,         &MI_Golem,         0,     1,       0, MFILE_NONE,     LS_GOLUM,    -1          },
+	{  MIS_ETHEREALIZE,   &AddEtherealize,   &MI_Etherealize,   1,     1,       0, MFILE_ETHRSHLD, LS_ETHEREAL, -1          },
+	{  MIS_BLODBUR,       &miss_null_23,     &mi_null_11,       1,     2,       0, MFILE_BLODBUR,  -1,          -1          },
+	{  MIS_BOOM,          &AddBoom,          &MI_Boom,          1,     2,       0, MFILE_NEWEXP,   -1,          -1          },
+	{  MIS_HEAL,          &AddHeal,          &MI_Dummy,         0,     1,       0, MFILE_NONE,     -1,          -1          },
+	{  MIS_FIREWALLC,     &AddFirewallC,     &MI_FirewallC,     0,     1,       1, MFILE_FIREWAL,  -1,          -1          },
+	{  MIS_INFRA,         &AddInfra,         &MI_Infra,         0,     1,       0, MFILE_NONE,     LS_INFRAVIS, -1          },
+	{  MIS_IDENTIFY,      &AddIdentify,      &MI_Dummy,         0,     1,       0, MFILE_NONE,     -1,          -1          },
+	{  MIS_WAVE,          &AddWave,          &MI_Wave,          1,     1,       1, MFILE_FIREWAL,  LS_FLAMWAVE, -1          },
+	{  MIS_NOVA,          &AddNova,          &MI_Nova,          1,     1,       2, MFILE_LGHNING,  LS_NOVA,     -1          },
+	{  MIS_BLODBOIL,      &miss_null_1F,     &MI_Blodboil,      1,     1,       0, MFILE_NONE,     -1,          LS_BLODBOIL },
+	{  MIS_APOCA,         &AddApoca,         &MI_Apoca,         1,     1,       3, MFILE_NEWEXP,   LS_APOC,     -1          },
+	{  MIS_REPAIR,        &AddRepair,        &MI_Dummy,         0,     2,       0, MFILE_NONE,     -1,          -1          },
+	{  MIS_RECHARGE,      &AddRecharge,      &MI_Dummy,         0,     2,       0, MFILE_NONE,     -1,          -1          },
+	{  MIS_DISARM,        &AddDisarm,        &MI_Dummy,         0,     2,       0, MFILE_NONE,     LS_TRAPDIS,  -1          },
+	{  MIS_FLAME,         &AddFlame,         &MI_Flame,         1,     1,       1, MFILE_INFERNO,  LS_SPOUTSTR, -1          },
+	{  MIS_FLAMEC,        &AddFlamec,        &MI_Flamec,        0,     1,       1, MFILE_NONE,     -1,          -1          },
+	{  MIS_FIREMAN,       &miss_null_32,     &mi_null_32,       1,     2,       0, MFILE_NONE,     -1,          -1          },
+	{  MIS_KRULL,         &miss_null_33,     &mi_null_33,       1,     0,       1, MFILE_KRULL,    -1,          -1          },
+	{  MIS_CBOLT,         &AddCbolt,         &MI_Cbolt,         1,     1,       2, MFILE_MINILTNG, LS_CBOLT,    -1          },
+	{  MIS_HBOLT,         &AddHbolt,         &MI_Hbolt,         1,     1,       0, MFILE_HOLY,     LS_HOLYBOLT, LS_ELECIMP1 },
+	{  MIS_RESURRECT,     &AddResurrect,     &MI_Dummy,         0,     1,       3, MFILE_NONE,     -1,          LS_RESUR    },
+	{  MIS_TELEKINESIS,   &AddTelekinesis,   &MI_Dummy,         0,     1,       0, MFILE_NONE,     LS_ETHEREAL, -1          },
+	{  MIS_LARROW,        &AddLArrow,        &MI_LArrow,        1,     0,       2, MFILE_LARROW,   -1,          -1          },
+	{  MIS_ACID,          &AddAcid,          &MI_Firebolt,      1,     1,       4, MFILE_ACIDBF,   LS_ACID,     -1          },
+	{  MIS_MISEXP3,       &AddMisexp,        &MI_Acidsplat,     1,     2,       4, MFILE_ACIDSPLA, -1,          -1          },
+	{  MIS_ACIDPUD,       &AddAcidpud,       &MI_Acidpud,       1,     2,       4, MFILE_ACIDPUD,  LS_PUDDLE,   -1          },
+	{  MIS_HEALOTHER,     &AddHealOther,     &MI_Dummy,         0,     1,       0, MFILE_NONE,     -1,          -1          },
+	{  MIS_ELEMENT,       &AddElement,       &MI_Element,       1,     1,       1, MFILE_FIRERUN,  LS_ELEMENTL, -1          },
+	{  MIS_RESURRECTBEAM, &AddResurrectBeam, &MI_ResurrectBeam, 1,     1,       0, MFILE_RESSUR1,  -1,          -1          },
+	{  MIS_BONESPIRIT,    &AddBoneSpirit,    &MI_Bonespirit,    1,     1,       3, MFILE_SKLBALL,  LS_BONESP,   LS_BSIMPCT  },
+	{  MIS_WEAPEXP,       &AddWeapexp,       &MI_Weapexp,       1,     2,       0, MFILE_NONE,     -1,          -1          },
+	{  MIS_RPORTAL,       &AddRportal,       &MI_Rportal,       1,     2,       0, MFILE_RPORTAL,  LS_SENTINEL, LS_ELEMENTL },
+	{  MIS_BOOM2,         &AddBoom,          &MI_Boom,          1,     2,       0, MFILE_FIREPLAR, -1,          -1          },
+	{  MIS_DIABAPOCA,     &AddDiabApoca,     &MI_Dummy,         0,     2,       0, MFILE_NONE,     -1,          -1          }
+	// clang-format on
 };
 MisFileData misfiledata[47] = {
 	// clang-format off
@@ -928,7 +931,7 @@ bool __fastcall MonsterMHit(int pnum, int m, int mindam, int maxdam, int dist, i
     pnuma = pnum;
     if (!v8
         || monster[v7]._mhitpoints >> 6 <= 0
-        || t == 53 && monster[v7].MType->mtype != MT_DIABLO && monster[v7].MData->mMonstClass) {
+        || t == MIS_HBOLT && monster[v7].MType->mtype != MT_DIABLO && monster[v7].MData->mMonstClass) {
         return 0;
     }
     if (monster[v7].MType->mtype == MT_ILLWEAV && _LOBYTE(monster[v7]._mgoal) == 2)
@@ -990,7 +993,7 @@ bool __fastcall MonsterMHit(int pnum, int m, int mindam, int maxdam, int dist, i
     if (v25 >= v13)
         return 0;
 #endif
-    if (t == 63) {
+    if (t == MIS_BONESPIRIT) {
         v19 = monster[v7]._mhitpoints / 3 >> 6;
     } else {
         v19 = mindam + random(70, maxdam - mindam + 1);
@@ -1135,7 +1138,7 @@ LABEL_25:
     }
     if ((_BYTE)shift == 1)
         v35 = 100;
-    if (mtype == 59)
+    if (mtype == MIS_ACIDPUD)
         v35 = 100;
     if (v8 == -1)
         v17 = plr[v9]._pBaseToBlk;
@@ -1161,7 +1164,7 @@ LABEL_25:
     dista = v20;
 LABEL_50:
     if (v32 < v14) {
-        if (mtype == 63) {
+        if (mtype == MIS_BONESPIRIT) {
             v21 = plr[v9]._pHitPoints / 3;
         } else {
             if ((_BYTE)shift) {
@@ -1259,7 +1262,7 @@ bool __fastcall Plr2PlrMHit(int pnum, int p, int mindam, int maxdam, int dist, i
     arglist = p;
     v7 = p;
     v26 = pnum;
-    if (plr[p]._pInvincible || mtype == 53 || plr[v7]._pSpellFlags & 1 && !missiledata[mtype].mType)
+    if (plr[p]._pInvincible || mtype == MIS_HBOLT || plr[v7]._pSpellFlags & 1 && !missiledata[mtype].mType)
         return 0;
     v22 = mtype;
     v8 = missiledata[mtype].mResist;
@@ -1322,7 +1325,7 @@ LABEL_14:
             dista = 100;
             v16 = 100;
         }
-        if (mtype == 63) {
+        if (mtype == MIS_BONESPIRIT) {
             v17 = plr[v7]._pHitPoints / 3;
         } else {
             v17 = mindam + random(70, maxdam - mindam + 1);
@@ -1958,7 +1961,7 @@ void __fastcall AddFirebolt(int mi, int sx, int sy, int dx, int dy, int midir, i
     }
     for (micastera = 0; micastera < nummissiles; ++micastera) {
         v12 = missileactive[micastera];
-        if (missile[v12]._mitype == 2 && missile[v12]._misource == id && missile[v12]._miVar3 == mi)
+        if (missile[v12]._mitype == MIS_GUARDIAN && missile[v12]._misource == id && missile[v12]._miVar3 == mi)
             break;
     }
     if (micastera == nummissiles)
@@ -2420,7 +2423,7 @@ void __fastcall AddTown(int mi, int sx, int sy, int dx, int dy, int midir, int m
         v18 = missileactive[v27];
         x = v18;
         v19 = v18;
-        if (missile[v19]._mitype == 10 && x != i && missile[v19]._misource == id)
+        if (missile[v19]._mitype == MIS_TOWN && x != i && missile[v19]._misource == id)
             missile[v19]._mirange = 0;
     }
     PutMissile(i);
@@ -3043,7 +3046,7 @@ void __fastcall AddGolem(int mi, int sx, int sy, int dx, int dy, int midir, int 
             v15 = missileactive[v12];
             v17 = v15;
             v16 = v15;
-            if (missile[v16]._mitype == 33) {
+            if (missile[v16]._mitype == MIS_GOLEM) {
                 v10 = id;
                 if (v17 != v18 && missile[v16]._misource == id)
                     break;
@@ -3732,7 +3735,7 @@ void __fastcall AddDiabApoca(int mi, int sx, int sy, int dx, int dy, int midir, 
             if (*((_BYTE *)v10 - 39)) {
                 //_LOBYTE(v11) = LineClear(x1, sy, *(v10 - 1), *v10);
                 if (LineClear(x1, sy, *(v10 - 1), *v10))
-                    AddMissile(0, 0, *(v10 - 1), *v10, 0, 66, mienemy, id, dam, 0);
+                    AddMissile(0, 0, *(v10 - 1), *v10, 0, MIS_BOOM2, mienemy, id, dam, 0);
                 mi = v13;
             }
             ++v9;
@@ -3743,7 +3746,7 @@ void __fastcall AddDiabApoca(int mi, int sx, int sy, int dx, int dy, int midir, 
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-int __fastcall AddMissile(int sx, int sy, int v1, int v2, int midir, int mitype, int micaster, int id, int v3, int spllvl)
+int __fastcall AddMissile(int sx, int sy, int dx, int dy, int midir, int mitype, int micaster, int id, int midam, int spllvl)
 {
     int v10;  // esi
     int v11;  // ecx
@@ -3764,7 +3767,7 @@ int __fastcall AddMissile(int sx, int sy, int v1, int v2, int midir, int mitype,
     sxa = sx;
     if (nummissiles >= MAXMISSILES)
         return -1;
-    if (mitype != 13 || plr[id].pManaShield != 1)
+    if (mitype != MIS_MANASHIELD || plr[id].pManaShield != 1)
         goto LABEL_9;
     if (currlevel != plr[id].plrlevel)
         return -1;
@@ -3772,7 +3775,7 @@ int __fastcall AddMissile(int sx, int sy, int v1, int v2, int midir, int mitype,
     if (nummissiles > 0) {
         do {
             v11 = missileactive[v10];
-            if (missile[v11]._mitype == 13 && missile[v11]._misource == id)
+            if (missile[v11]._mitype == MIS_MANASHIELD && missile[v11]._misource == id)
                 return -1;
         } while (++v10 < nummissiles);
     }
@@ -3816,12 +3819,12 @@ LABEL_9:
     missile[v15]._miy = sya;
     missile[v15]._misy = sya;
     missile[v15]._miAnimAdd = 1;
-    missile[v15]._midam = v3;
+    missile[v15]._midam = midam;
     if (v21 != -1) {
         PlaySfxLoc(v21, sxa, sya);
         v20 = sya;
     }
-    missiledata[v16].mAddProc(v13, sxa, v20, v1, v2, midir, micaster, id, v3);
+    missiledata[v16].mAddProc(v13, sxa, v20, dx, dy, midir, micaster, id, midam);
     return v13;
 }
 
@@ -3993,7 +3996,7 @@ void __fastcall MI_LArrow(int i)
         ChangeLight(missile[v1]._mlid, missile[v1]._mix, missile[v1]._miy, missile[v1]._miAnimFrame + 5);
         v18 = missiledata[missile[v1]._mitype].mResist;
         v32 = missiledata[missile[v1]._mitype].mResist;
-        if (missile[v1]._mitype == 56) {
+        if (missile[v1]._mitype == MIS_LARROW) {
             if (v3 == -1) {
                 v21 = random(68, 10);
                 v22 = currlevel;
@@ -4004,10 +4007,10 @@ void __fastcall MI_LArrow(int i)
                 v20 = plr[v3]._pILMaxDam;
             }
             v23 = missile[v1]._miy;
-            missiledata[56].mResist = 2;
+            missiledata[MIS_LARROW].mResist = 2;
             CheckMissileCol(ia, v19, v20, 0, missile[v1]._mix, v23, 1);
         }
-        if (missile[v1]._mitype == 27) {
+        if (missile[v1]._mitype == MIS_FARROW) {
             if (v3 == -1) {
                 v26 = random(68, 10);
                 v27 = currlevel;
@@ -4018,7 +4021,7 @@ void __fastcall MI_LArrow(int i)
                 v25 = plr[v3]._pIFMaxDam;
             }
             v28 = missile[v1]._miy;
-            missiledata[27].mResist = 1;
+            missiledata[MIS_FARROW].mResist = 1;
             CheckMissileCol(ia, v24, v25, 0, missile[v1]._mix, v28, 1);
         }
         missiledata[missile[v1]._mitype].mResist = v32;
@@ -4064,7 +4067,7 @@ void __fastcall MI_LArrow(int i)
             missile[v1]._mimfnum = 0;
             missile[v1]._mityoff -= v14;
             GetMissilePos(ia);
-            if (missile[v1]._mitype == 56)
+            if (missile[v1]._mitype == MIS_LARROW)
                 SetMissAnim(ia, 26);
             else
                 SetMissAnim(ia, MFILE_MAGBLOS);
@@ -4150,7 +4153,7 @@ void __fastcall MI_Firebolt(int i)
     ia = i;
     v2 = i;
     --missile[v2]._mirange;
-    if (missile[i]._mitype == 63 && missile[v2]._mimfnum == 8) {
+    if (missile[i]._mitype == MIS_BONESPIRIT && missile[v2]._mimfnum == 8) {
         if (!missile[i]._mirange) {
             v3 = missile[v2]._mlid;
             if (v3 >= 0)
@@ -4221,7 +4224,7 @@ LABEL_19:
         missile[v2]._mityoff = v21;
         GetMissilePos(v1);
         v15 = missile[v2]._mitype - 1;
-        if (missile[v2]._mitype == 1 || (v15 = missile[v2]._mitype - 21, missile[v2]._mitype == 21)) {
+        if (missile[v2]._mitype == MIS_FIREBOLT || (v15 = missile[v2]._mitype - 21, missile[v2]._mitype == MIS_MAGMABALL)) {
             _LOBYTE(v15) = missile[v2]._micaster;
             AddMissile(
                 missile[v2]._mix,
@@ -4229,40 +4232,40 @@ LABEL_19:
                 v1,
                 0,
                 missile[v2]._mimfnum,
-                9,
+                MIS_MISEXP,
                 v15,
                 missile[v2]._misource,
                 0,
                 0);
         } else {
             switch (missile[v2]._mitype) {
-            case 0x18:
+            case MIS_FLARE:
                 AddMissile(
                     missile[v2]._mix,
                     missile[v2]._miy,
                     v1,
                     0,
                     missile[v2]._mimfnum,
-                    25,
+                    MIS_MISEXP2,
                     _LOBYTE(missile[v2]._micaster),
                     missile[v2]._misource,
                     0,
                     0);
                 break;
-            case 0x39:
+            case MIS_ACID:
                 AddMissile(
                     missile[v2]._mix,
                     missile[v2]._miy,
                     v1,
                     0,
                     missile[v2]._mimfnum,
-                    58,
+                    MIS_MISEXP3,
                     _LOBYTE(missile[v2]._micaster),
                     missile[v2]._misource,
                     0,
                     0);
                 break;
-            case 0x3F:
+            case MIS_BONESPIRIT:
                 SetMissDir(v1, 8);
                 missile[v2]._mirange = 7;
                 missile[v2]._miDelFlag = 0;
@@ -4596,7 +4599,7 @@ void __fastcall MI_Lightctrl(int i)
                 _LOBYTE(v9) = *(_BYTE *)v9;
                 if ((unsigned char)v9 >= MT_STORM && (unsigned char)v9 <= MT_MAEL) {
                     _LOBYTE(v9) = missile[v1]._micaster;
-                    AddMissile(v6, v7, missile[v1]._misx, missile[v1]._misy, ia, 23, v9, v8, v5, missile[v1]._mispllvl);
+                    AddMissile(v6, v7, missile[v1]._misx, missile[v1]._misy, ia, MIS_LIGHTNING2, v9, v8, v5, missile[v1]._mispllvl);
                 LABEL_26:
                     v7 = v13;
                     missile[v1]._miVar1 = missile[v1]._mix;
@@ -4609,7 +4612,7 @@ void __fastcall MI_Lightctrl(int i)
             v10 = v8;
         }
         _LOBYTE(v9) = missile[v1]._micaster;
-        AddMissile(v6, v7, missile[v1]._misx, missile[v1]._misy, ia, 8, v9, v10, v11, v12);
+        AddMissile(v6, v7, missile[v1]._misx, missile[v1]._misy, ia, MIS_LIGHTNING, v9, v10, v11, v12);
         goto LABEL_26;
     }
 LABEL_27:
@@ -5156,7 +5159,7 @@ void __fastcall MI_Chain(int i)
     sx = v3;
     sy = v4;
     v7 = GetDirection(v3, v4, v6, ST1C_4_1);
-    AddMissile(v3, v4, missile[v1]._miVar1, missile[v1]._miVar2, v7, 7, 0, id, 1, missile[v1]._mispllvl);
+    AddMissile(v3, v4, missile[v1]._miVar1, missile[v1]._miVar2, v7, MIS_LIGHTCTRL, 0, id, 1, missile[v1]._mispllvl);
     v8 = missile[v1]._mispllvl + 3;
     if (v8 > 19)
         v8 = 19;
@@ -5173,7 +5176,7 @@ void __fastcall MI_Chain(int i)
                 v2 = sy + (char)*v11;
                 if (v12 > 0 && v12 < 112 && v13 > 0 && v13 < 112 && dMonster[0][v13 + 112 * v12] > 0) {
                     v14 = GetDirection(sx, sy, v12, v13);
-                    AddMissile(sx, sy, v12, v2, v14, 7, 0, id, 1, missile[v1]._mispllvl);
+                    AddMissile(sx, sy, v12, v2, v14, MIS_LIGHTCTRL, 0, id, 1, missile[v1]._mispllvl);
                     v11 = v19;
                 }
                 v11 += 2;
@@ -5327,7 +5330,7 @@ void __fastcall MI_Acidsplat(int i)
             i,
             0,
             missile[v1]._mimfnum,
-            59,
+            MIS_ACIDPUD,
             1,
             v4,
             (monster[v4].MData->mLevel >= 2) + 1,
@@ -5623,7 +5626,7 @@ void __fastcall MI_FirewallC(int i)
                 missile[v1]._miVar1,
                 v6,
                 plr[v2]._pdir,
-                5,
+                MIS_FIREWALL,
                 0,
                 v2,
                 0,
@@ -5650,7 +5653,7 @@ void __fastcall MI_FirewallC(int i)
                 missile[v1]._miVar5,
                 v10,
                 plr[v2]._pdir,
-                5,
+                MIS_FIREWALL,
                 0,
                 v2,
                 0,
@@ -5707,7 +5710,7 @@ void __fastcall MI_Apoca(int i)
             v5 = v2 + 112 * v4;
             while (!v3) {
                 if (dMonster[0][v5] > 3 && !nSolidTable[dPiece[0][v5]]) {
-                    AddMissile(v4, v2, v4, v2, plr[id]._pdir, 36, 0, id, missile[v1]._midam, 0);
+                    AddMissile(v4, v2, v4, v2, plr[id]._pdir, MIS_BOOM, 0, id, missile[v1]._midam, 0);
                     v4 = v7;
                     v3 = 1;
                 }
@@ -5779,7 +5782,7 @@ void __fastcall MI_Wave(int i)
     sy = v5 + v20;
     if (!nMissileTable[dPiece[0][v5 + v20 + 112 * v7]]) {
         v18 = &plr[id]._pdir;
-        AddMissile(v7, sy, v7 + v6, sy + v5, *v18, 14, 0, id, 0, missile[v1]._mispllvl);
+        AddMissile(v7, sy, v7 + v6, sy + v5, *v18, MIS_FIREMOVE, 0, id, 0, missile[v1]._mispllvl);
         v13 = v22;
         sya = YDirAdd[v22] + sy;
         v8 = v15;
@@ -5793,7 +5796,7 @@ void __fastcall MI_Wave(int i)
             if (nMissileTable[dPiece[0][sya + 112 * sx]] || v19 || sx <= 0 || sx >= 112 || sya <= 0 || sya >= 112) {
                 v19 = 1;
             } else {
-                AddMissile(sx, sya, sx + XDirAdd[v4], sya + YDirAdd[v4], *v18, 14, 0, id, 0, missile[v1]._mispllvl);
+                AddMissile(sx, sya, sx + XDirAdd[v4], sya + YDirAdd[v4], *v18, MIS_FIREMOVE, 0, id, 0, missile[v1]._mispllvl);
                 sx += XDirAdd[v13];
                 sya += YDirAdd[v13];
                 v10 = j;
@@ -5801,7 +5804,7 @@ void __fastcall MI_Wave(int i)
             if (nMissileTable[dPiece[0][v10 + 112 * v11]] || v17 || v11 <= 0 || v11 >= 112 || v10 <= 0 || v10 >= 112) {
                 v17 = 1;
             } else {
-                AddMissile(v11, v10, v11 + XDirAdd[v4], v10 + YDirAdd[v4], *v18, 14, 0, id, 0, missile[v1]._mispllvl);
+                AddMissile(v11, v10, v11 + XDirAdd[v4], v10 + YDirAdd[v4], *v18, MIS_FIREMOVE, 0, id, 0, missile[v1]._mispllvl);
                 v11 += *(int *)((char *)XDirAdd + v16);
                 j += *(int *)((char *)YDirAdd + v16);
                 v10 = j;
@@ -5848,10 +5851,10 @@ void __fastcall MI_Nova(int i)
     do {
         v6 = *(v5 - 1);
         if (v2 != v6 || v8 != *v5) {
-            AddMissile(v4, sy, v4 + v6, sy + *v5, midir, 4, micaster, id, v3, missile[v1]._mispllvl);
-            AddMissile(v4, sy, v4 - *(v5 - 1), sy - *v5, midir, 4, micaster, id, v3, missile[v1]._mispllvl);
-            AddMissile(v4, sy, v4 - *(v5 - 1), sy + *v5, midir, 4, micaster, id, v3, missile[v1]._mispllvl);
-            AddMissile(v4, sy, v4 + *(v5 - 1), sy - *v5, midir, 4, micaster, id, v3, missile[v1]._mispllvl);
+            AddMissile(v4, sy, v4 + v6, sy + *v5, midir, MIS_LIGHTBALL, micaster, id, v3, missile[v1]._mispllvl);
+            AddMissile(v4, sy, v4 - *(v5 - 1), sy - *v5, midir, MIS_LIGHTBALL, micaster, id, v3, missile[v1]._mispllvl);
+            AddMissile(v4, sy, v4 - *(v5 - 1), sy + *v5, midir, MIS_LIGHTBALL, micaster, id, v3, missile[v1]._mispllvl);
+            AddMissile(v4, sy, v4 + *(v5 - 1), sy - *v5, midir, MIS_LIGHTBALL, micaster, id, v3, missile[v1]._mispllvl);
             v2 = *(v5 - 1);
             v8 = *v5;
         }
@@ -5941,7 +5944,7 @@ void __fastcall MI_Flamec(int i)
                 missile[v2]._misx,
                 missile[v2]._misy,
                 v1,
-                48,
+                MIS_FLAME,
                 v7,
                 v4,
                 missile[v2]._miVar3,

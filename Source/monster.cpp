@@ -2556,7 +2556,7 @@ void __fastcall M_TryH2HHit(int i, int pnum, int Hit, int MinDam, int MaxDam)
 						v19 = 0;
 						for (hper = -1; v19 < nummissiles; ++v19) {
 							v20 = missileactive[v19];
-							if (missile[v20]._mitype == 13) {
+							if (missile[v20]._mitype == MIS_MANASHIELD) {
 								if (missile[v20]._misource == plr_num) {
 									v18 = missileactive[v19];
 									hper = missileactive[v19];
@@ -3937,7 +3937,7 @@ void __fastcall MAI_Snake(int i)
 		} else {
 			v24 = arglist;
 			if (LineClearF1(PosOkMonst, arglist, esi3->_mx, esi3->_my, v1, v2) && esi3->_mVar1 != 14) {
-				if (AddMissile(esi3->_mx, esi3->_my, v1, v2, midir, 20, micaster, arglist, 0, 0) != -1) {
+				if (AddMissile(esi3->_mx, esi3->_my, v1, v2, midir, MIS_RHINO, micaster, arglist, 0, 0) != -1) {
 					PlayEffect(arglist, 0);
 					v26 = esi3->_my + 112 * esi3->_mx;
 					esi3->_mmode = MM_CHARGE;
@@ -4078,7 +4078,7 @@ void __fastcall MAI_Bat(int i)
 			            v1,
 			            v2),
 			           v11)) {
-				if (AddMissile(esi3->_mx, esi3->_my, v1, v2, midir, 20, micaster, arglist, 0, 0) != -1) {
+				if (AddMissile(esi3->_mx, esi3->_my, v1, v2, midir, MIS_RHINO, micaster, arglist, 0, 0) != -1) {
 					v12 = esi3->_my + 112 * esi3->_mx;
 					esi3->_mmode = MM_CHARGE;
 					dMonster[0][v12] = -1 - arglist;
@@ -4099,7 +4099,7 @@ void __fastcall MAI_Bat(int i)
 				if (v14->mtype == MT_FAMILIAR) {
 					v15 = (unsigned char)esi3->_menemyx;
 					v16 = random(109, 10);
-					AddMissile(v15, (unsigned char)esi3->_menemyy, v15 + 1, 0, -1, 8, 1, arglist, v16 + 1, 0);
+					AddMissile(v15, (unsigned char)esi3->_menemyy, v15 + 1, 0, -1, MIS_LIGHTNING, 1, arglist, v16 + 1, 0);
 				}
 			}
 			if (esi3->_mmode == MM_STAND)
@@ -4164,7 +4164,7 @@ void __fastcall MAI_SkelBow(int i)
 			if (random(110, 100) < 2 * (unsigned char)v2->_mint + 3) {
 				//_LOBYTE(v16) = LineClear(v2->_mx, v2->_my, v14, v15);
 				if (LineClear(v2->_mx, v2->_my, v14, v15))
-					M_StartRAttack(arglist, 0, 4);
+					M_StartRAttack(arglist, MIS_ARROW, 4);
 			}
 		}
 		if (v2->_mmode == MM_STAND)
@@ -4351,7 +4351,7 @@ void __fastcall MAI_Fireman(int i)
 	case 1:
 		//_LOBYTE(v10) = LineClear(monster[esi3]._mx, monster[esi3]._my, v1, v2);
 		if (!LineClear(monster[esi3]._mx, monster[esi3]._my, v1, v2)
-		    || AddMissile(monster[esi3]._mx, monster[esi3]._my, v1, v2, midir, 50, micaster, arglist, 0, 0) == -1) {
+		    || AddMissile(monster[esi3]._mx, monster[esi3]._my, v1, v2, midir, MIS_FIREMAN, micaster, arglist, 0, 0) == -1) {
 			break;
 		}
 		monster[esi3]._mgoalvar1 = 0;
@@ -4364,11 +4364,11 @@ void __fastcall MAI_Fireman(int i)
 		} else {
 			//_LOBYTE(v11) = LineClear(monster[esi3]._mx, monster[esi3]._my, v1, v2);
 			if (LineClear(monster[esi3]._mx, monster[esi3]._my, v1, v2)) {
-				M_StartRAttack(arglist, 51, 4);
+				M_StartRAttack(arglist, MIS_KRULL, 4);
 			} else {
 				//_LOBYTE(v11) = LineClear(monster[esi3]._mx, monster[esi3]._my, v1, v2);
 				if (LineClear(monster[esi3]._mx, monster[esi3]._my, v1, v2)) {
-					M_StartRAttack(arglist, 51, 4);
+					M_StartRAttack(arglist, MIS_KRULL, 4);
 				} else {
 					v13 = random(112, 10);
 					M_StartDelay(arglist, v13 + 5);
@@ -4725,17 +4725,17 @@ void __fastcall MAI_Ranged(int i, int missile_type, unsigned char special)
 
 void __fastcall MAI_GoatBow(int i)
 {
-	MAI_Ranged(i, 0, 0);
+	MAI_Ranged(i, MIS_ARROW, 0);
 }
 
 void __fastcall MAI_Succ(int i)
 {
-	MAI_Ranged(i, 24, 0);
+	MAI_Ranged(i, MIS_FLARE, 0);
 }
 
 void __fastcall MAI_AcidUniq(int i)
 {
-	MAI_Ranged(i, 57, 1u);
+	MAI_Ranged(i, MIS_ACID, 1u);
 }
 
 void __fastcall MAI_Scav(int i)
@@ -5050,22 +5050,22 @@ void __fastcall MAI_RoundRanged(int i, int missile_type, unsigned char checkdoor
 
 void __fastcall MAI_Magma(int i)
 {
-	MAI_RoundRanged(i, 21, 1u, 4, 0);
+	MAI_RoundRanged(i, MIS_MAGMABALL, 1u, 4, 0);
 }
 
 void __fastcall MAI_Storm(int i)
 {
-	MAI_RoundRanged(i, 22, 1u, 4, 0);
+	MAI_RoundRanged(i, MIS_LIGHTCTRL2, 1u, 4, 0);
 }
 
 void __fastcall MAI_Acid(int i)
 {
-	MAI_RoundRanged(i, 57, 0, 4, 1);
+	MAI_RoundRanged(i, MIS_ACID, 0, 4, 1);
 }
 
 void __fastcall MAI_Diablo(int i)
 {
-	MAI_RoundRanged(i, 67, 0, 40, 0);
+	MAI_RoundRanged(i, MIS_DIABAPOCA, 0, 40, 0);
 }
 
 void __fastcall MAI_RR2(int i, int mistype, int dam)
@@ -5221,7 +5221,7 @@ void __fastcall MAI_RR2(int i, int mistype, int dam)
 
 void __fastcall MAI_Mega(int i)
 {
-	MAI_RR2(i, 49, 0);
+	MAI_RR2(i, MIS_FLAMEC, 0);
 }
 
 void __fastcall MAI_Golum(int i)
@@ -5553,7 +5553,7 @@ void __fastcall MAI_Rhino(int i)
 			            v1,
 			            v2),
 			           v19)) {
-				if (AddMissile(esi3->_mx, esi3->_my, v1, v2, midir, 20, esi3->_menemy, arglist, 0, 0) != -1) {
+				if (AddMissile(esi3->_mx, esi3->_my, v1, v2, midir, MIS_RHINO, esi3->_menemy, arglist, 0, 0) != -1) {
 					if (esi3->MData->snd_special)
 						PlayEffect(arglist, 3);
 					v20 = esi3->_my + 112 * esi3->_mx;
@@ -5734,8 +5734,8 @@ void __fastcall MAI_Counselor(int i)
 			           v30 = 2 * (unsigned char)monster[v2]._mint + 20,
 			           v29 < v30)) {
 				M_StartRAttack(v1, -1, 0);
-				AddMissile(monster[v2]._mx, monster[v2]._my, 0, 0, monster[v2]._mdir, 11, 1, v1, 4, 0);
-				AddMissile(monster[v2]._mx, monster[v2]._my, 0, 0, monster[v2]._mdir, 12, 1, v1, 4, 0);
+				AddMissile(monster[v2]._mx, monster[v2]._my, 0, 0, monster[v2]._mdir, MIS_FLASH, 1, v1, 4, 0);
+				AddMissile(monster[v2]._mx, monster[v2]._my, 0, 0, monster[v2]._mdir, MIS_FLASH2, 1, v1, 4, 0);
 				goto LABEL_39;
 			}
 		}
@@ -7075,12 +7075,12 @@ BOOL __fastcall PosOkMonst(int i, int x, int y)
 		if (v10 >= 0) {
 			v5 = (char)v5;
 			if ((char)v5 > 0) {
-				if (missile[v5]._mitype == 5)
+				if (missile[v5]._mitype == MIS_FIREWALL)
 					goto LABEL_24;
 				v9 = 0;
 				if (nummissiles > 0) {
 					do {
-						if (missile[missileactive[v9]]._mitype == 5)
+						if (missile[missileactive[v9]]._mitype == MIS_FIREWALL)
 							v4 = 1;
 						++v9;
 					} while (v9 < nummissiles);
@@ -7124,12 +7124,12 @@ BOOL __fastcall PosOkMonst2(int i, int x, int y)
 				if (v4 >= 0) {
 					v9 = (char)v9;
 					if ((char)v9 > 0) {
-						if (missile[v9]._mitype == 5)
+						if (missile[v9]._mitype == MIS_FIREWALL)
 							goto LABEL_23;
 						v10 = 0;
 						if (nummissiles > 0) {
 							do {
-								if (missile[missileactive[v10]]._mitype == 5)
+								if (missile[missileactive[v10]]._mitype == MIS_FIREWALL)
 									v5 = 1;
 								++v10;
 							} while (v10 < nummissiles);
@@ -7193,12 +7193,12 @@ BOOL __fastcall PosOkMonst3(int i, int x, int y)
 		if (v13 >= 0) {
 			v9 = (char)v9;
 			if ((char)v9 > 0) {
-				if (missile[v9]._mitype == 5)
+				if (missile[v9]._mitype == MIS_FIREWALL)
 					goto LABEL_33;
 				v11 = 0;
 				if (nummissiles > 0) {
 					do {
-						if (missile[missileactive[v11]]._mitype == 5)
+						if (missile[missileactive[v11]]._mitype == MIS_FIREWALL)
 							v12 = 1;
 						++v11;
 					} while (v11 < nummissiles);
