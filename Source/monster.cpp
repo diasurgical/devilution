@@ -2207,10 +2207,8 @@ void __fastcall M_SyncStartKill(int i, int x, int y, int pnum)
 
 void __fastcall M_StartFadein(int i, int md, BOOL backwards)
 {
-	if ((DWORD)i >= MAXMONSTERS) {
+	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_StartFadein: Invalid monster %d", i);
-	}
-
 	if (monster[i].MType == NULL)
 		TermMsg("M_StartFadein: Monster %d \"%s\" MType NULL", i, monster[i].mName);
 
@@ -2235,7 +2233,6 @@ void __fastcall M_StartFadeout(int i, int md, BOOL backwards)
 {
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_StartFadeout: Invalid monster %d", i);
-
 	if (monster[i].MType == NULL)
 		TermMsg("M_StartFadeout: Monster %d \"%s\" MType NULL", i, monster[i].mName);
 
@@ -2323,7 +2320,6 @@ BOOL __fastcall M_DoWalk(int i)
 {
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_DoWalk: Invalid monster %d", i);
-
 	if (monster[i].MType == NULL)
 		TermMsg("M_DoWalk: Monster %d \"%s\" MType NULL", i, monster[i].mName);
 
@@ -2355,7 +2351,6 @@ BOOL __fastcall M_DoWalk2(int i)
 {
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_DoWalk2: Invalid monster %d", i);
-
 	if (monster[i].MType == NULL)
 		TermMsg("M_DoWalk2: Monster %d \"%s\" MType NULL", i, monster[i].mName);
 
@@ -2386,7 +2381,6 @@ BOOL __fastcall M_DoWalk3(int i)
 {
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_DoWalk3: Invalid monster %d", i);
-
 	if (monster[i].MType == NULL)
 		TermMsg("M_DoWalk3: Monster %d \"%s\" MType NULL", i, monster[i].mName);
 
@@ -2722,52 +2716,44 @@ BOOL __fastcall M_DoRAttack(int i)
 
 int __fastcall M_DoRSpAttack(int i)
 {
-	int v1;        // ebx
-	int v2;        // esi
-	CMonster **v3; // edi
-	bool v4;       // zf
-	int v5;        // ecx
-
-	v1 = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_DoRSpAttack: Invalid monster %d", i);
-	v2 = v1;
-	v3 = &monster[v1].MType;
-	v4 = *v3 == 0;
-	if (*v3 == NULL) {
-		TermMsg("M_DoRSpAttack: Monster %d \"%s\" MType NULL", v1, monster[v2].mName);
-		v4 = *v3 == NULL;
-	}
-	if (v4)
-		TermMsg("M_DoRSpAttack: Monster %d \"%s\" MData NULL", v1, monster[v2].mName);
-	if (monster[v2]._mAnimFrame == monster[v2].MData->mAFNum2 && !monster[v2]._mAnimCnt) {
+	if (monster[i].MType == NULL)
+		TermMsg("M_DoRSpAttack: Monster %d \"%s\" MType NULL", i, monster[i].mName);
+	if (monster[i].MType == NULL) // BUGFIX: should check MData
+		TermMsg("M_DoRSpAttack: Monster %d \"%s\" MData NULL", i, monster[i].mName);
+
+	if (monster[i]._mAnimFrame == monster[i].MData->mAFNum2 && !monster[i]._mAnimCnt) {
 		AddMissile(
-		    monster[v2]._mx,
-		    monster[v2]._my,
-		    (unsigned char)monster[v2]._menemyx,
-		    (unsigned char)monster[v2]._menemyy,
-		    monster[v2]._mdir,
-		    monster[v2]._mVar1,
+		    monster[i]._mx,
+		    monster[i]._my,
+		    monster[i]._menemyx,
+		    monster[i]._menemyy,
+		    monster[i]._mdir,
+		    monster[i]._mVar1,
 		    1,
-		    v1,
-		    monster[v2]._mVar3,
+		    i,
+		    monster[i]._mVar3,
 		    0);
-		PlayEffect(v1, 3);
+		PlayEffect(i, 3);
 	}
-	if (monster[v2]._mAi == AI_MEGA && monster[v2]._mAnimFrame == 3) {
-		v5 = monster[v2]._mVar2;
-		monster[v2]._mVar2 = v5 + 1;
-		if (v5) {
-			if (v5 == 14)
-				monster[v2]._mFlags &= 0xFFFFFFFB;
-		} else {
-			monster[v2]._mFlags |= 4u;
+
+	if (monster[i]._mAi == AI_MEGA && monster[i]._mAnimFrame == 3) {
+		int hadV2 = monster[i]._mVar2;
+		monster[i]._mVar2++;
+		if (hadV2 == 0) {
+			monster[i]._mFlags |= 0x4;
+		} else if (monster[i]._mVar2 == 15) {
+			monster[i]._mFlags &= 0xFFFFFFFB;
 		}
 	}
-	if (monster[v2]._mAnimFrame != monster[v2]._mAnimLen)
-		return 0;
-	M_StartStand(v1, monster[v2]._mdir);
-	return 1;
+
+	if (monster[i]._mAnimFrame == monster[i]._mAnimLen) {
+		M_StartStand(i, monster[i]._mdir);
+		return TRUE;
+	}
+
+	return FALSE;
 }
 
 BOOL __fastcall M_DoSAttack(int i)
