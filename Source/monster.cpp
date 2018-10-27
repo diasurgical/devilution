@@ -2257,298 +2257,198 @@ void __fastcall M_StartFadeout(int i, int md, BOOL backwards)
 
 void __fastcall M_StartHeal(int i)
 {
-	int v1;            // edi
-	int v2;            // esi
-	CMonster *v3;      // eax
-	unsigned char *v4; // ecx
-	int v5;            // eax
-
-	v1 = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_StartHeal: Invalid monster %d", i);
-	v2 = v1;
-	if (monster[v1].MType == NULL)
-		TermMsg("M_StartHeal: Monster %d \"%s\" MType NULL", v1, monster[v2].mName);
-	v3 = monster[v2].MType;
-	v4 = v3->Anims[MA_SPECIAL].Data[monster[v2]._mdir];
-	monster[v2]._mAnimData = v4;
-	v5 = v3->Anims[MA_SPECIAL].Frames;
-	monster[v2]._mFlags |= 2u;
-	monster[v2]._mAnimFrame = v5;
-	monster[v2]._mmode = MM_HEAL;
-	monster[v2]._mVar1 = monster[v2]._mmaxhp / (16 * (random(97, 5) + 4));
+	if (monster[i].MType == NULL)
+		TermMsg("M_StartHeal: Monster %d \"%s\" MType NULL", i, monster[i].mName);
+
+	MonsterStruct *Monst = &monster[i];
+	Monst->_mAnimData = Monst->MType->Anims[MA_SPECIAL].Data[Monst->_mdir];
+	Monst->_mAnimFrame = Monst->MType->Anims[MA_SPECIAL].Frames;
+	Monst->_mFlags |= 2;
+	Monst->_mmode = MM_HEAL;
+	Monst->_mVar1 = Monst->_mmaxhp / (16 * (random(97, 5) + 4));
 }
 
 void __fastcall M_ChangeLightOffset(int monst)
 {
-	int v1;        // esi
-	int v2;        // ecx
-	int v3;        // eax
-	int v4;        // esi
-	int v5;        // edx
-	int v6;        // eax
-	signed int v7; // esi
-	int v8;        // edx
-	signed int v9; // esi
-
-	v1 = monst;
-	if ((unsigned int)monst >= MAXMONSTERS)
+	if ((DWORD)monst >= MAXMONSTERS)
 		TermMsg("M_ChangeLightOffset: Invalid monster %d", monst);
-	v2 = v1;
-	v3 = monster[v1]._myoff;
-	v4 = monster[v1]._mxoff;
-	v3 *= 2;
-	v5 = v4 + v3;
-	v6 = v3 - v4;
-	if (v5 >= 0) {
-		v7 = 1;
+
+	int lx = monster[monst]._mxoff + 2 * monster[monst]._myoff;
+	int ly = 2 * monster[monst]._myoff - monster[monst]._mxoff;
+
+	int sign;
+	if (lx < 0) {
+		sign = -1;
+		lx = -lx;
 	} else {
-		v7 = -1;
-		v5 = -v5;
+		sign = 1;
 	}
-	v8 = v7 * (v5 >> 3);
-	if (v6 >= 0) {
-		v9 = 1;
+
+	int _mxoff = sign * (lx >> 3);
+	int _myoff;
+	if (ly < 0) {
+		_myoff = -1;
+		ly = -ly;
 	} else {
-		v9 = -1;
-		v6 = -v6;
+		_myoff = 1;
 	}
-	ChangeLightOff((unsigned char)monster[v2].mlid, v8, v9 * (v6 >> 3));
+
+	ChangeLightOff(monster[monst].mlid, _mxoff, _myoff * (ly >> 3));
 }
 
 int __fastcall M_DoStand(int i)
 {
-	int v1;            // edi
-	int v2;            // esi
-	CMonster *v3;      // eax
-	int v4;            // ecx
-	unsigned char *v5; // eax
-
-	v1 = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_DoStand: Invalid monster %d", i);
-	v2 = v1;
-	if (monster[v1].MType == NULL)
-		TermMsg("M_DoStand: Monster %d \"%s\" MType NULL", v1, monster[v2].mName);
-	v3 = monster[v2].MType;
-	v4 = monster[v2]._mdir;
-	if (v3->mtype == MT_GOLEM)
-		v5 = v3->Anims[MA_WALK].Data[v4];
+	if (monster[i].MType == NULL)
+		TermMsg("M_DoStand: Monster %d \"%s\" MType NULL", i, monster[i].mName);
+
+	MonsterStruct *Monst = &monster[i];
+	if (Monst->MType->mtype == MT_GOLEM)
+		Monst->_mAnimData = Monst->MType->Anims[MA_WALK].Data[Monst->_mdir];
 	else
-		v5 = v3->Anims[MA_STAND].Data[v4];
-	monster[v2]._mAnimData = v5;
-	if (monster[v2]._mAnimFrame == monster[v2]._mAnimLen)
-		M_Enemy(v1);
-	++monster[v2]._mVar2;
-	return 0;
+		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[Monst->_mdir];
+
+	if (Monst->_mAnimFrame == Monst->_mAnimLen)
+		M_Enemy(i);
+
+	Monst->_mVar2++;
+
+	return FALSE;
 }
 
-int __fastcall M_DoWalk(int i)
+BOOL __fastcall M_DoWalk(int i)
 {
-	int v1;  // ebx
-	int v2;  // esi
-	int v3;  // edi
-	int v4;  // eax
-	int v5;  // edi
-	int v6;  // ecx
-	int v7;  // edx
-	int v8;  // eax
-	bool v9; // zf
-	int v10; // ecx
-	int v11; // edx
-	int v12; // eax
-	int v13; // ecx
+    if ((DWORD)i >= MAXMONSTERS)
+        TermMsg("M_DoWalk: Invalid monster %d", i);
 
-	v1 = i;
-	if ((DWORD)i >= MAXMONSTERS)
-		TermMsg("M_DoWalk: Invalid monster %d", i);
-	v2 = v1;
-	v3 = 0;
-	if (monster[v1].MType == NULL)
-		TermMsg("M_DoWalk: Monster %d \"%s\" MType NULL", v1, monster[v2].mName);
-	v4 = monster[v2]._mVar8;
-	if (v4 == monster[v2].MType->Anims[MA_WALK].Frames) {
-		v5 = monster[v2]._my;
-		v6 = monster[v2]._mx;
-		dMonster[0][v5 + 112 * monster[v2]._mx] = 0;
-		v7 = v6 + monster[v2]._mVar1;
-		monster[v2]._mx = v7;
-		v8 = v5 + monster[v2]._mVar2;
-		v9 = monster[v2]._uniqtype == 0;
-		monster[v2]._my = v8;
-		dMonster[0][v8 + 112 * v7] = v1 + 1;
-		if (!v9)
-			ChangeLightXY((unsigned char)monster[v2].mlid, v7, v8);
-		M_StartStand(v1, monster[v2]._mdir);
-		v3 = 1;
-	} else if (!monster[v2]._mAnimCnt) {
-		v10 = monster[v2]._mxvel;
-		v11 = monster[v2]._myvel;
-		monster[v2]._mVar8 = v4 + 1;
-		monster[v2]._mVar6 += v10;
-		v12 = monster[v2]._mVar6 >> 4;
-		monster[v2]._mVar7 += v11;
-		v13 = monster[v2]._mVar7 >> 4;
-		monster[v2]._mxoff = v12;
-		monster[v2]._myoff = v13;
-	}
-	if (monster[v2]._uniqtype != 0)
-		M_ChangeLightOffset(v1);
-	return v3;
+    if (monster[i].MType == NULL)
+        TermMsg("M_DoWalk: Monster %d \"%s\" MType NULL", i, monster[i].mName);
+
+    BOOL rv = FALSE;
+    if (monster[i]._mVar8 == monster[i].MType->Anims[MA_WALK].Frames) {
+        dMonster[monster[i]._mx][monster[i]._my] = 0;
+        monster[i]._mx += monster[i]._mVar1;
+        monster[i]._my += monster[i]._mVar2;
+        dMonster[monster[i]._mx][monster[i]._my] = i + 1;
+        if (monster[i]._uniqtype != 0)
+            ChangeLightXY(monster[i].mlid, monster[i]._mx, monster[i]._my);
+        M_StartStand(i, monster[i]._mdir);
+        rv = TRUE;
+    } else if (!monster[i]._mAnimCnt) {
+        monster[i]._mVar8++;
+        monster[i]._mVar6 += monster[i]._mxvel;
+        monster[i]._mVar7 += monster[i]._myvel;
+        monster[i]._mxoff = monster[i]._mVar6 >> 4;
+        monster[i]._myoff = monster[i]._mVar7 >> 4;
+    }
+
+    if (monster[i]._uniqtype != 0)
+        M_ChangeLightOffset(i);
+
+    return rv;
 }
 
-int __fastcall M_DoWalk2(int i)
+BOOL __fastcall M_DoWalk2(int i)
 {
-	int v1;  // ebp
-	int v2;  // esi
-	int v3;  // eax
-	bool v4; // zf
-	int v5;  // edi
-	int v6;  // ecx
-	int v7;  // edx
-	int v8;  // eax
-	int v9;  // ecx
+    if ((DWORD)i >= MAXMONSTERS)
+        TermMsg("M_DoWalk2: Invalid monster %d", i);
 
-	v1 = i;
-	if ((DWORD)i >= MAXMONSTERS)
-		TermMsg("M_DoWalk2: Invalid monster %d", i);
-	v2 = v1;
-	if (monster[v1].MType == NULL)
-		TermMsg("M_DoWalk2: Monster %d \"%s\" MType NULL", v1, monster[v2].mName);
-	v3 = monster[v2]._mVar8;
-	if (v3 == monster[v2].MType->Anims[MA_WALK].Frames) {
-		v4 = monster[v2]._uniqtype == 0;
-		dMonster[0][monster[v2]._mVar2 + 112 * monster[v2]._mVar1] = 0;
-		if (!v4)
-			ChangeLightXY((unsigned char)monster[v2].mlid, monster[v2]._mx, monster[v2]._my);
-		M_StartStand(v1, monster[v2]._mdir);
-		v5 = 1;
-	} else {
-		if (!monster[v2]._mAnimCnt) {
-			v6 = monster[v2]._mxvel;
-			v7 = monster[v2]._myvel;
-			monster[v2]._mVar8 = v3 + 1;
-			monster[v2]._mVar6 += v6;
-			v8 = monster[v2]._mVar6 >> 4;
-			monster[v2]._mVar7 += v7;
-			v9 = monster[v2]._mVar7 >> 4;
-			monster[v2]._mxoff = v8;
-			monster[v2]._myoff = v9;
-		}
-		v5 = 0;
-	}
-	if (monster[v2]._uniqtype != 0)
-		M_ChangeLightOffset(v1);
-	return v5;
+    if (monster[i].MType == NULL)
+        TermMsg("M_DoWalk2: Monster %d \"%s\" MType NULL", i, monster[i].mName);
+
+    BOOL rv;
+    if (monster[i]._mVar8 == monster[i].MType->Anims[MA_WALK].Frames) {
+        dMonster[monster[i]._mVar1][monster[i]._mVar2] = 0;
+        if (monster[i]._uniqtype != 0)
+            ChangeLightXY(monster[i].mlid, monster[i]._mx, monster[i]._my);
+        M_StartStand(i, monster[i]._mdir);
+        rv = TRUE;
+    } else {
+        if (!monster[i]._mAnimCnt) {
+            monster[i]._mVar8++;
+            monster[i]._mVar6 += monster[i]._mxvel;
+            monster[i]._mVar7 += monster[i]._myvel;
+            monster[i]._mxoff = monster[i]._mVar6 >> 4;
+            monster[i]._myoff = monster[i]._mVar7 >> 4;
+        }
+        rv = FALSE;
+    }
+    if (monster[i]._uniqtype != 0)
+        M_ChangeLightOffset(i);
+
+    return rv;
 }
 
-int __fastcall M_DoWalk3(int i)
+BOOL __fastcall M_DoWalk3(int i)
 {
-	int v1;   // ebp
-	int v2;   // esi
-	int v3;   // eax
-	int v4;   // edi
-	int v5;   // edx
-	int v6;   // ecx
-	int v7;   // edx
-	char *v8; // eax
-	bool v9;  // zf
-	int v10;  // edi
-	int v11;  // ecx
-	int v12;  // edx
-	int v13;  // eax
-	int v14;  // ecx
+    if ((DWORD)i >= MAXMONSTERS)
+        TermMsg("M_DoWalk3: Invalid monster %d", i);
 
-	v1 = i;
-	if ((DWORD)i >= MAXMONSTERS)
-		TermMsg("M_DoWalk3: Invalid monster %d", i);
-	v2 = v1;
-	if (monster[v1].MType == NULL)
-		TermMsg("M_DoWalk3: Monster %d \"%s\" MType NULL", v1, monster[v2].mName);
-	v3 = monster[v2]._mVar8;
-	if (v3 == monster[v2].MType->Anims[MA_WALK].Frames) {
-		v4 = monster[v2]._mVar2;
-		v5 = monster[v2]._my + 112 * monster[v2]._mx;
-		monster[v2]._my = v4;
-		v6 = monster[v2]._mVar5;
-		dMonster[0][v5] = 0;
-		v7 = monster[v2]._mVar1;
-		monster[v2]._mx = v7;
-		v8 = &dFlags[monster[v2]._mVar4][v6];
-		*v8 &= ~DFLAG_MONSTER;
-		v9 = monster[v2]._uniqtype == 0;
-		dMonster[0][v4 + 112 * v7] = v1 + 1;
-		if (!v9)
-			ChangeLightXY((unsigned char)monster[v2].mlid, v7, v4);
-		M_StartStand(v1, monster[v2]._mdir);
-		v10 = 1;
-	} else {
-		if (!monster[v2]._mAnimCnt) {
-			v11 = monster[v2]._mxvel;
-			v12 = monster[v2]._myvel;
-			monster[v2]._mVar8 = v3 + 1;
-			monster[v2]._mVar6 += v11;
-			v13 = monster[v2]._mVar6 >> 4;
-			monster[v2]._mVar7 += v12;
-			v14 = monster[v2]._mVar7 >> 4;
-			monster[v2]._mxoff = v13;
-			monster[v2]._myoff = v14;
-		}
-		v10 = 0;
-	}
-	if (monster[v2]._uniqtype != 0)
-		M_ChangeLightOffset(v1);
-	return v10;
+    if (monster[i].MType == NULL)
+        TermMsg("M_DoWalk3: Monster %d \"%s\" MType NULL", i, monster[i].mName);
+
+    BOOL rv;
+    if (monster[i]._mVar8 == monster[i].MType->Anims[MA_WALK].Frames) {
+        dMonster[monster[i]._mx][monster[i]._my] = 0;
+        monster[i]._mx = monster[i]._mVar1;
+        monster[i]._my = monster[i]._mVar2;
+        dFlags[monster[i]._mVar4][monster[i]._mVar5] &= ~DFLAG_MONSTER;
+        dMonster[monster[i]._mx][monster[i]._my] = i + 1;
+        if ( monster[i]._uniqtype )
+            ChangeLightXY(monster[i].mlid, monster[i]._mx, monster[i]._my);
+        M_StartStand(i, monster[i]._mdir);
+        rv = TRUE;
+    } else {
+        if (!monster[i]._mAnimCnt) {
+            monster[i]._mVar8++;
+            monster[i]._mVar6 += monster[i]._mxvel;
+            monster[i]._mVar7 += monster[i]._myvel;
+            monster[i]._mxoff = monster[i]._mVar6 >> 4;
+            monster[i]._myoff = monster[i]._mVar7 >> 4;
+        }
+        rv = FALSE;
+    }
+    if (monster[i]._uniqtype != 0)
+        M_ChangeLightOffset(i);
+
+    return rv;
 }
 
 void __fastcall M_TryM2MHit(int i, int mid, int hper, int mind, int maxd)
 {
-	int v5; // edi
-	//int v6; // ST08_4
-	int v7; // esi
-	int v8; // ebx
-	//int v9; // eax
-	int v11;         // eax
-	BOOL ret;        // [esp+Ch] [ebp-Ch]
-	char v13[4];     // [esp+10h] [ebp-8h]
-	char arglist[4]; // [esp+14h] [ebp-4h]
-
-	v5 = mid;
-	*(_DWORD *)arglist = mid;
-	*(_DWORD *)v13 = i;
-	if ((unsigned int)mid >= MAXMONSTERS) {
-		TermMsg("M_TryM2MHit: Invalid monster %d", mid);
-		//i = v6;
-	}
-	v7 = v5;
-	if (monster[v5].MType == NULL)
-		TermMsg("M_TryM2MHit: Monster %d \"%s\" MType NULL", v5, monster[v7].mName);
-	if (monster[v7]._mhitpoints >> 6 > 0
-	    && (monster[v7].MType->mtype != MT_ILLWEAV || _LOBYTE(monster[v7]._mgoal) != 2)) {
-		v8 = random(4, 100);
-		if (monster[v7]._mmode == MM_STONE)
-			v8 = 0;
-		//_LOBYTE(v9) = CheckMonsterHit(*(int *)arglist, &ret);
-		if (!CheckMonsterHit(*(int *)arglist, &ret) && v8 < hper) {
-			v11 = (mind + random(5, maxd - mind + 1)) << 6;
-			monster[v7]._mhitpoints -= v11;
-			if (monster[v7]._mhitpoints >> 6 > 0) {
-				if (monster[v7]._mmode == MM_STONE) {
-					M2MStartHit(*(int *)arglist, *(int *)v13, v11);
-					goto LABEL_15;
-				}
-				M2MStartHit(*(int *)arglist, *(int *)v13, v11);
-			} else {
-				if (monster[v7]._mmode == MM_STONE) {
-					M2MStartKill(*(int *)v13, *(int *)arglist);
-				LABEL_15:
-					monster[v7]._mmode = MM_STONE;
-					return;
-				}
-				M2MStartKill(*(int *)v13, *(int *)arglist);
-			}
-		}
-	}
+    if ((DWORD)mid >= MAXMONSTERS) {
+        TermMsg("M_TryM2MHit: Invalid monster %d", mid);
+    }
+    if (monster[mid].MType == NULL)
+        TermMsg("M_TryM2MHit: Monster %d \"%s\" MType NULL", mid, monster[mid].mName);
+    if (monster[mid]._mhitpoints >> 6 > 0 && (monster[mid].MType->mtype != MT_ILLWEAV || monster[mid]._mgoal != 2)) {
+        int hit = random(4, 100);
+        if (monster[mid]._mmode == MM_STONE)
+            hit = 0;
+        BOOL ret;
+        if (!CheckMonsterHit(mid, &ret) && hit < hper) {
+            int dam = (mind + random(5, maxd - mind + 1)) << 6;
+            monster[mid]._mhitpoints -= dam;
+            if (monster[mid]._mhitpoints >> 6 <= 0) {
+                if (monster[mid]._mmode == MM_STONE) {
+                    M2MStartKill(i, mid);
+                    monster[mid]._mmode = MM_STONE;
+                } else {
+                    M2MStartKill(i, mid);
+                }
+            } else {
+                if (monster[mid]._mmode == MM_STONE) {
+                    M2MStartHit(mid, i, dam);
+                    monster[mid]._mmode = MM_STONE;
+                } else {
+                    M2MStartHit(mid, i, dam);
+                }
+            }
+        }
+    }
 }
 
 void __fastcall M_TryH2HHit(int i, int pnum, int Hit, int MinDam, int MaxDam)
@@ -2900,36 +2800,24 @@ int __fastcall M_DoRSpAttack(int i)
 	return 1;
 }
 
-int __fastcall M_DoSAttack(int i)
+BOOL __fastcall M_DoSAttack(int i)
 {
-	int v1;        // ebx
-	int v2;        // esi
-	CMonster **v3; // edi
-	bool v4;       // zf
-
-	v1 = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_DoSAttack: Invalid monster %d", i);
-	v2 = v1;
-	v3 = &monster[v1].MType;
-	v4 = *v3 == NULL;
-	if (*v3 == NULL) {
-		TermMsg("M_DoSAttack: Monster %d \"%s\" MType NULL", v1, monster[v2].mName);
-		v4 = *v3 == NULL;
+	if (monster[i].MType == NULL)
+		TermMsg("M_DoSAttack: Monster %d \"%s\" MType NULL", i, monster[i].mName);
+	if (monster[i].MType == NULL) // BUGFIX: should check MData
+		TermMsg("M_DoSAttack: Monster %d \"%s\" MData NULL", i, monster[i].mName);
+
+	if (monster[i]._mAnimFrame == monster[i].MData->mAFNum2)
+		M_TryH2HHit(i, monster[i]._menemy, monster[i].mHit2, monster[i].mMinDamage2, monster[i].mMaxDamage2);
+
+	if (monster[i]._mAnimFrame == monster[i]._mAnimLen) {
+		M_StartStand(i, monster[i]._mdir);
+		return TRUE;
 	}
-	if (v4)
-		TermMsg("M_DoSAttack: Monster %d \"%s\" MData NULL", v1, monster[v2].mName);
-	if (monster[v2]._mAnimFrame == monster[v2].MData->mAFNum2)
-		M_TryH2HHit(
-		    v1,
-		    monster[v2]._menemy,
-		    (unsigned char)monster[v2].mHit2,
-		    (unsigned char)monster[v2].mMinDamage2,
-		    (unsigned char)monster[v2].mMaxDamage2);
-	if (monster[v2]._mAnimFrame != monster[v2]._mAnimLen)
-		return 0;
-	M_StartStand(v1, monster[v2]._mdir);
-	return 1;
+
+	return FALSE;
 }
 
 int __fastcall M_DoFadein(int i)
