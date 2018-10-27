@@ -2790,51 +2790,40 @@ BOOL __fastcall M_DoSAttack(int i)
 	return FALSE;
 }
 
-int __fastcall M_DoFadein(int i)
+BOOL __fastcall M_DoFadein(int i)
 {
-	int v1; // edi
-	int v2; // esi
-
-	v1 = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_DoFadein: Invalid monster %d", i);
-	v2 = v1;
-	if ((!(monster[v1]._mFlags & 2) || monster[v2]._mAnimFrame != 1)
-	    && (monster[v1]._mFlags & 2 || monster[v2]._mAnimFrame != monster[v2]._mAnimLen)) {
-		return 0;
+
+	if ((!(monster[i]._mFlags & 2) || monster[i]._mAnimFrame != 1)
+	    && (monster[i]._mFlags & 2 || monster[i]._mAnimFrame != monster[i]._mAnimLen)) {
+		return FALSE;
 	}
-	M_StartStand(v1, monster[v2]._mdir);
-	monster[v2]._mFlags &= 0xFFFFFFFD;
-	return 1;
+
+	M_StartStand(i, monster[i]._mdir);
+	monster[i]._mFlags &= 0xFFFFFFFD;
+
+	return TRUE;
 }
 
-int __fastcall M_DoFadeout(int i)
+BOOL __fastcall M_DoFadeout(int i)
 {
-	int v1;        // esi
-	int v2;        // eax
-	int v3;        // ecx
-	signed int v4; // edx
-	int v5;        // ecx
-	int v6;        // edx
-
-	v1 = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_DoFadeout: Invalid monster %d", i);
-	v2 = v1;
-	v3 = monster[v1]._mFlags;
-	if ((!(monster[v1]._mFlags & 2) || monster[v2]._mAnimFrame != 1)
-	    && (monster[v1]._mFlags & 2 || monster[v2]._mAnimFrame != monster[v2]._mAnimLen)) {
-		return 0;
+
+	if ((!(monster[i]._mFlags & 2) || monster[i]._mAnimFrame != 1)
+	    && (monster[i]._mFlags & 2 || monster[i]._mAnimFrame != monster[i]._mAnimLen)) {
+		return FALSE;
 	}
-	v4 = monster[v2].MType->mtype;
-	if (v4 < MT_INCIN || v4 > MT_HELLBURN)
-		v5 = v3 & 0xFFFFFFFD | 1;
+
+	if (monster[i].MType->mtype < MT_INCIN || monster[i].MType->mtype > MT_HELLBURN)
+		monster[i]._mFlags = monster[i]._mFlags & 0xFFFFFFFD | 1;
 	else
-		v5 = v3 & 0xFFFFFFFD;
-	v6 = monster[v2]._mdir;
-	monster[v2]._mFlags = v5;
-	M_StartStand(v1, v6);
-	return 1;
+		monster[i]._mFlags = monster[i]._mFlags & 0xFFFFFFFD;
+
+	M_StartStand(i, monster[i]._mdir);
+
+	return TRUE;
 }
 
 int __fastcall M_DoHeal(int i)
@@ -3032,21 +3021,20 @@ void __fastcall M_Teleport(int i)
 	}
 }
 
-int __fastcall M_DoGotHit(int i)
+BOOL __fastcall M_DoGotHit(int i)
 {
-	int v1; // edi
-	int v2; // esi
-
-	v1 = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_DoGotHit: Invalid monster %d", i);
-	v2 = v1;
-	if (monster[v1].MType == NULL)
-		TermMsg("M_DoGotHit: Monster %d \"%s\" MType NULL", v1, monster[v2].mName);
-	if (monster[v2]._mAnimFrame != monster[v2]._mAnimLen)
-		return 0;
-	M_StartStand(v1, monster[v2]._mdir);
-	return 1;
+
+	if (monster[i].MType == NULL)
+		TermMsg("M_DoGotHit: Monster %d \"%s\" MType NULL", i, monster[i].mName);
+	if (monster[i]._mAnimFrame == monster[i]._mAnimLen) {
+		M_StartStand(i, monster[i]._mdir);
+
+		return TRUE;
+	}
+
+	return FALSE;
 }
 
 void __fastcall M_UpdateLeader(int i)
