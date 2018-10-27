@@ -6,22 +6,22 @@ extern int light_table_index; // weak
 extern int screen_y_times_768[1024];
 extern int scrollrt_cpp_init_value; // weak
 extern unsigned int sgdwCursWdtOld; // idb
-extern int sgdwCursX; // idb
-extern int sgdwCursY; // idb
-extern unsigned char *gpBufEnd; // weak
+extern int sgdwCursX;               // idb
+extern int sgdwCursY;               // idb
+extern unsigned char *gpBufEnd;     // weak
 extern int sgdwCursHgt;
 extern int level_cel_block; // weak
-extern int sgdwCursXOld; // idb
-extern int sgdwCursYOld; // idb
+extern int sgdwCursXOld;    // idb
+extern int sgdwCursYOld;    // idb
 extern char arch_draw_type; // weak
 extern DDSURFACEDESC DDS_desc;
 extern int cel_transparency_active; // weak
-extern int level_piece_id; // weak
+extern int level_piece_id;          // weak
 extern int sgdwCursWdt;
-extern int (__fastcall *DrawPlrProc)(int player_num, int x, int y, int screen_x, int screen_y, void *cl2_buf, int frame, int frame_width, int a9, int a10);
+extern int(__fastcall *DrawPlrProc)(int player_num, int x, int y, int screen_x, int screen_y, void *cl2_buf, int frame, int frame_width, int a9, int a10);
 extern char sgSaveBack[8192];
 extern int draw_monster_num; // weak
-extern int sgdwCursHgtOld; // idb
+extern int sgdwCursHgtOld;   // idb
 
 void __cdecl scrollrt_cpp_init();
 void __cdecl ClearCursor();

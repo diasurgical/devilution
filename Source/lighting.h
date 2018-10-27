@@ -7,10 +7,10 @@ extern char lightactive[32];
 extern LightListStruct LightList[32];
 extern int numlights;
 extern char dung_map_radius[2048]; /* char [16][128] */
-extern int dovision; // weak
+extern int dovision;               // weak
 extern int numvision;
-extern char lightmax; // weak
-extern int dolighting; // weak
+extern char lightmax;             // weak
+extern int dolighting;            // weak
 extern char dung_map_rgba[16384]; /* int [64][64] short [64][128] char [64][256] */
 extern int visionid;
 extern char *pLightTbl; /* todo: struct? */

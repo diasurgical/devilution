@@ -6,12 +6,12 @@
 //pCelBuff->pFrameTable[0]
 
 extern int engine_cpp_init_value; // weak
-extern char gbPixelCol; // automap pixel color 8-bit (palette entry)
-extern int dword_52B970; // bool flip - if y < x
-extern int orgseed; // weak
+extern char gbPixelCol;           // automap pixel color 8-bit (palette entry)
+extern int dword_52B970;          // bool flip - if y < x
+extern int orgseed;               // weak
 extern int sgnWidth;
-extern int sglGameSeed; // weak
-extern int SeedCount; // weak
+extern int sglGameSeed;  // weak
+extern int SeedCount;    // weak
 extern int dword_52B99C; // bool valid - if x/y are in bounds
 
 void __cdecl engine_cpp_init_1();
@@ -73,8 +73,8 @@ void __fastcall PlayInGameMovie(char *pszMovie);
 
 /* rdata */
 
-extern const int engine_inf; // weak
-extern const int rand_increment; // unused
+extern const int engine_inf;      // weak
+extern const int rand_increment;  // unused
 extern const int rand_multiplier; // unused
 
 #endif /* __ENGINE_H__ */
