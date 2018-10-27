@@ -3039,24 +3039,19 @@ BOOL __fastcall M_DoGotHit(int i)
 
 void __fastcall M_UpdateLeader(int i)
 {
-	int v1;            // edi
-	int v2;            // esi
-	int j;             // edx
-	int v4;            // eax
-	unsigned char *v5; // eax
+	int ma;
 
-	v1 = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_UpdateLeader: Invalid monster %d", i);
-	v2 = nummonsters;
-	for (j = 0; j < v2; ++j) {
-		v4 = monstactive[j];
-		if (monster[v4].leaderflag == 1 && (unsigned char)monster[v4].leader == v1)
-			monster[v4].leaderflag = 0;
+
+	for (int j = 0; j < nummonsters; j++) {
+		ma = monstactive[j];
+		if (monster[ma].leaderflag == 1 && monster[ma].leader == i)
+			monster[ma].leaderflag = 0;
 	}
-	if (monster[v1].leaderflag == 1) {
-		v5 = &monster[(unsigned char)monster[v1].leader].unpackfilesize;
-		--*v5;
+
+	if (monster[i].leaderflag == 1) {
+		monster[monster[i].leader].unpackfilesize--;
 	}
 }
 
