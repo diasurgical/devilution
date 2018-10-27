@@ -2645,109 +2645,79 @@ void __fastcall M_TryH2HHit(int i, int pnum, int Hit, int MinDam, int MaxDam)
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-int __fastcall M_DoAttack(int i)
+BOOL __fastcall M_DoAttack(int i)
 {
-	int v1;           // edi
-	int v2;           // esi
-	CMonster **v3;    // ebx
-	unsigned char v4; // al
-	unsigned char v5; // al
-
-	v1 = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_DoAttack: Invalid monster %d", i);
-	v2 = v1;
-	v3 = &monster[v1].MType;
-	if (*v3 == NULL) {
-		TermMsg("M_DoAttack: Monster %d \"%s\" MType NULL", v1, monster[v2].mName);
-		if (*v3 == NULL)
-			TermMsg("M_DoAttack: Monster %d \"%s\" MData NULL", v1, monster[v2].mName);
+
+	MonsterStruct *Monst = &monster[i];
+	if (Monst->MType == NULL)
+		TermMsg("M_DoAttack: Monster %d \"%s\" MType NULL", i, Monst->mName);
+	if (Monst->MType == NULL) // BUGFIX: should check MData
+		TermMsg("M_DoAttack: Monster %d \"%s\" MData NULL", i, Monst->mName);
+
+	if (monster[i]._mAnimFrame == monster[i].MData->mAFNum) {
+		M_TryH2HHit(i, monster[i]._menemy, monster[i].mHit, monster[i].mMinDamage, monster[i].mMaxDamage);
+		if (monster[i]._mAi != AI_SNAKE)
+			PlayEffect(i, 0);
 	}
-	if (monster[v2]._mAnimFrame == monster[v2].MData->mAFNum) {
-		M_TryH2HHit(
-		    v1,
-		    monster[v2]._menemy,
-		    (unsigned char)monster[v2].mHit,
-		    (unsigned char)monster[v2].mMinDamage,
-		    (unsigned char)monster[v2].mMaxDamage);
-		if (monster[v2]._mAi != AI_SNAKE)
-			PlayEffect(v1, 0);
+	if (monster[i].MType->mtype >= MT_NMAGMA && monster[i].MType->mtype <= MT_WMAGMA && monster[i]._mAnimFrame == 9) {
+		M_TryH2HHit(i, monster[i]._menemy, monster[i].mHit + 10, monster[i].mMinDamage - 2, monster[i].mMaxDamage - 2);
+		PlayEffect(i, 0);
 	}
-	v4 = monster[v2].MType->mtype;
-	if (v4 >= MT_NMAGMA && v4 <= MT_WMAGMA && monster[v2]._mAnimFrame == 9) {
-		M_TryH2HHit(
-		    v1,
-		    monster[v2]._menemy,
-		    (unsigned char)monster[v2].mHit + 10,
-		    (unsigned char)monster[v2].mMinDamage - 2,
-		    (unsigned char)monster[v2].mMaxDamage - 2);
-		PlayEffect(v1, 0);
+	if (monster[i].MType->mtype >= MT_STORM && monster[i].MType->mtype <= MT_MAEL && monster[i]._mAnimFrame == 13) {
+		M_TryH2HHit(i, monster[i]._menemy, monster[i].mHit - 20, monster[i].mMinDamage + 4, monster[i].mMaxDamage + 4);
+		PlayEffect(i, 0);
 	}
-	v5 = monster[v2].MType->mtype;
-	if (v5 >= MT_STORM && v5 <= MT_MAEL && monster[v2]._mAnimFrame == 13) {
-		M_TryH2HHit(
-		    v1,
-		    monster[v2]._menemy,
-		    (unsigned char)monster[v2].mHit - 20,
-		    (unsigned char)monster[v2].mMinDamage + 4,
-		    (unsigned char)monster[v2].mMaxDamage + 4);
-		PlayEffect(v1, 0);
+	if (monster[i]._mAi == AI_SNAKE && monster[i]._mAnimFrame == 1)
+		PlayEffect(i, 0);
+	if (monster[i]._mAnimFrame == monster[i]._mAnimLen) {
+		M_StartStand(i, monster[i]._mdir);
+		return TRUE;
 	}
-	if (monster[v2]._mAi == AI_SNAKE && monster[v2]._mAnimFrame == 1)
-		PlayEffect(v1, 0);
-	if (monster[v2]._mAnimFrame != monster[v2]._mAnimLen)
-		return 0;
-	M_StartStand(v1, monster[v2]._mdir);
-	return 1;
+
+	return FALSE;
 }
 
-int __fastcall M_DoRAttack(int i)
+BOOL __fastcall M_DoRAttack(int i)
 {
-	int v1;        // ebx
-	int v2;        // esi
-	CMonster **v3; // edi
-	int v4;        // eax
-	int v5;        // eax
-	int v6;        // edi
-
-	v1 = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_DoRAttack: Invalid monster %d", i);
-	v2 = v1;
-	v3 = &monster[v1].MType;
-	if (*v3 == NULL) {
-		TermMsg("M_DoRAttack: Monster %d \"%s\" MType NULL", v1, monster[v2].mName);
-		if (*v3 == NULL)
-			TermMsg("M_DoRAttack: Monster %d \"%s\" MData NULL", v1, monster[v2].mName);
-	}
-	if (monster[v2]._mAnimFrame == monster[v2].MData->mAFNum) {
-		v4 = monster[v2]._mVar1;
-		if (v4 != -1) {
-			v5 = 2 * (v4 == 52) + 1;
-			if (v5 > 0) {
-				v6 = v5;
-				do {
-					AddMissile(
-					    monster[v2]._mx,
-					    monster[v2]._my,
-					    (unsigned char)monster[v2]._menemyx,
-					    (unsigned char)monster[v2]._menemyy,
-					    monster[v2]._mdir,
-					    monster[v2]._mVar1,
-					    1,
-					    v1,
-					    monster[v2]._mVar2,
-					    0);
-					--v6;
-				} while (v6);
+	if (monster[i].MType == NULL)
+		TermMsg("M_DoRAttack: Monster %d \"%s\" MType NULL", i, monster[i].mName);
+	if (monster[i].MType == NULL) // BUGFIX: should check MData
+		TermMsg("M_DoRAttack: Monster %d \"%s\" MData NULL", i, monster[i].mName);
+
+	if (monster[i]._mAnimFrame == monster[i].MData->mAFNum) {
+		if (monster[i]._mVar1 != -1) {
+			int multimissiles;
+			if (monster[i]._mVar1 != MIS_CBOLT)
+				multimissiles = 1;
+			else
+				multimissiles = 3;
+			for (int mi = 0; mi < multimissiles; mi++) {
+				AddMissile(
+				    monster[i]._mx,
+				    monster[i]._my,
+				    monster[i]._menemyx,
+				    monster[i]._menemyy,
+				    monster[i]._mdir,
+				    monster[i]._mVar1,
+				    1,
+				    i,
+				    monster[i]._mVar2,
+				    0);
 			}
 		}
-		PlayEffect(v1, 0);
+		PlayEffect(i, 0);
 	}
-	if (monster[v2]._mAnimFrame != monster[v2]._mAnimLen)
-		return 0;
-	M_StartStand(v1, monster[v2]._mdir);
-	return 1;
+
+	if (monster[i]._mAnimFrame == monster[i]._mAnimLen) {
+		M_StartStand(i, monster[i]._mdir);
+		return TRUE;
+	}
+
+	return FALSE;
 }
 
 int __fastcall M_DoRSpAttack(int i)
@@ -2820,51 +2790,40 @@ BOOL __fastcall M_DoSAttack(int i)
 	return FALSE;
 }
 
-int __fastcall M_DoFadein(int i)
+BOOL __fastcall M_DoFadein(int i)
 {
-	int v1; // edi
-	int v2; // esi
-
-	v1 = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_DoFadein: Invalid monster %d", i);
-	v2 = v1;
-	if ((!(monster[v1]._mFlags & 2) || monster[v2]._mAnimFrame != 1)
-	    && (monster[v1]._mFlags & 2 || monster[v2]._mAnimFrame != monster[v2]._mAnimLen)) {
-		return 0;
+
+	if ((!(monster[i]._mFlags & 2) || monster[i]._mAnimFrame != 1)
+	    && (monster[i]._mFlags & 2 || monster[i]._mAnimFrame != monster[i]._mAnimLen)) {
+		return FALSE;
 	}
-	M_StartStand(v1, monster[v2]._mdir);
-	monster[v2]._mFlags &= 0xFFFFFFFD;
-	return 1;
+
+	M_StartStand(i, monster[i]._mdir);
+	monster[i]._mFlags &= 0xFFFFFFFD;
+
+	return TRUE;
 }
 
-int __fastcall M_DoFadeout(int i)
+BOOL __fastcall M_DoFadeout(int i)
 {
-	int v1;        // esi
-	int v2;        // eax
-	int v3;        // ecx
-	signed int v4; // edx
-	int v5;        // ecx
-	int v6;        // edx
-
-	v1 = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_DoFadeout: Invalid monster %d", i);
-	v2 = v1;
-	v3 = monster[v1]._mFlags;
-	if ((!(monster[v1]._mFlags & 2) || monster[v2]._mAnimFrame != 1)
-	    && (monster[v1]._mFlags & 2 || monster[v2]._mAnimFrame != monster[v2]._mAnimLen)) {
-		return 0;
+
+	if ((!(monster[i]._mFlags & 2) || monster[i]._mAnimFrame != 1)
+	    && (monster[i]._mFlags & 2 || monster[i]._mAnimFrame != monster[i]._mAnimLen)) {
+		return FALSE;
 	}
-	v4 = monster[v2].MType->mtype;
-	if (v4 < MT_INCIN || v4 > MT_HELLBURN)
-		v5 = v3 & 0xFFFFFFFD | 1;
+
+	if (monster[i].MType->mtype < MT_INCIN || monster[i].MType->mtype > MT_HELLBURN)
+		monster[i]._mFlags = monster[i]._mFlags & 0xFFFFFFFD | 1;
 	else
-		v5 = v3 & 0xFFFFFFFD;
-	v6 = monster[v2]._mdir;
-	monster[v2]._mFlags = v5;
-	M_StartStand(v1, v6);
-	return 1;
+		monster[i]._mFlags = monster[i]._mFlags & 0xFFFFFFFD;
+
+	M_StartStand(i, monster[i]._mdir);
+
+	return TRUE;
 }
 
 int __fastcall M_DoHeal(int i)
@@ -3062,21 +3021,20 @@ void __fastcall M_Teleport(int i)
 	}
 }
 
-int __fastcall M_DoGotHit(int i)
+BOOL __fastcall M_DoGotHit(int i)
 {
-	int v1; // edi
-	int v2; // esi
-
-	v1 = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_DoGotHit: Invalid monster %d", i);
-	v2 = v1;
-	if (monster[v1].MType == NULL)
-		TermMsg("M_DoGotHit: Monster %d \"%s\" MType NULL", v1, monster[v2].mName);
-	if (monster[v2]._mAnimFrame != monster[v2]._mAnimLen)
-		return 0;
-	M_StartStand(v1, monster[v2]._mdir);
-	return 1;
+
+	if (monster[i].MType == NULL)
+		TermMsg("M_DoGotHit: Monster %d \"%s\" MType NULL", i, monster[i].mName);
+	if (monster[i]._mAnimFrame == monster[i]._mAnimLen) {
+		M_StartStand(i, monster[i]._mdir);
+
+		return TRUE;
+	}
+
+	return FALSE;
 }
 
 void __fastcall M_UpdateLeader(int i)
