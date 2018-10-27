@@ -14,7 +14,7 @@ void __cdecl CaptureScreen()
 		RedPalette(palette);
 
 		j_lock_buf_priv(2);
-		bool success = CaptureHdr(hObject, 640, 480);
+		BOOL success = CaptureHdr(hObject, 640, 480);
 		if (success) {
 			success = CapturePix(hObject, 640, 480, 768, (BYTE *)gpBuffer->row[0].pixels);
 			if (success) {
@@ -32,19 +32,19 @@ void __cdecl CaptureScreen()
 	}
 }
 
-bool __fastcall CaptureHdr(HANDLE hFile, short width, short height)
+BOOL __fastcall CaptureHdr(HANDLE hFile, short width, short height)
 {
 	PCXHeader Buffer;
 	memset(&Buffer, 0, sizeof(Buffer));
 
-	Buffer.xmax = width - 1;
-	Buffer.vertRes = height;
 	Buffer.manufacturer = 10;
 	Buffer.version = 5;
 	Buffer.encoding = 1;
 	Buffer.bitsPerPixel = 8;
+	Buffer.xmax = width - 1;
 	Buffer.ymax = height - 1;
 	Buffer.horzRes = width;
+	Buffer.vertRes = height;
 	Buffer.numColorPlanes = 1;
 	Buffer.bytesPerScanLine = width;
 
@@ -52,7 +52,7 @@ bool __fastcall CaptureHdr(HANDLE hFile, short width, short height)
 	return WriteFile(hFile, &Buffer, sizeof(Buffer), &lpNumBytes, NULL) && lpNumBytes == sizeof(Buffer);
 }
 
-bool __fastcall CapturePal(HANDLE hFile, PALETTEENTRY *palette)
+BOOL __fastcall CapturePal(HANDLE hFile, PALETTEENTRY *palette)
 {
 	char *v3;
 	char Buffer[769];
@@ -72,7 +72,7 @@ bool __fastcall CapturePal(HANDLE hFile, PALETTEENTRY *palette)
 	return WriteFile(hFile, Buffer, sizeof(Buffer), &lpNumBytes, NULL) && lpNumBytes == sizeof(Buffer);
 }
 
-bool __fastcall CapturePix(HANDLE hFile, WORD width, WORD height, WORD stride, BYTE *pixels)
+BOOL __fastcall CapturePix(HANDLE hFile, WORD width, WORD height, WORD stride, BYTE *pixels)
 {
 	int writeSize;
 	DWORD lpNumBytes;
@@ -81,65 +81,75 @@ bool __fastcall CapturePix(HANDLE hFile, WORD width, WORD height, WORD stride, B
 	do {
 		if (!height) {
 			mem_free_dbg(pBuffer);
-			return 1;
+			return TRUE;
 		}
 		height--;
 		BYTE *pBufferEnd = CaptureEnc(pixels, pBuffer, width);
 		pixels += stride;
 		writeSize = pBufferEnd - pBuffer;
 	} while (WriteFile(hFile, pBuffer, writeSize, &lpNumBytes, 0) && lpNumBytes == writeSize);
-	return 0;
+
+	return FALSE;
 }
 
 BYTE *__fastcall CaptureEnc(BYTE *src, BYTE *dst, int width)
 {
 	do {
-		BYTE rlePixel = *src++;
-		--width;
-
+		BYTE rlePixel = *src;
+		*src++;
 		int rleLength = 1;
+
+		width--;
+
 		while (rlePixel == *src) {
 			if (rleLength >= 63)
 				break;
 			if (!width)
 				break;
-			++rleLength;
+			rleLength++;
 
-			--width;
-			++src;
+			width--;
+			src++;
 		}
 
-		if (rlePixel > 0xBF || rleLength > 1) {
-			*dst++ = rleLength | 0xC0;
+		if (rleLength > 1 || rlePixel > 0xBF) {
+			*dst = rleLength | 0xC0;
+			*dst++;
 		}
-		*dst++ = rlePixel;
+
+		*dst = rlePixel;
+		*dst++;
 	} while (width);
+
 	return dst;
 }
 
 HANDLE __fastcall CaptureFile(char *dst_path)
 {
-	bool num_used[100] = { false };
-
+	bool num_used[100];
+	int free_num;
 	_finddata_t finder;
+
+	memset(num_used, FALSE, sizeof(num_used));
 	int hFind = _findfirst("screen??.PCX", &finder);
 	if (hFind != -1) {
 		do {
 			if (isdigit(finder.name[6]) && isdigit(finder.name[7])) {
-				num_used[10 * (finder.name[6] - '0') + (finder.name[7] - '0')] = true;
+				free_num = 10 * (finder.name[6] - '0');
+				free_num += (finder.name[7] - '0');
+				num_used[free_num] = TRUE;
 			}
 		} while (_findnext(hFind, &finder) == 0);
 	}
 
-	int free_num = 0;
-	while (num_used[free_num]) {
-		++free_num;
-		if (free_num >= 100)
-			return INVALID_HANDLE_VALUE;
+	for (free_num = 0; free_num < 100; free_num++) {
+		if (!num_used[free_num]) {
+			sprintf(dst_path, "screen%02d.PCX", free_num);
+			return CreateFile(dst_path, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+		}
 	}
 
-	sprintf(dst_path, "screen%02d.PCX", free_num);
-	return CreateFile(dst_path, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	return INVALID_HANDLE_VALUE;
 }
 
 void __fastcall RedPalette(PALETTEENTRY *pal)
