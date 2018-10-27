@@ -1435,6 +1435,22 @@ enum _monster_id {
 	NUM_MTYPES
 };
 
+enum monster_flag {
+	MFLAG_HIDDEN          = 0x01,
+	MFLAG_LOCK_ANIMATION  = 0x02,
+	MFLAG_ALLOW_SPECIAL   = 0x04,
+	MFLAG_NOHEAL          = 0x08,
+	MFLAG_TARGETS_MONSTER = 0x10,
+	MFLAG_GOLEM           = 0x20,
+	MFLAG_QUEST_COMPLETE  = 0x40,
+	MFLAG_KNOCKBACK       = 0x80,
+	MFLAG_SEARCH          = 0x100,
+	MFLAG_CAN_OPEN_DOOR   = 0x200,
+	MFLAG_SEARCH2         = 0x400,
+	MFLAG_UNUSED          = 0x800,
+	MFLAG_NOLIFESTEAL     = 0x1000
+};
+
 enum _speech_id {
 	QUEST_KING1      = 0x0,
 	QUEST_KING2      = 0x1,

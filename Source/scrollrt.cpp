@@ -957,7 +957,7 @@ void __fastcall scrollrt_draw_clipped_dungeon(char *a1, int sx, int sy, int a4, 
 		draw_monster_num = -1 - v41;
 		if ((unsigned int)(-1 - v41) < MAXMONSTERS) {
 			v24 = &monster[v23];
-			if (!(v24->_mFlags & 1)) {
+			if (!(v24->_mFlags & MFLAG_HIDDEN)) {
 				v25 = v24->MType;
 				if (v25) {
 					v26 = a5 + v24->_myoff;
@@ -1005,7 +1005,7 @@ void __fastcall scrollrt_draw_clipped_dungeon(char *a1, int sx, int sy, int a4, 
 		draw_monster_num = v40 - 1;
 		if ((unsigned int)(v40 - 1) < MAXMONSTERS) {
 			v32 = &monster[v31];
-			if (!(v32->_mFlags & 1)) {
+			if (!(v32->_mFlags & MFLAG_HIDDEN)) {
 				v33 = v32->MType;
 				if (v33) {
 					v34 = a5 + v32->_myoff;
@@ -1556,7 +1556,7 @@ void __fastcall scrollrt_draw_clipped_dungeon_2(char *buffer, int x, int y, int 
 		draw_monster_num = -1 - v44;
 		if ((unsigned int)(-1 - v44) < MAXMONSTERS) {
 			v27 = &monster[v26];
-			if (!(v27->_mFlags & 1)) {
+			if (!(v27->_mFlags & MFLAG_HIDDEN)) {
 				v28 = v27->MType;
 				if (v28) {
 					v29 = sy + v27->_myoff;
@@ -1605,7 +1605,7 @@ void __fastcall scrollrt_draw_clipped_dungeon_2(char *buffer, int x, int y, int 
 		draw_monster_num = v43 - 1;
 		if ((unsigned int)(v43 - 1) < MAXMONSTERS) {
 			v35 = &monster[v34];
-			if (!(v35->_mFlags & 1)) {
+			if (!(v35->_mFlags & MFLAG_HIDDEN)) {
 				v36 = v35->MType;
 				if (v36) {
 					v37 = sy + v35->_myoff;
@@ -2096,7 +2096,7 @@ void __fastcall scrollrt_draw_dungeon(char *buffer, int x, int y, int a4, int a5
 		draw_monster_num = -1 - v43;
 		if ((unsigned int)(-1 - v43) < MAXMONSTERS) {
 			v26 = &monster[v25];
-			if (!(v26->_mFlags & 1)) {
+			if (!(v26->_mFlags & MFLAG_HIDDEN)) {
 				v27 = v26->MType;
 				if (v27) {
 					v28 = sy + v26->_myoff;
@@ -2144,7 +2144,7 @@ void __fastcall scrollrt_draw_dungeon(char *buffer, int x, int y, int a4, int a5
 		draw_monster_num = v42 - 1;
 		if ((unsigned int)(v42 - 1) < MAXMONSTERS) {
 			v34 = &monster[v33];
-			if (!(v34->_mFlags & 1)) {
+			if (!(v34->_mFlags & MFLAG_HIDDEN)) {
 				v35 = v34->MType;
 				if (v35) {
 					v36 = sy + v34->_myoff;

@@ -1015,7 +1015,7 @@ bool __fastcall MonsterMHit(int pnum, int m, int mindam, int maxdam, int dist, i
 		monster[v7]._mhitpoints -= v19;
 	v22 = plr[v12]._pIFlags;
 	if (v22 & 8)
-		monster[v7]._mFlags |= 8u;
+		monster[v7]._mFlags |= MFLAG_NOHEAL;
 	if (monster[v7]._mhitpoints >> 6 > 0) {
 		if (v26) {
 			PlayEffect(arglist, 1);
@@ -1466,10 +1466,10 @@ void __fastcall CheckMissileCol(int i, int mindam, int maxdam, bool shift, int m
 			}
 			goto LABEL_13;
 		}
-		if (monster[v10]._mFlags & 0x10) {
-			v18 = dMonster[0][my + 112 * mx];
+		if (monster[v10]._mFlags & MFLAG_TARGETS_MONSTER) {
+			v18 = dMonster[mx][my];
 			if (v18 > 0) {
-				if (monster[v18 - 1]._mFlags & 0x20) /* fix */
+				if (monster[v18 - 1]._mFlags & MFLAG_GOLEM) /* fix */
 				{
 					v19 = MonsterTrapHit(
 					    v18 - 1,
@@ -1582,7 +1582,7 @@ void __fastcall LoadMissileGFX(BYTE mi)
 	char arglist[256]; // [esp+8h] [ebp-100h]
 
 	v1 = &misfiledata[(unsigned char)mi];
-	if (v1->mFlags & 4) {
+	if (v1->mFlags & MFLAG_ALLOW_SPECIAL) {
 		sprintf(arglist, "Missiles\\%s.CL2", v1->mName);
 		v2 = LoadFileInMem(arglist, 0);
 		v3 = 0;
@@ -1643,7 +1643,7 @@ void __fastcall FreeMissileGFX(int mi)
 	void *v5;          // ecx
 
 	v1 = mi;
-	if (misfiledata[mi].mFlags & 4) {
+	if (misfiledata[mi].mFlags & MFLAG_ALLOW_SPECIAL) {
 		v2 = misfiledata[v1].mAnimData[0];
 		if (v2) {
 			mem_free_dbg(&v2[-4 * misfiledata[v1].mAnimFAmt]);
@@ -5545,7 +5545,7 @@ void __fastcall mi_null_32(int i)
 	y = missile[v2]._miy;
 	v5 = monster[v4]._menemy;
 	x = missile[v2]._mix;
-	if (monster[v4]._mFlags & 0x10) {
+	if (monster[v4]._mFlags & MFLAG_TARGETS_MONSTER) {
 		v9 = v5;
 		v7 = monster[v9]._mx;
 		v8 = monster[v9]._my;
@@ -5563,8 +5563,8 @@ void __fastcall mi_null_32(int i)
 		missile[v2]._miDelFlag = 1;
 	} else {
 		v11 = x;
-		if (monster[v4]._mFlags & 0x10)
-			v10 = dMonster[0][y + v11 * 112];
+		if (monster[v4]._mFlags & MFLAG_TARGETS_MONSTER)
+			v10 = dMonster[v11][y];
 		else
 			v10 = dPlayer[v11][y];
 	}
