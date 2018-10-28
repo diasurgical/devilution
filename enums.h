@@ -1451,6 +1451,24 @@ enum monster_flag {
 	MFLAG_NOLIFESTEAL     = 0x1000
 };
 
+enum monster_resistance {
+	RESIST_MAGIC     = 0x01,
+	RESIST_FIRE      = 0x02,
+	RESIST_LIGHTNING = 0x04,
+	IMUNE_MAGIC      = 0x08,
+	IMUNE_FIRE       = 0x10,
+	IMUNE_LIGHTNING  = 0x20,
+	IMUNE_NULL_40    = 0x40,
+	IMUNE_ACID       = 0x80,
+};
+
+enum missile_resistance {
+	MISR_FIRE      = 1,
+	MISR_LIGHTNING = 2,
+	MISR_MAGIC     = 3,
+	MISR_ACID      = 4,
+};
+
 enum _speech_id {
 	QUEST_KING1      = 0x0,
 	QUEST_KING2      = 0x1,
