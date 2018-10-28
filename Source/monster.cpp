@@ -5905,39 +5905,36 @@ void __fastcall MAI_Lazhelp(int i)
 
 void __fastcall MAI_Lachdanan(int i)
 {
-	int v1; // ebp
-	int v2; // esi
-	int v3; // ebx
-	int v4; // edi
-	//int v5; // eax
-	int v6; // [esp+8h] [ebp-4h]
-
-	v1 = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("MAI_Lachdanan: Invalid monster %d", i);
-	v2 = v1;
-	if (monster[v1]._mmode == MM_STAND) {
-		v3 = monster[v2]._my;
-		v4 = monster[v2]._mx;
-		v6 = M_GetDir(v1);
-		if (monster[v2].mtalkmsg == QUEST_VEIL9 && !(dFlags[v4][v3] & DFLAG_VISIBLE) && _LOBYTE(monster[v2]._mgoal) == 7) {
-			monster[v2].mtalkmsg = QUEST_VEIL10;
-			_LOBYTE(monster[v2]._mgoal) = 6;
-		}
-		if (dFlags[v4][v3] & DFLAG_VISIBLE) {
-			if (monster[v2].mtalkmsg == QUEST_VEIL11) {
-				//_LOBYTE(v5) = effect_is_playing(USFX_LACH3);
-				if (!effect_is_playing(USFX_LACH3) && _LOBYTE(monster[v2]._mgoal) == 7) {
-					monster[v2].mtalkmsg = 0;
-					quests[QTYPE_VEIL]._qactive = 3;
-					M_StartKill(v1, -1);
-				}
+
+	MonsterStruct *Monst = &monster[i];
+	if (Monst->_mmode != MM_STAND) {
+		return;
+	}
+
+	int _mx = Monst->_mx;
+	int _my = Monst->_my;
+	int md = M_GetDir(i);
+	if (Monst->mtalkmsg == QUEST_VEIL9 && !(dFlags[_mx][_my] & DFLAG_VISIBLE) && Monst->_mgoal == 7) {
+		Monst->mtalkmsg = QUEST_VEIL10;
+		Monst->_mgoal = 6;
+	}
+
+	if (dFlags[_mx][_my] & DFLAG_VISIBLE) {
+		if (Monst->mtalkmsg == QUEST_VEIL11) {
+			if (!effect_is_playing(USFX_LACH3) && Monst->_mgoal == 7) {
+				Monst->mtalkmsg = 0;
+				quests[QTYPE_VEIL]._qactive = 3;
+				M_StartKill(i, -1);
 			}
 		}
-		monster[v2]._mdir = v6;
-		if (monster[v2]._mmode == MM_STAND)
-			monster[v2]._mAnimData = monster[v2].MType->Anims[MA_STAND].Data[v6];
 	}
+
+	monster[i]._mdir = md;
+
+	if (Monst->_mmode == MM_STAND)
+		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
 }
 
 void __fastcall MAI_Warlord(int i)
