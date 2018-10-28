@@ -26,7 +26,7 @@ extern void *pBtmBuff;
 extern void *pTalkBtns;
 extern int pstrjust[4];
 extern int pnumlines; // idb
-extern int pinfoflag; // weak
+extern BOOL pinfoflag;
 extern int talkbtndown[3];
 extern int pSpell; // weak
 extern char *pManaBuff;
