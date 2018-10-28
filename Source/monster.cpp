@@ -6188,33 +6188,21 @@ LABEL_60:
 
 void __cdecl FreeMonsters()
 {
-	void **v0;     // edi
-	int v1;        // ebx
-	signed int v2; // ebp
-	void **v3;     // esi
-	void *v4;      // ecx
-	int v5;        // [esp+0h] [ebp-4h]
+	int mtype;
+	int i, j;
+	void *ptr;
 
-	v5 = 0;
-	if (nummtypes > 0) {
-		v0 = (void **)Monsters[0].Anims;
-		do {
-			v1 = *((unsigned char *)v0 - 4);
-			v2 = 0;
-			v3 = v0;
-			do {
-				if (animletter[v2] != 's' || monsterdata[v1].has_special) {
-					v4 = *v3;
-					*v3 = 0;
-					mem_free_dbg(v4);
-				}
-				++v2;
-				v3 += 11;
-			} while (v2 < 6);
-			++v5;
-			v0 += 82;
-		} while (v5 < nummtypes);
+	for (i = 0; i < nummtypes; i++) {
+		mtype = Monsters[i].mtype;
+		for (j = 0; j < 6; j++) {
+			if (animletter[j] != 's' || monsterdata[mtype].has_special) {
+				ptr = Monsters[i].Anims[j].CMem;
+				Monsters[i].Anims[j].CMem = NULL;
+				mem_free_dbg(ptr);
+			}
+		}
 	}
+
 	FreeMissiles2();
 }
 
