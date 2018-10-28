@@ -766,7 +766,7 @@ void __fastcall CPrintString(int No, unsigned int glyph, unsigned char col)
 	}
 }
 
-void __fastcall AddPanelString(char *str, int just)
+void __fastcall AddPanelString(char *str, BOOL just)
 {
 	strcpy(&panelstr[64 * pnumlines], str);
 	pstrjust[pnumlines] = just;
