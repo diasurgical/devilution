@@ -107,7 +107,7 @@ void __fastcall MAI_Sneak(int i);
 void __fastcall MAI_Fireman(int i);
 void __fastcall MAI_Fallen(int i);
 void __fastcall MAI_Cleaver(int i);
-void __fastcall MAI_Round(int i, unsigned char special);
+void __fastcall MAI_Round(int i, BOOL special);
 void __fastcall MAI_GoatMc(int i);
 void __fastcall MAI_Ranged(int i, int missile_type, unsigned char special);
 void __fastcall MAI_GoatBow(int i);

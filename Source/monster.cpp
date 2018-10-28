@@ -4472,7 +4472,7 @@ void __fastcall MAI_Cleaver(int i)
 	}
 }
 
-void __fastcall MAI_Round(int i, unsigned char special)
+void __fastcall MAI_Round(int i, BOOL special)
 {
 	int v2;            // esi
 	MonsterStruct *v3; // esi
@@ -5658,50 +5658,43 @@ void __fastcall MAI_Counselor(int i)
 
 void __fastcall MAI_Garbud(int i)
 {
-	int v1; // esi
-	int v2; // esi
-	int v3; // ebx
-	int v4; // edi
-	int v5; // eax
-	//int v6; // eax
-	char v7;     // al
-	int v8;      // [esp+4h] [ebp-8h]
-	int arglist; // [esp+8h] [ebp-4h]
-
-	v1 = i;
-	arglist = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("MAI_Garbud: Invalid monster %d", i);
-	v2 = v1;
-	if (monster[v2]._mmode == MM_STAND) {
-		v3 = monster[v2]._my;
-		v4 = monster[v2]._mx;
-		v8 = M_GetDir(arglist);
-		v5 = monster[v2].mtalkmsg;
-		if (v5 < (signed int)QUEST_GARBUD4
-		    && v5 > (signed int)QUEST_DOOM10
-		    && !(dFlags[v4][v3] & DFLAG_VISIBLE)
-		    && _LOBYTE(monster[v2]._mgoal) == 7) {
-			_LOBYTE(monster[v2]._mgoal) = 6;
-			monster[v2].mtalkmsg = v5 + 1;
-		}
-		if (dFlags[v4][v3] & DFLAG_VISIBLE) {
-			if (monster[v2].mtalkmsg == QUEST_GARBUD4) {
-				//_LOBYTE(v6) = effect_is_playing(USFX_GARBUD4);
-				if (!effect_is_playing(USFX_GARBUD4) && _LOBYTE(monster[v2]._mgoal) == 7) {
-					monster[v2]._msquelch = -1;
-					monster[v2].mtalkmsg = 0;
-					_LOBYTE(monster[v2]._mgoal) = 1;
-				}
+
+	MonsterStruct *Monst = &monster[i];
+	if (Monst->_mmode != MM_STAND) {
+		return;
+	}
+
+	int _mx = Monst->_mx;
+	int _my = Monst->_my;
+	int md = M_GetDir(i);
+
+	if (Monst->mtalkmsg < QUEST_GARBUD4
+	    && Monst->mtalkmsg > QUEST_DOOM10
+	    && !(dFlags[_mx][_my] & DFLAG_VISIBLE)
+	    && Monst->_mgoal == 7) {
+		Monst->_mgoal = 6;
+		Monst->mtalkmsg++;
+	}
+
+	if (dFlags[_mx][_my] & DFLAG_VISIBLE) {
+		if (Monst->mtalkmsg == QUEST_GARBUD4) {
+			if (!effect_is_playing(USFX_GARBUD4) && Monst->_mgoal == 7) {
+				Monst->_mgoal = 1;
+				Monst->_msquelch = -1;
+				Monst->mtalkmsg = 0;
 			}
 		}
-		v7 = monster[v2]._mgoal;
-		if (v7 == 1 || v7 == 4)
-			MAI_Round(arglist, 1u);
-		monster[v2]._mdir = v8;
-		if (monster[v2]._mmode == MM_STAND)
-			monster[v2]._mAnimData = monster[v2].MType->Anims[MA_STAND].Data[v8];
 	}
+
+	if (Monst->_mgoal == 1 || Monst->_mgoal == 4)
+		MAI_Round(i, TRUE);
+
+	monster[i]._mdir = md;
+
+	if (Monst->_mmode == MM_STAND)
+		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
 }
 
 void __fastcall MAI_Zhar(int i)
