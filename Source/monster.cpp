@@ -3391,7 +3391,7 @@ LABEL_18:
 	}
 }
 
-bool __fastcall M_CallWalk(int i, int md)
+BOOL __fastcall M_CallWalk(int i, int md)
 {
 	int v2; // esi
 	int v3; // edi
@@ -3732,7 +3732,7 @@ void __fastcall MAI_SkelSd(int i)
 	}
 }
 
-bool __fastcall MAI_Path(int i)
+BOOL __fastcall MAI_Path(int i)
 {
 	int v1;            // edi
 	MonsterStruct *v2; // esi
@@ -5159,99 +5159,77 @@ void __fastcall MAI_Mega(int i)
 
 void __fastcall MAI_Golum(int i)
 {
-	int v1;  // edi
-	int v2;  // esi
-	int v3;  // eax
-	int v4;  // eax
-	int v5;  // edx
-	int v6;  // edi
-	int v7;  // ebx
-	int v8;  // eax
-	char v9; // cl
-	//char v10; // eax
-	signed int v11;     // edx
-	signed int v12;     // ecx
-	int v13;            // eax
-	bool v14;           // eax
-	unsigned char *v15; // esi
-	bool v16;           // eax
-	int v17;            // esi
-	int v18;            // edi
-	int v19;            // [esp+Ch] [ebp-Ch]
-	unsigned int v20;   // [esp+10h] [ebp-8h]
-	int arglist;        // [esp+14h] [ebp-4h]
+	int j, k;
 
-	v1 = i;
-	arglist = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("MAI_Golum: Invalid monster %d", i);
-	v2 = v1;
-	if (monster[v1]._mx != 1 || monster[v2]._my) {
-		v3 = monster[v2]._mmode;
-		if (v3 != MM_DEATH && v3 != MM_SPSTAND && (v3 < MM_WALK || v3 > MM_WALK3)) {
-			if (!(monster[v2]._mFlags & MFLAG_TARGETS_MONSTER))
-				M_Enemy(v1);
-			v20 = ~monster[v2]._mFlags & MFLAG_SEARCH2;
-			if (monster[v2]._mmode != MM_ATTACK) {
-				v4 = monster[v2]._menemy;
-				v5 = monster[v2]._my;
-				v6 = monster[v2]._mx - monster[v4]._mfutx;
-				v7 = v5 - monster[v4]._mfuty;
-				v19 = GetDirection(monster[v2]._mx, v5, monster[v4]._mx, monster[v4]._my);
-				monster[v2]._mdir = v19;
-				if (abs(v6) >= 2 || abs(v7) >= 2) {
-					if (v20) {
-						v14 = MAI_Path(arglist);
-						if (v14)
-							return;
-					}
-				} else if (v20) {
-					v8 = monster[v2]._menemy;
-					monster[v2]._menemyx = monster[v8]._mx;
-					v9 = monster[v8]._my;
-					monster[v2]._menemyy = v9;
-					if (!monster[v8]._msquelch) {
-						monster[v8]._msquelch = -1;
-						monster[monster[v2]._menemy]._lastx = monster[v2]._mx;
-						v11 = 0;
-						monster[monster[v2]._menemy]._lasty = monster[v2]._my;
-						do {
-							v12 = 0;
-							do {
-								/* v13 = *(_DWORD *)&nTransTable[4
-															* (monster[v2]._my + v11 + 112 * (v12 + monster[v2]._mx))
-															+ 1148]; check */
-								v13 = dMonster[monster[v2]._mx + v12 - 2][monster[v2]._my + v11 - 2];
-								if (v13 > 0)
-									monster[v13]._msquelch = -1;
-								++v12;
-							} while (v12 < 5);
-							++v11;
-						} while (v11 < 5);
-					}
-					M_StartAttack(arglist);
-					return;
-				}
-				v15 = &monster[v2]._pathcount;
-				if (++*(_BYTE *)v15 > 8u)
-					*(_BYTE *)v15 = 5;
-				v16 = M_CallWalk(arglist, plr[arglist]._pdir);
-				if (!v16) {
-					v17 = ((_BYTE)v19 - 1) & 7;
-					v18 = 0;
-					while (!v16) {
-						v17 = ((_BYTE)v17 + 1) & 7;
-						v16 = DirOK(arglist, v17);
-						if (++v18 >= 8) {
-							if (!v16)
-								return;
-							break;
-						}
-					}
-					M_WalkDir(arglist, v17);
+
+	MonsterStruct *Monst = &monster[i];
+	if (Monst->_mx == 1 && Monst->_my == 0) {
+		return;
+	}
+
+	if (Monst->_mmode == MM_DEATH
+	    || Monst->_mmode == MM_SPSTAND
+	    || (Monst->_mmode >= MM_WALK && Monst->_mmode <= MM_WALK3)) {
+		return;
+	}
+
+	if (!(Monst->_mFlags & MFLAG_TARGETS_MONSTER))
+		M_Enemy(i);
+
+	BOOL have_enemy = !(monster[i]._mFlags & MFLAG_SEARCH2); // BUGFIX MFLAG_SEARCH2 appears to never be set, maybe use MFLAG_TARGETS_MONSTER?
+
+	if (Monst->_mmode == MM_ATTACK) {
+		return;
+	}
+
+	int _menemy = monster[i]._menemy;
+
+	int mx = monster[i]._mx;
+	int my = monster[i]._my;
+	int _mex = mx - monster[_menemy]._mfutx;
+	int _mey = my - monster[_menemy]._mfuty;
+	int md = GetDirection(mx, my, monster[_menemy]._mx, monster[_menemy]._my);
+	monster[i]._mdir = md;
+	if (abs(_mex) >= 2 || abs(_mey) >= 2) {
+		if (have_enemy && MAI_Path(i))
+			return;
+	} else if (have_enemy) {
+		_menemy = monster[i]._menemy;
+		monster[i]._menemyx = monster[_menemy]._mx;
+		monster[i]._menemyy = monster[_menemy]._my;
+		if (!monster[_menemy]._msquelch) {
+			monster[_menemy]._msquelch = -1;
+			monster[monster[i]._menemy]._lastx = monster[i]._mx;
+			monster[monster[i]._menemy]._lasty = monster[i]._my;
+			for (j = 0; j < 5; j++) {
+				for (k = 0; k < 5; k++) {
+					_menemy = dMonster[monster[i]._mx + k - 2][monster[i]._my + j - 2];
+					if (_menemy > 0)
+						monster[_menemy]._msquelch = -1;
 				}
 			}
 		}
+		M_StartAttack(i);
+		return;
+	}
+
+	monster[i]._pathcount++;
+	if (monster[i]._pathcount > 8)
+		monster[i]._pathcount = 5;
+
+	BOOL ok = M_CallWalk(i, plr[i]._pdir);
+	if (!ok) {
+		md = (md - 1) & 7;
+		for (j = 0; j < 8 && !ok; j++) {
+			md = (md + 1) & 7;
+			ok = DirOK(i, md);
+		}
+		if (!ok) {
+			return;
+		}
+		M_WalkDir(i, md);
 	}
 }
 
