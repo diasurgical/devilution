@@ -199,7 +199,7 @@ struct PlayerStruct {
 	char _pSplType;
 	char _pSplFrom;
 	int _pTSpell;
-	int _pTSplType;
+	char _pTSplType;
 	int _pRSpell;
 	// enum spell_type
 	char _pRSplType;
