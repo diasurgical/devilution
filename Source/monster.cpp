@@ -5978,29 +5978,25 @@ void __fastcall MAI_Warlord(int i)
 
 void __cdecl DeleteMonsterList()
 {
-	int *v0;       // eax
-	signed int v1; // ecx
-
-	v0 = &monster[0]._my;
-	do {
-		if (v0[18]) {
-			*(v0 - 1) = 1;
-			*v0 = 0;
-			v0[1] = 0;
-			v0[2] = 0;
-			v0[3] = 0;
-			v0[4] = 0;
-			v0[18] = 0;
+	int i;
+	for (i = 0; i < 4; i++) {
+		if (monster[i]._mDelFlag) {
+			monster[i]._mx = 1;
+			monster[i]._my = 0;
+			monster[i]._mfutx = 0;
+			monster[i]._mfuty = 0;
+			monster[i]._moldx = 0;
+			monster[i]._moldy = 0;
+			monster[i]._mDelFlag = FALSE;
 		}
-		v0 += 57;
-	} while ((signed int)v0 < (signed int)&monster[4]._my);
-	v1 = 4;
-	while (v1 < nummonsters) {
-		if (monster[monstactive[v1]]._mDelFlag) {
-			DeleteMonster(v1);
-			v1 = 0;
+	}
+
+	while (i < nummonsters) {
+		if (monster[monstactive[i]]._mDelFlag) {
+			DeleteMonster(i);
+			i = 0;
 		} else {
-			++v1;
+			i++;
 		}
 	}
 }
