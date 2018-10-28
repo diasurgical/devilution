@@ -1169,12 +1169,12 @@ LABEL_50:
 		} else {
 			if ((_BYTE)shift) {
 				v23 = mind + random(75, maxd - mind + 1);
-				if (v34 == -1 && plr[v9]._pIFlags & 0x10000000)
+				if (v34 == -1 && plr[v9]._pIFlags & ISPL_ABSHALFTRAP)
 					v23 >>= 1;
 				v21 = plr[v9]._pIGetHit + v23;
 			} else {
 				v22 = (mind << 6) + random(75, (maxd - mind + 1) << 6);
-				if (v34 == -1 && plr[v9]._pIFlags & 0x10000000)
+				if (v34 == -1 && plr[v9]._pIFlags & ISPL_ABSHALFTRAP)
 					v22 >>= 1;
 				v21 = (plr[v9]._pIGetHit << 6) + v22;
 			}

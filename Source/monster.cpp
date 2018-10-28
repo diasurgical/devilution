@@ -2592,7 +2592,7 @@ void __fastcall M_TryH2HHit(int i, int pnum, int Hit, int MinDam, int MaxDam)
 						plr[v7]._pHitPoints -= v29;
 						plr[v7]._pHPBase -= v29;
 					}
-					if (plr[v7]._pIFlags & 0x4000000) {
+					if (plr[v7]._pIFlags & ISPL_FASTERRECOVER) {
 						v30 = (random(99, 3) + 1) << 6;
 						monster[v6]._mhitpoints -= v30;
 						if (monster[v6]._mhitpoints >> 6 > 0)
