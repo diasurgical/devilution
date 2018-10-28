@@ -5989,6 +5989,7 @@ void __cdecl DeleteMonsterList()
 		}
 	}
 
+	i = 4;
 	while (i < nummonsters) {
 		if (monster[monstactive[i]]._mDelFlag) {
 			DeleteMonster(i);
