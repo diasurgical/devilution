@@ -679,7 +679,7 @@ void __fastcall InitMonster(int i, int rd, int mtype, int x, int y)
 	monster[i]._mhitpoints = monster[i]._mmaxhp;
 	monster[i]._mAi = monst->MData->mAi;
 	monster[i]._mint = monst->MData->mInt;
-	monster[i]._mgoal = 1;
+	monster[i]._mgoal = MGOAL_NORMAL;
 	monster[i]._mgoalvar1 = 0;
 	monster[i]._mgoalvar2 = 0;
 	monster[i]._mgoalvar3 = 0;
@@ -944,7 +944,7 @@ void __fastcall PlaceUniqueMonst(int uniqindex, int miniontype, int unpackfilesi
 
 	if (gbMaxPlayers == 1) {
 		if (Monst->mtalkmsg) {
-			Monst->_mgoal = 6;
+			Monst->_mgoal = MGOAL_INQUIRING;
 		}
 	} else {
 		if (Monst->_mAi == AI_LAZHELP) {
@@ -953,10 +953,10 @@ void __fastcall PlaceUniqueMonst(int uniqindex, int miniontype, int unpackfilesi
 
 		if (Monst->_mAi != AI_LAZURUS || quests[QTYPE_VB]._qvar1 <= 3) {
 			if (Monst->mtalkmsg) {
-				Monst->_mgoal = 6;
+				Monst->_mgoal = MGOAL_INQUIRING;
 			}
 		} else {
-			Monst->_mgoal = 1;
+			Monst->_mgoal = MGOAL_NORMAL;
 		}
 	}
 
@@ -1926,7 +1926,7 @@ void __fastcall M_StartHit(int i, int pnum, int dam)
 		if (monster[i].MType->mtype == MT_BLINK) {
 			M_Teleport(i);
 		} else if (monster[i].MType->mtype >= MT_NSCAV && monster[i].MType->mtype <= MT_YSCAV) {
-			monster[i]._mgoal = 1;
+			monster[i]._mgoal = MGOAL_NORMAL;
 		}
 		if (monster[i]._mmode != MM_STONE) {
 			NewMonsterAnim(i, &monster[i].MType->Anims[MA_GOTHIT], monster[i]._mdir);
@@ -2039,7 +2039,7 @@ void __fastcall M2MStartHit(int mid, int i, int dam)
 		if (monster[mid].MType->mtype == MT_BLINK) {
 			M_Teleport(mid);
 		} else if (monster[mid].MType->mtype >= MT_NSCAV && monster[mid].MType->mtype <= MT_YSCAV) {
-			monster[mid]._mgoal = 1;
+			monster[mid]._mgoal = MGOAL_NORMAL;
 		}
 
 		if (monster[mid]._mmode != MM_STONE) {
@@ -2418,7 +2418,7 @@ void __fastcall M_TryM2MHit(int i, int mid, int hper, int mind, int maxd)
 	}
 	if (monster[mid].MType == NULL)
 		TermMsg("M_TryM2MHit: Monster %d \"%s\" MType NULL", mid, monster[mid].mName);
-	if (monster[mid]._mhitpoints >> 6 > 0 && (monster[mid].MType->mtype != MT_ILLWEAV || monster[mid]._mgoal != 2)) {
+	if (monster[mid]._mhitpoints >> 6 > 0 && (monster[mid].MType->mtype != MT_ILLWEAV || monster[mid]._mgoal != MGOAL_RETREAT)) {
 		int hit = random(4, 100);
 		if (monster[mid]._mmode == MM_STONE)
 			hit = 0;
@@ -2866,7 +2866,7 @@ int __fastcall M_DoTalk(int i)
 		TermMsg("M_DoTalk: Invalid monster %d", i);
 	v2 = v1;
 	M_StartStand(v1, monster[v1]._mdir);
-	_LOBYTE(monster[v1]._mgoal) = 7;
+	_LOBYTE(monster[v1]._mgoal) = MGOAL_TALKING;
 	//_LOBYTE(v3) = effect_is_playing(alltext[monster[v1].mtalkmsg].sfxnr);
 	if (!effect_is_playing(alltext[monster[v1].mtalkmsg].sfxnr)) {
 		InitQTextMsg(monster[v2].mtalkmsg);
@@ -2925,7 +2925,7 @@ int __fastcall M_DoTalk(int i)
 			monster[v2]._msquelch = -1;
 			monster[v2].mtalkmsg = 0;
 			quests[QTYPE_VB]._qvar1 = 6;
-			_LOBYTE(monster[v2]._mgoal) = 1;
+			_LOBYTE(monster[v2]._mgoal) = MGOAL_NORMAL;
 		}
 	}
 	return 0;
@@ -3315,12 +3315,10 @@ void __fastcall GroupUnity(int i)
 	int v4;           // edi
 	bool v5;          // eax
 	int v6;           // eax
-	int v7;           // ecx
 	unsigned char v8; // al
 	int v9;           // ebp
 	int j;            // edi
 	int v11;          // eax
-	//int v13; // [esp+10h] [ebp-4h]
 
 	v1 = i;
 	if ((DWORD)i >= MAXMONSTERS)
@@ -3750,7 +3748,7 @@ BOOL __fastcall MAI_Path(int i)
 		if (v2->_mmode)
 			return 0;
 		v3 = v2->_mgoal;
-		if (v3 != 1 && v3 != 4 && v3 != 5)
+		if (v3 != MGOAL_NORMAL && v3 != MGOAL_MOVE && v3 != MGOAL_SHOOT)
 			return 0;
 		if (v2->_mx == 1 && !v2->_my)
 			return 0;
@@ -3985,14 +3983,14 @@ void __fastcall MAI_Bat(int i)
 		midir = v7;
 		esi3->_mdir = v7;
 		v22 = random(107, 100);
-		if (_LOBYTE(esi3->_mgoal) == 2) {
+		if (_LOBYTE(esi3->_mgoal) == MGOAL_RETREAT) {
 			if (esi3->_mgoalvar1) {
 				if (random(108, 2))
 					v10 = left[midir];
 				else
 					v10 = right[midir];
 				M_CallWalk(arglist, v10);
-				_LOBYTE(esi3->_mgoal) = 1;
+				_LOBYTE(esi3->_mgoal) = MGOAL_NORMAL;
 			} else {
 				M_CallWalk(arglist, opposite[midir]);
 				++esi3->_mgoalvar1;
@@ -4028,7 +4026,7 @@ void __fastcall MAI_Bat(int i)
 				M_StartAttack(arglist);
 				v14 = esi3->MType;
 				esi3->_mgoalvar1 = 0;
-				_LOBYTE(esi3->_mgoal) = 2;
+				_LOBYTE(esi3->_mgoal) = MGOAL_RETREAT;
 				if (v14->mtype == MT_FAMILIAR) {
 					v15 = (unsigned char)esi3->_menemyx;
 					v16 = random(109, 10);
@@ -4187,17 +4185,17 @@ void __fastcall MAI_Sneak(int i)
 			v6 = 5 - (unsigned char)v2->_mint;
 			if (v2->_mVar1 == 5) {
 				v2->_mgoalvar1 = 0;
-				_LOBYTE(v2->_mgoal) = 2;
+				_LOBYTE(v2->_mgoal) = MGOAL_RETREAT;
 			} else {
 				v7 = abs(v17);
 				//v5 = v8;
 				if (v7 >= v6 + 3 || (v9 = abs(v4), v9 >= v6 + 3) || v2->_mgoalvar1 > 8) /* v5 = v10,  */
 				{
 					v2->_mgoalvar1 = 0;
-					_LOBYTE(v2->_mgoal) = 1;
+					_LOBYTE(v2->_mgoal) = MGOAL_NORMAL;
 				}
 			}
-			if (_LOBYTE(v2->_mgoal) == 2) {
+			if (_LOBYTE(v2->_mgoal) == MGOAL_RETREAT) {
 				if (v2->_mFlags & MFLAG_TARGETS_MONSTER)
 					md = GetDirection(v2->_mx, v2->_my, plr[v2->_menemy]._pownerx, plr[v2->_menemy]._pownery);
 				md = opposite[md];
@@ -4216,7 +4214,7 @@ void __fastcall MAI_Sneak(int i)
 			} else {
 				v12 = v6 + 1;
 				if (abs(v17) < v12 && abs(v4) < v12 || v2->_mFlags & MFLAG_HIDDEN) {
-					if (_LOBYTE(v2->_mgoal) == 2
+					if (_LOBYTE(v2->_mgoal) == MGOAL_RETREAT
 					    || (abs(v17) >= 2 || abs(v4) >= 2)
 					        && ((v13 = v2->_mVar2, v13 > 20) && v15 < 4 * (unsigned char)v2->_mint + 14
 					               || ((v14 = v2->_mVar1, v14 == 1) || v14 == 2 || v14 == 3)
@@ -4281,7 +4279,7 @@ void __fastcall MAI_Fireman(int i)
 	v9 = monster[esi3]._mgoal;
 	midir = v7;
 	switch (v9) {
-	case 1:
+	case MGOAL_NORMAL:
 		//_LOBYTE(v10) = LineClear(monster[esi3]._mx, monster[esi3]._my, v1, v2);
 		if (!LineClear(monster[esi3]._mx, monster[esi3]._my, v1, v2)
 		    || AddMissile(monster[esi3]._mx, monster[esi3]._my, v1, v2, midir, MIS_FIREMAN, micaster, arglist, 0, 0) == -1) {
@@ -4290,9 +4288,9 @@ void __fastcall MAI_Fireman(int i)
 		monster[esi3]._mgoalvar1 = 0;
 		monster[esi3]._mmode = MM_CHARGE;
 		goto LABEL_18;
-	case 5:
+	case MGOAL_SHOOT:
 		if (monster[esi3]._mgoalvar1 == 3) {
-			_LOBYTE(monster[esi3]._mgoal) = 1;
+			_LOBYTE(monster[esi3]._mgoal) = MGOAL_NORMAL;
 			M_StartFadeout(arglist, v7, TRUE);
 		} else {
 			//_LOBYTE(v11) = LineClear(monster[esi3]._mx, monster[esi3]._my, v1, v2);
@@ -4311,24 +4309,24 @@ void __fastcall MAI_Fireman(int i)
 			++monster[esi3]._mgoalvar1;
 		}
 		break;
-	case 2:
+	case MGOAL_RETREAT:
 		M_StartFadein(arglist, v7, FALSE);
 	LABEL_18:
-		_LOBYTE(monster[esi3]._mgoal) = 5;
+		_LOBYTE(monster[esi3]._mgoal) = MGOAL_SHOOT;
 		break;
 	}
 	monster[esi3]._mdir = midir;
 	random(112, 100);
 	if (monster[esi3]._mmode == MM_STAND)
 		return;
-	if (abs(v6) < 2 && abs(v5) < 2 && _LOBYTE(monster[esi3]._mgoal) == 1) {
+	if (abs(v6) < 2 && abs(v5) < 2 && _LOBYTE(monster[esi3]._mgoal) == MGOAL_NORMAL) {
 		M_TryH2HHit(
 		    arglist,
 		    monster[esi3]._menemy,
 		    (unsigned char)monster[esi3].mHit,
 		    (unsigned char)monster[esi3].mMinDamage,
 		    (unsigned char)monster[esi3].mMaxDamage);
-		_LOBYTE(monster[esi3]._mgoal) = 2;
+		_LOBYTE(monster[esi3]._mgoal) = MGOAL_RETREAT;
 		//_LOBYTE(v14) = M_CallWalk(arglist, opposite[midir]);
 		if (M_CallWalk(arglist, opposite[midir]))
 			return;
@@ -4338,11 +4336,11 @@ void __fastcall MAI_Fireman(int i)
 	//_LOBYTE(v16) = M_CallWalk(arglist, midir);
 	if (!M_CallWalk(arglist, midir)) {
 		v17 = _LOBYTE(monster[esi3]._mgoal);
-		if ((_BYTE)v17 == 1 || (_BYTE)v17 == 2) {
+		if ((_BYTE)v17 == MGOAL_NORMAL || (_BYTE)v17 == MGOAL_RETREAT) {
 			v15 = midir;
 		LABEL_29:
 			M_StartFadein(arglist, v15, FALSE);
-			_LOBYTE(monster[esi3]._mgoal) = 5;
+			_LOBYTE(monster[esi3]._mgoal) = MGOAL_SHOOT;
 			return;
 		}
 	}
@@ -4373,29 +4371,29 @@ void __fastcall MAI_Fallen(int i)
 		//i = v2;
 	}
 	v3 = v1;
-	if (_LOBYTE(monster[v1]._mgoal) == 5) {
+	if (_LOBYTE(monster[v1]._mgoal) == MGOAL_SHOOT) {
 		i = monster[v3]._mgoalvar1;
 		if (i)
 			monster[v3]._mgoalvar1 = --i;
 		else
-			_LOBYTE(monster[v3]._mgoal) = 1;
+			_LOBYTE(monster[v3]._mgoal) = MGOAL_NORMAL;
 	}
 	if (monster[v3]._mmode == MM_STAND && monster[v3]._msquelch) {
-		if (_LOBYTE(monster[v3]._mgoal) == 2) {
+		if (_LOBYTE(monster[v3]._mgoal) == MGOAL_RETREAT) {
 			i = monster[v3]._mgoalvar1;
 			monster[v3]._mgoalvar1 = i - 1;
 			if (!i) {
 				v4 = monster[v3]._mdir;
-				_LOBYTE(monster[v3]._mgoal) = 1;
+				_LOBYTE(monster[v3]._mgoal) = MGOAL_NORMAL;
 				M_StartStand(v1, opposite[v4]);
 			}
 		}
 		if (monster[v3]._mAnimFrame != monster[v3]._mAnimLen) {
 			v13 = monster[v3]._mgoal;
-			if (v13 == 2) {
+			if (v13 == MGOAL_RETREAT) {
 				v14 = monster[v3]._mdir;
 			} else {
-				if (v13 != 5) {
+				if (v13 != MGOAL_SHOOT) {
 					MAI_SkelSd(v1);
 					return;
 				}
@@ -4429,7 +4427,7 @@ void __fastcall MAI_Fallen(int i)
 						if (v11 > 0) {
 							v12 = v11 - 1;
 							if (monster[v12]._mAi == AI_FALLEN) {
-								_LOBYTE(monster[v12]._mgoal) = 5;
+								_LOBYTE(monster[v12]._mgoal) = MGOAL_SHOOT;
 								monster[v12]._mgoalvar1 = 30 * (unsigned char)monster[v3]._mint + 105;
 							}
 						}
@@ -4522,7 +4520,7 @@ void __fastcall MAI_Round(int i, BOOL special)
 		if ((abs(v7) >= 2 || abs(v32) >= 2) && v3->_msquelch == -1) {
 			v29 = &dung_map[v6][v28];
 			if (dung_map[v3->_mx][v3->_my] == *v29) {
-				if (_LOBYTE(v3->_mgoal) != 4) {
+				if (_LOBYTE(v3->_mgoal) != MGOAL_MOVE) {
 					v9 = abs(v7);
 					//v11 = v10;
 					if (v9 < 4) {
@@ -4533,12 +4531,12 @@ void __fastcall MAI_Round(int i, BOOL special)
 					}
 					if (random(115, 4))
 						goto LABEL_26;
-					if (_LOBYTE(v3->_mgoal) != 4) {
+					if (_LOBYTE(v3->_mgoal) != MGOAL_MOVE) {
 						v3->_mgoalvar1 = 0;
 						v3->_mgoalvar2 = random(116, 2);
 					}
 				}
-				_LOBYTE(v3->_mgoal) = 4;
+				_LOBYTE(v3->_mgoal) = MGOAL_MOVE;
 				v15 = abs(v32);
 				if (abs(v7) <= v15)
 					v16 = abs(v32);
@@ -4558,9 +4556,9 @@ void __fastcall MAI_Round(int i, BOOL special)
 				}
 			}
 		}
-		_LOBYTE(v3->_mgoal) = 1;
+		_LOBYTE(v3->_mgoal) = MGOAL_NORMAL;
 	LABEL_26:
-		if (_LOBYTE(v3->_mgoal) == 1) {
+		if (_LOBYTE(v3->_mgoal) == MGOAL_NORMAL) {
 			if (abs(v7) >= 2 || (v22 = abs(v32), v22 >= 2)) /* v24 = v23,  */
 			{
 				v25 = v3->_mVar2;
@@ -4702,17 +4700,17 @@ void __fastcall MAI_Scav(int i)
 	v20 = 0;
 	if (monster[v1]._mmode == MM_STAND) {
 		if (monster[v2]._mhitpoints<monster[v2]._mmaxhp>> 1) {
-			if (_LOBYTE(monster[v2]._mgoal) == 3)
+			if (_LOBYTE(monster[v2]._mgoal) == MGOAL_HEALING)
 				goto LABEL_10;
 			if (monster[v2].leaderflag) {
 				v3 = &monster[(unsigned char)monster[v2].leader].unpackfilesize;
 				--*v3;
 				monster[v2].leaderflag = 0;
 			}
-			_LOBYTE(monster[v2]._mgoal) = 3;
+			_LOBYTE(monster[v2]._mgoal) = MGOAL_HEALING;
 			monster[v2]._mgoalvar3 = 10;
 		}
-		if (_LOBYTE(monster[v2]._mgoal) != 3) {
+		if (_LOBYTE(monster[v2]._mgoal) != MGOAL_HEALING) {
 		LABEL_52:
 			if (monster[v2]._mmode == MM_STAND)
 				MAI_SkelSd(arglist);
@@ -4728,7 +4726,7 @@ void __fastcall MAI_Scav(int i)
 				if (!(monster[v2]._mFlags & MFLAG_NOHEAL))
 					monster[v2]._mhitpoints += 64;
 				if (monster[v2]._mhitpoints >= (monster[v2]._mmaxhp >> 1) + (monster[v2]._mmaxhp >> 2)) {
-					_LOBYTE(monster[v2]._mgoal) = 1;
+					_LOBYTE(monster[v2]._mgoal) = MGOAL_NORMAL;
 					monster[v2]._mgoalvar1 = 0;
 					monster[v2]._mgoalvar2 = 0;
 				}
@@ -4835,15 +4833,15 @@ void __fastcall MAI_Garg(int i)
 		}
 	} else if (v2->_mmode == MM_STAND && v5) {
 		if (v2->_mhitpoints<v2->_mmaxhp>> 1 && !(v2->_mFlags & MFLAG_NOHEAL))
-			_LOBYTE(v2->_mgoal) = 2;
-		if (_LOBYTE(v2->_mgoal) == 2) {
+			_LOBYTE(v2->_mgoal) = MGOAL_RETREAT;
+		if (_LOBYTE(v2->_mgoal) == MGOAL_RETREAT) {
 			if (abs(v3) >= (unsigned char)v2->_mint + 2 || abs(v4) >= (unsigned char)v2->_mint + 2) {
-				_LOBYTE(v2->_mgoal) = 1;
+				_LOBYTE(v2->_mgoal) = MGOAL_NORMAL;
 				M_StartHeal(v1);
 			} else {
 				//_LOBYTE(v7) = M_CallWalk(v1, opposite[v8]);
 				if (!M_CallWalk(v1, opposite[v8]))
-					_LOBYTE(v2->_mgoal) = 1;
+					_LOBYTE(v2->_mgoal) = MGOAL_NORMAL;
 			}
 		}
 		MAI_Round(v1, 0);
@@ -4916,7 +4914,7 @@ void __fastcall MAI_RoundRanged(int i, int missile_type, unsigned char checkdoor
 		//v13 = y2;
 		if (dung_map[v6->_mx][v6->_my] != dung_map[x2][y2])
 			goto LABEL_50;
-		if (_LOBYTE(v6->_mgoal) != 4) {
+		if (_LOBYTE(v6->_mgoal) != MGOAL_MOVE) {
 			if (abs(v9) < 3) {
 				v16 = abs(v8);
 				//v13 = v17;
@@ -4926,12 +4924,12 @@ void __fastcall MAI_RoundRanged(int i, int missile_type, unsigned char checkdoor
 			v18 = lessmissiles;
 			if (random(122, 4 << lessmissiles))
 				goto LABEL_28;
-			if (_LOBYTE(v6->_mgoal) != 4) {
+			if (_LOBYTE(v6->_mgoal) != MGOAL_MOVE) {
 				v6->_mgoalvar1 = 0;
 				v6->_mgoalvar2 = random(123, 2);
 			}
 		}
-		_LOBYTE(v6->_mgoal) = 4;
+		_LOBYTE(v6->_mgoal) = MGOAL_MOVE;
 		v19 = abs(v8);
 		if (abs(v9) <= v19) {
 			v8 = v33;
@@ -4944,7 +4942,7 @@ void __fastcall MAI_RoundRanged(int i, int missile_type, unsigned char checkdoor
 		v6->_mgoalvar1 = v21 + 1;
 		if (v21 >= 2 * v20 && (v22 = DirOK(arglist, md), v22)) {
 		LABEL_50:
-			_LOBYTE(v6->_mgoal) = 1;
+			_LOBYTE(v6->_mgoal) = MGOAL_NORMAL;
 		} else if (checkdoorsa<500 * ((unsigned char)v6->_mint + 1)>> lessmissiles
 		    && (v23 = LineClear(v6->_mx, v6->_my, x2, y2), v23)) {
 			M_StartRSpAttack(arglist, missile_typea, dam);
@@ -4952,7 +4950,7 @@ void __fastcall MAI_RoundRanged(int i, int missile_type, unsigned char checkdoor
 			M_RoundWalk(arglist, md, &v6->_mgoalvar2);
 		}
 	LABEL_28:
-		if (_LOBYTE(v6->_mgoal) == 1) {
+		if (_LOBYTE(v6->_mgoal) == MGOAL_NORMAL) {
 			if (((abs(v9) >= 3 || abs(v8) >= 3) && checkdoorsa<500 * ((unsigned char)v6->_mint + 2)>> lessmissiles
 			        || checkdoorsa<500 * ((unsigned char)v6->_mint + 1)>> lessmissiles)
 			    && (v24 = LineClear(v6->_mx, v6->_my, x2, y2), v24)) {
@@ -5069,7 +5067,7 @@ void __fastcall MAI_RR2(int i, int mistype, int dam)
 			if (v4->_msquelch == -1) {
 				//v12 = y2;
 				if (dung_map[v4->_mx][v4->_my] == dung_map[x2][y2]) {
-					if (_LOBYTE(v4->_mgoal) != 4) {
+					if (_LOBYTE(v4->_mgoal) != MGOAL_MOVE) {
 						v15 = abs(v8);
 						//v12 = v16;
 						if (v15 < 3) {
@@ -5078,12 +5076,12 @@ void __fastcall MAI_RR2(int i, int mistype, int dam)
 							if (v17 < 3)
 								goto LABEL_26;
 						}
-						if (_LOBYTE(v4->_mgoal) != 4) {
+						if (_LOBYTE(v4->_mgoal) != MGOAL_MOVE) {
 							v4->_mgoalvar1 = 0;
 							v4->_mgoalvar2 = random(123, 2);
 						}
 					}
-					_LOBYTE(v4->_mgoal) = 4;
+					_LOBYTE(v4->_mgoal) = MGOAL_MOVE;
 					v4->_mgoalvar3 = 4;
 					v19 = abs(v7);
 					if (abs(v8) <= v19) {
@@ -5099,7 +5097,7 @@ void __fastcall MAI_RR2(int i, int mistype, int dam)
 						if (v38 < 5 * ((unsigned char)v4->_mint + 16))
 							M_RoundWalk(arglist, md, &v4->_mgoalvar2);
 					LABEL_26:
-						if (_LOBYTE(v4->_mgoal) != 1)
+						if (_LOBYTE(v4->_mgoal) != MGOAL_NORMAL)
 							goto LABEL_48;
 						if (((abs(v8) >= 3 || abs(v7) >= 3) && v38 < 5 * ((unsigned char)v4->_mint + 2)
 						        || v38 < 5 * ((unsigned char)v4->_mint + 1)
@@ -5147,7 +5145,7 @@ void __fastcall MAI_RR2(int i, int mistype, int dam)
 				}
 			}
 		}
-		_LOBYTE(v4->_mgoal) = 1;
+		_LOBYTE(v4->_mgoal) = MGOAL_NORMAL;
 		goto LABEL_26;
 	}
 }
@@ -5288,7 +5286,7 @@ void __fastcall MAI_SkelKing(int i)
 		if ((abs(v5) >= 2 || abs(v4) >= 2) && v2->_msquelch == -1) {
 			v32 = &dung_map[x2][y2];
 			if (dung_map[v2->_mx][v2->_my] == *v32) {
-				if (_LOBYTE(v2->_mgoal) != 4) {
+				if (_LOBYTE(v2->_mgoal) != MGOAL_MOVE) {
 					v7 = abs(v5);
 					//v9 = v8;
 					if (v7 < 3) {
@@ -5299,12 +5297,12 @@ void __fastcall MAI_SkelKing(int i)
 					}
 					if (random(127, 4))
 						goto LABEL_26;
-					if (_LOBYTE(v2->_mgoal) != 4) {
+					if (_LOBYTE(v2->_mgoal) != MGOAL_MOVE) {
 						v2->_mgoalvar1 = 0;
 						v2->_mgoalvar2 = random(128, 2);
 					}
 				}
-				_LOBYTE(v2->_mgoal) = 4;
+				_LOBYTE(v2->_mgoal) = MGOAL_MOVE;
 				v13 = abs(v4);
 				if (abs(v5) <= v13) {
 					v4 = v34;
@@ -5327,9 +5325,9 @@ void __fastcall MAI_SkelKing(int i)
 				}
 			}
 		}
-		_LOBYTE(v2->_mgoal) = 1;
+		_LOBYTE(v2->_mgoal) = MGOAL_NORMAL;
 	LABEL_26:
-		if (_LOBYTE(v2->_mgoal) == 1) {
+		if (_LOBYTE(v2->_mgoal) == MGOAL_NORMAL) {
 			if (gbMaxPlayers == 1
 			    && ((abs(v5) >= 3 || abs(v4) >= 3) && v35 < 4 * (unsigned char)v2->_mint + 35 || v35 < 6)
 			    && (v20 = LineClear(v2->_mx, v2->_my, x2, y2), v20)) {
@@ -5415,7 +5413,7 @@ void __fastcall MAI_Rhino(int i)
 			MonstCheckDoors(arglist);
 		v30 = random(131, 100);
 		if (abs(v5) >= 2 || abs(v4) >= 2) {
-			if (_LOBYTE(esi3->_mgoal) != 4) {
+			if (_LOBYTE(esi3->_mgoal) != MGOAL_MOVE) {
 				v7 = abs(v5);
 				//v9 = v8;
 				if (v7 < 5) {
@@ -5426,7 +5424,7 @@ void __fastcall MAI_Rhino(int i)
 				}
 				if (!random(132, 4))
 					goto LABEL_23;
-				if (_LOBYTE(esi3->_mgoal) != 4) {
+				if (_LOBYTE(esi3->_mgoal) != MGOAL_MOVE) {
 					esi3->_mgoalvar1 = 0;
 					esi3->_mgoalvar2 = random(133, 2);
 				}
@@ -5451,9 +5449,9 @@ void __fastcall MAI_Rhino(int i)
 				goto LABEL_23;
 			}
 		}
-		_LOBYTE(esi3->_mgoal) = 1;
+		_LOBYTE(esi3->_mgoal) = MGOAL_NORMAL;
 	LABEL_23:
-		if (_LOBYTE(esi3->_mgoal) == 1) {
+		if (_LOBYTE(esi3->_mgoal) == MGOAL_NORMAL) {
 			if ((abs(v5) >= 5 || abs(v4) >= 5)
 			    && v30 < 2 * (unsigned char)esi3->_mint + 43
 			    && (v19 = LineClearF1(
@@ -5554,7 +5552,7 @@ void __fastcall MAI_Counselor(int i)
 			MonstCheckDoors(v1);
 		v39 = random(121, 100);
 		v9 = monster[v2]._mgoal;
-		if (v9 == 2) {
+		if (v9 == MGOAL_RETREAT) {
 			v10 = monster[v2]._mgoalvar1;
 			v13 = __OFSUB__(v10, 3);
 			v11 = v10 == 3;
@@ -5568,7 +5566,7 @@ void __fastcall MAI_Counselor(int i)
 			}
 			goto LABEL_21;
 		}
-		if (v9 == 4) {
+		if (v9 == MGOAL_MOVE) {
 			v16 = abs(v6);
 			if (abs(v4) <= v16)
 				v17 = abs(v6);
@@ -5582,7 +5580,7 @@ void __fastcall MAI_Counselor(int i)
 			LABEL_20:
 				v15 = v1;
 			LABEL_21:
-				_LOBYTE(monster[v2]._mgoal) = 1;
+				_LOBYTE(monster[v2]._mgoal) = MGOAL_NORMAL;
 				M_StartFadein(v15, md, TRUE);
 				goto LABEL_39;
 			}
@@ -5603,7 +5601,7 @@ void __fastcall MAI_Counselor(int i)
 			}
 			return;
 		}
-		if (v9 != 1)
+		if (v9 != MGOAL_NORMAL)
 			goto LABEL_39;
 		v22 = abs(v4);
 		//v24 = v23;
@@ -5624,7 +5622,7 @@ void __fastcall MAI_Counselor(int i)
 			}
 			if (random(124, 100) < 30) {
 				v27 = md;
-				_LOBYTE(monster[v2]._mgoal) = 4;
+				_LOBYTE(monster[v2]._mgoal) = MGOAL_MOVE;
 				goto LABEL_29;
 			}
 		} else {
@@ -5634,7 +5632,7 @@ void __fastcall MAI_Counselor(int i)
 			v12 = monster[v2]._mhitpoints - v28 < 0;
 			monster[v2]._mdir = md;
 			if (v12 ^ v13) {
-				_LOBYTE(monster[v2]._mgoal) = 2;
+				_LOBYTE(monster[v2]._mgoal) = MGOAL_RETREAT;
 			LABEL_29:
 				monster[v2]._mgoalvar1 = 0;
 				M_StartFadeout(v1, v27, FALSE);
@@ -5673,22 +5671,22 @@ void __fastcall MAI_Garbud(int i)
 	if (Monst->mtalkmsg < QUEST_GARBUD4
 	    && Monst->mtalkmsg > QUEST_DOOM10
 	    && !(dFlags[_mx][_my] & DFLAG_VISIBLE)
-	    && Monst->_mgoal == 7) {
-		Monst->_mgoal = 6;
+	    && Monst->_mgoal == MGOAL_TALKING) {
+		Monst->_mgoal = MGOAL_INQUIRING;
 		Monst->mtalkmsg++;
 	}
 
 	if (dFlags[_mx][_my] & DFLAG_VISIBLE) {
 		if (Monst->mtalkmsg == QUEST_GARBUD4) {
-			if (!effect_is_playing(USFX_GARBUD4) && Monst->_mgoal == 7) {
-				Monst->_mgoal = 1;
+			if (!effect_is_playing(USFX_GARBUD4) && Monst->_mgoal == MGOAL_TALKING) {
+				Monst->_mgoal = MGOAL_NORMAL;
 				Monst->_msquelch = -1;
 				Monst->mtalkmsg = 0;
 			}
 		}
 	}
 
-	if (Monst->_mgoal == 1 || Monst->_mgoal == 4)
+	if (Monst->_mgoal == MGOAL_NORMAL || Monst->_mgoal == MGOAL_MOVE)
 		MAI_Round(i, TRUE);
 
 	monster[i]._mdir = md;
@@ -5720,9 +5718,9 @@ void __fastcall MAI_Zhar(int i)
 		v3 = monster[v2]._my;
 		v4 = monster[v2]._mx;
 		v11 = M_GetDir(v1);
-		if (monster[v2].mtalkmsg == QUEST_ZHAR1 && !(dFlags[v4][v3] & DFLAG_VISIBLE) && _LOBYTE(monster[v2]._mgoal) == 7) {
+		if (monster[v2].mtalkmsg == QUEST_ZHAR1 && !(dFlags[v4][v3] & DFLAG_VISIBLE) && _LOBYTE(monster[v2]._mgoal) == MGOAL_TALKING) {
 			monster[v2].mtalkmsg = QUEST_ZHAR2;
-			_LOBYTE(monster[v2]._mgoal) = 6;
+			_LOBYTE(monster[v2]._mgoal) = MGOAL_INQUIRING;
 		}
 		if (dFlags[v4][v3] & DFLAG_VISIBLE) {
 			v5 = monster[v2]._mx - (unsigned char)monster[v2]._menemyx;
@@ -5734,15 +5732,15 @@ void __fastcall MAI_Zhar(int i)
 				abs(v5);
 			if (monster[v2].mtalkmsg == QUEST_ZHAR2) {
 				//_LOBYTE(v8) = effect_is_playing(USFX_ZHAR2);
-				if (!effect_is_playing(USFX_ZHAR2) && _LOBYTE(monster[v2]._mgoal) == 7) {
+				if (!effect_is_playing(USFX_ZHAR2) && _LOBYTE(monster[v2]._mgoal) == MGOAL_TALKING) {
 					monster[v2]._msquelch = -1;
 					monster[v2].mtalkmsg = 0;
-					_LOBYTE(monster[v2]._mgoal) = 1;
+					_LOBYTE(monster[v2]._mgoal) = MGOAL_NORMAL;
 				}
 			}
 		}
 		v9 = monster[v2]._mgoal;
-		if (v9 == 1 || v9 == 2 || v9 == 4)
+		if (v9 == MGOAL_NORMAL || v9 == MGOAL_RETREAT || v9 == MGOAL_MOVE)
 			MAI_Counselor(arglist);
 		monster[v2]._mdir = v11;
 		if (monster[v2]._mmode == MM_STAND)
@@ -5772,27 +5770,27 @@ void __fastcall MAI_SnotSpil(int i)
 		v5 = M_GetDir(v1);
 		if (monster[v2].mtalkmsg == QUEST_BANNER10 && !(dFlags[v4][v3] & DFLAG_VISIBLE) && _LOBYTE(monster[v2]._mgoal) == 7) {
 			monster[v2].mtalkmsg = QUEST_BANNER11;
-			_LOBYTE(monster[v2]._mgoal) = 6;
+			_LOBYTE(monster[v2]._mgoal) = MGOAL_INQUIRING;
 		}
 		if (monster[v2].mtalkmsg == QUEST_BANNER11 && quests[QTYPE_BOL]._qvar1 == 3) {
 			monster[v2].mtalkmsg = 0;
-			_LOBYTE(monster[v2]._mgoal) = 1;
+			_LOBYTE(monster[v2]._mgoal) = MGOAL_NORMAL;
 		}
 		if (dFlags[v4][v3] & DFLAG_VISIBLE) {
 			if (monster[v2].mtalkmsg == QUEST_BANNER12) {
 				//_LOBYTE(v6) = effect_is_playing(USFX_SNOT3);
-				if (!effect_is_playing(USFX_SNOT3) && _LOBYTE(monster[v2]._mgoal) == 7) {
+				if (!effect_is_playing(USFX_SNOT3) && _LOBYTE(monster[v2]._mgoal) == MGOAL_TALKING) {
 					ObjChangeMap(setpc_x, setpc_y, setpc_w + setpc_x + 1, setpc_h + setpc_y + 1);
 					quests[QTYPE_BOL]._qvar1 = 3;
 					RedoPlayerVision();
 					monster[v2]._msquelch = -1;
 					monster[v2].mtalkmsg = 0;
-					_LOBYTE(monster[v2]._mgoal) = 1;
+					_LOBYTE(monster[v2]._mgoal) = MGOAL_NORMAL;
 				}
 			}
 			if (quests[QTYPE_BOL]._qvar1 == 3) {
 				v7 = monster[v2]._mgoal;
-				if (v7 == 1 || v7 == 5)
+				if (v7 == MGOAL_NORMAL || v7 == MGOAL_SHOOT)
 					MAI_Fallen(arglist);
 			}
 		}
@@ -5829,31 +5827,31 @@ void __fastcall MAI_Lazurus(int i)
 			if (gbMaxPlayers != 1)
 				goto LABEL_29;
 			if (monster[v2].mtalkmsg == QUEST_VILE13) {
-				if (_LOBYTE(monster[v2]._mgoal) == 6 && plr[myplr].WorldX == QUEST_VILE13 && plr[myplr].WorldY == 46) {
+				if (_LOBYTE(monster[v2]._mgoal) == MGOAL_INQUIRING && plr[myplr].WorldX == QUEST_VILE13 && plr[myplr].WorldY == 46) {
 					PlayInGameMovie("gendata\\fprst3.smk");
 					monster[v2]._mmode = MM_TALK;
 					quests[QTYPE_VB]._qvar1 = 5;
 				}
 				if (monster[v2].mtalkmsg == QUEST_VILE13) {
 					//_LOBYTE(v6) = effect_is_playing(USFX_LAZ1);
-					if (!effect_is_playing(USFX_LAZ1) && _LOBYTE(monster[v2]._mgoal) == 7) {
+					if (!effect_is_playing(USFX_LAZ1) && _LOBYTE(monster[v2]._mgoal) == MGOAL_TALKING) {
 						ObjChangeMapResync(1, 18, 20, 24);
 						RedoPlayerVision();
 						monster[v2]._msquelch = -1;
 						monster[v2].mtalkmsg = 0;
 						quests[QTYPE_VB]._qvar1 = 6;
-						_LOBYTE(monster[v2]._mgoal) = 1;
+						_LOBYTE(monster[v2]._mgoal) = MGOAL_NORMAL;
 					}
 				}
 			}
 			if (gbMaxPlayers != 1) {
 			LABEL_29:
-				if (monster[v2].mtalkmsg == QUEST_VILE13 && _LOBYTE(monster[v2]._mgoal) == 6 && quests[QTYPE_VB]._qvar1 <= 3u)
+				if (monster[v2].mtalkmsg == QUEST_VILE13 && _LOBYTE(monster[v2]._mgoal) == MGOAL_INQUIRING && quests[QTYPE_VB]._qvar1 <= 3u)
 					monster[v2]._mmode = MM_TALK;
 			}
 		}
 		v7 = monster[v2]._mgoal;
-		if (v7 == 1 || v7 == 2 || v7 == 4) {
+		if (v7 == MGOAL_NORMAL || v7 == MGOAL_RETREAT || v7 == MGOAL_MOVE) {
 			monster[v2].mtalkmsg = 0;
 			MAI_Counselor(arglist);
 		}
@@ -5886,15 +5884,15 @@ void __fastcall MAI_Lazhelp(int i)
 		if (dFlags[v4][v3] & DFLAG_VISIBLE) {
 			if (gbMaxPlayers == 1) {
 				if (quests[QTYPE_VB]._qvar1 <= 5u) {
-					_LOBYTE(monster[v2]._mgoal) = 6;
+					_LOBYTE(monster[v2]._mgoal) = MGOAL_INQUIRING;
 					goto LABEL_10;
 				}
 				monster[v2].mtalkmsg = 0;
 			}
-			_LOBYTE(monster[v2]._mgoal) = 1;
+			_LOBYTE(monster[v2]._mgoal) = MGOAL_NORMAL;
 		}
 	LABEL_10:
-		if (_LOBYTE(monster[v2]._mgoal) == 1)
+		if (_LOBYTE(monster[v2]._mgoal) == MGOAL_NORMAL)
 			MAI_Succ(ia);
 		monster[v2]._mdir = v5;
 		if (monster[v2]._mmode == MM_STAND)
@@ -5916,14 +5914,14 @@ void __fastcall MAI_Lachdanan(int i)
 	int _mx = Monst->_mx;
 	int _my = Monst->_my;
 	int md = M_GetDir(i);
-	if (Monst->mtalkmsg == QUEST_VEIL9 && !(dFlags[_mx][_my] & DFLAG_VISIBLE) && Monst->_mgoal == 7) {
+	if (Monst->mtalkmsg == QUEST_VEIL9 && !(dFlags[_mx][_my] & DFLAG_VISIBLE) && Monst->_mgoal == MGOAL_TALKING) {
 		Monst->mtalkmsg = QUEST_VEIL10;
-		Monst->_mgoal = 6;
+		Monst->_mgoal = MGOAL_INQUIRING;
 	}
 
 	if (dFlags[_mx][_my] & DFLAG_VISIBLE) {
 		if (Monst->mtalkmsg == QUEST_VEIL11) {
-			if (!effect_is_playing(USFX_LACH3) && Monst->_mgoal == 7) {
+			if (!effect_is_playing(USFX_LACH3) && Monst->_mgoal == MGOAL_TALKING) {
 				Monst->mtalkmsg = 0;
 				quests[QTYPE_VEIL]._qactive = 3;
 				M_StartKill(i, -1);
@@ -5958,16 +5956,16 @@ void __fastcall MAI_Warlord(int i)
 		v4 = monster[v2]._mx;
 		v5 = M_GetDir(v1);
 		if (dFlags[v4][v3] & DFLAG_VISIBLE && monster[v2].mtalkmsg == QUEST_WARLRD9) {
-			if (_LOBYTE(monster[v2]._mgoal) == 6)
+			if (_LOBYTE(monster[v2]._mgoal) == MGOAL_INQUIRING)
 				monster[v2]._mmode = MM_TALK;
 			//_LOBYTE(v6) = effect_is_playing(USFX_WARLRD1);
-			if (!effect_is_playing(USFX_WARLRD1) && _LOBYTE(monster[v2]._mgoal) == 7) {
+			if (!effect_is_playing(USFX_WARLRD1) && _LOBYTE(monster[v2]._mgoal) == MGOAL_TALKING) {
 				monster[v2]._msquelch = -1;
 				monster[v2].mtalkmsg = 0;
-				_LOBYTE(monster[v2]._mgoal) = 1;
+				_LOBYTE(monster[v2]._mgoal) = MGOAL_NORMAL;
 			}
 		}
-		if (_LOBYTE(monster[v2]._mgoal) == 1)
+		if (_LOBYTE(monster[v2]._mgoal) == MGOAL_NORMAL)
 			MAI_SkelSd(arglist);
 		monster[v2]._mdir = v5;
 		v7 = monster[v2]._mmode;
@@ -6696,7 +6694,7 @@ void __fastcall M_FallenFear(int x, int y)
 			    && abs(x1 - monster[v5]._mx) < 5
 			    && abs(y1 - monster[v5]._my) < 5
 			    && monster[v5]._mhitpoints >> 6 > 0) {
-				_LOBYTE(monster[v5]._mgoal) = 2;
+				_LOBYTE(monster[v5]._mgoal) = MGOAL_RETREAT;
 				monster[v5]._mgoalvar1 = v4;
 				monster[v5]._mdir = GetDirection(x1, y1, *v3, v3[1]);
 			}
@@ -7319,14 +7317,14 @@ void __fastcall TalktoMonster(int i)
 			RemoveInvItem(v4, inv_item_num);
 			quests[QTYPE_BOL]._qactive = 3;
 			v2->mtalkmsg = QUEST_BANNER12;
-			_LOBYTE(v2->_mgoal) = 6;
+			_LOBYTE(v2->_mgoal) = MGOAL_INQUIRING;
 		}
 		//_LOBYTE(v6) = QuestStatus(QTYPE_VEIL);
 		if (QuestStatus(QTYPE_VEIL) && v2->mtalkmsg >= (signed int)QUEST_VEIL9) {
 			if (PlrHasItem(v4, IDI_GLDNELIX, &inv_item_num)) {
 				RemoveInvItem(v4, inv_item_num);
 				v2->mtalkmsg = QUEST_VEIL11;
-				_LOBYTE(v2->_mgoal) = 6;
+				_LOBYTE(v2->_mgoal) = MGOAL_INQUIRING;
 			}
 		}
 	}
@@ -7389,11 +7387,11 @@ BOOL __fastcall CanTalkToMonst(int m)
 		TermMsg("CanTalkToMonst: Invalid monster %d", m);
 	}
 
-	if (monster[m]._mgoal == 6) {
+	if (monster[m]._mgoal == MGOAL_INQUIRING) {
 		return TRUE;
 	}
 
-	return monster[m]._mgoal == 7;
+	return monster[m]._mgoal == MGOAL_TALKING;
 }
 
 BOOL __fastcall CheckMonsterHit(int m, BOOL *ret)
@@ -7409,7 +7407,7 @@ BOOL __fastcall CheckMonsterHit(int m, BOOL *ret)
 		return TRUE;
 	}
 
-	if (monster[m].MType->mtype < MT_COUNSLR || monster[m].MType->mtype > MT_ADVOCATE || monster[m]._mgoal == 1) {
+	if (monster[m].MType->mtype < MT_COUNSLR || monster[m].MType->mtype > MT_ADVOCATE || monster[m]._mgoal == MGOAL_NORMAL) {
 		return FALSE;
 	} else {
 		*ret = FALSE;

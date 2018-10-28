@@ -1451,6 +1451,16 @@ enum monster_flag {
 	MFLAG_NOLIFESTEAL     = 0x1000
 };
 
+enum monster_goal {
+	MGOAL_NORMAL    = 1,
+	MGOAL_RETREAT   = 2,
+	MGOAL_HEALING   = 3,
+	MGOAL_MOVE      = 4,
+	MGOAL_SHOOT     = 5,
+	MGOAL_INQUIRING = 6,
+	MGOAL_TALKING   = 7,
+};
+
 enum monster_resistance {
 	RESIST_MAGIC     = 0x01,
 	RESIST_FIRE      = 0x02,

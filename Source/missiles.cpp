@@ -835,7 +835,7 @@ BOOL __fastcall MonsterTrapHit(int m, int mindam, int maxdam, int dist, int t, i
 	v15 = mindam;
 	if (monster[m].mtalkmsg
 	    || monster[v6]._mhitpoints >> 6 <= 0
-	    || monster[v6].MType->mtype == MT_ILLWEAV && _LOBYTE(monster[v6]._mgoal) == 2) {
+	    || monster[v6].MType->mtype == MT_ILLWEAV && _LOBYTE(monster[v6]._mgoal) == MGOAL_RETREAT) {
 		return 0;
 	}
 	if (monster[v6]._mmode == MM_CHARGE)
@@ -934,7 +934,7 @@ bool __fastcall MonsterMHit(int pnum, int m, int mindam, int maxdam, int dist, i
 	    || t == MIS_HBOLT && monster[v7].MType->mtype != MT_DIABLO && monster[v7].MData->mMonstClass) {
 		return 0;
 	}
-	if (monster[v7].MType->mtype == MT_ILLWEAV && _LOBYTE(monster[v7]._mgoal) == 2)
+	if (monster[v7].MType->mtype == MT_ILLWEAV && _LOBYTE(monster[v7]._mgoal) == MGOAL_RETREAT)
 		return 0;
 	if (monster[v7]._mmode == MM_CHARGE)
 		return 0;
