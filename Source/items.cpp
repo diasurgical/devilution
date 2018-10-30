@@ -4095,7 +4095,7 @@ void __fastcall UseItem(int p, int Mid, int spl)
 		plr[p]._pHitPoints = plr[p]._pMaxHP;
 		plr[p]._pHPBase = plr[p]._pMaxHPBase;
 		drawhpflag = TRUE;
-		if(!(plr[p]._pIFlags & 0x8000000)) {
+		if(!(plr[p]._pIFlags & ISPL_NOMANA)) {
 			plr[p]._pMana = plr[p]._pMaxMana;
 			plr[p]._pManaBase = plr[p]._pMaxManaBase;
 			drawmanaflag = TRUE;
