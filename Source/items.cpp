@@ -4110,7 +4110,7 @@ void __fastcall UseItem(int p, int Mid, int spl)
 		} else {
 			ClrPlrPath(p);
 			plr[p]._pSpell = spl;
-			plr[p]._pSplType = 4;
+			plr[p]._pSplType = RSPLTYPE_INVALID;
 			plr[p]._pSplFrom = 3;
 			plr[p].destAction = ACTION_SPELL;
 			plr[p].destParam1 = cursmx;
