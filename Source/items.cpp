@@ -4032,7 +4032,7 @@ void __fastcall UseItem(int p, int Mid, int spl)
 			l *= 2;
 		if(plr[p]._pClass == PC_ROGUE)
 			l += l >> 1;
-		if(!(plr[p]._pIFlags & 0x8000000)) {
+		if(!(plr[p]._pIFlags & ISPL_NOMANA)) {
 			plr[p]._pMana += l;
 			if(plr[p]._pMana > plr[p]._pMaxMana)
 				plr[p]._pMana = plr[p]._pMaxMana;
