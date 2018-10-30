@@ -4001,288 +4001,163 @@ void __fastcall PrintItemDur(ItemStruct *x)
 
 void __fastcall UseItem(int p, int Mid, int spl)
 {
-	int v3;           // esi
-	int v5;           // edx
-	int v6;           // edx
-	int v7;           // edx
-	int v8;           // edx
-	int v9;           // esi
-	int v10;          // esi
-	int v11;          // edi
-	unsigned int v12; // edi
-	int v14;          // edi
-	int v15;          // ecx
-	int *v16;         // eax
-	int *v17;         // eax
-	int v18;          // esi
-	int v21;          // edx
-	int v22;          // edx
-	int v23;          // edx
-	int v24;          // edx
-	int v25;          // edi
-	char *v26;        // eax
-	int v27;          // edx
-	int *v28;         // ecx
-	int v29;          // eax
-	int *v30;         // ecx
-	int v31;          // edi
-	int v32;          // edi
-	int v33;          // eax
-	int v34;          // ecx
-	int v35;          // eax
-	bool v36;         // zf
-	int v37;          // ecx
-	int v38;          // eax
-	int v39;          // edx
-	int v40;          // eax
-	int v41;          // edx
-	int v42;          // esi
-	int v43;          // edi
-	unsigned int v44; // edi
-	int v46;          // edi
-	int v47;          // ecx
-	int *v48;         // eax
-	int v49;          // ecx
-	int *v50;         // eax
-	int v51;          // edi
-	int v52;          // edx
-	unsigned int v53; // edi
-	int v55;          // edi
-	int v56;          // ecx
-	int *v57;         // eax
-	int *v58;         // eax
-	int v59;          // esi
-	int v61;          // esi
-	int v62;          // edi
-	unsigned int v63; // edi
-	int v65;          // edi
-	int v66;          // ecx
-	int *v67;         // eax
-	int *v68;         // eax
-	int v69;          // esi
-	int pa;           // [esp+Ch] [ebp-4h]
+	int l, j;
 
-	v3 = p;
-	pa = p;
-	if (Mid > 28) {
-		if (Mid == IMISC_MAPOFDOOM) {
-			doom_init();
-		} else if (Mid == IMISC_SPECELIX) {
-			ModifyPlrStr(p, 3);
-			ModifyPlrMag(v3, 3);
-			ModifyPlrDex(v3, 3);
-			ModifyPlrVit(v3, 3);
-		}
-		return;
-	}
-	if (Mid == IMISC_HEAL_1C)
-		goto LABEL_71;
-	if (Mid <= 12) {
-		if (Mid == IMISC_ELIXDEX) {
-			ModifyPlrDex(p, 1);
-			return;
-		}
-		if (Mid == IMISC_FULLHEAL) {
+	switch(Mid) {
+	case IMISC_HEAL:
+	case IMISC_HEAL_1C:
+		j = plr[p]._pMaxHP >> 8;
+		l = ((j >> 1) + random(39, j)) << 6;
+		if(plr[p]._pClass == PC_WARRIOR)
+			l *= 2;
+		if(plr[p]._pClass == PC_ROGUE)
+			l += l >> 1;
+		plr[p]._pHitPoints += l;
+		if(plr[p]._pHitPoints > plr[p]._pMaxHP)
 			plr[p]._pHitPoints = plr[p]._pMaxHP;
+		plr[p]._pHPBase += l;
+		if(plr[p]._pHPBase > plr[p]._pMaxHPBase)
 			plr[p]._pHPBase = plr[p]._pMaxHPBase;
-			drawhpflag = TRUE;
-			return;
-		}
-		v5 = Mid - 3;
-		if (v5) {
-			v6 = v5 - 3;
-			if (v6) {
-				v7 = v6 - 1;
-				if (v7) {
-					v8 = v7 - 3;
-					if (v8) {
-						if (v8 == 1)
-							ModifyPlrMag(p, 1);
-					} else {
-						ModifyPlrStr(p, 1);
-					}
-					return;
-				}
-				v9 = p;
-				if (plr[p]._pIFlags & 0x8000000)
-					return;
-				plr[v9]._pMana = plr[v9]._pMaxMana;
-				plr[v9]._pManaBase = plr[v9]._pMaxManaBase;
-			LABEL_41:
-				drawmanaflag = TRUE;
-				return;
-			}
-			v10 = p;
-			v11 = plr[v10]._pMaxMana >> 8;
-			v12 = (v11 & 0xFFFFFFFE) + 2 * random(40, v11);
-			v14 = 32 * v12;
-			if (plr[v10]._pClass == PC_SORCERER)
-				v14 *= 2;
-			if (plr[v10]._pClass == PC_ROGUE)
-				v14 += v14 >> 1;
-			if (!(plr[v10]._pIFlags & 0x8000000)) {
-				v15 = plr[v10]._pMaxMana;
-				v16 = &plr[v10]._pMana;
-				*v16 += v14;
-				if (plr[v10]._pMana > v15)
-					*v16 = v15;
-				v17 = &plr[v10]._pManaBase;
-				v18 = plr[v10]._pMaxManaBase;
-				*v17 += v14;
-				if (*v17 > v18)
-					*v17 = v18;
-				goto LABEL_41;
-			}
-			return;
-		}
-	LABEL_71:
-		v61 = p;
-		v62 = plr[v61]._pMaxHP >> 8;
-		v63 = (v62 & 0xFFFFFFFE) + 2 * random(39, v62);
-		v65 = 32 * v63;
-		if (plr[v61]._pClass == PC_WARRIOR)
-			v65 *= 2;
-		if (plr[v61]._pClass == PC_ROGUE)
-			v65 += v65 >> 1;
-		v66 = plr[v61]._pMaxHP;
-		v67 = &plr[v61]._pHitPoints;
-		*v67 += v65;
-		if (plr[v61]._pHitPoints > v66)
-			*v67 = v66;
-		v68 = &plr[v61]._pHPBase;
-		v69 = plr[v61]._pMaxHPBase;
-		*v68 += v65;
-		if (*v68 > v69)
-			*v68 = v69;
 		drawhpflag = TRUE;
-		return;
-	}
-	if (Mid == IMISC_ELIXVIT) {
-		ModifyPlrVit(v3, 1);
-		return;
-	}
-	v21 = Mid - 18;
-	if (v21) {
-		v22 = v21 - 1;
-		if (v22) {
-			v23 = v22 - 2;
-			if (v23) {
-				v24 = v23 - 1;
-				if (v24) {
-					if (v24 != 2)
-						return;
-					v25 = p;
-					plr[p]._pMemSpells |= (__int64)1 << (spl - 1);
-					v26 = &plr[p]._pSplLvl[spl];
-					if (*v26 < 15)
-						++*v26;
-					v27 = plr[v25]._pMaxMana;
-					v28 = &plr[v25]._pMana;
-					v29 = spelldata[spl].sManaCost << 6;
-					*v28 += v29;
-					if (plr[v25]._pMana > v27)
-						*v28 = v27;
-					v30 = &plr[v25]._pManaBase;
-					v31 = plr[v25]._pMaxManaBase;
-					*v30 += v29;
-					if (*v30 > v31)
-						*v30 = v31;
-					if (pa == myplr)
-						CalcPlrBookVals(pa);
-					goto LABEL_41;
-				}
-				v32 = spl;
-				if (!spelldata[spl].sTargeted) {
-					ClrPlrPath(p);
-					v33 = v3;
-					plr[v33].destParam1 = cursmx;
-					v34 = cursmy;
-					plr[v33]._pSpell = spl;
-					plr[v33]._pSplType = 4;
-					plr[v33]._pSplFrom = 3;
-					plr[v33].destAction = ACTION_SPELL;
-					plr[v33].destParam2 = v34;
-					return;
-				}
-			} else {
-				v32 = spl;
-				if (!spelldata[spl].sTargeted) {
-					ClrPlrPath(p);
-					v37 = cursmx;
-					v38 = v3;
-					v39 = cursmy;
-					v36 = v3 == myplr;
-					plr[v38]._pSpell = spl;
-					plr[v38]._pSplType = 4;
-					plr[v38]._pSplFrom = 3;
-					plr[v38].destAction = ACTION_SPELL;
-					plr[v38].destParam1 = v37;
-					plr[v38].destParam2 = v39;
-					if (v36 && spl == SPL_NOVA)
-						NetSendCmdLoc(TRUE, CMD_NOVA, v37, v39);
-					return;
-				}
-			}
-			v35 = p;
-			v36 = p == myplr;
-			plr[v35]._pTSpell = v32;
-			_LOBYTE(plr[v35]._pTSplType) = 4;
-			if (v36)
-				SetCursor(CURSOR_TELEPORT);
-			return;
-		}
-		v40 = p;
-		plr[v40]._pHitPoints = plr[p]._pMaxHP;
-		plr[v40]._pHPBase = plr[p]._pMaxHPBase;
-		v36 = (plr[p]._pIFlags & 0x8000000) == 0;
+		break;
+	case IMISC_FULLHEAL:
+		plr[p]._pHitPoints = plr[p]._pMaxHP;
+		plr[p]._pHPBase = plr[p]._pMaxHPBase;
 		drawhpflag = TRUE;
-		if (v36) {
-			v41 = plr[v40]._pMaxMana;
-			drawmanaflag = TRUE;
-			plr[v40]._pMana = v41;
-			plr[v40]._pManaBase = plr[v40]._pMaxManaBase;
-		}
-	} else {
-		v42 = p;
-		v43 = plr[v42]._pMaxHP >> 8;
-		v44 = (v43 & 0xFFFFFFFE) + 2 * random(39, v43);
-		v46 = 32 * v44;
-		if (plr[v42]._pClass == PC_WARRIOR)
-			v46 *= 2;
-		if (plr[v42]._pClass == PC_ROGUE)
-			v46 += v46 >> 1;
-		v47 = plr[v42]._pMaxHP;
-		v48 = &plr[v42]._pHitPoints;
-		*v48 += v46;
-		if (plr[v42]._pHitPoints > v47)
-			*v48 = v47;
-		v49 = plr[v42]._pMaxHPBase;
-		v50 = &plr[v42]._pHPBase;
-		*v50 += v46;
-		if (plr[v42]._pHPBase > v49)
-			*v50 = v49;
-		v51 = plr[v42]._pMaxMana >> 8;
-		v52 = plr[v42]._pMaxMana >> 8;
-		drawhpflag = TRUE;
-		v53 = (v51 & 0xFFFFFFFE) + 2 * random(40, v52);
-		v55 = 32 * v53;
-		if (plr[v42]._pClass == PC_SORCERER)
-			v55 *= 2;
-		if (plr[v42]._pClass == PC_ROGUE)
-			v55 += v55 >> 1;
-		if (!(plr[v42]._pIFlags & 0x8000000)) {
-			v56 = plr[v42]._pMaxMana;
-			v57 = &plr[v42]._pMana;
-			*v57 += v55;
-			if (plr[v42]._pMana > v56)
-				*v57 = v56;
-			v58 = &plr[v42]._pManaBase;
-			v59 = plr[v42]._pMaxManaBase;
-			*v58 += v55;
-			if (*v58 > v59)
-				*v58 = v59;
+		break;
+	case IMISC_MANA:
+		j = plr[p]._pMaxMana >> 8;
+		l = ((j >> 1) + random(40, j)) << 6;
+		if(plr[p]._pClass == PC_SORCERER)
+			l *= 2;
+		if(plr[p]._pClass == PC_ROGUE)
+			l += l >> 1;
+		if(!(plr[p]._pIFlags & ISPL_NOMANA)) {
+			plr[p]._pMana += l;
+			if(plr[p]._pMana > plr[p]._pMaxMana)
+				plr[p]._pMana = plr[p]._pMaxMana;
+			plr[p]._pManaBase += l;
+			if(plr[p]._pManaBase > plr[p]._pMaxManaBase)
+				plr[p]._pManaBase = plr[p]._pMaxManaBase;
 			drawmanaflag = TRUE;
 		}
+		break;
+	case IMISC_FULLMANA:
+		if(!(plr[p]._pIFlags & ISPL_NOMANA)) {
+			plr[p]._pMana = plr[p]._pMaxMana;
+			plr[p]._pManaBase = plr[p]._pMaxManaBase;
+			drawmanaflag = TRUE;
+		}
+		break;
+	case IMISC_ELIXSTR:
+		ModifyPlrStr(p, 1);
+		break;
+	case IMISC_ELIXMAG:
+		ModifyPlrMag(p, 1);
+		break;
+	case IMISC_ELIXDEX:
+		ModifyPlrDex(p, 1);
+		break;
+	case IMISC_ELIXVIT:
+		ModifyPlrVit(p, 1);
+		break;
+	case IMISC_REJUV:
+		j = plr[p]._pMaxHP >> 8;
+		l = ((j >> 1) + random(39, j)) << 6;
+		if(plr[p]._pClass == PC_WARRIOR)
+			l *= 2;
+		if(plr[p]._pClass == PC_ROGUE)
+			l += l >> 1;
+		plr[p]._pHitPoints += l;
+		if(plr[p]._pHitPoints > plr[p]._pMaxHP)
+			plr[p]._pHitPoints = plr[p]._pMaxHP;
+		plr[p]._pHPBase += l;
+		if(plr[p]._pHPBase > plr[p]._pMaxHPBase)
+			plr[p]._pHPBase = plr[p]._pMaxHPBase;
+		drawhpflag = TRUE;
+		j = plr[p]._pMaxMana >> 8;
+		l = ((j >> 1) + random(40, j)) << 6;
+		if(plr[p]._pClass == PC_SORCERER)
+			l *= 2;
+		if(plr[p]._pClass == PC_ROGUE)
+			l += l >> 1;
+		if(!(plr[p]._pIFlags & ISPL_NOMANA)) {
+			plr[p]._pMana += l;
+			if(plr[p]._pMana > plr[p]._pMaxMana)
+				plr[p]._pMana = plr[p]._pMaxMana;
+			plr[p]._pManaBase += l;
+			if(plr[p]._pManaBase > plr[p]._pMaxManaBase)
+				plr[p]._pManaBase = plr[p]._pMaxManaBase;
+			drawmanaflag = TRUE;
+		}
+		break;
+	case IMISC_FULLREJUV:
+		plr[p]._pHitPoints = plr[p]._pMaxHP;
+		plr[p]._pHPBase = plr[p]._pMaxHPBase;
+		drawhpflag = TRUE;
+		if(!(plr[p]._pIFlags & ISPL_NOMANA)) {
+			plr[p]._pMana = plr[p]._pMaxMana;
+			plr[p]._pManaBase = plr[p]._pMaxManaBase;
+			drawmanaflag = TRUE;
+		}
+		break;
+	case IMISC_SCROLL:
+		if(spelldata[spl].sTargeted) {
+			plr[p]._pTSpell = spl;
+			plr[p]._pTSplType = RSPLTYPE_INVALID;
+			if(p == myplr)
+				NewCursor(CURSOR_TELEPORT);
+		} else {
+			ClrPlrPath(p);
+			plr[p]._pSpell = spl;
+			plr[p]._pSplType = RSPLTYPE_INVALID;
+			plr[p]._pSplFrom = 3;
+			plr[p].destAction = ACTION_SPELL;
+			plr[p].destParam1 = cursmx;
+			plr[p].destParam2 = cursmy;
+			if(p == myplr && spl == SPL_NOVA)
+				NetSendCmdLoc(TRUE, CMD_NOVA, cursmx, cursmy);
+		}
+		break;
+	case IMISC_SCROLLT:
+		if(spelldata[spl].sTargeted) {
+			plr[p]._pTSpell = spl;
+			plr[p]._pTSplType = RSPLTYPE_INVALID;
+			if(p == myplr)
+				NewCursor(CURSOR_TELEPORT);
+		} else {
+			ClrPlrPath(p);
+			plr[p]._pSpell = spl;
+			plr[p]._pSplType = RSPLTYPE_INVALID;
+			plr[p]._pSplFrom = 3;
+			plr[p].destAction = ACTION_SPELL;
+			plr[p].destParam1 = cursmx;
+			plr[p].destParam2 = cursmy;
+		}
+		break;
+	case IMISC_BOOK:
+		plr[p]._pMemSpells |= (__int64)1 << (spl - 1);
+		if(plr[p]._pSplLvl[spl] < 15)
+			plr[p]._pSplLvl[spl]++;
+		plr[p]._pMana += spelldata[spl].sManaCost << 6;
+		if(plr[p]._pMana > plr[p]._pMaxMana)
+			plr[p]._pMana = plr[p]._pMaxMana;
+		plr[p]._pManaBase += spelldata[spl].sManaCost << 6;
+		if(plr[p]._pManaBase > plr[p]._pMaxManaBase)
+			plr[p]._pManaBase = plr[p]._pMaxManaBase;
+		if(p == myplr)
+			CalcPlrBookVals(p);
+		drawmanaflag = TRUE;
+		break;
+	case IMISC_MAPOFDOOM:
+		doom_init();
+		break;
+	case IMISC_SPECELIX:
+		ModifyPlrStr(p, 3);
+		ModifyPlrMag(p, 3);
+		ModifyPlrDex(p, 3);
+		ModifyPlrVit(p, 3);
+		break;
 	}
 }
 
