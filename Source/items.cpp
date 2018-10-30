@@ -4158,8 +4158,6 @@ void __fastcall UseItem(int p, int Mid, int spl)
 		ModifyPlrDex(p, 3);
 		ModifyPlrVit(p, 3);
 		break;
-	default:
-		return;
 	}
 }
 
