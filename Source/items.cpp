@@ -4043,7 +4043,7 @@ void __fastcall UseItem(int p, int Mid, int spl)
 		}
 		break;
 	case IMISC_FULLMANA:
-		if(!(plr[p]._pIFlags & 0x8000000)) {
+		if(!(plr[p]._pIFlags & ISPL_NOMANA)) {
 			plr[p]._pMana = plr[p]._pMaxMana;
 			plr[p]._pManaBase = plr[p]._pMaxManaBase;
 			drawmanaflag = TRUE;
