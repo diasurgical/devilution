@@ -4122,7 +4122,7 @@ void __fastcall UseItem(int p, int Mid, int spl)
 	case IMISC_SCROLLT:
 		if(spelldata[spl].sTargeted) {
 			plr[p]._pTSpell = spl;
-			plr[p]._pTSplType = 4;
+			plr[p]._pTSplType = RSPLTYPE_INVALID;
 			if(p == myplr)
 				NewCursor(CURSOR_TELEPORT);
 		} else {
