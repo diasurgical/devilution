@@ -77,6 +77,9 @@ int WorldTbl17_2[17] = { 0, 32, 60, 88, 112, 136, 156, 176, 192, 208, 220, 232, 
 	|/
 */
 
+#if (_MSC_VER <= 1200)
+#include "_render.cpp"
+#else
 void __fastcall drawTopArchesUpperScreen(unsigned char *pbDst)
 {
 	unsigned char *dst;        // edi MAPDST
@@ -5208,3 +5211,4 @@ void __fastcall world_draw_black_tile(unsigned char *pbDst)
 		yy_32 += 2;
 	} while (yy_32 != 32);
 }
+#endif
