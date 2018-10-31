@@ -1243,19 +1243,21 @@ void __fastcall Theme_WeaponRack(int t)
 }
 // 6AAA50: using guessed type int weaponFlag;
 
+// UpdateL4Trans sets each value of the transparency map to 1.
 void __cdecl UpdateL4Trans()
 {
-	int i; // ecx
-	int j; // edx
+	int i;
+	int j;
 
-	for (i = 0; i < 112; i++) {
-		for (j = 0; j < 112; j++) {
+	for (j = 0; j < 112; j++) {
+		for (i = 0; i < 112; i++) {
 			if (dung_map[i][j])
 				dung_map[i][j] = 1;
 		}
 	}
 }
 
+// CreateThemeRooms adds thematic elements to rooms.
 void __cdecl CreateThemeRooms()
 {
 	int i;
