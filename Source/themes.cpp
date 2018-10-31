@@ -1321,8 +1321,6 @@ void __cdecl CreateThemeRooms()
 		case THEME_WEAPONRACK:
 			Theme_WeaponRack(i);
 			break;
-		default:
-			continue;
 		}
 	}
 	InitObjFlag = FALSE;
