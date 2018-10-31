@@ -2270,7 +2270,7 @@ BOOL __fastcall PlrHitMonst(int pnum, int m)
 		return FALSE;
 	}
 
-	if (monster[m].MType->mtype == MT_ILLWEAV && monster[m]._mgoal == 2) {
+	if (monster[m].MType->mtype == MT_ILLWEAV && monster[m]._mgoal == MGOAL_RETREAT) {
 		return FALSE;
 	}
 

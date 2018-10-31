@@ -5170,7 +5170,7 @@ void __fastcall OperateBookCase(int pnum, int i, unsigned char sendmsg)
 			    && monster[4]._mhitpoints) {
 				monster[4].mtalkmsg = QUEST_ZHAR2;
 				M_StartStand(0, monster[4]._mdir);
-				_LOBYTE(monster[4]._mgoal) = 5;
+				_LOBYTE(monster[4]._mgoal) = MGOAL_SHOOT;
 				monster[4]._mmode = MM_TALK;
 			}
 			if (v4 == myplr)

@@ -26,7 +26,7 @@ void *pBtmBuff;
 void *pTalkBtns;
 int pstrjust[4];
 int pnumlines; // idb
-int pinfoflag; // weak
+BOOL pinfoflag;
 int talkbtndown[3];
 int pSpell; // weak
 char *pManaBuff;
@@ -766,7 +766,7 @@ void __fastcall CPrintString(int No, unsigned int glyph, unsigned char col)
 	}
 }
 
-void __fastcall AddPanelString(char *str, int just)
+void __fastcall AddPanelString(char *str, BOOL just)
 {
 	strcpy(&panelstr[64 * pnumlines], str);
 	pstrjust[pnumlines] = just;
@@ -778,9 +778,8 @@ void __fastcall AddPanelString(char *str, int just)
 void __cdecl ClearPanel()
 {
 	pnumlines = 0;
-	pinfoflag = 0;
+	pinfoflag = FALSE;
 }
-// 4B8824: using guessed type int pinfoflag;
 
 void __fastcall DrawPanelBox(int x, int y, int w, int h, int sx, int sy)
 {
@@ -1257,7 +1256,7 @@ void __cdecl CheckPanelInfo()
 					}
 					infoclr = COL_WHITE;
 					panelflag = 1;
-					pinfoflag = 1;
+					pinfoflag = TRUE;
 				}
 			}
 			++v0;
@@ -1267,7 +1266,7 @@ void __cdecl CheckPanelInfo()
 		strcpy(infostr, "Select current spell button");
 		infoclr = COL_WHITE;
 		panelflag = 1;
-		pinfoflag = 1;
+		pinfoflag = TRUE;
 		strcpy(tempstr, "Hotkey : 's'");
 		AddPanelString(tempstr, 1);
 		v4 = plr[myplr]._pRSpell;
@@ -1333,7 +1332,6 @@ void __cdecl CheckPanelInfo()
 		pcursinvitem = CheckInvHLight();
 }
 // 484368: using guessed type int FriendlyMode;
-// 4B8824: using guessed type int pinfoflag;
 // 4B883C: using guessed type int infoclr;
 // 4B8A7C: using guessed type int numpanbtns;
 // 4B8B84: using guessed type int panelflag;
@@ -1589,7 +1587,7 @@ void __cdecl DrawInfoBox()
 		} else {
 			ClearPanel();
 			AddPanelString("Requirements not met", 1);
-			pinfoflag = 1;
+			pinfoflag = TRUE;
 		}
 	}
 LABEL_33:
@@ -1612,7 +1610,6 @@ LABEL_33:
 		}
 	}
 }
-// 4B8824: using guessed type int pinfoflag;
 // 4B883C: using guessed type int infoclr;
 // 4B8960: using guessed type int talkflag;
 // 4B8B84: using guessed type int panelflag;

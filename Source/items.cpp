@@ -3939,9 +3939,8 @@ void __fastcall PrintItemDetails(ItemStruct *x)
 			sprintf(tempstr, "%s %i Dex", tempstr, v6);
 		AddPanelString(tempstr, 1);
 	}
-	pinfoflag = 1;
+	pinfoflag = TRUE;
 }
-// 4B8824: using guessed type int pinfoflag;
 
 void __fastcall PrintItemDur(ItemStruct *x)
 {
@@ -3993,11 +3992,10 @@ void __fastcall PrintItemDur(ItemStruct *x)
 		v5 = v1->_iMinDex;
 		if (v5)
 			sprintf(tempstr, "%s %i Dex", tempstr, v5);
-		AddPanelString(tempstr, 1);
+		AddPanelString(tempstr, TRUE);
 	}
-	pinfoflag = 1;
+	pinfoflag = TRUE;
 }
-// 4B8824: using guessed type int pinfoflag;
 
 void __fastcall UseItem(int p, int Mid, int spl)
 {

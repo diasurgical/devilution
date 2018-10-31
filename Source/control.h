@@ -26,7 +26,7 @@ extern void *pBtmBuff;
 extern void *pTalkBtns;
 extern int pstrjust[4];
 extern int pnumlines; // idb
-extern int pinfoflag; // weak
+extern BOOL pinfoflag;
 extern int talkbtndown[3];
 extern int pSpell; // weak
 extern char *pManaBuff;
@@ -65,7 +65,7 @@ void __cdecl SetSpell();
 void __fastcall SetSpeedSpell(int slot);
 void __fastcall ToggleSpell(int slot);
 void __fastcall CPrintString(int No, unsigned int glyph, unsigned char col); /* check arg names */
-void __fastcall AddPanelString(char *str, int just);
+void __fastcall AddPanelString(char *str, BOOL just);
 void __cdecl ClearPanel();
 void __fastcall DrawPanelBox(int x, int y, int w, int h, int sx, int sy);
 void __cdecl InitPanelStr();
