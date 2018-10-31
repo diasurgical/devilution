@@ -790,67 +790,64 @@ void __fastcall Theme_MonstPit(int t)
 	PlaceThemeMonsts(t, monstrnd[leveltype - 1]);
 }
 
+// Theme_SkelRoom initializes the skeleton room theme.
+//
+// Parameters:
+//    - t: theme number (index into themes array).
 void __fastcall Theme_SkelRoom(int t)
 {
-	int yp;           // esi
-	int xp;           // edi
-	char monstrnd[4]; // [esp+Bh] [ebp-5h]
+
+	int xp;
+	int yp;
+	char monstrnd[4];
 
 	monstrnd[0] = 6;
 	monstrnd[1] = 7;
 	monstrnd[2] = 3;
 	monstrnd[3] = 9;
 	TFit_SkelRoom(t);
-	yp = themey;
 	xp = themex;
-	AddObject(OBJ_SKFIRE, themex, themey);
-
-	if (random(0, monstrnd[leveltype - 1])) {
-		SpawnSkeleton(PreSpawnSkeleton(), xp - 1, yp - 1);
+	yp = themey;
+	AddObject(OBJ_SKFIRE, xp, yp);
+	if (random(0, monstrnd[leveltype-1]) != 0) {
+		SpawnSkeleton(PreSpawnSkeleton(), xp-1, yp-1);
 	} else {
-		AddObject(OBJ_BANNERL, xp - 1, yp - 1);
+		AddObject(OBJ_BANNERL, xp-1, yp-1);
 	}
-
-	SpawnSkeleton(PreSpawnSkeleton(), xp, yp - 1);
-
-	if (random(0, monstrnd[leveltype - 1])) {
-		SpawnSkeleton(PreSpawnSkeleton(), xp + 1, yp - 1);
+	SpawnSkeleton(PreSpawnSkeleton(), xp, yp-1);
+	if (random(0, monstrnd[leveltype-1]) != 0) {
+		SpawnSkeleton(PreSpawnSkeleton(), xp+1, yp-1);
 	} else {
-		AddObject(OBJ_BANNERR, xp + 1, yp - 1);
+		AddObject(OBJ_BANNERR, xp+1, yp-1);
 	}
-
-	if (random(0, monstrnd[leveltype - 1])) {
-		SpawnSkeleton(PreSpawnSkeleton(), xp - 1, yp);
+	if (random(0, monstrnd[leveltype-1]) != 0) {
+		SpawnSkeleton(PreSpawnSkeleton(), xp-1, yp);
 	} else {
-		AddObject(OBJ_BANNERM, xp - 1, yp);
+		AddObject(OBJ_BANNERM, xp-1, yp);
 	}
-
-	if (random(0, monstrnd[leveltype - 1])) {
-		SpawnSkeleton(PreSpawnSkeleton(), xp + 1, yp);
+	if (random(0, monstrnd[leveltype-1]) != 0) {
+		SpawnSkeleton(PreSpawnSkeleton(), xp+1, yp);
 	} else {
-		AddObject(OBJ_BANNERM, xp + 1, yp);
+		AddObject(OBJ_BANNERM, xp+1, yp);
 	}
-
-	if (random(0, monstrnd[leveltype - 1])) {
-		SpawnSkeleton(PreSpawnSkeleton(), xp - 1, yp + 1);
+	if (random(0, monstrnd[leveltype-1]) != 0) {
+		SpawnSkeleton(PreSpawnSkeleton(), xp-1, yp+1);
 	} else {
-		AddObject(OBJ_BANNERR, xp - 1, yp + 1);
+		AddObject(OBJ_BANNERR, xp-1, yp+1);
 	}
-
-	SpawnSkeleton(PreSpawnSkeleton(), xp, yp + 1);
-
-	if (random(0, monstrnd[leveltype - 1])) {
-		SpawnSkeleton(PreSpawnSkeleton(), xp + 1, yp + 1);
+	SpawnSkeleton(PreSpawnSkeleton(), xp, yp+1);
+	if (random(0, monstrnd[leveltype-1]) != 0) {
+		SpawnSkeleton(PreSpawnSkeleton(), xp+1, yp+1);
 	} else {
-		AddObject(OBJ_BANNERL, xp + 1, yp + 1);
+		AddObject(OBJ_BANNERL, xp+1, yp+1);
+	}
+	if (dObject[xp][yp-3] == 0) {
+		AddObject(OBJ_SKELBOOK, xp, yp-2);
+	}
+	if (dObject[xp][yp+3] == 0) {
+		AddObject(OBJ_SKELBOOK, xp, yp+2);
 	}
 
-	if (!dObject[xp][yp - 3]) { // dungeon[xp + 39][yp + 37] ) /* fix */
-		AddObject(OBJ_SKELBOOK, xp, yp - 2);
-	}
-	if (!dObject[xp][yp + 3]) {
-		AddObject(OBJ_SKELBOOK, xp, yp + 2);
-	}
 }
 
 // Theme_Treasure initializes the treasure theme.
