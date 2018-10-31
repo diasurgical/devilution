@@ -5,7 +5,7 @@
 extern int numthemes;  // idb
 extern bool armorFlag; // weak
 extern int ThemeGoodIn[4];
-extern bool weaponFlag;    // weak
+extern BOOL weaponFlag;
 extern bool treasureFlag;  // weak
 extern bool mFountainFlag; // weak
 extern bool cauldronFlag;  // weak
@@ -23,7 +23,7 @@ bool __fastcall TFit_Shrine(int i);
 bool __fastcall TFit_Obj5(int t);
 bool __fastcall TFit_SkelRoom(int t);
 bool __fastcall TFit_GoatShrine(int t);
-bool __fastcall CheckThemeObj3(int xp, int yp, int t, int f);
+BOOL __fastcall CheckThemeObj3(int xp, int yp, int t, int f);
 bool __fastcall TFit_Obj3(int t);
 bool __fastcall CheckThemeReqs(int t);
 bool __fastcall SpecialThemeFit(int i, int t);

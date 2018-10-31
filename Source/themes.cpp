@@ -5,7 +5,7 @@
 int numthemes;  // idb
 bool armorFlag; // weak
 int ThemeGoodIn[4];
-bool weaponFlag;    // weak
+BOOL weaponFlag;
 bool treasureFlag;  // weak
 bool mFountainFlag; // weak
 bool cauldronFlag;  // weak
@@ -202,7 +202,7 @@ bool __fastcall TFit_GoatShrine(int t)
 	return TFit_Obj5(t);
 }
 
-bool __fastcall CheckThemeObj3(int xp, int yp, int t, int f)
+BOOL __fastcall CheckThemeObj3(int xp, int yp, int t, int f)
 {
 	int i; // edi
 
@@ -512,7 +512,7 @@ void __cdecl InitThemes()
 	pFountainFlag = 1;
 	tFountainFlag = 1;
 	treasureFlag = 1;
-	weaponFlag = 1;
+	weaponFlag = TRUE;
 	if (currlevel != 16) {
 		v1 = leveltype;
 		if (leveltype == DTYPE_CATHEDRAL) {
@@ -585,7 +585,6 @@ void __cdecl InitThemes()
 	}
 }
 // 6AAA3C: using guessed type int armorFlag;
-// 6AAA50: using guessed type int weaponFlag;
 // 6AAA54: using guessed type int treasureFlag;
 // 6AAA58: using guessed type int mFountainFlag;
 // 6AAA5C: using guessed type int cauldronFlag;
@@ -1192,20 +1191,17 @@ void __fastcall Theme_BrnCross(int t)
 }
 // 6AAC10: using guessed type int bCrossFlag;
 
+// Theme_WeaponRack initializes the weapon rack theme.
+//
+// Parameters:
+//    - t: theme number (index into themes array).
 void __fastcall Theme_WeaponRack(int t)
 {
-	int v1;   // esi
-	int v2;   // ebx
-	char *v3; // edi
-	//int v4; // eax
-	int ta;            // [esp+Ch] [ebp-14h]
-	int *v7;           // [esp+10h] [ebp-10h]
-	char monstrnd[4];  // [esp+14h] [ebp-Ch]
-	int *v9;           // [esp+18h] [ebp-8h]
-	char weaponrnd[4]; // [esp+1Ch] [ebp-4h]
+	int xp;
+	int yp;
+	char weaponrnd[4];
+	char monstrnd[4];
 
-	v1 = 0;
-	ta = t;
 	weaponrnd[0] = 6;
 	weaponrnd[1] = 8;
 	weaponrnd[2] = 5;
@@ -1218,30 +1214,19 @@ void __fastcall Theme_WeaponRack(int t)
 		TFit_Obj3(t);
 		AddObject(OBJ_WEAPONRACK, themex, themey);
 	}
-	v9 = (int *)dPiece;
-	do {
-		v2 = 0;
-		v3 = (char *)dung_map + v1;
-		v7 = v9;
-		do {
-			if (*v3 == themes[ta].ttval && !nSolidTable[*v7]) {
-				//LOBYTE(v4) = CheckThemeObj3(v2, v1, ta, -1);
-				if (CheckThemeObj3(v2, v1, ta, -1)) {
+	for (yp = 0; yp < 112; yp++) {
+		for (xp = 0; xp < 112; xp++) {
+			if (dung_map[xp][yp] == themes[t].ttval && !nSolidTable[dPiece[xp][yp]]) {
+				if (CheckThemeObj3(xp, yp, t, -1)) {
 					if (!random(0, weaponrnd[leveltype - 1]))
-						AddObject(OBJ_WEAPONRACKN, v2, v1);
+						AddObject(OBJ_WEAPONRACKN, xp, yp);
 				}
 			}
-			v7 += 112;
-			++v2;
-			v3 += 112;
-		} while (v2 < 112);
-		++v9;
-		++v1;
-	} while ((signed int)v9 < (signed int)dPiece[1]);
-	PlaceThemeMonsts(ta, monstrnd[leveltype - 1]);
-	weaponFlag = 0;
+		}
+	}
+	PlaceThemeMonsts(t, monstrnd[leveltype - 1]);
+	weaponFlag = FALSE;
 }
-// 6AAA50: using guessed type int weaponFlag;
 
 // UpdateL4Trans sets each value of the transparency map to 1.
 void __cdecl UpdateL4Trans()

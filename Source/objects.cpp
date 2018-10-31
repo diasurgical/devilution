@@ -1978,7 +1978,6 @@ void __fastcall AddWeaponRack(int i)
 	}
 	object[i]._oRndSeed = GetRndSeed();
 }
-// 6AAA50: using guessed type int weaponFlag;
 
 void __fastcall AddTorturedBody(int i)
 {
