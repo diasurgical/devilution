@@ -1104,9 +1104,13 @@ void __fastcall Theme_GoatShrine(int t)
 	}
 }
 
+// Theme_Cauldron initializes the cauldron theme.
+//
+// Parameters:
+//    - t: theme number (index into themes array).
 void __fastcall Theme_Cauldron(int t)
 {
-	char monstrnd[4]; // [esp+3h] [ebp-5h]
+	char monstrnd[4];
 
 	monstrnd[0] = 6;
 	monstrnd[1] = 7;
