@@ -1066,41 +1066,23 @@ void __fastcall Theme_ArmorStand(int t)
 }
 // 6AAA3C: using guessed type int armorFlag;
 
+// Theme_GoatShrine initializes the goat shrine theme.
+//
+// Parameters:
+//    - t: theme number (index into themes array).
 void __fastcall Theme_GoatShrine(int t)
 {
-	int v1;     // edx
-	int v2;     // esi
-	int v3;     // ecx
-	int v4;     // edi
-	int v5;     // eax
-	char *v6;   // ebx
-	_DWORD *v7; // [esp+4h] [ebp-8h]
+	int xx;
+	int yy;
 
 	TFit_GoatShrine(t);
 	AddObject(OBJ_GOATSHRINE, themex, themey);
-	v1 = themey;
-	v2 = themey - 1;
-	if (themey - 1 <= themey + 1) {
-		v3 = themex;
-		do {
-			v4 = v3 - 1;
-			if ((unsigned char)(__OFSUB__(v3 - 1, v3 + 1) ^ 1) | (v3 - 1 == v3 + 1)) {
-				v5 = v2 + 112 * v4;
-				v6 = (char *)dung_map + v5;
-				v7 = (_DWORD *)((char *)dPiece + 4 * v5);
-				do {
-					if (*v6 == themes[t].ttval && !nSolidTable[*v7] && (v4 != v3 || v2 != v1)) {
-						AddMonster(v4, v2, 1, themeVar1, 1);
-						v1 = themey;
-						v3 = themex;
-					}
-					v7 += 112;
-					++v4;
-					v6 += 112;
-				} while (v4 <= v3 + 1);
+	for (yy = themey - 1; yy <= themey + 1; yy++) {
+		for (xx = themex - 1; xx <= themex + 1; xx++) {
+			if (dung_map[xx][yy] == themes[t].ttval && !nSolidTable[dPiece[xx][yy]] && (xx != themex || yy != themey)) {
+				AddMonster(xx, yy, DIR_SW, themeVar1, 1);
 			}
-			++v2;
-		} while (v2 <= v1 + 1);
+		}
 	}
 }
 
