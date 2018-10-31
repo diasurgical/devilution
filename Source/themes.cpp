@@ -17,7 +17,7 @@ int themeVar1;      // idb
 ThemeStruct themes[MAXTHEMES];
 bool pFountainFlag; // weak
 bool bFountainFlag; // weak
-bool bCrossFlag;    // weak
+BOOL bCrossFlag;
 
 int ThemeGood[4] = { THEME_GOATSHRINE, THEME_SHRINE, THEME_SKELROOM, THEME_LIBRARY };
 
@@ -503,7 +503,7 @@ void __cdecl InitThemes()
 
 	zharlib = -1;
 	v0 = 0;
-	bCrossFlag = 0;
+	bCrossFlag = FALSE;
 	numthemes = 0;
 	armorFlag = 1;
 	bFountainFlag = 1;
@@ -592,7 +592,6 @@ void __cdecl InitThemes()
 // 6AAA64: using guessed type int zharlib;
 // 6AAC08: using guessed type int pFountainFlag;
 // 6AAC0C: using guessed type int bFountainFlag;
-// 6AAC10: using guessed type int bCrossFlag;
 
 void __cdecl HoldThemeRooms()
 {
@@ -1144,19 +1143,17 @@ void __fastcall Theme_TearFountain(int t)
 	PlaceThemeMonsts(t, monstrnd[leveltype - 1]);
 }
 
+// Theme_BrnCross initializes the burning cross theme.
+//
+// Parameters:
+//    - t: theme number (index into themes array).
 void __fastcall Theme_BrnCross(int t)
 {
-	int v1;   // esi
-	int v2;   // ebx
-	char *v3; // edi
-	//int v4; // eax
-	int ta;            // [esp+Ch] [ebp-14h]
-	int *v7;           // [esp+10h] [ebp-10h]
-	char monstrnd[4];  // [esp+14h] [ebp-Ch]
-	int *v9;           // [esp+18h] [ebp-8h]
-	char bcrossrnd[4]; // [esp+1Ch] [ebp-4h]
+	int xp;
+	int yp;
+	char monstrnd[4];
+	char bcrossrnd[4];
 
-	ta = t;
 	monstrnd[0] = 6;
 	monstrnd[1] = 8;
 	monstrnd[2] = 3;
@@ -1165,31 +1162,19 @@ void __fastcall Theme_BrnCross(int t)
 	bcrossrnd[1] = 7;
 	bcrossrnd[2] = 3;
 	bcrossrnd[3] = 8;
-	v1 = 0;
-	v9 = (int *)dPiece;
-	do {
-		v2 = 0;
-		v3 = (char *)dung_map + v1;
-		v7 = v9;
-		do {
-			if (*v3 == themes[ta].ttval && !nSolidTable[*v7]) {
-				//LOBYTE(v4) = CheckThemeObj3(v2, v1, ta, -1);
-				if (CheckThemeObj3(v2, v1, ta, -1)) {
+	for (yp = 0; yp < 112; yp++) {
+		for (xp = 0; xp < 112; xp++) {
+			if (dung_map[xp][yp] == themes[t].ttval && !nSolidTable[dPiece[xp][yp]]) {
+				if (CheckThemeObj3(xp, yp, t, -1)) {
 					if (!random(0, bcrossrnd[leveltype - 1]))
-						AddObject(OBJ_TBCROSS, v2, v1);
+						AddObject(OBJ_TBCROSS, xp, yp);
 				}
 			}
-			v7 += 112;
-			++v2;
-			v3 += 112;
-		} while (v2 < 112);
-		++v9;
-		++v1;
-	} while ((signed int)v9 < (signed int)dPiece[1]);
-	PlaceThemeMonsts(ta, monstrnd[leveltype - 1]);
-	bCrossFlag = 1;
+		}
+	}
+	PlaceThemeMonsts(t, monstrnd[leveltype - 1]);
+	bCrossFlag = TRUE;
 }
-// 6AAC10: using guessed type int bCrossFlag;
 
 // Theme_WeaponRack initializes the weapon rack theme.
 //

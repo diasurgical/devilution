@@ -17,7 +17,7 @@ extern int themeVar1;      // idb
 extern ThemeStruct themes[MAXTHEMES];
 extern bool pFountainFlag; // weak
 extern bool bFountainFlag; // weak
-extern bool bCrossFlag;    // weak
+extern BOOL bCrossFlag;
 
 bool __fastcall TFit_Shrine(int i);
 bool __fastcall TFit_Obj5(int t);
