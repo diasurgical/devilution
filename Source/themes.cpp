@@ -893,7 +893,7 @@ void __fastcall Theme_Treasure(int t)
 				}
 				i = ItemNoFlippy();
 				if (rv >= treasrnd[leveltype - 1] - 2 && leveltype != DTYPE_CATHEDRAL) {
-					item[i]._ivalue >>= 1; /* check */
+					item[i]._ivalue >>= 1;
 				}
 			}
 		}
