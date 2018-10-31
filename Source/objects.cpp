@@ -11,7 +11,7 @@ int nobjects; // idb
 int leverid;  // idb
 int objectavail[MAXOBJECTS];
 ObjectStruct object[MAXOBJECTS];
-int InitObjFlag; // weak
+BOOL InitObjFlag;
 int numobjfiles; // weak
 
 int ObjTypeConv[113] = {
@@ -1049,7 +1049,7 @@ void __fastcall LoadMapObjects(unsigned char *pMap, int startx, int starty, int 
 	int y;              // [esp+20h] [ebp+8h]
 
 	v8 = pMap + 2;
-	InitObjFlag = 1;
+	InitObjFlag = TRUE;
 	v9 = *pMap;
 	v10 = pMap[2];
 	v11 = v10;
@@ -1077,9 +1077,8 @@ void __fastcall LoadMapObjects(unsigned char *pMap, int startx, int starty, int 
 			++y;
 		} while (y + v21 < v12);
 	}
-	InitObjFlag = 0;
+	InitObjFlag = FALSE;
 }
-// 67D7C0: using guessed type int InitObjFlag;
 
 void __fastcall LoadMapObjs(unsigned char *pMap, int startx, int starty)
 {
@@ -1097,7 +1096,7 @@ void __fastcall LoadMapObjs(unsigned char *pMap, int startx, int starty)
 	int y;              // [esp+18h] [ebp+8h]
 
 	v3 = pMap + 2;
-	InitObjFlag = 1;
+	InitObjFlag = TRUE;
 	v4 = pMap[2];
 	v5 = *pMap;
 	v6 = v4;
@@ -1119,9 +1118,8 @@ void __fastcall LoadMapObjs(unsigned char *pMap, int startx, int starty)
 			--v13;
 		} while (v13);
 	}
-	InitObjFlag = 0;
+	InitObjFlag = FALSE;
 }
-// 67D7C0: using guessed type int InitObjFlag;
 
 void __cdecl AddDiabObjs()
 {
@@ -1333,7 +1331,7 @@ void __cdecl InitObjects()
 	if (currlevel == 16) {
 		AddDiabObjs();
 	} else {
-		InitObjFlag = 1;
+		InitObjFlag = TRUE;
 		GetRndSeed();
 		if (currlevel == 9 && gbMaxPlayers == 1)
 			AddSlainHero();
@@ -1431,13 +1429,12 @@ void __cdecl InitObjects()
 			AddObjTraps();
 		if (leveltype > 1u)
 			AddChestTraps();
-		InitObjFlag = 0;
+		InitObjFlag = FALSE;
 	}
 }
 // 5CF330: using guessed type int setpc_h;
 // 5CF334: using guessed type int setpc_w;
 // 679660: using guessed type char gbMaxPlayers;
-// 67D7C0: using guessed type int InitObjFlag;
 
 void __fastcall SetMapObjects(unsigned char *pMap, int startx, int starty)
 {
@@ -1467,7 +1464,7 @@ void __fastcall SetMapObjects(unsigned char *pMap, int startx, int starty)
 	v3 = pMap;
 	ClrAllObjects();
 	memset(fileload, 0, sizeof(fileload));
-	InitObjFlag = 1;
+	InitObjFlag = TRUE;
 	if (AllObjects[0].oload != -1) {
 		i = 0;
 		do {
@@ -1525,9 +1522,8 @@ void __fastcall SetMapObjects(unsigned char *pMap, int startx, int starty)
 			--v10;
 		} while (v10);
 	}
-	InitObjFlag = 0;
+	InitObjFlag = FALSE;
 }
-// 67D7C0: using guessed type int InitObjFlag;
 // 67D7C4: using guessed type int numobjfiles;
 // 4427C5: using guessed type int var_10C[56];
 
@@ -1790,7 +1786,6 @@ void __fastcall AddObjLight(int i, int r)
 		object[i]._oVar1 = 0;
 	}
 }
-// 67D7C0: using guessed type int InitObjFlag;
 
 void __fastcall AddBarrel(int i)
 {

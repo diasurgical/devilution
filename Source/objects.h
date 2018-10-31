@@ -11,7 +11,7 @@ extern int nobjects; // idb
 extern int leverid;  // idb
 extern int objectavail[MAXOBJECTS];
 extern ObjectStruct object[MAXOBJECTS];
-extern int InitObjFlag; // weak
+extern BOOL InitObjFlag;
 extern int numobjfiles; // weak
 
 void __cdecl InitObjectGFX();

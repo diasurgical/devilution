@@ -1258,72 +1258,72 @@ void __cdecl UpdateL4Trans()
 
 void __cdecl CreateThemeRooms()
 {
-	int i; // esi
+	int i;
 
-	if (currlevel != 16) {
-		InitObjFlag = 1;
-		for (i = 0; i < numthemes; i++) {
-			themex = 0;
-			themey = 0;
-			switch (themes[i].ttype) {
-			case THEME_BARREL:
-				Theme_Barrel(i);
-				break;
-			case THEME_SHRINE:
-				Theme_Shrine(i);
-				break;
-			case THEME_MONSTPIT:
-				Theme_MonstPit(i);
-				break;
-			case THEME_SKELROOM:
-				Theme_SkelRoom(i);
-				break;
-			case THEME_TREASURE:
-				Theme_Treasure(i);
-				break;
-			case THEME_LIBRARY:
-				Theme_Library(i);
-				break;
-			case THEME_TORTURE:
-				Theme_Torture(i);
-				break;
-			case THEME_BLOODFOUNTAIN:
-				Theme_BloodFountain(i);
-				break;
-			case THEME_DECAPITATED:
-				Theme_Decap(i);
-				break;
-			case THEME_PURIFYINGFOUNTAIN:
-				Theme_PurifyingFountain(i);
-				break;
-			case THEME_ARMORSTAND:
-				Theme_ArmorStand(i);
-				break;
-			case THEME_GOATSHRINE:
-				Theme_GoatShrine(i);
-				break;
-			case THEME_CAULDRON:
-				Theme_Cauldron(i);
-				break;
-			case THEME_MURKYFOUNTAIN:
-				Theme_MurkyFountain(i);
-				break;
-			case THEME_TEARFOUNTAIN:
-				Theme_TearFountain(i);
-				break;
-			case THEME_BRNCROSS:
-				Theme_BrnCross(i);
-				break;
-			case THEME_WEAPONRACK:
-				Theme_WeaponRack(i);
-				break;
-			default:
-				continue;
-			}
-		}
-		InitObjFlag = 0;
-		if (leveltype == DTYPE_HELL && themeCount > 0)
-			UpdateL4Trans();
+	if (currlevel == 16) {
+		return;
 	}
+	InitObjFlag = TRUE;
+	for (i = 0; i < numthemes; i++) {
+		themex = 0;
+		themey = 0;
+		switch (themes[i].ttype) {
+		case THEME_BARREL:
+			Theme_Barrel(i);
+			break;
+		case THEME_SHRINE:
+			Theme_Shrine(i);
+			break;
+		case THEME_MONSTPIT:
+			Theme_MonstPit(i);
+			break;
+		case THEME_SKELROOM:
+			Theme_SkelRoom(i);
+			break;
+		case THEME_TREASURE:
+			Theme_Treasure(i);
+			break;
+		case THEME_LIBRARY:
+			Theme_Library(i);
+			break;
+		case THEME_TORTURE:
+			Theme_Torture(i);
+			break;
+		case THEME_BLOODFOUNTAIN:
+			Theme_BloodFountain(i);
+			break;
+		case THEME_DECAPITATED:
+			Theme_Decap(i);
+			break;
+		case THEME_PURIFYINGFOUNTAIN:
+			Theme_PurifyingFountain(i);
+			break;
+		case THEME_ARMORSTAND:
+			Theme_ArmorStand(i);
+			break;
+		case THEME_GOATSHRINE:
+			Theme_GoatShrine(i);
+			break;
+		case THEME_CAULDRON:
+			Theme_Cauldron(i);
+			break;
+		case THEME_MURKYFOUNTAIN:
+			Theme_MurkyFountain(i);
+			break;
+		case THEME_TEARFOUNTAIN:
+			Theme_TearFountain(i);
+			break;
+		case THEME_BRNCROSS:
+			Theme_BrnCross(i);
+			break;
+		case THEME_WEAPONRACK:
+			Theme_WeaponRack(i);
+			break;
+		default:
+			continue;
+		}
+	}
+	InitObjFlag = FALSE;
+	if (leveltype == DTYPE_HELL && themeCount > 0)
+		UpdateL4Trans();
 }
-// 67D7C0: using guessed type int InitObjFlag;
