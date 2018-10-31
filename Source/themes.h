@@ -3,7 +3,7 @@
 #define __THEMES_H__
 
 extern int numthemes;  // idb
-extern bool armorFlag; // weak
+extern BOOL armorFlag;
 extern int ThemeGoodIn[4];
 extern BOOL weaponFlag;
 extern bool treasureFlag;  // weak

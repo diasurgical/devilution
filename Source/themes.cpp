@@ -3,7 +3,7 @@
 #include "../types.h"
 
 int numthemes;  // idb
-bool armorFlag; // weak
+BOOL armorFlag;
 int ThemeGoodIn[4];
 BOOL weaponFlag;
 bool treasureFlag;  // weak
@@ -505,7 +505,7 @@ void __cdecl InitThemes()
 	v0 = 0;
 	bCrossFlag = FALSE;
 	numthemes = 0;
-	armorFlag = 1;
+	armorFlag = TRUE;
 	bFountainFlag = 1;
 	cauldronFlag = 1;
 	mFountainFlag = 1;
@@ -584,7 +584,6 @@ void __cdecl InitThemes()
 		}
 	}
 }
-// 6AAA3C: using guessed type int armorFlag;
 // 6AAA54: using guessed type int treasureFlag;
 // 6AAA58: using guessed type int mFountainFlag;
 // 6AAA5C: using guessed type int cauldronFlag;
@@ -1015,20 +1014,17 @@ void __fastcall Theme_PurifyingFountain(int t)
 	PlaceThemeMonsts(t, monstrnd[leveltype - 1]);
 }
 
+// Theme_ArmorStand initializes the armor stand theme.
+//
+// Parameters:
+//    - t: theme number (index into themes array).
 void __fastcall Theme_ArmorStand(int t)
 {
-	int v1;   // esi
-	int v2;   // ebx
-	char *v3; // edi
-	//int v4; // eax
-	int ta;           // [esp+Ch] [ebp-14h]
-	int *v7;          // [esp+10h] [ebp-10h]
-	char monstrnd[4]; // [esp+14h] [ebp-Ch]
-	int *v9;          // [esp+18h] [ebp-8h]
-	char armorrnd[4]; // [esp+1Ch] [ebp-4h]
+	int xp;
+	int yp;
+	char armorrnd[4];
+	char monstrnd[4];
 
-	v1 = 0;
-	ta = t;
 	armorrnd[0] = 6;
 	armorrnd[1] = 8;
 	armorrnd[2] = 3;
@@ -1041,30 +1037,19 @@ void __fastcall Theme_ArmorStand(int t)
 		TFit_Obj3(t);
 		AddObject(OBJ_ARMORSTAND, themex, themey);
 	}
-	v9 = (int *)dPiece;
-	do {
-		v2 = 0;
-		v3 = (char *)dung_map + v1;
-		v7 = v9;
-		do {
-			if (*v3 == themes[ta].ttval && !nSolidTable[*v7]) {
-				//LOBYTE(v4) = CheckThemeObj3(v2, v1, ta, -1);
-				if (CheckThemeObj3(v2, v1, ta, -1)) {
+	for (yp = 0; yp < 112; yp++) {
+		for (xp = 0; xp < 112; xp++) {
+			if (dung_map[xp][yp] == themes[t].ttval && !nSolidTable[dPiece[xp][yp]]) {
+				if (CheckThemeObj3(xp, yp, t, -1)) {
 					if (!random(0, armorrnd[leveltype - 1]))
-						AddObject(OBJ_ARMORSTANDN, v2, v1);
+						AddObject(OBJ_ARMORSTANDN, xp, yp);
 				}
 			}
-			v7 += 112;
-			++v2;
-			v3 += 112;
-		} while (v2 < 112);
-		++v9;
-		++v1;
-	} while ((signed int)v9 < (signed int)dPiece[1]);
-	PlaceThemeMonsts(ta, monstrnd[leveltype - 1]);
-	armorFlag = 0;
+		}
+	}
+	PlaceThemeMonsts(t, monstrnd[leveltype - 1]);
+	armorFlag = FALSE;
 }
-// 6AAA3C: using guessed type int armorFlag;
 
 // Theme_GoatShrine initializes the goat shrine theme.
 //

@@ -1883,7 +1883,6 @@ void __fastcall AddArmorStand(int i)
 	}
 	object[i]._oRndSeed = GetRndSeed();
 }
-// 6AAA3C: using guessed type int armorFlag;
 
 void __fastcall AddDecap(int i)
 {
