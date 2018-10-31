@@ -956,19 +956,17 @@ void __fastcall Theme_BloodFountain(int t)
 	PlaceThemeMonsts(t, monstrnd[leveltype - 1]);
 }
 
+// Theme_Decap initializes the decapitated theme.
+//
+// Parameters:
+//    - t: theme number (index into themes array).
 void __fastcall Theme_Decap(int t)
 {
-	int v1;   // ebx
-	int v2;   // esi
-	char *v3; // edi
-	//int v4; // eax
-	int *x;           // [esp+Ch] [ebp-14h]
-	char monstrnd[4]; // [esp+10h] [ebp-10h]
-	int *v8;          // [esp+14h] [ebp-Ch]
-	char decaprnd[4]; // [esp+18h] [ebp-8h]
-	int v10;          // [esp+1Ch] [ebp-4h]
+	int xp;
+	int yp;
+	char decaprnd[4];
+	char monstrnd[4];
 
-	v1 = t;
 	decaprnd[0] = 6;
 	decaprnd[1] = 8;
 	decaprnd[2] = 3;
@@ -977,28 +975,17 @@ void __fastcall Theme_Decap(int t)
 	monstrnd[1] = 8;
 	monstrnd[2] = 3;
 	monstrnd[3] = 9;
-	v2 = 1;
-	v8 = &dPiece[1][1];
-	do {
-		v10 = 1;
-		v3 = &dung_map[1][v2];
-		x = v8;
-		do {
-			if (*v3 == themes[v1].ttval && !nSolidTable[*x]) {
-				//LOBYTE(v4) = CheckThemeObj3(v10, v2, v1, -1);
-				if (CheckThemeObj3(v10, v2, v1, -1)) {
+	for (yp = 1; yp < 112-1; yp++) {
+		for (xp = 1; xp < 112-1; xp++) {
+			if (dung_map[xp][yp] == themes[t].ttval && !nSolidTable[dPiece[xp][yp]]) {
+				if (CheckThemeObj3(xp, yp, t, -1)) {
 					if (!random(0, decaprnd[leveltype - 1]))
-						AddObject(OBJ_DECAP, v10, v2);
+						AddObject(OBJ_DECAP, xp, yp);
 				}
 			}
-			++v10;
-			x += 112;
-			v3 += 112;
-		} while (v10 < 111);
-		++v8;
-		++v2;
-	} while ((signed int)v8 < (signed int)&dPiece[1][111]);
-	PlaceThemeMonsts(v1, monstrnd[leveltype - 1]);
+		}
+	}
+	PlaceThemeMonsts(t, monstrnd[leveltype - 1]);
 }
 
 // Theme_PurifyingFountain initializes the purifying fountain theme.
