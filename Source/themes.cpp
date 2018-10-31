@@ -853,13 +853,17 @@ void __fastcall Theme_SkelRoom(int t)
 	}
 }
 
+// Theme_Treasure initializes the treasure theme.
+//
+// Parameters:
+//    - t: theme number (index into themes array).
 void __fastcall Theme_Treasure(int t)
 {
-	int yp;           // esi
-	int xp;           // edi
-	int rv;           // [esp+14h] [ebp-10h]
-	char monstrnd[4]; // [esp+18h] [ebp-Ch]
-	char treasrnd[4]; // [esp+20h] [ebp-4h]
+	int xp;
+	int yp;
+	int i;
+	char treasrnd[4];
+	char monstrnd[4];
 
 	treasrnd[0] = 4;
 	treasrnd[1] = 9;
@@ -873,17 +877,23 @@ void __fastcall Theme_Treasure(int t)
 	for (yp = 0; yp < 112; yp++) {
 		for (xp = 0; xp < 112; xp++) {
 			if (dung_map[xp][yp] == themes[t].ttval && !nSolidTable[dPiece[xp][yp]]) {
-				rv = random(0, treasrnd[leveltype - 1]);
-				if (!(2 * random(0, treasrnd[leveltype - 1]))) {
-					CreateTypeItem(xp, yp, 0, ITYPE_GOLD, 0, 0, 1);
+				int rv = random(0, treasrnd[leveltype - 1]);
+				// BUGFIX: the `2*` in `2*random(0, treasrnd...) == 0` has no effect, should probably be `random(0, 2*treasrnd...) == 0`
+				if ((2*random(0, treasrnd[leveltype - 1])) == 0) {
+					CreateTypeItem(xp, yp, FALSE, ITYPE_GOLD, IMISC_NONE, FALSE, TRUE);
 					ItemNoFlippy();
 				}
-				if (!rv) {
-					CreateRndItem(xp, yp, 0, 0, 1);
+				if (rv == 0) {
+					CreateRndItem(xp, yp, FALSE, FALSE, TRUE);
 					ItemNoFlippy();
+				} else {
+					if (rv < treasrnd[leveltype - 1]-2) {
+						continue;
+					}
 				}
-				if (rv >= treasrnd[leveltype - 1] - 2 && leveltype != 1) {
-					item[ItemNoFlippy()]._ivalue >>= 1; /* check */
+				i = ItemNoFlippy();
+				if (rv >= treasrnd[leveltype - 1] - 2 && leveltype != DTYPE_CATHEDRAL) {
+					item[i]._ivalue >>= 1; /* check */
 				}
 			}
 		}
