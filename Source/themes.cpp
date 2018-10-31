@@ -1001,9 +1001,13 @@ void __fastcall Theme_Decap(int t)
 	PlaceThemeMonsts(v1, monstrnd[leveltype - 1]);
 }
 
+// Theme_PurifyingFountain initializes the purifying fountain theme.
+//
+// Parameters:
+//    - t: theme number (index into themes array).
 void __fastcall Theme_PurifyingFountain(int t)
 {
-	char monstrnd[4]; // [esp+3h] [ebp-5h]
+	char monstrnd[4];
 
 	monstrnd[0] = 6;
 	monstrnd[1] = 7;
