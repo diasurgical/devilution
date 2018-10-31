@@ -1130,9 +1130,13 @@ void __fastcall Theme_MurkyFountain(int t)
 	PlaceThemeMonsts(t, monstrnd[leveltype - 1]);
 }
 
+// Theme_TearFountain initializes the tear fountain theme.
+//
+// Parameters:
+//    - t: theme number (index into themes array).
 void __fastcall Theme_TearFountain(int t)
 {
-	char monstrnd[4]; // [esp+3h] [ebp-5h]
+	char monstrnd[4];
 
 	monstrnd[0] = 6;
 	monstrnd[1] = 7;
