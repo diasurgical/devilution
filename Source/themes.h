@@ -10,7 +10,7 @@ extern bool treasureFlag;  // weak
 extern bool mFountainFlag; // weak
 extern bool cauldronFlag;  // weak
 extern bool tFountainFlag; // weak
-extern int zharlib;        // weak
+extern int zharlib;
 extern int themex;         // idb
 extern int themey;         // idb
 extern int themeVar1;      // idb

@@ -10,7 +10,7 @@ bool treasureFlag;  // weak
 bool mFountainFlag; // weak
 bool cauldronFlag;  // weak
 bool tFountainFlag; // weak
-int zharlib;        // weak
+int zharlib;
 int themex;         // idb
 int themey;         // idb
 int themeVar1;      // idb
@@ -633,7 +633,6 @@ void __cdecl InitThemes()
 // 6AAA58: using guessed type int mFountainFlag;
 // 6AAA5C: using guessed type int cauldronFlag;
 // 6AAA60: using guessed type int tFountainFlag;
-// 6AAA64: using guessed type int zharlib;
 // 6AAC08: using guessed type int pFountainFlag;
 // 6AAC0C: using guessed type int bFountainFlag;
 
@@ -892,21 +891,18 @@ void __fastcall Theme_Treasure(int t)
 	PlaceThemeMonsts(t, monstrnd[leveltype - 1]);
 }
 
+// Theme_Library initializes the library theme.
+//
+// Parameters:
+//    - t: theme number (index into themes array).
 void __fastcall Theme_Library(int t)
 {
-	int v1;   // edi
-	int v2;   // ebx
-	char *v3; // esi
-	//int v4; // eax
-	int v7; // eax
-	//int v8; // eax
-	int ta;           // [esp+Ch] [ebp-14h]
-	int *v10;         // [esp+10h] [ebp-10h]
-	int *v11;         // [esp+14h] [ebp-Ch]
-	char monstrnd[4]; // [esp+18h] [ebp-8h]
-	char librnd[4];   // [esp+1Ch] [ebp-4h]
+	int xp;
+	int yp;
+	int oi;
+	char librnd[4];
+	char monstrnd[4];
 
-	ta = t;
 	librnd[0] = 1;
 	librnd[1] = 2;
 	librnd[2] = 2;
@@ -916,48 +912,35 @@ void __fastcall Theme_Library(int t)
 	monstrnd[2] = 3;
 	monstrnd[3] = 9;
 	TFit_Shrine(t);
-	v1 = 1;
 	if (themeVar1 == 1) {
-		AddObject(OBJ_BOOKCANDLE, themex - 1, themey);
+		AddObject(OBJ_BOOKCANDLE, themex-1, themey);
 		AddObject(OBJ_BOOKCASER, themex, themey);
-		AddObject(OBJ_BOOKCANDLE, themex + 1, themey);
+		AddObject(OBJ_BOOKCANDLE, themex+1, themey);
 	} else {
-		AddObject(OBJ_BOOKCANDLE, themex, themey - 1);
+		AddObject(OBJ_BOOKCANDLE, themex, themey-1);
 		AddObject(OBJ_BOOKCASEL, themex, themey);
-		AddObject(OBJ_BOOKCANDLE, themex, themey + 1);
+		AddObject(OBJ_BOOKCANDLE, themex, themey+1);
 	}
-	v11 = &dMonster[1][1];
-	do {
-		v2 = 1;
-		v3 = &dObject[1][v1];
-		v10 = v11;
-		do {
-			//LOBYTE(v4) = CheckThemeObj3(v2, v1, ta, -1);
-			if (CheckThemeObj3(v2, v1, ta, -1)) {
-				if (!*v10) {
-					if (!random(0, librnd[leveltype - 1])) {
-						AddObject(OBJ_BOOKSTAND, v2, v1);
-						if (random(0, 2 * librnd[leveltype - 1])) {
-							v7 = *v3 - 1;
-							object[v7]._oSelFlag = 0;
-							object[v7]._oAnimFrame += 2;
+	for (yp = 1; yp < 112-1; yp++) {
+		for (xp = 1; xp < 112-1; xp++) {
+			if (CheckThemeObj3(xp, yp, t, -1)) {
+				if (dMonster[xp][yp] == 0) {
+					if (random(0, librnd[leveltype - 1]) == 0) {
+						AddObject(OBJ_BOOKSTAND, xp, yp);
+						if (random(0, 2*librnd[leveltype - 1]) != 0) {
+							oi = dObject[xp][yp] - 1;
+							object[oi]._oSelFlag = 0;
+							object[oi]._oAnimFrame += 2;
 						}
 					}
 				}
 			}
-			v10 += 112;
-			++v2;
-			v3 += 112;
-		} while (v2 < 111);
-		++v11;
-		++v1;
-	} while ((signed int)v11 < (signed int)&dMonster[1][111]);
-	//LOBYTE(v8) = QuestStatus(QTYPE_ZHAR);
-	if (!QuestStatus(QTYPE_ZHAR) || ta != zharlib) {
-		PlaceThemeMonsts(ta, monstrnd[leveltype - 1]);
+		}
+	}
+	if (!QuestStatus(QTYPE_ZHAR) || t != zharlib) {
+		PlaceThemeMonsts(t, monstrnd[leveltype - 1]);
 	}
 }
-// 6AAA64: using guessed type int zharlib;
 
 // Theme_Torture initializes the torture theme.
 //
@@ -982,7 +965,7 @@ void __fastcall Theme_Torture(int t)
 		for (xp = 1; xp < 112-1; xp++) {
 			if (dung_map[xp][yp] == themes[t].ttval && !nSolidTable[dPiece[xp][yp]]) {
 				if (CheckThemeObj3(xp, yp, t, -1)) {
-					if (!random(0, tortrnd[leveltype - 1])) {
+					if (random(0, tortrnd[leveltype - 1]) == 0) {
 						AddObject(OBJ_TNUDEM2, xp, yp);
 					}
 				}
@@ -1032,7 +1015,7 @@ void __fastcall Theme_Decap(int t)
 		for (xp = 1; xp < 112-1; xp++) {
 			if (dung_map[xp][yp] == themes[t].ttval && !nSolidTable[dPiece[xp][yp]]) {
 				if (CheckThemeObj3(xp, yp, t, -1)) {
-					if (!random(0, decaprnd[leveltype - 1])) {
+					if (random(0, decaprnd[leveltype - 1]) == 0) {
 						AddObject(OBJ_DECAP, xp, yp);
 					}
 				}
@@ -1086,7 +1069,7 @@ void __fastcall Theme_ArmorStand(int t)
 		for (xp = 0; xp < 112; xp++) {
 			if (dung_map[xp][yp] == themes[t].ttval && !nSolidTable[dPiece[xp][yp]]) {
 				if (CheckThemeObj3(xp, yp, t, -1)) {
-					if (!random(0, armorrnd[leveltype - 1])) {
+					if (random(0, armorrnd[leveltype - 1]) == 0) {
 						AddObject(OBJ_ARMORSTANDN, xp, yp);
 					}
 				}
@@ -1191,7 +1174,7 @@ void __fastcall Theme_BrnCross(int t)
 		for (xp = 0; xp < 112; xp++) {
 			if (dung_map[xp][yp] == themes[t].ttval && !nSolidTable[dPiece[xp][yp]]) {
 				if (CheckThemeObj3(xp, yp, t, -1)) {
-					if (!random(0, bcrossrnd[leveltype - 1])) {
+					if (random(0, bcrossrnd[leveltype - 1]) == 0) {
 						AddObject(OBJ_TBCROSS, xp, yp);
 					}
 				}
@@ -1229,7 +1212,7 @@ void __fastcall Theme_WeaponRack(int t)
 		for (xp = 0; xp < 112; xp++) {
 			if (dung_map[xp][yp] == themes[t].ttval && !nSolidTable[dPiece[xp][yp]]) {
 				if (CheckThemeObj3(xp, yp, t, -1)) {
-					if (!random(0, weaponrnd[leveltype - 1])) {
+					if (random(0, weaponrnd[leveltype - 1]) == 0) {
 						AddObject(OBJ_WEAPONRACKN, xp, yp);
 					}
 				}
