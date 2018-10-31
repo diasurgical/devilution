@@ -703,13 +703,17 @@ void __fastcall PlaceThemeMonsts(int t, int f)
 }
 // 45D0E1: using guessed type int var_1D0[111];
 
+// Theme_Barrel initializes the barrel theme.
+//
+// Parameters:
+//    - t: theme number (index into themes array).
 void __fastcall Theme_Barrel(int t)
 {
-	int yp; // edi
-	int xp; // ebx
+	int xp;
+	int yp;
 	int r;
-	char monstrnd[4];
 	char barrnd[4];
+	char monstrnd[4];
 
 	barrnd[0] = 2;
 	barrnd[1] = 6;
@@ -719,18 +723,17 @@ void __fastcall Theme_Barrel(int t)
 	monstrnd[1] = 7;
 	monstrnd[2] = 3;
 	monstrnd[3] = 9;
-
 	for (yp = 0; yp < 112; yp++) {
 		for (xp = 0; xp < 112; xp++) {
 			if (dung_map[xp][yp] == themes[t].ttval && !nSolidTable[dPiece[xp][yp]]) {
-				if (!random(0, barrnd[leveltype - 1])) {
-					r = random(0, barrnd[leveltype - 1]);
-					AddObject((r != 0) + OBJ_BARREL, xp, yp);
+				if (random(0, barrnd[leveltype - 1]) == 0) {
+					r = random(0, barrnd[leveltype - 1]) != 0;
+					r += OBJ_BARREL;
+					AddObject(r, xp, yp);
 				}
 			}
 		}
 	}
-
 	PlaceThemeMonsts(t, monstrnd[leveltype - 1]);
 }
 
