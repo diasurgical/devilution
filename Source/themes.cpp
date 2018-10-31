@@ -755,12 +755,16 @@ void __fastcall Theme_Shrine(int t)
 	PlaceThemeMonsts(t, monstrnd[leveltype - 1]);
 }
 
+// Theme_MonstPit initializes the monster pit theme.
+//
+// Parameters:
+//    - t: theme number (index into themes array).
 void __fastcall Theme_MonstPit(int t)
 {
-	int r;            // eax
-	int ixp;          // ecx
-	int iyp;          // edx
-	char monstrnd[4]; // [esp+4h] [ebp-8h]
+	int r;
+	int ixp;
+	int iyp;
+	char monstrnd[4];
 
 	monstrnd[0] = 6;
 	monstrnd[1] = 7;
@@ -770,22 +774,24 @@ void __fastcall Theme_MonstPit(int t)
 	ixp = 0;
 	iyp = 0;
 	if (r > 0) {
-		while (1) {
+		while (TRUE) {
 			if (dung_map[ixp][iyp] == themes[t].ttval && !nSolidTable[dPiece[ixp][iyp]]) {
 				--r;
 			}
 			if (r <= 0) {
 				break;
 			}
-			if (++ixp == 112) {
+			ixp++;
+			if (ixp == 112) {
 				ixp = 0;
-				if (++iyp == 112) {
+				iyp++;
+				if (iyp == 112) {
 					iyp = 0;
 				}
 			}
 		}
 	}
-	CreateRndItem(ixp, iyp, 1u, 0, 1);
+	CreateRndItem(ixp, iyp, TRUE, FALSE, TRUE);
 	ItemNoFlippy();
 	PlaceThemeMonsts(t, monstrnd[leveltype - 1]);
 }
