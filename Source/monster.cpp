@@ -5993,7 +5993,7 @@ void __cdecl DeleteMonsterList()
 	while (i < nummonsters) {
 		if (monster[monstactive[i]]._mDelFlag) {
 			DeleteMonster(i);
-			i = 0;
+			i = 0; // TODO: check if this should be i=4.
 		} else {
 			i++;
 		}
