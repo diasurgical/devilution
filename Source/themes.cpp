@@ -636,33 +636,23 @@ void __cdecl InitThemes()
 // 6AAC08: using guessed type int pFountainFlag;
 // 6AAC0C: using guessed type int bFountainFlag;
 
+// HoldThemeRooms marks theme rooms as populated.
 void __cdecl HoldThemeRooms()
 {
-	int v0;        // ebx
-	int i;         // esi
-	char v2;       // dl
-	signed int v3; // ecx
-	signed int v4; // eax
-	signed int v5; // edi
+	int i;
+	int x;
+	int y;
 
 	if (currlevel != 16) {
 		if (leveltype == DTYPE_CATHEDRAL) {
-			v0 = numthemes;
-			for (i = 0; i < v0; ++i) {
-				v2 = themes[i].ttval;
-				v3 = 0;
-				do {
-					v4 = v3;
-					v5 = 112;
-					do {
-						if (dung_map[0][v4] == v2) {
-							dFlags[0][v4] |= DFLAG_POPULATED;
+			for (i = 0; i < numthemes; i++) {
+				for (y = 0; y < 112; y++) {
+					for (x = 0; x < 112; x++) {
+						if (dung_map[x][y] == themes[i].ttval) {
+							dFlags[x][y] |= DFLAG_POPULATED;
 						}
-						v4 += 112;
-						--v5;
-					} while (v5);
-					++v3;
-				} while (v3 < 112);
+					}
+				}
 			}
 		} else {
 			DRLG_HoldThemeRooms();
