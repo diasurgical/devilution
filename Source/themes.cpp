@@ -670,38 +670,38 @@ void __cdecl HoldThemeRooms()
 	}
 }
 
+// PlaceThemeMonsts places theme monsters with the specified frequency.
+//
+// Parameters:
+//    - t: theme number (index into themes array).
+//    - f: frequency (1/f likelihood of adding monster).
 void __fastcall PlaceThemeMonsts(int t, int f)
 {
-	int numscattypes;      // edx
-	int i;                 // ecx
-	int yp;                // ebx
-	int xp;                // edi
-	int scattertypes[111]; // [esp+Ch] [ebp-1D0h]
-	int mtype;             // [esp+1CCh] [ebp-10h]
+	int xp;
+	int yp;
+	int mtype;
+	int scattertypes[111];
+	int numscattypes;
+	int i;
 
 	numscattypes = 0;
-
-	if (nummtypes > 0) {
-		for (i = 0; i < nummtypes; i++) {
-			if (Monsters[i].mPlaceFlags & 1) {
-				scattertypes[numscattypes++] = i;
-			}
+	for (i = 0; i < nummtypes; i++) {
+		if (Monsters[i].mPlaceFlags & 1) {
+			scattertypes[numscattypes] = i;
+			numscattypes++;
 		}
 	}
-
 	mtype = scattertypes[random(0, numscattypes)];
-
 	for (yp = 0; yp < 112; yp++) {
 		for (xp = 0; xp < 112; xp++) {
-			if (dung_map[xp][yp] == themes[t].ttval && !nSolidTable[dPiece[xp][yp]] && !dItem[xp][yp] && !dObject[xp][yp]) {
-				if (!random(0, f)) {
+			if (dung_map[xp][yp] == themes[t].ttval && !nSolidTable[dPiece[xp][yp]] && dItem[xp][yp] == 0 && dObject[xp][yp] == 0) {
+				if (random(0, f) == 0) {
 					AddMonster(xp, yp, random(0, 8), mtype, 1);
 				}
 			}
 		}
 	}
 }
-// 45D0E1: using guessed type int var_1D0[111];
 
 // Theme_Barrel initializes the barrel theme.
 //
