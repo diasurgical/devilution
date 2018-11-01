@@ -702,17 +702,9 @@ void __fastcall Theme_Barrel(int t)
 	int xp;
 	int yp;
 	int r;
-	char barrnd[4];
-	char monstrnd[4];
+	char barrnd[4] = { 2, 6, 4, 8 };
+	char monstrnd[4] = { 5, 7, 3, 9 };
 
-	barrnd[0] = 2;
-	barrnd[1] = 6;
-	barrnd[2] = 4;
-	barrnd[3] = 8;
-	monstrnd[0] = 5;
-	monstrnd[1] = 7;
-	monstrnd[2] = 3;
-	monstrnd[3] = 9;
 	for (yp = 0; yp < 112; yp++) {
 		for (xp = 0; xp < 112; xp++) {
 			if (dung_map[xp][yp] == themes[t].ttval && !nSolidTable[dPiece[xp][yp]]) {
@@ -733,12 +725,8 @@ void __fastcall Theme_Barrel(int t)
 //    - t: theme number (index into themes array).
 void __fastcall Theme_Shrine(int t)
 {
-	char monstrnd[4];
+	char monstrnd[4] = { 6, 6, 3, 9 };
 
-	monstrnd[0] = 6;
-	monstrnd[1] = 6;
-	monstrnd[2] = 3;
-	monstrnd[3] = 9;
 	TFit_Shrine(t);
 	if (themeVar1 == 1) {
 		AddObject(OBJ_CANDLE2, themex - 1, themey);
@@ -761,12 +749,8 @@ void __fastcall Theme_MonstPit(int t)
 	int r;
 	int ixp;
 	int iyp;
-	char monstrnd[4];
+	char monstrnd[4] = { 6, 7, 3, 9 };
 
-	monstrnd[0] = 6;
-	monstrnd[1] = 7;
-	monstrnd[2] = 3;
-	monstrnd[3] = 9;
 	r = random(0, 100) + 1;
 	ixp = 0;
 	iyp = 0;
@@ -802,12 +786,8 @@ void __fastcall Theme_SkelRoom(int t)
 
 	int xp;
 	int yp;
-	char monstrnd[4];
+	char monstrnd[4] = { 6, 7, 3, 9 };
 
-	monstrnd[0] = 6;
-	monstrnd[1] = 7;
-	monstrnd[2] = 3;
-	monstrnd[3] = 9;
 	TFit_SkelRoom(t);
 	xp = themex;
 	yp = themey;
@@ -859,20 +839,11 @@ void __fastcall Theme_SkelRoom(int t)
 //    - t: theme number (index into themes array).
 void __fastcall Theme_Treasure(int t)
 {
-	int xp;
-	int yp;
+	int xp, yp;
 	int i;
-	char treasrnd[4];
-	char monstrnd[4];
+	char treasrnd[4] = { 4, 9, 7, 10 };
+	char monstrnd[4] = { 6, 8, 3, 7 };
 
-	treasrnd[0] = 4;
-	treasrnd[1] = 9;
-	treasrnd[2] = 7;
-	treasrnd[3] = 10;
-	monstrnd[0] = 6;
-	monstrnd[1] = 8;
-	monstrnd[2] = 3;
-	monstrnd[3] = 7;
 	GetRndSeed();
 	for (yp = 0; yp < 112; yp++) {
 		for (xp = 0; xp < 112; xp++) {
@@ -886,14 +857,12 @@ void __fastcall Theme_Treasure(int t)
 				if (rv == 0) {
 					CreateRndItem(xp, yp, FALSE, FALSE, TRUE);
 					ItemNoFlippy();
-				} else {
-					if (rv < treasrnd[leveltype - 1]-2) {
-						continue;
-					}
 				}
-				i = ItemNoFlippy();
-				if (rv >= treasrnd[leveltype - 1] - 2 && leveltype != DTYPE_CATHEDRAL) {
-					item[i]._ivalue >>= 1;
+				if (rv == 0 || rv >= treasrnd[leveltype-1] - 2) {
+					i = ItemNoFlippy();
+					if (rv >= treasrnd[leveltype-1] - 2 && leveltype != DTYPE_CATHEDRAL) {
+						item[i]._ivalue >>= 1;
+					}
 				}
 			}
 		}
@@ -910,17 +879,9 @@ void __fastcall Theme_Library(int t)
 	int xp;
 	int yp;
 	int oi;
-	char librnd[4];
-	char monstrnd[4];
+	char librnd[4] = { 1, 2, 2, 5 };
+	char monstrnd[4] = { 5, 7, 3, 9 };
 
-	librnd[0] = 1;
-	librnd[1] = 2;
-	librnd[2] = 2;
-	librnd[3] = 5;
-	monstrnd[0] = 5;
-	monstrnd[1] = 7;
-	monstrnd[2] = 3;
-	monstrnd[3] = 9;
 	TFit_Shrine(t);
 	if (themeVar1 == 1) {
 		AddObject(OBJ_BOOKCANDLE, themex-1, themey);
@@ -960,17 +921,9 @@ void __fastcall Theme_Torture(int t)
 {
 	int xp;
 	int yp;
-	char tortrnd[4];
-	char monstrnd[4];
+	char tortrnd[4] = { 6, 8, 3, 8 };
+	char monstrnd[4] = { 6, 8, 3, 9 };
 
-	tortrnd[0] = 6;
-	tortrnd[1] = 8;
-	tortrnd[2] = 3;
-	tortrnd[3] = 8;
-	monstrnd[0] = 6;
-	monstrnd[1] = 8;
-	monstrnd[2] = 3;
-	monstrnd[3] = 9;
 	for (yp = 1; yp < 112-1; yp++) {
 		for (xp = 1; xp < 112-1; xp++) {
 			if (dung_map[xp][yp] == themes[t].ttval && !nSolidTable[dPiece[xp][yp]]) {
@@ -991,12 +944,8 @@ void __fastcall Theme_Torture(int t)
 //    - t: theme number (index into themes array).
 void __fastcall Theme_BloodFountain(int t)
 {
-	char monstrnd[4];
+	char monstrnd[4] = { 6, 8, 3, 9 };
 
-	monstrnd[0] = 6;
-	monstrnd[1] = 8;
-	monstrnd[2] = 3;
-	monstrnd[3] = 9;
 	TFit_Obj5(t);
 	AddObject(OBJ_BLOODFTN, themex, themey);
 	PlaceThemeMonsts(t, monstrnd[leveltype - 1]);
@@ -1010,17 +959,9 @@ void __fastcall Theme_Decap(int t)
 {
 	int xp;
 	int yp;
-	char decaprnd[4];
-	char monstrnd[4];
+	char decaprnd[4] = { 6, 8, 3, 8 };
+	char monstrnd[4] = { 6, 8, 3, 9 };
 
-	decaprnd[0] = 6;
-	decaprnd[1] = 8;
-	decaprnd[2] = 3;
-	decaprnd[3] = 8;
-	monstrnd[0] = 6;
-	monstrnd[1] = 8;
-	monstrnd[2] = 3;
-	monstrnd[3] = 9;
 	for (yp = 1; yp < 112-1; yp++) {
 		for (xp = 1; xp < 112-1; xp++) {
 			if (dung_map[xp][yp] == themes[t].ttval && !nSolidTable[dPiece[xp][yp]]) {
@@ -1041,12 +982,8 @@ void __fastcall Theme_Decap(int t)
 //    - t: theme number (index into themes array).
 void __fastcall Theme_PurifyingFountain(int t)
 {
-	char monstrnd[4];
+	char monstrnd[4] = { 6, 7, 3, 9 };
 
-	monstrnd[0] = 6;
-	monstrnd[1] = 7;
-	monstrnd[2] = 3;
-	monstrnd[3] = 9;
 	TFit_Obj5(t);
 	AddObject(OBJ_PURIFYINGFTN, themex, themey);
 	PlaceThemeMonsts(t, monstrnd[leveltype - 1]);
@@ -1060,17 +997,9 @@ void __fastcall Theme_ArmorStand(int t)
 {
 	int xp;
 	int yp;
-	char armorrnd[4];
-	char monstrnd[4];
+	char armorrnd[4] = { 6, 8, 3, 8 };
+	char monstrnd[4] = { 6, 7, 3, 9 };
 
-	armorrnd[0] = 6;
-	armorrnd[1] = 8;
-	armorrnd[2] = 3;
-	armorrnd[3] = 8;
-	monstrnd[0] = 6;
-	monstrnd[1] = 7;
-	monstrnd[2] = 3;
-	monstrnd[3] = 9;
 	if (armorFlag) {
 		TFit_Obj3(t);
 		AddObject(OBJ_ARMORSTAND, themex, themey);
@@ -1116,12 +1045,8 @@ void __fastcall Theme_GoatShrine(int t)
 //    - t: theme number (index into themes array).
 void __fastcall Theme_Cauldron(int t)
 {
-	char monstrnd[4];
+	char monstrnd[4] = { 6, 7, 3, 9 };
 
-	monstrnd[0] = 6;
-	monstrnd[1] = 7;
-	monstrnd[2] = 3;
-	monstrnd[3] = 9;
 	TFit_Obj5(t);
 	AddObject(OBJ_CAULDRON, themex, themey);
 	PlaceThemeMonsts(t, monstrnd[leveltype - 1]);
@@ -1133,12 +1058,8 @@ void __fastcall Theme_Cauldron(int t)
 //    - t: theme number (index into themes array).
 void __fastcall Theme_MurkyFountain(int t)
 {
-	char monstrnd[4];
+	char monstrnd[4] = { 6, 7, 3, 9 };
 
-	monstrnd[0] = 6;
-	monstrnd[1] = 7;
-	monstrnd[2] = 3;
-	monstrnd[3] = 9;
 	TFit_Obj5(t);
 	AddObject(OBJ_MURKYFTN, themex, themey);
 	PlaceThemeMonsts(t, monstrnd[leveltype - 1]);
@@ -1150,12 +1071,8 @@ void __fastcall Theme_MurkyFountain(int t)
 //    - t: theme number (index into themes array).
 void __fastcall Theme_TearFountain(int t)
 {
-	char monstrnd[4];
+	char monstrnd[4] = { 6, 7, 3, 9 };
 
-	monstrnd[0] = 6;
-	monstrnd[1] = 7;
-	monstrnd[2] = 3;
-	monstrnd[3] = 9;
 	TFit_Obj5(t);
 	AddObject(OBJ_TEARFTN, themex, themey);
 	PlaceThemeMonsts(t, monstrnd[leveltype - 1]);
@@ -1169,17 +1086,9 @@ void __fastcall Theme_BrnCross(int t)
 {
 	int xp;
 	int yp;
-	char monstrnd[4];
-	char bcrossrnd[4];
+	char monstrnd[4] = { 6, 8, 3, 9 };
+	char bcrossrnd[4] = { 5, 7, 3, 8 };
 
-	monstrnd[0] = 6;
-	monstrnd[1] = 8;
-	monstrnd[2] = 3;
-	monstrnd[3] = 9;
-	bcrossrnd[0] = 5;
-	bcrossrnd[1] = 7;
-	bcrossrnd[2] = 3;
-	bcrossrnd[3] = 8;
 	for (yp = 0; yp < 112; yp++) {
 		for (xp = 0; xp < 112; xp++) {
 			if (dung_map[xp][yp] == themes[t].ttval && !nSolidTable[dPiece[xp][yp]]) {
@@ -1203,17 +1112,9 @@ void __fastcall Theme_WeaponRack(int t)
 {
 	int xp;
 	int yp;
-	char weaponrnd[4];
-	char monstrnd[4];
+	char weaponrnd[4] = { 6, 8, 5, 8 };
+	char monstrnd[4] = { 6, 7, 3, 9 };
 
-	weaponrnd[0] = 6;
-	weaponrnd[1] = 8;
-	weaponrnd[2] = 5;
-	weaponrnd[3] = 8;
-	monstrnd[0] = 6;
-	monstrnd[1] = 7;
-	monstrnd[2] = 3;
-	monstrnd[3] = 9;
 	if (weaponFlag) {
 		TFit_Obj3(t);
 		AddObject(OBJ_WEAPONRACK, themex, themey);
