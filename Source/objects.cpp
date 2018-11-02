@@ -4440,12 +4440,12 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 			return;
 		v12 = 0;
 		for(j = 1; j <= 37; j++) {
-			if(plr[pnum]._pMemSpells64 & ((__int64)1 << (j-1))) // j
+			if(plr[pnum]._pMemSpells & ((__int64)1 << (j-1))) // j
 				v12++;
 		}
 		if(v12 > 1) {
 			for(j = 1; j <= 37; j++) {
-				if(plr[pnum]._pMemSpells64 & ((__int64)1 << (j-1))) { // j
+				if(plr[pnum]._pMemSpells & ((__int64)1 << (j-1))) { // j
 					if(plr[pnum]._pSplLvl[j] < 15)
 						plr[pnum]._pSplLvl[j]++;
 				}
@@ -4453,7 +4453,7 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 			do {
 				v60 = random(0, 37) + 1;
 			}
-			while(!(plr[pnum]._pMemSpells64 & ((__int64)1 << (v60-1))));
+			while(!(plr[pnum]._pMemSpells & ((__int64)1 << (v60-1))));
 			if(plr[pnum]._pSplLvl[v60] < 2)
 				plr[pnum]._pSplLvl[v60] = 0;
 			else
@@ -4483,7 +4483,7 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 	case SHRINE_FASCINATING:
 		if(deltaload || pnum != myplr)
 			return;
-		plr[pnum]._pMemSpells64 |= (__int64)1 << (SPL_FIREBOLT-1);
+		plr[pnum]._pMemSpells |= (__int64)1 << (SPL_FIREBOLT-1);
 		if(plr[pnum]._pSplLvl[SPL_FIREBOLT] < 15)
 			plr[pnum]._pSplLvl[SPL_FIREBOLT]++;
 		if(plr[pnum]._pSplLvl[SPL_FIREBOLT] < 15)
@@ -4613,7 +4613,7 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 	case SHRINE_SACRED:
 		if(deltaload || pnum != myplr)
 			return;
-		plr[pnum]._pMemSpells64 |= (__int64)1 << (SPL_CBOLT-1);
+		plr[pnum]._pMemSpells |= (__int64)1 << (SPL_CBOLT-1);
 		if(plr[pnum]._pSplLvl[SPL_CBOLT] < 15)
 			plr[pnum]._pSplLvl[SPL_CBOLT]++;
 		if(plr[pnum]._pSplLvl[SPL_CBOLT] < 15)
@@ -4705,7 +4705,7 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 	case SHRINE_ORNATE:
 		if(deltaload || pnum != myplr)
 			return;
-		plr[pnum]._pMemSpells64 |= (__int64)1 << (SPL_HBOLT-1);
+		plr[pnum]._pMemSpells |= (__int64)1 << (SPL_HBOLT-1);
 		if(plr[pnum]._pSplLvl[SPL_HBOLT] < 15)
 			plr[pnum]._pSplLvl[SPL_HBOLT]++;
 		if(plr[pnum]._pSplLvl[SPL_HBOLT] < 15)
