@@ -4761,7 +4761,7 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 		break;
 	}
 
-	CalcPlrInv(pnum, 1);
+	CalcPlrInv(pnum, TRUE);
 	drawpanflag = 255;
 
 	if(pnum == myplr)
