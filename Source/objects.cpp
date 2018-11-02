@@ -4226,883 +4226,546 @@ int __fastcall ItemMiscIdIdx(int imiscid)
 
 void __fastcall OperateShrine(int pnum, int i, int sType)
 {
-	int v3;                // esi
-	int *v4;               // ebx
-	int v5;                // eax
-	int v6;                // ecx
-	int v7;                // ecx
-	int v9;                // eax
-	int v10;               // eax
-	int v11;               // eax
-	int v12;               // edx
-	int v13;               // esi
-	signed int v14;        // ebx
-	int *v15;              // eax
-	int *v16;              // eax
-	int v17;               // edx
-	int v18;               // ebx
-	int *v19;              // eax
-	signed int v20;        // edx
-	int v21;               // eax
-	int v22;               // ecx
-	int *v23;              // eax
-	int v24;               // edx
-	int v25;               // esi
-	int v26;               // eax
-	int v27;               // ecx
-	int v28;               // edx
-	int *v29;              // ecx
-	int v30;               // edx
-	int v31;               // ebx
-	signed int v32;        // edx
-	int v33;               // edx
-	int v34;               // eax
-	int v35;               // ecx
-	int v36;               // esi
-	signed int v37;        // edx
-	int v38;               // eax
-	int *v39;              // ecx
-	signed int v40;        // esi
-	int v41;               // esi
-	int *v42;              // ecx
-	int *v43;              // eax
-	signed int v44;        // ecx
-	int v45;               // eax
-	int *v46;              // ecx
-	signed int v47;        // edx
-	int v48;               // ebx
-	int *v49;              // ecx
-	int *v50;              // eax
-	signed int v51;        // ecx
-	__int64 v52;           // edi
-	int v53;               // esi
-	bool v56;              // zf
-	__int64 v57;           // ebx
-	signed int v59;        // edx
-	int v60;               // ebx
-	char *v61;             // esi
-	int j;                 // edi
-	int v63;               // esi
-	int v64;               // eax
-	char v67;              // al
-	char v68;              // al
-	int v69;               // esi
-	int v70;               // edx
-	int v71;               // ebx
-	int v72;               // edi
-	int v73;               // eax
-	int v74;               // edx
-	int v75;               // edx
-	int v76;               // edx
-	int v77;               // esi
-	int v78;               // ebx
-	int *v79;              // eax
-	int v80;               // eax
-	int v81;               // eax
-	int *v82;              // eax
-	int v83;               // eax
-	int v84;               // eax
-	int v85;               // ecx
-	int v86;               // edx
-	int v87;               // eax
-	int v88;               // ebx
-	int v89;               // eax
-	int v91;               // esi
-	int v92;               // eax
-	int v93;               // edx
-	char v96;              // al
-	char v97;              // al
-	int v98;               // esi
-	int v99;               // edx
-	int v100;              // ebx
-	int v101;              // edi
-	int v102;              // eax
-	int v103;              // edx
-	int v104;              // edx
-	int v105;              // edx
-	int v106;              // ebx
-	int v107;              // ST38_4
-	int v108;              // ST34_4
-	int v109;              // ST3C_4
-	int v110;              // eax
-	_BYTE *v111;           // eax
-	signed int v112;       // edx
-	char v115;             // al
-	char v116;             // al
-	int v117;              // esi
-	int v118;              // edx
-	int v119;              // ebx
-	int v120;              // edi
-	int v121;              // eax
-	int v122;              // edx
-	int v123;              // edx
-	int v124;              // edx
-	int v125;              // eax
-	int *v126;             // ecx
-	signed int v127;       // esi
-	int v128;              // esi
-	int *v129;             // ecx
-	int *v130;             // eax
-	signed int v131;       // ecx
-	int v133;              // eax
-	int v134;              // ebx
-	int v135;              // edi
-	int v136;              // esi
-	unsigned short param2; // [esp+Ch] [ebp-18h]
-	signed int v139;       // [esp+1Ch] [ebp-8h]
-	int *v140;             // [esp+1Ch] [ebp-8h]
-	signed int v141;       // [esp+1Ch] [ebp-8h]
-	int arglist;           // [esp+20h] [ebp-4h]
-	int sfx_ida;           // [esp+2Ch] [ebp+8h]
-	int sfx_ide;           // [esp+2Ch] [ebp+8h]
-	int sfx_idb;           // [esp+2Ch] [ebp+8h]
-	int *sfx_idc;          // [esp+2Ch] [ebp+8h]
-	int sfx_idf;           // [esp+2Ch] [ebp+8h]
-	int sfx_idd;           // [esp+2Ch] [ebp+8h]
-	int sfx_idg;           // [esp+2Ch] [ebp+8h]
+	int v1;
+	int v12; // edx
+	int v21; // eax
+	int v60; // ebx
+	int j; // edi
+	int v72; // edi
+	int v88; // ebx
+	int v107; // ST38_4
+	int v108; // ST34_4
+	int v133; // eax
+	int xx, yy;
+	int min, max;
 
-	param2 = i;
-	arglist = pnum;
-	if (dropGoldFlag) {
+	if(dropGoldFlag) {
 		dropGoldFlag = 0;
 		dropGoldValue = 0;
 	}
-	v3 = i;
-	v4 = (int *)&object[i]._oSelFlag;
-	if (object[i]._oSelFlag) {
-		SetRndSeed(object[v3]._oRndSeed);
-		v5 = deltaload;
-		*(_BYTE *)v4 = 0;
-		if (v5) {
-			v6 = object[v3]._oAnimLen;
-			object[v3]._oAnimFlag = 0;
-			object[v3]._oAnimFrame = v6;
-		} else {
-			PlaySfxLoc(sType, object[v3]._ox, object[v3]._oy);
-			object[v3]._oAnimFlag = 1;
-			object[v3]._oAnimDelay = 1;
-			v5 = deltaload;
-		}
-		v7 = object[v3]._oVar1;
-		switch (v7) {
-		case SHRINE_MYSTERIOUS:
-			if (!v5 && arglist == myplr) {
-				ModifyPlrStr(arglist, -1);
-				ModifyPlrMag(arglist, -1);
-				ModifyPlrDex(arglist, -1);
-				ModifyPlrVit(arglist, -1);
-				v9 = random(0, 4);
-				if (v9) {
-					v10 = v9 - 1;
-					if (v10) {
-						v11 = v10 - 1;
-						if (v11) {
-							if (v11 == 1)
-								ModifyPlrVit(arglist, 6);
-						} else {
-							ModifyPlrDex(arglist, 6);
-						}
-					} else {
-						ModifyPlrMag(arglist, 6);
-					}
-				} else {
-					ModifyPlrStr(arglist, 6);
-				}
-				CheckStats(arglist);
-				_LOBYTE(v7) = EMSG_SHRINE_MYSTERIOUS;
-				goto LABEL_221;
-			}
+
+	/// ASSERT: assert((DWORD)i < MAXOBJECTS);
+
+	if(!object[i]._oSelFlag)
+		return;
+
+	SetRndSeed(object[i]._oRndSeed);
+	object[i]._oSelFlag = 0;
+
+	if(deltaload) {
+		object[i]._oAnimFlag = 0;
+		object[i]._oAnimFrame = object[i]._oAnimLen;
+	} else {
+		PlaySfxLoc(sType, object[i]._ox, object[i]._oy);
+		object[i]._oAnimFlag = 1;
+		object[i]._oAnimDelay = 1;
+	}
+
+	switch(object[i]._oVar1) {
+	case SHRINE_MYSTERIOUS:
+		if(deltaload || pnum != myplr)
 			return;
-		case SHRINE_HIDDEN:
-			v12 = 0;
-			if (v5 || arglist != myplr)
-				return;
-			v13 = arglist;
-			v14 = 7;
-			v15 = &plr[arglist].InvBody[INVLOC_HEAD]._itype;
-			v7 = 7;
-			do {
-				if (*v15 != -1)
-					++v12;
-				v15 += 92;
-				--v7;
-			} while (v7);
-			if (v12 <= 0)
-				goto LABEL_47;
-			v16 = &plr[v13].InvBody[INVLOC_HEAD]._iMaxDur;
-			do {
-				if (*(v16 - 58) != -1) {
-					v7 = *v16;
-					if (*v16 != 255) {
-						if (v7) {
-							*(v16 - 1) += 10;
-							v17 = *(v16 - 1);
-							v7 += 10;
-							*v16 = v7;
-							if (v17 > v7)
-								*(v16 - 1) = v7;
-						}
-					}
-				}
-				v16 += 92;
-				--v14;
-			} while (v14);
-			while (1) {
-				v18 = 0;
-				v19 = &plr[v13].InvBody[INVLOC_HEAD]._iMaxDur;
-				v20 = 7;
-				do {
-					if (*(v19 - 58) != -1) {
-						v7 = *v19;
-						if (*v19 != 255) {
-							if (v7)
-								++v18;
-						}
-					}
-					v19 += 92;
-					--v20;
-				} while (v20);
-				if (!v18)
-					goto LABEL_47;
-				v21 = random(0, 7);
-				v7 = v13 * 21720 + 368 * v21;
-				if (*(int *)((char *)&plr[0].InvBody[INVLOC_HEAD]._itype + v7) != -1) {
-					v7 = *(int *)((char *)&plr[0].InvBody[INVLOC_HEAD]._iMaxDur + v7);
-					if (v7 != 255) {
-						if (v7)
-							break;
-					}
-				}
-			}
-			v22 = 368 * v21 + v13 * 21720;
-			v23 = (int *)((char *)&plr[0].InvBody[INVLOC_HEAD]._iDurability + v22);
-			v7 = (int)&plr[0].InvBody[INVLOC_HEAD]._iMaxDur + v22;
-			*v23 -= 20;
-			v24 = *v23;
-			*(_DWORD *)v7 -= 20;
-			v25 = *(_DWORD *)v7;
-			if (v24 <= 0)
-				*v23 = 1;
-			if (v25 <= 0)
-				*(_DWORD *)v7 = 1;
-		LABEL_47:
-			_LOBYTE(v7) = EMSG_SHRINE_HIDDEN;
-			goto LABEL_221;
-		case SHRINE_GLOOMY:
-			if (v5)
-				return;
-			if (arglist != myplr)
-				goto LABEL_280;
-			v26 = arglist;
-			if (plr[arglist].InvBody[INVLOC_HEAD]._itype != ITYPE_NONE)
-				plr[v26].InvBody[INVLOC_HEAD]._iAC += 2;
-			if (plr[v26].InvBody[INVLOC_CHEST]._itype != ITYPE_NONE)
-				plr[v26].InvBody[INVLOC_CHEST]._iAC += 2;
-			v27 = plr[v26].InvBody[INVLOC_HAND_LEFT]._itype;
-			if (v27 != ITYPE_NONE) {
-				if (v27 == ITYPE_SHIELD) {
-					plr[v26].InvBody[INVLOC_HAND_LEFT]._iAC += 2;
-				} else {
-					v28 = plr[v26].InvBody[INVLOC_HAND_LEFT]._iMinDam;
-					v29 = &plr[v26].InvBody[INVLOC_HAND_LEFT]._iMaxDam;
-					--*v29;
-					if (plr[v26].InvBody[INVLOC_HAND_LEFT]._iMaxDam < v28)
-						*v29 = v28;
-				}
-			}
-			v7 = plr[v26].InvBody[INVLOC_HAND_RIGHT]._itype;
-			if (v7 != ITYPE_NONE) {
-				if (v7 == ITYPE_SHIELD) {
-					plr[v26].InvBody[INVLOC_HAND_RIGHT]._iAC += 2;
-				} else {
-					v30 = plr[v26].InvBody[INVLOC_HAND_RIGHT]._iMinDam;
-					v7 = (int)&plr[v26].InvBody[INVLOC_HAND_RIGHT]._iMaxDam;
-					--*(_DWORD *)v7;
-					if (plr[v26].InvBody[INVLOC_HAND_RIGHT]._iMaxDam < v30)
-						*(_DWORD *)v7 = v30;
-				}
-			}
-			v31 = 0;
-			if (plr[v26]._pNumInv <= 0)
-				goto LABEL_73;
-			v7 = (int)&plr[v26].InvList[0]._iAC;
+		ModifyPlrStr(pnum, -1);
+		ModifyPlrMag(pnum, -1);
+		ModifyPlrDex(pnum, -1);
+		ModifyPlrVit(pnum, -1);
+		switch(random(0, 4)) {
+		case 0:
+			ModifyPlrStr(pnum, 6);
 			break;
-		case SHRINE_WEIRD:
-			if (v5)
-				return;
-			if (arglist != myplr)
-				goto LABEL_280;
-			v34 = arglist;
-			v35 = plr[arglist].InvBody[INVLOC_HAND_LEFT]._itype;
-			if (v35 != ITYPE_NONE && v35 != ITYPE_SHIELD)
-				++plr[v34].InvBody[INVLOC_HAND_LEFT]._iMaxDam;
-			v7 = plr[v34].InvBody[INVLOC_HAND_RIGHT]._itype;
-			if (v7 != ITYPE_NONE && v7 != ITYPE_SHIELD)
-				++plr[v34].InvBody[INVLOC_HAND_RIGHT]._iMaxDam;
-			v36 = 0;
-			if (plr[v34]._pNumInv > 0) {
-				v7 = (int)&plr[v34].InvList[0]._iMaxDam;
-				do {
-					v37 = *(_DWORD *)(v7 - 200);
-					if (v37 > 0 && (v37 <= 4 || v37 == 10))
-						++*(_DWORD *)v7;
-					++v36;
-					v7 += 368;
-				} while (v36 < plr[v34]._pNumInv);
-			}
-			_LOBYTE(v7) = EMSG_SHRINE_WEIRD;
-			goto LABEL_221;
-		case SHRINE_MAGICAL:
-		case SHRINE_MAGICAL2:
-			if (v5)
-				return;
-			AddMissile(
-			    plr[arglist].WorldX,
-			    plr[arglist].WorldY,
-			    plr[arglist].WorldX,
-			    plr[arglist].WorldY,
-			    plr[arglist]._pdir,
-			    MIS_MANASHIELD,
-			    -1,
-			    arglist,
-			    0,
-			    2 * leveltype);
-			if (arglist != myplr)
-				return;
-			_LOBYTE(v7) = EMSG_SHRINE_MAGICAL;
-			goto LABEL_221;
-		case SHRINE_STONE:
-			if (v5)
-				return;
-			if (arglist != myplr)
-				goto LABEL_280;
-			v38 = arglist;
-			v39 = &plr[arglist].InvBody[INVLOC_HEAD]._iMaxCharges;
-			v40 = 7;
-			do {
-				if (*(v39 - 56) == 10)
-					*(v39 - 1) = *v39;
-				v39 += 92;
-				--v40;
-			} while (v40);
-			v41 = 0;
-			if (plr[v38]._pNumInv > 0) {
-				v42 = &plr[v38].InvList[0]._iMaxCharges;
-				do {
-					if (*(v42 - 56) == 10)
-						*(v42 - 1) = *v42;
-					++v41;
-					v42 += 92;
-				} while (v41 < plr[v38]._pNumInv);
-			}
-			v43 = &plr[v38].SpdList[0]._iMaxCharges;
-			v44 = MAXBELTITEMS;
-			do {
-				if (*(v43 - 56) == 10)
-					*(v43 - 1) = *v43;
-				v43 += 92;
-				--v44;
-			} while (v44);
-			v7 = EMSG_SHRINE_STONE;
-			goto LABEL_221;
-		case SHRINE_RELIGIOUS:
-			if (v5)
-				return;
-			if (arglist != myplr)
-				goto LABEL_280;
-			v45 = arglist;
-			v46 = &plr[arglist].InvBody[INVLOC_HEAD]._iDurability;
-			v47 = 7;
-			do {
-				*v46 = v46[1];
-				v46 += 92;
-				--v47;
-			} while (v47);
-			v48 = 0;
-			if (plr[v45]._pNumInv > 0) {
-				v49 = &plr[v45].InvList[0]._iDurability;
-				do {
-					++v48;
-					*v49 = v49[1];
-					v49 += 92;
-				} while (v48 < plr[v45]._pNumInv);
-			}
-			v50 = &plr[v45].SpdList[0]._iDurability;
-			v51 = MAXBELTITEMS;
-			do {
-				*v50 = v50[1];
-				v50 += 92;
-				--v51;
-			} while (v51);
-			v7 = EMSG_SHRINE_RELIGIOUS;
-			goto LABEL_221;
-		case SHRINE_ENCHANTED:
-			if (v5 || arglist != myplr)
-				return;
-			sfx_ida = 0;
-			v52 = 1;
-			v53 = arglist;
-			v139 = MAX_SPELLS;
-			do {
-				if (v52 & plr[arglist]._pMemSpells)
-					++sfx_ida;
-				v52 *= 2;
-				v56 = v139-- == 1;
-			} while (!v56);
-			v57 = 1;
-			if (sfx_ida > 1) {
-				v59 = 1;
-				do {
-					if (v57 & plr[v53]._pMemSpells) {
-						v7 = (int)&plr[v53]._pSplLvl[v59];
-						if (*(_BYTE *)v7 < 15)
-							++*(_BYTE *)v7;
-					}
-					v57 *= 2;
-					++v59;
-				} while (v59 <= MAX_SPELLS);
-				do {
-					v60 = random(0, MAX_SPELLS);
-				} while (!(plr[v53]._pMemSpells & ((__int64)1 << v60)));
-				v61 = &plr[v53]._pSplLvl[v60 + 1];
-				if (*v61 < 2)
-					*v61 = 0;
-				else
-					*v61 -= 2;
-			}
-			_LOBYTE(v7) = EMSG_SHRINE_ENCHANTED;
-			goto LABEL_221;
-		case SHRINE_THAUMATURGIC:
-			for (j = 0; j < nobjects; ++j) {
-				v63 = objectactive[j];
-				v7 = object[v63]._otype;
-				if ((v7 == OBJ_CHEST1 || v7 == OBJ_CHEST2 || v7 == OBJ_CHEST3) && !object[v63]._oSelFlag) {
-					v64 = GetRndSeed();
-					object[v63]._oAnimFrame -= 2;
-					object[v63]._oRndSeed = v64;
-					v5 = deltaload;
-					object[v63]._oSelFlag = 1;
+		case 1:
+			ModifyPlrMag(pnum, 6);
+			break;
+		case 2:
+			ModifyPlrDex(pnum, 6);
+			break;
+		case 3:
+			ModifyPlrVit(pnum, 6);
+			break;
+		}
+		CheckStats(pnum);
+		InitDiabloMsg(EMSG_SHRINE_MYSTERIOUS);
+		break;
+	case SHRINE_HIDDEN:
+		v12 = 0;
+		if(deltaload || pnum != myplr)
+			return;
+		for(j = 0; j < 7; j++) {
+			if(plr[pnum].InvBody[j]._itype != -1)
+				v12++;
+		}
+		if(v12 > 0) {
+			for(j = 0; j < 7; j++) {
+				if(plr[pnum].InvBody[j]._itype != -1
+				&& plr[pnum].InvBody[j]._iMaxDur != 255
+				&& plr[pnum].InvBody[j]._iMaxDur)
+				{
+					plr[pnum].InvBody[j]._iDurability += 10;
+					plr[pnum].InvBody[j]._iMaxDur += 10;
+					if(plr[pnum].InvBody[j]._iDurability > plr[pnum].InvBody[j]._iMaxDur)
+						plr[pnum].InvBody[j]._iDurability = plr[pnum].InvBody[j]._iMaxDur;
 				}
 			}
-			if (v5)
-				return;
-			if (arglist != myplr)
-				goto LABEL_280;
-			_LOBYTE(v7) = EMSG_SHRINE_THAUMATURGIC;
-			goto LABEL_221;
-		case SHRINE_FASCINATING:
-			if (v5 || arglist != myplr)
-				return;
-			v7 = 21720 * arglist;
-			plr[arglist]._pMemSpells |= (__int64)1 << (SPL_FIREBOLT - 1);
-			v67 = plr[arglist]._pSplLvl[SPL_FIREBOLT];
-			if (v67 < 15)
-				plr[0]._pSplLvl[v7 + SPL_FIREBOLT] = v67 + 1;
-			v68 = plr[0]._pSplLvl[v7 + SPL_FIREBOLT];
-			if (v68 < 15)
-				plr[0]._pSplLvl[v7 + SPL_FIREBOLT] = v68 + 1;
-			v69 = *(int *)((char *)&plr[0]._pMaxManaBase + v7);
-			v70 = *(int *)((char *)&plr[0]._pManaBase + v7);
-			v71 = *(int *)((char *)&plr[0]._pMana + v7) - v70;
-			v72 = *(int *)((char *)&plr[0]._pMaxManaBase + v7) / 10;
-			v73 = *(int *)((char *)&plr[0]._pMaxMana + v7) - v69;
-			*(int *)((char *)&plr[0]._pManaBase + v7) = v70 - v72;
-			v74 = *(int *)((char *)&plr[0]._pMana + v7) - v72;
-			sfx_ide = v74;
-			*(int *)((char *)&plr[0]._pMana + v7) = v74;
-			v75 = *(int *)((char *)&plr[0]._pMaxMana + v7);
-			*(int *)((char *)&plr[0]._pMaxManaBase + v7) = v69 - v72;
-			v76 = v75 - v72;
-			*(int *)((char *)&plr[0]._pMaxMana + v7) = v76;
-			if ((signed int)(sfx_ide & 0xFFFFFFC0) <= 0) {
-				*(int *)((char *)&plr[0]._pManaBase + v7) = 0;
-				*(int *)((char *)&plr[0]._pMana + v7) = v71;
+			v12 = 0;
+			for(j = 0; j < 7; j++) {
+				if(plr[pnum].InvBody[j]._itype != -1
+				&& plr[pnum].InvBody[j]._iMaxDur != 255
+				&& plr[pnum].InvBody[j]._iMaxDur)
+					v12++;
 			}
-			if ((signed int)(v76 & 0xFFFFFFC0) <= 0) {
-				*(int *)((char *)&plr[0]._pMaxManaBase + v7) = 0;
-				*(int *)((char *)&plr[0]._pMaxMana + v7) = v73;
-			}
-			_LOBYTE(v7) = EMSG_SHRINE_FASCINATING;
-			goto LABEL_221;
-		case SHRINE_CRYPTIC:
-			if (v5)
-				return;
-			v77 = arglist;
-			AddMissile(
-			    plr[arglist].WorldX,
-			    plr[arglist].WorldY,
-			    plr[arglist].WorldX,
-			    plr[arglist].WorldY,
-			    plr[arglist]._pdir,
-			    MIS_NOVA,
-			    -1,
-			    arglist,
-			    0,
-			    2 * leveltype);
-			if (arglist != myplr)
-				return;
-			_LOBYTE(v7) = EMSG_SHRINE_CRYPTIC;
-			plr[v77]._pMana = plr[v77]._pMaxMana;
-			plr[v77]._pManaBase = plr[v77]._pMaxManaBase;
-			goto LABEL_221;
-		case SHRINE_ELDRITCH:
-			if (v5)
-				return;
-			if (arglist != myplr)
-				goto LABEL_280;
-			sfx_idb = 0;
-			v78 = arglist;
-			if (plr[arglist]._pNumInv > 0) {
-				v79 = &plr[v78].InvList[0]._iMiscId;
-				v140 = &plr[v78].InvList[0]._iMiscId;
+			if(v12 > 0) { // check
 				do {
-					if (!*(v79 - 53)) {
-						if (*v79 == IMISC_HEAL || *v79 == IMISC_MANA) {
-							v80 = ItemMiscIdIdx(IMISC_REJUV);
-							SetPlrHandItem(&plr[v78].HoldItem, v80);
-							GetPlrHandSeed(&plr[v78].HoldItem);
-							v79 = v140;
-							plr[v78].HoldItem._iStatFlag = 1;
-							qmemcpy(v140 - 55, &plr[v78].HoldItem, 0x170u);
-						}
-						if (*v79 == IMISC_FULLHEAL || *v79 == IMISC_FULLMANA) {
-							v81 = ItemMiscIdIdx(IMISC_FULLREJUV);
-							SetPlrHandItem(&plr[v78].HoldItem, v81);
-							GetPlrHandSeed(&plr[v78].HoldItem);
-							v79 = v140;
-							plr[v78].HoldItem._iStatFlag = 1;
-							qmemcpy(v140 - 55, &plr[v78].HoldItem, 0x170u);
-						}
-					}
-					++sfx_idb;
-					v79 += 92;
-					v7 = sfx_idb;
-					v140 = v79;
-				} while (sfx_idb < plr[v78]._pNumInv);
+					v21 = random(0, 7);
+				}
+				while(plr[pnum].InvBody[v21]._itype == -1 || plr[pnum].InvBody[v21]._iMaxDur == 255 || !plr[pnum].InvBody[v21]._iMaxDur);
+
+				plr[pnum].InvBody[v21]._iDurability -= 20;
+				plr[pnum].InvBody[v21]._iMaxDur -= 20;
+				if(plr[pnum].InvBody[v21]._iDurability <= 0)
+					plr[pnum].InvBody[v21]._iDurability = 1;
+				if(plr[pnum].InvBody[v21]._iMaxDur <= 0)
+					plr[pnum].InvBody[v21]._iMaxDur = 1;
 			}
-			v82 = &plr[v78].SpdList[0]._iMiscId;
-			v141 = MAXBELTITEMS;
-			sfx_idc = &plr[v78].SpdList[0]._iMiscId;
-			do {
-				if (!*(v82 - 53)) {
-					if (*v82 == IMISC_HEAL || *v82 == IMISC_MANA) {
-						v83 = ItemMiscIdIdx(IMISC_REJUV);
-						SetPlrHandItem(&plr[v78].HoldItem, v83);
-						GetPlrHandSeed(&plr[v78].HoldItem);
-						v82 = sfx_idc;
-						plr[v78].HoldItem._iStatFlag = 1;
-						qmemcpy(sfx_idc - 55, &plr[v78].HoldItem, 0x170u);
-					}
-					v7 = *v82;
-					if (*v82 == IMISC_FULLHEAL || v7 == IMISC_FULLMANA) {
-						v84 = ItemMiscIdIdx(IMISC_FULLREJUV);
-						SetPlrHandItem(&plr[v78].HoldItem, v84);
-						GetPlrHandSeed(&plr[v78].HoldItem);
-						v82 = sfx_idc;
-						plr[v78].HoldItem._iStatFlag = 1;
-						qmemcpy(sfx_idc - 55, &plr[v78].HoldItem, 0x170u);
-						v7 = 0;
+		}
+		InitDiabloMsg(EMSG_SHRINE_HIDDEN);
+		break;
+	case SHRINE_GLOOMY:
+		if(deltaload)
+			return;
+		if(pnum == myplr) {
+			if(plr[pnum].InvBody[INVLOC_HEAD]._itype != -1)
+				plr[pnum].InvBody[INVLOC_HEAD]._iAC += 2;
+			if(plr[pnum].InvBody[INVLOC_CHEST]._itype != -1)
+				plr[pnum].InvBody[INVLOC_CHEST]._iAC += 2;
+			if(plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != -1) {
+				if(plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_SHIELD) {
+					plr[pnum].InvBody[INVLOC_HAND_LEFT]._iAC += 2;
+				} else {
+					plr[pnum].InvBody[INVLOC_HAND_LEFT]._iMaxDam--;
+					if(plr[pnum].InvBody[INVLOC_HAND_LEFT]._iMaxDam < plr[pnum].InvBody[INVLOC_HAND_LEFT]._iMinDam)
+						plr[pnum].InvBody[INVLOC_HAND_LEFT]._iMaxDam = plr[pnum].InvBody[INVLOC_HAND_LEFT]._iMinDam;
+				}
+			}
+			if(plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype != -1) {
+				if(plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_SHIELD) {
+					plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iAC += 2;
+				} else {
+					plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iMaxDam--;
+					if(plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iMaxDam < plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iMinDam)
+						plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iMaxDam = plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iMinDam;
+				}
+			}
+			for(j = 0; j < plr[pnum]._pNumInv; j++) {
+				if(plr[pnum].InvList[j]._itype > 0) {
+					if(plr[pnum].InvList[j]._itype <= ITYPE_MACE || plr[pnum].InvList[j]._itype == ITYPE_STAFF) { // check
+						plr[pnum].InvList[j]._iMaxDam--;
+						if(plr[pnum].InvList[j]._iMaxDam < plr[pnum].InvList[j]._iMinDam)
+							plr[pnum].InvList[j]._iMaxDam = plr[pnum].InvList[j]._iMinDam;
+					} else if(plr[pnum].InvList[j]._itype <= 9) {
+						plr[pnum].InvList[j]._iAC += 2;
 					}
 				}
-				v82 += 92;
-				v56 = v141-- == 1;
-				sfx_idc = v82;
-			} while (!v56);
-			_LOBYTE(v7) = EMSG_SHRINE_ELDRITCH;
-			goto LABEL_221;
-		case SHRINE_EERIE:
-			if (v5 || arglist != myplr)
-				return;
-			ModifyPlrMag(arglist, 2);
-			CheckStats(arglist);
-			_LOBYTE(v7) = EMSG_SHRINE_EERIE;
-			goto LABEL_221;
-		case SHRINE_DIVINE:
-			if (v5 || arglist != myplr)
-				return;
-			v85 = object[v3]._ox;
-			v86 = object[v3]._oy;
-			if (2 * currlevel >= 7) {
-				CreateTypeItem(v85, v86, 0, ITYPE_MISC, 19, 0, 1);
-				CreateTypeItem(object[v3]._ox, object[v3]._oy, 0, ITYPE_MISC, 19, 0, 1);
-			} else {
-				CreateTypeItem(v85, v86, 0, ITYPE_MISC, 7, 0, 1);
-				CreateTypeItem(object[v3]._ox, object[v3]._oy, 0, ITYPE_MISC, 2, 0, 1);
 			}
-			v87 = arglist;
-			plr[v87]._pMana = plr[arglist]._pMaxMana;
-			plr[v87]._pManaBase = plr[arglist]._pMaxManaBase;
-			plr[v87]._pHitPoints = plr[arglist]._pMaxHP;
-			v7 = plr[arglist]._pMaxHPBase;
-			plr[v87]._pHPBase = v7;
-			_LOBYTE(v7) = EMSG_SHRINE_DIVINE;
-			goto LABEL_221;
-		case SHRINE_HOLY:
-			if (v5)
-				return;
-			v88 = 0;
-			do {
-				v89 = random(159, 112);
-				v91 = v89;
-				v92 = random(159, 112);
-				if (++v88 > MAXDUNX * MAXDUNY)
-					break;
-				v7 = v92 + 112 * v91;
-				v93 = v92 + 112 * v91;
-			} while (nSolidTable[dPiece[0][v93]] || dObject[0][v7] || dMonster[0][v93]);
-			AddMissile(
-			    plr[arglist].WorldX,
-			    plr[arglist].WorldY,
-			    v91,
-			    v92,
-			    plr[arglist]._pdir,
-			    MIS_RNDTELEPORT,
-			    -1,
-			    arglist,
-			    0,
-			    2 * leveltype);
-			if (arglist != myplr)
-				return;
-			_LOBYTE(v7) = EMSG_SHRINE_HOLY;
-			goto LABEL_221;
-		case SHRINE_SACRED:
-			if (v5 || arglist != myplr)
-				return;
-			v7 = 21720 * arglist;
-			plr[arglist]._pMemSpells |= (__int64)1 << (SPL_CBOLT - 1);
-			v96 = plr[arglist]._pSplLvl[SPL_CBOLT];
-			if (v96 < 15)
-				plr[0]._pSplLvl[v7 + SPL_CBOLT] = v96 + 1;
-			v97 = plr[0]._pSplLvl[v7 + SPL_CBOLT];
-			if (v97 < 15)
-				plr[0]._pSplLvl[v7 + SPL_CBOLT] = v97 + 1;
-			v98 = *(int *)((char *)&plr[0]._pMaxManaBase + v7);
-			v99 = *(int *)((char *)&plr[0]._pManaBase + v7);
-			v100 = *(int *)((char *)&plr[0]._pMana + v7) - v99;
-			v101 = *(int *)((char *)&plr[0]._pMaxManaBase + v7) / 10;
-			v102 = *(int *)((char *)&plr[0]._pMaxMana + v7) - v98;
-			*(int *)((char *)&plr[0]._pManaBase + v7) = v99 - v101;
-			v103 = *(int *)((char *)&plr[0]._pMana + v7) - v101;
-			sfx_idf = v103;
-			*(int *)((char *)&plr[0]._pMana + v7) = v103;
-			v104 = *(int *)((char *)&plr[0]._pMaxMana + v7);
-			*(int *)((char *)&plr[0]._pMaxManaBase + v7) = v98 - v101;
-			v105 = v104 - v101;
-			*(int *)((char *)&plr[0]._pMaxMana + v7) = v105;
-			if (sfx_idf >> 6 <= 0) {
-				*(int *)((char *)&plr[0]._pManaBase + v7) = 0;
-				*(int *)((char *)&plr[0]._pMana + v7) = v100;
+			InitDiabloMsg(EMSG_SHRINE_GLOOMY);
+		}
+		break;
+	case SHRINE_WEIRD:
+		if(deltaload)
+			return;
+		if(pnum == myplr) {
+			if(plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != -1 && plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_SHIELD)
+				plr[pnum].InvBody[INVLOC_HAND_LEFT]._iMaxDam++;
+			if(plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype != -1 && plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype != ITYPE_SHIELD)
+				plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iMaxDam++;
+			for(j = 0; j < plr[pnum]._pNumInv; j++) {
+				if(plr[pnum].InvList[j]._itype > 0 && (plr[pnum].InvList[j]._itype <= ITYPE_MACE || plr[pnum].InvList[j]._itype == ITYPE_STAFF))
+					plr[pnum].InvList[j]._iMaxDam++;
 			}
-			if (v105 >> 6 <= 0) {
-				*(int *)((char *)&plr[0]._pMaxManaBase + v7) = 0;
-				*(int *)((char *)&plr[0]._pMaxMana + v7) = v102;
+			InitDiabloMsg(EMSG_SHRINE_WEIRD);
+		}
+		break;
+	case SHRINE_MAGICAL:
+	case SHRINE_MAGICAL2:
+		if(deltaload)
+			return;
+		AddMissile(
+			plr[pnum].WorldX,
+			plr[pnum].WorldY,
+			plr[pnum].WorldX,
+			plr[pnum].WorldY,
+			plr[pnum]._pdir,
+			MIS_MANASHIELD,
+			-1,
+			pnum,
+			0,
+			2 * leveltype);
+		if(pnum != myplr)
+			return;
+		InitDiabloMsg(EMSG_SHRINE_MAGICAL);
+		break;
+	case SHRINE_STONE:
+		if(deltaload)
+			return;
+		if(pnum == myplr) {
+			for(j = 0; j < 7; j++) {
+				if(plr[pnum].InvBody[j]._itype == ITYPE_STAFF)
+					plr[pnum].InvBody[j]._iCharges = plr[pnum].InvBody[j]._iMaxCharges;
 			}
-			_LOBYTE(v7) = EMSG_SHRINE_SACRED;
-			goto LABEL_221;
-		case SHRINE_SPIRITUAL:
-			if (v5 || arglist != myplr)
-				return;
-			sfx_idd = 0;
-			v106 = arglist;
-			do {
-				if (!plr[v106].InvGrid[sfx_idd]) {
-					v107 = 5 * leveltype + random(160, 10 * leveltype);
-					v108 = plr[v106]._pNumInv;
-					v109 = v106 * 21720 + 368 * v108;
-					qmemcpy((char *)plr[0].InvList + v109, &golditem, 0x170u);
-					*(int *)((char *)&plr[0].InvList[0]._iSeed + v109) = GetRndSeed();
-					++plr[v106]._pNumInv;
-					plr[v106].InvGrid[sfx_idd] = plr[v106]._pNumInv;
-					*(int *)((char *)&plr[0].InvList[0]._ivalue + v109) = v107;
-					plr[v106]._pGold += v107;
-					SetGoldCurs(arglist, v108);
+			for(j = 0; j < plr[pnum]._pNumInv; j++) {
+				if(plr[pnum].InvList[j]._itype == ITYPE_STAFF)
+					plr[pnum].InvList[j]._iCharges = plr[pnum].InvList[j]._iMaxCharges;
+			}
+			for(j = 0; j < 8; j++) {
+				if(plr[pnum].SpdList[j]._itype == ITYPE_STAFF)
+					plr[pnum].SpdList[j]._iCharges = plr[pnum].SpdList[j]._iMaxCharges; // belt items don't have charges?
+			}
+			InitDiabloMsg(EMSG_SHRINE_STONE);
+		}
+		break;
+	case SHRINE_RELIGIOUS:
+		if(deltaload)
+			return;
+		if(pnum == myplr) {
+			for(j = 0; j < 7; j++)
+				plr[pnum].InvBody[j]._iDurability = plr[pnum].InvBody[j]._iMaxDur;
+			for(j = 0; j < plr[pnum]._pNumInv; j++)
+				plr[pnum].InvList[j]._iDurability = plr[pnum].InvList[j]._iMaxDur;
+			for(j = 0; j < 8; j++)
+				plr[pnum].SpdList[j]._iDurability = plr[pnum].SpdList[j]._iMaxDur; // belt items don't have durability?
+			InitDiabloMsg(EMSG_SHRINE_RELIGIOUS);
+		}
+		break;
+	case SHRINE_ENCHANTED:
+		if(deltaload || pnum != myplr)
+			return;
+		v12 = 0;
+		for(j = 1; j <= 37; j++) {
+			if(plr[pnum]._pMemSpells64 & ((__int64)1 << (j-1))) // j
+				v12++;
+		}
+		if(v12 > 1) {
+			for(j = 1; j <= 37; j++) {
+				if(plr[pnum]._pMemSpells64 & ((__int64)1 << (j-1))) { // j
+					if(plr[pnum]._pSplLvl[j] < 15)
+						plr[pnum]._pSplLvl[j]++;
 				}
-				++sfx_idd;
-			} while (sfx_idd < 40);
-			_LOBYTE(v7) = EMSG_SHRINE_SPIRITUAL;
-			goto LABEL_221;
-		case SHRINE_SPOOKY:
-			if (v5)
-				return;
-			if (arglist == myplr) {
-				_LOBYTE(v7) = EMSG_SHRINE_SPOOKY1;
-				goto LABEL_221;
 			}
+			do {
+				v60 = random(0, 37) + 1;
+			}
+			while(!(plr[pnum]._pMemSpells64 & ((__int64)1 << (v60-1))));
+			if(plr[pnum]._pSplLvl[v60] < 2)
+				plr[pnum]._pSplLvl[v60] = 0;
+			else
+				plr[pnum]._pSplLvl[v60] -= 2;
+		}
+		InitDiabloMsg(EMSG_SHRINE_ENCHANTED);
+		break;
+	case SHRINE_THAUMATURGIC:
+		for(j = 0; j < nobjects; j++) {
+			v1 = objectactive[j];
+			/// ASSERT: assert((DWORD)v1 < MAXOBJECTS);
+			if((object[v1]._otype == OBJ_CHEST1
+			 || object[v1]._otype == OBJ_CHEST2
+			 || object[v1]._otype == OBJ_CHEST3)
+			 && !object[v1]._oSelFlag)
+			{
+				object[v1]._oAnimFrame -= 2;
+				object[v1]._oRndSeed = GetRndSeed();
+				object[v1]._oSelFlag = 1;
+			}
+		}
+		if(deltaload)
+			return;
+		if(pnum == myplr)
+			InitDiabloMsg(EMSG_SHRINE_THAUMATURGIC);
+		break;
+	case SHRINE_FASCINATING:
+		if(deltaload || pnum != myplr)
+			return;
+		plr[pnum]._pMemSpells64 |= (__int64)1 << (SPL_FIREBOLT-1);
+		if(plr[pnum]._pSplLvl[SPL_FIREBOLT] < 15)
+			plr[pnum]._pSplLvl[SPL_FIREBOLT]++;
+		if(plr[pnum]._pSplLvl[SPL_FIREBOLT] < 15)
+			plr[pnum]._pSplLvl[SPL_FIREBOLT]++;
+		v72 = plr[pnum]._pMaxManaBase / 10;
+		min = plr[pnum]._pMana - plr[pnum]._pManaBase;
+		max = plr[pnum]._pMaxMana - plr[pnum]._pMaxManaBase;
+		plr[pnum]._pManaBase -= v72;
+		plr[pnum]._pMana -= v72;
+		plr[pnum]._pMaxManaBase -= v72;
+		plr[pnum]._pMaxMana -= v72;
+		if((signed int)(plr[pnum]._pMana & 0xFFFFFFC0) <= 0) {
+			plr[pnum]._pMana = min;
+			plr[pnum]._pManaBase = 0;
+		}
+		if((signed int)(plr[pnum]._pMaxMana & 0xFFFFFFC0) <= 0) {
+			plr[pnum]._pMaxMana = max;
+			plr[pnum]._pMaxManaBase = 0;
+		}
+		InitDiabloMsg(EMSG_SHRINE_FASCINATING);
+		break;
+	case SHRINE_CRYPTIC:
+		if(deltaload)
+			return;
+		AddMissile(
+			plr[pnum].WorldX,
+			plr[pnum].WorldY,
+			plr[pnum].WorldX,
+			plr[pnum].WorldY,
+			plr[pnum]._pdir,
+			MIS_NOVA,
+			-1,
+			pnum,
+			0,
+			2 * leveltype);
+		if(pnum != myplr)
+			return;
+		plr[pnum]._pMana = plr[pnum]._pMaxMana;
+		plr[pnum]._pManaBase = plr[pnum]._pMaxManaBase;
+		InitDiabloMsg(EMSG_SHRINE_CRYPTIC);
+		break;
+	case SHRINE_ELDRITCH: /// BUGFIX: change `plr[pnum].HoldItem` to use a temporary buffer to prevent deleting item in hand
+		if(deltaload)
+			return;
+		if(pnum == myplr) {
+			for(j = 0; j < plr[pnum]._pNumInv; j++) {
+				if(!plr[pnum].InvList[j]._itype) {
+					if(plr[pnum].InvList[j]._iMiscId == IMISC_HEAL
+					|| plr[pnum].InvList[j]._iMiscId == IMISC_MANA)
+					{
+						SetPlrHandItem(&plr[pnum].HoldItem, ItemMiscIdIdx(IMISC_REJUV));
+						GetPlrHandSeed(&plr[pnum].HoldItem);
+						plr[pnum].HoldItem._iStatFlag = 1;
+						qmemcpy(&plr[pnum].InvList[j], &plr[pnum].HoldItem, sizeof(ItemStruct));
+					}
+					if(plr[pnum].InvList[j]._iMiscId == IMISC_FULLHEAL
+					|| plr[pnum].InvList[j]._iMiscId == IMISC_FULLMANA)
+					{
+						SetPlrHandItem(&plr[pnum].HoldItem, ItemMiscIdIdx(IMISC_FULLREJUV));
+						GetPlrHandSeed(&plr[pnum].HoldItem);
+						plr[pnum].HoldItem._iStatFlag = 1;
+						qmemcpy(&plr[pnum].InvList[j], &plr[pnum].HoldItem, sizeof(ItemStruct));
+					}
+				}
+			}
+			for(j = 0; j < 8; j++) {
+				if(!plr[pnum].SpdList[j]._itype) {
+					if(plr[pnum].SpdList[j]._iMiscId == IMISC_HEAL
+					|| plr[pnum].SpdList[j]._iMiscId == IMISC_MANA)
+					{
+						SetPlrHandItem(&plr[pnum].HoldItem, ItemMiscIdIdx(IMISC_REJUV));
+						GetPlrHandSeed(&plr[pnum].HoldItem);
+						plr[pnum].HoldItem._iStatFlag = 1;
+						qmemcpy(&plr[pnum].SpdList[j], &plr[pnum].HoldItem, sizeof(ItemStruct));
+					}
+					if(plr[pnum].SpdList[j]._iMiscId == IMISC_FULLHEAL
+					|| plr[pnum].SpdList[j]._iMiscId == IMISC_FULLMANA)
+					{
+						SetPlrHandItem(&plr[pnum].HoldItem, ItemMiscIdIdx(IMISC_FULLREJUV));
+						GetPlrHandSeed(&plr[pnum].HoldItem);
+						plr[pnum].HoldItem._iStatFlag = 1;
+						qmemcpy(&plr[pnum].SpdList[j], &plr[pnum].HoldItem, sizeof(ItemStruct));
+					}
+				}
+			}
+			InitDiabloMsg(EMSG_SHRINE_ELDRITCH);
+		}
+		break;
+	case SHRINE_EERIE:
+		if(deltaload || pnum != myplr)
+			return;
+		ModifyPlrMag(pnum, 2);
+		CheckStats(pnum);
+		InitDiabloMsg(EMSG_SHRINE_EERIE);
+		break;
+	case SHRINE_DIVINE:
+		if(deltaload || pnum != myplr)
+			return;
+		if(2 * currlevel >= 7) {
+			CreateTypeItem(object[i]._ox, object[i]._oy, 0, ITYPE_MISC, IMISC_FULLREJUV, 0, 1);
+			CreateTypeItem(object[i]._ox, object[i]._oy, 0, ITYPE_MISC, IMISC_FULLREJUV, 0, 1);
+		} else {
+			CreateTypeItem(object[i]._ox, object[i]._oy, 0, ITYPE_MISC, IMISC_FULLMANA, 0, 1);
+			CreateTypeItem(object[i]._ox, object[i]._oy, 0, ITYPE_MISC, IMISC_FULLHEAL, 0, 1);
+		}
+		plr[pnum]._pMana = plr[pnum]._pMaxMana;
+		plr[pnum]._pManaBase = plr[pnum]._pMaxManaBase;
+		plr[pnum]._pHitPoints = plr[pnum]._pMaxHP;
+		plr[pnum]._pHPBase = plr[pnum]._pMaxHPBase;
+		InitDiabloMsg(EMSG_SHRINE_DIVINE);
+		break;
+	case SHRINE_HOLY:
+		if(deltaload)
+			return;
+		v88 = 0;
+		do {
+			v88++;
+			xx = random(159, MAXDUNX);
+			yy = random(159, MAXDUNY);
+		}
+		while(v88 <= MAXDUNX*MAXDUNY && (nSolidTable[dPiece[xx][yy]] || dObject[xx][yy] || dMonster[xx][yy]));
+		AddMissile(plr[pnum].WorldX, plr[pnum].WorldY, xx, yy, plr[pnum]._pdir, MIS_RNDTELEPORT, -1, pnum, 0, 2 * leveltype);
+		if(pnum != myplr)
+			return;
+		InitDiabloMsg(EMSG_SHRINE_HOLY);
+		break;
+	case SHRINE_SACRED:
+		if(deltaload || pnum != myplr)
+			return;
+		plr[pnum]._pMemSpells64 |= (__int64)1 << (SPL_CBOLT-1);
+		if(plr[pnum]._pSplLvl[SPL_CBOLT] < 15)
+			plr[pnum]._pSplLvl[SPL_CBOLT]++;
+		if(plr[pnum]._pSplLvl[SPL_CBOLT] < 15)
+			plr[pnum]._pSplLvl[SPL_CBOLT]++;
+		v72 = plr[pnum]._pMaxManaBase / 10;
+		min = plr[pnum]._pMana - plr[pnum]._pManaBase;
+		max = plr[pnum]._pMaxMana - plr[pnum]._pMaxManaBase;
+		plr[pnum]._pManaBase -= v72;
+		plr[pnum]._pMana -= v72;
+		plr[pnum]._pMaxManaBase -= v72;
+		plr[pnum]._pMaxMana -= v72;
+		if((signed int)(plr[pnum]._pMana & 0xFFFFFFC0) <= 0) {
+			plr[pnum]._pMana = min;
+			plr[pnum]._pManaBase = 0;
+		}
+		if((signed int)(plr[pnum]._pMaxMana & 0xFFFFFFC0) <= 0) {
+			plr[pnum]._pMaxMana = max;
+			plr[pnum]._pMaxManaBase = 0;
+		}
+		InitDiabloMsg(EMSG_SHRINE_SACRED);
+		break;
+	case SHRINE_SPIRITUAL:
+		if(deltaload || pnum != myplr)
+			return;
+		for(j = 0; j < 40; j++) {
+			if(!plr[pnum].InvGrid[j]) {
+				v107 = 5 * leveltype + random(160, 10 * leveltype);
+				v108 = plr[pnum]._pNumInv; // check
+				qmemcpy(&plr[pnum].InvList[v108], &golditem, sizeof(ItemStruct));
+				plr[pnum]._pNumInv++;
+				plr[pnum].InvList[v108]._iSeed = GetRndSeed();
+				plr[pnum].InvGrid[j] = plr[pnum]._pNumInv;
+				plr[pnum].InvList[v108]._ivalue = v107;
+				plr[pnum]._pGold += v107;
+				SetGoldCurs(pnum, v108);
+			}
+		}
+		InitDiabloMsg(EMSG_SHRINE_SPIRITUAL);
+		break;
+	case SHRINE_SPOOKY:
+		if(deltaload)
+			return;
+		if(pnum == myplr) {
+			InitDiabloMsg(EMSG_SHRINE_SPOOKY1);
+		} else {
 			InitDiabloMsg(EMSG_SHRINE_SPOOKY2);
-			v110 = myplr;
-			plr[v110]._pHitPoints = plr[myplr]._pMaxHP;
-			plr[v110]._pHPBase = plr[v110]._pMaxHPBase;
-			plr[v110]._pMana = plr[v110]._pMaxMana;
-			plr[v110]._pManaBase = plr[v110]._pMaxManaBase;
-			goto LABEL_280;
-		case SHRINE_ABANDONED:
-			if (v5 || arglist != myplr)
-				return;
-			ModifyPlrDex(arglist, 2);
-			CheckStats(arglist);
-			if (arglist != myplr)
-				goto LABEL_280;
-			_LOBYTE(v7) = EMSG_SHRINE_ABANDONED;
-			goto LABEL_221;
-		case SHRINE_CREEPY:
-			if (v5 || arglist != myplr)
-				return;
-			ModifyPlrStr(arglist, 2);
-			CheckStats(arglist);
-			if (arglist != myplr)
-				goto LABEL_280;
-			_LOBYTE(v7) = EMSG_SHRINE_CREEPY;
-			goto LABEL_221;
-		case SHRINE_QUIET:
-			if (v5 || arglist != myplr)
-				return;
-			ModifyPlrVit(arglist, 2);
-			CheckStats(arglist);
-			if (arglist != myplr)
-				goto LABEL_280;
-			_LOBYTE(v7) = EMSG_SHRINE_QUIET;
-			goto LABEL_221;
-		case SHRINE_SECLUDED:
-			if (v5)
-				return;
-			if (arglist != myplr)
-				goto LABEL_280;
-			v7 = 0;
-			do {
-				v111 = (unsigned char *)automapview + v7;
-				v112 = 40;
-				do {
-					*v111 = 1;
-					v111 += 40;
-					--v112;
-				} while (v112);
-				++v7;
-			} while (v7 < 40);
-			_LOBYTE(v7) = EMSG_SHRINE_SECLUDED;
-			goto LABEL_221;
-		case SHRINE_ORNATE:
-			if (v5 || arglist != myplr)
-				return;
-			v7 = 21720 * arglist;
-			plr[arglist]._pMemSpells |= (__int64)1 << (SPL_HBOLT - 1);
-			v115 = plr[arglist]._pSplLvl[SPL_HBOLT];
-			if (v115 < 15)
-				plr[0]._pSplLvl[v7 + SPL_HBOLT] = v115 + 1;
-			v116 = plr[0]._pSplLvl[v7 + SPL_HBOLT];
-			if (v116 < 15)
-				plr[0]._pSplLvl[v7 + SPL_HBOLT] = v116 + 1;
-			v117 = *(int *)((char *)&plr[0]._pMaxManaBase + v7);
-			v118 = *(int *)((char *)&plr[0]._pManaBase + v7);
-			v119 = *(int *)((char *)&plr[0]._pMana + v7) - v118;
-			v120 = *(int *)((char *)&plr[0]._pMaxManaBase + v7) / 10;
-			v121 = *(int *)((char *)&plr[0]._pMaxMana + v7) - v117;
-			*(int *)((char *)&plr[0]._pManaBase + v7) = v118 - v120;
-			v122 = *(int *)((char *)&plr[0]._pMana + v7) - v120;
-			sfx_idg = v122;
-			*(int *)((char *)&plr[0]._pMana + v7) = v122;
-			v123 = *(int *)((char *)&plr[0]._pMaxMana + v7);
-			*(int *)((char *)&plr[0]._pMaxManaBase + v7) = v117 - v120;
-			v124 = v123 - v120;
-			*(int *)((char *)&plr[0]._pMaxMana + v7) = v124;
-			if (sfx_idg >> 6 <= 0) {
-				*(int *)((char *)&plr[0]._pManaBase + v7) = 0;
-				*(int *)((char *)&plr[0]._pMana + v7) = v119;
+			plr[myplr]._pHitPoints = plr[myplr]._pMaxHP;
+			plr[myplr]._pHPBase = plr[myplr]._pMaxHPBase;
+			plr[myplr]._pMana = plr[myplr]._pMaxMana;
+			plr[myplr]._pManaBase = plr[myplr]._pMaxManaBase;
+		}
+		break;
+	case SHRINE_ABANDONED:
+		if(deltaload || pnum != myplr)
+			return;
+		ModifyPlrDex(pnum, 2);
+		CheckStats(pnum);
+		if(pnum == myplr)
+			InitDiabloMsg(EMSG_SHRINE_ABANDONED);
+		break;
+	case SHRINE_CREEPY:
+		if(deltaload || pnum != myplr)
+			return;
+		ModifyPlrStr(pnum, 2);
+		CheckStats(pnum);
+		if(pnum == myplr)
+			InitDiabloMsg(EMSG_SHRINE_CREEPY);
+		break;
+	case SHRINE_QUIET:
+		if(deltaload || pnum != myplr)
+			return;
+		ModifyPlrVit(pnum, 2);
+		CheckStats(pnum);
+		if(pnum == myplr)
+			InitDiabloMsg(EMSG_SHRINE_QUIET);
+		break;
+	case SHRINE_SECLUDED:
+		if(deltaload)
+			return;
+		if(pnum == myplr) {
+			for(yy = 0; yy < DMAXY; yy++) {
+				for(xx = 0; xx < DMAXX; xx++) {
+					automapview[xx][yy] = 1;
+				}
 			}
-			if (v124 >> 6 <= 0) {
-				*(int *)((char *)&plr[0]._pMaxManaBase + v7) = 0;
-				*(int *)((char *)&plr[0]._pMaxMana + v7) = v121;
-			}
-			_LOBYTE(v7) = EMSG_SHRINE_ORNATE;
-			goto LABEL_221;
-		case SHRINE_GLIMMERING:
-			if (v5 || arglist != myplr)
-				return;
-			v125 = arglist;
-			v126 = &plr[arglist].InvBody[INVLOC_HEAD]._iIdentified;
-			v127 = 7;
-			do {
-				if (*((_BYTE *)v126 + 4) && !*v126)
-					*v126 = 1;
-				v126 += 92;
-				--v127;
-			} while (v127);
-			v128 = 0;
-			if (plr[v125]._pNumInv > 0) {
-				v129 = &plr[v125].InvList[0]._iIdentified;
-				do {
-					if (*((_BYTE *)v129 + 4) && !*v129)
-						*v129 = 1;
-					++v128;
-					v129 += 92;
-				} while (v128 < plr[v125]._pNumInv);
-			}
-			v130 = &plr[v125].SpdList[0]._iIdentified;
-			v131 = MAXBELTITEMS;
-			do {
-				if (*((_BYTE *)v130 + 4) && !*v130)
-					*v130 = 1;
-				v130 += 92;
-				--v131;
-			} while (v131);
-			v7 = EMSG_SHRINE_GLIMMERING;
-			goto LABEL_221;
-		case SHRINE_TAINTED:
-			if (v5)
-				return;
-			if (arglist == myplr) {
-				_LOBYTE(v7) = EMSG_SHRINE_TAINTED1;
-				goto LABEL_221;
-			}
+			InitDiabloMsg(EMSG_SHRINE_SECLUDED);
+		}
+		break;
+	case SHRINE_ORNATE:
+		if(deltaload || pnum != myplr)
+			return;
+		plr[pnum]._pMemSpells64 |= (__int64)1 << (SPL_HBOLT-1);
+		if(plr[pnum]._pSplLvl[SPL_HBOLT] < 15)
+			plr[pnum]._pSplLvl[SPL_HBOLT]++;
+		if(plr[pnum]._pSplLvl[SPL_HBOLT] < 15)
+			plr[pnum]._pSplLvl[SPL_HBOLT]++;
+		v72 = plr[pnum]._pMaxManaBase / 10;
+		min = plr[pnum]._pMana - plr[pnum]._pManaBase;
+		max = plr[pnum]._pMaxMana - plr[pnum]._pMaxManaBase;
+		plr[pnum]._pManaBase -= v72;
+		plr[pnum]._pMana -= v72;
+		plr[pnum]._pMaxManaBase -= v72;
+		plr[pnum]._pMaxMana -= v72;
+		if((signed int)(plr[pnum]._pMana & 0xFFFFFFC0) <= 0) {
+			plr[pnum]._pMana = min;
+			plr[pnum]._pManaBase = 0;
+		}
+		if((signed int)(plr[pnum]._pMaxMana & 0xFFFFFFC0) <= 0) {
+			plr[pnum]._pMaxMana = max;
+			plr[pnum]._pMaxManaBase = 0;
+		}
+		InitDiabloMsg(EMSG_SHRINE_ORNATE);
+		break;
+	case SHRINE_GLIMMERING:
+		if(deltaload || pnum != myplr)
+			return;
+		for(j = 0; j < 7; j++) {
+			if(plr[pnum].InvBody[j]._iMagical && !plr[pnum].InvBody[j]._iIdentified)
+				plr[pnum].InvBody[j]._iIdentified = 1;
+		}
+		for(j = 0; j < plr[pnum]._pNumInv; j++) {
+			if(plr[pnum].InvList[j]._iMagical && !plr[pnum].InvList[j]._iIdentified)
+				plr[pnum].InvList[j]._iIdentified = 1;
+		}
+		for(j = 0; j < 8; j++) {
+			if(plr[pnum].SpdList[j]._iMagical && !plr[pnum].SpdList[j]._iIdentified)
+				plr[pnum].SpdList[j]._iIdentified = 1; // belt items can't be magical?
+		}
+		InitDiabloMsg(EMSG_SHRINE_GLIMMERING);
+		break;
+	case SHRINE_TAINTED:
+		if(deltaload)
+			return;
+		if(pnum == myplr) {
+			InitDiabloMsg(EMSG_SHRINE_TAINTED1);
+		} else {
 			InitDiabloMsg(EMSG_SHRINE_TAINTED2);
 			v133 = random(155, 4);
-			v134 = 1;
-			v135 = 2 * (v133 == 1) - 1;
-			if (v133 == 2 || (v134 = -1, v133 != 3))
-				v136 = -1;
-			else
-				v136 = 1;
-			ModifyPlrStr(myplr, 2 * (v133 == 0) - 1);
-			ModifyPlrMag(myplr, v135);
-			ModifyPlrDex(myplr, v134);
-			ModifyPlrVit(myplr, v136);
+			ModifyPlrStr(myplr, v133 == 0 ? 1 : -1);
+			ModifyPlrMag(myplr, v133 == 1 ? 1 : -1);
+			ModifyPlrDex(myplr, v133 == 2 ? 1 : -1);
+			ModifyPlrVit(myplr, v133 == 3 ? 1 : -1);
 			CheckStats(myplr);
-			goto LABEL_280;
-		default:
-			goto LABEL_280;
 		}
-		while (1) {
-			v32 = *(_DWORD *)(v7 - 204);
-			if (v32 > 0) {
-				if (v32 <= 4)
-					goto LABEL_70;
-				if (v32 <= 9) {
-					*(_DWORD *)v7 += 2;
-				} else if (v32 == 10) {
-				LABEL_70:
-					--*(_DWORD *)(v7 - 4);
-					v33 = *(_DWORD *)(v7 - 8);
-					if (*(_DWORD *)(v7 - 4) < v33)
-						*(_DWORD *)(v7 - 4) = v33;
-					goto LABEL_72;
-				}
-			}
-		LABEL_72:
-			++v31;
-			v7 += 368;
-			if (v31 >= plr[v26]._pNumInv) {
-			LABEL_73:
-				_LOBYTE(v7) = 14;
-			LABEL_221:
-				InitDiabloMsg(v7);
-			LABEL_280:
-				CalcPlrInv(arglist, 1u);
-				drawpanflag = 255;
-				if (arglist == myplr)
-					NetSendCmdParam2(FALSE, CMD_PLROPOBJ, arglist, param2);
-				return;
-			}
-		}
+		break;
 	}
+
+	CalcPlrInv(pnum, 1);
+	drawpanflag = 255;
+
+	if(pnum == myplr)
+		NetSendCmdParam2(FALSE, CMD_PLROPOBJ, pnum, i);
 }
 // 4B84DC: using guessed type int dropGoldFlag;
 // 52571C: using guessed type int drawpanflag;
