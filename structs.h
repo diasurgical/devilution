@@ -607,7 +607,7 @@ struct MonsterStruct // note: missing field _mAFNum
 struct UniqMonstStruct {
 	char mtype;
 	char *mName;
-	char *mMode;
+	char *mTrnName;
 	unsigned char mlevel;
 	unsigned short mmaxhp;
 	unsigned char mAi;

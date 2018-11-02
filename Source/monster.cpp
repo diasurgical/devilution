@@ -173,7 +173,7 @@ unsigned char MonstAvailTbl[112] = {
 };
 UniqMonstStruct UniqMonst[98] = {
 	// clang-format off
-	// mtype,       mName,                      mMode, mlevel, mmaxhp, mAi,      mint, mMinDamage, mMaxDamage, mMagicRes,                                                     mUnqAttr, mUnqVar1, mUnqVar2, mtalkmsg
+	// mtype,       mName,                   mTrnName, mlevel, mmaxhp, mAi,      mint, mMinDamage, mMaxDamage, mMagicRes,                                                     mUnqAttr, mUnqVar1, mUnqVar2, mtalkmsg
 	{  MT_NGOATMC,  "Gharbad the Weak",         "BSDB",     4,    120, AI_GARBUD,   3,          8,         16,                              IMUNE_LIGHTNING  | IMUNE_NULL_40,        0,        0,        0, QUEST_GARBUD1  },
 	{  MT_SKING,    "Skeleton King",            "GENRL",    0,    240, AI_SKELKING, 3,          6,         16, IMUNE_MAGIC  | RESIST_FIRE | RESIST_LIGHTNING | IMUNE_NULL_40,        1,        0,        0, 0              },
 	{  MT_COUNSLR,  "Zhar the Mad",             "GENERAL",  8,    360, AI_ZHAR,     3,         16,         40, IMUNE_MAGIC  | RESIST_FIRE | RESIST_LIGHTNING                ,        0,        0,        0, QUEST_ZHAR1    },
@@ -982,7 +982,7 @@ void __fastcall PlaceUniqueMonst(int uniqindex, int miniontype, int unpackfilesi
 		Monst->mMaxDamage2 = 4 * Monst->mMaxDamage2 + 6;
 	}
 
-	sprintf(filestr, "Monsters\\Monsters\\%s.TRN", Uniq->mMode);
+	sprintf(filestr, "Monsters\\Monsters\\%s.TRN", Uniq->mTrnName);
 	LoadFileWithMem(filestr, &pLightTbl[256 * (uniquetrans + 19)]);
 
 	Monst->_uniqtrans = uniquetrans++;
