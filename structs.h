@@ -1138,8 +1138,8 @@ struct ROOMNODE {
 //////////////////////////////////////////////////
 
 struct ThemeStruct {
-	char ttype; /* aligned 4 */
-	int ttval;
+	int ttype; /* aligned 4 */
+	char ttval;
 };
 
 //////////////////////////////////////////////////

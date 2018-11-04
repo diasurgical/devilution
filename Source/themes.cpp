@@ -783,7 +783,6 @@ void __fastcall Theme_MonstPit(int t)
 //    - t: theme number (index into themes array).
 void __fastcall Theme_SkelRoom(int t)
 {
-
 	int xp;
 	int yp;
 	char monstrnd[4] = { 6, 7, 3, 9 };
