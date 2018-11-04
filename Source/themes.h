@@ -2,8 +2,8 @@
 #ifndef __THEMES_H__
 #define __THEMES_H__
 
-extern int numthemes;  // idb
-extern bool armorFlag; // weak
+extern int numthemes; // idb
+extern BOOL armorFlag;
 extern int ThemeGoodIn[4];
 extern bool weaponFlag;    // weak
 extern bool treasureFlag;  // weak

@@ -932,7 +932,7 @@ void __fastcall TalkToTowner(int p, int t)
 					InitQTextMsg(QUEST_MUSH12);
 					quests[QTYPE_BLKM]._qactive = 3;
 					towner[v7]._tMsgSaid = 1;
-					AllItemsList[Item->IDidx].iUsable = 1;
+					AllItemsList[Item->IDidx].iUsable = TRUE;
 				} else if (PlrHasItem(v3, IDI_BRAIN, &inv_item_num)) {
 					v17 = QUEST_MUSH11;
 					if (quests[QTYPE_BLKM]._qvar2 != QUEST_MUSH11) {

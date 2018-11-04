@@ -132,105 +132,105 @@ int ObjTypeConv[113] = {
 ObjDataStruct AllObjects[99] = {
 	// clang-format off
 	// oload, ofindex,   ominlvl, omaxlvl, olvltype, otheme, oquest, oAnimFlag, oAnimDelay, oAnimLen, oAnimWidth, oSolidFlag, oMissFlag, oLightFlag, oBreak, oSelFlag, oTrapFlag
-	{      1, OFILE_L1BRAZ,    1,       4,        1,     -1,     -1,         1,          1,       26,         64,          1,         1,          0,      0,        0,         0 },
-	{      1, OFILE_L1DOORS,   1,       4,        1,     -1,     -1,         0,          1,        0,         64,          0,         0,          1,      0,        3,         1 },
-	{      1, OFILE_L1DOORS,   1,       4,        1,     -1,     -1,         0,          2,        0,         64,          0,         0,          1,      0,        3,         1 },
-	{      3, OFILE_SKULFIRE,  0,       0,        0,      3,     -1,         1,          2,       11,         96,          1,         1,          0,      0,        0,         0 },
-	{      1, OFILE_LEVER,     1,       4,        1,     -1,     -1,         0,          1,        1,         96,          1,         1,          1,      0,        1,         1 },
-	{      1, OFILE_CHEST1,    1,      16,        0,     -1,     -1,         0,          1,        0,         96,          1,         1,          1,      0,        1,         1 },
-	{      1, OFILE_CHEST2,    1,      16,        0,     -1,     -1,         0,          1,        0,         96,          1,         1,          1,      0,        1,         1 },
-	{      1, OFILE_CHEST3,    1,      16,        0,     -1,     -1,         0,          1,        0,         96,          1,         1,          1,      0,        1,         1 },
-	{      2, OFILE_L1BRAZ,    0,       0,        0,     -1,     -1,         0,          0,        0,          0,          0,         0,          0,      0,        0,         0 },
-	{      3, OFILE_CANDLE2,   0,       0,        0,      1,     -1,         1,          2,        4,         96,          1,         1,          1,      0,        0,         0 },
-	{      2, OFILE_L1BRAZ,    0,       0,        0,     -1,     -1,         0,          0,        0,          0,          0,         0,          0,      0,        0,         0 },
-	{      3, OFILE_BANNER,    0,       0,        0,      3,     -1,         0,          2,        0,         96,          1,         1,          1,      0,        0,         0 },
-	{      3, OFILE_BANNER,    0,       0,        0,      3,     -1,         0,          1,        0,         96,          1,         1,          1,      0,        0,         0 },
-	{      3, OFILE_BANNER,    0,       0,        0,      3,     -1,         0,          3,        0,         96,          1,         1,          1,      0,        0,         0 },
-	{      2, OFILE_SKULPILE,  1,       4,        0,     -1,     -1,         0,          0,        1,         96,          1,         1,          1,      0,        0,         0 },
-	{      2, OFILE_L1BRAZ,    0,       0,        0,     -1,     -1,         0,          0,        0,          0,          0,         0,          0,      0,        0,         0 },
-	{      2, OFILE_L1BRAZ,    0,       0,        0,     -1,     -1,         0,          0,        0,          0,          0,         0,          0,      0,        0,         0 },
-	{      2, OFILE_L1BRAZ,    0,       0,        0,     -1,     -1,         0,          0,        0,          0,          0,         0,          0,      0,        0,         0 },
-	{      2, OFILE_L1BRAZ,    0,       0,        0,     -1,     -1,         0,          0,        0,          0,          0,         0,          0,      0,        0,         0 },
-	{      2, OFILE_L1BRAZ,    0,       0,        0,     -1,     -1,         0,          0,        0,          0,          0,         0,          0,      0,        0,         0 },
-	{      2, OFILE_CRUXSK1,   0,       0,        0,     -1,     -1,         0,          1,       15,         96,          1,         0,          1,      1,        3,         0 },
-	{      2, OFILE_CRUXSK2,   0,       0,        0,     -1,     -1,         0,          1,       15,         96,          1,         0,          1,      1,        3,         0 },
-	{      2, OFILE_CRUXSK3,   0,       0,        0,     -1,     -1,         0,          1,       15,         96,          1,         0,          1,      1,        3,         0 },
-	{      1, OFILE_ROCKSTAN,  5,       5,        0,     -1,     -1,         0,          1,        0,         96,          1,         1,          1,      0,        0,         0 },
-	{      2, OFILE_ANGEL,     0,       0,        0,     -1,     -1,         0,          1,        0,         96,          1,         0,          1,      0,        0,         0 },
-	{      2, OFILE_BOOK2,     0,       0,        0,     -1,     -1,         0,          1,        0,         96,          1,         1,          1,      0,        3,         0 },
-	{      2, OFILE_BURNCROS,  0,       0,        0,     -1,     -1,         1,          0,       10,        160,          1,         0,          0,      0,        0,         0 },
-	{      2, OFILE_NUDE2,     0,       0,        0,     -1,     -1,         1,          3,        6,        128,          1,         0,          1,      0,        0,         0 },
-	{      1, OFILE_SWITCH4,  16,      16,        0,     -1,     -1,         0,          1,        0,         96,          1,         1,          1,      0,        1,         1 },
-	{      1, OFILE_TNUDEM,   13,      16,        0,     -1,      6,         0,          1,        0,        128,          1,         0,          1,      0,        0,         0 },
-	{      1, OFILE_TNUDEM,   13,      16,        0,      6,      6,         0,          2,        0,        128,          1,         0,          1,      0,        0,         0 },
-	{      1, OFILE_TNUDEM,   13,      16,        0,      6,      6,         0,          3,        0,        128,          1,         0,          1,      0,        0,         0 },
-	{      1, OFILE_TNUDEM,   13,      16,        0,      6,      6,         0,          4,        0,        128,          1,         0,          1,      0,        0,         0 },
-	{      1, OFILE_TNUDEW,   13,      16,        0,      6,      6,         0,          1,        0,        128,          1,         0,          1,      0,        0,         0 },
-	{      1, OFILE_TNUDEW,   13,      16,        0,      6,      6,         0,          2,        0,        128,          1,         0,          1,      0,        0,         0 },
-	{      1, OFILE_TNUDEW,   13,      16,        0,      6,      6,         0,          3,        0,        128,          1,         0,          1,      0,        0,         0 },
-	{      1, OFILE_TSOUL,    13,      16,        0,     -1,      6,         0,          1,        0,        128,          1,         0,          1,      0,        0,         0 },
-	{      1, OFILE_TSOUL,    13,      16,        0,     -1,      6,         0,          2,        0,        128,          1,         0,          1,      0,        0,         0 },
-	{      1, OFILE_TSOUL,    13,      16,        0,     -1,      6,         0,          3,        0,        128,          1,         0,          1,      0,        0,         0 },
-	{      1, OFILE_TSOUL,    13,      16,        0,     -1,      6,         0,          4,        0,        128,          1,         0,          1,      0,        0,         0 },
-	{      1, OFILE_TSOUL,    13,      16,        0,     -1,      6,         0,          5,        0,        128,          1,         0,          1,      0,        0,         0 },
-	{      1, OFILE_BOOK2,     6,       6,        0,     -1,     -1,         0,          4,        0,         96,          1,         1,          1,      0,        3,         0 },
-	{      1, OFILE_L2DOORS,   5,       8,        2,     -1,     -1,         0,          1,        0,         64,          0,         0,          1,      0,        3,         1 },
-	{      1, OFILE_L2DOORS,   5,       8,        2,     -1,     -1,         0,          2,        0,         64,          0,         0,          1,      0,        3,         1 },
-	{      1, OFILE_WTORCH4,   5,       8,        2,     -1,     -1,         1,          1,        9,         96,          0,         1,          0,      0,        0,         0 },
-	{      1, OFILE_WTORCH3,   5,       8,        2,     -1,     -1,         1,          1,        9,         96,          0,         1,          0,      0,        0,         0 },
-	{      1, OFILE_WTORCH1,   5,       8,        2,     -1,     -1,         1,          1,        9,         96,          0,         1,          0,      0,        0,         0 },
-	{      1, OFILE_WTORCH2,   5,       8,        2,     -1,     -1,         1,          1,        9,         96,          0,         1,          0,      0,        0,         0 },
-	{      1, OFILE_SARC,      1,       4,        1,     -1,     -1,         0,          1,        5,        128,          1,         1,          1,      0,        3,         1 },
-	{      2, OFILE_FLAME1,    1,       4,        1,     -1,     -1,         0,          1,       20,         96,          0,         1,          1,      0,        0,         0 },
-	{      2, OFILE_LEVER,     1,       4,        1,     -1,     -1,         0,          1,        2,         96,          1,         1,          1,      0,        1,         1 },
-	{      2, OFILE_MINIWATR,  1,       4,        1,     -1,     -1,         1,          1,       10,         64,          1,         0,          1,      0,        0,         0 },
-	{      1, OFILE_BOOK1,     3,       4,        1,     -1,     -1,         0,          1,        0,         96,          1,         1,          1,      0,        3,         0 },
-	{      1, OFILE_TRAPHOLE,  1,      16,        0,     -1,     -1,         0,          1,        0,         64,          0,         1,          1,      0,        0,         0 },
-	{      1, OFILE_TRAPHOLE,  1,      16,        0,     -1,     -1,         0,          2,        0,         64,          0,         1,          1,      0,        0,         0 },
-	{      2, OFILE_BCASE,     0,       0,        0,     -1,     -1,         0,          1,        0,         96,          1,         0,          1,      0,        0,         0 },
-	{      2, OFILE_WEAPSTND,  0,       0,        0,     -1,     -1,         0,          1,        0,         96,          1,         0,          1,      0,        0,         0 },
-	{      1, OFILE_BARREL,    1,      16,        0,     -1,     -1,         0,          1,        9,         96,          1,         1,          1,      1,        3,         0 },
-	{      1, OFILE_BARRELEX,  1,      16,        0,     -1,     -1,         0,          1,       10,         96,          1,         1,          1,      1,        3,         0 },
-	{      3, OFILE_LSHRINEG,  0,       0,        0,      1,     -1,         0,          1,       11,        128,          0,         0,          1,      0,        3,         0 },
-	{      3, OFILE_RSHRINEG,  0,       0,        0,      1,     -1,         0,          1,       11,        128,          0,         0,          1,      0,        3,         0 },
-	{      3, OFILE_BOOK2,     0,       0,        0,      3,     -1,         0,          4,        0,         96,          1,         1,          1,      0,        3,         0 },
-	{      3, OFILE_BCASE,     0,       0,        0,      5,     -1,         0,          3,        0,         96,          0,         0,          1,      0,        3,         0 },
-	{      3, OFILE_BCASE,     0,       0,        0,      5,     -1,         0,          4,        0,         96,          0,         0,          1,      0,        3,         0 },
-	{      3, OFILE_BOOK2,     0,       0,        0,      5,     -1,         0,          1,        0,         96,          1,         1,          1,      0,        3,         0 },
-	{      3, OFILE_CANDLE2,   0,       0,        0,      5,     -1,         1,          2,        4,         96,          1,         1,          1,      0,        0,         0 },
-	{      3, OFILE_BLOODFNT,  0,       0,        0,      7,     -1,         1,          2,       10,         96,          1,         1,          1,      0,        3,         0 },
-	{      1, OFILE_DECAP,    13,      16,        0,      8,     -1,         0,          1,        0,         96,          1,         1,          1,      0,        1,         0 },
-	{      1, OFILE_CHEST1,    1,      16,        0,     -1,     -1,         0,          1,        0,         96,          1,         1,          1,      0,        1,         1 },
-	{      1, OFILE_CHEST2,    1,      16,        0,     -1,     -1,         0,          1,        0,         96,          1,         1,          1,      0,        1,         1 },
-	{      1, OFILE_CHEST3,    1,      16,        0,     -1,     -1,         0,          1,        0,         96,          1,         1,          1,      0,        1,         1 },
-	{      1, OFILE_BOOK1,     7,       7,        2,     -1,      8,         0,          1,        0,         96,          1,         1,          1,      0,        3,         0 },
-	{      1, OFILE_BOOK1,     5,       5,        2,     -1,      9,         0,          4,        0,         96,          1,         1,          1,      0,        3,         0 },
-	{      1, OFILE_PEDISTL,   5,       5,        2,     -1,      9,         0,          1,        0,         96,          1,         1,          1,      0,        3,         0 },
-	{      1, OFILE_L3DOORS,   9,      12,        3,     -1,     -1,         0,          1,        0,         64,          0,         0,          1,      0,        3,         1 },
-	{      1, OFILE_L3DOORS,   9,      12,        3,     -1,     -1,         0,          2,        0,         64,          0,         0,          1,      0,        3,         1 },
-	{      3, OFILE_PFOUNTN,   0,       0,        0,      9,     -1,         1,          2,       10,        128,          1,         1,          1,      0,        3,         0 },
-	{      3, OFILE_ARMSTAND,  0,       0,        0,     10,     -1,         0,          1,        0,         96,          1,         0,          1,      0,        3,         0 },
-	{      3, OFILE_ARMSTAND,  0,       0,        0,     10,     -1,         0,          2,        0,         96,          1,         0,          1,      0,        0,         0 },
-	{      3, OFILE_GOATSHRN,  0,       0,        0,     11,     -1,         1,          2,       10,         96,          1,         1,          1,      0,        3,         0 },
-	{      1, OFILE_CAULDREN, 13,      16,        0,     -1,     -1,         0,          1,        0,         96,          1,         0,          1,      0,        3,         0 },
-	{      3, OFILE_MFOUNTN,   0,       0,        0,     13,     -1,         1,          2,       10,        128,          1,         1,          1,      0,        3,         0 },
-	{      3, OFILE_TFOUNTN,   0,       0,        0,     14,     -1,         1,          2,        4,        128,          1,         1,          1,      0,        3,         0 },
-	{      1, OFILE_ALTBOY,    0,       0,        1,     -1,     15,         0,          1,        0,        128,          1,         1,          1,      0,        0,         0 },
-	{      1, OFILE_MCIRL,     0,       0,        1,     -1,     15,         0,          1,        0,         96,          0,         1,          1,      0,        0,         0 },
-	{      1, OFILE_MCIRL,     0,       0,        1,     -1,     15,         0,          1,        0,         96,          0,         1,          1,      0,        0,         0 },
-	{      1, OFILE_BKSLBRNT,  4,      12,        0,     -1,     -1,         0,          1,        0,         96,          1,         1,          1,      0,        3,         0 },
-	{      1, OFILE_CANDLE2,   2,      12,        0,     -1,     15,         1,          2,        4,         96,          1,         1,          1,      0,        0,         0 },
-	{      1, OFILE_BOOK1,    13,      13,        4,     -1,     11,         0,          4,        0,         96,          1,         1,          1,      0,        3,         0 },
-	{      1, OFILE_ARMSTAND, 13,      13,        0,     -1,     11,         0,          1,        0,         96,          1,         0,          1,      0,        3,         0 },
-	{      2, OFILE_WEAPSTND, 13,      13,        0,     -1,     11,         0,          1,        0,         96,          1,         0,          1,      0,        3,         0 },
-	{      2, OFILE_BURNCROS,  0,       0,        0,     15,     -1,         1,          0,       10,        160,          1,         0,          0,      0,        0,         0 },
-	{      2, OFILE_WEAPSTND,  0,       0,        0,     16,     -1,         0,          1,        0,         96,          1,         0,          1,      0,        3,         0 },
-	{      2, OFILE_WEAPSTND,  0,       0,        0,     16,     -1,         0,          2,        0,         96,          1,         0,          1,      0,        0,         0 },
-	{      2, OFILE_MUSHPTCH,  0,       0,        0,     -1,      1,         0,          1,        0,         96,          1,         1,          1,      0,        3,         1 },
-	{      2, OFILE_LZSTAND,   0,       0,        0,     -1,     15,         0,          1,        0,        128,          1,         0,          1,      0,        3,         0 },
-	{      1, OFILE_DECAP,     9,       9,        3,     -1,     -1,         0,          2,        0,         96,          1,         1,          1,      0,        1,         0 },
-	{      2, OFILE_CHEST3,    0,       0,        0,     -1,     -1,         0,          1,        0,         96,          1,         1,          1,      0,        1,         1 },
-	{     -1, 0,               0,       0,       -1,     -1,     -1,         0,          0,        0,          0,          0,         0,          0,      0,        0,         0 }
+	{      1, OFILE_L1BRAZ,    1,       4,        1,     -1,     -1,         1,          1,       26,         64, TRUE,       TRUE,      FALSE,           0,        0, FALSE     },
+	{      1, OFILE_L1DOORS,   1,       4,        1,     -1,     -1,         0,          1,        0,         64, FALSE,      FALSE,     TRUE,            0,        3, TRUE      },
+	{      1, OFILE_L1DOORS,   1,       4,        1,     -1,     -1,         0,          2,        0,         64, FALSE,      FALSE,     TRUE,            0,        3, TRUE      },
+	{      3, OFILE_SKULFIRE,  0,       0,        0,      3,     -1,         1,          2,       11,         96, TRUE,       TRUE,      FALSE,           0,        0, FALSE     },
+	{      1, OFILE_LEVER,     1,       4,        1,     -1,     -1,         0,          1,        1,         96, TRUE,       TRUE,      TRUE,            0,        1, TRUE      },
+	{      1, OFILE_CHEST1,    1,      16,        0,     -1,     -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        1, TRUE      },
+	{      1, OFILE_CHEST2,    1,      16,        0,     -1,     -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        1, TRUE      },
+	{      1, OFILE_CHEST3,    1,      16,        0,     -1,     -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        1, TRUE      },
+	{      2, OFILE_L1BRAZ,    0,       0,        0,     -1,     -1,         0,          0,        0,          0, FALSE,      FALSE,     FALSE,           0,        0, FALSE     },
+	{      3, OFILE_CANDLE2,   0,       0,        0,      1,     -1,         1,          2,        4,         96, TRUE,       TRUE,      TRUE,            0,        0, FALSE     },
+	{      2, OFILE_L1BRAZ,    0,       0,        0,     -1,     -1,         0,          0,        0,          0, FALSE,      FALSE,     FALSE,           0,        0, FALSE     },
+	{      3, OFILE_BANNER,    0,       0,        0,      3,     -1,         0,          2,        0,         96, TRUE,       TRUE,      TRUE,            0,        0, FALSE     },
+	{      3, OFILE_BANNER,    0,       0,        0,      3,     -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        0, FALSE     },
+	{      3, OFILE_BANNER,    0,       0,        0,      3,     -1,         0,          3,        0,         96, TRUE,       TRUE,      TRUE,            0,        0, FALSE     },
+	{      2, OFILE_SKULPILE,  1,       4,        0,     -1,     -1,         0,          0,        1,         96, TRUE,       TRUE,      TRUE,            0,        0, FALSE     },
+	{      2, OFILE_L1BRAZ,    0,       0,        0,     -1,     -1,         0,          0,        0,          0, FALSE,      FALSE,     FALSE,           0,        0, FALSE     },
+	{      2, OFILE_L1BRAZ,    0,       0,        0,     -1,     -1,         0,          0,        0,          0, FALSE,      FALSE,     FALSE,           0,        0, FALSE     },
+	{      2, OFILE_L1BRAZ,    0,       0,        0,     -1,     -1,         0,          0,        0,          0, FALSE,      FALSE,     FALSE,           0,        0, FALSE     },
+	{      2, OFILE_L1BRAZ,    0,       0,        0,     -1,     -1,         0,          0,        0,          0, FALSE,      FALSE,     FALSE,           0,        0, FALSE     },
+	{      2, OFILE_L1BRAZ,    0,       0,        0,     -1,     -1,         0,          0,        0,          0, FALSE,      FALSE,     FALSE,           0,        0, FALSE     },
+	{      2, OFILE_CRUXSK1,   0,       0,        0,     -1,     -1,         0,          1,       15,         96, TRUE,       FALSE,     TRUE,            1,        3, FALSE     },
+	{      2, OFILE_CRUXSK2,   0,       0,        0,     -1,     -1,         0,          1,       15,         96, TRUE,       FALSE,     TRUE,            1,        3, FALSE     },
+	{      2, OFILE_CRUXSK3,   0,       0,        0,     -1,     -1,         0,          1,       15,         96, TRUE,       FALSE,     TRUE,            1,        3, FALSE     },
+	{      1, OFILE_ROCKSTAN,  5,       5,        0,     -1,     -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        0, FALSE     },
+	{      2, OFILE_ANGEL,     0,       0,        0,     -1,     -1,         0,          1,        0,         96, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
+	{      2, OFILE_BOOK2,     0,       0,        0,     -1,     -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
+	{      2, OFILE_BURNCROS,  0,       0,        0,     -1,     -1,         1,          0,       10,        160, TRUE,       FALSE,     FALSE,           0,        0, FALSE     },
+	{      2, OFILE_NUDE2,     0,       0,        0,     -1,     -1,         1,          3,        6,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
+	{      1, OFILE_SWITCH4,  16,      16,        0,     -1,     -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        1, TRUE      },
+	{      1, OFILE_TNUDEM,   13,      16,        0,     -1,      6,         0,          1,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
+	{      1, OFILE_TNUDEM,   13,      16,        0,      6,      6,         0,          2,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
+	{      1, OFILE_TNUDEM,   13,      16,        0,      6,      6,         0,          3,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
+	{      1, OFILE_TNUDEM,   13,      16,        0,      6,      6,         0,          4,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
+	{      1, OFILE_TNUDEW,   13,      16,        0,      6,      6,         0,          1,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
+	{      1, OFILE_TNUDEW,   13,      16,        0,      6,      6,         0,          2,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
+	{      1, OFILE_TNUDEW,   13,      16,        0,      6,      6,         0,          3,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
+	{      1, OFILE_TSOUL,    13,      16,        0,     -1,      6,         0,          1,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
+	{      1, OFILE_TSOUL,    13,      16,        0,     -1,      6,         0,          2,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
+	{      1, OFILE_TSOUL,    13,      16,        0,     -1,      6,         0,          3,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
+	{      1, OFILE_TSOUL,    13,      16,        0,     -1,      6,         0,          4,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
+	{      1, OFILE_TSOUL,    13,      16,        0,     -1,      6,         0,          5,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
+	{      1, OFILE_BOOK2,     6,       6,        0,     -1,     -1,         0,          4,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
+	{      1, OFILE_L2DOORS,   5,       8,        2,     -1,     -1,         0,          1,        0,         64, FALSE,      FALSE,     TRUE,            0,        3, TRUE      },
+	{      1, OFILE_L2DOORS,   5,       8,        2,     -1,     -1,         0,          2,        0,         64, FALSE,      FALSE,     TRUE,            0,        3, FALSE     },
+	{      1, OFILE_WTORCH4,   5,       8,        2,     -1,     -1,         1,          1,        9,         96, FALSE,      TRUE,      FALSE,           0,        0, FALSE     },
+	{      1, OFILE_WTORCH3,   5,       8,        2,     -1,     -1,         1,          1,        9,         96, FALSE,      TRUE,      FALSE,           0,        0, FALSE     },
+	{      1, OFILE_WTORCH1,   5,       8,        2,     -1,     -1,         1,          1,        9,         96, FALSE,      TRUE,      FALSE,           0,        0, FALSE     },
+	{      1, OFILE_WTORCH2,   5,       8,        2,     -1,     -1,         1,          1,        9,         96, FALSE,      TRUE,      FALSE,           0,        0, FALSE     },
+	{      1, OFILE_SARC,      1,       4,        1,     -1,     -1,         0,          1,        5,        128, TRUE,       TRUE,      TRUE,            0,        3, TRUE      },
+	{      2, OFILE_FLAME1,    1,       4,        1,     -1,     -1,         0,          1,       20,         96, FALSE,      TRUE,      TRUE,            0,        0, FALSE     },
+	{      2, OFILE_LEVER,     1,       4,        1,     -1,     -1,         0,          1,        2,         96, TRUE,       TRUE,      TRUE,            0,        1, TRUE      },
+	{      2, OFILE_MINIWATR,  1,       4,        1,     -1,     -1,         1,          1,       10,         64, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
+	{      1, OFILE_BOOK1,     3,       4,        1,     -1,     -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
+	{      1, OFILE_TRAPHOLE,  1,      16,        0,     -1,     -1,         0,          1,        0,         64, FALSE,      TRUE,      TRUE,            0,        0, FALSE     },
+	{      1, OFILE_TRAPHOLE,  1,      16,        0,     -1,     -1,         0,          2,        0,         64, FALSE,      TRUE,      TRUE,            0,        0, FALSE     },
+	{      2, OFILE_BCASE,     0,       0,        0,     -1,     -1,         0,          1,        0,         96, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
+	{      2, OFILE_WEAPSTND,  0,       0,        0,     -1,     -1,         0,          1,        0,         96, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
+	{      1, OFILE_BARREL,    1,      16,        0,     -1,     -1,         0,          1,        9,         96, TRUE,       TRUE,      TRUE,            1,        3, FALSE     },
+	{      1, OFILE_BARRELEX,  1,      16,        0,     -1,     -1,         0,          1,       10,         96, TRUE,       TRUE,      TRUE,            1,        3, FALSE     },
+	{      3, OFILE_LSHRINEG,  0,       0,        0,      1,     -1,         0,          1,       11,        128, FALSE,      FALSE,     TRUE,            0,        3, FALSE     },
+	{      3, OFILE_RSHRINEG,  0,       0,        0,      1,     -1,         0,          1,       11,        128, FALSE,      FALSE,     TRUE,            0,        3, FALSE     },
+	{      3, OFILE_BOOK2,     0,       0,        0,      3,     -1,         0,          4,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
+	{      3, OFILE_BCASE,     0,       0,        0,      5,     -1,         0,          3,        0,         96, FALSE,      FALSE,     TRUE,            0,        3, FALSE     },
+	{      3, OFILE_BCASE,     0,       0,        0,      5,     -1,         0,          4,        0,         96, FALSE,      FALSE,     TRUE,            0,        3, FALSE     },
+	{      3, OFILE_BOOK2,     0,       0,        0,      5,     -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
+	{      3, OFILE_CANDLE2,   0,       0,        0,      5,     -1,         1,          2,        4,         96, TRUE,       TRUE,      TRUE,            0,        0, FALSE     },
+	{      3, OFILE_BLOODFNT,  0,       0,        0,      7,     -1,         1,          2,       10,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
+	{      1, OFILE_DECAP,    13,      16,        0,      8,     -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        1, FALSE     },
+	{      1, OFILE_CHEST1,    1,      16,        0,     -1,     -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        1, TRUE      },
+	{      1, OFILE_CHEST2,    1,      16,        0,     -1,     -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        1, TRUE      },
+	{      1, OFILE_CHEST3,    1,      16,        0,     -1,     -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        1, TRUE      },
+	{      1, OFILE_BOOK1,     7,       7,        2,     -1,      8,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
+	{      1, OFILE_BOOK1,     5,       5,        2,     -1,      9,         0,          4,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
+	{      1, OFILE_PEDISTL,   5,       5,        2,     -1,      9,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
+	{      1, OFILE_L3DOORS,   9,      12,        3,     -1,     -1,         0,          1,        0,         64, FALSE,      FALSE,     TRUE,            0,        3, TRUE      },
+	{      1, OFILE_L3DOORS,   9,      12,        3,     -1,     -1,         0,          2,        0,         64, FALSE,      FALSE,     TRUE,            0,        3, TRUE      },
+	{      3, OFILE_PFOUNTN,   0,       0,        0,      9,     -1,         1,          2,       10,        128, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
+	{      3, OFILE_ARMSTAND,  0,       0,        0,     10,     -1,         0,          1,        0,         96, TRUE,       FALSE,     TRUE,            0,        3, FALSE     },
+	{      3, OFILE_ARMSTAND,  0,       0,        0,     10,     -1,         0,          2,        0,         96, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
+	{      3, OFILE_GOATSHRN,  0,       0,        0,     11,     -1,         1,          2,       10,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
+	{      1, OFILE_CAULDREN, 13,      16,        0,     -1,     -1,         0,          1,        0,         96, TRUE,       FALSE,     TRUE,            0,        3, FALSE     },
+	{      3, OFILE_MFOUNTN,   0,       0,        0,     13,     -1,         1,          2,       10,        128, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
+	{      3, OFILE_TFOUNTN,   0,       0,        0,     14,     -1,         1,          2,        4,        128, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
+	{      1, OFILE_ALTBOY,    0,       0,        1,     -1,     15,         0,          1,        0,        128, TRUE,       TRUE,      TRUE,            0,        0, FALSE     },
+	{      1, OFILE_MCIRL,     0,       0,        1,     -1,     15,         0,          1,        0,         96, FALSE,      TRUE,      TRUE,            0,        0, FALSE     },
+	{      1, OFILE_MCIRL,     0,       0,        1,     -1,     15,         0,          1,        0,         96, FALSE,      TRUE,      TRUE,            0,        0, FALSE     },
+	{      1, OFILE_BKSLBRNT,  4,      12,        0,     -1,     -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
+	{      1, OFILE_CANDLE2,   2,      12,        0,     -1,     15,         1,          2,        4,         96, TRUE,       TRUE,      TRUE,            0,        0, FALSE     },
+	{      1, OFILE_BOOK1,    13,      13,        4,     -1,     11,         0,          4,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
+	{      1, OFILE_ARMSTAND, 13,      13,        0,     -1,     11,         0,          1,        0,         96, TRUE,       FALSE,     TRUE,            0,        3, FALSE     },
+	{      2, OFILE_WEAPSTND, 13,      13,        0,     -1,     11,         0,          1,        0,         96, TRUE,       FALSE,     TRUE,            0,        3, FALSE     },
+	{      2, OFILE_BURNCROS,  0,       0,        0,     15,     -1,         1,          0,       10,        160, TRUE,       FALSE,     FALSE,           0,        0, FALSE     },
+	{      2, OFILE_WEAPSTND,  0,       0,        0,     16,     -1,         0,          1,        0,         96, TRUE,       FALSE,     TRUE,            0,        3, FALSE     },
+	{      2, OFILE_WEAPSTND,  0,       0,        0,     16,     -1,         0,          2,        0,         96, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
+	{      2, OFILE_MUSHPTCH,  0,       0,        0,     -1,      1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, TRUE      },
+	{      2, OFILE_LZSTAND,   0,       0,        0,     -1,     15,         0,          1,        0,        128, TRUE,       FALSE,     TRUE,            0,        3, FALSE     },
+	{      1, OFILE_DECAP,     9,       9,        3,     -1,     -1,         0,          2,        0,         96, TRUE,       TRUE,      TRUE,            0,        1, FALSE     },
+	{      2, OFILE_CHEST3,    0,       0,        0,     -1,     -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        1, TRUE      },
+	{     -1, 0,               0,       0,       -1,     -1,     -1,         0,          0,        0,          0, FALSE,      FALSE,     FALSE,           0,        0, FALSE     }
 	// clang-format on
 };
 char *ObjMasterLoadList[56] = {
@@ -1879,16 +1879,13 @@ void __fastcall AddPurifyingFountain(int i)
 
 void __fastcall AddArmorStand(int i)
 {
-	int v1; // eax
-
 	if (!armorFlag) {
-		v1 = i;
-		object[v1]._oSelFlag = 0;
-		object[v1]._oAnimFlag = 2;
+		object[i]._oSelFlag = 0;
+		object[i]._oAnimFlag = 2;
 	}
+
 	object[i]._oRndSeed = GetRndSeed();
 }
-// 6AAA3C: using guessed type int armorFlag;
 
 void __fastcall AddDecap(int i)
 {
@@ -2335,7 +2332,7 @@ void __fastcall Obj_Door(int i)
 		dy = object[i]._oy;
 		dx = object[i]._ox;
 		object[i]._oSelFlag = 2;
-		object[i]._oMissFlag = 1;
+		object[i]._oMissFlag = TRUE;
 		object[i]._oVar4 = ((dItem[dx][dy] == 0
 		                        && dDead[dx][dy] == 0
 		                        && dPlayer[dx][dy] == 0
@@ -2343,7 +2340,7 @@ void __fastcall Obj_Door(int i)
 		                       == 0)
 		    + 1;
 	} else {
-		object[i]._oMissFlag = 0;
+		object[i]._oMissFlag = FALSE;
 		object[i]._oSelFlag = 3;
 	}
 }
@@ -4227,32 +4224,32 @@ int __fastcall ItemMiscIdIdx(int imiscid)
 void __fastcall OperateShrine(int pnum, int i, int sType)
 {
 	int v1;
-	int v12; // edx
-	int v21; // eax
-	int v60; // ebx
-	int j; // edi
-	int v72; // edi
-	int v88; // ebx
+	int v12;  // edx
+	int v21;  // eax
+	int v60;  // ebx
+	int j;    // edi
+	int v72;  // edi
+	int v88;  // ebx
 	int v107; // ST38_4
 	int v108; // ST34_4
 	int v133; // eax
 	int xx, yy;
 	int min, max;
 
-	if(dropGoldFlag) {
+	if (dropGoldFlag) {
 		dropGoldFlag = 0;
 		dropGoldValue = 0;
 	}
 
 	/// ASSERT: assert((DWORD)i < MAXOBJECTS);
 
-	if(!object[i]._oSelFlag)
+	if (!object[i]._oSelFlag)
 		return;
 
 	SetRndSeed(object[i]._oRndSeed);
 	object[i]._oSelFlag = 0;
 
-	if(deltaload) {
+	if (deltaload) {
 		object[i]._oAnimFlag = 0;
 		object[i]._oAnimFrame = object[i]._oAnimLen;
 	} else {
@@ -4261,15 +4258,15 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 		object[i]._oAnimDelay = 1;
 	}
 
-	switch(object[i]._oVar1) {
+	switch (object[i]._oVar1) {
 	case SHRINE_MYSTERIOUS:
-		if(deltaload || pnum != myplr)
+		if (deltaload || pnum != myplr)
 			return;
 		ModifyPlrStr(pnum, -1);
 		ModifyPlrMag(pnum, -1);
 		ModifyPlrDex(pnum, -1);
 		ModifyPlrVit(pnum, -1);
-		switch(random(0, 4)) {
+		switch (random(0, 4)) {
 		case 0:
 			ModifyPlrStr(pnum, 6);
 			break;
@@ -4288,80 +4285,78 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 		break;
 	case SHRINE_HIDDEN:
 		v12 = 0;
-		if(deltaload || pnum != myplr)
+		if (deltaload || pnum != myplr)
 			return;
-		for(j = 0; j < 7; j++) {
-			if(plr[pnum].InvBody[j]._itype != -1)
+		for (j = 0; j < 7; j++) {
+			if (plr[pnum].InvBody[j]._itype != -1)
 				v12++;
 		}
-		if(v12 > 0) {
-			for(j = 0; j < 7; j++) {
-				if(plr[pnum].InvBody[j]._itype != -1
-				&& plr[pnum].InvBody[j]._iMaxDur != 255
-				&& plr[pnum].InvBody[j]._iMaxDur)
-				{
+		if (v12 > 0) {
+			for (j = 0; j < 7; j++) {
+				if (plr[pnum].InvBody[j]._itype != -1
+				    && plr[pnum].InvBody[j]._iMaxDur != 255
+				    && plr[pnum].InvBody[j]._iMaxDur) {
 					plr[pnum].InvBody[j]._iDurability += 10;
 					plr[pnum].InvBody[j]._iMaxDur += 10;
-					if(plr[pnum].InvBody[j]._iDurability > plr[pnum].InvBody[j]._iMaxDur)
+					if (plr[pnum].InvBody[j]._iDurability > plr[pnum].InvBody[j]._iMaxDur)
 						plr[pnum].InvBody[j]._iDurability = plr[pnum].InvBody[j]._iMaxDur;
 				}
 			}
 			v12 = 0;
-			for(j = 0; j < 7; j++) {
-				if(plr[pnum].InvBody[j]._itype != -1
-				&& plr[pnum].InvBody[j]._iMaxDur != 255
-				&& plr[pnum].InvBody[j]._iMaxDur)
+			for (j = 0; j < 7; j++) {
+				if (plr[pnum].InvBody[j]._itype != -1
+				    && plr[pnum].InvBody[j]._iMaxDur != 255
+				    && plr[pnum].InvBody[j]._iMaxDur)
 					v12++;
 			}
-			if(v12 > 0) { // check
+			if (v12 > 0) { // check
 				do {
 					v21 = random(0, 7);
-				}
-				while(plr[pnum].InvBody[v21]._itype == -1 || plr[pnum].InvBody[v21]._iMaxDur == 255 || !plr[pnum].InvBody[v21]._iMaxDur);
+				} while (plr[pnum].InvBody[v21]._itype == -1 || plr[pnum].InvBody[v21]._iMaxDur == 255 || !plr[pnum].InvBody[v21]._iMaxDur);
 
 				plr[pnum].InvBody[v21]._iDurability -= 20;
 				plr[pnum].InvBody[v21]._iMaxDur -= 20;
-				if(plr[pnum].InvBody[v21]._iDurability <= 0)
+				if (plr[pnum].InvBody[v21]._iDurability <= 0)
 					plr[pnum].InvBody[v21]._iDurability = 1;
-				if(plr[pnum].InvBody[v21]._iMaxDur <= 0)
+				if (plr[pnum].InvBody[v21]._iMaxDur <= 0)
 					plr[pnum].InvBody[v21]._iMaxDur = 1;
 			}
 		}
 		InitDiabloMsg(EMSG_SHRINE_HIDDEN);
 		break;
 	case SHRINE_GLOOMY:
-		if(deltaload)
+		if (deltaload)
 			return;
-		if(pnum == myplr) {
-			if(plr[pnum].InvBody[INVLOC_HEAD]._itype != -1)
+		if (pnum == myplr) {
+			if (plr[pnum].InvBody[INVLOC_HEAD]._itype != -1)
 				plr[pnum].InvBody[INVLOC_HEAD]._iAC += 2;
-			if(plr[pnum].InvBody[INVLOC_CHEST]._itype != -1)
+			if (plr[pnum].InvBody[INVLOC_CHEST]._itype != -1)
 				plr[pnum].InvBody[INVLOC_CHEST]._iAC += 2;
-			if(plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != -1) {
-				if(plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_SHIELD) {
+			if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != -1) {
+				if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_SHIELD) {
 					plr[pnum].InvBody[INVLOC_HAND_LEFT]._iAC += 2;
 				} else {
 					plr[pnum].InvBody[INVLOC_HAND_LEFT]._iMaxDam--;
-					if(plr[pnum].InvBody[INVLOC_HAND_LEFT]._iMaxDam < plr[pnum].InvBody[INVLOC_HAND_LEFT]._iMinDam)
+					if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._iMaxDam < plr[pnum].InvBody[INVLOC_HAND_LEFT]._iMinDam)
 						plr[pnum].InvBody[INVLOC_HAND_LEFT]._iMaxDam = plr[pnum].InvBody[INVLOC_HAND_LEFT]._iMinDam;
 				}
 			}
-			if(plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype != -1) {
-				if(plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_SHIELD) {
+			if (plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype != -1) {
+				if (plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_SHIELD) {
 					plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iAC += 2;
 				} else {
 					plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iMaxDam--;
-					if(plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iMaxDam < plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iMinDam)
+					if (plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iMaxDam < plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iMinDam)
 						plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iMaxDam = plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iMinDam;
 				}
 			}
-			for(j = 0; j < plr[pnum]._pNumInv; j++) {
-				if(plr[pnum].InvList[j]._itype > 0) {
-					if(plr[pnum].InvList[j]._itype <= ITYPE_MACE || plr[pnum].InvList[j]._itype == ITYPE_STAFF) { // check
+			for (j = 0; j < plr[pnum]._pNumInv; j++) {
+				if (plr[pnum].InvList[j]._itype > 0) {
+					if (plr[pnum].InvList[j]._itype <= ITYPE_MACE || plr[pnum].InvList[j]._itype == ITYPE_STAFF) { // check
 						plr[pnum].InvList[j]._iMaxDam--;
-						if(plr[pnum].InvList[j]._iMaxDam < plr[pnum].InvList[j]._iMinDam)
+						if (plr[pnum].InvList[j]._iMaxDam < plr[pnum].InvList[j]._iMinDam)
 							plr[pnum].InvList[j]._iMaxDam = plr[pnum].InvList[j]._iMinDam;
-					} else if(plr[pnum].InvList[j]._itype <= 9) {
+					} else if (plr[pnum].InvList[j]._itype <= 9) {
 						plr[pnum].InvList[j]._iAC += 2;
 					}
 				}
@@ -4370,15 +4365,15 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 		}
 		break;
 	case SHRINE_WEIRD:
-		if(deltaload)
+		if (deltaload)
 			return;
-		if(pnum == myplr) {
-			if(plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != -1 && plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_SHIELD)
+		if (pnum == myplr) {
+			if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != -1 && plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_SHIELD)
 				plr[pnum].InvBody[INVLOC_HAND_LEFT]._iMaxDam++;
-			if(plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype != -1 && plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype != ITYPE_SHIELD)
+			if (plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype != -1 && plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype != ITYPE_SHIELD)
 				plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iMaxDam++;
-			for(j = 0; j < plr[pnum]._pNumInv; j++) {
-				if(plr[pnum].InvList[j]._itype > 0 && (plr[pnum].InvList[j]._itype <= ITYPE_MACE || plr[pnum].InvList[j]._itype == ITYPE_STAFF))
+			for (j = 0; j < plr[pnum]._pNumInv; j++) {
+				if (plr[pnum].InvList[j]._itype > 0 && (plr[pnum].InvList[j]._itype <= ITYPE_MACE || plr[pnum].InvList[j]._itype == ITYPE_STAFF))
 					plr[pnum].InvList[j]._iMaxDam++;
 			}
 			InitDiabloMsg(EMSG_SHRINE_WEIRD);
@@ -4386,75 +4381,74 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 		break;
 	case SHRINE_MAGICAL:
 	case SHRINE_MAGICAL2:
-		if(deltaload)
+		if (deltaload)
 			return;
 		AddMissile(
-			plr[pnum].WorldX,
-			plr[pnum].WorldY,
-			plr[pnum].WorldX,
-			plr[pnum].WorldY,
-			plr[pnum]._pdir,
-			MIS_MANASHIELD,
-			-1,
-			pnum,
-			0,
-			2 * leveltype);
-		if(pnum != myplr)
+		    plr[pnum].WorldX,
+		    plr[pnum].WorldY,
+		    plr[pnum].WorldX,
+		    plr[pnum].WorldY,
+		    plr[pnum]._pdir,
+		    MIS_MANASHIELD,
+		    -1,
+		    pnum,
+		    0,
+		    2 * leveltype);
+		if (pnum != myplr)
 			return;
 		InitDiabloMsg(EMSG_SHRINE_MAGICAL);
 		break;
 	case SHRINE_STONE:
-		if(deltaload)
+		if (deltaload)
 			return;
-		if(pnum == myplr) {
-			for(j = 0; j < 7; j++) {
-				if(plr[pnum].InvBody[j]._itype == ITYPE_STAFF)
+		if (pnum == myplr) {
+			for (j = 0; j < 7; j++) {
+				if (plr[pnum].InvBody[j]._itype == ITYPE_STAFF)
 					plr[pnum].InvBody[j]._iCharges = plr[pnum].InvBody[j]._iMaxCharges;
 			}
-			for(j = 0; j < plr[pnum]._pNumInv; j++) {
-				if(plr[pnum].InvList[j]._itype == ITYPE_STAFF)
+			for (j = 0; j < plr[pnum]._pNumInv; j++) {
+				if (plr[pnum].InvList[j]._itype == ITYPE_STAFF)
 					plr[pnum].InvList[j]._iCharges = plr[pnum].InvList[j]._iMaxCharges;
 			}
-			for(j = 0; j < 8; j++) {
-				if(plr[pnum].SpdList[j]._itype == ITYPE_STAFF)
+			for (j = 0; j < 8; j++) {
+				if (plr[pnum].SpdList[j]._itype == ITYPE_STAFF)
 					plr[pnum].SpdList[j]._iCharges = plr[pnum].SpdList[j]._iMaxCharges; // belt items don't have charges?
 			}
 			InitDiabloMsg(EMSG_SHRINE_STONE);
 		}
 		break;
 	case SHRINE_RELIGIOUS:
-		if(deltaload)
+		if (deltaload)
 			return;
-		if(pnum == myplr) {
-			for(j = 0; j < 7; j++)
+		if (pnum == myplr) {
+			for (j = 0; j < 7; j++)
 				plr[pnum].InvBody[j]._iDurability = plr[pnum].InvBody[j]._iMaxDur;
-			for(j = 0; j < plr[pnum]._pNumInv; j++)
+			for (j = 0; j < plr[pnum]._pNumInv; j++)
 				plr[pnum].InvList[j]._iDurability = plr[pnum].InvList[j]._iMaxDur;
-			for(j = 0; j < 8; j++)
+			for (j = 0; j < 8; j++)
 				plr[pnum].SpdList[j]._iDurability = plr[pnum].SpdList[j]._iMaxDur; // belt items don't have durability?
 			InitDiabloMsg(EMSG_SHRINE_RELIGIOUS);
 		}
 		break;
 	case SHRINE_ENCHANTED:
-		if(deltaload || pnum != myplr)
+		if (deltaload || pnum != myplr)
 			return;
 		v12 = 0;
-		for(j = 1; j <= 37; j++) {
-			if(plr[pnum]._pMemSpells & ((__int64)1 << (j-1))) // j
+		for (j = 1; j <= 37; j++) {
+			if (plr[pnum]._pMemSpells & ((__int64)1 << (j - 1))) // j
 				v12++;
 		}
-		if(v12 > 1) {
-			for(j = 1; j <= 37; j++) {
-				if(plr[pnum]._pMemSpells & ((__int64)1 << (j-1))) { // j
-					if(plr[pnum]._pSplLvl[j] < 15)
+		if (v12 > 1) {
+			for (j = 1; j <= 37; j++) {
+				if (plr[pnum]._pMemSpells & ((__int64)1 << (j - 1))) { // j
+					if (plr[pnum]._pSplLvl[j] < 15)
 						plr[pnum]._pSplLvl[j]++;
 				}
 			}
 			do {
 				v60 = random(0, 37) + 1;
-			}
-			while(!(plr[pnum]._pMemSpells & ((__int64)1 << (v60-1))));
-			if(plr[pnum]._pSplLvl[v60] < 2)
+			} while (!(plr[pnum]._pMemSpells & ((__int64)1 << (v60 - 1))));
+			if (plr[pnum]._pSplLvl[v60] < 2)
 				plr[pnum]._pSplLvl[v60] = 0;
 			else
 				plr[pnum]._pSplLvl[v60] -= 2;
@@ -4462,31 +4456,30 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 		InitDiabloMsg(EMSG_SHRINE_ENCHANTED);
 		break;
 	case SHRINE_THAUMATURGIC:
-		for(j = 0; j < nobjects; j++) {
+		for (j = 0; j < nobjects; j++) {
 			v1 = objectactive[j];
 			/// ASSERT: assert((DWORD)v1 < MAXOBJECTS);
-			if((object[v1]._otype == OBJ_CHEST1
-			 || object[v1]._otype == OBJ_CHEST2
-			 || object[v1]._otype == OBJ_CHEST3)
-			 && !object[v1]._oSelFlag)
-			{
+			if ((object[v1]._otype == OBJ_CHEST1
+			        || object[v1]._otype == OBJ_CHEST2
+			        || object[v1]._otype == OBJ_CHEST3)
+			    && !object[v1]._oSelFlag) {
 				object[v1]._oAnimFrame -= 2;
 				object[v1]._oRndSeed = GetRndSeed();
 				object[v1]._oSelFlag = 1;
 			}
 		}
-		if(deltaload)
+		if (deltaload)
 			return;
-		if(pnum == myplr)
+		if (pnum == myplr)
 			InitDiabloMsg(EMSG_SHRINE_THAUMATURGIC);
 		break;
 	case SHRINE_FASCINATING:
-		if(deltaload || pnum != myplr)
+		if (deltaload || pnum != myplr)
 			return;
-		plr[pnum]._pMemSpells |= (__int64)1 << (SPL_FIREBOLT-1);
-		if(plr[pnum]._pSplLvl[SPL_FIREBOLT] < 15)
+		plr[pnum]._pMemSpells |= (__int64)1 << (SPL_FIREBOLT - 1);
+		if (plr[pnum]._pSplLvl[SPL_FIREBOLT] < 15)
 			plr[pnum]._pSplLvl[SPL_FIREBOLT]++;
-		if(plr[pnum]._pSplLvl[SPL_FIREBOLT] < 15)
+		if (plr[pnum]._pSplLvl[SPL_FIREBOLT] < 15)
 			plr[pnum]._pSplLvl[SPL_FIREBOLT]++;
 		v72 = plr[pnum]._pMaxManaBase / 10;
 		min = plr[pnum]._pMana - plr[pnum]._pManaBase;
@@ -4495,53 +4488,51 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 		plr[pnum]._pMana -= v72;
 		plr[pnum]._pMaxManaBase -= v72;
 		plr[pnum]._pMaxMana -= v72;
-		if((signed int)(plr[pnum]._pMana & 0xFFFFFFC0) <= 0) {
+		if ((signed int)(plr[pnum]._pMana & 0xFFFFFFC0) <= 0) {
 			plr[pnum]._pMana = min;
 			plr[pnum]._pManaBase = 0;
 		}
-		if((signed int)(plr[pnum]._pMaxMana & 0xFFFFFFC0) <= 0) {
+		if ((signed int)(plr[pnum]._pMaxMana & 0xFFFFFFC0) <= 0) {
 			plr[pnum]._pMaxMana = max;
 			plr[pnum]._pMaxManaBase = 0;
 		}
 		InitDiabloMsg(EMSG_SHRINE_FASCINATING);
 		break;
 	case SHRINE_CRYPTIC:
-		if(deltaload)
+		if (deltaload)
 			return;
 		AddMissile(
-			plr[pnum].WorldX,
-			plr[pnum].WorldY,
-			plr[pnum].WorldX,
-			plr[pnum].WorldY,
-			plr[pnum]._pdir,
-			MIS_NOVA,
-			-1,
-			pnum,
-			0,
-			2 * leveltype);
-		if(pnum != myplr)
+		    plr[pnum].WorldX,
+		    plr[pnum].WorldY,
+		    plr[pnum].WorldX,
+		    plr[pnum].WorldY,
+		    plr[pnum]._pdir,
+		    MIS_NOVA,
+		    -1,
+		    pnum,
+		    0,
+		    2 * leveltype);
+		if (pnum != myplr)
 			return;
 		plr[pnum]._pMana = plr[pnum]._pMaxMana;
 		plr[pnum]._pManaBase = plr[pnum]._pMaxManaBase;
 		InitDiabloMsg(EMSG_SHRINE_CRYPTIC);
 		break;
 	case SHRINE_ELDRITCH: /// BUGFIX: change `plr[pnum].HoldItem` to use a temporary buffer to prevent deleting item in hand
-		if(deltaload)
+		if (deltaload)
 			return;
-		if(pnum == myplr) {
-			for(j = 0; j < plr[pnum]._pNumInv; j++) {
-				if(!plr[pnum].InvList[j]._itype) {
-					if(plr[pnum].InvList[j]._iMiscId == IMISC_HEAL
-					|| plr[pnum].InvList[j]._iMiscId == IMISC_MANA)
-					{
+		if (pnum == myplr) {
+			for (j = 0; j < plr[pnum]._pNumInv; j++) {
+				if (!plr[pnum].InvList[j]._itype) {
+					if (plr[pnum].InvList[j]._iMiscId == IMISC_HEAL
+					    || plr[pnum].InvList[j]._iMiscId == IMISC_MANA) {
 						SetPlrHandItem(&plr[pnum].HoldItem, ItemMiscIdIdx(IMISC_REJUV));
 						GetPlrHandSeed(&plr[pnum].HoldItem);
 						plr[pnum].HoldItem._iStatFlag = 1;
 						qmemcpy(&plr[pnum].InvList[j], &plr[pnum].HoldItem, sizeof(ItemStruct));
 					}
-					if(plr[pnum].InvList[j]._iMiscId == IMISC_FULLHEAL
-					|| plr[pnum].InvList[j]._iMiscId == IMISC_FULLMANA)
-					{
+					if (plr[pnum].InvList[j]._iMiscId == IMISC_FULLHEAL
+					    || plr[pnum].InvList[j]._iMiscId == IMISC_FULLMANA) {
 						SetPlrHandItem(&plr[pnum].HoldItem, ItemMiscIdIdx(IMISC_FULLREJUV));
 						GetPlrHandSeed(&plr[pnum].HoldItem);
 						plr[pnum].HoldItem._iStatFlag = 1;
@@ -4549,19 +4540,17 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 					}
 				}
 			}
-			for(j = 0; j < 8; j++) {
-				if(!plr[pnum].SpdList[j]._itype) {
-					if(plr[pnum].SpdList[j]._iMiscId == IMISC_HEAL
-					|| plr[pnum].SpdList[j]._iMiscId == IMISC_MANA)
-					{
+			for (j = 0; j < 8; j++) {
+				if (!plr[pnum].SpdList[j]._itype) {
+					if (plr[pnum].SpdList[j]._iMiscId == IMISC_HEAL
+					    || plr[pnum].SpdList[j]._iMiscId == IMISC_MANA) {
 						SetPlrHandItem(&plr[pnum].HoldItem, ItemMiscIdIdx(IMISC_REJUV));
 						GetPlrHandSeed(&plr[pnum].HoldItem);
 						plr[pnum].HoldItem._iStatFlag = 1;
 						qmemcpy(&plr[pnum].SpdList[j], &plr[pnum].HoldItem, sizeof(ItemStruct));
 					}
-					if(plr[pnum].SpdList[j]._iMiscId == IMISC_FULLHEAL
-					|| plr[pnum].SpdList[j]._iMiscId == IMISC_FULLMANA)
-					{
+					if (plr[pnum].SpdList[j]._iMiscId == IMISC_FULLHEAL
+					    || plr[pnum].SpdList[j]._iMiscId == IMISC_FULLMANA) {
 						SetPlrHandItem(&plr[pnum].HoldItem, ItemMiscIdIdx(IMISC_FULLREJUV));
 						GetPlrHandSeed(&plr[pnum].HoldItem);
 						plr[pnum].HoldItem._iStatFlag = 1;
@@ -4573,16 +4562,16 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 		}
 		break;
 	case SHRINE_EERIE:
-		if(deltaload || pnum != myplr)
+		if (deltaload || pnum != myplr)
 			return;
 		ModifyPlrMag(pnum, 2);
 		CheckStats(pnum);
 		InitDiabloMsg(EMSG_SHRINE_EERIE);
 		break;
 	case SHRINE_DIVINE:
-		if(deltaload || pnum != myplr)
+		if (deltaload || pnum != myplr)
 			return;
-		if(2 * currlevel >= 7) {
+		if (2 * currlevel >= 7) {
 			CreateTypeItem(object[i]._ox, object[i]._oy, 0, ITYPE_MISC, IMISC_FULLREJUV, 0, 1);
 			CreateTypeItem(object[i]._ox, object[i]._oy, 0, ITYPE_MISC, IMISC_FULLREJUV, 0, 1);
 		} else {
@@ -4596,27 +4585,26 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 		InitDiabloMsg(EMSG_SHRINE_DIVINE);
 		break;
 	case SHRINE_HOLY:
-		if(deltaload)
+		if (deltaload)
 			return;
 		v88 = 0;
 		do {
 			v88++;
 			xx = random(159, MAXDUNX);
 			yy = random(159, MAXDUNY);
-		}
-		while(v88 <= MAXDUNX*MAXDUNY && (nSolidTable[dPiece[xx][yy]] || dObject[xx][yy] || dMonster[xx][yy]));
+		} while (v88 <= MAXDUNX * MAXDUNY && (nSolidTable[dPiece[xx][yy]] || dObject[xx][yy] || dMonster[xx][yy]));
 		AddMissile(plr[pnum].WorldX, plr[pnum].WorldY, xx, yy, plr[pnum]._pdir, MIS_RNDTELEPORT, -1, pnum, 0, 2 * leveltype);
-		if(pnum != myplr)
+		if (pnum != myplr)
 			return;
 		InitDiabloMsg(EMSG_SHRINE_HOLY);
 		break;
 	case SHRINE_SACRED:
-		if(deltaload || pnum != myplr)
+		if (deltaload || pnum != myplr)
 			return;
-		plr[pnum]._pMemSpells |= (__int64)1 << (SPL_CBOLT-1);
-		if(plr[pnum]._pSplLvl[SPL_CBOLT] < 15)
+		plr[pnum]._pMemSpells |= (__int64)1 << (SPL_CBOLT - 1);
+		if (plr[pnum]._pSplLvl[SPL_CBOLT] < 15)
 			plr[pnum]._pSplLvl[SPL_CBOLT]++;
-		if(plr[pnum]._pSplLvl[SPL_CBOLT] < 15)
+		if (plr[pnum]._pSplLvl[SPL_CBOLT] < 15)
 			plr[pnum]._pSplLvl[SPL_CBOLT]++;
 		v72 = plr[pnum]._pMaxManaBase / 10;
 		min = plr[pnum]._pMana - plr[pnum]._pManaBase;
@@ -4625,21 +4613,21 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 		plr[pnum]._pMana -= v72;
 		plr[pnum]._pMaxManaBase -= v72;
 		plr[pnum]._pMaxMana -= v72;
-		if((signed int)(plr[pnum]._pMana & 0xFFFFFFC0) <= 0) {
+		if ((signed int)(plr[pnum]._pMana & 0xFFFFFFC0) <= 0) {
 			plr[pnum]._pMana = min;
 			plr[pnum]._pManaBase = 0;
 		}
-		if((signed int)(plr[pnum]._pMaxMana & 0xFFFFFFC0) <= 0) {
+		if ((signed int)(plr[pnum]._pMaxMana & 0xFFFFFFC0) <= 0) {
 			plr[pnum]._pMaxMana = max;
 			plr[pnum]._pMaxManaBase = 0;
 		}
 		InitDiabloMsg(EMSG_SHRINE_SACRED);
 		break;
 	case SHRINE_SPIRITUAL:
-		if(deltaload || pnum != myplr)
+		if (deltaload || pnum != myplr)
 			return;
-		for(j = 0; j < 40; j++) {
-			if(!plr[pnum].InvGrid[j]) {
+		for (j = 0; j < 40; j++) {
+			if (!plr[pnum].InvGrid[j]) {
 				v107 = 5 * leveltype + random(160, 10 * leveltype);
 				v108 = plr[pnum]._pNumInv; // check
 				qmemcpy(&plr[pnum].InvList[v108], &golditem, sizeof(ItemStruct));
@@ -4654,9 +4642,9 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 		InitDiabloMsg(EMSG_SHRINE_SPIRITUAL);
 		break;
 	case SHRINE_SPOOKY:
-		if(deltaload)
+		if (deltaload)
 			return;
-		if(pnum == myplr) {
+		if (pnum == myplr) {
 			InitDiabloMsg(EMSG_SHRINE_SPOOKY1);
 		} else {
 			InitDiabloMsg(EMSG_SHRINE_SPOOKY2);
@@ -4667,35 +4655,35 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 		}
 		break;
 	case SHRINE_ABANDONED:
-		if(deltaload || pnum != myplr)
+		if (deltaload || pnum != myplr)
 			return;
 		ModifyPlrDex(pnum, 2);
 		CheckStats(pnum);
-		if(pnum == myplr)
+		if (pnum == myplr)
 			InitDiabloMsg(EMSG_SHRINE_ABANDONED);
 		break;
 	case SHRINE_CREEPY:
-		if(deltaload || pnum != myplr)
+		if (deltaload || pnum != myplr)
 			return;
 		ModifyPlrStr(pnum, 2);
 		CheckStats(pnum);
-		if(pnum == myplr)
+		if (pnum == myplr)
 			InitDiabloMsg(EMSG_SHRINE_CREEPY);
 		break;
 	case SHRINE_QUIET:
-		if(deltaload || pnum != myplr)
+		if (deltaload || pnum != myplr)
 			return;
 		ModifyPlrVit(pnum, 2);
 		CheckStats(pnum);
-		if(pnum == myplr)
+		if (pnum == myplr)
 			InitDiabloMsg(EMSG_SHRINE_QUIET);
 		break;
 	case SHRINE_SECLUDED:
-		if(deltaload)
+		if (deltaload)
 			return;
-		if(pnum == myplr) {
-			for(yy = 0; yy < DMAXY; yy++) {
-				for(xx = 0; xx < DMAXX; xx++) {
+		if (pnum == myplr) {
+			for (yy = 0; yy < DMAXY; yy++) {
+				for (xx = 0; xx < DMAXX; xx++) {
 					automapview[xx][yy] = 1;
 				}
 			}
@@ -4703,12 +4691,12 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 		}
 		break;
 	case SHRINE_ORNATE:
-		if(deltaload || pnum != myplr)
+		if (deltaload || pnum != myplr)
 			return;
-		plr[pnum]._pMemSpells |= (__int64)1 << (SPL_HBOLT-1);
-		if(plr[pnum]._pSplLvl[SPL_HBOLT] < 15)
+		plr[pnum]._pMemSpells |= (__int64)1 << (SPL_HBOLT - 1);
+		if (plr[pnum]._pSplLvl[SPL_HBOLT] < 15)
 			plr[pnum]._pSplLvl[SPL_HBOLT]++;
-		if(plr[pnum]._pSplLvl[SPL_HBOLT] < 15)
+		if (plr[pnum]._pSplLvl[SPL_HBOLT] < 15)
 			plr[pnum]._pSplLvl[SPL_HBOLT]++;
 		v72 = plr[pnum]._pMaxManaBase / 10;
 		min = plr[pnum]._pMana - plr[pnum]._pManaBase;
@@ -4717,37 +4705,37 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 		plr[pnum]._pMana -= v72;
 		plr[pnum]._pMaxManaBase -= v72;
 		plr[pnum]._pMaxMana -= v72;
-		if((signed int)(plr[pnum]._pMana & 0xFFFFFFC0) <= 0) {
+		if ((signed int)(plr[pnum]._pMana & 0xFFFFFFC0) <= 0) {
 			plr[pnum]._pMana = min;
 			plr[pnum]._pManaBase = 0;
 		}
-		if((signed int)(plr[pnum]._pMaxMana & 0xFFFFFFC0) <= 0) {
+		if ((signed int)(plr[pnum]._pMaxMana & 0xFFFFFFC0) <= 0) {
 			plr[pnum]._pMaxMana = max;
 			plr[pnum]._pMaxManaBase = 0;
 		}
 		InitDiabloMsg(EMSG_SHRINE_ORNATE);
 		break;
 	case SHRINE_GLIMMERING:
-		if(deltaload || pnum != myplr)
+		if (deltaload || pnum != myplr)
 			return;
-		for(j = 0; j < 7; j++) {
-			if(plr[pnum].InvBody[j]._iMagical && !plr[pnum].InvBody[j]._iIdentified)
+		for (j = 0; j < 7; j++) {
+			if (plr[pnum].InvBody[j]._iMagical && !plr[pnum].InvBody[j]._iIdentified)
 				plr[pnum].InvBody[j]._iIdentified = 1;
 		}
-		for(j = 0; j < plr[pnum]._pNumInv; j++) {
-			if(plr[pnum].InvList[j]._iMagical && !plr[pnum].InvList[j]._iIdentified)
+		for (j = 0; j < plr[pnum]._pNumInv; j++) {
+			if (plr[pnum].InvList[j]._iMagical && !plr[pnum].InvList[j]._iIdentified)
 				plr[pnum].InvList[j]._iIdentified = 1;
 		}
-		for(j = 0; j < 8; j++) {
-			if(plr[pnum].SpdList[j]._iMagical && !plr[pnum].SpdList[j]._iIdentified)
+		for (j = 0; j < 8; j++) {
+			if (plr[pnum].SpdList[j]._iMagical && !plr[pnum].SpdList[j]._iIdentified)
 				plr[pnum].SpdList[j]._iIdentified = 1; // belt items can't be magical?
 		}
 		InitDiabloMsg(EMSG_SHRINE_GLIMMERING);
 		break;
 	case SHRINE_TAINTED:
-		if(deltaload)
+		if (deltaload)
 			return;
-		if(pnum == myplr) {
+		if (pnum == myplr) {
 			InitDiabloMsg(EMSG_SHRINE_TAINTED1);
 		} else {
 			InitDiabloMsg(EMSG_SHRINE_TAINTED2);
@@ -4764,7 +4752,7 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 	CalcPlrInv(pnum, TRUE);
 	drawpanflag = 255;
 
-	if(pnum == myplr)
+	if (pnum == myplr)
 		NetSendCmdParam2(FALSE, CMD_PLROPOBJ, pnum, i);
 }
 // 4B84DC: using guessed type int dropGoldFlag;
@@ -5542,7 +5530,7 @@ void __fastcall BreakCrux(int i)
 	object[v1]._oAnimFrame = 1;
 	object[v1]._oAnimDelay = 1;
 	object[v1]._oSolidFlag = TRUE;
-	object[v1]._oMissFlag = 1;
+	object[v1]._oMissFlag = TRUE;
 	if (v2 <= 0)
 		goto LABEL_15;
 	do {
@@ -5603,7 +5591,7 @@ void __fastcall BreakBarrel(int pnum, int i, int dam, unsigned char forcebreak, 
 			object[v5]._oAnimFrame = 1;
 			object[v5]._oAnimDelay = 1;
 			object[v5]._oSolidFlag = FALSE;
-			object[v5]._oMissFlag = 1;
+			object[v5]._oMissFlag = TRUE;
 			object[v5]._oSelFlag = 0;
 			object[v5]._oPreFlag = 1;
 			if (v6) {
@@ -5721,7 +5709,7 @@ void __fastcall SyncL1Doors(int i)
 		v3 = object[v2]._oy;
 		v4 = object[v2]._ox;
 		v5 = object[v2]._otype == 1;
-		object[v2]._oMissFlag = 1;
+		object[v2]._oMissFlag = TRUE;
 		object[v2]._oSelFlag = 2;
 		if (v5) {
 			if (object[v2]._oVar1 == 214)
@@ -5737,7 +5725,7 @@ void __fastcall SyncL1Doors(int i)
 		}
 		DoorSet(v1, v4, v3);
 	} else {
-		object[v2]._oMissFlag = 0;
+		object[v2]._oMissFlag = FALSE;
 	}
 }
 
@@ -5834,9 +5822,9 @@ void __fastcall SyncL2Doors(int i)
 	v1 = i;
 	v2 = object[i]._oVar4;
 	if (v2)
-		object[v1]._oMissFlag = 1;
+		object[v1]._oMissFlag = TRUE;
 	else
-		object[v1]._oMissFlag = 0;
+		object[v1]._oMissFlag = FALSE;
 	v3 = object[v1]._ox;
 	v4 = object[v1]._oy;
 	object[v1]._oSelFlag = 2;
@@ -5875,7 +5863,7 @@ void __fastcall SyncL3Doors(int i)
 	v2 = object[i]._otype;
 	v3 = object[i]._ox;
 	v4 = object[v1]._oy;
-	object[v1]._oMissFlag = 1;
+	object[v1]._oMissFlag = TRUE;
 	object[v1]._oSelFlag = 2;
 	if (v2 != OBJ_L3LDOOR)
 		goto LABEL_15;

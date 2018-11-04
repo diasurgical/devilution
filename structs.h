@@ -10,8 +10,8 @@ struct PLStruct {
 	int PLMinLvl;
 	int PLIType;
 	int PLGOE;
-	int PLDouble;
-	int PLOk;
+	BOOL PLDouble;
+	BOOL PLOk;
 	int PLMinVal;
 	int PLMaxVal;
 	int PLMultVal;
@@ -67,7 +67,7 @@ struct ItemDataStruct {
 	int iMiscId;
 	// spell_id
 	int iSpell;
-	int iUsable;
+	BOOL iUsable;
 	int iValue;
 	int iMaxValue;
 };
@@ -361,7 +361,7 @@ struct MissileData {
 	unsigned char mName;
 	void(__fastcall *mAddProc)(int, int, int, int, int, int, int, int, int);
 	void(__fastcall *mProc)(int);
-	int mDraw;
+	BOOL mDraw;
 	unsigned char mType;
 	unsigned char mResist;
 	unsigned char mFileNum;
@@ -412,7 +412,7 @@ struct MissileStruct {
 	int _miAnimCnt;
 	int _miAnimAdd;
 	int _miAnimFrame;
-	int _miDrawFlag;
+	BOOL _miDrawFlag;
 	int _miLightFlag;
 	int _miPreFlag;
 	int _miUniqTrans;
@@ -476,8 +476,8 @@ struct MonsterData {
 	char *GraphicType;
 	BOOL has_special;
 	char *sndfile;
-	int snd_special;
-	int has_trans;
+	BOOL snd_special;
+	BOOL has_trans;
 	char *TransFile;
 	int Frames[6];
 	int Rate[6];
@@ -517,7 +517,7 @@ struct CMonster {
 	int flags_2; // width 2
 	unsigned char mMinHP;
 	unsigned char mMaxHP;
-	int has_special;
+	BOOL has_special;
 	unsigned char mAFNum;
 	char mdeadval;
 	MonsterData *MData;
@@ -638,11 +638,11 @@ struct ObjDataStruct {
 	int oAnimLen;
 	int oAnimWidth;
 	BOOL oSolidFlag;
-	int oMissFlag;
-	int oLightFlag;
+	BOOL oMissFlag;
+	BOOL oLightFlag;
 	char oBreak;
 	char oSelFlag;
-	int oTrapFlag;
+	BOOL oTrapFlag;
 };
 
 struct ObjectStruct {
@@ -661,7 +661,7 @@ struct ObjectStruct {
 	int _oDelFlag;
 	char _oBreak; // check
 	BOOL _oSolidFlag;
-	int _oMissFlag;
+	BOOL _oMissFlag;
 	char _oSelFlag; // check
 	int _oPreFlag;
 	int _oTrapFlag;

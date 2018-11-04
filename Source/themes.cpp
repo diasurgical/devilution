@@ -2,8 +2,8 @@
 
 #include "../types.h"
 
-int numthemes;  // idb
-bool armorFlag; // weak
+int numthemes; // idb
+BOOL armorFlag;
 int ThemeGoodIn[4];
 bool weaponFlag;    // weak
 bool treasureFlag;  // weak
@@ -505,7 +505,7 @@ void __cdecl InitThemes()
 	v0 = 0;
 	bCrossFlag = 0;
 	numthemes = 0;
-	armorFlag = 1;
+	armorFlag = TRUE;
 	bFountainFlag = 1;
 	cauldronFlag = 1;
 	mFountainFlag = 1;
@@ -584,7 +584,6 @@ void __cdecl InitThemes()
 		}
 	}
 }
-// 6AAA3C: using guessed type int armorFlag;
 // 6AAA50: using guessed type int weaponFlag;
 // 6AAA54: using guessed type int treasureFlag;
 // 6AAA58: using guessed type int mFountainFlag;
@@ -1064,9 +1063,8 @@ void __fastcall Theme_ArmorStand(int t)
 		++v1;
 	} while ((signed int)v9 < (signed int)dPiece[1]);
 	PlaceThemeMonsts(ta, monstrnd[leveltype - 1]);
-	armorFlag = 0;
+	armorFlag = FALSE;
 }
-// 6AAA3C: using guessed type int armorFlag;
 
 void __fastcall Theme_GoatShrine(int t)
 {
