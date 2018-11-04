@@ -663,7 +663,7 @@ void __fastcall scrollrt_draw_lower(int x, int y, int sx, int sy, int a5, int so
 	if (some_flag) {
 		if (v6 < 0x70 && v7 < 0x70) {
 			v9 = v7;
-			v10 = dPiece[0][v9 * 112 + v6];
+			v10 = dPiece[v9][v6];
 			light_table_index = dTransVal[v9][v6];
 			level_piece_id = v10;
 			if (v10) {
@@ -721,9 +721,9 @@ LABEL_23:
 		v47 = 112 * sxa;
 		do {
 			--v46;
-			if (sya < 0 || v22 >= MAXDUNX * MAXDUNY)
+			if (sya < 0 || v22 >= MAXDUNX * 112)
 				break;
-			if (sya < 112 && v22 >= 0) {
+			if (sya < MAXDUNY && v22 >= 0) {
 				v23 = sya + v22;
 				v24 = dPiece[0][v23];
 				light_table_index = dTransVal[0][v23];
@@ -1275,7 +1275,7 @@ void __fastcall scrollrt_draw_lower_2(int x, int y, int sx, int sy, int a5, int 
 	v8 = sx;
 	v29 = (char *)dpiece_defs_map_1 + 32 * gendung_get_dpiece_num_from_coord(x, y);
 	if (some_flag) {
-		if (v7 >= 0 && v7 < 112 && xa >= 0 && xa < 112) {
+		if (v7 >= 0 && v7 < MAXDUNY && xa >= 0 && xa < MAXDUNX) {
 			v9 = 112 * xa + v7;
 			v10 = dPiece[0][v9];
 			light_table_index = dTransVal[0][v9];
@@ -1324,9 +1324,9 @@ void __fastcall scrollrt_draw_lower_2(int x, int y, int sx, int sy, int a5, int 
 		v23 = 112 * xa;
 		do {
 			--v25;
-			if (v13 >= MAXDUNX * MAXDUNY || v7 < 0)
+			if (v13 >= MAXDUNX * 112 || v7 < 0)
 				break;
-			if (v7 < 112 && v13 >= 0) {
+			if (v7 < MAXDUNY && v13 >= 0) {
 				v14 = v7 + v13;
 				v15 = dPiece[0][v14];
 				light_table_index = dTransVal[0][v14];
@@ -1808,7 +1808,7 @@ void __fastcall scrollrt_draw_upper(int x, int y, int sx, int sy, int a5, int a6
 	if (a5a > 8)
 		a5a = 8;
 	if (some_flag) {
-		if (v7 >= 0 && v7 < 112 && v8 >= 0 && v8 < 112) {
+		if (v7 >= 0 && v7 < MAXDUNY && v8 >= 0 && v8 < MAXDUNX) {
 			v10 = 112 * v8 + v7;
 			v11 = dPiece[0][v10];
 			light_table_index = dTransVal[0][v10];
@@ -1865,7 +1865,7 @@ void __fastcall scrollrt_draw_upper(int x, int y, int sx, int sy, int a5, int a6
 		v41 = v20;
 		v40 = a5;
 		do {
-			if (v7 >= 0 && v7 < 112 && v20 >= 0 && v20 < MAXDUNX * MAXDUNY) {
+			if (v7 >= 0 && v7 < MAXDUNY && v20 >= 0 && v20 < MAXDUNX * 112) {
 				v21 = dPiece[0][v20 + v7];
 				light_table_index = dTransVal[0][v20 + v7];
 				level_piece_id = v21;
@@ -1916,7 +1916,7 @@ void __fastcall scrollrt_draw_upper(int x, int y, int sx, int sy, int a5, int a6
 			ya = v7;
 		} while (!v30);
 	}
-	if (some_flag && v7 >= 0 && v7 < 112 && xa >= 0 && xa < 112) {
+	if (some_flag && v7 >= 0 && v7 < MAXDUNY && xa >= 0 && xa < MAXDUNX) {
 		v31 = 112 * xa + v7;
 		v32 = dPiece[0][v31];
 		light_table_index = dTransVal[0][v31];

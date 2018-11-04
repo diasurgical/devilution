@@ -1464,11 +1464,11 @@ BOOL __fastcall ItemSpaceOk(int i, int j)
 
 	if (i < 0)
 		return 0;
-	if (i >= 112)
+	if (i >= MAXDUNX)
 		return 0;
 	if (j < 0)
 		return 0;
-	if (j >= 112)
+	if (j >= MAXDUNY)
 		return 0;
 	v2 = i;
 	v3 = 112 * i + j;
@@ -3077,8 +3077,8 @@ void __fastcall SpawnQuestItem(int itemid, int x, int y, int randarea, int selfl
 			if (++tries > 1000 && randarea > 1)
 				--randarea;
 
-			x = random(0, 112);
-			y = random(0, 112);
+			x = random(0, MAXDUNX);
+			y = random(0, MAXDUNY);
 			i = 0;
 			failed = 0;
 			if (randarea <= 0)

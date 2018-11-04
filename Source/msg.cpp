@@ -646,7 +646,7 @@ void __cdecl DeltaLoadLevel()
 							decode_enemy(v0, *((unsigned char *)&sgLevels[0].monster[0]._menemy + v2));
 							v7 = *(v1 - 3);
 							if (v7 && v7 != 1 || *(v1 - 2))
-								dMonster[0][*(v1 - 2) + 112 * v7] = v0 + 1;
+								dMonster[v7][*(v1 - 2)] = v0 + 1;
 							if ((signed int)v1 >= (signed int)&monster[4]._mfuty) {
 								M_StartStand(v0, v1[7]);
 							} else {

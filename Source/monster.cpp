@@ -835,7 +835,7 @@ void __fastcall PlaceUniqueMonst(int uniqindex, int miniontype, int unpackfilesi
 		int count2 = 0;
 		for (int x = xp - 3; x < xp + 3; x++) {
 			for (int y = yp - 3; y < yp + 3; y++) {
-				if (y >= 0 && y < 112 && x >= 0 && x < 112 && MonstPlace(x, y)) {
+				if (y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX && MonstPlace(x, y)) {
 					count2++;
 				}
 			}
@@ -904,8 +904,8 @@ void __fastcall PlaceUniqueMonst(int uniqindex, int miniontype, int unpackfilesi
 	}
 	if (uniqindex == 9) {
 		BOOL done = FALSE;
-		for (yp = 0; yp < 112 && !done; yp++) {
-			for (xp = 0; xp < 112 && !done; xp++) {
+		for (yp = 0; yp < MAXDUNY && !done; yp++) {
+			for (xp = 0; xp < MAXDUNX && !done; xp++) {
 				done = dPiece[xp][yp] == 367;
 			}
 		}
@@ -1990,7 +1990,7 @@ void __fastcall M_DiabloDeath(int i, BOOL sendmsg)
 			monster[v6]._mfutx = v8;
 			M_CheckEFlag(v5);
 			M_ClearSquares(v5);
-			dMonster[0][monster[v6]._my + 112 * monster[v6]._mx] = v5 + 1;
+			dMonster[monster[v6]._mx][monster[v6]._my] = v5 + 1;
 		}
 		v4 = j + 1;
 	}
@@ -2980,7 +2980,7 @@ void __fastcall M_Teleport(int i)
 				if (v17 || v16) {
 					v9 = v7;
 					v6 = v10 + v11 * v17;
-					if (v7 >= 0 && v7 < 112 && v6 >= 0 && v6 < 112 && v6 != v3->_mx && v7 != v3->_my) {
+					if (v7 >= 0 && v7 < MAXDUNY && v6 >= 0 && v6 < MAXDUNX && v6 != v3->_mx && v7 != v3->_my) {
 						if (PosOkMonst(a1, v10 + v11 * v17, v7))
 							v15 = 1;
 					}
@@ -3001,7 +3001,7 @@ void __fastcall M_Teleport(int i)
 		v3->_moldx = v6;
 		dMonster[0][v8] = 0;
 		v3->_moldy = v9;
-		dMonster[0][v9 + 112 * v6] = v1 + 1;
+		dMonster[v6][v9] = v1 + 1;
 		v3->_mdir = M_GetDir(v1);
 		M_CheckEFlag(v1);
 	}
@@ -3224,7 +3224,7 @@ int __fastcall M_DoStone(int i)
 	if (!monster[v1]._mhitpoints) {
 		v3 = monster[v2]._mx;
 		monster[v2]._mDelFlag = TRUE;
-		dMonster[0][monster[v2]._my + 112 * v3] = 0;
+		dMonster[v3][monster[v2]._my] = 0;
 	}
 	return 0;
 }
@@ -4422,8 +4422,8 @@ void __fastcall MAI_Fallen(int i)
 			v8 = 2 * (unsigned char)monster[v3]._mint + 4;
 			for (j = -v8; j <= v8; ++j) {
 				for (k = -v8; k <= v8; ++k) {
-					if (j >= 0 && j < 112 && k >= 0 && k < 112) {
-						v11 = dMonster[0][j + monster[v3]._my + 112 * (k + monster[v3]._mx)];
+					if (j >= 0 && j < MAXDUNY && k >= 0 && k < MAXDUNX) {
+						v11 = dMonster[k + monster[v3]._mx][j + monster[v3]._my];
 						if (v11 > 0) {
 							v12 = v11 - 1;
 							if (monster[v12]._mAi == AI_FALLEN) {
@@ -4742,7 +4742,7 @@ void __fastcall MAI_Scav(int i)
 							do {
 								if (v20)
 									break;
-								if (v7 >= 0 && v7 < 112 && v6 >= 0 && v6 < 112) {
+								if (v7 >= 0 && v7 < MAXDUNY && v6 >= 0 && v6 < MAXDUNX) {
 									v8 = monster[v2]._mx;
 									v9 = monster[v2]._my;
 									v20 = dDead[v8 + v6][v9 + v7]
@@ -4769,7 +4769,7 @@ void __fastcall MAI_Scav(int i)
 							do {
 								if (v20)
 									break;
-								if (v13 >= 0 && v13 < 112 && v6 >= 0 && v6 < 112) {
+								if (v13 >= 0 && v13 < MAXDUNY && v6 >= 0 && v6 < MAXDUNX) {
 									v14 = monster[v2]._mx;
 									v15 = monster[v2]._my;
 									v20 = dDead[v14 + v6][v15 + v13]
@@ -6242,7 +6242,7 @@ BOOL __fastcall DirOK(int i, int mdir)
 	v5 = offset_y[v3];
 	v6 = monster[v4]._mx + offset_x[v3];
 	v7 = monster[v4]._my + v5;
-	if (v7 < 0 || v7 >= 112 || v6 < 0 || v6 >= 112 || !PosOkMonst(a1, v6, v7))
+	if (v7 < 0 || v7 >= MAXDUNY || v6 < 0 || v6 >= MAXDUNX || !PosOkMonst(a1, v6, v7))
 		return 0;
 	if (v25 == DIR_E) {
 		if (!SolidLoc(v6, v7 + 1)) {
@@ -6295,7 +6295,7 @@ LABEL_24:
 		v16 = 112 * v13;
 		do {
 			for (j = v23; j <= v15; ++j) {
-				if (j >= 0 && j < 112 && v16 >= 0 && v16 < MAXDUNX * MAXDUNY) {
+				if (j >= 0 && j < MAXDUNY && v16 >= 0 && v16 < MAXDUNX * 112) {
 					v18 = dMonster[0][v16 + j];
 					v19 = v18 == 0;
 					if (v18 < 0) {
@@ -6854,7 +6854,7 @@ void __fastcall MissToMonst(int i, int x, int y)
 	v31 = v4->_miy;
 	v6 = &monster[v5];
 	v6->_mx = v30;
-	dMonster[0][y + 112 * v30] = v5 + 1;
+	dMonster[v30][y] = v5 + 1;
 	v7 = v4->_mimfnum;
 	v6->_mdir = v7;
 	v6->_my = y;
@@ -6882,7 +6882,7 @@ void __fastcall MissToMonst(int i, int x, int y)
 					v26 = v31 + offset_y[v24];
 					if (PosOkMonst(*v21 - 1, v25, v26)) {
 						v27 = *v21;
-						dMonster[0][v26 + 112 * v25] = *v21;
+						dMonster[v25][v26] = *v21;
 						*v21 = 0;
 						v28 = v27 - 1;
 						monster[v28]._mx = v25;
@@ -7069,7 +7069,7 @@ BOOL __fastcall PosOkMonst3(int i, int x, int y)
 		if (object[v7]._oSolidFlag && !v4)
 			return 0;
 	}
-	if (SolidLoc(x, y) && !v4 || dPlayer[v3][y] || dMonster[0][v3 * 112 + y])
+	if (SolidLoc(x, y) && !v4 || dPlayer[v3][y] || dMonster[v3][y])
 		return 0;
 	_LOBYTE(v9) = dMissile[v3][y];
 	result = 1;
@@ -7165,7 +7165,7 @@ void __fastcall ActivateSpawn(int i, int x, int y, int dir)
 {
 	int v4; // eax
 
-	dMonster[0][y + 112 * x] = i + 1;
+	dMonster[x][y] = i + 1;
 	v4 = i;
 	monster[v4]._mx = x;
 	monster[v4]._mfutx = x;
@@ -7354,7 +7354,7 @@ void __fastcall SpawnGolum(int i, int x, int y, int mi)
 	monster[v6]._mfutx = v5;
 	monster[v6]._moldx = v5;
 	v7 = plr[v4]._pMaxMana;
-	dMonster[0][y + 112 * v5] = v4 + 1;
+	dMonster[v5][y] = v4 + 1;
 	_LOBYTE(monster[v6]._pathcount) = 0;
 	monster[v6]._mFlags |= MFLAG_GOLEM;
 	v8 = &missile[mi]._mispllvl;

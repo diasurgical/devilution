@@ -257,7 +257,7 @@ void __fastcall town_draw_lower(int x, int y, int sx, int sy, int a5, int some_f
 	ya = y;
 	xa = x;
 	if (some_flag) {
-		if (y >= 0 && y < 112 && x >= 0 && x < 112 && (level_cel_block = dPiece[0][y + 112 * x]) != 0) {
+		if (y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX && (level_cel_block = dPiece[x][y]) != 0) {
 			v6 = sy;
 			v7 = &screen_y_times_768[sy];
 			a1 = (unsigned char *)&gpBuffer->row_unused_1[0].col_unused_1[*v7 + 32 + sx];
@@ -290,7 +290,7 @@ void __fastcall town_draw_lower(int x, int y, int sx, int sy, int a5, int some_f
 		a5a = 112 * xa;
 		a1a = v10;
 		do {
-			if (y >= 0 && y < 112 && v12 >= 0 && v12 < MAXDUNX * MAXDUNY && (level_cel_block = dPiece[0][v12 + y]) != 0) {
+			if (y >= 0 && y < MAXDUNY && v12 >= 0 && v12 < MAXDUNX * 112 && (level_cel_block = dPiece[0][v12 + y]) != 0) {
 				v13 = (unsigned char *)gpBuffer + *v11 + sx;
 				v14 = (char *)dpiece_defs_map_1 + 32 * gendung_get_dpiece_num_from_coord(xa, ya);
 				v26 = 0;
@@ -322,7 +322,7 @@ void __fastcall town_draw_lower(int x, int y, int sx, int sy, int a5, int some_f
 		v6 = sy;
 	}
 	if (some_flag) {
-		if (y >= 0 && y < 112 && xa >= 0 && xa < 112 && (level_cel_block = dPiece[0][y + 112 * xa]) != 0) {
+		if (y >= 0 && y < MAXDUNY && xa >= 0 && xa < MAXDUNX && (level_cel_block = dPiece[xa][y]) != 0) {
 			v18 = &screen_y_times_768[v6];
 			v19 = (unsigned char *)gpBuffer + *v18 + sx;
 			v20 = (char *)dpiece_defs_map_1 + 32 * gendung_get_dpiece_num_from_coord(xa, ya);
@@ -530,11 +530,11 @@ void __fastcall town_draw_lower_2(int x, int y, int sx, int sy, int a5, int a6, 
 	ya = y;
 	xa = x;
 	if (some_flag) {
-		if (y < 0 || y >= 112 || x < 0 || x >= 112) {
+		if (y < 0 || y >= MAXDUNY || x < 0 || x >= MAXDUNX) {
 			v7 = sx;
 		} else {
 			v7 = sx;
-			level_cel_block = dPiece[0][y + 112 * x];
+			level_cel_block = dPiece[x][y];
 			if (level_cel_block) {
 				v8 = sy;
 				v9 = &screen_y_times_768[sy];
@@ -576,7 +576,7 @@ LABEL_18:
 		a5a = 112 * xa;
 		v24 = v12;
 		do {
-			if (ya >= 0 && ya < 112 && v14 >= 0 && v14 < MAXDUNX * MAXDUNY && (level_cel_block = dPiece[0][v14 + ya]) != 0) {
+			if (ya >= 0 && ya < MAXDUNY && v14 >= 0 && v14 < MAXDUNX * 112 && (level_cel_block = dPiece[0][v14 + ya]) != 0) {
 				a1a = (unsigned char *)gpBuffer + *v13 + v11 - 768 * 32;
 				sxb = 0;
 				v15 = &dpiece_defs_map_1[0][0][16 * gendung_get_dpiece_num_from_coord(xa, ya) + 3];
@@ -612,7 +612,7 @@ LABEL_18:
 		v8 = sy;
 	}
 	if (some_flag) {
-		if (ya >= 0 && ya < 112 && xa >= 0 && xa < 112 && (level_cel_block = dPiece[0][ya + 112 * xa]) != 0) {
+		if (ya >= 0 && ya < MAXDUNY && xa >= 0 && xa < MAXDUNX && (level_cel_block = dPiece[xa][ya]) != 0) {
 			v20 = &screen_y_times_768[v8];
 			a1b = (unsigned char *)gpBuffer + *v20 + v11 - 768 * 32;
 			sxc = 0;
@@ -766,12 +766,12 @@ void __fastcall town_draw_upper(int x, int y, int sx, int sy, int a5, int a6, in
 	if (dir > 8)
 		dir = 8;
 	if (some_flag) {
-		if (y < 0 || y >= 112 || x < 0 || x >= 112) {
+		if (y < 0 || y >= MAXDUNY || x < 0 || x >= MAXDUNX) {
 			v11 = sy;
 			v8 = sx;
 		} else {
 			v8 = sx;
-			v9 = dPiece[0][y + 112 * x];
+			v9 = dPiece[x][y];
 			level_cel_block = v9;
 			v10 = v9 == 0;
 			v11 = sy;
@@ -809,7 +809,7 @@ LABEL_19:
 		v15 = 112 * xa;
 		a5a = 112 * xa;
 		do {
-			if (v7 < 0 || v7 >= 112 || v15 < 0 || v15 >= MAXDUNX * MAXDUNY) {
+			if (v7 < 0 || v7 >= MAXDUNY || v15 < 0 || v15 >= MAXDUNX * 112) {
 				v17 = gpBuffer;
 			} else {
 				v16 = dPiece[0][v15 + v7];
@@ -853,7 +853,7 @@ LABEL_19:
 		} while (!v10);
 	}
 	if (some_flag) {
-		if (v7 < 0 || v7 >= 112 || xa < 0 || xa >= 112) {
+		if (v7 < 0 || v7 >= MAXDUNY || xa < 0 || xa >= MAXDUNX) {
 			v23 = sy;
 		} else {
 			v22 = dPiece[0][v7 + 112 * xa];

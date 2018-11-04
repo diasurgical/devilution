@@ -28,7 +28,7 @@ extern int gnDifficulty; // idb
 extern char block_lvid[2049];
 //char byte_5B78EB;
 extern char dung_map[MAXDUNX][MAXDUNY];
-extern char nTrapTable[2049];
+extern BOOLEAN nTrapTable[2049];
 extern BYTE leveltype;
 extern unsigned char currlevel; // idb
 extern char TransList[256];

@@ -668,12 +668,12 @@ LABEL_10:
 		++v6;
 	if (v6 < 0)
 		v6 = 0;
-	if (v6 >= 112)
-		v6 = 111;
+	if (v6 >= MAXDUNX)
+		v6 = MAXDUNX - 1;
 	if (v8 < 0)
 		v8 = 0;
-	if (v8 >= 112)
-		v8 = 111;
+	if (v8 >= MAXDUNY)
+		v8 = MAXDUNY - 1;
 	if (v5 >= v76 >> 1) {
 		if (!v9)
 			goto LABEL_49;

@@ -169,7 +169,7 @@ void __fastcall InitTownerInfo(int i, int w, bool sel, int t, int x, int y, int 
 	towner[v9]._tAnimWidth = v10;
 	towner[v9]._tAnimWidth2 = (v10 - 64) >> 1;
 	towner[v9]._ty = y;
-	dMonster[0][y + 112 * x] = v8 + 1;
+	dMonster[x][y] = v8 + 1;
 	_LOBYTE(towner[v9]._tAnimOrder) = ao;
 	towner[v9]._tTenPer = tp;
 	towner[v9]._tSeed = GetRndSeed();

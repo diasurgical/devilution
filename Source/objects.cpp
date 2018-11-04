@@ -898,17 +898,12 @@ void __cdecl AddL2Torches()
 	} while ((signed int)v7 < (signed int)dPiece[1]);
 }
 
-bool __fastcall TorchLocOK(int xp, int yp)
+BOOL __fastcall TorchLocOK(int xp, int yp)
 {
-	int v2;      // ecx
-	bool result; // al
+	if (dFlags[xp][yp] & DFLAG_POPULATED)
+		return FALSE;
 
-	v2 = xp;
-	if (dFlags[v2][yp] & DFLAG_POPULATED)
-		result = 0;
-	else
-		result = nTrapTable[dPiece[0][yp + v2 * 112]] != 0;
-	return result;
+	return nTrapTable[dPiece[xp][yp]] != FALSE;
 }
 
 void __cdecl AddObjTraps()
@@ -1354,7 +1349,7 @@ void __cdecl InitObjects()
 			if (QuestStatus(QTYPE_BOL))
 				AddObject(OBJ_SIGNCHEST, 2 * setpc_x + 26, 2 * setpc_y + 19);
 			InitRndLocBigObj(10, 15, OBJ_SARC);
-			AddL1Objs(0, 0, 112, 112);
+			AddL1Objs(0, 0, MAXDUNX, MAXDUNY);
 			InitRndBarrels();
 		}
 		if (leveltype == DTYPE_CATACOMBS) {
@@ -1364,7 +1359,7 @@ void __cdecl InitObjects()
 			//_LOBYTE(v5) = QuestStatus(QTYPE_BONE);
 			if (QuestStatus(QTYPE_BONE))
 				InitRndLocObj5x5(1, 1, OBJ_BOOK2R);
-			AddL2Objs(0, 0, 112, 112);
+			AddL2Objs(0, 0, MAXDUNX, MAXDUNY);
 			AddL2Torches();
 			//_LOBYTE(v6) = QuestStatus(QTYPE_BLIND);
 			if (QuestStatus(QTYPE_BLIND)) {
@@ -1376,7 +1371,7 @@ void __cdecl InitObjects()
 					v8 = QUEST_MBLINDING;
 				}
 				quests[QTYPE_BLIND]._qmsg = v8;
-				AddBookLever(0, 0, 112, 112, setpc_x, setpc_y, setpc_w + setpc_x + 1, setpc_h + setpc_y + 1, v8);
+				AddBookLever(0, 0, MAXDUNX, MAXDUNY, setpc_x, setpc_y, setpc_w + setpc_x + 1, setpc_h + setpc_y + 1, v8);
 				v9 = LoadFileInMem("Levels\\L2Data\\Blind2.DUN", 0);
 				LoadMapObjs(v9, 2 * setpc_x, 2 * setpc_y);
 				mem_free_dbg(v9);
@@ -1391,13 +1386,13 @@ void __cdecl InitObjects()
 					v8 = QUEST_MBLOODY;
 				}
 				quests[QTYPE_BLOOD]._qmsg = v8;
-				AddBookLever(0, 0, 112, 112, setpc_x, setpc_y + 3, setpc_x + 2, setpc_y + 7, v8);
+				AddBookLever(0, 0, MAXDUNX, MAXDUNY, setpc_x, setpc_y + 3, setpc_x + 2, setpc_y + 7, v8);
 				AddObject(OBJ_PEDISTAL, 2 * setpc_x + 25, 2 * setpc_y + 32);
 			}
 			InitRndBarrels();
 		}
 		if (leveltype == DTYPE_CAVES) {
-			AddL3Objs(0, 0, 112, 112);
+			AddL3Objs(0, 0, MAXDUNX, MAXDUNY);
 			InitRndBarrels();
 		}
 		if (leveltype == DTYPE_HELL) {
@@ -1411,7 +1406,7 @@ void __cdecl InitObjects()
 					v8 = QUEST_MBLOODWAR;
 				}
 				quests[QTYPE_WARLRD]._qmsg = v8;
-				AddBookLever(0, 0, 112, 112, setpc_x, setpc_y, setpc_x + setpc_w, setpc_y + setpc_h, v8);
+				AddBookLever(0, 0, MAXDUNX, MAXDUNY, setpc_x, setpc_y, setpc_x + setpc_w, setpc_y + setpc_h, v8);
 				v14 = LoadFileInMem("Levels\\L4Data\\Warlord.DUN", 0);
 				LoadMapObjs(v14, 2 * setpc_x, 2 * setpc_y);
 				mem_free_dbg(v14);
@@ -2003,9 +1998,9 @@ void __fastcall GetRndObjLoc(int randarea, int *xx, int *yy)
 		LABEL_3:
 			if (++v10 > 1000 && v12 > 1)
 				--v12;
-			v4 = random(0, 112);
+			v4 = random(0, MAXDUNX);
 			*v3 = v4;
-			v6 = random(0, 112);
+			v6 = random(0, MAXDUNY);
 			v7 = v6;
 			*yy = v6;
 			v8 = 0;
@@ -2705,7 +2700,7 @@ void __fastcall ObjSetMicro(int dx, int dy, int pn)
 	char *v7;      // esi
 	signed int v8; // ecx
 
-	dPiece[0][dy + 112 * dx] = pn;
+	dPiece[dx][dy] = pn;
 	v3 = pn - 1;
 	v4 = (char *)dpiece_defs_map_1 + 32 * gendung_get_dpiece_num_from_coord(dx, dy);
 	if (leveltype == DTYPE_HELL) {
@@ -2735,7 +2730,7 @@ void __fastcall objects_set_door_piece(int x, int y)
 
 	v2 = y;
 	v3 = x;
-	v4 = dPiece[0][y + 112 * x] - 1;
+	v4 = dPiece[x][y] - 1;
 	v5 = *((_WORD *)pLevelPieces + 10 * (unsigned short)v4 + 8);
 	v6 = *((_WORD *)pLevelPieces + 10 * (unsigned short)v4 + 9);
 	dpiece_defs_map_1[0][0][16 * gendung_get_dpiece_num_from_coord(x, y)] = v5;
@@ -2911,7 +2906,7 @@ void __fastcall DoorSet(int oi, int dx, int dy)
 
 	v3 = dx;
 	v4 = oi;
-	v5 = dPiece[0][dy + 112 * dx];
+	v5 = dPiece[dx][dy];
 	if (v5 == 43)
 		ObjSetMicro(dx, dy, 392);
 	if (v5 == 45)
@@ -3117,7 +3112,7 @@ void __fastcall OperateL2RDoor(int pnum, int oi, unsigned char sendflag)
 		if (v4) {
 			if (!deltaload)
 				PlaySfxLoc(IS_DOORCLOS, object[v3]._ox, v5);
-			if (dDead[v8][v5] != 0 || dMonster[0][v5 + 112 * v8] != 0 || dItem[v8][v5] != 0) {
+			if (dDead[v8][v5] != 0 || dMonster[v8][v5] != 0 || dItem[v8][v5] != 0) {
 				object[v3]._oVar4 = 2;
 				return;
 			}
@@ -3166,7 +3161,7 @@ void __fastcall OperateL2LDoor(int pnum, int oi, unsigned char sendflag)
 		if (v4) {
 			if (!deltaload)
 				PlaySfxLoc(IS_DOORCLOS, object[v3]._ox, v5);
-			if (dDead[v8][v5] != 0 || dMonster[0][v5 + 112 * v8] != 0 || dItem[v8][v5] != 0) {
+			if (dDead[v8][v5] != 0 || dMonster[v8][v5] != 0 || dItem[v8][v5] != 0) {
 				object[v3]._oVar4 = 2;
 				return;
 			}
@@ -3215,7 +3210,7 @@ void __fastcall OperateL3RDoor(int pnum, int oi, unsigned char sendflag)
 		if (v4) {
 			if (!deltaload)
 				PlaySfxLoc(IS_DOORCLOS, object[v3]._ox, v5);
-			if (dDead[v8][v5] != 0 || dMonster[0][v5 + 112 * v8] != 0 || dItem[v8][v5] != 0) {
+			if (dDead[v8][v5] != 0 || dMonster[v8][v5] != 0 || dItem[v8][v5] != 0) {
 				object[v3]._oVar4 = 2;
 				return;
 			}
@@ -3264,7 +3259,7 @@ void __fastcall OperateL3LDoor(int pnum, int oi, unsigned char sendflag)
 		if (v4) {
 			if (!deltaload)
 				PlaySfxLoc(IS_DOORCLOS, object[v3]._ox, v5);
-			if (dDead[v8][v5] != 0 || dMonster[0][v5 + 112 * v8] != 0 || dItem[v8][v5] != 0) {
+			if (dDead[v8][v5] != 0 || dMonster[v8][v5] != 0 || dItem[v8][v5] != 0) {
 				object[v3]._oVar4 = 2;
 				return;
 			}
@@ -4586,7 +4581,7 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 			v88++;
 			xx = random(159, MAXDUNX);
 			yy = random(159, MAXDUNY);
-		} while (v88 <= MAXDUNX * MAXDUNY && (nSolidTable[dPiece[xx][yy]] || dObject[xx][yy] || dMonster[xx][yy]));
+		} while (v88 <= MAXDUNX * 112 && (nSolidTable[dPiece[xx][yy]] || dObject[xx][yy] || dMonster[xx][yy]));
 		AddMissile(plr[pnum].WorldX, plr[pnum].WorldY, xx, yy, plr[pnum]._pdir, MIS_RNDTELEPORT, -1, pnum, 0, 2 * leveltype);
 		if (pnum != myplr)
 			return;

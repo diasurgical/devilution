@@ -454,7 +454,7 @@ unsigned char __cdecl ForceTownTrig()
 	v0 = TownDownList[0];
 	if (TownDownList[0] != -1) {
 		v1 = TownDownList;
-		while (dPiece[0][cursmy + 112 * cursmx] != v0) {
+		while (dPiece[cursmx][cursmy] != v0) {
 			++v1;
 			v0 = *v1;
 			if (*v1 == -1)
@@ -470,7 +470,7 @@ LABEL_5:
 		v2 = TownWarp1List[0];
 		if (TownWarp1List[0] != -1) {
 			v3 = TownWarp1List;
-			while (dPiece[0][cursmy + 112 * cursmx] != v2) {
+			while (dPiece[cursmx][cursmy] != v2) {
 				++v3;
 				v2 = *v3;
 				if (*v3 == -1)
@@ -485,7 +485,7 @@ LABEL_5:
 LABEL_13:
 	if (trigflag[1]) {
 		v4 = 1199;
-		while (dPiece[0][cursmy + 112 * cursmx] != v4) {
+		while (dPiece[cursmx][cursmy] != v4) {
 			if (++v4 > 1220)
 				goto LABEL_17;
 		}
@@ -497,7 +497,7 @@ LABEL_13:
 LABEL_17:
 	if (trigflag[2]) {
 		v5 = 1240;
-		while (dPiece[0][cursmy + 112 * cursmx] != v5) {
+		while (dPiece[cursmx][cursmy] != v5) {
 			if (++v5 > 1255)
 				return 0;
 		}
@@ -528,7 +528,7 @@ unsigned char __cdecl ForceL1Trig()
 		v4 = L1DownList;
 		v5 = L1DownList;
 		while (1) {
-			if (dPiece[0][cursmy + 112 * cursmx] == *v4) {
+			if (dPiece[cursmx][cursmy] == *v4) {
 				sprintf(infostr, "Down to level %i", currlevel + 1);
 				v2 = 0;
 				if (trigflag[4] > 0)
@@ -551,7 +551,7 @@ unsigned char __cdecl ForceL1Trig()
 		v0 = L1UpList;
 		v1 = L1UpList;
 		while (1) {
-			if (dPiece[0][cursmy + 112 * cursmx] == *v0) {
+			if (dPiece[cursmx][cursmy] == *v0) {
 				if (currlevel <= 1u)
 					strcpy(infostr, "Up to town");
 				else
@@ -609,7 +609,7 @@ unsigned char __cdecl ForceL2Trig()
 			v6 = L2DownList;
 			v7 = L2DownList;
 			while (1) {
-				if (dPiece[0][cursmy + 112 * cursmx] == *v6) {
+				if (dPiece[cursmx][cursmy] == *v6) {
 					sprintf(infostr, "Down to level %i", currlevel + 1);
 					v8 = 0;
 					if (trigflag[4] > 0)
@@ -640,7 +640,7 @@ unsigned char __cdecl ForceL2Trig()
 		v13 = L2TWarpUpList;
 		v14 = L2TWarpUpList;
 		while (1) {
-			if (dPiece[0][cursmy + 112 * cursmx] == *v13) {
+			if (dPiece[cursmx][cursmy] == *v13) {
 				v2 = 0;
 				if (trigflag[4] > 0)
 					break;
@@ -669,7 +669,7 @@ unsigned char __cdecl ForceL2Trig()
 		v0 = L2UpList;
 		v1 = L2UpList;
 		while (1) {
-			if (dPiece[0][cursmy + 112 * cursmx] == *v0) {
+			if (dPiece[cursmx][cursmy] == *v0) {
 				v2 = 0;
 				if (trigflag[4] > 0)
 					break;
@@ -729,7 +729,7 @@ unsigned char __cdecl ForceL3Trig()
 		v0 = L3UpList;
 		v1 = L3UpList;
 		while (1) {
-			if (dPiece[0][cursmy + 112 * cursmx] == *v0) {
+			if (dPiece[cursmx][cursmy] == *v0) {
 				sprintf(infostr, "Up to level %i", currlevel - 1);
 				v2 = 0;
 				if (trigflag[4] > 0)
@@ -790,7 +790,7 @@ LABEL_19:
 		v9 = L3TWarpUpList;
 		v10 = L3TWarpUpList;
 		while (1) {
-			if (dPiece[0][cursmy + 112 * cursmx] == *v9) {
+			if (dPiece[cursmx][cursmy] == *v9) {
 				v11 = 0;
 				if (trigflag[4] > 0)
 					break;
@@ -850,7 +850,7 @@ unsigned char __cdecl ForceL4Trig()
 		v0 = L4UpList;
 		v1 = L4UpList;
 		while (1) {
-			if (dPiece[0][cursmy + 112 * cursmx] == *v0) {
+			if (dPiece[cursmx][cursmy] == *v0) {
 				sprintf(infostr, "Up to level %i", currlevel - 1);
 				v2 = 0;
 				if (trigflag[4] > 0)
@@ -876,7 +876,7 @@ LABEL_9:
 		v4 = L4DownList;
 		v5 = L4DownList;
 		while (1) {
-			if (dPiece[0][cursmy + 112 * cursmx] == *v4) {
+			if (dPiece[cursmx][cursmy] == *v4) {
 				sprintf(infostr, "Down to level %i", currlevel + 1);
 				v2 = 0;
 				if (trigflag[4] > 0)
@@ -903,7 +903,7 @@ LABEL_17:
 			v7 = L4TWarpUpList;
 			v8 = L4TWarpUpList;
 			while (1) {
-				if (dPiece[0][cursmy + 112 * cursmx] == *v7) {
+				if (dPiece[cursmx][cursmy] == *v7) {
 					v9 = 0;
 					if (trigflag[4] > 0)
 						break;
@@ -939,7 +939,7 @@ LABEL_17:
 			v13 = L4PentaList;
 			v14 = L4PentaList;
 			while (1) {
-				if (dPiece[0][cursmy + 112 * cursmx] == *v13) {
+				if (dPiece[cursmx][cursmy] == *v13) {
 					strcpy(infostr, "Down to Diablo");
 					v2 = 0;
 					if (trigflag[4] > 0)
@@ -1012,7 +1012,7 @@ unsigned char __cdecl ForceSKingTrig()
 	if (L1UpList[0] == -1)
 		return 0;
 	v1 = L1UpList;
-	while (dPiece[0][cursmy + 112 * cursmx] != v0) {
+	while (dPiece[cursmx][cursmy] != v0) {
 		++v1;
 		v0 = *v1;
 		if (*v1 == -1)
@@ -1033,7 +1033,7 @@ unsigned char __cdecl ForceSChambTrig()
 	if (L2DownList[0] == -1)
 		return 0;
 	v1 = L2DownList;
-	while (dPiece[0][cursmy + 112 * cursmx] != v0) {
+	while (dPiece[cursmx][cursmy] != v0) {
 		++v1;
 		v0 = *v1;
 		if (*v1 == -1)
@@ -1054,7 +1054,7 @@ unsigned char __cdecl ForcePWaterTrig()
 	if (L3DownList[0] == -1)
 		return 0;
 	v1 = L3DownList;
-	while (dPiece[0][cursmy + 112 * cursmx] != v0) {
+	while (dPiece[cursmx][cursmy] != v0) {
 		++v1;
 		v0 = *v1;
 		if (*v1 == -1)

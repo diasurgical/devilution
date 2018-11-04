@@ -30,7 +30,7 @@ void __fastcall AddL2Objs(int x1, int y1, int x2, int y2);
 void __fastcall AddL3Objs(int x1, int y1, int x2, int y2);
 bool __fastcall WallTrapLocOk(int xp, int yp);
 void __cdecl AddL2Torches();
-bool __fastcall TorchLocOK(int xp, int yp);
+BOOL __fastcall TorchLocOK(int xp, int yp);
 void __cdecl AddObjTraps();
 void __cdecl AddChestTraps();
 void __fastcall LoadMapObjects(unsigned char *pMap, int startx, int starty, int x1, int y1, int w, int h, int leveridx);

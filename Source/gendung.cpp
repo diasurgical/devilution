@@ -28,7 +28,7 @@ int gnDifficulty; // idb
 char block_lvid[2049];
 //char byte_5B78EB;
 char dung_map[MAXDUNX][MAXDUNY];
-char nTrapTable[2049];
+BOOLEAN nTrapTable[2049];
 BYTE leveltype;
 unsigned char currlevel; // idb
 char TransList[256];
@@ -121,7 +121,7 @@ LABEL_13:
 			if (v4 & 8)
 				nTransTable[v3 + 1] = 1;
 			if ((v4 & 0x80u) != 0)
-				nTrapTable[v3 + 1] = 1;
+				nTrapTable[v3 + 1] = TRUE;
 			block_lvid[v3++ + 1] = (v4 >> 4) & 7;
 		} while (v3 + 1 <= (unsigned int)size);
 	}
@@ -130,66 +130,66 @@ LABEL_13:
 
 void __cdecl gendung_418D91()
 {
-	signed int v0;         // edx
-	short(*v1)[112][112];  // edi
-	short(*v2)[112][112];  // esi
-	signed int v3;         // ebx
-	int i;                 // edx
-	short v5;              // ax
-	int v6;                // ecx
-	signed int v7;         // edx
-	int v8;                // eax
-	int v9;                // edi
-	char *v10;             // esi
-	int j;                 // ecx
-	unsigned char v12;     // al
-	unsigned char *v13;    // esi
-	int v14;               // ecx
-	signed int v15;        // edx
-	int v16;               // eax
-	int v17;               // ecx
-	unsigned char v18;     // al
-	signed int v19;        // ecx
-	int v20;               // edi
-	int v21;               // edx
-	int v22;               // edi
-	int v23;               // eax
-	int v24;               // eax
-	bool v25;              // zf
-	int v26;               // edx
-	char *v27;             // esi
-	char *v28;             // edi
-	int k;                 // ecx
-	char *v33;             // esi
-	char *v34;             // edi
-	int v36;               // ecx
-	signed int v37;        // edx
-	int v38;               // eax
-	int v39;               // ecx
-	short(*v42)[112][112]; // esi
-	short v43;             // ax
-	unsigned short v44;    // dx
-	short v45;             // ax
-	int v46;               // [esp-4h] [ebp-38h]
-	int v47;               // [esp-4h] [ebp-38h]
-	int v48;               // [esp+Ch] [ebp-28h]
-	int(*v49)[128];        // [esp+10h] [ebp-24h]
-	int(*v50)[112];        // [esp+10h] [ebp-24h]
-	int v51;               // [esp+14h] [ebp-20h]
-	short(*v52)[112][112]; // [esp+14h] [ebp-20h]
-	signed int v53;        // [esp+18h] [ebp-1Ch]
-	int v54;               // [esp+18h] [ebp-1Ch]
-	short(*v55)[112][112]; // [esp+18h] [ebp-1Ch]
-	int v56;               // [esp+1Ch] [ebp-18h]
-	int(*v57)[112];        // [esp+1Ch] [ebp-18h]
-	signed int v58;        // [esp+20h] [ebp-14h]
-	int v59;               // [esp+20h] [ebp-14h]
-	int v60;               // [esp+24h] [ebp-10h]
-	signed int v61;        // [esp+24h] [ebp-10h]
-	int v62;               // [esp+28h] [ebp-Ch]
-	int v63;               // [esp+2Ch] [ebp-8h]
-	signed int v64;        // [esp+30h] [ebp-4h]
-	signed int v65;        // [esp+30h] [ebp-4h]
+	signed int v0;                 // edx
+	short(*v1)[MAXDUNX][MAXDUNY];  // edi
+	short(*v2)[MAXDUNX][MAXDUNY];  // esi
+	signed int v3;                 // ebx
+	int i;                         // edx
+	short v5;                      // ax
+	int v6;                        // ecx
+	signed int v7;                 // edx
+	int v8;                        // eax
+	int v9;                        // edi
+	char *v10;                     // esi
+	int j;                         // ecx
+	unsigned char v12;             // al
+	unsigned char *v13;            // esi
+	int v14;                       // ecx
+	signed int v15;                // edx
+	int v16;                       // eax
+	int v17;                       // ecx
+	unsigned char v18;             // al
+	signed int v19;                // ecx
+	int v20;                       // edi
+	int v21;                       // edx
+	int v22;                       // edi
+	int v23;                       // eax
+	int v24;                       // eax
+	bool v25;                      // zf
+	int v26;                       // edx
+	char *v27;                     // esi
+	char *v28;                     // edi
+	int k;                         // ecx
+	char *v33;                     // esi
+	char *v34;                     // edi
+	int v36;                       // ecx
+	signed int v37;                // edx
+	int v38;                       // eax
+	int v39;                       // ecx
+	short(*v42)[MAXDUNX][MAXDUNY]; // esi
+	short v43;                     // ax
+	unsigned short v44;            // dx
+	short v45;                     // ax
+	int v46;                       // [esp-4h] [ebp-38h]
+	int v47;                       // [esp-4h] [ebp-38h]
+	int v48;                       // [esp+Ch] [ebp-28h]
+	int(*v49)[128];                // [esp+10h] [ebp-24h]
+	int(*v50)[112];                // [esp+10h] [ebp-24h]
+	int v51;                       // [esp+14h] [ebp-20h]
+	short(*v52)[MAXDUNX][MAXDUNY]; // [esp+14h] [ebp-20h]
+	signed int v53;                // [esp+18h] [ebp-1Ch]
+	int v54;                       // [esp+18h] [ebp-1Ch]
+	short(*v55)[MAXDUNX][MAXDUNY]; // [esp+18h] [ebp-1Ch]
+	int v56;                       // [esp+1Ch] [ebp-18h]
+	int(*v57)[112];                // [esp+1Ch] [ebp-18h]
+	signed int v58;                // [esp+20h] [ebp-14h]
+	int v59;                       // [esp+20h] [ebp-14h]
+	int v60;                       // [esp+24h] [ebp-10h]
+	signed int v61;                // [esp+24h] [ebp-10h]
+	int v62;                       // [esp+28h] [ebp-Ch]
+	int v63;                       // [esp+2Ch] [ebp-8h]
+	signed int v64;                // [esp+30h] [ebp-4h]
+	signed int v65;                // [esp+30h] [ebp-4h]
 	int _EAX;
 	char *_EBX;
 
@@ -214,10 +214,10 @@ void __cdecl gendung_418D91()
 					level_frame_types[v6] = v5 & 0x7000;
 				}
 			}
-			v2 = (short(*)[112][112])((char *)v2 + 3584);
+			v2 = (short(*)[MAXDUNX][MAXDUNY])((char *)v2 + 3584);
 			--v3;
 		} while (v3);
-		v1 = (short(*)[112][112])((char *)v1 + 32);
+		v1 = (short(*)[MAXDUNX][MAXDUNY])((char *)v1 + 32);
 	} while ((signed int)v1 < (signed int)dpiece_defs_map_2[0][16]); /* check */
 	v7 = 1;
 	nlevel_frames = *(_DWORD *)pDungeonCels & 0xFFFF;
@@ -406,15 +406,15 @@ void __cdecl gendung_418D91()
 							*(_WORD *)v42 = v43;
 						}
 					}
-					v42 = (short(*)[112][112])((char *)v42 + 2);
+					v42 = (short(*)[MAXDUNX][MAXDUNY])((char *)v42 + 2);
 					--v59;
 				} while (v59);
 			}
 			++v50;
-			v52 = (short(*)[112][112])((char *)v52 + 3584);
+			v52 = (short(*)[MAXDUNX][MAXDUNY])((char *)v52 + 3584);
 			--v61;
 		} while (v61);
-		v55 = (short(*)[112][112])((char *)v55 + 32);
+		v55 = (short(*)[MAXDUNX][MAXDUNY])((char *)v55 + 32);
 		v57 = (int(*)[112])((char *)v57 + 4);
 	} while ((signed int)v55 < (signed int)dpiece_defs_map_2[0][16]); /* check */
 }
@@ -486,11 +486,11 @@ int __fastcall gendung_get_dpiece_num_from_coord(int x, int y)
 
 void __cdecl gendung_4192C2()
 {
-	short(*v0)[112][112]; // ebx
-	int v1;               // ebp
-	short(*v2)[112][112]; // esi
-	char *v3;             // edi
-	int x;                // [esp+10h] [ebp-4h]
+	short(*v0)[MAXDUNX][MAXDUNY]; // ebx
+	int v1;                       // ebp
+	short(*v2)[MAXDUNX][MAXDUNY]; // esi
+	char *v3;                     // edi
+	int x;                        // [esp+10h] [ebp-4h]
 
 	x = 0;
 	v0 = dpiece_defs_map_2;
@@ -499,7 +499,7 @@ void __cdecl gendung_4192C2()
 		do {
 			v2 = v0;
 			v3 = (char *)dpiece_defs_map_1 + 32 * gendung_get_dpiece_num_from_coord(x, v1++);
-			v0 = (short(*)[112][112])((char *)v0 + 32);
+			v0 = (short(*)[MAXDUNX][MAXDUNY])((char *)v0 + 32);
 			qmemcpy(v3, v2, 0x20u);
 		} while (v1 < 112);
 		++x;
@@ -508,17 +508,17 @@ void __cdecl gendung_4192C2()
 
 void __cdecl SetDungeonMicros()
 {
-	signed int v0;        // esi
-	short(*v1)[112][112]; // edx
-	int(*v2)[112];        // ebp
-	int v3;               // eax
-	char *v4;             // eax
-	signed int i;         // ecx
-	_WORD *v6;            // edi
-	int j;                // ecx
-	short(*v8)[112][112]; // [esp+8h] [ebp-Ch]
-	int(*v9)[112];        // [esp+Ch] [ebp-8h]
-	signed int v10;       // [esp+10h] [ebp-4h]
+	signed int v0;                // esi
+	short(*v1)[MAXDUNX][MAXDUNY]; // edx
+	int(*v2)[112];                // ebp
+	int v3;                       // eax
+	char *v4;                     // eax
+	signed int i;                 // ecx
+	_WORD *v6;                    // edi
+	int j;                        // ecx
+	short(*v8)[MAXDUNX][MAXDUNY]; // [esp+8h] [ebp-Ch]
+	int(*v9)[112];                // [esp+Ch] [ebp-8h]
+	signed int v10;               // [esp+10h] [ebp-4h]
 
 	if (leveltype == DTYPE_HELL) {
 		dword_5A5594 = 12;
@@ -551,10 +551,10 @@ void __cdecl SetDungeonMicros()
 				}
 			}
 			++v2;
-			v1 = (short(*)[112][112])((char *)v1 + 3584);
+			v1 = (short(*)[MAXDUNX][MAXDUNY])((char *)v1 + 3584);
 			--v10;
 		} while (v10);
-		v8 = (short(*)[112][112])((char *)v8 + 32);
+		v8 = (short(*)[MAXDUNX][MAXDUNY])((char *)v8 + 32);
 		v9 = (int(*)[112])((char *)v9 + 4);
 	} while ((signed int)v8 < (signed int)dpiece_defs_map_2[0][16]); /* check */
 	gendung_418D91();

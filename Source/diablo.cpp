@@ -1829,8 +1829,8 @@ void __fastcall LoadGameLevel(BOOL firstflag, int lvldir)
 			goto LABEL_72;
 		}
 
-		for (i = 0; i < 112; i++) {
-			for (j = 0; j < 112; j++)
+		for (i = 0; i < MAXDUNX; i++) {
+			for (j = 0; j < MAXDUNY; j++)
 				dFlags[i][j] |= DFLAG_LIT;
 		}
 

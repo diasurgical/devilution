@@ -428,7 +428,7 @@ int __fastcall CheckBlock(int fx, int fy, int tx, int ty)
 		v7 = GetDirection(v5, v4, tx, ty);
 		v5 += XDirAdd[v7];
 		v4 += YDirAdd[v7];
-		if (nSolidTable[dPiece[0][v4 + 112 * v5]])
+		if (nSolidTable[dPiece[v5][v4]])
 			v6 = 1;
 	}
 	return v6;
@@ -489,8 +489,8 @@ int __fastcall FindClosest(int sx, int sy, int rad)
 	while (1) {
 		v7 = fx + (char)*(v6 - 1);
 		v8 = fy + (char)*v6;
-		if (v7 > 0 && v7 < 112 && v8 > 0 && v8 < 112) {
-			v9 = dMonster[0][v8 + 112 * v7];
+		if (v7 > 0 && v7 < MAXDUNX && v8 > 0 && v8 < MAXDUNY) {
+			v9 = dMonster[v7][v8];
 			if (v9 > 0 && !CheckBlock(fx, fy, v7, fy + (char)*v6))
 				return v9 - 1;
 		}
@@ -714,7 +714,7 @@ void __fastcall PutMissile(int i)
 	v1 = i;
 	v2 = missile[i]._mix;
 	v3 = missile[i]._miy;
-	if (v2 <= 0 || v3 <= 0 || v2 >= 112 || v3 >= 112)
+	if (v2 <= 0 || v3 <= 0 || v2 >= MAXDUNX || v3 >= MAXDUNY)
 		missile[v1]._miDelFlag = 1;
 	if (!missile[v1]._miDelFlag) {
 		v4 = v3 + 112 * v2;
@@ -2060,7 +2060,7 @@ void __fastcall AddTeleport(int mi, int sx, int sy, int dx, int dy, int midir, i
 		while (1) {
 			v13 = dx + (char)*(v12 - 1);
 			v14 = dy + (char)*v12;
-			if (v13 <= 0 || v13 >= 112 || v14 <= 0 || v14 >= 112)
+			if (v13 <= 0 || v13 >= MAXDUNX || v14 <= 0 || v14 >= MAXDUNY)
 				goto LABEL_10;
 			v15 = v14 + 112 * v13;
 			v16 = dPlayer[0][v15];
@@ -2383,7 +2383,7 @@ void __fastcall AddTown(int mi, int sx, int sy, int dx, int dy, int midir, int m
 				while (1) {
 					v9 = dx + (char)*(v14 - 1);
 					v11 = dy + (char)*v14;
-					if (v9 > 0 && v9 < 112 && v11 > 0 && v11 < 112) {
+					if (v9 > 0 && v9 < MAXDUNX && v11 > 0 && v11 < MAXDUNY) {
 						v15 = v11 + 112 * v9;
 						if (!(dObject[0][v15] | dPlayer[0][v15] | dMissile[0][v15] | nSolidTable[dPiece[0][v15]] | (unsigned char)nMissileTable[dPiece[0][v15]])) {
 							//_LOBYTE(v16) = CheckIfTrig(v9, v11);
@@ -2629,7 +2629,7 @@ void __fastcall AddGuardian(int mi, int sx, int sy, int dx, int dy, int midir, i
 			v30 = v18 + 112 * (dx + (char)*(v16 - 1));
 			v29 = 4 * v30;
 			v31 = dPiece[0][v30];
-			if (v17 <= 0 || v17 >= 112 || v18 <= 0 || v18 >= 112)
+			if (v17 <= 0 || v17 >= MAXDUNX || v18 <= 0 || v18 >= MAXDUNY)
 				goto LABEL_14;
 			//_LOBYTE(v19) = LineClear(x1, sy, v17, v18);
 			if (LineClear(x1, sy, v17, v18)) {
@@ -2819,7 +2819,7 @@ void __fastcall miss_null_32(int mi, int sx, int sy, int dx, int dy, int midir, 
 		missile[v12]._miUniqTrans = (unsigned char)monster[v9]._uniqtrans + 1;
 	v15 = monster[v9]._mx;
 	missile[v12]._mirange = 256;
-	dMonster[0][monster[v9]._my + 112 * v15] = 0;
+	dMonster[v15][monster[v9]._my] = 0;
 	PutMissile(v10);
 }
 
@@ -2968,8 +2968,8 @@ void __fastcall AddStone(int mi, int sx, int sy, int dx, int dy, int midir, int 
 			while (1) {
 				v10 = dx + (char)*(v14 - 1);
 				v11 = dy + (char)*v14;
-				if (v10 > 0 && v10 < 112 && v11 > 0 && v11 < 112) {
-					v15 = dMonster[0][v11 + 112 * v10];
+				if (v10 > 0 && v10 < MAXDUNX && v11 > 0 && v11 < MAXDUNY) {
+					v15 = dMonster[v10][v11];
 					v16 = v15 <= 0 ? -1 - v15 : v15 - 1;
 					if (v16 > 3 && monster[v16]._mAi != AI_DIABLO) {
 						v17 = monster[v16]._mmode;
@@ -3285,7 +3285,7 @@ void __fastcall AddFirewallC(int mi, int sx, int sy, int dx, int dy, int midir, 
 		while (1) {
 			v13 = dx + (char)*(v12 - 1);
 			v14 = dy + (char)*v12;
-			if (v13 <= 0 || v13 >= 112 || v14 <= 0 || v14 >= 112)
+			if (v13 <= 0 || v13 >= MAXDUNX || v14 <= 0 || v14 >= MAXDUNY)
 				goto LABEL_13;
 			v18 = v14 + 112 * v13;
 			v17 = dPiece[0][v18];
@@ -3466,12 +3466,12 @@ void __fastcall AddApoca(int mi, int sx, int sy, int dx, int dy, int midir, int 
 	if (sy - 8 <= 0)
 		missile[v9]._miVar2 = 1;
 	v12 = 111;
-	if (sy + 8 >= 112)
-		missile[v9]._miVar3 = 111;
+	if (sy + 8 >= MAXDUNY)
+		missile[v9]._miVar3 = MAXDUNY - 1;
 	if (v10 <= 0)
 		missile[v9]._miVar4 = 1;
-	if (v11 >= 112)
-		missile[v9]._miVar5 = 111;
+	if (v11 >= MAXDUNX)
+		missile[v9]._miVar5 = MAXDUNX - 1;
 	v13 = 0;
 	v14 = &plr[id]._pLevel;
 	if (*v14 > 0) {
@@ -3849,7 +3849,7 @@ int __fastcall Sentfire(int i, int sx, int sy)
 	v5 = 0;
 	//_LOBYTE(v6) = LineClear(missile[i]._mix, missile[i]._miy, sx, sy);
 	if (LineClear(missile[i]._mix, missile[i]._miy, sx, sy)) {
-		v7 = dMonster[0][sy + 112 * v4];
+		v7 = dMonster[v4][sy];
 		if (v7 > 0 && monster[v7 - 1]._mhitpoints >> 6 > 0 && v7 - 1 > 3) /* fix monstactive */
 		{
 			v8 = GetDirection(missile[v3]._mix, missile[v3]._miy, v4, sy);
@@ -3921,7 +3921,7 @@ void __fastcall MI_Golem(int i)
 		while (1) {
 			v8 = missile[v1]._miVar4 + (char)*(v7 - 1);
 			v9 = missile[v1]._miVar5 + (char)*v7;
-			if (v8 <= 0 || v8 >= 112 || v9 <= 0 || v9 >= 112)
+			if (v8 <= 0 || v8 >= MAXDUNX || v9 <= 0 || v9 >= MAXDUNY)
 				goto LABEL_13;
 			v10 = missile[v1]._miVar2;
 			v11 = missile[v1]._miVar1;
@@ -4579,7 +4579,7 @@ void __fastcall MI_Lightctrl(int i)
 	v7 = missile[v1]._miy;
 	v8 = missile[v1]._misource;
 	v13 = missile[v1]._miy;
-	v9 = dPiece[0][v7 + 112 * missile[v1]._mix];
+	v9 = dPiece[missile[v1]._mix][v7];
 	if (v8 != -1 || v6 != missile[v1]._misx || v7 != missile[v1]._misy) {
 		if (!nMissileTable[v9])
 			goto LABEL_12;
@@ -4587,7 +4587,7 @@ void __fastcall MI_Lightctrl(int i)
 	}
 	if (!nMissileTable[v9]) {
 	LABEL_12:
-		if (v6 == missile[v1]._miVar1 && v7 == missile[v1]._miVar2 || v6 <= 0 || v7 <= 0 || v6 >= 112 || v7 >= 112)
+		if (v6 == missile[v1]._miVar1 && v7 == missile[v1]._miVar2 || v6 <= 0 || v7 <= 0 || v6 >= MAXDUNX || v7 >= MAXDUNY)
 			goto LABEL_27;
 		if (v8 == -1) {
 			v12 = missile[v1]._mispllvl;
@@ -4616,7 +4616,7 @@ void __fastcall MI_Lightctrl(int i)
 		goto LABEL_26;
 	}
 LABEL_27:
-	if (!missile[v1]._mirange || v6 <= 0 || v7 <= 0 || v6 >= 112 || v7 > 112)
+	if (!missile[v1]._mirange || v6 <= 0 || v7 <= 0 || v6 >= MAXDUNX || v7 > MAXDUNY)
 		missile[v1]._miDelFlag = 1;
 }
 
@@ -5174,7 +5174,7 @@ void __fastcall MI_Chain(int i)
 				v12 = sx + (char)*(v11 - 1);
 				v13 = sy + (char)*v11;
 				v2 = sy + (char)*v11;
-				if (v12 > 0 && v12 < 112 && v13 > 0 && v13 < 112 && dMonster[0][v13 + 112 * v12] > 0) {
+				if (v12 > 0 && v12 < MAXDUNX && v13 > 0 && v13 < MAXDUNY && dMonster[v12][v13] > 0) {
 					v14 = GetDirection(sx, sy, v12, v13);
 					AddMissile(sx, sy, v12, v2, v14, MIS_LIGHTCTRL, 0, id, 1, missile[v1]._mispllvl);
 					v11 = v19;
@@ -5472,7 +5472,7 @@ void __fastcall MI_Rhino(int i)
 	v5 = missile[v2]._mix;
 	x = v5;
 	v10 = missile[v2]._miy;
-	dMonster[0][v10 + 112 * v5] = 0;
+	dMonster[v5][v10] = 0;
 	v6 = missile[v2]._mixvel;
 	if (monster[v4]._mAi == AI_SNAKE) {
 		missile[v2]._mitxoff += 2 * v6;
@@ -5498,7 +5498,7 @@ void __fastcall MI_Rhino(int i)
 	v8 = monster[v4]._uniqtype == 0;
 	monster[v4]._mfutx = v7;
 	monster[v4]._moldx = v7;
-	dMonster[0][y + 112 * v7] = -1 - a1;
+	dMonster[v7][y] = -1 - a1;
 	monster[v4]._mx = v7;
 	monster[v4]._mfuty = y;
 	monster[v4]._moldy = y;
@@ -5612,12 +5612,12 @@ void __fastcall MI_FirewallC(int i)
 		v5 = missile[v1]._miVar1 + XDirAdd[v4];
 		v6 = missile[v1]._miVar2;
 		v7 = v6 + YDirAdd[v4];
-		if (nMissileTable[dPiece[0][v6 + 112 * missile[v1]._miVar1]]
+		if (nMissileTable[dPiece[missile[v1]._miVar1][v6]]
 		    || missile[v1]._miVar8
 		    || v5 <= 0
-		    || v5 >= 112
+		    || v5 >= MAXDUNX
 		    || v7 <= 0
-		    || v7 >= 112) {
+		    || v7 >= MAXDUNY) {
 			missile[v1]._miVar8 = 1;
 		} else {
 			AddMissile(
@@ -5639,12 +5639,12 @@ void __fastcall MI_FirewallC(int i)
 		v9 = missile[v1]._miVar5 + XDirAdd[v8];
 		v10 = missile[v1]._miVar6;
 		v11 = v10 + YDirAdd[v8];
-		if (nMissileTable[dPiece[0][v10 + 112 * missile[v1]._miVar5]]
+		if (nMissileTable[dPiece[missile[v1]._miVar5][v10]]
 		    || missile[v1]._miVar7
 		    || v9 <= 0
-		    || v9 >= 112
+		    || v9 >= MAXDUNX
 		    || v11 <= 0
-		    || v11 >= 112) {
+		    || v11 >= MAXDUNY) {
 			missile[v1]._miVar7 = 1;
 		} else {
 			AddMissile(
@@ -5780,7 +5780,7 @@ void __fastcall MI_Wave(int i)
 	v6 = XDirAdd[v3];
 	v7 = v6 + v2;
 	sy = v5 + v20;
-	if (!nMissileTable[dPiece[0][v5 + v20 + 112 * v7]]) {
+	if (!nMissileTable[dPiece[v7][v5 + v20]]) {
 		v18 = &plr[id]._pdir;
 		AddMissile(v7, sy, v7 + v6, sy + v5, *v18, MIS_FIREMOVE, 0, id, 0, missile[v1]._mispllvl);
 		v13 = v22;
@@ -5793,7 +5793,7 @@ void __fastcall MI_Wave(int i)
 		v11 = v14 + XDirAdd[v4] + v9;
 		v21 = 0;
 		for (j = v10; v21 < (missile[v1]._mispllvl >> 1) + 2; ++v21) {
-			if (nMissileTable[dPiece[0][sya + 112 * sx]] || v19 || sx <= 0 || sx >= 112 || sya <= 0 || sya >= 112) {
+			if (nMissileTable[dPiece[sx][sya]] || v19 || sx <= 0 || sx >= MAXDUNX || sya <= 0 || sya >= MAXDUNY) {
 				v19 = 1;
 			} else {
 				AddMissile(sx, sya, sx + XDirAdd[v4], sya + YDirAdd[v4], *v18, MIS_FIREMOVE, 0, id, 0, missile[v1]._mispllvl);
@@ -5801,7 +5801,7 @@ void __fastcall MI_Wave(int i)
 				sya += YDirAdd[v13];
 				v10 = j;
 			}
-			if (nMissileTable[dPiece[0][v10 + 112 * v11]] || v17 || v11 <= 0 || v11 >= 112 || v10 <= 0 || v10 >= 112) {
+			if (nMissileTable[dPiece[v11][v10]] || v17 || v11 <= 0 || v11 >= MAXDUNX || v10 <= 0 || v10 >= MAXDUNY) {
 				v17 = 1;
 			} else {
 				AddMissile(v11, v10, v11 + XDirAdd[v4], v10 + YDirAdd[v4], *v18, MIS_FIREMOVE, 0, id, 0, missile[v1]._mispllvl);
@@ -5933,7 +5933,7 @@ void __fastcall MI_Flamec(int i)
 	v5 = missile[v2]._mix;
 	if (v5 != missile[v2]._miVar1 || missile[v2]._miy != missile[v2]._miVar2) {
 		v6 = missile[v2]._miy;
-		v7 = dPiece[0][v6 + 112 * v5];
+		v7 = dPiece[v5][v6];
 		if (nMissileTable[v7]) {
 			missile[v2]._mirange = 0;
 		} else {

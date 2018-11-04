@@ -295,13 +295,13 @@ void __fastcall sync_monster_data(int pnum, TSyncMonster *packet)
 					v11 = abs(monster[v5]._mx - v9);
 					v12 = abs(monster[v5]._my - (unsigned char)v2->_my);
 					if (v11 > 2 || v12 > 2) {
-						if (dMonster[0][(unsigned char)v2->_my + 112 * (unsigned char)v2->_mx]) {
+						if (dMonster[(unsigned char)v2->_mx][(unsigned char)v2->_my]) {
 						LABEL_23:
 							decode_enemy(v4, (unsigned char)v2->_menemy);
 							return;
 						}
 						M_ClearSquares(v4);
-						dMonster[0][(unsigned char)v2->_my + 112 * (unsigned char)v2->_mx] = v4 + 1;
+						dMonster[(unsigned char)v2->_mx][(unsigned char)v2->_my] = v4 + 1;
 						monster[v5]._mx = (unsigned char)v2->_mx;
 						monster[v5]._my = (unsigned char)v2->_my;
 						decode_enemy(v4, (unsigned char)v2->_menemy);
@@ -325,7 +325,7 @@ void __fastcall sync_monster_data(int pnum, TSyncMonster *packet)
 						if (!DirOK(v4, v14))
 							goto LABEL_23;
 						M_ClearSquares(v4);
-						dMonster[0][monster[v5]._my + 112 * monster[v5]._mx] = v4 + 1;
+						dMonster[monster[v5]._mx][monster[v5]._my] = v4 + 1;
 						M_WalkDir(v4, mda);
 					}
 					monster[v5]._msquelch = -1;

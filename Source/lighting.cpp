@@ -587,7 +587,7 @@ void __fastcall DoLighting(int nXPos, int nYPos, int nRadius, int Lnum)
 	if (v4 + 15 > 112)
 		v8 = 112 - v4;
 	v45 = v8;
-	if (v5 >= 0 && v5 < 112 && v4 >= 0 && v4 < 112)
+	if (v5 >= 0 && v5 < MAXDUNX && v4 >= 0 && v4 < MAXDUNY)
 		dTransVal[v5][v4] = 0;
 	v55 = 0;
 	v51 = v6 + 8 * v7;
@@ -743,12 +743,12 @@ void __fastcall DoUnLight(int nXPos, int nYPos, int nRadius)
 	max_x = nXPos + nRadius + 1;
 	if (y < 0)
 		y = 0;
-	if (max_y > 112)
-		max_y = 112;
+	if (max_y > MAXDUNY)
+		max_y = MAXDUNY;
 	if (x < 0)
 		x = 0;
-	if (max_x > 112)
-		max_x = 112;
+	if (max_x > MAXDUNX)
+		max_x = MAXDUNX;
 	for (radius_block = y; radius_block < max_y; ++radius_block) {
 		v7 = x;
 		if (x < max_x) {
@@ -779,12 +779,12 @@ void __fastcall DoUnVision(int nXPos, int nYPos, int nRadius)
 	x2 = nRadius + 1 + nXPos;
 	if (y1 < 0)
 		y1 = 0;
-	if (y2 > 112)
-		y2 = 112;
+	if (y2 > MAXDUNY)
+		y2 = MAXDUNY;
 	if (x1 < 0)
 		x1 = 0;
-	if (x2 > 112)
-		x2 = 112;
+	if (x2 > MAXDUNX)
+		x2 = MAXDUNX;
 	if (x1 < x2) {
 		v7 = dFlags[x1];
 		i = x2 - x1;
@@ -829,7 +829,7 @@ void __fastcall DoVision(int nXPos, int nYPos, int nRadius, unsigned char doauto
 
 	v28 = nYPos;
 	v29 = nXPos;
-	if (nXPos >= 0 && nXPos <= 112 && nYPos >= 0 && nYPos <= 112) {
+	if (nXPos >= 0 && nXPos <= MAXDUNX && nYPos >= 0 && nYPos <= MAXDUNY) {
 		if (doautomap) {
 			v5 = &dFlags[nXPos][nYPos];
 			if (*v5 >= 0) {
@@ -905,11 +905,11 @@ void __fastcall DoVision(int nXPos, int nYPos, int nRadius, unsigned char doauto
 						v23 = -1;
 					}
 				}
-				if (v6 >= 0 && v6 <= 112 && v7 >= 0 && v7 <= 112) {
+				if (v6 >= 0 && v6 <= MAXDUNX && v7 >= 0 && v7 <= MAXDUNY) {
 					v22 = v7 + 112 * v6;
 					v21 = (unsigned char)nBlockTable[dPiece[0][v22]];
-					if (!nBlockTable[dPiece[0][v25 + v7 + 112 * (v6 + v26)]]
-					    || !nBlockTable[dPiece[0][v23 + v7 + 112 * (v6 + v24)]]) {
+					if (!nBlockTable[dPiece[v6 + v26][v25 + v7]]
+					    || !nBlockTable[dPiece[v6 + v24][v23 + v7]]) {
 						v16 = v7 + 112 * v6;
 						if (doautomap) {
 							if (dFlags[0][v22] >= 0) {

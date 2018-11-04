@@ -171,7 +171,7 @@ void __cdecl DrawQText()
 
 	DrawQTextBack();
 	v0 = qtextptr;
-	screen_x = 112;
+	screen_x = MAXDUNX;
 	v13 = 0;
 	screen_y = qtexty;
 	v14 = 0;
@@ -220,7 +220,7 @@ void __cdecl DrawQText()
 		if (!v13)
 			v13 = v0;
 		screen_y += 38;
-		screen_x = 112;
+		screen_x = MAXDUNX;
 		if (screen_y > 501)
 			v14 = 1;
 	} while (!v14);
