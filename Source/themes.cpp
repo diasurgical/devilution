@@ -2,7 +2,7 @@
 
 #include "../types.h"
 
-int numthemes;  // idb
+int numthemes; // idb
 BOOL armorFlag;
 int ThemeGoodIn[4];
 BOOL weaponFlag;

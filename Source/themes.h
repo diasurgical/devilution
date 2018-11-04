@@ -2,7 +2,7 @@
 #ifndef __THEMES_H__
 #define __THEMES_H__
 
-extern int numthemes;  // idb
+extern int numthemes; // idb
 extern BOOL armorFlag;
 extern int ThemeGoodIn[4];
 extern BOOL weaponFlag;
