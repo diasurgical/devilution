@@ -4,19 +4,19 @@
 
 extern int diablo_cpp_init_value; // weak
 extern HWND ghMainWnd;
-extern int glMid1Seed[17];
-extern int glMid2Seed[17];
-extern int gnLevelTypeTbl[17];
+extern int glMid1Seed[NUMLEVELS];
+extern int glMid2Seed[NUMLEVELS];
+extern int gnLevelTypeTbl[NUMLEVELS];
 extern int MouseY; // idb
 extern int MouseX; // idb
 extern bool gbGameLoopStartup; // idb
-extern int glSeedTbl[17];
+extern int glSeedTbl[NUMLEVELS];
 extern int gbRunGame; // weak
-extern int glMid3Seed[17];
+extern int glMid3Seed[NUMLEVELS];
 extern int gbRunGameResult; // weak
 extern int zoomflag; // weak
 extern int gbProcessPlayers; // weak
-extern int glEndSeed[17];
+extern int glEndSeed[NUMLEVELS];
 extern int dword_5256E8; // weak
 extern HINSTANCE ghInst; // idb
 extern int DebugMonsters[10];
@@ -24,7 +24,7 @@ extern char cineflag; // weak
 extern int drawpanflag; // weak
 extern int visiondebug; // weak
 extern int scrollflag; /* unused */
-extern int light4flag; // weak
+extern BOOL light4flag;
 extern int leveldebug; // weak
 extern int monstdebug; // weak
 extern int trigdebug; /* unused */
@@ -45,11 +45,11 @@ bool __cdecl diablo_get_not_running();
 int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd);
 void __fastcall diablo_parse_flags(char *args);
 void __cdecl diablo_init_screen();
-HWND __fastcall diablo_find_window(LPCSTR lpClassName);
+BOOL __fastcall diablo_find_window(LPCSTR lpClassName);
 void __fastcall diablo_reload_process(HMODULE hModule);
 int __cdecl PressEscKey();
-LRESULT __stdcall DisableInputWndProc(HWND hWnd, int uMsg, int wParam, int lParam);
-int __stdcall GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+LRESULT __stdcall DisableInputWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+LRESULT __stdcall GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 bool __fastcall LeftMouseDown(int a1);
 bool __cdecl TryIconCurs();
 void __cdecl LeftMouseUp();
@@ -64,10 +64,10 @@ void __fastcall PressChar(int vkey);
 void __cdecl LoadLvlGFX();
 void __cdecl LoadAllGFX();
 void __fastcall CreateLevel(int lvldir);
-void __fastcall LoadGameLevel(bool firstflag, int lvldir);
-void __fastcall game_loop(bool startup);
+void __fastcall LoadGameLevel(BOOL firstflag, int lvldir);
+void __fastcall game_loop(bool bStartup);
 void __cdecl game_logic();
-void __fastcall timeout_cursor(bool timeout);
+void __fastcall timeout_cursor(bool bTimeout);
 void __cdecl diablo_color_cyc_logic();
 
 /* data */
@@ -89,6 +89,7 @@ extern int debug_mode_key_i;
 extern int dbgplr;
 extern int dbgqst;
 extern int dbgmon;
+extern int arrowdebug;
 extern int frameflag;
 extern int frameend;
 extern int framerate;

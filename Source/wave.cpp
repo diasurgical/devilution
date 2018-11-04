@@ -4,7 +4,7 @@
 
 int wave_cpp_init_value; // weak
 
-int wave_inf = 0x7F800000; // weak
+const int wave_inf = 0x7F800000; // weak
 
 struct wave_cpp_init
 {
@@ -137,7 +137,7 @@ int __fastcall LoadWaveFormat(HANDLE hsFile, WAVEFORMATEX *pwfx)
 	return v3;
 }
 
-void *__fastcall AllocateMemFile(HANDLE hsFile, MEMFILE *pMemFile, unsigned int a3)
+void *__fastcall AllocateMemFile(HANDLE hsFile, MEMFILE *pMemFile, unsigned int dwPos)
 {
 	MEMFILE *v3; // esi
 	HANDLE v4; // edi
@@ -151,8 +151,8 @@ void *__fastcall AllocateMemFile(HANDLE hsFile, MEMFILE *pMemFile, unsigned int 
 	v5 = WGetFileSize(v4, 0);
 	v6 = 4096;
 	v3->end = v5;
-	if ( a3 > 0x1000 )
-		v6 = a3;
+	if ( dwPos > 0x1000 )
+		v6 = dwPos;
 	v3->buf_len = v6;
 	if ( v6 >= v5 )
 		v6 = v5;

@@ -9,9 +9,9 @@ char log_buffer[388];
 LPCVOID lpAddress; // idb
 DWORD nNumberOfBytesToWrite; // idb
 
-int log_inf = 0x7F800000; // weak
+const int log_inf = 0x7F800000; // weak
 
-/* rdata */
+/* data */
 
 int log_not_created = 1; // weak
 HANDLE log_file = (HANDLE)0xFFFFFFFF; // idb
@@ -93,12 +93,12 @@ void *__cdecl log_create()
 
 	if ( log_not_created )
 	{
-		if ( GetModuleFileNameA(0, Filename, 0x104u) && (v0 = strrchr(Filename, '\\')) != 0 )
+		if ( GetModuleFileName(0, Filename, 0x104u) && (v0 = strrchr(Filename, '\\')) != 0 )
 			v0[1] = 0;
 		else
 			Filename[0] = 0;
 		pcbBuffer = 32;
-		if ( !GetUserNameA(Buffer, &pcbBuffer) )
+		if ( !GetUserName(Buffer, &pcbBuffer) )
 			Buffer[0] = 0;
 		log_get_version(&file_info);
 		_snprintf(
@@ -114,7 +114,7 @@ void *__cdecl log_create()
 	v1 = (void *)-1;
 	for ( pcbBuffer = log_not_created == 0; (signed int)pcbBuffer < 2; ++pcbBuffer )
 	{
-		v2 = CreateFileA(FileName, GENERIC_WRITE, FILE_SHARE_READ, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+		v2 = CreateFile(FileName, GENERIC_WRITE, FILE_SHARE_READ, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 		v1 = v2;
 		if ( v2 != (HANDLE)-1 )
 		{
@@ -149,14 +149,14 @@ void __fastcall log_get_version(VS_FIXEDFILEINFO *file_info)
 
 	v9 = file_info;
 	memset(file_info, 0, 0x34u);
-	if ( GetModuleFileNameA(0, Filename, 0x104u) )
+	if ( GetModuleFileName(0, Filename, 0x104u) )
 	{
-		v1 = GetFileVersionInfoSizeA(Filename, &dwHandle);
+		v1 = GetFileVersionInfoSize(Filename, &dwHandle);
 		v2 = v1;
 		if ( v1 )
 		{
 			v3 = VirtualAlloc(0, v1, 0x1000u, 4u);
-			if ( GetFileVersionInfoA(Filename, 0, v2, v3) && VerQueryValueA(v3, "\\", &lpBuffer, &puLen) )
+			if ( GetFileVersionInfo(Filename, 0, v2, v3) && VerQueryValue(v3, "\\", &lpBuffer, &puLen) )
 			{
 				v4 = puLen;
 				if ( puLen >= 0x34 )
@@ -168,7 +168,7 @@ void __fastcall log_get_version(VS_FIXEDFILEINFO *file_info)
 	}
 }
 
-void log_printf(char *pszFmt, ...)
+void log_printf(const char *pszFmt, ...)
 {
 	size_t v1; // edi
 	char *v2; // eax
@@ -203,7 +203,7 @@ void __cdecl log_dump_computer_info()
 
 	GetLocalTime(&SystemTime);
 	pcbBuffer = 64;
-	if ( !GetUserNameA(Buffer, &pcbBuffer) )
+	if ( !GetUserName(Buffer, &pcbBuffer) )
 		Buffer[0] = 0;
 	log_get_version(&file_info);
 	log_printf(

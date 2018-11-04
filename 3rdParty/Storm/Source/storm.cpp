@@ -164,6 +164,7 @@ BOOL STORMAPI STransPointInMask(HANDLE hTrans, int x, int y) rBool;
 BOOL STORMAPI STransCombineMasks(HANDLE hTransA, HANDLE hTransB, int left, int top, int flags, HANDLE * phTransResult) rBool;
 
 BOOL STORMAPI STransCreateE(void *pBuffer, int width, int height, int bpp, int a5, int bufferSize, HANDLE *phTransOut) rBool;
+BOOL STORMAPI STransCreateI(void *pBuffer, int width, int height, int bpp, int a5, int bufferSize, HANDLE *phTransOut) rBool;
 
 BOOL STORMAPI SVidDestroy() rBool;
 BOOL STORMAPI SVidGetSize(HANDLE video, int width, int height, int zero) rBool;
@@ -236,3 +237,14 @@ bool __stdcall SNetSetBasePlayer(int) rBool;
 int __stdcall SNetInitializeProvider(unsigned long,struct _SNETPROGRAMDATA *,struct _SNETPLAYERDATA *,struct _SNETUIDATA *,struct _SNETVERSIONDATA *) rInt;
 int __stdcall SNetGetProviderCaps(struct _SNETCAPS *) rInt;
 int __stdcall SFileSetFilePointer(HANDLE,int,HANDLE,int) rInt;
+void __stdcall SDrawClearSurface(int a1) rVoid;
+BOOL __stdcall SDlgSetBitmapI(HWND hWnd, int a2, char *src, int mask1, int flags, void *pBuff, int a7, int width, int height, int mask2) rBool;
+void __stdcall SDlgBeginPaint(HWND hWnd, char *a2) rVoid;
+void __stdcall SDlgEndPaint(HWND hWnd, char *a2) rVoid;
+void __stdcall SDlgSetSystemCursor(BYTE *a1, BYTE *a2, int *a3, int a4) rVoid;
+void __stdcall SDlgSetCursor(HWND hWnd, HCURSOR a2, int a3, int *a4) rVoid;
+BOOL __stdcall SDlgSetTimer(int a1, int a2, int a3, void (__stdcall *a4)(int, int, int, int)) rBool;
+BOOL __stdcall SDlgKillTimer(int a1, int a2) rBool;
+BOOL __stdcall SDlgDrawBitmap(HWND hWnd, int a2, int a3, int a4, int a5, int a6, int a7) rBool;
+BOOL __stdcall SDlgDialogBoxParam(HINSTANCE hInst, char *szDialog, int a3, WNDPROC func, int a5) rBool;
+BOOL __stdcall SGdiTextOut(void *pBuffer, int x, int y, int mask, char *str, int len) rBool;

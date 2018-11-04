@@ -3,8 +3,8 @@
 #include "../types.h"
 
 void *pSquareCel;
-char dMonsDbg[17][112][112];
-char dFlagDbg[17][112][112];
+char dMonsDbg[NUMLEVELS][MAXDUNX][MAXDUNY];
+char dFlagDbg[NUMLEVELS][MAXDUNX][MAXDUNY];
 
 void __cdecl LoadDebugGFX()
 {
@@ -27,9 +27,9 @@ void __cdecl CheckDungeonClear()
 	int i;
 	int j;
 
-	for(i = 0; i < 112; i++)
+	for(i = 0; i < MAXDUNX; i++)
 	{
-		for(j = 0; j < 112; j++)
+		for(j = 0; j < MAXDUNY; j++)
 		{
 			if ( dMonster[i][j] )
 				TermMsg("Monsters not cleared");
@@ -115,6 +115,38 @@ void __cdecl MaxSpellsCheat()
 	}
 }
 
+void __fastcall SetSpellLevelCheat(char spl, int spllvl)
+{
+	*(_QWORD *)plr[myplr]._pMemSpells |= (__int64)1 << (spl - 1);
+	plr[myplr]._pSplLvl[spl] = spllvl;
+}
+
+void __cdecl SetAllSpellsCheat()
+{
+	SetSpellLevelCheat(SPL_FIREBOLT, 8);
+	SetSpellLevelCheat(SPL_CBOLT, 11);
+	SetSpellLevelCheat(SPL_HBOLT, 10);
+	SetSpellLevelCheat(SPL_HEAL, 7);
+	SetSpellLevelCheat(SPL_HEALOTHER, 5);
+	SetSpellLevelCheat(SPL_LIGHTNING, 9);
+	SetSpellLevelCheat(SPL_FIREWALL, 5);
+	SetSpellLevelCheat(SPL_TELEKINESIS, 3);
+	SetSpellLevelCheat(SPL_TOWN, 3);
+	SetSpellLevelCheat(SPL_FLASH, 3);
+	SetSpellLevelCheat(SPL_RNDTELEPORT, 2);
+	SetSpellLevelCheat(SPL_MANASHIELD, 2);
+	SetSpellLevelCheat(SPL_WAVE, 4);
+	SetSpellLevelCheat(SPL_FIREBALL, 3);
+	SetSpellLevelCheat(SPL_STONE, 1);
+	SetSpellLevelCheat(SPL_CHAIN, 1);
+	SetSpellLevelCheat(SPL_GUARDIAN, 4);
+	SetSpellLevelCheat(SPL_ELEMENT, 3);
+	SetSpellLevelCheat(SPL_NOVA, 1);
+	SetSpellLevelCheat(SPL_GOLEM, 2);
+	SetSpellLevelCheat(SPL_FLARE, 1);
+	SetSpellLevelCheat(SPL_BONESPIRIT, 1);
+}
+
 void __fastcall PrintDebugPlayer(bool bNextPlayer)
 {
 	char dstr[128]; // [esp+Ch] [ebp-80h]
@@ -146,7 +178,7 @@ void __cdecl PrintDebugQuest()
 
 	sprintf(dstr, "Quest %i :  Active = %i, Var1 = %i", dbgqst, quests[dbgqst]._qactive, quests[dbgqst]._qvar1);
 	NetSendCmdString(1 << myplr, dstr);
-	if ( ++dbgqst == 16 )
+	if ( ++dbgqst == MAXQUESTS )
 		dbgqst = 0;
 }
 
@@ -204,7 +236,7 @@ void __cdecl NextDebugMonster()
 {
 	char dstr[128]; // [esp+0h] [ebp-80h]
 
-	if ( dbgmon++ == 200 )
+	if ( dbgmon++ == MAXMONSTERS )
 		dbgmon = 0;
 
 	sprintf(dstr, "Current debug monster = %i", dbgmon);

@@ -42,7 +42,7 @@ void __cdecl FreeStoreMem();
 void __cdecl DrawSTextBack();
 void __fastcall PrintSString(int x, int y, unsigned char cjustflag, char *str, int col, int val);
 void __fastcall DrawSLine(int y);
-void __fastcall DrawSArrows(int a1, int a2);
+void __fastcall DrawSArrows(int y1, int y2);
 void __cdecl DrawSTextHelp();
 void __fastcall ClearSText(int s, int e);
 void __fastcall AddSLine(int y);

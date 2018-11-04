@@ -12,12 +12,12 @@ HMODULE hDsound_dll; // idb
 void *sgpMusicTrack;
 IDirectSoundBuffer *sglpDSB;
 
-int sound_inf = 0x7F800000; // weak
+const int sound_inf = 0x7F800000; // weak
 
-/* rdata */
+/* data */
 
-char gbMusicOn = 1; // weak
-char gbSoundOn = 1; // weak
+UCHAR gbMusicOn = 1; // weak
+UCHAR gbSoundOn = 1; // weak
 char gbDupSounds = 1; // weak
 int sgnMusicTrack = 6;
 char *sgszMusicTracks[6] =
@@ -29,7 +29,13 @@ char *sgszMusicTracks[6] =
   "Music\\DLvlD.wav",
   "Music\\Dintro.wav"
 };
-RECT8 QSRect[2] = { { { 15, -16 }, { 15, -16 } }, { { 30, -31 }, { 30, -31 } } }; /* psx version? */
+char unk_volume[4][2] =
+{
+	{ 15, -16 },
+	{ 15, -16 },
+	{ 30, -31 },
+	{ 30, -31 }
+};
 
 struct sound_cpp_init
 {
@@ -142,7 +148,7 @@ void __fastcall snd_play_snd(TSnd *pSnd, int lVolume, int lPan)
 						}
 						else if ( v8 )
 						{
-							DSErrDlg(v8, 261, "C:\\Src\\Diablo\\Source\\SOUND.CPP");
+							DSErrMsg(v8, 261, "C:\\Src\\Diablo\\Source\\SOUND.CPP");
 						}
 						v3->start_tc = v10;
 					}
@@ -242,11 +248,11 @@ TSnd *__fastcall sound_file_load(char *path)
 	sound_CreateSoundBuffer(v4);
 	v5 = v4->DSB->Lock(0, v4->len, &aptr1, &asize1, &aptr2, &asize2, 0); //v7);
 	if ( v5 )
-		DSErrDlg(v5, 318, "C:\\Src\\Diablo\\Source\\SOUND.CPP");
+		DSErrMsg(v5, 318, "C:\\Src\\Diablo\\Source\\SOUND.CPP");
 	memcpy(aptr1, (char *)ptr + v4->offset, asize1);
 	v6 = v4->DSB->Unlock(aptr1, asize1, aptr2, asize2);
 	if ( v6 )
-		DSErrDlg(v6, 325, "C:\\Src\\Diablo\\Source\\SOUND.CPP");
+		DSErrMsg(v6, 325, "C:\\Src\\Diablo\\Source\\SOUND.CPP");
 	mem_free_dbg(ptr);
 	WCloseFile(a1);
 	return v4;
@@ -267,7 +273,7 @@ void __fastcall sound_CreateSoundBuffer(TSnd *sound_file)
 	v3.dwFlags = DSBCAPS_CTRLVOLUME|DSBCAPS_CTRLPAN|DSBCAPS_STATIC;
 	v2 = sglpDS->CreateSoundBuffer(&v3, &v1->DSB, NULL);
 	if ( v2 )
-		DSErrDlg(v2, 282, "C:\\Src\\Diablo\\Source\\SOUND.CPP");
+		DSErrMsg(v2, 282, "C:\\Src\\Diablo\\Source\\SOUND.CPP");
 }
 
 void __fastcall sound_file_cleanup(TSnd *sound_file)
@@ -350,14 +356,14 @@ void __fastcall sound_create_primary_buffer(int music_track)
 		v4.dwFlags = DSBCAPS_PRIMARYBUFFER;
 		v1 = sglpDS->CreateSoundBuffer(&v4, &sglpDSB, NULL);
 		if ( v1 )
-			DSErrDlg(v1, 375, "C:\\Src\\Diablo\\Source\\SOUND.CPP");
+			DSErrMsg(v1, 375, "C:\\Src\\Diablo\\Source\\SOUND.CPP");
 	}
 	if ( sglpDSB )
 	{
 		v3.dwSize = 96;
 		v2 = sglpDS->GetCaps(&v3);
 		if ( v2 )
-			DSErrDlg(v2, 383, "C:\\Src\\Diablo\\Source\\SOUND.CPP");
+			DSErrMsg(v2, 383, "C:\\Src\\Diablo\\Source\\SOUND.CPP");
 		if ( !a1 || !LoadWaveFormat((HANDLE)a1, &a2) )
 		{
 			memset(&a2, 0, 0x12u);
@@ -367,7 +373,7 @@ void __fastcall sound_create_primary_buffer(int music_track)
 			a2.cbSize = 0;
 		}
 		a2.nChannels = 2;
-		a2.nBlockAlign = 2 * a2.wBitsPerSample / 8; // a2.nChannels * x / 8 (BUG_FIX: per MSDN)
+		a2.nBlockAlign = 2 * a2.wBitsPerSample / 8; /// BUGFIX: should be `a2.nChannels * a2.wBitsPerSample / 8`
 		a2.nAvgBytesPerSec = a2.nSamplesPerSec * a2.nBlockAlign;
 		sglpDSB->SetFormat(&a2);
 	}
@@ -386,18 +392,18 @@ int __fastcall sound_DirectSoundCreate(GUID *guid, IDirectSound **DS, int always
 	v8 = guid;
 	if ( !hDsound_dll )
 	{
-		hDsound_dll = LoadLibraryA("dsound.dll");
+		hDsound_dll = LoadLibrary("dsound.dll");
 		if ( !hDsound_dll )
 		{
 			v4 = GetLastError();
-			TermDlg(108, v4, "C:\\Src\\Diablo\\Source\\SOUND.CPP", 422);
+			ErrDlg(IDD_DIALOG5, v4, "C:\\Src\\Diablo\\Source\\SOUND.CPP", 422);
 		}
 	}
 	v5 = GetProcAddress(hDsound_dll, "DirectSoundCreate");
 	if ( !v5 )
 	{
 		v6 = GetLastError();
-		TermDlg(108, v6, "C:\\Src\\Diablo\\Source\\SOUND.CPP", 427);
+		ErrDlg(IDD_DIALOG5, v6, "C:\\Src\\Diablo\\Source\\SOUND.CPP", 427);
 	}
 	return ((int (__stdcall *)(GUID *, IDirectSound **, int))v5)(v8, v3, always_null);
 }

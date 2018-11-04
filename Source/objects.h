@@ -4,13 +4,13 @@
 
 extern int trapid; // weak
 extern int trapdir; // weak
-extern int pObjCels[40];
+extern unsigned char *pObjCels[40];
 extern char ObjFileList[40];
-extern int objectactive[127];
+extern int objectactive[MAXOBJECTS];
 extern int nobjects; // idb
 extern int leverid; // idb
-extern int objectavail[127];
-extern ObjectStruct object[127];
+extern int objectavail[MAXOBJECTS];
+extern ObjectStruct object[MAXOBJECTS];
 extern int InitObjFlag; // weak
 extern int numobjfiles; // weak
 
@@ -40,8 +40,8 @@ void __cdecl AddStoryBooks();
 void __fastcall AddHookedBodies(int freq);
 void __cdecl AddL4Goodies();
 void __cdecl AddLazStand();
-void __fastcall InitObjects(int a1);
-void __fastcall SetMapObjects(char *pMap, int startx, int starty);
+void __cdecl InitObjects();
+void __fastcall SetMapObjects(unsigned char *pMap, int startx, int starty);
 void __fastcall DeleteObject(int oi, int i);
 void __fastcall SetupObject(int i, int x, int y, int ot);
 void __fastcall SetObjMapRange(int i, int x1, int y1, int x2, int y2, int v);
@@ -153,10 +153,10 @@ extern ObjDataStruct AllObjects[99];
 extern char *ObjMasterLoadList[56];
 extern int bxadd[8];
 extern int byadd[8];
-extern char *shrinestrs[26];
-extern unsigned char shrinemin[26];
-extern unsigned char shrinemax[26];
-extern unsigned char shrineavail[26];
+extern char *shrinestrs[NUM_SHRINETYPE];
+extern unsigned char shrinemin[NUM_SHRINETYPE];
+extern unsigned char shrinemax[NUM_SHRINETYPE];
+extern unsigned char shrineavail[NUM_SHRINETYPE];
 extern char *StoryBookName[9];
 extern int StoryText[3][3];
 

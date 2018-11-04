@@ -10,7 +10,7 @@ bool __cdecl SystemSupported()
 	v0 = 0;
 	memset(&VersionInformation, 0, 0x94u);
 	VersionInformation.dwOSVersionInfoSize = 148;
-	if ( GetVersionExA(&VersionInformation)
+	if ( GetVersionEx(&VersionInformation)
 	  && VersionInformation.dwPlatformId == 2
 	  && VersionInformation.dwMajorVersion >= 5 )
 	{
@@ -26,7 +26,7 @@ bool __cdecl RestrictedTest()
 	char Buffer[260]; // [esp+4h] [ebp-104h]
 
 	v0 = 0;
-	if ( SystemSupported() && GetWindowsDirectoryA(Buffer, 0x104u) )
+	if ( SystemSupported() && GetWindowsDirectory(Buffer, 0x104u) )
 	{
 		strcat(Buffer, "\\Diablo1RestrictedTest.foo");
 		v2 = fopen(Buffer, "wt");
@@ -51,7 +51,7 @@ bool __cdecl ReadOnlyTest()
 	char Filename[260]; // [esp+4h] [ebp-104h]
 
 	v0 = 0;
-	if ( GetModuleFileNameA(ghInst, Filename, 0x104u) )
+	if ( GetModuleFileName(ghInst, Filename, 0x104u) )
 	{
 		v1 = strrchr(Filename, '\\');
 		if ( v1 )

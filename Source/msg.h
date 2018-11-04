@@ -6,13 +6,13 @@ extern int sgdwOwnerWait; // weak
 extern int msg_cpp_init_value; // weak
 extern int sgdwRecvOffset; // idb
 extern int sgnCurrMegaPlayer; // weak
-extern DLevel sgLevels[17];
+extern DLevel sgLevels[NUMLEVELS];
 extern char sbLastCmd; // weak
 extern TMegaPkt *sgpCurrPkt;
 extern char sgRecvBuf[4722];
 extern unsigned char sgbRecvCmd; // idb
-extern LocalLevel sgLocals[17];
-extern DJunk sgJunk[4];
+extern LocalLevel sgLocals[NUMLEVELS];
+extern DJunk sgJunk;
 extern TMegaPkt *sgpMegaPkt;
 extern char sgbDeltaChanged; // weak
 extern char sgbDeltaChunks; // weak
@@ -42,8 +42,8 @@ void __fastcall delta_monster_hp(int mi, int hp, unsigned char bLevel);
 void __fastcall delta_sync_monster(TCmdLocParam1 *packet, char level);
 void __fastcall delta_sync_golem(TCmdGolem *pG, int pnum, int bLevel);
 void __fastcall delta_leave_sync(unsigned char bLevel);
-bool __fastcall delta_portal_inited(int portal_num);
-bool __fastcall delta_quest_inited(int quest_num);
+bool __fastcall delta_portal_inited(int i);
+bool __fastcall delta_quest_inited(int i);
 void __fastcall DeltaAddItem(int ii);
 void __cdecl DeltaSaveLevel();
 void __cdecl DeltaLoadLevel();
@@ -53,8 +53,8 @@ void __fastcall NetSendCmdLoc(unsigned char bHiPri, unsigned char bCmd, unsigned
 void __fastcall NetSendCmdLocParam1(unsigned char bHiPri, unsigned char bCmd, unsigned char x, unsigned char y, int wParam1);
 void __fastcall NetSendCmdLocParam2(unsigned char bHiPri, unsigned char bCmd, unsigned char x, unsigned char y, int wParam1, int wParam2);
 void __fastcall NetSendCmdLocParam3(unsigned char bHiPri, unsigned char bCmd, unsigned char x, unsigned char y, int wParam1, int wParam2, int wParam3);
-void __fastcall NetSendCmdParam1(unsigned char bHiPri, unsigned char bCmd, unsigned short wParam1);
-void __fastcall NetSendCmdParam2(unsigned char bHiPri, unsigned char bCmd, unsigned short wParam1, unsigned short wParam2);
+void __fastcall NetSendCmdParam1(BOOL bHiPri, unsigned char bCmd, unsigned short wParam1);
+void __fastcall NetSendCmdParam2(BOOL bHiPri, unsigned char bCmd, unsigned short wParam1, unsigned short wParam2);
 void __fastcall NetSendCmdParam3(unsigned char bHiPri, unsigned char bCmd, unsigned short wParam1, unsigned short wParam2, int wParam3);
 void __fastcall NetSendCmdQuest(unsigned char bHiPri, unsigned char q);
 void __fastcall NetSendCmdGItem(unsigned char bHiPri, unsigned char bCmd, unsigned char mast, unsigned char pnum, int ii);
@@ -63,9 +63,9 @@ bool __fastcall NetSendCmdReq2(unsigned char bCmd, unsigned char mast, unsigned 
 void __fastcall NetSendCmdExtra(struct TCmdGItem *p);
 void __fastcall NetSendCmdPItem(unsigned char bHiPri, unsigned char bCmd, unsigned char x, unsigned char y);
 void __fastcall NetSendCmdChItem(unsigned char bHiPri, unsigned char bLoc);
-void __fastcall NetSendCmdDelItem(unsigned char bHiPri, unsigned char bLoc);
+void __fastcall NetSendCmdDelItem(BOOL bHiPri, unsigned char bLoc);
 void __fastcall NetSendCmdDItem(unsigned char bHiPri, int ii);
-void __fastcall NetSendCmdDamage(unsigned char bHiPri, unsigned char bPlr, unsigned int dwDam);
+void __fastcall NetSendCmdDamage(BOOL bHiPri, unsigned char bPlr, unsigned int dwDam);
 void __fastcall NetSendCmdString(int a1, const char *pszStr);
 void __fastcall RemovePlrPortal(int pnum);
 int __fastcall ParseCmd(int pnum, TCmd *pCmd);
@@ -158,8 +158,8 @@ int __fastcall On_NOVA(struct TCmdLoc *pCmd, int pnum);
 int __fastcall On_SETSHIELD(int unused, int pnum);
 int __fastcall On_REMSHIELD(int unused, int pnum);
 
-/* data */
+/* rdata */
 
-extern int msg_inf; // weak
+extern const int msg_inf; // weak
 
 #endif /* __MSG_H__ */

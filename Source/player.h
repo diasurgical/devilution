@@ -8,7 +8,7 @@ extern char plr_gfx_flag; // weak
 extern int player_cpp_init_value; // weak
 extern int plr_aframe_size; // idb
 extern int myplr;
-extern PlayerStruct plr[4];
+extern PlayerStruct plr[MAX_PLRS];
 extern int plr_fframe_size; // idb
 extern int plr_qframe_size; // idb
 extern int deathflag; // idb
@@ -20,26 +20,26 @@ extern int deathdelay; // weak
 extern int plr_dframe_size; // idb
 
 void __cdecl player_cpp_init();
-void __fastcall player_init_cl2_hdrs(char *src, char *dst);
-void __fastcall LoadPlrGFX(int pnum, int gfxflag);
+void __fastcall SetPlayerGPtrs(UCHAR *pData, UCHAR **pAnim); /* unsigned char *+** */
+void __fastcall LoadPlrGFX(int pnum, player_graphic gfxflag);
 void __fastcall InitPlayerGFX(int pnum);
 void __fastcall InitPlrGFXMem(int pnum);
-int __fastcall GetPlrGFXSize(char *szCel);
+DWORD __fastcall GetPlrGFXSize(char *szCel);
 void __fastcall FreePlayerGFX(int pnum);
-void __fastcall NewPlrAnim(int pnum, int Peq, int numFrames, int Delay, int width);
+void __fastcall NewPlrAnim(int pnum, unsigned char *Peq, int numFrames, int Delay, int width);
 void __fastcall ClearPlrPVars(int pnum);
 void __fastcall SetPlrAnims(int pnum);
-void __fastcall ClearPlrRVars(PlayerStruct *pPlayer);
+void __fastcall ClearPlrRVars(PlayerStruct *p);
 void __fastcall CreatePlayer(int pnum, char c);
 int __fastcall CalcStatDiff(int pnum);
 void __fastcall NextPlrLevel(int pnum);
 void __fastcall AddPlrExperience(int pnum, int lvl, int exp);
 void __fastcall AddPlrMonstExper(int lvl, int exp, char pmask);
-void __fastcall InitPlayer(int pnum, bool FirstTime);
+void __fastcall InitPlayer(int pnum, BOOL FirstTime);
 void __cdecl InitMultiView();
-void __fastcall InitPlayerLoc(int pnum, bool flag);
-bool __fastcall SolidLoc(int x, int y);
-bool __fastcall PlrDirOK(int pnum, int dir);
+void __fastcall InitPlayerLoc(int pnum, BOOL flag);
+BOOL __fastcall SolidLoc(int x, int y);
+BOOL __fastcall PlrDirOK(int pnum, int dir);
 void __fastcall PlrClrTrans(int x, int y);
 void __fastcall PlrDoTrans(int x, int y);
 void __fastcall SetPlayerOld(int pnum);
@@ -57,7 +57,7 @@ void __fastcall StartPlrBlock(int pnum, int dir);
 void __fastcall StartSpell(int pnum, int d, int cx, int cy);
 void __fastcall FixPlrWalkTags(int pnum);
 void __fastcall RemovePlrFromMap(int pnum);
-void __fastcall StartPlrHit(int pnum, int dam, unsigned char forcehit);
+void __fastcall StartPlrHit(int pnum, int dam, BOOL forcehit);
 void __fastcall RespawnDeadItem(ItemStruct *itm, int x, int y);
 void __fastcall StartPlayerKill(int pnum, int earflag);
 void __fastcall PlrDeadItem(int pnum, struct ItemStruct *itm, int xx, int yy);
@@ -69,29 +69,29 @@ void __fastcall InitLevelChange(int pnum);
 void __fastcall StartNewLvl(int pnum, int fom, int lvl);
 void __fastcall RestartTownLvl(int pnum);
 void __fastcall StartWarpLvl(int pnum, int pidx);
-int __fastcall PM_DoStand(int pnum);
-int __fastcall PM_DoWalk(int pnum);
-int __fastcall PM_DoWalk2(int pnum);
-int __fastcall PM_DoWalk3(int pnum);
-bool __fastcall WeaponDur(int pnum, int durrnd);
+BOOL __fastcall PM_DoStand(int pnum);
+BOOL __fastcall PM_DoWalk(int pnum);
+BOOL __fastcall PM_DoWalk2(int pnum);
+BOOL __fastcall PM_DoWalk3(int pnum);
+BOOL __fastcall WeaponDur(int pnum, int durrnd);
 bool __fastcall PlrHitMonst(int pnum, int m);
-bool __fastcall PlrHitPlr(int pnum, char p);
-bool __fastcall PlrHitObj(int pnum, int mx, int my);
+BOOL __fastcall PlrHitPlr(int pnum, char p);
+BOOL __fastcall PlrHitObj(int pnum, int mx, int my);
 int __fastcall PM_DoAttack(int pnum);
-int __fastcall PM_DoRangeAttack(int pnum);
+BOOL __fastcall PM_DoRangeAttack(int pnum);
 void __fastcall ShieldDur(int pnum);
-int __fastcall PM_DoBlock(int pnum);
-int __fastcall PM_DoSpell(int pnum);
+BOOL __fastcall PM_DoBlock(int pnum);
+BOOL __fastcall PM_DoSpell(int pnum);
 int __fastcall PM_DoGotHit(int pnum);
 void __fastcall ArmorDur(int pnum);
 int __fastcall PM_DoDeath(int pnum);
 void __fastcall CheckNewPath(int pnum);
-bool __fastcall PlrDeathModeOK(int pnum);
+BOOL __fastcall PlrDeathModeOK(int pnum);
 void __cdecl ValidatePlayer();
 void __cdecl ProcessPlayers();
 void __fastcall CheckCheatStats(int pnum);
 void __fastcall ClrPlrPath(int pnum);
-bool __fastcall PosOkPlayer(int pnum, int px, int py);
+BOOL __fastcall PosOkPlayer(int pnum, int px, int py);
 void __fastcall MakePlrPath(int pnum, int xx, int yy, unsigned char endspace);
 void __fastcall CheckPlrSpell();
 void __fastcall SyncPlrAnim(int pnum);
@@ -110,14 +110,14 @@ void __fastcall SetPlrVit(int pnum, int v);
 void __fastcall InitDungMsgs(int pnum);
 void __cdecl PlayDungMsgs();
 
-/* data */
-
-extern int player_inf;
-extern char ArmourChar[4];
-extern char WepChar[10];
-extern char CharChar[4];
-
 /* rdata */
+
+extern const int player_inf;
+extern const char ArmourChar[4];
+extern const char WepChar[10];
+extern const char CharChar[4];
+
+/* data */
 
 extern int plrxoff[9];
 extern int plryoff[9];

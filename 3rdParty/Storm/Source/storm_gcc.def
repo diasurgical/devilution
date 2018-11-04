@@ -52,6 +52,7 @@ EXPORTS
 
   SNetEnumGamesEx               @133 NONAME
   SNetSendServerChatCommand     @134 NONAME
+  SNetSendServerChatCommand@4   @134 NONAME
   ;SNetSendDatagram             @135 NONAME
   ;SNetReceiveDatagram          @136 NONAME
   SNetDisconnectAll             @137 NONAME
@@ -68,7 +69,8 @@ EXPORTS
   ;Ordinal150                    @150 NONAME
   ;Ordinal151                    @151 NONAME
 
-  ;SDlgBeginPaint                @201 NONAME
+  SDlgBeginPaint                 @201 NONAME
+  SDlgBeginPaint@8               @201 NONAME
   ;SDlgBltToWindowI              @202 NONAME
   ;SDlgCheckTimers               @203 NONAME
   ;SDlgCreateDialogIndirectParam @204 NONAME
@@ -76,17 +78,25 @@ EXPORTS
   SDlgDefDialogProc             @206 NONAME
 
   SDlgDialogBoxIndirectParam    @208 NONAME
-  ;SDlgDialogBoxParam            @209 NONAME
-  ;SDlgDrawBitmap                @210 NONAME
+  SDlgDialogBoxParam            @209 NONAME
+  SDlgDialogBoxParam@20         @209 NONAME
+  SDlgDrawBitmap                @210 NONAME
+  SDlgDrawBitmap@28             @210 NONAME
   SDlgEndDialog                 @211 NONAME
-  ;SDlgEndPaint                  @212 NONAME
-  ;SDlgKillTimer                 @213 NONAME
+  SDlgEndPaint                  @212 NONAME
+  SDlgEndPaint@8                @212 NONAME
+  SDlgKillTimer                 @213 NONAME
+  SDlgKillTimer@8               @213 NONAME
   ;SDlgSetBaseFont               @214 NONAME
-  ;SDlgSetBitmapI                @215 NONAME
+  SDlgSetBitmapI                @215 NONAME
+  SDlgSetBitmapI@40             @215 NONAME
   SDlgSetControlBitmaps         @216 NONAME
-  ;SDlgSetCursor                 @217 NONAME
-  ;SDlgSetSystemCursor           @218 NONAME
-  ;SDlgSetTimer                  @219 NONAME
+  SDlgSetCursor                 @217 NONAME
+  SDlgSetCursor@16              @217 NONAME
+  SDlgSetSystemCursor           @218 NONAME
+  SDlgSetSystemCursor@16        @218 NONAME
+  SDlgSetTimer                  @219 NONAME
+  SDlgSetTimer@16               @219 NONAME
   ;SDlgUpdateCursor              @220 NONAME
   SDlgBltToWindowE              @221 NONAME
   SDlgSetBitmapE                @222 NONAME
@@ -184,7 +194,8 @@ EXPORTS
 
   SDrawAutoInitialize           @341 NONAME
   SDrawCaptureScreen            @342 NONAME
-  ;SDrawClearSurface             @343 NONAME
+  SDrawClearSurface             @343 NONAME
+  SDrawClearSurface@0           @343 NONAME
   SDrawDestroy                  @344 NONAME
   ;SDrawFlipPage                 @345 NONAME
   SDrawGetFrameWindow           @346 NONAME
@@ -224,7 +235,8 @@ EXPORTS
   ;SGdiRectangle                 @388 NONAME
   SGdiSelectObject              @389 NONAME
   SGdiSetPitch                  @390 NONAME
-  ;SGdiTextOut                   @391 NONAME
+  SGdiTextOut                   @391 NONAME
+  SGdiTextOut@24                @391 NONAME
   ;SGdi392                       @392 NONAME
   Ordinal393                    @393 NONAME
 
@@ -266,7 +278,8 @@ EXPORTS
   ;SReg430                       @430 NONAME
   STransBlt                     @431 NONAME
   STransBltUsingMask            @432 NONAME
-  ;STransCreateI                 @433 NONAME
+  STransCreateI                 @433 NONAME
+  STransCreateI@28              @433 NONAME
   STransDelete                  @434 NONAME
 
   STransDuplicate               @436 NONAME

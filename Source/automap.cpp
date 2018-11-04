@@ -3,11 +3,11 @@
 #include "../types.h"
 
 short automaptype[512];
-int AMdword_4B7E40; // weak
-int AMdword_4B7E44; // weak
+static int MapX;
+static int MapY;
 bool automapflag; // idb
 char AMbyte_4B7E4C[32];
-char automapview[40][40];
+char automapview[DMAXX][DMAXY];
 int AutoMapScale; // idb
 int AutoMapXOfs; // weak
 int AutoMapYOfs; // weak
@@ -70,7 +70,7 @@ void __cdecl InitAutomap()
 		++v1;
 	}
 	while ( v1 < 31 );
-	memset(automaptype, 0, 0x400u);
+	memset(automaptype, 0, sizeof(automaptype));
 	switch ( leveltype )
 	{
 		case DTYPE_CATHEDRAL:
@@ -103,7 +103,7 @@ void __cdecl InitAutomap()
 		automaptype[i] = v8;
 	}
 	mem_free_dbg(v7);
-	memset(automapview, 0, 0x640u);
+	memset(automapview, 0, sizeof(automapview));
 	v13 = 0;
 	do
 	{
@@ -201,185 +201,93 @@ void __cdecl AutomapZoomOut()
 
 void __cdecl DrawAutomap()
 {
-	int v0; // eax
-	int v1; // ecx
-	int v2; // edx
-	int v3; // edx
-	int v4; // ecx
-	int v5; // eax
-	int v6; // esi
-	int v7; // edx
-	int v8; // edx
-	int v9; // esi
-	int v10; // ebx
-	int v11; // edi
-	int v12; // esi
-	int v13; // edi
-	int v14; // esi
-	int v15; // ebp
-	short v16; // ax
-	int v17; // ebp
-	short v18; // ax
-	int v19; // [esp+0h] [ebp-18h]
-	int screen_x; // [esp+4h] [ebp-14h]
-	int screen_xa; // [esp+4h] [ebp-14h]
-	int v22; // [esp+8h] [ebp-10h]
-	int ty; // [esp+Ch] [ebp-Ch]
-	int tya; // [esp+Ch] [ebp-Ch]
-	int v25; // [esp+10h] [ebp-8h]
-	int screen_y; // [esp+14h] [ebp-4h]
+	int cells;
+	int screen_x;
+	int screen_y;
+	int i, j;
+	int mapx, mapy;
 
-	if ( leveltype )
-	{
-		screen_buf_end = (int)gpBuffer->row[352].col_unused_1;
-		v0 = AutoMapXOfs;
-		v1 = (ViewX - 16) >> 1;
-		v2 = AutoMapXOfs + v1;
-		if ( AutoMapXOfs + v1 < 0 )
-		{
-			do
-			{
-				++v0;
-				++v2;
-			}
-			while ( v2 < 0 );
-			AutoMapXOfs = v0;
-		}
-		v3 = v0 + v1;
-		if ( v0 + v1 >= 40 )
-		{
-			do
-			{
-				--v0;
-				--v3;
-			}
-			while ( v3 >= 40 );
-			AutoMapXOfs = v0;
-		}
-		v4 = v0 + v1;
-		AMdword_4B7E40 = v4;
-		v5 = AutoMapYOfs;
-		v6 = (ViewY - 16) >> 1;
-		v7 = AutoMapYOfs + v6;
-		if ( AutoMapYOfs + v6 < 0 )
-		{
-			do
-			{
-				++v5;
-				++v7;
-			}
-			while ( v7 < 0 );
-			AutoMapYOfs = v5;
-		}
-		v8 = v5 + v6;
-		if ( v5 + v6 >= 40 )
-		{
-			do
-			{
-				--v5;
-				--v8;
-			}
-			while ( v8 >= 40 );
-			AutoMapYOfs = v5;
-		}
-		v9 = v5 + v6;
-		AMdword_4B7E44 = v9;
-		v10 = AMbyte_4B7E4C[(AutoMapScale - 50) / 5];
-		if ( ScrollInfo._sxoff + ScrollInfo._syoff )
-			++v10;
-		v22 = v4 - v10;
-		v19 = v9 - 1;
-		if ( v10 & 1 )
-		{
-			v11 = 384 - AutoMapPosBits * ((v10 - 1) >> 1);
-			v12 = 336 - AutoMapXPos * ((v10 + 1) >> 1);
-		}
-		else
-		{
-			v11 = AutoMapXPos - AutoMapPosBits * (v10 >> 1) + 384;
-			v12 = 336 - AutoMapXPos * (v10 >> 1) - AutoMapYPos;
-		}
-		if ( ViewX & 1 )
-		{
-			v11 -= AutoMapYPos;
-			v12 -= AMPlayerX;
-		}
-		if ( ViewY & 1 )
-		{
-			v11 += AutoMapYPos;
-			v12 -= AMPlayerX;
-		}
-		v13 = (AutoMapScale * ScrollInfo._sxoff / 100 >> 1) + v11;
-		v14 = (AutoMapScale * ScrollInfo._syoff / 100 >> 1) + v12;
-		if ( invflag || sbookflag )
-			v13 -= 160;
-		if ( chrflag || questlog )
-			v13 += 160;
-		if ( v10 + 1 >= 0 )
-		{
-			v25 = v10 + 2;
-			do
-			{
-				v15 = 0;
-				screen_x = v13;
-				if ( v10 > 0 )
-				{
-					ty = v19;
-					do
-					{
-						v16 = GetAutomapType(v22 + v15, ty, 1);
-						if ( v16 )
-							DrawAutomapType(screen_x, v14, v16);
-						screen_x += AutoMapPosBits;
-						++v15;
-						--ty;
-					}
-					while ( v15 < v10 );
-				}
-				++v19;
-				screen_xa = 0;
-				v17 = v13 - AutoMapXPos;
-				screen_y = v14 + AutoMapYPos;
-				if ( v10 >= 0 )
-				{
-					tya = v19;
-					do
-					{
-						v18 = GetAutomapType(v22 + screen_xa, tya, 1);
-						if ( v18 )
-							DrawAutomapType(v17, screen_y, v18);
-						v17 += AutoMapPosBits;
-						++screen_xa;
-						--tya;
-					}
-					while ( screen_xa <= v10 );
-				}
-				++v22;
-				v14 += AutoMapXPos;
-				--v25;
-			}
-			while ( v25 );
-		}
-		DrawAutomapPlr();
+	if ( leveltype == DTYPE_TOWN ) {
 		DrawAutomapGame();
+		return;
 	}
-	else
-	{
-		DrawAutomapGame();
+
+	gpBufEnd = (unsigned char *)&gpBuffer->row[352];
+
+	MapX = (ViewX - 16) >> 1;
+	while ( MapX + AutoMapXOfs < 0 )
+		AutoMapXOfs++;
+	while ( MapX + AutoMapXOfs >= DMAXX )
+		AutoMapXOfs--;
+	MapX += AutoMapXOfs;
+
+	MapY = (ViewY - 16) >> 1;
+	while ( MapY + AutoMapYOfs < 0 )
+		AutoMapYOfs++;
+	while ( MapY + AutoMapYOfs >= DMAXY )
+		AutoMapYOfs--;
+	MapY += AutoMapYOfs;
+
+	cells = AMbyte_4B7E4C[(AutoMapScale - 50) / 5];
+	if ( ScrollInfo._sxoff + ScrollInfo._syoff )
+		cells++;
+	mapx = MapX - cells;
+	mapy = MapY - 1;
+
+	if ( cells & 1 ) {
+		screen_x = 384 - AutoMapPosBits * ((cells - 1) >> 1);
+		screen_y = 336 - AutoMapXPos * ((cells + 1) >> 1);
+	} else {
+		screen_x = 384 - AutoMapPosBits * (cells >> 1) + AutoMapXPos;
+		screen_y = 336 - AutoMapXPos * (cells >> 1) - AutoMapYPos;
 	}
+	if ( ViewX & 1 ) {
+		screen_x -= AutoMapYPos;
+		screen_y -= AMPlayerX;
+	}
+	if ( ViewY & 1 ) {
+		screen_x += AutoMapYPos;
+		screen_y -= AMPlayerX;
+	}
+
+	screen_x += AutoMapScale * ScrollInfo._sxoff / 100 >> 1;
+	screen_y += AutoMapScale * ScrollInfo._syoff / 100 >> 1;
+	if ( invflag || sbookflag ) {
+		screen_x -= 160;
+	}
+	if ( chrflag || questlog ) {
+		screen_x += 160;
+	}
+
+	for ( i = 0; i <= cells + 1; i++ ) {
+		int x = screen_x;
+		int y;
+
+		for ( j = 0; j < cells; j++ ) {
+			short maptype = GetAutomapType(mapx + j, mapy - j, TRUE);
+			if ( maptype )
+				DrawAutomapType(x, screen_y, maptype);
+			x += AutoMapPosBits;
+		}
+		mapy++;
+		x = screen_x - AutoMapXPos;
+		y = screen_y + AutoMapYPos;
+		for ( j = 0; j <= cells; j++ ) {
+			short maptype = GetAutomapType(mapx + j, mapy - j, TRUE);
+			if ( maptype )
+				DrawAutomapType(x, y, maptype);
+			x += AutoMapPosBits;
+		}
+		mapx++;
+		screen_y += AutoMapXPos;
+	}
+	DrawAutomapPlr();
+	DrawAutomapGame();
 }
-// 4B7E40: using guessed type int AMdword_4B7E40;
-// 4B7E44: using guessed type int AMdword_4B7E44;
-// 4B84B0: using guessed type int AutoMapXOfs;
-// 4B84B4: using guessed type int AutoMapYOfs;
-// 4B84B8: using guessed type int AutoMapPosBits;
-// 4B84BC: using guessed type int AutoMapXPos;
-// 4B84C0: using guessed type int AutoMapYPos;
-// 4B84C4: using guessed type int AMPlayerX;
 // 4B8968: using guessed type int sbookflag;
 // 5BB1ED: using guessed type char leveltype;
 // 69BD04: using guessed type int questlog;
-// 69CF0C: using guessed type int screen_buf_end;
+// 69CF0C: using guessed type int gpBufEnd;
 
 void __fastcall DrawAutomapType(int screen_x, int screen_y, short automap_type)
 {
@@ -448,10 +356,10 @@ void __fastcall DrawAutomapType(int screen_x, int screen_y, short automap_type)
 	}
 	if ( automap_type < 0 )
 	{
-		engine_draw_automap_pixels(v4 - AMPlayerX, v5 - AMPlayerX - AMPlayerY, v4 + AMPlayerX + AutoMapYPos, AMPlayerY + v5, 144);
-		engine_draw_automap_pixels(v4 - AutoMapYPos, v5 - AMPlayerX, AutoMapYPos + v4, AMPlayerX + v5, 144);
-		engine_draw_automap_pixels(v4 - AutoMapYPos - AMPlayerX, v5 - AMPlayerY, AMPlayerX + v4, v5 + AMPlayerX + AMPlayerY, 144);
-		engine_draw_automap_pixels(v4 - AutoMapXPos, v5, v4, v5 + AutoMapYPos, 144);
+		DrawLine(v4 - AMPlayerX, v5 - AMPlayerX - AMPlayerY, v4 + AMPlayerX + AutoMapYPos, AMPlayerY + v5, 144);
+		DrawLine(v4 - AutoMapYPos, v5 - AMPlayerX, AutoMapYPos + v4, AMPlayerX + v5, 144);
+		DrawLine(v4 - AutoMapYPos - AMPlayerX, v5 - AMPlayerY, AMPlayerX + v4, v5 + AMPlayerX + AMPlayerY, 144);
+		DrawLine(v4 - AutoMapXPos, v5, v4, v5 + AutoMapYPos, 144);
 		v3 = automap_type;
 	}
 	v31 = 0;
@@ -464,9 +372,9 @@ void __fastcall DrawAutomapType(int screen_x, int screen_y, short automap_type)
 			a1 = v4 - AutoMapYPos;
 			a2 = v5 - AutoMapYPos;
 			automap_typea = v5 - AMPlayerX;
-			engine_draw_automap_pixels(v4, v5 - AutoMapYPos, v4 - AutoMapYPos, v5 - AMPlayerX, 200);
-			engine_draw_automap_pixels(v4, a2, a3, automap_typea, 200);
-			engine_draw_automap_pixels(v4, v5, a1, automap_typea, 200);
+			DrawLine(v4, v5 - AutoMapYPos, v4 - AutoMapYPos, v5 - AMPlayerX, 200);
+			DrawLine(v4, a2, a3, automap_typea, 200);
+			DrawLine(v4, v5, a1, automap_typea, 200);
 			v9 = v5;
 			v29 = automap_typea;
 			v28 = a3;
@@ -491,16 +399,16 @@ LABEL_8:
 				v11 = v4 - AutoMapYPos;
 				v12 = v5 - AutoMapYPos;
 				automap_typeb = v5 - AMPlayerX;
-				engine_draw_automap_pixels(v4, v5 - AutoMapYPos, v4 - AMPlayerX, v5 - AutoMapYPos + AMPlayerY, 200);
-				engine_draw_automap_pixels(v10, v5, v10 + AMPlayerX, v5 - AMPlayerY, 200);
-				engine_draw_automap_pixels(v11, v12, v10, automap_typeb, 144);
-				engine_draw_automap_pixels(v11, v12, v4, automap_typeb, 144);
-				engine_draw_automap_pixels(v11, v5, v10, automap_typeb, 144);
-				engine_draw_automap_pixels(v11, v5, v4, automap_typeb, 144);
+				DrawLine(v4, v5 - AutoMapYPos, v4 - AMPlayerX, v5 - AutoMapYPos + AMPlayerY, 200);
+				DrawLine(v10, v5, v10 + AMPlayerX, v5 - AMPlayerY, 200);
+				DrawLine(v11, v12, v10, automap_typeb, 144);
+				DrawLine(v11, v12, v4, automap_typeb, 144);
+				DrawLine(v11, v5, v10, automap_typeb, 144);
+				DrawLine(v11, v5, v4, automap_typeb, 144);
 			}
 			if ( v33 & 0x10 )
 			{
-				engine_draw_automap_pixels(v4 - AutoMapYPos, v5 - AMPlayerX, v4 - AutoMapXPos, v5, 200);
+				DrawLine(v4 - AutoMapYPos, v5 - AMPlayerX, v4 - AutoMapXPos, v5, 200);
 				v33 |= 4u;
 			}
 			if ( v33 & 4 )
@@ -509,13 +417,13 @@ LABEL_8:
 				v14 = v4 - AutoMapYPos;
 				v15 = v5 - AutoMapYPos;
 				automap_typec = v5 - AMPlayerX;
-				engine_draw_automap_pixels(v4, v5 - AutoMapYPos, v4 - AutoMapYPos, v5 - AMPlayerX, 200);
-				engine_draw_automap_pixels(v4, v15, v13, automap_typec, 200);
-				engine_draw_automap_pixels(v4, v5, v14, automap_typec, 200);
-				engine_draw_automap_pixels(v4, v5, v13, automap_typec, 200);
+				DrawLine(v4, v5 - AutoMapYPos, v4 - AutoMapYPos, v5 - AMPlayerX, 200);
+				DrawLine(v4, v15, v13, automap_typec, 200);
+				DrawLine(v4, v5, v14, automap_typec, 200);
+				DrawLine(v4, v5, v13, automap_typec, 200);
 			}
 			if ( !(v33 & 0x15) )
-				engine_draw_automap_pixels(v4, v5 - AutoMapYPos, v4 - AutoMapXPos, v5, 200);
+				DrawLine(v4, v5 - AutoMapYPos, v4 - AutoMapXPos, v5, 200);
 			if ( v31 )
 				goto LABEL_17;
 			goto LABEL_25;
@@ -528,16 +436,16 @@ LABEL_17:
 				v17 = v5 - AutoMapYPos;
 				v18 = v4 + AutoMapXPos;
 				automap_typed = v5 - AMPlayerX;
-				engine_draw_automap_pixels(v4, v5 - AutoMapYPos, v4 + AMPlayerX, v5 - AutoMapYPos + AMPlayerY, 200);
-				engine_draw_automap_pixels(v18, v5, v18 - AMPlayerX, v5 - AMPlayerY, 200);
-				engine_draw_automap_pixels(v16, v17, v4, automap_typed, 144);
-				engine_draw_automap_pixels(v16, v17, v18, automap_typed, 144);
-				engine_draw_automap_pixels(v16, v5, v4, automap_typed, 144);
-				engine_draw_automap_pixels(v16, v5, v18, automap_typed, 144);
+				DrawLine(v4, v5 - AutoMapYPos, v4 + AMPlayerX, v5 - AutoMapYPos + AMPlayerY, 200);
+				DrawLine(v18, v5, v18 - AMPlayerX, v5 - AMPlayerY, 200);
+				DrawLine(v16, v17, v4, automap_typed, 144);
+				DrawLine(v16, v17, v18, automap_typed, 144);
+				DrawLine(v16, v5, v4, automap_typed, 144);
+				DrawLine(v16, v5, v18, automap_typed, 144);
 			}
 			if ( v33 & 0x20 )
 			{
-				engine_draw_automap_pixels(AutoMapYPos + v4, v5 - AMPlayerX, v4 + AutoMapXPos, v5, 200);
+				DrawLine(AutoMapYPos + v4, v5 - AMPlayerX, v4 + AutoMapXPos, v5, 200);
 				v33 |= 8u;
 			}
 			if ( v33 & 8 )
@@ -546,13 +454,13 @@ LABEL_17:
 				v20 = v4 - AutoMapYPos;
 				v21 = v5 - AutoMapYPos;
 				automap_typee = v5 - AMPlayerX;
-				engine_draw_automap_pixels(v4, v5 - AutoMapYPos, v4 - AutoMapYPos, v5 - AMPlayerX, 200);
-				engine_draw_automap_pixels(v4, v21, v19, automap_typee, 200);
-				engine_draw_automap_pixels(v4, v5, v20, automap_typee, 200);
-				engine_draw_automap_pixels(v4, v5, v19, automap_typee, 200);
+				DrawLine(v4, v5 - AutoMapYPos, v4 - AutoMapYPos, v5 - AMPlayerX, 200);
+				DrawLine(v4, v21, v19, automap_typee, 200);
+				DrawLine(v4, v5, v20, automap_typee, 200);
+				DrawLine(v4, v5, v19, automap_typee, 200);
 			}
 			if ( !(v33 & 0x2A) )
-				engine_draw_automap_pixels(v4, v5 - AutoMapYPos, v4 + AutoMapXPos, v5, 200);
+				DrawLine(v4, v5 - AutoMapYPos, v4 + AutoMapXPos, v5, 200);
 LABEL_25:
 			if ( v30 )
 				goto LABEL_26;
@@ -570,16 +478,16 @@ LABEL_26:
 				v23 = v4 - AutoMapYPos;
 				v24 = AutoMapYPos + v5;
 				automap_typef = AMPlayerX + v5;
-				engine_draw_automap_pixels(v4, AutoMapYPos + v5, v4 - AMPlayerX, AutoMapYPos + v5 - AMPlayerY, 200);
-				engine_draw_automap_pixels(v22, v5, v22 + AMPlayerX, v5 + AMPlayerY, 200);
-				engine_draw_automap_pixels(v23, v24, v22, automap_typef, 144);
-				engine_draw_automap_pixels(v23, v24, v4, automap_typef, 144);
-				engine_draw_automap_pixels(v23, v5, v22, automap_typef, 144);
-				engine_draw_automap_pixels(v23, v5, v4, automap_typef, 144);
+				DrawLine(v4, AutoMapYPos + v5, v4 - AMPlayerX, AutoMapYPos + v5 - AMPlayerY, 200);
+				DrawLine(v22, v5, v22 + AMPlayerX, v5 + AMPlayerY, 200);
+				DrawLine(v23, v24, v22, automap_typef, 144);
+				DrawLine(v23, v24, v4, automap_typef, 144);
+				DrawLine(v23, v5, v22, automap_typef, 144);
+				DrawLine(v23, v5, v4, automap_typef, 144);
 			}
 			else
 			{
-				engine_draw_automap_pixels(v4, AutoMapYPos + v5, v4 - AutoMapXPos, v5, 200);
+				DrawLine(v4, AutoMapYPos + v5, v4 - AutoMapXPos, v5, 200);
 			}
 LABEL_32:
 			if ( v32 )
@@ -591,12 +499,12 @@ LABEL_33:
 					v26 = AutoMapYPos + v5;
 					v27 = v4 + AutoMapXPos;
 					automap_typeg = AMPlayerX + v5;
-					engine_draw_automap_pixels(v4, AutoMapYPos + v5, v4 + AMPlayerX, AutoMapYPos + v5 - AMPlayerY, 200);
-					engine_draw_automap_pixels(v27, v5, v27 - AMPlayerX, v5 + AMPlayerY, 200);
-					engine_draw_automap_pixels(v25, v26, v4, automap_typeg, 144);
-					engine_draw_automap_pixels(v25, v26, v27, automap_typeg, 144);
-					engine_draw_automap_pixels(v25, v5, v4, automap_typeg, 144);
-					engine_draw_automap_pixels(v25, v5, v27, automap_typeg, 144);
+					DrawLine(v4, AutoMapYPos + v5, v4 + AMPlayerX, AutoMapYPos + v5 - AMPlayerY, 200);
+					DrawLine(v27, v5, v27 - AMPlayerX, v5 + AMPlayerY, 200);
+					DrawLine(v25, v26, v4, automap_typeg, 144);
+					DrawLine(v25, v26, v27, automap_typeg, 144);
+					DrawLine(v25, v5, v4, automap_typeg, 144);
+					DrawLine(v25, v5, v27, automap_typeg, 144);
 				}
 				else
 				{
@@ -604,7 +512,7 @@ LABEL_33:
 					v28 = v4 + AutoMapXPos;
 					v9 = AutoMapYPos + v5;
 LABEL_36:
-					engine_draw_automap_pixels(v4, v9, v28, v29, 200);
+					DrawLine(v4, v9, v28, v29, 200);
 				}
 			}
 			break;
@@ -669,14 +577,14 @@ void __cdecl DrawAutomapPlr()
 	switch ( plr[v0]._pdir )
 	{
 		case DIR_S:
-			engine_draw_automap_pixels(v3, v4, v3, v4 + AutoMapYPos, 153);
-			engine_draw_automap_pixels(v3, AutoMapYPos + v4, v3 + AMPlayerY, v4 + AMPlayerX, 153);
+			DrawLine(v3, v4, v3, v4 + AutoMapYPos, 153);
+			DrawLine(v3, AutoMapYPos + v4, v3 + AMPlayerY, v4 + AMPlayerX, 153);
 			v10 = v4 + AMPlayerX;
 			v9 = v3 - AMPlayerY;
 			v5 = AutoMapYPos + v4;
 			goto LABEL_19;
 		case DIR_SW:
-			engine_draw_automap_pixels(
+			DrawLine(
 				v3,
 				AMPlayerX * (v12 + v11)
 			  + (AutoMapScale * ScrollInfo._syoff / 100 >> 1)
@@ -689,22 +597,22 @@ void __cdecl DrawAutomapPlr()
 			  + (AutoMapScale * plr[v0]._pyoff / 100 >> 1)
 			  + 336,
 				153);
-			engine_draw_automap_pixels(v3 - AutoMapYPos, AMPlayerX + v4, v3 - AMPlayerY - AMPlayerX, v4, 153);
+			DrawLine(v3 - AutoMapYPos, AMPlayerX + v4, v3 - AMPlayerY - AMPlayerX, v4, 153);
 			v7 = AMPlayerX;
 			v8 = v3;
 			v5 = AMPlayerX + v4;
 			v10 = AMPlayerX + v4;
 			goto LABEL_23;
 		case DIR_W:
-			engine_draw_automap_pixels(v3, v4, v3 - AutoMapYPos, v4, 153);
-			engine_draw_automap_pixels(v3 - AutoMapYPos, v4, v3 - AMPlayerX, v4 - AMPlayerY, 153);
+			DrawLine(v3, v4, v3 - AutoMapYPos, v4, 153);
+			DrawLine(v3 - AutoMapYPos, v4, v3 - AMPlayerX, v4 - AMPlayerY, 153);
 			v5 = v4;
 			v10 = v4 + AMPlayerY;
 			v9 = v3 - AMPlayerX;
 			goto LABEL_24;
 		case DIR_NW:
-			engine_draw_automap_pixels(v3, v4, v3 - AutoMapYPos, v4 - AMPlayerX, 153);
-			engine_draw_automap_pixels(v3 - AutoMapYPos, v4 - AMPlayerX, v3 - AMPlayerX, v4 - AMPlayerX, 153);
+			DrawLine(v3, v4, v3 - AutoMapYPos, v4 - AMPlayerX, 153);
+			DrawLine(v3 - AutoMapYPos, v4 - AMPlayerX, v3 - AMPlayerX, v4 - AMPlayerX, 153);
 			v7 = AMPlayerX;
 			v8 = v3 - AMPlayerY;
 			v10 = v4;
@@ -715,8 +623,8 @@ LABEL_24:
 			v6 = v3 - AutoMapYPos;
 			goto LABEL_25;
 		case DIR_N:
-			engine_draw_automap_pixels(v3, v4, v3, v4 - AutoMapYPos, 153);
-			engine_draw_automap_pixels(v3, v4 - AutoMapYPos, v3 - AMPlayerY, v4 - AMPlayerX, 153);
+			DrawLine(v3, v4, v3, v4 - AutoMapYPos, 153);
+			DrawLine(v3, v4 - AutoMapYPos, v3 - AMPlayerY, v4 - AMPlayerX, 153);
 			v10 = v4 - AMPlayerX;
 			v5 = v4 - AutoMapYPos;
 			v9 = v3 + AMPlayerY;
@@ -724,19 +632,19 @@ LABEL_19:
 			v6 = v3;
 			goto LABEL_25;
 		case DIR_NE:
-			engine_draw_automap_pixels(v3, v4, v3 + AutoMapYPos, v4 - AMPlayerX, 153);
-			engine_draw_automap_pixels(AutoMapYPos + v3, v4 - AMPlayerX, v3 + AMPlayerX, v4 - AMPlayerX, 153);
+			DrawLine(v3, v4, v3 + AutoMapYPos, v4 - AMPlayerX, 153);
+			DrawLine(AutoMapYPos + v3, v4 - AMPlayerX, v3 + AMPlayerX, v4 - AMPlayerX, 153);
 			v10 = v4;
 			v9 = v3 + AMPlayerX + AMPlayerY;
 			v5 = v4 - AMPlayerX;
 			goto LABEL_17;
 		case DIR_E:
-			engine_draw_automap_pixels(v3, v4, v3 + AutoMapYPos, v4, 153);
-			engine_draw_automap_pixels(AutoMapYPos + v3, v4, v3 + AMPlayerX, v4 - AMPlayerY, 153);
-			engine_draw_automap_pixels(AutoMapYPos + v3, v4, v3 + AMPlayerX, v4 + AMPlayerY, 153);
+			DrawLine(v3, v4, v3 + AutoMapYPos, v4, 153);
+			DrawLine(AutoMapYPos + v3, v4, v3 + AMPlayerX, v4 - AMPlayerY, 153);
+			DrawLine(AutoMapYPos + v3, v4, v3 + AMPlayerX, v4 + AMPlayerY, 153);
 			break;
 		case DIR_SE:
-			engine_draw_automap_pixels(
+			DrawLine(
 				v3,
 				AMPlayerX * (v12 + v11)
 			  + (AutoMapScale * ScrollInfo._syoff / 100 >> 1)
@@ -749,14 +657,14 @@ LABEL_19:
 			  + (AutoMapScale * plr[v0]._pyoff / 100 >> 1)
 			  + 336,
 				153);
-			engine_draw_automap_pixels(AutoMapYPos + v3, AMPlayerX + v4, v3 + AMPlayerX + AMPlayerY, v4, 153);
+			DrawLine(AutoMapYPos + v3, AMPlayerX + v4, v3 + AMPlayerX + AMPlayerY, v4, 153);
 			v5 = AMPlayerX + v4;
 			v10 = AMPlayerX + v4;
 			v9 = v3 + AMPlayerX;
 LABEL_17:
 			v6 = AutoMapYPos + v3;
 LABEL_25:
-			engine_draw_automap_pixels(v6, v5, v9, v10, 153);
+			DrawLine(v6, v5, v9, v10, 153);
 			break;
 		default:
 			return;
@@ -770,46 +678,46 @@ LABEL_25:
 // 4B8968: using guessed type int sbookflag;
 // 69BD04: using guessed type int questlog;
 
-short __fastcall GetAutomapType(int tx, int ty, bool view)
+short __fastcall GetAutomapType(int x, int y, BOOL view)
 {
 	int v3; // edi
 	int v4; // esi
 	int v6; // eax
 	short v7; // bp
 
-	v3 = ty;
-	v4 = tx;
+	v3 = y;
+	v4 = x;
 	if ( view )
 	{
-		if ( tx == -1 && ty >= 0 && ty < 40 && automapview[0][ty] )
+		if ( x == -1 && y >= 0 && y < 40 && automapview[0][y] )
 		{
-			tx = 0;
-			return ~GetAutomapType(tx, ty, 0) & 0x4000;
+			x = 0;
+			return ~GetAutomapType(x, y, 0) & 0x4000;
 		}
-		if ( ty == -1 )
+		if ( y == -1 )
 		{
-			if ( tx < 0 )
+			if ( x < 0 )
 				return 0;
-			if ( tx < 40 && automapview[tx][0] )
+			if ( x < 40 && automapview[x][0] )
 			{
-				ty = 0;
-				return ~GetAutomapType(tx, ty, 0) & 0x4000;
+				y = 0;
+				return ~GetAutomapType(x, y, 0) & 0x4000;
 			}
 		}
 	}
-	if ( tx < 0 )
+	if ( x < 0 )
 		return 0;
-	if ( tx >= 40 )
+	if ( x >= 40 )
 		return 0;
-	if ( ty < 0 )
+	if ( y < 0 )
 		return 0;
-	if ( ty >= 40 )
+	if ( y >= 40 )
 		return 0;
-	v6 = ty + 40 * tx;
+	v6 = y + 40 * x;
 	if ( !automapview[0][v6] && view )
 		return 0;
 	v7 = automaptype[(unsigned char)dungeon[0][v6]];
-	if ( v7 == 7 && ((unsigned short)GetAutomapType(tx - 1, ty, 0) >> 8) & 8 )
+	if ( v7 == 7 && ((unsigned short)GetAutomapType(x - 1, y, 0) >> 8) & 8 )
 	{
 		if ( ((unsigned short)GetAutomapType(v4, v3 - 1, 0) >> 8) & 4 )
 			v7 = 1;
@@ -855,99 +763,72 @@ void __cdecl DrawAutomapGame()
 
 void __fastcall SetAutomapView(int x, int y)
 {
-	signed int v2; // esi
-	signed int v3; // edi
-	int v4; // ebx
-	short v5; // ax
-	short v6; // cx
-	int v7; // eax
-	int v8; // eax
-	int v9; // eax
-	int v10; // eax
-	short v11; // ax
-	int v12; // edi
+	int xx = (x - 16) >> 1;
+	int yy = (y - 16) >> 1;
 
-	v2 = (x - 16) >> 1;
-	v3 = (y - 16) >> 1;
-	if ( v2 < 0 || v2 >= 40 || v3 < 0 || v3 >= 40 )
-		return;
-	v4 = v3 + 40 * v2;
-	automapview[0][v4] = 1;
-	v5 = GetAutomapType((x - 16) >> 1, (y - 16) >> 1, 0);
-	v6 = v5 & 0x4000;
-	v7 = (v5 & 0xF) - 2;
-	if ( !v7 )
-	{
-		if ( v6 )
-		{
-LABEL_19:
-			if ( GetAutomapType(v2, v3 + 1, 0) == 0x4007 )
-				automapview[0][v4 + 1] = 1;
-			return;
-		}
-		goto LABEL_35;
-	}
-	v8 = v7 - 1;
-	if ( !v8 )
-	{
-		if ( v6 )
-		{
-			v11 = GetAutomapType(v2 + 1, v3, 0);
-LABEL_32:
-			if ( v11 == 0x4007 )
-				automapview[1][v4] = 1;
-			return;
-		}
-LABEL_14:
-		if ( GetAutomapType(v2, v3 - 1, 0) & 0x4000 )
-			automapview[0][v4 - 1] = 1; // AMbyte_4B7E4C[v4 + 31] = 1;
+	if ( xx < 0 || xx >= DMAXX || yy < 0 || yy >= DMAXY ) {
 		return;
 	}
-	v9 = v8 - 1;
-	if ( v9 )
-	{
-		v10 = v9 - 1;
-		if ( v10 )
-		{
-			if ( v10 != 1 )
-				return;
-			if ( v6 )
-			{
-				if ( GetAutomapType(v2 - 1, v3, 0) & 0x4000 )
-					automapview[-1][v4] = 1; // *((_BYTE *)&AMdword_4B7E44 + v4) = 1;
-LABEL_13:
-				v11 = GetAutomapType(v2 + 1, v3, 0);
-				goto LABEL_32;
+
+	automapview[xx][yy] = 1;
+
+	USHORT maptype = GetAutomapType(xx, yy, FALSE);
+	USHORT solid = maptype & 0x4000;
+
+	switch ( maptype & 0xF ) {
+		case 2:
+			if ( solid ) {
+				if ( GetAutomapType(xx, yy + 1, FALSE) == 0x4007 )
+					automapview[xx][yy + 1] = 1;
 			}
-			goto LABEL_14;
-		}
-		if ( v6 )
-		{
-			if ( GetAutomapType(v2, v3 - 1, 0) & 0x4000 )
-				automapview[0][v4 - 1] = 1; // AMbyte_4B7E4C[v4 + 31] = 1;
-			goto LABEL_19;
-		}
-LABEL_35:
-		if ( GetAutomapType(v2 - 1, v3, 0) & 0x4000 )
-			automapview[-1][v4] = 1; // *((_BYTE *)&AMdword_4B7E44 + v4) = 1;
-		return;
+			else if ( GetAutomapType(xx - 1, yy, FALSE) & 0x4000 )
+				automapview[xx - 1][yy] = 1;
+			break;
+		case 3:
+			if ( solid ) {
+				if ( GetAutomapType(xx + 1, yy, FALSE) == 0x4007 )
+					automapview[xx + 1][yy] = 1;
+			}
+			else if ( GetAutomapType(xx, yy - 1, FALSE) & 0x4000 )
+				automapview[xx][yy - 1] = 1;
+			break;
+		case 4:
+			if ( solid ) {
+				if ( GetAutomapType(xx, yy + 1, FALSE) == 0x4007 )
+					automapview[xx][yy + 1] = 1;
+				if ( GetAutomapType(xx + 1, yy, FALSE) == 0x4007 )
+					automapview[xx + 1][yy] = 1;
+			}
+			else {
+				if ( GetAutomapType(xx - 1, yy, FALSE) & 0x4000 )
+					automapview[xx - 1][yy] = 1;
+				if ( GetAutomapType(xx, yy - 1, FALSE) & 0x4000 )
+					automapview[xx][yy - 1] = 1;
+				if ( GetAutomapType(xx - 1, yy - 1, FALSE) & 0x4000 )
+					automapview[xx - 1][yy - 1] = 1;
+			}
+			break;
+		case 5:
+			if ( solid ) {
+				if ( GetAutomapType(xx, yy - 1, FALSE) & 0x4000 )
+					automapview[xx][yy - 1] = 1;
+				if ( GetAutomapType(xx, yy + 1, FALSE) == 0x4007 )
+					automapview[xx][yy + 1] = 1;
+			}
+			else if ( GetAutomapType(xx - 1, yy, FALSE) & 0x4000 )
+				automapview[xx - 1][yy] = 1;
+			break;
+		case 6:
+			if ( solid ) {
+				if ( GetAutomapType(xx - 1, yy, FALSE) & 0x4000 )
+					automapview[xx - 1][yy] = 1;
+				if ( GetAutomapType(xx + 1, yy, FALSE) == 0x4007 )
+					automapview[xx + 1][yy] = 1;
+			}
+			else if ( GetAutomapType(xx, yy - 1, FALSE) & 0x4000 )
+				automapview[xx][yy - 1] = 1;
 	}
-	if ( v6 )
-	{
-		if ( GetAutomapType(v2, v3 + 1, 0) == 0x4007 )
-			automapview[0][v4 + 1] = 1;
-		goto LABEL_13;
-	}
-	if ( GetAutomapType(v2 - 1, v3, 0) & 0x4000 )
-		automapview[-1][v4] = 1; // *((_BYTE *)&AMdword_4B7E44 + v4) = 1;
-	v12 = v3 - 1;
-	if ( GetAutomapType(v2, v12, 0) & 0x4000 )
-		automapview[0][v4 - 1] = 1; // AMbyte_4B7E4C[v4 + 31] = 1;
-	if ( GetAutomapType(v2 - 1, v12, 0) & 0x4000 )
-		automapview[-1][v4 - 1] = 1; /* *((_BYTE *)&AMdword_4B7E40 + v4 + 3) = 1; fix */
 }
-// 4B7E40: using guessed type int AMdword_4B7E40;
-// 4B7E44: using guessed type int AMdword_4B7E44;
 
 void __cdecl AutomapZoomReset()
 {

@@ -18,12 +18,12 @@ void __cdecl DrawQTextBack();
 void __fastcall PrintQTextChr(int screen_x, int screen_y, char *cel_buf, int frame);
 void __cdecl DrawQText();
 
-/* data */
-
-extern unsigned char mfontframe[127];
-extern unsigned char mfontkern[56];
-
 /* rdata */
+
+extern const unsigned char mfontframe[127];
+extern const unsigned char mfontkern[56];
+
+/* data */
 
 extern int qscroll_spd_tbl[9];
 

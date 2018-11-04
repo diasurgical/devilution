@@ -2,11 +2,13 @@
 
 #include "../types.h"
 
+/* TODO: decompile and fix, commands are NOT deleted properly */
+
 int msgcmd_cpp_init_value; // weak
 ChatCmd sgChat_Cmd;
 int sgdwMsgCmdTimer;
 
-int msgcmd_inf = 0x7F800000; // weak
+const int msgcmd_inf = 0x7F800000; // weak
 
 struct msgcmd_cpp_init_1
 {
@@ -52,8 +54,8 @@ void __cdecl msgcmd_send_chat()
 {
 	ServerCommand *v0; // esi
 	int v1; // eax
-	return; /* fix this */
-	if ( (_DWORD)sgChat_Cmd.extern_msgs[1] > 0 )
+
+	if ( (signed int)sgChat_Cmd.extern_msgs[1] > 0 )
 	{
 		v0 = sgChat_Cmd.extern_msgs[1];
 		v1 = GetTickCount();

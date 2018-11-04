@@ -2,10 +2,10 @@
 
 #include "../types.h"
 
-short sync_word_6AA708[200];
-int dword_6AA898; // weak
-short sync_word_6AA89C[200];
-int dword_6AAA2C[2];
+short sync_word_6AA708[MAXMONSTERS];
+int syncmonsters; // weak
+short sync_word_6AA89C[MAXMONSTERS];
+int syncitems;
 int sgnSyncPInv; // weak
 
 int __fastcall sync_all_monsters(TSyncHeader *packet, int size)
@@ -23,7 +23,7 @@ int __fastcall sync_all_monsters(TSyncHeader *packet, int size)
 		v6 = size - 38;
 		v4 = 0;
 		packet->bCmd = CMD_SYNCDATA;
-		v5 = (TSyncMonster *)(&packet->wPInvCI + 1);
+		v5 = (TSyncMonster *)(&packet->bPInvId + 1);
 		packet->bLevel = currlevel;
 		packet->wLen = 0;
 		SyncPlrInv(packet);
@@ -63,7 +63,7 @@ void __cdecl sync_one_monster()
 		v2 = monstactive[i];
 		v3 = abs(plr[myplr].WorldY - monster[v2]._my);
 		v4 = abs(plr[myplr].WorldX - monster[v2]._mx);
-		v5 = _LOBYTE(monster[v2]._msquelch) == 0;
+		v5 = monster[v2]._msquelch == 0;
 		v6 = &sync_word_6AA708[v1];
 		*v6 = v4 + v3;
 		if ( v5 )
@@ -108,12 +108,12 @@ int __fastcall sync_monster_active(TSyncMonster *packet)
 	return 1;
 }
 
-int __fastcall sync_monster_pos(TSyncMonster *packet, int mon_id)
+void __fastcall sync_monster_pos(TSyncMonster *packet, int mon_id)
 {
 	int v2; // ebx
 	TSyncMonster *v3; // esi
 	int v4; // edi
-	int result; // eax
+	int v5; // eax
 	short v6; // cx
 	char v7; // cl
 
@@ -124,15 +124,14 @@ int __fastcall sync_monster_pos(TSyncMonster *packet, int mon_id)
 	packet->_mx = monster[mon_id]._mx;
 	packet->_my = monster[mon_id]._my;
 	packet->_menemy = encode_enemy(mon_id);
-	result = v2;
+	v5 = v2;
 	v6 = sync_word_6AA708[v2];
 	if ( (unsigned short)v6 > 0xFFu )
 		_LOBYTE(v6) = -1;
 	v3->_mdelta = v6;
 	v7 = monster[v4]._msquelch;
-	sync_word_6AA708[result] = -1;
-	sync_word_6AA89C[result] = -(v7 != 0) - 1;
-	return result * 2;
+	sync_word_6AA708[v5] = -1;
+	sync_word_6AA89C[v5] = -(v7 != 0) - 1;
 }
 
 int __fastcall sync_monster_active2(TSyncMonster *packet)
@@ -147,7 +146,7 @@ int __fastcall sync_monster_active2(TSyncMonster *packet)
 	v2 = 65534;
 	if ( nummonsters <= 0 )
 		return 0;
-	v3 = dword_6AA898;
+	v3 = syncmonsters;
 	v6 = nummonsters;
 	do
 	{
@@ -163,85 +162,83 @@ int __fastcall sync_monster_active2(TSyncMonster *packet)
 		--v6;
 	}
 	while ( v6 );
-	dword_6AA898 = v3;
+	syncmonsters = v3;
 	if ( v1 == -1 )
 		return 0;
 	sync_monster_pos(packet, v1);
 	return 1;
 }
-// 6AA898: using guessed type int dword_6AA898;
+// 6AA898: using guessed type int syncmonsters;
 
-char __fastcall SyncPlrInv(TSyncHeader *pItem)
+void __fastcall SyncPlrInv(TSyncHeader *pSync)
 {
 	int v1; // edx
 	int v2; // eax
 	int v3; // eax
 	short v4; // dx
 	short v5; // bx
-	ItemStruct *v6; // eax
+	ItemStruct *pItem; // eax
 
 	if ( numitems <= 0 )
 	{
-		pItem->bItemI = -1;
+		pSync->bItemI = -1;
 	}
 	else
 	{
-		v1 = dword_6AAA2C[0];
-		if ( dword_6AAA2C[0] >= numitems )
+		v1 = syncitems;
+		if ( syncitems >= numitems )
 			v1 = 0;
 		v2 = itemactive[v1];
-		dword_6AAA2C[0] = v1 + 1;
-		pItem->bItemI = v2;
+		syncitems = v1 + 1;
+		pSync->bItemI = v2;
 		v3 = v2;
-		pItem->bItemX = item[v3]._ix;
-		pItem->bItemY = item[v3]._iy;
-		*(_WORD *)(&pItem->bItemY + 1) = item[v3].IDidx;
+		pSync->bItemX = item[v3]._ix;
+		pSync->bItemY = item[v3]._iy;
+		pSync->wItemIndx = item[v3].IDidx;
 		if ( item[v3].IDidx == IDI_EAR )
 		{
 			_LOBYTE(v4) = 0;
 			_HIBYTE(v4) = item[v3]._iName[7];
 			_LOBYTE(v5) = 0;
-			*(unsigned short *)((char *)&pItem->wItemIndx + 1) = item[v3]._iName[8] | v4;
-			*(_DWORD *)((char *)&pItem->wItemCI + 1) = item[v3]._iName[12] | ((item[v3]._iName[11] | ((item[v3]._iName[10] | (item[v3]._iName[9] << 8)) << 8)) << 8);
-			BYTE1(pItem->dwItemSeed) = item[v3]._iName[13];
-			BYTE2(pItem->dwItemSeed) = item[v3]._iName[14];
-			_HIBYTE(pItem->dwItemSeed) = item[v3]._iName[15];
-			pItem->bItemId = item[v3]._iName[16];
-			pItem->bItemDur = item[v3]._iName[17];
+			pSync->wItemCI = item[v3]._iName[8] | v4;
+			pSync->dwItemSeed = item[v3]._iName[12] | ((item[v3]._iName[11] | ((item[v3]._iName[10] | (item[v3]._iName[9] << 8)) << 8)) << 8);
+			pSync->bItemId = item[v3]._iName[13];
+			pSync->bItemDur = item[v3]._iName[14];
+			pSync->bItemMDur = item[v3]._iName[15];
+			pSync->bItemCh = item[v3]._iName[16];
+			pSync->bItemMCh = item[v3]._iName[17];
 			_HIBYTE(v5) = item[v3]._iName[18];
-			*(_WORD *)&pItem->bItemMDur = _LOWORD(item[v3]._ivalue) | v5 | ((_LOWORD(item[v3]._iCurs) - 19) << 6);
-			*(_DWORD *)&pItem->bItemMCh = item[v3]._iName[22] | ((item[v3]._iName[21] | ((item[v3]._iName[20] | (item[v3]._iName[19] << 8)) << 8)) << 8);
+			pSync->wItemVal = LOWORD(item[v3]._ivalue) | v5 | ((LOWORD(item[v3]._iCurs) - 19) << 6);
+			pSync->dwItemBuff = item[v3]._iName[22] | ((item[v3]._iName[21] | ((item[v3]._iName[20] | (item[v3]._iName[19] << 8)) << 8)) << 8);
 		}
 		else
 		{
-			*(unsigned short *)((char *)&pItem->wItemIndx + 1) = item[v3]._iCreateInfo;
-			*(_DWORD *)((char *)&pItem->wItemCI + 1) = item[v3]._iSeed;
-			BYTE1(pItem->dwItemSeed) = item[v3]._iIdentified;
-			BYTE2(pItem->dwItemSeed) = item[v3]._iDurability;
-			_HIBYTE(pItem->dwItemSeed) = item[v3]._iMaxDur;
-			pItem->bItemId = item[v3]._iCharges;
-			pItem->bItemDur = item[v3]._iMaxCharges;
+			pSync->wItemCI = item[v3]._iCreateInfo;
+			pSync->dwItemSeed = item[v3]._iSeed;
+			pSync->bItemId = item[v3]._iIdentified;
+			pSync->bItemDur = item[v3]._iDurability;
+			pSync->bItemMDur = item[v3]._iMaxDur;
+			pSync->bItemCh = item[v3]._iCharges;
+			pSync->bItemMCh = item[v3]._iMaxCharges;
 			if ( !item[v3].IDidx )
-				*(_WORD *)&pItem->bItemMDur = item[v3]._ivalue;
+				pSync->wItemVal = item[v3]._ivalue;
 		}
 	}
-	v6 = &plr[myplr].InvBody[sgnSyncPInv];
-	if ( v6->_itype == -1 )
+	pItem = &plr[myplr].InvBody[sgnSyncPInv];
+	if ( pItem->_itype == -1 )
 	{
-		_LOBYTE(pItem->dwItemBuff) = -1;
+		pSync->bPInvLoc = -1;
 	}
 	else
 	{
-		_LOBYTE(pItem->dwItemBuff) = sgnSyncPInv;
-		*(_WORD *)((char *)&pItem->dwItemBuff + 1) = v6->IDidx;
-		*(_WORD *)((char *)&pItem->dwItemBuff + 3) = v6->_iCreateInfo;
-		*(_DWORD *)(&pItem->bPInvLoc + 1) = v6->_iSeed;
-		_LOBYTE(v6) = v6->_iIdentified;
-		_HIBYTE(pItem->wPInvCI) = (_BYTE)v6;
+		pSync->bPInvLoc = sgnSyncPInv;
+		pSync->wPInvIndx = pItem->IDidx;
+		pSync->wPInvCI = pItem->_iCreateInfo;
+		pSync->dwPInvSeed = pItem->_iSeed;
+		pSync->bPInvId = pItem->_iIdentified;
 	}
 	if ( ++sgnSyncPInv >= 7 )
 		sgnSyncPInv = 0;
-	return (char)v6;
 }
 // 6AAA34: using guessed type int sgnSyncPInv;
 
@@ -254,7 +251,7 @@ int __fastcall SyncData(int pnum, TSyncHeader *packet)
 	unsigned int v6; // ebx
 
 	v2 = packet;
-	v3 = (TSyncMonster *)(&packet->wPInvCI + 1);
+	v3 = (TSyncMonster *)(&packet->bPInvId + 1);
 	v4 = pnum;
 	if ( packet->bCmd != CMD_SYNCDATA )
 		TermMsg("bad sync command");
@@ -369,7 +366,7 @@ LABEL_23:
 						dMonster[0][monster[v5]._my + 112 * monster[v5]._mx] = v4 + 1;
 						M_WalkDir(v4, mda);
 					}
-					_LOBYTE(monster[v5]._msquelch) = -1;
+					monster[v5]._msquelch = -1;
 					goto LABEL_23;
 				}
 			}
@@ -379,7 +376,7 @@ LABEL_23:
 
 void __cdecl sync_clear_pkt()
 {
-	dword_6AA898 = 16 * myplr;
+	syncmonsters = 16 * myplr;
 	memset(sync_word_6AA89C, 255, 0x190u);
 }
-// 6AA898: using guessed type int dword_6AA898;
+// 6AA898: using guessed type int syncmonsters;

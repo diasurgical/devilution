@@ -7,43 +7,43 @@ int abyssx; // weak
 int lockoutcnt; // weak
 char lockout[40][40];
 
-unsigned char L3ConvTbl[16] = { 8, 11, 3, 10, 1, 9, 12, 12, 6, 13, 4, 13, 2, 14, 5, 7 };
-unsigned char L3UP[20] = { 3, 3, 8, 8, 0, 10, 10, 0, 7, 7, 0, 51, 50, 0, 48, 49, 0, 0, 0, 0 };
-unsigned char L3DOWN[20] = { 3, 3, 8, 9, 7, 8, 9, 7, 0, 0, 0, 0, 47, 0, 0, 46, 0, 0, 0, 0 };
-unsigned char L3HOLDWARP[20] = { 3, 3, 8, 8, 0, 10, 10, 0, 7, 7, 0, 125, 125, 0, 125, 125, 0, 0, 0, 0 };
-unsigned char L3TITE1[34] = { 4, 4, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 0, 57, 58, 0, 0, 56, 55, 0, 0, 0, 0, 0 };
-unsigned char L3TITE2[34] = { 4, 4, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 0, 61, 62, 0, 0, 60, 59, 0, 0, 0, 0, 0 };
-unsigned char L3TITE3[34] = { 4, 4, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 0, 65, 66, 0, 0, 64, 63, 0, 0, 0, 0, 0 };
-unsigned char L3TITE6[42] = { 5, 4, 7, 7, 7, 7, 7, 7, 7, 7, 0, 7, 7, 7, 7, 0, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 0, 0, 77, 78, 0, 0, 0, 76, 74, 75, 0, 0, 0, 0, 0, 0 };
-unsigned char L3TITE7[42] = { 4, 5, 7, 7, 7, 7, 7, 7, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 0, 83, 0, 0, 0, 82, 80, 0, 0, 81, 79, 0, 0, 0, 0, 0 };
-unsigned char L3TITE8[20] = { 3, 3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 52, 0, 0, 0, 0 };
-unsigned char L3TITE9[20] = { 3, 3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 53, 0, 0, 0, 0 };
-unsigned char L3TITE10[20] = { 3, 3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 54, 0, 0, 0, 0 };
-unsigned char L3TITE11[20] = { 3, 3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 67, 0, 0, 0, 0 };
-unsigned char L3TITE12[6] = { 2u, 1u, 9u, 7u, 68u, 0u };
-unsigned char L3TITE13[6] = { 1u, 2u, 10u, 7u, 69u, 0u };
-unsigned char L3CREV1[6] = { 2u, 1u, 8u, 7u, 84u, 85u };
-unsigned char L3CREV2[6] = { 2u, 1u, 8u, 11u, 86u, 87u };
-unsigned char L3CREV3[6] = { 1u, 2u, 8u, 10u, 89u, 88u };
-unsigned char L3CREV4[6] = { 2u, 1u, 8u, 7u, 90u, 91u };
-unsigned char L3CREV5[6] = { 1u, 2u, 8u, 11u, 92u, 93u };
-unsigned char L3CREV6[6] = { 1u, 2u, 8u, 10u, 95u, 94u };
-unsigned char L3CREV7[6] = { 2u, 1u, 8u, 7u, 96u, 101u };
-unsigned char L3CREV8[6] = { 1u, 2u, 2u, 8u, 102u, 97u };
-unsigned char L3CREV9[6] = { 2u, 1u, 3u, 8u, 103u, 98u };
-unsigned char L3CREV10[6] = { 2u, 1u, 4u, 8u, 104u, 99u };
-unsigned char L3CREV11[6] = { 1u, 2u, 6u, 8u, 105u, 100u };
-unsigned char L3ISLE1[14] = { 2u, 3u, 5u, 14u, 4u, 9u, 13u, 12u, 7u, 7u, 7u, 7u, 7u, 7u };
-unsigned char L3ISLE2[14] = { 3u, 2u, 5u, 2u, 14u, 13u, 10u, 12u, 7u, 7u, 7u, 7u, 7u, 7u };
-unsigned char L3ISLE3[14] = { 2u, 3u, 5u, 14u, 4u, 9u, 13u, 12u, 29u, 30u, 25u, 28u, 31u, 32u };
-unsigned char L3ISLE4[14] = { 3u, 2u, 5u, 2u, 14u, 13u, 10u, 12u, 29u, 26u, 30u, 31u, 27u, 32u };
-unsigned char L3ISLE5[10] = { 2u, 2u, 5u, 14u, 13u, 12u, 7u, 7u, 7u, 7u };
-unsigned char L3XTRA1[4] = { 1u, 1u, 7u, 106u };
-unsigned char L3XTRA2[4] = { 1u, 1u, 7u, 107u };
-unsigned char L3XTRA3[4] = { 1u, 1u, 7u, 108u };
-unsigned char L3XTRA4[4] = { 1u, 1u, 9u, 109u };
-unsigned char L3XTRA5[4] = { 1u, 1u, 10u, 110u };
-unsigned char L3ANVIL[244] =
+const unsigned char L3ConvTbl[16] = { 8, 11, 3, 10, 1, 9, 12, 12, 6, 13, 4, 13, 2, 14, 5, 7 };
+const unsigned char L3UP[20] = { 3, 3, 8, 8, 0, 10, 10, 0, 7, 7, 0, 51, 50, 0, 48, 49, 0, 0, 0, 0 };
+const unsigned char L3DOWN[20] = { 3, 3, 8, 9, 7, 8, 9, 7, 0, 0, 0, 0, 47, 0, 0, 46, 0, 0, 0, 0 };
+const unsigned char L3HOLDWARP[20] = { 3, 3, 8, 8, 0, 10, 10, 0, 7, 7, 0, 125, 125, 0, 125, 125, 0, 0, 0, 0 };
+const unsigned char L3TITE1[34] = { 4, 4, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 0, 57, 58, 0, 0, 56, 55, 0, 0, 0, 0, 0 };
+const unsigned char L3TITE2[34] = { 4, 4, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 0, 61, 62, 0, 0, 60, 59, 0, 0, 0, 0, 0 };
+const unsigned char L3TITE3[34] = { 4, 4, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 0, 65, 66, 0, 0, 64, 63, 0, 0, 0, 0, 0 };
+const unsigned char L3TITE6[42] = { 5, 4, 7, 7, 7, 7, 7, 7, 7, 7, 0, 7, 7, 7, 7, 0, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 0, 0, 77, 78, 0, 0, 0, 76, 74, 75, 0, 0, 0, 0, 0, 0 };
+const unsigned char L3TITE7[42] = { 4, 5, 7, 7, 7, 7, 7, 7, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 0, 83, 0, 0, 0, 82, 80, 0, 0, 81, 79, 0, 0, 0, 0, 0 };
+const unsigned char L3TITE8[20] = { 3, 3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 52, 0, 0, 0, 0 };
+const unsigned char L3TITE9[20] = { 3, 3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 53, 0, 0, 0, 0 };
+const unsigned char L3TITE10[20] = { 3, 3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 54, 0, 0, 0, 0 };
+const unsigned char L3TITE11[20] = { 3, 3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 67, 0, 0, 0, 0 };
+const unsigned char L3TITE12[6] = { 2u, 1u, 9u, 7u, 68u, 0u };
+const unsigned char L3TITE13[6] = { 1u, 2u, 10u, 7u, 69u, 0u };
+const unsigned char L3CREV1[6] = { 2u, 1u, 8u, 7u, 84u, 85u };
+const unsigned char L3CREV2[6] = { 2u, 1u, 8u, 11u, 86u, 87u };
+const unsigned char L3CREV3[6] = { 1u, 2u, 8u, 10u, 89u, 88u };
+const unsigned char L3CREV4[6] = { 2u, 1u, 8u, 7u, 90u, 91u };
+const unsigned char L3CREV5[6] = { 1u, 2u, 8u, 11u, 92u, 93u };
+const unsigned char L3CREV6[6] = { 1u, 2u, 8u, 10u, 95u, 94u };
+const unsigned char L3CREV7[6] = { 2u, 1u, 8u, 7u, 96u, 101u };
+const unsigned char L3CREV8[6] = { 1u, 2u, 2u, 8u, 102u, 97u };
+const unsigned char L3CREV9[6] = { 2u, 1u, 3u, 8u, 103u, 98u };
+const unsigned char L3CREV10[6] = { 2u, 1u, 4u, 8u, 104u, 99u };
+const unsigned char L3CREV11[6] = { 1u, 2u, 6u, 8u, 105u, 100u };
+const unsigned char L3ISLE1[14] = { 2u, 3u, 5u, 14u, 4u, 9u, 13u, 12u, 7u, 7u, 7u, 7u, 7u, 7u };
+const unsigned char L3ISLE2[14] = { 3u, 2u, 5u, 2u, 14u, 13u, 10u, 12u, 7u, 7u, 7u, 7u, 7u, 7u };
+const unsigned char L3ISLE3[14] = { 2u, 3u, 5u, 14u, 4u, 9u, 13u, 12u, 29u, 30u, 25u, 28u, 31u, 32u };
+const unsigned char L3ISLE4[14] = { 3u, 2u, 5u, 2u, 14u, 13u, 10u, 12u, 29u, 26u, 30u, 31u, 27u, 32u };
+const unsigned char L3ISLE5[10] = { 2u, 2u, 5u, 14u, 13u, 12u, 7u, 7u, 7u, 7u };
+const unsigned char L3XTRA1[4] = { 1u, 1u, 7u, 106u };
+const unsigned char L3XTRA2[4] = { 1u, 1u, 7u, 107u };
+const unsigned char L3XTRA3[4] = { 1u, 1u, 7u, 108u };
+const unsigned char L3XTRA4[4] = { 1u, 1u, 9u, 109u };
+const unsigned char L3XTRA5[4] = { 1u, 1u, 10u, 110u };
+const unsigned char L3ANVIL[244] =
 {
    11,  11,   7,   7,   7,   7,   7,   7,   7,   7,
 	7,   7,   7,   7,   7,   7,   7,   7,   7,   7,
@@ -71,9 +71,9 @@ unsigned char L3ANVIL[244] =
    32,   0,   0,   0,   0,   0,   0,   0,   0,   0,
 	0,   0,   0,   0
 };
-unsigned char L3SpawnTbl1[15] = { 0u, 10u, 67u, 5u, 44u, 6u, 9u, 0u, 0u, 28u, 131u, 6u, 9u, 10u, 5u }; /* local spawntable? */
-unsigned char L3SpawnTbl2[15] = { 0u, 10u, 3u, 5u, 12u, 6u, 9u, 0u, 0u, 12u, 3u, 6u, 9u, 10u, 5u }; /* local spawntable? */
-unsigned char L3PoolSub[15] = { 0u, 35u, 26u, 36u, 25u, 29u, 34u, 7u, 33u, 28u, 27u, 37u, 32u, 31u, 30u }; /* local poolsub? */
+const unsigned char L3SpawnTbl1[15] = { 0u, 10u, 67u, 5u, 44u, 6u, 9u, 0u, 0u, 28u, 131u, 6u, 9u, 10u, 5u }; /* local spawntable? */
+const unsigned char L3SpawnTbl2[15] = { 0u, 10u, 3u, 5u, 12u, 6u, 9u, 0u, 0u, 12u, 3u, 6u, 9u, 10u, 5u }; /* local spawntable? */
+const unsigned char L3PoolSub[15] = { 0u, 35u, 26u, 36u, 25u, 29u, 34u, 7u, 33u, 28u, 27u, 37u, 32u, 31u, 30u }; /* local poolsub? */
 
 void __cdecl AddFenceDoors()
 {
@@ -659,7 +659,7 @@ void __cdecl InitL3Dungeon()
 	int i; // edx
 	int j; // ecx
 
-	memset(dungeon, 0, 0x640u);
+	memset(dungeon, 0, sizeof(dungeon));
 
 	for(i = 0; i < 40; i++)
 	{
@@ -684,11 +684,9 @@ int __fastcall DRLG_L3FillRoom(int x1, int y1, int x2, int y2)
 	char *v12; // edx
 	int v13; // eax
 	int i; // ebx
-	int v15; // ecx
 	int v16; // ecx
 	char *v17; // ebx
 	int v18; // edi
-	int v19; // ecx
 	int v21; // [esp+Ch] [ebp-4h]
 	int x2a; // [esp+18h] [ebp+8h]
 	int y2a; // [esp+1Ch] [ebp+Ch]
@@ -756,11 +754,9 @@ LABEL_12:
 	}
 	for ( i = v5; i <= y2; ++i )
 	{
-		_LOBYTE(v8) = 0;
-		if ( random(v8, 2) )
+		if ( random(0, 2) )
 			dungeon[v4][i] = 1;
-		_LOBYTE(v15) = 0;
-		if ( random(v15, 2) )
+		if ( random(0, 2) )
 			dungeon[v6][i] = 1;
 	}
 	if ( v4 <= v6 )
@@ -771,11 +767,9 @@ LABEL_12:
 		y2a = v21 - y2;
 		do
 		{
-			_LOBYTE(v16) = 0;
-			if ( random(v16, 2) )
+			if ( random(0, 2) )
 				v17[y2a] = 1;
-			_LOBYTE(v19) = 0;
-			if ( random(v19, 2) )
+			if ( random(0, 2) )
 				*v17 = 1;
 			v17 += 40;
 			--v18;
@@ -790,12 +784,9 @@ void __fastcall DRLG_L3CreateBlock(int x, int y, int obs, int dir)
 	int v4; // esi
 	int v5; // edi
 	int v6; // eax
-	int v7; // ecx
-	int v8; // ecx
 	int v9; // ebx
 	bool v10; // zf
 	bool v11; // zf
-	int v12; // ecx
 	int y2; // [esp+Ch] [ebp-14h]
 	int x2; // [esp+10h] [ebp-10h]
 	int i; // [esp+14h] [ebp-Ch]
@@ -807,26 +798,22 @@ void __fastcall DRLG_L3CreateBlock(int x, int y, int obs, int dir)
 	v16 = y;
 	for ( i = x; ; i = v4 )
 	{
-		_LOBYTE(x) = 0;
-		v6 = random(x, 2);
-		_LOBYTE(v7) = 0;
+		v6 = random(0, 2);
 		max = v6 + 3;
-		v9 = random(v7, 2) + 3;
+		v9 = random(0, 2) + 3;
 		if ( !dir )
 		{
 			y2 = v16 - 1;
 			v5 = v16 - 1 - v9;
 			if ( max < obs )
 			{
-				_LOBYTE(v8) = 0;
-				v4 = i + random(v8, max);
+				v4 = i + random(0, max);
 			}
 			if ( max == obs )
 				v4 = i;
 			if ( max > obs )
 			{
-				_LOBYTE(v8) = 0;
-				v4 = i - random(v8, max);
+				v4 = i - random(0, max);
 			}
 			x2 = v4 + max;
 		}
@@ -837,16 +824,14 @@ void __fastcall DRLG_L3CreateBlock(int x, int y, int obs, int dir)
 			v10 = v9 == obs;
 			if ( v9 < obs )
 			{
-				_LOBYTE(v8) = 0;
-				v5 = v16 + random(v8, v9);
+				v5 = v16 + random(0, v9);
 				v10 = v9 == obs;
 			}
 			if ( v10 )
 				v5 = v16;
 			if ( v9 > obs )
 			{
-				_LOBYTE(v8) = 0;
-				v5 = v16 - random(v8, v9);
+				v5 = v16 - random(0, v9);
 			}
 			y2 = v5 + v9;
 		}
@@ -856,15 +841,13 @@ void __fastcall DRLG_L3CreateBlock(int x, int y, int obs, int dir)
 			y2 = v16 + 1 + v9;
 			if ( max < obs )
 			{
-				_LOBYTE(v8) = 0;
-				v4 = i + random(v8, max);
+				v4 = i + random(0, max);
 			}
 			if ( max == obs )
 				v4 = i;
 			if ( max > obs )
 			{
-				_LOBYTE(v8) = 0;
-				v4 = i - random(v8, max);
+				v4 = i - random(0, max);
 			}
 			x2 = v4 + max;
 		}
@@ -875,23 +858,20 @@ void __fastcall DRLG_L3CreateBlock(int x, int y, int obs, int dir)
 			x2 = i + 1 + max;
 			if ( v9 < obs )
 			{
-				_LOBYTE(v8) = 0;
-				v5 = v16 + random(v8, v9);
+				v5 = v16 + random(0, v9);
 				v11 = v9 == obs;
 			}
 			if ( v11 )
 				v5 = v16;
 			if ( v9 > obs )
 			{
-				_LOBYTE(v8) = 0;
-				v5 = v16 - random(v8, v9);
+				v5 = v16 - random(0, v9);
 			}
 			y2 = v5 + v9;
 		}
 		if ( DRLG_L3FillRoom(v4, v5, x2, y2) != 1 )
 			break;
-		_LOBYTE(v12) = 0;
-		if ( !random(v12, 4) )
+		if ( !random(0, 4) )
 			break;
 		if ( dir != 2 )
 			DRLG_L3CreateBlock(v4, v5, v9, 0);
@@ -950,8 +930,7 @@ void __cdecl DRLG_L3FillDiags()
 			   + 2 * ((unsigned char)*(v1 - 40) + 2 * ((unsigned char)*(v1 - 1) + 2 * (unsigned char)*(v1 - 41)));
 			if ( v4 == 6 )
 			{
-				_LOBYTE(v3) = 0;
-				if ( !random(v3, 2) )
+				if ( !random(0, 2) )
 				{
 					*(v1 - 41) = 1;
 					goto LABEL_11;
@@ -960,8 +939,7 @@ void __cdecl DRLG_L3FillDiags()
 			}
 			if ( v4 == 9 )
 			{
-				_LOBYTE(v3) = 0;
-				if ( random(v3, 2) )
+				if ( random(0, 2) )
 					*(v1 - 40) = 1;
 				else
 					*(v1 - 1) = 1;
@@ -1056,8 +1034,7 @@ void __cdecl DRLG_L3FillStraights()
 			{
 				if ( v2 > 3 )
 				{
-					_LOBYTE(v1) = 0;
-					if ( random((int)v1, 2) )
+					if ( random(0, 2) )
 					{
 						if ( v0 < v29 )
 						{
@@ -1065,8 +1042,7 @@ void __cdecl DRLG_L3FillStraights()
 							v24 = (char *)dungeon + v4 + v27;
 							do
 							{
-								_LOBYTE(v1) = 0;
-								v6 = random((int)v1, 2);
+								v6 = random(0, 2);
 								v1 = v24;
 								v24 += 40;
 								--v5;
@@ -1113,8 +1089,7 @@ void __cdecl DRLG_L3FillStraights()
 			{
 				if ( v8 > 3 )
 				{
-					_LOBYTE(v7) = 0;
-					if ( random((int)v7, 2) )
+					if ( random(0, 2) )
 					{
 						if ( v0 < v30 )
 						{
@@ -1122,8 +1097,7 @@ void __cdecl DRLG_L3FillStraights()
 							v24 = &dungeon[0][v10 + 1 + v28];
 							do
 							{
-								_LOBYTE(v7) = 0;
-								v12 = random((int)v7, 2);
+								v12 = random(0, 2);
 								v7 = v24;
 								v24 += 40;
 								--v11;
@@ -1165,13 +1139,11 @@ void __cdecl DRLG_L3FillStraights()
 			{
 				if ( v14 > 3 )
 				{
-					_LOBYTE(v7) = 0;
-					if ( random((int)v7, 2) )
+					if ( random(0, 2) )
 					{
 						for ( i = (signed int)v24; i < v15; ++i )
 						{
-							_LOBYTE(v7) = 0;
-							dungeon[v13][i] = random((int)v7, 2);
+							dungeon[v13][i] = random(0, 2);
 						}
 					}
 				}
@@ -1200,13 +1172,11 @@ void __cdecl DRLG_L3FillStraights()
 			{
 				if ( v18 > 3 )
 				{
-					_LOBYTE(v7) = 0;
-					if ( random((int)v7, 2) )
+					if ( random(0, 2) )
 					{
 						for ( j = (signed int)v24; j < v19; ++j )
 						{
-							_LOBYTE(v7) = 0;
-							dungeon[v17 + 1][j] = random((int)v7, 2);
+							dungeon[v17 + 1][j] = random(0, 2);
 						}
 					}
 				}
@@ -1277,8 +1247,7 @@ void __cdecl DRLG_L3MakeMegas()
 			v4 = v3 + 2 * ((unsigned char)*v1 + 2 * ((unsigned char)v1[39] + 2 * (unsigned char)*(v1 - 1)));
 			if ( v4 == 6 )
 			{
-				_LOBYTE(v3) = 0;
-				if ( !random(v3, 2) )
+				if ( !random(0, 2) )
 				{
 					v4 = 12;
 					goto LABEL_9;
@@ -1287,8 +1256,7 @@ void __cdecl DRLG_L3MakeMegas()
 			}
 			if ( v4 == 9 )
 			{
-				_LOBYTE(v3) = 0;
-				v4 = (random(v3, 2) != 0) + 13;
+				v4 = (random(0, 2) != 0) + 13;
 			}
 LABEL_9:
 			--v2;
@@ -1786,8 +1754,7 @@ void __cdecl DRLG_L3Pool()
 				v5 = v2 <= 0 || v4 ? 1 : DRLG_L3SpawnEdge(v2, v0, &totarea);
 				v6 = v0 + 1 >= 40 || v5 ? 1 : DRLG_L3SpawnEdge(x, v0 + 1, &totarea);
 				v17 = v0 - 1 <= 0 || v6 ? 1 : DRLG_L3SpawnEdge(x, v0 - 1, &totarea);
-				_LOBYTE(v3) = 0;
-				v7 = random(v3, 100);
+				v7 = random(0, 100);
 				v8 = totarea;
 				v15 = v7;
 				v9 = v0 - totarea;
@@ -2009,172 +1976,149 @@ void __cdecl DRLG_L3PoolFix()
 	while ( v0 < 40 );
 }
 
-int __fastcall DRLG_L3PlaceMiniSet(unsigned char *miniset, int tmin, int tmax, int cx, int cy, bool setview, int ldir)
+int __fastcall DRLG_L3PlaceMiniSet(const unsigned char *miniset, int tmin, int tmax, int cx, int cy, bool setview, int ldir)
 {
 	int v7; // ebx
 	int v8; // esi
 	int v9; // edi
 	int v10; // edx
-	int v11; // eax
-	int v12; // ecx
-	int v13; // esi
-	signed int v14; // ebx
-	int v15; // ecx
-	int v16; // eax
-	int v17; // ecx
-	int v18; // eax
-	int v19; // ecx
-	int v20; // edi
+	int v11; // esi
+	signed int v12; // ebx
+	int v13; // edi
 	signed int i; // eax
-	int v22; // ecx
-	unsigned char v23; // dl
-	int v24; // eax
-	int v25; // edi
-	char *v26; // edx
-	unsigned char v27; // bl
-	unsigned char *v29; // [esp+Ch] [ebp-24h]
-	int v30; // [esp+10h] [ebp-20h]
-	int v31; // [esp+14h] [ebp-1Ch]
-	int v32; // [esp+18h] [ebp-18h]
-	signed int v33; // [esp+1Ch] [ebp-14h]
-	int v34; // [esp+20h] [ebp-10h]
-	int v35; // [esp+24h] [ebp-Ch]
-	int v36; // [esp+28h] [ebp-8h]
+	int v15; // ecx
+	unsigned char v16; // dl
+	int v17; // eax
+	int v18; // ecx
+	int v19; // edi
+	char *v20; // edx
+	char v21; // bl
+	const unsigned char *v23; // [esp+Ch] [ebp-24h]
+	int v24; // [esp+10h] [ebp-20h]
+	int v25; // [esp+14h] [ebp-1Ch]
+	int v26; // [esp+18h] [ebp-18h]
+	signed int v27; // [esp+1Ch] [ebp-14h]
+	int v28; // [esp+20h] [ebp-10h]
+	int v29; // [esp+24h] [ebp-Ch]
+	int v30; // [esp+28h] [ebp-8h]
 	int max; // [esp+2Ch] [ebp-4h]
 
 	v7 = miniset[1];
 	v8 = tmin;
 	v9 = *miniset;
-	v29 = miniset;
+	v23 = miniset;
 	v10 = tmax - tmin;
-	v34 = *miniset;
-	v35 = miniset[1];
+	v28 = *miniset;
+	v29 = miniset[1];
 	if ( v10 )
-	{
-		_LOBYTE(miniset) = 0;
-		v30 = v8 + random((int)miniset, v10);
-	}
+		v24 = v8 + random(0, v10);
 	else
+		v24 = 1;
+	v25 = 0;
+	if ( v24 <= 0 )
 	{
-		v30 = 1;
-	}
-	v31 = 0;
-	if ( v30 <= 0 )
-	{
-		v13 = tmax;
+		v11 = tmax;
 	}
 	else
 	{
 		max = 40 - v9;
-		v36 = 40 - v7;
+		v30 = 40 - v7;
 		do
 		{
-			_LOBYTE(miniset) = 0;
-			v11 = random((int)miniset, max);
-			_LOBYTE(v12) = 0;
-			v13 = v11;
-			v33 = 0;
-			tmax = random(v12, v36);
+			v11 = random(0, max);
+			v27 = 0;
+			tmax = random(0, v30);
 			while ( 1 )
 			{
-				if ( v33 >= 200 )
+				if ( v27 >= 200 )
 					return 1;
-				++v33;
-				v14 = 1;
-				if ( cx != -1 )
+				++v27;
+				v12 = 1;
+				if ( cx != -1 && v11 >= cx - v28 && v11 <= cx + 12 )
 				{
-					v15 = cx - v34;
-					if ( v13 >= cx - v34 && v13 <= cx + 12 )
-					{
-						_LOBYTE(v15) = 0;
-						v16 = random(v15, max);
-						_LOBYTE(v17) = 0;
-						v13 = v16;
-						tmax = random(v17, v36);
-						v14 = 0;
-					}
+					v11 = random(0, max);
+					tmax = random(0, v30);
+					v12 = 0;
 				}
-				if ( cy != -1 && tmax >= cy - v35 && tmax <= cy + 12 )
+				if ( cy != -1 && tmax >= cy - v29 && tmax <= cy + 12 )
 				{
-					v18 = random(cy - v35, max);
-					_LOBYTE(v19) = 0;
-					v13 = v18;
-					tmax = random(v19, v36);
-					v14 = 0;
+					v11 = random(0, max);
+					tmax = random(0, v30);
+					v12 = 0;
 				}
-				v20 = 0;
-				for ( i = 2; v20 < v35; ++v20 )
+				v13 = 0;
+				for ( i = 2; v13 < v29; ++v13 )
 				{
-					if ( v14 != 1 )
+					if ( v12 != 1 )
 						break;
-					v32 = 0;
-					if ( v34 > 0 )
+					v26 = 0;
+					if ( v28 > 0 )
 					{
-						v22 = tmax + v20 + 40 * v13;
+						v15 = tmax + v13 + 40 * v11;
 						do
 						{
-							if ( v14 != 1 )
+							if ( v12 != 1 )
 								break;
-							v23 = v29[i];
-							if ( v23 && dungeon[0][v22] != v23 )
-								v14 = 0;
-							if ( dflags[0][v22] )
-								v14 = 0;
+							v16 = v23[i];
+							if ( v16 && dungeon[0][v15] != v16 )
+								v12 = 0;
+							if ( dflags[0][v15] )
+								v12 = 0;
 							++i;
-							++v32;
-							v22 += 40;
+							++v26;
+							v15 += 40;
 						}
-						while ( v32 < v34 );
+						while ( v26 < v28 );
 					}
 				}
-				v24 = 0;
-				if ( v14 )
+				v17 = 0;
+				if ( v12 )
 					break;
-				if ( ++v13 == max )
+				if ( ++v11 == max )
 				{
-					v13 = 0;
-					if ( ++tmax == v36 )
+					v11 = 0;
+					if ( ++tmax == v30 )
 						tmax = 0;
 				}
 			}
-			if ( v33 >= 200 )
+			if ( v27 >= 200 )
 				return 1;
-			miniset = (unsigned char *)(v34 * v35 + 2);
-			if ( v35 > 0 )
+			v18 = v28 * v29 + 2;
+			if ( v29 > 0 )
 			{
 				do
 				{
-					v25 = v34;
-					if ( v34 > 0 )
+					v19 = v28;
+					if ( v28 > 0 )
 					{
-						v26 = &dungeon[v13][v24 + tmax];
+						v20 = &dungeon[v11][v17 + tmax];
 						do
 						{
-							v27 = v29[(_DWORD)miniset];
-							if ( v27 )
-								*v26 = v27;
-							++miniset;
-							v26 += 40;
-							--v25;
+							v21 = v23[v18];
+							if ( v21 )
+								*v20 = v21;
+							++v18;
+							v20 += 40;
+							--v19;
 						}
-						while ( v25 );
+						while ( v19 );
 					}
-					++v24;
+					++v17;
 				}
-				while ( v24 < v35 );
+				while ( v17 < v29 );
 			}
-			++v31;
+			++v25;
 		}
-		while ( v31 < v30 );
+		while ( v25 < v24 );
 	}
 	if ( setview == 1 )
 	{
-		ViewX = 2 * v13 + 17;
+		ViewX = 2 * v11 + 17;
 		ViewY = 2 * tmax + 19;
 	}
 	if ( !ldir )
 	{
-		LvlViewX = 2 * v13 + 17;
+		LvlViewX = 2 * v11 + 17;
 		LvlViewY = 2 * tmax + 19;
 	}
 	return 0;
@@ -2182,9 +2126,9 @@ int __fastcall DRLG_L3PlaceMiniSet(unsigned char *miniset, int tmin, int tmax, i
 // 5CF320: using guessed type int LvlViewY;
 // 5CF324: using guessed type int LvlViewX;
 
-void __fastcall DRLG_L3PlaceRndSet(unsigned char *miniset, int rndper)
+void __fastcall DRLG_L3PlaceRndSet(const unsigned char *miniset, int rndper)
 {
-	unsigned char *v2; // ebx
+	const unsigned char *v2; // ebx
 	int v3; // ecx
 	int v4; // eax
 	char *v5; // ecx
@@ -2291,8 +2235,7 @@ LABEL_43:
 LABEL_33:
 		if ( v29 == 1 )
 		{
-			_LOBYTE(v5) = 0;
-			if ( random((int)v5, 100) < v19 )
+			if ( random(0, 100) < v19 )
 			{
 				for ( j = 0; j < v28; ++j )
 				{
@@ -2903,8 +2846,8 @@ void __fastcall LoadL3Dungeon(char *sFileName, int vx, int vy)
 	DRLG_Init_Globals();
 	ViewX = 31;
 	ViewY = 83;
-	SetMapMonsters(v5, 0, 0);
-	SetMapObjects(v5, 0, 0);
+	SetMapMonsters((unsigned char *)v5, 0, 0);
+	SetMapObjects((unsigned char *)v5, 0, 0);
 	v19 = dPiece;
 	do
 	{

@@ -4,7 +4,7 @@
 
 /* todo: move text out of struct */
 
-TextDataStruct alltext[259] =
+const TextDataStruct alltext[259] =
 {
   { " Ahh, the story of our King, is it? The tragic fall of Leoric was a harsh blow to this land. The people always loved the King, and now they live in mortal fear of him. The question that I keep asking myself is how he could have fallen so far from the Light, as Leoric had always been the holiest of men. Only the vilest powers of Hell could so utterly destroy a man from within... |",
 	1, 5, TSFX_STORY1 },
@@ -509,4 +509,4 @@ TextDataStruct alltext[259] =
   { "Thank goodness you've returned!\nMuch has changed since you lived here, my friend. All was peaceful until the dark riders came and destroyed our village. Many were cut down where they stood, and those who took up arms were slain or dragged away to become slaves - or worse. The church at the edge of town has been desecrated and is being used for dark rituals. The screams that echo in the night are inhuman, but some of our townsfolk may yet survive. Follow the path that lies between my tavern and the blacksmith shop to find the church and save who you can. \n \nPerhaps I can tell you more if we speak again. Good luck.|",
 	1, 5, TSFX_TAVERN0 }
 };
-int gdwAllTextEntries = 259; /* unused */
+const int gdwAllTextEntries = 259; /* unused */

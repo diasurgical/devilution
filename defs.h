@@ -5,7 +5,9 @@
 
 #define LIGHTSIZE				6912 // 27 * 256
 
+// must be unsigned to generate unsigned comparisons with pnum
 #define MAX_PLRS				4
+
 #define MAX_CHARACTERS			10
 #define MAX_LVLMTYPES			16
 // #define MAX_PATH				260
@@ -27,6 +29,19 @@
 #define MDMAXX					40
 #define MDMAXY					40
 
+
+// number of inventory grid cells
+#define NUM_INV_GRID_ELEM			40
+#define INV_SLOT_SIZE_PX		28
+
+// todo: enums
+#define NUM_SFX					858
+#define NUMLEVELS				17
+
+// from diablo 2 beta
+#define MAXEXP					2000000000
+
+#define PLR_NAME_LEN			32
 
 // Diablo uses a 256 color palette
 // Entry 0-127 (0x00-0x7F) are level specific
@@ -132,12 +147,9 @@ typedef ull             uint64;
 
 #ifdef __cplusplus
 
-
-// memcpy() with determined behavoir: it always copies
-// from the start to the end of the buffer
-// note: it copies byte by byte, so it is not equivalent to, for example, rep movsd
+#ifdef FAST_MEMCPY
 #define qmemcpy memcpy
-/*
+#else
 inline void *qmemcpy(void *dst, const void *src, size_t cnt)
 {
   char *out = (char *)dst;
@@ -148,7 +160,8 @@ inline void *qmemcpy(void *dst, const void *src, size_t cnt)
     --cnt;
   }
   return dst;
-} */
+}
+#endif
 
 // Generate a reference to pair of operands
 template<class T>  int16 __PAIR__( int8  high, T low) { return ((( int16)high) << sizeof(high)*8) | uint8(low); }
@@ -217,3 +230,8 @@ template<class T, class U> int8 __OFSUB__(T x, U y)
 #endif
 
 #endif /* IDA_GARBAGE */
+
+#ifndef INFINITY
+#include <limits>
+#define INFINITY std::numeric_limits<float>::infinity()
+#endif

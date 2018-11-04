@@ -1,9 +1,9 @@
-Microsoft Developer Studio Workspace File, Format Version 5.00
+Microsoft Developer Studio Workspace File, Format Version 6.00
 # WARNING: DO NOT EDIT OR DELETE THIS WORKSPACE FILE!
 
 ###############################################################################
 
-Project: "Diablo"=.\Diablo.dsp - Package Owner=<4>
+Project: "Diablo"=".\Diablo.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -21,7 +21,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "DiabloUI"=.\DiabloUI\DiabloUI.dsp - Package Owner=<4>
+Project: "DiabloUI"=".\DiabloUI\DiabloUI.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -29,11 +29,14 @@ Package=<5>
 
 Package=<4>
 {{{
+    Begin Project Dependency
+    Project_Dep_Name Storm
+    End Project Dependency
 }}}
 
 ###############################################################################
 
-Project: "Storm"=.\3rdParty\Storm\Source\Storm.dsp - Package Owner=<4>
+Project: "Storm"=".\3rdParty\Storm\Source\Storm.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{

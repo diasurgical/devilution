@@ -18,9 +18,9 @@ int __fastcall GoldAutoPlace(int pnum);
 int __fastcall WeaponAutoPlace(int pnum);
 int __fastcall SwapItem(ItemStruct *a, ItemStruct *b);
 void __fastcall CheckInvPaste(int pnum, int mx, int my);
-void __fastcall CheckInvSwap(int pnum, int bLoc, int idx, int wCI, int seed, int bId);
+void __fastcall CheckInvSwap(int pnum, BYTE bLoc, int idx, WORD wCI, int seed, BOOL bId);
 void __fastcall CheckInvCut(int pnum, int mx, int my);
-void __fastcall inv_update_rem_item(int pnum, int iv);
+void __fastcall inv_update_rem_item(int pnum, BYTE iv);
 void __fastcall RemoveInvItem(int pnum, int iv);
 void __fastcall RemoveSpdBarItem(int pnum, int iv);
 void __cdecl CheckInvItem();
@@ -48,11 +48,11 @@ void __cdecl DoTelekinesis();
 int __fastcall CalculateGold(int pnum);
 int __cdecl DropItemBeforeTrig();
 
-/* data */
-
-extern InvXY InvRect[73];
-
 /* rdata */
+
+extern const InvXY InvRect[73];
+
+/* data */
 
 extern int AP2x2Tbl[10]; // weak
 

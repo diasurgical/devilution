@@ -6,48 +6,48 @@ short level_frame_types[2048];
 int themeCount;
 char nTransTable[2049];
 //int dword_52D204;
-int dMonster[112][112];
+int dMonster[MAXDUNX][MAXDUNY];
 char dungeon[40][40];
-char dObject[112][112];
+char dObject[MAXDUNX][MAXDUNY];
 void *pSpeedCels;
 int nlevel_frames; // weak
 char pdungeon[40][40];
-char dDead[112][112];
-short dpiece_defs_map_1[16][112][112];
-char dTransVal2[112][112];
+char dDead[MAXDUNX][MAXDUNY];
+short dpiece_defs_map_1[16][MAXDUNX][MAXDUNY];
+char dTransVal2[MAXDUNX][MAXDUNY];
 char TransVal; // weak
 int dword_5A5594;
 char dflags[40][40];
-int dPiece[112][112];
-char dTransVal[112][112];
+int dPiece[MAXDUNX][MAXDUNY];
+char dTransVal[MAXDUNX][MAXDUNY];
 int setloadflag_2; // weak
-Tile tile_defs[1024];
+int tile_defs[2048];
 void *pMegaTiles;
-DPiece dpiece_defs[2];
+void *pLevelPieces;
 int gnDifficulty; // idb
 char block_lvid[2049];
 //char byte_5B78EB;
-char dung_map[112][112];
+char dung_map[MAXDUNX][MAXDUNY];
 char nTrapTable[2049];
 char leveltype; // weak
 unsigned char currlevel; // idb
 char TransList[256];
-char nSolidTable[2049];
-int level_frame_count[2049];
+UCHAR nSolidTable[2049];
+int level_frame_count[2048];
 ScrollStruct ScrollInfo;
 void *pDungeonCels;
 int speed_cel_frame_num_from_light_index_frame_num[16][128];
-THEME_LOC themeLoc[50];
-char dPlayer[112][112];
+THEME_LOC themeLoc[MAXTHEMES];
+char dPlayer[MAXDUNX][MAXDUNY];
 int dword_5C2FF8; // weak
 int dword_5C2FFC; // weak
 int scr_pix_width; // weak
 int scr_pix_height; // weak
-char dArch[112][112];
+char dArch[MAXDUNX][MAXDUNY];
 char nBlockTable[2049];
 void *level_special_cel;
-char dFlags[112][112];
-char dItem[112][112];
+char dFlags[MAXDUNX][MAXDUNY];
+char dItem[MAXDUNX][MAXDUNY];
 char setlvlnum; // weak
 int level_frame_sizes[2048];
 char nMissileTable[2049];
@@ -64,10 +64,10 @@ int setpc_x; // idb
 int ViewX; // idb
 int ViewY; // idb
 int setpc_y; // idb
-char dMissile[112][112];
+char dMissile[MAXDUNX][MAXDUNY];
 int dminx; // weak
 int dminy; // weak
-short dpiece_defs_map_2[16][112][112];
+short dpiece_defs_map_2[16][MAXDUNX][MAXDUNY];
 
 void __cdecl FillSolidBlockTbls()
 {
@@ -78,12 +78,12 @@ void __cdecl FillSolidBlockTbls()
 	unsigned char v4; // bl
 	int size; // [esp+8h] [ebp-4h]
 
-	memset(nBlockTable, 0, 0x801u);
-	memset(nSolidTable, 0, 0x801u);
-	memset(nTransTable, 0, 0x801u);
-	memset(nMissileTable, 0, 0x801u);
-	memset(nTrapTable, 0, 0x801u);
-	if ( leveltype )
+	memset(nBlockTable, 0, sizeof(nBlockTable));
+	memset(nSolidTable, 0, sizeof(nSolidTable));
+	memset(nTransTable, 0, sizeof(nTransTable));
+	memset(nMissileTable, 0, sizeof(nMissileTable));
+	memset(nTrapTable, 0, sizeof(nTrapTable));
+	if ( leveltype != DTYPE_TOWN )
 	{
 		switch ( leveltype )
 		{
@@ -203,15 +203,15 @@ void __cdecl gendung_418D91()
 
 	v0 = 0;
 	memset(level_frame_types, 0, sizeof(level_frame_types));
-	memset(level_frame_count, 0, 0x2000u);
+	memset(level_frame_count, 0, sizeof(level_frame_count));
 	do
 	{
-		*((_DWORD *)&tile_defs[0].top + v0) = v0;
+		tile_defs[v0] = v0;
 		++v0;
 	}
 	while ( v0 < 2048 );
 	v1 = dpiece_defs_map_2;
-	v48 = 2 * (leveltype == 4) + 10;
+	v48 = 2 * (leveltype == DTYPE_HELL) + 10;
 	do
 	{
 		v2 = v1;
@@ -250,7 +250,7 @@ void __cdecl gendung_418D91()
 	}
 	v9 = 0;
 	level_frame_sizes[0] = 0;
-	if ( leveltype == 4 && v8 > 0 )
+	if ( leveltype == DTYPE_HELL && v8 > 0 )
 	{
 		do
 		{
@@ -351,7 +351,7 @@ LABEL_36:
 		{
 			v24 = v54;
 			v25 = level_frame_types[v54] == 4096;
-			v62 = *((_DWORD *)&tile_defs[0].top + v54);
+			v62 = tile_defs[v54];
 			(*v49)[0] = v62;
 			if ( v25 )
 			{
@@ -463,7 +463,7 @@ LABEL_66:
 						{
 							do
 							{
-								if ( (v43 & 0xFFF) == *((_DWORD *)&tile_defs[0].top + v44) )
+								if ( (v43 & 0xFFF) == tile_defs[v44] )
 								{
 									v45 = v44 + level_frame_types[v44];
 									v44 = v22;
@@ -535,12 +535,12 @@ void __fastcall gendung_4191FB(int a1, int a2)
 	v2 *= 4;
 	v5 = *v3;
 	*v3 = *(int *)((char *)level_frame_count + v2);
-	v6 = (int *)((char *)tile_defs + 4 * a1);
+	v6 = &tile_defs[a1];
 	*(int *)((char *)level_frame_count + v2) = v5;
 	v7 = &level_frame_sizes[a1];
 	v8 = *v6;
-	*v6 = *(_DWORD *)((char *)&tile_defs[0].top + v2);
-	*(_DWORD *)((char *)&tile_defs[0].top + v2) = v8;
+	*v6 = *(int *)((char *)tile_defs + v2);
+	*(int *)((char *)tile_defs + v2) = v8;
 	v9 = &level_frame_types[a1];
 	_LOWORD(v6) = *v9;
 	*v9 = *v4;
@@ -592,7 +592,7 @@ void __cdecl SetDungeonMicros()
 	short (*v1)[112][112]; // edx
 	int (*v2)[112]; // ebp
 	int v3; // eax
-	int v4; // eax
+	char *v4; // eax
 	signed int i; // ecx
 	_WORD *v6; // edi
 	int j; // ecx
@@ -600,7 +600,7 @@ void __cdecl SetDungeonMicros()
 	int (*v9)[112]; // [esp+Ch] [ebp-8h]
 	signed int v10; // [esp+10h] [ebp-4h]
 
-	if ( leveltype == 4 )
+	if ( leveltype == DTYPE_HELL )
 	{
 		dword_5A5594 = 12;
 		v0 = 16;
@@ -622,12 +622,12 @@ void __cdecl SetDungeonMicros()
 			if ( (*v2)[0] )
 			{
 				v3 = (*v2)[0] - 1;
-				if ( leveltype == 4 )
-					v4 = *(_DWORD *)&dpiece_defs[0].blocks + 32 * v3;
+				if ( leveltype == DTYPE_HELL )
+					v4 = (char *)pLevelPieces + 32 * v3;
 				else
-					v4 = *(_DWORD *)&dpiece_defs[0].blocks + 20 * v3;
+					v4 = (char *)pLevelPieces + 20 * v3;
 				for ( i = 0; i < v0; ++i )
-					(*v1)[0][i] = *(_WORD *)(v4 + 2 * (v0 + (i & 1) - (i & 0xE)) - 4);
+					(*v1)[0][i] = *(_WORD *)&v4[2 * (v0 + (i & 1) - (i & 0xE)) - 4];
 			}
 			else if ( v0 > 0 )
 			{
@@ -674,8 +674,8 @@ void __cdecl SetDungeonMicros()
 
 void __cdecl DRLG_InitTrans()
 {
-	memset(dung_map, 0, 0x3100u);
-	memset(TransList, 0, 0x100u);
+	memset(dung_map, 0, sizeof(dung_map));
+	memset(TransList, 0, sizeof(TransList));
 	TransVal = 1;
 }
 // 5A5590: using guessed type char TransVal;
@@ -913,8 +913,8 @@ bool __fastcall DRLG_WillThemeRoomFit(int floor, int x, int y, int minSize, int 
 		return 0;
 	if ( !SkipThemeRoom(x, y) )
 		return 0;
-	memset(xArray, 0, 0x50u);
-	memset(yArray, 0, 0x50u);
+	memset(xArray, 0, sizeof(xArray));
+	memset(yArray, 0, sizeof(yArray));
 	if ( maxSize > 0 )
 	{
 		v10 = 40 * v7;
@@ -1067,7 +1067,7 @@ LABEL_52:
 		v21 = &dungeon[v6][v4];
 		while ( 1 )
 		{
-			if ( leveltype != 2 )
+			if ( leveltype != DTYPE_CATACOMBS )
 				goto LABEL_21;
 			if ( v4 == v2 && v6 >= themeLoc[v1].x && v6 <= v20 )
 				goto LABEL_12;
@@ -1080,7 +1080,7 @@ LABEL_16:
 				goto LABEL_19;
 			*v21 = 3;
 LABEL_21:
-			if ( leveltype == 3 )
+			if ( leveltype == DTYPE_CAVES )
 			{
 				if ( v4 == v2 && v6 >= themeLoc[v1].x && v6 <= v20 )
 				{
@@ -1111,7 +1111,7 @@ LABEL_35:
 					goto LABEL_35;
 				*v21 = 7;
 			}
-			if ( leveltype != 4 )
+			if ( leveltype != DTYPE_HELL )
 				goto LABEL_51;
 			if ( v4 != v2 || v6 < themeLoc[v1].x || v6 > v20 )
 			{
@@ -1151,7 +1151,7 @@ LABEL_13:
 		goto LABEL_16;
 	}
 LABEL_53:
-	if ( leveltype == 2 )
+	if ( leveltype == DTYPE_CATACOMBS )
 	{
 		v7 = themeLoc[v1].x;
 		v8 = 10 * (v7 + themeLoc[v1].width);
@@ -1161,7 +1161,7 @@ LABEL_53:
 		dungeon[0][v5 + v2 - 1] = 9; // *((_BYTE *)&dMonster[111][111] + v5 + v2 + 3) = 9;
 		dungeon[-1][v3 + v8 * 4 + v2 - 1] = 6; // *((_BYTE *)&dMonster[111][101] + v3 + v8 * 4 + v2 + 3) = 6;
 	}
-	if ( leveltype == 3 )
+	if ( leveltype == DTYPE_CAVES )
 	{
 		v9 = themeLoc[v1].x;
 		v10 = 10 * (v9 + themeLoc[v1].width);
@@ -1171,7 +1171,7 @@ LABEL_53:
 		dungeon[0][v5 + v2 - 1] = 152; // *((_BYTE *)&dMonster[111][111] + v5 + v2 + 3) = -104;
 		dungeon[-1][v3 + v10 * 4 + v2 - 1] = 138; // *((_BYTE *)&dMonster[111][101] + v3 + v10 * 4 + v2 + 3) = -118;
 	}
-	if ( leveltype == 4 )
+	if ( leveltype == DTYPE_HELL )
 	{
 		v11 = themeLoc[v1].x;
 		v12 = 10 * (v11 + themeLoc[v1].width);
@@ -1181,10 +1181,9 @@ LABEL_53:
 		dungeon[0][v5 + v2 - 1] = 15; // *((_BYTE *)&dMonster[111][111] + v5 + v2 + 3) = 15;
 		dungeon[-1][v3 + v12 * 4 + v2 - 1] = 12; // *((_BYTE *)&dMonster[111][101] + v3 + v12 * 4 + v2 + 3) = 12;
 	}
-	if ( leveltype == 2 )
+	if ( leveltype == DTYPE_CATACOMBS )
 	{
-		_LOBYTE(v5) = 0;
-		v13 = random(v5, 2);
+		v13 = random(0, 2);
 		if ( v13 )
 		{
 			if ( v13 == 1 )
@@ -1203,10 +1202,9 @@ LABEL_53:
 			// *((_BYTE *)&dMonster[111][10 * (themeLoc[v1].x + themeLoc[v1].width) + 102] + themeLoc[v1].height / 2 + v5) = 4;
 		}
 	}
-	if ( leveltype == 3 )
+	if ( leveltype == DTYPE_CAVES )
 	{
-		_LOBYTE(v5) = 0;
-		v14 = random(v5, 2);
+		v14 = random(0, 2);
 		if ( v14 )
 		{
 			if ( v14 == 1 )
@@ -1225,10 +1223,9 @@ LABEL_53:
 			// *((_BYTE *)&dMonster[111][10 * (themeLoc[v1].x + themeLoc[v1].width) + 102] + themeLoc[v1].height / 2 + v5) = -109;
 		}
 	}
-	if ( leveltype == 4 )
+	if ( leveltype == DTYPE_HELL )
 	{
-		_LOBYTE(v5) = 0;
-		v15 = random(v5, 2);
+		v15 = random(0, 2);
 		if ( v15 )
 		{
 			if ( v15 == 1 )
@@ -1258,16 +1255,12 @@ LABEL_53:
 void __fastcall DRLG_PlaceThemeRooms(int minSize, int maxSize, int floor, int freq, int rndSize)
 {
 	int v5; // ebx
-	int v6; // ecx
 	//int v7; // eax
 	int v8; // esi
 	int v9; // edi
 	int v10; // eax
-	int v11; // ecx
 	int v12; // eax
-	int v13; // ecx
 	int v14; // eax
-	int v15; // ecx
 	int v16; // eax
 	int v17; // edi
 	int v18; // esi
@@ -1286,7 +1279,7 @@ void __fastcall DRLG_PlaceThemeRooms(int minSize, int maxSize, int floor, int fr
 	maxSize2 = maxSize;
 	minSize2 = minSize;
 	themeCount = 0;
-	memset(themeLoc, 0, 0x14u);
+	memset(themeLoc, 0, sizeof(*themeLoc));
 	do
 	{
 		x = 0;
@@ -1296,8 +1289,7 @@ void __fastcall DRLG_PlaceThemeRooms(int minSize, int maxSize, int floor, int fr
 		{
 			if ( *v24 == floor )
 			{
-				_LOBYTE(v6) = 0;
-				if ( !random(v6, freq) )
+				if ( !random(0, freq) )
 				{
 					//_LOBYTE(v7) = DRLG_WillThemeRoomFit(floor, x, v5, minSize2, maxSize2, &width, &height);
 					if ( DRLG_WillThemeRoomFit(floor, x, v5, minSize2, maxSize2, &width, &height) )
@@ -1306,16 +1298,12 @@ void __fastcall DRLG_PlaceThemeRooms(int minSize, int maxSize, int floor, int fr
 						{
 							v8 = minSize2 - 2;
 							v9 = maxSize2 - 2;
-							_LOBYTE(v6) = 0;
-							v10 = random(v6, width - (minSize2 - 2) + 1);
-							_LOBYTE(v11) = 0;
-							v12 = minSize2 - 2 + random(v11, v10);
+							v10 = random(0, width - (minSize2 - 2) + 1);
+							v12 = minSize2 - 2 + random(0, v10);
 							if ( v12 < minSize2 - 2 || (width = v12, v12 > v9) )
 								width = minSize2 - 2;
-							_LOBYTE(v13) = 0;
-							v14 = random(v13, height - v8 + 1);
-							_LOBYTE(v15) = 0;
-							v16 = v8 + random(v15, v14);
+							v14 = random(0, height - v8 + 1);
+							v16 = v8 + random(0, v14);
 							if ( v16 < v8 || v16 > v9 )
 								v16 = minSize2 - 2;
 							height = v16;
@@ -1333,7 +1321,7 @@ void __fastcall DRLG_PlaceThemeRooms(int minSize, int maxSize, int floor, int fr
 						themeLoc[v18].height = v16;
 						v20 = x + v19;
 						v21 = v5 + v16;
-						if ( leveltype == 3 )
+						if ( leveltype == DTYPE_CAVES )
 							DRLG_RectTrans(x_start, 2 * v5 + 20, 2 * v20 + 15, 2 * v21 + 15);
 						else
 							DRLG_MRectTrans(x + 1, v5 + 1, v20, v21);

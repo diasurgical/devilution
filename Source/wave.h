@@ -13,7 +13,7 @@ int __fastcall WOpenFile(char *dwInitParam, HANDLE *phsFile, int a3);
 char __fastcall WReadFile(HANDLE hsFile, char *buf, int a3);
 int __fastcall WSetFilePointer(HANDLE file1, int offset, HANDLE file2, int whence);
 int __fastcall LoadWaveFormat(HANDLE hsFile, WAVEFORMATEX *pwfx);
-void *__fastcall AllocateMemFile(HANDLE hsFile, MEMFILE *pMemFile, unsigned int a3);
+void *__fastcall AllocateMemFile(HANDLE hsFile, MEMFILE *pMemFile, unsigned int dwPos);
 void __fastcall FreeMemFile(MEMFILE *pMemFile);
 int __fastcall ReadWaveFile(MEMFILE *pMemFile, WAVEFORMATEX *pwfx, int *a3);
 int __fastcall ReadMemFile(MEMFILE *pMemFile, void *lpBuf, size_t a3);
@@ -23,8 +23,8 @@ int __fastcall ReadWaveSection(MEMFILE *pMemFile, int a2, int *a3);
 void *__fastcall LoadWaveFile(HANDLE hsFile, WAVEFORMATEX *pwfx, int *a3);
 void __fastcall j_engine_mem_free(void *ptr);
 
-/* data */
+/* rdata */
 
-extern int wave_inf; // weak
+extern const int wave_inf; // weak
 
 #endif /* __WAVE_H__ */

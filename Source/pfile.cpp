@@ -3,11 +3,11 @@
 #include "../types.h"
 
 int pfile_cpp_init_value;
-char hero_names[320];
+char hero_names[MAX_CHARACTERS][PLR_NAME_LEN];
 bool gbValidSaveFile; // idb
 int save_prev_tc; // weak
 
-int pfile_inf = 0x7F800000; // weak
+const int pfile_inf = 0x7F800000; // weak
 
 struct pfile_cpp_init
 {
@@ -22,8 +22,8 @@ void __cdecl pfile_init_save_directory()
 {
 	char Buffer[260]; // [esp+4h] [ebp-104h]
 
-	if ( GetWindowsDirectoryA(Buffer, 0x104u)
-	  && (pfile_check_available_space(Buffer), GetModuleFileNameA(ghInst, Buffer, 0x104u)) )
+	if ( GetWindowsDirectory(Buffer, 0x104u)
+	  && (pfile_check_available_space(Buffer), GetModuleFileName(ghInst, Buffer, 0x104u)) )
 	{
 		pfile_check_available_space(Buffer);
 	}
@@ -58,7 +58,7 @@ void __fastcall pfile_check_available_space(char *pszDir)
 			break;
 		}
 	}
-	v4 = GetDiskFreeSpaceA(v1, &SectorsPerCluster, &BytesPerSector, &NumberOfFreeClusters, &TotalNumberOfClusters);
+	v4 = GetDiskFreeSpace(v1, &SectorsPerCluster, &BytesPerSector, &NumberOfFreeClusters, &TotalNumberOfClusters);
 	if ( !v4 )
 		goto LABEL_12;
 	if ( (signed __int64)(BytesPerSector * (unsigned __int64)SectorsPerCluster * NumberOfFreeClusters) < 0xA00000 )
@@ -91,19 +91,16 @@ int __fastcall pfile_get_save_num_from_name(char *name)
 {
 	char *v1; // ebx
 	unsigned int v2; // esi
-	char *v3; // edi
 
 	v1 = name;
 	v2 = 0;
-	v3 = hero_names;
 	do
 	{
-		if ( !_strcmpi(v3, v1) )
+		if ( !_strcmpi(hero_names[v2], v1) )
 			break;
 		++v2;
-		v3 += 32;
 	}
-	while ( v2 < 0xA );
+	while ( v2 < MAX_CHARACTERS );
 	return v2;
 }
 
@@ -164,7 +161,7 @@ void __fastcall pfile_get_save_path(char *pszBuf, int dwBufSize, int save_num)
 	v4 = "\\multi_%d.sv";
 	if ( (unsigned char)gbMaxPlayers <= 1u )
 		v4 = "\\single_%d.sv";
-	v5 = GetModuleFileNameA(ghInst, pszBuf, 0x104u);
+	v5 = GetModuleFileName(ghInst, pszBuf, 0x104u);
 	v6 = strrchr(v3, '\\');
 	if ( v6 )
 		*v6 = 0;
@@ -225,7 +222,7 @@ int __fastcall pfile_create_save_file(char *name_1, char *name_2)
 
 	v2 = name_2;
 	v3 = name_1;
-	if ( pfile_get_save_num_from_name(name_2) != 10 )
+	if ( pfile_get_save_num_from_name(name_2) != MAX_CHARACTERS )
 		return 0;
 	v4 = 0;
 	v7 = plr[0]._pName;
@@ -237,9 +234,9 @@ int __fastcall pfile_create_save_file(char *name_1, char *name_2)
 			return 0;
 	}
 	v5 = pfile_get_save_num_from_name(v3);
-	if ( v5 == 10 )
+	if ( v5 == MAX_CHARACTERS )
 		return 0;
-	SStrCopy(&hero_names[32 * v5], v2, 32);
+	SStrCopy(hero_names[v5], v2, 32);
 	SStrCopy(plr[v4]._pName, v2, 32);
 	if ( !_strcmpi(chr_name_str, v3) )
 		SStrCopy(chr_name_str, v2, 16);
@@ -291,14 +288,13 @@ char __fastcall game_2_ui_class(PlayerStruct *p)
 	return result;
 }
 
-bool __stdcall pfile_ui_set_hero_infos(void (__stdcall *ui_add_hero_info)(_uiheroinfo *))
+BOOL __stdcall pfile_ui_set_hero_infos(BOOL (__stdcall *ui_add_hero_info)(_uiheroinfo *))
 {
 	char *v1; // esi
 	//int v2; // eax
 	int v3; // eax
 	DWORD v4; // eax
 	unsigned int v5; // esi
-	char *v6; // ebx
 	void *v7; // eax
 	void *v8; // edi
 	//int v9; // eax
@@ -312,14 +308,14 @@ bool __stdcall pfile_ui_set_hero_infos(void (__stdcall *ui_add_hero_info)(_uiher
 	LPCSTR lpSrcStr; // [esp+7C0h] [ebp-8h]
 	int save_num; // [esp+7C4h] [ebp-4h]
 
-	memset(hero_names, 0, 0x140u);
+	memset(hero_names, 0, sizeof(hero_names));
 	if ( (unsigned char)gbMaxPlayers > 1u )
 	{
 		lpSrcStr = 0;
 		save_num = 0;
 		do
 		{
-			if ( (unsigned int)save_num >= 0xA )
+			if ( (unsigned int)save_num >= MAX_CHARACTERS )
 				break;
 			GetSaveDirectory(FileName, 260, (int)lpSrcStr);
 			v1 = strrchr(FileName, '\\') + 1;
@@ -333,17 +329,17 @@ bool __stdcall pfile_ui_set_hero_infos(void (__stdcall *ui_add_hero_info)(_uiher
 						pfile_get_save_path(NewFileName, 260, v3);
 						if ( OpenFile(NewFileName, &ReOpenBuff, 0x4000u) == -1 )
 							break;
-						if ( (unsigned int)save_num >= 0xA )
+						if ( (unsigned int)save_num >= MAX_CHARACTERS )
 							goto LABEL_13;
 					}
-					if ( CopyFileA(FileName, NewFileName, 1) )
+					if ( CopyFile(FileName, NewFileName, 1) )
 					{
 						SRegSaveString("Diablo\\Converted", v1, 0, NewFileName);
-						v4 = GetFileAttributesA(NewFileName);
+						v4 = GetFileAttributes(NewFileName);
 						if ( v4 != -1 )
 						{
 							_LOBYTE(v4) = v4 & 0xF9;
-							SetFileAttributesA(NewFileName, v4);
+							SetFileAttributes(NewFileName, v4);
 						}
 					}
 				}
@@ -351,11 +347,10 @@ bool __stdcall pfile_ui_set_hero_infos(void (__stdcall *ui_add_hero_info)(_uiher
 LABEL_13:
 			++lpSrcStr;
 		}
-		while ( (unsigned int)lpSrcStr < 0xA );
+		while ( (unsigned int)lpSrcStr < MAX_CHARACTERS );
 	}
 	unused = 1;
 	v5 = 0;
-	v6 = hero_names;
 	do
 	{
 		v7 = pfile_open_save_archive(&unused, v5);
@@ -364,7 +359,7 @@ LABEL_13:
 		{
 			if ( pfile_read_hero(v7, &pkplr) )
 			{
-				strcpy(v6, pkplr.pName);
+				strcpy(hero_names[v5], pkplr.pName);
 				UnPackPlayer(&pkplr, 0, 0);
 				v10 = pfile_archive_contains_game(v8);
 				game_2_ui_player(plr, &hero_info, v10);
@@ -373,9 +368,8 @@ LABEL_13:
 			pfile_SFileCloseArchive(v8);
 		}
 		++v5;
-		v6 += 32;
 	}
-	while ( v5 < 0xA );
+	while ( v5 < MAX_CHARACTERS );
 	return 1;
 }
 // 679660: using guessed type char gbMaxPlayers;
@@ -392,7 +386,7 @@ char *__fastcall GetSaveDirectory(char *dst, int dst_size, int save_num)
 	if ( (unsigned char)gbMaxPlayers <= 1u )
 	{
 		v4 = "\\single_%d.sv";
-		v5 = GetModuleFileNameA(ghInst, dst, 0x104u);
+		v5 = GetModuleFileName(ghInst, dst, 0x104u);
 		v6 = strrchr(v3, '\\');
 		if ( v6 )
 			*v6 = '\0';
@@ -400,7 +394,7 @@ char *__fastcall GetSaveDirectory(char *dst, int dst_size, int save_num)
 	else
 	{
 		v4 = "\\dlinfo_%d.drv";
-		v5 = GetWindowsDirectoryA(dst, 0x104u);
+		v5 = GetWindowsDirectory(dst, 0x104u);
 	}
 	if ( !v5 )
 		TermMsg("Unable to get save directory");
@@ -452,7 +446,7 @@ bool __fastcall pfile_read_hero(void *archive, PkPlayerStruct *pPack)
 				goto LABEL_11;
 			if ( (unsigned char)gbMaxPlayers > 1u )
 			{
-				GetComputerNameA(password, &nSize);
+				GetComputerName(password, &nSize);
 				if ( !SFileSetFilePointer(file, 0, 0, 0) )
 				{
 					//_LOBYTE(v8) = SFileReadFile(file, v6, v4, (unsigned long *)&dwBytes, 0);
@@ -513,7 +507,7 @@ bool __fastcall pfile_archive_contains_game(void *hsArchive)
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-bool __stdcall pfile_ui_set_class_stats(int player_class_nr, _uidefaultstats *class_stats)
+BOOL __stdcall pfile_ui_set_class_stats(int player_class_nr, _uidefaultstats *class_stats)
 {
 	int v2; // eax
 
@@ -536,36 +530,33 @@ int __fastcall pfile_get_player_class(int player_class_nr)
 	return result;
 }
 
-bool __stdcall pfile_ui_save_create(_uiheroinfo *heroinfo)
+BOOL __stdcall pfile_ui_save_create(_uiheroinfo *heroinfo)
 {
 	unsigned int v1; // edi
-	char *v2; // eax
 	//int v3; // eax
 	char v5; // al
 	PkPlayerStruct pkplr; // [esp+8h] [ebp-4F4h]
 
 	v1 = pfile_get_save_num_from_name(heroinfo->name);
-	if ( v1 == 10 )
+	if ( v1 == MAX_CHARACTERS )
 	{
 		v1 = 0;
-		v2 = hero_names;
 		do
 		{
-			if ( !*v2 )
+			if ( !*hero_names[v1] )
 				break;
 			++v1;
-			v2 += 32;
 		}
-		while ( v1 < 0xA );
-		if ( v1 == 10 )
+		while ( v1 < MAX_CHARACTERS );
+		if ( v1 == MAX_CHARACTERS )
 			return 0;
 	}
 	//_LOBYTE(v3) = pfile_open_archive(0, v1);
 	if ( !pfile_open_archive(0, v1) )
 		return 0;
 	mpqapi_remove_hash_entries(pfile_get_file_name);
-	strncpy(&hero_names[32 * v1], heroinfo->name, 0x20u);
-	hero_names[32 * v1 + 31] = 0;
+	strncpy(hero_names[v1], heroinfo->name, 0x20u);
+	hero_names[v1][31] = 0;
 	v5 = pfile_get_player_class((unsigned char)heroinfo->heroclass);
 	CreatePlayer(0, v5);
 	strncpy(plr[0]._pName, heroinfo->name, 0x20u);
@@ -618,17 +609,17 @@ LABEL_10:
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-bool __stdcall pfile_delete_save(_uiheroinfo *hero_info)
+BOOL __stdcall pfile_delete_save(_uiheroinfo *hero_info)
 {
 	unsigned int v1; // eax
 	char FileName[260]; // [esp+0h] [ebp-104h]
 
 	v1 = pfile_get_save_num_from_name(hero_info->name);
-	if ( v1 < 0xA )
+	if ( v1 < MAX_CHARACTERS )
 	{
-		hero_names[32 * v1] = 0;
+		hero_names[v1][0] = 0;
 		pfile_get_save_path(FileName, 260, v1);
-		DeleteFileA(FileName);
+		DeleteFile(FileName);
 	}
 	return 1;
 }
@@ -889,7 +880,7 @@ char *__fastcall pfile_read(char *pszName, int *pdwLen)
 	{
 		if ( (unsigned char)gbMaxPlayers > 1u )
 		{
-			GetComputerNameA(password, &nSize);
+			GetComputerName(password, &nSize);
 			if ( SFileSetFilePointer(file, 0, 0, 0) )
 				TermMsg("Unable to read save file");
 			//_LOBYTE(v11) = SFileReadFile(file, v9, *v2, (unsigned long *)&nread, 0);

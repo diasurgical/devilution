@@ -2,35 +2,35 @@
 
 #include "../types.h"
 
-void __fastcall town_clear_upper_buf(int a1)
+void __fastcall town_clear_upper_buf(unsigned char *a1)
 {
-	unsigned int v1; // edi
+	unsigned char *v1; // edi
 	signed int v2; // edx
 	signed int v3; // ebx
-	char *v4; // edi
+	unsigned char *v4; // edi
 	signed int v5; // edx
 	signed int v6; // ebx
-	char *v7; // edi
+	unsigned char *v7; // edi
 
 	v1 = a1;
 	v2 = 30;
 	v3 = 1;
-	while ( v1 >= screen_buf_end )
+	while ( v1 >= gpBufEnd )
 	{
-		v4 = (char *)(v2 + v1);
+		v4 = &v1[v2];
 		memset(v4, 0, 4 * v3);
-		v1 = (unsigned int)&v4[4 * v3 - 832 + v2];
+		v1 = &v4[4 * v3 - 832 + v2];
 		if ( !v2 )
 		{
 			v5 = 2;
 			v6 = 15;
 			do
 			{
-				if ( v1 < screen_buf_end )
+				if ( v1 < gpBufEnd )
 					break;
-				v7 = (char *)(v5 + v1);
+				v7 = &v1[v5];
 				memset(v7, 0, 4 * v6);
-				v1 = (unsigned int)&v7[4 * v6-- - 832 + v5];
+				v1 = &v7[4 * v6-- - 832 + v5];
 				v5 += 2;
 			}
 			while ( v5 != 32 );
@@ -40,29 +40,29 @@ void __fastcall town_clear_upper_buf(int a1)
 		++v3;
 	}
 }
-// 69CF0C: using guessed type int screen_buf_end;
+// 69CF0C: using guessed type int gpBufEnd;
 
-void __fastcall town_clear_low_buf(int y_related)
+void __fastcall town_clear_low_buf(unsigned char *y_related)
 {
-	unsigned int v1; // edi
+	unsigned char *v1; // edi
 	signed int v2; // edx
 	signed int i; // ebx
-	int v4; // edi
-	char *v5; // edi
+	unsigned char *v4; // edi
+	unsigned char *v5; // edi
 	signed int v6; // edx
 	signed int v7; // ebx
-	int v8; // edi
-	char *v9; // edi
+	unsigned char *v8; // edi
+	unsigned char *v9; // edi
 
 	v1 = y_related;
 	v2 = 30;
 	for ( i = 1; ; ++i )
 	{
-		if ( v1 < screen_buf_end )
+		if ( v1 < gpBufEnd )
 		{
-			v5 = (char *)(v2 + v1);
+			v5 = &v1[v2];
 			memset(v5, 0, 4 * i);
-			v4 = (int)&v5[4 * i + v2];
+			v4 = &v5[4 * i + v2];
 		}
 		else
 		{
@@ -77,11 +77,11 @@ void __fastcall town_clear_low_buf(int y_related)
 	v7 = 15;
 	do
 	{
-		if ( v1 < screen_buf_end )
+		if ( v1 < gpBufEnd )
 		{
-			v9 = (char *)(v6 + v1);
+			v9 = &v1[v6];
 			memset(v9, 0, 4 * v7);
-			v8 = (int)&v9[4 * v7 + v6];
+			v8 = &v9[4 * v7 + v6];
 		}
 		else
 		{
@@ -93,7 +93,7 @@ void __fastcall town_clear_low_buf(int y_related)
 	}
 	while ( v6 != 32 );
 }
-// 69CF0C: using guessed type int screen_buf_end;
+// 69CF0C: using guessed type int gpBufEnd;
 
 void __fastcall town_draw_clipped_e_flag(void *buffer, int x, int y, int sx, int sy)
 {
@@ -103,11 +103,11 @@ void __fastcall town_draw_clipped_e_flag(void *buffer, int x, int y, int sx, int
 	int v8; // eax
 	int v9; // eax
 	void *unused; // [esp+Ch] [ebp-8h]
-	char *a1; // [esp+10h] [ebp-4h]
+	unsigned char *a1; // [esp+10h] [ebp-4h]
 
 	v5 = x;
 	unused = buffer;
-	a1 = (char *)buffer;
+	a1 = (unsigned char *)buffer;
 	v6 = (char *)dpiece_defs_map_1 + 32 * gendung_get_dpiece_num_from_coord(x, y);
 	v7 = 0;
 	do
@@ -256,16 +256,16 @@ void __fastcall town_draw_lower(int x, int y, int sx, int sy, int a5, int some_f
 	int v10; // eax
 	int *v11; // ebx
 	int v12; // esi
-	char *v13; // esi
+	unsigned char *v13; // esi
 	char *v14; // edi
 	int v15; // eax
 	int v16; // eax
 	bool v17; // zf
 	int *v18; // ebx
-	char *v19; // esi
+	unsigned char *v19; // esi
 	char *v20; // edi
 	int v21; // eax
-	char *a1; // [esp+Ch] [ebp-10h]
+	unsigned char *a1; // [esp+Ch] [ebp-10h]
 	int a1a; // [esp+Ch] [ebp-10h]
 	int ya; // [esp+10h] [ebp-Ch]
 	signed int v25; // [esp+14h] [ebp-8h]
@@ -282,7 +282,7 @@ void __fastcall town_draw_lower(int x, int y, int sx, int sy, int a5, int some_f
 		{
 			v6 = sy;
 			v7 = &screen_y_times_768[sy];
-			a1 = &gpBuffer->row_unused_1[0].col_unused_1[*v7 + 32 + sx];
+			a1 = (unsigned char *)&gpBuffer->row_unused_1[0].col_unused_1[*v7 + 32 + sx];
 			v25 = 1;
 			v8 = (char *)dpiece_defs_map_1 + 32 * gendung_get_dpiece_num_from_coord(x, y);
 			do
@@ -299,7 +299,7 @@ void __fastcall town_draw_lower(int x, int y, int sx, int sy, int a5, int some_f
 		}
 		else
 		{
-			town_clear_low_buf((int)gpBuffer + screen_y_times_768[sy] + sx);
+			town_clear_low_buf((unsigned char *)gpBuffer + screen_y_times_768[sy] + sx);
 			v6 = sy;
 		}
 		++xa;
@@ -322,7 +322,7 @@ void __fastcall town_draw_lower(int x, int y, int sx, int sy, int a5, int some_f
 		{
 			if ( y >= 0 && y < 112 && v12 >= 0 && v12 < 12544 && (level_cel_block = dPiece[0][v12 + y]) != 0 )
 			{
-				v13 = (char *)gpBuffer + *v11 + sx;
+				v13 = (unsigned char *)gpBuffer + *v11 + sx;
 				v14 = (char *)dpiece_defs_map_1 + 32 * gendung_get_dpiece_num_from_coord(xa, ya);
 				v26 = 0;
 				do
@@ -344,7 +344,7 @@ void __fastcall town_draw_lower(int x, int y, int sx, int sy, int a5, int some_f
 			}
 			else
 			{
-				town_clear_low_buf((int)gpBuffer + *v11 + sx);
+				town_clear_low_buf((unsigned char *)gpBuffer + *v11 + sx);
 			}
 			++xa;
 			sx += 64;
@@ -362,7 +362,7 @@ void __fastcall town_draw_lower(int x, int y, int sx, int sy, int a5, int some_f
 		if ( y >= 0 && y < 112 && xa >= 0 && xa < 112 && (level_cel_block = dPiece[0][y + 112 * xa]) != 0 )
 		{
 			v18 = &screen_y_times_768[v6];
-			v19 = (char *)gpBuffer + *v18 + sx;
+			v19 = (unsigned char *)gpBuffer + *v18 + sx;
 			v20 = (char *)dpiece_defs_map_1 + 32 * gendung_get_dpiece_num_from_coord(xa, ya);
 			v27 = 0;
 			do
@@ -379,7 +379,7 @@ void __fastcall town_draw_lower(int x, int y, int sx, int sy, int a5, int some_f
 		}
 		else
 		{
-			town_clear_low_buf((int)gpBuffer + screen_y_times_768[v6] + sx);
+			town_clear_low_buf((unsigned char *)gpBuffer + screen_y_times_768[v6] + sx);
 		}
 	}
 }
@@ -388,7 +388,7 @@ void __fastcall town_draw_lower(int x, int y, int sx, int sy, int a5, int some_f
 void __fastcall town_draw_clipped_e_flag_2(void *buffer, int x, int y, int a4, int a5, int sx, int sy)
 {
 	int v7; // ebx
-	char *v8; // edi
+	unsigned char *v8; // edi
 	short *v9; // esi
 	int v10; // eax
 	int v11; // eax
@@ -400,9 +400,9 @@ void __fastcall town_draw_clipped_e_flag_2(void *buffer, int x, int y, int a4, i
 	xa = x;
 	v12 = buffer;
 	if ( a4 )
-		v8 = (char *)buffer + 24576 * a4;
+		v8 = (unsigned char *)buffer + 24576 * a4;
 	else
-		v8 = (char *)buffer;
+		v8 = (unsigned char *)buffer;
 	a4a = 0;
 	v9 = &dpiece_defs_map_1[0][0][16 * gendung_get_dpiece_num_from_coord(x, y) + 3];
 	do
@@ -567,9 +567,9 @@ void __fastcall town_draw_lower_2(int x, int y, int sx, int sy, int a5, int a6, 
 	int v22; // eax
 	short *v23; // [esp+Ch] [ebp-10h]
 	int v24; // [esp+Ch] [ebp-10h]
-	char *a1; // [esp+10h] [ebp-Ch]
-	char *a1a; // [esp+10h] [ebp-Ch]
-	char *a1b; // [esp+10h] [ebp-Ch]
+	unsigned char *a1; // [esp+10h] [ebp-Ch]
+	unsigned char *a1a; // [esp+10h] [ebp-Ch]
+	unsigned char *a1b; // [esp+10h] [ebp-Ch]
 	signed int ya; // [esp+14h] [ebp-8h]
 	signed int xa; // [esp+18h] [ebp-4h]
 	signed int sxa; // [esp+24h] [ebp+8h]
@@ -593,7 +593,7 @@ void __fastcall town_draw_lower_2(int x, int y, int sx, int sy, int a5, int a6, 
 			{
 				v8 = sy;
 				v9 = &screen_y_times_768[sy];
-				a1 = (char *)gpBuffer + *v9 + sx - 24544;
+				a1 = (unsigned char *)gpBuffer + *v9 + sx - 24544;
 				sxa = 0;
 				v10 = &dpiece_defs_map_1[0][0][16 * gendung_get_dpiece_num_from_coord(x, y) + 3];
 				v23 = v10;
@@ -616,7 +616,7 @@ void __fastcall town_draw_lower_2(int x, int y, int sx, int sy, int a5, int a6, 
 				goto LABEL_16;
 			}
 		}
-		town_clear_low_buf((int)gpBuffer + screen_y_times_768[sy] + v7);
+		town_clear_low_buf((unsigned char *)gpBuffer + screen_y_times_768[sy] + v7);
 		v8 = sy;
 LABEL_16:
 		++xa;
@@ -638,7 +638,7 @@ LABEL_18:
 		{
 			if ( ya >= 0 && ya < 112 && v14 >= 0 && v14 < 12544 && (level_cel_block = dPiece[0][v14 + ya]) != 0 )
 			{
-				a1a = (char *)gpBuffer + *v13 + v11 - 24576;
+				a1a = (unsigned char *)gpBuffer + *v13 + v11 - 24576;
 				sxb = 0;
 				v15 = &dpiece_defs_map_1[0][0][16 * gendung_get_dpiece_num_from_coord(xa, ya) + 3];
 				do
@@ -666,7 +666,7 @@ LABEL_18:
 			}
 			else
 			{
-				town_clear_low_buf((int)gpBuffer + *v13 + v11);
+				town_clear_low_buf((unsigned char *)gpBuffer + *v13 + v11);
 			}
 			++xa;
 			v14 += 112;
@@ -683,7 +683,7 @@ LABEL_18:
 		if ( ya >= 0 && ya < 112 && xa >= 0 && xa < 112 && (level_cel_block = dPiece[0][ya + 112 * xa]) != 0 )
 		{
 			v20 = &screen_y_times_768[v8];
-			a1b = (char *)gpBuffer + *v20 + v11 - 24576;
+			a1b = (unsigned char *)gpBuffer + *v20 + v11 - 24576;
 			sxc = 0;
 			v21 = &dpiece_defs_map_1[0][0][16 * gendung_get_dpiece_num_from_coord(xa, ya) + 2];
 			do
@@ -705,7 +705,7 @@ LABEL_18:
 		}
 		else
 		{
-			town_clear_low_buf((int)gpBuffer + screen_y_times_768[v8] + v11);
+			town_clear_low_buf((unsigned char *)gpBuffer + screen_y_times_768[v8] + v11);
 		}
 	}
 }
@@ -719,11 +719,11 @@ void __fastcall town_draw_e_flag(void *buffer, int x, int y, int a4, int dir, in
 	int v10; // eax
 	int v11; // eax
 	void *buffera; // [esp+Ch] [ebp-8h]
-	int *a1; // [esp+10h] [ebp-4h]
+	unsigned char *a1; // [esp+10h] [ebp-4h]
 
 	v7 = x;
 	buffera = buffer;
-	a1 = (int *)buffer;
+	a1 = (unsigned char *)buffer;
 	v8 = (char *)dpiece_defs_map_1 + 32 * gendung_get_dpiece_num_from_coord(x, y);
 	v9 = 0;
 	do
@@ -737,9 +737,9 @@ void __fastcall town_draw_e_flag(void *buffer, int x, int y, int a4, int dir, in
 			v11 = *(unsigned short *)&v8[4 * v9 + 2];
 			level_cel_block = *(unsigned short *)&v8[4 * v9 + 2];
 			if ( v11 )
-				drawUpperScreen(a1 + 8);
+				drawUpperScreen(a1 + 32);
 		}
-		a1 -= 6144;
+		a1 -= 24576;
 		++v9;
 	}
 	while ( v9 < 7 );
@@ -822,13 +822,13 @@ void __fastcall town_draw_upper(int x, int y, int sx, int sy, int a5, int a6, in
 	int v15; // edi
 	int v16; // eax
 	Screen *v17; // eax
-	char *v18; // ebx
+	unsigned char *v18; // ebx
 	char *v19; // edi
 	int v20; // eax
 	int v21; // eax
 	int v22; // eax
 	int v23; // eax
-	char *v24; // edi
+	unsigned char *v24; // edi
 	char *v25; // ebx
 	int v26; // eax
 	int *a1; // [esp+Ch] [ebp-10h]
@@ -873,7 +873,7 @@ void __fastcall town_draw_upper(int x, int y, int sx, int sy, int a5, int a6, in
 						v13 = (unsigned short)*v12;
 						level_cel_block = (unsigned short)*v12;
 						if ( v13 )
-							drawUpperScreen(a1);
+							drawUpperScreen((unsigned char *)a1);
 					}
 					a1 -= 6144;
 					++sxa;
@@ -885,7 +885,7 @@ void __fastcall town_draw_upper(int x, int y, int sx, int sy, int a5, int a6, in
 				goto LABEL_17;
 			}
 		}
-		town_clear_upper_buf((int)gpBuffer + screen_y_times_768[v11] + v8);
+		town_clear_upper_buf((unsigned char *)gpBuffer + screen_y_times_768[v11] + v8);
 LABEL_17:
 		++xa;
 		ya = --v7;
@@ -913,7 +913,7 @@ LABEL_19:
 				v17 = gpBuffer;
 				if ( !v10 )
 				{
-					v18 = (char *)gpBuffer + v14 + screen_y_times_768[sy];
+					v18 = (unsigned char *)gpBuffer + v14 + screen_y_times_768[sy];
 					v19 = (char *)dpiece_defs_map_1 + 32 * gendung_get_dpiece_num_from_coord(xa, ya);
 					sxb = 0;
 					do
@@ -939,7 +939,7 @@ LABEL_19:
 					goto LABEL_36;
 				}
 			}
-			town_clear_upper_buf((int)v17 + v14 + screen_y_times_768[sy]);
+			town_clear_upper_buf((unsigned char *)v17 + v14 + screen_y_times_768[sy]);
 LABEL_36:
 			++xa;
 			v15 += 112;
@@ -966,7 +966,7 @@ LABEL_36:
 			v23 = sy;
 			if ( !v10 )
 			{
-				v24 = (char *)gpBuffer + v14 + screen_y_times_768[sy];
+				v24 = (unsigned char *)gpBuffer + v14 + screen_y_times_768[sy];
 				v25 = (char *)dpiece_defs_map_1 + 32 * gendung_get_dpiece_num_from_coord(xa, v7);
 				sxc = 0;
 				do
@@ -986,7 +986,7 @@ LABEL_36:
 				return;
 			}
 		}
-		town_clear_upper_buf((int)gpBuffer + screen_y_times_768[v23] + v14);
+		town_clear_upper_buf((unsigned char *)gpBuffer + screen_y_times_768[v23] + v14);
 	}
 }
 // 69CF14: using guessed type int level_cel_block;
@@ -1075,7 +1075,7 @@ LABEL_15:
 			break;
 	}
 	a6 = 0;
-	screen_buf_end = (int)gpBuffer + screen_y_times_768[160];
+	gpBufEnd = (unsigned char *)gpBuffer + screen_y_times_768[160];
 	do
 	{
 		town_draw_upper(v3, ya++, v2, v4, a5, a6, 0);
@@ -1087,7 +1087,7 @@ LABEL_15:
 		++a6;
 	}
 	while ( a6 < 7 );
-	screen_buf_end = (int)gpBuffer + screen_y_times_768[512];
+	gpBufEnd = (unsigned char *)gpBuffer + screen_y_times_768[512];
 	if ( v11 > 0 )
 	{
 		do
@@ -1121,7 +1121,7 @@ LABEL_15:
 // 5C3000: using guessed type int scr_pix_width;
 // 5C3004: using guessed type int scr_pix_height;
 // 69BD04: using guessed type int questlog;
-// 69CF0C: using guessed type int screen_buf_end;
+// 69CF0C: using guessed type int gpBufEnd;
 
 void __fastcall T_DrawZoom(int x, int y)
 {
@@ -1203,7 +1203,7 @@ LABEL_9:
 			break;
 	}
 	a6 = 0;
-	screen_buf_end = (int)gpBuffer + screen_y_times_768[143];
+	gpBufEnd = (unsigned char *)gpBuffer + screen_y_times_768[143];
 	do
 	{
 		town_draw_upper(v3, ya++, v2, v4, a5, a6, 0);
@@ -1215,7 +1215,7 @@ LABEL_9:
 		++a6;
 	}
 	while ( a6 < 7 );
-	screen_buf_end = (int)gpBuffer + screen_y_times_768[320];
+	gpBufEnd = (unsigned char *)gpBuffer + screen_y_times_768[320];
 	if ( v18 > 0 )
 	{
 		do
@@ -1291,7 +1291,7 @@ LABEL_24:
 // 5C3000: using guessed type int scr_pix_width;
 // 5C3004: using guessed type int scr_pix_height;
 // 69BD04: using guessed type int questlog;
-// 69CF0C: using guessed type int screen_buf_end;
+// 69CF0C: using guessed type int gpBufEnd;
 
 void __fastcall T_DrawView(int StartX, int StartY)
 {
@@ -1365,7 +1365,7 @@ void __cdecl town_init_dpiece_defs_map()
 	int v1; // ebp
 	int v2; // esi
 	char *v3; // edi
-	int v4; // ecx
+	char *v4; // ecx
 	signed int v5; // eax
 	int (*v6)[112]; // [esp+10h] [ebp-8h]
 	int y; // [esp+14h] [ebp-4h]
@@ -1382,11 +1382,11 @@ void __cdecl town_init_dpiece_defs_map()
 			v3 = (char *)dpiece_defs_map_1 + 32 * gendung_get_dpiece_num_from_coord(v1, y);
 			if ( v2 )
 			{
-				v4 = 32 * v2 + *(_DWORD *)&dpiece_defs[0].blocks - 32;
+				v4 = (char *)pLevelPieces + 32 * v2 - 32;
 				v5 = 0;
 				do
 				{
-					*(_WORD *)&v3[2 * v5] = *(_WORD *)(v4 + 2 * ((v5 & 1) - (v5 & 0xE)) + 28);
+					*(_WORD *)&v3[2 * v5] = *(_WORD *)&v4[2 * ((v5 & 1) - (v5 & 0xE)) + 28];
 					++v5;
 				}
 				while ( v5 < 16 );
@@ -1639,13 +1639,13 @@ void __fastcall CreateTown(int entry)
 		ViewY = 68;
 	}
 	T_Pass3();
-	memset(dTransVal, 0, 0x3100u);
-	memset(dFlags, 0, 0x3100u);
-	memset(dPlayer, 0, 0x3100u);
-	memset(dMonster, 0, 0xC400u);
-	memset(dObject, 0, 0x3100u);
-	memset(dItem, 0, 0x3100u);
-	memset(dArch, 0, 0x3100u);
+	memset(dTransVal, 0, sizeof(dTransVal));
+	memset(dFlags, 0, sizeof(dFlags));
+	memset(dPlayer, 0, sizeof(dPlayer));
+	memset(dMonster, 0, sizeof(dMonster));
+	memset(dObject, 0, sizeof(dObject));
+	memset(dItem, 0, sizeof(dItem));
+	memset(dArch, 0, sizeof(dArch));
 	v2 = dPiece;
 	do
 	{

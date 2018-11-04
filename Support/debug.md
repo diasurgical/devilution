@@ -20,13 +20,16 @@ Command-line parameters
 - `-t <##>` : sets current quest level
 
 In-game hotkeys
-- `?` -> start quest text mode (`-`/`_`, `+`/`=`, and `Enter` to use) [NOT YET IMPLEMENTED]
-- `Esc` -> stop quest text mode [NOT YET IMPLEMENTED]
+- `?` -> enter quest text mode [NOT YET IMPLEMENTED]
+  - `-`/`_` -> decrease message number/speed
+  - `+`/`=` -> increase message number/speed
+  - `Enter` -> play selected message
+  - `Esc` -> stop quest text mode
 - `Shift` -> while holding, use the mouse to scroll screen
 - `F2` -> display dungeon information [NOT YET IMPLEMENTED]
 - `F3` -> display number of items on the ground/cursor item
 - `F4` -> display quest status information
-- `0`/`)` -> cycle through active item flags [NOT YET IMPLEMENTED]
+- `0`/`)` -> cycle between regular/magic arrows
 - `8`/`*` -> level up character
 - `~` -> refresh vendor items (Griswold premium and Adria)
 - `]` -> all spells level 10
@@ -34,13 +37,18 @@ In-game hotkeys
 - `[` -> delete all gold in inventory
 - `|` -> fill inventory with gold (5000 piece piles)
 - `.` -> display dungeon Y/sum [NOT YET IMPLEMENTED]
-- `a` -> increase level of the last spell casted
+- `a` -> increase level of the last spell casted and enable `Teleport` in town
 - `A` -> display "Mid" monster related
 - `d` -> print debug player info
 - `D` -> switch current debug player
 - `e` -> display "EFlag"
-- `l`/`L` -> toggle lighting in dungeon [NOT YET IMPLEMENTED]
+- `l`/`L` -> toggle lighting in dungeon
 - `m` -> print debug monster info
 - `M` -> switch current debug monster
 - `r`/`R` -> display game seeds
 - `t`/`T` -> display player and cursor coordinates
+
+Multiplayer hotkeys [NOT YET IMPLEMENTED]
+- `Ctrl`+`C` -> trigger breakpoint
+- `Ctrl`+`P` -> print mouse clicks and frame counter for each player
+- `Ctrl`+`S` -> sleep the network thread

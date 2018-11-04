@@ -3,8 +3,8 @@
 #define __DEBUG_H__
 
 extern void *pSquareCel;
-extern char dMonsDbg[17][112][112];
-extern char dFlagDbg[17][112][112];
+extern char dMonsDbg[NUMLEVELS][MAXDUNX][MAXDUNY];
+extern char dFlagDbg[NUMLEVELS][MAXDUNX][MAXDUNY];
 
 void __cdecl LoadDebugGFX();
 void __cdecl FreeDebugGFX();
@@ -14,6 +14,8 @@ void __cdecl GiveGoldCheat();
 void __cdecl StoresCheat();
 void __cdecl TakeGoldCheat();
 void __cdecl MaxSpellsCheat();
+void __fastcall SetSpellLevelCheat(char spl, int spllvl);
+void __cdecl SetAllSpellsCheat();
 void __fastcall PrintDebugPlayer(bool bNextPlayer);
 void __cdecl PrintDebugQuest();
 void __fastcall PrintDebugMonster(int m);

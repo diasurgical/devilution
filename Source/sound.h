@@ -34,17 +34,17 @@ void __fastcall sound_disable_music(bool disable);
 int __fastcall sound_get_or_set_music_volume(int volume);
 int __fastcall sound_get_or_set_sound_volume(int volume);
 
-/* data */
-
-extern int sound_inf; // weak
-
 /* rdata */
 
-extern char gbMusicOn; // weak
-extern char gbSoundOn; // weak
+extern const int sound_inf; // weak
+
+/* data */
+
+extern UCHAR gbMusicOn;
+extern UCHAR gbSoundOn;
 extern char gbDupSounds; // weak
 extern int sgnMusicTrack;
 extern char *sgszMusicTracks[6];
-extern RECT8 QSRect[2]; /* psx version? */
+extern char unk_volume[4][2];
 
 #endif /* __SOUND_H__ */

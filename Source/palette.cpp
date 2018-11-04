@@ -8,9 +8,9 @@ PALETTEENTRY system_palette[256];
 PALETTEENTRY orig_palette[256];
 UINT gdwPalEntries;
 
-int palette_inf = 0x7F800000; // weak
+const int palette_inf = 0x7F800000; // weak
 
-/* rdata */
+/* data */
 
 int gamma_correction = 100; // idb
 int color_cycling_enabled = 1; // idb
@@ -26,7 +26,7 @@ struct palette_cpp_init
 // 47F16C: using guessed type int palette_inf;
 // 67DBCC: using guessed type int palette_cpp_init_value;
 
-void __cdecl palette_save_gamme()
+void __cdecl SaveGamma()
 {
 	SRegSaveValue("Diablo", "Gamma Correction", 0, gamma_correction);
 	SRegSaveValue("Diablo", "Color Cycling", 0, color_cycling_enabled);
@@ -37,18 +37,18 @@ void __cdecl palette_init()
 	int v0; // eax
 	int v1; // eax
 
-	palette_load_gamma();
+	LoadGamma();
 	memcpy(system_palette, orig_palette, 0x400u);
 	LoadSysPal();
 	v0 = lpDDInterface->CreatePalette(DDPCAPS_ALLOW256|DDPCAPS_8BIT, system_palette, &lpDDPalette, NULL);
 	if ( v0 )
-		TermDlg(111, v0, "C:\\Src\\Diablo\\Source\\PALETTE.CPP", 143);
+		ErrDlg(IDD_DIALOG8, v0, "C:\\Src\\Diablo\\Source\\PALETTE.CPP", 143);
 	v1 = lpDDSPrimary->SetPalette(lpDDPalette);
 	if ( v1 )
-		TermDlg(111, v1, "C:\\Src\\Diablo\\Source\\PALETTE.CPP", 146);
+		ErrDlg(IDD_DIALOG8, v1, "C:\\Src\\Diablo\\Source\\PALETTE.CPP", 146);
 }
 
-void __cdecl palette_load_gamma()
+void __cdecl LoadGamma()
 {
 	int v3; // eax
 	int value; // [esp+8h] [ebp-4h]
@@ -147,14 +147,14 @@ void __cdecl ResetPal()
 	}
 }
 
-void __cdecl palette_inc_gamma()
+void __cdecl IncreaseGamma()
 {
 	if ( gamma_correction < 100 )
 	{
 		gamma_correction += 5;
 		if ( gamma_correction > 100 )
 			gamma_correction = 100;
-		palette_apply_gamma_correction(system_palette, logical_palette, 256);
+		ApplyGamma(system_palette, logical_palette, 256);
 		palette_update();
 	}
 }
@@ -178,7 +178,7 @@ void __cdecl palette_update()
 }
 // 484364: using guessed type int fullscreen;
 
-void __fastcall palette_apply_gamma_correction(PALETTEENTRY *dst, PALETTEENTRY *src, int n)
+void __fastcall ApplyGamma(PALETTEENTRY *dst, PALETTEENTRY *src, int n)
 {
 	PALETTEENTRY *v3; // edi
 	PALETTEENTRY *v4; // esi
@@ -202,24 +202,24 @@ void __fastcall palette_apply_gamma_correction(PALETTEENTRY *dst, PALETTEENTRY *
 	}
 }
 
-void __cdecl palette_dec_gamma()
+void __cdecl DecreaseGamma()
 {
 	if ( gamma_correction > 30 )
 	{
 		gamma_correction -= 5;
 		if ( gamma_correction < 30 )
 			gamma_correction = 30;
-		palette_apply_gamma_correction(system_palette, logical_palette, 256);
+		ApplyGamma(system_palette, logical_palette, 256);
 		palette_update();
 	}
 }
 
-int __fastcall palette_update_gamma(int gamma)
+int __fastcall UpdateGamma(int gamma)
 {
 	if ( gamma )
 	{
 		gamma_correction = 130 - gamma;
-		palette_apply_gamma_correction(system_palette, logical_palette, 256);
+		ApplyGamma(system_palette, logical_palette, 256);
 		palette_update();
 	}
 	return 130 - gamma_correction;
@@ -252,7 +252,7 @@ void __fastcall PaletteFadeIn(int fr)
 {
 	int i; // ebp
 
-	palette_apply_gamma_correction(logical_palette, orig_palette, 256);
+	ApplyGamma(logical_palette, orig_palette, 256);
 
 	for(i = 0; i < 256; i += fr)
 		SetFadeLevel(i);
@@ -308,7 +308,7 @@ void __fastcall palette_update_quest_palette(int n)
 
 	for ( i = 32 - n; i >= 0; --i )
 		logical_palette[i] = orig_palette[i];
-	palette_apply_gamma_correction(system_palette, logical_palette, 32);
+	ApplyGamma(system_palette, logical_palette, 32);
 	palette_update();
 }
 

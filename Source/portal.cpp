@@ -2,17 +2,17 @@
 
 #include "../types.h"
 
-PortalStruct portal[4];
+PortalStruct portal[MAXPORTAL];
 int portalindex;
 
-int WarpDropX[4] = { 57, 59, 61, 63 };
-int WarpDropY[4] = { 40, 40, 40, 40 };
+int WarpDropX[MAXPORTAL] = { 57, 59, 61, 63 };
+int WarpDropY[MAXPORTAL] = { 40, 40, 40, 40 };
 
 void __cdecl InitPortals()
 {
 	int i; // edi
 
-	for(i = 0; i < 4; i++)
+	for(i = 0; i < MAXPORTAL; i++)
 	{
 		if(delta_portal_inited(i))
 			portal[i].open = 0;
@@ -76,7 +76,7 @@ void __cdecl SyncPortals()
 		v1 += 6;
 		++v0;
 	}
-	while ( (signed int)v1 < (signed int)&portal[4].level );
+	while ( (signed int)v1 < (signed int)&portal[MAXPORTAL].level );
 }
 // 5CCB10: using guessed type char setlvlnum;
 // 5CF31D: using guessed type char setlevel;
@@ -196,15 +196,15 @@ void __cdecl GetPortalLvlPos()
 	}
 }
 
-bool __fastcall PosOkPortal(int level, int x, int y)
+bool __fastcall PosOkPortal(int lvl, int x, int y)
 {
 	int *v3; // eax
 
 	v3 = &portal[0].x;
-	while ( !*(v3 - 1) || v3[2] != level || (*v3 != x || v3[1] != y) && (*v3 != x - 1 || v3[1] != y - 1) )
+	while ( !*(v3 - 1) || v3[2] != lvl || (*v3 != x || v3[1] != y) && (*v3 != x - 1 || v3[1] != y - 1) )
 	{
 		v3 += 6;
-		if ( (signed int)v3 >= (signed int)&portal[4].x )
+		if ( (signed int)v3 >= (signed int)&portal[MAXPORTAL].x )
 			return 0;
 	}
 	return 1;

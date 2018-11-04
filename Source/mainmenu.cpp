@@ -5,9 +5,9 @@
 int mainmenu_cpp_init_value; // weak
 char chr_name_str[16];
 
-int mainmenu_inf = 0x7F800000; // weak
+const int mainmenu_inf = 0x7F800000; // weak
 
-/* rdata */
+/* data */
 
 int menu_music_track_id = 5; // idb
 
@@ -106,12 +106,11 @@ LABEL_6:
 // 5256E8: using guessed type int dword_5256E8;
 // 679660: using guessed type char gbMaxPlayers;
 
-void __fastcall mainmenu_action(int option)
+void __cdecl mainmenu_loop()
 {
 	int v1; // eax
 	int a2; // [esp+0h] [ebp-4h]
 
-	a2 = option;
 	mainmenu_refresh_music();
 	do
 	{
@@ -136,7 +135,7 @@ void __fastcall mainmenu_action(int option)
 					goto LABEL_16;
 				case MAINMENU_ATTRACT_MODE:
 LABEL_10:
-					if ( window_activated )
+					if ( gbActive )
 						mainmenu_play_intro();
 					break;
 			}
@@ -149,7 +148,7 @@ LABEL_15:
 LABEL_16:
 	music_stop();
 }
-// 634980: using guessed type int window_activated;
+// 634980: using guessed type int gbActive;
 
 int __cdecl mainmenu_single_player()
 {
@@ -175,7 +174,7 @@ int __fastcall mainmenu_init_menu(int a1)
 
 int __cdecl mainmenu_multi_player()
 {
-	gbMaxPlayers = 4;
+	gbMaxPlayers = MAX_PLRS;
 	return mainmenu_init_menu(3);
 }
 // 679660: using guessed type char gbMaxPlayers;

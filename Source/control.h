@@ -64,7 +64,7 @@ void __cdecl DrawSpellList();
 void __cdecl SetSpell();
 void __fastcall SetSpeedSpell(int slot);
 void __fastcall ToggleSpell(int slot);
-void __fastcall CPrintString(int No, unsigned char pszStr, int Just);
+void __fastcall CPrintString(int No, unsigned char pszStr, int Just); /* check arg names */
 void __fastcall AddPanelString(char *str, int just);
 void __cdecl ClearPanel();
 void __fastcall DrawPanelBox(int x, int y, int w, int h, int sx, int sy);
@@ -123,19 +123,19 @@ int __fastcall control_presskeys(int a1);
 void __cdecl control_press_enter();
 void __fastcall control_up_down(char a1);
 
-/* data */
-extern unsigned char fontframe[127];
-extern unsigned char fontkern[68];
-extern int lineoffset[25];
-extern unsigned char fontidx[256];
-
 /* rdata */
+extern const unsigned char fontframe[127];
+extern const unsigned char fontkern[68];
+extern const int lineoffset[25];
+extern const unsigned char fontidx[256];
+
+/* data */
 
 extern unsigned char SpellITbl[37];
 extern int PanBtnPos[8][5];
 extern char *PanBtnHotKey[8];
 extern char *PanBtnStr[8];
-extern RECT32 attribute_inc_rects[4];
+extern int attribute_inc_rects[4][4];
 extern int SpellPages[6][7];
 
 #endif /* __CONTROL_H__ */

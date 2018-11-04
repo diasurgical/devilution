@@ -3,7 +3,7 @@
 #include "../types.h"
 
 int engine_cpp_init_value; // weak
-char byte_52B96C; // automap pixel color 8-bit (palette entry)
+char gbPixelCol; // automap pixel color 8-bit (palette entry)
 int dword_52B970; // bool flip - if y < x
 int orgseed; // weak
 int sgnWidth;
@@ -12,7 +12,9 @@ static CRITICAL_SECTION sgMemCrit;
 int SeedCount; // weak
 int dword_52B99C; // bool valid - if x/y are in bounds
 
-int engine_inf = 0x7F800000; // weak
+const int engine_inf = 0x7F800000; // weak
+const int rand_increment = 1; // unused
+const int rand_multiplier = 0x015A4E35; // unused
 
 struct engine_cpp_init_1
 {
@@ -181,11 +183,12 @@ void __fastcall CelDecDatLightOnly(char *pDecodeTo, char *pRLEBytes, int frame_c
 	char *v6; // ebx
 	int v7; // edx
 	int v8; // eax
-	int v9; // [esp+0h] [ebp-1Ch]
-	char *v10; // [esp+4h] [ebp-18h]
+	int v9; // ST00_4
+	char *a3; // [esp+Ch] [ebp-10h]
 
 	if ( pDecodeTo && pRLEBytes )
 	{
+		a3 = &pLightTbl[256 * light_table_index];
 		v4 = pRLEBytes;
 		v5 = pDecodeTo;
 		v6 = &pRLEBytes[frame_content_size];
@@ -197,15 +200,15 @@ void __fastcall CelDecDatLightOnly(char *pDecodeTo, char *pRLEBytes, int frame_c
 				while ( 1 )
 				{
 					v8 = (unsigned char)*v4++;
-					if ( (v8 & 0x80u) != 0 )
+					if ( (v8 & 0x80u) != 0 ) /* check sign */
 						break;
-					CelDecDatLightEntry(v8, (char *)(v7 - v8), (char *)(v7 - v8), v6);
+					v9 = v7 - v8;
+					CelDecDatLightEntry(v8, a3, v5, v4);
 					v7 = v9;
-					v6 = v10;
 					if ( !v9 )
 						goto LABEL_9;
 				}
-				v8 = -(char)v8;
+				_LOBYTE(v8) = -(char)v8;
 				v5 += v8;
 				v7 -= v8;
 			}
@@ -218,55 +221,55 @@ LABEL_9:
 }
 // 69BEF8: using guessed type int light_table_index;
 
-void __fastcall CelDecDatLightEntry(int a1, char *a2, char *a3, char *v6)
+void __fastcall CelDecDatLightEntry(unsigned char shift, char *LightIndex, char *&pDecodeTo, char *&pRLEBytes)
 {
-	int v4; // ebx
-   // _BYTE *v6; // esi
-	char v7; // cf
-	unsigned char v8; // cl
-	char v9; // cl
-	int v10; // eax
+	char v5; // cf
+	unsigned char v6; // cl
+	char v7; // cl
+	int v8; // eax
+	char v9; // ch
+	int tmp; // eax
 	char v11; // ch
 	char v12; // ch
-	char v13; // ch
+	unsigned char a1;
 
-	v7 = a1 & 1;
-	v8 = (unsigned char)a1 >> 1;
-	if ( v7 )
+	v5 = shift & 1;
+	v6 = shift >> 1;
+	if ( v5 )
 	{
-		*a2 = *v6;
-		*a3 = a2[v4];
-		++v6;
-		++a3;
+		a1 = *pRLEBytes;
+		*pDecodeTo = LightIndex[a1];
+		++pRLEBytes;
+		++pDecodeTo;
 	}
-	v7 = v8 & 1;
-	v9 = v8 >> 1;
-	if ( v7 )
+	v5 = v6 & 1;
+	v7 = v6 >> 1;
+	if ( v5 )
 	{
-		*a2 = *v6;
-		*a3 = a2[v4];
-		*a2 = v6[1];
-		a3[1] = a2[v4];
-		v6 += 2;
-		a3 += 2;
+		a1 = *pRLEBytes;
+		*pDecodeTo = LightIndex[a1];
+		a1 = pRLEBytes[1];
+		pDecodeTo[1] = LightIndex[a1];
+		pRLEBytes += 2;
+		pDecodeTo += 2;
 	}
-	for ( ; v9; --v9 )
+	for ( ; v7; --v7 )
 	{
-		v10 = *(_DWORD *)v6;
-		v6 += 4;
-		*a2 = v10;
-		v11 = a2[v4];
-		*a2 = BYTE1(v10);
-		v10 = __ROR4__(v10, 16);
-		*a3 = v11;
-		v12 = a2[v4];
-		*a2 = v10;
-		a3[1] = v12;
-		v13 = a2[v4];
-		*a2 = BYTE1(v10);
-		a3[2] = v13;
-		a3[3] = a2[v4];
-		a3 += 4;
+		v8 = *(_DWORD *)pRLEBytes;
+		pRLEBytes += 4;
+		a1 = v8;
+		v9 = LightIndex[a1];
+		a1 = BYTE1(v8);
+		tmp = __ROR4__(v8, 16);
+		*pDecodeTo = v9;
+		v11 = LightIndex[a1];
+		a1 = tmp;
+		pDecodeTo[1] = v11;
+		v12 = LightIndex[a1];
+		a1 = BYTE1(tmp);
+		pDecodeTo[2] = v12;
+		pDecodeTo[3] = LightIndex[a1];
+		pDecodeTo += 4;
 	}
 }
 
@@ -430,9 +433,9 @@ void __fastcall CelDecodeLightOnly(int screen_x, int screen_y, char *pCelBuff, i
 		v7 = &pCelBuff[v6];
 		v8 = (char *)gpBuffer + screen_y_times_768[v5] + screen_x;
 		v9 = *(_DWORD *)&pCelBuff[4 * frame + 4] - v6;
-		/*if ( light_table_index )
+		if ( light_table_index )
 			CelDecDatLightOnly(v8, v7, v9, frame_width);
-		else */
+		else
 			CelDrawDatOnly(v8, v7, v9, frame_width);
 	}
 }
@@ -470,9 +473,9 @@ void __fastcall CelDecodeHdrLightOnly(int screen_x, int screen_y, char *pCelBuff
 					v12 = *(_DWORD *)&v8[4 * frame + 4] - v9 - (_DWORD)cel_buf;
 				v13 = &v10[(_DWORD)cel_buf];
 				v14 = (char *)gpBuffer + screen_y_times_768[v7 - 16 * always_0] + v15;
-				/*if ( light_table_index )
+				if ( light_table_index )
 					CelDecDatLightOnly(v14, v13, v12, frame_width);
-				else*/
+				else
 					CelDrawDatOnly(v14, v13, v12, frame_width);
 			}
 		}
@@ -510,10 +513,10 @@ void __fastcall CelDecodeHdrLightTrans(char *pBuff, char *pCelBuff, int frame, i
 				{
 					CelDecDatLightTrans(pBuff, v12, v11, frame_width);
 				}
-				/*else if ( light_table_index )
+				else if ( light_table_index )
 				{
 					CelDecDatLightOnly(pBuff, v12, v11, frame_width);
-				}*/
+				}
 				else
 				{
 					CelDrawDatOnly(pBuff, v12, v11, frame_width);
@@ -653,7 +656,7 @@ void __fastcall Cel2DecDatOnly(char *pDecodeTo, char *pRLEBytes, int frame_conte
 						goto LABEL_17;
 				}
 				v6 -= v7;
-				if ( (unsigned int)v5 < screen_buf_end )
+				if ( v5 < (char *)gpBufEnd )
 				{
 					v8 = v7 >> 1;
 					if ( !(v7 & 1) || (*v5 = *v4, ++v4, ++v5, v8) )
@@ -681,7 +684,7 @@ LABEL_17:
 		while ( &v11[frame_content_size] != v4 );
 	}
 }
-// 69CF0C: using guessed type int screen_buf_end;
+// 69CF0C: using guessed type int gpBufEnd;
 
 void __fastcall Cel2DrawHdrOnly(int screen_x, int screen_y, char *pCelBuff, int frame, int frame_width, int a6, int direction)
 {
@@ -757,9 +760,11 @@ void __fastcall Cel2DecDatLightOnly(char *pDecodeTo, char *pRLEBytes, int frame_
 	int v7; // edx
 	int v8; // eax
 	int v9; // ST00_4
+	char *a3; // [esp+Ch] [ebp-10h]
 
 	if ( pDecodeTo && pRLEBytes && gpBuffer )
 	{
+		a3 = &pLightTbl[256 * light_table_index];
 		v4 = pRLEBytes;
 		v5 = pDecodeTo;
 		v6 = &pRLEBytes[frame_content_size];
@@ -770,8 +775,8 @@ void __fastcall Cel2DecDatLightOnly(char *pDecodeTo, char *pRLEBytes, int frame_
 			{
 				while ( 1 )
 				{
-					v8 = (unsigned char)*v4++;
-					if ( (v8 & 0x80u) == 0 )
+					v8 = (unsigned __int8)*v4++;
+					if ( (v8 & 0x80u) == 0 ) /* check sign */
 						break;
 					_LOBYTE(v8) = -(char)v8;
 					v5 += v8;
@@ -780,10 +785,10 @@ void __fastcall Cel2DecDatLightOnly(char *pDecodeTo, char *pRLEBytes, int frame_
 						goto LABEL_13;
 				}
 				v7 -= v8;
-				if ( (unsigned int)v5 < screen_buf_end )
+				if ( v5 < (char *)gpBufEnd )
 				{
 					v9 = v7;
-					Cel2DecDatLightEntry(v8, v7);
+					Cel2DecDatLightEntry(v8, a3, v5, v4);
 					v7 = v9;
 				}
 				else
@@ -800,58 +805,57 @@ LABEL_13:
 	}
 }
 // 69BEF8: using guessed type int light_table_index;
-// 69CF0C: using guessed type int screen_buf_end;
+// 69CF0C: using guessed type int gpBufEnd;
 
-void __fastcall Cel2DecDatLightEntry(int a1, int a2)
+void __fastcall Cel2DecDatLightEntry(unsigned char shift, char *LightIndex, char *&pDecodeTo, char *&pRLEBytes)
 {
-	int v2; // ebx
-	_BYTE *v3; // edi
-	_BYTE *v4; // esi
 	char v5; // cf
 	unsigned char v6; // cl
 	char v7; // cl
 	int v8; // eax
 	char v9; // ch
-	char v10; // ch
+	int tmp; // eax
 	char v11; // ch
+	char v12; // ch
+	unsigned char a1;
 
-	v5 = a1 & 1;
-	v6 = (unsigned char)a1 >> 1;
+	v5 = shift & 1;
+	v6 = shift >> 1;
 	if ( v5 )
 	{
-		_LOBYTE(a2) = *v4;
-		*v3 = *(_BYTE *)(v2 + a2);
-		++v4;
-		++v3;
+		a1 = *pRLEBytes;
+		*pDecodeTo = LightIndex[a1];
+		++pRLEBytes;
+		++pDecodeTo;
 	}
 	v5 = v6 & 1;
 	v7 = v6 >> 1;
 	if ( v5 )
 	{
-		_LOBYTE(a2) = *v4;
-		*v3 = *(_BYTE *)(v2 + a2);
-		_LOBYTE(a2) = v4[1];
-		v3[1] = *(_BYTE *)(v2 + a2);
-		v4 += 2;
-		v3 += 2;
+		a1 = *pRLEBytes;
+		*pDecodeTo = LightIndex[a1];
+		a1 = pRLEBytes[1];
+		pDecodeTo[1] = LightIndex[a1];
+		pRLEBytes += 2;
+		pDecodeTo += 2;
 	}
 	for ( ; v7; --v7 )
 	{
-		v8 = *(_DWORD *)v4;
-		v4 += 4;
-		_LOBYTE(a2) = v8;
-		v9 = *(_BYTE *)(v2 + a2);
-		_LOBYTE(a2) = BYTE1(v8);
-		v8 = __ROR4__(v8, 16);
-		*v3 = v9;
-		v10 = *(_BYTE *)(v2 + a2);
-		_LOBYTE(a2) = v8;
-		v3[1] = v10;
-		v11 = *(_BYTE *)(v2 + a2);
-		_LOBYTE(a2) = BYTE1(v8);
-		v3[2] = v11;
-		v3[3] = *(_BYTE *)(v2 + a2);
-		v3 += 4;
+		v8 = *(_DWORD *)pRLEBytes;
+		pRLEBytes += 4;
+		a1 = v8;
+		v9 = LightIndex[a1];
+		a1 = BYTE1(v8);
+		tmp = __ROR4__(v8, 16);
+		*pDecodeTo = v9;
+		v11 = LightIndex[a1];
+		a1 = tmp;
+		pDecodeTo[1] = v11;
+		v12 = LightIndex[a1];
+		a1 = BYTE1(tmp);
+		pDecodeTo[2] = v12;
+		pDecodeTo[3] = LightIndex[a1];
+		pDecodeTo += 4;
 	}
 }
 
@@ -896,7 +900,7 @@ void __fastcall Cel2DecDatLightTrans(char *pDecodeTo, char *pRLEBytes, int frame
 					v26 = v6;
 					_EBX = v27;
 					v7 -= v8;
-					if ( v5 < screen_buf_end )
+					if ( v5 < (unsigned int)gpBufEnd )
 					{
 						if ( (v5 & 1) == v28 )
 						{
@@ -1007,7 +1011,7 @@ LABEL_26:
 	}
 }
 // 69BEF8: using guessed type int light_table_index;
-// 69CF0C: using guessed type int screen_buf_end;
+// 69CF0C: using guessed type int gpBufEnd;
 
 void __fastcall Cel2DecodeHdrLight(int screen_x, int screen_y, char *pCelBuff, int frame, int frame_width, int a6, int direction)
 {
@@ -1045,9 +1049,9 @@ void __fastcall Cel2DecodeHdrLight(int screen_x, int screen_y, char *pCelBuff, i
 					v14 = v12 - (_DWORD)cel_buf;
 				v15 = &v10[(_DWORD)cel_buf];
 				v16 = (char *)gpBuffer + screen_y_times_768[v7 - 16 * a6] + screen_x;
-				/*if ( light_table_index )
+				if ( light_table_index )
 					Cel2DecDatLightOnly(v16, v15, v14, frame_width);
-				else*/
+				else
 					Cel2DecDatOnly(v16, v15, v14, frame_width);
 			}
 		}
@@ -1087,10 +1091,10 @@ void __fastcall Cel2DecodeLightTrans(char *dst_buf, char *pCelBuff, int frame, i
 			{
 				Cel2DecDatLightTrans(dst_buf, v13, v12, frame_width);
 			}
-			/*else if ( light_table_index )
+			else if ( light_table_index )
 			{
 				Cel2DecDatLightOnly(dst_buf, v13, v12, frame_width);
-			}*/
+			}
 			else
 			{
 				Cel2DecDatOnly(dst_buf, v13, v12, frame_width);
@@ -1173,7 +1177,7 @@ void __fastcall Cel2DrawHdrLightRed(int screen_x, int screen_y, char *pCelBuff, 
 								goto LABEL_21;
 						}
 						v18 -= v20;
-						if ( (unsigned int)v16 < screen_buf_end )
+						if ( v16 < gpBufEnd )
 						{
 							do
 							{
@@ -1201,7 +1205,7 @@ LABEL_21:
 	}
 }
 // 525728: using guessed type int light4flag;
-// 69CF0C: using guessed type int screen_buf_end;
+// 69CF0C: using guessed type int gpBufEnd;
 
 void __fastcall CelDecodeRect(char *pBuff, int always_0, int dst_height, int dst_width, char *pCelBuff, int frame, int frame_width)
 {
@@ -1269,7 +1273,7 @@ LABEL_14:
 	}
 }
 
-void __fastcall CelDecodeClr(char colour, int screen_x, int screen_y, char *pCelBuff, int frame, int frame_width, int a7, int direction)
+void __fastcall CelDecodeClr(BYTE colour, int screen_x, int screen_y, char *pCelBuff, int frame, int frame_width, int a7, int direction)
 {
 	char *v8; // ebx
 	int v9; // eax
@@ -1401,9 +1405,9 @@ void __fastcall CelDrawHdrClrHL(char colour, int screen_x, int screen_y, char *p
 								goto LABEL_28;
 						}
 						v12 -= v13;
-						if ( (unsigned int)v11 < screen_buf_end )
+						if ( v11 < (char *)gpBufEnd )
 						{
-							if ( (unsigned int)v11 >= screen_buf_end - 768 )
+							if ( v11 >= (char *)gpBufEnd - 768 )
 							{
 								v16 = v13;
 								do
@@ -1454,7 +1458,7 @@ LABEL_28:
 		}
 	}
 }
-// 69CF0C: using guessed type int screen_buf_end;
+// 69CF0C: using guessed type int gpBufEnd;
 
 void __fastcall ENG_set_pixel(int screen_x, int screen_y, char pixel)
 {
@@ -1463,11 +1467,11 @@ void __fastcall ENG_set_pixel(int screen_x, int screen_y, char pixel)
 	if ( screen_y >= 0 && screen_y < 640 && screen_x >= 64 && screen_x < 704 )
 	{
 		v3 = (char *)gpBuffer + screen_y_times_768[screen_y] + screen_x;
-		if ( (unsigned int)v3 < screen_buf_end )
+		if ( v3 < (char *)gpBufEnd )
 			*v3 = pixel;
 	}
 }
-// 69CF0C: using guessed type int screen_buf_end;
+// 69CF0C: using guessed type int gpBufEnd;
 
 void __fastcall engine_draw_pixel(int x, int y)
 {
@@ -1485,311 +1489,287 @@ void __fastcall engine_draw_pixel(int x, int y)
 	{
 		v2 = (unsigned char *)gpBuffer + screen_y_times_768[y] + x;
 LABEL_14:
-		if ( (unsigned int)v2 < screen_buf_end )
-			*v2 = byte_52B96C;
+		if ( v2 < gpBufEnd )
+			*v2 = gbPixelCol;
 		return;
 	}
 }
-// 52B96C: using guessed type char byte_52B96C;
+// 52B96C: using guessed type char gbPixelCol;
 // 52B970: using guessed type int dword_52B970;
 // 52B99C: using guessed type int dword_52B99C;
-// 69CF0C: using guessed type int screen_buf_end;
+// 69CF0C: using guessed type int gpBufEnd;
 
-void __fastcall engine_draw_automap_pixels(int x1, int y1, int x2, int y2, char a5)
+void __fastcall DrawLine(int x0, int y0, int x1, int y1, char col)
 {
-	int v5; // edi
-	int v6; // edx
-	int v7; // ecx
-	int v8; // eax
-	int v9; // edx
-	int v10; // eax
-	int v11; // ebx
-	int v12; // edx
-	int v13; // eax
-	int v14; // esi
-	int v15; // edi MAPDST
-	__int64 v16; // rax
-	int v17; // ebx
-	int v18; // esi
-	int v24; // esi
-	int v26; // ecx
-	int v27; // esi
-	int v29; // edx
-	int v30; // esi
-	int v31; // ebx
-	int v32; // edi
-	int v33; // ebx
-	int v35; // eax
-	int v39; // edi
-	int v40; // esi
-	int v41; // esi
-	int v42; // esi
-	int v44; // [esp+Ch] [ebp-18h]
-	int v45; // [esp+10h] [ebp-14h]
-	int v46; // [esp+14h] [ebp-10h]
-	int v47; // [esp+14h] [ebp-10h]
-	int v48; // [esp+18h] [ebp-Ch]
-	int v49; // [esp+18h] [ebp-Ch]
-	int v50; // [esp+18h] [ebp-Ch]
-	int v51; // [esp+1Ch] [ebp-8h]
-	int v52; // [esp+1Ch] [ebp-8h]
-	int v53; // [esp+1Ch] [ebp-8h]
-	signed int v54; // [esp+20h] [ebp-4h]
-	int xa; // [esp+2Ch] [ebp+8h]
-	int x; // [esp+2Ch] [ebp+8h] MAPDST
-	signed int a4; // [esp+30h] [ebp+Ch]
-	int a5a; // [esp+34h] [ebp+10h]
-	int a5b; // [esp+34h] [ebp+10h]
+	int v5; // ST18_4
+	int v6; // ST2C_4
+	int v7; // ST20_4
+	int v8; // [esp+Ch] [ebp-48h]
+	int v9; // [esp+10h] [ebp-44h]
+	int v10; // [esp+14h] [ebp-40h]
+	int v11; // [esp+18h] [ebp-3Ch]
+	signed int v12; // [esp+1Ch] [ebp-38h]
+	int v13; // [esp+20h] [ebp-34h]
+	int v14; // [esp+24h] [ebp-30h]
+	int v15; // [esp+28h] [ebp-2Ch]
+	int y; // [esp+2Ch] [ebp-28h]
+	int ya; // [esp+2Ch] [ebp-28h]
+	int yb; // [esp+2Ch] [ebp-28h]
+	int yc; // [esp+2Ch] [ebp-28h]
+	int j; // [esp+30h] [ebp-24h]
+	int i; // [esp+30h] [ebp-24h]
+	int x; // [esp+34h] [ebp-20h]
+	int xa; // [esp+34h] [ebp-20h]
+	int xb; // [esp+34h] [ebp-20h]
+	int xc; // [esp+34h] [ebp-20h]
+	int xd; // [esp+34h] [ebp-20h]
+	int xe; // [esp+34h] [ebp-20h]
+	int xf; // [esp+34h] [ebp-20h]
+	int xg; // [esp+34h] [ebp-20h]
+	int xh; // [esp+34h] [ebp-20h]
+	int v31; // [esp+38h] [ebp-1Ch]
+	int v32; // [esp+3Ch] [ebp-18h]
+	int v33; // [esp+3Ch] [ebp-18h]
+	int v34; // [esp+3Ch] [ebp-18h]
+	signed int v35; // [esp+40h] [ebp-14h]
+	signed int v36; // [esp+44h] [ebp-10h]
+	int v37; // [esp+48h] [ebp-Ch]
+	int v38; // [esp+48h] [ebp-Ch]
+	int v39; // [esp+4Ch] [ebp-8h]
+	int v40; // [esp+4Ch] [ebp-8h]
+	int v41; // [esp+50h] [ebp-4h]
+	int x2a; // [esp+5Ch] [ebp+8h]
 
+	v8 = y0;
+	v9 = x0;
+	gbPixelCol = col;
 	dword_52B99C = 0;
-	v5 = y1;
-	v6 = x1;
-	byte_52B96C = a5;
-	v51 = v5;
-	v48 = x1;
+	if ( x0 < 64 || x0 >= 704 )
+		dword_52B99C = 1;
 	if ( x1 < 64 || x1 >= 704 )
 		dword_52B99C = 1;
-	if ( x2 < 64 || x2 >= 704 )
+	if ( y0 < 160 || y0 >= 512 )
 		dword_52B99C = 1;
-	if ( v5 < 160 || v5 >= 512 )
+	if ( y1 < 160 || y1 >= 512 )
 		dword_52B99C = 1;
-	v7 = y2;
-	if ( y2 < 160 || y2 >= 512 )
-		dword_52B99C = 1;
-	v8 = x2 - v6;
-	v9 = 2 * (x2 - v6 >= 0) - 1;
-	v10 = v9 * v8;
-	v46 = v10;
-	v11 = (2 * (y2 - v5 >= 0) - 1) * (y2 - v5);
-	a4 = 2 * (v9 == 2 * (y2 - v5 >= 0) - 1) - 1;
-	v12 = v48;
-	if ( v11 <= v10 )
+	if ( x1 - x0 < 0 )
+		v36 = -1;
+	else
+		v36 = 1;
+	v11 = v36 * (x1 - x0);
+	if ( y1 - y0 < 0 )
+		v35 = -1;
+	else
+		v35 = 1;
+	v10 = v35 * (y1 - y0);
+	if ( v35 == v36 )
+		v12 = 1;
+	else
+		v12 = -1;
+	if ( v11 >= v10 )
 	{
 		dword_52B970 = 0;
 	}
 	else
 	{
-		xa = v7 ^ x2;
-		v7 ^= xa;
-		v13 = v11 ^ v10;
-		v51 = v5 ^ v48 ^ v5;
-		v11 ^= v13;
-		v12 = v51 ^ v5 ^ v48;
-		x2 = v7 ^ xa;
-		v10 = v11 ^ v13;
+		v8 = y0 ^ x0 ^ y0;
+		v9 = v8 ^ y0 ^ x0;
+		x2a = y1 ^ x1;
+		y1 ^= x2a;
+		x1 = y1 ^ x2a;
+		v5 = v10 ^ v11;
+		v10 ^= v5;
+		v11 = v10 ^ v5;
 		dword_52B970 = 1;
-		v46 = v10;
 	}
-	v14 = x2;
-	if ( v12 <= x2 )
+	if ( x1 >= v9 )
 	{
-		v15 = v51;
-		v14 = v12;
-		v12 = x2;
+		x = v9;
+		y = v8;
+		v32 = x1;
+		v13 = y1;
 	}
 	else
 	{
-		v15 = v7;
-		v7 = v51;
+		x = x1;
+		y = y1;
+		v32 = v9;
+		v13 = v8;
 	}
-	a5a = v12;
-	x = v7;
-	v16 = v10 - 1;
-	v54 = v16 % 4;
-	v45 = v16 / 4;
-	engine_draw_pixel(v14, v15);
-	engine_draw_pixel(a5a, x);
-	v49 = 2 * v11;
-	v44 = 2 * (2 * v11 - v46);
-	if ( v44 >= 0 )
+	v31 = (v11 - 1) / 4;
+	v41 = (v11 - 1) % 4; /* (((v11 - 1) >> 31) ^ abs(v11 - 1) & 3) - ((v11 - 1) >> 31) */
+	engine_draw_pixel(x, y);
+	engine_draw_pixel(v32, v13);
+	v14 = 4 * v10 - 2 * v11;
+	if ( v14 >= 0 )
 	{
-		v50 = 2 * (v11 - v46);
-		v53 = v46 + 4 * (v11 - v46);
-		if ( v45 <= 0 )
+		v40 = 2 * (v10 - v11);
+		v15 = 4 * (v10 - v11);
+		v38 = v15 + v11;
+		for ( i = 0; i < v31; ++i )
 		{
-			v33 = a5a;
-		}
-		else
-		{
-			do
+			xe = x + 1;
+			v34 = v32 - 1;
+			if ( v38 <= 0 )
 			{
-				v30 = v14 + 1;
-				v31 = a5a - 1;
-				if ( v53 <= 0 )
+				if ( v40 <= v38 )
 				{
-					if ( v53 >= v50 )
-					{
-						v15 += a4;
-						engine_draw_pixel(v30, v15);
-						v14 = v30 + 1;
-						engine_draw_pixel(v14, v15);
-						x -= a4;
-						engine_draw_pixel(v31, x);
-					}
-					else
-					{
-						engine_draw_pixel(v30, v15);
-						v15 += a4;
-						v14 = v30 + 1;
-						engine_draw_pixel(v14, v15);
-						engine_draw_pixel(v31, x);
-						x -= a4;
-					}
-					v33 = a5a - 2;
-					a5a = v33;
-					engine_draw_pixel(v33, x);
-					v35 = v44;
+					y += v12;
+					engine_draw_pixel(xe, y);
+					x = xe + 1;
+					engine_draw_pixel(x, y);
+					v13 -= v12;
+					engine_draw_pixel(v34, v13);
 				}
 				else
 				{
-					v32 = a4 + v15;
-					engine_draw_pixel(v30, v32);
-					v15 = a4 + v32;
-					v14 = v30 + 1;
-					engine_draw_pixel(v14, v15);
-					engine_draw_pixel(v31, x - a4);
-					v33 = a5a - 2;
-					a5a = v33;
-					x -= a4;
-					engine_draw_pixel(v33, x);
-					v35 = 2 * v50;
+					engine_draw_pixel(xe, y);
+					y += v12;
+					x = xe + 1;
+					engine_draw_pixel(x, y);
+					engine_draw_pixel(v34, v13);
+					v13 -= v12;
 				}
-				v53 += v35;
-				--v45;
-			}
-			while ( v45 );
-		}
-		if ( !v54 )
-			return;
-		if ( v53 > 0 )
-		{
-			v39 = a4 + v15;
-			v40 = v14 + 1;
-			engine_draw_pixel(v40, v39);
-			if ( v54 > 1 )
-				engine_draw_pixel(v40 + 1, v39 + a4);
-			if ( v54 <= 2 )
-				return;
-			goto LABEL_71;
-		}
-		if ( v53 >= v50 )
-		{
-			v42 = v14 + 1;
-			engine_draw_pixel(v42, a4 + v15);
-			if ( v54 > 1 )
-				engine_draw_pixel(v42 + 1, v15);
-			if ( v54 <= 2 )
-				return;
-			if ( v53 > v50 )
-			{
-LABEL_71:
-				v26 = v33 - 1;
-				v29 = x - a4;
-				goto LABEL_65;
-			}
-		}
-		else
-		{
-			v41 = v14 + 1;
-			engine_draw_pixel(v41, v15);
-			if ( v54 > 1 )
-				engine_draw_pixel(v41 + 1, v15 + a4);
-			if ( v54 <= 2 )
-				return;
-		}
-		v26 = v33 - 1;
-LABEL_64:
-		v29 = x;
-		goto LABEL_65;
-	}
-	v52 = 4 * v11;
-	v17 = 4 * v11 - v46;
-	if ( v45 > 0 )
-	{
-		v47 = v45;
-		do
-		{
-			v18 = v14 + 1;
-			a5b = a5a - 1;
-			if ( v17 >= 0 )
-			{
-				if ( v17 >= v49 )
-				{
-					v15 += a4;
-					engine_draw_pixel(v18, v15);
-					v14 = v18 + 1;
-					engine_draw_pixel(v14, v15);
-					x -= a4;
-					engine_draw_pixel(a5b, x);
-				}
-				else
-				{
-					engine_draw_pixel(v18, v15);
-					v15 += a4;
-					v14 = v18 + 1;
-					engine_draw_pixel(v14, v15);
-					engine_draw_pixel(a5b, x);
-					x -= a4;
-				}
-				a5a = a5b - 1;
-				engine_draw_pixel(a5a, x);
-				v17 += v44;
+				v32 = v34 - 1;
+				engine_draw_pixel(v32, v13);
+				v38 += v14;
 			}
 			else
 			{
-				engine_draw_pixel(v18, v15);
-				v14 = v18 + 1;
-				engine_draw_pixel(v14, v15);
-				engine_draw_pixel(a5b, x);
-				a5a = a5b - 1;
-				engine_draw_pixel(a5a, x);
-				v17 += v52;
+				v6 = v12 + y;
+				engine_draw_pixel(xe, v6);
+				y = v12 + v6;
+				x = xe + 1;
+				engine_draw_pixel(x, y);
+				v7 = v13 - v12;
+				engine_draw_pixel(v34, v7);
+				v13 = v7 - v12;
+				v32 = v34 - 1;
+				engine_draw_pixel(v32, v13);
+				v38 += v15;
 			}
-			--v47;
 		}
-		while ( v47 );
-	}
-	if ( v54 )
-	{
-		if ( v17 < 0 )
+		if ( v41 )
 		{
-			v24 = v14 + 1;
-			engine_draw_pixel(v24, v15);
-			if ( v54 > 1 )
-				goto LABEL_36;
-			goto LABEL_37;
-		}
-		if ( v17 < v49 )
-		{
-			v24 = v14 + 1;
-			engine_draw_pixel(v24, v15);
-			if ( v54 > 1 )
+			if ( v38 <= 0 )
 			{
-				v15 += a4;
-LABEL_36:
-				engine_draw_pixel(v24 + 1, v15);
+				if ( v40 <= v38 )
+				{
+					yc = v12 + y;
+					xh = x + 1;
+					engine_draw_pixel(xh, yc);
+					if ( v41 > 1 )
+						engine_draw_pixel(xh + 1, yc);
+					if ( v41 > 2 )
+					{
+						if ( v40 >= v38 )
+							engine_draw_pixel(v32 - 1, v13);
+						else
+							engine_draw_pixel(v32 - 1, v13 - v12);
+					}
+				}
+				else
+				{
+					xg = x + 1;
+					engine_draw_pixel(xg, y);
+					if ( v41 > 1 )
+						engine_draw_pixel(xg + 1, v12 + y);
+					if ( v41 > 2 )
+						engine_draw_pixel(v32 - 1, v13);
+				}
 			}
-LABEL_37:
-			if ( v54 <= 2 )
-				return;
-			v26 = a5a - 1;
-			goto LABEL_64;
+			else
+			{
+				yb = v12 + y;
+				xf = x + 1;
+				engine_draw_pixel(xf, yb);
+				if ( v41 > 1 )
+					engine_draw_pixel(xf + 1, v12 + yb);
+				if ( v41 > 2 )
+					engine_draw_pixel(v32 - 1, v13 - v12);
+			}
 		}
-		v27 = v14 + 1;
-		engine_draw_pixel(v27, a4 + v15);
-		if ( v54 > 1 )
-			engine_draw_pixel(v27 + 1, v15);
-		if ( v54 > 2 )
+	}
+	else
+	{
+		v39 = 2 * v10;
+		v37 = 4 * v10 - v11;
+		for ( j = 0; j < v31; ++j )
 		{
-			v29 = x - a4;
-			v26 = a5a - 1;
-LABEL_65:
-			engine_draw_pixel(v26, v29);
-			return;
+			xa = x + 1;
+			v33 = v32 - 1;
+			if ( v37 >= 0 )
+			{
+				if ( v39 <= v37 )
+				{
+					y += v12;
+					engine_draw_pixel(xa, y);
+					x = xa + 1;
+					engine_draw_pixel(x, y);
+					v13 -= v12;
+					engine_draw_pixel(v33, v13);
+				}
+				else
+				{
+					engine_draw_pixel(xa, y);
+					y += v12;
+					x = xa + 1;
+					engine_draw_pixel(x, y);
+					engine_draw_pixel(v33, v13);
+					v13 -= v12;
+				}
+				v32 = v33 - 1;
+				engine_draw_pixel(v32, v13);
+				v37 += v14;
+			}
+			else
+			{
+				engine_draw_pixel(xa, y);
+				x = xa + 1;
+				engine_draw_pixel(x, y);
+				engine_draw_pixel(v33, v13);
+				v32 = v33 - 1;
+				engine_draw_pixel(v32, v13);
+				v37 += 4 * v10;
+			}
+		}
+		if ( v41 )
+		{
+			if ( v37 >= 0 )
+			{
+				if ( v39 <= v37 )
+				{
+					ya = v12 + y;
+					xd = x + 1;
+					engine_draw_pixel(xd, ya);
+					if ( v41 > 1 )
+						engine_draw_pixel(xd + 1, ya);
+					if ( v41 > 2 )
+						engine_draw_pixel(v32 - 1, v13 - v12);
+				}
+				else
+				{
+					xc = x + 1;
+					engine_draw_pixel(xc, y);
+					if ( v41 > 1 )
+						engine_draw_pixel(xc + 1, v12 + y);
+					if ( v41 > 2 )
+						engine_draw_pixel(v32 - 1, v13);
+				}
+			}
+			else
+			{
+				xb = x + 1;
+				engine_draw_pixel(xb, y);
+				if ( v41 > 1 )
+					engine_draw_pixel(xb + 1, y);
+				if ( v41 > 2 )
+					engine_draw_pixel(v32 - 1, v13);
+			}
 		}
 	}
 }
-// 52B96C: using guessed type char byte_52B96C;
+// 52B96C: using guessed type char gbPixelCol;
 // 52B970: using guessed type int dword_52B970;
 // 52B99C: using guessed type int dword_52B99C;
 
@@ -1865,18 +1845,13 @@ int __cdecl GetRndSeed()
 // 52B97C: using guessed type int sglGameSeed;
 // 52B998: using guessed type int SeedCount;
 
-int __fastcall random(int idx, int v)
+int __fastcall random(BYTE idx, int v)
 {
-	int v2; // esi
-	int v4; // eax
-
-	v2 = v;
 	if ( v <= 0 )
 		return 0;
-	v4 = GetRndSeed();
-	if ( v2 < 0xFFFF )
-		v4 >>= 16;
-	return v4 % v2;
+	if ( v >= 0xFFFF )
+		return GetRndSeed() % v;
+	return (GetRndSeed() >> 16) % v;
 }
 
 struct engine_cpp_init_2
@@ -1903,30 +1878,30 @@ void __cdecl mem_free_mutex()
 	DeleteCriticalSection(&sgMemCrit);
 }
 
-void *__fastcall DiabloAllocPtr(int dwBytes)
+unsigned char *__fastcall DiabloAllocPtr(int dwBytes)
 {
 	int v1; // ebx
-	void *v2; // ebx
+	unsigned char *v2; // ebx
 	int v3; // eax
 
 	v1 = dwBytes;
 	EnterCriticalSection(&sgMemCrit);
-	v2 = SMemAlloc(v1, "C:\\Src\\Diablo\\Source\\ENGINE.CPP", 2236, 0);
+	v2 = (unsigned char *)SMemAlloc(v1, "C:\\Src\\Diablo\\Source\\ENGINE.CPP", 2236, 0);
 	LeaveCriticalSection(&sgMemCrit);
 	if ( !v2 )
 	{
 		v3 = GetLastError();
-		TermDlg(105, v3, "C:\\Src\\Diablo\\Source\\ENGINE.CPP", 2269);
+		ErrDlg(IDD_DIALOG2, v3, "C:\\Src\\Diablo\\Source\\ENGINE.CPP", 2269);
 	}
 	return v2;
 }
 
-void __fastcall mem_free_dbg(void *ptr)
+void __fastcall mem_free_dbg(void *p)
 {
 	void *v1; // edi
 
-	v1 = ptr;
-	if ( ptr )
+	v1 = p;
+	if ( p )
 	{
 		EnterCriticalSection(&sgMemCrit);
 		SMemFree(v1, "C:\\Src\\Diablo\\Source\\ENGINE.CPP", 2317, 0);
@@ -1977,12 +1952,12 @@ void __fastcall LoadFileWithMem(char *pszName, void *buf)
 	WCloseFile(a1);
 }
 
-void __fastcall Cl2ApplyTrans(char *p, char *ttbl, int last_frame)
+void __fastcall Cl2ApplyTrans(unsigned char *p, unsigned char *ttbl, int last_frame)
 {
 	int v3; // eax
 	int v4; // edi
 	int v5; // esi
-	char *v6; // eax
+	unsigned char *v6; // eax
 	char v7; // bl
 	unsigned char v8; // bl
 	int v9; // edi
@@ -2009,7 +1984,7 @@ void __fastcall Cl2ApplyTrans(char *p, char *ttbl, int last_frame)
 						v9 = v8;
 						do
 						{
-							*v6 = ttbl[(unsigned char)*v6];
+							*v6 = ttbl[*v6];
 							++v6;
 							--v9;
 						}
@@ -2019,7 +1994,7 @@ void __fastcall Cl2ApplyTrans(char *p, char *ttbl, int last_frame)
 				else
 				{
 					--v5;
-					*v6 = ttbl[(unsigned char)*v6];
+					*v6 = ttbl[*v6];
 					++v6;
 				}
 			}
@@ -2524,7 +2499,7 @@ void __fastcall Cl2DecDatFrm4(char *buffer, char *a2, int a3, int frame_width)
 			if ( (char)v6 <= 65 )
 			{
 				v8 -= v6;
-				if ( (signed int)v5 < screen_buf_end )
+				if ( v5 < (char *)gpBufEnd )
 				{
 					v7 -= v6;
 					do
@@ -2544,7 +2519,7 @@ void __fastcall Cl2DecDatFrm4(char *buffer, char *a2, int a3, int frame_width)
 				_LOBYTE(v6) = v6 - 65;
 				--v8;
 				v9 = *v4++;
-				if ( (signed int)v5 < screen_buf_end )
+				if ( v5 < (char *)gpBufEnd )
 				{
 					v7 -= v6;
 					do
@@ -2589,7 +2564,7 @@ LABEL_12:
 	}
 	while ( v8 );
 }
-// 69CF0C: using guessed type int screen_buf_end;
+// 69CF0C: using guessed type int gpBufEnd;
 
 void __fastcall Cl2DecodeClrHL(char colour, int screen_x, int screen_y, char *pCelBuff, int nCel, int frame_width, int a7, int a8)
 {
@@ -2615,20 +2590,20 @@ void __fastcall Cl2DecodeClrHL(char colour, int screen_x, int screen_y, char *pC
 				{
 					if ( a8 == 8 || (v11 = *(unsigned short *)&v9[a8], !*(_WORD *)&v9[a8]) )
 						v11 = *(_DWORD *)&pCelBuff[4 * nCel + 4] - v8;
-					screen_buf_end -= 768;
+					gpBufEnd -= 768;
 					Cl2DecDatClrHL(
 						(char *)gpBuffer + screen_y_times_768[screen_y - 16 * a7] + v12,
 						&v9[v10],
 						v11 - v10,
 						frame_width,
 						a5);
-					screen_buf_end += 768;
+					gpBufEnd += 768;
 				}
 			}
 		}
 	}
 }
-// 69CF0C: using guessed type int screen_buf_end;
+// 69CF0C: using guessed type int gpBufEnd;
 
 void __fastcall Cl2DecDatClrHL(char *dst_buf, char *frame_content, int a3, int frame_width, char colour)
 {
@@ -2658,7 +2633,7 @@ void __fastcall Cl2DecDatClrHL(char *dst_buf, char *frame_content, int a3, int f
 			if ( (char)v7 <= 65 )
 			{
 				v9 -= v7;
-				if ( (signed int)v6 < screen_buf_end )
+				if ( v6 < (char *)gpBufEnd )
 				{
 					v8 -= v7;
 					do
@@ -2684,7 +2659,7 @@ void __fastcall Cl2DecDatClrHL(char *dst_buf, char *frame_content, int a3, int f
 				_LOBYTE(v7) = v7 - 65;
 				--v9;
 				v11 = *v5++;
-				if ( v11 && (signed int)v6 < screen_buf_end )
+				if ( v11 && v6 < (char *)gpBufEnd )
 				{
 					*(v6 - 1) = v10;
 					v8 -= v7;
@@ -2733,7 +2708,7 @@ LABEL_15:
 	}
 	while ( v9 );
 }
-// 69CF0C: using guessed type int screen_buf_end;
+// 69CF0C: using guessed type int gpBufEnd;
 
 void __fastcall Cl2DecodeFrm5(int screen_x, int screen_y, char *pCelBuff, int nCel, int frame_width, int a6, int a7, char a8)
 {
@@ -2812,7 +2787,7 @@ void __fastcall Cl2DecDatLightTbl2(char *dst_buf, char *a2, int a3, int frame_wi
 			if ( (char)v9 <= 65 )
 			{
 				v8 -= v9;
-				if ( (signed int)v6 < screen_buf_end )
+				if ( v6 < (char *)gpBufEnd )
 				{
 					v7 -= v9;
 					do
@@ -2833,7 +2808,7 @@ void __fastcall Cl2DecDatLightTbl2(char *dst_buf, char *a2, int a3, int frame_wi
 				--v8;
 				_LOBYTE(v10) = *v5++;
 				v11 = a5[v10];
-				if ( (signed int)v6 < screen_buf_end )
+				if ( v6 < (char *)gpBufEnd )
 				{
 					v7 -= v9;
 					do
@@ -2879,7 +2854,7 @@ LABEL_12:
 	while ( v8 );
 }
 // 52B978: using guessed type int sgnWidth;
-// 69CF0C: using guessed type int screen_buf_end;
+// 69CF0C: using guessed type int gpBufEnd;
 
 void __fastcall Cl2DecodeFrm6(int screen_x, int screen_y, char *pCelBuff, int nCel, int frame_width, int a6, int a7)
 {

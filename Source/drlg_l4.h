@@ -50,20 +50,20 @@ void __cdecl L4firstRoom();
 void __fastcall L4drawRoom(int x, int y, int width, int height);
 void __fastcall L4roomGen(int x, int y, int w, int h, int dir);
 bool __fastcall L4checkRoom(int x, int y, int width, int height);
-bool __fastcall DRLG_L4PlaceMiniSet(unsigned char *miniset, int tmin, int tmax, int cx, int cy, int setview, int ldir);
+bool __fastcall DRLG_L4PlaceMiniSet(const unsigned char *miniset, int tmin, int tmax, int cx, int cy, int setview, int ldir);
 void __cdecl DRLG_L4FloodTVal();
 void __fastcall DRLG_L4FTVR(int i, int j, int x, int y, int d);
 void __cdecl DRLG_L4TransFix();
 void __cdecl DRLG_L4Corners();
 void __cdecl DRLG_L4Pass3();
 
-/* data */
-extern unsigned char L4ConvTbl[16];
-extern unsigned char L4USTAIRS[42];
-extern unsigned char L4TWARP[42];
-extern unsigned char L4DSTAIRS[52];
-extern unsigned char L4PENTA[52];
-extern unsigned char L4PENTA2[52];
-extern unsigned char L4BTYPES[140];
+/* rdata */
+extern const unsigned char L4ConvTbl[16];
+extern const unsigned char L4USTAIRS[42];
+extern const unsigned char L4TWARP[42];
+extern const unsigned char L4DSTAIRS[52];
+extern const unsigned char L4PENTA[52];
+extern const unsigned char L4PENTA2[52];
+extern const unsigned char L4BTYPES[140];
 
 #endif /* __DRLG_L4_H__ */

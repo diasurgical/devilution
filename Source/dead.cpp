@@ -3,7 +3,7 @@
 #include "../types.h"
 
 int spurtndx; // weak
-DeadStruct dead[31];
+DeadStruct dead[MAXDEAD];
 int stonendx;
 
 void __cdecl InitDead()
@@ -21,7 +21,7 @@ void __cdecl InitDead()
 	CMonster *v10; // ecx
 	char *v11; // edi
 	int *v12; // ebx
-	int mtypes[200]; // [esp+Ch] [ebp-330h]
+	int mtypes[MAXMONSTERS]; // [esp+Ch] [ebp-330h]
 	int *v14; // [esp+32Ch] [ebp-10h]
 	int *v15; // [esp+330h] [ebp-Ch]
 	int v16; // [esp+334h] [ebp-8h]
@@ -56,12 +56,12 @@ void __cdecl InitDead()
 	}
 	v16 = 0;
 	v4 = v0;
-	memset32(&dead[v0], misfiledata[16].mAnimData[0], 8u);
+	memset32(&dead[v0], (unsigned int)misfiledata[16].mAnimData[0], 8u);
 	_LOBYTE(dead[v4]._deadtrans) = 0;
 	dead[v4]._deadFrame = 8;
-	v5 = misfiledata[18].mAnimData[0];
-	dead[v4].field_24 = 128;
-	dead[v4].field_28 = 32;
+	v5 = (unsigned int)misfiledata[18].mAnimData[0];
+	dead[v4]._deadWidth = 128;
+	dead[v4]._deadWidth2 = 32;
 	v6 = v0 + 1;
 	spurtndx = v0 + 1;
 	memset32(&dead[v6], v5, 8u);
@@ -69,8 +69,8 @@ void __cdecl InitDead()
 	stonendx = v0 + 2;
 	v7 = nummonsters;
 	dead[v6]._deadFrame = 12;
-	dead[v6].field_24 = 128;
-	dead[v6].field_28 = 32;
+	dead[v6]._deadWidth = 128;
+	dead[v6]._deadWidth2 = 32;
 	v17 = v0 + 2;
 	if ( v7 > 0 )
 	{
@@ -83,7 +83,7 @@ void __cdecl InitDead()
 				v10 = monster[v9].MType;
 				v11 = (char *)(v8 - 8);
 				v15 = (int *)8;
-				v14 = v10->Anims[4].Frames;
+				v14 = (int *)v10->Anims[4].Frames;
 				do
 				{
 					v12 = v14;

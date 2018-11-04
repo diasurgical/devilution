@@ -7,9 +7,9 @@ float interfac_cpp_init_value;
 int sgdwProgress;
 int progress_id; // idb
 
-int interfac_inf = 0x7F800000; // weak
-unsigned char progress_bar_colours[3] = { 138u, 43u, 254u };
-POINT32 progress_bar_screen_pos[3] = { { 53, 37 }, { 53, 421 }, { 53, 37 } };
+const int interfac_inf = 0x7F800000; // weak
+const unsigned char progress_bar_colours[3] = { 138u, 43u, 254u };
+const int progress_bar_screen_pos[3][2] = { { 53, 37 }, { 53, 421 }, { 53, 37 } };
 
 struct interfac_cpp_init
 {
@@ -24,12 +24,12 @@ void __cdecl interface_msg_pump()
 {
 	MSG Msg; // [esp+8h] [ebp-1Ch]
 
-	while ( PeekMessageA(&Msg, NULL, 0, 0, PM_REMOVE) )
+	while ( PeekMessage(&Msg, NULL, 0, 0, PM_REMOVE) )
 	{
 		if ( Msg.message != WM_QUIT )
 		{
 			TranslateMessage(&Msg);
-			DispatchMessageA(&Msg);
+			DispatchMessage(&Msg);
 		}
 	}
 }
@@ -49,19 +49,19 @@ void __cdecl DrawCutscene()
 {
 	unsigned int v0; // esi
 
-	dx_lock_mutex();
+	lock_buf_priv();
 	CelDecodeOnly(64, 639, sgpBackCel, 1, 640);
 	v0 = 0;
 	if ( sgdwProgress )
 	{
 		do
 			DrawProgress(
-				progress_bar_screen_pos[progress_id].x + v0++ + 64,
-				progress_bar_screen_pos[progress_id].y + 160,
+				progress_bar_screen_pos[progress_id][0] + v0++ + 64,
+				progress_bar_screen_pos[progress_id][1] + 160,
 				progress_id);
 		while ( v0 < sgdwProgress );
 	}
-	dx_unlock_mutex();
+	unlock_buf_priv();
 	drawpanflag = 255;
 	scrollrt_draw_game_screen(0);
 }
@@ -85,8 +85,8 @@ void __fastcall DrawProgress(int screen_x, int screen_y, int progress_id)
 
 void __fastcall ShowProgress(int uMsg)
 {
-	LRESULT (__stdcall *saveProc)(HWND, UINT, WPARAM, LPARAM); // edi
-	bool v3; // cl
+	WNDPROC saveProc; // edi
+	BOOL v3; // cl
 	int v4; // eax
 	int v5; // edx
 	signed int v7; // [esp-4h] [ebp-10h]
@@ -187,7 +187,7 @@ void __fastcall ShowProgress(int uMsg)
 LABEL_32:
 			v5 = v7;
 LABEL_33:
-			v3 = 0;
+			v3 = FALSE;
 			goto LABEL_40;
 		case WM_DIABRETOWN:
 			IncProgress();
@@ -201,14 +201,14 @@ LABEL_33:
 LABEL_38:
 			leveltype = gnLevelTypeTbl[v4];
 			IncProgress();
-			v3 = 0;
+			v3 = FALSE;
 			goto LABEL_39;
 		case WM_DIABNEWGAME:
 			IncProgress();
 			FreeGameMem();
 			IncProgress();
 			pfile_remove_temp_files();
-			v3 = 1;
+			v3 = TRUE;
 LABEL_39:
 			v5 = 0;
 LABEL_40:
@@ -216,7 +216,7 @@ LABEL_40:
 			goto LABEL_41;
 		case WM_DIABLOADGAME:
 			IncProgress();
-			LoadGame(1);
+			LoadGame(TRUE);
 LABEL_41:
 			IncProgress();
 			break;
@@ -248,7 +248,7 @@ void __cdecl FreeInterface()
 	mem_free_dbg(v0);
 }
 
-void __fastcall InitCutscene(int interface_mode)
+void __fastcall InitCutscene(int uMsg)
 {
 	int v1; // eax
 	int v2; // eax
@@ -265,7 +265,7 @@ void __fastcall InitCutscene(int interface_mode)
 	int v13; // eax
 	int v14; // eax
 
-	switch ( interface_mode )
+	switch ( uMsg )
 	{
 		case WM_DIABNEXTLVL:
 			v1 = gnLevelTypeTbl[currlevel];

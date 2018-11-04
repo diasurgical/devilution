@@ -57,7 +57,7 @@ int panbtndown; // weak
 void *pTalkPanel; // idb
 int spselflag; // weak
 
-unsigned char fontframe[127] =
+const unsigned char fontframe[127] =
 {
 	0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
 	0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
@@ -73,7 +73,7 @@ unsigned char fontframe[127] =
    14,  15,  16,  17,  18,  19,  20,  21,  22,  23,
    24,  25,  26,  40,  66,  41,  67
 };
-unsigned char fontkern[68] =
+const unsigned char fontkern[68] =
 {
 	8,  10,   7,   9,   8,   7,   6,   8,   8,   3,
 	3,   8,   6,  11,   9,  10,   6,   9,   9,   6,
@@ -83,7 +83,7 @@ unsigned char fontkern[68] =
 	3,   2,   7,   6,   3,  10,  10,   6,   6,   7,
 	4,   4,   9,   6,   6,  12,   3,   7
 };
-int lineoffset[25] =
+const int lineoffset[25] =
 {
   456433,
   24576,
@@ -111,7 +111,7 @@ int lineoffset[25] =
   465649,
   474097
 };
-unsigned char fontidx[256] =
+const unsigned char fontidx[256] =
 {
 	0,   1,   1,   1,   1,   1,   1,   1,   1,   1,
 	1,   1,   1,   1,   1,   1,   1,   1,   1,   1,
@@ -141,7 +141,7 @@ unsigned char fontidx[256] =
   117, 117, 117, 121,  98, 121
 };
 
-/* rdata */
+/* data */
 
 unsigned char SpellITbl[37] =
 {
@@ -173,7 +173,7 @@ char *PanBtnStr[8] =
   "Send Message",
   "Player Attack"
 };
-RECT32 attribute_inc_rects[4] =
+int attribute_inc_rects[4][4] =
 {
   { 137, 138, 41, 22 },
   { 137, 166, 41, 22 },
@@ -1851,7 +1851,7 @@ LABEL_32:
 			GetObjectStr(pcursobj);
 		if ( pcursmonst != -1 )
 		{
-			if ( leveltype )
+			if ( leveltype != DTYPE_TOWN)
 			{
 				_LOBYTE(infoclr) = 0;
 				strcpy(infostr, monster[pcursmonst].mName);
@@ -2455,11 +2455,11 @@ LABEL_12:
 					if ( v5 ^ v6 )
 					{
 						v10 = v0;
-						v11 = attribute_inc_rects[v0].x;
-						if ( v2 >= v11 && v2 <= v11 + attribute_inc_rects[v10].w )
+						v11 = attribute_inc_rects[v0][0];
+						if ( v2 >= v11 && v2 <= v11 + attribute_inc_rects[v10][2] )
 						{
-							v12 = attribute_inc_rects[v10].y;
-							if ( MouseY >= v12 && MouseY <= v12 + attribute_inc_rects[v10].h )
+							v12 = attribute_inc_rects[v10][1];
+							if ( MouseY >= v12 && MouseY <= v12 + attribute_inc_rects[v10][3] )
 							{
 								chrbtn[v0] = 1;
 								chrbtnactive = 1;
@@ -2497,11 +2497,11 @@ void __cdecl ReleaseChrBtns()
 		{
 			*v1 = 0;
 			v2 = v0;
-			v3 = attribute_inc_rects[v0].x;
-			if ( MouseX >= v3 && MouseX <= v3 + attribute_inc_rects[v2].w )
+			v3 = attribute_inc_rects[v0][0];
+			if ( MouseX >= v3 && MouseX <= v3 + attribute_inc_rects[v2][2] )
 			{
-				v4 = attribute_inc_rects[v2].y;
-				if ( MouseY >= v4 && MouseY <= v4 + attribute_inc_rects[v2].h )
+				v4 = attribute_inc_rects[v2][1];
+				if ( MouseY >= v4 && MouseY <= v4 + attribute_inc_rects[v2][3] )
 				{
 					if ( v0 )
 					{
@@ -2641,7 +2641,7 @@ void __cdecl RedBack()
 	v0 = -(light4flag != 0);
 	_LOWORD(v0) = v0 & 0xF400;
 	v12 = v0 + 0x1200;
-	if ( leveltype == 4 )
+	if ( leveltype == DTYPE_HELL )
 	{
 		v7 = gpBuffer->row[0].pixels;
 		_EBX = &pLightTbl[v12];
@@ -2721,8 +2721,8 @@ int __fastcall GetSBookTrans(int ii, unsigned char townok)
 
 void __cdecl DrawSpellBook()
 {
-	int v0; // edi
-	int v1; // ebp
+	__int64 v0; // edi
+	__int64 v1; // ebp
 	int v2; // esi
 	char v3; // al
 	int v4; // eax
@@ -2739,13 +2739,12 @@ void __cdecl DrawSpellBook()
 	CelDecodeOnly(76 * sbooktab + 391, 508, pSBkBtnCel, sbooktab + 1, 76);
 	v9 = 1;
 	v8 = 214;
-	v0 = plr[myplr]._pISpells[0] | plr[myplr]._pMemSpells[0] | plr[myplr]._pAblSpells[0];
-	v1 = plr[myplr]._pISpells[1] | plr[myplr]._pMemSpells[1] | plr[myplr]._pAblSpells[1];
+	v0 = plr[myplr]._pISpells64 | plr[myplr]._pMemSpells64 | plr[myplr]._pAblSpells64;
 	do
 	{
 		v2 = SpellPages[0][v9 + 7 * sbooktab - 1]; // *(&attribute_inc_rects[3].h + v9 + 7 * sbooktab); /* check */
-		if ( v2 != -1
-		  && v1 & ((unsigned __int64)((__int64)1 << ((unsigned char)v2 - 1)) >> 32) | v0 & (unsigned int)((__int64)1 << ((unsigned char)v2 - 1)) )
+		v1 = (__int64)1 << (v2 - 1);
+		if ( v2 != -1 && (v1 & v0) )
 		{
 			v7 = GetSBookTrans(v2, 1u);
 			SetSpellTrans(v7);
@@ -2888,7 +2887,7 @@ void __cdecl CheckSBook()
 			v0 = MouseY;
 		}
 	}
-	if ( v1 >= 327 && v1 < 633 && v0 >= 320 && v0 < 349 )
+	if ( v1 >= 327 && v1 < 633 && v0 >= 320 && v0 < 349 ) /// BUGFIX: change `< 633` to `< 631`
 		sbooktab = (v1 - 327) / 76;
 }
 // 4B8950: using guessed type int sbooktab;
@@ -2957,7 +2956,7 @@ void __fastcall control_drop_gold(int vkey)
 		dropGoldValue = 0;
 		return;
 	}
-	memset(v6, 0, 6u);
+	memset(v6, 0, sizeof(v6));
 	_itoa(dropGoldValue, v6, 10);
 	if ( v1 != VK_RETURN )
 	{

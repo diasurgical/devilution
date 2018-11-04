@@ -1315,7 +1315,8 @@ enum _monster_id
 	MT_ADVOCATE = 0x6C,
 	MT_GOLEM = 0x6D,
 	MT_DIABLO = 0x6E,
-	MT_DARKMAGE = 0x6F
+	MT_DARKMAGE = 0x6F,
+	NUM_MTYPES
 };
 
 enum _speech_id
@@ -1757,20 +1758,6 @@ enum PLR_MODE
 	PM_SPELL = 9,
 	PM_NEWLVL = 10,
 	PM_QUIT = 11,
-};
-
-enum template_id
-{
-	TEMPLATE_ERR_DX = 0x68,
-	TEMPLATE_ERR_NOMEMORY = 0x69,
-	TEMPLATE_ERR_NOFILE = 0x6A,
-	TEMPLATE_ERR_DDRAW = 0x6B,
-	TEMPLATE_ERR_DSOUND = 0x6C,
-	TEMPLATE_ERR_DISKSPACE = 0x6E,
-	TEMPLATE_ERR_VIDEOMODE = 0x6F,
-	TEMPLATE_ERR_INSERTCD = 0x70,
-	TEMPLATE_ERR_RESTRICTED = 0x71,
-	TEMPLATE_ERR_READONLY = 0x72,
 };
 
 enum spell_type
@@ -2406,6 +2393,14 @@ enum _unique_items
 	UITEM_INVALID = 0x5A,
 };
 
+enum plr_class
+{
+	PC_WARRIOR = 0x0,
+	PC_ROGUE = 0x1,
+	PC_SORCERER = 0x2,
+	NUM_CLASSES
+};
+
 enum _ui_classes
 {
 	UI_WARRIOR = 0x0,
@@ -2427,22 +2422,22 @@ enum _walk_path
 	WALK_W = 0x8,
 };
 
-typedef enum {
+enum item_class {
 	ICLASS_NONE = 0,
 	ICLASS_WEAPON = 1,
 	ICLASS_ARMOR = 2,
 	ICLASS_MISC = 3,
 	ICLASS_GOLD = 4,
 	ICLASS_QUEST = 5,
-} item_class;
+};
 
-typedef enum {
+enum item_drop_rate {
 	IDROP_NEVER   = 0,
 	IDROP_REGULAR = 1,
 	IDROP_DOUBLE  = 2,
-} item_drop_rate;
+};
 
-typedef enum {
+enum item_special_effect {
 	ISPL_NONE = 0x00000000,
 	ISPL_INFRAVISION = 0x00000001,
 	ISPL_RNDSTEALLIFE = 0x00000002,
@@ -2476,4 +2471,102 @@ typedef enum {
 	ISPL_UNKNOWN_4 = 0x20000000,
 	ISPL_3XDAMVDEM = 0x40000000,
 	ISPL_ALLRESZERO = 0x80000000,
-} item_special_effect;
+};
+
+// Logical equipment locations
+enum inv_body_loc {
+	INVLOC_HEAD = 0,
+	INVLOC_RING_LEFT = 1,
+	INVLOC_RING_RIGHT = 2,
+	INVLOC_AMULET = 3,
+	INVLOC_HAND_LEFT = 4,
+	INVLOC_HAND_RIGHT = 5,
+	INVLOC_CHEST = 6,
+	NUM_INVLOC,
+};
+
+enum inv_item {
+	INVITEM_HEAD = 0,
+	INVITEM_RING_LEFT = 1,
+	INVITEM_RING_RIGHT = 2,
+	INVITEM_AMULET = 3,
+	INVITEM_HAND_LEFT = 4,
+	INVITEM_HAND_RIGHT = 5,
+	INVITEM_CHEST = 6,
+	INVITEM_INV_FIRST = 7,
+	INVITEM_INV_LAST = 46,
+	INVITEM_BELT_FIRST = 47,
+	INVITEM_BELT_LAST = 54,
+	NUM_INVELEM
+};
+
+// identifiers for each of the inventory squares
+// see https://github.com/sanctuary/graphics/blob/master/inventory.png
+enum inv_xy_slot {
+	SLOTXY_HEAD_FIRST = 0,
+	SLOTXY_HEAD_LAST = 3,
+	SLOTXY_RING_LEFT = 4,
+	SLOTXY_RING_RIGHT = 5,
+	SLOTXY_AMULET = 6,
+	SLOTXY_HAND_LEFT_FIRST = 7,
+	SLOTXY_HAND_LEFT_LAST = 12,
+	SLOTXY_HAND_RIGHT_FIRST = 13,
+	SLOTXY_HAND_RIGHT_LAST = 18,
+	SLOTXY_CHEST_FIRST = 19,
+	SLOTXY_CHEST_LAST = 24,
+
+	// regular inventory
+	SLOTXY_INV_FIRST = 25,
+	SLOTXY_INV_LAST = 64,
+
+	// belt items
+	SLOTXY_BELT_FIRST = 65,
+	SLOTXY_BELT_LAST = 72,
+	NUM_XY_SLOTS = 73
+};
+
+enum player_graphic
+{
+	PFILE_STAND = 1 << 0,
+	PFILE_WALK = 1 << 1,
+	PFILE_ATTACK = 1 << 2,
+	PFILE_HIT = 1 << 3,
+	PFILE_LIGHTNING = 1 << 4,
+	PFILE_FIRE = 1 << 5,
+	PFILE_MAGIC = 1 << 6,
+	PFILE_DEATH = 1 << 7,
+	PFILE_BLOCK = 1 << 8,
+	// everything except PFILE_DEATH
+	// 0b1_0111_1111
+	PFILE_NONDEATH = 0x17F
+};
+
+enum shrine_type {
+	SHRINE_MYSTERIOUS = 0,
+	SHRINE_HIDDEN = 1,
+	SHRINE_GLOOMY = 2,
+	SHRINE_WEIRD = 3,
+	SHRINE_MAGICAL = 4,
+	SHRINE_STONE = 5,
+	SHRINE_RELIGIOUS = 6,
+	SHRINE_ENCHANTED = 7,
+	SHRINE_THAUMATURGIC = 8,
+	SHRINE_FASCINATING = 9,
+	SHRINE_CRYPTIC = 10,
+	SHRINE_MAGICAL2 = 11,
+	SHRINE_ELDRITCH = 12,
+	SHRINE_EERIE = 13,
+	SHRINE_DIVINE = 14,
+	SHRINE_HOLY = 15,
+	SHRINE_SACRED = 16,
+	SHRINE_SPIRITUAL = 17,
+	SHRINE_SPOOKY = 18,
+	SHRINE_ABANDONED = 19,
+	SHRINE_CREEPY = 20,
+	SHRINE_QUIET = 21,
+	SHRINE_SECLUDED = 22,
+	SHRINE_ORNATE = 23,
+	SHRINE_GLIMMERING = 24,
+	SHRINE_TAINTED = 25,
+	NUM_SHRINETYPE
+};

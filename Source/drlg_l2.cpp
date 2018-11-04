@@ -261,74 +261,111 @@ void __cdecl InitDungeon()
 
 void __cdecl L2LockoutFix()
 {
-	int i; // ecx
-	int j; // edx
-	bool doorok; // esi
+	signed int v0; // ecx
+	char *v1; // eax
+	signed int v2; // edx
+	signed int v3; // ecx
+	signed int v4; // edi
+	signed int v5; // eax
+	char *v6; // esi
+	signed int v7; // edx
+	char v8; // al
+	unsigned int v9; // ecx
+	signed int v10; // eax
+	char v11; // dl
+	signed int v12; // esi
+	char v13; // bl
+	char *v14; // edx
 
-	for(i = 0; i < 40; i++)
+	v0 = 0;
+	do
 	{
-		for(j = 0; j < 40; j++)
+		v1 = (char *)dungeon + v0;
+		v2 = 40;
+		do
 		{
-			if ( dungeon[i][j] == 4 && dungeon[i-1][j] != 3 )
-				dungeon[i][j] = 1;
-			if ( dungeon[i][j] == 5 && dungeon[i][j-1] != 3 )
-				dungeon[i][j] = 2;
+			if ( *v1 == 4 && *(v1 - 40) != 3 )
+				*v1 = 1;
+			if ( *v1 == 5 && *(v1 - 1) != 3 )
+				*v1 = 2;
+			v1 += 40;
+			--v2;
 		}
+		while ( v2 );
+		++v0;
 	}
-
-	for(i = 1; i < 39; i++)
+	while ( v0 < 40 );
+	v3 = 1;
+	do
 	{
-		for(j = 1; j < 39; j++)
+		v4 = 1;
+		do
 		{
-			if ( dflags[i][j] >= 0 )
+			v5 = v4;
+			if ( dflags[v4][v3] >= 0 )
 			{
-				if ( (dungeon[i][j] == 2 || dungeon[i][j] == 5) && dungeon[i][j-1] == 3 && dungeon[i][j+1] == 3 )
+				v6 = &dungeon[v5][v3];
+				if ( (*v6 == 2 || *v6 == 5) && *(v6 - 1) == 3 && dungeon[v5][v3 + 1] == 3 )
 				{
-					doorok = 0;
+					v7 = 0;
 					while ( 1 )
 					{
-						if ( dungeon[i][j] != 2 && dungeon[i][j] != 5 )
+						v8 = *v6;
+						if ( *v6 != 2 && v8 != 5 )
 							break;
-						if ( dungeon[i][j-1] != 3 || dungeon[i][j+1] != 3 )
+						if ( *(v6 - 1) != 3 || v6[1] != 3 )
 							break;
-						if ( dungeon[i][j] == 5 )
-							doorok = 1;
-						++i;
+						if ( v8 == 5 )
+							v7 = 1;
+						++v4;
+						v6 += 40;
 					}
-					if ( !doorok && dflags[i-1][j] >= 0 ) // dTransVal2[111][40 * i + 80 + j] >= 0 )
-						dungeon[i-1][j] = 5; // *((_BYTE *)&dMonster[111][10 * i + 102] + j) = 5;
+					if ( !v7 && dflags[v4 - 1][v3] >= 0 ) // dflags[-1][]
+						dungeon[v4 - 1][v3] = 5; // dungeon[-1][]
 				}
 			}
+			++v4;
 		}
+		while ( v4 < 39 );
+		++v3;
 	}
-
-	for(i = 1; i < 39; i++)
+	while ( v3 < 39 );
+	v9 = 1;
+	do
 	{
-		for(j = 1; j < 39; j++)
+		v10 = 1;
+		do
 		{
-			if ( dflags[i][j] >= 0 )
+			if ( dflags[v9][v10] >= 0 )
 			{
-				if ( (dungeon[i][j] == 1 || dungeon[i][j] == 4)
-				  && dungeon[i-1][j] == 3 // *((_BYTE *)&dMonster[111][i / 4 + 102] + j) == 3
-				  && dungeon[i+1][j] == 3 )
+				v11 = dungeon[v9][v10];
+				if ( (v11 == 1 || v11 == 4)
+				  && dungeon[v9 - 1][v10] == 3 // dungeon[-1][]
+				  && dungeon[v9 + 1][v10] == 3 )
 				{
-					doorok = 0;
+					v12 = 0;
 					while ( 1 )
 					{
-						if ( dungeon[i][j] != 1 && dungeon[i][j] != 4 )
+						v13 = dungeon[v9][v10];
+						if ( v13 != 1 && v13 != 4 )
 							break;
-						if ( dungeon[i-1][j] != 3 || dungeon[i+1][j] != 3 )
+						v14 = &dungeon[v9 + 1][v10];
+						if ( *(v14 - 80) != 3 || *v14 != 3 )
 							break;
-						if ( dungeon[i][j] == 4 )
-							doorok = 1;
-						++j;
+						if ( v13 == 4 )
+							v12 = 1;
+						++v10;
 					}
-					if ( !doorok && dflags[i][j-1] >= 0 ) // *(_BYTE *)(i + j + 5920151) >= 0 ) /* check */
-						dungeon[i][j-1] = 4; // *((_BYTE *)&dMonster[111][i / 4 + 111] + j + 3) = 4;
+					if ( !v12 && dflags[v9][v10 - 1] >= 0 ) // dflags[][-1]
+						dungeon[v9][v10 - 1] = 4; // dungeon[][-1]
 				}
 			}
+			++v10;
 		}
+		while ( v10 < 39 );
+		++v9;
 	}
+	while ( v9 < 39 );
 }
 
 void __cdecl L2DoorFix()
@@ -532,8 +569,8 @@ void __fastcall LoadL2Dungeon(char *sFileName, int vx, int vy)
 	while ( (signed int)v25 < (signed int)dPiece[1] );
 	ViewX = v30;
 	ViewY = vy;
-	SetMapMonsters(ptr, 0, 0);
-	SetMapObjects(ptr, 0, 0);
+	SetMapMonsters((unsigned char *)ptr, 0, 0);
+	SetMapObjects((unsigned char *)ptr, 0, 0);
 	mem_free_dbg(ptr);
 }
 
@@ -855,43 +892,43 @@ void __fastcall DRLG_L2(int entry)
 		DRLG_L2TransFix();
 		if ( !v13 )
 		{
-			v3 = DRLG_L2PlaceMiniSet((char *)USTAIRS, 1, 1, -1, -1, 1, 0);
+			v3 = DRLG_L2PlaceMiniSet(USTAIRS, 1, 1, -1, -1, 1, 0);
 			v1 = v3;
 			if ( !v3 )
 				goto LABEL_21;
-			v4 = DRLG_L2PlaceMiniSet((char *)DSTAIRS, 1, 1, -1, -1, 0, 1);
+			v4 = DRLG_L2PlaceMiniSet(DSTAIRS, 1, 1, -1, -1, 0, 1);
 			v1 = v4;
 			if ( !v4 || currlevel != 5 )
 				goto LABEL_21;
-			v5 = DRLG_L2PlaceMiniSet((char *)WARPSTAIRS, 1, 1, -1, -1, 0, 6);
+			v5 = DRLG_L2PlaceMiniSet(WARPSTAIRS, 1, 1, -1, -1, 0, 6);
 LABEL_20:
 			v1 = v5;
 LABEL_21:
 			ViewY -= 2;
 			continue;
 		}
-		v6 = DRLG_L2PlaceMiniSet((char *)USTAIRS, 1, 1, -1, -1, 0, 0);
+		v6 = DRLG_L2PlaceMiniSet(USTAIRS, 1, 1, -1, -1, 0, 0);
 		v1 = v6;
 		if ( v13 != 1 )
 		{
 			if ( !v6 )
 				goto LABEL_21;
-			v9 = DRLG_L2PlaceMiniSet((char *)DSTAIRS, 1, 1, -1, -1, 0, 1);
+			v9 = DRLG_L2PlaceMiniSet(DSTAIRS, 1, 1, -1, -1, 0, 1);
 			v1 = v9;
 			if ( !v9 || currlevel != 5 )
 				goto LABEL_21;
-			v5 = DRLG_L2PlaceMiniSet((char *)WARPSTAIRS, 1, 1, -1, -1, 1, 6);
+			v5 = DRLG_L2PlaceMiniSet(WARPSTAIRS, 1, 1, -1, -1, 1, 6);
 			goto LABEL_20;
 		}
 		if ( v6 )
 		{
-			v7 = DRLG_L2PlaceMiniSet((char *)DSTAIRS, 1, 1, -1, -1, 1, 1);
+			v7 = DRLG_L2PlaceMiniSet(DSTAIRS, 1, 1, -1, -1, 1, 1);
 			v1 = v7;
 			if ( v7 )
 			{
 				if ( currlevel == 5 )
 				{
-					v8 = DRLG_L2PlaceMiniSet((char *)WARPSTAIRS, 1, 1, -1, -1, 0, 6);
+					v8 = DRLG_L2PlaceMiniSet(WARPSTAIRS, 1, 1, -1, -1, 0, 6);
 					v1 = v8;
 				}
 			}
@@ -903,114 +940,114 @@ LABEL_21:
 	L2DoorFix();
 	L2DirtFix();
 	DRLG_PlaceThemeRooms(6, 10, 3, 0, 0);
-	DRLG_L2PlaceRndSet((char *)CTRDOOR1, 100);
-	DRLG_L2PlaceRndSet((char *)CTRDOOR2, 100);
-	DRLG_L2PlaceRndSet((char *)CTRDOOR3, 100);
-	DRLG_L2PlaceRndSet((char *)CTRDOOR4, 100);
-	DRLG_L2PlaceRndSet((char *)CTRDOOR5, 100);
-	DRLG_L2PlaceRndSet((char *)CTRDOOR6, 100);
-	DRLG_L2PlaceRndSet((char *)CTRDOOR7, 100);
-	DRLG_L2PlaceRndSet((char *)CTRDOOR8, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH33, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH34, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH35, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH36, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH37, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH38, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH39, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH40, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH1, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH2, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH3, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH4, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH5, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH6, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH7, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH8, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH9, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH10, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH11, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH12, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH13, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH14, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH15, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH16, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH17, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH18, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH19, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH20, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH21, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH22, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH23, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH24, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH25, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH26, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH27, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH28, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH29, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH30, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH31, 100);
-	DRLG_L2PlaceRndSet((char *)VARCH32, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH1, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH2, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH3, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH4, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH5, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH6, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH7, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH8, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH9, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH10, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH11, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH12, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH13, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH14, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH15, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH16, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH17, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH18, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH19, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH20, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH21, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH22, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH23, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH24, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH25, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH26, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH27, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH28, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH29, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH30, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH31, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH32, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH33, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH34, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH35, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH36, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH37, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH38, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH39, 100);
-	DRLG_L2PlaceRndSet((char *)HARCH40, 100);
-	DRLG_L2PlaceRndSet((char *)CRUSHCOL, 99);
-	DRLG_L2PlaceRndSet((char *)RUINS1, 10);
-	DRLG_L2PlaceRndSet((char *)RUINS2, 10);
-	DRLG_L2PlaceRndSet((char *)RUINS3, 10);
-	DRLG_L2PlaceRndSet((char *)RUINS4, 10);
-	DRLG_L2PlaceRndSet((char *)RUINS5, 10);
-	DRLG_L2PlaceRndSet((char *)RUINS6, 10);
-	DRLG_L2PlaceRndSet((char *)RUINS7, 50);
-	DRLG_L2PlaceRndSet((char *)PANCREAS1, 1);
-	DRLG_L2PlaceRndSet((char *)PANCREAS2, 1);
-	DRLG_L2PlaceRndSet((char *)BIG1, 3);
-	DRLG_L2PlaceRndSet((char *)BIG2, 3);
-	DRLG_L2PlaceRndSet((char *)BIG3, 3);
-	DRLG_L2PlaceRndSet((char *)BIG4, 3);
-	DRLG_L2PlaceRndSet((char *)BIG5, 3);
-	DRLG_L2PlaceRndSet((char *)BIG6, 20);
-	DRLG_L2PlaceRndSet((char *)BIG7, 20);
-	DRLG_L2PlaceRndSet((char *)BIG8, 3);
-	DRLG_L2PlaceRndSet((char *)BIG9, 20);
-	DRLG_L2PlaceRndSet((char *)BIG10, 20);
+	DRLG_L2PlaceRndSet(CTRDOOR1, 100);
+	DRLG_L2PlaceRndSet(CTRDOOR2, 100);
+	DRLG_L2PlaceRndSet(CTRDOOR3, 100);
+	DRLG_L2PlaceRndSet(CTRDOOR4, 100);
+	DRLG_L2PlaceRndSet(CTRDOOR5, 100);
+	DRLG_L2PlaceRndSet(CTRDOOR6, 100);
+	DRLG_L2PlaceRndSet(CTRDOOR7, 100);
+	DRLG_L2PlaceRndSet(CTRDOOR8, 100);
+	DRLG_L2PlaceRndSet(VARCH33, 100);
+	DRLG_L2PlaceRndSet(VARCH34, 100);
+	DRLG_L2PlaceRndSet(VARCH35, 100);
+	DRLG_L2PlaceRndSet(VARCH36, 100);
+	DRLG_L2PlaceRndSet(VARCH37, 100);
+	DRLG_L2PlaceRndSet(VARCH38, 100);
+	DRLG_L2PlaceRndSet(VARCH39, 100);
+	DRLG_L2PlaceRndSet(VARCH40, 100);
+	DRLG_L2PlaceRndSet(VARCH1, 100);
+	DRLG_L2PlaceRndSet(VARCH2, 100);
+	DRLG_L2PlaceRndSet(VARCH3, 100);
+	DRLG_L2PlaceRndSet(VARCH4, 100);
+	DRLG_L2PlaceRndSet(VARCH5, 100);
+	DRLG_L2PlaceRndSet(VARCH6, 100);
+	DRLG_L2PlaceRndSet(VARCH7, 100);
+	DRLG_L2PlaceRndSet(VARCH8, 100);
+	DRLG_L2PlaceRndSet(VARCH9, 100);
+	DRLG_L2PlaceRndSet(VARCH10, 100);
+	DRLG_L2PlaceRndSet(VARCH11, 100);
+	DRLG_L2PlaceRndSet(VARCH12, 100);
+	DRLG_L2PlaceRndSet(VARCH13, 100);
+	DRLG_L2PlaceRndSet(VARCH14, 100);
+	DRLG_L2PlaceRndSet(VARCH15, 100);
+	DRLG_L2PlaceRndSet(VARCH16, 100);
+	DRLG_L2PlaceRndSet(VARCH17, 100);
+	DRLG_L2PlaceRndSet(VARCH18, 100);
+	DRLG_L2PlaceRndSet(VARCH19, 100);
+	DRLG_L2PlaceRndSet(VARCH20, 100);
+	DRLG_L2PlaceRndSet(VARCH21, 100);
+	DRLG_L2PlaceRndSet(VARCH22, 100);
+	DRLG_L2PlaceRndSet(VARCH23, 100);
+	DRLG_L2PlaceRndSet(VARCH24, 100);
+	DRLG_L2PlaceRndSet(VARCH25, 100);
+	DRLG_L2PlaceRndSet(VARCH26, 100);
+	DRLG_L2PlaceRndSet(VARCH27, 100);
+	DRLG_L2PlaceRndSet(VARCH28, 100);
+	DRLG_L2PlaceRndSet(VARCH29, 100);
+	DRLG_L2PlaceRndSet(VARCH30, 100);
+	DRLG_L2PlaceRndSet(VARCH31, 100);
+	DRLG_L2PlaceRndSet(VARCH32, 100);
+	DRLG_L2PlaceRndSet(HARCH1, 100);
+	DRLG_L2PlaceRndSet(HARCH2, 100);
+	DRLG_L2PlaceRndSet(HARCH3, 100);
+	DRLG_L2PlaceRndSet(HARCH4, 100);
+	DRLG_L2PlaceRndSet(HARCH5, 100);
+	DRLG_L2PlaceRndSet(HARCH6, 100);
+	DRLG_L2PlaceRndSet(HARCH7, 100);
+	DRLG_L2PlaceRndSet(HARCH8, 100);
+	DRLG_L2PlaceRndSet(HARCH9, 100);
+	DRLG_L2PlaceRndSet(HARCH10, 100);
+	DRLG_L2PlaceRndSet(HARCH11, 100);
+	DRLG_L2PlaceRndSet(HARCH12, 100);
+	DRLG_L2PlaceRndSet(HARCH13, 100);
+	DRLG_L2PlaceRndSet(HARCH14, 100);
+	DRLG_L2PlaceRndSet(HARCH15, 100);
+	DRLG_L2PlaceRndSet(HARCH16, 100);
+	DRLG_L2PlaceRndSet(HARCH17, 100);
+	DRLG_L2PlaceRndSet(HARCH18, 100);
+	DRLG_L2PlaceRndSet(HARCH19, 100);
+	DRLG_L2PlaceRndSet(HARCH20, 100);
+	DRLG_L2PlaceRndSet(HARCH21, 100);
+	DRLG_L2PlaceRndSet(HARCH22, 100);
+	DRLG_L2PlaceRndSet(HARCH23, 100);
+	DRLG_L2PlaceRndSet(HARCH24, 100);
+	DRLG_L2PlaceRndSet(HARCH25, 100);
+	DRLG_L2PlaceRndSet(HARCH26, 100);
+	DRLG_L2PlaceRndSet(HARCH27, 100);
+	DRLG_L2PlaceRndSet(HARCH28, 100);
+	DRLG_L2PlaceRndSet(HARCH29, 100);
+	DRLG_L2PlaceRndSet(HARCH30, 100);
+	DRLG_L2PlaceRndSet(HARCH31, 100);
+	DRLG_L2PlaceRndSet(HARCH32, 100);
+	DRLG_L2PlaceRndSet(HARCH33, 100);
+	DRLG_L2PlaceRndSet(HARCH34, 100);
+	DRLG_L2PlaceRndSet(HARCH35, 100);
+	DRLG_L2PlaceRndSet(HARCH36, 100);
+	DRLG_L2PlaceRndSet(HARCH37, 100);
+	DRLG_L2PlaceRndSet(HARCH38, 100);
+	DRLG_L2PlaceRndSet(HARCH39, 100);
+	DRLG_L2PlaceRndSet(HARCH40, 100);
+	DRLG_L2PlaceRndSet(CRUSHCOL, 99);
+	DRLG_L2PlaceRndSet(RUINS1, 10);
+	DRLG_L2PlaceRndSet(RUINS2, 10);
+	DRLG_L2PlaceRndSet(RUINS3, 10);
+	DRLG_L2PlaceRndSet(RUINS4, 10);
+	DRLG_L2PlaceRndSet(RUINS5, 10);
+	DRLG_L2PlaceRndSet(RUINS6, 10);
+	DRLG_L2PlaceRndSet(RUINS7, 50);
+	DRLG_L2PlaceRndSet(PANCREAS1, 1);
+	DRLG_L2PlaceRndSet(PANCREAS2, 1);
+	DRLG_L2PlaceRndSet(BIG1, 3);
+	DRLG_L2PlaceRndSet(BIG2, 3);
+	DRLG_L2PlaceRndSet(BIG3, 3);
+	DRLG_L2PlaceRndSet(BIG4, 3);
+	DRLG_L2PlaceRndSet(BIG5, 3);
+	DRLG_L2PlaceRndSet(BIG6, 20);
+	DRLG_L2PlaceRndSet(BIG7, 20);
+	DRLG_L2PlaceRndSet(BIG8, 3);
+	DRLG_L2PlaceRndSet(BIG9, 20);
+	DRLG_L2PlaceRndSet(BIG10, 20);
 	DRLG_L2Subs();
 	DRLG_L2Shadows();
 	v10 = 0;
@@ -1033,31 +1070,28 @@ LABEL_21:
 }
 // 5B50D8: using guessed type int setloadflag_2;
 
-bool __fastcall DRLG_L2PlaceMiniSet(char *miniset, int tmin, int tmax, int cx, int cy, bool setview, int ldir)
+bool __fastcall DRLG_L2PlaceMiniSet(unsigned char *miniset, int tmin, int tmax, int cx, int cy, bool setview, int ldir)
 {
 	int v7; // ebx
 	int v8; // esi
 	int v9; // edi
 	int v10; // edx
 	int v11; // eax
-	int v12; // ecx
 	int v13; // esi
 	int v14; // ebx
 	int v15; // ecx
 	int v16; // eax
-	int v17; // ecx
 	int v18; // eax
-	int v19; // ecx
 	int v20; // edi
 	signed int i; // eax
 	int v22; // ecx
-	char v23; // dl
+	unsigned char v23; // dl
 	int v24; // eax
 	int v25; // edi
 	char *v26; // edx
-	char v27; // bl
+	unsigned char v27; // bl
 	bool result; // al
-	char *v29; // [esp+Ch] [ebp-28h]
+	unsigned char *v29; // [esp+Ch] [ebp-28h]
 	int v30; // [esp+10h] [ebp-24h]
 	int v31; // [esp+14h] [ebp-20h]
 	int v32; // [esp+18h] [ebp-1Ch]
@@ -1070,17 +1104,16 @@ bool __fastcall DRLG_L2PlaceMiniSet(char *miniset, int tmin, int tmax, int cx, i
 	int v39; // [esp+30h] [ebp-4h]
 	int tmaxa; // [esp+3Ch] [ebp+8h]
 
-	v7 = (unsigned char)miniset[1];
+	v7 = miniset[1];
 	v8 = tmin;
-	v9 = (unsigned char)*miniset;
+	v9 = *miniset;
 	v29 = miniset;
 	v10 = tmax - tmin;
-	v34 = (unsigned char)*miniset;
-	v35 = (unsigned char)miniset[1];
+	v34 = *miniset;
+	v35 = miniset[1];
 	if ( v10 )
 	{
-		_LOBYTE(miniset) = 0;
-		v30 = v8 + random((int)miniset, v10);
+		v30 = v8 + random(0, v10);
 	}
 	else
 	{
@@ -1090,7 +1123,7 @@ bool __fastcall DRLG_L2PlaceMiniSet(char *miniset, int tmin, int tmax, int cx, i
 	if ( v30 <= 0 )
 	{
 		v13 = ldir;
-		v14 = 0; /* v38 */
+		v14 = 0; /* v38; check */
 	}
 	else
 	{
@@ -1098,12 +1131,10 @@ bool __fastcall DRLG_L2PlaceMiniSet(char *miniset, int tmin, int tmax, int cx, i
 		v36 = 40 - v7;
 		do
 		{
-			_LOBYTE(miniset) = 0;
-			v11 = random((int)miniset, max);
-			_LOBYTE(v12) = 0;
+			v11 = random(0, max);
 			v13 = v11;
 			v33 = 0;
-			v14 = random(v12, v36);
+			v14 = random(0, v36);
 			v39 = v14;
 			do
 			{
@@ -1117,22 +1148,19 @@ bool __fastcall DRLG_L2PlaceMiniSet(char *miniset, int tmin, int tmax, int cx, i
 					v15 = cx - v34;
 					if ( v13 >= cx - v34 && v13 <= cx + 12 )
 					{
-						_LOBYTE(v15) = 0;
-						v16 = random(v15, max);
-						_LOBYTE(v17) = 0;
+						v16 = random(0, max);
 						v13 = v16;
 						tmaxa = 0;
-						v39 = random(v17, v36);
+						v39 = random(0, v36);
 						v14 = v39;
 					}
 				}
 				if ( cy != -1 && v14 >= cy - v35 && v14 <= cy + 12 )
 				{
-					v18 = random(cy - v35, max);
-					_LOBYTE(v19) = 0;
+					v18 = random(0, max); /* cy - v35 */
 					v13 = v18;
 					tmaxa = 0;
-					v39 = random(v19, v36);
+					v39 = random(0, v36);
 					v14 = v39;
 				}
 				v20 = 0;
@@ -1176,7 +1204,7 @@ bool __fastcall DRLG_L2PlaceMiniSet(char *miniset, int tmin, int tmax, int cx, i
 			if ( v33 >= 200 )
 				return 0;
 			v24 = 0;
-			for ( miniset = (char *)(v34 * v35 + 2); v24 < v35; ++v24 )
+			for ( miniset = (unsigned char *)(v34 * v35 + 2); v24 < v35; ++v24 )
 			{
 				v25 = v34;
 				if ( v34 > 0 )
@@ -1222,9 +1250,9 @@ bool __fastcall DRLG_L2PlaceMiniSet(char *miniset, int tmin, int tmax, int cx, i
 // 5CF320: using guessed type int LvlViewY;
 // 5CF324: using guessed type int LvlViewX;
 
-void __fastcall DRLG_L2PlaceRndSet(char *miniset, int rndper)
+void __fastcall DRLG_L2PlaceRndSet(unsigned char *miniset, int rndper)
 {
-	char *v2; // ebx
+	unsigned char *v2; // ebx
 	signed int v3; // esi
 	signed int v4; // ecx
 	int v5; // edx
@@ -1232,7 +1260,7 @@ void __fastcall DRLG_L2PlaceRndSet(char *miniset, int rndper)
 	signed int i; // edx
 	signed int v8; // esi
 	int v9; // eax
-	char v10; // cl
+	unsigned char v10; // cl
 	int v11; // edi
 	_BYTE *v12; // ecx
 	int v13; // esi
@@ -1240,10 +1268,10 @@ void __fastcall DRLG_L2PlaceRndSet(char *miniset, int rndper)
 	int v15; // eax
 	signed int j; // edx
 	signed int v17; // esi
-	char *v18; // eax
-	char v19; // cl
+	unsigned char *v18; // eax
+	unsigned char v19; // cl
 	int v20; // [esp+8h] [ebp-3Ch]
-	char *v21; // [esp+10h] [ebp-34h]
+	unsigned char *v21; // [esp+10h] [ebp-34h]
 	int v22; // [esp+14h] [ebp-30h]
 	int v23; // [esp+18h] [ebp-2Ch]
 	int v24; // [esp+1Ch] [ebp-28h]
@@ -1260,8 +1288,8 @@ void __fastcall DRLG_L2PlaceRndSet(char *miniset, int rndper)
 	v2 = miniset;
 	v32 = 0;
 	v20 = rndper;
-	v3 = (unsigned char)miniset[1];
-	v4 = (unsigned char)*miniset;
+	v3 = miniset[1];
+	v4 = *miniset;
 	v21 = v2;
 	v30 = v4;
 	v26 = 40 - v3;
@@ -1318,15 +1346,14 @@ void __fastcall DRLG_L2PlaceRndSet(char *miniset, int rndper)
 						if ( v23 >= v32 + 2 * v31 )
 						{
 LABEL_34:
-							_LOBYTE(v12) = 0;
-							if ( random((int)v12, 100) < v20 )
+							if ( random(0, 100) < v20 )
 							{
 								for ( j = 0; j < v31; ++j )
 								{
 									v17 = v30;
 									if ( v30 > 0 )
 									{
-										v18 = (char *)dungeon + j + v28 + v32;
+										v18 = (unsigned char *)dungeon + j + v28 + v32;
 										do
 										{
 											v19 = v2[v11];
@@ -1739,16 +1766,13 @@ void __fastcall CreateRoom(int nX1, int nY1, int nX2, int nY2, int nRDest, int n
 	int v13; // edx
 	int v14; // edx
 	int v15; // edi
-	int v16; // ecx
 	int v17; // esi
 	int v18; // ebx
 	int v19; // edx
 	int v20; // ecx
 	int v21; // eax
-	int v22; // ecx
 	int v23; // eax
 	int v24; // eax
-	int v25; // ecx
 	int v26; // eax
 	int *v27; // ecx
 	int v28; // eax
@@ -1803,18 +1827,15 @@ LABEL_11:
 				v13 = nY2 - v39;
 			}
 			v14 = v13 - nX1;
-			_LOBYTE(nX1) = 0;
-			v36 = Room_Min + random(nX1, v14);
+			v36 = Room_Min + random(0, v14);
 LABEL_16:
 			if ( ForceHW == 1 )
 			{
 				v41 = nW;
 				v36 = nH;
 			}
-			_LOBYTE(nX1) = 0;
-			v15 = v37 + random(nX1, v9);
-			_LOBYTE(v16) = 0;
-			v17 = v39 + random(v16, v10);
+			v15 = v37 + random(0, v9);
+			v17 = v39 + random(0, v10);
 			v18 = v15 + v41;
 			v43 = v17 + v36;
 			if ( v15 + v41 > nX2 )
@@ -1859,53 +1880,45 @@ LABEL_16:
 			{
 				if ( nHDir == 1 )
 				{
-					_LOBYTE(v20) = 0;
-					v21 = random(v20, v18 - v15 - 2);
-					_LOBYTE(v22) = 0;
+					v21 = random(0, v18 - v15 - 2);
 					nX1a = v21 + v15 + 1;
 					v33 = v17;
-					v23 = random(v22, RoomList[nRDest].nRoomx2 - RoomList[nRDest].nRoomx1 - 2);
+					v23 = random(0, RoomList[nRDest].nRoomx2 - RoomList[nRDest].nRoomx1 - 2);
 					v20 = 20 * nRDest;
 					v34 = v23 + RoomList[nRDest].nRoomx1 + 1;
 					v35 = RoomList[nRDest].nRoomy2;
 				}
 				if ( nHDir == 3 )
 				{
-					_LOBYTE(v20) = 0;
-					v24 = random(v20, v18 - v15 - 2);
-					_LOBYTE(v25) = 0;
+					v24 = random(0, v18 - v15 - 2);
 					nX1a = v24 + v15 + 1;
 					v33 = v43;
-					v26 = random(v25, RoomList[nRDest].nRoomx2 - RoomList[nRDest].nRoomx1 - 2);
+					v26 = random(0, RoomList[nRDest].nRoomx2 - RoomList[nRDest].nRoomx1 - 2);
 					v20 = 20 * nRDest;
 					v34 = v26 + RoomList[nRDest].nRoomx1 + 1;
 					v35 = RoomList[nRDest].nRoomy1;
 				}
 				if ( nHDir == 2 )
 				{
-					_LOBYTE(v20) = 0;
 					nX1a = v18;
-					v33 = random(v20, v43 - v17 - 2) + v17 + 1;
+					v33 = random(0, v43 - v17 - 2) + v17 + 1;
 					v34 = RoomList[nRDest].nRoomx1;
 					v27 = &RoomList[nRDest].nRoomy1;
 					ForceHWa = v27;
 					v28 = RoomList[nRDest].nRoomy2 - *v27;
-					_LOBYTE(v27) = 0;
-					v29 = random((int)v27, v28 - 2);
+					v29 = random(0, v28 - 2);
 					v20 = *ForceHWa;
 					v35 = v29 + *ForceHWa + 1;
 				}
 				if ( nHDir == 4 )
 				{
-					_LOBYTE(v20) = 0;
 					nX1a = v15;
-					v33 = random(v20, v43 - v17 - 2) + v17 + 1;
+					v33 = random(0, v43 - v17 - 2) + v17 + 1;
 					v34 = RoomList[nRDest].nRoomx2;
 					v30 = &RoomList[nRDest].nRoomy1;
 					ForceHWb = v30;
 					v31 = RoomList[nRDest].nRoomy2 - *v30;
-					_LOBYTE(v30) = 0;
-					v35 = random((int)v30, v31 - 2) + *ForceHWb + 1;
+					v35 = random(0, v31 - 2) + *ForceHWb + 1;
 				}
 				AddHall(nX1a, v33, v34, v35, nHDir);
 				v19 = v42;
@@ -1949,8 +1962,7 @@ LABEL_16:
 		}
 		v11 = Room_Max - Room_Min;
 LABEL_7:
-		_LOBYTE(nX1) = 0;
-		v12 = random(nX1, v11);
+		v12 = random(0, v11);
 		nX1 = Room_Min;
 		v41 = Room_Min + v12;
 		goto LABEL_11;
@@ -2100,7 +2112,6 @@ void __fastcall ConnectHall(int nX1, int nY1, int nX2, int nY2, int nHd)
 	int v5; // edi
 	signed int v6; // esi
 	int v7; // eax
-	int v8; // ecx
 	int v9; // edi
 	int v10; // ebx
 	int v11; // ecx
@@ -2114,7 +2125,6 @@ void __fastcall ConnectHall(int nX1, int nY1, int nX2, int nY2, int nHd)
 	int v19; // edx
 	int v20; // eax
 	//int v21; // ST04_4
-	int v22; // ecx
 	int v23; // ebx
 	int v24; // ebx
 	bool v25; // zf
@@ -2138,12 +2148,10 @@ void __fastcall ConnectHall(int nX1, int nY1, int nX2, int nY2, int nHd)
 	v34 = 0;
 	v5 = nY1;
 	v6 = nX1;
-	_LOBYTE(nX1) = 0;
 	nY = nY1;
-	v7 = random(nX1, 100);
-	_LOBYTE(v8) = 0;
+	v7 = random(0, 100);
 	v33 = v7;
-	v32 = random(v8, 100);
+	v32 = random(0, 100);
 	v31 = v6;
 	v30 = v5;
 	CreateDoorType(v6, v5);
@@ -2239,8 +2247,7 @@ void __fastcall ConnectHall(int nX1, int nY1, int nX2, int nY2, int nHd)
 			v24 = 5 * v20;
 			if ( 5 * v20 > 80 )
 				v24 = 80;
-			_LOBYTE(v22) = 0;
-			if ( random(v22, 100) < v24 )
+			if ( random(0, 100) < v24 )
 			{
 				if ( nY2a <= nY || nY >= 40 )
 				{
@@ -2256,8 +2263,7 @@ void __fastcall ConnectHall(int nX1, int nY1, int nX2, int nY2, int nHd)
 			v23 = 2 * v36;
 			if ( 2 * v36 > 30 )
 				v23 = 30;
-			_LOBYTE(v22) = 0;
-			if ( random(v22, 100) < v23 )
+			if ( random(0, 100) < v23 )
 			{
 				if ( nX2a <= v6 || v6 >= 40 )
 					v26 = 4;
@@ -2476,9 +2482,7 @@ LABEL_25:
 bool __cdecl DL2_FillVoids()
 {
 	int i; // eax
-	int v1; // ecx
 	int v2; // eax
-	int v3; // ecx
 	int v4; // edi
 	int v5; // eax
 	int v6; // ebx
@@ -2540,11 +2544,9 @@ bool __cdecl DL2_FillVoids()
 	v48 = 0;
 	for ( i = DL2_NumNoChar(); i > 700 && v48 < 100; i = DL2_NumNoChar() )
 	{
-		_LOBYTE(v1) = 0;
-		v2 = random(v1, 38);
-		_LOBYTE(v3) = 0;
+		v2 = random(0, 38);
 		v4 = v2 + 1;
-		v5 = random(v3, 38);
+		v5 = random(0, 38);
 		v6 = v5 + 1;
 		v7 = v5 + 1 + 40 * v4;
 		if ( predungeon[0][v7] != 35 )

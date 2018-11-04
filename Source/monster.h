@@ -4,11 +4,11 @@
 
 extern int MissileFileFlag; // weak
 extern int monster_cpp_init_value; // weak
-extern int monstkills[200];
-extern int monstactive[200];
+extern int monstkills[MAXMONSTERS];
+extern int monstactive[MAXMONSTERS];
 extern int nummonsters;
 extern int sgbSaveSoundOn; // weak
-extern MonsterStruct monster[200];
+extern MonsterStruct monster[MAXMONSTERS];
 extern int totalmonsters; // weak
 extern CMonster Monsters[16];
 // int END_Monsters_17; // weak
@@ -17,7 +17,7 @@ extern int uniquetrans;
 extern int nummtypes;
 
 void __cdecl monster_cpp_init();
-void __fastcall InitMonsterTRN(int monst, int special);
+void __fastcall InitMonsterTRN(int monst, BOOL special);
 void __cdecl InitLevelMonsters();
 int __fastcall AddMonsterType(int type, int placeflag);
 void __cdecl GetLevelMTypes();
@@ -25,15 +25,15 @@ void __fastcall InitMonsterGFX(int monst);
 void __fastcall ClearMVars(int i);
 void __fastcall InitMonster(int i, int rd, int mtype, int x, int y);
 void __cdecl ClrAllMonsters();
-bool __fastcall MonstPlace(int xp, int yp);
+BOOL __fastcall MonstPlace(int xp, int yp);
 void __fastcall PlaceMonster(int i, int mtype, int x, int y);
 void __fastcall PlaceUniqueMonst(int uniqindex, int miniontype, int unpackfilesize);
 void __cdecl PlaceQuestMonsters();
-void __fastcall PlaceGroup(int mtype, int num, unsigned char leaderf, int leader);
+void __fastcall PlaceGroup(int mtype, int num, int leaderf, int leader);
 void __cdecl LoadDiabMonsts();
 void __cdecl InitMonsters();
 void __cdecl PlaceUniques();
-void __fastcall SetMapMonsters(char *pMap, int startx, int starty);
+void __fastcall SetMapMonsters(unsigned char *pMap, int startx, int starty);
 void __fastcall DeleteMonster(int i);
 int __fastcall AddMonster(int x, int y, int dir, int mtype, int InMap);
 void __fastcall NewMonsterAnim(int i, AnimStruct *anim, int md);
@@ -46,8 +46,8 @@ void __fastcall M_StartStand(int i, int md);
 void __fastcall M_StartDelay(int i, int len);
 void __fastcall M_StartSpStand(int i, int md);
 void __fastcall M_StartWalk(int i, int xvel, int yvel, int xadd, int yadd, int EndDir);
-void __fastcall M_StartWalk2(int i, int xvel, int yvel, int a4, int a5, int a6, int a7, int EndDir);
-void __fastcall M_StartWalk3(int i, int xvel, int yvel, int a4, int a5, int a6, int a7, int a8, int a9, int EndDir);
+void __fastcall M_StartWalk2(int i, int xvel, int yvel, int xoff, int yoff, int xadd, int yadd, int EndDir);
+void __fastcall M_StartWalk3(int i, int xvel, int yvel, int xoff, int yoff, int xadd, int yadd, int mapx, int mapy, int EndDir);
 void __fastcall M_StartAttack(int i);
 void __fastcall M_StartRAttack(int i, int missile_type, int dam);
 void __fastcall M_StartRSpAttack(int i, int missile_type, int dam);
@@ -137,20 +137,20 @@ void __cdecl DeleteMonsterList();
 void __cdecl ProcessMonsters();
 void __cdecl FreeMonsters();
 bool __fastcall DirOK(int i, int mdir);
-bool __fastcall PosOkMissile(int x, int y);
-bool __fastcall CheckNoSolid(int x, int y);
-bool __fastcall LineClearF(bool (__fastcall *Clear)(int, int), int x1, int y1, int x2, int y2);
-bool __fastcall LineClear(int x1, int y1, int x2, int y2);
-bool __fastcall LineClearF1(bool (__fastcall *Clear)(int, int, int), int monst, int x1, int y1, int x2, int y2);
+BOOL __fastcall PosOkMissile(int x, int y);
+BOOL __fastcall CheckNoSolid(int x, int y);
+BOOL __fastcall LineClearF(BOOL (__fastcall *Clear)(int, int), int x1, int y1, int x2, int y2);
+BOOL __fastcall LineClear(int x1, int y1, int x2, int y2);
+BOOL __fastcall LineClearF1(BOOL (__fastcall *Clear)(int, int, int), int monst, int x1, int y1, int x2, int y2);
 void __fastcall SyncMonsterAnim(int i);
 void __fastcall M_FallenFear(int x, int y);
 void __fastcall PrintMonstHistory(int mt);
 void __cdecl PrintUniqueHistory();
 void __fastcall MissToMonst(int i, int x, int y);
-bool __fastcall PosOkMonst(int i, int x, int y);
-bool __fastcall PosOkMonst2(int i, int x, int y);
-bool __fastcall PosOkMonst3(int i, int x, int y);
-bool __fastcall IsSkel(int mt);
+BOOL __fastcall PosOkMonst(int i, int x, int y);
+BOOL __fastcall PosOkMonst2(int i, int x, int y);
+BOOL __fastcall PosOkMonst3(int i, int x, int y);
+BOOL __fastcall IsSkel(int mt);
 bool __fastcall IsGoat(int mt);
 int __fastcall M_SpawnSkel(int x, int y, int dir);
 void __fastcall ActivateSpawn(int i, int x, int y, int dir);
@@ -159,17 +159,17 @@ int __cdecl PreSpawnSkeleton();
 void __fastcall TalktoMonster(int i);
 void __fastcall SpawnGolum(int i, int x, int y, int mi);
 bool __fastcall CanTalkToMonst(int m);
-bool __fastcall CheckMonsterHit(int m, bool *ret);
+BOOL __fastcall CheckMonsterHit(int m, BOOL *ret);
 int __fastcall encode_enemy(int m);
 void __fastcall decode_enemy(int m, int enemy);
 
-/* data */
-
-extern int monster_inf; // weak
-extern char plr2monst[9];
-extern unsigned char counsmiss[4];
-
 /* rdata */
+
+extern const int monster_inf; // weak
+extern const char plr2monst[9];
+extern const unsigned char counsmiss[4];
+
+/* data */
 
 extern MonsterData monsterdata[112];
 extern char MonstConvTbl[128];

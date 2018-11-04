@@ -9,8 +9,8 @@ void __cdecl gamemenu_off();
 void __cdecl gamemenu_handle_previous();
 void __cdecl gamemenu_new_game();
 void __cdecl gamemenu_quit_game();
-void __cdecl gamemenu_load_game();
-void __cdecl gamemenu_save_game();
+void __cdecl gamemenu_load_game(); // should have 1-2 args
+void __cdecl gamemenu_save_game(); // should have 1-2 args
 void __cdecl gamemenu_restart_town();
 void __cdecl gamemenu_options();
 void __cdecl gamemenu_get_music();

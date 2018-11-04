@@ -12,8 +12,8 @@ extern void *pCowCels; // idb
 extern TownerStruct towner[16];
 
 int __fastcall GetActiveTowner(int t);
-void __fastcall SetTownerGPtrs(void *pData, void **pAnim);
-void __fastcall NewTownerAnim(int tnum, void *pAnim, int numFrames, int Delay);
+void __fastcall SetTownerGPtrs(void *pData, void **pAnim); /* unsigned char *+** */
+void __fastcall NewTownerAnim(int tnum, unsigned char *pAnim, int numFrames, int Delay);
 void __fastcall InitTownerInfo(int i, int w, bool sel, int t, int x, int y, int ao, int tp);
 void __fastcall InitQstSnds(int i);
 void __cdecl InitSmith();
@@ -45,11 +45,11 @@ void __fastcall TownerTalk(int t);
 void __fastcall TalkToTowner(int p, int t);
 void __fastcall CowSFX(int pnum);
 
-/* data */
-
-extern int snSFX[3][3];
-
 /* rdata */
+
+extern const int snSFX[3][3];
+
+/* data */
 
 extern char AnimOrder[6][148];
 extern int TownCowX[3];

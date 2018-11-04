@@ -2,9 +2,11 @@
 ifdef MINGW32
 	CXX=mingw32-g++
 	DLLTOOL=dlltool
+	WINDRES=windres
 else
 	CXX=i686-w64-mingw32-g++
 	DLLTOOL=i686-w64-mingw32-dlltool
+	WINDRES=i686-w64-mingw32-windres
 endif
 
 # Clang doesn't understand permissive compilation, we need to "fix" invalid
@@ -19,6 +21,10 @@ LDFLAGS=-L./ -static-libgcc -mwindows
 
 all: devilution.exe
 
+debug: CXXFLAGS += -D_DEBUG
+debug: CPPFLAGS += -D_DEBUG
+debug: devilution.exe
+
 DIABLO_SRC=$(wildcard Source/*.cpp)
 OBJS=$(DIABLO_SRC:.cpp=.o)
 
@@ -29,7 +35,7 @@ devilution.exe: $(OBJS) $(PKWARE_OBJS) diabres.o diabloui.lib storm.lib
 	$(CXX) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 
 diabres.o: Diablo.rc
-	windres $< $@
+	$(WINDRES) $< $@
 
 diabloui.lib: diabloui.dll DiabloUI/diabloui_gcc.def
 	$(DLLTOOL) -d DiabloUI/diabloui_gcc.def -D $< -l $@
@@ -44,6 +50,6 @@ storm.dll:
 #	$(error Please copy storm.dll (version 1.09[b]) here)
 
 clean:
-	@$(RM) -v $(OBJS) $(OBJS:.o=.d) $(PKWARE_OBJS) $(PKWARE_OBJS:.o=d) diabres.o storm.lib diabloui.lib
+	@$(RM) -v $(OBJS) $(OBJS:.o=.d) $(PKWARE_OBJS) $(PKWARE_OBJS:.o=d) diabres.o storm.lib diabloui.lib devilution.exe
 
 .PHONY: clean all

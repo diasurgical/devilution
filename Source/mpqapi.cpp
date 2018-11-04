@@ -10,9 +10,11 @@ bool save_archive_modified; // weak
 _BLOCKENTRY *sgpBlockTbl;
 bool save_archive_open; // weak
 
-int mpqapi_inf = 0x7F800000; // weak
+const int mpqapi_inf = 0x7F800000; // weak
 
-/* rdata */
+//note: 32872 = 32768 + 104 (sizeof(_FILEHEADER))
+
+/* data */
 
 HANDLE sghArchive = (HANDLE)0xFFFFFFFF; // idb
 
@@ -36,14 +38,14 @@ bool __fastcall mpqapi_set_hidden(char *pszArchive, bool hidden)
 
 	v2 = pszArchive;
 	v3 = hidden;
-	v4 = GetFileAttributesA(pszArchive);
+	v4 = GetFileAttributes(pszArchive);
 	if ( v4 == -1 )
 		return GetLastError() == ERROR_FILE_NOT_FOUND;
 	v6 = v3 != 0 ? FILE_ATTRIBUTE_SYSTEM|FILE_ATTRIBUTE_HIDDEN : 0;
 	if ( v4 == v6 )
 		result = 1;
 	else
-		result = SetFileAttributesA(v2, v6);
+		result = SetFileAttributes(v2, v6);
 	return result;
 }
 
@@ -61,7 +63,7 @@ void __fastcall mpqapi_store_creation_time(char *pszArchive, int dwChar)
 	if ( gbMaxPlayers != 1 )
 	{
 		mpqapi_reg_load_modification_time(dst, 160);
-		v4 = FindFirstFileA(v3, &FindFileData);
+		v4 = FindFirstFile(v3, &FindFileData);
 		if ( v4 != (HANDLE)-1 )
 		{
 			FindClose(v4);
@@ -164,13 +166,13 @@ void __fastcall mpqapi_remove_hash_entry(char *pszName)
 		v4 = v3->offset;
 		v5 = v3->sizealloc;
 		memset(v3, 0, 0x10u);
-		mpqapi_alloc_block(v4, v5);
+		mpqapi_free_block(v4, v5);
 		save_archive_modified = 1;
 	}
 }
 // 65AB0C: using guessed type int save_archive_modified;
 
-void __fastcall mpqapi_alloc_block(int block_offset, int block_size)
+void __fastcall mpqapi_free_block(int block_offset, int block_size)
 {
 	int v2; // esi
 	int v3; // edi
@@ -470,7 +472,7 @@ LABEL_25:
 		{
 			v15 = destsize + v9->offset;
 			v9->sizealloc = destsize;
-			mpqapi_alloc_block(v15, v14);
+			mpqapi_free_block(v15, v14);
 		}
 	}
 	return 1;
@@ -549,7 +551,7 @@ bool __fastcall mpqapi_open_archive(char *pszArchive, bool hidden, int dwChar) /
 	int v10; // eax
 	char *lpFileName; // [esp+10h] [ebp-70h]
 	DWORD dwTemp; // [esp+14h] [ebp-6Ch]
-	TMPQHeader fhdr; // [esp+18h] [ebp-68h]
+	_FILEHEADER fhdr; // [esp+18h] [ebp-68h]
 
 	v3 = pszArchive;
 	v4 = hidden;
@@ -559,10 +561,10 @@ bool __fastcall mpqapi_open_archive(char *pszArchive, bool hidden, int dwChar) /
 		return 0;
 	v6 = (unsigned char)gbMaxPlayers > 1u ? FILE_FLAG_WRITE_THROUGH : 0;
 	save_archive_open = 0;
-	sghArchive = CreateFileA(v3, GENERIC_READ|GENERIC_WRITE, 0, NULL, OPEN_EXISTING, v6, NULL);
+	sghArchive = CreateFile(v3, GENERIC_READ|GENERIC_WRITE, 0, NULL, OPEN_EXISTING, v6, NULL);
 	if ( sghArchive == (HANDLE)-1 )
 	{
-		sghArchive = CreateFileA(lpFileName, GENERIC_READ|GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, v6 | (v4 != 0 ? FILE_ATTRIBUTE_SYSTEM|FILE_ATTRIBUTE_HIDDEN : 0), NULL);
+		sghArchive = CreateFile(lpFileName, GENERIC_READ|GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, v6 | (v4 != 0 ? FILE_ATTRIBUTE_SYSTEM|FILE_ATTRIBUTE_HIDDEN : 0), NULL);
 		if ( sghArchive == (HANDLE)-1 )
 			return 0;
 		save_archive_open = 1;
@@ -579,7 +581,7 @@ LABEL_15:
 		}
 		sgpBlockTbl = (_BLOCKENTRY *)DiabloAllocPtr(0x8000);
 		memset(sgpBlockTbl, 0, 0x8000u);
-		if ( fhdr.dwBlockTableSize )
+		if ( fhdr.blockcount )
 		{
 			if ( SetFilePointer(sghArchive, 104, NULL, FILE_BEGIN) == -1
 			  || !ReadFile(sghArchive, sgpBlockTbl, 0x8000u, &dwTemp, NULL) )
@@ -591,7 +593,7 @@ LABEL_15:
 		}
 		sgpHashTbl = (_HASHENTRY *)DiabloAllocPtr(0x8000);
 		memset(sgpHashTbl, 255, 0x8000u);
-		if ( fhdr.dwHashTableSize )
+		if ( fhdr.hashcount )
 		{
 			if ( SetFilePointer(sghArchive, 32872, NULL, FILE_BEGIN) == -1
 			  || !ReadFile(sghArchive, sgpHashTbl, 0x8000u, &dwTemp, NULL) )
@@ -608,10 +610,10 @@ LABEL_15:
 // 65AB14: using guessed type char save_archive_open;
 // 679660: using guessed type char gbMaxPlayers;
 
-bool __fastcall mpqapi_parse_archive_header(TMPQHeader *pHdr, int *pdwNextFileStart) // ParseMPQHeader
+bool __fastcall mpqapi_parse_archive_header(_FILEHEADER *pHdr, int *pdwNextFileStart) // ParseMPQHeader
 {
 	int *v2; // ebp
-	TMPQHeader *v3; // esi
+	_FILEHEADER *v3; // esi
 	DWORD v4; // eax
 	DWORD v5; // edi
 	DWORD NumberOfBytesRead; // [esp+10h] [ebp-4h]
@@ -625,23 +627,23 @@ bool __fastcall mpqapi_parse_archive_header(TMPQHeader *pHdr, int *pdwNextFileSt
 	  || v4 < 0x68
 	  || !ReadFile(sghArchive, v3, 0x68u, &NumberOfBytesRead, NULL)
 	  || NumberOfBytesRead != 104
-	  || v3->dwID != '\x1AQPM'
-	  || v3->dwHeaderSize != 32
-	  || v3->wFormatVersion > 0u
-	  || v3->wSectorSize != 3
-	  || v3->dwArchiveSize != v5
-	  || v3->dwHashTablePos != 32872
-	  || v3->dwBlockTablePos != 104
-	  || v3->dwHashTableSize != 2048
-	  || v3->dwBlockTableSize != 2048 )
+	  || v3->signature != '\x1AQPM'
+	  || v3->headersize != 32
+	  || v3->version > 0u
+	  || v3->sectorsizeid != 3
+	  || v3->filesize != v5
+	  || v3->hashoffset != 32872
+	  || v3->blockoffset != 104
+	  || v3->hashcount != 2048
+	  || v3->blockcount != 2048 )
 	{
 		if ( SetFilePointer(sghArchive, 0, NULL, FILE_BEGIN) == -1 || !SetEndOfFile(sghArchive) )
 			return 0;
 		memset(v3, 0, 0x68u);
-		v3->dwID = '\x1AQPM';
-		v3->dwHeaderSize = 32;
-		v3->wSectorSize = 3;
-		v3->wFormatVersion = 0;
+		v3->signature = '\x1AQPM';
+		v3->headersize = 32;
+		v3->sectorsizeid = 3;
+		v3->version = 0;
 		*v2 = 0x10068;
 		save_archive_modified = 1;
 		save_archive_open = 1;
@@ -700,7 +702,7 @@ void __fastcall mpqapi_store_modified_time(char *pszArchive, int dwChar)
 	if ( gbMaxPlayers != 1 )
 	{
 		mpqapi_reg_load_modification_time(dst, 160);
-		v4 = FindFirstFileA(v3, &FindFileData);
+		v4 = FindFirstFile(v3, &FindFileData);
 		if ( v4 != (HANDLE)-1 )
 		{
 			FindClose(v4);
@@ -736,19 +738,19 @@ void __fastcall mpqapi_flush_and_close(char *pszArchive, bool bFree, int dwChar)
 bool __cdecl mpqapi_write_header() // WriteMPQHeader
 {
 	bool result; // al
-	TMPQHeader fhdr; // [esp+8h] [ebp-6Ch]
+	_FILEHEADER fhdr; // [esp+8h] [ebp-6Ch]
 	DWORD NumberOfBytesWritten; // [esp+70h] [ebp-4h]
 
 	memset(&fhdr, 0, 0x68u);
-	fhdr.dwID = '\x1AQPM';
-	fhdr.dwHeaderSize = 32;
-	fhdr.dwArchiveSize = GetFileSize(sghArchive, 0);
-	fhdr.wFormatVersion = 0;
-	fhdr.wSectorSize = 3;
-	fhdr.dwHashTablePos = 32872;
-	fhdr.dwBlockTablePos = 104;
-	fhdr.dwHashTableSize = 2048;
-	fhdr.dwBlockTableSize = 2048;
+	fhdr.signature = '\x1AQPM';
+	fhdr.headersize = 32;
+	fhdr.filesize = GetFileSize(sghArchive, 0);
+	fhdr.version = 0;
+	fhdr.sectorsizeid = 3;
+	fhdr.hashoffset = 32872;
+	fhdr.blockoffset = 104;
+	fhdr.hashcount = 2048;
+	fhdr.blockcount = 2048;
 	if ( SetFilePointer(sghArchive, 0, NULL, FILE_BEGIN) != -1 && WriteFile(sghArchive, &fhdr, 0x68u, &NumberOfBytesWritten, 0) )
 		result = NumberOfBytesWritten == 104;
 	else

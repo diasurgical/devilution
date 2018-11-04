@@ -13,7 +13,7 @@ int VR2;
 int VR3;
 void *pSetPiece; // idb
 
-ShadowStruct SPATS[37] =
+const ShadowStruct SPATS[37] =
 {
   { 7, 13, 0, 13, 144, 0, 142 },
   { 16, 13, 0, 13, 144, 0, 142 },
@@ -53,7 +53,7 @@ ShadowStruct SPATS[37] =
   { 12, 13, 11, 0, 140, 147, 0 },
   { 3, 13, 11, 12, 150, 0, 0 }
 };
-unsigned char BSTYPES[206] =
+const unsigned char BSTYPES[206] =
 {
 	0,   1,   2,   3,   4,   5,   6,   7,   8,   9,
    10,  11,  12,  13,  14,  15,  16,  17,   0,   0,
@@ -77,7 +77,7 @@ unsigned char BSTYPES[206] =
    28,   1,   2,  25,  26,  22,  22,  25,  26,   0,
 	0,   0,   0,   0,   0,   0
 };
-unsigned char L5BTYPES[206] =
+const unsigned char L5BTYPES[206] =
 {
 	0,   1,   2,   3,   4,   5,   6,   7,   8,   9,
    10,  11,  12,  13,  14,  15,  16,  17,   0,   0,
@@ -101,32 +101,32 @@ unsigned char L5BTYPES[206] =
 	0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
 	0,   0,   0,   0,   0,   0
 };
-unsigned char STAIRSUP[] = { 4, 4, 13, 13, 13, 13, 2, 2, 2, 2, 13, 13, 13, 13, 13, 13, 13, 13, 0, 66, 6, 0, 63, 64, 65, 0, 0, 67, 68, 0, 0, 0, 0, 0 };
-unsigned char L5STAIRSUP[] = { 4, 4, 22, 22, 22, 22, 2, 2, 2, 2, 13, 13, 13, 13, 13, 13, 13, 13, 0, 66, 23, 0, 63, 64, 65, 0, 0, 67, 68, 0, 0, 0, 0, 0 };
-unsigned char STAIRSDOWN[] = { 4, 3, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 62, 57, 58, 0, 61, 59, 60, 0, 0, 0, 0, 0 };
-unsigned char LAMPS[] = { 2, 2, 13, 0, 13, 13, 129, 0, 130, 128 };
-unsigned char PWATERIN[] = { 6, 6, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 0, 0, 0, 0, 0, 0, 0, 202, 200, 200, 84, 0, 0, 199, 203, 203, 83, 0, 0, 85, 206, 80, 81, 0, 0, 0, 134, 135, 0, 0, 0, 0, 0, 0, 0, 0 };
+const unsigned char STAIRSUP[] = { 4, 4, 13, 13, 13, 13, 2, 2, 2, 2, 13, 13, 13, 13, 13, 13, 13, 13, 0, 66, 6, 0, 63, 64, 65, 0, 0, 67, 68, 0, 0, 0, 0, 0 };
+const unsigned char L5STAIRSUP[] = { 4, 4, 22, 22, 22, 22, 2, 2, 2, 2, 13, 13, 13, 13, 13, 13, 13, 13, 0, 66, 23, 0, 63, 64, 65, 0, 0, 67, 68, 0, 0, 0, 0, 0 };
+const unsigned char STAIRSDOWN[] = { 4, 3, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 62, 57, 58, 0, 61, 59, 60, 0, 0, 0, 0, 0 };
+const unsigned char LAMPS[] = { 2, 2, 13, 0, 13, 13, 129, 0, 130, 128 };
+const unsigned char PWATERIN[] = { 6, 6, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 0, 0, 0, 0, 0, 0, 0, 202, 200, 200, 84, 0, 0, 199, 203, 203, 83, 0, 0, 85, 206, 80, 81, 0, 0, 0, 134, 135, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-/* rdata */
+/* data */
 unsigned char L5ConvTbl[16] = { 22u, 13u, 1u, 13u, 2u, 13u, 13u, 13u, 4u, 13u, 1u, 13u, 2u, 13u, 16u, 13u };
 
 void __cdecl DRLG_Init_Globals()
 {
-	char v0; // al
+	char c;
 
-	memset(dFlags, 0, 0x3100u);
-	memset(dPlayer, 0, 0x3100u);
-	memset(dMonster, 0, 0xC400u);
-	memset(dDead, 0, 0x3100u);
-	memset(dObject, 0, 0x3100u);
-	memset(dItem, 0, 0x3100u);
-	memset(dMissile, 0, 0x3100u);
-	memset(dArch, 0, 0x3100u);
-	if ( lightflag )
-		v0 = 0;
+	memset(dFlags, 0, sizeof(dFlags));
+	memset(dPlayer, 0, sizeof(dPlayer));
+	memset(dMonster, 0, sizeof(dMonster));
+	memset(dDead, 0, sizeof(dDead));
+	memset(dObject, 0, sizeof(dObject));
+	memset(dItem, 0, sizeof(dItem));
+	memset(dMissile, 0, sizeof(dMissile));
+	memset(dArch, 0, sizeof(dArch));
+	if ( !lightflag )
+		c = ( light4flag ) ? 3 : 15;
 	else
-		v0 = light4flag == 0 ? 15 : 3;
-	memset(dTransVal, v0, 0x3100u);
+		c = 0;
+	memset(dTransVal, c, sizeof(dTransVal));
 }
 // 525728: using guessed type int light4flag;
 // 646A28: using guessed type int lightflag;
@@ -211,8 +211,8 @@ void __fastcall LoadL1Dungeon(char *sFileName, int vx, int vy)
 	DRLG_L1Pass3();
 	DRLG_Init_Globals();
 	DRLG_InitL1Vals();
-	SetMapMonsters((char *)v4, 0, 0);
-	SetMapObjects((char *)v4, 0, 0);
+	SetMapMonsters(v4, 0, 0);
+	SetMapObjects(v4, 0, 0);
 	mem_free_dbg(v4);
 }
 // 5CF328: using guessed type int dmaxx;
@@ -847,10 +847,10 @@ void __cdecl DRLG_L1Shadows()
 	do
 	{
 		v1 = &dungeon[0][v0 + 39];
-		v2 = 40;
+		v2 = 1;
 		do
 		{
-			v3 = &SPATS[0].s1;
+			v3 = (unsigned char *)&SPATS[0].s1;
 			sd[0][0] = BSTYPES[(unsigned char)v1[1]];
 			sd[1][0] = BSTYPES[(unsigned char)*(v1 - 39)];
 			sd[0][1] = BSTYPES[(unsigned char)*v1];
@@ -884,10 +884,10 @@ void __cdecl DRLG_L1Shadows()
 				v3 += 7;
 			}
 			while ( (signed int)v3 < (signed int)&SPATS[37].s1 );
-			v2 += 40;
+			++v2;
 			v1 += 40;
 		}
-		while ( v2 < 1600 );
+		while ( v2 < 40 );
 		++v0;
 	}
 	while ( v0 < 40 );
@@ -961,226 +961,215 @@ void __cdecl DRLG_L1Shadows()
 	while ( v10 < 40 );
 }
 
-int __fastcall DRLG_PlaceMiniSet(unsigned char *miniset, int tmin, int tmax, int cx, int cy, bool setview, int noquad, int ldir)
+int __fastcall DRLG_PlaceMiniSet(const unsigned char *miniset, int tmin, int tmax, int cx, int cy, bool setview, int noquad, int ldir)
 {
 	unsigned char *v8; // ebx
 	int v9; // edi
 	int v10; // esi
 	int v11; // edx
-	int v12; // eax
-	int v13; // ecx
-	int v14; // esi
-	int v15; // edi
-	int v16; // ebx
-	signed int v17; // edx
-	int v18; // eax
-	unsigned char v19; // cl
-	int v20; // ebx
+	int v12; // esi
+	int v13; // edi
+	int v14; // ebx
+	signed int v15; // edx
+	int v16; // eax
+	unsigned char v17; // cl
+	int v18; // ebx
 	int result; // eax
-	int v22; // eax
-	unsigned char v23; // dl
-	unsigned char v24; // bl
-	bool v25; // zf
-	bool v26; // sf
-	unsigned char v27; // of
-	int v28; // [esp-4h] [ebp-34h]
-	int v29; // [esp+Ch] [ebp-24h]
-	unsigned char *v30; // [esp+10h] [ebp-20h]
-	int v31; // [esp+14h] [ebp-1Ch]
-	int v32; // [esp+18h] [ebp-18h]
-	int v33; // [esp+1Ch] [ebp-14h]
-	signed int v34; // [esp+20h] [ebp-10h]
+	int v20; // eax
+	char *v21; // ecx
+	char v22; // dl
+	char v23; // bl
+	bool v24; // zf
+	bool v25; // sf
+	unsigned char v26; // of
+	int v27; // [esp-4h] [ebp-34h]
+	int v28; // [esp+Ch] [ebp-24h]
+	const unsigned char *v29; // [esp+10h] [ebp-20h]
+	int v30; // [esp+14h] [ebp-1Ch]
+	int v31; // [esp+18h] [ebp-18h]
+	int v32; // [esp+1Ch] [ebp-14h]
+	int v33; // [esp+20h] [ebp-10h]
 	int max; // [esp+24h] [ebp-Ch]
-	int v36; // [esp+28h] [ebp-8h]
-	int v37; // [esp+2Ch] [ebp-4h]
+	int v35; // [esp+28h] [ebp-8h]
+	int v36; // [esp+2Ch] [ebp-4h]
 	int tmaxa; // [esp+38h] [ebp+8h]
 	int tmaxb; // [esp+38h] [ebp+8h]
 
-	v8 = miniset;
+	v8 = (unsigned char *)miniset;
 	v9 = *miniset;
 	v10 = tmin;
 	v11 = tmax - tmin;
-	v30 = miniset;
-	v36 = *miniset;
-	v37 = miniset[1];
+	v29 = miniset;
+	v35 = *miniset;
+	v36 = miniset[1];
 	if ( v11 )
-	{
-		_LOBYTE(miniset) = 0;
-		v31 = v10 + random((int)miniset, v11);
-	}
+		v30 = v10 + random(0, v11);
 	else
-	{
-		v31 = 1;
-	}
-	v32 = 0;
-	if ( v31 > 0 )
+		v30 = 1;
+	v31 = 0;
+	if ( v30 > 0 )
 	{
 		max = 40 - v9;
-		v29 = 40 - v37;
+		v28 = 40 - v36;
 		while ( 1 )
 		{
-			_LOBYTE(miniset) = 0;
-			v12 = random((int)miniset, max);
-			_LOBYTE(v13) = 0;
-			v14 = v12;
-			v33 = 0;
-			v15 = random(v13, v29);
+			v12 = random(0, max);
+			v32 = 0;
+			v13 = random(0, v28);
 			while ( 1 )
 			{
 				tmaxa = 1;
-				if ( cx != -1 && v14 >= cx - v36 && v14 <= cx + 12 )
+				if ( cx != -1 && v12 >= cx - v35 && v12 <= cx + 12 )
 				{
-					++v14;
+					++v12;
 					tmaxa = 0;
 				}
-				miniset = (unsigned char *)cy;
-				if ( cy != -1 && v15 >= cy - v37 && v15 <= cy + 12 )
+				if ( cy != -1 && v13 >= cy - v36 && v13 <= cy + 12 )
 				{
-					++v15;
+					++v13;
 					tmaxa = 0;
 				}
-				v16 = 0;
+				v14 = 0;
 				switch ( noquad )
 				{
 					case 0:
-						if ( v14 >= cx )
+						if ( v12 >= cx )
 							goto LABEL_29;
 						goto LABEL_27;
 					case 1:
-						if ( v14 <= cx )
+						if ( v12 <= cx )
 							goto LABEL_29;
 LABEL_27:
-						if ( v15 >= cy )
+						if ( v13 >= cy )
 							goto LABEL_29;
 LABEL_28:
 						tmaxa = 0;
 						goto LABEL_29;
 					case 2:
-						if ( v14 >= cx )
+						if ( v12 >= cx )
 							goto LABEL_29;
 LABEL_22:
-						if ( v15 <= cy )
+						if ( v13 <= cy )
 							goto LABEL_29;
 						goto LABEL_28;
 				}
-				if ( noquad == 3 && v14 > cx )
+				if ( noquad == 3 && v12 > cx )
 					goto LABEL_22;
 LABEL_29:
-				v17 = 2;
-				if ( v37 > 0 )
+				v15 = 2;
+				if ( v36 > 0 )
 				{
 					do
 					{
 						if ( tmaxa != 1 )
 							break;
-						v34 = 0;
-						if ( v36 > 0 )
+						v33 = 0;
+						if ( v35 > 0 )
 						{
-							v18 = v15 + v16 + 40 * v14;
+							v16 = v13 + v14 + 40 * v12;
 							do
 							{
 								if ( tmaxa != 1 )
 									break;
-								v19 = v30[v17];
-								if ( v19 && dungeon[0][v18] != v19 )
+								v17 = v29[v15];
+								if ( v17 && dungeon[0][v16] != v17 )
 									tmaxa = 0;
-								if ( mydflags[0][v18] )
+								if ( mydflags[0][v16] )
 									tmaxa = 0;
-								miniset = (unsigned char *)v36;
-								++v17;
-								++v34;
-								v18 += 40;
+								++v15;
+								++v33;
+								v16 += 40;
 							}
-							while ( v34 < v36 );
+							while ( v33 < v35 );
 						}
-						++v16;
+						++v14;
 					}
-					while ( v16 < v37 );
+					while ( v14 < v36 );
 				}
-				v20 = 0;
+				v18 = 0;
 				if ( tmaxa )
 					break;
-				if ( ++v14 == max )
+				if ( ++v12 == max )
 				{
-					v14 = 0;
-					if ( ++v15 == v29 )
-						v15 = 0;
+					v12 = 0;
+					if ( ++v13 == v28 )
+						v13 = 0;
 				}
-				if ( ++v33 > 4000 )
+				if ( ++v32 > 4000 )
 					return -1;
 			}
-			v22 = v36 * v37 + 2;
-			if ( v37 > 0 )
+			v20 = v35 * v36 + 2;
+			if ( v36 > 0 )
 			{
 				do
 				{
-					if ( v36 > 0 )
+					if ( v35 > 0 )
 					{
-						tmaxb = v36;
-						miniset = (unsigned char *)&dungeon[v14][v20 + v15];
+						tmaxb = v35;
+						v21 = &dungeon[v12][v18 + v13];
 						do
 						{
-							v23 = v30[v22];
-							if ( v23 )
-								*miniset = v23;
-							++v22;
-							miniset += 40;
+							v22 = v29[v20];
+							if ( v22 )
+								*v21 = v22;
+							++v20;
+							v21 += 40;
 							--tmaxb;
 						}
 						while ( tmaxb );
 					}
-					++v20;
+					++v18;
 				}
-				while ( v20 < v37 );
+				while ( v18 < v36 );
 			}
-			if ( ++v32 >= v31 )
+			if ( ++v31 >= v30 )
 			{
-				v8 = (unsigned char *)v30;
+				v8 = (unsigned char *)v29;
 				goto LABEL_57;
 			}
 		}
 	}
-	v14 = cx;
-	v15 = cx;
+	v12 = cx;
+	v13 = cx;
 LABEL_57:
 	if ( v8 == PWATERIN )
 	{
-		v24 = TransVal;
+		v23 = TransVal;
 		TransVal = 0;
-		DRLG_MRectTrans(v14, v15 + 2, v14 + 5, v15 + 4);
-		TransVal = v24;
-		quests[13]._qtx = 2 * v14 + 21;
-		quests[13]._qty = 2 * v15 + 22;
+		DRLG_MRectTrans(v12, v13 + 2, v12 + 5, v13 + 4);
+		TransVal = v23;
+		quests[13]._qtx = 2 * v12 + 21;
+		quests[13]._qty = 2 * v13 + 22;
 	}
 	result = 1;
 	if ( setview == 1 )
 	{
-		ViewX = 2 * v14 + 19;
-		ViewY = 2 * v15 + 20;
+		ViewX = 2 * v12 + 19;
+		ViewY = 2 * v13 + 20;
 	}
 	if ( !ldir )
 	{
-		LvlViewX = 2 * v14 + 19;
-		LvlViewY = 2 * v15 + 20;
+		LvlViewX = 2 * v12 + 19;
+		LvlViewY = 2 * v13 + 20;
 	}
-	v27 = __OFSUB__(v14, cx);
-	v25 = v14 == cx;
-	v26 = v14 - cx < 0;
-	if ( v14 < cx )
+	v26 = __OFSUB__(v12, cx);
+	v24 = v12 == cx;
+	v25 = v12 - cx < 0;
+	if ( v12 < cx )
 	{
-		if ( v15 < cy )
+		if ( v13 < cy )
 			return 0;
-		v27 = __OFSUB__(v14, cx);
-		v25 = v14 == cx;
-		v26 = v14 - cx < 0;
+		v26 = __OFSUB__(v12, cx);
+		v24 = v12 == cx;
+		v25 = v12 - cx < 0;
 	}
-	if ( (unsigned char)(v26 ^ v27) | v25 || v15 >= cy )
+	if ( (unsigned char)(v25 ^ v26) | v24 || v13 >= cy )
 	{
-		if ( v14 >= cx || v15 <= cy )
-			v28 = 3;
+		if ( v12 >= cx || v13 <= cy )
+			v27 = 3;
 		else
-			v28 = 2;
-		result = v28;
+			v27 = 2;
+		result = v27;
 	}
 	return result;
 }
@@ -1355,21 +1344,19 @@ void __fastcall L5drawRoom(int x, int y, int w, int h)
 	}
 }
 
-void __fastcall L5roomGen(int x, int y, int w, int h, bool dir)
+void __fastcall L5roomGen(int x, int y, int w, int h, BOOL dir)
 {
 	int v5; // eax
-	int v6; // ecx
-	int v7; // eax
+	BOOL v6; // ecx
+	BOOL v7; // eax
 	int v8; // ecx
 	int v9; // eax
-	int v10; // ecx
 	int v11; // esi
 	int v12; // edi
 	int v13; // ebx
 	int v14; // eax
 	int v15; // eax
 	int v16; // eax
-	int v17; // ecx
 	int v18; // esi
 	int v19; // edi
 	int v20; // ebx
@@ -1395,10 +1382,9 @@ void __fastcall L5roomGen(int x, int y, int w, int h, bool dir)
 	{
 		while ( 1 )
 		{
-			_LOBYTE(x) = 0;
-			v5 = random(x, 4);
+			v5 = random(0, 4);
 			v6 = 0;
-			_LOBYTE(v6) = dir == 1 ? v5 != 0 : v5 == 0;
+			v6 = dir == 1 ? v5 != 0 : v5 == 0;
 			v7 = v6;
 			v8 = 0;
 			if ( !v7 )
@@ -1409,11 +1395,9 @@ void __fastcall L5roomGen(int x, int y, int w, int h, bool dir)
 			twa = w / 2;
 			do
 			{
-				_LOBYTE(v8) = 0;
-				v9 = random(v8, 5);
-				_LOBYTE(v10) = 0;
+				v9 = random(0, 5);
 				v11 = (v9 + 2) & 0xFFFFFFFE;
-				v12 = (random(v10, 5) + 2) & 0xFFFFFFFE;
+				v12 = (random(0, 5) + 2) & 0xFFFFFFFE;
 				v13 = txa + twa - v11 / 2;
 				tya = v29 - v12;
 				v14 = L5checkRoom(v13 - 1, v29 - v12 - 1, v11 + 2, v12 + 1);
@@ -1432,7 +1416,7 @@ void __fastcall L5roomGen(int x, int y, int w, int h, bool dir)
 				L5roomGen(v13, tya, v11, v12, 0);
 			if ( tha != 1 )
 				return;
-			*(_DWORD *)&dir = 0;
+			dir = 0;
 			h = v12;
 			w = v11;
 			v29 = txb;
@@ -1442,11 +1426,9 @@ void __fastcall L5roomGen(int x, int y, int w, int h, bool dir)
 		thb = h / 2;
 		do
 		{
-			_LOBYTE(v8) = 0;
-			v16 = random(v8, 5);
-			_LOBYTE(v17) = 0;
+			v16 = random(0, 5);
 			v18 = (v16 + 2) & 0xFFFFFFFE;
-			v19 = (random(v17, 5) + 2) & 0xFFFFFFFE;
+			v19 = (random(0, 5) + 2) & 0xFFFFFFFE;
 			v20 = v29 + thb - v19 / 2;
 			tyb = txa - v18;
 			v21 = L5checkRoom(txa - v18 - 1, v20 - 1, v19 + 2, v18 + 1);
@@ -1465,7 +1447,7 @@ void __fastcall L5roomGen(int x, int y, int w, int h, bool dir)
 			L5roomGen(tyb, v20, v18, v19, 1);
 		if ( thc != 1 )
 			break;
-		*(_DWORD *)&dir = 1;
+		dir = 1;
 		h = v19;
 		w = v18;
 		v29 = v20;
@@ -1780,7 +1762,6 @@ void __fastcall L5HorizWall(int i, int j, char p, int dx)
 	int v4; // edi
 	int v5; // esi
 	int v6; // eax
-	int v7; // ecx
 	char v8; // bl
 	int v9; // eax
 	int v10; // ecx
@@ -1793,9 +1774,8 @@ void __fastcall L5HorizWall(int i, int j, char p, int dx)
 
 	v4 = j;
 	v5 = i;
-	_LOBYTE(i) = 0;
 	v15 = j;
-	v6 = random(i, 4);
+	v6 = random(0, 4);
 	if ( v6 >= 0 )
 	{
 		if ( v6 <= 1 )
@@ -1819,8 +1799,7 @@ void __fastcall L5HorizWall(int i, int j, char p, int dx)
 				_LOBYTE(p) = 27;
 		}
 	}
-	_LOBYTE(v7) = 0;
-	v8 = random(v7, 6) != 5 ? 26 : 12;
+	v8 = random(0, 6) != 5 ? 26 : 12;
 	if ( v16 == 12 )
 		v8 = 12;
 	v9 = v4 + 40 * v5;
@@ -1839,8 +1818,7 @@ void __fastcall L5HorizWall(int i, int j, char p, int dx)
 		while ( v12 );
 		v4 = v15;
 	}
-	_LOBYTE(v10) = 0;
-	v13 = random(v10, dx - 1) + 1;
+	v13 = random(0, dx - 1) + 1;
 	if ( v8 == 12 )
 	{
 		dungeon[v5 + v13][v4] = 12;
@@ -1858,7 +1836,6 @@ void __fastcall L5VertWall(int i, int j, char p, int dy)
 	int v4; // edi
 	int v5; // esi
 	int v6; // eax
-	int v7; // ecx
 	int v8; // eax
 	int v9; // ebx
 	int v10; // esi
@@ -1875,9 +1852,8 @@ void __fastcall L5VertWall(int i, int j, char p, int dy)
 
 	v4 = j;
 	v5 = i;
-	_LOBYTE(i) = 0;
 	v18 = j;
-	v6 = random(i, 4);
+	v6 = random(0, 4);
 	if ( v6 >= 0 )
 	{
 		if ( v6 <= 1 )
@@ -1901,8 +1877,7 @@ void __fastcall L5VertWall(int i, int j, char p, int dy)
 				_LOBYTE(p) = 37;
 		}
 	}
-	_LOBYTE(v7) = 0;
-	v8 = random(v7, 6);
+	v8 = random(0, 6);
 	v9 = 5 - v8;
 	_LOBYTE(v9) = v8 != 5 ? 25 : 11;
 	v19 = v8 != 5 ? 25 : 11;
@@ -1929,8 +1904,7 @@ void __fastcall L5VertWall(int i, int j, char p, int dy)
 		v4 = v18;
 	}
 	v15 = v11 - 1;
-	_LOBYTE(v11) = 0;
-	v16 = random(v11, v15) + 1;
+	v16 = random(0, v15) + 1;
 	if ( (_BYTE)v9 == 11 )
 	{
 		dungeon[0][v16 + v10 * 40 + v4] = 11;

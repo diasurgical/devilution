@@ -63,16 +63,14 @@ void __fastcall dthread_remove_player(int pnum)
 	LeaveCriticalSection(&sgMemCrit);
 }
 
-void __fastcall dthread_send_delta(int pnum, int cmd, void *pbSrc, int dwLen)
+void __fastcall dthread_send_delta(int pnum, char cmd, void *pbSrc, int dwLen)
 {
-	char v4; // bl
 	TMegaPkt *v5; // eax
 	TMegaPkt *v6; // esi
 	TMegaPkt *v7; // eax
 	TMegaPkt **v8; // ecx
 	int v9; // [esp+4h] [ebp-4h]
 
-	v4 = cmd;
 	v9 = pnum;
 	if ( gbMaxPlayers != 1 )
 	{
@@ -80,7 +78,7 @@ void __fastcall dthread_send_delta(int pnum, int cmd, void *pbSrc, int dwLen)
 		v6 = v5;
 		v5->pNext = 0;
 		v5->dwSpaceLeft = v9;
-		v5->data[0] = v4;
+		v5->data[0] = cmd;
 		*(_DWORD *)&v5->data[4] = dwLen;
 		memcpy(&v5->data[8], pbSrc, dwLen);
 		EnterCriticalSection(&sgMemCrit);
@@ -105,17 +103,17 @@ void __cdecl dthread_start()
 
 	if ( gbMaxPlayers != 1 )
 	{
-		sghWorkToDoEvent = CreateEventA(NULL, TRUE, FALSE, NULL);
+		sghWorkToDoEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
 		if ( !sghWorkToDoEvent )
 		{
-			v0 = GetLastErr();
+			v0 = TraceLastError();
 			TermMsg("dthread:1\n%s", v0);
 		}
 		byte_52A508 = 1;
 		sghThread = (HANDLE)_beginthreadex(NULL, 0, dthread_handler, NULL, 0, &glpDThreadId);
 		if ( sghThread == (HANDLE)-1 )
 		{
-			v1 = GetLastErr();
+			v1 = TraceLastError();
 			TermMsg("dthread2:\n%s", v1);
 		}
 	}
@@ -134,7 +132,7 @@ unsigned int __stdcall dthread_handler(void *a1)
 	{
 		if ( !sgpInfoHead && WaitForSingleObject(sghWorkToDoEvent, 0xFFFFFFFF) == -1 )
 		{
-			v1 = GetLastErr();
+			v1 = TraceLastError();
 			TermMsg("dthread4:\n%s", v1);
 		}
 		EnterCriticalSection(&sgMemCrit);
@@ -176,7 +174,7 @@ void __cdecl dthread_cleanup()
 		{
 			if ( WaitForSingleObject(sghThread, 0xFFFFFFFF) == -1 )
 			{
-				v0 = GetLastErr();
+				v0 = TraceLastError();
 				TermMsg("dthread3:\n(%s)", v0);
 			}
 			CloseHandle(sghThread);

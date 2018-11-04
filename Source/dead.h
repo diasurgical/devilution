@@ -3,7 +3,7 @@
 #define __DEAD_H__
 
 extern int spurtndx; // weak
-extern DeadStruct dead[31];
+extern DeadStruct dead[MAXDEAD];
 extern int stonendx;
 
 void __cdecl InitDead();

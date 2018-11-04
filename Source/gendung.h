@@ -6,48 +6,48 @@ extern short level_frame_types[2048];
 extern int themeCount;
 extern char nTransTable[2049];
 //int dword_52D204;
-extern int dMonster[112][112];
+extern int dMonster[MAXDUNX][MAXDUNY];
 extern char dungeon[40][40];
-extern char dObject[112][112];
+extern char dObject[MAXDUNX][MAXDUNY];
 extern void *pSpeedCels;
 extern int nlevel_frames; // weak
 extern char pdungeon[40][40];
-extern char dDead[112][112];
-extern short dpiece_defs_map_1[16][112][112];
-extern char dTransVal2[112][112];
+extern char dDead[MAXDUNX][MAXDUNY];
+extern short dpiece_defs_map_1[16][MAXDUNX][MAXDUNY];
+extern char dTransVal2[MAXDUNX][MAXDUNY];
 extern char TransVal; // weak
 extern int dword_5A5594;
 extern char dflags[40][40];
-extern int dPiece[112][112];
-extern char dTransVal[112][112];
+extern int dPiece[MAXDUNX][MAXDUNY];
+extern char dTransVal[MAXDUNX][MAXDUNY];
 extern int setloadflag_2; // weak
-extern Tile tile_defs[1024];
+extern int tile_defs[2048];
 extern void *pMegaTiles;
-extern DPiece dpiece_defs[2];
+extern void *pLevelPieces;
 extern int gnDifficulty; // idb
 extern char block_lvid[2049];
 //char byte_5B78EB;
-extern char dung_map[112][112];
+extern char dung_map[MAXDUNX][MAXDUNY];
 extern char nTrapTable[2049];
 extern char leveltype; // weak
 extern unsigned char currlevel; // idb
 extern char TransList[256];
-extern char nSolidTable[2049];
-extern int level_frame_count[2049];
+extern UCHAR nSolidTable[2049];
+extern int level_frame_count[2048];
 extern ScrollStruct ScrollInfo;
 extern void *pDungeonCels;
 extern int speed_cel_frame_num_from_light_index_frame_num[16][128];
-extern THEME_LOC themeLoc[50];
-extern char dPlayer[112][112];
+extern THEME_LOC themeLoc[MAXTHEMES];
+extern char dPlayer[MAXDUNX][MAXDUNY];
 extern int dword_5C2FF8; // weak
 extern int dword_5C2FFC; // weak
 extern int scr_pix_width; // weak
 extern int scr_pix_height; // weak
-extern char dArch[112][112];
+extern char dArch[MAXDUNX][MAXDUNY];
 extern char nBlockTable[2049];
 extern void *level_special_cel;
-extern char dFlags[112][112];
-extern char dItem[112][112];
+extern char dFlags[MAXDUNX][MAXDUNY];
+extern char dItem[MAXDUNX][MAXDUNY];
 extern char setlvlnum; // weak
 extern int level_frame_sizes[2048];
 extern char nMissileTable[2049];
@@ -64,10 +64,10 @@ extern int setpc_x; // idb
 extern int ViewX; // idb
 extern int ViewY; // idb
 extern int setpc_y; // idb
-extern char dMissile[112][112];
+extern char dMissile[MAXDUNX][MAXDUNY];
 extern int dminx; // weak
 extern int dminy; // weak
-extern short dpiece_defs_map_2[16][112][112];
+extern short dpiece_defs_map_2[16][MAXDUNX][MAXDUNY];
 
 void __cdecl FillSolidBlockTbls();
 void __cdecl gendung_418D91();

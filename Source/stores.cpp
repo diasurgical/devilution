@@ -357,7 +357,7 @@ void __fastcall DrawSLine(int y)
 }
 // 6A09E0: using guessed type char stextsize;
 
-void __fastcall DrawSArrows(int a1, int a2)
+void __fastcall DrawSArrows(int y1, int y2)
 {
 	int *v2; // ebp
 	int v3; // ebx
@@ -366,9 +366,9 @@ void __fastcall DrawSArrows(int a1, int a2)
 	int v6; // eax
 	int v7; // eax
 
-	v2 = &SStringY[a2];
-	v3 = a1;
-	v4 = SStringY[a1] + 204;
+	v2 = &SStringY[y2];
+	v3 = y1;
+	v4 = SStringY[y1] + 204;
 	v5 = *v2 + 204;
 	if ( stextscrlubtn == -1 )
 		CelDecodeOnly(665, v4, pSTextSlidCels, 10, 12);
@@ -2252,7 +2252,7 @@ void __cdecl STextESC()
 	if ( qtextflag )
 	{
 		qtextflag = 0;
-		if ( !leveltype )
+		if ( leveltype == DTYPE_TOWN )
 			sfx_stop();
 	}
 	else
@@ -3889,7 +3889,6 @@ void __cdecl S_TalkEnter()
 	int *v4; // ecx
 	int v5; // esi
 	signed int v6; // ebp
-	int v7; // ecx
 	int v8; // eax
 	int v9; // ebx
 	int v10; // ecx
@@ -3927,8 +3926,7 @@ void __cdecl S_TalkEnter()
 		if ( stextsel == v5 - 2 )
 		{
 			SetRndSeed(towner[talker]._tSeed);
-			_LOBYTE(v7) = 0;
-			v8 = random(v7, gossipend - gossipstart + 1);
+			v8 = random(0, gossipend - gossipstart + 1);
 			InitQTextMsg(gossipstart + v8);
 		}
 		else
@@ -4051,7 +4049,7 @@ void __cdecl STextEnter()
 	if ( qtextflag )
 	{
 		qtextflag = 0;
-		if ( !leveltype )
+		if ( leveltype == DTYPE_TOWN )
 			sfx_stop();
 	}
 	else
@@ -4150,7 +4148,7 @@ void __cdecl CheckStoreBtn()
 	if ( qtextflag )
 	{
 		qtextflag = 0;
-		if ( !leveltype )
+		if ( leveltype == DTYPE_TOWN )
 			sfx_stop();
 	}
 	else if ( stextsel != -1 && MouseY >= 32 && MouseY <= 320 )

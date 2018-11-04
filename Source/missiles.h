@@ -2,14 +2,14 @@
 #ifndef __MISSILES_H__
 #define __MISSILES_H__
 
-extern int missileactive[125];
-extern int missileavail[125];
-extern MissileStruct missile[125];
+extern int missileactive[MAXMISSILES];
+extern int missileavail[MAXMISSILES];
+extern MissileStruct missile[MAXMISSILES];
 extern int nummissiles; // idb
 extern int ManashieldFlag;
-extern unk_missile_struct misflagstruct_unknown[125];
+extern ChainStruct chain[MAXMISSILES];
 extern int MissilePreFlag; // weak
-// int END_unkmis_126; // weak
+extern int numchains; // weak
 
 void __fastcall GetDamageAmt(int i, int *mind, int *maxd);
 int __fastcall CheckBlock(int fx, int fy, int tx, int ty);
@@ -22,14 +22,14 @@ void __fastcall GetMissileVel(int i, int sx, int sy, int dx, int dy, int v);
 void __fastcall PutMissile(int i);
 void __fastcall GetMissilePos(int i);
 void __fastcall MoveMissilePos(int i);
-bool __fastcall MonsterTrapHit(int m, int mindam, int maxdam, int dist, int t, int shift);
+BOOL __fastcall MonsterTrapHit(int m, int mindam, int maxdam, int dist, int t, int shift);
 bool __fastcall MonsterMHit(int pnum, int m, int mindam, int maxdam, int dist, int t, int shift);
 bool __fastcall PlayerMHit(int pnum, int m, int dist, int mind, int maxd, int mtype, int shift, int earflag);
 bool __fastcall Plr2PlrMHit(int pnum, int p, int mindam, int maxdam, int dist, int mtype, int shift);
 void __fastcall CheckMissileCol(int i, int mindam, int maxdam, bool shift, int mx, int my, int nodel);
 void __fastcall SetMissAnim(int mi, int animtype);
 void __fastcall SetMissDir(int mi, int dir);
-void __fastcall LoadMissileGFX(int mi);
+void __fastcall LoadMissileGFX(BYTE mi);
 void __cdecl InitMissileGFX();
 void __fastcall FreeMissileGFX(int mi);
 void __cdecl FreeMissiles();

@@ -4,7 +4,7 @@
 
 void *tbuff;
 
-void __fastcall LoadGame(bool firstflag)
+void __fastcall LoadGame(BOOL firstflag)
 {
 	int v1; // esi
 	int v2; // edi
@@ -90,11 +90,11 @@ void __fastcall LoadGame(bool firstflag)
 	quest_num = 0;
 	do
 		LoadQuest(quest_num++);
-	while ( quest_num < 16 );
+	while ( quest_num < MAXQUESTS );
 	quest_num = 0;
 	do
 		LoadPortal(quest_num++);
-	while ( quest_num < 4 );
+	while ( quest_num < MAXPORTAL );
 	LoadGameLevel(firstflag, 4);
 	SyncInitPlr(myplr);
 	SyncPlrAnim(myplr);
@@ -110,7 +110,7 @@ void __fastcall LoadGame(bool firstflag)
 		*v11 = ILoad_2();
 		++v11;
 	}
-	while ( (signed int)v11 < (signed int)&monstkills[200] );
+	while ( (signed int)v11 < (signed int)&monstkills[MAXMONSTERS] );
 	if ( leveltype )
 	{
 		v12 = monstactive;
@@ -119,7 +119,7 @@ void __fastcall LoadGame(bool firstflag)
 			*v12 = ILoad();
 			++v12;
 		}
-		while ( (signed int)v12 < (signed int)&monstactive[200] );
+		while ( (signed int)v12 < (signed int)&monstactive[MAXMONSTERS] );
 		for ( i = 0; i < nummonsters; ++i )
 			LoadMonster(monstactive[i]);
 		v14 = missileactive;
@@ -128,14 +128,14 @@ void __fastcall LoadGame(bool firstflag)
 			*v14 = BLoad();
 			++v14;
 		}
-		while ( (signed int)v14 < (signed int)&missileactive[125] );
+		while ( (signed int)v14 < (signed int)&missileactive[MAXMISSILES] );
 		v15 = missileavail;
 		do
 		{
 			*v15 = BLoad();
 			++v15;
 		}
-		while ( (signed int)v15 < (signed int)&missileavail[125] );
+		while ( (signed int)v15 < (signed int)&missileavail[MAXMISSILES] );
 		for ( j = 0; j < nummissiles; ++j )
 			LoadMissile(missileactive[j]);
 		v17 = objectactive;
@@ -144,14 +144,14 @@ void __fastcall LoadGame(bool firstflag)
 			*v17 = BLoad();
 			++v17;
 		}
-		while ( (signed int)v17 < (signed int)&objectactive[127] );
+		while ( (signed int)v17 < (signed int)&objectactive[MAXOBJECTS] );
 		v18 = objectavail;
 		do
 		{
 			*v18 = BLoad();
 			++v18;
 		}
-		while ( (signed int)v18 < (signed int)&objectavail[127] );
+		while ( (signed int)v18 < (signed int)&objectavail[MAXOBJECTS] );
 		for ( k = 0; k < nobjects; ++k )
 			LoadObject(objectactive[k]);
 		for ( l = 0; l < nobjects; ++l )
@@ -179,14 +179,14 @@ void __fastcall LoadGame(bool firstflag)
 		*v24 = BLoad();
 		++v24;
 	}
-	while ( (signed int)v24 < (signed int)&itemactive[127] );
+	while ( (signed int)v24 < (signed int)&itemactive[MAXITEMS] );
 	v25 = itemavail;
 	do
 	{
 		*v25 = BLoad();
 		++v25;
 	}
-	while ( (signed int)v25 < (signed int)&itemavail[127] );
+	while ( (signed int)v25 < (signed int)&itemavail[MAXITEMS] );
 	for ( n = 0; n < numitems; ++n )
 		LoadItem(itemactive[n]);
 	v27 = UniqueItemFlag;
@@ -597,23 +597,23 @@ void __cdecl SaveGame()
 		ISave(gnLevelTypeTbl[v2]);
 		++v2;
 	}
-	while ( v2 < 17 );
+	while ( v2 < NUMLEVELS );
 	SavePlayer(myplr);
 	v3 = 0;
 	do
 		SaveQuest(v3++);
-	while ( v3 < 16 );
+	while ( v3 < MAXQUESTS );
 	v4 = 0;
 	do
 		SavePortal(v4++);
-	while ( v4 < 4 );
+	while ( v4 < MAXPORTAL );
 	v5 = monstkills;
 	do
 	{
 		ISave_2(*v5);
 		++v5;
 	}
-	while ( (signed int)v5 < (signed int)&monstkills[200] );
+	while ( (signed int)v5 < (signed int)&monstkills[MAXMONSTERS] );
 	if ( leveltype )
 	{
 		v6 = monstactive;
@@ -622,7 +622,7 @@ void __cdecl SaveGame()
 			ISave(*v6);
 			++v6;
 		}
-		while ( (signed int)v6 < (signed int)&monstactive[200] );
+		while ( (signed int)v6 < (signed int)&monstactive[MAXMONSTERS] );
 		for ( i = 0; i < nummonsters; ++i )
 			SaveMonster(monstactive[i]);
 		v8 = missileactive;
@@ -631,14 +631,14 @@ void __cdecl SaveGame()
 			BSave(*(_BYTE *)v8);
 			++v8;
 		}
-		while ( (signed int)v8 < (signed int)&missileactive[125] );
+		while ( (signed int)v8 < (signed int)&missileactive[MAXMISSILES] );
 		v9 = missileavail;
 		do
 		{
 			BSave(*(_BYTE *)v9);
 			++v9;
 		}
-		while ( (signed int)v9 < (signed int)&missileavail[125] );
+		while ( (signed int)v9 < (signed int)&missileavail[MAXMISSILES] );
 		for ( j = 0; j < nummissiles; ++j )
 			SaveMissile(missileactive[j]);
 		v11 = objectactive;
@@ -647,14 +647,14 @@ void __cdecl SaveGame()
 			BSave(*(_BYTE *)v11);
 			++v11;
 		}
-		while ( (signed int)v11 < (signed int)&objectactive[127] );
+		while ( (signed int)v11 < (signed int)&objectactive[MAXOBJECTS] );
 		v12 = objectavail;
 		do
 		{
 			BSave(*(_BYTE *)v12);
 			++v12;
 		}
-		while ( (signed int)v12 < (signed int)&objectavail[127] );
+		while ( (signed int)v12 < (signed int)&objectavail[MAXOBJECTS] );
 		for ( k = 0; k < nobjects; ++k )
 			SaveObject(objectactive[k]);
 		ISave(numlights);
@@ -675,14 +675,14 @@ void __cdecl SaveGame()
 		BSave(*(_BYTE *)v17);
 		++v17;
 	}
-	while ( (signed int)v17 < (signed int)&itemactive[127] );
+	while ( (signed int)v17 < (signed int)&itemactive[MAXITEMS] );
 	v18 = itemavail;
 	do
 	{
 		BSave(*(_BYTE *)v18);
 		++v18;
 	}
-	while ( (signed int)v18 < (signed int)&itemavail[127] );
+	while ( (signed int)v18 < (signed int)&itemavail[MAXITEMS] );
 	for ( n = 0; n < numitems; ++n )
 		SaveItem(itemactive[n]);
 	v20 = UniqueItemFlag;
@@ -1016,26 +1016,26 @@ void __cdecl SaveLevel()
 
 	if ( leveltype )
 	{
-		for(i = 0; i < 200; i++)
+		for(i = 0; i < MAXMONSTERS; i++)
 			ISave(monstactive[i]);
 
 		for(i = 0; i < nummonsters; i++)
 			SaveMonster(monstactive[i]);
 
-		for(i = 0; i < 127; i++)
+		for(i = 0; i < MAXOBJECTS; i++)
 			BSave(objectactive[i]);
 
-		for(i = 0; i < 127; i++)
+		for(i = 0; i < MAXOBJECTS; i++)
 			BSave(objectavail[i]);
 
 		for(i = 0; i < nobjects; i++)
 			SaveObject(objectactive[i]);
 	}
 
-	for(i = 0; i < 127; i++)
+	for(i = 0; i < MAXITEMS; i++)
 		BSave(itemactive[i]);
 
-	for(i = 0; i < 127; i++)
+	for(i = 0; i < MAXITEMS; i++)
 		BSave(itemavail[i]);
 
 	for(i = 0; i < numitems; i++)
@@ -1153,16 +1153,16 @@ void __cdecl LoadLevel()
 
 	if ( leveltype )
 	{
-		for(i = 0; i < 200; i++)
+		for(i = 0; i < MAXMONSTERS; i++)
 			monstactive[i] = ILoad();
 
 		for(i = 0; i < nummonsters; i++)
 			LoadMonster(monstactive[i]);
 
-		for(i = 0; i < 127; i++)
+		for(i = 0; i < MAXOBJECTS; i++)
 			objectactive[i] = BLoad();
 
-		for(i = 0; i < 127; i++)
+		for(i = 0; i < MAXOBJECTS; i++)
 			objectavail[i] = BLoad();
 
 		for(i = 0; i < nobjects; i++)
@@ -1172,10 +1172,10 @@ void __cdecl LoadLevel()
 			SyncObjectAnim(objectactive[i]);
 	}
 
-	for(i = 0; i < 127; i++)
+	for(i = 0; i < MAXITEMS; i++)
 		itemactive[i] = BLoad();
 
-	for(i = 0; i < 127; i++)
+	for(i = 0; i < MAXITEMS; i++)
 		itemavail[i] = BLoad();
 
 	for(i = 0; i < numitems; i++)

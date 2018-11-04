@@ -12,14 +12,14 @@ void *pCowCels; // idb
 TownerStruct towner[16];
 
 
-int snSFX[3][3] =
+const int snSFX[3][3] =
 {
   { PS_WARR52, PS_ROGUE52, PS_MAGE52 },
   { PS_WARR49, PS_ROGUE49, PS_MAGE49 },
   { PS_WARR50, PS_ROGUE50, PS_MAGE50 }
 };
 
-/* rdata */
+/* data */
 
 char AnimOrder[6][148] =
 {
@@ -343,7 +343,7 @@ void __fastcall SetTownerGPtrs(void *pData, void **pAnim)
 	while ( v5 < 8 );
 }
 
-void __fastcall NewTownerAnim(int tnum, void *pAnim, int numFrames, int Delay)
+void __fastcall NewTownerAnim(int tnum, unsigned char *pAnim, int numFrames, int Delay)
 {
 	int v4; // ecx
 
@@ -419,7 +419,7 @@ void __cdecl InitSmith()
 	v0 = numtowners;
 	InitQstSnds(numtowners);
 	v1 = v0;
-	towner[v1]._tNData = (char *)LoadFileInMem("Towners\\Smith\\SmithN.CEL", 0);
+	towner[v1]._tNData = LoadFileInMem("Towners\\Smith\\SmithN.CEL", 0);
 	v2 = (unsigned int *)towner[v1]._tNAnim;
 	v3 = 8;
 	do
@@ -431,7 +431,7 @@ void __cdecl InitSmith()
 	while ( v3 );
 	v4 = numtowners;
 	towner[v1]._tNFrames = 16;
-	NewTownerAnim(v4, (void *)towner[v1]._tNAnim[1], 16, 3);
+	NewTownerAnim(v4, towner[v1]._tNAnim[1], 16, 3);
 	strcpy(towner[v1]._tName, "Griswold the Blacksmith");
 	++numtowners;
 }
@@ -449,7 +449,7 @@ void __cdecl InitBarOwner()
 	v0 = numtowners;
 	InitQstSnds(numtowners);
 	v1 = v0;
-	towner[v1]._tNData = (char *)LoadFileInMem("Towners\\TwnF\\TwnFN.CEL", 0);
+	towner[v1]._tNData = LoadFileInMem("Towners\\TwnF\\TwnFN.CEL", 0);
 	v2 = (unsigned int *)towner[v1]._tNAnim;
 	v3 = 8;
 	do
@@ -461,7 +461,7 @@ void __cdecl InitBarOwner()
 	while ( v3 );
 	v4 = numtowners;
 	towner[v1]._tNFrames = 16;
-	NewTownerAnim(v4, (void *)towner[v1]._tNAnim[1], 16, 3);
+	NewTownerAnim(v4, towner[v1]._tNAnim[1], 16, 3);
 	strcpy(towner[v1]._tName, "Ogden the Tavern owner");
 	++numtowners;
 }
@@ -479,7 +479,7 @@ void __cdecl InitTownDead()
 	v0 = numtowners;
 	InitQstSnds(numtowners);
 	v1 = v0;
-	towner[v1]._tNData = (char *)LoadFileInMem("Towners\\Butch\\Deadguy.CEL", 0);
+	towner[v1]._tNData = LoadFileInMem("Towners\\Butch\\Deadguy.CEL", 0);
 	v2 = (unsigned int *)towner[v1]._tNAnim;
 	v3 = 8;
 	do
@@ -491,7 +491,7 @@ void __cdecl InitTownDead()
 	while ( v3 );
 	v4 = numtowners;
 	towner[v1]._tNFrames = 8;
-	NewTownerAnim(v4, (void *)towner[v1]._tNAnim[4], 8, 6);
+	NewTownerAnim(v4, towner[v1]._tNAnim[4], 8, 6);
 	strcpy(towner[v1]._tName, "Wounded Townsman");
 	++numtowners;
 }
@@ -507,7 +507,7 @@ void __cdecl InitWitch()
 	v0 = numtowners;
 	InitQstSnds(numtowners);
 	v1 = v0;
-	towner[v1]._tNData = (char *)LoadFileInMem("Towners\\TownWmn1\\Witch.CEL", 0);
+	towner[v1]._tNData = LoadFileInMem("Towners\\TownWmn1\\Witch.CEL", 0);
 	v2 = (unsigned int *)towner[v1]._tNAnim;
 	v3 = 8;
 	do
@@ -518,7 +518,7 @@ void __cdecl InitWitch()
 	}
 	while ( v3 );
 	towner[v1]._tNFrames = 19;
-	NewTownerAnim(numtowners, (void *)towner[v1]._tNAnim[0], 19, 6);
+	NewTownerAnim(numtowners, towner[v1]._tNAnim[0], 19, 6);
 	strcpy(towner[v1]._tName, "Adria the Witch");
 	++numtowners;
 }
@@ -534,7 +534,7 @@ void __cdecl InitBarmaid()
 	v0 = numtowners;
 	InitQstSnds(numtowners);
 	v1 = v0;
-	towner[v1]._tNData = (char *)LoadFileInMem("Towners\\TownWmn1\\WmnN.CEL", 0);
+	towner[v1]._tNData = LoadFileInMem("Towners\\TownWmn1\\WmnN.CEL", 0);
 	v2 = (unsigned int *)towner[v1]._tNAnim;
 	v3 = 8;
 	do
@@ -545,7 +545,7 @@ void __cdecl InitBarmaid()
 	}
 	while ( v3 );
 	towner[v1]._tNFrames = 18;
-	NewTownerAnim(numtowners, (void *)towner[v1]._tNAnim[0], 18, 6);
+	NewTownerAnim(numtowners, towner[v1]._tNAnim[0], 18, 6);
 	strcpy(towner[v1]._tName, "Gillian the Barmaid");
 	++numtowners;
 }
@@ -562,7 +562,7 @@ void __cdecl InitBoy()
 	v0 = numtowners;
 	InitQstSnds(numtowners);
 	v1 = v0;
-	towner[v1]._tNData = (char *)LoadFileInMem("Towners\\TownBoy\\PegKid1.CEL", 0);
+	towner[v1]._tNData = LoadFileInMem("Towners\\TownBoy\\PegKid1.CEL", 0);
 	v2 = (unsigned int *)towner[v1]._tNAnim;
 	v3 = 8;
 	do
@@ -573,7 +573,7 @@ void __cdecl InitBoy()
 	}
 	while ( v3 );
 	towner[v1]._tNFrames = 20;
-	NewTownerAnim(numtowners, (void *)towner[v1]._tNAnim[0], 20, 6);
+	NewTownerAnim(numtowners, towner[v1]._tNAnim[0], 20, 6);
 	strcpy(towner[v1]._tName, "Wirt the Peg-legged boy");
 	++numtowners;
 }
@@ -591,7 +591,7 @@ void __cdecl InitHealer()
 	v0 = numtowners;
 	InitQstSnds(numtowners);
 	v1 = v0;
-	towner[v1]._tNData = (char *)LoadFileInMem("Towners\\Healer\\Healer.CEL", 0);
+	towner[v1]._tNData = LoadFileInMem("Towners\\Healer\\Healer.CEL", 0);
 	v2 = (unsigned int *)towner[v1]._tNAnim;
 	v3 = 8;
 	do
@@ -603,7 +603,7 @@ void __cdecl InitHealer()
 	while ( v3 );
 	v4 = numtowners;
 	towner[v1]._tNFrames = 20;
-	NewTownerAnim(v4, (void *)towner[v1]._tNAnim[7], 20, 6);
+	NewTownerAnim(v4, towner[v1]._tNAnim[7], 20, 6);
 	strcpy(towner[v1]._tName, "Pepin the Healer");
 	++numtowners;
 }
@@ -619,7 +619,7 @@ void __cdecl InitTeller()
 	v0 = numtowners;
 	InitQstSnds(numtowners);
 	v1 = v0;
-	towner[v1]._tNData = (char *)LoadFileInMem("Towners\\Strytell\\Strytell.CEL", 0);
+	towner[v1]._tNData = LoadFileInMem("Towners\\Strytell\\Strytell.CEL", 0);
 	v2 = (unsigned int *)towner[v1]._tNAnim;
 	v3 = 8;
 	do
@@ -630,7 +630,7 @@ void __cdecl InitTeller()
 	}
 	while ( v3 );
 	towner[v1]._tNFrames = 25;
-	NewTownerAnim(numtowners, (void *)towner[v1]._tNAnim[0], 25, 3);
+	NewTownerAnim(numtowners, towner[v1]._tNAnim[0], 25, 3);
 	strcpy(towner[v1]._tName, "Cain the Elder");
 	++numtowners;
 }
@@ -646,7 +646,7 @@ void __cdecl InitDrunk()
 	v0 = numtowners;
 	InitQstSnds(numtowners);
 	v1 = v0;
-	towner[v1]._tNData = (char *)LoadFileInMem("Towners\\Drunk\\TwnDrunk.CEL", 0);
+	towner[v1]._tNData = LoadFileInMem("Towners\\Drunk\\TwnDrunk.CEL", 0);
 	v2 = (unsigned int *)towner[v1]._tNAnim;
 	v3 = 8;
 	do
@@ -657,7 +657,7 @@ void __cdecl InitDrunk()
 	}
 	while ( v3 );
 	towner[v1]._tNFrames = 18;
-	NewTownerAnim(numtowners, (void *)towner[v1]._tNAnim[0], 18, 3);
+	NewTownerAnim(numtowners, towner[v1]._tNAnim[0], 18, 3);
 	strcpy(towner[v1]._tName, "Farnham the Drunk");
 	++numtowners;
 }
@@ -672,7 +672,6 @@ void __cdecl InitCows()
 	int v5; // eax
 	void **v6; // ecx
 	int v7; // edi
-	int v8; // ecx
 	int v9; // edx
 	int v10; // eax
 	int v11; // ecx
@@ -698,10 +697,9 @@ void __cdecl InitCows()
 		SetTownerGPtrs(*v6, (void **)towner[v5]._tNAnim);
 		v7 = numtowners;
 		towner[numtowners]._tNFrames = 12;
-		NewTownerAnim(v7, (void *)towner[0]._tNAnim[v4 + 58 * v7], 12, 3);
+		NewTownerAnim(v7, towner[0]._tNAnim[v4 + 58 * v7], 12, 3);
 		v7 *= 232;
-		_LOBYTE(v8) = 0;
-		*(int *)((char *)&towner[0]._tAnimFrame + v7) = random(v8, 11) + 1;
+		*(int *)((char *)&towner[0]._tAnimFrame + v7) = random(0, 11) + 1;
 		*(int *)((char *)&towner[0]._tSelFlag + v7) = 1;
 		strcpy(&towner[0]._tName[v7], "Cow");
 		v9 = v3 + cowoffx[v4];
@@ -990,8 +988,6 @@ void __fastcall TalkToTowner(int p, int t)
 {
 	int v2; // ebx
 	int v3; // edi
-	int v4; // ecx
-	int v5; // ecx
 	int v6; // ebp
 	int v7; // esi
 	int v8; // eax
@@ -1011,13 +1007,10 @@ void __fastcall TalkToTowner(int p, int t)
 
 	v2 = t;
 	v3 = p;
-	_LOBYTE(p) = 6;
 	v21 = t;
-	random(p, 3);
-	_LOBYTE(v4) = 6;
-	random(v4, 4);
-	_LOBYTE(v5) = 6;
-	random(v5, 5);
+	random(6, 3); /* figure out what these are for */
+	random(6, 4);
+	random(6, 5);
 	v6 = v3;
 	v7 = v2;
 	inv_item_num = abs(plr[v3].WorldX - towner[v2]._tx);

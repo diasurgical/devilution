@@ -5,31 +5,31 @@
 char gbSomebodyWonGameKludge; // weak
 char pkdata_6761C0[4100];
 char szPlayerDescript[128];
-short sgwPackPlrOffsetTbl[4];
-PkPlayerStruct pkplr[4];
-char sgbPlayerTurnBitTbl[4];
-char sgbPlayerLeftGameTbl[4];
+short sgwPackPlrOffsetTbl[MAX_PLRS];
+PkPlayerStruct netplr[MAX_PLRS];
+char sgbPlayerTurnBitTbl[MAX_PLRS];
+char sgbPlayerLeftGameTbl[MAX_PLRS];
 int multi_cpp_init_value; // weak
 int sgbSentThisCycle; // idb
 int dword_678628; // weak
 char gbActivePlayers; // weak
 char gbGameDestroyed; // weak
-char sgbSendDeltaTbl[4];
+char sgbSendDeltaTbl[MAX_PLRS];
 _gamedata sgGameInitInfo;
 char byte_678640; // weak
 int sglTimeoutStart; // weak
-int sgdwPlayerLeftReasonTbl[4];
+int sgdwPlayerLeftReasonTbl[MAX_PLRS];
 char pkdata_678658[4100];
 unsigned int sgdwGameLoops; // idb
-char gbMaxPlayers; // weak
+UCHAR gbMaxPlayers; // weak
 char sgbTimeout; // weak
 char szPlayerName[128];
 char gbDeltaSender; // weak
 int sgbNetInited; // weak
-int player_state[4];
+int player_state[MAX_PLRS];
 
-int multi_inf = 0x7F800000; // weak
-event_type event_types[3] =
+const int multi_inf = 0x7F800000; // weak
+const int event_types[3] =
 {
   EVENT_TYPE_PLAYER_LEAVE_GAME,
   EVENT_TYPE_PLAYER_CREATE_GAME,
@@ -235,7 +235,7 @@ void __cdecl multi_msg_countdown()
 		}
 		++v0;
 	}
-	while ( v0 < 4 );
+	while ( v0 < MAX_PLRS );
 }
 
 void __fastcall multi_parse_turn(int pnum, int turn)
@@ -269,7 +269,7 @@ void __fastcall multi_handle_turn_upper_bit(int pnum)
 			break;
 		++v1;
 	}
-	while ( v1 < 4 );
+	while ( v1 < MAX_PLRS );
 	if ( myplr == v1 )
 	{
 		sgbSendDeltaTbl[pnum] = 1;
@@ -306,7 +306,7 @@ void __cdecl multi_clear_left_tbl()
 		}
 		++v0;
 	}
-	while ( v0 < 4 );
+	while ( v0 < MAX_PLRS );
 }
 // 676194: using guessed type char gbBufferMsgs;
 
@@ -380,7 +380,7 @@ int __cdecl multi_handle_delta()
 		}
 		++v0;
 	}
-	while ( v0 < 4 );
+	while ( v0 < MAX_PLRS );
 	sgbSentThisCycle = nthread_send_and_recv_turn(sgbSentThisCycle, 1);
 	if ( !nthread_recv_turns(&recieved) )
 	{
@@ -432,7 +432,7 @@ void __cdecl multi_mon_seeds()
 		*v2 = v3;
 		v2 += 57;
 	}
-	while ( (signed int)v2 < (signed int)&monster[200]._mAISeed );
+	while ( (signed int)v2 < (signed int)&monster[MAXMONSTERS]._mAISeed );
 }
 
 void __cdecl multi_begin_timeout()
@@ -481,7 +481,7 @@ void __cdecl multi_begin_timeout()
 					}
 					++v4;
 				}
-				while ( v4 < 4 );
+				while ( v4 < MAX_PLRS );
 				if ( bGroupPlayers >= v6 && (bGroupPlayers != v6 || nLowestPlayer == nLowestActive) )
 				{
 					if ( nLowestActive == myplr )
@@ -520,7 +520,7 @@ void __cdecl multi_check_drop_player()
 		}
 		++v0;
 	}
-	while ( v0 < 4 );
+	while ( v0 < MAX_PLRS );
 }
 
 void __cdecl multi_process_network_packets()
@@ -543,7 +543,7 @@ void __cdecl multi_process_network_packets()
 	//int v15; // eax
 	TPktHdr *pkt; // [esp+0h] [ebp-Ch]
 	int len; // [esp+4h] [ebp-8h]
-	char arglist[4]; // [esp+8h] [ebp-4h]
+	char arglist[4]; // [esp+8h] [ebp-4h] /* fix, int */
 
 	multi_clear_left_tbl();
 	multi_process_tmsgs();
@@ -652,7 +652,7 @@ void __cdecl multi_process_tmsgs()
 
 	while ( 1 )
 	{
-		v0 = tmsg_get(&pkt.hdr.px, 512);
+		v0 = tmsg_get((unsigned char *)&pkt, 512);
 		if ( !v0 )
 			break;
 		multi_handle_all_packets(myplr, &pkt, v0);
@@ -740,7 +740,7 @@ char __fastcall multi_event_handler(int a1)
 		v4 = (int)v2(event_types[v3], multi_handle_events);
 		if ( !v4 && v1 )
 		{
-			v5 = GetLastErr();
+			v5 = TraceLastError();
 			TermMsg("SNetRegisterEventHandler:\n%s", v5);
 		}
 		++v3;
@@ -791,7 +791,6 @@ int __fastcall NetInit(int bSinglePlayer, int *pfExitProgram)
 	int v2; // ebx
 	int v4; // eax
 	//int v5; // ecx
-	TCmdPlrInfoHdr *v6; // edx
 	bool v7; // zf
 	//int v9; // eax
 	//int v10; // eax
@@ -809,7 +808,7 @@ int __fastcall NetInit(int bSinglePlayer, int *pfExitProgram)
 	{
 		*a4 = 0;
 		SetRndSeed(0);
-		sgGameInitInfo.dwSeed = time(0);
+		sgGameInitInfo.dwSeed = time(NULL);
 		_LOBYTE(sgGameInitInfo.bDiff) = gnDifficulty;
 		memset(&ProgramData, 0, 0x3Cu);
 		ProgramData.size = 60;
@@ -817,11 +816,11 @@ int __fastcall NetInit(int bSinglePlayer, int *pfExitProgram)
 		ProgramData.programdescription = gszVersionNumber;
 		ProgramData.programid = 'DRTL';
 		ProgramData.versionid = 42;
-		ProgramData.maxplayers = 4;
-		ProgramData.multi_seed = (int)&sgGameInitInfo;
-		ProgramData.initdata = (void *)8;
-		ProgramData.reserved2 = (void *)15;
-		ProgramData.languageid = 1033;
+		ProgramData.maxplayers = MAX_PLRS;
+		ProgramData.initdata = &sgGameInitInfo;
+		ProgramData.initdatabytes = 8;
+		ProgramData.optcategorybits = 15;
+		ProgramData.lcid = 1033; /* LANG_ENGLISH */
 		memset(&a2, 0, 0x10u);
 		a2.size = 16;
 		memset(&UiData, 0, 0x50u);
@@ -835,11 +834,11 @@ int __fastcall NetInit(int bSinglePlayer, int *pfExitProgram)
 		UiData.authcallback = UiAuthCallback;
 		UiData.getdatacallback = UiGetDataCallback;
 		UiData.categorycallback = UiCategoryCallback;
-		UiData.selecthero = (void (__cdecl *)())mainmenu_select_hero_dialog;
-		UiData.createhero = (void (__cdecl *)())mainmenu_create_hero;
-		UiData.profiledraw = UiProfileDraw;
+		UiData.selectnamecallback = (void (__cdecl *)())mainmenu_select_hero_dialog;
+		UiData.changenamecallback = (void (__cdecl *)())mainmenu_create_hero;
+		UiData.profilebitmapcallback = UiProfileDraw;
 		UiData.profilecallback = UiProfileCallback;
-		UiData.profilegetstring = UiProfileGetString();
+		UiData.profilefields = UiProfileGetString();
 		memset(sgbPlayerTurnBitTbl, 0, 4u);
 		gbGameDestroyed = 0;
 		memset(sgbPlayerLeftGameTbl, 0, 4u);
@@ -871,8 +870,7 @@ int __fastcall NetInit(int bSinglePlayer, int *pfExitProgram)
 		gbSomebodyWonGameKludge = 0;
 		nthread_send_and_recv_turn(0, 0);
 		SetupLocalCoords();
-		_LOBYTE(v6) = CMD_SEND_PLRINFO;
-		multi_send_pinfo(-2, v6);
+		multi_send_pinfo(-2, CMD_SEND_PLRINFO);
 		gbActivePlayers = 1;
 		v7 = sgbPlayerTurnBitTbl[myplr] == 0;
 		plr[myplr].plractive = 1;
@@ -913,18 +911,16 @@ void __fastcall multi_clear_pkt(char *a1)
 	a1[4] = 0;
 }
 
-void __fastcall multi_send_pinfo(int pnum, TCmdPlrInfoHdr *cmd)
+void __fastcall multi_send_pinfo(int pnum, char cmd)
 {
 	char v2; // bl
 	int v3; // esi
-	int v4; // edx
 	PkPlayerStruct pkplr; // [esp+8h] [ebp-4F4h]
 
-	v2 = (char)cmd;
+	v2 = cmd;
 	v3 = pnum;
 	PackPlayer(&pkplr, myplr, 1);
-	_LOBYTE(v4) = v2;
-	dthread_send_delta(v3, v4, &pkplr, 1266);
+	dthread_send_delta(v3, v2, &pkplr, 1266);
 }
 
 int __fastcall InitNewSeed(int newseed)
@@ -1006,7 +1002,7 @@ int __fastcall multi_init_single(_SNETPROGRAMDATA *client_info, _SNETPLAYERDATA 
 		//_LOBYTE(v5) = SNetCreateGame("local", "local", "local", 0, (char *)&sgGameInitInfo.dwSeed, 8, 1, "local", "local", (int *)&ui_info);
 		if ( !SNetCreateGame("local", "local", "local", 0, (char *)&sgGameInitInfo.dwSeed, 8, 1, "local", "local", (int *)&ui_info) )
 		{
-			v6 = GetLastErr();
+			v6 = TraceLastError();
 			TermMsg("SNetCreateGame1:\n%s", v6);
 		}
 		myplr = 0;
@@ -1050,10 +1046,10 @@ int __fastcall multi_init_multi(_SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *
 			break;
 		byte_678640 = 1;
 	}
-	if ( (unsigned int)a6 >= 4 )
+	if ( (unsigned int)a6 >= MAX_PLRS )
 		return 0;
 	myplr = a6;
-	gbMaxPlayers = 4;
+	gbMaxPlayers = MAX_PLRS;
 	pfile_read_player_from_save();
 	if ( type == 'BNET' )
 		plr[myplr].pBattleNet = 1;
@@ -1095,7 +1091,7 @@ void __fastcall multi_player_joins(int pnum, TCmdPlrInfoHdr *cmd, int a3)
 	bool v7; // zf
 	char *v8; // eax
 	int v9; // ST08_4
-	int v10; // edx
+	unsigned char *v10; // edx
 	int v11; // eax
 	int v12; // ecx
 	int v13; // eax
@@ -1109,10 +1105,9 @@ void __fastcall multi_player_joins(int pnum, TCmdPlrInfoHdr *cmd, int a3)
 		{
 			if ( !a3 && !*v5 )
 			{
-				_LOBYTE(cmd) = CMD_ACK_PLRINFO;
-				multi_send_pinfo(pnum, cmd);
+				multi_send_pinfo(pnum, CMD_ACK_PLRINFO);
 			}
-			memcpy((char *)&pkplr[v3] + (unsigned short)v4->wOffset, &v4[1], (unsigned short)v4->wBytes);
+			memcpy((char *)&netplr[v3] + (unsigned short)v4->wOffset, &v4[1], (unsigned short)v4->wBytes);
 			*v5 += v4->wBytes;
 			if ( *v5 == 1266 )
 			{
@@ -1120,7 +1115,7 @@ void __fastcall multi_player_joins(int pnum, TCmdPlrInfoHdr *cmd, int a3)
 				multi_player_left_msg(v3, 0);
 				v6 = v3;
 				plr[v3]._pGFXLoad = 0;
-				UnPackPlayer(&pkplr[v3], v3, 1);
+				UnPackPlayer(&netplr[v3], v3, 1);
 				if ( a3 )
 				{
 					++gbActivePlayers;
@@ -1130,14 +1125,14 @@ void __fastcall multi_player_joins(int pnum, TCmdPlrInfoHdr *cmd, int a3)
 					if ( v7 )
 						v8 = "Player '%s' (level %d) is already in the game";
 					EventPlrMsg(v8, plr[v6]._pName, plr[v6]._pLevel);
-					LoadPlrGFX(v3, 1);
+					LoadPlrGFX(v3, PFILE_STAND);
 					SyncInitPlr(v3);
 					if ( plr[v6].plrlevel == currlevel )
 					{
 						if ( (signed int)(plr[v6]._pHitPoints & 0xFFFFFFC0) <= 0 )
 						{
 							plr[v6]._pgfxnum = 0;
-							LoadPlrGFX(v3, 128);
+							LoadPlrGFX(v3, PFILE_DEATH);
 							v9 = plr[v6]._pDWidth;
 							v10 = plr[v6]._pDAnim[0];
 							plr[v6]._pmode = 8;

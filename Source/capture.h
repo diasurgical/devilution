@@ -3,10 +3,10 @@
 #define __CAPTURE_H__
 
 void __cdecl CaptureScreen();
-bool __fastcall CaptureHdr(HANDLE hFile, short width, int height);
+bool __fastcall CaptureHdr(HANDLE hFile, short width, short height);
 bool __fastcall CapturePal(HANDLE hFile, PALETTEENTRY *palette);
-bool __fastcall CapturePix(HANDLE hFile, short width, short height, short stride, char *pixels);
-char *__fastcall CaptureEnc(char *src, char *dst, int width);
+bool __fastcall CapturePix(HANDLE hFile, WORD width, WORD height, WORD stride, BYTE *pixels);
+BYTE *__fastcall CaptureEnc(BYTE *src, BYTE *dst, int width);
 HANDLE __fastcall CaptureFile(char *dst_path);
 void __fastcall RedPalette(PALETTEENTRY *pal);
 

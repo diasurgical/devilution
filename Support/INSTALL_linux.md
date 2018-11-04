@@ -2,10 +2,26 @@
 
 ## Dependencies
 
+Ubuntu
+```bash
+sudo apt install g++-mingw-w64-i686
+```
+
 Arch Linux
 ```bash
 pacman -S mingw-w64-gcc mingw-w64-binutils
 ```
+
+Fedora 28:
+```bash
+sudo dnf install mingw32-gcc-c++ wine
+```
+
+elementary OS:
+```bash
+sudo apt install mingw-w64 wine
+```
+
 
 ## Building
 
