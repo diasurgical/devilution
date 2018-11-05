@@ -712,7 +712,6 @@ unsigned char __cdecl ForceL3Trig()
 	int *v4;            // ecx
 	int *v5;            // esi
 	int v6;             // ecx
-	int v7;             // eax
 	int *v8;            // ecx
 	int *v9;            // eax
 	int *v10;           // ebp
@@ -756,8 +755,7 @@ LABEL_9:
 		v5 = L3DownList;
 		while (1) {
 			v6 = *v4;
-			v7 = cursmy + 112 * cursmx;
-			if (dPiece[0][v7] == v6 || dPiece[1][v7] == v6 || dPiece[2][v7] == v6) {
+			if (dPiece[cursmx][cursmy] == v6 || dPiece[cursmx + 1][cursmy] == v6 || dPiece[cursmx + 2][cursmy] == v6) {
 				sprintf(infostr, "Down to level %i", currlevel + 1);
 				v2 = 0;
 				if (trigflag[4] > 0)

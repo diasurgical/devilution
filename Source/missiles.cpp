@@ -705,26 +705,17 @@ void __fastcall GetMissileVel(int i, int sx, int sy, int dx, int dy, int v)
 
 void __fastcall PutMissile(int i)
 {
-	int v1;    // eax
-	int v2;    // edx
-	int v3;    // esi
-	int v4;    // edx
-	_BYTE *v5; // edx
-
-	v1 = i;
-	v2 = missile[i]._mix;
-	v3 = missile[i]._miy;
-	if (v2 <= 0 || v3 <= 0 || v2 >= MAXDUNX || v3 >= MAXDUNY)
-		missile[v1]._miDelFlag = 1;
-	if (!missile[v1]._miDelFlag) {
-		v4 = v3 + 112 * v2;
-		dFlags[0][v4] |= DFLAG_MISSILE;
-		v5 = (unsigned char *)dMissile + v4;
-		if (*v5)
-			*v5 = -1;
+	int x = missile[i]._mix;
+	int y = missile[i]._miy;
+	if (x <= 0 || y <= 0 || x >= MAXDUNX || y >= MAXDUNY)
+		missile[i]._miDelFlag = 1;
+	if (!missile[i]._miDelFlag) {
+		dFlags[x][y] |= DFLAG_MISSILE;
+		if (!dMissile[x][y])
+			dMissile[x][y] = i + 1;
 		else
-			*v5 = i + 1;
-		if (missile[v1]._miPreFlag)
+			dMissile[x][y] = -1;
+		if (missile[i]._miPreFlag)
 			MissilePreFlag = 1;
 	}
 }
@@ -1394,7 +1385,7 @@ void __fastcall CheckMissileCol(int i, int mindam, int maxdam, bool shift, int m
 	v9 = missile[i]._miAnimType;
 	if (v9 == 4 || (v10 = missile[v8]._misource, v10 == -1)) {
 		v11 = 112 * mx + my;
-		v21 = dMonster[0][v11];
+		v21 = dMonster[mx][my];
 		if (v21 > 0) {
 			v28 = missile[v8]._mitype;
 			v27 = missile[v8]._midist;
@@ -1405,7 +1396,7 @@ void __fastcall CheckMissileCol(int i, int mindam, int maxdam, bool shift, int m
 				missile[v8]._miHitFlag = 1;
 			}
 		}
-		v23 = dPlayer[0][v11];
+		v23 = dPlayer[mx][my];
 		if (v23 > 0) {
 			v17 = PlayerMHit(
 			    v23 - 1,
@@ -1427,11 +1418,11 @@ void __fastcall CheckMissileCol(int i, int mindam, int maxdam, bool shift, int m
 	} else {
 		if (!missile[v8]._micaster) {
 			v11 = 112 * mx + my;
-			v12 = dMonster[0][v11];
+			v12 = dMonster[mx][my];
 			if (v12 <= 0) {
 				if (v12 >= 0 || monster[-(v12 + 1)]._mmode != MM_STONE) {
 				LABEL_13:
-					v14 = dPlayer[0][v11];
+					v14 = dPlayer[mx][my];
 					if (v14 <= 0)
 						goto LABEL_39;
 					v15 = missile[v8]._misource;
@@ -1487,7 +1478,7 @@ void __fastcall CheckMissileCol(int i, int mindam, int maxdam, bool shift, int m
 			}
 		}
 		v11 = my + 112 * mx;
-		v20 = dPlayer[0][v11];
+		v20 = dPlayer[mx][my];
 		if (v20 > 0) {
 			v17 = PlayerMHit(
 			    v20 - 1,
@@ -2030,12 +2021,9 @@ void __fastcall AddTeleport(int mi, int sx, int sy, int dx, int dy, int midir, i
 	char *v12;       // edx
 	int v13;         // ecx
 	int v14;         // eax
-	int v15;         // edx
 	int v16;         // ebx
-	int v17;         // edi
 	int v18;         // edx
 	int CrawlNum[6]; // [esp+Ch] [ebp-28h]
-	int v20;         // [esp+24h] [ebp-10h]
 	char *v21;       // [esp+28h] [ebp-Ch]
 	int v22;         // [esp+2Ch] [ebp-8h]
 	int v23;         // [esp+30h] [ebp-4h]
@@ -2062,12 +2050,9 @@ void __fastcall AddTeleport(int mi, int sx, int sy, int dx, int dy, int midir, i
 			v14 = dy + (char)*v12;
 			if (v13 <= 0 || v13 >= MAXDUNX || v14 <= 0 || v14 >= MAXDUNY)
 				goto LABEL_10;
-			v15 = v14 + 112 * v13;
-			v16 = dPlayer[0][v15];
-			v17 = v15;
-			v18 = dObject[0][v15];
-			v20 = v17 * 4;
-			if (!(dMonster[0][v17] | v18 | v16 | nSolidTable[dPiece[0][v17]]))
+			v16 = dPlayer[v13][v14];
+			v18 = dObject[v13][v14];
+			if (!(dMonster[v13][v14] | v18 | v16 | nSolidTable[dPiece[v13][v14]]))
 				break;
 			v12 = v21;
 		LABEL_10:
@@ -2345,7 +2330,6 @@ void __fastcall AddTown(int mi, int sx, int sy, int dx, int dy, int midir, int m
 	int v12;   // eax
 	int v13;   // ecx
 	char *v14; // eax
-	int v15;   // eax
 	//int v16; // eax
 	int v17;         // ecx
 	int v18;         // eax
@@ -2384,8 +2368,7 @@ void __fastcall AddTown(int mi, int sx, int sy, int dx, int dy, int midir, int m
 					v9 = dx + (char)*(v14 - 1);
 					v11 = dy + (char)*v14;
 					if (v9 > 0 && v9 < MAXDUNX && v11 > 0 && v11 < MAXDUNY) {
-						v15 = v11 + 112 * v9;
-						if (!(dObject[0][v15] | dPlayer[0][v15] | dMissile[0][v15] | nSolidTable[dPiece[0][v15]] | (unsigned char)nMissileTable[dPiece[0][v15]])) {
+						if (!(dObject[v9][v11] | dPlayer[v9][v11] | dMissile[v9][v11] | nSolidTable[dPiece[v9][v11]] | (unsigned char)nMissileTable[dPiece[v9][v11]])) {
 							//_LOBYTE(v16) = CheckIfTrig(v9, v11);
 							if (!CheckIfTrig(v9, v11))
 								break;
@@ -3258,7 +3241,6 @@ void __fastcall AddFirewallC(int mi, int sx, int sy, int dx, int dy, int midir, 
 	//int v15; // eax
 	int CrawlNum[6]; // [esp+Ch] [ebp-30h]
 	int v17;         // [esp+24h] [ebp-18h]
-	int v18;         // [esp+28h] [ebp-14h]
 	char *v19;       // [esp+2Ch] [ebp-10h]
 	int x1;          // [esp+30h] [ebp-Ch]
 	int v21;         // [esp+34h] [ebp-8h]
@@ -3287,11 +3269,10 @@ void __fastcall AddFirewallC(int mi, int sx, int sy, int dx, int dy, int midir, 
 			v14 = dy + (char)*v12;
 			if (v13 <= 0 || v13 >= MAXDUNX || v14 <= 0 || v14 >= MAXDUNY)
 				goto LABEL_13;
-			v18 = v14 + 112 * v13;
-			v17 = dPiece[0][v18];
+			v17 = dPiece[v13][v13];
 			//_LOBYTE(v15) = LineClear(x1, sy, v13, v14);
 			if (LineClear(x1, sy, v13, v14)) {
-				if ((x1 != v13 || sy != v14) && !(nSolidTable[v17] | dObject[0][v18]))
+				if ((x1 != v13 || sy != v14) && !(nSolidTable[v17] | dObject[v13][v13]))
 					break;
 			}
 			v12 = v19;
@@ -3925,11 +3906,10 @@ void __fastcall MI_Golem(int i)
 				goto LABEL_13;
 			v10 = missile[v1]._miVar2;
 			v11 = missile[v1]._miVar1;
-			v18 = v9 + 112 * v8;
 			v16 = 4 * v18;
-			v17 = dPiece[0][v18];
+			v17 = dPiece[v8][v9];
 			if (LineClear(v11, v10, v8, v9)) {
-				if (!(dMonster[0][v16 / 4] | nSolidTable[v17] | dObject[0][v18]))
+				if (!(dMonster[0][v16 / 4] | nSolidTable[v17] | dObject[v8][v9]))
 					break;
 			}
 			v7 = v19;
@@ -4433,7 +4413,6 @@ void __fastcall MI_Fireball(int i)
 	int v10; // ecx
 	int v11; // eax
 	int v12; // edx
-	int v13; // eax
 	int v14; // ecx
 	int v15; // ST10_4
 	int fx;  // [esp+Ch] [ebp-14h]
@@ -4512,25 +4491,25 @@ void __fastcall MI_Fireball(int i)
 				CheckMissileCol(ia, v5, v5, 0, tx - 1, ty + 1, 1);
 			if (!CheckBlock(fx, fy, tx - 1, ty - 1))
 				CheckMissileCol(ia, v5, v5, 0, tx - 1, ty - 1, 1);
-			v13 = 112 * tx + ty;
-			if (!TransList[dung_map[0][v13]] /* check */
+
+			if (!TransList[dung_map[tx][ty]] /* check */
 			    || missile[v1]._mixvel < 0
-			        && (TransList[dung_map[0][v13 + 1]] && nSolidTable[dPiece[0][v13 + 1]]
-			               || TransList[dung_map[0][v13 - 1]] && nSolidTable[dPiece[0][v13 - 1]])) // TransList[*(&byte_5B78EB + v13)] && nSolidTable[*(_DWORD *)&dflags[39][4 * v13 + 36]]) )
+			        && (TransList[dung_map[tx][ty + 1]] && nSolidTable[dPiece[tx][ty + 1]]
+			               || TransList[dung_map[tx][ty - 1]] && nSolidTable[dPiece[tx][ty - 1]])) // TransList[*(&byte_5B78EB + v13)] && nSolidTable[*(_DWORD *)&dflags[39][4 * v13 + 36]]) )
 			{
 				++missile[v1]._mix;
 				++missile[v1]._miy;
 				missile[v1]._miyoff -= 32;
 			}
 			if (missile[v1]._miyvel > 0
-			    && (TransList[dung_map[tx + 1][ty]] && nSolidTable[dPiece[1][v13]]
-			           || TransList[dung_map[tx - 1][ty]] && nSolidTable[dPiece[-1][v13]])) // TransList[block_lvid[v13 + 1940]] && nSolidTable[*(_DWORD *)&dflags[28][4 * v13 + 32]]) )
+			    && (TransList[dung_map[tx + 1][ty]] && nSolidTable[dPiece[tx + 1][ty]]
+			           || TransList[dung_map[tx - 1][ty]] && nSolidTable[dPiece[tx - 1][ty]])) // TransList[block_lvid[v13 + 1940]] && nSolidTable[*(_DWORD *)&dflags[28][4 * v13 + 32]]) )
 			{
 				missile[v1]._miyoff -= 32;
 			}
 			if (missile[v1]._mixvel > 0
-			    && (TransList[dung_map[0][v13 + 1]] && nSolidTable[dPiece[0][v13 + 1]]
-			           || TransList[dung_map[0][v13 - 1]] && nSolidTable[dPiece[0][v13 - 1]])) // TransList[*(&byte_5B78EB + v13)] && nSolidTable[*(_DWORD *)&dflags[39][4 * v13 + 36]]) )
+			    && (TransList[dung_map[tx][ty + 1]] && nSolidTable[dPiece[tx][ty + 1]]
+			           || TransList[dung_map[tx][ty - 1]] && nSolidTable[dPiece[tx][ty - 1]])) // TransList[*(&byte_5B78EB + v13)] && nSolidTable[*(_DWORD *)&dflags[39][4 * v13 + 36]]) )
 			{
 				missile[v1]._mixoff -= 32;
 			}
@@ -6336,7 +6315,6 @@ void __cdecl ProcessMissiles()
 {
 	int v0;  // eax
 	int i;   // edx
-	int v2;  // ecx
 	int v3;  // edx
 	int v4;  // edi
 	int v5;  // esi
@@ -6348,9 +6326,12 @@ void __cdecl ProcessMissiles()
 	int v11; // edx
 
 	v0 = nummissiles;
-	for (i = 0; i < v0; dMissile[0][v2] = 0) {
-		v2 = 112 * missile[missileactive[i]]._mix + missile[missileactive[i]]._miy;
-		dFlags[0][v2] &= ~DFLAG_MISSILE;
+	int x = 0;
+	int y = 0;
+	for (i = 0; i < v0; dMissile[x][y] = 0) {
+		x = missile[missileactive[i]]._mix;
+		y = missile[missileactive[i]]._miy;
+		dFlags[x][y] &= ~DFLAG_MISSILE;
 		++i;
 	}
 	v3 = 0;

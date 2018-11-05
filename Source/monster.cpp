@@ -2944,7 +2944,6 @@ void __fastcall M_Teleport(int i)
 	int v4;            // eax
 	int v6;            // edi
 	int v7;            // ebx
-	int v8;            // eax
 	int v9;            // [esp+Ch] [ebp-24h]
 	int v10;           // [esp+10h] [ebp-20h]
 	int v11;           // [esp+14h] [ebp-1Ch]
@@ -2997,9 +2996,8 @@ void __fastcall M_Teleport(int i)
 			v1 = a1;
 		}
 		M_ClearSquares(v1);
-		v8 = v3->_my + 112 * v3->_mx;
 		v3->_moldx = v6;
-		dMonster[0][v8] = 0;
+		dMonster[v3->_mx][v3->_my] = 0;
 		v3->_moldy = v9;
 		dMonster[v6][v9] = v1 + 1;
 		v3->_mdir = M_GetDir(v1);
@@ -3117,7 +3115,6 @@ int __fastcall M_DoDeath(int i)
 	int v8;        // esi
 	signed int v9; // ecx
 	char v10;      // al
-	int v11;       // eax
 
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_DoDeath: Invalid monster %d", i);
@@ -3150,9 +3147,8 @@ int __fastcall M_DoDeath(int i)
 		else
 			v10 = v3->mdeadval;
 		AddDead(monster[i]._mx, monster[i]._my, v10, (direction)monster[i]._mdir);
-		v11 = monster[i]._my + 112 * monster[i]._mx;
 		monster[i]._mDelFlag = TRUE;
-		dMonster[0][v11] = 0;
+		dMonster[monster[i]._mx][monster[i]._my] = 0;
 		M_UpdateLeader(i);
 	}
 	return 0;
@@ -3797,7 +3793,6 @@ void __fastcall MAI_Snake(int i)
 	int v22; // eax
 	//int v23; // ST1C_4
 	int v24;         // ebx
-	int v26;         // ecx
 	int v27;         // eax
 	int v28;         // ecx
 	int v29;         // ecx
@@ -3870,9 +3865,8 @@ void __fastcall MAI_Snake(int i)
 			if (LineClearF1(PosOkMonst, arglist, esi3->_mx, esi3->_my, v1, v2) && esi3->_mVar1 != 14) {
 				if (AddMissile(esi3->_mx, esi3->_my, v1, v2, midir, MIS_RHINO, micaster, arglist, 0, 0) != -1) {
 					PlayEffect(arglist, 0);
-					v26 = esi3->_my + 112 * esi3->_mx;
 					esi3->_mmode = MM_CHARGE;
-					dMonster[0][v26] = -1 - v24;
+					dMonster[esi3->_mx][esi3->_my] = -1 - v24;
 				}
 				goto LABEL_49;
 			}
@@ -3955,7 +3949,6 @@ void __fastcall MAI_Bat(int i)
 	int v7;              // eax
 	int v10;             // edx
 	bool v11;            // eax
-	int v12;             // ecx
 	CMonster *v14;       // eax
 	int v15;             // edi
 	int v16;             // eax
@@ -4010,9 +4003,8 @@ void __fastcall MAI_Bat(int i)
 			            v2),
 			           v11)) {
 				if (AddMissile(esi3->_mx, esi3->_my, v1, v2, midir, MIS_RHINO, micaster, arglist, 0, 0) != -1) {
-					v12 = esi3->_my + 112 * esi3->_mx;
 					esi3->_mmode = MM_CHARGE;
-					dMonster[0][v12] = -1 - arglist;
+					dMonster[esi3->_mx][esi3->_my] = -1 - arglist;
 				}
 			} else if (abs(v5) >= 2 || abs(v6) >= 2) {
 				v17 = esi3->_mVar2;
@@ -5380,7 +5372,6 @@ void __fastcall MAI_Rhino(int i)
 	//int v16; // eax
 	int v18;  // eax
 	bool v19; // eax
-	int v20;  // ecx
 	int v21;  // eax
 	//int v22; // ST1C_4
 	int v24; // eax
@@ -5465,9 +5456,8 @@ void __fastcall MAI_Rhino(int i)
 				if (AddMissile(esi3->_mx, esi3->_my, v1, v2, midir, MIS_RHINO, esi3->_menemy, arglist, 0, 0) != -1) {
 					if (esi3->MData->snd_special)
 						PlayEffect(arglist, 3);
-					v20 = esi3->_my + 112 * esi3->_mx;
 					esi3->_mmode = MM_CHARGE;
-					dMonster[0][v20] = -1 - arglist;
+					dMonster[esi3->_mx][esi3->_my] = -1 - arglist;
 				}
 			} else {
 				v21 = abs(v5);
@@ -6944,10 +6934,10 @@ BOOL __fastcall PosOkMonst(int i, int x, int y)
 	v4 = 0;
 	if (SolidLoc(x, y))
 		return 0;
-	v5 = 112 * v3;
-	if (dPlayer[v3][y] || dMonster[0][v5 + y])
+
+	if (dPlayer[v3][y] || dMonster[v3][y])
 		return 0;
-	v6 = dObject[0][v5 + y];
+	v6 = dObject[v3][y];
 	result = 1;
 	if (v6) {
 		v8 = v6 <= 0 ? -1 - v6 : v6 - 1;

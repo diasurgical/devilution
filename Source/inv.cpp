@@ -2092,8 +2092,6 @@ void __fastcall SyncGetItem(int x, int y, int idx, unsigned short ci, int iseed)
 
 int __fastcall CanPut(int i, int j)
 {
-	int v2;  // ecx
-	int v3;  // esi
 	char v4; // al
 	int v5;  // eax
 	char v6; // al
@@ -2101,19 +2099,18 @@ int __fastcall CanPut(int i, int j)
 	char v8; // al
 	char v9; // cl
 
-	v2 = i;
-	if (dItem[v2][j])
+	if (dItem[i][j])
 		return 0;
-	v3 = v2 * 112 + j;
-	if (nSolidTable[dPiece[0][v3]])
+
+	if (nSolidTable[dPiece[i][j]])
 		return 0;
-	v4 = dObject[v2][j];
+	v4 = dObject[i][j];
 	if (v4) {
 		v5 = v4 <= 0 ? -1 - v4 : v4 - 1;
 		if (object[v5]._oSolidFlag)
 			return 0;
 	}
-	v6 = dObject[v2 + 1][j + 1];
+	v6 = dObject[i + 1][j + 1];
 	v7 = v6 < 0;
 	if (v6 > 0) {
 		if (object[v6 - 1]._oSelFlag) /* check */
@@ -2122,13 +2119,13 @@ int __fastcall CanPut(int i, int j)
 	}
 	if (v7 && object[-(v6 + 1)]._oSelFlag)
 		return 0;
-	v8 = dObject[v2 + 1][j];
+	v8 = dObject[i + 1][j];
 	if (v8 > 0) {
-		v9 = dObject[v2][j + 1];
+		v9 = dObject[i][j + 1];
 		if (v9 > 0 && object[v8 - 1]._oSelFlag && object[v9 - 1]._oSelFlag)
 			return 0;
 	}
-	if (!currlevel && (dMonster[0][v3] || dMonster[1][v3 + 1]))
+	if (!currlevel && (dMonster[i][j] || dMonster[i + 1][j + 1]))
 		return 0;
 	return 1;
 }

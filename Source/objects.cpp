@@ -425,16 +425,12 @@ void __cdecl FreeObjectGFX()
 
 bool __fastcall RndLocOk(int xp, int yp)
 {
-	int v2;      // ecx
-	int v3;      // eax
 	int v4;      // eax
 	bool result; // eax
 
-	v2 = xp;
-	v3 = v2 * 112 + yp;
 	result = 0;
-	if (!dMonster[0][v3] && !dPlayer[v2][yp] && !dObject[v2][yp] && !(dFlags[v2][yp] & DFLAG_POPULATED)) {
-		v4 = dPiece[0][v3];
+	if (!dMonster[xp][yp] && !dPlayer[xp][yp] && !dObject[xp][yp] && !(dFlags[xp][yp] & DFLAG_POPULATED)) {
+		v4 = dPiece[xp][yp];
 		if (!nSolidTable[v4] && (leveltype != 1 || v4 <= 126 || v4 >= 144))
 			result = 1;
 	}
@@ -1612,7 +1608,6 @@ void __fastcall AddL1Door(int i, int x, int y, int ot)
 	int *v6; // eax
 	int v7;  // edx
 	int v8;  // eax
-	int v9;  // eax
 
 	v4 = i;
 	v5 = 112 * x;
@@ -1622,9 +1617,8 @@ void __fastcall AddL1Door(int i, int x, int y, int ot)
 		v7 = *v6;
 		v8 = *(v6 - 1);
 	} else {
-		v9 = v5 + y;
-		v7 = dPiece[0][v5 + y];
-		v8 = dPiece[-1][v5 + y]; // *(_DWORD *)&dflags[28][4 * v9 + 32]; /* check */
+		v7 = dPiece[x][y];
+		v8 = dPiece[x - 1][y]; // *(_DWORD *)&dflags[28][4 * v9 + 32]; /* check */
 	}
 	object[v4]._oVar4 = 0;
 	object[v4]._oVar1 = v7;
@@ -1723,15 +1717,13 @@ void __fastcall AddSarc(int i)
 {
 	int v1;           // esi
 	char v2;          // al
-	int v3;           // ecx
 	int v4;           // eax
 	bool v5;          // sf
 	unsigned char v6; // of
 
 	v1 = i;
 	v2 = -1 - i;
-	v3 = 112 * object[i]._ox;
-	dObject[0][v3 + object[v1]._oy - 1] = v2; /* dungeon[39][v3 + 39 + object[v1]._oy] = v2; */
+	dObject[object[i]._ox][object[v1]._oy - 1] = v2; /* dungeon[39][v3 + 39 + object[v1]._oy] = v2; */
 	object[v1]._oVar1 = random(153, 10);
 	v4 = GetRndSeed();
 	v6 = __OFSUB__(object[v1]._oVar1, 8);
@@ -2969,7 +2961,6 @@ void __fastcall OperateL1RDoor(int pnum, int oi, unsigned char sendflag)
 	int v5;     // ebx
 	int v6;     // edi
 	int v7;     // ST04_4
-	int v8;     // [esp+Ch] [ebp-Ch]
 	int v9;     // [esp+10h] [ebp-8h]
 	int param1; // [esp+14h] [ebp-4h]
 
@@ -2983,8 +2974,7 @@ void __fastcall OperateL1RDoor(int pnum, int oi, unsigned char sendflag)
 		if (v4) {
 			if (!deltaload)
 				PlaySfxLoc(IS_DOORCLOS, v5, object[v3]._oy);
-			v8 = v6 + 112 * v5;
-			if (dDead[0][v8] != 0 || dMonster[0][v8] != 0 || dItem[0][v8] != 0) {
+			if (dDead[v5][v6] != 0 || dMonster[v5][v6] != 0 || dItem[v5][v6] != 0) {
 				object[v3]._oVar4 = 2;
 				return;
 			}
@@ -2995,7 +2985,7 @@ void __fastcall OperateL1RDoor(int pnum, int oi, unsigned char sendflag)
 			object[v3]._oSelFlag = 3;
 			ObjSetMicro(v5, v6, v7);
 			if (object[v3]._oVar2 == 50) {
-				if (dPiece[-1][v8] == 396) /* check *(_DWORD *)&dflags[28][4 * v8 + 32] == 396 ) */
+				if (dPiece[v5 - 1][v6] == 396) /* check *(_DWORD *)&dflags[28][4 * v8 + 32] == 396 ) */
 					ObjSetMicro(v5 - 1, v6, 411);
 				else
 					ObjSetMicro(v5 - 1, v6, 50);
@@ -3033,7 +3023,6 @@ void __fastcall OperateL1LDoor(int pnum, int oi, unsigned char sendflag)
 	int v5;     // ebx
 	int v6;     // edi
 	int v7;     // ST04_4
-	int v8;     // [esp+Ch] [ebp-Ch]
 	int v9;     // [esp+10h] [ebp-8h]
 	int param1; // [esp+14h] [ebp-4h]
 
@@ -3047,8 +3036,7 @@ void __fastcall OperateL1LDoor(int pnum, int oi, unsigned char sendflag)
 		if (v4) {
 			if (!deltaload)
 				PlaySfxLoc(IS_DOORCLOS, v5, object[v3]._oy);
-			v8 = v6 + 112 * v5;
-			if (dDead[v5][v6] != 0 || dMonster[0][v8] != 0 || dItem[v5][v6] != 0) {
+			if (dDead[v5][v6] != 0 || dMonster[v5][v6] != 0 || dItem[v5][v6] != 0) {
 				object[v3]._oVar4 = 2;
 				return;
 			}
@@ -3059,7 +3047,7 @@ void __fastcall OperateL1LDoor(int pnum, int oi, unsigned char sendflag)
 			object[v3]._oSelFlag = 3;
 			ObjSetMicro(v5, v6, v7);
 			if (object[v3]._oVar2 == 50) {
-				if (dPiece[0][v8 - 1] == 396) /* check  *(_DWORD *)&dflags[39][v8 * 4 + 36] == 396 ) */
+				if (dPiece[v5][v6 - 1] == 396) /* check  *(_DWORD *)&dflags[39][v8 * 4 + 36] == 396 ) */
 					ObjSetMicro(v5, v6 - 1, 412);
 				else
 					ObjSetMicro(v5, v6 - 1, 50);
@@ -4581,7 +4569,7 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 			v88++;
 			xx = random(159, MAXDUNX);
 			yy = random(159, MAXDUNY);
-		} while (v88 <= MAXDUNX * 112 && (nSolidTable[dPiece[xx][yy]] || dObject[xx][yy] || dMonster[xx][yy]));
+		} while (v88 <= MAXDUNX * MAXDUNY && (nSolidTable[dPiece[xx][yy]] || dObject[xx][yy] || dMonster[xx][yy]));
 		AddMissile(plr[pnum].WorldX, plr[pnum].WorldY, xx, yy, plr[pnum]._pdir, MIS_RNDTELEPORT, -1, pnum, 0, 2 * leveltype);
 		if (pnum != myplr)
 			return;

@@ -115,37 +115,32 @@ void __fastcall town_draw_clipped_e_flag(void *buffer, int x, int y, int sx, int
 
 void __fastcall town_draw_clipped_town(void *unused, int x, int y, int sx, int sy, int some_flag)
 {
-	unsigned int v6; // edx
-	int v7;          // edi
-	char v8;         // al
-	char v9;         // al
-	int v10;         // esi
-	int v11;         // ebx
-	int v12;         // esi
-	int v13;         // ebx
-	int v14;         // eax
-	int v15;         // eax
-	int v16;         // esi
-	int v17;         // ebx
-	char v18;        // al
-	int v19;         // esi
-	int v20;         // ebx
-	int v21;         // edi
-	char v22;        // al
-	char v23;        // al
-	int v24;         // esi
-	int v25;         // ebx
-	int v26;         // edi
-	char *v27;       // [esp+Ch] [ebp-Ch]
-	int xa;          // [esp+10h] [ebp-8h]
-	int v29;         // [esp+14h] [ebp-4h]
+	char v8;   // al
+	char v9;   // al
+	int v10;   // esi
+	int v11;   // ebx
+	int v12;   // esi
+	int v13;   // ebx
+	int v14;   // eax
+	int v15;   // eax
+	int v16;   // esi
+	int v17;   // ebx
+	char v18;  // al
+	int v19;   // esi
+	int v20;   // ebx
+	int v21;   // edi
+	char v22;  // al
+	char v23;  // al
+	int v24;   // esi
+	int v25;   // ebx
+	int v26;   // edi
+	char *v27; // [esp+Ch] [ebp-Ch]
+	int xa;    // [esp+10h] [ebp-8h]
 
 	xa = x;
-	v6 = 112 * x;
 	v27 = (char *)gpBuffer + screen_y_times_768[sy] + sx;
-	v7 = v6 + y;
-	v29 = v6 + y;
-	v8 = dItem[v6 / 0x70][y];
+
+	v8 = dItem[x][y];
 	if (v8) {
 		v9 = v8 - 1;
 		v10 = v9;
@@ -162,7 +157,7 @@ void __fastcall town_draw_clipped_town(void *unused, int x, int y, int sx, int s
 			    8);
 		Cel2DrawHdrOnly(v11, sy, (char *)item[v10]._iAnimData, item[v10]._iAnimFrame, item[v10]._iAnimWidth, 0, 8);
 	}
-	if (dFlags[0][v7] & DFLAG_MONSTER) {
+	if (dFlags[x][y] & DFLAG_MONSTER) {
 		v12 = -1 - dMonster[x][y - 1]; // -1 - *(&dword_52D204 + v7); /* check */
 		v13 = sx - towner[v12]._tAnimWidth2;
 		if (v12 == pcursmonst)
@@ -177,7 +172,7 @@ void __fastcall town_draw_clipped_town(void *unused, int x, int y, int sx, int s
 			    8);
 		Cel2DrawHdrOnly(v13, sy, (char *)towner[v12]._tAnimData, towner[v12]._tAnimFrame, towner[v12]._tAnimWidth, 0, 8);
 	}
-	v14 = dMonster[0][v7];
+	v14 = dMonster[x][y];
 	if (v14 > 0) {
 		v15 = v14 - 1;
 		v16 = v15;
@@ -194,7 +189,7 @@ void __fastcall town_draw_clipped_town(void *unused, int x, int y, int sx, int s
 			    8);
 		Cel2DrawHdrOnly(v17, sy, (char *)towner[v16]._tAnimData, towner[v16]._tAnimFrame, towner[v16]._tAnimWidth, 0, 8);
 	}
-	if (dFlags[0][v7] & DFLAG_PLAYER) {
+	if (dFlags[x][y] & DFLAG_PLAYER) {
 		v18 = -1 - dPlayer[x][y - 1]; // -1 - *((_BYTE *)&themeLoc[49].height + v7 + 3);
 		v19 = v18;
 		v20 = sy + plr[v19]._pyoff;
@@ -204,11 +199,10 @@ void __fastcall town_draw_clipped_town(void *unused, int x, int y, int sx, int s
 		Cl2DecodeFrm4(v21, v20, (char *)plr[v19]._pAnimData, plr[v19]._pAnimFrame, plr[v19]._pAnimWidth, 0, 8);
 		if (some_flag && plr[v19]._peflag)
 			town_draw_clipped_e_flag(v27 - 64, xa - 1, y + 1, sx - 64, sy);
-		v7 = v29;
 	}
-	if (dFlags[0][v7] & DFLAG_DEAD_PLAYER)
+	if (dFlags[x][y] & DFLAG_DEAD_PLAYER)
 		DrawDeadPlayer(xa, y, sx, sy, 0, 8, 1);
-	v22 = dPlayer[0][v7];
+	v22 = dPlayer[x][y];
 	if (v22 > 0) {
 		v23 = v22 - 1;
 		v24 = v23;
@@ -219,9 +213,8 @@ void __fastcall town_draw_clipped_town(void *unused, int x, int y, int sx, int s
 		Cl2DecodeFrm4(v26, v25, (char *)plr[v24]._pAnimData, plr[v24]._pAnimFrame, plr[v24]._pAnimWidth, 0, 8);
 		if (some_flag && plr[v24]._peflag)
 			town_draw_clipped_e_flag(v27 - 64, xa - 1, y + 1, sx - 64, sy);
-		v7 = v29;
 	}
-	if (dFlags[0][v7] & DFLAG_MISSILE)
+	if (dFlags[x][y] & DFLAG_MISSILE)
 		DrawClippedMissile(xa, y, sx, sy, 0, 8, 0);
 }
 // 4B8CC0: using guessed type char pcursitem;
@@ -385,37 +378,31 @@ void __fastcall town_draw_clipped_e_flag_2(void *buffer, int x, int y, int a4, i
 
 void __fastcall town_draw_clipped_town_2(int x, int y, int a3, int a4, int a5, int sx, int sy, int some_flag)
 {
-	unsigned int v8; // edx
-	int v9;          // ebx
-	char v10;        // al
-	char v11;        // al
-	int v12;         // esi
-	int v13;         // edi
-	int v14;         // esi
-	int v15;         // edi
-	int v16;         // eax
-	int v17;         // eax
-	int v18;         // esi
-	int v19;         // edi
-	char v20;        // al
-	int v21;         // esi
-	int v22;         // ebx
-	int v23;         // edi
-	char v24;        // al
-	char v25;        // al
-	int v26;         // esi
-	int v27;         // ebx
-	int v28;         // edi
-	int v29;         // [esp+Ch] [ebp-Ch]
-	int xa;          // [esp+10h] [ebp-8h]
-	int v31;         // [esp+14h] [ebp-4h]
+	char v10; // al
+	char v11; // al
+	int v12;  // esi
+	int v13;  // edi
+	int v14;  // esi
+	int v15;  // edi
+	int v16;  // eax
+	int v17;  // eax
+	int v18;  // esi
+	int v19;  // edi
+	char v20; // al
+	int v21;  // esi
+	int v22;  // ebx
+	int v23;  // edi
+	char v24; // al
+	char v25; // al
+	int v26;  // esi
+	int v27;  // ebx
+	int v28;  // edi
+	int v29;  // [esp+Ch] [ebp-Ch]
+	int xa;   // [esp+10h] [ebp-8h]
 
 	xa = y;
-	v8 = 112 * y;
-	v9 = v8 + a3;
 	v29 = x;
-	v31 = v8 + a3;
-	v10 = dItem[v8 / 0x70][a3];
+	v10 = dItem[y][a3];
 	if (v10) {
 		v11 = v10 - 1;
 		v12 = v11;
@@ -432,7 +419,7 @@ void __fastcall town_draw_clipped_town_2(int x, int y, int a3, int a4, int a5, i
 			    8);
 		Cel2DrawHdrOnly(v13, sy, (char *)item[v12]._iAnimData, item[v12]._iAnimFrame, item[v12]._iAnimWidth, a5, 8);
 	}
-	if (dFlags[0][v9] & DFLAG_MONSTER) {
+	if (dFlags[y][a3] & DFLAG_MONSTER) {
 		v14 = -1 - dMonster[x][y - 1]; // -1 - *(&dword_52D204 + v9); /* check */
 		v15 = sx - towner[v14]._tAnimWidth2;
 		if (v14 == pcursmonst)
@@ -447,7 +434,7 @@ void __fastcall town_draw_clipped_town_2(int x, int y, int a3, int a4, int a5, i
 			    8);
 		Cel2DrawHdrOnly(v15, sy, (char *)towner[v14]._tAnimData, towner[v14]._tAnimFrame, towner[v14]._tAnimWidth, a5, 8);
 	}
-	v16 = dMonster[0][v9];
+	v16 = dMonster[y][a3];
 	if (v16 > 0) {
 		v17 = v16 - 1;
 		v18 = v17;
@@ -464,7 +451,7 @@ void __fastcall town_draw_clipped_town_2(int x, int y, int a3, int a4, int a5, i
 			    8);
 		Cel2DrawHdrOnly(v19, sy, (char *)towner[v18]._tAnimData, towner[v18]._tAnimFrame, towner[v18]._tAnimWidth, a5, 8);
 	}
-	if (dFlags[0][v9] & DFLAG_PLAYER) {
+	if (dFlags[y][a3] & DFLAG_PLAYER) {
 		v20 = -1 - dPlayer[x][y - 1]; // -1 - *((_BYTE *)&themeLoc[49].height + v9 + 3);
 		v21 = v20;
 		v22 = sy + plr[v21]._pyoff;
@@ -474,11 +461,10 @@ void __fastcall town_draw_clipped_town_2(int x, int y, int a3, int a4, int a5, i
 		Cl2DecodeFrm4(v23, v22, (char *)plr[v21]._pAnimData, plr[v21]._pAnimFrame, plr[v21]._pAnimWidth, a5, 8);
 		if (some_flag && plr[v21]._peflag)
 			town_draw_clipped_e_flag_2((void *)(v29 - 64), xa - 1, a3 + 1, a4, a5, sx - 64, sy);
-		v9 = v31;
 	}
-	if (dFlags[0][v9] & DFLAG_DEAD_PLAYER)
+	if (dFlags[y][a3] & DFLAG_DEAD_PLAYER)
 		DrawDeadPlayer(xa, a3, sx, sy, a5, 8, 1);
-	v24 = dPlayer[0][v9];
+	v24 = dPlayer[y][a3];
 	if (v24 > 0) {
 		v25 = v24 - 1;
 		v26 = v25;
@@ -489,9 +475,8 @@ void __fastcall town_draw_clipped_town_2(int x, int y, int a3, int a4, int a5, i
 		Cl2DecodeFrm4(v28, v27, (char *)plr[v26]._pAnimData, plr[v26]._pAnimFrame, plr[v26]._pAnimWidth, a5, 8);
 		if (some_flag && plr[v26]._peflag)
 			town_draw_clipped_e_flag_2((void *)(v29 - 64), xa - 1, a3 + 1, a4, a5, sx - 64, sy);
-		v9 = v31;
 	}
-	if (dFlags[0][v9] & DFLAG_MISSILE)
+	if (dFlags[y][a3] & DFLAG_MISSILE)
 		DrawClippedMissile(xa, a3, sx, sy, a5, 8, 0);
 }
 // 4B8CC0: using guessed type char pcursitem;
@@ -672,12 +657,10 @@ void __fastcall town_draw_e_flag(void *buffer, int x, int y, int a4, int dir, in
 
 void __fastcall town_draw_town_all(void *buffer, int x, int y, int a4, int dir, int sx, int sy, int some_flag)
 {
-	//int v9; // ebx
 	int id; // esi
 	int yy; // ebx
 	int xx; // edi
 
-	//v9 = 112 * x + y;
 	if (dItem[x][y]) {
 		id = dItem[x][y] - 1;
 		xx = sx - item[id]._iAnimWidth2;
@@ -856,7 +839,7 @@ LABEL_19:
 		if (v7 < 0 || v7 >= MAXDUNY || xa < 0 || xa >= MAXDUNX) {
 			v23 = sy;
 		} else {
-			v22 = dPiece[0][v7 + 112 * xa];
+			v22 = dPiece[xa][v7];
 			level_cel_block = v22;
 			v10 = v22 == 0;
 			v23 = sy;
@@ -1299,7 +1282,7 @@ void __fastcall T_FillSector(unsigned char *P3Tiles, unsigned char *pSector, int
 		do {
 			v9 = w;
 			if (w > 0) {
-				v10 = &dPiece[1][v8 + 112 * xi];
+				v10 = &dPiece[xi + 1][v8];
 				do {
 					v11 = *(unsigned short *)&v17[v19];
 					if ((_WORD)v11) {

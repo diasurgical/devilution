@@ -635,7 +635,6 @@ void __fastcall scrollrt_draw_lower(int x, int y, int sx, int sy, int a5, int so
 	int v30;            // eax
 	int v31;            // eax
 	int v32;            // eax
-	int v33;            // ecx
 	int v34;            // eax
 	int *v35;           // edi
 	int v36;            // ecx
@@ -773,13 +772,12 @@ LABEL_23:
 		} while (v46);
 	}
 	if (some_flag && (unsigned int)sya < 0x70 && sxa < 0x70) {
-		v33 = sya + 112 * sxa;
-		v34 = dPiece[0][v33];
-		light_table_index = dTransVal[0][v33];
+		v34 = dPiece[sxa][sya];
+		light_table_index = dTransVal[sxa][sya];
 		level_piece_id = v34;
 		if (v34) {
 			v35 = &screen_y_times_768[v21];
-			v36 = (unsigned char)(nTransTable[v34] & TransList[dung_map[0][v33]]);
+			v36 = (unsigned char)(nTransTable[v34] & TransList[dung_map[sxa][sya]]);
 			v37 = *v8;
 			v51 = v35;
 			v38 = (char *)gpBuffer + *v35;
@@ -827,11 +825,9 @@ LABEL_23:
 
 void __fastcall scrollrt_draw_clipped_dungeon(char *a1, int sx, int sy, int a4, int a5, int a6)
 {
-	int v6;             // eax
 	char v7;            // bl
 	char v8;            // cl
 	char v9;            // dl
-	int *v10;           // eax
 	DeadStruct *v11;    // eax
 	int *v12;           // esi
 	int v13;            // ecx
@@ -875,20 +871,18 @@ void __fastcall scrollrt_draw_clipped_dungeon(char *a1, int sx, int sy, int a4, 
 
 	a1a = sx;
 	dst_buf = a1;
-	v6 = 112 * sx + sy;
-	v7 = dDead[0][v6];
-	v50 = dFlags[0][v6];
-	v47 = dObject[0][v6];
-	v49 = dItem[0][v6];
-	v8 = dPlayer[0][v6 - 1];
-	v48 = dPlayer[0][v6];
-	v46 = dArch[0][v6];
-	v9 = dung_map[0][v6];
-	v10 = (int *)((char *)dMonster + 4 * v6);
+	v7 = dDead[sx][sy];
+	v50 = dFlags[sx][sy];
+	v47 = dObject[sx][sy];
+	v49 = dItem[sx][sy];
+	v8 = dPlayer[sx][sy - 1];
+	v48 = dPlayer[sx][sy];
+	v46 = dArch[sx][sy];
+	v9 = dung_map[sx][sy];
 	v44 = v9;
 	v45 = v8;
-	v40 = *v10;
-	v41 = *(v10 - 1);
+	v40 = dMonster[sx][sy];
+	v41 = dMonster[sx][sy - 1];
 	if (visiondebug && v50 & DFLAG_LIT)
 		Cel2DecodeHdrOnly(dst_buf, (char *)pSquareCel, 1, 64, 0, 8);
 	if (MissilePreFlag && v50 & DFLAG_MISSILE)
@@ -1168,7 +1162,6 @@ void __fastcall DrawClippedObject(int x, int y, int a3, int a4, int pre_flag, in
 
 void __fastcall scrollrt_draw_clipped_e_flag(char *buffer, int x, int y, int a4, int a5)
 {
-	int v5;               // eax
 	int v6;               // ebx
 	int v7;               // ecx
 	int v8;               // esi
@@ -1189,12 +1182,11 @@ void __fastcall scrollrt_draw_clipped_e_flag(char *buffer, int x, int y, int a4,
 
 	xa = x;
 	v18 = level_piece_id;
-	v5 = y + 112 * x;
 	a1 = (unsigned char *)buffer;
 	v6 = cel_transparency_active;
-	v7 = dPiece[0][v5];
-	v8 = dTransVal[0][v5];
-	v9 = dung_map[0][v5];
+	v7 = dPiece[x][y];
+	v8 = dTransVal[x][y];
+	v9 = dung_map[x][y];
 	v10 = light_table_index;
 	level_piece_id = v7;
 	v11 = (unsigned char)(nTransTable[v7] & TransList[v9]);
@@ -1241,7 +1233,6 @@ void __fastcall scrollrt_draw_lower_2(int x, int y, int sx, int sy, int a5, int 
 {
 	signed int v7;       // ebx
 	int v8;              // edi
-	int v9;              // ecx
 	int v10;             // eax
 	int v11;             // eax
 	int v12;             // eax
@@ -1251,7 +1242,6 @@ void __fastcall scrollrt_draw_lower_2(int x, int y, int sx, int sy, int a5, int 
 	unsigned char *v16;  // ebx
 	int v17;             // eax
 	int v18;             // eax
-	int v19;             // ecx
 	int v20;             // eax
 	int v21;             // eax
 	int v22;             // eax
@@ -1276,13 +1266,12 @@ void __fastcall scrollrt_draw_lower_2(int x, int y, int sx, int sy, int a5, int 
 	v29 = (char *)dpiece_defs_map_1 + 32 * gendung_get_dpiece_num_from_coord(x, y);
 	if (some_flag) {
 		if (v7 >= 0 && v7 < MAXDUNY && xa >= 0 && xa < MAXDUNX) {
-			v9 = 112 * xa + v7;
-			v10 = dPiece[0][v9];
-			light_table_index = dTransVal[0][v9];
+			v10 = dPiece[xa][v7];
+			light_table_index = dTransVal[xa][v7];
 			level_piece_id = v10;
 			if (v10) {
 				a6a = 0;
-				cel_transparency_active = (unsigned char)(nTransTable[v10] & TransList[dung_map[0][v9]]);
+				cel_transparency_active = (unsigned char)(nTransTable[v10] & TransList[dung_map[xa][v7]]);
 				a1a = (unsigned char *)gpBuffer + screen_y_times_768[sy] + v8 - 24544;
 				if ((dword_5A5594 >> 1) - 1 > 0) {
 					v24 = (unsigned short *)(v29 + 6);
@@ -1377,13 +1366,12 @@ void __fastcall scrollrt_draw_lower_2(int x, int y, int sx, int sy, int a5, int 
 	}
 	if (some_flag) {
 		if ((unsigned int)v7 < 0x70 && (unsigned int)xa < 0x70) {
-			v19 = 112 * xa + v7;
-			v20 = dPiece[0][v19];
-			light_table_index = dTransVal[0][v19];
+			v20 = dPiece[xa][v7];
+			light_table_index = dTransVal[xa][v7];
 			level_piece_id = v20;
 			if (v20) {
 				a6c = 0;
-				cel_transparency_active = (unsigned char)(nTransTable[v20] & TransList[dung_map[0][v19]]);
+				cel_transparency_active = (unsigned char)(nTransTable[v20] & TransList[dung_map[xa][v7]]);
 				a1b = (unsigned char *)gpBuffer + screen_y_times_768[sy] + v8 - 24576;
 				if ((dword_5A5594 >> 1) - 1 > 0) {
 					a5b = (unsigned short *)(v29 + 4);
@@ -1421,11 +1409,9 @@ void __fastcall scrollrt_draw_lower_2(int x, int y, int sx, int sy, int a5, int 
 
 void __fastcall scrollrt_draw_clipped_dungeon_2(char *buffer, int x, int y, int a4, int a5, int sx, int sy, int me_flag)
 {
-	int v8;             // eax
 	char v9;            // bl
 	char v10;           // cl
 	char v11;           // dl
-	int *v12;           // eax
 	int v13;            // edi
 	DeadStruct *v14;    // eax
 	int *v15;           // esi
@@ -1470,20 +1456,18 @@ void __fastcall scrollrt_draw_clipped_dungeon_2(char *buffer, int x, int y, int 
 
 	a1 = x;
 	dst_buf = buffer;
-	v8 = 112 * x + y;
-	v9 = dDead[0][v8];
-	v53 = dFlags[0][v8];
-	v50 = dObject[0][v8];
-	v52 = dItem[0][v8];
-	v10 = dPlayer[0][v8 - 1];
-	v51 = dPlayer[0][v8];
-	v49 = dArch[0][v8];
-	v11 = dung_map[0][v8];
-	v12 = (int *)((char *)dMonster + 4 * v8);
+	v9 = dDead[x][y];
+	v53 = dFlags[x][y];
+	v50 = dObject[x][y];
+	v52 = dItem[x][y];
+	v10 = dPlayer[x][y - 1];
+	v51 = dPlayer[x][y];
+	v49 = dArch[x][y];
+	v11 = dung_map[x][y];
 	v47 = v11;
 	v48 = v10;
-	v43 = *v12;
-	v44 = *(v12 - 1);
+	v43 = dMonster[x][y];
+	v44 = dMonster[x][y - 1];
 	if (visiondebug && v53 & DFLAG_LIT)
 		Cel2DecodeHdrOnly(dst_buf, (char *)pSquareCel, 1, 64, a5, 8);
 	if (MissilePreFlag && v53 & DFLAG_MISSILE) {
@@ -1665,7 +1649,6 @@ void __fastcall scrollrt_draw_clipped_dungeon_2(char *buffer, int x, int y, int 
 
 void __fastcall scrollrt_draw_clipped_e_flag_2(char *buffer, int x, int y, int a4, signed int a5, int sx, int sy)
 {
-	int v7;              // eax
 	int v8;              // ecx
 	int v9;              // esi
 	int v10;             // eax
@@ -1688,11 +1671,10 @@ void __fastcall scrollrt_draw_clipped_e_flag_2(char *buffer, int x, int y, int a
 	v22 = light_table_index;
 	v21 = cel_transparency_active;
 	v20 = level_piece_id;
-	v7 = y + 112 * x;
 	a1 = buffer;
-	v8 = dPiece[0][v7];
-	v9 = dTransVal[0][v7];
-	v10 = dung_map[0][v7];
+	v8 = dPiece[x][y];
+	v9 = dTransVal[x][y];
+	v10 = dung_map[x][y];
 	level_piece_id = v8;
 	v11 = (unsigned char *)&a1[24576 * a4];
 	v12 = (unsigned char)(nTransTable[v8] & TransList[v10]);
@@ -1762,7 +1744,6 @@ void __fastcall scrollrt_draw_upper(int x, int y, int sx, int sy, int a5, int a6
 	int v7;             // edi
 	int v8;             // esi
 	unsigned short *v9; // ebx
-	int v10;            // ecx
 	int v11;            // eax
 	char *v12;          // edx
 	int v13;            // edi
@@ -1783,7 +1764,6 @@ void __fastcall scrollrt_draw_upper(int x, int y, int sx, int sy, int a5, int a6
 	int v28;            // eax
 	int v29;            // eax
 	bool v30;           // zf
-	int v31;            // ecx
 	int v32;            // eax
 	unsigned char *v33; // esi
 	int v34;            // eax
@@ -1809,12 +1789,11 @@ void __fastcall scrollrt_draw_upper(int x, int y, int sx, int sy, int a5, int a6
 		a5a = 8;
 	if (some_flag) {
 		if (v7 >= 0 && v7 < MAXDUNY && v8 >= 0 && v8 < MAXDUNX) {
-			v10 = 112 * v8 + v7;
-			v11 = dPiece[0][v10];
-			light_table_index = dTransVal[0][v10];
+			v11 = dPiece[v8][v7];
+			light_table_index = dTransVal[v8][v7];
 			level_piece_id = v11;
 			if (v11) {
-				cel_transparency_active = (unsigned char)(nTransTable[v11] & TransList[dung_map[0][v10]]);
+				cel_transparency_active = (unsigned char)(nTransTable[v11] & TransList[dung_map[v8][v7]]);
 				v12 = (char *)gpBuffer + screen_y_times_768[sy];
 				v13 = (int)&v12[sx + 32];
 				if (a6 >= 0) {
@@ -1917,13 +1896,12 @@ void __fastcall scrollrt_draw_upper(int x, int y, int sx, int sy, int a5, int a6
 		} while (!v30);
 	}
 	if (some_flag && v7 >= 0 && v7 < MAXDUNY && xa >= 0 && xa < MAXDUNX) {
-		v31 = 112 * xa + v7;
-		v32 = dPiece[0][v31];
-		light_table_index = dTransVal[0][v31];
+		v32 = dPiece[xa][v7];
+		light_table_index = dTransVal[xa][v7];
 		level_piece_id = v32;
 		if (v32) {
 			arch_draw_type = 1;
-			cel_transparency_active = (unsigned char)(nTransTable[v32] & TransList[dung_map[0][v31]]);
+			cel_transparency_active = (unsigned char)(nTransTable[v32] & TransList[dung_map[xa][v7]]);
 			v33 = (unsigned char *)gpBuffer + screen_y_times_768[sy] + sx;
 			if (a6 >= 0) {
 				v34 = *v9;
@@ -1966,11 +1944,9 @@ void __fastcall scrollrt_draw_upper(int x, int y, int sx, int sy, int a5, int a6
 
 void __fastcall scrollrt_draw_dungeon(char *buffer, int x, int y, int a4, int a5, int sx, int sy, int me_flag)
 {
-	int v8;             // eax
 	char v9;            // bl
 	char v10;           // cl
 	char v11;           // dl
-	int *v12;           // eax
 	DeadStruct *v13;    // eax
 	int *v14;           // esi
 	int v15;            // ecx
@@ -2014,20 +1990,18 @@ void __fastcall scrollrt_draw_dungeon(char *buffer, int x, int y, int a4, int a5
 
 	xa = x;
 	dst_buf = buffer;
-	v8 = 112 * x + y;
-	v9 = dDead[0][v8];
-	v52 = dFlags[0][v8];
-	v49 = dObject[0][v8];
-	v51 = dItem[0][v8];
-	v10 = dPlayer[0][v8 - 1];
-	v50 = dPlayer[0][v8];
-	v48 = dArch[0][v8];
-	v11 = dung_map[0][v8];
-	v12 = (int *)((char *)dMonster + 4 * v8);
+	v9 = dDead[x][y];
+	v52 = dFlags[x][y];
+	v49 = dObject[x][y];
+	v51 = dItem[x][y];
+	v10 = dPlayer[x][y - 1];
+	v50 = dPlayer[x][y];
+	v48 = dArch[x][y];
+	v11 = dung_map[x][y];
 	v46 = v11;
 	v47 = v10;
-	v42 = *v12;
-	v43 = *(v12 - 1);
+	v42 = dMonster[x][y];
+	v43 = dMonster[x][y - 1];
 	if (visiondebug && v52 & DFLAG_LIT)
 		CelDecodeHdrOnly(dst_buf, (char *)pSquareCel, 1, 64, 0, a5);
 	if (MissilePreFlag && v52 & DFLAG_MISSILE)
@@ -2312,7 +2286,6 @@ void __fastcall DrawObject(int x, int y, int a3, int a4, int pre_flag, int a6, i
 
 void __fastcall scrollrt_draw_e_flag(char *buffer, int x, int y, int a4, int a5, int sx, int sy)
 {
-	int v7;              // eax
 	char *v8;            // esi
 	int v9;              // ecx
 	int v10;             // ebx
@@ -2335,12 +2308,11 @@ void __fastcall scrollrt_draw_e_flag(char *buffer, int x, int y, int a4, int a5,
 
 	xa = x;
 	v22 = level_piece_id;
-	v7 = 112 * x + y;
 	v8 = buffer;
-	v9 = dPiece[0][v7];
+	v9 = dPiece[x][y];
 	v10 = cel_transparency_active;
-	v11 = dTransVal[0][v7];
-	v12 = dung_map[0][v7];
+	v11 = dTransVal[x][y];
+	v12 = dung_map[x][y];
 	level_piece_id = v9;
 	v13 = (unsigned char)TransList[v12];
 	v14 = (unsigned char)nTransTable[v9];

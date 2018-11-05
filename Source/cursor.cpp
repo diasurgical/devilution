@@ -728,7 +728,7 @@ LABEL_40:
 			v27 = 112 * v6;
 			v78 = 112 * v6;
 			v43 = 112 * v6 + v8;
-			v45 = dMonster[0][v43 + 1];
+			v45 = dMonster[v6][v8 + 1];
 			if (v45 <= 0)
 				goto LABEL_200;
 			v11 = v45 - 1;
@@ -738,7 +738,7 @@ LABEL_40:
 			v27 = 112 * v6;
 			v78 = 112 * v6;
 			v43 = 112 * v6 + v8;
-			v44 = dMonster[1][v43];
+			v44 = dMonster[v6 + 1][v8];
 			if (v44 <= 0)
 				goto LABEL_200;
 			v11 = v44 - 1;

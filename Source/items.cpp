@@ -651,16 +651,12 @@ void __cdecl InitItemGFX()
 
 bool __fastcall ItemPlace(int xp, int yp)
 {
-	int v2;      // ecx
-	int v3;      // eax
 	bool result; // al
 
-	v2 = xp;
-	v3 = v2 * 112 + yp;
-	if (dMonster[0][v3] || dPlayer[v2][yp] || dItem[v2][yp] || dObject[v2][yp] || dFlags[v2][yp] & DFLAG_POPULATED)
+	if (dMonster[xp][yp] || dPlayer[xp][yp] || dItem[xp][yp] || dObject[xp][yp] || dFlags[xp][yp] & DFLAG_POPULATED)
 		result = 0;
 	else
-		result = nSolidTable[dPiece[0][v3]] == 0;
+		result = nSolidTable[dPiece[xp][yp]] == 0;
 	return result;
 }
 
@@ -1454,7 +1450,6 @@ void __fastcall CreatePlrItems(int p)
 BOOL __fastcall ItemSpaceOk(int i, int j)
 {
 	int v2;  // eax
-	int v3;  // esi
 	char v4; // cl
 	int v5;  // ecx
 	char v6; // cl
@@ -1471,8 +1466,7 @@ BOOL __fastcall ItemSpaceOk(int i, int j)
 	if (j >= MAXDUNY)
 		return 0;
 	v2 = i;
-	v3 = 112 * i + j;
-	if (dMonster[0][v3] || dPlayer[v2][j] || dItem[v2][j])
+	if (dMonster[i][j] || dPlayer[v2][j] || dItem[v2][j])
 		return 0;
 	v4 = dObject[v2][j];
 	if (v4) {
@@ -1490,10 +1484,10 @@ BOOL __fastcall ItemSpaceOk(int i, int j)
 	if (!v7 || !object[-(v6 + 1)]._oSelFlag) {
 		v8 = dObject[v2 + 1][j];
 		if (v8 <= 0)
-			return nSolidTable[dPiece[0][v3]] == 0;
+			return nSolidTable[dPiece[i][j]] == 0;
 		v9 = dObject[v2][j + 1];
 		if (v9 <= 0 || !object[v8 - 1]._oSelFlag || !object[v9 - 1]._oSelFlag)
-			return nSolidTable[dPiece[0][v3]] == 0;
+			return nSolidTable[dPiece[i][j]] == 0;
 	}
 	return 0;
 }

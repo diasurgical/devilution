@@ -2746,16 +2746,11 @@ void __fastcall DRLG_L2FTVR(int i, int j, int x, int y, int d)
 	int v6;   // esi
 	int v7;   // edi
 	int v8;   // edx
-	int v9;   // ecx
 	int v10;  // ebx
 	int v11;  // eax
 	int v12;  // edi
 	char v13; // al
 	char v14; // al
-	int v15;  // ecx
-	int v16;  // ecx
-	int v17;  // ecx
-	int v18;  // ecx
 	int v19;  // [esp+Ch] [ebp-14h]
 	int k;    // [esp+10h] [ebp-10h]
 	int v21;  // [esp+14h] [ebp-Ch]
@@ -2767,10 +2762,9 @@ void __fastcall DRLG_L2FTVR(int i, int j, int x, int y, int d)
 	v6 = y;
 	v7 = j;
 	v8 = i;
-	v9 = 112 * x + y;
 	ja = v7;
 	v21 = v8;
-	if (!dung_map[0][v9]) {
+	if (!dung_map[x][y]) {
 		v19 = x;
 		ia = v8 - 1;
 		v10 = x - 2;
@@ -2779,10 +2773,10 @@ void __fastcall DRLG_L2FTVR(int i, int j, int x, int y, int d)
 		v12 = v6 - 2;
 		for (k = 40 * v8; dungeon[0][v11 + ja] == 3; v11 = k) {
 			v13 = TransVal;
-			dung_map[0][v9] = TransVal;
-			dung_map[1][v9] = v13;
-			dung_map[0][v9 + 1] = v13;
-			dung_map[1][v9 + 1] = v13;
+			dung_map[v19][v6] = TransVal;
+			dung_map[v19 + 1][v6] = v13;
+			dung_map[v19][v6 + 1] = v13;
+			dung_map[v19 + 1][v6 + 1] = v13;
 			DRLG_L2FTVR(ia + 2, ja, v10 + 4, v6, 1);
 			DRLG_L2FTVR(ia, ja, v10, v6, 2);
 			DRLG_L2FTVR(v21, ya + 2, x, v12 + 4, 3);
@@ -2801,7 +2795,6 @@ void __fastcall DRLG_L2FTVR(int i, int j, int x, int y, int d)
 			++ya;
 			++v21;
 			++ia;
-			v9 = v19 * 112 + v6;
 			if (dung_map[v19][v6])
 				break;
 		}
@@ -2809,24 +2802,20 @@ void __fastcall DRLG_L2FTVR(int i, int j, int x, int y, int d)
 	}
 	v14 = TransVal;
 	if (d == 1) {
-		v15 = v6 + 112 * v5;
-		dung_map[0][v15] = TransVal;
-		dung_map[0][v15 + 1] = v14;
+		dung_map[v5][v6] = TransVal;
+		dung_map[v5][v6 + 1] = v14;
 	}
 	if (d == 2) {
-		v16 = v6 + 112 * v5;
-		dung_map[1][v16] = v14;
-		dung_map[1][v16 + 1] = v14;
+		dung_map[v5 + 1][v6] = v14;
+		dung_map[v5 + 1][v6 + 1] = v14;
 	}
 	if (d == 3) {
-		v17 = v6 + 112 * v5;
-		dung_map[0][v17] = v14;
-		dung_map[1][v17] = v14;
+		dung_map[v5][v6] = v14;
+		dung_map[v5 + 1][v6] = v14;
 	}
 	if (d == 4) {
-		v18 = v6 + 112 * v5;
-		dung_map[0][v18 + 1] = v14;
-		dung_map[1][v18 + 1] = v14;
+		dung_map[v5][v6 + 1] = v14;
+		dung_map[v5 + 1][v6 + 1] = v14;
 	}
 	if (d == 5)
 		dung_map[v5 + 1][v6 + 1] = v14;

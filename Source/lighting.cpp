@@ -810,13 +810,11 @@ void __fastcall DoVision(int nXPos, int nYPos, int nRadius, unsigned char doauto
 	int v13;            // ecx
 	unsigned char v14;  // cl
 	unsigned char v15;  // dl
-	int v16;            // ecx
 	int v17;            // ecx
 	int i;              // [esp+Ch] [ebp-34h]
 	unsigned char *v19; // [esp+10h] [ebp-30h]
 	int v20;            // [esp+14h] [ebp-2Ch]
 	int v21;            // [esp+18h] [ebp-28h]
-	int v22;            // [esp+1Ch] [ebp-24h]
 	signed int v23;     // [esp+20h] [ebp-20h]
 	signed int v24;     // [esp+24h] [ebp-1Ch]
 	signed int v25;     // [esp+28h] [ebp-18h]
@@ -906,24 +904,21 @@ void __fastcall DoVision(int nXPos, int nYPos, int nRadius, unsigned char doauto
 					}
 				}
 				if (v6 >= 0 && v6 <= MAXDUNX && v7 >= 0 && v7 <= MAXDUNY) {
-					v22 = v7 + 112 * v6;
-					v21 = (unsigned char)nBlockTable[dPiece[0][v22]];
+					v21 = (unsigned char)nBlockTable[dPiece[v6][v7]];
 					if (!nBlockTable[dPiece[v6 + v26][v25 + v7]]
 					    || !nBlockTable[dPiece[v6 + v24][v23 + v7]]) {
-						v16 = v7 + 112 * v6;
 						if (doautomap) {
-							if (dFlags[0][v22] >= 0) {
+							if (dFlags[v6][v7] >= 0) {
 								SetAutomapView(v6, v7);
-								v16 = v7 + 112 * v6;
 								v8 = v19;
 							}
-							dFlags[0][v16] |= DFLAG_EXPLORED;
+							dFlags[v6][v7] |= DFLAG_EXPLORED;
 						}
 						if (visible)
-							dFlags[0][v16] |= DFLAG_LIT;
-						dFlags[0][v16] |= DFLAG_VISIBLE;
+							dFlags[v6][v7] |= DFLAG_LIT;
+						dFlags[v6][v7] |= DFLAG_VISIBLE;
 						if (!v21) {
-							v17 = dung_map[0][v16];
+							v17 = dung_map[v6][v7];
 							if (v17)
 								TransList[v17] = 1;
 						}
