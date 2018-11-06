@@ -1007,7 +1007,7 @@ void __cdecl InitControlPan()
 	chrbtnactive = 0;
 	chrbtn[3] = 0;
 	pDurIcons = LoadFileInMem("Items\\DurIcons.CEL", 0);
-	strcpy(infostr, &empty_string);
+	strcpy(infostr, "");
 	ClearPanel();
 	drawhpflag = TRUE;
 	drawmanaflag = TRUE;

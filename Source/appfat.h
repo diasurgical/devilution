@@ -5,7 +5,6 @@
 extern char sz_error_buf[256];
 extern int terminating;       // weak
 extern int cleanup_thread_id; // weak
-extern char empty_string;
 
 char *__fastcall GetErrorStr(int error_code);
 void __fastcall TraceErrorDD(int error_code, char *error_buf, int error_buf_len);

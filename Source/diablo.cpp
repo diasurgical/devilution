@@ -500,8 +500,8 @@ void __fastcall diablo_reload_process(HMODULE hModule)
 	HANDLE hMap;            // [esp+2A0h] [ebp-8h]
 	HWND hWnd;              // [esp+2A4h] [ebp-4h]
 
-	*Filename = empty_string;
-	memset(Filename + 1, 0, sizeof(Filename) - 1);
+	//*Filename = empty_string;
+	memset(Filename, 0, sizeof(Filename));
 	//	*(_WORD *)&Filename[257] = 0;
 	//	Filename[259] = 0;
 	GetModuleFileName(hModule, Filename, 0x104u);

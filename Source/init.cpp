@@ -69,9 +69,9 @@ void __cdecl init_run_office_from_start_menu()
 	LPITEMIDLIST ppidl; // [esp+100h] [ebp-4h]
 
 	if (killed_mom_parent) {
-		*pszPath = empty_string;
+		//*pszPath = empty_string;
 		killed_mom_parent = 0;
-		memset(pszPath + 1, 0, sizeof(pszPath) - 1);
+		memset(pszPath, 0, sizeof(pszPath));
 		// *(_WORD *)&pszPath[253] = 0;
 		//pszPath[255] = 0;
 		ppidl = 0;
@@ -105,8 +105,8 @@ void __fastcall init_run_office(char *dir)
 		do {
 			if (FindFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
 				if (strcmp(FindFileData.cFileName, ".") && strcmp(FindFileData.cFileName, "..")) {
-					*Directory = empty_string;
-					memset(Directory + 1, 0, sizeof(Directory) - 1);
+					//*Directory = empty_string;
+					memset(Directory, 0, sizeof(Directory));
 					v3 = *v1 == 0;
 					// *(_WORD *)&Directory[257] = 0;
 					//Directory[259] = 0;
@@ -118,7 +118,7 @@ void __fastcall init_run_office(char *dir)
 				}
 			} else if (!_strcmpi(FindFileData.cFileName, "Microsoft Office Shortcut Bar.lnk")) {
 				v4 = GetDesktopWindow();
-				ShellExecute(v4, "open", FindFileData.cFileName, &empty_string, v1, SW_SHOWNORMAL);
+				ShellExecute(v4, "open", FindFileData.cFileName, "", v1, SW_SHOWNORMAL);
 			}
 		} while (FindNextFile(v2, &FindFileData));
 		FindClose(v2);
