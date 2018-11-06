@@ -100,7 +100,7 @@ const PLStruct PL_Prefix[84] = {
 	{ "Bountiful",    IPL_CHARGES,           3,        3,        9,                                  PLT_STAFF                     ,  0, FALSE,    TRUE,      3000,     3000,         3 },
 	{ "Flaming",      IPL_FIREDAM,           1,       10,        7,                       PLT_WEAP | PLT_STAFF                     ,  0, FALSE,    TRUE,      5000,     5000,         2 },
 	{ "Lightning",    IPL_LIGHTDAM,          2,       20,       18,                       PLT_WEAP | PLT_STAFF                     ,  0, FALSE,    TRUE,     10000,    10000,         2 },
-	{ &empty_string,  IPL_INVALID,           0,        0,        0, 0                                                              ,  0, FALSE,    FALSE,        0,        0,         0 }
+	{ "",  IPL_INVALID,           0,        0,        0, 0                                                              ,  0, FALSE,    FALSE,        0,        0,         0 }
 	// clang-format on
 };
 const PLStruct PL_Suffix[96] = {
@@ -201,7 +201,7 @@ const PLStruct PL_Suffix[96] = {
 	{ "stability",     IPL_FASTRECOVER,      2,        2,       10, PLT_ARMO |                                             PLT_MISC,  0, FALSE,    TRUE,      4000,     4000,         4 },
 	{ "harmony",       IPL_FASTRECOVER,      3,        3,       20, PLT_ARMO |                                             PLT_MISC,  0, FALSE,    TRUE,      8000,     8000,         8 },
 	{ "blocking",      IPL_FASTBLOCK,        1,        1,        5,            PLT_SHLD                                            ,  0, FALSE,    TRUE,      4000,     4000,         4 },
-	{ &empty_string,   IPL_INVALID,          0,        0,        0, 0                                                              ,  0, FALSE,    FALSE,        0,        0,         0 }
+	{ "",   IPL_INVALID,          0,        0,        0, 0                                                              ,  0, FALSE,    FALSE,        0,        0,         0 }
 	// clang-format on
 };
 const UItemStruct UniqueItemList[91] = {
@@ -297,7 +297,7 @@ const UItemStruct UniqueItemList[91] = {
 	{  "The Bleeder",             UITYPE_RING,         2,       4,    8500, IPL_MAGICRES,       20,       20, IPL_MANA,            30,       30, IPL_LIFE_CURSE,      10,       10, IPL_INVCURS,          8,        0, IPL_TOHIT,            0,         0, IPL_TOHIT,        0,         0 },
 	{  "Constricting Ring",       UITYPE_RING,         5,       3,   62000, IPL_ALLRES,         75,       75, IPL_DRAINLIFE,        0,        0, IPL_INVCURS,         14,        0, IPL_TOHIT,            0,        0, IPL_TOHIT,            0,         0, IPL_TOHIT,        0,         0 },
 	{  "Ring of Engagement",      UITYPE_RING,        11,       5,   12476, IPL_GETHIT,          1,        2, IPL_THORNS,           1,        3, IPL_SETAC,            5,        5, IPL_TARGAC,           4,       12, IPL_INVCURS,         13,         0, IPL_TOHIT,        0,         0 },
-	{  &empty_string,             UITYPE_INVALID,      0,       0,       0, IPL_TOHIT,           0,        0, IPL_TOHIT,            0,        0, IPL_TOHIT,            0,        0, IPL_TOHIT,            0,        0, IPL_TOHIT,            0,         0, IPL_TOHIT,        0,         0 }
+	{  "",             UITYPE_INVALID,      0,       0,       0, IPL_TOHIT,           0,        0, IPL_TOHIT,            0,        0, IPL_TOHIT,            0,        0, IPL_TOHIT,            0,        0, IPL_TOHIT,            0,         0, IPL_TOHIT,        0,         0 }
 	// clang-format on
 };
 

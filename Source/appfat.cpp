@@ -8,7 +8,6 @@ float appfat_cpp_init_value;
 char sz_error_buf[256];
 int terminating;       // weak
 int cleanup_thread_id; // weak
-char empty_string;
 
 // appfat_cpp_init initializes the C++ runtime of appfat.cpp.
 struct appfat_cpp_init {
@@ -384,7 +383,7 @@ void __fastcall FileErrDlg(const char *error)
 	v1 = error;
 	FreeDlg();
 	if (!v1)
-		v1 = &empty_string;
+		v1 = "";
 	if (DialogBoxParam(ghInst, MAKEINTRESOURCE(IDD_DIALOG3), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)v1) == -1)
 		TermMsg("FileErrDlg");
 	TermMsg(0);
@@ -406,7 +405,7 @@ BOOL __cdecl InsertCDDlg()
 	int v0; // edi
 
 	ShowCursor(1);
-	v0 = DialogBoxParam(ghInst, MAKEINTRESOURCE(IDD_DIALOG9), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)&empty_string);
+	v0 = DialogBoxParam(ghInst, MAKEINTRESOURCE(IDD_DIALOG9), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)"");
 	if (v0 == -1)
 		TermMsg("InsertCDDlg");
 	ShowCursor(0);

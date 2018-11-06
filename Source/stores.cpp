@@ -65,7 +65,7 @@ int SStringY[24] = {
 char *talkname[9] = {
 	"Griswold",
 	"Pepin",
-	&empty_string,
+	"",
 	"Ogden",
 	"Cain",
 	"Farnham",
