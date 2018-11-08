@@ -31,7 +31,7 @@ void __cdecl interface_msg_pump()
 	}
 }
 
-bool __cdecl IncProgress()
+BOOL __cdecl IncProgress()
 {
 	interface_msg_pump();
 	sgdwProgress += 15;
