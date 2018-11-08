@@ -9,7 +9,7 @@ extern int progress_id; // idb
 
 void __cdecl interfac_cpp_init();
 void __cdecl interface_msg_pump();
-bool __cdecl IncProgress();
+BOOL __cdecl IncProgress();
 void __cdecl DrawCutscene();
 void __fastcall DrawProgress(int screen_x, int screen_y, int progress_id);
 void __fastcall ShowProgress(int uMsg);

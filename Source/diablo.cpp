@@ -1713,14 +1713,12 @@ void __fastcall CreateLevel(int lvldir)
 
 void __fastcall LoadGameLevel(BOOL firstflag, int lvldir)
 {
-	int v2;       // ebp
-	bool visited; // edx
-	int i;        // ecx
-	int j;        // eax
+	int i, j;
+	BOOL visited;
 
-	v2 = 0;
-	if (setseed)
+	if(setseed)
 		glSeedTbl[currlevel] = setseed;
+
 	music_stop();
 	SetCursor(CURSOR_HAND);
 	SetRndSeed(glSeedTbl[currlevel]);
@@ -1728,75 +1726,81 @@ void __fastcall LoadGameLevel(BOOL firstflag, int lvldir)
 	MakeLightTable();
 	LoadLvlGFX();
 	IncProgress();
-	if (firstflag) {
+
+	if(firstflag) {
 		InitInv();
 		InitItemGFX();
 		InitQuestText();
 
-		if (gbMaxPlayers) {
-			for (i = 0; i < gbMaxPlayers; i++)
-				InitPlrGFXMem(i);
-		}
+		for(i = 0; i < gbMaxPlayers; i++)
+			InitPlrGFXMem(i);
 
 		InitStores();
 		InitAutomapOnce();
 		InitHelp();
 	}
+
 	SetRndSeed(glSeedTbl[currlevel]);
-	if (leveltype == DTYPE_TOWN)
+
+	if(leveltype == DTYPE_TOWN)
 		SetupTownStores();
+
 	IncProgress();
 	InitAutomap();
-	if (leveltype != DTYPE_TOWN && lvldir != 4) {
+
+	if(leveltype != DTYPE_TOWN && lvldir != 4) {
 		InitLighting();
 		InitVision();
 	}
+
 	InitLevelMonsters();
 	IncProgress();
-	if (!setlevel) {
+
+	if(!setlevel) {
 		CreateLevel(lvldir);
 		IncProgress();
 		FillSolidBlockTbls();
 		SetRndSeed(glSeedTbl[currlevel]);
-		if (leveltype != DTYPE_TOWN) {
+
+		if(leveltype != DTYPE_TOWN) {
 			GetLevelMTypes();
 			InitThemes();
 			LoadAllGFX();
 		} else {
 			InitMissileGFX();
 		}
-		IncProgress();
-		if (lvldir == 3)
-			GetReturnLvlPos();
-		if (lvldir == 5)
-			GetPortalLvlPos();
+
 		IncProgress();
 
-		for (i = 0; i < MAX_PLRS; i++) {
-			if (plr[i].plractive) {
-				if (currlevel == plr[i].plrlevel) {
-					InitPlayerGFX(v2);
-					if (lvldir != 4)
-						InitPlayer(v2, firstflag);
-				}
+		if(lvldir == 3)
+			GetReturnLvlPos();
+		if(lvldir == 5)
+			GetPortalLvlPos();
+
+		IncProgress();
+
+		for(i = 0; i < MAX_PLRS; i++) {
+			if(plr[i].plractive && currlevel == plr[i].plrlevel) {
+				InitPlayerGFX(i);
+				if(lvldir != 4)
+					InitPlayer(i, firstflag);
 			}
-			++v2;
 		}
 
 		PlayDungMsgs();
 		InitMultiView();
 		IncProgress();
 
-		visited = 0;
-		if (gbMaxPlayers > 0) {
-			for (i = 0; i < gbMaxPlayers; i++) {
-				if (plr[i].plractive)
-					visited = visited || plr[i]._pLvlVisited[currlevel];
-			}
+		visited = FALSE;
+		for(i = 0; i < gbMaxPlayers; i++) {
+			if(plr[i].plractive)
+				visited = visited || plr[i]._pLvlVisited[currlevel];
 		}
+
 		SetRndSeed(glSeedTbl[currlevel]);
-		if (leveltype != DTYPE_TOWN) {
-			if (firstflag || lvldir == 4 || !plr[myplr]._pLvlVisited[currlevel] || gbMaxPlayers != 1) {
+
+		if(leveltype != DTYPE_TOWN) {
+			if(firstflag || lvldir == 4 || !plr[myplr]._pLvlVisited[currlevel] || gbMaxPlayers != 1) {
 				HoldThemeRooms();
 				glMid1Seed[currlevel] = GetRndSeed();
 				InitMonsters();
@@ -1808,113 +1812,115 @@ void __fastcall LoadGameLevel(BOOL firstflag, int lvldir)
 				InitMissiles();
 				InitDead();
 				glEndSeed[currlevel] = GetRndSeed();
-				if (gbMaxPlayers != 1)
+
+				if(gbMaxPlayers != 1)
 					DeltaLoadLevel();
+
 				IncProgress();
 				SavePreLighting();
-				goto LABEL_55;
+			} else {
+				InitMonsters();
+				InitMissiles();
+				InitDead();
+				IncProgress();
+				LoadLevel();
+				IncProgress();
 			}
-			InitMonsters();
+		} else {
+			for(i = 0; i < MAXDUNX; i++) {
+				for(j = 0; j < MAXDUNY; j++)
+					dFlags[i][j] |= DFLAG_LIT;
+			}
+
+			InitTowners();
+			InitItems();
 			InitMissiles();
-			InitDead();
 			IncProgress();
+
+			if(!firstflag && lvldir != 4 && plr[myplr]._pLvlVisited[currlevel] && gbMaxPlayers == 1)
+				LoadLevel();
+			if(gbMaxPlayers != 1)
+				DeltaLoadLevel();
+
+			IncProgress();
+		}
+		if(gbMaxPlayers == 1)
+			ResyncQuests();
+		else
+			ResyncMPQuests();
+	} else {
+		/// ASSERT: assert(! pSpeedCels);
+		pSpeedCels = DiabloAllocPtr(0x100000);
+		LoadSetMap();
+		IncProgress();
+		GetLevelMTypes();
+		InitMonsters();
+		InitMissileGFX();
+		InitDead();
+		FillSolidBlockTbls();
+		IncProgress();
+
+		if(lvldir == 5)
+			GetPortalLvlPos();
+
+		for(i = 0; i < MAX_PLRS; i++) {
+			if(plr[i].plractive && currlevel == plr[i].plrlevel) {
+				InitPlayerGFX(i);
+				if(lvldir != 4)
+					InitPlayer(i, firstflag);
+			}
+		}
+
+		InitMultiView();
+		IncProgress();
+
+		if(firstflag || lvldir == 4 || !plr[myplr]._pSLvlVisited[setlvlnum]) {
+			InitItems();
+			SavePreLighting();
+		} else {
 			LoadLevel();
-		LABEL_54:
-			IncProgress();
-		LABEL_55:
-			if (gbMaxPlayers == 1)
-				ResyncQuests();
-			else
-				ResyncMPQuests();
-			goto LABEL_72;
 		}
 
-		for (i = 0; i < MAXDUNX; i++) {
-			for (j = 0; j < MAXDUNY; j++)
-				dFlags[i][j] |= DFLAG_LIT;
-		}
-
-		InitTowners();
-		InitItems();
 		InitMissiles();
 		IncProgress();
-		if (!firstflag && lvldir != 4 && plr[myplr]._pLvlVisited[currlevel]) {
-			if (gbMaxPlayers != 1)
-				goto LABEL_53;
-			LoadLevel();
-		}
-		if (gbMaxPlayers == 1)
-			goto LABEL_54;
-	LABEL_53:
-		DeltaLoadLevel();
-		goto LABEL_54;
-	}
-	pSpeedCels = DiabloAllocPtr(0x100000);
-	LoadSetMap();
-	IncProgress();
-	GetLevelMTypes();
-	InitMonsters();
-	InitMissileGFX();
-	InitDead();
-	FillSolidBlockTbls();
-	IncProgress();
-	if (lvldir == 5)
-		GetPortalLvlPos();
-
-	for (i = 0; i < MAX_PLRS; i++) {
-		if (plr[i].plractive) {
-			if (currlevel == plr[i].plrlevel) {
-				InitPlayerGFX(v2);
-				if (lvldir != 4)
-					InitPlayer(v2, firstflag);
-			}
-		}
-		++v2;
 	}
 
-	InitMultiView();
-	IncProgress();
-	if (firstflag || lvldir == 4 || !plr[myplr]._pSLvlVisited[setlvlnum]) {
-		InitItems();
-		SavePreLighting();
-	} else {
-		LoadLevel();
-	}
-	InitMissiles();
-	IncProgress();
-LABEL_72:
 	SyncPortals();
 
-	for (i = 0; i < MAX_PLRS; i++) {
-		if (plr[i].plractive && plr[i].plrlevel == currlevel && (!plr[i]._pLvlChanging || i == myplr)) {
-			if (plr[i]._pHitPoints <= 0)
+	for(i = 0; i < MAX_PLRS; i++) {
+		if(plr[i].plractive && plr[i].plrlevel == currlevel && (!plr[i]._pLvlChanging || i == myplr)) {
+			if(plr[i]._pHitPoints > 0) {
+				if(gbMaxPlayers == 1)
+					dPlayer[plr[i].WorldX][plr[i].WorldY] = i + 1;
+				else
+					SyncInitPlrPos(i);
+			} else {
 				dFlags[plr[i].WorldX][plr[i].WorldY] |= DFLAG_DEAD_PLAYER;
-			else if (gbMaxPlayers == 1)
-				dPlayer[plr[i].WorldX][plr[i].WorldY] = i + 1;
-			else
-				SyncInitPlrPos(i);
+			}
 		}
 	}
 
-	if (leveltype != DTYPE_TOWN)
+	if(leveltype != DTYPE_TOWN)
 		SetDungeonMicros();
+
 	InitLightMax();
 	IncProgress();
 	IncProgress();
-	if (firstflag) {
+
+	if(firstflag) {
 		InitControlPan();
 		IncProgress();
 	}
-	if (leveltype != DTYPE_TOWN) {
+	if(leveltype != DTYPE_TOWN) {
 		ProcessLightList();
 		ProcessVisionList();
 	}
+
 	music_start(leveltype);
-	//do
-	//	_LOBYTE(v19) = IncProgress();
-	while (!IncProgress())
-		;
-	if (setlevel && setlvlnum == SL_SKELKING && quests[QTYPE_KING]._qactive == 2)
+
+	while(!IncProgress());
+
+	if(setlevel && setlvlnum == SL_SKELKING && quests[QTYPE_KING]._qactive == 2)
 		PlaySFX(USFX_SKING1);
 }
 // 525738: using guessed type int setseed;
