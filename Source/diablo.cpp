@@ -1895,7 +1895,7 @@ void __fastcall LoadGameLevel(BOOL firstflag, int lvldir)
 				else
 					SyncInitPlrPos(i);
 			} else {
-				dFlags[plr[i].WorldX][plr[i].WorldY] |= 4;
+				dFlags[plr[i].WorldX][plr[i].WorldY] |= DFLAG_DEAD_PLAYER;
 			}
 		}
 	}
