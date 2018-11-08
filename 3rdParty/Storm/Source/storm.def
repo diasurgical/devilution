@@ -88,7 +88,7 @@ EXPORTS
   SFileDdaInitialize            @260 NONAME
   SFileDdaSetVolume             @261 NONAME
   SFileDestroy                  @262 NONAME
-  ;SFileEnableDirectAccess       @263 NONAME
+  SFileEnableDirectAccess       @263 NONAME
   SFileGetFileArchive           @264 NONAME
   SFileGetFileSize              @265 NONAME
   SFileOpenArchive              @266 NONAME

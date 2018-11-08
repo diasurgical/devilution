@@ -254,71 +254,81 @@ void __cdecl free_game()
 	FreeGameMem();
 }
 
-bool __cdecl diablo_get_not_running()
+BOOL __cdecl diablo_get_not_running()
 {
 	SetLastError(0);
 	CreateEvent(NULL, FALSE, FALSE, "DiabloEvent");
 	return GetLastError() != ERROR_ALREADY_EXISTS;
 }
 
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+int PASCAL WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-	HINSTANCE v4;       // esi
-	char Filename[260]; // [esp+8h] [ebp-10Ch]
-	char value_name[8]; // [esp+10Ch] [ebp-8h]
+	HINSTANCE hInst;
+	int nData;
+	char szFileName[MAX_PATH];
 
-	v4 = hInstance;
+	hInst = hInstance;
 #ifndef DEBUGGER
 	diablo_reload_process(hInstance);
 #endif
-	ghInst = v4;
-	if (RestrictedTest())
+	ghInst = hInst;
+
+	if(RestrictedTest())
 		ErrOkDlg(IDD_DIALOG10, 0, "C:\\Src\\Diablo\\Source\\DIABLO.CPP", 877);
-	if (ReadOnlyTest()) {
-		if (!GetModuleFileName(ghInst, Filename, 0x104u))
-			*Filename = '\0';
-		DirErrorDlg(Filename);
+	if(ReadOnlyTest()) {
+		if(!GetModuleFileName(ghInst, szFileName, sizeof(szFileName)))
+			szFileName[0] = '\0';
+		DirErrorDlg(szFileName);
 	}
+
 	ShowCursor(FALSE);
 	srand(GetTickCount());
 	InitHash();
 	exception_get_filter();
-	if (!diablo_find_window("DIABLO") && diablo_get_not_running()) {
+
+	BOOL bNoEvent = diablo_get_not_running();
+	if(!diablo_find_window("DIABLO") && bNoEvent) {
+#ifdef _DEBUG
+		SFileEnableDirectAccess(TRUE);
+#endif
 		diablo_init_screen();
 		diablo_parse_flags(lpCmdLine);
 		init_create_window(nCmdShow);
 		sound_init();
 		UiInitialize();
+
 #ifdef _DEBUG
-		if (showintrodebug)
-			play_movie("gendata\\logo.smk", 1);
-#else
-		play_movie("gendata\\logo.smk", 1);
+		if(showintrodebug)
 #endif
-		strcpy(value_name, "Intro");
-		if (!SRegLoadValue("Diablo", value_name, 0, (int *)&hInstance))
-			hInstance = (HINSTANCE)1;
-		if (hInstance)
-			play_movie("gendata\\diablo1.smk", 1);
-		SRegSaveValue("Diablo", value_name, 0, 0);
+			play_movie("gendata\\logo.smk", TRUE);
+
+		char szValueName[] = "Intro";
+		if(!SRegLoadValue("Diablo", szValueName, 0, &nData))
+			nData = 1;
+		if(nData)
+			play_movie("gendata\\diablo1.smk", TRUE);
+		SRegSaveValue("Diablo", szValueName, 0, 0);
+
 #ifdef _DEBUG
-		if (showintrodebug) {
+		if(showintrodebug) {
+#endif
 			UiTitleDialog(7);
 			BlackPalette();
+#ifdef _DEBUG
 		}
-#else
-		UiTitleDialog(7);
-		BlackPalette();
 #endif
+
 		mainmenu_loop();
 		UiDestroy();
 		SaveGamma();
-		if (ghMainWnd) {
+
+		if(ghMainWnd) {
 			Sleep(300);
 			DestroyWindow(ghMainWnd);
 		}
 	}
-	return 0;
+
+	return FALSE;
 }
 
 void __fastcall diablo_parse_flags(char *args)
