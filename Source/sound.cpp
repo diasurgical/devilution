@@ -367,9 +367,16 @@ void __cdecl music_stop()
 
 void __fastcall music_start(int nTrack)
 {
+	/// ASSERT: assert((DWORD) nTrack < NUM_MUSIC);
 	music_stop();
 	if (sglpDS && gbMusicOn) {
+#ifdef _DEBUG
+		SFileEnableDirectAccess(FALSE);
+#endif
 		BOOL success = SFileOpenFile(sgszMusicTracks[nTrack], &sgpMusicTrack);
+#ifdef _DEBUG
+		SFileEnableDirectAccess(TRUE);
+#endif
 		sound_create_primary_buffer(sgpMusicTrack);
 		if (!success) {
 			sgpMusicTrack = 0;

@@ -1042,12 +1042,21 @@ void __fastcall PlaySFX_priv(TSFX *pSFX, BOOL loc, int x, int y)
 
 void __fastcall stream_play(TSFX *pSFX, int lVolume, int lPan)
 {
+	/// ASSERT: assert(pSFX);
+	/// ASSERT: assert(pSFX->bFlags & sfx_STREAM);
 	sfx_stop();
 	lVolume += sound_get_or_set_sound_volume(1);
 	if (lVolume >= VOLUME_MIN) {
 		if (lVolume > VOLUME_MAX)
 			lVolume = VOLUME_MAX;
-		if (!SFileOpenFile(pSFX->pszName, &sfx_stream)) {
+#ifdef _DEBUG
+		SFileEnableDirectAccess(FALSE);
+#endif
+		BOOL success = SFileOpenFile(pSFX->pszName, &sfx_stream);
+#ifdef _DEBUG
+		SFileEnableDirectAccess(TRUE);
+#endif
+		if (!success) {
 			sfx_stream = 0;
 		} else {
 			if (!SFileDdaBeginEx(sfx_stream, 0x40000, 0, 0, lVolume, lPan, 0))
