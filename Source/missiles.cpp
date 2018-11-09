@@ -3272,7 +3272,7 @@ void __fastcall AddFirewallC(int mi, int sx, int sy, int dx, int dy, int midir, 
 			v17 = dPiece[v13][v14];
 			//_LOBYTE(v15) = LineClear(x1, sy, v13, v14);
 			if (LineClear(x1, sy, v13, v14)) {
-				if ((x1 != v13 || sy != v14) && !(nSolidTable[v17] | dObject[v13][v13]))
+				if ((x1 != v13 || sy != v14) && !(nSolidTable[v17] | dObject[v13][v14]))
 					break;
 			}
 			v12 = v19;
