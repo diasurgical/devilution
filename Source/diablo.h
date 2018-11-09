@@ -42,7 +42,7 @@ void __fastcall run_game_loop(int uMsg);
 void __fastcall start_game(int uMsg);
 void __cdecl free_game();
 BOOL __cdecl diablo_get_not_running();
-int PASCAL WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow);
+int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow);
 void __fastcall diablo_parse_flags(char *args);
 void __cdecl diablo_init_screen();
 BOOL __fastcall diablo_find_window(LPCSTR lpClassName);

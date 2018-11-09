@@ -261,7 +261,7 @@ BOOL __cdecl diablo_get_not_running()
 	return GetLastError() != ERROR_ALREADY_EXISTS;
 }
 
-int PASCAL WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	HINSTANCE hInst;
 	int nData;
