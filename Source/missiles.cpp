@@ -711,7 +711,7 @@ void __fastcall PutMissile(int i)
 		missile[i]._miDelFlag = 1;
 	if (!missile[i]._miDelFlag) {
 		dFlags[x][y] |= DFLAG_MISSILE;
-		if (!dMissile[x][y])
+		if (dMissile[x][y] == 0)
 			dMissile[x][y] = i + 1;
 		else
 			dMissile[x][y] = -1;
