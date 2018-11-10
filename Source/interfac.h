@@ -12,9 +12,9 @@ void __cdecl interface_msg_pump();
 BOOL __cdecl IncProgress();
 void __cdecl DrawCutscene();
 void __fastcall DrawProgress(int screen_x, int screen_y, int progress_id);
-void __fastcall ShowProgress(int uMsg);
+void __fastcall ShowProgress(unsigned int uMsg);
 void __cdecl FreeInterface();
-void __fastcall InitCutscene(int uMsg);
+void __fastcall InitCutscene(unsigned int uMsg);
 
 /* rdata */
 

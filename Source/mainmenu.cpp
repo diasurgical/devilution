@@ -130,11 +130,11 @@ BOOL __cdecl mainmenu_single_player()
 BOOL __fastcall mainmenu_init_menu(int type)
 {
 	if (type == 4)
-		return 1;
+		return TRUE;
 
 	music_stop();
 
-	int success = diablo_init_menu(type != 2, type != 3);
+	BOOL success = StartGame(type != 2, type != 3);
 	if (success)
 		mainmenu_refresh_music();
 

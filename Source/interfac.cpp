@@ -77,7 +77,7 @@ void __fastcall DrawProgress(int screen_x, int screen_y, int progress_id)
 	} while (v4);
 }
 
-void __fastcall ShowProgress(int uMsg)
+void __fastcall ShowProgress(unsigned int uMsg)
 {
 	WNDPROC saveProc; // edi
 	BOOL v3;          // cl
@@ -240,7 +240,7 @@ void __cdecl FreeInterface()
 	mem_free_dbg(v0);
 }
 
-void __fastcall InitCutscene(int uMsg)
+void __fastcall InitCutscene(unsigned int uMsg)
 {
 	int v1;            // eax
 	int v2;            // eax
