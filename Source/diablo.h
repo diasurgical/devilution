@@ -37,9 +37,9 @@ extern int color_cycle_timer; // weak
 
 void __cdecl diablo_cpp_init();
 void __cdecl FreeGameMem();
-int __fastcall diablo_init_menu(int a1, int bSinglePlayer);
-void __fastcall run_game_loop(int uMsg);
-void __fastcall start_game(int uMsg);
+BOOL __fastcall StartGame(BOOL bNewGame, BOOL bSinglePlayer);
+void __fastcall run_game_loop(unsigned int uMsg);
+void __fastcall start_game(unsigned int uMsg);
 void __cdecl free_game();
 BOOL __cdecl diablo_get_not_running();
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow);

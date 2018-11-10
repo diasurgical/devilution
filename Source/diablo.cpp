@@ -107,41 +107,37 @@ void __cdecl FreeGameMem()
 	FreeTownerGFX();
 }
 
-int __fastcall diablo_init_menu(int a1, int bSinglePlayer)
+BOOL __fastcall StartGame(BOOL bNewGame, BOOL bSinglePlayer)
 {
-	int v2;            // esi
-	int v3;            // edi
-	int v4;            // ecx
-	int pfExitProgram; // [esp+Ch] [ebp-4h]
+	BOOL fExitProgram; // [esp+Ch] [ebp-4h]
+	unsigned int uMsg; // ecx
 
-	v2 = bSinglePlayer;
-	v3 = a1;
 	byte_678640 = 1;
 	while (1) {
-		pfExitProgram = 0;
+		fExitProgram = 0;
 		dword_5256E8 = FALSE;
-		if (!NetInit(v2, &pfExitProgram))
+		if (!NetInit(bSinglePlayer, &fExitProgram))
 			break;
 		byte_678640 = 0;
-		if ((v3 || !gbValidSaveFile)
+		if ((bNewGame || !gbValidSaveFile)
 		        && (InitLevels(), InitQuests(), InitPortals(), InitDungMsgs(myplr), !gbValidSaveFile)
-		    || (v4 = WM_DIABLOADGAME, !dword_5256E8)) {
-			v4 = WM_DIABNEWGAME;
+		    || (uMsg = WM_DIABLOADGAME, !dword_5256E8)) {
+			uMsg = WM_DIABNEWGAME;
 		}
-		run_game_loop(v4);
+		run_game_loop(uMsg);
 		NetClose();
 		pfile_create_player_description(0, 0);
 		if (!gbRunGameResult)
 			goto LABEL_11;
 	}
-	gbRunGameResult = pfExitProgram == 0;
+	gbRunGameResult = fExitProgram == 0;
 LABEL_11:
 	SNetDestroy();
 	return gbRunGameResult;
 }
 // 678640: using guessed type char byte_678640;
 
-void __fastcall run_game_loop(int uMsg)
+void __fastcall run_game_loop(unsigned int uMsg)
 {
 	//int v3; // eax
 	bool v5; // zf
@@ -215,7 +211,7 @@ void __fastcall run_game_loop(int uMsg)
 // 52571C: using guessed type int drawpanflag;
 // 679660: using guessed type char gbMaxPlayers;
 
-void __fastcall start_game(int uMsg)
+void __fastcall start_game(unsigned int uMsg)
 {
 	cineflag = FALSE;
 	zoomflag = 1;
