@@ -609,55 +609,47 @@ LABEL_10:
 // 646D00: using guessed type char qtextflag;
 // 6AA705: using guessed type char stextflag;
 
-LRESULT __stdcall DisableInputWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK DisableInputWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	bool v5; // zf
-
-	if (uMsg <= WM_LBUTTONDOWN) {
-		if (uMsg != WM_LBUTTONDOWN) {
-			if (uMsg >= WM_KEYFIRST
-			    && (uMsg <= WM_CHAR
-			           || uMsg == WM_SYSKEYDOWN
-			           || uMsg == WM_SYSCOMMAND
-			           || uMsg == WM_MOUSEFIRST)) {
-				return 0;
-			}
-			return MainWndProc(hWnd, uMsg, wParam, lParam);
-		}
-		if (!sgbMouseDown) {
+	switch(uMsg) {
+	case WM_KEYDOWN:
+	case WM_KEYUP:
+	case WM_CHAR:
+	case WM_SYSKEYDOWN:
+	case WM_SYSCOMMAND:
+	case WM_MOUSEMOVE:
+		return 0;
+	case WM_LBUTTONDOWN:
+		if(sgbMouseDown == 0) {
 			sgbMouseDown = 1;
-		LABEL_21:
 			SetCapture(hWnd);
-			return 0;
 		}
 		return 0;
-	}
-	if (uMsg == WM_LBUTTONUP) {
-		v5 = sgbMouseDown == 1;
-		goto LABEL_23;
-	}
-	if (uMsg != WM_RBUTTONDOWN) {
-		if (uMsg != WM_RBUTTONUP) {
-			if (uMsg == WM_CAPTURECHANGED) {
-				if (hWnd != (HWND)lParam)
-					sgbMouseDown = 0;
-				return 0;
-			}
-			return MainWndProc(hWnd, uMsg, wParam, lParam);
-		}
-		v5 = sgbMouseDown == 2;
-	LABEL_23:
-		if (v5) {
+	case WM_LBUTTONUP:
+		if(sgbMouseDown == 1) {
 			sgbMouseDown = 0;
 			ReleaseCapture();
 		}
 		return 0;
+	case WM_RBUTTONDOWN:
+		if(sgbMouseDown == 0) {
+			sgbMouseDown = 2;
+			SetCapture(hWnd);
+		}
+		return 0;
+	case WM_RBUTTONUP:
+		if(sgbMouseDown == 2) {
+			sgbMouseDown = 0;
+			ReleaseCapture();
+		}
+		return 0;
+	case WM_CAPTURECHANGED:
+		if(hWnd != (HWND)lParam)
+			sgbMouseDown = 0;
+		return 0;
 	}
-	if (!sgbMouseDown) {
-		sgbMouseDown = 2;
-		goto LABEL_21;
-	}
-	return 0;
+
+	return MainWndProc(hWnd, uMsg, wParam, lParam);
 }
 // 525748: using guessed type char sgbMouseDown;
 
