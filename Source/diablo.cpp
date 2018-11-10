@@ -9,7 +9,7 @@ int glMid2Seed[NUMLEVELS];
 int gnLevelTypeTbl[NUMLEVELS];
 int MouseY;             // idb
 int MouseX;             // idb
-bool gbGameLoopStartup; // idb
+BOOL gbGameLoopStartup; // idb
 int glSeedTbl[NUMLEVELS];
 BOOL gbRunGame;
 int glMid3Seed[NUMLEVELS];
@@ -78,28 +78,26 @@ struct diablo_cpp_init {
 
 void __cdecl FreeGameMem()
 {
-	void *v0; // ecx
-	void *v1; // ecx
-	void *v2; // ecx
-	void *v3; // ecx
-	void *v4; // ecx
+	void *p;
 
 	music_stop();
-	v0 = pDungeonCels;
-	pDungeonCels = 0;
-	mem_free_dbg(v0);
-	v1 = pMegaTiles;
-	pMegaTiles = 0;
-	mem_free_dbg(v1);
-	v2 = pLevelPieces;
-	pLevelPieces = 0;
-	mem_free_dbg(v2);
-	v3 = level_special_cel;
-	level_special_cel = 0;
-	mem_free_dbg(v3);
-	v4 = pSpeedCels;
-	pSpeedCels = 0;
-	mem_free_dbg(v4);
+
+	p = pDungeonCels; /* todo: macro */
+	pDungeonCels = NULL;
+	mem_free_dbg(p);
+	p = pMegaTiles;
+	pMegaTiles = NULL;
+	mem_free_dbg(p);
+	p = pLevelPieces;
+	pLevelPieces = NULL;
+	mem_free_dbg(p);
+	p = level_special_cel;
+	level_special_cel = NULL;
+	mem_free_dbg(p);
+	p = pSpeedCels;
+	pSpeedCels = NULL;
+	mem_free_dbg(p);
+
 	FreeMissiles();
 	FreeMonsters();
 	FreeObjectGFX();
@@ -445,10 +443,8 @@ void __fastcall diablo_parse_flags(char *args)
 
 void __cdecl diablo_init_screen()
 {
-	int v0;  // ecx
-	int *v1; // eax
+	int i;
 
-	v0 = 0;
 	MouseX = 320;
 	MouseY = 240;
 	ScrollInfo._sdx = 0;
@@ -456,15 +452,12 @@ void __cdecl diablo_init_screen()
 	ScrollInfo._sxoff = 0;
 	ScrollInfo._syoff = 0;
 	ScrollInfo._sdir = 0;
-	v1 = screen_y_times_768;
-	do {
-		*v1 = v0;
-		++v1;
-		v0 += 768;
-	} while ((signed int)v1 < (signed int)&screen_y_times_768[1024]);
+
+	for(i = 0; i < 1024; i++)
+		screen_y_times_768[i] = i * 768;
+
 	ClrDiabloMsg();
 }
-// 69CEFC: using guessed type int scrollrt_cpp_init_value;
 
 BOOL __fastcall diablo_find_window(LPCSTR lpClassName)
 {
@@ -668,75 +661,10 @@ LRESULT __stdcall DisableInputWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
 }
 // 525748: using guessed type char sgbMouseDown;
 
-LRESULT __stdcall GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	if (uMsg > WM_LBUTTONDOWN) {
-		if (uMsg == WM_LBUTTONUP) {
-			MouseX = (unsigned short)lParam;
-			MouseY = (unsigned int)lParam >> 16;
-			if (sgbMouseDown != 1)
-				return 0;
-			sgbMouseDown = 0;
-			LeftMouseUp();
-			track_repeat_walk(0);
-		} else {
-			if (uMsg == WM_RBUTTONDOWN) {
-				MouseX = (unsigned short)lParam;
-				MouseY = (unsigned int)lParam >> 16;
-				if (!sgbMouseDown) {
-					sgbMouseDown = 2;
-					SetCapture(hWnd);
-					RightMouseDown();
-				}
-				return 0;
-			}
-			if (uMsg != WM_RBUTTONUP) {
-				if (uMsg == WM_CAPTURECHANGED) {
-					if (hWnd != (HWND)lParam) {
-						sgbMouseDown = 0;
-						track_repeat_walk(0);
-					}
-				} else if (uMsg > WM_DIAB && uMsg <= WM_DIABRETOWN) {
-					if ((unsigned char)gbMaxPlayers > 1u)
-						pfile_write_hero();
-					nthread_ignore_mutex(1);
-					PaletteFadeOut(8);
-					FreeMonsterSnd();
-					music_stop();
-					track_repeat_walk(0);
-					sgbMouseDown = 0;
-					ReleaseCapture();
-					ShowProgress(uMsg);
-					drawpanflag = 255;
-					DrawAndBlit();
-					if (gbRunGame)
-						PaletteFadeIn(8);
-					nthread_ignore_mutex(0);
-					gbGameLoopStartup = 1;
-					return 0;
-				}
-				return MainWndProc(hWnd, uMsg, wParam, lParam);
-			}
-			MouseX = (unsigned short)lParam;
-			MouseY = (unsigned int)lParam >> 16;
-			if (sgbMouseDown != 2)
-				return 0;
-			sgbMouseDown = 0;
-		}
-		ReleaseCapture();
-		return 0;
-	}
-	switch (uMsg) {
-	case WM_LBUTTONDOWN:
-		MouseX = (unsigned short)lParam;
-		MouseY = (unsigned int)lParam >> 16;
-		if (!sgbMouseDown) {
-			sgbMouseDown = 1;
-			SetCapture(hWnd);
-			track_repeat_walk(LeftMouseDown(wParam));
-		}
-		return 0;
-	case WM_KEYFIRST:
+	switch(uMsg) {
+	case WM_KEYDOWN:
 		PressKey(wParam);
 		return 0;
 	case WM_KEYUP:
@@ -746,29 +674,97 @@ LRESULT __stdcall GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		PressChar(wParam);
 		return 0;
 	case WM_SYSKEYDOWN:
-		if (PressSysKey(wParam))
+		if(PressSysKey(wParam))
 			return 0;
-		return MainWndProc(hWnd, uMsg, wParam, lParam);
+		break;
 	case WM_SYSCOMMAND:
-		if (wParam == SC_CLOSE) {
+		if(wParam == SC_CLOSE) {
 			gbRunGame = FALSE;
 			gbRunGameResult = FALSE;
 			return 0;
 		}
-		return MainWndProc(hWnd, uMsg, wParam, lParam);
+		break;
+	case WM_MOUSEMOVE:
+		MouseX = LOWORD(lParam);
+		MouseY = HIWORD(lParam);
+		gmenu_on_mouse_move(LOWORD(lParam));
+		return 0;
+	case WM_LBUTTONDOWN:
+		MouseX = LOWORD(lParam);
+		MouseY = HIWORD(lParam);
+		if(sgbMouseDown == 0) {
+			sgbMouseDown = 1;
+			SetCapture(hWnd);
+			track_repeat_walk(LeftMouseDown(wParam));
+		}
+		return 0;
+	case WM_LBUTTONUP:
+		MouseX = LOWORD(lParam);
+		MouseY = HIWORD(lParam);
+		if(sgbMouseDown == 1) {
+			sgbMouseDown = 0;
+			LeftMouseUp();
+			track_repeat_walk(FALSE);
+			ReleaseCapture();
+		}
+		return 0;
+	case WM_RBUTTONDOWN:
+		MouseX = LOWORD(lParam);
+		MouseY = HIWORD(lParam);
+		if(sgbMouseDown == 0) {
+			sgbMouseDown = 2;
+			SetCapture(hWnd);
+			RightMouseDown();
+		}
+		return 0;
+	case WM_RBUTTONUP:
+		MouseX = LOWORD(lParam);
+		MouseY = HIWORD(lParam);
+		if(sgbMouseDown == 2) {
+			sgbMouseDown = 0;
+			ReleaseCapture();
+		}
+		return 0;
+	case WM_CAPTURECHANGED:
+		if(hWnd != (HWND)lParam) {
+			sgbMouseDown = 0;
+			track_repeat_walk(FALSE);
+		}
+		break;
+	case WM_DIABNEXTLVL:
+	case WM_DIABPREVLVL:
+	case WM_DIABRTNLVL:
+	case WM_DIABSETLVL:
+	case WM_DIABWARPLVL:
+	case WM_DIABTOWNWARP:
+	case WM_DIABTWARPUP:
+	case WM_DIABRETOWN:
+		if(gbMaxPlayers > 1)
+			pfile_write_hero();
+		nthread_ignore_mutex(TRUE);
+		PaletteFadeOut(8);
+		FreeMonsterSnd();
+		music_stop();
+		track_repeat_walk(FALSE);
+		sgbMouseDown = 0;
+		ReleaseCapture();
+		ShowProgress(uMsg);
+		drawpanflag = 255;
+		DrawAndBlit();
+		if(gbRunGame)
+			PaletteFadeIn(8);
+		nthread_ignore_mutex(FALSE);
+		gbGameLoopStartup = TRUE;
+		return 0;
 	}
-	if (uMsg != WM_MOUSEFIRST)
-		return MainWndProc(hWnd, uMsg, wParam, lParam);
-	MouseX = (unsigned short)lParam;
-	MouseY = (unsigned int)lParam >> 16;
-	gmenu_on_mouse_move((unsigned short)lParam);
-	return 0;
+
+	return MainWndProc(hWnd, uMsg, wParam, lParam);
 }
 // 52571C: using guessed type int drawpanflag;
 // 525748: using guessed type char sgbMouseDown;
 // 679660: using guessed type char gbMaxPlayers;
 
-bool __fastcall LeftMouseDown(int a1)
+BOOL __fastcall LeftMouseDown(int a1)
 {
 	int v1;             // edi
 	int v3;             // eax
@@ -1058,12 +1054,12 @@ void __cdecl RightMouseDown()
 // 52575C: using guessed type int doomflag;
 // 6AA705: using guessed type char stextflag;
 
-bool __fastcall PressSysKey(int wParam)
+BOOL __fastcall PressSysKey(int wParam)
 {
 	if (gmenu_exception() || wParam != VK_F10)
-		return 0;
+		return FALSE;
 	diablo_hotkey_msg(1);
-	return 1;
+	return TRUE;
 }
 
 void __fastcall diablo_hotkey_msg(int dwMsg)

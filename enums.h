@@ -2039,7 +2039,6 @@ enum _scroll_direction {
 };
 
 enum interface_mode {
-	WM_DIAB         = 0x401,
 	WM_DIABNEXTLVL  = 0x402, // WM_USER+2
 	WM_DIABPREVLVL  = 0x403,
 	WM_DIABRTNLVL   = 0x404,

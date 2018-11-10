@@ -276,7 +276,7 @@ void __cdecl nthread_cleanup()
 // 67975C: using guessed type int gdwLargestMsgSize;
 // 679760: using guessed type int gdwNormalMsgSize;
 
-void __fastcall nthread_ignore_mutex(bool bStart)
+void __fastcall nthread_ignore_mutex(BOOL bStart)
 {
 	if (sghThread != (HANDLE)-1) {
 		if (bStart)

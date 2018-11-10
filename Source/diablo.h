@@ -9,7 +9,7 @@ extern int glMid2Seed[NUMLEVELS];
 extern int gnLevelTypeTbl[NUMLEVELS];
 extern int MouseY;             // idb
 extern int MouseX;             // idb
-extern bool gbGameLoopStartup; // idb
+extern BOOL gbGameLoopStartup; // idb
 extern int glSeedTbl[NUMLEVELS];
 extern BOOL gbRunGame;
 extern int glMid3Seed[NUMLEVELS];
@@ -49,13 +49,13 @@ BOOL __fastcall diablo_find_window(LPCSTR lpClassName);
 void __fastcall diablo_reload_process(HMODULE hModule);
 int __cdecl PressEscKey();
 LRESULT __stdcall DisableInputWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-LRESULT __stdcall GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-bool __fastcall LeftMouseDown(int a1);
+LRESULT CALLBACK GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+BOOL __fastcall LeftMouseDown(int a1);
 bool __cdecl TryIconCurs();
 void __cdecl LeftMouseUp();
 void __cdecl RightMouseDown();
 void __fastcall j_gmenu_on_mouse_move(LPARAM lParam);
-bool __fastcall PressSysKey(int wParam);
+BOOL __fastcall PressSysKey(int wParam);
 void __fastcall diablo_hotkey_msg(int dwMsg);
 void __fastcall ReleaseKey(int vkey);
 void __fastcall PressKey(int vkey);
