@@ -48,7 +48,7 @@ void __cdecl diablo_init_screen();
 BOOL __fastcall diablo_find_window(LPCSTR lpClassName);
 void __fastcall diablo_reload_process(HMODULE hModule);
 int __cdecl PressEscKey();
-LRESULT __stdcall DisableInputWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+LRESULT CALLBACK DisableInputWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 LRESULT __stdcall GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 bool __fastcall LeftMouseDown(int a1);
 bool __cdecl TryIconCurs();
