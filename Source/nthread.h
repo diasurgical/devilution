@@ -29,7 +29,7 @@ void __cdecl nthread_set_turn_upper_bit();
 void __fastcall nthread_start(bool set_turn_upper_bit);
 unsigned int __stdcall nthread_handler(void *a1);
 void __cdecl nthread_cleanup();
-void __fastcall nthread_ignore_mutex(bool bStart);
+void __fastcall nthread_ignore_mutex(BOOL bStart);
 BOOL __cdecl nthread_has_500ms_passed();
 
 /* rdata */
