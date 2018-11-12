@@ -117,7 +117,7 @@ BOOL __fastcall StartGame(BOOL bNewGame, BOOL bSinglePlayer)
 		dword_5256E8 = 0;
 
 		if(!NetInit(bSinglePlayer, &fExitProgram)) {
-			gbRunGameResult = fExitProgram == FALSE;
+			gbRunGameResult = !fExitProgram;
 			break;
 		}
 
