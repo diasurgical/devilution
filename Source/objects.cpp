@@ -3939,10 +3939,10 @@ void __fastcall OperateSlainHero(int pnum, int i, unsigned char sendmsg)
 		object[v5]._oSelFlag = 0;
 		if (v6) {
 			if (plr[pnum]._pClass == PC_WARRIOR) {
-				CreateMagicItem(object[v5]._ox, object[v5]._oy, 9, ICURS_BREAST_PLATE, 0, 1);
+				CreateMagicArmor(object[v5]._ox, object[v5]._oy, 9, ICURS_BREAST_PLATE, 0, 1);
 				v8 = PS_WARR9;
 			} else if (plr[pnum]._pClass == PC_ROGUE) {
-				CreateMagicItem(object[v5]._ox, object[v5]._oy, 3, ICURS_LONG_WAR_BOW, 0, 1);
+				CreateMagicWeapon(object[v5]._ox, object[v5]._oy, 3, ICURS_LONG_WAR_BOW, 0, 1);
 				v8 = PS_ROGUE9;
 			} else if (plr[pnum]._pClass == PC_SORCERER) {
 				CreateSpellBook(object[v5]._ox, object[v5]._oy, 3, 0, 1);

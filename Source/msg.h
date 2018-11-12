@@ -134,10 +134,8 @@ int __fastcall On_STRING(struct TCmdString *pCmd, int pnum);
 int __fastcall On_STRING2(int pnum, struct TCmdString *pCmd);
 int __fastcall On_SYNCQUEST(struct TCmdQuest *pCmd, int pnum);
 int __fastcall On_ENDSHIELD(struct TCmd *pCmd, int pnum);
-#ifdef _DEBUG
 int __fastcall On_CHEAT_EXPERIENCE(struct TCmd *pCmd, int pnum);
 int __fastcall On_CHEAT_SPELL_LEVEL(struct TCmd *pCmd, int pnum);
-#endif
 int __cdecl On_DEBUG(struct TCmd *pCmd);
 int __fastcall On_NOVA(struct TCmdLoc *pCmd, int pnum);
 int __fastcall On_SETSHIELD(struct TCmd *pCmd, int pnum);
