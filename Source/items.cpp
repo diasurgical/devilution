@@ -4942,7 +4942,7 @@ void __fastcall CreateMagicWeapon(int x, int y, int imisc, int icurs, int sendms
 			NetSendCmdDItem(FALSE, ii);
 		if (delta)
 			DeltaAddItem(ii);
-		++numitems;
+		numitems++;
 	}
 }
 
