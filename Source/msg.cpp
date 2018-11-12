@@ -1315,17 +1315,10 @@ int __fastcall ParseCmd(int pnum, TCmd *pCmd)
 		return On_NEWLVL((struct TCmdParam2 *)v3, pnum);
 	case CMD_WARP:
 		return On_WARP((struct TCmdParam1 *)v3, pnum);
-#ifdef _DEBUG
 	case CMD_CHEAT_EXPERIENCE:
 		return On_CHEAT_EXPERIENCE(v3, pnum);
 	case CMD_CHEAT_SPELL_LEVEL:
 		return On_CHEAT_SPELL_LEVEL(v3, pnum);
-#else
-	case CMD_CHEAT_EXPERIENCE:
-		return On_DEBUG(v3);
-	case CMD_CHEAT_SPELL_LEVEL:
-		return On_DEBUG(v3);
-#endif
 	case CMD_DEBUG:
 		return On_DEBUG(v3);
 	case CMD_SYNCDATA:
@@ -2751,29 +2744,29 @@ int __fastcall On_ENDSHIELD(struct TCmd *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-#ifdef _DEBUG
 int __fastcall On_CHEAT_EXPERIENCE(struct TCmd *pCmd, int pnum)
 {
+#ifdef _DEBUG
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
 	else if (plr[pnum]._pLevel < MAXCHARLEVEL - 1) {
 		plr[pnum]._pExperience = plr[pnum]._pNextExper;
 		NextPlrLevel(pnum);
 	}
-
+#endif
 	return sizeof(*pCmd);
 }
 
 int __fastcall On_CHEAT_SPELL_LEVEL(struct TCmd *pCmd, int pnum)
 {
+#ifdef _DEBUG
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
 	else
 		plr[pnum]._pSplLvl[plr[pnum]._pRSpell]++;
-
+#endif
 	return sizeof(*pCmd);
 }
-#endif
 
 int __cdecl On_DEBUG(struct TCmd *pCmd)
 {

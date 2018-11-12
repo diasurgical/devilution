@@ -119,7 +119,8 @@ void __fastcall RecreateTownItem(int ii, int idx, unsigned short icreateinfo, in
 void __cdecl RecalcStoreStats();
 int __cdecl ItemNoFlippy();
 void __fastcall CreateSpellBook(int x, int y, int ispell, bool sendmsg, int delta);
-void __fastcall CreateMagicItem(int x, int y, int imisc, int icurs, int sendmsg, int delta);
+void __fastcall CreateMagicArmor(int x, int y, int imisc, int icurs, int sendmsg, int delta);
+void __fastcall CreateMagicWeapon(int x, int y, int imisc, int icurs, int sendmsg, int delta);
 BOOL __fastcall GetItemRecord(int dwSeed, WORD CI, int indx);
 void __fastcall NextItemRecord(int i);
 void __fastcall SetItemRecord(int dwSeed, WORD CI, int indx);

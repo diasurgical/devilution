@@ -4890,18 +4890,46 @@ void __fastcall CreateSpellBook(int x, int y, int ispell, bool sendmsg, int delt
 	}
 }
 
-void __fastcall CreateMagicItem(int x, int y, int imisc, int icurs, int sendmsg, int delta)
+void __fastcall CreateMagicArmor(int x, int y, int imisc, int icurs, int sendmsg, int delta)
 {
 	int ii;    // esi
 	int idx;   // ebx
-	bool done; // [esp+Ch] [ebp-4h]
+	BOOL done; // [esp+Ch] [ebp-4h]
 
 	done = 0;
 	if (numitems < MAXITEMS) {
 		ii = itemavail[0];
-		GetSuperItemSpace(x, y, itemavail[0]);
-		itemactive[numitems] = ii;
+		GetSuperItemSpace(x, y, ii);
 		itemavail[0] = itemavail[MAXITEMS - numitems - 1];
+		itemactive[numitems] = ii;
+		idx = RndTypeItems(imisc, 0);
+		do {
+			SetupAllItems(ii, idx, GetRndSeed(), 2 * currlevel, 1, 1, 0, delta);
+			if (item[ii]._iCurs == icurs)
+				done = 1;
+			else
+				idx = RndTypeItems(imisc, 0);
+		} while (!done);
+		if (sendmsg)
+			NetSendCmdDItem(FALSE, ii);
+		if (delta)
+			DeltaAddItem(ii);
+		++numitems;
+	}
+}
+
+void __fastcall CreateMagicWeapon(int x, int y, int imisc, int icurs, int sendmsg, int delta)
+{
+	int ii;    // esi
+	int idx;   // ebx
+	BOOL done; // [esp+Ch] [ebp-4h]
+
+	done = 0;
+	if (numitems < MAXITEMS) {
+		ii = itemavail[0];
+		GetSuperItemSpace(x, y, ii);
+		itemavail[0] = itemavail[MAXITEMS - numitems - 1];
+		itemactive[numitems] = ii;
 		idx = RndTypeItems(imisc, 0);
 		do {
 			SetupAllItems(ii, idx, GetRndSeed(), 2 * currlevel, 1, 1, 0, delta);
