@@ -4914,7 +4914,7 @@ void __fastcall CreateMagicArmor(int x, int y, int imisc, int icurs, int sendmsg
 			NetSendCmdDItem(FALSE, ii);
 		if (delta)
 			DeltaAddItem(ii);
-		++numitems;
+		numitems++;
 	}
 }
 
