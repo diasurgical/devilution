@@ -47,7 +47,7 @@ void __fastcall diablo_parse_flags(char *args);
 void __cdecl diablo_init_screen();
 BOOL __fastcall diablo_find_window(LPCSTR lpClassName);
 void __fastcall diablo_reload_process(HMODULE hModule);
-int __cdecl PressEscKey();
+BOOL __cdecl PressEscKey();
 LRESULT CALLBACK DisableInputWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 BOOL __fastcall LeftMouseDown(int a1);
