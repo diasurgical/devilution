@@ -108,7 +108,7 @@ void __fastcall PrintSBookStr(int x, int y, bool cjustflag, char *pszStr, int br
 void __cdecl CheckSBook();
 char *__fastcall get_pieces_str(int nGold);
 void __fastcall DrawGoldSplit(int amount);
-void __fastcall control_drop_gold(int vkey);
+void __fastcall control_drop_gold(char vkey);
 void __fastcall control_remove_gold(int pnum, int gold_index);
 void __fastcall control_set_gold_curs(int pnum);
 void __cdecl DrawTalkPan();

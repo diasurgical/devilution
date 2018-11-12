@@ -107,29 +107,38 @@ void __cdecl FreeGameMem()
 
 BOOL __fastcall StartGame(BOOL bNewGame, BOOL bSinglePlayer)
 {
-	BOOL fExitProgram; // [esp+Ch] [ebp-4h]
-	unsigned int uMsg; // ecx
+	BOOL fExitProgram;
+	unsigned int uMsg;
 
 	byte_678640 = 1;
-	while (1) {
-		fExitProgram = 0;
-		dword_5256E8 = FALSE;
-		if (!NetInit(bSinglePlayer, &fExitProgram))
+
+	do {
+		fExitProgram = FALSE;
+		dword_5256E8 = 0;
+
+		if(!NetInit(bSinglePlayer, &fExitProgram)) {
+			gbRunGameResult = !fExitProgram;
 			break;
-		byte_678640 = 0;
-		if ((bNewGame || !gbValidSaveFile)
-		        && (InitLevels(), InitQuests(), InitPortals(), InitDungMsgs(myplr), !gbValidSaveFile)
-		    || (uMsg = WM_DIABLOADGAME, !dword_5256E8)) {
-			uMsg = WM_DIABNEWGAME;
 		}
+
+		byte_678640 = 0;
+
+		if(bNewGame || !gbValidSaveFile) {
+			InitLevels();
+			InitQuests();
+			InitPortals();
+			InitDungMsgs(myplr);
+		}
+		if(!gbValidSaveFile || !dword_5256E8)
+			uMsg = WM_DIABNEWGAME;
+		else
+			uMsg = WM_DIABLOADGAME;
+
 		run_game_loop(uMsg);
 		NetClose();
 		pfile_create_player_description(0, 0);
-		if (!gbRunGameResult)
-			goto LABEL_11;
-	}
-	gbRunGameResult = fExitProgram == 0;
-LABEL_11:
+	} while(gbRunGameResult);
+
 	SNetDestroy();
 	return gbRunGameResult;
 }
@@ -559,46 +568,46 @@ void __fastcall diablo_reload_process(HMODULE hModule)
 	}
 }
 
-int __cdecl PressEscKey()
+BOOL __cdecl PressEscKey()
 {
-	int result; // eax
+	BOOL rv = FALSE;
 
-	result = 0;
-	if (doomflag) {
+	if(doomflag) {
 		doom_close();
-		result = 1;
+		rv = TRUE;
 	}
-	if (helpflag) {
+	if(helpflag) {
 		helpflag = 0;
-		result = 1;
+		rv = TRUE;
 	}
-	if (qtextflag) {
-		qtextflag = FALSE;
+
+	if(qtextflag) {
+		qtextflag = 0;
 		sfx_stop();
-	} else {
-		if (!stextflag)
-			goto LABEL_10;
+		rv = TRUE;
+	} else if(stextflag) {
 		STextESC();
+		rv = TRUE;
 	}
-	result = 1;
-LABEL_10:
-	if (msgflag) {
+
+	if(msgflag) {
 		msgdelay = 0;
-		result = 1;
+		rv = TRUE;
 	}
-	if (talkflag) {
+	if(talkflag) {
 		control_reset_talk();
-		result = 1;
+		rv = TRUE;
 	}
-	if (dropGoldFlag) {
+	if(dropGoldFlag) {
 		control_drop_gold(VK_ESCAPE);
-		result = 1;
+		rv = TRUE;
 	}
-	if (spselflag) {
+	if(spselflag) {
 		spselflag = 0;
-		result = 1;
+		rv = TRUE;
 	}
-	return result;
+
+	return rv;
 }
 // 4B84DC: using guessed type int dropGoldFlag;
 // 4B8960: using guessed type int talkflag;

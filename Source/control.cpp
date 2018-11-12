@@ -2481,7 +2481,7 @@ void __fastcall DrawGoldSplit(int amount)
 	frame_4B8800 = (frame_4B8800 & 7) + 1;
 }
 
-void __fastcall control_drop_gold(int vkey)
+void __fastcall control_drop_gold(char vkey)
 {
 	char v1;    // bl
 	int v2;     // eax
