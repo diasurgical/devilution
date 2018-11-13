@@ -1242,8 +1242,6 @@ int __fastcall ParseCmd(int pnum, TCmd *pCmd)
 	TCmd *v3;         // eax
 	char v4;          // dl
 	unsigned char v5; // bl
-	int result;       // eax
-	TCmd *v7;         // esi
 
 	v2 = sgwPackPlrOffsetTbl[pnum] == 0;
 	v3 = pCmd;
@@ -1406,49 +1404,58 @@ int __fastcall ParseCmd(int pnum, TCmd *pCmd)
 			SNetDropPlayer(pnum, 0x40000006);
 			return 0;
 		}
-		v7 = v3;
-		if ((unsigned char)gbDeltaSender == pnum) {
-			if (sgbRecvCmd != CMD_DLEVEL_END) {
-				if (sgbRecvCmd == v3->bCmd) {
-				LABEL_99:
-					memcpy(&sgRecvBuf[*(unsigned short *)&v7[1].bCmd], &v7[5], *(unsigned short *)&v7[3].bCmd);
-					sgdwRecvOffset += *(unsigned short *)&v7[3].bCmd;
-					goto LABEL_100;
-				}
-				DeltaImportData(sgbRecvCmd, sgdwRecvOffset);
-				if (v7->bCmd == CMD_DLEVEL_END) {
-					sgbDeltaChunks = 20;
-					sgbRecvCmd = CMD_DLEVEL_END;
-					goto LABEL_100;
-				}
-				sgdwRecvOffset = 0;
-			LABEL_98:
-				sgbRecvCmd = v7->bCmd;
-				goto LABEL_99;
-			}
-		} else {
-			if (v3->bCmd != CMD_DLEVEL_END && (v3->bCmd != CMD_DLEVEL_0 || *(_WORD *)&v3[1].bCmd))
-				goto LABEL_100;
-			gbDeltaSender = pnum;
-			sgbRecvCmd = CMD_DLEVEL_END;
-		}
-		if (v3->bCmd == CMD_DLEVEL_END) {
-			sgbDeltaChunks = 20;
-			goto LABEL_100;
-		}
-		if (v3->bCmd == CMD_DLEVEL_0 && !*(_WORD *)&v3[1].bCmd) {
-			sgdwRecvOffset = 0;
-			goto LABEL_98;
-		}
-	LABEL_100:
-		result = *(unsigned short *)&v7[3].bCmd + 5;
-		break;
+		return On_DLEVEL(pnum, (struct TCmdPlrInfoHdr *)v3);
 	}
-	return result;
 }
 // 66E4A9: using guessed type char sbLastCmd;
 // 67618D: using guessed type char sgbDeltaChunks;
 // 6796E4: using guessed type char gbDeltaSender;
+
+int __fastcall On_DLEVEL(int pnum, struct TCmdPlrInfoHdr *pCmd)
+{
+	if ( (unsigned char)gbDeltaSender == pnum )
+	{
+		if ( sgbRecvCmd != CMD_DLEVEL_END )
+		{
+			if ( sgbRecvCmd == pCmd->bCmd )
+			{
+LABEL_17:
+				memcpy(&sgRecvBuf[pCmd->wOffset], &pCmd[1], pCmd->wBytes);
+				sgdwRecvOffset += pCmd->wBytes;
+				return pCmd->wBytes + 5;
+			}
+			DeltaImportData(sgbRecvCmd, sgdwRecvOffset);
+			if ( pCmd->bCmd == CMD_DLEVEL_END )
+			{
+				sgbDeltaChunks = 20;
+				sgbRecvCmd = CMD_DLEVEL_END;
+				return pCmd->wBytes + 5;
+			}
+			sgdwRecvOffset = 0;
+LABEL_16:
+			sgbRecvCmd = pCmd->bCmd;
+			goto LABEL_17;
+		}
+	}
+	else
+	{
+		if ( pCmd->bCmd != CMD_DLEVEL_END && (pCmd->bCmd != CMD_DLEVEL_0 || pCmd->wOffset) )
+			return pCmd->wBytes + 5;
+		gbDeltaSender = pnum;
+		sgbRecvCmd = CMD_DLEVEL_END;
+	}
+	if ( pCmd->bCmd == CMD_DLEVEL_END )
+	{
+		sgbDeltaChunks = 20;
+		return pCmd->wBytes + 5;
+	}
+	if ( pCmd->bCmd == CMD_DLEVEL_0 && !pCmd->wOffset )
+	{
+		sgdwRecvOffset = 0;
+		goto LABEL_16;
+	}
+	return pCmd->wBytes + 5;
+}
 
 void __fastcall DeltaImportData(BYTE cmd, DWORD recv_offset)
 {

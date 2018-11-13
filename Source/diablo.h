@@ -51,6 +51,7 @@ BOOL __cdecl PressEscKey();
 LRESULT CALLBACK DisableInputWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 BOOL __fastcall LeftMouseDown(int a1);
+BOOL __fastcall LeftMouseCmd(BOOL a1);
 bool __cdecl TryIconCurs();
 void __cdecl LeftMouseUp();
 void __cdecl RightMouseDown();
