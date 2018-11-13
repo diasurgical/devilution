@@ -2802,10 +2802,13 @@ BOOL __fastcall M_DoFadeout(int i)
 		return FALSE;
 	}
 
-	if (monster[i].MType->mtype < MT_INCIN || monster[i].MType->mtype > MT_HELLBURN)
-		monster[i]._mFlags &= ~MFLAG_LOCK_ANIMATION | MFLAG_HIDDEN;
-	else
+	int mt = monster[i].MType->mtype;
+	if (mt < MT_INCIN || mt > MT_HELLBURN) {
 		monster[i]._mFlags &= ~MFLAG_LOCK_ANIMATION;
+		monster[i]._mFlags |= MFLAG_HIDDEN;
+	} else {
+		monster[i]._mFlags &= ~MFLAG_LOCK_ANIMATION;
+	}
 
 	M_StartStand(i, monster[i]._mdir);
 
