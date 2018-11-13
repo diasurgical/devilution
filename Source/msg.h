@@ -53,6 +53,7 @@ void __fastcall NetSendCmdDamage(BOOL bHiPri, BYTE bPlr, DWORD dwDam);
 void __fastcall NetSendCmdString(int pmask, const char *pszStr);
 void __fastcall RemovePlrPortal(int pnum);
 int __fastcall ParseCmd(int pnum, TCmd *pCmd);
+int __fastcall On_DLEVEL(int pnum, struct TCmdPlrInfoHdr *pCmd);
 void __fastcall DeltaImportData(BYTE cmd, DWORD recv_offset);
 void *__fastcall DeltaImportItem(void *src, void *dst);
 void *__fastcall DeltaImportObject(void *src, void *dst);
