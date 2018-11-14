@@ -85,7 +85,7 @@ BOOL __fastcall M_DoGotHit(int i);
 void __fastcall M_UpdateLeader(int i);
 void __cdecl DoEnding();
 void __cdecl PrepDoEnding();
-int __fastcall M_DoDeath(int i);
+BOOL __fastcall M_DoDeath(int i);
 int __fastcall M_DoSpStand(int i);
 int __fastcall M_DoDelay(int i);
 int __fastcall M_DoStone(int i);

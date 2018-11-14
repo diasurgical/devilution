@@ -3110,55 +3110,48 @@ void __cdecl PrepDoEnding()
 // 64D32C: using guessed type int sgbSaveSoundOn;
 // 679660: using guessed type char gbMaxPlayers;
 
-int __fastcall M_DoDeath(int i)
+BOOL __fastcall M_DoDeath(int i)
 {
-	CMonster *v3;  // ecx
-	int v4;        // eax
-	int v5;        // ecx
-	signed int v6; // ecx
-	int v7;        // esi
-	int v8;        // esi
-	signed int v9; // ecx
-	char v10;      // al
-	int v11;       // eax
+	int var1;
+	int x, y;
 
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_DoDeath: Invalid monster %d", i);
 	if (monster[i].MType == NULL)
 		TermMsg("M_DoDeath: Monster %d \"%s\" MType NULL", i, monster[i].mName);
 
-	v3 = monster[i].MType;
-	v4 = ++monster[i]._mVar1;
-	if (v3->mtype == MT_DIABLO) {
-		v5 = monster[i]._mx - ViewX;
-		if (v5 >= 0)
-			v6 = v5 > 0;
+	monster[i]._mVar1++;
+	var1 = monster[i]._mVar1;
+	if (monster[i].MType->mtype == MT_DIABLO) {
+		x = monster[i]._mx - ViewX;
+		if (x < 0)
+			x = -1;
 		else
-			v6 = -1;
-		v7 = monster[i]._my;
-		ViewX += v6;
-		v8 = v7 - ViewY;
-		if (v8 >= 0) {
-			v9 = v8 < 0;
-			_LOBYTE(v9) = v8 > 0;
+			x = x > 0;
+		ViewX += x;
+
+		y = monster[i]._my - ViewY;
+		if (y < 0) {
+			y = -1;
 		} else {
-			v9 = -1;
+			y = y > 0;
 		}
-		ViewY += v9;
-		if (v4 == 140)
+		ViewY += y;
+
+		if (var1 == 140)
 			PrepDoEnding();
 	} else if (monster[i]._mAnimFrame == monster[i]._mAnimLen) {
-		if (monster[i]._uniqtype != 0)
-			v10 = monster[i]._udeadval;
+		if (monster[i]._uniqtype == 0)
+			AddDead(monster[i]._mx, monster[i]._my, monster[i].MType->mdeadval, (direction)monster[i]._mdir);
 		else
-			v10 = v3->mdeadval;
-		AddDead(monster[i]._mx, monster[i]._my, v10, (direction)monster[i]._mdir);
-		v11 = monster[i]._my + 112 * monster[i]._mx;
+			AddDead(monster[i]._mx, monster[i]._my, monster[i]._udeadval, (direction)monster[i]._mdir);
+
 		monster[i]._mDelFlag = TRUE;
-		dMonster[0][v11] = 0;
+		dMonster[monster[i]._mx][monster[i]._my] = 0;
+
 		M_UpdateLeader(i);
 	}
-	return 0;
+	return FALSE;
 }
 
 int __fastcall M_DoSpStand(int i)
