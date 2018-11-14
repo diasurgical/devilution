@@ -3154,23 +3154,22 @@ BOOL __fastcall M_DoDeath(int i)
 	return FALSE;
 }
 
-int __fastcall M_DoSpStand(int i)
+BOOL __fastcall M_DoSpStand(int i)
 {
-	int v1; // ebx
-	int v2; // esi
-
-	v1 = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_DoSpStand: Invalid monster %d", i);
-	v2 = v1;
-	if (monster[v1].MType == NULL)
-		TermMsg("M_DoSpStand: Monster %d \"%s\" MType NULL", v1, monster[v2].mName);
-	if (monster[v2]._mAnimFrame == monster[v2].MData->mAFNum2)
-		PlayEffect(v1, 3);
-	if (monster[v2]._mAnimFrame != monster[v2]._mAnimLen)
-		return 0;
-	M_StartStand(v1, monster[v2]._mdir);
-	return 1;
+	if (monster[i].MType == NULL)
+		TermMsg("M_DoSpStand: Monster %d \"%s\" MType NULL", i, monster[i].mName);
+
+	if (monster[i]._mAnimFrame == monster[i].MData->mAFNum2)
+		PlayEffect(i, 3);
+
+	if (monster[i]._mAnimFrame == monster[i]._mAnimLen) {
+		M_StartStand(i, monster[i]._mdir);
+		return TRUE;
+	}
+
+	return FALSE;
 }
 
 int __fastcall M_DoDelay(int i)
