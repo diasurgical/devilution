@@ -3409,30 +3409,25 @@ LABEL_11:
 	return 0;
 }
 
-bool __fastcall M_PathWalk(int i)
+BOOL __fastcall M_PathWalk(int i)
 {
-	int v1; // esi
+	char path[25];
 	BOOL(__fastcall * Check)
-	(int, int, int); // ecx
-	char path[25];   // [esp+4h] [ebp-1Ch]
+	(int, int, int);
 
-	v1 = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_PathWalk: Invalid monster %d", i);
+
 	Check = PosOkMonst3;
-	if (!(monster[v1]._mFlags & MFLAG_CAN_OPEN_DOOR))
+	if (!(monster[i]._mFlags & MFLAG_CAN_OPEN_DOOR))
 		Check = PosOkMonst;
-	if (!FindPath(
-	        Check,
-	        v1,
-	        monster[v1]._mx,
-	        monster[v1]._my,
-	        (unsigned char)monster[v1]._menemyx,
-	        (unsigned char)monster[v1]._menemyy,
-	        path))
-		return 0;
-	M_CallWalk(v1, (char)plr2monst[path[0]]); /* plr2monst is local */
-	return 1;
+
+	if (FindPath(Check, i, monster[i]._mx, monster[i]._my, monster[i]._menemyx, monster[i]._menemyy, path)) {
+		M_CallWalk(i, (char)plr2monst[path[0]]); /* plr2monst is local */
+		return TRUE;
+	}
+
+	return FALSE;
 }
 
 bool __fastcall M_CallWalk2(int i, int md)
