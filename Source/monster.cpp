@@ -3172,38 +3172,33 @@ BOOL __fastcall M_DoSpStand(int i)
 	return FALSE;
 }
 
-int __fastcall M_DoDelay(int i)
+BOOL __fastcall M_DoDelay(int i)
 {
-	int v1;  // ebp
-	int v2;  // esi
-	int v3;  // eax
-	bool v4; // zf
-	int v5;  // ecx
-	int v6;  // ecx
-	int v7;  // ebx
+	int mVar2;
+	int oFrame;
 
-	v1 = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_DoDelay: Invalid monster %d", i);
-	v2 = v1;
-	if (monster[v1].MType == NULL)
-		TermMsg("M_DoDelay: Monster %d \"%s\" MType NULL", v1, monster[v2].mName);
-	v3 = M_GetDir(v1);
-	v4 = monster[v2]._mAi == AI_LAZURUS;
-	monster[v2]._mAnimData = monster[v2].MType->Anims[MA_STAND].Data[v3];
-	if (v4) {
-		v5 = monster[v2]._mVar2;
-		if (v5 > 8 || v5 < 0)
-			monster[v2]._mVar2 = 8;
+	if (monster[i].MType == NULL)
+		TermMsg("M_DoDelay: Monster %d \"%s\" MType NULL", i, monster[i].mName);
+
+	monster[i]._mAnimData = monster[i].MType->Anims[MA_STAND].Data[M_GetDir(i)];
+	if (monster[i]._mAi == AI_LAZURUS) {
+		if (monster[i]._mVar2 > 8 || monster[i]._mVar2 < 0)
+			monster[i]._mVar2 = 8;
 	}
-	v6 = monster[v2]._mVar2;
-	monster[v2]._mVar2 = v6 - 1;
-	if (v6)
-		return 0;
-	v7 = monster[v2]._mAnimFrame;
-	M_StartStand(v1, monster[v2]._mdir);
-	monster[v2]._mAnimFrame = v7;
-	return 1;
+
+	mVar2 = monster[i]._mVar2;
+	monster[i]._mVar2--;
+
+	if (!mVar2) {
+		oFrame = monster[i]._mAnimFrame;
+		M_StartStand(i, monster[i]._mdir);
+		monster[i]._mAnimFrame = oFrame;
+		return TRUE;
+	}
+
+	return FALSE;
 }
 
 int __fastcall M_DoStone(int i)
