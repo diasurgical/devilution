@@ -3216,79 +3216,37 @@ BOOL __fastcall M_DoStone(int i)
 
 void __fastcall M_WalkDir(int i, int md)
 {
-	int v2;  // esi
-	int v3;  // edi
-	int v4;  // eax
-	int v5;  // eax
-	int v6;  // edx
-	int v7;  // ecx
-	int v8;  // eax
-	int v9;  // edx
-	int v10; // eax
-	int v11; // [esp-14h] [ebp-1Ch]
-	int v12; // [esp-Ch] [ebp-14h]
-	int v13; // [esp-Ch] [ebp-14h]
-	int v14; // [esp-8h] [ebp-10h]
-	int v15; // [esp-8h] [ebp-10h]
-	int v16; // [esp-4h] [ebp-Ch]
-	int v17; // [esp-4h] [ebp-Ch]
+	int mwi;
 
-	v2 = i;
-	v3 = md;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_WalkDir: Invalid monster %d", i);
-	v4 = monster[v2].MType->Anims[MA_WALK].Frames - 1;
-	switch (v3) {
-	case DIR_S:
-		M_StartWalk2(v2, 0, MWVel[v4][1], 0, -32, 1, 1, 0);
-		return;
-	case DIR_SW:
-		v17 = 1;
-		v8 = v4;
-		v15 = 1;
-		v13 = 0;
-		v11 = 32;
-		v9 = -MWVel[v8][1];
-		goto LABEL_10;
-	case DIR_W:
-		M_StartWalk3(v2, -MWVel[v4][2], 0, 32, -16, -1, 1, 0, 1, 2);
-		return;
-	case DIR_NW:
-		v16 = 3;
-		v10 = v4;
-		v14 = 0;
-		v12 = -1;
-		v7 = -MWVel[v10][0];
-		v6 = -MWVel[v10][1];
-		goto LABEL_15;
+
+	mwi = monster[i].MType->Anims[MA_WALK].Frames - 1;
+	switch (md) {
 	case DIR_N:
-		M_StartWalk(v2, 0, -MWVel[v4][1], -1, -1, 4);
+		M_StartWalk(i, 0, -MWVel[mwi][1], -1, -1, DIR_N);
 		break;
 	case DIR_NE:
-		v16 = 5;
-		v5 = v4;
-		v14 = -1;
-		v12 = 0;
-		v6 = MWVel[v5][1];
-		v7 = -MWVel[v5][0];
-	LABEL_15:
-		M_StartWalk(v2, v6, v7, v12, v14, v16);
+		M_StartWalk(i, MWVel[mwi][1], -MWVel[mwi][0], 0, -1, DIR_NE);
 		break;
 	case DIR_E:
-		M_StartWalk3(v2, MWVel[v4][2], 0, -32, -16, 1, -1, 1, 0, 6);
+		M_StartWalk3(i, MWVel[mwi][2], 0, -32, -16, 1, -1, 1, 0, DIR_E);
 		break;
 	case DIR_SE:
-		v17 = 7;
-		v8 = v4;
-		v15 = 0;
-		v13 = 1;
-		v9 = MWVel[v8][1];
-		v11 = -32;
-	LABEL_10:
-		M_StartWalk2(v2, v9, MWVel[v8][0], v11, -16, v13, v15, v17);
+		M_StartWalk2(i, MWVel[mwi][1], MWVel[mwi][0], -32, -16, 1, 0, DIR_SE);
 		break;
-	default:
-		return;
+	case DIR_S:
+		M_StartWalk2(i, 0, MWVel[mwi][1], 0, -32, 1, 1, DIR_S);
+		break;
+	case DIR_SW:
+		M_StartWalk2(i, -MWVel[mwi][1], MWVel[mwi][0], 32, -16, 0, 1, DIR_SW);
+		break;
+	case DIR_W:
+		M_StartWalk3(i, -MWVel[mwi][2], 0, 32, -16, -1, 1, 0, 1, DIR_W);
+		break;
+	case DIR_NW:
+		M_StartWalk(i, -MWVel[mwi][1], -MWVel[mwi][0], -1, 0, DIR_NW);
+		break;
 	}
 }
 
