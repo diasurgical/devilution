@@ -3430,50 +3430,23 @@ BOOL __fastcall M_PathWalk(int i)
 	return FALSE;
 }
 
-bool __fastcall M_CallWalk2(int i, int md)
+BOOL __fastcall M_CallWalk2(int i, int md)
 {
-	int v2; // esi
-	int v3; // ebx
-	//int v4; // eax
-	bool v6; // edi
-	int v7;  // edi
-	//int v8; // eax
-	int v9; // edi
-	//int v10; // eax
-	//int v11; // eax
-	bool v12; // di
+	BOOL ok;
+	int mdtemp;
 
-	v2 = md;
-	v3 = i;
-	//_LOBYTE(v4) = DirOK(i, md);
-	v6 = DirOK(i, md);
-	if (random(101, 2)) {
-		if (v6)
-			goto LABEL_10;
-		v7 = v2;
-		v2 = left[v2];
-		//_LOBYTE(v8) = DirOK(v3, v2);
-		if (DirOK(v3, v2))
-			goto LABEL_10;
-		v2 = right[v7];
+	mdtemp = md;
+	ok = DirOK(i, md);    // Can we continue in the same direction
+	if (random(101, 2)) { // Randomly go left or right
+		ok = ok || (mdtemp = left[md], DirOK(i, left[md])) || (mdtemp = right[md], DirOK(i, right[md]));
 	} else {
-		if (v6)
-			goto LABEL_10;
-		v9 = v2;
-		v2 = right[v2];
-		//_LOBYTE(v10) = DirOK(v3, v2);
-		if (DirOK(v3, v2))
-			goto LABEL_10;
-		v2 = left[v9];
+		ok = ok || (mdtemp = right[md], DirOK(i, right[md])) || (mdtemp = left[md], DirOK(i, left[md]));
 	}
-	//_LOBYTE(v11) = DirOK(v3, v2);
-	if (DirOK(v3, v2)) {
-	LABEL_10:
-		v12 = 1;
-		M_WalkDir(v3, v2);
-		return v12;
-	}
-	return 0;
+
+	if (ok)
+		M_WalkDir(i, mdtemp);
+
+	return ok;
 }
 
 bool __fastcall M_DumbWalk(int i, int md)

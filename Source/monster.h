@@ -93,7 +93,7 @@ void __fastcall M_WalkDir(int i, int md);
 void __fastcall GroupUnity(int i);
 BOOL __fastcall M_CallWalk(int i, int md);
 BOOL __fastcall M_PathWalk(int i);
-bool __fastcall M_CallWalk2(int i, int md);
+BOOL __fastcall M_CallWalk2(int i, int md);
 bool __fastcall M_DumbWalk(int i, int md);
 bool __fastcall M_RoundWalk(int i, int md, int *dir);
 void __fastcall MAI_Zombie(int i);
