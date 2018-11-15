@@ -3201,22 +3201,17 @@ BOOL __fastcall M_DoDelay(int i)
 	return FALSE;
 }
 
-int __fastcall M_DoStone(int i)
+BOOL __fastcall M_DoStone(int i)
 {
-	int v1; // esi
-	int v2; // eax
-	int v3; // ecx
-
-	v1 = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_DoStone: Invalid monster %d", i);
-	v2 = v1;
-	if (!monster[v1]._mhitpoints) {
-		v3 = monster[v2]._mx;
-		monster[v2]._mDelFlag = TRUE;
-		dMonster[v3][monster[v2]._my] = 0;
+
+	if (!monster[i]._mhitpoints) {
+		dMonster[monster[i]._mx][monster[i]._my] = 0;
+		monster[i]._mDelFlag = TRUE;
 	}
-	return 0;
+
+	return FALSE;
 }
 
 void __fastcall M_WalkDir(int i, int md)

@@ -88,7 +88,7 @@ void __cdecl PrepDoEnding();
 BOOL __fastcall M_DoDeath(int i);
 BOOL __fastcall M_DoSpStand(int i);
 BOOL __fastcall M_DoDelay(int i);
-int __fastcall M_DoStone(int i);
+BOOL __fastcall M_DoStone(int i);
 void __fastcall M_WalkDir(int i, int md);
 void __fastcall GroupUnity(int i);
 BOOL __fastcall M_CallWalk(int i, int md);
