@@ -3423,7 +3423,7 @@ BOOL __fastcall M_PathWalk(int i)
 		Check = PosOkMonst;
 
 	if (FindPath(Check, i, monster[i]._mx, monster[i]._my, monster[i]._menemyx, monster[i]._menemyy, path)) {
-		M_CallWalk(i, (char)plr2monst[path[0]]); /* plr2monst is local */
+		M_CallWalk(i, plr2monst[path[0]]); /* plr2monst is local */
 		return TRUE;
 	}
 
@@ -3449,20 +3449,14 @@ BOOL __fastcall M_CallWalk2(int i, int md)
 	return ok;
 }
 
-bool __fastcall M_DumbWalk(int i, int md)
+BOOL __fastcall M_DumbWalk(int i, int md)
 {
-	int v2; // esi
-	int v3; // edi
-	//int v4; // eax
-	bool v5; // bl
+	BOOL ok;
+	ok = DirOK(i, md);
+	if (ok)
+		M_WalkDir(i, md);
 
-	v2 = md;
-	v3 = i;
-	//_LOBYTE(v4) = DirOK(i, md);
-	v5 = DirOK(i, md);
-	if (v5)
-		M_WalkDir(v3, v2);
-	return v5;
+	return ok;
 }
 
 bool __fastcall M_RoundWalk(int i, int md, int *dir)
