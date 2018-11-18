@@ -3110,203 +3110,143 @@ void __cdecl PrepDoEnding()
 // 64D32C: using guessed type int sgbSaveSoundOn;
 // 679660: using guessed type char gbMaxPlayers;
 
-int __fastcall M_DoDeath(int i)
+BOOL __fastcall M_DoDeath(int i)
 {
-	CMonster *v3;  // ecx
-	int v4;        // eax
-	int v5;        // ecx
-	signed int v6; // ecx
-	int v7;        // esi
-	int v8;        // esi
-	signed int v9; // ecx
-	char v10;      // al
-	int v11;       // eax
+	int var1;
+	int x, y;
 
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_DoDeath: Invalid monster %d", i);
 	if (monster[i].MType == NULL)
 		TermMsg("M_DoDeath: Monster %d \"%s\" MType NULL", i, monster[i].mName);
 
-	v3 = monster[i].MType;
-	v4 = ++monster[i]._mVar1;
-	if (v3->mtype == MT_DIABLO) {
-		v5 = monster[i]._mx - ViewX;
-		if (v5 >= 0)
-			v6 = v5 > 0;
+	monster[i]._mVar1++;
+	var1 = monster[i]._mVar1;
+	if (monster[i].MType->mtype == MT_DIABLO) {
+		x = monster[i]._mx - ViewX;
+		if (x < 0)
+			x = -1;
 		else
-			v6 = -1;
-		v7 = monster[i]._my;
-		ViewX += v6;
-		v8 = v7 - ViewY;
-		if (v8 >= 0) {
-			v9 = v8 < 0;
-			_LOBYTE(v9) = v8 > 0;
+			x = x > 0;
+		ViewX += x;
+
+		y = monster[i]._my - ViewY;
+		if (y < 0) {
+			y = -1;
 		} else {
-			v9 = -1;
+			y = y > 0;
 		}
-		ViewY += v9;
-		if (v4 == 140)
+		ViewY += y;
+
+		if (var1 == 140)
 			PrepDoEnding();
 	} else if (monster[i]._mAnimFrame == monster[i]._mAnimLen) {
-		if (monster[i]._uniqtype != 0)
-			v10 = monster[i]._udeadval;
+		if (monster[i]._uniqtype == 0)
+			AddDead(monster[i]._mx, monster[i]._my, monster[i].MType->mdeadval, (direction)monster[i]._mdir);
 		else
-			v10 = v3->mdeadval;
-		AddDead(monster[i]._mx, monster[i]._my, v10, (direction)monster[i]._mdir);
-		v11 = monster[i]._my + 112 * monster[i]._mx;
+			AddDead(monster[i]._mx, monster[i]._my, monster[i]._udeadval, (direction)monster[i]._mdir);
+
 		monster[i]._mDelFlag = TRUE;
-		dMonster[0][v11] = 0;
+		dMonster[monster[i]._mx][monster[i]._my] = 0;
+
 		M_UpdateLeader(i);
 	}
-	return 0;
+	return FALSE;
 }
 
-int __fastcall M_DoSpStand(int i)
+BOOL __fastcall M_DoSpStand(int i)
 {
-	int v1; // ebx
-	int v2; // esi
-
-	v1 = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_DoSpStand: Invalid monster %d", i);
-	v2 = v1;
-	if (monster[v1].MType == NULL)
-		TermMsg("M_DoSpStand: Monster %d \"%s\" MType NULL", v1, monster[v2].mName);
-	if (monster[v2]._mAnimFrame == monster[v2].MData->mAFNum2)
-		PlayEffect(v1, 3);
-	if (monster[v2]._mAnimFrame != monster[v2]._mAnimLen)
-		return 0;
-	M_StartStand(v1, monster[v2]._mdir);
-	return 1;
+	if (monster[i].MType == NULL)
+		TermMsg("M_DoSpStand: Monster %d \"%s\" MType NULL", i, monster[i].mName);
+
+	if (monster[i]._mAnimFrame == monster[i].MData->mAFNum2)
+		PlayEffect(i, 3);
+
+	if (monster[i]._mAnimFrame == monster[i]._mAnimLen) {
+		M_StartStand(i, monster[i]._mdir);
+		return TRUE;
+	}
+
+	return FALSE;
 }
 
-int __fastcall M_DoDelay(int i)
+BOOL __fastcall M_DoDelay(int i)
 {
-	int v1;  // ebp
-	int v2;  // esi
-	int v3;  // eax
-	bool v4; // zf
-	int v5;  // ecx
-	int v6;  // ecx
-	int v7;  // ebx
+	int mVar2;
+	int oFrame;
 
-	v1 = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_DoDelay: Invalid monster %d", i);
-	v2 = v1;
-	if (monster[v1].MType == NULL)
-		TermMsg("M_DoDelay: Monster %d \"%s\" MType NULL", v1, monster[v2].mName);
-	v3 = M_GetDir(v1);
-	v4 = monster[v2]._mAi == AI_LAZURUS;
-	monster[v2]._mAnimData = monster[v2].MType->Anims[MA_STAND].Data[v3];
-	if (v4) {
-		v5 = monster[v2]._mVar2;
-		if (v5 > 8 || v5 < 0)
-			monster[v2]._mVar2 = 8;
+	if (monster[i].MType == NULL)
+		TermMsg("M_DoDelay: Monster %d \"%s\" MType NULL", i, monster[i].mName);
+
+	monster[i]._mAnimData = monster[i].MType->Anims[MA_STAND].Data[M_GetDir(i)];
+	if (monster[i]._mAi == AI_LAZURUS) {
+		if (monster[i]._mVar2 > 8 || monster[i]._mVar2 < 0)
+			monster[i]._mVar2 = 8;
 	}
-	v6 = monster[v2]._mVar2;
-	monster[v2]._mVar2 = v6 - 1;
-	if (v6)
-		return 0;
-	v7 = monster[v2]._mAnimFrame;
-	M_StartStand(v1, monster[v2]._mdir);
-	monster[v2]._mAnimFrame = v7;
-	return 1;
+
+	mVar2 = monster[i]._mVar2;
+	monster[i]._mVar2--;
+
+	if (!mVar2) {
+		oFrame = monster[i]._mAnimFrame;
+		M_StartStand(i, monster[i]._mdir);
+		monster[i]._mAnimFrame = oFrame;
+		return TRUE;
+	}
+
+	return FALSE;
 }
 
-int __fastcall M_DoStone(int i)
+BOOL __fastcall M_DoStone(int i)
 {
-	int v1; // esi
-	int v2; // eax
-	int v3; // ecx
-
-	v1 = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_DoStone: Invalid monster %d", i);
-	v2 = v1;
-	if (!monster[v1]._mhitpoints) {
-		v3 = monster[v2]._mx;
-		monster[v2]._mDelFlag = TRUE;
-		dMonster[v3][monster[v2]._my] = 0;
+
+	if (!monster[i]._mhitpoints) {
+		dMonster[monster[i]._mx][monster[i]._my] = 0;
+		monster[i]._mDelFlag = TRUE;
 	}
-	return 0;
+
+	return FALSE;
 }
 
 void __fastcall M_WalkDir(int i, int md)
 {
-	int v2;  // esi
-	int v3;  // edi
-	int v4;  // eax
-	int v5;  // eax
-	int v6;  // edx
-	int v7;  // ecx
-	int v8;  // eax
-	int v9;  // edx
-	int v10; // eax
-	int v11; // [esp-14h] [ebp-1Ch]
-	int v12; // [esp-Ch] [ebp-14h]
-	int v13; // [esp-Ch] [ebp-14h]
-	int v14; // [esp-8h] [ebp-10h]
-	int v15; // [esp-8h] [ebp-10h]
-	int v16; // [esp-4h] [ebp-Ch]
-	int v17; // [esp-4h] [ebp-Ch]
+	int mwi;
 
-	v2 = i;
-	v3 = md;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_WalkDir: Invalid monster %d", i);
-	v4 = monster[v2].MType->Anims[MA_WALK].Frames - 1;
-	switch (v3) {
-	case DIR_S:
-		M_StartWalk2(v2, 0, MWVel[v4][1], 0, -32, 1, 1, 0);
-		return;
-	case DIR_SW:
-		v17 = 1;
-		v8 = v4;
-		v15 = 1;
-		v13 = 0;
-		v11 = 32;
-		v9 = -MWVel[v8][1];
-		goto LABEL_10;
-	case DIR_W:
-		M_StartWalk3(v2, -MWVel[v4][2], 0, 32, -16, -1, 1, 0, 1, 2);
-		return;
-	case DIR_NW:
-		v16 = 3;
-		v10 = v4;
-		v14 = 0;
-		v12 = -1;
-		v7 = -MWVel[v10][0];
-		v6 = -MWVel[v10][1];
-		goto LABEL_15;
+
+	mwi = monster[i].MType->Anims[MA_WALK].Frames - 1;
+	switch (md) {
 	case DIR_N:
-		M_StartWalk(v2, 0, -MWVel[v4][1], -1, -1, 4);
+		M_StartWalk(i, 0, -MWVel[mwi][1], -1, -1, DIR_N);
 		break;
 	case DIR_NE:
-		v16 = 5;
-		v5 = v4;
-		v14 = -1;
-		v12 = 0;
-		v6 = MWVel[v5][1];
-		v7 = -MWVel[v5][0];
-	LABEL_15:
-		M_StartWalk(v2, v6, v7, v12, v14, v16);
+		M_StartWalk(i, MWVel[mwi][1], -MWVel[mwi][0], 0, -1, DIR_NE);
 		break;
 	case DIR_E:
-		M_StartWalk3(v2, MWVel[v4][2], 0, -32, -16, 1, -1, 1, 0, 6);
+		M_StartWalk3(i, MWVel[mwi][2], 0, -32, -16, 1, -1, 1, 0, DIR_E);
 		break;
 	case DIR_SE:
-		v17 = 7;
-		v8 = v4;
-		v15 = 0;
-		v13 = 1;
-		v9 = MWVel[v8][1];
-		v11 = -32;
-	LABEL_10:
-		M_StartWalk2(v2, v9, MWVel[v8][0], v11, -16, v13, v15, v17);
+		M_StartWalk2(i, MWVel[mwi][1], MWVel[mwi][0], -32, -16, 1, 0, DIR_SE);
 		break;
-	default:
-		return;
+	case DIR_S:
+		M_StartWalk2(i, 0, MWVel[mwi][1], 0, -32, 1, 1, DIR_S);
+		break;
+	case DIR_SW:
+		M_StartWalk2(i, -MWVel[mwi][1], MWVel[mwi][0], 32, -16, 0, 1, DIR_SW);
+		break;
+	case DIR_W:
+		M_StartWalk3(i, -MWVel[mwi][2], 0, 32, -16, -1, 1, 0, 1, DIR_W);
+		break;
+	case DIR_NW:
+		M_StartWalk(i, -MWVel[mwi][1], -MWVel[mwi][0], -1, 0, DIR_NW);
+		break;
 	}
 }
 
@@ -3469,92 +3409,54 @@ LABEL_11:
 	return 0;
 }
 
-bool __fastcall M_PathWalk(int i)
+BOOL __fastcall M_PathWalk(int i)
 {
-	int v1; // esi
+	char path[25];
 	BOOL(__fastcall * Check)
-	(int, int, int); // ecx
-	char path[25];   // [esp+4h] [ebp-1Ch]
+	(int, int, int);
 
-	v1 = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_PathWalk: Invalid monster %d", i);
+
 	Check = PosOkMonst3;
-	if (!(monster[v1]._mFlags & MFLAG_CAN_OPEN_DOOR))
+	if (!(monster[i]._mFlags & MFLAG_CAN_OPEN_DOOR))
 		Check = PosOkMonst;
-	if (!FindPath(
-	        Check,
-	        v1,
-	        monster[v1]._mx,
-	        monster[v1]._my,
-	        (unsigned char)monster[v1]._menemyx,
-	        (unsigned char)monster[v1]._menemyy,
-	        path))
-		return 0;
-	M_CallWalk(v1, (char)plr2monst[path[0]]); /* plr2monst is local */
-	return 1;
+
+	if (FindPath(Check, i, monster[i]._mx, monster[i]._my, monster[i]._menemyx, monster[i]._menemyy, path)) {
+		M_CallWalk(i, plr2monst[path[0]]); /* plr2monst is local */
+		return TRUE;
+	}
+
+	return FALSE;
 }
 
-bool __fastcall M_CallWalk2(int i, int md)
+BOOL __fastcall M_CallWalk2(int i, int md)
 {
-	int v2; // esi
-	int v3; // ebx
-	//int v4; // eax
-	bool v6; // edi
-	int v7;  // edi
-	//int v8; // eax
-	int v9; // edi
-	//int v10; // eax
-	//int v11; // eax
-	bool v12; // di
+	BOOL ok;
+	int mdtemp;
 
-	v2 = md;
-	v3 = i;
-	//_LOBYTE(v4) = DirOK(i, md);
-	v6 = DirOK(i, md);
-	if (random(101, 2)) {
-		if (v6)
-			goto LABEL_10;
-		v7 = v2;
-		v2 = left[v2];
-		//_LOBYTE(v8) = DirOK(v3, v2);
-		if (DirOK(v3, v2))
-			goto LABEL_10;
-		v2 = right[v7];
+	mdtemp = md;
+	ok = DirOK(i, md);    // Can we continue in the same direction
+	if (random(101, 2)) { // Randomly go left or right
+		ok = ok || (mdtemp = left[md], DirOK(i, left[md])) || (mdtemp = right[md], DirOK(i, right[md]));
 	} else {
-		if (v6)
-			goto LABEL_10;
-		v9 = v2;
-		v2 = right[v2];
-		//_LOBYTE(v10) = DirOK(v3, v2);
-		if (DirOK(v3, v2))
-			goto LABEL_10;
-		v2 = left[v9];
+		ok = ok || (mdtemp = right[md], DirOK(i, right[md])) || (mdtemp = left[md], DirOK(i, left[md]));
 	}
-	//_LOBYTE(v11) = DirOK(v3, v2);
-	if (DirOK(v3, v2)) {
-	LABEL_10:
-		v12 = 1;
-		M_WalkDir(v3, v2);
-		return v12;
-	}
-	return 0;
+
+	if (ok)
+		M_WalkDir(i, mdtemp);
+
+	return ok;
 }
 
-bool __fastcall M_DumbWalk(int i, int md)
+BOOL __fastcall M_DumbWalk(int i, int md)
 {
-	int v2; // esi
-	int v3; // edi
-	//int v4; // eax
-	bool v5; // bl
+	BOOL ok;
+	ok = DirOK(i, md);
+	if (ok)
+		M_WalkDir(i, md);
 
-	v2 = md;
-	v3 = i;
-	//_LOBYTE(v4) = DirOK(i, md);
-	v5 = DirOK(i, md);
-	if (v5)
-		M_WalkDir(v3, v2);
-	return v5;
+	return ok;
 }
 
 bool __fastcall M_RoundWalk(int i, int md, int *dir)
