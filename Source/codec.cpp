@@ -59,19 +59,20 @@ LABEL_14:
 
 void __fastcall codec_init_key(int unused, char *pszPassword)
 {
-	int i;
+	int i, ch, n;
 	char key[136]; // last 64 bytes are the SHA1
 	char pw[64];
 	char digest[SHA1HashSize];
+	char *keyInit;
 
 	srand(0x7058);
 
-	char *keyInit = key;
+	keyInit = key;
 	for (i = 0; i < 136; i++) {
 		*keyInit = rand();
 		keyInit++;
 	}
-	int ch = 0;
+	ch = 0;
 	for (i = 0; i < 64; i++) {
 		if (!pszPassword[ch])
 			ch = 0;
@@ -85,7 +86,7 @@ void __fastcall codec_init_key(int unused, char *pszPassword)
 		key[i] ^= digest[i % 20];
 	memset(pw, 0, sizeof(pw));
 	memset(digest, 0, sizeof(digest));
-	for (int n = 0; n < 3; n++) {
+	for (n = 0; n < 3; n++) {
 		SHA1Reset(n);
 		SHA1Calculate(n, &key[72], NULL);
 	}
