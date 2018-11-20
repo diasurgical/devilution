@@ -578,8 +578,11 @@ void __cdecl DrawAutomapGame()
 
 void __fastcall SetAutomapView(int x, int y)
 {
-	int xx = (x - 16) >> 1;
-	int yy = (y - 16) >> 1;
+	WORD maptype, solid;
+	int xx, yy;
+
+	xx = (x - 16) >> 1;
+	yy = (y - 16) >> 1;
 
 	if (xx < 0 || xx >= DMAXX || yy < 0 || yy >= DMAXY) {
 		return;
@@ -587,8 +590,8 @@ void __fastcall SetAutomapView(int x, int y)
 
 	automapview[xx][yy] = 1;
 
-	WORD maptype = GetAutomapType(xx, yy, FALSE);
-	WORD solid = maptype & 0x4000;
+	maptype = GetAutomapType(xx, yy, FALSE);
+	solid = maptype & 0x4000;
 
 	switch (maptype & 0xF) {
 	case 2:
