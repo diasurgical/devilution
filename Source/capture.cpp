@@ -4,17 +4,19 @@
 
 void __cdecl CaptureScreen()
 {
+	HANDLE hObject;
 	PALETTEENTRY palette[256];
 	char FileName[MAX_PATH];
+	BOOL success;
 
-	HANDLE hObject = CaptureFile(FileName);
+	hObject = CaptureFile(FileName);
 	if (hObject != INVALID_HANDLE_VALUE) {
 		DrawAndBlit();
 		lpDDPalette->GetEntries(0, 0, 256, palette);
 		RedPalette(palette);
 
 		j_lock_buf_priv(2);
-		BOOL success = CaptureHdr(hObject, 640, 480);
+		success = CaptureHdr(hObject, 640, 480);
 		if (success) {
 			success = CapturePix(hObject, 640, 480, 768, (BYTE *)gpBuffer->row[0].pixels);
 			if (success) {
@@ -34,6 +36,7 @@ void __cdecl CaptureScreen()
 
 BOOL __fastcall CaptureHdr(HANDLE hFile, short width, short height)
 {
+	DWORD lpNumBytes;
 	PCXHeader Buffer;
 	memset(&Buffer, 0, sizeof(Buffer));
 
@@ -48,7 +51,6 @@ BOOL __fastcall CaptureHdr(HANDLE hFile, short width, short height)
 	Buffer.numColorPlanes = 1;
 	Buffer.bytesPerScanLine = width;
 
-	DWORD lpNumBytes;
 	return WriteFile(hFile, &Buffer, sizeof(Buffer), &lpNumBytes, NULL) && lpNumBytes == sizeof(Buffer);
 }
 
@@ -56,10 +58,12 @@ BOOL __fastcall CapturePal(HANDLE hFile, PALETTEENTRY *palette)
 {
 	char *v3;
 	char Buffer[769];
+	int i;
+	DWORD lpNumBytes;
 
 	Buffer[0] = 12;
 	v3 = &Buffer[1];
-	for (int i = 256; i != 0; --i) {
+	for (i = 256; i != 0; --i) {
 		v3[0] = palette->peRed;
 		v3[1] = palette->peGreen;
 		v3[2] = palette->peBlue;
@@ -68,7 +72,6 @@ BOOL __fastcall CapturePal(HANDLE hFile, PALETTEENTRY *palette)
 		v3 += 3;
 	}
 
-	DWORD lpNumBytes;
 	return WriteFile(hFile, Buffer, sizeof(Buffer), &lpNumBytes, NULL) && lpNumBytes == sizeof(Buffer);
 }
 
@@ -76,15 +79,16 @@ BOOL __fastcall CapturePix(HANDLE hFile, WORD width, WORD height, WORD stride, B
 {
 	int writeSize;
 	DWORD lpNumBytes;
+	BYTE *pBuffer, *pBufferEnd;
 
-	BYTE *pBuffer = (BYTE *)DiabloAllocPtr(2 * width);
+	pBuffer = (BYTE *)DiabloAllocPtr(2 * width);
 	do {
 		if (!height) {
 			mem_free_dbg(pBuffer);
 			return TRUE;
 		}
 		height--;
-		BYTE *pBufferEnd = CaptureEnc(pixels, pBuffer, width);
+		pBufferEnd = CaptureEnc(pixels, pBuffer, width);
 		pixels += stride;
 		writeSize = pBufferEnd - pBuffer;
 	} while (WriteFile(hFile, pBuffer, writeSize, &lpNumBytes, 0) && lpNumBytes == writeSize);
@@ -94,10 +98,12 @@ BOOL __fastcall CapturePix(HANDLE hFile, WORD width, WORD height, WORD stride, B
 
 BYTE *__fastcall CaptureEnc(BYTE *src, BYTE *dst, int width)
 {
+	int rleLength;
+
 	do {
 		BYTE rlePixel = *src;
 		*src++;
-		int rleLength = 1;
+		rleLength = 1;
 
 		width--;
 
@@ -127,11 +133,11 @@ BYTE *__fastcall CaptureEnc(BYTE *src, BYTE *dst, int width)
 HANDLE __fastcall CaptureFile(char *dst_path)
 {
 	BOOLEAN num_used[100];
-	int free_num;
+	int free_num, hFind;
 	_finddata_t finder;
 
 	memset(num_used, FALSE, sizeof(num_used));
-	int hFind = _findfirst("screen??.PCX", &finder);
+	hFind = _findfirst("screen??.PCX", &finder);
 	if (hFind != -1) {
 		do {
 			if (isdigit(finder.name[6]) && isdigit(finder.name[7])) {
