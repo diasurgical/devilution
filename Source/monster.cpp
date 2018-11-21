@@ -1610,9 +1610,9 @@ void __fastcall M_Enemy(int i)
 		}
 	}
 	if (v24 == -1) {
-		v1->_mFlags |= MFLAG_ALLOW_SPECIAL;
+		v1->_mFlags |= MFLAG_NO_ENEMY;
 	} else {
-		v1->_mFlags &= ~MFLAG_ALLOW_SPECIAL;
+		v1->_mFlags &= ~MFLAG_NO_ENEMY;
 		v1->_menemy = v24;
 		v1->_menemyx = v27;
 		v1->_menemyy = v26;
@@ -5081,7 +5081,7 @@ void __fastcall MAI_Golum(int i)
 	if (!(Monst->_mFlags & MFLAG_TARGETS_MONSTER))
 		M_Enemy(i);
 
-	BOOL have_enemy = !(monster[i]._mFlags & MFLAG_SEARCH2); // BUGFIX MFLAG_SEARCH2 appears to never be set, maybe use MFLAG_TARGETS_MONSTER?
+	BOOL have_enemy = !(monster[i]._mFlags & MFLAG_NO_ENEMY);
 
 	if (Monst->_mmode == MM_ATTACK) {
 		return;
