@@ -94,33 +94,13 @@
 #ifndef IDA_GARBAGE
 #define IDA_GARBAGE
 
-typedef          __int64 ll;
-typedef unsigned __int64 ull;
-
-typedef unsigned int uint;
-typedef unsigned char uchar;
-typedef unsigned short ushort;
-typedef unsigned long ulong;
-
-typedef          char   int8;
-typedef   signed char   sint8;
-typedef unsigned char   uint8;
-typedef          short  int16;
-typedef   signed short  sint16;
-typedef unsigned short  uint16;
-typedef          int    int32;
-typedef   signed int    sint32;
-typedef unsigned int    uint32;
-typedef ll              int64;
-typedef ll              sint64;
-typedef ull             uint64;
+typedef __int64 int64;
 
 // Partially defined types. They are used when the decompiler does not know
 // anything about the type except its size.
-#define _BYTE  uint8
-#define _WORD  uint16
-#define _DWORD uint32
-#define _QWORD uint64
+#define _BYTE  unsigned char
+#define _WORD  unsigned short
+#define _DWORD unsigned int
 
 // Some convenience macros to make partial accesses nicer
 #define LAST_IND(x,part_type)    (sizeof(x)/sizeof(part_type) - 1)
@@ -131,6 +111,7 @@ typedef ull             uint64;
 #  define HIGH_IND(x,part_type)  LAST_IND(x,part_type)
 #  define LOW_IND(x,part_type)   0
 #endif
+
 // first unsigned macros:
 #define BYTEn(x, n)   (*((_BYTE*)&(x)+n))
 #define WORDn(x, n)   (*((_WORD*)&(x)+n))
@@ -138,7 +119,6 @@ typedef ull             uint64;
 
 #define _LOBYTE(x)  BYTEn(x,LOW_IND(x,_BYTE))
 #define _LOWORD(x)  WORDn(x,LOW_IND(x,_WORD))
-#define LODWORD(x) DWORDn(x,LOW_IND(x,_DWORD))
 #define _HIBYTE(x)  BYTEn(x,HIGH_IND(x,_BYTE))
 #define _HIWORD(x)  WORDn(x,HIGH_IND(x,_WORD))
 #define HIDWORD(x) DWORDn(x,HIGH_IND(x,_DWORD))
@@ -147,12 +127,11 @@ typedef ull             uint64;
 
 
 // now signed macros (the same but with sign extension)
-#define SBYTEn(x, n)   (*((int8*)&(x)+n))
-#define SWORDn(x, n)   (*((int16*)&(x)+n))
+#define SBYTEn(x, n)   (*((char*)&(x)+n))
+#define SWORDn(x, n)   (*((short*)&(x)+n))
 
-#define SLOBYTE(x)  SBYTEn(x,LOW_IND(x,int8))
-#define SHIWORD(x)  SWORDn(x,HIGH_IND(x,int16))
-
+#define SLOBYTE(x)  SBYTEn(x,LOW_IND(x,char))
+#define SHIWORD(x)  SWORDn(x,HIGH_IND(x,short))
 
 
 // Helper functions to represent some assembly instructions.
@@ -178,7 +157,7 @@ inline void *qmemcpy(void *dst, const void *src, size_t cnt)
 template <class T>
 T __ROL__(T value, int count)
 {
-	const uint nbits = sizeof(T) * 8;
+	const unsigned int nbits = sizeof(T) * 8;
 
 	if (count > 0) {
 		count %= nbits;
@@ -196,33 +175,33 @@ T __ROL__(T value, int count)
 	return value;
 }
 
-inline uint16 __ROR2__(uint16 value, int count) { return __ROL__((uint16)value, -count); }
-inline uint32 __ROR4__(uint32 value, int count) { return __ROL__((uint32)value, -count); }
+inline unsigned short __ROR2__(unsigned short value, int count) { return __ROL__((unsigned short)value, -count); }
+inline unsigned int __ROR4__(unsigned int value, int count) { return __ROL__((unsigned int)value, -count); }
 
 // sign flag
 template <class T>
-int8 __SETS__(T x)
+char __SETS__(T x)
 {
 	if (sizeof(T) == 1)
-		return int8(x) < 0;
+		return char(x) < 0;
 	if (sizeof(T) == 2)
-		return int16(x) < 0;
+		return short(x) < 0;
 	if (sizeof(T) == 4)
-		return int32(x) < 0;
+		return int(x) < 0;
 	return int64(x) < 0;
 }
 
 // overflow flag of subtraction (x-y)
 template <class T, class U>
-int8 __OFSUB__(T x, U y)
+char __OFSUB__(T x, U y)
 {
 	if (sizeof(T) < sizeof(U)) {
 		U x2    = x;
-		int8 sx = __SETS__(x2);
+		char sx = __SETS__(x2);
 		return (sx ^ __SETS__(y)) & (sx ^ __SETS__(x2 - y));
 	} else {
 		T y2    = y;
-		int8 sx = __SETS__(x);
+		char sx = __SETS__(x);
 		return (sx ^ __SETS__(y2)) & (sx ^ __SETS__(x - y2));
 	}
 }
