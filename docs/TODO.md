@@ -12,10 +12,9 @@ Minor bugs (noticeable but can be avoided)
 
 Code issues (incorrect code that still works)
 - Critical sections should be constructors using `CCritSect`
-- Some code uses macros such as `__PAIR__` or `__ROL4__`
+- Some code uses macros such as `__ROL4__`
 - Some functions/structures have incorrect signing (signed/unsigned BYTE)
 - Function `GetLevelMTypes`, decompile and check `monster.cpp`
 - Function `SetAutomapView`, decompile and check `automap.cpp`
 - Function `engine_draw_automap_pixels`, decompile and check `engine.cpp`
-- Double check `UseMana` references
 - Double check `LOBYTE` of function `random(int, int)`
