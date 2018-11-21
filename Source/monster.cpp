@@ -3321,7 +3321,7 @@ LABEL_18:
 						monster[v11]._msquelch = monster[v2]._msquelch - 1;
 					}
 					if (monster[v11]._mAi == AI_GARG) {
-						if (monster[v11]._mFlags & 4) {
+						if (monster[v11]._mFlags & MFLAG_ALLOW_SPECIAL) {
 							monster[v11]._mmode = MM_SATTACK;
 							monster[v11]._mFlags &= ~MFLAG_ALLOW_SPECIAL;
 						}
@@ -4712,44 +4712,35 @@ void __fastcall MAI_Scav(int i)
 
 void __fastcall MAI_Garg(int i)
 {
-	int v1;            // ebp
-	MonsterStruct *v2; // esi
-	int v3;            // edi
-	int v4;            // ebx
-	char v5;           // al
-	int v6;            // edi
-	//int v7; // eax
-	int v8; // [esp+10h] [ebp-4h]
+	MonsterStruct *Monst;
+	int mx, my, dx, dy, md;
 
-	v1 = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("MAI_Garg: Invalid monster %d", i);
-	v2 = &monster[v1];
-	v3 = v2->_mx - v2->_lastx;
-	v4 = v2->_my - v2->_lasty;
-	v8 = M_GetDir(v1);
-	v5 = v2->_msquelch;
-	if (v5 && v2->_mFlags & MFLAG_ALLOW_SPECIAL) {
-		M_Enemy(v1);
-		v6 = v2->_my - (unsigned char)v2->_menemyy;
-		if (abs(v2->_mx - (unsigned char)v2->_menemyx) < (unsigned char)v2->_mint + 2
-		    && abs(v6) < (unsigned char)v2->_mint + 2) {
-			v2->_mFlags &= ~MFLAG_ALLOW_SPECIAL;
+
+	Monst = &monster[i];
+	dx = Monst->_mx - Monst->_lastx;
+	dy = Monst->_my - Monst->_lasty;
+	md = M_GetDir(i);
+	if (Monst->_msquelch && Monst->_mFlags & MFLAG_ALLOW_SPECIAL) {
+		M_Enemy(i);
+		mx = Monst->_mx - Monst->_menemyx;
+		my = Monst->_my - Monst->_menemyy;
+		if (abs(mx) < Monst->_mint + 2 && abs(my) < Monst->_mint + 2) {
+			Monst->_mFlags &= ~MFLAG_ALLOW_SPECIAL;
 		}
-	} else if (v2->_mmode == MM_STAND && v5) {
-		if (v2->_mhitpoints<v2->_mmaxhp>> 1 && !(v2->_mFlags & MFLAG_NOHEAL))
-			_LOBYTE(v2->_mgoal) = MGOAL_RETREAT;
-		if (_LOBYTE(v2->_mgoal) == MGOAL_RETREAT) {
-			if (abs(v3) >= (unsigned char)v2->_mint + 2 || abs(v4) >= (unsigned char)v2->_mint + 2) {
-				_LOBYTE(v2->_mgoal) = MGOAL_NORMAL;
-				M_StartHeal(v1);
-			} else {
-				//_LOBYTE(v7) = M_CallWalk(v1, opposite[v8]);
-				if (!M_CallWalk(v1, opposite[v8]))
-					_LOBYTE(v2->_mgoal) = MGOAL_NORMAL;
+	} else if (Monst->_mmode == MM_STAND && Monst->_msquelch) {
+		if (Monst->_mhitpoints<Monst->_mmaxhp>> 1 && !(Monst->_mFlags & MFLAG_NOHEAL))
+			Monst->_mgoal = MGOAL_RETREAT;
+		if (Monst->_mgoal == MGOAL_RETREAT) {
+			if (abs(dx) >= Monst->_mint + 2 || abs(dy) >= Monst->_mint + 2) {
+				Monst->_mgoal = MGOAL_NORMAL;
+				M_StartHeal(i);
+			} else if (!M_CallWalk(i, opposite[md])) {
+				Monst->_mgoal = MGOAL_NORMAL;
 			}
 		}
-		MAI_Round(v1, 0);
+		MAI_Round(i, 0);
 	}
 }
 
