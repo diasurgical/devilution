@@ -32,7 +32,7 @@ void __fastcall DeltaAddItem(int ii);
 void __cdecl DeltaSaveLevel();
 void __cdecl DeltaLoadLevel();
 void __fastcall NetSendCmd(BOOL bHiPri, BYTE bCmd);
-void __fastcall NetSendCmdGolem(BYTE mx, BYTE my, BYTE dir, BYTE menemy, int hp, int cl);
+void __fastcall NetSendCmdGolem(BYTE mx, BYTE my, BYTE dir, BYTE menemy, int hp, BYTE cl);
 void __fastcall NetSendCmdLoc(BOOL bHiPri, BYTE bCmd, BYTE x, BYTE y);
 void __fastcall NetSendCmdLocParam1(BOOL bHiPri, BYTE bCmd, BYTE x, BYTE y, WORD wParam1);
 void __fastcall NetSendCmdLocParam2(BOOL bHiPri, BYTE bCmd, BYTE x, BYTE y, WORD wParam1, WORD wParam2);

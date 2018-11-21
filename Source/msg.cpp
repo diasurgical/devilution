@@ -812,7 +812,7 @@ void __fastcall NetSendCmd(BOOL bHiPri, BYTE bCmd)
 		NetSendLoPri((unsigned char *)&cmd, 1u);
 }
 
-void __fastcall NetSendCmdGolem(BYTE mx, BYTE my, BYTE dir, BYTE menemy, int hp, int cl)
+void __fastcall NetSendCmdGolem(BYTE mx, BYTE my, BYTE dir, BYTE menemy, int hp, BYTE cl)
 {
 	TCmdGolem cmd; // [esp+0h] [ebp-Ch]
 
