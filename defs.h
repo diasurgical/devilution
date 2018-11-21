@@ -94,14 +94,6 @@
 #ifndef IDA_GARBAGE
 #define IDA_GARBAGE
 
-inline void memset32(void *s, unsigned int c, size_t n)
-{
-	unsigned int *p = (unsigned int *)s;
-	for (int i = 0; i < n; i++) {
-		p[i] = c;
-	}
-}
-
 typedef          __int64 ll;
 typedef unsigned __int64 ull;
 
