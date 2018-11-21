@@ -1446,7 +1446,7 @@ enum monster_flag {
 	MFLAG_KNOCKBACK       = 0x80,
 	MFLAG_SEARCH          = 0x100,
 	MFLAG_CAN_OPEN_DOOR   = 0x200,
-	MFLAG_SEARCH2         = 0x400,
+	MFLAG_NO_ENEMY        = 0x400,
 	MFLAG_UNUSED          = 0x800,
 	MFLAG_NOLIFESTEAL     = 0x1000
 };
