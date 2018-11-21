@@ -2593,7 +2593,6 @@ int __fastcall On_PLAYER_JOINLEVEL(struct TCmdLocParam1 *pCmd, int pnum)
 
 	return sizeof(*pCmd);
 }
-// 67862C: using guessed type char gbActivePlayers;
 
 int __fastcall On_ACTIVATEPORTAL(struct TCmdLocParam3 *pCmd, int pnum)
 {

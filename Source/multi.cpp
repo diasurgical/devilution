@@ -12,7 +12,7 @@ char sgbPlayerLeftGameTbl[MAX_PLRS];
 int multi_cpp_init_value; // weak
 int sgbSentThisCycle;     // idb
 int dword_678628;         // weak
-char gbActivePlayers;     // weak
+BYTE gbActivePlayers;     // weak
 char gbGameDestroyed;     // weak
 char sgbSendDeltaTbl[MAX_PLRS];
 _gamedata sgGameInitInfo;
@@ -321,7 +321,6 @@ void __fastcall multi_player_left_msg(int pnum, int left)
 	}
 }
 // 6761B8: using guessed type char gbSomebodyWonGameKludge;
-// 67862C: using guessed type char gbActivePlayers;
 
 void __cdecl multi_net_ping()
 {
@@ -817,7 +816,6 @@ int __fastcall NetInit(int bSinglePlayer, int *pfExitProgram)
 }
 // 6761B8: using guessed type char gbSomebodyWonGameKludge;
 // 678628: using guessed type int dword_678628;
-// 67862C: using guessed type char gbActivePlayers;
 // 67862D: using guessed type char gbGameDestroyed;
 // 678640: using guessed type char byte_678640;
 // 679661: using guessed type char sgbTimeout;
@@ -1045,4 +1043,3 @@ void __fastcall multi_player_joins(int pnum, TCmdPlrInfoHdr *cmd, int a3)
 		}
 	}
 }
-// 67862C: using guessed type char gbActivePlayers;
