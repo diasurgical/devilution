@@ -7055,16 +7055,13 @@ int __fastcall M_SpawnSkel(int x, int y, int dir)
 
 void __fastcall ActivateSpawn(int i, int x, int y, int dir)
 {
-	int v4; // eax
-
 	dMonster[x][y] = i + 1;
-	v4 = i;
-	monster[v4]._mx = x;
-	monster[v4]._mfutx = x;
-	monster[v4]._moldx = x;
-	monster[v4]._my = y;
-	monster[v4]._mfuty = y;
-	monster[v4]._moldy = y;
+	monster[i]._mx = x;
+	monster[i]._mfutx = x;
+	monster[i]._moldx = x;
+	monster[i]._my = y;
+	monster[i]._mfuty = y;
+	monster[i]._moldy = y;
 	M_StartSpStand(i, dir);
 }
 
