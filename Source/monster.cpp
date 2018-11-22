@@ -2957,9 +2957,9 @@ void __fastcall M_Teleport(int i)
 		rx = 2 * random(100, 2) - 1;
 		ry = 2 * random(100, 2) - 1;
 
-		for (j = -1; j <= 1 && !tren; ++j) {
-			for (k = -1; k < 1 && !tren; ++k) {
-				if (j || k) {
+		for (j = -1; j <= 1 && !tren; j++) {
+			for (k = -1; k < 1 && !tren; k++) {
+				if (j != 0 || k != 0) {
 					x = _mx + rx * j;
 					y = _my + ry * k;
 					if (y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX && x != Monst->_mx && y != Monst->_my) {
