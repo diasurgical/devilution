@@ -4345,33 +4345,29 @@ void __fastcall MAI_Fallen(int i)
 
 void __fastcall MAI_Cleaver(int i)
 {
-	int v1;            // esi
-	MonsterStruct *v2; // esi
-	int v3;            // ecx
-	int v4;            // edx
-	int v5;            // edi
-	int v6;            // ebp
-	int v7;            // ebx
-	int arglist;       // [esp+8h] [ebp-4h]
+	MonsterStruct *Monst;
+	int x, y, mx, my, md;
 
-	v1 = i;
-	arglist = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("MAI_Cleaver: Invalid monster %d", i);
-	v2 = &monster[v1];
-	if (v2->_mmode == MM_STAND && v2->_msquelch) {
-		v3 = v2->_mx;
-		v4 = v2->_my;
-		v5 = v3 - (unsigned char)v2->_menemyx;
-		v6 = v4 - (unsigned char)v2->_menemyy;
-		v7 = GetDirection(v3, v4, v2->_lastx, v2->_lasty);
-		v2->_mdir = v7;
-		if (abs(v5) >= 2 || abs(v6) >= 2)
-			M_CallWalk(arglist, v7);
+
+	Monst = &monster[i];
+	if (Monst->_mmode == MM_STAND && Monst->_msquelch) {
+		mx = Monst->_mx;
+		my = Monst->_my;
+		x = mx - Monst->_menemyx;
+		y = my - Monst->_menemyy;
+
+		md = GetDirection(mx, my, Monst->_lastx, Monst->_lasty);
+		Monst->_mdir = md;
+
+		if (abs(x) >= 2 || abs(y) >= 2)
+			M_CallWalk(i, md);
 		else
-			M_StartAttack(arglist);
-		if (v2->_mmode == MM_STAND)
-			v2->_mAnimData = v2->MType->Anims[MA_STAND].Data[v7];
+			M_StartAttack(i);
+
+		if (Monst->_mmode == MM_STAND)
+			Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
 	}
 }
 
