@@ -705,26 +705,19 @@ void __fastcall GetMissileVel(int i, int sx, int sy, int dx, int dy, int v)
 
 void __fastcall PutMissile(int i)
 {
-	int v1;    // eax
-	int v2;    // edx
-	int v3;    // esi
-	int v4;    // edx
-	_BYTE *v5; // edx
+	int x, y;
 
-	v1 = i;
-	v2 = missile[i]._mix;
-	v3 = missile[i]._miy;
-	if (v2 <= 0 || v3 <= 0 || v2 >= MAXDUNX || v3 >= MAXDUNY)
-		missile[v1]._miDelFlag = 1;
-	if (!missile[v1]._miDelFlag) {
-		v4 = v3 + 112 * v2;
-		dFlags[0][v4] |= DFLAG_MISSILE;
-		v5 = (unsigned char *)dMissile + v4;
-		if (*v5)
-			*v5 = -1;
+	x = missile[i]._mix;
+	y = missile[i]._miy;
+	if (x <= 0 || y <= 0 || x >= MAXDUNX || y >= MAXDUNY)
+		missile[i]._miDelFlag = 1;
+	if (!missile[i]._miDelFlag) {
+		dFlags[x][y] |= DFLAG_MISSILE;
+		if (dMissile[x][y] == 0)
+			dMissile[x][y] = i + 1;
 		else
-			*v5 = i + 1;
-		if (missile[v1]._miPreFlag)
+			dMissile[x][y] = -1;
+		if (missile[i]._miPreFlag)
 			MissilePreFlag = 1;
 	}
 }

@@ -812,7 +812,7 @@ void __fastcall NetSendCmd(BOOL bHiPri, BYTE bCmd)
 		NetSendLoPri((unsigned char *)&cmd, 1u);
 }
 
-void __fastcall NetSendCmdGolem(BYTE mx, BYTE my, BYTE dir, BYTE menemy, int hp, int cl)
+void __fastcall NetSendCmdGolem(BYTE mx, BYTE my, BYTE dir, BYTE menemy, int hp, BYTE cl)
 {
 	TCmdGolem cmd; // [esp+0h] [ebp-Ch]
 
@@ -2593,7 +2593,6 @@ int __fastcall On_PLAYER_JOINLEVEL(struct TCmdLocParam1 *pCmd, int pnum)
 
 	return sizeof(*pCmd);
 }
-// 67862C: using guessed type char gbActivePlayers;
 
 int __fastcall On_ACTIVATEPORTAL(struct TCmdLocParam3 *pCmd, int pnum)
 {
