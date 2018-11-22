@@ -2941,72 +2941,44 @@ int __fastcall M_DoTalk(int i)
 
 void __fastcall M_Teleport(int i)
 {
-	int v1; // ebx
-	//int v2; // ST04_4
-	MonsterStruct *v3; // esi
-	int v4;            // eax
-	int v6;            // edi
-	int v7;            // ebx
-	int v8;            // eax
-	int v9;            // [esp+Ch] [ebp-24h]
-	int v10;           // [esp+10h] [ebp-20h]
-	int v11;           // [esp+14h] [ebp-1Ch]
-	int v12;           // [esp+18h] [ebp-18h]
-	int v13;           // [esp+1Ch] [ebp-14h]
-	int a1;            // [esp+20h] [ebp-10h]
-	signed int v15;    // [esp+24h] [ebp-Ch]
-	signed int v16;    // [esp+28h] [ebp-8h]
-	signed int v17;    // [esp+2Ch] [ebp-4h]
+	BOOL tren;
+	MonsterStruct *Monst;
+	int k, j, x, y, _mx, _my, rx, ry;
 
-	v1 = i;
-	a1 = i;
-	if ((DWORD)i >= MAXMONSTERS) {
+	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_Teleport: Invalid monster %d", i);
-		//i = v2;
-	}
-	v15 = 0;
-	v3 = &monster[v1];
-	if (v3->_mmode != MM_STONE) {
-		v10 = (unsigned char)v3->_menemyx;
-		v12 = (unsigned char)v3->_menemyy;
-		v4 = random(100, 2);
-		v11 = 2 * v4 - 1;
-		v17 = -1;
-		v6 = 0; /* v9 */
-		v13 = 2 * random(100, 2) - 1;
-		while (!v15) {
-			v16 = -1;
-			v7 = v12 - v13;
-			do {
-				if (v15)
-					break;
-				if (v17 || v16) {
-					v9 = v7;
-					v6 = v10 + v11 * v17;
-					if (v7 >= 0 && v7 < MAXDUNY && v6 >= 0 && v6 < MAXDUNX && v6 != v3->_mx && v7 != v3->_my) {
-						if (PosOkMonst(a1, v10 + v11 * v17, v7))
-							v15 = 1;
+
+	tren = FALSE;
+
+	Monst = &monster[i];
+	if (Monst->_mmode != MM_STONE) {
+		_mx = Monst->_menemyx;
+		_my = Monst->_menemyy;
+		rx = 2 * random(100, 2) - 1;
+		ry = 2 * random(100, 2) - 1;
+
+		for (j = -1; j <= 1 && !tren; ++j) {
+			for (k = -1; k < 1 && !tren; ++k) {
+				if (j || k) {
+					x = _mx + rx * j;
+					y = _my + ry * k;
+					if (y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX && x != Monst->_mx && y != Monst->_my) {
+						if (PosOkMonst(i, x, y))
+							tren = TRUE;
 					}
 				}
-				++v16;
-				v7 += v13;
-			} while (v16 < 1);
-			if (++v17 > 1) {
-				if (!v15)
-					return;
-				v1 = a1;
-				break;
 			}
-			v1 = a1;
 		}
-		M_ClearSquares(v1);
-		v8 = v3->_my + 112 * v3->_mx;
-		v3->_moldx = v6;
-		dMonster[0][v8] = 0;
-		v3->_moldy = v9;
-		dMonster[v6][v9] = v1 + 1;
-		v3->_mdir = M_GetDir(v1);
-		M_CheckEFlag(v1);
+	}
+
+	if (tren) {
+		M_ClearSquares(i);
+		dMonster[Monst->_mx][Monst->_my] = 0;
+		dMonster[x][y] = i + 1;
+		Monst->_moldx = x;
+		Monst->_moldy = y;
+		Monst->_mdir = M_GetDir(i);
+		M_CheckEFlag(i);
 	}
 }
 
