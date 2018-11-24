@@ -3918,65 +3918,43 @@ void __fastcall MAI_Bat(int i)
 
 void __fastcall MAI_SkelBow(int i)
 {
-	int v1;            // esi
-	MonsterStruct *v2; // esi
-	int v3;            // edi
-	int v4;            // ebx
-	int v5;            // eax
-	int v7;            // eax
-	//int v8; // ST04_4
-	int v9;  // ecx
-	int v10; // eax
-	//int v11; // ST04_4
-	int v12; // eax
-	//int v13; // eax
-	int v14; // edi
-	int v15; // ebx
-	//int v16; // eax
-	int v17;     // [esp+4h] [ebp-10h]
-	bool v18;    // [esp+8h] [ebp-Ch]
-	int v19;     // [esp+Ch] [ebp-8h]
-	int arglist; // [esp+10h] [ebp-4h]
+	MonsterStruct *Monst;
+	int mx, my, md, v;
+	BOOL walking;
 
-	v18 = 0;
-	v1 = i;
-	arglist = i;
+	walking = FALSE;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("MAI_SkelBow: Invalid monster %d", i);
-	v2 = &monster[v1];
-	if (v2->_mmode == MM_STAND && v2->_msquelch) {
-		v3 = v2->_mx - (unsigned char)v2->_menemyx;
-		v4 = v2->_my - (unsigned char)v2->_menemyy;
-		v5 = M_GetDir(arglist);
-		v17 = v5;
-		v2->_mdir = v5;
-		v19 = random(110, 100);
-		v7 = abs(v3);
-		//v9 = v8;
-		if (v7 < 4) {
-			v10 = abs(v4);
-			//v9 = v11;
-			if (v10 < 4) {
-				if ((v9 = v2->_mVar2, v9 > 20) && v19 < 2 * (unsigned char)v2->_mint + 13
-				    || ((v12 = v2->_mVar1, v12 == 1) || v12 == 2 || v12 == 3)
-				        && !v9
-				        && v19 < 2 * (unsigned char)v2->_mint + 63) {
-					//_LOBYTE(v13) = M_DumbWalk(arglist, opposite[v17]);
-					v18 = M_DumbWalk(arglist, opposite[v17]);
-				}
+
+	Monst = &monster[i];
+	if (Monst->_mmode == MM_STAND && Monst->_msquelch) {
+		mx = Monst->_mx - Monst->_menemyx;
+		my = Monst->_my - Monst->_menemyy;
+
+		md = M_GetDir(i);
+		Monst->_mdir = md;
+		v = random(110, 100);
+
+		if (abs(mx) < 4 && abs(my) < 4) {
+			if (Monst->_mVar2 > 20 && v < 2 * Monst->_mint + 13
+			    || (Monst->_mVar1 == 1 || Monst->_mVar1 == 2 || Monst->_mVar1 == 3)
+			        && !Monst->_mVar2
+			        && v < 2 * Monst->_mint + 63) {
+				walking = M_DumbWalk(i, opposite[md]);
 			}
 		}
-		v14 = (unsigned char)v2->_menemyx;
-		v15 = (unsigned char)v2->_menemyy;
-		if (!v18) {
-			if (random(110, 100) < 2 * (unsigned char)v2->_mint + 3) {
-				//_LOBYTE(v16) = LineClear(v2->_mx, v2->_my, v14, v15);
-				if (LineClear(v2->_mx, v2->_my, v14, v15))
-					M_StartRAttack(arglist, MIS_ARROW, 4);
+
+		mx = Monst->_menemyx;
+		my = Monst->_menemyy;
+		if (!walking) {
+			if (random(110, 100) < 2 * Monst->_mint + 3) {
+				if (LineClear(Monst->_mx, Monst->_my, mx, my))
+					M_StartRAttack(i, MIS_ARROW, 4);
 			}
 		}
-		if (v2->_mmode == MM_STAND)
-			v2->_mAnimData = v2->MType->Anims[MA_STAND].Data[v17];
+
+		if (Monst->_mmode == MM_STAND)
+			Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
 	}
 }
 
