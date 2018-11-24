@@ -3545,65 +3545,36 @@ void __fastcall MAI_Zombie(int i)
 
 void __fastcall MAI_SkelSd(int i)
 {
-	int v1;            // esi
-	MonsterStruct *v2; // esi
-	int v3;            // ecx
-	int v4;            // edx
-	int v5;            // edi
-	int v6;            // ebp
-	int v7;            // ebx
-	int v8;            // eax
-	//int v9; // ST04_4
-	int v11; // eax
-	//int v12; // ST04_4
-	int v13;     // eax
-	int v14;     // ecx
-	int v15;     // edx
-	int v16;     // eax
-	int v17;     // ecx
-	int arglist; // [esp+8h] [ebp-4h]
+	MonsterStruct *Monst;
+	int mx, my, x, y, md;
 
-	v1 = i;
-	arglist = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("MAI_SkelSd: Invalid monster %d", i);
-	v2 = &monster[v1];
-	if (v2->_mmode == MM_STAND && v2->_msquelch) {
-		v3 = v2->_mx;
-		v4 = v2->_my;
-		v5 = v3 - (unsigned char)v2->_menemyx;
-		v6 = v4 - (unsigned char)v2->_menemyy;
-		v7 = GetDirection(v3, v4, v2->_lastx, v2->_lasty);
-		v2->_mdir = v7;
-		v8 = abs(v5);
-		//v10 = v9;
-		if (v8 >= 2 || (v11 = abs(v6), v11 >= 2)) /* v10 = v12,  */
-		{
-			if (v2->_mVar1 != 13) {
-				v16 = random(106, 100);
-				v17 = 4 * (unsigned char)v2->_mint;
-				if (v16 < 35 - v17) {
-					v15 = 15 - 2 * (unsigned char)v2->_mint + random(106, 10);
-					goto LABEL_10;
-				}
+
+	Monst = &monster[i];
+	if (Monst->_mmode == MM_STAND && Monst->_msquelch) { //16,18
+		mx = Monst->_mx;
+		my = Monst->_my;
+		x = mx - Monst->_menemyx;
+		y = my - Monst->_menemyy;
+		md = GetDirection(mx, my, Monst->_lastx, Monst->_lasty);
+		Monst->_mdir = md;
+		if (abs(x) >= 2 || abs(y) >= 2) {
+			if (Monst->_mVar1 == 13 || (random(106, 100) >= 35 - 4 * Monst->_mint)) {
+				M_CallWalk(i, md);
+			} else {
+				M_StartDelay(i, 15 - 2 * Monst->_mint + random(106, 10));
 			}
-			M_CallWalk(arglist, v7);
 		} else {
-			if (v2->_mVar1 != 13) {
-				v13 = random(105, 100);
-				v14 = 2 * (unsigned char)v2->_mint + 20;
-				if (v13 >= v14) {
-					v15 = random(105, 10) + 2 * (5 - (unsigned char)v2->_mint);
-				LABEL_10:
-					M_StartDelay(arglist, v15);
-					goto LABEL_16;
-				}
+			if (Monst->_mVar1 == 13 || (random(105, 100) < 2 * Monst->_mint + 20)) {
+				M_StartAttack(i);
+			} else {
+				M_StartDelay(i, 2 * (5 - Monst->_mint) + random(105, 10));
 			}
-			M_StartAttack(arglist);
 		}
-	LABEL_16:
-		if (v2->_mmode == MM_STAND)
-			v2->_mAnimData = v2->MType->Anims[MA_STAND].Data[v7];
+
+		if (Monst->_mmode == MM_STAND)
+			Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
 	}
 }
 
