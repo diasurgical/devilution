@@ -3552,7 +3552,7 @@ void __fastcall MAI_SkelSd(int i)
 		TermMsg("MAI_SkelSd: Invalid monster %d", i);
 
 	Monst = &monster[i];
-	if (Monst->_mmode == MM_STAND && Monst->_msquelch) { //16,18
+	if (Monst->_mmode == MM_STAND && Monst->_msquelch) {
 		mx = Monst->_mx;
 		my = Monst->_my;
 		x = mx - Monst->_menemyx;
@@ -3580,45 +3580,43 @@ void __fastcall MAI_SkelSd(int i)
 
 BOOL __fastcall MAI_Path(int i)
 {
-	int v1;            // edi
-	MonsterStruct *v2; // esi
-	char v3;           // al
-	bool v4;           // eax
-	unsigned char v5;  // al
+	MonsterStruct *Monst;
+	BOOL clear;
 
-	v1 = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("MAI_Path: Invalid monster %d", i);
-	v2 = &monster[v1];
-	if (v2->MType->mtype != MT_GOLEM) {
-		if (!v2->_msquelch)
-			return 0;
-		if (v2->_mmode)
-			return 0;
-		v3 = v2->_mgoal;
-		if (v3 != MGOAL_NORMAL && v3 != MGOAL_MOVE && v3 != MGOAL_SHOOT)
-			return 0;
-		if (v2->_mx == 1 && !v2->_my)
-			return 0;
+
+	Monst = &monster[i];
+	if (Monst->MType->mtype != MT_GOLEM) {
+		if (!Monst->_msquelch)
+			return FALSE;
+		if (Monst->_mmode != MM_STAND)
+			return FALSE;
+		if (Monst->_mgoal != MGOAL_NORMAL && Monst->_mgoal != MGOAL_MOVE && Monst->_mgoal != MGOAL_SHOOT)
+			return FALSE;
+		if (Monst->_mx == 1 && Monst->_my == 0)
+			return FALSE;
 	}
-	v4 = LineClearF1(
+	clear = LineClearF1(
 	    PosOkMonst2,
-	    v1,
-	    v2->_mx,
-	    v2->_my,
-	    (unsigned char)v2->_menemyx,
-	    (unsigned char)v2->_menemyy);
-	if (!v4 || (v5 = v2->_pathcount, v5 >= 5u) && v5 < 8u) {
-		if (v2->_mFlags & MFLAG_CAN_OPEN_DOOR)
-			MonstCheckDoors(v1);
-		if (++_LOBYTE(v2->_pathcount) < 5u)
-			return 0;
-		if (M_PathWalk(v1))
-			return 1;
+	    i,
+	    Monst->_mx,
+	    Monst->_my,
+	    Monst->_menemyx,
+	    Monst->_menemyy);
+	if (!clear || Monst->_pathcount >= 5 && Monst->_pathcount < 8) {
+		if (Monst->_mFlags & MFLAG_CAN_OPEN_DOOR)
+			MonstCheckDoors(i);
+		Monst->_pathcount++;
+		if (Monst->_pathcount < 5)
+			return FALSE;
+		if (M_PathWalk(i))
+			return TRUE;
 	}
-	if (v2->MType->mtype != MT_GOLEM)
-		_LOBYTE(v2->_pathcount) = 0;
-	return 0;
+	if (Monst->MType->mtype != MT_GOLEM)
+		Monst->_pathcount = 0;
+
+	return FALSE;
 }
 
 void __fastcall MAI_Snake(int i)
