@@ -7048,35 +7048,27 @@ int __cdecl PreSpawnSkeleton()
 
 void __fastcall TalktoMonster(int i)
 {
-	int v1;            // esi
-	MonsterStruct *v2; // esi
-	char v3;           // al
-	int v4;            // edi
-	//int v5; // eax
-	//int v6; // eax
-	int inv_item_num; // [esp+8h] [ebp-4h]
+	MonsterStruct *Monst;
+	int pnum, itm;
 
-	v1 = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("TalktoMonster: Invalid monster %d", i);
-	v2 = &monster[v1];
-	v3 = v2->_mAi;
-	v4 = v2->_menemy;
-	v2->_mmode = MM_TALK;
-	if (v3 == AI_SNOTSPIL || v3 == AI_LACHDAN) {
-		//_LOBYTE(v5) = QuestStatus(QTYPE_BOL);
-		if (QuestStatus(QTYPE_BOL) && quests[QTYPE_BOL]._qvar1 == 2 && PlrHasItem(v4, IDI_BANNER, &inv_item_num)) {
-			RemoveInvItem(v4, inv_item_num);
+
+	Monst = &monster[i];
+	pnum = Monst->_menemy;
+	Monst->_mmode = MM_TALK;
+	if (Monst->_mAi == AI_SNOTSPIL || Monst->_mAi == AI_LACHDAN) {
+		if (QuestStatus(QTYPE_BOL) && quests[QTYPE_BOL]._qvar1 == 2 && PlrHasItem(pnum, IDI_BANNER, &itm)) {
+			RemoveInvItem(pnum, itm);
 			quests[QTYPE_BOL]._qactive = 3;
-			v2->mtalkmsg = QUEST_BANNER12;
-			_LOBYTE(v2->_mgoal) = MGOAL_INQUIRING;
+			Monst->mtalkmsg = QUEST_BANNER12;
+			Monst->_mgoal = MGOAL_INQUIRING;
 		}
-		//_LOBYTE(v6) = QuestStatus(QTYPE_VEIL);
-		if (QuestStatus(QTYPE_VEIL) && v2->mtalkmsg >= (signed int)QUEST_VEIL9) {
-			if (PlrHasItem(v4, IDI_GLDNELIX, &inv_item_num)) {
-				RemoveInvItem(v4, inv_item_num);
-				v2->mtalkmsg = QUEST_VEIL11;
-				_LOBYTE(v2->_mgoal) = MGOAL_INQUIRING;
+		if (QuestStatus(QTYPE_VEIL) && Monst->mtalkmsg >= QUEST_VEIL9) {
+			if (PlrHasItem(pnum, IDI_GLDNELIX, &itm)) {
+				RemoveInvItem(pnum, itm);
+				Monst->mtalkmsg = QUEST_VEIL11;
+				Monst->_mgoal = MGOAL_INQUIRING;
 			}
 		}
 	}
