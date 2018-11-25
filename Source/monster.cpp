@@ -7170,14 +7170,13 @@ BOOL __fastcall CheckMonsterHit(int m, BOOL *ret)
 
 int __fastcall encode_enemy(int m)
 {
-	int v1;     // ecx
-	int result; // eax
+	int enemy;
 
-	v1 = m;
-	result = monster[v1]._menemy;
-	if (monster[v1]._mFlags & MFLAG_TARGETS_MONSTER)
-		result += 4;
-	return result;
+	enemy = monster[m]._menemy;
+	if (monster[m]._mFlags & MFLAG_TARGETS_MONSTER)
+		enemy += 4;
+
+	return enemy;
 }
 
 void __fastcall decode_enemy(int m, int enemy)
