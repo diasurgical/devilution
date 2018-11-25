@@ -6870,53 +6870,29 @@ BOOL __fastcall IsGoat(int mt)
 
 int __fastcall M_SpawnSkel(int x, int y, int dir)
 {
-	CMonster *v3; // ebx
-	CMonster *v4; // esi
-	int v5;       // edx
-	int v7;       // esi
-	//int v8; // edx
-	int v9;  // eax
-	int v10; // esi
-	int xa;  // [esp+Ch] [ebp-10h]
-	int ya;  // [esp+10h] [ebp-Ch]
-	int v14; // [esp+14h] [ebp-8h]
-	int v15; // [esp+18h] [ebp-4h]
-	int v16; // [esp+18h] [ebp-4h]
+	int i, j, skeltypes, skel;
 
-	ya = y;
-	xa = x;
-	v5 = 0;
-	if (nummtypes <= 0)
-		return -1;
-	v3 = Monsters;
-	v15 = nummtypes;
-	v4 = Monsters;
-	do {
-		if (IsSkel((unsigned char)v4->mtype))
-			++v5;
-		++v4;
-		--v15;
-	} while (v15);
-	if (!v5)
-		return -1;
-	v7 = 0;
-	v14 = random(136, v5);
-	v16 = 0;
-	if (nummtypes > 0) {
-		do {
-			if (v16 > v14)
-				break;
-			if (IsSkel((unsigned char)v3->mtype))
-				++v16;
-			++v7;
-			++v3;
-		} while (v7 < nummtypes); /* v8 */
+	j = 0;
+	for (i = 0; i < nummtypes; i++) {
+		if (IsSkel(Monsters[i].mtype))
+			j++;
 	}
-	v9 = AddMonster(xa, ya, dir, v7 - 1, 1);
-	v10 = v9;
-	if (v9 != -1)
-		M_StartSpStand(v9, dir);
-	return v10;
+
+	if (j) {
+		skeltypes = random(136, j);
+		j = 0;
+		for (i = 0; i < nummtypes && j <= skeltypes; i++) {
+			if (IsSkel(Monsters[i].mtype))
+				j++;
+		}
+		skel = AddMonster(x, y, dir, i - 1, 1);
+		if (skel != -1)
+			M_StartSpStand(skel, dir);
+
+		return skel;
+	}
+
+	return -1;
 }
 
 void __fastcall ActivateSpawn(int i, int x, int y, int dir)
@@ -6988,25 +6964,24 @@ BOOL __fastcall SpawnSkeleton(int ii, int x, int y)
 
 int __cdecl PreSpawnSkeleton()
 {
-	int i, skeltypes, skeltype, skel;
+	int i, j, skeltypes, skel;
 
-	skeltypes = 0;
+	j = 0;
 
 	if (nummtypes <= 0)
 		return -1;
 
 	for (i = 0; i < nummtypes; i++) {
 		if (IsSkel(Monsters[i].mtype))
-			skeltypes++;
+			j++;
 	}
 
-	if (skeltypes) {
-		skeltype = random(136, skeltypes);
-		skeltypes = 0;
-
-		for (i = 0; i < nummtypes && skeltypes <= skeltype; i++) {
+	if (j) {
+		skeltypes = random(136, j);
+		j = 0;
+		for (i = 0; i < nummtypes && j <= skeltypes; i++) {
 			if (IsSkel(Monsters[i].mtype))
-				skeltypes++;
+				j++;
 		}
 		skel = AddMonster(0, 0, 0, i - 1, 0);
 		if (skel != -1)
