@@ -6930,89 +6930,60 @@ void __fastcall ActivateSpawn(int i, int x, int y, int dir)
 	M_StartSpStand(i, dir);
 }
 
-BOOLEAN __fastcall SpawnSkeleton(int ii, int x, int y)
+BOOL __fastcall SpawnSkeleton(int ii, int x, int y)
 {
-	int v3;         // esi
-	int v4;         // ebx
-	int v5;         // ST04_4
-	int v6;         // ecx
-	int v7;         // edi
-	int *v8;        // esi
-	BOOLEAN v9;        // eax
-	int v11;        // eax
-	int v12;        // ecx
-	int v13;        // edx
-	int v14;        // esi
-	int v15;        // edi
-	int v16;        // ST04_4
-	int monstok[9]; // [esp+Ch] [ebp-34h]
-	int i;          // [esp+30h] [ebp-10h]
-	int x2;         // [esp+34h] [ebp-Ch]
-	int v20;        // [esp+38h] [ebp-8h]
-	int *v21;       // [esp+3Ch] [ebp-4h]
-	int a3;         // [esp+48h] [ebp+8h]
-	int a3a;        // [esp+48h] [ebp+8h]
+	int dx, dy, xx, yy, dir, j, k, rs;
+	BOOL savail;
+	int monstok[3][3];
 
-	i = ii;
-	v3 = x;
-	x2 = x;
 	if (ii == -1)
-		return 0;
-	v4 = y;
-	if (!PosOkMonst(-1, x, y)) {
-		v20 = 0;
-		v6 = y - 1;
-		a3 = y - 1;
-		if ((unsigned char)(__OFSUB__(v4 - 1, v4 + 1) ^ 1) | (v4 - 1 == v4 + 1)) {
-			v21 = monstok;
-			do {
-				v7 = v3 - 1;
-				if ((unsigned char)(__OFSUB__(v3 - 1, v3 + 1) ^ 1) | (v3 - 1 == v3 + 1)) {
-					v8 = v21;
-					do {
-						v9 = PosOkMonst(-1, v7, a3);
-						v20 |= v9;
-						*v8 = v9;
-						v8 += 3;
-						++v7;
-					} while (v7 <= x2 + 1);
-					v3 = x2;
-				}
-				++v21;
-				++a3;
-			} while (a3 <= v4 + 1);
-			if (v20) {
-				v11 = random(137, 15);
-				v12 = 0;
-				v13 = 0;
-				a3a = v11 + 1;
-				if (v11 + 1 > 0) {
-					while (1) {
-						if (monstok[v13 + 2 * v12 + v12])
-							--a3a;
-						if (a3a <= 0)
-							break;
-						if (++v12 == 3) {
-							v12 = 0;
-							if (++v13 == 3)
-								v13 = 0;
-						}
-					}
-				}
-				v14 = v12 + v3 - 1;
-				v15 = v13 + v4 - 1;
-				v16 = GetDirection(v14, v15, x2, v4);
-				ActivateSpawn(i, v14, v15, v16);
-				return 1;
+		return FALSE;
+
+	if (PosOkMonst(-1, x, y)) {
+		dir = GetDirection(x, y, x, y);
+		ActivateSpawn(ii, x, y, dir);
+		return TRUE;
+	}
+
+	savail = FALSE;
+	yy = 0;
+	for (j = y - 1; j <= y + 1; j++) {
+		xx = 0;
+		for (k = x - 1; k <= x + 1; k++) {
+			monstok[xx][yy] = PosOkMonst(-1, k, j);
+			savail |= monstok[xx][yy];
+			xx++;
+		}
+		yy++;
+	}
+	if (!savail) {
+		return FALSE;
+	}
+
+	rs = random(137, 15) + 1;
+	xx = 0;
+	yy = 0;
+	while (rs > 0) {
+		if (monstok[xx][yy])
+			rs--;
+		if (rs > 0) {
+			xx++;
+			if (xx == 3) {
+				xx = 0;
+				yy++;
+				if (yy == 3)
+					yy = 0;
 			}
 		}
-		return 0;
 	}
-	v5 = GetDirection(v3, y, v3, y);
-	ActivateSpawn(i, v3, y, v5);
-	return 1;
+
+	dx = x - 1 + xx;
+	dy = y - 1 + yy;
+	dir = GetDirection(dx, dy, x, y);
+	ActivateSpawn(ii, dx, dy, dir);
+
+	return TRUE;
 }
-// 43A879: using guessed type int var_34[9];
 
 int __cdecl PreSpawnSkeleton()
 {
