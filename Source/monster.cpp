@@ -6923,10 +6923,10 @@ void __fastcall ActivateSpawn(int i, int x, int y, int dir)
 {
 	dMonster[x][y] = i + 1;
 	monster[i]._mx = x;
-	monster[i]._mfutx = x;
-	monster[i]._moldx = x;
 	monster[i]._my = y;
+	monster[i]._mfutx = x;
 	monster[i]._mfuty = y;
+	monster[i]._moldx = x;
 	monster[i]._moldy = y;
 	M_StartSpStand(i, dir);
 }
