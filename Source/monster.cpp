@@ -5733,40 +5733,30 @@ void __fastcall MAI_Lachdanan(int i)
 
 void __fastcall MAI_Warlord(int i)
 {
-	int v1; // ebp
-	int v2; // esi
-	int v3; // ebx
-	int v4; // edi
-	int v5; // ebp
-	//int v6; // eax
-	int v7;      // eax
-	int arglist; // [esp+8h] [ebp-4h]
+	int mx, my, md;
 
-	v1 = i;
-	arglist = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("MAI_Warlord: Invalid monster %d", i);
-	v2 = v1;
-	if (monster[v1]._mmode == MM_STAND) {
-		v3 = monster[v2]._my;
-		v4 = monster[v2]._mx;
-		v5 = M_GetDir(v1);
-		if (dFlags[v4][v3] & DFLAG_VISIBLE && monster[v2].mtalkmsg == QUEST_WARLRD9) {
-			if (_LOBYTE(monster[v2]._mgoal) == MGOAL_INQUIRING)
-				monster[v2]._mmode = MM_TALK;
-			//_LOBYTE(v6) = effect_is_playing(USFX_WARLRD1);
-			if (!effect_is_playing(USFX_WARLRD1) && _LOBYTE(monster[v2]._mgoal) == MGOAL_TALKING) {
-				monster[v2]._msquelch = -1;
-				monster[v2].mtalkmsg = 0;
-				_LOBYTE(monster[v2]._mgoal) = MGOAL_NORMAL;
+
+	if (monster[i]._mmode == MM_STAND) {
+		mx = monster[i]._mx;
+		my = monster[i]._my;
+		md = M_GetDir(i);
+		if (dFlags[mx][my] & DFLAG_VISIBLE) {
+			if (monster[i].mtalkmsg == QUEST_WARLRD9 && monster[i]._mgoal == MGOAL_INQUIRING)
+				monster[i]._mmode = MM_TALK;
+			if (monster[i].mtalkmsg == QUEST_WARLRD9 && !effect_is_playing(USFX_WARLRD1) && monster[i]._mgoal == MGOAL_TALKING) {
+				monster[i]._msquelch = -1;
+				monster[i].mtalkmsg = 0;
+				monster[i]._mgoal = MGOAL_NORMAL;
 			}
 		}
-		if (_LOBYTE(monster[v2]._mgoal) == MGOAL_NORMAL)
-			MAI_SkelSd(arglist);
-		monster[v2]._mdir = v5;
-		v7 = monster[v2]._mmode;
-		if (v7 == MM_STAND || v7 == MM_TALK)
-			monster[v2]._mAnimData = monster[v2].MType->Anims[MA_STAND].Data[v5];
+		if (monster[i]._mgoal == MGOAL_NORMAL)
+			MAI_SkelSd(i);
+
+		monster[i]._mdir = md;
+		if (monster[i]._mmode == MM_STAND || monster[i]._mmode == MM_TALK)
+			monster[i]._mAnimData = monster[i].MType->Anims[MA_STAND].Data[md];
 	}
 }
 
