@@ -7084,52 +7084,34 @@ void __fastcall TalktoMonster(int i)
 
 void __fastcall SpawnGolum(int i, int x, int y, int mi)
 {
-	int v4;   // edi
-	int v5;   // ebx
-	int v6;   // esi
-	int v7;   // eax
-	int *v8;  // edx
-	int v9;   // eax
-	char v10; // cl
-	int v11;  // eax
-
-	v4 = i;
-	v5 = x;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("SpawnGolum: Invalid monster %d", i);
-	v6 = v4;
-	monster[v6]._mx = v5;
-	monster[v6]._my = y;
-	monster[v6]._mfuty = y;
-	monster[v6]._moldy = y;
-	monster[v6]._mfutx = v5;
-	monster[v6]._moldx = v5;
-	v7 = plr[v4]._pMaxMana;
-	dMonster[v5][y] = v4 + 1;
-	_LOBYTE(monster[v6]._pathcount) = 0;
-	monster[v6]._mFlags |= MFLAG_GOLEM;
-	v8 = &missile[mi]._mispllvl;
-	monster[v6].mArmorClass = 25;
-	v9 = 320 * *v8 + v7 / 3;
-	v10 = *(_BYTE *)v8;
-	_LOBYTE(v8) = plr[v4]._pLevel;
-	v9 *= 2;
-	monster[v6]._mmaxhp = v9;
-	monster[v6]._mhitpoints = v9;
-	monster[v6].mHit = 5 * (v10 + 8) + 2 * (_BYTE)v8;
-	monster[v6].mMinDamage = 2 * (v10 + 4);
-	monster[v6].mMaxDamage = 2 * (v10 + 8);
-	M_StartSpStand(v4, 0);
-	M_Enemy(v4);
-	if (v4 == myplr) {
-		_LOBYTE(v11) = currlevel;
+
+	dMonster[x][y] = i + 1;
+	monster[i]._mx = x;
+	monster[i]._my = y;
+	monster[i]._mfutx = x;
+	monster[i]._mfuty = y;
+	monster[i]._moldx = x;
+	monster[i]._moldy = y;
+	monster[i]._pathcount = 0;
+	monster[i]._mFlags |= MFLAG_GOLEM;
+	monster[i].mArmorClass = 25;
+	monster[i]._mmaxhp = 2 * (320 * missile[mi]._mispllvl + plr[i]._pMaxMana / 3);
+	monster[i]._mhitpoints = monster[i]._mmaxhp;
+	monster[i].mHit = 5 * (missile[mi]._mispllvl + 8) + 2 * plr[i]._pLevel;
+	monster[i].mMinDamage = 2 * (missile[mi]._mispllvl + 4);
+	monster[i].mMaxDamage = 2 * (missile[mi]._mispllvl + 8);
+	M_StartSpStand(i, 0);
+	M_Enemy(i);
+	if (i == myplr) {
 		NetSendCmdGolem(
-		    monster[v6]._mx,
-		    monster[v6]._my,
-		    monster[v6]._mdir,
-		    monster[v6]._menemy,
-		    monster[v6]._mhitpoints,
-		    v11);
+		    monster[i]._mx,
+		    monster[i]._my,
+		    monster[i]._mdir,
+		    monster[i]._menemy,
+		    monster[i]._mhitpoints,
+		    currlevel);
 	}
 }
 
