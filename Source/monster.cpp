@@ -7182,24 +7182,16 @@ int __fastcall encode_enemy(int m)
 
 void __fastcall decode_enemy(int m, int enemy)
 {
-	int v2;  // eax
-	int v3;  // edx
-	char v4; // cl
-	int v5;  // edx
-
-	v2 = m;
-	if (enemy >= 4) {
-		monster[v2]._mFlags |= MFLAG_TARGETS_MONSTER;
-		v5 = enemy - 4;
-		monster[v2]._menemy = v5;
-		monster[v2]._menemyx = monster[v5]._mfutx;
-		v4 = monster[v5]._mfuty;
+	if (enemy < 4) {
+		monster[m]._mFlags &= ~MFLAG_TARGETS_MONSTER;
+		monster[m]._menemy = enemy;
+		monster[m]._menemyx = plr[enemy]._px;
+		monster[m]._menemyy = plr[enemy]._py;
 	} else {
-		monster[v2]._mFlags &= ~MFLAG_TARGETS_MONSTER;
-		monster[v2]._menemy = enemy;
-		v3 = enemy;
-		monster[v2]._menemyx = plr[v3]._px;
-		v4 = plr[v3]._py;
+		monster[m]._mFlags |= MFLAG_TARGETS_MONSTER;
+		enemy -= 4;
+		monster[m]._menemy = enemy;
+		monster[m]._menemyx = monster[enemy]._mfutx;
+		monster[m]._menemyy = monster[enemy]._mfuty;
 	}
-	monster[v2]._menemyy = v4;
 }
