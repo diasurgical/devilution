@@ -7016,10 +7016,7 @@ BOOLEAN __fastcall SpawnSkeleton(int ii, int x, int y)
 
 int __cdecl PreSpawnSkeleton()
 {
-	int skeltypes; // edx // should be i/j
-	int j;         // edx // remove
-	int skel;      // eax
-	int i;         // [esp+10h] [ebp-4h] // should be skeltypes
+	int i, skeltypes, skeltype, skel;
 
 	skeltypes = 0;
 
@@ -7028,25 +7025,25 @@ int __cdecl PreSpawnSkeleton()
 
 	for (i = 0; i < nummtypes; i++) {
 		if (IsSkel(Monsters[i].mtype))
-			++skeltypes;
+			skeltypes++;
 	}
 
-	if (!skeltypes)
-		return -1;
+	if (skeltypes) {
+		skeltype = random(136, skeltypes);
+		skeltypes = 0;
 
-	j = random(136, skeltypes); /* check this code -i integer is messed up*/
-	skeltypes = 0;
+		for (i = 0; i < nummtypes && skeltypes <= skeltype; i++) {
+			if (IsSkel(Monsters[i].mtype))
+				skeltypes++;
+		}
+		skel = AddMonster(0, 0, 0, i - 1, 0);
+		if (skel != -1)
+			M_StartStand(skel, 0);
 
-	for (i = 0; i < nummtypes; ++i) {
-		if (skeltypes > j)
-			break;
-		if (IsSkel(Monsters[i].mtype))
-			++skeltypes;
+		return skel;
 	}
-	skel = AddMonster(0, 0, 0, i - 1, 0);
-	if (skel != -1)
-		M_StartStand(skel, 0);
-	return skel;
+
+	return -1;
 }
 
 void __fastcall TalktoMonster(int i)
