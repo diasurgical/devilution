@@ -3929,47 +3929,32 @@ void __fastcall MAI_SkelBow(int i)
 
 void __fastcall MAI_Fat(int i)
 {
-	int v1;            // esi
-	MonsterStruct *v2; // esi
-	int v3;            // edi
-	int v4;            // ebx
-	int v5;            // eax
-	int v7;            // eax
-	signed int v8;     // ecx
-	int v9;            // eax
-	int md;            // [esp+4h] [ebp-Ch]
-	int arglist;       // [esp+8h] [ebp-8h]
-	int v12;           // [esp+Ch] [ebp-4h]
+	MonsterStruct *Monst;
+	int mx, my, md, v;
 
-	v1 = i;
-	arglist = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("MAI_Fat: Invalid monster %d", i);
-	v2 = &monster[v1];
-	if (v2->_mmode == MM_STAND && v2->_msquelch) {
-		v3 = v2->_mx - (unsigned char)v2->_menemyx;
-		v4 = v2->_my - (unsigned char)v2->_menemyy;
-		v5 = M_GetDir(arglist);
-		md = v5;
-		v2->_mdir = v5;
-		v12 = random(111, 100);
-		if (abs(v3) >= 2 || abs(v4) >= 2) {
-			v8 = v2->_mVar2;
-			if (v8 > 20 && v12 < 4 * (unsigned char)v2->_mint + 20
-			    || ((v9 = v2->_mVar1, v9 == 1) || v9 == 2 || v9 == 3) && !v8 && v12 < 4 * (unsigned char)v2->_mint + 70) {
-				M_CallWalk(arglist, md);
+
+	Monst = &monster[i];
+	if (Monst->_mmode == MM_STAND && Monst->_msquelch) {
+		mx = Monst->_mx - Monst->_menemyx;
+		my = Monst->_my - Monst->_menemyy;
+		md = M_GetDir(i);
+		Monst->_mdir = md;
+		v = random(111, 100);
+		if (abs(mx) >= 2 || abs(my) >= 2) {
+			if (Monst->_mVar2 > 20 && v < 4 * Monst->_mint + 20
+			    || (Monst->_mVar1 == 1 || Monst->_mVar1 == 2 || Monst->_mVar1 == 3) && Monst->_mVar2 == 0 && v < 4 * Monst->_mint + 70) {
+				M_CallWalk(i, md);
 			}
-		} else {
-			v7 = (unsigned char)v2->_mint;
-			if (v12 >= 4 * v7 + 15) {
-				if (v12 < 4 * v7 + 20)
-					M_StartSpAttack(arglist);
-			} else {
-				M_StartAttack(arglist);
-			}
+		} else if (v < 4 * Monst->_mint + 15) {
+			M_StartAttack(i);
+		} else if (v < 4 * Monst->_mint + 20) {
+			M_StartSpAttack(i);
 		}
-		if (v2->_mmode == MM_STAND)
-			v2->_mAnimData = v2->MType->Anims[MA_STAND].Data[md];
+
+		if (Monst->_mmode == MM_STAND)
+			Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
 	}
 }
 
