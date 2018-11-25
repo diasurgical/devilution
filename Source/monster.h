@@ -151,7 +151,7 @@ BOOL __fastcall PosOkMonst(int i, int x, int y);
 BOOL __fastcall PosOkMonst2(int i, int x, int y);
 BOOL __fastcall PosOkMonst3(int i, int x, int y);
 BOOL __fastcall IsSkel(int mt);
-BOOLEAN __fastcall IsGoat(int mt);
+BOOL __fastcall IsGoat(int mt);
 int __fastcall M_SpawnSkel(int x, int y, int dir);
 void __fastcall ActivateSpawn(int i, int x, int y, int dir);
 BOOL __fastcall SpawnSkeleton(int ii, int x, int y);

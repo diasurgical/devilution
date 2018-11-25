@@ -6862,9 +6862,10 @@ BOOL __fastcall IsSkel(int mt)
 	    || mt >= MT_WSKELSD && mt <= MT_XSKELSD;
 }
 
-BOOLEAN __fastcall IsGoat(int mt)
+BOOL __fastcall IsGoat(int mt)
 {
-	return mt >= MT_NGOATMC && mt <= MT_GGOATMC || mt >= MT_NGOATBW && mt <= MT_GGOATBW;
+	return mt >= MT_NGOATMC && mt <= MT_GGOATMC
+	    || mt >= MT_NGOATBW && mt <= MT_GGOATBW;
 }
 
 int __fastcall M_SpawnSkel(int x, int y, int dir)
