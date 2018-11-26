@@ -360,18 +360,21 @@ struct monster_cpp_init {
 
 void __fastcall InitMonsterTRN(int monst, BOOL special)
 {
-	BYTE *f = Monsters[monst].trans_file;
-	for (int i = 0; i < 256; i++) {
+	BYTE *f;
+	int i, n, j, k;
+
+	f = Monsters[monst].trans_file;
+	for (i = 0; i < 256; i++) {
 		if (*f == 255) {
 			*f = 0;
 		}
 		f++;
 	}
 
-	int n = special ? 6 : 5;
-	for (int j = 0; j < n; ++j) {
+	n = special ? 6 : 5;
+	for (j = 0; j < n; ++j) {
 		if (j != 1 || Monsters[monst].mtype < MT_COUNSLR || Monsters[monst].mtype > MT_ADVOCATE) {
-			for (int k = 0; k < 8; k++) {
+			for (k = 0; k < 8; k++) {
 				Cl2ApplyTrans(
 				    Monsters[monst].Anims[j].Data[k],
 				    Monsters[monst].trans_file,
@@ -436,11 +439,14 @@ void __cdecl GetLevelMTypes()
 	int typelist[MAXMONSTERS];
 	int skeltypes[NUM_MTYPES];
 
-	int minl;        // min level
-	int maxl;        // max level
-	char mamask = 3; // monster availability mask
+	int minl; // min level
+	int maxl; // max level
+	char mamask;
+	const int numskeltypes = 19;
 
 	int nt; // number of types
+
+	mamask = 3; // monster availability mask
 
 	AddMonsterType(MT_GOLEM, 2);
 	if (currlevel == 16) {
@@ -467,7 +473,6 @@ void __cdecl GetLevelMTypes()
 		if (gbMaxPlayers != 1 && currlevel == quests[QTYPE_KING]._qlevel) {
 
 			AddMonsterType(MT_SKING, 4);
-			const int numskeltypes = 19;
 
 			nt = 0;
 			for (i = MT_WSKELAX; i <= MT_WSKELAX + numskeltypes; i++) {
@@ -529,23 +534,27 @@ void __cdecl GetLevelMTypes()
 
 void __fastcall InitMonsterGFX(int monst)
 {
-	int mtype = (unsigned char)Monsters[monst].mtype;
+	int mtype, anim, i;
 	char strBuff[256];
+	unsigned char *celBuf;
+	void *trans_file;
 
-	for (int anim = 0; anim < 6; anim++) {
+	mtype = (unsigned char)Monsters[monst].mtype;
+
+	for (anim = 0; anim < 6; anim++) {
 		if ((animletter[anim] != 's' || monsterdata[mtype].has_special) && monsterdata[mtype].Frames[anim] > 0) {
 			sprintf(strBuff, monsterdata[mtype].GraphicType, animletter[anim]);
 
-			unsigned char *celBuf = LoadFileInMem(strBuff, NULL);
+			celBuf = LoadFileInMem(strBuff, NULL);
 			Monsters[monst].Anims[anim].CMem = celBuf;
 
 			if (Monsters[monst].mtype != MT_GOLEM || (animletter[anim] != 's' && animletter[anim] != 'd')) {
 
-				for (int i = 0; i < 8; i++) {
+				for (i = 0; i < 8; i++) {
 					Monsters[monst].Anims[anim].Data[i] = &celBuf[((int *)celBuf)[i]];
 				}
 			} else {
-				for (int i = 0; i < 8; i++) {
+				for (i = 0; i < 8; i++) {
 					Monsters[monst].Anims[anim].Data[i] = celBuf;
 				}
 			}
@@ -568,7 +577,7 @@ void __fastcall InitMonsterGFX(int monst)
 		Monsters[monst].trans_file = LoadFileInMem(monsterdata[mtype].TransFile, NULL);
 		InitMonsterTRN(monst, monsterdata[mtype].has_special);
 
-		void *trans_file = Monsters[monst].trans_file;
+		trans_file = Monsters[monst].trans_file;
 		Monsters[monst].trans_file = NULL;
 
 		mem_free_dbg(trans_file);
@@ -745,9 +754,10 @@ void __fastcall InitMonster(int i, int rd, int mtype, int x, int y)
 
 void __cdecl ClrAllMonsters()
 {
+	int i;
 	MonsterStruct *Monst;
 
-	for (int i = 0; i < MAXMONSTERS; i++) {
+	for (i = 0; i < MAXMONSTERS; i++) {
 		Monst = &monster[i];
 		ClearMVars(i);
 		Monst->mName = "Invalid Monster";
@@ -779,6 +789,8 @@ void __cdecl ClrAllMonsters()
 
 BOOL __fastcall MonstPlace(int xp, int yp)
 {
+	char f;
+
 	if (xp < 0 || xp >= MAXDUNX
 	    || yp < 0 || yp >= MAXDUNY
 	    || dMonster[xp][yp]
@@ -786,7 +798,7 @@ BOOL __fastcall MonstPlace(int xp, int yp)
 		return FALSE;
 	}
 
-	char f = dFlags[xp][yp];
+	f = dFlags[xp][yp];
 
 	if (f & DFLAG_VISIBLE) {
 		return FALSE;
@@ -801,17 +813,21 @@ BOOL __fastcall MonstPlace(int xp, int yp)
 
 void __fastcall PlaceMonster(int i, int mtype, int x, int y)
 {
+	int rd;
+
 	dMonster[x][y] = i + 1;
 
-	int rd = random(90, 8);
+	rd = random(90, 8);
 	InitMonster(i, rd, mtype, x, y);
 }
 
 void __fastcall PlaceUniqueMonst(int uniqindex, int miniontype, int packsize)
 {
-	int xp;
-	int yp;
+	int xp, yp, x, y, i;
+	int uniqtype;
+	int count2;
 	char filestr[64];
+	BOOL zharflag, done;
 
 	UniqMonstStruct *Uniq = &UniqMonst[uniqindex];
 	MonsterStruct *Monst = &monster[nummonsters];
@@ -821,20 +837,18 @@ void __fastcall PlaceUniqueMonst(int uniqindex, int miniontype, int packsize)
 		return;
 	}
 
-	int uniqtype;
 	for (uniqtype = 0; uniqtype < nummtypes; uniqtype++) {
 		if (Monsters[uniqtype].mtype == Uniq->mtype) {
 			break;
 		}
 	}
 
-	while (true) {
-
+	while (1) {
 		xp = random(91, 80) + 16;
 		yp = random(91, 80) + 16;
-		int count2 = 0;
-		for (int x = xp - 3; x < xp + 3; x++) {
-			for (int y = yp - 3; y < yp + 3; y++) {
+		count2 = 0;
+		for (x = xp - 3; x < xp + 3; x++) {
+			for (y = yp - 3; y < yp + 3; y++) {
 				if (y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX && MonstPlace(x, y)) {
 					count2++;
 				}
@@ -862,8 +876,8 @@ void __fastcall PlaceUniqueMonst(int uniqindex, int miniontype, int packsize)
 		yp = 2 * setpc_y + 23;
 	}
 	if (uniqindex == 2) {
-		BOOL zharflag = TRUE;
-		for (int i = 0; i < themeCount; i++) {
+		zharflag = TRUE;
+		for (i = 0; i < themeCount; i++) {
 			if (i == zharlib && zharflag == TRUE) {
 				zharflag = FALSE;
 				xp = 2 * themeLoc[i].x + 20;
@@ -903,7 +917,7 @@ void __fastcall PlaceUniqueMonst(int uniqindex, int miniontype, int packsize)
 		}
 	}
 	if (uniqindex == 9) {
-		BOOL done = FALSE;
+		done = FALSE;
 		for (yp = 0; yp < MAXDUNY && !done; yp++) {
 			for (xp = 0; xp < MAXDUNX && !done; xp++) {
 				done = dPiece[xp][yp] == 367;
@@ -1083,13 +1097,12 @@ void __cdecl PlaceQuestMonsters()
 
 void __fastcall PlaceGroup(int mtype, int num, int leaderf, int leader)
 {
-	int placed = 0;
-	int xp;
-	int yp;
-	int x1;
-	int y1;
+	int placed, try1, try2, j;
+	int xp, yp, x1, y1;
 
-	for (int try1 = 0; try1 < 10; try1++) {
+	placed = 0;
+
+	for (try1 = 0; try1 < 10; try1++) {
 		while (placed) {
 			nummonsters--;
 			placed--;
@@ -1115,8 +1128,8 @@ void __fastcall PlaceGroup(int mtype, int num, int leaderf, int leader)
 			num = totalmonsters - nummonsters;
 		}
 
-		int j = 0;
-		for (int try2 = 0; j < num && try2 < 100; xp += offset_x[random(94, 8)], yp += offset_x[random(94, 8)]) {
+		j = 0;
+		for (try2 = 0; j < num && try2 < 100; xp += offset_x[random(94, 8)], yp += offset_x[random(94, 8)]) {
 			if (!MonstPlace(xp, yp)
 			    || (dung_map[x1][y1] != dung_map[xp][yp])
 			    || (leaderf & 2) && ((abs(xp - x1) >= 4) || (abs(yp - y1) >= 4))) {
@@ -1444,8 +1457,10 @@ void __fastcall SetMapMonsters(unsigned char *pMap, int startx, int starty)
 
 void __fastcall DeleteMonster(int i)
 {
+	int temp;
+
 	nummonsters--;
-	int temp = monstactive[nummonsters];
+	temp = monstactive[nummonsters];
 	monstactive[nummonsters] = monstactive[i];
 	monstactive[i] = temp;
 }
@@ -1865,14 +1880,16 @@ void __fastcall M_StartEat(int i)
 
 void __fastcall M_ClearSquares(int i)
 {
-	int mx = monster[i]._moldx;
-	int my = monster[i]._moldy;
-	int m1 = -1 - i;
-	int m2 = i + 1;
+	int x, y, mx, my, m1, m2;
 
-	for (int y = my - 1; y <= my + 1; y++) {
+	mx = monster[i]._moldx;
+	my = monster[i]._moldy;
+	m1 = -1 - i;
+	m2 = i + 1;
+
+	for (y = my - 1; y <= my + 1; y++) {
 		if (y >= 0 && y < MAXDUNY) {
-			for (int x = mx - 1; x <= mx + 1; x++) {
+			for (x = mx - 1; x <= mx + 1; x++) {
 				if (x >= 0 && x < MAXDUNX && (dMonster[x][y] == m1 || dMonster[x][y] == m2))
 					dMonster[x][y] = 0;
 			}
@@ -2063,6 +2080,8 @@ void __fastcall M2MStartHit(int mid, int i, int dam)
 
 void __fastcall MonstStartKill(int i, int pnum, BOOL sendmsg)
 {
+	int md;
+
 	if ((DWORD)i >= MAXMONSTERS) {
 		TermMsg("MonstStartKill: Invalid monster %d", i);
 	}
@@ -2086,7 +2105,7 @@ void __fastcall MonstStartKill(int i, int pnum, BOOL sendmsg)
 		M_DiabloDeath(i, TRUE);
 	else
 		PlayEffect(i, 2);
-	int md;
+
 	if (pnum >= 0)
 		md = M_GetDir(i);
 	else
@@ -2112,6 +2131,8 @@ void __fastcall MonstStartKill(int i, int pnum, BOOL sendmsg)
 
 void __fastcall M2MStartKill(int i, int mid)
 {
+	int md;
+
 	if ((DWORD)i >= MAXMONSTERS) {
 		TermMsg("M2MStartKill: Invalid monster (attacker) %d", i);
 		TermMsg("M2MStartKill: Invalid monster (killed) %d", mid);
@@ -2140,7 +2161,7 @@ void __fastcall M2MStartKill(int i, int mid)
 
 	PlayEffect(mid, 2);
 
-	int md = (monster[i]._mdir - 4) & 7;
+	md = (monster[i]._mdir - 4) & 7;
 	if (monster[mid].MType->mtype == MT_GOLEM)
 		md = 0;
 
@@ -2254,12 +2275,14 @@ void __fastcall M_StartFadeout(int i, int md, BOOL backwards)
 
 void __fastcall M_StartHeal(int i)
 {
+	MonsterStruct *Monst;
+
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_StartHeal: Invalid monster %d", i);
 	if (monster[i].MType == NULL)
 		TermMsg("M_StartHeal: Monster %d \"%s\" MType NULL", i, monster[i].mName);
 
-	MonsterStruct *Monst = &monster[i];
+	Monst = &monster[i];
 	Monst->_mAnimData = Monst->MType->Anims[MA_SPECIAL].Data[Monst->_mdir];
 	Monst->_mAnimFrame = Monst->MType->Anims[MA_SPECIAL].Frames;
 	Monst->_mFlags |= MFLAG_LOCK_ANIMATION;
@@ -2269,13 +2292,14 @@ void __fastcall M_StartHeal(int i)
 
 void __fastcall M_ChangeLightOffset(int monst)
 {
+	int lx, ly, _mxoff, _myoff, sign;
+
 	if ((DWORD)monst >= MAXMONSTERS)
 		TermMsg("M_ChangeLightOffset: Invalid monster %d", monst);
 
-	int lx = monster[monst]._mxoff + 2 * monster[monst]._myoff;
-	int ly = 2 * monster[monst]._myoff - monster[monst]._mxoff;
+	lx = monster[monst]._mxoff + 2 * monster[monst]._myoff;
+	ly = 2 * monster[monst]._myoff - monster[monst]._mxoff;
 
-	int sign;
 	if (lx < 0) {
 		sign = -1;
 		lx = -lx;
@@ -2283,8 +2307,7 @@ void __fastcall M_ChangeLightOffset(int monst)
 		sign = 1;
 	}
 
-	int _mxoff = sign * (lx >> 3);
-	int _myoff;
+	_mxoff = sign * (lx >> 3);
 	if (ly < 0) {
 		_myoff = -1;
 		ly = -ly;
@@ -2297,12 +2320,14 @@ void __fastcall M_ChangeLightOffset(int monst)
 
 int __fastcall M_DoStand(int i)
 {
+	MonsterStruct *Monst;
+
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_DoStand: Invalid monster %d", i);
 	if (monster[i].MType == NULL)
 		TermMsg("M_DoStand: Monster %d \"%s\" MType NULL", i, monster[i].mName);
 
-	MonsterStruct *Monst = &monster[i];
+	Monst = &monster[i];
 	if (Monst->MType->mtype == MT_GOLEM)
 		Monst->_mAnimData = Monst->MType->Anims[MA_WALK].Data[Monst->_mdir];
 	else
@@ -2318,12 +2343,14 @@ int __fastcall M_DoStand(int i)
 
 BOOL __fastcall M_DoWalk(int i)
 {
+	BOOL rv;
+
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_DoWalk: Invalid monster %d", i);
 	if (monster[i].MType == NULL)
 		TermMsg("M_DoWalk: Monster %d \"%s\" MType NULL", i, monster[i].mName);
 
-	BOOL rv = FALSE;
+	rv = FALSE;
 	if (monster[i]._mVar8 == monster[i].MType->Anims[MA_WALK].Frames) {
 		dMonster[monster[i]._mx][monster[i]._my] = 0;
 		monster[i]._mx += monster[i]._mVar1;
@@ -2349,12 +2376,13 @@ BOOL __fastcall M_DoWalk(int i)
 
 BOOL __fastcall M_DoWalk2(int i)
 {
+	BOOL rv;
+
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_DoWalk2: Invalid monster %d", i);
 	if (monster[i].MType == NULL)
 		TermMsg("M_DoWalk2: Monster %d \"%s\" MType NULL", i, monster[i].mName);
 
-	BOOL rv;
 	if (monster[i]._mVar8 == monster[i].MType->Anims[MA_WALK].Frames) {
 		dMonster[monster[i]._mVar1][monster[i]._mVar2] = 0;
 		if (monster[i]._uniqtype != 0)
@@ -2379,12 +2407,13 @@ BOOL __fastcall M_DoWalk2(int i)
 
 BOOL __fastcall M_DoWalk3(int i)
 {
+	BOOL rv;
+
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_DoWalk3: Invalid monster %d", i);
 	if (monster[i].MType == NULL)
 		TermMsg("M_DoWalk3: Monster %d \"%s\" MType NULL", i, monster[i].mName);
 
-	BOOL rv;
 	if (monster[i]._mVar8 == monster[i].MType->Anims[MA_WALK].Frames) {
 		dMonster[monster[i]._mx][monster[i]._my] = 0;
 		monster[i]._mx = monster[i]._mVar1;
@@ -2413,6 +2442,8 @@ BOOL __fastcall M_DoWalk3(int i)
 
 void __fastcall M_TryM2MHit(int i, int mid, int hper, int mind, int maxd)
 {
+	BOOL ret;
+
 	if ((DWORD)mid >= MAXMONSTERS) {
 		TermMsg("M_TryM2MHit: Invalid monster %d", mid);
 	}
@@ -2422,7 +2453,6 @@ void __fastcall M_TryM2MHit(int i, int mid, int hper, int mind, int maxd)
 		int hit = random(4, 100);
 		if (monster[mid]._mmode == MM_STONE)
 			hit = 0;
-		BOOL ret;
 		if (!CheckMonsterHit(mid, &ret) && hit < hper) {
 			int dam = (mind + random(5, maxd - mind + 1)) << 6;
 			monster[mid]._mhitpoints -= dam;
@@ -2641,10 +2671,12 @@ void __fastcall M_TryH2HHit(int i, int pnum, int Hit, int MinDam, int MaxDam)
 
 BOOL __fastcall M_DoAttack(int i)
 {
+	MonsterStruct *Monst;
+
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_DoAttack: Invalid monster %d", i);
 
-	MonsterStruct *Monst = &monster[i];
+	Monst = &monster[i];
 	if (Monst->MType == NULL)
 		TermMsg("M_DoAttack: Monster %d \"%s\" MType NULL", i, Monst->mName);
 	if (Monst->MType == NULL) // BUGFIX: should check MData
@@ -2675,6 +2707,8 @@ BOOL __fastcall M_DoAttack(int i)
 
 BOOL __fastcall M_DoRAttack(int i)
 {
+	int multimissiles, mi;
+
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_DoRAttack: Invalid monster %d", i);
 	if (monster[i].MType == NULL)
@@ -2684,12 +2718,11 @@ BOOL __fastcall M_DoRAttack(int i)
 
 	if (monster[i]._mAnimFrame == monster[i].MData->mAFNum) {
 		if (monster[i]._mVar1 != -1) {
-			int multimissiles;
 			if (monster[i]._mVar1 != MIS_CBOLT)
 				multimissiles = 1;
 			else
 				multimissiles = 3;
-			for (int mi = 0; mi < multimissiles; mi++) {
+			for (mi = 0; mi < multimissiles; mi++) {
 				AddMissile(
 				    monster[i]._mx,
 				    monster[i]._my,
@@ -2794,6 +2827,8 @@ BOOL __fastcall M_DoFadein(int i)
 
 BOOL __fastcall M_DoFadeout(int i)
 {
+	int mt;
+
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_DoFadeout: Invalid monster %d", i);
 
@@ -2802,7 +2837,7 @@ BOOL __fastcall M_DoFadeout(int i)
 		return FALSE;
 	}
 
-	int mt = monster[i].MType->mtype;
+	mt = monster[i].MType->mtype;
 	if (mt < MT_INCIN || mt > MT_HELLBURN) {
 		monster[i]._mFlags &= ~MFLAG_LOCK_ANIMATION;
 		monster[i]._mFlags |= MFLAG_HIDDEN;
@@ -3000,12 +3035,12 @@ BOOL __fastcall M_DoGotHit(int i)
 
 void __fastcall M_UpdateLeader(int i)
 {
-	int ma;
+	int ma, j;
 
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("M_UpdateLeader: Invalid monster %d", i);
 
-	for (int j = 0; j < nummonsters; j++) {
+	for (j = 0; j < nummonsters; j++) {
 		ma = monstactive[j];
 		if (monster[ma].leaderflag == 1 && monster[ma].leader == i)
 			monster[ma].leaderflag = 0;
@@ -3018,6 +3053,9 @@ void __fastcall M_UpdateLeader(int i)
 
 void __cdecl DoEnding()
 {
+	BOOL bMusicOn;
+	int musicVolume;
+
 	if (gbMaxPlayers > 1) {
 		SNetLeaveGame(0x40000004);
 	}
@@ -3037,10 +3075,10 @@ void __cdecl DoEnding()
 	}
 	play_movie("gendata\\Diabend.smk", 0);
 
-	BOOL bMusicOn = gbMusicOn;
+	bMusicOn = gbMusicOn;
 	gbMusicOn = TRUE;
 
-	int musicVolume = sound_get_or_set_music_volume(1);
+	musicVolume = sound_get_or_set_music_volume(1);
 	sound_get_or_set_music_volume(0);
 
 	music_start(2);
@@ -3056,18 +3094,21 @@ void __cdecl DoEnding()
 
 void __cdecl PrepDoEnding()
 {
+	int newKillLevel, i;
+	DWORD *killLevel;
+
 	gbSoundOn = sgbSaveSoundOn;
 	gbRunGame = FALSE;
 	deathflag = FALSE;
 	cineflag = TRUE;
 
-	DWORD *killLevel = &plr[myplr].pDiabloKillLevel;
-	int newKillLevel = gnDifficulty + 1;
+	killLevel = &plr[myplr].pDiabloKillLevel;
+	newKillLevel = gnDifficulty + 1;
 	if (*killLevel > newKillLevel)
 		newKillLevel = *killLevel;
 	plr[myplr].pDiabloKillLevel = newKillLevel;
 
-	for (int i = 0; i < MAX_PLRS; i++) {
+	for (i = 0; i < MAX_PLRS; i++) {
 		plr[i]._pmode = PM_QUIT;
 		plr[i]._pBlockFlag = TRUE;
 		if (gbMaxPlayers > 1) {
@@ -4953,12 +4994,15 @@ void __fastcall MAI_Mega(int i)
 
 void __fastcall MAI_Golum(int i)
 {
-	int j, k;
+	int mx, my, _mex, _mey;
+	int md, j, k, _menemy;
+	MonsterStruct *Monst;
+	BOOL have_enemy, ok;
 
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("MAI_Golum: Invalid monster %d", i);
 
-	MonsterStruct *Monst = &monster[i];
+	Monst = &monster[i];
 	if (Monst->_mx == 1 && Monst->_my == 0) {
 		return;
 	}
@@ -4972,19 +5016,19 @@ void __fastcall MAI_Golum(int i)
 	if (!(Monst->_mFlags & MFLAG_TARGETS_MONSTER))
 		M_Enemy(i);
 
-	BOOL have_enemy = !(monster[i]._mFlags & MFLAG_NO_ENEMY);
+	have_enemy = !(monster[i]._mFlags & MFLAG_NO_ENEMY);
 
 	if (Monst->_mmode == MM_ATTACK) {
 		return;
 	}
 
-	int _menemy = monster[i]._menemy;
+	_menemy = monster[i]._menemy;
 
-	int mx = monster[i]._mx;
-	int my = monster[i]._my;
-	int _mex = mx - monster[_menemy]._mfutx;
-	int _mey = my - monster[_menemy]._mfuty;
-	int md = GetDirection(mx, my, monster[_menemy]._mx, monster[_menemy]._my);
+	mx = monster[i]._mx;
+	my = monster[i]._my;
+	_mex = mx - monster[_menemy]._mfutx;
+	_mey = my - monster[_menemy]._mfuty;
+	md = GetDirection(mx, my, monster[_menemy]._mx, monster[_menemy]._my);
 	monster[i]._mdir = md;
 	if (abs(_mex) >= 2 || abs(_mey) >= 2) {
 		if (have_enemy && MAI_Path(i))
@@ -5013,7 +5057,7 @@ void __fastcall MAI_Golum(int i)
 	if (monster[i]._pathcount > 8)
 		monster[i]._pathcount = 5;
 
-	BOOL ok = M_CallWalk(i, plr[i]._pdir);
+	ok = M_CallWalk(i, plr[i]._pdir);
 	if (!ok) {
 		md = (md - 1) & 7;
 		for (j = 0; j < 8 && !ok; j++) {
@@ -5452,17 +5496,20 @@ void __fastcall MAI_Counselor(int i)
 
 void __fastcall MAI_Garbud(int i)
 {
+	int _mx, _my, md;
+	MonsterStruct *Monst;
+
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("MAI_Garbud: Invalid monster %d", i);
 
-	MonsterStruct *Monst = &monster[i];
+	Monst = &monster[i];
 	if (Monst->_mmode != MM_STAND) {
 		return;
 	}
 
-	int _mx = Monst->_mx;
-	int _my = Monst->_my;
-	int md = M_GetDir(i);
+	_mx = Monst->_mx;
+	_my = Monst->_my;
+	md = M_GetDir(i);
 
 	if (Monst->mtalkmsg < QUEST_GARBUD4
 	    && Monst->mtalkmsg > QUEST_DOOM10
@@ -5699,17 +5746,20 @@ void __fastcall MAI_Lazhelp(int i)
 
 void __fastcall MAI_Lachdanan(int i)
 {
+	int _mx, _my, md;
+	MonsterStruct *Monst;
+
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("MAI_Lachdanan: Invalid monster %d", i);
 
-	MonsterStruct *Monst = &monster[i];
+	Monst = &monster[i];
 	if (Monst->_mmode != MM_STAND) {
 		return;
 	}
 
-	int _mx = Monst->_mx;
-	int _my = Monst->_my;
-	int md = M_GetDir(i);
+	_mx = Monst->_mx;
+	_my = Monst->_my;
+	md = M_GetDir(i);
 	if (Monst->mtalkmsg == QUEST_VEIL9 && !(dFlags[_mx][_my] & DFLAG_VISIBLE) && Monst->_mgoal == MGOAL_TALKING) {
 		Monst->mtalkmsg = QUEST_VEIL10;
 		Monst->_mgoal = MGOAL_INQUIRING;
