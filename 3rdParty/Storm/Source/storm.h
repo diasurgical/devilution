@@ -1288,14 +1288,14 @@ int STORMAPI SBigToBinaryBuffer(void *buffer, int length, int a3, int a4);
 
 void __stdcall SDrawMessageBox(char *,char *,int);
 void __cdecl SDrawDestroy(void);
-bool __cdecl StormDestroy(void);
-bool __stdcall SFileSetBasePath(char *);
+BOOLEAN __cdecl StormDestroy(void);
+BOOLEAN __stdcall SFileSetBasePath(char *);
 void __cdecl SDrawRealizePalette(void);
 BOOL __cdecl SVidPlayContinue(void);
 BOOL __stdcall SNetGetOwnerTurnsWaiting(DWORD *);
 void * __stdcall SNetUnregisterEventHandler(int,void (__stdcall*)(struct _SNETEVENT *));
 void * __stdcall SNetRegisterEventHandler(int,void (__stdcall*)(struct _SNETEVENT *));
-bool __stdcall SNetSetBasePlayer(int);
+BOOLEAN __stdcall SNetSetBasePlayer(int);
 int __stdcall SNetInitializeProvider(unsigned long,struct _SNETPROGRAMDATA *,struct _SNETPLAYERDATA *,struct _SNETUIDATA *,struct _SNETVERSIONDATA *);
 int __stdcall SNetGetProviderCaps(struct _SNETCAPS *);
 int __stdcall SFileSetFilePointer(HANDLE,int,HANDLE,int);
