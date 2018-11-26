@@ -25,8 +25,8 @@ void __cdecl CheckDungeonClear()
 	int i;
 	int j;
 
-	for (i = 0; i < MAXDUNX; i++) {
-		for (j = 0; j < MAXDUNY; j++) {
+	for (j = 0; j < MAXDUNY; j++) {
+		for (i = 0; i < MAXDUNX; i++) {
 			if (dMonster[i][j])
 				TermMsg("Monsters not cleared");
 			if (dPlayer[i][j])
