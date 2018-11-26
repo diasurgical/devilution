@@ -1000,7 +1000,7 @@ void __fastcall NetSendCmdGItem(BOOL bHiPri, BYTE bCmd, BYTE mast, BYTE pnum, in
 		NetSendLoPri((unsigned char *)&cmd, 0x1Eu);
 }
 
-void __fastcall NetSendCmdGItem2(BOOL usonly, BYTE bCmd, BYTE mast, BYTE pnum, struct TCmdGItem *p)
+void __fastcall NetSendCmdGItem2(BOOL usonly, BYTE bCmd, BYTE mast, BYTE pnum, TCmdGItem *p)
 {
 	unsigned char v5; // bl
 	int v7;           // eax
@@ -1026,7 +1026,7 @@ void __fastcall NetSendCmdGItem2(BOOL usonly, BYTE bCmd, BYTE mast, BYTE pnum, s
 	multi_msg_add(&cmd.bCmd, 0x1Eu);
 }
 
-BOOL __fastcall NetSendCmdReq2(BYTE bCmd, BYTE mast, BYTE pnum, struct TCmdGItem *p)
+BOOL __fastcall NetSendCmdReq2(BYTE bCmd, BYTE mast, BYTE pnum, TCmdGItem *p)
 {
 	unsigned char v4; // bl
 	int v5;           // eax
@@ -1051,7 +1051,7 @@ BOOL __fastcall NetSendCmdReq2(BYTE bCmd, BYTE mast, BYTE pnum, struct TCmdGItem
 	return 0;
 }
 
-void __fastcall NetSendCmdExtra(struct TCmdGItem *p)
+void __fastcall NetSendCmdExtra(TCmdGItem *p)
 {
 	TCmdGItem cmd; // [esp+0h] [ebp-20h]
 
@@ -1252,67 +1252,67 @@ int __fastcall ParseCmd(int pnum, TCmd *pCmd)
 	v5 = v3->bCmd;
 	switch (v3->bCmd) {
 	case CMD_WALKXY:
-		return On_WALKXY((struct TCmdLoc *)v3, pnum);
+		return On_WALKXY((TCmdLoc *)v3, pnum);
 	case CMD_ACK_PLRINFO:
-		return On_ACK_PLRINFO((struct TCmdPlrInfoHdr *)v3, pnum);
+		return On_ACK_PLRINFO((TCmdPlrInfoHdr *)v3, pnum);
 	case CMD_ADDSTR:
-		return On_ADDSTR((struct TCmdParam1 *)v3, pnum);
+		return On_ADDSTR((TCmdParam1 *)v3, pnum);
 	case CMD_ADDMAG:
-		return On_ADDMAG((struct TCmdParam1 *)v3, pnum);
+		return On_ADDMAG((TCmdParam1 *)v3, pnum);
 	case CMD_ADDDEX:
-		return On_ADDDEX((struct TCmdParam1 *)v3, pnum);
+		return On_ADDDEX((TCmdParam1 *)v3, pnum);
 	case CMD_ADDVIT:
-		return On_ADDVIT((struct TCmdParam1 *)v3, pnum);
+		return On_ADDVIT((TCmdParam1 *)v3, pnum);
 	case CMD_SBSPELL:
-		return On_SBSPELL((struct TCmdParam1 *)v3, pnum);
+		return On_SBSPELL((TCmdParam1 *)v3, pnum);
 	case CMD_GETITEM:
-		return On_GETITEM((struct TCmdGItem *)v3, pnum);
+		return On_GETITEM((TCmdGItem *)v3, pnum);
 	case CMD_AGETITEM:
-		return On_AGETITEM((struct TCmdGItem *)v3, pnum);
+		return On_AGETITEM((TCmdGItem *)v3, pnum);
 	case CMD_PUTITEM:
-		return On_PUTITEM((struct TCmdPItem *)v3, pnum);
+		return On_PUTITEM((TCmdPItem *)v3, pnum);
 	case CMD_RESPAWNITEM:
-		return On_RESPAWNITEM((struct TCmdPItem *)v3, pnum);
+		return On_RESPAWNITEM((TCmdPItem *)v3, pnum);
 	case CMD_ATTACKXY:
-		return On_ATTACKXY((struct TCmdLoc *)v3, pnum);
+		return On_ATTACKXY((TCmdLoc *)v3, pnum);
 	case CMD_RATTACKXY:
-		return On_RATTACKXY((struct TCmdLoc *)v3, pnum);
+		return On_RATTACKXY((TCmdLoc *)v3, pnum);
 	case CMD_SPELLXY:
-		return On_SPELLXY((struct TCmdLocParam2 *)v3, pnum);
+		return On_SPELLXY((TCmdLocParam2 *)v3, pnum);
 	case CMD_TSPELLXY:
-		return On_TSPELLXY((struct TCmdLocParam2 *)v3, pnum);
+		return On_TSPELLXY((TCmdLocParam2 *)v3, pnum);
 	case CMD_OPOBJXY:
-		return On_OPOBJXY((struct TCmdLocParam1 *)v3, pnum);
+		return On_OPOBJXY((TCmdLocParam1 *)v3, pnum);
 	case CMD_DISARMXY:
-		return On_DISARMXY((struct TCmdLocParam1 *)v3, pnum);
+		return On_DISARMXY((TCmdLocParam1 *)v3, pnum);
 	case CMD_ATTACKID:
-		return On_ATTACKID((struct TCmdParam1 *)v3, pnum);
+		return On_ATTACKID((TCmdParam1 *)v3, pnum);
 	case CMD_ATTACKPID:
-		return On_ATTACKPID((struct TCmdParam1 *)v3, pnum);
+		return On_ATTACKPID((TCmdParam1 *)v3, pnum);
 	case CMD_RATTACKID:
-		return On_RATTACKID((struct TCmdParam1 *)v3, pnum);
+		return On_RATTACKID((TCmdParam1 *)v3, pnum);
 	case CMD_RATTACKPID:
-		return On_RATTACKPID((struct TCmdParam1 *)v3, pnum);
+		return On_RATTACKPID((TCmdParam1 *)v3, pnum);
 	case CMD_SPELLID:
-		return On_SPELLID((struct TCmdParam3 *)v3, pnum);
+		return On_SPELLID((TCmdParam3 *)v3, pnum);
 	case CMD_SPELLPID:
-		return On_SPELLPID((struct TCmdParam3 *)v3, pnum);
+		return On_SPELLPID((TCmdParam3 *)v3, pnum);
 	case CMD_TSPELLID:
-		return On_TSPELLID((struct TCmdParam3 *)v3, pnum);
+		return On_TSPELLID((TCmdParam3 *)v3, pnum);
 	case CMD_TSPELLPID:
-		return On_TSPELLPID((struct TCmdParam3 *)v3, pnum);
+		return On_TSPELLPID((TCmdParam3 *)v3, pnum);
 	case CMD_RESURRECT:
-		return On_RESURRECT((struct TCmdParam1 *)v3, pnum);
+		return On_RESURRECT((TCmdParam1 *)v3, pnum);
 	case CMD_OPOBJT:
-		return On_OPOBJT((struct TCmdParam1 *)v3, pnum);
+		return On_OPOBJT((TCmdParam1 *)v3, pnum);
 	case CMD_KNOCKBACK:
-		return On_KNOCKBACK((struct TCmdParam1 *)v3, pnum);
+		return On_KNOCKBACK((TCmdParam1 *)v3, pnum);
 	case CMD_TALKXY:
-		return On_TALKXY((struct TCmdLocParam1 *)v3, pnum);
+		return On_TALKXY((TCmdLocParam1 *)v3, pnum);
 	case CMD_NEWLVL:
-		return On_NEWLVL((struct TCmdParam2 *)v3, pnum);
+		return On_NEWLVL((TCmdParam2 *)v3, pnum);
 	case CMD_WARP:
-		return On_WARP((struct TCmdParam1 *)v3, pnum);
+		return On_WARP((TCmdParam1 *)v3, pnum);
 	case CMD_CHEAT_EXPERIENCE:
 		return On_CHEAT_EXPERIENCE(v3, pnum);
 	case CMD_CHEAT_SPELL_LEVEL:
@@ -1322,79 +1322,79 @@ int __fastcall ParseCmd(int pnum, TCmd *pCmd)
 	case CMD_SYNCDATA:
 		return On_SYNCDATA(v3, pnum);
 	case CMD_MONSTDEATH:
-		return On_MONSTDEATH((struct TCmdLocParam1 *)v3, pnum);
+		return On_MONSTDEATH((TCmdLocParam1 *)v3, pnum);
 	case CMD_MONSTDAMAGE:
-		return On_MONSTDAMAGE((struct TCmdParam2 *)v3, pnum);
+		return On_MONSTDAMAGE((TCmdParam2 *)v3, pnum);
 	case CMD_PLRDEAD:
-		return On_PLRDEAD((struct TCmdParam1 *)v3, pnum);
+		return On_PLRDEAD((TCmdParam1 *)v3, pnum);
 	case CMD_REQUESTGITEM:
-		return On_REQUESTGITEM((struct TCmdGItem *)v3, pnum);
+		return On_REQUESTGITEM((TCmdGItem *)v3, pnum);
 	case CMD_REQUESTAGITEM:
-		return On_REQUESTAGITEM((struct TCmdGItem *)v3, pnum);
+		return On_REQUESTAGITEM((TCmdGItem *)v3, pnum);
 	case CMD_GOTOGETITEM:
-		return On_GOTOGETITEM((struct TCmdLocParam1 *)v3, pnum);
+		return On_GOTOGETITEM((TCmdLocParam1 *)v3, pnum);
 	case CMD_GOTOAGETITEM:
-		return On_GOTOAGETITEM((struct TCmdLocParam1 *)v3, pnum);
+		return On_GOTOAGETITEM((TCmdLocParam1 *)v3, pnum);
 	case CMD_OPENDOOR:
-		return On_OPENDOOR((struct TCmdParam1 *)v3, pnum);
+		return On_OPENDOOR((TCmdParam1 *)v3, pnum);
 	case CMD_CLOSEDOOR:
-		return On_CLOSEDOOR((struct TCmdParam1 *)v3, pnum);
+		return On_CLOSEDOOR((TCmdParam1 *)v3, pnum);
 	case CMD_OPERATEOBJ:
-		return On_OPERATEOBJ((struct TCmdParam1 *)v3, pnum);
+		return On_OPERATEOBJ((TCmdParam1 *)v3, pnum);
 	case CMD_PLROPOBJ:
-		return On_PLROPOBJ((struct TCmdParam2 *)v3, pnum);
+		return On_PLROPOBJ((TCmdParam2 *)v3, pnum);
 	case CMD_BREAKOBJ:
-		return On_BREAKOBJ((struct TCmdParam2 *)v3, pnum);
+		return On_BREAKOBJ((TCmdParam2 *)v3, pnum);
 	case CMD_CHANGEPLRITEMS:
-		return On_CHANGEPLRITEMS((struct TCmdChItem *)v3, pnum);
+		return On_CHANGEPLRITEMS((TCmdChItem *)v3, pnum);
 	case CMD_DELPLRITEMS:
-		return On_DELPLRITEMS((struct TCmdDelItem *)v3, pnum);
+		return On_DELPLRITEMS((TCmdDelItem *)v3, pnum);
 	case CMD_PLRDAMAGE:
-		return On_PLRDAMAGE((struct TCmdDamage *)v3, pnum);
+		return On_PLRDAMAGE((TCmdDamage *)v3, pnum);
 	case CMD_PLRLEVEL:
-		return On_PLRLEVEL((struct TCmdParam1 *)v3, pnum);
+		return On_PLRLEVEL((TCmdParam1 *)v3, pnum);
 	case CMD_DROPITEM:
-		return On_DROPITEM((struct TCmdPItem *)v3, pnum);
+		return On_DROPITEM((TCmdPItem *)v3, pnum);
 	case CMD_PLAYER_JOINLEVEL:
-		return On_PLAYER_JOINLEVEL((struct TCmdLocParam1 *)v3, pnum);
+		return On_PLAYER_JOINLEVEL((TCmdLocParam1 *)v3, pnum);
 	case CMD_SEND_PLRINFO:
-		return On_SEND_PLRINFO((struct TCmdPlrInfoHdr *)v3, pnum);
+		return On_SEND_PLRINFO((TCmdPlrInfoHdr *)v3, pnum);
 	case CMD_SATTACKXY:
-		return On_SATTACKXY((struct TCmdLoc *)v3, pnum);
+		return On_SATTACKXY((TCmdLoc *)v3, pnum);
 	case CMD_ACTIVATEPORTAL:
-		return On_ACTIVATEPORTAL((struct TCmdLocParam3 *)v3, pnum);
+		return On_ACTIVATEPORTAL((TCmdLocParam3 *)v3, pnum);
 	case CMD_DEACTIVATEPORTAL:
 		return On_DEACTIVATEPORTAL(v3, pnum);
 	case CMD_HEALOTHER:
-		return On_HEALOTHER((struct TCmdParam1 *)v3, pnum);
+		return On_HEALOTHER((TCmdParam1 *)v3, pnum);
 	case CMD_STRING:
-		return On_STRING((struct TCmdString *)v3, pnum);
+		return On_STRING((TCmdString *)v3, pnum);
 	case CMD_SETSTR:
-		return On_SETSTR((struct TCmdParam1 *)v3, pnum);
+		return On_SETSTR((TCmdParam1 *)v3, pnum);
 	case CMD_SETMAG:
-		return On_SETMAG((struct TCmdParam1 *)v3, pnum);
+		return On_SETMAG((TCmdParam1 *)v3, pnum);
 	case CMD_SETDEX:
-		return On_SETDEX((struct TCmdParam1 *)v3, pnum);
+		return On_SETDEX((TCmdParam1 *)v3, pnum);
 	case CMD_SETVIT:
-		return On_SETVIT((struct TCmdParam1 *)v3, pnum);
+		return On_SETVIT((TCmdParam1 *)v3, pnum);
 	case CMD_RETOWN:
 		return On_RETOWN(v3, pnum);
 	case CMD_SPELLXYD:
-		return On_SPELLXYD((struct TCmdLocParam3 *)v3, pnum);
+		return On_SPELLXYD((TCmdLocParam3 *)v3, pnum);
 	case CMD_ITEMEXTRA:
-		return On_ITEMEXTRA((struct TCmdGItem *)v3, pnum);
+		return On_ITEMEXTRA((TCmdGItem *)v3, pnum);
 	case CMD_SYNCPUTITEM:
-		return On_SYNCPUTITEM((struct TCmdPItem *)v3, pnum);
+		return On_SYNCPUTITEM((TCmdPItem *)v3, pnum);
 	case CMD_KILLGOLEM:
-		return On_KILLGOLEM((struct TCmdLocParam1 *)v3, pnum);
+		return On_KILLGOLEM((TCmdLocParam1 *)v3, pnum);
 	case CMD_SYNCQUEST:
-		return On_SYNCQUEST((struct TCmdQuest *)v3, pnum);
+		return On_SYNCQUEST((TCmdQuest *)v3, pnum);
 	case CMD_ENDSHIELD:
 		return On_ENDSHIELD(v3, pnum);
 	case CMD_AWAKEGOLEM:
-		return On_AWAKEGOLEM((struct TCmdGolem *)v3, pnum);
+		return On_AWAKEGOLEM((TCmdGolem *)v3, pnum);
 	case CMD_NOVA:
-		return On_NOVA((struct TCmdLoc *)v3, pnum);
+		return On_NOVA((TCmdLoc *)v3, pnum);
 	case CMD_SETSHIELD:
 		return On_SETSHIELD(v3, pnum);
 	case CMD_REMSHIELD:
@@ -1404,14 +1404,14 @@ int __fastcall ParseCmd(int pnum, TCmd *pCmd)
 			SNetDropPlayer(pnum, 0x40000006);
 			return 0;
 		}
-		return On_DLEVEL(pnum, (struct TCmdPlrInfoHdr *)v3);
+		return On_DLEVEL(pnum, (TCmdPlrInfoHdr *)v3);
 	}
 }
 // 66E4A9: using guessed type char sbLastCmd;
 // 67618D: using guessed type char sgbDeltaChunks;
 // 6796E4: using guessed type char gbDeltaSender;
 
-int __fastcall On_DLEVEL(int pnum, struct TCmdPlrInfoHdr *pCmd)
+int __fastcall On_DLEVEL(int pnum, TCmdPlrInfoHdr *pCmd)
 {
 	if ( (unsigned char)gbDeltaSender == pnum )
 	{
@@ -1593,7 +1593,7 @@ int __fastcall On_SYNCDATA(void *packet, int pnum)
 	return SyncData(pnum, (TSyncHeader *)packet);
 }
 
-int __fastcall On_WALKXY(struct TCmdLoc *pCmd, int pnum)
+int __fastcall On_WALKXY(TCmdLoc *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
 		ClrPlrPath(pnum);
@@ -1604,7 +1604,7 @@ int __fastcall On_WALKXY(struct TCmdLoc *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_ADDSTR(struct TCmdParam1 *pCmd, int pnum)
+int __fastcall On_ADDSTR(TCmdParam1 *pCmd, int pnum)
 {
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
@@ -1614,7 +1614,7 @@ int __fastcall On_ADDSTR(struct TCmdParam1 *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_ADDMAG(struct TCmdParam1 *pCmd, int pnum)
+int __fastcall On_ADDMAG(TCmdParam1 *pCmd, int pnum)
 {
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
@@ -1624,7 +1624,7 @@ int __fastcall On_ADDMAG(struct TCmdParam1 *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_ADDDEX(struct TCmdParam1 *pCmd, int pnum)
+int __fastcall On_ADDDEX(TCmdParam1 *pCmd, int pnum)
 {
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
@@ -1634,7 +1634,7 @@ int __fastcall On_ADDDEX(struct TCmdParam1 *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_ADDVIT(struct TCmdParam1 *pCmd, int pnum)
+int __fastcall On_ADDVIT(TCmdParam1 *pCmd, int pnum)
 {
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
@@ -1644,7 +1644,7 @@ int __fastcall On_ADDVIT(struct TCmdParam1 *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_SBSPELL(struct TCmdParam1 *pCmd, int pnum)
+int __fastcall On_SBSPELL(TCmdParam1 *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1) {
 		if (currlevel != 0 || spelldata[pCmd->wParam1].sTownSpell) {
@@ -1676,7 +1676,7 @@ void msg_errorf(const char *pszFmt, ...)
 	va_end(va);
 }
 
-int __fastcall On_GOTOGETITEM(struct TCmdLocParam1 *pCmd, int pnum)
+int __fastcall On_GOTOGETITEM(TCmdLocParam1 *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
 		MakePlrPath(pnum, pCmd->x, pCmd->y, FALSE);
@@ -1687,7 +1687,7 @@ int __fastcall On_GOTOGETITEM(struct TCmdLocParam1 *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_REQUESTGITEM(struct TCmdGItem *pCmd, int pnum)
+int __fastcall On_REQUESTGITEM(TCmdGItem *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1 && i_own_level(plr[pnum].plrlevel)) {
 		if (GetItemRecord(pCmd->dwSeed, pCmd->wCI, pCmd->wIndx)) {
@@ -1724,7 +1724,7 @@ BOOL __fastcall i_own_level(int nReqLevel)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-int __fastcall On_GETITEM(struct TCmdGItem *pCmd, int pnum)
+int __fastcall On_GETITEM(TCmdGItem *pCmd, int pnum)
 {
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
@@ -1749,9 +1749,9 @@ int __fastcall On_GETITEM(struct TCmdGItem *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-BOOL __fastcall delta_get_item(struct TCmdGItem *pI, BYTE bLevel)
+BOOL __fastcall delta_get_item(TCmdGItem *pI, BYTE bLevel)
 {
-	struct TCmdGItem *v2; // esi
+	TCmdGItem *v2; // esi
 	signed int v3;        // ecx
 	DLevel *v4;           // edi
 	DLevel *v5;           // eax
@@ -1818,7 +1818,7 @@ BOOL __fastcall delta_get_item(struct TCmdGItem *pI, BYTE bLevel)
 // 67618C: using guessed type char sgbDeltaChanged;
 // 679660: using guessed type char gbMaxPlayers;
 
-int __fastcall On_GOTOAGETITEM(struct TCmdLocParam1 *pCmd, int pnum)
+int __fastcall On_GOTOAGETITEM(TCmdLocParam1 *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
 		MakePlrPath(pnum, pCmd->x, pCmd->y, FALSE);
@@ -1829,7 +1829,7 @@ int __fastcall On_GOTOAGETITEM(struct TCmdLocParam1 *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_REQUESTAGITEM(struct TCmdGItem *pCmd, int pnum)
+int __fastcall On_REQUESTAGITEM(TCmdGItem *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1 && i_own_level(plr[pnum].plrlevel)) {
 		if (GetItemRecord(pCmd->dwSeed, pCmd->wCI, pCmd->wIndx)) {
@@ -1849,7 +1849,7 @@ int __fastcall On_REQUESTAGITEM(struct TCmdGItem *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_AGETITEM(struct TCmdGItem *pCmd, int pnum)
+int __fastcall On_AGETITEM(TCmdGItem *pCmd, int pnum)
 {
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
@@ -1874,7 +1874,7 @@ int __fastcall On_AGETITEM(struct TCmdGItem *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_ITEMEXTRA(struct TCmdGItem *pCmd, int pnum)
+int __fastcall On_ITEMEXTRA(TCmdGItem *pCmd, int pnum)
 {
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
@@ -1887,7 +1887,7 @@ int __fastcall On_ITEMEXTRA(struct TCmdGItem *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_PUTITEM(struct TCmdPItem *pCmd, int pnum)
+int __fastcall On_PUTITEM(TCmdPItem *pCmd, int pnum)
 {
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
@@ -1912,9 +1912,9 @@ int __fastcall On_PUTITEM(struct TCmdPItem *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-void __fastcall delta_put_item(struct TCmdPItem *pI, int x, int y, BYTE bLevel)
+void __fastcall delta_put_item(TCmdPItem *pI, int x, int y, BYTE bLevel)
 {
-	struct TCmdPItem *v4; // ebx
+	TCmdPItem *v4; // ebx
 	int v5;               // eax
 	DLevel *v6;           // esi
 	DLevel *v7;           // edi
@@ -1968,7 +1968,7 @@ void __fastcall check_update_plr(int pnum)
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-int __fastcall On_SYNCPUTITEM(struct TCmdPItem *pCmd, int pnum)
+int __fastcall On_SYNCPUTITEM(TCmdPItem *pCmd, int pnum)
 {
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
@@ -1989,7 +1989,7 @@ int __fastcall On_SYNCPUTITEM(struct TCmdPItem *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_RESPAWNITEM(struct TCmdPItem *pCmd, int pnum)
+int __fastcall On_RESPAWNITEM(TCmdPItem *pCmd, int pnum)
 {
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
@@ -2003,7 +2003,7 @@ int __fastcall On_RESPAWNITEM(struct TCmdPItem *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_ATTACKXY(struct TCmdLoc *pCmd, int pnum)
+int __fastcall On_ATTACKXY(TCmdLoc *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
 		MakePlrPath(pnum, pCmd->x, pCmd->y, FALSE);
@@ -2015,7 +2015,7 @@ int __fastcall On_ATTACKXY(struct TCmdLoc *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_SATTACKXY(struct TCmdLoc *pCmd, int pnum)
+int __fastcall On_SATTACKXY(TCmdLoc *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
 		ClrPlrPath(pnum);
@@ -2027,7 +2027,7 @@ int __fastcall On_SATTACKXY(struct TCmdLoc *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_RATTACKXY(struct TCmdLoc *pCmd, int pnum)
+int __fastcall On_RATTACKXY(TCmdLoc *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
 		ClrPlrPath(pnum);
@@ -2039,7 +2039,7 @@ int __fastcall On_RATTACKXY(struct TCmdLoc *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_SPELLXYD(struct TCmdLocParam3 *pCmd, int pnum)
+int __fastcall On_SPELLXYD(TCmdLocParam3 *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
 		if (currlevel != 0 || spelldata[pCmd->wParam1].sTownSpell) {
@@ -2059,7 +2059,7 @@ int __fastcall On_SPELLXYD(struct TCmdLocParam3 *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_SPELLXY(struct TCmdLocParam2 *pCmd, int pnum)
+int __fastcall On_SPELLXY(TCmdLocParam2 *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
 		if (currlevel != 0 || spelldata[pCmd->wParam1].sTownSpell) {
@@ -2078,7 +2078,7 @@ int __fastcall On_SPELLXY(struct TCmdLocParam2 *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_TSPELLXY(struct TCmdLocParam2 *pCmd, int pnum)
+int __fastcall On_TSPELLXY(TCmdLocParam2 *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
 		if (currlevel != 0 || spelldata[pCmd->wParam1].sTownSpell) {
@@ -2097,7 +2097,7 @@ int __fastcall On_TSPELLXY(struct TCmdLocParam2 *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_OPOBJXY(struct TCmdLocParam1 *pCmd, int pnum)
+int __fastcall On_OPOBJXY(TCmdLocParam1 *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
 		if (object[pCmd->wParam1]._oSolidFlag || object[pCmd->wParam1]._oDoorFlag)
@@ -2111,7 +2111,7 @@ int __fastcall On_OPOBJXY(struct TCmdLocParam1 *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_DISARMXY(struct TCmdLocParam1 *pCmd, int pnum)
+int __fastcall On_DISARMXY(TCmdLocParam1 *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
 		if (object[pCmd->wParam1]._oSolidFlag || object[pCmd->wParam1]._oDoorFlag)
@@ -2125,7 +2125,7 @@ int __fastcall On_DISARMXY(struct TCmdLocParam1 *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_OPOBJT(struct TCmdParam1 *pCmd, int pnum)
+int __fastcall On_OPOBJT(TCmdParam1 *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
 		plr[pnum].destAction = ACTION_OPERATETK;
@@ -2135,7 +2135,7 @@ int __fastcall On_OPOBJT(struct TCmdParam1 *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_ATTACKID(struct TCmdParam1 *pCmd, int pnum)
+int __fastcall On_ATTACKID(TCmdParam1 *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
 		int distx = abs(plr[pnum].WorldX - monster[pCmd->wParam1]._mfutx);
@@ -2149,7 +2149,7 @@ int __fastcall On_ATTACKID(struct TCmdParam1 *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_ATTACKPID(struct TCmdParam1 *pCmd, int pnum)
+int __fastcall On_ATTACKPID(TCmdParam1 *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
 		MakePlrPath(pnum, plr[pCmd->wParam1]._px, plr[pCmd->wParam1]._py, FALSE);
@@ -2160,7 +2160,7 @@ int __fastcall On_ATTACKPID(struct TCmdParam1 *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_RATTACKID(struct TCmdParam1 *pCmd, int pnum)
+int __fastcall On_RATTACKID(TCmdParam1 *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
 		ClrPlrPath(pnum);
@@ -2171,7 +2171,7 @@ int __fastcall On_RATTACKID(struct TCmdParam1 *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_RATTACKPID(struct TCmdParam1 *pCmd, int pnum)
+int __fastcall On_RATTACKPID(TCmdParam1 *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
 		ClrPlrPath(pnum);
@@ -2182,7 +2182,7 @@ int __fastcall On_RATTACKPID(struct TCmdParam1 *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_SPELLID(struct TCmdParam3 *pCmd, int pnum)
+int __fastcall On_SPELLID(TCmdParam3 *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
 		if (currlevel != 0 || spelldata[pCmd->wParam2].sTownSpell) {
@@ -2200,7 +2200,7 @@ int __fastcall On_SPELLID(struct TCmdParam3 *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_SPELLPID(struct TCmdParam3 *pCmd, int pnum)
+int __fastcall On_SPELLPID(TCmdParam3 *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
 		if (currlevel != 0 || spelldata[pCmd->wParam2].sTownSpell) {
@@ -2218,7 +2218,7 @@ int __fastcall On_SPELLPID(struct TCmdParam3 *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_TSPELLID(struct TCmdParam3 *pCmd, int pnum)
+int __fastcall On_TSPELLID(TCmdParam3 *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
 		if (currlevel != 0 || spelldata[pCmd->wParam2].sTownSpell) {
@@ -2236,7 +2236,7 @@ int __fastcall On_TSPELLID(struct TCmdParam3 *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_TSPELLPID(struct TCmdParam3 *pCmd, int pnum)
+int __fastcall On_TSPELLPID(TCmdParam3 *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
 		if (currlevel != 0 || spelldata[pCmd->wParam2].sTownSpell) {
@@ -2254,7 +2254,7 @@ int __fastcall On_TSPELLPID(struct TCmdParam3 *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_KNOCKBACK(struct TCmdParam1 *pCmd, int pnum)
+int __fastcall On_KNOCKBACK(TCmdParam1 *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
 		M_GetKnockback(pCmd->wParam1);
@@ -2264,7 +2264,7 @@ int __fastcall On_KNOCKBACK(struct TCmdParam1 *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_RESURRECT(struct TCmdParam1 *pCmd, int pnum)
+int __fastcall On_RESURRECT(TCmdParam1 *pCmd, int pnum)
 {
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
@@ -2276,7 +2276,7 @@ int __fastcall On_RESURRECT(struct TCmdParam1 *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_HEALOTHER(struct TCmdParam1 *pCmd, int pnum)
+int __fastcall On_HEALOTHER(TCmdParam1 *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel)
 		DoHealOther(pnum, pCmd->wParam1);
@@ -2284,7 +2284,7 @@ int __fastcall On_HEALOTHER(struct TCmdParam1 *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_TALKXY(struct TCmdLocParam1 *pCmd, int pnum)
+int __fastcall On_TALKXY(TCmdLocParam1 *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel) {
 		MakePlrPath(pnum, pCmd->x, pCmd->y, FALSE);
@@ -2295,7 +2295,7 @@ int __fastcall On_TALKXY(struct TCmdLocParam1 *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_NEWLVL(struct TCmdParam2 *pCmd, int pnum)
+int __fastcall On_NEWLVL(TCmdParam2 *pCmd, int pnum)
 {
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
@@ -2305,7 +2305,7 @@ int __fastcall On_NEWLVL(struct TCmdParam2 *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_WARP(struct TCmdParam1 *pCmd, int pnum)
+int __fastcall On_WARP(TCmdParam1 *pCmd, int pnum)
 {
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
@@ -2320,7 +2320,7 @@ int __fastcall On_WARP(struct TCmdParam1 *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_MONSTDEATH(struct TCmdLocParam1 *pCmd, int pnum)
+int __fastcall On_MONSTDEATH(TCmdLocParam1 *pCmd, int pnum)
 {
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
@@ -2333,7 +2333,7 @@ int __fastcall On_MONSTDEATH(struct TCmdLocParam1 *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_KILLGOLEM(struct TCmdLocParam1 *pCmd, int pnum)
+int __fastcall On_KILLGOLEM(TCmdLocParam1 *pCmd, int pnum)
 {
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
@@ -2346,7 +2346,7 @@ int __fastcall On_KILLGOLEM(struct TCmdLocParam1 *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_AWAKEGOLEM(struct TCmdGolem *pCmd, int pnum)
+int __fastcall On_AWAKEGOLEM(TCmdGolem *pCmd, int pnum)
 {
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
@@ -2370,7 +2370,7 @@ int __fastcall On_AWAKEGOLEM(struct TCmdGolem *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_MONSTDAMAGE(struct TCmdParam2 *pCmd, int pnum)
+int __fastcall On_MONSTDAMAGE(TCmdParam2 *pCmd, int pnum)
 {
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
@@ -2390,7 +2390,7 @@ int __fastcall On_MONSTDAMAGE(struct TCmdParam2 *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_PLRDEAD(struct TCmdParam1 *pCmd, int pnum)
+int __fastcall On_PLRDEAD(TCmdParam1 *pCmd, int pnum)
 {
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
@@ -2402,7 +2402,7 @@ int __fastcall On_PLRDEAD(struct TCmdParam1 *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_PLRDAMAGE(struct TCmdDamage *pCmd, int pnum)
+int __fastcall On_PLRDAMAGE(TCmdDamage *pCmd, int pnum)
 {
 	if (pCmd->bPlr == myplr && currlevel != 0) {
 		if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel && pCmd->dwDam <= 192000) {
@@ -2423,7 +2423,7 @@ int __fastcall On_PLRDAMAGE(struct TCmdDamage *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_OPENDOOR(struct TCmdParam1 *pCmd, int pnum)
+int __fastcall On_OPENDOOR(TCmdParam1 *pCmd, int pnum)
 {
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
@@ -2446,7 +2446,7 @@ void __fastcall delta_sync_object(int oi, BYTE bCmd, BYTE bLevel)
 // 67618C: using guessed type char sgbDeltaChanged;
 // 679660: using guessed type char gbMaxPlayers;
 
-int __fastcall On_CLOSEDOOR(struct TCmdParam1 *pCmd, int pnum)
+int __fastcall On_CLOSEDOOR(TCmdParam1 *pCmd, int pnum)
 {
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
@@ -2459,7 +2459,7 @@ int __fastcall On_CLOSEDOOR(struct TCmdParam1 *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_OPERATEOBJ(struct TCmdParam1 *pCmd, int pnum)
+int __fastcall On_OPERATEOBJ(TCmdParam1 *pCmd, int pnum)
 {
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
@@ -2472,7 +2472,7 @@ int __fastcall On_OPERATEOBJ(struct TCmdParam1 *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_PLROPOBJ(struct TCmdParam2 *pCmd, int pnum)
+int __fastcall On_PLROPOBJ(TCmdParam2 *pCmd, int pnum)
 {
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
@@ -2485,7 +2485,7 @@ int __fastcall On_PLROPOBJ(struct TCmdParam2 *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_BREAKOBJ(struct TCmdParam2 *pCmd, int pnum)
+int __fastcall On_BREAKOBJ(TCmdParam2 *pCmd, int pnum)
 {
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
@@ -2498,7 +2498,7 @@ int __fastcall On_BREAKOBJ(struct TCmdParam2 *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_CHANGEPLRITEMS(struct TCmdChItem *pCmd, int pnum)
+int __fastcall On_CHANGEPLRITEMS(TCmdChItem *pCmd, int pnum)
 {
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
@@ -2508,7 +2508,7 @@ int __fastcall On_CHANGEPLRITEMS(struct TCmdChItem *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_DELPLRITEMS(struct TCmdDelItem *pCmd, int pnum)
+int __fastcall On_DELPLRITEMS(TCmdDelItem *pCmd, int pnum)
 {
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
@@ -2518,7 +2518,7 @@ int __fastcall On_DELPLRITEMS(struct TCmdDelItem *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_PLRLEVEL(struct TCmdParam1 *pCmd, int pnum)
+int __fastcall On_PLRLEVEL(TCmdParam1 *pCmd, int pnum)
 {
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
@@ -2528,7 +2528,7 @@ int __fastcall On_PLRLEVEL(struct TCmdParam1 *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_DROPITEM(struct TCmdPItem *pCmd, int pnum)
+int __fastcall On_DROPITEM(TCmdPItem *pCmd, int pnum)
 {
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
@@ -2538,7 +2538,7 @@ int __fastcall On_DROPITEM(struct TCmdPItem *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_SEND_PLRINFO(struct TCmdPlrInfoHdr *pCmd, int pnum)
+int __fastcall On_SEND_PLRINFO(TCmdPlrInfoHdr *pCmd, int pnum)
 {
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, pCmd, pCmd->wBytes + sizeof(*pCmd));
@@ -2548,12 +2548,12 @@ int __fastcall On_SEND_PLRINFO(struct TCmdPlrInfoHdr *pCmd, int pnum)
 	return pCmd->wBytes + sizeof(*pCmd);
 }
 
-int __fastcall On_ACK_PLRINFO(struct TCmdPlrInfoHdr *pCmd, int pnum)
+int __fastcall On_ACK_PLRINFO(TCmdPlrInfoHdr *pCmd, int pnum)
 {
 	return On_SEND_PLRINFO(pCmd, pnum);
 }
 
-int __fastcall On_PLAYER_JOINLEVEL(struct TCmdLocParam1 *pCmd, int pnum)
+int __fastcall On_PLAYER_JOINLEVEL(TCmdLocParam1 *pCmd, int pnum)
 {
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
@@ -2594,7 +2594,7 @@ int __fastcall On_PLAYER_JOINLEVEL(struct TCmdLocParam1 *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_ACTIVATEPORTAL(struct TCmdLocParam3 *pCmd, int pnum)
+int __fastcall On_ACTIVATEPORTAL(TCmdLocParam3 *pCmd, int pnum)
 {
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
@@ -2638,7 +2638,7 @@ void __fastcall delta_open_portal(int pnum, BYTE x, BYTE y, BYTE bLevel, BYTE bL
 }
 // 67618C: using guessed type char sgbDeltaChanged;
 
-int __fastcall On_DEACTIVATEPORTAL(struct TCmd *pCmd, int pnum)
+int __fastcall On_DEACTIVATEPORTAL(TCmd *pCmd, int pnum)
 {
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
@@ -2652,7 +2652,7 @@ int __fastcall On_DEACTIVATEPORTAL(struct TCmd *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_RETOWN(struct TCmd *pCmd, int pnum)
+int __fastcall On_RETOWN(TCmd *pCmd, int pnum)
 {
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
@@ -2667,7 +2667,7 @@ int __fastcall On_RETOWN(struct TCmd *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_SETSTR(struct TCmdParam1 *pCmd, int pnum)
+int __fastcall On_SETSTR(TCmdParam1 *pCmd, int pnum)
 {
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
@@ -2677,7 +2677,7 @@ int __fastcall On_SETSTR(struct TCmdParam1 *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_SETDEX(struct TCmdParam1 *pCmd, int pnum)
+int __fastcall On_SETDEX(TCmdParam1 *pCmd, int pnum)
 {
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
@@ -2687,7 +2687,7 @@ int __fastcall On_SETDEX(struct TCmdParam1 *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_SETMAG(struct TCmdParam1 *pCmd, int pnum)
+int __fastcall On_SETMAG(TCmdParam1 *pCmd, int pnum)
 {
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
@@ -2697,7 +2697,7 @@ int __fastcall On_SETMAG(struct TCmdParam1 *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_SETVIT(struct TCmdParam1 *pCmd, int pnum)
+int __fastcall On_SETVIT(TCmdParam1 *pCmd, int pnum)
 {
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
@@ -2707,12 +2707,12 @@ int __fastcall On_SETVIT(struct TCmdParam1 *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_STRING(struct TCmdString *pCmd, int pnum)
+int __fastcall On_STRING(TCmdString *pCmd, int pnum)
 {
 	return On_STRING2(pnum, pCmd);
 }
 
-int __fastcall On_STRING2(int pnum, struct TCmdString *pCmd)
+int __fastcall On_STRING2(int pnum, TCmdString *pCmd)
 {
 	int len = strlen(pCmd->str);
 	if (!gbBufferMsgs)
@@ -2721,7 +2721,7 @@ int __fastcall On_STRING2(int pnum, struct TCmdString *pCmd)
 	return len + 2; // length of string + nul terminator + sizeof(pCmd->bCmd)
 }
 
-int __fastcall On_SYNCQUEST(struct TCmdQuest *pCmd, int pnum)
+int __fastcall On_SYNCQUEST(TCmdQuest *pCmd, int pnum)
 {
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, pCmd, sizeof(*pCmd));
@@ -2734,7 +2734,7 @@ int __fastcall On_SYNCQUEST(struct TCmdQuest *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_ENDSHIELD(struct TCmd *pCmd, int pnum)
+int __fastcall On_ENDSHIELD(TCmd *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1 && pnum != myplr && currlevel == plr[pnum].plrlevel) {
 		int i;
@@ -2750,7 +2750,7 @@ int __fastcall On_ENDSHIELD(struct TCmd *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_CHEAT_EXPERIENCE(struct TCmd *pCmd, int pnum)
+int __fastcall On_CHEAT_EXPERIENCE(TCmd *pCmd, int pnum)
 {
 #ifdef _DEBUG
 	if (gbBufferMsgs == 1)
@@ -2763,7 +2763,7 @@ int __fastcall On_CHEAT_EXPERIENCE(struct TCmd *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_CHEAT_SPELL_LEVEL(struct TCmd *pCmd, int pnum)
+int __fastcall On_CHEAT_SPELL_LEVEL(TCmd *pCmd, int pnum)
 {
 #ifdef _DEBUG
 	if (gbBufferMsgs == 1)
@@ -2774,12 +2774,12 @@ int __fastcall On_CHEAT_SPELL_LEVEL(struct TCmd *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __cdecl On_DEBUG(struct TCmd *pCmd)
+int __cdecl On_DEBUG(TCmd *pCmd)
 {
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_NOVA(struct TCmdLoc *pCmd, int pnum)
+int __fastcall On_NOVA(TCmdLoc *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1 && currlevel == plr[pnum].plrlevel && pnum != myplr) {
 		ClrPlrPath(pnum);
@@ -2794,7 +2794,7 @@ int __fastcall On_NOVA(struct TCmdLoc *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_SETSHIELD(struct TCmd *pCmd, int pnum)
+int __fastcall On_SETSHIELD(TCmd *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1)
 		plr[pnum].pManaShield = 1;
@@ -2802,7 +2802,7 @@ int __fastcall On_SETSHIELD(struct TCmd *pCmd, int pnum)
 	return sizeof(*pCmd);
 }
 
-int __fastcall On_REMSHIELD(struct TCmd *pCmd, int pnum)
+int __fastcall On_REMSHIELD(TCmd *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1)
 		plr[pnum].pManaShield = 0;

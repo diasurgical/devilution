@@ -1724,7 +1724,7 @@ void __fastcall StartPlayerKill(int pnum, int earflag)
 	SetPlayerHitPoints(pnum, 0);
 }
 
-void __fastcall PlrDeadItem(int pnum, struct ItemStruct *itm, int xx, int yy)
+void __fastcall PlrDeadItem(int pnum, ItemStruct *itm, int xx, int yy)
 {
 	int x, y;
 	int i, j;

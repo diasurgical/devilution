@@ -60,7 +60,7 @@ void __fastcall RemovePlrFromMap(int pnum);
 void __fastcall StartPlrHit(int pnum, int dam, BOOL forcehit);
 void __fastcall RespawnDeadItem(ItemStruct *itm, int x, int y);
 void __fastcall StartPlayerKill(int pnum, int earflag);
-void __fastcall PlrDeadItem(int pnum, struct ItemStruct *itm, int xx, int yy);
+void __fastcall PlrDeadItem(int pnum, ItemStruct *itm, int xx, int yy);
 void __fastcall DropHalfPlayersGold(int pnum);
 void __fastcall SyncPlrKill(int pnum, int earflag);
 void __fastcall j_StartPlayerKill(int pnum, int earflag);
