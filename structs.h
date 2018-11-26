@@ -2,7 +2,7 @@
 // items
 //////////////////////////////////////////////////
 
-struct PLStruct {
+typedef struct PLStruct {
 	const char *PLName;
 	char PLPower;
 	int PLParam1;
@@ -15,9 +15,9 @@ struct PLStruct {
 	int PLMinVal;
 	int PLMaxVal;
 	int PLMultVal;
-};
+} PLStruct;
 
-struct UItemStruct {
+typedef struct UItemStruct {
 	char *UIName;
 	char UIItemId;
 	char UIMinLvl;
@@ -41,9 +41,9 @@ struct UItemStruct {
 	char UIPower6;
 	int UIParam11;
 	int UIParam12;
-};
+} UItemStruct;
 
-struct ItemDataStruct {
+typedef struct ItemDataStruct {
 	int iRnd;
 	char iClass;
 	char iLoc;
@@ -70,16 +70,16 @@ struct ItemDataStruct {
 	BOOL iUsable;
 	int iValue;
 	int iMaxValue;
-};
+} ItemDataStruct;
 
-struct ItemGetRecordStruct {
+typedef struct ItemGetRecordStruct {
 	int nSeed;
 	unsigned short wCI;
 	int nIndex;
 	int dwTimestamp;
-};
+} ItemGetRecordStruct;
 
-struct ItemStruct {
+typedef struct ItemStruct {
 	int _iSeed;
 	unsigned short _iCreateInfo;
 	int _itype;
@@ -152,13 +152,13 @@ struct ItemStruct {
 	BOOL _iStatFlag;
 	int IDidx;
 	int offs016C; // _oldlight or _iInvalid
-};
+} ItemStruct;
 
 //////////////////////////////////////////////////
 // player
 //////////////////////////////////////////////////
 
-struct PlayerStruct {
+typedef struct PlayerStruct {
 	int _pmode;
 	char walkpath[25];
 	unsigned char plractive;
@@ -337,18 +337,18 @@ struct PlayerStruct {
 	unsigned char *_pDData;
 	unsigned char *_pBData;
 	void *pReserved;
-};
+} PlayerStruct;
 
 //////////////////////////////////////////////////
 // textdat
 //////////////////////////////////////////////////
 
-struct TextDataStruct {
+typedef struct TextDataStruct {
 	char *txtstr;
 	int scrlltxt;
 	int txtspd;
 	int sfxnr;
-};
+} TextDataStruct;
 
 //////////////////////////////////////////////////
 // missiles
@@ -357,7 +357,7 @@ struct TextDataStruct {
 // TPDEF PTR FCN VOID MIADDPRC
 // TPDEF PTR FCN VOID MIPROC
 
-struct MissileData {
+typedef struct MissileData {
 	unsigned char mName;
 	void(__fastcall *mAddProc)(int, int, int, int, int, int, int, int, int);
 	void(__fastcall *mProc)(int);
@@ -367,9 +367,9 @@ struct MissileData {
 	unsigned char mFileNum;
 	int mlSFX;
 	int miSFX;
-};
+} MissileData;
 
-struct MisFileData {
+typedef struct MisFileData {
 	unsigned char mAnimName;
 	unsigned char mAnimFAmt;
 	char *mName;
@@ -379,15 +379,15 @@ struct MisFileData {
 	unsigned char mAnimLen[16];
 	int mAnimWidth[16];
 	int mAnimWidth2[16];
-};
+} MisFileData;
 
-struct ChainStruct {
+typedef struct ChainStruct {
 	int idx;
 	int _mitype;
 	int _mirange;
-};
+} ChainStruct;
 
-struct MissileStruct {
+typedef struct MissileStruct {
 	int _mitype;
 	int _mix;
 	int _miy;
@@ -432,45 +432,45 @@ struct MissileStruct {
 	int _miVar6;
 	int _miVar7;
 	int _miVar8;
-};
+} MissileStruct;
 
 //////////////////////////////////////////////////
 // effects/sound
 //////////////////////////////////////////////////
 
-struct CKINFO {
+typedef struct CKINFO {
 	DWORD dwSize;
 	DWORD dwOffset;
-};
+} CKINFO;
 
-struct TSnd {
+typedef struct TSnd {
 	WAVEFORMATEX fmt;
 	CKINFO chunk;
 	char *sound_path;
 	LPDIRECTSOUNDBUFFER DSB;
 	int start_tc;
-};
+} TSnd;
 
 #pragma pack(push, 1)
-struct TSFX {
+typedef struct TSFX {
 	unsigned char bFlags;
 	char *pszName;
 	TSnd *pSnd;
-};
+} TSFX;
 #pragma pack(pop)
 
 //////////////////////////////////////////////////
 // monster
 //////////////////////////////////////////////////
 
-struct AnimStruct {
+typedef struct AnimStruct {
 	BYTE *CMem;
 	BYTE *Data[8];
 	int Frames;
 	int Rate;
-};
+} AnimStruct;
 
-struct MonsterData {
+typedef struct MonsterData {
 	int flags; // width?
 	int mType;
 	char *GraphicType;
@@ -505,9 +505,9 @@ struct MonsterData {
 	unsigned short mTreasure;
 	char mSelFlag;
 	unsigned short mExp;
-};
+} MonsterData;
 
-struct CMonster {
+typedef struct CMonster {
 	unsigned char mtype;
 	// TODO: Add enum for place flags
 	unsigned char mPlaceFlags;
@@ -524,10 +524,9 @@ struct CMonster {
 	// A TRN file contains a sequence of colour transitions, represented
 	// as indexes into a palette. (a 256 byte array of palette indices)
 	unsigned char *trans_file;
-};
+} CMonster;
 
-struct MonsterStruct // note: missing field _mAFNum
-{
+typedef struct MonsterStruct { // note: missing field _mAFNum
 	int _mMTidx;
 	int _mmode; /* MON_MODE */
 	unsigned char _mgoal;
@@ -602,9 +601,9 @@ struct MonsterStruct // note: missing field _mAFNum
 	char *mName;
 	CMonster *MType;
 	MonsterData *MData;
-};
+} MonsterStruct;
 
-struct UniqMonstStruct {
+typedef struct UniqMonstStruct {
 	char mtype;
 	char *mName;
 	char *mTrnName;
@@ -619,13 +618,13 @@ struct UniqMonstStruct {
 	unsigned char mUnqVar1;
 	unsigned char mUnqVar2;
 	int mtalkmsg;
-};
+} UniqMonstStruct;
 
 //////////////////////////////////////////////////
 // objects
 //////////////////////////////////////////////////
 
-struct ObjDataStruct {
+typedef struct ObjDataStruct {
 	char oload;
 	char ofindex;
 	char ominlvl;
@@ -643,9 +642,9 @@ struct ObjDataStruct {
 	char oBreak;
 	char oSelFlag;
 	BOOL oTrapFlag;
-};
+} ObjDataStruct;
 
-struct ObjectStruct {
+typedef struct ObjectStruct {
 	int _otype;
 	int _ox;
 	int _oy;
@@ -676,79 +675,79 @@ struct ObjectStruct {
 	int _oVar6;
 	int _oVar7;
 	int _oVar8;
-};
+} ObjectStruct;
 
 //////////////////////////////////////////////////
 // portal
 //////////////////////////////////////////////////
 
-struct PortalStruct {
+typedef struct PortalStruct {
 	BOOL open;
 	int x;
 	int y;
 	int level;
 	int ltype;
 	BOOL setlvl;
-};
+} PortalStruct;
 
 //////////////////////////////////////////////////
 // msg
 //////////////////////////////////////////////////
 
 #pragma pack(push, 1)
-struct TCmd {
+typedef struct TCmd {
 	BYTE bCmd;
-};
+} TCmd;
 
-struct TCmdLoc {
-	BYTE bCmd;
-	BYTE x;
-	BYTE y;
-};
-
-struct TCmdLocParam1 {
+typedef struct TCmdLoc {
 	BYTE bCmd;
 	BYTE x;
 	BYTE y;
-	WORD wParam1;
-};
+} TCmdLoc;
 
-struct TCmdLocParam2 {
+typedef struct TCmdLocParam1 {
 	BYTE bCmd;
 	BYTE x;
 	BYTE y;
 	WORD wParam1;
-	WORD wParam2;
-};
+} TCmdLocParam1;
 
-struct TCmdLocParam3 {
+typedef struct TCmdLocParam2 {
 	BYTE bCmd;
 	BYTE x;
 	BYTE y;
 	WORD wParam1;
 	WORD wParam2;
-	WORD wParam3;
-};
+} TCmdLocParam2;
 
-struct TCmdParam1 {
+typedef struct TCmdLocParam3 {
 	BYTE bCmd;
-	WORD wParam1;
-};
-
-struct TCmdParam2 {
-	BYTE bCmd;
-	WORD wParam1;
-	WORD wParam2;
-};
-
-struct TCmdParam3 {
-	BYTE bCmd;
+	BYTE x;
+	BYTE y;
 	WORD wParam1;
 	WORD wParam2;
 	WORD wParam3;
-};
+} TCmdLocParam3;
 
-struct TCmdGolem {
+typedef struct TCmdParam1 {
+	BYTE bCmd;
+	WORD wParam1;
+} TCmdParam1;
+
+typedef struct TCmdParam2 {
+	BYTE bCmd;
+	WORD wParam1;
+	WORD wParam2;
+} TCmdParam2;
+
+typedef struct TCmdParam3 {
+	BYTE bCmd;
+	WORD wParam1;
+	WORD wParam2;
+	WORD wParam3;
+} TCmdParam3;
+
+typedef struct TCmdGolem {
 	BYTE bCmd;
 	BYTE _mx;
 	BYTE _my;
@@ -756,17 +755,17 @@ struct TCmdGolem {
 	BYTE _menemy;
 	int _mhitpoints;
 	BYTE _currlevel;
-};
+} TCmdGolem;
 
-struct TCmdQuest {
+typedef struct TCmdQuest {
 	BYTE bCmd;
 	BYTE q;
 	BYTE qstate;
 	BYTE qlog;
 	BYTE qvar1;
-};
+} TCmdQuest;
 
-struct TCmdGItem {
+typedef struct TCmdGItem {
 	BYTE bCmd;
 	BYTE bMaster;
 	BYTE bPnum;
@@ -785,9 +784,9 @@ struct TCmdGItem {
 	WORD wValue;
 	DWORD dwBuff;
 	DWORD dwTime;
-};
+} TCmdGItem;
 
-struct TCmdPItem {
+typedef struct TCmdPItem {
 	BYTE bCmd;
 	BYTE x;
 	BYTE y;
@@ -801,51 +800,51 @@ struct TCmdPItem {
 	BYTE bMCh;
 	WORD wValue;
 	DWORD dwBuff;
-};
+} TCmdPItem;
 
-struct TCmdChItem {
+typedef struct TCmdChItem {
 	BYTE bCmd;
 	BYTE bLoc;
 	WORD wIndx;
 	WORD wCI;
 	DWORD dwSeed;
 	BYTE bId;
-};
+} TCmdChItem;
 
-struct TCmdDelItem {
+typedef struct TCmdDelItem {
 	BYTE bCmd;
 	BYTE bLoc;
-};
+} TCmdDelItem;
 
-struct TCmdDamage {
+typedef struct TCmdDamage {
 	BYTE bCmd;
 	BYTE bPlr;
 	DWORD dwDam;
-};
+} TCmdDamage;
 
-struct TCmdPlrInfoHdr {
+typedef struct TCmdPlrInfoHdr {
 	BYTE bCmd;
 	WORD wOffset;
 	WORD wBytes;
-};
+} TCmdPlrInfoHdr;
 
-struct TCmdString {
+typedef struct TCmdString {
 	BYTE bCmd;
 	char str[MAX_SEND_STR_LEN];
-};
+} TCmdString;
 
-struct TFakeCmdPlr {
+typedef struct TFakeCmdPlr {
 	BYTE bCmd;
 	BYTE bPlr;
-};
+} TFakeCmdPlr;
 
-struct TFakeDropPlr {
+typedef struct TFakeDropPlr {
 	BYTE bCmd;
 	BYTE bPlr;
 	DWORD dwReason;
-};
+} TFakeDropPlr;
 
-struct TSyncHeader {
+typedef struct TSyncHeader {
 	BYTE bCmd;
 	BYTE bLevel;
 	WORD wLen;
@@ -869,17 +868,17 @@ struct TSyncHeader {
 	WORD wPInvCI;
 	DWORD dwPInvSeed;
 	BYTE bPInvId;
-};
+} TSyncHeader;
 
-struct TSyncMonster {
+typedef struct TSyncMonster {
 	BYTE _mndx;
 	BYTE _mx;
 	BYTE _my;
 	BYTE _menemy;
 	BYTE _mdelta;
-};
+} TSyncMonster;
 
-struct TPktHdr {
+typedef struct TPktHdr {
 	BYTE px;
 	BYTE py;
 	BYTE targx;
@@ -891,67 +890,67 @@ struct TPktHdr {
 	BYTE bdex;
 	WORD wCheck;
 	WORD wLen;
-};
+} TPktHdr;
 
-struct TPkt {
+typedef struct TPkt {
 	TPktHdr hdr;
 	BYTE body[493];
-};
+} TPkt;
 
-struct DMonsterStr {
+typedef struct DMonsterStr {
 	BYTE _mx;
 	BYTE _my;
 	BYTE _mdir;
 	BYTE _menemy;
 	BYTE _mactive;
 	int _mhitpoints;
-};
+} DMonsterStr;
 
-struct DObjectStr {
+typedef struct DObjectStr {
 	BYTE bCmd;
-};
+} DObjectStr;
 
-struct DLevel {
+typedef struct DLevel {
 	TCmdPItem item[MAXITEMS];
 	DObjectStr object[MAXOBJECTS];
 	DMonsterStr monster[MAXMONSTERS];
-};
+} DLevel;
 
-struct LocalLevel {
+typedef struct LocalLevel {
 	BYTE automapsv[40][40];
-};
+} LocalLevel;
 
-struct DPortal {
+typedef struct DPortal {
 	BYTE x;
 	BYTE y;
 	BYTE level;
 	BYTE ltype;
 	BYTE setlvl;
-};
+} DPortal;
 
-struct MultiQuests {
+typedef struct MultiQuests {
 	BYTE qstate;
 	BYTE qlog;
 	BYTE qvar1;
-};
+} MultiQuests;
 
-struct DJunk {
+typedef struct DJunk {
 	DPortal portal[MAXPORTAL];
 	MultiQuests quests[MAXMULTIQUESTS];
-};
+} DJunk;
 #pragma pack(pop)
 
-struct TMegaPkt {
-	TMegaPkt *pNext;
+typedef struct TMegaPkt {
+	struct TMegaPkt *pNext;
 	DWORD dwSpaceLeft;
 	BYTE data[32000];
-};
+} TMegaPkt;
 
 //////////////////////////////////////////////////
 // quests
 //////////////////////////////////////////////////
 
-struct QuestStruct {
+typedef struct QuestStruct {
 	unsigned char _qlevel;
 	unsigned char _qtype;
 	unsigned char _qactive;
@@ -964,9 +963,9 @@ struct QuestStruct {
 	unsigned char _qvar1;
 	unsigned char _qvar2;
 	int _qlog; /* char */
-};
+} QuestStruct;
 
-struct QuestData {
+typedef struct QuestData {
 	unsigned char _qdlvl;
 	char _qdmultlvl;
 	unsigned char _qlvlt;
@@ -976,7 +975,7 @@ struct QuestData {
 	int _qflags; /* unsigned char */
 	int _qdmsg;
 	char *_qlstr;
-};
+} QuestData;
 
 //////////////////////////////////////////////////
 // gamemenu/gmenu
@@ -984,11 +983,11 @@ struct QuestData {
 
 // TPDEF PTR FCN VOID TMenuFcn
 
-struct TMenuItem {
+typedef struct TMenuItem {
 	unsigned int dwFlags;
 	char *pszStr;
 	void(__cdecl *fnMenu)(); /* fix, should have one arg */
-};
+} TMenuItem;
 
 // TPDEF PTR FCN VOID TMenuUpdateFcn
 
@@ -996,7 +995,7 @@ struct TMenuItem {
 // spells
 //////////////////////////////////////////////////
 
-struct SpellData {
+typedef struct SpellData {
 	unsigned char sName;
 	unsigned char sManaCost;
 	unsigned char sType;
@@ -1015,19 +1014,19 @@ struct SpellData {
 	int sStaffMax;
 	int sBookCost;
 	int sStaffCost;
-};
+} SpellData;
 
 //////////////////////////////////////////////////
 // towners
 //////////////////////////////////////////////////
 
-struct TNQ {
+typedef struct TNQ {
 	unsigned char _qsttype;
 	unsigned char _qstmsg;
 	unsigned char _qstmsgact;
-};
+} TNQ;
 
-struct TownerStruct {
+typedef struct TownerStruct {
 	int _tmode;
 	int _ttype;
 	int _tx;
@@ -1061,9 +1060,9 @@ struct TownerStruct {
 	unsigned char *_tNAnim[8];
 	int _tNFrames;
 	unsigned char *_tNData;
-};
+} TownerStruct;
 
-struct QuestTalkData {
+typedef struct QuestTalkData {
 	int _qinfra;
 	int _qblkm;
 	int _qgarb;
@@ -1080,33 +1079,33 @@ struct QuestTalkData {
 	int _qpw;
 	int _qbone;
 	int _qvb;
-};
+} QuestTalkData;
 
 //////////////////////////////////////////////////
 // gendung
 //////////////////////////////////////////////////
 
-struct ScrollStruct {
+typedef struct ScrollStruct {
 	int _sxoff;
 	int _syoff;
 	int _sdx;
 	int _sdy;
 	int _sdir;
-};
+} ScrollStruct;
 
-struct THEME_LOC {
+typedef struct THEME_LOC {
 	int x;
 	int y;
 	int ttval;
 	int width;
 	int height;
-};
+} THEME_LOC;
 
 //////////////////////////////////////////////////
 // drlg
 //////////////////////////////////////////////////
 
-struct ShadowStruct {
+typedef struct ShadowStruct {
 	unsigned char strig;
 	unsigned char s1;
 	unsigned char s2;
@@ -1114,48 +1113,48 @@ struct ShadowStruct {
 	unsigned char nv1;
 	unsigned char nv2;
 	unsigned char nv3;
-};
+} ShadowStruct;
 
-struct HALLNODE {
+typedef struct HALLNODE {
 	int nHallx1;
 	int nHally1;
 	int nHallx2;
 	int nHally2;
 	int nHalldir;
-	HALLNODE *pNext;
-};
+	struct HALLNODE *pNext;
+} HALLNODE;
 
-struct ROOMNODE {
+typedef struct ROOMNODE {
 	int nRoomx1;
 	int nRoomy1;
 	int nRoomx2;
 	int nRoomy2;
 	int nRoomDest;
-};
+} ROOMNODE;
 
 //////////////////////////////////////////////////
 // themes
 //////////////////////////////////////////////////
 
-struct ThemeStruct {
+typedef struct ThemeStruct {
 	int ttype; /* aligned 4 */
 	char ttval;
-};
+} ThemeStruct;
 
 //////////////////////////////////////////////////
 // inv
 //////////////////////////////////////////////////
 
-struct InvXY {
+typedef struct InvXY {
 	int X;
 	int Y;
-};
+} InvXY;
 
 //////////////////////////////////////////////////
 // lighting
 //////////////////////////////////////////////////
 
-struct LightListStruct {
+typedef struct LightListStruct {
 	int _lx;
 	int _ly;
 	int _lradius;
@@ -1169,36 +1168,35 @@ struct LightListStruct {
 	int _xoff;
 	int _yoff;
 	int _lflags;
-};
+} LightListStruct;
 
 //////////////////////////////////////////////////
 // dead
 //////////////////////////////////////////////////
 
-struct DeadStruct {
+typedef struct DeadStruct {
 	unsigned char *_deadData[8];
 	int _deadFrame;
 	int _deadWidth;
 	int _deadWidth2;
 	char _deadtrans;
-};
+} DeadStruct;
 
 //////////////////////////////////////////////////
 // dx
 //////////////////////////////////////////////////
 
-struct ScreenRow {
+typedef struct ScreenRow {
 	char col_unused_1[64];
 	char pixels[640];
 	char col_unused_2[64];
-};
+} ScreenRow;
 
-struct Screen /* create union for work data vs visible data */
-{
+typedef struct Screen { /* create union for work data vs visible data */
 	ScreenRow row_unused_1[160];
 	ScreenRow row[480];
 	ScreenRow row_unused_2[16];
-};
+} Screen;
 
 //////////////////////////////////////////////////
 // storm
@@ -1209,7 +1207,7 @@ struct Screen /* create union for work data vs visible data */
 // TPDEF PTR FCN UCHAR SMSGIDLEPROC
 // TPDEF PTR FCN VOID SMSGHANDLER
 
-struct _SNETCAPS {
+typedef struct _SNETCAPS {
 	int size;
 	int flags;
 	int maxmessagesize;
@@ -1219,14 +1217,14 @@ struct _SNETCAPS {
 	int latencyms;
 	int defaultturnssec;
 	int defaultturnsintransit;
-};
+} _SNETCAPS;
 
-struct _SNETEVENT {
+typedef struct _SNETEVENT {
 	int eventid;
 	int playerid;
 	void *data;
 	int databytes;
-};
+} _SNETEVENT;
 
 // TPDEF PTR FCN UCHAR SNETABORTPROC
 // TPDEF PTR FCN UCHAR SNETCATEGORYPROC
@@ -1244,14 +1242,14 @@ struct _SNETEVENT {
 // TPDEF PTR FCN UCHAR SNETSELECTEDPROC
 // TPDEF PTR FCN UCHAR SNETSTATUSPROC
 
-struct _SNETPLAYERDATA {
+typedef struct _SNETPLAYERDATA {
 	int size;
 	char *playername;
 	char *playerdescription;
 	int reserved;
-};
+} _SNETPLAYERDATA;
 
-struct _SNETPROGRAMDATA {
+typedef struct _SNETPROGRAMDATA {
 	int size;
 	char *programname;
 	char *programdescription;
@@ -1267,9 +1265,9 @@ struct _SNETPROGRAMDATA {
 	char *registereduser;
 	int spawned;
 	int lcid;
-};
+} _SNETPROGRAMDATA;
 
-struct _SNETUIDATA {
+typedef struct _SNETUIDATA {
 	int size;
 	int uiflags;
 	HWND parentwindow;
@@ -1297,17 +1295,17 @@ struct _SNETUIDATA {
 	    char *, DWORD,  /* character name will be copied here */
 	    char *, DWORD,  /* character "description" will be copied here (used to advertise games) */
 	    BOOL *          /* new character? - unsure about this */
-	    );
+	);
 	void(__cdecl *changenamecallback)();
-};
+} _SNETUIDATA;
 
-struct _SNETVERSIONDATA {
+typedef struct _SNETVERSIONDATA {
 	int size;
 	char *versionstring;
 	char *executablefile;
 	char *originalarchivefile;
 	char *patcharchivefile;
-};
+} _SNETVERSIONDATA;
 
 // TPDEF PTR FCN UCHAR SNETSPIBIND
 // TPDEF PTR FCN UCHAR SNETSPIQUERY
@@ -1318,20 +1316,20 @@ struct _SNETVERSIONDATA {
 
 // TPDEF PTR FCN VOID PLAYSND
 
-struct _gamedata {
+typedef struct _gamedata {
 	int dwSeed;
 	unsigned char bDiff;
-};
+} _gamedata;
 
-struct _uidefaultstats {
+typedef struct _uidefaultstats {
 	unsigned short strength;
 	unsigned short magic;
 	unsigned short dexterity;
 	unsigned short vitality;
-};
+} _uidefaultstats;
 
-struct _uiheroinfo {
-	_uiheroinfo *next;
+typedef struct _uiheroinfo {
+	struct _uiheroinfo *next;
 	char name[16];
 	unsigned short level;
 	unsigned char heroclass;
@@ -1343,7 +1341,7 @@ struct _uiheroinfo {
 	int gold;
 	int hassaved;
 	int spawned;
-};
+} _uiheroinfo;
 
 // TPDEF PTR FCN UCHAR ENUMHEROPROC
 // TPDEF PTR FCN UCHAR ENUMHEROS
@@ -1358,7 +1356,7 @@ struct _uiheroinfo {
 //////////////////////////////////////////////////
 
 #pragma pack(push, 1)
-struct PkItemStruct {
+typedef struct PkItemStruct {
 	int iSeed;
 	short iCreateInfo;
 	short idx;
@@ -1369,9 +1367,9 @@ struct PkItemStruct {
 	char bMCh;
 	short wValue;
 	int dwBuff;
-};
+} PkItemStruct;
 
-struct PkPlayerStruct {
+typedef struct PkPlayerStruct {
 	FILETIME archiveTime;
 	char destAction;
 	char destParam1;
@@ -1411,14 +1409,14 @@ struct PkPlayerStruct {
 	short wReserved[8];
 	int pDiabloKillLevel;
 	int dwReserved[7];
-};
+} PkPlayerStruct;
 #pragma pack(pop)
 
 //////////////////////////////////////////////////
 // path
 //////////////////////////////////////////////////
 
-struct PATHNODE {
+typedef struct PATHNODE {
 	char f;
 	char h;
 	char g;
@@ -1427,7 +1425,7 @@ struct PATHNODE {
 	struct PATHNODE *Parent;
 	struct PATHNODE *Child[8];
 	struct PATHNODE *NextNode;
-};
+} PATHNODE;
 
 // TPDEF PTR FCN UCHAR CHECKFUNC1
 
@@ -1437,38 +1435,38 @@ struct PATHNODE {
 // sha
 //////////////////////////////////////////////////
 
-struct SHA1Context {
+typedef struct SHA1Context {
 	int state[5];
 	int count[2];
 	char buffer[64];
-};
+} SHA1Context;
 
 //////////////////////////////////////////////////
 // tmsg
 //////////////////////////////////////////////////
 
 #pragma pack(push, 1)
-struct TMsg;
+typedef struct TMsg TMsg;
 
-struct TMsgHdr {
+typedef struct TMsgHdr {
 	TMsg *pNext;
 	DWORD dwTime;
 	BYTE bLen;
-};
+} TMsgHdr;
 
-struct TMsg {
+typedef struct TMsg {
 	TMsgHdr hdr;
 	// this is actually alignment padding, but the message body is appended to the struct
 	// so it's convenient to use byte-alignment and name it "body"
 	unsigned char body[3];
-};
+} TMsg;
 #pragma pack(pop)
 
 //////////////////////////////////////////////////
 // mpqapi
 //////////////////////////////////////////////////
 
-struct _FILEHEADER {
+typedef struct _FILEHEADER {
 	int signature;
 	int headersize;
 	int filesize;
@@ -1479,20 +1477,20 @@ struct _FILEHEADER {
 	int hashcount;
 	int blockcount;
 	char pad[72];
-};
+} _FILEHEADER;
 
-struct _HASHENTRY {
+typedef struct _HASHENTRY {
 	int hashcheck[2];
 	int lcid;
 	int block;
-};
+} _HASHENTRY;
 
-struct _BLOCKENTRY {
+typedef struct _BLOCKENTRY {
 	int offset;
 	int sizealloc;
 	int sizefile;
 	int flags;
-};
+} _BLOCKENTRY;
 
 // TPDEF PTR FCN UCHAR TGetNameFcn
 
@@ -1502,18 +1500,18 @@ struct _BLOCKENTRY {
 // trigs
 //////////////////////////////////////////////////
 
-struct TriggerStruct {
+typedef struct TriggerStruct {
 	int _tx;
 	int _ty;
 	int _tmsg;
 	int _tlvl;
-};
+} TriggerStruct;
 
 //////////////////////////////////////////////////
 // stores
 //////////////////////////////////////////////////
 
-struct STextStruct {
+typedef struct STextStruct {
 	int _sx;
 	int _syoff;
 	char _sstr[128];
@@ -1522,13 +1520,13 @@ struct STextStruct {
 	int _sline;
 	int _ssel;
 	int _sval;
-};
+} STextStruct;
 
 //////////////////////////////////////////////////
 // wave
 //////////////////////////////////////////////////
 
-struct MEMFILE {
+typedef struct MEMFILE {
 	DWORD end;
 	LONG offset;
 	DWORD buf_len;
@@ -1536,23 +1534,23 @@ struct MEMFILE {
 	DWORD bytes_to_read;
 	BYTE *buf;
 	HANDLE file;
-};
+} MEMFILE;
 
 //////////////////////////////////////////////////
 // plrmsg
 //////////////////////////////////////////////////
 
-struct _plrmsg {
+typedef struct _plrmsg {
 	DWORD time;
 	unsigned char player;
 	char str[144];
-};
+} _plrmsg;
 
 //////////////////////////////////////////////////
 // capture
 //////////////////////////////////////////////////
 
-struct PCXHeader {
+typedef struct PCXHeader {
 	char manufacturer;
 	char version;
 	char encoding;
@@ -1567,31 +1565,31 @@ struct PCXHeader {
 	short paletteType;
 	short horzSize, vertSize;
 	char padding[54];
-};
+} PCXHeader;
 
 //////////////////////////////////////////////////
 // encrypt
 //////////////////////////////////////////////////
 
-struct TDataInfo {
+typedef struct TDataInfo {
 	BYTE *srcData;
 	DWORD srcOffset;
 	BYTE *destData;
 	DWORD destOffset;
 	DWORD size;
-};
+} TDataInfo;
 
 //////////////////////////////////////////////////
 // msgcmd
 //////////////////////////////////////////////////
 
-struct ServerCommand {
+typedef struct ServerCommand {
 	int field_0;
 	int field_4;
 	char command[128];
-};
+} ServerCommand;
 
-struct ChatCmd {
+typedef struct ChatCmd {
 	struct ChatCmd *next;
 	ServerCommand *extern_msgs[2];
-};
+} ChatCmd;
