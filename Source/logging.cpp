@@ -48,7 +48,7 @@ void __cdecl log_cleanup_mutex()
 	DeleteCriticalSection(&sgMemCrit);
 }
 
-void __cdecl log_flush(bool force_close)
+void __cdecl log_flush(BOOLEAN force_close)
 {
 	void *v1;                   // eax
 	DWORD NumberOfBytesWritten; // [esp+8h] [ebp-4h]

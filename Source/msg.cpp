@@ -437,7 +437,7 @@ void __fastcall delta_sync_golem(TCmdGolem *pG, int pnum, BYTE bLevel)
 void __fastcall delta_leave_sync(BYTE bLevel)
 {
 	unsigned char v1; // bl
-	bool v2;          // zf
+	BOOLEAN v2;          // zf
 	int v3;           // eax
 	int i;            // ebp
 	int v5;           // ecx
@@ -946,7 +946,7 @@ void __fastcall NetSendCmdQuest(BOOL bHiPri, BYTE q)
 void __fastcall NetSendCmdGItem(BOOL bHiPri, BYTE bCmd, BYTE mast, BYTE pnum, int ii)
 {
 	int v5;        // eax
-	bool v6;       // zf
+	BOOLEAN v6;       // zf
 	short v7;      // dx
 	short v8;      // bx
 	int v9;        // esi
@@ -1065,7 +1065,7 @@ void __fastcall NetSendCmdPItem(BOOL bHiPri, BYTE bCmd, BYTE x, BYTE y)
 {
 	int v4;        // eax
 	short *v5;     // edx
-	bool v6;       // zf
+	BOOLEAN v6;       // zf
 	short v7;      // dx
 	short v8;      // bx
 	int v9;        // esi
@@ -1151,7 +1151,7 @@ void __fastcall NetSendCmdDItem(BOOL bHiPri, int ii)
 {
 	int v2;        // eax
 	short *v3;     // edx
-	bool v4;       // zf
+	BOOLEAN v4;       // zf
 	short v5;      // dx
 	short v6;      // bx
 	int v7;        // esi
@@ -1238,7 +1238,7 @@ void __fastcall RemovePlrPortal(int pnum)
 
 int __fastcall ParseCmd(int pnum, TCmd *pCmd)
 {
-	bool v2;          // zf
+	BOOLEAN v2;          // zf
 	TCmd *v3;         // eax
 	char v4;          // dl
 	unsigned char v5; // bl

@@ -56,7 +56,7 @@ void __cdecl gamemenu_previous()
 
 void __cdecl gamemenu_enable_single()
 {
-	bool v0; // dl
+	BOOLEAN v0; // dl
 
 	gmenu_enable(&sgSingleMenu[3], gbValidSaveFile);
 	v0 = 0;

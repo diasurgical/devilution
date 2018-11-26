@@ -649,11 +649,11 @@ void __cdecl InitItemGFX()
 	memset(UniqueItemFlag, 0, sizeof(UniqueItemFlag));
 }
 
-bool __fastcall ItemPlace(int xp, int yp)
+BOOLEAN __fastcall ItemPlace(int xp, int yp)
 {
 	int v2;      // ecx
 	int v3;      // eax
-	bool result; // al
+	BOOLEAN result; // al
 
 	v2 = xp;
 	v3 = v2 * 112 + yp;
@@ -1101,7 +1101,7 @@ void __fastcall CalcSelfItems(int pnum)
 	int v4;           // edi
 	int *v5;          // eax
 	signed int v6;    // ebx
-	bool v7;          // zf
+	BOOLEAN v7;          // zf
 	char *v8;         // eax
 	signed int v9;    // [esp+Ch] [ebp-10h]
 	signed int v10;   // [esp+10h] [ebp-Ch]
@@ -1189,7 +1189,7 @@ void __fastcall CalcPlrItemMin(int pnum)
 	} while (v7);
 }
 
-bool __fastcall ItemMinStats(PlayerStruct *p, ItemStruct *x)
+BOOLEAN __fastcall ItemMinStats(PlayerStruct *p, ItemStruct *x)
 {
 	if (p->_pStrength < x->_iMinStr || p->_pMagic < x->_iMinMag || p->_pDexterity < x->_iMinDex)
 		return 0;
@@ -1458,7 +1458,7 @@ BOOL __fastcall ItemSpaceOk(int i, int j)
 	char v4; // cl
 	int v5;  // ecx
 	char v6; // cl
-	bool v7; // sf
+	BOOLEAN v7; // sf
 	char v8; // cl
 	char v9; // al
 
@@ -1498,7 +1498,7 @@ BOOL __fastcall ItemSpaceOk(int i, int j)
 	return 0;
 }
 
-bool __fastcall GetItemSpace(int x, int y, char inum)
+BOOLEAN __fastcall GetItemSpace(int x, int y, char inum)
 {
 	int v3;        // eax
 	int v4;        // edx
@@ -1671,7 +1671,7 @@ void __fastcall CalcItemValue(int i)
 {
 	int v1;  // ecx
 	int v2;  // esi
-	bool v3; // sf
+	BOOLEAN v3; // sf
 	int v4;  // esi
 
 	v1 = i;
@@ -2564,7 +2564,7 @@ int __fastcall RndUItem(int m)
 {
 	int ri;       // edx
 	int i;        // ebp
-	bool okflag;  // edi
+	BOOLEAN okflag;  // edi
 	int ril[512]; // [esp+0h] [ebp-800h]
 
 	if (m != -1) {
@@ -2638,7 +2638,7 @@ int __cdecl RndAllItems()
 int __fastcall RndTypeItems(int itype, int imid)
 {
 	int i;        // edi
-	bool okflag;  // esi
+	BOOLEAN okflag;  // esi
 	int ril[512]; // [esp+4h] [ebp-80Ch]
 	int ri;       // [esp+80Ch] [ebp-4h]
 
@@ -2666,7 +2666,7 @@ int __fastcall RndTypeItems(int itype, int imid)
 }
 // 421CB7: using guessed type int var_80C[512];
 
-int __fastcall CheckUnique(int i, int lvl, int uper, bool recreate)
+int __fastcall CheckUnique(int i, int lvl, int uper, BOOLEAN recreate)
 {
 	int numu;      // ebx
 	int j;         // esi
@@ -3208,8 +3208,8 @@ void __fastcall RespawnItem(int i, BOOL FlipFlag)
 void __fastcall DeleteItem(int ii, int i)
 {
 	int v2;  // eax
-	bool v3; // zf
-	bool v4; // sf
+	BOOLEAN v3; // zf
+	BOOLEAN v4; // sf
 
 	v2 = numitems - 1;
 	v3 = numitems == 1;
@@ -4159,9 +4159,9 @@ void __fastcall UseItem(int p, int Mid, int spl)
 	}
 }
 
-bool __fastcall StoreStatOk(ItemStruct *h)
+BOOLEAN __fastcall StoreStatOk(ItemStruct *h)
 {
-	bool sf; // al
+	BOOLEAN sf; // al
 
 	sf = 1;
 	if (plr[myplr]._pStrength < h->_iMinStr
@@ -4171,10 +4171,10 @@ bool __fastcall StoreStatOk(ItemStruct *h)
 	return sf;
 }
 
-bool __fastcall SmithItemOk(int i)
+BOOLEAN __fastcall SmithItemOk(int i)
 {
 	unsigned char v1; // cl
-	bool rv;          // eax
+	BOOLEAN rv;          // eax
 
 	v1 = AllItemsList[i].itype;
 	rv = 1;
@@ -4285,10 +4285,10 @@ void __fastcall SpawnSmith(int lvl)
 	SortSmith();
 }
 
-bool __fastcall PremiumItemOk(int i)
+BOOLEAN __fastcall PremiumItemOk(int i)
 {
 	unsigned char v1; // cl
-	bool rv;          // eax
+	BOOLEAN rv;          // eax
 
 	v1 = AllItemsList[i].itype;
 	rv = 1;
@@ -4371,9 +4371,9 @@ void __fastcall SpawnPremium(int lvl)
 }
 // 69FB38: using guessed type int talker;
 
-bool __fastcall WitchItemOk(int i)
+BOOLEAN __fastcall WitchItemOk(int i)
 {
-	bool rv;          // eax
+	BOOLEAN rv;          // eax
 	unsigned char v3; // dl
 	int v4;           // edx
 	int v5;           // ecx
@@ -4579,10 +4579,10 @@ void __fastcall SpawnBoy(int lvl)
 }
 // 6A8A3C: using guessed type int boylevel;
 
-bool __fastcall HealerItemOk(int i)
+BOOLEAN __fastcall HealerItemOk(int i)
 {
 	int v1;      // ecx
-	bool result; // eax
+	BOOLEAN result; // eax
 	int v3;      // esi
 
 	v1 = i;
@@ -4864,11 +4864,11 @@ int __cdecl ItemNoFlippy()
 	return r;
 }
 
-void __fastcall CreateSpellBook(int x, int y, int ispell, bool sendmsg, int delta)
+void __fastcall CreateSpellBook(int x, int y, int ispell, BOOLEAN sendmsg, int delta)
 {
 	int ii;    // edi
 	int idx;   // [esp+8h] [ebp-8h]
-	bool done; // [esp+Ch] [ebp-4h]
+	BOOLEAN done; // [esp+Ch] [ebp-4h]
 
 	done = 0;
 	idx = RndTypeItems(0, 24);

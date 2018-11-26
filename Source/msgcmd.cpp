@@ -64,7 +64,7 @@ void __cdecl msgcmd_send_chat()
 	}
 }
 
-bool __fastcall msgcmd_add_server_cmd_W(char *chat_message)
+BOOLEAN __fastcall msgcmd_add_server_cmd_W(char *chat_message)
 {
 	if (*chat_message != '/')
 		return 0;
@@ -119,11 +119,11 @@ void __fastcall msgcmd_free_event(ChatCmd *a1)
 	}
 }
 
-bool __fastcall msgcmd_delete_server_cmd_W(ChatCmd *cmd, ServerCommand *extern_msg)
+BOOLEAN __fastcall msgcmd_delete_server_cmd_W(ChatCmd *cmd, ServerCommand *extern_msg)
 {
 	char *v2;          // eax
 	ServerCommand *v3; // eax
-	bool v4;           // si
+	BOOLEAN v4;           // si
 	ChatCmd *ptr;      // [esp+Ch] [ebp+4h]
 
 	v2 = (char *)ptr;

@@ -27,8 +27,8 @@ void __fastcall PaletteFadeIn(int fr);
 void __fastcall PaletteFadeOut(int fr);
 void __cdecl palette_update_caves();
 void __fastcall palette_update_quest_palette(int n);
-bool __cdecl palette_get_colour_cycling();
-void __fastcall palette_set_color_cycling(bool enabled);
+BOOLEAN __cdecl palette_get_colour_cycling();
+void __fastcall palette_set_color_cycling(BOOLEAN enabled);
 
 /* rdata */
 
@@ -38,6 +38,6 @@ extern const int palette_inf; // weak
 
 extern int gamma_correction; // idb
 extern BOOL color_cycling_enabled;
-extern bool sgbFadedIn;
+extern BOOLEAN sgbFadedIn;
 
 #endif /* __PALETTE_H__ */

@@ -4,13 +4,13 @@
 
 int engine_cpp_init_value; // weak
 char gbPixelCol;           // automap pixel color 8-bit (palette entry)
-int dword_52B970;          // bool flip - if y < x
+int dword_52B970;          // BOOLEAN flip - if y < x
 int orgseed;               // weak
 int sgnWidth;
 int sglGameSeed; // weak
 static CRITICAL_SECTION sgMemCrit;
 int SeedCount;    // weak
-int dword_52B99C; // bool valid - if x/y are in bounds
+int dword_52B99C; // BOOLEAN valid - if x/y are in bounds
 
 const int engine_inf = 0x7F800000;      // weak
 const int rand_increment = 1;           // unused

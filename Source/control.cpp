@@ -354,7 +354,7 @@ void __cdecl DrawSpellList()
 	int v5;               // eax
 	int v6;               // esi
 	int v7;               // eax
-	bool v8;              // sf
+	BOOLEAN v8;              // sf
 	int v9;               // esi
 	int v10;              // eax
 	int v11;              // ebp
@@ -1619,7 +1619,7 @@ LABEL_33:
 // 4B8CC1: using guessed type char pcursobj;
 // 4B8CC2: using guessed type char pcursplr;
 
-void __fastcall control_print_info_str(int y, char *str, bool center, int lines)
+void __fastcall control_print_info_str(int y, char *str, BOOLEAN center, int lines)
 {
 	int v4;            // edi
 	char *v5;          // ebx
@@ -1693,7 +1693,7 @@ void __cdecl DrawChr()
 	int v2;      // ecx
 	int v3;      // eax
 	int v4;      // eax
-	bool v5;     // zf
+	BOOLEAN v5;     // zf
 	int v6;      // eax
 	int v7;      // edi
 	int v8;      // edi
@@ -2039,7 +2039,7 @@ void __cdecl CheckChrBtns()
 	int v2;           // ebx
 	int v3;           // edi
 	int v4;           // edx
-	bool v5;          // sf
+	BOOLEAN v5;          // sf
 	unsigned char v6; // of
 	int v7;           // edx
 	int v8;           // edx
@@ -2367,7 +2367,7 @@ void __cdecl DrawSpellBook()
 }
 // 4B8950: using guessed type int sbooktab;
 
-void __fastcall PrintSBookStr(int x, int y, bool cjustflag, char *pszStr, int bright)
+void __fastcall PrintSBookStr(int x, int y, BOOLEAN cjustflag, char *pszStr, int bright)
 {
 	char *v5;          // ebx
 	signed int v6;     // eax
@@ -2576,8 +2576,8 @@ void __fastcall control_set_gold_curs(int pnum)
 	int v1;           // ecx
 	int v2;           // eax
 	int *v3;          // eax
-	bool v4;          // zf
-	bool v5;          // sf
+	BOOLEAN v4;          // zf
+	BOOLEAN v5;          // sf
 	unsigned char v6; // of
 
 	v1 = pnum;

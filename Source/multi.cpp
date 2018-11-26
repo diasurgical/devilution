@@ -470,7 +470,7 @@ void __cdecl multi_process_network_packets()
 	TPktHdr *v1;       // ecx
 	TPktHdr *v2;       // edi
 	int v3;            // eax
-	bool v4;           // zf
+	BOOLEAN v4;           // zf
 	unsigned char *v5; // esi
 	int v6;            // ebx
 	int v7;            // eax
@@ -712,7 +712,7 @@ int __fastcall NetInit(int bSinglePlayer, int *pfExitProgram)
 	int v2; // ebx
 	int v4; // eax
 	//int v5; // ecx
-	bool v7; // zf
+	BOOLEAN v7; // zf
 	//int v9; // eax
 	//int v10; // eax
 	_SNETPROGRAMDATA ProgramData; // [esp+8h] [ebp-A8h]
@@ -986,7 +986,7 @@ void __fastcall multi_player_joins(int pnum, TCmdPlrInfoHdr *cmd, int a3)
 	TCmdPlrInfoHdr *v4; // edi
 	short *v5;          // esi
 	int v6;             // esi
-	bool v7;            // zf
+	BOOLEAN v7;            // zf
 	char *v8;           // eax
 	int v9;             // ST08_4
 	unsigned char *v10; // edx

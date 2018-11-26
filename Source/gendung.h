@@ -85,11 +85,11 @@ void __fastcall DRLG_AreaTrans(int num, unsigned char *List);
 void __cdecl DRLG_InitSetPC();
 void __cdecl DRLG_SetPC();
 void __fastcall Make_SetPC(int x, int y, int w, int h);
-bool __fastcall DRLG_WillThemeRoomFit(int floor, int x, int y, int minSize, int maxSize, int *width, int *height);
+BOOLEAN __fastcall DRLG_WillThemeRoomFit(int floor, int x, int y, int minSize, int maxSize, int *width, int *height);
 void __fastcall DRLG_CreateThemeRoom(int themeIndex);
 void __fastcall DRLG_PlaceThemeRooms(int minSize, int maxSize, int floor, int freq, int rndSize);
 void __cdecl DRLG_HoldThemeRooms();
-bool __fastcall SkipThemeRoom(int x, int y);
+BOOLEAN __fastcall SkipThemeRoom(int x, int y);
 void __cdecl InitLevels();
 
 #endif /* __GENDUNG_H__ */

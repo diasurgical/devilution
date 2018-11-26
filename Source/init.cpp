@@ -13,7 +13,7 @@ void *diabdat_mpq;
 char diabdat_mpq_path[260];
 void *patch_rt_mpq;
 int killed_mom_parent; // weak
-bool screensaver_enabled_prev;
+BOOLEAN screensaver_enabled_prev;
 
 const int init_inf = 0x7F800000; // weak
 
@@ -31,7 +31,7 @@ struct init_cpp_init {
 // 47AE20: using guessed type int init_inf;
 // 63497C: using guessed type int init_cpp_init_value;
 
-void __fastcall init_cleanup(bool show_cursor)
+void __fastcall init_cleanup(BOOLEAN show_cursor)
 {
 	int v1; // edi
 
@@ -88,7 +88,7 @@ void __fastcall init_run_office(char *dir)
 {
 	char *v1;                              // esi
 	HANDLE v2;                             // ebx
-	bool v3;                               // zf
+	BOOLEAN v3;                               // zf
 	HWND v4;                               // eax
 	char Directory[260];                   // [esp+8h] [ebp-348h]
 	char FileName[260];                    // [esp+10Ch] [ebp-244h]
@@ -125,14 +125,14 @@ void __fastcall init_run_office(char *dir)
 	}
 }
 
-void __fastcall init_disable_screensaver(bool disable)
+void __fastcall init_disable_screensaver(BOOLEAN disable)
 {
-	bool v1;        // al
+	BOOLEAN v1;        // al
 	char Data[16];  // [esp+4h] [ebp-20h]
 	DWORD Type;     // [esp+14h] [ebp-10h]
 	DWORD cbData;   // [esp+18h] [ebp-Ch]
 	HKEY phkResult; // [esp+1Ch] [ebp-8h]
-	bool v6;        // [esp+20h] [ebp-4h]
+	BOOLEAN v6;        // [esp+20h] [ebp-4h]
 
 	// BUGFIX: this is probably the worst possible way to do this. Alternatives: ExtEscape() with SETPOWERMANAGEMENT,
 	// SystemParametersInfo() with SPI_SETSCREENSAVEACTIVE/SPI_SETPOWEROFFACTIVE/SPI_SETLOWPOWERACTIVE
@@ -269,7 +269,7 @@ void __cdecl init_archives()
 	patch_rt_mpq = init_test_access(patch_rt_mpq_path, "\\patch_rt.mpq", "DiabloInstall", 2000, 0);
 }
 
-void *__fastcall init_test_access(char *mpq_path, char *mpq_name, char *reg_loc, int flags, bool on_cd)
+void *__fastcall init_test_access(char *mpq_path, char *mpq_name, char *reg_loc, int flags, BOOLEAN on_cd)
 {
 	char *v5;           // esi
 	char *v7;           // eax
@@ -442,7 +442,7 @@ LRESULT __stdcall MainWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 }
 // 52571C: using guessed type int drawpanflag;
 
-void __fastcall init_activate_window(HWND hWnd, bool bActive)
+void __fastcall init_activate_window(HWND hWnd, BOOLEAN bActive)
 {
 	LONG dwNewLong; // eax
 

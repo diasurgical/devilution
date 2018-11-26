@@ -135,7 +135,7 @@ void __cdecl SetAllSpellsCheat()
 	SetSpellLevelCheat(SPL_BONESPIRIT, 1);
 }
 
-void __fastcall PrintDebugPlayer(bool bNextPlayer)
+void __fastcall PrintDebugPlayer(BOOLEAN bNextPlayer)
 {
 	char dstr[128]; // [esp+Ch] [ebp-80h]
 
@@ -171,7 +171,7 @@ void __cdecl PrintDebugQuest()
 
 void __fastcall PrintDebugMonster(int m)
 {
-	bool bActive;   // ecx
+	BOOLEAN bActive;   // ecx
 	int i;          // eax
 	char dstr[128]; // [esp+Ch] [ebp-80h]
 

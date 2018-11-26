@@ -3,7 +3,7 @@
 #define __GMENU_H__
 
 extern void *optbar_cel;
-extern bool byte_634464; // weak
+extern BOOLEAN byte_634464; // weak
 extern void *PentSpin_cel;
 extern TMenuItem *sgpCurrItem;
 extern void *BigTGold_cel;
@@ -29,7 +29,7 @@ int __fastcall gmenu_get_lfont(TMenuItem *pItem);
 int __fastcall gmenu_presskeys(int a1);
 void __fastcall gmenu_left_right(int a1);
 int __fastcall gmenu_on_mouse_move(LPARAM lParam);
-bool __fastcall gmenu_valid_mouse_pos(int *plOffset);
+BOOLEAN __fastcall gmenu_valid_mouse_pos(int *plOffset);
 int __fastcall gmenu_left_mouse(int a1);
 void __fastcall gmenu_enable(TMenuItem *pMenuItem, BOOL enable);
 void __fastcall gmenu_slider_1(TMenuItem *pItem, int min, int max, int gamma);

@@ -126,7 +126,7 @@ BYTE *__fastcall CaptureEnc(BYTE *src, BYTE *dst, int width)
 
 HANDLE __fastcall CaptureFile(char *dst_path)
 {
-	bool num_used[100];
+	BOOLEAN num_used[100];
 	int free_num;
 	_finddata_t finder;
 

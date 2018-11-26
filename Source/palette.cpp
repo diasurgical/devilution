@@ -14,7 +14,7 @@ const int palette_inf = 0x7F800000; // weak
 
 int gamma_correction = 100; // idb
 BOOL color_cycling_enabled = TRUE;
-bool sgbFadedIn = 1;
+BOOLEAN sgbFadedIn = 1;
 
 struct palette_cpp_init {
 	palette_cpp_init()
@@ -286,12 +286,12 @@ void __fastcall palette_update_quest_palette(int n)
 	palette_update();
 }
 
-bool __cdecl palette_get_colour_cycling()
+BOOLEAN __cdecl palette_get_colour_cycling()
 {
 	return color_cycling_enabled;
 }
 
-void __fastcall palette_set_color_cycling(bool enabled)
+void __fastcall palette_set_color_cycling(BOOLEAN enabled)
 {
 	color_cycling_enabled = enabled;
 }

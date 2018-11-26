@@ -240,7 +240,7 @@ LABEL_29:
 // 679660: using guessed type char gbMaxPlayers;
 // 69BE90: using guessed type int qline;
 
-bool __cdecl ForceQuests()
+BOOLEAN __cdecl ForceQuests()
 {
 	QuestStruct *v0; // eax
 	int v1;          // esi

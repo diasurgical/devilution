@@ -89,7 +89,7 @@ void __cdecl DrawDiabloMsg()
 	int v12;             // esi
 	signed int v13;      // esi
 	unsigned char v14;   // bl
-	bool v15;            // zf
+	BOOLEAN v15;            // zf
 	signed int v16;      // [esp+Ch] [ebp-8h]
 	signed int v17;      // [esp+Ch] [ebp-8h]
 	signed int screen_x; // [esp+10h] [ebp-4h]

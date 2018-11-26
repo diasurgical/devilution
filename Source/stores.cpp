@@ -786,10 +786,10 @@ void __fastcall S_ScrollSPBuy(int idx)
 // 6A8A28: using guessed type int stextsel;
 // 6AA700: using guessed type int stextdown;
 
-bool __cdecl S_StartSPBuy()
+BOOLEAN __cdecl S_StartSPBuy()
 {
 	int *v0;     // eax
-	bool result; // al
+	BOOLEAN result; // al
 	int v2;      // ST10_4
 
 	storenumh = 0;
@@ -829,7 +829,7 @@ bool __cdecl S_StartSPBuy()
 // 6A6BB8: using guessed type int stextscrl;
 // 6A8A28: using guessed type int stextsel;
 
-bool __fastcall SmithSellOk(int i)
+BOOLEAN __fastcall SmithSellOk(int i)
 {
 	if (plr[myplr].InvList[i]._itype != ITYPE_NONE
 	    && plr[myplr].InvList[i]._itype
@@ -892,7 +892,7 @@ void __fastcall S_ScrollSSell(int idx)
 void __cdecl S_StartSSell()
 {
 	int i;       // eax
-	bool sellok; // [esp+14h] [ebp-4h]
+	BOOLEAN sellok; // [esp+14h] [ebp-4h]
 
 	stextsize = 1;
 	sellok = 0;
@@ -943,7 +943,7 @@ void __cdecl S_StartSSell()
 // 6A09E4: using guessed type int stextsmax;
 // 6A6BB8: using guessed type int stextscrl;
 
-bool __fastcall SmithRepairOk(int i)
+BOOLEAN __fastcall SmithRepairOk(int i)
 {
 	if (plr[myplr].InvList[i]._itype != ITYPE_NONE
 	    && plr[myplr].InvList[i]._itype
@@ -1166,9 +1166,9 @@ void __cdecl S_StartWBuy()
 // 6A09E4: using guessed type int stextsmax;
 // 6A6BB8: using guessed type int stextscrl;
 
-bool __fastcall WitchSellOk(int i)
+BOOLEAN __fastcall WitchSellOk(int i)
 {
-	bool rv;        // al
+	BOOLEAN rv;        // al
 	ItemStruct *pI; // edx
 
 	rv = 0;
@@ -1192,7 +1192,7 @@ bool __fastcall WitchSellOk(int i)
 void __cdecl S_StartWSell()
 {
 	int i;       // eax
-	bool sellok; // [esp+18h] [ebp-8h]
+	BOOLEAN sellok; // [esp+18h] [ebp-8h]
 
 	stextsize = 1;
 	sellok = 0;
@@ -1258,9 +1258,9 @@ void __cdecl S_StartWSell()
 // 6A09E4: using guessed type int stextsmax;
 // 6A6BB8: using guessed type int stextscrl;
 
-bool __fastcall WitchRechargeOk(int i)
+BOOLEAN __fastcall WitchRechargeOk(int i)
 {
-	bool rv; // al
+	BOOLEAN rv; // al
 
 	rv = 0;
 	if (plr[myplr].InvList[i]._itype == ITYPE_STAFF
@@ -1614,9 +1614,9 @@ void __cdecl S_StartStory()
 // 6A09E0: using guessed type char stextsize;
 // 6A6BB8: using guessed type int stextscrl;
 
-bool __fastcall IdItemOk(ItemStruct *i)
+BOOLEAN __fastcall IdItemOk(ItemStruct *i)
 {
-	bool result; // al
+	BOOLEAN result; // al
 
 	result = 0;
 	if (i->_itype != -1) {
@@ -1639,7 +1639,7 @@ void __fastcall AddStoreHoldId(ItemStruct itm, int i)
 void __cdecl S_StartSIdentify()
 {
 	ItemStruct itm; // [esp-170h] [ebp-18Ch]
-	bool idok;      // [esp+10h] [ebp-Ch]
+	BOOLEAN idok;      // [esp+10h] [ebp-Ch]
 	int i;          // [esp+14h] [ebp-8h]
 
 	idok = 0;
@@ -2428,7 +2428,7 @@ void __cdecl SmithBuyItem()
 	int idx;        // eax
 	ItemStruct *v1; // edx
 	ItemStruct *v2; // edi
-	bool v3;        // zf
+	BOOLEAN v3;        // zf
 
 	TakePlrsMoney(plr[myplr].HoldItem._iIvalue);
 	if (plr[myplr].HoldItem._iMagical == ITEM_QUALITY_NORMAL)
@@ -2507,7 +2507,7 @@ void __cdecl SmithBuyPItem()
 {
 	int xx;  // ecx
 	int idx; // eax
-	bool v2; // sf
+	BOOLEAN v2; // sf
 	int v3;  // eax
 	int i;   // edx
 
@@ -2541,7 +2541,7 @@ void __cdecl SmithBuyPItem()
 void __cdecl S_SPBuyEnter()
 {
 	int v0;   // eax
-	bool v1;  // sf
+	BOOLEAN v1;  // sf
 	int v2;   // eax
 	int v3;   // ecx
 	int v4;   // edx
@@ -2607,7 +2607,7 @@ void __cdecl S_SPBuyEnter()
 // 6A8A24: using guessed type int stextvhold;
 // 6A8A28: using guessed type int stextsel;
 
-bool __fastcall StoreGoldFit(int idx)
+BOOLEAN __fastcall StoreGoldFit(int idx)
 {
 	int cost;    // edi
 	int i;       // ecx
@@ -2650,7 +2650,7 @@ bool __fastcall StoreGoldFit(int idx)
 
 void __fastcall PlaceStoreGold(int v)
 {
-	bool done; // ecx
+	BOOLEAN done; // ecx
 	int ii;    // ebp
 	int xx;    // esi
 	int yy;    // ST20_4
@@ -2682,7 +2682,7 @@ void __cdecl StoreSellItem()
 	char v1;          // al
 	int v2;           // eax
 	int cost;         // ebp
-	bool v4;          // sf
+	BOOLEAN v4;          // sf
 	unsigned char v5; // of
 	unsigned int v6;  // eax
 	int v8;           // edx
@@ -2808,7 +2808,7 @@ void __cdecl S_SRepairEnter()
 	int idx;          // eax
 	int v1;           // edx
 	int v2;           // ecx
-	bool v3;          // sf
+	BOOLEAN v3;          // sf
 	unsigned char v4; // of
 	char v5;          // cl
 
@@ -3006,7 +3006,7 @@ void __cdecl S_WRechargeEnter()
 	int idx;          // eax
 	int v1;           // edx
 	int v2;           // ecx
-	bool v3;          // sf
+	BOOLEAN v3;          // sf
 	unsigned char v4; // of
 	char v5;          // cl
 
@@ -3085,16 +3085,16 @@ void __cdecl BoyBuyItem()
 void __cdecl HealerBuyItem()
 {
 	int idx;          // esi
-	bool v1;          // sf
+	BOOLEAN v1;          // sf
 	unsigned char v2; // of
 	int v3;           // eax
 	int v4;           // ecx
-	bool v5;          // sf
+	BOOLEAN v5;          // sf
 	unsigned char v6; // of
 	int v7;           // eax
 	ItemStruct *v8;   // edx
 	ItemStruct *v9;   // edi
-	bool v10;         // zf
+	BOOLEAN v10;         // zf
 
 	idx = stextvhold + ((stextlhold - stextup) >> 2);
 	if (gbMaxPlayers == 1) {
@@ -3409,7 +3409,7 @@ void __cdecl S_SIDEnter()
 	int idx;          // eax
 	int v1;           // edx
 	int v2;           // ecx
-	bool v3;          // sf
+	BOOLEAN v3;          // sf
 	unsigned char v4; // of
 	char v5;          // cl
 
@@ -3666,7 +3666,7 @@ void __cdecl STextEnter()
 
 void __cdecl CheckStoreBtn()
 {
-	bool v0;          // sf
+	BOOLEAN v0;          // sf
 	unsigned char v1; // of
 	int v2;           // eax
 	int *v3;          // ecx

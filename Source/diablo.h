@@ -52,7 +52,7 @@ LRESULT CALLBACK DisableInputWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
 LRESULT CALLBACK GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 BOOL __fastcall LeftMouseDown(int a1);
 BOOL __fastcall LeftMouseCmd(BOOL a1);
-bool __cdecl TryIconCurs();
+BOOLEAN __cdecl TryIconCurs();
 void __cdecl LeftMouseUp();
 void __cdecl RightMouseDown();
 void __fastcall j_gmenu_on_mouse_move(LPARAM lParam);
@@ -66,9 +66,9 @@ void __cdecl LoadLvlGFX();
 void __cdecl LoadAllGFX();
 void __fastcall CreateLevel(int lvldir);
 void __fastcall LoadGameLevel(BOOL firstflag, int lvldir);
-void __fastcall game_loop(bool bStartup);
+void __fastcall game_loop(BOOLEAN bStartup);
 void __cdecl game_logic();
-void __fastcall timeout_cursor(bool bTimeout);
+void __fastcall timeout_cursor(BOOLEAN bTimeout);
 void __cdecl diablo_color_cyc_logic();
 
 /* data */

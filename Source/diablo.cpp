@@ -147,7 +147,7 @@ BOOL __fastcall StartGame(BOOL bNewGame, BOOL bSinglePlayer)
 void __fastcall run_game_loop(unsigned int uMsg)
 {
 	//int v3; // eax
-	bool v5; // zf
+	BOOLEAN v5; // zf
 	//int v6; // eax
 	signed int v7;     // [esp+8h] [ebp-24h]
 	WNDPROC saveProc;  // [esp+Ch] [ebp-20h]
@@ -852,7 +852,7 @@ BOOL __fastcall LeftMouseDown(int a1)
 
 BOOL __fastcall LeftMouseCmd(BOOL a1)
 {
-	bool v2; // zf
+	BOOLEAN v2; // zf
 	BOOL v3; // ecx
 	unsigned char v4; // dl
 	unsigned char v6; // dl
@@ -947,7 +947,7 @@ LABEL_49:
 	return 0;
 }
 
-bool __cdecl TryIconCurs()
+BOOLEAN __cdecl TryIconCurs()
 {
 	unsigned char v0; // dl
 	int v1;           // edx
@@ -1936,7 +1936,7 @@ void __fastcall LoadGameLevel(BOOL firstflag, int lvldir)
 // 5CF31D: using guessed type char setlevel;
 // 679660: using guessed type char gbMaxPlayers;
 
-void __fastcall game_loop(bool bStartup)
+void __fastcall game_loop(BOOLEAN bStartup)
 {
 	int v1; // ecx
 	int v2; // esi
@@ -2011,7 +2011,7 @@ void __cdecl game_logic()
 // 525740: using guessed type int PauseMode;
 // 679660: using guessed type char gbMaxPlayers;
 
-void __fastcall timeout_cursor(bool bTimeout)
+void __fastcall timeout_cursor(BOOLEAN bTimeout)
 {
 	if (bTimeout) {
 		if (sgnTimeoutCurs == CURSOR_NONE && !sgbMouseDown) {

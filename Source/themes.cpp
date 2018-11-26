@@ -6,17 +6,17 @@ int numthemes; // idb
 BOOL armorFlag;
 int ThemeGoodIn[4];
 BOOL weaponFlag;
-bool treasureFlag;  // weak
-bool mFountainFlag; // weak
-bool cauldronFlag;  // weak
-bool tFountainFlag; // weak
+BOOLEAN treasureFlag;  // weak
+BOOLEAN mFountainFlag; // weak
+BOOLEAN cauldronFlag;  // weak
+BOOLEAN tFountainFlag; // weak
 int zharlib;
 int themex;    // idb
 int themey;    // idb
 int themeVar1; // idb
 ThemeStruct themes[MAXTHEMES];
-bool pFountainFlag; // weak
-bool bFountainFlag; // weak
+BOOLEAN pFountainFlag; // weak
+BOOLEAN bFountainFlag; // weak
 BOOL bCrossFlag;
 
 int ThemeGood[4] = { THEME_GOATSHRINE, THEME_SHRINE, THEME_SKELROOM, THEME_LIBRARY };
@@ -49,7 +49,7 @@ int trm3y[9] = {
 	1, 1, 1
 };
 
-bool __fastcall TFit_Shrine(int i)
+BOOLEAN __fastcall TFit_Shrine(int i)
 {
 	int v1;        // ecx
 	int v2;        // esi
@@ -110,7 +110,7 @@ bool __fastcall TFit_Shrine(int i)
 	return 1;
 }
 
-bool __fastcall TFit_Obj5(int t)
+BOOLEAN __fastcall TFit_Obj5(int t)
 {
 	int v2;         // ebx
 	int v3;         // esi
@@ -177,7 +177,7 @@ bool __fastcall TFit_Obj5(int t)
 	}
 }
 
-bool __fastcall TFit_SkelRoom(int t)
+BOOLEAN __fastcall TFit_SkelRoom(int t)
 {
 	int i; // esi
 
@@ -199,7 +199,7 @@ bool __fastcall TFit_SkelRoom(int t)
 	return TFit_Obj5(t);
 }
 
-bool __fastcall TFit_GoatShrine(int t)
+BOOLEAN __fastcall TFit_GoatShrine(int t)
 {
 	int i; // esi
 
@@ -252,7 +252,7 @@ BOOL __fastcall CheckThemeObj3(int xp, int yp, int t, int f)
 	return 0;
 }
 
-bool __fastcall TFit_Obj3(int t)
+BOOLEAN __fastcall TFit_Obj3(int t)
 {
 	int yp;         // edi
 	int xp;         // esi
@@ -281,14 +281,14 @@ bool __fastcall TFit_Obj3(int t)
 	return 0;
 }
 
-bool __fastcall CheckThemeReqs(int t)
+BOOLEAN __fastcall CheckThemeReqs(int t)
 {
-	bool rv; // al
+	BOOLEAN rv; // al
 	int v2;  // ecx
 	int v3;  // ecx
 	int v4;  // ecx
 	int v5;  // ecx
-	bool v6; // zf
+	BOOLEAN v6; // zf
 	int v7;  // ecx
 	int v8;  // ecx
 	int v9;  // ecx
@@ -358,9 +358,9 @@ bool __fastcall CheckThemeReqs(int t)
 // 6AAC08: using guessed type int pFountainFlag;
 // 6AAC0C: using guessed type int bFountainFlag;
 
-bool __fastcall SpecialThemeFit(int i, int t)
+BOOLEAN __fastcall SpecialThemeFit(int i, int t)
 {
-	bool rv; // eax
+	BOOLEAN rv; // eax
 
 	rv = CheckThemeReqs(t);
 	switch (t) {
@@ -447,7 +447,7 @@ bool __fastcall SpecialThemeFit(int i, int t)
 // 6AAC08: using guessed type int pFountainFlag;
 // 6AAC0C: using guessed type int bFountainFlag;
 
-bool __fastcall CheckThemeRoom(int tv)
+BOOLEAN __fastcall CheckThemeRoom(int tv)
 {
 	int v1;         // esi
 	int *v2;        // edx

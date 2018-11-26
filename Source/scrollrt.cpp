@@ -247,7 +247,7 @@ void __fastcall DrawClippedMissile(int x, int y, int sx, int sy, int a5, int a6,
 	}
 }
 
-void __fastcall DrawDeadPlayer(int x, int y, int sx, int sy, int a5, int a6, bool clipped)
+void __fastcall DrawDeadPlayer(int x, int y, int sx, int sy, int a5, int a6, BOOLEAN clipped)
 {
 	int v7;         // ebx
 	int *v8;        // esi
@@ -1782,7 +1782,7 @@ void __fastcall scrollrt_draw_upper(int x, int y, int sx, int sy, int a5, int a6
 	int v27;            // eax
 	int v28;            // eax
 	int v29;            // eax
-	bool v30;           // zf
+	BOOLEAN v30;           // zf
 	int v31;            // ecx
 	int v32;            // eax
 	unsigned char *v33; // esi
@@ -2979,8 +2979,8 @@ void __fastcall DoBlitScreen(int dwX, int dwY, int dwWdt, int dwHgt)
 
 void __cdecl DrawAndBlit()
 {
-	bool ddsdesc; // ebp
-	bool ctrlPan; // esi
+	BOOLEAN ddsdesc; // ebp
+	BOOLEAN ctrlPan; // esi
 	int dwHgt;    // edi
 
 	if (gbRunGame) {

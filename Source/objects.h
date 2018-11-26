@@ -16,7 +16,7 @@ extern int numobjfiles; // weak
 
 void __cdecl InitObjectGFX();
 void __cdecl FreeObjectGFX();
-bool __fastcall RndLocOk(int xp, int yp);
+BOOLEAN __fastcall RndLocOk(int xp, int yp);
 void __fastcall InitRndLocObj(int min, int max, int objtype);
 void __fastcall InitRndLocBigObj(int min, int max, int objtype);
 void __fastcall InitRndLocObj5x5(int min, int max, int objtype);
@@ -28,7 +28,7 @@ void __cdecl InitRndBarrels();
 void __fastcall AddL1Objs(int x1, int y1, int x2, int y2);
 void __fastcall AddL2Objs(int x1, int y1, int x2, int y2);
 void __fastcall AddL3Objs(int x1, int y1, int x2, int y2);
-bool __fastcall WallTrapLocOk(int xp, int yp);
+BOOLEAN __fastcall WallTrapLocOk(int xp, int yp);
 void __cdecl AddL2Torches();
 BOOL __fastcall TorchLocOK(int xp, int yp);
 void __cdecl AddObjTraps();
@@ -123,7 +123,7 @@ void __fastcall OperateArmorStand(int pnum, int i, unsigned char sendmsg);
 int __fastcall FindValidShrine(int i);
 void __fastcall OperateGoatShrine(int pnum, int i, int sType);
 void __fastcall OperateCauldron(int pnum, int i, int sType);
-bool __fastcall OperateFountains(int pnum, int i);
+BOOLEAN __fastcall OperateFountains(int pnum, int i);
 void __fastcall OperateWeaponRack(int pnum, int i, unsigned char sendmsg);
 void __fastcall OperateStoryBook(int pnum, int i);
 void __fastcall OperateLazStand(int pnum, int i);

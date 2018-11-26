@@ -1573,7 +1573,7 @@ void __cdecl L5FillChambers()
 }
 // 5276A4: using guessed type int setloadflag;
 
-void __fastcall DRLG_L5GChamber(int sx, int sy, bool topflag, bool bottomflag, bool leftflag, bool rightflag)
+void __fastcall DRLG_L5GChamber(int sx, int sy, BOOLEAN topflag, BOOLEAN bottomflag, BOOLEAN leftflag, BOOLEAN rightflag)
 {
 	int v6;         // eax
 	int v7;         // edx

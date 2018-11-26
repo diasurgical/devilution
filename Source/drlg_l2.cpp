@@ -963,7 +963,7 @@ void __fastcall DRLG_L2(int entry)
 }
 // 5B50D8: using guessed type int setloadflag_2;
 
-bool __fastcall DRLG_L2PlaceMiniSet(unsigned char *miniset, int tmin, int tmax, int cx, int cy, bool setview, int ldir)
+BOOLEAN __fastcall DRLG_L2PlaceMiniSet(unsigned char *miniset, int tmin, int tmax, int cx, int cy, BOOLEAN setview, int ldir)
 {
 	int v7;             // ebx
 	int v8;             // esi
@@ -983,7 +983,7 @@ bool __fastcall DRLG_L2PlaceMiniSet(unsigned char *miniset, int tmin, int tmax, 
 	int v25;            // edi
 	char *v26;          // edx
 	unsigned char v27;  // bl
-	bool result;        // al
+	BOOLEAN result;        // al
 	unsigned char *v29; // [esp+Ch] [ebp-28h]
 	int v30;            // [esp+10h] [ebp-24h]
 	int v31;            // [esp+14h] [ebp-20h]
@@ -1452,7 +1452,7 @@ void __cdecl L2TileFix()
 	} while (v0 < 40);
 }
 
-bool __cdecl CreateDungeon()
+BOOLEAN __cdecl CreateDungeon()
 {
 	int v0;         // esi
 	int v1;         // edx
@@ -1461,8 +1461,8 @@ bool __cdecl CreateDungeon()
 	char *v4;       // eax
 	signed int v5;  // ebx
 	_BYTE *v6;      // ecx
-	bool v7;        // zf
-	bool v8;        // eax
+	BOOLEAN v7;        // zf
+	BOOLEAN v8;        // eax
 	int v9;         // edi
 	int v10;        // esi
 	signed int v12; // [esp-4h] [ebp-20h]
@@ -1760,7 +1760,7 @@ void __fastcall DefineRoom(int nX1, int nY1, int nX2, int nY2, int ForceHW)
 	int v6;         // edi
 	int v7;         // eax
 	int i;          // eax
-	bool v9;        // zf
+	BOOLEAN v9;        // zf
 	int v10;        // ecx
 	char *v11;      // eax
 	char *v12;      // ebx
@@ -1892,7 +1892,7 @@ void __fastcall ConnectHall(int nX1, int nY1, int nX2, int nY2, int nHd)
 	//int v21; // ST04_4
 	int v23;        // ebx
 	int v24;        // ebx
-	bool v25;       // zf
+	BOOLEAN v25;       // zf
 	signed int v26; // [esp-4h] [ebp-34h]
 	signed int v27; // [esp-4h] [ebp-34h]
 	signed int v28; // [esp-4h] [ebp-34h]
@@ -2115,9 +2115,9 @@ void __fastcall DoPatternCheck(int i, int j)
 	signed int v4; // ebp
 	int v5;        // esi
 	int v6;        // ecx
-	bool v7;       // zf
+	BOOLEAN v7;       // zf
 	char v8;       // bl
-	bool v9;       // zf
+	BOOLEAN v9;       // zf
 	char v10;      // bl
 	int *v11;      // [esp+0h] [ebp-10h]
 	int v12;       // [esp+4h] [ebp-Ch]
@@ -2204,7 +2204,7 @@ void __fastcall DoPatternCheck(int i, int j)
 	}
 }
 
-bool __cdecl DL2_FillVoids()
+BOOLEAN __cdecl DL2_FillVoids()
 {
 	int i;          // eax
 	int v2;         // eax
@@ -2214,7 +2214,7 @@ bool __cdecl DL2_FillVoids()
 	int v7;         // eax
 	int v8;         // ecx
 	char v9;        // dl
-	bool v10;       // eax
+	BOOLEAN v10;       // eax
 	int v11;        // esi
 	signed int v12; // ecx
 	signed int v13; // edi
@@ -2569,9 +2569,9 @@ bool __cdecl DL2_FillVoids()
 	return DL2_NumNoChar() <= 700;
 }
 
-bool __fastcall DL2_Cont(bool x1f, bool y1f, bool x2f, bool y2f)
+BOOLEAN __fastcall DL2_Cont(BOOLEAN x1f, BOOLEAN y1f, BOOLEAN x2f, BOOLEAN y2f)
 {
-	bool v4; // zf
+	BOOLEAN v4; // zf
 
 	if (x1f && x2f) {
 		if (!y1f)

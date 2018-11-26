@@ -27,7 +27,7 @@ void __cdecl scrollrt_cpp_init();
 void __cdecl ClearCursor();
 void __fastcall DrawMissile(int x, int y, int sx, int sy, int a5, int a6, int del_flag);
 void __fastcall DrawClippedMissile(int x, int y, int sx, int sy, int a5, int a6, int a7);
-void __fastcall DrawDeadPlayer(int x, int y, int sx, int sy, int a5, int a6, bool clipped);
+void __fastcall DrawDeadPlayer(int x, int y, int sx, int sy, int a5, int a6, BOOLEAN clipped);
 void __fastcall DrawPlayer(int pnum, int x, int y, int px, int py, unsigned char *animdata, int animframe, int animwidth, int a9, int a10);
 void __fastcall DrawClippedPlayer(int pnum, int x, int y, int px, int py, unsigned char *animdata, int animframe, int animwidth, int a9, int a10);
 void __fastcall DrawView(int StartX, int StartY);

@@ -112,7 +112,7 @@ int __fastcall nthread_send_and_recv_turn(int cur_turn, int turn_delta)
 
 int __fastcall nthread_recv_turns(int *pfSendAsync)
 {
-	bool hasCountedDown; // zf
+	BOOLEAN hasCountedDown; // zf
 
 	*pfSendAsync = 0;
 	if (--sgbPacketCountdown) {
@@ -154,7 +154,7 @@ void __cdecl nthread_set_turn_upper_bit()
 }
 // 679754: using guessed type int turn_upper_bit;
 
-void __fastcall nthread_start(bool set_turn_upper_bit)
+void __fastcall nthread_start(BOOLEAN set_turn_upper_bit)
 {
 	char *err;                   // eax
 	unsigned int largestMsgSize; // esi

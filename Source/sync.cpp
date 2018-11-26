@@ -49,7 +49,7 @@ void __cdecl sync_one_monster()
 	int v2;    // esi
 	short v3;  // bp
 	short v4;  // ax
-	bool v5;   // zf
+	BOOLEAN v5;   // zf
 	short *v6; // edx
 	short *v7; // eax
 

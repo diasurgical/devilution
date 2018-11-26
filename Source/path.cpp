@@ -48,7 +48,7 @@ int __fastcall FindPath(BOOL(__fastcall *PosOk)(int, int, int), int PosOkArg, in
 	PATHNODE *current;    // edx
 	PATHNODE **previous;  // eax
 	int path_length;      // edi
-	bool path_is_full;    // zf
+	BOOLEAN path_is_full;    // zf
 	int *step_ptr;        // ecx
 	char step;            // dl
 

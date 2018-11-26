@@ -3,7 +3,7 @@
 #include "../types.h"
 
 void *optbar_cel;
-bool byte_634464; // weak
+BOOLEAN byte_634464; // weak
 void *PentSpin_cel;
 TMenuItem *sgpCurrItem;
 void *BigTGold_cel;
@@ -373,7 +373,7 @@ int __fastcall gmenu_on_mouse_move(LPARAM lParam)
 // 41A37A: could not find valid save-restore pair for esi
 // 634464: using guessed type char byte_634464;
 
-bool __fastcall gmenu_valid_mouse_pos(int *plOffset)
+BOOLEAN __fastcall gmenu_valid_mouse_pos(int *plOffset)
 {
 	*plOffset = 282;
 	if (MouseX < 282) {

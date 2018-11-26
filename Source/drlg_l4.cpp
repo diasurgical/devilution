@@ -440,9 +440,9 @@ void __fastcall DRLG_L4SetRoom(unsigned char *pSetPiece, int rx1, int ry1)
 	}
 }
 
-void __fastcall DRLG_LoadDiabQuads(bool preflag)
+void __fastcall DRLG_LoadDiabQuads(BOOLEAN preflag)
 {
-	bool v1;           // esi
+	BOOLEAN v1;           // esi
 	unsigned char *v2; // edi
 	char *v3;          // ecx
 	unsigned char *v4; // edi
@@ -487,9 +487,9 @@ void __fastcall DRLG_LoadDiabQuads(bool preflag)
 // 528A34: using guessed type int l4holdx;
 // 528A38: using guessed type int l4holdy;
 
-bool __fastcall IsDURWall(char d)
+BOOLEAN __fastcall IsDURWall(char d)
 {
-	bool result; // al
+	BOOLEAN result; // al
 
 	if (d == 25 || d == 28)
 		result = 1;
@@ -498,9 +498,9 @@ bool __fastcall IsDURWall(char d)
 	return result;
 }
 
-bool __fastcall IsDLLWall(char dd)
+BOOLEAN __fastcall IsDLLWall(char dd)
 {
-	bool result; // al
+	BOOLEAN result; // al
 
 	if (dd == 27 || dd == 26)
 		result = 1;
@@ -1075,7 +1075,7 @@ void __fastcall L4HorizWall(int i, int j, int dx)
 	int v8;    // edx
 	char *v9;  // eax
 	int v10;   // eax
-	bool v11;  // zf
+	BOOLEAN v11;  // zf
 	char *v12; // eax
 
 	v3 = i;
@@ -1128,7 +1128,7 @@ void __fastcall L4VertWall(int i, int j, int dy)
 	int v8;    // edx
 	int v9;    // eax
 	char *v10; // ecx
-	bool v11;  // zf
+	BOOLEAN v11;  // zf
 	int v12;   // [esp+8h] [ebp-4h]
 
 	v3 = j;
@@ -2470,7 +2470,7 @@ void __fastcall L4roomGen(int x, int y, int w, int h, int dir)
 	}
 }
 
-bool __fastcall L4checkRoom(int x, int y, int width, int height)
+BOOLEAN __fastcall L4checkRoom(int x, int y, int width, int height)
 {
 	int v4;   // esi
 	int v5;   // ebx
@@ -2502,7 +2502,7 @@ bool __fastcall L4checkRoom(int x, int y, int width, int height)
 	return 0;
 }
 
-bool __fastcall DRLG_L4PlaceMiniSet(const unsigned char *miniset, int tmin, int tmax, int cx, int cy, int setview, int ldir)
+BOOLEAN __fastcall DRLG_L4PlaceMiniSet(const unsigned char *miniset, int tmin, int tmax, int cx, int cy, int setview, int ldir)
 {
 	int v7;                   // ebx
 	int v8;                   // esi
@@ -2519,7 +2519,7 @@ bool __fastcall DRLG_L4PlaceMiniSet(const unsigned char *miniset, int tmin, int 
 	int v19;                  // edi
 	int v20;                  // edx
 	char v21;                 // bl
-	bool result;              // al
+	BOOLEAN result;              // al
 	const unsigned char *v23; // [esp+Ch] [ebp-28h]
 	int v24;                  // [esp+10h] [ebp-24h]
 	int v25;                  // [esp+14h] [ebp-20h]

@@ -152,7 +152,7 @@ void __fastcall NewTownerAnim(int tnum, unsigned char *pAnim, int numFrames, int
 	towner[v4]._tAnimDelay = Delay;
 }
 
-void __fastcall InitTownerInfo(int i, int w, bool sel, int t, int x, int y, int ao, int tp)
+void __fastcall InitTownerInfo(int i, int w, BOOLEAN sel, int t, int x, int y, int ao, int tp)
 {
 	int v8;  // ebx
 	int v9;  // esi
@@ -181,7 +181,7 @@ void __fastcall InitQstSnds(int i)
 	_BYTE *v2;         // ecx
 	unsigned char *v3; // esi
 	QuestTalkData *v4; // eax
-	bool v5;           // zf
+	BOOLEAN v5;           // zf
 
 	v1 = i;
 	if (boyloadflag)
@@ -752,7 +752,7 @@ void __fastcall TalkToTowner(int p, int t)
 	int v8; // eax
 	int v9; // ecx
 	//char v10; // cl
-	bool v11; // zf
+	BOOLEAN v11; // zf
 	int v12;  // edi
 	//int v13; // eax
 	//int v14; // eax

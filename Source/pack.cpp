@@ -138,7 +138,7 @@ void __fastcall VerifyGoldSeeds(PlayerStruct *pPlayer)
 	}
 }
 
-void __fastcall UnPackPlayer(PkPlayerStruct *pPack, int pnum, bool killok)
+void __fastcall UnPackPlayer(PkPlayerStruct *pPack, int pnum, BOOLEAN killok)
 {
 	PlayerStruct *pPlayer; // esi
 	signed int v6;         // eax

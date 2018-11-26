@@ -2465,8 +2465,8 @@ void __fastcall M_TryH2HHit(int i, int pnum, int Hit, int MinDam, int MaxDam)
 	int v21;           // eax
 	int v22;           // edx
 	int v23;           // eax
-	bool v24;          // zf
-	bool v25;          // sf
+	BOOLEAN v24;          // zf
+	BOOLEAN v25;          // sf
 	unsigned char v26; // of
 	int v27;           // eax
 	int v29;           // edi
@@ -3228,7 +3228,7 @@ void __fastcall GroupUnity(int i)
 	int v2;           // esi
 	int v3;           // ebp
 	int v4;           // edi
-	bool v5;          // eax
+	BOOLEAN v5;          // eax
 	int v6;           // eax
 	unsigned char v8; // al
 	int v9;           // ebp
@@ -3310,7 +3310,7 @@ BOOL __fastcall M_CallWalk(int i, int md)
 	int v3; // edi
 	int v4; // ebp
 	//int v5; // eax
-	bool v7; // ebx
+	BOOLEAN v7; // ebx
 	int v9;  // ebx
 	//int v10; // eax
 	int v11; // ebx
@@ -3431,13 +3431,13 @@ BOOL __fastcall M_DumbWalk(int i, int md)
 	return ok;
 }
 
-bool __fastcall M_RoundWalk(int i, int md, int *dir)
+BOOLEAN __fastcall M_RoundWalk(int i, int md, int *dir)
 {
 	int *v3; // ebp
 	int v4;  // ebx
 	int v5;  // esi
 	//int v6; // eax
-	bool v7; // di
+	BOOLEAN v7; // di
 	int v8;  // edi
 	//int v9; // eax
 	//int v10; // eax
@@ -3623,7 +3623,7 @@ void __fastcall MAI_Snake(int i)
 {
 	int esi1;            // esi
 	MonsterStruct *esi3; // esi
-	bool v3;             // zf
+	BOOLEAN v3;             // zf
 	int v4;              // ecx
 	int v5;              // eax
 	int v6;              // ST1C_4
@@ -3800,7 +3800,7 @@ void __fastcall MAI_Bat(int i)
 	int v6;              // ebx
 	int v7;              // eax
 	int v10;             // edx
-	bool v11;            // eax
+	BOOLEAN v11;            // eax
 	int v12;             // ecx
 	CMonster *v14;       // eax
 	int v15;             // edi
@@ -4290,7 +4290,7 @@ void __fastcall MAI_Round(int i, BOOL special)
 	int v15;  // edi
 	int v16;  // eax
 	int v17;  // ecx
-	bool v18; // eax
+	BOOLEAN v18; // eax
 	//int v19; // eax
 	int v21; // eax
 	int v22; // eax
@@ -4400,7 +4400,7 @@ void __fastcall MAI_Ranged(int i, int missile_type, unsigned char special)
 	int v7;   // ecx
 	int v8;   // ebx
 	int v9;   // edi
-	bool v11; // zf
+	BOOLEAN v11; // zf
 	int v12;  // eax
 	int v13;  // eax
 	//int v14; // ST00_4
@@ -4485,13 +4485,13 @@ void __fastcall MAI_Scav(int i)
 	signed int v7;     // edi
 	int v8;            // edx
 	int v9;            // eax
-	bool v10;          // eax
+	BOOLEAN v10;          // eax
 	int v11;           // ebx
 	int v12;           // edi
 	signed int v13;    // edi
 	int v14;           // edx
 	int v15;           // eax
-	bool v16;          // eax
+	BOOLEAN v16;          // eax
 	int v17;           // eax
 	int v18;           // eax
 	int arglist;       // [esp+Ch] [ebp-8h]
@@ -4662,9 +4662,9 @@ void __fastcall MAI_RoundRanged(int i, int missile_type, unsigned char checkdoor
 	int v19;  // ebx
 	int v20;  // eax
 	int v21;  // ecx
-	bool v22; // eax
-	bool v23; // eax
-	bool v24; // eax
+	BOOLEAN v22; // eax
+	BOOLEAN v23; // eax
+	BOOLEAN v24; // eax
 	int v25;  // eax
 	//int v26; // ST04_4
 	int v27; // eax
@@ -4814,8 +4814,8 @@ void __fastcall MAI_RR2(int i, int mistype, int dam)
 	//int v18; // ST04_4
 	int v19;  // ebx
 	int v20;  // eax
-	bool v21; // eax
-	bool v22; // eax
+	BOOLEAN v21; // eax
+	BOOLEAN v22; // eax
 	int v23;  // ecx
 	int v24;  // eax
 	//int v25; // ST04_4
@@ -5041,10 +5041,10 @@ void __fastcall MAI_SkelKing(int i)
 	int v13;  // ebx
 	int v14;  // eax
 	int v15;  // ecx
-	bool v16; // eax
+	BOOLEAN v16; // eax
 	//int v17; // eax
 	int v19;  // eax
-	bool v20; // eax
+	BOOLEAN v20; // eax
 	int v21;  // edi
 	int v22;  // ebx
 	int v23;  // eax
@@ -5175,7 +5175,7 @@ void __fastcall MAI_Rhino(int i)
 	int v15; // ecx
 	//int v16; // eax
 	int v18;  // eax
-	bool v19; // eax
+	BOOLEAN v19; // eax
 	int v20;  // ecx
 	int v21;  // eax
 	//int v22; // ST1C_4
@@ -5302,8 +5302,8 @@ void __fastcall MAI_Counselor(int i)
 	int v6;            // ebp
 	char v9;           // al
 	int v10;           // ecx
-	bool v11;          // zf
-	bool v12;          // sf
+	BOOLEAN v11;          // zf
+	BOOLEAN v12;          // sf
 	unsigned char v13; // of
 	int v14;           // edx
 	int v15;           // ecx
@@ -5809,14 +5809,14 @@ void __cdecl ProcessMonsters()
 	int v8;          // eax
 	unsigned int v9; // eax
 	int v10;         // eax
-	bool v11;        // zf
+	BOOLEAN v11;        // zf
 	char *v12;       // ecx
 	char *v13;       // eax
 	int v14;         // ecx
 	int v15;         // eax
 	char v16;        // al
 	int v17;         // ecx
-	bool v18;        // eax
+	BOOLEAN v18;        // eax
 	int v19;         // eax
 	int v20;         // ecx
 	int *v21;        // eax
@@ -6009,7 +6009,7 @@ BOOL __fastcall DirOK(int i, int mdir)
 	int v5;             // edi
 	int v6;             // esi
 	int v7;             // edi
-	bool v8;            // zf
+	BOOLEAN v8;            // zf
 	int v9;             // edx
 	unsigned char *v11; // ebx
 	unsigned char v12;  // al
@@ -6019,7 +6019,7 @@ BOOL __fastcall DirOK(int i, int mdir)
 	int v16;            // ecx
 	signed int j;       // esi
 	int v18;            // eax
-	bool v19;           // zf
+	BOOLEAN v19;           // zf
 	int v20;            // eax
 	int v21;            // [esp+Ch] [ebp-14h]
 	int v22;            // [esp+10h] [ebp-10h]
@@ -6442,7 +6442,7 @@ void __fastcall M_FallenFear(int x, int y)
 	int v5;         // esi
 	signed int v6;  // eax
 	int v7;         // eax
-	bool v8;        // zf
+	BOOLEAN v8;        // zf
 	int v9;         // eax
 	int v10;        // eax
 	signed int v11; // [esp-10h] [ebp-1Ch]
@@ -6797,7 +6797,7 @@ BOOL __fastcall PosOkMonst3(int i, int x, int y)
 	int v7;         // eax
 	int v8;         // ecx
 	int v9;         // ecx
-	bool result;    // eax
+	BOOLEAN result;    // eax
 	int v11;        // ecx
 	signed int v12; // [esp+10h] [ebp-8h]
 	int v13;        // [esp+14h] [ebp-4h]
@@ -6862,7 +6862,7 @@ BOOL __fastcall IsSkel(int mt)
 	    || mt >= MT_WSKELSD && mt <= MT_XSKELSD;
 }
 
-bool __fastcall IsGoat(int mt)
+BOOLEAN __fastcall IsGoat(int mt)
 {
 	return mt >= MT_NGOATMC && mt <= MT_GGOATMC || mt >= MT_NGOATBW && mt <= MT_GGOATBW;
 }
@@ -6930,7 +6930,7 @@ void __fastcall ActivateSpawn(int i, int x, int y, int dir)
 	M_StartSpStand(i, dir);
 }
 
-bool __fastcall SpawnSkeleton(int ii, int x, int y)
+BOOLEAN __fastcall SpawnSkeleton(int ii, int x, int y)
 {
 	int v3;         // esi
 	int v4;         // ebx
@@ -6938,7 +6938,7 @@ bool __fastcall SpawnSkeleton(int ii, int x, int y)
 	int v6;         // ecx
 	int v7;         // edi
 	int *v8;        // esi
-	bool v9;        // eax
+	BOOLEAN v9;        // eax
 	int v11;        // eax
 	int v12;        // ecx
 	int v13;        // edx

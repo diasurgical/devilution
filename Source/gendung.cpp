@@ -155,7 +155,7 @@ void __cdecl gendung_418D91()
 	int v22;                       // edi
 	int v23;                       // eax
 	int v24;                       // eax
-	bool v25;                      // zf
+	BOOLEAN v25;                      // zf
 	int v26;                       // edx
 	char *v27;                     // esi
 	char *v28;                     // edi
@@ -759,7 +759,7 @@ void __fastcall Make_SetPC(int x, int y, int w, int h)
 	}
 }
 
-bool __fastcall DRLG_WillThemeRoomFit(int floor, int x, int y, int minSize, int maxSize, int *width, int *height)
+BOOLEAN __fastcall DRLG_WillThemeRoomFit(int floor, int x, int y, int minSize, int maxSize, int *width, int *height)
 {
 	int v7;             // esi
 	int v8;             // edi
@@ -1208,7 +1208,7 @@ void __cdecl DRLG_HoldThemeRooms()
 	}
 }
 
-bool __fastcall SkipThemeRoom(int x, int y)
+BOOLEAN __fastcall SkipThemeRoom(int x, int y)
 {
 	int i;         // ebx
 	THEME_LOC *v3; // eax

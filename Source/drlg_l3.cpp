@@ -365,7 +365,7 @@ void __fastcall DRLG_L3LockRec(int x, int y)
 }
 // 528380: using guessed type int lockoutcnt;
 
-bool __cdecl DRLG_L3Lockout()
+BOOLEAN __cdecl DRLG_L3Lockout()
 {
 	int v0;        // esi
 	signed int v1; // edx
@@ -450,7 +450,7 @@ void __fastcall DRLG_L3(int entry)
 	int genok;    // eax
 	signed int i; // ecx
 	signed int j; // esi
-	bool v24;     // [esp-8h] [ebp-20h]
+	BOOLEAN v24;     // [esp-8h] [ebp-20h]
 
 	lavapool = 0;
 	do {
@@ -700,8 +700,8 @@ void __fastcall DRLG_L3CreateBlock(int x, int y, int obs, int dir)
 	int v5;   // edi
 	int v6;   // eax
 	int v9;   // ebx
-	bool v10; // zf
-	bool v11; // zf
+	BOOLEAN v10; // zf
+	BOOLEAN v11; // zf
 	int y2;   // [esp+Ch] [ebp-14h]
 	int x2;   // [esp+10h] [ebp-10h]
 	int i;    // [esp+14h] [ebp-Ch]
@@ -1120,7 +1120,7 @@ void __cdecl DRLG_L3River()
 	char *v11;         // eax
 	signed int v12;    // eax
 	int v13;           // ecx
-	bool v14;          // zf
+	BOOLEAN v14;          // zf
 	int v15;           // eax
 	signed int v16;    // eax
 	int v17;           // eax
@@ -1139,7 +1139,7 @@ void __cdecl DRLG_L3River()
 	int v30;           // edx
 	int v31;           // ecx
 	int v32;           // edx
-	bool v33;          // sf
+	BOOLEAN v33;          // sf
 	unsigned char v34; // of
 	int river[3][100]; // [esp+Ch] [ebp-4E8h]
 	int v36;           // [esp+4BCh] [ebp-38h]
@@ -1682,7 +1682,7 @@ void __cdecl DRLG_L3PoolFix()
 	char v7;          // cl
 	char v8;          // cl
 	char v9;          // al
-	bool v10;         // zf
+	BOOLEAN v10;         // zf
 	signed int v11;   // [esp+10h] [ebp-4h]
 
 	v0 = 0;
@@ -1721,7 +1721,7 @@ void __cdecl DRLG_L3PoolFix()
 	} while (v0 < 40);
 }
 
-int __fastcall DRLG_L3PlaceMiniSet(const unsigned char *miniset, int tmin, int tmax, int cx, int cy, bool setview, int ldir)
+int __fastcall DRLG_L3PlaceMiniSet(const unsigned char *miniset, int tmin, int tmax, int cx, int cy, BOOLEAN setview, int ldir)
 {
 	int v7;                   // ebx
 	int v8;                   // esi
@@ -1868,7 +1868,7 @@ void __fastcall DRLG_L3PlaceRndSet(const unsigned char *miniset, int rndper)
 	int v15;                 // esi
 	unsigned char *v16;      // eax
 	unsigned char v17;       // cl
-	bool v18;                // zf
+	BOOLEAN v18;                // zf
 	int v19;                 // [esp+8h] [ebp-30h]
 	int v20;                 // [esp+10h] [ebp-28h]
 	char *v21;               // [esp+14h] [ebp-24h]
@@ -2236,14 +2236,14 @@ void __cdecl DRLG_L3Wood()
 	FenceDoorFix();
 }
 
-bool __fastcall WoodVertU(int i, int y)
+BOOLEAN __fastcall WoodVertU(int i, int y)
 {
 	int v2;           // eax
 	char v3;          // cl
 	char *v4;         // eax
 	unsigned char v5; // cl
 	char v6;          // al
-	bool result;      // eax
+	BOOLEAN result;      // eax
 
 	v2 = i;
 	v3 = dungeon[i + 1][y];
@@ -2260,14 +2260,14 @@ bool __fastcall WoodVertU(int i, int y)
 	return result;
 }
 
-bool __fastcall WoodVertD(int i, int y)
+BOOLEAN __fastcall WoodVertD(int i, int y)
 {
 	int v2;           // eax
 	char v3;          // cl
 	char *v4;         // eax
 	unsigned char v5; // cl
 	char v6;          // al
-	bool result;      // eax
+	BOOLEAN result;      // eax
 
 	v2 = i;
 	v3 = dungeon[i + 1][y];
@@ -2284,14 +2284,14 @@ bool __fastcall WoodVertD(int i, int y)
 	return result;
 }
 
-bool __fastcall WoodHorizL(int x, int j)
+BOOLEAN __fastcall WoodHorizL(int x, int j)
 {
 	int v2;           // eax
 	char v3;          // cl
 	char *v4;         // eax
 	unsigned char v5; // cl
 	char v6;          // al
-	bool result;      // eax
+	BOOLEAN result;      // eax
 
 	v2 = x;
 	v3 = dungeon[x][j + 1];
@@ -2308,14 +2308,14 @@ bool __fastcall WoodHorizL(int x, int j)
 	return result;
 }
 
-bool __fastcall WoodHorizR(int x, int j)
+BOOLEAN __fastcall WoodHorizR(int x, int j)
 {
 	int v2;           // eax
 	char v3;          // cl
 	char *v4;         // eax
 	unsigned char v5; // cl
 	char v6;          // al
-	bool result;      // eax
+	BOOLEAN result;      // eax
 
 	v2 = x;
 	v3 = dungeon[x][j + 1];

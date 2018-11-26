@@ -400,7 +400,7 @@ void __cdecl DrawInvBelt()
 	int v4;            // edi
 	char v5;           // cl
 	int v6;            // edx
-	bool v7;           // zf
+	BOOLEAN v7;           // zf
 	int v8;            // ecx
 	int v9;            // eax
 	unsigned char v10; // edx
@@ -2097,7 +2097,7 @@ int __fastcall CanPut(int i, int j)
 	char v4; // al
 	int v5;  // eax
 	char v6; // al
-	bool v7; // sf
+	BOOLEAN v7; // sf
 	char v8; // al
 	char v9; // cl
 

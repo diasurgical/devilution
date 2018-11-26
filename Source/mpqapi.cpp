@@ -6,9 +6,9 @@ int mpqapi_cpp_init_value; // weak
 int sgdwMpqOffset;         // idb
 char mpq_buf[4096];
 _HASHENTRY *sgpHashTbl;
-bool save_archive_modified; // weak
+BOOLEAN save_archive_modified; // weak
 _BLOCKENTRY *sgpBlockTbl;
-bool save_archive_open; // weak
+BOOLEAN save_archive_open; // weak
 
 const int mpqapi_inf = 0x7F800000; // weak
 
@@ -27,12 +27,12 @@ struct mpqapi_cpp_init {
 // 47F148: using guessed type int mpqapi_inf;
 // 659B00: using guessed type int mpqapi_cpp_init_value;
 
-bool __fastcall mpqapi_set_hidden(const char *pszArchive, bool hidden)
+BOOLEAN __fastcall mpqapi_set_hidden(const char *pszArchive, BOOLEAN hidden)
 {
 	const char *v2; // edi
 	BOOL v3;        // esi
 	DWORD v4;       // eax
-	bool result;    // al
+	BOOLEAN result;    // al
 	DWORD v6;       // esi
 
 	v2 = pszArchive;
@@ -73,7 +73,7 @@ void __fastcall mpqapi_store_creation_time(const char *pszArchive, int dwChar)
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-bool __fastcall mpqapi_reg_load_modification_time(char *dst, int size)
+BOOLEAN __fastcall mpqapi_reg_load_modification_time(char *dst, int size)
 {
 	unsigned int v2; // esi
 	char *v3;        // edi
@@ -119,7 +119,7 @@ void __fastcall mpqapi_update_multi_creation_time(DWORD dwChar)
 {
 }
 
-bool __fastcall mpqapi_reg_store_modification_time(char *pbData, int dwLen)
+BOOLEAN __fastcall mpqapi_reg_store_modification_time(char *pbData, int dwLen)
 {
 	int v2;          // ebx
 	char *v3;        // ebp
@@ -172,7 +172,7 @@ void __fastcall mpqapi_free_block(int block_offset, int block_size)
 	signed int v5;   // edx
 	signed int v6;   // ecx
 	int v7;          // ecx
-	bool v8;         // zf
+	BOOLEAN v8;         // zf
 	_BLOCKENTRY *v9; // eax
 
 	v2 = block_size;
@@ -355,7 +355,7 @@ _BLOCKENTRY *__fastcall mpqapi_add_file(const char *pszName, _BLOCKENTRY *pBlk, 
 	return v12;
 }
 
-bool __fastcall mpqapi_write_file_contents(const char *pszName, const BYTE *pbData, int dwLen, _BLOCKENTRY *pBlk)
+BOOLEAN __fastcall mpqapi_write_file_contents(const char *pszName, const BYTE *pbData, int dwLen, _BLOCKENTRY *pBlk)
 {
 	const char *v4;              // esi
 	const char *v5;              // eax
@@ -457,7 +457,7 @@ int __fastcall mpqapi_find_free_block(int size, int *block_size)
 	signed int v3;   // esi
 	int result;      // eax
 	int v5;          // esi
-	bool v6;         // zf
+	BOOLEAN v6;         // zf
 
 	v2 = sgpBlockTbl;
 	v3 = 2048;
@@ -572,7 +572,7 @@ BOOL __fastcall mpqapi_open_archive(const char *pszArchive, BOOL hidden, int dwC
 // 65AB14: using guessed type char save_archive_open;
 // 679660: using guessed type char gbMaxPlayers;
 
-bool __fastcall mpqapi_parse_archive_header(_FILEHEADER *pHdr, int *pdwNextFileStart) // ParseMPQHeader
+BOOLEAN __fastcall mpqapi_parse_archive_header(_FILEHEADER *pHdr, int *pdwNextFileStart) // ParseMPQHeader
 {
 	int *v2;                 // ebp
 	_FILEHEADER *v3;         // esi
@@ -686,9 +686,9 @@ void __fastcall mpqapi_flush_and_close(const char *pszArchive, BOOL bFree, int d
 }
 // 65AB0C: using guessed type int save_archive_modified;
 
-bool __cdecl mpqapi_write_header() // WriteMPQHeader
+BOOLEAN __cdecl mpqapi_write_header() // WriteMPQHeader
 {
-	bool result;                // al
+	BOOLEAN result;                // al
 	_FILEHEADER fhdr;           // [esp+8h] [ebp-6Ch]
 	DWORD NumberOfBytesWritten; // [esp+70h] [ebp-4h]
 
@@ -709,7 +709,7 @@ bool __cdecl mpqapi_write_header() // WriteMPQHeader
 	return result;
 }
 
-bool __cdecl mpqapi_write_block_table()
+BOOLEAN __cdecl mpqapi_write_block_table()
 {
 	int v1;                     // eax
 	BOOL v2;                    // ebx
@@ -726,7 +726,7 @@ bool __cdecl mpqapi_write_block_table()
 	return v2 && NumberOfBytesWritten == 0x8000;
 }
 
-bool __cdecl mpqapi_write_hash_table()
+BOOLEAN __cdecl mpqapi_write_hash_table()
 {
 	int v1;                     // eax
 	BOOL v2;                    // ebx
@@ -743,9 +743,9 @@ bool __cdecl mpqapi_write_hash_table()
 	return v2 && NumberOfBytesWritten == 0x8000;
 }
 
-bool __cdecl mpqapi_can_seek()
+BOOLEAN __cdecl mpqapi_can_seek()
 {
-	bool result; // al
+	BOOLEAN result; // al
 
 	if (SetFilePointer(sghArchive, sgdwMpqOffset, NULL, FILE_BEGIN) == -1)
 		result = 0;
