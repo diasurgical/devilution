@@ -203,7 +203,7 @@ void __fastcall run_game_loop(unsigned int uMsg)
 		pfile_write_hero();
 	pfile_flush_W();
 	PaletteFadeOut(8);
-	SetCursor(0);
+	SetCursor(CURSOR_NONE);
 	ClearScreenBuffer();
 	drawpanflag = 255;
 	scrollrt_draw_game_screen(1);
