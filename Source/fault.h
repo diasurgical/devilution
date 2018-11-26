@@ -2,10 +2,10 @@
 #ifndef __FAULT_H__
 #define __FAULT_H__
 
-struct STACK_FRAME {
-	STACK_FRAME *pNext;
+typedef struct STACK_FRAME {
+	struct STACK_FRAME *pNext;
 	void *pCallRet;
-};
+} STACK_FRAME;
 
 //int dword_52B9F4;
 extern LPTOP_LEVEL_EXCEPTION_FILTER lpTopLevelExceptionFilter; // idb

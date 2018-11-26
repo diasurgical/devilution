@@ -1,10 +1,10 @@
-enum item_quality {
+typedef enum item_quality {
 	ITEM_QUALITY_NORMAL = 0,
 	ITEM_QUALITY_MAGIC  = 1,
 	ITEM_QUALITY_UNIQUE = 2,
-};
+} item_quality;
 
-enum unique_base_item {
+typedef enum unique_base_item {
 	UITYPE_NONE        = 0x0,
 	UITYPE_SHORTBOW    = 0x1,
 	UITYPE_LONGBOW     = 0x2,
@@ -75,9 +75,9 @@ enum unique_base_item {
 	UITYPE_LGTFORGE    = 0x43,
 	UITYPE_LAZSTAFF    = 0x44,
 	UITYPE_INVALID     = -1,
-};
+} unique_base_item;
 
-enum item_effect_type {
+typedef enum item_effect_type {
 	IPL_TOHIT            = 0x0,
 	IPL_TOHIT_CURSE      = 0x1,
 	IPL_DAMP             = 0x2,
@@ -150,19 +150,19 @@ enum item_effect_type {
 	IPL_FIRERESCLVL      = 0x4E,
 	IPL_AC_CURSE         = 0x4F,
 	IPL_INVALID          = -1,
-};
+} item_effect_type;
 
-enum affix_item_type {
+typedef enum affix_item_type {
 	PLT_MISC  = 0x1,
 	PLT_BOW   = 0x10,
 	PLT_STAFF = 0x100,
 	PLT_WEAP  = 0x1000,
 	PLT_SHLD  = 0x10000,
 	PLT_ARMO  = 0x100000,
-};
+} affix_item_type;
 
 /// Item graphic IDs; frame_num-11 of objcurs.cel.
-enum item_cursor_graphic {
+typedef enum item_cursor_graphic {
 	ICURS_POTION_OF_FULL_MANA         = 0,
 	ICURS_SCROLL_OF                   = 1,
 	ICURS_GOLD_SMALL                  = 4,
@@ -268,9 +268,9 @@ enum item_cursor_graphic {
 	ICURS_COMPOSITE_STAFF             = 166,
 	ICURS_SHORT_BATTLE_BOW            = 167,
 	ICURS_GOLD                        = 168,
-};
+} item_cursor_graphic;
 
-enum _sfx_id {
+typedef enum _sfx_id {
 	PS_WALK1      = 0x0,
 	PS_WALK2      = 0x1,
 	PS_WALK3      = 0x2,
@@ -1129,9 +1129,9 @@ enum _sfx_id {
 	USFX_ZHAR1    = 0x357,
 	USFX_ZHAR2    = 0x358,
 	USFX_DIABLOD  = 0x359,
-};
+} _sfx_id;
 
-enum sfx_flag {
+typedef enum sfx_flag {
 	SFX_STREAM   = 0x01,
 	SFX_MISC     = 0x02,
 	SFX_UI       = 0x04,
@@ -1140,9 +1140,9 @@ enum sfx_flag {
 	SFX_WARRIOR  = 0x20,
 	SFX_SORCEROR = 0x40,
 	SFX_LOADED   = 0x80,
-};
+} sfx_flag;
 
-enum item_equip_type {
+typedef enum item_equip_type {
 	ILOC_NONE        = 0x0,
 	ILOC_ONEHAND     = 0x1,
 	ILOC_TWOHAND     = 0x2,
@@ -1153,9 +1153,9 @@ enum item_equip_type {
 	ILOC_UNEQUIPABLE = 0x7,
 	ILOC_BELT        = 0x8,
 	ILOC_INVALID     = -1,
-};
+} item_equip_type;
 
-enum missile_id {
+typedef enum missile_id {
 	MIS_ARROW         = 0x0,
 	MIS_FIREBOLT      = 0x1,
 	MIS_GUARDIAN      = 0x2,
@@ -1224,9 +1224,9 @@ enum missile_id {
 	MIS_RPORTAL       = 0x41,
 	MIS_BOOM2         = 0x42,
 	MIS_DIABAPOCA     = 0x43,
-};
+} missile_id;
 
-enum missile_graphic_id {
+typedef enum missile_graphic_id {
 	MFILE_ARROWS   = 0x0,
 	MFILE_FIREBA   = 0x1,
 	MFILE_GUARD    = 0x2,
@@ -1276,9 +1276,9 @@ enum missile_graphic_id {
 	MFILE_NULL     = 0x2E,
 	MFILE_INVALID  = 0x2F,
 	MFILE_NONE     = 0xFF,
-};
+} missile_graphic_id;
 
-enum _mai_id {
+typedef enum _mai_id {
 	AI_ZOMBIE   = 0,
 	AI_FAT      = 1,
 	AI_SKELSD   = 2,
@@ -1311,15 +1311,15 @@ enum _mai_id {
 	AI_LAZHELP  = 29,
 	AI_LACHDAN  = 30,
 	AI_WARLORD  = 31,
-};
+} _mai_id;
 
-enum _mc_id {
+typedef enum _mc_id {
 	MC_UNDEAD = 0,
 	MC_DEMON  = 1,
 	MC_ANIMAL = 2,
-};
+} _mc_id;
 
-enum _monster_id {
+typedef enum _monster_id {
 	MT_NZOMBIE  = 0x0,
 	MT_BZOMBIE  = 0x1,
 	MT_GZOMBIE  = 0x2,
@@ -1433,9 +1433,9 @@ enum _monster_id {
 	MT_DIABLO   = 0x6E,
 	MT_DARKMAGE = 0x6F,
 	NUM_MTYPES
-};
+} _monster_id;
 
-enum monster_flag {
+typedef enum monster_flag {
 	MFLAG_HIDDEN          = 0x01,
 	MFLAG_LOCK_ANIMATION  = 0x02,
 	MFLAG_ALLOW_SPECIAL   = 0x04,
@@ -1449,9 +1449,9 @@ enum monster_flag {
 	MFLAG_NO_ENEMY        = 0x400,
 	MFLAG_UNUSED          = 0x800,
 	MFLAG_NOLIFESTEAL     = 0x1000
-};
+} monster_flag;
 
-enum monster_goal {
+typedef enum monster_goal {
 	MGOAL_NORMAL    = 1,
 	MGOAL_RETREAT   = 2,
 	MGOAL_HEALING   = 3,
@@ -1459,9 +1459,9 @@ enum monster_goal {
 	MGOAL_SHOOT     = 5,
 	MGOAL_INQUIRING = 6,
 	MGOAL_TALKING   = 7,
-};
+} monster_goal;
 
-enum monster_resistance {
+typedef enum monster_resistance {
 	RESIST_MAGIC     = 0x01,
 	RESIST_FIRE      = 0x02,
 	RESIST_LIGHTNING = 0x04,
@@ -1470,16 +1470,16 @@ enum monster_resistance {
 	IMUNE_LIGHTNING  = 0x20,
 	IMUNE_NULL_40    = 0x40,
 	IMUNE_ACID       = 0x80,
-};
+} monster_resistance;
 
-enum missile_resistance {
+typedef enum missile_resistance {
 	MISR_FIRE      = 1,
 	MISR_LIGHTNING = 2,
 	MISR_MAGIC     = 3,
 	MISR_ACID      = 4,
-};
+} missile_resistance;
 
-enum _speech_id {
+typedef enum _speech_id {
 	QUEST_KING1      = 0x0,
 	QUEST_KING2      = 0x1,
 	QUEST_KING3      = 0x2,
@@ -1739,9 +1739,9 @@ enum _speech_id {
 	QUEST_BOOK32     = 0x100,
 	QUEST_BOOK33     = 0x101,
 	QUEST_INTRO      = 0x102
-};
+} _speech_id;
 
-enum object_graphic_id {
+typedef enum object_graphic_id {
 	OFILE_L1BRAZ   = 0x0,
 	OFILE_L1DOORS  = 0x1,
 	OFILE_LEVER    = 0x2,
@@ -1798,18 +1798,18 @@ enum object_graphic_id {
 	OFILE_BKSLBRNT = 0x35,
 	OFILE_MUSHPTCH = 0x36,
 	OFILE_LZSTAND  = 0x37,
-};
+} object_graphic_id;
 
-enum dungeon_type {
+typedef enum dungeon_type {
 	DTYPE_TOWN      = 0x0,
 	DTYPE_CATHEDRAL = 0x1,
 	DTYPE_CATACOMBS = 0x2,
 	DTYPE_CAVES     = 0x3,
 	DTYPE_HELL      = 0x4,
 	DTYPE_NONE      = 0xFF,
-};
+} dungeon_type;
 
-enum dflag {
+typedef enum dflag {
 	DFLAG_MISSILE     = 0x01,
 	DFLAG_VISIBLE     = 0x02,
 	DFLAG_DEAD_PLAYER = 0x04,
@@ -1818,17 +1818,17 @@ enum dflag {
 	DFLAG_PLAYER      = 0x20,
 	DFLAG_LIT         = 0x40,
 	DFLAG_EXPLORED    = 0x80,
-};
+} dflag;
 
-enum dungeon_message {
+typedef enum dungeon_message {
 	DMSG_CATHEDRAL = 1 << 0,
 	DMSG_CATACOMBS = 1 << 1,
 	DMSG_CAVES     = 1 << 2,
 	DMSG_HELL      = 1 << 3,
 	DMSG_DIABLO    = 1 << 4,
-};
+} dungeon_message;
 
-enum diablo_message {
+typedef enum diablo_message {
 	EMSG_NONE                   = 0,
 	EMSG_NO_AUTOMAP_IN_TOWN     = 1,
 	EMSG_NO_MULTIPLAYER_IN_DEMO = 2,
@@ -1873,15 +1873,15 @@ enum diablo_message {
 	EMSG_REQUIRES_LVL_13        = 41,
 	EMSG_REQUIRES_LVL_17        = 42,
 	EMSG_BONECHAMB              = 43,
-};
+} diablo_message;
 
-enum magic_type {
+typedef enum magic_type {
 	STYPE_FIRE      = 0x0,
 	STYPE_LIGHTNING = 0x1,
 	STYPE_MAGIC     = 0x2,
-};
+} magic_type;
 
-enum theme_id {
+typedef enum theme_id {
 	THEME_BARREL            = 0x0,
 	THEME_SHRINE            = 0x1,
 	THEME_MONSTPIT          = 0x2,
@@ -1900,9 +1900,9 @@ enum theme_id {
 	THEME_BRNCROSS          = 0xF,
 	THEME_WEAPONRACK        = 0x10,
 	THEME_NONE              = 0xFF,
-};
+} theme_id;
 
-enum event_type {
+typedef enum event_type {
 	EVENT_TYPE_PLAYER_CREATE_GAME = 1,
 	EVENT_TYPE_2                  = 2,
 	EVENT_TYPE_PLAYER_LEAVE_GAME  = 3,
@@ -1918,34 +1918,34 @@ enum event_type {
 	EVENT_TYPE_13                 = 13,
 	EVENT_TYPE_14                 = 14,
 	EVENT_TYPE_15                 = 15,
-};
+} event_type;
 
-enum _copyprot_results {
+typedef enum _copyprot_results {
 	COPYPROT_OK     = 1,
 	COPYPROT_CANCEL = 2,
-};
+} _copyprot_results;
 
-enum text_color {
+typedef enum text_color {
 	COL_WHITE = 0x0,
 	COL_BLUE  = 0x1,
 	COL_RED   = 0x2,
 	COL_GOLD  = 0x3,
-};
+} text_color;
 
-enum item_color {
+typedef enum item_color {
 	ICOL_WHITE = PAL16_YELLOW + 5,
 	ICOL_BLUE  = PAL16_BLUE + 5,
 	ICOL_RED   = PAL16_RED + 5,
-};
+} item_color;
 
-enum _difficulty {
+typedef enum _difficulty {
 	DIFF_NORMAL      = 0x0,
 	DIFF_NIGHTMARE   = 0x1,
 	DIFF_HELL        = 0x2,
 	NUM_DIFFICULTIES = 0x3,
-};
+} _difficulty;
 
-enum MON_MODE {
+typedef enum MON_MODE {
 	MM_STAND     = 0,
 	MM_WALK      = 1,
 	MM_WALK2     = 2,
@@ -1964,18 +1964,18 @@ enum MON_MODE {
 	MM_STONE     = 15,
 	MM_HEAL      = 16,
 	MM_TALK      = 17,
-};
+} MON_MODE;
 
-enum MON_ANIM {
+typedef enum MON_ANIM {
 	MA_STAND   = 0,
 	MA_WALK    = 1,
 	MA_ATTACK  = 2,
 	MA_GOTHIT  = 3,
 	MA_DEATH   = 4,
 	MA_SPECIAL = 5,
-};
+} MON_ANIM;
 
-enum PLR_MODE {
+typedef enum PLR_MODE {
 	PM_STAND   = 0,
 	PM_WALK    = 1,
 	PM_WALK2   = 2,
@@ -1988,17 +1988,17 @@ enum PLR_MODE {
 	PM_SPELL   = 9,
 	PM_NEWLVL  = 10,
 	PM_QUIT    = 11,
-};
+} PLR_MODE;
 
-enum spell_type {
+typedef enum spell_type {
 	RSPLTYPE_SKILL   = 0x0,
 	RSPLTYPE_SPELL   = 0x1,
 	RSPLTYPE_SCROLL  = 0x2,
 	RSPLTYPE_CHARGES = 0x3,
 	RSPLTYPE_INVALID = 0x4,
-};
+} spell_type;
 
-enum cursor_id {
+typedef enum cursor_id {
 	CURSOR_NONE        = 0x0,
 	CURSOR_HAND        = 0x1,
 	CURSOR_IDENTIFY    = 0x2,
@@ -2012,9 +2012,9 @@ enum cursor_id {
 	CURSOR_HEALOTHER   = 0xA,
 	CURSOR_HOURGLASS   = 0xB,
 	CURSOR_FIRSTITEM   = 0xC,
-};
+} cursor_id;
 
-enum direction {
+typedef enum direction {
 	DIR_S    = 0x0,
 	DIR_SW   = 0x1,
 	DIR_W    = 0x2,
@@ -2024,9 +2024,9 @@ enum direction {
 	DIR_E    = 0x6,
 	DIR_SE   = 0x7,
 	DIR_OMNI = 0x8,
-};
+} direction;
 
-enum _scroll_direction {
+typedef enum _scroll_direction {
 	SDIR_NONE = 0x0,
 	SDIR_N    = 0x1,
 	SDIR_NE   = 0x2,
@@ -2036,9 +2036,9 @@ enum _scroll_direction {
 	SDIR_SW   = 0x6,
 	SDIR_W    = 0x7,
 	SDIR_NW   = 0x8,
-};
+} _scroll_direction;
 
-enum interface_mode {
+typedef enum interface_mode {
 	WM_DIABNEXTLVL  = 0x402, // WM_USER+2
 	WM_DIABPREVLVL  = 0x403,
 	WM_DIABRTNLVL   = 0x404,
@@ -2051,18 +2051,18 @@ enum interface_mode {
 	WM_DIABLOADGAME = 0x40B
 	// WM_LEIGHSKIP = 0x40C, // psx only
 	// WM_DIAVNEWLVL = 0x40D, // psx only
-};
+} interface_mode;
 
-enum game_info {
+typedef enum game_info {
 	GAMEINFO_NAME         = 1,
 	GAMEINFO_PASSWORD     = 2,
 	GAMEINFO_STATS        = 3,
 	GAMEINFO_MODEFLAG     = 4,
 	GAMEINFO_GAMETEMPLATE = 5,
 	GAMEINFO_PLAYERS      = 6,
-};
+} game_info;
 
-enum spell_id {
+typedef enum spell_id {
 	SPL_NULL        = 0x0,
 	SPL_FIREBOLT    = 0x1,
 	SPL_HEAL        = 0x2,
@@ -2101,9 +2101,9 @@ enum spell_id {
 	SPL_FLARE       = 0x23,
 	SPL_BONESPIRIT  = 0x24,
 	SPL_INVALID     = 0xFFFFFFFF,
-};
+} spell_id;
 
-enum _cmd_id {
+typedef enum _cmd_id {
 	CMD_STAND             = 0,
 	CMD_WALKXY            = 1,
 	CMD_ACK_PLRINFO       = 2,
@@ -2201,9 +2201,9 @@ enum _cmd_id {
 	FAKE_CMD_SETID        = 94,
 	FAKE_CMD_DROPID       = 95,
 	NUM_CMDS              = 96,
-};
+} _cmd_id;
 
-enum _talker_id {
+typedef enum _talker_id {
 	TOWN_SMITH   = 0x0,
 	TOWN_HEALER  = 0x1,
 	TOWN_DEADGUY = 0x2,
@@ -2215,9 +2215,9 @@ enum _talker_id {
 	TOWN_PEGBOY  = 0x8,
 	TOWN_COW     = 0x9,
 	TOWN_PRIEST  = 0xA,
-};
+} _talker_id;
 
-enum _music_id {
+typedef enum _music_id {
 	TMUSIC_TOWN  = 0,
 	TMUSIC_L1    = 1,
 	TMUSIC_L2    = 2,
@@ -2225,18 +2225,18 @@ enum _music_id {
 	TMUSIC_L4    = 4,
 	TMUSIC_INTRO = 5,
 	NUM_MUSIC    = 6,
-};
+} _music_id;
 
-enum _mainmenu_selections {
+typedef enum _mainmenu_selections {
 	MAINMENU_SINGLE_PLAYER = 1,
 	MAINMENU_MULTIPLAYER   = 2,
 	MAINMENU_REPLAY_INTRO  = 3,
 	MAINMENU_SHOW_CREDITS  = 4,
 	MAINMENU_EXIT_DIABLO   = 5,
 	MAINMENU_ATTRACT_MODE  = 6,
-};
+} _mainmenu_selections;
 
-enum panel_button_id {
+typedef enum panel_button_id {
 	PANBTN_CHARINFO  = 0,
 	PANBTN_QLOG      = 1,
 	PANBTN_AUTOMAP   = 2,
@@ -2245,16 +2245,16 @@ enum panel_button_id {
 	PANBTN_SPELLBOOK = 5,
 	PANBTN_SENDMSG   = 6,
 	PANBTN_FRIENDLY  = 7,
-};
+} panel_button_id;
 
-enum attribute_id {
+typedef enum attribute_id {
 	ATTRIB_STR = 0,
 	ATTRIB_MAG = 1,
 	ATTRIB_DEX = 2,
 	ATTRIB_VIT = 3,
-};
+} attribute_id;
 
-enum _object_id {
+typedef enum _object_id {
 	OBJ_L1LIGHT      = 0x0,
 	OBJ_L1LDOOR      = 0x1,
 	OBJ_L1RDOOR      = 0x2,
@@ -2354,9 +2354,9 @@ enum _object_id {
 	OBJ_SLAINHERO    = 0x60,
 	OBJ_SIGNCHEST    = 0x61,
 	OBJ_NULL_98      = 0x62,
-};
+} _object_id;
 
-enum item_misc_id {
+typedef enum item_misc_id {
 	IMISC_NONE      = 0x0,
 	IMISC_USEFIRST  = 0x1,
 	IMISC_FULLHEAL  = 0x2,
@@ -2403,9 +2403,9 @@ enum item_misc_id {
 	IMISC_EAR       = 0x2B,
 	IMISC_SPECELIX  = 0x2C,
 	IMISC_INVALID   = 0xFFFFFFFF,
-};
+} item_misc_id;
 
-enum item_type {
+typedef enum item_type {
 	ITYPE_MISC   = 0x0,
 	ITYPE_SWORD  = 0x1,
 	ITYPE_AXE    = 0x2,
@@ -2422,9 +2422,9 @@ enum item_type {
 	ITYPE_AMULET = 0xD,
 	ITYPE_0E     = 0xE,
 	ITYPE_NONE   = 0xFFFFFFFF,
-};
+} item_type;
 
-enum _item_indexes {
+typedef enum _item_indexes {
 	IDI_GOLD       = 0x0,
 	IDI_WARRIOR    = 0x1,
 	IDI_WARRSHLD   = 0x2,
@@ -2462,18 +2462,18 @@ enum _item_indexes {
 	IDI_LGTFORGE   = 0x20,
 	IDI_LAZSTAFF   = 0x21,
 	IDI_RESURRECT  = 0x22,
-};
+} _item_indexes;
 
-enum _setlevels {
+typedef enum _setlevels {
 	//SL_BUTCHCHAMB = 0x0,
 	SL_SKELKING     = 0x1,
 	SL_BONECHAMB    = 0x2,
 	SL_MAZE         = 0x3,
 	SL_POISONWATER  = 0x4,
 	SL_VILEBETRAYER = 0x5,
-};
+} _setlevels;
 
-enum quest_id {
+typedef enum quest_id {
 	QTYPE_INFRA   = 0x0,
 	QTYPE_BLKM    = 0x1,
 	QTYPE_GARB    = 0x2,
@@ -2491,9 +2491,9 @@ enum quest_id {
 	QTYPE_BONE    = 0xE,
 	QTYPE_VB      = 0xF,
 	QTYPE_INVALID = 0xFFFFFFFF,
-};
+} quest_id;
 
-enum quest_mush_state {
+typedef enum quest_mush_state {
 	QS_INIT         = 0,
 	QS_TOMESPAWNED  = 1,
 	QS_TOMEGIVEN    = 2,
@@ -2502,9 +2502,9 @@ enum quest_mush_state {
 	QS_MUSHGIVEN    = 5,
 	QS_BRAINSPAWNED = 6,
 	QS_BRAINGIVEN   = 7
-};
+} quest_mush_state;
 
-enum talk_id {
+typedef enum talk_id {
 	STORE_NONE      = 0x0,
 	STORE_SMITH     = 0x1,
 	STORE_SBUY      = 0x2,
@@ -2529,9 +2529,9 @@ enum talk_id {
 	STORE_TAVERN    = 0x15,
 	STORE_DRUNK     = 0x16,
 	STORE_BARMAID   = 0x17,
-};
+} talk_id;
 
-enum _unique_items {
+typedef enum _unique_items {
 	UITEM_CLEAVER      = 0x0,
 	UITEM_SKCROWN      = 0x1,
 	UITEM_INFRARING    = 0x2,
@@ -2623,23 +2623,23 @@ enum _unique_items {
 	UITEM_CONSTRICT    = 0x58,
 	UITEM_ENGAGE       = 0x59,
 	UITEM_INVALID      = 0x5A,
-};
+} _unique_items;
 
-enum plr_class {
+typedef enum plr_class {
 	PC_WARRIOR  = 0x0,
 	PC_ROGUE    = 0x1,
 	PC_SORCERER = 0x2,
 	NUM_CLASSES
-};
+} plr_class;
 
-enum _ui_classes {
+typedef enum _ui_classes {
 	UI_WARRIOR     = 0x0,
 	UI_ROGUE       = 0x1,
 	UI_SORCERER    = 0x2,
 	UI_NUM_CLASSES = 0x3,
-};
+} _ui_classes;
 
-enum _walk_path {
+typedef enum _walk_path {
 	WALK_NE   = 0x1,
 	WALK_NW   = 0x2,
 	WALK_SE   = 0x3,
@@ -2649,24 +2649,24 @@ enum _walk_path {
 	WALK_S    = 0x7,
 	WALK_W    = 0x8,
 	WALK_NONE = -1,
-};
+} _walk_path;
 
-enum item_class {
+typedef enum item_class {
 	ICLASS_NONE   = 0,
 	ICLASS_WEAPON = 1,
 	ICLASS_ARMOR  = 2,
 	ICLASS_MISC   = 3,
 	ICLASS_GOLD   = 4,
 	ICLASS_QUEST  = 5,
-};
+} item_class;
 
-enum item_drop_rate {
+typedef enum item_drop_rate {
 	IDROP_NEVER   = 0,
 	IDROP_REGULAR = 1,
 	IDROP_DOUBLE  = 2,
-};
+} item_drop_rate;
 
-enum item_special_effect {
+typedef enum item_special_effect {
 	ISPL_NONE           = 0x00000000,
 	ISPL_INFRAVISION    = 0x00000001,
 	ISPL_RNDSTEALLIFE   = 0x00000002,
@@ -2700,10 +2700,10 @@ enum item_special_effect {
 	ISPL_UNKNOWN_4      = 0x20000000,
 	ISPL_3XDAMVDEM      = 0x40000000,
 	ISPL_ALLRESZERO     = 0x80000000,
-};
+} item_special_effect;
 
 // Logical equipment locations
-enum inv_body_loc {
+typedef enum inv_body_loc {
 	INVLOC_HEAD       = 0,
 	INVLOC_RING_LEFT  = 1,
 	INVLOC_RING_RIGHT = 2,
@@ -2712,9 +2712,9 @@ enum inv_body_loc {
 	INVLOC_HAND_RIGHT = 5,
 	INVLOC_CHEST      = 6,
 	NUM_INVLOC,
-};
+} inv_body_loc;
 
-enum inv_item {
+typedef enum inv_item {
 	INVITEM_HEAD       = 0,
 	INVITEM_RING_LEFT  = 1,
 	INVITEM_RING_RIGHT = 2,
@@ -2727,11 +2727,11 @@ enum inv_item {
 	INVITEM_BELT_FIRST = 47,
 	INVITEM_BELT_LAST  = 54,
 	NUM_INVELEM
-};
+} inv_item;
 
 // identifiers for each of the inventory squares
 // see https://github.com/sanctuary/graphics/blob/master/inventory.png
-enum inv_xy_slot {
+typedef enum inv_xy_slot {
 	SLOTXY_HEAD_FIRST       = 0,
 	SLOTXY_HEAD_LAST        = 3,
 	SLOTXY_RING_LEFT        = 4,
@@ -2752,9 +2752,9 @@ enum inv_xy_slot {
 	SLOTXY_BELT_FIRST = 65,
 	SLOTXY_BELT_LAST  = 72,
 	NUM_XY_SLOTS      = 73
-};
+} inv_xy_slot;
 
-enum player_graphic {
+typedef enum player_graphic {
 	PFILE_STAND     = 1 << 0,
 	PFILE_WALK      = 1 << 1,
 	PFILE_ATTACK    = 1 << 2,
@@ -2767,9 +2767,9 @@ enum player_graphic {
 	// everything except PFILE_DEATH
 	// 0b1_0111_1111
 	PFILE_NONDEATH = 0x17F
-};
+} player_graphic;
 
-enum anim_weapon_id {
+typedef enum anim_weapon_id {
 	ANIM_ID_UNARMED        = 0x00,
 	ANIM_ID_UNARMED_SHIELD = 0x01,
 	ANIM_ID_SWORD          = 0x02,
@@ -2779,15 +2779,15 @@ enum anim_weapon_id {
 	ANIM_ID_MACE           = 0x06,
 	ANIM_ID_MACE_SHIELD    = 0x07,
 	ANIM_ID_STAFF          = 0x08
-};
+} anim_weapon_id;
 
-enum anim_armor_id {
+typedef enum anim_armor_id {
 	ANIM_ID_LIGHT_ARMOR  = 0x00,
 	ANIM_ID_MEDIUM_ARMOR = 0x10,
 	ANIM_ID_HEAVY_ARMOR  = 0x20
-};
+} anim_armor_id;
 
-enum shrine_type {
+typedef enum shrine_type {
 	SHRINE_MYSTERIOUS   = 0,
 	SHRINE_HIDDEN       = 1,
 	SHRINE_GLOOMY       = 2,
@@ -2815,9 +2815,9 @@ enum shrine_type {
 	SHRINE_GLIMMERING   = 24,
 	SHRINE_TAINTED      = 25,
 	NUM_SHRINETYPE
-};
+} shrine_type;
 
-enum action_id {
+typedef enum action_id {
 	ACTION_NONE        = -1,
 	ACTION_ATTACK      = 9,
 	ACTION_RATTACK     = 10,
@@ -2835,4 +2835,4 @@ enum action_id {
 	ACTION_SPELLMON    = 24,
 	ACTION_SPELLPLR    = 25,
 	ACTION_SPELLWALL   = 26,
-};
+} action_id;

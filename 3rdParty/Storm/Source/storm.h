@@ -257,7 +257,7 @@ typedef struct _game
   DWORD     dwUnk_24;
   char      szGameName[128];
   char      szGameStatString[128];
-  _game     *pNext;
+  struct _game     *pNext;
   void      *pExtra;
   DWORD     dwExtraBytes;
   DWORD     dwProduct;
