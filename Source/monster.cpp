@@ -6780,69 +6780,47 @@ BOOL __fastcall PosOkMonst2(int i, int x, int y)
 
 BOOL __fastcall PosOkMonst3(int i, int x, int y)
 {
-	int v3;         // esi
-	signed int v4;  // ebp
-	char v5;        // al
-	int v6;         // eax
-	int v7;         // eax
-	int v8;         // ecx
-	int v9;         // ecx
-	BOOLEAN result;    // eax
-	int v11;        // ecx
-	signed int v12; // [esp+10h] [ebp-8h]
-	int v13;        // [esp+14h] [ebp-4h]
+	int oi, mi, j, objtype;
+	BOOL ret, fire, isdoor;
 
-	v12 = 0;
-	v3 = x;
-	v4 = 0;
-	v13 = i;
-	v5 = dObject[x][y];
-	if (v5) {
-		if (v5 <= 0)
-			v6 = -1 - v5;
-		else
-			v6 = v5 - 1;
-		v7 = v6;
-		v8 = object[v7]._otype;
-		v4 = 1;
-		if (v8 != 1
-		    && v8 != OBJ_L1RDOOR
-		    && v8 != OBJ_L2LDOOR
-		    && v8 != OBJ_L2RDOOR
-		    && v8 != OBJ_L3LDOOR
-		    && v8 != OBJ_L3RDOOR) {
-			v4 = 0;
+	fire = FALSE;
+	isdoor = FALSE;
+	if (dObject[x][y]) {
+		oi = dObject[x][y] > 0 ? dObject[x][y] - 1 : -(dObject[x][y] + 1);
+		objtype = object[oi]._otype;
+		isdoor = TRUE;
+		if (objtype != OBJ_L1LDOOR
+		    && objtype != OBJ_L1RDOOR
+		    && objtype != OBJ_L2LDOOR
+		    && objtype != OBJ_L2RDOOR
+		    && objtype != OBJ_L3LDOOR
+		    && objtype != OBJ_L3RDOOR) {
+			isdoor = FALSE;
 		}
-		if (object[v7]._oSolidFlag && !v4)
-			return 0;
+		if (object[oi]._oSolidFlag && !isdoor)
+			return FALSE;
 	}
-	if (SolidLoc(x, y) && !v4 || dPlayer[v3][y] || dMonster[v3][y])
-		return 0;
-	_LOBYTE(v9) = dMissile[v3][y];
-	result = 1;
-	if ((_BYTE)v9) {
-		if (v13 >= 0) {
-			v9 = (char)v9;
-			if ((char)v9 > 0) {
-				if (missile[v9]._mitype == MIS_FIREWALL)
-					goto LABEL_33;
-				v11 = 0;
-				if (nummissiles > 0) {
-					do {
-						if (missile[missileactive[v11]]._mitype == MIS_FIREWALL)
-							v12 = 1;
-						++v11;
-					} while (v11 < nummissiles);
-					if (v12) {
-					LABEL_33:
-						if (!(monster[v13].mMagicRes & IMUNE_FIRE) || monster[v13].MType->mtype == MT_DIABLO)
-							return 0;
-					}
+
+	if (SolidLoc(x, y) && !isdoor || dPlayer[x][y] || dMonster[x][y])
+		return FALSE;
+
+	ret = TRUE;
+	if (dMissile[x][y] && i >= 0) {
+		mi = dMissile[x][y];
+		if (mi > 0) {
+			if (missile[mi]._mitype == MIS_FIREWALL) {
+				fire = TRUE;
+			} else {
+				for (j = 0; j < nummissiles; j++) {
+					if (missile[missileactive[j]]._mitype == MIS_FIREWALL)
+						fire = TRUE;
 				}
 			}
 		}
+		if (fire && (!(monster[i].mMagicRes & IMUNE_FIRE) || monster[i].MType->mtype == MT_DIABLO))
+			ret = FALSE;
 	}
-	return result;
+	return ret;
 }
 
 BOOL __fastcall IsSkel(int mt)
