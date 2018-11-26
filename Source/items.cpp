@@ -4177,9 +4177,9 @@ BOOLEAN __fastcall SmithItemOk(int i)
 	BOOLEAN rv;          // eax
 
 	v1 = AllItemsList[i].itype;
-	rv = 1;
+	rv = TRUE;
 	if (!v1 || v1 == ITYPE_GOLD || v1 == ITYPE_0E || v1 == ITYPE_STAFF || v1 == ITYPE_RING || v1 == ITYPE_AMULET)
-		rv = 0;
+		rv = FALSE;
 	return rv;
 }
 

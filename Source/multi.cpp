@@ -745,7 +745,7 @@ int __fastcall NetInit(int bSinglePlayer, int *pfExitProgram)
 		a2.size = 16;
 		memset(&UiData, 0, 0x50u);
 		UiData.size = 80;
-		UiData.parentwindow = SDrawGetFrameWindow(0);
+		UiData.parentwindow = SDrawGetFrameWindow(NULL);
 		UiData.artcallback = (void(__cdecl *)())UiArtCallback;
 		UiData.createcallback = (void(__cdecl *)())UiCreateGameCallback;
 		UiData.drawdesccallback = (void(__cdecl *)())UiDrawDescCallback;
