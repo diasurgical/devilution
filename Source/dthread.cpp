@@ -62,29 +62,23 @@ void __fastcall dthread_remove_player(int pnum)
 
 void __fastcall dthread_send_delta(int pnum, char cmd, void *pbSrc, int dwLen)
 {
-	TMegaPkt *v5;  // eax
-	TMegaPkt *v6;  // esi
-	TMegaPkt *v7;  // eax
-	TMegaPkt **v8; // ecx
-	int v9;        // [esp+4h] [ebp-4h]
+	TMegaPkt *pkt;
+	TMegaPkt *p;
+	TMegaPkt **last;
 
-	v9 = pnum;
 	if (gbMaxPlayers != 1) {
-		v5 = (TMegaPkt *)DiabloAllocPtr(dwLen + 20);
-		v6 = v5;
-		v5->pNext = 0;
-		v5->dwSpaceLeft = v9;
-		v5->data[0] = cmd;
-		*(_DWORD *)&v5->data[4] = dwLen;
-		memcpy(&v5->data[8], pbSrc, dwLen);
+		pkt = (TMegaPkt *)DiabloAllocPtr(dwLen + 20);
+		pkt->pNext = 0;
+		pkt->dwSpaceLeft = pnum;
+		pkt->data[0] = cmd;
+		*(_DWORD *)&pkt->data[4] = dwLen;
+		memcpy(&pkt->data[8], pbSrc, dwLen);
 		EnterCriticalSection(&sgMemCrit);
-		v7 = sgpInfoHead;
-		v8 = &sgpInfoHead;
-		while (v7) {
-			v8 = &v7->pNext;
-			v7 = v7->pNext;
+		last = &sgpInfoHead;
+		for (p = sgpInfoHead; p != NULL; p = p->pNext) {
+			last = &p->pNext;
 		}
-		*v8 = v6;
+		*last = pkt;
 		SetEvent(sghWorkToDoEvent);
 		LeaveCriticalSection(&sgMemCrit);
 	}
