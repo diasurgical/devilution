@@ -861,7 +861,7 @@ void __fastcall InitPlayer(int pnum, BOOL FirstTime)
 			plr[pnum]._ptargx = plr[pnum].WorldX;
 			plr[pnum]._ptargy = plr[pnum].WorldY;
 			DWORD i;
-			for (i = 0; i < 8 && !PosOkPlayer(pnum, plrxoff2[i] + plr[pnum].WorldX, plryoff2[i] + plr[pnum].WorldY); ++i)
+			for (i = 0; i < 8 && !PosOkPlayer(pnum, plrxoff2[i] + plr[pnum].WorldX, plryoff2[i] + plr[pnum].WorldY); i++)
 				;
 			plr[pnum].WorldX += plrxoff2[i];
 			plr[pnum].WorldY += plryoff2[i];
