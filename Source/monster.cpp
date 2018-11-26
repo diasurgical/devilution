@@ -6726,105 +6726,66 @@ void __fastcall MissToMonst(int i, int x, int y)
 
 BOOL __fastcall PosOkMonst(int i, int x, int y)
 {
-	int v3;        // edi
-	signed int v4; // ebx
-	int v5;        // ecx
-	char v6;       // dl
-	bool result;   // eax
-	int v8;        // edx
-	int v9;        // ecx
-	int v10;       // [esp+Ch] [ebp-4h]
+	int oi, mi, j;
+	BOOL ret, fire;
 
-	v3 = x;
-	v10 = i;
-	v4 = 0;
-	if (SolidLoc(x, y))
-		return 0;
-	v5 = 112 * v3;
-	if (dPlayer[v3][y] || dMonster[0][v5 + y])
-		return 0;
-	v6 = dObject[0][v5 + y];
-	result = 1;
-	if (v6) {
-		v8 = v6 <= 0 ? -1 - v6 : v6 - 1;
-		if (object[v8]._oSolidFlag)
-			return 0;
+	fire = FALSE;
+	ret = !SolidLoc(x, y) && !dPlayer[x][y] && !dMonster[x][y];
+	if (ret && dObject[x][y]) {
+		oi = dObject[x][y] > 0 ? dObject[x][y] - 1 : -(dObject[x][y] + 1);
+		if (object[oi]._oSolidFlag)
+			ret = FALSE;
 	}
-	_LOBYTE(v5) = dMissile[0][v5 + y];
-	if ((_BYTE)v5) {
-		if (v10 >= 0) {
-			v5 = (char)v5;
-			if ((char)v5 > 0) {
-				if (missile[v5]._mitype == MIS_FIREWALL)
-					goto LABEL_24;
-				v9 = 0;
-				if (nummissiles > 0) {
-					do {
-						if (missile[missileactive[v9]]._mitype == MIS_FIREWALL)
-							v4 = 1;
-						++v9;
-					} while (v9 < nummissiles);
-					if (v4) {
-					LABEL_24:
-						if (!(monster[v10].mMagicRes & IMUNE_FIRE) || monster[v10].MType->mtype == MT_DIABLO)
-							return 0;
-					}
+
+	if (ret && dMissile[x][y] && i >= 0) {
+		mi = dMissile[x][y];
+		if (mi > 0) {
+			if (missile[mi]._mitype == MIS_FIREWALL) {
+				fire = TRUE;
+			} else {
+				for (j = 0; j < nummissiles; j++) {
+					if (missile[missileactive[j]]._mitype == MIS_FIREWALL)
+						fire = TRUE;
 				}
 			}
 		}
+		if (fire && (!(monster[i].mMagicRes & IMUNE_FIRE) || monster[i].MType->mtype == MT_DIABLO))
+			ret = FALSE;
 	}
-	return result;
+
+	return ret;
 }
 
 BOOL __fastcall PosOkMonst2(int i, int x, int y)
 {
-	int v3;        // edi
-	int v4;        // ebx
-	signed int v5; // ebp
-	bool result;   // eax
-	char v7;       // dl
-	int v8;        // edx
-	int v9;        // ecx
-	int v10;       // ecx
+	int oi, mi, j;
+	BOOL ret, fire;
 
-	v3 = x;
-	v4 = i;
-	v5 = 0;
-	result = SolidLoc(x, y) == 0;
-	if (result) {
-		v7 = dObject[v3][y];
-		if (v7) {
-			v8 = v7 <= 0 ? -1 - v7 : v7 - 1;
-			if (object[v8]._oSolidFlag)
-				result = 0;
-		}
-		if (result) {
-			_LOBYTE(v9) = dMissile[v3][y];
-			if ((_BYTE)v9) {
-				if (v4 >= 0) {
-					v9 = (char)v9;
-					if ((char)v9 > 0) {
-						if (missile[v9]._mitype == MIS_FIREWALL)
-							goto LABEL_23;
-						v10 = 0;
-						if (nummissiles > 0) {
-							do {
-								if (missile[missileactive[v10]]._mitype == MIS_FIREWALL)
-									v5 = 1;
-								++v10;
-							} while (v10 < nummissiles);
-							if (v5) {
-							LABEL_23:
-								if (!(monster[v4].mMagicRes & IMUNE_FIRE) || monster[v4].MType->mtype == MT_DIABLO)
-									result = 0;
-							}
-						}
-					}
+	fire = FALSE;
+	ret = !SolidLoc(x, y); //12-15
+	if (ret && dObject[x][y]) {
+		oi = dObject[x][y] > 0 ? dObject[x][y] - 1 : -(dObject[x][y] + 1);
+		if (object[oi]._oSolidFlag)
+			ret = FALSE;
+	}
+
+	if (ret && dMissile[x][y] && i >= 0) { //37
+		mi = dMissile[x][y];
+		if (mi > 0) {
+			if (missile[mi]._mitype == MIS_FIREWALL) {
+				fire = TRUE;
+			} else {
+				for (j = 0; j < nummissiles; j++) {
+					if (missile[missileactive[j]]._mitype == MIS_FIREWALL)
+						fire = TRUE;
 				}
 			}
 		}
+		if (fire && (!(monster[i].mMagicRes & IMUNE_FIRE) || monster[i].MType->mtype == MT_DIABLO))
+			ret = FALSE;
 	}
-	return result;
+
+	return ret;
 }
 
 BOOL __fastcall PosOkMonst3(int i, int x, int y)
