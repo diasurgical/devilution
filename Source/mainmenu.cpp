@@ -83,38 +83,40 @@ int __stdcall mainmenu_select_hero_dialog(
 
 void __cdecl mainmenu_loop()
 {
-	BOOL loop;
-	int choice;
+	BOOL done;
+	int menu;
 
+	done = FALSE;
 	mainmenu_refresh_music();
+
 	do {
-		while (1) {
-			choice = 0;
-			if (!UiMainMenuDialog("Diablo v1.09", &choice, effects_play_sound, 30))
-				TermMsg("Unable to display mainmenu");
-			switch (choice) {
-			case MAINMENU_SINGLE_PLAYER:
-				loop = mainmenu_single_player();
-				goto check_cond;
-			case MAINMENU_MULTIPLAYER:
-				loop = mainmenu_multi_player();
-				goto check_cond;
-			case MAINMENU_SHOW_CREDITS:
-				UiCreditsDialog(16);
-				break;
-			case MAINMENU_EXIT_DIABLO:
-				goto ret;
-			case MAINMENU_REPLAY_INTRO:
-			case MAINMENU_ATTRACT_MODE:
-				if (gbActive)
-					mainmenu_play_intro();
-				break;
-			}
+		menu = 0;
+		if(!UiMainMenuDialog("Diablo v1.09", &menu, effects_play_sound, 30))
+			TermMsg("Unable to display mainmenu");
+
+		switch(menu) {
+		case MAINMENU_SINGLE_PLAYER:
+			if(!mainmenu_single_player())
+				done = TRUE;
+			break;
+		case MAINMENU_MULTIPLAYER:
+			if(!mainmenu_multi_player())
+				done = TRUE;
+			break;
+		case MAINMENU_REPLAY_INTRO:
+		case MAINMENU_ATTRACT_MODE:
+			if(gbActive)
+				mainmenu_play_intro();
+			break;
+		case MAINMENU_SHOW_CREDITS:
+			UiCreditsDialog(16);
+			break;
+		case MAINMENU_EXIT_DIABLO:
+			done = TRUE;
+			break;
 		}
-		check_cond:
-			;
-	} while (loop);
-ret:
+	} while(done == FALSE);
+
 	music_stop();
 }
 // 634980: using guessed type int gbActive;
