@@ -1559,6 +1559,8 @@ void __fastcall RemovePlrFromMap(int pnum)
 
 void __fastcall StartPlrHit(int pnum, int dam, BOOL forcehit)
 {
+	int pd;
+	
 	if ((DWORD)pnum >= MAX_PLRS) {
 		TermMsg("StartPlrHit: illegal player %d", pnum);
 	}
@@ -1578,15 +1580,15 @@ void __fastcall StartPlrHit(int pnum, int dam, BOOL forcehit)
 
 	drawhpflag = TRUE;
 	if (dam >> 6 >= plr[pnum]._pLevel || forcehit) {
-		int dir = plr[pnum]._pdir;
+		pd = plr[pnum]._pdir;
 
 		if (!(plr[pnum]._pGFXLoad & PFILE_HIT)) {
 			LoadPlrGFX(pnum, PFILE_HIT);
 		}
-		NewPlrAnim(pnum, plr[pnum]._pHAnim[dir], plr[pnum]._pHFrames, 0, plr[pnum]._pHWidth);
+		NewPlrAnim(pnum, plr[pnum]._pHAnim[pd], plr[pnum]._pHFrames, 0, plr[pnum]._pHWidth);
 
 		plr[pnum]._pmode = PM_GOTHIT;
-		FixPlayerLocation(pnum, dir);
+		FixPlayerLocation(pnum, pd);
 		plr[pnum]._pVar8 = 1;
 		FixPlrWalkTags(pnum);
 		dPlayer[plr[pnum].WorldX][plr[pnum].WorldY] = pnum + 1;
@@ -1596,6 +1598,8 @@ void __fastcall StartPlrHit(int pnum, int dam, BOOL forcehit)
 
 void __fastcall RespawnDeadItem(ItemStruct *itm, int x, int y)
 {
+	int ii;
+
 	if (numitems >= MAXITEMS) {
 		return;
 	}
@@ -1605,14 +1609,14 @@ void __fastcall RespawnDeadItem(ItemStruct *itm, int x, int y)
 		SyncGetItem(x, y, itm->IDidx, itm->_iCreateInfo, itm->_iSeed);
 	}
 
-	int i = itemavail[0];
-	dItem[x][y] = i + 1;
+	ii = itemavail[0];
+	dItem[x][y] = ii + 1;
 	itemavail[0] = itemavail[MAXITEMS - numitems - 1];
-	itemactive[numitems] = i;
-	item[i] = *itm;
-	item[i]._ix = x;
-	item[i]._iy = y;
-	RespawnItem(i, TRUE);
+	itemactive[numitems] = ii;
+	item[ii] = *itm;
+	item[ii]._ix = x;
+	item[ii]._iy = y;
+	RespawnItem(ii, TRUE);
 	numitems++;
 	itm->_itype = ITYPE_NONE;
 }
