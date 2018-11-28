@@ -1598,6 +1598,8 @@ void __fastcall StartPlrHit(int pnum, int dam, BOOL forcehit)
 
 void __fastcall RespawnDeadItem(ItemStruct *itm, int x, int y)
 {
+	int ii;
+
 	if (numitems >= MAXITEMS) {
 		return;
 	}
@@ -1607,14 +1609,14 @@ void __fastcall RespawnDeadItem(ItemStruct *itm, int x, int y)
 		SyncGetItem(x, y, itm->IDidx, itm->_iCreateInfo, itm->_iSeed);
 	}
 
-	int i = itemavail[0];
-	dItem[x][y] = i + 1;
+	ii = itemavail[0];
+	dItem[x][y] = ii + 1;
 	itemavail[0] = itemavail[MAXITEMS - numitems - 1];
-	itemactive[numitems] = i;
-	item[i] = *itm;
-	item[i]._ix = x;
-	item[i]._iy = y;
-	RespawnItem(i, TRUE);
+	itemactive[numitems] = ii;
+	item[ii] = *itm;
+	item[ii]._ix = x;
+	item[ii]._iy = y;
+	RespawnItem(ii, TRUE);
 	numitems++;
 	itm->_itype = ITYPE_NONE;
 }
