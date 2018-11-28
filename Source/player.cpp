@@ -1580,7 +1580,7 @@ void __fastcall StartPlrHit(int pnum, int dam, BOOL forcehit)
 
 	drawhpflag = TRUE;
 	if (dam >> 6 >= plr[pnum]._pLevel || forcehit) {
-		int pd = plr[pnum]._pdir;
+		pd = plr[pnum]._pdir;
 
 		if (!(plr[pnum]._pGFXLoad & PFILE_HIT)) {
 			LoadPlrGFX(pnum, PFILE_HIT);
