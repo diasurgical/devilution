@@ -1559,6 +1559,8 @@ void __fastcall RemovePlrFromMap(int pnum)
 
 void __fastcall StartPlrHit(int pnum, int dam, BOOL forcehit)
 {
+	int pd;
+	
 	if ((DWORD)pnum >= MAX_PLRS) {
 		TermMsg("StartPlrHit: illegal player %d", pnum);
 	}
@@ -1578,15 +1580,15 @@ void __fastcall StartPlrHit(int pnum, int dam, BOOL forcehit)
 
 	drawhpflag = TRUE;
 	if (dam >> 6 >= plr[pnum]._pLevel || forcehit) {
-		int dir = plr[pnum]._pdir;
+		int pd = plr[pnum]._pdir;
 
 		if (!(plr[pnum]._pGFXLoad & PFILE_HIT)) {
 			LoadPlrGFX(pnum, PFILE_HIT);
 		}
-		NewPlrAnim(pnum, plr[pnum]._pHAnim[dir], plr[pnum]._pHFrames, 0, plr[pnum]._pHWidth);
+		NewPlrAnim(pnum, plr[pnum]._pHAnim[pd], plr[pnum]._pHFrames, 0, plr[pnum]._pHWidth);
 
 		plr[pnum]._pmode = PM_GOTHIT;
-		FixPlayerLocation(pnum, dir);
+		FixPlayerLocation(pnum, pd);
 		plr[pnum]._pVar8 = 1;
 		FixPlrWalkTags(pnum);
 		dPlayer[plr[pnum].WorldX][plr[pnum].WorldY] = pnum + 1;
