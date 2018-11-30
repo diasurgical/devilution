@@ -95,9 +95,9 @@ void __fastcall SelClass_LoadClassFocus(HWND hWnd)
 	v3 = GetWindowLongA(v2, -21);
 	SetWindowLongA(v1, -21, v3);
 	local_DoUiWndProc(v1, (DWORD *)selclass_msgtbl3);
-	Doom_ParseWndProc3(v1, selclass_msgtbl1, 5);
-	Doom_ParseWndProcs(v1, selclass_msgtbl2, 4, 0);
-	Doom_ParseWndProcs(v1, selclass_msgtbl3, 2, 1);
+	Doom_ParseWndProc3(v1, selclass_msgtbl1, AF_BIGGRAY);
+	Doom_ParseWndProcs(v1, selclass_msgtbl2, AF_BIG, 0);
+	Doom_ParseWndProcs(v1, selclass_msgtbl3, AF_MED, 1);
 	Focus_LoadSpinner("ui_art\\focus.pcx");
 	SDlgSetTimer((int)v1, 1, 55, 0);
 }

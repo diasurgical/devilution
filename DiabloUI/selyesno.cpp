@@ -130,8 +130,8 @@ void __fastcall SelYesNo_LoadSelYN_GFX(HWND hWnd)
 	v6 = yesno_dialog_string;
 	v7 = GetDlgItem(hWnd, 1026);
 	SetWindowTextA(v7, v6);
-	Doom_ParseWndProc3(hWnd, yesno_msgtbl2, 3);
-	Doom_ParseWndProcs(hWnd, yesno_msgtbl1, 4, 1);
+	Doom_ParseWndProc3(hWnd, yesno_msgtbl2, AF_MEDGRAY);
+	Doom_ParseWndProcs(hWnd, yesno_msgtbl1, AF_BIG, 1);
 	if (yesno_remove_focus)
 		Focus_LoadSpinner("ui_art\\focus.pcx");
 	else

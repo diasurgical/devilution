@@ -189,22 +189,22 @@ void __cdecl disclaim_cpp_init();
 
 void __cdecl j_Doom_cpp_init();
 void __cdecl Doom_cpp_init();
-void __fastcall Doom_ParseWndProcs(HWND hWnd, int *msgtbl, int a3, int a4);
+void __fastcall Doom_ParseWndProcs(HWND hWnd, int *msgtbl, int nFont, int a4);
 void __fastcall Doom_GetSetWndText(HWND hWnd, int msg, int nFont, int a4);
 void __fastcall Doom_PrintStrWithSpin(HWND hWnd, BOOL a2);
 void __fastcall Doom_AllocAndSetBMP(HWND hWnd, int a2, int bmp_flags); /* check args, __stdcall? */
 void __fastcall Doom_GetWindowROP3(HWND hWnd1, HWND hWnd2);
-void __fastcall Doom_ParseWndProc2(HWND hWnd, int *msgtbl, int a3, int a4);
+void __fastcall Doom_ParseWndProc2(HWND hWnd, int *msgtbl, int nFont, int a4);
 void __fastcall Doom_GetSetWndTxt2(HWND hWnd, int msg, int nFont, int a4);
-void __fastcall Doom_ParseWndProc3(HWND hWnd, int *msgtbl, int a3);
+void __fastcall Doom_ParseWndProc3(HWND hWnd, int *msgtbl, int nFont);
 void __fastcall Doom_GetSetWndTxt3(HWND hWnd, int msg, int nFont);
 void __fastcall Doom_PrintStrWithSpn2(HWND hWnd, int justify_type);
-void __fastcall Doom_ParseWndProc4(HWND hWnd, int *msgtbl, int a3);
+void __fastcall Doom_ParseWndProc4(HWND hWnd, int *msgtbl, int nFont);
 void __fastcall Doom_GetSetWndTxt4(HWND hWnd, int msg, int nFont);
-void __fastcall Doom_ParseWndProc5(HWND hWnd, int *msgtbl, int a3);
+void __fastcall Doom_ParseWndProc5(HWND hWnd, int *msgtbl, int nFont);
 void __fastcall Doom_GetSetWndTxt5(HWND hWnd, int msg, int nFont);
 void __fastcall Doom_PrintTextMsg403(HWND hWnd);
-void __fastcall Doom_ParseWndProc6(HWND hWnd, int *msgtbl, int a3);
+void __fastcall Doom_ParseWndProc6(HWND hWnd, int *msgtbl, int nFont);
 void __fastcall Doom_GetSetWndTxt6(HWND hWnd, int msg, int nFont);
 void __fastcall Doom_DeleteFreeProcs(HWND hWnd, int *msgtbl);
 

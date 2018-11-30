@@ -2,25 +2,25 @@
 void __fastcall artfont_SetArtFont(int nFont)
 {
 	switch (nFont) {
-	case 0:
+	case AF_SMALL:
 		sgpCurrFont = &font16g;
 		break;
-	case 2:
+	case AF_MED:
 		sgpCurrFont = &font24g;
 		break;
-	case 3:
+	case AF_MEDGRAY:
 		sgpCurrFont = &font24s;
 		break;
-	case 4:
+	case AF_BIG:
 		sgpCurrFont = &font30g;
 		break;
-	case 5:
+	case AF_BIGGRAY:
 		sgpCurrFont = &font30s;
 		break;
-	case 6:
+	case AF_HUGE:
 		sgpCurrFont = &font42g;
 		break;
-	case 7:
+	case AF_HUGEGRAY:
 		sgpCurrFont = &font42y;
 		break;
 	default:

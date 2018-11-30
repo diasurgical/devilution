@@ -74,8 +74,8 @@ void __fastcall disclaim_LoadDisclaimGFX(HWND hWnd)
 		local_LoadArtWithPal(hWnd, 0, &nullcharacter, -1, 1, "ui_art\\disclaim.pcx", (BYTE **)v2, v2 + 1, 0);
 		Fade_NoInputAndArt(hWnd, 0);
 	}
-	Doom_ParseWndProc3(hWnd, disclaim_msgtbl1, 5);
-	Doom_ParseWndProc3(hWnd, disclaim_msgtbl2, 2);
+	Doom_ParseWndProc3(hWnd, disclaim_msgtbl1, AF_BIGGRAY);
+	Doom_ParseWndProc3(hWnd, disclaim_msgtbl2, AF_MED);
 }
 
 // ref: 0x10006552

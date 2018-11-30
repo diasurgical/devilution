@@ -137,8 +137,8 @@ void __fastcall MainMenu_LoadMenuGFX(HWND hWnd)
 	}
 	v6 = GetDlgItem(hWnd, 1042);
 	SetWindowTextA(v6, menu_version_str);
-	Doom_ParseWndProc3(hWnd, menumsgs_1option, 1);
-	Doom_ParseWndProcs(hWnd, menumsgs_5options, 6, 1);
+	Doom_ParseWndProc3(hWnd, menumsgs_1option, AF_SMALLGRAY);
+	Doom_ParseWndProcs(hWnd, menumsgs_5options, AF_HUGE, 1);
 	Focus_SetFocusTimer(hWnd, "ui_art\\focus42.pcx");
 	Title_LoadImgSetTimer(hWnd, "ui_art\\smlogo.pcx");
 	MainMenu_SetMenuTimer(hWnd);

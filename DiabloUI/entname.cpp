@@ -86,9 +86,9 @@ void __fastcall EntName_LoadFocusChkName(HWND hWnd)
 	SelHero_SetStringWithMsg(v2, Buffer);
 	v3 = GetWindowLongA(v2, -21);
 	SetWindowLongA(hWnd, -21, v3);
-	Doom_ParseWndProc3(hWnd, entname_msgtbl1, 5);
-	Doom_ParseWndProcs(hWnd, entname_msgtbl2, 4, 0);
-	Doom_ParseWndProc5(hWnd, entname_msgtbl3, 2);
+	Doom_ParseWndProc3(hWnd, entname_msgtbl1, AF_BIGGRAY);
+	Doom_ParseWndProcs(hWnd, entname_msgtbl2, AF_BIG, 0);
+	Doom_ParseWndProc5(hWnd, entname_msgtbl3, AF_MED);
 	Focus_LoadSpinner("ui_art\\focus.pcx");
 	SDlgSetTimer((int)hWnd, 1, 55, 0);
 	v4 = GetDlgItem(hWnd, 1065);
@@ -121,7 +121,7 @@ void __fastcall EntName_GetMessageName(HWND hWnd, unsigned int a2, int a3)
 	v3 = (a2 >> 16) - 1;
 	if (v3) {
 		if (v3 == 2)
-			Doom_ParseWndProc6(hWnd, entname_msgtbl3, 2);
+			Doom_ParseWndProc6(hWnd, entname_msgtbl3, AF_MED);
 	} else {
 		v5 = GetFocus();
 		Focus_DoBlitSpinIncFrame(hWnd, v5);

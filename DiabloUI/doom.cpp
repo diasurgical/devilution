@@ -7,13 +7,13 @@ void __cdecl Doom_cpp_init()
 // 10029854: using guessed type int doom_cpp_float;
 
 // ref: 0x1000658C
-void __fastcall Doom_ParseWndProcs(HWND hWnd, int *msgtbl, int a3, int a4)
+void __fastcall Doom_ParseWndProcs(HWND hWnd, int *msgtbl, int nFont, int a4)
 {
-	HWND v6; // eax
+	HWND msg; // eax
 
 	while (*msgtbl) {
-		v6 = GetDlgItem(hWnd, *msgtbl);
-		Doom_GetSetWndText(hWnd, (int)v6, a3, a4);
+		msg = GetDlgItem(hWnd, *msgtbl);
+		Doom_GetSetWndText(hWnd, (int)msg, nFont, a4);
 		++msgtbl;
 	}
 }
@@ -128,13 +128,13 @@ void __fastcall Doom_GetWindowROP3(HWND hWnd1, HWND hWnd2)
 }
 
 // ref: 0x1000680A
-void __fastcall Doom_ParseWndProc2(HWND hWnd, int *msgtbl, int a3, int a4)
+void __fastcall Doom_ParseWndProc2(HWND hWnd, int *msgtbl, int nFont, int a4)
 {
-	HWND v6; // eax
+	HWND msg; // eax
 
 	while (*msgtbl) {
-		v6 = GetDlgItem(hWnd, *msgtbl);
-		Doom_GetSetWndTxt2(hWnd, (int)v6, a3, a4);
+		msg = GetDlgItem(hWnd, *msgtbl);
+		Doom_GetSetWndTxt2(hWnd, (int)msg, nFont, a4);
 		++msgtbl;
 	}
 }
@@ -161,13 +161,13 @@ void __fastcall Doom_GetSetWndTxt2(HWND hWnd, int msg, int nFont, int a4)
 }
 
 // ref: 0x100068AB
-void __fastcall Doom_ParseWndProc3(HWND hWnd, int *msgtbl, int a3)
+void __fastcall Doom_ParseWndProc3(HWND hWnd, int *msgtbl, int nFont)
 {
-	HWND v5; // eax
+	HWND msg; // eax
 
 	while (*msgtbl) {
-		v5 = GetDlgItem(hWnd, *msgtbl);
-		Doom_GetSetWndTxt3(hWnd, (int)v5, a3);
+		msg = GetDlgItem(hWnd, *msgtbl);
+		Doom_GetSetWndTxt3(hWnd, (int)msg, nFont);
 		++msgtbl;
 	}
 }
@@ -227,13 +227,13 @@ void __fastcall Doom_PrintStrWithSpn2(HWND hWnd, int justify_type)
 }
 
 // ref: 0x10006A13
-void __fastcall Doom_ParseWndProc4(HWND hWnd, int *msgtbl, int a3)
+void __fastcall Doom_ParseWndProc4(HWND hWnd, int *msgtbl, int nFont)
 {
-	HWND v5; // eax
+	HWND msg; // eax
 
 	while (*msgtbl) {
-		v5 = GetDlgItem(hWnd, *msgtbl);
-		Doom_GetSetWndTxt4(hWnd, (int)v5, a3);
+		msg = GetDlgItem(hWnd, *msgtbl);
+		Doom_GetSetWndTxt4(hWnd, (int)msg, nFont);
 		++msgtbl;
 	}
 }
@@ -262,13 +262,13 @@ void __fastcall Doom_GetSetWndTxt4(HWND hWnd, int msg, int nFont)
 }
 
 // ref: 0x10006AB8
-void __fastcall Doom_ParseWndProc5(HWND hWnd, int *msgtbl, int a3)
+void __fastcall Doom_ParseWndProc5(HWND hWnd, int *msgtbl, int nFont)
 {
-	HWND v5; // eax
+	HWND msg; // eax
 
 	while (*msgtbl) {
-		v5 = GetDlgItem(hWnd, *msgtbl);
-		Doom_GetSetWndTxt5(hWnd, (int)v5, a3);
+		msg = GetDlgItem(hWnd, *msgtbl);
+		Doom_GetSetWndTxt5(hWnd, (int)msg, nFont);
 		++msgtbl;
 	}
 }
@@ -329,13 +329,13 @@ void __fastcall Doom_PrintTextMsg403(HWND hWnd)
 }
 
 // ref: 0x10006C08
-void __fastcall Doom_ParseWndProc6(HWND hWnd, int *msgtbl, int a3)
+void __fastcall Doom_ParseWndProc6(HWND hWnd, int *msgtbl, int nFont)
 {
-	HWND v5; // eax
+	HWND msg; // eax
 
 	while (*msgtbl) {
-		v5 = GetDlgItem(hWnd, *msgtbl);
-		Doom_GetSetWndTxt6(hWnd, (int)v5, a3);
+		msg = GetDlgItem(hWnd, *msgtbl);
+		Doom_GetSetWndTxt6(hWnd, (int)msg, nFont);
 		++msgtbl;
 	}
 }
