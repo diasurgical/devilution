@@ -1,8 +1,6 @@
 [![Build Status](https://travis-ci.org/diasurgical/devilution.svg?branch=master)](https://travis-ci.org/diasurgical/devilution)
 [![Build status](https://ci.appveyor.com/api/projects/status/ssk0xjhoka1uu940?svg=true)](https://ci.appveyor.com/project/galaxyhaxz/devilution)
 
-[Discord](https://discord.gg/XEKDxHK)
-
 # Devilution
 Diablo devolved - magic behind the 1996 computer game
 
