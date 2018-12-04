@@ -89,9 +89,9 @@ void __fastcall SelLoad_LoadFocusAndMsg(HWND hWnd)
 	v3 = GetWindowLongA(v2, -21);
 	SetWindowLongA(hWnd, -21, v3);
 	local_DoUiWndProc(hWnd, (DWORD *)selload_msgtbl3);
-	Doom_ParseWndProc3(hWnd, selload_msgtbl1, 5);
-	Doom_ParseWndProcs(hWnd, selload_msgtbl2, 4, 0);
-	Doom_ParseWndProcs(hWnd, selload_msgtbl3, 2, 1);
+	Doom_ParseWndProc3(hWnd, selload_msgtbl1, AF_BIGGRAY);
+	Doom_ParseWndProcs(hWnd, selload_msgtbl2, AF_BIG, 0);
+	Doom_ParseWndProcs(hWnd, selload_msgtbl3, AF_MED, 1);
 	Focus_LoadSpinner("ui_art\\focus16.pcx");
 	SDlgSetTimer((int)hWnd, 1, 55, 0);
 }

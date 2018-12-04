@@ -251,7 +251,7 @@ void __fastcall Title_LoadAllTitleImgs(HWND hWnd, int time)
 		local_LoadArtWithPal(hWnd, 0, &nullcharacter, -1, 1, "ui_art\\title.pcx", (BYTE **)v4, v4 + 1, 0);
 		Fade_NoInputAndArt(hWnd, 0);
 	}
-	Doom_ParseWndProc3(hWnd, titlemsgtbl, 3);
+	Doom_ParseWndProc3(hWnd, titlemsgtbl, AF_MEDGRAY);
 	Title_LoadImgSetTimer(hWnd, "ui_art\\logo.pcx");
 	if (time)
 		SDlgSetTimer((int)hWnd, 1, 1000 * time, 0);

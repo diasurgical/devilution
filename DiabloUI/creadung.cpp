@@ -76,14 +76,14 @@ void __fastcall CreaDung_ParseDungProcs(HWND hWnd, int dlg)
 		v4 = GetWindowLongA(v3, -21);
 		local_SetWndLongStr(v4, Buffer);
 	}
-	Doom_ParseWndProc4(hWnd, creadung_msgtbl2, 5);
+	Doom_ParseWndProc4(hWnd, creadung_msgtbl2, AF_BIGGRAY);
 	LoadStringA(ghUiInst, dlg - 65, Buffer, 255);
 	v5 = GetDlgItem(hWnd, 1099);
 	if (v5) {
 		v6 = GetWindowLongA(v5, -21);
 		local_SetWndLongStr(v6, Buffer);
 	}
-	Doom_ParseWndProc4(hWnd, creadung_msgtbl3, 1);
+	Doom_ParseWndProc4(hWnd, creadung_msgtbl3, AF_SMALLGRAY);
 }
 
 // ref: 0x10004E2E
@@ -119,11 +119,11 @@ void __fastcall CreaDung_LoadDungGFX(HWND hWnd)
 		local_LoadArtWithPal(hWnd, 0, "popup", -1, 1, "ui_art\\seldiff.pcx", (BYTE **)v2, v2 + 1, 0);
 	}
 	local_DoUiWndProc(hWnd, (DWORD *)creadung_msgtbl5);
-	Doom_ParseWndProc3(hWnd, creadung_msgtbl1, 5);
-	Doom_ParseWndProc3(hWnd, creadung_msgtbl2, 5);
-	Doom_ParseWndProc3(hWnd, creadung_msgtbl3, 1);
-	Doom_ParseWndProcs(hWnd, creadung_msgtbl4, 4, 0);
-	Doom_ParseWndProcs(hWnd, creadung_msgtbl5, 2, 1);
+	Doom_ParseWndProc3(hWnd, creadung_msgtbl1, AF_BIGGRAY);
+	Doom_ParseWndProc3(hWnd, creadung_msgtbl2, AF_BIGGRAY);
+	Doom_ParseWndProc3(hWnd, creadung_msgtbl3, AF_SMALLGRAY);
+	Doom_ParseWndProcs(hWnd, creadung_msgtbl4, AF_BIG, 0);
+	Doom_ParseWndProcs(hWnd, creadung_msgtbl5, AF_MED, 1);
 }
 // 100296CC: using guessed type int creadung_delspinners;
 

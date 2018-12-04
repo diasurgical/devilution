@@ -111,7 +111,7 @@ void __fastcall SelHero_PrintHeroInfo(HWND hWnd, _uiheroinfo *pInfo)
 		v24 = GetWindowLongA(v23, -21);
 		local_SetWndLongStr(v24, selhero_herovit);
 		SelHero_SetStaticBMP(hWnd, pInfo->heroclass);
-		Doom_ParseWndProc4(hWnd, selhero_msgtbl_info, 1);
+		Doom_ParseWndProc4(hWnd, selhero_msgtbl_info, AF_SMALLGRAY);
 	} else {
 		selhero_hero_hassaved  = 0;
 		selhero_heronamestr[0] = 0;
@@ -131,7 +131,7 @@ void __fastcall SelHero_PrintHeroInfo(HWND hWnd, _uiheroinfo *pInfo)
 		v12 = GetWindowLongA(v11, -21);
 		local_SetWndLongStr(v12, "--");
 		SelHero_SetStaticBMP(hWnd, 3);
-		Doom_ParseWndProc4(hWnd, selhero_msgtbl_info, 1);
+		Doom_ParseWndProc4(hWnd, selhero_msgtbl_info, AF_SMALLGRAY);
 	}
 }
 // 1002A424: using guessed type int selhero_hero_hassaved;
@@ -146,7 +146,7 @@ void __fastcall SelHero_SetStringWithMsg(HWND hWnd, const char *str)
 	if (v4) {
 		v5 = GetWindowLongA(v4, -21);
 		local_SetWndLongStr(v5, str);
-		Doom_ParseWndProc4(hWnd, selhero_msgtbl_string, 5);
+		Doom_ParseWndProc4(hWnd, selhero_msgtbl_string, AF_BIGGRAY);
 	}
 }
 
@@ -637,9 +637,9 @@ void __fastcall SelHero_LoadHeroGFX(HWND hWnd)
 	local_LoadArtImage("ui_art\\heros.pcx", &selhero_buffer, selhero_sizedata);
 	SetActiveWindow(hWnd);
 	Title_LoadImgSetTimer(hWnd, "ui_art\\smlogo.pcx");
-	Doom_ParseWndProc3(hWnd, selhero_msgtbl_string, 5);
-	Doom_ParseWndProc3(hWnd, selhero_msgtbl_3, 1);
-	Doom_ParseWndProc3(hWnd, selhero_msgtbl_info, 1);
+	Doom_ParseWndProc3(hWnd, selhero_msgtbl_string, AF_BIGGRAY);
+	Doom_ParseWndProc3(hWnd, selhero_msgtbl_3, AF_SMALLGRAY);
+	Doom_ParseWndProc3(hWnd, selhero_msgtbl_info, AF_SMALLGRAY);
 	selhero_hero_hassaved  = 0;
 	selhero_heronamestr[0] = 0;
 	v1                     = GetDlgItem(hWnd, 1014);
@@ -658,7 +658,7 @@ void __fastcall SelHero_LoadHeroGFX(HWND hWnd)
 	v10 = GetWindowLongA(v9, -21);
 	local_SetWndLongStr(v10, "--");
 	SelHero_SetStaticBMP(hWnd, 3);
-	Doom_ParseWndProc4(hWnd, selhero_msgtbl_info, 1);
+	Doom_ParseWndProc4(hWnd, selhero_msgtbl_info, AF_SMALLGRAY);
 }
 // 1002A424: using guessed type int selhero_hero_hassaved;
 

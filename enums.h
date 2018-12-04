@@ -1319,6 +1319,17 @@ typedef enum _mc_id {
 	MC_ANIMAL = 2,
 } _mc_id;
 
+typedef enum _artfonts {
+	AF_SMALL     = 0,
+	AF_SMALLGRAY = 1,
+	AF_MED       = 2,
+	AF_MEDGRAY   = 3,
+	AF_BIG       = 4,
+	AF_BIGGRAY   = 5,
+	AF_HUGE      = 6,
+	AF_HUGEGRAY  = 7,
+} _artfonts;
+
 typedef enum _monster_id {
 	MT_NZOMBIE  = 0x0,
 	MT_BZOMBIE  = 0x1,
@@ -2501,7 +2512,7 @@ typedef enum quest_mush_state {
 	QS_MUSHPICKED   = 4,
 	QS_MUSHGIVEN    = 5,
 	QS_BRAINSPAWNED = 6,
-	QS_BRAINGIVEN   = 7
+	QS_BRAINGIVEN   = 7,
 } quest_mush_state;
 
 typedef enum talk_id {

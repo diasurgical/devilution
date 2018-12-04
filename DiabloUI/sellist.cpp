@@ -130,13 +130,13 @@ void __fastcall SelList_GetHeroStats(HWND hWnd, int nIDDlgItem)
 			v16 = *(_uiheroinfo **)(v15 + 12);
 			if (v16) {
 				if (v16->level)
-					Doom_ParseWndProc2(hWnd, sellist_msgtbl3, 4, 0);
+					Doom_ParseWndProc2(hWnd, sellist_msgtbl3, AF_BIG, 0);
 				else
-					Doom_ParseWndProc2(hWnd, sellist_msgtbl3, 5, 0);
+					Doom_ParseWndProc2(hWnd, sellist_msgtbl3, AF_BIGGRAY, 0);
 				v17 = GetParent(hWnd);
 				SelHero_PrintHeroInfo(v17, v16);
 			} else {
-				Doom_ParseWndProc2(hWnd, sellist_msgtbl3, 5, 0);
+				Doom_ParseWndProc2(hWnd, sellist_msgtbl3, AF_BIGGRAY, 0);
 				v18                    = GetParent(hWnd);
 				selhero_hero_hassaved  = 0;
 				selhero_heronamestr[0] = 0;
@@ -157,7 +157,7 @@ void __fastcall SelList_GetHeroStats(HWND hWnd, int nIDDlgItem)
 				v12 = GetWindowLongA(v11, -21);
 				local_SetWndLongStr(v12, "--");
 				SelHero_SetStaticBMP(v2, 3);
-				Doom_ParseWndProc4(v2, selhero_msgtbl_info, 1);
+				Doom_ParseWndProc4(v2, selhero_msgtbl_info, AF_SMALLGRAY);
 			}
 		}
 	}
@@ -237,10 +237,10 @@ void __fastcall SelList_ShowListWindow(HWND hWnd)
 	SelHero_SetStringWithMsg(v2, Buffer);
 	v3 = GetWindowLongA(v2, -21);
 	SetWindowLongA(hWnd, -21, v3);
-	Doom_ParseWndProc3(hWnd, sellist_msgtbl1, 5);
-	Doom_ParseWndProcs(hWnd, sellist_msgtbl2, 4, 0);
-	Doom_ParseWndProcs(hWnd, sellist_msgtbl3, 4, 0);
-	Doom_ParseWndProcs(hWnd, sellist_msgtbl4, 2, 1);
+	Doom_ParseWndProc3(hWnd, sellist_msgtbl1, AF_BIGGRAY);
+	Doom_ParseWndProcs(hWnd, sellist_msgtbl2, AF_BIG, 0);
+	Doom_ParseWndProcs(hWnd, sellist_msgtbl3, AF_BIG, 0);
+	Doom_ParseWndProcs(hWnd, sellist_msgtbl4, AF_MED, 1);
 	sellist_pheroinfo = SelHero_GetCurrentHeroInfo();
 	SelList_SetHeroDlgLong(hWnd, sellist_pheroinfo);
 	Sbar_LoadScrBarGFX(hWnd, 1105);
@@ -272,7 +272,7 @@ void __fastcall SelList_SetHeroDlgLong(HWND hWnd, _uiheroinfo *pInfo)
 			}
 		}
 	}
-	Doom_ParseWndProc2(hWnd, sellist_msgtbl4, 2, 1);
+	Doom_ParseWndProc2(hWnd, sellist_msgtbl4, AF_MED, 1);
 }
 
 // ref: 0x1000DBAC
