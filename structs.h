@@ -471,7 +471,7 @@ typedef struct AnimStruct {
 } AnimStruct;
 
 typedef struct MonsterData {
-	int flags; // width?
+	int width;
 	int mType;
 	char *GraphicType;
 	BOOL has_special;
@@ -513,8 +513,8 @@ typedef struct CMonster {
 	unsigned char mPlaceFlags;
 	AnimStruct Anims[6];
 	TSnd *Snds[4][2];
-	int flags_1; // width
-	int flags_2; // width 2
+	int width;
+	int width2;
 	unsigned char mMinHP;
 	unsigned char mMaxHP;
 	BOOL has_special;
