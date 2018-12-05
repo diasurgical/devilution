@@ -26,7 +26,7 @@ const unsigned char counsmiss[4] = { MIS_FIREBOLT, MIS_CBOLT, MIS_LIGHTCTRL, MIS
 
 MonsterData monsterdata[112] = {
 	// clang-format off
-	// flags, mType, GraphicType,                       has_special, sndfile,                             snd_special, has_trans, TransFile,                         Frames[6],                  Rate[6],              mName,               mMinDLvl, mMaxDLvl, mLevel, mMinHP, mMaxHP, mAi,         mFlags,                                                              mInt, mHit, mAFNum, mMinDamage, mMaxDamage, mHit2, mAFNum2, mMinDamage2, mMaxDamage2, mArmorClass, mMonstClass, mMagicRes                                                    , mMagicRes2                                                   , mTreasure, mSelFlag,  mExp
+	// width, mType, GraphicType,                       has_special, sndfile,                             snd_special, has_trans, TransFile,                         Frames[6],                  Rate[6],              mName,               mMinDLvl, mMaxDLvl, mLevel, mMinHP, mMaxHP, mAi,         mFlags,                                                              mInt, mHit, mAFNum, mMinDamage, mMaxDamage, mHit2, mAFNum2, mMinDamage2, mMaxDamage2, mArmorClass, mMonstClass, mMagicRes                                                    , mMagicRes2                                                   , mTreasure, mSelFlag,  mExp
 	{    128,   799, "Monsters\\Zombie\\Zombie%c.CL2",  FALSE,       "Monsters\\Zombie\\Zombie%c%i.WAV",  FALSE,       FALSE,     NULL,                              { 11, 24, 12,  6, 16,  0 }, { 4, 0, 0, 0, 0, 0 }, "Zombie",                   1,        3,      1,      4,      7, AI_ZOMBIE,   0                                                                  ,    0,   10,      8,          2,          5,     0,       0,           0,           0,           5, MC_UNDEAD,   IMUNE_MAGIC  |                                  IMUNE_NULL_40, IMUNE_MAGIC  |                                  IMUNE_NULL_40,         0,        3,    54 },
 	{    128,   799, "Monsters\\Zombie\\Zombie%c.CL2",  FALSE,       "Monsters\\Zombie\\Zombie%c%i.WAV",  FALSE,       TRUE,      "Monsters\\Zombie\\Bluered.TRN",   { 11, 24, 12,  6, 16,  0 }, { 4, 0, 0, 0, 0, 0 }, "Ghoul",                    2,        4,      2,      7,     11, AI_ZOMBIE,   0                                                                  ,    1,   10,      8,          3,         10,     0,       0,           0,           0,          10, MC_UNDEAD,   IMUNE_MAGIC  |                                  IMUNE_NULL_40, IMUNE_MAGIC  |                                  IMUNE_NULL_40,         0,        3,    58 },
 	{    128,   799, "Monsters\\Zombie\\Zombie%c.CL2",  FALSE,       "Monsters\\Zombie\\Zombie%c%i.WAV",  FALSE,       TRUE,      "Monsters\\Zombie\\Grey.TRN",      { 11, 24, 12,  6, 16,  0 }, { 4, 0, 0, 0, 0, 0 }, "Rotting Carcass",          2,        6,      4,     15,     25, AI_ZOMBIE,   0                                                                  ,    2,   25,      8,          5,         15,     0,       0,           0,           0,          15, MC_UNDEAD,   IMUNE_MAGIC  |                                  IMUNE_NULL_40, IMUNE_MAGIC  | RESIST_FIRE |                    IMUNE_NULL_40,         0,        3,   136 },
@@ -556,8 +556,8 @@ void __fastcall InitMonsterGFX(int monst)
 		Monsters[monst].Anims[anim].Rate = monsterdata[mtype].Rate[anim];
 	}
 
-	Monsters[monst].flags_1 = monsterdata[mtype].flags;
-	Monsters[monst].flags_2 = (monsterdata[mtype].flags - 64) >> 1;
+	Monsters[monst].width = monsterdata[mtype].width;
+	Monsters[monst].width2 = (monsterdata[mtype].width - 64) >> 1;
 	Monsters[monst].mMinHP = monsterdata[mtype].mMinHP;
 	Monsters[monst].mMaxHP = monsterdata[mtype].mMaxHP;
 	Monsters[monst].has_special = monsterdata[mtype].has_special;

@@ -2762,8 +2762,8 @@ void __fastcall AddRhino(int mi, int sx, int sy, int dx, int dy, int midir, int 
 	missile[v13]._miAnimDelay = v12->Rate;
 	missile[v13]._miAnimLen = v12->Frames;
 	v14 = monster[v9].MType;
-	missile[v13]._miAnimWidth = v14->flags_1;
-	missile[v13]._miAnimWidth2 = v14->flags_2;
+	missile[v13]._miAnimWidth = v14->width;
+	missile[v13]._miAnimWidth2 = v14->width2;
 	missile[v13]._miAnimAdd = 1;
 	v15 = v14->mtype;
 	if (v15 >= MT_NSNAKE && v15 <= MT_GSNAKE)
@@ -2801,8 +2801,8 @@ void __fastcall miss_null_32(int mi, int sx, int sy, int dx, int dy, int midir, 
 	missile[v12]._miAnimDelay = v11->Rate;
 	missile[v12]._miAnimLen = v11->Frames;
 	v13 = monster[id].MType;
-	missile[v12]._miAnimWidth = v13->flags_1;
-	missile[v12]._miAnimWidth2 = v13->flags_2;
+	missile[v12]._miAnimWidth = v13->width;
+	missile[v12]._miAnimWidth2 = v13->width2;
 	v14 = monster[id]._uniqtype == 0;
 	missile[v12]._miAnimAdd = 1;
 	missile[v12]._miVar1 = 0;

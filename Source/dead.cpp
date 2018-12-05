@@ -25,8 +25,8 @@ void __cdecl InitDead()
 			for(d = 0; d < 8; d++)
 				dead[nd]._deadData[d] = Monsters[i].Anims[MA_DEATH].Data[d];
 			dead[nd]._deadFrame = Monsters[i].Anims[MA_DEATH].Frames;
-			dead[nd]._deadWidth = Monsters[i].flags_1;
-			dead[nd]._deadWidth2 = Monsters[i].flags_2;
+			dead[nd]._deadWidth = Monsters[i].width;
+			dead[nd]._deadWidth2 = Monsters[i].width2;
 			dead[nd]._deadtrans = 0;
 			Monsters[i].mdeadval = nd + 1;
 			mtypes[Monsters[i].mtype] = nd + 1;
@@ -58,8 +58,8 @@ void __cdecl InitDead()
 			for(d = 0; d < 8; d++)
 				dead[nd]._deadData[d] = monster[mi].MType->Anims[MA_DEATH].Data[d];
 			dead[nd]._deadFrame = monster[mi].MType->Anims[MA_DEATH].Frames;
-			dead[nd]._deadWidth = monster[mi].MType->flags_1;
-			dead[nd]._deadWidth2 = monster[mi].MType->flags_2;
+			dead[nd]._deadWidth = monster[mi].MType->width;
+			dead[nd]._deadWidth2 = monster[mi].MType->width2;
 			dead[nd]._deadtrans = monster[mi]._uniqtrans + 4;
 			monster[mi]._udeadval = nd + 1;
 			nd++;
