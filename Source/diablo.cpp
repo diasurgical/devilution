@@ -765,7 +765,7 @@ LRESULT CALLBACK GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 // 525748: using guessed type char sgbMouseDown;
 // 679660: using guessed type char gbMaxPlayers;
 
-BOOL __fastcall LeftMouseDown(int a1)
+BOOL __fastcall LeftMouseDown(int wParam)
 {
 	if (gmenu_left_mouse(1) || control_check_talk_btn() || sgnTimeoutCurs)
 		return 0;
@@ -825,14 +825,14 @@ BOOL __fastcall LeftMouseDown(int a1)
 		if (!TryInvPut())
 			return 0;
 		NetSendCmdPItem(TRUE, CMD_PUTITEM, cursmx, cursmy);
-	LABEL_48:
+LABEL_48:
 		SetCursor(CURSOR_HAND);
 		return 0;
 	}
 	if (plr[myplr]._pStatPts && !spselflag)
 		CheckLvlBtn();
 	if (!lvlbtndown)
-		return LeftMouseCmd(a1 == 5);
+		return LeftMouseCmd(wParam == MK_SHIFT+MK_LBUTTON);
 	return 0;
 }
 // 484368: using guessed type int FriendlyMode;
@@ -850,101 +850,57 @@ BOOL __fastcall LeftMouseDown(int a1)
 // 69BD04: using guessed type int questlog;
 // 6AA705: using guessed type char stextflag;
 
-BOOL __fastcall LeftMouseCmd(BOOL a1)
+BOOL __fastcall LeftMouseCmd(BOOL bShift)
 {
-	BOOLEAN v2; // zf
-	BOOL v3; // ecx
-	unsigned char v4; // dl
-	unsigned char v6; // dl
-	unsigned short v7; // ax
-	unsigned char v8; // dl
-	unsigned short v11; // [esp-4h] [ebp-Ch]
+	BOOL bNear;
 
-	if ( leveltype )
-	{
-		v3 = abs(plr[myplr].WorldX - cursmx) < 2 && abs(plr[myplr].WorldY - cursmy) < 2;
-		if ( pcursitem != -1 && pcurs == 1 && !a1 )
-		{
-			NetSendCmdLocParam1(1u, (invflag == 0) + CMD_GOTOGETITEM, cursmx, cursmy, pcursitem);
-LABEL_47:
-			if ( pcursitem != -1 )
-				return 0;
-			v2 = pcursobj == -1;
-			goto LABEL_49;
-		}
-		if ( pcursobj != -1 && (!a1 || v3 && object[pcursobj]._oBreak == 1) )
-		{
-			NetSendCmdLocParam1(1u, (pcurs == 5) + CMD_OPOBJXY, cursmx, cursmy, pcursobj);
-			goto LABEL_46;
-		}
-		if ( plr[myplr]._pwtype == 1 )
-		{
-			if ( a1 )
-			{
-				v4 = CMD_RATTACKXY;
-LABEL_35:
-				NetSendCmdLoc(1u, v4, cursmx, cursmy);
-				goto LABEL_46;
-			}
-			if ( pcursmonst != -1 )
-			{
-				v11 = pcursmonst;
-				if ( !CanTalkToMonst(pcursmonst) )
-				{
-					v6 = CMD_RATTACKID;
-LABEL_40:
-					NetSendCmdParam1(1u, v6, v11);
-					goto LABEL_47;
+	if(!leveltype) {
+		if(pcursitem != -1 && pcurs == CURSOR_HAND)
+			NetSendCmdLocParam1(TRUE, invflag ? CMD_GOTOGETITEM : CMD_GOTOAGETITEM, cursmx, cursmy, pcursitem);
+		if(pcursmonst != -1)
+			NetSendCmdLocParam1(TRUE, CMD_TALKXY, cursmx, cursmy, pcursmonst);
+		if(pcursitem == -1 && pcursmonst == -1 && pcursplr == -1)
+			return TRUE;
+	} else {
+		bNear = abs(plr[myplr].WorldX - cursmx) < 2 && abs(plr[myplr].WorldY - cursmy) < 2;
+		if(pcursitem != -1 && pcurs == CURSOR_HAND && !bShift) {
+			NetSendCmdLocParam1(pcurs, invflag ? CMD_GOTOGETITEM : CMD_GOTOAGETITEM, cursmx, cursmy, pcursitem);
+		} else if(pcursobj != -1 && (!bShift || bNear && object[pcursobj]._oBreak == 1)) {
+			NetSendCmdLocParam1(TRUE, pcurs == CURSOR_DISARM ? CMD_DISARMXY : CMD_OPOBJXY, cursmx, cursmy, pcursobj);
+		} else if(plr[myplr]._pwtype == 1) {
+			if(bShift) {
+				NetSendCmdLoc(TRUE, CMD_RATTACKXY, cursmx, cursmy);
+			} else if(pcursmonst != -1) {
+				if(CanTalkToMonst(pcursmonst)) {
+					NetSendCmdParam1(TRUE, CMD_ATTACKID, pcursmonst);
+				} else {
+					NetSendCmdParam1(TRUE, CMD_RATTACKID, pcursmonst);
 				}
-LABEL_39:
-				v6 = CMD_ATTACKID;
-				goto LABEL_40;
+			} else if(pcursplr != -1 && !FriendlyMode) {
+				NetSendCmdParam1(TRUE, CMD_RATTACKPID, pcursplr);
 			}
-			_LOBYTE(v7) = pcursplr;
-			if ( pcursplr == -1 || FriendlyMode )
-				goto LABEL_47;
-			v8 = CMD_RATTACKPID;
-		}
-		else
-		{
-			if ( a1 )
-			{
-				if ( pcursmonst == -1 || !CanTalkToMonst(pcursmonst) )
-				{
-					v4 = CMD_SATTACKXY;
-					goto LABEL_35;
+		} else {
+			if(bShift) {
+				if(pcursmonst != -1) {
+					if(CanTalkToMonst(pcursmonst)) {
+						NetSendCmdParam1(TRUE, CMD_ATTACKID, pcursmonst);
+					} else {
+						NetSendCmdLoc(TRUE, CMD_SATTACKXY, cursmx, cursmy);
+					}
+				} else {
+					NetSendCmdLoc(TRUE, CMD_SATTACKXY, cursmx, cursmy);
 				}
-				v7 = pcursmonst;
-				v8 = CMD_ATTACKID;
-LABEL_45:
-				NetSendCmdParam1(1u, v8, v7);
-LABEL_46:
-				if ( a1 )
-					return 0;
-				goto LABEL_47;
+			} else if(pcursmonst != -1) {
+				NetSendCmdParam1(TRUE, CMD_ATTACKID, pcursmonst);
+			} else if(pcursplr != -1 && !FriendlyMode) {
+				NetSendCmdParam1(TRUE, CMD_ATTACKPID, pcursplr);
 			}
-			if ( pcursmonst != -1 )
-			{
-				v11 = pcursmonst;
-				goto LABEL_39;
-			}
-			_LOBYTE(v7) = pcursplr;
-			if ( pcursplr == -1 || FriendlyMode )
-				goto LABEL_47;
-			v8 = CMD_ATTACKPID;
 		}
-		v7 = (char)v7;
-		goto LABEL_45;
+		if(!bShift && pcursitem == -1 && pcursobj == -1 && pcursmonst == -1 && pcursplr == -1)
+			return TRUE;
 	}
-	if ( pcursitem != -1 && pcurs == 1 )
-		NetSendCmdLocParam1(1u, (invflag == 0) + CMD_GOTOGETITEM, cursmx, cursmy, pcursitem);
-	if ( pcursmonst != -1 )
-		NetSendCmdLocParam1(1u, CMD_TALKXY, cursmx, cursmy, (unsigned short)pcursmonst);
-	v2 = pcursitem == -1;
-LABEL_49:
-	if ( v2 && pcursmonst == -1 && pcursplr == -1 )
-		return 1;
-	return 0;
+
+	return FALSE;
 }
 
 BOOLEAN __cdecl TryIconCurs()
