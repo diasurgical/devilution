@@ -817,9 +817,9 @@ void __fastcall InitPlayer(int pnum, BOOL FirstTime)
 		plr[pnum]._pRSplType = RSPLTYPE_INVALID;
 		plr[pnum]._pSplType = RSPLTYPE_INVALID;
 		if ((plr[pnum]._pgfxnum & 0xF) == ANIM_ID_BOW) {
-			plr[pnum]._pwtype = TRUE;
+			plr[pnum]._pwtype = WT_RANGED;
 		} else {
-			plr[pnum]._pwtype = FALSE;
+			plr[pnum]._pwtype = WT_MELEE;
 		}
 		plr[pnum].pManaShield = 0;
 	}

@@ -324,7 +324,7 @@ void *__fastcall init_test_access(char *mpq_path, char *mpq_name, char *reg_loc,
 				return archive;
 		}
 	}
-	if (fs && init_read_test_file(v15, mpq_namea, flags, &archive)) {
+	if (fs == FS_CD && init_read_test_file(v15, mpq_namea, flags, &archive)) {
 		strcpy(v5, v15);
 		return archive;
 	}
