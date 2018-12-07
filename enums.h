@@ -1319,6 +1319,11 @@ typedef enum _mc_id {
 	MC_ANIMAL = 2,
 } _mc_id;
 
+typedef enum FILE_SYSTEM {
+	FS_PC = 0,
+	FS_CD = 1,
+} FILE_SYSTEM;
+
 typedef enum _artfonts {
 	AF_SMALL     = 0,
 	AF_SMALLGRAY = 1,

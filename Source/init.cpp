@@ -254,7 +254,7 @@ void __cdecl init_archives()
 #ifdef COPYPROT
 	while (1) {
 #endif
-		diabdat_mpq = init_test_access(diabdat_mpq_path, "\\diabdat.mpq", "DiabloCD", 1000, 1);
+		diabdat_mpq = init_test_access(diabdat_mpq_path, "\\diabdat.mpq", "DiabloCD", 1000, FS_CD);
 #ifdef COPYPROT
 		if (diabdat_mpq)
 			break;
@@ -266,10 +266,10 @@ void __cdecl init_archives()
 	if (!WOpenFile("ui_art\\title.pcx", &a1, 1))
 		FileErrDlg("Main program archive: diabdat.mpq");
 	WCloseFile(a1);
-	patch_rt_mpq = init_test_access(patch_rt_mpq_path, "\\patch_rt.mpq", "DiabloInstall", 2000, 0);
+	patch_rt_mpq = init_test_access(patch_rt_mpq_path, "\\patch_rt.mpq", "DiabloInstall", 2000, FS_PC);
 }
 
-void *__fastcall init_test_access(char *mpq_path, char *mpq_name, char *reg_loc, int flags, BOOLEAN on_cd)
+void *__fastcall init_test_access(char *mpq_path, char *mpq_name, char *reg_loc, int flags, int fs)
 {
 	char *v5;           // esi
 	char *v7;           // eax
@@ -295,18 +295,18 @@ void *__fastcall init_test_access(char *mpq_path, char *mpq_name, char *reg_loc,
 	strcpy(v5, Buffer);
 	strcat(v5, mpq_namea);
 #ifdef COPYPROT
-	if (SFileOpenArchive(v5, flags, on_cd, &archive))
+	if (SFileOpenArchive(v5, flags, fs, &archive))
 #else
-	if (SFileOpenArchive(v5, flags, 0, &archive))
+	if (SFileOpenArchive(v5, flags, FS_PC, &archive))
 #endif
 		return archive;
 	if (strcmp(Filename, Buffer)) {
 		strcpy(v5, Filename);
 		strcat(v5, mpq_namea);
 #ifdef COPYPROT
-		if (SFileOpenArchive(v5, flags, on_cd, &archive))
+		if (SFileOpenArchive(v5, flags, fs, &archive))
 #else
-		if (SFileOpenArchive(v5, flags, 0, &archive))
+		if (SFileOpenArchive(v5, flags, FS_PC, &archive))
 #endif
 			return archive;
 	}
@@ -317,14 +317,14 @@ void *__fastcall init_test_access(char *mpq_path, char *mpq_name, char *reg_loc,
 			strcpy(v5, v15);
 			strcat(v5, mpq_namea);
 #ifdef COPYPROT
-			if (SFileOpenArchive(v5, flags, on_cd, &archive))
+			if (SFileOpenArchive(v5, flags, fs, &archive))
 #else
-			if (SFileOpenArchive(v5, flags, 0, &archive))
+			if (SFileOpenArchive(v5, flags, FS_PC, &archive))
 #endif
 				return archive;
 		}
 	}
-	if (on_cd && init_read_test_file(v15, mpq_namea, flags, &archive)) {
+	if (fs && init_read_test_file(v15, mpq_namea, flags, &archive)) {
 		strcpy(v5, v15);
 		return archive;
 	}
