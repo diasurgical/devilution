@@ -975,7 +975,7 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 	}
 
 	plr[p]._pBlockFlag = 0;
-	plr[p]._pwtype = 0;
+	plr[p]._pwtype = WT_MELEE;
 
 	g = 0;
 
@@ -999,7 +999,7 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 		g = ANIM_ID_AXE;
 		break;
 	case ITYPE_BOW:
-		plr[p]._pwtype = 1;
+		plr[p]._pwtype = WT_RANGED;
 		g = ANIM_ID_BOW;
 		break;
 	case ITYPE_MACE:

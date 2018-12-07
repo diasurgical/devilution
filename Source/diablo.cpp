@@ -867,7 +867,7 @@ BOOL __fastcall LeftMouseCmd(BOOL bShift)
 			NetSendCmdLocParam1(pcurs, invflag ? CMD_GOTOGETITEM : CMD_GOTOAGETITEM, cursmx, cursmy, pcursitem);
 		} else if(pcursobj != -1 && (!bShift || bNear && object[pcursobj]._oBreak == 1)) {
 			NetSendCmdLocParam1(TRUE, pcurs == CURSOR_DISARM ? CMD_DISARMXY : CMD_OPOBJXY, cursmx, cursmy, pcursobj);
-		} else if(plr[myplr]._pwtype == 1) {
+		} else if(plr[myplr]._pwtype == WT_RANGED) {
 			if(bShift) {
 				NetSendCmdLoc(TRUE, CMD_RATTACKXY, cursmx, cursmy);
 			} else if(pcursmonst != -1) {

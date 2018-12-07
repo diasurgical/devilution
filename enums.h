@@ -2667,6 +2667,11 @@ typedef enum _walk_path {
 	WALK_NONE = -1,
 } _walk_path;
 
+typedef enum player_weapon_type {
+	WT_MELEE  = 0,
+	WT_RANGED = 1,
+} player_weapon_type;
+
 typedef enum item_class {
 	ICLASS_NONE   = 0,
 	ICLASS_WEAPON = 1,
