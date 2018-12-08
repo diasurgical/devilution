@@ -532,646 +532,612 @@ void __cdecl CheckRportal()
 
 void __cdecl CheckCursMove()
 {
-	int v0;         // esi
-	signed int v1;  // edi
-	int v2;         // esi
-	int v3;         // edi
-	int v4;         // edx
-	int v5;         // ebx
-	int v6;         // edi
-	int v7;         // eax
-	int v8;         // esi
-	BOOL v9;        // eax
-	int v10;        // ecx
-	int v11;        // edx
-	int v12;        // ecx
-	int v13;        // ebx
-	int v14;        // ebx
-	int v15;        // eax
-	BOOLEAN v16;       // zf
-	int v17;        // ecx
-	int v18;        // eax
-	int v19;        // ecx
-	int v20;        // eax
-	int v21;        // ecx
-	int v22;        // eax
-	int v23;        // eax
-	int v24;        // ecx
-	int v25;        // eax
-	int v26;        // ecx
-	int v27;        // ebx
-	int v28;        // edx
-	int v29;        // eax
-	int v30;        // ecx
-	int v31;        // eax
-	int v32;        // eax
-	int v33;        // eax
-	int v34;        // ecx
-	int v35;        // eax
-	int v36;        // ecx
-	int v37;        // eax
-	int v38;        // eax
-	int v39;        // ecx
-	int v40;        // eax
-	int v41;        // ecx
-	signed int v42; // eax
-	int v43;        // ecx
-	int v44;        // eax
-	int v45;        // eax
-	int v46;        // eax
-	int v47;        // eax
-	char v48;       // al
-	char v49;       // cl
-	char v50;       // al
-	char v51;       // al
-	char v52;       // cl
-	int v53;        // ecx
-	int *v54;       // eax
-	int v55;        // edx
-	int *v56;       // ecx
-	char v57;       // al
-	char v58;       // cl
-	signed int v59; // edx
-	char v60;       // al
-	char v61;       // cl
-	char v62;       // al
-	char v63;       // al
-	char v64;       // cl
-	char v65;       // al
-	char v66;       // al
-	char v67;       // cl
-	char v68;       // al
-	char v69;       // al
-	char v70;       // al
-	char v71;       // al
-	char v72;       // al
-	char v73;       // cl
-	char v74;       // al
-	char v75;       // al
-	int v76;        // [esp+Ch] [ebp-18h]
-	char *v77;      // [esp+Ch] [ebp-18h]
-	int v78;        // [esp+10h] [ebp-14h]
-	signed int v79; // [esp+14h] [ebp-10h]
-	signed int v80; // [esp+18h] [ebp-Ch]
-	int v81;        // [esp+1Ch] [ebp-8h]
-	int v82;        // [esp+1Ch] [ebp-8h]
-	signed int v83; // [esp+20h] [ebp-4h]
+	int mos_x; // esi MAPDST
+	int mos_y; // edi MAPDST
+	int posy_31; // ebx
+	int mx; // edi
+	int my; // esi
+	BOOL v9; // eax
+	int d_monster; // eax MAPDST
+	int mon_id; // ecx MAPDST
+	char d_player; // al MAPDST
+	char plr_id; // cl MAPDST
+	char obj_id; // cl MAPDST
+	char d_obj; // al MAPDST
+	char d_item; // al MAPDST
+	int i;
+	char item_id; // al MAPDST
+	int posx_63; // [esp+Ch] [ebp-18h]
+	signed int xx; // [esp+14h] [ebp-10h]
+	signed int yy; // [esp+18h] [ebp-Ch]
+	signed int some_bool; // [esp+20h] [ebp-4h]
 
-	v0 = MouseX;
-	v1 = MouseY;
-	if (chrflag || questlog) {
-		if (MouseX >= 160) {
-			v0 = MouseX - 160;
-			goto LABEL_10;
-		}
-		goto LABEL_9;
+	mos_x = MouseX;
+	mos_y = MouseY;
+	if ( chrflag || questlog )
+	{
+		if ( MouseX < 160 )
+			mos_x = 0;
+		else
+			mos_x = MouseX - 160;
 	}
-	if (invflag || sbookflag) {
-		if (MouseX <= 320) {
-			v0 = MouseX + 160;
-			goto LABEL_10;
-		}
-	LABEL_9:
-		v0 = 0;
+	else if ( invflag || sbookflag )
+	{
+		if ( MouseX > 320 )
+			mos_x = 0;
+		else
+			mos_x = MouseX + 160;
 	}
-LABEL_10:
-	if (MouseY > 351 && track_isscrolling())
-		v1 = 351;
-	if (!zoomflag) {
-		v0 >>= 1;
-		v1 >>= 1;
+/* 	else
+	{
+		mos_x = MouseX;
+		mos_y = MouseY;
+	} */
+	if ( MouseY > 351 && track_isscrolling() )
+		mos_y = 351;
+	if ( !zoomflag )
+	{
+		mos_x >>= 1;
+		mos_y >>= 1;
 	}
-	v2 = v0 - ScrollInfo._sxoff;
-	v3 = v1 - ScrollInfo._syoff;
-	if (ScrollInfo._sdir) {
-		v2 += ((plr[myplr]._pVar6 + plr[myplr]._pxvel) >> 8) - (plr[myplr]._pVar6 >> 8);
-		v3 += ((plr[myplr]._pVar7 + plr[myplr]._pyvel) >> 8) - (plr[myplr]._pVar7 >> 8);
+	mos_x -= ScrollInfo._sxoff;
+	mos_y -= ScrollInfo._syoff;
+	if ( ScrollInfo._sdir )
+	{
+		mos_x += ((plr[myplr]._pVar6 + plr[myplr]._pxvel) >> 8) - (plr[myplr]._pVar6 >> 8);
+		mos_y += ((plr[myplr]._pVar7 + plr[myplr]._pyvel) >> 8) - (plr[myplr]._pVar7 >> 8);
 	}
-	if (v2 < 0)
-		v2 = 0;
-	if (v2 >= 640)
-		v2 = 640;
-	if (v3 < 0)
-		v3 = 0;
-	if (v3 >= 480)
-		v3 = 480;
-	v4 = v3 >> 5;
-	v5 = v3 & 0x1F;
-	v76 = v2 & 0x3F;
-	v6 = (v2 >> 6) + (v3 >> 5) + ViewX - (zoomflag != 0 ? 10 : 5);
-	v7 = v76 >> 1;
-	v8 = v4 + ViewY - (v2 >> 6);
-	if (v5<v76>> 1)
-		--v8;
-	v9 = v5 >= 32 - v7;
-	if (v9)
-		++v6;
-	if (v6 < 0)
-		v6 = 0;
-	if (v6 >= MAXDUNX)
-		v6 = MAXDUNX - 1;
-	if (v8 < 0)
-		v8 = 0;
-	if (v8 >= MAXDUNY)
-		v8 = MAXDUNY - 1;
-	if (v5 >= v76 >> 1) {
-		if (!v9)
-			goto LABEL_49;
-		goto LABEL_48;
+
+	if ( mos_x < 0 )
+		mos_x = 0;
+	if ( mos_x >= 640 )
+		mos_x = 640;
+	if ( mos_y < 0 )
+		mos_y = 0;
+	if ( mos_y >= 480 )
+		mos_y = 480;
+
+	posy_31 = mos_y & 0x1F;
+	posx_63 = mos_x & 0x3F;
+	mx = (mos_x >> 6) + (mos_y >> 5) + ViewX - (zoomflag != 0 ? 10 : 5);
+	my = (mos_y >> 5) + ViewY - (mos_x >> 6);
+
+	if ( posy_31 < posx_63 >> 1 )
+		--my;
+
+	v9 = posy_31 >= 32 - (posx_63 >> 1);
+	if ( v9 )
+		++mx;
+
+	if ( mx < 0 )
+		mx = 0;
+	if ( mx >= MAXDUNX )
+		mx = MAXDUNX-1;
+	if ( my < 0 )
+		my = 0;
+	if ( my >= MAXDUNY )
+		my = MAXDUNY-1;
+
+	if ( posy_31 >= posx_63 >> 1 )
+	{
+		if ( !v9 )
+			some_bool = 0;
+		else if ( posx_63 < 32 )
+			some_bool = 1;
+		else
+			some_bool = 0;
 	}
-	if (!v9) {
-	LABEL_48:
-		if (v76 < 32)
-			goto LABEL_39;
-	LABEL_49:
-		v83 = 0;
-		goto LABEL_40;
+	else if ( !v9 )
+	{
+		if ( posx_63 < 32 )
+			some_bool = 1;
+		else
+			some_bool = 0;
 	}
-LABEL_39:
-	v83 = 1;
-LABEL_40:
-	v10 = pcursmonst;
-	pcursobj = -1;
-	pcursitem = -1;
-	v11 = -1;
+
 	dword_4B8CCC = pcursmonst;
 	pcursmonst = -1;
-	if (pcursinvitem != -1)
+	pcursobj = -1;
+	pcursitem = -1;
+	if ( pcursinvitem != -1 )
 		drawsbarflag = 1;
 	pcursinvitem = -1;
 	pcursplr = -1;
-	v16 = plr[myplr]._pInvincible == 0;
 	uitemflag = 0;
 	panelflag = 0;
 	trigflag[3] = 0;
-	if (!v16)
+
+	if ( plr[myplr]._pInvincible )
 		return;
-	if (pcurs >= CURSOR_FIRSTITEM || spselflag) {
-		cursmx = v6;
-		cursmy = v8;
+	if ( pcurs >= CURSOR_FIRSTITEM || spselflag )
+	{
+		cursmx = mx;
+		cursmy = my;
 		return;
 	}
-	if (MouseY > 352) {
+	if ( MouseY > 352 )
+	{
 		CheckPanelInfo();
 		return;
 	}
-	if (doomflag)
+	if ( doomflag )
 		return;
-	if (invflag && MouseX > 320) {
+	if ( invflag && MouseX > 320 )
+	{
 		pcursinvitem = CheckInvHLight();
 		return;
 	}
-	if (sbookflag && MouseX > 320 || (chrflag || questlog) && MouseX < 320)
+	if ( sbookflag && MouseX > 320 || (chrflag || questlog) && MouseX < 320 )
 		return;
-	if (leveltype == DTYPE_TOWN) {
-		if (v83) {
-			v27 = 112 * v6;
-			v78 = 112 * v6;
-			v43 = 112 * v6 + v8;
-			v45 = dMonster[0][v43 + 1];
-			if (v45 <= 0)
-				goto LABEL_200;
-			v11 = v45 - 1;
-			cursmx = v6;
-			cursmy = v8 + 1;
-		} else {
-			v27 = 112 * v6;
-			v78 = 112 * v6;
-			v43 = 112 * v6 + v8;
-			v44 = dMonster[1][v43];
-			if (v44 <= 0)
-				goto LABEL_200;
-			v11 = v44 - 1;
-			cursmx = v6 + 1;
-			cursmy = v8;
+
+	if ( !leveltype )
+	{
+		if ( some_bool )
+		{
+			d_monster = dMonster[mx][my + 1];
+			if ( d_monster > 0 )
+			{
+				cursmx = mx;
+				cursmy = my + 1;
+				pcursmonst = d_monster - 1;
+			}
 		}
-		pcursmonst = v11;
-	LABEL_200:
-		v46 = dMonster[0][v43];
-		if (v46 > 0) {
-			v11 = v46 - 1;
-			cursmx = v6;
-			pcursmonst = v46 - 1;
-			cursmy = v8;
+		else
+		{
+			d_monster = dMonster[mx + 1][my];
+			if ( d_monster > 0 )
+			{
+				cursmx = mx + 1;
+				cursmy = my;
+				pcursmonst = d_monster - 1;
+			}
 		}
-		v47 = dMonster[1][v43 + 1];
-		if (v47 > 0) {
-			v11 = v47 - 1;
-			cursmx = v6 + 1;
-			pcursmonst = v47 - 1;
-			cursmy = v8 + 1;
+		d_monster = dMonster[mx][my];
+		if ( d_monster > 0 )
+		{
+			cursmx = mx;
+			cursmy = my;
+			pcursmonst = d_monster - 1;
 		}
-		if (!towner[v11]._tSelFlag)
-		LABEL_205:
+		d_monster = dMonster[mx + 1][my + 1];
+		if ( d_monster > 0 )
+		{
+			cursmx = mx + 1;
+			cursmy = my + 1;
+			pcursmonst = d_monster - 1;
+		}
+		if ( !towner[pcursmonst]._tSelFlag )
 			pcursmonst = -1;
-	LABEL_206:
-		if (pcursmonst != -1) {
-		LABEL_305:
-			v59 = pcursmonst;
-			goto LABEL_306;
-		}
-	LABEL_207:
-		if (v83) {
-			v50 = dPlayer[0][v27 + 1 + v8];
-			if (v50) {
-				v49 = v50 <= 0 ? -1 - v50 : v50 - 1;
-				if (v49 != myplr && plr[v49]._pHitPoints) {
-					cursmx = v6;
-					cursmy = v8 + 1;
-					goto LABEL_222;
-				}
-			}
-		} else {
-			v48 = dPlayer[1][v27 + v8];
-			if (v48) {
-				v49 = v48 <= 0 ? -1 - v48 : v48 - 1;
-				if (v49 != myplr && plr[v49]._pHitPoints) {
-					cursmy = v8;
-					cursmx = v6 + 1;
-				LABEL_222:
-					pcursplr = v49;
-					goto LABEL_223;
-				}
-			}
-		}
-	LABEL_223:
-		v51 = dPlayer[0][v27 + v8];
-		if (v51) {
-			v52 = v51 <= 0 ? -1 - v51 : v51 - 1;
-			if (v52 != myplr) {
-				cursmx = v6;
-				cursmy = v8;
-				pcursplr = v52;
-			}
-		}
-		if (dFlags[0][v27 + v8] & DFLAG_DEAD_PLAYER) {
-			v53 = 0;
-			v54 = &plr[0].WorldY;
-			do {
-				if (*(v54 - 1) == v6 && *v54 == v8 && v53 != myplr) {
-					cursmx = v6;
-					cursmy = v8;
-					pcursplr = v53;
-				}
-				v54 += 5430;
-				++v53;
-			} while ((signed int)v54 < (signed int)&plr[4].WorldY);
-		}
-		if (pcurs == CURSOR_RESURRECT) {
-			v79 = -1;
-			v77 = &dFlags[-1][v27 + v8]; /* v77 = &nBlockTable[v27 + 1944 + v8]; check */
-			do {
-				v80 = -1;
-				v55 = v8 - 1;
-				do {
-					if (v77[v80] & DFLAG_DEAD_PLAYER) {
-						v82 = 0;
-						v56 = &plr[0].WorldY;
-						do {
-							if (*(v56 - 1) == v6 + v79 && *v56 == v55 && v82 != myplr) {
-								cursmx = v6 + v79;
-								cursmy = v55;
-								pcursplr = v82;
-							}
-							++v82;
-							v56 += 5430;
-						} while ((signed int)v56 < (signed int)&plr[4].WorldY);
+	}
+	else
+	{
+		if ( dword_4B8CCC != -1 )
+		{
+			if ( some_bool )
+			{
+				d_monster = dMonster[mx + 1][my + 2];
+				if ( d_monster )
+				{
+					if ( dFlags[mx + 1][my + 2] & 0x40 )
+					{
+						mon_id = d_monster <= 0 ? -1 - d_monster : d_monster - 1;
+						if ( mon_id == dword_4B8CCC
+						  && (signed int)(monster[mon_id]._mhitpoints & 0xFFFFFFC0) > 0
+						  && monster[mon_id].MData->mSelFlag & 4 )
+						{
+							cursmx = mx + 1;
+							cursmy = my + 2;
+							pcursmonst = mon_id;
+						}
 					}
-					++v80;
-					++v55;
-				} while (v80 < 2);
-				++v79;
-				v77 += 112;
-			} while (v79 < 2);
-			v27 = v78;
-		}
-		v57 = dPlayer[1][v27 + 1 + v8];
-		if (v57) {
-			v58 = v57 <= 0 ? -1 - v57 : v57 - 1;
-			if (v58 != myplr && plr[v58]._pHitPoints) {
-				pcursplr = v58;
-				cursmx = v6 + 1;
-				cursmy = v8 + 1;
+				}
 			}
-		}
-		v59 = pcursmonst;
-		if (pcursmonst != -1) {
-		LABEL_285:
-			if (pcursplr == -1)
-				goto LABEL_286;
-		LABEL_306:
-			if (pcurs == CURSOR_IDENTIFY) {
-				pcursobj = -1;
-				v59 = -1;
-				pcursitem = -1;
+			else
+			{
+				d_monster = dMonster[mx + 2][my + 1];
+				if ( d_monster )
+				{
+					if ( dFlags[mx + 2][my + 1] & 0x40 )
+					{
+						mon_id = d_monster <= 0 ? -1 - d_monster : d_monster - 1;
+						if ( mon_id == dword_4B8CCC
+						  && (signed int)(monster[mon_id]._mhitpoints & 0xFFFFFFC0) > 0
+						  && monster[mon_id].MData->mSelFlag & 4 )
+						{
+							cursmx = mx + 1;
+							cursmy = my + 2;
+							pcursmonst = mon_id;
+						}
+					}
+				}
+			}
+			d_monster = dMonster[mx + 2][my + 2];
+			if ( d_monster && dFlags[mx + 2][my + 2] & 0x40 )
+			{
+				mon_id = d_monster <= 0 ? -1 - d_monster : d_monster - 1;
+				if ( mon_id == dword_4B8CCC
+				  && (signed int)(monster[mon_id]._mhitpoints & 0xFFFFFFC0) > 0
+				  && monster[mon_id].MData->mSelFlag & 4 )
+				{
+					cursmx = mx + 2;
+					cursmy = my + 2;
+					pcursmonst = mon_id;
+				}
+			}
+			if ( some_bool )
+			{
+				d_monster = dMonster[mx][my + 1];
+				if ( d_monster && dFlags[mx][my + 1] & 0x40 )
+				{
+					mon_id = d_monster <= 0 ? -1 - d_monster : d_monster - 1;
+					if ( mon_id == dword_4B8CCC
+					  && (signed int)(monster[mon_id]._mhitpoints & 0xFFFFFFC0) > 0
+					  && monster[mon_id].MData->mSelFlag & 2 )
+					{
+						cursmx = mx;
+						cursmy = my + 1;
+						pcursmonst = mon_id;
+					}
+				}
+			}
+			else
+			{
+				d_monster = dMonster[mx + 1][my];
+				if ( d_monster && dFlags[mx + 1][my] & 0x40 )
+				{
+					mon_id = d_monster <= 0 ? -1 - d_monster : d_monster - 1;
+					if ( mon_id == dword_4B8CCC
+					  && (signed int)(monster[mon_id]._mhitpoints & 0xFFFFFFC0) > 0
+					  && monster[mon_id].MData->mSelFlag & 2 )
+					{
+						cursmy = my;
+						cursmx = mx + 1;
+						pcursmonst = mon_id;
+					}
+				}
+			}
+			d_monster = dMonster[mx][my];
+			if ( d_monster && dFlags[mx][my] & 0x40 )
+			{
+				mon_id = d_monster <= 0 ? -1 - d_monster : d_monster - 1;
+				if ( mon_id == dword_4B8CCC
+				  && (signed int)(monster[mon_id]._mhitpoints & 0xFFFFFFC0) > 0
+				  && monster[mon_id].MData->mSelFlag & 1 )
+				{
+					cursmx = mx;
+					cursmy = my;
+					pcursmonst = mon_id;
+				}
+			}
+			d_monster = dMonster[mx + 1][my + 1];
+			if ( d_monster && dFlags[mx + 1][my + 1] & 0x40 )
+			{
+				mon_id = d_monster <= 0 ? -1 - d_monster : d_monster - 1;
+				if ( mon_id == dword_4B8CCC
+				  && (signed int)(monster[mon_id]._mhitpoints & 0xFFFFFFC0) > 0
+				  && monster[mon_id].MData->mSelFlag & 2 )
+				{
+					cursmx = mx + 1;
+					cursmy = my + 1;
+					pcursmonst = mon_id;
+				}
+			}
+			if ( pcursmonst != -1 && monster[pcursmonst]._mFlags & 1 )
+			{
+				cursmx = mx;
+				cursmy = my;
 				pcursmonst = -1;
-				cursmx = v6;
-				cursmy = v8;
 			}
-			if (v59 != -1) {
-				if (monster[v59]._mFlags & MFLAG_GOLEM)
-					pcursmonst = -1;
-			}
-			return;
+			if ( pcursmonst != -1 && monster[pcursmonst]._mFlags & 0x20 )
+				pcursmonst = -1;
+			if ( pcursmonst != -1 )
+				return;
 		}
-		if (pcursplr != pcursmonst) /* check in future */
-			goto LABEL_306;
-		if (v83) {
-			v62 = dObject[0][v27 + 1 + v8];
-			if (!v62)
-				goto LABEL_272;
-			v61 = v62 <= 0 ? -1 - v62 : v62 - 1;
-			if (object[v61]._oSelFlag < 2)
-				goto LABEL_272;
-			cursmx = v6;
-			cursmy = v8 + 1;
-		} else {
-			v60 = dObject[1][v27 + v8];
-			if (!v60)
-				goto LABEL_272;
-			v61 = v60 <= 0 ? -1 - v60 : v60 - 1;
-			if (object[v61]._oSelFlag < 2)
-				goto LABEL_272;
-			cursmy = v8;
-			cursmx = v6 + 1;
-		}
-		pcursobj = v61;
-	LABEL_272:
-		v63 = dObject[0][v27 + v8];
-		if (v63) {
-			v64 = v63 <= 0 ? -1 - v63 : v63 - 1;
-			v65 = object[v64]._oSelFlag;
-			if (v65 == 1 || v65 == 3) {
-				cursmx = v6;
-				cursmy = v8;
-				pcursobj = v64;
-			}
-		}
-		v66 = dObject[1][v27 + 1 + v8];
-		if (!v66 || (v66 <= 0 ? (v67 = -1 - v66) : (v67 = v66 - 1), object[v67]._oSelFlag < 2)) {
-		LABEL_286:
-			if (pcursobj != -1 || pcursmonst != -1)
-				goto LABEL_306;
-			if (v83) {
-				v70 = dItem[0][v27 + 1 + v8];
-				if (v70 <= 0)
-					goto LABEL_296;
-				v69 = v70 - 1;
-				if (item[v69]._iSelFlag < 2)
-					goto LABEL_296;
-				cursmx = v6;
-				cursmy = v8 + 1;
-			} else {
-				v68 = dItem[1][v27 + v8];
-				if (v68 <= 0)
-					goto LABEL_296;
-				v69 = v68 - 1;
-				if (item[v69]._iSelFlag < 2)
-					goto LABEL_296;
-				cursmy = v8;
-				cursmx = v6 + 1;
-			}
-			pcursitem = v69;
-		LABEL_296:
-			v71 = dItem[0][v27 + v8];
-			if (v71 > 0) {
-				v72 = v71 - 1;
-				v73 = item[v72]._iSelFlag;
-				if (v73 == 1 || v73 == 3) {
-					cursmx = v6;
-					cursmy = v8;
-					pcursitem = v72;
-				}
-			}
-			v74 = dItem[1][v27 + 1 + v8];
-			if (v74 > 0) {
-				v75 = v74 - 1;
-				if (item[v75]._iSelFlag >= 2) {
-					pcursitem = v75;
-					cursmx = v6 + 1;
-					cursmy = v8 + 1;
-				}
-			}
-			if (pcursitem != -1)
-				goto LABEL_306;
-			cursmx = v6;
-			cursmy = v8;
-			CheckTrigForce();
-			CheckTown();
-			CheckRportal();
-			goto LABEL_305;
-		}
-		pcursobj = v67;
-		cursmx = v6 + 1;
-		cursmy = v8 + 1;
-		goto LABEL_285;
-	}
-	if (v10 == -1)
-		goto LABEL_128;
-	v12 = 112 * v6 + v8;
-	v81 = 112 * v6 + v8;
-	v13 = 112 * v6 + v8;
-	if (v83) {
-		v14 = v13;
-		v15 = dMonster[1][v14 + 2];
-		if (!v15)
-			goto LABEL_74;
-		v16 = (dFlags[1][v12 + 2] & DFLAG_LIT) == 0;
-	} else {
-		v14 = v13;
-		v15 = dMonster[2][v14 + 1];
-		if (!v15)
-			goto LABEL_74;
-		v16 = (dFlags[2][v12 + 1] & DFLAG_LIT) == 0;
-	}
-	if (!v16) {
-		v17 = v15 <= 0 ? -1 - v15 : v15 - 1;
-		if (v17 == dword_4B8CCC
-		    && monster[v17]._mhitpoints >> 6 > 0
-		    && monster[v17].MData->mSelFlag & 4) {
-			v11 = v17;
-			cursmx = v6 + 1;
-			cursmy = v8 + 2;
-			pcursmonst = v17;
-		}
-	}
-LABEL_74:
-	v18 = dMonster[2][v14 + 2];
-	if (v18 && dFlags[2][v81 + 2] & DFLAG_LIT) {
-		v19 = v18 <= 0 ? -1 - v18 : v18 - 1;
-		if (v19 == dword_4B8CCC
-		    && monster[v19]._mhitpoints >> 6 > 0
-		    && monster[v19].MData->mSelFlag & 4) {
-			v11 = v19;
-			cursmx = v6 + 2;
-			cursmy = v8 + 2;
-			pcursmonst = v19;
-		}
-	}
-	if (v83) {
-		v22 = dMonster[0][v14 + 1];
-		if (v22 && dFlags[0][v81 + 1] & DFLAG_LIT) {
-			v21 = v22 <= 0 ? -1 - v22 : v22 - 1;
-			if (v21 == dword_4B8CCC
-			    && monster[v21]._mhitpoints >> 6 > 0
-			    && monster[v21].MData->mSelFlag & 2) {
-				cursmx = v6;
-				cursmy = v8 + 1;
-				goto LABEL_102;
-			}
-		}
-	} else {
-		v20 = dMonster[1][v14];
-		if (v20 && dFlags[1][v81] & DFLAG_LIT) {
-			v21 = v20 <= 0 ? -1 - v20 : v20 - 1;
-			if (v21 == dword_4B8CCC
-			    && monster[v21]._mhitpoints >> 6 > 0
-			    && monster[v21].MData->mSelFlag & 2) {
-				cursmy = v8;
-				cursmx = v6 + 1;
-			LABEL_102:
-				v11 = v21;
-				pcursmonst = v21;
-				goto LABEL_103;
-			}
-		}
-	}
-LABEL_103:
-	v23 = dMonster[0][v14];
-	if (v23 && dFlags[0][v81] & DFLAG_LIT) {
-		v24 = v23 <= 0 ? -1 - v23 : v23 - 1;
-		if (v24 == dword_4B8CCC
-		    && monster[v24]._mhitpoints >> 6 > 0
-		    && monster[v24].MData->mSelFlag & 1) {
-			v11 = v24;
-			cursmx = v6;
-			cursmy = v8;
-			pcursmonst = v24;
-		}
-	}
-	v25 = dMonster[1][v14 + 1];
-	if (v25 && dFlags[1][v81 + 1] & DFLAG_LIT) {
-		v26 = v25 <= 0 ? -1 - v25 : v25 - 1;
-		if (v26 == dword_4B8CCC
-		    && monster[v26]._mhitpoints >> 6 > 0
-		    && monster[v26].MData->mSelFlag & 2) {
-			v11 = v26;
-			cursmx = v6 + 1;
-			cursmy = v8 + 1;
-			pcursmonst = v26;
-		}
-	}
-	if (v11 == -1)
-		goto LABEL_128;
-	if (monster[v11]._mFlags & MFLAG_HIDDEN) {
-		v11 = -1;
-		cursmx = v6;
-		pcursmonst = -1;
-		cursmy = v8;
-	}
-	if (v11 == -1)
-		goto LABEL_128;
-	if (monster[v11]._mFlags & MFLAG_GOLEM) {
-		v11 = -1;
-		pcursmonst = -1;
-	}
-	if (v11 == -1) {
-	LABEL_128:
-		v27 = 112 * v6;
-		v78 = 112 * v6;
-		if (v83) {
-			v28 = v27 + v8;
-			v32 = dMonster[1][v28 + 2];
-			if (v32 && dFlags[1][v27 + 2 + v8] & DFLAG_LIT) {
-				v30 = v32 <= 0 ? -1 - v32 : v32 - 1;
-				if (monster[v30]._mhitpoints >> 6 > 0 && monster[v30].MData->mSelFlag & 4) {
-					cursmx = v6 + 1;
-					v31 = v8 + 2;
-					goto LABEL_145;
-				}
-			}
-		} else {
-			v28 = v27 + v8;
-			v29 = dMonster[2][v28 + 1];
-			if (v29 && dFlags[2][v27 + 1 + v8] & DFLAG_LIT) {
-				v30 = v29 <= 0 ? -1 - v29 : v29 - 1;
-				if (monster[v30]._mhitpoints >> 6 > 0 && monster[v30].MData->mSelFlag & 4) {
-					cursmx = v6 + 2;
-					v31 = v8 + 1;
-				LABEL_145:
-					cursmy = v31;
-					pcursmonst = v30;
-					goto LABEL_146;
+		if ( some_bool )
+		{
+			d_monster = dMonster[mx + 1][my + 2];
+			if ( d_monster && dFlags[mx + 1][my + 2] & 0x40 )
+			{
+				mon_id = d_monster <= 0 ? -1 - d_monster : d_monster - 1;
+				if ( (signed int)(monster[mon_id]._mhitpoints & 0xFFFFFFC0) > 0 && monster[mon_id].MData->mSelFlag & 4 )
+				{
+					cursmx = mx + 1;
+					cursmy = my + 2;
+					pcursmonst = mon_id;
 				}
 			}
 		}
-	LABEL_146:
-		v33 = dMonster[2][v28 + 2];
-		if (v33 && dFlags[2][v27 + 2 + v8] & DFLAG_LIT) {
-			v34 = v33 <= 0 ? -1 - v33 : v33 - 1;
-			if (monster[v34]._mhitpoints >> 6 > 0 && monster[v34].MData->mSelFlag & 4) {
-				pcursmonst = v34;
-				cursmx = v6 + 2;
-				cursmy = v8 + 2;
-			}
-		}
-		if (v83) {
-			v37 = dMonster[0][v28 + 1];
-			if (v37 && dFlags[0][v27 + 1 + v8] & DFLAG_LIT) {
-				v36 = v37 <= 0 ? -1 - v37 : v37 - 1;
-				if (monster[v36]._mhitpoints >> 6 > 0 && monster[v36].MData->mSelFlag & 2) {
-					cursmx = v6;
-					cursmy = v8 + 1;
-					goto LABEL_171;
-				}
-			}
-		} else {
-			v35 = dMonster[1][v28];
-			if (v35 && dFlags[1][v27 + v8] & DFLAG_LIT) {
-				v36 = v35 <= 0 ? -1 - v35 : v35 - 1;
-				if (monster[v36]._mhitpoints >> 6 > 0 && monster[v36].MData->mSelFlag & 2) {
-					cursmy = v8;
-					cursmx = v6 + 1;
-				LABEL_171:
-					pcursmonst = v36;
-					goto LABEL_172;
+		else
+		{
+			d_monster = dMonster[mx + 2][my + 1];
+			if ( d_monster && dFlags[mx + 2][my + 1] & 0x40 )
+			{
+				mon_id = d_monster <= 0 ? -1 - d_monster : d_monster - 1;
+				if ( (signed int)(monster[mon_id]._mhitpoints & 0xFFFFFFC0) > 0 && monster[mon_id].MData->mSelFlag & 4 )
+				{
+					cursmx = mx + 2;
+					cursmy = my + 1;
+					pcursmonst = mon_id;
 				}
 			}
 		}
-	LABEL_172:
-		v38 = dMonster[0][v28];
-		if (v38 && dFlags[0][v27 + v8] & DFLAG_LIT) {
-			v39 = v38 <= 0 ? -1 - v38 : v38 - 1;
-			if (monster[v39]._mhitpoints >> 6 > 0 && monster[v39].MData->mSelFlag & 1) {
-				cursmx = v6;
-				cursmy = v8;
-				pcursmonst = v39;
+		d_monster = dMonster[mx + 2][my + 2];
+		if ( d_monster && dFlags[mx + 2][my + 2] & 0x40 )
+		{
+			mon_id = d_monster <= 0 ? -1 - d_monster : d_monster - 1;
+			if ( (signed int)(monster[mon_id]._mhitpoints & 0xFFFFFFC0) > 0 && monster[mon_id].MData->mSelFlag & 4 )
+			{
+				pcursmonst = mon_id;
+				cursmx = mx + 2;
+				cursmy = my + 2;
 			}
 		}
-		v40 = dMonster[1][v28 + 1];
-		if (v40 && dFlags[1][v27 + 1 + v8] & DFLAG_LIT) {
-			v41 = v40 <= 0 ? -1 - v40 : v40 - 1;
-			if (monster[v41]._mhitpoints >> 6 > 0 && monster[v41].MData->mSelFlag & 2) {
-				pcursmonst = v41;
-				cursmx = v6 + 1;
-				cursmy = v8 + 1;
+		if ( some_bool )
+		{
+			d_monster = dMonster[mx][my + 1];
+			if ( d_monster && dFlags[mx][my + 1] & 0x40 )
+			{
+				mon_id = d_monster <= 0 ? -1 - d_monster : d_monster - 1;
+				if ( (signed int)(monster[mon_id]._mhitpoints & 0xFFFFFFC0) > 0 && monster[mon_id].MData->mSelFlag & 2 )
+				{
+					cursmx = mx;
+					cursmy = my + 1;
+					pcursmonst = mon_id;
+				}
 			}
 		}
-		v42 = pcursmonst;
-		if (pcursmonst == -1)
-			goto LABEL_207;
-		if (monster[pcursmonst]._mFlags & MFLAG_HIDDEN) {
-			v42 = -1;
-			cursmx = v6;
+		else
+		{
+			d_monster = dMonster[mx + 1][my];
+			if ( d_monster && dFlags[mx + 1][my] & 0x40 )
+			{
+				mon_id = d_monster <= 0 ? -1 - d_monster : d_monster - 1;
+				if ( (signed int)(monster[mon_id]._mhitpoints & 0xFFFFFFC0) > 0 && monster[mon_id].MData->mSelFlag & 2 )
+				{
+					cursmy = my;
+					cursmx = mx + 1;
+					pcursmonst = mon_id;
+				}
+			}
+		}
+		d_monster = dMonster[mx][my];
+		if ( d_monster && dFlags[mx][my] & 0x40 )
+		{
+			mon_id = d_monster <= 0 ? -1 - d_monster : d_monster - 1;
+			if ( (signed int)(monster[mon_id]._mhitpoints & 0xFFFFFFC0) > 0 && monster[mon_id].MData->mSelFlag & 1 )
+			{
+				cursmx = mx;
+				cursmy = my;
+				pcursmonst = mon_id;
+			}
+		}
+		d_monster = dMonster[mx + 1][my + 1];
+		if ( d_monster && dFlags[mx + 1][my + 1] & 0x40 )
+		{
+			mon_id = d_monster <= 0 ? -1 - d_monster : d_monster - 1;
+			if ( (signed int)(monster[mon_id]._mhitpoints & 0xFFFFFFC0) > 0 && monster[mon_id].MData->mSelFlag & 2 )
+			{
+				pcursmonst = mon_id;
+				cursmx = mx + 1;
+				cursmy = my + 1;
+			}
+		}
+		if ( pcursmonst != -1 && monster[pcursmonst]._mFlags & 1 )
+		{
+			cursmx = mx;
+			cursmy = my;
 			pcursmonst = -1;
-			cursmy = v8;
 		}
-		if (v42 == -1)
-			goto LABEL_207;
-		if (monster[v42]._mFlags & MFLAG_GOLEM)
-			goto LABEL_205;
-		goto LABEL_206;
+		if ( pcursmonst != -1 && monster[pcursmonst]._mFlags & 0x20 )
+			pcursmonst = -1;
 	}
+	if ( pcursmonst == -1 )
+	{
+		if ( some_bool )
+		{
+			d_player = dPlayer[mx][my + 1];
+			if ( d_player )
+			{
+				plr_id = d_player <= 0 ? -1 - d_player : d_player - 1;
+				if ( plr_id != myplr && plr[plr_id]._pHitPoints )
+				{
+					cursmx = mx;
+					cursmy = my + 1;
+					pcursplr = plr_id;
+				}
+			}
+		}
+		else
+		{
+			d_player = dPlayer[mx + 1][my];
+			if ( d_player )
+			{
+				plr_id = d_player <= 0 ? -1 - d_player : d_player - 1;
+				if ( plr_id != myplr && plr[plr_id]._pHitPoints )
+				{
+					cursmy = my;
+					cursmx = mx + 1;
+					pcursplr = plr_id;
+				}
+			}
+		}
+		d_player = dPlayer[mx][my];
+		if ( d_player )
+		{
+			plr_id = d_player <= 0 ? -1 - d_player : d_player - 1;
+			if ( plr_id != myplr )
+			{
+				cursmx = mx;
+				cursmy = my;
+				pcursplr = plr_id;
+			}
+		}
+		if ( dFlags[mx][my] & 4 )
+		{
+			for(i = 0; i < MAX_PLRS; i++)
+			{
+				if ( plr[i].WorldX == mx && plr[i].WorldY == my && i != myplr )
+				{
+					cursmx = mx;
+					cursmy = my;
+					pcursplr = i;
+				}
+			}
+		}
+		if ( pcurs == CURSOR_RESURRECT )
+		{
+			for(xx = -1; xx < 2; xx++)
+			{
+				for(yy = -1; yy < 2; yy++)
+				{
+					if ( dFlags[mx + xx][my + yy] & 4 )
+					{
+						for(i = 0; i < MAX_PLRS; i++)
+						{
+							//   plr[i].WorldX - mx = xx     plr[i].WorldY - yy = my
+							if ( plr[i].WorldX == mx + xx && plr[i].WorldY == my + yy && i != myplr )
+							{
+								cursmx = mx + xx;
+								cursmy = my + yy;
+								pcursplr = i;
+							}
+						}
+					}
+				}
+			}
+		}
+		d_player = dPlayer[mx + 1][my + 1];
+		if ( d_player )
+		{
+			plr_id = d_player <= 0 ? -1 - d_player : d_player - 1;
+			if ( plr_id != myplr && plr[plr_id]._pHitPoints )
+			{
+				pcursplr = plr_id;
+				cursmx = mx + 1;
+				cursmy = my + 1;
+			}
+		}
+	}
+	if ( pcursmonst == -1 && pcursplr == -1 ) /* (BYTE)pcursmonst */
+	{
+		if ( some_bool )
+		{
+			d_obj = dObject[mx][my + 1];
+			if ( d_obj )
+			{
+				obj_id = d_obj <= 0 ? -1 - d_obj : d_obj - 1;
+				if ( object[obj_id]._oSelFlag >= 2 )
+				{
+					cursmx = mx;
+					cursmy = my + 1;
+					pcursobj = obj_id;
+				}
+			}
+		}
+		else
+		{
+			d_obj = dObject[mx + 1][my];
+			if ( d_obj )
+			{
+				obj_id = d_obj <= 0 ? -1 - d_obj : d_obj - 1;
+				if ( object[obj_id]._oSelFlag >= 2 )
+				{
+					cursmy = my;
+					cursmx = mx + 1;
+					pcursobj = obj_id;
+				}
+			}
+		}
+		d_obj = dObject[mx][my];
+		if ( d_obj )
+		{
+			obj_id = d_obj <= 0 ? -1 - d_obj : d_obj - 1;
+			if ( object[obj_id]._oSelFlag == 1 || object[obj_id]._oSelFlag == 3 )
+			{
+				cursmx = mx;
+				cursmy = my;
+				pcursobj = obj_id;
+			}
+		}
+		d_obj = dObject[mx + 1][my + 1];
+		if ( d_obj && (d_obj <= 0 ? (obj_id = -1 - d_obj) : (obj_id = d_obj - 1), object[obj_id]._oSelFlag >= 2) )
+		{
+			pcursobj = obj_id;
+			cursmx = mx + 1;
+			cursmy = my + 1;
+		}
+	}
+	if ( pcursmonst == -1 && pcursplr == -1 && pcursobj == -1 )
+	{
+		if ( some_bool )
+		{
+			d_item = dItem[mx][my + 1];
+			if ( d_item > 0 )
+			{
+				item_id = d_item - 1;
+				if ( item[item_id]._iSelFlag >= 2 )
+				{
+					cursmx = mx;
+					cursmy = my + 1;
+					pcursitem = item_id;
+				}
+			}
+		}
+		else
+		{
+			d_item = dItem[mx + 1][my];
+			if ( d_item > 0 )
+			{
+				item_id = d_item - 1;
+				if ( item[item_id]._iSelFlag >= 2 )
+				{
+					cursmy = my;
+					cursmx = mx + 1;
+					pcursitem = item_id;
+				}
+			}
+		}
+		d_item = dItem[mx][my];
+		if ( d_item > 0 )
+		{
+			item_id = d_item - 1;
+			if ( item[item_id]._iSelFlag == 1 || item[item_id]._iSelFlag == 3 )
+			{
+				cursmx = mx;
+				cursmy = my;
+				pcursitem = item_id;
+			}
+		}
+		d_item = dItem[mx + 1][my + 1];
+		if ( d_item > 0 )
+		{
+			item_id = d_item - 1;
+			if ( item[item_id]._iSelFlag >= 2 )
+			{
+				pcursitem = item_id;
+				cursmx = mx + 1;
+				cursmy = my + 1;
+			}
+		}
+	}
+	if ( pcursmonst == -1 && pcursplr == -1 && pcursobj == -1 && pcursitem == -1 )
+	{
+		cursmx = mx;
+		cursmy = my;
+		CheckTrigForce();
+		CheckTown();
+		CheckRportal();
+	}
+	if ( pcurs == CURSOR_IDENTIFY )
+	{
+		pcursobj = -1;
+		pcursitem = -1;
+		pcursmonst = -1;
+		cursmx = mx;
+		cursmy = my;
+	}
+	if ( pcursmonst != -1 && monster[pcursmonst]._mFlags & 0x20 )
+		pcursmonst = -1;
 }
 // 4B8968: using guessed type int sbookflag;
 // 4B8B84: using guessed type int panelflag;
