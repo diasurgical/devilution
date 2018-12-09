@@ -472,7 +472,7 @@ typedef struct AnimStruct {
 
 typedef struct MonsterData {
 	int width;
-	int mType;
+	int mImage;
 	char *GraphicType;
 	BOOL has_special;
 	char *sndfile;
