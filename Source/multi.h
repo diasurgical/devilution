@@ -29,14 +29,14 @@ extern int sgbNetInited;   // weak
 extern int player_state[MAX_PLRS];
 
 void __cdecl multi_cpp_init();
-void __fastcall multi_msg_add(unsigned char *a1, unsigned char a2);
-void __fastcall NetSendLoPri(unsigned char *pbMsg, unsigned char bLen);
-void __fastcall multi_copy_packet(void *a1, void *packet, int size);
-void __fastcall multi_send_packet(void *packet, int dwSize);
+void __fastcall multi_msg_add(BYTE *a1, unsigned char a2);
+void __fastcall NetSendLoPri(BYTE *pbMsg, BYTE bLen);
+void __fastcall multi_copy_packet(void *a1, void *packet, BYTE size);
+void __fastcall multi_send_packet(void *packet, BYTE dwSize);
 void __fastcall NetRecvPlrData(TPkt *pkt);
-void __fastcall NetSendHiPri(unsigned char *pbMsg, unsigned char bLen);
+void __fastcall NetSendHiPri(BYTE *pbMsg, BYTE bLen);
 unsigned char *__fastcall multi_recv_packet(void *packet, unsigned char *a2, int *a3);
-void __fastcall multi_send_msg_packet(int a1, unsigned char *a2, unsigned char len);
+void __fastcall multi_send_msg_packet(int a1, BYTE *a2, BYTE len);
 void __cdecl multi_msg_countdown();
 void __fastcall multi_parse_turn(int pnum, int turn);
 void __fastcall multi_handle_turn_upper_bit(int pnum);

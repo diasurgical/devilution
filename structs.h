@@ -696,86 +696,86 @@ typedef struct PortalStruct {
 
 #pragma pack(push, 1)
 typedef struct TCmd {
-	BYTE bCmd;
+	char bCmd;
 } TCmd;
 
 typedef struct TCmdLoc {
-	BYTE bCmd;
-	BYTE x;
-	BYTE y;
+	char bCmd;
+	char x;
+	char y;
 } TCmdLoc;
 
 typedef struct TCmdLocParam1 {
-	BYTE bCmd;
-	BYTE x;
-	BYTE y;
+	char bCmd;
+	char x;
+	char y;
 	WORD wParam1;
 } TCmdLocParam1;
 
 typedef struct TCmdLocParam2 {
-	BYTE bCmd;
-	BYTE x;
-	BYTE y;
+	char bCmd;
+	char x;
+	char y;
 	WORD wParam1;
 	WORD wParam2;
 } TCmdLocParam2;
 
 typedef struct TCmdLocParam3 {
-	BYTE bCmd;
-	BYTE x;
-	BYTE y;
+	char bCmd;
+	char x;
+	char y;
 	WORD wParam1;
 	WORD wParam2;
 	WORD wParam3;
 } TCmdLocParam3;
 
 typedef struct TCmdParam1 {
-	BYTE bCmd;
+	char bCmd;
 	WORD wParam1;
 } TCmdParam1;
 
 typedef struct TCmdParam2 {
-	BYTE bCmd;
+	char bCmd;
 	WORD wParam1;
 	WORD wParam2;
 } TCmdParam2;
 
 typedef struct TCmdParam3 {
-	BYTE bCmd;
+	char bCmd;
 	WORD wParam1;
 	WORD wParam2;
 	WORD wParam3;
 } TCmdParam3;
 
 typedef struct TCmdGolem {
-	BYTE bCmd;
-	BYTE _mx;
-	BYTE _my;
+	char bCmd;
+	char _mx;
+	char _my;
 	BYTE _mdir;
-	BYTE _menemy;
+	char _menemy;
 	int _mhitpoints;
 	BYTE _currlevel;
 } TCmdGolem;
 
 typedef struct TCmdQuest {
-	BYTE bCmd;
+	char bCmd;
 	BYTE q;
-	BYTE qstate;
+	char qstate;
 	BYTE qlog;
 	BYTE qvar1;
 } TCmdQuest;
 
 typedef struct TCmdGItem {
-	BYTE bCmd;
+	char bCmd;
 	BYTE bMaster;
 	BYTE bPnum;
 	BYTE bCursitem;
 	BYTE bLevel;
-	BYTE x;
-	BYTE y;
+	char x;
+	char y;
 	WORD wIndx;
 	WORD wCI;
-	DWORD dwSeed;
+	int dwSeed;
 	BYTE bId;
 	BYTE bDur;
 	BYTE bMDur;
@@ -783,16 +783,16 @@ typedef struct TCmdGItem {
 	BYTE bMCh;
 	WORD wValue;
 	DWORD dwBuff;
-	DWORD dwTime;
+	int dwTime;
 } TCmdGItem;
 
 typedef struct TCmdPItem {
-	BYTE bCmd;
-	BYTE x;
-	BYTE y;
+	char bCmd;
+	char x;
+	char y;
 	WORD wIndx;
 	WORD wCI;
-	DWORD dwSeed;
+	int dwSeed;
 	BYTE bId;
 	BYTE bDur;
 	BYTE bMDur;
@@ -803,49 +803,49 @@ typedef struct TCmdPItem {
 } TCmdPItem;
 
 typedef struct TCmdChItem {
-	BYTE bCmd;
+	char bCmd;
 	BYTE bLoc;
 	WORD wIndx;
 	WORD wCI;
-	DWORD dwSeed;
+	int dwSeed;
 	BYTE bId;
 } TCmdChItem;
 
 typedef struct TCmdDelItem {
-	BYTE bCmd;
+	char bCmd;
 	BYTE bLoc;
 } TCmdDelItem;
 
 typedef struct TCmdDamage {
-	BYTE bCmd;
+	char bCmd;
 	BYTE bPlr;
 	DWORD dwDam;
 } TCmdDamage;
 
 typedef struct TCmdPlrInfoHdr {
-	BYTE bCmd;
+	char bCmd;
 	WORD wOffset;
 	WORD wBytes;
 } TCmdPlrInfoHdr;
 
 typedef struct TCmdString {
-	BYTE bCmd;
+	char bCmd;
 	char str[MAX_SEND_STR_LEN];
 } TCmdString;
 
 typedef struct TFakeCmdPlr {
-	BYTE bCmd;
+	char bCmd;
 	BYTE bPlr;
 } TFakeCmdPlr;
 
 typedef struct TFakeDropPlr {
-	BYTE bCmd;
+	char bCmd;
 	BYTE bPlr;
 	DWORD dwReason;
 } TFakeDropPlr;
 
 typedef struct TSyncHeader {
-	BYTE bCmd;
+	char bCmd;
 	BYTE bLevel;
 	WORD wLen;
 	BYTE bObjId;
@@ -855,7 +855,7 @@ typedef struct TSyncHeader {
 	BYTE bItemY;
 	WORD wItemIndx;
 	WORD wItemCI;
-	DWORD dwItemSeed;
+	int dwItemSeed;
 	BYTE bItemId;
 	BYTE bItemDur;
 	BYTE bItemMDur;
@@ -866,15 +866,15 @@ typedef struct TSyncHeader {
 	BYTE bPInvLoc;
 	WORD wPInvIndx;
 	WORD wPInvCI;
-	DWORD dwPInvSeed;
+	int dwPInvSeed;
 	BYTE bPInvId;
 } TSyncHeader;
 
 typedef struct TSyncMonster {
 	BYTE _mndx;
-	BYTE _mx;
-	BYTE _my;
-	BYTE _menemy;
+	char _mx;
+	char _my;
+	char _menemy;
 	BYTE _mdelta;
 } TSyncMonster;
 
@@ -898,8 +898,8 @@ typedef struct TPkt {
 } TPkt;
 
 typedef struct DMonsterStr {
-	BYTE _mx;
-	BYTE _my;
+	char _mx;
+	char _my;
 	BYTE _mdir;
 	char _menemy;
 	char _mactive;
@@ -907,7 +907,7 @@ typedef struct DMonsterStr {
 } DMonsterStr;
 
 typedef struct DObjectStr {
-	BYTE bCmd;
+	char bCmd;
 } DObjectStr;
 
 typedef struct DLevel {
@@ -917,19 +917,19 @@ typedef struct DLevel {
 } DLevel;
 
 typedef struct LocalLevel {
-	BYTE automapsv[40][40];
+	BYTE automapsv[DMAXX][DMAXY];
 } LocalLevel;
 
 typedef struct DPortal {
-	BYTE x;
-	BYTE y;
+	char x;
+	char y;
 	BYTE level;
 	BYTE ltype;
 	BYTE setlvl;
 } DPortal;
 
 typedef struct MultiQuests {
-	BYTE qstate;
+	char qstate;
 	BYTE qlog;
 	BYTE qvar1;
 } MultiQuests;
@@ -1450,7 +1450,7 @@ typedef struct TMsg TMsg;
 
 typedef struct TMsgHdr {
 	TMsg *pNext;
-	DWORD dwTime;
+	int dwTime;
 	BYTE bLen;
 } TMsgHdr;
 
