@@ -901,8 +901,8 @@ typedef struct DMonsterStr {
 	BYTE _mx;
 	BYTE _my;
 	BYTE _mdir;
-	BYTE _menemy;
-	BYTE _mactive;
+	char _menemy;
+	char _mactive;
 	int _mhitpoints;
 } DMonsterStr;
 
