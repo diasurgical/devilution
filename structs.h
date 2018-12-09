@@ -596,7 +596,7 @@ typedef struct MonsterStruct { // note: missing field _mAFNum
 	int mtalkmsg;
 	unsigned char leader;
 	unsigned char leaderflag;
-	unsigned char unpackfilesize;
+	unsigned char packsize;
 	unsigned char mlid;
 	char *mName;
 	CMonster *MType;
