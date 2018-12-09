@@ -44,7 +44,7 @@ struct multi_cpp_init {
 // 47F154: using guessed type int multi_inf;
 // 678620: using guessed type int multi_cpp_init_value;
 
-void __fastcall multi_msg_add(unsigned char *a1, unsigned char a2)
+void __fastcall multi_msg_add(BYTE *a1, unsigned char a2)
 {
 	if (a1) {
 		if (a2)
@@ -52,24 +52,17 @@ void __fastcall multi_msg_add(unsigned char *a1, unsigned char a2)
 	}
 }
 
-void __fastcall NetSendLoPri(unsigned char *pbMsg, unsigned char bLen)
+void __fastcall NetSendLoPri(BYTE *pbMsg, BYTE bLen)
 {
-	unsigned char *v2; // esi
-	unsigned char v3;  // bl
-	int v4;            // edx
-
-	v2 = pbMsg;
-	v3 = bLen;
 	if (pbMsg) {
 		if (bLen) {
 			multi_copy_packet(pkdata_678658, pbMsg, bLen);
-			_LOBYTE(v4) = v3;
-			multi_send_packet(v2, v4);
+			multi_send_packet(pbMsg, bLen);
 		}
 	}
 }
 
-void __fastcall multi_copy_packet(void *a1, void *packet, int size)
+void __fastcall multi_copy_packet(void *a1, void *packet, BYTE size)
 {
 	int v3;   // eax
 	int v4;   // ebx
@@ -86,7 +79,7 @@ void __fastcall multi_copy_packet(void *a1, void *packet, int size)
 	}
 }
 
-void __fastcall multi_send_packet(void *packet, int dwSize)
+void __fastcall multi_send_packet(void *packet, BYTE dwSize)
 {
 	void *v2;         // esi
 	unsigned char v3; // bl
@@ -117,9 +110,6 @@ void __fastcall NetRecvPlrData(TPkt *pkt)
 
 void __fastcall NetSendHiPri(BYTE *pbMsg, BYTE bLen)
 {
-	unsigned char *v2; // edi
-	unsigned char v3;  // bl
-	int v4;            // edx
 	unsigned char *v5; // eax
 	TSyncHeader *v6;   // eax
 	int v7;            // eax
@@ -127,12 +117,9 @@ void __fastcall NetSendHiPri(BYTE *pbMsg, BYTE bLen)
 	TPkt pkt;          // [esp+Ch] [ebp-204h]
 	int size;          // [esp+20Ch] [ebp-4h]
 
-	v2 = pbMsg;
-	v3 = bLen;
 	if (pbMsg && bLen) {
 		multi_copy_packet(pkdata_6761C0, pbMsg, bLen);
-		_LOBYTE(v4) = v3;
-		multi_send_packet(v2, v4);
+		multi_send_packet(pbMsg, bLen);
 	}
 	if (!dword_678628) {
 		dword_678628 = 1;
@@ -141,7 +128,6 @@ void __fastcall NetSendHiPri(BYTE *pbMsg, BYTE bLen)
 		v5 = multi_recv_packet(pkdata_6761C0, pkt.body, &size);
 		v6 = (TSyncHeader *)multi_recv_packet(pkdata_678658, v5, &size);
 		v7 = sync_all_monsters(v6, size);
-		size = v7;
 		v8 = gdwNormalMsgSize - v7;
 		pkt.hdr.wLen = v8;
 		if (!SNetSendMessage(-2, &pkt.hdr, v8))
@@ -182,7 +168,7 @@ unsigned char *__fastcall multi_recv_packet(void *packet, unsigned char *a2, int
 	return result;
 }
 
-void __fastcall multi_send_msg_packet(int a1, unsigned char *a2, unsigned char len)
+void __fastcall multi_send_msg_packet(int a1, BYTE *a2, BYTE len)
 {
 	//const void *v3; // edx
 	signed int v4;   // ebx
@@ -580,7 +566,7 @@ void __cdecl multi_process_tmsgs()
 	TPkt pkt; // [esp+0h] [ebp-200h]
 
 	while (1) {
-		v0 = tmsg_get((unsigned char *)&pkt, 512);
+		v0 = tmsg_get((BYTE *)&pkt, 512);
 		if (!v0)
 			break;
 		multi_handle_all_packets(myplr, &pkt, v0);
