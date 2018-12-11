@@ -27,7 +27,7 @@ void __fastcall InitMonster(int i, int rd, int mtype, int x, int y);
 void __cdecl ClrAllMonsters();
 BOOL __fastcall MonstPlace(int xp, int yp);
 void __fastcall PlaceMonster(int i, int mtype, int x, int y);
-void __fastcall PlaceUniqueMonst(int uniqindex, int miniontype, int unpackfilesize);
+void __fastcall PlaceUniqueMonst(int uniqindex, int miniontype, int packsize);
 void __cdecl PlaceQuestMonsters();
 void __fastcall PlaceGroup(int mtype, int num, int leaderf, int leader);
 void __cdecl LoadDiabMonsts();

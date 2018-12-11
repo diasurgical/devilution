@@ -549,7 +549,7 @@ typedef struct MonsterStruct { // note: missing field _mAFNum
 	int _menemy;
 	unsigned char _menemyx;
 	unsigned char _menemyy;
-	short falign_52;
+	short falign_52; // probably _mAFNum (unused)
 	unsigned char *_mAnimData;
 	int _mAnimDelay;
 	int _mAnimCnt;
@@ -596,7 +596,7 @@ typedef struct MonsterStruct { // note: missing field _mAFNum
 	int mtalkmsg;
 	unsigned char leader;
 	unsigned char leaderflag;
-	unsigned char unpackfilesize;
+	unsigned char packsize;
 	unsigned char mlid;
 	char *mName;
 	CMonster *MType;

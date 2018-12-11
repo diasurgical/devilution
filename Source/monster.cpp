@@ -807,7 +807,7 @@ void __fastcall PlaceMonster(int i, int mtype, int x, int y)
 	InitMonster(i, rd, mtype, x, y);
 }
 
-void __fastcall PlaceUniqueMonst(int uniqindex, int miniontype, int unpackfilesize)
+void __fastcall PlaceUniqueMonst(int uniqindex, int miniontype, int packsize)
 {
 	int xp;
 	int yp;
@@ -998,7 +998,7 @@ void __fastcall PlaceUniqueMonst(int uniqindex, int miniontype, int unpackfilesi
 	nummonsters++;
 
 	if (Uniq->mUnqAttr & 1) {
-		PlaceGroup(miniontype, unpackfilesize, Uniq->mUnqAttr, nummonsters - 1);
+		PlaceGroup(miniontype, packsize, Uniq->mUnqAttr, nummonsters - 1);
 	}
 
 	if (Monst->_mAi != AI_GARG) {
@@ -1154,7 +1154,7 @@ void __fastcall PlaceGroup(int mtype, int num, int leaderf, int leader)
 	}
 
 	if (leaderf & 2) {
-		monster[leader].unpackfilesize = placed;
+		monster[leader].packsize = placed;
 	}
 }
 
@@ -3012,7 +3012,7 @@ void __fastcall M_UpdateLeader(int i)
 	}
 
 	if (monster[i].leaderflag == 1) {
-		monster[monster[i].leader].unpackfilesize--;
+		monster[monster[i].leader].packsize--;
 	}
 }
 
@@ -3252,13 +3252,13 @@ void __fastcall GroupUnity(int i)
 			if (monster[v2].leaderflag == 2
 			    && abs(monster[v2]._mx - monster[v4]._mfutx) < 4
 			    && abs(monster[v2]._my - monster[v4]._mfuty) < 4) {
-				++monster[v4].unpackfilesize;
+				++monster[v4].packsize;
 				monster[v2].leaderflag = 1;
 			}
 		} else {
 			if (monster[v2].leaderflag != 1)
 				goto LABEL_18;
-			--monster[v4].unpackfilesize;
+			--monster[v4].packsize;
 			monster[v2].leaderflag = 2;
 		}
 	} else {
@@ -4508,7 +4508,7 @@ void __fastcall MAI_Scav(int i)
 			if (_LOBYTE(monster[v2]._mgoal) == MGOAL_HEALING)
 				goto LABEL_10;
 			if (monster[v2].leaderflag) {
-				v3 = &monster[(unsigned char)monster[v2].leader].unpackfilesize;
+				v3 = &monster[(unsigned char)monster[v2].leader].packsize;
 				--*v3;
 				monster[v2].leaderflag = 0;
 			}
@@ -6104,7 +6104,7 @@ LABEL_24:
 			v16 += 112;
 		} while (v13 <= v21);
 	}
-	return v26 == (unsigned char)monster[v4].unpackfilesize;
+	return v26 == (unsigned char)monster[v4].packsize;
 }
 
 BOOL __fastcall PosOkMissile(int x, int y)
