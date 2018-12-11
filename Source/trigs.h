@@ -22,9 +22,9 @@ unsigned char __cdecl ForceL2Trig();
 unsigned char __cdecl ForceL3Trig();
 unsigned char __cdecl ForceL4Trig();
 void __cdecl Freeupstairs();
-unsigned char __cdecl ForceSKingTrig();
-unsigned char __cdecl ForceSChambTrig();
-unsigned char __cdecl ForcePWaterTrig();
+BOOL __cdecl ForceSKingTrig();
+BOOL __cdecl ForceSChambTrig();
+BOOL __cdecl ForcePWaterTrig();
 void __cdecl CheckTrigForce();
 void __cdecl CheckTriggers();
 

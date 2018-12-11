@@ -1003,67 +1003,55 @@ void __cdecl Freeupstairs()
 	}
 }
 
-unsigned char __cdecl ForceSKingTrig()
+BOOL __cdecl ForceSKingTrig()
 {
-	int v0;  // eax
-	int *v1; // ecx
+	int i;
 
-	v0 = L1UpList[0];
-	if (L1UpList[0] == -1)
-		return 0;
-	v1 = L1UpList;
-	while (dPiece[cursmx][cursmy] != v0) {
-		++v1;
-		v0 = *v1;
-		if (*v1 == -1)
-			return 0;
+	for (i = 0; L1UpList[i] != -1; i++) {
+		if (dPiece[cursmx][cursmy] == L1UpList[i]) {
+			sprintf(infostr, "Back to Level %i", quests[QTYPE_KING]._qlevel);
+			cursmx = trigs[0]._tx;
+			cursmy = trigs[0]._ty;
+
+			return TRUE;
+		}
 	}
-	sprintf(infostr, "Back to Level %i", (unsigned char)quests[QTYPE_KING]._qlevel);
-	cursmx = trigs[0]._tx;
-	cursmy = trigs[0]._ty;
-	return 1;
+
+	return FALSE;
 }
 
-unsigned char __cdecl ForceSChambTrig()
+BOOL __cdecl ForceSChambTrig()
 {
-	int v0;  // eax
-	int *v1; // ecx
+	int i;
 
-	v0 = L2DownList[0];
-	if (L2DownList[0] == -1)
-		return 0;
-	v1 = L2DownList;
-	while (dPiece[cursmx][cursmy] != v0) {
-		++v1;
-		v0 = *v1;
-		if (*v1 == -1)
-			return 0;
+	for (i = 0; L2DownList[i] != -1; i++) {
+		if (dPiece[cursmx][cursmy] == L2DownList[i]) {
+			sprintf(infostr, "Back to Level %i", quests[QTYPE_BONE]._qlevel);
+			cursmx = trigs[0]._tx;
+			cursmy = trigs[0]._ty;
+
+			return TRUE;
+		}
 	}
-	sprintf(infostr, "Back to Level %i", (unsigned char)quests[QTYPE_BONE]._qlevel);
-	cursmx = trigs[0]._tx;
-	cursmy = trigs[0]._ty;
-	return 1;
+
+	return FALSE;
 }
 
-unsigned char __cdecl ForcePWaterTrig()
+BOOL __cdecl ForcePWaterTrig()
 {
-	int v0;  // eax
-	int *v1; // ecx
+	int i;
 
-	v0 = L3DownList[0];
-	if (L3DownList[0] == -1)
-		return 0;
-	v1 = L3DownList;
-	while (dPiece[cursmx][cursmy] != v0) {
-		++v1;
-		v0 = *v1;
-		if (*v1 == -1)
-			return 0;
+	for (i = 0; L3DownList[i] != -1; i++) {
+		if (dPiece[cursmx][cursmy] == L3DownList[i]) {
+			sprintf(infostr, "Back to Level %i", quests[QTYPE_PW]._qlevel);
+			cursmx = trigs[0]._tx;
+			cursmy = trigs[0]._ty;
+
+			return TRUE;
+		}
 	}
-	sprintf(infostr, "Back to Level %i", (unsigned char)quests[QTYPE_PW]._qlevel);
-	cursmx = trigs[0]._tx;
-	cursmy = trigs[0]._ty;
-	return 1;
+
+	return FALSE;
 }
 
 void __cdecl CheckTrigForce()
