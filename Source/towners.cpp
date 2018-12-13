@@ -2,13 +2,13 @@
 
 #include "../types.h"
 
-int storeflag;     // weak
-int sgnCowMsg;     // weak
-int numtowners;    // idb
-int sgdwCowClicks; // weak
-int bannerflag;    // weak // unused 0x6AAC28
-int boyloadflag;   // weak
-void *pCowCels;    // idb
+int storeflag; // weak
+int sgnCowMsg;
+int numtowners; // idb
+DWORD sgdwCowClicks;
+int bannerflag;  // weak // unused 0x6AAC28
+int boyloadflag; // weak
+void *pCowCels;  // idb
 TownerStruct towner[16];
 
 const int snSFX[3][3] = {
@@ -110,18 +110,14 @@ int CowPlaying = -1;
 
 int __fastcall GetActiveTowner(int t)
 {
-	int i; // eax
+	int i;
 
-	i = 0;
-	if (numtowners <= 0)
-		return -1;
-
-	while (towner[i]._ttype != t) {
-		++i;
-		if (i >= numtowners)
-			return -1;
+	for (i = 0; i < numtowners; i++) {
+		if (towner[i]._ttype == t)
+			return i;
 	}
-	return i;
+
+	return -1;
 }
 
 void __fastcall SetTownerGPtrs(void *pData, void **pAnim)
@@ -142,37 +138,27 @@ void __fastcall SetTownerGPtrs(void *pData, void **pAnim)
 
 void __fastcall NewTownerAnim(int tnum, unsigned char *pAnim, int numFrames, int Delay)
 {
-	int v4; // ecx
-
-	v4 = tnum;
-	towner[v4]._tAnimCnt = 0;
-	towner[v4]._tAnimLen = numFrames;
-	towner[v4]._tAnimData = pAnim;
-	towner[v4]._tAnimFrame = 1;
-	towner[v4]._tAnimDelay = Delay;
+	towner[tnum]._tAnimCnt = 0;
+	towner[tnum]._tAnimLen = numFrames;
+	towner[tnum]._tAnimData = pAnim;
+	towner[tnum]._tAnimFrame = 1;
+	towner[tnum]._tAnimDelay = Delay;
 }
 
-void __fastcall InitTownerInfo(int i, int w, BOOLEAN sel, int t, int x, int y, int ao, int tp)
+void __fastcall InitTownerInfo(int i, int w, BOOL sel, int t, int x, int y, int ao, int tp)
 {
-	int v8;  // ebx
-	int v9;  // esi
-	int v10; // edi
-
-	v8 = i;
-	v9 = i;
-	v10 = w;
-	memset(&towner[i], 0, 0xE8u);
-	towner[v9]._tSelFlag = sel;
-	towner[v9]._ttype = t;
-	towner[v9]._tx = x;
-	towner[v9]._tMsgSaid = 0;
-	towner[v9]._tAnimWidth = v10;
-	towner[v9]._tAnimWidth2 = (v10 - 64) >> 1;
-	towner[v9]._ty = y;
-	dMonster[x][y] = v8 + 1;
-	_LOBYTE(towner[v9]._tAnimOrder) = ao;
-	towner[v9]._tTenPer = tp;
-	towner[v9]._tSeed = GetRndSeed();
+	memset(&towner[i], 0, sizeof(TownerStruct));
+	towner[i]._tSelFlag = sel;
+	towner[i]._tAnimWidth = w;
+	towner[i]._tAnimWidth2 = (w - 64) >> 1;
+	towner[i]._tMsgSaid = 0;
+	towner[i]._ttype = t;
+	towner[i]._tx = x;
+	towner[i]._ty = y;
+	dMonster[x][y] = i + 1;
+	towner[i]._tAnimOrder = ao;
+	towner[i]._tTenPer = tp;
+	towner[i]._tSeed = GetRndSeed();
 }
 
 void __fastcall InitQstSnds(int i)
@@ -181,7 +167,7 @@ void __fastcall InitQstSnds(int i)
 	_BYTE *v2;         // ecx
 	unsigned char *v3; // esi
 	QuestTalkData *v4; // eax
-	BOOLEAN v5;           // zf
+	BOOLEAN v5;        // zf
 
 	v1 = i;
 	if (boyloadflag)
@@ -561,18 +547,18 @@ void __fastcall TownCtrlMsg(int i)
 
 void __cdecl TownBlackSmith()
 {
-	int v0; // eax
+	int i;
 
-	v0 = GetActiveTowner(TOWN_SMITH);
-	TownCtrlMsg(v0);
+	i = GetActiveTowner(TOWN_SMITH);
+	TownCtrlMsg(i);
 }
 
 void __cdecl TownBarOwner()
 {
-	int v0; // eax
+	int i;
 
-	v0 = GetActiveTowner(TOWN_TAVERN);
-	TownCtrlMsg(v0);
+	i = GetActiveTowner(TOWN_TAVERN);
+	TownCtrlMsg(i);
 }
 
 void __cdecl TownDead()
@@ -598,58 +584,58 @@ void __cdecl TownDead()
 
 void __cdecl TownHealer()
 {
-	int v0; // eax
+	int i;
 
-	v0 = GetActiveTowner(TOWN_HEALER);
-	TownCtrlMsg(v0);
+	i = GetActiveTowner(TOWN_HEALER);
+	TownCtrlMsg(i);
 }
 
 void __cdecl TownStory()
 {
-	int v0; // eax
+	int i;
 
-	v0 = GetActiveTowner(TOWN_STORY);
-	TownCtrlMsg(v0);
+	i = GetActiveTowner(TOWN_STORY);
+	TownCtrlMsg(i);
 }
 
 void __cdecl TownDrunk()
 {
-	int v0; // eax
+	int i;
 
-	v0 = GetActiveTowner(TOWN_DRUNK);
-	TownCtrlMsg(v0);
+	i = GetActiveTowner(TOWN_DRUNK);
+	TownCtrlMsg(i);
 }
 
 void __cdecl TownBoy()
 {
-	int v0; // eax
+	int i;
 
-	v0 = GetActiveTowner(TOWN_PEGBOY);
-	TownCtrlMsg(v0);
+	i = GetActiveTowner(TOWN_PEGBOY);
+	TownCtrlMsg(i);
 }
 
 void __cdecl TownWitch()
 {
-	int v0; // eax
+	int i;
 
-	v0 = GetActiveTowner(TOWN_WITCH);
-	TownCtrlMsg(v0);
+	i = GetActiveTowner(TOWN_WITCH);
+	TownCtrlMsg(i);
 }
 
 void __cdecl TownBarMaid()
 {
-	int v0; // eax
+	int i;
 
-	v0 = GetActiveTowner(TOWN_BMAID);
-	TownCtrlMsg(v0);
+	i = GetActiveTowner(TOWN_BMAID);
+	TownCtrlMsg(i);
 }
 
 void __cdecl TownCow()
 {
-	int v0; // eax
+	int i;
 
-	v0 = GetActiveTowner(TOWN_COW);
-	TownCtrlMsg(v0);
+	i = GetActiveTowner(TOWN_COW);
+	TownCtrlMsg(i);
 }
 
 void __cdecl ProcessTowners()
@@ -740,8 +726,6 @@ void __fastcall TownerTalk(int t)
 	InitQTextMsg(t);
 }
 // 6AAC18: using guessed type int storeflag;
-// 6AAC1C: using guessed type int sgnCowMsg;
-// 6AAC24: using guessed type int sgdwCowClicks;
 
 void __fastcall TalkToTowner(int p, int t)
 {
@@ -753,7 +737,7 @@ void __fastcall TalkToTowner(int p, int t)
 	int v9; // ecx
 	//char v10; // cl
 	BOOLEAN v11; // zf
-	int v12;  // edi
+	int v12;     // edi
 	//int v13; // eax
 	//int v14; // eax
 	//int v15; // eax
@@ -1157,17 +1141,18 @@ LABEL_86:
 void __fastcall CowSFX(int pnum)
 {
 	if (CowPlaying == -1 || !effect_is_playing(CowPlaying)) {
-		if (sgdwCowClicks++ < 8) {
-			CowPlaying = (sgdwCowClicks == 4) + TSFX_COW1;
-		} else {
+		sgdwCowClicks++;
+		if (sgdwCowClicks >= 8) {
 			PlaySfxLoc(TSFX_COW1, plr[pnum].WorldX, plr[pnum].WorldY + 5);
 			sgdwCowClicks = 4;
 			CowPlaying = snSFX[sgnCowMsg][plr[pnum]._pClass]; /* snSFX is local */
-			if (sgnCowMsg++ >= 2)
+			sgnCowMsg++;
+			if (sgnCowMsg >= 3)
 				sgnCowMsg = 0;
+		} else {
+			CowPlaying = sgdwCowClicks == 4 ? 1 : 0;
+			CowPlaying += TSFX_COW1;
 		}
 		PlaySfxLoc(CowPlaying, plr[pnum].WorldX, plr[pnum].WorldY);
 	}
 }
-// 6AAC1C: using guessed type int sgnCowMsg;
-// 6AAC24: using guessed type int sgdwCowClicks;
