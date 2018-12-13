@@ -1042,7 +1042,7 @@ typedef struct TownerStruct {
 	int _tAnimLen;
 	int _tAnimFrame;
 	int _tAnimFrameCnt;
-	int _tAnimOrder;
+	char _tAnimOrder;
 	int _tAnimWidth;
 	int _tAnimWidth2;
 	int _tTenPer;
