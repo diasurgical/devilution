@@ -185,8 +185,7 @@ void __cdecl AutomapZoomOut()
 void __cdecl DrawAutomap()
 {
 	int cells;
-	int screen_x;
-	int screen_y;
+	int sx, sy;
 	int i, j;
 	int mapx, mapy;
 
@@ -218,43 +217,43 @@ void __cdecl DrawAutomap()
 	mapy = MapY - 1;
 
 	if (cells & 1) {
-		screen_x = 384 - AutoMapPosBits * ((cells - 1) >> 1);
-		screen_y = 336 - AutoMapXPos * ((cells + 1) >> 1);
+		sx = 384 - AutoMapPosBits * ((cells - 1) >> 1);
+		sy = 336 - AutoMapXPos * ((cells + 1) >> 1);
 	} else {
-		screen_x = 384 - AutoMapPosBits * (cells >> 1) + AutoMapXPos;
-		screen_y = 336 - AutoMapXPos * (cells >> 1) - AutoMapYPos;
+		sx = 384 - AutoMapPosBits * (cells >> 1) + AutoMapXPos;
+		sy = 336 - AutoMapXPos * (cells >> 1) - AutoMapYPos;
 	}
 	if (ViewX & 1) {
-		screen_x -= AutoMapYPos;
-		screen_y -= AMPlayerX;
+		sx -= AutoMapYPos;
+		sy -= AMPlayerX;
 	}
 	if (ViewY & 1) {
-		screen_x += AutoMapYPos;
-		screen_y -= AMPlayerX;
+		sx += AutoMapYPos;
+		sy -= AMPlayerX;
 	}
 
-	screen_x += AutoMapScale * ScrollInfo._sxoff / 100 >> 1;
-	screen_y += AutoMapScale * ScrollInfo._syoff / 100 >> 1;
+	sx += AutoMapScale * ScrollInfo._sxoff / 100 >> 1;
+	sy += AutoMapScale * ScrollInfo._syoff / 100 >> 1;
 	if (invflag || sbookflag) {
-		screen_x -= 160;
+		sx -= 160;
 	}
 	if (chrflag || questlog) {
-		screen_x += 160;
+		sx += 160;
 	}
 
 	for (i = 0; i <= cells + 1; i++) {
-		int x = screen_x;
+		int x = sx;
 		int y;
 
 		for (j = 0; j < cells; j++) {
 			WORD maptype = GetAutomapType(mapx + j, mapy - j, TRUE);
 			if (maptype)
-				DrawAutomapType(x, screen_y, maptype);
+				DrawAutomapType(x, sy, maptype);
 			x += AutoMapPosBits;
 		}
 		mapy++;
-		x = screen_x - AutoMapXPos;
-		y = screen_y + AutoMapYPos;
+		x = sx - AutoMapXPos;
+		y = sy + AutoMapYPos;
 		for (j = 0; j <= cells; j++) {
 			WORD maptype = GetAutomapType(mapx + j, mapy - j, TRUE);
 			if (maptype)
@@ -262,7 +261,7 @@ void __cdecl DrawAutomap()
 			x += AutoMapPosBits;
 		}
 		mapx++;
-		screen_y += AutoMapXPos;
+		sy += AutoMapXPos;
 	}
 	DrawAutomapPlr();
 	DrawAutomapGame();
@@ -271,7 +270,7 @@ void __cdecl DrawAutomap()
 // 69BD04: using guessed type int questlog;
 // 69CF0C: using guessed type int gpBufEnd;
 
-void __fastcall DrawAutomapType(int screen_x, int screen_y, WORD automap_type)
+void __fastcall DrawAutomapType(int sx, int sy, WORD automap_type)
 {
 	BOOL do_vert;
 	BOOL do_horz;
@@ -282,29 +281,29 @@ void __fastcall DrawAutomapType(int screen_x, int screen_y, WORD automap_type)
 	BYTE flags = automap_type >> 8;
 
 	if (flags & MAPFLAG_SQUARE) {
-		ENG_set_pixel(screen_x, screen_y, COLOR_DIM);
-		ENG_set_pixel(screen_x - AMPlayerX, screen_y - AMPlayerY, COLOR_DIM);
-		ENG_set_pixel(screen_x - AMPlayerX, screen_y + AMPlayerY, COLOR_DIM);
-		ENG_set_pixel(screen_x + AMPlayerX, screen_y - AMPlayerY, COLOR_DIM);
-		ENG_set_pixel(screen_x + AMPlayerX, screen_y + AMPlayerY, COLOR_DIM);
-		ENG_set_pixel(screen_x - AutoMapYPos, screen_y, COLOR_DIM);
-		ENG_set_pixel(screen_x + AutoMapYPos, screen_y, COLOR_DIM);
-		ENG_set_pixel(screen_x, screen_y - AMPlayerX, COLOR_DIM);
-		ENG_set_pixel(screen_x, screen_y + AMPlayerX, COLOR_DIM);
-		ENG_set_pixel(screen_x + AMPlayerX - AutoMapXPos, screen_y + AMPlayerY, COLOR_DIM);
-		ENG_set_pixel(screen_x - AMPlayerX + AutoMapXPos, screen_y + AMPlayerY, COLOR_DIM);
-		ENG_set_pixel(screen_x - AutoMapYPos, screen_y + AMPlayerX, COLOR_DIM);
-		ENG_set_pixel(screen_x + AutoMapYPos, screen_y + AMPlayerX, COLOR_DIM);
-		ENG_set_pixel(screen_x - AMPlayerX, screen_y + AutoMapYPos - AMPlayerY, COLOR_DIM);
-		ENG_set_pixel(screen_x + AMPlayerX, screen_y + AutoMapYPos - AMPlayerY, COLOR_DIM);
-		ENG_set_pixel(screen_x, screen_y + AutoMapYPos, COLOR_DIM);
+		ENG_set_pixel(sx, sy, COLOR_DIM);
+		ENG_set_pixel(sx - AMPlayerX, sy - AMPlayerY, COLOR_DIM);
+		ENG_set_pixel(sx - AMPlayerX, sy + AMPlayerY, COLOR_DIM);
+		ENG_set_pixel(sx + AMPlayerX, sy - AMPlayerY, COLOR_DIM);
+		ENG_set_pixel(sx + AMPlayerX, sy + AMPlayerY, COLOR_DIM);
+		ENG_set_pixel(sx - AutoMapYPos, sy, COLOR_DIM);
+		ENG_set_pixel(sx + AutoMapYPos, sy, COLOR_DIM);
+		ENG_set_pixel(sx, sy - AMPlayerX, COLOR_DIM);
+		ENG_set_pixel(sx, sy + AMPlayerX, COLOR_DIM);
+		ENG_set_pixel(sx + AMPlayerX - AutoMapXPos, sy + AMPlayerY, COLOR_DIM);
+		ENG_set_pixel(sx - AMPlayerX + AutoMapXPos, sy + AMPlayerY, COLOR_DIM);
+		ENG_set_pixel(sx - AutoMapYPos, sy + AMPlayerX, COLOR_DIM);
+		ENG_set_pixel(sx + AutoMapYPos, sy + AMPlayerX, COLOR_DIM);
+		ENG_set_pixel(sx - AMPlayerX, sy + AutoMapYPos - AMPlayerY, COLOR_DIM);
+		ENG_set_pixel(sx + AMPlayerX, sy + AutoMapYPos - AMPlayerY, COLOR_DIM);
+		ENG_set_pixel(sx, sy + AutoMapYPos, COLOR_DIM);
 	}
 
 	if (flags & MAPFLAG_STAIRS) {
-		DrawLine(screen_x - AMPlayerX, screen_y - AMPlayerX - AMPlayerY, screen_x + AMPlayerX + AutoMapYPos, screen_y + AMPlayerY, COLOR_BRIGHT);
-		DrawLine(screen_x - AutoMapYPos, screen_y - AMPlayerX, screen_x + AutoMapYPos, screen_y + AMPlayerX, COLOR_BRIGHT);
-		DrawLine(screen_x - AutoMapYPos - AMPlayerX, screen_y - AMPlayerY, screen_x + AMPlayerX, screen_y + AMPlayerX + AMPlayerY, COLOR_BRIGHT);
-		DrawLine(screen_x - AutoMapXPos, screen_y, screen_x, screen_y + AutoMapYPos, COLOR_BRIGHT);
+		DrawLine(sx - AMPlayerX, sy - AMPlayerX - AMPlayerY, sx + AMPlayerX + AutoMapYPos, sy + AMPlayerY, COLOR_BRIGHT);
+		DrawLine(sx - AutoMapYPos, sy - AMPlayerX, sx + AutoMapYPos, sy + AMPlayerX, COLOR_BRIGHT);
+		DrawLine(sx - AutoMapYPos - AMPlayerX, sy - AMPlayerY, sx + AMPlayerX, sy + AMPlayerX + AMPlayerY, COLOR_BRIGHT);
+		DrawLine(sx - AutoMapXPos, sy, sx, sy + AutoMapYPos, COLOR_BRIGHT);
 	}
 
 	do_vert = FALSE;
@@ -313,14 +312,14 @@ void __fastcall DrawAutomapType(int screen_x, int screen_y, WORD automap_type)
 	do_cave_vert = FALSE;
 	switch (automap_type & MAPFLAG_TYPE) {
 	case 1: // stand-alone column or other unpassable object
-		x1 = screen_x - AutoMapYPos;
-		y1 = screen_y - AutoMapYPos;
+		x1 = sx - AutoMapYPos;
+		y1 = sy - AutoMapYPos;
 		x2 = x1 + AutoMapXPos;
-		y2 = screen_y - AMPlayerX;
-		DrawLine(screen_x, y1, x1, y2, COLOR_DIM);
-		DrawLine(screen_x, y1, x2, y2, COLOR_DIM);
-		DrawLine(screen_x, screen_y, x1, y2, COLOR_DIM);
-		DrawLine(screen_x, screen_y, x2, y2, COLOR_DIM);
+		y2 = sy - AMPlayerX;
+		DrawLine(sx, y1, x1, y2, COLOR_DIM);
+		DrawLine(sx, y1, x2, y2, COLOR_DIM);
+		DrawLine(sx, sy, x1, y2, COLOR_DIM);
+		DrawLine(sx, sy, x2, y2, COLOR_DIM);
 		return;
 	case 2:
 	case 5:
@@ -356,109 +355,109 @@ void __fastcall DrawAutomapType(int screen_x, int screen_y, WORD automap_type)
 
 	if (do_vert) {                      // right-facing obstacle
 		if (flags & MAPFLAG_VERTDOOR) { // two wall segments with a door in the middle
-			x1 = screen_x - AutoMapXPos;
-			x2 = screen_x - AutoMapYPos;
-			y1 = screen_y - AutoMapYPos;
-			y2 = screen_y - AMPlayerX;
+			x1 = sx - AutoMapXPos;
+			x2 = sx - AutoMapYPos;
+			y1 = sy - AutoMapYPos;
+			y2 = sy - AMPlayerX;
 
-			DrawLine(screen_x, y1, screen_x - AMPlayerX, y1 + AMPlayerY, COLOR_DIM);
-			DrawLine(x1, screen_y, x1 + AMPlayerX, screen_y - AMPlayerY, COLOR_DIM);
+			DrawLine(sx, y1, sx - AMPlayerX, y1 + AMPlayerY, COLOR_DIM);
+			DrawLine(x1, sy, x1 + AMPlayerX, sy - AMPlayerY, COLOR_DIM);
 			DrawLine(x2, y1, x1, y2, COLOR_BRIGHT);
-			DrawLine(x2, y1, screen_x, y2, COLOR_BRIGHT);
-			DrawLine(x2, screen_y, x1, y2, COLOR_BRIGHT);
-			DrawLine(x2, screen_y, screen_x, y2, COLOR_BRIGHT);
+			DrawLine(x2, y1, sx, y2, COLOR_BRIGHT);
+			DrawLine(x2, sy, x1, y2, COLOR_BRIGHT);
+			DrawLine(x2, sy, sx, y2, COLOR_BRIGHT);
 		}
 		if (flags & MAPFLAG_VERTGRATE) { // right-facing half-wall
-			DrawLine(screen_x - AutoMapYPos, screen_y - AMPlayerX, screen_x - AutoMapXPos, screen_y, COLOR_DIM);
+			DrawLine(sx - AutoMapYPos, sy - AMPlayerX, sx - AutoMapXPos, sy, COLOR_DIM);
 			flags |= MAPFLAG_VERTARCH;
 		}
 		if (flags & MAPFLAG_VERTARCH) { // window or passable column
-			x1 = screen_x - AutoMapYPos;
-			y1 = screen_y - AutoMapYPos;
+			x1 = sx - AutoMapYPos;
+			y1 = sy - AutoMapYPos;
 			x2 = x1 + AutoMapXPos;
-			y2 = screen_y - AMPlayerX;
+			y2 = sy - AMPlayerX;
 
-			DrawLine(screen_x, y1, x1, y2, COLOR_DIM);
-			DrawLine(screen_x, y1, x2, y2, COLOR_DIM);
-			DrawLine(screen_x, screen_y, x1, y2, COLOR_DIM);
-			DrawLine(screen_x, screen_y, x2, y2, COLOR_DIM);
+			DrawLine(sx, y1, x1, y2, COLOR_DIM);
+			DrawLine(sx, y1, x2, y2, COLOR_DIM);
+			DrawLine(sx, sy, x1, y2, COLOR_DIM);
+			DrawLine(sx, sy, x2, y2, COLOR_DIM);
 		}
 		if (!(flags & (MAPFLAG_VERTDOOR | MAPFLAG_VERTGRATE | MAPFLAG_VERTARCH)))
-			DrawLine(screen_x, screen_y - AutoMapYPos, screen_x - AutoMapXPos, screen_y, COLOR_DIM);
+			DrawLine(sx, sy - AutoMapYPos, sx - AutoMapXPos, sy, COLOR_DIM);
 	}
 
 	if (do_horz) { // left-facing obstacle
 		if (flags & MAPFLAG_HORZDOOR) {
-			x1 = screen_x + AutoMapYPos;
-			x2 = screen_x + AutoMapXPos;
-			y1 = screen_y - AutoMapYPos;
-			y2 = screen_y - AMPlayerX;
+			x1 = sx + AutoMapYPos;
+			x2 = sx + AutoMapXPos;
+			y1 = sy - AutoMapYPos;
+			y2 = sy - AMPlayerX;
 
-			DrawLine(screen_x, y1, screen_x + AMPlayerX, y1 + AMPlayerY, COLOR_DIM);
-			DrawLine(x2, screen_y, x2 - AMPlayerX, screen_y - AMPlayerY, COLOR_DIM);
-			DrawLine(x1, y1, screen_x, y2, COLOR_BRIGHT);
+			DrawLine(sx, y1, sx + AMPlayerX, y1 + AMPlayerY, COLOR_DIM);
+			DrawLine(x2, sy, x2 - AMPlayerX, sy - AMPlayerY, COLOR_DIM);
+			DrawLine(x1, y1, sx, y2, COLOR_BRIGHT);
 			DrawLine(x1, y1, x2, y2, COLOR_BRIGHT);
-			DrawLine(x1, screen_y, screen_x, y2, COLOR_BRIGHT);
-			DrawLine(x1, screen_y, x2, y2, COLOR_BRIGHT);
+			DrawLine(x1, sy, sx, y2, COLOR_BRIGHT);
+			DrawLine(x1, sy, x2, y2, COLOR_BRIGHT);
 		}
 		if (flags & MAPFLAG_HORZGRATE) {
-			DrawLine(screen_x + AutoMapYPos, screen_y - AMPlayerX, screen_x + AutoMapXPos, screen_y, COLOR_DIM);
+			DrawLine(sx + AutoMapYPos, sy - AMPlayerX, sx + AutoMapXPos, sy, COLOR_DIM);
 			flags |= MAPFLAG_HORZARCH;
 		}
 		if (flags & MAPFLAG_HORZARCH) {
-			x1 = screen_x - AutoMapYPos;
-			y1 = screen_y - AutoMapYPos;
+			x1 = sx - AutoMapYPos;
+			y1 = sy - AutoMapYPos;
 			x2 = x1 + AutoMapXPos;
-			y2 = screen_y - AMPlayerX;
+			y2 = sy - AMPlayerX;
 
-			DrawLine(screen_x, y1, x1, y2, COLOR_DIM);
-			DrawLine(screen_x, y1, x2, y2, COLOR_DIM);
-			DrawLine(screen_x, screen_y, x1, y2, COLOR_DIM);
-			DrawLine(screen_x, screen_y, x2, y2, COLOR_DIM);
+			DrawLine(sx, y1, x1, y2, COLOR_DIM);
+			DrawLine(sx, y1, x2, y2, COLOR_DIM);
+			DrawLine(sx, sy, x1, y2, COLOR_DIM);
+			DrawLine(sx, sy, x2, y2, COLOR_DIM);
 		}
 		if (!(flags & (MAPFLAG_HORZDOOR | MAPFLAG_HORZGRATE | MAPFLAG_HORZARCH)))
-			DrawLine(screen_x, screen_y - AutoMapYPos, screen_x + AutoMapXPos, screen_y, COLOR_DIM);
+			DrawLine(sx, sy - AutoMapYPos, sx + AutoMapXPos, sy, COLOR_DIM);
 	}
 
 	// for caves the horz/vert flags are switched
 	if (do_cave_horz) {
 		if (flags & MAPFLAG_VERTDOOR) {
-			x1 = screen_x - AutoMapXPos;
-			x2 = screen_x - AutoMapYPos;
-			y1 = screen_y + AutoMapYPos;
-			y2 = screen_y + AMPlayerX;
+			x1 = sx - AutoMapXPos;
+			x2 = sx - AutoMapYPos;
+			y1 = sy + AutoMapYPos;
+			y2 = sy + AMPlayerX;
 
-			DrawLine(screen_x, y1, screen_x - AMPlayerX, y1 - AMPlayerY, COLOR_DIM);
-			DrawLine(x1, screen_y, x1 + AMPlayerX, screen_y + AMPlayerY, COLOR_DIM);
+			DrawLine(sx, y1, sx - AMPlayerX, y1 - AMPlayerY, COLOR_DIM);
+			DrawLine(x1, sy, x1 + AMPlayerX, sy + AMPlayerY, COLOR_DIM);
 			DrawLine(x2, y1, x1, y2, COLOR_BRIGHT);
-			DrawLine(x2, y1, screen_x, y2, COLOR_BRIGHT);
-			DrawLine(x2, screen_y, x1, y2, COLOR_BRIGHT);
-			DrawLine(x2, screen_y, screen_x, y2, COLOR_BRIGHT);
+			DrawLine(x2, y1, sx, y2, COLOR_BRIGHT);
+			DrawLine(x2, sy, x1, y2, COLOR_BRIGHT);
+			DrawLine(x2, sy, sx, y2, COLOR_BRIGHT);
 		} else
-			DrawLine(screen_x, screen_y + AutoMapYPos, screen_x - AutoMapXPos, screen_y, COLOR_DIM);
+			DrawLine(sx, sy + AutoMapYPos, sx - AutoMapXPos, sy, COLOR_DIM);
 	}
 
 	if (do_cave_vert) {
 		if (flags & MAPFLAG_HORZDOOR) {
-			x1 = screen_x + AutoMapYPos;
-			x2 = screen_x + AutoMapXPos;
-			y1 = screen_y + AutoMapYPos;
-			y2 = screen_y + AMPlayerX;
+			x1 = sx + AutoMapYPos;
+			x2 = sx + AutoMapXPos;
+			y1 = sy + AutoMapYPos;
+			y2 = sy + AMPlayerX;
 
-			DrawLine(screen_x, y1, screen_x + AMPlayerX, y1 - AMPlayerY, COLOR_DIM);
-			DrawLine(x2, screen_y, x2 - AMPlayerX, screen_y + AMPlayerY, COLOR_DIM);
-			DrawLine(x1, y1, screen_x, y2, COLOR_BRIGHT);
+			DrawLine(sx, y1, sx + AMPlayerX, y1 - AMPlayerY, COLOR_DIM);
+			DrawLine(x2, sy, x2 - AMPlayerX, sy + AMPlayerY, COLOR_DIM);
+			DrawLine(x1, y1, sx, y2, COLOR_BRIGHT);
 			DrawLine(x1, y1, x2, y2, COLOR_BRIGHT);
-			DrawLine(x1, screen_y, screen_x, y2, COLOR_BRIGHT);
-			DrawLine(x1, screen_y, x2, y2, COLOR_BRIGHT);
+			DrawLine(x1, sy, sx, y2, COLOR_BRIGHT);
+			DrawLine(x1, sy, x2, y2, COLOR_BRIGHT);
 		} else
-			DrawLine(screen_x, screen_y + AutoMapYPos, screen_x + AutoMapXPos, screen_y, COLOR_DIM);
+			DrawLine(sx, sy + AutoMapYPos, sx + AutoMapXPos, sy, COLOR_DIM);
 	}
 }
 
 void __cdecl DrawAutomapPlr()
 {
-	int posx, posy;
+	int px, py;
 	int x, y;
 
 	if (plr[myplr]._pmode == PM_WALK3) {
@@ -472,11 +471,11 @@ void __cdecl DrawAutomapPlr()
 		x = plr[myplr].WorldX;
 		y = plr[myplr].WorldY;
 	}
-	posx = x - 2 * AutoMapXOfs - ViewX;
-	posy = y - 2 * AutoMapYOfs - ViewY;
+	px = x - 2 * AutoMapXOfs - ViewX;
+	py = y - 2 * AutoMapYOfs - ViewY;
 
-	x = (plr[myplr]._pxoff * AutoMapScale / 100 >> 1) + (ScrollInfo._sxoff * AutoMapScale / 100 >> 1) + (posx - posy) * AutoMapYPos + 384;
-	y = (plr[myplr]._pyoff * AutoMapScale / 100 >> 1) + (ScrollInfo._syoff * AutoMapScale / 100 >> 1) + (posx + posy) * AMPlayerX + 336;
+	x = (plr[myplr]._pxoff * AutoMapScale / 100 >> 1) + (ScrollInfo._sxoff * AutoMapScale / 100 >> 1) + (px - py) * AutoMapYPos + 384;
+	y = (plr[myplr]._pyoff * AutoMapScale / 100 >> 1) + (ScrollInfo._syoff * AutoMapScale / 100 >> 1) + (px + py) * AMPlayerX + 336;
 
 	if (invflag || sbookflag)
 		x -= 160;
