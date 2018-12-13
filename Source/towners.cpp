@@ -7,8 +7,8 @@ int sgnCowMsg;     // weak
 int numtowners;    // idb
 int sgdwCowClicks; // weak
 int bannerflag;    // weak // unused 0x6AAC28
-int boyloadflag;   // weak
-void *pCowCels;    // idb
+BOOL boyloadflag;
+void *pCowCels;   // idb
 TownerStruct towner[16];
 
 const int snSFX[3][3] = {
@@ -90,20 +90,21 @@ int TownCowY[3] = { 16, 14, 20 };
 int TownCowDir[3] = { 1, 3, 4 };
 int cowoffx[8] = { -1, 0, -1, -1, -1, 0, -1, -1 };
 int cowoffy[8] = { -1, -1, -1, 0, -1, -1, -1, 0 };
-QuestTalkData Qtalklist[11] = {
+
+int Qtalklist[NUM_TOWN][MAXQUESTS] = {
 	// clang-format off
-	// _qinfra,      _qblkm,       _qgarb,      _qzhar,      _qveil,      _qmod,       _qbutch,      _qbol,         _qblind,      _qblood,      _qanvil,      _qwarlrd,      _qking,       _qpw,           _qbone,      _qvb
-	{ QUEST_INFRA6,  QUEST_MUSH6,  -1,          -1,          QUEST_VEIL5, -1,          QUEST_BUTCH5, QUEST_BANNER6, QUEST_BLIND5, QUEST_BLOOD5, QUEST_ANVIL6, QUEST_WARLRD5, QUEST_KING7,  QUEST_POISON7,  QUEST_BONE5, QUEST_VILE9  },
-	{ QUEST_INFRA3,  -1,           -1,          -1,          QUEST_VEIL3, -1,          QUEST_BUTCH3, QUEST_BANNER4, QUEST_BLIND3, QUEST_BLOOD3, QUEST_ANVIL3, QUEST_WARLRD3, QUEST_KING5,  QUEST_POISON4,  QUEST_BONE3, QUEST_VILE7  },
-	{ -1,            -1,           -1,          -1,          -1,          -1,          -1,           -1,            -1,           -1,           -1,           -1,            -1,           -1,             -1,          -1           },
-	{ QUEST_INFRA2,  QUEST_MUSH2,  -1,          -1,          QUEST_VEIL2, -1,          QUEST_BUTCH2, -1,            QUEST_BLIND2, QUEST_BLOOD2, QUEST_ANVIL2, QUEST_WARLRD2, QUEST_KING3,  QUEST_POISON2,  QUEST_BONE2, QUEST_VILE4  },
-	{ QUEST_INFRA1,  QUEST_MUSH1,  -1,          -1,          QUEST_VEIL1, QUEST_VILE3, QUEST_BUTCH1, QUEST_BANNER1, QUEST_BLIND1, QUEST_BLOOD1, QUEST_ANVIL1, QUEST_WARLRD1, QUEST_KING1,  QUEST_POISON1,  QUEST_BONE1, QUEST_VILE2  },
-	{ QUEST_INFRA8,  QUEST_MUSH7,  -1,          -1,          QUEST_VEIL6, -1,          QUEST_BUTCH6, QUEST_BANNER7, QUEST_BLIND6, QUEST_BLOOD6, QUEST_ANVIL8, QUEST_WARLRD6, QUEST_KING8,  QUEST_POISON8,  QUEST_BONE6, QUEST_VILE10 },
-	{ QUEST_INFRA9,  QUEST_MUSH9,  -1,          -1,          QUEST_VEIL7, -1,          QUEST_BUTCH7, QUEST_BANNER8, QUEST_BLIND7, QUEST_BLOOD7, QUEST_ANVIL9, QUEST_WARLRD7, QUEST_KING9,  QUEST_POISON9,  QUEST_BONE7, QUEST_VILE11 },
-	{ QUEST_INFRA4,  QUEST_MUSH5,  -1,          -1,          QUEST_VEIL4, -1,          QUEST_BUTCH4, QUEST_BANNER5, QUEST_BLIND4, QUEST_BLOOD4, QUEST_ANVIL4, QUEST_WARLRD4, QUEST_KING6,  QUEST_POISON6,  QUEST_BONE4, QUEST_VILE8  },
-	{ QUEST_INFRA10, QUEST_MUSH13, -1,          -1,          QUEST_VEIL8, -1,          QUEST_BUTCH8, QUEST_BANNER9, QUEST_BLIND8, QUEST_BLOOD8, QUEST_ANVIL10,QUEST_WARLRD8, QUEST_KING10, QUEST_POISON10, QUEST_BONE8, QUEST_VILE12 },
-	{ -1,            -1,           -1,          -1,          -1,          -1,          -1,           -1,            -1,           -1,           -1,           -1,            -1,           -1,             -1,          -1           },
-	{ QUEST_KING1,   QUEST_KING1,  QUEST_KING1, QUEST_KING1, QUEST_KING1, QUEST_KING1, QUEST_KING1,  QUEST_KING1,   QUEST_KING1,  QUEST_KING1,  QUEST_KING1,  QUEST_KING1,   QUEST_KING1,  QUEST_KING1,    QUEST_KING1, QUEST_KING1  }
+	//                   QTYPE_INFRA,   QTYPE_BLKM,   QTYPE_GARB,  QTYPE_ZHAR,  QTYPE_VEIL,  QTYPE_MOD,   QTYPE_BUTCH,  QTYPE_BOL,     QTYPE_BLIND,  QTYPE_BLOOD,  QTYPE_ANVIL,  QTYPE_WARLRD,  QTYPE_KING,   QTYPE_PW,       QTYPE_BONE,  QTYPE_VB
+	/* TOWN_SMITH   */ { QUEST_INFRA6,  QUEST_MUSH6,  -1,          -1,          QUEST_VEIL5, -1,          QUEST_BUTCH5, QUEST_BANNER6, QUEST_BLIND5, QUEST_BLOOD5, QUEST_ANVIL6, QUEST_WARLRD5, QUEST_KING7,  QUEST_POISON7,  QUEST_BONE5, QUEST_VILE9  },
+	/* TOWN_HEALER  */ { QUEST_INFRA3,  -1,           -1,          -1,          QUEST_VEIL3, -1,          QUEST_BUTCH3, QUEST_BANNER4, QUEST_BLIND3, QUEST_BLOOD3, QUEST_ANVIL3, QUEST_WARLRD3, QUEST_KING5,  QUEST_POISON4,  QUEST_BONE3, QUEST_VILE7  },
+	/* TOWN_DEADGUY */ { -1,            -1,           -1,          -1,          -1,          -1,          -1,           -1,            -1,           -1,           -1,           -1,            -1,           -1,             -1,          -1           },
+	/* TOWN_TAVERN  */ { QUEST_INFRA2,  QUEST_MUSH2,  -1,          -1,          QUEST_VEIL2, -1,          QUEST_BUTCH2, -1,            QUEST_BLIND2, QUEST_BLOOD2, QUEST_ANVIL2, QUEST_WARLRD2, QUEST_KING3,  QUEST_POISON2,  QUEST_BONE2, QUEST_VILE4  },
+	/* TOWN_STORY   */ { QUEST_INFRA1,  QUEST_MUSH1,  -1,          -1,          QUEST_VEIL1, QUEST_VILE3, QUEST_BUTCH1, QUEST_BANNER1, QUEST_BLIND1, QUEST_BLOOD1, QUEST_ANVIL1, QUEST_WARLRD1, QUEST_KING1,  QUEST_POISON1,  QUEST_BONE1, QUEST_VILE2  },
+	/* TOWN_DRUNK   */ { QUEST_INFRA8,  QUEST_MUSH7,  -1,          -1,          QUEST_VEIL6, -1,          QUEST_BUTCH6, QUEST_BANNER7, QUEST_BLIND6, QUEST_BLOOD6, QUEST_ANVIL8, QUEST_WARLRD6, QUEST_KING8,  QUEST_POISON8,  QUEST_BONE6, QUEST_VILE10 },
+	/* TOWN_WITCH   */ { QUEST_INFRA9,  QUEST_MUSH9,  -1,          -1,          QUEST_VEIL7, -1,          QUEST_BUTCH7, QUEST_BANNER8, QUEST_BLIND7, QUEST_BLOOD7, QUEST_ANVIL9, QUEST_WARLRD7, QUEST_KING9,  QUEST_POISON9,  QUEST_BONE7, QUEST_VILE11 },
+	/* TOWN_BMAID   */ { QUEST_INFRA4,  QUEST_MUSH5,  -1,          -1,          QUEST_VEIL4, -1,          QUEST_BUTCH4, QUEST_BANNER5, QUEST_BLIND4, QUEST_BLOOD4, QUEST_ANVIL4, QUEST_WARLRD4, QUEST_KING6,  QUEST_POISON6,  QUEST_BONE4, QUEST_VILE8  },
+	/* TOWN_PEGBOY  */ { QUEST_INFRA10, QUEST_MUSH13, -1,          -1,          QUEST_VEIL8, -1,          QUEST_BUTCH8, QUEST_BANNER9, QUEST_BLIND8, QUEST_BLOOD8, QUEST_ANVIL10,QUEST_WARLRD8, QUEST_KING10, QUEST_POISON10, QUEST_BONE8, QUEST_VILE12 },
+	/* TOWN_COW     */ { -1,            -1,           -1,          -1,          -1,          -1,          -1,           -1,            -1,           -1,           -1,           -1,            -1,           -1,             -1,          -1           },
+	/* TOWN_PRIEST  */ { QUEST_KING1,   QUEST_KING1,  QUEST_KING1, QUEST_KING1, QUEST_KING1, QUEST_KING1, QUEST_KING1,  QUEST_KING1,   QUEST_KING1,  QUEST_KING1,  QUEST_KING1,  QUEST_KING1,   QUEST_KING1,  QUEST_KING1,    QUEST_KING1, QUEST_KING1  }
 	// clang-format on
 };
 int CowPlaying = -1;
@@ -177,30 +178,19 @@ void __fastcall InitTownerInfo(int i, int w, BOOLEAN sel, int t, int x, int y, i
 
 void __fastcall InitQstSnds(int i)
 {
-	int v1;            // eax
-	_BYTE *v2;         // ecx
-	unsigned char *v3; // esi
-	QuestTalkData *v4; // eax
-	BOOLEAN v5;           // zf
+	int j, k;
 
-	v1 = i;
+	k = i;
 	if (boyloadflag)
-		v1 = i + 1;
-	v2 = (unsigned char *)&towner[i].qsts[0]._qstmsgact;
-	v3 = &quests[0]._qtype;
-	v4 = &Qtalklist[v1];
-	do {
-		v5 = v4->_qinfra == -1;
-		*(v2 - 2) = *v3;
-		*(v2 - 1) = v4->_qinfra;
-		*v2 = !v5;
-		v3 += 24;
-		v4 = (QuestTalkData *)((char *)v4 + 4);
-		v2 += 3;
-	} while ((signed int)v3 < (signed int)&quests[16]._qtype);
+		k = i + 1;
+
+	for (j = 0; j < MAXQUESTS; j++) {
+		towner[i].qsts[j]._qsttype = quests[j]._qtype;
+		towner[i].qsts[j]._qstmsg = Qtalklist[k][j];
+		towner[i].qsts[j]._qstmsgact = Qtalklist[k][j] != -1;
+	}
 }
 // 69BE90: using guessed type int qline;
-// 6AAC2C: using guessed type int boyloadflag;
 
 void __cdecl InitSmith()
 {
@@ -342,7 +332,7 @@ void __cdecl InitBoy()
 	_DWORD *v2;    // ecx
 	signed int v3; // edx
 
-	boyloadflag = 1;
+	boyloadflag = TRUE;
 	InitTownerInfo(numtowners, 96, 1, 8, 11, 53, -1, 10);
 	v0 = numtowners;
 	InitQstSnds(numtowners);
@@ -360,7 +350,6 @@ void __cdecl InitBoy()
 	strcpy(towner[v1]._tName, "Wirt the Peg-legged boy");
 	++numtowners;
 }
-// 6AAC2C: using guessed type int boyloadflag;
 
 void __cdecl InitHealer()
 {
@@ -496,12 +485,11 @@ void __cdecl InitCows()
 		numtowners = v1;
 	} while (v2 < 3);
 }
-// 6AAC2C: using guessed type int boyloadflag;
 
 void __cdecl InitTowners()
 {
 	numtowners = 0;
-	boyloadflag = 0;
+	boyloadflag = FALSE;
 	InitSmith();
 	InitHealer();
 	if (quests[QTYPE_BUTCH]._qactive && quests[QTYPE_BUTCH]._qactive != 3)
@@ -514,7 +502,6 @@ void __cdecl InitTowners()
 	InitBoy();
 	InitCows();
 }
-// 6AAC2C: using guessed type int boyloadflag;
 
 void __cdecl FreeTownerGFX()
 {
@@ -913,9 +900,9 @@ void __fastcall TalkToTowner(int p, int t)
 				if (quests[QTYPE_BLKM]._qvar1 >= QS_TOMEGIVEN && quests[QTYPE_BLKM]._qvar1 <= QS_MUSHPICKED) {
 					if (PlrHasItem(v3, IDI_MUSHROOM, &inv_item_num)) {
 						RemoveInvItem(v3, inv_item_num);
-						Qtalklist[TOWN_WITCH]._qblkm = -1;
+						Qtalklist[TOWN_WITCH][QTYPE_BLKM] = -1;
 						quests[QTYPE_BLKM]._qvar1 = QS_MUSHGIVEN;
-						Qtalklist[TOWN_HEALER]._qblkm = QUEST_MUSH3;
+						Qtalklist[TOWN_HEALER][QTYPE_BLKM] = QUEST_MUSH3;
 						v17 = QUEST_MUSH10;
 					} else {
 						v17 = QUEST_MUSH9;
@@ -1001,7 +988,7 @@ void __fastcall TalkToTowner(int p, int t)
 				RemoveInvItem(v3, inv_item_num);
 				SpawnQuestItem(IDI_SPECELIX, towner[v7]._tx, towner[v7]._ty + 1, 0, 0);
 				InitQTextMsg(QUEST_MUSH4);
-				Qtalklist[TOWN_HEALER]._qblkm = -1;
+				Qtalklist[TOWN_HEALER][QTYPE_BLKM] = -1;
 				quests[QTYPE_BLKM]._qvar1 = QS_BRAINGIVEN;
 			}
 		LABEL_131:

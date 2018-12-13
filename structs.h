@@ -1050,7 +1050,7 @@ typedef struct TownerStruct {
 	int _tbtcnt;
 	int _tSelFlag;
 	int _tMsgSaid;
-	TNQ qsts[16];
+	TNQ qsts[MAXQUESTS];
 	int _tSeed;
 	int _tVar1;
 	int _tVar2;
@@ -1061,25 +1061,6 @@ typedef struct TownerStruct {
 	int _tNFrames;
 	unsigned char *_tNData;
 } TownerStruct;
-
-typedef struct QuestTalkData {
-	int _qinfra;
-	int _qblkm;
-	int _qgarb;
-	int _qzhar;
-	int _qveil;
-	int _qmod;
-	int _qbutch;
-	int _qbol;
-	int _qblind;
-	int _qblood;
-	int _qanvil;
-	int _qwarlrd;
-	int _qking;
-	int _qpw;
-	int _qbone;
-	int _qvb;
-} QuestTalkData;
 
 //////////////////////////////////////////////////
 // gendung

@@ -890,10 +890,10 @@ void __cdecl ResyncQuests()
 		} else if (quests[QTYPE_BLKM]._qactive == 2) {
 			if (quests[QTYPE_BLKM]._qvar1 < QS_MUSHGIVEN) {
 				if (quests[QTYPE_BLKM]._qvar1 >= QS_BRAINGIVEN)
-					Qtalklist[TOWN_HEALER]._qblkm = -1;
+					Qtalklist[TOWN_HEALER][QTYPE_BLKM] = -1;
 			} else {
-				Qtalklist[TOWN_WITCH]._qblkm = -1;
-				Qtalklist[TOWN_HEALER]._qblkm = QUEST_MUSH3;
+				Qtalklist[TOWN_WITCH][QTYPE_BLKM] = -1;
+				Qtalklist[TOWN_HEALER][QTYPE_BLKM] = QUEST_MUSH3;
 			}
 		}
 	}

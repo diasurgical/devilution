@@ -1762,7 +1762,7 @@ void __cdecl S_StartTalk()
 	v2 = 0;
 	v3 = &quests[0]._qlog;
 	do {
-		if (*((_BYTE *)v3 - 18) == 2 && *((_DWORD *)&Qtalklist[0]._qinfra + v2 + 16 * talker) != -1 && *v3)
+		if (*((_BYTE *)v3 - 18) == 2 && *((_DWORD *)&Qtalklist[0][0] + v2 + 16 * talker) != -1 && *v3)
 			++v1;
 		v3 += 6;
 		++v2;
@@ -1780,7 +1780,7 @@ void __cdecl S_StartTalk()
 	v6 = 0;
 	y = v7 - v1 - 2;
 	do {
-		if (*((_BYTE *)v0 - 18) == 2 && *((_DWORD *)&Qtalklist[0]._qinfra + v6 + 16 * talker) != -1 && *v0) {
+		if (*((_BYTE *)v0 - 18) == 2 && *((_DWORD *)&Qtalklist[0][0] + v6 + 16 * talker) != -1 && *v0) {
 			AddSText(0, v5, 1u, *v4, COL_WHITE, 1);
 			v5 += v8;
 		}
@@ -3460,7 +3460,7 @@ void __cdecl S_TalkEnter()
 		v3 = 0;
 		v4 = &quests[0]._qlog;
 		do {
-			if (*((_BYTE *)v4 - 18) == 2 && *((_DWORD *)&Qtalklist[0]._qinfra + v3 + 16 * talker) != -1 && *v4)
+			if (*((_BYTE *)v4 - 18) == 2 && *((_DWORD *)&Qtalklist[0][0] + v3 + 16 * talker) != -1 && *v4)
 				++v2;
 			v4 += 6;
 			++v3;
@@ -3480,7 +3480,7 @@ void __cdecl S_TalkEnter()
 			v9 = 0;
 			do {
 				if (*((_BYTE *)v1 - 18) == 2) {
-					v10 = *((_DWORD *)&Qtalklist[0]._qinfra + v9 + 16 * v0);
+					v10 = *((_DWORD *)&Qtalklist[0][0] + v9 + 16 * v0);
 					if (v10 != -1) {
 						if (*v1) {
 							if (v5 == stextsel) {

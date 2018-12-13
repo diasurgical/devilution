@@ -2231,6 +2231,7 @@ typedef enum _talker_id {
 	TOWN_PEGBOY  = 0x8,
 	TOWN_COW     = 0x9,
 	TOWN_PRIEST  = 0xA,
+	NUM_TOWN     = 0xB,
 } _talker_id;
 
 typedef enum _music_id {

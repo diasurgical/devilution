@@ -7,7 +7,7 @@ extern int sgnCowMsg;     // weak
 extern int numtowners;    // idb
 extern int sgdwCowClicks; // weak
 extern int bannerflag;    // weak // unused 0x6AAC28
-extern int boyloadflag;   // weak
+extern BOOL boyloadflag;
 extern void *pCowCels;    // idb
 extern TownerStruct towner[16];
 
@@ -57,7 +57,7 @@ extern int TownCowY[3];
 extern int TownCowDir[3];
 extern int cowoffx[8];
 extern int cowoffy[8];
-extern QuestTalkData Qtalklist[11];
+extern int Qtalklist[NUM_TOWN][MAXQUESTS];
 extern int CowPlaying;
 
 #endif /* __TOWNERS_H__ */
