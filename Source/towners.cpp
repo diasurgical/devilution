@@ -1150,8 +1150,7 @@ void __fastcall CowSFX(int pnum)
 			if (sgnCowMsg >= 3)
 				sgnCowMsg = 0;
 		} else {
-			CowPlaying = sgdwCowClicks == 4 ? 1 : 0;
-			CowPlaying += TSFX_COW1;
+			CowPlaying = sgdwCowClicks == 4 ? TSFX_COW2 : TSFX_COW1;
 		}
 		PlaySfxLoc(CowPlaying, plr[pnum].WorldX, plr[pnum].WorldY);
 	}
