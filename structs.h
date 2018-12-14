@@ -701,29 +701,29 @@ typedef struct TCmd {
 
 typedef struct TCmdLoc {
 	char bCmd;
-	char x;
-	char y;
+	BYTE x;
+	BYTE y;
 } TCmdLoc;
 
 typedef struct TCmdLocParam1 {
 	char bCmd;
-	char x;
-	char y;
+	BYTE x;
+	BYTE y;
 	WORD wParam1;
 } TCmdLocParam1;
 
 typedef struct TCmdLocParam2 {
 	char bCmd;
-	char x;
-	char y;
+	BYTE x;
+	BYTE y;
 	WORD wParam1;
 	WORD wParam2;
 } TCmdLocParam2;
 
 typedef struct TCmdLocParam3 {
 	char bCmd;
-	char x;
-	char y;
+	BYTE x;
+	BYTE y;
 	WORD wParam1;
 	WORD wParam2;
 	WORD wParam3;
@@ -749,8 +749,8 @@ typedef struct TCmdParam3 {
 
 typedef struct TCmdGolem {
 	char bCmd;
-	char _mx;
-	char _my;
+	BYTE _mx;
+	BYTE _my;
 	BYTE _mdir;
 	char _menemy;
 	int _mhitpoints;
@@ -760,7 +760,7 @@ typedef struct TCmdGolem {
 typedef struct TCmdQuest {
 	char bCmd;
 	BYTE q;
-	char qstate;
+	BYTE qstate;
 	BYTE qlog;
 	BYTE qvar1;
 } TCmdQuest;
@@ -771,8 +771,8 @@ typedef struct TCmdGItem {
 	BYTE bPnum;
 	BYTE bCursitem;
 	BYTE bLevel;
-	char x;
-	char y;
+	BYTE x;
+	BYTE y;
 	WORD wIndx;
 	WORD wCI;
 	int dwSeed;
@@ -788,8 +788,8 @@ typedef struct TCmdGItem {
 
 typedef struct TCmdPItem {
 	char bCmd;
-	char x;
-	char y;
+	BYTE x;
+	BYTE y;
 	WORD wIndx;
 	WORD wCI;
 	int dwSeed;
