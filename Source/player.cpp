@@ -2425,7 +2425,6 @@ BOOL __fastcall PlrHitMonst(int pnum, int m)
 			monster[m]._mhitpoints -= skdam;
 		}
 
-		tac;
 		if (plr[pnum]._pIFlags & ISPL_RNDSTEALLIFE) {
 			tac = random(7, skdam >> 3);
 			plr[pnum]._pHitPoints += tac;
