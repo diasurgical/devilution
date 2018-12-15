@@ -352,9 +352,9 @@ int __fastcall msg_comp_level(char *begin, void *end)
 void __cdecl delta_init()
 {
 	sgbDeltaChanged = 0;
-	memset(&sgJunk, 255, 0x20u);
-	memset(sgLevels, 255, 0x13981u);
-	memset(sgLocals, 0, 0x6A40u);
+	memset(&sgJunk, 255, sizeof(sgJunk));
+	memset(sgLevels, 255, sizeof(sgLevels));
+	memset(sgLocals, 0, sizeof(sgLocals));
 	deltaload = 0;
 }
 // 67618C: using guessed type char sgbDeltaChanged;
@@ -449,7 +449,7 @@ void __fastcall delta_leave_sync(BYTE bLevel)
 					pD->_mactive = monster[ma]._msquelch;
 				}
 			}
-			memcpy(&sgLocals[bLevel], automapview, 0x640u);
+			memcpy(&sgLocals[bLevel], automapview, sizeof(automapview));
 		}
 	}
 }
@@ -656,7 +656,7 @@ void __cdecl DeltaLoadLevel()
 					v1 += 57;
 				} while (v0 < nummonsters);
 			}
-			memcpy(automapview, &sgLocals[currlevel], 0x640u);
+			memcpy(automapview, &sgLocals[currlevel], sizeof(automapview));
 		}
 		v8 = 0;
 		i = 0;
@@ -789,9 +789,9 @@ void __fastcall NetSendCmd(BOOL bHiPri, BYTE bCmd)
 
 	cmd.bCmd = bCmd;
 	if (bHiPri)
-		NetSendHiPri((BYTE *)&cmd, 1u);
+		NetSendHiPri((BYTE *)&cmd, sizeof(cmd));
 	else
-		NetSendLoPri((BYTE *)&cmd, 1u);
+		NetSendLoPri((BYTE *)&cmd, sizeof(cmd));
 }
 
 void __fastcall NetSendCmdGolem(BYTE mx, BYTE my, BYTE dir, BYTE menemy, int hp, BYTE cl)
@@ -805,7 +805,7 @@ void __fastcall NetSendCmdGolem(BYTE mx, BYTE my, BYTE dir, BYTE menemy, int hp,
 	cmd._my = my;
 	cmd.bCmd = CMD_AWAKEGOLEM;
 	cmd._currlevel = cl;
-	NetSendLoPri((BYTE *)&cmd, 0xAu);
+	NetSendLoPri((BYTE *)&cmd, sizeof(cmd));
 }
 
 void __fastcall NetSendCmdLoc(BOOL bHiPri, BYTE bCmd, BYTE x, BYTE y)
@@ -816,9 +816,9 @@ void __fastcall NetSendCmdLoc(BOOL bHiPri, BYTE bCmd, BYTE x, BYTE y)
 	cmd.x = x;
 	cmd.y = y;
 	if (bHiPri)
-		NetSendHiPri((BYTE *)&cmd, 3u);
+		NetSendHiPri((BYTE *)&cmd, sizeof(cmd));
 	else
-		NetSendLoPri((BYTE *)&cmd, 3u);
+		NetSendLoPri((BYTE *)&cmd, sizeof(cmd));
 }
 
 void __fastcall NetSendCmdLocParam1(BOOL bHiPri, BYTE bCmd, BYTE x, BYTE y, WORD wParam1)
@@ -830,9 +830,9 @@ void __fastcall NetSendCmdLocParam1(BOOL bHiPri, BYTE bCmd, BYTE x, BYTE y, WORD
 	cmd.y = y;
 	cmd.wParam1 = wParam1;
 	if (bHiPri)
-		NetSendHiPri((BYTE *)&cmd, 5u);
+		NetSendHiPri((BYTE *)&cmd, sizeof(cmd));
 	else
-		NetSendLoPri((BYTE *)&cmd, 5u);
+		NetSendLoPri((BYTE *)&cmd, sizeof(cmd));
 }
 
 void __fastcall NetSendCmdLocParam2(BOOL bHiPri, BYTE bCmd, BYTE x, BYTE y, WORD wParam1, WORD wParam2)
@@ -845,9 +845,9 @@ void __fastcall NetSendCmdLocParam2(BOOL bHiPri, BYTE bCmd, BYTE x, BYTE y, WORD
 	cmd.wParam1 = wParam1;
 	cmd.wParam2 = wParam2;
 	if (bHiPri)
-		NetSendHiPri((BYTE *)&cmd, 7u);
+		NetSendHiPri((BYTE *)&cmd, sizeof(cmd));
 	else
-		NetSendLoPri((BYTE *)&cmd, 7u);
+		NetSendLoPri((BYTE *)&cmd, sizeof(cmd));
 }
 
 void __fastcall NetSendCmdLocParam3(BOOL bHiPri, BYTE bCmd, BYTE x, BYTE y, WORD wParam1, WORD wParam2, WORD wParam3)
@@ -861,9 +861,9 @@ void __fastcall NetSendCmdLocParam3(BOOL bHiPri, BYTE bCmd, BYTE x, BYTE y, WORD
 	cmd.wParam2 = wParam2;
 	cmd.wParam3 = wParam3;
 	if (bHiPri)
-		NetSendHiPri((BYTE *)&cmd, 9u);
+		NetSendHiPri((BYTE *)&cmd, sizeof(cmd));
 	else
-		NetSendLoPri((BYTE *)&cmd, 9u);
+		NetSendLoPri((BYTE *)&cmd, sizeof(cmd));
 }
 
 void __fastcall NetSendCmdParam1(BOOL bHiPri, BYTE bCmd, WORD wParam1)
@@ -873,9 +873,9 @@ void __fastcall NetSendCmdParam1(BOOL bHiPri, BYTE bCmd, WORD wParam1)
 	cmd.bCmd = bCmd;
 	cmd.wParam1 = wParam1;
 	if (bHiPri)
-		NetSendHiPri((BYTE *)&cmd, 3u);
+		NetSendHiPri((BYTE *)&cmd, sizeof(cmd));
 	else
-		NetSendLoPri((BYTE *)&cmd, 3u);
+		NetSendLoPri((BYTE *)&cmd, sizeof(cmd));
 }
 
 void __fastcall NetSendCmdParam2(BOOL bHiPri, BYTE bCmd, WORD wParam1, WORD wParam2)
@@ -886,9 +886,9 @@ void __fastcall NetSendCmdParam2(BOOL bHiPri, BYTE bCmd, WORD wParam1, WORD wPar
 	cmd.wParam1 = wParam1;
 	cmd.wParam2 = wParam2;
 	if (bHiPri)
-		NetSendHiPri((BYTE *)&cmd, 5u);
+		NetSendHiPri((BYTE *)&cmd, sizeof(cmd));
 	else
-		NetSendLoPri((BYTE *)&cmd, 5u);
+		NetSendLoPri((BYTE *)&cmd, sizeof(cmd));
 }
 
 void __fastcall NetSendCmdParam3(BOOL bHiPri, BYTE bCmd, WORD wParam1, WORD wParam2, WORD wParam3)
@@ -900,9 +900,9 @@ void __fastcall NetSendCmdParam3(BOOL bHiPri, BYTE bCmd, WORD wParam1, WORD wPar
 	cmd.wParam2 = wParam2;
 	cmd.wParam3 = wParam3;
 	if (bHiPri)
-		NetSendHiPri((BYTE *)&cmd, 7u);
+		NetSendHiPri((BYTE *)&cmd, sizeof(cmd));
 	else
-		NetSendLoPri((BYTE *)&cmd, 7u);
+		NetSendLoPri((BYTE *)&cmd, sizeof(cmd));
 }
 
 void __fastcall NetSendCmdQuest(BOOL bHiPri, BYTE q)
@@ -920,9 +920,9 @@ void __fastcall NetSendCmdQuest(BOOL bHiPri, BYTE q)
 	cmd.qlog = v3;
 	cmd.qvar1 = v2;
 	if (bHiPri)
-		NetSendHiPri((BYTE *)&cmd, 5u);
+		NetSendHiPri((BYTE *)&cmd, sizeof(cmd));
 	else
-		NetSendLoPri((BYTE *)&cmd, 5u);
+		NetSendLoPri((BYTE *)&cmd, sizeof(cmd));
 }
 
 void __fastcall NetSendCmdGItem(BOOL bHiPri, BYTE bCmd, BYTE mast, BYTE pnum, int ii)
@@ -977,9 +977,9 @@ void __fastcall NetSendCmdGItem(BOOL bHiPri, BYTE bCmd, BYTE mast, BYTE pnum, in
 		cmd.wValue = v12;
 	}
 	if (bHiPri)
-		NetSendHiPri((BYTE *)&cmd, 0x1Eu);
+		NetSendHiPri((BYTE *)&cmd, sizeof(cmd));
 	else
-		NetSendLoPri((BYTE *)&cmd, 0x1Eu);
+		NetSendLoPri((BYTE *)&cmd, sizeof(cmd));
 }
 
 void __fastcall NetSendCmdGItem2(BOOL usonly, BYTE bCmd, BYTE mast, BYTE pnum, TCmdGItem *p)
@@ -995,7 +995,7 @@ void __fastcall NetSendCmdGItem2(BOOL usonly, BYTE bCmd, BYTE mast, BYTE pnum, T
 	cmd.bMaster = mast;
 	if (!usonly) {
 		cmd.dwTime = 0;
-		NetSendHiPri((BYTE *)&cmd, 0x1Eu);
+		NetSendHiPri((BYTE *)&cmd, sizeof(cmd));
 		return;
 	}
 	v7 = GetTickCount();
@@ -1005,7 +1005,8 @@ void __fastcall NetSendCmdGItem2(BOOL usonly, BYTE bCmd, BYTE mast, BYTE pnum, T
 		if (v7 - cmd.dwTime > 5000)
 			return;
 	}
-	multi_msg_add((BYTE *)&cmd.bCmd, 0x1Eu);
+
+	multi_msg_add((BYTE *)&cmd.bCmd, sizeof(cmd));
 }
 
 BOOL __fastcall NetSendCmdReq2(BYTE bCmd, BYTE mast, BYTE pnum, TCmdGItem *p)
@@ -1013,7 +1014,7 @@ BOOL __fastcall NetSendCmdReq2(BYTE bCmd, BYTE mast, BYTE pnum, TCmdGItem *p)
 	int ticks;
 	TCmdGItem cmd;
 
-	memcpy(&cmd, p, sizeof(TCmdGItem));
+	memcpy(&cmd, p, sizeof(cmd));
 	cmd.bCmd = bCmd;
 	cmd.bPnum = pnum;
 	cmd.bMaster = mast;
@@ -1025,19 +1026,19 @@ BOOL __fastcall NetSendCmdReq2(BYTE bCmd, BYTE mast, BYTE pnum, TCmdGItem *p)
 		return FALSE;
 	}
 
-	multi_msg_add((BYTE *)&cmd.bCmd, sizeof(TCmdGItem));
+	multi_msg_add((BYTE *)&cmd.bCmd, sizeof(cmd));
 
 	return TRUE;
 }
 
 void __fastcall NetSendCmdExtra(TCmdGItem *p)
 {
-	TCmdGItem cmd; // [esp+0h] [ebp-20h]
+	TCmdGItem cmd;
 
-	memcpy(&cmd, p, 0x1Eu);
+	memcpy(&cmd, p, sizeof(cmd));
 	cmd.dwTime = 0;
 	cmd.bCmd = CMD_ITEMEXTRA;
-	NetSendHiPri((BYTE *)&cmd, 0x1Eu);
+	NetSendHiPri((BYTE *)&cmd, sizeof(cmd));
 }
 
 void __fastcall NetSendCmdPItem(BOOL bHiPri, BYTE bCmd, BYTE x, BYTE y)
@@ -1089,9 +1090,9 @@ void __fastcall NetSendCmdPItem(BOOL bHiPri, BYTE bCmd, BYTE x, BYTE y)
 		cmd.wValue = v12;
 	}
 	if (bHiPri)
-		NetSendHiPri((BYTE *)&cmd, 0x16u);
+		NetSendHiPri((BYTE *)&cmd, sizeof(cmd));
 	else
-		NetSendLoPri((BYTE *)&cmd, 0x16u);
+		NetSendLoPri((BYTE *)&cmd, sizeof(cmd));
 }
 
 void __fastcall NetSendCmdChItem(BOOL bHiPri, BYTE bLoc)
@@ -1109,9 +1110,9 @@ void __fastcall NetSendCmdChItem(BOOL bHiPri, BYTE bLoc)
 	cmd.dwSeed = plr[myplr].HoldItem._iSeed;
 	cmd.bId = v3;
 	if (bHiPri)
-		NetSendHiPri((BYTE *)&cmd, 0xBu);
+		NetSendHiPri((BYTE *)&cmd, sizeof(cmd));
 	else
-		NetSendLoPri((BYTE *)&cmd, 0xBu);
+		NetSendLoPri((BYTE *)&cmd, sizeof(cmd));
 }
 
 void __fastcall NetSendCmdDelItem(BOOL bHiPri, BYTE bLoc)
@@ -1121,9 +1122,9 @@ void __fastcall NetSendCmdDelItem(BOOL bHiPri, BYTE bLoc)
 	cmd.bLoc = bLoc;
 	cmd.bCmd = CMD_DELPLRITEMS;
 	if (bHiPri)
-		NetSendHiPri((BYTE *)&cmd, 2u);
+		NetSendHiPri((BYTE *)&cmd, sizeof(cmd));
 	else
-		NetSendLoPri((BYTE *)&cmd, 2u);
+		NetSendLoPri((BYTE *)&cmd, sizeof(cmd));
 }
 
 void __fastcall NetSendCmdDItem(BOOL bHiPri, int ii)
@@ -1175,9 +1176,9 @@ void __fastcall NetSendCmdDItem(BOOL bHiPri, int ii)
 		cmd.wValue = v10;
 	}
 	if (bHiPri)
-		NetSendHiPri((BYTE *)&cmd, 0x16u);
+		NetSendHiPri((BYTE *)&cmd, sizeof(cmd));
 	else
-		NetSendLoPri((BYTE *)&cmd, 0x16u);
+		NetSendLoPri((BYTE *)&cmd, sizeof(cmd));
 }
 
 void __fastcall NetSendCmdDamage(BOOL bHiPri, BYTE bPlr, DWORD dwDam)
@@ -1188,9 +1189,9 @@ void __fastcall NetSendCmdDamage(BOOL bHiPri, BYTE bPlr, DWORD dwDam)
 	cmd.bCmd = CMD_PLRDAMAGE;
 	cmd.dwDam = dwDam;
 	if (bHiPri)
-		NetSendHiPri((BYTE *)&cmd, 6u);
+		NetSendHiPri((BYTE *)&cmd, sizeof(cmd));
 	else
-		NetSendLoPri((BYTE *)&cmd, 6u);
+		NetSendLoPri((BYTE *)&cmd, sizeof(cmd));
 }
 
 void __fastcall NetSendCmdString(int pmask, const char *pszStr)
@@ -1206,7 +1207,7 @@ void __fastcall NetSendCmdString(int pmask, const char *pszStr)
 
 void __fastcall RemovePlrPortal(int pnum)
 {
-	memset(&sgJunk.portal[pnum], 255, 5u);
+	memset(&sgJunk.portal[pnum], 255, sizeof(sgJunk.portal[pnum]));
 	sgbDeltaChanged = 1;
 }
 // 67618C: using guessed type char sgbDeltaChanged;
@@ -1927,7 +1928,7 @@ void __fastcall delta_put_item(TCmdPItem *pI, int x, int y, BYTE bLevel)
 				return;
 		}
 		sgbDeltaChanged = 1;
-		memcpy(v6, v4, 0x16u);
+		memcpy(v6, v4, sizeof(TCmdPItem));
 		v6->item[0].x = v10;
 		v6->item[0].bCmd = 2;
 		v6->item[0].y = y;
