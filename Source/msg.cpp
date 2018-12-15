@@ -122,28 +122,25 @@ void __cdecl msg_free_packets()
 
 int __cdecl msg_wait_for_turns()
 {
-	//int v0; // eax
-	//int v2; // eax
-	int recieved; // [esp+0h] [ebp-8h]
-	DWORD turns;  // [esp+4h] [ebp-4h]
+	int recieved;
+	DWORD turns;
 
 	if (!sgbDeltaChunks) {
 		nthread_send_and_recv_turn(0, 0);
-		//_LOBYTE(v0) = SNetGetOwnerTurnsWaiting(&turns);
 		if (!SNetGetOwnerTurnsWaiting(&turns) && SErrGetLastError() == STORM_ERROR_NOT_IN_GAME)
 			return 100;
-		if (GetTickCount() - sgdwOwnerWait <= 2000 && turns < (unsigned int)gdwTurnsInTransit)
+		if (GetTickCount() - sgdwOwnerWait <= 2000 && turns < gdwTurnsInTransit)
 			return 0;
-		++sgbDeltaChunks;
+		sgbDeltaChunks++;
 	}
 	multi_process_network_packets();
 	nthread_send_and_recv_turn(0, 0);
-	//_LOBYTE(v2) = nthread_has_500ms_passed();
-	if (nthread_has_500ms_passed())
+	if (nthread_has_500ms_passed(0))
 		nthread_recv_turns(&recieved);
+
 	if (gbGameDestroyed)
 		return 100;
-	if ((unsigned char)gbDeltaSender >= 4u) {
+	if (gbDeltaSender >= 4) {
 		sgbDeltaChunks = 0;
 		sgbRecvCmd = CMD_DLEVEL_END;
 		gbDeltaSender = myplr;
@@ -153,7 +150,7 @@ int __cdecl msg_wait_for_turns()
 		sgbDeltaChunks = 21;
 		return 99;
 	}
-	return 100 * (unsigned char)sgbDeltaChunks / 21;
+	return 100 * sgbDeltaChunks / 21;
 }
 // 65AB18: using guessed type int sgdwOwnerWait;
 // 67618D: using guessed type char sgbDeltaChunks;
