@@ -431,64 +431,41 @@ BOOL __fastcall delta_quest_inited(int i)
 
 void __fastcall DeltaAddItem(int ii)
 {
-	int v1;        // eax
-	int v2;        // ecx
-	signed int v3; // ebp
-	DLevel *v4;    // edx
-	DLevel *v5;    // edi
-	char v6;       // bl
-	int v7;        // esi
-	signed int v8; // esi
-	int v9;        // eax
-	char v10;      // cl
-	char v11;      // cl
+	int i;
+	TCmdPItem *pD;
 
-	v1 = ii;
-	if (gbMaxPlayers != 1) {
-		v2 = currlevel;
-		v3 = 0;
-		v4 = &sgLevels[v2];
-		v5 = &sgLevels[v2];
-		while (1) {
-			v6 = v5->item[0].bCmd;
-			if (v5->item[0].bCmd != -1) {
-				v7 = v1;
-				if ((unsigned short)v5->item[0].wIndx == item[v1].IDidx
-				    && v5->item[0].wCI == item[v7]._iCreateInfo
-				    && v5->item[0].dwSeed == item[v7]._iSeed
-				    && (v6 == 1 || !v6)) {
-					break;
-				}
-			}
-			++v3;
-			v5 = (DLevel *)((char *)v5 + 22);
-			if (v3 >= 127) {
-				v8 = 0;
-				while (v4->item[0].bCmd != -1) {
-					++v8;
-					v4 = (DLevel *)((char *)v4 + 22);
-					if (v8 >= 127)
-						return;
-				}
-				v4->item[0].bCmd = 0;
-				v9 = 368 * v1;
-				v10 = *((_BYTE *)&item[0]._ix + v9);
-				sgbDeltaChanged = 1;
-				v4->item[0].x = v10;
-				v4->item[0].y = *((_BYTE *)&item[0]._iy + v9);
-				v4->item[0].wIndx = *(_WORD *)((char *)&item[0].IDidx + v9);
-				v4->item[0].wCI = *(short *)((char *)&item[0]._iCreateInfo + v9);
-				v4->item[0].dwSeed = *(int *)((char *)&item[0]._iSeed + v9);
-				v4->item[0].bId = *((_BYTE *)&item[0]._iIdentified + v9);
-				v4->item[0].bDur = *((_BYTE *)&item[0]._iDurability + v9);
-				v4->item[0].bMDur = *((_BYTE *)&item[0]._iMaxDur + v9);
-				v4->item[0].bCh = *((_BYTE *)&item[0]._iCharges + v9);
-				v11 = *((_BYTE *)&item[0]._iMaxCharges + v9);
-				_LOWORD(v9) = *(_WORD *)((char *)&item[0]._ivalue + v9);
-				v4->item[0].bMCh = v11;
-				v4->item[0].wValue = v9;
-				return;
-			}
+	if (gbMaxPlayers == 1) {
+		return;
+	}
+
+	for (i = 0; i < MAXITEMS; i++) {
+		pD = &sgLevels[currlevel].item[i];
+		if (pD->bCmd != 0xFF
+		    && pD->wIndx == item[ii].IDidx
+		    && pD->wCI == item[ii]._iCreateInfo
+		    && pD->dwSeed == item[ii]._iSeed
+		    && (pD->bCmd == CMD_WALKXY || pD->bCmd == CMD_STAND)) {
+			return;
+		}
+	}
+
+	for (i = 0; i < MAXITEMS; i++) {
+		pD = &sgLevels[currlevel].item[i];
+		if (pD->bCmd == 0xFF) {
+			pD->bCmd = CMD_STAND;
+			sgbDeltaChanged = 1;
+			pD->x = item[ii]._ix;
+			pD->y = item[ii]._iy;
+			pD->wIndx = item[ii].IDidx;
+			pD->wCI = item[ii]._iCreateInfo;
+			pD->dwSeed = item[ii]._iSeed;
+			pD->bId = item[ii]._iIdentified;
+			pD->bDur = item[ii]._iDurability;
+			pD->bMDur = item[ii]._iMaxDur;
+			pD->bCh = item[ii]._iCharges;
+			pD->bMCh = item[ii]._iMaxCharges;
+			pD->wValue = item[ii]._ivalue;
+			return;
 		}
 	}
 }
