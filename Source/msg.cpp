@@ -1040,18 +1040,15 @@ void __fastcall NetSendCmdPItem(BOOL bHiPri, BYTE bCmd, BYTE x, BYTE y)
 
 void __fastcall NetSendCmdChItem(BOOL bHiPri, BYTE bLoc)
 {
-	short v2;       // dx
-	char v3;        // al
-	TCmdChItem cmd; // [esp+0h] [ebp-Ch]
+	TCmdChItem cmd;
 
-	cmd.bLoc = bLoc;
-	v2 = plr[myplr].HoldItem.IDidx;
 	cmd.bCmd = CMD_CHANGEPLRITEMS;
-	cmd.wIndx = v2;
+	cmd.bLoc = bLoc;
+	cmd.wIndx = plr[myplr].HoldItem.IDidx;
 	cmd.wCI = plr[myplr].HoldItem._iCreateInfo;
-	v3 = plr[myplr].HoldItem._iIdentified;
 	cmd.dwSeed = plr[myplr].HoldItem._iSeed;
-	cmd.bId = v3;
+	cmd.bId = plr[myplr].HoldItem._iIdentified;
+
 	if (bHiPri)
 		NetSendHiPri((BYTE *)&cmd, sizeof(cmd));
 	else
