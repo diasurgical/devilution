@@ -1004,52 +1004,34 @@ void __fastcall NetSendCmdExtra(TCmdGItem *p)
 
 void __fastcall NetSendCmdPItem(BOOL bHiPri, BYTE bCmd, BYTE x, BYTE y)
 {
-	int v4;        // eax
-	short *v5;     // edx
-	BOOLEAN v6;    // zf
-	short v7;      // dx
-	short v8;      // bx
-	int v9;        // esi
-	int v10;       // esi
-	char v11;      // dl
-	short v12;     // ax
-	TCmdPItem cmd; // [esp+4h] [ebp-18h]
+	TCmdPItem cmd;
 
 	cmd.bCmd = bCmd;
 	cmd.x = x;
 	cmd.y = y;
-	v4 = myplr;
-	v5 = (short *)&plr[myplr].HoldItem.IDidx;
-	v6 = *(_DWORD *)v5 == IDI_EAR;
-	cmd.wIndx = *v5;
-	if (v6) {
-		_LOBYTE(v7) = 0;
-		_HIBYTE(v7) = plr[v4].HoldItem._iName[7];
-		_LOBYTE(v8) = 0;
-		_HIBYTE(v8) = plr[v4].HoldItem._iName[18];
-		v9 = plr[v4].HoldItem._iName[10];
-		cmd.wCI = plr[v4].HoldItem._iName[8] | v7;
-		cmd.dwSeed = plr[v4].HoldItem._iName[12] | ((plr[v4].HoldItem._iName[11] | ((v9 | (plr[v4].HoldItem._iName[9] << 8)) << 8)) << 8);
-		cmd.bId = plr[v4].HoldItem._iName[13];
-		cmd.bDur = plr[v4].HoldItem._iName[14];
-		cmd.bMDur = plr[v4].HoldItem._iName[15];
-		cmd.bCh = plr[v4].HoldItem._iName[16];
-		cmd.bMCh = plr[v4].HoldItem._iName[17];
-		v10 = plr[v4].HoldItem._iName[20];
-		cmd.wValue = _LOWORD(plr[v4].HoldItem._ivalue) | v8 | ((_LOWORD(plr[v4].HoldItem._iCurs) - 19) << 6);
-		cmd.dwBuff = plr[v4].HoldItem._iName[22] | ((plr[v4].HoldItem._iName[21] | ((v10 | (plr[v4].HoldItem._iName[19] << 8)) << 8)) << 8);
+	cmd.wIndx = plr[myplr].HoldItem.IDidx;
+
+	if (plr[myplr].HoldItem.IDidx == IDI_EAR) {
+		cmd.wCI = plr[myplr].HoldItem._iName[8] | (plr[myplr].HoldItem._iName[7] << 8);
+		cmd.dwSeed = plr[myplr].HoldItem._iName[12] | ((plr[myplr].HoldItem._iName[11] | ((plr[myplr].HoldItem._iName[10] | (plr[myplr].HoldItem._iName[9] << 8)) << 8)) << 8);
+		cmd.bId = plr[myplr].HoldItem._iName[13];
+		cmd.bDur = plr[myplr].HoldItem._iName[14];
+		cmd.bMDur = plr[myplr].HoldItem._iName[15];
+		cmd.bCh = plr[myplr].HoldItem._iName[16];
+		cmd.bMCh = plr[myplr].HoldItem._iName[17];
+		cmd.wValue = plr[myplr].HoldItem._ivalue | (plr[myplr].HoldItem._iName[18] << 8) | ((plr[myplr].HoldItem._iCurs - 19) << 6);
+		cmd.dwBuff = plr[myplr].HoldItem._iName[22] | ((plr[myplr].HoldItem._iName[21] | ((plr[myplr].HoldItem._iName[20] | (plr[myplr].HoldItem._iName[19] << 8)) << 8)) << 8);
 	} else {
-		cmd.wCI = plr[v4].HoldItem._iCreateInfo;
-		cmd.dwSeed = plr[v4].HoldItem._iSeed;
-		cmd.bId = plr[v4].HoldItem._iIdentified;
-		cmd.bDur = plr[v4].HoldItem._iDurability;
-		cmd.bMDur = plr[v4].HoldItem._iMaxDur;
-		cmd.bCh = plr[v4].HoldItem._iCharges;
-		v11 = plr[v4].HoldItem._iMaxCharges;
-		v12 = plr[v4].HoldItem._ivalue;
-		cmd.bMCh = v11;
-		cmd.wValue = v12;
+		cmd.wCI = plr[myplr].HoldItem._iCreateInfo;
+		cmd.dwSeed = plr[myplr].HoldItem._iSeed;
+		cmd.bId = plr[myplr].HoldItem._iIdentified;
+		cmd.bDur = plr[myplr].HoldItem._iDurability;
+		cmd.bMDur = plr[myplr].HoldItem._iMaxDur;
+		cmd.bCh = plr[myplr].HoldItem._iCharges;
+		cmd.bMCh = plr[myplr].HoldItem._iMaxCharges;
+		cmd.wValue = plr[myplr].HoldItem._ivalue;
 	}
+
 	if (bHiPri)
 		NetSendHiPri((BYTE *)&cmd, sizeof(cmd));
 	else
