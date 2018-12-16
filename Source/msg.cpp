@@ -1435,86 +1435,73 @@ LABEL_16:
 
 void __fastcall DeltaImportData(BYTE cmd, DWORD recv_offset)
 {
-	unsigned char v2; // bl
-	int v3;           // esi
-	void *v4;         // eax
-	void *v5;         // eax
+	BYTE i;
+	BYTE *src;
 
-	v2 = cmd;
 	if (sgRecvBuf[0])
 		PkwareDecompress(&sgRecvBuf[1], recv_offset, 4721);
-	if (v2 == CMD_DLEVEL_JUNK) {
-		DeltaImportJunk(&sgRecvBuf[1]);
-	} else if (v2 < CMD_DLEVEL_0 || v2 > CMD_DLEVEL_16) {
-		TermMsg("msg:1");
+
+	src = &sgRecvBuf[1];
+	if (cmd == CMD_DLEVEL_JUNK) {
+		DeltaImportJunk(src);
+	} else if (cmd >= CMD_DLEVEL_0 && cmd <= CMD_DLEVEL_16) {
+		i = cmd - CMD_DLEVEL_0;
+		src = DeltaImportItem(src, sgLevels[i].item);
+		src = DeltaImportObject(src, sgLevels[i].object);
+		DeltaImportMonster(src, sgLevels[i].monster);
 	} else {
-		v3 = (unsigned char)(v2 - CMD_DLEVEL_0);
-		v4 = DeltaImportItem(&sgRecvBuf[1], &sgLevels[v3]);
-		v5 = DeltaImportObject(v4, sgLevels[v3].object);
-		DeltaImportMonster(v5, sgLevels[v3].monster);
+		TermMsg("msg:1");
 	}
-	++sgbDeltaChunks;
+
+	sgbDeltaChunks++;
 	sgbDeltaChanged = 1;
 }
 // 67618C: using guessed type char sgbDeltaChanged;
 // 67618D: using guessed type char sgbDeltaChunks;
 
-void *__fastcall DeltaImportItem(void *src, void *dst)
+BYTE *__fastcall DeltaImportItem(BYTE *src, TCmdPItem *dst)
 {
-	char *v2;      // edi
-	_BYTE *v3;     // esi
-	signed int v4; // ebx
+	int i;
 
-	v2 = (char *)dst;
-	v3 = (unsigned char *)src;
-	v4 = 127;
-	do {
-		if (*v3 == -1) {
-			memset(v2, 255, 0x16u);
-			++v3;
+	for (i = 0; i < MAXITEMS; i++) {
+		if (*src == 0xFF) {
+			memset(dst, 0xFF, sizeof(TCmdPItem));
+			src++;
 		} else {
-			memcpy(v2, v3, 0x16u);
-			v3 += 22;
+			memcpy(dst, src, sizeof(TCmdPItem));
+			src += sizeof(TCmdPItem);
 		}
-		v2 += 22;
-		--v4;
-	} while (v4);
-	return v3;
+		dst++;
+	}
+
+	return src;
 }
 
-void *__fastcall DeltaImportObject(void *src, void *dst)
+BYTE *__fastcall DeltaImportObject(BYTE *src, DObjectStr *dst)
 {
-	char *v2; // esi
-
-	v2 = (char *)src;
-	memcpy(dst, src, 0x7Fu);
-	return v2 + 127;
+	memcpy(dst, src, sizeof(DObjectStr) * MAXOBJECTS);
+	return src + sizeof(DObjectStr) * MAXOBJECTS;
 }
 
-void *__fastcall DeltaImportMonster(void *src, void *dst)
+BYTE *__fastcall DeltaImportMonster(BYTE *src, DMonsterStr *dst)
 {
-	char *v2;      // edi
-	_BYTE *v3;     // esi
-	signed int v4; // ebx
+	int i;
 
-	v2 = (char *)dst;
-	v3 = (unsigned char *)src;
-	v4 = MAXMONSTERS;
-	do {
-		if (*v3 == -1) {
-			memset(v2, 255, 9u);
-			++v3;
+	for (i = 0; i < MAXMONSTERS; i++) {
+		if (*src == 0xFF) {
+			memset(dst, 0xFF, sizeof(DMonsterStr));
+			src++;
 		} else {
-			memcpy(v2, v3, 9u);
-			v3 += 9;
+			memcpy(dst, src, sizeof(DMonsterStr));
+			src += sizeof(DMonsterStr);
 		}
-		v2 += 9;
-		--v4;
-	} while (v4);
-	return v3;
+		dst++;
+	}
+
+	return src;
 }
 
-void __fastcall DeltaImportJunk(void *src)
+void __fastcall DeltaImportJunk(BYTE *src)
 {
 	_BYTE *v1;         // ebx
 	int v2;            // edi
