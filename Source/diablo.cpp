@@ -180,13 +180,13 @@ void __fastcall run_game_loop(unsigned int uMsg)
 				TranslateMessage(&msg);
 				DispatchMessage(&msg);
 			}
-			if (!gbRunGame || (v7 = 1, !nthread_has_500ms_passed()))
+			if (!gbRunGame || (v7 = 1, !nthread_has_500ms_passed(0)))
 				v7 = 0;
 			SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_NORMAL);
 			v5 = v7 == 0;
 		} else {
 			//_LOBYTE(v6) = nthread_has_500ms_passed();
-			v5 = nthread_has_500ms_passed() == 0;
+			v5 = nthread_has_500ms_passed(0) == 0;
 		}
 		if (!v5) {
 			multi_process_network_packets();
@@ -1908,7 +1908,7 @@ void __fastcall game_loop(BOOLEAN bStartup)
 			game_logic();
 			if (gbRunGame) {
 				if (gbMaxPlayers != 1) {
-					if (nthread_has_500ms_passed()) {
+					if (nthread_has_500ms_passed(0)) {
 						if (v2)
 							continue;
 					}

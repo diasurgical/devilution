@@ -288,7 +288,7 @@ void __fastcall nthread_ignore_mutex(BOOL bStart)
 }
 // 67975A: using guessed type char sgbThreadIsRunning;
 
-BOOL __cdecl nthread_has_500ms_passed()
+BOOL __fastcall nthread_has_500ms_passed(int unused)
 {
 	DWORD currentTickCount; // eax
 	int ticksElapsed;       // ecx

@@ -81,16 +81,12 @@ void __fastcall multi_copy_packet(void *a1, void *packet, BYTE size)
 
 void __fastcall multi_send_packet(void *packet, BYTE dwSize)
 {
-	void *v2;         // esi
-	unsigned char v3; // bl
-	TPkt pkt;         // [esp+8h] [ebp-200h]
+	TPkt pkt;
 
-	v2 = packet;
-	v3 = dwSize;
 	NetRecvPlrData(&pkt);
-	pkt.hdr.wLen = v3 + 19;
-	memcpy(pkt.body, v2, v3);
-	if (!SNetSendMessage(myplr, &pkt.hdr, (unsigned short)pkt.hdr.wLen))
+	pkt.hdr.wLen = dwSize + 19;
+	memcpy(pkt.body, packet, dwSize);
+	if (!SNetSendMessage(myplr, &pkt.hdr, pkt.hdr.wLen))
 		nthread_terminate_game("SNetSendMessage0");
 }
 

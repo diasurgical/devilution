@@ -54,21 +54,18 @@ void __fastcall msg_send_packet(int pnum, const void *packet, DWORD dwSize)
 
 TMegaPkt *__cdecl msg_get_next_packet()
 {
-	TMegaPkt *v0;     // eax
-	TMegaPkt *v1;     // ecx
-	TMegaPkt *result; // eax
+	TMegaPkt *result;
 
-	v0 = (TMegaPkt *)DiabloAllocPtr(32008);
-	sgpCurrPkt = v0;
-	v0->pNext = 0;
+	sgpCurrPkt = (TMegaPkt *)DiabloAllocPtr(32008);
+	sgpCurrPkt->pNext = 0;
 	sgpCurrPkt->dwSpaceLeft = 32000;
-	v1 = sgpMegaPkt;
+
 	result = (TMegaPkt *)&sgpMegaPkt;
-	while (v1) {
-		result = v1;
-		v1 = v1->pNext;
+	while (result->pNext) {
+		result = result->pNext;
 	}
 	result->pNext = sgpCurrPkt;
+
 	return result;
 }
 
@@ -106,44 +103,38 @@ BOOL __cdecl msg_wait_resync()
 
 void __cdecl msg_free_packets()
 {
-	TMegaPkt *v0; // eax
-	TMegaPkt *v1; // ecx
+	TMegaPkt *tmp;
 
-	v0 = sgpMegaPkt;
-	while (v0) {
-		v1 = v0->pNext;
-		sgpMegaPkt = 0;
-		sgpCurrPkt = v1;
-		mem_free_dbg(v0);
-		v0 = sgpCurrPkt;
+	while (sgpMegaPkt) {
+		sgpCurrPkt = sgpMegaPkt->pNext;
+		tmp = sgpMegaPkt;
+		sgpMegaPkt = NULL;
+		mem_free_dbg(tmp);
 		sgpMegaPkt = sgpCurrPkt;
 	}
 }
 
 int __cdecl msg_wait_for_turns()
 {
-	//int v0; // eax
-	//int v2; // eax
-	int recieved; // [esp+0h] [ebp-8h]
-	DWORD turns;  // [esp+4h] [ebp-4h]
+	int recieved;
+	DWORD turns;
 
 	if (!sgbDeltaChunks) {
 		nthread_send_and_recv_turn(0, 0);
-		//_LOBYTE(v0) = SNetGetOwnerTurnsWaiting(&turns);
 		if (!SNetGetOwnerTurnsWaiting(&turns) && SErrGetLastError() == STORM_ERROR_NOT_IN_GAME)
 			return 100;
-		if (GetTickCount() - sgdwOwnerWait <= 2000 && turns < (unsigned int)gdwTurnsInTransit)
+		if (GetTickCount() - sgdwOwnerWait <= 2000 && turns < gdwTurnsInTransit)
 			return 0;
-		++sgbDeltaChunks;
+		sgbDeltaChunks++;
 	}
 	multi_process_network_packets();
 	nthread_send_and_recv_turn(0, 0);
-	//_LOBYTE(v2) = nthread_has_500ms_passed();
-	if (nthread_has_500ms_passed())
+	if (nthread_has_500ms_passed(0))
 		nthread_recv_turns(&recieved);
+
 	if (gbGameDestroyed)
 		return 100;
-	if ((unsigned char)gbDeltaSender >= 4u) {
+	if (gbDeltaSender >= MAX_PLRS) {
 		sgbDeltaChunks = 0;
 		sgbRecvCmd = CMD_DLEVEL_END;
 		gbDeltaSender = myplr;
@@ -153,7 +144,7 @@ int __cdecl msg_wait_for_turns()
 		sgbDeltaChunks = 21;
 		return 99;
 	}
-	return 100 * (unsigned char)sgbDeltaChunks / 21;
+	return 100 * sgbDeltaChunks / 21;
 }
 // 65AB18: using guessed type int sgdwOwnerWait;
 // 67618D: using guessed type char sgbDeltaChunks;
@@ -175,33 +166,31 @@ void __cdecl msg_process_net_packets()
 
 void __cdecl msg_pre_packet()
 {
-	TMegaPkt *v0;     // edi
-	int i;            // ebp
-	signed int v2;    // ebx
-	TFakeCmdPlr *v3;  // esi
-	TFakeCmdPlr *v4;  // eax
-	TFakeDropPlr *v5; // eax
-	int v6;           // eax
+	int i;
+	int spaceLeft, pktSize;
+	TMegaPkt *pkt;
+	TFakeCmdPlr *cmd, *tmpCmd;
+	TFakeDropPlr *dropCmd;
 
-	v0 = sgpMegaPkt;
-	for (i = -1; v0; v0 = v0->pNext) {
-		v2 = 32000;
-		v3 = (TFakeCmdPlr *)v0->data;
-		while (v2 != v0->dwSpaceLeft) {
-			if (v3->bCmd == FAKE_CMD_SETID) {
-				v4 = v3;
-				++v3;
-				i = (unsigned char)v4->bPlr;
-				v2 -= 2;
-			} else if (v3->bCmd == FAKE_CMD_DROPID) {
-				v5 = (TFakeDropPlr *)v3;
-				v3 += 3;
-				v2 -= 6;
-				multi_player_left((unsigned char)v5->bPlr, v5->dwReason);
+	pkt = sgpMegaPkt;
+	for (i = -1; pkt; pkt = pkt->pNext) {
+		spaceLeft = 32000;
+		cmd = (TFakeCmdPlr *)pkt->data;
+		while (spaceLeft != pkt->dwSpaceLeft) {
+			if (cmd->bCmd == FAKE_CMD_SETID) {
+				tmpCmd = cmd;
+				cmd++;
+				i = tmpCmd->bPlr;
+				spaceLeft -= sizeof(*cmd);
+			} else if (cmd->bCmd == FAKE_CMD_DROPID) {
+				dropCmd = (TFakeDropPlr *)cmd;
+				cmd += 3;
+				spaceLeft -= sizeof(*dropCmd);
+				multi_player_left(dropCmd->bPlr, dropCmd->dwReason);
 			} else {
-				v6 = ParseCmd(i, (TCmd *)v3);
-				v3 = (TFakeCmdPlr *)((char *)v3 + v6);
-				v2 -= v6;
+				pktSize = ParseCmd(i, (TCmd *)cmd);
+				cmd = (TFakeCmdPlr *)((char *)cmd + pktSize);
+				spaceLeft -= pktSize;
 			}
 		}
 	}
@@ -535,24 +524,15 @@ void __fastcall DeltaAddItem(int ii)
 
 void __cdecl DeltaSaveLevel()
 {
-	int v0;           // eax
-	int v1;           // edx
-	int *v2;          // ecx
-	unsigned char v3; // cl
+	int i;
 
 	if (gbMaxPlayers != 1) {
-		v0 = myplr;
-		v1 = 0;
-		v2 = &plr[0]._pGFXLoad;
-		do {
-			if (v1 != v0)
-				*v2 = 0;
-			v2 += 5430;
-			++v1;
-		} while ((signed int)v2 < (signed int)&plr[4]._pGFXLoad);
-		v3 = currlevel;
-		plr[v0]._pLvlVisited[currlevel] = 1;
-		delta_leave_sync(v3);
+		for (i = 0; i < MAX_PLRS; i++) {
+			if (i != myplr)
+				plr[i]._pGFXLoad = 0;
+		}
+		plr[myplr]._pLvlVisited[currlevel] = 1;
+		delta_leave_sync(currlevel);
 	}
 }
 // 679660: using guessed type char gbMaxPlayers;
@@ -785,7 +765,7 @@ void __cdecl DeltaLoadLevel()
 
 void __fastcall NetSendCmd(BOOL bHiPri, BYTE bCmd)
 {
-	TCmd cmd; // [esp+3h] [ebp-1h]
+	TCmd cmd;
 
 	cmd.bCmd = bCmd;
 	if (bHiPri)
@@ -796,21 +776,21 @@ void __fastcall NetSendCmd(BOOL bHiPri, BYTE bCmd)
 
 void __fastcall NetSendCmdGolem(BYTE mx, BYTE my, BYTE dir, BYTE menemy, int hp, BYTE cl)
 {
-	TCmdGolem cmd; // [esp+0h] [ebp-Ch]
+	TCmdGolem cmd;
 
+	cmd.bCmd = CMD_AWAKEGOLEM;
 	cmd._mx = mx;
+	cmd._my = my;
 	cmd._mdir = dir;
 	cmd._menemy = menemy;
 	cmd._mhitpoints = hp;
-	cmd._my = my;
-	cmd.bCmd = CMD_AWAKEGOLEM;
 	cmd._currlevel = cl;
 	NetSendLoPri((BYTE *)&cmd, sizeof(cmd));
 }
 
 void __fastcall NetSendCmdLoc(BOOL bHiPri, BYTE bCmd, BYTE x, BYTE y)
 {
-	TCmdLoc cmd; // [esp+1h] [ebp-3h]
+	TCmdLoc cmd;
 
 	cmd.bCmd = bCmd;
 	cmd.x = x;
@@ -823,7 +803,7 @@ void __fastcall NetSendCmdLoc(BOOL bHiPri, BYTE bCmd, BYTE x, BYTE y)
 
 void __fastcall NetSendCmdLocParam1(BOOL bHiPri, BYTE bCmd, BYTE x, BYTE y, WORD wParam1)
 {
-	TCmdLocParam1 cmd; // [esp+0h] [ebp-8h]
+	TCmdLocParam1 cmd;
 
 	cmd.bCmd = bCmd;
 	cmd.x = x;
@@ -837,7 +817,7 @@ void __fastcall NetSendCmdLocParam1(BOOL bHiPri, BYTE bCmd, BYTE x, BYTE y, WORD
 
 void __fastcall NetSendCmdLocParam2(BOOL bHiPri, BYTE bCmd, BYTE x, BYTE y, WORD wParam1, WORD wParam2)
 {
-	TCmdLocParam2 cmd; // [esp+0h] [ebp-8h]
+	TCmdLocParam2 cmd;
 
 	cmd.bCmd = bCmd;
 	cmd.x = x;
@@ -852,7 +832,7 @@ void __fastcall NetSendCmdLocParam2(BOOL bHiPri, BYTE bCmd, BYTE x, BYTE y, WORD
 
 void __fastcall NetSendCmdLocParam3(BOOL bHiPri, BYTE bCmd, BYTE x, BYTE y, WORD wParam1, WORD wParam2, WORD wParam3)
 {
-	TCmdLocParam3 cmd; // [esp+0h] [ebp-Ch]
+	TCmdLocParam3 cmd;
 
 	cmd.bCmd = bCmd;
 	cmd.x = x;
@@ -880,7 +860,7 @@ void __fastcall NetSendCmdParam1(BOOL bHiPri, BYTE bCmd, WORD wParam1)
 
 void __fastcall NetSendCmdParam2(BOOL bHiPri, BYTE bCmd, WORD wParam1, WORD wParam2)
 {
-	TCmdParam2 cmd; // [esp+0h] [ebp-8h]
+	TCmdParam2 cmd;
 
 	cmd.bCmd = bCmd;
 	cmd.wParam1 = wParam1;
@@ -893,7 +873,7 @@ void __fastcall NetSendCmdParam2(BOOL bHiPri, BYTE bCmd, WORD wParam1, WORD wPar
 
 void __fastcall NetSendCmdParam3(BOOL bHiPri, BYTE bCmd, WORD wParam1, WORD wParam2, WORD wParam3)
 {
-	TCmdParam3 cmd; // [esp+0h] [ebp-8h]
+	TCmdParam3 cmd;
 
 	cmd.bCmd = bCmd;
 	cmd.wParam1 = wParam1;
@@ -907,35 +887,22 @@ void __fastcall NetSendCmdParam3(BOOL bHiPri, BYTE bCmd, WORD wParam1, WORD wPar
 
 void __fastcall NetSendCmdQuest(BOOL bHiPri, BYTE q)
 {
-	int v2;        // eax
-	char v3;       // dl
-	TCmdQuest cmd; // [esp+0h] [ebp-8h]
+	TCmdQuest cmd;
 
 	cmd.q = q;
 	cmd.bCmd = CMD_SYNCQUEST;
-	v2 = 24 * q;
-	cmd.qstate = *(&quests[0]._qactive + v2);
-	v3 = *((_BYTE *)&quests[0]._qlog + v2);
-	_LOBYTE(v2) = *(&quests[0]._qvar1 + v2);
-	cmd.qlog = v3;
-	cmd.qvar1 = v2;
+	cmd.qstate = quests[q]._qactive;
+	cmd.qlog = quests[q]._qlog;
+	cmd.qvar1 = quests[q]._qvar1;
 	if (bHiPri)
 		NetSendHiPri((BYTE *)&cmd, sizeof(cmd));
 	else
 		NetSendLoPri((BYTE *)&cmd, sizeof(cmd));
 }
 
-void __fastcall NetSendCmdGItem(BOOL bHiPri, BYTE bCmd, BYTE mast, BYTE pnum, int ii)
+void __fastcall NetSendCmdGItem(BOOL bHiPri, BYTE bCmd, BYTE mast, BYTE pnum, BYTE ii)
 {
-	int v5;        // eax
-	BOOLEAN v6;    // zf
-	short v7;      // dx
-	short v8;      // bx
-	int v9;        // esi
-	int v10;       // esi
-	char v11;      // dl
-	short v12;     // ax
-	TCmdGItem cmd; // [esp+4h] [ebp-20h]
+	TCmdGItem cmd;
 
 	cmd.bCmd = bCmd;
 	cmd.bPnum = pnum;
@@ -943,39 +910,31 @@ void __fastcall NetSendCmdGItem(BOOL bHiPri, BYTE bCmd, BYTE mast, BYTE pnum, in
 	cmd.bLevel = currlevel;
 	cmd.bCursitem = ii;
 	cmd.dwTime = 0;
-	v5 = (unsigned char)ii;
-	cmd.x = item[v5]._ix;
-	cmd.y = item[v5]._iy;
-	v6 = item[v5].IDidx == IDI_EAR;
-	cmd.wIndx = item[v5].IDidx;
-	if (v6) {
-		_LOBYTE(v7) = 0;
-		_HIBYTE(v7) = item[v5]._iName[7];
-		_LOBYTE(v8) = 0;
-		_HIBYTE(v8) = item[v5]._iName[18];
-		v9 = item[v5]._iName[10];
-		cmd.wCI = item[v5]._iName[8] | v7;
-		cmd.dwSeed = item[v5]._iName[12] | ((item[v5]._iName[11] | ((v9 | (item[v5]._iName[9] << 8)) << 8)) << 8);
-		cmd.bId = item[v5]._iName[13];
-		cmd.bDur = item[v5]._iName[14];
-		cmd.bMDur = item[v5]._iName[15];
-		cmd.bCh = item[v5]._iName[16];
-		cmd.bMCh = item[v5]._iName[17];
-		v10 = item[v5]._iName[20];
-		cmd.wValue = _LOWORD(item[v5]._ivalue) | v8 | ((_LOWORD(item[v5]._iCurs) - 19) << 6);
-		cmd.dwBuff = item[v5]._iName[22] | ((item[v5]._iName[21] | ((v10 | (item[v5]._iName[19] << 8)) << 8)) << 8);
+	cmd.x = item[ii]._ix;
+	cmd.y = item[ii]._iy;
+	cmd.wIndx = item[ii].IDidx;
+
+	if (item[ii].IDidx == IDI_EAR) {
+		cmd.wCI = item[ii]._iName[8] | (item[ii]._iName[7] << 8);
+		cmd.dwSeed = item[ii]._iName[12] | ((item[ii]._iName[11] | ((item[ii]._iName[10] | (item[ii]._iName[9] << 8)) << 8)) << 8);
+		cmd.bId = item[ii]._iName[13];
+		cmd.bDur = item[ii]._iName[14];
+		cmd.bMDur = item[ii]._iName[15];
+		cmd.bCh = item[ii]._iName[16];
+		cmd.bMCh = item[ii]._iName[17];
+		cmd.wValue = item[ii]._ivalue | (item[ii]._iName[18] << 8) | ((item[ii]._iCurs - 19) << 6);
+		cmd.dwBuff = item[ii]._iName[22] | ((item[ii]._iName[21] | ((item[ii]._iName[20] | (item[ii]._iName[19] << 8)) << 8)) << 8);
 	} else {
-		cmd.wCI = item[v5]._iCreateInfo;
-		cmd.dwSeed = item[v5]._iSeed;
-		cmd.bId = item[v5]._iIdentified;
-		cmd.bDur = item[v5]._iDurability;
-		cmd.bMDur = item[v5]._iMaxDur;
-		cmd.bCh = item[v5]._iCharges;
-		v11 = item[v5]._iMaxCharges;
-		v12 = item[v5]._ivalue;
-		cmd.bMCh = v11;
-		cmd.wValue = v12;
+		cmd.wCI = item[ii]._iCreateInfo;
+		cmd.dwSeed = item[ii]._iSeed;
+		cmd.bId = item[ii]._iIdentified;
+		cmd.bDur = item[ii]._iDurability;
+		cmd.bMDur = item[ii]._iMaxDur;
+		cmd.bCh = item[ii]._iCharges;
+		cmd.bMCh = item[ii]._iMaxCharges;
+		cmd.wValue = item[ii]._ivalue;
 	}
+
 	if (bHiPri)
 		NetSendHiPri((BYTE *)&cmd, sizeof(cmd));
 	else
@@ -984,26 +943,25 @@ void __fastcall NetSendCmdGItem(BOOL bHiPri, BYTE bCmd, BYTE mast, BYTE pnum, in
 
 void __fastcall NetSendCmdGItem2(BOOL usonly, BYTE bCmd, BYTE mast, BYTE pnum, TCmdGItem *p)
 {
-	unsigned char v5; // bl
-	int v7;           // eax
-	TCmdGItem cmd;    // [esp+8h] [ebp-20h]
+	int ticks;
+	TCmdGItem cmd;
 
-	v5 = bCmd;
-	memcpy(&cmd, p, 0x1Eu);
+	memcpy(&cmd, p, sizeof(cmd));
 	cmd.bPnum = pnum;
-	cmd.bCmd = v5;
+	cmd.bCmd = bCmd;
 	cmd.bMaster = mast;
+
 	if (!usonly) {
 		cmd.dwTime = 0;
 		NetSendHiPri((BYTE *)&cmd, sizeof(cmd));
 		return;
 	}
-	v7 = GetTickCount();
+
+	ticks = GetTickCount();
 	if (!cmd.dwTime) {
-		cmd.dwTime = v7;
-	} else {
-		if (v7 - cmd.dwTime > 5000)
-			return;
+		cmd.dwTime = ticks;
+	} else if (ticks - cmd.dwTime > 5000) {
+		return;
 	}
 
 	multi_msg_add((BYTE *)&cmd.bCmd, sizeof(cmd));
@@ -1043,52 +1001,34 @@ void __fastcall NetSendCmdExtra(TCmdGItem *p)
 
 void __fastcall NetSendCmdPItem(BOOL bHiPri, BYTE bCmd, BYTE x, BYTE y)
 {
-	int v4;        // eax
-	short *v5;     // edx
-	BOOLEAN v6;    // zf
-	short v7;      // dx
-	short v8;      // bx
-	int v9;        // esi
-	int v10;       // esi
-	char v11;      // dl
-	short v12;     // ax
-	TCmdPItem cmd; // [esp+4h] [ebp-18h]
+	TCmdPItem cmd;
 
 	cmd.bCmd = bCmd;
 	cmd.x = x;
 	cmd.y = y;
-	v4 = myplr;
-	v5 = (short *)&plr[myplr].HoldItem.IDidx;
-	v6 = *(_DWORD *)v5 == IDI_EAR;
-	cmd.wIndx = *v5;
-	if (v6) {
-		_LOBYTE(v7) = 0;
-		_HIBYTE(v7) = plr[v4].HoldItem._iName[7];
-		_LOBYTE(v8) = 0;
-		_HIBYTE(v8) = plr[v4].HoldItem._iName[18];
-		v9 = plr[v4].HoldItem._iName[10];
-		cmd.wCI = plr[v4].HoldItem._iName[8] | v7;
-		cmd.dwSeed = plr[v4].HoldItem._iName[12] | ((plr[v4].HoldItem._iName[11] | ((v9 | (plr[v4].HoldItem._iName[9] << 8)) << 8)) << 8);
-		cmd.bId = plr[v4].HoldItem._iName[13];
-		cmd.bDur = plr[v4].HoldItem._iName[14];
-		cmd.bMDur = plr[v4].HoldItem._iName[15];
-		cmd.bCh = plr[v4].HoldItem._iName[16];
-		cmd.bMCh = plr[v4].HoldItem._iName[17];
-		v10 = plr[v4].HoldItem._iName[20];
-		cmd.wValue = _LOWORD(plr[v4].HoldItem._ivalue) | v8 | ((_LOWORD(plr[v4].HoldItem._iCurs) - 19) << 6);
-		cmd.dwBuff = plr[v4].HoldItem._iName[22] | ((plr[v4].HoldItem._iName[21] | ((v10 | (plr[v4].HoldItem._iName[19] << 8)) << 8)) << 8);
+	cmd.wIndx = plr[myplr].HoldItem.IDidx;
+
+	if (plr[myplr].HoldItem.IDidx == IDI_EAR) {
+		cmd.wCI = plr[myplr].HoldItem._iName[8] | (plr[myplr].HoldItem._iName[7] << 8);
+		cmd.dwSeed = plr[myplr].HoldItem._iName[12] | ((plr[myplr].HoldItem._iName[11] | ((plr[myplr].HoldItem._iName[10] | (plr[myplr].HoldItem._iName[9] << 8)) << 8)) << 8);
+		cmd.bId = plr[myplr].HoldItem._iName[13];
+		cmd.bDur = plr[myplr].HoldItem._iName[14];
+		cmd.bMDur = plr[myplr].HoldItem._iName[15];
+		cmd.bCh = plr[myplr].HoldItem._iName[16];
+		cmd.bMCh = plr[myplr].HoldItem._iName[17];
+		cmd.wValue = plr[myplr].HoldItem._ivalue | (plr[myplr].HoldItem._iName[18] << 8) | ((plr[myplr].HoldItem._iCurs - 19) << 6);
+		cmd.dwBuff = plr[myplr].HoldItem._iName[22] | ((plr[myplr].HoldItem._iName[21] | ((plr[myplr].HoldItem._iName[20] | (plr[myplr].HoldItem._iName[19] << 8)) << 8)) << 8);
 	} else {
-		cmd.wCI = plr[v4].HoldItem._iCreateInfo;
-		cmd.dwSeed = plr[v4].HoldItem._iSeed;
-		cmd.bId = plr[v4].HoldItem._iIdentified;
-		cmd.bDur = plr[v4].HoldItem._iDurability;
-		cmd.bMDur = plr[v4].HoldItem._iMaxDur;
-		cmd.bCh = plr[v4].HoldItem._iCharges;
-		v11 = plr[v4].HoldItem._iMaxCharges;
-		v12 = plr[v4].HoldItem._ivalue;
-		cmd.bMCh = v11;
-		cmd.wValue = v12;
+		cmd.wCI = plr[myplr].HoldItem._iCreateInfo;
+		cmd.dwSeed = plr[myplr].HoldItem._iSeed;
+		cmd.bId = plr[myplr].HoldItem._iIdentified;
+		cmd.bDur = plr[myplr].HoldItem._iDurability;
+		cmd.bMDur = plr[myplr].HoldItem._iMaxDur;
+		cmd.bCh = plr[myplr].HoldItem._iCharges;
+		cmd.bMCh = plr[myplr].HoldItem._iMaxCharges;
+		cmd.wValue = plr[myplr].HoldItem._ivalue;
 	}
+
 	if (bHiPri)
 		NetSendHiPri((BYTE *)&cmd, sizeof(cmd));
 	else
@@ -1097,18 +1037,15 @@ void __fastcall NetSendCmdPItem(BOOL bHiPri, BYTE bCmd, BYTE x, BYTE y)
 
 void __fastcall NetSendCmdChItem(BOOL bHiPri, BYTE bLoc)
 {
-	short v2;       // dx
-	char v3;        // al
-	TCmdChItem cmd; // [esp+0h] [ebp-Ch]
+	TCmdChItem cmd;
 
-	cmd.bLoc = bLoc;
-	v2 = plr[myplr].HoldItem.IDidx;
 	cmd.bCmd = CMD_CHANGEPLRITEMS;
-	cmd.wIndx = v2;
+	cmd.bLoc = bLoc;
+	cmd.wIndx = plr[myplr].HoldItem.IDidx;
 	cmd.wCI = plr[myplr].HoldItem._iCreateInfo;
-	v3 = plr[myplr].HoldItem._iIdentified;
 	cmd.dwSeed = plr[myplr].HoldItem._iSeed;
-	cmd.bId = v3;
+	cmd.bId = plr[myplr].HoldItem._iIdentified;
+
 	if (bHiPri)
 		NetSendHiPri((BYTE *)&cmd, sizeof(cmd));
 	else
@@ -1117,7 +1054,7 @@ void __fastcall NetSendCmdChItem(BOOL bHiPri, BYTE bLoc)
 
 void __fastcall NetSendCmdDelItem(BOOL bHiPri, BYTE bLoc)
 {
-	TCmdDelItem cmd; // [esp+2h] [ebp-2h]
+	TCmdDelItem cmd;
 
 	cmd.bLoc = bLoc;
 	cmd.bCmd = CMD_DELPLRITEMS;
@@ -1129,52 +1066,34 @@ void __fastcall NetSendCmdDelItem(BOOL bHiPri, BYTE bLoc)
 
 void __fastcall NetSendCmdDItem(BOOL bHiPri, int ii)
 {
-	int v2;        // eax
-	short *v3;     // edx
-	BOOLEAN v4;    // zf
-	short v5;      // dx
-	short v6;      // bx
-	int v7;        // esi
-	int v8;        // esi
-	char v9;       // dl
-	short v10;     // ax
-	TCmdPItem cmd; // [esp+4h] [ebp-18h]
+	TCmdPItem cmd;
 
-	v2 = ii;
 	cmd.bCmd = CMD_DROPITEM;
 	cmd.x = item[ii]._ix;
 	cmd.y = item[ii]._iy;
-	v3 = (short *)&item[ii].IDidx;
-	v4 = *(_DWORD *)v3 == IDI_EAR;
-	cmd.wIndx = *v3;
-	if (v4) {
-		_LOBYTE(v5) = 0;
-		_HIBYTE(v5) = item[v2]._iName[7];
-		_LOBYTE(v6) = 0;
-		_HIBYTE(v6) = item[v2]._iName[18];
-		v7 = item[v2]._iName[10];
-		cmd.wCI = item[v2]._iName[8] | v5;
-		cmd.dwSeed = item[v2]._iName[12] | ((item[v2]._iName[11] | ((v7 | (item[v2]._iName[9] << 8)) << 8)) << 8);
-		cmd.bId = item[v2]._iName[13];
-		cmd.bDur = item[v2]._iName[14];
-		cmd.bMDur = item[v2]._iName[15];
-		cmd.bCh = item[v2]._iName[16];
-		cmd.bMCh = item[v2]._iName[17];
-		v8 = item[v2]._iName[20];
-		cmd.wValue = _LOWORD(item[v2]._ivalue) | v6 | ((_LOWORD(item[v2]._iCurs) - 19) << 6);
-		cmd.dwBuff = item[v2]._iName[22] | ((item[v2]._iName[21] | ((v8 | (item[v2]._iName[19] << 8)) << 8)) << 8);
+	cmd.wIndx = item[ii].IDidx;
+
+	if (item[ii].IDidx == IDI_EAR) {
+		cmd.wCI = item[ii]._iName[8] | (item[ii]._iName[7] << 8);
+		cmd.dwSeed = item[ii]._iName[12] | ((item[ii]._iName[11] | ((item[ii]._iName[10] | (item[ii]._iName[9] << 8)) << 8)) << 8);
+		cmd.bId = item[ii]._iName[13];
+		cmd.bDur = item[ii]._iName[14];
+		cmd.bMDur = item[ii]._iName[15];
+		cmd.bCh = item[ii]._iName[16];
+		cmd.bMCh = item[ii]._iName[17];
+		cmd.wValue = item[ii]._ivalue | (item[ii]._iName[18] << 8) | ((item[ii]._iCurs - 19) << 6);
+		cmd.dwBuff = item[ii]._iName[22] | ((item[ii]._iName[21] | ((item[ii]._iName[20] | (item[ii]._iName[19] << 8)) << 8)) << 8);
 	} else {
-		cmd.wCI = item[v2]._iCreateInfo;
-		cmd.dwSeed = item[v2]._iSeed;
-		cmd.bId = item[v2]._iIdentified;
-		cmd.bDur = item[v2]._iDurability;
-		cmd.bMDur = item[v2]._iMaxDur;
-		cmd.bCh = item[v2]._iCharges;
-		v9 = item[v2]._iMaxCharges;
-		v10 = item[v2]._ivalue;
-		cmd.bMCh = v9;
-		cmd.wValue = v10;
+		cmd.wCI = item[ii]._iCreateInfo;
+		cmd.dwSeed = item[ii]._iSeed;
+		cmd.bId = item[ii]._iIdentified;
+		cmd.bDur = item[ii]._iDurability;
+		cmd.bMDur = item[ii]._iMaxDur;
+		cmd.bCh = item[ii]._iCharges;
+		cmd.bMCh = item[ii]._iMaxCharges;
+		cmd.wValue = item[ii]._ivalue;
 	}
+
 	if (bHiPri)
 		NetSendHiPri((BYTE *)&cmd, sizeof(cmd));
 	else
@@ -1183,10 +1102,10 @@ void __fastcall NetSendCmdDItem(BOOL bHiPri, int ii)
 
 void __fastcall NetSendCmdDamage(BOOL bHiPri, BYTE bPlr, DWORD dwDam)
 {
-	TCmdDamage cmd; // [esp+0h] [ebp-8h]
+	TCmdDamage cmd;
 
-	cmd.bPlr = bPlr;
 	cmd.bCmd = CMD_PLRDAMAGE;
+	cmd.bPlr = bPlr;
 	cmd.dwDam = dwDam;
 	if (bHiPri)
 		NetSendHiPri((BYTE *)&cmd, sizeof(cmd));
@@ -1199,8 +1118,8 @@ void __fastcall NetSendCmdString(int pmask, const char *pszStr)
 	int dwStrLen;
 	TCmdString cmd;
 
-	dwStrLen = strlen(pszStr);
 	cmd.bCmd = CMD_STRING;
+	dwStrLen = strlen(pszStr);
 	strcpy(cmd.str, pszStr);
 	multi_send_msg_packet(pmask, (BYTE *)&cmd.bCmd, dwStrLen + 2);
 }
@@ -1638,16 +1557,16 @@ int __fastcall On_SBSPELL(TCmdParam1 *pCmd, int pnum)
 void msg_errorf(const char *pszFmt, ...)
 {
 	static DWORD msg_err_timer;
-	DWORD v1;     // eax
-	char v2[256]; // [esp+0h] [ebp-100h]
-	va_list va;   // [esp+10Ch] [ebp+Ch]
+	DWORD ticks;
+	char msg[256];
+	va_list va;
 
 	va_start(va, pszFmt);
-	v1 = GetTickCount();
-	if (v1 - msg_err_timer >= 5000) {
-		msg_err_timer = v1;
-		vsprintf(v2, pszFmt, va);
-		ErrorPlrMsg(v2);
+	ticks = GetTickCount();
+	if (ticks - msg_err_timer >= 5000) {
+		msg_err_timer = ticks;
+		vsprintf(msg, pszFmt, va);
+		ErrorPlrMsg(msg);
 	}
 	va_end(va);
 }
@@ -1685,18 +1604,17 @@ int __fastcall On_REQUESTGITEM(TCmdGItem *pCmd, int pnum)
 
 BOOL __fastcall i_own_level(int nReqLevel)
 {
-	int v1;            // edx
-	unsigned char *v2; // eax
+	int i;
 
-	v1 = 0;
-	v2 = &plr[0]._pLvlChanging;
-	do {
-		if (*(v2 - 290) && !*v2 && *(_DWORD *)(v2 - 267) == nReqLevel && (v1 != myplr || !gbBufferMsgs))
+	for (i = 0; i < MAX_PLRS; i++) {
+		if (plr[i].plractive
+		    && !plr[i]._pLvlChanging
+		    && plr[i].plrlevel == nReqLevel
+		    && (i != myplr || !gbBufferMsgs))
 			break;
-		v2 += 21720;
-		++v1;
-	} while ((signed int)v2 < (signed int)&plr[4]._pLvlChanging);
-	return v1 == myplr;
+	}
+
+	return i == myplr;
 }
 // 676194: using guessed type char gbBufferMsgs;
 
