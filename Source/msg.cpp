@@ -946,26 +946,25 @@ void __fastcall NetSendCmdGItem(BOOL bHiPri, BYTE bCmd, BYTE mast, BYTE pnum, BY
 
 void __fastcall NetSendCmdGItem2(BOOL usonly, BYTE bCmd, BYTE mast, BYTE pnum, TCmdGItem *p)
 {
-	unsigned char v5; // bl
-	int v7;           // eax
-	TCmdGItem cmd;    // [esp+8h] [ebp-20h]
+	int ticks;
+	TCmdGItem cmd;
 
-	v5 = bCmd;
-	memcpy(&cmd, p, 0x1Eu);
+	memcpy(&cmd, p, sizeof(cmd));
 	cmd.bPnum = pnum;
-	cmd.bCmd = v5;
+	cmd.bCmd = bCmd;
 	cmd.bMaster = mast;
+
 	if (!usonly) {
 		cmd.dwTime = 0;
 		NetSendHiPri((BYTE *)&cmd, sizeof(cmd));
 		return;
 	}
-	v7 = GetTickCount();
+
+	ticks = GetTickCount();
 	if (!cmd.dwTime) {
-		cmd.dwTime = v7;
-	} else {
-		if (v7 - cmd.dwTime > 5000)
-			return;
+		cmd.dwTime = ticks;
+	} else if (ticks - cmd.dwTime > 5000) {
+		return;
 	}
 
 	multi_msg_add((BYTE *)&cmd.bCmd, sizeof(cmd));
