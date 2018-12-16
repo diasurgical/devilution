@@ -1721,48 +1721,34 @@ int __fastcall On_PUTITEM(TCmdPItem *pCmd, int pnum)
 
 void __fastcall delta_put_item(TCmdPItem *pI, int x, int y, BYTE bLevel)
 {
-	TCmdPItem *v4; // ebx
-	int v5;               // eax
-	DLevel *v6;           // esi
-	DLevel *v7;           // edi
-	char v8;              // al
-	signed int v9;        // eax
-	char v10;             // [esp+Ch] [ebp-4h]
-	signed int bLevela;   // [esp+1Ch] [ebp+Ch]
+	int i;
+	TCmdPItem *pD;
 
-	v10 = x;
-	v4 = pI;
 	if (gbMaxPlayers != 1) {
-		v5 = bLevel;
-		bLevela = 0;
-		v6 = &sgLevels[v5];
-		v7 = &sgLevels[v5];
-		do {
-			v8 = v7->item[0].bCmd;
-			if (v7->item[0].bCmd != 1
-			    && v8 != -1
-			    && v7->item[0].wIndx == v4->wIndx
-			    && v7->item[0].wCI == v4->wCI
-			    && v7->item[0].dwSeed == v4->dwSeed) {
-				if (v8 == 2)
+		for (i = 0; i < MAXITEMS; i++) {
+			pD = &sgLevels[bLevel].item[i];
+			if (pD->bCmd != CMD_WALKXY
+			    && pD->bCmd != 0xFF
+			    && pD->wIndx == pI->wIndx
+			    && pD->wCI == pI->wCI
+			    && pD->dwSeed == pI->dwSeed) {
+				if (pD->bCmd == CMD_ACK_PLRINFO)
 					return;
 				TermMsg("Trying to drop a floor item?");
 			}
-			++bLevela;
-			v7 = (DLevel *)((char *)v7 + 22);
-		} while (bLevela < 127);
-		v9 = 0;
-		while (v6->item[0].bCmd != -1) {
-			++v9;
-			v6 = (DLevel *)((char *)v6 + 22);
-			if (v9 >= 127)
-				return;
 		}
-		sgbDeltaChanged = 1;
-		memcpy(v6, v4, sizeof(TCmdPItem));
-		v6->item[0].x = v10;
-		v6->item[0].bCmd = 2;
-		v6->item[0].y = y;
+
+		for (i = 0; i < MAXITEMS; i++) {
+			pD = &sgLevels[bLevel].item[i];
+			if (pD->bCmd == 0xFF) {
+				sgbDeltaChanged = 1;
+				memcpy(pD, pI, sizeof(TCmdPItem));
+				pD->bCmd = CMD_ACK_PLRINFO;
+				pD->x = x;
+				pD->y = y;
+				return;
+			}
+		}
 	}
 }
 // 67618C: using guessed type char sgbDeltaChanged;
