@@ -527,24 +527,15 @@ void __fastcall DeltaAddItem(int ii)
 
 void __cdecl DeltaSaveLevel()
 {
-	int v0;           // eax
-	int v1;           // edx
-	int *v2;          // ecx
-	unsigned char v3; // cl
+	int i;
 
 	if (gbMaxPlayers != 1) {
-		v0 = myplr;
-		v1 = 0;
-		v2 = &plr[0]._pGFXLoad;
-		do {
-			if (v1 != v0)
-				*v2 = 0;
-			v2 += 5430;
-			++v1;
-		} while ((signed int)v2 < (signed int)&plr[4]._pGFXLoad);
-		v3 = currlevel;
-		plr[v0]._pLvlVisited[currlevel] = 1;
-		delta_leave_sync(v3);
+		for (i = 0; i < MAX_PLRS; i++) {
+			if (i != myplr)
+				plr[i]._pGFXLoad = 0;
+		}
+		plr[myplr]._pLvlVisited[currlevel] = 1;
+		delta_leave_sync(currlevel);
 	}
 }
 // 679660: using guessed type char gbMaxPlayers;
