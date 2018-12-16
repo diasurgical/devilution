@@ -54,21 +54,18 @@ void __fastcall msg_send_packet(int pnum, const void *packet, DWORD dwSize)
 
 TMegaPkt *__cdecl msg_get_next_packet()
 {
-	TMegaPkt *v0;     // eax
-	TMegaPkt *v1;     // ecx
-	TMegaPkt *result; // eax
+	TMegaPkt *result;
 
-	v0 = (TMegaPkt *)DiabloAllocPtr(32008);
-	sgpCurrPkt = v0;
-	v0->pNext = 0;
+	sgpCurrPkt = (TMegaPkt *)DiabloAllocPtr(32008);
+	sgpCurrPkt->pNext = 0;
 	sgpCurrPkt->dwSpaceLeft = 32000;
-	v1 = sgpMegaPkt;
+
 	result = (TMegaPkt *)&sgpMegaPkt;
-	while (v1) {
-		result = v1;
-		v1 = v1->pNext;
+	while (result->pNext) {
+		result = result->pNext;
 	}
 	result->pNext = sgpCurrPkt;
+
 	return result;
 }
 
@@ -140,7 +137,7 @@ int __cdecl msg_wait_for_turns()
 
 	if (gbGameDestroyed)
 		return 100;
-	if (gbDeltaSender >= 4) {
+	if (gbDeltaSender >= MAX_PLRS) {
 		sgbDeltaChunks = 0;
 		sgbRecvCmd = CMD_DLEVEL_END;
 		gbDeltaSender = myplr;
