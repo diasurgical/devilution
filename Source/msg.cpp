@@ -108,7 +108,7 @@ void __cdecl msg_free_packets()
 	while (sgpMegaPkt) {
 		sgpCurrPkt = sgpMegaPkt->pNext;
 		tmp = sgpMegaPkt;
-		sgpMegaPkt = 0;
+		sgpMegaPkt = NULL;
 		mem_free_dbg(tmp);
 		sgpMegaPkt = sgpCurrPkt;
 	}
