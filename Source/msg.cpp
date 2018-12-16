@@ -903,17 +903,9 @@ void __fastcall NetSendCmdQuest(BOOL bHiPri, BYTE q)
 		NetSendLoPri((BYTE *)&cmd, sizeof(cmd));
 }
 
-void __fastcall NetSendCmdGItem(BOOL bHiPri, BYTE bCmd, BYTE mast, BYTE pnum, int ii)
+void __fastcall NetSendCmdGItem(BOOL bHiPri, BYTE bCmd, BYTE mast, BYTE pnum, BYTE ii)
 {
-	int v5;        // eax
-	BOOLEAN v6;    // zf
-	short v7;      // dx
-	short v8;      // bx
-	int v9;        // esi
-	int v10;       // esi
-	char v11;      // dl
-	short v12;     // ax
-	TCmdGItem cmd; // [esp+4h] [ebp-20h]
+	TCmdGItem cmd;
 
 	cmd.bCmd = bCmd;
 	cmd.bPnum = pnum;
@@ -921,39 +913,31 @@ void __fastcall NetSendCmdGItem(BOOL bHiPri, BYTE bCmd, BYTE mast, BYTE pnum, in
 	cmd.bLevel = currlevel;
 	cmd.bCursitem = ii;
 	cmd.dwTime = 0;
-	v5 = (unsigned char)ii;
-	cmd.x = item[v5]._ix;
-	cmd.y = item[v5]._iy;
-	v6 = item[v5].IDidx == IDI_EAR;
-	cmd.wIndx = item[v5].IDidx;
-	if (v6) {
-		_LOBYTE(v7) = 0;
-		_HIBYTE(v7) = item[v5]._iName[7];
-		_LOBYTE(v8) = 0;
-		_HIBYTE(v8) = item[v5]._iName[18];
-		v9 = item[v5]._iName[10];
-		cmd.wCI = item[v5]._iName[8] | v7;
-		cmd.dwSeed = item[v5]._iName[12] | ((item[v5]._iName[11] | ((v9 | (item[v5]._iName[9] << 8)) << 8)) << 8);
-		cmd.bId = item[v5]._iName[13];
-		cmd.bDur = item[v5]._iName[14];
-		cmd.bMDur = item[v5]._iName[15];
-		cmd.bCh = item[v5]._iName[16];
-		cmd.bMCh = item[v5]._iName[17];
-		v10 = item[v5]._iName[20];
-		cmd.wValue = _LOWORD(item[v5]._ivalue) | v8 | ((_LOWORD(item[v5]._iCurs) - 19) << 6);
-		cmd.dwBuff = item[v5]._iName[22] | ((item[v5]._iName[21] | ((v10 | (item[v5]._iName[19] << 8)) << 8)) << 8);
+	cmd.x = item[ii]._ix;
+	cmd.y = item[ii]._iy;
+	cmd.wIndx = item[ii].IDidx;
+
+	if (item[ii].IDidx == IDI_EAR) {
+		cmd.wCI = item[ii]._iName[8] | (item[ii]._iName[7] << 8);
+		cmd.dwSeed = item[ii]._iName[12] | ((item[ii]._iName[11] | ((item[ii]._iName[10] | (item[ii]._iName[9] << 8)) << 8)) << 8);
+		cmd.bId = item[ii]._iName[13];
+		cmd.bDur = item[ii]._iName[14];
+		cmd.bMDur = item[ii]._iName[15];
+		cmd.bCh = item[ii]._iName[16];
+		cmd.bMCh = item[ii]._iName[17];
+		cmd.wValue = item[ii]._ivalue | (item[ii]._iName[18] << 8) | ((item[ii]._iCurs - 19) << 6);
+		cmd.dwBuff = item[ii]._iName[22] | ((item[ii]._iName[21] | ((item[ii]._iName[20] | (item[ii]._iName[19] << 8)) << 8)) << 8);
 	} else {
-		cmd.wCI = item[v5]._iCreateInfo;
-		cmd.dwSeed = item[v5]._iSeed;
-		cmd.bId = item[v5]._iIdentified;
-		cmd.bDur = item[v5]._iDurability;
-		cmd.bMDur = item[v5]._iMaxDur;
-		cmd.bCh = item[v5]._iCharges;
-		v11 = item[v5]._iMaxCharges;
-		v12 = item[v5]._ivalue;
-		cmd.bMCh = v11;
-		cmd.wValue = v12;
+		cmd.wCI = item[ii]._iCreateInfo;
+		cmd.dwSeed = item[ii]._iSeed;
+		cmd.bId = item[ii]._iIdentified;
+		cmd.bDur = item[ii]._iDurability;
+		cmd.bMDur = item[ii]._iMaxDur;
+		cmd.bCh = item[ii]._iCharges;
+		cmd.bMCh = item[ii]._iMaxCharges;
+		cmd.wValue = item[ii]._ivalue;
 	}
+
 	if (bHiPri)
 		NetSendHiPri((BYTE *)&cmd, sizeof(cmd));
 	else
