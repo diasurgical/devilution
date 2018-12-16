@@ -71,7 +71,7 @@ TMegaPkt *__cdecl msg_get_next_packet()
 
 BOOL __cdecl msg_wait_resync()
 {
-	int v0; // eax
+	BOOL success;
 
 	msg_get_next_packet();
 	sgbDeltaChunks = 0;
@@ -79,21 +79,26 @@ BOOL __cdecl msg_wait_resync()
 	sgbRecvCmd = CMD_DLEVEL_END;
 	gbBufferMsgs = 1;
 	sgdwOwnerWait = GetTickCount();
-	v0 = UiProgressDialog(ghMainWnd, "Waiting for game data...", 1, msg_wait_for_turns, 20);
+	success = UiProgressDialog(ghMainWnd, "Waiting for game data...", 1, msg_wait_for_turns, 20);
 	gbBufferMsgs = 0;
-	if (!v0)
-		goto LABEL_6;
+	if (!success) {
+		msg_free_packets();
+		return FALSE;
+	}
+
 	if (gbGameDestroyed) {
 		DrawDlg("The game ended");
-	LABEL_6:
 		msg_free_packets();
-		return 0;
+		return FALSE;
 	}
+
 	if (sgbDeltaChunks != 21) {
 		DrawDlg("Unable to get level data");
-		goto LABEL_6;
+		msg_free_packets();
+		return FALSE;
 	}
-	return 1;
+
+	return TRUE;
 }
 // 65AB18: using guessed type int sgdwOwnerWait;
 // 65AB24: using guessed type int sgnCurrMegaPlayer;
