@@ -1463,69 +1463,59 @@ int __fastcall On_GETITEM(TCmdGItem *pCmd, int pnum)
 
 BOOL __fastcall delta_get_item(TCmdGItem *pI, BYTE bLevel)
 {
-	TCmdGItem *v2; // esi
-	signed int v3; // ecx
-	DLevel *v4;    // edi
-	DLevel *v5;    // eax
-	char v6;       // cl
-	DLevel *v8;    // eax
-	signed int v9; // ecx
+	BOOL result;
+	TCmdPItem *pD;
+	int i;
 
-	v2 = pI;
 	if (gbMaxPlayers != 1) {
-		v3 = 0;
-		v4 = &sgLevels[bLevel];
-		v5 = &sgLevels[bLevel];
-		while (v5->item[0].bCmd == -1
-		    || v5->item[0].wIndx != v2->wIndx
-		    || v5->item[0].wCI != v2->wCI
-		    || v5->item[0].dwSeed != v2->dwSeed) {
-			++v3;
-			v5 = (DLevel *)((char *)v5 + 22);
-			if (v3 >= 127)
-				goto LABEL_15;
+		for (i = 0; i < MAXITEMS; i++) {
+			pD = &sgLevels[bLevel].item[i];
+			if (*(BYTE *)pD != 0xFF
+			    && pD->wIndx == pI->wIndx
+			    && pD->wCI == pI->wCI
+			    && pD->dwSeed == pI->dwSeed) {
+				if (pD->bCmd == CMD_STAND) {
+					sgbDeltaChanged = 1;
+					pD->bCmd = CMD_WALKXY;
+					return TRUE;
+				} else if (pD->bCmd == CMD_WALKXY) {
+					return TRUE;
+				} else if (pD->bCmd == CMD_ACK_PLRINFO) {
+					*(BYTE *)pD = 0xFF;
+					sgbDeltaChanged = 1;
+					return TRUE;
+				} else {
+					TermMsg("delta:1");
+				}
+				return result;
+			}
 		}
-		v6 = v5->item[0].bCmd;
-		if (v5->item[0].bCmd == 1)
-			return 1;
-		if (!v6) {
-			sgbDeltaChanged = TRUE;
-			v5->item[0].bCmd = 1;
-			return 1;
+
+		if (((pI->wCI >> 8) & 0x80) == 0)
+			return FALSE;
+
+		for (i = 0; i < MAXITEMS; i++) {
+			pD = &sgLevels[bLevel].item[i];
+			if (*(BYTE *)pD == 0xFF) {
+				sgbDeltaChanged = 1;
+				pD->bCmd = CMD_WALKXY;
+				pD->x = pI->x;
+				pD->y = pI->y;
+				pD->wIndx = pI->wIndx;
+				pD->wCI = pI->wCI;
+				pD->dwSeed = pI->dwSeed;
+				pD->bId = pI->bId;
+				pD->bDur = pI->bDur;
+				pD->bMDur = pI->bMDur;
+				pD->bCh = pI->bCh;
+				pD->bMCh = pI->bMCh;
+				pD->wValue = pI->wValue;
+				pD->dwBuff = pI->dwBuff;
+				return TRUE;
+			}
 		}
-		if (v6 == 2) {
-			v5->item[0].bCmd = -1;
-			sgbDeltaChanged = TRUE;
-			return 1;
-		}
-		TermMsg("delta:1");
-	LABEL_15:
-		if (v2->wCI >= 0)
-			return 0;
-		v8 = v4;
-		v9 = 0;
-		while (v8->item[0].bCmd != -1) {
-			++v9;
-			v8 = (DLevel *)((char *)v8 + 22);
-			if (v9 >= 127)
-				return 1;
-		}
-		sgbDeltaChanged = TRUE;
-		v8->item[0].bCmd = 1;
-		v8->item[0].x = v2->x;
-		v8->item[0].y = v2->y;
-		v8->item[0].wIndx = v2->wIndx;
-		v8->item[0].wCI = v2->wCI;
-		v8->item[0].dwSeed = v2->dwSeed;
-		v8->item[0].bId = v2->bId;
-		v8->item[0].bDur = v2->bDur;
-		v8->item[0].bMDur = v2->bMDur;
-		v8->item[0].bCh = v2->bCh;
-		v8->item[0].bMCh = v2->bMCh;
-		v8->item[0].wValue = v2->wValue;
-		v8->item[0].dwBuff = v2->dwBuff;
 	}
-	return 1;
+	return TRUE;
 }
 // 679660: using guessed type char gbMaxPlayers;
 
