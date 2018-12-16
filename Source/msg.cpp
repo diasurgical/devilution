@@ -8,7 +8,7 @@ static int sgnCurrMegaPlayer;
 static DLevel sgLevels[NUMLEVELS];
 static BYTE sbLastCmd;
 static TMegaPkt *sgpCurrPkt;
-static char sgRecvBuf[sizeof(DLevel) + 1];
+static BYTE sgRecvBuf[sizeof(DLevel) + 1];
 static BYTE sgbRecvCmd;
 static LocalLevel sgLocals[NUMLEVELS];
 static DJunk sgJunk;
@@ -209,14 +209,14 @@ void __cdecl msg_pre_packet()
 
 void __fastcall DeltaExportData(int pnum)
 {
-	char *v1;       // edi
+	BYTE *v1;       // edi
 	DObjectStr *v2; // esi
-	void *v3;       // ebx
-	void *v4;       // eax
-	void *v5;       // eax
-	void *v6;       // eax
+	BYTE *v3;       // ebx
+	BYTE *v4;       // eax
+	BYTE *v5;       // eax
+	BYTE *v6;       // eax
 	int v7;         // eax
-	void *v8;       // eax
+	BYTE *v8;       // eax
 	int v9;         // eax
 	int player_num; // [esp+0h] [ebp-Ch]
 	int v11;        // [esp+4h] [ebp-8h]
@@ -225,13 +225,13 @@ void __fastcall DeltaExportData(int pnum)
 	player_num = pnum;
 	if (sgbDeltaChanged) {
 		v11 = 0;
-		v1 = (char *)DiabloAllocPtr(4722);
+		v1 = (BYTE *)DiabloAllocPtr(4722);
 		v2 = sgLevels[0].object;
 		v3 = v1 + 1;
 		do {
-			v4 = DeltaExportItem(v3, &v2[-2794]);
+			v4 = DeltaExportItem(v3, (TCmdPItem *)&v2[-2794]);
 			v5 = DeltaExportObject(v4, v2);
-			v6 = DeltaExportMonster(v5, &v2[127]);
+			v6 = DeltaExportMonster(v5, (DMonsterStr *)&v2[127]);
 			v7 = msg_comp_level(v1, v6);
 			dthread_send_delta(player_num, (_BYTE)v11++ + CMD_DLEVEL_0, v1, v7);
 			v2 += 4721;
@@ -246,68 +246,57 @@ void __fastcall DeltaExportData(int pnum)
 }
 // 67618C: using guessed type char sgbDeltaChanged;
 
-void *__fastcall DeltaExportItem(void *dst, void *src)
+BYTE *__fastcall DeltaExportItem(BYTE *dst, TCmdPItem *src)
 {
-	_BYTE *v2;     // edi
-	_BYTE *v3;     // esi
-	signed int v4; // ebx
+	int i;
 
-	v2 = (unsigned char *)src;
-	v3 = (unsigned char *)dst;
-	v4 = 127;
-	do {
-		if (*v2 == -1) {
-			*v3++ = -1;
+	for (i = 0; i < MAXITEMS; i++) {
+		if (src->bCmd == 0xFF) {
+			*dst = 0xFF;
+			dst++;
 		} else {
-			memcpy(v3, v2, 0x16u);
-			v3 += 22;
+			memcpy(dst, src, sizeof(TCmdPItem));
+			dst += sizeof(TCmdPItem);
 		}
-		v2 += 22;
-		--v4;
-	} while (v4);
-	return v3;
+		src++;
+	}
+
+	return dst;
 }
 
-void *__fastcall DeltaExportObject(void *dst, void *src)
+BYTE *__fastcall DeltaExportObject(BYTE *dst, DObjectStr *src)
 {
-	char *v2; // esi
-
-	v2 = (char *)dst;
-	memcpy(dst, src, 0x7Fu);
-	return v2 + 127;
+	memcpy(dst, src, sizeof(DObjectStr) * MAXOBJECTS);
+	return dst + sizeof(DObjectStr) * MAXOBJECTS;
 }
 
-void *__fastcall DeltaExportMonster(void *dst, void *src)
+BYTE *__fastcall DeltaExportMonster(BYTE *dst, DMonsterStr *src)
 {
-	_BYTE *v2;     // edi
-	_BYTE *v3;     // esi
-	signed int v4; // ebx
+	int i;
 
-	v2 = (unsigned char *)src;
-	v3 = (unsigned char *)dst;
-	v4 = MAXMONSTERS;
-	do {
-		if (*v2 == -1) {
-			*v3++ = -1;
+	for (i = 0; i < MAXMONSTERS; i++) {
+		if (*(BYTE *)src == 0xFF) {
+			*dst = 0xFF;
+			dst++;
 		} else {
-			memcpy(v3, v2, 9u);
-			v3 += 9;
+			memcpy(dst, src, sizeof(DMonsterStr));
+			dst += sizeof(DMonsterStr);
 		}
-		v2 += 9;
-		--v4;
-	} while (v4);
-	return v3;
+		src++;
+	}
+
+	return dst;
 }
 
-void *__fastcall DeltaExportJunk(void *dst)
+BYTE *__fastcall DeltaExportJunk(BYTE *dst)
 {
-	char *v1;          // ebx
+	BYTE *v1;          // ebx
 	DJunk *v2;         // edi
 	MultiQuests *v3;   // esi
 	unsigned char *v4; // edi
 	int *v5;           // ebp
 
-	v1 = (char *)dst;
+	v1 = dst;
 	v2 = &sgJunk;
 	v3 = sgJunk.quests;
 	do {
@@ -336,24 +325,22 @@ void *__fastcall DeltaExportJunk(void *dst)
 	return v1;
 }
 
-int __fastcall msg_comp_level(char *begin, void *end)
+int __fastcall msg_comp_level(BYTE *buffer, BYTE *end)
 {
-	char *v2; // esi
-	int v3;   // edi
-	int v4;   // eax
+	int size, pkSize;
 
-	v2 = begin;
-	v3 = (char *)end - begin - 1;
-	v4 = PkwareCompress(begin + 1, v3);
-	*v2 = v3 != v4;
-	return v4 + 1;
+	size = end - buffer - 1;
+	pkSize = PkwareCompress(buffer + 1, size);
+	*buffer = size != pkSize;
+
+	return pkSize + 1;
 }
 
 void __cdecl delta_init()
 {
 	sgbDeltaChanged = 0;
-	memset(&sgJunk, 255, sizeof(sgJunk));
-	memset(sgLevels, 255, sizeof(sgLevels));
+	memset(&sgJunk, 0xFF, sizeof(sgJunk));
+	memset(sgLevels, 0xFF, sizeof(sgLevels));
 	memset(sgLocals, 0, sizeof(sgLocals));
 	deltaload = 0;
 }
@@ -459,12 +446,12 @@ void __fastcall delta_leave_sync(BYTE bLevel)
 
 BOOL __fastcall delta_portal_inited(int i)
 {
-	return sgJunk.portal[i].x == -1;
+	return sgJunk.portal[i].x == 0xFF;
 }
 
 BOOL __fastcall delta_quest_inited(int i)
 {
-	return sgJunk.quests[i].qstate != -1;
+	return sgJunk.quests[i].qstate != 0xFF;
 }
 
 void __fastcall DeltaAddItem(int ii)
@@ -610,7 +597,7 @@ void __cdecl DeltaLoadLevel()
 				v40 = 0;
 				v1 = &monster[0]._mfuty;
 				do {
-					if (sgLevels[currlevel].monster[v40]._mx != -1) {
+					if (sgLevels[currlevel].monster[v40]._mx != 0xFF) {
 						M_ClearSquares(v0);
 						v2 = v40 * 9 + 4721 * currlevel;
 						v3 = *((unsigned char *)&sgLevels[0].monster[0]._mx + v2);
@@ -664,7 +651,7 @@ void __cdecl DeltaLoadLevel()
 		do {
 			v9 = v8 + 4721 * currlevel;
 			v10 = *(&sgLevels[0].item[0].bCmd + v9);
-			if (v10 != -1) {
+			if (v10 != 0xFF) {
 				if (v10 == 1) {
 					v11 = FindGetItem(
 					    *(unsigned short *)((char *)&sgLevels[0].item[0].wIndx + v9),
@@ -1207,7 +1194,7 @@ void __fastcall NetSendCmdString(int pmask, const char *pszStr)
 
 void __fastcall RemovePlrPortal(int pnum)
 {
-	memset(&sgJunk.portal[pnum], 255, sizeof(sgJunk.portal[pnum]));
+	memset(&sgJunk.portal[pnum], 0xFF, sizeof(sgJunk.portal[pnum]));
 	sgbDeltaChanged = 1;
 }
 // 67618C: using guessed type char sgbDeltaChanged;
