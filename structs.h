@@ -696,24 +696,24 @@ typedef struct PortalStruct {
 
 #pragma pack(push, 1)
 typedef struct TCmd {
-	char bCmd;
+	BYTE bCmd;
 } TCmd;
 
 typedef struct TCmdLoc {
-	char bCmd;
+	BYTE bCmd;
 	BYTE x;
 	BYTE y;
 } TCmdLoc;
 
 typedef struct TCmdLocParam1 {
-	char bCmd;
+	BYTE bCmd;
 	BYTE x;
 	BYTE y;
 	WORD wParam1;
 } TCmdLocParam1;
 
 typedef struct TCmdLocParam2 {
-	char bCmd;
+	BYTE bCmd;
 	BYTE x;
 	BYTE y;
 	WORD wParam1;
@@ -721,7 +721,7 @@ typedef struct TCmdLocParam2 {
 } TCmdLocParam2;
 
 typedef struct TCmdLocParam3 {
-	char bCmd;
+	BYTE bCmd;
 	BYTE x;
 	BYTE y;
 	WORD wParam1;
@@ -730,25 +730,25 @@ typedef struct TCmdLocParam3 {
 } TCmdLocParam3;
 
 typedef struct TCmdParam1 {
-	char bCmd;
+	BYTE bCmd;
 	WORD wParam1;
 } TCmdParam1;
 
 typedef struct TCmdParam2 {
-	char bCmd;
+	BYTE bCmd;
 	WORD wParam1;
 	WORD wParam2;
 } TCmdParam2;
 
 typedef struct TCmdParam3 {
-	char bCmd;
+	BYTE bCmd;
 	WORD wParam1;
 	WORD wParam2;
 	WORD wParam3;
 } TCmdParam3;
 
 typedef struct TCmdGolem {
-	char bCmd;
+	BYTE bCmd;
 	BYTE _mx;
 	BYTE _my;
 	BYTE _mdir;
@@ -758,7 +758,7 @@ typedef struct TCmdGolem {
 } TCmdGolem;
 
 typedef struct TCmdQuest {
-	char bCmd;
+	BYTE bCmd;
 	BYTE q;
 	BYTE qstate;
 	BYTE qlog;
@@ -766,7 +766,7 @@ typedef struct TCmdQuest {
 } TCmdQuest;
 
 typedef struct TCmdGItem {
-	char bCmd;
+	BYTE bCmd;
 	BYTE bMaster;
 	BYTE bPnum;
 	BYTE bCursitem;
@@ -787,7 +787,7 @@ typedef struct TCmdGItem {
 } TCmdGItem;
 
 typedef struct TCmdPItem {
-	char bCmd;
+	BYTE bCmd;
 	BYTE x;
 	BYTE y;
 	WORD wIndx;
@@ -803,7 +803,7 @@ typedef struct TCmdPItem {
 } TCmdPItem;
 
 typedef struct TCmdChItem {
-	char bCmd;
+	BYTE bCmd;
 	BYTE bLoc;
 	WORD wIndx;
 	WORD wCI;
@@ -812,40 +812,40 @@ typedef struct TCmdChItem {
 } TCmdChItem;
 
 typedef struct TCmdDelItem {
-	char bCmd;
+	BYTE bCmd;
 	BYTE bLoc;
 } TCmdDelItem;
 
 typedef struct TCmdDamage {
-	char bCmd;
+	BYTE bCmd;
 	BYTE bPlr;
 	DWORD dwDam;
 } TCmdDamage;
 
 typedef struct TCmdPlrInfoHdr {
-	char bCmd;
+	BYTE bCmd;
 	WORD wOffset;
 	WORD wBytes;
 } TCmdPlrInfoHdr;
 
 typedef struct TCmdString {
-	char bCmd;
+	BYTE bCmd;
 	char str[MAX_SEND_STR_LEN];
 } TCmdString;
 
 typedef struct TFakeCmdPlr {
-	char bCmd;
+	BYTE bCmd;
 	BYTE bPlr;
 } TFakeCmdPlr;
 
 typedef struct TFakeDropPlr {
-	char bCmd;
+	BYTE bCmd;
 	BYTE bPlr;
 	DWORD dwReason;
 } TFakeDropPlr;
 
 typedef struct TSyncHeader {
-	char bCmd;
+	BYTE bCmd;
 	BYTE bLevel;
 	WORD wLen;
 	BYTE bObjId;
@@ -907,7 +907,7 @@ typedef struct DMonsterStr {
 } DMonsterStr;
 
 typedef struct DObjectStr {
-	char bCmd;
+	BYTE bCmd;
 } DObjectStr;
 
 typedef struct DLevel {
@@ -921,8 +921,8 @@ typedef struct LocalLevel {
 } LocalLevel;
 
 typedef struct DPortal {
-	char x;
-	char y;
+	BYTE x;
+	BYTE y;
 	BYTE level;
 	BYTE ltype;
 	BYTE setlvl;
@@ -962,7 +962,7 @@ typedef struct QuestStruct {
 	unsigned char _qmsg;
 	unsigned char _qvar1;
 	unsigned char _qvar2;
-	int _qlog; /* char */
+	int _qlog;
 } QuestStruct;
 
 typedef struct QuestData {
