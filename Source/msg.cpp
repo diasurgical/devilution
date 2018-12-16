@@ -103,16 +103,13 @@ BOOL __cdecl msg_wait_resync()
 
 void __cdecl msg_free_packets()
 {
-	TMegaPkt *v0; // eax
-	TMegaPkt *v1; // ecx
+	TMegaPkt *tmp;
 
-	v0 = sgpMegaPkt;
-	while (v0) {
-		v1 = v0->pNext;
+	while (sgpMegaPkt) {
+		sgpCurrPkt = sgpMegaPkt->pNext;
+		tmp = sgpMegaPkt;
 		sgpMegaPkt = 0;
-		sgpCurrPkt = v1;
-		mem_free_dbg(v0);
-		v0 = sgpCurrPkt;
+		mem_free_dbg(tmp);
 		sgpMegaPkt = sgpCurrPkt;
 	}
 }
