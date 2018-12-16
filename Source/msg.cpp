@@ -1607,18 +1607,17 @@ int __fastcall On_REQUESTGITEM(TCmdGItem *pCmd, int pnum)
 
 BOOL __fastcall i_own_level(int nReqLevel)
 {
-	int v1;            // edx
-	unsigned char *v2; // eax
+	int i;
 
-	v1 = 0;
-	v2 = &plr[0]._pLvlChanging;
-	do {
-		if (*(v2 - 290) && !*v2 && *(_DWORD *)(v2 - 267) == nReqLevel && (v1 != myplr || !gbBufferMsgs))
+	for (i = 0; i < MAX_PLRS; i++) {
+		if (plr[i].plractive
+		    && !plr[i]._pLvlChanging
+		    && plr[i].plrlevel == nReqLevel
+		    && (i != myplr || !gbBufferMsgs))
 			break;
-		v2 += 21720;
-		++v1;
-	} while ((signed int)v2 < (signed int)&plr[4]._pLvlChanging);
-	return v1 == myplr;
+	}
+
+	return i == myplr;
 }
 // 676194: using guessed type char gbBufferMsgs;
 
