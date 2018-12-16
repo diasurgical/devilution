@@ -271,39 +271,33 @@ BYTE *__fastcall DeltaExportMonster(BYTE *dst, DMonsterStr *src)
 
 BYTE *__fastcall DeltaExportJunk(BYTE *dst)
 {
-	BYTE *v1;          // ebx
-	DJunk *v2;         // edi
-	MultiQuests *v3;   // esi
-	unsigned char *v4; // edi
-	int *v5;           // ebp
+	int i;
+	MultiQuests *mq;
+	DPortal *pD;
 
-	v1 = dst;
-	v2 = &sgJunk;
-	v3 = sgJunk.quests;
-	do {
-		if (v2->portal[0].x == LOBYTE(-1)) {
-			*v1++ = -1;
+	for (i = 0; i < MAXPORTAL; i++) {
+		pD = &sgJunk.portal[i];
+		if (pD->x == 0xFF) {
+			*dst = 0xFF;
+			dst++;
 		} else {
-			memcpy(v1, v2, 5u);
-			v1 += 5;
+			memcpy(dst, pD, sizeof(*pD));
+			dst += sizeof(*pD);
 		}
-		v2 = (DJunk *)((char *)v2 + 5);
-	} while ((signed int)v2 < (signed int)sgJunk.quests);
-	v4 = &quests[0]._qactive;
-	v5 = &questlist[0]._qflags;
-	do {
-		if (*(_BYTE *)v5 & 1) {
-			v3->qlog = v4[18];
-			v3->qstate = *v4;
-			v3->qvar1 = v4[13];
-			memcpy(v1, v3, 3u);
-			v1 += 3;
-			++v3;
+	}
+
+	for (i = 0; i < MAXQUESTS; i++) {
+		if (questlist[i]._qflags & 1) {
+			mq = &sgJunk.quests[i];
+			mq->qlog = quests[i]._qlog;
+			mq->qstate = quests[i]._qactive;
+			mq->qvar1 = quests[i]._qvar1;
+			memcpy(dst, mq, sizeof(*mq));
+			dst += sizeof(*mq);
 		}
-		v5 += 5;
-		v4 += 24;
-	} while ((signed int)v5 < (signed int)&questlist[16]._qflags);
-	return v1;
+	}
+
+	return dst;
 }
 
 int __fastcall msg_comp_level(BYTE *buffer, BYTE *end)
