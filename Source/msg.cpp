@@ -169,33 +169,31 @@ void __cdecl msg_process_net_packets()
 
 void __cdecl msg_pre_packet()
 {
-	TMegaPkt *v0;     // edi
-	int i;            // ebp
-	signed int v2;    // ebx
-	TFakeCmdPlr *v3;  // esi
-	TFakeCmdPlr *v4;  // eax
-	TFakeDropPlr *v5; // eax
-	int v6;           // eax
+	int i;
+	int spaceLeft, pktSize;
+	TMegaPkt *pkt;
+	TFakeCmdPlr *cmd, *tmpCmd;
+	TFakeDropPlr *dropCmd;
 
-	v0 = sgpMegaPkt;
-	for (i = -1; v0; v0 = v0->pNext) {
-		v2 = 32000;
-		v3 = (TFakeCmdPlr *)v0->data;
-		while (v2 != v0->dwSpaceLeft) {
-			if (v3->bCmd == FAKE_CMD_SETID) {
-				v4 = v3;
-				++v3;
-				i = (unsigned char)v4->bPlr;
-				v2 -= 2;
-			} else if (v3->bCmd == FAKE_CMD_DROPID) {
-				v5 = (TFakeDropPlr *)v3;
-				v3 += 3;
-				v2 -= 6;
-				multi_player_left((unsigned char)v5->bPlr, v5->dwReason);
+	pkt = sgpMegaPkt;
+	for (i = -1; pkt; pkt = pkt->pNext) {
+		spaceLeft = 32000;
+		cmd = (TFakeCmdPlr *)pkt->data;
+		while (spaceLeft != pkt->dwSpaceLeft) {
+			if (cmd->bCmd == FAKE_CMD_SETID) {
+				tmpCmd = cmd;
+				cmd++;
+				i = tmpCmd->bPlr;
+				spaceLeft -= sizeof(*cmd);
+			} else if (cmd->bCmd == FAKE_CMD_DROPID) {
+				dropCmd = (TFakeDropPlr *)cmd;
+				cmd += 3;
+				spaceLeft -= sizeof(*dropCmd);
+				multi_player_left(dropCmd->bPlr, dropCmd->dwReason);
 			} else {
-				v6 = ParseCmd(i, (TCmd *)v3);
-				v3 = (TFakeCmdPlr *)((char *)v3 + v6);
-				v2 -= v6;
+				pktSize = ParseCmd(i, (TCmd *)cmd);
+				cmd = (TFakeCmdPlr *)((char *)cmd + pktSize);
+				spaceLeft -= pktSize;
 			}
 		}
 	}
