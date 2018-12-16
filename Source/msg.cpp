@@ -1560,16 +1560,16 @@ int __fastcall On_SBSPELL(TCmdParam1 *pCmd, int pnum)
 void msg_errorf(const char *pszFmt, ...)
 {
 	static DWORD msg_err_timer;
-	DWORD v1;     // eax
-	char v2[256]; // [esp+0h] [ebp-100h]
-	va_list va;   // [esp+10Ch] [ebp+Ch]
+	DWORD ticks;
+	char msg[256];
+	va_list va;
 
 	va_start(va, pszFmt);
-	v1 = GetTickCount();
-	if (v1 - msg_err_timer >= 5000) {
-		msg_err_timer = v1;
-		vsprintf(v2, pszFmt, va);
-		ErrorPlrMsg(v2);
+	ticks = GetTickCount();
+	if (ticks - msg_err_timer >= 5000) {
+		msg_err_timer = ticks;
+		vsprintf(msg, pszFmt, va);
+		ErrorPlrMsg(msg);
 	}
 	va_end(va);
 }
