@@ -1069,52 +1069,34 @@ void __fastcall NetSendCmdDelItem(BOOL bHiPri, BYTE bLoc)
 
 void __fastcall NetSendCmdDItem(BOOL bHiPri, int ii)
 {
-	int v2;        // eax
-	short *v3;     // edx
-	BOOLEAN v4;    // zf
-	short v5;      // dx
-	short v6;      // bx
-	int v7;        // esi
-	int v8;        // esi
-	char v9;       // dl
-	short v10;     // ax
-	TCmdPItem cmd; // [esp+4h] [ebp-18h]
+	TCmdPItem cmd;
 
-	v2 = ii;
 	cmd.bCmd = CMD_DROPITEM;
 	cmd.x = item[ii]._ix;
 	cmd.y = item[ii]._iy;
-	v3 = (short *)&item[ii].IDidx;
-	v4 = *(_DWORD *)v3 == IDI_EAR;
-	cmd.wIndx = *v3;
-	if (v4) {
-		_LOBYTE(v5) = 0;
-		_HIBYTE(v5) = item[v2]._iName[7];
-		_LOBYTE(v6) = 0;
-		_HIBYTE(v6) = item[v2]._iName[18];
-		v7 = item[v2]._iName[10];
-		cmd.wCI = item[v2]._iName[8] | v5;
-		cmd.dwSeed = item[v2]._iName[12] | ((item[v2]._iName[11] | ((v7 | (item[v2]._iName[9] << 8)) << 8)) << 8);
-		cmd.bId = item[v2]._iName[13];
-		cmd.bDur = item[v2]._iName[14];
-		cmd.bMDur = item[v2]._iName[15];
-		cmd.bCh = item[v2]._iName[16];
-		cmd.bMCh = item[v2]._iName[17];
-		v8 = item[v2]._iName[20];
-		cmd.wValue = _LOWORD(item[v2]._ivalue) | v6 | ((_LOWORD(item[v2]._iCurs) - 19) << 6);
-		cmd.dwBuff = item[v2]._iName[22] | ((item[v2]._iName[21] | ((v8 | (item[v2]._iName[19] << 8)) << 8)) << 8);
+	cmd.wIndx = item[ii].IDidx;
+
+	if (item[ii].IDidx == IDI_EAR) {
+		cmd.wCI = item[ii]._iName[8] | (item[ii]._iName[7] << 8);
+		cmd.dwSeed = item[ii]._iName[12] | ((item[ii]._iName[11] | ((item[ii]._iName[10] | (item[ii]._iName[9] << 8)) << 8)) << 8);
+		cmd.bId = item[ii]._iName[13];
+		cmd.bDur = item[ii]._iName[14];
+		cmd.bMDur = item[ii]._iName[15];
+		cmd.bCh = item[ii]._iName[16];
+		cmd.bMCh = item[ii]._iName[17];
+		cmd.wValue = item[ii]._ivalue | (item[ii]._iName[18] << 8) | ((item[ii]._iCurs - 19) << 6);
+		cmd.dwBuff = item[ii]._iName[22] | ((item[ii]._iName[21] | ((item[ii]._iName[20] | (item[ii]._iName[19] << 8)) << 8)) << 8);
 	} else {
-		cmd.wCI = item[v2]._iCreateInfo;
-		cmd.dwSeed = item[v2]._iSeed;
-		cmd.bId = item[v2]._iIdentified;
-		cmd.bDur = item[v2]._iDurability;
-		cmd.bMDur = item[v2]._iMaxDur;
-		cmd.bCh = item[v2]._iCharges;
-		v9 = item[v2]._iMaxCharges;
-		v10 = item[v2]._ivalue;
-		cmd.bMCh = v9;
-		cmd.wValue = v10;
+		cmd.wCI = item[ii]._iCreateInfo;
+		cmd.dwSeed = item[ii]._iSeed;
+		cmd.bId = item[ii]._iIdentified;
+		cmd.bDur = item[ii]._iDurability;
+		cmd.bMDur = item[ii]._iMaxDur;
+		cmd.bCh = item[ii]._iCharges;
+		cmd.bMCh = item[ii]._iMaxCharges;
+		cmd.wValue = item[ii]._ivalue;
 	}
+
 	if (bHiPri)
 		NetSendHiPri((BYTE *)&cmd, sizeof(cmd));
 	else
