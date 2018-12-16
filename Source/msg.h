@@ -2,7 +2,7 @@
 #ifndef __MSG_H__
 #define __MSG_H__
 
-extern int deltaload;
+extern BOOL deltaload;
 extern BYTE gbBufferMsgs;
 extern int pkt_counter;
 

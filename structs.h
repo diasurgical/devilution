@@ -898,10 +898,10 @@ typedef struct TPkt {
 } TPkt;
 
 typedef struct DMonsterStr {
-	char _mx;
-	char _my;
+	BYTE _mx;
+	BYTE _my;
 	BYTE _mdir;
-	char _menemy;
+	BYTE _menemy;
 	char _mactive;
 	int _mhitpoints;
 } DMonsterStr;

@@ -3034,7 +3034,7 @@ void __fastcall RecreateItem(int ii, int idx, unsigned short ic, int iseed, int 
 	}
 }
 
-void __fastcall RecreateEar(int ii, unsigned short ic, int iseed, unsigned char Id, int dur, int mdur, int ch, int mch, int ivalue, int ibuff)
+void __fastcall RecreateEar(int ii, unsigned short ic, int iseed, int Id, int dur, int mdur, int ch, int mch, int ivalue, int ibuff)
 {
 	SetPlrHandItem(&item[ii], IDI_EAR);
 	tempstr[0] = (ic >> 8) & 0x7F;
