@@ -1365,52 +1365,35 @@ BYTE *__fastcall DeltaImportMonster(BYTE *src, DMonsterStr *dst)
 
 void __fastcall DeltaImportJunk(BYTE *src)
 {
-	_BYTE *v1;         // ebx
-	int v2;            // edi
-	DJunk *v3;         // esi
-	char result;       // al
-	MultiQuests *v5;   // esi
-	unsigned char *v6; // edi
-	int *v7;           // ebp
+	int i;
 
-	v1 = (_BYTE *)src;
-	v2 = 0;
-	v3 = &sgJunk;
-	do {
-		if (*v1 == -1) {
-			memset(v3, 255, 5u);
-			++v1;
-			SetPortalStats(v2, 0, 0, 0, 0, 0);
+	for (i = 0; i < MAXPORTAL; i++) {
+		if (*src == 0xFF) {
+			memset(&sgJunk.portal[i], 0xFF, sizeof(DPortal));
+			src++;
+			SetPortalStats(i, 0, 0, 0, 0, 0);
 		} else {
-			memcpy(v3, v1, 5u);
-			v1 += 5;
+			memcpy(&sgJunk.portal[i], src, sizeof(DPortal));
+			src += sizeof(DPortal);
 			SetPortalStats(
-			    v2,
+			    i,
 			    1,
-			    (unsigned char)v3->portal[0].x,
-			    (unsigned char)v3->portal[0].y,
-			    (unsigned char)v3->portal[0].level,
-			    (unsigned char)v3->portal[0].ltype);
+			    sgJunk.portal[i].x,
+			    sgJunk.portal[i].y,
+			    sgJunk.portal[i].level,
+			    sgJunk.portal[i].ltype);
 		}
-		v3 = (DJunk *)((char *)v3 + 5);
-		++v2;
-	} while ((signed int)v3 < (signed int)sgJunk.quests);
-	v5 = sgJunk.quests;
-	v6 = &quests[0]._qactive;
-	v7 = &questlist[0]._qflags;
-	do {
-		if (*(_BYTE *)v7 & 1) {
-			memcpy(v5, v1, 3u);
-			*(_DWORD *)(v6 + 18) = (unsigned char)v5->qlog;
-			*v6 = v5->qstate;
-			result = v5->qvar1;
-			v1 += 3;
-			v6[13] = result;
-			++v5;
+	}
+
+	for (i = 0; i < MAXMULTIQUESTS; i++) {
+		if (questlist[i]._qflags & 1) {
+			memcpy(&sgJunk.quests[i], src, sizeof(MultiQuests));
+			src += sizeof(MultiQuests);
+			quests[i]._qlog = sgJunk.quests[i].qlog;
+			quests[i]._qactive = sgJunk.quests[i].qstate;
+			quests[i]._qvar1 = sgJunk.quests[i].qvar1;
 		}
-		v7 += 5;
-		v6 += 24;
-	} while ((signed int)v7 < (signed int)&questlist[16]._qflags);
+	}
 }
 
 int __fastcall On_SYNCDATA(void *packet, int pnum)
