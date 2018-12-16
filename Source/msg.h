@@ -137,7 +137,7 @@ int __fastcall On_SYNCQUEST(TCmdQuest *pCmd, int pnum);
 int __fastcall On_ENDSHIELD(TCmd *pCmd, int pnum);
 int __fastcall On_CHEAT_EXPERIENCE(TCmd *pCmd, int pnum);
 int __fastcall On_CHEAT_SPELL_LEVEL(TCmd *pCmd, int pnum);
-int __cdecl On_DEBUG(TCmd *pCmd);
+int __fastcall On_DEBUG(TCmd *pCmd, int pnum);
 int __fastcall On_NOVA(TCmdLoc *pCmd, int pnum);
 int __fastcall On_SETSHIELD(TCmd *pCmd, int pnum);
 int __fastcall On_REMSHIELD(TCmd *pCmd, int pnum);
