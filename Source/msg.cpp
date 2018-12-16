@@ -203,40 +203,27 @@ void __cdecl msg_pre_packet()
 
 void __fastcall DeltaExportData(int pnum)
 {
-	BYTE *v1;       // edi
-	DObjectStr *v2; // esi
-	BYTE *v3;       // ebx
-	BYTE *v4;       // eax
-	BYTE *v5;       // eax
-	BYTE *v6;       // eax
-	int v7;         // eax
-	BYTE *v8;       // eax
-	int v9;         // eax
-	int player_num; // [esp+0h] [ebp-Ch]
-	int v11;        // [esp+4h] [ebp-8h]
-	char src;       // [esp+Bh] [ebp-1h]
+	BYTE *dst, *dstEnd;
+	int size, i;
+	char src;
 
-	player_num = pnum;
 	if (sgbDeltaChanged) {
-		v11 = 0;
-		v1 = (BYTE *)DiabloAllocPtr(4722);
-		v2 = sgLevels[0].object;
-		v3 = v1 + 1;
-		do {
-			v4 = DeltaExportItem(v3, (TCmdPItem *)&v2[-2794]);
-			v5 = DeltaExportObject(v4, v2);
-			v6 = DeltaExportMonster(v5, (DMonsterStr *)&v2[127]);
-			v7 = msg_comp_level(v1, v6);
-			dthread_send_delta(player_num, (_BYTE)v11++ + CMD_DLEVEL_0, v1, v7);
-			v2 += 4721;
-		} while ((signed int)v2 < (signed int)&sgLevels[NUMLEVELS].object);
-		v8 = DeltaExportJunk(v3);
-		v9 = msg_comp_level(v1, v8);
-		dthread_send_delta(player_num, CMD_DLEVEL_JUNK, v1, v9);
-		mem_free_dbg(v1);
+		dst = (BYTE *)DiabloAllocPtr(4722);
+		dstEnd = dst + 1;
+		for (i = 0; i < NUMLEVELS; i++) {
+			dstEnd = DeltaExportItem(dstEnd, sgLevels[i].item);
+			dstEnd = DeltaExportObject(dstEnd, sgLevels[i].object);
+			dstEnd = DeltaExportMonster(dstEnd, sgLevels[i].monster);
+			size = msg_comp_level(dst, dstEnd);
+			dthread_send_delta(pnum, i + CMD_DLEVEL_0, dst, size);
+		}
+		dstEnd = DeltaExportJunk(dstEnd);
+		size = msg_comp_level(dst, dstEnd);
+		dthread_send_delta(pnum, CMD_DLEVEL_JUNK, dst, size);
+		mem_free_dbg(dst);
 	}
 	src = 0;
-	dthread_send_delta(player_num, CMD_DLEVEL_END, &src, 1);
+	dthread_send_delta(pnum, CMD_DLEVEL_END, &src, 1);
 }
 // 67618C: using guessed type char sgbDeltaChanged;
 
