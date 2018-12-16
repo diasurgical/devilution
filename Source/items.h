@@ -63,7 +63,7 @@ void __fastcall SetupAllUseful(int ii, int iseed, int lvl);
 void __fastcall CreateRndUseful(int pnum, int x, int y, unsigned char sendmsg);
 void __fastcall CreateTypeItem(int x, int y, unsigned char onlygood, int itype, int imisc, int sendmsg, int delta);
 void __fastcall RecreateItem(int ii, int idx, unsigned short ic, int iseed, int ivalue);
-void __fastcall RecreateEar(int ii, unsigned short ic, int iseed, unsigned char Id, int dur, int mdur, int ch, int mch, int ivalue, int ibuff);
+void __fastcall RecreateEar(int ii, unsigned short ic, int iseed, int Id, int dur, int mdur, int ch, int mch, int ivalue, int ibuff);
 void __fastcall SpawnQuestItem(int itemid, int x, int y, int randarea, int selflag);
 void __cdecl SpawnRock();
 void __fastcall RespawnItem(int i, BOOL FlipFlag);
