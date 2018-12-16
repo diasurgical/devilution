@@ -890,18 +890,13 @@ void __fastcall NetSendCmdParam3(BOOL bHiPri, BYTE bCmd, WORD wParam1, WORD wPar
 
 void __fastcall NetSendCmdQuest(BOOL bHiPri, BYTE q)
 {
-	int v2;        // eax
-	char v3;       // dl
-	TCmdQuest cmd; // [esp+0h] [ebp-8h]
+	TCmdQuest cmd;
 
 	cmd.q = q;
 	cmd.bCmd = CMD_SYNCQUEST;
-	v2 = 24 * q;
-	cmd.qstate = *(&quests[0]._qactive + v2);
-	v3 = *((_BYTE *)&quests[0]._qlog + v2);
-	_LOBYTE(v2) = *(&quests[0]._qvar1 + v2);
-	cmd.qlog = v3;
-	cmd.qvar1 = v2;
+	cmd.qstate = quests[q]._qactive;
+	cmd.qlog = quests[q]._qlog;
+	cmd.qvar1 = quests[q]._qvar1;
 	if (bHiPri)
 		NetSendHiPri((BYTE *)&cmd, sizeof(cmd));
 	else
