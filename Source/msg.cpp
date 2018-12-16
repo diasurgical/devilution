@@ -577,7 +577,7 @@ void __cdecl DeltaLoadLevel()
 				v40 = 0;
 				v1 = &monster[0]._mfuty;
 				do {
-					if (sgLevels[currlevel].monster[v40]._mx != 0xFF) {
+					if (sgLevels[currlevel].monster[v40]._mx != -1) {
 						M_ClearSquares(v0);
 						v2 = v40 * 9 + 4721 * currlevel;
 						v3 = *((unsigned char *)&sgLevels[0].monster[0]._mx + v2);
