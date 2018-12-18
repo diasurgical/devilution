@@ -34,7 +34,8 @@ int infoclr;       // weak
 int sgbPlrTalkTbl; // weak // should be char [4]
 void *pGBoxBuff;
 void *pSBkBtnCel;
-char tempstr[260];
+char tempstr[256];
+char byte_4B894C[4];
 int sbooktab;             // weak
 int pSplType;             // weak
 int frame;                // idb
@@ -988,7 +989,7 @@ void __cdecl InitControlPan()
 		pMultiBtns = LoadFileInMem("CtrlPan\\P8But2.CEL", 0);
 		pTalkBtns = LoadFileInMem("CtrlPan\\TalkButt.CEL", 0);
 		sgbPlrTalkTbl = 0;
-		*(_DWORD *)&tempstr[256] = 0x1010101;
+		*(_DWORD *)byte_4B894C = 0x1010101;
 		talkbtndown[0] = 0;
 		talkbtndown[1] = 0;
 		sgszTalkMsg[0] = 0;
@@ -2651,7 +2652,7 @@ void __cdecl DrawTalkPan()
 			if ((signed int)a1 >= (signed int)&plr[4]._pName)
 				return;
 		}
-		if (tempstr[v10 + 256]) {
+		if (byte_4B894C[v10]) {
 			v6 = 3;
 			if (!talkbtndown[v5]) {
 			LABEL_18:
@@ -2768,7 +2769,7 @@ void __cdecl control_reset_talk_msg()
 	BOOL v0 = FALSE;
 	v1 = 0;
 	do {
-		if (tempstr[v1 + 256])
+		if (byte_4B894C[v1])
 			v0 |= 1 << v1;
 		++v1;
 	} while (v1 < 4);
