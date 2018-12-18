@@ -3,7 +3,7 @@
 #include "../types.h"
 
 char gbSomebodyWonGameKludge; // weak
-char pkdata_6761C0[4100];
+TBuffer sgHiPriBuf;
 char szPlayerDescript[128];
 short sgwPackPlrOffsetTbl[MAX_PLRS];
 PkPlayerStruct netplr[MAX_PLRS];
@@ -19,7 +19,7 @@ _gamedata sgGameInitInfo;
 char byte_678640;    // weak
 int sglTimeoutStart; // weak
 int sgdwPlayerLeftReasonTbl[MAX_PLRS];
-char pkdata_678658[4100];
+TBuffer sgLoPriBuf;
 unsigned int sgdwGameLoops; // idb
 BYTE gbMaxPlayers;
 char sgbTimeout; // weak
@@ -56,26 +56,27 @@ void __fastcall NetSendLoPri(BYTE *pbMsg, BYTE bLen)
 {
 	if (pbMsg) {
 		if (bLen) {
-			multi_copy_packet(pkdata_678658, pbMsg, bLen);
+			multi_copy_packet(&sgLoPriBuf, pbMsg, bLen);
 			multi_send_packet(pbMsg, bLen);
 		}
 	}
 }
 
-void __fastcall multi_copy_packet(void *a1, void *packet, BYTE size)
+void __fastcall multi_copy_packet(TBuffer *a1, void *packet, BYTE size)
 {
-	int v3;   // eax
-	int v4;   // ebx
-	char *v5; // esi
+	DWORD v3; // eax
+	DWORD v4; // ebx
+	BYTE *v5; // esi
 
-	v3 = *(_DWORD *)a1;
-	v4 = *(_DWORD *)a1 + (unsigned char)size;
-	if ((unsigned int)(v4 + 2) <= 0x1000) {
-		*(_DWORD *)a1 = v4 + 1;
-		*((_BYTE *)a1 + v3 + 4) = size;
-		v5 = (char *)a1 + v3 + 5;
-		memcpy(v5, packet, (unsigned char)size);
-		v5[(unsigned char)size] = 0;
+	v3 = a1->dwNextWriteOffset;
+	v4 = a1->dwNextWriteOffset + size;
+	if ( v4 + 2 <= 0x1000 )
+	{
+		a1->dwNextWriteOffset = v4 + 1;
+		a1->bData[v3] = size;
+		v5 = &a1->bData[v3 + 1];
+		memcpy(v5, packet, size);
+		v5[size] = 0;
 	}
 }
 
@@ -114,15 +115,15 @@ void __fastcall NetSendHiPri(BYTE *pbMsg, BYTE bLen)
 	int size;          // [esp+20Ch] [ebp-4h]
 
 	if (pbMsg && bLen) {
-		multi_copy_packet(pkdata_6761C0, pbMsg, bLen);
+		multi_copy_packet(&sgHiPriBuf, pbMsg, bLen);
 		multi_send_packet(pbMsg, bLen);
 	}
 	if (!dword_678628) {
 		dword_678628 = 1;
 		NetRecvPlrData(&pkt);
 		size = gdwNormalMsgSize - 19;
-		v5 = multi_recv_packet(pkdata_6761C0, pkt.body, &size);
-		v6 = (TSyncHeader *)multi_recv_packet(pkdata_678658, v5, &size);
+		v5 = multi_recv_packet(&sgHiPriBuf, pkt.body, &size);
+		v6 = (TSyncHeader *)multi_recv_packet(&sgLoPriBuf, v5, &size);
 		v7 = sync_all_monsters(v6, size);
 		v8 = gdwNormalMsgSize - v7;
 		pkt.hdr.wLen = v8;
@@ -133,32 +134,34 @@ void __fastcall NetSendHiPri(BYTE *pbMsg, BYTE bLen)
 // 678628: using guessed type int dword_678628;
 // 679760: using guessed type int gdwNormalMsgSize;
 
-unsigned char *__fastcall multi_recv_packet(void *packet, unsigned char *a2, int *a3)
+unsigned char *__fastcall multi_recv_packet(TBuffer *packet, unsigned char *a2, int *a3)
 {
-	char *v3;              // esi
+	TBuffer *v3; // esi
 	unsigned char *result; // eax
-	char *v5;              // ebx
-	size_t v6;             // edi
-	char *v7;              // ebx
-	unsigned char *v8;     // [esp+4h] [ebp-4h]
+	BYTE *v5; // ebx
+	size_t v6; // edi
+	char *v7; // ebx
+	unsigned char *v8; // [esp+4h] [ebp-4h]
 
-	v3 = (char *)packet;
+	v3 = packet;
 	result = a2;
 	v8 = a2;
-	if (*(_DWORD *)packet) {
-		v5 = (char *)packet + 4;
-		while (*v5) {
-			v6 = (unsigned char)*v5;
-			if (v6 > *a3)
+	if ( packet->dwNextWriteOffset )
+	{
+		v5 = packet->bData;
+		while ( *v5 )
+		{
+			v6 = *v5;
+			if ( v6 > *a3 )
 				break;
-			v7 = v5 + 1;
+			v7 = (char *)(v5 + 1);
 			memcpy(v8, v7, v6);
 			v8 += v6;
-			v5 = &v7[v6];
+			v5 = (BYTE *)&v7[v6];
 			*a3 -= v6;
 		}
-		memcpy(v3 + 4, v5, (size_t)&v3[*(_DWORD *)v3 - (_DWORD)v5 + 5]);
-		*(_DWORD *)v3 += v3 - v5 + 4;
+		memcpy(v3->bData, v5, (size_t)&v3->bData[v3->dwNextWriteOffset - (_DWORD)v5 + 1]); /* memcpy_0 */
+		v3->dwNextWriteOffset += (char *)v3 - (char *)v5 + 4;
 		result = v8;
 	}
 	return result;
@@ -338,7 +341,7 @@ int __cdecl multi_handle_delta()
 	if (recieved) {
 		if (dword_678628) {
 			dword_678628 = 0;
-			if (!multi_check_pkt_valid(pkdata_6761C0))
+			if (!multi_check_pkt_valid(&sgHiPriBuf))
 				NetSendHiPri(0, 0);
 		} else {
 			NetSendHiPri(0, 0);
@@ -353,9 +356,9 @@ int __cdecl multi_handle_delta()
 // 679661: using guessed type char sgbTimeout;
 
 // Microsoft VisualC 2-11/net runtime
-int __fastcall multi_check_pkt_valid(char *a1)
+int __fastcall multi_check_pkt_valid(TBuffer *a1)
 {
-	return *(_DWORD *)a1 == 0;
+	return a1->dwNextWriteOffset == 0;
 }
 
 void __cdecl multi_mon_seeds()
@@ -759,8 +762,8 @@ int __fastcall NetInit(int bSinglePlayer, int *pfExitProgram)
 		sgbTimeout = 0;
 		delta_init();
 		InitPlrMsg();
-		multi_clear_pkt(pkdata_6761C0);
-		multi_clear_pkt(pkdata_678658);
+		buffer_init(&sgHiPriBuf);
+		buffer_init(&sgLoPriBuf);
 		dword_678628 = 0;
 		sync_clear_pkt();
 		nthread_start(sgbPlayerTurnBitTbl[myplr]);
@@ -804,10 +807,10 @@ int __fastcall NetInit(int bSinglePlayer, int *pfExitProgram)
 // 6796E4: using guessed type char gbDeltaSender;
 // 6796E8: using guessed type int sgbNetInited;
 
-void __fastcall multi_clear_pkt(char *a1)
+void __fastcall buffer_init(TBuffer *pBuf)
 {
-	*(_DWORD *)a1 = 0;
-	a1[4] = 0;
+	pBuf->dwNextWriteOffset = 0;
+	pBuf->bData[0] = 0;
 }
 
 void __fastcall multi_send_pinfo(int pnum, char cmd)
