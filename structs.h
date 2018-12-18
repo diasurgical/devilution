@@ -946,6 +946,11 @@ typedef struct TMegaPkt {
 	BYTE data[32000];
 } TMegaPkt;
 
+typedef struct TBuffer {
+	DWORD dwNextWriteOffset;
+	BYTE bData[4096];
+} TBuffer;
+
 //////////////////////////////////////////////////
 // quests
 //////////////////////////////////////////////////
