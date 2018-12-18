@@ -3,7 +3,7 @@
 #include "../types.h"
 
 static float mainmenu_cpp_init_value = INFINITY;
-char chr_name_str[16];
+char gszHero[16];
 
 /* data */
 
@@ -44,7 +44,7 @@ int __stdcall mainmenu_select_hero_dialog(
 		        pfile_delete_save,
 		        pfile_ui_set_class_stats,
 		        &a5,
-		        chr_name_str,
+		        gszHero,
 		        &gnDifficulty))
 			TermMsg("Unable to display SelHeroSing");
 
@@ -60,7 +60,7 @@ int __stdcall mainmenu_select_hero_dialog(
 	               pfile_ui_set_class_stats,
 	               &a5,
 	               &a6,
-	               chr_name_str)) {
+	               gszHero)) {
 		TermMsg("Can't load multiplayer dialog");
 	}
 	if (a5 == 4) {
@@ -76,7 +76,7 @@ int __stdcall mainmenu_select_hero_dialog(
 			*multi = a6;
 	}
 	if (cname && clen)
-		SStrCopy(cname, chr_name_str, clen);
+		SStrCopy(cname, gszHero, clen);
 
 	return 1;
 }

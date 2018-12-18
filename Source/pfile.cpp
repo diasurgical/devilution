@@ -150,7 +150,7 @@ BOOL __fastcall pfile_create_player_description(char *dst, unsigned int len)
 	myplr = 0;
 	pfile_read_player_from_save();
 	game_2_ui_player(plr, &uihero, gbValidSaveFile);
-	UiSetupPlayerInfo(chr_name_str, &uihero, GAME_ID);
+	UiSetupPlayerInfo(gszHero, &uihero, GAME_ID);
 
 	if (dst != NULL && len) {
 		if (UiCreatePlayerDescription(&uihero, GAME_ID, desc) == 0)
@@ -184,10 +184,10 @@ BOOL __fastcall pfile_create_save_file(const char *name_1, const char *name_2)
 
 	SStrCopy(hero_names[save_num], name_2, PLR_NAME_LEN);
 	SStrCopy(plr[i]._pName, name_2, PLR_NAME_LEN);
-	if (!_strcmpi(chr_name_str, name_1))
-		SStrCopy(chr_name_str, name_2, sizeof(chr_name_str));
+	if (!_strcmpi(gszHero, name_1))
+		SStrCopy(gszHero, name_2, sizeof(gszHero));
 	game_2_ui_player(plr, &uihero, gbValidSaveFile);
-	UiSetupPlayerInfo(chr_name_str, &uihero, GAME_ID);
+	UiSetupPlayerInfo(gszHero, &uihero, GAME_ID);
 	pfile_write_hero();
 	return TRUE;
 }
@@ -485,7 +485,7 @@ void __cdecl pfile_read_player_from_save()
 	unsigned int save_num;
 	PkPlayerStruct pkplr;
 
-	save_num = pfile_get_save_num_from_name(chr_name_str);
+	save_num = pfile_get_save_num_from_name(gszHero);
 	archive = pfile_open_save_archive(NULL, save_num);
 	if (archive == NULL)
 		TermMsg("Unable to open archive");
