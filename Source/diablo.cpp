@@ -1892,31 +1892,22 @@ void __fastcall LoadGameLevel(BOOL firstflag, int lvldir)
 // 5CF31D: using guessed type char setlevel;
 // 679660: using guessed type char gbMaxPlayers;
 
-void __fastcall game_loop(BOOLEAN bStartup)
+void __fastcall game_loop(BOOL bStartup)
 {
-	int v1; // ecx
-	int v2; // esi
+	int i;
 
-	v1 = bStartup != 0 ? 0x39 : 0;
-	v2 = v1 + 3;
-	if (v1 != -3) {
-		while (1) {
-			--v2;
-			if (!multi_handle_delta())
-				break;
-			timeout_cursor(0);
+	i = bStartup ? 60 : 3;
+
+	while(i--) {
+		if(!multi_handle_delta()) {
+			timeout_cursor(TRUE);
+			break;
+		} else {
+			timeout_cursor(FALSE);
 			game_logic();
-			if (gbRunGame) {
-				if (gbMaxPlayers != 1) {
-					if (nthread_has_500ms_passed(0)) {
-						if (v2)
-							continue;
-					}
-				}
-			}
-			return;
 		}
-		timeout_cursor(1);
+		if(!gbRunGame || gbMaxPlayers == 1 || !nthread_has_500ms_passed(TRUE))
+			break;
 	}
 }
 // 679660: using guessed type char gbMaxPlayers;
@@ -1967,7 +1958,7 @@ void __cdecl game_logic()
 // 525740: using guessed type int PauseMode;
 // 679660: using guessed type char gbMaxPlayers;
 
-void __fastcall timeout_cursor(BOOLEAN bTimeout)
+void __fastcall timeout_cursor(BOOL bTimeout)
 {
 	if (bTimeout) {
 		if (sgnTimeoutCurs == CURSOR_NONE && !sgbMouseDown) {
