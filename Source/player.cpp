@@ -1781,7 +1781,7 @@ void __fastcall StartPlayerKill(int pnum, int earflag)
 void __fastcall PlrDeadItem(int pnum, ItemStruct *itm, int xx, int yy)
 {
 	int x, y;
-	int i, j;
+	int i, j, k;
 
 	if (itm->_itype == ITYPE_NONE)
 		return;
@@ -1799,10 +1799,10 @@ void __fastcall PlrDeadItem(int pnum, ItemStruct *itm, int xx, int yy)
 		return;
 	}
 
-	for (yy = -1, xx = 1; yy > -50; xx++, yy--) {
-		for (j = yy; j <= xx; j++) {
+	for (k = 1; k < 50; k++) {
+		for (j = -k; j <= k; j++) {
 			y = j + plr[pnum].WorldY;
-			for (i = yy; i <= xx; i++) {
+			for (i = -k; i <= k; i++) {
 				x = i + plr[pnum].WorldX;
 				if (ItemSpaceOk(x, y)) {
 					RespawnDeadItem(itm, x, y);
