@@ -504,24 +504,22 @@ void __cdecl InitTowners()
 
 void __cdecl FreeTownerGFX()
 {
-	void **v0; // esi
-	void *v1;  // ecx
-	void *v2;  // ecx
+	void *tmp;
+	int i;
 
-	v0 = (void **)&towner[0]._tNData;
-	do {
-		v1 = *v0;
-		if (*v0 == pCowCels) {
-			*v0 = 0;
-		} else if (v1) {
-			*v0 = 0;
-			mem_free_dbg(v1);
+	for (i = 0; i < 16; i++) {
+		if (towner[i]._tNData == pCowCels) {
+			towner[i]._tNData = NULL;
+		} else if (towner[i]._tNData) {
+			tmp = towner[i]._tNData;
+			towner[i]._tNData = NULL;
+			mem_free_dbg(tmp);
 		}
-		v0 += 58;
-	} while ((signed int)v0 < (signed int)&towner[16]._tNData);
-	v2 = pCowCels;
-	pCowCels = 0;
-	mem_free_dbg(v2);
+	}
+
+	tmp = pCowCels;
+	pCowCels = NULL;
+	mem_free_dbg(tmp);
 }
 // 6ABB9C: using guessed type int dword_6ABB9C;
 
