@@ -3529,57 +3529,40 @@ LABEL_12:
 
 void __fastcall MAI_Zombie(int i)
 {
-	int v1; // esi
-	//int v2; // ST04_4
-	MonsterStruct *v3; // esi
-	int v4;            // edi
-	int v5;            // ebx
-	int v6;            // edi
-	int v7;            // eax
-	int v8;            // ecx
-	int v9;            // eax
-	int v10;           // eax
-	int v11;           // eax
-	int v12;           // ecx
-	int md;            // [esp+Ch] [ebp-Ch]
-	int v14;           // [esp+10h] [ebp-8h]
-	int arglist;       // [esp+14h] [ebp-4h]
+	MonsterStruct *Monst;
+	int mx, my;
+	int md, v;
 
-	v1 = i;
-	arglist = i;
 	if ((DWORD)i >= MAXMONSTERS) {
 		TermMsg("MAI_Zombie: Invalid monster %d", i);
-		//i = v2;
 	}
-	v3 = &monster[v1];
-	if (v3->_mmode == MM_STAND) {
-		v4 = v3->_my;
-		if (dFlags[v3->_mx][v4] & DFLAG_VISIBLE) {
-			v5 = v3->_mx - (unsigned char)v3->_menemyx;
-			v6 = v4 - (unsigned char)v3->_menemyy;
-			md = v3->_mdir;
-			v14 = random(103, 100);
-			if (abs(v5) >= 2 || abs(v6) >= 2) {
-				if (v14 < 2 * (unsigned char)v3->_mint + 10) {
-					v7 = abs(v5);
-					v8 = 2 * (unsigned char)v3->_mint + 4;
-					if (v7 >= v8 || (v9 = abs(v6), v8 = 2 * (unsigned char)v3->_mint + 4, v9 >= v8)) {
-						v11 = random(104, 100);
-						v12 = 2 * (unsigned char)v3->_mint + 20;
-						if (v11 < v12) {
+
+	Monst = &monster[i];
+	if (Monst->_mmode == MM_STAND) {
+		mx = Monst->_mx;
+		my = Monst->_my;
+		if (dFlags[mx][my] & DFLAG_VISIBLE) {
+			mx = mx - Monst->_menemyx;
+			my = my - Monst->_menemyy;
+			md = Monst->_mdir;
+			v = random(103, 100);
+			if (abs(mx) >= 2 || abs(my) >= 2) {
+				if (v < 2 * Monst->_mint + 10) {
+					if (abs(mx) >= 2 * Monst->_mint + 4 || abs(my) >= 2 * Monst->_mint + 4) {
+						if (random(104, 100) < 2 * Monst->_mint + 20) {
 							md = random(104, 8);
 						}
-						M_DumbWalk(arglist, md);
+						M_DumbWalk(i, md);
 					} else {
-						v10 = M_GetDir(arglist);
-						M_CallWalk(arglist, v10);
+						md = M_GetDir(i);
+						M_CallWalk(i, md);
 					}
 				}
-			} else if (v14 < 2 * (unsigned char)v3->_mint + 10) {
-				M_StartAttack(arglist);
+			} else if (v < 2 * Monst->_mint + 10) {
+				M_StartAttack(i);
 			}
-			if (v3->_mmode == MM_STAND)
-				v3->_mAnimData = v3->MType->Anims[MA_STAND].Data[v3->_mdir];
+			if (Monst->_mmode == MM_STAND)
+				Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[Monst->_mdir];
 		}
 	}
 }
