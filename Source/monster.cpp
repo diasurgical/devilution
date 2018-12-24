@@ -3816,95 +3816,60 @@ void __fastcall MAI_Snake(int i)
 
 void __fastcall MAI_Bat(int i)
 {
-	int esi1;            // esi
-	MonsterStruct *esi3; // esi
-	int v3;              // ecx
-	int v4;              // edx
-	int v5;              // edi
-	int v6;              // ebx
-	int v7;              // eax
-	int v10;             // edx
-	BOOLEAN v11;            // eax
-	int v12;             // ecx
-	CMonster *v14;       // eax
-	int v15;             // edi
-	int v16;             // eax
-	signed int v17;      // ecx
-	int v18;             // eax
-	int micaster;        // [esp+Ch] [ebp-18h]
-	int v1;              // [esp+10h] [ebp-14h]
-	int v2;              // [esp+14h] [ebp-10h]
-	int v22;             // [esp+18h] [ebp-Ch]
-	int midir;           // [esp+1Ch] [ebp-8h]
-	int arglist;         // [esp+20h] [ebp-4h]
+	MonsterStruct *Monst;
+	int md, v, micaster;
+	int fx, fy, xd, yd, mx, my;
 
-	esi1 = i;
-	arglist = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("MAI_Bat: Invalid monster %d", i);
-	esi3 = &monster[esi1];
-	micaster = esi3->_menemy;
-	if (esi3->_mmode == MM_STAND && esi3->_msquelch) {
-		v3 = esi3->_mx;
-		v4 = esi3->_my;
-		v5 = v3 - (unsigned char)esi3->_menemyx;
-		v6 = v4 - (unsigned char)esi3->_menemyy;
-		v7 = GetDirection(v3, v4, esi3->_lastx, esi3->_lasty);
-		midir = v7;
-		esi3->_mdir = v7;
-		v22 = random(107, 100);
-		if (_LOBYTE(esi3->_mgoal) == MGOAL_RETREAT) {
-			if (esi3->_mgoalvar1) {
-				if (random(108, 2))
-					v10 = left[midir];
-				else
-					v10 = right[midir];
-				M_CallWalk(arglist, v10);
-				_LOBYTE(esi3->_mgoal) = MGOAL_NORMAL;
+
+	Monst = &monster[i];
+	micaster = Monst->_menemy;
+	if (Monst->_mmode == MM_STAND && Monst->_msquelch) {
+		xd = Monst->_mx - Monst->_menemyx;
+		yd = Monst->_my - Monst->_menemyy;
+		md = GetDirection(Monst->_mx, Monst->_my, Monst->_lastx, Monst->_lasty);
+		Monst->_mdir = md;
+		v = random(107, 100);
+		if (Monst->_mgoal == MGOAL_RETREAT) {
+			if (!Monst->_mgoalvar1) {
+				M_CallWalk(i, opposite[md]);
+				Monst->_mgoalvar1++;
 			} else {
-				M_CallWalk(arglist, opposite[midir]);
-				++esi3->_mgoalvar1;
+				if (random(108, 2))
+					M_CallWalk(i, left[md]);
+				else
+					M_CallWalk(i, right[md]);
+				Monst->_mgoal = MGOAL_NORMAL;
 			}
 		} else {
-			v1 = (unsigned char)esi3->_menemyx;
-			v2 = (unsigned char)esi3->_menemyy;
-			if (esi3->MType->mtype == MT_GLOOM
-			    && (abs(v5) >= 5 || abs(v6) >= 5)
-			    && v22 < 4 * (unsigned char)esi3->_mint + 33
-			    && (v11 = LineClearF1(
-			            PosOkMonst,
-			            arglist,
-			            esi3->_mx,
-			            esi3->_my,
-			            v1,
-			            v2),
-			           v11)) {
-				if (AddMissile(esi3->_mx, esi3->_my, v1, v2, midir, MIS_RHINO, micaster, arglist, 0, 0) != -1) {
-					v12 = esi3->_my + 112 * esi3->_mx;
-					esi3->_mmode = MM_CHARGE;
-					dMonster[0][v12] = -1 - arglist;
+			fx = Monst->_menemyx;
+			fy = Monst->_menemyy;
+			if (Monst->MType->mtype == MT_GLOOM
+			    && (abs(xd) >= 5 || abs(yd) >= 5)
+			    && v < 4 * Monst->_mint + 33
+			    && LineClearF1(PosOkMonst, i, Monst->_mx, Monst->_my, fx, fy)) {
+				if (AddMissile(Monst->_mx, Monst->_my, fx, fy, md, MIS_RHINO, micaster, i, 0, 0) != -1) {
+				dMonster[Monst->_mx][Monst->_my] = -(i + 1);
+					Monst->_mmode = MM_CHARGE;
 				}
-			} else if (abs(v5) >= 2 || abs(v6) >= 2) {
-				v17 = esi3->_mVar2;
-				if (v17 > 20 && v22 < (unsigned char)esi3->_mint + 13
-				    || ((v18 = esi3->_mVar1, v18 == 1) || v18 == 2 || v18 == 3)
-				        && !v17
-				        && v22 < (unsigned char)esi3->_mint + 63) {
-					M_CallWalk(arglist, midir);
+			} else if (abs(xd) >= 2 || abs(yd) >= 2) {
+				if (Monst->_mVar2 > 20 && v < Monst->_mint + 13
+				    || (Monst->_mVar1 == 1 || Monst->_mVar1 == 2 || Monst->_mVar1 == 3)
+				        && !Monst->_mVar2
+				        && v < Monst->_mint + 63) {
+					M_CallWalk(i, md);
 				}
-			} else if (v22 < 4 * (unsigned char)esi3->_mint + 8) {
-				M_StartAttack(arglist);
-				v14 = esi3->MType;
-				esi3->_mgoalvar1 = 0;
-				_LOBYTE(esi3->_mgoal) = MGOAL_RETREAT;
-				if (v14->mtype == MT_FAMILIAR) {
-					v15 = (unsigned char)esi3->_menemyx;
-					v16 = random(109, 10);
-					AddMissile(v15, (unsigned char)esi3->_menemyy, v15 + 1, 0, -1, MIS_LIGHTNING, 1, arglist, v16 + 1, 0);
+			} else if (v < 4 * Monst->_mint + 8) {
+				M_StartAttack(i);
+				Monst->_mgoal = MGOAL_RETREAT;
+				Monst->_mgoalvar1 = 0;
+				if (Monst->MType->mtype == MT_FAMILIAR) {
+					AddMissile(Monst->_menemyx, Monst->_menemyy, Monst->_menemyx + 1, 0, -1, MIS_LIGHTNING, 1, i, random(109, 10) + 1, 0);
 				}
 			}
-			if (esi3->_mmode == MM_STAND)
-				esi3->_mAnimData = esi3->MType->Anims[MA_STAND].Data[midir];
+			if (Monst->_mmode == MM_STAND)
+				Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
 		}
 	}
 }
