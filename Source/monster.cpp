@@ -5630,62 +5630,52 @@ void __fastcall MAI_SnotSpil(int i)
 
 void __fastcall MAI_Lazurus(int i)
 {
-	int v1; // ebx
-	int v2; // esi
-	int v3; // ebp
-	int v4; // edi
-	int v5; // ebx
-	//int v6; // eax
-	char v7;     // al
-	int v8;      // eax
-	int arglist; // [esp+8h] [ebp-4h]
+	int mx, my, md;
+	MonsterStruct *Monst;
 
-	v1 = i;
-	arglist = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("MAI_Lazurus: Invalid monster %d", i);
-	v2 = v1;
-	if (monster[v1]._mmode == MM_STAND) {
-		v3 = monster[v2]._my;
-		v4 = monster[v2]._mx;
-		v5 = M_GetDir(v1);
-		if (dFlags[v4][v3] & DFLAG_VISIBLE) {
-			if (gbMaxPlayers != 1)
-				goto LABEL_29;
-			if (monster[v2].mtalkmsg == QUEST_VILE13) {
-				if (_LOBYTE(monster[v2]._mgoal) == MGOAL_INQUIRING && plr[myplr].WorldX == QUEST_VILE13 && plr[myplr].WorldY == 46) {
-					PlayInGameMovie("gendata\\fprst3.smk");
-					monster[v2]._mmode = MM_TALK;
-					quests[QTYPE_VB]._qvar1 = 5;
-				}
-				if (monster[v2].mtalkmsg == QUEST_VILE13) {
-					//_LOBYTE(v6) = effect_is_playing(USFX_LAZ1);
-					if (!effect_is_playing(USFX_LAZ1) && _LOBYTE(monster[v2]._mgoal) == MGOAL_TALKING) {
-						ObjChangeMapResync(1, 18, 20, 24);
-						RedoPlayerVision();
-						monster[v2]._msquelch = -1;
-						monster[v2].mtalkmsg = 0;
-						quests[QTYPE_VB]._qvar1 = 6;
-						_LOBYTE(monster[v2]._mgoal) = MGOAL_NORMAL;
-					}
-				}
-			}
-			if (gbMaxPlayers != 1) {
-			LABEL_29:
-				if (monster[v2].mtalkmsg == QUEST_VILE13 && _LOBYTE(monster[v2]._mgoal) == MGOAL_INQUIRING && quests[QTYPE_VB]._qvar1 <= 3u)
-					monster[v2]._mmode = MM_TALK;
-			}
-		}
-		v7 = monster[v2]._mgoal;
-		if (v7 == MGOAL_NORMAL || v7 == MGOAL_RETREAT || v7 == MGOAL_MOVE) {
-			monster[v2].mtalkmsg = 0;
-			MAI_Counselor(arglist);
-		}
-		monster[v2]._mdir = v5;
-		v8 = monster[v2]._mmode;
-		if (v8 == MM_STAND || v8 == MM_TALK)
-			monster[v2]._mAnimData = monster[v2].MType->Anims[MA_STAND].Data[v5];
+
+	Monst = &monster[i];
+	if (monster[i]._mmode != MM_STAND) {
+		return;
 	}
+
+	mx = Monst->_my;
+	my = Monst->_mx;
+	md = M_GetDir(i);
+	if (dFlags[mx][my] & DFLAG_VISIBLE) {
+		if (gbMaxPlayers == 1) {
+			if (Monst->mtalkmsg == QUEST_VILE13 && Monst->_mgoal == MGOAL_INQUIRING && plr[myplr].WorldX == QUEST_VILE13 && plr[myplr].WorldY == 46) {
+				PlayInGameMovie("gendata\\fprst3.smk");
+				Monst->_mmode = MM_TALK;
+				quests[QTYPE_VB]._qvar1 = 5;
+			}
+
+			if (Monst->mtalkmsg == QUEST_VILE13 && !effect_is_playing(USFX_LAZ1) && Monst->_mgoal == MGOAL_TALKING) {
+				ObjChangeMapResync(1, 18, 20, 24);
+				RedoPlayerVision();
+				Monst->_msquelch = -1;
+				Monst->mtalkmsg = 0;
+				quests[QTYPE_VB]._qvar1 = 6;
+				Monst->_mgoal = MGOAL_NORMAL;
+			}
+		}
+
+		if (gbMaxPlayers != 1 && Monst->mtalkmsg == QUEST_VILE13 && Monst->_mgoal == MGOAL_INQUIRING && quests[QTYPE_VB]._qvar1 <= 3) {
+			Monst->_mmode = MM_TALK;
+		}
+	}
+
+	if (Monst->_mgoal == MGOAL_NORMAL || Monst->_mgoal == MGOAL_RETREAT || Monst->_mgoal == MGOAL_MOVE) {
+		Monst->mtalkmsg = 0;
+		MAI_Counselor(i);
+	}
+
+	Monst->_mdir = md;
+
+	if (Monst->_mmode == MM_STAND || Monst->_mmode == MM_TALK)
+		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
 }
 // 679660: using guessed type char gbMaxPlayers;
 
