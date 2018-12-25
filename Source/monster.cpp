@@ -5576,54 +5576,53 @@ void __fastcall MAI_Zhar(int i)
 
 void __fastcall MAI_SnotSpil(int i)
 {
-	int v1; // ebp
-	int v2; // esi
-	int v3; // ebx
-	int v4; // edi
-	int v5; // ebp
-	//int v6; // eax
-	char v7;     // al
-	int arglist; // [esp+8h] [ebp-4h]
+	int mx, my, md;
+	MonsterStruct *Monst;
 
-	v1 = i;
-	arglist = i;
+
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("MAI_SnotSpil: Invalid monster %d", i);
-	v2 = v1;
-	if (monster[v1]._mmode == MM_STAND) {
-		v3 = monster[v2]._my;
-		v4 = monster[v2]._mx;
-		v5 = M_GetDir(v1);
-		if (monster[v2].mtalkmsg == QUEST_BANNER10 && !(dFlags[v4][v3] & DFLAG_VISIBLE) && _LOBYTE(monster[v2]._mgoal) == 7) {
-			monster[v2].mtalkmsg = QUEST_BANNER11;
-			_LOBYTE(monster[v2]._mgoal) = MGOAL_INQUIRING;
-		}
-		if (monster[v2].mtalkmsg == QUEST_BANNER11 && quests[QTYPE_BOL]._qvar1 == 3) {
-			monster[v2].mtalkmsg = 0;
-			_LOBYTE(monster[v2]._mgoal) = MGOAL_NORMAL;
-		}
-		if (dFlags[v4][v3] & DFLAG_VISIBLE) {
-			if (monster[v2].mtalkmsg == QUEST_BANNER12) {
-				//_LOBYTE(v6) = effect_is_playing(USFX_SNOT3);
-				if (!effect_is_playing(USFX_SNOT3) && _LOBYTE(monster[v2]._mgoal) == MGOAL_TALKING) {
-					ObjChangeMap(setpc_x, setpc_y, setpc_w + setpc_x + 1, setpc_h + setpc_y + 1);
-					quests[QTYPE_BOL]._qvar1 = 3;
-					RedoPlayerVision();
-					monster[v2]._msquelch = -1;
-					monster[v2].mtalkmsg = 0;
-					_LOBYTE(monster[v2]._mgoal) = MGOAL_NORMAL;
-				}
-			}
-			if (quests[QTYPE_BOL]._qvar1 == 3) {
-				v7 = monster[v2]._mgoal;
-				if (v7 == MGOAL_NORMAL || v7 == MGOAL_SHOOT)
-					MAI_Fallen(arglist);
-			}
-		}
-		monster[v2]._mdir = v5;
-		if (monster[v2]._mmode == MM_STAND)
-			monster[v2]._mAnimData = monster[v2].MType->Anims[MA_STAND].Data[v5];
+
+	Monst = &monster[i];
+	if (monster[i]._mmode != MM_STAND) {
+		return;
 	}
+
+	mx = Monst->_mx;
+	my = Monst->_my;
+	md = M_GetDir(i);
+
+	if (Monst->mtalkmsg == QUEST_BANNER10 && !(dFlags[mx][my] & DFLAG_VISIBLE) && Monst->_mgoal == MGOAL_TALKING) {
+		Monst->mtalkmsg = QUEST_BANNER11;
+		Monst->_mgoal = MGOAL_INQUIRING;
+	}
+
+	if (Monst->mtalkmsg == QUEST_BANNER11 && quests[QTYPE_BOL]._qvar1 == 3) {
+		Monst->mtalkmsg = 0;
+		Monst->_mgoal = MGOAL_NORMAL;
+	}
+
+	if (dFlags[mx][my] & DFLAG_VISIBLE) {
+		if (Monst->mtalkmsg == QUEST_BANNER12) {
+			if (!effect_is_playing(USFX_SNOT3) && Monst->_mgoal == MGOAL_TALKING) {
+				ObjChangeMap(setpc_x, setpc_y, setpc_w + setpc_x + 1, setpc_h + setpc_y + 1);
+				quests[QTYPE_BOL]._qvar1 = 3;
+				RedoPlayerVision();
+				Monst->_msquelch = -1;
+				Monst->mtalkmsg = 0;
+				Monst->_mgoal = MGOAL_NORMAL;
+			}
+		}
+		if (quests[QTYPE_BOL]._qvar1 == 3) {
+			if (Monst->_mgoal == MGOAL_NORMAL || Monst->_mgoal == MGOAL_SHOOT)
+				MAI_Fallen(i);
+		}
+	}
+
+	Monst->_mdir = md;
+
+	if (Monst->_mmode == MM_STAND)
+		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
 }
 // 5CF330: using guessed type int setpc_h;
 // 5CF334: using guessed type int setpc_w;
