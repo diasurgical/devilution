@@ -4148,92 +4148,66 @@ void __fastcall MAI_Fireman(int i)
 
 void __fastcall MAI_Fallen(int i)
 {
-	int v1; // edi
-	//int v2; // ST04_4
-	int v3;   // esi
-	int v4;   // eax
-	int v5;   // ecx
-	int *v6;  // eax
-	int v7;   // edx
-	int v8;   // edx
-	int j;    // edi
-	int k;    // ecx
-	int v11;  // eax
-	int v12;  // eax
-	char v13; // al
-	int v14;  // edx
-	int v15;  // eax
-	int v16;  // esi
+	int x, y, xpos, ypos;
+	int m, rad, md;
 
-	v1 = i;
 	if ((DWORD)i >= MAXMONSTERS) {
 		TermMsg("MAI_Fallen: Invalid monster %d", i);
-		//i = v2;
 	}
-	v3 = v1;
-	if (_LOBYTE(monster[v1]._mgoal) == MGOAL_SHOOT) {
-		i = monster[v3]._mgoalvar1;
-		if (i)
-			monster[v3]._mgoalvar1 = --i;
+	if (monster[i]._mgoal == MGOAL_SHOOT) {
+		if (monster[i]._mgoalvar1)
+			monster[i]._mgoalvar1--;
 		else
-			_LOBYTE(monster[v3]._mgoal) = MGOAL_NORMAL;
+			monster[i]._mgoal = MGOAL_NORMAL;
 	}
-	if (monster[v3]._mmode == MM_STAND && monster[v3]._msquelch) {
-		if (_LOBYTE(monster[v3]._mgoal) == MGOAL_RETREAT) {
-			i = monster[v3]._mgoalvar1;
-			monster[v3]._mgoalvar1 = i - 1;
-			if (!i) {
-				v4 = monster[v3]._mdir;
-				_LOBYTE(monster[v3]._mgoal) = MGOAL_NORMAL;
-				M_StartStand(v1, opposite[v4]);
+
+	if (monster[i]._mmode == MM_STAND && monster[i]._msquelch) {
+		if (monster[i]._mgoal == MGOAL_RETREAT) {
+			if (!monster[i]._mgoalvar1--) {
+				monster[i]._mgoal = MGOAL_NORMAL;
+				M_StartStand(i, opposite[monster[i]._mdir]);
 			}
 		}
-		if (monster[v3]._mAnimFrame != monster[v3]._mAnimLen) {
-			v13 = monster[v3]._mgoal;
-			if (v13 == MGOAL_RETREAT) {
-				v14 = monster[v3]._mdir;
-			} else {
-				if (v13 != MGOAL_SHOOT) {
-					MAI_SkelSd(v1);
-					return;
+		if (monster[i]._mAnimFrame == monster[i]._mAnimLen) {
+			if (!random(113, 4)) {
+				if (!(monster[i]._mFlags & MFLAG_NOHEAL)) {
+					M_StartSpStand(i, monster[i]._mdir);
+					rad = 2 * monster[i]._mint + 2;
+					if (monster[i]._mmaxhp - rad >= monster[i]._mhitpoints)
+						monster[i]._mhitpoints = rad + monster[i]._mhitpoints;
+					else
+						monster[i]._mhitpoints = monster[i]._mmaxhp;
 				}
-				v15 = monster[v3]._mx - (unsigned char)monster[v3]._menemyx;
-				v16 = monster[v3]._my - (unsigned char)monster[v3]._menemyy;
-				if (abs(v15) < 2 && abs(v16) < 2) {
-					M_StartAttack(v1);
-					return;
-				}
-				v14 = M_GetDir(v1);
-			}
-			M_CallWalk(v1, v14);
-			return;
-		}
-		if (!random(113, 4)) {
-			if (!(monster[v3]._mFlags & MFLAG_NOHEAL)) {
-				M_StartSpStand(v1, monster[v3]._mdir);
-				v5 = 2 * (unsigned char)monster[v3]._mint + 2;
-				v6 = &monster[v3]._mhitpoints;
-				v7 = monster[v3]._mhitpoints;
-				if (monster[v3]._mmaxhp - v5 < v7)
-					*v6 = monster[v3]._mmaxhp;
-				else
-					*v6 = v5 + v7;
-			}
-			v8 = 2 * (unsigned char)monster[v3]._mint + 4;
-			for (j = -v8; j <= v8; ++j) {
-				for (k = -v8; k <= v8; ++k) {
-					if (j >= 0 && j < MAXDUNY && k >= 0 && k < MAXDUNX) {
-						v11 = dMonster[k + monster[v3]._mx][j + monster[v3]._my];
-						if (v11 > 0) {
-							v12 = v11 - 1;
-							if (monster[v12]._mAi == AI_FALLEN) {
-								_LOBYTE(monster[v12]._mgoal) = MGOAL_SHOOT;
-								monster[v12]._mgoalvar1 = 30 * (unsigned char)monster[v3]._mint + 105;
+				rad = 2 * monster[i]._mint + 4;
+				for (y = -rad; y <= rad; y++) {
+					for (x = -rad; x <= rad; x++) {
+						if (y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX) {
+							m = dMonster[x + monster[i]._mx][y + monster[i]._my];
+							if (m > 0) {
+								m--;
+								if (monster[m]._mAi == AI_FALLEN) {
+									monster[m]._mgoal = MGOAL_SHOOT;
+									monster[m]._mgoalvar1 = 30 * monster[i]._mint + 105;
+								}
 							}
 						}
 					}
 				}
 			}
+		} else if (monster[i]._mgoal == MGOAL_RETREAT) {
+			md = monster[i]._mdir;
+			M_CallWalk(i, md);
+		} else if (monster[i]._mgoal == MGOAL_SHOOT) {
+			xpos = monster[i]._mx - monster[i]._menemyx;
+			ypos = monster[i]._my - monster[i]._menemyy;
+			if (abs(xpos) < 2 && abs(ypos) < 2) {
+				M_StartAttack(i);
+			} else {
+				md = M_GetDir(i);
+				M_CallWalk(i, md);
+			}
+		} else {
+			MAI_SkelSd(i);
 		}
 	}
 }
