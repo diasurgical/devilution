@@ -5523,55 +5523,48 @@ void __fastcall MAI_Garbud(int i)
 
 void __fastcall MAI_Zhar(int i)
 {
-	int v1; // ebp
-	int v2; // esi
-	int v3; // ebx
-	int v4; // edi
-	int v5; // edi
-	int v6; // ebx
-	int v7; // ebp
-	//int v8; // eax
-	char v9;     // al
-	int arglist; // [esp+8h] [ebp-8h]
-	int v11;     // [esp+Ch] [ebp-4h]
+	int mx, my, _mx, _my, md;
+	MonsterStruct *Monst;
 
-	v1 = i;
-	arglist = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("MAI_Zhar: Invalid monster %d", i);
-	v2 = v1;
-	if (monster[v1]._mmode == MM_STAND) {
-		v3 = monster[v2]._my;
-		v4 = monster[v2]._mx;
-		v11 = M_GetDir(v1);
-		if (monster[v2].mtalkmsg == QUEST_ZHAR1 && !(dFlags[v4][v3] & DFLAG_VISIBLE) && _LOBYTE(monster[v2]._mgoal) == MGOAL_TALKING) {
-			monster[v2].mtalkmsg = QUEST_ZHAR2;
-			_LOBYTE(monster[v2]._mgoal) = MGOAL_INQUIRING;
-		}
-		if (dFlags[v4][v3] & DFLAG_VISIBLE) {
-			v5 = monster[v2]._mx - (unsigned char)monster[v2]._menemyx;
-			v6 = monster[v2]._my - (unsigned char)monster[v2]._menemyy;
-			v7 = abs(v6);
-			if (abs(v5) <= v7)
-				abs(v6);
-			else
-				abs(v5);
-			if (monster[v2].mtalkmsg == QUEST_ZHAR2) {
-				//_LOBYTE(v8) = effect_is_playing(USFX_ZHAR2);
-				if (!effect_is_playing(USFX_ZHAR2) && _LOBYTE(monster[v2]._mgoal) == MGOAL_TALKING) {
-					monster[v2]._msquelch = -1;
-					monster[v2].mtalkmsg = 0;
-					_LOBYTE(monster[v2]._mgoal) = MGOAL_NORMAL;
-				}
+
+	Monst = &monster[i];
+	if (monster[i]._mmode != MM_STAND) {
+		return;
+	}
+
+	my = Monst->_my;
+	mx = Monst->_mx;
+	md = M_GetDir(i);
+	if (Monst->mtalkmsg == QUEST_ZHAR1 && !(dFlags[mx][my] & DFLAG_VISIBLE) && Monst->_mgoal == MGOAL_TALKING) {
+		Monst->mtalkmsg = QUEST_ZHAR2;
+		Monst->_mgoal = MGOAL_INQUIRING;
+	}
+
+	if (dFlags[mx][my] & DFLAG_VISIBLE) {
+		_mx = Monst->_mx - Monst->_menemyx;
+		_my = Monst->_my - Monst->_menemyy;
+		if (abs(_mx) > abs(_my))
+			abs(_mx);
+		else
+			abs(_my);
+		if (Monst->mtalkmsg == QUEST_ZHAR2) {
+			if (!effect_is_playing(USFX_ZHAR2) && Monst->_mgoal == MGOAL_TALKING) {
+				Monst->_msquelch = -1;
+				Monst->mtalkmsg = 0;
+				Monst->_mgoal = MGOAL_NORMAL;
 			}
 		}
-		v9 = monster[v2]._mgoal;
-		if (v9 == MGOAL_NORMAL || v9 == MGOAL_RETREAT || v9 == MGOAL_MOVE)
-			MAI_Counselor(arglist);
-		monster[v2]._mdir = v11;
-		if (monster[v2]._mmode == MM_STAND)
-			monster[v2]._mAnimData = monster[v2].MType->Anims[MA_STAND].Data[v11];
 	}
+
+	if (Monst->_mgoal == MGOAL_NORMAL || Monst->_mgoal == MGOAL_RETREAT || Monst->_mgoal == MGOAL_MOVE)
+		MAI_Counselor(i);
+
+	Monst->_mdir = md;
+
+	if (Monst->_mmode == MM_STAND)
+		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
 }
 
 void __fastcall MAI_SnotSpil(int i)
