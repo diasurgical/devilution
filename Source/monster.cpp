@@ -2495,8 +2495,8 @@ void __fastcall M_TryH2HHit(int i, int pnum, int Hit, int MinDam, int MaxDam)
 	int v21;           // eax
 	int v22;           // edx
 	int v23;           // eax
-	BOOLEAN v24;          // zf
-	BOOLEAN v25;          // sf
+	BOOLEAN v24;       // zf
+	BOOLEAN v25;       // sf
 	unsigned char v26; // of
 	int v27;           // eax
 	int v29;           // edi
@@ -3269,7 +3269,7 @@ void __fastcall GroupUnity(int i)
 	int v2;           // esi
 	int v3;           // ebp
 	int v4;           // edi
-	BOOLEAN v5;          // eax
+	BOOLEAN v5;       // eax
 	int v6;           // eax
 	unsigned char v8; // al
 	int v9;           // ebp
@@ -3352,7 +3352,7 @@ BOOL __fastcall M_CallWalk(int i, int md)
 	int v4; // ebp
 	//int v5; // eax
 	BOOLEAN v7; // ebx
-	int v9;  // ebx
+	int v9;     // ebx
 	//int v10; // eax
 	int v11; // ebx
 	//int v12; // eax
@@ -3479,7 +3479,7 @@ BOOLEAN __fastcall M_RoundWalk(int i, int md, int *dir)
 	int v5;  // esi
 	//int v6; // eax
 	BOOLEAN v7; // di
-	int v8;  // edi
+	int v8;     // edi
 	//int v9; // eax
 	//int v10; // eax
 	int *v11; // ebp
@@ -3538,33 +3538,38 @@ void __fastcall MAI_Zombie(int i)
 	}
 
 	Monst = &monster[i];
-	if (Monst->_mmode == MM_STAND) {
-		mx = Monst->_mx;
-		my = Monst->_my;
-		if (dFlags[mx][my] & DFLAG_VISIBLE) {
-			mx = mx - Monst->_menemyx;
-			my = my - Monst->_menemyy;
-			md = Monst->_mdir;
-			v = random(103, 100);
-			if (abs(mx) >= 2 || abs(my) >= 2) {
-				if (v < 2 * Monst->_mint + 10) {
-					if (abs(mx) >= 2 * Monst->_mint + 4 || abs(my) >= 2 * Monst->_mint + 4) {
-						if (random(104, 100) < 2 * Monst->_mint + 20) {
-							md = random(104, 8);
-						}
-						M_DumbWalk(i, md);
-					} else {
-						md = M_GetDir(i);
-						M_CallWalk(i, md);
-					}
-				}
-			} else if (v < 2 * Monst->_mint + 10) {
-				M_StartAttack(i);
-			}
-			if (Monst->_mmode == MM_STAND)
-				Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[Monst->_mdir];
-		}
+	if (Monst->_mmode != MM_STAND) {
+		return;
 	}
+
+	mx = Monst->_mx;
+	my = Monst->_my;
+	if (!(dFlags[mx][my] & DFLAG_VISIBLE)) {
+		return;
+	}
+
+	mx = mx - Monst->_menemyx;
+	my = my - Monst->_menemyy;
+	md = Monst->_mdir;
+	v = random(103, 100);
+	if (abs(mx) >= 2 || abs(my) >= 2) {
+		if (v < 2 * Monst->_mint + 10) {
+			if (abs(mx) >= 2 * Monst->_mint + 4 || abs(my) >= 2 * Monst->_mint + 4) {
+				if (random(104, 100) < 2 * Monst->_mint + 20) {
+					md = random(104, 8);
+				}
+				M_DumbWalk(i, md);
+			} else {
+				md = M_GetDir(i);
+				M_CallWalk(i, md);
+			}
+		}
+	} else if (v < 2 * Monst->_mint + 10) {
+		M_StartAttack(i);
+	}
+
+	if (Monst->_mmode == MM_STAND)
+		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[Monst->_mdir];
 }
 
 void __fastcall MAI_SkelSd(int i)
@@ -3576,30 +3581,32 @@ void __fastcall MAI_SkelSd(int i)
 		TermMsg("MAI_SkelSd: Invalid monster %d", i);
 
 	Monst = &monster[i];
-	if (Monst->_mmode == MM_STAND && Monst->_msquelch) {
-		mx = Monst->_mx;
-		my = Monst->_my;
-		x = mx - Monst->_menemyx;
-		y = my - Monst->_menemyy;
-		md = GetDirection(mx, my, Monst->_lastx, Monst->_lasty);
-		Monst->_mdir = md;
-		if (abs(x) >= 2 || abs(y) >= 2) {
-			if (Monst->_mVar1 == MM_DELAY || (random(106, 100) >= 35 - 4 * Monst->_mint)) {
-				M_CallWalk(i, md);
-			} else {
-				M_StartDelay(i, 15 - 2 * Monst->_mint + random(106, 10));
-			}
-		} else {
-			if (Monst->_mVar1 == MM_DELAY || (random(105, 100) < 2 * Monst->_mint + 20)) {
-				M_StartAttack(i);
-			} else {
-				M_StartDelay(i, 2 * (5 - Monst->_mint) + random(105, 10));
-			}
-		}
-
-		if (Monst->_mmode == MM_STAND)
-			Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
+	if (Monst->_mmode != MM_STAND || !Monst->_msquelch) {
+		return;
 	}
+
+	mx = Monst->_mx;
+	my = Monst->_my;
+	x = mx - Monst->_menemyx;
+	y = my - Monst->_menemyy;
+	md = GetDirection(mx, my, Monst->_lastx, Monst->_lasty);
+	Monst->_mdir = md;
+	if (abs(x) >= 2 || abs(y) >= 2) {
+		if (Monst->_mVar1 == MM_DELAY || (random(106, 100) >= 35 - 4 * Monst->_mint)) {
+			M_CallWalk(i, md);
+		} else {
+			M_StartDelay(i, 15 - 2 * Monst->_mint + random(106, 10));
+		}
+	} else {
+		if (Monst->_mVar1 == MM_DELAY || (random(105, 100) < 2 * Monst->_mint + 20)) {
+			M_StartAttack(i);
+		} else {
+			M_StartDelay(i, 2 * (5 - Monst->_mint) + random(105, 10));
+		}
+	}
+
+	if (Monst->_mmode == MM_STAND)
+		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
 }
 
 BOOL __fastcall MAI_Path(int i)
@@ -3621,6 +3628,7 @@ BOOL __fastcall MAI_Path(int i)
 		if (Monst->_mx == 1 && Monst->_my == 0)
 			return FALSE;
 	}
+
 	clear = LineClearF1(
 	    PosOkMonst2,
 	    i,
@@ -3637,6 +3645,7 @@ BOOL __fastcall MAI_Path(int i)
 		if (M_PathWalk(i))
 			return TRUE;
 	}
+
 	if (Monst->MType->mtype != MT_GOLEM)
 		Monst->_pathcount = 0;
 
@@ -3647,7 +3656,7 @@ void __fastcall MAI_Snake(int i)
 {
 	int esi1;            // esi
 	MonsterStruct *esi3; // esi
-	BOOLEAN v3;             // zf
+	BOOLEAN v3;          // zf
 	int v4;              // ecx
 	int v5;              // eax
 	int v6;              // ST1C_4
@@ -3825,53 +3834,57 @@ void __fastcall MAI_Bat(int i)
 
 	Monst = &monster[i];
 	pnum = Monst->_menemy;
-	if (Monst->_mmode == MM_STAND && Monst->_msquelch) {
-		xd = Monst->_mx - Monst->_menemyx;
-		yd = Monst->_my - Monst->_menemyy;
-		md = GetDirection(Monst->_mx, Monst->_my, Monst->_lastx, Monst->_lasty);
-		Monst->_mdir = md;
-		v = random(107, 100);
-		if (Monst->_mgoal == MGOAL_RETREAT) {
-			if (!Monst->_mgoalvar1) {
-				M_CallWalk(i, opposite[md]);
-				Monst->_mgoalvar1++;
-			} else {
-				if (random(108, 2))
-					M_CallWalk(i, left[md]);
-				else
-					M_CallWalk(i, right[md]);
-				Monst->_mgoal = MGOAL_NORMAL;
-			}
+	if (Monst->_mmode != MM_STAND || !Monst->_msquelch) {
+		return;
+	}
+
+	xd = Monst->_mx - Monst->_menemyx;
+	yd = Monst->_my - Monst->_menemyy;
+	md = GetDirection(Monst->_mx, Monst->_my, Monst->_lastx, Monst->_lasty);
+	Monst->_mdir = md;
+	v = random(107, 100);
+	if (Monst->_mgoal == MGOAL_RETREAT) {
+		if (!Monst->_mgoalvar1) {
+			M_CallWalk(i, opposite[md]);
+			Monst->_mgoalvar1++;
 		} else {
-			fx = Monst->_menemyx;
-			fy = Monst->_menemyy;
-			if (Monst->MType->mtype == MT_GLOOM
-			    && (abs(xd) >= 5 || abs(yd) >= 5)
-			    && v < 4 * Monst->_mint + 33
-			    && LineClearF1(PosOkMonst, i, Monst->_mx, Monst->_my, fx, fy)) {
-				if (AddMissile(Monst->_mx, Monst->_my, fx, fy, md, MIS_RHINO, pnum, i, 0, 0) != -1) {
-					dMonster[Monst->_mx][Monst->_my] = -(i + 1);
-					Monst->_mmode = MM_CHARGE;
-				}
-			} else if (abs(xd) >= 2 || abs(yd) >= 2) {
-				if (Monst->_mVar2 > 20 && v < Monst->_mint + 13
-				    || (Monst->_mVar1 == MM_WALK || Monst->_mVar1 == MM_WALK2 || Monst->_mVar1 == MM_WALK3)
-				        && Monst->_mVar2 == 0
-				        && v < Monst->_mint + 63) {
-					M_CallWalk(i, md);
-				}
-			} else if (v < 4 * Monst->_mint + 8) {
-				M_StartAttack(i);
-				Monst->_mgoal = MGOAL_RETREAT;
-				Monst->_mgoalvar1 = 0;
-				if (Monst->MType->mtype == MT_FAMILIAR) {
-					AddMissile(Monst->_menemyx, Monst->_menemyy, Monst->_menemyx + 1, 0, -1, MIS_LIGHTNING, 1, i, random(109, 10) + 1, 0);
-				}
-			}
-			if (Monst->_mmode == MM_STAND)
-				Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
+			if (random(108, 2))
+				M_CallWalk(i, left[md]);
+			else
+				M_CallWalk(i, right[md]);
+			Monst->_mgoal = MGOAL_NORMAL;
+		}
+		return;
+	}
+
+	fx = Monst->_menemyx;
+	fy = Monst->_menemyy;
+	if (Monst->MType->mtype == MT_GLOOM
+	    && (abs(xd) >= 5 || abs(yd) >= 5)
+	    && v < 4 * Monst->_mint + 33
+	    && LineClearF1(PosOkMonst, i, Monst->_mx, Monst->_my, fx, fy)) {
+		if (AddMissile(Monst->_mx, Monst->_my, fx, fy, md, MIS_RHINO, pnum, i, 0, 0) != -1) {
+			dMonster[Monst->_mx][Monst->_my] = -(i + 1);
+			Monst->_mmode = MM_CHARGE;
+		}
+	} else if (abs(xd) >= 2 || abs(yd) >= 2) {
+		if (Monst->_mVar2 > 20 && v < Monst->_mint + 13
+		    || (Monst->_mVar1 == MM_WALK || Monst->_mVar1 == MM_WALK2 || Monst->_mVar1 == MM_WALK3)
+		        && Monst->_mVar2 == 0
+		        && v < Monst->_mint + 63) {
+			M_CallWalk(i, md);
+		}
+	} else if (v < 4 * Monst->_mint + 8) {
+		M_StartAttack(i);
+		Monst->_mgoal = MGOAL_RETREAT;
+		Monst->_mgoalvar1 = 0;
+		if (Monst->MType->mtype == MT_FAMILIAR) {
+			AddMissile(Monst->_menemyx, Monst->_menemyy, Monst->_menemyx + 1, 0, -1, MIS_LIGHTNING, 1, i, random(109, 10) + 1, 0);
 		}
 	}
+
+	if (Monst->_mmode == MM_STAND)
+		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
 }
 
 void __fastcall MAI_SkelBow(int i)
@@ -3885,35 +3898,37 @@ void __fastcall MAI_SkelBow(int i)
 		TermMsg("MAI_SkelBow: Invalid monster %d", i);
 
 	Monst = &monster[i];
-	if (Monst->_mmode == MM_STAND && Monst->_msquelch) {
-		mx = Monst->_mx - Monst->_menemyx;
-		my = Monst->_my - Monst->_menemyy;
-
-		md = M_GetDir(i);
-		Monst->_mdir = md;
-		v = random(110, 100);
-
-		if (abs(mx) < 4 && abs(my) < 4) {
-			if (Monst->_mVar2 > 20 && v < 2 * Monst->_mint + 13
-			    || (Monst->_mVar1 == MM_WALK || Monst->_mVar1 == MM_WALK2 || Monst->_mVar1 == MM_WALK3)
-			        && Monst->_mVar2 == 0
-			        && v < 2 * Monst->_mint + 63) {
-				walking = M_DumbWalk(i, opposite[md]);
-			}
-		}
-
-		mx = Monst->_menemyx;
-		my = Monst->_menemyy;
-		if (!walking) {
-			if (random(110, 100) < 2 * Monst->_mint + 3) {
-				if (LineClear(Monst->_mx, Monst->_my, mx, my))
-					M_StartRAttack(i, MIS_ARROW, 4);
-			}
-		}
-
-		if (Monst->_mmode == MM_STAND)
-			Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
+	if (Monst->_mmode != MM_STAND || !Monst->_msquelch) {
+		return;
 	}
+
+	mx = Monst->_mx - Monst->_menemyx;
+	my = Monst->_my - Monst->_menemyy;
+
+	md = M_GetDir(i);
+	Monst->_mdir = md;
+	v = random(110, 100);
+
+	if (abs(mx) < 4 && abs(my) < 4) {
+		if (Monst->_mVar2 > 20 && v < 2 * Monst->_mint + 13
+		    || (Monst->_mVar1 == MM_WALK || Monst->_mVar1 == MM_WALK2 || Monst->_mVar1 == MM_WALK3)
+		        && Monst->_mVar2 == 0
+		        && v < 2 * Monst->_mint + 63) {
+			walking = M_DumbWalk(i, opposite[md]);
+		}
+	}
+
+	mx = Monst->_menemyx;
+	my = Monst->_menemyy;
+	if (!walking) {
+		if (random(110, 100) < 2 * Monst->_mint + 3) {
+			if (LineClear(Monst->_mx, Monst->_my, mx, my))
+				M_StartRAttack(i, MIS_ARROW, 4);
+		}
+	}
+
+	if (Monst->_mmode == MM_STAND)
+		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
 }
 
 void __fastcall MAI_Fat(int i)
@@ -3925,28 +3940,30 @@ void __fastcall MAI_Fat(int i)
 		TermMsg("MAI_Fat: Invalid monster %d", i);
 
 	Monst = &monster[i];
-	if (Monst->_mmode == MM_STAND && Monst->_msquelch) {
-		mx = Monst->_mx - Monst->_menemyx;
-		my = Monst->_my - Monst->_menemyy;
-		md = M_GetDir(i);
-		Monst->_mdir = md;
-		v = random(111, 100);
-		if (abs(mx) >= 2 || abs(my) >= 2) {
-			if (Monst->_mVar2 > 20 && v < 4 * Monst->_mint + 20
-			    || (Monst->_mVar1 == MM_WALK || Monst->_mVar1 == MM_WALK2 || Monst->_mVar1 == MM_WALK3)
-					&& Monst->_mVar2 == 0
-					&& v < 4 * Monst->_mint + 70) {
-				M_CallWalk(i, md);
-			}
-		} else if (v < 4 * Monst->_mint + 15) {
-			M_StartAttack(i);
-		} else if (v < 4 * Monst->_mint + 20) {
-			M_StartSpAttack(i);
-		}
-
-		if (Monst->_mmode == MM_STAND)
-			Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
+	if (Monst->_mmode != MM_STAND || !Monst->_msquelch) {
+		return;
 	}
+
+	mx = Monst->_mx - Monst->_menemyx;
+	my = Monst->_my - Monst->_menemyy;
+	md = M_GetDir(i);
+	Monst->_mdir = md;
+	v = random(111, 100);
+	if (abs(mx) >= 2 || abs(my) >= 2) {
+		if (Monst->_mVar2 > 20 && v < 4 * Monst->_mint + 20
+		    || (Monst->_mVar1 == MM_WALK || Monst->_mVar1 == MM_WALK2 || Monst->_mVar1 == MM_WALK3)
+		        && Monst->_mVar2 == 0
+		        && v < 4 * Monst->_mint + 70) {
+			M_CallWalk(i, md);
+		}
+	} else if (v < 4 * Monst->_mint + 15) {
+		M_StartAttack(i);
+	} else if (v < 4 * Monst->_mint + 20) {
+		M_StartSpAttack(i);
+	}
+
+	if (Monst->_mmode == MM_STAND)
+		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
 }
 
 void __fastcall MAI_Sneak(int i)
@@ -4150,6 +4167,7 @@ void __fastcall MAI_Fallen(int i)
 {
 	int x, y, xpos, ypos;
 	int m, rad, md;
+	MonsterStruct *Monst;
 
 	if ((DWORD)i >= MAXMONSTERS) {
 		TermMsg("MAI_Fallen: Invalid monster %d", i);
@@ -4161,54 +4179,59 @@ void __fastcall MAI_Fallen(int i)
 			monster[i]._mgoal = MGOAL_NORMAL;
 	}
 
-	if (monster[i]._mmode == MM_STAND && monster[i]._msquelch) {
-		if (monster[i]._mgoal == MGOAL_RETREAT) {
-			if (!monster[i]._mgoalvar1--) {
-				monster[i]._mgoal = MGOAL_NORMAL;
-				M_StartStand(i, opposite[monster[i]._mdir]);
-			}
+	Monst = &monster[i];
+	if (monster[i]._mmode != MM_STAND || !monster[i]._msquelch) {
+		return;
+	}
+
+	if (Monst->_mgoal == MGOAL_RETREAT) {
+		if (!Monst->_mgoalvar1--) {
+			Monst->_mgoal = MGOAL_NORMAL;
+			M_StartStand(i, opposite[Monst->_mdir]);
 		}
-		if (monster[i]._mAnimFrame == monster[i]._mAnimLen) {
-			if (!random(113, 4)) {
-				if (!(monster[i]._mFlags & MFLAG_NOHEAL)) {
-					M_StartSpStand(i, monster[i]._mdir);
-					rad = 2 * monster[i]._mint + 2;
-					if (monster[i]._mmaxhp - rad >= monster[i]._mhitpoints)
-						monster[i]._mhitpoints = rad + monster[i]._mhitpoints;
-					else
-						monster[i]._mhitpoints = monster[i]._mmaxhp;
-				}
-				rad = 2 * monster[i]._mint + 4;
-				for (y = -rad; y <= rad; y++) {
-					for (x = -rad; x <= rad; x++) {
-						if (y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX) {
-							m = dMonster[x + monster[i]._mx][y + monster[i]._my];
-							if (m > 0) {
-								m--;
-								if (monster[m]._mAi == AI_FALLEN) {
-									monster[m]._mgoal = MGOAL_SHOOT;
-									monster[m]._mgoalvar1 = 30 * monster[i]._mint + 105;
-								}
-							}
+	}
+
+	if (Monst->_mAnimFrame == Monst->_mAnimLen) {
+		if (random(113, 4)) {
+			return;
+		}
+		if (!(Monst->_mFlags & MFLAG_NOHEAL)) {
+			M_StartSpStand(i, Monst->_mdir);
+			rad = 2 * Monst->_mint + 2;
+			if (Monst->_mmaxhp - rad >= Monst->_mhitpoints)
+				Monst->_mhitpoints = rad + Monst->_mhitpoints;
+			else
+				Monst->_mhitpoints = Monst->_mmaxhp;
+		}
+		rad = 2 * Monst->_mint + 4;
+		for (y = -rad; y <= rad; y++) {
+			for (x = -rad; x <= rad; x++) {
+				if (y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX) {
+					m = dMonster[x + Monst->_mx][y + Monst->_my];
+					if (m > 0) {
+						m--;
+						if (monster[m]._mAi == AI_FALLEN) {
+							monster[m]._mgoal = MGOAL_SHOOT;
+							monster[m]._mgoalvar1 = 30 * Monst->_mint + 105;
 						}
 					}
 				}
 			}
-		} else if (monster[i]._mgoal == MGOAL_RETREAT) {
-			md = monster[i]._mdir;
-			M_CallWalk(i, md);
-		} else if (monster[i]._mgoal == MGOAL_SHOOT) {
-			xpos = monster[i]._mx - monster[i]._menemyx;
-			ypos = monster[i]._my - monster[i]._menemyy;
-			if (abs(xpos) < 2 && abs(ypos) < 2) {
-				M_StartAttack(i);
-			} else {
-				md = M_GetDir(i);
-				M_CallWalk(i, md);
-			}
-		} else {
-			MAI_SkelSd(i);
 		}
+	} else if (Monst->_mgoal == MGOAL_RETREAT) {
+		md = Monst->_mdir;
+		M_CallWalk(i, md);
+	} else if (Monst->_mgoal == MGOAL_SHOOT) {
+		xpos = Monst->_mx - Monst->_menemyx;
+		ypos = Monst->_my - Monst->_menemyy;
+		if (abs(xpos) < 2 && abs(ypos) < 2) {
+			M_StartAttack(i);
+		} else {
+			md = M_GetDir(i);
+			M_CallWalk(i, md);
+		}
+	} else {
+		MAI_SkelSd(i);
 	}
 }
 
@@ -4221,23 +4244,25 @@ void __fastcall MAI_Cleaver(int i)
 		TermMsg("MAI_Cleaver: Invalid monster %d", i);
 
 	Monst = &monster[i];
-	if (Monst->_mmode == MM_STAND && Monst->_msquelch) {
-		mx = Monst->_mx;
-		my = Monst->_my;
-		x = mx - Monst->_menemyx;
-		y = my - Monst->_menemyy;
-
-		md = GetDirection(mx, my, Monst->_lastx, Monst->_lasty);
-		Monst->_mdir = md;
-
-		if (abs(x) >= 2 || abs(y) >= 2)
-			M_CallWalk(i, md);
-		else
-			M_StartAttack(i);
-
-		if (Monst->_mmode == MM_STAND)
-			Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
+	if (Monst->_mmode != MM_STAND || !Monst->_msquelch) {
+		return;
 	}
+
+	mx = Monst->_mx;
+	my = Monst->_my;
+	x = mx - Monst->_menemyx;
+	y = my - Monst->_menemyy;
+
+	md = GetDirection(mx, my, Monst->_lastx, Monst->_lasty);
+	Monst->_mdir = md;
+
+	if (abs(x) >= 2 || abs(y) >= 2)
+		M_CallWalk(i, md);
+	else
+		M_StartAttack(i);
+
+	if (Monst->_mmode == MM_STAND)
+		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
 }
 
 void __fastcall MAI_Round(int i, BOOL special)
@@ -4252,9 +4277,9 @@ void __fastcall MAI_Round(int i, BOOL special)
 	//int v10; // ST04_4
 	int v12; // eax
 	//int v13; // ST04_4
-	int v15;  // edi
-	int v16;  // eax
-	int v17;  // ecx
+	int v15;     // edi
+	int v16;     // eax
+	int v17;     // ecx
 	BOOLEAN v18; // eax
 	//int v19; // eax
 	int v21; // eax
@@ -4358,16 +4383,16 @@ void __fastcall MAI_GoatMc(int i)
 
 void __fastcall MAI_Ranged(int i, int missile_type, unsigned char special)
 {
-	int v3;   // edi
-	int v4;   // esi
-	char v5;  // al
-	int v6;   // eax
-	int v7;   // ecx
-	int v8;   // ebx
-	int v9;   // edi
+	int v3;      // edi
+	int v4;      // esi
+	char v5;     // al
+	int v6;      // eax
+	int v7;      // ecx
+	int v8;      // ebx
+	int v9;      // edi
 	BOOLEAN v11; // zf
-	int v12;  // eax
-	int v13;  // eax
+	int v12;     // eax
+	int v13;     // eax
 	//int v14; // ST00_4
 	//int v16; // eax
 	int x2;            // [esp+8h] [ebp-14h]
@@ -4450,13 +4475,13 @@ void __fastcall MAI_Scav(int i)
 	signed int v7;     // edi
 	int v8;            // edx
 	int v9;            // eax
-	BOOLEAN v10;          // eax
+	BOOLEAN v10;       // eax
 	int v11;           // ebx
 	int v12;           // edi
 	signed int v13;    // edi
 	int v14;           // edx
 	int v15;           // eax
-	BOOLEAN v16;          // eax
+	BOOLEAN v16;       // eax
 	int v17;           // eax
 	int v18;           // eax
 	int arglist;       // [esp+Ch] [ebp-8h]
@@ -4594,19 +4619,24 @@ void __fastcall MAI_Garg(int i)
 		if (abs(mx) < Monst->_mint + 2 && abs(my) < Monst->_mint + 2) {
 			Monst->_mFlags &= ~MFLAG_ALLOW_SPECIAL;
 		}
-	} else if (Monst->_mmode == MM_STAND && Monst->_msquelch) {
-		if (Monst->_mhitpoints<Monst->_mmaxhp>> 1 && !(Monst->_mFlags & MFLAG_NOHEAL))
-			Monst->_mgoal = MGOAL_RETREAT;
-		if (Monst->_mgoal == MGOAL_RETREAT) {
-			if (abs(dx) >= Monst->_mint + 2 || abs(dy) >= Monst->_mint + 2) {
-				Monst->_mgoal = MGOAL_NORMAL;
-				M_StartHeal(i);
-			} else if (!M_CallWalk(i, opposite[md])) {
-				Monst->_mgoal = MGOAL_NORMAL;
-			}
-		}
-		MAI_Round(i, 0);
+		return;
 	}
+
+	if (Monst->_mmode != MM_STAND || !Monst->_msquelch) {
+		return;
+	}
+
+	if (Monst->_mhitpoints<Monst->_mmaxhp>> 1 && !(Monst->_mFlags & MFLAG_NOHEAL))
+		Monst->_mgoal = MGOAL_RETREAT;
+	if (Monst->_mgoal == MGOAL_RETREAT) {
+		if (abs(dx) >= Monst->_mint + 2 || abs(dy) >= Monst->_mint + 2) {
+			Monst->_mgoal = MGOAL_NORMAL;
+			M_StartHeal(i);
+		} else if (!M_CallWalk(i, opposite[md])) {
+			Monst->_mgoal = MGOAL_NORMAL;
+		}
+	}
+	MAI_Round(i, 0);
 }
 
 void __fastcall MAI_RoundRanged(int i, int missile_type, unsigned char checkdoors, int dam, int lessmissiles)
@@ -4623,14 +4653,14 @@ void __fastcall MAI_RoundRanged(int i, int missile_type, unsigned char checkdoor
 	//int v15; // ST04_4
 	int v16; // eax
 	//int v17; // ST04_4
-	int v18;  // ecx
-	int v19;  // ebx
-	int v20;  // eax
-	int v21;  // ecx
+	int v18;     // ecx
+	int v19;     // ebx
+	int v20;     // eax
+	int v21;     // ecx
 	BOOLEAN v22; // eax
 	BOOLEAN v23; // eax
 	BOOLEAN v24; // eax
-	int v25;  // eax
+	int v25;     // eax
 	//int v26; // ST04_4
 	int v27; // eax
 	//int v28; // ST04_4
@@ -4777,12 +4807,12 @@ void __fastcall MAI_RR2(int i, int mistype, int dam)
 	//int v16; // ST04_4
 	int v17; // eax
 	//int v18; // ST04_4
-	int v19;  // ebx
-	int v20;  // eax
+	int v19;     // ebx
+	int v20;     // eax
 	BOOLEAN v21; // eax
 	BOOLEAN v22; // eax
-	int v23;  // ecx
-	int v24;  // eax
+	int v23;     // ecx
+	int v24;     // eax
 	//int v25; // ST04_4
 	int v27; // eax
 	//int v28; // ST04_4
@@ -5006,16 +5036,16 @@ void __fastcall MAI_SkelKing(int i)
 	//int v8; // ST04_4
 	int v10; // eax
 	//int v11; // ST04_4
-	int v13;  // ebx
-	int v14;  // eax
-	int v15;  // ecx
+	int v13;     // ebx
+	int v14;     // eax
+	int v15;     // ecx
 	BOOLEAN v16; // eax
 	//int v17; // eax
-	int v19;  // eax
+	int v19;     // eax
 	BOOLEAN v20; // eax
-	int v21;  // edi
-	int v22;  // ebx
-	int v23;  // eax
+	int v21;     // edi
+	int v22;     // ebx
+	int v23;     // eax
 	//int v24; // ST04_4
 	int v26; // eax
 	//int v27; // ST04_4
@@ -5142,10 +5172,10 @@ void __fastcall MAI_Rhino(int i)
 	int v14; // eax
 	int v15; // ecx
 	//int v16; // eax
-	int v18;  // eax
+	int v18;     // eax
 	BOOLEAN v19; // eax
-	int v20;  // ecx
-	int v21;  // eax
+	int v20;     // ecx
+	int v21;     // eax
 	//int v22; // ST1C_4
 	int v24; // eax
 	//int v25; // ST1C_4
@@ -5270,8 +5300,8 @@ void __fastcall MAI_Counselor(int i)
 	int v6;            // ebp
 	char v9;           // al
 	int v10;           // ecx
-	BOOLEAN v11;          // zf
-	BOOLEAN v12;          // sf
+	BOOLEAN v11;       // zf
+	BOOLEAN v12;       // sf
 	unsigned char v13; // of
 	int v14;           // edx
 	int v15;           // ecx
@@ -5699,7 +5729,7 @@ void __fastcall MAI_Lachdanan(int i)
 		}
 	}
 
-	monster[i]._mdir = md;
+	Monst->_mdir = md;
 
 	if (Monst->_mmode == MM_STAND)
 		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
@@ -5707,31 +5737,37 @@ void __fastcall MAI_Lachdanan(int i)
 
 void __fastcall MAI_Warlord(int i)
 {
+	MonsterStruct *Monst;
 	int mx, my, md;
 
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("MAI_Warlord: Invalid monster %d", i);
 
-	if (monster[i]._mmode == MM_STAND) {
-		mx = monster[i]._mx;
-		my = monster[i]._my;
-		md = M_GetDir(i);
-		if (dFlags[mx][my] & DFLAG_VISIBLE) {
-			if (monster[i].mtalkmsg == QUEST_WARLRD9 && monster[i]._mgoal == MGOAL_INQUIRING)
-				monster[i]._mmode = MM_TALK;
-			if (monster[i].mtalkmsg == QUEST_WARLRD9 && !effect_is_playing(USFX_WARLRD1) && monster[i]._mgoal == MGOAL_TALKING) {
-				monster[i]._msquelch = -1;
-				monster[i].mtalkmsg = 0;
-				monster[i]._mgoal = MGOAL_NORMAL;
-			}
-		}
-		if (monster[i]._mgoal == MGOAL_NORMAL)
-			MAI_SkelSd(i);
-
-		monster[i]._mdir = md;
-		if (monster[i]._mmode == MM_STAND || monster[i]._mmode == MM_TALK)
-			monster[i]._mAnimData = monster[i].MType->Anims[MA_STAND].Data[md];
+	Monst = &monster[i];
+	if (monster[i]._mmode != MM_STAND) {
+		return;
 	}
+
+	mx = Monst->_mx;
+	my = Monst->_my;
+	md = M_GetDir(i);
+	if (dFlags[mx][my] & DFLAG_VISIBLE) {
+		if (Monst->mtalkmsg == QUEST_WARLRD9 && Monst->_mgoal == MGOAL_INQUIRING)
+			Monst->_mmode = MM_TALK;
+		if (Monst->mtalkmsg == QUEST_WARLRD9 && !effect_is_playing(USFX_WARLRD1) && Monst->_mgoal == MGOAL_TALKING) {
+			Monst->_msquelch = -1;
+			Monst->mtalkmsg = 0;
+			Monst->_mgoal = MGOAL_NORMAL;
+		}
+	}
+
+	if (Monst->_mgoal == MGOAL_NORMAL)
+		MAI_SkelSd(i);
+
+	Monst->_mdir = md;
+
+	if (Monst->_mmode == MM_STAND || Monst->_mmode == MM_TALK)
+		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[Monst->_mdir];
 }
 
 void __cdecl DeleteMonsterList()
@@ -5773,14 +5809,14 @@ void __cdecl ProcessMonsters()
 	int v8;          // eax
 	unsigned int v9; // eax
 	int v10;         // eax
-	BOOLEAN v11;        // zf
+	BOOLEAN v11;     // zf
 	char *v12;       // ecx
 	char *v13;       // eax
 	int v14;         // ecx
 	int v15;         // eax
 	char v16;        // al
 	int v17;         // ecx
-	BOOLEAN v18;        // eax
+	BOOLEAN v18;     // eax
 	int v19;         // eax
 	int v20;         // ecx
 	int *v21;        // eax
@@ -5973,7 +6009,7 @@ BOOL __fastcall DirOK(int i, int mdir)
 	int v5;             // edi
 	int v6;             // esi
 	int v7;             // edi
-	BOOLEAN v8;            // zf
+	BOOLEAN v8;         // zf
 	int v9;             // edx
 	unsigned char *v11; // ebx
 	unsigned char v12;  // al
@@ -5983,7 +6019,7 @@ BOOL __fastcall DirOK(int i, int mdir)
 	int v16;            // ecx
 	signed int j;       // esi
 	int v18;            // eax
-	BOOLEAN v19;           // zf
+	BOOLEAN v19;        // zf
 	int v20;            // eax
 	int v21;            // [esp+Ch] [ebp-14h]
 	int v22;            // [esp+10h] [ebp-10h]
@@ -6406,7 +6442,7 @@ void __fastcall M_FallenFear(int x, int y)
 	int v5;         // esi
 	signed int v6;  // eax
 	int v7;         // eax
-	BOOLEAN v8;        // zf
+	BOOLEAN v8;     // zf
 	int v9;         // eax
 	int v10;        // eax
 	signed int v11; // [esp-10h] [ebp-1Ch]
