@@ -2,7 +2,7 @@
 
 #include "../types.h"
 
-int engine_cpp_init_value; // weak
+static float engine_cpp_init_value = INFINITY;
 char gbPixelCol;           // automap pixel color 8-bit (palette entry)
 int dword_52B970;          // BOOLEAN flip - if y < x
 int orgseed;               // weak
@@ -12,18 +12,8 @@ static CRITICAL_SECTION sgMemCrit;
 int SeedCount;    // weak
 int dword_52B99C; // BOOLEAN valid - if x/y are in bounds
 
-const int engine_inf = 0x7F800000;      // weak
 const int rand_increment = 1;           // unused
 const int rand_multiplier = 0x015A4E35; // unused
-
-struct engine_cpp_init_1 {
-	engine_cpp_init_1()
-	{
-		engine_cpp_init_value = engine_inf;
-	}
-} _engine_cpp_init_1;
-// 47A474: using guessed type int engine_inf;
-// 52B968: using guessed type int engine_cpp_init_value;
 
 void __fastcall CelDrawDatOnly(char *pDecodeTo, char *pRLEBytes, int dwRLESize, int dwRLEWdt)
 {

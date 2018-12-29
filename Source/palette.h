@@ -3,7 +3,6 @@
 #define __PALETTE_H__
 
 extern PALETTEENTRY logical_palette[256];
-extern int palette_cpp_init_value; // weak
 extern PALETTEENTRY system_palette[256];
 extern PALETTEENTRY orig_palette[256];
 extern UINT gdwPalEntries;
@@ -31,8 +30,6 @@ BOOLEAN __cdecl palette_get_colour_cycling();
 void __fastcall palette_set_color_cycling(BOOLEAN enabled);
 
 /* rdata */
-
-extern const int palette_inf; // weak
 
 /* data */
 

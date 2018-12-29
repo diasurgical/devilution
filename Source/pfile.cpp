@@ -315,14 +315,16 @@ char *__fastcall GetSaveDirectory(char *dst, int dst_size, unsigned int save_num
 BOOL __fastcall pfile_read_hero(HANDLE archive, PkPlayerStruct *pPack)
 {
 	HANDLE file;
+	BOOL decoded, ret;
+	DWORD dwlen, nSize;
+	unsigned char *buf;
 
 	if (!SFileOpenFileEx(archive, "hero", 0, &file))
 		return FALSE;
 	else {
-		DWORD dwlen;
-		BOOL ret = FALSE;
+		ret = FALSE;
 		char password[16] = PASSWORD_SINGLE;
-		DWORD nSize = 16;
+		nSize = 16;
 
 		if (gbMaxPlayers > 1)
 			strcpy(password, PASSWORD_MULTI);
@@ -330,9 +332,9 @@ BOOL __fastcall pfile_read_hero(HANDLE archive, PkPlayerStruct *pPack)
 		dwlen = SFileGetFileSize(file, NULL);
 		if (dwlen) {
 			DWORD read;
-			unsigned char *buf = DiabloAllocPtr(dwlen);
+			buf = DiabloAllocPtr(dwlen);
 			if (SFileReadFile(file, buf, dwlen, &read, NULL)) {
-				BOOL decoded = TRUE;
+				decoded = TRUE;
 				read = codec_decode(buf, dwlen, password);
 				if (!read && gbMaxPlayers > 1) {
 					GetComputerName(password, &nSize);
@@ -422,7 +424,7 @@ BOOL __stdcall pfile_ui_save_create(_uiheroinfo *heroinfo)
 				break;
 		}
 		if (save_num == MAX_CHARACTERS)
-			return false;
+			return FALSE;
 	}
 	if (!pfile_open_archive(FALSE, save_num))
 		return FALSE;

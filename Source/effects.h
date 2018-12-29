@@ -2,8 +2,7 @@
 #ifndef __EFFECTS_H__
 #define __EFFECTS_H__
 
-extern int effects_cpp_init_value; // weak
-extern int sfxdelay;               // weak
+extern int sfxdelay; // weak
 extern int sfxdnum;
 extern void *sfx_stream;
 extern TSFX *sfx_data_cur;

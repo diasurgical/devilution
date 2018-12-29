@@ -29,19 +29,22 @@ void __cdecl exception_init_filter()
 
 LONG __stdcall TopLevelExceptionFilter(PEXCEPTION_POINTERS ExceptionInfo)
 {
-	log_dump_computer_info();
-	PEXCEPTION_RECORD xcpt = ExceptionInfo->ExceptionRecord;
-
+	PEXCEPTION_RECORD xcpt;
 	char szExceptionNameBuf[MAX_PATH];
-	char *pszExceptionName = exception_get_error_type(ExceptionInfo->ExceptionRecord->ExceptionCode, szExceptionNameBuf, sizeof(szExceptionNameBuf));
+	char szModuleName[MAX_PATH];
+	char *pszExceptionName;
+	int sectionNumber, sectionOffset;
+	PCONTEXT ctx;
+
+	log_dump_computer_info();
+	xcpt = ExceptionInfo->ExceptionRecord;
+	pszExceptionName = exception_get_error_type(ExceptionInfo->ExceptionRecord->ExceptionCode, szExceptionNameBuf, sizeof(szExceptionNameBuf));
 	log_printf("Exception code: %08X %s\r\n", xcpt->ExceptionCode, pszExceptionName);
 
-	char szModuleName[MAX_PATH];
-	int sectionNumber, sectionOffset;
 	exception_unknown_module(xcpt->ExceptionAddress, szModuleName, MAX_PATH, &sectionNumber, &sectionOffset);
 	log_printf("Fault address:\t%08X %02X:%08X %s\r\n", xcpt->ExceptionAddress, sectionNumber, sectionOffset, szModuleName);
 
-	PCONTEXT ctx = ExceptionInfo->ContextRecord;
+	ctx = ExceptionInfo->ContextRecord;
 
 	log_printf("\r\nRegisters:\r\n");
 	log_printf(
@@ -75,10 +78,11 @@ LONG __stdcall TopLevelExceptionFilter(PEXCEPTION_POINTERS ExceptionInfo)
 
 void __fastcall exception_hex_format(BYTE *ptr, unsigned int numBytes)
 {
-	DWORD i;
+	DWORD i, bytesRead;
+	const char *fmt;
+	BYTE c;
 
 	while (numBytes > 0) {
-		DWORD bytesRead;
 		if (numBytes < 16)
 			bytesRead = numBytes;
 		else
@@ -90,7 +94,7 @@ void __fastcall exception_hex_format(BYTE *ptr, unsigned int numBytes)
 		log_printf("0x%08x: ", ptr);
 
 		for (i = 0; i < 16; ++i) {
-			const char *fmt = "%02x ";
+			fmt = "%02x ";
 			if (i >= bytesRead)
 				fmt = "   ";
 			log_printf(fmt, ptr[i]);
@@ -99,7 +103,6 @@ void __fastcall exception_hex_format(BYTE *ptr, unsigned int numBytes)
 		}
 
 		for (i = 0; i < bytesRead; i++) {
-			BYTE c;
 			if (isprint(ptr[i]))
 				c = ptr[i];
 			else
@@ -116,15 +119,22 @@ void __fastcall exception_hex_format(BYTE *ptr, unsigned int numBytes)
 
 void __fastcall exception_unknown_module(LPCVOID lpAddress, LPSTR lpModuleName, int iMaxLength, int *sectionNum, int *sectionOffset)
 {
+	MEMORY_BASIC_INFORMATION memInfo;
+	PIMAGE_DOS_HEADER dosHeader;
+	LONG ntOffset;
+	PIMAGE_NT_HEADERS ntHeader;
+	PIMAGE_SECTION_HEADER section;
+	DWORD numSections, moduleOffset, sectionSize, sectionAddress;
+	int i;
+
 	lstrcpyn(lpModuleName, "*unknown*", iMaxLength);
 	*sectionNum = 0;
 	*sectionOffset = 0;
 
-	MEMORY_BASIC_INFORMATION memInfo;
 	if (!VirtualQuery(lpAddress, &memInfo, sizeof(memInfo)))
 		return;
 
-	PIMAGE_DOS_HEADER dosHeader = (PIMAGE_DOS_HEADER)memInfo.AllocationBase;
+	dosHeader = (PIMAGE_DOS_HEADER)memInfo.AllocationBase;
 	if (!memInfo.AllocationBase)
 		dosHeader = (PIMAGE_DOS_HEADER)GetModuleHandle(0);
 
@@ -134,16 +144,16 @@ void __fastcall exception_unknown_module(LPCVOID lpAddress, LPSTR lpModuleName, 
 	}
 
 	if (dosHeader && dosHeader->e_magic == IMAGE_DOS_SIGNATURE) {
-		LONG ntOffset = dosHeader->e_lfanew;
+		ntOffset = dosHeader->e_lfanew;
 		if (ntOffset) {
-			PIMAGE_NT_HEADERS ntHeader = (PIMAGE_NT_HEADERS)((DWORD)dosHeader + ntOffset);
+			ntHeader = (PIMAGE_NT_HEADERS)((DWORD)dosHeader + ntOffset);
 			if (ntHeader->Signature == IMAGE_NT_SIGNATURE) {
-				PIMAGE_SECTION_HEADER section = IMAGE_FIRST_SECTION(ntHeader);
-				DWORD numSections = ntHeader->FileHeader.NumberOfSections;
-				DWORD moduleOffset = (BYTE *)lpAddress - (BYTE *)dosHeader;
-				for (int i = 0; i < numSections; i++, section++) {
-					DWORD sectionSize = section->SizeOfRawData;
-					DWORD sectionAddress = section->VirtualAddress;
+				section = IMAGE_FIRST_SECTION(ntHeader);
+				numSections = ntHeader->FileHeader.NumberOfSections;
+				moduleOffset = (BYTE *)lpAddress - (BYTE *)dosHeader;
+				for (i = 0; i < numSections; i++, section++) {
+					sectionSize = section->SizeOfRawData;
+					sectionAddress = section->VirtualAddress;
 					if (section->SizeOfRawData <= section->Misc.VirtualSize)
 						sectionSize = section->Misc.VirtualSize;
 
@@ -161,11 +171,11 @@ void __fastcall exception_unknown_module(LPCVOID lpAddress, LPSTR lpModuleName, 
 void __fastcall exception_call_stack(void *instr, STACK_FRAME *stackFrame)
 {
 	STACK_FRAME *oldStackFrame;
+	char szModuleName[MAX_PATH];
+	int sectionNumber, sectionOffset;
 
 	log_printf("Call stack:\r\nAddress  Frame    Logical addr  Module\r\n");
 	do {
-		char szModuleName[MAX_PATH];
-		int sectionNumber, sectionOffset;
 		exception_unknown_module(instr, szModuleName, MAX_PATH, &sectionNumber, &sectionOffset);
 		log_printf("%08X %08X %04X:%08X %s\r\n", instr, stackFrame, sectionNumber, sectionOffset, szModuleName);
 
@@ -190,6 +200,7 @@ void __fastcall exception_call_stack(void *instr, STACK_FRAME *stackFrame)
 char *__fastcall exception_get_error_type(DWORD dwMessageId, LPSTR lpString1, DWORD nSize)
 {
 	const char *v4; // eax
+	HMODULE ntdll;
 
 	switch (dwMessageId) {
 		CASE_EXCEPTION(v4, STACK_OVERFLOW);
@@ -215,7 +226,7 @@ char *__fastcall exception_get_error_type(DWORD dwMessageId, LPSTR lpString1, DW
 		CASE_EXCEPTION(v4, SINGLE_STEP);
 		CASE_EXCEPTION(v4, ACCESS_VIOLATION);
 	default:
-		HMODULE ntdll = GetModuleHandle("NTDLL.DLL");
+		ntdll = GetModuleHandle("NTDLL.DLL");
 		if (!FormatMessage(FORMAT_MESSAGE_FROM_HMODULE | FORMAT_MESSAGE_IGNORE_INSERTS, ntdll, dwMessageId, 0, lpString1, nSize, NULL)) {
 			v4 = "*unknown*";
 		}

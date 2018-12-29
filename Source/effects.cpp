@@ -2,13 +2,12 @@
 
 #include "../types.h"
 
-int effects_cpp_init_value; // weak
-int sfxdelay;               // weak
+static float effects_cpp_init_value = INFINITY;
+int sfxdelay; // weak
 int sfxdnum;
 void *sfx_stream;
 TSFX *sfx_data_cur;
 
-const int effects_inf = 0x7F800000;                          // weak
 const char monster_action_sounds[] = { 'a', 'h', 'd', 's' }; // idb
 
 /* data */
@@ -877,15 +876,6 @@ TSFX sgSFX[NUM_SFX] = {
 	// clang-format on
 };
 
-struct effects_cpp_init {
-	effects_cpp_init()
-	{
-		effects_cpp_init_value = effects_inf;
-	}
-} _effects_cpp_init;
-// 47A468: using guessed type int effects_inf;
-// 52A550: using guessed type int effects_cpp_init_value;
-
 BOOL __fastcall effect_is_playing(int nSFX)
 {
 	TSFX *sfx = &sgSFX[nSFX];
@@ -913,15 +903,16 @@ void __fastcall InitMonsterSND(int monst)
 	TSnd *pSnd;
 	char name[MAX_PATH];
 	char *path;
+	int mtype, i, j;
 
 	if (!gbSndInited) {
 		return;
 	}
 
-	int mtype = Monsters[monst].mtype;
-	for (int i = 0; i < 4; i++) {
+	mtype = Monsters[monst].mtype;
+	for (i = 0; i < 4; i++) {
 		if (monster_action_sounds[i] != 's' || monsterdata[mtype].snd_special) {
-			for (int j = 0; j < 2; j++) {
+			for (j = 0; j < 2; j++) {
 				sprintf(name, monsterdata[mtype].sndfile, monster_action_sounds[i], j + 1);
 				path = (char *)DiabloAllocPtr(strlen(name) + 1);
 				strcpy(path, name);
@@ -936,14 +927,18 @@ void __fastcall InitMonsterSND(int monst)
 
 void __cdecl FreeEffects()
 {
-	for (int i = 0; i < nummtypes; i++) {
-		int mtype = Monsters[i].mtype;
-		for (int j = 0; j < 4; ++j) {
-			for (int k = 0; k < 2; ++k) {
-				TSnd *pSnd = Monsters[i].Snds[j][k];
+	int mtype, i, j, k;
+	char *file;
+	TSnd *pSnd;
+
+	for (i = 0; i < nummtypes; i++) {
+		mtype = Monsters[i].mtype;
+		for (j = 0; j < 4; ++j) {
+			for (k = 0; k < 2; ++k) {
+				pSnd = Monsters[i].Snds[j][k];
 				if (pSnd) {
 					Monsters[i].Snds[j][k] = NULL;
-					char *file = pSnd->sound_path;
+					file = pSnd->sound_path;
 					pSnd->sound_path = NULL;
 					sound_file_cleanup(pSnd);
 					mem_free_dbg(file);
@@ -955,22 +950,24 @@ void __cdecl FreeEffects()
 
 void __fastcall PlayEffect(int i, int mode)
 {
+	int sndIdx, mi, lVolume, lPan;
+	TSnd *snd;
+
 	if (plr[myplr].pLvlLoad) {
 		return;
 	}
 
-	int sndIdx = random(164, 2);
+	sndIdx = random(164, 2);
 	if (!gbSndInited || !gbSoundOn || gbBufferMsgs) {
 		return;
 	}
 
-	int mi = monster[i]._mMTidx;
-	TSnd *snd = Monsters[mi].Snds[mode][sndIdx];
+	mi = monster[i]._mMTidx;
+	snd = Monsters[mi].Snds[mode][sndIdx];
 	if (!snd || snd_playing(snd)) {
 		return;
 	}
 
-	int lVolume, lPan;
 	if (!calc_snd_position(monster[i]._mx, monster[i]._my, &lVolume, &lPan))
 		return;
 
@@ -980,16 +977,18 @@ void __fastcall PlayEffect(int i, int mode)
 
 BOOL __fastcall calc_snd_position(int x, int y, int *plVolume, int *plPan)
 {
+	int pan, volume;
+
 	x -= plr[myplr].WorldX;
 	y -= plr[myplr].WorldY;
 
-	int pan = (x - y) << 8;
+	pan = (x - y) << 8;
 	*plPan = pan;
 
 	if (abs(pan) > 6400)
 		return FALSE;
 
-	int volume = abs(x) > abs(y) ? abs(x) : abs(y);
+	volume = abs(x) > abs(y) ? abs(x) : abs(y);
 	volume <<= 6;
 	*plVolume = volume;
 
@@ -1009,6 +1008,8 @@ void __fastcall PlaySFX(int psfx)
 
 void __fastcall PlaySFX_priv(TSFX *pSFX, BOOL loc, int x, int y)
 {
+	int lPan, lVolume;
+
 	if (plr[myplr].pLvlLoad && gbMaxPlayers != 1) {
 		return;
 	}
@@ -1020,8 +1021,8 @@ void __fastcall PlaySFX_priv(TSFX *pSFX, BOOL loc, int x, int y)
 		return;
 	}
 
-	int lPan = 0;
-	int lVolume = 0;
+	lPan = 0;
+	lVolume = 0;
 	if (loc && !calc_snd_position(x, y, &lVolume, &lPan)) {
 		return;
 	}
@@ -1042,6 +1043,8 @@ void __fastcall PlaySFX_priv(TSFX *pSFX, BOOL loc, int x, int y)
 
 void __fastcall stream_play(TSFX *pSFX, int lVolume, int lPan)
 {
+	BOOL success;
+
 	/// ASSERT: assert(pSFX);
 	/// ASSERT: assert(pSFX->bFlags & sfx_STREAM);
 	sfx_stop();
@@ -1052,7 +1055,7 @@ void __fastcall stream_play(TSFX *pSFX, int lVolume, int lPan)
 #ifdef _DEBUG
 		SFileEnableDirectAccess(FALSE);
 #endif
-		BOOL success = SFileOpenFile(pSFX->pszName, &sfx_stream);
+		success = SFileOpenFile(pSFX->pszName, &sfx_stream);
 #ifdef _DEBUG
 		SFileEnableDirectAccess(TRUE);
 #endif
@@ -1101,10 +1104,12 @@ int __fastcall RndSFX(int psfx)
 
 void __fastcall PlaySfxLoc(int psfx, int x, int y)
 {
+	TSnd *pSnd;
+
 	psfx = RndSFX(psfx);
 
 	if (psfx >= 0 && psfx <= 3) {
-		TSnd *pSnd = sgSFX[psfx].pSnd;
+		pSnd = sgSFX[psfx].pSnd;
 		if (pSnd)
 			pSnd->start_tc = 0;
 	}
@@ -1114,13 +1119,15 @@ void __fastcall PlaySfxLoc(int psfx, int x, int y)
 
 void __cdecl FreeMonsterSnd()
 {
+	int i, j, k;
+
 	snd_update(TRUE);
 	sfx_stop();
 	sound_stop();
 
-	for (int i = 0; i < nummtypes; i++) {
-		for (int j = 0; j < 4; j++) {
-			for (int k = 0; k < 2; k++) {
+	for (i = 0; i < nummtypes; i++) {
+		for (j = 0; j < 4; j++) {
+			for (k = 0; k < 2; k++) {
 				snd_stop_snd(Monsters[i].Snds[j][k]);
 			}
 		}
@@ -1164,9 +1171,11 @@ void __cdecl sound_update()
 
 void __cdecl effects_cleanup_sfx()
 {
+	DWORD i;
+
 	FreeMonsterSnd();
 
-	for (DWORD i = 0; i < NUM_SFX; i++) {
+	for (i = 0; i < NUM_SFX; i++) {
 		if (sgSFX[i].pSnd) {
 			sound_file_cleanup(sgSFX[i].pSnd);
 			sgSFX[i].pSnd = NULL;
@@ -1195,19 +1204,22 @@ void __cdecl stream_update()
 
 void __fastcall priv_sound_init(UCHAR bLoadMask)
 {
+	UCHAR pc, bFlags;
+	DWORD i;
+
 	if (!gbSndInited) {
 		return;
 	}
 
-	UCHAR pc = bLoadMask & (SFX_ROGUE | SFX_WARRIOR | SFX_SORCEROR);
+	pc = bLoadMask & (SFX_ROGUE | SFX_WARRIOR | SFX_SORCEROR);
 	bLoadMask ^= pc;
 
-	for (DWORD i = 0; i < NUM_SFX; i++) {
+	for (i = 0; i < NUM_SFX; i++) {
 		if (sgSFX[i].pSnd) {
 			continue;
 		}
 
-		UCHAR bFlags = sgSFX[i].bFlags;
+		bFlags = sgSFX[i].bFlags;
 		if (bFlags & SFX_STREAM) {
 			continue;
 		}
@@ -1231,11 +1243,13 @@ void __cdecl sound_init()
 
 void __stdcall effects_play_sound(char *snd_file)
 {
+	DWORD i;
+
 	if (!gbSndInited || !gbSoundOn) {
 		return;
 	}
 
-	for (DWORD i = 0; i < NUM_SFX; i++) {
+	for (i = 0; i < NUM_SFX; i++) {
 		if (!_strcmpi(sgSFX[i].pszName, snd_file) && sgSFX[i].pSnd) {
 			if (!snd_playing(sgSFX[i].pSnd))
 				snd_play_snd(sgSFX[i].pSnd, 0, 0);

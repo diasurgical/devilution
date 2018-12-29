@@ -821,6 +821,7 @@ BOOL __fastcall MonsterTrapHit(int m, int mindam, int maxdam, int dist, int t, i
 	int v15;            // [esp+10h] [ebp-Ch]
 	signed int v16;     // [esp+14h] [ebp-8h]
 	signed int arglist; // [esp+18h] [ebp-4h]
+	BOOL ret;
 
 	v16 = 0;
 	arglist = m;
@@ -850,7 +851,6 @@ BOOL __fastcall MonsterTrapHit(int m, int mindam, int maxdam, int dist, int t, i
 	if (v10 > 95)
 		v10 = 95;
 	//_LOBYTE(v11) = CheckMonsterHit(arglist, (unsigned char *)&t);
-	BOOL ret;
 	if (CheckMonsterHit(arglist, &ret))
 		return ret;
 #ifdef _DEBUG

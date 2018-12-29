@@ -3,7 +3,7 @@
 #include "../types.h"
 
 _SNETVERSIONDATA fileinfo;
-int init_cpp_init_value; // weak
+static float init_cpp_init_value = INFINITY;
 int gbActive;            // weak
 char diablo_exe_path[260];
 void *unused_mpq;
@@ -15,21 +15,10 @@ void *patch_rt_mpq;
 int killed_mom_parent; // weak
 BOOLEAN screensaver_enabled_prev;
 
-const int init_inf = 0x7F800000; // weak
-
 /* data */
 
 char gszVersionNumber[260] = "internal version unknown";
 char gszProductName[260] = "Diablo v1.09";
-
-struct init_cpp_init {
-	init_cpp_init()
-	{
-		init_cpp_init_value = init_inf;
-	}
-} _init_cpp_init;
-// 47AE20: using guessed type int init_inf;
-// 63497C: using guessed type int init_cpp_init_value;
 
 void __fastcall init_cleanup(BOOLEAN show_cursor)
 {

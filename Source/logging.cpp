@@ -2,28 +2,17 @@
 
 #include "../types.h"
 
-int log_cpp_init_value; // weak
+static float log_cpp_init_value = INFINITY;
 static CRITICAL_SECTION sgMemCrit;
 CHAR FileName[260]; // idb
 char log_buffer[388];
 LPCVOID lpAddress;           // idb
 DWORD nNumberOfBytesToWrite; // idb
 
-const int log_inf = 0x7F800000; // weak
-
 /* data */
 
 int log_not_created = 1;              // weak
 HANDLE log_file = (HANDLE)0xFFFFFFFF; // idb
-
-struct log_cpp_init_1 {
-	log_cpp_init_1()
-	{
-		log_cpp_init_value = log_inf;
-	}
-} _log_cpp_init_1;
-// 47F070: using guessed type int log_inf;
-// 646A30: using guessed type int log_cpp_init_value;
 
 struct log_cpp_init_2 {
 	log_cpp_init_2()

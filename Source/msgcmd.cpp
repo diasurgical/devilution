@@ -4,20 +4,9 @@
 
 /* TODO: decompile and fix, commands are NOT deleted properly */
 
-int msgcmd_cpp_init_value; // weak
+static float msgcmd_cpp_init_value = INFINITY;
 ChatCmd sgChat_Cmd;
 int sgdwMsgCmdTimer;
-
-const int msgcmd_inf = 0x7F800000; // weak
-
-struct msgcmd_cpp_init_1 {
-	msgcmd_cpp_init_1()
-	{
-		msgcmd_cpp_init_value = msgcmd_inf;
-	}
-} _msgcmd_cpp_init_1;
-// 47F150: using guessed type int msgcmd_inf;
-// 6761A0: using guessed type int msgcmd_cpp_init_value;
 
 struct msgcmd_cpp_init_2 {
 	msgcmd_cpp_init_2()

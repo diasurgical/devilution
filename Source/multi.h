@@ -9,7 +9,6 @@ extern short sgwPackPlrOffsetTbl[MAX_PLRS];
 extern PkPlayerStruct netplr[MAX_PLRS];
 extern char sgbPlayerTurnBitTbl[MAX_PLRS];
 extern char sgbPlayerLeftGameTbl[MAX_PLRS];
-extern int multi_cpp_init_value; // weak
 extern int sgbSentThisCycle;     // idb
 extern int dword_678628;         // weak
 extern BYTE gbActivePlayers;

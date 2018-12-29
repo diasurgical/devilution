@@ -362,10 +362,12 @@ PATHNODE *__cdecl path_pop_active_step()
  * none are available */
 PATHNODE *__cdecl path_new_step()
 {
+	PATHNODE *new_node;
+
 	if (gdwCurNodes == MAXPATHNODES)
 		return NULL;
 
-	PATHNODE *new_node = &path_nodes[gdwCurNodes];
+	new_node = &path_nodes[gdwCurNodes];
 	gdwCurNodes++;
 	memset(new_node, 0, sizeof(PATHNODE));
 	return new_node;

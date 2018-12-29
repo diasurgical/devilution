@@ -9,7 +9,7 @@ short sgwPackPlrOffsetTbl[MAX_PLRS];
 PkPlayerStruct netplr[MAX_PLRS];
 char sgbPlayerTurnBitTbl[MAX_PLRS];
 char sgbPlayerLeftGameTbl[MAX_PLRS];
-int multi_cpp_init_value; // weak
+static float multi_cpp_init_value = INFINITY;
 int sgbSentThisCycle;     // idb
 int dword_678628;         // weak
 BYTE gbActivePlayers;     // weak
@@ -28,21 +28,11 @@ BYTE gbDeltaSender;
 int sgbNetInited; // weak
 int player_state[MAX_PLRS];
 
-const int multi_inf = 0x7F800000; // weak
 const int event_types[3] = {
 	EVENT_TYPE_PLAYER_LEAVE_GAME,
 	EVENT_TYPE_PLAYER_CREATE_GAME,
 	EVENT_TYPE_PLAYER_MESSAGE
 };
-
-struct multi_cpp_init {
-	multi_cpp_init()
-	{
-		multi_cpp_init_value = multi_inf;
-	}
-} _multi_cpp_init;
-// 47F154: using guessed type int multi_inf;
-// 678620: using guessed type int multi_cpp_init_value;
 
 void __fastcall multi_msg_add(BYTE *a1, unsigned char a2)
 {
