@@ -2,26 +2,15 @@
 
 #include "../types.h"
 
-int dthread_cpp_init_value;        // weak
+static float dthread_cpp_init_value = INFINITY;
 static CRITICAL_SECTION sgMemCrit; // idb
 unsigned int glpDThreadId;         // idb
 TMegaPkt *sgpInfoHead;             /* may not be right struct */
 char byte_52A508;                  // weak
 HANDLE sghWorkToDoEvent;           // idb
 
-int dthread_inf = 0x7F800000; // weak
-
 /* rdata */
 static HANDLE sghThread = (HANDLE)0xFFFFFFFF; // idb
-
-struct dthread_cpp_init_1 {
-	dthread_cpp_init_1()
-	{
-		dthread_cpp_init_value = dthread_inf;
-	}
-} _dthread_cpp_init_1;
-// 47A460: using guessed type int dthread_inf;
-// 52A4E0: using guessed type int dthread_cpp_init_value;
 
 struct dthread_cpp_init_2 {
 	dthread_cpp_init_2()

@@ -78,7 +78,7 @@ LRESULT __stdcall SelList_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPa
 	if (Msg <= 0x103)
 		return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 	if (Msg <= 0x105) {
-		v4 = (HWND)SDrawGetFrameWindow();
+		v4 = (HWND)SDrawGetFrameWindow(NULL);
 		SendMessageA(v4, Msg, wParam, lParam);
 		return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 	}

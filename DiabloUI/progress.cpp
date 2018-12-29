@@ -52,7 +52,7 @@ int __stdcall Progress_100094F4(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPara
 	{
 		if ( Msg <= 0x105 )
 		{
-			v7 = (HWND)SDrawGetFrameWindow();
+			v7 = (HWND)SDrawGetFrameWindow(NULL);
 			SendMessageA(v7, Msg, wParam, lParam);
 		}
 		else
@@ -61,7 +61,7 @@ int __stdcall Progress_100094F4(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPara
 			{
 				case 0x110u:
 					Progress_10009675(hWnd, (const CHAR *)lParam);
-					v5 = (void *)SDrawGetFrameWindow();
+					v5 = (void *)SDrawGetFrameWindow(NULL);
 					local_1000812B(v5);
 					local_1000812B(hWnd);
 					ShowCursor(1);
@@ -71,7 +71,7 @@ int __stdcall Progress_100094F4(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPara
 					{
 						SDlgKillTimer(hWnd, 1);
 						v4 = GetParent(hWnd);
-						if ( (HWND)SDrawGetFrameWindow() == v4 )
+						if ( (HWND)SDrawGetFrameWindow(NULL) == v4 )
 							Fade_100072BE(10);
 						Progress_100098B0();
 					}
@@ -153,7 +153,7 @@ BOOL __fastcall Progress_10009675(HWND hWnd, const CHAR *a2) { return 0; }
 		SDlgSetTimer(hWnd, 1, 50, 0);
 	local_10007944((int)v2, 0, &byte_10029448, -1, 1, (int)"ui_art\\spopup.pcx", &dword_1002A318, 0, 0);
 	v3 = GetParent(v2);
-	if ( (HWND)SDrawGetFrameWindow() == v3 )
+	if ( (HWND)SDrawGetFrameWindow(NULL) == v3 )
 		Fade_100073EF(v2);
 	v4 = local_10007895(0);
 	SDrawUpdatePalette(0, 10, v4, 0);
@@ -257,7 +257,7 @@ void UNKCALL Progress_100098C5(HWND hWnd) { return; }
 	{
 		SDlgKillTimer(v1, 1);
 		v3 = GetParent(v1);
-		if ( (HWND)SDrawGetFrameWindow() == v3 )
+		if ( (HWND)SDrawGetFrameWindow(NULL) == v3 )
 			Fade_100072BE(10);
 		Progress_100098B0();
 		dword_1002A2E8 &= v4;

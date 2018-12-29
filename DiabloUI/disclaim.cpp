@@ -3,7 +3,7 @@ BOOL __stdcall UiBetaDisclaimer(int a1)
 {
 	int v1; // eax
 
-	v1 = (int)SDrawGetFrameWindow();
+	v1 = (int)SDrawGetFrameWindow(NULL);
 	SDlgDialogBoxParam(ghUiInst, "DISCLAIMER_DIALOG", v1, disclaim_WndProc, a1);
 	return 1;
 }
@@ -31,7 +31,7 @@ LRESULT __stdcall disclaim_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lP
 			if (Msg != 256) {
 				if (Msg > 0x103) {
 					if (Msg <= 0x105) {
-						v5 = (HWND)SDrawGetFrameWindow();
+						v5 = (HWND)SDrawGetFrameWindow(NULL);
 						SendMessageA(v5, Msg, wParam, lParam);
 					} else if (Msg == 272) {
 						disclaim_LoadDisclaimGFX(hWnd);

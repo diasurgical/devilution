@@ -3,7 +3,7 @@
 #include "../types.h"
 
 Screen *sgpBackBuf;
-int dx_cpp_init_value; // weak
+static float dx_cpp_init_value = INFINITY;
 LPDIRECTDRAW lpDDInterface;
 IDirectDrawPalette *lpDDPalette; // idb
 int sgdwLockCount;
@@ -17,17 +17,6 @@ static CRITICAL_SECTION sgMemCrit;
 char gbBackBuf;    // weak
 char gbEmulate;    // weak
 HMODULE ghDiabMod; // idb
-
-int dx_inf = 0x7F800000; // weak
-
-struct dx_cpp_init_1 {
-	dx_cpp_init_1()
-	{
-		dx_cpp_init_value = dx_inf;
-	}
-} _dx_cpp_init_1;
-// 47A464: using guessed type int dx_inf;
-// 52A514: using guessed type int dx_cpp_init_value;
 
 struct dx_cpp_init_2 {
 	dx_cpp_init_2()
@@ -99,11 +88,13 @@ void __fastcall dx_init(HWND hWnd)
 void __cdecl dx_create_back_buffer()
 {
 	DDSCAPS caps;
-	HRESULT error_code = lpDDSPrimary->GetCaps(&caps);
+	HRESULT error_code;
+	DDSURFACEDESC ddsd;
+
+	error_code = lpDDSPrimary->GetCaps(&caps);
 	if (error_code != DD_OK)
 		DDErrMsg(error_code, 59, "C:\\Src\\Diablo\\Source\\dx.cpp");
 
-	DDSURFACEDESC ddsd;
 	if (gbBackBuf == NULL) {
 		ddsd.dwSize = sizeof(ddsd);
 		error_code = lpDDSPrimary->Lock(NULL, &ddsd, DDLOCK_WRITEONLY | DDLOCK_WAIT, NULL);
@@ -136,11 +127,13 @@ void __cdecl dx_create_back_buffer()
 void __cdecl dx_create_primary_surface()
 {
 	DDSURFACEDESC ddsd;
+	HRESULT error_code;
+
 	memset(&ddsd, 0, sizeof(ddsd));
 	ddsd.dwSize = sizeof(ddsd);
 	ddsd.dwFlags = DDSD_CAPS;
 	ddsd.ddsCaps.dwCaps = DDSCAPS_PRIMARYSURFACE;
-	HRESULT error_code = lpDDInterface->CreateSurface(&ddsd, &lpDDSPrimary, NULL);
+	error_code = lpDDInterface->CreateSurface(&ddsd, &lpDDSPrimary, NULL);
 	if (error_code != DD_OK)
 		ErrDlg(IDD_DIALOG1, error_code, "C:\\Src\\Diablo\\Source\\dx.cpp", 109);
 }
@@ -173,6 +166,9 @@ void __fastcall j_lock_buf_priv(BYTE idx)
 
 void __cdecl lock_buf_priv()
 {
+	DDSURFACEDESC ddsd;
+	HRESULT error_code;
+
 	EnterCriticalSection(&sgMemCrit);
 	if (sgpBackBuf != NULL) {
 		gpBuffer = sgpBackBuf;
@@ -191,9 +187,8 @@ void __cdecl lock_buf_priv()
 		sgdwLockCount++;
 		return;
 	}
-	DDSURFACEDESC ddsd;
 	ddsd.dwSize = sizeof(ddsd);
-	HRESULT error_code = lpDDSBackBuf->Lock(NULL, &ddsd, DDLOCK_WAIT, NULL);
+	error_code = lpDDSBackBuf->Lock(NULL, &ddsd, DDLOCK_WAIT, NULL);
 	if (error_code != DD_OK)
 		DDErrMsg(error_code, 235, "C:\\Src\\Diablo\\Source\\dx.cpp");
 
@@ -214,6 +209,8 @@ void __fastcall j_unlock_buf_priv(BYTE idx)
 
 void __cdecl unlock_buf_priv()
 {
+	HRESULT error_code;
+
 	if (sgdwLockCount == 0)
 		TermMsg("draw main unlock error");
 	if (!gpBuffer)
@@ -224,7 +221,7 @@ void __cdecl unlock_buf_priv()
 		gpBufEnd -= (int)gpBuffer;
 		gpBuffer = NULL;
 		if (sgpBackBuf == NULL) {
-			HRESULT error_code = lpDDSBackBuf->Unlock(NULL);
+			error_code = lpDDSBackBuf->Unlock(NULL);
 			if (error_code != DD_OK)
 				DDErrMsg(error_code, 273, "C:\\Src\\Diablo\\Source\\dx.cpp");
 		}
@@ -267,9 +264,11 @@ void __cdecl dx_cleanup()
 
 void __cdecl dx_reinit()
 {
+	int lockCount;
+
 	EnterCriticalSection(&sgMemCrit);
 	ClearCursor();
-	int lockCount = sgdwLockCount;
+	lockCount = sgdwLockCount;
 
 	while (sgdwLockCount != 0)
 		unlock_buf_priv();

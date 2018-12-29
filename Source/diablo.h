@@ -2,7 +2,6 @@
 #ifndef __DIABLO_H__
 #define __DIABLO_H__
 
-extern int diablo_cpp_init_value; // weak
 extern HWND ghMainWnd;
 extern int glMid1Seed[NUMLEVELS];
 extern int glMid2Seed[NUMLEVELS];

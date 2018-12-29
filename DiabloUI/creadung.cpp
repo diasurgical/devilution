@@ -53,7 +53,7 @@ LRESULT __stdcall CreaDung_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lP
 			}
 			return 0;
 		}
-		v6 = (HWND)SDrawGetFrameWindow();
+		v6 = (HWND)SDrawGetFrameWindow(NULL);
 		SendMessageA(v6, Msg, wParam, lParam);
 	}
 	return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);

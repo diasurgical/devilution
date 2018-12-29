@@ -33,7 +33,7 @@ int __stdcall ModmStat_10008CA0(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPara
 	{
 		if ( Msg <= 0x105 )
 		{
-			v6 = (HWND)SDrawGetFrameWindow();
+			v6 = (HWND)SDrawGetFrameWindow(NULL);
 			SendMessageA(v6, Msg, wParam, lParam);
 		}
 		else

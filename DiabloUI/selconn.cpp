@@ -57,7 +57,7 @@ LABEL_25:
 		return SDlgDefDialogProc(hWnd, Msg, wParam, lParam);
 	if ( Msg <= 0x105 )
 	{
-		v4 = (HWND)SDrawGetFrameWindow();
+		v4 = (HWND)SDrawGetFrameWindow(NULL);
 		SendMessageA(v4, Msg, wParam, lParam);
 		return SDlgDefDialogProc(hWnd, Msg, wParam, lParam);
 	}
@@ -1115,7 +1115,7 @@ int __stdcall UiSelectProvider(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYE
 	dword_1002A364 = a4;
 	dword_1002A358 = a5;
 	artfont_10001159();
-	v6 = SDrawGetFrameWindow();
+	v6 = SDrawGetFrameWindow(NULL);
 	v7 = SDlgDialogBoxParam(hInstance, "SELCONNECT_DIALOG", v6, SelConn_1000A0A6, 0);
 	if ( a6 )
 		*a6 = SelGame_1000B67E();
