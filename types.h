@@ -40,8 +40,8 @@
 #include "enums.h"
 #include "structs.h"
 
-#include "3rdParty/Storm/Source/storm.h"
 #include "DiabloUI/diabloui.h"
+#include "3rdParty/Storm/Source/storm.h"
 #include "3rdParty/PKWare/pkware.h"
 
 // If defined, use copy protection [Default -> Defined]
