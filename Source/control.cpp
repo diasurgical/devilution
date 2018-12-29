@@ -355,7 +355,7 @@ void __cdecl DrawSpellList()
 	int v5;               // eax
 	int v6;               // esi
 	int v7;               // eax
-	BOOLEAN v8;              // sf
+	BOOLEAN v8;           // sf
 	int v9;               // esi
 	int v10;              // eax
 	int v11;              // ebp
@@ -1694,7 +1694,7 @@ void __cdecl DrawChr()
 	int v2;      // ecx
 	int v3;      // eax
 	int v4;      // eax
-	BOOLEAN v5;     // zf
+	BOOLEAN v5;  // zf
 	int v6;      // eax
 	int v7;      // edi
 	int v8;      // edi
@@ -2040,7 +2040,7 @@ void __cdecl CheckChrBtns()
 	int v2;           // ebx
 	int v3;           // edi
 	int v4;           // edx
-	BOOLEAN v5;          // sf
+	BOOLEAN v5;       // sf
 	unsigned char v6; // of
 	int v7;           // edx
 	int v8;           // edx
@@ -2577,8 +2577,8 @@ void __fastcall control_set_gold_curs(int pnum)
 	int v1;           // ecx
 	int v2;           // eax
 	int *v3;          // eax
-	BOOLEAN v4;          // zf
-	BOOLEAN v5;          // sf
+	BOOLEAN v4;       // zf
+	BOOLEAN v5;       // sf
 	unsigned char v6; // of
 
 	v1 = pnum;

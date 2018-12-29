@@ -88,7 +88,7 @@ void __fastcall init_run_office(char *dir)
 {
 	char *v1;                              // esi
 	HANDLE v2;                             // ebx
-	BOOLEAN v3;                               // zf
+	BOOLEAN v3;                            // zf
 	HWND v4;                               // eax
 	char Directory[260];                   // [esp+8h] [ebp-348h]
 	char FileName[260];                    // [esp+10Ch] [ebp-244h]
@@ -127,12 +127,12 @@ void __fastcall init_run_office(char *dir)
 
 void __fastcall init_disable_screensaver(BOOLEAN disable)
 {
-	BOOLEAN v1;        // al
+	BOOLEAN v1;     // al
 	char Data[16];  // [esp+4h] [ebp-20h]
 	DWORD Type;     // [esp+14h] [ebp-10h]
 	DWORD cbData;   // [esp+18h] [ebp-Ch]
 	HKEY phkResult; // [esp+1Ch] [ebp-8h]
-	BOOLEAN v6;        // [esp+20h] [ebp-4h]
+	BOOLEAN v6;     // [esp+20h] [ebp-4h]
 
 	// BUGFIX: this is probably the worst possible way to do this. Alternatives: ExtEscape() with SETPOWERMANAGEMENT,
 	// SystemParametersInfo() with SPI_SETSCREENSAVEACTIVE/SPI_SETPOWEROFFACTIVE/SPI_SETLOWPOWERACTIVE

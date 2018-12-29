@@ -548,7 +548,7 @@ void __cdecl CheckCursMove()
 	int v13;        // ebx
 	int v14;        // ebx
 	int v15;        // eax
-	BOOLEAN v16;       // zf
+	BOOLEAN v16;    // zf
 	int v17;        // ecx
 	int v18;        // eax
 	int v19;        // ecx

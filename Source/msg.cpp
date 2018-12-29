@@ -1213,44 +1213,36 @@ int __fastcall ParseCmd(int pnum, TCmd *pCmd)
 
 int __fastcall On_DLEVEL(int pnum, TCmdPlrInfoHdr *pCmd)
 {
-	if ( (unsigned char)gbDeltaSender == pnum )
-	{
-		if ( sgbRecvCmd != CMD_DLEVEL_END )
-		{
-			if ( sgbRecvCmd == pCmd->bCmd )
-			{
-LABEL_17:
+	if ((unsigned char)gbDeltaSender == pnum) {
+		if (sgbRecvCmd != CMD_DLEVEL_END) {
+			if (sgbRecvCmd == pCmd->bCmd) {
+			LABEL_17:
 				memcpy(&sgRecvBuf[pCmd->wOffset], &pCmd[1], pCmd->wBytes);
 				sgdwRecvOffset += pCmd->wBytes;
 				return pCmd->wBytes + 5;
 			}
 			DeltaImportData(sgbRecvCmd, sgdwRecvOffset);
-			if ( pCmd->bCmd == CMD_DLEVEL_END )
-			{
+			if (pCmd->bCmd == CMD_DLEVEL_END) {
 				sgbDeltaChunks = 20;
 				sgbRecvCmd = CMD_DLEVEL_END;
 				return pCmd->wBytes + 5;
 			}
 			sgdwRecvOffset = 0;
-LABEL_16:
+		LABEL_16:
 			sgbRecvCmd = pCmd->bCmd;
 			goto LABEL_17;
 		}
-	}
-	else
-	{
-		if ( pCmd->bCmd != CMD_DLEVEL_END && (pCmd->bCmd != CMD_DLEVEL_0 || pCmd->wOffset) )
+	} else {
+		if (pCmd->bCmd != CMD_DLEVEL_END && (pCmd->bCmd != CMD_DLEVEL_0 || pCmd->wOffset))
 			return pCmd->wBytes + 5;
 		gbDeltaSender = pnum;
 		sgbRecvCmd = CMD_DLEVEL_END;
 	}
-	if ( pCmd->bCmd == CMD_DLEVEL_END )
-	{
+	if (pCmd->bCmd == CMD_DLEVEL_END) {
 		sgbDeltaChunks = 20;
 		return pCmd->wBytes + 5;
 	}
-	if ( pCmd->bCmd == CMD_DLEVEL_0 && !pCmd->wOffset )
-	{
+	if (pCmd->bCmd == CMD_DLEVEL_0 && !pCmd->wOffset) {
 		sgdwRecvOffset = 0;
 		goto LABEL_16;
 	}
@@ -1538,12 +1530,12 @@ int __fastcall On_GETITEM(TCmdGItem *pCmd, int pnum)
 BOOL __fastcall delta_get_item(TCmdGItem *pI, BYTE bLevel)
 {
 	TCmdGItem *v2; // esi
-	signed int v3;        // ecx
-	DLevel *v4;           // edi
-	DLevel *v5;           // eax
-	char v6;              // cl
-	DLevel *v8;           // eax
-	signed int v9;        // ecx
+	signed int v3; // ecx
+	DLevel *v4;    // edi
+	DLevel *v5;    // eax
+	char v6;       // cl
+	DLevel *v8;    // eax
+	signed int v9; // ecx
 
 	v2 = pI;
 	if (gbMaxPlayers != 1) {
@@ -1700,14 +1692,14 @@ int __fastcall On_PUTITEM(TCmdPItem *pCmd, int pnum)
 
 void __fastcall delta_put_item(TCmdPItem *pI, int x, int y, BYTE bLevel)
 {
-	TCmdPItem *v4; // ebx
-	int v5;               // eax
-	DLevel *v6;           // esi
-	DLevel *v7;           // edi
-	char v8;              // al
-	signed int v9;        // eax
-	char v10;             // [esp+Ch] [ebp-4h]
-	signed int bLevela;   // [esp+1Ch] [ebp+Ch]
+	TCmdPItem *v4;      // ebx
+	int v5;             // eax
+	DLevel *v6;         // esi
+	DLevel *v7;         // edi
+	char v8;            // al
+	signed int v9;      // eax
+	char v10;           // [esp+Ch] [ebp-4h]
+	signed int bLevela; // [esp+1Ch] [ebp+Ch]
 
 	v10 = x;
 	v4 = pI;

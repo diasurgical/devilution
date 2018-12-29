@@ -400,7 +400,7 @@ void __cdecl DrawInvBelt()
 	int v4;            // edi
 	char v5;           // cl
 	int v6;            // edx
-	BOOLEAN v7;           // zf
+	BOOLEAN v7;        // zf
 	int v8;            // ecx
 	int v9;            // eax
 	unsigned char v10; // edx
@@ -2092,14 +2092,14 @@ void __fastcall SyncGetItem(int x, int y, int idx, unsigned short ci, int iseed)
 
 int __fastcall CanPut(int i, int j)
 {
-	int v2;  // ecx
-	int v3;  // esi
-	char v4; // al
-	int v5;  // eax
-	char v6; // al
+	int v2;     // ecx
+	int v3;     // esi
+	char v4;    // al
+	int v5;     // eax
+	char v6;    // al
 	BOOLEAN v7; // sf
-	char v8; // al
-	char v9; // cl
+	char v8;    // al
+	char v9;    // cl
 
 	v2 = i;
 	if (dItem[v2][j])

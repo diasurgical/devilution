@@ -13,7 +13,7 @@ extern int multi_cpp_init_value; // weak
 extern int sgbSentThisCycle;     // idb
 extern int dword_678628;         // weak
 extern BYTE gbActivePlayers;
-extern char gbGameDestroyed;     // weak
+extern char gbGameDestroyed; // weak
 extern char sgbSendDeltaTbl[MAX_PLRS];
 extern _gamedata sgGameInitInfo;
 extern char byte_678640;    // weak

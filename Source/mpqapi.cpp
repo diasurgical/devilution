@@ -32,7 +32,7 @@ BOOLEAN __fastcall mpqapi_set_hidden(const char *pszArchive, BOOLEAN hidden)
 	const char *v2; // edi
 	BOOL v3;        // esi
 	DWORD v4;       // eax
-	BOOLEAN result;    // al
+	BOOLEAN result; // al
 	DWORD v6;       // esi
 
 	v2 = pszArchive;
@@ -172,7 +172,7 @@ void __fastcall mpqapi_free_block(int block_offset, int block_size)
 	signed int v5;   // edx
 	signed int v6;   // ecx
 	int v7;          // ecx
-	BOOLEAN v8;         // zf
+	BOOLEAN v8;      // zf
 	_BLOCKENTRY *v9; // eax
 
 	v2 = block_size;
@@ -457,7 +457,7 @@ int __fastcall mpqapi_find_free_block(int size, int *block_size)
 	signed int v3;   // esi
 	int result;      // eax
 	int v5;          // esi
-	BOOLEAN v6;         // zf
+	BOOLEAN v6;      // zf
 
 	v2 = sgpBlockTbl;
 	v3 = 2048;
@@ -688,7 +688,7 @@ void __fastcall mpqapi_flush_and_close(const char *pszArchive, BOOL bFree, int d
 
 BOOLEAN __cdecl mpqapi_write_header() // WriteMPQHeader
 {
-	BOOLEAN result;                // al
+	BOOLEAN result;             // al
 	_FILEHEADER fhdr;           // [esp+8h] [ebp-6Ch]
 	DWORD NumberOfBytesWritten; // [esp+70h] [ebp-4h]
 

@@ -651,8 +651,8 @@ void __cdecl InitItemGFX()
 
 BOOLEAN __fastcall ItemPlace(int xp, int yp)
 {
-	int v2;      // ecx
-	int v3;      // eax
+	int v2;         // ecx
+	int v3;         // eax
 	BOOLEAN result; // al
 
 	v2 = xp;
@@ -1101,7 +1101,7 @@ void __fastcall CalcSelfItems(int pnum)
 	int v4;           // edi
 	int *v5;          // eax
 	signed int v6;    // ebx
-	BOOLEAN v7;          // zf
+	BOOLEAN v7;       // zf
 	char *v8;         // eax
 	signed int v9;    // [esp+Ch] [ebp-10h]
 	signed int v10;   // [esp+10h] [ebp-Ch]
@@ -1453,14 +1453,14 @@ void __fastcall CreatePlrItems(int p)
 
 BOOL __fastcall ItemSpaceOk(int i, int j)
 {
-	int v2;  // eax
-	int v3;  // esi
-	char v4; // cl
-	int v5;  // ecx
-	char v6; // cl
+	int v2;     // eax
+	int v3;     // esi
+	char v4;    // cl
+	int v5;     // ecx
+	char v6;    // cl
 	BOOLEAN v7; // sf
-	char v8; // cl
-	char v9; // al
+	char v8;    // cl
+	char v9;    // al
 
 	if (i < 0)
 		return 0;
@@ -1669,10 +1669,10 @@ LABEL_3:
 
 void __fastcall CalcItemValue(int i)
 {
-	int v1;  // ecx
-	int v2;  // esi
+	int v1;     // ecx
+	int v2;     // esi
 	BOOLEAN v3; // sf
-	int v4;  // esi
+	int v4;     // esi
 
 	v1 = i;
 	v2 = item[v1]._iVMult1 + item[v1]._iVMult2;
@@ -2562,10 +2562,10 @@ int __fastcall RndItem(int m)
 
 int __fastcall RndUItem(int m)
 {
-	int ri;       // edx
-	int i;        // ebp
-	BOOLEAN okflag;  // edi
-	int ril[512]; // [esp+0h] [ebp-800h]
+	int ri;         // edx
+	int i;          // ebp
+	BOOLEAN okflag; // edi
+	int ril[512];   // [esp+0h] [ebp-800h]
 
 	if (m != -1) {
 		if ((monster[m].MData->mTreasure & 0x8000) != 0 && gbMaxPlayers == 1)
@@ -2637,10 +2637,10 @@ int __cdecl RndAllItems()
 
 int __fastcall RndTypeItems(int itype, int imid)
 {
-	int i;        // edi
-	BOOLEAN okflag;  // esi
-	int ril[512]; // [esp+4h] [ebp-80Ch]
-	int ri;       // [esp+80Ch] [ebp-4h]
+	int i;          // edi
+	BOOLEAN okflag; // esi
+	int ril[512];   // [esp+4h] [ebp-80Ch]
+	int ri;         // [esp+80Ch] [ebp-4h]
 
 	ri = 0;
 	i = 0;
@@ -3207,7 +3207,7 @@ void __fastcall RespawnItem(int i, BOOL FlipFlag)
 
 void __fastcall DeleteItem(int ii, int i)
 {
-	int v2;  // eax
+	int v2;     // eax
 	BOOLEAN v3; // zf
 	BOOLEAN v4; // sf
 
@@ -4174,7 +4174,7 @@ BOOLEAN __fastcall StoreStatOk(ItemStruct *h)
 BOOLEAN __fastcall SmithItemOk(int i)
 {
 	unsigned char v1; // cl
-	BOOLEAN rv;          // eax
+	BOOLEAN rv;       // eax
 
 	v1 = AllItemsList[i].itype;
 	rv = TRUE;
@@ -4288,7 +4288,7 @@ void __fastcall SpawnSmith(int lvl)
 BOOLEAN __fastcall PremiumItemOk(int i)
 {
 	unsigned char v1; // cl
-	BOOLEAN rv;          // eax
+	BOOLEAN rv;       // eax
 
 	v1 = AllItemsList[i].itype;
 	rv = 1;
@@ -4373,7 +4373,7 @@ void __fastcall SpawnPremium(int lvl)
 
 BOOLEAN __fastcall WitchItemOk(int i)
 {
-	BOOLEAN rv;          // eax
+	BOOLEAN rv;       // eax
 	unsigned char v3; // dl
 	int v4;           // edx
 	int v5;           // ecx
@@ -4581,9 +4581,9 @@ void __fastcall SpawnBoy(int lvl)
 
 BOOLEAN __fastcall HealerItemOk(int i)
 {
-	int v1;      // ecx
+	int v1;         // ecx
 	BOOLEAN result; // eax
-	int v3;      // esi
+	int v3;         // esi
 
 	v1 = i;
 	result = 0;
@@ -4866,8 +4866,8 @@ int __cdecl ItemNoFlippy()
 
 void __fastcall CreateSpellBook(int x, int y, int ispell, BOOLEAN sendmsg, int delta)
 {
-	int ii;    // edi
-	int idx;   // [esp+8h] [ebp-8h]
+	int ii;       // edi
+	int idx;      // [esp+8h] [ebp-8h]
 	BOOLEAN done; // [esp+Ch] [ebp-4h]
 
 	done = 0;

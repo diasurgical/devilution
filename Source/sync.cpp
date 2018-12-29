@@ -44,14 +44,14 @@ int __fastcall sync_all_monsters(TSyncHeader *packet, int size)
 
 void __cdecl sync_one_monster()
 {
-	int i;     // ebx
-	int v1;    // edi
-	int v2;    // esi
-	short v3;  // bp
-	short v4;  // ax
-	BOOLEAN v5;   // zf
-	short *v6; // edx
-	short *v7; // eax
+	int i;      // ebx
+	int v1;     // edi
+	int v2;     // esi
+	short v3;   // bp
+	short v4;   // ax
+	BOOLEAN v5; // zf
+	short *v6;  // edx
+	short *v7;  // eax
 
 	for (i = 0; i < nummonsters; ++i) {
 		v1 = monstactive[i];

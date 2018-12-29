@@ -123,7 +123,7 @@ BOOLEAN __fastcall msgcmd_delete_server_cmd_W(ChatCmd *cmd, ServerCommand *exter
 {
 	char *v2;          // eax
 	ServerCommand *v3; // eax
-	BOOLEAN v4;           // si
+	BOOLEAN v4;        // si
 	ChatCmd *ptr;      // [esp+Ch] [ebp+4h]
 
 	v2 = (char *)ptr;

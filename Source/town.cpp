@@ -240,7 +240,7 @@ void __fastcall town_draw_lower(int x, int y, int sx, int sy, int a5, int some_f
 	char *v14;          // edi
 	int v15;            // eax
 	int v16;            // eax
-	BOOLEAN v17;           // zf
+	BOOLEAN v17;        // zf
 	int *v18;           // ebx
 	unsigned char *v19; // esi
 	char *v20;          // edi
@@ -511,7 +511,7 @@ void __fastcall town_draw_lower_2(int x, int y, int sx, int sy, int a5, int a6, 
 	int v16;            // eax
 	int v17;            // eax
 	int v18;            // eax
-	BOOLEAN v19;           // zf
+	BOOLEAN v19;        // zf
 	int *v20;           // edi
 	short *v21;         // ebx
 	int v22;            // eax
@@ -732,7 +732,7 @@ void __fastcall town_draw_upper(int x, int y, int sx, int sy, int a5, int a6, in
 	signed int v7;      // ebx
 	int v8;             // esi
 	int v9;             // eax
-	BOOLEAN v10;           // zf
+	BOOLEAN v10;        // zf
 	int v11;            // eax
 	short *v12;         // ebx
 	int v13;            // eax

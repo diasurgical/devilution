@@ -284,14 +284,14 @@ BOOLEAN __fastcall TFit_Obj3(int t)
 BOOLEAN __fastcall CheckThemeReqs(int t)
 {
 	BOOLEAN rv; // al
-	int v2;  // ecx
-	int v3;  // ecx
-	int v4;  // ecx
-	int v5;  // ecx
+	int v2;     // ecx
+	int v3;     // ecx
+	int v4;     // ecx
+	int v5;     // ecx
 	BOOLEAN v6; // zf
-	int v7;  // ecx
-	int v8;  // ecx
-	int v9;  // ecx
+	int v7;     // ecx
+	int v8;     // ecx
+	int v9;     // ecx
 
 	rv = 1;
 	if (t <= 10) {

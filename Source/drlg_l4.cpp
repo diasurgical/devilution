@@ -442,7 +442,7 @@ void __fastcall DRLG_L4SetRoom(unsigned char *pSetPiece, int rx1, int ry1)
 
 void __fastcall DRLG_LoadDiabQuads(BOOLEAN preflag)
 {
-	BOOLEAN v1;           // esi
+	BOOLEAN v1;        // esi
 	unsigned char *v2; // edi
 	char *v3;          // ecx
 	unsigned char *v4; // edi
@@ -1067,16 +1067,16 @@ int __fastcall L4VWallOk(int i, int j)
 
 void __fastcall L4HorizWall(int i, int j, int dx)
 {
-	int v3;    // esi
-	int v4;    // edi
-	int v5;    // eax
-	int v6;    // ecx
-	char *v7;  // eax
-	int v8;    // edx
-	char *v9;  // eax
-	int v10;   // eax
-	BOOLEAN v11;  // zf
-	char *v12; // eax
+	int v3;      // esi
+	int v4;      // edi
+	int v5;      // eax
+	int v6;      // ecx
+	char *v7;    // eax
+	int v8;      // edx
+	char *v9;    // eax
+	int v10;     // eax
+	BOOLEAN v11; // zf
+	char *v12;   // eax
 
 	v3 = i;
 	v4 = j;
@@ -1120,16 +1120,16 @@ void __fastcall L4HorizWall(int i, int j, int dx)
 
 void __fastcall L4VertWall(int i, int j, int dy)
 {
-	int v3;    // edi
-	int v4;    // esi
-	int v5;    // edx
-	int v6;    // ecx
-	_BYTE *v7; // eax
-	int v8;    // edx
-	int v9;    // eax
-	char *v10; // ecx
-	BOOLEAN v11;  // zf
-	int v12;   // [esp+8h] [ebp-4h]
+	int v3;      // edi
+	int v4;      // esi
+	int v5;      // edx
+	int v6;      // ecx
+	_BYTE *v7;   // eax
+	int v8;      // edx
+	int v9;      // eax
+	char *v10;   // ecx
+	BOOLEAN v11; // zf
+	int v12;     // [esp+8h] [ebp-4h]
 
 	v3 = j;
 	v4 = 40 * i;
@@ -2519,7 +2519,7 @@ BOOLEAN __fastcall DRLG_L4PlaceMiniSet(const unsigned char *miniset, int tmin, i
 	int v19;                  // edi
 	int v20;                  // edx
 	char v21;                 // bl
-	BOOLEAN result;              // al
+	BOOLEAN result;           // al
 	const unsigned char *v23; // [esp+Ch] [ebp-28h]
 	int v24;                  // [esp+10h] [ebp-24h]
 	int v25;                  // [esp+14h] [ebp-20h]

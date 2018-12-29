@@ -70,8 +70,7 @@ void __fastcall multi_copy_packet(TBuffer *a1, void *packet, BYTE size)
 
 	v3 = a1->dwNextWriteOffset;
 	v4 = a1->dwNextWriteOffset + size;
-	if ( v4 + 2 <= 0x1000 )
-	{
+	if (v4 + 2 <= 0x1000) {
 		a1->dwNextWriteOffset = v4 + 1;
 		a1->bData[v3] = size;
 		v5 = &a1->bData[v3 + 1];
@@ -136,23 +135,21 @@ void __fastcall NetSendHiPri(BYTE *pbMsg, BYTE bLen)
 
 unsigned char *__fastcall multi_recv_packet(TBuffer *packet, unsigned char *a2, int *a3)
 {
-	TBuffer *v3; // esi
+	TBuffer *v3;           // esi
 	unsigned char *result; // eax
-	BYTE *v5; // ebx
-	size_t v6; // edi
-	char *v7; // ebx
-	unsigned char *v8; // [esp+4h] [ebp-4h]
+	BYTE *v5;              // ebx
+	size_t v6;             // edi
+	char *v7;              // ebx
+	unsigned char *v8;     // [esp+4h] [ebp-4h]
 
 	v3 = packet;
 	result = a2;
 	v8 = a2;
-	if ( packet->dwNextWriteOffset )
-	{
+	if (packet->dwNextWriteOffset) {
 		v5 = packet->bData;
-		while ( *v5 )
-		{
+		while (*v5) {
 			v6 = *v5;
-			if ( v6 > *a3 )
+			if (v6 > *a3)
 				break;
 			v7 = (char *)(v5 + 1);
 			memcpy(v8, v7, v6);
@@ -455,7 +452,7 @@ void __cdecl multi_process_network_packets()
 	TPktHdr *v1;       // ecx
 	TPktHdr *v2;       // edi
 	int v3;            // eax
-	BOOLEAN v4;           // zf
+	BOOLEAN v4;        // zf
 	unsigned char *v5; // esi
 	int v6;            // ebx
 	int v7;            // eax
@@ -971,7 +968,7 @@ void __fastcall multi_player_joins(int pnum, TCmdPlrInfoHdr *cmd, int a3)
 	TCmdPlrInfoHdr *v4; // edi
 	short *v5;          // esi
 	int v6;             // esi
-	BOOLEAN v7;            // zf
+	BOOLEAN v7;         // zf
 	char *v8;           // eax
 	int v9;             // ST08_4
 	unsigned char *v10; // edx

@@ -91,21 +91,21 @@ void __cdecl mainmenu_loop()
 
 	do {
 		menu = 0;
-		if(!UiMainMenuDialog("Diablo v1.09", &menu, effects_play_sound, 30))
+		if (!UiMainMenuDialog("Diablo v1.09", &menu, effects_play_sound, 30))
 			TermMsg("Unable to display mainmenu");
 
-		switch(menu) {
+		switch (menu) {
 		case MAINMENU_SINGLE_PLAYER:
-			if(!mainmenu_single_player())
+			if (!mainmenu_single_player())
 				done = TRUE;
 			break;
 		case MAINMENU_MULTIPLAYER:
-			if(!mainmenu_multi_player())
+			if (!mainmenu_multi_player())
 				done = TRUE;
 			break;
 		case MAINMENU_REPLAY_INTRO:
 		case MAINMENU_ATTRACT_MODE:
-			if(gbActive)
+			if (gbActive)
 				mainmenu_play_intro();
 			break;
 		case MAINMENU_SHOW_CREDITS:
@@ -115,7 +115,7 @@ void __cdecl mainmenu_loop()
 			done = TRUE;
 			break;
 		}
-	} while(done == FALSE);
+	} while (done == FALSE);
 
 	music_stop();
 }
