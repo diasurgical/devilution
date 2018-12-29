@@ -61,12 +61,19 @@
 #define ASM_XLAT(eax, ebx) eax = (eax & 0xFFFFFF00) + LOBYTE(ebx[LOBYTE(eax)])
 
 // header files
+#ifdef __cplusplus
+extern "C" {
+#endif
 #include "Source/appfat.h"
 #include "Source/automap.h"
 #include "Source/capture.h"
 #include "Source/codec.h"
 #include "Source/control.h"
+#ifdef __cplusplus
+}
 #include "Source/cursor.h"
+extern "C" {
+#endif
 #include "Source/dead.h"
 #include "Source/debug.h"
 #include "Source/diablo.h"
@@ -79,7 +86,11 @@
 #include "Source/dx.h"
 #include "Source/effects.h"
 #include "Source/encrypt.h"
+#ifdef __cplusplus
+}
 #include "Source/engine.h"
+extern "C" {
+#endif
 #include "Source/error.h"
 #include "Source/fault.h"
 #include "Source/gamemenu.h"
@@ -103,7 +114,11 @@
 #include "Source/msgcmd.h"
 #include "Source/multi.h"
 #include "Source/nthread.h"
+#ifdef __cplusplus
+}
 #include "Source/objects.h"
+extern "C" {
+#endif
 #include "Source/pack.h"
 #include "Source/palette.h"
 #include "Source/path.h"
@@ -129,5 +144,8 @@
 #include "Source/trigs.h"
 #include "Source/wave.h"
 #include "Source/render.h" // linked last, likely .s/.asm
+#ifdef __cplusplus
+}
+#endif
 
 #endif
