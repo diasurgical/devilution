@@ -43,6 +43,4 @@ void __fastcall pfile_update(BOOL force_save);
 
 /* rdata */
 
-extern const int pfile_inf; // weak
-
 #endif /* __PFILE_H__ */

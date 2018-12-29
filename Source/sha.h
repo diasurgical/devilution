@@ -10,7 +10,6 @@
 #define SHA1HashSize 20
 
 //sha
-extern SHA1Context sgSHA1[3];
 
 void __cdecl SHA1Clear();
 void __fastcall SHA1Result(int n, char Message_Digest[SHA1HashSize]);

@@ -122,7 +122,11 @@ extern "C" {
 #include "Source/pack.h"
 #include "Source/palette.h"
 #include "Source/path.h"
+#ifdef __cplusplus
+}
 #include "Source/pfile.h"
+extern "C" {
+#endif
 #include "Source/player.h"
 #include "Source/plrmsg.h"
 #include "Source/portal.h"
