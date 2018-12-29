@@ -150,7 +150,7 @@ BOOL __fastcall CheckSpell(int id, int sn, BYTE st, BOOL manaonly)
 
 void __fastcall CastSpell(int id, int spl, int sx, int sy, int dx, int dy, BOOL caster, int spllvl)
 {
-
+	int i;
 	int dir; // missile direction
 
 	// ugly switch, but generates the right code
@@ -170,7 +170,7 @@ void __fastcall CastSpell(int id, int spl, int sx, int sy, int dx, int dy, BOOL 
 		break;
 	}
 
-	for (int i = 0; spelldata[spl].sMissiles[i] != MIS_ARROW && i < 3; i++) {
+	for (i = 0; spelldata[spl].sMissiles[i] != MIS_ARROW && i < 3; i++) {
 		AddMissile(sx, sy, dx, dy, dir, spelldata[spl].sMissiles[i], caster, id, 0, spllvl);
 	}
 
@@ -180,7 +180,7 @@ void __fastcall CastSpell(int id, int spl, int sx, int sy, int dx, int dy, BOOL 
 	if (spelldata[spl].sMissiles[0] == MIS_CBOLT) {
 		UseMana(id, SPL_CBOLT);
 
-		for (int i = 0; i < (spllvl >> 1) + 3; i++) {
+		for (i = 0; i < (spllvl >> 1) + 3; i++) {
 			AddMissile(sx, sy, dx, dy, dir, MIS_CBOLT, caster, id, 0, spllvl);
 		}
 	}
@@ -190,6 +190,8 @@ void __fastcall CastSpell(int id, int spl, int sx, int sy, int dx, int dy, BOOL 
 // rid: target player index
 void __fastcall DoResurrect(int pnum, int rid)
 {
+	int hp;
+
 	if ((char)rid != -1) {
 		AddMissile(plr[rid].WorldX, plr[rid].WorldY, plr[rid].WorldX, plr[rid].WorldY, 0, MIS_RESURRECTBEAM, 0, pnum, 0, 0);
 	}
@@ -211,7 +213,7 @@ void __fastcall DoResurrect(int pnum, int rid)
 		plr[rid]._pInvincible = 0;
 		PlacePlayer(rid);
 
-		int hp = 640;
+		hp = 640;
 		if (plr[rid]._pMaxHPBase < 640) {
 			hp = plr[rid]._pMaxHPBase;
 		}
@@ -233,11 +235,12 @@ void __fastcall DoResurrect(int pnum, int rid)
 
 void __fastcall PlacePlayer(int pnum)
 {
-	int nx;
-	int ny;
+	int nx, ny, max, min, x, y;
+	DWORD i;
+	BOOL done;
 
 	if (plr[pnum].plrlevel == currlevel) {
-		for (DWORD i = 0; i < 8; i++) {
+		for (i = 0; i < 8; i++) {
 			nx = plr[pnum].WorldX + plrxoff2[i];
 			ny = plr[pnum].WorldY + plryoff2[i];
 
@@ -247,13 +250,13 @@ void __fastcall PlacePlayer(int pnum)
 		}
 
 		if (!PosOkPlayer(pnum, nx, ny)) {
-			BOOL done = FALSE;
+			done = FALSE;
 
-			for (int max = 1, min = -1; min > -50 && !done; max++, min--) {
-				for (int y = min; y <= max && !done; y++) {
+			for (max = 1, min = -1; min > -50 && !done; max++, min--) {
+				for (y = min; y <= max && !done; y++) {
 					ny = plr[pnum].WorldY + y;
 
-					for (int x = min; x <= max && !done; x++) {
+					for (x = min; x <= max && !done; x++) {
 						nx = plr[pnum].WorldX + x;
 
 						if (PosOkPlayer(pnum, nx, ny)) {
@@ -278,18 +281,20 @@ void __fastcall PlacePlayer(int pnum)
 
 void __fastcall DoHealOther(int pnum, int rid)
 {
+	int i, j, hp;
+
 	if (pnum == myplr) {
 		NewCursor(CURSOR_HAND);
 	}
 
 	if ((char)rid != -1 && (plr[rid]._pHitPoints >> 6) > 0) {
-		int hp = (random(57, 10) + 1) << 6;
+		hp = (random(57, 10) + 1) << 6;
 
-		for (int i = 0; i < plr[pnum]._pLevel; i++) {
+		for (i = 0; i < plr[pnum]._pLevel; i++) {
 			hp += (random(57, 4) + 1) << 6;
 		}
 
-		for (int j = 0; j < GetSpellLevel(pnum, SPL_HEALOTHER); ++j) {
+		for (j = 0; j < GetSpellLevel(pnum, SPL_HEALOTHER); ++j) {
 			hp += (random(57, 6) + 1) << 6;
 		}
 

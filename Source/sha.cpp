@@ -11,9 +11,12 @@ void __cdecl SHA1Clear()
 
 void __fastcall SHA1Result(int n, char Message_Digest[SHA1HashSize])
 {
-	DWORD *Message_Digest_Block = (DWORD *)Message_Digest;
+	DWORD *Message_Digest_Block;
+	int i;
+
+	Message_Digest_Block = (DWORD *)Message_Digest;
 	if (Message_Digest) {
-		for (int i = 0; i < 5; i++) {
+		for (i = 0; i < 5; i++) {
 			*Message_Digest_Block = sgSHA1[n].state[i];
 			Message_Digest_Block++;
 		}
@@ -29,14 +32,16 @@ void __fastcall SHA1Calculate(int n, const char *data, char Message_Digest[SHA1H
 
 void __fastcall SHA1Input(SHA1Context *context, const char *message_array, int len)
 {
-	int count = context->count[0] + 8 * len;
+	int i, count;
+
+	count = context->count[0] + 8 * len;
 	if (count < context->count[0])
 		context->count[1]++;
 
 	context->count[0] = count;
 	context->count[1] += len >> 29;
 
-	for (int i = len; i >= 64; i -= 64) {
+	for (i = len; i >= 64; i -= 64) {
 		memcpy(context->buffer, message_array, sizeof(context->buffer));
 		SHA1ProcessMessageBlock(context);
 		message_array += 64;

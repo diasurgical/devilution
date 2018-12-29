@@ -2,7 +2,7 @@
 
 #include "../types.h"
 
-float sound_cpp_init_value;
+static float sound_cpp_init_value = INFINITY;
 LPDIRECTSOUNDBUFFER DSBs[8];
 LPDIRECTSOUND sglpDS;
 char gbSndInited;
@@ -11,8 +11,6 @@ int sglSoundVolume;
 HMODULE hDsound_dll;
 HANDLE sgpMusicTrack;
 LPDIRECTSOUNDBUFFER sglpDSB;
-
-const int sound_inf = 0x7F800000; // weak
 
 /* data */
 
@@ -35,19 +33,11 @@ char unk_volume[4][2] = {
 	{ 30, -31 }
 };
 
-struct sound_cpp_init {
-	sound_cpp_init()
-	{
-		sound_cpp_init_value = sound_inf;
-	}
-} _sound_cpp_init;
-// 47F24C: using guessed type int sound_inf;
-
 void __fastcall snd_update(BOOL bStopAll)
 {
-	DWORD error_code;
+	DWORD error_code, i;
 
-	for (DWORD i = 0; i < 8; i++) {
+	for (i = 0; i < 8; i++) {
 		if (!DSBs[i])
 			continue;
 
@@ -68,7 +58,7 @@ void __fastcall snd_stop_snd(TSnd *pSnd)
 
 BOOL __fastcall snd_playing(TSnd *pSnd)
 {
-	DWORD error_code;
+	DWORD error_code; // TODO should probably be HRESULT
 
 	if (!pSnd)
 		return FALSE;
@@ -84,16 +74,20 @@ BOOL __fastcall snd_playing(TSnd *pSnd)
 
 void __fastcall snd_play_snd(TSnd *pSnd, int lVolume, int lPan)
 {
+	LPDIRECTSOUNDBUFFER DSB;
+	DWORD tc;
+	HRESULT error_code;
+
 	if (!pSnd || !gbSoundOn) {
 		return;
 	}
 
-	LPDIRECTSOUNDBUFFER DSB = pSnd->DSB;
+	DSB = pSnd->DSB;
 	if (!DSB) {
 		return;
 	}
 
-	DWORD tc = GetTickCount();
+	tc = GetTickCount();
 	if (tc - pSnd->start_tc < 80) {
 		pSnd->start_tc = GetTickCount();
 		return;
@@ -116,7 +110,7 @@ void __fastcall snd_play_snd(TSnd *pSnd, int lVolume, int lPan)
 
 	DSB->SetPan(lPan);
 
-	HRESULT error_code = DSB->Play(0, 0, 0);
+	error_code = DSB->Play(0, 0, 0);
 	if (error_code != DSERR_BUFFERLOST) {
 		if (error_code != DS_OK) {
 			DSErrMsg(error_code, 261, "C:\\Src\\Diablo\\Source\\SOUND.CPP");
@@ -130,11 +124,13 @@ void __fastcall snd_play_snd(TSnd *pSnd, int lVolume, int lPan)
 
 LPDIRECTSOUNDBUFFER __fastcall sound_dup_channel(LPDIRECTSOUNDBUFFER DSB)
 {
+	DWORD i;
+
 	if (!gbDupSounds) {
 		return NULL;
 	}
 
-	for (DWORD i = 0; i < 8; i++) {
+	for (i = 0; i < 8; i++) {
 		if (!DSBs[i]) {
 			if (sglpDS->DuplicateSoundBuffer(DSB, &DSBs[i]) != DS_OK) {
 				return NULL;
@@ -149,14 +145,15 @@ LPDIRECTSOUNDBUFFER __fastcall sound_dup_channel(LPDIRECTSOUNDBUFFER DSB)
 
 BOOL __fastcall sound_file_reload(TSnd *sound_file, LPDIRECTSOUNDBUFFER DSB)
 {
-	if (DSB->Restore())
-		return FALSE;
-
 	HANDLE file;
 	LPVOID buf1, buf2;
 	DWORD size1, size2;
+	BOOL rv;
 
-	BOOL rv = FALSE;
+	if (DSB->Restore())
+		return FALSE;
+
+	rv = FALSE;
 
 	WOpenFile(sound_file->sound_path, &file, 0);
 	WSetFilePointer(file, sound_file->chunk.dwOffset, 0, 0);
@@ -174,12 +171,17 @@ BOOL __fastcall sound_file_reload(TSnd *sound_file, LPDIRECTSOUNDBUFFER DSB)
 
 TSnd *__fastcall sound_file_load(char *path)
 {
+	void *file, *wave_file;
+	TSnd *pSnd;
+	LPVOID buf1, buf2;
+	DWORD size1, size2;
+	HRESULT error_code;
+
 	if (!sglpDS)
 		return NULL;
 
-	void *file, *wave_file;
 	WOpenFile(path, &file, 0);
-	TSnd *pSnd = (TSnd *)DiabloAllocPtr(40);
+	pSnd = (TSnd *)DiabloAllocPtr(40);
 	memset(pSnd, 0, sizeof(TSnd));
 	pSnd->sound_path = path;
 	pSnd->start_tc = GetTickCount() - 81;
@@ -190,9 +192,7 @@ TSnd *__fastcall sound_file_load(char *path)
 
 	sound_CreateSoundBuffer(pSnd);
 
-	LPVOID buf1, buf2;
-	DWORD size1, size2;
-	HRESULT error_code = pSnd->DSB->Lock(0, pSnd->chunk.dwSize, &buf1, &size1, &buf2, &size2, 0);
+	error_code = pSnd->DSB->Lock(0, pSnd->chunk.dwSize, &buf1, &size1, &buf2, &size2, 0);
 	if (error_code != DS_OK)
 		DSErrMsg(error_code, 318, "C:\\Src\\Diablo\\Source\\SOUND.CPP");
 
@@ -212,6 +212,7 @@ TSnd *__fastcall sound_file_load(char *path)
 void __fastcall sound_CreateSoundBuffer(TSnd *sound_file)
 {
 	DSBUFFERDESC DSB;
+	HRESULT error_code;
 	memset(&DSB, 0, sizeof(DSBUFFERDESC));
 
 	DSB.dwBufferBytes = sound_file->chunk.dwSize;
@@ -219,7 +220,7 @@ void __fastcall sound_CreateSoundBuffer(TSnd *sound_file)
 	DSB.dwSize = sizeof(DSBUFFERDESC);
 	DSB.dwFlags = DSBCAPS_CTRLVOLUME | DSBCAPS_CTRLPAN | DSBCAPS_STATIC;
 
-	HRESULT error_code = sglpDS->CreateSoundBuffer(&DSB, &sound_file->DSB, NULL);
+	error_code = sglpDS->CreateSoundBuffer(&DSB, &sound_file->DSB, NULL);
 	if (error_code != ERROR_SUCCESS)
 		DSErrMsg(error_code, 282, "C:\\Src\\Diablo\\Source\\SOUND.CPP");
 }

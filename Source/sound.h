@@ -2,7 +2,6 @@
 #ifndef __SOUND_H__
 #define __SOUND_H__
 
-extern float sound_cpp_init_value;
 extern IDirectSoundBuffer *DSBs[8];
 extern LPDIRECTSOUND sglpDS;
 extern char gbSndInited;
@@ -35,8 +34,6 @@ int __fastcall sound_get_or_set_music_volume(int volume);
 int __fastcall sound_get_or_set_sound_volume(int volume);
 
 /* rdata */
-
-extern const int sound_inf; // weak
 
 /* data */
 
