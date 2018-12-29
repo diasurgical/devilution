@@ -209,10 +209,13 @@ void __fastcall LoadL1Dungeon(char *sFileName, int vx, int vy)
 
 void __cdecl DRLG_L1Floor()
 {
-	for (int j = 0; j < DMAXY; j++) {
-		for (int i = 0; i < DMAXX; i++) {
+	int i, j;
+	long rv;
+
+	for (j = 0; j < DMAXY; j++) {
+		for (i = 0; i < DMAXX; i++) {
 			if (mydflags[i][j] == 0 && dungeon[i][j] == 13) {
-				long rv = random(0, 3);
+				rv = random(0, 3);
 
 				if (rv == 1)
 					dungeon[i][j] = 162;
@@ -669,9 +672,10 @@ void __fastcall DRLG_PlaceDoor(int x, int y)
 
 void __cdecl DRLG_L1Shadows()
 {
-	int x, y;
+	int x, y, i;
 	unsigned char sd[2][2];
 	unsigned char tnv3;
+	BOOL patflag;
 
 	for (y = 1; y < DMAXY; y++) {
 		for (x = 1; x < DMAXX; x++) {
@@ -680,9 +684,9 @@ void __cdecl DRLG_L1Shadows()
 			sd[0][1] = BSTYPES[(unsigned char)dungeon[x][y - 1]];
 			sd[1][1] = BSTYPES[(unsigned char)dungeon[x - 1][y - 1]];
 
-			for (int i = 0; i < 37; i++) {
+			for (i = 0; i < 37; i++) {
 				if (SPATS[i].strig == sd[0][0]) {
-					BOOL patflag = TRUE;
+					patflag = TRUE;
 					if (SPATS[i].s1 && SPATS[i].s1 != sd[1][1])
 						patflag = FALSE;
 					if (SPATS[i].s2 && SPATS[i].s2 != sd[0][1])
@@ -761,8 +765,9 @@ void __cdecl DRLG_L1Shadows()
 int __fastcall DRLG_PlaceMiniSet(const unsigned char *miniset, int tmin, int tmax, int cx, int cy, BOOL setview, int noquad, int ldir)
 {
 	int xx, yy, sx, sy;
-	int ii;
+	int ii, i, t, found;
 	int numt;
+	BOOL abort;
 
 	int sw = miniset[0];
 	int sh = miniset[1];
@@ -772,11 +777,11 @@ int __fastcall DRLG_PlaceMiniSet(const unsigned char *miniset, int tmin, int tma
 	else
 		numt = random(0, tmax - tmin) + tmin;
 
-	for (int i = 0; i < numt; i++) {
+	for (i = 0; i < numt; i++) {
 		sx = random(0, 40 - sw);
 		sy = random(0, 40 - sh);
-		BOOL abort = FALSE;
-		int found = 0;
+		abort = FALSE;
+		found = 0;
 
 		while (abort == FALSE) {
 			abort = TRUE;
@@ -805,8 +810,6 @@ int __fastcall DRLG_PlaceMiniSet(const unsigned char *miniset, int tmin, int tma
 			case 3:
 				if (sx > cx && sy > cy)
 					abort = FALSE;
-				break;
-			default:
 				break;
 			}
 
@@ -845,7 +848,7 @@ int __fastcall DRLG_PlaceMiniSet(const unsigned char *miniset, int tmin, int tma
 	}
 
 	if (miniset == PWATERIN) {
-		int t = TransVal;
+		t = TransVal;
 		TransVal = 0;
 		DRLG_MRectTrans(sx, sy + 2, sx + 5, sy + 4);
 		TransVal = t;
@@ -879,8 +882,10 @@ int __fastcall DRLG_PlaceMiniSet(const unsigned char *miniset, int tmin, int tma
 
 void __cdecl InitL5Dungeon()
 {
-	for (int j = 0; j < DMAXY; j++) {
-		for (int i = 0; i < DMAXX; i++) {
+	int i, j;
+
+	for (j = 0; j < DMAXY; j++) {
+		for (i = 0; i < DMAXX; i++) {
 			dungeon[i][j] = 0;
 			mydflags[i][j] = 0;
 		}
@@ -889,8 +894,10 @@ void __cdecl InitL5Dungeon()
 
 void __cdecl L5ClearFlags()
 {
-	for (int j = 0; j < DMAXY; j++) {
-		for (int i = 0; i < DMAXX; i++) {
+	int i, j;
+
+	for (j = 0; j < DMAXY; j++) {
+		for (i = 0; i < DMAXX; i++) {
 			mydflags[i][j] &= 0xBF;
 		}
 	}
@@ -898,9 +905,12 @@ void __cdecl L5ClearFlags()
 
 void __cdecl L5firstRoom()
 {
+	int ys, ye, y;
+	int xs, xe, x;
+
 	if (random(0, 2) == 0) {
-		int ys = 1;
-		int ye = 39;
+		ys = 1;
+		ye = 39;
 
 		VR1 = random(0, 2);
 		VR2 = random(0, 2);
@@ -920,7 +930,7 @@ void __cdecl L5firstRoom()
 		else
 			ye = 22;
 
-		for (int y = ys; y < ye; y++) {
+		for (y = ys; y < ye; y++) {
 			dungeon[17][y] = 1;
 			dungeon[18][y] = 1;
 			dungeon[19][y] = 1;
@@ -940,8 +950,8 @@ void __cdecl L5firstRoom()
 		HR2 = 0;
 		HR1 = 0;
 	} else {
-		int xs = 1;
-		int xe = 39;
+		xs = 1;
+		xe = 39;
 
 		HR1 = random(0, 2);
 		HR2 = random(0, 2);
@@ -961,7 +971,7 @@ void __cdecl L5firstRoom()
 		else
 			xe = 22;
 
-		for (int x = xs; x < xe; x++) {
+		for (x = xs; x < xe; x++) {
 			dungeon[x][17] = 1;
 			dungeon[x][18] = 1;
 			dungeon[x][19] = 1;
@@ -985,8 +995,10 @@ void __cdecl L5firstRoom()
 
 void __fastcall L5drawRoom(int x, int y, int w, int h)
 {
-	for (int j = 0; j < h; j++) {
-		for (int i = 0; i < w; i++) {
+	int i, j;
+
+	for (j = 0; j < h; j++) {
+		for (i = 0; i < w; i++) {
 			dungeon[x + i][y + j] = 1;
 		}
 	}
@@ -994,12 +1006,12 @@ void __fastcall L5drawRoom(int x, int y, int w, int h)
 
 void __fastcall L5roomGen(int x, int y, int w, int h, int dir)
 {
-	int num;
+	int num, dirProb;
 	BOOL ran, ran2;
 	int width, height, rx, ry, ry2;
 	int cw, ch, cx1, cy1, cx2;
 
-	int dirProb = random(0, 4);
+	dirProb = random(0, 4);
 
 	switch (dir == 1 ? dirProb != 0 : dirProb == 0) {
 	case FALSE:
@@ -1051,8 +1063,10 @@ void __fastcall L5roomGen(int x, int y, int w, int h, int dir)
 
 BOOL __fastcall L5checkRoom(int x, int y, int width, int height)
 {
-	for (int j = 0; j < height; j++) {
-		for (int i = 0; i < width; i++) {
+	int i, j;
+
+	for (j = 0; j < height; j++) {
+		for (i = 0; i < width; i++) {
 			if (i + x < 0 || i + x >= DMAXX || j + y < 0 || j + y >= DMAXY)
 				return FALSE;
 			if (dungeon[i + x][j + y])
@@ -1065,10 +1079,13 @@ BOOL __fastcall L5checkRoom(int x, int y, int width, int height)
 
 int __cdecl L5GetArea()
 {
-	int rv = 0;
+	int i, j;
+	int rv;
 
-	for (int j = 0; j < DMAXY; j++) {
-		for (int i = 0; i < DMAXX; i++) {
+	rv = 0;
+
+	for (j = 0; j < DMAXY; j++) {
+		for (i = 0; i < DMAXX; i++) {
 			if (dungeon[i][j] == 1)
 				rv++;
 		}
@@ -1127,36 +1144,38 @@ void __cdecl L5makeDmt()
 
 void __cdecl L5AddWall()
 {
-	for (int j = 0; j < DMAXY; j++) {
-		for (int i = 0; i < DMAXX; i++) {
+	int i, j, x, y;
+
+	for (j = 0; j < DMAXY; j++) {
+		for (i = 0; i < DMAXX; i++) {
 			if (!mydflags[i][j]) {
 				if (dungeon[i][j] == 3 && random(0, 100) < 100) {
-					int x = L5HWallOk(i, j);
+					x = L5HWallOk(i, j);
 					if (x != -1)
 						L5HorizWall(i, j, 2, x);
 				}
 				if (dungeon[i][j] == 3 && random(0, 100) < 100) {
-					int y = L5VWallOk(i, j);
+					y = L5VWallOk(i, j);
 					if (y != -1)
 						L5VertWall(i, j, 1, y);
 				}
 				if (dungeon[i][j] == 6 && random(0, 100) < 100) {
-					int x = L5HWallOk(i, j);
+					x = L5HWallOk(i, j);
 					if (x != -1)
 						L5HorizWall(i, j, 4, x);
 				}
 				if (dungeon[i][j] == 7 && random(0, 100) < 100) {
-					int y = L5VWallOk(i, j);
+					y = L5VWallOk(i, j);
 					if (y != -1)
 						L5VertWall(i, j, 4, y);
 				}
 				if (dungeon[i][j] == 2 && random(0, 100) < 100) {
-					int x = L5HWallOk(i, j);
+					x = L5HWallOk(i, j);
 					if (x != -1)
 						L5HorizWall(i, j, 2, x);
 				}
 				if (dungeon[i][j] == 1 && random(0, 100) < 100) {
-					int y = L5VWallOk(i, j);
+					y = L5VWallOk(i, j);
 					if (y != -1)
 						L5VertWall(i, j, 1, y);
 				}
@@ -1168,13 +1187,14 @@ void __cdecl L5AddWall()
 int __fastcall L5HWallOk(int i, int j)
 {
 	int x;
+	BOOL wallok;
 
 	for (x = 1; dungeon[i + x][j] == 13; x++) {
 		if (dungeon[i + x][j - 1] != 13 || dungeon[i + x][j + 1] != 13 || mydflags[i + x][j])
 			break;
 	}
 
-	BOOL wallok = FALSE;
+	wallok = FALSE;
 	if ((unsigned char)dungeon[i + x][j] >= 3 && (unsigned char)dungeon[i + x][j] <= 7) /* todo: unsigned */
 		wallok = TRUE;
 	if ((unsigned char)dungeon[i + x][j] >= 16 && (unsigned char)dungeon[i + x][j] <= 24)
@@ -1193,13 +1213,14 @@ int __fastcall L5HWallOk(int i, int j)
 int __fastcall L5VWallOk(int i, int j)
 {
 	int y;
+	BOOL wallok;
 
 	for (y = 1; dungeon[i][j + y] == 13; y++) {
 		if (dungeon[i - 1][j + y] != 13 || dungeon[i + 1][j + y] != 13 || mydflags[i][j + y])
 			break;
 	}
 
-	BOOL wallok = FALSE;
+	wallok = FALSE;
 	if ((unsigned char)dungeon[i][j + y] >= 3 && (unsigned char)dungeon[i][j + y] <= 7) /* todo: unsigned */
 		wallok = TRUE;
 	if ((unsigned char)dungeon[i][j + y] >= 16 && (unsigned char)dungeon[i][j + y] <= 24)
@@ -1427,14 +1448,16 @@ void __cdecl L5tileFix()
 
 void __cdecl DRLG_L5Subs()
 {
-	for (int y = 0; y < DMAXY; y++) {
-		for (int x = 0; x < DMAXX; x++) {
+	int x, y, rv, i;
+
+	for (y = 0; y < DMAXY; y++) {
+		for (x = 0; x < DMAXX; x++) {
 			if (!random(0, 4)) {
 				unsigned char c = L5BTYPES[(unsigned char)dungeon[x][y]]; /* todo: changed to unsigned */
 
 				if (c && !mydflags[x][y]) {
-					int rv = random(0, 16);
-					int i = -1;
+					rv = random(0, 16);
+					i = -1;
 
 					while (rv >= 0) {
 						if (++i == sizeof(L5BTYPES))
@@ -1673,18 +1696,21 @@ void __fastcall DRLG_L5GHall(int x1, int y1, int x2, int y2)
 
 void __fastcall DRLG_L5SetRoom(int rx1, int ry1)
 {
-	int rw = *(unsigned char *)pSetPiece; /* todo: BYTE */
-	int rh = *((unsigned char *)pSetPiece + 2);
+	int rw, rh, i, j;
+	unsigned char *sp;
+
+	rw = *(unsigned char *)pSetPiece; /* todo: BYTE */
+	rh = *((unsigned char *)pSetPiece + 2);
 
 	setpc_x = rx1;
 	setpc_y = ry1;
 	setpc_w = rw;
 	setpc_h = rh;
 
-	unsigned char *sp = (unsigned char *)pSetPiece + 4;
+	sp = (unsigned char *)pSetPiece + 4;
 
-	for (int j = 0; j < rh; j++) {
-		for (int i = 0; i < rw; i++) {
+	for (j = 0; j < rh; j++) {
+		for (i = 0; i < rw; i++) {
 			if (*sp) {
 				dungeon[rx1 + i][ry1 + j] = *sp;
 				mydflags[rx1 + i][ry1 + j] |= 0x80;
@@ -1700,12 +1726,14 @@ void __fastcall DRLG_L5SetRoom(int rx1, int ry1)
 
 void __cdecl DRLG_L5FloodTVal()
 {
-	int yy = 16;
+	int xx, yy, i, j;
 
-	for (int j = 0; j < DMAXY; j++) {
-		int xx = 16;
+	yy = 16;
 
-		for (int i = 0; i < DMAXX; i++) {
+	for (j = 0; j < DMAXY; j++) {
+		xx = 16;
+
+		for (i = 0; i < DMAXX; i++) {
 			if (dungeon[i][j] == 13 && !dung_map[xx][yy]) {
 				DRLG_L5FTVR(i, j, xx, yy, 0);
 				TransVal++;
@@ -1763,12 +1791,14 @@ void __fastcall DRLG_L5FTVR(int i, int j, int x, int y, int d)
 
 void __cdecl DRLG_L5TransFix()
 {
-	int yy = 16;
+	int xx, yy, i, j;
 
-	for (int j = 0; j < DMAXY; j++) {
-		int xx = 16;
+	yy = 16;
 
-		for (int i = 0; i < DMAXX; i++) {
+	for (j = 0; j < DMAXY; j++) {
+		xx = 16;
+
+		for (i = 0; i < DMAXX; i++) {
 			if (dungeon[i][j] == 23 && dungeon[i][j - 1] == 18) {
 				dung_map[xx + 1][yy] = dung_map[xx][yy];
 				dung_map[xx + 1][yy + 1] = dung_map[xx][yy];
@@ -1798,8 +1828,10 @@ void __cdecl DRLG_L5TransFix()
 
 void __cdecl DRLG_L5DirtFix()
 {
-	for (int j = 0; j < DMAXY; j++) {
-		for (int i = 0; i < DMAXX; i++) {
+	int i, j;
+
+	for (j = 0; j < DMAXY; j++) {
+		for (i = 0; i < DMAXX; i++) {
 			if (dungeon[i][j] == 21 && dungeon[i + 1][j] != 19)
 				dungeon[i][j] = 202;
 			if (dungeon[i][j] == 19 && dungeon[i + 1][j] != 19)

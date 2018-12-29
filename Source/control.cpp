@@ -581,11 +581,12 @@ void __fastcall SetSpeedSpell(int slot)
 
 void __fastcall ToggleSpell(int slot)
 {
+	unsigned __int64 spells;
+
 	if (plr[myplr]._pSplHotKey[slot] == -1) {
 		return;
 	}
 
-	unsigned __int64 spells;
 	switch (plr[myplr]._pSplTHotKey[slot]) {
 	case RSPLTYPE_SKILL:
 		spells = plr[myplr]._pAblSpells;
@@ -1088,14 +1089,15 @@ void __cdecl DrawCtrlPan()
 void __cdecl DoSpeedBook()
 {
 	unsigned __int64 spells, spell;
+	int xo, yo, X, Y, i, j;
 
 	spselflag = 1;
-	int xo = 636;
-	int yo = 495;
-	int X = 600;
-	int Y = 307;
+	xo = 636;
+	yo = 495;
+	X = 600;
+	Y = 307;
 	if (plr[myplr]._pRSpell != -1) {
-		for (int i = 0; i < 4; i++) {
+		for (i = 0; i < 4; i++) {
 			switch (i) {
 			case RSPLTYPE_SKILL:
 				spells = plr[myplr]._pAblSpells;
@@ -1111,7 +1113,7 @@ void __cdecl DoSpeedBook()
 				break;
 			}
 			spell = (__int64)1;
-			for (int j = 1; j < MAX_SPELLS; j++) {
+			for (j = 1; j < MAX_SPELLS; j++) {
 				if (spell & spells) {
 					if (j == plr[myplr]._pRSpell && i == plr[myplr]._pRSplType) {
 						X = xo - 36;

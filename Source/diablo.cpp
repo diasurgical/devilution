@@ -2,7 +2,7 @@
 
 #include "../types.h"
 
-int diablo_cpp_init_value; // weak
+static float diablo_cpp_init_value = INFINITY;
 HWND ghMainWnd;
 int glMid1Seed[NUMLEVELS];
 int glMid2Seed[NUMLEVELS];
@@ -35,8 +35,6 @@ int sgnTimeoutCurs;
 char sgbMouseDown;     // weak
 int color_cycle_timer; // weak
 
-int diablo_inf = 0x7F800000; // weak
-
 /* rdata */
 
 BOOL fullscreen = TRUE;
@@ -66,15 +64,6 @@ char *spszMsgTbl[4] = {
 	"Now you DIE!"
 };                                                      // weak
 char *spszMsgKeyTbl[4] = { "F9", "F10", "F11", "F12" }; // weak
-
-struct diablo_cpp_init {
-	diablo_cpp_init()
-	{
-		diablo_cpp_init_value = diablo_inf;
-	}
-} _diablo_cpp_init;
-// 479BF8: using guessed type int diablo_inf;
-// 525514: using guessed type int diablo_cpp_init_value;
 
 void __cdecl FreeGameMem()
 {
@@ -269,6 +258,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	HINSTANCE hInst;
 	int nData;
 	char szFileName[MAX_PATH];
+	BOOL bNoEvent;
 
 	hInst = hInstance;
 #ifndef DEBUGGER
@@ -289,7 +279,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	InitHash();
 	exception_get_filter();
 
-	BOOL bNoEvent = diablo_get_not_running();
+	bNoEvent = diablo_get_not_running();
 	if (!diablo_find_window("DIABLO") && bNoEvent) {
 #ifdef _DEBUG
 		SFileEnableDirectAccess(TRUE);

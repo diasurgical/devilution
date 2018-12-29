@@ -63,7 +63,7 @@ LRESULT __stdcall OkCancel_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lP
 	if (Msg <= 0x103)
 		return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 	if (Msg <= 0x105) {
-		v9 = (HWND)SDrawGetFrameWindow();
+		v9 = (HWND)SDrawGetFrameWindow(NULL);
 		SendMessageA(v9, Msg, wParam, lParam);
 		return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 	}
@@ -160,7 +160,7 @@ BOOL __fastcall OkCancel_LoadOkCancGFX(HWND hWnd, DWORD *lParam)
 		pszFileName = "ui_art\\spopup.pcx";
 	}
 	v4 = GetParent(hWnd);
-	if ((HWND)SDrawGetFrameWindow() == v4) {
+	if ((HWND)SDrawGetFrameWindow(NULL) == v4) {
 		local_LoadArtWithPal(hWnd, 0, &nullcharacter, -1, 1, pszFileName, pBuffer, 0, 1);
 		v5 = local_GetArtPalEntry(0);
 		SDrawUpdatePalette(0, 0xAu, v5, 0);
@@ -170,7 +170,7 @@ BOOL __fastcall OkCancel_LoadOkCancGFX(HWND hWnd, DWORD *lParam)
 		local_LoadArtWithPal(hWnd, (int)v6, "Popup", -1, 1, pszFileName, pBuffer, 0, 1);
 	}
 	v7 = GetParent(hWnd);
-	if ((HWND)SDrawGetFrameWindow() == v7)
+	if ((HWND)SDrawGetFrameWindow(NULL) == v7)
 		Fade_SetInputWindow(hWnd);
 	v8 = pBuffer + 1;
 	local_LoadArtImage("ui_art\\but_sml.pcx", pBuffer + 1, data);

@@ -226,7 +226,7 @@ BOOL __stdcall UiSelHeroMultDialog(BOOL(__stdcall *fninfo)(BOOL(__stdcall *fninf
 	sgpHeroInfo        = 0;
 	selhero_is_good    = 1;
 	selhero_is_created = 0;
-	v7                 = (int)SDrawGetFrameWindow();
+	v7                 = (int)SDrawGetFrameWindow(NULL);
 	v8                 = SDlgDialogBoxParam(ghUiInst, "SELHERO_DIALOG", v7, SelHero_WndProc, 0);
 	if (dlgresult)
 		*dlgresult = v8;
@@ -295,7 +295,7 @@ LRESULT __stdcall SelHero_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPa
 	if (Msg <= 0x103)
 		return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 	if (Msg <= 0x105) {
-		v4 = (HWND)SDrawGetFrameWindow();
+		v4 = (HWND)SDrawGetFrameWindow(NULL);
 		SendMessageA(v4, Msg, wParam, lParam);
 		return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 	}
@@ -716,7 +716,7 @@ BOOL __stdcall UiSelHeroSingDialog(BOOL(__stdcall *fninfo)(BOOL(__stdcall *fninf
 	selhero_fnstats  = fnstats;
 	sgpHeroInfo      = 0;
 	selhero_is_good  = 0;
-	v7               = (int)SDrawGetFrameWindow();
+	v7               = (int)SDrawGetFrameWindow(NULL);
 	v8               = SDlgDialogBoxParam(ghUiInst, "SELHERO_DIALOG", v7, SelHero_WndProc, 0);
 	if (dlgresult)
 		*dlgresult = v8;

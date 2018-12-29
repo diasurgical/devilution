@@ -9,7 +9,7 @@ BOOL __stdcall UiCopyProtError(int *pdwResult)
 		LoadStringA(ghUiInst, 0x3Fu, Buffer, 127);
 	else
 		LoadStringA(ghUiInst, 0x1Bu, Buffer, 127);
-	v1 = (int)SDrawGetFrameWindow();
+	v1 = (int)SDrawGetFrameWindow(NULL);
 	v2 = SDlgDialogBoxParam(ghUiInst, "OKCANCEL_DIALOG", v1, CopyProt_WndProc, (int)Buffer);
 	if (pdwResult)
 		*pdwResult = v2;
@@ -34,7 +34,7 @@ LRESULT __stdcall CopyProt_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lP
 	if (Msg <= 0x103)
 		return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 	if (Msg <= 0x105) {
-		v9 = (HWND)SDrawGetFrameWindow();
+		v9 = (HWND)SDrawGetFrameWindow(NULL);
 		SendMessageA(v9, Msg, wParam, lParam);
 		return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 	}

@@ -66,7 +66,7 @@ HGDIOBJ __stdcall bn_prof_1000155F(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lP
 			default:
 				if ( Msg > 0x103 && Msg <= 0x105 )
 				{
-					v4 = (HWND)SDrawGetFrameWindow();
+					v4 = (HWND)SDrawGetFrameWindow(NULL);
 					SendMessageA(v4, Msg, wParam, lParam);
 				}
 				return (HGDIOBJ)SDlgDefDialogProc(hWnd, Msg, wParam, lParam);
@@ -395,7 +395,7 @@ HINSTANCE __fastcall bn_prof_10001B0A(HWND a1, const CHAR *a2) { return 0; }
 	hWnd = a1;
 	v3 = GetDesktopWindow();
 	SetForegroundWindow(v3);
-	v4 = (HWND)SDrawGetFrameWindow();
+	v4 = (HWND)SDrawGetFrameWindow(NULL);
 	result = ShellExecuteA(v4, "open", v2, 0, 0, 1);
 	if ( (unsigned int)result <= 0x20 )
 	{
@@ -404,12 +404,12 @@ HINSTANCE __fastcall bn_prof_10001B0A(HWND a1, const CHAR *a2) { return 0; }
 			fclose(v6);
 		if ( (unsigned int)FindExecutableA("battle.htm", 0, &Result) <= 0x20 )
 		{
-			v7 = (HWND)SDrawGetFrameWindow();
+			v7 = (HWND)SDrawGetFrameWindow(NULL);
 			if ( (unsigned int)ShellExecuteA(v7, "open", &Result, v2, 0, 1) <= 0x20 )
 			{
-				v8 = (HWND)SDrawGetFrameWindow();
+				v8 = (HWND)SDrawGetFrameWindow(NULL);
 				SetActiveWindow(v8);
-				v9 = (HWND)SDrawGetFrameWindow();
+				v9 = (HWND)SDrawGetFrameWindow(NULL);
 				ShowWindow(v9, 0);
 				LoadStringA(hInstance, 0x50u, &Buffer, 512);
 				LoadStringA(hInstance, 0x51u, &Caption, 64);

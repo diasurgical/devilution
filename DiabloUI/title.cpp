@@ -170,7 +170,7 @@ BOOL __stdcall UiTitleDialog(int a1)
 	int v1; // eax
 
 	artfont_LoadAllFonts();
-	v1 = (int)SDrawGetFrameWindow();
+	v1 = (int)SDrawGetFrameWindow(NULL);
 	SDlgDialogBoxParam(ghUiInst, "TITLESCREEN_DIALOG", v1, Title_MainProc, a1);
 	return 1;
 }
@@ -189,7 +189,7 @@ LRESULT __stdcall Title_MainProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 				if (uMsg != 256) {
 					if (uMsg > 0x103) {
 						if (uMsg <= 0x105) {
-							v5 = (HWND)SDrawGetFrameWindow();
+							v5 = (HWND)SDrawGetFrameWindow(NULL);
 							SendMessageA(v5, uMsg, wParam, lParam);
 						} else if (uMsg == 272) {
 							Title_LoadAllTitleImgs(hWnd, lParam);

@@ -15,7 +15,7 @@ LRESULT __stdcall EntName_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPa
 	if (Msg <= 0x103)
 		return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 	if (Msg <= 0x105) {
-		v9 = (HWND)SDrawGetFrameWindow();
+		v9 = (HWND)SDrawGetFrameWindow(NULL);
 		SendMessageA(v9, Msg, wParam, lParam);
 		return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 	}
