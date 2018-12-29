@@ -425,9 +425,9 @@ void __cdecl FreeObjectGFX()
 
 BOOLEAN __fastcall RndLocOk(int xp, int yp)
 {
-	int v2;      // ecx
-	int v3;      // eax
-	int v4;      // eax
+	int v2;         // ecx
+	int v3;         // eax
+	int v4;         // eax
 	BOOLEAN result; // eax
 
 	v2 = xp;
@@ -718,7 +718,7 @@ void __cdecl InitRndBarrels()
 	int v1;        // esi
 	int v2;        // edi
 	int v3;        // eax
-	BOOLEAN v4;       // ebx
+	BOOLEAN v4;    // ebx
 	int v5;        // edx
 	int v6;        // eax
 	int v7;        // eax
@@ -995,7 +995,7 @@ void __cdecl AddChestTraps()
 	_BYTE *v1;     // ebx
 	int v2;        // esi
 	int v3;        // eax
-	BOOLEAN v4;       // zf
+	BOOLEAN v4;    // zf
 	int v5;        // eax
 	signed int v6; // [esp+10h] [ebp-4h]
 
@@ -1524,7 +1524,7 @@ void __fastcall SetMapObjects(unsigned char *pMap, int startx, int starty)
 
 void __fastcall DeleteObject(int oi, int i)
 {
-	int v2;  // eax
+	int v2;     // eax
 	BOOLEAN v3; // zf
 	BOOLEAN v4; // sf
 
@@ -1725,7 +1725,7 @@ void __fastcall AddSarc(int i)
 	char v2;          // al
 	int v3;           // ecx
 	int v4;           // eax
-	BOOLEAN v5;          // sf
+	BOOLEAN v5;       // sf
 	unsigned char v6; // of
 
 	v1 = i;
@@ -1788,7 +1788,7 @@ void __fastcall AddBarrel(int i)
 	int v2;           // eax
 	int v4;           // eax
 	int v6;           // eax
-	BOOLEAN v7;          // sf
+	BOOLEAN v7;       // sf
 	unsigned char v8; // of
 
 	v1 = i;
@@ -1811,7 +1811,7 @@ void __fastcall AddShrine(int i)
 	signed int v2; // edi
 	signed int v3; // eax
 	int *v4;       // ecx
-	BOOLEAN v5;       // zf
+	BOOLEAN v5;    // zf
 	int v6;        // eax
 	int slist[26]; // [esp+8h] [ebp-68h]
 
@@ -1980,15 +1980,15 @@ void __fastcall AddTorturedBody(int i)
 
 void __fastcall GetRndObjLoc(int randarea, int *xx, int *yy)
 {
-	int *v3; // ebx
-	int v4;  // eax
-	int v6;  // eax
-	int v7;  // esi
+	int *v3;    // ebx
+	int v4;     // eax
+	int v6;     // eax
+	int v7;     // esi
 	BOOLEAN v8; // eax
-	int v9;  // edi
-	int v10; // [esp+Ch] [ebp-Ch]
-	int v11; // [esp+10h] [ebp-8h]
-	int v12; // [esp+14h] [ebp-4h]
+	int v9;     // edi
+	int v10;    // [esp+Ch] [ebp-Ch]
+	int v11;    // [esp+10h] [ebp-8h]
+	int v12;    // [esp+14h] [ebp-4h]
 
 	v3 = xx;
 	v12 = randarea;
@@ -2370,8 +2370,8 @@ void __fastcall Obj_FlameTrap(int i)
 	int *v2;          // esi
 	int v3;           // eax
 	int v4;           // ecx
-	BOOLEAN v5;          // zf
-	BOOLEAN v6;          // sf
+	BOOLEAN v5;       // zf
+	BOOLEAN v6;       // sf
 	unsigned char v7; // of
 	int v8;           // edx
 	int v9;           // eax
@@ -2532,7 +2532,7 @@ LABEL_10:
 void __fastcall Obj_BCrossDamage(int i)
 {
 	int v1;        // esi
-	BOOLEAN v2;       // zf
+	BOOLEAN v2;    // zf
 	int v3;        // ecx
 	int v4;        // edx
 	int v6;        // ecx
@@ -3302,20 +3302,20 @@ void __fastcall MonstCheckDoors(int m)
 	int v9;            // eax
 	int v10;           // ebx
 	int v11;           // eax
-	BOOLEAN v12;          // zf
-	BOOLEAN v13;          // sf
+	BOOLEAN v12;       // zf
+	BOOLEAN v13;       // sf
 	unsigned char v14; // of
 	int v15;           // eax
 	int v16;           // ebx
 	int v17;           // eax
-	BOOLEAN v18;          // zf
-	BOOLEAN v19;          // sf
+	BOOLEAN v18;       // zf
+	BOOLEAN v19;       // sf
 	unsigned char v20; // of
 	int v21;           // eax
 	int v22;           // ebx
 	int v23;           // eax
-	BOOLEAN v24;          // zf
-	BOOLEAN v25;          // sf
+	BOOLEAN v24;       // zf
+	BOOLEAN v25;       // sf
 	unsigned char v26; // of
 	int v27;           // [esp+0h] [ebp-14h]
 	int v28;           // [esp+4h] [ebp-10h]
@@ -3508,8 +3508,8 @@ void __fastcall OperateL1Door(int pnum, int i, unsigned char sendflag)
 	int v5;            // esi
 	int v6;            // ST1C_4
 	int v7;            // eax
-	BOOLEAN v8;           // zf
-	BOOLEAN v9;           // sf
+	BOOLEAN v8;        // zf
+	BOOLEAN v9;        // sf
 	unsigned char v10; // of
 	int v11;           // [esp+Ch] [ebp-Ch]
 	int pnuma;         // [esp+10h] [ebp-8h]
@@ -3589,7 +3589,7 @@ void __fastcall OperateBook(int pnum, int i)
 {
 	signed int v4;  // ecx
 	int v5;         // eax
-	BOOLEAN v6;        // zf
+	BOOLEAN v6;     // zf
 	int j;          // esi
 	signed int v11; // [esp+10h] [ebp-10h]
 	signed int v1;  // [esp+14h] [ebp-Ch]
@@ -3776,7 +3776,7 @@ void __fastcall OperateSChambBk(int pnum, int i)
 void __fastcall OperateChest(int pnum, int i, unsigned char sendmsg)
 {
 	int v3;         // esi
-	BOOLEAN v4;        // zf
+	BOOLEAN v4;     // zf
 	int v5;         // edi
 	int v6;         // eax
 	int v7;         // eax
@@ -3852,11 +3852,11 @@ void __fastcall OperateChest(int pnum, int i, unsigned char sendmsg)
 
 void __fastcall OperateMushPatch(int pnum, int i)
 {
-	int v2;  // esi
+	int v2;     // esi
 	BOOLEAN v3; // zf
-	int v5;  // ecx
-	int xx;  // [esp+8h] [ebp-8h]
-	int yy;  // [esp+Ch] [ebp-4h]
+	int v5;     // ecx
+	int xx;     // [esp+8h] [ebp-8h]
+	int yy;     // [esp+Ch] [ebp-4h]
 
 	if (quests[QTYPE_BLKM]._qactive != 2 || quests[QTYPE_BLKM]._qvar1 < QS_TOMEGIVEN) {
 		if (!deltaload && pnum == myplr) {
@@ -3889,10 +3889,10 @@ void __fastcall OperateMushPatch(int pnum, int i)
 
 void __fastcall OperateInnSignChest(int pnum, int i)
 {
-	int v4;  // esi
+	int v4;     // esi
 	BOOLEAN v5; // zf
-	int xx;  // [esp+8h] [ebp-8h]
-	int yy;  // [esp+Ch] [ebp-4h]
+	int xx;     // [esp+8h] [ebp-8h]
+	int yy;     // [esp+Ch] [ebp-4h]
 
 	if (quests[QTYPE_BOL]._qvar1 == 2) {
 		v4 = i;
@@ -3928,7 +3928,7 @@ void __fastcall OperateSlainHero(int pnum, int i, unsigned char sendmsg)
 	unsigned short v3; // di
 	int v4;            // esi
 	int v5;            // eax
-	BOOLEAN v6;           // zf
+	BOOLEAN v6;        // zf
 	int v8;            // ecx
 
 	v3 = i;
@@ -4003,7 +4003,7 @@ void __fastcall OperateSarc(int pnum, int i, unsigned char sendmsg)
 {
 	unsigned short v3; // bp
 	int v4;            // esi
-	BOOLEAN v5;           // zf
+	BOOLEAN v5;        // zf
 	int v6;            // ecx
 	int v7;            // [esp+Ch] [ebp-4h]
 
@@ -4040,8 +4040,8 @@ void __fastcall OperateL2Door(int pnum, int i, unsigned char sendflag)
 	int v5;            // esi
 	int v6;            // ST1C_4
 	int v7;            // eax
-	BOOLEAN v8;           // zf
-	BOOLEAN v9;           // sf
+	BOOLEAN v8;        // zf
+	BOOLEAN v9;        // sf
 	unsigned char v10; // of
 	int v11;           // [esp+Ch] [ebp-Ch]
 	int pnuma;         // [esp+10h] [ebp-8h]
@@ -4081,8 +4081,8 @@ void __fastcall OperateL3Door(int pnum, int i, unsigned char sendflag)
 	int v5;            // esi
 	int v6;            // ST1C_4
 	int v7;            // eax
-	BOOLEAN v8;           // zf
-	BOOLEAN v9;           // sf
+	BOOLEAN v8;        // zf
+	BOOLEAN v9;        // sf
 	unsigned char v10; // of
 	int v11;           // [esp+Ch] [ebp-Ch]
 	int pnuma;         // [esp+10h] [ebp-8h]
@@ -4752,7 +4752,7 @@ void __fastcall OperateSkelBook(int pnum, int i, unsigned char sendmsg)
 {
 	unsigned short v3; // di
 	int v4;            // esi
-	BOOLEAN v5;           // zf
+	BOOLEAN v5;        // zf
 	int v7;            // eax
 	int v8;            // ecx
 	int v9;            // edx
@@ -4788,7 +4788,7 @@ void __fastcall OperateBookCase(int pnum, int i, unsigned char sendmsg)
 	unsigned short v3; // di
 	int v4;            // ebp
 	int v5;            // esi
-	BOOLEAN v6;           // zf
+	BOOLEAN v6;        // zf
 	//int v7; // eax
 
 	v3 = i;
@@ -4826,7 +4826,7 @@ void __fastcall OperateDecap(int pnum, int i, unsigned char sendmsg)
 	int v4;            // esi
 	int v5;            // edi
 	int *v6;           // eax
-	BOOLEAN v7;           // zf
+	BOOLEAN v7;        // zf
 
 	v3 = i;
 	v4 = i;
@@ -4850,7 +4850,7 @@ void __fastcall OperateArmorStand(int pnum, int i, unsigned char sendmsg)
 	unsigned short v3; // di
 	int v4;            // esi
 	int *v5;           // eax
-	BOOLEAN v6;           // zf
+	BOOLEAN v6;        // zf
 	unsigned char v8;  // al
 	int v9;            // [esp-10h] [ebp-20h]
 	int v10;           // [esp-8h] [ebp-18h]
@@ -4897,7 +4897,7 @@ void __fastcall OperateArmorStand(int pnum, int i, unsigned char sendmsg)
 int __fastcall FindValidShrine(int i)
 {
 	BOOLEAN done; // esi
-	int rv;    // eax
+	int rv;       // eax
 	BOOLEAN v3;   // zf
 
 	do {
@@ -4956,7 +4956,7 @@ BOOLEAN __fastcall OperateFountains(int pnum, int i)
 	unsigned short v2; // bx
 	int v3;            // esi
 	int v4;            // edi
-	BOOLEAN v5;           // bp
+	BOOLEAN v5;        // bp
 	signed int v7;     // ebx
 	int v8;            // ebp
 	int v10;           // eax
@@ -5115,7 +5115,7 @@ void __fastcall OperateWeaponRack(int pnum, int i, unsigned char sendmsg)
 	int v7;            // eax
 	int v8;            // eax
 	int v9;            // eax
-	BOOLEAN v10;          // zf
+	BOOLEAN v10;       // zf
 	int v11;           // ecx
 	int v12;           // edx
 	signed int v13;    // [esp-4h] [ebp-14h]
@@ -5212,7 +5212,7 @@ void __fastcall OperateObject(int pnum, int i, BOOL TeleFlag)
 	int v4;           // edi
 	ObjectStruct *v5; // ebx
 	int v6;           // ecx
-	BOOLEAN sendmsg;     // [esp+Ch] [ebp-4h]
+	BOOLEAN sendmsg;  // [esp+Ch] [ebp-4h]
 
 	v3 = pnum;
 	v4 = i;
@@ -5544,7 +5544,7 @@ void __fastcall BreakCrux(int i)
 void __fastcall BreakBarrel(int pnum, int i, int dam, unsigned char forcebreak, int sendmsg)
 {
 	int v5;          // esi
-	BOOLEAN v6;         // zf
+	BOOLEAN v6;      // zf
 	int v7;          // eax
 	int v8;          // edx
 	int v9;          // eax
@@ -5686,10 +5686,10 @@ void __fastcall SyncBreakObj(int pnum, int oi)
 
 void __fastcall SyncL1Doors(int i)
 {
-	int v1;  // ebx
-	int v2;  // eax
-	int v3;  // esi
-	int v4;  // edi
+	int v1;     // ebx
+	int v2;     // eax
+	int v3;     // esi
+	int v4;     // edi
 	BOOLEAN v5; // zf
 
 	v1 = i;

@@ -788,9 +788,9 @@ void __fastcall S_ScrollSPBuy(int idx)
 
 BOOLEAN __cdecl S_StartSPBuy()
 {
-	int *v0;     // eax
+	int *v0;        // eax
 	BOOLEAN result; // al
-	int v2;      // ST10_4
+	int v2;         // ST10_4
 
 	storenumh = 0;
 	v0 = &premiumitem[0]._itype;
@@ -891,7 +891,7 @@ void __fastcall S_ScrollSSell(int idx)
 
 void __cdecl S_StartSSell()
 {
-	int i;       // eax
+	int i;          // eax
 	BOOLEAN sellok; // [esp+14h] [ebp-4h]
 
 	stextsize = 1;
@@ -1168,7 +1168,7 @@ void __cdecl S_StartWBuy()
 
 BOOLEAN __fastcall WitchSellOk(int i)
 {
-	BOOLEAN rv;        // al
+	BOOLEAN rv;     // al
 	ItemStruct *pI; // edx
 
 	rv = 0;
@@ -1191,7 +1191,7 @@ BOOLEAN __fastcall WitchSellOk(int i)
 
 void __cdecl S_StartWSell()
 {
-	int i;       // eax
+	int i;          // eax
 	BOOLEAN sellok; // [esp+18h] [ebp-8h]
 
 	stextsize = 1;
@@ -1639,7 +1639,7 @@ void __fastcall AddStoreHoldId(ItemStruct itm, int i)
 void __cdecl S_StartSIdentify()
 {
 	ItemStruct itm; // [esp-170h] [ebp-18Ch]
-	BOOLEAN idok;      // [esp+10h] [ebp-Ch]
+	BOOLEAN idok;   // [esp+10h] [ebp-Ch]
 	int i;          // [esp+14h] [ebp-8h]
 
 	idok = 0;
@@ -2428,7 +2428,7 @@ void __cdecl SmithBuyItem()
 	int idx;        // eax
 	ItemStruct *v1; // edx
 	ItemStruct *v2; // edi
-	BOOLEAN v3;        // zf
+	BOOLEAN v3;     // zf
 
 	TakePlrsMoney(plr[myplr].HoldItem._iIvalue);
 	if (plr[myplr].HoldItem._iMagical == ITEM_QUALITY_NORMAL)
@@ -2505,11 +2505,11 @@ void __cdecl S_SBuyEnter()
 
 void __cdecl SmithBuyPItem()
 {
-	int xx;  // ecx
-	int idx; // eax
+	int xx;     // ecx
+	int idx;    // eax
 	BOOLEAN v2; // sf
-	int v3;  // eax
-	int i;   // edx
+	int v3;     // eax
+	int i;      // edx
 
 	TakePlrsMoney(plr[myplr].HoldItem._iIvalue);
 	if (plr[myplr].HoldItem._iMagical == ITEM_QUALITY_NORMAL)
@@ -2540,17 +2540,17 @@ void __cdecl SmithBuyPItem()
 
 void __cdecl S_SPBuyEnter()
 {
-	int v0;   // eax
-	BOOLEAN v1;  // sf
-	int v2;   // eax
-	int v3;   // ecx
-	int v4;   // edx
-	int *v5;  // esi
-	int v6;   // ecx
-	int v7;   // eax
-	int v8;   // eax
-	int v9;   // esi
-	char v10; // cl
+	int v0;     // eax
+	BOOLEAN v1; // sf
+	int v2;     // eax
+	int v3;     // ecx
+	int v4;     // edx
+	int *v5;    // esi
+	int v6;     // ecx
+	int v7;     // eax
+	int v8;     // eax
+	int v9;     // esi
+	char v10;   // cl
 
 	if (stextsel == 22) {
 		StartStore(STORE_SMITH);
@@ -2651,10 +2651,10 @@ BOOLEAN __fastcall StoreGoldFit(int idx)
 void __fastcall PlaceStoreGold(int v)
 {
 	BOOLEAN done; // ecx
-	int ii;    // ebp
-	int xx;    // esi
-	int yy;    // ST20_4
-	int i;     // [esp+10h] [ebp-10h]
+	int ii;       // ebp
+	int xx;       // esi
+	int yy;       // ST20_4
+	int i;        // [esp+10h] [ebp-10h]
 
 	done = 0;
 
@@ -2682,7 +2682,7 @@ void __cdecl StoreSellItem()
 	char v1;          // al
 	int v2;           // eax
 	int cost;         // ebp
-	BOOLEAN v4;          // sf
+	BOOLEAN v4;       // sf
 	unsigned char v5; // of
 	unsigned int v6;  // eax
 	int v8;           // edx
@@ -2808,7 +2808,7 @@ void __cdecl S_SRepairEnter()
 	int idx;          // eax
 	int v1;           // edx
 	int v2;           // ecx
-	BOOLEAN v3;          // sf
+	BOOLEAN v3;       // sf
 	unsigned char v4; // of
 	char v5;          // cl
 
@@ -3006,7 +3006,7 @@ void __cdecl S_WRechargeEnter()
 	int idx;          // eax
 	int v1;           // edx
 	int v2;           // ecx
-	BOOLEAN v3;          // sf
+	BOOLEAN v3;       // sf
 	unsigned char v4; // of
 	char v5;          // cl
 
@@ -3085,16 +3085,16 @@ void __cdecl BoyBuyItem()
 void __cdecl HealerBuyItem()
 {
 	int idx;          // esi
-	BOOLEAN v1;          // sf
+	BOOLEAN v1;       // sf
 	unsigned char v2; // of
 	int v3;           // eax
 	int v4;           // ecx
-	BOOLEAN v5;          // sf
+	BOOLEAN v5;       // sf
 	unsigned char v6; // of
 	int v7;           // eax
 	ItemStruct *v8;   // edx
 	ItemStruct *v9;   // edi
-	BOOLEAN v10;         // zf
+	BOOLEAN v10;      // zf
 
 	idx = stextvhold + ((stextlhold - stextup) >> 2);
 	if (gbMaxPlayers == 1) {
@@ -3409,7 +3409,7 @@ void __cdecl S_SIDEnter()
 	int idx;          // eax
 	int v1;           // edx
 	int v2;           // ecx
-	BOOLEAN v3;          // sf
+	BOOLEAN v3;       // sf
 	unsigned char v4; // of
 	char v5;          // cl
 
@@ -3666,7 +3666,7 @@ void __cdecl STextEnter()
 
 void __cdecl CheckStoreBtn()
 {
-	BOOLEAN v0;          // sf
+	BOOLEAN v0;       // sf
 	unsigned char v1; // of
 	int v2;           // eax
 	int *v3;          // ecx

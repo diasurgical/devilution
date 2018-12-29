@@ -3,7 +3,7 @@
 #include "../types.h"
 
 static float mainmenu_cpp_init_value = INFINITY;
-char chr_name_str[16];
+char gszHero[16];
 
 /* data */
 
@@ -44,7 +44,7 @@ int __stdcall mainmenu_select_hero_dialog(
 		        pfile_delete_save,
 		        pfile_ui_set_class_stats,
 		        &a5,
-		        chr_name_str,
+		        gszHero,
 		        &gnDifficulty))
 			TermMsg("Unable to display SelHeroSing");
 
@@ -60,7 +60,7 @@ int __stdcall mainmenu_select_hero_dialog(
 	               pfile_ui_set_class_stats,
 	               &a5,
 	               &a6,
-	               chr_name_str)) {
+	               gszHero)) {
 		TermMsg("Can't load multiplayer dialog");
 	}
 	if (a5 == 4) {
@@ -76,7 +76,7 @@ int __stdcall mainmenu_select_hero_dialog(
 			*multi = a6;
 	}
 	if (cname && clen)
-		SStrCopy(cname, chr_name_str, clen);
+		SStrCopy(cname, gszHero, clen);
 
 	return 1;
 }
@@ -91,21 +91,21 @@ void __cdecl mainmenu_loop()
 
 	do {
 		menu = 0;
-		if(!UiMainMenuDialog("Diablo v1.09", &menu, effects_play_sound, 30))
+		if (!UiMainMenuDialog("Diablo v1.09", &menu, effects_play_sound, 30))
 			TermMsg("Unable to display mainmenu");
 
-		switch(menu) {
+		switch (menu) {
 		case MAINMENU_SINGLE_PLAYER:
-			if(!mainmenu_single_player())
+			if (!mainmenu_single_player())
 				done = TRUE;
 			break;
 		case MAINMENU_MULTIPLAYER:
-			if(!mainmenu_multi_player())
+			if (!mainmenu_multi_player())
 				done = TRUE;
 			break;
 		case MAINMENU_REPLAY_INTRO:
 		case MAINMENU_ATTRACT_MODE:
-			if(gbActive)
+			if (gbActive)
 				mainmenu_play_intro();
 			break;
 		case MAINMENU_SHOW_CREDITS:
@@ -115,7 +115,7 @@ void __cdecl mainmenu_loop()
 			done = TRUE;
 			break;
 		}
-	} while(done == FALSE);
+	} while (done == FALSE);
 
 	music_stop();
 }
@@ -130,12 +130,14 @@ BOOL __cdecl mainmenu_single_player()
 
 BOOL __fastcall mainmenu_init_menu(int type)
 {
+	BOOL success;
+
 	if (type == 4)
 		return TRUE;
 
 	music_stop();
 
-	BOOL success = StartGame(type != 2, type != 3);
+	success = StartGame(type != 2, type != 3);
 	if (success)
 		mainmenu_refresh_music();
 

@@ -3,19 +3,11 @@
 #include "../types.h"
 
 // +Infinity after initialization of appfat.cpp.
-float appfat_cpp_init_value;
+static float appfat_cpp_init_value = INFINITY;
 
 char sz_error_buf[256];
 int terminating;       // weak
 int cleanup_thread_id; // weak
-
-// appfat_cpp_init initializes the C++ runtime of appfat.cpp.
-struct appfat_cpp_init {
-	appfat_cpp_init()
-	{
-		appfat_cpp_init_value = INFINITY;
-	}
-} appfat_cpp_init;
 
 // delete overloads the delete operator.
 void operator delete(void *ptr)
@@ -405,7 +397,7 @@ BOOL __cdecl InsertCDDlg()
 	int v0; // edi
 
 	ShowCursor(1);
-	v0 = DialogBoxParam(ghInst, MAKEINTRESOURCE(IDD_DIALOG9), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)"");
+	v0 = DialogBoxParam(ghInst, MAKEINTRESOURCE(IDD_DIALOG9), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM) "");
 	if (v0 == -1)
 		TermMsg("InsertCDDlg");
 	ShowCursor(0);

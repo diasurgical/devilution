@@ -164,7 +164,7 @@ LRESULT __stdcall cr8game_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPa
 			}
 			return 0;
 		}
-		v8 = (HWND)SDrawGetFrameWindow();
+		v8 = (HWND)SDrawGetFrameWindow(NULL);
 		SendMessageA(v8, Msg, wParam, lParam);
 	}
 	return (LRESULT)SDlgDefDialogProc(hWnd, v4, (HDC)wParam, (HWND)lParam);

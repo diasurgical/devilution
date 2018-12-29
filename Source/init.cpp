@@ -3,7 +3,7 @@
 #include "../types.h"
 
 _SNETVERSIONDATA fileinfo;
-int init_cpp_init_value; // weak
+static float init_cpp_init_value = INFINITY;
 int gbActive;            // weak
 char diablo_exe_path[260];
 void *unused_mpq;
@@ -15,21 +15,10 @@ void *patch_rt_mpq;
 int killed_mom_parent; // weak
 BOOLEAN screensaver_enabled_prev;
 
-const int init_inf = 0x7F800000; // weak
-
 /* data */
 
 char gszVersionNumber[260] = "internal version unknown";
 char gszProductName[260] = "Diablo v1.09";
-
-struct init_cpp_init {
-	init_cpp_init()
-	{
-		init_cpp_init_value = init_inf;
-	}
-} _init_cpp_init;
-// 47AE20: using guessed type int init_inf;
-// 63497C: using guessed type int init_cpp_init_value;
 
 void __fastcall init_cleanup(BOOLEAN show_cursor)
 {
@@ -88,7 +77,7 @@ void __fastcall init_run_office(char *dir)
 {
 	char *v1;                              // esi
 	HANDLE v2;                             // ebx
-	BOOLEAN v3;                               // zf
+	BOOLEAN v3;                            // zf
 	HWND v4;                               // eax
 	char Directory[260];                   // [esp+8h] [ebp-348h]
 	char FileName[260];                    // [esp+10Ch] [ebp-244h]
@@ -127,12 +116,12 @@ void __fastcall init_run_office(char *dir)
 
 void __fastcall init_disable_screensaver(BOOLEAN disable)
 {
-	BOOLEAN v1;        // al
+	BOOLEAN v1;     // al
 	char Data[16];  // [esp+4h] [ebp-20h]
 	DWORD Type;     // [esp+14h] [ebp-10h]
 	DWORD cbData;   // [esp+18h] [ebp-Ch]
 	HKEY phkResult; // [esp+1Ch] [ebp-8h]
-	BOOLEAN v6;        // [esp+20h] [ebp-4h]
+	BOOLEAN v6;     // [esp+20h] [ebp-4h]
 
 	// BUGFIX: this is probably the worst possible way to do this. Alternatives: ExtEscape() with SETPOWERMANAGEMENT,
 	// SystemParametersInfo() with SPI_SETSCREENSAVEACTIVE/SPI_SETPOWEROFFACTIVE/SPI_SETLOWPOWERACTIVE

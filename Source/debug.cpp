@@ -171,9 +171,9 @@ void __cdecl PrintDebugQuest()
 
 void __fastcall PrintDebugMonster(int m)
 {
-	BOOLEAN bActive;   // ecx
-	int i;          // eax
-	char dstr[128]; // [esp+Ch] [ebp-80h]
+	BOOLEAN bActive; // ecx
+	int i;           // eax
+	char dstr[128];  // [esp+Ch] [ebp-80h]
 
 	sprintf(dstr, "Monster %i = %s", m, monster[m].mName);
 	NetSendCmdString(1 << myplr, dstr);

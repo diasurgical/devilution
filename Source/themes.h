@@ -11,9 +11,9 @@ extern BOOLEAN mFountainFlag; // weak
 extern BOOLEAN cauldronFlag;  // weak
 extern BOOLEAN tFountainFlag; // weak
 extern int zharlib;
-extern int themex;         // idb
-extern int themey;         // idb
-extern int themeVar1;      // idb
+extern int themex;    // idb
+extern int themey;    // idb
+extern int themeVar1; // idb
 extern ThemeStruct themes[MAXTHEMES];
 extern BOOLEAN pFountainFlag; // weak
 extern BOOLEAN bFountainFlag; // weak

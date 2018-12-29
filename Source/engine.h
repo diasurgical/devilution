@@ -5,7 +5,6 @@
 //offset 0
 //pCelBuff->pFrameTable[0]
 
-extern int engine_cpp_init_value; // weak
 extern char gbPixelCol;           // automap pixel color 8-bit (palette entry)
 extern int dword_52B970;          // bool flip - if y < x
 extern int orgseed;               // weak

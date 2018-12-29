@@ -15,7 +15,7 @@ static DJunk sgJunk;
 static TMegaPkt *sgpMegaPkt;
 static BYTE sgbDeltaChanged;
 static BYTE sgbDeltaChunks;
-int deltaload;
+BOOL deltaload;
 BYTE gbBufferMsgs;
 int pkt_counter;
 
@@ -317,7 +317,7 @@ void __cdecl delta_init()
 	memset(&sgJunk, 0xFF, sizeof(sgJunk));
 	memset(sgLevels, 0xFF, sizeof(sgLevels));
 	memset(sgLocals, 0, sizeof(sgLocals));
-	deltaload = 0;
+	deltaload = FALSE;
 }
 // 67618C: using guessed type char sgbDeltaChanged;
 // 676190: using guessed type int deltaload;
@@ -489,228 +489,153 @@ void __cdecl DeltaSaveLevel()
 
 void __cdecl DeltaLoadLevel()
 {
-	int v0;             // ebx
-	int *v1;            // esi
-	int v2;             // eax
-	int v3;             // ecx
-	int v4;             // edx
-	int v5;             // edi
-	char v6;            // al
-	int v7;             // eax
-	signed int v8;      // esi
-	int v9;             // eax
-	char v10;           // cl
-	int v11;            // eax
-	char *v12;          // edx
-	int v13;            // eax
-	int v14;            // ebx
-	int *v15;           // edx
-	unsigned short v16; // cx
-	int v17;            // ST1C_4
-	int v18;            // ST18_4
-	int v19;            // eax
-	int v20;            // ecx
-	int v21;            // edx
-	int v22;            // eax
-	int v23;            // eax
-	int v24;            // esi
-	int v25;            // edi
-	int v26;            // eax
-	int v27;            // eax
-	int v28;            // esi
-	unsigned char v29;  // al
-	int j;              // esi
-	int v31;            // eax
-	signed int v32;     // [esp+0h] [ebp-24h]
-	int v33;            // [esp+4h] [ebp-20h]
-	int o2;             // [esp+8h] [ebp-1Ch]
-	int i;              // [esp+Ch] [ebp-18h]
-	signed int v36;     // [esp+10h] [ebp-14h]
-	int v37;            // [esp+14h] [ebp-10h]
-	signed int v38;     // [esp+18h] [ebp-Ch]
-	signed int v39;     // [esp+1Ch] [ebp-8h]
-	int v40;            // [esp+20h] [ebp-4h]
-	signed int v41;     // [esp+20h] [ebp-4h]
+	int ii, ot;
+	int i, j, k, l;
+	int x, y, xx, yy;
+	BOOL done;
 
-	if (gbMaxPlayers != 1) {
-		deltaload = 1;
-		if (currlevel != 0) {
-			v0 = 0;
-			if (nummonsters > 0) {
-				v40 = 0;
-				v1 = &monster[0]._mfuty;
-				do {
-					if (sgLevels[currlevel].monster[v40]._mx != 0xFF) {
-						M_ClearSquares(v0);
-						v2 = v40 * 9 + 4721 * currlevel;
-						v3 = *((unsigned char *)&sgLevels[0].monster[0]._mx + v2);
-						v4 = *((unsigned char *)&sgLevels[0].monster[0]._my + v2);
-						v5 = *(int *)((char *)&sgLevels[0].monster[0]._mhitpoints + v2);
-						*(v1 - 3) = v3;
-						*(v1 - 2) = v4;
-						v1[1] = v3;
-						v1[2] = v4;
-						*(v1 - 1) = v3;
-						*v1 = v4;
-						if (v5 != -1)
-							v1[26] = v5;
-						if (v5) {
-							decode_enemy(v0, *((unsigned char *)&sgLevels[0].monster[0]._menemy + v2));
-							v7 = *(v1 - 3);
-							if (v7 && v7 != 1 || *(v1 - 2))
-								dMonster[v7][*(v1 - 2)] = v0 + 1;
-							if ((signed int)v1 >= (signed int)&monster[4]._mfuty) {
-								M_StartStand(v0, v1[7]);
-							} else {
-								MAI_Golum(v0);
-								v1[28] |= 0x30u;
+	if (gbMaxPlayers == 1) {
+		return;
+	}
+
+	deltaload = TRUE;
+	if (currlevel != 0) {
+		for (i = 0; i < nummonsters; i++) {
+			if (sgLevels[currlevel].monster[i]._mx != 0xFF) {
+				M_ClearSquares(i);
+				x = sgLevels[currlevel].monster[i]._mx;
+				y = sgLevels[currlevel].monster[i]._my;
+				monster[i]._mx = x;
+				monster[i]._my = y;
+				monster[i]._moldx = x;
+				monster[i]._moldy = y;
+				monster[i]._mfutx = x;
+				monster[i]._mfuty = y;
+				if (sgLevels[currlevel].monster[i]._mhitpoints != -1)
+					monster[i]._mhitpoints = sgLevels[currlevel].monster[i]._mhitpoints;
+				if (!sgLevels[currlevel].monster[i]._mhitpoints) {
+					monster[i]._moldx = x;
+					monster[i]._moldy = y;
+					M_ClearSquares(i);
+					if (monster[i]._mAi != AI_DIABLO) {
+						if (!monster[i]._uniqtype)
+							/// ASSERT: assert(monster[i].MType != NULL);
+							AddDead(monster[i]._mx, monster[i]._my, monster[i].MType->mdeadval, (direction)monster[i]._mdir);
+						else
+							AddDead(monster[i]._mx, monster[i]._my, monster[i]._udeadval, (direction)monster[i]._mdir);
+					}
+					monster[i]._mDelFlag = TRUE;
+					M_UpdateLeader(i);
+				} else {
+					decode_enemy(i, sgLevels[currlevel].monster[i]._menemy);
+					if (monster[i]._mx && monster[i]._mx != 1 || monster[i]._my)
+						dMonster[monster[i]._mx][monster[i]._my] = i + 1;
+					if (i < 4) {
+						MAI_Golum(i);
+						monster[i]._mFlags |= (MFLAG_TARGETS_MONSTER | MFLAG_GOLEM);
+					} else {
+						M_StartStand(i, monster[i]._mdir);
+					}
+					monster[i]._msquelch = sgLevels[currlevel].monster[i]._mactive;
+				}
+			}
+		}
+		memcpy(automapview, &sgLocals[currlevel], sizeof(automapview));
+	}
+
+	for (i = 0; i < MAXITEMS; i++) {
+		if (sgLevels[currlevel].item[i].bCmd != 0xFF) {
+			if (sgLevels[currlevel].item[i].bCmd == CMD_WALKXY) {
+				ii = FindGetItem(
+				    sgLevels[currlevel].item[i].wIndx,
+				    sgLevels[currlevel].item[i].wCI,
+				    sgLevels[currlevel].item[i].dwSeed);
+				if (ii != -1) {
+					if (dItem[item[ii]._ix][item[ii]._iy] == ii + 1)
+						dItem[item[ii]._ix][item[ii]._iy] = 0;
+					DeleteItem(ii, i);
+				}
+			}
+			if (sgLevels[currlevel].item[i].bCmd == CMD_ACK_PLRINFO) {
+				ii = itemavail[0];
+				itemavail[0] = itemavail[MAXITEMS - numitems - 1];
+				itemactive[numitems] = ii;
+				if (sgLevels[currlevel].item[i].wIndx == IDI_EAR) {
+					RecreateEar(
+					    ii,
+					    sgLevels[currlevel].item[i].wCI,
+					    sgLevels[currlevel].item[i].dwSeed,
+					    sgLevels[currlevel].item[i].bId,
+					    sgLevels[currlevel].item[i].bDur,
+					    sgLevels[currlevel].item[i].bMDur,
+					    sgLevels[currlevel].item[i].bCh,
+					    sgLevels[currlevel].item[i].bMCh,
+					    sgLevels[currlevel].item[i].wValue,
+					    sgLevels[currlevel].item[i].dwBuff);
+				} else {
+					RecreateItem(
+					    ii,
+					    sgLevels[currlevel].item[i].wIndx,
+					    sgLevels[currlevel].item[i].wCI,
+					    sgLevels[currlevel].item[i].dwSeed,
+					    sgLevels[currlevel].item[i].wValue);
+					if (sgLevels[currlevel].item[i].bId)
+						item[ii]._iIdentified = TRUE;
+					item[ii]._iDurability = sgLevels[currlevel].item[i].bDur;
+					item[ii]._iMaxDur = sgLevels[currlevel].item[i].bMDur;
+					item[ii]._iCharges = sgLevels[currlevel].item[i].bCh;
+					item[ii]._iMaxCharges = sgLevels[currlevel].item[i].bMCh;
+				}
+				x = sgLevels[currlevel].item[i].x;
+				y = sgLevels[currlevel].item[i].y;
+				if (!CanPut(x, y)) {
+					done = FALSE;
+					for (k = 1; k < 50 && !done; k++) {
+						for (j = -k; j <= k && !done; j++) {
+							yy = y + j;
+							for (l = -k; l <= k && !done; l++) {
+								xx = x + l;
+								if (CanPut(xx, yy)) {
+									done = TRUE;
+									x = xx;
+									y = yy;
+								}
 							}
-							*((_BYTE *)v1 + 116) = sgLevels[currlevel].monster[v40]._mactive;
-						} else {
-							v1[1] = v3;
-							v1[2] = v4;
-							M_ClearSquares(v0);
-							if (*((_BYTE *)v1 + 108) != 27) {
-								if (*((_BYTE *)v1 + 144))
-									v6 = *((_BYTE *)v1 + 146);
-								else
-									v6 = *(_BYTE *)(v1[44] + 317);
-								AddDead(*(v1 - 3), *(v1 - 2), v6, (direction)v1[7]);
-							}
-							v1[16] = 1;
-							M_UpdateLeader(v0);
 						}
 					}
-					++v40;
-					++v0;
-					v1 += 57;
-				} while (v0 < nummonsters);
-			}
-			memcpy(automapview, &sgLocals[currlevel], sizeof(automapview));
-		}
-		v8 = 0;
-		i = 0;
-		v32 = 0;
-		do {
-			v9 = v8 + 4721 * currlevel;
-			v10 = *(&sgLevels[0].item[0].bCmd + v9);
-			if (v10 != 0xFF) {
-				if (v10 == 1) {
-					v11 = FindGetItem(
-					    *(unsigned short *)((char *)&sgLevels[0].item[0].wIndx + v9),
-					    *(short *)((char *)&sgLevels[0].item[0].wCI + v9),
-					    *(int *)((char *)&sgLevels[0].item[0].dwSeed + v9));
-					if (v11 != -1) {
-						v12 = &dItem[item[v11]._ix][item[v11]._iy];
-						if (*v12 == v11 + 1)
-							*v12 = 0;
-						DeleteItem(v11, i);
-					}
 				}
-				v13 = v8 + 4721 * currlevel;
-				if (*(&sgLevels[0].item[0].bCmd + v13) == 2) {
-					v14 = itemavail[0];
-					v33 = itemavail[0];
-					v15 = &itemavail[MAXITEMS - numitems - 1];
-					itemactive[numitems] = itemavail[0];
-					v16 = *(short *)((char *)&sgLevels[0].item[0].wIndx + v13);
-					itemavail[0] = *v15;
-					if (v16 == IDI_EAR) {
-						RecreateEar(
-						    v14,
-						    *(short *)((char *)&sgLevels[0].item[0].wCI + v13),
-						    *(int *)((char *)&sgLevels[0].item[0].dwSeed + v13),
-						    *(&sgLevels[0].item[0].bId + v13),
-						    *((unsigned char *)&sgLevels[0].item[0].bDur + v13),
-						    *((unsigned char *)&sgLevels[0].item[0].bMDur + v13),
-						    *((unsigned char *)&sgLevels[0].item[0].bCh + v13),
-						    *((unsigned char *)&sgLevels[0].item[0].bMCh + v13),
-						    *(unsigned short *)((char *)&sgLevels[0].item[0].wValue + v13),
-						    *(int *)((char *)&sgLevels[0].item[0].dwBuff + v13));
-					} else {
-						v17 = *(unsigned short *)((char *)&sgLevels[0].item[0].wValue + v13);
-						v18 = *(int *)((char *)&sgLevels[0].item[0].dwSeed + v13);
-						_LOWORD(v13) = *(short *)((char *)&sgLevels[0].item[0].wCI + v13);
-						RecreateItem(v14, v16, v13, v18, v17);
-						v19 = v8 + 4721 * currlevel;
-						if (*(&sgLevels[0].item[0].bId + v19))
-							item[v14]._iIdentified = TRUE;
-						v20 = v14;
-						item[v20]._iDurability = *((unsigned char *)&sgLevels[0].item[0].bDur + v19);
-						item[v20]._iMaxDur = *((unsigned char *)&sgLevels[0].item[0].bMDur + v19);
-						v21 = *((unsigned char *)&sgLevels[0].item[0].bCh + v19);
-						v22 = *((unsigned char *)&sgLevels[0].item[0].bMCh + v19);
-						item[v20]._iCharges = v21;
-						item[v20]._iMaxCharges = v22;
-					}
-					v23 = v8 + 4721 * currlevel;
-					v24 = *((unsigned char *)&sgLevels[0].item[0].x + v23);
-					v25 = *((unsigned char *)&sgLevels[0].item[0].y + v23);
-					if (!CanPut(v24, v25)) {
-						v39 = 0;
-						v26 = -1;
-						v41 = 1;
-						v36 = -1;
-						do {
-							if (v39)
-								break;
-							v37 = v26;
-							while (v26 <= v41 && !v39) {
-								o2 = v25 + v37;
-								v38 = v36;
-								do {
-									if (v39)
-										break;
-									if (CanPut(v38 + v24, o2)) {
-										v25 = o2;
-										v39 = 1;
-										v24 += v38;
-									}
-									++v38;
-									v14 = v33;
-								} while (v38 <= v41);
-								v26 = ++v37;
-							}
-							++v41;
-							v26 = v36-- - 1;
-						} while (v36 > -50);
-					}
-					v27 = v14;
-					item[v27]._ix = v24;
-					item[v27]._iy = v25;
-					dItem[v24][v25] = v14 + 1;
-					RespawnItem(v14, 0);
-					++numitems;
-					v8 = v32;
-				}
-			}
-			++i;
-			v8 += 22;
-			v32 = v8;
-		} while (v8 < 2794);
-		if (currlevel != 0) {
-			v28 = 0;
-			do {
-				v29 = sgLevels[currlevel].object[v28].bCmd;
-				if (v29 >= CMD_OPENDOOR) {
-					if (v29 <= CMD_PLROPOBJ) {
-						SyncOpObject(-1, v29, v28);
-					} else if (v29 == CMD_BREAKOBJ) {
-						SyncBreakObj(-1, v28);
-					}
-				}
-				++v28;
-			} while (v28 < 127);
-			for (j = 0; j < nobjects; ++j) {
-				v31 = object[objectactive[j]]._otype;
-				if (v31 == OBJ_TRAPL || v31 == OBJ_TRAPR)
-					Obj_Trap(objectactive[j]);
+				item[ii]._ix = x;
+				item[ii]._iy = y;
+				dItem[x][y] = ii + 1;
+				RespawnItem(ii, 0);
+				numitems++;
 			}
 		}
-		deltaload = 0;
 	}
+
+	if (currlevel != 0) {
+		for (i = 0; i < MAXOBJECTS; i++) {
+			switch (sgLevels[currlevel].object[i].bCmd) {
+			case CMD_OPENDOOR:
+			case CMD_CLOSEDOOR:
+			case CMD_OPERATEOBJ:
+			case CMD_PLROPOBJ:
+				SyncOpObject(-1, sgLevels[currlevel].object[i].bCmd, i);
+				break;
+			case CMD_BREAKOBJ:
+				SyncBreakObj(-1, i);
+				break;
+			}
+		}
+
+		for (i = 0; i < nobjects; i++) {
+			ot = object[objectactive[i]]._otype;
+			if (ot == OBJ_TRAPL || ot == OBJ_TRAPR)
+				Obj_Trap(objectactive[i]);
+		}
+	}
+	deltaload = FALSE;
 }
-// 676190: using guessed type int deltaload;
 // 679660: using guessed type char gbMaxPlayers;
 
 void __fastcall NetSendCmd(BOOL bHiPri, BYTE bCmd)
@@ -1251,44 +1176,36 @@ int __fastcall ParseCmd(int pnum, TCmd *pCmd)
 
 int __fastcall On_DLEVEL(int pnum, TCmdPlrInfoHdr *pCmd)
 {
-	if ( (unsigned char)gbDeltaSender == pnum )
-	{
-		if ( sgbRecvCmd != CMD_DLEVEL_END )
-		{
-			if ( sgbRecvCmd == pCmd->bCmd )
-			{
-LABEL_17:
+	if ((unsigned char)gbDeltaSender == pnum) {
+		if (sgbRecvCmd != CMD_DLEVEL_END) {
+			if (sgbRecvCmd == pCmd->bCmd) {
+			LABEL_17:
 				memcpy(&sgRecvBuf[pCmd->wOffset], &pCmd[1], pCmd->wBytes);
 				sgdwRecvOffset += pCmd->wBytes;
 				return pCmd->wBytes + 5;
 			}
 			DeltaImportData(sgbRecvCmd, sgdwRecvOffset);
-			if ( pCmd->bCmd == CMD_DLEVEL_END )
-			{
+			if (pCmd->bCmd == CMD_DLEVEL_END) {
 				sgbDeltaChunks = 20;
 				sgbRecvCmd = CMD_DLEVEL_END;
 				return pCmd->wBytes + 5;
 			}
 			sgdwRecvOffset = 0;
-LABEL_16:
+		LABEL_16:
 			sgbRecvCmd = pCmd->bCmd;
 			goto LABEL_17;
 		}
-	}
-	else
-	{
-		if ( pCmd->bCmd != CMD_DLEVEL_END && (pCmd->bCmd != CMD_DLEVEL_0 || pCmd->wOffset) )
+	} else {
+		if (pCmd->bCmd != CMD_DLEVEL_END && (pCmd->bCmd != CMD_DLEVEL_0 || pCmd->wOffset))
 			return pCmd->wBytes + 5;
 		gbDeltaSender = pnum;
 		sgbRecvCmd = CMD_DLEVEL_END;
 	}
-	if ( pCmd->bCmd == CMD_DLEVEL_END )
-	{
+	if (pCmd->bCmd == CMD_DLEVEL_END) {
 		sgbDeltaChunks = 20;
 		return pCmd->wBytes + 5;
 	}
-	if ( pCmd->bCmd == CMD_DLEVEL_0 && !pCmd->wOffset )
-	{
+	if (pCmd->bCmd == CMD_DLEVEL_0 && !pCmd->wOffset) {
 		sgdwRecvOffset = 0;
 		goto LABEL_16;
 	}
@@ -1559,12 +1476,12 @@ int __fastcall On_GETITEM(TCmdGItem *pCmd, int pnum)
 BOOL __fastcall delta_get_item(TCmdGItem *pI, BYTE bLevel)
 {
 	TCmdGItem *v2; // esi
-	signed int v3;        // ecx
-	DLevel *v4;           // edi
-	DLevel *v5;           // eax
-	char v6;              // cl
-	DLevel *v8;           // eax
-	signed int v9;        // ecx
+	signed int v3; // ecx
+	DLevel *v4;    // edi
+	DLevel *v5;    // eax
+	char v6;       // cl
+	DLevel *v8;    // eax
+	signed int v9; // ecx
 
 	v2 = pI;
 	if (gbMaxPlayers != 1) {

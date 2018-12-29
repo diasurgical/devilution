@@ -38,7 +38,7 @@ BOOL __fastcall CaptureHdr(HANDLE hFile, short width, short height)
 {
 	DWORD lpNumBytes;
 	PCXHeader Buffer;
-	
+
 	memset(&Buffer, 0, sizeof(Buffer));
 	Buffer.manufacturer = 10;
 	Buffer.version = 5;

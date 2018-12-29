@@ -2,7 +2,7 @@
 #ifndef __MAINMENU_H__
 #define __MAINMENU_H__
 
-extern char chr_name_str[16];
+extern char gszHero[16];
 
 void __cdecl mainmenu_cpp_init();
 void __cdecl mainmenu_refresh_music();

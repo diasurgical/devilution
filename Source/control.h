@@ -34,7 +34,8 @@ extern int infoclr;       // weak
 extern int sgbPlrTalkTbl; // weak // should be char [4]
 extern void *pGBoxBuff;
 extern void *pSBkBtnCel;
-extern char tempstr[260];
+extern char tempstr[256];
+extern char byte_4B894C[4];
 extern int sbooktab;             // weak
 extern int pSplType;             // weak
 extern int frame;                // idb

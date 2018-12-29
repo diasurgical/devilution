@@ -3,27 +3,16 @@
 #include "../types.h"
 
 PALETTEENTRY logical_palette[256];
-int palette_cpp_init_value; // weak
+static float palette_cpp_init_value = INFINITY;
 PALETTEENTRY system_palette[256];
 PALETTEENTRY orig_palette[256];
 UINT gdwPalEntries;
-
-const int palette_inf = 0x7F800000; // weak
 
 /* data */
 
 int gamma_correction = 100; // idb
 BOOL color_cycling_enabled = TRUE;
 BOOLEAN sgbFadedIn = 1;
-
-struct palette_cpp_init {
-	palette_cpp_init()
-	{
-		palette_cpp_init_value = palette_inf;
-	}
-} _palette_cpp_init;
-// 47F16C: using guessed type int palette_inf;
-// 67DBCC: using guessed type int palette_cpp_init_value;
 
 void __cdecl SaveGamma()
 {

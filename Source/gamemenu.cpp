@@ -85,7 +85,9 @@ void __cdecl gamemenu_handle_previous()
 
 void __cdecl gamemenu_new_game()
 {
-	for (int i = 0; i < MAX_PLRS; i++) {
+	int i;
+
+	for (i = 0; i < MAX_PLRS; i++) {
 		plr[i]._pmode = PM_QUIT;
 		plr[i]._pInvincible = TRUE;
 	}

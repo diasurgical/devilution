@@ -11,7 +11,7 @@ BOOL __stdcall UiCreditsDialog(int a1)
 {
 	int v1; // eax
 
-	v1 = (int)SDrawGetFrameWindow();
+	v1 = (int)SDrawGetFrameWindow(NULL);
 	SDlgDialogBoxParam(ghUiInst, "CREDITS_DIALOG", v1, credits_WndProc, 25);
 	return 1;
 }
@@ -51,7 +51,7 @@ LRESULT __stdcall credits_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPa
 		if (Msg != 256) {
 			if (Msg > 0x103) {
 				if (Msg <= 0x105) {
-					v5 = (HWND)SDrawGetFrameWindow();
+					v5 = (HWND)SDrawGetFrameWindow(NULL);
 					SendMessageA(v5, Msg, wParam, lParam);
 				} else if (Msg == 272) {
 					credits_LoadImgCreditTxt(hWnd, lParam);

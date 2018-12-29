@@ -18,7 +18,7 @@ BOOL __stdcall UiMainMenuDialog(char *name, int *pdwResult, void(__stdcall *fnSo
 	menu_version_str[0] = 0;
 	if (name)
 		strncpy(menu_version_str, name, 0x40u);
-	v4 = (int)SDrawGetFrameWindow();
+	v4 = (int)SDrawGetFrameWindow(NULL);
 	v5 = SDlgDialogBoxParam(ghUiInst, "MAINMENU_DIALOG", v4, MainMenu_WndProc, 0);
 	if (v5 == 5)
 		artfont_FreeAllFonts();
@@ -40,7 +40,7 @@ LRESULT __stdcall MainMenu_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lP
 				MainMenu_KillAndFreeMenu(hWnd);
 			} else if (Msg > 0x103) {
 				if (Msg <= 0x105) {
-					v5 = (HWND)SDrawGetFrameWindow();
+					v5 = (HWND)SDrawGetFrameWindow(NULL);
 					SendMessageA(v5, Msg, wParam, lParam);
 				} else {
 					if (Msg == 272) {

@@ -450,7 +450,7 @@ void __fastcall DRLG_L3(int entry)
 	int genok;    // eax
 	signed int i; // ecx
 	signed int j; // esi
-	BOOLEAN v24;     // [esp-8h] [ebp-20h]
+	BOOLEAN v24;  // [esp-8h] [ebp-20h]
 
 	lavapool = 0;
 	do {
@@ -696,17 +696,17 @@ LABEL_12:
 
 void __fastcall DRLG_L3CreateBlock(int x, int y, int obs, int dir)
 {
-	int v4;   // esi
-	int v5;   // edi
-	int v6;   // eax
-	int v9;   // ebx
+	int v4;      // esi
+	int v5;      // edi
+	int v6;      // eax
+	int v9;      // ebx
 	BOOLEAN v10; // zf
 	BOOLEAN v11; // zf
-	int y2;   // [esp+Ch] [ebp-14h]
-	int x2;   // [esp+10h] [ebp-10h]
-	int i;    // [esp+14h] [ebp-Ch]
-	int v16;  // [esp+18h] [ebp-8h]
-	int max;  // [esp+1Ch] [ebp-4h]
+	int y2;      // [esp+Ch] [ebp-14h]
+	int x2;      // [esp+10h] [ebp-10h]
+	int i;       // [esp+14h] [ebp-Ch]
+	int v16;     // [esp+18h] [ebp-8h]
+	int max;     // [esp+1Ch] [ebp-4h]
 
 	v4 = obs;
 	v5 = obs;
@@ -1120,7 +1120,7 @@ void __cdecl DRLG_L3River()
 	char *v11;         // eax
 	signed int v12;    // eax
 	int v13;           // ecx
-	BOOLEAN v14;          // zf
+	BOOLEAN v14;       // zf
 	int v15;           // eax
 	signed int v16;    // eax
 	int v17;           // eax
@@ -1139,7 +1139,7 @@ void __cdecl DRLG_L3River()
 	int v30;           // edx
 	int v31;           // ecx
 	int v32;           // edx
-	BOOLEAN v33;          // sf
+	BOOLEAN v33;       // sf
 	unsigned char v34; // of
 	int river[3][100]; // [esp+Ch] [ebp-4E8h]
 	int v36;           // [esp+4BCh] [ebp-38h]
@@ -1682,7 +1682,7 @@ void __cdecl DRLG_L3PoolFix()
 	char v7;          // cl
 	char v8;          // cl
 	char v9;          // al
-	BOOLEAN v10;         // zf
+	BOOLEAN v10;      // zf
 	signed int v11;   // [esp+10h] [ebp-4h]
 
 	v0 = 0;
@@ -1868,7 +1868,7 @@ void __fastcall DRLG_L3PlaceRndSet(const unsigned char *miniset, int rndper)
 	int v15;                 // esi
 	unsigned char *v16;      // eax
 	unsigned char v17;       // cl
-	BOOLEAN v18;                // zf
+	BOOLEAN v18;             // zf
 	int v19;                 // [esp+8h] [ebp-30h]
 	int v20;                 // [esp+10h] [ebp-28h]
 	char *v21;               // [esp+14h] [ebp-24h]
@@ -2243,7 +2243,7 @@ BOOLEAN __fastcall WoodVertU(int i, int y)
 	char *v4;         // eax
 	unsigned char v5; // cl
 	char v6;          // al
-	BOOLEAN result;      // eax
+	BOOLEAN result;   // eax
 
 	v2 = i;
 	v3 = dungeon[i + 1][y];
@@ -2267,7 +2267,7 @@ BOOLEAN __fastcall WoodVertD(int i, int y)
 	char *v4;         // eax
 	unsigned char v5; // cl
 	char v6;          // al
-	BOOLEAN result;      // eax
+	BOOLEAN result;   // eax
 
 	v2 = i;
 	v3 = dungeon[i + 1][y];
@@ -2291,7 +2291,7 @@ BOOLEAN __fastcall WoodHorizL(int x, int j)
 	char *v4;         // eax
 	unsigned char v5; // cl
 	char v6;          // al
-	BOOLEAN result;      // eax
+	BOOLEAN result;   // eax
 
 	v2 = x;
 	v3 = dungeon[x][j + 1];
@@ -2315,7 +2315,7 @@ BOOLEAN __fastcall WoodHorizR(int x, int j)
 	char *v4;         // eax
 	unsigned char v5; // cl
 	char v6;          // al
-	BOOLEAN result;      // eax
+	BOOLEAN result;   // eax
 
 	v2 = x;
 	v3 = dungeon[x][j + 1];

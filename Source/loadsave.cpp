@@ -9,11 +9,13 @@ void __fastcall LoadGame(BOOL firstflag)
 	int i, j;
 	DWORD dwLen;
 	char szName[MAX_PATH];
+	BYTE *LoadBuff;
+	int _ViewX, _ViewY, _nummonsters, _numitems, _nummissiles, _nobjects;
 
 	FreeGameMem();
 	pfile_remove_temp_files();
 	pfile_get_game_name(szName);
-	BYTE *LoadBuff = pfile_read(szName, &dwLen);
+	LoadBuff = pfile_read(szName, &dwLen);
 	tbuff = LoadBuff;
 
 	if (ILoad() != 'RETL')
@@ -23,14 +25,14 @@ void __fastcall LoadGame(BOOL firstflag)
 	setlvlnum = WLoad();
 	currlevel = WLoad();
 	leveltype = WLoad();
-	int _ViewX = WLoad();
-	int _ViewY = WLoad();
+	_ViewX = WLoad();
+	_ViewY = WLoad();
 	invflag = OLoad();
 	chrflag = OLoad();
-	int _nummonsters = WLoad();
-	int _numitems = WLoad();
-	int _nummissiles = WLoad();
-	int _nobjects = WLoad();
+	_nummonsters = WLoad();
+	_numitems = WLoad();
+	_nummissiles = WLoad();
+	_nobjects = WLoad();
 
 	for (i = 0; i < NUMLEVELS; i++) {
 		glSeedTbl[i] = ILoad();
@@ -515,12 +517,14 @@ void __cdecl SaveLevel()
 {
 	int i, j;
 	char szName[MAX_PATH];
+	int dwLen;
+	unsigned char *SaveBuff;
 
 	if (!currlevel)
 		glSeedTbl[0] = GetRndSeed();
 
-	int dwLen = codec_get_encoded_len(FILEBUFF);
-	unsigned char *SaveBuff = DiabloAllocPtr(dwLen);
+	 dwLen = codec_get_encoded_len(FILEBUFF);
+	SaveBuff = DiabloAllocPtr(dwLen);
 	tbuff = SaveBuff;
 
 	if (leveltype) {
@@ -607,9 +611,10 @@ void __cdecl LoadLevel()
 	int i, j;
 	DWORD dwLen;
 	char szName[MAX_PATH];
+	BYTE *LoadBuff;
 
 	GetPermLevelNames(szName);
-	BYTE *LoadBuff = pfile_read(szName, &dwLen);
+	LoadBuff = pfile_read(szName, &dwLen);
 	tbuff = LoadBuff;
 
 	if (leveltype) {

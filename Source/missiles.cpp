@@ -657,10 +657,10 @@ int __fastcall GetDirection16(int x1, int y1, int x2, int y2)
 
 void __fastcall DeleteMissile(int mi, int i)
 {
-	int v2;  // edi
-	int v3;  // ebx
-	int v4;  // esi
-	int v5;  // eax
+	int v2;     // edi
+	int v3;     // ebx
+	int v4;     // esi
+	int v5;     // eax
 	BOOLEAN v6; // zf
 	BOOLEAN v7; // sf
 
@@ -821,6 +821,7 @@ BOOL __fastcall MonsterTrapHit(int m, int mindam, int maxdam, int dist, int t, i
 	int v15;            // [esp+10h] [ebp-Ch]
 	signed int v16;     // [esp+14h] [ebp-8h]
 	signed int arglist; // [esp+18h] [ebp-4h]
+	BOOL ret;
 
 	v16 = 0;
 	arglist = m;
@@ -850,7 +851,6 @@ BOOL __fastcall MonsterTrapHit(int m, int mindam, int maxdam, int dist, int t, i
 	if (v10 > 95)
 		v10 = 95;
 	//_LOBYTE(v11) = CheckMonsterHit(arglist, (unsigned char *)&t);
-	BOOL ret;
 	if (CheckMonsterHit(arglist, &ret))
 		return ret;
 #ifdef _DEBUG
@@ -896,14 +896,14 @@ BOOL __fastcall MonsterTrapHit(int m, int mindam, int maxdam, int dist, int t, i
 
 BOOLEAN __fastcall MonsterMHit(int pnum, int m, int mindam, int maxdam, int dist, int t, int shift)
 {
-	int v7;   // edi
-	BOOLEAN v8;  // zf
-	short v9; // ax
-	int v10;  // ecx
-	int v11;  // eax
-	int v12;  // esi
-	int v13;  // ebx
-	int v15;  // eax
+	int v7;     // edi
+	BOOLEAN v8; // zf
+	short v9;   // ax
+	int v10;    // ecx
+	int v11;    // eax
+	int v12;    // esi
+	int v13;    // ebx
+	int v15;    // eax
 	//int v16; // eax
 	int v19;              // ebx
 	int v20;              // ebx
@@ -1240,7 +1240,7 @@ BOOLEAN __fastcall Plr2PlrMHit(int pnum, int p, int mindam, int maxdam, int dist
 	int v12;          // ecx
 	int v13;          // eax
 	int v14;          // ecx
-	BOOLEAN v15;         // sf
+	BOOLEAN v15;      // sf
 	int v16;          // ecx
 	int v17;          // ebx
 	int v20;          // eax
@@ -1363,13 +1363,13 @@ void __fastcall CheckMissileCol(int i, int mindam, int maxdam, BOOLEAN shift, in
 	int v10;     // ecx
 	int v11;     // edi
 	int v12;     // eax
-	BOOLEAN v13;    // eax
+	BOOLEAN v13; // eax
 	char v14;    // al
 	int v15;     // ecx
 	int v16;     // edx
-	BOOLEAN v17;    // eax
+	BOOLEAN v17; // eax
 	int v18;     // eax
-	BOOLEAN v19;    // eax
+	BOOLEAN v19; // eax
 	char v20;    // al
 	int v21;     // eax
 	int v22;     // eax
@@ -1874,17 +1874,17 @@ void __fastcall GetVileMissPos(int mi, int dx, int dy)
 
 void __fastcall AddRndTeleport(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9;   // eax
-	int v11;  // esi
-	int v12;  // eax
-	int v14;  // edi
-	int v16;  // eax
+	int v9;      // eax
+	int v11;     // esi
+	int v12;     // eax
+	int v14;     // edi
+	int v16;     // eax
 	BOOLEAN v17; // zf
-	int v18;  // ecx
-	int v19;  // ecx
-	int v20;  // [esp+Ch] [ebp-Ch]
-	int mia;  // [esp+10h] [ebp-8h]
-	int v22;  // [esp+14h] [ebp-4h]
+	int v18;     // ecx
+	int v19;     // ecx
+	int v20;     // [esp+Ch] [ebp-Ch]
+	int mia;     // [esp+10h] [ebp-8h]
+	int v22;     // [esp+14h] [ebp-4h]
 
 	v22 = 0;
 	v20 = sx;
@@ -2741,7 +2741,7 @@ void __fastcall AddRhino(int mi, int sx, int sy, int dx, int dy, int midir, int 
 	int v13;         // eax
 	CMonster *v14;   // ecx
 	char v15;        // cl
-	BOOLEAN v16;        // zf
+	BOOLEAN v16;     // zf
 	int i;           // [esp+8h] [ebp-4h]
 
 	v9 = id;
@@ -2787,7 +2787,7 @@ void __fastcall miss_null_32(int mi, int sx, int sy, int dx, int dy, int midir, 
 	AnimStruct *v11; // edi
 	int v12;         // eax
 	CMonster *v13;   // ecx
-	BOOLEAN v14;        // zf
+	BOOLEAN v14;     // zf
 	int v15;         // ecx
 
 	v9 = id;
@@ -3006,16 +3006,16 @@ void __fastcall AddStone(int mi, int sx, int sy, int dx, int dy, int midir, int 
 
 void __fastcall AddGolem(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9;   // eax
-	int v10;  // ebx
-	int v11;  // edi
-	int v12;  // ecx
+	int v9;      // eax
+	int v10;     // ebx
+	int v11;     // edi
+	int v12;     // ecx
 	BOOLEAN v13; // zf
 	BOOLEAN v14; // sf
-	int v15;  // esi
-	int v16;  // esi
-	int v17;  // [esp+Ch] [ebp-8h]
-	int v18;  // [esp+10h] [ebp-4h]
+	int v15;     // esi
+	int v16;     // esi
+	int v17;     // [esp+Ch] [ebp-8h]
+	int v18;     // [esp+10h] [ebp-4h]
 
 	v18 = mi;
 	v9 = mi;
@@ -3870,7 +3870,7 @@ void __fastcall MI_Golem(int i)
 	int v1;           // esi
 	int v2;           // eax
 	int v3;           // eax
-	BOOLEAN v4;          // zf
+	BOOLEAN v4;       // zf
 	int v5;           // eax
 	int v6;           // ecx
 	char *v7;         // eax
@@ -4414,22 +4414,22 @@ void __fastcall MI_Firewall(int i)
 
 void __fastcall MI_Fireball(int i)
 {
-	int v1;  // esi
+	int v1;     // esi
 	BOOLEAN v2; // zf
-	int v3;  // eax
-	int v4;  // ecx
-	int v5;  // edi
-	int v6;  // eax
-	int v7;  // edx
-	int v8;  // eax
-	int v9;  // eax
-	int v10; // ecx
-	int v11; // eax
-	int v12; // edx
-	int v13; // eax
-	int v14; // ecx
-	int v15; // ST10_4
-	int fx;  // [esp+Ch] [ebp-14h]
+	int v3;     // eax
+	int v4;     // ecx
+	int v5;     // edi
+	int v6;     // eax
+	int v7;     // edx
+	int v8;     // eax
+	int v9;     // eax
+	int v10;    // ecx
+	int v11;    // eax
+	int v12;    // edx
+	int v13;    // eax
+	int v14;    // ecx
+	int v15;    // ST10_4
+	int fx;     // [esp+Ch] [ebp-14h]
 	//int fxa; // [esp+Ch] [ebp-14h]
 	//int fxb; // [esp+Ch] [ebp-14h]
 	int fy; // [esp+10h] [ebp-10h]
@@ -4707,12 +4707,12 @@ void __fastcall MI_Town(int i)
 
 void __fastcall MI_Flash(int i)
 {
-	int v1;  // edi
-	int v2;  // esi
-	int v3;  // eax
-	int v4;  // eax
+	int v1;     // edi
+	int v2;     // esi
+	int v3;     // eax
+	int v4;     // eax
 	BOOLEAN v5; // zf
-	int v6;  // esi
+	int v6;     // esi
 
 	v1 = i;
 	v2 = i;
@@ -4743,12 +4743,12 @@ void __fastcall MI_Flash(int i)
 
 void __fastcall MI_Flash2(int i)
 {
-	int v1;  // edi
-	int v2;  // esi
-	int v3;  // eax
-	int v4;  // eax
+	int v1;     // edi
+	int v2;     // esi
+	int v3;     // eax
+	int v4;     // eax
 	BOOLEAN v5; // zf
-	int v6;  // esi
+	int v6;     // esi
 
 	v1 = i;
 	v2 = i;
@@ -4782,13 +4782,13 @@ void __fastcall MI_Manashield(int i)
 	int v4;      // eax
 	int v5;      // ecx
 	int v6;      // edx
-	BOOLEAN v7;     // zf
+	BOOLEAN v7;  // zf
 	int v8;      // eax
 	int v9;      // ecx
 	int v10;     // edx
 	int v11;     // ecx
 	int v12;     // ecx
-	BOOLEAN v13;    // sf
+	BOOLEAN v13; // sf
 	int v14;     // [esp+Ch] [ebp-10h]
 	int ia;      // [esp+14h] [ebp-8h]
 	int arglist; // [esp+18h] [ebp-4h]
@@ -4885,16 +4885,16 @@ LABEL_33:
 
 void __fastcall MI_Etherealize(int i)
 {
-	int v1;   // ebx
-	int v2;   // esi
-	int v3;   // edi
-	int v4;   // edi
-	int v5;   // edx
-	int v6;   // eax
-	int v7;   // ecx
-	int v8;   // edx
-	BOOLEAN v9;  // zf
-	char v10; // al
+	int v1;     // ebx
+	int v2;     // esi
+	int v3;     // edi
+	int v4;     // edi
+	int v5;     // edx
+	int v6;     // eax
+	int v7;     // ecx
+	int v8;     // edx
+	BOOLEAN v9; // zf
+	char v10;   // al
 
 	v1 = i;
 	v2 = i;
@@ -5113,7 +5113,7 @@ void __fastcall MI_Chain(int i)
 	int v12;          // ebx
 	int v13;          // eax
 	int v14;          // eax
-	BOOLEAN v15;         // zf
+	BOOLEAN v15;      // zf
 	int CrawlNum[19]; // [esp+Ch] [ebp-68h]
 	int v2;           // [esp+58h] [ebp-1Ch]
 	int v18;          // [esp+5Ch] [ebp-18h]
@@ -5185,7 +5185,7 @@ void __fastcall MI_Chain(int i)
 
 void __fastcall mi_null_11(int i)
 {
-	int v1;  // eax
+	int v1;     // eax
 	BOOLEAN v2; // zf
 
 	v1 = i;
@@ -5204,7 +5204,7 @@ void __fastcall MI_Weapexp(int i)
 	int v2;           // ecx
 	int v3;           // eax
 	int v4;           // ecx
-	BOOLEAN v5;          // zf
+	BOOLEAN v5;       // zf
 	int v6;           // edx
 	int v7;           // eax
 	int v8;           // eax
@@ -5260,7 +5260,7 @@ void __fastcall MI_Misexp(int i)
 {
 	int v1;           // edi
 	int v2;           // esi
-	BOOLEAN v3;          // zf
+	BOOLEAN v3;       // zf
 	int v4;           // ecx
 	int v5;           // eax
 	int ExpLight[10]; // [esp+8h] [ebp-28h]
@@ -5333,16 +5333,16 @@ void __fastcall MI_Acidsplat(int i)
 
 void __fastcall MI_Teleport(int i)
 {
-	int v1;   // edi
-	int v2;   // ebx
-	int *v3;  // eax
-	int v4;   // esi
-	int v5;   // ecx
-	int v6;   // edx
-	int v7;   // ecx
-	int v8;   // edx
-	int v9;   // edx
-	int v10;  // eax
+	int v1;      // edi
+	int v2;      // ebx
+	int *v3;     // eax
+	int v4;      // esi
+	int v5;      // ecx
+	int v6;      // edx
+	int v7;      // ecx
+	int v8;      // edx
+	int v9;      // edx
+	int v10;     // eax
 	BOOLEAN v11; // zf
 
 	v1 = i;
@@ -5383,12 +5383,12 @@ void __fastcall MI_Teleport(int i)
 
 void __fastcall MI_Stone(int i)
 {
-	int v1;  // esi
-	int v2;  // edi
-	int v3;  // edi
+	int v1;     // esi
+	int v2;     // edi
+	int v3;     // edi
 	BOOLEAN v4; // zf
 	BOOLEAN v5; // sf
-	int ia;  // [esp+Ch] [ebp-4h]
+	int ia;     // [esp+Ch] [ebp-4h]
 
 	v1 = i;
 	ia = i;
@@ -5444,7 +5444,7 @@ void __fastcall MI_Rhino(int i)
 	int v5;      // eax
 	int v6;      // eax
 	int v7;      // ebx
-	BOOLEAN v8;     // zf
+	BOOLEAN v8;  // zf
 	int x;       // [esp+Ch] [ebp-1Ch]
 	int v10;     // [esp+10h] [ebp-18h]
 	int y;       // [esp+14h] [ebp-14h]
@@ -5580,18 +5580,18 @@ void __fastcall mi_null_32(int i)
 
 void __fastcall MI_FirewallC(int i)
 {
-	int v1;  // esi
-	int v2;  // edx
+	int v1;     // esi
+	int v2;     // edx
 	BOOLEAN v3; // zf
-	int v4;  // eax
-	int v5;  // edi
-	int v6;  // ecx
-	int v7;  // ebx
-	int v8;  // eax
-	int v9;  // edi
-	int v10; // ecx
-	int v11; // ebx
-	int id;  // [esp+Ch] [ebp-4h]
+	int v4;     // eax
+	int v5;     // edi
+	int v6;     // ecx
+	int v7;     // ebx
+	int v8;     // eax
+	int v9;     // edi
+	int v10;    // ecx
+	int v11;    // ebx
+	int id;     // [esp+Ch] [ebp-4h]
 
 	v1 = i;
 	v2 = missile[i]._misource;
@@ -5741,7 +5741,7 @@ void __fastcall MI_Wave(int i)
 	int v9;         // ebx
 	int v10;        // eax
 	int v11;        // ebx
-	BOOLEAN v12;       // zf
+	BOOLEAN v12;    // zf
 	int v13;        // [esp+Ch] [ebp-2Ch]
 	int v14;        // [esp+10h] [ebp-28h]
 	int v15;        // [esp+14h] [ebp-24h]
@@ -5817,7 +5817,7 @@ void __fastcall MI_Nova(int i)
 	int v4;              // ebx
 	unsigned char *v5;   // esi
 	int v6;              // eax
-	BOOLEAN v7;             // zf
+	BOOLEAN v7;          // zf
 	int v8;              // [esp+Ch] [ebp-18h]
 	int sy;              // [esp+10h] [ebp-14h]
 	int id;              // [esp+14h] [ebp-10h]
@@ -5955,7 +5955,7 @@ void __fastcall MI_Flamec(int i)
 void __fastcall MI_Cbolt(int i)
 {
 	int v1;        // esi
-	BOOLEAN v2;       // zf
+	BOOLEAN v2;    // zf
 	int v3;        // eax
 	int v4;        // edx
 	int v5;        // eax
@@ -6263,7 +6263,7 @@ void __fastcall MI_Bonespirit(int i)
 
 void __fastcall MI_ResurrectBeam(int i)
 {
-	int v1;  // eax
+	int v1;     // eax
 	BOOLEAN v2; // zf
 
 	v1 = i;
@@ -6413,7 +6413,7 @@ void __cdecl missiles_process_charge()
 	int i;          // edi
 	int v2;         // ecx
 	int v3;         // esi
-	BOOLEAN v4;        // zf
+	BOOLEAN v4;     // zf
 	CMonster *v5;   // eax
 	char v6;        // dl
 	AnimStruct *v7; // eax

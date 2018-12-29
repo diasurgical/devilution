@@ -5,7 +5,6 @@
 extern int plr_lframe_size; // idb
 extern int plr_wframe_size; // idb
 extern UCHAR plr_gfx_flag;
-extern int player_cpp_init_value; // weak
 extern int plr_aframe_size;       // idb
 extern int myplr;
 extern PlayerStruct plr[MAX_PLRS];
@@ -113,7 +112,6 @@ void __cdecl PlayDungMsgs();
 
 /* rdata */
 
-extern const int player_inf;
 extern const char ArmourChar[4];
 extern const char WepChar[10];
 extern const char CharChar[4];

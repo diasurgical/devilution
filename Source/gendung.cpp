@@ -155,7 +155,7 @@ void __cdecl gendung_418D91()
 	int v22;                       // edi
 	int v23;                       // eax
 	int v24;                       // eax
-	BOOLEAN v25;                      // zf
+	BOOLEAN v25;                   // zf
 	int v26;                       // edx
 	char *v27;                     // esi
 	char *v28;                     // edi

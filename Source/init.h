@@ -3,7 +3,6 @@
 #define __INIT_H__
 
 extern _SNETVERSIONDATA fileinfo;
-extern int init_cpp_init_value; // weak
 extern int gbActive;            // weak
 extern char diablo_exe_path[260];
 extern void *unused_mpq;

@@ -2,8 +2,7 @@
 #ifndef __MONSTER_H__
 #define __MONSTER_H__
 
-extern int MissileFileFlag;        // weak
-extern int monster_cpp_init_value; // weak
+extern int MissileFileFlag; // weak
 extern int monstkills[MAXMONSTERS];
 extern int monstactive[MAXMONSTERS];
 extern int nummonsters;
@@ -165,7 +164,6 @@ void __fastcall decode_enemy(int m, int enemy);
 
 /* rdata */
 
-extern const int monster_inf; // weak
 extern const char plr2monst[9];
 extern const unsigned char counsmiss[4];
 

@@ -662,7 +662,7 @@ SDrawCaptureScreen(
 HWND
 STORMAPI
 SDrawGetFrameWindow(
-    HWND *sdraw_framewindow = NULL);
+    HWND *sdraw_framewindow);
 
 
 /*  SDrawGetObjects @ 347

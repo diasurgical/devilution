@@ -898,10 +898,10 @@ typedef struct TPkt {
 } TPkt;
 
 typedef struct DMonsterStr {
-	char _mx;
-	char _my;
+	BYTE _mx;
+	BYTE _my;
 	BYTE _mdir;
-	char _menemy;
+	BYTE _menemy;
 	char _mactive;
 	int _mhitpoints;
 } DMonsterStr;
@@ -945,6 +945,11 @@ typedef struct TMegaPkt {
 	DWORD dwSpaceLeft;
 	BYTE data[32000];
 } TMegaPkt;
+
+typedef struct TBuffer {
+	DWORD dwNextWriteOffset;
+	BYTE bData[4096];
+} TBuffer;
 
 //////////////////////////////////////////////////
 // quests
@@ -1295,7 +1300,7 @@ typedef struct _SNETUIDATA {
 	    char *, DWORD,  /* character name will be copied here */
 	    char *, DWORD,  /* character "description" will be copied here (used to advertise games) */
 	    BOOL *          /* new character? - unsure about this */
-	);
+	    );
 	void(__cdecl *changenamecallback)();
 } _SNETUIDATA;
 

@@ -1782,7 +1782,7 @@ void __fastcall scrollrt_draw_upper(int x, int y, int sx, int sy, int a5, int a6
 	int v27;            // eax
 	int v28;            // eax
 	int v29;            // eax
-	BOOLEAN v30;           // zf
+	BOOLEAN v30;        // zf
 	int v31;            // ecx
 	int v32;            // eax
 	unsigned char *v33; // esi
@@ -2981,7 +2981,7 @@ void __cdecl DrawAndBlit()
 {
 	BOOLEAN ddsdesc; // ebp
 	BOOLEAN ctrlPan; // esi
-	int dwHgt;    // edi
+	int dwHgt;       // edi
 
 	if (gbRunGame) {
 		if (drawpanflag == 255) {

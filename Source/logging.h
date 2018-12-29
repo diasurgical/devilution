@@ -2,7 +2,6 @@
 #ifndef __LOGGING_H__
 #define __LOGGING_H__
 
-extern int log_cpp_init_value; // weak
 extern CHAR FileName[260];     // idb
 extern char log_buffer[388];
 extern LPCVOID lpAddress;           // idb

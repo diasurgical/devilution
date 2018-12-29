@@ -2,8 +2,8 @@
 
 #include "../types.h"
 
-int nthread_cpp_init_value; // weak
-char byte_679704;           // weak
+static float nthread_cpp_init_value = INFINITY;
+char byte_679704; // weak
 int gdwMsgLenTbl[4];
 static CRITICAL_SECTION sgMemCrit;
 int gdwDeltaBytesSec;    // weak
@@ -20,19 +20,8 @@ int gdwLargestMsgSize;   // weak
 int gdwNormalMsgSize;    // weak
 int last_tick;           // weak
 
-const int nthread_inf = 0x7F800000; // weak
-
 /* data */
 static HANDLE sghThread = (HANDLE)0xFFFFFFFF; // idb
-
-struct nthread_cpp_init_1 {
-	nthread_cpp_init_1()
-	{
-		nthread_cpp_init_value = nthread_inf;
-	}
-} _nthread_cpp_init_1;
-// 47F164: using guessed type int nthread_inf;
-// 679700: using guessed type int nthread_cpp_init_value;
 
 struct nthread_cpp_init_2 {
 	nthread_cpp_init_2()
@@ -288,7 +277,7 @@ void __fastcall nthread_ignore_mutex(BOOL bStart)
 }
 // 67975A: using guessed type char sgbThreadIsRunning;
 
-BOOL __fastcall nthread_has_500ms_passed(int unused)
+BOOL __fastcall nthread_has_500ms_passed(BOOL unused)
 {
 	DWORD currentTickCount; // eax
 	int ticksElapsed;       // ecx

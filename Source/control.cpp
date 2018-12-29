@@ -34,7 +34,8 @@ int infoclr;       // weak
 int sgbPlrTalkTbl; // weak // should be char [4]
 void *pGBoxBuff;
 void *pSBkBtnCel;
-char tempstr[260];
+char tempstr[256];
+char byte_4B894C[4];
 int sbooktab;             // weak
 int pSplType;             // weak
 int frame;                // idb
@@ -354,7 +355,7 @@ void __cdecl DrawSpellList()
 	int v5;               // eax
 	int v6;               // esi
 	int v7;               // eax
-	BOOLEAN v8;              // sf
+	BOOLEAN v8;           // sf
 	int v9;               // esi
 	int v10;              // eax
 	int v11;              // ebp
@@ -580,11 +581,12 @@ void __fastcall SetSpeedSpell(int slot)
 
 void __fastcall ToggleSpell(int slot)
 {
+	unsigned __int64 spells;
+
 	if (plr[myplr]._pSplHotKey[slot] == -1) {
 		return;
 	}
 
-	unsigned __int64 spells;
 	switch (plr[myplr]._pSplTHotKey[slot]) {
 	case RSPLTYPE_SKILL:
 		spells = plr[myplr]._pAblSpells;
@@ -988,7 +990,7 @@ void __cdecl InitControlPan()
 		pMultiBtns = LoadFileInMem("CtrlPan\\P8But2.CEL", 0);
 		pTalkBtns = LoadFileInMem("CtrlPan\\TalkButt.CEL", 0);
 		sgbPlrTalkTbl = 0;
-		*(_DWORD *)&tempstr[256] = 0x1010101;
+		*(_DWORD *)byte_4B894C = 0x1010101;
 		talkbtndown[0] = 0;
 		talkbtndown[1] = 0;
 		sgszTalkMsg[0] = 0;
@@ -1087,14 +1089,15 @@ void __cdecl DrawCtrlPan()
 void __cdecl DoSpeedBook()
 {
 	unsigned __int64 spells, spell;
+	int xo, yo, X, Y, i, j;
 
 	spselflag = 1;
-	int xo = 636;
-	int yo = 495;
-	int X = 600;
-	int Y = 307;
+	xo = 636;
+	yo = 495;
+	X = 600;
+	Y = 307;
 	if (plr[myplr]._pRSpell != -1) {
-		for (int i = 0; i < 4; i++) {
+		for (i = 0; i < 4; i++) {
 			switch (i) {
 			case RSPLTYPE_SKILL:
 				spells = plr[myplr]._pAblSpells;
@@ -1110,7 +1113,7 @@ void __cdecl DoSpeedBook()
 				break;
 			}
 			spell = (__int64)1;
-			for (int j = 1; j < MAX_SPELLS; j++) {
+			for (j = 1; j < MAX_SPELLS; j++) {
 				if (spell & spells) {
 					if (j == plr[myplr]._pRSpell && i == plr[myplr]._pRSplType) {
 						X = xo - 36;
@@ -1693,7 +1696,7 @@ void __cdecl DrawChr()
 	int v2;      // ecx
 	int v3;      // eax
 	int v4;      // eax
-	BOOLEAN v5;     // zf
+	BOOLEAN v5;  // zf
 	int v6;      // eax
 	int v7;      // edi
 	int v8;      // edi
@@ -2039,7 +2042,7 @@ void __cdecl CheckChrBtns()
 	int v2;           // ebx
 	int v3;           // edi
 	int v4;           // edx
-	BOOLEAN v5;          // sf
+	BOOLEAN v5;       // sf
 	unsigned char v6; // of
 	int v7;           // edx
 	int v8;           // edx
@@ -2576,8 +2579,8 @@ void __fastcall control_set_gold_curs(int pnum)
 	int v1;           // ecx
 	int v2;           // eax
 	int *v3;          // eax
-	BOOLEAN v4;          // zf
-	BOOLEAN v5;          // sf
+	BOOLEAN v4;       // zf
+	BOOLEAN v5;       // sf
 	unsigned char v6; // of
 
 	v1 = pnum;
@@ -2651,7 +2654,7 @@ void __cdecl DrawTalkPan()
 			if ((signed int)a1 >= (signed int)&plr[4]._pName)
 				return;
 		}
-		if (tempstr[v10 + 256]) {
+		if (byte_4B894C[v10]) {
 			v6 = 3;
 			if (!talkbtndown[v5]) {
 			LABEL_18:
@@ -2768,7 +2771,7 @@ void __cdecl control_reset_talk_msg()
 	BOOL v0 = FALSE;
 	v1 = 0;
 	do {
-		if (tempstr[v1 + 256])
+		if (byte_4B894C[v1])
 			v0 |= 1 << v1;
 		++v1;
 	} while (v1 < 4);

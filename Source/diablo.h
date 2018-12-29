@@ -2,7 +2,6 @@
 #ifndef __DIABLO_H__
 #define __DIABLO_H__
 
-extern int diablo_cpp_init_value; // weak
 extern HWND ghMainWnd;
 extern int glMid1Seed[NUMLEVELS];
 extern int glMid2Seed[NUMLEVELS];
@@ -66,9 +65,9 @@ void __cdecl LoadLvlGFX();
 void __cdecl LoadAllGFX();
 void __fastcall CreateLevel(int lvldir);
 void __fastcall LoadGameLevel(BOOL firstflag, int lvldir);
-void __fastcall game_loop(BOOLEAN bStartup);
+void __fastcall game_loop(BOOL bStartup);
 void __cdecl game_logic();
-void __fastcall timeout_cursor(BOOLEAN bTimeout);
+void __fastcall timeout_cursor(BOOL bTimeout);
 void __cdecl diablo_color_cyc_logic();
 
 /* data */

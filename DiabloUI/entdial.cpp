@@ -15,7 +15,7 @@ int __stdcall EntDial_10006C96(HWND hDlg, UINT Msg, WPARAM wParam, LPARAM lParam
 	{
 		if ( Msg <= 0x105 )
 		{
-			v7 = (HWND)SDrawGetFrameWindow();
+			v7 = (HWND)SDrawGetFrameWindow(NULL);
 			SendMessageA(v7, Msg, wParam, lParam);
 		}
 		else

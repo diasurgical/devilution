@@ -196,7 +196,7 @@ void __cdecl InitSmith()
 	signed int v3; // ecx
 	int v4;        // ecx
 
-	InitTownerInfo(numtowners, 96, 1, 0, 62, 63, 0, 10);
+	InitTownerInfo(numtowners, 96, 1, TOWN_SMITH, 62, 63, 0, 10);
 	v0 = numtowners;
 	InitQstSnds(numtowners);
 	v1 = v0;
@@ -224,7 +224,7 @@ void __cdecl InitBarOwner()
 	int v4;        // ecx
 
 	bannerflag = 0; // unused
-	InitTownerInfo(numtowners, 96, 1, 3, 55, 62, 3, 10);
+	InitTownerInfo(numtowners, 96, 1, TOWN_TAVERN, 55, 62, 3, 10);
 	v0 = numtowners;
 	InitQstSnds(numtowners);
 	v1 = v0;
@@ -252,7 +252,7 @@ void __cdecl InitTownDead()
 	signed int v3; // ecx
 	int v4;        // ecx
 
-	InitTownerInfo(numtowners, 96, 1, 2, 24, 32, -1, 10);
+	InitTownerInfo(numtowners, 96, 1, TOWN_DEADGUY, 24, 32, -1, 10);
 	v0 = numtowners;
 	InitQstSnds(numtowners);
 	v1 = v0;
@@ -278,7 +278,7 @@ void __cdecl InitWitch()
 	_DWORD *v2;    // ecx
 	signed int v3; // edx
 
-	InitTownerInfo(numtowners, 96, 1, 6, 80, 20, 5, 10);
+	InitTownerInfo(numtowners, 96, 1, TOWN_WITCH, 80, 20, 5, 10);
 	v0 = numtowners;
 	InitQstSnds(numtowners);
 	v1 = v0;
@@ -303,7 +303,7 @@ void __cdecl InitBarmaid()
 	_DWORD *v2;    // ecx
 	signed int v3; // edx
 
-	InitTownerInfo(numtowners, 96, 1, 7, 43, 66, -1, 10);
+	InitTownerInfo(numtowners, 96, 1, TOWN_BMAID, 43, 66, -1, 10);
 	v0 = numtowners;
 	InitQstSnds(numtowners);
 	v1 = v0;
@@ -329,7 +329,7 @@ void __cdecl InitBoy()
 	signed int v3; // edx
 
 	boyloadflag = 1;
-	InitTownerInfo(numtowners, 96, 1, 8, 11, 53, -1, 10);
+	InitTownerInfo(numtowners, 96, 1, TOWN_PEGBOY, 11, 53, -1, 10);
 	v0 = numtowners;
 	InitQstSnds(numtowners);
 	v1 = v0;
@@ -356,7 +356,7 @@ void __cdecl InitHealer()
 	signed int v3; // ecx
 	int v4;        // ecx
 
-	InitTownerInfo(numtowners, 96, 1, 1, 55, 79, 1, 10);
+	InitTownerInfo(numtowners, 96, 1, TOWN_HEALER, 55, 79, 1, 10);
 	v0 = numtowners;
 	InitQstSnds(numtowners);
 	v1 = v0;
@@ -382,7 +382,7 @@ void __cdecl InitTeller()
 	_DWORD *v2;    // ecx
 	signed int v3; // edx
 
-	InitTownerInfo(numtowners, 96, 1, 4, 62, 71, 2, 10);
+	InitTownerInfo(numtowners, 96, 1, TOWN_STORY, 62, 71, 2, 10);
 	v0 = numtowners;
 	InitQstSnds(numtowners);
 	v1 = v0;
@@ -407,7 +407,7 @@ void __cdecl InitDrunk()
 	_DWORD *v2;    // ecx
 	signed int v3; // edx
 
-	InitTownerInfo(numtowners, 96, 1, 5, 71, 84, 4, 10);
+	InitTownerInfo(numtowners, 96, 1, TOWN_DRUNK, 71, 84, 4, 10);
 	v0 = numtowners;
 	InitQstSnds(numtowners);
 	v1 = v0;
@@ -452,7 +452,7 @@ void __cdecl InitCows()
 		v3 = TownCowX[v2];
 		v4 = TownCowDir[v2];
 		v16 = TownCowY[v2];
-		InitTownerInfo(v1, 128, 0, 9, TownCowX[v2], v16, -1, 10);
+		InitTownerInfo(v1, 128, 0, TOWN_COW, TownCowX[v2], v16, -1, 10);
 		v5 = numtowners;
 		v6 = (void **)&towner[numtowners]._tNData;
 		*v6 = pCowCels;
@@ -504,32 +504,29 @@ void __cdecl InitTowners()
 
 void __cdecl FreeTownerGFX()
 {
-	void **v0; // esi
-	void *v1;  // ecx
-	void *v2;  // ecx
+	void *tmp;
+	int i;
 
-	v0 = (void **)&towner[0]._tNData;
-	do {
-		v1 = *v0;
-		if (*v0 == pCowCels) {
-			*v0 = 0;
-		} else if (v1) {
-			*v0 = 0;
-			mem_free_dbg(v1);
+	for (i = 0; i < 16; i++) {
+		if (towner[i]._tNData == pCowCels) {
+			towner[i]._tNData = NULL;
+		} else if (towner[i]._tNData) {
+			tmp = towner[i]._tNData;
+			towner[i]._tNData = NULL;
+			mem_free_dbg(tmp);
 		}
-		v0 += 58;
-	} while ((signed int)v0 < (signed int)&towner[16]._tNData);
-	v2 = pCowCels;
-	pCowCels = 0;
-	mem_free_dbg(v2);
+	}
+
+	tmp = pCowCels;
+	pCowCels = NULL;
+	mem_free_dbg(tmp);
 }
 // 6ABB9C: using guessed type int dword_6ABB9C;
 
 void __fastcall TownCtrlMsg(int i)
 {
-	int p;  // edi
-	int dx; // ebx
-	int dy; // eax
+	int p;
+	int dx, dy;
 
 	if (towner[i]._tbtcnt) {
 		p = towner[i]._tVar1;

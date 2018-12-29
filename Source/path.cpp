@@ -48,7 +48,7 @@ int __fastcall FindPath(BOOL(__fastcall *PosOk)(int, int, int), int PosOkArg, in
 	PATHNODE *current;    // edx
 	PATHNODE **previous;  // eax
 	int path_length;      // edi
-	BOOLEAN path_is_full;    // zf
+	BOOLEAN path_is_full; // zf
 	int *step_ptr;        // ecx
 	char step;            // dl
 
@@ -362,10 +362,12 @@ PATHNODE *__cdecl path_pop_active_step()
  * none are available */
 PATHNODE *__cdecl path_new_step()
 {
+	PATHNODE *new_node;
+
 	if (gdwCurNodes == MAXPATHNODES)
 		return NULL;
 
-	PATHNODE *new_node = &path_nodes[gdwCurNodes];
+	new_node = &path_nodes[gdwCurNodes];
 	gdwCurNodes++;
 	memset(new_node, 0, sizeof(PATHNODE));
 	return new_node;

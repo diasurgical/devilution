@@ -29,7 +29,7 @@ LRESULT __stdcall SelYesNo_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lP
 	}
 	if (Msg > 0x103) {
 		if (Msg <= 0x105) {
-			v11 = (HWND)SDrawGetFrameWindow();
+			v11 = (HWND)SDrawGetFrameWindow(NULL);
 			SendMessageA(v11, Msg, wParam, lParam);
 			return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 		}

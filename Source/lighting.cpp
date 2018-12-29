@@ -494,7 +494,7 @@ void __fastcall DoLighting(int nXPos, int nYPos, int nRadius, int Lnum)
 	int v13;           // edx
 	_BYTE *v14;        // ecx
 	int v15;           // ebx
-	BOOLEAN v16;          // sf
+	BOOLEAN v16;       // sf
 	unsigned char v17; // of
 	int v18;           // esi
 	int v19;           // ecx
@@ -998,7 +998,7 @@ void __cdecl MakeLightTable()
 	double v41;         // st6
 	int v42;            // ecx
 	char *v43;          // ecx
-	BOOLEAN v44;           // zf
+	BOOLEAN v44;        // zf
 	char v45[16];       // [esp+14h] [ebp-2Ch] /* check */
 	int v46;            // [esp+24h] [ebp-1Ch]
 	int v47;            // [esp+28h] [ebp-18h]

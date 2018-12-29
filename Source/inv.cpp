@@ -148,17 +148,18 @@ void __fastcall InvDrawSlotBack(int X, int Y, int W, int H)
 void __cdecl DrawInv()
 {
 	BOOL invtest[40];
+	int frame, frame_width, colour, screen_x, screen_y, i, j, ii;
 
 	CelDecodeOnly(384, 511, pInvCels, 1, 320);
 
 	if (plr[myplr].InvBody[INVLOC_HEAD]._itype != ITYPE_NONE) {
 		InvDrawSlotBack(517, 219, 2 * INV_SLOT_SIZE_PX, 2 * INV_SLOT_SIZE_PX);
 
-		int frame = plr[myplr].InvBody[INVLOC_HEAD]._iCurs + 12;
-		int frame_width = InvItemWidth[frame];
+		frame = plr[myplr].InvBody[INVLOC_HEAD]._iCurs + 12;
+		frame_width = InvItemWidth[frame];
 
 		if (pcursinvitem == INVITEM_HEAD) {
-			int colour = ICOL_WHITE;
+			colour = ICOL_WHITE;
 			if (plr[myplr].InvBody[INVLOC_HEAD]._iMagical != ITEM_QUALITY_NORMAL) {
 				colour = ICOL_BLUE;
 			}
@@ -178,11 +179,11 @@ void __cdecl DrawInv()
 	if (plr[myplr].InvBody[INVLOC_RING_LEFT]._itype != ITYPE_NONE) {
 		InvDrawSlotBack(432, 365, INV_SLOT_SIZE_PX, INV_SLOT_SIZE_PX);
 
-		int frame = plr[myplr].InvBody[INVLOC_RING_LEFT]._iCurs + 12;
-		int frame_width = InvItemWidth[frame];
+		frame = plr[myplr].InvBody[INVLOC_RING_LEFT]._iCurs + 12;
+		frame_width = InvItemWidth[frame];
 
 		if (pcursinvitem == INVITEM_RING_LEFT) {
-			int colour = ICOL_WHITE;
+			colour = ICOL_WHITE;
 			if (plr[myplr].InvBody[INVLOC_RING_LEFT]._iMagical != ITEM_QUALITY_NORMAL) {
 				colour = ICOL_BLUE;
 			}
@@ -202,11 +203,11 @@ void __cdecl DrawInv()
 	if (plr[myplr].InvBody[INVLOC_RING_RIGHT]._itype != ITYPE_NONE) {
 		InvDrawSlotBack(633, 365, INV_SLOT_SIZE_PX, INV_SLOT_SIZE_PX);
 
-		int frame = plr[myplr].InvBody[INVLOC_RING_RIGHT]._iCurs + 12;
-		int frame_width = InvItemWidth[frame];
+		frame = plr[myplr].InvBody[INVLOC_RING_RIGHT]._iCurs + 12;
+		frame_width = InvItemWidth[frame];
 
 		if (pcursinvitem == INVITEM_RING_RIGHT) {
-			int colour = ICOL_WHITE;
+			colour = ICOL_WHITE;
 			if (plr[myplr].InvBody[INVLOC_RING_RIGHT]._iMagical != ITEM_QUALITY_NORMAL) {
 				colour = ICOL_BLUE;
 			}
@@ -226,11 +227,11 @@ void __cdecl DrawInv()
 	if (plr[myplr].InvBody[INVLOC_AMULET]._itype != ITYPE_NONE) {
 		InvDrawSlotBack(589, 220, INV_SLOT_SIZE_PX, INV_SLOT_SIZE_PX);
 
-		int frame = plr[myplr].InvBody[INVLOC_AMULET]._iCurs + 12;
-		int frame_width = InvItemWidth[frame];
+		frame = plr[myplr].InvBody[INVLOC_AMULET]._iCurs + 12;
+		frame_width = InvItemWidth[frame];
 
 		if (pcursinvitem == INVITEM_AMULET) {
-			int colour = ICOL_WHITE;
+			colour = ICOL_WHITE;
 			if (plr[myplr].InvBody[INVLOC_AMULET]._iMagical != ITEM_QUALITY_NORMAL) {
 				colour = ICOL_BLUE;
 			}
@@ -250,14 +251,14 @@ void __cdecl DrawInv()
 	if (plr[myplr].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE) {
 		InvDrawSlotBack(401, 320, 2 * INV_SLOT_SIZE_PX, 3 * INV_SLOT_SIZE_PX);
 
-		int frame = plr[myplr].InvBody[INVLOC_HAND_LEFT]._iCurs + 12;
-		int frame_width = InvItemWidth[frame];
+		frame = plr[myplr].InvBody[INVLOC_HAND_LEFT]._iCurs + 12;
+		frame_width = InvItemWidth[frame];
 		// calc item offsets for weapons smaller than 2x3 slots
-		int screen_x = frame_width == INV_SLOT_SIZE_PX ? 415 : 401;
-		int screen_y = InvItemHeight[frame] == (3 * INV_SLOT_SIZE_PX) ? 320 : 306;
+		screen_x = frame_width == INV_SLOT_SIZE_PX ? 415 : 401;
+		screen_y = InvItemHeight[frame] == (3 * INV_SLOT_SIZE_PX) ? 320 : 306;
 
 		if (pcursinvitem == INVITEM_HAND_LEFT) {
-			int colour = ICOL_WHITE;
+			colour = ICOL_WHITE;
 			if (plr[myplr].InvBody[INVLOC_HAND_LEFT]._iMagical != ITEM_QUALITY_NORMAL) {
 				colour = ICOL_BLUE;
 			}
@@ -290,14 +291,14 @@ void __cdecl DrawInv()
 	if (plr[myplr].InvBody[INVLOC_HAND_RIGHT]._itype != ITYPE_NONE) {
 		InvDrawSlotBack(631, 320, 2 * INV_SLOT_SIZE_PX, 3 * INV_SLOT_SIZE_PX);
 
-		int frame = plr[myplr].InvBody[INVLOC_HAND_RIGHT]._iCurs + 12;
-		int frame_width = InvItemWidth[frame];
+		frame = plr[myplr].InvBody[INVLOC_HAND_RIGHT]._iCurs + 12;
+		frame_width = InvItemWidth[frame];
 		// calc item offsets for weapons smaller than 2x3 slots
-		int screen_x = frame_width == INV_SLOT_SIZE_PX ? 645 : 633;
-		int screen_y = InvItemHeight[frame] == 3 * INV_SLOT_SIZE_PX ? 320 : 306;
+		screen_x = frame_width == INV_SLOT_SIZE_PX ? 645 : 633;
+		screen_y = InvItemHeight[frame] == 3 * INV_SLOT_SIZE_PX ? 320 : 306;
 
 		if (pcursinvitem == INVITEM_HAND_RIGHT) {
-			int colour = ICOL_WHITE;
+			colour = ICOL_WHITE;
 			if (plr[myplr].InvBody[INVLOC_HAND_RIGHT]._iMagical != ITEM_QUALITY_NORMAL) {
 				colour = ICOL_BLUE;
 			}
@@ -317,11 +318,11 @@ void __cdecl DrawInv()
 	if (plr[myplr].InvBody[INVLOC_CHEST]._itype != ITYPE_NONE) {
 		InvDrawSlotBack(517, 320, 2 * INV_SLOT_SIZE_PX, 3 * INV_SLOT_SIZE_PX);
 
-		int frame = plr[myplr].InvBody[INVLOC_CHEST]._iCurs + 12;
-		int frame_width = InvItemWidth[frame];
+		frame = plr[myplr].InvBody[INVLOC_CHEST]._iCurs + 12;
+		frame_width = InvItemWidth[frame];
 
 		if (pcursinvitem == INVITEM_CHEST) {
-			int colour = ICOL_WHITE;
+			colour = ICOL_WHITE;
 			if (plr[myplr].InvBody[INVLOC_CHEST]._iMagical != ITEM_QUALITY_NORMAL) {
 				colour = ICOL_BLUE;
 			}
@@ -338,7 +339,7 @@ void __cdecl DrawInv()
 		}
 	}
 
-	for (int i = 0; i < NUM_INV_GRID_ELEM; i++) {
+	for (i = 0; i < NUM_INV_GRID_ELEM; i++) {
 		if (plr[myplr].InvGrid[i] != 0) {
 			InvDrawSlotBack(
 			    InvRect[i + SLOTXY_INV_FIRST].X + 64,
@@ -348,17 +349,17 @@ void __cdecl DrawInv()
 		}
 	}
 
-	for (int j = 0; j < NUM_INV_GRID_ELEM; j++) {
+	for (j = 0; j < NUM_INV_GRID_ELEM; j++) {
 		if (plr[myplr].InvGrid[j] > 0) // first slot of an item
 		{
-			int ii = plr[myplr].InvGrid[j] - 1;
+			ii = plr[myplr].InvGrid[j] - 1;
 
 			invtest[j] = TRUE;
 
-			int frame = plr[myplr].InvList[ii]._iCurs + 12;
-			int frame_width = InvItemWidth[frame];
+			frame = plr[myplr].InvList[ii]._iCurs + 12;
+			frame_width = InvItemWidth[frame];
 			if (pcursinvitem == ii + INVITEM_INV_FIRST) {
-				int colour = ICOL_WHITE;
+				colour = ICOL_WHITE;
 				if (plr[myplr].InvList[ii]._iMagical != ITEM_QUALITY_NORMAL) {
 					colour = ICOL_BLUE;
 				}
@@ -400,7 +401,7 @@ void __cdecl DrawInvBelt()
 	int v4;            // edi
 	char v5;           // cl
 	int v6;            // edx
-	BOOLEAN v7;           // zf
+	BOOLEAN v7;        // zf
 	int v8;            // ecx
 	int v9;            // eax
 	unsigned char v10; // edx
@@ -1376,9 +1377,11 @@ LABEL_81:
 
 void __fastcall CheckInvSwap(int pnum, BYTE bLoc, int idx, WORD wCI, int seed, BOOL bId)
 {
+	PlayerStruct *p;
+
 	RecreateItem(MAXITEMS, idx, wCI, seed, 0);
 
-	PlayerStruct *p = &plr[pnum];
+	p = &plr[pnum];
 	p->HoldItem = item[MAXITEMS];
 
 	if (bId) {
@@ -1400,6 +1403,11 @@ void __fastcall CheckInvSwap(int pnum, BYTE bLoc, int idx, WORD wCI, int seed, B
 
 void __fastcall CheckInvCut(int pnum, int mx, int my)
 {
+	int r;
+	BOOL done;
+	char ii;
+	int iv, i, j, offs;
+
 	if (plr[pnum]._pmode > PM_WALK3) {
 		return;
 	}
@@ -1409,8 +1417,7 @@ void __fastcall CheckInvCut(int pnum, int mx, int my)
 		dropGoldValue = 0;
 	}
 
-	int r;
-	BOOL done = FALSE;
+	done = FALSE;
 
 	// TODO: this loop is compiled differently (via InvRect pointers)
 	for (r = 0; (DWORD)r < NUM_XY_SLOTS && !done; r++) {
@@ -1492,14 +1499,14 @@ void __fastcall CheckInvCut(int pnum, int mx, int my)
 	}
 
 	if (r >= SLOTXY_INV_FIRST && r <= SLOTXY_INV_LAST) {
-		char ii = plr[pnum].InvGrid[r - SLOTXY_INV_FIRST];
+		ii = plr[pnum].InvGrid[r - SLOTXY_INV_FIRST];
 		if (ii) {
-			int iv = ii;
+			iv = ii;
 			if (ii <= 0) {
 				iv = -ii;
 			}
 
-			for (int i = 0; i < NUM_INV_GRID_ELEM; i++) {
+			for (i = 0; i < NUM_INV_GRID_ELEM; i++) {
 				if (plr[pnum].InvGrid[i] == iv || plr[pnum].InvGrid[i] == -iv) {
 					plr[pnum].InvGrid[i] = 0;
 				}
@@ -1513,7 +1520,7 @@ void __fastcall CheckInvCut(int pnum, int mx, int my)
 			if (plr[pnum]._pNumInv > 0 && plr[pnum]._pNumInv != iv) {
 				plr[pnum].InvList[iv] = plr[pnum].InvList[plr[pnum]._pNumInv];
 
-				for (int j = 0; j < NUM_INV_GRID_ELEM; j++) {
+				for (j = 0; j < NUM_INV_GRID_ELEM; j++) {
 					if (plr[pnum].InvGrid[j] == plr[pnum]._pNumInv + 1) {
 						plr[pnum].InvGrid[j] = iv + 1;
 					}
@@ -1526,7 +1533,7 @@ void __fastcall CheckInvCut(int pnum, int mx, int my)
 	}
 
 	if (r >= SLOTXY_BELT_FIRST) {
-		int offs = r - SLOTXY_BELT_FIRST;
+		offs = r - SLOTXY_BELT_FIRST;
 		if (plr[pnum].SpdList[offs]._itype != ITYPE_NONE) {
 			plr[pnum].HoldItem = plr[pnum].SpdList[offs];
 			plr[pnum].SpdList[offs]._itype = ITYPE_NONE;
@@ -1552,11 +1559,13 @@ void __fastcall CheckInvCut(int pnum, int mx, int my)
 
 void __fastcall inv_update_rem_item(int pnum, BYTE iv)
 {
+	BOOL Loadgfx;
+
 	if (iv < NUM_INVLOC) {
 		plr[pnum].InvBody[iv]._itype = ITYPE_NONE;
 	}
 
-	BOOL Loadgfx = FALSE;
+	Loadgfx = FALSE;
 
 	if (plr[pnum]._pmode != PM_DEATH) {
 		Loadgfx = TRUE;
@@ -1567,9 +1576,11 @@ void __fastcall inv_update_rem_item(int pnum, BYTE iv)
 
 void __fastcall RemoveInvItem(int pnum, int iv)
 {
+	int i, j;
+
 	iv++;
 
-	for (int i = 0; i < NUM_INV_GRID_ELEM; i++) {
+	for (i = 0; i < NUM_INV_GRID_ELEM; i++) {
 		if (plr[pnum].InvGrid[i] == iv || plr[pnum].InvGrid[i] == -iv) {
 			plr[pnum].InvGrid[i] = 0;
 		}
@@ -1581,7 +1592,7 @@ void __fastcall RemoveInvItem(int pnum, int iv)
 	if (plr[pnum]._pNumInv > 0 && plr[pnum]._pNumInv != iv) {
 		plr[pnum].InvList[iv] = plr[pnum].InvList[plr[pnum]._pNumInv];
 
-		for (int j = 0; j < NUM_INV_GRID_ELEM; j++) {
+		for (j = 0; j < NUM_INV_GRID_ELEM; j++) {
 			if (plr[pnum].InvGrid[j] == plr[pnum]._pNumInv + 1) {
 				plr[pnum].InvGrid[j] = iv + 1;
 			}
@@ -2092,14 +2103,14 @@ void __fastcall SyncGetItem(int x, int y, int idx, unsigned short ci, int iseed)
 
 int __fastcall CanPut(int i, int j)
 {
-	int v2;  // ecx
-	int v3;  // esi
-	char v4; // al
-	int v5;  // eax
-	char v6; // al
+	int v2;     // ecx
+	int v3;     // esi
+	char v4;    // al
+	int v5;     // eax
+	char v6;    // al
 	BOOLEAN v7; // sf
-	char v8; // al
-	char v9; // cl
+	char v8;    // al
+	char v9;    // cl
 
 	v2 = i;
 	if (dItem[v2][j])
