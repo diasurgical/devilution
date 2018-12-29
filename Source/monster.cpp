@@ -4047,109 +4047,62 @@ void __fastcall MAI_Sneak(int i)
 
 void __fastcall MAI_Fireman(int i)
 {
-	int esi1; // esi
-	int esi3; // esi
-	int v3;   // ecx
-	int v4;   // eax
-	int v5;   // ebx
-	int v6;   // edi
-	int v7;   // edx
-	char v9;  // al
-	//int v10; // eax
-	//int v11; // eax
-	int v13; // eax
-	//int v14; // eax
-	int v15; // edx
-	//int v16; // eax
-	int v17;      // eax
-	int micaster; // [esp+Ch] [ebp-14h]
-	int v1;       // [esp+10h] [ebp-10h]
-	int v2;       // [esp+14h] [ebp-Ch]
-	int midir;    // [esp+18h] [ebp-8h]
-	int arglist;  // [esp+1Ch] [ebp-4h]
+	int xd, yd;
+	int md, pnum;
+	int fx, fy;
+	MonsterStruct *Monst;
 
-	esi1 = i;
-	arglist = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("MAI_Fireman: Invalid monster %d", i);
-	esi3 = esi1;
-	if (monster[esi3]._mmode || !monster[esi3]._msquelch)
+
+	Monst = &monster[i];
+	if (monster[i]._mmode != MM_STAND || !Monst->_msquelch)
 		return;
-	v3 = (unsigned char)monster[esi3]._menemyy;
-	micaster = monster[esi3]._menemy;
-	v4 = (unsigned char)monster[esi3]._menemyx;
-	v2 = v3;
-	v5 = monster[esi3]._my - v3;
-	v1 = v4;
-	v6 = monster[esi3]._mx - v4;
-	v7 = M_GetDir(arglist);
-	v9 = monster[esi3]._mgoal;
-	midir = v7;
-	switch (v9) {
-	case MGOAL_NORMAL:
-		//_LOBYTE(v10) = LineClear(monster[esi3]._mx, monster[esi3]._my, v1, v2);
-		if (!LineClear(monster[esi3]._mx, monster[esi3]._my, v1, v2)
-		    || AddMissile(monster[esi3]._mx, monster[esi3]._my, v1, v2, midir, MIS_FIREMAN, micaster, arglist, 0, 0) == -1) {
-			break;
+
+	pnum = monster[i]._menemy;
+	fx = monster[i]._menemyx;
+	fy = monster[i]._menemyy;
+	xd = monster[i]._mx - fx;
+	yd = monster[i]._my - fy;
+
+	md = M_GetDir(i);
+	if (Monst->_mgoal == MGOAL_NORMAL) {
+		if (LineClear(Monst->_mx, Monst->_my, fx, fy)
+		    && AddMissile(Monst->_mx, Monst->_my, fx, fy, md, MIS_FIREMAN, pnum, i, 0, 0) != -1) {
+			Monst->_mmode = MM_CHARGE;
+			Monst->_mgoal = MGOAL_SHOOT;
+			Monst->_mgoalvar1 = 0;
 		}
-		monster[esi3]._mgoalvar1 = 0;
-		monster[esi3]._mmode = MM_CHARGE;
-		goto LABEL_18;
-	case MGOAL_SHOOT:
-		if (monster[esi3]._mgoalvar1 == 3) {
-			_LOBYTE(monster[esi3]._mgoal) = MGOAL_NORMAL;
-			M_StartFadeout(arglist, v7, TRUE);
+	} else if (Monst->_mgoal == MGOAL_SHOOT) {
+		if (Monst->_mgoalvar1 == 3) {
+			Monst->_mgoal = MGOAL_NORMAL;
+			M_StartFadeout(i, md, TRUE);
+		} else if (LineClear(Monst->_mx, Monst->_my, fx, fy)) {
+			M_StartRAttack(i, MIS_KRULL, 4);
+			Monst->_mgoalvar1++;
 		} else {
-			//_LOBYTE(v11) = LineClear(monster[esi3]._mx, monster[esi3]._my, v1, v2);
-			if (LineClear(monster[esi3]._mx, monster[esi3]._my, v1, v2)) {
-				M_StartRAttack(arglist, MIS_KRULL, 4);
-			} else {
-				//_LOBYTE(v11) = LineClear(monster[esi3]._mx, monster[esi3]._my, v1, v2);
-				if (LineClear(monster[esi3]._mx, monster[esi3]._my, v1, v2)) {
-					M_StartRAttack(arglist, MIS_KRULL, 4);
-				} else {
-					v13 = random(112, 10);
-					M_StartDelay(arglist, v13 + 5);
-				}
-				++monster[esi3]._mgoalvar1;
-			}
-			++monster[esi3]._mgoalvar1;
+			M_StartDelay(i, random(112, 10) + 5);
+			Monst->_mgoalvar1++;
 		}
-		break;
-	case MGOAL_RETREAT:
-		M_StartFadein(arglist, v7, FALSE);
-	LABEL_18:
-		_LOBYTE(monster[esi3]._mgoal) = MGOAL_SHOOT;
-		break;
+	} else if (Monst->_mgoal == MGOAL_RETREAT) {
+		M_StartFadein(i, md, FALSE);
+		Monst->_mgoal = MGOAL_SHOOT;
 	}
-	monster[esi3]._mdir = midir;
+	Monst->_mdir = md;
 	random(112, 100);
-	if (monster[esi3]._mmode == MM_STAND)
+	if (Monst->_mmode != MM_STAND)
 		return;
-	if (abs(v6) < 2 && abs(v5) < 2 && _LOBYTE(monster[esi3]._mgoal) == MGOAL_NORMAL) {
-		M_TryH2HHit(
-		    arglist,
-		    monster[esi3]._menemy,
-		    (unsigned char)monster[esi3].mHit,
-		    (unsigned char)monster[esi3].mMinDamage,
-		    (unsigned char)monster[esi3].mMaxDamage);
-		_LOBYTE(monster[esi3]._mgoal) = MGOAL_RETREAT;
-		//_LOBYTE(v14) = M_CallWalk(arglist, opposite[midir]);
-		if (M_CallWalk(arglist, opposite[midir]))
-			return;
-		v15 = midir;
-		goto LABEL_29;
-	}
-	//_LOBYTE(v16) = M_CallWalk(arglist, midir);
-	if (!M_CallWalk(arglist, midir)) {
-		v17 = _LOBYTE(monster[esi3]._mgoal);
-		if ((_BYTE)v17 == MGOAL_NORMAL || (_BYTE)v17 == MGOAL_RETREAT) {
-			v15 = midir;
-		LABEL_29:
-			M_StartFadein(arglist, v15, FALSE);
-			_LOBYTE(monster[esi3]._mgoal) = MGOAL_SHOOT;
-			return;
+
+	if (abs(xd) < 2 && abs(yd) < 2 && Monst->_mgoal == MGOAL_NORMAL) {
+		M_TryH2HHit(i, monster[i]._menemy, monster[i].mHit, monster[i].mMinDamage, monster[i].mMaxDamage);
+		Monst->_mgoal = MGOAL_RETREAT;
+		if (!M_CallWalk(i, opposite[md])) {
+			M_StartFadein(i, md, FALSE);
+			Monst->_mgoal = MGOAL_SHOOT;
 		}
+	} else if (!M_CallWalk(i, md) && (Monst->_mgoal == MGOAL_NORMAL || Monst->_mgoal == MGOAL_RETREAT)) {
+		M_StartFadein(i, md, FALSE);
+		Monst->_mgoal = MGOAL_SHOOT;
 	}
 }
 
