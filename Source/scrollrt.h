@@ -4,7 +4,6 @@
 
 extern int light_table_index; // weak
 extern int screen_y_times_768[1024];
-extern int scrollrt_cpp_init_value; // weak
 extern unsigned int sgdwCursWdtOld; // idb
 extern int sgdwCursX;               // idb
 extern int sgdwCursY;               // idb
@@ -62,8 +61,6 @@ void __fastcall DoBlitScreen(int dwX, int dwY, int dwWdt, int dwHgt);
 void __cdecl DrawAndBlit();
 
 /* rdata */
-
-extern const int scrollrt_inf; // weak
 
 /* data */
 

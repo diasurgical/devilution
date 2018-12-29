@@ -4,7 +4,7 @@
 
 int light_table_index; // weak
 int screen_y_times_768[1024];
-int scrollrt_cpp_init_value; // weak
+static float scrollrt_cpp_init_value = INFINITY;
 unsigned int sgdwCursWdtOld; // idb
 int sgdwCursX;               // idb
 int sgdwCursY;               // idb
@@ -22,8 +22,6 @@ int(__fastcall *DrawPlrProc)(int player_num, int x, int y, int screen_x, int scr
 char sgSaveBack[8192];
 int draw_monster_num; // weak
 int sgdwCursHgtOld;   // idb
-
-const int scrollrt_inf = 0x7F800000; // weak
 
 /* data */
 
@@ -63,15 +61,6 @@ char *szPlrModeAssert[12] = {
 	"changing levels",
 	"quitting"
 };
-
-struct scrollrt_cpp_init {
-	scrollrt_cpp_init()
-	{
-		scrollrt_cpp_init_value = scrollrt_inf;
-	}
-} _scrollrt_cpp_init;
-// 47F238: using guessed type int scrollrt_inf;
-// 69CEFC: using guessed type int scrollrt_cpp_init_value;
 
 void __cdecl ClearCursor() // CODE_FIX: this was supposed to be in cursor.cpp
 {
