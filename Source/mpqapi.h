@@ -2,7 +2,6 @@
 #ifndef __MPQAPI_H__
 #define __MPQAPI_H__
 
-extern int mpqapi_cpp_init_value; // weak
 extern int sgdwMpqOffset;         // idb
 extern char mpq_buf[4096];
 extern _HASHENTRY *sgpHashTbl;
@@ -41,8 +40,6 @@ BOOLEAN __cdecl mpqapi_write_hash_table();
 BOOLEAN __cdecl mpqapi_can_seek();
 
 /* rdata */
-
-extern const int mpqapi_inf; // weak
 
 /* data */
 

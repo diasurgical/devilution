@@ -5,7 +5,7 @@
 // Tracks which missile files are already loaded
 int MissileFileFlag;
 
-int monster_cpp_init_value; // weak
+static float monster_cpp_init_value = INFINITY;
 int monstkills[MAXMONSTERS];
 int monstactive[MAXMONSTERS];
 int nummonsters;
@@ -18,7 +18,6 @@ int monstimgtot; // weak
 int uniquetrans;
 int nummtypes;
 
-const int monster_inf = 0x7F800000; // weak
 const char plr2monst[9] = { 0, 5, 3, 7, 1, 4, 6, 0, 2 };
 const unsigned char counsmiss[4] = { MIS_FIREBOLT, MIS_CBOLT, MIS_LIGHTCTRL, MIS_FIREBALL };
 
@@ -348,15 +347,6 @@ void(__fastcall *AiProc[])(int i) = {
 	&MAI_Lachdanan,
 	&MAI_Warlord
 };
-
-struct monster_cpp_init {
-	monster_cpp_init()
-	{
-		monster_cpp_init_value = monster_inf;
-	}
-} _monster_cpp_init;
-// 47F130: using guessed type int monster_inf;
-// 64CCE4: using guessed type int monster_cpp_init_value;
 
 void __fastcall InitMonsterTRN(int monst, BOOL special)
 {

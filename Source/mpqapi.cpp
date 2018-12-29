@@ -2,30 +2,19 @@
 
 #include "../types.h"
 
-int mpqapi_cpp_init_value; // weak
-int sgdwMpqOffset;         // idb
+static float mpqapi_cpp_init_value = INFINITY;
+int sgdwMpqOffset; // idb
 char mpq_buf[4096];
 _HASHENTRY *sgpHashTbl;
 BOOLEAN save_archive_modified; // weak
 _BLOCKENTRY *sgpBlockTbl;
 BOOLEAN save_archive_open; // weak
 
-const int mpqapi_inf = 0x7F800000; // weak
-
 //note: 32872 = 32768 + 104 (sizeof(_FILEHEADER))
 
 /* data */
 
 HANDLE sghArchive = (HANDLE)0xFFFFFFFF; // idb
-
-struct mpqapi_cpp_init {
-	mpqapi_cpp_init()
-	{
-		mpqapi_cpp_init_value = mpqapi_inf;
-	}
-} _mpqapi_cpp_init;
-// 47F148: using guessed type int mpqapi_inf;
-// 659B00: using guessed type int mpqapi_cpp_init_value;
 
 BOOLEAN __fastcall mpqapi_set_hidden(const char *pszArchive, BOOLEAN hidden)
 {

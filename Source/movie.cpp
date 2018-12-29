@@ -2,28 +2,20 @@
 
 #include "../types.h"
 
-int movie_cpp_init_value; // weak
+static float movie_cpp_init_value = INFINITY;
 BYTE movie_playing;
 BOOL loop_movie;
 
-const int movie_inf = 0x7F800000; // weak
-
-struct movie_cpp_init {
-	movie_cpp_init()
-	{
-		movie_cpp_init_value = movie_inf;
-	}
-} _movie_cpp_init;
-// 47F144: using guessed type int movie_inf;
-// 659AF4: using guessed type int movie_cpp_init_value;
-
 void __fastcall play_movie(char *pszMovie, BOOL user_can_close)
 {
+	WNDPROC saveProc;
+	void *video_stream;
+
 	if (!gbActive) {
 		return;
 	}
 
-	WNDPROC saveProc = SetWindowProc(MovieWndProc);
+	saveProc = SetWindowProc(MovieWndProc);
 	InvalidateRect(ghMainWnd, 0, 0);
 	UpdateWindow(ghMainWnd);
 	movie_playing = TRUE;
@@ -31,7 +23,6 @@ void __fastcall play_movie(char *pszMovie, BOOL user_can_close)
 	sfx_stop();
 	effects_play_sound("Sfx\\Misc\\blank.wav");
 
-	void *video_stream;
 	SVidPlayBegin(pszMovie, 0, 0, 0, 0, loop_movie ? 0x100C0808 : 0x10280808, &video_stream);
 	if (video_stream) {
 		MSG Msg;

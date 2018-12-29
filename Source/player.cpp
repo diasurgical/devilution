@@ -5,7 +5,7 @@
 int plr_lframe_size;
 int plr_wframe_size;
 UCHAR plr_gfx_flag = 0;
-int player_cpp_init_value;
+static float player_cpp_init_value = INFINITY;
 int plr_aframe_size;
 int myplr;
 PlayerStruct plr[MAX_PLRS];
@@ -19,7 +19,6 @@ int plr_sframe_size;
 int deathdelay;
 int plr_dframe_size;
 
-const int player_inf = 0x7F800000; // weak
 const char ArmourChar[4] = { 'L', 'M', 'H', 0 };
 const char WepChar[10] = { 'N', 'U', 'S', 'D', 'B', 'A', 'M', 'H', 'T', 0 };
 const char CharChar[4] = { 'W', 'R', 'S', 0 };
@@ -108,14 +107,6 @@ int ExpLvlsTbl[MAXCHARLEVEL] = {
 char *ClassStrTbl[3] = { "Warrior", "Rogue", "Sorceror" };
 unsigned char fix[9] = { 0u, 0u, 3u, 3u, 3u, 6u, 6u, 6u, 8u }; /* PM_ChangeLightOff local type */
 
-struct player_cpp_init {
-	player_cpp_init()
-	{
-		player_cpp_init_value = player_inf;
-	}
-} _player_cpp_init;
-// 47F204: using guessed type int player_inf;
-// 68643C: using guessed type int player_cpp_init_value;
 
 void __fastcall SetPlayerGPtrs(UCHAR *pData, UCHAR **pAnim)
 {

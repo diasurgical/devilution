@@ -745,6 +745,8 @@ void __cdecl InitItems()
 
 void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 {
+	int pvid, d;
+
 	int mind = 0; // min damage
 	int maxd = 0; // max damage
 	int tac = 0;  // accuracy
@@ -866,7 +868,7 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 	if (plr[p]._pLightRad != lrad && p == myplr) {
 		ChangeLightRadius(plr[p]._plid, lrad);
 
-		int pvid = plr[p]._pvid;
+		pvid = plr[p]._pvid;
 		if (lrad >= 10) {
 			ChangeVisionRadius(pvid, lrad);
 		} else {
@@ -1032,7 +1034,7 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 		LoadPlrGFX(p, PFILE_STAND);
 		SetPlrAnims(p);
 
-		int d = plr[p]._pdir;
+		d = plr[p]._pdir;
 
 		// TODO: Add debug assert here ( plr[p]._pNAnim[d] != NULL )
 		plr[p]._pAnimData = plr[p]._pNAnim[d];
@@ -1061,15 +1063,17 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 
 void __fastcall CalcPlrScrolls(int p)
 {
+	int i, j;
+
 	plr[p]._pScrlSpells = 0;
-	for (int i = 0; i < plr[p]._pNumInv; i++) {
+	for (i = 0; i < plr[p]._pNumInv; i++) {
 		if (plr[p].InvList[i]._itype != ITYPE_NONE && (plr[p].InvList[i]._iMiscId == IMISC_SCROLL || plr[p].InvList[i]._iMiscId == IMISC_SCROLLT)) {
 			if (plr[p].InvList[i]._iStatFlag)
 				plr[p]._pScrlSpells |= (__int64)1 << (plr[p].InvList[i]._iSpell - 1);
 		}
 	}
 
-	for (int j = 0; j < MAXBELTITEMS; j++) {
+	for (j = 0; j < MAXBELTITEMS; j++) {
 		if (plr[p].SpdList[j]._itype != ITYPE_NONE && (plr[p].SpdList[j]._iMiscId == IMISC_SCROLL || plr[p].SpdList[j]._iMiscId == IMISC_SCROLLT)) {
 			if (plr[p].SpdList[j]._iStatFlag)
 				plr[p]._pScrlSpells |= (__int64)1 << (plr[p].SpdList[j]._iSpell - 1);

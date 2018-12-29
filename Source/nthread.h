@@ -2,7 +2,6 @@
 #ifndef __NTHREAD_H__
 #define __NTHREAD_H__
 
-extern int nthread_cpp_init_value; // weak
 extern char byte_679704;           // weak
 extern int gdwMsgLenTbl[4];
 extern int gdwDeltaBytesSec;    // weak
@@ -33,7 +32,5 @@ void __fastcall nthread_ignore_mutex(BOOL bStart);
 BOOL __fastcall nthread_has_500ms_passed(BOOL unused);
 
 /* rdata */
-
-extern const int nthread_inf; // weak
 
 #endif /* __NTHREAD_H__ */

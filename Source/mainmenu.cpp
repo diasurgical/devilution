@@ -130,12 +130,14 @@ BOOL __cdecl mainmenu_single_player()
 
 BOOL __fastcall mainmenu_init_menu(int type)
 {
+	BOOL success;
+
 	if (type == 4)
 		return TRUE;
 
 	music_stop();
 
-	BOOL success = StartGame(type != 2, type != 3);
+	success = StartGame(type != 2, type != 3);
 	if (success)
 		mainmenu_refresh_music();
 

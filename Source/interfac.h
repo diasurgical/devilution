@@ -3,7 +3,6 @@
 #define __INTERFAC_H__
 
 extern void *sgpBackCel;
-extern float interfac_cpp_init_value;
 extern int sgdwProgress;
 extern int progress_id; // idb
 

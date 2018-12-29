@@ -56,7 +56,9 @@ char *MsgStrings[44] = {
 
 void __fastcall InitDiabloMsg(char e)
 {
-	for (int i = 0; i < msgcnt; i++) {
+	int i;
+
+	for (i = 0; i < msgcnt; i++) {
 		if (msgtable[i] == e)
 			return;
 	}
@@ -71,7 +73,9 @@ void __fastcall InitDiabloMsg(char e)
 
 void __cdecl ClrDiabloMsg()
 {
-	for (int i = 0; i < sizeof(msgtable); i++)
+	int i;
+
+	for (i = 0; i < sizeof(msgtable); i++)
 		msgtable[i] = 0;
 
 	msgflag = 0;

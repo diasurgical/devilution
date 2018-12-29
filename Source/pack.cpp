@@ -2,18 +2,7 @@
 
 #include "../types.h"
 
-int pack_cpp_init_value; // weak
-
-const int pack_inf = 0x7F800000; // weak
-
-struct pack_cpp_init {
-	pack_cpp_init()
-	{
-		pack_cpp_init_value = pack_inf;
-	}
-} _pack_cpp_init;
-// 47F168: using guessed type int pack_inf;
-// 67D7C8: using guessed type int pack_cpp_init_value;
+static float pack_cpp_init_value = INFINITY;
 
 void __fastcall PackPlayer(PkPlayerStruct *pPack, int pnum, BOOL manashield)
 {
