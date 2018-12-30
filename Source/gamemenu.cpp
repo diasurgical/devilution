@@ -56,13 +56,15 @@ void __cdecl gamemenu_previous()
 
 void __cdecl gamemenu_enable_single()
 {
-	BOOLEAN v0; // dl
+	BOOL enable;
 
 	gmenu_enable(&sgSingleMenu[3], gbValidSaveFile);
-	v0 = 0;
+
+	enable = FALSE;
 	if (plr[myplr]._pmode != PM_DEATH && !deathflag)
-		v0 = 1;
-	gmenu_enable(sgSingleMenu, v0);
+		enable = TRUE;
+
+	gmenu_enable(sgSingleMenu, enable);
 }
 
 void __cdecl gamemenu_enable_multi()
