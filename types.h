@@ -69,11 +69,7 @@ extern "C" {
 #include "Source/capture.h"
 #include "Source/codec.h"
 #include "Source/control.h"
-#ifdef __cplusplus
-}
 #include "Source/cursor.h"
-extern "C" {
-#endif
 #include "Source/dead.h"
 #include "Source/debug.h"
 #include "Source/diablo.h"
@@ -114,11 +110,7 @@ extern "C" {
 #include "Source/msgcmd.h"
 #include "Source/multi.h"
 #include "Source/nthread.h"
-#ifdef __cplusplus
-}
 #include "Source/objects.h"
-extern "C" {
-#endif
 #include "Source/pack.h"
 #include "Source/palette.h"
 #include "Source/path.h"
