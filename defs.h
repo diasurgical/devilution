@@ -206,6 +206,8 @@ char __OFSUB__(T x, U y)
 	}
 }
 
+#else
+#define qmemcpy memcpy
 #endif
 
 #endif /* IDA_GARBAGE */
