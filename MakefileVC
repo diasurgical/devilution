@@ -56,6 +56,9 @@ debug: Diablo.exe
 DIABLO_SRC=$(sort $(filter-out Source/_asm.cpp Source/_render.cpp Source/render.cpp, $(wildcard Source/*.cpp)))
 DIABLO_SRC += Source/render.cpp
 OBJS=$(DIABLO_SRC:.cpp=.obj)
+# hardcoded list of src files, because only some of them are ready to be compiled as C instead of C++
+# once all files compile as C we should use the /TC flag abd DIABLO_SRC instead
+DIABLO_SRC_FIXED = Source/appfat.cpp Source/automap.cpp Source/capture.cpp /TcSource/codec.cpp Source/control.cpp Source/cursor.cpp /TcSource/dead.cpp Source/debug.cpp Source/diablo.cpp Source/doom.cpp Source/drlg_l1.cpp Source/drlg_l2.cpp Source/drlg_l3.cpp Source/drlg_l4.cpp Source/dthread.cpp Source/dx.cpp Source/effects.cpp Source/encrypt.cpp Source/engine.cpp Source/error.cpp Source/fault.cpp Source/gamemenu.cpp Source/gendung.cpp Source/gmenu.cpp /TcSource/help.cpp Source/init.cpp Source/interfac.cpp Source/inv.cpp Source/items.cpp Source/lighting.cpp Source/loadsave.cpp Source/logging.cpp Source/mainmenu.cpp Source/minitext.cpp Source/missiles.cpp Source/monster.cpp Source/movie.cpp Source/mpqapi.cpp Source/msg.cpp Source/msgcmd.cpp Source/multi.cpp Source/nthread.cpp Source/objects.cpp Source/pack.cpp Source/palette.cpp /TcSource/path.cpp Source/pfile.cpp Source/player.cpp /TcSource/plrmsg.cpp /TcSource/portal.cpp Source/quests.cpp /TcSource/restrict.cpp Source/scrollrt.cpp Source/setmaps.cpp /TcSource/sha.cpp Source/sound.cpp Source/spells.cpp Source/stores.cpp Source/sync.cpp /TcSource/textdat.cpp Source/themes.cpp Source/tmsg.cpp Source/town.cpp Source/towners.cpp Source/track.cpp Source/trigs.cpp Source/wave.cpp Source/render.cpp
 
 PKWARE_SRC=$(sort $(wildcard 3rdParty/PKWare/*.cpp))
 PKWARE_OBJS=$(PKWARE_SRC:.cpp=.obj)
@@ -67,7 +70,7 @@ DIABLOUI_SRC=DiabloUI/diabloui.cpp
 DIABLOUI_OBJS=$(DIABLOUI_SRC:.cpp=.obj)
 
 Diablo.exe: main_files $(PKWARE_OBJS) diablo.res DiabloUI/diabloui.lib 3rdParty/Storm/Source/storm.lib
-	$(VC_LINK) /OUT:$@ $(LINKFLAGS) $(OBJS) $(PKWARE_OBJS) diablo.res advapi32.lib gdi32.lib shell32.lib user32.lib version.lib DiabloUI/diabloui.lib 3rdParty/Storm/Source/storm.lib
+	$(VC_LINK) /OUT:$@ $(LINKFLAGS) $(OBJS) $(PKWARE_OBJS) diablo.res DiabloUI/diabloui.lib 3rdParty/Storm/Source/storm.lib user32.lib gdi32.lib advapi32.lib shell32.lib version.lib
 
 DiabloUI/diabloui.lib: $(DIABLOUI_OBJS) 3rdParty/Storm/Source/storm.lib
 	$(CL) $^ /link /LINK50COMPAT /nologo /dll /subsystem:windows /machine:I386 /LIBPATH:$(VC6_LIB_DIR) DiabloUI/diabloui.res advapi32.lib gdi32.lib shell32.lib user32.lib version.lib 3rdParty/Storm/Source/storm.lib /def:"DiabloUI/diabloui.def" /out:DiabloUI/diabloui.dll
@@ -77,7 +80,7 @@ DiabloUI/diabloui.lib: $(DIABLOUI_OBJS) 3rdParty/Storm/Source/storm.lib
 
 # compiles all main source files with once compiler call
 main_files:
-	$(CL) $(CFLAGS) /FoSource/ $(DIABLO_SRC)
+	$(CL) $(CFLAGS) /FoSource/ $(DIABLO_SRC_FIXED)
 
 %.obj: %.cpp
 	$(CL) $(CFLAGS) /Fo$@ $<
