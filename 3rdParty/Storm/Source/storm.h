@@ -60,7 +60,7 @@ typedef struct _WSIZE
 #define GAMESTATE_STARTED 0x08
 #define GAMESTATE_REPLAY  0x80
 
-#ifdef __GNUC__
+#if defined(__GNUC__) || defined(__cplusplus)
 extern "C" {
 #endif
 
@@ -1312,7 +1312,7 @@ BOOL __stdcall SDlgDialogBoxParam(HINSTANCE hInst, char *szDialog, int a3, WNDPR
 BOOL __stdcall SGdiTextOut(void *pBuffer, int x, int y, int mask, char *str, int len);
 BOOL __stdcall SFileEnableDirectAccess(BOOL enable);
 
-#ifdef __GNUC__
+#if defined(__GNUC__) || defined(__cplusplus)
 }
 #endif
 
