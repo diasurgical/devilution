@@ -3,7 +3,6 @@
 #include "../types.h"
 
 static BYTE sgbIsScrolling;
-static float track_cpp_init_value = INFINITY;
 static DWORD sgdwLastWalk;
 static BOOL sgbIsWalking;
 
