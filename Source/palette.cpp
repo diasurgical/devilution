@@ -3,7 +3,6 @@
 #include "../types.h"
 
 PALETTEENTRY logical_palette[256];
-static float palette_cpp_init_value = INFINITY;
 PALETTEENTRY system_palette[256];
 PALETTEENTRY orig_palette[256];
 UINT gdwPalEntries;
@@ -28,10 +27,18 @@ void __cdecl palette_init()
 	LoadGamma();
 	memcpy(system_palette, orig_palette, 0x400u);
 	LoadSysPal();
+#ifdef __cplusplus
 	v0 = lpDDInterface->CreatePalette(DDPCAPS_ALLOW256 | DDPCAPS_8BIT, system_palette, &lpDDPalette, NULL);
+#else
+	v0 = lpDDInterface->lpVtbl->CreatePalette(lpDDInterface, DDPCAPS_ALLOW256 | DDPCAPS_8BIT, system_palette, &lpDDPalette, NULL);
+#endif
 	if (v0)
 		ErrDlg(IDD_DIALOG8, v0, "C:\\Src\\Diablo\\Source\\PALETTE.CPP", 143);
+#ifdef __cplusplus
 	v1 = lpDDSPrimary->SetPalette(lpDDPalette);
+#else
+	v1 = lpDDSPrimary->lpVtbl->SetPalette(lpDDSPrimary, lpDDPalette);
+#endif
 	if (v1)
 		ErrDlg(IDD_DIALOG8, v1, "C:\\Src\\Diablo\\Source\\PALETTE.CPP", 146);
 }
@@ -118,8 +125,13 @@ void __fastcall LoadRndLvlPal(int l)
 void __cdecl ResetPal()
 {
 	if (!lpDDSPrimary
+#ifdef __cplusplus
 	    || lpDDSPrimary->IsLost() != DDERR_SURFACELOST
 	    || !lpDDSPrimary->Restore()) {
+#else
+	    || lpDDSPrimary->lpVtbl->IsLost(lpDDSPrimary) != DDERR_SURFACELOST
+	    || !lpDDSPrimary->lpVtbl->Restore(lpDDSPrimary)) {
+#endif
 		SDrawRealizePalette();
 	}
 }
@@ -209,7 +221,11 @@ void __fastcall SetFadeLevel(int fadeval)
 			system_palette[i].peBlue = (fadeval * logical_palette[i].peBlue) >> 8;
 		}
 		Sleep(3);
+#ifdef __cplusplus
 		lpDDInterface->WaitForVerticalBlank(DDWAITVB_BLOCKBEGIN, NULL);
+#else
+		lpDDInterface->lpVtbl->WaitForVerticalBlank(lpDDInterface, DDWAITVB_BLOCKBEGIN, NULL);
+#endif
 		palette_update();
 	}
 }

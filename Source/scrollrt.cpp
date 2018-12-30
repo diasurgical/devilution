@@ -4,7 +4,6 @@
 
 int light_table_index; // weak
 int screen_y_times_768[1024];
-static float scrollrt_cpp_init_value = INFINITY;
 unsigned int sgdwCursWdtOld; // idb
 int sgdwCursX;               // idb
 int sgdwCursY;               // idb
@@ -2800,9 +2799,15 @@ void __fastcall DrawMain(int dwHgt, int draw_desc, int draw_hp, int draw_mana, i
 
 	a4 = dwHgt;
 	if (gbActive && lpDDSPrimary) {
+#ifdef __cplusplus
 		if (lpDDSPrimary->IsLost() == DDERR_SURFACELOST) {
 			if (lpDDSPrimary->Restore())
 				return;
+#else
+		if (lpDDSPrimary->lpVtbl->IsLost(lpDDSPrimary) == DDERR_SURFACELOST) {
+			if (lpDDSPrimary->lpVtbl->Restore(lpDDSPrimary))
+				return;
+#endif
 			ResetPal();
 			a4 = 480;
 		}
@@ -2812,7 +2817,11 @@ void __fastcall DrawMain(int dwHgt, int draw_desc, int draw_hp, int draw_mana, i
 			v7 = GetTickCount();
 			while (1) {
 				DDS_desc.dwSize = 108;
+#ifdef __cplusplus
 				v8 = lpDDSPrimary->Lock(NULL, &DDS_desc, DDLOCK_WRITEONLY | DDLOCK_WAIT, NULL);
+#else
+				v8 = lpDDSPrimary->lpVtbl->Lock(lpDDSPrimary, NULL, &DDS_desc, DDLOCK_WRITEONLY | DDLOCK_WAIT, NULL);
+#endif
 				if (!v8)
 					break;
 				if (v7 - GetTickCount() > 5000)
@@ -2863,7 +2872,11 @@ void __fastcall DrawMain(int dwHgt, int draw_desc, int draw_hp, int draw_mana, i
 				DoBlitScreen(sgdwCursX, sgdwCursY, sgdwCursWdt, sgdwCursHgt);
 		}
 		if (lpDDSBackBuf == NULL) {
+#ifdef __cplusplus
 			v9 = lpDDSPrimary->Unlock(NULL);
+#else
+			v9 = lpDDSPrimary->lpVtbl->Unlock(lpDDSPrimary, NULL);
+#endif
 			if (v9 != DDERR_SURFACELOST) {
 				if (v9)
 					DDErrMsg(v9, 3779, "C:\\Src\\Diablo\\Source\\SCROLLRT.CPP");
@@ -2897,10 +2910,17 @@ void __cdecl DrawFPS()
 		if (framerate > 99)
 			framerate = 99;
 		wsprintf(String, "%2d", framerate);
+#ifdef __cplusplus
 		if (!lpDDSPrimary->GetDC(&hdc)) {
 			TextOut(hdc, 0, 400, String, strlen(String));
 			lpDDSPrimary->ReleaseDC(hdc);
 		}
+#else
+		if (!lpDDSPrimary->lpVtbl->GetDC(lpDDSPrimary, &hdc)) {
+			TextOut(hdc, 0, 400, String, strlen(String));
+			lpDDSPrimary->lpVtbl->ReleaseDC(lpDDSPrimary, hdc);
+		}
+#endif
 	}
 }
 #endif
@@ -2931,7 +2951,11 @@ void __fastcall DoBlitScreen(int dwX, int dwY, int dwWdt, int dwHgt)
 		Rect.bottom = dwY + 160 + dwHgt - 1;
 		a4 = GetTickCount();
 		while (1) {
+#ifdef __cplusplus
 			error_code = lpDDSPrimary->BltFast(v5, v4, lpDDSBackBuf, &Rect, DDBLTFAST_WAIT);
+#else
+			error_code = lpDDSPrimary->lpVtbl->BltFast(lpDDSPrimary, v5, v4, lpDDSBackBuf, &Rect, DDBLTFAST_WAIT);
+#endif
 			if (!error_code)
 				break;
 			if (a4 - GetTickCount() <= 5000) {
