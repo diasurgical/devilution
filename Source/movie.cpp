@@ -2,7 +2,6 @@
 
 #include "../types.h"
 
-static float movie_cpp_init_value = INFINITY;
 BYTE movie_playing;
 BOOL loop_movie;
 
@@ -58,7 +57,7 @@ LRESULT __stdcall MovieWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam
 	case WM_SYSCOMMAND:
 		if (wParam == SC_CLOSE) {
 			movie_playing = FALSE;
-			return NULL;
+			return 0;
 		}
 		break;
 	}
