@@ -172,7 +172,7 @@ void __fastcall CelDecDatLightOnly(char *pDecodeTo, char *pRLEBytes, int frame_c
 					if ((v8 & 0x80u) != 0) /* check sign */
 						break;
 					v9 = v7 - v8;
-					CelDecDatLightEntry(v8, a3, v5, v4);
+					CelDecDatLightEntry(v8, a3, &v5, &v4);
 					v7 = v9;
 					if (!v9)
 						goto LABEL_9;
@@ -188,52 +188,14 @@ void __fastcall CelDecDatLightOnly(char *pDecodeTo, char *pRLEBytes, int frame_c
 }
 // 69BEF8: using guessed type int light_table_index;
 
-void __fastcall CelDecDatLightEntry(unsigned char shift, char *LightIndex, char *&pDecodeTo, char *&pRLEBytes)
+void __fastcall CelDecDatLightEntry(unsigned char n, char *LightIndex, char **pDecodeTo, char **pRLEBytes)
 {
-	char v5;          // cf
-	unsigned char v6; // cl
-	char v7;          // cl
-	int v8;           // eax
-	char v9;          // ch
-	int tmp;          // eax
-	char v11;         // ch
-	char v12;         // ch
-	unsigned char a1;
+	int i;
 
-	v5 = shift & 1;
-	v6 = shift >> 1;
-	if (v5) {
-		a1 = *pRLEBytes;
-		*pDecodeTo = LightIndex[a1];
-		++pRLEBytes;
-		++pDecodeTo;
-	}
-	v5 = v6 & 1;
-	v7 = v6 >> 1;
-	if (v5) {
-		a1 = *pRLEBytes;
-		*pDecodeTo = LightIndex[a1];
-		a1 = pRLEBytes[1];
-		pDecodeTo[1] = LightIndex[a1];
-		pRLEBytes += 2;
-		pDecodeTo += 2;
-	}
-	for (; v7; --v7) {
-		v8 = *(_DWORD *)pRLEBytes;
-		pRLEBytes += 4;
-		a1 = v8;
-		v9 = LightIndex[a1];
-		a1 = BYTE1(v8);
-		tmp = __ROR4__(v8, 16);
-		*pDecodeTo = v9;
-		v11 = LightIndex[a1];
-		a1 = tmp;
-		pDecodeTo[1] = v11;
-		v12 = LightIndex[a1];
-		a1 = BYTE1(tmp);
-		pDecodeTo[2] = v12;
-		pDecodeTo[3] = LightIndex[a1];
-		pDecodeTo += 4;
+	for (i = 0; i < n; i++) {
+		**pDecodeTo = LightIndex[**pRLEBytes];
+		(*pRLEBytes)++;
+		(*pDecodeTo)++;
 	}
 }
 
@@ -690,7 +652,7 @@ void __fastcall Cel2DecDatLightOnly(char *pDecodeTo, char *pRLEBytes, int frame_
 				v7 -= v8;
 				if (v5 < (char *)gpBufEnd) {
 					v9 = v7;
-					Cel2DecDatLightEntry(v8, a3, v5, v4);
+					Cel2DecDatLightEntry(v8, a3, &v5, &v4);
 					v7 = v9;
 				} else {
 					v4 += v8;
@@ -705,52 +667,14 @@ void __fastcall Cel2DecDatLightOnly(char *pDecodeTo, char *pRLEBytes, int frame_
 // 69BEF8: using guessed type int light_table_index;
 // 69CF0C: using guessed type int gpBufEnd;
 
-void __fastcall Cel2DecDatLightEntry(unsigned char shift, char *LightIndex, char *&pDecodeTo, char *&pRLEBytes)
+void __fastcall Cel2DecDatLightEntry(unsigned char n, char *LightIndex, char **pDecodeTo, char **pRLEBytes)
 {
-	char v5;          // cf
-	unsigned char v6; // cl
-	char v7;          // cl
-	int v8;           // eax
-	char v9;          // ch
-	int tmp;          // eax
-	char v11;         // ch
-	char v12;         // ch
-	unsigned char a1;
+	int i;
 
-	v5 = shift & 1;
-	v6 = shift >> 1;
-	if (v5) {
-		a1 = *pRLEBytes;
-		*pDecodeTo = LightIndex[a1];
-		++pRLEBytes;
-		++pDecodeTo;
-	}
-	v5 = v6 & 1;
-	v7 = v6 >> 1;
-	if (v5) {
-		a1 = *pRLEBytes;
-		*pDecodeTo = LightIndex[a1];
-		a1 = pRLEBytes[1];
-		pDecodeTo[1] = LightIndex[a1];
-		pRLEBytes += 2;
-		pDecodeTo += 2;
-	}
-	for (; v7; --v7) {
-		v8 = *(_DWORD *)pRLEBytes;
-		pRLEBytes += 4;
-		a1 = v8;
-		v9 = LightIndex[a1];
-		a1 = BYTE1(v8);
-		tmp = __ROR4__(v8, 16);
-		*pDecodeTo = v9;
-		v11 = LightIndex[a1];
-		a1 = tmp;
-		pDecodeTo[1] = v11;
-		v12 = LightIndex[a1];
-		a1 = BYTE1(tmp);
-		pDecodeTo[2] = v12;
-		pDecodeTo[3] = LightIndex[a1];
-		pDecodeTo += 4;
+	for (i = 0; i < n; i++) {
+		**pDecodeTo = LightIndex[**pRLEBytes];
+		(*pRLEBytes)++;
+		(*pDecodeTo)++;
 	}
 }
 

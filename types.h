@@ -82,11 +82,7 @@ extern "C" {
 #include "Source/dx.h"
 #include "Source/effects.h"
 #include "Source/encrypt.h"
-#ifdef __cplusplus
-}
 #include "Source/engine.h"
-extern "C" {
-#endif
 #include "Source/error.h"
 #include "Source/fault.h"
 #include "Source/gamemenu.h"
