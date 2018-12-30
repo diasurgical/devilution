@@ -12,7 +12,11 @@ void __cdecl CaptureScreen()
 	hObject = CaptureFile(FileName);
 	if (hObject != INVALID_HANDLE_VALUE) {
 		DrawAndBlit();
+#ifdef __cplusplus
 		lpDDPalette->GetEntries(0, 0, 256, palette);
+#else
+		lpDDPalette->lpVtbl->GetEntries(lpDDPalette, 0, 0, 256, palette);
+#endif
 		RedPalette(palette);
 
 		j_lock_buf_priv(2);
@@ -30,7 +34,11 @@ void __cdecl CaptureScreen()
 			DeleteFile(FileName);
 
 		Sleep(300);
+#ifdef __cplusplus
 		lpDDPalette->SetEntries(0, 0, 256, palette);
+#else
+		lpDDPalette->lpVtbl->SetEntries(lpDDPalette, 0, 0, 256, palette);
+#endif
 	}
 }
 
@@ -134,7 +142,7 @@ HANDLE __fastcall CaptureFile(char *dst_path)
 {
 	BOOLEAN num_used[100];
 	int free_num, hFind;
-	_finddata_t finder;
+	struct _finddata_t finder;
 
 	memset(num_used, FALSE, sizeof(num_used));
 	hFind = _findfirst("screen??.PCX", &finder);
@@ -161,13 +169,18 @@ HANDLE __fastcall CaptureFile(char *dst_path)
 void __fastcall RedPalette(PALETTEENTRY *pal)
 {
 	PALETTEENTRY red[256];
+	int i;
 
-	for (int i = 0; i < 256; i++) {
+	for (i = 0; i < 256; i++) {
 		red[i].peRed = pal[i].peRed;
 		red[i].peGreen = 0;
 		red[i].peBlue = 0;
 		red[i].peFlags = 0;
 	}
 
+#ifdef __cplusplus
 	lpDDPalette->SetEntries(0, 0, 256, red);
+#else
+	lpDDPalette->lpVtbl->SetEntries(lpDDPalette, 0, 0, 256, red);
+#endif
 }
