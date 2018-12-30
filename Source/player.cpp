@@ -5,7 +5,6 @@
 int plr_lframe_size;
 int plr_wframe_size;
 UCHAR plr_gfx_flag = 0;
-static float player_cpp_init_value = INFINITY;
 int plr_aframe_size;
 int myplr;
 PlayerStruct plr[MAX_PLRS];

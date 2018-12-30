@@ -3,7 +3,6 @@
 #include "../types.h"
 
 void *sgpBackCel;
-static float interfac_cpp_init_value = INFINITY;
 int sgdwProgress;
 int progress_id; // idb
 
