@@ -2,8 +2,6 @@
 
 #include "../types.h"
 
-static float pack_cpp_init_value = INFINITY;
-
 void __fastcall PackPlayer(PkPlayerStruct *pPack, int pnum, BOOL manashield)
 {
 	PlayerStruct *pPlayer; // edi
