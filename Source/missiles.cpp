@@ -515,19 +515,17 @@ int __fastcall GetSpellLevel(int id, int sn)
 
 int __fastcall GetDirection8(int x1, int y1, int x2, int y2)
 {
-	int v4;         // edi
 	int v5;         // esi
 	int v6;         // eax
 	int v7;         // eax
 	int result;     // eax
-	int v9;         // [esp+8h] [ebp-110h]
 	char lrtoul[3]; // [esp+10Ch] [ebp-Ch]
 	char urtoll[3]; // [esp+10Fh] [ebp-9h]
 	char lltour[3]; // [esp+112h] [ebp-6h]
 	char ultolr[3]; // [esp+115h] [ebp-3h]
 
-	v9 = y1;
-	v4 = x1;
+	int v9 = y1;
+	int v4 = x1;
 
 	unsigned char Dirs[16][16] = {
 		{ 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -582,19 +580,17 @@ int __fastcall GetDirection8(int x1, int y1, int x2, int y2)
 
 int __fastcall GetDirection16(int x1, int y1, int x2, int y2)
 {
-	int v4;         // edi
 	int v5;         // esi
 	int v6;         // eax
 	int v7;         // eax
 	int result;     // eax
-	int v9;         // [esp+8h] [ebp-124h]
 	char lrtoul[5]; // [esp+10Ch] [ebp-20h]
 	char urtoll[5]; // [esp+114h] [ebp-18h]
 	char lltour[5]; // [esp+11Ch] [ebp-10h]
 	char ultolr[5]; // [esp+124h] [ebp-8h]
 
-	v9 = y1;
-	v4 = x1;
+	int v9 = y1;
+	int v4 = x1;
 
 	unsigned char Dirs[16][16] = {
 		{ 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
