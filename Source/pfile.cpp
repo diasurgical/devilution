@@ -5,8 +5,6 @@
 #define PASSWORD_SINGLE "xrgyrkj1"
 #define PASSWORD_MULTI "szqnlsk1"
 
-static float pfile_cpp_init_value = INFINITY;
-
 static char hero_names[MAX_CHARACTERS][PLR_NAME_LEN];
 BOOL gbValidSaveFile;
 
@@ -315,14 +313,14 @@ char *__fastcall GetSaveDirectory(char *dst, int dst_size, unsigned int save_num
 BOOL __fastcall pfile_read_hero(HANDLE archive, PkPlayerStruct *pPack)
 {
 	HANDLE file;
-	BOOL decoded, ret;
+	BOOL decoded;
 	DWORD dwlen, nSize;
 	unsigned char *buf;
 
 	if (!SFileOpenFileEx(archive, "hero", 0, &file))
 		return FALSE;
 	else {
-		ret = FALSE;
+		BOOL ret = FALSE;
 		char password[16] = PASSWORD_SINGLE;
 		nSize = 16;
 
