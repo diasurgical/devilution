@@ -2,7 +2,6 @@
 
 #include "../types.h"
 
-static float diablo_cpp_init_value = INFINITY;
 HWND ghMainWnd;
 int glMid1Seed[NUMLEVELS];
 int glMid2Seed[NUMLEVELS];
@@ -140,7 +139,7 @@ void __fastcall run_game_loop(unsigned int uMsg)
 	//int v6; // eax
 	signed int v7;    // [esp+8h] [ebp-24h]
 	WNDPROC saveProc; // [esp+Ch] [ebp-20h]
-	tagMSG msg;       // [esp+10h] [ebp-1Ch]
+	MSG msg;       // [esp+10h] [ebp-1Ch]
 
 	nthread_ignore_mutex(1);
 	start_game(uMsg);
@@ -295,12 +294,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 #endif
 			play_movie("gendata\\logo.smk", TRUE);
 
-		char szValueName[] = "Intro";
-		if (!SRegLoadValue("Diablo", szValueName, 0, &nData))
-			nData = 1;
-		if (nData)
-			play_movie("gendata\\diablo1.smk", TRUE);
-		SRegSaveValue("Diablo", szValueName, 0, 0);
+		{
+			char szValueName[] = "Intro";
+			if (!SRegLoadValue("Diablo", szValueName, 0, &nData))
+				nData = 1;
+			if (nData)
+				play_movie("gendata\\diablo1.smk", TRUE);
+			SRegSaveValue("Diablo", szValueName, 0, 0);
+		}
 
 #ifdef _DEBUG
 		if (showintrodebug) {
