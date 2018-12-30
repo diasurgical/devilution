@@ -505,7 +505,7 @@ enum SFileFlags
   SFILE_FROM_DISK     = 0x00000004
 };
 
-BOOL STORMAPI SFileReadFile(HANDLE hFile, void *buffer, DWORD nNumberOfBytesToRead, DWORD *read, LONG lpDistanceToMoveHigh);
+BOOL STORMAPI SFileReadFile(HANDLE hFile, void *buffer, DWORD nNumberOfBytesToRead, DWORD *read, LONG *lpDistanceToMoveHigh);
 
 void STORMAPI SFileSetLocale(LCID lcLocale);
 

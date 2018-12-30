@@ -2,7 +2,6 @@
 
 #include "../types.h"
 
-static float mainmenu_cpp_init_value = INFINITY;
 char gszHero[16];
 
 /* data */

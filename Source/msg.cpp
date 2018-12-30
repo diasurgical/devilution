@@ -19,8 +19,6 @@ BOOL deltaload;
 BYTE gbBufferMsgs;
 int pkt_counter;
 
-static float msg_cpp_init_value = INFINITY;
-
 void __fastcall msg_send_drop_pkt(int pnum, int reason)
 {
 	TFakeDropPlr cmd;

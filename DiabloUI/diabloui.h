@@ -2,7 +2,7 @@
 #ifndef __DIABLOUI_H__
 #define __DIABLOUI_H__
 
-#ifdef __GNUC__
+#if defined(__GNUC__) || defined(__cplusplus)
 extern "C" {
 #endif
 
@@ -55,7 +55,7 @@ void __stdcall UiCreateGameCriteria(_uiheroinfo *pInfo, char *str);
 BOOL __stdcall UiGetDefaultStats(int pclass, _uidefaultstats *pStats);
 BOOL __stdcall UiBetaDisclaimer(int a1);
 
-#ifdef __GNUC__
+#if defined(__GNUC__) || defined(__cplusplus)
 }
 #endif
 

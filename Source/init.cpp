@@ -3,7 +3,6 @@
 #include "../types.h"
 
 _SNETVERSIONDATA fileinfo;
-static float init_cpp_init_value = INFINITY;
 int gbActive;            // weak
 char diablo_exe_path[260];
 void *unused_mpq;

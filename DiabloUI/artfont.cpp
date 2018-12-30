@@ -107,7 +107,7 @@ void __fastcall artfont_LoadArtFont(FontStruct *pFont, const char *pszBinFile, c
 
 	if (!pFont->active && SFileOpenFile(pszBinFile, &phFile)) {
 		v4 = SFileGetFileSize(phFile, 0);
-		if (SFileReadFile(phFile, pFont, v4, 0, 0)) {
+		if (SFileReadFile(phFile, pFont, v4, 0, NULL)) {
 			SFileCloseFile(phFile);
 			local_LoadArtImage(pszFileName, &pBuffer, size);
 			memset(pFont->fonttrans, 0, 0x400u);
