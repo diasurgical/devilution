@@ -2,7 +2,6 @@
 
 #include "../types.h"
 
-static float effects_cpp_init_value = INFINITY;
 int sfxdelay; // weak
 int sfxdnum;
 void *sfx_stream;

@@ -2,8 +2,6 @@
 
 #include "../types.h"
 
-static float wave_cpp_init_value = INFINITY;
-
 BOOL __fastcall WCloseFile(HANDLE file)
 {
 	return SFileCloseFile(file);
