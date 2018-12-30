@@ -22,7 +22,7 @@ extern int pcurs;        // idb
 void __cdecl InitCursor();
 void __cdecl FreeCursor();
 void __fastcall SetICursor(int i);
-void __fastcall SetCursor(int i);
+void __fastcall SetCursor_(int i);
 void __fastcall NewCursor(int i);
 void __cdecl InitLevelCursor();
 void __cdecl CheckTown();

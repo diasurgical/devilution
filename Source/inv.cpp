@@ -1035,7 +1035,7 @@ LABEL_18:
 				qmemcpy(&plr[v3].HoldItem, v27, sizeof(plr[v3].HoldItem));
 				v29 = plr[v3].HoldItem._iCurs + 12;
 				if (v28 == myplr)
-					SetCursor(v29);
+					SetCursor_(v29);
 				else
 					SetICursor(v29);
 				v67 = 0;
@@ -1050,7 +1050,7 @@ LABEL_18:
 				qmemcpy(&plr[v3].HoldItem, &tempitem, sizeof(plr[v3].HoldItem));
 				v33 = plr[v3].HoldItem._iCurs + 12;
 				if (v32 == myplr)
-					SetCursor(v33);
+					SetCursor_(v33);
 				else
 					SetICursor(v33);
 				if (!v67)
@@ -1286,7 +1286,7 @@ LABEL_18:
 				if (v60 == myplr) {
 					if (cursor_ida == 1)
 						SetCursorPos(MouseX + (cursW >> 1), MouseY + (cursH >> 1));
-					SetCursor(cursor_ida);
+					SetCursor_(cursor_ida);
 				}
 				return;
 			default:
@@ -1551,7 +1551,7 @@ void __fastcall CheckInvCut(int pnum, int mx, int my)
 
 		if (pnum == myplr) {
 			PlaySFX(IS_IGRAB);
-			SetCursor(plr[pnum].HoldItem._iCurs + CURSOR_FIRSTITEM);
+			SetCursor_(plr[pnum].HoldItem._iCurs + CURSOR_FIRSTITEM);
 			SetCursorPos(mx - (cursW >> 1), MouseY - (cursH >> 1));
 		}
 	}
@@ -1809,7 +1809,7 @@ void __fastcall InvGetItem(int pnum, int ii)
 		}
 		v5 = plr[pnuma].HoldItem._iCurs;
 		pcursitem = -1;
-		SetCursor(v5 + 12);
+		SetCursor_(v5 + 12);
 	}
 }
 // 4B84DC: using guessed type int dropGoldFlag;
@@ -2286,7 +2286,7 @@ int __fastcall InvPutItem(int pnum, int x, int y)
 	item[v17]._ix = xa;
 	RespawnItem(v15, 1);
 	++numitems;
-	SetCursor(CURSOR_HAND);
+	SetCursor_(CURSOR_HAND);
 	return yc;
 }
 
@@ -2770,7 +2770,7 @@ void __cdecl DoTelekinesis()
 		NetSendCmdGItem(TRUE, CMD_REQUESTAGITEM, myplr, myplr, pcursitem);
 	if (pcursmonst != -1 && !M_Talker(pcursmonst) && !monster[pcursmonst].mtalkmsg)
 		NetSendCmdParam1(TRUE, CMD_KNOCKBACK, pcursmonst);
-	SetCursor(CURSOR_HAND);
+	SetCursor_(CURSOR_HAND);
 }
 // 4B8CC0: using guessed type char pcursitem;
 // 4B8CC1: using guessed type char pcursobj;
@@ -2815,6 +2815,6 @@ int __cdecl DropItemBeforeTrig()
 	if (!TryInvPut())
 		return 0;
 	NetSendCmdPItem(TRUE, CMD_PUTITEM, cursmx, cursmy);
-	SetCursor(CURSOR_HAND);
+	SetCursor_(CURSOR_HAND);
 	return 1;
 }

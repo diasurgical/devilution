@@ -1726,7 +1726,7 @@ void __fastcall StartPlayerKill(int pnum, int earflag)
 
 			if (pcurs >= CURSOR_FIRSTITEM) {
 				PlrDeadItem(pnum, &plr[pnum].HoldItem, 0, 0);
-				SetCursor(CURSOR_HAND);
+				SetCursor_(CURSOR_HAND);
 			}
 
 			if (!diablolevel) {

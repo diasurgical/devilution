@@ -192,7 +192,7 @@ void __fastcall run_game_loop(unsigned int uMsg)
 		pfile_write_hero();
 	pfile_flush_W();
 	PaletteFadeOut(8);
-	SetCursor(CURSOR_NONE);
+	SetCursor_(CURSOR_NONE);
 	ClearScreenBuffer();
 	drawpanflag = 255;
 	scrollrt_draw_game_screen(1);
@@ -816,7 +816,7 @@ BOOL __fastcall LeftMouseDown(int wParam)
 			return 0;
 		NetSendCmdPItem(TRUE, CMD_PUTITEM, cursmx, cursmy);
 	LABEL_48:
-		SetCursor(CURSOR_HAND);
+		SetCursor_(CURSOR_HAND);
 		return 0;
 	}
 	if (plr[myplr]._pStatPts && !spselflag)
@@ -920,7 +920,7 @@ BOOLEAN __cdecl TryIconCurs()
 			return 1;
 		}
 	LABEL_26:
-		SetCursor(CURSOR_HAND);
+		SetCursor_(CURSOR_HAND);
 		return 1;
 	case CURSOR_REPAIR:
 		if (pcursinvitem != -1) {
@@ -994,7 +994,7 @@ void __cdecl RightMouseDown()
 					if (pcursinvitem == -1 || !UseInvItem(myplr, pcursinvitem))
 						CheckPlrSpell();
 				} else if (pcurs > 1 && pcurs < 12) {
-					SetCursor(CURSOR_HAND);
+					SetCursor_(CURSOR_HAND);
 				}
 			}
 		}
@@ -1675,7 +1675,7 @@ void __fastcall LoadGameLevel(BOOL firstflag, int lvldir)
 		glSeedTbl[currlevel] = setseed;
 
 	music_stop();
-	SetCursor(CURSOR_HAND);
+	SetCursor_(CURSOR_HAND);
 	SetRndSeed(glSeedTbl[currlevel]);
 	IncProgress();
 	MakeLightTable();
@@ -1958,12 +1958,12 @@ void __fastcall timeout_cursor(BOOL bTimeout)
 			ClearPanel();
 			AddPanelString("-- Network timeout --", 1);
 			AddPanelString("-- Waiting for players --", 1);
-			SetCursor(CURSOR_HOURGLASS);
+			SetCursor_(CURSOR_HOURGLASS);
 			drawpanflag = 255;
 		}
 		scrollrt_draw_game_screen(1);
 	} else if (sgnTimeoutCurs) {
-		SetCursor(sgnTimeoutCurs);
+		SetCursor_(sgnTimeoutCurs);
 		sgnTimeoutCurs = 0;
 		ClearPanel();
 		drawpanflag = 255;

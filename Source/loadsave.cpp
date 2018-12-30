@@ -170,7 +170,7 @@ void __fastcall LoadGame(BOOL firstflag)
 	ProcessVisionList();
 	missiles_process_charge();
 	ResetPal();
-	SetCursor(CURSOR_HAND);
+	SetCursor_(CURSOR_HAND);
 	gbProcessPlayers = TRUE;
 }
 // 5CF31D: using guessed type char setlevel;

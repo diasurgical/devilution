@@ -3322,7 +3322,7 @@ void __fastcall CheckIdentify(int pnum, int cii)
 	CalcPlrInv(pnum, 1);
 
 	if (pnum == myplr)
-		SetCursor(CURSOR_HAND);
+		SetCursor_(CURSOR_HAND);
 }
 
 void __fastcall DoRepair(int pnum, int cii)
@@ -3338,7 +3338,7 @@ void __fastcall DoRepair(int pnum, int cii)
 	CalcPlrInv(pnum, 1);
 
 	if (pnum == myplr)
-		SetCursor(CURSOR_HAND);
+		SetCursor_(CURSOR_HAND);
 }
 
 void __fastcall RepairItem(ItemStruct *i, int lvl)
@@ -3386,7 +3386,7 @@ void __fastcall DoRecharge(int pnum, int cii)
 	}
 
 	if (pnum == myplr)
-		SetCursor(CURSOR_HAND);
+		SetCursor_(CURSOR_HAND);
 }
 
 void __fastcall RechargeItem(ItemStruct *i, int r)

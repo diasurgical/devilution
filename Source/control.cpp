@@ -2598,7 +2598,7 @@ void __fastcall control_set_gold_curs(int pnum)
 		v3 = &plr[v1].HoldItem._iCurs;
 		plr[v1].HoldItem._iCurs = ICURS_GOLD_LARGE;
 	}
-	SetCursor(*v3 + 12);
+	SetCursor_(*v3 + 12);
 }
 
 void __cdecl DrawTalkPan()
