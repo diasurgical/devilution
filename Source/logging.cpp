@@ -175,7 +175,7 @@ void __cdecl log_dump_computer_info()
 {
 	char Buffer[64];            // [esp+0h] [ebp-88h]
 	VS_FIXEDFILEINFO file_info; // [esp+40h] [ebp-48h]
-	_SYSTEMTIME SystemTime;     // [esp+74h] [ebp-14h]
+	SYSTEMTIME SystemTime;     // [esp+74h] [ebp-14h]
 	DWORD pcbBuffer;            // [esp+84h] [ebp-4h]
 
 	GetLocalTime(&SystemTime);
