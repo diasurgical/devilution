@@ -416,7 +416,7 @@ void __fastcall SetICursor(int i)
 // 4B8CB4: using guessed type int icursH;
 // 4B8CBC: using guessed type int icursW;
 
-void __fastcall SetCursor(int i)
+void __fastcall SetCursor_(int i)
 {
 	int v1; // eax
 
@@ -430,12 +430,12 @@ void __fastcall SetCursor(int i)
 
 void __fastcall NewCursor(int i)
 {
-	SetCursor(i);
+	SetCursor_(i);
 }
 
 void __cdecl InitLevelCursor()
 {
-	SetCursor(CURSOR_HAND);
+	SetCursor_(CURSOR_HAND);
 	cursmx = ViewX;
 	cursmy = ViewY;
 	dword_4B8CCC = -1;

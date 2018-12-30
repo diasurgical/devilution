@@ -3177,7 +3177,7 @@ void __fastcall AddHealOther(int mi, int sx, int sy, int dx, int dy, int midir, 
 	missile[mi]._miDelFlag = 1;
 	UseMana(id, 34);
 	if (id == myplr)
-		SetCursor(CURSOR_HEALOTHER);
+		SetCursor_(CURSOR_HEALOTHER);
 }
 
 void __fastcall AddElement(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
@@ -3235,7 +3235,7 @@ void __fastcall AddIdentify(int mi, int sx, int sy, int dx, int dy, int midir, i
 			sbookflag = 0;
 		if (!invflag)
 			invflag = 1;
-		SetCursor(CURSOR_IDENTIFY);
+		SetCursor_(CURSOR_IDENTIFY);
 	}
 }
 // 4B8968: using guessed type int sbookflag;
@@ -3411,7 +3411,7 @@ void __fastcall AddRepair(int mi, int sx, int sy, int dx, int dy, int midir, int
 			sbookflag = 0;
 		if (!invflag)
 			invflag = 1;
-		SetCursor(CURSOR_REPAIR);
+		SetCursor_(CURSOR_REPAIR);
 	}
 }
 // 4B8968: using guessed type int sbookflag;
@@ -3425,7 +3425,7 @@ void __fastcall AddRecharge(int mi, int sx, int sy, int dx, int dy, int midir, i
 			sbookflag = 0;
 		if (!invflag)
 			invflag = 1;
-		SetCursor(CURSOR_RECHARGE);
+		SetCursor_(CURSOR_RECHARGE);
 	}
 }
 // 4B8968: using guessed type int sbookflag;
@@ -3435,7 +3435,7 @@ void __fastcall AddDisarm(int mi, int sx, int sy, int dx, int dy, int midir, int
 	missile[mi]._miDelFlag = 1;
 	UseMana(id, 28);
 	if (id == myplr)
-		SetCursor(CURSOR_DISARM);
+		SetCursor_(CURSOR_DISARM);
 }
 
 void __fastcall AddApoca(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
@@ -3625,7 +3625,7 @@ void __fastcall AddResurrect(int mi, int sx, int sy, int dx, int dy, int midir, 
 	v9 = mi;
 	UseMana(id, 32);
 	if (id == myplr)
-		SetCursor(CURSOR_RESURRECT);
+		SetCursor_(CURSOR_RESURRECT);
 	missile[v9]._miDelFlag = 1;
 }
 
@@ -3650,7 +3650,7 @@ void __fastcall AddTelekinesis(int mi, int sx, int sy, int dx, int dy, int midir
 	missile[mi]._miDelFlag = 1;
 	UseMana(id, 33);
 	if (id == myplr)
-		SetCursor(CURSOR_TELEKINESIS);
+		SetCursor_(CURSOR_TELEKINESIS);
 }
 
 void __fastcall AddBoneSpirit(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)

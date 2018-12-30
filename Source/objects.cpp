@@ -4173,7 +4173,7 @@ void __fastcall TryDisarm(int pnum, int i)
 	v3 = i;
 	v12 = i;
 	if (pnum == myplr)
-		SetCursor(CURSOR_HAND);
+		SetCursor_(CURSOR_HAND);
 	v4 = v3;
 	if (object[v4]._oTrapFlag) {
 		v5 = 2 * plr[v2]._pDexterity - 5 * currlevel;
