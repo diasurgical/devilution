@@ -1502,86 +1502,58 @@ BOOL __fastcall ItemSpaceOk(int i, int j)
 	return 0;
 }
 
-BOOLEAN __fastcall GetItemSpace(int x, int y, char inum)
+BOOL __fastcall GetItemSpace(int x, int y, char inum)
 {
-	int v3;        // eax
-	int v4;        // edx
-	BOOL *v5;      // edi
-	int v6;        // ebx
-	BOOL *v7;      // esi
-	signed int v9; // esi
-	BOOL *v10;     // eax
-	int v11;       // ecx
-	int v12;       // eax
-	int v14;       // ecx
-	int v15;       // edx
-	int v16;       // eax
-	int v17;       // esi
-	int v18;       // ecx
-	int v19;       // [esp+8h] [ebp-Ch]
-	int v20;       // [esp+Ch] [ebp-8h]
-	BOOL *v21;     // [esp+10h] [ebp-4h]
+	int i, j, rs;
+	int xx, yy;
+	BOOL savail;
 
-	v3 = y;
-	v19 = y;
-	v4 = y - 1;
-	v20 = x;
-	v5 = itemhold[0];
-	if (v4 <= v19 + 1) {
-		v21 = itemhold[0];
-		do {
-			v6 = x - 1;
-			if ((unsigned char)(__OFSUB__(x - 1, x + 1) ^ 1) | (x - 1 == x + 1)) {
-				v7 = v21;
-				do {
-					*v7 = ItemSpaceOk(v6, v4);
-					v7 += 3;
-					++v6;
-				} while (v6 <= v20 + 1);
-				v3 = v19;
-				x = v20;
-			}
-			++v21;
-			++v4;
-		} while (v4 <= v3 + 1);
+	yy = 0;
+	for (j = y - 1; j <= y + 1; j++) {
+		xx = 0;
+		for (i = x - 1; i <= x + 1; i++) {
+			itemhold[xx][yy] = ItemSpaceOk(i, j);
+			xx++;
+		}
+		yy++;
 	}
-	v9 = 0;
-	do {
-		v10 = v5;
-		v11 = 3;
-		do {
-			if (*v10)
-				v9 = 1;
-			v10 += 3;
-			--v11;
-		} while (v11);
-		++v5;
-	} while (v5 < itemhold[1]);
-	v12 = random(13, 15) + 1;
-	if (!v9)
-		return 0;
-	v14 = 0;
-	v15 = 0;
-	if (v12 > 0) {
-		while (1) {
-			if (itemhold[v14][v15])
-				--v12;
-			if (v12 <= 0)
-				break;
-			if (++v14 == 3) {
-				v14 = 0;
-				if (++v15 == 3)
-					v15 = 0;
+
+	savail = FALSE;
+	for (j = 0; j < 3; j++) {
+		for (i = 0; i < 3; i++) {
+			if (itemhold[i][j])
+				savail = TRUE;
+		}
+	}
+
+	rs = random(13, 15) + 1;
+
+	if (!savail)
+		return FALSE;
+
+	xx = 0;
+	yy = 0;
+	while (rs > 0) {
+		if (itemhold[xx][yy])
+			rs--;
+		if (rs > 0) {
+			xx++;
+			if (xx == 3) {
+				xx = 0;
+				yy++;
+				if (yy == 3)
+					yy = 0;
 			}
 		}
 	}
-	v16 = v14 + v20 - 1;
-	v17 = v15 + v19 - 1;
-	v18 = inum;
-	item[v18]._ix = v16;
-	dItem[v16][v17] = inum + 1;
-	item[v18]._iy = v17;
-	return 1;
+
+	x += xx - 1;
+	y += yy - 1;
+	item[inum]._ix = x;
+	item[inum]._iy = y;
+	dItem[x][y] = inum + 1;
+
+	return TRUE;
 }
 
 void __fastcall GetSuperItemSpace(int x, int y, char inum)
