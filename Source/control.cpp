@@ -2576,29 +2576,15 @@ void __fastcall control_remove_gold(int pnum, int gold_index)
 
 void __fastcall control_set_gold_curs(int pnum)
 {
-	int v1;           // ecx
-	int v2;           // eax
-	int *v3;          // eax
-	BOOLEAN v4;       // zf
-	BOOLEAN v5;       // sf
-	unsigned char v6; // of
-
-	v1 = pnum;
-	v2 = plr[v1].HoldItem._ivalue;
-	if (v2 < 2500) {
-		v6 = __OFSUB__(v2, 1000);
-		v4 = v2 == 1000;
-		v5 = v2 - 1000 < 0;
-		v3 = &plr[v1].HoldItem._iCurs;
-		if ((unsigned char)(v5 ^ v6) | v4)
-			*v3 = ICURS_GOLD_SMALL;
-		else
-			*v3 = ICURS_GOLD_MEDIUM;
+	if (plr[pnum].HoldItem._ivalue >= 2500) {
+		plr[pnum].HoldItem._iCurs = 6;
 	} else {
-		v3 = &plr[v1].HoldItem._iCurs;
-		plr[v1].HoldItem._iCurs = ICURS_GOLD_LARGE;
+		if (plr[pnum].HoldItem._ivalue <= 1000)
+			plr[pnum].HoldItem._iCurs = 4;
+		else
+			plr[pnum].HoldItem._iCurs = 5;
 	}
-	SetCursor_(*v3 + 12);
+	SetCursor_(plr[pnum].HoldItem._iCurs + CURSOR_FIRSTITEM);
 }
 
 void __cdecl DrawTalkPan()
