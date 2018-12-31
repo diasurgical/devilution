@@ -1547,11 +1547,11 @@ BOOL __fastcall GetItemSpace(int x, int y, char inum)
 		}
 	}
 
-	x += xx - 1;
-	y += yy - 1;
-	item[inum]._ix = x;
-	item[inum]._iy = y;
-	dItem[x][y] = inum + 1;
+	xx += x - 1;
+	yy += y - 1;
+	item[inum]._ix = xx;
+	item[inum]._iy = yy;
+	dItem[xx][yy] = inum + 1;
 
 	return TRUE;
 }
