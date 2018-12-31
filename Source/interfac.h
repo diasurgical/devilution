@@ -6,7 +6,6 @@ extern void *sgpBackCel;
 extern int sgdwProgress;
 extern int progress_id; // idb
 
-void __cdecl interfac_cpp_init();
 void __cdecl interface_msg_pump();
 BOOL __cdecl IncProgress();
 void __cdecl DrawCutscene();

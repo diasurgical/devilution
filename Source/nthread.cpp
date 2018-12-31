@@ -2,7 +2,6 @@
 
 #include "../types.h"
 
-static float nthread_cpp_init_value = INFINITY;
 char byte_679704; // weak
 int gdwMsgLenTbl[4];
 static CRITICAL_SECTION sgMemCrit;

@@ -608,7 +608,6 @@ void __cdecl ClrAllObjects()
 }
 // 679768: using guessed type int trapid;
 // 67976C: using guessed type int trapdir;
-// 67D7C8: using guessed type int hero_cpp_init_value;
 
 void __cdecl AddTortures()
 {

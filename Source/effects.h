@@ -7,7 +7,6 @@ extern int sfxdnum;
 extern void *sfx_stream;
 extern TSFX *sfx_data_cur;
 
-void __cdecl effects_cpp_init();
 BOOL __fastcall effect_is_playing(int nSFX);
 void __cdecl sfx_stop();
 void __fastcall InitMonsterSND(int monst);

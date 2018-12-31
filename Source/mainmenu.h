@@ -4,7 +4,6 @@
 
 extern char gszHero[16];
 
-void __cdecl mainmenu_cpp_init();
 void __cdecl mainmenu_refresh_music();
 void __stdcall mainmenu_create_hero(char *name_1, char *name_2);
 int __stdcall mainmenu_select_hero_dialog(

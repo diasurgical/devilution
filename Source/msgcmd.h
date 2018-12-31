@@ -5,7 +5,6 @@
 extern ChatCmd sgChat_Cmd;
 extern int sgdwMsgCmdTimer;
 
-void __cdecl msgcmd_cpp_init_1();
 void __cdecl msgcmd_cpp_init_2();
 void __cdecl msgcmd_init_event();
 void __cdecl msgcmd_cleanup_chatcmd_atexit();

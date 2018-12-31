@@ -4,7 +4,6 @@
 
 /* TODO: decompile and fix, commands are NOT deleted properly */
 
-static float msgcmd_cpp_init_value = INFINITY;
 ChatCmd sgChat_Cmd;
 int sgdwMsgCmdTimer;
 

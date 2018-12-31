@@ -27,7 +27,6 @@ extern BYTE gbDeltaSender; // weak
 extern int sgbNetInited;   // weak
 extern int player_state[MAX_PLRS];
 
-void __cdecl multi_cpp_init();
 void __fastcall multi_msg_add(BYTE *a1, unsigned char a2);
 void __fastcall NetSendLoPri(BYTE *pbMsg, BYTE bLen);
 void __fastcall multi_copy_packet(TBuffer *a1, void *packet, BYTE size);

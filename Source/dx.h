@@ -13,7 +13,6 @@ extern char gbBackBuf;    // weak
 extern char gbEmulate;    // weak
 extern HMODULE ghDiabMod; // idb
 
-void __cdecl dx_cpp_init_1();
 void __cdecl dx_cpp_init_2();
 void __cdecl dx_init_mutex();
 void __cdecl dx_cleanup_mutex_atexit();

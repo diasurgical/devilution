@@ -9,7 +9,6 @@ extern BOOLEAN save_archive_modified; // weak
 extern _BLOCKENTRY *sgpBlockTbl;
 extern BOOLEAN save_archive_open; // weak
 
-void __cdecl mpqapi_cpp_init();
 BOOLEAN __fastcall mpqapi_set_hidden(char *pszArchive, BOOLEAN hidden);
 void __fastcall mpqapi_store_creation_time(const char *pszArchive, int dwChar);
 BOOLEAN __fastcall mpqapi_reg_load_modification_time(char *dst, int size);

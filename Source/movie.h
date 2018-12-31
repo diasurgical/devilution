@@ -5,7 +5,6 @@
 extern BYTE movie_playing;
 extern BOOL loop_movie;
 
-void __cdecl movie_cpp_init();
 void __fastcall play_movie(char *pszMovie, BOOL user_can_close);
 LRESULT __stdcall MovieWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
 

@@ -2,9 +2,6 @@
 
 #include "../types.h"
 
-// +Infinity after initialization of appfat.cpp.
-static float appfat_cpp_init_value = INFINITY;
-
 char sz_error_buf[256];
 int terminating;       // weak
 int cleanup_thread_id; // weak

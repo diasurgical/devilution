@@ -211,17 +211,3 @@ char __OFSUB__(T x, U y)
 #endif
 
 #endif /* IDA_GARBAGE */
-
-#ifndef INFINITY
-#ifdef __cplusplus
-#include <limits>
-#define INFINITY std::numeric_limits<float>::infinity()
-#else
-typedef union {
-   unsigned int u;
-   float f;
-} inf;
-static inf float_init = {0x7F800000};
-#define INFINITY float_init.f
-#endif
-#endif
