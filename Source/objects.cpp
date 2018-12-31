@@ -3912,84 +3912,26 @@ void __fastcall OperateSarc(int pnum, int i, unsigned char sendmsg)
 
 void __fastcall OperateL2Door(int pnum, int i, unsigned char sendflag)
 {
-	int v3;            // ebx
-	int v4;            // edi
-	int v5;            // esi
-	int v6;            // ST1C_4
-	int v7;            // eax
-	BOOLEAN v8;        // zf
-	BOOLEAN v9;        // sf
-	unsigned char v10; // of
-	int v11;           // [esp+Ch] [ebp-Ch]
-	int pnuma;         // [esp+10h] [ebp-8h]
+	int dpx, dpy;
 
-	v3 = i;
-	v4 = i;
-	pnuma = pnum;
-	v5 = pnum;
-	v6 = abs(object[i]._ox - plr[pnum].WorldX);
-	v7 = abs(object[v4]._oy - plr[v5].WorldY);
-	v10 = __OFSUB__(v6, 1);
-	v8 = v6 == 1;
-	v9 = v6 - 1 < 0;
-	v11 = v7;
-	if (v6 != 1) {
-	LABEL_5:
-		if (!((unsigned char)(v9 ^ v10) | v8))
-			return;
-		goto LABEL_6;
-	}
-	if (v7 <= 1 && object[v4]._otype == OBJ_L2LDOOR) {
-		OperateL2LDoor(pnuma, v3, sendflag);
-		v10 = 0;
-		v8 = 1;
-		v9 = 0;
-		goto LABEL_5;
-	}
-LABEL_6:
-	if (v11 == 1 && object[v4]._otype == OBJ_L2RDOOR)
-		OperateL2RDoor(pnuma, v3, sendflag);
+	dpx = abs(object[i]._ox - plr[pnum].WorldX);
+	dpy = abs(object[i]._oy - plr[pnum].WorldY);
+	if (dpx == 1 && dpy <= 1 && object[i]._otype == OBJ_L2LDOOR)
+		OperateL2LDoor(pnum, i, sendflag);
+	if (dpx <= 1 && dpy == 1 && object[i]._otype == OBJ_L2RDOOR)
+		OperateL2RDoor(pnum, i, sendflag);
 }
 
 void __fastcall OperateL3Door(int pnum, int i, unsigned char sendflag)
 {
-	int v3;            // ebx
-	int v4;            // edi
-	int v5;            // esi
-	int v6;            // ST1C_4
-	int v7;            // eax
-	BOOLEAN v8;        // zf
-	BOOLEAN v9;        // sf
-	unsigned char v10; // of
-	int v11;           // [esp+Ch] [ebp-Ch]
-	int pnuma;         // [esp+10h] [ebp-8h]
+	int dpx, dpy;
 
-	v3 = i;
-	v4 = i;
-	pnuma = pnum;
-	v5 = pnum;
-	v6 = abs(object[i]._ox - plr[pnum].WorldX);
-	v7 = abs(object[v4]._oy - plr[v5].WorldY);
-	v10 = __OFSUB__(v6, 1);
-	v8 = v6 == 1;
-	v9 = v6 - 1 < 0;
-	v11 = v7;
-	if (v6 != 1) {
-	LABEL_5:
-		if (!((unsigned char)(v9 ^ v10) | v8))
-			return;
-		goto LABEL_6;
-	}
-	if (v7 <= 1 && object[v4]._otype == OBJ_L3RDOOR) {
-		OperateL3RDoor(pnuma, v3, sendflag);
-		v10 = 0;
-		v8 = 1;
-		v9 = 0;
-		goto LABEL_5;
-	}
-LABEL_6:
-	if (v11 == 1 && object[v4]._otype == OBJ_L3LDOOR)
-		OperateL3LDoor(pnuma, v3, sendflag);
+	dpx = abs(object[i]._ox - plr[pnum].WorldX);
+	dpy = abs(object[i]._oy - plr[pnum].WorldY);
+	if (dpx == 1 && dpy <= 1 && object[i]._otype == OBJ_L3RDOOR)
+		OperateL3RDoor(pnum, i, sendflag);
+	if (dpx <= 1 && dpy == 1 && object[i]._otype == OBJ_L3LDOOR)
+		OperateL3LDoor(pnum, i, sendflag);
 }
 
 void __fastcall OperatePedistal(int pnum, int i)
