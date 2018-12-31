@@ -2486,7 +2486,7 @@ void __fastcall M_TryH2HHit(int i, int pnum, int Hit, int MinDam, int MaxDam)
 	int v23;           // eax
 	BOOLEAN v24;       // zf
 	BOOLEAN v25;       // sf
-	unsigned char v26; // of
+	//unsigned char v26; // of
 	int v27;           // eax
 	int v29;           // edi
 	int v30;           // eax
@@ -2584,11 +2584,11 @@ void __fastcall M_TryH2HHit(int i, int pnum, int Hit, int MinDam, int MaxDam)
 							v22 = plr[v7]._pMaxHPBase;
 							if (v22 > 64) {
 								v23 = v21 - 64;
-								v26 = __OFSUB__(plr[v7]._pHitPoints, v23);
+								//v26 = __OFSUB__(plr[v7]._pHitPoints, v23);
 								v24 = plr[v7]._pHitPoints == v23;
 								v25 = plr[v7]._pHitPoints - v23 < 0;
 								*v16 = v23;
-								if (!((unsigned char)(v25 ^ v26) | v24)) {
+								if (!(v25 | v24)) {//if (!((unsigned char)(v25 ^ v26) | v24)) {
 									plr[v7]._pHitPoints = v23;
 									if (v18 >= 0)
 										missile[v18]._miVar1 = v23;
@@ -5221,7 +5221,7 @@ void __fastcall MAI_Counselor(int i)
 	int v10;           // ecx
 	BOOLEAN v11;       // zf
 	BOOLEAN v12;       // sf
-	unsigned char v13; // of
+	//unsigned char v13; // of
 	int v14;           // edx
 	int v15;           // ecx
 	int v16;           // ebx
@@ -5267,13 +5267,13 @@ void __fastcall MAI_Counselor(int i)
 		v9 = monster[v2]._mgoal;
 		if (v9 == MGOAL_RETREAT) {
 			v10 = monster[v2]._mgoalvar1;
-			v13 = __OFSUB__(v10, 3);
+			//v13 = __OFSUB__(v10, 3);
 			v11 = v10 == 3;
 			v12 = v10 - 3 < 0;
 			v14 = v10 + 1;
 			v15 = v1;
 			monster[v2]._mgoalvar1 = v14;
-			if ((unsigned char)(v12 ^ v13) | v11) {
+			if (v12 | v11) {//if ((unsigned char)(v12 ^ v13) | v11) {
 				M_CallWalk(v1, opposite[md]);
 				goto LABEL_39;
 			}
@@ -5341,10 +5341,10 @@ void __fastcall MAI_Counselor(int i)
 		} else {
 			v27 = md;
 			v28 = monster[v2]._mmaxhp >> 1;
-			v13 = __OFSUB__(monster[v2]._mhitpoints, v28);
+			//v13 = __OFSUB__(monster[v2]._mhitpoints, v28);
 			v12 = monster[v2]._mhitpoints - v28 < 0;
 			monster[v2]._mdir = md;
-			if (v12 ^ v13) {
+			if (v12) {//if (v12 ^ v13) {
 				_LOBYTE(monster[v2]._mgoal) = MGOAL_RETREAT;
 			LABEL_29:
 				monster[v2]._mgoalvar1 = 0;

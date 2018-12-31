@@ -1140,7 +1140,7 @@ void __cdecl DRLG_L3River()
 	int v31;           // ecx
 	int v32;           // edx
 	BOOLEAN v33;       // sf
-	unsigned char v34; // of
+	//unsigned char v34; // of
 	int river[3][100]; // [esp+Ch] [ebp-4E8h]
 	int v36;           // [esp+4BCh] [ebp-38h]
 	int v37;           // [esp+4C0h] [ebp-34h]
@@ -1476,11 +1476,11 @@ void __cdecl DRLG_L3River()
 				if (max >= 0) {
 					do {
 						v32 = v44++;
-						v34 = __OFSUB__(v44, v31);
+						//v34 = __OFSUB__(v44, v31);
 						v14 = v44 == v31;
 						v33 = v44 - v31 < 0;
 						dungeon[river[0][v32]][river[1][v32]] = river[2][v32];
-					} while ((unsigned char)(v33 ^ v34) | v14);
+					} while (v33 | v14); //} while ((unsigned char)(v33 ^ v34) | v14);
 				}
 			}
 		}
