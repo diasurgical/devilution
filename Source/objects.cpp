@@ -1783,25 +1783,13 @@ void __fastcall AddObjLight(int i, int r)
 
 void __fastcall AddBarrel(int i)
 {
-	int v1;           // esi
-	int v2;           // eax
-	int v4;           // eax
-	int v6;           // eax
-	BOOLEAN v7;       // sf
-	unsigned char v8; // of
-
-	v1 = i;
 	object[i]._oVar1 = 0;
-	v2 = GetRndSeed();
-	object[v1]._oRndSeed = v2;
-	v4 = random(149, 10);
-	object[v1]._oVar2 = v4;
-	v6 = random(149, 3);
-	v8 = __OFSUB__(object[v1]._oVar2, 8);
-	v7 = object[v1]._oVar2 - 8 < 0;
-	object[v1]._oVar3 = v6;
-	if (!(v7 ^ v8))
-		object[v1]._oVar4 = PreSpawnSkeleton();
+	object[i]._oRndSeed = GetRndSeed();
+	object[i]._oVar2 = random(149, 10);
+	object[i]._oVar3 = random(149, 3);
+
+	if (object[i]._oVar2 >= 8)
+		object[i]._oVar4 = PreSpawnSkeleton();
 }
 
 void __fastcall AddShrine(int i)
