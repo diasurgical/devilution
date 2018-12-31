@@ -33,7 +33,7 @@ void __fastcall SetPlrHandSeed(ItemStruct *h, int iseed);
 void __fastcall SetPlrHandGoldCurs(ItemStruct *h);
 void __fastcall CreatePlrItems(int p);
 BOOL __fastcall ItemSpaceOk(int i, int j);
-BOOLEAN __fastcall GetItemSpace(int x, int y, char inum);
+BOOL __fastcall GetItemSpace(int x, int y, char inum);
 void __fastcall GetSuperItemSpace(int x, int y, char inum);
 void __fastcall GetSuperItemLoc(int x, int y, int *xx, int *yy);
 void __fastcall CalcItemValue(int i);
