@@ -20,7 +20,7 @@ extern int last_tick;           // weak
 
 void __cdecl nthread_init_mutex();
 void __cdecl nthread_cleanup_mutex_atexit();
-void __cdecl nthread_cleanup_mutex();
+void __cdecl nthread_cleanup_mutex(void);
 void __fastcall nthread_terminate_game(const char *pszFcn);
 int __fastcall nthread_send_and_recv_turn(int cur_turn, int turn_delta);
 int __fastcall nthread_recv_turns(int *pfSendAsync);

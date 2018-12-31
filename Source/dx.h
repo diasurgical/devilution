@@ -16,7 +16,7 @@ extern HMODULE ghDiabMod; // idb
 void __cdecl dx_cpp_init_2();
 void __cdecl dx_init_mutex();
 void __cdecl dx_cleanup_mutex_atexit();
-void __cdecl dx_cleanup_mutex();
+void __cdecl dx_cleanup_mutex(void);
 void __fastcall dx_init(HWND hWnd);
 void __cdecl dx_create_back_buffer();
 void __cdecl dx_create_primary_surface();

@@ -35,7 +35,7 @@ void __cdecl dx_cleanup_mutex_atexit()
 	atexit(dx_cleanup_mutex);
 }
 
-void __cdecl dx_cleanup_mutex()
+void __cdecl dx_cleanup_mutex(void)
 {
 	DeleteCriticalSection(&sgMemCrit);
 }

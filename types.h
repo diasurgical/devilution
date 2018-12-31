@@ -10,6 +10,7 @@
 #include <windows.h>
 #include <mmsystem.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <ddraw.h>
 #include <dsound.h>
 #include <io.h>
