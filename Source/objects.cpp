@@ -2340,82 +2340,45 @@ void __fastcall ActivateTrapLine(int ttype, int tid)
 
 void __fastcall Obj_FlameTrap(int i)
 {
-	int v1;           // ecx
-	int *v2;          // esi
-	int v3;           // eax
-	int v4;           // ecx
-	BOOLEAN v5;       // zf
-	BOOLEAN v6;       // sf
-	unsigned char v7; // of
-	int v8;           // edx
-	int v9;           // eax
-	signed int v10;   // esi
-	int v11;          // eax
-	_BYTE *v12;       // edx
-	_DWORD *v13;      // eax
-	int v14;          // eax
-	_BYTE *v15;       // edx
-	_DWORD *v16;      // eax
-	int *v17;         // eax
+	int x, y;
+	int j, k;
 
-	v1 = i;
-	if (object[v1]._oVar2) {
-		v2 = &object[v1]._oVar4;
-		if (!object[v1]._oVar4)
-			return;
-		v3 = --object[v1]._oAnimFrame;
-		if (v3 == 1) {
-			v4 = object[v1]._olid;
-			*v2 = 0;
-			AddUnLight(v4);
-			return;
+	if (object[i]._oVar2) {
+		if (object[i]._oVar4) {
+			object[i]._oAnimFrame--;
+			if (object[i]._oAnimFrame == 1) {
+				object[i]._oVar4 = 0;
+				AddUnLight(object[i]._olid);
+			} else if (object[i]._oAnimFrame <= 4) {
+				ChangeLightRadius(object[i]._olid, object[i]._oAnimFrame);
+			}
 		}
-		v7 = __OFSUB__(v3, 4);
-		v5 = v3 == 4;
-		v6 = v3 - 4 < 0;
-		goto LABEL_24;
-	}
-	if (object[v1]._oVar4) {
-		v17 = &object[v1]._oAnimFrame;
-		if (object[v1]._oAnimFrame == object[v1]._oAnimLen)
-			*v17 = 11;
-		v3 = *v17;
-		v7 = __OFSUB__(v3, 5);
-		v5 = v3 == 5;
-		v6 = v3 - 5 < 0;
-	LABEL_24:
-		if ((unsigned char)(v6 ^ v7) | v5)
-			ChangeLightRadius(object[v1]._olid, v3);
-		return;
-	}
-	v8 = object[v1]._oy;
-	v9 = object[v1]._ox;
-	v10 = 5;
-	if (object[v1]._oVar3 == 2) {
-		v11 = v8 + 112 * (v9 - 2);
-		v12 = (unsigned char *)dPlayer + v11;
-		v13 = (_DWORD *)((char *)dMonster + 4 * v11);
-		do {
-			if (*v12 || *v13)
-				object[v1]._oVar4 = 1;
-			v13 += 112;
-			v12 += 112;
-			--v10;
-		} while (v10);
+	} else if (!object[i]._oVar4) {
+		if (object[i]._oVar3 == 2) {
+			x = object[i]._ox - 2;
+			y = object[i]._oy;
+			for (j = 0; j < 5; j++) {
+				if (dPlayer[x][y] || dMonster[x][y])
+					object[i]._oVar4 = 1;
+				x++;
+			}
+		} else {
+			x = object[i]._ox;
+			y = object[i]._oy - 2;
+			for (k = 0; k < 5; k++) {
+				if (dPlayer[x][y] || dMonster[x][y])
+					object[i]._oVar4 = 1;
+				y++;
+			}
+		}
+		if (object[i]._oVar4)
+			ActivateTrapLine(object[i]._otype, object[i]._oVar1);
 	} else {
-		v14 = v8 - 2 + 112 * v9;
-		v15 = (unsigned char *)dPlayer + v14;
-		v16 = (_DWORD *)((char *)dMonster + 4 * v14);
-		do {
-			if (*v15 || *v16)
-				object[v1]._oVar4 = 1;
-			++v16;
-			++v15;
-			--v10;
-		} while (v10);
+		if (object[i]._oAnimFrame == object[i]._oAnimLen)
+			object[i]._oAnimFrame = 11;
+		if (object[i]._oAnimFrame <= 5)
+			ChangeLightRadius(object[i]._olid, object[i]._oAnimFrame);
 	}
-	if (object[v1]._oVar4)
-		ActivateTrapLine(object[v1]._otype, object[v1]._oVar1);
 }
 
 void __fastcall Obj_Trap(int i)
