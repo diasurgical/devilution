@@ -2383,86 +2383,55 @@ void __fastcall Obj_FlameTrap(int i)
 
 void __fastcall Obj_Trap(int i)
 {
-	int edi1; // edi
-	int v2;   // esi
-	int v3;   // eax
-	int v4;   // eax
-	int v5;   // ebx
-	int v6;   // ecx
-	int v7;   // eax
-	int v8;   // ecx
-	char *j;  // edx
-	int v10;  // eax
-	int v11;  // [esp+8h] [ebp-1Ch]
-	int v12;  // [esp+10h] [ebp-14h]
-	int sx;   // [esp+14h] [ebp-10h]
-	int sy;   // [esp+18h] [ebp-Ch]
-	int v15;  // [esp+1Ch] [ebp-8h]
-	int v1;   // [esp+20h] [ebp-4h]
+	int oti, dir;
+	BOOL otrig;
+	int sx, sy, dx, dy, x, y;
 
-	edi1 = i;
-	if (object[i]._oVar4)
-		return;
-	v2 = dObject[object[edi1]._oVar1][object[edi1]._oVar2] - 1;
-	v3 = object[v2]._otype;
-	if (v3 <= OBJ_L2RDOOR) {
-		if (v3 < OBJ_L2LDOOR) {
-			if (v3 <= 0)
-				return;
-			if (v3 > OBJ_L1RDOOR) {
-				if (v3 <= OBJ_SKFIRE || v3 > OBJ_CHEST3 && v3 != OBJ_SWITCHSKL)
-					return;
-				goto LABEL_9;
-			}
+	otrig = FALSE;
+	if (!object[i]._oVar4) {
+		oti = dObject[object[i]._oVar1][object[i]._oVar2] - 1;
+		switch (object[oti]._otype) {
+		case OBJ_L1LDOOR:
+		case OBJ_L1RDOOR:
+		case OBJ_L2LDOOR:
+		case OBJ_L2RDOOR:
+		case OBJ_L3LDOOR:
+		case OBJ_L3RDOOR:
+			if (object[oti]._oVar4)
+				otrig = TRUE;
+			break;
+		case OBJ_LEVER:
+		case OBJ_CHEST1:
+		case OBJ_CHEST2:
+		case OBJ_CHEST3:
+		case OBJ_SWITCHSKL:
+		case OBJ_SARC:
+			if (!object[oti]._oSelFlag)
+				otrig = TRUE;
+			break;
 		}
-	LABEL_17:
-		if (!object[v2]._oVar4)
-			return;
-		goto LABEL_10;
-	}
-	if (v3 != OBJ_SARC) {
-		if (v3 <= OBJ_PEDISTAL || v3 > OBJ_L3RDOOR)
-			return;
-		goto LABEL_17;
-	}
-LABEL_9:
-	if (object[v2]._oSelFlag)
-		return;
-LABEL_10:
-	v4 = object[edi1]._ox;
-	object[edi1]._oVar4 = 1;
-	v5 = object[v2]._oy;
-	v6 = object[v2]._ox;
-	sx = v4;
-	sy = object[edi1]._oy;
-	v7 = v5 - 1;
-	v1 = object[v2]._ox;
-	v11 = v5 + 1;
-	if ((unsigned char)(__OFSUB__(v5 - 1, v5 + 1) ^ 1) | (v5 - 1 == v5 + 1)) {
-		v12 = v6 - 1;
-		v15 = v6 + 1;
-		do {
-			v8 = v12;
-			if (v12 <= v15) {
-				for (j = &dPlayer[v12][v7];; j += 112) {
-					if (*j) {
-						v1 = v8;
-						v5 = v7;
+		if (otrig) {
+			object[i]._oVar4 = 1;
+			sx = object[i]._ox;
+			sy = object[i]._oy;
+			dx = object[oti]._ox;
+			dy = object[oti]._oy;
+			for (y = dy - 1; y <= object[oti]._oy + 1; y++) {
+				for (x = object[oti]._ox - 1; x <= object[oti]._ox + 1; x++) {
+					if (dPlayer[x][y]) {
+						dx = x;
+						dy = y;
 					}
-					if (++v8 > v15)
-						break;
 				}
 			}
-			++v7;
-		} while (v7 <= v11);
-		v6 = v1;
+			if (!deltaload) {
+				dir = GetDirection(sx, sy, dx, dy);
+				AddMissile(sx, sy, dx, dy, dir, object[i]._oVar3, 1, -1, 0, 0);
+				PlaySfxLoc(IS_TRAP, object[oti]._ox, object[oti]._oy);
+			}
+			object[oti]._oTrapFlag = 0;
+		}
 	}
-	if (!deltaload) {
-		v10 = GetDirection(sx, sy, v6, v5);
-		AddMissile(sx, sy, v1, v5, v10, object[edi1]._oVar3, 1, -1, 0, 0);
-		PlaySfxLoc(IS_TRAP, object[v2]._ox, object[v2]._oy);
-	}
-	object[v2]._oTrapFlag = 0;
 }
 // 676190: using guessed type int deltaload;
 
