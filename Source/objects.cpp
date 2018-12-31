@@ -3197,138 +3197,45 @@ void __fastcall OperateL3LDoor(int pnum, int oi, unsigned char sendflag)
 
 void __fastcall MonstCheckDoors(int m)
 {
-	int v1;            // ecx
-	int v2;            // eax
-	int v3;            // ecx
-	int v4;            // eax
-	char *v5;          // ecx
-	int v6;            // eax
-	int v7;            // esi
-	int v8;            // esi
-	int v9;            // eax
-	int v10;           // ebx
-	int v11;           // eax
-	BOOLEAN v12;       // zf
-	BOOLEAN v13;       // sf
-	unsigned char v14; // of
-	int v15;           // eax
-	int v16;           // ebx
-	int v17;           // eax
-	BOOLEAN v18;       // zf
-	BOOLEAN v19;       // sf
-	unsigned char v20; // of
-	int v21;           // eax
-	int v22;           // ebx
-	int v23;           // eax
-	BOOLEAN v24;       // zf
-	BOOLEAN v25;       // sf
-	unsigned char v26; // of
-	int v27;           // [esp+0h] [ebp-14h]
-	int v28;           // [esp+4h] [ebp-10h]
-	int v29;           // [esp+8h] [ebp-Ch]
-	int v30;           // [esp+Ch] [ebp-8h]
-	int v31;           // [esp+Ch] [ebp-8h]
-	int v32;           // [esp+Ch] [ebp-8h]
-	int oi;            // [esp+10h] [ebp-4h]
+	int i, oi;
+	int dpx, dpy, mx, my;
 
-	v1 = m;
-	v2 = monster[v1]._mx;
-	v3 = monster[v1]._my;
-	v29 = v2;
-	v4 = v3 + 112 * v2;
-	v28 = v3;
-	v5 = (char *)dObject + v4;
-	if (dObject[-1][v4 - 1]
-	    || *(v5 - 1)
-	    || dObject[0][v4 + 111]
-	    || *(v5 - 112)
-	    || dObject[1][v4]
-	    || dObject[-1][v4 + 1]
-	    || dObject[0][v4 + 1]
-	    || dObject[1][v4 + 1]) {
-		v6 = 0;
-		v27 = 0;
-		if (nobjects > 0) {
-			while (1) {
-				v7 = objectactive[v6];
-				oi = v7;
-				v8 = v7;
-				v9 = object[v8]._otype;
-				if (v9 != 1 && v9 != OBJ_L1RDOOR || object[v8]._oVar4)
-					goto LABEL_21;
-				v10 = abs(object[v8]._ox - v29);
-				v11 = abs(object[v8]._oy - v28);
-				v14 = __OFSUB__(v10, 1);
-				v12 = v10 == 1;
-				v13 = v10 - 1 < 0;
-				v30 = v11;
-				if (v10 != 1)
-					goto LABEL_17;
-				if (v11 <= 1 && object[v8]._otype == 1)
-					break;
-			LABEL_18:
-				if (v30 == 1 && object[v8]._otype == OBJ_L1RDOOR)
-					OperateL1RDoor(myplr, oi, 1u);
-			LABEL_21:
-				v15 = object[v8]._otype;
-				if (v15 != OBJ_L2LDOOR && v15 != OBJ_L2RDOOR || object[v8]._oVar4)
-					goto LABEL_32;
-				v16 = abs(object[v8]._ox - v29);
-				v17 = abs(object[v8]._oy - v28);
-				v20 = __OFSUB__(v16, 1);
-				v18 = v16 == 1;
-				v19 = v16 - 1 < 0;
-				v31 = v17;
-				if (v16 != 1)
-					goto LABEL_28;
-				if (v17 <= 1 && object[v8]._otype == OBJ_L2LDOOR) {
-					OperateL2LDoor(myplr, oi, 1u);
-					v20 = 0;
-					v18 = 1;
-					v19 = 0;
-				LABEL_28:
-					if (!((unsigned char)(v19 ^ v20) | v18))
-						goto LABEL_32;
-				}
-				if (v31 == 1 && object[v8]._otype == OBJ_L2RDOOR)
-					OperateL2RDoor(myplr, oi, 1u);
-			LABEL_32:
-				v21 = object[v8]._otype;
-				if (v21 != OBJ_L3LDOOR && v21 != OBJ_L3RDOOR || object[v8]._oVar4)
-					goto LABEL_43;
-				v22 = abs(object[v8]._ox - v29);
-				v23 = abs(object[v8]._oy - v28);
-				v26 = __OFSUB__(v22, 1);
-				v24 = v22 == 1;
-				v25 = v22 - 1 < 0;
-				v32 = v23;
-				if (v22 == 1) {
-					if (v23 > 1 || object[v8]._otype != OBJ_L3RDOOR) {
-					LABEL_40:
-						if (v32 == 1 && object[v8]._otype == OBJ_L3LDOOR)
-							OperateL3LDoor(myplr, oi, 1u);
-						goto LABEL_43;
-					}
-					OperateL3RDoor(myplr, oi, 1u);
-					v26 = 0;
-					v24 = 1;
-					v25 = 0;
-				}
-				if ((unsigned char)(v25 ^ v26) | v24)
-					goto LABEL_40;
-			LABEL_43:
-				v6 = v27++ + 1;
-				if (v27 >= nobjects)
-					return;
+	mx = monster[m]._mx;
+	my = monster[m]._my;
+	if (dObject[mx - 1][my - 1]
+	    || dObject[mx][my - 1]
+	    || dObject[mx + 1][my - 1]
+	    || dObject[mx - 1][my]
+	    || dObject[mx + 1][my]
+	    || dObject[mx - 1][my + 1]
+	    || dObject[mx][my + 1]
+	    || dObject[mx + 1][my + 1]) {
+		for (i = 0; i < nobjects; ++i) {
+			oi = objectactive[i];
+			if ((object[oi]._otype == OBJ_L1LDOOR || object[oi]._otype == OBJ_L1RDOOR) && !object[oi]._oVar4) {
+				dpx = abs(object[oi]._ox - mx);
+				dpy = abs(object[oi]._oy - my);
+				if (dpx == 1 && dpy <= 1 && object[oi]._otype == OBJ_L1LDOOR)
+					OperateL1LDoor(myplr, oi, TRUE);
+				if (dpx <= 1 && dpy == 1 && object[oi]._otype == OBJ_L1RDOOR)
+					OperateL1RDoor(myplr, oi, TRUE);
 			}
-			OperateL1LDoor(myplr, oi, 1u);
-			v14 = 0;
-			v12 = 1;
-			v13 = 0;
-		LABEL_17:
-			if (!((unsigned char)(v13 ^ v14) | v12))
-				goto LABEL_21;
-			goto LABEL_18;
+			if ((object[oi]._otype == OBJ_L2LDOOR || object[oi]._otype == OBJ_L2RDOOR) && !object[oi]._oVar4) {
+				dpx = abs(object[oi]._ox - mx);
+				dpy = abs(object[oi]._oy - my);
+				if (dpx == 1 && dpy <= 1 && object[oi]._otype == OBJ_L2LDOOR)
+					OperateL2LDoor(myplr, oi, TRUE);
+				if (dpx <= 1 && dpy == 1 && object[oi]._otype == OBJ_L2RDOOR)
+					OperateL2RDoor(myplr, oi, TRUE);
+			}
+			if ((object[oi]._otype == OBJ_L3LDOOR || object[oi]._otype == OBJ_L3RDOOR) && !object[oi]._oVar4) {
+				dpx = abs(object[oi]._ox - mx);
+				dpy = abs(object[oi]._oy - my);
+				if (dpx == 1 && dpy <= 1 && object[oi]._otype == OBJ_L3RDOOR)
+					OperateL3RDoor(myplr, oi, TRUE);
+				if (dpx <= 1 && dpy == 1 && object[oi]._otype == OBJ_L3LDOOR)
+					OperateL3LDoor(myplr, oi, TRUE);
+			}
 		}
 	}
 }
