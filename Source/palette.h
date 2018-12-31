@@ -7,7 +7,6 @@ extern PALETTEENTRY system_palette[256];
 extern PALETTEENTRY orig_palette[256];
 extern UINT gdwPalEntries;
 
-void __cdecl palette_cpp_init();
 void __cdecl SaveGamma();
 void __cdecl palette_init();
 void __cdecl LoadGamma();

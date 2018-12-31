@@ -2,7 +2,6 @@
 
 #include "../types.h"
 
-static float dthread_cpp_init_value = INFINITY;
 static CRITICAL_SECTION sgMemCrit; // idb
 unsigned int glpDThreadId;         // idb
 TMegaPkt *sgpInfoHead;             /* may not be right struct */

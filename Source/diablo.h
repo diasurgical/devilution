@@ -34,7 +34,6 @@ extern int sgnTimeoutCurs;
 extern char sgbMouseDown;     // weak
 extern int color_cycle_timer; // weak
 
-void __cdecl diablo_cpp_init();
 void __cdecl FreeGameMem();
 BOOL __fastcall StartGame(BOOL bNewGame, BOOL bSinglePlayer);
 void __fastcall run_game_loop(unsigned int uMsg);

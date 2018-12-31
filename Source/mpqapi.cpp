@@ -2,7 +2,6 @@
 
 #include "../types.h"
 
-static float mpqapi_cpp_init_value = INFINITY;
 int sgdwMpqOffset; // idb
 char mpq_buf[4096];
 _HASHENTRY *sgpHashTbl;

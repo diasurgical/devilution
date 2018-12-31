@@ -11,7 +11,6 @@ extern HMODULE hDsound_dll;
 extern void *sgpMusicTrack;
 extern IDirectSoundBuffer *sglpDSB;
 
-void __cdecl sound_cpp_init();
 void __fastcall snd_update(BOOL bStopAll);
 void __fastcall snd_stop_snd(TSnd *pSnd);
 BOOL __fastcall snd_playing(TSnd *pSnd);

@@ -5,7 +5,6 @@
 // Tracks which missile files are already loaded
 int MissileFileFlag;
 
-static float monster_cpp_init_value = INFINITY;
 int monstkills[MAXMONSTERS];
 int monstactive[MAXMONSTERS];
 int nummonsters;

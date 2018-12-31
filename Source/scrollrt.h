@@ -22,7 +22,6 @@ extern char sgSaveBack[8192];
 extern int draw_monster_num; // weak
 extern int sgdwCursHgtOld;   // idb
 
-void __cdecl scrollrt_cpp_init();
 void __cdecl ClearCursor();
 void __fastcall DrawMissile(int x, int y, int sx, int sy, int a5, int a6, int del_flag);
 void __fastcall DrawClippedMissile(int x, int y, int sx, int sy, int a5, int a6, int a7);

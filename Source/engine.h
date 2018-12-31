@@ -13,7 +13,6 @@ extern int sglGameSeed;  // weak
 extern int SeedCount;    // weak
 extern int dword_52B99C; // bool valid - if x/y are in bounds
 
-void __cdecl engine_cpp_init_1();
 void __fastcall CelDrawDatOnly(char *pDecodeTo, char *pRLEBytes, int dwRLESize, int dwRLEWdt);
 void __fastcall CelDecodeOnly(int screen_x, int screen_y, void *pCelBuff, int frame, int frame_width);
 void __fastcall CelDecDatOnly(char *pBuff, char *pCelBuff, int frame, int frame_width);

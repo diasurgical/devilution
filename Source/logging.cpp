@@ -2,7 +2,6 @@
 
 #include "../types.h"
 
-static float log_cpp_init_value = INFINITY;
 static CRITICAL_SECTION sgMemCrit;
 CHAR FileName[260]; // idb
 char log_buffer[388];

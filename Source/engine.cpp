@@ -2,7 +2,6 @@
 
 #include "../types.h"
 
-static float engine_cpp_init_value = INFINITY;
 char gbPixelCol;           // automap pixel color 8-bit (palette entry)
 int dword_52B970;          // BOOLEAN flip - if y < x
 int orgseed;               // weak
