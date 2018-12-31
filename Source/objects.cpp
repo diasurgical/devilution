@@ -1720,24 +1720,11 @@ void __fastcall AddL3Door(int i, int x, int y, int ot)
 
 void __fastcall AddSarc(int i)
 {
-	int v1;           // esi
-	char v2;          // al
-	int v3;           // ecx
-	int v4;           // eax
-	BOOLEAN v5;       // sf
-	unsigned char v6; // of
-
-	v1 = i;
-	v2 = -1 - i;
-	v3 = 112 * object[i]._ox;
-	dObject[0][v3 + object[v1]._oy - 1] = v2; /* dungeon[39][v3 + 39 + object[v1]._oy] = v2; */
-	object[v1]._oVar1 = random(153, 10);
-	v4 = GetRndSeed();
-	v6 = __OFSUB__(object[v1]._oVar1, 8);
-	v5 = object[v1]._oVar1 - 8 < 0;
-	object[v1]._oRndSeed = v4;
-	if (!(v5 ^ v6))
-		object[v1]._oVar2 = PreSpawnSkeleton();
+	dObject[object[i]._ox][object[i]._oy - 1] = -(i + 1);
+	object[i]._oVar1 = random(153, 10);
+	object[i]._oRndSeed = GetRndSeed();
+	if (object[i]._oVar1 >= 8)
+		object[i]._oVar2 = PreSpawnSkeleton();
 }
 
 void __fastcall AddFlameTrap(int i)
