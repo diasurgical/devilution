@@ -17,7 +17,7 @@ extern int lvlbtndown; // weak
 extern char sgszTalkSave[8][80];
 extern int dropGoldValue; // idb
 extern BOOL drawmanaflag; // idb
-extern int chrbtnactive;  // weak
+extern BOOL chrbtnactive;
 extern char sgszTalkMsg[80];
 extern void *pPanelText;
 extern int frame_4B8800; // idb

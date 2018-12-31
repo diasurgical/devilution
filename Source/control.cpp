@@ -17,7 +17,7 @@ int lvlbtndown; // weak
 char sgszTalkSave[8][80];
 int dropGoldValue; // idb
 BOOL drawmanaflag; // idb
-int chrbtnactive;  // weak
+BOOL chrbtnactive;
 char sgszTalkMsg[80];
 void *pPanelText;
 int frame_4B8800; // idb
@@ -1006,7 +1006,7 @@ void __cdecl InitControlPan()
 	chrbtn[0] = 0;
 	chrbtn[1] = 0;
 	chrbtn[2] = 0;
-	chrbtnactive = 0;
+	chrbtnactive = FALSE;
 	chrbtn[3] = 0;
 	pDurIcons = LoadFileInMem("Items\\DurIcons.CEL", 0);
 	strcpy(infostr, "");
@@ -1038,7 +1038,6 @@ void __cdecl InitControlPan()
 }
 // 4B84DC: using guessed type int dropGoldFlag;
 // 4B851C: using guessed type int lvlbtndown;
-// 4B87A8: using guessed type int chrbtnactive;
 // 4B8840: using guessed type int sgbPlrTalkTbl;
 // 4B8950: using guessed type int sbooktab;
 // 4B8960: using guessed type int talkflag;
@@ -2037,69 +2036,41 @@ void __cdecl DrawLevelUpIcon()
 
 void __cdecl CheckChrBtns()
 {
-	int v0;           // esi
-	int v1;           // ecx
-	int v2;           // ebx
-	int v3;           // edi
-	int v4;           // edx
-	BOOLEAN v5;       // sf
-	unsigned char v6; // of
-	int v7;           // edx
-	int v8;           // edx
-	int v9;           // edx
-	int v10;          // eax
-	int v11;          // edx
-	int v12;          // edx
+	int pc, i;
 
-	v0 = 0;
-	if (!chrbtnactive) {
-		v1 = myplr;
-		if (plr[myplr]._pStatPts) {
-			v2 = MouseX;
-			v3 = plr[v1]._pClass;
-			while (1) {
-				if (!v0) {
-					v9 = plr[v1]._pBaseStr;
-					v6 = __OFSUB__(v9, MaxStats[v3][ATTRIB_STR]);
-					v5 = v9 - MaxStats[v3][ATTRIB_STR] < 0;
-					goto LABEL_12;
-				}
-				if (v0 == 1) {
-					v8 = plr[v1]._pBaseMag;
-					v6 = __OFSUB__(v8, MaxStats[v3][ATTRIB_MAG]);
-					v5 = v8 - MaxStats[v3][ATTRIB_MAG] < 0;
-					goto LABEL_12;
-				}
-				if (v0 == 2)
-					break;
-				if (v0 == 3) {
-					v4 = plr[v1]._pBaseVit;
-					v6 = __OFSUB__(v4, MaxStats[v3][ATTRIB_VIT]);
-					v5 = v4 - MaxStats[v3][ATTRIB_VIT] < 0;
-				LABEL_12:
-					if (v5 ^ v6) {
-						v10 = v0;
-						v11 = attribute_inc_rects[v0][0];
-						if (v2 >= v11 && v2 <= v11 + attribute_inc_rects[v10][2]) {
-							v12 = attribute_inc_rects[v10][1];
-							if (MouseY >= v12 && MouseY <= v12 + attribute_inc_rects[v10][3]) {
-								chrbtn[v0] = 1;
-								chrbtnactive = 1;
-							}
-						}
-					}
-				}
-				if (++v0 >= 4)
-					return;
+	if (!chrbtnactive && plr[myplr]._pStatPts) {
+		pc = plr[myplr]._pClass;
+		for (i = 0; i < 4; i++) {
+			switch (i) {
+			case ATTRIB_STR:
+				if (plr[myplr]._pBaseStr >= MaxStats[pc][ATTRIB_STR])
+					continue;
+				break;
+			case ATTRIB_MAG:
+				if (plr[myplr]._pBaseMag >= MaxStats[pc][ATTRIB_MAG])
+					continue;
+				break;
+			case ATTRIB_DEX:
+				if (plr[myplr]._pBaseDex >= MaxStats[pc][ATTRIB_DEX])
+					continue;
+				break;
+			case ATTRIB_VIT:
+				if (plr[myplr]._pBaseVit >= MaxStats[pc][ATTRIB_VIT])
+					continue;
+				break;
+			default:
+				continue;
 			}
-			v7 = plr[v1]._pBaseDex;
-			v6 = __OFSUB__(v7, MaxStats[v3][ATTRIB_DEX]);
-			v5 = v7 - MaxStats[v3][ATTRIB_DEX] < 0;
-			goto LABEL_12;
+			if (MouseX >= attribute_inc_rects[i][0]
+			    && MouseX <= attribute_inc_rects[i][0] + attribute_inc_rects[i][2]
+			    && MouseY >= attribute_inc_rects[i][1]
+			    && MouseY <= attribute_inc_rects[i][3] + attribute_inc_rects[i][1]) {
+				chrbtn[i] = 1;
+				chrbtnactive = TRUE;
+			}
 		}
 	}
 }
-// 4B87A8: using guessed type int chrbtnactive;
 
 void __cdecl ReleaseChrBtns()
 {
@@ -2110,7 +2081,7 @@ void __cdecl ReleaseChrBtns()
 	int v4;           // ecx
 	unsigned char v5; // dl
 
-	chrbtnactive = 0;
+	chrbtnactive = FALSE;
 	v0 = 0;
 	do {
 		v1 = &chrbtn[v0];
@@ -2147,7 +2118,6 @@ void __cdecl ReleaseChrBtns()
 		++v0;
 	} while (v0 < 4);
 }
-// 4B87A8: using guessed type int chrbtnactive;
 
 void __cdecl DrawDurIcon()
 {
@@ -2577,12 +2547,12 @@ void __fastcall control_remove_gold(int pnum, int gold_index)
 void __fastcall control_set_gold_curs(int pnum)
 {
 	if (plr[pnum].HoldItem._ivalue >= 2500) {
-		plr[pnum].HoldItem._iCurs = 6;
+		plr[pnum].HoldItem._iCurs = ICURS_GOLD_LARGE;
 	} else {
 		if (plr[pnum].HoldItem._ivalue <= 1000)
-			plr[pnum].HoldItem._iCurs = 4;
+			plr[pnum].HoldItem._iCurs = ICURS_GOLD_SMALL;
 		else
-			plr[pnum].HoldItem._iCurs = 5;
+			plr[pnum].HoldItem._iCurs = ICURS_GOLD_MEDIUM;
 	}
 	SetCursor_(plr[pnum].HoldItem._iCurs + CURSOR_FIRSTITEM);
 }
@@ -2846,7 +2816,6 @@ int __fastcall control_presskeys(int a1)
 	}
 	return 0;
 }
-// 4B87A8: using guessed type int chrbtnactive;
 // 4B8960: using guessed type int talkflag;
 // 679660: using guessed type char gbMaxPlayers;
 
