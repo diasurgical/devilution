@@ -10,7 +10,7 @@ extern DWORD nNumberOfBytesToWrite; // idb
 void __cdecl log_cpp_init_2();
 void __cdecl log_init_mutex();
 void __cdecl j_log_cleanup_mutex();
-void __cdecl log_cleanup_mutex();
+void __cdecl log_cleanup_mutex(void);
 void __cdecl log_flush(BOOLEAN force_close);
 void *__cdecl log_create(); // should be HANDLE
 void __fastcall log_get_version(VS_FIXEDFILEINFO *file_info);

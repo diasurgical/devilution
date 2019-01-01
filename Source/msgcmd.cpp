@@ -25,7 +25,7 @@ void __cdecl msgcmd_cleanup_chatcmd_atexit()
 	atexit(msgcmd_cleanup_chatcmd);
 }
 
-void __cdecl msgcmd_cleanup_chatcmd()
+void __cdecl msgcmd_cleanup_chatcmd(void)
 {
 	msgcmd_cleanup_chatcmd_1(&sgChat_Cmd);
 	msgcmd_cleanup_extern_msg(sgChat_Cmd.extern_msgs);

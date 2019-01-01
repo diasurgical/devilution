@@ -1556,7 +1556,7 @@ void __cdecl mem_atexit_mutex()
 	atexit(mem_free_mutex);
 }
 
-void __cdecl mem_free_mutex()
+void __cdecl mem_free_mutex(void)
 {
 	DeleteCriticalSection(&sgMemCrit);
 }

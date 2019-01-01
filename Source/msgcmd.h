@@ -8,7 +8,7 @@ extern int sgdwMsgCmdTimer;
 void __cdecl msgcmd_cpp_init_2();
 void __cdecl msgcmd_init_event();
 void __cdecl msgcmd_cleanup_chatcmd_atexit();
-void __cdecl msgcmd_cleanup_chatcmd();
+void __cdecl msgcmd_cleanup_chatcmd(void);
 void __cdecl msgcmd_cmd_cleanup();
 void __cdecl msgcmd_send_chat();
 BOOLEAN __fastcall msgcmd_add_server_cmd_W(char *chat_message);

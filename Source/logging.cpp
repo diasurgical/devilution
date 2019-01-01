@@ -31,7 +31,7 @@ void __cdecl j_log_cleanup_mutex()
 	atexit(log_cleanup_mutex);
 }
 
-void __cdecl log_cleanup_mutex()
+void __cdecl log_cleanup_mutex(void)
 {
 	DeleteCriticalSection(&sgMemCrit);
 }

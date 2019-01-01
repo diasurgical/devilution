@@ -22,7 +22,7 @@ void __cdecl j_exception_init_filter()
 	atexit(exception_init_filter);
 }
 
-void __cdecl exception_init_filter()
+void __cdecl exception_init_filter(void)
 {
 	exception_set_filter_ptr();
 }

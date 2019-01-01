@@ -13,7 +13,7 @@ extern LPTOP_LEVEL_EXCEPTION_FILTER lpTopLevelExceptionFilter; // idb
 void __cdecl exception_cpp_init();
 void __cdecl exception_install_filter();
 void __cdecl j_exception_init_filter();
-void __cdecl exception_init_filter();
+void __cdecl exception_init_filter(void);
 LONG __stdcall TopLevelExceptionFilter(PEXCEPTION_POINTERS ExceptionInfo);
 void __fastcall exception_hex_format(BYTE *ptr, unsigned int numBytes);
 void __fastcall exception_unknown_module(LPCVOID lpAddress, LPSTR lpModuleName, int iMaxLength, int *sectionNum, int *sectionOffset);

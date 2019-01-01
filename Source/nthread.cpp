@@ -40,7 +40,7 @@ void __cdecl nthread_cleanup_mutex_atexit()
 	atexit(nthread_cleanup_mutex);
 }
 
-void __cdecl nthread_cleanup_mutex()
+void __cdecl nthread_cleanup_mutex(void)
 {
 	DeleteCriticalSection(&sgMemCrit);
 }
