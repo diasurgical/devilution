@@ -430,7 +430,7 @@ void __cdecl StoreAutoPlace()
 	int v20;        // [esp+14h] [ebp-8h]
 	int v21;        // [esp+18h] [ebp-4h]
 
-	SetICursor(plr[myplr].HoldItem._iCurs + 12);
+	SetICursor(plr[myplr].HoldItem._iCurs + CURSOR_FIRSTITEM);
 	v0 = icursH28;
 	v1 = 0;
 	v21 = icursW28;
@@ -2475,7 +2475,7 @@ void __cdecl S_SBuyEnter()
 		idx = stextsval + ((stextsel - stextup) >> 2);
 		if (plr[myplr]._pGold >= smithitem[idx]._iIvalue) {
 			qmemcpy(&plr[v0].HoldItem, &smithitem[idx], sizeof(plr[v0].HoldItem));
-			SetCursor_(plr[v0].HoldItem._iCurs + 12);
+			SetCursor_(plr[v0].HoldItem._iCurs + CURSOR_FIRSTITEM);
 			done = 0;
 			i = 0;
 			do {
@@ -2579,7 +2579,7 @@ void __cdecl S_SPBuyEnter()
 		v7 = myplr;
 		if (plr[myplr]._pGold >= premiumitem[v6]._iIvalue) {
 			qmemcpy(&plr[v7].HoldItem, &premiumitem[v6], sizeof(plr[v7].HoldItem));
-			SetCursor_(plr[v7].HoldItem._iCurs + 12);
+			SetCursor_(plr[v7].HoldItem._iCurs + CURSOR_FIRSTITEM);
 			v8 = 0;
 			v9 = 0;
 			do {
@@ -2619,7 +2619,7 @@ BOOLEAN __fastcall StoreGoldFit(int idx)
 	if (cost % 5000)
 		sz++;
 
-	SetCursor_(storehold[idx]._iCurs + 12);
+	SetCursor_(storehold[idx]._iCurs + CURSOR_FIRSTITEM);
 	numsqrs = cursW / 28 * (cursH / 28);
 	SetCursor_(CURSOR_HAND);
 
@@ -2928,7 +2928,7 @@ void __cdecl S_WBuyEnter()
 
 		if (plr[myplr]._pGold >= witchitem[idx]._iIvalue) {
 			qmemcpy(&plr[myplr].HoldItem, &witchitem[idx], sizeof(ItemStruct));
-			SetCursor_(plr[myplr].HoldItem._iCurs + 12);
+			SetCursor_(plr[myplr].HoldItem._iCurs + CURSOR_FIRSTITEM);
 			done = 0;
 
 			for (i = 0; i < 40; i++) {
@@ -3164,7 +3164,7 @@ void __cdecl S_BBuyEnter()
 		if (plr[myplr]._pGold >= boyitem._iIvalue + (boyitem._iIvalue >> 1)) {
 			qmemcpy(&plr[v1].HoldItem, &boyitem, sizeof(plr[v1].HoldItem));
 			plr[v1].HoldItem._iIvalue += plr[v1].HoldItem._iIvalue >> 1;
-			SetCursor_(plr[v1].HoldItem._iCurs + 12);
+			SetCursor_(plr[v1].HoldItem._iCurs + CURSOR_FIRSTITEM);
 			v3 = 0;
 			v4 = 0;
 			do {
@@ -3345,7 +3345,7 @@ void __cdecl S_HBuyEnter()
 		idx = stextsval + ((stextsel - stextup) >> 2);
 		if (plr[myplr]._pGold >= healitem[idx]._iIvalue) {
 			qmemcpy(&plr[v0].HoldItem, &healitem[idx], sizeof(plr[v0].HoldItem));
-			SetCursor_(plr[v0].HoldItem._iCurs + 12);
+			SetCursor_(plr[v0].HoldItem._iCurs + CURSOR_FIRSTITEM);
 			done = 0;
 			i = 0;
 			do {
