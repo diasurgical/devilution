@@ -70,6 +70,7 @@ const int InvItemHeight[180] = {
 
 void __cdecl InitCursor()
 {
+	/// ASSERT: assert(! pCursCels);
 	pCursCels = LoadFileInMem("Data\\Inv\\Objcurs.CEL", 0);
 	ClearCursor();
 }
