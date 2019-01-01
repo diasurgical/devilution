@@ -155,7 +155,7 @@ void __cdecl DrawInv()
 	if (plr[myplr].InvBody[INVLOC_HEAD]._itype != ITYPE_NONE) {
 		InvDrawSlotBack(517, 219, 2 * INV_SLOT_SIZE_PX, 2 * INV_SLOT_SIZE_PX);
 
-		frame = plr[myplr].InvBody[INVLOC_HEAD]._iCurs + 12;
+		frame = plr[myplr].InvBody[INVLOC_HEAD]._iCurs + CURSOR_FIRSTITEM;
 		frame_width = InvItemWidth[frame];
 
 		if (pcursinvitem == INVITEM_HEAD) {
@@ -179,7 +179,7 @@ void __cdecl DrawInv()
 	if (plr[myplr].InvBody[INVLOC_RING_LEFT]._itype != ITYPE_NONE) {
 		InvDrawSlotBack(432, 365, INV_SLOT_SIZE_PX, INV_SLOT_SIZE_PX);
 
-		frame = plr[myplr].InvBody[INVLOC_RING_LEFT]._iCurs + 12;
+		frame = plr[myplr].InvBody[INVLOC_RING_LEFT]._iCurs + CURSOR_FIRSTITEM;
 		frame_width = InvItemWidth[frame];
 
 		if (pcursinvitem == INVITEM_RING_LEFT) {
@@ -203,7 +203,7 @@ void __cdecl DrawInv()
 	if (plr[myplr].InvBody[INVLOC_RING_RIGHT]._itype != ITYPE_NONE) {
 		InvDrawSlotBack(633, 365, INV_SLOT_SIZE_PX, INV_SLOT_SIZE_PX);
 
-		frame = plr[myplr].InvBody[INVLOC_RING_RIGHT]._iCurs + 12;
+		frame = plr[myplr].InvBody[INVLOC_RING_RIGHT]._iCurs + CURSOR_FIRSTITEM;
 		frame_width = InvItemWidth[frame];
 
 		if (pcursinvitem == INVITEM_RING_RIGHT) {
@@ -227,7 +227,7 @@ void __cdecl DrawInv()
 	if (plr[myplr].InvBody[INVLOC_AMULET]._itype != ITYPE_NONE) {
 		InvDrawSlotBack(589, 220, INV_SLOT_SIZE_PX, INV_SLOT_SIZE_PX);
 
-		frame = plr[myplr].InvBody[INVLOC_AMULET]._iCurs + 12;
+		frame = plr[myplr].InvBody[INVLOC_AMULET]._iCurs + CURSOR_FIRSTITEM;
 		frame_width = InvItemWidth[frame];
 
 		if (pcursinvitem == INVITEM_AMULET) {
@@ -251,7 +251,7 @@ void __cdecl DrawInv()
 	if (plr[myplr].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE) {
 		InvDrawSlotBack(401, 320, 2 * INV_SLOT_SIZE_PX, 3 * INV_SLOT_SIZE_PX);
 
-		frame = plr[myplr].InvBody[INVLOC_HAND_LEFT]._iCurs + 12;
+		frame = plr[myplr].InvBody[INVLOC_HAND_LEFT]._iCurs + CURSOR_FIRSTITEM;
 		frame_width = InvItemWidth[frame];
 		// calc item offsets for weapons smaller than 2x3 slots
 		screen_x = frame_width == INV_SLOT_SIZE_PX ? 415 : 401;
@@ -291,7 +291,7 @@ void __cdecl DrawInv()
 	if (plr[myplr].InvBody[INVLOC_HAND_RIGHT]._itype != ITYPE_NONE) {
 		InvDrawSlotBack(631, 320, 2 * INV_SLOT_SIZE_PX, 3 * INV_SLOT_SIZE_PX);
 
-		frame = plr[myplr].InvBody[INVLOC_HAND_RIGHT]._iCurs + 12;
+		frame = plr[myplr].InvBody[INVLOC_HAND_RIGHT]._iCurs + CURSOR_FIRSTITEM;
 		frame_width = InvItemWidth[frame];
 		// calc item offsets for weapons smaller than 2x3 slots
 		screen_x = frame_width == INV_SLOT_SIZE_PX ? 645 : 633;
@@ -318,7 +318,7 @@ void __cdecl DrawInv()
 	if (plr[myplr].InvBody[INVLOC_CHEST]._itype != ITYPE_NONE) {
 		InvDrawSlotBack(517, 320, 2 * INV_SLOT_SIZE_PX, 3 * INV_SLOT_SIZE_PX);
 
-		frame = plr[myplr].InvBody[INVLOC_CHEST]._iCurs + 12;
+		frame = plr[myplr].InvBody[INVLOC_CHEST]._iCurs + CURSOR_FIRSTITEM;
 		frame_width = InvItemWidth[frame];
 
 		if (pcursinvitem == INVITEM_CHEST) {
@@ -356,7 +356,7 @@ void __cdecl DrawInv()
 
 			invtest[j] = TRUE;
 
-			frame = plr[myplr].InvList[ii]._iCurs + 12;
+			frame = plr[myplr].InvList[ii]._iCurs + CURSOR_FIRSTITEM;
 			frame_width = InvItemWidth[frame];
 			if (pcursinvitem == ii + INVITEM_INV_FIRST) {
 				colour = ICOL_WHITE;
@@ -420,7 +420,7 @@ void __cdecl DrawInvBelt()
 				InvDrawSlotBack(InvRect[v11 + 65].X + 64, InvRect[v11 + 65].Y + 159, 28, 28);
 				v2 = myplr;
 				v3 = v0 + 21720 * myplr;
-				v4 = *(int *)((char *)&plr[0].SpdList[0]._iCurs + v3) + 12;
+				v4 = *(int *)((char *)&plr[0].SpdList[0]._iCurs + v3) + CURSOR_FIRSTITEM;
 				frame_width = InvItemWidth[v4];
 				if (pcursinvitem == v11 + 47) {
 					v5 = -59;
@@ -813,7 +813,7 @@ int __fastcall SwapItem(ItemStruct *a, ItemStruct *b)
 	v2 = h._iCurs;
 	qmemcpy(a, b, sizeof(ItemStruct));
 	qmemcpy(b, &h, sizeof(ItemStruct));
-	return v2 + 12;
+	return v2 + CURSOR_FIRSTITEM;
 }
 
 void __fastcall CheckInvPaste(int pnum, int mx, int my)
@@ -889,7 +889,7 @@ void __fastcall CheckInvPaste(int pnum, int mx, int my)
 	p = pnum;
 	v3 = pnum;
 	v4 = mx;
-	SetICursor(plr[pnum].HoldItem._iCurs + 12);
+	SetICursor(plr[pnum].HoldItem._iCurs + CURSOR_FIRSTITEM);
 	v5 = my + (icursH >> 1);
 	v6 = v4 + (icursW >> 1);
 	v64 = icursW28;
@@ -1033,7 +1033,7 @@ LABEL_18:
 					v27 = &plr[v3].InvBody[INVLOC_HAND_LEFT];
 				v28 = p;
 				qmemcpy(&plr[v3].HoldItem, v27, sizeof(plr[v3].HoldItem));
-				v29 = plr[v3].HoldItem._iCurs + 12;
+				v29 = plr[v3].HoldItem._iCurs + CURSOR_FIRSTITEM;
 				if (v28 == myplr)
 					SetCursor_(v29);
 				else
@@ -1048,7 +1048,7 @@ LABEL_18:
 				} while (v30 < 40);
 				v32 = p;
 				qmemcpy(&plr[v3].HoldItem, &tempitem, sizeof(plr[v3].HoldItem));
-				v33 = plr[v3].HoldItem._iCurs + 12;
+				v33 = plr[v3].HoldItem._iCurs + CURSOR_FIRSTITEM;
 				if (v32 == myplr)
 					SetCursor_(v33);
 				else
@@ -1809,7 +1809,7 @@ void __fastcall InvGetItem(int pnum, int ii)
 		}
 		v5 = plr[pnuma].HoldItem._iCurs;
 		pcursitem = -1;
-		SetCursor_(v5 + 12);
+		SetCursor_(v5 + CURSOR_FIRSTITEM);
 	}
 }
 // 4B84DC: using guessed type int dropGoldFlag;
@@ -1859,7 +1859,7 @@ void __fastcall AutoGetItem(int pnum, int ii)
 		CheckQuestItem(pnum);
 		CheckBookLevel(v2);
 		CheckItemStats(v2);
-		SetICursor(plr[v2].HoldItem._iCurs + 12);
+		SetICursor(plr[v2].HoldItem._iCurs + CURSOR_FIRSTITEM);
 		if (plr[v2].HoldItem._itype == ITYPE_GOLD) {
 			v4 = GoldAutoPlace(v2);
 		} else {
