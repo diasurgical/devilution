@@ -9,7 +9,7 @@ int sgdwCursX;               // idb
 int sgdwCursY;               // idb
 unsigned char *gpBufEnd;     // weak
 int sgdwCursHgt;
-int level_cel_block; // weak
+DWORD level_cel_block; // weak
 int sgdwCursXOld;    // idb
 int sgdwCursYOld;    // idb
 char arch_draw_type; // weak

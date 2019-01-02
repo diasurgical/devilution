@@ -13,7 +13,7 @@ void *pSpeedCels;
 int nlevel_frames; // weak
 char pdungeon[40][40];
 char dDead[MAXDUNX][MAXDUNY];
-short dpiece_defs_map_1[16][MAXDUNX][MAXDUNY];
+WORD dpiece_defs_map_1[MAXDUNX * MAXDUNY][16];
 char dTransVal2[MAXDUNX][MAXDUNY];
 char TransVal; // weak
 int dword_5A5594;

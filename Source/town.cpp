@@ -362,7 +362,7 @@ void __fastcall town_draw_clipped_e_flag_2(void *buffer, int x, int y, int a4, i
 	else
 		v8 = (unsigned char *)buffer;
 	a4a = 0;
-	v9 = &dpiece_defs_map_1[0][0][16 * gendung_get_dpiece_num_from_coord(x, y) + 3];
+	v9 = &dpiece_defs_map_1[0][16 * gendung_get_dpiece_num_from_coord(x, y) + 3];
 	do {
 		if (v7 <= a4a) {
 			v10 = (unsigned short)*(v9 - 1);
@@ -540,7 +540,7 @@ void __fastcall town_draw_lower_2(int x, int y, int sx, int sy, int a5, int a6, 
 				v9 = &screen_y_times_768[sy];
 				a1 = (unsigned char *)gpBuffer + *v9 + sx - 24544;
 				sxa = 0;
-				v10 = &dpiece_defs_map_1[0][0][16 * gendung_get_dpiece_num_from_coord(x, y) + 3];
+				v10 = &dpiece_defs_map_1[0][16 * gendung_get_dpiece_num_from_coord(x, y) + 3];
 				v23 = v10;
 				do {
 					if (a6 <= sxa) {
@@ -579,7 +579,7 @@ LABEL_18:
 			if (ya >= 0 && ya < MAXDUNY && v14 >= 0 && v14 < MAXDUNX * 112 && (level_cel_block = dPiece[0][v14 + ya]) != 0) {
 				a1a = (unsigned char *)gpBuffer + *v13 + v11 - 768 * 32;
 				sxb = 0;
-				v15 = &dpiece_defs_map_1[0][0][16 * gendung_get_dpiece_num_from_coord(xa, ya) + 3];
+				v15 = &dpiece_defs_map_1[0][16 * gendung_get_dpiece_num_from_coord(xa, ya) + 3];
 				do {
 					if (a6 <= sxb) {
 						v16 = (unsigned short)*(v15 - 1);
@@ -616,7 +616,7 @@ LABEL_18:
 			v20 = &screen_y_times_768[v8];
 			a1b = (unsigned char *)gpBuffer + *v20 + v11 - 768 * 32;
 			sxc = 0;
-			v21 = &dpiece_defs_map_1[0][0][16 * gendung_get_dpiece_num_from_coord(xa, ya) + 2];
+			v21 = &dpiece_defs_map_1[0][16 * gendung_get_dpiece_num_from_coord(xa, ya) + 2];
 			do {
 				if (a6 <= sxc) {
 					v22 = (unsigned short)*v21;
@@ -640,25 +640,24 @@ LABEL_18:
 void __fastcall town_draw_e_flag(BYTE *buffer, int x, int y, int a4, int dir, int sx, int sy)
 {
 	int i;
-	char *v8; // esi
-	int v10;  // eax
-	int v11;  // eax
+	BYTE *buf;
+	WORD *defs;
 
-	v8 = (char *)dpiece_defs_map_1 + 32 * gendung_get_dpiece_num_from_coord(x, y);
+	buf = buffer;
+	defs = dpiece_defs_map_1[gendung_get_dpiece_num_from_coord(x, y)];
 
 	for (i = 0; i < 7; i++) {
 		if (a4 >= i) {
-			v10 = *(unsigned short *)&v8[4 * i];
-			level_cel_block = *(unsigned short *)&v8[4 * i];
-			if (v10)
-				drawUpperScreen(buffer);
-			v11 = *(unsigned short *)&v8[4 * i + 2];
-			level_cel_block = *(unsigned short *)&v8[4 * i + 2];
-			if (v11)
-				drawUpperScreen(buffer + 32);
+			level_cel_block = defs[2 * i];
+			if (level_cel_block)
+				drawUpperScreen(buf);
+			level_cel_block = defs[2 * i + 1];
+			if (level_cel_block)
+				drawUpperScreen(buf + 32);
 		}
-		buffer -= 768 * 32;
+		buf -= 768 * 32;
 	}
+
 	town_draw_town_all(buffer, x, y, a4, dir, sx, sy, 0);
 }
 // 69CF14: using guessed type int level_cel_block;
@@ -769,7 +768,7 @@ void __fastcall town_draw_upper(int x, int y, int sx, int sy, int a5, int a6, in
 			if (!v10) {
 				a1 = (int *)&gpBuffer->row_unused_1[0].col_unused_1[sx + 32 + screen_y_times_768[sy]];
 				sxa = 0;
-				v12 = &dpiece_defs_map_1[0][0][16 * gendung_get_dpiece_num_from_coord(x, y) + 1];
+				v12 = &dpiece_defs_map_1[0][16 * gendung_get_dpiece_num_from_coord(x, y) + 1];
 				do {
 					if (a6 >= sxa) {
 						v13 = (unsigned short)*v12;

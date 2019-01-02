@@ -13,7 +13,7 @@ extern void *pSpeedCels;
 extern int nlevel_frames; // weak
 extern char pdungeon[40][40];
 extern char dDead[MAXDUNX][MAXDUNY];
-extern short dpiece_defs_map_1[16][MAXDUNX][MAXDUNY];
+extern WORD dpiece_defs_map_1[MAXDUNX * MAXDUNY][16];
 extern char dTransVal2[MAXDUNX][MAXDUNY];
 extern char TransVal; // weak
 extern int dword_5A5594;
