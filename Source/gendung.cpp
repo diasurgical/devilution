@@ -476,12 +476,12 @@ void __fastcall gendung_4191FB(int a1, int a2)
 
 int __fastcall gendung_get_dpiece_num_from_coord(int x, int y)
 {
-	__int64 v3; // rax
+	if (x < MAXDUNY - y)
+		return (y + y * y + x * (x + 2 * y + 3)) / 2;
 
-	if (x < 112 - y)
-		return (y * (y + 1) + x * (x + 2 * y + 3)) / 2;
-	v3 = (111 - y) * (111 - y + 1) + (111 - x) * (111 - x + 2 * (111 - y) + 3);
-	return 12543 - (((signed int)v3 - HIDWORD(v3)) >> 1);
+	x = MAXDUNY - x - 1;
+	y = MAXDUNY - y - 1;
+	return MAXDUNX * MAXDUNY - (y + y * y + x * (x + 2 * y + 3)) / 2 - 1;
 }
 
 void __cdecl gendung_4192C2()
