@@ -637,89 +637,80 @@ LABEL_18:
 }
 // 69CF14: using guessed type int level_cel_block;
 
-void __fastcall town_draw_e_flag(void *buffer, int x, int y, int a4, int dir, int sx, int sy)
+void __fastcall town_draw_e_flag(BYTE *buffer, int x, int y, int a4, int dir, int sx, int sy)
 {
-	int v7;            // ebx
-	char *v8;          // esi
-	int v9;            // edi
-	int v10;           // eax
-	int v11;           // eax
-	void *buffera;     // [esp+Ch] [ebp-8h]
-	unsigned char *a1; // [esp+10h] [ebp-4h]
+	int i;
+	char *v8; // esi
+	int v10;  // eax
+	int v11;  // eax
 
-	v7 = x;
-	buffera = buffer;
-	a1 = (unsigned char *)buffer;
 	v8 = (char *)dpiece_defs_map_1 + 32 * gendung_get_dpiece_num_from_coord(x, y);
-	v9 = 0;
-	do {
-		if (a4 >= v9) {
-			v10 = *(unsigned short *)&v8[4 * v9];
-			level_cel_block = *(unsigned short *)&v8[4 * v9];
+
+	for (i = 0; i < 7; i++) {
+		if (a4 >= i) {
+			v10 = *(unsigned short *)&v8[4 * i];
+			level_cel_block = *(unsigned short *)&v8[4 * i];
 			if (v10)
-				drawUpperScreen(a1);
-			v11 = *(unsigned short *)&v8[4 * v9 + 2];
-			level_cel_block = *(unsigned short *)&v8[4 * v9 + 2];
+				drawUpperScreen(buffer);
+			v11 = *(unsigned short *)&v8[4 * i + 2];
+			level_cel_block = *(unsigned short *)&v8[4 * i + 2];
 			if (v11)
-				drawUpperScreen(a1 + 32);
+				drawUpperScreen(buffer + 32);
 		}
-		a1 -= 768 * 32;
-		++v9;
-	} while (v9 < 7);
-	town_draw_town_all(buffera, v7, y, a4, dir, sx, sy, 0);
+		buffer -= 768 * 32;
+	}
+	town_draw_town_all(buffer, x, y, a4, dir, sx, sy, 0);
 }
 // 69CF14: using guessed type int level_cel_block;
 
-void __fastcall town_draw_town_all(void *buffer, int x, int y, int a4, int dir, int sx, int sy, int some_flag)
+void __fastcall town_draw_town_all(BYTE *buffer, int x, int y, int a4, int dir, int sx, int sy, int some_flag)
 {
-	//int v9; // ebx
-	int id; // esi
-	int yy; // ebx
-	int xx; // edi
+	char ii, pnum;
+	int mi;
+	int xx, yy;
 
-	//v9 = 112 * x + y;
 	if (dItem[x][y]) {
-		id = dItem[x][y] - 1;
-		xx = sx - item[id]._iAnimWidth2;
-		if (id == pcursitem)
-			CelDecodeClr(ICOL_BLUE, xx, sy, (char *)item[id]._iAnimData, item[id]._iAnimFrame, item[id]._iAnimWidth, 0, dir);
-		CelDrawHdrOnly(xx, sy, (char *)item[id]._iAnimData, item[id]._iAnimFrame, item[id]._iAnimWidth, 0, dir);
+		ii = dItem[x][y] - 1;
+		xx = sx - item[ii]._iAnimWidth2;
+		if (ii == pcursitem)
+			CelDecodeClr(ICOL_BLUE, xx, sy, item[ii]._iAnimData, item[ii]._iAnimFrame, item[ii]._iAnimWidth, 0, dir);
+		CelDrawHdrOnly(xx, sy, item[ii]._iAnimData, item[ii]._iAnimFrame, item[ii]._iAnimWidth, 0, dir);
 	}
 	if (dFlags[x][y] & DFLAG_MONSTER) {
-		id = -1 - dMonster[x][y - 1]; // -1 - *(&dword_52D204 + v9); /* check */
-		xx = sx - towner[id]._tAnimWidth2;
-		if (id == pcursmonst)
-			CelDecodeClr(166, xx, sy, (char *)towner[id]._tAnimData, towner[id]._tAnimFrame, towner[id]._tAnimWidth, 0, dir);
-		CelDrawHdrOnly(xx, sy, (char *)towner[id]._tAnimData, towner[id]._tAnimFrame, towner[id]._tAnimWidth, 0, dir);
+		mi = -1 - dMonster[x][y - 1];
+		xx = sx - towner[mi]._tAnimWidth2;
+		if (mi == pcursmonst)
+			CelDecodeClr(PAL16_BEIGE + 6, xx, sy, towner[mi]._tAnimData, towner[mi]._tAnimFrame, towner[mi]._tAnimWidth, 0, dir);
+		CelDrawHdrOnly(xx, sy, towner[mi]._tAnimData, towner[mi]._tAnimFrame, towner[mi]._tAnimWidth, 0, dir);
 	}
 	if (dMonster[x][y] > 0) {
-		id = dMonster[x][y] - 1;
-		xx = sx - towner[id]._tAnimWidth2;
-		if (id == pcursmonst)
-			CelDecodeClr(166, xx, sy, (char *)towner[id]._tAnimData, towner[id]._tAnimFrame, towner[id]._tAnimWidth, 0, dir);
-		CelDrawHdrOnly(xx, sy, (char *)towner[id]._tAnimData, towner[id]._tAnimFrame, towner[id]._tAnimWidth, 0, dir);
+		mi = dMonster[x][y] - 1;
+		xx = sx - towner[mi]._tAnimWidth2;
+		if (mi == pcursmonst)
+			CelDecodeClr(PAL16_BEIGE + 6, xx, sy, towner[mi]._tAnimData, towner[mi]._tAnimFrame, towner[mi]._tAnimWidth, 0, dir);
+		CelDrawHdrOnly(xx, sy, towner[mi]._tAnimData, towner[mi]._tAnimFrame, towner[mi]._tAnimWidth, 0, dir);
 	}
 	if (dFlags[x][y] & DFLAG_PLAYER) {
-		id = -1 - dPlayer[x][y - 1]; // -1 - *((_BYTE *)&themeLoc[49].height + v9 + 3);
-		yy = sy + plr[id]._pyoff;
-		xx = sx + plr[id]._pxoff - plr[id]._pAnimWidth2;
-		if (id == pcursplr)
-			Cl2DecodeFrm2(165, xx, yy, (char *)plr[id]._pAnimData, plr[id]._pAnimFrame, plr[id]._pAnimWidth, 0, dir);
-		Cl2DecodeFrm1(xx, yy, (char *)plr[id]._pAnimData, plr[id]._pAnimFrame, plr[id]._pAnimWidth, 0, dir);
-		if (some_flag && plr[id]._peflag)
-			town_draw_e_flag((char *)buffer - 64, x - 1, y + 1, a4, dir, sx - 64, sy);
+		pnum = -1 - dPlayer[x][y - 1];
+		yy = sy + plr[pnum]._pyoff;
+		xx = sx + plr[pnum]._pxoff - plr[pnum]._pAnimWidth2;
+		if (pnum == pcursplr)
+			Cl2DecodeFrm2(PAL16_BEIGE + 5, xx, yy, plr[pnum]._pAnimData, plr[pnum]._pAnimFrame, plr[pnum]._pAnimWidth, 0, dir);
+		Cl2DecodeFrm1(xx, yy, plr[pnum]._pAnimData, plr[pnum]._pAnimFrame, plr[pnum]._pAnimWidth, 0, dir);
+		if (some_flag && plr[pnum]._peflag)
+			town_draw_e_flag(buffer - 64, x - 1, y + 1, a4, dir, sx - 64, sy);
 	}
 	if (dFlags[x][y] & DFLAG_DEAD_PLAYER)
 		DrawDeadPlayer(x, y, sx, sy, 0, dir, 0);
 	if (dPlayer[x][y] > 0) {
-		id = dPlayer[x][y] - 1;
-		yy = sy + plr[id]._pyoff;
-		xx = sx + plr[id]._pxoff - plr[id]._pAnimWidth2;
-		if (id == pcursplr)
-			Cl2DecodeFrm2(165, xx, yy, (char *)plr[id]._pAnimData, plr[id]._pAnimFrame, plr[id]._pAnimWidth, 0, dir);
-		Cl2DecodeFrm1(xx, yy, (char *)plr[id]._pAnimData, plr[id]._pAnimFrame, plr[id]._pAnimWidth, 0, dir);
-		if (some_flag && plr[id]._peflag)
-			town_draw_e_flag((char *)buffer - 64, x - 1, y + 1, a4, dir, sx - 64, sy);
+		pnum = dPlayer[x][y] - 1;
+		yy = sy + plr[pnum]._pyoff;
+		xx = sx + plr[pnum]._pxoff - plr[pnum]._pAnimWidth2;
+		if (pnum == pcursplr)
+			Cl2DecodeFrm2(PAL16_BEIGE + 5, xx, yy, plr[pnum]._pAnimData, plr[pnum]._pAnimFrame, plr[pnum]._pAnimWidth, 0, dir);
+		Cl2DecodeFrm1(xx, yy, plr[pnum]._pAnimData, plr[pnum]._pAnimFrame, plr[pnum]._pAnimWidth, 0, dir);
+		if (some_flag && plr[pnum]._peflag)
+			town_draw_e_flag(buffer - 64, x - 1, y + 1, a4, dir, sx - 64, sy);
 	}
 	if (dFlags[x][y] & DFLAG_MISSILE)
 		DrawMissile(x, y, sx, sy, 0, dir, 0);
