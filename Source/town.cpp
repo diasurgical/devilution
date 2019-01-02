@@ -347,7 +347,7 @@ void __fastcall town_draw_clipped_e_flag_2(void *buffer, int x, int y, int a4, i
 {
 	int v7;            // ebx
 	unsigned char *v8; // edi
-	short *v9;         // esi
+	WORD *v9;          // esi
 	int v10;           // eax
 	int v11;           // eax
 	void *v12;         // [esp+8h] [ebp-8h]
@@ -502,20 +502,20 @@ void __fastcall town_draw_lower_2(int x, int y, int sx, int sy, int a5, int a6, 
 	int v7;             // esi
 	int v8;             // ebx
 	int *v9;            // edi
-	short *v10;         // eax
+	WORD *v10;          // eax
 	int v11;            // esi
 	int v12;            // eax
 	int *v13;           // ebx
 	int v14;            // edi
-	short *v15;         // edi
+	WORD *v15;          // edi
 	int v16;            // eax
 	int v17;            // eax
 	int v18;            // eax
 	BOOLEAN v19;        // zf
 	int *v20;           // edi
-	short *v21;         // ebx
+	WORD *v21;          // ebx
 	int v22;            // eax
-	short *v23;         // [esp+Ch] [ebp-10h]
+	WORD *v23;          // [esp+Ch] [ebp-10h]
 	int v24;            // [esp+Ch] [ebp-10h]
 	unsigned char *a1;  // [esp+10h] [ebp-Ch]
 	unsigned char *a1a; // [esp+10h] [ebp-Ch]
@@ -672,30 +672,30 @@ void __fastcall town_draw_town_all(BYTE *buffer, int x, int y, int a4, int dir, 
 		ii = dItem[x][y] - 1;
 		xx = sx - item[ii]._iAnimWidth2;
 		if (ii == pcursitem)
-			CelDecodeClr(ICOL_BLUE, xx, sy, item[ii]._iAnimData, item[ii]._iAnimFrame, item[ii]._iAnimWidth, 0, dir);
-		CelDrawHdrOnly(xx, sy, item[ii]._iAnimData, item[ii]._iAnimFrame, item[ii]._iAnimWidth, 0, dir);
+			CelDecodeClr(ICOL_BLUE, xx, sy, (char *)item[ii]._iAnimData, item[ii]._iAnimFrame, item[ii]._iAnimWidth, 0, dir);
+		CelDrawHdrOnly(xx, sy, (char *)item[ii]._iAnimData, item[ii]._iAnimFrame, item[ii]._iAnimWidth, 0, dir);
 	}
 	if (dFlags[x][y] & DFLAG_MONSTER) {
 		mi = -1 - dMonster[x][y - 1];
 		xx = sx - towner[mi]._tAnimWidth2;
 		if (mi == pcursmonst)
-			CelDecodeClr(PAL16_BEIGE + 6, xx, sy, towner[mi]._tAnimData, towner[mi]._tAnimFrame, towner[mi]._tAnimWidth, 0, dir);
-		CelDrawHdrOnly(xx, sy, towner[mi]._tAnimData, towner[mi]._tAnimFrame, towner[mi]._tAnimWidth, 0, dir);
+			CelDecodeClr(PAL16_BEIGE + 6, xx, sy, (char *)towner[mi]._tAnimData, towner[mi]._tAnimFrame, towner[mi]._tAnimWidth, 0, dir);
+		CelDrawHdrOnly(xx, sy, (char *)towner[mi]._tAnimData, towner[mi]._tAnimFrame, towner[mi]._tAnimWidth, 0, dir);
 	}
 	if (dMonster[x][y] > 0) {
 		mi = dMonster[x][y] - 1;
 		xx = sx - towner[mi]._tAnimWidth2;
 		if (mi == pcursmonst)
-			CelDecodeClr(PAL16_BEIGE + 6, xx, sy, towner[mi]._tAnimData, towner[mi]._tAnimFrame, towner[mi]._tAnimWidth, 0, dir);
-		CelDrawHdrOnly(xx, sy, towner[mi]._tAnimData, towner[mi]._tAnimFrame, towner[mi]._tAnimWidth, 0, dir);
+			CelDecodeClr(PAL16_BEIGE + 6, xx, sy, (char *)towner[mi]._tAnimData, towner[mi]._tAnimFrame, towner[mi]._tAnimWidth, 0, dir);
+		CelDrawHdrOnly(xx, sy, (char *)towner[mi]._tAnimData, towner[mi]._tAnimFrame, towner[mi]._tAnimWidth, 0, dir);
 	}
 	if (dFlags[x][y] & DFLAG_PLAYER) {
 		pnum = -1 - dPlayer[x][y - 1];
 		yy = sy + plr[pnum]._pyoff;
 		xx = sx + plr[pnum]._pxoff - plr[pnum]._pAnimWidth2;
 		if (pnum == pcursplr)
-			Cl2DecodeFrm2(PAL16_BEIGE + 5, xx, yy, plr[pnum]._pAnimData, plr[pnum]._pAnimFrame, plr[pnum]._pAnimWidth, 0, dir);
-		Cl2DecodeFrm1(xx, yy, plr[pnum]._pAnimData, plr[pnum]._pAnimFrame, plr[pnum]._pAnimWidth, 0, dir);
+			Cl2DecodeFrm2(PAL16_BEIGE + 5, xx, yy, (char *)plr[pnum]._pAnimData, plr[pnum]._pAnimFrame, plr[pnum]._pAnimWidth, 0, dir);
+		Cl2DecodeFrm1(xx, yy, (char *)plr[pnum]._pAnimData, plr[pnum]._pAnimFrame, plr[pnum]._pAnimWidth, 0, dir);
 		if (some_flag && plr[pnum]._peflag)
 			town_draw_e_flag(buffer - 64, x - 1, y + 1, a4, dir, sx - 64, sy);
 	}
@@ -706,8 +706,8 @@ void __fastcall town_draw_town_all(BYTE *buffer, int x, int y, int a4, int dir, 
 		yy = sy + plr[pnum]._pyoff;
 		xx = sx + plr[pnum]._pxoff - plr[pnum]._pAnimWidth2;
 		if (pnum == pcursplr)
-			Cl2DecodeFrm2(PAL16_BEIGE + 5, xx, yy, plr[pnum]._pAnimData, plr[pnum]._pAnimFrame, plr[pnum]._pAnimWidth, 0, dir);
-		Cl2DecodeFrm1(xx, yy, plr[pnum]._pAnimData, plr[pnum]._pAnimFrame, plr[pnum]._pAnimWidth, 0, dir);
+			Cl2DecodeFrm2(PAL16_BEIGE + 5, xx, yy, (char *)plr[pnum]._pAnimData, plr[pnum]._pAnimFrame, plr[pnum]._pAnimWidth, 0, dir);
+		Cl2DecodeFrm1(xx, yy, (char *)plr[pnum]._pAnimData, plr[pnum]._pAnimFrame, plr[pnum]._pAnimWidth, 0, dir);
 		if (some_flag && plr[pnum]._peflag)
 			town_draw_e_flag(buffer - 64, x - 1, y + 1, a4, dir, sx - 64, sy);
 	}
@@ -724,7 +724,7 @@ void __fastcall town_draw_upper(int x, int y, int sx, int sy, int a5, int a6, in
 	int v9;             // eax
 	BOOLEAN v10;        // zf
 	int v11;            // eax
-	short *v12;         // ebx
+	WORD *v12;          // ebx
 	int v13;            // eax
 	int v14;            // esi
 	int v15;            // edi
@@ -780,7 +780,7 @@ void __fastcall town_draw_upper(int x, int y, int sx, int sy, int a5, int a6, in
 					++sxa;
 					v12 += 2;
 				} while (sxa < 7);
-				town_draw_town_all((char *)gpBuffer + v8 + screen_y_times_768[sy], xa, ya, a6, dir, v8, sy, 0);
+				town_draw_town_all((BYTE *)gpBuffer + v8 + screen_y_times_768[sy], xa, ya, a6, dir, v8, sy, 0);
 				v7 = ya;
 				goto LABEL_17;
 			}
@@ -824,7 +824,7 @@ LABEL_19:
 						v18 -= 768 * 32;
 						++sxb;
 					} while (sxb < 7);
-					town_draw_town_all((char *)gpBuffer + v14 + screen_y_times_768[sy], xa, ya, a6, dir, v14, sy, 1);
+					town_draw_town_all((BYTE *)gpBuffer + v14 + screen_y_times_768[sy], xa, ya, a6, dir, v14, sy, 1);
 					v15 = a5a;
 					v7 = ya;
 					goto LABEL_36;
@@ -864,7 +864,7 @@ LABEL_19:
 					v24 -= 768 * 32;
 					++sxc;
 				} while (sxc < 7);
-				town_draw_town_all((char *)gpBuffer + v14 + screen_y_times_768[sy], xa, ya, a6, dir, v14, sy, 0);
+				town_draw_town_all((BYTE *)gpBuffer + v14 + screen_y_times_768[sy], xa, ya, a6, dir, v14, sy, 0);
 				return;
 			}
 		}
