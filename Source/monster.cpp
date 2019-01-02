@@ -4323,71 +4323,48 @@ void __fastcall MAI_GoatMc(int i)
 	MAI_Round(i, 1u);
 }
 
-void __fastcall MAI_Ranged(int i, int missile_type, unsigned char special)
+void __fastcall MAI_Ranged(int i, int missile_type, BOOL special)
 {
-	int v3;      // edi
-	int v4;      // esi
-	char v5;     // al
-	int v6;      // eax
-	int v7;      // ecx
-	int v8;      // ebx
-	int v9;      // edi
-	BOOLEAN v11; // zf
-	int v12;     // eax
-	int v13;     // eax
-	//int v14; // ST00_4
-	//int v16; // eax
-	int x2;            // [esp+8h] [ebp-14h]
-	int y2;            // [esp+Ch] [ebp-10h]
-	int missile_typea; // [esp+10h] [ebp-Ch]
-	int v20;           // [esp+14h] [ebp-8h]
-	int arglist;       // [esp+18h] [ebp-4h]
+	int md;
+	int mx, my, fx, fy;
+	MonsterStruct *Monst;
 
-	v3 = i;
-	missile_typea = missile_type;
-	arglist = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("MAI_Ranged: Invalid monster %d", i);
-	v4 = v3;
-	if (monster[v3]._mmode == MM_STAND) {
-		v5 = monster[v4]._msquelch;
-		if (v5 == -1 || monster[v4]._mFlags & MFLAG_TARGETS_MONSTER) {
-			v7 = (unsigned char)monster[v4]._menemyy;
-			y2 = v7;
-			v8 = monster[v4]._my - v7;
-			x2 = (unsigned char)monster[v4]._menemyx;
-			v9 = monster[v4]._mx - x2;
-			v20 = M_GetDir(arglist);
-			if (monster[v4]._msquelch < 0xFFu) /* check sign */
-				MonstCheckDoors(arglist);
-			v11 = monster[v4]._mVar1 == MM_RATTACK;
-			monster[v4]._mdir = v20;
-			if (v11) {
-				v12 = random(118, 20);
-				M_StartDelay(arglist, v12);
-			} else if (abs(v9) < 4) {
-				v13 = abs(v8);
-				//v15 = v14;
-				if (v13 < 4) {
-					if (random(119, 100) < 10 * ((unsigned char)monster[v4]._mint + 7))
-						M_CallWalk(arglist, opposite[v20]);
-				}
-			}
-			if (monster[v4]._mmode == MM_STAND) {
-				//_LOBYTE(v16) = LineClear(monster[v4]._mx, monster[v4]._my, x2, y2);
-				if (LineClear(monster[v4]._mx, monster[v4]._my, x2, y2)) {
-					if (special)
-						M_StartRSpAttack(arglist, missile_typea, 4);
-					else
-						M_StartRAttack(arglist, missile_typea, 4);
-				} else {
-					monster[v4]._mAnimData = monster[v4].MType->Anims[MA_STAND].Data[v20];
-				}
-			}
-		} else if (v5) {
-			v6 = GetDirection(monster[v4]._mx, monster[v4]._my, monster[v4]._lastx, monster[v4]._lasty);
-			M_CallWalk(v3, v6);
+
+	Monst = &monster[i];
+	if (monster[i]._mmode != MM_STAND) {
+		return;
+	}
+
+	if (Monst->_msquelch == -1 || Monst->_mFlags & MFLAG_TARGETS_MONSTER) {
+		mx = Monst->_menemyx;
+		my = Monst->_menemyy;
+		fx = Monst->_mx - mx;
+		fy = Monst->_my - my;
+		md = M_GetDir(i);
+		if ((DWORD)Monst->_msquelch < -1) /* check sign */
+			MonstCheckDoors(i);
+		Monst->_mdir = md;
+		if (Monst->_mVar1 == MM_RATTACK) {
+			M_StartDelay(i, random(118, 20));
+		} else if (abs(fx) < 4 && abs(fy) < 4) {
+			if (random(119, 100) < 10 * (Monst->_mint + 7))
+				M_CallWalk(i, opposite[md]);
 		}
+		if (Monst->_mmode == MM_STAND) {
+			if (LineClear(Monst->_mx, Monst->_my, mx, my)) {
+				if (special)
+					M_StartRSpAttack(i, missile_type, 4);
+				else
+					M_StartRAttack(i, missile_type, 4);
+			} else {
+				Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
+			}
+		}
+	} else if (Monst->_msquelch) {
+		md = GetDirection(Monst->_mx, Monst->_my, Monst->_lastx, Monst->_lasty);
+		M_CallWalk(i, md);
 	}
 }
 
