@@ -1592,26 +1592,25 @@ void __fastcall mem_free_dbg(void *p)
 
 unsigned char *__fastcall LoadFileInMem(char *pszName, int *pdwFileLen)
 {
-	int *v2;  // edi
-	char *v3; // ebx
-	int v4;   // eax
-	int v5;   // esi
-	char *v6; // edi
-	void *a1; // [esp+Ch] [ebp-4h]
+	HANDLE file;
+	BYTE *buf;
+	int fileLen;
 
-	v2 = pdwFileLen;
-	v3 = pszName;
-	WOpenFile(pszName, &a1, 0);
-	v4 = WGetFileSize(a1, 0);
-	v5 = v4;
-	if (v2)
-		*v2 = v4;
-	if (!v4)
-		TermMsg("Zero length SFILE:\n%s", v3);
-	v6 = (char *)DiabloAllocPtr(v5);
-	WReadFile(a1, v6, v5);
-	WCloseFile(a1);
-	return (unsigned char *)v6;
+	WOpenFile(pszName, &file, FALSE);
+	fileLen = WGetFileSize(file, NULL);
+
+	if (pdwFileLen)
+		*pdwFileLen = fileLen;
+
+	if (!fileLen)
+		TermMsg("Zero length SFILE:\n%s", pszName);
+
+	buf = (BYTE *)DiabloAllocPtr(fileLen);
+
+	WReadFile(file, buf, fileLen);
+	WCloseFile(file);
+
+	return buf;
 }
 
 void __fastcall LoadFileWithMem(char *pszName, void *buf)
