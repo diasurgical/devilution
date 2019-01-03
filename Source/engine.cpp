@@ -1476,31 +1476,31 @@ int __fastcall GetDirection(int x1, int y1, int x2, int y2)
 
 	if (mx >= 0) {
 		if (my >= 0) {
-			md = 0;
+			md = DIR_S;
 			if (2 * mx < my)
-				md = 1;
+				md = DIR_SW;
 		} else {
 			my = -my;
-			md = 6;
+			md = DIR_E;
 			if (2 * mx < my)
-				md = 5;
+				md = DIR_NE;
 		}
 		if (2 * my < mx)
-			return 7;
+			return DIR_SE;
 	} else {
 		ny = -mx;
 		if (my >= 0) {
-			md = 2;
+			md = DIR_W;
 			if (2 * ny < my)
-				md = 1;
+				md = DIR_SW;
 		} else {
 			my = -my;
-			md = 4;
+			md = DIR_N;
 			if (2 * ny < my)
-				md = 5;
+				md = DIR_NE;
 		}
 		if (2 * my < ny)
-			return 3;
+			return DIR_NW;
 	}
 
 	return md;
