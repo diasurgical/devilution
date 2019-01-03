@@ -2418,11 +2418,8 @@ void __fastcall Cl2DecodeFrm6(int screen_x, int screen_y, char *pCelBuff, int nC
 
 void __fastcall PlayInGameMovie(char *pszMovie)
 {
-	char *v1; // esi
-
-	v1 = pszMovie;
 	PaletteFadeOut(8);
-	play_movie(v1, 0);
+	play_movie(pszMovie, 0);
 	ClearScreenBuffer();
 	drawpanflag = 255;
 	scrollrt_draw_game_screen(1);
