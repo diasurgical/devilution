@@ -1468,46 +1468,42 @@ void __fastcall DrawLine(int x0, int y0, int x1, int y1, UCHAR col)
 
 int __fastcall GetDirection(int x1, int y1, int x2, int y2)
 {
-	int v4;     // esi
-	int v5;     // ecx
-	int v6;     // edx
-	int result; // eax
-	int v8;     // esi
-	int v9;     // edx
+	int mx,  my;
+	int md, ny;
 
-	v4 = x2 - x1;
-	v5 = y2 - y1;
-	if (v4 < 0) {
-		v8 = -v4;
-		v9 = 2 * v8;
-		if (v5 < 0) {
-			v5 = -v5;
-			result = 4;
-			if (v9 < v5)
-				result = 5;
+	mx = x2 - x1;
+	my = y2 - y1;
+
+	if (mx >= 0) {
+		if (my >= 0) {
+			md = 0;
+			if (2 * mx < my)
+				md = 1;
 		} else {
-			result = 2;
-			if (v9 < v5)
-				result = 1;
+			my = -my;
+			md = 6;
+			if (2 * mx < my)
+				md = 5;
 		}
-		if (2 * v5 < v8)
-			return 3;
-	} else {
-		v6 = 2 * v4;
-		if (v5 < 0) {
-			v5 = -v5;
-			result = 6;
-			if (v6 < v5)
-				result = 5;
-		} else {
-			result = 0;
-			if (v6 < v5)
-				result = 1;
-		}
-		if (2 * v5 < v4)
+		if (2 * my < mx)
 			return 7;
+	} else {
+		ny = -mx;
+		if (my >= 0) {
+			md = 2;
+			if (2 * ny < my)
+				md = 1;
+		} else {
+			my = -my;
+			md = 4;
+			if (2 * ny < my)
+				md = 5;
+		}
+		if (2 * my < ny)
+			return 3;
 	}
-	return result;
+
+	return md;
 }
 
 void __fastcall SetRndSeed(int s)
@@ -1522,7 +1518,7 @@ void __fastcall SetRndSeed(int s)
 
 int __cdecl GetRndSeed()
 {
-	++SeedCount;
+	SeedCount++;
 	sglGameSeed = 0x015A4E35 * sglGameSeed + 1;
 	return abs(sglGameSeed);
 }
