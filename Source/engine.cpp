@@ -1563,19 +1563,17 @@ void __cdecl mem_free_mutex(void)
 
 unsigned char *__fastcall DiabloAllocPtr(int dwBytes)
 {
-	int v1;            // ebx
-	unsigned char *v2; // ebx
-	int v3;            // eax
+	BYTE *buf;
 
-	v1 = dwBytes;
 	EnterCriticalSection(&sgMemCrit);
-	v2 = (unsigned char *)SMemAlloc(v1, "C:\\Src\\Diablo\\Source\\ENGINE.CPP", 2236, 0);
+	buf = (BYTE *)SMemAlloc(dwBytes, "C:\\Src\\Diablo\\Source\\ENGINE.CPP", 2236, 0);
 	LeaveCriticalSection(&sgMemCrit);
-	if (!v2) {
-		v3 = GetLastError();
-		ErrDlg(IDD_DIALOG2, v3, "C:\\Src\\Diablo\\Source\\ENGINE.CPP", 2269);
+
+	if (buf == NULL) {
+		ErrDlg(IDD_DIALOG2, GetLastError(), "C:\\Src\\Diablo\\Source\\ENGINE.CPP", 2269);
 	}
-	return v2;
+
+	return buf;
 }
 
 void __fastcall mem_free_dbg(void *p)
