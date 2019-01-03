@@ -1578,17 +1578,14 @@ unsigned char *__fastcall DiabloAllocPtr(int dwBytes)
 
 void __fastcall mem_free_dbg(void *p)
 {
-	void *v1; // edi
-
-	v1 = p;
 	if (p) {
 		EnterCriticalSection(&sgMemCrit);
-		SMemFree(v1, "C:\\Src\\Diablo\\Source\\ENGINE.CPP", 2317, 0);
+		SMemFree(p, "C:\\Src\\Diablo\\Source\\ENGINE.CPP", 2317, 0);
 		LeaveCriticalSection(&sgMemCrit);
 	}
 }
 
-unsigned char *__fastcall LoadFileInMem(char *pszName, int *pdwFileLen)
+BYTE *__fastcall LoadFileInMem(char *pszName, int *pdwFileLen)
 {
 	HANDLE file;
 	BYTE *buf;

@@ -50,7 +50,7 @@ void __cdecl mem_atexit_mutex();
 void __cdecl mem_free_mutex(void);
 unsigned char *__fastcall DiabloAllocPtr(int dwBytes);
 void __fastcall mem_free_dbg(void *p);
-unsigned char *__fastcall LoadFileInMem(char *pszName, int *pdwFileLen);
+BYTE *__fastcall LoadFileInMem(char *pszName, int *pdwFileLen);
 void __fastcall LoadFileWithMem(char *pszName, void *buf);
 void __fastcall Cl2ApplyTrans(unsigned char *p, unsigned char *ttbl, int last_frame);
 void __fastcall Cl2DecodeFrm1(int x, int y, char *pCelBuff, int nCel, int width, int dir1, int dir2);
