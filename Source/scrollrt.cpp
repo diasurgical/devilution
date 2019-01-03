@@ -2618,7 +2618,7 @@ void __cdecl ScrollView()
 	}
 
 	if(scroll)
-		ScrollInfo._sdir = 0;
+		ScrollInfo._sdir = SDIR_NONE;
 }
 
 void __cdecl EnableFrameCount()
