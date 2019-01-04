@@ -82,38 +82,29 @@ void __fastcall town_clear_low_buf(unsigned char *y_related)
 }
 // 69CF0C: using guessed type int gpBufEnd;
 
-void __fastcall town_draw_clipped_e_flag(void *buffer, int x, int y, int sx, int sy)
+void __fastcall town_draw_clipped_e_flag(BYTE *buffer, int x, int y, int sx, int sy)
 {
-	int v5;            // ebx
-	char *v6;          // esi
-	signed int v7;     // edi
-	int v8;            // eax
-	int v9;            // eax
-	void *unused;      // [esp+Ch] [ebp-8h]
-	unsigned char *a1; // [esp+10h] [ebp-4h]
+	int i;
+	BYTE *buf;
+	WORD *defs;
 
-	v5 = x;
-	unused = buffer;
-	a1 = (unsigned char *)buffer;
-	v6 = (char *)dpiece_defs_map_1 + 32 * gendung_get_dpiece_num_from_coord(x, y);
-	v7 = 0;
-	do {
-		v8 = *(unsigned short *)&v6[2 * v7];
-		level_cel_block = *(unsigned short *)&v6[2 * v7];
-		if (v8)
-			drawLowerScreen(a1);
-		v9 = *(unsigned short *)&v6[2 * v7 + 2];
-		level_cel_block = *(unsigned short *)&v6[2 * v7 + 2];
-		if (v9)
-			drawLowerScreen(a1 + 32);
-		a1 -= 768 * 32;
-		v7 += 2;
-	} while (v7 < 12);
-	town_draw_clipped_town(unused, v5, y, sx, sy, 0);
+	buf = buffer;
+	defs = dpiece_defs_map_1[gendung_get_dpiece_num_from_coord(x, y)];
+
+	for (i = 0; i < 12; i += 2) {
+		level_cel_block = defs[i];
+		if (level_cel_block)
+			drawLowerScreen(buf);
+		level_cel_block = defs[i + 1];
+		if (level_cel_block)
+			drawLowerScreen(buf + 32);
+		buf -= 768 * 32;
+	}
+	town_draw_clipped_town(buffer, x, y, sx, sy, 0);
 }
 // 69CF14: using guessed type int level_cel_block;
 
-void __fastcall town_draw_clipped_town(void *unused, int x, int y, int sx, int sy, int some_flag)
+void __fastcall town_draw_clipped_town(BYTE *buffer, int x, int y, int sx, int sy, int some_flag)
 {
 	unsigned int v6; // edx
 	int v7;          // edi
@@ -203,7 +194,7 @@ void __fastcall town_draw_clipped_town(void *unused, int x, int y, int sx, int s
 			Cl2DecodeClrHL(165, v21, v20, (char *)plr[v19]._pAnimData, plr[v19]._pAnimFrame, plr[v19]._pAnimWidth, 0, 8);
 		Cl2DecodeFrm4(v21, v20, (char *)plr[v19]._pAnimData, plr[v19]._pAnimFrame, plr[v19]._pAnimWidth, 0, 8);
 		if (some_flag && plr[v19]._peflag)
-			town_draw_clipped_e_flag(v27 - 64, xa - 1, y + 1, sx - 64, sy);
+			town_draw_clipped_e_flag((BYTE*)v27 - 64, xa - 1, y + 1, sx - 64, sy);
 		v7 = v29;
 	}
 	if (dFlags[0][v7] & DFLAG_DEAD_PLAYER)
@@ -218,7 +209,7 @@ void __fastcall town_draw_clipped_town(void *unused, int x, int y, int sx, int s
 			Cl2DecodeClrHL(165, v26, v25, (char *)plr[v24]._pAnimData, plr[v24]._pAnimFrame, plr[v24]._pAnimWidth, 0, 8);
 		Cl2DecodeFrm4(v26, v25, (char *)plr[v24]._pAnimData, plr[v24]._pAnimFrame, plr[v24]._pAnimWidth, 0, 8);
 		if (some_flag && plr[v24]._peflag)
-			town_draw_clipped_e_flag(v27 - 64, xa - 1, y + 1, sx - 64, sy);
+			town_draw_clipped_e_flag((BYTE*)v27 - 64, xa - 1, y + 1, sx - 64, sy);
 		v7 = v29;
 	}
 	if (dFlags[0][v7] & DFLAG_MISSILE)
@@ -271,7 +262,7 @@ void __fastcall town_draw_lower(int x, int y, int sx, int sy, int a5, int some_f
 				v25 += 2;
 				a1 -= 768 * 32;
 			} while (v25 < 17);
-			town_draw_clipped_town((char *)gpBuffer + *v7 + sx, xa, ya, sx, sy, 0);
+			town_draw_clipped_town((BYTE *)gpBuffer + *v7 + sx, xa, ya, sx, sy, 0);
 		} else {
 			town_clear_low_buf((unsigned char *)gpBuffer + screen_y_times_768[sy] + sx);
 			v6 = sy;
@@ -306,7 +297,7 @@ void __fastcall town_draw_lower(int x, int y, int sx, int sy, int a5, int some_f
 					v26 += 2;
 					v13 -= 768 * 32;
 				} while (v26 < 16);
-				town_draw_clipped_town((char *)gpBuffer + *v11 + sx, xa, ya, sx, sy, 1);
+				town_draw_clipped_town((BYTE *)gpBuffer + *v11 + sx, xa, ya, sx, sy, 1);
 				v12 = a5a;
 			} else {
 				town_clear_low_buf((unsigned char *)gpBuffer + *v11 + sx);
@@ -335,7 +326,7 @@ void __fastcall town_draw_lower(int x, int y, int sx, int sy, int a5, int some_f
 				v27 += 2;
 				v19 -= 768 * 32;
 			} while (v27 < 16);
-			town_draw_clipped_town((char *)gpBuffer + *v18 + sx, xa, ya, sx, sy, 0);
+			town_draw_clipped_town((BYTE *)gpBuffer + *v18 + sx, xa, ya, sx, sy, 0);
 		} else {
 			town_clear_low_buf((unsigned char *)gpBuffer + screen_y_times_768[v6] + sx);
 		}
@@ -473,7 +464,7 @@ void __fastcall town_draw_clipped_town_2(int x, int y, int a3, int a4, int a5, i
 			Cl2DecodeClrHL(165, v23, v22, (char *)plr[v21]._pAnimData, plr[v21]._pAnimFrame, plr[v21]._pAnimWidth, a5, 8);
 		Cl2DecodeFrm4(v23, v22, (char *)plr[v21]._pAnimData, plr[v21]._pAnimFrame, plr[v21]._pAnimWidth, a5, 8);
 		if (some_flag && plr[v21]._peflag)
-			town_draw_clipped_e_flag_2((void *)(v29 - 64), xa - 1, a3 + 1, a4, a5, sx - 64, sy);
+			town_draw_clipped_e_flag_2((BYTE *)(v29 - 64), xa - 1, a3 + 1, a4, a5, sx - 64, sy);
 		v9 = v31;
 	}
 	if (dFlags[0][v9] & DFLAG_DEAD_PLAYER)
@@ -488,7 +479,7 @@ void __fastcall town_draw_clipped_town_2(int x, int y, int a3, int a4, int a5, i
 			Cl2DecodeClrHL(165, v28, v27, (char *)plr[v26]._pAnimData, plr[v26]._pAnimFrame, plr[v26]._pAnimWidth, a5, 8);
 		Cl2DecodeFrm4(v28, v27, (char *)plr[v26]._pAnimData, plr[v26]._pAnimFrame, plr[v26]._pAnimWidth, a5, 8);
 		if (some_flag && plr[v26]._peflag)
-			town_draw_clipped_e_flag_2((void *)(v29 - 64), xa - 1, a3 + 1, a4, a5, sx - 64, sy);
+			town_draw_clipped_e_flag_2((BYTE *)(v29 - 64), xa - 1, a3 + 1, a4, a5, sx - 64, sy);
 		v9 = v31;
 	}
 	if (dFlags[0][v9] & DFLAG_MISSILE)
