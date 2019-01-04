@@ -16,8 +16,8 @@ __attribute__((constructor))
 #endif
 static void dthread_c_init(void)
 {
-	dx_init_mutex();
-	dx_cleanup_mutex_atexit();
+	dthread_init_mutex();
+	dthread_cleanup_mutex_atexit();
 }
 
 SEG_ALLOCATE(SEGMENT_C_INIT)

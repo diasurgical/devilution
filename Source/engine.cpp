@@ -1534,13 +1534,17 @@ int __fastcall random(BYTE idx, int v)
 	return (GetRndSeed() >> 16) % v;
 }
 
-struct engine_cpp_init_2 {
-	engine_cpp_init_2()
-	{
-		mem_init_mutex();
-		mem_atexit_mutex();
-	}
-} _engine_cpp_init_2;
+#ifndef _MSC_VER
+__attribute__((constructor))
+#endif
+static void engine_c_init(void)
+{
+	mem_init_mutex();
+	mem_atexit_mutex();
+}
+
+SEG_ALLOCATE(SEGMENT_C_INIT)
+_PVFV engine_c_init_funcs[] = { &engine_c_init };
 
 void __cdecl mem_init_mutex()
 {

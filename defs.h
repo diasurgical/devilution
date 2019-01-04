@@ -193,12 +193,12 @@ char __OFSUB__(T x, U y)
 // Typedef for the function pointer
 typedef void (*_PVFV)(void);
 
-// Define where our segment names
+// Define our segment names
 #define SEGMENT_C_INIT ".CRT$XIM"
 
 // Build our various function tables and insert them into the correct segments.
 #pragma data_seg(SEGMENT_C_INIT)
 #pragma data_seg() // Switch back to the default segment
-// Call create our call function pointer arrays and place them in the segments created above
+// Call function pointer arrays and place them in the segments created above
 #define SEG_ALLOCATE(SEGMENT) __declspec(allocate(SEGMENT))
 
