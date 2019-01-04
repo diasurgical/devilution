@@ -231,22 +231,9 @@ void __fastcall DrawSpellCel(int xp, int yp, char *Trans, int nCel, int w)
 			_EAX = *(_WORD *)v6;
 			v6 += 2;
 			ASM_XLAT(_EAX, _EBX);
-#ifndef _MSC_VER
 			_EAX = __ROR2__(_EAX, 8);
-#else
-			__asm mov eax, _EAX
-			__asm ror ax, 8
-			__asm mov _EAX, eax
-#endif
 			ASM_XLAT(_EAX, _EBX);
-#ifndef _MSC_VER
 			*(_WORD *)v7 = __ROR2__(_EAX, 8);
-#else
-			__asm mov eax, _EAX
-			__asm ror ax, 8
-			__asm mov _EAX, eax
-#endif
-			*(_WORD *)v7 = _EAX;
 			v7 += 2;
 			if (v15) {
 			LABEL_15:
@@ -254,30 +241,13 @@ void __fastcall DrawSpellCel(int xp, int yp, char *Trans, int nCel, int w)
 					_EAX = *(_DWORD *)v6;
 					v6 += 4;
 					ASM_XLAT(_EAX, _EBX);
-#ifndef _MSC_VER
-					_EAX = __ROR4__(_EAX, 8);
-#else
-					__asm ror _EAX, 8
-#endif
+					_EAX = _rotr(_EAX, 8);
 					ASM_XLAT(_EAX, _EBX);
-#ifndef _MSC_VER
-					_EAX = __ROR4__(_EAX, 8);
-#else
-					__asm ror _EAX, 8
-#endif
+					_EAX = _rotr(_EAX, 8);
 					ASM_XLAT(_EAX, _EBX);
-#ifndef _MSC_VER
-					_EAX = __ROR4__(_EAX, 8);
-#else
-					__asm ror _EAX, 8
-#endif
+					_EAX = _rotr(_EAX, 8);
 					ASM_XLAT(_EAX, _EBX);
-#ifndef _MSC_VER
-					_EAX = __ROR4__(_EAX, 8);
-#else
-					__asm ror _EAX, 8
-#endif
-					*(_DWORD *)v7 = _EAX;
+					*(_DWORD *)v7 = _rotr(_EAX, 8);
 					v7 += 4;
 					--v15;
 				} while (v15);
