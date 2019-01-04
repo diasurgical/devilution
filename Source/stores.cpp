@@ -132,19 +132,17 @@ void __cdecl SetupTownStores()
 
 void __cdecl FreeStoreMem()
 {
-	void *v0; // ecx
-	void *v1; // ecx
-	void *v2; // ecx
+	void *p;
 
-	v0 = pSTextBoxCels;
-	pSTextBoxCels = 0;
-	mem_free_dbg(v0);
-	v1 = pCelBuff;
-	pCelBuff = 0;
-	mem_free_dbg(v1);
-	v2 = pSTextSlidCels;
-	pSTextSlidCels = 0;
-	mem_free_dbg(v2);
+	p = pSTextBoxCels;
+	pSTextBoxCels = NULL;
+	mem_free_dbg(p);
+	p = pCelBuff;
+	pCelBuff = NULL;
+	mem_free_dbg(p);
+	p = pSTextSlidCels;
+	pSTextSlidCels = NULL;
+	mem_free_dbg(p);
 }
 
 void __cdecl DrawSTextBack()
