@@ -11,13 +11,17 @@ HANDLE sghWorkToDoEvent;           // idb
 /* rdata */
 static HANDLE sghThread = (HANDLE)0xFFFFFFFF; // idb
 
-struct dthread_cpp_init_2 {
-	dthread_cpp_init_2()
-	{
-		dthread_init_mutex();
-		dthread_cleanup_mutex_atexit();
-	}
-} _dthread_cpp_init_2;
+#ifndef _MSC_VER
+__attribute__((constructor))
+#endif
+static void dthread_c_init(void)
+{
+	dx_init_mutex();
+	dx_cleanup_mutex_atexit();
+}
+
+SEG_ALLOCATE(SEGMENT_C_INIT)
+_PVFV dthread_c_init_funcs[] = { &dthread_c_init };
 
 void __cdecl dthread_init_mutex()
 {

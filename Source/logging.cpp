@@ -13,13 +13,17 @@ DWORD nNumberOfBytesToWrite; // idb
 int log_not_created = 1;              // weak
 HANDLE log_file = (HANDLE)0xFFFFFFFF; // idb
 
-struct log_cpp_init_2 {
-	log_cpp_init_2()
-	{
-		log_init_mutex();
-		j_log_cleanup_mutex();
-	}
-} _log_cpp_init_2;
+#ifndef _MSC_VER
+__attribute__((constructor))
+#endif
+static void log_c_init(void)
+{
+	log_init_mutex();
+	j_log_cleanup_mutex();
+}
+
+SEG_ALLOCATE(SEGMENT_C_INIT)
+_PVFV log_c_init_funcs[] = { &log_c_init };
 
 void __cdecl log_init_mutex()
 {
@@ -174,7 +178,7 @@ void __cdecl log_dump_computer_info()
 {
 	char Buffer[64];            // [esp+0h] [ebp-88h]
 	VS_FIXEDFILEINFO file_info; // [esp+40h] [ebp-48h]
-	SYSTEMTIME SystemTime;     // [esp+74h] [ebp-14h]
+	SYSTEMTIME SystemTime;      // [esp+74h] [ebp-14h]
 	DWORD pcbBuffer;            // [esp+84h] [ebp-4h]
 
 	GetLocalTime(&SystemTime);

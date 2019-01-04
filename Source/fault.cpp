@@ -4,13 +4,17 @@
 
 LPTOP_LEVEL_EXCEPTION_FILTER lpTopLevelExceptionFilter; // idb
 
-struct exception_cpp_init {
-	exception_cpp_init()
-	{
-		exception_install_filter();
-		j_exception_init_filter();
-	}
-} _exception_cpp_init;
+#ifndef _MSC_VER
+__attribute__((constructor))
+#endif
+static void exception_c_init(void)
+{
+	exception_install_filter();
+	j_exception_init_filter();
+}
+
+SEG_ALLOCATE(SEGMENT_C_INIT)
+_PVFV exception_c_init_funcs[] = { &exception_c_init };
 
 void __cdecl exception_install_filter()
 {
