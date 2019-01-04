@@ -194,7 +194,7 @@ void __fastcall town_draw_clipped_town(BYTE *buffer, int x, int y, int sx, int s
 			Cl2DecodeClrHL(165, v21, v20, (char *)plr[v19]._pAnimData, plr[v19]._pAnimFrame, plr[v19]._pAnimWidth, 0, 8);
 		Cl2DecodeFrm4(v21, v20, (char *)plr[v19]._pAnimData, plr[v19]._pAnimFrame, plr[v19]._pAnimWidth, 0, 8);
 		if (some_flag && plr[v19]._peflag)
-			town_draw_clipped_e_flag((BYTE*)v27 - 64, xa - 1, y + 1, sx - 64, sy);
+			town_draw_clipped_e_flag((BYTE *)v27 - 64, xa - 1, y + 1, sx - 64, sy);
 		v7 = v29;
 	}
 	if (dFlags[0][v7] & DFLAG_DEAD_PLAYER)
@@ -209,7 +209,7 @@ void __fastcall town_draw_clipped_town(BYTE *buffer, int x, int y, int sx, int s
 			Cl2DecodeClrHL(165, v26, v25, (char *)plr[v24]._pAnimData, plr[v24]._pAnimFrame, plr[v24]._pAnimWidth, 0, 8);
 		Cl2DecodeFrm4(v26, v25, (char *)plr[v24]._pAnimData, plr[v24]._pAnimFrame, plr[v24]._pAnimWidth, 0, 8);
 		if (some_flag && plr[v24]._peflag)
-			town_draw_clipped_e_flag((BYTE*)v27 - 64, xa - 1, y + 1, sx - 64, sy);
+			town_draw_clipped_e_flag((BYTE *)v27 - 64, xa - 1, y + 1, sx - 64, sy);
 		v7 = v29;
 	}
 	if (dFlags[0][v7] & DFLAG_MISSILE)
@@ -334,43 +334,33 @@ void __fastcall town_draw_lower(int x, int y, int sx, int sy, int a5, int some_f
 }
 // 69CF14: using guessed type int level_cel_block;
 
-void __fastcall town_draw_clipped_e_flag_2(void *buffer, int x, int y, int a4, int a5, int sx, int sy)
+void __fastcall town_draw_clipped_e_flag_2(BYTE *buffer, int x, int y, int a4, int a5, int sx, int sy)
 {
-	int v7;            // ebx
-	unsigned char *v8; // edi
-	WORD *v9;          // esi
-	int v10;           // eax
-	int v11;           // eax
-	void *v12;         // [esp+8h] [ebp-8h]
-	int xa;            // [esp+Ch] [ebp-4h]
-	int a4a;           // [esp+1Ch] [ebp+Ch]
+	int i;
+	BYTE *buf;
+	WORD *defs;
 
-	v7 = a4;
-	xa = x;
-	v12 = buffer;
-	if (a4)
-		v8 = (unsigned char *)buffer + 768 * 32 * a4;
+	if (!a4)
+		buf = buffer;
 	else
-		v8 = (unsigned char *)buffer;
-	a4a = 0;
-	v9 = &dpiece_defs_map_1[0][16 * gendung_get_dpiece_num_from_coord(x, y) + 3];
-	do {
-		if (v7 <= a4a) {
-			v10 = (unsigned short)*(v9 - 1);
-			level_cel_block = (unsigned short)*(v9 - 1);
-			if (v10)
-				drawLowerScreen(v8);
-			v11 = (unsigned short)*v9;
-			level_cel_block = (unsigned short)*v9;
-			if (v11)
-				drawLowerScreen(v8 + 32);
+		buf = buffer + 768 * 32 * a4;
+
+	defs = dpiece_defs_map_1[gendung_get_dpiece_num_from_coord(x, y)];
+
+	for (i = 0; i < 6; i++) {
+		if (a4 <= i) {
+			level_cel_block = defs[2 * i + 2];
+			if (level_cel_block)
+				drawLowerScreen(buf);
+			level_cel_block = defs[2 * i + 3];
+			if (level_cel_block)
+				drawLowerScreen(buf + 32);
 		}
-		v8 -= 768 * 32;
-		++a4a;
-		v9 += 2;
-	} while (a4a < 6);
+		buf -= 768 * 32;
+	}
+
 	if (a5 < 8)
-		town_draw_clipped_town_2((int)v12, xa, y, v7, a5, sx, sy, 0);
+		town_draw_clipped_town_2((int)buffer, x, y, a4, a5, sx, sy, 0);
 }
 // 69CF14: using guessed type int level_cel_block;
 
