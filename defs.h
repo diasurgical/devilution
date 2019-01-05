@@ -121,7 +121,6 @@ typedef __int64 int64;
 #define _LOWORD(x)  WORDn(x,LOW_IND(x,_WORD))
 #define _HIBYTE(x)  BYTEn(x,HIGH_IND(x,_BYTE))
 #define _HIWORD(x)  WORDn(x,HIGH_IND(x,_WORD))
-#define HIDWORD(x) DWORDn(x,HIGH_IND(x,_DWORD))
 #define BYTE1(x)   BYTEn(x,  1)         // byte 1 (counting from 0)
 #define BYTE2(x)   BYTEn(x,  2)
 
