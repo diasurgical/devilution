@@ -371,13 +371,10 @@ void __fastcall ClearSText(int s, int e)
 
 void __fastcall AddSLine(int y)
 {
-	int v1; // ecx
-
-	v1 = y;
-	stext[v1]._sx = 0;
-	stext[v1]._syoff = 0;
-	stext[v1]._sstr[0] = 0;
-	stext[v1]._sline = 1;
+	stext[y]._sx = 0;
+	stext[y]._syoff = 0;
+	stext[y]._sstr[0] = 0;
+	stext[y]._sline = 1;
 }
 
 void __fastcall AddSTextVal(int y, int val)
