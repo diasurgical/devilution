@@ -1029,7 +1029,7 @@ LABEL_18:
 					goto LABEL_146;
 				qmemcpy(&tempitem, &plr[v3].HoldItem, sizeof(tempitem));
 				v27 = &plr[v3].InvBody[INVLOC_HAND_RIGHT];
-				if (v26 != 5)
+				if (v26 != ITYPE_SHIELD)
 					v27 = &plr[v3].InvBody[INVLOC_HAND_LEFT];
 				v28 = p;
 				qmemcpy(&plr[v3].HoldItem, v27, sizeof(plr[v3].HoldItem));
@@ -1242,7 +1242,7 @@ LABEL_18:
 				}
 				v54 = *(int *)((char *)&plr[0].SpdList[0]._itype + v53);
 				if (v54 != -1) {
-					if (v54 == 11) {
+					if (v54 == ITYPE_GOLD) {
 						v55 = *(int *)((char *)&plr[0].SpdList[0]._ivalue + v53);
 						v56 = plr[v3].HoldItem._ivalue;
 						v57 = v55 + v56;

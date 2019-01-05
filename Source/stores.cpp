@@ -132,19 +132,17 @@ void __cdecl SetupTownStores()
 
 void __cdecl FreeStoreMem()
 {
-	void *v0; // ecx
-	void *v1; // ecx
-	void *v2; // ecx
+	void *p;
 
-	v0 = pSTextBoxCels;
-	pSTextBoxCels = 0;
-	mem_free_dbg(v0);
-	v1 = pCelBuff;
-	pCelBuff = 0;
-	mem_free_dbg(v1);
-	v2 = pSTextSlidCels;
-	pSTextSlidCels = 0;
-	mem_free_dbg(v2);
+	p = pSTextBoxCels;
+	pSTextBoxCels = NULL;
+	mem_free_dbg(p);
+	p = pCelBuff;
+	pCelBuff = NULL;
+	mem_free_dbg(p);
+	p = pSTextSlidCels;
+	pSTextSlidCels = NULL;
+	mem_free_dbg(p);
 }
 
 void __cdecl DrawSTextBack()
@@ -373,13 +371,10 @@ void __fastcall ClearSText(int s, int e)
 
 void __fastcall AddSLine(int y)
 {
-	int v1; // ecx
-
-	v1 = y;
-	stext[v1]._sx = 0;
-	stext[v1]._syoff = 0;
-	stext[v1]._sstr[0] = 0;
-	stext[v1]._sline = 1;
+	stext[y]._sx = 0;
+	stext[y]._syoff = 0;
+	stext[y]._sstr[0] = 0;
+	stext[y]._sline = 1;
 }
 
 void __fastcall AddSTextVal(int y, int val)
@@ -392,18 +387,15 @@ void __fastcall OffsetSTextY(int y, int yo)
 	stext[y]._syoff = yo;
 }
 
-void __fastcall AddSText(int x, int y, unsigned char j, char *str, int clr, int sel)
+void __fastcall AddSText(int x, int y, int j, char *str, int clr, int sel)
 {
-	int v6; // esi
-
-	v6 = y;
-	stext[v6]._syoff = 0;
-	stext[v6]._sx = x;
+	stext[y]._sx = x;
+	stext[y]._syoff = 0;
 	strcpy(stext[y]._sstr, str);
-	stext[v6]._sline = 0;
-	stext[v6]._sjust = j;
-	_LOBYTE(stext[v6]._sclr) = clr;
-	stext[v6]._ssel = sel;
+	stext[y]._sjust = j;
+	stext[y]._sclr = clr;
+	stext[y]._sline = 0;
+	stext[y]._ssel = sel;
 }
 
 void __cdecl StoreAutoPlace()
@@ -829,16 +821,22 @@ BOOLEAN __cdecl S_StartSPBuy()
 // 6A6BB8: using guessed type int stextscrl;
 // 6A8A28: using guessed type int stextsel;
 
-BOOLEAN __fastcall SmithSellOk(int i)
+BOOL __fastcall SmithSellOk(int i)
 {
-	if (plr[myplr].InvList[i]._itype != ITYPE_NONE
-	    && plr[myplr].InvList[i]._itype
-	    && plr[myplr].InvList[i]._itype != ITYPE_GOLD
-	    && plr[myplr].InvList[i]._itype != ITYPE_0E
-	    && plr[myplr].InvList[i]._itype != ITYPE_STAFF)
-		return plr[myplr].InvList[i].IDidx != IDI_LAZSTAFF;
-	else
-		return 0;
+	if (plr[myplr].InvList[i]._itype == ITYPE_NONE)
+		return FALSE;
+	if (plr[myplr].InvList[i]._itype == ITYPE_MISC)
+		return FALSE;
+	if (plr[myplr].InvList[i]._itype == ITYPE_GOLD)
+		return FALSE;
+	if (plr[myplr].InvList[i]._itype == ITYPE_0E)
+		return FALSE;
+	if (plr[myplr].InvList[i]._itype == ITYPE_STAFF)
+		return FALSE;
+	if (plr[myplr].InvList[i].IDidx == IDI_LAZSTAFF)
+		return FALSE;
+
+	return TRUE;
 }
 
 void __fastcall S_ScrollSSell(int idx)
