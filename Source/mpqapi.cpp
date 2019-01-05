@@ -15,24 +15,20 @@ BOOLEAN save_archive_open; // weak
 
 HANDLE sghArchive = (HANDLE)0xFFFFFFFF; // idb
 
-BOOLEAN __fastcall mpqapi_set_hidden(const char *pszArchive, BOOLEAN hidden)
+BOOL __fastcall mpqapi_set_hidden(const char *pszArchive, BOOL hidden)
 {
-	const char *v2; // edi
-	BOOL v3;        // esi
-	DWORD v4;       // eax
-	BOOLEAN result; // al
-	DWORD v6;       // esi
+	DWORD dwFileAttributes;
+	BOOL result;
+	DWORD dwFileAttributesToSet;
 
-	v2 = pszArchive;
-	v3 = hidden;
-	v4 = GetFileAttributes(pszArchive);
-	if (v4 == -1)
+	dwFileAttributes = GetFileAttributes(pszArchive);
+	if (dwFileAttributes == INVALID_FILE_ATTRIBUTES)
 		return GetLastError() == ERROR_FILE_NOT_FOUND;
-	v6 = v3 != 0 ? FILE_ATTRIBUTE_SYSTEM | FILE_ATTRIBUTE_HIDDEN : 0;
-	if (v4 == v6)
-		result = 1;
+	dwFileAttributesToSet = hidden != 0 ? FILE_ATTRIBUTE_SYSTEM | FILE_ATTRIBUTE_HIDDEN : 0;
+	if (dwFileAttributes == dwFileAttributesToSet)
+		result = TRUE;
 	else
-		result = SetFileAttributes(v2, v6);
+		result =  SetFileAttributes(pszArchive, dwFileAttributesToSet);
 	return result;
 }
 
