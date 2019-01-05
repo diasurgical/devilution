@@ -77,9 +77,9 @@ int WorldTbl17_2[17] = { 0, 32, 60, 88, 112, 136, 156, 176, 192, 208, 220, 232, 
 	|/
 */
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
-#include "_render.cpp"
-#else
+//#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+//#include "_render.cpp"
+//#else
 void __fastcall drawTopArchesUpperScreen(unsigned char *pbDst)
 {
 	unsigned char *dst;        // edi MAPDST
@@ -117,11 +117,11 @@ void __fastcall drawTopArchesUpperScreen(unsigned char *pbDst)
 				do {
 					if (dst < gpBufEnd)
 						break;
-					asm_trans_light_square_1_3(8, tbl, dst, src);
+					asm_trans_light_square_1_3(8, tbl, &dst, &src);
 					dst -= 800;
 					if (dst < gpBufEnd)
 						break;
-					asm_trans_light_square_0_2(8, tbl, dst, src);
+					asm_trans_light_square_0_2(8, tbl, &dst, &src);
 					dst -= 800;
 					--i;
 				} while (i);
@@ -145,9 +145,9 @@ void __fastcall drawTopArchesUpperScreen(unsigned char *pbDst)
 						if (dst < gpBufEnd)
 							return;
 						if (((unsigned char)dst & 1) == WorldBoolFlag) {
-							asm_trans_light_cel_0_2(width, tbl, dst, src);
+							asm_trans_light_cel_0_2(width, tbl, &dst, &src);
 						} else {
-							asm_trans_light_cel_1_3(width, tbl, dst, src);
+							asm_trans_light_cel_1_3(width, tbl, &dst, &src);
 						}
 						yy_32 -= width;
 					} while (yy_32);
@@ -165,9 +165,9 @@ void __fastcall drawTopArchesUpperScreen(unsigned char *pbDst)
 					src += (32 - (_BYTE)xx_32) & 2;
 					WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 					if (WorldBoolFlag) {
-						asm_trans_light_cel_0_2(32 - xx_32, tbl, dst, src);
+						asm_trans_light_cel_0_2(32 - xx_32, tbl, &dst, &src);
 					} else {
-						asm_trans_light_cel_1_3(32 - xx_32, tbl, dst, src);
+						asm_trans_light_cel_1_3(32 - xx_32, tbl, &dst, &src);
 					}
 					dst -= 800;
 					xx_32 -= 2;
@@ -180,9 +180,9 @@ void __fastcall drawTopArchesUpperScreen(unsigned char *pbDst)
 							src += (32 - (_BYTE)yy_32) & 2;
 							WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 							if (WorldBoolFlag) {
-								asm_trans_light_cel_0_2(32 - yy_32, tbl, dst, src);
+								asm_trans_light_cel_0_2(32 - yy_32, tbl, &dst, &src);
 							} else {
-								asm_trans_light_cel_1_3(32 - yy_32, tbl, dst, src);
+								asm_trans_light_cel_1_3(32 - yy_32, tbl, &dst, &src);
 							}
 							dst -= 800;
 							yy_32 += 2;
@@ -197,9 +197,9 @@ void __fastcall drawTopArchesUpperScreen(unsigned char *pbDst)
 				while (dst >= gpBufEnd) {
 					WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 					if (WorldBoolFlag) {
-						asm_trans_light_cel_0_2(32 - xx_32, tbl, dst, src);
+						asm_trans_light_cel_0_2(32 - xx_32, tbl, &dst, &src);
 					} else {
-						asm_trans_light_cel_1_3(32 - xx_32, tbl, dst, src);
+						asm_trans_light_cel_1_3(32 - xx_32, tbl, &dst, &src);
 					}
 					src += (unsigned char)src & 2;
 					dst = &dst[xx_32 - 800];
@@ -211,9 +211,9 @@ void __fastcall drawTopArchesUpperScreen(unsigned char *pbDst)
 								break;
 							WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 							if (WorldBoolFlag) {
-								asm_trans_light_cel_0_2(32 - yy_32, tbl, dst, src);
+								asm_trans_light_cel_0_2(32 - yy_32, tbl, &dst, &src);
 							} else {
-								asm_trans_light_cel_1_3(32 - yy_32, tbl, dst, src);
+								asm_trans_light_cel_1_3(32 - yy_32, tbl, &dst, &src);
 							}
 							src += (unsigned char)src & 2;
 							dst = &dst[yy_32 - 800];
@@ -231,9 +231,9 @@ void __fastcall drawTopArchesUpperScreen(unsigned char *pbDst)
 					src += (32 - (_BYTE)xx_32) & 2;
 					WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 					if (WorldBoolFlag) {
-						asm_trans_light_cel_0_2(32 - xx_32, tbl, dst, src);
+						asm_trans_light_cel_0_2(32 - xx_32, tbl, &dst, &src);
 					} else {
-						asm_trans_light_cel_1_3(32 - xx_32, tbl, dst, src);
+						asm_trans_light_cel_1_3(32 - xx_32, tbl, &dst, &src);
 					}
 					dst -= 800;
 					xx_32 -= 2;
@@ -242,11 +242,11 @@ void __fastcall drawTopArchesUpperScreen(unsigned char *pbDst)
 						do {
 							if (dst < gpBufEnd)
 								break;
-							asm_trans_light_square_1_3(8, tbl, dst, src);
+							asm_trans_light_square_1_3(8, tbl, &dst, &src);
 							dst -= 800;
 							if (dst < gpBufEnd)
 								break;
-							asm_trans_light_square_0_2(8, tbl, dst, src);
+							asm_trans_light_square_0_2(8, tbl, &dst, &src);
 							dst -= 800;
 							--i;
 						} while (i);
@@ -260,9 +260,9 @@ void __fastcall drawTopArchesUpperScreen(unsigned char *pbDst)
 				while (dst >= gpBufEnd) {
 					WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 					if (WorldBoolFlag) {
-						asm_trans_light_cel_0_2(32 - xx_32, tbl, dst, src);
+						asm_trans_light_cel_0_2(32 - xx_32, tbl, &dst, &src);
 					} else {
-						asm_trans_light_cel_1_3(32 - xx_32, tbl, dst, src);
+						asm_trans_light_cel_1_3(32 - xx_32, tbl, &dst, &src);
 					}
 					src += (unsigned char)src & 2;
 					dst = &dst[xx_32 - 800];
@@ -272,11 +272,11 @@ void __fastcall drawTopArchesUpperScreen(unsigned char *pbDst)
 						do {
 							if (dst < gpBufEnd)
 								break;
-							asm_trans_light_square_1_3(8, tbl, dst, src);
+							asm_trans_light_square_1_3(8, tbl, &dst, &src);
 							dst -= 800;
 							if (dst < gpBufEnd)
 								break;
-							asm_trans_light_square_0_2(8, tbl, dst, src);
+							asm_trans_light_square_0_2(8, tbl, &dst, &src);
 							dst -= 800;
 							--i;
 						} while (i);
@@ -1372,7 +1372,7 @@ void __fastcall drawBottomArchesUpperScreen(unsigned char *pbDst, unsigned int *
 				do {
 					if (dst < gpBufEnd)
 						break;
-					asm_trans_light_mask(32, tbl, dst, src, *gpDrawMask);
+					asm_trans_light_mask(32, tbl, &dst, &src, *gpDrawMask);
 					dst -= 800;
 					--gpDrawMask;
 					--xx_32;
@@ -1399,7 +1399,7 @@ void __fastcall drawBottomArchesUpperScreen(unsigned char *pbDst, unsigned int *
 						yy_32 -= width;
 						if (dst < gpBufEnd)
 							return;
-						gdwCurrentMask = asm_trans_light_mask(width, tbl, dst, src, gdwCurrentMask);
+						gdwCurrentMask = asm_trans_light_mask(width, tbl, &dst, &src, gdwCurrentMask);
 					} while (yy_32);
 				LABEL_50:
 					dst -= 800;
@@ -1412,7 +1412,7 @@ void __fastcall drawBottomArchesUpperScreen(unsigned char *pbDst, unsigned int *
 				while (dst >= gpBufEnd) {
 					dst += xx_32;
 					src += (32 - (_BYTE)xx_32) & 2;
-					asm_cel_light_edge(32 - xx_32, tbl, dst, src);
+					asm_cel_light_edge(32 - xx_32, tbl, &dst, &src);
 					dst -= 800;
 					xx_32 -= 2;
 					if (xx_32 < 0) {
@@ -1422,7 +1422,7 @@ void __fastcall drawBottomArchesUpperScreen(unsigned char *pbDst, unsigned int *
 								break;
 							dst += yy_32;
 							src += (32 - (_BYTE)yy_32) & 2;
-							asm_cel_light_edge(32 - yy_32, tbl, dst, src);
+							asm_cel_light_edge(32 - yy_32, tbl, &dst, &src);
 							dst -= 800;
 							yy_32 += 2;
 						} while (yy_32 != 32);
@@ -1433,7 +1433,7 @@ void __fastcall drawBottomArchesUpperScreen(unsigned char *pbDst, unsigned int *
 			case 3: // upper (bottom transparent), with lighting
 				xx_32 = 30;
 				while (dst >= gpBufEnd) {
-					asm_cel_light_edge(32 - xx_32, tbl, dst, src);
+					asm_cel_light_edge(32 - xx_32, tbl, &dst, &src);
 					src += (unsigned char)src & 2;
 					dst = &dst[xx_32 - 800];
 					xx_32 -= 2;
@@ -1442,7 +1442,7 @@ void __fastcall drawBottomArchesUpperScreen(unsigned char *pbDst, unsigned int *
 						do {
 							if (dst < gpBufEnd)
 								break;
-							asm_cel_light_edge(32 - yy_32, tbl, dst, src);
+							asm_cel_light_edge(32 - yy_32, tbl, &dst, &src);
 							src += (unsigned char)src & 2;
 							dst = &dst[yy_32 - 800];
 							yy_32 += 2;
@@ -1456,7 +1456,7 @@ void __fastcall drawBottomArchesUpperScreen(unsigned char *pbDst, unsigned int *
 				while (dst >= gpBufEnd) {
 					dst += xx_32;
 					src += (32 - (_BYTE)xx_32) & 2;
-					asm_cel_light_edge(32 - xx_32, tbl, dst, src);
+					asm_cel_light_edge(32 - xx_32, tbl, &dst, &src);
 					dst -= 800;
 					xx_32 -= 2;
 					if (xx_32 < 0) {
@@ -1466,7 +1466,7 @@ void __fastcall drawBottomArchesUpperScreen(unsigned char *pbDst, unsigned int *
 							if (dst < gpBufEnd)
 								break;
 							src += (unsigned char)src & 2;
-							asm_trans_light_mask(32, tbl, dst, src, *gpDrawMask);
+							asm_trans_light_mask(32, tbl, &dst, &src, *gpDrawMask);
 							dst -= 800;
 							--gpDrawMask;
 							--yy_32;
@@ -1478,7 +1478,7 @@ void __fastcall drawBottomArchesUpperScreen(unsigned char *pbDst, unsigned int *
 			default: // upper (bottom transparent), with lighting
 				xx_32 = 30;
 				while (dst >= gpBufEnd) {
-					asm_cel_light_edge(32 - xx_32, tbl, dst, src);
+					asm_cel_light_edge(32 - xx_32, tbl, &dst, &src);
 					src += (unsigned char)src & 2;
 					dst = &dst[xx_32 - 800];
 					xx_32 -= 2;
@@ -1488,7 +1488,7 @@ void __fastcall drawBottomArchesUpperScreen(unsigned char *pbDst, unsigned int *
 						do {
 							if (dst < gpBufEnd)
 								break;
-							asm_trans_light_mask(32, tbl, dst, src, *gpDrawMask);
+							asm_trans_light_mask(32, tbl, &dst, &src, *gpDrawMask);
 							src += (unsigned char)src & 2;
 							dst -= 800;
 							--gpDrawMask;
@@ -2013,7 +2013,7 @@ void __fastcall drawUpperScreen(unsigned char *pbDst)
 				do {
 					if (dst < gpBufEnd)
 						break;
-					asm_cel_light_square(8, tbl, dst, src);
+					asm_cel_light_square(8, tbl, &dst, &src);
 					dst -= 800;
 					--xx_32;
 				} while (xx_32);
@@ -2036,7 +2036,7 @@ void __fastcall drawUpperScreen(unsigned char *pbDst)
 						yy_32 -= width;
 						if (dst < gpBufEnd)
 							return;
-						asm_cel_light_edge(width, tbl, dst, src);
+						asm_cel_light_edge(width, tbl, &dst, &src);
 					} while (yy_32);
 				LABEL_58:
 					dst -= 800;
@@ -2048,7 +2048,7 @@ void __fastcall drawUpperScreen(unsigned char *pbDst)
 				while (dst >= gpBufEnd) {
 					dst += xx_32;
 					src += (32 - (_BYTE)xx_32) & 2;
-					asm_cel_light_edge(32 - xx_32, tbl, dst, src);
+					asm_cel_light_edge(32 - xx_32, tbl, &dst, &src);
 					dst -= 800;
 					xx_32 -= 2;
 					if (xx_32 < 0) {
@@ -2058,7 +2058,7 @@ void __fastcall drawUpperScreen(unsigned char *pbDst)
 								break;
 							dst += yy_32;
 							src += (32 - (_BYTE)yy_32) & 2;
-							asm_cel_light_edge(32 - yy_32, tbl, dst, src);
+							asm_cel_light_edge(32 - yy_32, tbl, &dst, &src);
 							dst -= 800;
 							yy_32 += 2;
 						} while (yy_32 != 32);
@@ -2069,7 +2069,7 @@ void __fastcall drawUpperScreen(unsigned char *pbDst)
 			case 3: // upper (solid), with lighting
 				xx_32 = 30;
 				while (dst >= gpBufEnd) {
-					asm_cel_light_edge(32 - xx_32, tbl, dst, src);
+					asm_cel_light_edge(32 - xx_32, tbl, &dst, &src);
 					src += (unsigned char)src & 2;
 					dst = &dst[xx_32 - 800];
 					xx_32 -= 2;
@@ -2078,7 +2078,7 @@ void __fastcall drawUpperScreen(unsigned char *pbDst)
 						do {
 							if (dst < gpBufEnd)
 								break;
-							asm_cel_light_edge(32 - yy_32, tbl, dst, src);
+							asm_cel_light_edge(32 - yy_32, tbl, &dst, &src);
 							src += (unsigned char)src & 2;
 							dst = &dst[yy_32 - 800];
 							yy_32 += 2;
@@ -2092,7 +2092,7 @@ void __fastcall drawUpperScreen(unsigned char *pbDst)
 				while (dst >= gpBufEnd) {
 					dst += xx_32;
 					src += (32 - (_BYTE)xx_32) & 2;
-					asm_cel_light_edge(32 - xx_32, tbl, dst, src);
+					asm_cel_light_edge(32 - xx_32, tbl, &dst, &src);
 					dst -= 800;
 					xx_32 -= 2;
 					if (xx_32 < 0) {
@@ -2100,7 +2100,7 @@ void __fastcall drawUpperScreen(unsigned char *pbDst)
 						do {
 							if (dst < gpBufEnd)
 								break;
-							asm_cel_light_square(8, tbl, dst, src);
+							asm_cel_light_square(8, tbl, &dst, &src);
 							dst -= 800;
 							--yy_32;
 						} while (yy_32);
@@ -2111,7 +2111,7 @@ void __fastcall drawUpperScreen(unsigned char *pbDst)
 			default: // upper (solid), with lighting
 				xx_32 = 30;
 				while (dst >= gpBufEnd) {
-					asm_cel_light_edge(32 - xx_32, tbl, dst, src);
+					asm_cel_light_edge(32 - xx_32, tbl, &dst, &src);
 					src += (unsigned char)src & 2;
 					dst = &dst[xx_32 - 800];
 					xx_32 -= 2;
@@ -2120,7 +2120,7 @@ void __fastcall drawUpperScreen(unsigned char *pbDst)
 						do {
 							if (dst < gpBufEnd)
 								break;
-							asm_cel_light_square(8, tbl, dst, src);
+							asm_cel_light_square(8, tbl, &dst, &src);
 							dst -= 800;
 							--yy_32;
 						} while (yy_32);
@@ -2841,14 +2841,14 @@ void __fastcall drawTopArchesLowerScreen(unsigned char *pbDst)
 			i = 16;
 			do {
 				if (dst < gpBufEnd) {
-					asm_trans_light_square_1_3(8, tbl, dst, src);
+					asm_trans_light_square_1_3(8, tbl, &dst, &src);
 				} else {
 					src += 32;
 					dst += 32;
 				}
 				dst -= 800;
 				if (dst < gpBufEnd) {
-					asm_trans_light_square_0_2(8, tbl, dst, src);
+					asm_trans_light_square_0_2(8, tbl, &dst, &src);
 				} else {
 					src += 32;
 					dst += 32;
@@ -2876,9 +2876,9 @@ void __fastcall drawTopArchesLowerScreen(unsigned char *pbDst)
 					yy_32 -= width;
 					if (dst < gpBufEnd) {
 						if (((unsigned char)dst & 1) == WorldBoolFlag) {
-							asm_trans_light_cel_0_2(width, tbl, dst, src);
+							asm_trans_light_cel_0_2(width, tbl, &dst, &src);
 						} else {
-							asm_trans_light_cel_1_3(width, tbl, dst, src);
+							asm_trans_light_cel_1_3(width, tbl, &dst, &src);
 						}
 					} else {
 						src += width;
@@ -2917,9 +2917,9 @@ void __fastcall drawTopArchesLowerScreen(unsigned char *pbDst)
 						src += (32 - (_BYTE)yy_32) & 2;
 						WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 						if (WorldBoolFlag) {
-							asm_trans_light_cel_0_2(32 - yy_32, tbl, dst, src);
+							asm_trans_light_cel_0_2(32 - yy_32, tbl, &dst, &src);
 						} else {
-							asm_trans_light_cel_1_3(32 - yy_32, tbl, dst, src);
+							asm_trans_light_cel_1_3(32 - yy_32, tbl, &dst, &src);
 						}
 						dst -= 800;
 						yy_32 += 2;
@@ -2938,9 +2938,9 @@ void __fastcall drawTopArchesLowerScreen(unsigned char *pbDst)
 				src += (32 - (_BYTE)xx_32) & 2;
 				WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 				if (WorldBoolFlag) {
-					asm_trans_light_cel_0_2(32 - xx_32, tbl, dst, src);
+					asm_trans_light_cel_0_2(32 - xx_32, tbl, &dst, &src);
 				} else {
-					asm_trans_light_cel_1_3(32 - xx_32, tbl, dst, src);
+					asm_trans_light_cel_1_3(32 - xx_32, tbl, &dst, &src);
 				}
 				dst -= 800;
 				xx_32 -= 2;
@@ -2970,9 +2970,9 @@ void __fastcall drawTopArchesLowerScreen(unsigned char *pbDst)
 					do {
 						WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 						if (WorldBoolFlag) {
-							asm_trans_light_cel_0_2(32 - yy_32, tbl, dst, src);
+							asm_trans_light_cel_0_2(32 - yy_32, tbl, &dst, &src);
 						} else {
-							asm_trans_light_cel_1_3(32 - yy_32, tbl, dst, src);
+							asm_trans_light_cel_1_3(32 - yy_32, tbl, &dst, &src);
 						}
 						src += (unsigned char)src & 2;
 						dst = &dst[yy_32 - 800];
@@ -2990,9 +2990,9 @@ void __fastcall drawTopArchesLowerScreen(unsigned char *pbDst)
 			do {
 				WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 				if (WorldBoolFlag) {
-					asm_trans_light_cel_0_2(32 - xx_32, tbl, dst, src);
+					asm_trans_light_cel_0_2(32 - xx_32, tbl, &dst, &src);
 				} else {
-					asm_trans_light_cel_1_3(32 - xx_32, tbl, dst, src);
+					asm_trans_light_cel_1_3(32 - xx_32, tbl, &dst, &src);
 				}
 				src += (unsigned char)src & 2;
 				dst = &dst[xx_32 - 800];
@@ -3011,14 +3011,14 @@ void __fastcall drawTopArchesLowerScreen(unsigned char *pbDst)
 					i = 8;
 					do {
 						if (dst < gpBufEnd) {
-							asm_trans_light_square_1_3(8, tbl, dst, src);
+							asm_trans_light_square_1_3(8, tbl, &dst, &src);
 						} else {
 							src += 32;
 							dst += 32;
 						}
 						dst -= 800;
 						if (dst < gpBufEnd) {
-							asm_trans_light_square_0_2(8, tbl, dst, src);
+							asm_trans_light_square_0_2(8, tbl, &dst, &src);
 						} else {
 							src += 32;
 							dst += 32;
@@ -3040,9 +3040,9 @@ void __fastcall drawTopArchesLowerScreen(unsigned char *pbDst)
 				src += (32 - (_BYTE)xx_32) & 2;
 				WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 				if (WorldBoolFlag) {
-					asm_trans_light_cel_0_2(32 - xx_32, tbl, dst, src);
+					asm_trans_light_cel_0_2(32 - xx_32, tbl, &dst, &src);
 				} else {
-					asm_trans_light_cel_1_3(32 - xx_32, tbl, dst, src);
+					asm_trans_light_cel_1_3(32 - xx_32, tbl, &dst, &src);
 				}
 				dst -= 800;
 				xx_32 -= 2;
@@ -3060,14 +3060,14 @@ void __fastcall drawTopArchesLowerScreen(unsigned char *pbDst)
 					i = 8;
 					do {
 						if (dst < gpBufEnd) {
-							asm_trans_light_square_1_3(8, tbl, dst, src);
+							asm_trans_light_square_1_3(8, tbl, &dst, &src);
 						} else {
 							src += 32;
 							dst += 32;
 						}
 						dst -= 800;
 						if (dst < gpBufEnd) {
-							asm_trans_light_square_0_2(8, tbl, dst, src);
+							asm_trans_light_square_0_2(8, tbl, &dst, &src);
 						} else {
 							src += 32;
 							dst += 32;
@@ -3087,9 +3087,9 @@ void __fastcall drawTopArchesLowerScreen(unsigned char *pbDst)
 			do {
 				WorldBoolFlag = ((_BYTE)WorldBoolFlag + 1) & 1;
 				if (WorldBoolFlag) {
-					asm_trans_light_cel_0_2(32 - xx_32, tbl, dst, src);
+					asm_trans_light_cel_0_2(32 - xx_32, tbl, &dst, &src);
 				} else {
-					asm_trans_light_cel_1_3(32 - xx_32, tbl, dst, src);
+					asm_trans_light_cel_1_3(32 - xx_32, tbl, &dst, &src);
 				}
 				src += (unsigned char)src & 2;
 				dst = &dst[xx_32 - 800];
@@ -3889,7 +3889,7 @@ void __fastcall drawBottomArchesLowerScreen(unsigned char *pbDst, unsigned int *
 				yy_32 = 32;
 				do {
 					if (dst < gpBufEnd) {
-						asm_trans_light_mask(32, tbl, dst, src, *gpDrawMask);
+						asm_trans_light_mask(32, tbl, &dst, &src, *gpDrawMask);
 					} else {
 						src += 32;
 						dst += 32;
@@ -3911,7 +3911,7 @@ void __fastcall drawBottomArchesLowerScreen(unsigned char *pbDst, unsigned int *
 								break;
 							yy_32 -= width;
 							if (dst < gpBufEnd) {
-								gdwCurrentMask = asm_trans_light_mask(width, tbl, dst, src, gdwCurrentMask);
+								gdwCurrentMask = asm_trans_light_mask(width, tbl, &dst, &src, gdwCurrentMask);
 							} else {
 								src += width;
 								dst += width;
@@ -3952,7 +3952,7 @@ void __fastcall drawBottomArchesLowerScreen(unsigned char *pbDst, unsigned int *
 						do {
 							dst += yy_32;
 							src += (32 - (_BYTE)yy_32) & 2;
-							asm_cel_light_edge(32 - yy_32, tbl, dst, src);
+							asm_cel_light_edge(32 - yy_32, tbl, &dst, &src);
 							yy_32 += 2;
 							dst -= 800;
 						} while (yy_32 != 32);
@@ -3966,7 +3966,7 @@ void __fastcall drawBottomArchesLowerScreen(unsigned char *pbDst, unsigned int *
 				do {
 					dst += xx_32;
 					src += (32 - (_BYTE)xx_32) & 2;
-					asm_cel_light_edge(32 - xx_32, tbl, dst, src);
+					asm_cel_light_edge(32 - xx_32, tbl, &dst, &src);
 					dst -= 800;
 					xx_32 -= 2;
 				} while (xx_32 >= 0);
@@ -3990,7 +3990,7 @@ void __fastcall drawBottomArchesLowerScreen(unsigned char *pbDst, unsigned int *
 							yy_32 = (world_tbl >> 1) + 2;
 						}
 						do {
-							asm_cel_light_edge(32 - yy_32, tbl, dst, src);
+							asm_cel_light_edge(32 - yy_32, tbl, &dst, &src);
 							/// BUGFIX: uncomment this line
 							// src += (unsigned char)src & 2;
 							dst = &dst[yy_32 - 800];
@@ -4004,7 +4004,7 @@ void __fastcall drawBottomArchesLowerScreen(unsigned char *pbDst, unsigned int *
 					xx_32 = 30 - (world_tbl >> 1);
 				}
 				do {
-					asm_cel_light_edge(32 - xx_32, tbl, dst, src);
+					asm_cel_light_edge(32 - xx_32, tbl, &dst, &src);
 					src += (unsigned char)src & 2;
 					dst = &dst[xx_32 - 800];
 					xx_32 -= 2;
@@ -4022,7 +4022,7 @@ void __fastcall drawBottomArchesLowerScreen(unsigned char *pbDst, unsigned int *
 						yy_32 = 16;
 						do {
 							if (dst < gpBufEnd) {
-								asm_trans_light_mask(32, tbl, dst, src, *gpDrawMask);
+								asm_trans_light_mask(32, tbl, &dst, &src, *gpDrawMask);
 							} else {
 								src += 32;
 								dst += 32;
@@ -4041,7 +4041,7 @@ void __fastcall drawBottomArchesLowerScreen(unsigned char *pbDst, unsigned int *
 				do {
 					dst += xx_32;
 					src += (32 - (_BYTE)xx_32) & 2;
-					asm_cel_light_edge(32 - xx_32, tbl, dst, src);
+					asm_cel_light_edge(32 - xx_32, tbl, &dst, &src);
 					dst -= 800;
 					xx_32 -= 2;
 				} while (xx_32 >= 0);
@@ -4058,7 +4058,7 @@ void __fastcall drawBottomArchesLowerScreen(unsigned char *pbDst, unsigned int *
 						yy_32 = 16;
 						do {
 							if (dst < gpBufEnd) {
-								asm_trans_light_mask(32, tbl, dst, src, *gpDrawMask);
+								asm_trans_light_mask(32, tbl, &dst, &src, *gpDrawMask);
 								src += (unsigned char)src & 2;
 							} else {
 								src += 32;
@@ -4076,7 +4076,7 @@ void __fastcall drawBottomArchesLowerScreen(unsigned char *pbDst, unsigned int *
 					xx_32 = 30 - (world_tbl >> 1);
 				}
 				do {
-					asm_cel_light_edge(32 - xx_32, tbl, dst, src);
+					asm_cel_light_edge(32 - xx_32, tbl, &dst, &src);
 					src += (unsigned char)src & 2;
 					dst = &dst[xx_32 - 800];
 					xx_32 -= 2;
@@ -4691,7 +4691,7 @@ void __fastcall drawLowerScreen(unsigned char *pbDst)
 				xx_32 = 32;
 				do {
 					if (dst < gpBufEnd) {
-						asm_cel_light_square(8, tbl, dst, src);
+						asm_cel_light_square(8, tbl, &dst, &src);
 					} else {
 						src += 32;
 						dst += 32;
@@ -4709,7 +4709,7 @@ void __fastcall drawLowerScreen(unsigned char *pbDst)
 						if ((width & 0x80u) == 0) {
 							yy_32 -= width;
 							if (dst < gpBufEnd) {
-								asm_cel_light_edge(width, tbl, dst, src);
+								asm_cel_light_edge(width, tbl, &dst, &src);
 							} else {
 								src += width;
 								dst += width;
@@ -4745,7 +4745,7 @@ void __fastcall drawLowerScreen(unsigned char *pbDst)
 						do {
 							dst += yy_32;
 							src += (32 - (_BYTE)yy_32) & 2;
-							asm_cel_light_edge(32 - yy_32, tbl, dst, src);
+							asm_cel_light_edge(32 - yy_32, tbl, &dst, &src);
 							yy_32 += 2;
 							dst -= 800;
 						} while (yy_32 != 32);
@@ -4759,7 +4759,7 @@ void __fastcall drawLowerScreen(unsigned char *pbDst)
 				do {
 					dst += xx_32;
 					src += (32 - (_BYTE)xx_32) & 2;
-					asm_cel_light_edge(32 - xx_32, tbl, dst, src);
+					asm_cel_light_edge(32 - xx_32, tbl, &dst, &src);
 					dst -= 800;
 					xx_32 -= 2;
 				} while (xx_32 >= 0);
@@ -4783,7 +4783,7 @@ void __fastcall drawLowerScreen(unsigned char *pbDst)
 							yy_32 = (world_tbl >> 1) + 2;
 						}
 						do {
-							asm_cel_light_edge(32 - yy_32, tbl, dst, src);
+							asm_cel_light_edge(32 - yy_32, tbl, &dst, &src);
 							src += (unsigned char)src & 2;
 							dst = &dst[yy_32 - 800];
 							yy_32 += 2;
@@ -4796,7 +4796,7 @@ void __fastcall drawLowerScreen(unsigned char *pbDst)
 					xx_32 = 30 - (world_tbl >> 1);
 				}
 				do {
-					asm_cel_light_edge(32 - xx_32, tbl, dst, src);
+					asm_cel_light_edge(32 - xx_32, tbl, &dst, &src);
 					src += (unsigned char)src & 2;
 					dst = &dst[xx_32 - 800];
 					xx_32 -= 2;
@@ -4813,7 +4813,7 @@ void __fastcall drawLowerScreen(unsigned char *pbDst)
 						i = 16;
 						do {
 							if (dst < gpBufEnd) {
-								asm_cel_light_square(8, tbl, dst, src);
+								asm_cel_light_square(8, tbl, &dst, &src);
 							} else {
 								src += 32;
 								dst += 32;
@@ -4831,7 +4831,7 @@ void __fastcall drawLowerScreen(unsigned char *pbDst)
 				do {
 					dst += xx_32;
 					src += (32 - (_BYTE)xx_32) & 2;
-					asm_cel_light_edge(32 - xx_32, tbl, dst, src);
+					asm_cel_light_edge(32 - xx_32, tbl, &dst, &src);
 					dst -= 800;
 					xx_32 -= 2;
 				} while (xx_32 >= 0);
@@ -4847,7 +4847,7 @@ void __fastcall drawLowerScreen(unsigned char *pbDst)
 						j = 16;
 						do {
 							if (dst < gpBufEnd) {
-								asm_cel_light_square(8, tbl, dst, src);
+								asm_cel_light_square(8, tbl, &dst, &src);
 							} else {
 								src += 32;
 								dst += 32;
@@ -4863,7 +4863,7 @@ void __fastcall drawLowerScreen(unsigned char *pbDst)
 					xx_32 = 30 - (world_tbl >> 1);
 				}
 				do {
-					asm_cel_light_edge(32 - xx_32, tbl, dst, src);
+					asm_cel_light_edge(32 - xx_32, tbl, &dst, &src);
 					src += (unsigned char)src & 2;
 					dst = &dst[xx_32 - 800];
 					xx_32 -= 2;
@@ -5211,4 +5211,4 @@ void __fastcall world_draw_black_tile(unsigned char *pbDst)
 		yy_32 += 2;
 	} while (yy_32 != 32);
 }
-#endif
+//#endif
