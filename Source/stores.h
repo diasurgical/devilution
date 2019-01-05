@@ -56,7 +56,7 @@ void __fastcall PrintStoreItem(ItemStruct *x, int l, char iclr);
 void __cdecl S_StartSBuy();
 void __fastcall S_ScrollSPBuy(int idx);
 BOOLEAN __cdecl S_StartSPBuy();
-BOOLEAN __fastcall SmithSellOk(int i);
+BOOL __fastcall SmithSellOk(int i);
 void __fastcall S_ScrollSSell(int idx);
 void __cdecl S_StartSSell();
 BOOLEAN __fastcall SmithRepairOk(int i);

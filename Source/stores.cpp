@@ -821,16 +821,22 @@ BOOLEAN __cdecl S_StartSPBuy()
 // 6A6BB8: using guessed type int stextscrl;
 // 6A8A28: using guessed type int stextsel;
 
-BOOLEAN __fastcall SmithSellOk(int i)
+BOOL __fastcall SmithSellOk(int i)
 {
-	if (plr[myplr].InvList[i]._itype != ITYPE_NONE
-	    && plr[myplr].InvList[i]._itype
-	    && plr[myplr].InvList[i]._itype != ITYPE_GOLD
-	    && plr[myplr].InvList[i]._itype != ITYPE_0E
-	    && plr[myplr].InvList[i]._itype != ITYPE_STAFF)
-		return plr[myplr].InvList[i].IDidx != IDI_LAZSTAFF;
-	else
-		return 0;
+	if (plr[myplr].InvList[i]._itype == ITYPE_NONE)
+		return FALSE;
+	if (plr[myplr].InvList[i]._itype == ITYPE_MISC)
+		return FALSE;
+	if (plr[myplr].InvList[i]._itype == ITYPE_GOLD)
+		return FALSE;
+	if (plr[myplr].InvList[i]._itype == ITYPE_0E)
+		return FALSE;
+	if (plr[myplr].InvList[i]._itype == ITYPE_STAFF)
+		return FALSE;
+	if (plr[myplr].InvList[i].IDidx == IDI_LAZSTAFF)
+		return FALSE;
+
+	return TRUE;
 }
 
 void __fastcall S_ScrollSSell(int idx)
