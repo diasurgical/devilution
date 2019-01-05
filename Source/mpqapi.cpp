@@ -23,7 +23,7 @@ BOOL __fastcall mpqapi_set_hidden(const char *pszArchive, BOOL hidden)
 	dwFileAttributes = GetFileAttributes(pszArchive);
 	if (dwFileAttributes == INVALID_FILE_ATTRIBUTES)
 		return GetLastError() == ERROR_FILE_NOT_FOUND;
-	dwFileAttributesToSet = hidden != 0 ? FILE_ATTRIBUTE_SYSTEM | FILE_ATTRIBUTE_HIDDEN : 0;
+	dwFileAttributesToSet = hidden ? FILE_ATTRIBUTE_SYSTEM | FILE_ATTRIBUTE_HIDDEN : 0;
 	if (dwFileAttributes == dwFileAttributesToSet)
 		return TRUE;
 	else
