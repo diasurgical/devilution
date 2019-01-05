@@ -9,7 +9,7 @@ extern BOOLEAN save_archive_modified; // weak
 extern _BLOCKENTRY *sgpBlockTbl;
 extern BOOLEAN save_archive_open; // weak
 
-BOOL __fastcall mpqapi_set_hidden(const char *pszArchive, BOOL hidden);
+BOOL __fastcall mpqapi_set_hidden(char *pszArchive, BOOL hidden);
 void __fastcall mpqapi_store_creation_time(const char *pszArchive, int dwChar);
 BOOLEAN __fastcall mpqapi_reg_load_modification_time(char *dst, int size);
 void __fastcall mpqapi_xor_buf(char *pbData);
