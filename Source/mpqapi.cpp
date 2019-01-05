@@ -18,7 +18,6 @@ HANDLE sghArchive = (HANDLE)0xFFFFFFFF; // idb
 BOOL __fastcall mpqapi_set_hidden(const char *pszArchive, BOOL hidden)
 {
 	DWORD dwFileAttributes;
-	BOOL result;
 	DWORD dwFileAttributesToSet;
 
 	dwFileAttributes = GetFileAttributes(pszArchive);
@@ -26,10 +25,9 @@ BOOL __fastcall mpqapi_set_hidden(const char *pszArchive, BOOL hidden)
 		return GetLastError() == ERROR_FILE_NOT_FOUND;
 	dwFileAttributesToSet = hidden != 0 ? FILE_ATTRIBUTE_SYSTEM | FILE_ATTRIBUTE_HIDDEN : 0;
 	if (dwFileAttributes == dwFileAttributesToSet)
-		result = TRUE;
+		return TRUE;
 	else
-		result =  SetFileAttributes(pszArchive, dwFileAttributesToSet);
-	return result;
+		return SetFileAttributes(pszArchive, dwFileAttributesToSet);
 }
 
 void __fastcall mpqapi_store_creation_time(const char *pszArchive, int dwChar)
