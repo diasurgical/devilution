@@ -48,7 +48,7 @@ void __fastcall ClearSText(int s, int e);
 void __fastcall AddSLine(int y);
 void __fastcall AddSTextVal(int y, int val);
 void __fastcall OffsetSTextY(int y, int yo);
-void __fastcall AddSText(int x, int y, unsigned char j, char *str, int clr, int sel);
+void __fastcall AddSText(int x, int y, int j, char *str, int clr, int sel);
 void __cdecl StoreAutoPlace();
 void __cdecl S_StartSmith();
 void __fastcall S_ScrollSBuy(int idx);

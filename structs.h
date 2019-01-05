@@ -1521,7 +1521,7 @@ typedef struct STextStruct {
 	int _syoff;
 	char _sstr[128];
 	int _sjust;
-	int _sclr;
+	char _sclr;
 	int _sline;
 	int _ssel;
 	int _sval;

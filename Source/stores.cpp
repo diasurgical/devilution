@@ -387,18 +387,15 @@ void __fastcall OffsetSTextY(int y, int yo)
 	stext[y]._syoff = yo;
 }
 
-void __fastcall AddSText(int x, int y, unsigned char j, char *str, int clr, int sel)
+void __fastcall AddSText(int x, int y, int j, char *str, int clr, int sel)
 {
-	int v6; // esi
-
-	v6 = y;
-	stext[v6]._syoff = 0;
-	stext[v6]._sx = x;
+	stext[y]._sx = x;
+	stext[y]._syoff = 0;
 	strcpy(stext[y]._sstr, str);
-	stext[v6]._sline = 0;
-	stext[v6]._sjust = j;
-	_LOBYTE(stext[v6]._sclr) = clr;
-	stext[v6]._ssel = sel;
+	stext[y]._sjust = j;
+	stext[y]._sclr = clr;
+	stext[y]._sline = 0;
+	stext[y]._ssel = sel;
 }
 
 void __cdecl StoreAutoPlace()
