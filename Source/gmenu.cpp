@@ -289,7 +289,7 @@ int __fastcall gmenu_get_lfont(TMenuItem *pItem)
 	return i - 2;
 }
 
-int __fastcall gmenu_presskeys(int a1)
+BOOL __fastcall gmenu_presskeys(int a1)
 {
 	if (!dword_634480)
 		return 0;
@@ -305,7 +305,7 @@ int __fastcall gmenu_presskeys(int a1)
 		gmenu_call_proc(0, 0);
 		break;
 	case VK_SPACE:
-		return 0;
+		return FALSE;
 	case VK_LEFT:
 		gmenu_left_right(0);
 		break;
@@ -319,7 +319,7 @@ int __fastcall gmenu_presskeys(int a1)
 		gmenu_up_down(1);
 		break;
 	}
-	return 1;
+	return TRUE;
 }
 
 void __fastcall gmenu_left_right(int a1)
