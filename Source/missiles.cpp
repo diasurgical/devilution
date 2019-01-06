@@ -735,8 +735,8 @@ void __fastcall GetMissilePos(int i)
 	int v12; // [esp+Ch] [ebp-8h]
 
 	v1 = i;
-	v2 = SHIWORD(missile[v1]._mityoff);
-	v3 = SHIWORD(missile[v1]._mitxoff);
+	v2 = missile[v1]._mityoff >> 16;
+	v3 = missile[v1]._mitxoff >> 16;
 	v4 = 2 * v2 + v3;
 	v5 = 2 * v2 - v3;
 	if (v4 >= 0) {
@@ -758,7 +758,7 @@ void __fastcall GetMissilePos(int i)
 	}
 	missile[v1]._mix = v8 + missile[v1]._misx;
 	missile[v1]._miy = v11 + missile[v1]._misy;
-	missile[v1]._mixoff = SHIWORD(missile[v1]._mitxoff) + 32 * v11 - 32 * v8;
+	missile[v1]._mixoff = (missile[v1]._mitxoff >> 16) + 32 * v11 - 32 * v8;
 	missile[v1]._miyoff = v2 - 16 * v11 - 16 * v8;
 	ChangeLightOff(missile[v1]._mlid, v12 - 8 * v8, v10 - 8 * v11);
 }
