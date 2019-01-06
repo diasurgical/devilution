@@ -260,7 +260,7 @@ void __fastcall CelDecDatLightTrans(char *pDecodeTo, char *pRLEBytes, int frame_
 									ASM_XLAT(_EAX, _EBX);
 									*(_BYTE *)v5 = _EAX;
 									v25 = (_BYTE *)(v5 + 2);
-									_EAX = __ROR4__(_EAX, 16);
+									_EAX = _rotr(_EAX, 16);
 									ASM_XLAT(_EAX, _EBX);
 									*v25 = _EAX;
 									v5 = (int)(v25 + 2);
@@ -295,10 +295,10 @@ void __fastcall CelDecDatLightTrans(char *pDecodeTo, char *pRLEBytes, int frame_
 									_EAX = *(_DWORD *)v4;
 									v4 += 4;
 									v18 = (_BYTE *)(v5 + 1);
-									_EAX = __ROR4__(_EAX, 8);
+									_EAX = _rotr(_EAX, 8);
 									ASM_XLAT(_EAX, _EBX);
 									*v18 = _EAX;
-									_EAX = __ROR4__(_EAX, 16);
+									_EAX = _rotr(_EAX, 16);
 									v18 += 2;
 									ASM_XLAT(_EAX, _EBX);
 									*v18 = _EAX;
@@ -740,7 +740,7 @@ void __fastcall Cel2DecDatLightTrans(char *pDecodeTo, char *pRLEBytes, int frame
 										ASM_XLAT(_EAX, _EBX);
 										*(_BYTE *)v5 = _EAX;
 										v25 = (_BYTE *)(v5 + 2);
-										_EAX = __ROR4__(_EAX, 16);
+										_EAX = _rotr(_EAX, 16);
 										ASM_XLAT(_EAX, _EBX);
 										*v25 = _EAX;
 										v5 = (unsigned int)(v25 + 2);
@@ -775,10 +775,10 @@ void __fastcall Cel2DecDatLightTrans(char *pDecodeTo, char *pRLEBytes, int frame
 										_EAX = *(_DWORD *)v4;
 										v4 += 4;
 										v18 = (_BYTE *)(v5 + 1);
-										_EAX = __ROR4__(_EAX, 8);
+										_EAX = _rotr(_EAX, 8);
 										ASM_XLAT(_EAX, _EBX);
 										*v18 = _EAX;
-										_EAX = __ROR4__(_EAX, 16);
+										_EAX = _rotr(_EAX, 16);
 										v18 += 2;
 										ASM_XLAT(_EAX, _EBX);
 										*v18 = _EAX;
