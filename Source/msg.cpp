@@ -13,7 +13,7 @@ static BYTE sgbRecvCmd;
 static LocalLevel sgLocals[NUMLEVELS];
 static DJunk sgJunk;
 static TMegaPkt *sgpMegaPkt;
-static BYTE sgbDeltaChanged;
+static BOOLEAN sgbDeltaChanged;
 static BYTE sgbDeltaChunks;
 BOOL deltaload;
 BYTE gbBufferMsgs;
@@ -69,7 +69,7 @@ TMegaPkt *__cdecl msg_get_next_packet()
 
 BOOL __cdecl msg_wait_resync()
 {
-	int v0; // eax
+	BOOL success;
 
 	msg_get_next_packet();
 	sgbDeltaChunks = 0;
@@ -77,21 +77,26 @@ BOOL __cdecl msg_wait_resync()
 	sgbRecvCmd = CMD_DLEVEL_END;
 	gbBufferMsgs = 1;
 	sgdwOwnerWait = GetTickCount();
-	v0 = UiProgressDialog(ghMainWnd, "Waiting for game data...", 1, msg_wait_for_turns, 20);
+	success = UiProgressDialog(ghMainWnd, "Waiting for game data...", 1, msg_wait_for_turns, 20);
 	gbBufferMsgs = 0;
-	if (!v0)
-		goto LABEL_6;
+	if (!success) {
+		msg_free_packets();
+		return FALSE;
+	}
+
 	if (gbGameDestroyed) {
 		DrawDlg("The game ended");
-	LABEL_6:
 		msg_free_packets();
-		return 0;
+		return FALSE;
 	}
+
 	if (sgbDeltaChunks != 21) {
 		DrawDlg("Unable to get level data");
-		goto LABEL_6;
+		msg_free_packets();
+		return FALSE;
 	}
-	return 1;
+
+	return TRUE;
 }
 // 65AB18: using guessed type int sgdwOwnerWait;
 // 65AB24: using guessed type int sgnCurrMegaPlayer;
@@ -196,42 +201,28 @@ void __cdecl msg_pre_packet()
 
 void __fastcall DeltaExportData(int pnum)
 {
-	BYTE *v1;       // edi
-	DObjectStr *v2; // esi
-	BYTE *v3;       // ebx
-	BYTE *v4;       // eax
-	BYTE *v5;       // eax
-	BYTE *v6;       // eax
-	int v7;         // eax
-	BYTE *v8;       // eax
-	int v9;         // eax
-	int player_num; // [esp+0h] [ebp-Ch]
-	int v11;        // [esp+4h] [ebp-8h]
-	char src;       // [esp+Bh] [ebp-1h]
+	BYTE *dst, *dstEnd;
+	int size, i;
+	char src;
 
-	player_num = pnum;
 	if (sgbDeltaChanged) {
-		v11 = 0;
-		v1 = (BYTE *)DiabloAllocPtr(4722);
-		v2 = sgLevels[0].object;
-		v3 = v1 + 1;
-		do {
-			v4 = DeltaExportItem(v3, (TCmdPItem *)&v2[-2794]);
-			v5 = DeltaExportObject(v4, v2);
-			v6 = DeltaExportMonster(v5, (DMonsterStr *)&v2[127]);
-			v7 = msg_comp_level(v1, v6);
-			dthread_send_delta(player_num, (_BYTE)v11++ + CMD_DLEVEL_0, v1, v7);
-			v2 += 4721;
-		} while ((signed int)v2 < (signed int)&sgLevels[NUMLEVELS].object);
-		v8 = DeltaExportJunk(v3);
-		v9 = msg_comp_level(v1, v8);
-		dthread_send_delta(player_num, CMD_DLEVEL_JUNK, v1, v9);
-		mem_free_dbg(v1);
+		dst = (BYTE *)DiabloAllocPtr(4722);
+		dstEnd = dst + 1;
+		for (i = 0; i < NUMLEVELS; i++) {
+			dstEnd = DeltaExportItem(dstEnd, sgLevels[i].item);
+			dstEnd = DeltaExportObject(dstEnd, sgLevels[i].object);
+			dstEnd = DeltaExportMonster(dstEnd, sgLevels[i].monster);
+			size = msg_comp_level(dst, dstEnd);
+			dthread_send_delta(pnum, i + CMD_DLEVEL_0, dst, size);
+		}
+		dstEnd = DeltaExportJunk(dstEnd);
+		size = msg_comp_level(dst, dstEnd);
+		dthread_send_delta(pnum, CMD_DLEVEL_JUNK, dst, size);
+		mem_free_dbg(dst);
 	}
 	src = 0;
-	dthread_send_delta(player_num, CMD_DLEVEL_END, &src, 1);
+	dthread_send_delta(pnum, CMD_DLEVEL_END, &src, 1);
 }
-// 67618C: using guessed type char sgbDeltaChanged;
 
 BYTE *__fastcall DeltaExportItem(BYTE *dst, TCmdPItem *src)
 {
@@ -277,39 +268,33 @@ BYTE *__fastcall DeltaExportMonster(BYTE *dst, DMonsterStr *src)
 
 BYTE *__fastcall DeltaExportJunk(BYTE *dst)
 {
-	BYTE *v1;          // ebx
-	DJunk *v2;         // edi
-	MultiQuests *v3;   // esi
-	unsigned char *v4; // edi
-	int *v5;           // ebp
+	int i;
+	MultiQuests *mq;
+	DPortal *pD;
 
-	v1 = dst;
-	v2 = &sgJunk;
-	v3 = sgJunk.quests;
-	do {
-		if (v2->portal[0].x == LOBYTE(-1)) {
-			*v1++ = -1;
+	for (i = 0; i < MAXPORTAL; i++) {
+		pD = &sgJunk.portal[i];
+		if (pD->x == 0xFF) {
+			*dst = 0xFF;
+			dst++;
 		} else {
-			memcpy(v1, v2, 5u);
-			v1 += 5;
+			memcpy(dst, pD, sizeof(*pD));
+			dst += sizeof(*pD);
 		}
-		v2 = (DJunk *)((char *)v2 + 5);
-	} while ((signed int)v2 < (signed int)sgJunk.quests);
-	v4 = &quests[0]._qactive;
-	v5 = &questlist[0]._qflags;
-	do {
-		if (*(_BYTE *)v5 & 1) {
-			v3->qlog = v4[18];
-			v3->qstate = *v4;
-			v3->qvar1 = v4[13];
-			memcpy(v1, v3, 3u);
-			v1 += 3;
-			++v3;
+	}
+
+	for (i = 0; i < MAXQUESTS; i++) {
+		if (questlist[i]._qflags & 1) {
+			mq = &sgJunk.quests[i];
+			mq->qlog = quests[i]._qlog;
+			mq->qstate = quests[i]._qactive;
+			mq->qvar1 = quests[i]._qvar1;
+			memcpy(dst, mq, sizeof(*mq));
+			dst += sizeof(*mq);
 		}
-		v5 += 5;
-		v4 += 24;
-	} while ((signed int)v5 < (signed int)&questlist[16]._qflags);
-	return v1;
+	}
+
+	return dst;
 }
 
 int __fastcall msg_comp_level(BYTE *buffer, BYTE *end)
@@ -325,13 +310,12 @@ int __fastcall msg_comp_level(BYTE *buffer, BYTE *end)
 
 void __cdecl delta_init()
 {
-	sgbDeltaChanged = 0;
+	sgbDeltaChanged = FALSE;
 	memset(&sgJunk, 0xFF, sizeof(sgJunk));
 	memset(sgLevels, 0xFF, sizeof(sgLevels));
 	memset(sgLocals, 0, sizeof(sgLocals));
 	deltaload = FALSE;
 }
-// 67618C: using guessed type char sgbDeltaChanged;
 // 676190: using guessed type int deltaload;
 
 void __fastcall delta_kill_monster(int mi, BYTE x, BYTE y, BYTE bLevel)
@@ -339,7 +323,7 @@ void __fastcall delta_kill_monster(int mi, BYTE x, BYTE y, BYTE bLevel)
 	DMonsterStr *pD;
 
 	if (gbMaxPlayers != 1) {
-		sgbDeltaChanged = 1;
+		sgbDeltaChanged = TRUE;
 		pD = &sgLevels[bLevel].monster[mi];
 		pD->_mx = x;
 		pD->_my = y;
@@ -347,7 +331,6 @@ void __fastcall delta_kill_monster(int mi, BYTE x, BYTE y, BYTE bLevel)
 		pD->_mhitpoints = 0;
 	}
 }
-// 67618C: using guessed type char sgbDeltaChanged;
 // 679660: using guessed type char gbMaxPlayers;
 
 void __fastcall delta_monster_hp(int mi, int hp, BYTE bLevel)
@@ -355,13 +338,12 @@ void __fastcall delta_monster_hp(int mi, int hp, BYTE bLevel)
 	DMonsterStr *pD;
 
 	if (gbMaxPlayers != 1) {
-		sgbDeltaChanged = 1;
+		sgbDeltaChanged = TRUE;
 		pD = &sgLevels[bLevel].monster[mi];
 		if (pD->_mhitpoints > hp)
 			pD->_mhitpoints = hp;
 	}
 }
-// 67618C: using guessed type char sgbDeltaChanged;
 // 679660: using guessed type char gbMaxPlayers;
 
 void __fastcall delta_sync_monster(TCmdLocParam1 *packet, BYTE level)
@@ -369,7 +351,7 @@ void __fastcall delta_sync_monster(TCmdLocParam1 *packet, BYTE level)
 	DMonsterStr *pD;
 
 	if (gbMaxPlayers != 1) {
-		sgbDeltaChanged = 1;
+		sgbDeltaChanged = TRUE;
 		pD = &sgLevels[level].monster[(BYTE)packet->bCmd];
 		if (pD->_mhitpoints) {
 			pD->_mx = packet->x;
@@ -379,7 +361,6 @@ void __fastcall delta_sync_monster(TCmdLocParam1 *packet, BYTE level)
 		}
 	}
 }
-// 67618C: using guessed type char sgbDeltaChanged;
 // 679660: using guessed type char gbMaxPlayers;
 
 void __fastcall delta_sync_golem(TCmdGolem *pG, int pnum, BYTE bLevel)
@@ -387,7 +368,7 @@ void __fastcall delta_sync_golem(TCmdGolem *pG, int pnum, BYTE bLevel)
 	DMonsterStr *pD;
 
 	if (gbMaxPlayers != 1) {
-		sgbDeltaChanged = 1;
+		sgbDeltaChanged = TRUE;
 		pD = &sgLevels[bLevel].monster[pnum];
 		pD->_mx = pG->_mx;
 		pD->_my = pG->_my;
@@ -397,7 +378,6 @@ void __fastcall delta_sync_golem(TCmdGolem *pG, int pnum, BYTE bLevel)
 		pD->_mhitpoints = pG->_mhitpoints;
 	}
 }
-// 67618C: using guessed type char sgbDeltaChanged;
 // 679660: using guessed type char gbMaxPlayers;
 
 void __fastcall delta_leave_sync(BYTE bLevel)
@@ -413,7 +393,7 @@ void __fastcall delta_leave_sync(BYTE bLevel)
 			for (i = 0; i < nummonsters; ++i) {
 				ma = monstactive[i];
 				if (monster[ma]._mhitpoints) {
-					sgbDeltaChanged = 1;
+					sgbDeltaChanged = TRUE;
 					pD = &sgLevels[bLevel].monster[ma];
 					pD->_mx = monster[ma]._mx;
 					pD->_my = monster[ma]._my;
@@ -428,7 +408,6 @@ void __fastcall delta_leave_sync(BYTE bLevel)
 	}
 }
 // 43C17D: could not find valid save-restore pair for edi
-// 67618C: using guessed type char sgbDeltaChanged;
 // 679660: using guessed type char gbMaxPlayers;
 
 BOOL __fastcall delta_portal_inited(int i)
@@ -443,68 +422,44 @@ BOOL __fastcall delta_quest_inited(int i)
 
 void __fastcall DeltaAddItem(int ii)
 {
-	int v1;        // eax
-	int v2;        // ecx
-	signed int v3; // ebp
-	DLevel *v4;    // edx
-	DLevel *v5;    // edi
-	char v6;       // bl
-	int v7;        // esi
-	signed int v8; // esi
-	int v9;        // eax
-	char v10;      // cl
-	char v11;      // cl
+	int i;
+	TCmdPItem *pD;
 
-	v1 = ii;
-	if (gbMaxPlayers != 1) {
-		v2 = currlevel;
-		v3 = 0;
-		v4 = &sgLevels[v2];
-		v5 = &sgLevels[v2];
-		while (1) {
-			v6 = v5->item[0].bCmd;
-			if (v5->item[0].bCmd != -1) {
-				v7 = v1;
-				if ((unsigned short)v5->item[0].wIndx == item[v1].IDidx
-				    && v5->item[0].wCI == item[v7]._iCreateInfo
-				    && v5->item[0].dwSeed == item[v7]._iSeed
-				    && (v6 == 1 || !v6)) {
-					break;
-				}
-			}
-			++v3;
-			v5 = (DLevel *)((char *)v5 + 22);
-			if (v3 >= 127) {
-				v8 = 0;
-				while (v4->item[0].bCmd != -1) {
-					++v8;
-					v4 = (DLevel *)((char *)v4 + 22);
-					if (v8 >= 127)
-						return;
-				}
-				v4->item[0].bCmd = 0;
-				v9 = 368 * v1;
-				v10 = *((_BYTE *)&item[0]._ix + v9);
-				sgbDeltaChanged = 1;
-				v4->item[0].x = v10;
-				v4->item[0].y = *((_BYTE *)&item[0]._iy + v9);
-				v4->item[0].wIndx = *(_WORD *)((char *)&item[0].IDidx + v9);
-				v4->item[0].wCI = *(short *)((char *)&item[0]._iCreateInfo + v9);
-				v4->item[0].dwSeed = *(int *)((char *)&item[0]._iSeed + v9);
-				v4->item[0].bId = *((_BYTE *)&item[0]._iIdentified + v9);
-				v4->item[0].bDur = *((_BYTE *)&item[0]._iDurability + v9);
-				v4->item[0].bMDur = *((_BYTE *)&item[0]._iMaxDur + v9);
-				v4->item[0].bCh = *((_BYTE *)&item[0]._iCharges + v9);
-				v11 = *((_BYTE *)&item[0]._iMaxCharges + v9);
-				_LOWORD(v9) = *(_WORD *)((char *)&item[0]._ivalue + v9);
-				v4->item[0].bMCh = v11;
-				v4->item[0].wValue = v9;
-				return;
-			}
+	if (gbMaxPlayers == 1) {
+		return;
+	}
+
+	for (i = 0; i < MAXITEMS; i++) {
+		pD = &sgLevels[currlevel].item[i];
+		if (pD->bCmd != 0xFF
+		    && pD->wIndx == item[ii].IDidx
+		    && pD->wCI == item[ii]._iCreateInfo
+		    && pD->dwSeed == item[ii]._iSeed
+		    && (pD->bCmd == CMD_WALKXY || pD->bCmd == CMD_STAND)) {
+			return;
+		}
+	}
+
+	for (i = 0; i < MAXITEMS; i++) {
+		pD = &sgLevels[currlevel].item[i];
+		if (pD->bCmd == 0xFF) {
+			pD->bCmd = CMD_STAND;
+			sgbDeltaChanged = TRUE;
+			pD->x = item[ii]._ix;
+			pD->y = item[ii]._iy;
+			pD->wIndx = item[ii].IDidx;
+			pD->wCI = item[ii]._iCreateInfo;
+			pD->dwSeed = item[ii]._iSeed;
+			pD->bId = item[ii]._iIdentified;
+			pD->bDur = item[ii]._iDurability;
+			pD->bMDur = item[ii]._iMaxDur;
+			pD->bCh = item[ii]._iCharges;
+			pD->bMCh = item[ii]._iMaxCharges;
+			pD->wValue = item[ii]._ivalue;
+			return;
 		}
 	}
 }
-// 67618C: using guessed type char sgbDeltaChanged;
 // 679660: using guessed type char gbMaxPlayers;
 
 void __cdecl DeltaSaveLevel()
@@ -1037,9 +992,8 @@ void __fastcall NetSendCmdString(int pmask, const char *pszStr)
 void __fastcall RemovePlrPortal(int pnum)
 {
 	memset(&sgJunk.portal[pnum], 0xFF, sizeof(sgJunk.portal[pnum]));
-	sgbDeltaChanged = 1;
+	sgbDeltaChanged = TRUE;
 }
-// 67618C: using guessed type char sgbDeltaChanged;
 
 int __fastcall ParseCmd(int pnum, TCmd *pCmd)
 {
@@ -1268,9 +1222,8 @@ void __fastcall DeltaImportData(BYTE cmd, DWORD recv_offset)
 	}
 
 	sgbDeltaChunks++;
-	sgbDeltaChanged = 1;
+	sgbDeltaChanged = TRUE;
 }
-// 67618C: using guessed type char sgbDeltaChanged;
 // 67618D: using guessed type char sgbDeltaChunks;
 
 BYTE *__fastcall DeltaImportItem(BYTE *src, TCmdPItem *dst)
@@ -1317,52 +1270,35 @@ BYTE *__fastcall DeltaImportMonster(BYTE *src, DMonsterStr *dst)
 
 void __fastcall DeltaImportJunk(BYTE *src)
 {
-	_BYTE *v1;         // ebx
-	int v2;            // edi
-	DJunk *v3;         // esi
-	char result;       // al
-	MultiQuests *v5;   // esi
-	unsigned char *v6; // edi
-	int *v7;           // ebp
+	int i;
 
-	v1 = (_BYTE *)src;
-	v2 = 0;
-	v3 = &sgJunk;
-	do {
-		if (*v1 == -1) {
-			memset(v3, 255, 5u);
-			++v1;
-			SetPortalStats(v2, 0, 0, 0, 0, 0);
+	for (i = 0; i < MAXPORTAL; i++) {
+		if (*src == 0xFF) {
+			memset(&sgJunk.portal[i], 0xFF, sizeof(DPortal));
+			src++;
+			SetPortalStats(i, 0, 0, 0, 0, 0);
 		} else {
-			memcpy(v3, v1, 5u);
-			v1 += 5;
+			memcpy(&sgJunk.portal[i], src, sizeof(DPortal));
+			src += sizeof(DPortal);
 			SetPortalStats(
-			    v2,
+			    i,
 			    1,
-			    (unsigned char)v3->portal[0].x,
-			    (unsigned char)v3->portal[0].y,
-			    (unsigned char)v3->portal[0].level,
-			    (unsigned char)v3->portal[0].ltype);
+			    sgJunk.portal[i].x,
+			    sgJunk.portal[i].y,
+			    sgJunk.portal[i].level,
+			    sgJunk.portal[i].ltype);
 		}
-		v3 = (DJunk *)((char *)v3 + 5);
-		++v2;
-	} while ((signed int)v3 < (signed int)sgJunk.quests);
-	v5 = sgJunk.quests;
-	v6 = &quests[0]._qactive;
-	v7 = &questlist[0]._qflags;
-	do {
-		if (*(_BYTE *)v7 & 1) {
-			memcpy(v5, v1, 3u);
-			*(_DWORD *)(v6 + 18) = (unsigned char)v5->qlog;
-			*v6 = v5->qstate;
-			result = v5->qvar1;
-			v1 += 3;
-			v6[13] = result;
-			++v5;
+	}
+
+	for (i = 0; i < MAXMULTIQUESTS; i++) {
+		if (questlist[i]._qflags & 1) {
+			memcpy(&sgJunk.quests[i], src, sizeof(MultiQuests));
+			src += sizeof(MultiQuests);
+			quests[i]._qlog = sgJunk.quests[i].qlog;
+			quests[i]._qactive = sgJunk.quests[i].qstate;
+			quests[i]._qvar1 = sgJunk.quests[i].qvar1;
 		}
-		v7 += 5;
-		v6 += 24;
-	} while ((signed int)v7 < (signed int)&questlist[16]._qflags);
+	}
 }
 
 int __fastcall On_SYNCDATA(void *packet, int pnum)
@@ -1553,13 +1489,13 @@ BOOL __fastcall delta_get_item(TCmdGItem *pI, BYTE bLevel)
 		if (v5->item[0].bCmd == 1)
 			return 1;
 		if (!v6) {
-			sgbDeltaChanged = 1;
+			sgbDeltaChanged = TRUE;
 			v5->item[0].bCmd = 1;
 			return 1;
 		}
 		if (v6 == 2) {
 			v5->item[0].bCmd = -1;
-			sgbDeltaChanged = 1;
+			sgbDeltaChanged = TRUE;
 			return 1;
 		}
 		TermMsg("delta:1");
@@ -1574,7 +1510,7 @@ BOOL __fastcall delta_get_item(TCmdGItem *pI, BYTE bLevel)
 			if (v9 >= 127)
 				return 1;
 		}
-		sgbDeltaChanged = 1;
+		sgbDeltaChanged = TRUE;
 		v8->item[0].bCmd = 1;
 		v8->item[0].x = v2->x;
 		v8->item[0].y = v2->y;
@@ -1591,7 +1527,6 @@ BOOL __fastcall delta_get_item(TCmdGItem *pI, BYTE bLevel)
 	}
 	return 1;
 }
-// 67618C: using guessed type char sgbDeltaChanged;
 // 679660: using guessed type char gbMaxPlayers;
 
 int __fastcall On_GOTOAGETITEM(TCmdLocParam1 *pCmd, int pnum)
@@ -1690,51 +1625,36 @@ int __fastcall On_PUTITEM(TCmdPItem *pCmd, int pnum)
 
 void __fastcall delta_put_item(TCmdPItem *pI, int x, int y, BYTE bLevel)
 {
-	TCmdPItem *v4;      // ebx
-	int v5;             // eax
-	DLevel *v6;         // esi
-	DLevel *v7;         // edi
-	char v8;            // al
-	signed int v9;      // eax
-	char v10;           // [esp+Ch] [ebp-4h]
-	signed int bLevela; // [esp+1Ch] [ebp+Ch]
+	int i;
+	TCmdPItem *pD;
 
-	v10 = x;
-	v4 = pI;
 	if (gbMaxPlayers != 1) {
-		v5 = bLevel;
-		bLevela = 0;
-		v6 = &sgLevels[v5];
-		v7 = &sgLevels[v5];
-		do {
-			v8 = v7->item[0].bCmd;
-			if (v7->item[0].bCmd != 1
-			    && v8 != -1
-			    && v7->item[0].wIndx == v4->wIndx
-			    && v7->item[0].wCI == v4->wCI
-			    && v7->item[0].dwSeed == v4->dwSeed) {
-				if (v8 == 2)
+		for (i = 0; i < MAXITEMS; i++) {
+			pD = &sgLevels[bLevel].item[i];
+			if (pD->bCmd != CMD_WALKXY
+			    && pD->bCmd != 0xFF
+			    && pD->wIndx == pI->wIndx
+			    && pD->wCI == pI->wCI
+			    && pD->dwSeed == pI->dwSeed) {
+				if (pD->bCmd == CMD_ACK_PLRINFO)
 					return;
 				TermMsg("Trying to drop a floor item?");
 			}
-			++bLevela;
-			v7 = (DLevel *)((char *)v7 + 22);
-		} while (bLevela < 127);
-		v9 = 0;
-		while (v6->item[0].bCmd != -1) {
-			++v9;
-			v6 = (DLevel *)((char *)v6 + 22);
-			if (v9 >= 127)
-				return;
 		}
-		sgbDeltaChanged = 1;
-		memcpy(v6, v4, sizeof(TCmdPItem));
-		v6->item[0].x = v10;
-		v6->item[0].bCmd = 2;
-		v6->item[0].y = y;
+
+		for (i = 0; i < MAXITEMS; i++) {
+			pD = &sgLevels[bLevel].item[i];
+			if (pD->bCmd == 0xFF) {
+				sgbDeltaChanged = TRUE;
+				memcpy(pD, pI, sizeof(TCmdPItem));
+				pD->bCmd = CMD_ACK_PLRINFO;
+				pD->x = x;
+				pD->y = y;
+				return;
+			}
+		}
 	}
 }
-// 67618C: using guessed type char sgbDeltaChanged;
 // 679660: using guessed type char gbMaxPlayers;
 
 void __fastcall check_update_plr(int pnum)
@@ -2215,11 +2135,10 @@ int __fastcall On_OPENDOOR(TCmdParam1 *pCmd, int pnum)
 void __fastcall delta_sync_object(int oi, BYTE bCmd, BYTE bLevel)
 {
 	if (gbMaxPlayers != 1) {
-		sgbDeltaChanged = 1;
+		sgbDeltaChanged = TRUE;
 		sgLevels[bLevel].object[oi].bCmd = bCmd;
 	}
 }
-// 67618C: using guessed type char sgbDeltaChanged;
 // 679660: using guessed type char gbMaxPlayers;
 
 int __fastcall On_CLOSEDOOR(TCmdParam1 *pCmd, int pnum)
@@ -2402,14 +2321,13 @@ int __fastcall On_ACTIVATEPORTAL(TCmdLocParam3 *pCmd, int pnum)
 
 void __fastcall delta_open_portal(int pnum, BYTE x, BYTE y, BYTE bLevel, BYTE bLType, BYTE bSetLvl)
 {
-	sgbDeltaChanged = 1;
+	sgbDeltaChanged = TRUE;
 	sgJunk.portal[pnum].x = x;
 	sgJunk.portal[pnum].y = y;
 	sgJunk.portal[pnum].level = bLevel;
 	sgJunk.portal[pnum].ltype = bLType;
 	sgJunk.portal[pnum].setlvl = bSetLvl;
 }
-// 67618C: using guessed type char sgbDeltaChanged;
 
 int __fastcall On_DEACTIVATEPORTAL(TCmd *pCmd, int pnum)
 {
@@ -2501,7 +2419,7 @@ int __fastcall On_SYNCQUEST(TCmdQuest *pCmd, int pnum)
 	else {
 		if (pnum != myplr)
 			SetMultiQuest(pCmd->q, pCmd->qstate, pCmd->qlog, pCmd->qvar1);
-		sgbDeltaChanged = 1;
+		sgbDeltaChanged = TRUE;
 	}
 
 	return sizeof(*pCmd);

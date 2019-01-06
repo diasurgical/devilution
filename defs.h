@@ -121,7 +121,6 @@ typedef __int64 int64;
 #define _LOWORD(x)  WORDn(x,LOW_IND(x,_WORD))
 #define _HIBYTE(x)  BYTEn(x,HIGH_IND(x,_BYTE))
 #define _HIWORD(x)  WORDn(x,HIGH_IND(x,_WORD))
-#define HIDWORD(x) DWORDn(x,HIGH_IND(x,_DWORD))
 #define BYTE1(x)   BYTEn(x,  1)         // byte 1 (counting from 0)
 #define BYTE2(x)   BYTEn(x,  2)
 
@@ -136,12 +135,10 @@ typedef __int64 int64;
 
 // Helper functions to represent some assembly instructions.
 
-#ifdef __cplusplus
-
 #ifdef FAST_MEMCPY
 #define qmemcpy memcpy
 #else
-inline void *qmemcpy(void *dst, const void *src, size_t cnt)
+__inline void *qmemcpy(void *dst, const void *src, size_t cnt)
 {
 	char *out      = (char *)dst;
 	const char *in = (const char *)src;
@@ -153,31 +150,15 @@ inline void *qmemcpy(void *dst, const void *src, size_t cnt)
 }
 #endif
 
-// rotate left
-template <class T>
-T __ROL__(T value, int count)
+// rotate right
+__inline WORD __ROR2__(WORD value, DWORD count)
 {
-	const unsigned int nbits = sizeof(T) * 8;
+	count %= 16;
 
-	if (count > 0) {
-		count %= nbits;
-		T high = value >> (nbits - count);
-		if (T(-1) < 0) // signed value
-			high &= ~((T(-1) << count));
-		value <<= count;
-		value |= high;
-	} else {
-		count = -count % nbits;
-		T low = value << (nbits - count);
-		value >>= count;
-		value |= low;
-	}
-	return value;
+	return value >> count | value << (16 - count);
 }
 
-inline unsigned short __ROR2__(unsigned short value, int count) { return __ROL__((unsigned short)value, -count); }
-inline unsigned int __ROR4__(unsigned int value, int count) { return __ROL__((unsigned int)value, -count); }
-
+#ifdef __cplusplus
 // sign flag
 template <class T>
 char __SETS__(T x)
@@ -205,9 +186,6 @@ char __OFSUB__(T x, U y)
 		return (sx ^ __SETS__(y2)) & (sx ^ __SETS__(x - y2));
 	}
 }
-
-#else
-#define qmemcpy memcpy
 #endif
 
 #endif /* IDA_GARBAGE */

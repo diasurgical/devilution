@@ -241,13 +241,13 @@ void __fastcall DrawSpellCel(int xp, int yp, char *Trans, int nCel, int w)
 					_EAX = *(_DWORD *)v6;
 					v6 += 4;
 					ASM_XLAT(_EAX, _EBX);
-					_EAX = __ROR4__(_EAX, 8);
+					_EAX = _rotr(_EAX, 8);
 					ASM_XLAT(_EAX, _EBX);
-					_EAX = __ROR4__(_EAX, 8);
+					_EAX = _rotr(_EAX, 8);
 					ASM_XLAT(_EAX, _EBX);
-					_EAX = __ROR4__(_EAX, 8);
+					_EAX = _rotr(_EAX, 8);
 					ASM_XLAT(_EAX, _EBX);
-					*(_DWORD *)v7 = __ROR4__(_EAX, 8);
+					*(_DWORD *)v7 = _rotr(_EAX, 8);
 					v7 += 4;
 					--v15;
 				} while (v15);

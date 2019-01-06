@@ -2340,166 +2340,98 @@ void __fastcall ActivateTrapLine(int ttype, int tid)
 
 void __fastcall Obj_FlameTrap(int i)
 {
-	int v1;           // ecx
-	int *v2;          // esi
-	int v3;           // eax
-	int v4;           // ecx
-	BOOLEAN v5;       // zf
-	BOOLEAN v6;       // sf
-	unsigned char v7; // of
-	int v8;           // edx
-	int v9;           // eax
-	signed int v10;   // esi
-	int v11;          // eax
-	_BYTE *v12;       // edx
-	_DWORD *v13;      // eax
-	int v14;          // eax
-	_BYTE *v15;       // edx
-	_DWORD *v16;      // eax
-	int *v17;         // eax
+	int x, y;
+	int j, k;
 
-	v1 = i;
-	if (object[v1]._oVar2) {
-		v2 = &object[v1]._oVar4;
-		if (!object[v1]._oVar4)
-			return;
-		v3 = --object[v1]._oAnimFrame;
-		if (v3 == 1) {
-			v4 = object[v1]._olid;
-			*v2 = 0;
-			AddUnLight(v4);
-			return;
+	if (object[i]._oVar2) {
+		if (object[i]._oVar4) {
+			object[i]._oAnimFrame--;
+			if (object[i]._oAnimFrame == 1) {
+				object[i]._oVar4 = 0;
+				AddUnLight(object[i]._olid);
+			} else if (object[i]._oAnimFrame <= 4) {
+				ChangeLightRadius(object[i]._olid, object[i]._oAnimFrame);
+			}
 		}
-		v7 = __OFSUB__(v3, 4);
-		v5 = v3 == 4;
-		v6 = v3 - 4 < 0;
-		goto LABEL_24;
-	}
-	if (object[v1]._oVar4) {
-		v17 = &object[v1]._oAnimFrame;
-		if (object[v1]._oAnimFrame == object[v1]._oAnimLen)
-			*v17 = 11;
-		v3 = *v17;
-		v7 = __OFSUB__(v3, 5);
-		v5 = v3 == 5;
-		v6 = v3 - 5 < 0;
-	LABEL_24:
-		if ((unsigned char)(v6 ^ v7) | v5)
-			ChangeLightRadius(object[v1]._olid, v3);
-		return;
-	}
-	v8 = object[v1]._oy;
-	v9 = object[v1]._ox;
-	v10 = 5;
-	if (object[v1]._oVar3 == 2) {
-		v11 = v8 + 112 * (v9 - 2);
-		v12 = (unsigned char *)dPlayer + v11;
-		v13 = (_DWORD *)((char *)dMonster + 4 * v11);
-		do {
-			if (*v12 || *v13)
-				object[v1]._oVar4 = 1;
-			v13 += 112;
-			v12 += 112;
-			--v10;
-		} while (v10);
+	} else if (!object[i]._oVar4) {
+		if (object[i]._oVar3 == 2) {
+			x = object[i]._ox - 2;
+			y = object[i]._oy;
+			for (j = 0; j < 5; j++) {
+				if (dPlayer[x][y] || dMonster[x][y])
+					object[i]._oVar4 = 1;
+				x++;
+			}
+		} else {
+			x = object[i]._ox;
+			y = object[i]._oy - 2;
+			for (k = 0; k < 5; k++) {
+				if (dPlayer[x][y] || dMonster[x][y])
+					object[i]._oVar4 = 1;
+				y++;
+			}
+		}
+		if (object[i]._oVar4)
+			ActivateTrapLine(object[i]._otype, object[i]._oVar1);
 	} else {
-		v14 = v8 - 2 + 112 * v9;
-		v15 = (unsigned char *)dPlayer + v14;
-		v16 = (_DWORD *)((char *)dMonster + 4 * v14);
-		do {
-			if (*v15 || *v16)
-				object[v1]._oVar4 = 1;
-			++v16;
-			++v15;
-			--v10;
-		} while (v10);
+		if (object[i]._oAnimFrame == object[i]._oAnimLen)
+			object[i]._oAnimFrame = 11;
+		if (object[i]._oAnimFrame <= 5)
+			ChangeLightRadius(object[i]._olid, object[i]._oAnimFrame);
 	}
-	if (object[v1]._oVar4)
-		ActivateTrapLine(object[v1]._otype, object[v1]._oVar1);
 }
 
 void __fastcall Obj_Trap(int i)
 {
-	int edi1; // edi
-	int v2;   // esi
-	int v3;   // eax
-	int v4;   // eax
-	int v5;   // ebx
-	int v6;   // ecx
-	int v7;   // eax
-	int v8;   // ecx
-	char *j;  // edx
-	int v10;  // eax
-	int v11;  // [esp+8h] [ebp-1Ch]
-	int v12;  // [esp+10h] [ebp-14h]
-	int sx;   // [esp+14h] [ebp-10h]
-	int sy;   // [esp+18h] [ebp-Ch]
-	int v15;  // [esp+1Ch] [ebp-8h]
-	int v1;   // [esp+20h] [ebp-4h]
+	int oti, dir;
+	BOOL otrig;
+	int sx, sy, dx, dy, x, y;
 
-	edi1 = i;
-	if (object[i]._oVar4)
-		return;
-	v2 = dObject[object[edi1]._oVar1][object[edi1]._oVar2] - 1;
-	v3 = object[v2]._otype;
-	if (v3 <= OBJ_L2RDOOR) {
-		if (v3 < OBJ_L2LDOOR) {
-			if (v3 <= 0)
-				return;
-			if (v3 > OBJ_L1RDOOR) {
-				if (v3 <= OBJ_SKFIRE || v3 > OBJ_CHEST3 && v3 != OBJ_SWITCHSKL)
-					return;
-				goto LABEL_9;
-			}
+	otrig = FALSE;
+	if (!object[i]._oVar4) {
+		oti = dObject[object[i]._oVar1][object[i]._oVar2] - 1;
+		switch (object[oti]._otype) {
+		case OBJ_L1LDOOR:
+		case OBJ_L1RDOOR:
+		case OBJ_L2LDOOR:
+		case OBJ_L2RDOOR:
+		case OBJ_L3LDOOR:
+		case OBJ_L3RDOOR:
+			if (object[oti]._oVar4)
+				otrig = TRUE;
+			break;
+		case OBJ_LEVER:
+		case OBJ_CHEST1:
+		case OBJ_CHEST2:
+		case OBJ_CHEST3:
+		case OBJ_SWITCHSKL:
+		case OBJ_SARC:
+			if (!object[oti]._oSelFlag)
+				otrig = TRUE;
+			break;
 		}
-	LABEL_17:
-		if (!object[v2]._oVar4)
-			return;
-		goto LABEL_10;
-	}
-	if (v3 != OBJ_SARC) {
-		if (v3 <= OBJ_PEDISTAL || v3 > OBJ_L3RDOOR)
-			return;
-		goto LABEL_17;
-	}
-LABEL_9:
-	if (object[v2]._oSelFlag)
-		return;
-LABEL_10:
-	v4 = object[edi1]._ox;
-	object[edi1]._oVar4 = 1;
-	v5 = object[v2]._oy;
-	v6 = object[v2]._ox;
-	sx = v4;
-	sy = object[edi1]._oy;
-	v7 = v5 - 1;
-	v1 = object[v2]._ox;
-	v11 = v5 + 1;
-	if ((unsigned char)(__OFSUB__(v5 - 1, v5 + 1) ^ 1) | (v5 - 1 == v5 + 1)) {
-		v12 = v6 - 1;
-		v15 = v6 + 1;
-		do {
-			v8 = v12;
-			if (v12 <= v15) {
-				for (j = &dPlayer[v12][v7];; j += 112) {
-					if (*j) {
-						v1 = v8;
-						v5 = v7;
+		if (otrig) {
+			object[i]._oVar4 = 1;
+			sx = object[i]._ox;
+			sy = object[i]._oy;
+			dx = object[oti]._ox;
+			dy = object[oti]._oy;
+			for (y = dy - 1; y <= object[oti]._oy + 1; y++) {
+				for (x = object[oti]._ox - 1; x <= object[oti]._ox + 1; x++) {
+					if (dPlayer[x][y]) {
+						dx = x;
+						dy = y;
 					}
-					if (++v8 > v15)
-						break;
 				}
 			}
-			++v7;
-		} while (v7 <= v11);
-		v6 = v1;
+			if (!deltaload) {
+				dir = GetDirection(sx, sy, dx, dy);
+				AddMissile(sx, sy, dx, dy, dir, object[i]._oVar3, 1, -1, 0, 0);
+				PlaySfxLoc(IS_TRAP, object[oti]._ox, object[oti]._oy);
+			}
+			object[oti]._oTrapFlag = 0;
+		}
 	}
-	if (!deltaload) {
-		v10 = GetDirection(sx, sy, v6, v5);
-		AddMissile(sx, sy, v1, v5, v10, object[edi1]._oVar3, 1, -1, 0, 0);
-		PlaySfxLoc(IS_TRAP, object[v2]._ox, object[v2]._oy);
-	}
-	object[v2]._oTrapFlag = 0;
 }
 // 676190: using guessed type int deltaload;
 
@@ -2707,8 +2639,8 @@ void __fastcall objects_set_door_piece(int x, int y)
 	v4 = dPiece[x][y] - 1;
 	v5 = *((_WORD *)pLevelPieces + 10 * (unsigned short)v4 + 8);
 	v6 = *((_WORD *)pLevelPieces + 10 * (unsigned short)v4 + 9);
-	dpiece_defs_map_1[0][0][16 * gendung_get_dpiece_num_from_coord(x, y)] = v5;
-	dpiece_defs_map_1[0][0][16 * gendung_get_dpiece_num_from_coord(v3, v2) + 1] = v6;
+	dpiece_defs_map_1[0][16 * gendung_get_dpiece_num_from_coord(x, y)] = v5;
+	dpiece_defs_map_1[0][16 * gendung_get_dpiece_num_from_coord(v3, v2) + 1] = v6;
 }
 
 void __fastcall ObjSetMini(int x, int y, int v)
@@ -3265,138 +3197,45 @@ void __fastcall OperateL3LDoor(int pnum, int oi, unsigned char sendflag)
 
 void __fastcall MonstCheckDoors(int m)
 {
-	int v1;            // ecx
-	int v2;            // eax
-	int v3;            // ecx
-	int v4;            // eax
-	char *v5;          // ecx
-	int v6;            // eax
-	int v7;            // esi
-	int v8;            // esi
-	int v9;            // eax
-	int v10;           // ebx
-	int v11;           // eax
-	BOOLEAN v12;       // zf
-	BOOLEAN v13;       // sf
-	unsigned char v14; // of
-	int v15;           // eax
-	int v16;           // ebx
-	int v17;           // eax
-	BOOLEAN v18;       // zf
-	BOOLEAN v19;       // sf
-	unsigned char v20; // of
-	int v21;           // eax
-	int v22;           // ebx
-	int v23;           // eax
-	BOOLEAN v24;       // zf
-	BOOLEAN v25;       // sf
-	unsigned char v26; // of
-	int v27;           // [esp+0h] [ebp-14h]
-	int v28;           // [esp+4h] [ebp-10h]
-	int v29;           // [esp+8h] [ebp-Ch]
-	int v30;           // [esp+Ch] [ebp-8h]
-	int v31;           // [esp+Ch] [ebp-8h]
-	int v32;           // [esp+Ch] [ebp-8h]
-	int oi;            // [esp+10h] [ebp-4h]
+	int i, oi;
+	int dpx, dpy, mx, my;
 
-	v1 = m;
-	v2 = monster[v1]._mx;
-	v3 = monster[v1]._my;
-	v29 = v2;
-	v4 = v3 + 112 * v2;
-	v28 = v3;
-	v5 = (char *)dObject + v4;
-	if (dObject[-1][v4 - 1]
-	    || *(v5 - 1)
-	    || dObject[0][v4 + 111]
-	    || *(v5 - 112)
-	    || dObject[1][v4]
-	    || dObject[-1][v4 + 1]
-	    || dObject[0][v4 + 1]
-	    || dObject[1][v4 + 1]) {
-		v6 = 0;
-		v27 = 0;
-		if (nobjects > 0) {
-			while (1) {
-				v7 = objectactive[v6];
-				oi = v7;
-				v8 = v7;
-				v9 = object[v8]._otype;
-				if (v9 != 1 && v9 != OBJ_L1RDOOR || object[v8]._oVar4)
-					goto LABEL_21;
-				v10 = abs(object[v8]._ox - v29);
-				v11 = abs(object[v8]._oy - v28);
-				v14 = __OFSUB__(v10, 1);
-				v12 = v10 == 1;
-				v13 = v10 - 1 < 0;
-				v30 = v11;
-				if (v10 != 1)
-					goto LABEL_17;
-				if (v11 <= 1 && object[v8]._otype == 1)
-					break;
-			LABEL_18:
-				if (v30 == 1 && object[v8]._otype == OBJ_L1RDOOR)
-					OperateL1RDoor(myplr, oi, 1u);
-			LABEL_21:
-				v15 = object[v8]._otype;
-				if (v15 != OBJ_L2LDOOR && v15 != OBJ_L2RDOOR || object[v8]._oVar4)
-					goto LABEL_32;
-				v16 = abs(object[v8]._ox - v29);
-				v17 = abs(object[v8]._oy - v28);
-				v20 = __OFSUB__(v16, 1);
-				v18 = v16 == 1;
-				v19 = v16 - 1 < 0;
-				v31 = v17;
-				if (v16 != 1)
-					goto LABEL_28;
-				if (v17 <= 1 && object[v8]._otype == OBJ_L2LDOOR) {
-					OperateL2LDoor(myplr, oi, 1u);
-					v20 = 0;
-					v18 = 1;
-					v19 = 0;
-				LABEL_28:
-					if (!((unsigned char)(v19 ^ v20) | v18))
-						goto LABEL_32;
-				}
-				if (v31 == 1 && object[v8]._otype == OBJ_L2RDOOR)
-					OperateL2RDoor(myplr, oi, 1u);
-			LABEL_32:
-				v21 = object[v8]._otype;
-				if (v21 != OBJ_L3LDOOR && v21 != OBJ_L3RDOOR || object[v8]._oVar4)
-					goto LABEL_43;
-				v22 = abs(object[v8]._ox - v29);
-				v23 = abs(object[v8]._oy - v28);
-				v26 = __OFSUB__(v22, 1);
-				v24 = v22 == 1;
-				v25 = v22 - 1 < 0;
-				v32 = v23;
-				if (v22 == 1) {
-					if (v23 > 1 || object[v8]._otype != OBJ_L3RDOOR) {
-					LABEL_40:
-						if (v32 == 1 && object[v8]._otype == OBJ_L3LDOOR)
-							OperateL3LDoor(myplr, oi, 1u);
-						goto LABEL_43;
-					}
-					OperateL3RDoor(myplr, oi, 1u);
-					v26 = 0;
-					v24 = 1;
-					v25 = 0;
-				}
-				if ((unsigned char)(v25 ^ v26) | v24)
-					goto LABEL_40;
-			LABEL_43:
-				v6 = v27++ + 1;
-				if (v27 >= nobjects)
-					return;
+	mx = monster[m]._mx;
+	my = monster[m]._my;
+	if (dObject[mx - 1][my - 1]
+	    || dObject[mx][my - 1]
+	    || dObject[mx + 1][my - 1]
+	    || dObject[mx - 1][my]
+	    || dObject[mx + 1][my]
+	    || dObject[mx - 1][my + 1]
+	    || dObject[mx][my + 1]
+	    || dObject[mx + 1][my + 1]) {
+		for (i = 0; i < nobjects; ++i) {
+			oi = objectactive[i];
+			if ((object[oi]._otype == OBJ_L1LDOOR || object[oi]._otype == OBJ_L1RDOOR) && !object[oi]._oVar4) {
+				dpx = abs(object[oi]._ox - mx);
+				dpy = abs(object[oi]._oy - my);
+				if (dpx == 1 && dpy <= 1 && object[oi]._otype == OBJ_L1LDOOR)
+					OperateL1LDoor(myplr, oi, TRUE);
+				if (dpx <= 1 && dpy == 1 && object[oi]._otype == OBJ_L1RDOOR)
+					OperateL1RDoor(myplr, oi, TRUE);
 			}
-			OperateL1LDoor(myplr, oi, 1u);
-			v14 = 0;
-			v12 = 1;
-			v13 = 0;
-		LABEL_17:
-			if (!((unsigned char)(v13 ^ v14) | v12))
-				goto LABEL_21;
-			goto LABEL_18;
+			if ((object[oi]._otype == OBJ_L2LDOOR || object[oi]._otype == OBJ_L2RDOOR) && !object[oi]._oVar4) {
+				dpx = abs(object[oi]._ox - mx);
+				dpy = abs(object[oi]._oy - my);
+				if (dpx == 1 && dpy <= 1 && object[oi]._otype == OBJ_L2LDOOR)
+					OperateL2LDoor(myplr, oi, TRUE);
+				if (dpx <= 1 && dpy == 1 && object[oi]._otype == OBJ_L2RDOOR)
+					OperateL2RDoor(myplr, oi, TRUE);
+			}
+			if ((object[oi]._otype == OBJ_L3LDOOR || object[oi]._otype == OBJ_L3RDOOR) && !object[oi]._oVar4) {
+				dpx = abs(object[oi]._ox - mx);
+				dpy = abs(object[oi]._oy - my);
+				if (dpx == 1 && dpy <= 1 && object[oi]._otype == OBJ_L3RDOOR)
+					OperateL3RDoor(myplr, oi, TRUE);
+				if (dpx <= 1 && dpy == 1 && object[oi]._otype == OBJ_L3LDOOR)
+					OperateL3LDoor(myplr, oi, TRUE);
+			}
 		}
 	}
 }
@@ -3477,43 +3316,14 @@ void __fastcall ObjChangeMapResync(int x1, int y1, int x2, int y2)
 
 void __fastcall OperateL1Door(int pnum, int i, unsigned char sendflag)
 {
-	int v3;            // ebx
-	int v4;            // edi
-	int v5;            // esi
-	int v6;            // ST1C_4
-	int v7;            // eax
-	BOOLEAN v8;        // zf
-	BOOLEAN v9;        // sf
-	unsigned char v10; // of
-	int v11;           // [esp+Ch] [ebp-Ch]
-	int pnuma;         // [esp+10h] [ebp-8h]
+	int dpx, dpy;
 
-	v3 = i;
-	v4 = i;
-	pnuma = pnum;
-	v5 = pnum;
-	v6 = abs(object[i]._ox - plr[pnum].WorldX);
-	v7 = abs(object[v4]._oy - plr[v5].WorldY);
-	v10 = __OFSUB__(v6, 1);
-	v8 = v6 == 1;
-	v9 = v6 - 1 < 0;
-	v11 = v7;
-	if (v6 != 1) {
-	LABEL_5:
-		if (!((unsigned char)(v9 ^ v10) | v8))
-			return;
-		goto LABEL_6;
-	}
-	if (v7 <= 1 && object[v4]._otype == 1) {
-		OperateL1LDoor(pnuma, v3, sendflag);
-		v10 = 0;
-		v8 = 1;
-		v9 = 0;
-		goto LABEL_5;
-	}
-LABEL_6:
-	if (v11 == 1 && object[v4]._otype == OBJ_L1RDOOR)
-		OperateL1RDoor(pnuma, v3, sendflag);
+	dpx = abs(object[i]._ox - plr[pnum].WorldX);
+	dpy = abs(object[i]._oy - plr[pnum].WorldY);
+	if (dpx == 1 && dpy <= 1 && object[i]._otype == OBJ_L1LDOOR)
+		OperateL1LDoor(pnum, i, sendflag);
+	if (dpx <= 1 && dpy == 1 && object[i]._otype == OBJ_L1RDOOR)
+		OperateL1RDoor(pnum, i, sendflag);
 }
 
 void __fastcall OperateLever(int pnum, int i)
@@ -4009,84 +3819,26 @@ void __fastcall OperateSarc(int pnum, int i, unsigned char sendmsg)
 
 void __fastcall OperateL2Door(int pnum, int i, unsigned char sendflag)
 {
-	int v3;            // ebx
-	int v4;            // edi
-	int v5;            // esi
-	int v6;            // ST1C_4
-	int v7;            // eax
-	BOOLEAN v8;        // zf
-	BOOLEAN v9;        // sf
-	unsigned char v10; // of
-	int v11;           // [esp+Ch] [ebp-Ch]
-	int pnuma;         // [esp+10h] [ebp-8h]
+	int dpx, dpy;
 
-	v3 = i;
-	v4 = i;
-	pnuma = pnum;
-	v5 = pnum;
-	v6 = abs(object[i]._ox - plr[pnum].WorldX);
-	v7 = abs(object[v4]._oy - plr[v5].WorldY);
-	v10 = __OFSUB__(v6, 1);
-	v8 = v6 == 1;
-	v9 = v6 - 1 < 0;
-	v11 = v7;
-	if (v6 != 1) {
-	LABEL_5:
-		if (!((unsigned char)(v9 ^ v10) | v8))
-			return;
-		goto LABEL_6;
-	}
-	if (v7 <= 1 && object[v4]._otype == OBJ_L2LDOOR) {
-		OperateL2LDoor(pnuma, v3, sendflag);
-		v10 = 0;
-		v8 = 1;
-		v9 = 0;
-		goto LABEL_5;
-	}
-LABEL_6:
-	if (v11 == 1 && object[v4]._otype == OBJ_L2RDOOR)
-		OperateL2RDoor(pnuma, v3, sendflag);
+	dpx = abs(object[i]._ox - plr[pnum].WorldX);
+	dpy = abs(object[i]._oy - plr[pnum].WorldY);
+	if (dpx == 1 && dpy <= 1 && object[i]._otype == OBJ_L2LDOOR)
+		OperateL2LDoor(pnum, i, sendflag);
+	if (dpx <= 1 && dpy == 1 && object[i]._otype == OBJ_L2RDOOR)
+		OperateL2RDoor(pnum, i, sendflag);
 }
 
 void __fastcall OperateL3Door(int pnum, int i, unsigned char sendflag)
 {
-	int v3;            // ebx
-	int v4;            // edi
-	int v5;            // esi
-	int v6;            // ST1C_4
-	int v7;            // eax
-	BOOLEAN v8;        // zf
-	BOOLEAN v9;        // sf
-	unsigned char v10; // of
-	int v11;           // [esp+Ch] [ebp-Ch]
-	int pnuma;         // [esp+10h] [ebp-8h]
+	int dpx, dpy;
 
-	v3 = i;
-	v4 = i;
-	pnuma = pnum;
-	v5 = pnum;
-	v6 = abs(object[i]._ox - plr[pnum].WorldX);
-	v7 = abs(object[v4]._oy - plr[v5].WorldY);
-	v10 = __OFSUB__(v6, 1);
-	v8 = v6 == 1;
-	v9 = v6 - 1 < 0;
-	v11 = v7;
-	if (v6 != 1) {
-	LABEL_5:
-		if (!((unsigned char)(v9 ^ v10) | v8))
-			return;
-		goto LABEL_6;
-	}
-	if (v7 <= 1 && object[v4]._otype == OBJ_L3RDOOR) {
-		OperateL3RDoor(pnuma, v3, sendflag);
-		v10 = 0;
-		v8 = 1;
-		v9 = 0;
-		goto LABEL_5;
-	}
-LABEL_6:
-	if (v11 == 1 && object[v4]._otype == OBJ_L3LDOOR)
-		OperateL3LDoor(pnuma, v3, sendflag);
+	dpx = abs(object[i]._ox - plr[pnum].WorldX);
+	dpy = abs(object[i]._oy - plr[pnum].WorldY);
+	if (dpx == 1 && dpy <= 1 && object[i]._otype == OBJ_L3RDOOR)
+		OperateL3RDoor(pnum, i, sendflag);
+	if (dpx <= 1 && dpy == 1 && object[i]._otype == OBJ_L3LDOOR)
+		OperateL3LDoor(pnum, i, sendflag);
 }
 
 void __fastcall OperatePedistal(int pnum, int i)
