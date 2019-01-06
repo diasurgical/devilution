@@ -2707,8 +2707,8 @@ void __fastcall objects_set_door_piece(int x, int y)
 	v4 = dPiece[x][y] - 1;
 	v5 = *((_WORD *)pLevelPieces + 10 * (unsigned short)v4 + 8);
 	v6 = *((_WORD *)pLevelPieces + 10 * (unsigned short)v4 + 9);
-	dpiece_defs_map_1[0][0][16 * gendung_get_dpiece_num_from_coord(x, y)] = v5;
-	dpiece_defs_map_1[0][0][16 * gendung_get_dpiece_num_from_coord(v3, v2) + 1] = v6;
+	dpiece_defs_map_1[0][16 * gendung_get_dpiece_num_from_coord(x, y)] = v5;
+	dpiece_defs_map_1[0][16 * gendung_get_dpiece_num_from_coord(v3, v2) + 1] = v6;
 }
 
 void __fastcall ObjSetMini(int x, int y, int v)

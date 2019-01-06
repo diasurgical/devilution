@@ -949,7 +949,7 @@ void __fastcall InitPlayerLoc(int pnum, BOOL flag)
 	x = plr[pnum].WorldX - 1;
 	y = plr[pnum].WorldY + 1;
 	bitflags = 0;
-	pieces = (USHORT *)dpiece_defs_map_1 + 16 * gendung_get_dpiece_num_from_coord(x, y);
+	pieces = dpiece_defs_map_1[gendung_get_dpiece_num_from_coord(x, y)];
 
 	for (i = 2; i < 10; i++) {
 		bitflags |= pieces[i];
@@ -968,7 +968,7 @@ void __fastcall InitPlayerLoc(int pnum, BOOL flag)
 	x = plr[pnum].WorldX;
 	y = plr[pnum].WorldY + 2;
 	bitflags = 0;
-	pieces = (USHORT *)dpiece_defs_map_1 + 16 * gendung_get_dpiece_num_from_coord(x, y);
+	pieces = dpiece_defs_map_1[gendung_get_dpiece_num_from_coord(x, y)];
 
 	for (i = 2; i < 10; i++) {
 		bitflags |= pieces[i];
@@ -981,7 +981,7 @@ void __fastcall InitPlayerLoc(int pnum, BOOL flag)
 	x = plr[pnum].WorldX - 2;
 	y = plr[pnum].WorldY + 1;
 	bitflags = 0;
-	pieces = (USHORT *)dpiece_defs_map_1 + 16 * gendung_get_dpiece_num_from_coord(x, y);
+	pieces = dpiece_defs_map_1[gendung_get_dpiece_num_from_coord(x, y)];
 
 	for (i = 2; i < 10; i++) {
 		bitflags |= pieces[i];
