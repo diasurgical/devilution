@@ -94,8 +94,6 @@
 #ifndef IDA_GARBAGE
 #define IDA_GARBAGE
 
-typedef __int64 int64;
-
 // Partially defined types. They are used when the decompiler does not know
 // anything about the type except its size.
 #define _BYTE  unsigned char
@@ -113,31 +111,23 @@ typedef __int64 int64;
 #endif
 
 // first unsigned macros:
-#define BYTEn(x, n)   (*((_BYTE*)&(x)+n))
-#define WORDn(x, n)   (*((_WORD*)&(x)+n))
-#define DWORDn(x, n)  (*((_DWORD*)&(x)+n))
+#define BYTEn(x, n)   (*((BYTE*)&(x)+n))
+#define WORDn(x, n)   (*((WORD*)&(x)+n))
 
-#define _LOBYTE(x)  BYTEn(x,LOW_IND(x,_BYTE))
-#define _LOWORD(x)  WORDn(x,LOW_IND(x,_WORD))
-#define _HIBYTE(x)  BYTEn(x,HIGH_IND(x,_BYTE))
-#define _HIWORD(x)  WORDn(x,HIGH_IND(x,_WORD))
+#define _LOBYTE(x)  BYTEn(x,LOW_IND(x,BYTE))
+#define _LOWORD(x)  WORDn(x,LOW_IND(x,WORD))
+#define _HIBYTE(x)  BYTEn(x,HIGH_IND(x,BYTE))
+#define _HIWORD(x)  WORDn(x,HIGH_IND(x,WORD))
 #define BYTE1(x)   BYTEn(x,  1)         // byte 1 (counting from 0)
 #define BYTE2(x)   BYTEn(x,  2)
 
-
 // now signed macros (the same but with sign extension)
 #define SBYTEn(x, n)   (*((char*)&(x)+n))
-#define SWORDn(x, n)   (*((short*)&(x)+n))
 
 #define SLOBYTE(x)  SBYTEn(x,LOW_IND(x,char))
-#define SHIWORD(x)  SWORDn(x,HIGH_IND(x,short))
-
 
 // Helper functions to represent some assembly instructions.
 
-#ifdef FAST_MEMCPY
-#define qmemcpy memcpy
-#else
 __inline void *qmemcpy(void *dst, const void *src, size_t cnt)
 {
 	char *out      = (char *)dst;
@@ -148,7 +138,6 @@ __inline void *qmemcpy(void *dst, const void *src, size_t cnt)
 	}
 	return dst;
 }
-#endif
 
 // rotate right
 __inline WORD __ROR2__(WORD value, DWORD count)
@@ -157,35 +146,5 @@ __inline WORD __ROR2__(WORD value, DWORD count)
 
 	return value >> count | value << (16 - count);
 }
-
-#ifdef __cplusplus
-// sign flag
-template <class T>
-char __SETS__(T x)
-{
-	if (sizeof(T) == 1)
-		return char(x) < 0;
-	if (sizeof(T) == 2)
-		return short(x) < 0;
-	if (sizeof(T) == 4)
-		return int(x) < 0;
-	return int64(x) < 0;
-}
-
-// overflow flag of subtraction (x-y)
-template <class T, class U>
-char __OFSUB__(T x, U y)
-{
-	if (sizeof(T) < sizeof(U)) {
-		U x2    = x;
-		char sx = __SETS__(x2);
-		return (sx ^ __SETS__(y)) & (sx ^ __SETS__(x2 - y));
-	} else {
-		T y2    = y;
-		char sx = __SETS__(x);
-		return (sx ^ __SETS__(y2)) & (sx ^ __SETS__(x - y2));
-	}
-}
-#endif
 
 #endif /* IDA_GARBAGE */
