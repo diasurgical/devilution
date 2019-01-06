@@ -495,7 +495,7 @@ void __fastcall DoLighting(int nXPos, int nYPos, int nRadius, int Lnum)
 	_BYTE *v14;        // ecx
 	int v15;           // ebx
 	BOOLEAN v16;       // sf
-	unsigned char v17; // of
+	//unsigned char v17; // of
 	int v18;           // esi
 	int v19;           // ecx
 	char *v20;         // edi
@@ -606,10 +606,10 @@ void __fastcall DoLighting(int nXPos, int nYPos, int nRadius, int Lnum)
 						if (v9 >= 0 && v9 < 112 && v47 >= 0 && v47 < 112) {
 							v14 = (unsigned char *)dTransVal + v47 + v10;
 							v15 = (char)*v14;
-							v17 = __OFSUB__(v13, v15);
+							//v17 = __OFSUB__(v13, v15);
 							v16 = v13 - v15 < 0;
 							v5 = v52;
-							if (v16 ^ v17)
+							if (v16) // if (v16 ^ v17)
 								*v14 = v13;
 						}
 					}
@@ -640,10 +640,10 @@ void __fastcall DoLighting(int nXPos, int nYPos, int nRadius, int Lnum)
 						if (v18 + v5 >= 0 && v18 + v5 < 112 && v19 >= 0 && v19 < 112) {
 							v23 = (unsigned char *)dTransVal + v47 + v19;
 							v24 = (char)*v23;
-							v17 = __OFSUB__(v22, v24);
+							//v17 = __OFSUB__(v22, v24);
 							v16 = v22 - v24 < 0;
 							v5 = v52;
-							if (v16 ^ v17)
+							if (v16) //if (v16 ^ v17)
 								*v23 = v22;
 						}
 					}
@@ -674,10 +674,10 @@ void __fastcall DoLighting(int nXPos, int nYPos, int nRadius, int Lnum)
 						if (v26 >= 0 && v26 < 112 && v46 >= 0 && v46 < 112) {
 							v30 = (unsigned char *)dTransVal + v46 + v25;
 							v31 = (char)*v30;
-							v17 = __OFSUB__(v29, v31);
+							//v17 = __OFSUB__(v29, v31);
 							v16 = v29 - v31 < 0;
 							v5 = v52;
-							if (v16 ^ v17)
+							if (v16) //if (v16 ^ v17)
 								*v30 = v29;
 						}
 					}
@@ -709,10 +709,10 @@ void __fastcall DoLighting(int nXPos, int nYPos, int nRadius, int Lnum)
 						if (Lnumd >= 0 && Lnumd < 112 && v33 >= 0 && v33 < 112) {
 							v37 = (unsigned char *)dTransVal + v33 + *(_DWORD *)s_r;
 							v38 = (char)*v37;
-							v17 = __OFSUB__(v36, v38);
+							//v17 = __OFSUB__(v36, v38);
 							v16 = v36 - v38 < 0;
 							v4 = v48;
-							if (v16 ^ v17)
+							if (v16) //if (v16 ^ v17)
 								*v37 = v36;
 						}
 					}

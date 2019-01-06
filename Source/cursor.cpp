@@ -23,393 +23,73 @@ int pcurs;        // idb
 
 /* rdata */
 const int InvItemWidth[180] = {
-	0,
-	33,
-	32,
-	32,
-	32,
-	32,
-	32,
-	32,
-	32,
-	32,
-	32,
-	23,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56
+	// Cursors
+	0,  33, 32, 32, 32, 32, 32, 32, 32, 32, 32, 23,
+	// Items
+	1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28,
+	1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28,
+	1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28,
+	1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28,
+	1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28,
+	1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28,
+	1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28,
+	1*28, 1*28, 1*28, 1*28, 1*28, 2*28, 2*28, 2*28, 2*28, 2*28,
+	2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 2*28,
+	2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 2*28,
+	2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 2*28,
+	2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 2*28,
+	2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 2*28,
+	2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 2*28,
+	2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 2*28,
+	2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 2*28,
+	2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 2*28
 };
+
 const int InvItemHeight[180] = {
-	0,
-	29,
-	32,
-	32,
-	32,
-	32,
-	32,
-	32,
-	32,
-	32,
-	32,
-	35,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	28,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	56,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84,
-	84
+	// Cursors
+	0,  29, 32, 32, 32, 32, 32, 32, 32, 32, 32, 35,
+	// Items
+	1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28,
+	1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28,
+	1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28,
+	1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28,
+	1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28, 1*28,
+	2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 3*28, 3*28, 3*28, 3*28,
+	3*28, 3*28, 3*28, 3*28, 3*28, 3*28, 3*28, 3*28, 3*28, 3*28,
+	3*28, 3*28, 3*28, 3*28, 3*28, 2*28, 2*28, 2*28, 2*28, 2*28,
+	2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 2*28,
+	2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 2*28, 2*28,
+	3*28, 3*28, 3*28, 3*28, 3*28, 3*28, 3*28, 3*28, 3*28, 3*28,
+	3*28, 3*28, 3*28, 3*28, 3*28, 3*28, 3*28, 3*28, 3*28, 3*28,
+	3*28, 3*28, 3*28, 3*28, 3*28, 3*28, 3*28, 3*28, 3*28, 3*28,
+	3*28, 3*28, 3*28, 3*28, 3*28, 3*28, 3*28, 3*28, 3*28, 3*28,
+	3*28, 3*28, 3*28, 3*28, 3*28, 3*28, 3*28, 3*28, 3*28, 3*28,
+	3*28, 3*28, 3*28, 3*28, 3*28, 3*28, 3*28, 3*28, 3*28, 3*28,
+	3*28, 3*28, 3*28, 3*28, 3*28, 3*28, 3*28, 3*28
 };
 
 void __cdecl InitCursor()
 {
+	/// ASSERT: assert(! pCursCels);
 	pCursCels = LoadFileInMem("Data\\Inv\\Objcurs.CEL", 0);
 	ClearCursor();
 }
 
 void __cdecl FreeCursor()
 {
-	void *v0; // ecx
+	void *p;
 
-	v0 = pCursCels;
-	pCursCels = 0;
-	mem_free_dbg(v0);
+	p = pCursCels;
+	pCursCels = NULL;
+	mem_free_dbg(p);
+
 	ClearCursor();
 }
 
 void __fastcall SetICursor(int i)
 {
-	int v1; // ecx
-
-	v1 = i;
-	icursW = InvItemWidth[v1];
-	icursH = InvItemHeight[v1];
+	icursW = InvItemWidth[i];
+	icursH = InvItemHeight[i];
 	icursW28 = icursW / 28;
 	icursH28 = icursH / 28;
 }
@@ -418,11 +98,8 @@ void __fastcall SetICursor(int i)
 
 void __fastcall SetCursor_(int i)
 {
-	int v1; // eax
-
-	v1 = InvItemWidth[i];
 	pcurs = i;
-	cursW = v1;
+	cursW = InvItemWidth[i];
 	cursH = InvItemHeight[i];
 	SetICursor(i);
 }
@@ -452,80 +129,56 @@ void __cdecl InitLevelCursor()
 
 void __cdecl CheckTown()
 {
-	int v0; // ecx
-	int v1; // eax
-	int v2; // esi
-	int v3; // edx
-	int v4; // ebx
-	int v5; // [esp+0h] [ebp-4h]
+	int i, mx;
 
-	v5 = 0;
-	if (nummissiles > 0) {
-		v0 = cursmx;
-		v1 = cursmy;
-		do {
-			v2 = missileactive[v5];
-			if (missile[v2]._mitype == MIS_TOWN) {
-				if ((v3 = missile[v2]._mix, v4 = v3 - 1, v0 == v3 - 1) && v1 == missile[v2]._miy
-				    || v0 == v3 && v1 == missile[v2]._miy - 1
-				    || v0 == v4 && v1 == missile[v2]._miy - 1
-				    || v0 == v3 - 2 && (v1 == missile[v2]._miy - 1 || v0 == v3 - 2 && v1 == missile[v2]._miy - 2)
-				    || v0 == v4 && v1 == missile[v2]._miy - 2
-				    || v0 == v3 && v1 == missile[v2]._miy) {
-					trigflag[3] = 1;
-					ClearPanel();
-					strcpy(infostr, "Town Portal");
-					sprintf(tempstr, "from %s", plr[missile[v2]._misource]._pName);
-					AddPanelString(tempstr, 1);
-					v0 = missile[v2]._mix;
-					v1 = missile[v2]._miy;
-					cursmx = missile[v2]._mix;
-					cursmy = v1;
-				}
+	for(i = 0; i < nummissiles; i++) {
+		mx = missileactive[i];
+		if(missile[mx]._mitype == MIS_TOWN) {
+			if(cursmx == missile[mx]._mix - 1 && cursmy == missile[mx]._miy
+			|| cursmx == missile[mx]._mix     && cursmy == missile[mx]._miy - 1
+			|| cursmx == missile[mx]._mix - 1 && cursmy == missile[mx]._miy - 1
+			|| cursmx == missile[mx]._mix - 2 && cursmy == missile[mx]._miy - 1
+			|| cursmx == missile[mx]._mix - 2 && cursmy == missile[mx]._miy - 2
+			|| cursmx == missile[mx]._mix - 1 && cursmy == missile[mx]._miy - 2
+			|| cursmx == missile[mx]._mix     && cursmy == missile[mx]._miy) {
+				trigflag[3] = 1;
+				ClearPanel();
+				strcpy(infostr, "Town Portal");
+				sprintf(tempstr, "from %s", plr[missile[mx]._misource]._pName);
+				AddPanelString(tempstr, 1);
+				cursmx = missile[mx]._mix;
+				cursmy = missile[mx]._miy;
 			}
-			++v5;
-		} while (v5 < nummissiles);
+		}
 	}
 }
 
 void __cdecl CheckRportal()
 {
-	int v0; // ecx
-	int v1; // eax
-	int v2; // esi
-	int v3; // edx
-	int v4; // ebx
-	int v5; // [esp+0h] [ebp-4h]
+	int i, mx;
 
-	v5 = 0;
-	if (nummissiles > 0) {
-		v0 = cursmx;
-		v1 = cursmy;
-		do {
-			v2 = missileactive[v5];
-			if (missile[v2]._mitype == MIS_RPORTAL) {
-				if ((v3 = missile[v2]._mix, v4 = v3 - 1, v0 == v3 - 1) && v1 == missile[v2]._miy
-				    || v0 == v3 && v1 == missile[v2]._miy - 1
-				    || v0 == v4 && v1 == missile[v2]._miy - 1
-				    || v0 == v3 - 2 && (v1 == missile[v2]._miy - 1 || v0 == v3 - 2 && v1 == missile[v2]._miy - 2)
-				    || v0 == v4 && v1 == missile[v2]._miy - 2
-				    || v0 == v3 && v1 == missile[v2]._miy) {
-					trigflag[3] = 1;
-					ClearPanel();
-					strcpy(infostr, "Portal to");
-					if (setlevel)
-						strcpy(tempstr, "level 15");
-					else
-						strcpy(tempstr, "The Unholy Altar");
-					AddPanelString(tempstr, 1);
-					v0 = missile[v2]._mix;
-					v1 = missile[v2]._miy;
-					cursmx = missile[v2]._mix;
-					cursmy = v1;
-				}
+	for(i = 0; i < nummissiles; i++) {
+		mx = missileactive[i];
+		if(missile[mx]._mitype == MIS_RPORTAL) {
+			if(cursmx == missile[mx]._mix - 1 && cursmy == missile[mx]._miy
+			|| cursmx == missile[mx]._mix     && cursmy == missile[mx]._miy - 1
+			|| cursmx == missile[mx]._mix - 1 && cursmy == missile[mx]._miy - 1
+			|| cursmx == missile[mx]._mix - 2 && cursmy == missile[mx]._miy - 1
+			|| cursmx == missile[mx]._mix - 2 && cursmy == missile[mx]._miy - 2
+			|| cursmx == missile[mx]._mix - 1 && cursmy == missile[mx]._miy - 2
+			|| cursmx == missile[mx]._mix     && cursmy == missile[mx]._miy) {
+				trigflag[3] = 1;
+				ClearPanel();
+				strcpy(infostr, "Portal to");
+				if(!setlevel)
+					strcpy(tempstr, "The Unholy Altar");
+				else
+					strcpy(tempstr, "level 15");
+				AddPanelString(tempstr, 1);
+				cursmx = missile[mx]._mix;
+				cursmy = missile[mx]._miy;
 			}
-			++v5;
-		} while (v5 < nummissiles);
+		}
 	}
 }
 // 5CF31D: using guessed type char setlevel;

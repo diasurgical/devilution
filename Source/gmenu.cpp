@@ -289,11 +289,8 @@ int __fastcall gmenu_get_lfont(TMenuItem *pItem)
 	return i - 2;
 }
 
-int __fastcall gmenu_presskeys(int a1)
+BOOL __fastcall gmenu_presskeys(int a1)
 {
-	int v1; // ecx
-	int v2; // ecx
-
 	if (!dword_634480)
 		return 0;
 	switch (a1) {
@@ -302,31 +299,27 @@ int __fastcall gmenu_presskeys(int a1)
 			PlaySFX(IS_TITLEMOV);
 			((void(__fastcall *)(signed int))sgpCurrItem->fnMenu)(1);
 		}
-		return 1;
+		break;
 	case VK_ESCAPE:
 		PlaySFX(IS_TITLEMOV);
 		gmenu_call_proc(0, 0);
-		return 1;
+		break;
 	case VK_SPACE:
-		return 0;
+		return FALSE;
 	case VK_LEFT:
-		v2 = 0;
-		goto LABEL_12;
-	case VK_UP:
-		v1 = 0;
-		goto LABEL_10;
+		gmenu_left_right(0);
+		break;
 	case VK_RIGHT:
-		v2 = 1;
-	LABEL_12:
-		gmenu_left_right(v2);
-		return 1;
+		gmenu_left_right(1);
+		break;
+	case VK_UP:
+		gmenu_up_down(0);
+		break;
 	case VK_DOWN:
-		v1 = 1;
-	LABEL_10:
-		gmenu_up_down(v1);
+		gmenu_up_down(1);
 		break;
 	}
-	return 1;
+	return TRUE;
 }
 
 void __fastcall gmenu_left_right(int a1)

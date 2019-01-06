@@ -4,7 +4,7 @@
 
 extern WORD automaptype[512];
 extern BOOL automapflag; // idb
-extern char AMbyte_4B7E4C[32];
+extern char AmShiftTab[32];
 extern unsigned char automapview[DMAXX][DMAXY];
 extern int AutoMapScale;   // idb
 extern int AutoMapXOfs;    // weak

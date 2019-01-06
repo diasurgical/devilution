@@ -26,7 +26,7 @@ void __cdecl gmenu_draw();
 void __fastcall gmenu_draw_menu_item(TMenuItem *pItem, int a2);
 void __fastcall gmenu_clear_buffer(int x, int y, int width, int height);
 int __fastcall gmenu_get_lfont(TMenuItem *pItem);
-int __fastcall gmenu_presskeys(int a1);
+BOOL __fastcall gmenu_presskeys(int a1);
 void __fastcall gmenu_left_right(int a1);
 int __fastcall gmenu_on_mouse_move(LPARAM lParam);
 BOOLEAN __fastcall gmenu_valid_mouse_pos(int *plOffset);

@@ -451,7 +451,7 @@ void __cdecl diablo_init_screen()
 	ScrollInfo._sdy = 0;
 	ScrollInfo._sxoff = 0;
 	ScrollInfo._syoff = 0;
-	ScrollInfo._sdir = 0;
+	ScrollInfo._sdir = SDIR_NONE;
 
 	for (i = 0; i < 1024; i++)
 		screen_y_times_768[i] = i * 768;

@@ -851,17 +851,17 @@ void __fastcall InitPlayer(int pnum, BOOL FirstTime)
 
 		if (plr[pnum]._pHitPoints >> 6 > 0) {
 			plr[pnum]._pmode = PM_STAND;
-			NewPlrAnim(pnum, plr[pnum]._pNAnim[0], plr[pnum]._pNFrames, 3, plr[pnum]._pNWidth);
+			NewPlrAnim(pnum, plr[pnum]._pNAnim[DIR_S], plr[pnum]._pNFrames, 3, plr[pnum]._pNWidth);
 			plr[pnum]._pAnimFrame = random(2, plr[pnum]._pNFrames - 1) + 1;
 			plr[pnum]._pAnimCnt = random(2, 3);
 		} else {
 			plr[pnum]._pmode = PM_DEATH;
-			NewPlrAnim(pnum, plr[pnum]._pDAnim[0], plr[pnum]._pDFrames, 1, plr[pnum]._pDWidth);
+			NewPlrAnim(pnum, plr[pnum]._pDAnim[DIR_S], plr[pnum]._pDFrames, 1, plr[pnum]._pDWidth);
 			plr[pnum]._pAnimFrame = plr[pnum]._pAnimLen - 1;
 			plr[pnum]._pVar8 = 2 * plr[pnum]._pAnimLen;
 		}
 
-		plr[pnum]._pdir = 0;
+		plr[pnum]._pdir = DIR_S;
 		plr[pnum]._peflag = 0;
 
 		if (pnum == myplr) {
@@ -921,7 +921,7 @@ void __fastcall InitPlayer(int pnum, BOOL FirstTime)
 		deathflag = FALSE;
 		ScrollInfo._sxoff = 0;
 		ScrollInfo._syoff = 0;
-		ScrollInfo._sdir = 0;
+		ScrollInfo._sdir = SDIR_NONE;
 	}
 }
 // 52572C: using guessed type int leveldebug;
@@ -949,7 +949,7 @@ void __fastcall InitPlayerLoc(int pnum, BOOL flag)
 	x = plr[pnum].WorldX - 1;
 	y = plr[pnum].WorldY + 1;
 	bitflags = 0;
-	pieces = (USHORT *)dpiece_defs_map_1 + 16 * gendung_get_dpiece_num_from_coord(x, y);
+	pieces = dpiece_defs_map_1[gendung_get_dpiece_num_from_coord(x, y)];
 
 	for (i = 2; i < 10; i++) {
 		bitflags |= pieces[i];
@@ -968,7 +968,7 @@ void __fastcall InitPlayerLoc(int pnum, BOOL flag)
 	x = plr[pnum].WorldX;
 	y = plr[pnum].WorldY + 2;
 	bitflags = 0;
-	pieces = (USHORT *)dpiece_defs_map_1 + 16 * gendung_get_dpiece_num_from_coord(x, y);
+	pieces = dpiece_defs_map_1[gendung_get_dpiece_num_from_coord(x, y)];
 
 	for (i = 2; i < 10; i++) {
 		bitflags |= pieces[i];
@@ -981,7 +981,7 @@ void __fastcall InitPlayerLoc(int pnum, BOOL flag)
 	x = plr[pnum].WorldX - 2;
 	y = plr[pnum].WorldY + 1;
 	bitflags = 0;
-	pieces = (USHORT *)dpiece_defs_map_1 + 16 * gendung_get_dpiece_num_from_coord(x, y);
+	pieces = dpiece_defs_map_1[gendung_get_dpiece_num_from_coord(x, y)];
 
 	for (i = 2; i < 10; i++) {
 		bitflags |= pieces[i];
@@ -1084,7 +1084,7 @@ void __fastcall FixPlayerLocation(int pnum, int dir)
 	if (pnum == myplr) {
 		ScrollInfo._sxoff = 0;
 		ScrollInfo._syoff = 0;
-		ScrollInfo._sdir = 0;
+		ScrollInfo._sdir = SDIR_NONE;
 		ViewX = plr[pnum].WorldX;
 		ViewY = plr[pnum].WorldY;
 	}
@@ -1129,7 +1129,7 @@ void __fastcall StartWalkStand(int pnum)
 	if (pnum == myplr) {
 		ScrollInfo._sxoff = 0;
 		ScrollInfo._syoff = 0;
-		ScrollInfo._sdir = 0;
+		ScrollInfo._sdir = SDIR_NONE;
 		ViewX = plr[pnum].WorldX;
 		ViewY = plr[pnum].WorldY;
 	}

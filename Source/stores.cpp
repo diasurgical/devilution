@@ -132,19 +132,17 @@ void __cdecl SetupTownStores()
 
 void __cdecl FreeStoreMem()
 {
-	void *v0; // ecx
-	void *v1; // ecx
-	void *v2; // ecx
+	void *p;
 
-	v0 = pSTextBoxCels;
-	pSTextBoxCels = 0;
-	mem_free_dbg(v0);
-	v1 = pCelBuff;
-	pCelBuff = 0;
-	mem_free_dbg(v1);
-	v2 = pSTextSlidCels;
-	pSTextSlidCels = 0;
-	mem_free_dbg(v2);
+	p = pSTextBoxCels;
+	pSTextBoxCels = NULL;
+	mem_free_dbg(p);
+	p = pCelBuff;
+	pCelBuff = NULL;
+	mem_free_dbg(p);
+	p = pSTextSlidCels;
+	pSTextSlidCels = NULL;
+	mem_free_dbg(p);
 }
 
 void __cdecl DrawSTextBack()
@@ -373,13 +371,10 @@ void __fastcall ClearSText(int s, int e)
 
 void __fastcall AddSLine(int y)
 {
-	int v1; // ecx
-
-	v1 = y;
-	stext[v1]._sx = 0;
-	stext[v1]._syoff = 0;
-	stext[v1]._sstr[0] = 0;
-	stext[v1]._sline = 1;
+	stext[y]._sx = 0;
+	stext[y]._syoff = 0;
+	stext[y]._sstr[0] = 0;
+	stext[y]._sline = 1;
 }
 
 void __fastcall AddSTextVal(int y, int val)
@@ -392,18 +387,15 @@ void __fastcall OffsetSTextY(int y, int yo)
 	stext[y]._syoff = yo;
 }
 
-void __fastcall AddSText(int x, int y, unsigned char j, char *str, int clr, int sel)
+void __fastcall AddSText(int x, int y, int j, char *str, int clr, int sel)
 {
-	int v6; // esi
-
-	v6 = y;
-	stext[v6]._syoff = 0;
-	stext[v6]._sx = x;
+	stext[y]._sx = x;
+	stext[y]._syoff = 0;
 	strcpy(stext[y]._sstr, str);
-	stext[v6]._sline = 0;
-	stext[v6]._sjust = j;
-	_LOBYTE(stext[v6]._sclr) = clr;
-	stext[v6]._ssel = sel;
+	stext[y]._sjust = j;
+	stext[y]._sclr = clr;
+	stext[y]._sline = 0;
+	stext[y]._ssel = sel;
 }
 
 void __cdecl StoreAutoPlace()
@@ -430,7 +422,7 @@ void __cdecl StoreAutoPlace()
 	int v20;        // [esp+14h] [ebp-8h]
 	int v21;        // [esp+18h] [ebp-4h]
 
-	SetICursor(plr[myplr].HoldItem._iCurs + 12);
+	SetICursor(plr[myplr].HoldItem._iCurs + CURSOR_FIRSTITEM);
 	v0 = icursH28;
 	v1 = 0;
 	v21 = icursW28;
@@ -829,16 +821,22 @@ BOOLEAN __cdecl S_StartSPBuy()
 // 6A6BB8: using guessed type int stextscrl;
 // 6A8A28: using guessed type int stextsel;
 
-BOOLEAN __fastcall SmithSellOk(int i)
+BOOL __fastcall SmithSellOk(int i)
 {
-	if (plr[myplr].InvList[i]._itype != ITYPE_NONE
-	    && plr[myplr].InvList[i]._itype
-	    && plr[myplr].InvList[i]._itype != ITYPE_GOLD
-	    && plr[myplr].InvList[i]._itype != ITYPE_0E
-	    && plr[myplr].InvList[i]._itype != ITYPE_STAFF)
-		return plr[myplr].InvList[i].IDidx != IDI_LAZSTAFF;
-	else
-		return 0;
+	if (plr[myplr].InvList[i]._itype == ITYPE_NONE)
+		return FALSE;
+	if (plr[myplr].InvList[i]._itype == ITYPE_MISC)
+		return FALSE;
+	if (plr[myplr].InvList[i]._itype == ITYPE_GOLD)
+		return FALSE;
+	if (plr[myplr].InvList[i]._itype == ITYPE_0E)
+		return FALSE;
+	if (plr[myplr].InvList[i]._itype == ITYPE_STAFF)
+		return FALSE;
+	if (plr[myplr].InvList[i].IDidx == IDI_LAZSTAFF)
+		return FALSE;
+
+	return TRUE;
 }
 
 void __fastcall S_ScrollSSell(int idx)
@@ -2475,7 +2473,7 @@ void __cdecl S_SBuyEnter()
 		idx = stextsval + ((stextsel - stextup) >> 2);
 		if (plr[myplr]._pGold >= smithitem[idx]._iIvalue) {
 			qmemcpy(&plr[v0].HoldItem, &smithitem[idx], sizeof(plr[v0].HoldItem));
-			SetCursor_(plr[v0].HoldItem._iCurs + 12);
+			SetCursor_(plr[v0].HoldItem._iCurs + CURSOR_FIRSTITEM);
 			done = 0;
 			i = 0;
 			do {
@@ -2579,7 +2577,7 @@ void __cdecl S_SPBuyEnter()
 		v7 = myplr;
 		if (plr[myplr]._pGold >= premiumitem[v6]._iIvalue) {
 			qmemcpy(&plr[v7].HoldItem, &premiumitem[v6], sizeof(plr[v7].HoldItem));
-			SetCursor_(plr[v7].HoldItem._iCurs + 12);
+			SetCursor_(plr[v7].HoldItem._iCurs + CURSOR_FIRSTITEM);
 			v8 = 0;
 			v9 = 0;
 			do {
@@ -2619,7 +2617,7 @@ BOOLEAN __fastcall StoreGoldFit(int idx)
 	if (cost % 5000)
 		sz++;
 
-	SetCursor_(storehold[idx]._iCurs + 12);
+	SetCursor_(storehold[idx]._iCurs + CURSOR_FIRSTITEM);
 	numsqrs = cursW / 28 * (cursH / 28);
 	SetCursor_(CURSOR_HAND);
 
@@ -2683,7 +2681,7 @@ void __cdecl StoreSellItem()
 	int v2;           // eax
 	int cost;         // ebp
 	BOOLEAN v4;       // sf
-	unsigned char v5; // of
+	//unsigned char v5; // of
 	unsigned int v6;  // eax
 	int v8;           // edx
 	int *v10;         // edi
@@ -2699,9 +2697,9 @@ void __cdecl StoreSellItem()
 		RemoveInvItem(myplr, v1);
 	v2 = storenumh - 1;
 	cost = storehold[idx]._iIvalue;
-	v5 = __OFSUB__(idx, storenumh - 1);
+	//v5 = __OFSUB__(idx, storenumh - 1);
 	v4 = idx - (storenumh-- - 1) < 0;
-	if (v4 ^ v5) {
+	if (v4) {//if (v4 ^ v5) {
 		v6 = v2 - idx;
 		qmemcpy(&storehidx[idx], &storehidx[idx + 1], v6);
 		qmemcpy(&storehold[idx], &storehold[idx + 1], 4 * (368 * v6 >> 2));
@@ -2809,7 +2807,7 @@ void __cdecl S_SRepairEnter()
 	int v1;           // edx
 	int v2;           // ecx
 	BOOLEAN v3;       // sf
-	unsigned char v4; // of
+	//unsigned char v4; // of
 	char v5;          // cl
 
 	if (stextsel == 22) {
@@ -2823,10 +2821,10 @@ void __cdecl S_SRepairEnter()
 		stextvhold = stextsval;
 		qmemcpy(&plr[myplr].HoldItem, &storehold[idx], sizeof(plr[myplr].HoldItem));
 		v2 = plr[v1]._pGold;
-		v4 = __OFSUB__(v2, storehold[idx]._iIvalue);
+		//v4 = __OFSUB__(v2, storehold[idx]._iIvalue);
 		v3 = v2 - storehold[idx]._iIvalue < 0;
 		v5 = STORE_NOMONEY;
-		if (!(v3 ^ v4))
+		if (!v3)//if (!(v3 ^ v4))
 			v5 = STORE_CONFIRM;
 		StartStore(v5);
 	}
@@ -2928,7 +2926,7 @@ void __cdecl S_WBuyEnter()
 
 		if (plr[myplr]._pGold >= witchitem[idx]._iIvalue) {
 			qmemcpy(&plr[myplr].HoldItem, &witchitem[idx], sizeof(ItemStruct));
-			SetCursor_(plr[myplr].HoldItem._iCurs + 12);
+			SetCursor_(plr[myplr].HoldItem._iCurs + CURSOR_FIRSTITEM);
 			done = 0;
 
 			for (i = 0; i < 40; i++) {
@@ -3007,7 +3005,7 @@ void __cdecl S_WRechargeEnter()
 	int v1;           // edx
 	int v2;           // ecx
 	BOOLEAN v3;       // sf
-	unsigned char v4; // of
+	//unsigned char v4; // of
 	char v5;          // cl
 
 	if (stextsel == 22) {
@@ -3021,10 +3019,10 @@ void __cdecl S_WRechargeEnter()
 		stextvhold = stextsval;
 		qmemcpy(&plr[myplr].HoldItem, &storehold[idx], sizeof(plr[myplr].HoldItem));
 		v2 = plr[v1]._pGold;
-		v4 = __OFSUB__(v2, storehold[idx]._iIvalue);
+		//v4 = __OFSUB__(v2, storehold[idx]._iIvalue);
 		v3 = v2 - storehold[idx]._iIvalue < 0;
 		v5 = STORE_NOMONEY;
-		if (!(v3 ^ v4))
+		if (!v3)//if (!(v3 ^ v4))
 			v5 = STORE_CONFIRM;
 		StartStore(v5);
 	}
@@ -3086,11 +3084,11 @@ void __cdecl HealerBuyItem()
 {
 	int idx;          // esi
 	BOOLEAN v1;       // sf
-	unsigned char v2; // of
+	//unsigned char v2; // of
 	int v3;           // eax
 	int v4;           // ecx
 	BOOLEAN v5;       // sf
-	unsigned char v6; // of
+	//unsigned char v6; // of
 	int v7;           // eax
 	ItemStruct *v8;   // edx
 	ItemStruct *v9;   // edi
@@ -3098,13 +3096,13 @@ void __cdecl HealerBuyItem()
 
 	idx = stextvhold + ((stextlhold - stextup) >> 2);
 	if (gbMaxPlayers == 1) {
-		v2 = __OFSUB__(idx, 2);
+		//v2 = __OFSUB__(idx, 2);
 		v1 = idx - 2 < 0;
 	} else {
-		v2 = __OFSUB__(idx, 3);
+		//v2 = __OFSUB__(idx, 3);
 		v1 = idx - 3 < 0;
 	}
-	if (v1 ^ v2) {
+	if (v1) {//if (v1 ^ v2) {
 		v3 = GetRndSeed();
 		v4 = myplr;
 		plr[myplr].HoldItem._iSeed = v3;
@@ -3116,13 +3114,13 @@ void __cdecl HealerBuyItem()
 		plr[myplr].HoldItem._iIdentified = FALSE;
 	StoreAutoPlace();
 	if (gbMaxPlayers == 1) {
-		v6 = __OFSUB__(idx, 2);
+		//v6 = __OFSUB__(idx, 2);
 		v5 = idx - 2 < 0;
 	} else {
-		v6 = __OFSUB__(idx, 3);
+		//v6 = __OFSUB__(idx, 3);
 		v5 = idx - 3 < 0;
 	}
-	if (!(v5 ^ v6)) {
+	if (!v5) {//if (!(v5 ^ v6)) {
 		v7 = stextvhold + ((stextlhold - stextup) >> 2);
 		if (v7 == 19) {
 			healitem[19]._itype = -1;
@@ -3164,7 +3162,7 @@ void __cdecl S_BBuyEnter()
 		if (plr[myplr]._pGold >= boyitem._iIvalue + (boyitem._iIvalue >> 1)) {
 			qmemcpy(&plr[v1].HoldItem, &boyitem, sizeof(plr[v1].HoldItem));
 			plr[v1].HoldItem._iIvalue += plr[v1].HoldItem._iIvalue >> 1;
-			SetCursor_(plr[v1].HoldItem._iCurs + 12);
+			SetCursor_(plr[v1].HoldItem._iCurs + CURSOR_FIRSTITEM);
 			v3 = 0;
 			v4 = 0;
 			do {
@@ -3345,7 +3343,7 @@ void __cdecl S_HBuyEnter()
 		idx = stextsval + ((stextsel - stextup) >> 2);
 		if (plr[myplr]._pGold >= healitem[idx]._iIvalue) {
 			qmemcpy(&plr[v0].HoldItem, &healitem[idx], sizeof(plr[v0].HoldItem));
-			SetCursor_(plr[v0].HoldItem._iCurs + 12);
+			SetCursor_(plr[v0].HoldItem._iCurs + CURSOR_FIRSTITEM);
 			done = 0;
 			i = 0;
 			do {
@@ -3410,7 +3408,7 @@ void __cdecl S_SIDEnter()
 	int v1;           // edx
 	int v2;           // ecx
 	BOOLEAN v3;       // sf
-	unsigned char v4; // of
+	//unsigned char v4; // of
 	char v5;          // cl
 
 	if (stextsel == 22) {
@@ -3424,10 +3422,10 @@ void __cdecl S_SIDEnter()
 		stextvhold = stextsval;
 		qmemcpy(&plr[myplr].HoldItem, &storehold[idx], sizeof(plr[myplr].HoldItem));
 		v2 = plr[v1]._pGold;
-		v4 = __OFSUB__(v2, storehold[idx]._iIvalue);
+		//v4 = __OFSUB__(v2, storehold[idx]._iIvalue);
 		v3 = v2 - storehold[idx]._iIvalue < 0;
 		v5 = STORE_NOMONEY;
-		if (!(v3 ^ v4))
+		if (!v3)//if (!(v3 ^ v4))
 			v5 = STORE_CONFIRM;
 		StartStore(v5);
 	}
@@ -3667,7 +3665,7 @@ void __cdecl STextEnter()
 void __cdecl CheckStoreBtn()
 {
 	BOOLEAN v0;       // sf
-	unsigned char v1; // of
+	//unsigned char v1; // of
 	int v2;           // eax
 	int *v3;          // ecx
 
@@ -3677,13 +3675,13 @@ void __cdecl CheckStoreBtn()
 			sfx_stop();
 	} else if (stextsel != -1 && MouseY >= 32 && MouseY <= 320) {
 		if (stextsize) {
-			v1 = __OFSUB__(MouseX, 24);
+			//v1 = __OFSUB__(MouseX, 24);
 			v0 = MouseX - 24 < 0;
 		} else {
-			v1 = __OFSUB__(MouseX, 344);
+			//v1 = __OFSUB__(MouseX, 344);
 			v0 = MouseX - 344 < 0;
 		}
-		if (!(v0 ^ v1) && MouseX <= 616) {
+		if (!v0 && MouseX <= 616) {//if (!(v0 ^ v1) && MouseX <= 616) {
 			v2 = (MouseY - 32) / 12;
 			if (stextscrl && MouseX > 600) {
 				if (v2 == 4) {

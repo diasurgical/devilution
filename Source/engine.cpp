@@ -1468,46 +1468,42 @@ void __fastcall DrawLine(int x0, int y0, int x1, int y1, UCHAR col)
 
 int __fastcall GetDirection(int x1, int y1, int x2, int y2)
 {
-	int v4;     // esi
-	int v5;     // ecx
-	int v6;     // edx
-	int result; // eax
-	int v8;     // esi
-	int v9;     // edx
+	int mx,  my;
+	int md, ny;
 
-	v4 = x2 - x1;
-	v5 = y2 - y1;
-	if (v4 < 0) {
-		v8 = -v4;
-		v9 = 2 * v8;
-		if (v5 < 0) {
-			v5 = -v5;
-			result = 4;
-			if (v9 < v5)
-				result = 5;
+	mx = x2 - x1;
+	my = y2 - y1;
+
+	if (mx >= 0) {
+		if (my >= 0) {
+			md = DIR_S;
+			if (2 * mx < my)
+				md = DIR_SW;
 		} else {
-			result = 2;
-			if (v9 < v5)
-				result = 1;
+			my = -my;
+			md = DIR_E;
+			if (2 * mx < my)
+				md = DIR_NE;
 		}
-		if (2 * v5 < v8)
-			return 3;
+		if (2 * my < mx)
+			return DIR_SE;
 	} else {
-		v6 = 2 * v4;
-		if (v5 < 0) {
-			v5 = -v5;
-			result = 6;
-			if (v6 < v5)
-				result = 5;
+		ny = -mx;
+		if (my >= 0) {
+			md = DIR_W;
+			if (2 * ny < my)
+				md = DIR_SW;
 		} else {
-			result = 0;
-			if (v6 < v5)
-				result = 1;
+			my = -my;
+			md = DIR_N;
+			if (2 * ny < my)
+				md = DIR_NE;
 		}
-		if (2 * v5 < v4)
-			return 7;
+		if (2 * my < ny)
+			return DIR_NW;
 	}
-	return result;
+
+	return md;
 }
 
 void __fastcall SetRndSeed(int s)
@@ -1522,7 +1518,7 @@ void __fastcall SetRndSeed(int s)
 
 int __cdecl GetRndSeed()
 {
-	++SeedCount;
+	SeedCount++;
 	sglGameSeed = 0x015A4E35 * sglGameSeed + 1;
 	return abs(sglGameSeed);
 }
@@ -1563,55 +1559,49 @@ void __cdecl mem_free_mutex(void)
 
 unsigned char *__fastcall DiabloAllocPtr(int dwBytes)
 {
-	int v1;            // ebx
-	unsigned char *v2; // ebx
-	int v3;            // eax
+	BYTE *buf;
 
-	v1 = dwBytes;
 	EnterCriticalSection(&sgMemCrit);
-	v2 = (unsigned char *)SMemAlloc(v1, "C:\\Src\\Diablo\\Source\\ENGINE.CPP", 2236, 0);
+	buf = (BYTE *)SMemAlloc(dwBytes, "C:\\Src\\Diablo\\Source\\ENGINE.CPP", 2236, 0);
 	LeaveCriticalSection(&sgMemCrit);
-	if (!v2) {
-		v3 = GetLastError();
-		ErrDlg(IDD_DIALOG2, v3, "C:\\Src\\Diablo\\Source\\ENGINE.CPP", 2269);
+
+	if (buf == NULL) {
+		ErrDlg(IDD_DIALOG2, GetLastError(), "C:\\Src\\Diablo\\Source\\ENGINE.CPP", 2269);
 	}
-	return v2;
+
+	return buf;
 }
 
 void __fastcall mem_free_dbg(void *p)
 {
-	void *v1; // edi
-
-	v1 = p;
 	if (p) {
 		EnterCriticalSection(&sgMemCrit);
-		SMemFree(v1, "C:\\Src\\Diablo\\Source\\ENGINE.CPP", 2317, 0);
+		SMemFree(p, "C:\\Src\\Diablo\\Source\\ENGINE.CPP", 2317, 0);
 		LeaveCriticalSection(&sgMemCrit);
 	}
 }
 
-unsigned char *__fastcall LoadFileInMem(char *pszName, int *pdwFileLen)
+BYTE *__fastcall LoadFileInMem(char *pszName, int *pdwFileLen)
 {
-	int *v2;  // edi
-	char *v3; // ebx
-	int v4;   // eax
-	int v5;   // esi
-	char *v6; // edi
-	void *a1; // [esp+Ch] [ebp-4h]
+	HANDLE file;
+	BYTE *buf;
+	int fileLen;
 
-	v2 = pdwFileLen;
-	v3 = pszName;
-	WOpenFile(pszName, &a1, 0);
-	v4 = WGetFileSize(a1, 0);
-	v5 = v4;
-	if (v2)
-		*v2 = v4;
-	if (!v4)
-		TermMsg("Zero length SFILE:\n%s", v3);
-	v6 = (char *)DiabloAllocPtr(v5);
-	WReadFile(a1, v6, v5);
-	WCloseFile(a1);
-	return (unsigned char *)v6;
+	WOpenFile(pszName, &file, FALSE);
+	fileLen = WGetFileSize(file, NULL);
+
+	if (pdwFileLen)
+		*pdwFileLen = fileLen;
+
+	if (!fileLen)
+		TermMsg("Zero length SFILE:\n%s", pszName);
+
+	buf = (BYTE *)DiabloAllocPtr(fileLen);
+
+	WReadFile(file, buf, fileLen);
+	WCloseFile(file);
+
+	return buf;
 }
 
 void __fastcall LoadFileWithMem(char *pszName, void *buf)
@@ -2428,11 +2418,8 @@ void __fastcall Cl2DecodeFrm6(int screen_x, int screen_y, char *pCelBuff, int nC
 
 void __fastcall PlayInGameMovie(char *pszMovie)
 {
-	char *v1; // esi
-
-	v1 = pszMovie;
 	PaletteFadeOut(8);
-	play_movie(v1, 0);
+	play_movie(pszMovie, 0);
 	ClearScreenBuffer();
 	drawpanflag = 255;
 	scrollrt_draw_game_screen(1);

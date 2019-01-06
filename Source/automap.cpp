@@ -7,7 +7,7 @@ WORD automaptype[512];
 static int MapX;
 static int MapY;
 BOOL automapflag; // idb
-char AMbyte_4B7E4C[32];
+char AmShiftTab[32]; // [31]?
 unsigned char automapview[DMAXX][DMAXY];
 int AutoMapScale;   // idb
 int AutoMapXOfs;    // weak
@@ -49,82 +49,63 @@ void __cdecl InitAutomapOnce()
 
 void __cdecl InitAutomap()
 {
-	signed int v0;     // edi
-	signed int v1;     // ecx
-	int v2;            // esi
-	char v3;           // al
-	int v4;            // esi
-	char v5;           // al
-	char *v6;          // ecx
-	unsigned char *v7; // eax
-	int v8;            // ecx
-	unsigned char *v9; // edx
-	unsigned int i;    // esi
-	unsigned char v11; // bl
-	_BYTE *v12;        // edx
-	signed int v13;    // ecx
-	_BYTE *v14;        // eax
-	signed int v15;    // edx
-	int size;          // [esp+Ch] [ebp-4h]
+	unsigned char b1, b2;
+	unsigned int dwTiles;
+	int x, y;
+	unsigned char *pAFile, *pTmp;
+	int i, j;
+	int d;
 
-	v0 = 50;
-	v1 = 0;
-	do {
-		v2 = (v0 << 6) / 100;
-		v3 = 2 * (320 / v2);
-		v4 = 320 % v2;
-		v5 = v3 + 1;
-		AMbyte_4B7E4C[v1] = v5;
-		if (v4)
-			AMbyte_4B7E4C[v1] = v5 + 1;
-		if (v4 >= 32 * v0 / 100)
-			++AMbyte_4B7E4C[v1];
-		v0 += 5;
-		++v1;
-	} while (v1 < 31);
+	j = 50;
+
+	for(i = 0; i < 31; i++) {
+		d = (j << 6) / 100;
+		AmShiftTab[i] = 2 * (320 / d) + 1;
+		if(320 % d)
+			AmShiftTab[i]++;
+		if(320 % d >= (j << 5) / 100)
+			AmShiftTab[i]++;
+		j += 5;
+	}
+
 	memset(automaptype, 0, sizeof(automaptype));
-	switch (leveltype) {
+
+	switch(leveltype) {
 	case DTYPE_CATHEDRAL:
-		v6 = "Levels\\L1Data\\L1.AMP";
+		pAFile = LoadFileInMem("Levels\\L1Data\\L1.AMP", (int *)&dwTiles);
+		dwTiles >>= 1;
 		break;
 	case DTYPE_CATACOMBS:
-		v6 = "Levels\\L2Data\\L2.AMP";
+		pAFile = LoadFileInMem("Levels\\L2Data\\L2.AMP", (int *)&dwTiles);
+		dwTiles >>= 1;
 		break;
 	case DTYPE_CAVES:
-		v6 = "Levels\\L3Data\\L3.AMP";
+		pAFile = LoadFileInMem("Levels\\L3Data\\L3.AMP", (int *)&dwTiles);
+		dwTiles >>= 1;
 		break;
 	case DTYPE_HELL:
-		v6 = "Levels\\L4Data\\L4.AMP";
+		pAFile = LoadFileInMem("Levels\\L4Data\\L4.AMP", (int *)&dwTiles);
+		dwTiles >>= 1;
 		break;
 	default:
 		return;
 	}
-	v7 = LoadFileInMem(v6, &size);
-	size = (unsigned int)size >> 1;
-	v9 = v7;
-	for (i = 1; i <= size; ++i) {
-		v11 = *v9;
-		v12 = v9 + 1;
-		_LOWORD(v0) = v11;
-		_LOBYTE(v8) = *v12;
-		v9 = v12 + 1;
-		_LOWORD(v8) = (unsigned char)v8;
-		v8 = v0 + (v8 << 8);
-		automaptype[i] = v8;
+
+	pTmp = pAFile;
+
+	for(i = 1; i <= dwTiles; i++) {
+		b1 = *pTmp++;
+		b2 = *pTmp++;
+		automaptype[i] = b1 + (b2 << 8);
 	}
-	mem_free_dbg(v7);
+
+	mem_free_dbg(pAFile);
 	memset(automapview, 0, sizeof(automapview));
-	v13 = 0;
-	do {
-		v14 = (unsigned char *)dFlags + v13;
-		v15 = 112;
-		do {
-			*v14 &= ~DFLAG_EXPLORED;
-			v14 += 112;
-			--v15;
-		} while (v15);
-		++v13;
-	} while (v13 < 112);
+
+	for(y = 0; y < MAXDUNY; y++) {
+		for(x = 0; x < MAXDUNX; x++)
+			dFlags[x][y] &= ~DFLAG_EXPLORED;
+	}
 }
 
 void __cdecl StartAutomap()
@@ -210,7 +191,7 @@ void __cdecl DrawAutomap()
 		AutoMapYOfs--;
 	MapY += AutoMapYOfs;
 
-	cells = AMbyte_4B7E4C[(AutoMapScale - 50) / 5];
+	cells = AmShiftTab[(AutoMapScale - 50) / 5];
 	if (ScrollInfo._sxoff + ScrollInfo._syoff)
 		cells++;
 	mapx = MapX - cells;

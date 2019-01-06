@@ -9,7 +9,7 @@ int sgdwCursX;               // idb
 int sgdwCursY;               // idb
 unsigned char *gpBufEnd;     // weak
 int sgdwCursHgt;
-int level_cel_block; // weak
+DWORD level_cel_block; // weak
 int sgdwCursXOld;    // idb
 int sgdwCursYOld;    // idb
 char arch_draw_type; // weak
@@ -2545,94 +2545,80 @@ void __cdecl ClearScreenBuffer()
 #ifdef _DEBUG
 void __cdecl ScrollView()
 {
-	signed int v0; // esi
-	int v1;        // edi
-	int v2;        // edx
+	BOOL scroll;
 
-	if (pcurs < 12) {
-		v0 = 0;
-		if (MouseX >= 20) {
-			v2 = ViewX;
-			v1 = ViewY;
+	if(pcurs >= CURSOR_FIRSTITEM)
+		return;
+
+	scroll = FALSE;
+
+	if(MouseX < 20) {
+		if(dmaxy - 1 <= ViewY || dminx >= ViewX) {
+			if(dmaxy - 1 > ViewY) {
+				ViewY++;
+				scroll = TRUE;
+			}
+			if(dminx < ViewX) {
+				ViewX--;
+				scroll = TRUE;
+			}
 		} else {
-			v1 = ViewY;
-			v2 = ViewX;
-			if (ViewY >= dmaxy - 1 || dminx >= ViewX) {
-				if (ViewY < dmaxy - 1) {
-					v1 = ViewY + 1;
-					v0 = 1;
-				}
-				if (dminx < ViewX) {
-					v2 = ViewX - 1;
-					v0 = 1;
-				}
-			} else {
-				v1 = ViewY + 1;
-				v2 = ViewX - 1;
-				v0 = 1;
-			}
+			ViewY++;
+			ViewX--;
+			scroll = TRUE;
 		}
-		if (MouseX > 620) {
-			if (dmaxx - 1 > v2) {
-				if (dminy < v1) {
-					--v1;
-					++v2;
-					v0 = 1;
-					goto LABEL_19;
-				}
-				if (dmaxx - 1 > v2) {
-					++v2;
-					v0 = 1;
-				}
-			}
-			if (dminy < v1) {
-				--v1;
-				v0 = 1;
-			}
-		}
-	LABEL_19:
-		if (MouseY >= 20)
-			goto LABEL_28;
-		if (dminy < v1) {
-			if (dminx < v2) {
-				--v2;
-				--v1;
-				goto LABEL_27;
-			}
-			if (dminy < v1) {
-				--v1;
-				v0 = 1;
-			}
-		}
-		if (dminx >= v2)
-			goto LABEL_28;
-		--v2;
-	LABEL_27:
-		v0 = 1;
-	LABEL_28:
-		ViewX = v2;
-		ViewY = v1;
-		if (MouseY > 460) {
-			if (v1 >= dmaxy - 1 || dmaxx - 1 <= v2) {
-				ViewY = v1;
-				if (v1 < dmaxy - 1) {
-					v0 = 1;
-					ViewY = v1 + 1;
-				}
-				ViewX = v2;
-				if (dmaxx - 1 <= v2)
-					goto LABEL_37;
-				ViewX = v2 + 1;
-			} else {
-				ViewX = v2 + 1;
-				ViewY = v1 + 1;
-			}
-			v0 = 1;
-		}
-	LABEL_37:
-		if (v0)
-			ScrollInfo._sdir = 0;
 	}
+	if(MouseX > 640-20) {
+		if(dmaxx - 1 <= ViewX || dminy >= ViewY) {
+			if(dmaxx - 1 > ViewX) {
+				ViewX++;
+				scroll = TRUE;
+			}
+			if(dminy < ViewY) {
+				ViewY--;
+				scroll = TRUE;
+			}
+		} else {
+			ViewY--;
+			ViewX++;
+			scroll = TRUE;
+		}
+	}
+	if(MouseY < 20) {
+		if(dminy >= ViewY || dminx >= ViewX) {
+			if(dminy < ViewY) {
+				ViewY--;
+				scroll = TRUE;
+			}
+			if(dminx < ViewX) {
+				ViewX--;
+				scroll = TRUE;
+			}
+		} else {
+			ViewX--;
+			ViewY--;
+			scroll = TRUE;
+		}
+	}
+	if(MouseY > 480-20) {
+		if(dmaxy - 1 <= ViewY || dmaxx - 1 <= ViewX) {
+			if(dmaxy - 1 > ViewY) {
+				ViewY++;
+				scroll = TRUE;
+			}
+			if(dmaxx - 1 > ViewX) {
+				ViewX++;
+				scroll = TRUE;
+			}
+		} else {
+			ViewX++;
+			ViewY++;
+			scroll = TRUE;
+		}
+	}
+
+	if(scroll)
+		ScrollInfo._sdir = SDIR_NONE;
 }
 
 void __cdecl EnableFrameCount()
