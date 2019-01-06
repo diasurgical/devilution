@@ -194,7 +194,7 @@ char __OFSUB__(T x, U y)
 typedef void (*_PVFV)(void);
 
 // Define our segment names
-#define SEGMENT_C_INIT ".CRT$XIM"
+#define SEGMENT_C_INIT ".CRT$XCU"
 
 // Build our various function tables and insert them into the correct segments.
 #pragma data_seg(SEGMENT_C_INIT)
