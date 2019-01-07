@@ -756,16 +756,14 @@ void __fastcall Connect_SetDiffString(_gamedata *gamedata, const char *str1, cha
 	size_t v8;         // eax
 	unsigned char v9;  // zf
 	unsigned char v10; // sf
-	unsigned char v11; // of
 	int v12;           // eax
 
 	v7  = strlen(str1);
 	v8  = v7 + strlen(str2) + 5;
-	v11 = __OFSUB__(size, v8);
 	v9  = size == v8;
 	v10 = (signed int)(size - v8) < 0;
 	v12 = gamedata->bDiff;
-	if ((unsigned char)(v10 ^ v11) | v9)
+	if (v10 | v9)
 		_itoa(v12, str3, 10);
 	else
 		sprintf(str3, "%d\r%s\r%s", v12, str1, str2);

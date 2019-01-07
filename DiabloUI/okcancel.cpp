@@ -218,7 +218,6 @@ void __stdcall UiMessageBoxCallback(HWND hWnd, char *lpText, LPCSTR lpCaption, U
 {
 	int v4;           // eax
 	unsigned char v5; // sf
-	unsigned char v6; // of
 	size_t v7;        // eax
 	char *v8;         // eax
 	int v9;           // ecx
@@ -242,9 +241,8 @@ void __stdcall UiMessageBoxCallback(HWND hWnd, char *lpText, LPCSTR lpCaption, U
 		if (v14 != (char *)0xFF000000)
 			break;
 		v4 = a5[2] + 1;
-		v6 = __OFSUB__(a5[2] + 1, 2);
 		v5 = a5[2]++ - 1 < 0;
-		if (!(v5 ^ v6)) {
+		if (!v5) {
 			v7       = strlen(lpText);
 			v8       = (char *)SMemAlloc(v7 + 256, "C:\\Src\\Diablo\\DiabloUI\\OkCancel.cpp", 392, 0);
 			v11      = 0; /* check */
