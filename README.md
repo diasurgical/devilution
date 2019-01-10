@@ -9,7 +9,7 @@ Diablo devolved - magic behind the 1996 computer game
 Reverse engineered by GalaXyHaXz in 2018
 
 # Introduction
-While most titles from Blizzard receive years of love and support, Diablo stayed in the shadows. Abandoned in favor of a sequel, it remained full of bugs and unfinished potential. The game was last patched in 2001 before being discontinued altogether, a problem I wanted to fix. I played Diablo extensively as a teenager, but as time passed it became difficult to run the game on newer hardware. The lack of many improvements found in the sequel also kept it from aging well. At first the game appeared to be a lost cause, but thankfully a little oversight in 1997 made it not so.
+While most titles from Blizzard receive years of love and support, Diablo stayed in the shadows. Abandoned in favour of a sequel, it remained full of bugs and unfinished potential. The game was last patched in 2001 before being discontinued altogether, a problem I wanted to fix. I played Diablo extensively as a teenager, but as time passed it became difficult to run the game on newer hardware. The lack of many improvements found in the sequel also kept it from ageing well. At first the game appeared to be a lost cause, but thankfully a little oversight in 1997 made it not so.
 
 With Diablo's development team moving on the source code was given to **Synergistic Software** to handle the expansion. Less known however is that it was also given to **Climax Studios** to create a PlayStation port. Now Sony has long been known for letting things slide; _especially_ in Japan. Anything from leaking prototypes to full source code and Diablo was no exception. Symbolic information was accidentally left on the Japanese port. Normally used for debugging, a symbol file contains a map of everything generated during compile time. This includes file names, functions, structures, variables, and more! To top it all off a special build is hidden on the PC release in `DIABDAT.MPQ -> D1221A.MPQ -> DIABLO.EXE`! This build contains debug tools and assert strings further giving away code information.
 
@@ -28,7 +28,7 @@ Diablo was developed on Windows 95 using Visual C++ 4.20 and later 5.10 and 6 fo
 ### Building with Visual C++ 6
 - Open the project workspace `Diablo.dsw`, choose `Debug` or `Release`, and then `Build Diablo.exe`.
 
-To build a binary with functions compiled as close as possible to the original, use [Visual C++ 6](https://winworldpc.com/product/visual-c/6x) with Service Pack 5 and the [Processor Pack](https://download.microsoft.com/download/vb60ent/update/6/w9x2kxp/en-us/vcpp5.exe) (**important for proper code genration!**)
+To build a binary with functions compiled as close as possible to the original, use [Visual C++ 6](https://winworldpc.com/product/visual-c/6x) with Service Pack 5 and the [Processor Pack](https://download.microsoft.com/download/vb60ent/update/6/w9x2kxp/en-us/vcpp5.exe) (**important for proper code generation!**)
 
 If you aim to build a binary as close as possible to the original one you will also need [Visual C++ 5](https://winworldpc.com/product/visual-c/5x) with [Service Pack 3](http://www.mediafire.com/file/jw4j4sd5dnzze4p/VS97SP3.zip), since the original binary as linked with the older linker from that. Sadly, you cannot use the old linker right out of VC6, so you'll need to link manually or via the `MakefileVC` in the project root.
 
@@ -93,13 +93,13 @@ Open an issue and provide as much information as possible (OS version, etc.) inc
 That is the result of decompiled code. Whenever a program is compiled, much of the source is optimized and stripped away, so it's nearly impossible to decompile it back. Have patience. Everything will be cleaned up eventually. :)
 > Will you be reverse engineering Diablo II next? Ooooh please!
 
-Absolutely not. Diablo II would require far more work and is still supported by Blizzard. Setting that aside, there are rumors that the game will be remastered which takes the point out of it.
+Absolutely not. Diablo II would require far more work and is still supported by Blizzard. Setting that aside, there are rumours that the game will be remastered which takes the point out of it.
 > Are you interested in working for me? I have this game I want you to reverse...
 
 Sorry, but no. This project is time consuming enough as it is, and it's just a hobby.
 > I think that's about all, but is Devilution even legal?
 
-That's a tricky question. Under the DMCA, reverse-engineering has exceptions for the purpose of documentation and interoperability. Devilution provides the necessary documentation needed to achieve the latter. However, it falls into an entirely gray area. The real question is whether or not Blizzard deems it necessary to take action.
+That's a tricky question. Under the DMCA, reverse-engineering has exceptions for the purpose of documentation and interoperability. Devilution provides the necessary documentation needed to achieve the latter. However, it falls into an entirely grey area. The real question is whether or not Blizzard deems it necessary to take action.
 
 # Credits
 - [sanctuary](https://github.com/sanctuary) - extensively documenting Diablo's game engine
