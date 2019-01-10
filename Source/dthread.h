@@ -7,7 +7,6 @@ extern TMegaPkt *sgpInfoHead;     /* may not be right struct */
 extern char byte_52A508;          // weak
 extern HANDLE sghWorkToDoEvent;   // idb
 
-void __cdecl dthread_cpp_init_2();
 void __cdecl dthread_init_mutex();
 void __cdecl dthread_cleanup_mutex_atexit();
 void __cdecl dthread_cleanup_mutex(void);

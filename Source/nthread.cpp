@@ -22,13 +22,17 @@ int last_tick;           // weak
 /* data */
 static HANDLE sghThread = (HANDLE)0xFFFFFFFF; // idb
 
-struct nthread_cpp_init_2 {
-	nthread_cpp_init_2()
-	{
-		nthread_init_mutex();
-		nthread_cleanup_mutex_atexit();
-	}
-} _nthread_cpp_init_2;
+#ifndef _MSC_VER
+__attribute__((constructor))
+#endif
+static void nthread_c_init(void)
+{
+	nthread_init_mutex();
+	nthread_cleanup_mutex_atexit();
+}
+
+SEG_ALLOCATE(SEGMENT_C_INIT)
+_PVFV nthread_c_init_funcs[] = { &nthread_c_init };
 
 void __cdecl nthread_init_mutex()
 {

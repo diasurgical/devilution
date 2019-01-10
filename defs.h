@@ -148,3 +148,16 @@ __inline WORD __ROR2__(WORD value, DWORD count)
 }
 
 #endif /* IDA_GARBAGE */
+
+// Typedef for the function pointer
+typedef void (*_PVFV)(void);
+
+// Define our segment names
+#define SEGMENT_C_INIT ".CRT$XCU"
+
+// Build our various function tables and insert them into the correct segments.
+#pragma data_seg(SEGMENT_C_INIT)
+#pragma data_seg() // Switch back to the default segment
+// Call function pointer arrays and place them in the segments created above
+#define SEG_ALLOCATE(SEGMENT) __declspec(allocate(SEGMENT))
+

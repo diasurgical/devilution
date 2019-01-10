@@ -7,13 +7,17 @@
 ChatCmd sgChat_Cmd;
 int sgdwMsgCmdTimer;
 
-struct msgcmd_cpp_init_2 {
-	msgcmd_cpp_init_2()
-	{
-		msgcmd_init_event();
-		msgcmd_cleanup_chatcmd_atexit();
-	}
-} _msgcmd_cpp_init_2;
+#ifndef _MSC_VER
+__attribute__((constructor))
+#endif
+static void msgcmd_c_init(void)
+{
+	exception_install_filter();
+	j_exception_init_filter();
+}
+
+SEG_ALLOCATE(SEGMENT_C_INIT)
+_PVFV msgcmd_c_init_funcs[] = { &msgcmd_c_init };
 
 void __cdecl msgcmd_init_event()
 {

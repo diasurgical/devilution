@@ -7,7 +7,6 @@ extern char log_buffer[388];
 extern LPCVOID lpAddress;           // idb
 extern DWORD nNumberOfBytesToWrite; // idb
 
-void __cdecl log_cpp_init_2();
 void __cdecl log_init_mutex();
 void __cdecl j_log_cleanup_mutex();
 void __cdecl log_cleanup_mutex(void);
