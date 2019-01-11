@@ -17,13 +17,17 @@ char gbBackBuf;    // weak
 char gbEmulate;    // weak
 HMODULE ghDiabMod; // idb
 
-struct dx_cpp_init_2 {
-	dx_cpp_init_2()
-	{
-		dx_init_mutex();
-		dx_cleanup_mutex_atexit();
-	}
-} _dx_cpp_init_2;
+#ifndef _MSC_VER
+__attribute__((constructor))
+#endif
+static void dx_c_init(void)
+{
+	dx_init_mutex();
+	dx_cleanup_mutex_atexit();
+}
+
+SEG_ALLOCATE(SEGMENT_C_INIT)
+_PVFV dx_c_init_funcs[] = { &dx_c_init };
 
 void __cdecl dx_init_mutex()
 {

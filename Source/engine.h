@@ -44,7 +44,6 @@ int __fastcall GetDirection(int x1, int y1, int x2, int y2);
 void __fastcall SetRndSeed(int s);
 int __cdecl GetRndSeed();
 int __fastcall random(BYTE idx, int v);
-void __cdecl engine_cpp_init_2();
 void __cdecl mem_init_mutex();
 void __cdecl mem_atexit_mutex();
 void __cdecl mem_free_mutex(void);
