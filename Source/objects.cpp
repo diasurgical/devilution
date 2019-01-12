@@ -3785,16 +3785,21 @@ void __fastcall OperateTrapLvr(int i)
 
 void __fastcall OperateSarc(int pnum, int i, unsigned char sendmsg)
 {
+	BOOL bDeltaLoadIsFalse;
+	int rndSeed;
+
 	if (object[i]._oSelFlag) {
 		if (!deltaload)
 			PlaySfxLoc(IS_SARC, object[i]._ox, object[i]._oy);
+		bDeltaLoadIsFalse = deltaload == FALSE;
 		object[i]._oSelFlag = 0;
-		if (deltaload) {
+		if (!bDeltaLoadIsFalse) {
 			object[i]._oAnimFrame = object[i]._oAnimLen;
 		} else {
+			rndSeed = object[i]._oRndSeed;
 			object[i]._oAnimFlag = 1;
 			object[i]._oAnimDelay = 3;
-			SetRndSeed(object[i]._oRndSeed);
+			SetRndSeed(rndSeed);
 			if (object[i]._oVar1 <= 2)
 				CreateRndItem(object[i]._ox, object[i]._oy, 0, sendmsg, 0);
 			if (object[i]._oVar1 >= 8)
