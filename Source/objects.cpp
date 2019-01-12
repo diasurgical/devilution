@@ -3785,33 +3785,22 @@ void __fastcall OperateTrapLvr(int i)
 
 void __fastcall OperateSarc(int pnum, int i, unsigned char sendmsg)
 {
-	unsigned short v3; // bp
-	int v4;            // esi
-	BOOLEAN v5;        // zf
-	int v6;            // ecx
-	int v7;            // [esp+Ch] [ebp-4h]
-
-	v3 = i;
-	v4 = i;
-	v7 = pnum;
 	if (object[i]._oSelFlag) {
 		if (!deltaload)
-			PlaySfxLoc(IS_SARC, object[v4]._ox, object[v4]._oy);
-		v5 = deltaload == 0;
-		object[v4]._oSelFlag = 0;
-		if (v5) {
-			v6 = object[v4]._oRndSeed;
-			object[v4]._oAnimFlag = 1;
-			object[v4]._oAnimDelay = 3;
-			SetRndSeed(v6);
-			if (object[v4]._oVar1 <= 2)
-				CreateRndItem(object[v4]._ox, object[v4]._oy, 0, sendmsg, 0);
-			if (object[v4]._oVar1 >= 8)
-				SpawnSkeleton(object[v4]._oVar2, object[v4]._ox, object[v4]._oy);
-			if (v7 == myplr)
-				NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, v3);
+			PlaySfxLoc(IS_SARC, object[i]._ox, object[i]._oy);
+		object[i]._oSelFlag = 0;
+		if (deltaload) {
+			object[i]._oAnimFrame = object[i]._oAnimLen;
 		} else {
-			object[v4]._oAnimFrame = object[v4]._oAnimLen;
+			object[i]._oAnimFlag = 1;
+			object[i]._oAnimDelay = 3;
+			SetRndSeed(object[i]._oRndSeed);
+			if (object[i]._oVar1 <= 2)
+				CreateRndItem(object[i]._ox, object[i]._oy, 0, sendmsg, 0);
+			if (object[i]._oVar1 >= 8)
+				SpawnSkeleton(object[i]._oVar2, object[i]._ox, object[i]._oy);
+			if (pnum == myplr)
+				NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, i);
 		}
 	}
 }
