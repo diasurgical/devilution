@@ -7,12 +7,12 @@ int terminating;       // weak
 int cleanup_thread_id; // weak
 
 // delete overloads the delete operator.
-void operator delete(void *ptr)
-{
-	if (ptr != NULL) {
-		SMemFree(ptr, "delete", -1, 0);
-	}
-}
+//void operator delete(void *ptr)
+//{
+//	if (ptr != NULL) {
+//		SMemFree(ptr, "delete", -1, 0);
+//	}
+//}
 
 char *__fastcall GetErrorStr(int error_code)
 {
