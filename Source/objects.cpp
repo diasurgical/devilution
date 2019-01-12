@@ -3799,7 +3799,7 @@ void __fastcall OperateSarc(int pnum, int i, unsigned char sendmsg)
 			rndSeed = object[i]._oRndSeed;
 			object[i]._oAnimFlag = 1;
 			object[i]._oAnimDelay = 3;
-			SetRndSeed(rndSeed);
+			SetRndSeed(object[i]._oRndSeed);
 			if (object[i]._oVar1 <= 2)
 				CreateRndItem(object[i]._ox, object[i]._oy, 0, sendmsg, 0);
 			if (object[i]._oVar1 >= 8)
