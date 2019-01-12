@@ -56,9 +56,6 @@ debug: Diablo.exe
 DIABLO_SRC=$(sort $(filter-out Source/_asm.cpp Source/_render.cpp Source/render.cpp, $(wildcard Source/*.cpp)))
 DIABLO_SRC += Source/render.cpp
 OBJS=$(DIABLO_SRC:.cpp=.obj)
-# hardcoded list of src files, because only some of them are ready to be compiled as C instead of C++
-# once all files compile as C we should use the /TC flag abd DIABLO_SRC instead
-DIABLO_SRC_FIXED = Source/appfat.cpp /TcSource/automap.cpp /TcSource/capture.cpp /TcSource/codec.cpp /TcSource/control.cpp /TcSource/cursor.cpp /TcSource/dead.cpp /TcSource/debug.cpp /TcSource/diablo.cpp /TcSource/doom.cpp /TcSource/drlg_l1.cpp /TcSource/drlg_l2.cpp /TcSource/drlg_l3.cpp /TcSource/drlg_l4.cpp /TcSource/dthread.cpp /TcSource/dx.cpp /TcSource/effects.cpp /TcSource/encrypt.cpp /TcSource/engine.cpp /TcSource/error.cpp /TcSource/fault.cpp /TcSource/gamemenu.cpp /TcSource/gendung.cpp /TcSource/gmenu.cpp /TcSource/help.cpp /TcSource/init.cpp /TcSource/interfac.cpp /TcSource/inv.cpp /TcSource/items.cpp /TcSource/lighting.cpp /TcSource/loadsave.cpp /TcSource/logging.cpp /TcSource/mainmenu.cpp /TcSource/minitext.cpp /TcSource/missiles.cpp /TcSource/monster.cpp /TcSource/movie.cpp /TcSource/mpqapi.cpp /TcSource/msg.cpp /TcSource/msgcmd.cpp /TcSource/multi.cpp /TcSource/nthread.cpp /TcSource/objects.cpp /TcSource/pack.cpp /TcSource/palette.cpp /TcSource/path.cpp /TcSource/pfile.cpp /TcSource/player.cpp /TcSource/plrmsg.cpp /TcSource/portal.cpp /TcSource/quests.cpp /TcSource/restrict.cpp /TcSource/scrollrt.cpp /TcSource/setmaps.cpp /TcSource/sha.cpp /TcSource/sound.cpp /TcSource/spells.cpp /TcSource/stores.cpp /TcSource/sync.cpp /TcSource/textdat.cpp /TcSource/themes.cpp /TcSource/tmsg.cpp /TcSource/town.cpp /TcSource/towners.cpp /TcSource/track.cpp /TcSource/trigs.cpp /TcSource/wave.cpp /TcSource/render.cpp
 
 PKWARE_SRC=$(sort $(wildcard 3rdParty/PKWare/*.cpp))
 PKWARE_OBJS=$(PKWARE_SRC:.cpp=.obj)
@@ -80,7 +77,7 @@ DiabloUI/diabloui.lib: $(DIABLOUI_OBJS) 3rdParty/Storm/Source/storm.lib
 
 # compiles all main source files with once compiler call
 main_files:
-	$(CL) $(CFLAGS) /FoSource/ $(DIABLO_SRC_FIXED)
+	$(CL) $(CFLAGS) /TC /FoSource/ $(DIABLO_SRC)
 
 %.obj: %.cpp
 	$(CL) $(CFLAGS) /Fo$@ $<
