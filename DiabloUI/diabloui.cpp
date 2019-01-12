@@ -1,3 +1,4 @@
+#define STRICT // for WNDPROC. ref: Remarks in https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-callwindowproca
 #include <ddraw.h>
 #include <dsound.h>
 #include <io.h>
