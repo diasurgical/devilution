@@ -3793,7 +3793,7 @@ void __fastcall OperateSarc(int pnum, int i, unsigned char sendmsg)
 			PlaySfxLoc(IS_SARC, object[i]._ox, object[i]._oy);
 		bDeltaLoadIsFalse = deltaload == FALSE;
 		object[i]._oSelFlag = 0;
-		if (!bDeltaLoadIsFalse) {
+		if (deltaload) {
 			object[i]._oAnimFrame = object[i]._oAnimLen;
 		} else {
 			rndSeed = object[i]._oRndSeed;
