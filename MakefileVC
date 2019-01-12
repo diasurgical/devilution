@@ -36,7 +36,7 @@ else
 	VC6_LINK = wine $(VC6_BIN_DIR)/link.exe
 endif
 
-CFLAGS=/nologo /c /GX /W3 /O1 /I $(VC6_INC_DIR) /FD /MT /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /Fp"Diablo.pch" /YX /Gm /Zi
+CFLAGS=/nologo /c /TC /GX /W3 /O1 /I $(VC6_INC_DIR) /FD /MT /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /Fp"Diablo.pch" /YX /Gm /Zi
 LINKFLAGS=/nologo /subsystem:windows /machine:I386 /incremental:no
 
 ifeq ($(MAKE_BUILD),pdb)
@@ -77,7 +77,7 @@ DiabloUI/diabloui.lib: $(DIABLOUI_OBJS) 3rdParty/Storm/Source/storm.lib
 
 # compiles all main source files with once compiler call
 main_files:
-	$(CL) $(CFLAGS) /TC /FoSource/ $(DIABLO_SRC)
+	$(CL) $(CFLAGS) /FoSource/ $(DIABLO_SRC)
 
 %.obj: %.cpp
 	$(CL) $(CFLAGS) /Fo$@ $<
