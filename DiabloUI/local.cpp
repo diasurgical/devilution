@@ -275,15 +275,14 @@ void __fastcall local_DoUiWndProc(HWND hWnd, DWORD *pdwMsgTbl)
 // ref: 0x10007D01
 LRESULT __stdcall local_PostUiWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	LRESULT(__stdcall * v4)
-	(HWND, UINT, WPARAM, LPARAM); // ebx
+	WNDPROC v4;
 	HWND v5;                      // eax
 	HWND v6;                      // eax
 	HWND v7;                      // eax
 	WPARAM v9;                    // [esp-8h] [ebp-14h]
 	BOOL v10;                     // [esp-4h] [ebp-10h]
 
-	v4 = (LRESULT(__stdcall *)(HWND, UINT, WPARAM, LPARAM))GetPropA(hWnd, "UIWNDPROC");
+	v4 = (WNDPROC)GetPropA(hWnd, "UIWNDPROC");
 	switch (uMsg) {
 	case 2u:
 		RemovePropA(hWnd, "UIWNDPROC");
