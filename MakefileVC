@@ -64,10 +64,10 @@ Diablo.exe: main_files $(PKWARE_OBJS) diablo.res DiabloUI/diabloui.lib 3rdParty/
 	$(VC_LINK) /OUT:$@ $(LINKFLAGS) $(OBJS) $(PKWARE_OBJS) diablo.res DiabloUI/diabloui.lib 3rdParty/Storm/storm.lib user32.lib gdi32.lib advapi32.lib shell32.lib version.lib
 
 DiabloUI/diabloui.lib:
-	make -C DiabloUI -f MakefileVC
+	make -C DiabloUI
 
 3rdParty/Storm/storm.lib:
-	make -C 3rdParty/Storm -f MakefileVC
+	make -C 3rdParty/Storm
 
 # compiles all main source files with once compiler call
 main_files:
