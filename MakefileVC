@@ -61,7 +61,7 @@ PKWARE_SRC=$(sort $(wildcard 3rdParty/PKWare/*.cpp))
 PKWARE_OBJS=$(PKWARE_SRC:.cpp=.obj)
 
 Diablo.exe: main_files $(PKWARE_OBJS) diablo.res DiabloUI/diabloui.lib 3rdParty/Storm/storm.lib
-	$(VC_LINK) /OUT:$@ $(LINKFLAGS) $(OBJS) $(PKWARE_OBJS) diablo.res DiabloUI/diabloui.lib 3rdParty/Storm/storm.lib user32.lib gdi32.lib advapi32.lib shell32.lib version.lib
+	$(VC_LINK) /OUT:$@ $(LINKFLAGS) $(OBJS) $(PKWARE_OBJS) diablo.res DiabloUI/diabloui.lib 3rdParty/Storm/storm.lib kernel32.lib user32.lib gdi32.lib advapi32.lib shell32.lib version.lib
 
 DiabloUI/diabloui.lib:
 	make -C DiabloUI
