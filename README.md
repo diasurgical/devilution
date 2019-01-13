@@ -110,6 +110,9 @@ That's a tricky question. Under the DMCA, reverse-engineering has exceptions for
 - Blizzard North - wait, this was a typo!
 - Depression - reason to waste four months of my life doing this ;)
 
+# Changelog
+[From the beginning until release](docs/CHANGELOG.md)
+
 # Legal
 This software is being released to the Public Domain. No assets of Diablo are being provided. You must own a copy of Diablo and have access to the assets beforehand in order to use this software.
 
