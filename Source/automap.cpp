@@ -578,16 +578,18 @@ void __fastcall SetAutomapView(int x, int y)
 		if (solid) {
 			if (GetAutomapType(xx, yy + 1, FALSE) == 0x4007)
 				automapview[xx][yy + 1] = 1;
-		} else if (GetAutomapType(xx - 1, yy, FALSE) & 0x4000)
+		} else if (GetAutomapType(xx - 1, yy, FALSE) & 0x4000) {
 			automapview[xx - 1][yy] = 1;
-		break;
+		}
+		return;
 	case 3:
 		if (solid) {
 			if (GetAutomapType(xx + 1, yy, FALSE) == 0x4007)
 				automapview[xx + 1][yy] = 1;
-		} else if (GetAutomapType(xx, yy - 1, FALSE) & 0x4000)
+		} else if (GetAutomapType(xx, yy - 1, FALSE) & 0x4000) {
 			automapview[xx][yy - 1] = 1;
-		break;
+		}
+		return;
 	case 4:
 		if (solid) {
 			if (GetAutomapType(xx, yy + 1, FALSE) == 0x4007)
@@ -602,24 +604,27 @@ void __fastcall SetAutomapView(int x, int y)
 			if (GetAutomapType(xx - 1, yy - 1, FALSE) & 0x4000)
 				automapview[xx - 1][yy - 1] = 1;
 		}
-		break;
+		return;
 	case 5:
 		if (solid) {
 			if (GetAutomapType(xx, yy - 1, FALSE) & 0x4000)
 				automapview[xx][yy - 1] = 1;
 			if (GetAutomapType(xx, yy + 1, FALSE) == 0x4007)
 				automapview[xx][yy + 1] = 1;
-		} else if (GetAutomapType(xx - 1, yy, FALSE) & 0x4000)
+		} else if (GetAutomapType(xx - 1, yy, FALSE) & 0x4000) {
 			automapview[xx - 1][yy] = 1;
-		break;
+		}
+		return;
 	case 6:
 		if (solid) {
 			if (GetAutomapType(xx - 1, yy, FALSE) & 0x4000)
 				automapview[xx - 1][yy] = 1;
 			if (GetAutomapType(xx + 1, yy, FALSE) == 0x4007)
 				automapview[xx + 1][yy] = 1;
-		} else if (GetAutomapType(xx, yy - 1, FALSE) & 0x4000)
+		} else if (GetAutomapType(xx, yy - 1, FALSE) & 0x4000) {
 			automapview[xx][yy - 1] = 1;
+		}
+		return;
 	}
 }
 
