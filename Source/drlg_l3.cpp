@@ -1106,40 +1106,40 @@ void __cdecl DRLG_L3MakeMegas()
 
 void __cdecl DRLG_L3River()
 {
-	signed int v0;     // ebx
-	int v1;            // esi
-	int v2;            // edi
-	char v3;           // al
-	char v4;           // al
-	signed int v5;     // edx
-	int v6;            // eax
-	int v7;            // ebx
-	unsigned char v8;  // al
-	unsigned char v9;  // al
-	int v10;           // eax
-	char *v11;         // eax
-	signed int v12;    // eax
-	int v13;           // ecx
-	BOOLEAN v14;       // zf
-	int v15;           // eax
-	signed int v16;    // eax
-	int v17;           // eax
-	signed int v18;    // eax
-	signed int v19;    // eax
-	signed int v20;    // edi
-	int v21;           // eax
-	int v22;           // eax
-	int v23;           // edx
-	int v24;           // ecx
-	int v25;           // ecx
-	int v26;           // esi
-	int v27;           // ecx
-	int v28;           // edx
-	int v29;           // ecx
-	int v30;           // edx
-	int v31;           // ecx
-	int v32;           // edx
-	BOOLEAN v33;       // sf
+	signed int v0;    // ebx
+	int v1;           // esi
+	int v2;           // edi
+	char v3;          // al
+	char v4;          // al
+	signed int v5;    // edx
+	int v6;           // eax
+	int v7;           // ebx
+	unsigned char v8; // al
+	unsigned char v9; // al
+	int v10;          // eax
+	char *v11;        // eax
+	signed int v12;   // eax
+	int v13;          // ecx
+	BOOLEAN v14;      // zf
+	int v15;          // eax
+	signed int v16;   // eax
+	int v17;          // eax
+	signed int v18;   // eax
+	signed int v19;   // eax
+	signed int v20;   // edi
+	int v21;          // eax
+	int v22;          // eax
+	int v23;          // edx
+	int v24;          // ecx
+	int v25;          // ecx
+	int v26;          // esi
+	int v27;          // ecx
+	int v28;          // edx
+	int v29;          // ecx
+	int v30;          // edx
+	int v31;          // ecx
+	int v32;          // edx
+	BOOLEAN v33;      // sf
 	//unsigned char v34; // of
 	int river[3][100]; // [esp+Ch] [ebp-4E8h]
 	int v36;           // [esp+4BCh] [ebp-38h]

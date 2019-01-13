@@ -10,9 +10,9 @@ int sgdwCursY;               // idb
 unsigned char *gpBufEnd;     // weak
 int sgdwCursHgt;
 DWORD level_cel_block; // weak
-int sgdwCursXOld;    // idb
-int sgdwCursYOld;    // idb
-char arch_draw_type; // weak
+int sgdwCursXOld;      // idb
+int sgdwCursYOld;      // idb
+char arch_draw_type;   // weak
 DDSURFACEDESC DDS_desc;
 int cel_transparency_active; // weak
 int level_piece_id;          // weak
@@ -2547,18 +2547,18 @@ void __cdecl ScrollView()
 {
 	BOOL scroll;
 
-	if(pcurs >= CURSOR_FIRSTITEM)
+	if (pcurs >= CURSOR_FIRSTITEM)
 		return;
 
 	scroll = FALSE;
 
-	if(MouseX < 20) {
-		if(dmaxy - 1 <= ViewY || dminx >= ViewX) {
-			if(dmaxy - 1 > ViewY) {
+	if (MouseX < 20) {
+		if (dmaxy - 1 <= ViewY || dminx >= ViewX) {
+			if (dmaxy - 1 > ViewY) {
 				ViewY++;
 				scroll = TRUE;
 			}
-			if(dminx < ViewX) {
+			if (dminx < ViewX) {
 				ViewX--;
 				scroll = TRUE;
 			}
@@ -2568,13 +2568,13 @@ void __cdecl ScrollView()
 			scroll = TRUE;
 		}
 	}
-	if(MouseX > 640-20) {
-		if(dmaxx - 1 <= ViewX || dminy >= ViewY) {
-			if(dmaxx - 1 > ViewX) {
+	if (MouseX > 640 - 20) {
+		if (dmaxx - 1 <= ViewX || dminy >= ViewY) {
+			if (dmaxx - 1 > ViewX) {
 				ViewX++;
 				scroll = TRUE;
 			}
-			if(dminy < ViewY) {
+			if (dminy < ViewY) {
 				ViewY--;
 				scroll = TRUE;
 			}
@@ -2584,13 +2584,13 @@ void __cdecl ScrollView()
 			scroll = TRUE;
 		}
 	}
-	if(MouseY < 20) {
-		if(dminy >= ViewY || dminx >= ViewX) {
-			if(dminy < ViewY) {
+	if (MouseY < 20) {
+		if (dminy >= ViewY || dminx >= ViewX) {
+			if (dminy < ViewY) {
 				ViewY--;
 				scroll = TRUE;
 			}
-			if(dminx < ViewX) {
+			if (dminx < ViewX) {
 				ViewX--;
 				scroll = TRUE;
 			}
@@ -2600,13 +2600,13 @@ void __cdecl ScrollView()
 			scroll = TRUE;
 		}
 	}
-	if(MouseY > 480-20) {
-		if(dmaxy - 1 <= ViewY || dmaxx - 1 <= ViewX) {
-			if(dmaxy - 1 > ViewY) {
+	if (MouseY > 480 - 20) {
+		if (dmaxy - 1 <= ViewY || dmaxx - 1 <= ViewX) {
+			if (dmaxy - 1 > ViewY) {
 				ViewY++;
 				scroll = TRUE;
 			}
-			if(dmaxx - 1 > ViewX) {
+			if (dmaxx - 1 > ViewX) {
 				ViewX++;
 				scroll = TRUE;
 			}
@@ -2617,7 +2617,7 @@ void __cdecl ScrollView()
 		}
 	}
 
-	if(scroll)
+	if (scroll)
 		ScrollInfo._sdir = SDIR_NONE;
 }
 

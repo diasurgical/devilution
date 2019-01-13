@@ -10,7 +10,8 @@ int sgdwMsgCmdTimer;
 #ifndef _MSC_VER
 __attribute__((constructor))
 #endif
-static void msgcmd_c_init(void)
+static void
+msgcmd_c_init(void)
 {
 	exception_install_filter();
 	j_exception_init_filter();

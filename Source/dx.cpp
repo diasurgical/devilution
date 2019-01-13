@@ -20,7 +20,8 @@ HMODULE ghDiabMod; // idb
 #ifndef _MSC_VER
 __attribute__((constructor))
 #endif
-static void dx_c_init(void)
+static void
+dx_c_init(void)
 {
 	dx_init_mutex();
 	dx_cleanup_mutex_atexit();

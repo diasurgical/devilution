@@ -2,7 +2,7 @@
 #ifndef __MPQAPI_H__
 #define __MPQAPI_H__
 
-extern int sgdwMpqOffset;         // idb
+extern int sgdwMpqOffset; // idb
 extern char mpq_buf[4096];
 extern _HASHENTRY *sgpHashTbl;
 extern BOOLEAN save_archive_modified; // weak

@@ -139,7 +139,7 @@ void __fastcall run_game_loop(unsigned int uMsg)
 	//int v6; // eax
 	signed int v7;    // [esp+8h] [ebp-24h]
 	WNDPROC saveProc; // [esp+Ch] [ebp-20h]
-	MSG msg;       // [esp+10h] [ebp-1Ch]
+	MSG msg;          // [esp+10h] [ebp-1Ch]
 
 	nthread_ignore_mutex(1);
 	start_game(uMsg);

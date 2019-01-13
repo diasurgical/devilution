@@ -3,7 +3,7 @@
 #include "../types.h"
 
 _SNETVERSIONDATA fileinfo;
-int gbActive;            // weak
+int gbActive; // weak
 char diablo_exe_path[260];
 void *unused_mpq;
 char patch_rt_mpq_path[260];

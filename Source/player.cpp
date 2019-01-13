@@ -106,7 +106,6 @@ int ExpLvlsTbl[MAXCHARLEVEL] = {
 char *ClassStrTbl[3] = { "Warrior", "Rogue", "Sorceror" };
 unsigned char fix[9] = { 0u, 0u, 3u, 3u, 3u, 6u, 6u, 6u, 8u }; /* PM_ChangeLightOff local type */
 
-
 void __fastcall SetPlayerGPtrs(UCHAR *pData, UCHAR **pAnim)
 {
 	int i;
