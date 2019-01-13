@@ -2,314 +2,214 @@
 
 #include "../types.h"
 
-int wave_cpp_init_value; // weak
-
-const int wave_inf = 0x7F800000; // weak
-
-struct wave_cpp_init
-{
-	wave_cpp_init()
-	{
-		wave_cpp_init_value = wave_inf;
-	}
-} _wave_cpp_init;
-// 4802D4: using guessed type int wave_inf;
-// 6ABB34: using guessed type int wave_cpp_init_value;
-
-bool __fastcall WCloseFile(void *file)
+BOOL __fastcall WCloseFile(HANDLE file)
 {
 	return SFileCloseFile(file);
 }
 
-int __fastcall WGetFileSize(HANDLE hsFile, unsigned long *a2)
+LONG __fastcall WGetFileSize(HANDLE hsFile, DWORD *lpFileSizeHigh)
 {
-	unsigned long *v2; // edi
-	HANDLE i; // esi
-	int result; // eax
-	int a2a; // [esp+8h] [ebp-4h]
+	unsigned int retry = 0;
+	LONG ret;
 
-	a2a = 0;
-	v2 = a2;
-	for ( i = hsFile; ; WGetFileArchive(i, &a2a, 0) )
-	{
-		result = SFileGetFileSize(i, v2);
-		if ( result )
-			break;
-	}
-	return result;
+	while ((ret = SFileGetFileSize(hsFile, lpFileSizeHigh)) == 0)
+		WGetFileArchive(hsFile, &retry, NULL);
+
+	return ret;
 }
 
-void __fastcall WGetFileArchive(HANDLE hsFile, int *a2, char *dwInitParam)
+void __fastcall WGetFileArchive(HANDLE hsFile, unsigned int *retries, const char *FileName)
 {
-	int *v3; // esi
-	HANDLE v4; // edi
-	//int v5; // eax
-	//int v6; // eax
-	HANDLE archive; // [esp+8h] [ebp-4h]
+	HANDLE archive;
 
-	v3 = a2;
-	v4 = hsFile;
-	if ( (unsigned int)*a2 >= 5 )
-		FileErrDlg(dwInitParam);
-	if ( v4 && SFileGetFileArchive(v4, &archive) && archive != diabdat_mpq )
-	{
-		Sleep(0x14u);
-		++*v3;
-	}
-	else
-	{
-		//_LOBYTE(v6) = InsertCDDlg();
-		if ( !InsertCDDlg() )
-			FileErrDlg(dwInitParam);
-	}
+	if (*retries >= 5)
+		FileErrDlg(FileName);
+
+	if (hsFile && SFileGetFileArchive(hsFile, &archive) && archive != diabdat_mpq) {
+		Sleep(20);
+		(*retries)++;
+	} else if (!InsertCDDlg())
+		FileErrDlg(FileName);
 }
 
-int __fastcall WOpenFile(char *dwInitParam, HANDLE *phsFile, int a3)
+BOOL __fastcall WOpenFile(const char *FileName, HANDLE *phsFile, BOOL mayNotExist)
 {
-	HANDLE *v3; // edi
-	char *i; // esi
-//	int v5; // eax
-	int a2a; // [esp+8h] [ebp-4h]
+	unsigned int retry = 0;
 
-	a2a = 0;
-	v3 = phsFile;
-	for ( i = dwInitParam; ; WGetFileArchive(0, &a2a, i) )
-	{
-		//_LOBYTE(v5) = SFileOpenFile(i, v3);
-		if ( SFileOpenFile(i, v3) )
-			return 1;
-		if ( a3 && SErrGetLastError() == 2 )
+	while (1) {
+		if (SFileOpenFile(FileName, phsFile))
+			return TRUE;
+		if (mayNotExist && SErrGetLastError() == ERROR_FILE_NOT_FOUND)
 			break;
+		WGetFileArchive(NULL, &retry, FileName);
 	}
-	return 0;
+	return FALSE;
 }
 
-char __fastcall WReadFile(HANDLE hsFile, char *buf, int a3)
+void __fastcall WReadFile(HANDLE hsFile, LPVOID buf, DWORD to_read)
 {
-	char *v3; // ebx
-	HANDLE v4; // edi
-	int v5; // eax
-	int nread; // [esp+Ch] [ebp-Ch]
-	int offset; // [esp+10h] [ebp-8h]
-	int a2a; // [esp+14h] [ebp-4h]
+	unsigned int retry = 0;
+	DWORD readed;
+	int initial_pos = WSetFilePointer(hsFile, 0, NULL, FILE_CURRENT);
 
-	v3 = buf;
-	v4 = hsFile;
-	a2a = 0;
-	for ( offset = WSetFilePointer(hsFile, 0, 0, 1); ; WSetFilePointer(v4, offset, 0, 0) )
-	{
-		v5 = SFileReadFile(v4, v3, a3, (unsigned long *)&nread, 0);
-		if ( v5 )
-			break;
-		WGetFileArchive(v4, &a2a, 0);
+	while (!SFileReadFile(hsFile, buf, to_read, &readed, NULL)) {
+		WGetFileArchive(hsFile, &retry, NULL);
+		WSetFilePointer(hsFile, initial_pos, NULL, FILE_BEGIN);
 	}
-	return v5;
 }
 
 int __fastcall WSetFilePointer(HANDLE file1, int offset, HANDLE file2, int whence)
 {
-	int v4; // edi
-	HANDLE i; // esi
-	int result; // eax
-	int a2; // [esp+8h] [ebp-4h]
+	unsigned int retry = 0;
+	int result;
 
-	a2 = 0;
-	v4 = offset;
-	for ( i = file1; ; WGetFileArchive(i, &a2, 0) )
-	{
-		result = SFileSetFilePointer(i, v4, file2, whence);
-		if ( result != -1 )
+	while (1) {
+		result = SFileSetFilePointer(file1, offset, file2, whence);
+		if (result != -1)
 			break;
+		WGetFileArchive(file1, &retry, NULL);
 	}
 	return result;
 }
 
-int __fastcall LoadWaveFormat(HANDLE hsFile, WAVEFORMATEX *pwfx)
+BOOL __fastcall LoadWaveFormat(HANDLE hsFile, WAVEFORMATEX *pwfx)
 {
-	WAVEFORMATEX *v2; // esi
-	int v3; // esi
-	MEMFILE wave_file; // [esp+4h] [ebp-1Ch]
+	BOOL ret;
+	MEMFILE wave_file;
 
-	v2 = pwfx;
 	AllocateMemFile(hsFile, &wave_file, 0);
-	v3 = ReadWaveFile(&wave_file, v2, 0);
+	ret = ReadWaveFile(&wave_file, pwfx, NULL);
 	FreeMemFile(&wave_file);
-	return v3;
+	return ret;
 }
 
-void *__fastcall AllocateMemFile(HANDLE hsFile, MEMFILE *pMemFile, unsigned int dwPos)
+void *__fastcall AllocateMemFile(HANDLE hsFile, MEMFILE *pMemFile, DWORD dwPos)
 {
-	MEMFILE *v3; // esi
-	HANDLE v4; // edi
-	unsigned int v5; // eax
-	unsigned int v6; // ecx
-	void *result; // eax
+	DWORD length;
 
-	v3 = pMemFile;
-	v4 = hsFile;
-	memset(pMemFile, 0, 0x1Cu);
-	v5 = WGetFileSize(v4, 0);
-	v6 = 4096;
-	v3->end = v5;
-	if ( dwPos > 0x1000 )
-		v6 = dwPos;
-	v3->buf_len = v6;
-	if ( v6 >= v5 )
-		v6 = v5;
-	v3->buf_len = v6;
-	result = DiabloAllocPtr(v6);
-	v3->file = (int)v4;
-	v3->buf = (char *)result;
-	return result;
+	memset(pMemFile, 0, sizeof(*pMemFile));
+	pMemFile->end = WGetFileSize(hsFile, NULL);
+	length = 4096;
+	if (dwPos > length)
+		length = dwPos;
+	pMemFile->buf_len = length;
+	if (length >= pMemFile->end)
+		length = pMemFile->end;
+	pMemFile->buf_len = length;
+	pMemFile->buf = DiabloAllocPtr(length);
+	pMemFile->file = hsFile;
+	return pMemFile->buf;
 }
 
 void __fastcall FreeMemFile(MEMFILE *pMemFile)
 {
-	MEMFILE *v1; // eax
-	char *v2; // ecx
-
-	v1 = pMemFile;
-	v2 = pMemFile->buf;
-	v1->buf = 0;
-	mem_free_dbg(v2);
+	void *mem = pMemFile->buf;
+	pMemFile->buf = NULL;
+	mem_free_dbg(mem);
 }
 
-int __fastcall ReadWaveFile(MEMFILE *pMemFile, WAVEFORMATEX *pwfx, int *a3)
+BOOL __fastcall ReadWaveFile(MEMFILE *pMemFile, WAVEFORMATEX *pwfx, CKINFO *chunk)
 {
-	WAVEFORMATEX *v3; // esi
-	MEMFILE *v4; // edi
-	WORD v5; // ax
-	int result; // eax
-	int a2a[5]; // [esp+8h] [ebp-2Ch]
-	PCMWAVEFORMAT v8; // [esp+1Ch] [ebp-18h]
-	int v9[2]; // [esp+2Ch] [ebp-8h]
+	MMCKINFO hdr;
+	CKINFO fmt;
+	PCMWAVEFORMAT wf;
 
-	v3 = pwfx;
-	v4 = pMemFile;
-	if ( !ReadMemFile(pMemFile, a2a, 0xCu)
-	  || a2a[0] != 'FFIR'
-	  || a2a[2] != 'EVAW'
-	  || !ReadWaveSection(v4, ' tmf', v9)
-	  || v9[0] < 0x10u
-	  || !ReadMemFile(v4, &v8, 0x10u)
-	  || SeekMemFile(v4, v9[0] - 16, FILE_CURRENT) == -1 )
-	{
-		return 0;
-	}
-	v5 = v8.wf.wFormatTag;
-	v3->cbSize = 0;
-	v3->wFormatTag = v5;
-	v3->nChannels = v8.wf.nChannels;
-	v3->nSamplesPerSec = v8.wf.nSamplesPerSec;
-	v3->nAvgBytesPerSec = v8.wf.nAvgBytesPerSec;
-	v3->nBlockAlign = v8.wf.nBlockAlign;
-	v3->wBitsPerSample = v8.wBitsPerSample;
-	if ( a3 )
-		result = ReadWaveSection(v4, 'atad', a3);
-	else
-		result = 1;
-	return result;
+	if (!ReadMemFile(pMemFile, &hdr, 12))
+		return FALSE;
+	if (hdr.ckid != FOURCC_RIFF || hdr.fccType != MAKEFOURCC('W', 'A', 'V', 'E'))
+		return FALSE;
+	if (!ReadWaveSection(pMemFile, MAKEFOURCC('f', 'm', 't', ' '), &fmt))
+		return FALSE;
+	if (fmt.dwSize < sizeof(PCMWAVEFORMAT))
+		return FALSE;
+	if (!ReadMemFile(pMemFile, &wf, sizeof(wf)))
+		return FALSE;
+	if (SeekMemFile(pMemFile, fmt.dwSize - sizeof(wf), FILE_CURRENT) == -1)
+		return FALSE;
+
+	pwfx->cbSize = 0;
+	pwfx->wFormatTag = wf.wf.wFormatTag;
+	pwfx->nChannels = wf.wf.nChannels;
+	pwfx->nSamplesPerSec = wf.wf.nSamplesPerSec;
+	pwfx->nAvgBytesPerSec = wf.wf.nAvgBytesPerSec;
+	pwfx->nBlockAlign = wf.wf.nBlockAlign;
+	pwfx->wBitsPerSample = wf.wBitsPerSample;
+	if (chunk == NULL)
+		return TRUE;
+	return ReadWaveSection(pMemFile, MAKEFOURCC('d', 'a', 't', 'a'), chunk);
 }
 
-int __fastcall ReadMemFile(MEMFILE *pMemFile, void *lpBuf, size_t a3)
+BOOL __fastcall ReadMemFile(MEMFILE *pMemFile, void *lpBuf, size_t length)
 {
-	size_t v3; // ebx
-	void *v4; // ebp
-	MEMFILE *v5; // esi
-	size_t v6; // edi
-
-	v3 = a3;
-	v4 = lpBuf;
-	v5 = pMemFile;
-	if ( !a3 )
-		return 1;
-	while ( 1 )
-	{
-		if ( !v5->bytes_to_read )
-			FillMemFile(v5);
-		v6 = v5->bytes_to_read;
-		if ( v3 < v6 )
-			v6 = v3;
-		if ( !v6 )
-			break;
-		memcpy(v4, &v5->buf[v5->dist], v6);
-		v5->offset += v6;
-		v5->dist += v6;
-		v5->bytes_to_read -= v6;
-		v3 -= v6;
-		if ( !v3 )
-			return 1;
+	while (length) {
+		size_t to_copy;
+		if (!pMemFile->bytes_to_read)
+			FillMemFile(pMemFile);
+		to_copy = pMemFile->bytes_to_read;
+		if (length < to_copy)
+			to_copy = length;
+		if (!to_copy)
+			return FALSE;
+		memcpy(lpBuf, &pMemFile->buf[pMemFile->dist], to_copy);
+		pMemFile->offset += to_copy;
+		pMemFile->dist += to_copy;
+		pMemFile->bytes_to_read -= to_copy;
+		// BUGFIX: lpBuf is not incremented, next read will overwrite data
+		length -= to_copy;
 	}
-	return 0;
+	return TRUE;
 }
 
 void __fastcall FillMemFile(MEMFILE *pMemFile)
 {
-	MEMFILE *v1; // esi
-	unsigned int v2; // edi
-
-	v1 = pMemFile;
-	WSetFilePointer((HANDLE)pMemFile->file, pMemFile->offset, 0, 0);
-	v2 = v1->end - v1->offset;
-	if ( v1->buf_len < v2 )
-		v2 = v1->buf_len;
-	if ( v2 )
-		WReadFile((HANDLE)v1->file, v1->buf, v2);
-	v1->dist = 0;
-	v1->bytes_to_read = v2;
+	DWORD to_read;
+	WSetFilePointer(pMemFile->file, pMemFile->offset, NULL, FILE_BEGIN);
+	to_read = pMemFile->end - pMemFile->offset;
+	if (pMemFile->buf_len < to_read)
+		to_read = pMemFile->buf_len;
+	if (to_read)
+		WReadFile(pMemFile->file, pMemFile->buf, to_read);
+	pMemFile->dist = 0;
+	pMemFile->bytes_to_read = to_read;
 }
 
-int __fastcall SeekMemFile(MEMFILE *pMemFile, unsigned int lDist, int dwMethod)
+int __fastcall SeekMemFile(MEMFILE *pMemFile, LONG lDist, DWORD dwMethod)
 {
-	unsigned int v3; // eax
-
-	v3 = pMemFile->bytes_to_read;
-	if ( lDist >= v3 )
-	{
-		pMemFile->bytes_to_read = 0;
-	}
-	else
-	{
+	if (lDist < pMemFile->bytes_to_read) {
+		pMemFile->bytes_to_read -= lDist;
 		pMemFile->dist += lDist;
-		pMemFile->bytes_to_read = v3 - lDist;
-	}
+	} else
+		pMemFile->bytes_to_read = 0;
 	pMemFile->offset += lDist;
 	return pMemFile->offset;
 }
 
-int __fastcall ReadWaveSection(MEMFILE *pMemFile, int a2, int *a3)
+BOOL __fastcall ReadWaveSection(MEMFILE *pMemFile, DWORD id, CKINFO *chunk)
 {
-	int v3; // esi
-	MEMFILE *v4; // edi
-	int v6; // eax
-	int a2a[2]; // [esp+8h] [ebp-8h]
+	DWORD hdr[2];
 
-	v3 = a2;
-	v4 = pMemFile;
-	while ( 1 )
-	{
-		if ( !ReadMemFile(v4, a2a, 8u) )
-			return 0;
-		if ( a2a[0] == v3 )
+	while (1) {
+		if (!ReadMemFile(pMemFile, hdr, sizeof(hdr)))
+			return FALSE;
+		if (hdr[0] == id)
 			break;
-		if ( SeekMemFile(v4, a2a[1], FILE_CURRENT) == -1 )
-			return 0;
+		if (SeekMemFile(pMemFile, hdr[1], FILE_CURRENT) == -1)
+			return FALSE;
 	}
-	*a3 = a2a[1];
-	v6 = SeekMemFile(v4, 0, FILE_CURRENT);
-	a3[1] = v6;
-	return v6 != -1;
+
+	chunk->dwSize = hdr[1];
+	chunk->dwOffset = SeekMemFile(pMemFile, 0, FILE_CURRENT);
+	return chunk->dwOffset != (DWORD)-1;
 }
 
-void *__fastcall LoadWaveFile(HANDLE hsFile, WAVEFORMATEX *pwfx, int *a3)
+void *__fastcall LoadWaveFile(HANDLE hsFile, WAVEFORMATEX *pwfx, CKINFO *chunk)
 {
-	WAVEFORMATEX *v3; // esi
-	MEMFILE wave_file; // [esp+4h] [ebp-1Ch]
+	MEMFILE wave_file;
 
-	v3 = pwfx;
-	AllocateMemFile(hsFile, &wave_file, 0xFFFFFFFF);
-	if ( ReadWaveFile(&wave_file, v3, a3) )
-		return wave_file.buf;
-	FreeMemFile(&wave_file);
-	return 0;
+	AllocateMemFile(hsFile, &wave_file, (DWORD)-1);
+	if (!ReadWaveFile(&wave_file, pwfx, chunk)) {
+		FreeMemFile(&wave_file);
+		return NULL;
+	}
+	return wave_file.buf;
 }

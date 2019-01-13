@@ -7,7 +7,7 @@ void __cdecl MainMenu_cpp_init()
 // 1002A0D4: using guessed type int mainmenu_cpp_float;
 
 // ref: 0x1000816F
-BOOL __stdcall UiMainMenuDialog(char *name, int *pdwResult, void (__stdcall *fnSound)(char *file), int a4)
+BOOL __stdcall UiMainMenuDialog(char *name, int *pdwResult, void(__stdcall *fnSound)(char *file), int a4)
 {
 	int v4; // eax
 	int v5; // esi
@@ -16,13 +16,13 @@ BOOL __stdcall UiMainMenuDialog(char *name, int *pdwResult, void (__stdcall *fnS
 	TitleSnd_SetSoundFunction(fnSound);
 	artfont_LoadAllFonts();
 	menu_version_str[0] = 0;
-	if ( name )
+	if (name)
 		strncpy(menu_version_str, name, 0x40u);
-	v4 = (int)SDrawGetFrameWindow();
+	v4 = (int)SDrawGetFrameWindow(NULL);
 	v5 = SDlgDialogBoxParam(ghUiInst, "MAINMENU_DIALOG", v4, MainMenu_WndProc, 0);
-	if ( v5 == 5 )
+	if (v5 == 5)
 		artfont_FreeAllFonts();
-	if ( pdwResult )
+	if (pdwResult)
 		*pdwResult = v5;
 	return 1;
 }
@@ -34,74 +34,59 @@ LRESULT __stdcall MainMenu_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lP
 {
 	HWND v5; // eax
 
-	if ( Msg <= 0x113 )
-	{
-		if ( Msg != 275 )
-		{
-			if ( Msg == 2 )
-			{
+	if (Msg <= 0x113) {
+		if (Msg != 275) {
+			if (Msg == 2) {
 				MainMenu_KillAndFreeMenu(hWnd);
-			}
-			else if ( Msg > 0x103 )
-			{
-				if ( Msg <= 0x105 )
-				{
-					v5 = (HWND)SDrawGetFrameWindow();
+			} else if (Msg > 0x103) {
+				if (Msg <= 0x105) {
+					v5 = (HWND)SDrawGetFrameWindow(NULL);
 					SendMessageA(v5, Msg, wParam, lParam);
-				}
-				else
-				{
-					if ( Msg == 272 )
-					{
+				} else {
+					if (Msg == 272) {
 						MainMenu_LoadMenuGFX(hWnd);
 						PostMessageA(hWnd, 0x7E8u, 0, 0);
 						return 1;
 					}
-					if ( Msg == 273 )
-					{
+					if (Msg == 273) {
 						MainMenu_SetMenuTimer(hWnd);
-						switch ( HIWORD(wParam) )
-						{
-							case 7:
-								Focus_GetAndBlitSpin(hWnd, lParam);
-								break;
-							case 6:
-								Focus_CheckPlayMove(lParam);
-								Focus_DoBlitSpinIncFrame(hWnd, (HWND)lParam);
-								break;
-							case 0:
-								MainMenu_CheckWParamFocus(hWnd, (unsigned short)wParam);
-								break;
+						switch (HIWORD(wParam)) {
+						case 7:
+							Focus_GetAndBlitSpin(hWnd, lParam);
+							break;
+						case 6:
+							Focus_CheckPlayMove(lParam);
+							Focus_DoBlitSpinIncFrame(hWnd, (HWND)lParam);
+							break;
+						case 0:
+							MainMenu_CheckWParamFocus(hWnd, (unsigned short)wParam);
+							break;
 						}
 					}
 				}
 			}
 			return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 		}
-		if ( wParam == 3 && !DiabloUI_GetSpawned() )
-		{
-			if ( app_is_active )
+		if (wParam == 3 && !DiabloUI_GetSpawned()) {
+			if (app_is_active)
 				MainMenu_DoOptions(hWnd, 6, 0);
 			else
 				MainMenu_SetMenuTimer(hWnd);
 		}
 		return 0;
 	}
-	if ( Msg >= 0x200 )
-	{
-		if ( Msg <= 0x202 )
+	if (Msg >= 0x200) {
+		if (Msg <= 0x202)
 			goto LABEL_34;
-		if ( Msg <= 0x203 )
+		if (Msg <= 0x203)
 			return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
-		if ( Msg <= 0x205 )
-		{
-LABEL_34:
+		if (Msg <= 0x205) {
+		LABEL_34:
 			MainMenu_SetMenuTimer(hWnd);
 			return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 		}
-		if ( Msg == 2024 )
-		{
-			if ( !Fade_CheckRange5() )
+		if (Msg == 2024) {
+			if (!Fade_CheckRange5())
 				Fade_SetFadeTimer((int)hWnd);
 			return 0;
 		}
@@ -135,26 +120,25 @@ void __fastcall MainMenu_SetMenuTimer(HWND hWnd)
 // ref: 0x100083A8
 void __fastcall MainMenu_LoadMenuGFX(HWND hWnd)
 {
-	DWORD *v2; // eax MAPDST
-	bool v4; // zf
+	DWORD *v2;      // eax MAPDST
+	bool v4;        // zf
 	const char *v5; // eax
-	HWND v6; // eax
+	HWND v6;        // eax
 
 	v2 = local_AllocWndLongData();
-	if ( v2 )
-	{
+	if (v2) {
 		SetWindowLongA(hWnd, -21, (LONG)v2);
 		v4 = DiabloUI_GetSpawned() == 0;
 		v5 = "ui_art\\swmmenu.pcx";
-		if ( v4 )
+		if (v4)
 			v5 = "ui_art\\mainmenu.pcx";
 		local_LoadArtWithPal(hWnd, 0, &nullcharacter, -1, 1, v5, (BYTE **)v2, v2 + 1, 0);
 		Fade_NoInputAndArt(hWnd, 1);
 	}
 	v6 = GetDlgItem(hWnd, 1042);
 	SetWindowTextA(v6, menu_version_str);
-	Doom_ParseWndProc3(hWnd, menumsgs_1option, 1);
-	Doom_ParseWndProcs(hWnd, menumsgs_5options, 6, 1);
+	Doom_ParseWndProc3(hWnd, menumsgs_1option, AF_SMALLGRAY);
+	Doom_ParseWndProcs(hWnd, menumsgs_5options, AF_HUGE, 1);
 	Focus_SetFocusTimer(hWnd, "ui_art\\focus42.pcx");
 	Title_LoadImgSetTimer(hWnd, "ui_art\\smlogo.pcx");
 	MainMenu_SetMenuTimer(hWnd);
@@ -165,20 +149,18 @@ void __fastcall MainMenu_LoadMenuGFX(HWND hWnd)
 void __fastcall MainMenu_DoOptions(HWND hWnd, int option, int PlaySelect)
 {
 	SDlgKillTimer((int)hWnd, 3);
-	if ( DiabloUI_GetSpawned() && option == 3 )
-	{
+	if (DiabloUI_GetSpawned() && option == 3) {
 		SelYesNo_SpawnErrDialog(hWnd, 70, 1);
-LABEL_7:
+	LABEL_7:
 		SDlgSetTimer((int)hWnd, 3, 1000 * menu_item_timer, 0);
 		return;
 	}
-	if ( option == 2 && !MainMenu_CheckEnoughMemory() )
-	{
+	if (option == 2 && !MainMenu_CheckEnoughMemory()) {
 		SelYesNo_SpawnErrDialog(hWnd, 78, 1);
 		goto LABEL_7;
 	}
 	Fade_Range5SetZero();
-	if ( PlaySelect )
+	if (PlaySelect)
 		TitleSnd_PlaySelectSound();
 	Fade_UpdatePaletteRange(10);
 	SDlgEndDialog(hWnd, (HANDLE)option);
@@ -200,31 +182,30 @@ void __fastcall MainMenu_CheckWParamFocus(HWND hWnd, WPARAM wParam)
 {
 	HWND v3; // eax
 	LONG v4; // eax
-	int v5; // [esp-8h] [ebp-Ch]
+	int v5;  // [esp-8h] [ebp-Ch]
 
-	switch ( wParam )
-	{
-		case 1u:
-			v3 = GetFocus();
-			v4 = GetWindowLongA(v3, -12);
-			SendMessageA(hWnd, 0x111u, v4, 0);
-			return;
-		case 2u:
-			v5 = 5;
-			goto LABEL_12;
-		case 0x3E9u:
-			v5 = 2;
-			goto LABEL_12;
-		case 0x3EAu:
-			v5 = 3;
-			goto LABEL_12;
-		case 0x3EBu:
-			v5 = 4;
-LABEL_12:
-			MainMenu_DoOptions(hWnd, v5, 1);
-			return;
-		case 0x414u:
-			MainMenu_DoOptions(hWnd, 1, 1);
-			break;
+	switch (wParam) {
+	case 1u:
+		v3 = GetFocus();
+		v4 = GetWindowLongA(v3, -12);
+		SendMessageA(hWnd, 0x111u, v4, 0);
+		return;
+	case 2u:
+		v5 = 5;
+		goto LABEL_12;
+	case 0x3E9u:
+		v5 = 2;
+		goto LABEL_12;
+	case 0x3EAu:
+		v5 = 3;
+		goto LABEL_12;
+	case 0x3EBu:
+		v5 = 4;
+	LABEL_12:
+		MainMenu_DoOptions(hWnd, v5, 1);
+		return;
+	case 0x414u:
+		MainMenu_DoOptions(hWnd, 1, 1);
+		break;
 	}
 }

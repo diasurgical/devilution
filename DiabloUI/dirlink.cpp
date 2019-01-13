@@ -90,7 +90,7 @@ int __stdcall DirLink_10005D63(HWND hWnd, UINT Msg, WPARAM wParam, unsigned int 
 		return SDlgDefDialogProc(hWnd, Msg, wParam, lParam);
 	if ( Msg <= 0x105 )
 	{
-		v4 = (HWND)SDrawGetFrameWindow();
+		v4 = (HWND)SDrawGetFrameWindow(NULL);
 		SendMessageA(v4, Msg, wParam, lParam);
 		return SDlgDefDialogProc(hWnd, Msg, wParam, lParam);
 	}

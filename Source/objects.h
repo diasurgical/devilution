@@ -2,21 +2,21 @@
 #ifndef __OBJECTS_H__
 #define __OBJECTS_H__
 
-extern int trapid; // weak
+extern int trapid;  // weak
 extern int trapdir; // weak
 extern unsigned char *pObjCels[40];
 extern char ObjFileList[40];
 extern int objectactive[MAXOBJECTS];
 extern int nobjects; // idb
-extern int leverid; // idb
+extern int leverid;  // idb
 extern int objectavail[MAXOBJECTS];
 extern ObjectStruct object[MAXOBJECTS];
-extern int InitObjFlag; // weak
+extern BOOL InitObjFlag;
 extern int numobjfiles; // weak
 
 void __cdecl InitObjectGFX();
 void __cdecl FreeObjectGFX();
-bool __fastcall RndLocOk(int xp, int yp);
+BOOLEAN __fastcall RndLocOk(int xp, int yp);
 void __fastcall InitRndLocObj(int min, int max, int objtype);
 void __fastcall InitRndLocBigObj(int min, int max, int objtype);
 void __fastcall InitRndLocObj5x5(int min, int max, int objtype);
@@ -28,9 +28,9 @@ void __cdecl InitRndBarrels();
 void __fastcall AddL1Objs(int x1, int y1, int x2, int y2);
 void __fastcall AddL2Objs(int x1, int y1, int x2, int y2);
 void __fastcall AddL3Objs(int x1, int y1, int x2, int y2);
-bool __fastcall WallTrapLocOk(int xp, int yp);
+BOOLEAN __fastcall WallTrapLocOk(int xp, int yp);
 void __cdecl AddL2Torches();
-bool __fastcall TorchLocOK(int xp, int yp);
+BOOL __fastcall TorchLocOK(int xp, int yp);
 void __cdecl AddObjTraps();
 void __cdecl AddChestTraps();
 void __fastcall LoadMapObjects(unsigned char *pMap, int startx, int starty, int x1, int y1, int w, int h, int leveridx);
@@ -42,7 +42,7 @@ void __cdecl AddL4Goodies();
 void __cdecl AddLazStand();
 void __cdecl InitObjects();
 void __fastcall SetMapObjects(unsigned char *pMap, int startx, int starty);
-void __fastcall DeleteObject(int oi, int i);
+void __fastcall DeleteObject_(int oi, int i);
 void __fastcall SetupObject(int i, int x, int y, int ot);
 void __fastcall SetObjMapRange(int i, int x1, int y1, int x2, int y2, int v);
 void __fastcall SetBookMsg(int i, int msg);
@@ -123,11 +123,11 @@ void __fastcall OperateArmorStand(int pnum, int i, unsigned char sendmsg);
 int __fastcall FindValidShrine(int i);
 void __fastcall OperateGoatShrine(int pnum, int i, int sType);
 void __fastcall OperateCauldron(int pnum, int i, int sType);
-bool __fastcall OperateFountains(int pnum, int i);
+BOOLEAN __fastcall OperateFountains(int pnum, int i);
 void __fastcall OperateWeaponRack(int pnum, int i, unsigned char sendmsg);
 void __fastcall OperateStoryBook(int pnum, int i);
 void __fastcall OperateLazStand(int pnum, int i);
-void __fastcall OperateObject(int pnum, int i, unsigned char TeleFlag);
+void __fastcall OperateObject(int pnum, int i, BOOL TeleFlag);
 void __fastcall SyncOpL1Door(int pnum, int cmd, int i);
 void __fastcall SyncOpL2Door(int pnum, int cmd, int i);
 void __fastcall SyncOpL3Door(int pnum, int cmd, int i);

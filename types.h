@@ -10,6 +10,7 @@
 #include <windows.h>
 #include <mmsystem.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <ddraw.h>
 #include <dsound.h>
 #include <io.h>
@@ -25,15 +26,15 @@
 
 // tell Visual C++ to shut the hell up
 #ifdef _MSC_VER
-#pragma warning (disable : 4309) // truncation of constant value
-#pragma warning (disable : 4305) // truncation of int
-#pragma warning (disable : 4018) // signed/unsigned mismatch
-#pragma warning (disable : 4700) // used without having been initialized
-#pragma warning (disable : 4804) // unsafe use of type 'bool' in operation
-#pragma warning (disable : 4805) // unsafe bool mix
-#pragma warning (disable : 4244) // conversion loss
-#pragma warning (disable : 4800) // bool perf
-#pragma warning (disable : 4146) // negative unsigned
+#pragma warning(disable : 4309) // truncation of constant value
+#pragma warning(disable : 4305) // truncation of int
+#pragma warning(disable : 4018) // signed/unsigned mismatch
+#pragma warning(disable : 4700) // used without having been initialized
+#pragma warning(disable : 4804) // unsafe use of type 'bool' in operation
+#pragma warning(disable : 4805) // unsafe bool mix
+#pragma warning(disable : 4244) // conversion loss
+#pragma warning(disable : 4800) // bool perf
+#pragma warning(disable : 4146) // negative unsigned
 #endif
 
 #include "defs.h"
@@ -57,11 +58,13 @@
 // Will be replaced with [rep movsd] if optimization is used
 #define FAST_MEMCPY
 
-
 /* temp macro for asm XLAT */
-#define ASM_XLAT(eax,ebx) eax = (eax & 0xFFFFFF00) + LOBYTE(ebx[LOBYTE(eax)])
+#define ASM_XLAT(eax, ebx) eax = (eax & 0xFFFFFF00) + LOBYTE(ebx[LOBYTE(eax)])
 
 // header files
+#ifdef __cplusplus
+extern "C" {
+#endif
 #include "Source/appfat.h"
 #include "Source/automap.h"
 #include "Source/capture.h"
@@ -130,5 +133,8 @@
 #include "Source/trigs.h"
 #include "Source/wave.h"
 #include "Source/render.h" // linked last, likely .s/.asm
+#ifdef __cplusplus
+}
+#endif
 
 #endif

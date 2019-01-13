@@ -3,18 +3,18 @@
 #define __TOWNERS_H__
 
 extern int storeflag; // weak
-extern int sgnCowMsg; // weak
+extern int sgnCowMsg;
 extern int numtowners; // idb
-extern int sgdwCowClicks; // weak
-extern int bannerflag; // weak // unused 0x6AAC28
+extern DWORD sgdwCowClicks;
+extern int bannerflag;  // weak // unused 0x6AAC28
 extern int boyloadflag; // weak
-extern void *pCowCels; // idb
+extern void *pCowCels;  // idb
 extern TownerStruct towner[16];
 
 int __fastcall GetActiveTowner(int t);
 void __fastcall SetTownerGPtrs(void *pData, void **pAnim); /* unsigned char *+** */
 void __fastcall NewTownerAnim(int tnum, unsigned char *pAnim, int numFrames, int Delay);
-void __fastcall InitTownerInfo(int i, int w, bool sel, int t, int x, int y, int ao, int tp);
+void __fastcall InitTownerInfo(int i, int w, BOOL sel, int t, int x, int y, int ao, int tp);
 void __fastcall InitQstSnds(int i);
 void __cdecl InitSmith();
 void __cdecl InitBarOwner();

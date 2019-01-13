@@ -1,1063 +1,874 @@
 // ref: 0x10002E2B
-void *Connect_10002E2B() { return 0; }
-/* {
-	int *v0; // edi
-	int result; // eax
+void __cdecl Connect_FreeConnectData()
+{
+	HANDLE *v0; // edi
 
-	if ( dword_100295D8 )
-	{
-		SMemFree(dword_100295D8, "C:\\Src\\Diablo\\DiabloUI\\Connect.cpp", 124, 0);
-		dword_100295D8 = 0;
+	if (connect_data1) {
+		SMemFree(connect_data1, "C:\\Src\\Diablo\\DiabloUI\\Connect.cpp", 124, 0);
+		connect_data1 = 0;
 	}
-	if ( dword_100295DC )
-	{
-		SMemFree(dword_100295DC, "C:\\Src\\Diablo\\DiabloUI\\Connect.cpp", 129, 0);
-		dword_100295DC = 0;
+	if (connect_data2) {
+		SMemFree(connect_data2, "C:\\Src\\Diablo\\DiabloUI\\Connect.cpp", 129, 0);
+		connect_data2 = 0;
 	}
-	v0 = dword_100295E8;
-	do
-	{
-		if ( *v0 )
-		{
+	v0 = connect_trans;
+	do {
+		if (*v0) {
 			STransDelete(*v0);
 			*v0 = 0;
 		}
 		++v0;
+	} while ((signed int)v0 < (signed int)&connect_trans[10]);
+	if (connect_data3) {
+		SMemFree(connect_data3, "C:\\Src\\Diablo\\DiabloUI\\Connect.cpp", 141, 0);
+		connect_data3 = 0;
 	}
-	while ( (signed int)v0 < (signed int)&dword_10029610 );
-	if ( dword_100295E0 )
-	{
-		SMemFree(dword_100295E0, "C:\\Src\\Diablo\\DiabloUI\\Connect.cpp", 141, 0);
-		dword_100295E0 = 0;
+	if (connect_data4) {
+		SMemFree(connect_data4, "C:\\Src\\Diablo\\DiabloUI\\Connect.cpp", 146, 0);
+		connect_data4 = 0;
 	}
-	result = dword_100295E4;
-	if ( dword_100295E4 )
-	{
-		result = SMemFree(dword_100295E4, "C:\\Src\\Diablo\\DiabloUI\\Connect.cpp", 146, 0);
-		dword_100295E4 = 0;
-	}
-	return result;
-} */
-// 1001033A: using guessed type int __stdcall STransDelete(_DWORD);
-// 10010340: using guessed type int __stdcall SMemFree(_DWORD, _DWORD, _DWORD, _DWORD);
-// 100295D8: using guessed type int dword_100295D8;
-// 100295DC: using guessed type int dword_100295DC;
-// 100295E0: using guessed type int dword_100295E0;
-// 100295E4: using guessed type int dword_100295E4;
-// 10029610: using guessed type int dword_10029610;
+}
 
 // ref: 0x10002EC4
-signed int Connect_10002EC4() { return 0; }
-/* {
-	int *v0; // esi
-	int v1; // ebx
-	int v3; // [esp+4h] [ebp-14h]
-	int v4; // [esp+8h] [ebp-10h]
-	int v5; // [esp+Ch] [ebp-Ch]
-	int v6; // [esp+10h] [ebp-8h]
-	int v7; // [esp+14h] [ebp-4h]
+BOOL __cdecl Connect_LoadGFXAndStuff()
+{
+	HANDLE *v0; // esi
+	int v1;     // ebx
+	int a5[4];  // [esp+4h] [ebp-14h]
+	BYTE *a2;   // [esp+14h] [ebp-4h]
 
-	v7 = 0;
-	if ( !dword_100295D8 && !dword_100295E8[0] )
-	{
-		local_100078BE((int)"ui_art\\heroport.pcx", &dword_100295D8, &dword_100294A8);
-		local_100078BE((int)"ui_art\\spwnport.pcx", &dword_100295DC, 0);
-		local_100078BE((int)"ui_art\\heronum.pcx", &v7, &dword_100295C8);
-		local_100078BE((int)"ui_art\\special.pcx", &dword_100295E0, &dword_100295B8);
-		dword_100295D4 = 14;
-		dword_100295D0 = dword_100295CC / 10;
-		dword_100294A4 = dword_100295BC / 8;
-		dword_100295B0 = dword_100295CC / 10 * dword_100295C8;
-		dword_100295C0 = 14 * dword_100294A8;
-		v0 = dword_100295E8;
-		dword_100295E4 = SMemAlloc(14 * dword_100294A8, "C:\\Src\\Diablo\\DiabloUI\\Connect.cpp", 194, 0);
-		memset(dword_100295E8, 0, 0x28u);
-		if ( v7 )
-		{
+	a2 = 0;
+	if (!connect_data1 && !connect_trans[0]) {
+		local_LoadArtImage("ui_art\\heroport.pcx", &connect_data1, heroport_data);
+		local_LoadArtImage("ui_art\\spwnport.pcx", &connect_data2, 0);
+		local_LoadArtImage("ui_art\\heronum.pcx", &a2, heronum_data);
+		local_LoadArtImage("ui_art\\special.pcx", &connect_data3, special_data);
+		connect_draw_height = 14;
+		heronum_frames      = (signed int)heronum_data[1] / 10;
+		special_frames      = (signed int)special_data[1] / 8;
+		heronum_frames2     = (signed int)heronum_data[1] / 10 * heronum_data[0];
+		heroport_frames     = 14 * heroport_data[0];
+		v0                  = connect_trans;
+		connect_data4       = SMemAlloc(14 * heroport_data[0], "C:\\Src\\Diablo\\DiabloUI\\Connect.cpp", 194, 0);
+		memset(connect_trans, 0, 0x28u);
+		if (a2) {
 			v1 = 0;
-			do
-			{
-				v3 = 0;
-				v5 = dword_100295C8 - 1;
-				v4 = v1 * dword_100295D0;
-				v6 = dword_100295D0 + v1 * dword_100295D0 - 1;
-				STransCreateI(v7, dword_100295C8, dword_100295D0, 8, &v3, 16777455, v0);
+			do {
+				a5[0] = 0;
+				a5[2] = heronum_data[0] - 1;
+				a5[1] = v1 * heronum_frames;
+				a5[3] = heronum_frames + v1 * heronum_frames - 1;
+				STransCreateI(a2, heronum_data[0], heronum_frames, 8, (int)a5, 16777455, v0);
 				++v0;
 				++v1;
-			}
-			while ( (signed int)v0 < (signed int)&dword_10029610 );
-			SMemFree(v7, "C:\\Src\\Diablo\\DiabloUI\\Connect.cpp", 218, 0);
+			} while ((signed int)v0 < (signed int)&connect_trans[10]);
+			SMemFree(a2, "C:\\Src\\Diablo\\DiabloUI\\Connect.cpp", 218, 0);
 		}
 	}
 	return 1;
-} */
-// 10010340: using guessed type int __stdcall SMemFree(_DWORD, _DWORD, _DWORD, _DWORD);
-// 10010346: using guessed type int __stdcall STransCreateI(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
-// 10010364: using guessed type int __stdcall SMemAlloc(_DWORD, _DWORD, _DWORD, _DWORD);
-// 100294A4: using guessed type int dword_100294A4;
-// 100294A8: using guessed type int dword_100294A8;
-// 100295B0: using guessed type int dword_100295B0;
-// 100295B8: using guessed type int dword_100295B8;
-// 100295BC: using guessed type int dword_100295BC;
-// 100295C0: using guessed type int dword_100295C0;
-// 100295C8: using guessed type int dword_100295C8;
-// 100295CC: using guessed type int dword_100295CC;
-// 100295D0: using guessed type int dword_100295D0;
-// 100295D4: using guessed type int dword_100295D4;
-// 100295D8: using guessed type int dword_100295D8;
-// 100295DC: using guessed type int dword_100295DC;
-// 100295E0: using guessed type int dword_100295E0;
-// 100295E4: using guessed type int dword_100295E4;
-// 10029610: using guessed type int dword_10029610;
+}
+// 100294A4: using guessed type int special_frames;
+// 100295B0: using guessed type int heronum_frames2;
+// 100295C0: using guessed type int heroport_frames;
 
 // ref: 0x10003009
-void __cdecl UiArtCallback() { return; }
-//int __stdcall UiArtCallback(int a1, unsigned int a2, int a3, int a4, int a5, int a6, int a7, int a8) { return 0; }
-/* {
-	int result; // eax
-	CHAR v9; // [esp+8h] [ebp-104h]
-	char v10; // [esp+9h] [ebp-103h]
-	short v11; // [esp+109h] [ebp-3h]
-	char v12; // [esp+10Bh] [ebp-1h]
+BOOL __stdcall UiArtCallback(int game_type, unsigned int art_code, PALETTEENTRY *pPalette, void *pBuffer, DWORD dwBuffersize, DWORD *pdwWidth, DWORD *pdwHeight, DWORD *pdwBpp)
+{
+	BOOL result;           // eax
+	char pszFileName[260]; // [esp+8h] [ebp-104h]
 
-	v9 = byte_10029448;
-	memset(&v10, 0, 0x100u);
-	v11 = 0;
-	v12 = 0;
-	SStrCopy(&v9, "ui_art\\", 260);
-	if ( a1 == 1112425812 )
-	{
-		if ( a2 > 0x80000004 )
-		{
-			switch ( a2 )
-			{
-				case 0x80000005:
-					SStrPack(&v9, "bnconnbg.pcx", 0x104u);
-					return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-				case 0x80000006:
-					SStrPack(&v9, "bnselchn.pcx", 0x104u);
-					return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-				case 0x80000007:
-					SStrPack(&v9, "bnlogin.pcx", 0x104u);
-					return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-				case 0x80000008:
-					SStrPack(&v9, "newaccount.pcx", 0x104u);
-					return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-				case 0x80000009:
-					SStrPack(&v9, "changepassword.pcx", 0x104u);
-					return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-				case 0x8000000A:
-					SStrPack(&v9, "bnladder.pcx", 0x104u);
-					return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-				case 0x8000000B:
-					SStrPack(&v9, "badconn.pcx", 0x104u);
-					return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-				case 0x8000000C:
-					SStrPack(&v9, "welcome.pcx", 0x104u);
-					return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-				case 0x8000000D:
-					SStrPack(&v9, "lepopup.pcx", 0x104u);
-					return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-				case 0x8000000E:
-					SStrPack(&v9, "tos.pcx", 0x104u);
-					return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-				default:
-					break;
+	pszFileName[0] = nullcharacter;
+	memset(&pszFileName[1], 0, 0x100u);
+	*(_WORD *)&pszFileName[257] = 0;
+	pszFileName[259]            = 0;
+	SStrCopy(pszFileName, "ui_art\\", 260);
+	if (game_type == 'BNET') {
+		if (art_code > 0x80000004) {
+			switch (art_code) {
+			case 0x80000005:
+				SStrPack(pszFileName, "bnconnbg.pcx", 0x104u);
+				return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+			case 0x80000006:
+				SStrPack(pszFileName, "bnselchn.pcx", 0x104u);
+				return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+			case 0x80000007:
+				SStrPack(pszFileName, "bnlogin.pcx", 0x104u);
+				return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+			case 0x80000008:
+				SStrPack(pszFileName, "newaccount.pcx", 0x104u);
+				return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+			case 0x80000009:
+				SStrPack(pszFileName, "changepassword.pcx", 0x104u);
+				return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+			case 0x8000000A:
+				SStrPack(pszFileName, "bnladder.pcx", 0x104u);
+				return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+			case 0x8000000B:
+				SStrPack(pszFileName, "badconn.pcx", 0x104u);
+				return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+			case 0x8000000C:
+				SStrPack(pszFileName, "welcome.pcx", 0x104u);
+				return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+			case 0x8000000D:
+				SStrPack(pszFileName, "lepopup.pcx", 0x104u);
+				return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+			case 0x8000000E:
+				SStrPack(pszFileName, "tos.pcx", 0x104u);
+				return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+			default:
+				break;
 			}
-		}
-		else
-		{
-			if ( a2 == -2147483644 )
-			{
-				SStrPack(&v9, "redlag.pcx", 0x104u);
-				return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
+		} else {
+			if (art_code == 0x80000004) {
+				SStrPack(pszFileName, "redlag.pcx", 0x104u);
+				return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
 			}
-			if ( a2 > 7 )
-			{
-				switch ( a2 )
-				{
-					case 8u:
-LABEL_48:
-						SStrPack(&v9, "but_lrg.pcx", 0x104u);
-						return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-					case 0x80000000:
-						SStrPack(&v9, "bnbuttns.pcx", 0x104u);
-						return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-					case 0x80000001:
-						SStrPack(&v9, "chat_bkg.pcx", 0x104u);
-						return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-					case 0x80000002:
-						SStrPack(&v9, "greenlag.pcx", 0x104u);
-						return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-					case 0x80000003:
-						SStrPack(&v9, "yellolag.pcx", 0x104u);
-						return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
+			if (art_code > 7) {
+				switch (art_code) {
+				case 8u:
+				LABEL_48:
+					SStrPack(pszFileName, "but_lrg.pcx", 0x104u);
+					return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+				case 0x80000000:
+					SStrPack(pszFileName, "bnbuttns.pcx", 0x104u);
+					return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+				case 0x80000001:
+					SStrPack(pszFileName, "chat_bkg.pcx", 0x104u);
+					return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+				case 0x80000002:
+					SStrPack(pszFileName, "greenlag.pcx", 0x104u);
+					return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+				case 0x80000003:
+					SStrPack(pszFileName, "yellolag.pcx", 0x104u);
+					return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
 				}
-			}
-			else
-			{
-				switch ( a2 )
-				{
-					case 7u:
-LABEL_47:
-						SStrPack(&v9, "but_med.pcx", 0x104u);
-						return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-					case 0u:
-						SStrPack(&v9, "bn_bkg.pcx", 0x104u);
-						return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-					case 2u:
-						SStrPack(&v9, "bnjoinbg.pcx", 0x104u);
-						return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-					case 3u:
-						SStrPack(&v9, "hpopup.pcx", 0x104u);
-						return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-					case 5u:
-LABEL_46:
-						SStrPack(&v9, "but_xsm.pcx", 0x104u);
-						return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-					case 6u:
-LABEL_11:
-						SStrPack(&v9, "but_sml.pcx", 0x104u);
-						return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
+			} else {
+				switch (art_code) {
+				case 7u:
+				LABEL_47:
+					SStrPack(pszFileName, "but_med.pcx", 0x104u);
+					return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+				case 0u:
+					SStrPack(pszFileName, "bn_bkg.pcx", 0x104u);
+					return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+				case 2u:
+					SStrPack(pszFileName, "bnjoinbg.pcx", 0x104u);
+					return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+				case 3u:
+					SStrPack(pszFileName, "hpopup.pcx", 0x104u);
+					return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+				case 5u:
+				LABEL_46:
+					SStrPack(pszFileName, "but_xsm.pcx", 0x104u);
+					return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+				case 6u:
+				LABEL_11:
+					SStrPack(pszFileName, "but_sml.pcx", 0x104u);
+					return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
 				}
 			}
 		}
-	}
-	else if ( a1 == 1230002254 )
-	{
-		if ( !a2 )
-		{
-			SStrPack(&v9, "ipx_bkg.pcx", 0x104u);
-			return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
+	} else if (game_type == 'IPXN') {
+		if (!art_code) {
+			SStrPack(pszFileName, "ipx_bkg.pcx", 0x104u);
+			return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
 		}
+	} else if (!game_type && !art_code) {
+		SStrPack(pszFileName, "connect.pcx", 0x104u);
+		return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
 	}
-	else if ( !a1 && !a2 )
-	{
-		SStrPack(&v9, "connect.pcx", 0x104u);
-		return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-	}
-	switch ( a2 )
-	{
-		case 0u:
-		case 2u:
-			SStrPack(&v9, "menu.pcx", 0x104u);
-			return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-		case 1u:
-		case 8u:
-			goto LABEL_48;
-		case 3u:
-		case 4u:
-			SStrPack(&v9, "lpopup.pcx", 0x104u);
-			return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-		case 5u:
-			goto LABEL_46;
-		case 6u:
-			goto LABEL_11;
-		case 7u:
-			goto LABEL_47;
-		case 9u:
-			SStrPack(&v9, "xsmlogo.pcx", 0x104u);
-			return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-		case 0xAu:
-			SStrPack(&v9, "prog_bg.pcx", 0x104u);
-			return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-		case 0xBu:
-			SStrPack(&v9, "prog_fil.pcx", 0x104u);
-			return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-		case 0xCu:
-			SStrPack(&v9, "spopup.pcx", 0x104u);
-			return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-		case 0xDu:
-			SStrPack(&v9, "scrlarrw.pcx", 0x104u);
-			return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-		case 0xEu:
-			SStrPack(&v9, "scrlthmb.pcx", 0x104u);
-			return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-		case 0xFu:
-			SStrPack(&v9, "scrlbar.pcx", 0x104u);
-			return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-		case 0x10u:
-			SStrPack(&v9, "cmel.pcx", 0x104u);
-			return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-		case 0x11u:
-			SStrPack(&v9, "cmml.pcx", 0x104u);
-			return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-		case 0x12u:
-			SStrPack(&v9, "cmbl.pcx", 0x104u);
-			return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-		case 0x13u:
-			SStrPack(&v9, "cmec.pcx", 0x104u);
-			return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-		case 0x14u:
-			SStrPack(&v9, "cmmc.pcx", 0x104u);
-			return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-		case 0x15u:
-			SStrPack(&v9, "cmbc.pcx", 0x104u);
-			return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-		case 0x16u:
-			SStrPack(&v9, "cmer.pcx", 0x104u);
-			return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-		case 0x17u:
-			SStrPack(&v9, "cmmr.pcx", 0x104u);
-			return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-		case 0x18u:
-			SStrPack(&v9, "cmbr.pcx", 0x104u);
-			return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-		case 0x19u:
-			SStrPack(&v9, "slgray.pcx", 0x104u);
-			return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-		case 0x1Au:
-			SStrPack(&v9, "slthumb.pcx", 0x104u);
-			return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-		case 0x1Bu:
-			SStrPack(&v9, "slfocus.pcx", 0x104u);
-			return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-		case 0x1Cu:
-			SStrPack(&v9, "slleft.pcx", 0x104u);
-			return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-		case 0x1Du:
-			SStrPack(&v9, "slmiddle.pcx", 0x104u);
-			return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-		case 0x1Eu:
-			SStrPack(&v9, "slright.pcx", 0x104u);
-			return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-		case 0x20u:
-			SStrPack(&v9, "but_checkoff.pcx", 0x104u);
-			return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-		case 0x21u:
-			SStrPack(&v9, "but_checkon.pcx", 0x104u);
-			return SBmpLoadImage(&v9, a3, a4, a5, a6, a7, a8);
-		default:
-			result = 0;
-			break;
+	switch (art_code) {
+	case 0u:
+	case 2u:
+		SStrPack(pszFileName, "menu.pcx", 0x104u);
+		return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+	case 1u:
+	case 8u:
+		goto LABEL_48;
+	case 3u:
+	case 4u:
+		SStrPack(pszFileName, "lpopup.pcx", 0x104u);
+		return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+	case 5u:
+		goto LABEL_46;
+	case 6u:
+		goto LABEL_11;
+	case 7u:
+		goto LABEL_47;
+	case 9u:
+		SStrPack(pszFileName, "xsmlogo.pcx", 0x104u);
+		return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+	case 0xAu:
+		SStrPack(pszFileName, "prog_bg.pcx", 0x104u);
+		return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+	case 0xBu:
+		SStrPack(pszFileName, "prog_fil.pcx", 0x104u);
+		return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+	case 0xCu:
+		SStrPack(pszFileName, "spopup.pcx", 0x104u);
+		return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+	case 0xDu:
+		SStrPack(pszFileName, "scrlarrw.pcx", 0x104u);
+		return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+	case 0xEu:
+		SStrPack(pszFileName, "scrlthmb.pcx", 0x104u);
+		return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+	case 0xFu:
+		SStrPack(pszFileName, "scrlbar.pcx", 0x104u);
+		return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+	case 0x10u:
+		SStrPack(pszFileName, "cmel.pcx", 0x104u);
+		return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+	case 0x11u:
+		SStrPack(pszFileName, "cmml.pcx", 0x104u);
+		return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+	case 0x12u:
+		SStrPack(pszFileName, "cmbl.pcx", 0x104u);
+		return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+	case 0x13u:
+		SStrPack(pszFileName, "cmec.pcx", 0x104u);
+		return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+	case 0x14u:
+		SStrPack(pszFileName, "cmmc.pcx", 0x104u);
+		return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+	case 0x15u:
+		SStrPack(pszFileName, "cmbc.pcx", 0x104u);
+		return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+	case 0x16u:
+		SStrPack(pszFileName, "cmer.pcx", 0x104u);
+		return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+	case 0x17u:
+		SStrPack(pszFileName, "cmmr.pcx", 0x104u);
+		return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+	case 0x18u:
+		SStrPack(pszFileName, "cmbr.pcx", 0x104u);
+		return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+	case 0x19u:
+		SStrPack(pszFileName, "slgray.pcx", 0x104u);
+		return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+	case 0x1Au:
+		SStrPack(pszFileName, "slthumb.pcx", 0x104u);
+		return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+	case 0x1Bu:
+		SStrPack(pszFileName, "slfocus.pcx", 0x104u);
+		return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+	case 0x1Cu:
+		SStrPack(pszFileName, "slleft.pcx", 0x104u);
+		return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+	case 0x1Du:
+		SStrPack(pszFileName, "slmiddle.pcx", 0x104u);
+		return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+	case 0x1Eu:
+		SStrPack(pszFileName, "slright.pcx", 0x104u);
+		return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+	case 0x20u:
+		SStrPack(pszFileName, "but_checkoff.pcx", 0x104u);
+		return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+	case 0x21u:
+		SStrPack(pszFileName, "but_checkon.pcx", 0x104u);
+		return SBmpLoadImage(pszFileName, pPalette, pBuffer, dwBuffersize, pdwWidth, pdwHeight, pdwBpp);
+	default:
+		result = 0;
+		break;
 	}
 	return result;
-} */
-// 100103BE: using guessed type int __stdcall SBmpLoadImage(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
+}
 // 100103E2: using guessed type unsigned int __stdcall SStrPack(char *, const char *, unsigned int);
-// 100103E8: using guessed type int __stdcall SStrCopy(_DWORD, _DWORD, _DWORD);
 
 // ref: 0x100033D1
-signed int Connect_100033D1() { return 0; }
-/* {
-	signed int result; // eax
-
-	result = 2139095040;
-	dword_100294A0 = 2139095040;
-	return result;
-} */
-// 100294A0: using guessed type int dword_100294A0;
+void __cdecl Connect_cpp_init()
+{
+	Connect_cpp_float = Connect_cpp_float_value;
+}
+// 1001F3F4: using guessed type int Connect_cpp_float_value;
+// 100294A0: using guessed type int Connect_cpp_float;
 
 // ref: 0x100033DC
-void __cdecl UiGetDataCallback() { return; }
-//BOOL __stdcall UiGetDataCallback(int a1, int a2, void *a3, int a4, int a5) { return 0; }
-/* {
+BOOL __stdcall UiGetDataCallback(int game_type, int data_code, void *a3, int a4, int a5)
+{
 	signed int v5; // edi
-	_DWORD *v6; // esi
-	HCURSOR v7; // eax
+	_DWORD *v6;    // esi
+	HCURSOR v7;    // eax
 
 	v5 = 0;
-	if ( a1 != 1112425812 || a2 != 0x80000000 )
-	{
-		switch ( a2 )
-		{
-			case 1:
-				v5 = 16;
-				if ( !a3 )
-					goto LABEL_24;
-				if ( (unsigned int)a4 >= 0x10 )
-				{
-					memcpy(a3, "\r", 0x10u);
-					goto LABEL_24;
-				}
-				return 0;
-			case 2:
-				v6 = a3;
-				v5 = 4;
-				if ( !a3 )
-					goto LABEL_24;
-				if ( (unsigned int)a4 < 4 )
-					return 0;
-				v7 = LoadCursorA(hInstance, "DIABLO_LINKCURSOR");
-				break;
-			case 3:
-				v6 = a3;
-				v5 = 4;
-				if ( !a3 )
-					goto LABEL_24;
-				if ( (unsigned int)a4 < 4 )
-					return 0;
-				v7 = LoadCursorA(hInstance, "DIABLO_ARROWCURSOR");
-				break;
-			case 4:
-				v6 = a3;
-				v5 = 4;
-				if ( !a3 )
-					goto LABEL_24;
-				if ( (unsigned int)a4 < 4 )
-					return 0;
-				v7 = LoadCursorA(hInstance, "DIABLOIBEAM");
-				break;
-			default:
+	if (game_type != 'BNET' || data_code != 0x80000000) {
+		switch (data_code) {
+		case 1:
+			v5 = 16;
+			if (!a3)
 				goto LABEL_24;
+			if ((unsigned int)a4 >= 0x10) {
+				memcpy(a3, connect_subnet_ip, 0x10u);
+				goto LABEL_24;
+			}
+			return 0;
+		case 2:
+			v6 = (unsigned int *)a3;
+			v5 = 4;
+			if (!a3)
+				goto LABEL_24;
+			if ((unsigned int)a4 < 4)
+				return 0;
+			v7 = LoadCursorA(ghUiInst, "DIABLO_LINKCURSOR");
+			break;
+		case 3:
+			v6 = (unsigned int *)a3;
+			v5 = 4;
+			if (!a3)
+				goto LABEL_24;
+			if ((unsigned int)a4 < 4)
+				return 0;
+			v7 = LoadCursorA(ghUiInst, "DIABLO_ARROWCURSOR");
+			break;
+		case 4:
+			v6 = (unsigned int *)a3;
+			v5 = 4;
+			if (!a3)
+				goto LABEL_24;
+			if ((unsigned int)a4 < 4)
+				return 0;
+			v7 = LoadCursorA(ghUiInst, "DIABLOIBEAM");
+			break;
+		default:
+			goto LABEL_24;
 		}
-		*v6 = v7;
-		if ( v7 )
+		*v6 = (unsigned int)v7;
+		if (v7)
 			goto LABEL_24;
 		return 0;
 	}
 	v5 = 4;
-	if ( a3 )
-	{
-		if ( (unsigned int)a4 >= 4 )
-		{
+	if (a3) {
+		if ((unsigned int)a4 >= 4) {
 			*(_DWORD *)a3 = 54;
 			goto LABEL_24;
 		}
 		return 0;
 	}
 LABEL_24:
-	if ( a5 )
+	if (a5)
 		*(_DWORD *)a5 = v5;
 	return v5 != 0;
-} */
+}
 
 // ref: 0x100034AB
-void __cdecl UiSoundCallback() { return; }
-//int __stdcall UiSoundCallback(int a1, int a2, int a3) { return 0; }
-/* {
-	if ( a2 )
-	{
-		if ( a2 == 1 )
-			TitleSnd_1001031F();
-	}
-	else
-	{
-		TitleSnd_10010315();
+BOOL __stdcall UiSoundCallback(int a1, int type, int a3)
+{
+	if (type) {
+		if (type == 1)
+			TitleSnd_PlaySelectSound();
+	} else {
+		TitleSnd_PlayMoveSound();
 	}
 	return 0;
-} */
+}
 
 // ref: 0x100034C8
-void __cdecl UiAuthCallback() { return; }
-//int __stdcall UiAuthCallback(int a1, int a2, char *a3, char a4, char *a5, LPSTR lpBuffer, int cchBufferMax) { return 0; }
-/* {
-	size_t v7; // edi
-	size_t v8; // ebx
-	int v9; // ebx
-	char *v10; // ebx
-	size_t v11; // eax
-	int v12; // eax
-	int v14; // eax
-	CHAR v15; // [esp+0h] [ebp-434h]
-	char v16; // [esp+100h] [ebp-334h]
-	char v17; // [esp+200h] [ebp-234h]
-	CHAR Buffer; // [esp+300h] [ebp-134h]
-	char v19; // [esp+400h] [ebp-34h]
-	unsigned short v20; // [esp+414h] [ebp-20h]
-	unsigned char v21; // [esp+416h] [ebp-1Eh]
-	char v22; // [esp+42Ch] [ebp-8h]
-	int v23; // [esp+430h] [ebp-4h]
+BOOL __stdcall UiAuthCallback(int a1, char *a2, char *a3, char a4, char *a5, LPSTR lpBuffer, int cchBufferMax)
+{
+	size_t v7;            // edi
+	size_t v8;            // ebx
+	int v9;               // ebx
+	char *v10;            // ebx
+	size_t v11;           // eax
+	int v12;              // eax
+	int v14;              // eax
+	char v15[256];        // [esp+0h] [ebp-434h]
+	char a1a[256];        // [esp+100h] [ebp-334h]
+	char v17[256];        // [esp+200h] [ebp-234h]
+	char Buffer[256];     // [esp+300h] [ebp-134h]
+	_uiheroinfo heroinfo; // [esp+400h] [ebp-34h]
+	_gamedata GameData;   // [esp+42Ch] [ebp-8h]
 
-	v23 = 0;
-	if ( cchBufferMax )
+	*(_DWORD *)&GameData.bDiff = 0;
+	if (cchBufferMax)
 		*lpBuffer = 0;
-	v7 = strlen(a3) + 1;
-	v8 = strlen(a5) + 1;
-	if ( v7 > 0x100 || v8 > 0x100 )
-	{
-		if ( lpBuffer )
-			LoadStringA(hInstance, 0x413u, lpBuffer, cchBufferMax);
+	v7            = strlen(a3) + 1;
+	v8            = strlen(a5) + 1;
+	if (v7 > 0x100 || v8 > 0x100) {
+		if (lpBuffer)
+			LoadStringA(ghUiInst, 0x413u, lpBuffer, cchBufferMax);
 		return 0;
 	}
-	memcpy(&v16, a3, v7);
-	memcpy(&v17, a5, v8);
-	if ( Connect_10003E61(&v16, &v19) )
-	{
-		if ( a1 == 1 )
-		{
-			if ( !(a4 & 9) )
-			{
+	memcpy(a1a, a3, v7);
+	memcpy(v17, a5, v8);
+	if (Connect_GetHeroInfoConc(a1a, &heroinfo)) {
+		if (a1 == 1) {
+			if (!(a4 & 9)) {
 				v9 = 0;
-				while ( 1 )
-				{
-					LoadStringA(hInstance, v9 + 4, &Buffer, 256);
-					if ( strstr(&v17, &Buffer) )
+				while (1) {
+					LoadStringA(ghUiInst, v9 + 4, Buffer, 256);
+					if (strstr(v17, Buffer))
 						break;
-					if ( ++v9 >= 3 )
+					if (++v9 >= 3)
 						goto LABEL_16;
 				}
-				if ( v21 != v9 )
+				if (heroinfo.heroclass != v9)
 					goto LABEL_20;
-				v23 = 1;
-LABEL_16:
-				LoadStringA(hInstance, 0x408u, &Buffer, 256);
-				v10 = strstr(&v17, &Buffer);
-				if ( v10 )
-				{
-					v11 = strlen(&Buffer);
+				*(_DWORD *)&GameData.bDiff = 1;
+			LABEL_16:
+				LoadStringA(ghUiInst, 0x408u, Buffer, 256);
+				v10 = strstr(v17, Buffer);
+				if (v10) {
+					v11 = strlen(Buffer);
 					v12 = atoi(&v10[v11]);
-					if ( v20 >= v12 )
+					if (heroinfo.level >= v12)
 						return 1;
 				}
-				if ( v23 )
+				if (*(_DWORD *)&GameData.bDiff)
 					return 1;
-LABEL_20:
-				if ( lpBuffer )
-				{
-					LoadStringA(hInstance, 0x415u, &v15, 256);
-					v14 = sprintf(&Buffer, &v15, &v17) + 1;
-					if ( cchBufferMax >= v14 )
-					{
-						memcpy(lpBuffer, &Buffer, v14);
-					}
-					else
-					{
-						memcpy(lpBuffer, &Buffer, cchBufferMax);
+			LABEL_20:
+				if (lpBuffer) {
+					LoadStringA(ghUiInst, 0x415u, v15, 256);
+					v14 = sprintf(Buffer, v15, v17) + 1;
+					if (cchBufferMax >= v14) {
+						memcpy(lpBuffer, Buffer, v14);
+					} else {
+						memcpy(lpBuffer, Buffer, cchBufferMax);
 						lpBuffer[cchBufferMax - 1] = 0;
 					}
 				}
 				return 0;
 			}
-		}
-		else if ( !(a4 & 8) )
-		{
-			Connect_10003DAF(&v17, (int)&v22, 0, 0);
-			if ( (_BYTE)v23 == 1 )
-			{
-				if ( v20 < 0x14u )
-				{
-					if ( lpBuffer )
-						LoadStringA(hInstance, 0x411u, lpBuffer, cchBufferMax);
+		} else if (!(a4 & 8)) {
+			Connect_DiffFromString(v17, &GameData, 0, 0);
+			if (GameData.bDiff == 1) {
+				if (heroinfo.level < 20u) {
+					if (lpBuffer)
+						LoadStringA(ghUiInst, 0x411u, lpBuffer, cchBufferMax);
 					return 0;
 				}
-			}
-			else if ( (_BYTE)v23 == 2 && v20 < 0x1Eu )
-			{
-				if ( lpBuffer )
-					LoadStringA(hInstance, 0x412u, lpBuffer, cchBufferMax);
+			} else if (GameData.bDiff == 2 && heroinfo.level < 30u) {
+				if (lpBuffer)
+					LoadStringA(ghUiInst, 0x412u, lpBuffer, cchBufferMax);
 				return 0;
 			}
 		}
 		return 1;
 	}
-	if ( lpBuffer )
-		LoadStringA(hInstance, 0x414u, lpBuffer, cchBufferMax);
+	if (lpBuffer)
+		LoadStringA(ghUiInst, 0x414u, lpBuffer, cchBufferMax);
 	return 0;
-} */
+}
 
 // ref: 0x10003710
-void __cdecl UiDrawDescCallback() { return; }
-//int __stdcall UiDrawDescCallback(int a1, COLORREF color, LPCSTR lpString, char *a4, int a5, UINT align, time_t a7, int a8) { return 0; }
-/* {
-	int v8; // ebx
-	int v9; // esi
-	int v10; // esi
-	size_t v11; // eax
-	UINT v13; // eax
-	BOOL v14; // esi
-	int v15; // eax
-	int v16; // eax
-	HDC v17; // ST20_4
-	struct tm *v18; // eax
-	struct tm *v19; // edi
-	signed int v20; // eax
-	int v21; // eax
-	int v22; // eax
-	UINT v23; // eax
-	int v24; // esi
-	int v25; // eax
-	int v26; // eax
-	signed int v27; // [esp-4h] [ebp-2E8h]
-	char v28[4]; // [esp+Ch] [ebp-2D8h]
-	CHAR String; // [esp+10Ch] [ebp-1D8h]
-	CHAR Buffer; // [esp+18Ch] [ebp-158h]
-	char v31; // [esp+18Dh] [ebp-157h]
-	short v32; // [esp+209h] [ebp-DBh]
-	char v33; // [esp+20Bh] [ebp-D9h]
-	CHAR v34; // [esp+20Ch] [ebp-D8h]
-	int v35; // [esp+22Ch] [ebp-B8h]
-	struct tagPOINT v36; // [esp+248h] [ebp-9Ch]
+BOOL __stdcall UiDrawDescCallback(int arg0, COLORREF color, LPCSTR lpString, char *a4, int a5, UINT align, time_t a7, HDC *a8)
+{
+	HDC *v8;                  // ebx
+	HDC v9;                   // esi
+	int v10;                  // esi
+	size_t v11;               // eax
+	UINT v13;                 // eax
+	BOOL v14;                 // esi
+	int v15;                  // eax
+	int v16;                  // eax
+	HDC v17;                  // ST20_4
+	struct tm *v18;           // eax
+	struct tm *v19;           // edi
+	signed int v20;           // eax
+	int v21;                  // eax
+	int v22;                  // eax
+	UINT v23;                 // eax
+	int v24;                  // esi
+	int v25;                  // eax
+	int v26;                  // eax
+	signed int v27;           // [esp-4h] [ebp-2E8h]
+	char a1[256];             // [esp+Ch] [ebp-2D8h]
+	char String[128];         // [esp+10Ch] [ebp-1D8h]
+	char Buffer[128];         // [esp+18Ch] [ebp-158h]
+	CHAR v31[32];             // [esp+20Ch] [ebp-D8h]
+	HDC a8a[12];              // [esp+22Ch] [ebp-B8h]
 	struct tagTEXTMETRICA tm; // [esp+25Ch] [ebp-88h]
-	char v38; // [esp+294h] [ebp-50h]
-	CHAR v39; // [esp+2A0h] [ebp-44h]
-	unsigned short v40; // [esp+2A8h] [ebp-3Ch]
-	unsigned char v41; // [esp+2AAh] [ebp-3Ah]
-	unsigned char v42; // [esp+2ABh] [ebp-39h]
-	int v43; // [esp+2BCh] [ebp-28h]
-	struct tagPOINT pt; // [esp+2C0h] [ebp-24h]
-	char v45; // [esp+2C8h] [ebp-1Ch]
-	unsigned char v46; // [esp+2CCh] [ebp-18h]
-	struct tagRECT rc; // [esp+2D0h] [ebp-14h]
-	COLORREF v48; // [esp+2E0h] [ebp-4h]
-	LPCSTR lpStringa; // [esp+2F4h] [ebp+10h]
+	_uiheroinfo heroinfo;     // [esp+294h] [ebp-50h]
+	struct tagPOINT pt;       // [esp+2C0h] [ebp-24h]
+	_gamedata gamedata;       // [esp+2C8h] [ebp-1Ch]
+	struct tagRECT rc;        // [esp+2D0h] [ebp-14h]
+	COLORREF v38;             // [esp+2E0h] [ebp-4h]
+	LPCSTR lpStringa;         // [esp+2F4h] [ebp+10h]
 
-	Buffer = byte_10029448;
-	v8 = a8;
-	memset(&v31, 0, 0x7Cu);
-	v9 = *(_DWORD *)(a8 + 16);
-	v32 = 0;
-	v33 = 0;
-	v10 = v9 & 1;
-	v11 = strlen(a4) + 1;
-	if ( v11 > 0x100 )
+	Buffer[0] = nullcharacter;
+	v8        = a8;
+	memset(&Buffer[1], 0, 0x7Cu);
+	v9                     = a8[4];
+	*(_WORD *)&Buffer[125] = 0;
+	Buffer[127]            = 0;
+	v10                    = (unsigned char)v9 & 1;
+	v11                    = strlen(a4) + 1;
+	if (v11 > 0x100)
 		return 0;
-	memcpy(v28, a4, v11);
-	if ( color == 1 )
-	{
+	memcpy(a1, a4, v11);
+	if (color == 1) {
 		a8 = 0;
 		a4 = 0;
-		if ( !Connect_10003DAF(v28, (int)&v45, (int)&a8, (int)&a4) )
+		if (!Connect_DiffFromString(a1, &gamedata, (int)&a8, (int)&a4))
 			return 0;
-		color = SetTextColor(*(HDC *)(v8 + 24), 0xFFFFFFu);
-		v48 = SetBkColor(*(HDC *)(v8 + 24), v10 != 0 ? 0x808080 : 0);
-		if ( align & 1 )
-		{
+		color = SetTextColor(v8[6], 0xFFFFFFu);
+		v38   = SetBkColor(v8[6], v10 != 0 ? 0x808080 : 0);
+		if (align & 1) {
 			v13 = strlen(lpString);
-			ExtTextOutA(
-				*(HDC *)(v8 + 24),
-				*(_DWORD *)(v8 + 28),
-				*(_DWORD *)(v8 + 32),
-				6u,
-				(const RECT *)(v8 + 28),
-				lpString,
-				v13,
-				0);
-		}
-		else
-		{
+			ExtTextOutA(v8[6], (int)v8[7], (int)v8[8], 6u, (const RECT *)(v8 + 7), lpString, v13, 0);
+		} else {
 			v14 = a8 && a4;
-			if ( v46 < 3u )
-				LoadStringA(hInstance, v46 + 1003, &Buffer, 128);
-			if ( align & 2 && v14 )
-			{
-				GetTextMetricsA(*(HDC *)(v8 + 24), &tm);
+			if (gamedata.bDiff < 3u)
+				LoadStringA(ghUiInst, gamedata.bDiff + 1003, Buffer, 128);
+			if (align & 2 && v14) {
+				GetTextMetricsA(v8[6], &tm);
 				lpStringa = (LPCSTR)(tm.tmHeight + tm.tmExternalLeading);
-				MoveToEx(*(HDC *)(v8 + 24), *(_DWORD *)(v8 + 28), *(_DWORD *)(v8 + 32), &pt);
-				align = SetTextAlign(*(HDC *)(v8 + 24), 1u);
-				v15 = strlen(&Buffer);
-				TextOutA(*(HDC *)(v8 + 24), 0, 0, &Buffer, v15);
-				LoadStringA(hInstance, 0x409u, &String, 128);
-				MoveToEx(*(HDC *)(v8 + 24), *(_DWORD *)(v8 + 28), (int)&lpStringa[*(_DWORD *)(v8 + 32)], 0);
-				v16 = strlen(&String);
-				TextOutA(*(HDC *)(v8 + 24), 0, 0, &String, v16);
-				v17 = *(HDC *)(v8 + 24);
-				qmemcpy(&v35, (const void *)v8, 0x30u);
-				GetCurrentPositionEx(v17, &v36);
-				SetTextAlign(*(HDC *)(v8 + 24), 0);
-				dword_10029614 = 1;
-				UiDrawDescCallback(a1, 2u, (LPCSTR)a8, a4, 0, 1u, 0, (int)&v35);
-				dword_10029614 = 0;
-				if ( a7 )
-				{
-					SetTextAlign(*(HDC *)(v8 + 24), 1u);
-					LoadStringA(hInstance, 0x40Cu, &v39, 32);
-					LoadStringA(hInstance, 0x40Du, &v34, 32);
+				MoveToEx(v8[6], (int)v8[7], (int)v8[8], &pt);
+				align = SetTextAlign(v8[6], 1u);
+				v15   = strlen(Buffer);
+				TextOutA(v8[6], 0, 0, Buffer, v15);
+				LoadStringA(ghUiInst, 0x409u, String, 128);
+				MoveToEx(v8[6], (int)v8[7], (int)v8[8] + (_DWORD)lpStringa, 0);
+				v16 = strlen(String);
+				TextOutA(v8[6], 0, 0, String, v16);
+				v17 = v8[6];
+				qmemcpy(a8a, v8, sizeof(a8a));
+				GetCurrentPositionEx(v17, (LPPOINT)&a8a[7]);
+				SetTextAlign(v8[6], 0);
+				connect_color_text = 1;
+				UiDrawDescCallback(arg0, 2u, (LPCSTR)a8, a4, 0, 1u, 0, a8a);
+				connect_color_text = 0;
+				if (a7) {
+					SetTextAlign(v8[6], 1u);
+					LoadStringA(ghUiInst, 0x40Cu, &heroinfo.name[8], 32);
+					LoadStringA(ghUiInst, 0x40Du, v31, 32);
 					v18 = localtime(&a7);
 					v19 = v18;
-					if ( v18 )
-					{
-						LoadStringA(hInstance, (v18->tm_hour > 12) + 1034, (LPSTR)&rc.top, 10);
+					if (v18) {
+						LoadStringA(ghUiInst, (v18->tm_hour > 12) + 1034, (LPSTR)&rc.top, 10);
 						v20 = v19->tm_hour;
-						if ( v20 > 12 )
+						if (v20 > 12)
 							v19->tm_hour = v20 - 12;
-						if ( !v19->tm_hour )
+						if (!v19->tm_hour)
 							v19->tm_hour = 12;
-						sprintf(&String, &v39, &v34, v19->tm_hour, v19->tm_min, &rc.top);
-						MoveToEx(
-							*(HDC *)(v8 + 24),
-							*(_DWORD *)(v8 + 28),
-							*(_DWORD *)(v8 + 32) + 2 * (_DWORD)lpStringa,
-							0);
-						v21 = strlen(&String);
-						TextOutA(*(HDC *)(v8 + 24), 0, 0, &String, v21);
+						sprintf(String, &heroinfo.name[8], v31, v19->tm_hour, v19->tm_min, &rc.top);
+						MoveToEx(v8[6], (int)v8[7], (int)v8[8] + 2 * (_DWORD)lpStringa, 0);
+						v21 = strlen(String);
+						TextOutA(v8[6], 0, 0, String, v21);
 					}
 				}
-				MoveToEx(*(HDC *)(v8 + 24), pt.x, pt.y, 0);
-				SetTextAlign(*(HDC *)(v8 + 24), align);
-			}
-			else
-			{
-				v22 = strlen(&Buffer);
-				TextOutA(*(HDC *)(v8 + 24), *(_DWORD *)(v8 + 28), *(_DWORD *)(v8 + 32), &Buffer, v22);
+				MoveToEx(v8[6], pt.x, pt.y, 0);
+				SetTextAlign(v8[6], align);
+			} else {
+				v22 = strlen(Buffer);
+				TextOutA(v8[6], (int)v8[7], (int)v8[8], Buffer, v22);
 			}
 		}
 		goto LABEL_56;
 	}
-	GetTextMetricsA(*(HDC *)(v8 + 24), &tm);
-	a4 = (char *)((tm.tmHeight - dword_100295D4) / 2 + 1);
-	if ( !dword_10029614 )
-	{
-		color = SetTextColor(*(HDC *)(v8 + 24), 0xFFFFu);
-		v48 = SetBkColor(*(HDC *)(v8 + 24), v10 != 0 ? 0x808080 : 0);
+	GetTextMetricsA(v8[6], &tm);
+	a4 = (char *)((tm.tmHeight - connect_draw_height) / 2 + 1);
+	if (!connect_color_text) {
+		color = SetTextColor(v8[6], 0xFFFFu);
+		v38   = SetBkColor(v8[6], v10 != 0 ? 0x808080 : 0);
 	}
-	if ( align & 1 )
-	{
+	if (align & 1) {
 		v23 = strlen(lpString);
-		ExtTextOutA(
-			*(HDC *)(v8 + 24),
-			*(_DWORD *)(v8 + 28) + dword_100294A8 + 2,
-			*(_DWORD *)(v8 + 32),
-			6u,
-			(const RECT *)(v8 + 28),
-			lpString,
-			v23,
-			0);
+		ExtTextOutA(v8[6], (int)v8[7] + heroport_data[0] + 2, (int)v8[8], 6u, (const RECT *)(v8 + 7), lpString, v23, 0);
 	}
-	if ( a5 )
-	{
-		if ( a5 & 0x20 )
-		{
+	if (a5) {
+		if (a5 & 0x20) {
 			v27 = 5;
-LABEL_45:
+		LABEL_45:
 			v24 = v27;
 			goto LABEL_46;
 		}
-		if ( a5 & 1 )
-		{
+		if (a5 & 1) {
 			v24 = 0;
-LABEL_46:
-			SetRect(&rc, 0, 0, dword_100295B8 - 1, dword_100294A4 - 1);
-			OffsetRect(&rc, 0, dword_100294A4 * v24);
+		LABEL_46:
+			SetRect(&rc, 0, 0, special_data[0] - 1, special_frames - 1);
+			OffsetRect(&rc, 0, special_frames * v24);
 			SDlgBltToWindowI(
-				*(_DWORD *)(v8 + 20),
-				0,
-				*(_DWORD *)(v8 + 28),
-				&a4[*(_DWORD *)(v8 + 32)],
-				dword_100295E0,
-				&rc,
-				&dword_100295B8,
-				-1,
-				0,
-				13369376);
+			    (HWND)v8[5],
+			    0,
+			    (char *)v8[7],
+			    (int)v8[8] + (_DWORD)a4,
+			    connect_data3,
+			    &rc,
+			    (SIZE *)special_data,
+			    -1,
+			    0,
+			    0xCC0020u);
 			goto LABEL_55;
 		}
-		if ( a5 & 2 )
-		{
+		if (a5 & 2) {
 			v27 = 2;
 			goto LABEL_45;
 		}
-		if ( a5 & 4 )
-		{
+		if (a5 & 4) {
 			v27 = 3;
 			goto LABEL_45;
 		}
-		if ( a5 & 8 )
-		{
-			v25 = (a1 != 1112425812) - 1;
-			LOBYTE(v25) = v25 & 0xFD;
-			v24 = v25 + 4;
+		if (a5 & 8) {
+			v25          = (arg0 != 'BNET') - 1;
+			_LOBYTE(v25) = v25 & 0xFD;
+			v24          = v25 + 4;
 			goto LABEL_46;
 		}
 	}
-	if ( *(_DWORD *)v28 == 1128808788 )
-	{
+	if (*(_DWORD *)a1 == 'CHAT') {
 		v27 = 6;
 		goto LABEL_45;
 	}
-	if ( *(_DWORD *)v28 == 1397053520 || *(_DWORD *)v28 == 1397966930 || *(_DWORD *)v28 == 1398030674 )
-	{
+	if (*(_DWORD *)a1 == 'SEXP' || *(_DWORD *)a1 == 'SSHR' || *(_DWORD *)a1 == 'STAR') {
 		v27 = 7;
 		goto LABEL_45;
 	}
-	if ( Connect_10003E61(v28, &v38) )
-	{
-		if ( v43 )
-		{
-			if ( dword_100295DC )
+	if (Connect_GetHeroInfoConc(a1, &heroinfo)) {
+		if (heroinfo.spawned) {
+			if (connect_data2)
 				SBltROP3(
-					dword_100295E4,
-					dword_100295DC,
-					dword_100294A8,
-					dword_100295D4,
-					dword_100294A8,
-					dword_100294A8,
-					0,
-					13369376);
-		}
-		else
-		{
+				    connect_data4,
+				    connect_data2,
+				    heroport_data[0],
+				    connect_draw_height,
+				    heroport_data[0],
+				    heroport_data[0],
+				    0,
+				    0xCC0020u);
+		} else {
 			SBltROP3(
-				dword_100295E4,
-				dword_100295D8 + dword_100295C0 * (v41 + 3 * v42),
-				dword_100294A8,
-				dword_100295D4,
-				dword_100294A8,
-				dword_100294A8,
-				0,
-				13369376);
+			    connect_data4,
+			    &connect_data1[heroport_frames * (heroinfo.heroclass + 3 * heroinfo.herorank)],
+			    heroport_data[0],
+			    connect_draw_height,
+			    heroport_data[0],
+			    heroport_data[0],
+			    0,
+			    0xCC0020u);
 		}
-		v26 = v40 / 10;
-		if ( v26 )
+		v26 = heroinfo.level / 10;
+		if (v26)
 			STransBlt(
-				dword_100294A8 + dword_100295E4 + 4 * dword_100294A8 + 14,
-				0,
-				0,
-				dword_100294A8,
-				dword_100295E8[v26]);
+			    (char *)connect_data4 + 4 * heroport_data[0] + heroport_data[0] + 14,
+			    0,
+			    0,
+			    heroport_data[0],
+			    connect_trans[v26]);
 		STransBlt(
-			dword_100295E4 + 4 * (dword_100294A8 + 4) + dword_100294A8 + 4,
-			0,
-			0,
-			dword_100294A8,
-			dword_100295E8[v40 % 10]);
-		SetRect(&rc, 0, 0, dword_100294A8 - 1, dword_100295D4 - 1);
+		    (char *)connect_data4 + 4 * (heroport_data[0] + 4) + heroport_data[0] + 4,
+		    0,
+		    0,
+		    heroport_data[0],
+		    connect_trans[heroinfo.level % 10]);
+		SetRect(&rc, 0, 0, heroport_data[0] - 1, connect_draw_height - 1);
 		SDlgBltToWindowI(
-			*(_DWORD *)(v8 + 20),
-			0,
-			*(_DWORD *)(v8 + 28),
-			&a4[*(_DWORD *)(v8 + 32)],
-			dword_100295E4,
-			&rc,
-			&dword_100294A8,
-			-1,
-			0,
-			13369376);
+		    (HWND)v8[5],
+		    0,
+		    (char *)v8[7],
+		    (int)v8[8] + (_DWORD)a4,
+		    connect_data4,
+		    &rc,
+		    (SIZE *)heroport_data,
+		    -1,
+		    0,
+		    0xCC0020u);
 	}
 LABEL_55:
-	if ( !dword_10029614 )
-	{
-LABEL_56:
-		SetTextColor(*(HDC *)(v8 + 24), color);
-		SetBkColor(*(HDC *)(v8 + 24), v48);
+	if (!connect_color_text) {
+	LABEL_56:
+		SetTextColor(v8[6], color);
+		SetBkColor(v8[6], v38);
 	}
 	return 1;
-} */
-// 1001036A: using guessed type int __stdcall STransBlt(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
-// 100103EE: using guessed type int __stdcall SDlgBltToWindowI(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
-// 100103F4: using guessed type int __stdcall SBltROP3(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
-// 100294A4: using guessed type int dword_100294A4;
-// 100294A8: using guessed type int dword_100294A8;
-// 100295B8: using guessed type int dword_100295B8;
-// 100295C0: using guessed type int dword_100295C0;
-// 100295D4: using guessed type int dword_100295D4;
-// 100295D8: using guessed type int dword_100295D8;
-// 100295DC: using guessed type int dword_100295DC;
-// 100295E0: using guessed type int dword_100295E0;
-// 100295E4: using guessed type int dword_100295E4;
-// 10029614: using guessed type int dword_10029614;
+}
+// 100294A4: using guessed type int special_frames;
+// 100295C0: using guessed type int heroport_frames;
+// 10029614: using guessed type int connect_color_text;
 
 // ref: 0x10003CE4
-void __cdecl UiCategoryCallback() { return; }
-//signed int __stdcall UiCategoryCallback(int a1, int a2, int a3, int a4, int a5, _DWORD *a6, _DWORD *a7) { return 0; }
-/* {
+BOOL __stdcall UiCategoryCallback(int a1, int a2, int a3, int a4, int a5, _DWORD *a6, _DWORD *a7)
+{
 	*a7 = 0xFFFF;
-	*a6 = Connect_10003D04(byte_100294B0);
+	*a6 = Connect_GetRankFromLevel(connect_categorystr);
 	return 1;
-} */
+}
 
 // ref: 0x10003D04
-int UNKCALL Connect_10003D04(char *arg) { return 0; }
-/* {
-	char v3; // [esp+0h] [ebp-22Ch]
-	char v4; // [esp+200h] [ebp-2Ch]
-	unsigned short v5; // [esp+214h] [ebp-18h]
+int __fastcall Connect_GetRankFromLevel(char *str)
+{
+	char a1[512];   // [esp+0h] [ebp-22Ch]
+	_uiheroinfo a2; // [esp+200h] [ebp-2Ch]
 
-	strcpy(&v3, arg);
-	if ( !Connect_10003E61(&v3, &v4) || v5 == 1 )
+	strcpy(a1, str);
+	if (!Connect_GetHeroInfoConc(a1, &a2) || a2.level == 1)
 		return 0;
-	if ( (signed int)v5 < 4 )
+	if ((signed int)a2.level < 4)
 		return 1;
-	if ( (signed int)v5 < 6 )
+	if ((signed int)a2.level < 6)
 		return 2;
-	if ( (signed int)v5 < 8 )
+	if ((signed int)a2.level < 8)
 		return 3;
-	if ( (signed int)v5 < 10 )
+	if ((signed int)a2.level < 10)
 		return 4;
-	if ( (signed int)v5 < 13 )
+	if ((signed int)a2.level < 13)
 		return 5;
-	if ( (signed int)v5 < 17 )
+	if ((signed int)a2.level < 17)
 		return 6;
-	if ( (signed int)v5 < 20 )
+	if ((signed int)a2.level < 20)
 		return 7;
-	if ( (signed int)v5 < 25 )
+	if ((signed int)a2.level < 25)
 		return 8;
-	if ( (signed int)v5 < 30 )
+	if ((signed int)a2.level < 30)
 		return 9;
-	if ( (signed int)v5 < 35 )
+	if ((signed int)a2.level < 35)
 		return 10;
-	if ( (signed int)v5 < 40 )
+	if ((signed int)a2.level < 40)
 		return 11;
-	return ((signed int)v5 >= 48) + 12;
-} */
+	return ((signed int)a2.level >= 48) + 12;
+}
 
 // ref: 0x10003DAF
-int __fastcall Connect_10003DAF(char *a1, int a2, int a3, int a4) { return 0; }
-/* {
-	char *v4; // esi
-	int v5; // edi
+BOOL __fastcall Connect_DiffFromString(char *str, _gamedata *gamedata, int a3, int a4)
+{
 	unsigned char v6; // al
-	char *v8; // eax
-	const char *v9; // eax
-	char *v10; // eax
+	char *v8;         // eax
+	const char *v9;   // eax
+	char *v10;        // eax
 
-	v4 = a1;
-	v5 = a2;
-	if ( !*a1 )
+	if (!*str)
 		return 0;
-	v6 = atoi(a1);
-	*(_BYTE *)(v5 + 4) = v6;
-	if ( v6 >= 3u )
+	v6              = atoi(str);
+	gamedata->bDiff = v6;
+	if (v6 >= 3u)
 		return 0;
-	v8 = strchr(v4, 13);
-	if ( v8 )
-	{
+	v8 = strchr(str, 13);
+	if (v8) {
 		*v8 = 0;
-		v9 = v8 + 1;
-		if ( a3 )
-			*(_DWORD *)a3 = v9;
-		v10 = strchr(v9, 13);
-		if ( v10 )
-		{
+		v9  = v8 + 1;
+		if (a3)
+			*(_DWORD *)a3 = (unsigned int)v9;
+		v10               = (char *)strchr(v9, 13);
+		if (v10) {
 			*v10 = 0;
-			if ( a4 )
-				*(_DWORD *)a4 = v10 + 1;
+			if (a4)
+				*(_DWORD *)a4 = (unsigned int)v10 + 1;
 		}
 	}
 	return 1;
-} */
+}
 
 // ref: 0x10003E0C
-char *__fastcall Connect_10003E0C(int a1, const char *a2, char *a3, char *a4, int a5) { return 0; }
-/* {
-	const char *v5; // edi
-	int v6; // esi
-	size_t v7; // ebx
-	size_t v8; // eax
-	bool v9; // zf
-	bool v10; // sf
-	unsigned char v11; // of
-	int v12; // eax
-	char *result; // eax
+void __fastcall Connect_SetDiffString(_gamedata *gamedata, const char *str1, char *str2, char *str3, int size)
+{
+	size_t v7;         // ebx
+	size_t v8;         // eax
+	unsigned char v9;  // zf
+	unsigned char v10; // sf
+	int v12;           // eax
 
-	v5 = a2;
-	v6 = a1;
-	v7 = strlen(a2);
-	v8 = v7 + strlen(a3) + 5;
-	v11 = __OFSUB__(a5, v8);
-	v9 = a5 == v8;
-	v10 = (signed int)(a5 - v8) < 0;
-	v12 = *(unsigned char *)(v6 + 4);
-	if ( (unsigned char)(v10 ^ v11) | v9 )
-		result = _itoa(v12, a4, 10);
+	v7  = strlen(str1);
+	v8  = v7 + strlen(str2) + 5;
+	v9  = size == v8;
+	v10 = (signed int)(size - v8) < 0;
+	v12 = gamedata->bDiff;
+	if (v10 | v9)
+		_itoa(v12, str3, 10);
 	else
-		result = (char *)sprintf(a4, "%d\r%s\r%s", v12, v5, a3);
-	return result;
-} */
+		sprintf(str3, "%d\r%s\r%s", v12, str1, str2);
+}
 
 // ref: 0x10003E61
-signed int __fastcall Connect_10003E61(const char *a1, _BYTE *a2) { return 0; }
-/* {
-	_BYTE *v2; // esi
-	const char *v3; // edi
-	int v4; // eax
-	int v5; // edi
-	int v6; // edx
-	short v7; // di
-	char v8; // cl
-	int v10; // [esp+Ch] [ebp-24h]
-	unsigned int v11; // [esp+10h] [ebp-20h]
-	unsigned int v12; // [esp+14h] [ebp-1Ch]
-	unsigned int v13; // [esp+18h] [ebp-18h]
-	int v14; // [esp+1Ch] [ebp-14h]
-	int v15; // [esp+20h] [ebp-10h]
-	int v16; // [esp+24h] [ebp-Ch]
-	int v17; // [esp+28h] [ebp-8h]
-	int v18; // [esp+2Ch] [ebp-4h]
+BOOL __fastcall Connect_GetHeroInfoConc(const char *a1, _uiheroinfo *pInfo)
+{
+	int v4;            // eax
+	int v5;            // edi
+	int v6;            // edx
+	unsigned short v7; // di
+	unsigned char v8;  // cl
+	int v10;           // [esp+Ch] [ebp-24h]
+	unsigned int v11;  // [esp+10h] [ebp-20h]
+	unsigned int v12;  // [esp+14h] [ebp-1Ch]
+	unsigned int v13;  // [esp+18h] [ebp-18h]
+	int v14;           // [esp+1Ch] [ebp-14h]
+	int v15;           // [esp+20h] [ebp-10h]
+	int v16;           // [esp+24h] [ebp-Ch]
+	int v17;           // [esp+28h] [ebp-8h]
+	int v18;           // [esp+2Ch] [ebp-4h]
 
-	v2 = a2;
-	v3 = a1;
-	memset(a2, 0, 0x2Cu);
-	if ( !*v3 )
+	memset(pInfo, 0, 0x2Cu);
+	if (!*a1)
 		return 0;
-	v4 = *(_DWORD *)v3;
-	if ( *(_DWORD *)v3 != 1146246220 && v4 != 1146308690 && v4 != 1146377044 )
+	v4 = *(_DWORD *)a1;
+	if (*(_DWORD *)a1 != 'DRTL' && v4 != 'DSHR' && v4 != 'DTST')
 		return 0;
-	if ( sscanf(v3 + 4, "%d %d %d %d %d %d %d %d %d", &v13, &v12, &v11, &v18, &v17, &v16, &v15, &v10, &v14) != 9 )
+	if (sscanf(a1 + 4, "%d %d %d %d %d %d %d %d %d", &v13, &v12, &v11, &v18, &v17, &v16, &v15, &v10, &v14) != 9)
 		return 0;
-	v5 = *(_DWORD *)v3;
+	v5 = *(_DWORD *)a1;
 	v6 = v14;
-	if ( v5 == 1146246220 )
-	{
-		if ( v14 )
+	if (v5 == 'DRTL') {
+		if (v14)
 			return 0;
 	}
-	if ( v5 == 1146308690 && !v14 )
+	if (v5 == 'DSHR' && !v14)
 		return 0;
 	v7 = v13;
-	if ( !v13 )
+	if (!v13)
 		return 0;
-	if ( v13 > 0x63 )
+	if (v13 > 0x63)
 		return 0;
 	v8 = v12;
-	if ( v12 >= 3 || v11 > 3 || v18 < 0 || v17 < 0 || v16 < 0 || v15 < 0 )
+	if (v12 >= 3 || v11 > 3 || v18 < 0 || v17 < 0 || v16 < 0 || v15 < 0)
 		return 0;
-	v2[23] = v11;
-	*((_WORD *)v2 + 10) = v7;
-	*((_WORD *)v2 + 12) = (unsigned char)v18;
-	v2[22] = v8;
-	*((_WORD *)v2 + 13) = (unsigned char)v17;
-	*((_DWORD *)v2 + 10) = v6;
-	*((_WORD *)v2 + 14) = (unsigned char)v16;
-	*((_WORD *)v2 + 15) = (unsigned char)v15;
-	*((_DWORD *)v2 + 8) = v10;
+	pInfo->herorank  = v11;
+	pInfo->level     = v7;
+	pInfo->strength  = (unsigned char)v18;
+	pInfo->heroclass = v8;
+	pInfo->magic     = (unsigned char)v17;
+	pInfo->spawned   = v6;
+	pInfo->dexterity = (unsigned char)v16;
+	pInfo->vitality  = (unsigned char)v15;
+	pInfo->gold      = v10;
 	return 1;
-} */
+}
 
 // ref: 0x10003F6F
-int __fastcall Connect_10003F6F(int a1, int a2, size_t a3) { return 0; }
-/* {
-	*(_DWORD *)a2 = dword_10029610;
-	return _snprintf(
-			   (char *)(a2 + 4),
-			   a3,
-			   " %d %d %d %d %d %d %d %d %d",
-			   *(unsigned short *)(a1 + 20),
-			   *(unsigned char *)(a1 + 22),
-			   *(unsigned char *)(a1 + 23),
-			   *(unsigned short *)(a1 + 24),
-			   *(unsigned short *)(a1 + 26),
-			   *(unsigned short *)(a1 + 28),
-			   *(unsigned short *)(a1 + 30),
-			   *(_DWORD *)(a1 + 32),
-			   *(_DWORD *)(a1 + 40));
-} */
-// 10029610: using guessed type int dword_10029610;
+void __fastcall Connect_MakeDescString(_uiheroinfo *a1, char *name, size_t size)
+{
+	*(_DWORD *)name = (unsigned int)connect_charname;
+	_snprintf(
+	    name + 4,
+	    size,
+	    " %d %d %d %d %d %d %d %d %d",
+	    a1->level,
+	    a1->heroclass,
+	    a1->herorank,
+	    a1->strength,
+	    a1->magic,
+	    a1->dexterity,
+	    a1->vitality,
+	    a1->gold,
+	    a1->spawned);
+}
 
 // ref: 0x10003FB7
-int __stdcall UiCreateGameCriteria(int a1, char *a2) { return 0; }
-/* {
-	return sprintf(a2, "#%d?%d", 3, *(unsigned short *)(a1 + 20));
-} */
+void __stdcall UiCreateGameCriteria(_uiheroinfo *pInfo, char *str)
+{
+	sprintf(str, "#%d?%d", 3, pInfo->level);
+}
 
 // ref: 0x10003FD6
-int __stdcall UiCreatePlayerDescription(_uiheroinfo *info, int mode, char *desc) { return 0; }
-/* {
-	dword_10029610 = a2;
-	Connect_10003F6F(a1, a3, 0x80u);
+BOOL __stdcall UiCreatePlayerDescription(_uiheroinfo *info, int mode, char *desc)
+{
+	connect_charname = (char *)mode;
+	Connect_MakeDescString(info, desc, 0x80u);
 	return 1;
-} */
-// 10029610: using guessed type int dword_10029610;
+}
 
 // ref: 0x10003FF7
-int __stdcall UiSetupPlayerInfo(char *str, _uiheroinfo *info, int mode) { return 0; }
-/* {
-	dword_10029610 = a3;
-	SStrCopy(&unk_10029530, a1, 128);
-	return Connect_10003F6F(a2, (int)byte_100294B0, 0x80u);
-} */
-// 100103E8: using guessed type int __stdcall SStrCopy(_DWORD, _DWORD, _DWORD);
-// 10029610: using guessed type int dword_10029610;
+void __stdcall UiSetupPlayerInfo(char *infostr, _uiheroinfo *pInfo, int type)
+{
+	connect_charname = (char *)type;
+	SStrCopy(connect_plrinfostr, infostr, 128);
+	Connect_MakeDescString(pInfo, connect_categorystr, 0x80u);
+}
 
 // ref: 0x10004028
-int __fastcall Connect_10004028(int a1, int a2, int a3, int a4) { return 0; }
-/* {
-	int result; // eax
-
-	if ( a1 )
-		result = SStrCopy(a1, &unk_10029530, a2);
-	if ( a3 )
-		result = SStrCopy(a3, byte_100294B0, a4);
-	return result;
-} */
-// 100103E8: using guessed type int __stdcall SStrCopy(_DWORD, _DWORD, _DWORD);
+void __fastcall Connect_CopyPlrDescStrings(char *str1, int size1, char *str2, int size2)
+{
+	if (str1)
+		SStrCopy(str1, connect_plrinfostr, size1);
+	if (str2)
+		SStrCopy(str2, connect_categorystr, size2);
+}

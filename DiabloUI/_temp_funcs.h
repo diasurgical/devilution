@@ -13,7 +13,6 @@ int __fastcall artfont_GetFontBreak(char *str);
 void __cdecl artfont_delete_operator(void *ptr);
 void __fastcall artfont_PrintFontStr(char *str, DWORD **pSurface, int sx, int sy);
 
-
 signed int bn_prof_100014E8();
 //const char *UiProfileGetString();
 //BOOL __stdcall UiProfileCallback(int a1, int a2, int a3, int a4, LPARAM a5, int a6, int a7, int a8, int (__stdcall *a9)(_DWORD, _DWORD, _DWORD, _DWORD));
@@ -24,7 +23,7 @@ int __fastcall bn_prof_10001938(HDC a1, _DWORD *a2, char *a3, int a4, int a5);
 int __fastcall bn_prof_10001A10(HWND a1, HWND a2);
 HINSTANCE __fastcall bn_prof_10001B0A(HWND a1, const CHAR *a2);
 HWND UNKCALL bn_prof_10001C0E(HWND hWnd);
-void __fastcall bn_prof_10001CB9(_DWORD *a1, int a2, void (__fastcall *a3)(_BYTE *, _DWORD, int), int a4);
+void __fastcall bn_prof_10001CB9(_DWORD *a1, int a2, void(__fastcall *a3)(_BYTE *, _DWORD, int), int a4);
 BOOL UNKCALL bn_prof_10001CF3(HWND hWnd);
 HFONT __fastcall bn_prof_10001D81(HWND hWnd, int a2, int a3);
 void UNKCALL bn_prof_10001E34(void *arg);
@@ -37,7 +36,7 @@ BOOL bn_prof_100021C4();
 void *bn_prof_10002247();
 int j_bn_prof_10002282();
 _DWORD *bn_prof_10002282();
-void __cdecl bn_prof_10002298(); // idb
+void __cdecl bn_prof_10002298();         // idb
 int UNKCALL bn_prof_100022A2(HWND hWnd); // idb
 int UNKCALL bn_prof_10002353(HGDIOBJ h); // idb
 HGDIOBJ bn_prof_100023D8();
@@ -54,7 +53,6 @@ _DWORD *UNKCALL bn_prof_1000280C(int *arg, _DWORD *a2, int a3, _DWORD *a4);
 void UNKCALL bn_prof_1000287D(_DWORD *arg);
 void UNKCALL bn_prof_10002890(_DWORD *arg);
 
-
 void UNKCALL BNetGW_100028C2(_DWORD *arg);
 void UNKCALL BNetGW_100029BF(_DWORD *arg, int a2);
 void *UNKCALL BNetGW_10002A07(_DWORD *arg);
@@ -70,67 +68,66 @@ int UNKCALL BNetGW_10002DBF(_DWORD *arg);
 char *__stdcall BNetGW_10002DEB(char *a1, unsigned int a2);
 char *__stdcall BNetGW_10002E0B(char *a1, unsigned int a2);
 
+void __cdecl Connect_FreeConnectData();
+BOOL __cdecl Connect_LoadGFXAndStuff();
+BOOL __stdcall UiArtCallback(int game_type, unsigned int art_code, PALETTEENTRY *pPalette, void *pBuffer, DWORD dwBuffersize, DWORD *pdwWidth, DWORD *pdwHeight, DWORD *pdwBpp);
+void __cdecl j_Connect_cpp_init();
+void __cdecl Connect_cpp_init();
+BOOL __stdcall UiGetDataCallback(int game_type, int data_code, void *a3, int a4, int a5);
+BOOL __stdcall UiSoundCallback(int a1, int type, int a3);
+BOOL __stdcall UiAuthCallback(int a1, char *a2, char *a3, char a4, char *a5, LPSTR lpBuffer, int cchBufferMax);
+BOOL __stdcall UiDrawDescCallback(int arg0, COLORREF color, LPCSTR lpString, char *a4, int a5, UINT align, time_t a7, HDC *a8);
+BOOL __stdcall UiCategoryCallback(int a1, int a2, int a3, int a4, int a5, _DWORD *a6, _DWORD *a7);
+int __fastcall Connect_GetRankFromLevel(char *str);
+BOOL __fastcall Connect_DiffFromString(char *str, _gamedata *gamedata, int a3, int a4);
+void __fastcall Connect_SetDiffString(_gamedata *gamedata, const char *str1, char *str2, char *str3, int size);
+BOOL __fastcall Connect_GetHeroInfoConc(const char *a1, _uiheroinfo *pInfo);
+void __fastcall Connect_MakeDescString(_uiheroinfo *a1, char *name, size_t size);
+void __stdcall UiCreateGameCriteria(_uiheroinfo *pInfo, char *str);
+BOOL __stdcall UiCreatePlayerDescription(_uiheroinfo *info, int mode, char *desc);
+void __stdcall UiSetupPlayerInfo(char *infostr, _uiheroinfo *pInfo, int type);
+void __fastcall Connect_CopyPlrDescStrings(char *str1, int size1, char *str2, int size2);
 
-void *Connect_10002E2B();
-signed int Connect_10002EC4();
-//BOOL __stdcall UiArtCallback(int a1, unsigned int a2, PALETTEENTRY *pPalette, void *pBuffer, DWORD dwBuffersize, DWORD *pdwWidth, DWORD *dwHeight, DWORD *pdwBpp);
-signed int Connect_100033D1();
-//BOOL __stdcall UiGetDataCallback(int a1, int a2, void *a3, int a4, int a5);
-//int __stdcall UiSoundCallback(int a1, int a2, int a3);
-//int __stdcall UiAuthCallback(int, int, char *, char, char *, LPSTR lpBuffer, int cchBufferMax); // idb
-//int __stdcall UiDrawDescCallback(int, COLORREF color, LPCSTR lpString, char *, int, UINT align, time_t, int); // idb
-//signed int __stdcall UiCategoryCallback(int a1, int a2, int a3, int a4, int a5, _DWORD *a6, _DWORD *a7);
-int UNKCALL Connect_10003D04(char *); // idb
-int __fastcall Connect_10003DAF(char *a1, int a2, int a3, int a4);
-char *__fastcall Connect_10003E0C(int a1, const char *a2, char *a3, char *a4, int a5);
-signed int __fastcall Connect_10003E61(const char *a1, _BYTE *a2);
-int __fastcall Connect_10003F6F(int a1, int a2, size_t a3);
-//int __stdcall UiCreateGameCriteria(int, char *); // idb
-//signed int __stdcall UiCreatePlayerDescription(int a1, int a2, int a3);
-//int __stdcall UiSetupPlayerInfo(int a1, int a2, int a3);
-int __fastcall Connect_10004028(int a1, int a2, int a3, int a4);
+BOOL __stdcall UiCopyProtError(int *pdwResult);
+LRESULT __stdcall CopyProt_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+void __cdecl CopyProt_FreeCopyResrcs();
+BOOL __fastcall CopyProt_LoadCopyStuff(HWND hWnd, int a2);
+void __fastcall CopyProt_EndCopyDlg(HWND hWnd, int a2);
+void __cdecl j_CopyProt_cpp_init();
+void __cdecl CopyProt_cpp_init();
 
+void __cdecl j_cr8game_cpp_init();
+void __cdecl cr8game_cpp_init();
+BOOL __fastcall cr8game_GetSnetCreaGame(HWND hWnd);
+BOOL __stdcall UiCreateGameCallback(int a1, int a2, int a3, int a4, int a5, int a6);
+LRESULT __stdcall cr8game_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+void __cdecl cr8game_FreeCreaStuff();
+BOOL __fastcall cr8game_LoadCreaGFX(HWND hWnd);
+void __fastcall cr8game_FreeMainMem(HWND hWnd);
+void __fastcall cr8game_AllocMainMem(HWND hWnd);
+void __fastcall cr8game_DoAROP3Blit(HWND hWnd, int frame, int size);
+void __fastcall cr8game_SendMessageF5(HWND hWnd);
+void __fastcall cr8game_BlitCr8Dialog(HWND hWnd, int a2);
+void __fastcall cr8game_SetWindowStr(HWND hWnd, int dlgitem, int a3);
+int __fastcall cr8game_CheckValidGameName(char *name);
+HFONT __fastcall cr8game_GetCr8Object(HWND hWnd);
 
-//signed int __stdcall UiCopyProtError(int *a1);
-int __stdcall CopyProt_100040AF(int, UINT Msg, WPARAM wParam, LPARAM lParam); // idb
-HGLOBAL CopyProt_10004173();
-signed int __fastcall CopyProt_100041B5(HWND a1, const CHAR *edx0);
-int __fastcall CopyProt_1000430C(int a1, int a2);
-signed int CopyProt_10004329();
+void __fastcall CreaDung_SetDelSpin(int a1);
+void __cdecl j_CreaDung_cpp_init();
+void __cdecl CreaDung_cpp_init();
+LRESULT __stdcall CreaDung_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+void __fastcall CreaDung_ParseDungProcs(HWND hWnd, int dlg);
+void __fastcall CreaDung_FreeDungProcs(HWND hWnd);
+void __fastcall CreaDung_LoadDungGFX(HWND hWnd);
+void __fastcall CreaDung_PlaySndAndKill(HWND hWnd, int a2);
+void __fastcall CreaDung_DoAllPlaySnd(HWND hWnd);
+void __fastcall CreaDung_DoSnetCreaGame(HWND hWnd);
+void __fastcall CreaDung_CheckDlgForSnd(HWND hWnd, int a2, int a3);
+BOOL __fastcall CreaDung_SelDungDiff(int a1, int a2, int a3, int a4, int a5, int a6, int a7, int a8);
 
-
-signed int cr8game_10004339();
-int UNKCALL cr8game_10004344(HWND arg);
-//int __stdcall UiCreateGameCallback(int a1, int a2, int a3, int a4, int a5, int a6);
-HGDIOBJ __stdcall cr8game_10004506(HWND hDlg, UINT Msg, WPARAM wParam, HWND hWnd);
-BYTE *cr8game_10004828();
-BOOL __fastcall cr8game_1000487F(HWND hWnd);
-void **UNKCALL cr8game_10004914(HWND hDlg);
-_DWORD *UNKCALL cr8game_1000497F(HWND arg);
-_DWORD *__fastcall cr8game_10004A34(HWND hWnd, int a2, int a3);
-LRESULT UNKCALL cr8game_10004A93(HWND hDlg);
-_DWORD *__fastcall cr8game_10004ABA(HWND hDlg, int a2);
-BOOL __fastcall cr8game_10004B02(HWND hWnd, int a2, int a3);
-int UNKCALL cr8game_10004B3F(char *); // idb
-HFONT UNKCALL cr8game_10004BA8(HWND hWnd);
-
-
-void UNKCALL CreaDung_10004C33(void *arg);
-signed int CreaDung_10004C3F();
-int __stdcall CreaDung_10004C4A(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam); // idb
-int __fastcall CreaDung_10004D75(HWND a1, int a2);
-void UNKCALL CreaDung_10004E2E(HWND hDlg);
-int UNKCALL CreaDung_10004E8B(HWND hWnd); // idb
-int __fastcall CreaDung_10004F40(int a1, int a2);
-HWND USERCALL CreaDung_10004F5D(HWND a1, int a2);
-HWND UNKCALL CreaDung_10005037(HWND arg);
-HWND USERPURGE CreaDung_1000517E(HWND hWnd, int a2, int a3, int height);
-int __fastcall CreaDung_100051D8(int a1, int a2, int a3, int a4, int a5, int a6, int a7, int a8);
-
-
-//signed int __stdcall UiGetDefaultStats(int a1, _WORD *a2);
-signed int CreaStat_10005287();
-
+BOOL __stdcall UiGetDefaultStats(int pclass, _uidefaultstats *pStats);
+void __cdecl j_CreaStat_cpp_init();
+void __cdecl CreaStat_cpp_init();
 
 void __cdecl j_credits_cpp_init();
 void __cdecl credits_cpp_init();
@@ -142,7 +139,6 @@ void __fastcall credits_CalcPosROP3(HWND hWnd);
 void __fastcall credits_PrintCredLines(HWND hWnd);
 int __fastcall credits_GetCredLineBreak(char *str);
 char *__fastcall credits_GetAdjustText(char *str, int len);
-
 
 void __fastcall DiabEdit_DoPaintBMP(HWND hWnd);
 void __cdecl j_DiabEdit_cpp_init();
@@ -157,7 +153,6 @@ void __fastcall DiabEdit_SetRestrictString(HWND hWnd, LPARAM lParam);
 void __fastcall DiabEdit_SetRestrictTimer(HWND hWnd);
 void __fastcall DiabEdit_RemoveAllProps(HWND hWnd);
 
-
 int __cdecl DiabloUI_GetSpawned();
 void __stdcall UiOnPaint(int a1);
 void __stdcall UiSetBackgroundBitmap(int a1, PALETTEENTRY *a2, int a3, int a4, int a5);
@@ -168,7 +163,6 @@ void __stdcall UiAppActivate(BOOL bActive);
 BOOL __stdcall DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved);
 void __cdecl j_DiabloUI_cpp_init();
 void __cdecl DiabloUI_cpp_init();
-
 
 signed int DirLink_10005CFA();
 BOOL __fastcall DirLink_10005D05(int a1, int a2, int a3, _DWORD *a4, int a5, int a6);
@@ -185,36 +179,34 @@ int UNKCALL DirLink_100062BF(void *arg, int a2, char *a3, char *a4);
 signed int __stdcall DirLink_1000632B(int a1, char *a2, char *a3);
 HWND __fastcall DirLink_10006359(HWND hWnd, int a2, int height);
 
-
-//signed int __stdcall UiBetaDisclaimer(int a1);
-int __stdcall disclaim_100063DA(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam); // idb
-void UNKCALL disclaim_100064C9(HWND hDlg);
-int UNKCALL disclaim_100064F3(HWND hWnd); // idb
-int UNKCALL disclaim_10006552(void *arg);
-signed int disclaim_10006571();
-
+BOOL __stdcall UiBetaDisclaimer(int a1);
+LRESULT __stdcall disclaim_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+void __fastcall disclaim_DelDisclaimProcs(HWND hWnd);
+void __fastcall disclaim_LoadDisclaimGFX(HWND hWnd);
+void __fastcall disclaim_FadeFromDisclaim(HWND hWnd);
+void __cdecl j_disclaim_cpp_init();
+void __cdecl disclaim_cpp_init();
 
 void __cdecl j_Doom_cpp_init();
 void __cdecl Doom_cpp_init();
-void __fastcall Doom_ParseWndProcs(HWND hWnd, int *msgtbl, int a3, int a4);
+void __fastcall Doom_ParseWndProcs(HWND hWnd, int *msgtbl, int nFont, int a4);
 void __fastcall Doom_GetSetWndText(HWND hWnd, int msg, int nFont, int a4);
 void __fastcall Doom_PrintStrWithSpin(HWND hWnd, BOOL a2);
 void __fastcall Doom_AllocAndSetBMP(HWND hWnd, int a2, int bmp_flags); /* check args, __stdcall? */
 void __fastcall Doom_GetWindowROP3(HWND hWnd1, HWND hWnd2);
-void __fastcall Doom_ParseWndProc2(HWND hWnd, int *msgtbl, int a3, int a4);
+void __fastcall Doom_ParseWndProc2(HWND hWnd, int *msgtbl, int nFont, int a4);
 void __fastcall Doom_GetSetWndTxt2(HWND hWnd, int msg, int nFont, int a4);
-void __fastcall Doom_ParseWndProc3(HWND hWnd, int *msgtbl, int a3);
+void __fastcall Doom_ParseWndProc3(HWND hWnd, int *msgtbl, int nFont);
 void __fastcall Doom_GetSetWndTxt3(HWND hWnd, int msg, int nFont);
 void __fastcall Doom_PrintStrWithSpn2(HWND hWnd, int justify_type);
-void __fastcall Doom_ParseWndProc4(HWND hWnd, int *msgtbl, int a3);
+void __fastcall Doom_ParseWndProc4(HWND hWnd, int *msgtbl, int nFont);
 void __fastcall Doom_GetSetWndTxt4(HWND hWnd, int msg, int nFont);
-void __fastcall Doom_ParseWndProc5(HWND hWnd, int *msgtbl, int a3);
+void __fastcall Doom_ParseWndProc5(HWND hWnd, int *msgtbl, int nFont);
 void __fastcall Doom_GetSetWndTxt5(HWND hWnd, int msg, int nFont);
 void __fastcall Doom_PrintTextMsg403(HWND hWnd);
-void __fastcall Doom_ParseWndProc6(HWND hWnd, int *msgtbl, int a3);
+void __fastcall Doom_ParseWndProc6(HWND hWnd, int *msgtbl, int nFont);
 void __fastcall Doom_GetSetWndTxt6(HWND hWnd, int msg, int nFont);
 void __fastcall Doom_DeleteFreeProcs(HWND hWnd, int *msgtbl);
-
 
 int __stdcall EntDial_10006C96(HWND hDlg, UINT Msg, WPARAM wParam, LPARAM lParam); // idb
 HWND UNKCALL EntDial_10006D78(HWND hDlg);
@@ -224,14 +216,13 @@ void __fastcall EntDial_10006EE8(HWND hWnd, unsigned int a2, int a3);
 int __fastcall EntDial_10006F16(HWND hDlg, int, int); // idb
 signed int EntDial_10006F71();
 
-
-LRESULT __stdcall EntName_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam); // idb
-HWND UNKCALL EntName_1000709E(HWND hDlg);
-int UNKCALL EntName_100070DB(HWND hWnd); // idb
-int __fastcall EntName_100071AC(HWND hDlg, int a2);
-void __fastcall EntName_100071ED(HWND hWnd, unsigned int a2, int a3);
-signed int EntName_10007220();
-
+LRESULT __stdcall EntName_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+void __fastcall EntName_DelEntNameMsgs(HWND hWnd);
+void __fastcall EntName_LoadFocusChkName(HWND hWnd);
+void __fastcall EntName_SetCharName(HWND hWnd, int a2);
+void __fastcall EntName_GetMessageName(HWND hWnd, unsigned int a2, int a3);
+void __cdecl j_EntName_cpp_init();
+void __cdecl EntName_cpp_init();
 
 void __fastcall Fade_ApplyPaletteRange(int range1, int range2);
 void __fastcall Fade_UpdatePaletteRange(int range);
@@ -243,7 +234,6 @@ void __fastcall Fade_SetFadeTimer(int nTime);
 void __stdcall Fade_TimerFunctionDlg(int a1, int a2, int a3, int a4);
 void __cdecl j_Fade_cpp_init();
 void __cdecl Fade_cpp_init();
-
 
 void __fastcall Focus_CheckPlayMove(LPARAM lParam);
 int __cdecl Focus_GetSpinWidthOrZero();
@@ -259,7 +249,6 @@ void __fastcall Focus_LoadSpinner(const char *pszFileName);
 void __fastcall Focus_SetFocusTimer(HWND hWnd, const char *pszFileName);
 void __stdcall Focus_SetFocusAndBlit(int hWnd, int a2, int a3, int a4);
 void __fastcall Focus_KillFocusTimer(HWND hWnd);
-
 
 void __cdecl local_InitUiPalette();
 void __cdecl local_DelUiPalette();
@@ -292,10 +281,9 @@ void __cdecl local_SetCursorArt();
 void __cdecl local_SetCursorDefault();
 void __fastcall local_SetDiabloCursor(HWND hWnd);
 
-
 void __cdecl j_MainMenu_cpp_init();
 void __cdecl MainMenu_cpp_init();
-BOOL __stdcall UiMainMenuDialog(char *name, int *pdwResult, void (__stdcall *fnSound)(char *file), int a4);
+BOOL __stdcall UiMainMenuDialog(char *name, int *pdwResult, void(__stdcall *fnSound)(char *file), int a4);
 LRESULT __stdcall MainMenu_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
 void __fastcall MainMenu_KillAndFreeMenu(HWND hWnd);
 void __fastcall MainMenu_SetMenuTimer(HWND hWnd);
@@ -303,7 +291,6 @@ void __fastcall MainMenu_LoadMenuGFX(HWND hWnd);
 void __fastcall MainMenu_DoOptions(HWND hWnd, int option, int PlaySelect);
 BOOL __cdecl MainMenu_CheckEnoughMemory();
 void __fastcall MainMenu_CheckWParamFocus(HWND hWnd, WPARAM wParam);
-
 
 int Modem_1000855D();
 HWND __fastcall Modem_10008563(HWND hDlg, const char *edx0, int a2);
@@ -319,33 +306,31 @@ int __stdcall Modem_100086DE(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
 void **UNKCALL Modem_1000879E(HWND hDlg);
 BOOL UNKCALL Modem_100087DB(HWND hWnd);
 int Modem_10008888();
-int UNKCALL Modem_100088DB(HWND hWnd); // idb
-int UNKCALL Modem_1000893D(HWND hWnd); // idb
+int UNKCALL Modem_100088DB(HWND hWnd);         // idb
+int UNKCALL Modem_1000893D(HWND hWnd);         // idb
 int __fastcall Modem_10008A38(HWND hWnd, int); // idb
 void __cdecl Modem_10008B42(char *a1);
 int UNKCALL Modem_10008BB7(HWND hWnd); // idb
 int UNKCALL Modem_10008BFE(HWND hWnd); // idb
 
-
 int __stdcall ModmStat_10008C62(char *, int, int, int, int); // idb
 int UNKCALL ModmStat_10008C87(void *arg);
 int __stdcall ModmStat_10008CA0(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam); // idb
-int UNKCALL ModmStat_10008DB3(HWND hDlg); // idb
+int UNKCALL ModmStat_10008DB3(HWND hDlg);                                           // idb
 BOOL UNKCALL ModmStat_10008DE4(HWND hWnd);
 int __fastcall ModmStat_10008E89(int a1, int a2);
 void UNKCALL ModmStat_10008EBF(HWND hDlg);
 signed int ModmStat_10008F26();
 
-
-int __fastcall OkCancel_10008F31(HWND hWnd, const CHAR *a2);
-signed int OkCancel_10008FEC();
-HGDIOBJ __stdcall OkCancel_10008FF7(HWND a1, UINT Msg, WPARAM wParam, HWND hWnd);
-void **UNKCALL OkCancel_10009117(HWND hWnd);
-signed int __fastcall OkCancel_10009161(HWND a1, int a2);
-int __fastcall OkCancel_100092F5(int a1, int a2);
-int __fastcall OkCancel_1000930A(int a1, int a2, int a3);
-//LPCSTR __stdcall UiMessageBoxCallback(HWND hWnd, LPCSTR lpText, LPCSTR lpCaption, UINT uType);
-
+BOOL __fastcall OkCancel_DrawString(HWND hWnd, char *str);
+void __cdecl j_OkCancel_cpp_init();
+void __cdecl OkCancel_cpp_init();
+LRESULT __stdcall OkCancel_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+void __fastcall OkCancel_FreeDlgBmp(HWND hWnd);
+BOOL __fastcall OkCancel_LoadOkCancGFX(HWND hWnd, DWORD *lParam);
+void __fastcall OkCancel_PlaySndEndDlg(HWND hWnd, int a2);
+void __fastcall OkCancel_DoOkDialog(HWND hWnd, char *str, int a3);
+void __stdcall UiMessageBoxCallback(HWND hWnd, char *lpText, LPCSTR lpCaption, UINT uType);
 
 signed int Progress_10009480();
 //BOOL __stdcall UiProgressDialog(int a1, int a2, BOOL a3, int (*a4)(void), int a5);
@@ -357,23 +342,23 @@ void Progress_100098B0();
 void UNKCALL Progress_100098C5(HWND hWnd);
 BOOL UNKCALL Progress_1000991C(HWND hWnd);
 
+void __cdecl j_Sbar_cpp_init();
+void __cdecl Sbar_cpp_init();
+BOOL __fastcall Sbar_CheckIfNextHero(HWND hWnd);
+int __fastcall Sbar_NumScrollLines(HWND hWnd, int width, int height);
+void __fastcall Sbar_DrawScrollBar(HWND hWnd, int nIDDlgItem, int width, int height);
+void __fastcall Sbar_LoadScrBarGFX(HWND hWnd, int nIDDlgItem);
+void __cdecl j_Sbar_cpp_init2();
+void __cdecl Sbar_cpp_init2();
+void __fastcall Sbar_FreeScrollBar(HWND hWnd, int nIDDlgItem);
 
-signed int Sbar_100099B5();
-int UNKCALL Sbar_100099C0(HWND hWnd); // idb
-int __fastcall Sbar_100099DC(HWND hWnd, LONG a2, int a3);
-HWND __fastcall Sbar_10009A99(HWND hDlg, int nIDDlgItem, int a3, int a4);
-HWND __fastcall Sbar_10009BF1(HWND hDlg, int nIDDlgItem);
-signed int Sbar_10009CC7();
-HWND __fastcall Sbar_10009CD2(HWND hDlg, int nIDDlgItem);
-
-
-LRESULT __stdcall SelClass_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam); // idb
-HWND UNKCALL SelClass_10009EC0(HWND hDlg);
-int UNKCALL SelClass_10009EFD(HWND hWnd); // idb
-int __fastcall SelClass_10009FA2(HWND hWnd, int a2);
-int __fastcall SelClass_1000A00D(int a1, LONG a2);
-signed int SelClass_1000A077();
-
+LRESULT __stdcall SelClass_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+void __fastcall SelClass_FreeClassMsgTbl(HWND hWnd);
+void __fastcall SelClass_LoadClassFocus(HWND hWnd);
+void __fastcall SelClass_SetDefaultStats(HWND hWnd, int a2);
+void __fastcall SelClass_CheckClassSpawn(HWND hWnd, int a2);
+void __cdecl j_SelClass_cpp_init();
+void __cdecl SelClass_cpp_init();
 
 void *SelConn_1000A082();
 signed int SelConn_1000A09B();
@@ -406,7 +391,6 @@ int __fastcall SelConn_1000AE19(int a1, UINT a2);
 HWND __fastcall SelConn_1000AE59(HWND hWnd, int a2, int height);
 //signed int __stdcall UiSelectProvider(int a1, int a2, int a3, int a4, char *a5, int *a6);
 
-
 int UNKCALL SelDial_1000B011(char *arg);
 signed int SelDial_1000B0C4();
 int __stdcall SelDial_1000B0CF(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam); // idb
@@ -420,14 +404,12 @@ HWND USERCALL SelDial_1000B483(HWND hWnd, int a2);
 int SelDial_1000B5D9();
 int __fastcall SelDial_1000B614(HWND hWnd, int, int); // idb
 
-
 void UNKCALL SelGame_1000B66A(void *arg);
 int SelGame_1000B671();
 void UNKCALL SelGame_1000B677(void *arg);
 int SelGame_1000B67E();
 //int __stdcall UiSelectGame(int, int, void *, int, int, int); // idb
 signed int SelGame_1000B795();
-
 
 _uiheroinfo *__cdecl SelHero_GetCurrentHeroInfo();
 int __cdecl SelHero_GetNumHeroesLeft();
@@ -445,7 +427,7 @@ BOOL __fastcall SelHero_IsNameReserved(char *name);
 void __fastcall SelHero_SetLastNamePos(char *name);
 BOOL __fastcall SelHero_NameHasChar(char *name, char *illegalchrs);
 BOOL __fastcall UiValidPlayerName(char *name);
-BOOL __stdcall UiSelHeroMultDialog(BOOL (__stdcall *fninfo)(BOOL (__stdcall *fninfofunc)(_uiheroinfo *)), BOOL (__stdcall *fncreate)(_uiheroinfo *), BOOL (__stdcall *fnremove)(_uiheroinfo *), BOOL (__stdcall *fnstats)(int, _uidefaultstats *), int *dlgresult, int *a6, char *name);
+BOOL __stdcall UiSelHeroMultDialog(BOOL(__stdcall *fninfo)(BOOL(__stdcall *fninfofunc)(_uiheroinfo *)), BOOL(__stdcall *fncreate)(_uiheroinfo *), BOOL(__stdcall *fnremove)(_uiheroinfo *), BOOL(__stdcall *fnstats)(int, _uidefaultstats *), int *dlgresult, int *a6, char *name);
 LRESULT __stdcall SelHero_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
 void __fastcall SelHero_DoStuffWithStrings(HWND hWnd);
 _uiheroinfo *__fastcall SelHero_GetNextHeroFromStr(_uiheroinfo *pInfo, char *name);
@@ -463,8 +445,7 @@ void __fastcall SelHero_DoHeroEndFade(HWND hWnd, int a2);
 void __fastcall SelHero_LoadHeroGFX(HWND hWnd);
 void __fastcall SelHero_SelectHeroRegion(HWND hWnd);
 BOOL __stdcall SelHero_GetHeroInfo(_uiheroinfo *pInfo);
-BOOL __stdcall UiSelHeroSingDialog(BOOL (__stdcall *fninfo)(BOOL (__stdcall *fninfofunc)(_uiheroinfo *)), BOOL (__stdcall *fncreate)(_uiheroinfo *), BOOL (__stdcall *fnremove)(_uiheroinfo *), BOOL (__stdcall *fnstats)(int, _uidefaultstats *), int *dlgresult, char *name, int *difficulty);
-
+BOOL __stdcall UiSelHeroSingDialog(BOOL(__stdcall *fninfo)(BOOL(__stdcall *fninfofunc)(_uiheroinfo *)), BOOL(__stdcall *fncreate)(_uiheroinfo *), BOOL(__stdcall *fnremove)(_uiheroinfo *), BOOL(__stdcall *fnstats)(int, _uidefaultstats *), int *dlgresult, char *name, int *difficulty);
 
 void *SelIPX_1000C610();
 signed int SelIPX_1000C629();
@@ -502,35 +483,34 @@ const char *__fastcall SelIPX_1000D58D(const char *a1, const char *a2);
 int __fastcall SelIPX_1000D5B0(int a1, int a2);
 HWND __fastcall SelIPX_1000D696(HWND hDlg, int a2, int height);
 
+void __cdecl j_SelList_cpp_init();
+void __cdecl SelList_cpp_init();
+LRESULT __stdcall SelList_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+void __fastcall SelList_DeleteFreeProcs(HWND hWnd);
+void __fastcall SelList_GetHeroStats(HWND hWnd, int nIDDlgItem);
+void __fastcall SelList_CountHeroList(HWND hWnd);
+int __fastcall SelList_GetNextHeroLong(HWND hWnd);
+void __fastcall SelList_LoadFocus16(HWND hWnd);
+void __fastcall SelList_KillFocus16(HWND hWnd);
+void __fastcall SelList_ShowListWindow(HWND hWnd);
+void __fastcall SelList_SetHeroDlgLong(HWND hWnd, _uiheroinfo *pInfo);
+void __fastcall SelList_DoListOldProc(HWND hWnd);
+LRESULT __stdcall SelList_OldListWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+void __fastcall SelList_ShiftHeroDlgItems(HWND hWnd);
+void __fastcall SelList_ShiftHeroDlgItm2(HWND hWnd);
+void __fastcall SelList_HeroesWithBigDialogs(HWND hWnd);
+_uiheroinfo *__fastcall SelList_GetHeroFromNum(int heronum);
+void __fastcall SelList_HeroesWithHugeDlg(HWND hWnd);
+void __fastcall SelList_HeroDlgWithSound(HWND hWnd);
+void __fastcall SelList_HeroDlgWithSnd2(HWND hWnd);
+void __fastcall SelList_ChooseDlgFromSize(HWND hWnd, int width, int height);
 
-signed int SelList_1000D769();
-LRESULT __stdcall SelList_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam); // idb
-HWND UNKCALL SelList_1000D916(HWND hDlg);
-HWND __fastcall SelList_1000D964(HWND hDlg, int nIDDlgItem);
-HWND UNKCALL SelList_1000D9CF(HWND hDlg);
-int UNKCALL SelList_1000D9F4(HWND hWnd); // idb
-int UNKCALL SelList_1000DA2D(void *arg);
-int UNKCALL SelList_1000DA48(void *arg);
-int UNKCALL SelList_1000DA55(HWND hWnd); // idb
-int __fastcall SelList_1000DB2C(HWND a1, const char *a2);
-void UNKCALL SelList_1000DBAC(HWND hDlg);
-LRESULT __stdcall SelList_1000DBFE(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
-HWND UNKCALL SelList_1000DD36(HWND hWnd);
-HWND UNKCALL SelList_1000DDA7(HWND hWnd);
-HWND UNKCALL SelList_1000DE18(HWND hWnd);
-_DWORD *UNKCALL SelList_1000DEDD(char *arg);
-HWND UNKCALL SelList_1000DEF4(HWND hWnd);
-HWND UNKCALL SelList_1000DFAB(HWND hWnd);
-HWND UNKCALL SelList_1000E043(HWND hWnd);
-int __fastcall SelList_1000E0CA(HWND hWnd, int, int); // idb
-
-
-LRESULT __stdcall SelLoad_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam); // idb
-HWND UNKCALL SelLoad_1000E30E(HWND hDlg);
-int UNKCALL SelLoad_1000E34B(HWND hWnd); // idb
-int __fastcall SelLoad_1000E3E2(int a1, LONG a2);
-signed int SelLoad_1000E41A();
-
+LRESULT __stdcall SelLoad_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+void __fastcall SelLoad_DeleteProcsAndSpin(HWND hWnd);
+void __fastcall SelLoad_LoadFocusAndMsg(HWND hWnd);
+void __fastcall SelLoad_SelectSndLoad(HWND hWnd, int a2);
+void __cdecl j_SelLoad_cpp_init();
+void __cdecl SelLoad_cpp_init();
 
 signed int SelModem_1000E42A();
 int __fastcall SelModem_1000E435(void *a1, int a2, int a3, char *a4, char *a5);
@@ -561,9 +541,8 @@ HWND UNKCALL SelModem_1000EDBC(HWND hWnd);
 int __fastcall SelModem_1000EE29(int a1, int a2);
 HWND __fastcall SelModem_1000EE78(HWND hWnd, int a2, int height);
 
-
 void *SelRegn_1000EF42();
-_DWORD *__fastcall SelRegn_1000EF56(int a1, _DWORD *a2);
+_uiheroinfo *__fastcall SelRegn_SetNextHero(_uiheroinfo *pNext, _uiheroinfo *pCurrent);
 signed int SelRegn_1000EF60();
 int __stdcall SelRegn_1000EF6B(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam); // idb
 HWND __fastcall SelRegn_1000F0D7(HWND hDlg, int nIDDlgItem);
@@ -590,17 +569,15 @@ signed int SelRegn_1000F8F6();
 HWND __fastcall SelRegn_1000F929(HWND hWnd, int a2, int height);
 //signed int __stdcall UiSelectRegion(_DWORD *a1);
 
-
 int __fastcall SelYesNo_YesNoDialog(HWND hWnd, char *dialogstr, char *hero, int nofocus); /* void */
 LRESULT __stdcall SelYesNo_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
 void __fastcall SelYesNo_RemoveYNDialog(HWND hWnd);
 void __fastcall SelYesNo_LoadSelYN_GFX(HWND hWnd);
 void __fastcall SelYesNo_DoSelectYesNo(HWND hWnd, int option);
 int __fastcall SelYesNo_SelOkDialog(HWND hWnd, char *dialogstr, char *hero, int nofocus); /* void */
-int __fastcall SelYesNo_SpawnErrDialog(HWND hWnd, int string_rsrc, int is_popup); /* void */
+int __fastcall SelYesNo_SpawnErrDialog(HWND hWnd, int string_rsrc, int is_popup);         /* void */
 void __cdecl j_SelYesNo_cpp_init();
 void __cdecl SelYesNo_cpp_init();
-
 
 void __fastcall Title_BlitTitleBuffer(HWND hWnd);
 void __cdecl Title_DeletePhTrans();
@@ -618,8 +595,7 @@ void __fastcall Title_KillTimerAndFree(HWND hWnd);
 void __fastcall Title_LoadAllTitleImgs(HWND hWnd, int time);
 void __fastcall Title_KillAndFadeDlg(HWND hWnd);
 
-
-void __fastcall TitleSnd_SetSoundFunction(void (__stdcall *func)(char *file));
+void __fastcall TitleSnd_SetSoundFunction(void(__stdcall *func)(char *file));
 void __cdecl TitleSnd_InitSoundFunc();
 void __cdecl TitleSnd_PlayMoveSound();
 void __cdecl TitleSnd_PlaySelectSound();

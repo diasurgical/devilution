@@ -1,341 +1,273 @@
 // ref: 0x10008F31
-int __fastcall OkCancel_10008F31(HWND hWnd, const CHAR *a2) { return 0; }
-/* {
-	HWND v2; // ebx
-	HDC v3; // edi
-	void *v4; // eax
-	int v5; // eax
-	int result; // eax
-	LONG v7; // [esp+14h] [ebp-20h]
-	LONG v8; // [esp+18h] [ebp-1Ch]
+BOOL __fastcall OkCancel_DrawString(HWND hWnd, char *str)
+{
+	HDC v3;              // edi
+	void *v4;            // eax
+	int v5;              // eax
+	BOOL result;         // eax
+	LONG v7;             // [esp+14h] [ebp-20h]
+	LONG v8;             // [esp+18h] [ebp-1Ch]
 	struct tagRECT Rect; // [esp+1Ch] [ebp-18h]
-	HGDIOBJ h; // [esp+2Ch] [ebp-8h]
-	LPCSTR lpchText; // [esp+30h] [ebp-4h]
+	HGDIOBJ h;           // [esp+2Ch] [ebp-8h]
 
-	lpchText = a2;
-	v2 = hWnd;
-	if ( !a2 || !*a2 )
+	if (!str || !*str)
 		goto LABEL_13;
-	if ( !hWnd )
+	if (!hWnd)
 		goto LABEL_14;
 	GetClientRect(hWnd, &Rect);
 	--Rect.right;
 	--Rect.bottom;
 	v7 = Rect.right;
 	v8 = Rect.bottom;
-	v3 = GetDC(v2);
-	v4 = (void *)SendMessageA(v2, 0x31u, 0, 0);
-	h = SelectObject(v3, v4);
-	if ( !v3 )
+	v3 = GetDC(hWnd);
+	v4 = (void *)SendMessageA(hWnd, 0x31u, 0, 0);
+	h  = SelectObject(v3, v4);
+	if (!v3)
 		goto LABEL_13;
-	v5 = strlen(lpchText);
-	DrawTextA(v3, lpchText, v5, &Rect, 0x410u);
-	if ( h )
+	v5 = strlen(str);
+	DrawTextA(v3, str, v5, &Rect, 0x410u);
+	if (h)
 		SelectObject(v3, h);
-	ReleaseDC(v2, v3);
-	if ( Rect.bottom > v8 || Rect.right > v7 )
-LABEL_14:
+	ReleaseDC(hWnd, v3);
+	if (Rect.bottom > v8 || Rect.right > v7)
+	LABEL_14:
 		result = 1;
 	else
-LABEL_13:
+	LABEL_13:
 		result = 0;
 	return result;
-} */
+}
 
 // ref: 0x10008FEC
-signed int OkCancel_10008FEC() { return 0; }
-/* {
-	signed int result; // eax
-
-	result = 2139095040;
-	dword_1002A2E4 = 2139095040;
-	return result;
-} */
-// 1002A2E4: using guessed type int dword_1002A2E4;
+void __cdecl OkCancel_cpp_init()
+{
+	OkCancel_cpp_float = OkCancel_cpp_float_value;
+}
+// 1001F440: using guessed type int OkCancel_cpp_float_value;
+// 1002A2E4: using guessed type int OkCancel_cpp_float;
 
 // ref: 0x10008FF7
-HGDIOBJ __stdcall OkCancel_10008FF7(HWND a1, UINT Msg, WPARAM wParam, HWND hWnd) { return 0; }
-/* {
+LRESULT __stdcall OkCancel_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
+{
 	HWND v5; // ecx
-	int v6; // edx
+	int v6;  // edx
 	HWND v7; // eax
 	LONG v8; // eax
 	HWND v9; // eax
 
-	if ( Msg == 2 )
-	{
+	if (Msg == 2) {
 		ShowCursor(0);
-		OkCancel_10009117(a1);
-		return (HGDIOBJ)SDlgDefDialogProc(a1, Msg, wParam, hWnd);
+		OkCancel_FreeDlgBmp(hWnd);
+		return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 	}
-	if ( Msg <= 0x103 )
-		return (HGDIOBJ)SDlgDefDialogProc(a1, Msg, wParam, hWnd);
-	if ( Msg <= 0x105 )
-	{
-		v9 = (HWND)SDrawGetFrameWindow();
-		SendMessageA(v9, Msg, wParam, (LPARAM)hWnd);
-		return (HGDIOBJ)SDlgDefDialogProc(a1, Msg, wParam, hWnd);
+	if (Msg <= 0x103)
+		return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
+	if (Msg <= 0x105) {
+		v9 = (HWND)SDrawGetFrameWindow(NULL);
+		SendMessageA(v9, Msg, wParam, lParam);
+		return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 	}
-	if ( Msg != 272 )
-	{
-		if ( Msg != 273 )
-		{
-			if ( Msg == 312 && GetWindowLongA(hWnd, -12) == 1038 )
-			{
-				local_10007C2E((HDC)wParam);
-				return GetStockObject(5);
+	if (Msg != 272) {
+		if (Msg != 273) {
+			if (Msg == 312 && GetWindowLongA((HWND)lParam, -12) == 1038) {
+				local_SetWhiteText((HDC)wParam);
+				return (LRESULT)GetStockObject(5);
 			}
-			return (HGDIOBJ)SDlgDefDialogProc(a1, Msg, wParam, hWnd);
+			return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 		}
-		if ( (unsigned short)wParam == 1 )
-		{
+		if ((unsigned short)wParam == 1) {
 			v7 = GetFocus();
 			v8 = GetWindowLongA(v7, -12);
-			v5 = a1;
-			if ( v8 == 1109 )
-			{
+			v5 = hWnd;
+			if (v8 == 1109) {
 				v6 = 1;
 				goto LABEL_16;
 			}
-		}
-		else
-		{
-			if ( (unsigned short)wParam != 2 )
-			{
-				if ( (unsigned short)wParam == 1109 )
-				{
-					v5 = a1;
+		} else {
+			if ((unsigned short)wParam != 2) {
+				if ((unsigned short)wParam == 1109) {
+					v5 = hWnd;
 					v6 = 1;
-LABEL_16:
-					OkCancel_100092F5((int)v5, v6);
+				LABEL_16:
+					OkCancel_PlaySndEndDlg(v5, v6);
 				}
-				return (HGDIOBJ)SDlgDefDialogProc(a1, Msg, wParam, hWnd);
+				return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 			}
-			v5 = a1;
+			v5 = hWnd;
 		}
 		v6 = 2;
 		goto LABEL_16;
 	}
 	ShowCursor(1);
-	if ( !OkCancel_10009161(a1, (int)hWnd) )
-		SDlgEndDialog(a1, -16777216);
-	return (HGDIOBJ)1;
-} */
-// 10010376: using guessed type int __stdcall SDlgEndDialog(_DWORD, _DWORD);
-// 1001037C: using guessed type int __stdcall SDlgDefDialogProc(_DWORD, _DWORD, _DWORD, _DWORD);
+	if (!OkCancel_LoadOkCancGFX(hWnd, (DWORD *)lParam))
+		SDlgEndDialog(hWnd, (HANDLE)0xFF000000);
+	return 1;
+}
 // 10010382: using guessed type _DWORD __stdcall SDrawGetFrameWindow();
 
 // ref: 0x10009117
-void **UNKCALL OkCancel_10009117(HWND hWnd) { return 0; }
-/* {
-	_DWORD *result; // eax
-	_DWORD *v2; // esi
-	int v3; // eax
-	int v4; // eax
+void __fastcall OkCancel_FreeDlgBmp(HWND hWnd)
+{
+	void **v1; // eax MAPDST
+	void *v3;  // eax
+	void *v4;  // eax
 
-	result = RemovePropA(hWnd, "DLGBMP");
-	v2 = result;
-	if ( result )
-	{
-		v3 = *result;
-		if ( v3 )
+	v1 = (void **)RemovePropA(hWnd, "DLGBMP");
+	if (v1) {
+		v3 = *v1;
+		if (v3)
 			SMemFree(v3, "C:\\Src\\Diablo\\DiabloUI\\OkCancel.cpp", 48, 0);
-		v4 = v2[1];
-		if ( v4 )
+		v4 = v1[1];
+		if (v4)
 			SMemFree(v4, "C:\\Src\\Diablo\\DiabloUI\\OkCancel.cpp", 50, 0);
-		result = (_DWORD *)SMemFree(v2, "C:\\Src\\Diablo\\DiabloUI\\OkCancel.cpp", 51, 0);
+		SMemFree(v1, "C:\\Src\\Diablo\\DiabloUI\\OkCancel.cpp", 51, 0);
 	}
-	return result;
-} */
-// 10010340: using guessed type int __stdcall SMemFree(_DWORD, _DWORD, _DWORD, _DWORD);
+}
 
 // ref: 0x10009161
-signed int __fastcall OkCancel_10009161(HWND a1, int a2) { return 0; }
-/* {
-	int v2; // esi
-	bool v3; // zf
-	HWND v4; // edi
-	char *v5; // edi
-	HWND v6; // eax
-	HWND v7; // edi
-	HWND v8; // edi
-	HWND v9; // eax
-	const CHAR *v10; // ST1C_4
-	HWND v11; // eax
-	HWND v12; // edi
-	int v14; // [esp+Ch] [ebp-20h]
-	int v15; // [esp+10h] [ebp-1Ch]
-	int v16; // [esp+14h] [ebp-18h]
-	char v17; // [esp+18h] [ebp-14h]
-	HWND v18; // [esp+20h] [ebp-Ch]
-	const char *v19; // [esp+24h] [ebp-8h]
-	HWND hWnd; // [esp+28h] [ebp-4h]
+BOOL __fastcall OkCancel_LoadOkCancGFX(HWND hWnd, DWORD *lParam)
+{
+	bool v3;             // zf
+	HWND v4;             // edi
+	tagPALETTEENTRY *v5; // edi
+	HWND v6;             // eax
+	HWND v7;             // edi
+	BYTE **v8;           // edi
+	HWND v9;             // eax
+	const CHAR *v10;     // ST1C_4
+	HWND v11;            // eax
+	HWND v12;            // edi
+	int a2a;             // [esp+Ch] [ebp-20h]
+	int v15;             // [esp+10h] [ebp-1Ch]
+	int v16;             // [esp+14h] [ebp-18h]
+	DWORD data[2];       // [esp+18h] [ebp-14h]
+	BYTE **pBuffer;      // [esp+20h] [ebp-Ch]
+	char *pszFileName;   // [esp+24h] [ebp-8h]
 
-	v2 = a2;
-	hWnd = a1;
-	v14 = 1109;
-	v15 = 2;
-	v16 = 0;
-	v18 = (HWND)SMemAlloc(8, "C:\\Src\\Diablo\\DiabloUI\\OkCancel.cpp", 110, 0);
-	SetPropA(hWnd, "DLGBMP", v18);
-	if ( *(_DWORD *)(v2 + 8) )
-	{
-		v3 = *(_DWORD *)(v2 + 12) == 0;
-		v19 = "ui_art\\lrpopup.pcx";
-		if ( v3 )
-			v19 = "ui_art\\lpopup.pcx";
-	}
-	else if ( *(_DWORD *)(v2 + 12) )
-	{
-		v19 = "ui_art\\srpopup.pcx";
-	}
-	else
-	{
-		v19 = "ui_art\\spopup.pcx";
+	a2a     = 1109;
+	v15     = 2;
+	v16     = 0;
+	pBuffer = (BYTE **)SMemAlloc(8u, "C:\\Src\\Diablo\\DiabloUI\\OkCancel.cpp", 110, 0);
+	SetPropA(hWnd, "DLGBMP", pBuffer);
+	if (lParam[2]) {
+		v3          = lParam[3] == 0;
+		pszFileName = "ui_art\\lrpopup.pcx";
+		if (v3)
+			pszFileName = "ui_art\\lpopup.pcx";
+	} else if (lParam[3]) {
+		pszFileName = "ui_art\\srpopup.pcx";
+	} else {
+		pszFileName = "ui_art\\spopup.pcx";
 	}
 	v4 = GetParent(hWnd);
-	if ( (HWND)SDrawGetFrameWindow() == v4 )
-	{
-		local_10007944((int)hWnd, 0, &byte_10029448, -1, 1, (int)v19, (int *)v18, 0, 1);
-		v5 = local_10007895(0);
-		SDrawUpdatePalette(0, 10, v5, 0);
-		SDrawUpdatePalette(112, 144, v5 + 448, 1);
-	}
-	else
-	{
+	if ((HWND)SDrawGetFrameWindow(NULL) == v4) {
+		local_LoadArtWithPal(hWnd, 0, &nullcharacter, -1, 1, pszFileName, pBuffer, 0, 1);
+		v5 = local_GetArtPalEntry(0);
+		SDrawUpdatePalette(0, 0xAu, v5, 0);
+		SDrawUpdatePalette(0x70u, 0x90u, v5 + 112, 1);
+	} else {
 		v6 = GetParent(hWnd);
-		local_10007944((int)hWnd, (int)v6, "Popup", -1, 1, (int)v19, (int *)v18, 0, 1);
+		local_LoadArtWithPal(hWnd, (int)v6, "Popup", -1, 1, pszFileName, pBuffer, 0, 1);
 	}
 	v7 = GetParent(hWnd);
-	if ( (HWND)SDrawGetFrameWindow() == v7 )
-		Fade_100073EF(hWnd);
-	v8 = v18 + 1;
-	local_100078BE((int)"ui_art\\but_sml.pcx", (int *)v18 + 1, &v17);
-	local_10007B1B(hWnd, &v14, *(_DWORD *)v8, &v17);
-	v9 = GetDlgItem(hWnd, 1026);
-	v10 = *(const CHAR **)(v2 + 4);
-	v18 = v9;
+	if ((HWND)SDrawGetFrameWindow(NULL) == v7)
+		Fade_SetInputWindow(hWnd);
+	v8 = pBuffer + 1;
+	local_LoadArtImage("ui_art\\but_sml.pcx", pBuffer + 1, data);
+	local_FitButtonDlg(hWnd, &a2a, *v8, data);
+	v9      = GetDlgItem(hWnd, 1026);
+	v10     = (const CHAR *)lParam[1];
+	pBuffer = (BYTE **)v9;
 	SetWindowTextA(v9, v10);
-	if ( *(_DWORD *)(v2 + 16) && OkCancel_10008F31(v18, *(const CHAR **)(v2 + 4)) )
+	if (lParam[4] && OkCancel_DrawString((HWND)pBuffer, (char *)lParam[1]))
 		return 0;
-	if ( *(_DWORD *)v2 )
-	{
+	if (*lParam) {
 		v11 = GetDlgItem(hWnd, 1038);
 		v12 = v11;
-		if ( *(_DWORD *)(v2 + 16) && OkCancel_10008F31(v11, *(const CHAR **)v2) )
+		if (lParam[4] && OkCancel_DrawString(v11, (char *)*lParam))
 			return 0;
-		if ( v12 )
-			SetWindowTextA(v12, *(LPCSTR *)v2);
+		if (v12)
+			SetWindowTextA(v12, (LPCSTR)*lParam);
 	}
 	return 1;
-} */
-// 10010364: using guessed type int __stdcall SMemAlloc(_DWORD, _DWORD, _DWORD, _DWORD);
+}
 // 10010382: using guessed type _DWORD __stdcall SDrawGetFrameWindow();
-// 100103FA: using guessed type int __stdcall SDrawUpdatePalette(_DWORD, _DWORD, _DWORD, _DWORD);
 
 // ref: 0x100092F5
-int __fastcall OkCancel_100092F5(int a1, int a2) { return 0; }
-/* {
-	int v2; // esi
-	int v3; // edi
-
-	v2 = a2;
-	v3 = a1;
-	TitleSnd_1001031F();
-	return SDlgEndDialog(v3, v2);
-} */
-// 10010376: using guessed type int __stdcall SDlgEndDialog(_DWORD, _DWORD);
+void __fastcall OkCancel_PlaySndEndDlg(HWND hWnd, int a2)
+{
+	TitleSnd_PlaySelectSound();
+	SDlgEndDialog(hWnd, (HANDLE)a2);
+}
 
 // ref: 0x1000930A
-int __fastcall OkCancel_1000930A(int a1, int a2, int a3) { return 0; }
-/* {
-	int v4; // [esp+0h] [ebp-14h]
-	int v5; // [esp+4h] [ebp-10h]
-	int v6; // [esp+8h] [ebp-Ch]
-	int v7; // [esp+Ch] [ebp-8h]
-	int v8; // [esp+10h] [ebp-4h]
+void __fastcall OkCancel_DoOkDialog(HWND hWnd, char *str, int a3)
+{
+	int a5[5]; // [esp+0h] [ebp-14h]
 
-	v5 = a2;
-	v6 = 0;
-	v4 = 0;
-	v8 = 0;
-	v7 = a3;
-	return SDlgDialogBoxParam(hInstance, "OK_DIALOG", a1, OkCancel_10008FF7, &v4);
-} */
-// 10010370: using guessed type int __stdcall SDlgDialogBoxParam(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
+	a5[1] = (int)str;
+	a5[2] = 0;
+	a5[0] = 0;
+	a5[4] = 0;
+	a5[3] = a3;
+	SDlgDialogBoxParam(ghUiInst, "OK_DIALOG", (int)hWnd, OkCancel_WndProc, (int)a5);
+}
 
 // ref: 0x10009342
-void __cdecl UiMessageBoxCallback() { return; }
-//LPCSTR __stdcall UiMessageBoxCallback(HWND hWnd, LPCSTR lpText, LPCSTR lpCaption, UINT uType) { return 0; }
-/* {
-	int v4; // eax
-	bool v5; // sf
-	unsigned char v6; // of
-	size_t v7; // eax
-	CHAR *v8; // eax
-	int v9; // ecx
-	LPCSTR v11; // [esp+0h] [ebp-24h]
-	LPCSTR v12; // [esp+4h] [ebp-20h]
-	int v13; // [esp+8h] [ebp-1Ch]
-	BOOL v14; // [esp+Ch] [ebp-18h]
-	int v15; // [esp+10h] [ebp-14h]
-	int v16; // [esp+14h] [ebp-10h]
-	LPCSTR v17; // [esp+18h] [ebp-Ch]
-	const char *v18; // [esp+1Ch] [ebp-8h]
-	LPCSTR v19; // [esp+20h] [ebp-4h]
+void __stdcall UiMessageBoxCallback(HWND hWnd, char *lpText, LPCSTR lpCaption, UINT uType)
+{
+	int v4;           // eax
+	unsigned char v5; // sf
+	size_t v7;        // eax
+	char *v8;         // eax
+	int v9;           // ecx
+	int a5[5];        // [esp+0h] [ebp-24h]
+	int v11;          // [esp+14h] [ebp-10h]
+	void *location;   // [esp+18h] [ebp-Ch]
+	char *szDialog;   // [esp+1Ch] [ebp-8h]
+	char *v14;        // [esp+20h] [ebp-4h]
 
-	v11 = lpCaption;
-	v12 = lpText;
-	v18 = "OK_DIALOG";
-	v15 = 1;
-	if ( uType & 0xF )
-		v18 = "OKCANCEL_DIALOG";
-	v14 = (uType & 0xF0) == 16 || (uType & 0xF0) == 48;
-	v4 = 0;
-	v13 = 0;
-	while ( 1 )
-	{
-		v19 = (LPCSTR)SDlgDialogBoxParam(hInstance, &v18[32 * v4], hWnd, OkCancel_10008FF7, &v11);
-		if ( v19 != (LPCSTR)-16777216 )
+	a5[0]    = (int)lpCaption;
+	a5[1]    = (int)lpText;
+	szDialog = "OK_DIALOG";
+	a5[4]    = 1;
+	if (uType & 0xF)
+		szDialog = "OKCANCEL_DIALOG";
+	a5[3]        = (uType & 0xF0) == 16 || (uType & 0xF0) == 48;
+	v4           = 0;
+	a5[2]        = 0;
+	while (1) {
+		v14 = (char *)SDlgDialogBoxParam(ghUiInst, &szDialog[32 * v4], (int)hWnd, OkCancel_WndProc, (int)a5);
+		if (v14 != (char *)0xFF000000)
 			break;
-		v4 = v13 + 1;
-		v6 = __OFSUB__(v13 + 1, 2);
-		v5 = v13++ - 1 < 0;
-		if ( !(v5 ^ v6) )
-		{
-			v7 = strlen(lpText);
-			v8 = (CHAR *)SMemAlloc(v7 + 256, "C:\\Src\\Diablo\\DiabloUI\\OkCancel.cpp", 392, 0);
-			v16 = 0;
-			v17 = v8;
-			v19 = lpText;
-			if ( *lpText )
-			{
-				v9 = v16;
-				do
-				{
-					if ( *v19 <= 32 )
+		v4 = a5[2] + 1;
+		v5 = a5[2]++ - 1 < 0;
+		if (!v5) {
+			v7       = strlen(lpText);
+			v8       = (char *)SMemAlloc(v7 + 256, "C:\\Src\\Diablo\\DiabloUI\\OkCancel.cpp", 392, 0);
+			v11      = 0; /* check */
+			location = v8;
+			v14      = lpText;
+			if (*lpText) {
+				v9 = v11;
+				do {
+					if (*v14 <= 32)
 						v9 = 0;
-					*v8++ = *v19;
-					if ( ++v9 > 18 )
-					{
+					*v8++  = *v14;
+					if (++v9 > 18) {
 						*v8++ = 10;
-						v9 = 0;
+						v9    = 0;
 					}
-					++v19;
-				}
-				while ( *v19 );
+					++v14;
+				} while (*v14);
 			}
-			*v8 = 0;
-			v12 = v17;
-			v19 = (LPCSTR)SDlgDialogBoxParam(hInstance, v18, hWnd, OkCancel_10008FF7, &v11);
-			SMemFree(v17, "C:\\Src\\Diablo\\DiabloUI\\OkCancel.cpp", 416, 0);
-			if ( v19 == (LPCSTR)-16777216 )
-				return (LPCSTR)MessageBoxA(hWnd, lpText, lpCaption, uType);
-			return v19;
+			*v8   = 0;
+			a5[1] = (int)location;
+			v14   = (char *)SDlgDialogBoxParam(ghUiInst, szDialog, (int)hWnd, OkCancel_WndProc, (int)a5);
+			SMemFree(location, "C:\\Src\\Diablo\\DiabloUI\\OkCancel.cpp", 416, 0);
+			if (v14 == (char *)0xFF000000)
+				MessageBoxA(hWnd, lpText, lpCaption, uType);
+			return;
 		}
 	}
-	return v19;
-} */
-// 10010340: using guessed type int __stdcall SMemFree(_DWORD, _DWORD, _DWORD, _DWORD);
-// 10010364: using guessed type int __stdcall SMemAlloc(_DWORD, _DWORD, _DWORD, _DWORD);
-// 10010370: using guessed type int __stdcall SDlgDialogBoxParam(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
+}

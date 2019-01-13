@@ -1,62 +1,31 @@
 // ref: 0x10001058
 void __fastcall artfont_SetArtFont(int nFont)
 {
-	int v1; // ecx
-	int v2; // ecx
-	int v3; // ecx
-	int v4; // ecx
-	int v5; // ecx
-
-	if ( nFont )
-	{
-		v1 = nFont - 2;
-		if ( v1 )
-		{
-			v2 = v1 - 1;
-			if ( v2 )
-			{
-				v3 = v2 - 1;
-				if ( v3 )
-				{
-					v4 = v3 - 1;
-					if ( v4 )
-					{
-						v5 = v4 - 1;
-						if ( v5 )
-						{
-							if ( v5 == 1 )
-								sgpCurrFont = &font42y;
-							else
-								sgpCurrFont = &font16s;
-						}
-						else
-						{
-							sgpCurrFont = &font42g;
-						}
-					}
-					else
-					{
-						sgpCurrFont = &font30s;
-					}
-				}
-				else
-				{
-					sgpCurrFont = &font30g;
-				}
-			}
-			else
-			{
-				sgpCurrFont = &font24s;
-			}
-		}
-		else
-		{
-			sgpCurrFont = &font24g;
-		}
-	}
-	else
-	{
+	switch (nFont) {
+	case AF_SMALL:
 		sgpCurrFont = &font16g;
+		break;
+	case AF_MED:
+		sgpCurrFont = &font24g;
+		break;
+	case AF_MEDGRAY:
+		sgpCurrFont = &font24s;
+		break;
+	case AF_BIG:
+		sgpCurrFont = &font30g;
+		break;
+	case AF_BIGGRAY:
+		sgpCurrFont = &font30s;
+		break;
+	case AF_HUGE:
+		sgpCurrFont = &font42g;
+		break;
+	case AF_HUGEGRAY:
+		sgpCurrFont = &font42y;
+		break;
+	default:
+		sgpCurrFont = &font16s;
+		break;
 	}
 }
 
@@ -71,7 +40,7 @@ void __cdecl artfont_InitAllFonts()
 	font24s.active = 0;
 	font16g.active = 0;
 	font16s.active = 0;
-	sgpCurrFont = 0;
+	sgpCurrFont    = 0;
 }
 
 // ref: 0x100010C8
@@ -91,24 +60,20 @@ void __cdecl artfont_FreeAllFonts()
 // ref: 0x10001120
 void __fastcall artfont_FreeArtFont(FontStruct *pFont)
 {
-	HANDLE *v2; // esi
+	HANDLE *v2;    // esi
 	signed int v3; // ebx
 
-	if ( pFont->active )
-	{
+	if (pFont->active) {
 		v2 = pFont->fonttrans;
 		v3 = 256;
-		do
-		{
-			if ( *v2 )
-			{
+		do {
+			if (*v2) {
 				STransDelete(*v2);
 				*v2 = 0;
 			}
 			++v2;
 			--v3;
-		}
-		while ( v3 );
+		} while (v3);
 		pFont->active = 0;
 	}
 }
@@ -130,34 +95,29 @@ BOOL __cdecl artfont_LoadAllFonts()
 // ref: 0x100011FB
 void __fastcall artfont_LoadArtFont(FontStruct *pFont, const char *pszBinFile, const char *pszFileName)
 {
-	LONG v4; // eax
-	signed int v5; // edi
+	LONG v4;          // eax
+	signed int v5;    // edi
 	unsigned char v6; // al
-	int v7; // ecx
-	int a5[4]; // [esp+8h] [ebp-20h]
-	DWORD size[2]; // [esp+18h] [ebp-10h]
-	BYTE *pBuffer; // [esp+20h] [ebp-8h]
-	HANDLE phFile; // [esp+24h] [ebp-4h]
-	HANDLE *a1a; // [esp+30h] [ebp+8h]
+	int v7;           // ecx
+	int a5[4];        // [esp+8h] [ebp-20h]
+	DWORD size[2];    // [esp+18h] [ebp-10h]
+	BYTE *pBuffer;    // [esp+20h] [ebp-8h]
+	HANDLE phFile;    // [esp+24h] [ebp-4h]
+	HANDLE *a1a;      // [esp+30h] [ebp+8h]
 
-	if ( !pFont->active && SFileOpenFile(pszBinFile, &phFile) )
-	{
+	if (!pFont->active && SFileOpenFile(pszBinFile, &phFile)) {
 		v4 = SFileGetFileSize(phFile, 0);
-		if ( SFileReadFile(phFile, pFont, v4, 0, 0) )
-		{
+		if (SFileReadFile(phFile, pFont, v4, 0, NULL)) {
 			SFileCloseFile(phFile);
 			local_LoadArtImage(pszFileName, &pBuffer, size);
 			memset(pFont->fonttrans, 0, 0x400u);
-			if ( pBuffer )
-			{
-				v5 = 0;
+			if (pBuffer) {
+				v5  = 0;
 				a1a = pFont->fonttrans;
-				do
-				{
+				do {
 					v6 = pFont->fontbin[v5 + 2];
-					if ( v6 )
-					{
-						v7 = pFont->fontbin[1];
+					if (v6) {
+						v7    = pFont->fontbin[1];
 						a5[2] = v6;
 						a5[1] = v5 * v7;
 						a5[0] = 0;
@@ -166,14 +126,11 @@ void __fastcall artfont_LoadArtFont(FontStruct *pFont, const char *pszBinFile, c
 					}
 					++a1a;
 					++v5;
-				}
-				while ( v5 <= 256 );
+				} while (v5 <= 256);
 				pFont->active = 1;
 				SMemFree(pBuffer, "C:\\Src\\Diablo\\DiabloUI\\artfont.cpp", 206, 0);
 			}
-		}
-		else
-		{
+		} else {
 			SFileCloseFile(phFile);
 		}
 	}
@@ -184,7 +141,7 @@ int __cdecl artfont_GetFontMaxHeight()
 {
 	int result; // eax
 
-	if ( sgpCurrFont && sgpCurrFont->active )
+	if (sgpCurrFont && sgpCurrFont->active)
 		result = sgpCurrFont->fontbin[1];
 	else
 		result = 0;
@@ -196,7 +153,7 @@ int __cdecl artfont_GetFontDefWidth()
 {
 	int result; // eax
 
-	if ( sgpCurrFont && sgpCurrFont->active )
+	if (sgpCurrFont && sgpCurrFont->active)
 		result = sgpCurrFont->fontbin[0];
 	else
 		result = 0;
@@ -206,18 +163,17 @@ int __cdecl artfont_GetFontDefWidth()
 // ref: 0x10001329
 int __fastcall artfont_GetFontWidth(char *str)
 {
-	int result; // eax
-	unsigned char i; // bl
+	int result;       // eax
+	unsigned char i;  // bl
 	unsigned char v3; // bl
-	int v4; // esi
+	int v4;           // esi
 
 	result = 0;
-	if ( !sgpCurrFont || !sgpCurrFont->active )
+	if (!sgpCurrFont || !sgpCurrFont->active)
 		return 0;
-	for ( i = *str; *str; i = *str )
-	{
+	for (i = *str; *str; i = *str) {
 		v3 = sgpCurrFont->fontbin[i + 2];
-		if ( v3 )
+		if (v3)
 			v4 = v3;
 		else
 			v4 = sgpCurrFont->fontbin[0];
@@ -237,24 +193,23 @@ void __cdecl artfont_cpp_init()
 // ref: 0x10001377
 int __fastcall artfont_GetFontBreak(char *str)
 {
-	int result; // eax
+	int result;       // eax
 	unsigned char v2; // dl
 	unsigned char v3; // dl
 
 	result = 0;
-	if ( !sgpCurrFont || !sgpCurrFont->active )
+	if (!sgpCurrFont || !sgpCurrFont->active)
 		return 0;
-	while ( 1 )
-	{
+	while (1) {
 		v3 = *str;
-		if ( !*str )
+		if (!*str)
 			break;
-		if ( v3 == '\n' )
+		if (v3 == '\n')
 			break;
-		if ( v3 == ' ' )
+		if (v3 == ' ')
 			break;
 		v2 = sgpCurrFont->fontbin[v3 + 2];
-		if ( !v2 )
+		if (!v2)
 			break;
 		result += v2;
 		++str;
@@ -265,67 +220,55 @@ int __fastcall artfont_GetFontBreak(char *str)
 // ref: 0x100013B3
 void __cdecl artfont_delete_operator(void *ptr)
 {
-	if ( ptr )
+	if (ptr)
 		SMemFree(ptr, "delete", -1, 0);
 }
 
 // ref: 0x100013CD
 void __fastcall artfont_PrintFontStr(char *str, DWORD **pSurface, int sx, int sy)
 {
-	FontStruct *v5; // esi
+	FontStruct *v5;   // esi
 	unsigned char v6; // cl
-	int v7; // edi
+	int v7;           // edi
 	unsigned char v8; // dl
-	int v9; // edi
-	DWORD *v10; // ecx
-	HANDLE hTrans; // [esp+Ch] [ebp-8h]
-	HANDLE hTransa; // [esp+Ch] [ebp-8h]
+	int v9;           // edi
+	DWORD *v10;       // ecx
+	HANDLE hTrans;    // [esp+Ch] [ebp-8h]
+	HANDLE hTransa;   // [esp+Ch] [ebp-8h]
 
-	if ( pSurface )
-	{
-		if ( *pSurface )
-		{
+	if (pSurface) {
+		if (*pSurface) {
 			v5 = sgpCurrFont;
-			if ( sgpCurrFont )
-			{
-				if ( sgpCurrFont->active )
-				{
-					if ( sx < 0 )
+			if (sgpCurrFont) {
+				if (sgpCurrFont->active) {
+					if (sx < 0)
 						sx = 0;
-					if ( sy < 0 )
+					if (sy < 0)
 						sy = 0;
-					v6 = *str;
-					if ( *str )
-					{
-						while ( 1 )
-						{
+					v6     = *str;
+					if (*str) {
+						while (1) {
 							hTrans = (HANDLE)(sy + v5->fontbin[1]);
-							if ( sy + v5->fontbin[1] > (signed int)pSurface[2] )
+							if (sy + v5->fontbin[1] > (signed int)pSurface[2])
 								return;
-							if ( v6 == '\n' )
+							if (v6 == '\n')
 								break;
 							v7 = v6;
 							v8 = v5->fontbin[v6 + 2];
-							if ( !v8 )
-							{
+							if (!v8) {
 								v9 = v5->fontbin[0];
-								if ( sx + v9 + artfont_GetFontBreak(++str) < (signed int)pSurface[1] )
-								{
+								if (sx + v9 + artfont_GetFontBreak(++str) < (signed int)pSurface[1]) {
 									sx += v9;
-								}
-								else
-								{
+								} else {
 									sx = 0;
 									sy = (int)hTrans;
 								}
 								goto LABEL_23;
 							}
 							hTransa = v5->fonttrans[v6];
-							if ( v5->fonttrans[v6] )
-							{
+							if (v5->fonttrans[v6]) {
 								v10 = pSurface[1];
-								if ( sx + v8 <= (signed int)v10 )
-								{
+								if (sx + v8 <= (signed int)v10) {
 									STransBlt(*pSurface, sx, sy, (int)v10, hTransa);
 									v5 = sgpCurrFont;
 									sx += sgpCurrFont->fontbin[v7 + 2];
@@ -334,14 +277,14 @@ void __fastcall artfont_PrintFontStr(char *str, DWORD **pSurface, int sx, int sy
 								sx = 0;
 								sy += v5->fontbin[1];
 							}
-LABEL_23:
+						LABEL_23:
 							v6 = *str;
-							if ( !*str )
+							if (!*str)
 								return;
 						}
 						sx = 0;
 						sy += v5->fontbin[1];
-LABEL_22:
+					LABEL_22:
 						++str;
 						goto LABEL_23;
 					}

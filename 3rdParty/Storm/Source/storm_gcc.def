@@ -5,9 +5,9 @@ EXPORTS
   SNetCreateGame@40             @101 NONAME
   SNetDestroy                   @102 NONAME
   SNetDestroy@0                 @102 NONAME
-  SNetEnumProviders             @103 NONAME
-  ;SNetEnumDevices               @104 NONAME
-  SNetEnumGames                 @105 NONAME
+  ;SNetEnumDevices               @103 NONAME
+  ;SNetEnumGames                 @104 NONAME
+  ;SNetEnumProviders             @105 NONAME
   SNetDropPlayer                @106 NONAME
   SNetDropPlayer@8              @106 NONAME
   SNetGetGameInfo               @107 NONAME
@@ -71,11 +71,13 @@ EXPORTS
 
   SDlgBeginPaint                 @201 NONAME
   SDlgBeginPaint@8               @201 NONAME
-  ;SDlgBltToWindowI              @202 NONAME
+  SDlgBltToWindowI              @202 NONAME
+  SDlgBltToWindowI@40           @202 NONAME
   ;SDlgCheckTimers               @203 NONAME
   ;SDlgCreateDialogIndirectParam @204 NONAME
   ;SDlgCreateDialogParam         @205 NONAME
   SDlgDefDialogProc             @206 NONAME
+  SDlgDefDialogProc@16          @206 NONAME
 
   SDlgDialogBoxIndirectParam    @208 NONAME
   SDlgDialogBoxParam            @209 NONAME
@@ -83,6 +85,7 @@ EXPORTS
   SDlgDrawBitmap                @210 NONAME
   SDlgDrawBitmap@28             @210 NONAME
   SDlgEndDialog                 @211 NONAME
+  SDlgEndDialog@8               @211 NONAME
   SDlgEndPaint                  @212 NONAME
   SDlgEndPaint@8                @212 NONAME
   SDlgKillTimer                 @213 NONAME
@@ -91,6 +94,7 @@ EXPORTS
   SDlgSetBitmapI                @215 NONAME
   SDlgSetBitmapI@40             @215 NONAME
   SDlgSetControlBitmaps         @216 NONAME
+  SDlgSetControlBitmaps@28      @216 NONAME
   SDlgSetCursor                 @217 NONAME
   SDlgSetCursor@16              @217 NONAME
   SDlgSetSystemCursor           @218 NONAME
@@ -123,7 +127,8 @@ EXPORTS
   SFileDdaSetVolume             @261 NONAME
   SFileDdaSetVolume@12          @261 NONAME
   SFileDestroy                  @262 NONAME
-  ;SFileEnableDirectAccess       @263 NONAME
+  SFileEnableDirectAccess       @263 NONAME
+  SFileEnableDirectAccess@4     @263 NONAME
   SFileGetFileArchive           @264 NONAME
   SFileGetFileArchive@8         @264 NONAME
   SFileGetFileSize              @265 NONAME
@@ -176,12 +181,15 @@ EXPORTS
 
   ;SBltGetSCode                  @312 NONAME
   SBltROP3                      @313 NONAME
+  SBltROP3@32                   @313 NONAME
   SBltROP3Clipped               @314 NONAME
-  ;SBltROP3Tiled                 @315 NONAME
+  SBltROP3Tiled                 @315 NONAME
+  SBltROP3Tiled@40              @315 NONAME
 
   SBmpDecodeImage               @321 NONAME
 
   SBmpLoadImage                 @323 NONAME
+  SBmpLoadImage@28              @323 NONAME
   SBmpSaveImage                 @324 NONAME
   SBmpAllocLoadImage            @325 NONAME
   ;SBmpSaveImageEx               @326 NONAME
@@ -195,7 +203,7 @@ EXPORTS
   SDrawAutoInitialize           @341 NONAME
   SDrawCaptureScreen            @342 NONAME
   SDrawClearSurface             @343 NONAME
-  SDrawClearSurface@0           @343 NONAME
+  SDrawClearSurface@4           @343 NONAME
   SDrawDestroy                  @344 NONAME
   ;SDrawFlipPage                 @345 NONAME
   SDrawGetFrameWindow           @346 NONAME
@@ -228,13 +236,17 @@ EXPORTS
   ;SGdiBitBlt                    @381 NONAME
   ;SGdiCreateFont                @382 NONAME
   SGdiDeleteObject              @383 NONAME
+  SGdiDeleteObject@4            @383 NONAME
   ;SGdiDestroy                   @384 NONAME
   SGdiExtTextOut                @385 NONAME
   SGdiImportFont                @386 NONAME
+  SGdiImportFont@8              @386 NONAME
   ;SGdiLoadFont                  @387 NONAME
   ;SGdiRectangle                 @388 NONAME
   SGdiSelectObject              @389 NONAME
+  SGdiSelectObject@4            @389 NONAME
   SGdiSetPitch                  @390 NONAME
+  SGdiSetPitch@4                @390 NONAME
   SGdiTextOut                   @391 NONAME
   SGdiTextOut@24                @391 NONAME
   ;SGdi392                       @392 NONAME
@@ -277,10 +289,12 @@ EXPORTS
   ;SReg429                       @429 NONAME
   ;SReg430                       @430 NONAME
   STransBlt                     @431 NONAME
+  STransBlt@20                  @431 NONAME
   STransBltUsingMask            @432 NONAME
   STransCreateI                 @433 NONAME
   STransCreateI@28              @433 NONAME
   STransDelete                  @434 NONAME
+  STransDelete@4                @434 NONAME
 
   STransDuplicate               @436 NONAME
   STransIntersectDirtyArray     @437 NONAME
@@ -354,7 +368,8 @@ EXPORTS
   SStrCopy                      @501 NONAME
   SStrCopy@12                   @501 NONAME
   SStrHash                      @502 NONAME
-  SStrNCat                      @503 NONAME
+  SStrPack                      @503 NONAME
+  SStrPack@12                   @503 NONAME
   ;SStrTokenize                  @504 NONAME
   ;SStrPack                      @505 NONAME
   SStrLen                       @506 NONAME

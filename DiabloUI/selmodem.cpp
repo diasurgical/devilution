@@ -229,7 +229,7 @@ LABEL_25:
 		return SDlgDefDialogProc(hDlg, Msg, wParam, lParam);
 	if ( Msg <= 0x105 )
 	{
-		v5 = (HWND)SDrawGetFrameWindow();
+		v5 = (HWND)SDrawGetFrameWindow(NULL);
 		SendMessageA(v5, Msg, wParam, lParam);
 		return SDlgDefDialogProc(hDlg, Msg, wParam, lParam);
 	}

@@ -6,14 +6,14 @@ void *SelRegn_1000EF42() { return 0; }
 // 10010364: using guessed type int __stdcall SMemAlloc(_DWORD, _DWORD, _DWORD, _DWORD);
 
 // ref: 0x1000EF56
-_DWORD *__fastcall SelRegn_1000EF56(int a1, _DWORD *a2) { return 0; }
-/* {
-	_DWORD *result; // eax
+_uiheroinfo *__fastcall SelRegn_SetNextHero(_uiheroinfo *pNext, _uiheroinfo *pCurrent)
+{
+    _uiheroinfo *result; // eax
 
-	result = a2;
-	*a2 = a1;
-	return result;
-} */
+    result         = pCurrent;
+    pCurrent->next = pNext;
+    return result;
+}
 
 // ref: 0x1000EF60
 signed int SelRegn_1000EF60() { return 0; }
@@ -65,7 +65,7 @@ LABEL_25:
 		return SDlgDefDialogProc(hWnd, Msg, wParam, lParam);
 	if ( Msg <= 0x105 )
 	{
-		v4 = (HWND)SDrawGetFrameWindow();
+		v4 = (HWND)SDrawGetFrameWindow(NULL);
 		SendMessageA(v4, Msg, wParam, lParam);
 		return SDlgDefDialogProc(hWnd, Msg, wParam, lParam);
 	}
@@ -870,7 +870,7 @@ signed int __stdcall UiSelectRegion(_DWORD *a1) { return 0; }
 	signed int result; // eax
 
 	artfont_10001159();
-	v1 = SDrawGetFrameWindow();
+	v1 = SDrawGetFrameWindow(NULL);
 	v2 = SDlgDialogBoxParam(hInstance, "SELREGION_DIALOG", v1, SelRegn_1000EF6B, 0);
 	if ( a1 )
 		*a1 = dword_1002948C;

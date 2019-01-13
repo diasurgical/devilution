@@ -3,9 +3,9 @@ LIBRARY      "Storm"
 EXPORTS
   SNetCreateGame                @101 NONAME
   SNetDestroy                   @102 NONAME
-  SNetEnumProviders             @103 NONAME
-  ;SNetEnumDevices               @104 NONAME
-  SNetEnumGames                 @105 NONAME
+  ;SNetEnumDevices               @103 NONAME
+  ;SNetEnumGames                 @104 NONAME
+  ;SNetEnumProviders             @105 NONAME
   SNetDropPlayer                @106 NONAME
   SNetGetGameInfo               @107 NONAME
   ;SNetGetNetworkLatency         @108 NONAME
@@ -52,7 +52,7 @@ EXPORTS
   ;Ordinal151                    @151 NONAME
 
   SDlgBeginPaint                @201 NONAME
-  ;SDlgBltToWindowI              @202 NONAME
+  SDlgBltToWindowI              @202 NONAME
   ;SDlgCheckTimers               @203 NONAME
   ;SDlgCreateDialogIndirectParam @204 NONAME
   ;SDlgCreateDialogParam         @205 NONAME
@@ -88,7 +88,7 @@ EXPORTS
   SFileDdaInitialize            @260 NONAME
   SFileDdaSetVolume             @261 NONAME
   SFileDestroy                  @262 NONAME
-  ;SFileEnableDirectAccess       @263 NONAME
+  SFileEnableDirectAccess       @263 NONAME
   SFileGetFileArchive           @264 NONAME
   SFileGetFileSize              @265 NONAME
   SFileOpenArchive              @266 NONAME
@@ -134,7 +134,7 @@ EXPORTS
   ;SBltGetSCode                  @312 NONAME
   SBltROP3                      @313 NONAME
   SBltROP3Clipped               @314 NONAME
-  ;SBltROP3Tiled                 @315 NONAME
+  SBltROP3Tiled                 @315 NONAME
 
   SBmpDecodeImage               @321 NONAME
 
@@ -288,7 +288,7 @@ EXPORTS
 
   SStrCopy                      @501 NONAME
   SStrHash                      @502 NONAME
-  SStrNCat                      @503 NONAME
+  SStrPack                      @503 NONAME
   ;SStrTokenize                  @504 NONAME
   ;SStrPack                      @505 NONAME
   SStrLen                       @506 NONAME

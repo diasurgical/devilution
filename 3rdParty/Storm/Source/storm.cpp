@@ -7,9 +7,7 @@
 
 BOOL STORMAPI SNetCreateGame(const char *pszGameName, const char *pszGamePassword, const char *pszGameStatString, DWORD dwGameType, char *GameTemplateData, int GameTemplateSize, int playerCount, char *creatorName, char *a11, int *playerID) rBool;
 BOOL STORMAPI SNetDestroy() rBool;
-BOOL STORMAPI SNetEnumProviders(int (STORMAPI *callback)(DWORD, DWORD, DWORD, DWORD), int mincaps) rBool;
 
-BOOL STORMAPI SNetEnumGames(int (STORMAPI *callback)(DWORD, DWORD, DWORD), int *hintnextcall) rBool;
 BOOL STORMAPI SNetDropPlayer(int playerid, DWORD flags) rBool;
 BOOL STORMAPI SNetGetGameInfo(int type, void *dst, size_t length, size_t *byteswritten) rBool;
 
@@ -57,6 +55,7 @@ BOOL STORMAPI SDlgEndDialog(HWND hDlg, HANDLE nResult) rBool;
 
 BOOL STORMAPI SDlgSetControlBitmaps(HWND parentwindow, int *id, int a3, char *buffer2, char *buffer, int flags, int mask) rBool;
 
+BOOL STORMAPI SDlgBltToWindowI(HWND hWnd, HRGN a2, char *a3, int a4, void *buffer, RECT *rct, SIZE *size, int a8, int a9, DWORD rop) rBool;
 BOOL STORMAPI SDlgBltToWindowE(HWND hWnd, HRGN a2, char *a3, int a4, void *buffer, RECT *rct, SIZE *size, int a8, int a9, DWORD rop) rBool;
 BOOL STORMAPI SDlgSetBitmapE(HWND hWnd, int a2, char *src, int mask1, int flags, int a6, int a7, int width, int a9, int mask2) rBool;
 
@@ -79,7 +78,7 @@ LONG STORMAPI SFileGetFileSize(HANDLE hFile, LPDWORD lpFileSizeHigh) rInt;
 BOOL STORMAPI SFileOpenArchive(const char *szMpqName, DWORD dwPriority, DWORD dwFlags, HANDLE *phMpq) rBool;
 BOOL STORMAPI SFileOpenFile(const char *filename, HANDLE *phFile) rBool;
 BOOL STORMAPI SFileOpenFileEx(HANDLE hMpq, const char *szFileName, DWORD dwSearchScope, HANDLE *phFile) rBool;
-BOOL STORMAPI SFileReadFile(HANDLE hFile, void *buffer, DWORD nNumberOfBytesToRead, DWORD *read, LONG lpDistanceToMoveHigh) rBool;
+BOOL STORMAPI SFileReadFile(HANDLE hFile, void *buffer, DWORD nNumberOfBytesToRead, DWORD *read, LONG *lpDistanceToMoveHigh) rBool;
 
 void STORMAPI SFileSetLocale(LCID lcLocale) rVoid;
 
@@ -93,6 +92,7 @@ BOOL STORMAPI SFileLoadFileEx(void *hArchive, char *filename, int a3, int a4, in
 
 BOOL STORMAPI SBltROP3(void *lpDstBuffer, void *lpSrcBuffer, int width, int height, int a5, int a6, int a7, DWORD rop) rBool;
 BOOL STORMAPI SBltROP3Clipped(void *lpDstBuffer, RECT *lpDstRect, POINT *lpDstPt, int a4, void *lpSrcBuffer, RECT *lpSrcRect, POINT *lpSrcPt, int a8, int a9, DWORD rop) rBool;
+BOOL STORMAPI SBltROP3Tiled(void *lpDstBuffer, RECT *lpDstRect, POINT *lpDstPt, int a4, void *lpSrcBuffer, RECT *lpSrcRect, POINT *lpSrcPt, int a8, int a9, DWORD rop) rBool;
 
 BOOL STORMAPI SBmpDecodeImage(DWORD dwImgType, void *pSrcBuffer, DWORD dwSrcBuffersize, PALETTEENTRY *pPalette, void *pDstBuffer, DWORD dwDstBuffersize, DWORD *pdwWidth, DWORD *pdwHeight, DWORD *pdwBpp) rBool;
 
@@ -190,7 +190,7 @@ int  STORMAPI SMemCmp(void *location1, void *location2, DWORD size) rInt;
 
 int   STORMAPI SStrCopy(char *dest, const char *src, int max_length) rInt;
 DWORD STORMAPI SStrHash(const char *string, DWORD flags, DWORD Seed) rInt;
-int   STORMAPI SStrNCat(char *dest, const char *src, DWORD max_length) rInt;
+int   STORMAPI SStrPack(char *dest, const char *src, DWORD max_length) rInt;
 
 int STORMAPI SStrLen(const char* string) rInt;
 
@@ -226,14 +226,14 @@ int STORMAPI SBigToBinaryBuffer(void *buffer, int length, int a3, int a4) rInt;
 
 void __stdcall SDrawMessageBox(char *,char *,int) rVoid;
 void __cdecl SDrawDestroy(void) rVoid;
-bool __cdecl StormDestroy(void) rBool;
-bool __stdcall SFileSetBasePath(char *) rBool;
+BOOLEAN __cdecl StormDestroy(void) rBool;
+BOOLEAN __stdcall SFileSetBasePath(char *) rBool;
 void __cdecl SDrawRealizePalette(void) rVoid;
-bool __cdecl SVidPlayContinue(void) rBool;
-bool __stdcall SNetGetOwnerTurnsWaiting(int *) rBool;
+BOOL __cdecl SVidPlayContinue(void) rBool;
+BOOL __stdcall SNetGetOwnerTurnsWaiting(DWORD *) rBool;
 void * __stdcall SNetUnregisterEventHandler(int,void (__stdcall*)(struct _SNETEVENT *)) rPVoid;
 void * __stdcall SNetRegisterEventHandler(int,void (__stdcall*)(struct _SNETEVENT *)) rPVoid;
-bool __stdcall SNetSetBasePlayer(int) rBool;
+BOOLEAN __stdcall SNetSetBasePlayer(int) rBool;
 int __stdcall SNetInitializeProvider(unsigned long,struct _SNETPROGRAMDATA *,struct _SNETPLAYERDATA *,struct _SNETUIDATA *,struct _SNETVERSIONDATA *) rInt;
 int __stdcall SNetGetProviderCaps(struct _SNETCAPS *) rInt;
 int __stdcall SFileSetFilePointer(HANDLE,int,HANDLE,int) rInt;
@@ -248,3 +248,4 @@ BOOL __stdcall SDlgKillTimer(int a1, int a2) rBool;
 BOOL __stdcall SDlgDrawBitmap(HWND hWnd, int a2, int a3, int a4, int a5, int a6, int a7) rBool;
 BOOL __stdcall SDlgDialogBoxParam(HINSTANCE hInst, char *szDialog, int a3, WNDPROC func, int a5) rBool;
 BOOL __stdcall SGdiTextOut(void *pBuffer, int x, int y, int mask, char *str, int len) rBool;
+BOOL __stdcall SFileEnableDirectAccess(BOOL enable) rBool;

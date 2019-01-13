@@ -25,7 +25,7 @@ debug: CXXFLAGS += -D_DEBUG
 debug: CPPFLAGS += -D_DEBUG
 debug: devilution.exe
 
-DIABLO_SRC=$(wildcard Source/*.cpp)
+DIABLO_SRC=$(sort $(filter-out Source/_asm.cpp Source/_render.cpp, $(wildcard Source/*.cpp)))
 OBJS=$(DIABLO_SRC:.cpp=.o)
 
 PKWARE_SRC=$(wildcard 3rdParty/PKWare/*.cpp)

@@ -4,6 +4,7 @@
 #define DMAXY					40
 
 #define LIGHTSIZE				6912 // 27 * 256
+#define ROW_PITCH				768
 
 // must be unsigned to generate unsigned comparisons with pnum
 #define MAX_PLRS				4
@@ -12,11 +13,13 @@
 #define MAX_LVLMTYPES			16
 // #define MAX_PATH				260
 #define MAX_SEND_STR_LEN		80
+#define MAX_SPELLS				37
 
 #define MAXDEAD					31
 #define MAXDUNX					112
 #define MAXDUNY					112
 #define MAXITEMS				127
+#define MAXBELTITEMS			8
 #define MAXMISSILES				125
 #define MAXMONSTERS				200
 #define MAXMULTIQUESTS			4
@@ -28,11 +31,17 @@
 #define MAXTRIGGERS				5
 #define MDMAXX					40
 #define MDMAXY					40
-
+#define MAXCHARLEVEL			51
 
 // number of inventory grid cells
-#define NUM_INV_GRID_ELEM			40
+#define NUM_INV_GRID_ELEM		40
 #define INV_SLOT_SIZE_PX		28
+
+// Item indestructible durability
+#define DUR_INDESTRUCTIBLE		255
+
+#define VOLUME_MIN				-1600
+#define VOLUME_MAX				0
 
 // todo: enums
 #define NUM_SFX					858
@@ -42,6 +51,17 @@
 #define MAXEXP					2000000000
 
 #define PLR_NAME_LEN			32
+
+#define MAXPATHNODES			300
+
+// 256 kilobytes + 3 bytes (demo leftover) for file magic (262147)
+// final game uses 4-byte magic instead of 3
+#define FILEBUFF				((256*1024)+3)
+
+#define PMSG_COUNT				8
+
+// Diablo Retail Version Game ID
+#define GAME_ID					((int)'DRTL')
 
 // Diablo uses a 256 color palette
 // Entry 0-127 (0x00-0x7F) are level specific
@@ -63,9 +83,9 @@
 #define PAL16_RED		224
 #define PAL16_GRAY		240
 
-
-
-
+#ifndef INVALID_FILE_ATTRIBUTES
+#define INVALID_FILE_ATTRIBUTES ((DWORD)-1)
+#endif
 
 /////////////////////////////////////////////////////////////////////////
 /* temporary stuff from the decompiler */
@@ -74,41 +94,11 @@
 #ifndef IDA_GARBAGE
 #define IDA_GARBAGE
 
-inline void memset32(void *s, unsigned int c, size_t n)
-{
-	unsigned int *p = (unsigned int *)s;
-	for (int i = 0; i < n; i++) {
-		p[i] = c;
-	}
-}
-
-typedef          __int64 ll;
-typedef unsigned __int64 ull;
-
-typedef unsigned int uint;
-typedef unsigned char uchar;
-typedef unsigned short ushort;
-typedef unsigned long ulong;
-
-typedef          char   int8;
-typedef   signed char   sint8;
-typedef unsigned char   uint8;
-typedef          short  int16;
-typedef   signed short  sint16;
-typedef unsigned short  uint16;
-typedef          int    int32;
-typedef   signed int    sint32;
-typedef unsigned int    uint32;
-typedef ll              int64;
-typedef ll              sint64;
-typedef ull             uint64;
-
 // Partially defined types. They are used when the decompiler does not know
 // anything about the type except its size.
-#define _BYTE  uint8
-#define _WORD  uint16
-#define _DWORD uint32
-#define _QWORD uint64
+#define _BYTE  unsigned char
+#define _WORD  unsigned short
+#define _DWORD unsigned int
 
 // Some convenience macros to make partial accesses nicer
 #define LAST_IND(x,part_type)    (sizeof(x)/sizeof(part_type) - 1)
@@ -119,119 +109,55 @@ typedef ull             uint64;
 #  define HIGH_IND(x,part_type)  LAST_IND(x,part_type)
 #  define LOW_IND(x,part_type)   0
 #endif
-// first unsigned macros:
-#define BYTEn(x, n)   (*((_BYTE*)&(x)+n))
-#define WORDn(x, n)   (*((_WORD*)&(x)+n))
-#define DWORDn(x, n)  (*((_DWORD*)&(x)+n))
 
-#define _LOBYTE(x)  BYTEn(x,LOW_IND(x,_BYTE))
-#define _LOWORD(x)  WORDn(x,LOW_IND(x,_WORD))
-#define LODWORD(x) DWORDn(x,LOW_IND(x,_DWORD))
-#define _HIBYTE(x)  BYTEn(x,HIGH_IND(x,_BYTE))
-#define _HIWORD(x)  WORDn(x,HIGH_IND(x,_WORD))
-#define HIDWORD(x) DWORDn(x,HIGH_IND(x,_DWORD))
+// first unsigned macros:
+#define BYTEn(x, n)   (*((BYTE*)&(x)+n))
+#define WORDn(x, n)   (*((WORD*)&(x)+n))
+
+#define _LOBYTE(x)  BYTEn(x,LOW_IND(x,BYTE))
+#define _LOWORD(x)  WORDn(x,LOW_IND(x,WORD))
+#define _HIBYTE(x)  BYTEn(x,HIGH_IND(x,BYTE))
+#define _HIWORD(x)  WORDn(x,HIGH_IND(x,WORD))
 #define BYTE1(x)   BYTEn(x,  1)         // byte 1 (counting from 0)
 #define BYTE2(x)   BYTEn(x,  2)
 
-
 // now signed macros (the same but with sign extension)
-#define SBYTEn(x, n)   (*((int8*)&(x)+n))
-#define SWORDn(x, n)   (*((int16*)&(x)+n))
+#define SBYTEn(x, n)   (*((char*)&(x)+n))
 
-#define SLOBYTE(x)  SBYTEn(x,LOW_IND(x,int8))
-#define SHIWORD(x)  SWORDn(x,HIGH_IND(x,int16))
-
-
+#define SLOBYTE(x)  SBYTEn(x,LOW_IND(x,char))
 
 // Helper functions to represent some assembly instructions.
 
-#ifdef __cplusplus
-
-#ifdef FAST_MEMCPY
-#define qmemcpy memcpy
-#else
-inline void *qmemcpy(void *dst, const void *src, size_t cnt)
+__inline void *qmemcpy(void *dst, const void *src, size_t cnt)
 {
-  char *out = (char *)dst;
-  const char *in = (const char *)src;
-  while ( cnt > 0 )
-  {
-    *out++ = *in++;
-    --cnt;
-  }
-  return dst;
-}
-#endif
-
-// Generate a reference to pair of operands
-template<class T>  int16 __PAIR__( int8  high, T low) { return ((( int16)high) << sizeof(high)*8) | uint8(low); }
-template<class T>  int32 __PAIR__( int16 high, T low) { return ((( int32)high) << sizeof(high)*8) | uint16(low); }
-template<class T>  int64 __PAIR__( int32 high, T low) { return ((( int64)high) << sizeof(high)*8) | uint32(low); }
-template<class T> uint16 __PAIR__(uint8  high, T low) { return (((uint16)high) << sizeof(high)*8) | uint8(low); }
-template<class T> uint32 __PAIR__(uint16 high, T low) { return (((uint32)high) << sizeof(high)*8) | uint16(low); }
-template<class T> uint64 __PAIR__(uint32 high, T low) { return (((uint64)high) << sizeof(high)*8) | uint32(low); }
-
-// rotate left
-template<class T> T __ROL__(T value, int count)
-{
-  const uint nbits = sizeof(T) * 8;
-
-  if ( count > 0 )
-  {
-    count %= nbits;
-    T high = value >> (nbits - count);
-    if ( T(-1) < 0 ) // signed value
-      high &= ~((T(-1) << count));
-    value <<= count;
-    value |= high;
-  }
-  else
-  {
-    count = -count % nbits;
-    T low = value << (nbits - count);
-    value >>= count;
-    value |= low;
-  }
-  return value;
+	char *out      = (char *)dst;
+	const char *in = (const char *)src;
+	while (cnt > 0) {
+		*out++ = *in++;
+		--cnt;
+	}
+	return dst;
 }
 
-inline uint16 __ROR2__(uint16 value, int count) { return __ROL__((uint16)value, -count); }
-inline uint32 __ROR4__(uint32 value, int count) { return __ROL__((uint32)value, -count); }
-
-// sign flag
-template<class T> int8 __SETS__(T x)
+// rotate right
+__inline WORD __ROR2__(WORD value, DWORD count)
 {
-  if ( sizeof(T) == 1 )
-    return int8(x) < 0;
-  if ( sizeof(T) == 2 )
-    return int16(x) < 0;
-  if ( sizeof(T) == 4 )
-    return int32(x) < 0;
-  return int64(x) < 0;
-}
+	count %= 16;
 
-// overflow flag of subtraction (x-y)
-template<class T, class U> int8 __OFSUB__(T x, U y)
-{
-  if ( sizeof(T) < sizeof(U) )
-  {
-    U x2 = x;
-    int8 sx = __SETS__(x2);
-    return (sx ^ __SETS__(y)) & (sx ^ __SETS__(x2-y));
-  }
-  else
-  {
-    T y2 = y;
-    int8 sx = __SETS__(x);
-    return (sx ^ __SETS__(y2)) & (sx ^ __SETS__(x-y2));
-  }
+	return value >> count | value << (16 - count);
 }
-
-#endif
 
 #endif /* IDA_GARBAGE */
 
-#ifndef INFINITY
-#include <limits>
-#define INFINITY std::numeric_limits<float>::infinity()
-#endif
+// Typedef for the function pointer
+typedef void (*_PVFV)(void);
+
+// Define our segment names
+#define SEGMENT_C_INIT ".CRT$XCU"
+
+// Build our various function tables and insert them into the correct segments.
+#pragma data_seg(SEGMENT_C_INIT)
+#pragma data_seg() // Switch back to the default segment
+// Call function pointer arrays and place them in the segments created above
+#define SEG_ALLOCATE(SEGMENT) __declspec(allocate(SEGMENT))
+
