@@ -5,7 +5,7 @@
 extern int plr_lframe_size; // idb
 extern int plr_wframe_size; // idb
 extern UCHAR plr_gfx_flag;
-extern int plr_aframe_size;       // idb
+extern int plr_aframe_size; // idb
 extern int myplr;
 extern PlayerStruct plr[MAX_PLRS];
 extern int plr_fframe_size; // idb

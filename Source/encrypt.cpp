@@ -60,8 +60,8 @@ void __cdecl InitHash()
 
 	seed = 0x00100001;
 
-	for ( i = 0; i < 256; i++) {
-		for ( j = 0; j < 5; j++) {
+	for (i = 0; i < 256; i++) {
+		for (j = 0; j < 5; j++) {
 			seed = (125 * seed + 3) % 0x2AAAAB;
 			ch = (seed & 0xFFFF);
 			seed = (125 * seed + 3) % 0x2AAAAB;

@@ -16,7 +16,8 @@ HANDLE log_file = (HANDLE)0xFFFFFFFF; // idb
 #ifndef _MSC_VER
 __attribute__((constructor))
 #endif
-static void log_c_init(void)
+static void
+log_c_init(void)
 {
 	log_init_mutex();
 	j_log_cleanup_mutex();

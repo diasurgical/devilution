@@ -986,7 +986,7 @@ void __fastcall PlaceUniqueMonst(int uniqindex, int miniontype, int packsize)
 	}
 
 	sprintf(filestr, "Monsters\\Monsters\\%s.TRN", Uniq->mTrnName);
-	LoadFileWithMem(filestr, (BYTE*)&pLightTbl[256 * (uniquetrans + 19)]);
+	LoadFileWithMem(filestr, (BYTE *)&pLightTbl[256 * (uniquetrans + 19)]);
 
 	Monst->_uniqtrans = uniquetrans++;
 
@@ -2472,33 +2472,33 @@ void __fastcall M_TryH2HHit(int i, int pnum, int Hit, int MinDam, int MaxDam)
 	int v8; // edi
 	int v9; // eax
 	//int v10; // ST08_4
-	int v12;           // ecx
-	int v13;           // edi
-	int v14;           // eax
-	int v15;           // eax
-	int *v16;          // ecx
-	int v17;           // eax
-	int v18;           // edi
-	int v19;           // edx
-	int v20;           // eax
-	int v21;           // eax
-	int v22;           // edx
-	int v23;           // eax
-	BOOLEAN v24;       // zf
-	BOOLEAN v25;       // sf
+	int v12;     // ecx
+	int v13;     // edi
+	int v14;     // eax
+	int v15;     // eax
+	int *v16;    // ecx
+	int v17;     // eax
+	int v18;     // edi
+	int v19;     // edx
+	int v20;     // eax
+	int v21;     // eax
+	int v22;     // edx
+	int v23;     // eax
+	BOOLEAN v24; // zf
+	BOOLEAN v25; // sf
 	//unsigned char v26; // of
-	int v27;           // eax
-	int v29;           // edi
-	int v30;           // eax
-	int v31;           // eax
-	int v32;           // eax
-	int v33;           // edi
-	int v34;           // ebx
-	int v35;           // edx
-	int v36;           // [esp+Ch] [ebp-Ch]
-	int arglist;       // [esp+10h] [ebp-8h]
-	int plr_num;       // [esp+14h] [ebp-4h]
-	int hper;          // [esp+20h] [ebp+8h]
+	int v27;     // eax
+	int v29;     // edi
+	int v30;     // eax
+	int v31;     // eax
+	int v32;     // eax
+	int v33;     // edi
+	int v34;     // ebx
+	int v35;     // edx
+	int v36;     // [esp+Ch] [ebp-Ch]
+	int arglist; // [esp+10h] [ebp-8h]
+	int plr_num; // [esp+14h] [ebp-4h]
+	int hper;    // [esp+20h] [ebp+8h]
 
 	v5 = i;
 	plr_num = pnum;
@@ -2588,7 +2588,7 @@ void __fastcall M_TryH2HHit(int i, int pnum, int Hit, int MinDam, int MaxDam)
 								v24 = plr[v7]._pHitPoints == v23;
 								v25 = plr[v7]._pHitPoints - v23 < 0;
 								*v16 = v23;
-								if (!(v25 | v24)) {//if (!((unsigned char)(v25 ^ v26) | v24)) {
+								if (!(v25 | v24)) { //if (!((unsigned char)(v25 ^ v26) | v24)) {
 									plr[v7]._pHitPoints = v23;
 									if (v18 >= 0)
 										missile[v18]._miVar1 = v23;
@@ -5211,24 +5211,24 @@ void __fastcall MAI_Rhino(int i)
 
 void __fastcall MAI_Counselor(int i)
 {
-	int v1;            // ebx
-	int v2;            // esi
-	int v3;            // ecx
-	int v4;            // edi
-	int v5;            // edx
-	int v6;            // ebp
-	char v9;           // al
-	int v10;           // ecx
-	BOOLEAN v11;       // zf
-	BOOLEAN v12;       // sf
+	int v1;      // ebx
+	int v2;      // esi
+	int v3;      // ecx
+	int v4;      // edi
+	int v5;      // edx
+	int v6;      // ebp
+	char v9;     // al
+	int v10;     // ecx
+	BOOLEAN v11; // zf
+	BOOLEAN v12; // sf
 	//unsigned char v13; // of
-	int v14;           // edx
-	int v15;           // ecx
-	int v16;           // ebx
-	int v17;           // eax
-	int v18;           // ebx
-	int v19;           // edx
-	int v20;           // ecx
+	int v14; // edx
+	int v15; // ecx
+	int v16; // ebx
+	int v17; // eax
+	int v18; // ebx
+	int v19; // edx
+	int v20; // ecx
 	//int v21; // eax
 	int v22; // eax
 	//int v23; // ST1C_4
@@ -5273,7 +5273,7 @@ void __fastcall MAI_Counselor(int i)
 			v14 = v10 + 1;
 			v15 = v1;
 			monster[v2]._mgoalvar1 = v14;
-			if (v12 | v11) {//if ((unsigned char)(v12 ^ v13) | v11) {
+			if (v12 | v11) { //if ((unsigned char)(v12 ^ v13) | v11) {
 				M_CallWalk(v1, opposite[md]);
 				goto LABEL_39;
 			}
@@ -5344,7 +5344,7 @@ void __fastcall MAI_Counselor(int i)
 			//v13 = __OFSUB__(monster[v2]._mhitpoints, v28);
 			v12 = monster[v2]._mhitpoints - v28 < 0;
 			monster[v2]._mdir = md;
-			if (v12) {//if (v12 ^ v13) {
+			if (v12) { //if (v12 ^ v13) {
 				_LOBYTE(monster[v2]._mgoal) = MGOAL_RETREAT;
 			LABEL_29:
 				monster[v2]._mgoalvar1 = 0;
@@ -5461,7 +5461,6 @@ void __fastcall MAI_SnotSpil(int i)
 {
 	int mx, my, md;
 	MonsterStruct *Monst;
-
 
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("MAI_SnotSpil: Invalid monster %d", i);

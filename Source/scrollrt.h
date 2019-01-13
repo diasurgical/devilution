@@ -10,9 +10,9 @@ extern int sgdwCursY;               // idb
 extern unsigned char *gpBufEnd;     // weak
 extern int sgdwCursHgt;
 extern DWORD level_cel_block; // weak
-extern int sgdwCursXOld;    // idb
-extern int sgdwCursYOld;    // idb
-extern char arch_draw_type; // weak
+extern int sgdwCursXOld;      // idb
+extern int sgdwCursYOld;      // idb
+extern char arch_draw_type;   // weak
 extern DDSURFACEDESC DDS_desc;
 extern int cel_transparency_active; // weak
 extern int level_piece_id;          // weak

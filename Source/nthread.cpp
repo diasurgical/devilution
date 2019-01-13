@@ -25,7 +25,8 @@ static HANDLE sghThread = (HANDLE)0xFFFFFFFF; // idb
 #ifndef _MSC_VER
 __attribute__((constructor))
 #endif
-static void nthread_c_init(void)
+static void
+nthread_c_init(void)
 {
 	nthread_init_mutex();
 	nthread_cleanup_mutex_atexit();

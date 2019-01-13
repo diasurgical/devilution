@@ -2,7 +2,7 @@
 #ifndef __NTHREAD_H__
 #define __NTHREAD_H__
 
-extern char byte_679704;           // weak
+extern char byte_679704; // weak
 extern int gdwMsgLenTbl[4];
 extern int gdwDeltaBytesSec;    // weak
 extern char nthread_should_run; // weak

@@ -134,7 +134,6 @@ void __fastcall snd_play_snd(TSnd *pSnd, int lVolume, int lPan)
 	error_code = DSB->lpVtbl->Play(DSB, 0, 0, 0);
 #endif
 
-
 	if (error_code != DSERR_BUFFERLOST) {
 		if (error_code != DS_OK) {
 			DSErrMsg(error_code, 261, "C:\\Src\\Diablo\\Source\\SOUND.CPP");

@@ -2676,11 +2676,11 @@ void __fastcall PlaceStoreGold(int v)
 
 void __cdecl StoreSellItem()
 {
-	int idx;          // ebx
-	char v1;          // al
-	int v2;           // eax
-	int cost;         // ebp
-	BOOLEAN v4;       // sf
+	int idx;    // ebx
+	char v1;    // al
+	int v2;     // eax
+	int cost;   // ebp
+	BOOLEAN v4; // sf
 	//unsigned char v5; // of
 	unsigned int v6;  // eax
 	int v8;           // edx
@@ -2699,7 +2699,7 @@ void __cdecl StoreSellItem()
 	cost = storehold[idx]._iIvalue;
 	//v5 = __OFSUB__(idx, storenumh - 1);
 	v4 = idx - (storenumh-- - 1) < 0;
-	if (v4) {//if (v4 ^ v5) {
+	if (v4) { //if (v4 ^ v5) {
 		v6 = v2 - idx;
 		qmemcpy(&storehidx[idx], &storehidx[idx + 1], v6);
 		qmemcpy(&storehold[idx], &storehold[idx + 1], 4 * (368 * v6 >> 2));
@@ -2803,12 +2803,12 @@ void __cdecl SmithRepairItem()
 
 void __cdecl S_SRepairEnter()
 {
-	int idx;          // eax
-	int v1;           // edx
-	int v2;           // ecx
-	BOOLEAN v3;       // sf
+	int idx;    // eax
+	int v1;     // edx
+	int v2;     // ecx
+	BOOLEAN v3; // sf
 	//unsigned char v4; // of
-	char v5;          // cl
+	char v5; // cl
 
 	if (stextsel == 22) {
 		StartStore(STORE_SMITH);
@@ -2824,7 +2824,7 @@ void __cdecl S_SRepairEnter()
 		//v4 = __OFSUB__(v2, storehold[idx]._iIvalue);
 		v3 = v2 - storehold[idx]._iIvalue < 0;
 		v5 = STORE_NOMONEY;
-		if (!v3)//if (!(v3 ^ v4))
+		if (!v3) //if (!(v3 ^ v4))
 			v5 = STORE_CONFIRM;
 		StartStore(v5);
 	}
@@ -3001,12 +3001,12 @@ void __cdecl WitchRechargeItem()
 
 void __cdecl S_WRechargeEnter()
 {
-	int idx;          // eax
-	int v1;           // edx
-	int v2;           // ecx
-	BOOLEAN v3;       // sf
+	int idx;    // eax
+	int v1;     // edx
+	int v2;     // ecx
+	BOOLEAN v3; // sf
 	//unsigned char v4; // of
-	char v5;          // cl
+	char v5; // cl
 
 	if (stextsel == 22) {
 		StartStore(STORE_WITCH);
@@ -3022,7 +3022,7 @@ void __cdecl S_WRechargeEnter()
 		//v4 = __OFSUB__(v2, storehold[idx]._iIvalue);
 		v3 = v2 - storehold[idx]._iIvalue < 0;
 		v5 = STORE_NOMONEY;
-		if (!v3)//if (!(v3 ^ v4))
+		if (!v3) //if (!(v3 ^ v4))
 			v5 = STORE_CONFIRM;
 		StartStore(v5);
 	}
@@ -3082,17 +3082,17 @@ void __cdecl BoyBuyItem()
 
 void __cdecl HealerBuyItem()
 {
-	int idx;          // esi
-	BOOLEAN v1;       // sf
+	int idx;    // esi
+	BOOLEAN v1; // sf
 	//unsigned char v2; // of
-	int v3;           // eax
-	int v4;           // ecx
-	BOOLEAN v5;       // sf
+	int v3;     // eax
+	int v4;     // ecx
+	BOOLEAN v5; // sf
 	//unsigned char v6; // of
-	int v7;           // eax
-	ItemStruct *v8;   // edx
-	ItemStruct *v9;   // edi
-	BOOLEAN v10;      // zf
+	int v7;         // eax
+	ItemStruct *v8; // edx
+	ItemStruct *v9; // edi
+	BOOLEAN v10;    // zf
 
 	idx = stextvhold + ((stextlhold - stextup) >> 2);
 	if (gbMaxPlayers == 1) {
@@ -3102,7 +3102,7 @@ void __cdecl HealerBuyItem()
 		//v2 = __OFSUB__(idx, 3);
 		v1 = idx - 3 < 0;
 	}
-	if (v1) {//if (v1 ^ v2) {
+	if (v1) { //if (v1 ^ v2) {
 		v3 = GetRndSeed();
 		v4 = myplr;
 		plr[myplr].HoldItem._iSeed = v3;
@@ -3120,7 +3120,7 @@ void __cdecl HealerBuyItem()
 		//v6 = __OFSUB__(idx, 3);
 		v5 = idx - 3 < 0;
 	}
-	if (!v5) {//if (!(v5 ^ v6)) {
+	if (!v5) { //if (!(v5 ^ v6)) {
 		v7 = stextvhold + ((stextlhold - stextup) >> 2);
 		if (v7 == 19) {
 			healitem[19]._itype = -1;
@@ -3404,12 +3404,12 @@ void __cdecl S_StoryEnter()
 
 void __cdecl S_SIDEnter()
 {
-	int idx;          // eax
-	int v1;           // edx
-	int v2;           // ecx
-	BOOLEAN v3;       // sf
+	int idx;    // eax
+	int v1;     // edx
+	int v2;     // ecx
+	BOOLEAN v3; // sf
 	//unsigned char v4; // of
-	char v5;          // cl
+	char v5; // cl
 
 	if (stextsel == 22) {
 		StartStore(STORE_STORY);
@@ -3425,7 +3425,7 @@ void __cdecl S_SIDEnter()
 		//v4 = __OFSUB__(v2, storehold[idx]._iIvalue);
 		v3 = v2 - storehold[idx]._iIvalue < 0;
 		v5 = STORE_NOMONEY;
-		if (!v3)//if (!(v3 ^ v4))
+		if (!v3) //if (!(v3 ^ v4))
 			v5 = STORE_CONFIRM;
 		StartStore(v5);
 	}
@@ -3664,10 +3664,10 @@ void __cdecl STextEnter()
 
 void __cdecl CheckStoreBtn()
 {
-	BOOLEAN v0;       // sf
+	BOOLEAN v0; // sf
 	//unsigned char v1; // of
-	int v2;           // eax
-	int *v3;          // ecx
+	int v2;  // eax
+	int *v3; // ecx
 
 	if (qtextflag) {
 		qtextflag = FALSE;
@@ -3681,7 +3681,7 @@ void __cdecl CheckStoreBtn()
 			//v1 = __OFSUB__(MouseX, 344);
 			v0 = MouseX - 344 < 0;
 		}
-		if (!v0 && MouseX <= 616) {//if (!(v0 ^ v1) && MouseX <= 616) {
+		if (!v0 && MouseX <= 616) { //if (!(v0 ^ v1) && MouseX <= 616) {
 			v2 = (MouseY - 32) / 12;
 			if (stextscrl && MouseX > 600) {
 				if (v2 == 4) {

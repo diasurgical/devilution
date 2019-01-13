@@ -7,7 +7,8 @@ LPTOP_LEVEL_EXCEPTION_FILTER lpTopLevelExceptionFilter; // idb
 #ifndef _MSC_VER
 __attribute__((constructor))
 #endif
-static void exception_c_init(void)
+static void
+exception_c_init(void)
 {
 	exception_install_filter();
 	j_exception_init_filter();

@@ -5,9 +5,9 @@
 //offset 0
 //pCelBuff->pFrameTable[0]
 
-extern char gbPixelCol;           // automap pixel color 8-bit (palette entry)
-extern int dword_52B970;          // bool flip - if y < x
-extern int orgseed;               // weak
+extern char gbPixelCol;  // automap pixel color 8-bit (palette entry)
+extern int dword_52B970; // bool flip - if y < x
+extern int orgseed;      // weak
 extern int sgnWidth;
 extern int sglGameSeed;  // weak
 extern int SeedCount;    // weak

@@ -482,62 +482,62 @@ void __fastcall SetLightFX(int *x, int *y, short *s_r, short *s_g, int *s_b, int
 
 void __fastcall DoLighting(int nXPos, int nYPos, int nRadius, int Lnum)
 {
-	int v4;            // edi
-	int v5;            // ebx
-	int v6;            // ecx
-	int v7;            // eax
-	int v8;            // edx
-	int v9;            // esi
-	int v10;           // eax
-	char *v11;         // edi
-	signed int v12;    // ecx
-	int v13;           // edx
-	_BYTE *v14;        // ecx
-	int v15;           // ebx
-	BOOLEAN v16;       // sf
+	int v4;         // edi
+	int v5;         // ebx
+	int v6;         // ecx
+	int v7;         // eax
+	int v8;         // edx
+	int v9;         // esi
+	int v10;        // eax
+	char *v11;      // edi
+	signed int v12; // ecx
+	int v13;        // edx
+	_BYTE *v14;     // ecx
+	int v15;        // ebx
+	BOOLEAN v16;    // sf
 	//unsigned char v17; // of
-	int v18;           // esi
-	int v19;           // ecx
-	char *v20;         // edi
-	signed int v21;    // eax
-	int v22;           // edx
-	_BYTE *v23;        // eax
-	int v24;           // ebx
-	int v25;           // eax
-	int v26;           // esi
-	char *v27;         // edi
-	signed int v28;    // ecx
-	int v29;           // edx
-	_BYTE *v30;        // ecx
-	int v31;           // ebx
-	signed int v32;    // ebx
-	int v33;           // ecx
-	char *v34;         // esi
-	signed int v35;    // eax
-	int v36;           // edx
-	_BYTE *v37;        // eax
-	int v38;           // edi
-	short s_r[2];      // [esp+Ch] [ebp-44h]
-	short s_g[2];      // [esp+10h] [ebp-40h]
-	int s_b;           // [esp+14h] [ebp-3Ch]
-	int d_r;           // [esp+18h] [ebp-38h]
-	int v43;           // [esp+1Ch] [ebp-34h]
-	int v44;           // [esp+20h] [ebp-30h]
-	int v45;           // [esp+24h] [ebp-2Ch]
-	int v46;           // [esp+28h] [ebp-28h]
-	int v47;           // [esp+2Ch] [ebp-24h]
-	int v48;           // [esp+30h] [ebp-20h]
-	int d_g;           // [esp+34h] [ebp-1Ch]
-	int d_b;           // [esp+38h] [ebp-18h]
-	int v51;           // [esp+3Ch] [ebp-14h]
-	int v52;           // [esp+40h] [ebp-10h]
-	int y;             // [esp+44h] [ebp-Ch]
-	int x;             // [esp+48h] [ebp-8h]
-	int v55;           // [esp+4Ch] [ebp-4h]
-	int Lnuma;         // [esp+5Ch] [ebp+Ch]
-	int Lnumb;         // [esp+5Ch] [ebp+Ch]
-	int Lnumc;         // [esp+5Ch] [ebp+Ch]
-	int Lnumd;         // [esp+5Ch] [ebp+Ch]
+	int v18;        // esi
+	int v19;        // ecx
+	char *v20;      // edi
+	signed int v21; // eax
+	int v22;        // edx
+	_BYTE *v23;     // eax
+	int v24;        // ebx
+	int v25;        // eax
+	int v26;        // esi
+	char *v27;      // edi
+	signed int v28; // ecx
+	int v29;        // edx
+	_BYTE *v30;     // ecx
+	int v31;        // ebx
+	signed int v32; // ebx
+	int v33;        // ecx
+	char *v34;      // esi
+	signed int v35; // eax
+	int v36;        // edx
+	_BYTE *v37;     // eax
+	int v38;        // edi
+	short s_r[2];   // [esp+Ch] [ebp-44h]
+	short s_g[2];   // [esp+10h] [ebp-40h]
+	int s_b;        // [esp+14h] [ebp-3Ch]
+	int d_r;        // [esp+18h] [ebp-38h]
+	int v43;        // [esp+1Ch] [ebp-34h]
+	int v44;        // [esp+20h] [ebp-30h]
+	int v45;        // [esp+24h] [ebp-2Ch]
+	int v46;        // [esp+28h] [ebp-28h]
+	int v47;        // [esp+2Ch] [ebp-24h]
+	int v48;        // [esp+30h] [ebp-20h]
+	int d_g;        // [esp+34h] [ebp-1Ch]
+	int d_b;        // [esp+38h] [ebp-18h]
+	int v51;        // [esp+3Ch] [ebp-14h]
+	int v52;        // [esp+40h] [ebp-10h]
+	int y;          // [esp+44h] [ebp-Ch]
+	int x;          // [esp+48h] [ebp-8h]
+	int v55;        // [esp+4Ch] [ebp-4h]
+	int Lnuma;      // [esp+5Ch] [ebp+Ch]
+	int Lnumb;      // [esp+5Ch] [ebp+Ch]
+	int Lnumc;      // [esp+5Ch] [ebp+Ch]
+	int Lnumd;      // [esp+5Ch] [ebp+Ch]
 
 	v4 = nYPos;
 	v5 = nXPos;
