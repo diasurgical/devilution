@@ -127,12 +127,14 @@ void __fastcall UseMana(int id, int sn)
 
 BOOL __fastcall CheckSpell(int id, int sn, BYTE st, BOOL manaonly)
 {
+	BOOL result;
+
 #ifdef _DEBUG
 	if (debug_mode_key_inverted_v)
 		return TRUE;
 #endif
 
-	BOOL result = TRUE;
+	result = TRUE;
 	if (!manaonly && pcurs != 1) {
 		result = FALSE;
 	} else {
