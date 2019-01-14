@@ -4162,22 +4162,21 @@ BOOL __fastcall SmithItemOk(int i)
 
 int __fastcall RndSmithItem(int lvl)
 {
-	int ri;       // edx
-	int i;        // edi
-	int ril[512]; // [esp+4h] [ebp-804h]
+	int i, ri;
+	int ril[512];
 
 	ri = 0;
-	i = 1;
-	if (AllItemsList[1].iLoc != -1) {
-		do {
-			if (AllItemsList[i].iRnd && SmithItemOk(i) && lvl >= AllItemsList[i].iMinMLvl) {
-				ril[ri++] = i;
-				if (AllItemsList[i].iRnd == 2)
-					ril[ri++] = i;
+	for (i = 1; AllItemsList[i].iLoc != -1; i++) {
+		if (AllItemsList[i].iRnd && SmithItemOk(i) && lvl >= AllItemsList[i].iMinMLvl) {
+			ril[ri] = i;
+			ri++;
+			if (AllItemsList[i].iRnd == 2) {
+				ril[ri] = i;
+				ri++;
 			}
-			++i;
-		} while (AllItemsList[i].iLoc != -1);
+		}
 	}
+
 	return ril[random(50, ri)] + 1;
 }
 // 424252: using guessed type int var_804[512];
