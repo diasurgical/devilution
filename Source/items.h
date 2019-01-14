@@ -94,7 +94,7 @@ int __fastcall RndSmithItem(int lvl);
 void __fastcall BubbleSwapItem(ItemStruct *a, ItemStruct *b);
 void __cdecl SortSmith();
 void __fastcall SpawnSmith(int lvl);
-BOOLEAN __fastcall PremiumItemOk(int i);
+BOOL __fastcall PremiumItemOk(int i);
 int __fastcall RndPremiumItem(int minlvl, int maxlvl);
 void __fastcall SpawnOnePremium(int i, int plvl);
 void __fastcall SpawnPremium(int lvl);

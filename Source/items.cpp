@@ -4262,18 +4262,27 @@ void __fastcall SpawnSmith(int lvl)
 	SortSmith();
 }
 
-BOOLEAN __fastcall PremiumItemOk(int i)
+BOOL __fastcall PremiumItemOk(int i)
 {
-	unsigned char v1; // cl
-	BOOLEAN rv;       // eax
+	BOOL rv;
 
-	v1 = AllItemsList[i].itype;
-	rv = 1;
-	if (!v1 || v1 == ITYPE_GOLD || v1 == ITYPE_0E || v1 == ITYPE_STAFF)
-		rv = 0;
-	if (gbMaxPlayers != 1 && (v1 == ITYPE_RING || v1 == ITYPE_AMULET)) {
-		rv = 0;
+	rv = TRUE;
+	if (AllItemsList[i].itype == ITYPE_MISC)
+		rv = FALSE;
+	if (AllItemsList[i].itype == ITYPE_GOLD)
+		rv = FALSE;
+	if (AllItemsList[i].itype == ITYPE_0E)
+		rv = FALSE;
+	if (AllItemsList[i].itype == ITYPE_STAFF)
+		rv = FALSE;
+
+	if (gbMaxPlayers != 1) {
+		if (AllItemsList[i].itype == ITYPE_RING)
+			rv = FALSE;
+		if (AllItemsList[i].itype == ITYPE_AMULET)
+			rv = FALSE;
 	}
+
 	return rv;
 }
 // 679660: using guessed type char gbMaxPlayers;
