@@ -3,28 +3,16 @@
 #define __MULTI_H__
 
 extern char gbSomebodyWonGameKludge; // weak
-extern TBuffer sgHiPriBuf;
 extern char szPlayerDescript[128];
 extern short sgwPackPlrOffsetTbl[MAX_PLRS];
 extern PkPlayerStruct netplr[MAX_PLRS];
-extern char sgbPlayerTurnBitTbl[MAX_PLRS];
-extern char sgbPlayerLeftGameTbl[MAX_PLRS];
-extern int sgbSentThisCycle; // idb
-extern int dword_678628;     // weak
+extern int dword_678628; // weak
 extern BYTE gbActivePlayers;
 extern char gbGameDestroyed; // weak
-extern char sgbSendDeltaTbl[MAX_PLRS];
-extern _gamedata sgGameInitInfo;
-extern char byte_678640;    // weak
-extern int sglTimeoutStart; // weak
-extern int sgdwPlayerLeftReasonTbl[MAX_PLRS];
-extern TBuffer sgLoPriBuf;
-extern unsigned int sgdwGameLoops; // idb
+extern char byte_678640;     // weak
 extern BYTE gbMaxPlayers;
-extern char sgbTimeout; // weak
 extern char szPlayerName[128];
 extern BYTE gbDeltaSender; // weak
-extern int sgbNetInited;   // weak
 extern int player_state[MAX_PLRS];
 
 void __fastcall multi_msg_add(BYTE *a1, unsigned char a2);

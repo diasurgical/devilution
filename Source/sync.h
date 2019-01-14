@@ -6,7 +6,6 @@ extern short sync_word_6AA708[MAXMONSTERS];
 extern int syncmonsters; // weak
 extern short sync_word_6AA89C[MAXMONSTERS];
 extern int syncitems;
-extern int sgnSyncPInv; // weak
 
 int __fastcall sync_all_monsters(TSyncHeader *packet, int size);
 void __cdecl sync_one_monster();

@@ -9,14 +9,11 @@ extern char nthread_should_run; // weak
 extern DWORD gdwTurnsInTransit; // weak
 extern int glpMsgTbl[4];
 extern unsigned int glpNThreadId;
-extern char sgbSyncCountdown;   // weak
-extern int turn_upper_bit;      // weak
-extern char byte_679758;        // weak
-extern char sgbPacketCountdown; // weak
-extern char sgbThreadIsRunning; // weak
-extern int gdwLargestMsgSize;   // weak
-extern int gdwNormalMsgSize;    // weak
-extern int last_tick;           // weak
+extern int turn_upper_bit;    // weak
+extern char byte_679758;      // weak
+extern int gdwLargestMsgSize; // weak
+extern int gdwNormalMsgSize;  // weak
+extern int last_tick;         // weak
 
 void __cdecl nthread_init_mutex();
 void __cdecl nthread_cleanup_mutex_atexit();

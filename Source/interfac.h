@@ -2,8 +2,6 @@
 #ifndef __INTERFAC_H__
 #define __INTERFAC_H__
 
-extern void *sgpBackCel;
-extern int sgdwProgress;
 extern int progress_id; // idb
 
 void __cdecl interface_msg_pump();

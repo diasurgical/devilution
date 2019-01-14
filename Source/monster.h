@@ -6,7 +6,6 @@ extern int MissileFileFlag; // weak
 extern int monstkills[MAXMONSTERS];
 extern int monstactive[MAXMONSTERS];
 extern int nummonsters;
-extern int sgbSaveSoundOn; // weak
 extern MonsterStruct monster[MAXMONSTERS];
 extern int totalmonsters; // weak
 extern CMonster Monsters[16];

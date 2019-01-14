@@ -2,10 +2,8 @@
 #ifndef __DX_H__
 #define __DX_H__
 
-extern Screen *sgpBackBuf;
 extern IDirectDraw *lpDDInterface;
 extern IDirectDrawPalette *lpDDPalette; // idb
-extern int sgdwLockCount;
 extern Screen *gpBuffer;
 extern IDirectDrawSurface *lpDDSBackBuf;
 extern IDirectDrawSurface *lpDDSPrimary;
