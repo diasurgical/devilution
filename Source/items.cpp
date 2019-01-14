@@ -4288,23 +4288,19 @@ BOOL __fastcall PremiumItemOk(int i)
 
 int __fastcall RndPremiumItem(int minlvl, int maxlvl)
 {
-	int ri;       // edx
-	int i;        // edi
-	int ril[512]; // [esp+8h] [ebp-804h]
+	int i, ri;
+	int ril[512];
 
 	ri = 0;
-	i = 1;
-	if (AllItemsList[1].iLoc != -1) {
-		do {
-			if (AllItemsList[i].iRnd) {
-				if (PremiumItemOk(i)) {
-					if (AllItemsList[i].iMinMLvl >= minlvl && AllItemsList[i].iMinMLvl <= maxlvl)
-						ril[ri++] = i;
-				}
+	for (i = 1; AllItemsList[i].iLoc != -1; i++) {
+		if (AllItemsList[i].iRnd) {
+			if (PremiumItemOk(i)) {
+				if (AllItemsList[i].iMinMLvl >= minlvl && AllItemsList[i].iMinMLvl <= maxlvl)
+					ril[ri++] = i;
 			}
-			++i;
-		} while (AllItemsList[i].iLoc != -1);
+		}
 	}
+
 	return ril[random(50, ri)] + 1;
 }
 // 42445F: using guessed type int ril[512];
