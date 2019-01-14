@@ -2531,49 +2531,42 @@ int __fastcall RndItem(int m)
 	return ril[random(24, ri)] + 1;
 }
 // 679660: using guessed type char gbMaxPlayers;
-// 421A4B: using guessed type int var_800[512];
 
 int __fastcall RndUItem(int m)
 {
-	int ri;         // edx
-	int i;          // ebp
-	BOOLEAN okflag; // edi
-	int ril[512];   // [esp+0h] [ebp-800h]
+	int i, ri;
+	int ril[512];
+	BOOL okflag;
 
-	if (m != -1) {
-		if ((monster[m].MData->mTreasure & 0x8000) != 0 && gbMaxPlayers == 1)
-			return -1 - (monster[m].MData->mTreasure & 0xFFF);
-	}
+	if (m != -1 && (monster[m].MData->mTreasure & 0x8000) != 0 && gbMaxPlayers == 1)
+		return -1 - (monster[m].MData->mTreasure & 0xFFF);
+
 	ri = 0;
-	i = 0;
-	if (AllItemsList[0].iLoc != -1) {
-		do {
-			okflag = 1;
-			if (!AllItemsList[i].iRnd)
-				okflag = 0;
-			if (m == -1) {
-				if (2 * currlevel - AllItemsList[i].iMinMLvl < 0)
-					okflag = 0;
-			} else {
-				if (monster[m].mLevel - AllItemsList[i].iMinMLvl < 0)
-					okflag = 0;
-			}
-			if (!AllItemsList[i].itype)
-				okflag = 0;
-			if (AllItemsList[i].itype == ITYPE_GOLD)
-				okflag = 0;
-			if (AllItemsList[i].itype == ITYPE_0E)
-				okflag = 0;
-			if (AllItemsList[i].iMiscId == IMISC_BOOK)
-				okflag = 1;
-			if (AllItemsList[i].iSpell == SPL_RESURRECT && gbMaxPlayers == 1)
-				okflag = 0;
-			if (AllItemsList[i].iSpell == SPL_HEALOTHER && gbMaxPlayers == 1)
-				okflag = 0;
-			if (okflag)
-				ril[ri++] = i;
-			++i;
-		} while (AllItemsList[i].iLoc != -1);
+	for (i = 0; AllItemsList[i].iLoc != -1; i++) {
+		okflag = TRUE;
+		if (!AllItemsList[i].iRnd)
+			okflag = FALSE;
+		if (m != -1) {
+			if (monster[m].mLevel < AllItemsList[i].iMinMLvl)
+				okflag = FALSE;
+		} else {
+			if (2 * currlevel < AllItemsList[i].iMinMLvl)
+				okflag = FALSE;
+		}
+		if (AllItemsList[i].itype == ITYPE_MISC)
+			okflag = FALSE;
+		if (AllItemsList[i].itype == ITYPE_GOLD)
+			okflag = FALSE;
+		if (AllItemsList[i].itype == ITYPE_0E)
+			okflag = FALSE;
+		if (AllItemsList[i].iMiscId == IMISC_BOOK)
+			okflag = TRUE;
+		if (AllItemsList[i].iSpell == SPL_RESURRECT && gbMaxPlayers == 1)
+			okflag = FALSE;
+		if (AllItemsList[i].iSpell == SPL_HEALOTHER && gbMaxPlayers == 1)
+			okflag = FALSE;
+		if (okflag)
+			ril[ri++] = i;
 	}
 
 	return ril[random(25, ri)];
