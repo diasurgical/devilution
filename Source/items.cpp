@@ -2501,34 +2501,31 @@ void __fastcall SetupItem(int i)
 
 int __fastcall RndItem(int m)
 {
-	int ri;       // esi
-	int i;        // edx
-	int ril[512]; // [esp+4h] [ebp-800h]
+	int i, ri;
+	int ril[512];
 
 	if ((monster[m].MData->mTreasure & 0x8000) != 0)
 		return -1 - (monster[m].MData->mTreasure & 0xFFF);
+
 	if (monster[m].MData->mTreasure & 0x4000)
 		return 0;
 
 	if (random(24, 100) > 40)
 		return 0;
+
 	if (random(24, 100) > 25)
 		return 1;
 
 	ri = 0;
-	i = 0;
-	if (AllItemsList[0].iLoc != -1) {
-		do {
-			if (AllItemsList[i].iRnd == 2 && monster[m].mLevel >= AllItemsList[i].iMinMLvl)
-				ril[ri++] = i;
-			if (AllItemsList[i].iRnd && monster[m].mLevel >= AllItemsList[i].iMinMLvl)
-				ril[ri++] = i;
-			if (AllItemsList[i].iSpell == SPL_RESURRECT && gbMaxPlayers == 1)
-				--ri;
-			if (AllItemsList[i].iSpell == SPL_HEALOTHER && gbMaxPlayers == 1)
-				--ri;
-			++i;
-		} while (AllItemsList[i].iLoc != -1);
+	for (i = 0; AllItemsList[i].iLoc != -1; i++) {
+		if (AllItemsList[i].iRnd == 2 && monster[m].mLevel >= AllItemsList[i].iMinMLvl)
+			ril[ri++] = i;
+		if (AllItemsList[i].iRnd && monster[m].mLevel >= AllItemsList[i].iMinMLvl)
+			ril[ri++] = i;
+		if (AllItemsList[i].iSpell == SPL_RESURRECT && gbMaxPlayers == 1)
+			ri--;
+		if (AllItemsList[i].iSpell == SPL_HEALOTHER && gbMaxPlayers == 1)
+			ri--;
 	}
 
 	return ril[random(24, ri)] + 1;
