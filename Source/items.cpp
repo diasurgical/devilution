@@ -2518,10 +2518,14 @@ int __fastcall RndItem(int m)
 
 	ri = 0;
 	for (i = 0; AllItemsList[i].iLoc != -1; i++) {
-		if (AllItemsList[i].iRnd == 2 && monster[m].mLevel >= AllItemsList[i].iMinMLvl)
-			ril[ri++] = i;
-		if (AllItemsList[i].iRnd && monster[m].mLevel >= AllItemsList[i].iMinMLvl)
-			ril[ri++] = i;
+		if (AllItemsList[i].iRnd == 2 && monster[m].mLevel >= AllItemsList[i].iMinMLvl) {
+			ril[ri] = i;
+			ri++;
+		}
+		if (AllItemsList[i].iRnd && monster[m].mLevel >= AllItemsList[i].iMinMLvl) {
+			ril[ri] = i;
+			ri++;
+		}
 		if (AllItemsList[i].iSpell == SPL_RESURRECT && gbMaxPlayers == 1)
 			ri--;
 		if (AllItemsList[i].iSpell == SPL_HEALOTHER && gbMaxPlayers == 1)
@@ -2565,41 +2569,39 @@ int __fastcall RndUItem(int m)
 			okflag = FALSE;
 		if (AllItemsList[i].iSpell == SPL_HEALOTHER && gbMaxPlayers == 1)
 			okflag = FALSE;
-		if (okflag)
-			ril[ri++] = i;
+		if (okflag) {
+			ril[ri] = i;
+			ri++;
+		}
 	}
 
 	return ril[random(25, ri)];
 }
 // 679660: using guessed type char gbMaxPlayers;
-// 421B32: using guessed type int var_800[512];
 
 int __cdecl RndAllItems()
 {
-	int ri;       // esi
-	int i;        // edi
-	int ril[512]; // [esp+0h] [ebp-800h]
+	int i, ri;
+	int ril[512];
 
 	if (random(26, 100) > 25)
 		return 0;
 
 	ri = 0;
-	i = 0;
-	if (AllItemsList[0].iLoc != -1) {
-		do {
-			if (AllItemsList[i].iRnd && 2 * currlevel >= AllItemsList[i].iMinMLvl)
-				ril[ri++] = i;
-			if (AllItemsList[i].iSpell == SPL_RESURRECT && gbMaxPlayers == 1)
-				--ri;
-			if (AllItemsList[i].iSpell == SPL_HEALOTHER && gbMaxPlayers == 1)
-				--ri;
-			++i;
-		} while (AllItemsList[i].iLoc != -1);
+	for (i = 0; AllItemsList[i].iLoc != -1; i++) {
+		if (AllItemsList[i].iRnd && 2 * currlevel >= AllItemsList[i].iMinMLvl) {
+			ril[ri] = i;
+			ri++;
+		}
+		if (AllItemsList[i].iSpell == SPL_RESURRECT && gbMaxPlayers == 1)
+			ri--;
+		if (AllItemsList[i].iSpell == SPL_HEALOTHER && gbMaxPlayers == 1)
+			ri--;
 	}
+
 	return ril[random(26, ri)];
 }
 // 679660: using guessed type char gbMaxPlayers;
-// 421C2A: using guessed type int var_800[512];
 
 int __fastcall RndTypeItems(int itype, int imid)
 {
