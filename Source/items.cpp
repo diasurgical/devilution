@@ -4558,7 +4558,7 @@ void __fastcall SpawnBoy(int lvl)
 }
 // 6A8A3C: using guessed type int boylevel;
 
-BOOLEAN __fastcall HealerItemOk(int i)
+BOOL __fastcall HealerItemOk(int i)
 {
 	int v1;         // ecx
 	BOOLEAN result; // eax
@@ -4615,19 +4615,17 @@ LABEL_21:
 
 int __fastcall RndHealerItem(int lvl)
 {
-	int ri;       // ebx
-	int i;        // edi
-	int ril[512]; // [esp+8h] [ebp-804h]
+	int i, ri;
+	int ril[512];
 
 	ri = 0;
-	i = 1;
-	if (AllItemsList[1].iLoc != -1) {
-		do {
-			if (AllItemsList[i].iRnd && HealerItemOk(i) && lvl >= AllItemsList[i].iMinMLvl)
-				ril[ri++] = i;
-			++i;
-		} while (AllItemsList[i].iLoc != -1);
+	for (i = 1; AllItemsList[i].iLoc != -1; i++) {
+		if (AllItemsList[i].iRnd && HealerItemOk(i) && lvl >= AllItemsList[i].iMinMLvl) {
+			ril[ri] = i;
+			ri++;
+		}
 	}
+
 	return ril[random(50, ri)] + 1;
 }
 // 424B49: using guessed type int var_804[512];

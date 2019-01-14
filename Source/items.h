@@ -105,7 +105,7 @@ void __fastcall WitchBookLevel(int ii);
 void __fastcall SpawnWitch(int lvl);
 int __fastcall RndBoyItem(int lvl);
 void __fastcall SpawnBoy(int lvl);
-BOOLEAN __fastcall HealerItemOk(int i);
+BOOL __fastcall HealerItemOk(int i);
 int __fastcall RndHealerItem(int lvl);
 void __cdecl SortHealer();
 void __fastcall SpawnHealer(int lvl);
