@@ -52,7 +52,7 @@ typedef struct ItemDataStruct {
 	char iItemId;
 	char *iName;
 	char *iSName;
-	int iMinMLvl;
+	char iMinMLvl;
 	int iDurability;
 	int iMinDam;
 	int iMaxDam;
