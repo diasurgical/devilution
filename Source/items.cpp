@@ -4353,33 +4353,28 @@ void __fastcall SpawnPremium(int lvl)
 
 BOOL __fastcall WitchItemOk(int i)
 {
-	BOOLEAN rv;       // eax
-	unsigned char v3; // dl
-	int v4;           // edx
-	int v5;           // ecx
+	BOOL rv;
 
-	rv = 0;
-	v3 = AllItemsList[i].itype;
-	if (!v3)
-		rv = 1;
-	if (v3 == ITYPE_STAFF)
-		rv = 1;
-	v4 = AllItemsList[i].iMiscId;
-	if (v4 == IMISC_MANA)
-		rv = 0;
-	if (v4 == IMISC_FULLMANA)
-		rv = 0;
-	if (v4 == IMISC_FULLHEAL)
-		rv = 0;
-	if (v4 == IMISC_HEAL)
-		rv = 0;
-	v5 = AllItemsList[i].iSpell;
-	if (v5 == SPL_TOWN)
-		rv = 0;
-	if (v5 == SPL_RESURRECT && gbMaxPlayers == 1)
-		rv = 0;
-	if (v5 == SPL_HEALOTHER && gbMaxPlayers == 1)
-		rv = 0;
+	rv = FALSE;
+	if (AllItemsList[i].itype == ITYPE_MISC)
+		rv = TRUE;
+	if (AllItemsList[i].itype == ITYPE_STAFF)
+		rv = TRUE;
+	if (AllItemsList[i].iMiscId == IMISC_MANA)
+		rv = FALSE;
+	if (AllItemsList[i].iMiscId == IMISC_FULLMANA)
+		rv = FALSE;
+	if (AllItemsList[i].iSpell == SPL_TOWN)
+		rv = FALSE;
+	if (AllItemsList[i].iMiscId == IMISC_FULLHEAL)
+		rv = FALSE;
+	if (AllItemsList[i].iMiscId == IMISC_HEAL)
+		rv = FALSE;
+	if (AllItemsList[i].iSpell == SPL_RESURRECT && gbMaxPlayers == 1)
+		rv = FALSE;
+	if (AllItemsList[i].iSpell == SPL_HEALOTHER && gbMaxPlayers == 1)
+		rv = FALSE;
+
 	return rv;
 }
 // 679660: using guessed type char gbMaxPlayers;
