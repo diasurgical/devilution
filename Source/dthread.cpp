@@ -57,24 +57,26 @@ void __fastcall dthread_send_delta(int pnum, char cmd, void *pbSrc, int dwLen)
 {
 	TMegaPkt *pkt;
 	TMegaPkt *p;
-	TMegaPkt **last;
 
-	if (gbMaxPlayers != 1) {
-		pkt = (TMegaPkt *)DiabloAllocPtr(dwLen + 20);
-		pkt->pNext = 0;
-		pkt->dwSpaceLeft = pnum;
-		pkt->data[0] = cmd;
-		*(_DWORD *)&pkt->data[4] = dwLen;
-		memcpy(&pkt->data[8], pbSrc, dwLen);
-		EnterCriticalSection(&sgMemCrit);
-		last = &sgpInfoHead;
-		for (p = sgpInfoHead; p != NULL; p = p->pNext) {
-			last = &p->pNext;
-		}
-		*last = pkt;
-		SetEvent(sghWorkToDoEvent);
-		LeaveCriticalSection(&sgMemCrit);
+	if (gbMaxPlayers == 1) {
+		return;
 	}
+
+	pkt = (TMegaPkt *)DiabloAllocPtr(dwLen + 20);
+	pkt->pNext = NULL;
+	pkt->dwSpaceLeft = pnum;
+	pkt->data[0] = cmd;
+	*(_DWORD *)&pkt->data[4] = dwLen;
+	memcpy(&pkt->data[8], pbSrc, dwLen);
+	EnterCriticalSection(&sgMemCrit);
+	p = (TMegaPkt *)&sgpInfoHead;
+	while (p->pNext) {
+		p = p->pNext;
+	}
+	p->pNext = pkt;
+
+	SetEvent(sghWorkToDoEvent);
+	LeaveCriticalSection(&sgMemCrit);
 }
 // 679660: using guessed type char gbMaxPlayers;
 
