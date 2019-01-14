@@ -98,7 +98,7 @@ BOOL __fastcall PremiumItemOk(int i);
 int __fastcall RndPremiumItem(int minlvl, int maxlvl);
 void __fastcall SpawnOnePremium(int i, int plvl);
 void __fastcall SpawnPremium(int lvl);
-BOOLEAN __fastcall WitchItemOk(int i);
+BOOL __fastcall WitchItemOk(int i);
 int __fastcall RndWitchItem(int lvl);
 void __cdecl SortWitch();
 void __fastcall WitchBookLevel(int ii);

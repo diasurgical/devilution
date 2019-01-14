@@ -4179,7 +4179,6 @@ int __fastcall RndSmithItem(int lvl)
 
 	return ril[random(50, ri)] + 1;
 }
-// 424252: using guessed type int var_804[512];
 
 void __fastcall BubbleSwapItem(ItemStruct *a, ItemStruct *b)
 {
@@ -4352,7 +4351,7 @@ void __fastcall SpawnPremium(int lvl)
 }
 // 69FB38: using guessed type int talker;
 
-BOOLEAN __fastcall WitchItemOk(int i)
+BOOL __fastcall WitchItemOk(int i)
 {
 	BOOLEAN rv;       // eax
 	unsigned char v3; // dl
@@ -4387,22 +4386,19 @@ BOOLEAN __fastcall WitchItemOk(int i)
 
 int __fastcall RndWitchItem(int lvl)
 {
-	int ri;       // ebx
-	int i;        // edi
-	int ril[512]; // [esp+8h] [ebp-804h]
+	int i, ri;
+	int ril[512];
 
 	ri = 0;
-	i = 1;
-	if (AllItemsList[1].iLoc != -1) {
-		do {
-			if (AllItemsList[i].iRnd && WitchItemOk(i) && lvl >= AllItemsList[i].iMinMLvl)
-				ril[ri++] = i;
-			++i;
-		} while (AllItemsList[i].iLoc != -1);
+	for (i = 1; AllItemsList[i].iLoc != -1; i++) {
+		if (AllItemsList[i].iRnd && WitchItemOk(i) && lvl >= AllItemsList[i].iMinMLvl) {
+			ril[ri] = i;
+			ri++;
+		}
 	}
+
 	return ril[random(51, ri)] + 1;
 }
-// 4246D2: using guessed type int var_804[512];
 
 void __cdecl SortWitch()
 {
@@ -4628,7 +4624,6 @@ int __fastcall RndHealerItem(int lvl)
 
 	return ril[random(50, ri)] + 1;
 }
-// 424B49: using guessed type int var_804[512];
 
 void __cdecl SortHealer()
 {
