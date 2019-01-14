@@ -4139,15 +4139,24 @@ BOOLEAN __fastcall StoreStatOk(ItemStruct *h)
 	return sf;
 }
 
-BOOLEAN __fastcall SmithItemOk(int i)
+BOOL __fastcall SmithItemOk(int i)
 {
-	unsigned char v1; // cl
-	BOOLEAN rv;       // eax
+	BOOL rv;
 
-	v1 = AllItemsList[i].itype;
 	rv = TRUE;
-	if (!v1 || v1 == ITYPE_GOLD || v1 == ITYPE_0E || v1 == ITYPE_STAFF || v1 == ITYPE_RING || v1 == ITYPE_AMULET)
+	if (AllItemsList[i].itype == ITYPE_MISC)
 		rv = FALSE;
+	if (AllItemsList[i].itype == ITYPE_GOLD)
+		rv = FALSE;
+	if (AllItemsList[i].itype == ITYPE_0E)
+		rv = FALSE;
+	if (AllItemsList[i].itype == ITYPE_STAFF)
+		rv = FALSE;
+	if (AllItemsList[i].itype == ITYPE_RING)
+		rv = FALSE;
+	if (AllItemsList[i].itype == ITYPE_AMULET)
+		rv = FALSE;
+
 	return rv;
 }
 

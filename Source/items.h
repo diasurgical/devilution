@@ -89,7 +89,7 @@ void __fastcall PrintItemDetails(ItemStruct *x);
 void __fastcall PrintItemDur(ItemStruct *x);
 void __fastcall UseItem(int p, int Mid, int spl);
 BOOLEAN __fastcall StoreStatOk(ItemStruct *h);
-BOOLEAN __fastcall SmithItemOk(int i);
+BOOL __fastcall SmithItemOk(int i);
 int __fastcall RndSmithItem(int lvl);
 void __fastcall BubbleSwapItem(ItemStruct *a, ItemStruct *b);
 void __cdecl SortSmith();
