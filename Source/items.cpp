@@ -4522,19 +4522,17 @@ void __fastcall SpawnWitch(int lvl)
 
 int __fastcall RndBoyItem(int lvl)
 {
-	int ri;       // edx
-	int i;        // edi
-	int ril[512]; // [esp+8h] [ebp-800h]
+	int i, ri;
+	int ril[512];
 
 	ri = 0;
-	i = 1;
-	if (AllItemsList[1].iLoc != -1) {
-		do {
-			if (AllItemsList[i].iRnd && PremiumItemOk(i) && lvl >= AllItemsList[i].iMinMLvl)
-				ril[ri++] = i;
-			++i;
-		} while (AllItemsList[i].iLoc != -1);
+	for (i = 1; AllItemsList[i].iLoc != -1; i++) {
+		if (AllItemsList[i].iRnd && PremiumItemOk(i) && lvl >= AllItemsList[i].iMinMLvl) {
+			ril[ri] = i;
+			ri++;
+		}
 	}
+
 	return ril[random(49, ri)] + 1;
 }
 // 4249A4: using guessed type int var_800[512];
