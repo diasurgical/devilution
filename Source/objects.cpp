@@ -3916,13 +3916,12 @@ void __fastcall TryDisarm(int pnum, int i)
 
 int __fastcall ItemMiscIdIdx(int imiscid)
 {
-	int result; // eax
-	int *i;     // edx
+	int i;
 
-	result = 0;
-	for (i = &AllItemsList[0].iMiscId; !*(i - 14) || *i != imiscid; i += 19)
-		++result;
-	return result;
+	for (i = 0; AllItemsList[i].iRnd == 0 || AllItemsList[i].iMiscId != imiscid; i++) {
+	}
+
+	return i;
 }
 
 void __fastcall OperateShrine(int pnum, int i, int sType)
