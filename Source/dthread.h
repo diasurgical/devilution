@@ -3,9 +3,7 @@
 #define __DTHREAD_H__
 
 extern unsigned int glpDThreadId; // idb
-extern TMegaPkt *sgpInfoHead;     /* may not be right struct */
 extern BOOLEAN dthread_running;
-extern HANDLE sghWorkToDoEvent;
 
 void __cdecl dthread_init_mutex();
 void __cdecl dthread_cleanup_mutex_atexit();

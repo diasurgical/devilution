@@ -34,6 +34,5 @@ void __fastcall palette_set_color_cycling(BOOLEAN enabled);
 
 extern int gamma_correction; // idb
 extern BOOL color_cycling_enabled;
-extern BOOLEAN sgbFadedIn;
 
 #endif /* __PALETTE_H__ */

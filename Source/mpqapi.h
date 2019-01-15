@@ -2,12 +2,9 @@
 #ifndef __MPQAPI_H__
 #define __MPQAPI_H__
 
-extern int sgdwMpqOffset; // idb
 extern char mpq_buf[4096];
-extern _HASHENTRY *sgpHashTbl;
 extern BOOLEAN save_archive_modified; // weak
-extern _BLOCKENTRY *sgpBlockTbl;
-extern BOOLEAN save_archive_open; // weak
+extern BOOLEAN save_archive_open;     // weak
 
 BOOL __fastcall mpqapi_set_hidden(const char *pszArchive, BOOL hidden);
 void __fastcall mpqapi_store_creation_time(const char *pszArchive, int dwChar);
@@ -41,7 +38,5 @@ BOOLEAN __cdecl mpqapi_can_seek();
 /* rdata */
 
 /* data */
-
-extern HANDLE sghArchive; // idb
 
 #endif /* __MPQAPI_H__ */

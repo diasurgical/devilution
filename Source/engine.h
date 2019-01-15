@@ -8,8 +8,6 @@
 extern char gbPixelCol;  // automap pixel color 8-bit (palette entry)
 extern int dword_52B970; // bool flip - if y < x
 extern int orgseed;      // weak
-extern int sgnWidth;
-extern int sglGameSeed;  // weak
 extern int SeedCount;    // weak
 extern int dword_52B99C; // bool valid - if x/y are in bounds
 

@@ -2,9 +2,6 @@
 #ifndef __MSGCMD_H__
 #define __MSGCMD_H__
 
-extern ChatCmd sgChat_Cmd;
-extern int sgdwMsgCmdTimer;
-
 void __cdecl msgcmd_init_event();
 void __cdecl msgcmd_cleanup_chatcmd_atexit();
 void __cdecl msgcmd_cleanup_chatcmd(void);
