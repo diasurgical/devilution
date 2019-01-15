@@ -2518,10 +2518,14 @@ int __fastcall RndItem(int m)
 
 	ri = 0;
 	for (i = 0; AllItemsList[i].iLoc != -1; i++) {
-		if (AllItemsList[i].iRnd == 2 && monster[m].mLevel >= AllItemsList[i].iMinMLvl)
-			ril[ri++] = i;
-		if (AllItemsList[i].iRnd && monster[m].mLevel >= AllItemsList[i].iMinMLvl)
-			ril[ri++] = i;
+		if (AllItemsList[i].iRnd == 2 && monster[m].mLevel >= AllItemsList[i].iMinMLvl) {
+			ril[ri] = i;
+			ri++;
+		}
+		if (AllItemsList[i].iRnd && monster[m].mLevel >= AllItemsList[i].iMinMLvl) {
+			ril[ri] = i;
+			ri++;
+		}
 		if (AllItemsList[i].iSpell == SPL_RESURRECT && gbMaxPlayers == 1)
 			ri--;
 		if (AllItemsList[i].iSpell == SPL_HEALOTHER && gbMaxPlayers == 1)
@@ -2565,41 +2569,39 @@ int __fastcall RndUItem(int m)
 			okflag = FALSE;
 		if (AllItemsList[i].iSpell == SPL_HEALOTHER && gbMaxPlayers == 1)
 			okflag = FALSE;
-		if (okflag)
-			ril[ri++] = i;
+		if (okflag) {
+			ril[ri] = i;
+			ri++;
+		}
 	}
 
 	return ril[random(25, ri)];
 }
 // 679660: using guessed type char gbMaxPlayers;
-// 421B32: using guessed type int var_800[512];
 
 int __cdecl RndAllItems()
 {
-	int ri;       // esi
-	int i;        // edi
-	int ril[512]; // [esp+0h] [ebp-800h]
+	int i, ri;
+	int ril[512];
 
 	if (random(26, 100) > 25)
 		return 0;
 
 	ri = 0;
-	i = 0;
-	if (AllItemsList[0].iLoc != -1) {
-		do {
-			if (AllItemsList[i].iRnd && 2 * currlevel >= AllItemsList[i].iMinMLvl)
-				ril[ri++] = i;
-			if (AllItemsList[i].iSpell == SPL_RESURRECT && gbMaxPlayers == 1)
-				--ri;
-			if (AllItemsList[i].iSpell == SPL_HEALOTHER && gbMaxPlayers == 1)
-				--ri;
-			++i;
-		} while (AllItemsList[i].iLoc != -1);
+	for (i = 0; AllItemsList[i].iLoc != -1; i++) {
+		if (AllItemsList[i].iRnd && 2 * currlevel >= AllItemsList[i].iMinMLvl) {
+			ril[ri] = i;
+			ri++;
+		}
+		if (AllItemsList[i].iSpell == SPL_RESURRECT && gbMaxPlayers == 1)
+			ri--;
+		if (AllItemsList[i].iSpell == SPL_HEALOTHER && gbMaxPlayers == 1)
+			ri--;
 	}
+
 	return ril[random(26, ri)];
 }
 // 679660: using guessed type char gbMaxPlayers;
-// 421C2A: using guessed type int var_800[512];
 
 int __fastcall RndTypeItems(int itype, int imid)
 {
@@ -4137,39 +4139,46 @@ BOOLEAN __fastcall StoreStatOk(ItemStruct *h)
 	return sf;
 }
 
-BOOLEAN __fastcall SmithItemOk(int i)
+BOOL __fastcall SmithItemOk(int i)
 {
-	unsigned char v1; // cl
-	BOOLEAN rv;       // eax
+	BOOL rv;
 
-	v1 = AllItemsList[i].itype;
 	rv = TRUE;
-	if (!v1 || v1 == ITYPE_GOLD || v1 == ITYPE_0E || v1 == ITYPE_STAFF || v1 == ITYPE_RING || v1 == ITYPE_AMULET)
+	if (AllItemsList[i].itype == ITYPE_MISC)
 		rv = FALSE;
+	if (AllItemsList[i].itype == ITYPE_GOLD)
+		rv = FALSE;
+	if (AllItemsList[i].itype == ITYPE_0E)
+		rv = FALSE;
+	if (AllItemsList[i].itype == ITYPE_STAFF)
+		rv = FALSE;
+	if (AllItemsList[i].itype == ITYPE_RING)
+		rv = FALSE;
+	if (AllItemsList[i].itype == ITYPE_AMULET)
+		rv = FALSE;
+
 	return rv;
 }
 
 int __fastcall RndSmithItem(int lvl)
 {
-	int ri;       // edx
-	int i;        // edi
-	int ril[512]; // [esp+4h] [ebp-804h]
+	int i, ri;
+	int ril[512];
 
 	ri = 0;
-	i = 1;
-	if (AllItemsList[1].iLoc != -1) {
-		do {
-			if (AllItemsList[i].iRnd && SmithItemOk(i) && lvl >= AllItemsList[i].iMinMLvl) {
-				ril[ri++] = i;
-				if (AllItemsList[i].iRnd == 2)
-					ril[ri++] = i;
+	for (i = 1; AllItemsList[i].iLoc != -1; i++) {
+		if (AllItemsList[i].iRnd && SmithItemOk(i) && lvl >= AllItemsList[i].iMinMLvl) {
+			ril[ri] = i;
+			ri++;
+			if (AllItemsList[i].iRnd == 2) {
+				ril[ri] = i;
+				ri++;
 			}
-			++i;
-		} while (AllItemsList[i].iLoc != -1);
+		}
 	}
+
 	return ril[random(50, ri)] + 1;
 }
-// 424252: using guessed type int var_804[512];
 
 void __fastcall BubbleSwapItem(ItemStruct *a, ItemStruct *b)
 {
@@ -4251,41 +4260,46 @@ void __fastcall SpawnSmith(int lvl)
 	SortSmith();
 }
 
-BOOLEAN __fastcall PremiumItemOk(int i)
+BOOL __fastcall PremiumItemOk(int i)
 {
-	unsigned char v1; // cl
-	BOOLEAN rv;       // eax
+	BOOL rv;
 
-	v1 = AllItemsList[i].itype;
-	rv = 1;
-	if (!v1 || v1 == ITYPE_GOLD || v1 == ITYPE_0E || v1 == ITYPE_STAFF)
-		rv = 0;
-	if (gbMaxPlayers != 1 && (v1 == ITYPE_RING || v1 == ITYPE_AMULET)) {
-		rv = 0;
+	rv = TRUE;
+	if (AllItemsList[i].itype == ITYPE_MISC)
+		rv = FALSE;
+	if (AllItemsList[i].itype == ITYPE_GOLD)
+		rv = FALSE;
+	if (AllItemsList[i].itype == ITYPE_0E)
+		rv = FALSE;
+	if (AllItemsList[i].itype == ITYPE_STAFF)
+		rv = FALSE;
+
+	if (gbMaxPlayers != 1) {
+		if (AllItemsList[i].itype == ITYPE_RING)
+			rv = FALSE;
+		if (AllItemsList[i].itype == ITYPE_AMULET)
+			rv = FALSE;
 	}
+
 	return rv;
 }
 // 679660: using guessed type char gbMaxPlayers;
 
 int __fastcall RndPremiumItem(int minlvl, int maxlvl)
 {
-	int ri;       // edx
-	int i;        // edi
-	int ril[512]; // [esp+8h] [ebp-804h]
+	int i, ri;
+	int ril[512];
 
 	ri = 0;
-	i = 1;
-	if (AllItemsList[1].iLoc != -1) {
-		do {
-			if (AllItemsList[i].iRnd) {
-				if (PremiumItemOk(i)) {
-					if (AllItemsList[i].iMinMLvl >= minlvl && AllItemsList[i].iMinMLvl <= maxlvl)
-						ril[ri++] = i;
-				}
+	for (i = 1; AllItemsList[i].iLoc != -1; i++) {
+		if (AllItemsList[i].iRnd) {
+			if (PremiumItemOk(i)) {
+				if (AllItemsList[i].iMinMLvl >= minlvl && AllItemsList[i].iMinMLvl <= maxlvl)
+					ril[ri++] = i;
 			}
-			++i;
-		} while (AllItemsList[i].iLoc != -1);
+		}
 	}
+
 	return ril[random(50, ri)] + 1;
 }
 // 42445F: using guessed type int ril[512];
@@ -4337,57 +4351,49 @@ void __fastcall SpawnPremium(int lvl)
 }
 // 69FB38: using guessed type int talker;
 
-BOOLEAN __fastcall WitchItemOk(int i)
+BOOL __fastcall WitchItemOk(int i)
 {
-	BOOLEAN rv;       // eax
-	unsigned char v3; // dl
-	int v4;           // edx
-	int v5;           // ecx
+	BOOL rv;
 
-	rv = 0;
-	v3 = AllItemsList[i].itype;
-	if (!v3)
-		rv = 1;
-	if (v3 == ITYPE_STAFF)
-		rv = 1;
-	v4 = AllItemsList[i].iMiscId;
-	if (v4 == IMISC_MANA)
-		rv = 0;
-	if (v4 == IMISC_FULLMANA)
-		rv = 0;
-	if (v4 == IMISC_FULLHEAL)
-		rv = 0;
-	if (v4 == IMISC_HEAL)
-		rv = 0;
-	v5 = AllItemsList[i].iSpell;
-	if (v5 == SPL_TOWN)
-		rv = 0;
-	if (v5 == SPL_RESURRECT && gbMaxPlayers == 1)
-		rv = 0;
-	if (v5 == SPL_HEALOTHER && gbMaxPlayers == 1)
-		rv = 0;
+	rv = FALSE;
+	if (AllItemsList[i].itype == ITYPE_MISC)
+		rv = TRUE;
+	if (AllItemsList[i].itype == ITYPE_STAFF)
+		rv = TRUE;
+	if (AllItemsList[i].iMiscId == IMISC_MANA)
+		rv = FALSE;
+	if (AllItemsList[i].iMiscId == IMISC_FULLMANA)
+		rv = FALSE;
+	if (AllItemsList[i].iSpell == SPL_TOWN)
+		rv = FALSE;
+	if (AllItemsList[i].iMiscId == IMISC_FULLHEAL)
+		rv = FALSE;
+	if (AllItemsList[i].iMiscId == IMISC_HEAL)
+		rv = FALSE;
+	if (AllItemsList[i].iSpell == SPL_RESURRECT && gbMaxPlayers == 1)
+		rv = FALSE;
+	if (AllItemsList[i].iSpell == SPL_HEALOTHER && gbMaxPlayers == 1)
+		rv = FALSE;
+
 	return rv;
 }
 // 679660: using guessed type char gbMaxPlayers;
 
 int __fastcall RndWitchItem(int lvl)
 {
-	int ri;       // ebx
-	int i;        // edi
-	int ril[512]; // [esp+8h] [ebp-804h]
+	int i, ri;
+	int ril[512];
 
 	ri = 0;
-	i = 1;
-	if (AllItemsList[1].iLoc != -1) {
-		do {
-			if (AllItemsList[i].iRnd && WitchItemOk(i) && lvl >= AllItemsList[i].iMinMLvl)
-				ril[ri++] = i;
-			++i;
-		} while (AllItemsList[i].iLoc != -1);
+	for (i = 1; AllItemsList[i].iLoc != -1; i++) {
+		if (AllItemsList[i].iRnd && WitchItemOk(i) && lvl >= AllItemsList[i].iMinMLvl) {
+			ril[ri] = i;
+			ri++;
+		}
 	}
+
 	return ril[random(51, ri)] + 1;
 }
-// 4246D2: using guessed type int var_804[512];
 
 void __cdecl SortWitch()
 {
@@ -4507,19 +4513,17 @@ void __fastcall SpawnWitch(int lvl)
 
 int __fastcall RndBoyItem(int lvl)
 {
-	int ri;       // edx
-	int i;        // edi
-	int ril[512]; // [esp+8h] [ebp-800h]
+	int i, ri;
+	int ril[512];
 
 	ri = 0;
-	i = 1;
-	if (AllItemsList[1].iLoc != -1) {
-		do {
-			if (AllItemsList[i].iRnd && PremiumItemOk(i) && lvl >= AllItemsList[i].iMinMLvl)
-				ril[ri++] = i;
-			++i;
-		} while (AllItemsList[i].iLoc != -1);
+	for (i = 1; AllItemsList[i].iLoc != -1; i++) {
+		if (AllItemsList[i].iRnd && PremiumItemOk(i) && lvl >= AllItemsList[i].iMinMLvl) {
+			ril[ri] = i;
+			ri++;
+		}
 	}
+
 	return ril[random(49, ri)] + 1;
 }
 // 4249A4: using guessed type int var_800[512];
@@ -4545,7 +4549,7 @@ void __fastcall SpawnBoy(int lvl)
 }
 // 6A8A3C: using guessed type int boylevel;
 
-BOOLEAN __fastcall HealerItemOk(int i)
+BOOL __fastcall HealerItemOk(int i)
 {
 	int v1;         // ecx
 	BOOLEAN result; // eax
@@ -4602,22 +4606,19 @@ LABEL_21:
 
 int __fastcall RndHealerItem(int lvl)
 {
-	int ri;       // ebx
-	int i;        // edi
-	int ril[512]; // [esp+8h] [ebp-804h]
+	int i, ri;
+	int ril[512];
 
 	ri = 0;
-	i = 1;
-	if (AllItemsList[1].iLoc != -1) {
-		do {
-			if (AllItemsList[i].iRnd && HealerItemOk(i) && lvl >= AllItemsList[i].iMinMLvl)
-				ril[ri++] = i;
-			++i;
-		} while (AllItemsList[i].iLoc != -1);
+	for (i = 1; AllItemsList[i].iLoc != -1; i++) {
+		if (AllItemsList[i].iRnd && HealerItemOk(i) && lvl >= AllItemsList[i].iMinMLvl) {
+			ril[ri] = i;
+			ri++;
+		}
 	}
+
 	return ril[random(50, ri)] + 1;
 }
-// 424B49: using guessed type int var_804[512];
 
 void __cdecl SortHealer()
 {
