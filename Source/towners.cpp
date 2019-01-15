@@ -190,29 +190,18 @@ void __fastcall InitQstSnds(int i)
 
 void __cdecl InitSmith()
 {
-	int v0;        // esi
-	int v1;        // esi
-	_DWORD *v2;    // eax
-	signed int v3; // ecx
-	int v4;        // ecx
+	int i;
 
-	InitTownerInfo(numtowners, 96, 1, TOWN_SMITH, 62, 63, 0, 10);
-	v0 = numtowners;
+	InitTownerInfo(numtowners, 96, 1, 0, 62, 63, 0, 10);
 	InitQstSnds(numtowners);
-	v1 = v0;
-	towner[v1]._tNData = LoadFileInMem("Towners\\Smith\\SmithN.CEL", 0);
-	v2 = (unsigned int *)towner[v1]._tNAnim;
-	v3 = 8;
-	do {
-		*v2 = (unsigned int)towner[v1]._tNData;
-		++v2;
-		--v3;
-	} while (v3);
-	v4 = numtowners;
-	towner[v1]._tNFrames = 16;
-	NewTownerAnim(v4, towner[v1]._tNAnim[1], 16, 3);
-	strcpy(towner[v1]._tName, "Griswold the Blacksmith");
-	++numtowners;
+	towner[numtowners]._tNData = LoadFileInMem("Towners\\Smith\\SmithN.CEL", 0);
+	for (i = 0; i < 8; i++) {
+		towner[numtowners]._tNAnim[i] = towner[numtowners]._tNData;
+	}
+	towner[numtowners]._tNFrames = 16;
+	NewTownerAnim(numtowners, towner[numtowners]._tNAnim[1], towner[numtowners]._tNFrames, 3);
+	strcpy(towner[numtowners]._tName, "Griswold the Blacksmith");
+	numtowners++;
 }
 
 void __cdecl InitBarOwner()
@@ -521,7 +510,6 @@ void __cdecl FreeTownerGFX()
 	pCowCels = NULL;
 	mem_free_dbg(tmp);
 }
-// 6ABB9C: using guessed type int dword_6ABB9C;
 
 void __fastcall TownCtrlMsg(int i)
 {
