@@ -24,13 +24,12 @@ extern int drawpanflag; // weak
 extern int visiondebug; // weak
 extern int scrollflag;  /* unused */
 extern BOOL light4flag;
-extern int leveldebug;      // weak
-extern int monstdebug;      // weak
-extern int trigdebug;       /* unused */
-extern int setseed;         // weak
-extern int debugmonsttypes; // weak
-extern int PauseMode;       // weak
-extern int sgnTimeoutCurs;
+extern int leveldebug;        // weak
+extern int monstdebug;        // weak
+extern int trigdebug;         /* unused */
+extern int setseed;           // weak
+extern int debugmonsttypes;   // weak
+extern int PauseMode;         // weak
 extern char sgbMouseDown;     // weak
 extern int color_cycle_timer; // weak
 

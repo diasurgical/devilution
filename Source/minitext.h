@@ -4,10 +4,9 @@
 
 extern int qtexty; // weak
 extern char *qtextptr;
-extern int qtextSpd;     // weak
-extern char qtextflag;   // weak
-extern int scrolltexty;  // weak
-extern int sgLastScroll; // weak
+extern int qtextSpd;    // weak
+extern char qtextflag;  // weak
+extern int scrolltexty; // weak
 extern void *pMedTextCels;
 extern void *pTextBoxCels;
 

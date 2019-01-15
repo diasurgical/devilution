@@ -2,8 +2,6 @@
 #ifndef __CONTROL_H__
 #define __CONTROL_H__
 
-extern char sgbNextTalkSave; // weak
-extern char sgbTalkSavePos;  // weak
 extern void *pDurIcons;
 extern void *pChrButtons;
 extern BOOL drawhpflag;  // idb
@@ -13,12 +11,10 @@ extern int chrbtn[4];
 extern void *pMultiBtns;
 extern void *pPanelButtons;
 extern void *pChrPanel;
-extern int lvlbtndown; // weak
-extern char sgszTalkSave[8][80];
+extern int lvlbtndown;    // weak
 extern int dropGoldValue; // idb
 extern BOOL drawmanaflag; // idb
 extern BOOL chrbtnactive;
-extern char sgszTalkMsg[80];
 extern void *pPanelText;
 extern int frame_4B8800; // idb
 extern char *pLifeBuff;
@@ -30,8 +26,7 @@ extern BOOL pinfoflag;
 extern int talkbtndown[3];
 extern int pSpell; // weak
 extern char *pManaBuff;
-extern int infoclr;       // weak
-extern int sgbPlrTalkTbl; // weak // should be char [4]
+extern int infoclr; // weak
 extern void *pGBoxBuff;
 extern void *pSBkBtnCel;
 extern char tempstr[256];

@@ -4191,11 +4191,11 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 		plr[pnum]._pMana -= v72;
 		plr[pnum]._pMaxManaBase -= v72;
 		plr[pnum]._pMaxMana -= v72;
-		if ((signed int)(plr[pnum]._pMana & 0xFFFFFFC0) <= 0) {
+		if (plr[pnum]._pMana >> 6 <= 0) {
 			plr[pnum]._pMana = min;
 			plr[pnum]._pManaBase = 0;
 		}
-		if ((signed int)(plr[pnum]._pMaxMana & 0xFFFFFFC0) <= 0) {
+		if (plr[pnum]._pMaxMana >> 6 <= 0) {
 			plr[pnum]._pMaxMana = max;
 			plr[pnum]._pMaxManaBase = 0;
 		}
@@ -4316,11 +4316,11 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 		plr[pnum]._pMana -= v72;
 		plr[pnum]._pMaxManaBase -= v72;
 		plr[pnum]._pMaxMana -= v72;
-		if ((signed int)(plr[pnum]._pMana & 0xFFFFFFC0) <= 0) {
+		if (plr[pnum]._pMana >> 6 <= 0) {
 			plr[pnum]._pMana = min;
 			plr[pnum]._pManaBase = 0;
 		}
-		if ((signed int)(plr[pnum]._pMaxMana & 0xFFFFFFC0) <= 0) {
+		if (plr[pnum]._pMaxMana >> 6 <= 0) {
 			plr[pnum]._pMaxMana = max;
 			plr[pnum]._pMaxManaBase = 0;
 		}
@@ -4408,11 +4408,11 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 		plr[pnum]._pMana -= v72;
 		plr[pnum]._pMaxManaBase -= v72;
 		plr[pnum]._pMaxMana -= v72;
-		if ((signed int)(plr[pnum]._pMana & 0xFFFFFFC0) <= 0) {
+		if (plr[pnum]._pMana >> 6 <= 0) {
 			plr[pnum]._pMana = min;
 			plr[pnum]._pManaBase = 0;
 		}
-		if ((signed int)(plr[pnum]._pMaxMana & 0xFFFFFFC0) <= 0) {
+		if (plr[pnum]._pMaxMana >> 6 <= 0) {
 			plr[pnum]._pMaxMana = max;
 			plr[pnum]._pMaxManaBase = 0;
 		}

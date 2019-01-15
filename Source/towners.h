@@ -2,10 +2,8 @@
 #ifndef __TOWNERS_H__
 #define __TOWNERS_H__
 
-extern int storeflag; // weak
-extern int sgnCowMsg;
-extern int numtowners; // idb
-extern DWORD sgdwCowClicks;
+extern int storeflag;   // weak
+extern int numtowners;  // idb
 extern int bannerflag;  // weak // unused 0x6AAC28
 extern int boyloadflag; // weak
 extern void *pCowCels;  // idb

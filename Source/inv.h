@@ -3,9 +3,7 @@
 #define __INV_H__
 
 extern BOOL invflag;
-extern void *pInvCels;
 extern int drawsbarflag; // idb
-extern int sgdwLastTime; // check name
 
 void __cdecl FreeInvGFX();
 void __cdecl InitInv();
@@ -47,10 +45,6 @@ int __fastcall UseInvItem(int pnum, int cii);
 void __cdecl DoTelekinesis();
 int __fastcall CalculateGold(int pnum);
 int __cdecl DropItemBeforeTrig();
-
-/* rdata */
-
-extern const InvXY InvRect[73];
 
 /* data */
 

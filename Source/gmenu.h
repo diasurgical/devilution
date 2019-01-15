@@ -5,14 +5,12 @@
 extern void *optbar_cel;
 extern BOOLEAN byte_634464; // weak
 extern void *PentSpin_cel;
-extern TMenuItem *sgpCurrItem;
 extern void *BigTGold_cel;
 extern int dword_634474; // weak
 extern char byte_634478; // weak
 extern void(__cdecl *dword_63447C)();
 extern TMenuItem *dword_634480; // idb
 extern void *option_cel;
-extern void *sgpLogo;
 extern int dword_63448C; // weak
 
 void __cdecl gmenu_draw_pause();
