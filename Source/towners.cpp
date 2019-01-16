@@ -120,20 +120,13 @@ int __fastcall GetActiveTowner(int t)
 	return -1;
 }
 
-void __fastcall SetTownerGPtrs(void *pData, void **pAnim)
+void __fastcall SetTownerGPtrs(BYTE *pData, BYTE **pAnim)
 {
-	void **v2;     // esi
-	signed int v3; // edx
-	char *v4;      // eax
-	signed int v5; // [esp+Ch] [ebp-4h]
+	int i;
 
-	v5 = 0;
-	v2 = pAnim;
-	do {
-		v3 = v5;
-		v4 = (char *)pData + *((_DWORD *)pData + v5++);
-		v2[v3] = v4;
-	} while (v5 < 8);
+	for (i = 0; i < 8; i++) {
+		pAnim[i] = pData + *((_DWORD *)pData + i);
+	}
 }
 
 void __fastcall NewTownerAnim(int tnum, unsigned char *pAnim, int numFrames, int Delay)
@@ -356,7 +349,7 @@ void __cdecl InitCows()
 		InitTownerInfo(numtowners, 128, 0, TOWN_COW, TownCowX[i], TownCowY[i], -1, 10);
 		tnum = numtowners;
 		towner[tnum]._tNData = pCowCels;
-		SetTownerGPtrs(towner[tnum]._tNData, (void **)towner[tnum]._tNAnim);
+		SetTownerGPtrs(towner[tnum]._tNData, (BYTE **)towner[tnum]._tNAnim);
 		towner[tnum]._tNFrames = 12;
 		NewTownerAnim(numtowners, towner[tnum]._tNAnim[dir], towner[tnum]._tNFrames, 3);
 		towner[tnum]._tAnimFrame = random(0, 11) + 1;
