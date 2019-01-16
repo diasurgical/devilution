@@ -394,77 +394,45 @@ void __cdecl DrawInv()
 
 void __cdecl DrawInvBelt()
 {
-	int v0;            // ebx
-	signed int v1;     // esi
-	int v2;            // ecx
-	int v3;            // eax
-	int v4;            // edi
-	char v5;           // cl
-	int v6;            // edx
-	BOOLEAN v7;        // zf
-	int v8;            // ecx
-	int v9;            // eax
-	unsigned char v10; // edx
-	signed int v11;    // [esp+4h] [ebp-Ch]
-	int frame_width;   // [esp+8h] [ebp-8h]
-	int v13;           // [esp+Ch] [ebp-4h]
+	int i, frame, frame_width, colour;
+	BYTE fi, ff;
 
-	v0 = 0;
-	if (!talkflag) {
-		DrawPanelBox(205, 21, 0xE8u, 0x1Cu, 269, 517);
-		v11 = 0;
-		v13 = 0;
-		do {
-			if (*(int *)((char *)&plr[myplr].SpdList[0]._itype + v0) != -1) {
-				v1 = v11;
-				InvDrawSlotBack(InvRect[v11 + 65].X + 64, InvRect[v11 + 65].Y + 159, 28, 28);
-				v2 = myplr;
-				v3 = v0 + 21720 * myplr;
-				v4 = *(int *)((char *)&plr[0].SpdList[0]._iCurs + v3) + CURSOR_FIRSTITEM;
-				frame_width = InvItemWidth[v4];
-				if (pcursinvitem == v11 + 47) {
-					v5 = -59;
-					if (*(&plr[0].SpdList[0]._iMagical + v3))
-						v5 = -75;
-					if (!*(int *)((char *)&plr[0].SpdList[0]._iStatFlag + v3))
-						v5 = -27;
-					CelDecodeClr(
-					    v5,
-					    InvRect[v1 + 65].X + 64,
-					    InvRect[v1 + 65].Y + 159,
-					    (char *)pCursCels,
-					    v4,
-					    frame_width,
-					    0,
-					    8);
-					v2 = myplr;
-				}
-				v0 = v13;
-				v6 = InvRect[v1 + 65].Y + 159;
-				v7 = *(int *)((char *)&plr[v2].SpdList[0]._iStatFlag + v13) == 0;
-				v8 = InvRect[v1 + 65].X;
-				if (v7)
-					CelDrawHdrLightRed(v8 + 64, v6, (char *)pCursCels, v4, frame_width, 0, 8, 1);
-				else
-					CelDrawHdrOnly(v8 + 64, v6, (char *)pCursCels, v4, frame_width, 0, 8);
-				v9 = v13 + 21720 * myplr;
-				if (AllItemsList[*(int *)((char *)&plr[0].SpdList[0].IDidx + v9)].iUsable
-				    && *(int *)((char *)&plr[0].SpdList[0]._iStatFlag + v9)
-				    && *(int *)((char *)&plr[0].SpdList[0]._itype + v9) != 11) {
-					v10 = fontframe[fontidx[(unsigned char)(v11 + 49)]];
-					CPrintString(
-					    screen_y_times_768[InvRect[v1 + 65].Y + 159]
-					        - fontkern[v10]
-					        + InvRect[v1 + 65].X
-					        + 92,
-					    v10,
-					    0);
-				}
-			}
-			++v11;
-			v0 += 368;
-			v13 = v0;
-		} while (v11 < MAXBELTITEMS);
+	if (talkflag) {
+		return;
+	}
+
+	DrawPanelBox(205, 21, 232, 28, 269, 517);
+
+	for (i = 0; i < MAXBELTITEMS; i++) {
+		if (plr[myplr].SpdList[i]._itype == ITYPE_NONE) {
+			continue;
+		}
+
+		InvDrawSlotBack(InvRect[i + 65].X + 64, InvRect[i + 65].Y + 159, 28, 28);
+		frame = plr[myplr].SpdList[i]._iCurs + CURSOR_FIRSTITEM;
+		frame_width = InvItemWidth[frame];
+
+		if (pcursinvitem == i + 47) {
+			colour = ICOL_WHITE;
+			if (plr[myplr].SpdList[i]._iMagical)
+				colour = ICOL_BLUE;
+			if (!plr[myplr].SpdList[i]._iStatFlag)
+				colour = ICOL_RED;
+			CelDecodeClr(colour, InvRect[i + 65].X + 64, InvRect[i + 65].Y + 159, (char *)pCursCels, frame, frame_width, 0, 8);
+		}
+
+		if (plr[myplr].SpdList[i]._iStatFlag)
+			CelDrawHdrOnly(InvRect[i + 65].X + 64, InvRect[i + 65].Y + 159, (char *)pCursCels, frame, frame_width, 0, 8);
+		else
+			CelDrawHdrLightRed(InvRect[i + 65].X + 64, InvRect[i + 65].Y + 159, (char *)pCursCels, frame, frame_width, 0, 8, 1);
+
+		if (AllItemsList[plr[myplr].SpdList[i].IDidx].iUsable
+		    && plr[myplr].SpdList[i]._iStatFlag
+		    && plr[myplr].SpdList[i]._itype != ITYPE_GOLD) {
+			fi = i + 49;
+			ff = fontframe[fontidx[fi]];
+			CPrintString(InvRect[i + 65].X + 64 + screen_y_times_768[InvRect[i + 65].Y + 159] - fontkern[ff] + 28, ff, 0);
+		}
 	}
 }
 // 4B8960: using guessed type int talkflag;
