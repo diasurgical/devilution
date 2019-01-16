@@ -12,7 +12,7 @@ extern TownerStruct towner[16];
 int __fastcall GetActiveTowner(int t);
 void __fastcall SetTownerGPtrs(void *pData, void **pAnim); /* unsigned char *+** */
 void __fastcall NewTownerAnim(int tnum, unsigned char *pAnim, int numFrames, int Delay);
-void __fastcall InitTownerInfo(int i, int w, BOOL sel, int t, int x, int y, int ao, int tp);
+void __fastcall InitTownerInfo(int i, int w, int sel, int t, int x, int y, int ao, int tp);
 void __fastcall InitQstSnds(int i);
 void __cdecl InitSmith();
 void __cdecl InitBarOwner();
