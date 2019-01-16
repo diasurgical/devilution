@@ -6,7 +6,7 @@ extern int storeflag;   // weak
 extern int numtowners;  // idb
 extern int bannerflag;  // weak // unused 0x6AAC28
 extern int boyloadflag; // weak
-extern void *pCowCels;  // idb
+extern BYTE *pCowCels;  // idb
 extern TownerStruct towner[16];
 
 int __fastcall GetActiveTowner(int t);
