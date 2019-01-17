@@ -592,22 +592,16 @@ void __cdecl ProcessTowners()
 	} while ((signed int)v0 < (signed int)&towner[16]._tAnimCnt);
 }
 
-ItemStruct *__fastcall PlrHasItem(int pnum, int item, int *i)
+ItemStruct *__fastcall PlrHasItem(int pnum, int item, int *inv_item_num)
 {
-	unsigned int v3; // eax
-	int v4;          // ecx
+	int i;
 
-	v3 = 21720 * pnum;
-	*i = 0;
-	if (plr[pnum]._pNumInv <= 0)
-		return 0;
-	while (*(int *)((char *)&plr[0].InvList[*i].IDidx + v3) != item) {
-		v4 = *i + 1;
-		*i = v4;
-		if (v4 >= plr[v3 / 0x54D8]._pNumInv)
-			return 0;
+	for (i = 0, *inv_item_num = i; i < plr[pnum]._pNumInv; i = *inv_item_num + 1, *inv_item_num = i) {
+		if (plr[pnum].InvList[*inv_item_num].IDidx == item)
+			return &plr[pnum].InvList[*inv_item_num];
 	}
-	return (ItemStruct *)((char *)&plr[0].InvList[*i] + v3);
+
+	return NULL;
 }
 
 void __fastcall TownerTalk(int t)
