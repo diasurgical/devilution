@@ -532,14 +532,10 @@ void __cdecl TownCow()
 
 void __cdecl ProcessTowners()
 {
-	int *v0;    // esi
-	char v1;    // al
-	int v2;     // ecx
-	_DWORD *v3; // eax
+	int i, ao;
 
-	v0 = &towner[0]._tAnimCnt;
-	do {
-		switch (*(v0 - 10)) {
+	for (i = 0; i < 16; i++) {
+		switch (towner[i]._ttype) {
 		case TOWN_SMITH:
 			TownBlackSmith();
 			break;
@@ -570,26 +566,26 @@ void __cdecl ProcessTowners()
 		case TOWN_COW:
 			TownCow();
 			break;
-		default:
-			break;
 		}
-		if (++*v0 >= *(v0 - 1)) {
-			v1 = *((_BYTE *)v0 + 16);
-			*v0 = 0;
-			if (v1 < 0) {
-				if (++v0[2] > v0[1])
-					v0[2] = 1;
+
+		towner[i]._tAnimCnt++;
+		if (towner[i]._tAnimCnt >= towner[i]._tAnimDelay) {
+			towner[i]._tAnimCnt = 0;
+
+			if (towner[i]._tAnimOrder >= 0) {
+				ao = towner[i]._tAnimOrder;
+				towner[i]._tAnimFrameCnt++;
+				if (AnimOrder[ao][towner[i]._tAnimFrameCnt] == -1)
+					towner[i]._tAnimFrameCnt = 0;
+
+				towner[i]._tAnimFrame = AnimOrder[ao][towner[i]._tAnimFrameCnt];
 			} else {
-				v2 = 148 * v1;
-				v3 = (unsigned int *)v0 + 3;
-				++*v3;
-				if (AnimOrder[0][v0[3] + v2] == -1)
-					*v3 = 0;
-				v0[2] = (char)AnimOrder[0][*v3 + v2];
+				towner[i]._tAnimFrame++;
+				if (towner[i]._tAnimFrame > towner[i]._tAnimLen)
+					towner[i]._tAnimFrame = 1;
 			}
 		}
-		v0 += 58;
-	} while ((signed int)v0 < (signed int)&towner[16]._tAnimCnt);
+	}
 }
 
 ItemStruct *__fastcall PlrHasItem(int pnum, int item, int *i)
