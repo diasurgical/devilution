@@ -10,30 +10,21 @@ endif()
 
 include(CMake/out_of_tree.cmake)
 
-# This *must* be included before calling `project()`, due to setting early compiler flags.
-include(CMake/32bit.cmake)
-
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
-project(devil-miniwin
+project(devilutionX
     VERSION 0.0.1
     LANGUAGES C CXX
 )
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${devilutionX_SOURCE_DIR}/CMake")
 
-if(NOT CMAKE_SIZEOF_VOID_P EQUAL 4)
-    message(WARNING "sizeof(void*) == ${CMAKE_SIZEOF_VOID_P}.")
-    message(FATAL_ERROR [[This project can only be compiled in 32-bit mode.]])
-endif()
+find_package(SDL2 REQUIRED)
+find_package(SDL2_mixer REQUIRED)
 
 # Note: In Debug mode, GCC generates spurious memory references that upset Valgrind,
 # these options fix that.
 string(APPEND CMAKE_CXX_FLAGS_DEBUG " -fno-omit-frame-pointer")
-if(NOT CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    # Clang/LLVM optimizations break everything
-#    string(APPEND CMAKE_CXX_FLAGS_DEBUG " -Og")
-#    string(APPEND CMAKE_CXX_FLAGS_DEBUG " -fvar-tracking-assignments -ggdb -gdwarf-4")
-endif()
 
 set(SOURCES
     Source/automap.cpp
@@ -151,11 +142,9 @@ set(STUB_SOURCES
 )
 
 include(CMake/SDL2_fixed.cmake)
-include(CMake/sanitize.cmake)
-include(CMake/absolute.cmake)
-include(CMake/CodeCoverage.cmake)
 
-include_directories(${SDL2_INCLUDE_DIRS})
+include_directories(${SDL2_INCLUDE_DIR}
+                    ${SDL2_MIXER_INCLUDE_DIR})
 
 include_directories(. Stub)
 
@@ -181,7 +170,6 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     add_compile_options(-fms-extensions)
 endif()
 
-# Vanilla build
 add_executable(devilution
     ${SOURCES}
     ${STUB_SOURCES}
@@ -191,80 +179,11 @@ add_executable(devilution
 target_link_libraries(devilution PUBLIC
     m
     ${SDL2_LIBRARIES}
+    ${SDL2_MIXER_LIBRARIES}
 )
-
-# Coverage tracing library (compiled separately so it itself is not traced & can be optimized)
-add_library(sanitize_coverage STATIC Stub/sanitize_coverage.cpp)
-target_compile_options(sanitize_coverage PRIVATE -O2 -fno-pie -fno-pic)
-
-cmake_push_check_state()
-set(SANITIZE_COVERAGE_FLAGS -fsanitize-coverage=trace-pc)
-set(CMAKE_REQUIRED_FLAGS ${SANITIZE_COVERAGE_FLAGS})
-check_cxx_source_compiles([[extern "C" void __sanitizer_cov_trace_pc(void) {} int main() { return 0; }]] HAS_SANITIZE_COVERAGE)
-cmake_pop_check_state()
-
 
 # xxhash fast hashing library
 add_library(xxhash STATIC 3rdParty/xxhash/xxhash.c)
 set_source_files_properties(3rdParty/xxhash/xxhash.c PROPERTIES LANGUAGE CXX)
 target_include_directories(xxhash PUBLIC 3rdParty/xxhash)
 target_compile_options(xxhash PRIVATE -O3 -fno-pie -fno-pic)
-
-# Build with harness enabled (conflicts with sanitizers)
-if(TARGET harness)
-    add_executable(devil-harness
-        ${SOURCES}
-        ${STUB_SOURCES}
-        # Stub/main_harness.cpp
-        Stub/main_test.cpp
-        Absolute/absolute.cpp
-        Absolute/hook.cpp
-        Stub/test_utils.cpp
-    )
-
-    if(HAS_SANITIZE_COVERAGE)
-        target_compile_options(devil-harness PRIVATE ${SANITIZE_COVERAGE_FLAGS})
-        target_compile_definitions(devil-harness PRIVATE -DHAVE_SANITIZE_COVERGE)
-    endif()
-
-    target_compile_definitions(devil-harness PUBLIC -DHAVE_HARNESS)
-
-    target_link_libraries(devil-harness PUBLIC
-        m
-        harness
-        xxhash
-        sanitize_coverage
-        ${SDL2_LIBRARIES}
-    )
-endif()
-
-# Build with sanitizers enabled
-add_executable(devil-sanitize
-    ${SOURCES}
-    ${STUB_SOURCES}
-    Stub/main_test.cpp
-    Stub/test_utils.cpp
-    Stub/sanitize.cpp
-)
-
-target_compile_options(devil-sanitize PRIVATE
-    ${SANITIZE_OPTIONS}
-    ${COVERAGE_COMPILER_FLAGS}
-)
-
-target_link_libraries(devil-sanitize PUBLIC
-    m
-    xxhash
-    sanitize_coverage
-    ${SDL2_LIBRARIES}
-    ${SANITIZE_OPTIONS}
-    ${COVERAGE_COMPILER_FLAGS}
-)
-
-if(COVERAGE_COMPILER_FLAGS)
-    SETUP_TARGET_FOR_COVERAGE_GCOVR_HTML(
-        NAME devil-sanitize-coverage
-        EXECUTABLE devil-sanitize
-        DEPENDENCIES devil-sanitize
-    )
-endif()
