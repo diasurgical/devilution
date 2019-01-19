@@ -1008,6 +1008,11 @@ struct TMegaPkt
 	unsigned char data[32000];
 };
 
+typedef struct TBuffer {
+	DWORD dwNextWriteOffset;
+	BYTE bData[4096];
+} TBuffer;
+
 //////////////////////////////////////////////////
 // quests
 //////////////////////////////////////////////////

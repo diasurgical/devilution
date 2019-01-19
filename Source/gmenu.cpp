@@ -360,7 +360,7 @@ void __cdecl gmenu_init_menu()
 	gdwCursorWidth = dwData[0];
 	gdwCursorHeight = dwData[1];
 
-	LoadArtImage("ui_art\\logo.pcx", &pPcxLogoImage, 15, dwData);
+	LoadArtImage("ui_art\\smlogo.pcx", &pPcxLogoImage, 15, dwData);
 	gdwLogoWidth = dwData[0];
 	gdwLogoHeight = dwData[1];
 
@@ -389,8 +389,6 @@ void __cdecl gmenu_init_menu()
 	LoadArtImage("ui_art\\font42g.pcx", &pPcxFont42gImage, 256, dwData);
 	gdwFont42Width = dwData[0];
 	gdwFont42Height = dwData[1];
-
-
 }
 // 634464: using guessed type char byte_634464;
 // 634478: using guessed type char byte_634478;

@@ -118,6 +118,7 @@ typedef ull             uint64;
 #define _WORD  uint16
 #define _DWORD uint32
 #define _QWORD uint64
+#define BOOLEAN bool
 
 // Some convenience macros to make partial accesses nicer
 #define LAST_IND(x,part_type)    (sizeof(x)/sizeof(part_type) - 1)

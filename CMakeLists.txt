@@ -123,7 +123,8 @@ set(STUB_SOURCES
     Stub/miniwin_io.cpp
     Stub/miniwin_msg_sdl.cpp
     Stub/storm_net.cpp
-    Stub/validate.cpp
+    #Stub/validate.cpp
+    Stub/effects.cpp
     Stub/sdlrender.cpp
     Stub/diablo.cpp
     Stub/gamemenu.cpp
