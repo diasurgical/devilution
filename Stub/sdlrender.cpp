@@ -606,7 +606,7 @@ void SdlDiabloMainWindow()
 	SDL_Init(SDL_INIT_VIDEO);
 
 	window = SDL_CreateWindow("Diablo", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, Window_Width, Window_Height,
-	                          SDL_WINDOW_RESIZABLE);
+	                          0);
 
 	renderer = SDL_CreateRenderer(window, -1, 0);
 	printf("Window And Renderer Created!\n");
@@ -698,15 +698,21 @@ void DrawArtWithMask(int SX, int SY, int SW, int SH, int nFrame, BYTE bMask, voi
 	}
 }
 
+int GetCenter(int w)
+{
+	return SCREEN_WIDTH / 2 - w / 2;
+}
+
 void DrawPCXString(int x, int y, int w, int h, char *str, BYTE *font, void *pBuff)
 {
 	int i;
 	int len = 0;
+	BYTE chr;
 	for (i = 0; i < strlen(str); i++) {
 		DrawArtWithMask(x + len, y, w, h, str[i], 32, pBuff);
-		// DrawPCX(x+len, y, str[i], 32);
-		if (font[str[i] + 2])
-			len += font[str[i] + 2];
+		chr = font[str[i] + 2];
+		if (chr)
+			len += chr;
 		else
 			len += *font;
 	}
@@ -714,21 +720,17 @@ void DrawPCXString(int x, int y, int w, int h, char *str, BYTE *font, void *pBuf
 
 int __fastcall GetPCXFontWidth(char *str, BYTE *font)
 {
-	int len; // eax
-	unsigned __int8 i; // bl
-	BYTE chr; // bl
-	int width; // esi
-
-	len = 0;
-	for (i = *str; *str; i = *str) {
-		chr = font[i + 2];
+	int i;
+	int len = 0;
+	BYTE chr;
+	for (i = 0; i < strlen(str); i++) {
+		chr = font[str[i] + 2];
 		if (chr)
-			width = chr;
+			len += chr;
 		else
-			width = *font;
-		len += width;
-		++str;
+			len += *font;
 	}
+	
 	return len;
 }
 
@@ -752,12 +754,12 @@ void ShowCredts()
 	for (int i = 0; i < linecount; i++) {
 		// Needs to be slower...
 		if (*the_long_credits[creditline + i] == '$'){
-			DrawPCXString(320 - (GetPCXFontWidth(the_long_credits[creditline + i] + 1, pFont2) / 2),
+			DrawPCXString(GetCenter(GetPCXFontWidth(the_long_credits[creditline + i] + 1, pFont2)),
 			              50 + (i * pFont2[1]) - ybase, gdwFont2Width, gdwFont2Height,
 			              the_long_credits[creditline + i] + 1, pFont2, pPcxFont2Image);
         }
 		else{
-			DrawPCXString(320 - (GetPCXFontWidth(the_long_credits[creditline + i], pFont3) / 2),
+			DrawPCXString(GetCenter(GetPCXFontWidth(the_long_credits[creditline + i], pFont3)),
 			              50 + (i * pFont3[1]) - ybase, gdwFont3Width, gdwFont3Height, the_long_credits[creditline + i],
 			              pFont3, pPcxFont2Image);
 	}
@@ -776,7 +778,7 @@ void RenderDiabloLogo()
 		MyPcxFRAME = 1;
 	}
 
-	DrawArtWithMask(320 - (gdwLogoWidth / 2), 1, gdwLogoWidth, gdwLogoHeight, MyPcxFRAME, 250, pPcxLogoImage);
+	DrawArtWithMask(320 - (gdwLogoWidth / 2), 0, gdwLogoWidth, gdwLogoHeight, MyPcxFRAME, 250, pPcxLogoImage);
 }
 
 void DrawCursor(int mx, int my)
@@ -822,11 +824,11 @@ void SDL_RenderDiabloMainPage()
 		Pentframe = 1;
 	}
 
-	int PentPositionX1 = (SCREEN_WIDTH / 2) - (SCREEN_WIDTH * 0.28);
-	int PentPositionY1 = (SCREEN_HEIGHT / 2) + (SCREEN_HEIGHT * 0.2);
-	int PentPositionX2 = (SCREEN_WIDTH / 2) - (SCREEN_WIDTH * 0.75);
-	int PentPositionY2 = (SCREEN_HEIGHT / 2) + (SCREEN_HEIGHT * 0.2);
+	int PentPositionX = GetCenter(42);
+	int PentPositionY = 192;
 
+	DrawArtWithMask(PentPositionX - 234, PentPositionY, 42, 42, Pentframe, 250, MenuPentegram);
+	DrawArtWithMask(PentPositionX + 234, PentPositionY, 42, 42, Pentframe, 250, MenuPentegram);
 	// scrollrt_draw_cursor_back_buffer(); // Doesn't work?
 
     char * MENIITEMS[5]= {"Single Player", "Multi Player", "Replay Intro", "Show Credits", "Exit Diablo"};
@@ -835,44 +837,23 @@ void SDL_RenderDiabloMainPage()
 	RenderDiabloLogo();
 
 	// print_title_str_large();
-    int x = 150;
-    int y = 200;
-    for (int i = 0 ; i < 5 ; i++ ){
+	int x = GetCenter(GetPCXFontWidth(MENIITEMS[0], pFont)) - 1;
+    int y = 192;
+	DrawPCXString(x, y, gdwFontWidth, gdwFontHeight, MENIITEMS[0], pFont, pPcxFontImage);
+	x = GetCenter(GetPCXFontWidth(MENIITEMS[1], pFont)) - 1;
+	y += 43;
+	DrawPCXString(x, y, gdwFontWidth, gdwFontHeight, MENIITEMS[1], pFont, pPcxFontImage);
+	x = GetCenter(GetPCXFontWidth(MENIITEMS[2], pFont)) - 1;
+	y += 42;
+	DrawPCXString(x, y, gdwFontWidth, gdwFontHeight, MENIITEMS[2], pFont, pPcxFontImage);
+	x = GetCenter(GetPCXFontWidth(MENIITEMS[3], pFont)) - 1;
+	y += 43;
+	DrawPCXString(x, y, gdwFontWidth, gdwFontHeight, MENIITEMS[3], pFont, pPcxFontImage);
+	x = GetCenter(GetPCXFontWidth(MENIITEMS[4], pFont)) - 1;
+	y += 43;
+	DrawPCXString(x, y, gdwFontWidth, gdwFontHeight, MENIITEMS[4], pFont, pPcxFontImage);
 
-        DrawPCXString( x, y, gdwFontWidth, gdwFontHeight, MENIITEMS[i], pFont, pPcxFontImage);
-
-        y+= 50;
-
-
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-	// gmenu_print_text((SCREEN_WIDTH / 2) - (SCREEN_WIDTH * 0.2), (SCREEN_HEIGHT / 2) + (SCREEN_HEIGHT * 0.2),  "Single Player");
-    // DrawPCXString( 150, 165, gdwFontWidth, gdwFontHeight, "Single Player", pFont, pPcxFontImage);
-
-	// gmenu_print_text((SCREEN_WIDTH / 2) - (SCREEN_WIDTH * 0.2), (SCREEN_HEIGHT / 2) + (SCREEN_HEIGHT * 0.3), "Multi Player");
-
-    // DrawPCXString( 150, 215, gdwFontWidth, gdwFontHeight, "Multi Player", pFont, pPcxFontImage);
-
-
-
-	// // gmenu_print_text((SCREEN_WIDTH / 2) - (SCREEN_WIDTH * 0.2), (SCREEN_HEIGHT / 2) + (SCREEN_HEIGHT * 0.3),  "Show
-	// // Replay");
-	// gmenu_print_text((SCREEN_WIDTH / 2) - (SCREEN_WIDTH * 0.2), (SCREEN_HEIGHT / 2) + (SCREEN_HEIGHT * 0.4), "Play Credits");
-	// gmenu_print_text((SCREEN_WIDTH / 2) - (SCREEN_WIDTH * 0.2), (SCREEN_HEIGHT / 2) + (SCREEN_HEIGHT * 0.5),"Exit  Diablo");
-
-	DrawArtWithMask(PentPositionX1-90, PentPositionY1-220, 42, 42, Pentframe, 250, MenuPentegram);
-	DrawArtWithMask(PentPositionX2-90, PentPositionY2-220, 42, 42, Pentframe, 250, MenuPentegram);
+	DrawPCXString(17, 444, gdwFont3Width, gdwFont3Height, gszProductName, pFont2, pPcxFont3Image);
 
 	ADD_PlrStringXY(0, 600 - 150, 640, "DedicaTed To David Brevik, Erich Schaefer, Max Schaefer,", COL_BLUE);// Red isn't red
 	ADD_PlrStringXY(0, 600 - 130, 640, " MaTT Uelman, and The Blizzard North Team ThaT Gave Us A Childhood.", COL_BLUE);

@@ -14,8 +14,8 @@ WNDPROC CurrentProc;
 int gbActive;
 #endif
 
-char gszVersionNumber[260];
-char gszProductName[260];
+char gszVersionNumber[260] = "internal version unknown";
+char gszProductName[260] = "Diablo v1.09";
 char HeroUndecidedName[17] = {0};
 bool StartNewGame;
 bool CreateSinglePlayerChar;
@@ -63,8 +63,6 @@ void __fastcall init_create_window(int nCmdShow)
 {
 	DUMMY();
 
-	init_get_file_info();
-
 	// pfile_init_save_directory();
 
 	dx_init(NULL);
@@ -98,12 +96,6 @@ void __cdecl init_archives()
 	assert(diabdat_mpq);
 
 	SFileOpenArchive("patch_rt.mpq", 1000, 0, &patch_rt_mpq);
-}
-
-void __cdecl init_get_file_info()
-{
-	strcpy(gszVersionNumber, "0.1");
-	strcpy(gszProductName, "Diablo");
 }
 
 void GetAvailableHeroes() {}
