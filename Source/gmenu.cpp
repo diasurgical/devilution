@@ -11,7 +11,7 @@ int dword_634474; // weak
 char byte_634478; // weak
 void(__cdecl *dword_63447C)();
 TMenuItem *dword_634480; // idb
-int dword_63448C; // weak
+int dword_63448C;        // weak
 
 void *pPentSmall;
 void *BigTGold_cel;
@@ -38,7 +38,6 @@ void *pPcxHeroImage;
 int gdwSHeroHeight;
 int gdwSHeroWidth;
 
-
 int gdwFontWidth;
 int gdwFontHeight;
 void *pPcxFontImage;
@@ -53,14 +52,12 @@ int gdwFont3Width;
 int gdwFont3Height;
 void *pPcxFont3Image;
 
-
 void *GameTitle;
 int GameTitleHeight;
 int GameTitleWidth;
 
-void * TitleMenuText;
-void * MenuPentegram;
-
+void *TitleMenuText;
+void *MenuPentegram;
 
 void *optbar_cel;
 void *PentSpin_cel;
@@ -69,46 +66,42 @@ void *sgpLogo;
 void *pTitlgrayCel_sgpBackCel;
 void *pDiabfrCel;
 
-
-
 #endif
 
-const unsigned char lfontframe[127] =
-	{
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 37, 49, 38, 0, 39, 40, 47,
-		42, 43, 41, 45, 52, 44, 53, 55, 36, 27,
-		28, 29, 30, 31, 32, 33, 34, 35, 51, 50,
-		0, 46, 0, 54, 0, 1, 2, 3, 4, 5,
-		6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
-		16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
-		26, 42, 0, 43, 0, 0, 0, 1, 2, 3,
-		4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
-		14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
-		24, 25, 26, 20, 0, 21, 0};
-const unsigned char lfontkern[56] =
-	{
-		18, 33, 21, 26, 28, 19, 19, 26, 25, 11,
-		12, 25, 19, 34, 28, 32, 20, 32, 28, 20,
-		28, 36, 35, 46, 33, 33, 24, 11, 23, 22,
-		22, 21, 22, 21, 21, 21, 32, 10, 20, 36,
-		31, 17, 13, 12, 13, 18, 16, 11, 20, 21,
-		11, 10, 12, 11, 21, 23};
+const unsigned char lfontframe[127] = {
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	0, 0, 0, 37, 49, 38, 0, 39, 40, 47,
+	42, 43, 41, 45, 52, 44, 53, 55, 36, 27,
+	28, 29, 30, 31, 32, 33, 34, 35, 51, 50,
+	0, 46, 0, 54, 0, 1, 2, 3, 4, 5,
+	6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+	16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
+	26, 42, 0, 43, 0, 0, 0, 1, 2, 3,
+	4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
+	14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
+	24, 25, 26, 20, 0, 21, 0
+};
+const unsigned char lfontkern[56] = {
+	18, 33, 21, 26, 28, 19, 19, 26, 25, 11,
+	12, 25, 19, 34, 28, 32, 20, 32, 28, 20,
+	28, 36, 35, 46, 33, 33, 24, 11, 23, 22,
+	22, 21, 22, 21, 21, 21, 32, 10, 20, 36,
+	31, 17, 13, 12, 13, 18, 16, 11, 20, 21,
+	11, 10, 12, 11, 21, 23
+};
 
 void __cdecl gmenu_draw_pause()
 {
 	if (currlevel)
 		RedBack();
-	if (!dword_634480)
-	{
+	if (!dword_634480) {
 		light_table_index = 0;
 		gmenu_print_text(316, 336, "Pause");
 	}
 }
 // 69BEF8: using guessed type int light_table_index;
-
 
 PALETTEENTRY pcxPal[256];
 
@@ -116,8 +109,7 @@ void __fastcall LoadPalInMem(PALETTEENTRY *pPal)
 {
 	int i; // eax
 
-	for (i = 0; i < 256; i++)
-	{
+	for (i = 0; i < 256; i++) {
 		orig_palette[i].peFlags = 0;
 		orig_palette[i].peRed = pPal[i].peRed;
 		orig_palette[i].peGreen = pPal[i].peGreen;
@@ -137,8 +129,7 @@ BOOL __cdecl LoadArtImage(char *pszFile, void **pBuffer, int frames, DWORD *data
 	*pBuffer = SMemAlloc(height * width, "U:\\DiabloUI\\Ui\\local.cpp", 88);
 	if (!SBmpLoadImage(pszFile, NULL, *pBuffer, height * width, 0, 0, 0))
 		return 0;
-	if (pBuffer && data)
-	{
+	if (pBuffer && data) {
 		data[0] = width;
 		data[1] = height / frames;
 	}
@@ -162,8 +153,7 @@ BOOL __cdecl LoadArtWithPal(char *pszFile, void **pBuffer, int frames, DWORD *da
 
 	//lpDDPalette->SetEntries(0, 0, 256, orig_palette);
 
-	if (pBuffer && data)
-	{
+	if (pBuffer && data) {
 		data[0] = width;
 		data[1] = height / frames;
 	}
@@ -172,27 +162,27 @@ BOOL __cdecl LoadArtWithPal(char *pszFile, void **pBuffer, int frames, DWORD *da
 
 BOOL __stdcall SBmpLoadImage(const char *pszFileName, PALETTEENTRY *pPalette, void *pBuffer, DWORD dwBuffersize, DWORD *pdwWidth, DWORD *dwHeight, DWORD *pdwBpp)
 {
-	char *v7;					   // ebx
-	unsigned char *v8;			   // edi
-	PALETTEENTRY *v9;			   // esi
-	int v10;					   // esi
-	signed int v11;				   // ebx
-	int v12;					   // ebp
-	size_t v13;					   // ebp
-	unsigned char *v14;			   // eax
-	unsigned char *v15;			   // edx
-	int v16;					   // ebp
-	unsigned char v17;			   // cl
-	unsigned char v18;			   // al
-	int v19;					   // ecx
-	bool v20;					   // zf
-	bool v21;					   // sf
-	unsigned char(*v22)[3];		   // eax
-	BYTE v23;					   // cl
-	unsigned char *Memory;		   // [esp+14h] [ebp-38Ch]
-	HANDLE hFile;				   // [esp+18h] [ebp-388h] MAPDST
-	DWORD v28;					   // [esp+1Ch] [ebp-384h]
-	PCXHeader pcxhdr;			   // [esp+20h] [ebp-380h]
+	char *v7;                      // ebx
+	unsigned char *v8;             // edi
+	PALETTEENTRY *v9;              // esi
+	int v10;                       // esi
+	signed int v11;                // ebx
+	int v12;                       // ebp
+	size_t v13;                    // ebp
+	unsigned char *v14;            // eax
+	unsigned char *v15;            // edx
+	int v16;                       // ebp
+	unsigned char v17;             // cl
+	unsigned char v18;             // al
+	int v19;                       // ecx
+	bool v20;                      // zf
+	bool v21;                      // sf
+	unsigned char(*v22)[3];        // eax
+	BYTE v23;                      // cl
+	unsigned char *Memory;         // [esp+14h] [ebp-38Ch]
+	HANDLE hFile;                  // [esp+18h] [ebp-388h] MAPDST
+	DWORD v28;                     // [esp+1Ch] [ebp-384h]
+	PCXHeader pcxhdr;              // [esp+20h] [ebp-380h]
 	unsigned char paldata[256][3]; // [esp+A0h] [ebp-300h]
 	int z;
 
@@ -203,20 +193,14 @@ BOOL __stdcall SBmpLoadImage(const char *pszFileName, PALETTEENTRY *pPalette, vo
 	if (pdwBpp)
 		*pdwBpp = 0;
 	v7 = (char *)pszFileName;
-	if (pszFileName)
-	{
-		if (*pszFileName)
-		{
+	if (pszFileName) {
+		if (*pszFileName) {
 			v8 = (unsigned char *)pBuffer;
-			if (!pBuffer || dwBuffersize)
-			{
+			if (!pBuffer || dwBuffersize) {
 				v9 = pPalette;
-				if (pPalette || pBuffer || pdwWidth || dwHeight)
-				{
-					if (SFileOpenFile(pszFileName, &hFile))
-					{
-						if (strchr(pszFileName, 92))
-						{
+				if (pPalette || pBuffer || pdwWidth || dwHeight) {
+					if (SFileOpenFile(pszFileName, &hFile)) {
+						if (strchr(pszFileName, 92)) {
 							do
 								v7 = strchr(v7, 92) + 1;
 							while (strchr(v7, 92));
@@ -229,8 +213,7 @@ BOOL __stdcall SBmpLoadImage(const char *pszFileName, PALETTEENTRY *pPalette, vo
 							//v10 = sub_15001C70(hFile, pPalette, pBuffer, dwBuffersize, pdwWidth, dwHeight, pdwBpp);
 							//goto LABEL_51;
 						}
-						if (!SFileReadFile(hFile, &pcxhdr, 128u, 0, 0))
-						{
+						if (!SFileReadFile(hFile, &pcxhdr, 128u, 0, 0)) {
 							v10 = 0;
 						LABEL_51:
 							SFileCloseFile(hFile);
@@ -245,8 +228,7 @@ BOOL __stdcall SBmpLoadImage(const char *pszFileName, PALETTEENTRY *pPalette, vo
 							*dwHeight = v11;
 						if (pdwBpp)
 							*pdwBpp = v28;
-						if (!pBuffer)
-						{
+						if (!pBuffer) {
 							SFileSetFilePointer(hFile, 0, 0, 2);
 							goto LABEL_45;
 						}
@@ -254,16 +236,13 @@ BOOL __stdcall SBmpLoadImage(const char *pszFileName, PALETTEENTRY *pPalette, vo
 						v13 = v12 - SFileSetFilePointer(hFile, 0, 0, 1);
 						v14 = (unsigned char *)SMemAlloc(v13, "SBMP.CPP", 171);
 						Memory = v14;
-						if (!v14)
-						{
+						if (!v14) {
 						LABEL_45:
-							if (pPalette && v28 == 8)
-							{
+							if (pPalette && v28 == 8) {
 								SFileSetFilePointer(hFile, -768, 0, 1);
 								SFileReadFile(hFile, paldata, 768u, 0, 0);
 								v22 = paldata;
-								for (z = 0; z < 256; z++)
-								{
+								for (z = 0; z < 256; z++) {
 									v23 = *(_BYTE *)v22;
 									++v9;
 									++v22;
@@ -282,21 +261,16 @@ BOOL __stdcall SBmpLoadImage(const char *pszFileName, PALETTEENTRY *pPalette, vo
 							goto LABEL_43;
 					LABEL_33:
 						v16 = *(_DWORD *)&paldata[0][0];
-						while (1)
-						{
+						while (1) {
 							v17 = *v15++;
-							if (v17 < 0xC0u)
-							{
+							if (v17 < 0xC0u) {
 								*v8++ = v17;
 								--v16;
-							}
-							else
-							{
+							} else {
 								v18 = *v15;
 								v19 = v17 & 0x3F;
 								++v15;
-								for (; v19; --v16)
-								{
+								for (; v19; --v16) {
 									v20 = v16 == 0;
 									v21 = v16 < 0;
 									if (!v16)
@@ -308,10 +282,8 @@ BOOL __stdcall SBmpLoadImage(const char *pszFileName, PALETTEENTRY *pPalette, vo
 							v20 = v16 == 0;
 							v21 = v16 < 0;
 						LABEL_41:
-							if (v21 || v20)
-							{
-								if (!--v11)
-								{
+							if (v21 || v20) {
+								if (!--v11) {
 								LABEL_43:
 									SMemFree(Memory, "SBMP.CPP", 178);
 									goto LABEL_45;
@@ -327,20 +299,11 @@ BOOL __stdcall SBmpLoadImage(const char *pszFileName, PALETTEENTRY *pPalette, vo
 	return 0;
 }
 
-
-
-
-
-
-
-
-
-
 void __fastcall gmenu_print_text(int x, int y, char *pszStr)
 {
-	char *v3;		  // edi
-	int v4;			  // ebp
-	int v5;			  // esi
+	char *v3;         // edi
+	int v4;           // ebp
+	int v5;           // esi
 	unsigned char i;  // al
 	unsigned char v7; // bl
 
@@ -349,18 +312,15 @@ void __fastcall gmenu_print_text(int x, int y, char *pszStr)
 	v4 = y;
 	v5 = x;
 
-	for (i = *pszStr; *v3; i = *v3)
-	{
+	for (i = *pszStr; *v3; i = *v3) {
 		++v3;
 		v7 = lfontframe[fontidx[i]];
 		if (v7)
-			if(gbRunGame == 1){
+			if (gbRunGame == 1) {
 				//CelDecodeLightOnly(v5, v4, (char *)BigTGold_cel, v7, 46);
-				DrawArtWithMask(v5-90, v4-250, 42, 42, 0, 242, pPcxFontImage); //pPcxFontImage
-			}
-			else{
-				DrawArtWithMask(v5-90, v4-250, 42, 42, 0, 242, pPcxFontImage); //pPcxFontImage
-
+				DrawArtWithMask(v5 - 90, v4 - 250, 42, 42, 0, 242, pPcxFontImage); //pPcxFontImage
+			} else {
+				DrawArtWithMask(v5 - 90, v4 - 250, 42, 42, 0, 242, pPcxFontImage); //pPcxFontImage
 			}
 
 		v5 += lfontkern[v7] + 2;
@@ -381,11 +341,9 @@ void __cdecl gmenu_init_menu()
 	dword_63448C = 0;
 	byte_634464 = 0;
 
-//Dont remove this
 	pPanelText = LoadFileInMem("CtrlPan\\SmalText.CEL", 0);
 	LoadArtImage("ui_art\\focus42.pcx", &MenuPentegram, 8, dwData);
 
-//
 	LoadArtImage("ui_art\\cursor.pcx", &pPcxCursorImage, 1, dwData);
 	gdwCursorWidth = dwData[0];
 	gdwCursorHeight = dwData[1];
@@ -423,8 +381,8 @@ bool __cdecl gmenu_exception()
 
 void __fastcall gmenu_call_proc(TMenuItem *pItem, void(__cdecl *gmFunc)())
 {
-	TMenuItem *v2;		   // eax
-	int v3;				   // ecx
+	TMenuItem *v2;         // eax
+	int v3;                // ecx
 	void(__cdecl * *v4)(); // edx
 
 	PauseMode = 0;
@@ -432,18 +390,15 @@ void __fastcall gmenu_call_proc(TMenuItem *pItem, void(__cdecl *gmFunc)())
 	v2 = pItem;
 	dword_63447C = gmFunc;
 	dword_634480 = pItem;
-	if (gmFunc)
-	{
+	if (gmFunc) {
 		gmFunc();
 		v2 = dword_634480;
 	}
 	v3 = 0;
 	dword_63448C = 0;
-	if (v2)
-	{
+	if (v2) {
 		v4 = &v2->fnMenu;
-		while (*v4)
-		{
+		while (*v4) {
 			++v3;
 			v4 += 3;
 			dword_63448C = v3;
@@ -459,34 +414,28 @@ void __fastcall gmenu_call_proc(TMenuItem *pItem, void(__cdecl *gmFunc)())
 void __fastcall gmenu_up_down(int a1)
 {
 	TMenuItem *v1; // eax
-	int v2;		   // edi
+	int v2;        // edi
 
 	v1 = sgpCurrItem;
-	if (sgpCurrItem)
-	{
+	if (sgpCurrItem) {
 		byte_634464 = 0;
 		v2 = dword_63448C;
-		while (v2)
-		{
+		while (v2) {
 			--v2;
-			if (a1)
-			{
+			if (a1) {
 				++v1;
 				sgpCurrItem = v1;
 				if (v1->fnMenu)
 					goto LABEL_10;
 				v1 = dword_634480;
-			}
-			else
-			{
+			} else {
 				if (v1 == dword_634480)
 					v1 = &dword_634480[dword_63448C];
 				--v1;
 			}
 			sgpCurrItem = v1;
 		LABEL_10:
-			if ((v1->dwFlags & 0x80000000) != 0)
-			{
+			if ((v1->dwFlags & 0x80000000) != 0) {
 				if (v2)
 					PlaySFX(IS_TITLEMOV);
 				return;
@@ -499,24 +448,21 @@ void __fastcall gmenu_up_down(int a1)
 
 void __cdecl gmenu_draw()
 {
-	int v0;		  // edi
+	int v0;       // edi
 	TMenuItem *i; // esi
-	DWORD v2;	 // eax
+	DWORD v2;     // eax
 
-	if (dword_634480)
-	{
+	if (dword_634480) {
 		if (dword_63447C)
 			dword_63447C();
 		//	CelDecodeOnly(236, 262, sgpLogo, 1, 296);
 		v0 = 320;
-		for (i = dword_634480; i->fnMenu; v0 += 45)
-		{
+		for (i = dword_634480; i->fnMenu; v0 += 45) {
 			gmenu_draw_menu_item(i, v0);
 			++i;
 		}
 		v2 = GetTickCount();
-		if ((signed int)(v2 - dword_634474) > 25)
-		{
+		if ((signed int)(v2 - dword_634474) > 25) {
 			if (++byte_634478 == 9)
 				byte_634478 = 1;
 			dword_634474 = v2;
@@ -528,24 +474,23 @@ void __cdecl gmenu_draw()
 
 void __fastcall gmenu_draw_menu_item(TMenuItem *pItem, int a2)
 {
-	int v2;			  // edi
-	TMenuItem *v3;	// ebx
+	int v2;           // edi
+	TMenuItem *v3;    // ebx
 	unsigned int v4;  // eax
 	unsigned int v5;  // ebp
-	int v6;			  // esi
+	int v6;           // esi
 	unsigned int v7;  // ecx
 	unsigned int v8;  // eax
-	int v9;			  // ecx
+	int v9;           // ecx
 	unsigned int v10; // ebp
-	int v11;		  // esi
-	int v12;		  // eax
-	int v13;		  // edi
+	int v11;          // esi
+	int v12;          // eax
+	int v13;          // edi
 	unsigned int v14; // [esp+10h] [ebp-4h]
 
 	int MyPcxDelay = 60;
 	int MyPcxFRAME = (SDL_GetTicks() / MyPcxDelay) % 15;
-	if (++MyPcxFRAME == 15)
-	{
+	if (++MyPcxFRAME == 15) {
 		MyPcxFRAME = 1;
 	}
 
@@ -556,8 +501,7 @@ void __fastcall gmenu_draw_menu_item(TMenuItem *pItem, int a2)
 	v4 = gmenu_get_lfont(pItem);
 	v5 = v4;
 	v14 = v4;
-	if (v3->dwFlags & 0x40000000)
-	{
+	if (v3->dwFlags & 0x40000000) {
 		v6 = (v4 >> 1) + 80;
 		//CelDecodeOnly(v6, v2 - 10, optbar_cel, 1, 287);
 		v7 = (v3->dwFlags >> 12) & 0xFFF;
@@ -575,8 +519,7 @@ void __fastcall gmenu_draw_menu_item(TMenuItem *pItem, int a2)
 	_LOBYTE(v12) = v12 & 0xF1;
 	light_table_index = v12 + 15;
 	gmenu_print_text(384 - (v5 >> 1), v2, v3->pszStr);
-	if (v3 == sgpCurrItem)
-	{
+	if (v3 == sgpCurrItem) {
 		v13 = v2 + 1;
 
 		//CelDecodeOnly(v11 - 54, v13, PentSpin_cel, (unsigned char)byte_634478, 48);
@@ -592,8 +535,7 @@ void __fastcall gmenu_clear_buffer(int x, int y, int width, int height)
 	char *i; // esi
 
 	v4 = height;
-	for (i = (char *)gpBuffer + screen_y_times_768[y] + x; v4; --v4)
-	{
+	for (i = (char *)gpBuffer + screen_y_times_768[y] + x; v4; --v4) {
 		memset(i, 205, width);
 		i -= 768;
 	}
@@ -601,15 +543,14 @@ void __fastcall gmenu_clear_buffer(int x, int y, int width, int height)
 
 int __fastcall gmenu_get_lfont(TMenuItem *pItem)
 {
-	char *v2;		  // eax
-	int i;			  // edx
+	char *v2;         // eax
+	int i;            // edx
 	unsigned char v4; // cl
 
 	if (pItem->dwFlags & 0x40000000)
 		return 490;
 	v2 = pItem->pszStr;
-	for (i = 0;; i += lfontkern[lfontframe[fontidx[v4]]] + 2)
-	{
+	for (i = 0;; i += lfontkern[lfontframe[fontidx[v4]]] + 2) {
 		v4 = *v2;
 		if (!*v2)
 			break;
@@ -625,11 +566,9 @@ int __fastcall gmenu_presskeys(int a1)
 
 	if (!dword_634480)
 		return 0;
-	switch (a1)
-	{
+	switch (a1) {
 	case VK_RETURN:
-		if ((sgpCurrItem->dwFlags & 0x80000000) != 0)
-		{
+		if ((sgpCurrItem->dwFlags & 0x80000000) != 0) {
 			PlaySFX(IS_TITLEMOV);
 			((void(__fastcall *)(signed int))sgpCurrItem->fnMenu)(1);
 		}
@@ -664,20 +603,16 @@ void __fastcall gmenu_left_right(int a1)
 {
 	signed int v1;   // edx
 	unsigned int v2; // eax
-	int v3;			 // eax
+	int v3;          // eax
 
 	v1 = sgpCurrItem->dwFlags;
-	if (sgpCurrItem->dwFlags & 0x40000000)
-	{
+	if (sgpCurrItem->dwFlags & 0x40000000) {
 		v2 = sgpCurrItem->dwFlags & 0xFFF;
-		if (a1)
-		{
+		if (a1) {
 			if (v2 == ((v1 >> 12) & 0xFFF))
 				return;
 			v3 = v2 + 1;
-		}
-		else
-		{
+		} else {
 			if (!(v1 & 0xFFF))
 				return;
 			v3 = v2 - 1;
@@ -711,13 +646,11 @@ int __fastcall gmenu_on_mouse_move(LPARAM lParam)
 bool __fastcall gmenu_valid_mouse_pos(int *plOffset)
 {
 	*plOffset = 282;
-	if (MouseX < 282)
-	{
+	if (MouseX < 282) {
 		*plOffset = 0;
 		return 0;
 	}
-	if (MouseX > 538)
-	{
+	if (MouseX > 538) {
 		*plOffset = 256;
 		return 0;
 	}
@@ -727,7 +660,7 @@ bool __fastcall gmenu_valid_mouse_pos(int *plOffset)
 
 int __fastcall gmenu_left_mouse(int a1)
 {
-	int result;		 // eax
+	int result;      // eax
 	unsigned int v2; // eax
 	unsigned int v3; // eax
 	TMenuItem *v4;   // esi
@@ -735,40 +668,30 @@ int __fastcall gmenu_left_mouse(int a1)
 	//LPARAM v6; // ecx
 	int a1a; // [esp+4h] [ebp-4h]
 
-	if (a1)
-	{
+	if (a1) {
 		if (!dword_634480 || MouseY >= 352)
 			return 0;
-		if (MouseY - 117 >= 0)
-		{
+		if (MouseY - 117 >= 0) {
 			v2 = (MouseY - 117) / 45;
-			if (v2 < dword_63448C)
-			{
+			if (v2 < dword_63448C) {
 				v3 = v2;
 				v4 = &dword_634480[v3];
-				if ((v4->dwFlags & 0x80000000) != 0)
-				{
+				if ((v4->dwFlags & 0x80000000) != 0) {
 					v5 = (unsigned int)gmenu_get_lfont(&dword_634480[v3]) >> 1;
-					if (MouseX >= 320 - v5 && MouseX <= v5 + 320)
-					{
+					if (MouseX >= 320 - v5 && MouseX <= v5 + 320) {
 						sgpCurrItem = v4;
 						PlaySFX(IS_TITLEMOV);
-						if (v4->dwFlags & 0x40000000)
-						{
+						if (v4->dwFlags & 0x40000000) {
 							byte_634464 = gmenu_valid_mouse_pos(&a1a);
 							gmenu_on_mouse_move(a1); /* v6 */
-						}
-						else
-						{
+						} else {
 							((void(__fastcall *)(signed int))sgpCurrItem->fnMenu)(1);
 						}
 					}
 				}
 			}
 		}
-	}
-	else
-	{
+	} else {
 		result = 0;
 		if (!byte_634464)
 			return result;
@@ -790,7 +713,7 @@ void __fastcall gmenu_enable(TMenuItem *pMenuItem, BOOL enable)
 void __fastcall gmenu_slider_1(TMenuItem *pItem, int min, int max, int gamma)
 {
 	unsigned int v4; // esi
-	int v5;			 // eax
+	int v5;          // eax
 
 	v4 = pItem->dwFlags;
 	v5 = (pItem->dwFlags >> 12) & 0xFFF;
@@ -802,7 +725,7 @@ void __fastcall gmenu_slider_1(TMenuItem *pItem, int min, int max, int gamma)
 
 int __fastcall gmenu_slider_get(TMenuItem *pItem, int min, int max)
 {
-	int v3;			 // eax
+	int v3;          // eax
 	unsigned int v4; // ecx
 
 	v3 = (pItem->dwFlags >> 12) & 0xFFF;
