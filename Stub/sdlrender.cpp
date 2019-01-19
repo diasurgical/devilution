@@ -33,6 +33,7 @@ SDL_Event input;
 bool SinglePlayerMenuItemsLoaded = 0;
 bool DiabloImageLoaded = 0;
 bool DiabloMainMenuListLoaded = 0;
+bool TitleImageLoaded = false;
 
 _uiheroinfo heroarray[10];
 
@@ -68,7 +69,8 @@ int gb_Lfont_str_len;
 int gb_Lfont_pix_width;
 int the_pcx_frame;
 
-char *the_long_credits[] = { "",
+char *the_long_credits[] = {
+	"",
 	"",
 	"",
 	"",
@@ -553,7 +555,8 @@ char *the_long_credits[] = { "",
 	" ",
 	" ",
 	" ",
-	NULL };
+	NULL
+};
 
 int creditline = 0;
 int ybase = 0;
@@ -740,8 +743,23 @@ int __fastcall GetPCXFontWidth(char *str, BYTE *font)
 	return len;
 }
 
+void LoadTitelArt(char *pszFile)
+{
+	DWORD dwData[2];
+
+	if (TitleImageLoaded) {
+		return;
+	}
+
+	LoadArtWithPal(pszFile, &pPcxTitleImage, 1, dwData);
+	gdwTitleWidth = dwData[0];
+	gdwTitleHeight = dwData[1];
+	TitleImageLoaded = true;
+}
+
 void ShowCredts()
 {
+	LoadTitelArt("ui_art\\credits.pcx");
 	ybase += 1;
 	if (ybase >= pFont16[1]) {
 		ybase = 0;
@@ -782,7 +800,7 @@ void RenderDiabloLogo()
 		MyPcxFRAME = 1;
 	}
 
-	DrawArtWithMask(320 - (gdwLogoWidth / 2), 0, gdwLogoWidth, gdwLogoHeight, MyPcxFRAME, 250, pPcxLogoImage);
+	DrawArtWithMask(GetCenter(gdwLogoWidth), 0, gdwLogoWidth, gdwLogoHeight, MyPcxFRAME, 250, pPcxLogoImage);
 }
 
 void DrawCursor(int mx, int my)
@@ -818,6 +836,11 @@ void DrawMouse()
 
 void SDL_RenderDiabloMainPage()
 {
+	char *pszFile = "ui_art\\mainmenu.pcx";
+	if (false) //DiabloUI_GetSpawned()
+		pszFile = "ui_art\\swmmenu.pcx";
+	LoadTitelArt(pszFile);
+
 	DrawArtImage(0, 0, gdwTitleWidth, gdwTitleHeight, 0, pPcxTitleImage);
 
 	int totalPentFrames = 8;
@@ -864,6 +887,7 @@ void SDL_RenderDiabloMainPage()
 
 void SDL_RenderDiabloSinglePlayerPage()
 {
+	LoadTitelArt("ui_art\\selhero.pcx");
 	DrawArtImage(0, 0, gdwTitleWidth, gdwTitleHeight, 0, pPcxTitleImage);
 	RenderDiabloLogo();
 	RenderCharNames();
@@ -922,6 +946,7 @@ int TotalPlayers = 0;
 
 void DrawNewHeroKartinka(int image, int ShowClasses)
 {
+	LoadTitelArt("ui_art\\selhero.pcx");
 	DrawArtImage(0, 0, gdwTitleWidth, gdwTitleHeight, 0, pPcxTitleImage);
 	RenderDiabloLogo();
 
@@ -943,6 +968,7 @@ void DrawNewHeroKartinka(int image, int ShowClasses)
 
 void DrawPreGameOptions(int image, int ShowClasses)
 {
+	LoadTitelArt("ui_art\\selhero.pcx");
 	DrawArtImage(0, 0, gdwTitleWidth, gdwTitleHeight, 0, pPcxTitleImage);
 	RenderDiabloLogo();
 
@@ -963,6 +989,7 @@ void DrawPreGameOptions(int image, int ShowClasses)
 
 void DrawPreGameDifficultySelection(int image, int ShowClasses)
 {
+	LoadTitelArt("ui_art\\selhero.pcx");
 	DrawArtImage(0, 0, gdwTitleWidth, gdwTitleHeight, 0, pPcxTitleImage);
 	RenderDiabloLogo();
 

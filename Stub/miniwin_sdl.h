@@ -18,6 +18,7 @@ extern SDL_Surface *surface;
 extern SDL_Palette *palette;
 extern SDL_Surface *pal_surface;
 
+extern bool TitleImageLoaded;
 
 void sdl_present_surface();
 

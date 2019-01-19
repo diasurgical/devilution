@@ -19,6 +19,7 @@ char HeroUndecidedName[17] = { 0 };
 bool StartNewGame;
 bool CreateSinglePlayerChar;
 int HeroChosen = 0;
+int menu = 0;
 
 /**
  * Case insensitive search for a file name in a directory.
@@ -141,9 +142,24 @@ void HideCursor()
 	SDL_SetCursor(g_cursor);
 }
 
+void SetMenu(int MenuId)
+{
+	void *tmp = pPcxTitleImage;
+	pPcxTitleImage = NULL;
+	mem_free_dbg(tmp);
+	TitleImageLoaded = false;
+	menu = MenuId;
+}
+
+void ExitDiablo()
+{
+	printf("Exiting Diablo\n");
+	SDL_Quit();
+	exit(0);
+}
+
 void SDL_Diablo_UI() // I anticipate to move this later.
 {
-	DWORD dwData[2];
 	// WNDPROC saveProc;
 
 	snd_init(0);
@@ -153,7 +169,7 @@ void SDL_Diablo_UI() // I anticipate to move this later.
 
 	signed int NewHeroNameIndex = 0;
 
-	int menu = 0;
+	SetMenu(0);
 	SDL_Event event;
 	int x, y;
 	bool quit = false;
@@ -174,21 +190,15 @@ void SDL_Diablo_UI() // I anticipate to move this later.
 
 	// static std::deque<MSG> message_queue;
 
-	while (1 && quit == false) {
+	while (!quit) {
 		DrawMouse();
 		PaletteFadeIn(32);
 
 		if (menu == 0) {
-			LoadArtWithPal("ui_art\\mainmenu.pcx", &pPcxTitleImage, 1, dwData);
-			gdwTitleWidth = dwData[0];
-			gdwTitleHeight = dwData[1];
 			SDL_RenderDiabloMainPage();
 		}
 
 		if (menu == 2) {
-			LoadArtWithPal("ui_art\\selhero.pcx", &pPcxTitleImage, 1, dwData);
-			gdwTitleWidth = dwData[0];
-			gdwTitleHeight = dwData[1];
 			if (CharsLoaded == 0) {
 				LoadCharNamesintoMemory(0, 7);
 				//	LoadHeroStats();
@@ -196,25 +206,19 @@ void SDL_Diablo_UI() // I anticipate to move this later.
 			}
 			SDL_RenderDiabloSinglePlayerPage();
 			gbMaxPlayers = 1;
-			// DrawMouse(); // Not accurate for some reason. It adds too much  and I am not sure why.
+			DrawMouse();
 			ConstantButtons();
 		}
 
 		if (menu == 3) {
-			LoadArtWithPal("ui_art\\selhero.pcx", &pPcxTitleImage, 1, dwData);
-			gdwTitleWidth = dwData[0];
-			gdwTitleHeight = dwData[1];
 			CreateHeroMenu();
 			DrawNewHeroKartinka(HeroPortrait, 1);
 			ConstantButtons();
-			// DrawMouse();
+			DrawMouse();
 		}
 
 		int m4Loaded = 0;
 		if (menu == 4) {
-			LoadArtWithPal("ui_art\\selhero.pcx", &pPcxTitleImage, 1, dwData);
-			gdwTitleWidth = dwData[0];
-			gdwTitleHeight = dwData[1];
 			DrawNewHeroKartinka(HeroPortrait, 0);
 			RenderDefaultStats(HeroPortrait);
 			RenderUndecidedHeroName();
@@ -222,18 +226,12 @@ void SDL_Diablo_UI() // I anticipate to move this later.
 			DrawMouse();
 		}
 		if (menu == 5) {
-			LoadArtWithPal("ui_art\\selhero.pcx", &pPcxTitleImage, 1, dwData);
-			gdwTitleWidth = dwData[0];
-			gdwTitleHeight = dwData[1];
 			DrawPreGameOptions(HeroPortrait, 1);
 			RenderDefaultStats(HeroPortrait);
 			ConstantButtons();
 			DrawMouse();
 		}
 		if (menu == 6) {
-			LoadArtWithPal("ui_art\\selhero.pcx", &pPcxTitleImage, 1, dwData);
-			gdwTitleWidth = dwData[0];
-			gdwTitleHeight = dwData[1];
 			DrawPreGameDifficultySelection(HeroPortrait, 1);
 			RenderDefaultStats(HeroPortrait);
 			ConstantButtons();
@@ -241,9 +239,6 @@ void SDL_Diablo_UI() // I anticipate to move this later.
 		}
 
 		if (menu == 10) {
-			LoadArtWithPal("ui_art\\credits.pcx", &pPcxTitleImage, 1, dwData);
-			gdwTitleWidth = dwData[0];
-			gdwTitleHeight = dwData[1];
 			ShowCredts();
 		}
 
@@ -253,8 +248,11 @@ void SDL_Diablo_UI() // I anticipate to move this later.
 				switch (event.key.keysym.sym) {
 				case SDLK_ESCAPE:
 					if (menu != 0) {
-						menu = 0;
+						SetMenu(0);
+						break;
 					}
+					quit = true;
+					ExitDiablo();
 					break;
 
 				case SDLK_BACKSPACE:
@@ -286,10 +284,8 @@ void SDL_Diablo_UI() // I anticipate to move this later.
 			}
 
 			if (event.type == SDL_QUIT) {
-
 				quit = true;
-				SDL_Quit();
-				exit(0); // SDL quit doesn't always work.
+				ExitDiablo();
 			}
 
 			if (event.type == SDL_MOUSEMOTION) {
@@ -315,7 +311,7 @@ void SDL_Diablo_UI() // I anticipate to move this later.
 
 						if ((x > ClickListStart) && (y > ClickListStart) && (x < ClickListStart + WidthOfBox) && (y < ClickListStart + sizeOfBox)) { // Single clicked
 							printf("SinglePlayer Diablo\n");
-							menu = 2;
+							SetMenu(2);
 						}
 
 						if ((x > ClickListStart) && (y > ClickListStart + (sizeOfBox)) && (x < ClickListStart + WidthOfBox) && (y < ClickListStart + (sizeOfBox) + sizeOfBox)) { // MultiBox clicked
@@ -323,13 +319,11 @@ void SDL_Diablo_UI() // I anticipate to move this later.
 						}
 						if ((x > ClickListStart) && (y > ClickListStart + (sizeOfBox * 2)) && (x < ClickListStart + WidthOfBox) && (y < ClickListStart + (sizeOfBox * 2) + sizeOfBox)) { // Reply Intro clicked
 							printf("Credits\n");
-							menu = 10;
+							SetMenu(10);
 						}
 						if ((x > ClickListStart) && (y > ClickListStart + (sizeOfBox * 4)) && (x < ClickListStart + WidthOfBox) && (y < ClickListStart + (sizeOfBox * 4) + sizeOfBox)) { // ShowCredits clicked
-							printf("Exiting Diablo\n");
 							quit = true;
-							SDL_Quit();
-							exit(0);
+							ExitDiablo();
 						}
 
 					} // End of this Menu0
@@ -355,7 +349,7 @@ void SDL_Diablo_UI() // I anticipate to move this later.
 						if (TotalPlayers >= 1 && (x > ClickListStart) && (y > ClickListStart) && (x < ClickListStart + WidthOfBox) && (y < ClickListStart + sizeOfBox)) { // MultiBox clicked
 							strcpy(chr_name_str, hero_names[0]);
 							printf("Player %s\n", chr_name_str);
-							menu = 5;
+							SetMenu(5);
 							// break;
 						}
 
@@ -363,7 +357,7 @@ void SDL_Diablo_UI() // I anticipate to move this later.
 							printf("Player 2 Diablo\n");
 							strcpy(chr_name_str, hero_names[1]);
 							printf("Player %s\n", chr_name_str);
-							menu = 5;
+							SetMenu(5);
 							//	break;
 						}
 
@@ -371,7 +365,7 @@ void SDL_Diablo_UI() // I anticipate to move this later.
 							printf("Player 3 Diablo\n");
 							strcpy(chr_name_str, hero_names[2]);
 							printf("Player %s\n", chr_name_str);
-							menu = 5;
+							SetMenu(5);
 							//	break;
 						}
 
@@ -380,7 +374,7 @@ void SDL_Diablo_UI() // I anticipate to move this later.
 							effects_play_sound("Sfx\\Items\\Titlslct.wav");
 							strcpy(chr_name_str, hero_names[3]);
 							printf("Player %s\n", chr_name_str);
-							menu = 5;
+							SetMenu(5);
 							//	break;
 						}
 
@@ -389,7 +383,7 @@ void SDL_Diablo_UI() // I anticipate to move this later.
 							effects_play_sound("Sfx\\Items\\Titlslct.wav");
 							strcpy(chr_name_str, hero_names[4]);
 							printf("Player %s\n", chr_name_str);
-							menu = 5;
+							SetMenu(5);
 							//	break;
 						}
 
@@ -398,7 +392,7 @@ void SDL_Diablo_UI() // I anticipate to move this later.
 							effects_play_sound("Sfx\\Items\\Titlslct.wav");
 							strcpy(chr_name_str, hero_names[5]);
 							printf("Player %s\n", chr_name_str);
-							menu = 5;
+							SetMenu(5);
 							//	break;
 						}
 
@@ -406,11 +400,11 @@ void SDL_Diablo_UI() // I anticipate to move this later.
 							HeroPortrait = 3;
 
 							printf("Cancel\n\n\n");
-							menu = 0;
+							SetMenu(0);
 						}
 						if ((x > CreateHeroX) && (y > CreateHeroY) && (x < CreateHeroX + WidthOfBox) && (y < CreateHeroY + sizeOfBox)) {
 							printf("Clicked Create Hero Box\n");
-							menu = 3;
+							SetMenu(3);
 						}
 					}
 					if (menu == 3) {
@@ -464,20 +458,20 @@ void SDL_Diablo_UI() // I anticipate to move this later.
 							printf(" warrior I was hit\n\n\n");
 							HeroPortrait = 0;
 							HeroChosen = 0;
-							menu = 4;
+							SetMenu(4);
 						}
 						if ((x > RogueSelectBox.x) && (y > RogueSelectBox.y) && (x < RogueSelectBox.w) && (y < RogueSelectBox.h)) {
 
 							printf(" rogue I was hit\n\n\n");
 							HeroPortrait = 1;
 							HeroChosen = 1;
-							menu = 4;
+							SetMenu(4);
 						}
 						if ((x > SorcerorSelectBox.x) && (y > SorcerorSelectBox.y) && (x < SorcerorSelectBox.w) && (y < SorcerorSelectBox.h)) {
 							HeroPortrait = 2;
 							printf("sorceror I was hit\n\n\n");
 							HeroChosen = 2;
-							menu = 4;
+							SetMenu(4);
 						}
 
 						if ((x > CreateHeroCancelBox.x) && (y > CreateHeroCancelBox.y) && (x < CreateHeroCancelBox.w) && (y < CreateHeroCancelBox.h)) {
@@ -509,7 +503,7 @@ void SDL_Diablo_UI() // I anticipate to move this later.
 
 							printf("Cancel\n\n\n");
 							HeroPortrait = 3;
-							menu = 3;
+							SetMenu(3);
 						}
 
 						if ((x > ClickOkBox.x) && (y > ClickOkBox.y) && (x < ClickOkBox.w) && (y < ClickOkBox.h)) {
@@ -571,7 +565,7 @@ void SDL_Diablo_UI() // I anticipate to move this later.
 						if (cpu_time_used > 0.5 && (x > NewGameBox.x) && (y > NewGameBox.y) && (x < NewGameBox.w) && (y < NewGameBox.h)) {
 
 							printf(" New Game I was hit\n\n\n");
-							menu = 6;
+							SetMenu(6);
 							cpu_time_used = 0;
 							timestart = 0;
 							start = 0;
@@ -592,7 +586,7 @@ void SDL_Diablo_UI() // I anticipate to move this later.
 
 							printf("Cancel\n\n\n");
 
-							menu = 2; // Return back to select hero menu.
+							SetMenu(2); // Return back to select hero menu.
 						}
 					}
 
