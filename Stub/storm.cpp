@@ -129,7 +129,7 @@ BOOL STORMAPI SFileOpenFile(const char *filename, HANDLE *phFile)
 	BOOL result;
 
 
-	result = SFileOpenFileEx((HANDLE)patch_rt_mpq, filename, 0, phFile);
+	result = patch_rt_mpq && SFileOpenFileEx((HANDLE)patch_rt_mpq, filename, 0, phFile);
 	if (!result) {
 		result = SFileOpenFileEx((HANDLE)diabdat_mpq, filename, 0, phFile);
 	}

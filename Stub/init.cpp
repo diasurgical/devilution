@@ -97,9 +97,7 @@ void __cdecl init_archives()
 	SFileOpenArchive(find_file_in_std_directories("diabdat.mpq").c_str(), 1000, 0, &diabdat_mpq);
 	assert(diabdat_mpq);
 
-	SFileOpenArchive(find_file_in_std_directories("patch_rt.mpq").c_str(), 1000, 0, &patch_rt_mpq);
-	assert(patch_rt_mpq);
-	
+	SFileOpenArchive("patch_rt.mpq", 1000, 0, &patch_rt_mpq);
 }
 
 void __cdecl init_get_file_info()
