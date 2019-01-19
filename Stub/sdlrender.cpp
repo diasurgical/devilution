@@ -737,7 +737,7 @@ int __fastcall GetPCXFontWidth(char *str, BYTE *font)
 void ShowCredts()
 {
 	ybase += 1;
-	if (ybase >= pFont2[1]) {
+	if (ybase >= pFont16[1]) {
 		ybase = 0;
 		if (!nottheend) {
 			linecount--;
@@ -754,14 +754,14 @@ void ShowCredts()
 	for (int i = 0; i < linecount; i++) {
 		// Needs to be slower...
 		if (*the_long_credits[creditline + i] == '$'){
-			DrawPCXString(GetCenter(GetPCXFontWidth(the_long_credits[creditline + i] + 1, pFont2)),
-			              50 + (i * pFont2[1]) - ybase, gdwFont2Width, gdwFont2Height,
-			              the_long_credits[creditline + i] + 1, pFont2, pPcxFont2Image);
+			DrawPCXString(GetCenter(GetPCXFontWidth(the_long_credits[creditline + i] + 1, pFont16)),
+			              50 + (i * pFont16[1]) - ybase, gdwFont2Width, gdwFont2Height,
+			              the_long_credits[creditline + i] + 1, pFont16, pPcxFont2Image);
         }
 		else{
-			DrawPCXString(GetCenter(GetPCXFontWidth(the_long_credits[creditline + i], pFont3)),
-			              50 + (i * pFont3[1]) - ybase, gdwFont3Width, gdwFont3Height, the_long_credits[creditline + i],
-			              pFont3, pPcxFont2Image);
+			DrawPCXString(GetCenter(GetPCXFontWidth(the_long_credits[creditline + i], pFont16)),
+			              50 + (i * pFont16[1]) - ybase, gdwFont3Width, gdwFont3Height, the_long_credits[creditline + i],
+			              pFont16, pPcxFont2Image);
 	}
 
     }
@@ -831,7 +831,7 @@ void SDL_RenderDiabloMainPage()
 	DrawArtWithMask(PentPositionX + 234, PentPositionY, 42, 42, Pentframe, 250, MenuPentegram);
 	// scrollrt_draw_cursor_back_buffer(); // Doesn't work?
 
-    char * MENIITEMS[5]= {"Single Player", "Multi Player", "Replay Intro", "Show Credits", "Exit Diablo"};
+    char *MENIITEMS[5]= {"Single Player", "Multi Player", "Replay Intro", "Show Credits", "Exit Diablo"};
 
 
 	RenderDiabloLogo();
@@ -853,7 +853,7 @@ void SDL_RenderDiabloMainPage()
 	y += 43;
 	DrawPCXString(x, y, gdwFontWidth, gdwFontHeight, MENIITEMS[4], pFont, pPcxFontImage);
 
-	DrawPCXString(17, 444, gdwFont3Width, gdwFont3Height, gszProductName, pFont2, pPcxFont3Image);
+	DrawPCXString(17, 444, gdwFont3Width, gdwFont3Height, gszProductName, pFont16, pPcxFont3Image);
 
 	ADD_PlrStringXY(0, 600 - 150, 640, "DedicaTed To David Brevik, Erich Schaefer, Max Schaefer,", COL_BLUE);// Red isn't red
 	ADD_PlrStringXY(0, 600 - 130, 640, " MaTT Uelman, and The Blizzard North Team ThaT Gave Us A Childhood.", COL_BLUE);
@@ -1002,7 +1002,7 @@ void RenderDefaultStats(int HeroChosen)
 		print_title_str_small(x, y - 20, "Warrior Stats:");
 		for (int i = 0; i < 4; i++) {
 			print_title_str_small(x, y, WarriorStats[i]);
-			// DrawPCXString(x, y, gdwFont3Width, gdwFont3Height, WarriorStats[i], pFont3, pPcxFont3Image);
+			// DrawPCXString(x, y, gdwFont3Width, gdwFont3Height, WarriorStats[i], pFont16, pPcxFont3Image);
 			y += 20;
 		}
 	}
@@ -1010,7 +1010,7 @@ void RenderDefaultStats(int HeroChosen)
 		print_title_str_small(x, y - 20, "Rogue Stats:");
 		for (int i = 0; i < 4; i++) {
 			print_title_str_small(x, y, RogueStats[i]);
-			// DrawPCXString(x, y, gdwFont3Width, gdwFont3Height, RogueStats[i], pFont3, pPcxFont3Image);
+			// DrawPCXString(x, y, gdwFont3Width, gdwFont3Height, RogueStats[i], pFont16, pPcxFont3Image);
 			y += 20;
 		}
 	}
@@ -1019,7 +1019,7 @@ void RenderDefaultStats(int HeroChosen)
 
 		for (int i = 0; i < 4; i++) {
 			print_title_str_small(x, y, SorcerorStats[i]);
-			// DrawPCXString(x, y, gdwFont3Width, gdwFont3Height, SorcerorStats[i], pFont3, pPcxFont3Image);
+			// DrawPCXString(x, y, gdwFont3Width, gdwFont3Height, SorcerorStats[i], pFont16, pPcxFont3Image);
 			y += 20;
 		}
 	}
@@ -1084,8 +1084,8 @@ void ConstantButtons()
 {
 	//print_title_str_small(500, 620, "Ok");
 	//print_title_str_small(600, 620, "Cancel");
-    DrawPCXString( 500, 440, gdwFont2Height, gdwFont2Width, "OK", pFont2, pPcxFont2Image);
-    DrawPCXString( 550, 440, gdwFont2Height, gdwFont2Width, "Cancel", pFont2, pPcxFont2Image);
+    DrawPCXString( 500, 440, gdwFont2Height, gdwFont2Width, "OK", pFont16, pPcxFont2Image);
+    DrawPCXString( 550, 440, gdwFont2Height, gdwFont2Width, "Cancel", pFont16, pPcxFont2Image);
 
 
 

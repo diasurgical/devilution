@@ -47,12 +47,11 @@ unsigned char *pFont;
 int gdwFont2Width;
 int gdwFont2Height;
 void *pPcxFont2Image;
-unsigned char *pFont2;
+unsigned char *pFont16;
 
 int gdwFont3Width;
 int gdwFont3Height;
 void *pPcxFont3Image;
-unsigned char *pFont3;
 
 
 void *GameTitle;
@@ -64,8 +63,8 @@ void * MenuPentegram;
 
 
 void *optbar_cel;
-void *PentSpin_cel;	
-void *option_cel;	
+void *PentSpin_cel;
+void *option_cel;
 void *sgpLogo;
 void *pTitlgrayCel_sgpBackCel;
 void *pDiabfrCel;
@@ -407,14 +406,11 @@ void __cdecl gmenu_init_menu()
 	LoadArtImage("ui_art\\font16g.pcx", &pPcxFont2Image, 256, dwData);
 	gdwFont2Width = dwData[0];
 	gdwFont2Height = dwData[1];
-	pFont2 = LoadFileInMem("ui_art\\font16.bin", 0);
+	pFont16 = LoadFileInMem("ui_art\\font16.bin", 0);
 
 	LoadArtImage("ui_art\\font16s.pcx", &pPcxFont3Image, 256, dwData);
 	gdwFont3Width = dwData[0];
 	gdwFont3Height = dwData[1];
-	pFont3 = LoadFileInMem("ui_art\\font16.bin", 0);
-
-	
 }
 // 634464: using guessed type char byte_634464;
 // 634478: using guessed type char byte_634478;

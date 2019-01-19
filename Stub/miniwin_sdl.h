@@ -102,12 +102,11 @@ extern int gdwCreditsHeight;
 extern int gdwFont2Width;
 extern int gdwFont2Height;
 extern void *pPcxFont2Image;
-extern unsigned char *pFont2;
+extern unsigned char *pFont16;
 
 extern int gdwFont3Width;
 extern int gdwFont3Height;
 extern void *pPcxFont3Image;
-extern unsigned char *pFont3;
 
 extern char HeroUndecidedName[17];
 extern bool StartNewGame;
