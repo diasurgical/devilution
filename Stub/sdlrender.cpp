@@ -601,9 +601,8 @@ void SDLCreateDiabloCursor() {}
 
 void SdlDiabloMainWindow()
 {
-
+    SDL_ShowCursor(SDL_DISABLE);
 	SDL_Init(SDL_INIT_EVERYTHING);
-	//IMG_Init(IMG_INIT_PNG);
 	SDL_Init(SDL_INIT_VIDEO);
 
 	window = SDL_CreateWindow("Diablo", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, Window_Width, Window_Height,
