@@ -20,6 +20,7 @@ bool StartNewGame;
 bool CreateSinglePlayerChar;
 int HeroChosen = 0;
 int menu = 0;
+int SelectedItem = 0;
 
 /**
  * Case insensitive search for a file name in a directory.
@@ -148,7 +149,9 @@ void SetMenu(int MenuId)
 	pPcxTitleImage = NULL;
 	mem_free_dbg(tmp);
 	TitleImageLoaded = false;
+
 	menu = MenuId;
+	SelectedItem = 0;
 }
 
 void ExitDiablo()
@@ -175,8 +178,6 @@ void SDL_Diablo_UI() // I anticipate to move this later.
 	bool quit = false;
 	int CharsLoaded = 0;
 	int HeroPortrait = 3;
-
-	int Selection[4];
 
 	printf("Main Menu Init\n");
 	// SDL_ShowCursor(SDL_DISABLE);//Doesn't really work... Use HideCursor() instead.
@@ -260,6 +261,14 @@ void SDL_Diablo_UI() // I anticipate to move this later.
 						HeroUndecidedName[NewHeroNameIndex - 1] = 0;
 						--NewHeroNameIndex;
 					}
+					break;
+
+				case SDLK_UP:
+					SelectedItem--;
+					break;
+
+				case SDLK_DOWN:
+					SelectedItem++;
 					break;
 
 				case SDLK_RETURN:
