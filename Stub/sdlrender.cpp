@@ -852,8 +852,13 @@ void SDL_RenderDiabloMainPage()
 		Pentframe = 0;
 	}
 
+	int menuTop = 192;
+
 	int PentPositionX = GetCenter(42);
-	int PentPositionY = 192;
+	int PentPositionY = menuTop + SelectedItem * 43;
+	if (SelectedItem > 1) {
+		PentPositionY -= 1; // "Multi Player" and "Replay Intro" has a smaller gap then other items
+	}
 
 	DrawArtWithMask(PentPositionX - 234, PentPositionY, 42, 42, Pentframe, 250, MenuPentegram);
 	DrawArtWithMask(PentPositionX + 234, PentPositionY, 42, 42, Pentframe, 250, MenuPentegram);
@@ -863,22 +868,14 @@ void SDL_RenderDiabloMainPage()
 
 	RenderDiabloLogo();
 
-	// print_title_str_large();
-	int x = GetCenter(GetPCXFontWidth(MENIITEMS[0], pFont)) - 1;
-	int y = 192;
-	DrawPCXString(x, y, gdwFontWidth, gdwFontHeight, MENIITEMS[0], pFont, pPcxFontImage);
-	x = GetCenter(GetPCXFontWidth(MENIITEMS[1], pFont)) - 1;
-	y += 43;
-	DrawPCXString(x, y, gdwFontWidth, gdwFontHeight, MENIITEMS[1], pFont, pPcxFontImage);
-	x = GetCenter(GetPCXFontWidth(MENIITEMS[2], pFont)) - 1;
-	y += 42;
-	DrawPCXString(x, y, gdwFontWidth, gdwFontHeight, MENIITEMS[2], pFont, pPcxFontImage);
-	x = GetCenter(GetPCXFontWidth(MENIITEMS[3], pFont)) - 1;
-	y += 43;
-	DrawPCXString(x, y, gdwFontWidth, gdwFontHeight, MENIITEMS[3], pFont, pPcxFontImage);
-	x = GetCenter(GetPCXFontWidth(MENIITEMS[4], pFont)) - 1;
-	y += 43;
-	DrawPCXString(x, y, gdwFontWidth, gdwFontHeight, MENIITEMS[4], pFont, pPcxFontImage);
+	for (int i = 0; i < 5; i++) {
+		int x = GetCenter(GetPCXFontWidth(MENIITEMS[i], pFont)) - 1;
+		int y = menuTop + i * 43;
+		if (i == 1) {
+			y -= 1; // "Multi Player" and "Replay Intro" has a smaller gap then other items
+		}
+		DrawPCXString(x, y, gdwFontWidth, gdwFontHeight, MENIITEMS[i], pFont, pPcxFontImage);
+	}
 
 	DrawPCXString(17, 444, gdwFont3Width, gdwFont3Height, gszProductName, pFont16, pPcxFont3Image);
 

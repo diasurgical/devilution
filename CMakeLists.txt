@@ -48,7 +48,7 @@ set(SOURCES
     Source/drlg_l2.cpp
     Source/drlg_l3.cpp
     Source/drlg_l4.cpp
-#   Source/effects.cpp
+    Source/effects.cpp
     Source/encrypt.cpp
     Source/engine.cpp
     Source/error.cpp
@@ -103,7 +103,6 @@ set(ORIGINAL_SOURCES
     Source/capture.cpp
     Source/appfat.cpp
     Source/dthread.cpp
-    Source/effects.cpp
     Source/dx.cpp
     Source/fault.cpp
     Source/init.cpp
@@ -134,7 +133,6 @@ set(STUB_SOURCES
     Stub/miniwin_msg_sdl.cpp
     Stub/storm_net.cpp
     Stub/validate.cpp
-    Stub/effects.cpp
     Stub/sdlrender.cpp
     Stub/diablo.cpp
     Stub/gamemenu.cpp
