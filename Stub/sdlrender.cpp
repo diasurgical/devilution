@@ -3,11 +3,11 @@
 #include "stubs.h"
 
 
-int SCREEN_WIDTH = 800; // 1024×768
-int SCREEN_HEIGHT = 600;
+int SCREEN_WIDTH = 640; // 1024×768
+int SCREEN_HEIGHT = 480;
 
-int Window_Width = 800;
-int Window_Height = 600;
+int Window_Width = 640;
+int Window_Height = 480;
 
 int LogoWidth;
 int LogoHeight;
@@ -613,7 +613,7 @@ void SdlDiabloMainWindow()
 	printf("Window And Renderer Created!\n");
 
 
-	SDL_RenderSetLogicalSize(renderer, 800, 600);
+	SDL_RenderSetLogicalSize(renderer, 640, 480);
 	const int pitch = SCREEN_WIDTH + 64 + 64;
 
 	surface = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_HEIGHT, 32, 0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF);
@@ -771,13 +771,13 @@ void ShowCredts()
 void RenderDiabloLogo()
 {
 	int MyPcxDelay = 60;
-	int MyPcxFRAME = (SDL_GetTicks() / MyPcxDelay) % 15;        // This is not how this should be done... 
+	int MyPcxFRAME = (SDL_GetTicks() / MyPcxDelay) % 15;        // This is not how this should be done...
 	MyPcxFRAME++;
 	if (MyPcxFRAME >= 15) {
 		MyPcxFRAME = 1;
 	}
 
-	DrawArtWithMask(320 - (gdwLogoWidth / 2), -30, gdwLogoWidth, gdwLogoHeight, MyPcxFRAME, 250, pPcxLogoImage);
+	DrawArtWithMask(320 - (gdwLogoWidth / 2), 1, gdwLogoWidth, gdwLogoHeight, MyPcxFRAME, 250, pPcxLogoImage);
 }
 
 void DrawCursor(int mx, int my)
@@ -830,7 +830,7 @@ void SDL_RenderDiabloMainPage()
 
 	// scrollrt_draw_cursor_back_buffer(); // Doesn't work?
 
-    char * MENIITEMS[5]= {"Single Player", "Multi Player", "Show Intro", "Play Credits","Exit Diablo"}; 
+    char * MENIITEMS[5]= {"Single Player", "Multi Player", "Replay Intro", "Show Credits", "Exit Diablo"};
 
 
 	RenderDiabloLogo();
