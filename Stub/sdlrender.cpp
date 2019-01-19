@@ -796,8 +796,8 @@ void RenderDiabloLogo()
 	int MyPcxDelay = 60;
 	int MyPcxFRAME = (SDL_GetTicks() / MyPcxDelay) % 15; // This is not how this should be done...
 	MyPcxFRAME++;
-	if (MyPcxFRAME >= 15) {
-		MyPcxFRAME = 1;
+	if (MyPcxFRAME == 15) {
+		MyPcxFRAME = 0;
 	}
 
 	DrawArtWithMask(GetCenter(gdwLogoWidth), 0, gdwLogoWidth, gdwLogoHeight, MyPcxFRAME, 250, pPcxLogoImage);
@@ -847,8 +847,9 @@ void SDL_RenderDiabloMainPage()
 	int PentdelayPerFrame = 60;
 	int Pentframe = (SDL_GetTicks() / PentdelayPerFrame) % totalPentFrames;
 
-	if (++Pentframe == 8) {
-		Pentframe = 1;
+	Pentframe++;
+	if (Pentframe == 8) {
+		Pentframe = 0;
 	}
 
 	int PentPositionX = GetCenter(42);

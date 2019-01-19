@@ -490,8 +490,9 @@ void __fastcall gmenu_draw_menu_item(TMenuItem *pItem, int a2)
 
 	int MyPcxDelay = 60;
 	int MyPcxFRAME = (SDL_GetTicks() / MyPcxDelay) % 15;
-	if (++MyPcxFRAME == 15) {
-		MyPcxFRAME = 1;
+	MyPcxFRAME++;
+	if (MyPcxFRAME == 15) {
+		MyPcxFRAME = 0;
 	}
 
 	DrawArtWithMask(320 - (gdwLogoWidth / 2), -50, gdwLogoWidth, gdwLogoHeight, MyPcxFRAME, 250, pPcxLogoImage);
