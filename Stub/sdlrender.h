@@ -1,6 +1,6 @@
 #pragma once
 
-int GetCenterOffset(int w);
+int GetCenterOffset(int w, int bw = 0);
 
 /*
 extern int totalFrames;

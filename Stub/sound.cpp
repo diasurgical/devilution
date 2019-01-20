@@ -159,14 +159,10 @@ void __cdecl music_stop()
 
 BOOL __fastcall snd_playing(TSnd *pSnd)
 {
-
-	printf("snd_playing \n");
+	DUMMY();
 	return false;
-	// DUMMY();
-	// UNIMPLEMENTED();
 }
 
-//
 void __fastcall snd_play_snd(TSnd *pSnd, int lVolume, int lPan)
 {
 

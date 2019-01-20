@@ -2158,6 +2158,12 @@ enum _mainmenu_selections
 	MAINMENU_ATTRACT_MODE = 6,
 };
 
+enum TXT_JUST {
+	JustLeft   = 0,
+	JustCentre = 1,
+	JustRight  = 2,
+};
+
 enum panel_button_id
 {
 	PANBTN_CHARINFO = 0,

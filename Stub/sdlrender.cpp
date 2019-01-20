@@ -640,48 +640,6 @@ void DrawArtImage(int SX, int SY, int SW, int SH, int nFrame, void *pBuffer)
 		}
 	}
 }
-
-void __fastcall print_title_str_large(int a1, int a2, char *a3)
-{
-	assert(BigTGold_cel);
-	int screen_y;  // [esp+Ch] [ebp-14h]
-	int screen_x;  // [esp+10h] [ebp-10h]
-	char v5;       // [esp+14h] [ebp-Ch]
-	signed int i;  // [esp+18h] [ebp-8h]
-	signed int v7; // [esp+1Ch] [ebp-4h]
-
-	screen_y = a2;
-	screen_x = a1;
-	v7 = strlen(a3);
-	for (i = 0; v7 > i; ++i) {
-		v5 = lfontframe[fontidx[a3[i]]];
-		if (v5)
-			CelDecodeOnly(screen_x, screen_y, BigTGold_cel, v5, 46);
-		screen_x += lfontkern[v5] + 2;
-	}
-	gb_Lfont_pix_width = screen_x;
-	gb_Lfont_str_len = v7;
-}
-
-void __fastcall print_title_str_small(int a1, int a2, char *a3)
-{
-	int screen_y;  // [esp+Ch] [ebp-14h]
-	int screen_x;  // [esp+10h] [ebp-10h]
-	char v5;       // [esp+14h] [ebp-Ch]
-	signed int i;  // [esp+18h] [ebp-8h]
-	signed int v7; // [esp+1Ch] [ebp-4h]
-
-	screen_y = a2;
-	screen_x = a1;
-	v7 = strlen(a3);
-	for (i = 0; i < v7; ++i) {
-		v5 = mfontframe[fontidx[a3[i]]];
-		if (v5)
-			CelDecodeOnly(screen_x, screen_y, pMedTextCels, v5, 22);
-		screen_x += mfontkern[v5] + 2;
-	}
-}
-
 void LoadDiabloMenuLogoImage()
 {
 }
@@ -707,9 +665,13 @@ void DrawArtWithMask(int SX, int SY, int SW, int SH, int nFrame, BYTE bMask, voi
 	}
 }
 
-int GetCenterOffset(int w)
+int GetCenterOffset(int w, int bw = 0)
 {
-	return SCREEN_WIDTH / 2 - w / 2;
+	if (bw == 0) {
+		bw = SCREEN_WIDTH;
+	}
+
+	return bw / 2 - w / 2;
 }
 
 void DrawPCXString(int x, int y, int w, int h, char *str, BYTE *font, void *pBuff)
@@ -741,6 +703,62 @@ int __fastcall GetPCXFontWidth(char *str, BYTE *font)
 	}
 
 	return len;
+}
+
+int TextAlignment(char *text, TXT_JUST align, int bw, BYTE *pFont)
+{
+	if (align != JustLeft) {
+		int w = GetPCXFontWidth(text, pFont);
+		if (align == JustCentre) {
+			return GetCenterOffset(w, bw);
+		} else if (align == JustRight) {
+			return bw - w;
+		}
+	}
+
+	return 0;
+}
+
+void PrintText16Gold(int x, int y, char *text, TXT_JUST align = JustLeft, int bw = 0)
+{
+	x += TextAlignment(text, align, bw, pFont16);
+
+	DrawPCXString(x, y, gdwFont16Width, gdwFont16Height, text, pFont16, pPcxFont16gImage);
+}
+
+void PrintText16Silver(int x, int y, char *text, TXT_JUST align = JustLeft, int bw = 0)
+{
+	x += TextAlignment(text, align, bw, pFont16);
+
+	DrawPCXString(x, y, gdwFont16Width, gdwFont16Height, text, pFont16, pPcxFont16sImage);
+}
+
+void PrintText24Gold(int x, int y, char *text, TXT_JUST align = JustLeft, int bw = 0)
+{
+	x += TextAlignment(text, align, bw, pFont24);
+
+	DrawPCXString(x, y, gdwFont24Width, gdwFont24Height, text, pFont24, pPcxFont24gImage);
+}
+
+void PrintText30Gold(int x, int y, char *text, TXT_JUST align = JustLeft, int bw = 0)
+{
+	x += TextAlignment(text, align, bw, pFont30);
+
+	DrawPCXString(x, y, gdwFont30Width, gdwFont30Height, text, pFont30, pPcxFont30gImage);
+}
+
+void PrintText30Silver(int x, int y, char *text, TXT_JUST align = JustLeft, int bw = 0)
+{
+	x += TextAlignment(text, align, bw, pFont30);
+
+	DrawPCXString(x, y, gdwFont30Width, gdwFont30Height, text, pFont30, pPcxFont30sImage);
+}
+
+void PrintText42Gold(int x, int y, char *text, TXT_JUST align = JustLeft, int bw = 0)
+{
+	x += TextAlignment(text, align, bw, pFont42);
+
+	DrawPCXString(x, y, gdwFont42Width, gdwFont42Height, text, pFont42, pPcxFont42gImage);
 }
 
 void LoadTitelArt(char *pszFile)
@@ -778,13 +796,9 @@ void ShowCredts()
 	for (int i = 0; i < linecount; i++) {
 		// Needs to be slower...
 		if (*the_long_credits[creditline + i] == '$') {
-			DrawPCXString(GetCenterOffset(GetPCXFontWidth(the_long_credits[creditline + i] + 1, pFont16)),
-			    50 + (i * pFont16[1]) - ybase, gdwFont2Width, gdwFont2Height,
-			    the_long_credits[creditline + i] + 1, pFont16, pPcxFont2Image);
+			PrintText16Gold(0, 50 + (i * pFont16[1]) - ybase, the_long_credits[creditline + i] + 1, JustCentre);
 		} else {
-			DrawPCXString(GetCenterOffset(GetPCXFontWidth(the_long_credits[creditline + i], pFont16)),
-			    50 + (i * pFont16[1]) - ybase, gdwFont3Width, gdwFont3Height, the_long_credits[creditline + i],
-			    pFont16, pPcxFont2Image);
+			PrintText16Gold(0, 50 + (i * pFont16[1]) - ybase, the_long_credits[creditline + i], JustCentre);
 		}
 	}
 }
@@ -834,6 +848,33 @@ void DrawMouse()
 	//	unlock_buf_priv();
 }
 
+void DrawSelector(int x, int y, int width, int padding, int spacing, int swidth, void *pBuffer)
+{
+	int Pentframe = (SDL_GetTicks() / 60) % 8;
+
+	Pentframe++;
+	if (Pentframe == 8) {
+		Pentframe = 0;
+	}
+
+	width = width ? width : SCREEN_WIDTH;
+	x += GetCenterOffset(swidth, width);
+	y += (SelectedItem - 1) * spacing;
+
+	DrawArtWithMask(x - width / 2 + padding, y, swidth, swidth, Pentframe, 250, pBuffer);
+	DrawArtWithMask(x + width / 2 - padding, y, swidth, swidth, Pentframe, 250, pBuffer);
+}
+
+void DrawSelector16(int x, int y, int width, int padding, int spacing)
+{
+	DrawSelector(x, y, width, padding, spacing, 20, MenuPentegram16);
+}
+
+void DrawSelector42(int x, int y, int width, int padding, int spacing)
+{
+	DrawSelector(x, y, width, padding, spacing, 42, MenuPentegram42);
+}
+
 void SDL_RenderDiabloMainPage()
 {
 	char *pszFile = "ui_art\\mainmenu.pcx";
@@ -843,41 +884,30 @@ void SDL_RenderDiabloMainPage()
 
 	DrawArtImage(0, 0, gdwTitleWidth, gdwTitleHeight, 0, pPcxTitleImage);
 
-	int totalPentFrames = 8;
-	int PentdelayPerFrame = 60;
-	int Pentframe = (SDL_GetTicks() / PentdelayPerFrame) % totalPentFrames;
-
-	Pentframe++;
-	if (Pentframe == 8) {
-		Pentframe = 0;
-	}
-
-	int menuTop = 192;
-
-	int PentPositionX = GetCenterOffset(42);
-	int PentPositionY = menuTop + SelectedItem * 43;
-	if (SelectedItem > 1) {
-		PentPositionY -= 1; // "Multi Player" and "Replay Intro" has a smaller gap then other items
-	}
-
-	DrawArtWithMask(PentPositionX - 234, PentPositionY, 42, 42, Pentframe, 250, MenuPentegram);
-	DrawArtWithMask(PentPositionX + 234, PentPositionY, 42, 42, Pentframe, 250, MenuPentegram);
 	// scrollrt_draw_cursor_back_buffer(); // Doesn't work?
 
 	char *MENIITEMS[5] = { "Single Player", "Multi Player", "Replay Intro", "Show Credits", "Exit Diablo" };
 
 	RenderDiabloLogo();
 
+	int menuTop = 192;
+
 	for (int i = 0; i < 5; i++) {
-		int x = GetCenterOffset(GetPCXFontWidth(MENIITEMS[i], pFont)) - 1;
 		int y = menuTop + i * 43;
-		if (i == 1) {
+		if (i > 1) {
 			y -= 1; // "Multi Player" and "Replay Intro" has a smaller gap then other items
 		}
-		DrawPCXString(x, y, gdwFontWidth, gdwFontHeight, MENIITEMS[i], pFont, pPcxFontImage);
+		PrintText42Gold(-1, y, MENIITEMS[i], 1);
 	}
 
-	DrawPCXString(17, 444, gdwFont3Width, gdwFont3Height, gszProductName, pFont16, pPcxFont3Image);
+	int selectorTop = menuTop;
+	if (SelectedItem > 2) {
+		selectorTop -= 1; // "Multi Player" and "Replay Intro" has a smaller gap then other items
+	}
+
+	DrawSelector42(0, selectorTop, 0, 85, 43);
+
+	PrintText16Silver(17, 444, gszProductName);
 
 	ADD_PlrStringXY(0, 600 - 150, 640, "DedicaTed To David Brevik, Erich Schaefer, Max Schaefer,", COL_BLUE);// Red isn't red
 	ADD_PlrStringXY(0, 600 - 130, 640, " MaTT Uelman, and The Blizzard North Team ThaT Gave Us A Childhood.", COL_BLUE);
@@ -888,11 +918,31 @@ void SDL_RenderDiabloSinglePlayerPage()
 	LoadTitelArt("ui_art\\selhero.pcx");
 	DrawArtImage(0, 0, gdwTitleWidth, gdwTitleHeight, 0, pPcxTitleImage);
 	RenderDiabloLogo();
-	RenderCharNames();
-}
 
-void LoadFont()
-{
+	DrawArtImage(30, 211, gdwHeroWidth, gdwHeroHeight, 0, pPcxHeroImage);
+
+	PrintText30Silver(-1, 161, "Single Player Characters", JustCentre);
+
+	PrintText30Silver(241 - 1, 211, "Select Hero", JustCentre, 369);
+
+	PrintText24Gold(241 - 1, 256, "New Hero", JustCentre, 369); // 26px spacing
+
+	DrawSelector16(241, 256 + 3, 369, 32, 26);
+
+	PrintText16Silver(31, 323, "Level:", JustRight, 118);
+	PrintText16Silver(149, 323, "1", JustCentre, 61);
+	PrintText16Silver(31, 358, "Strength:", JustRight, 118);
+	PrintText16Silver(149, 358, "30", JustCentre, 61);
+	PrintText16Silver(31, 380, "Magic:", JustRight, 118);
+	PrintText16Silver(149, 380, "10", JustCentre, 61);
+	PrintText16Silver(31, 401, "Dexterity:", JustRight, 118);
+	PrintText16Silver(149, 401, "20", JustCentre, 61);
+	PrintText16Silver(31, 422, "Vitality:", JustRight, 118);
+	PrintText16Silver(149, 422, "25", JustCentre, 61);
+
+	PrintText30Gold(279, 429, "OK");
+	PrintText30Gold(378, 429, "Delete");
+	PrintText30Gold(501, 429, "Cancel");
 }
 
 void LoadClickBoxes(int numberofchars)
@@ -942,24 +992,23 @@ void LoadClickBoxes(int numberofchars)
 int LoadedFont = 0;
 int TotalPlayers = 0;
 
-void DrawNewHeroKartinka(int image, int ShowClasses)
+void DrawNewHeroImage(int image, int ShowClasses)
 {
 	LoadTitelArt("ui_art\\selhero.pcx");
 	DrawArtImage(0, 0, gdwTitleWidth, gdwTitleHeight, 0, pPcxTitleImage);
 	RenderDiabloLogo();
+
+	DrawArtImage(30, 211, gdwHeroWidth, gdwHeroHeight, 0, pPcxHeroImage);
 
 	char *heroclasses[3] = { "Warrior", "Rogue", "Sorceror" };
 
 	// this should not be hard coded.
 	int x = 280;
 	int y = 430;
-	// DrawArtImage(30, 211, gdwHeroWidth, gdwHeroHeight, image, pPcxHeroImage);
-
 	if (ShowClasses == 1) {
 		for (int i = 0; i < 3; i++) {
 			y += 40;
-			// print_title_str_small(x, y, heroclasses[i]);
-			gmenu_print_text(x, y, heroclasses[i]);
+			PrintText16Silver(x, y, heroclasses[i]);
 		}
 	}
 }
@@ -970,6 +1019,8 @@ void DrawPreGameOptions(int image, int ShowClasses)
 	DrawArtImage(0, 0, gdwTitleWidth, gdwTitleHeight, 0, pPcxTitleImage);
 	RenderDiabloLogo();
 
+	DrawArtImage(30, 211, gdwHeroWidth, gdwHeroHeight, 0, pPcxHeroImage);
+
 	char *GameOptions[2] = { "New Game", "Load Game" };
 
 	// this should not be hard coded.
@@ -979,8 +1030,7 @@ void DrawPreGameOptions(int image, int ShowClasses)
 	if (ShowClasses == 1) {
 		for (int i = 0; i < 2; i++) {
 			y += 40;
-			// print_title_str_small(x, y, heroclasses[i]);
-			gmenu_print_text(x, y, GameOptions[i]);
+			PrintText16Silver(x, y, GameOptions[i]);
 		}
 	}
 }
@@ -990,6 +1040,8 @@ void DrawPreGameDifficultySelection(int image, int ShowClasses)
 	LoadTitelArt("ui_art\\selhero.pcx");
 	DrawArtImage(0, 0, gdwTitleWidth, gdwTitleHeight, 0, pPcxTitleImage);
 	RenderDiabloLogo();
+
+	DrawArtImage(30, 211, gdwHeroWidth, gdwHeroHeight, 0, pPcxHeroImage);
 
 	char *GameOptions[3] = { "Normal", "Nightmare", "Hell" };
 
@@ -1001,8 +1053,7 @@ void DrawPreGameDifficultySelection(int image, int ShowClasses)
 	if (ShowClasses == 1) {
 		for (int i = 0; i < 3; i++) {
 			y += 40;
-			// print_title_str_small(x, y, heroclasses[i]);
-			gmenu_print_text(x, y, GameOptions[i]);
+			PrintText16Silver(x, y, GameOptions[i]);
 		}
 	}
 }
@@ -1016,27 +1067,24 @@ void RenderDefaultStats(int HeroChosen)
 	char *SorcerorStats[4] = { "Strenght : 15", "Magic : 35", "Dexterity : 15", "Vitality : 20" };
 
 	if (HeroChosen == 0) {
-		print_title_str_small(x, y - 20, "Warrior Stats:");
+		PrintText16Silver(x, y - 20, "Warrior Stats:");
 		for (int i = 0; i < 4; i++) {
-			print_title_str_small(x, y, WarriorStats[i]);
-			// DrawPCXString(x, y, gdwFont3Width, gdwFont3Height, WarriorStats[i], pFont16, pPcxFont3Image);
+			PrintText16Silver(x, y, WarriorStats[i]);
 			y += 20;
 		}
 	}
 	if (HeroChosen == 1) {
-		print_title_str_small(x, y - 20, "Rogue Stats:");
+		PrintText16Silver(x, y - 20, "Rogue Stats:");
 		for (int i = 0; i < 4; i++) {
-			print_title_str_small(x, y, RogueStats[i]);
-			// DrawPCXString(x, y, gdwFont3Width, gdwFont3Height, RogueStats[i], pFont16, pPcxFont3Image);
+			PrintText16Silver(x, y, RogueStats[i]);
 			y += 20;
 		}
 	}
 	if (HeroChosen == 2) {
-		print_title_str_small(x, y - 20, "Sorceror Stats:");
+		PrintText16Silver(x, y - 20, "Sorceror Stats:");
 
 		for (int i = 0; i < 4; i++) {
-			print_title_str_small(x, y, SorcerorStats[i]);
-			// DrawPCXString(x, y, gdwFont3Width, gdwFont3Height, SorcerorStats[i], pFont16, pPcxFont3Image);
+			PrintText16Silver(x, y, SorcerorStats[i]);
 			y += 20;
 		}
 	}
@@ -1067,42 +1115,6 @@ void DrawHeroStats()
 	Render charactor stats if you want.
 
 	*/
-}
-
-void RenderCharNames()
-{
-	// 	const char *hero_name = hero_infos[0].name;
-	// DUMMY_PRINT("use hero: %s", hero_name);
-	// strcpy(name, hero_name);
-	// *dlgresult = 2;
-
-	// X 355, Y 269
-	int x = 350;
-	int y = 430;
-	TotalPlayers = 0;
-	for (int i = 0; i < 6; i++) {
-		if (hero_names[i][0] != 0) {
-			// Checking if section of array is empty.
-			// if array has something in this then draw name.
-			print_title_str_small(x, y, hero_names[i]);
-
-			y += 35;
-			TotalPlayers++;
-		}
-		if (TotalPlayers < 6 || TotalPlayers == 0) {
-			print_title_str_small(305, 620, "New Hero");
-		}
-	}
-
-	// SDL_RenderPresent(renderer);
-}
-
-void ConstantButtons()
-{
-	//print_title_str_small(500, 620, "Ok");
-	//print_title_str_small(600, 620, "Cancel");
-	DrawPCXString(500, 440, gdwFont2Height, gdwFont2Width, "OK", pFont16, pPcxFont2Image);
-	DrawPCXString(550, 440, gdwFont2Height, gdwFont2Width, "Cancel", pFont16, pPcxFont2Image);
 }
 
 bool LoadCreateHeroDialogImages = 0;

@@ -4,9 +4,9 @@
 #include "sdlrender.h"
 #include "stubs.h"
 int menu = 0;
-int SelectedItem = 0;
-int SelectedItemMax = 0;
-int MenuItem[10] = { 5, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+int SelectedItem = 1;
+int SelectedItemMax = 1;
+int MenuItem[10] = { 5, 0, 1, 0, 0, 0, 0, 0, 0, 0 };
 
 void __cdecl UiDestroy()
 {
@@ -19,21 +19,19 @@ BOOL __stdcall UiTitleDialog(int a1)
 	return TRUE;
 }
 
-void LoadCharNamesintoMemory(int start, int end)
+void LoadCharNamesintoMemory()
 {
 	PkPlayerStruct pkplr;
-	int unused;
-	void *CharFile;
+	HANDLE CharFile;
 	char *p_hero_names = *hero_names; // Not sure if this is correct
 
 	memset(hero_names, 0, 0x140u);
 
-	while (start != end) {
-		CharFile = pfile_open_save_archive(&unused, start);
+	for (int i = 0; i < MAX_CHARACTERS; i++) {
+		CharFile = pfile_open_save_archive(NULL, i);
 		if (CharFile) {
 			if (pfile_read_hero(CharFile, &pkplr)) {
 				strcpy(p_hero_names, pkplr.pName);
-				printf("Player Strength %d\n", (int)pkplr.pBaseStr);
 				UnPackPlayer(&pkplr, 0, 0);
 				pfile_archive_contains_game(CharFile);
 			}
@@ -41,7 +39,11 @@ void LoadCharNamesintoMemory(int start, int end)
 		}
 
 		p_hero_names += 32;
-		start++;
+	}
+
+	for (int i = 0; i < MAX_CHARACTERS; i++) {
+			strcpy(p_hero_names, "32as1d");
+		p_hero_names += 32;
 	}
 
 	// memcpy(shero_names, hero_names, sizeof(hero_names));
@@ -57,8 +59,8 @@ void SetMenu(int MenuId)
 	TitleImageLoaded = false;
 
 	menu = MenuId;
-	SelectedItem = 0;
-	SelectedItemMax = MenuItem[MenuId] - 1;
+	SelectedItem = 1;
+	SelectedItemMax = MenuItem[MenuId];
 }
 
 void ExitDiablo()
@@ -82,7 +84,7 @@ BOOL IsInsideRect(int x, int y, SDL_Rect rect)
 
 void UiInitialize() // I anticipate to move this later.
 {
-	SDL_SetRelativeMouseMode(SDL_TRUE);
+	//SDL_SetRelativeMouseMode(SDL_TRUE);
 	// WNDPROC saveProc;
 
 	snd_init(0);
@@ -96,7 +98,6 @@ void UiInitialize() // I anticipate to move this later.
 	SDL_Event event;
 	int x, y;
 	bool quit = false;
-	int CharsLoaded = 0;
 	int HeroPortrait = 3;
 
 	printf("Main Menu Init\n");
@@ -109,53 +110,46 @@ void UiInitialize() // I anticipate to move this later.
 	const Uint8 *state = SDL_GetKeyboardState(NULL);
 
 	// static std::deque<MSG> message_queue;
+	LoadHeroStats();
+	LoadCharNamesintoMemory();
 
 	while (!quit) {
 		DrawMouse();
 		PaletteFadeIn(32);
 
-		if (menu == 0) {
+		switch (menu) {
+		case 0:
 			SDL_RenderDiabloMainPage();
-		} else if (menu == 2) {
-			if (CharsLoaded == 0) {
-				LoadCharNamesintoMemory(0, 7);
-				//	LoadHeroStats();
-				CharsLoaded = 1;
-			}
+			break;
+		case 2:
 			SDL_RenderDiabloSinglePlayerPage();
 			gbMaxPlayers = 1;
 			DrawMouse();
-			ConstantButtons();
-		} else if (menu == 3) {
+			break;
+		case 3:
 			CreateHeroMenu();
-			DrawNewHeroKartinka(HeroPortrait, 1);
-			ConstantButtons();
+			DrawNewHeroImage(HeroPortrait, 1);
 			DrawMouse();
-		}
-
-		int m4Loaded = 0;
-		if (menu == 4) {
-			DrawNewHeroKartinka(HeroPortrait, 0);
+			break;
+		case 4:
+			DrawNewHeroImage(HeroPortrait, 0);
 			RenderDefaultStats(HeroPortrait);
 			RenderUndecidedHeroName();
-			ConstantButtons();
 			DrawMouse();
-		}
-		if (menu == 5) {
+			break;
+		case 5:
 			DrawPreGameOptions(HeroPortrait, 1);
 			RenderDefaultStats(HeroPortrait);
-			ConstantButtons();
 			DrawMouse();
-		}
-		if (menu == 6) {
+			break;
+		case 6:
 			DrawPreGameDifficultySelection(HeroPortrait, 1);
 			RenderDefaultStats(HeroPortrait);
-			ConstantButtons();
 			DrawMouse();
-		}
-
-		if (menu == 10) {
+			break;
+		case 10:
 			ShowCredts();
+			break;
 		}
 
 		if (SDL_PollEvent(&event)) {
@@ -180,7 +174,7 @@ void UiInitialize() // I anticipate to move this later.
 
 				case SDLK_UP:
 					SelectedItem--;
-					if (SelectedItem < 0) {
+					if (SelectedItem < 1) {
 						SelectedItem = SelectedItemMax;
 					}
 					effects_play_sound("sfx\\items\\titlemov.wav");
@@ -189,26 +183,26 @@ void UiInitialize() // I anticipate to move this later.
 				case SDLK_DOWN:
 					SelectedItem++;
 					if (SelectedItem > SelectedItemMax) {
-						SelectedItem = 0;
+						SelectedItem = 1;
 					}
 					effects_play_sound("sfx\\items\\titlemov.wav");
 					break;
 
 				case SDLK_RETURN:
 					switch (SelectedItem) {
-					case 0:
-						SetMenu(2);
+					case MAINMENU_SINGLE_PLAYER:
+						SetMenu(2); // TODO skip to choose class if no valid saves
 						break;
-					case 1:
+					case MAINMENU_MULTIPLAYER:
 						printf("Multi Player\n");
 						break;
-					case 2:
+					case MAINMENU_REPLAY_INTRO:
 						printf("Replay Intro\n");
 						break;
-					case 3:
+					case MAINMENU_SHOW_CREDITS:
 						SetMenu(10);
 						break;
-					case 4:
+					case MAINMENU_EXIT_DIABLO:
 						quit = true;
 						ExitDiablo();
 						break;
@@ -228,9 +222,6 @@ void UiInitialize() // I anticipate to move this later.
 				}
 
 			case SDL_KEYUP:
-				break;
-
-			default:
 				break;
 			}
 
@@ -285,7 +276,7 @@ void UiInitialize() // I anticipate to move this later.
 						ItemWidth = 515;
 						ItemLeft = GetCenterOffset(ItemWidth);
 						if (IsInside(x, y, ItemLeft, ItemTop, ItemWidth, ItemHeight)) {
-							SetMenu(2);
+							SetMenu(2); // TODO skip to choose class if no valid saves
 						} else if (IsInside(x, y, ItemLeft, ItemTop + ItemHeight + 1, ItemWidth, ItemHeight)) {
 							printf("Multi Player\n");
 						} else if (IsInside(x, y, ItemLeft, ItemTop + ItemHeight * 2 + 1, ItemWidth, ItemHeight)) {
@@ -476,7 +467,7 @@ void UiInitialize() // I anticipate to move this later.
 
 							printf("Cancel\n\n\n");
 
-							SetMenu(2); // Return back to select hero menu.
+							SetMenu(2); // TODO skip to main menu if no valid saves
 						}
 						break;
 					case 6:

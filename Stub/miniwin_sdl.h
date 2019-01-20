@@ -8,7 +8,6 @@
 #include <SDL_mixer.h>
 //#include "SDL_FontCache.h"
 
-
 #define SDL_CHECK(e) assert(e == 0)
 
 extern SDL_Window *window;
@@ -30,36 +29,47 @@ void sdl_present_surface();
 #define GetCurrentDir getcwd
 #endif
 
+extern unsigned char *pFont16;
+extern int gdwFont16Width;
+extern int gdwFont16Height;
+extern void *pPcxFont16sImage;
+extern void *pPcxFont16gImage;
 
+extern int gdwFont24Width;
+extern int gdwFont24Height;
+extern void *pPcxFont24gImage;
+extern unsigned char *pFont24;
 
-extern int gdwFontWidth;
-extern int gdwFontHeight;
-extern void *pPcxFontImage;
-extern unsigned char *pFont;
+extern unsigned char *pFont30;
+extern int gdwFont30Width;
+extern int gdwFont30Height;
+extern void *pPcxFont30sImage;
+extern void *pPcxFont30gImage;
 
+extern unsigned char *pFont42;
+extern int gdwFont42Width;
+extern int gdwFont42Height;
+extern void *pPcxFont42gImage;
 
 void sdl_update_entire_surface();
 
-//My SDL inclusions // 
+//My SDL inclusions //
 
 extern bool SorcerorCreateSelected;
 extern bool WarriorCreateSelected;
 extern bool RogueCreateSelected;
 
-
 extern int totalFrames;
 //extern SDL_Texture* spriteSheet;
-extern SDL_Surface* DiabloTitle;
+extern SDL_Surface *DiabloTitle;
 extern SDL_Event input;
 
 extern int SCREEN_WIDTH;
 extern int SCREEN_HEIGHT;
 extern int TotalPlayers;
 
-
 extern SDL_Rect textureRect;
 extern SDL_Rect windowRect;
-
 
 //Menu0 //Main Menu rects
 extern SDL_Rect SinglePlrBox;
@@ -72,51 +82,41 @@ extern SDL_Rect ExitBox;
 
 //CEL Gobals ?? Doesn't work?
 extern void *BigTGold_cel;
-extern void * pTitlqtxtCel;
-extern void * pDiabfrCel ;
+extern void *pTitlqtxtCel;
+extern void *pDiabfrCel;
 extern void *BigTGold_cel;
 extern int gdwLogoWidth;
 extern int gdwLogoHeight;
 extern void *pPcxLogoImage;
-extern void *pPanelText;
-extern void * pTitlgrayCel_sgpBackCel;
+extern void *pTitlgrayCel_sgpBackCel;
 extern int gdwTitleWidth;
 extern int gdwTitleHeight;
 extern void *pPcxTitleImage;
 extern int gdwCursorHeight;
 extern int gdwCursorWidth;
-extern void * pPcxCursorImage;
+extern void *pPcxCursorImage;
 extern int gdwHeroHeight;
 extern int gdwHeroWidth;
-extern void * pPcxHeroImage;
+extern void *pPcxHeroImage;
 extern int gdwSHeroHeight;
 extern int gdwSHeroWidth;
-extern void * pPcxSHeroImage;
-extern void * pMedTextCels;
+extern void *pPcxSHeroImage;
+extern void *pMedTextCels;
 
-extern void * pPcxGameImage;
-extern void * pPcxCreditsImage;
+extern void *pPcxGameImage;
+extern void *pPcxCreditsImage;
 extern int gdwCreditsWidth;
 extern int gdwCreditsHeight;
-
-
-extern int gdwFont2Width;
-extern int gdwFont2Height;
-extern void *pPcxFont2Image;
-extern unsigned char *pFont16;
-
-extern int gdwFont3Width;
-extern int gdwFont3Height;
-extern void *pPcxFont3Image;
 
 extern char HeroUndecidedName[17];
 extern bool StartNewGame;
 extern bool CreateSinglePlayerChar;
 extern int HeroChosen;
 
-extern void * TitleMenuText; 
+extern void *TitleMenuText;
 
-extern void * MenuPentegram;
+extern void *MenuPentegram16;
+extern void *MenuPentegram42;
 
 //Menu2 // Single player menu rects
 //extern static std::vector<_uiheroinfo> hero_infos;
@@ -127,7 +127,7 @@ void CreateDiabloMainMenuz();
 void SdlDiabloMainWindow();
 void SDL_RenderDiabloMainPage();
 char *GetWorkingDirectory();
-void  CreateMainDiabloMenu();
+void CreateMainDiabloMenu();
 void SDLCreateDiabloCursor();
 void SDL_RenderDiabloSinglePlayerPage();
 void ShowCredts();
@@ -137,16 +137,12 @@ void FreeMenuItems();
 void DrawMouse();
 void DrawCursor(int mx, int my);
 void CreateHeroMenu();
-void DrawNewHeroKartinka(int image , int ShowClasses);
-void ConstantButtons();
+void DrawNewHeroImage(int image, int ShowClasses);
 void RenderUndecidedHeroName();
 void LoadHeroStats();
 void RenderDefaultStats(int HeroChosen);
-void DrawPreGameOptions(int image , int ShowClasses);
+void DrawPreGameOptions(int image, int ShowClasses);
 void DrawPreGameDifficultySelection(int image, int ShowClasses);
-
-
-
 
 typedef unsigned char BYTE;
 void DrawPCXString(int x, int y, int w, int h, char *str, BYTE *font, void *pBuff);

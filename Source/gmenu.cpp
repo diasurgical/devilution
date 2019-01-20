@@ -39,26 +39,37 @@ void *pPcxHeroImage;
 int gdwSHeroHeight;
 int gdwSHeroWidth;
 
-int gdwFontWidth;
-int gdwFontHeight;
-void *pPcxFontImage;
-unsigned char *pFont;
-
-int gdwFont2Width;
-int gdwFont2Height;
-void *pPcxFont2Image;
+int gdwFont16Width;
+int gdwFont16Height;
+void *pPcxFont16sImage;
+void *pPcxFont16gImage;
 unsigned char *pFont16;
 
-int gdwFont3Width;
-int gdwFont3Height;
-void *pPcxFont3Image;
+int gdwFont24Width;
+int gdwFont24Height;
+void *pPcxFont24gImage;
+unsigned char *pFont24;
+
+int gdwFont30Width;
+int gdwFont30Height;
+void *pPcxFont30sImage;
+void *pPcxFont30gImage;
+unsigned char *pFont30;
+
+int gdwFont42Width;
+int gdwFont42Height;
+void *pPcxFont42gImage;
+void *pPcxFont42yImage;
+unsigned char *pFont42;
+
 
 void *GameTitle;
 int GameTitleHeight;
 int GameTitleWidth;
 
 void *TitleMenuText;
-void *MenuPentegram;
+void *MenuPentegram16;
+void *MenuPentegram42;
 
 void *optbar_cel;
 void *PentSpin_cel;
@@ -319,9 +330,9 @@ void __fastcall gmenu_print_text(int x, int y, char *pszStr)
 		if (v7)
 			if (gbRunGame == 1) {
 				//CelDecodeLightOnly(v5, v4, (char *)BigTGold_cel, v7, 46);
-				DrawArtWithMask(v5 - 90, v4 - 250, 42, 42, 0, 242, pPcxFontImage); //pPcxFontImage
+				DrawArtWithMask(v5 - 90, v4 - 250, 42, 42, 0, 242, pPcxFont42gImage);
 			} else {
-				DrawArtWithMask(v5 - 90, v4 - 250, 42, 42, 0, 242, pPcxFontImage); //pPcxFontImage
+				DrawArtWithMask(v5 - 90, v4 - 250, 42, 42, 0, 242, pPcxFont42gImage);
 			}
 
 		v5 += lfontkern[v7] + 2;
@@ -342,8 +353,8 @@ void __cdecl gmenu_init_menu()
 	dword_63448C = 0;
 	byte_634464 = 0;
 
-	pPanelText = LoadFileInMem("CtrlPan\\SmalText.CEL", 0);
-	LoadArtImage("ui_art\\focus42.pcx", &MenuPentegram, 8, dwData);
+	LoadArtImage("ui_art\\focus16.pcx", &MenuPentegram16, 8, dwData);
+	LoadArtImage("ui_art\\focus42.pcx", &MenuPentegram42, 8, dwData);
 
 	LoadArtImage("ui_art\\cursor.pcx", &pPcxCursorImage, 1, dwData);
 	gdwCursorWidth = dwData[0];
@@ -357,19 +368,29 @@ void __cdecl gmenu_init_menu()
 	gdwHeroWidth = dwData[0];
 	gdwHeroHeight = dwData[1];
 
-	LoadArtImage("ui_art\\font42g.pcx", &pPcxFontImage, 256, dwData);
-	gdwFontWidth = dwData[0];
-	gdwFontHeight = dwData[1];
-	pFont = LoadFileInMem("ui_art\\font42.bin", 0);
-
-	LoadArtImage("ui_art\\font16g.pcx", &pPcxFont2Image, 256, dwData);
-	gdwFont2Width = dwData[0];
-	gdwFont2Height = dwData[1];
 	pFont16 = LoadFileInMem("ui_art\\font16.bin", 0);
+	LoadArtImage("ui_art\\font16s.pcx", &pPcxFont16sImage, 256, NULL);
+	LoadArtImage("ui_art\\font16g.pcx", &pPcxFont16gImage, 256, dwData);
+	gdwFont16Width = dwData[0];
+	gdwFont16Height = dwData[1];
 
-	LoadArtImage("ui_art\\font16s.pcx", &pPcxFont3Image, 256, dwData);
-	gdwFont3Width = dwData[0];
-	gdwFont3Height = dwData[1];
+	pFont24 = LoadFileInMem("ui_art\\font24.bin", 0);
+	LoadArtImage("ui_art\\font24g.pcx", &pPcxFont24gImage, 256, dwData);
+	gdwFont24Width = dwData[0];
+	gdwFont24Height = dwData[1];
+
+	pFont30 = LoadFileInMem("ui_art\\font30.bin", 0);
+	LoadArtImage("ui_art\\font30s.pcx", &pPcxFont30sImage, 256, NULL);
+	LoadArtImage("ui_art\\font30g.pcx", &pPcxFont30gImage, 256, dwData);
+	gdwFont30Width = dwData[0];
+	gdwFont30Height = dwData[1];
+
+	pFont42 = LoadFileInMem("ui_art\\font42.bin", 0);
+	LoadArtImage("ui_art\\font42g.pcx", &pPcxFont42gImage, 256, dwData);
+	gdwFont42Width = dwData[0];
+	gdwFont42Height = dwData[1];
+
+
 }
 // 634464: using guessed type char byte_634464;
 // 634478: using guessed type char byte_634478;
