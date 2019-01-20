@@ -293,12 +293,11 @@ void sdl_present_surface()
 
 void __cdecl lock_buf_priv()
 {
-
 	if (!gpBuffer) {
-		printf(" GpBuffer Created\n ");
+		printf("GpBuffer Created\n");
 		const int pitch = 640 + 64 + 64;
 		gpBuffer = (Screen *)malloc(sizeof(Screen));
-		printf("SIZE OF SCREEN %d", sizeof(Screen));
+		printf("SIZE OF SCREEN %d\n", sizeof(Screen));
 		gpBufEnd += (unsigned int)gpBuffer;
 
 
@@ -310,15 +309,13 @@ void __cdecl lock_buf_priv()
 	}
 
 	unlock_buf_priv();
-
-
 }
 
 void __cdecl unlock_buf_priv()
 {
-	
+
 	gpBufEnd -= (unsigned int)gpBufEnd;
-		
+
 
 
 	if (!surface_dirty) {
