@@ -2,6 +2,7 @@
 
 #include "../types.h"
 #include "miniwin_sdl.h"
+#include "sdlrender.h"
 
 #ifndef NO_GLOBALS
 bool byte_634464; // weak
@@ -495,7 +496,7 @@ void __fastcall gmenu_draw_menu_item(TMenuItem *pItem, int a2)
 		MyPcxFRAME = 0;
 	}
 
-	DrawArtWithMask(320 - (gdwLogoWidth / 2), -50, gdwLogoWidth, gdwLogoHeight, MyPcxFRAME, 250, pPcxLogoImage);
+	DrawArtWithMask(GetCenterOffset(gdwLogoWidth), -50, gdwLogoWidth, gdwLogoHeight, MyPcxFRAME, 250, pPcxLogoImage);
 
 	v2 = a2;
 	v3 = pItem;

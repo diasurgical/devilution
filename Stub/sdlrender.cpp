@@ -707,7 +707,7 @@ void DrawArtWithMask(int SX, int SY, int SW, int SH, int nFrame, BYTE bMask, voi
 	}
 }
 
-int GetCenter(int w)
+int GetCenterOffset(int w)
 {
 	return SCREEN_WIDTH / 2 - w / 2;
 }
@@ -778,11 +778,11 @@ void ShowCredts()
 	for (int i = 0; i < linecount; i++) {
 		// Needs to be slower...
 		if (*the_long_credits[creditline + i] == '$') {
-			DrawPCXString(GetCenter(GetPCXFontWidth(the_long_credits[creditline + i] + 1, pFont16)),
+			DrawPCXString(GetCenterOffset(GetPCXFontWidth(the_long_credits[creditline + i] + 1, pFont16)),
 			    50 + (i * pFont16[1]) - ybase, gdwFont2Width, gdwFont2Height,
 			    the_long_credits[creditline + i] + 1, pFont16, pPcxFont2Image);
 		} else {
-			DrawPCXString(GetCenter(GetPCXFontWidth(the_long_credits[creditline + i], pFont16)),
+			DrawPCXString(GetCenterOffset(GetPCXFontWidth(the_long_credits[creditline + i], pFont16)),
 			    50 + (i * pFont16[1]) - ybase, gdwFont3Width, gdwFont3Height, the_long_credits[creditline + i],
 			    pFont16, pPcxFont2Image);
 		}
@@ -800,7 +800,7 @@ void RenderDiabloLogo()
 		MyPcxFRAME = 0;
 	}
 
-	DrawArtWithMask(GetCenter(gdwLogoWidth), 0, gdwLogoWidth, gdwLogoHeight, MyPcxFRAME, 250, pPcxLogoImage);
+	DrawArtWithMask(GetCenterOffset(gdwLogoWidth), 0, gdwLogoWidth, gdwLogoHeight, MyPcxFRAME, 250, pPcxLogoImage);
 }
 
 void DrawCursor(int mx, int my)
@@ -854,7 +854,7 @@ void SDL_RenderDiabloMainPage()
 
 	int menuTop = 192;
 
-	int PentPositionX = GetCenter(42);
+	int PentPositionX = GetCenterOffset(42);
 	int PentPositionY = menuTop + SelectedItem * 43;
 	if (SelectedItem > 1) {
 		PentPositionY -= 1; // "Multi Player" and "Replay Intro" has a smaller gap then other items
@@ -869,7 +869,7 @@ void SDL_RenderDiabloMainPage()
 	RenderDiabloLogo();
 
 	for (int i = 0; i < 5; i++) {
-		int x = GetCenter(GetPCXFontWidth(MENIITEMS[i], pFont)) - 1;
+		int x = GetCenterOffset(GetPCXFontWidth(MENIITEMS[i], pFont)) - 1;
 		int y = menuTop + i * 43;
 		if (i == 1) {
 			y -= 1; // "Multi Player" and "Replay Intro" has a smaller gap then other items
