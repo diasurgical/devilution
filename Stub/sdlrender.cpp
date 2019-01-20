@@ -2,11 +2,8 @@
 #include "miniwin_sdl.h"
 #include "stubs.h"
 
-int SCREEN_WIDTH = 640; // 1024×768
+int SCREEN_WIDTH = 640;
 int SCREEN_HEIGHT = 480;
-
-int Window_Width = 640;
-int Window_Height = 480;
 
 int LogoWidth;
 int LogoHeight;
@@ -35,9 +32,12 @@ bool DiabloImageLoaded = 0;
 bool DiabloMainMenuListLoaded = 0;
 bool TitleImageLoaded = false;
 
+void *pPcxLogoImage;
 int gdwLogoWidth;
 int gdwLogoHeight;
-void *pPcxLogoImage;
+void *pPcxLogoSmImage;
+int gdwLogoSmWidth;
+int gdwLogoSmHeight;
 
 int gdwTitleWidth;
 int gdwTitleHeight;
@@ -62,6 +62,7 @@ unsigned char *pFont16;
 
 int gdwFont24Width;
 int gdwFont24Height;
+void *pPcxFont24sImage;
 void *pPcxFont24gImage;
 unsigned char *pFont24;
 
@@ -848,8 +849,7 @@ void SdlDiabloMainWindow()
 	SDL_Init(SDL_INIT_EVERYTHING);
 	SDL_Init(SDL_INIT_VIDEO);
 
-	window = SDL_CreateWindow("Diablo", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, Window_Width, Window_Height,
-	    0);
+	window = SDL_CreateWindow("Diablo", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
 
 	renderer = SDL_CreateRenderer(window, -1, 0);
 	printf("Window And Renderer Created!\n");
@@ -913,7 +913,7 @@ int GetCenterOffset(int w, int bw = 0)
 	return bw / 2 - w / 2;
 }
 
-void DrawPCXString(int x, int y, int w, int h, char *str, BYTE *font, void *pBuff)
+void DrawPCXString(int x, int y, int w, int h, BYTE *str, BYTE *font, void *pBuff)
 {
 	int i;
 	int len = 0;
@@ -977,6 +977,13 @@ void PrintText24Gold(int x, int y, char *text, TXT_JUST align = JustLeft, int bw
 	x += TextAlignment(text, align, bw, pFont24);
 
 	DrawPCXString(x, y, gdwFont24Width, gdwFont24Height, text, pFont24, pPcxFont24gImage);
+}
+
+void PrintText24Silver(int x, int y, char *text, TXT_JUST align = JustLeft, int bw = 0)
+{
+	x += TextAlignment(text, align, bw, pFont24);
+
+	DrawPCXString(x, y, gdwFont24Width, gdwFont24Height, text, pFont24, pPcxFont24sImage);
 }
 
 void PrintText30Gold(int x, int y, char *text, TXT_JUST align = JustLeft, int bw = 0)
@@ -1044,16 +1051,26 @@ void ShowCredts()
 
 ///////////////////////////Renders
 
-void RenderDiabloLogo()
+void AnimateDiabloLogo(int t, int w, int h, void *pBuffer)
 {
 	int MyPcxDelay = 60;
-	int MyPcxFRAME = (SDL_GetTicks() / MyPcxDelay) % 15; // This is not how this should be done...
+	int MyPcxFRAME = (SDL_GetTicks() / MyPcxDelay) % 15;
 	MyPcxFRAME++;
 	if (MyPcxFRAME == 15) {
 		MyPcxFRAME = 0;
 	}
 
-	DrawArtWithMask(GetCenterOffset(gdwLogoWidth), 0, gdwLogoWidth, gdwLogoHeight, MyPcxFRAME, 250, pPcxLogoImage);
+	DrawArtWithMask(GetCenterOffset(w), t, w, h, MyPcxFRAME, 250, pBuffer);
+}
+
+void RenderDiabloLogo()
+{
+	AnimateDiabloLogo(182, gdwLogoWidth, gdwLogoHeight, pPcxLogoImage);
+}
+
+void RenderDiabloLogoSm()
+{
+	AnimateDiabloLogo(0, gdwLogoSmWidth, gdwLogoSmHeight, pPcxLogoSmImage);
 }
 
 void DrawCursor(int mx, int my)
@@ -1114,6 +1131,15 @@ void DrawSelector42(int x, int y, int width, int padding, int spacing)
 	DrawSelector(x, y, width, padding, spacing, 42, MenuPentegram42);
 }
 
+void SDL_RenderDiabloSplashPage()
+{
+	LoadTitelArt("ui_art\\title.pcx");
+	DrawArtImage(0, 0, gdwTitleWidth, gdwTitleHeight, 0, pPcxTitleImage);
+
+	PrintText24Silver(-1, 410, "Copyright \xA9 1996-2001 Blizzard Entertainment", JustCentre);
+	RenderDiabloLogo();
+}
+
 void SDL_RenderDiabloMainPage()
 {
 	char *pszFile = "ui_art\\mainmenu.pcx";
@@ -1125,11 +1151,11 @@ void SDL_RenderDiabloMainPage()
 
 	// scrollrt_draw_cursor_back_buffer(); // Doesn't work?
 
-	char *MENIITEMS[5] = { "Single Player", "Multi Player", "Replay Intro", "Show Credits", "Exit Diablo" };
 
-	RenderDiabloLogo();
+	RenderDiabloLogoSm();
 
 	int menuTop = 192;
+	char *MENIITEMS[5] = { "Single Player", "Multi Player", "Replay Intro", "Show Credits", "Exit Diablo" };
 
 	for (int i = 0; i < 5; i++) {
 		int y = menuTop + i * 43;
@@ -1156,7 +1182,7 @@ void SDL_RenderDiabloSinglePlayerPage()
 {
 	LoadTitelArt("ui_art\\selhero.pcx");
 	DrawArtImage(0, 0, gdwTitleWidth, gdwTitleHeight, 0, pPcxTitleImage);
-	RenderDiabloLogo();
+	RenderDiabloLogoSm();
 
 	DrawArtImage(30, 211, gdwHeroWidth, gdwHeroHeight, 0, pPcxHeroImage);
 
@@ -1235,7 +1261,7 @@ void DrawNewHeroImage(int image, int ShowClasses)
 {
 	LoadTitelArt("ui_art\\selhero.pcx");
 	DrawArtImage(0, 0, gdwTitleWidth, gdwTitleHeight, 0, pPcxTitleImage);
-	RenderDiabloLogo();
+	RenderDiabloLogoSm();
 
 	DrawArtImage(30, 211, gdwHeroWidth, gdwHeroHeight, 0, pPcxHeroImage);
 
@@ -1256,7 +1282,7 @@ void DrawPreGameOptions(int image, int ShowClasses)
 {
 	LoadTitelArt("ui_art\\selhero.pcx");
 	DrawArtImage(0, 0, gdwTitleWidth, gdwTitleHeight, 0, pPcxTitleImage);
-	RenderDiabloLogo();
+	RenderDiabloLogoSm();
 
 	DrawArtImage(30, 211, gdwHeroWidth, gdwHeroHeight, 0, pPcxHeroImage);
 
@@ -1278,7 +1304,7 @@ void DrawPreGameDifficultySelection(int image, int ShowClasses)
 {
 	LoadTitelArt("ui_art\\selhero.pcx");
 	DrawArtImage(0, 0, gdwTitleWidth, gdwTitleHeight, 0, pPcxTitleImage);
-	RenderDiabloLogo();
+	RenderDiabloLogoSm();
 
 	DrawArtImage(30, 211, gdwHeroWidth, gdwHeroHeight, 0, pPcxHeroImage);
 
@@ -1369,5 +1395,5 @@ void LoadCreateHeroDialogMenu()
 void CreateHeroMenu()
 {
 	DrawArtImage(0, 0, gdwTitleWidth, gdwTitleHeight, 0, pPcxTitleImage);
-	RenderDiabloLogo();
+	RenderDiabloLogoSm();
 }

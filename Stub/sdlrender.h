@@ -10,6 +10,7 @@ extern void *pPcxFont16gImage;
 
 extern int gdwFont24Width;
 extern int gdwFont24Height;
+extern void *pPcxFont24sImage;
 extern void *pPcxFont24gImage;
 extern unsigned char *pFont24;
 
@@ -26,9 +27,14 @@ extern void *pPcxFont42gImage;
 
 extern void *pTitlqtxtCel;
 extern void *pDiabfrCel;
+
+extern void *pPcxLogoImage;
 extern int gdwLogoWidth;
 extern int gdwLogoHeight;
-extern void *pPcxLogoImage;
+extern void *pPcxLogoSmImage;
+extern int gdwLogoSmWidth;
+extern int gdwLogoSmHeight;
+
 extern int gdwTitleWidth;
 extern int gdwTitleHeight;
 extern void *pPcxTitleImage;
@@ -90,6 +96,7 @@ extern SDL_Rect CreateHeroBox;
 void CreateMenuDialogBox();
 void CreateDiabloMainMenuz();
 void SdlDiabloMainWindow();
+void SDL_RenderDiabloSplashPage();
 void SDL_RenderDiabloMainPage();
 char *GetWorkingDirectory();
 void CreateMainDiabloMenu();
