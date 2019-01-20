@@ -15,7 +15,6 @@ int gbActive;
 
 char gszVersionNumber[260] = "internal version unknown";
 char gszProductName[260] = "Diablo v1.09";
-char HeroUndecidedName[17] = { 0 };
 bool StartNewGame;
 bool CreateSinglePlayerChar;
 int HeroChosen = 0;
