@@ -1643,52 +1643,36 @@ void __fastcall AddSCambBook(int i)
 
 void __fastcall AddChest(int i, int t)
 {
-	int v2; // edi
-	int v3; // esi
-	int v4; // esi
-	int v6; // [esp-4h] [ebp-Ch]
-
-	v2 = t;
-	v3 = i;
 	if (!random(147, 2))
-		object[v3]._oAnimFrame += 3;
-	v4 = v3;
-	object[v4]._oRndSeed = GetRndSeed();
-	switch (v2) {
+		object[i]._oAnimFrame += 3;
+	object[i]._oRndSeed = GetRndSeed();
+	switch (t) {
 	case OBJ_CHEST1:
-		goto LABEL_22;
-	case OBJ_CHEST2:
-	LABEL_12:
-		if (setlevel) {
-			object[v4]._oVar1 = 2;
-			break;
-		}
-		v6 = 3;
-		goto LABEL_18;
-	case OBJ_CHEST3:
-	LABEL_9:
-		if (setlevel) {
-			object[v4]._oVar1 = 3;
-			break;
-		}
-		v6 = 4;
-	LABEL_18:
-		object[v4]._oVar1 = random(147, v6);
-		break;
 	case OBJ_TCHEST1:
-	LABEL_22:
 		if (setlevel) {
-			object[v4]._oVar1 = 1;
+			object[i]._oVar1 = 1;
 			break;
 		}
-		v6 = 2;
-		goto LABEL_18;
+		object[i]._oVar1 = random(147, 2);
+		break;
 	case OBJ_TCHEST2:
-		goto LABEL_12;
+	case OBJ_CHEST2:
+		if (setlevel) {
+			object[i]._oVar1 = 2;
+			break;
+		}
+		object[i]._oVar1 = random(147, 3);
+		break;
 	case OBJ_TCHEST3:
-		goto LABEL_9;
+	case OBJ_CHEST3:
+		if (setlevel) {
+			object[i]._oVar1 = 3;
+			break;
+		}
+		object[i]._oVar1 = random(147, 4);
+		break;
 	}
-	object[v4]._oVar2 = random(147, 8);
+	object[i]._oVar2 = random(147, 8);
 }
 // 5CF31D: using guessed type char setlevel;
 
