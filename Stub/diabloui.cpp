@@ -3,6 +3,7 @@
 #include "../types.h"
 #include "sdlrender.h"
 #include "stubs.h"
+
 int menu = 0;
 int SelectedItem = 1;
 int SelectedItemMax = 1;
@@ -11,6 +12,7 @@ int MenuItem[10] = { 5, 0, 1, 0, 0, 0, 0, 0, 0, 0 };
 void __cdecl UiDestroy()
 {
 	DUMMY();
+	FreeMenuItems();
 }
 
 BOOL __stdcall UiTitleDialog(int a1)
@@ -82,11 +84,54 @@ BOOL IsInsideRect(int x, int y, SDL_Rect rect)
 	return IsInside(x, y, rect.x, rect.y, rect.w, rect.h);
 }
 
+void LoadUiGFX() // I anticipate to move this later.
+{
+	DWORD dwData[2];
+
+	LoadArtImage("ui_art\\focus16.pcx", &MenuPentegram16, 8, dwData);
+	LoadArtImage("ui_art\\focus42.pcx", &MenuPentegram42, 8, dwData);
+
+	LoadArtImage("ui_art\\cursor.pcx", &pPcxCursorImage, 1, dwData);
+	gdwCursorWidth = dwData[0];
+	gdwCursorHeight = dwData[1];
+
+	LoadArtImage("ui_art\\smlogo.pcx", &pPcxLogoImage, 15, dwData);
+	gdwLogoWidth = dwData[0];
+	gdwLogoHeight = dwData[1];
+
+	LoadArtImage("ui_art\\heros.pcx", &pPcxHeroImage, 4, dwData);
+	gdwHeroWidth = dwData[0];
+	gdwHeroHeight = dwData[1];
+
+	pFont16 = LoadFileInMem("ui_art\\font16.bin", 0);
+	LoadArtImage("ui_art\\font16s.pcx", &pPcxFont16sImage, 256, NULL);
+	LoadArtImage("ui_art\\font16g.pcx", &pPcxFont16gImage, 256, dwData);
+	gdwFont16Width = dwData[0];
+	gdwFont16Height = dwData[1];
+
+	pFont24 = LoadFileInMem("ui_art\\font24.bin", 0);
+	LoadArtImage("ui_art\\font24g.pcx", &pPcxFont24gImage, 256, dwData);
+	gdwFont24Width = dwData[0];
+	gdwFont24Height = dwData[1];
+
+	pFont30 = LoadFileInMem("ui_art\\font30.bin", 0);
+	LoadArtImage("ui_art\\font30s.pcx", &pPcxFont30sImage, 256, NULL);
+	LoadArtImage("ui_art\\font30g.pcx", &pPcxFont30gImage, 256, dwData);
+	gdwFont30Width = dwData[0];
+	gdwFont30Height = dwData[1];
+
+	pFont42 = LoadFileInMem("ui_art\\font42.bin", 0);
+	LoadArtImage("ui_art\\font42g.pcx", &pPcxFont42gImage, 256, dwData);
+	gdwFont42Width = dwData[0];
+	gdwFont42Height = dwData[1];
+}
+
 void UiInitialize() // I anticipate to move this later.
 {
 	//SDL_SetRelativeMouseMode(SDL_TRUE);
 	// WNDPROC saveProc;
 
+	LoadUiGFX();
 	snd_init(0);
 	music_start(5);
 
