@@ -86,10 +86,10 @@ void __cdecl init_archives()
 {
 	DUMMY(); // We will need to remove the find_file_in_std_directories funct when it comes to mobile
 
-	SFileOpenArchive(find_file_in_std_directories("diabdat.mpq").c_str(), 1000, 0, &diabdat_mpq);
+	SFileOpenArchive(find_file_in_std_directories("diabdat.mpq").c_str(), 1000, MPQ_FLAG_READ_ONLY, &diabdat_mpq);
 	assert(diabdat_mpq);
 
-	SFileOpenArchive("patch_rt.mpq", 1000, 0, &patch_rt_mpq);
+	SFileOpenArchive("patch_rt.mpq", 1000, MPQ_FLAG_READ_ONLY, &patch_rt_mpq);
 }
 
 void GetAvailableHeroes()
