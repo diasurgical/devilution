@@ -393,6 +393,8 @@ SNetSendMessage(
 #define SNPLAYER_ALL    -1
 #define SNPLAYER_OTHERS -2
 
+#define MPQ_FLAG_READ_ONLY 1
+
 
 /*  SNetSendTurn @ 128
  *
