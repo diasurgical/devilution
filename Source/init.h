@@ -41,5 +41,6 @@ extern const int init_inf; // weak
 
 extern char gszVersionNumber[260];
 extern char gszProductName[260];
+extern int SelectedItem;
 
 #endif /* __INIT_H__ */

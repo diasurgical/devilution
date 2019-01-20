@@ -3,8 +3,6 @@
 #ifndef _TYPES_H
 #define _TYPES_H
 
-
-
 #include "resource.h"
 
 #ifdef MINIWIN
@@ -18,8 +16,6 @@
 #include <SDL.h>
 #include <SDL_mixer.h>
 #endif
-
-
 
 #ifdef __WIN32__
 #define WIN32_LEAN_AND_MEAN

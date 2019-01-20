@@ -26,7 +26,6 @@ As a side goal Devilution tries to document the unused and cut content from the 
 # How To Play:
  - Install Diablo
  - copy diabdat.mpq to Diablo game directory ; Make sure it is all lowercase.
- - [Download This Pre-Alpha MPQ ](https://github.com/diasurgical/devilutionX/blob/master/prealpha.mpq)
  - [Download Devilution](https://github.com/diasurgical/devilutionX/blob/master/build/devilution)
 
 

@@ -25,22 +25,22 @@ Mix_Music *gMusic = NULL;
 Mix_Chunk *sample;
 Mix_Music *music;
 
-char *sgszMusicTracks[6] = {"Music\\DTowne.wav", "Music\\DLvlA.wav", "Music\\DLvlB.wav",
-                            "Music\\DLvlC.wav",  "Music\\DLvlD.wav", "Music\\Dintro.wav"};
+char *sgszMusicTracks[6] = { "Music\\DTowne.wav", "Music\\DLvlA.wav", "Music\\DLvlB.wav",
+	"Music\\DLvlC.wav", "Music\\DLvlD.wav", "Music\\Dintro.wav" };
 
 void __fastcall snd_init(HWND hWnd)
 {
 	DUMMY();
-    /* for some reason function __fastcall snd_init seems to be used twice at this time*/
+	/* for some reason function __fastcall snd_init seems to be used twice at this time*/
 	printf("\nSND INIT\n");
 	// Initialize SDL.
 	if (SDL_Init(SDL_INIT_AUDIO) < 0) {
 		printf("ERROR : %s\n\n", SDL_GetError());
 	}
-	
-    /* following function Mix_AllocateChannels allocates the number of channels of simultaneously played sounds.*/
-    printf("Opened %i sound channels\n\n", Mix_AllocateChannels(channels));
-    /* for example following possible channels:
+
+	/* following function Mix_AllocateChannels allocates the number of channels of simultaneously played sounds.*/
+	printf("Opened %i sound channels\n\n", Mix_AllocateChannels(channels));
+	/* for example following possible channels:
     1. music is playing
     2. walking at the same time (walking sound)
     3. reading a quest book at the same time
@@ -111,7 +111,6 @@ void __fastcall music_start(int nTrack)
 		// This is a hack.... I don't like it .
 		// If you know this better than I , please help clean it up.
 
-
 		//Mix_OpenAudio(44100, AUDIO_S16LSB, 1, 1024); //No need to Mix_OpenAudio. Already done in the function __fastcall snd_init
 
 		//Mix_OpenAudio(44100, AUDIO_S16LSB, 2, 1024);
@@ -160,20 +159,14 @@ void __cdecl music_stop()
 
 BOOL __fastcall snd_playing(TSnd *pSnd)
 {
-
-	printf("snd_playing \n");
-	// DUMMY();
-	// UNIMPLEMENTED();
+	DUMMY();
+	return false;
 }
 
-
-//
 void __fastcall snd_play_snd(TSnd *pSnd, int lVolume, int lPan)
 {
 
-
-	Mix_PlayChannel(-1, (Mix_Chunk*)pSnd, 0);
-
+	Mix_PlayChannel(-1, (Mix_Chunk *)pSnd, 0);
 }
 
 void __fastcall snd_stop_snd(TSnd *pSnd)
@@ -181,10 +174,6 @@ void __fastcall snd_stop_snd(TSnd *pSnd)
 	DUMMY();
 	Mix_HaltMusic();
 }
-
-
-
-
 
 void *MSFXBuffer;
 TSnd *__fastcall sound_file_load(char *path)
@@ -194,24 +183,19 @@ TSnd *__fastcall sound_file_load(char *path)
 	int nrread;
 	void *file;
 
-
-//This opens the file and reads it, makes Mix_chunk pointer to it.
-//Once this is done the pointer is stored TSnd Struct
+	//This opens the file and reads it, makes Mix_chunk pointer to it.
+	//Once this is done the pointer is stored TSnd Struct
 
 	SFileOpenFile(path, &file);
-	 bytestoread = (int)SFileGetFileSize((HANDLE)file, 0);	 
-	 MSFXBuffer = DiabloAllocPtr(bytestoread);
-	 SFileReadFile(file, (char *)MSFXBuffer, bytestoread, (unsigned long *)&nrread, 0);
-	 SDL_RWops *rw = SDL_RWFromMem(MSFXBuffer, bytestoread);
-	 Mix_Chunk *SoundFX = Mix_LoadWAV_RW(rw, 1);
+	bytestoread = (int)SFileGetFileSize((HANDLE)file, 0);
+	MSFXBuffer = DiabloAllocPtr(bytestoread);
+	SFileReadFile(file, (char *)MSFXBuffer, bytestoread, (unsigned long *)&nrread, 0);
+	SDL_RWops *rw = SDL_RWFromMem(MSFXBuffer, bytestoread);
+	Mix_Chunk *SoundFX = Mix_LoadWAV_RW(rw, 1);
 
-	
+	return (TSnd *)SoundFX;
 
-
-
-	return (TSnd*)SoundFX;
-
-//	printf("Sound_File_Load %s\n", path);
+	//	printf("Sound_File_Load %s\n", path);
 	// UNIMPLEMENTED();
 }
 
