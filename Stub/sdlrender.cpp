@@ -1108,7 +1108,6 @@ void AnimateSelector(int x, int y, int width, int padding, int spacing, int swid
 	if (Pentframe == 8) {
 		Pentframe = 0;
 	}
-	Pentframe = 0;
 
 	width = width ? width : SCREEN_WIDTH;
 	x += GetCenterOffset(swidth, width);
