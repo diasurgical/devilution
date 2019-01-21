@@ -956,7 +956,7 @@ void __fastcall PlayEffect(int i, int mode)
 		return;
 	}
 
-	sndIdx = random_(164, 2);
+	sndIdx = random(164, 2);
 	if (!gbSndInited || !gbSoundOn || gbBufferMsgs) {
 		return;
 	}
@@ -1092,7 +1092,7 @@ int __fastcall RndSFX(int psfx)
 	LABEL_12:
 		v3 = 2;
 	LABEL_15:
-		return v1 + random_(165, v3);
+		return v1 + random(165, v3);
 	case PS_WARR2:
 	LABEL_19:
 		v3 = 3;

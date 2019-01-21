@@ -194,9 +194,9 @@ int __cdecl DRLG_L3Anvil()
 	signed int v14;    // [esp+10h] [ebp-8h]
 	int v15;           // [esp+14h] [ebp-4h]
 
-	v0 = random_(0, 29);
+	v0 = random(0, 29);
 	v1 = 0;
-	v15 = random_(0, 29);
+	v15 = random(0, 29);
 	v12 = 0;
 	while (1) {
 		if (v12 >= 200)
@@ -457,8 +457,8 @@ void __fastcall DRLG_L3(int entry)
 		do {
 			do {
 				InitL3Dungeon();
-				x1 = random_(0, 20) + 10;
-				y1 = random_(0, 20);
+				x1 = random(0, 20) + 10;
+				y1 = random(0, 20);
 				DRLG_L3FillRoom(x1, y1 + 10, x1 + 2, y1 + 12);
 				DRLG_L3CreateBlock(x1, y1 + 10, 2, 0);
 				DRLG_L3CreateBlock(x1 + 2, y1 + 10, 2, 1);
@@ -466,8 +466,8 @@ void __fastcall DRLG_L3(int entry)
 				DRLG_L3CreateBlock(x1, y1 + 10, 2, 3);
 
 				if (QuestStatus(QTYPE_ANVIL)) {
-					x2 = random_(0, 10) + 10;
-					y2 = random_(0, 10);
+					x2 = random(0, 10) + 10;
+					y2 = random(0, 10);
 					DRLG_L3FloorArea(x2, y2 + 10, x2 + 12, y2 + 22);
 				}
 				DRLG_L3FillDiags();
@@ -672,9 +672,9 @@ LABEL_12:
 		v5 = v21;
 	}
 	for (i = v5; i <= y2; ++i) {
-		if (random_(0, 2))
+		if (random(0, 2))
 			dungeon[v4][i] = 1;
-		if (random_(0, 2))
+		if (random(0, 2))
 			dungeon[v6][i] = 1;
 	}
 	if (v4 <= v6) {
@@ -683,9 +683,9 @@ LABEL_12:
 		v18 = v6 - v4 + 1;
 		y2a = v21 - y2;
 		do {
-			if (random_(0, 2))
+			if (random(0, 2))
 				v17[y2a] = 1;
-			if (random_(0, 2))
+			if (random(0, 2))
 				*v17 = 1;
 			v17 += 40;
 			--v18;
@@ -712,19 +712,19 @@ void __fastcall DRLG_L3CreateBlock(int x, int y, int obs, int dir)
 	v5 = obs;
 	v16 = y;
 	for (i = x;; i = v4) {
-		v6 = random_(0, 2);
+		v6 = random(0, 2);
 		max = v6 + 3;
-		v9 = random_(0, 2) + 3;
+		v9 = random(0, 2) + 3;
 		if (!dir) {
 			y2 = v16 - 1;
 			v5 = v16 - 1 - v9;
 			if (max < obs) {
-				v4 = i + random_(0, max);
+				v4 = i + random(0, max);
 			}
 			if (max == obs)
 				v4 = i;
 			if (max > obs) {
-				v4 = i - random_(0, max);
+				v4 = i - random(0, max);
 			}
 			x2 = v4 + max;
 		}
@@ -733,13 +733,13 @@ void __fastcall DRLG_L3CreateBlock(int x, int y, int obs, int dir)
 			v4 = i - 1 - max;
 			v10 = v9 == obs;
 			if (v9 < obs) {
-				v5 = v16 + random_(0, v9);
+				v5 = v16 + random(0, v9);
 				v10 = v9 == obs;
 			}
 			if (v10)
 				v5 = v16;
 			if (v9 > obs) {
-				v5 = v16 - random_(0, v9);
+				v5 = v16 - random(0, v9);
 			}
 			y2 = v5 + v9;
 		}
@@ -747,12 +747,12 @@ void __fastcall DRLG_L3CreateBlock(int x, int y, int obs, int dir)
 			v5 = v16 + 1;
 			y2 = v16 + 1 + v9;
 			if (max < obs) {
-				v4 = i + random_(0, max);
+				v4 = i + random(0, max);
 			}
 			if (max == obs)
 				v4 = i;
 			if (max > obs) {
-				v4 = i - random_(0, max);
+				v4 = i - random(0, max);
 			}
 			x2 = v4 + max;
 		}
@@ -761,19 +761,19 @@ void __fastcall DRLG_L3CreateBlock(int x, int y, int obs, int dir)
 			v11 = v9 == obs;
 			x2 = i + 1 + max;
 			if (v9 < obs) {
-				v5 = v16 + random_(0, v9);
+				v5 = v16 + random(0, v9);
 				v11 = v9 == obs;
 			}
 			if (v11)
 				v5 = v16;
 			if (v9 > obs) {
-				v5 = v16 - random_(0, v9);
+				v5 = v16 - random(0, v9);
 			}
 			y2 = v5 + v9;
 		}
 		if (DRLG_L3FillRoom(v4, v5, x2, y2) != 1)
 			break;
-		if (!random_(0, 4))
+		if (!random(0, 4))
 			break;
 		if (dir != 2)
 			DRLG_L3CreateBlock(v4, v5, v9, 0);
@@ -825,14 +825,14 @@ void __cdecl DRLG_L3FillDiags()
 			v4 = v3
 			    + 2 * ((unsigned char)*(v1 - 40) + 2 * ((unsigned char)*(v1 - 1) + 2 * (unsigned char)*(v1 - 41)));
 			if (v4 == 6) {
-				if (!random_(0, 2)) {
+				if (!random(0, 2)) {
 					*(v1 - 41) = 1;
 					goto LABEL_11;
 				}
 				*v1 = 1;
 			}
 			if (v4 == 9) {
-				if (random_(0, 2))
+				if (random(0, 2))
 					*(v1 - 40) = 1;
 				else
 					*(v1 - 1) = 1;
@@ -916,12 +916,12 @@ void __cdecl DRLG_L3FillStraights()
 		do {
 			if (*(v3 - 1) || *v3 != 1) {
 				if (v2 > 3) {
-					if (random_(0, 2)) {
+					if (random(0, 2)) {
 						if (v0 < v29) {
 							v5 = v29 - v0;
 							v24 = (char *)dungeon + v4 + v27;
 							do {
-								v6 = random_(0, 2);
+								v6 = random(0, 2);
 								v1 = v24;
 								v24 += 40;
 								--v5;
@@ -958,12 +958,12 @@ void __cdecl DRLG_L3FillStraights()
 		do {
 			if (*(v9 - 1) != 1 || *v9) {
 				if (v8 > 3) {
-					if (random_(0, 2)) {
+					if (random(0, 2)) {
 						if (v0 < v30) {
 							v11 = v30 - v0;
 							v24 = &dungeon[0][v10 + 1 + v28];
 							do {
-								v12 = random_(0, 2);
+								v12 = random(0, 2);
 								v7 = v24;
 								v24 += 40;
 								--v11;
@@ -995,9 +995,9 @@ void __cdecl DRLG_L3FillStraights()
 		do {
 			if (dungeon[v13][v15] || dungeon[v13 + 1][v15] != 1) {
 				if (v14 > 3) {
-					if (random_(0, 2)) {
+					if (random(0, 2)) {
 						for (i = (signed int)v24; i < v15; ++i) {
-							dungeon[v13][i] = random_(0, 2);
+							dungeon[v13][i] = random(0, 2);
 						}
 					}
 				}
@@ -1018,9 +1018,9 @@ void __cdecl DRLG_L3FillStraights()
 		do {
 			if (dungeon[v17][v19] != 1 || dungeon[v17 + 1][v19]) {
 				if (v18 > 3) {
-					if (random_(0, 2)) {
+					if (random(0, 2)) {
 						for (j = (signed int)v24; j < v19; ++j) {
-							dungeon[v17 + 1][j] = random_(0, 2);
+							dungeon[v17 + 1][j] = random(0, 2);
 						}
 					}
 				}
@@ -1081,14 +1081,14 @@ void __cdecl DRLG_L3MakeMegas()
 			v3 = (unsigned char)v1[40];
 			v4 = v3 + 2 * ((unsigned char)*v1 + 2 * ((unsigned char)v1[39] + 2 * (unsigned char)*(v1 - 1)));
 			if (v4 == 6) {
-				if (!random_(0, 2)) {
+				if (!random(0, 2)) {
 					v4 = 12;
 					goto LABEL_9;
 				}
 				v4 = 5;
 			}
 			if (v4 == 9) {
-				v4 = (random_(0, 2) != 0) + 13;
+				v4 = (random(0, 2) != 0) + 13;
 			}
 		LABEL_9:
 			--v2;
@@ -1176,8 +1176,8 @@ void __cdecl DRLG_L3River()
 					break;
 				if (v0 >= 100)
 					return;
-				v1 = random_(0, 40);
-				v2 = random_(0, 40);
+				v1 = random(0, 40);
+				v2 = random(0, 40);
 				++v0;
 				while (1) {
 					v4 = dungeon[v1][v2];
@@ -1230,7 +1230,7 @@ void __cdecl DRLG_L3River()
 					v48 = ((_BYTE)v48 + 1) & 3;
 					v7 = v48;
 				} else {
-					v6 = random_(0, 4);
+					v6 = random(0, 4);
 					v5 = max;
 					v7 = v6;
 					v48 = v6;
@@ -1267,12 +1267,12 @@ void __cdecl DRLG_L3River()
 				if (dungeon[0][v45 + v2] == 7) {
 					v43 = 0;
 					if (v7 < 2) {
-						v8 = random_(0, 2);
+						v8 = random(0, 2);
 						v5 = max;
 						river[2][max] = v8 + 17;
 					}
 					if (v7 > 1) {
-						v9 = random_(0, 2);
+						v9 = random(0, 2);
 						v5 = max;
 						river[2][max] = v9 + 15;
 					}
@@ -1424,7 +1424,7 @@ void __cdecl DRLG_L3River()
 		LABEL_124:
 			while (v47 < 30) {
 				++v47;
-				v21 = random_(0, max);
+				v21 = random(0, max);
 				v44 = v21;
 				v22 = v21;
 				v23 = river[2][v22];
@@ -1532,7 +1532,7 @@ void __cdecl DRLG_L3Pool()
 				v5 = v2 <= 0 || v4 ? 1 : DRLG_L3SpawnEdge(v2, v0, &totarea);
 				v6 = v0 + 1 >= 40 || v5 ? 1 : DRLG_L3SpawnEdge(x, v0 + 1, &totarea);
 				v17 = v0 - 1 <= 0 || v6 ? 1 : DRLG_L3SpawnEdge(x, v0 - 1, &totarea);
-				v7 = random_(0, 100);
+				v7 = random(0, 100);
 				v8 = totarea;
 				v15 = v7;
 				v9 = v0 - totarea;
@@ -1756,7 +1756,7 @@ int __fastcall DRLG_L3PlaceMiniSet(const unsigned char *miniset, int tmin, int t
 	v28 = *miniset;
 	v29 = miniset[1];
 	if (v10)
-		v24 = v8 + random_(0, v10);
+		v24 = v8 + random(0, v10);
 	else
 		v24 = 1;
 	v25 = 0;
@@ -1766,22 +1766,22 @@ int __fastcall DRLG_L3PlaceMiniSet(const unsigned char *miniset, int tmin, int t
 		max = 40 - v9;
 		v30 = 40 - v7;
 		do {
-			v11 = random_(0, max);
+			v11 = random(0, max);
 			v27 = 0;
-			tmax = random_(0, v30);
+			tmax = random(0, v30);
 			while (1) {
 				if (v27 >= 200)
 					return 1;
 				++v27;
 				v12 = 1;
 				if (cx != -1 && v11 >= cx - v28 && v11 <= cx + 12) {
-					v11 = random_(0, max);
-					tmax = random_(0, v30);
+					v11 = random(0, max);
+					tmax = random(0, v30);
 					v12 = 0;
 				}
 				if (cy != -1 && tmax >= cy - v29 && tmax <= cy + 12) {
-					v11 = random_(0, max);
-					tmax = random_(0, v30);
+					v11 = random(0, max);
+					tmax = random(0, v30);
 					v12 = 0;
 				}
 				v13 = 0;
@@ -1951,7 +1951,7 @@ void __fastcall DRLG_L3PlaceRndSet(const unsigned char *miniset, int rndper)
 			v29 = 0;
 	LABEL_33:
 		if (v29 == 1) {
-			if (random_(0, 100) < v19) {
+			if (random(0, 100) < v19) {
 				for (j = 0; j < v28; ++j) {
 					v15 = v27;
 					if (v27 > 0) {
@@ -2030,7 +2030,7 @@ void __cdecl DRLG_L3Wood()
 		v44 = 1;
 		v0 = (char *)dungeon + y;
 		do {
-			if (*v0 == 10 && random_(0, 2)) {
+			if (*v0 == 10 && random(0, 2)) {
 				v1 = v44 - 1;
 				if (*v0 == 10) {
 					v2 = (unsigned char *)v0;
@@ -2047,7 +2047,7 @@ void __cdecl DRLG_L3Wood()
 						v4 = (unsigned char *)v0 + 40;
 						v5 = v3 - v44;
 						do {
-							*v4 = random_(0, 2) != 0 ? 126 : -127;
+							*v4 = random(0, 2) != 0 ? 126 : -127;
 							v4 += 40;
 							--v5;
 						} while (v5);
@@ -2055,7 +2055,7 @@ void __cdecl DRLG_L3Wood()
 					dungeon[v37][y] = -128;
 				}
 			}
-			if (*v0 == 9 && random_(0, 2)) {
+			if (*v0 == 9 && random(0, 2)) {
 				v6 = y;
 				v7 = y;
 				if (*v0 == 9) {
@@ -2067,7 +2067,7 @@ void __cdecl DRLG_L3Wood()
 				if (v8 - y > 0) {
 					*v0 = 123;
 					while (++v6 < v8) {
-						if (random_(0, 2))
+						if (random(0, 2))
 							dungeon[x][v6] = 121;
 						else
 							dungeon[x][v6] = 124;
@@ -2075,7 +2075,7 @@ void __cdecl DRLG_L3Wood()
 					dungeon[x][v8] = 122;
 				}
 			}
-			if (*v0 == 11 && v0[40] == 10 && v0[1] == 9 && random_(0, 2)) {
+			if (*v0 == 11 && v0[40] == 10 && v0[1] == 9 && random(0, 2)) {
 				v9 = v44;
 				*v0 = 125;
 				if (v0[40] == 10) {
@@ -2090,7 +2090,7 @@ void __cdecl DRLG_L3Wood()
 					v38 = (int)(v0 + 40);
 					v12 = v11 - v44;
 					do {
-						v13 = random_(0, 2);
+						v13 = random(0, 2);
 						v14 = (_BYTE *)v38;
 						v38 += 40;
 						--v12;
@@ -2106,7 +2106,7 @@ void __cdecl DRLG_L3Wood()
 				v39 = y + 1;
 				if (v16 < v18) {
 					do {
-						if (random_(0, 2))
+						if (random(0, 2))
 							dungeon[x][v39] = 121;
 						else
 							dungeon[x][v39] = 124;
@@ -2128,12 +2128,12 @@ void __cdecl DRLG_L3Wood()
 		do {
 			if (dungeon[v45][ya] != 7)
 				goto LABEL_112;
-			if (random_(0, 1))
+			if (random(0, 1))
 				goto LABEL_112;
 			//_LOBYTE(v19) = SkipThemeRoom(xa, ya);
 			if (!SkipThemeRoom(xa, ya))
 				goto LABEL_112;
-			v36 = random_(0, 2);
+			v36 = random(0, 2);
 			if (!v36) {
 				v20 = ya;
 				v21 = ya;
@@ -2152,7 +2152,7 @@ void __cdecl DRLG_L3Wood()
 					goto LABEL_112;
 				if (!v25)
 					goto LABEL_112;
-				v40 = random_(0, v24 - v23 - 1) + v23 + 1;
+				v40 = random(0, v24 - v23 - 1) + v23 + 1;
 				v26 = v23;
 				if (v23 > v24)
 					goto LABEL_112;
@@ -2160,7 +2160,7 @@ void __cdecl DRLG_L3Wood()
 					if (v26 != v40) {
 						v27 = &dungeon[v45][v26];
 						if (*v27 == 7)
-							*v27 = random_(0, 2) != 0 ? -121 : -119;
+							*v27 = random(0, 2) != 0 ? -121 : -119;
 						if (*v27 == 10)
 							*v27 = -125;
 						if (*v27 == 126)
@@ -2195,13 +2195,13 @@ void __cdecl DRLG_L3Wood()
 				if (dungeon[v33][ya] == 7)
 					v35 = 0;
 				if (v33 - v31 > 1 && v35) {
-					v41 = random_(0, v33 - v31 - 1) + v31 + 1;
+					v41 = random(0, v33 - v31 - 1) + v31 + 1;
 					while (1) {
 						if (v31 > v33)
 							break;
 						if (v31 != v41) {
 							if (*v34 == 7) {
-								if (random_(0, 2)) {
+								if (random(0, 2)) {
 									*v34 = -122;
 									goto LABEL_110;
 								}

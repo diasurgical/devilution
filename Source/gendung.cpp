@@ -1029,7 +1029,7 @@ LABEL_53:
 		dungeon[-1][v3 + v12 * 4 + v2 - 1] = 12; // *((_BYTE *)&dMonster[111][101] + v3 + v12 * 4 + v2 + 3) = 12;
 	}
 	if (leveltype == DTYPE_CATACOMBS) {
-		v13 = random_(0, 2);
+		v13 = random(0, 2);
 		if (v13) {
 			if (v13 == 1) {
 				v5 = themeLoc[v1].height;
@@ -1045,7 +1045,7 @@ LABEL_53:
 		}
 	}
 	if (leveltype == DTYPE_CAVES) {
-		v14 = random_(0, 2);
+		v14 = random(0, 2);
 		if (v14) {
 			if (v14 == 1) {
 				v5 = themeLoc[v1].height;
@@ -1061,7 +1061,7 @@ LABEL_53:
 		}
 	}
 	if (leveltype == DTYPE_HELL) {
-		v15 = random_(0, 2);
+		v15 = random(0, 2);
 		if (v15) {
 			if (v15 == 1) {
 				v16 = themeLoc[v1].y + 40 * (themeLoc[v1].x + themeLoc[v1].width / 2) + themeLoc[v1].height;
@@ -1117,18 +1117,18 @@ void __fastcall DRLG_PlaceThemeRooms(int minSize, int maxSize, int floor, int fr
 		v24 = (unsigned char *)dungeon + v5;
 		do {
 			if (*v24 == floor) {
-				if (!random_(0, freq)) {
+				if (!random(0, freq)) {
 					//_LOBYTE(v7) = DRLG_WillThemeRoomFit(floor, x, v5, minSize2, maxSize2, &width, &height);
 					if (DRLG_WillThemeRoomFit(floor, x, v5, minSize2, maxSize2, &width, &height)) {
 						if (rndSize) {
 							v8 = minSize2 - 2;
 							v9 = maxSize2 - 2;
-							v10 = random_(0, width - (minSize2 - 2) + 1);
-							v12 = minSize2 - 2 + random_(0, v10);
+							v10 = random(0, width - (minSize2 - 2) + 1);
+							v12 = minSize2 - 2 + random(0, v10);
 							if (v12 < minSize2 - 2 || (width = v12, v12 > v9))
 								width = minSize2 - 2;
-							v14 = random_(0, height - v8 + 1);
-							v16 = v8 + random_(0, v14);
+							v14 = random(0, height - v8 + 1);
+							v16 = v8 + random(0, v14);
 							if (v16 < v8 || v16 > v9)
 								v16 = minSize2 - 2;
 							height = v16;

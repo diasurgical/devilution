@@ -1526,7 +1526,7 @@ int __cdecl GetRndSeed()
 // 52B97C: using guessed type int sglGameSeed;
 // 52B998: using guessed type int SeedCount;
 
-int __fastcall random_(BYTE idx, int v)
+int __fastcall random(BYTE idx, int v)
 {
 	if (v <= 0)
 		return 0;

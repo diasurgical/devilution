@@ -1993,15 +1993,15 @@ void __fastcall AutoGetItem(int pnum, int ii)
 		if (v2 == myplr) {
 			switch (plr[v3]._pClass) {
 			case PC_WARRIOR:
-				v13 = random_(0, 3) + PS_WARR14;
+				v13 = random(0, 3) + PS_WARR14;
 				PlaySFX(v13);
 				break;
 			case PC_ROGUE:
-				v13 = random_(0, 3) + PS_ROGUE14;
+				v13 = random(0, 3) + PS_ROGUE14;
 				PlaySFX(v13);
 				break;
 			case PC_SORCERER:
-				v13 = random_(0, 3) + PS_MAGE14;
+				v13 = random(0, 3) + PS_MAGE14;
 				PlaySFX(v13);
 				break;
 			}

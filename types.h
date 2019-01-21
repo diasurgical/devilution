@@ -76,9 +76,9 @@
 #define ASM_XLAT(eax, ebx) eax = (eax & 0xFFFFFF00) + LOBYTE(ebx[LOBYTE(eax)])
 
 // header files
-#ifdef __cplusplus
-extern "C" {
-#endif
+//#ifdef __cplusplus
+//extern "C" {
+//#endif
 #include "Source/appfat.h"
 #include "Source/automap.h"
 #include "Source/capture.h"
@@ -147,8 +147,8 @@ extern "C" {
 #include "Source/trigs.h"
 #include "Source/wave.h"
 #include "Source/render.h" // linked last, likely .s/.asm
-#ifdef __cplusplus
-}
-#endif
+//#ifdef __cplusplus
+//}
+//#endif
 
 #endif

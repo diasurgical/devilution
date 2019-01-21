@@ -1380,7 +1380,7 @@ void __cdecl T_Pass3()
 		if (!(plr[myplr].pTownWarps & 4)) {
 			xx = 36;
 			do {
-				T_FillTile(P3Tiles, xx++, 78, random_(0, 4) + 1);
+				T_FillTile(P3Tiles, xx++, 78, random(0, 4) + 1);
 			} while (xx < 46);
 		}
 	}
