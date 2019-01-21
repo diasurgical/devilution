@@ -130,17 +130,17 @@ void __cdecl InitQuests()
 	} while (v6 < MAXQUESTS);
 	if (v0 == 1) {
 		SetRndSeed(glSeedTbl[15]);
-		if (random(0, 2))
+		if (random_(0, 2))
 			quests[QTYPE_PW]._qactive = 0;
 		else
 			quests[QTYPE_KING]._qactive = 0;
-		v13 = random(0, 3);
+		v13 = random_(0, 3);
 		quests[QuestGroup1[v13]]._qactive = 0;
-		v15 = random(0, 3);
+		v15 = random_(0, 3);
 		quests[QuestGroup2[v15]]._qactive = 0;
-		v17 = random(0, 3);
+		v17 = random_(0, 3);
 		quests[QuestGroup3[v17]]._qactive = 0;
-		v19 = random(0, 2);
+		v19 = random_(0, 2);
 		v0 = gbMaxPlayers;
 		quests[QuestGroup4[v19]]._qactive = 0;
 	}

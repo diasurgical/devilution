@@ -291,7 +291,7 @@ void sdl_present_surface()
 	surface_dirty = false;
 }
 
-void __cdecl lock_buf_priv()
+void __fastcall j_lock_buf_priv(BYTE idx)
 {
 	if (!gpBuffer) {
 		printf("GpBuffer Created\n");
@@ -308,10 +308,10 @@ void __cdecl lock_buf_priv()
 		SDL_CHECK(SDL_SetSurfacePalette(pal_surface, palette));
 	}
 
-	unlock_buf_priv();
+	j_unlock_buf_priv(idx); // what is idx?
 }
 
-void __cdecl unlock_buf_priv()
+void __fastcall j_unlock_buf_priv(BYTE idx)
 {
 
 	gpBufEnd -= (unsigned int)gpBufEnd;

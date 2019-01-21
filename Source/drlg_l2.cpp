@@ -1007,7 +1007,7 @@ BOOLEAN __fastcall DRLG_L2PlaceMiniSet(unsigned char *miniset, int tmin, int tma
 	v34 = *miniset;
 	v35 = miniset[1];
 	if (v10) {
-		v30 = v8 + random(0, v10);
+		v30 = v8 + random_(0, v10);
 	} else {
 		v30 = 1;
 	}
@@ -1019,10 +1019,10 @@ BOOLEAN __fastcall DRLG_L2PlaceMiniSet(unsigned char *miniset, int tmin, int tma
 		max = 40 - v9;
 		v36 = 40 - v7;
 		do {
-			v11 = random(0, max);
+			v11 = random_(0, max);
 			v13 = v11;
 			v33 = 0;
-			v14 = random(0, v36);
+			v14 = random_(0, v36);
 			v39 = v14;
 			do {
 				if (v33 >= 200)
@@ -1033,18 +1033,18 @@ BOOLEAN __fastcall DRLG_L2PlaceMiniSet(unsigned char *miniset, int tmin, int tma
 				if (cx != -1) {
 					v15 = cx - v34;
 					if (v13 >= cx - v34 && v13 <= cx + 12) {
-						v16 = random(0, max);
+						v16 = random_(0, max);
 						v13 = v16;
 						tmaxa = 0;
-						v39 = random(0, v36);
+						v39 = random_(0, v36);
 						v14 = v39;
 					}
 				}
 				if (cy != -1 && v14 >= cy - v35 && v14 <= cy + 12) {
-					v18 = random(0, max); /* cy - v35 */
+					v18 = random_(0, max); /* cy - v35 */
 					v13 = v18;
 					tmaxa = 0;
-					v39 = random(0, v36);
+					v39 = random_(0, v36);
 					v14 = v39;
 				}
 				v20 = 0;
@@ -1205,7 +1205,7 @@ void __fastcall DRLG_L2PlaceRndSet(unsigned char *miniset, int rndper)
 						v13 = v23;
 						if (v23 >= v32 + 2 * v31) {
 						LABEL_34:
-							if (random(0, 100) < v20) {
+							if (random_(0, 100) < v20) {
 								for (j = 0; j < v31; ++j) {
 									v17 = v30;
 									if (v30 > 0) {
@@ -1284,10 +1284,10 @@ void __cdecl DRLG_L2Subs()
 		v10 = 0;
 		v8 = &dungeon[0][v9 + 2];
 		do {
-			if ((v10 < nSx1 || v10 > nSx2) && (v0 - 3 < nSy1 || v0 - 3 > nSy2) && !random(0, 4)) {
+			if ((v10 < nSx1 || v10 > nSx2) && (v0 - 3 < nSy1 || v0 - 3 > nSy2) && !random_(0, 4)) {
 				v1 = BTYPESL2[(unsigned char)*v8];
 				if (v1) {
-					v2 = random(0, 16);
+					v2 = random_(0, 16);
 					v3 = -1;
 					while (v2 >= 0) {
 						if (++v3 == 161)
@@ -1621,14 +1621,14 @@ void __fastcall CreateRoom(int nX1, int nY1, int nX2, int nY2, int nRDest, int n
 				v13 = nY2 - v39;
 			}
 			v14 = v13 - nX1;
-			v36 = Room_Min + random(0, v14);
+			v36 = Room_Min + random_(0, v14);
 		LABEL_16:
 			if (ForceHW == 1) {
 				v41 = nW;
 				v36 = nH;
 			}
-			v15 = v37 + random(0, v9);
-			v17 = v39 + random(0, v10);
+			v15 = v37 + random_(0, v9);
+			v17 = v39 + random_(0, v10);
 			v18 = v15 + v41;
 			v43 = v17 + v36;
 			if (v15 + v41 > nX2) {
@@ -1668,42 +1668,42 @@ void __fastcall CreateRoom(int nX1, int nY1, int nX2, int nY2, int nRDest, int n
 			RoomList[nRoomCnt].nRoomDest = nRDest;
 			if (nRDest) {
 				if (nHDir == 1) {
-					v21 = random(0, v18 - v15 - 2);
+					v21 = random_(0, v18 - v15 - 2);
 					nX1a = v21 + v15 + 1;
 					v33 = v17;
-					v23 = random(0, RoomList[nRDest].nRoomx2 - RoomList[nRDest].nRoomx1 - 2);
+					v23 = random_(0, RoomList[nRDest].nRoomx2 - RoomList[nRDest].nRoomx1 - 2);
 					v20 = 20 * nRDest;
 					v34 = v23 + RoomList[nRDest].nRoomx1 + 1;
 					v35 = RoomList[nRDest].nRoomy2;
 				}
 				if (nHDir == 3) {
-					v24 = random(0, v18 - v15 - 2);
+					v24 = random_(0, v18 - v15 - 2);
 					nX1a = v24 + v15 + 1;
 					v33 = v43;
-					v26 = random(0, RoomList[nRDest].nRoomx2 - RoomList[nRDest].nRoomx1 - 2);
+					v26 = random_(0, RoomList[nRDest].nRoomx2 - RoomList[nRDest].nRoomx1 - 2);
 					v20 = 20 * nRDest;
 					v34 = v26 + RoomList[nRDest].nRoomx1 + 1;
 					v35 = RoomList[nRDest].nRoomy1;
 				}
 				if (nHDir == 2) {
 					nX1a = v18;
-					v33 = random(0, v43 - v17 - 2) + v17 + 1;
+					v33 = random_(0, v43 - v17 - 2) + v17 + 1;
 					v34 = RoomList[nRDest].nRoomx1;
 					v27 = &RoomList[nRDest].nRoomy1;
 					ForceHWa = v27;
 					v28 = RoomList[nRDest].nRoomy2 - *v27;
-					v29 = random(0, v28 - 2);
+					v29 = random_(0, v28 - 2);
 					v20 = *ForceHWa;
 					v35 = v29 + *ForceHWa + 1;
 				}
 				if (nHDir == 4) {
 					nX1a = v15;
-					v33 = random(0, v43 - v17 - 2) + v17 + 1;
+					v33 = random_(0, v43 - v17 - 2) + v17 + 1;
 					v34 = RoomList[nRDest].nRoomx2;
 					v30 = &RoomList[nRDest].nRoomy1;
 					ForceHWb = v30;
 					v31 = RoomList[nRDest].nRoomy2 - *v30;
-					v35 = random(0, v31 - 2) + *ForceHWb + 1;
+					v35 = random_(0, v31 - 2) + *ForceHWb + 1;
 				}
 				AddHall(nX1a, v33, v34, v35, nHDir);
 				v19 = v42;
@@ -1744,7 +1744,7 @@ void __fastcall CreateRoom(int nX1, int nY1, int nX2, int nY2, int nRDest, int n
 		}
 		v11 = Room_Max - Room_Min;
 	LABEL_7:
-		v12 = random(0, v11);
+		v12 = random_(0, v11);
 		nX1 = Room_Min;
 		v41 = Room_Min + v12;
 		goto LABEL_11;
@@ -1916,9 +1916,9 @@ void __fastcall ConnectHall(int nX1, int nY1, int nX2, int nY2, int nHd)
 	v5 = nY1;
 	v6 = nX1;
 	nY = nY1;
-	v7 = random(0, 100);
+	v7 = random_(0, 100);
 	v33 = v7;
-	v32 = random(0, 100);
+	v32 = random_(0, 100);
 	v31 = v6;
 	v30 = v5;
 	CreateDoorType(v6, v5);
@@ -1998,7 +1998,7 @@ void __fastcall ConnectHall(int nX1, int nY1, int nX2, int nY2, int nHd)
 			v24 = 5 * v20;
 			if (5 * v20 > 80)
 				v24 = 80;
-			if (random(0, 100) < v24) {
+			if (random_(0, 100) < v24) {
 				if (nY2a <= nY || nY >= 40) {
 					v9 = 1;
 					goto LABEL_67;
@@ -2010,7 +2010,7 @@ void __fastcall ConnectHall(int nX1, int nY1, int nX2, int nY2, int nHd)
 			v23 = 2 * v36;
 			if (2 * v36 > 30)
 				v23 = 30;
-			if (random(0, 100) < v23) {
+			if (random_(0, 100) < v23) {
 				if (nX2a <= v6 || v6 >= 40)
 					v26 = 4;
 				else
@@ -2270,9 +2270,9 @@ BOOLEAN __cdecl DL2_FillVoids()
 
 	v48 = 0;
 	for (i = DL2_NumNoChar(); i > 700 && v48 < 100; i = DL2_NumNoChar()) {
-		v2 = random(0, 38);
+		v2 = random_(0, 38);
 		v4 = v2 + 1;
-		v5 = random(0, 38);
+		v5 = random_(0, 38);
 		v6 = v5 + 1;
 		v7 = v5 + 1 + 40 * v4;
 		if (predungeon[0][v7] != 35)

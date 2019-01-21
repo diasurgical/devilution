@@ -8,11 +8,11 @@ int gdwNormalMsgSize;
 int gdwLargestMsgSize;
 int gdwMsgLenTbl[4];
 int glpMsgTbl[4];
-int gdwTurnsInTransit;
+DWORD gdwTurnsInTransit;
 char byte_679704;
 #endif
 
-void __fastcall nthread_start(bool set_turn_upper_bit)
+void __fastcall nthread_start(BOOLEAN set_turn_upper_bit)
 {
 	DUMMY();
 	byte_679704 = 1;
@@ -31,12 +31,12 @@ void __fastcall nthread_terminate_game(const char *pszFcn)
 	UNIMPLEMENTED();
 }
 
-void __fastcall nthread_ignore_mutex(bool bStart)
+void __fastcall nthread_ignore_mutex(BOOL bStart)
 {
 	DUMMY();
 }
 
-bool __cdecl nthread_has_500ms_passed()
+BOOL __fastcall nthread_has_500ms_passed(BOOL unused)
 {
 	DUMMY_ONCE();
 	return TRUE;

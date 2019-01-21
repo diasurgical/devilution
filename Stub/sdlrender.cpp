@@ -642,7 +642,7 @@ BOOL __cdecl LoadArtImage(char *pszFile, void **pBuffer, int frames, DWORD *data
 
 	if (!SBmpLoadImage(pszFile, 0, 0, 0, &width, &height, 0))
 		return 0;
-	*pBuffer = SMemAlloc(height * width, "U:\\DiabloUI\\Ui\\local.cpp", 88);
+	*pBuffer = SMemAlloc(height * width, "U:\\DiabloUI\\Ui\\local.cpp", 88, 0);
 	if (!SBmpLoadImage(pszFile, NULL, *pBuffer, height * width, 0, 0, 0))
 		return 0;
 	if (pBuffer && data) {
@@ -661,7 +661,7 @@ BOOL __cdecl LoadArtWithPal(char *pszFile, void **pBuffer, int frames, DWORD *da
 
 	if (!SBmpLoadImage(pszFile, 0, 0, 0, &width, &height, 0))
 		return 0;
-	*pBuffer = SMemAlloc(height * width, "U:\\DiabloUI\\Ui\\local.cpp", 88);
+	*pBuffer = SMemAlloc(height * width, "U:\\DiabloUI\\Ui\\local.cpp", 88, 0);
 	if (!SBmpLoadImage(pszFile, pcxPal, *pBuffer, height * width, 0, 0, 0))
 		return 0;
 
@@ -750,7 +750,7 @@ BOOL __stdcall SBmpLoadImage(const char *pszFileName, PALETTEENTRY *pPalette, vo
 						}
 						v12 = SFileGetFileSize(hFile, 0);
 						v13 = v12 - SFileSetFilePointer(hFile, 0, 0, 1);
-						v14 = (unsigned char *)SMemAlloc(v13, "SBMP.CPP", 171);
+						v14 = (unsigned char *)SMemAlloc(v13, "SBMP.CPP", 171, 0);
 						Memory = v14;
 						if (!v14) {
 						LABEL_45:
@@ -801,7 +801,7 @@ BOOL __stdcall SBmpLoadImage(const char *pszFileName, PALETTEENTRY *pPalette, vo
 							if (v21 || v20) {
 								if (!--v11) {
 								LABEL_43:
-									SMemFree(Memory, "SBMP.CPP", 178);
+									SMemFree(Memory, "SBMP.CPP", 178, 0);
 									goto LABEL_45;
 								}
 								goto LABEL_33;
@@ -865,7 +865,7 @@ void SdlDiabloMainWindow()
 
 	palette = SDL_AllocPalette(256);
 
-	lock_buf_priv();
+	j_lock_buf_priv(0); //FIXME 0?
 }
 
 void DrawArtImage(int SX, int SY, int SW, int SH, int nFrame, void *pBuffer)
@@ -1080,7 +1080,7 @@ void DrawCursor(int mx, int my)
 	int lines = gdwCursorWidth;
 
 	DrawArtWithMask(mx, my, gdwCursorWidth, lines, 0, 0, pPcxCursorImage);
-	unlock_buf_priv();
+	j_unlock_buf_priv(0); //FIXME 0?
 }
 
 void DrawMouse()

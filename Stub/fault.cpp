@@ -8,3 +8,13 @@ LPTOP_LEVEL_EXCEPTION_FILTER __cdecl exception_get_filter()
 
 	return NULL;
 }
+
+void __cdecl exception_install_filter()
+{
+	DUMMY();
+}
+
+void __cdecl j_exception_init_filter()
+{
+	DUMMY();
+}

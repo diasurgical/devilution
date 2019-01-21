@@ -17,7 +17,7 @@ UCHAR gbSoundOn;
 
 bool SoundInited;
 char gbSndInited;
-char gbDupSounds;
+BYTE gbDupSounds;
 unsigned char channels = 8; // defines how many channels, respectively how many *.wav files can be played at the same time
 UCHAR gbMusicOn;
 UCHAR gbSoundOn;

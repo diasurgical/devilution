@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+#include "diablo.h"
+
 char gszHero[16];
 
 /* data */

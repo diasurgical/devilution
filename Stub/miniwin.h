@@ -7,6 +7,7 @@
 #endif
 
 #include <vector>
+
 #include <ctype.h>
 #include <math.h>
 #include <stdarg.h>
@@ -30,6 +31,7 @@
 #define __fastcall __attribute__((fastcall))
 #define __stdcall __attribute__((stdcall))
 #define CALLBACK __stdcall
+#define APIENTRY __stdcall
 #define WINAPI __stdcall
 #define WINAPIV __cdecl
 
@@ -48,6 +50,7 @@ extern void *prealpha_mpq;
 typedef char CHAR;
 typedef uint16_t SHORT;
 typedef int32_t LONG;
+typedef uint8_t BOOLEAN;
 
 typedef LONG *PLONG;
 typedef unsigned long ULONG;
@@ -195,6 +198,18 @@ typedef struct tagMSG {
 	DWORD time;
 	POINT pt;
 } MSG, *LPMSG;
+
+// sdl wave?!?
+#define MAKEFOURCC SDL_FOURCC 
+typedef uint8_t FOURCC;
+typedef struct {
+  FOURCC ckid;
+  DWORD  cksize;
+  FOURCC fccType;
+  DWORD  dwDataOffset;
+  DWORD  dwFlags;
+} MMCKINFO;
+#define FOURCC_RIFF MAKEFOURCC('W', 'A', 'V', 'E')
 
 //
 // COM
@@ -563,6 +578,7 @@ extern void LoadAndPlaySound(char *FilePath, int lVolume, int lPan);
 extern void DrawArtWithMask(int SX, int SY, int SW, int SH, int nFrame, BYTE bMask, void *pBuffer);
 extern BOOL __cdecl LoadArtWithPal(char *pszFile, void **pBuffer, int frames, DWORD *data);
 
+#define OF_EXIST 1
 
 #include "miniwin_ddraw.h"
 #include "miniwin_dsound.h"

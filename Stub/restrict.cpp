@@ -1,13 +1,13 @@
 #include "../types.h"
 #include "stubs.h"
 
-bool __cdecl RestrictedTest()
+BOOL __cdecl RestrictedTest()
 {
 	DUMMY();
 	return FALSE;
 }
 
-bool __cdecl ReadOnlyTest()
+BOOL __cdecl ReadOnlyTest()
 {
 	DUMMY();
 	return FALSE;

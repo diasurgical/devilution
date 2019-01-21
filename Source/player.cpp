@@ -851,8 +851,8 @@ void __fastcall InitPlayer(int pnum, BOOL FirstTime)
 		if (plr[pnum]._pHitPoints >> 6 > 0) {
 			plr[pnum]._pmode = PM_STAND;
 			NewPlrAnim(pnum, plr[pnum]._pNAnim[DIR_S], plr[pnum]._pNFrames, 3, plr[pnum]._pNWidth);
-			plr[pnum]._pAnimFrame = random(2, plr[pnum]._pNFrames - 1) + 1;
-			plr[pnum]._pAnimCnt = random(2, 3);
+			plr[pnum]._pAnimFrame = random_(2, plr[pnum]._pNFrames - 1) + 1;
+			plr[pnum]._pAnimCnt = random_(2, 3);
 		} else {
 			plr[pnum]._pmode = PM_DEATH;
 			NewPlrAnim(pnum, plr[pnum]._pDAnim[DIR_S], plr[pnum]._pDFrames, 1, plr[pnum]._pDWidth);
@@ -2247,7 +2247,7 @@ BOOL __fastcall WeaponDur(int pnum, int durrnd)
 		return FALSE;
 	}
 
-	if (random(3, durrnd) != 0) {
+	if (random_(3, durrnd) != 0) {
 		return FALSE;
 	}
 
@@ -2341,7 +2341,7 @@ BOOL __fastcall PlrHitMonst(int pnum, int m)
 
 	rv = FALSE;
 
-	hit = random(4, 100);
+	hit = random_(4, 100);
 	if (monster[m]._mmode == MM_STONE) {
 		hit = 0;
 	}
@@ -2367,12 +2367,12 @@ BOOL __fastcall PlrHitMonst(int pnum, int m)
 	if (hit < hper) {
 #endif
 		mind = plr[pnum]._pIMinDam;
-		maxd = random(5, plr[pnum]._pIMaxDam - mind + 1);
+		maxd = random_(5, plr[pnum]._pIMaxDam - mind + 1);
 		dam = maxd + mind;
 		dam += plr[pnum]._pDamageMod + plr[pnum]._pIBonusDamMod + dam * plr[pnum]._pIBonusDam / 100;
 		if (plr[pnum]._pClass == PC_WARRIOR) {
 			lvl = plr[pnum]._pLevel;
-			if (random(6, 100) < lvl) {
+			if (random_(6, 100) < lvl) {
 				dam *= 2;
 			}
 		}
@@ -2415,7 +2415,7 @@ BOOL __fastcall PlrHitMonst(int pnum, int m)
 		}
 
 		if (plr[pnum]._pIFlags & ISPL_RNDSTEALLIFE) {
-			tac = random(7, skdam >> 3);
+			tac = random_(7, skdam >> 3);
 			plr[pnum]._pHitPoints += tac;
 			if (plr[pnum]._pHitPoints > plr[pnum]._pMaxHP) {
 				plr[pnum]._pHitPoints = plr[pnum]._pMaxHP;
@@ -2515,7 +2515,7 @@ BOOL __fastcall PlrHitPlr(int pnum, char p)
 		TermMsg("PlrHitPlr: illegal attacking player %d", pnum);
 	}
 
-	hit = random(4, 100);
+	hit = random_(4, 100);
 
 	hper = (plr[pnum]._pDexterity >> 1) + plr[pnum]._pLevel + 50 - (plr[p]._pIBonusAC + plr[p]._pIAC + plr[p]._pDexterity / 5);
 
@@ -2531,7 +2531,7 @@ BOOL __fastcall PlrHitPlr(int pnum, char p)
 	}
 
 	if ((plr[p]._pmode == PM_STAND || plr[p]._pmode == PM_ATTACK) && plr[p]._pBlockFlag) {
-		blk = random(5, 100);
+		blk = random_(5, 100);
 	} else {
 		blk = 100;
 	}
@@ -2550,19 +2550,19 @@ BOOL __fastcall PlrHitPlr(int pnum, char p)
 			StartPlrBlock(p, dir);
 		} else {
 			mind = plr[pnum]._pIMinDam;
-			maxd = random(5, plr[pnum]._pIMaxDam - mind + 1);
+			maxd = random_(5, plr[pnum]._pIMaxDam - mind + 1);
 			dam = maxd + mind;
 			dam += plr[pnum]._pDamageMod + plr[pnum]._pIBonusDamMod + dam * plr[pnum]._pIBonusDam / 100;
 
 			if (plr[pnum]._pClass == PC_WARRIOR) {
 				lvl = plr[pnum]._pLevel;
-				if (random(6, 100) < lvl) {
+				if (random_(6, 100) < lvl) {
 					dam *= 2;
 				}
 			}
 			skdam = dam << 6;
 			if (plr[pnum]._pIFlags & ISPL_RNDSTEALLIFE) {
-				tac = random(7, skdam >> 3);
+				tac = random_(7, skdam >> 3);
 				plr[pnum]._pHitPoints += tac;
 				if (plr[pnum]._pHitPoints > plr[pnum]._pMaxHP) {
 					plr[pnum]._pHitPoints = plr[pnum]._pMaxHP;
@@ -2793,7 +2793,7 @@ BOOL __fastcall PM_DoBlock(int pnum)
 		StartStand(pnum, plr[pnum]._pdir);
 		ClearPlrPVars(pnum);
 
-		if (!random(3, 10)) {
+		if (!random_(3, 10)) {
 			ShieldDur(pnum);
 		}
 		return TRUE;
@@ -2880,7 +2880,7 @@ BOOL __fastcall PM_DoGotHit(int pnum)
 	if (plr[pnum]._pAnimFrame >= plr[pnum]._pHFrames) {
 		StartStand(pnum, plr[pnum]._pdir);
 		ClearPlrPVars(pnum);
-		if (random(3, 4)) {
+		if (random_(3, 4)) {
 			ArmorDur(pnum);
 		}
 
@@ -2909,7 +2909,7 @@ void __fastcall ArmorDur(int pnum)
 		return;
 	}
 
-	a = random(8, 3);
+	a = random_(8, 3);
 	if (p->InvBody[INVLOC_CHEST]._itype != ITYPE_NONE && p->InvBody[INVLOC_HEAD]._itype == ITYPE_NONE) {
 		a = 1;
 	}

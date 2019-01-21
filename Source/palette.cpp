@@ -114,7 +114,7 @@ void __fastcall LoadRndLvlPal(int l)
 	char szTemp[260]; // [esp+4h] [ebp-104h]
 
 	if (l) {
-		sprintf(szTemp, "Levels\\L%iData\\L%i_%i.PAL", l, l, random(0, 4) + 1);
+		sprintf(szTemp, "Levels\\L%iData\\L%i_%i.PAL", l, l, random_(0, 4) + 1);
 		pszPal = szTemp;
 	} else {
 		pszPal = "Levels\\TownData\\Town.pal";

@@ -130,7 +130,7 @@ void __cdecl gamemenu_load_game()
 
 	saveProc = SetWindowProc(DisableInputWndProc);
 	gamemenu_off();
-	SetCursor(0);
+	SetCursor_(0);
 	InitDiabloMsg(10);
 	drawpanflag = 255;
 	DrawAndBlit();
@@ -141,7 +141,7 @@ void __cdecl gamemenu_load_game()
 	drawpanflag = 255;
 	DrawAndBlit();
 	PaletteFadeIn(8);
-	SetCursor(CURSOR_HAND);
+	SetCursor_(CURSOR_HAND);
 	interface_msg_pump();
 	SetWindowProc(saveProc);
 }
@@ -160,7 +160,7 @@ void __cdecl gamemenu_save_game()
 		else
 		{
 			saveProc = SetWindowProc(DisableInputWndProc);
-			SetCursor(0);
+			SetCursor_(0);
 			gamemenu_off();
 			InitDiabloMsg(11);
 			drawpanflag = 255;
@@ -168,7 +168,7 @@ void __cdecl gamemenu_save_game()
 			SaveGame();
 			ClrDiabloMsg();
 			drawpanflag = 255;
-			SetCursor(CURSOR_HAND);
+			SetCursor_(CURSOR_HAND);
 			interface_msg_pump();
 			SetWindowProc(saveProc);
 		}

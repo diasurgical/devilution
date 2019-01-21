@@ -672,15 +672,15 @@ void __cdecl AddInitItems()
 	int yy; // eax
 	int j;  // eax
 
-	i = random(11, 3) + 3;
+	i = random_(11, 3) + 3;
 	if (i > 0) {
 		do {
 			ii = itemavail[0];
 			itemactive[numitems] = itemavail[0];
 			itemavail[0] = itemavail[MAXITEMS - numitems - 1];
 			do {
-				xx = random(12, 80) + 16;
-				yy = random(12, 80) + 16;
+				xx = random_(12, 80) + 16;
+				yy = random_(12, 80) + 16;
 			} while (!ItemPlace(xx, yy));
 			item[ii]._ix = xx;
 			item[ii]._iy = yy;
@@ -688,7 +688,7 @@ void __cdecl AddInitItems()
 			j = GetRndSeed();
 			item[ii]._iSeed = j;
 			SetRndSeed(j);
-			if (random(12, 2))
+			if (random_(12, 2))
 				GetItemAttrs(ii, IDI_HEAL, currlevel);
 			else
 				GetItemAttrs(ii, IDI_MANA, currlevel);
@@ -1526,7 +1526,7 @@ BOOL __fastcall GetItemSpace(int x, int y, char inum)
 		}
 	}
 
-	rs = random(13, 15) + 1;
+	rs = random_(13, 15) + 1;
 
 	if (!savail)
 		return FALSE;
@@ -1682,7 +1682,7 @@ void __fastcall GetBookSpell(int i, int lvl)
 	v3 = i;
 	if (!lvl)
 		v2 = lvl + 1;
-	v4 = random(14, MAX_SPELLS) + 1;
+	v4 = random_(14, MAX_SPELLS) + 1;
 LABEL_13:
 	v6 = 1;
 	while (v4 > 0) {
@@ -1739,7 +1739,7 @@ void __fastcall GetStaffPower(int i, int lvl, int bs, unsigned char onlygood)
 	v4 = lvl;
 	ia = i;
 	v5 = -1;
-	if (!random(15, 10) || onlygood) {
+	if (!random_(15, 10) || onlygood) {
 		v6 = 0;
 		v7 = 0;
 		if (PL_Prefix[0].PLPower != -1) {
@@ -1752,7 +1752,7 @@ void __fastcall GetStaffPower(int i, int lvl, int bs, unsigned char onlygood)
 				++v7;
 			} while (PL_Prefix[v7].PLPower != -1);
 			if (v6) {
-				v5 = l[random(16, v6)];
+				v5 = l[random_(16, v6)];
 				v9 = ia;
 				v17 = item[ia]._iIName;
 				sprintf(istr, "%s %s", PL_Prefix[v5].PLName, item[ia]._iIName);
@@ -1800,11 +1800,11 @@ void __fastcall GetStaffSpell(int i, int lvl, unsigned char onlygood)
 	char istr[64]; // [esp+4h] [ebp-4Ch]
 	int bs;        // [esp+4Ch] [ebp-4h]
 
-	if (random(17, 4)) {
+	if (random_(17, 4)) {
 		l = lvl >> 1;
 		if (!l)
 			l = 1;
-		rv = random(18, MAX_SPELLS) + 1;
+		rv = random_(18, MAX_SPELLS) + 1;
 	LABEL_15:
 		s = 1;
 		while (rv > 0) {
@@ -1830,7 +1830,7 @@ void __fastcall GetStaffSpell(int i, int lvl, unsigned char onlygood)
 		minc = spelldata[bs].sStaffMin;
 		maxc = spelldata[bs].sStaffMax - minc + 1;
 		item[i]._iSpell = bs;
-		v = random(19, maxc) + minc;
+		v = random_(19, maxc) + minc;
 		item[i]._iMinMag = spelldata[bs].sMinInt;
 		item[i]._iCharges = v;
 		item[i]._iMaxCharges = v;
@@ -1857,7 +1857,7 @@ void __fastcall GetItemAttrs(int i, int idata, int lvl)
 	item[i]._iMinDam = AllItemsList[idata].iMinDam;
 	item[i]._iMaxDam = AllItemsList[idata].iMaxDam;
 	item[i]._iMiscId = AllItemsList[idata].iMiscId;
-	item[i]._iAC = AllItemsList[idata].iMinAC + random(20, AllItemsList[idata].iMaxAC - AllItemsList[idata].iMinAC + 1);
+	item[i]._iAC = AllItemsList[idata].iMinAC + random_(20, AllItemsList[idata].iMaxAC - AllItemsList[idata].iMinAC + 1);
 	item[i]._iFlags = AllItemsList[idata].iFlags;
 	item[i]._iSpell = AllItemsList[idata].iSpell;
 	item[i]._ivalue = AllItemsList[idata].iValue;
@@ -1907,12 +1907,12 @@ void __fastcall GetItemAttrs(int i, int idata, int lvl)
 		if (gnDifficulty) /* clean this up, NORMAL */
 			rndv = lvl;
 		else
-			rndv = 5 * currlevel + random(21, 10 * currlevel);
+			rndv = 5 * currlevel + random_(21, 10 * currlevel);
 
 		if (gnDifficulty == DIFF_NIGHTMARE)
-			rndv = 5 * (currlevel + 16) + random(21, 10 * (currlevel + 16));
+			rndv = 5 * (currlevel + 16) + random_(21, 10 * (currlevel + 16));
 		if (gnDifficulty == DIFF_HELL)
-			rndv = 5 * (currlevel + 32) + random(21, 10 * (currlevel + 32));
+			rndv = 5 * (currlevel + 32) + random_(21, 10 * (currlevel + 32));
 
 		if (leveltype == DTYPE_HELL)
 			rndv += rndv >> 3;
@@ -1931,7 +1931,7 @@ void __fastcall GetItemAttrs(int i, int idata, int lvl)
 
 int __fastcall RndPL(int param1, int param2)
 {
-	return param1 + random(22, param2 - param1 + 1);
+	return param1 + random_(22, param2 - param1 + 1);
 }
 
 int __fastcall PLVal(int pv, int p1, int p2, int minv, int maxv)
@@ -2345,10 +2345,10 @@ void __fastcall GetItemPower(int i, int minlvl, int maxlvl, int flgs, int onlygo
 	int sufidx;        // [esp+48Ch] [ebp-Ch]
 	int preidx;        // [esp+490h] [ebp-8h]
 
-	pre = random(23, 4);
-	post = random(23, 3);
+	pre = random_(23, 4);
+	post = random_(23, 3);
 	if (pre && !post) {
-		if (random(23, 2))
+		if (random_(23, 2))
 			post = 1;
 		else
 			pre = 0;
@@ -2357,7 +2357,7 @@ void __fastcall GetItemPower(int i, int minlvl, int maxlvl, int flgs, int onlygo
 	sufidx = -1;
 	goe = 0;
 	if (!onlygood) {
-		if (random(0, 3))
+		if (random_(0, 3))
 			onlygood = 1;
 	}
 	if (!pre) {
@@ -2375,7 +2375,7 @@ void __fastcall GetItemPower(int i, int minlvl, int maxlvl, int flgs, int onlygo
 				v14++;
 			} while (PL_Prefix[v14].PLPower != -1);
 			if (v11) {
-				preidx = l[random(23, v11)];
+				preidx = l[random_(23, v11)];
 				sprintf(istr, "%s %s", PL_Prefix[preidx].PLName, item[i]._iIName);
 				strcpy(item[i]._iIName, istr);
 				item[i]._iMagical = ITEM_QUALITY_MAGIC;
@@ -2404,7 +2404,7 @@ void __fastcall GetItemPower(int i, int minlvl, int maxlvl, int flgs, int onlygo
 				v14++;
 			} while (PL_Suffix[v14].PLPower != -1);
 			if (v11) {
-				sufidx = l[random(23, v11)];
+				sufidx = l[random_(23, v11)];
 				sprintf(istr, "%s of %s", item[i]._iIName, PL_Suffix[sufidx].PLName);
 				strcpy(item[i]._iIName, istr);
 				item[i]._iMagical = ITEM_QUALITY_MAGIC;
@@ -2510,10 +2510,10 @@ int __fastcall RndItem(int m)
 	if (monster[m].MData->mTreasure & 0x4000)
 		return 0;
 
-	if (random(24, 100) > 40)
+	if (random_(24, 100) > 40)
 		return 0;
 
-	if (random(24, 100) > 25)
+	if (random_(24, 100) > 25)
 		return 1;
 
 	ri = 0;
@@ -2532,7 +2532,7 @@ int __fastcall RndItem(int m)
 			ri--;
 	}
 
-	return ril[random(24, ri)] + 1;
+	return ril[random_(24, ri)] + 1;
 }
 // 679660: using guessed type char gbMaxPlayers;
 
@@ -2575,7 +2575,7 @@ int __fastcall RndUItem(int m)
 		}
 	}
 
-	return ril[random(25, ri)];
+	return ril[random_(25, ri)];
 }
 // 679660: using guessed type char gbMaxPlayers;
 
@@ -2584,7 +2584,7 @@ int __cdecl RndAllItems()
 	int i, ri;
 	int ril[512];
 
-	if (random(26, 100) > 25)
+	if (random_(26, 100) > 25)
 		return 0;
 
 	ri = 0;
@@ -2599,7 +2599,7 @@ int __cdecl RndAllItems()
 			ri--;
 	}
 
-	return ril[random(26, ri)];
+	return ril[random_(26, ri)];
 }
 // 679660: using guessed type char gbMaxPlayers;
 
@@ -2630,7 +2630,7 @@ int __fastcall RndTypeItems(int itype, int imid)
 		} while (AllItemsList[i].iLoc != -1);
 	}
 
-	return ril[random(27, ri)];
+	return ril[random_(27, ri)];
 }
 // 421CB7: using guessed type int var_80C[512];
 
@@ -2641,7 +2641,7 @@ int __fastcall CheckUnique(int i, int lvl, int uper, BOOLEAN recreate)
 	int idata;     // eax
 	char uok[128]; // [esp+8h] [ebp-84h]
 
-	if (random(28, 100) > uper)
+	if (random_(28, 100) > uper)
 		return -1;
 	numu = 0;
 	memset(uok, 0, sizeof(uok));
@@ -2661,7 +2661,7 @@ int __fastcall CheckUnique(int i, int lvl, int uper, BOOLEAN recreate)
 	if (!numu)
 		return -1;
 
-	random(29, 10);
+	random_(29, 10);
 	idata = 0;
 	if (numu > 0) {
 		while (1) {
@@ -2734,7 +2734,7 @@ void __fastcall SpawnUnique(int uid, int x, int y)
 void __fastcall ItemRndDur(int ii)
 {
 	if (item[ii]._iDurability && item[ii]._iDurability != DUR_INDESTRUCTIBLE)
-		item[ii]._iDurability = random(0, item[ii]._iMaxDur >> 1) + (item[ii]._iMaxDur >> 2) + 1;
+		item[ii]._iDurability = random_(0, item[ii]._iMaxDur >> 1) + (item[ii]._iMaxDur >> 2) + 1;
 }
 
 void __fastcall SetupAllItems(int ii, int idx, int iseed, int lvl, int uper, int onlygood, int recreate, int pregen)
@@ -2762,7 +2762,7 @@ void __fastcall SetupAllItems(int ii, int idx, int iseed, int lvl, int uper, int
 			GetUniqueItem(ii, iseed);
 	} else {
 		iblvl = -1;
-		if (random(32, 100) > 10 && random(33, 100) > lvl || (iblvl = lvl, lvl == -1)) {
+		if (random_(32, 100) > 10 && random_(33, 100) > lvl || (iblvl = lvl, lvl == -1)) {
 
 			if (item[ii]._iMiscId != IMISC_STAFF || (iblvl = lvl, lvl == -1)) {
 				if (item[ii]._iMiscId != IMISC_RING || (iblvl = lvl, lvl == -1)) {
@@ -2896,10 +2896,10 @@ void __fastcall SetupAllUseful(int ii, int iseed, int lvl)
 
 	item[ii]._iSeed = iseed;
 	SetRndSeed(iseed);
-	idx = 25 - (random(34, 2) != 0);
+	idx = 25 - (random_(34, 2) != 0);
 
 	if (lvl > 1) {
-		if (!random(34, 3))
+		if (!random_(34, 3))
 			idx = 27; // unique?
 	}
 
@@ -3045,8 +3045,8 @@ void __fastcall SpawnQuestItem(int itemid, int x, int y, int randarea, int selfl
 			if (++tries > 1000 && randarea > 1)
 				--randarea;
 
-			x = random(0, MAXDUNX);
-			y = random(0, MAXDUNY);
+			x = random_(0, MAXDUNX);
+			y = random_(0, MAXDUNY);
 			i = 0;
 			failed = 0;
 			if (randarea <= 0)
@@ -3314,7 +3314,7 @@ void __fastcall RepairItem(ItemStruct *i, int lvl)
 		if (i->_iMaxDur > 0) {
 			rep = 0;
 			while (1) {
-				rep += lvl + random(37, lvl);
+				rep += lvl + random_(37, lvl);
 				d = i->_iMaxDur / (lvl + 9);
 
 				if (d < 1)
@@ -3345,7 +3345,7 @@ void __fastcall DoRecharge(int pnum, int cii)
 	pi = &p->InvBody[cii];
 
 	if (pi->_itype == ITYPE_STAFF && pi->_iSpell) {
-		RechargeItem(pi, random(38, p->_pLevel / spelldata[pi->_iSpell].sBookLvl) + 1);
+		RechargeItem(pi, random_(38, p->_pLevel / spelldata[pi->_iSpell].sBookLvl) + 1);
 		CalcPlrInv(pnum, 1);
 	}
 
@@ -3973,7 +3973,7 @@ void __fastcall UseItem(int p, int Mid, int spl)
 	case IMISC_HEAL:
 	case IMISC_HEAL_1C:
 		j = plr[p]._pMaxHP >> 8;
-		l = ((j >> 1) + random(39, j)) << 6;
+		l = ((j >> 1) + random_(39, j)) << 6;
 		if (plr[p]._pClass == PC_WARRIOR)
 			l *= 2;
 		if (plr[p]._pClass == PC_ROGUE)
@@ -3993,7 +3993,7 @@ void __fastcall UseItem(int p, int Mid, int spl)
 		break;
 	case IMISC_MANA:
 		j = plr[p]._pMaxMana >> 8;
-		l = ((j >> 1) + random(40, j)) << 6;
+		l = ((j >> 1) + random_(40, j)) << 6;
 		if (plr[p]._pClass == PC_SORCERER)
 			l *= 2;
 		if (plr[p]._pClass == PC_ROGUE)
@@ -4029,7 +4029,7 @@ void __fastcall UseItem(int p, int Mid, int spl)
 		break;
 	case IMISC_REJUV:
 		j = plr[p]._pMaxHP >> 8;
-		l = ((j >> 1) + random(39, j)) << 6;
+		l = ((j >> 1) + random_(39, j)) << 6;
 		if (plr[p]._pClass == PC_WARRIOR)
 			l *= 2;
 		if (plr[p]._pClass == PC_ROGUE)
@@ -4042,7 +4042,7 @@ void __fastcall UseItem(int p, int Mid, int spl)
 			plr[p]._pHPBase = plr[p]._pMaxHPBase;
 		drawhpflag = TRUE;
 		j = plr[p]._pMaxMana >> 8;
-		l = ((j >> 1) + random(40, j)) << 6;
+		l = ((j >> 1) + random_(40, j)) << 6;
 		if (plr[p]._pClass == PC_SORCERER)
 			l *= 2;
 		if (plr[p]._pClass == PC_ROGUE)
@@ -4177,7 +4177,7 @@ int __fastcall RndSmithItem(int lvl)
 		}
 	}
 
-	return ril[random(50, ri)] + 1;
+	return ril[random_(50, ri)] + 1;
 }
 
 void __fastcall BubbleSwapItem(ItemStruct *a, ItemStruct *b)
@@ -4232,7 +4232,7 @@ void __fastcall SpawnSmith(int lvl)
 	ItemStruct *v4; // ebx
 	int v9;         // [esp+Ch] [ebp-8h]
 
-	v3 = random(50, 10) + 10;
+	v3 = random_(50, 10) + 10;
 	if (v3 > 0) {
 		v4 = smithitem;
 		v9 = v3;
@@ -4300,7 +4300,7 @@ int __fastcall RndPremiumItem(int minlvl, int maxlvl)
 		}
 	}
 
-	return ril[random(50, ri)] + 1;
+	return ril[random_(50, ri)] + 1;
 }
 // 42445F: using guessed type int ril[512];
 
@@ -4392,7 +4392,7 @@ int __fastcall RndWitchItem(int lvl)
 		}
 	}
 
-	return ril[random(51, ri)] + 1;
+	return ril[random_(51, ri)] + 1;
 }
 
 void __cdecl SortWitch()
@@ -4472,7 +4472,7 @@ void __fastcall SpawnWitch(int lvl)
 	qmemcpy(&witchitem[2], item, sizeof(ItemStruct));
 	witchitem[2]._iCreateInfo = lvl;
 	witchitem[2]._iStatFlag = 1;
-	v2 = random(51, 8) + 10;
+	v2 = random_(51, 8) + 10;
 	ii = 3;
 	if (v2 > 3) {
 		itm = &witchitem[3];
@@ -4481,7 +4481,7 @@ void __fastcall SpawnWitch(int lvl)
 			SetRndSeed(item[0]._iSeed);
 			itype = RndWitchItem(lvl) - 1;
 			GetItemAttrs(0, itype, lvl);
-			if (random(51, 100) > 5 || (iblvl = 2 * lvl, iblvl == -1)) {
+			if (random_(51, 100) > 5 || (iblvl = 2 * lvl, iblvl == -1)) {
 				if (item[0]._iMiscId != IMISC_STAFF)
 					continue;
 				iblvl = 2 * lvl;
@@ -4524,7 +4524,7 @@ int __fastcall RndBoyItem(int lvl)
 		}
 	}
 
-	return ril[random(49, ri)] + 1;
+	return ril[random_(49, ri)] + 1;
 }
 // 4249A4: using guessed type int var_800[512];
 
@@ -4617,7 +4617,7 @@ int __fastcall RndHealerItem(int lvl)
 		}
 	}
 
-	return ril[random(50, ri)] + 1;
+	return ril[random_(50, ri)] + 1;
 }
 
 void __cdecl SortHealer()
@@ -4681,7 +4681,7 @@ void __fastcall SpawnHealer(int lvl)
 		healitem[2]._iStatFlag = 1;
 		v8 = 3;
 	}
-	v3 = random(50, 8) + 10;
+	v3 = random_(50, 8) + 10;
 	if (v8 < v3) {
 		v4 = &healitem[v8];
 		v10 = v3 - v8;
@@ -4761,7 +4761,7 @@ void __fastcall RecreateWitchItem(int ii, int idx, int lvl, int iseed)
 		itype = RndWitchItem(lvl) - 1;
 		GetItemAttrs(ii, itype, lvl);
 		iblvl = 2 * lvl;
-		if (iblvl != -1 && (random(51, 100) <= 5 || item[ii]._iMiscId == IMISC_STAFF)) {
+		if (iblvl != -1 && (random_(51, 100) <= 5 || item[ii]._iMiscId == IMISC_STAFF)) {
 			GetItemBonus(ii, itype, iblvl >> 1, iblvl, 1);
 		}
 	}

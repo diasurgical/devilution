@@ -14,6 +14,7 @@ include(CMake/out_of_tree.cmake)
 include(CMake/32bit.cmake)
 
 set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
 project(devil-miniwin

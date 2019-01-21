@@ -3472,7 +3472,7 @@ void __cdecl S_TalkEnter()
 		}
 		if (stextsel == v5 - 2) {
 			SetRndSeed(towner[talker]._tSeed);
-			v8 = random(0, gossipend - gossipstart + 1);
+			v8 = random_(0, gossipend - gossipstart + 1);
 			InitQTextMsg(gossipstart + v8);
 		} else {
 			v9 = 0;

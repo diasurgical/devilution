@@ -885,77 +885,77 @@ void __cdecl L4AddWall()
 		v2 = v0;
 		do {
 			if (!dflags[0][v2]) {
-				if (dungeon[0][v2] == 10 && random(0, 100) < 100) {
+				if (dungeon[0][v2] == 10 && random_(0, 100) < 100) {
 					v3 = L4HWallOk(v1, v0);
 					if (v3 != -1)
 						L4HorizWall(v1, v0, v3);
 				}
-				if (dungeon[0][v2] == 12 && random(0, 100) < 100) {
+				if (dungeon[0][v2] == 12 && random_(0, 100) < 100) {
 					v4 = L4HWallOk(v1, v0);
 					if (v4 != -1)
 						L4HorizWall(v1, v0, v4);
 				}
-				if (dungeon[0][v2] == 13 && random(0, 100) < 100) {
+				if (dungeon[0][v2] == 13 && random_(0, 100) < 100) {
 					v5 = L4HWallOk(v1, v0);
 					if (v5 != -1)
 						L4HorizWall(v1, v0, v5);
 				}
-				if (dungeon[0][v2] == 15 && random(0, 100) < 100) {
+				if (dungeon[0][v2] == 15 && random_(0, 100) < 100) {
 					v6 = L4HWallOk(v1, v0);
 					if (v6 != -1)
 						L4HorizWall(v1, v0, v6);
 				}
-				if (dungeon[0][v2] == 16 && random(0, 100) < 100) {
+				if (dungeon[0][v2] == 16 && random_(0, 100) < 100) {
 					v7 = L4HWallOk(v1, v0);
 					if (v7 != -1)
 						L4HorizWall(v1, v0, v7);
 				}
-				if (dungeon[0][v2] == 21 && random(0, 100) < 100) {
+				if (dungeon[0][v2] == 21 && random_(0, 100) < 100) {
 					v8 = L4HWallOk(v1, v0);
 					if (v8 != -1)
 						L4HorizWall(v1, v0, v8);
 				}
-				if (dungeon[0][v2] == 22 && random(0, 100) < 100) {
+				if (dungeon[0][v2] == 22 && random_(0, 100) < 100) {
 					v9 = L4HWallOk(v1, v0);
 					if (v9 != -1)
 						L4HorizWall(v1, v0, v9);
 				}
-				if (dungeon[0][v2] == 8 && random(0, 100) < 100) {
+				if (dungeon[0][v2] == 8 && random_(0, 100) < 100) {
 					v10 = L4VWallOk(v1, v0);
 					if (v10 != -1)
 						L4VertWall(v1, v0, v10);
 				}
-				if (dungeon[0][v2] == 9 && random(0, 100) < 100) {
+				if (dungeon[0][v2] == 9 && random_(0, 100) < 100) {
 					v11 = L4VWallOk(v1, v0);
 					if (v11 != -1)
 						L4VertWall(v1, v0, v11);
 				}
-				if (dungeon[0][v2] == 11 && random(0, 100) < 100) {
+				if (dungeon[0][v2] == 11 && random_(0, 100) < 100) {
 					v12 = L4VWallOk(v1, v0);
 					if (v12 != -1)
 						L4VertWall(v1, v0, v12);
 				}
-				if (dungeon[0][v2] == 14 && random(0, 100) < 100) {
+				if (dungeon[0][v2] == 14 && random_(0, 100) < 100) {
 					v13 = L4VWallOk(v1, v0);
 					if (v13 != -1)
 						L4VertWall(v1, v0, v13);
 				}
-				if (dungeon[0][v2] == 15 && random(0, 100) < 100) {
+				if (dungeon[0][v2] == 15 && random_(0, 100) < 100) {
 					v14 = L4VWallOk(v1, v0);
 					if (v14 != -1)
 						L4VertWall(v1, v0, v14);
 				}
-				if (dungeon[0][v2] == 16 && random(0, 100) < 100) {
+				if (dungeon[0][v2] == 16 && random_(0, 100) < 100) {
 					v15 = L4VWallOk(v1, v0);
 					if (v15 != -1)
 						L4VertWall(v1, v0, v15);
 				}
-				if (dungeon[0][v2] == 21 && random(0, 100) < 100) {
+				if (dungeon[0][v2] == 21 && random_(0, 100) < 100) {
 					v16 = L4VWallOk(v1, v0);
 					if (v16 != -1)
 						L4VertWall(v1, v0, v16);
 				}
-				if (dungeon[0][v2] == 23 && random(0, 100) < 100) {
+				if (dungeon[0][v2] == 23 && random_(0, 100) < 100) {
 					v17 = L4VWallOk(v1, v0);
 					if (v17 != -1)
 						L4VertWall(v1, v0, v17);
@@ -1108,7 +1108,7 @@ void __fastcall L4HorizWall(int i, int j, int dx)
 		*v9 = 23;
 	if (*v9 == 22)
 		*v9 = 29;
-	v10 = v4 + 40 * (v3 + random(0, dx - 3) + 1);
+	v10 = v4 + 40 * (v3 + random_(0, dx - 3) + 1);
 	dungeon[2][v10] = 56;
 	dungeon[1][v10] = 60;
 	v11 = dungeon[0][v10 - 1] == 6;
@@ -1161,7 +1161,7 @@ void __fastcall L4VertWall(int i, int j, int dy)
 	if (*v7 == 23)
 		*v7 = 29;
 	v8 = v6 - 3;
-	v9 = random(0, v8) + 1 + v4 + v3;
+	v9 = random_(0, v8) + 1 + v4 + v3;
 	v10 = (char *)dungeon + v9;
 	dungeon[0][v9 + 2] = 52;
 	dungeon[0][v9 + 1] = 6;
@@ -2045,11 +2045,11 @@ void __cdecl DRLG_L4Subs()
 		v1 = v0;
 		v2 = 40;
 		do {
-			if (!random(0, 3)) {
+			if (!random_(0, 3)) {
 				v3 = L4BTYPES[(unsigned char)dungeon[0][v1]];
 				if (v3) {
 					if (!dflags[0][v1]) {
-						v4 = random(0, 16);
+						v4 = random_(0, 16);
 						v5 = -1;
 						while (v4 >= 0) {
 							if (++v5 == 140)
@@ -2071,8 +2071,8 @@ void __cdecl DRLG_L4Subs()
 		v7 = v6;
 		v8 = 40;
 		do {
-			if (!random(0, 10) && L4BTYPES[(unsigned char)dungeon[0][v7]] == 6 && !dflags[0][v7])
-				dungeon[0][v7] = random(0, 3) + 95;
+			if (!random_(0, 10) && L4BTYPES[(unsigned char)dungeon[0][v7]] == 6 && !dflags[0][v7])
+				dungeon[0][v7] = random_(0, 3) + 95;
 			v7 += 40;
 			--v8;
 		} while (v8);
@@ -2213,7 +2213,7 @@ void __cdecl uShape()
 		} while (v1 >= 0);
 		--v0;
 	} while (v0 >= 0);
-	v4 = random(0, 19) + 1;
+	v4 = random_(0, 19) + 1;
 	do {
 		if (hallok[v4]) {
 			v5 = 19;
@@ -2247,7 +2247,7 @@ void __cdecl uShape()
 		--v8;
 		v7 -= 20;
 	} while ((signed int)v8 >= (signed int)hallok);
-	v11 = random(0, 19) + 1;
+	v11 = random_(0, 19) + 1;
 	do {
 		if (hallok[v11]) {
 			v12 = 19;
@@ -2309,8 +2309,8 @@ void __cdecl L4firstRoom()
 	} else {
 		if ((currlevel != quests[QTYPE_WARLRD]._qlevel || !quests[QTYPE_WARLRD]._qactive)
 		    && (currlevel != quests[QTYPE_VB]._qlevel || gbMaxPlayers == 1)) {
-			v0 = random(0, 5) + 2;
-			v1 = random(0, 5) + 2;
+			v0 = random_(0, 5) + 2;
+			v1 = random_(0, 5) + 2;
 			goto LABEL_10;
 		}
 		v9 = 11;
@@ -2319,10 +2319,10 @@ void __cdecl L4firstRoom()
 	v0 = v9;
 LABEL_10:
 	v2 = 20 - v0;
-	v3 = ((20 - v0) >> 1) + random(0, 20 - ((20 - v0) >> 1) - v0);
+	v3 = ((20 - v0) >> 1) + random_(0, 20 - ((20 - v0) >> 1) - v0);
 	if (v3 + v0 <= 19)
 		v2 = v3;
-	v4 = ((20 - v1) >> 1) + random(0, 20 - ((20 - v1) >> 1) - v1);
+	v4 = ((20 - v1) >> 1) + random_(0, 20 - ((20 - v1) >> 1) - v1);
 	v5 = 20 - v1;
 	if (v4 + v1 <= 19)
 		v5 = v4;
@@ -2344,7 +2344,7 @@ LABEL_10:
 	}
 	SP4x2 = v7;
 	L4drawRoom(v2, v5, v0, v1);
-	v8 = random(0, 2);
+	v8 = random_(0, 2);
 	L4roomGen(v2, v5, v0, v1, v8);
 }
 // 528A34: using guessed type int l4holdx;
@@ -2406,7 +2406,7 @@ void __fastcall L4roomGen(int x, int y, int w, int h, int dir)
 	xa = x;
 	while (1) {
 		while (1) {
-			v5 = random(0, 4);
+			v5 = random_(0, 4);
 			v6 = 0;
 			_LOBYTE(v6) = dir == 1 ? v5 != 0 : v5 == 0;
 			v7 = v6;
@@ -2418,9 +2418,9 @@ void __fastcall L4roomGen(int x, int y, int w, int h, int dir)
 			dira = 0;
 			wa = w / 2;
 			do {
-				v9 = random(0, 5);
+				v9 = random_(0, 5);
 				v11 = (v9 + 2) & 0xFFFFFFFE;
-				v12 = (random(0, 5) + 2) & 0xFFFFFFFE;
+				v12 = (random_(0, 5) + 2) & 0xFFFFFFFE;
 				v13 = xa + wa - v11 / 2;
 				ya = v27 - v12;
 				v14 = L4checkRoom(v13 - 1, v27 - v12 - 1, v11 + 2, v12 + 1);
@@ -2446,9 +2446,9 @@ void __fastcall L4roomGen(int x, int y, int w, int h, int dir)
 		dirb = 0;
 		hb = h / 2;
 		do {
-			v15 = random(0, 5);
+			v15 = random_(0, 5);
 			v17 = (v15 + 2) & 0xFFFFFFFE;
-			v18 = (random(0, 5) + 2) & 0xFFFFFFFE;
+			v18 = (random_(0, 5) + 2) & 0xFFFFFFFE;
 			v19 = v27 + hb - v18 / 2;
 			yb = xa - v17;
 			v20 = L4checkRoom(xa - v17 - 1, v19 - 1, v18 + 2, v17 + 1);
@@ -2543,7 +2543,7 @@ BOOLEAN __fastcall DRLG_L4PlaceMiniSet(const unsigned char *miniset, int tmin, i
 	v28 = *miniset;
 	v29 = miniset[1];
 	if (v10)
-		v24 = v8 + random(0, v10);
+		v24 = v8 + random_(0, v10);
 	else
 		v24 = 1;
 	v25 = 0;
@@ -2554,9 +2554,9 @@ BOOLEAN __fastcall DRLG_L4PlaceMiniSet(const unsigned char *miniset, int tmin, i
 		max = 40 - v9;
 		v30 = 40 - v7;
 		do {
-			v11 = random(0, max);
+			v11 = random_(0, max);
 			v27 = 0;
-			v12 = random(0, v30);
+			v12 = random_(0, v30);
 			v33 = v12;
 			do {
 				if (v27 >= 200)
@@ -2565,15 +2565,15 @@ BOOLEAN __fastcall DRLG_L4PlaceMiniSet(const unsigned char *miniset, int tmin, i
 				if (v11 >= SP4x1 && v11 <= SP4x2 && v12 >= SP4y1 && v12 <= SP4y2)
 					tmaxa = 0;
 				if (cx != -1 && v11 >= cx - v28 && v11 <= cx + 12) {
-					v11 = random(0, max);
+					v11 = random_(0, max);
 					tmaxa = 0;
-					v33 = random(0, v30);
+					v33 = random_(0, v30);
 					v12 = v33;
 				}
 				if (cy != -1 && v12 >= cy - v29 && v12 <= cy + 12) {
-					v11 = random(0, max);
+					v11 = random_(0, max);
 					tmaxa = 0;
-					v33 = random(0, v30);
+					v33 = random_(0, v30);
 					v12 = v33;
 				}
 				v13 = 0;

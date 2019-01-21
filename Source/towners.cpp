@@ -354,7 +354,7 @@ void __cdecl InitCows()
 		SetTownerGPtrs(towner[tnum]._tNData, (BYTE **)towner[tnum]._tNAnim);
 		towner[tnum]._tNFrames = 12;
 		NewTownerAnim(numtowners, towner[tnum]._tNAnim[dir], towner[tnum]._tNFrames, 3);
-		towner[tnum]._tAnimFrame = random(0, 11) + 1;
+		towner[tnum]._tAnimFrame = random_(0, 11) + 1;
 		towner[tnum]._tSelFlag = 1;
 		strcpy(towner[tnum]._tName, "Cow");
 
@@ -628,9 +628,9 @@ void __fastcall TalkToTowner(int p, int t)
 	v2 = t;
 	v3 = p;
 	v21 = t;
-	random(6, 3); /* figure out what these are for */
-	random(6, 4);
-	random(6, 5);
+	random_(6, 3); /* figure out what these are for */
+	random_(6, 4);
+	random_(6, 5);
 	v6 = v3;
 	v7 = v2;
 	inv_item_num = abs(plr[v3].WorldX - towner[v2]._tx);

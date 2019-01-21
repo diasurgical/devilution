@@ -330,7 +330,7 @@ void __cdecl SDrawRealizePalette(void)
 //	UNIMPLEMENTED();
 //}
 
-bool __stdcall SNetGetOwnerTurnsWaiting(int *)
+BOOL __stdcall SNetGetOwnerTurnsWaiting(DWORD *)
 {
 	UNIMPLEMENTED();
 }
@@ -346,7 +346,7 @@ void *__stdcall SNetRegisterEventHandler(int, void(__stdcall *)(struct _SNETEVEN
 	UNIMPLEMENTED();
 }
 
-bool __stdcall SNetSetBasePlayer(int)
+BOOLEAN __stdcall SNetSetBasePlayer(int)
 {
 	DUMMY();
 	return TRUE;
