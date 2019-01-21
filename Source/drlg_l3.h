@@ -2,8 +2,8 @@
 #ifndef __DRLG_L3_H__
 #define __DRLG_L3_H__
 
-extern char lavapool; // weak
-extern int abyssx; // weak
+extern char lavapool;  // weak
+extern int abyssx;     // weak
 extern int lockoutcnt; // weak
 extern char lockout[40][40];
 
@@ -13,7 +13,7 @@ int __cdecl DRLG_L3Anvil();
 void __cdecl FixL3Warp();
 void __cdecl FixL3HallofHeroes();
 void __fastcall DRLG_L3LockRec(int x, int y);
-bool __cdecl DRLG_L3Lockout();
+BOOLEAN __cdecl DRLG_L3Lockout();
 void __fastcall CreateL3Dungeon(int rseed, int entry);
 void __fastcall DRLG_L3(int entry);
 void __cdecl InitL3Dungeon();
@@ -31,13 +31,13 @@ void __cdecl DRLG_L3Pool();
 int __fastcall DRLG_L3SpawnEdge(int x, int y, int *totarea);
 int __fastcall DRLG_L3Spawn(int x, int y, int *totarea);
 void __cdecl DRLG_L3PoolFix();
-int __fastcall DRLG_L3PlaceMiniSet(const unsigned char *miniset, int tmin, int tmax, int cx, int cy, bool setview, int ldir);
+int __fastcall DRLG_L3PlaceMiniSet(const unsigned char *miniset, int tmin, int tmax, int cx, int cy, BOOLEAN setview, int ldir);
 void __fastcall DRLG_L3PlaceRndSet(const unsigned char *miniset, int rndper);
 void __cdecl DRLG_L3Wood();
-bool __fastcall WoodVertU(int i, int y);
-bool __fastcall WoodVertD(int i, int y);
-bool __fastcall WoodHorizL(int x, int j);
-bool __fastcall WoodHorizR(int x, int j);
+BOOLEAN __fastcall WoodVertU(int i, int y);
+BOOLEAN __fastcall WoodVertD(int i, int y);
+BOOLEAN __fastcall WoodHorizL(int x, int j);
+BOOLEAN __fastcall WoodHorizR(int x, int j);
 void __cdecl DRLG_L3Pass3();
 void __fastcall LoadL3Dungeon(char *sFileName, int vx, int vy);
 void __fastcall LoadPreL3Dungeon(char *sFileName, int vx, int vy);
@@ -82,6 +82,6 @@ extern const unsigned char L3XTRA5[4];
 extern const unsigned char L3ANVIL[244];
 extern const unsigned char L3SpawnTbl1[15]; /* local spawntable? */
 extern const unsigned char L3SpawnTbl2[15]; /* local spawntable? */
-extern const unsigned char L3PoolSub[15]; /* local poolsub? */
+extern const unsigned char L3PoolSub[15];   /* local poolsub? */
 
 #endif /* __DRLG_L3_H__ */

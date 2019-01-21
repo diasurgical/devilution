@@ -3,9 +3,7 @@
 #define __INV_H__
 
 extern BOOL invflag;
-extern void *pInvCels;
 extern int drawsbarflag; // idb
-extern int sgdwLastTime; // check name
 
 void __cdecl FreeInvGFX();
 void __cdecl InitInv();
@@ -36,7 +34,7 @@ int __fastcall CanPut(int i, int j);
 int __cdecl TryInvPut();
 void __fastcall DrawInvMsg(char *msg);
 int __fastcall InvPutItem(int pnum, int x, int y);
-int __fastcall SyncPutItem(int pnum, int x, int y, int idx, int icreateinfo, int iseed, int Id, int dur, int mdur, int ch, int mch, int ivalue, unsigned int ibuff);
+int __fastcall SyncPutItem(int pnum, int x, int y, int idx, WORD icreateinfo, int iseed, int Id, int dur, int mdur, int ch, int mch, int ivalue, unsigned int ibuff);
 int __cdecl CheckInvHLight();
 void __fastcall RemoveScroll(int pnum);
 BOOL __cdecl UseScroll();
@@ -47,10 +45,6 @@ int __fastcall UseInvItem(int pnum, int cii);
 void __cdecl DoTelekinesis();
 int __fastcall CalculateGold(int pnum);
 int __cdecl DropItemBeforeTrig();
-
-/* rdata */
-
-extern const InvXY InvRect[73];
 
 /* data */
 

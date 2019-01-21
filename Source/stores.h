@@ -2,39 +2,39 @@
 #ifndef __STORES_H__
 #define __STORES_H__
 
-extern int stextup; // weak
-extern int storenumh; // weak
+extern int stextup;    // weak
+extern int storenumh;  // weak
 extern int stextlhold; // weak
 extern ItemStruct boyitem;
 extern int stextshold; // idb
 extern ItemStruct premiumitem[6];
 extern void *pSTextBoxCels;
 extern int premiumlevel; // idb
-extern int talker; // weak
+extern int talker;       // weak
 extern STextStruct stext[24];
-extern char stextsize; // weak
-extern int stextsmax; // weak
+extern char stextsize;  // weak
+extern int stextsmax;   // weak
 extern int InStoreFlag; // idb
 extern ItemStruct storehold[48];
 extern int gossipstart; // weak
 extern ItemStruct witchitem[20];
-extern int stextscrl; // weak
+extern int stextscrl;  // weak
 extern int numpremium; // idb
 extern ItemStruct healitem[20];
 extern ItemStruct golditem;
 extern char storehidx[48];
 extern void *pSTextSlidCels;
-extern int stextvhold; // weak
-extern int stextsel; // weak
+extern int stextvhold;     // weak
+extern int stextsel;       // weak
 extern char stextscrldbtn; // weak
-extern int gossipend; // weak
+extern int gossipend;      // weak
 extern void *pCelBuff;
 extern int stextsval; // idb
-extern int boylevel; // weak
+extern int boylevel;  // weak
 extern ItemStruct smithitem[20];
-extern int stextdown; // weak
+extern int stextdown;      // weak
 extern char stextscrlubtn; // weak
-extern char stextflag; // weak
+extern char stextflag;     // weak
 
 void __cdecl InitStores();
 void __cdecl SetupTownStores();
@@ -48,26 +48,26 @@ void __fastcall ClearSText(int s, int e);
 void __fastcall AddSLine(int y);
 void __fastcall AddSTextVal(int y, int val);
 void __fastcall OffsetSTextY(int y, int yo);
-void __fastcall AddSText(int x, int y, unsigned char j, char *str, int clr, int sel);
+void __fastcall AddSText(int x, int y, int j, char *str, int clr, int sel);
 void __cdecl StoreAutoPlace();
 void __cdecl S_StartSmith();
 void __fastcall S_ScrollSBuy(int idx);
 void __fastcall PrintStoreItem(ItemStruct *x, int l, char iclr);
 void __cdecl S_StartSBuy();
 void __fastcall S_ScrollSPBuy(int idx);
-bool __cdecl S_StartSPBuy();
-bool __fastcall SmithSellOk(int i);
+BOOLEAN __cdecl S_StartSPBuy();
+BOOL __fastcall SmithSellOk(int i);
 void __fastcall S_ScrollSSell(int idx);
 void __cdecl S_StartSSell();
-bool __fastcall SmithRepairOk(int i);
+BOOLEAN __fastcall SmithRepairOk(int i);
 void __cdecl S_StartSRepair();
 void __fastcall AddStoreHoldRepair(ItemStruct *itm, int i);
 void __cdecl S_StartWitch();
 void __fastcall S_ScrollWBuy(int idx);
 void __cdecl S_StartWBuy();
-bool __fastcall WitchSellOk(int i);
+BOOLEAN __fastcall WitchSellOk(int i);
 void __cdecl S_StartWSell();
-bool __fastcall WitchRechargeOk(int i);
+BOOLEAN __fastcall WitchRechargeOk(int i);
 void __fastcall AddStoreHoldRecharge(ItemStruct itm, int i);
 void __cdecl S_StartWRecharge();
 void __cdecl S_StartNoMoney();
@@ -79,7 +79,7 @@ void __cdecl S_StartHealer();
 void __fastcall S_ScrollHBuy(int idx);
 void __cdecl S_StartHBuy();
 void __cdecl S_StartStory();
-bool __fastcall IdItemOk(ItemStruct *i);
+BOOLEAN __fastcall IdItemOk(ItemStruct *i);
 void __fastcall AddStoreHoldId(ItemStruct itm, int i);
 void __cdecl S_StartSIdentify();
 void __cdecl S_StartIdShow();
@@ -102,7 +102,7 @@ void __cdecl SmithBuyItem();
 void __cdecl S_SBuyEnter();
 void __cdecl SmithBuyPItem();
 void __cdecl S_SPBuyEnter();
-bool __fastcall StoreGoldFit(int idx);
+BOOLEAN __fastcall StoreGoldFit(int idx);
 void __fastcall PlaceStoreGold(int v);
 void __cdecl StoreSellItem();
 void __cdecl S_SSellEnter();

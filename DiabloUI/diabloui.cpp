@@ -1,15 +1,16 @@
-#include <windows.h>
-#include <stdio.h>
+#define STRICT // for WNDPROC. ref: Remarks in https://docs.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-callwindowproca
 #include <ddraw.h>
 #include <dsound.h>
 #include <io.h>
 #include <math.h>
-#include <time.h>
 #include <process.h>
 #include <shlobj.h>
+#include <stdio.h>
+#include <time.h>
+#include <windows.h>
 
 #ifdef _MSC_VER
-#pragma warning (disable : 4018) // signed/unsigned mismatch
+#pragma warning(disable : 4018) // signed/unsigned mismatch
 #endif
 
 #include "..\defs.h"
@@ -18,17 +19,17 @@
 #include "..\3rdParty\Storm\Source\storm.h"
 #include "diabloui.h"
 
-#define UNKCALL     __fastcall
-#define USERCALL    __fastcall
-#define USERPURGE   __fastcall
+#define UNKCALL __fastcall
+#define USERCALL __fastcall
+#define USERPURGE __fastcall
 
 //temporarily include everything directly
-#include "_temp_funcs.h"
 #include "_temp_data.cpp"
+#include "_temp_funcs.h"
 
 #include "artfont.cpp"
-#include "bnetgw.cpp"
 #include "bn_prof.cpp"
+#include "bnetgw.cpp"
 #include "connect.cpp"
 #include "copyprot.cpp"
 #include "cr8game.cpp"
@@ -63,7 +64,6 @@
 #include "selyesno.cpp"
 #include "title.cpp"
 #include "titlesnd.cpp"
-
 
 // ref: 0x10005C2A
 int __cdecl DiabloUI_GetSpawned()
@@ -129,17 +129,13 @@ void __stdcall UiAppActivate(BOOL bActive)
 // ref: 0x10005CB9
 BOOL __stdcall DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
 {
-	if ( fdwReason )
-	{
-		if ( fdwReason == 1 )
-		{
+	if (fdwReason) {
+		if (fdwReason == 1) {
 			ghUiInst = hinstDLL;
 			DiabEdit_SetupWindow();
 			local_InitUiPalette();
 		}
-	}
-	else
-	{
+	} else {
 		local_DelUiPalette();
 	}
 	return 1;

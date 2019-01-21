@@ -2,187 +2,152 @@
 
 #include "../types.h"
 
-#ifndef NO_GLOBALS
-int mainmenu_cpp_init_value; // weak
-
-char chr_name_str[16];
-#endif
-
-const int mainmenu_inf = 0x7F800000; // weak
+char gszHero[16];
 
 /* data */
 
-int menu_music_track_id = 5; // idb
-
-struct mainmenu_cpp_init
-{
-	mainmenu_cpp_init()
-	{
-		mainmenu_cpp_init_value = mainmenu_inf;
-	}
-} _mainmenu_cpp_init;
-// 47F074: using guessed type int mainmenu_inf;
-// 646CE0: using guessed type int mainmenu_cpp_init_value;
+int menu_music_track_id = 5;
 
 void __cdecl mainmenu_refresh_music()
 {
-	int v0; // eax
-
 	music_start(menu_music_track_id);
-	v0 = menu_music_track_id;
-	do
-	{
-		if ( ++v0 == 6 )
-			v0 = 0;
-	}
-	while ( !v0 || v0 == 1 );
-	menu_music_track_id = v0;
+	do {
+		menu_music_track_id++;
+		if (menu_music_track_id == 6)
+			menu_music_track_id = 0;
+	} while (!menu_music_track_id || menu_music_track_id == 1);
 }
 
-void __stdcall mainmenu_create_hero(char *a1, char *a2)
+void __stdcall mainmenu_create_hero(char *name_1, char *name_2)
 {
-	// char *v2; // [esp-14h] [ebp-14h]
-
-	if ( UiValidPlayerName(a1) ) /* v2 */
-		pfile_create_save_file(a1, a2);
+	if (UiValidPlayerName(name_1))
+		pfile_create_save_file(name_1, name_2);
 }
 
-int __stdcall mainmenu_select_hero_dialog(int u1, int u2, int u3, int u4, int mode, char *cname, int clen, char *cdesc, int cdlen, int *multi) /* fix args */
+int __stdcall mainmenu_select_hero_dialog(
+    const _SNETPROGRAMDATA *u1,
+    const _SNETPLAYERDATA *u2,
+    const _SNETUIDATA *u3,
+    const _SNETVERSIONDATA *u4,
+    DWORD mode,
+    char *cname, DWORD clen,
+    char *cdesc, DWORD cdlen,
+    BOOL *multi)
 {
-
-
-	int v10; // eax
-	int a6; // [esp+8h] [ebp-8h]
-	int a5; // [esp+Ch] [ebp-4h]
-
-	a6 = 1;
-	a5 = 0;
-	if ( gbMaxPlayers == 1 )
-	{
-		if ( !UiSelHeroSingDialog(
-				  pfile_ui_set_hero_infos,
-				  pfile_ui_save_create,
-				  pfile_delete_save,
-				  pfile_ui_set_class_stats,
-				  &a5,
-				  chr_name_str,
-				  &gnDifficulty) )
+	int a6 = 1;
+	int a5 = 0;
+	if (gbMaxPlayers == 1) {
+		if (!UiSelHeroSingDialog(
+		        pfile_ui_set_hero_infos,
+		        pfile_ui_save_create,
+		        pfile_delete_save,
+		        pfile_ui_set_class_stats,
+		        &a5,
+		        gszHero,
+		        &gnDifficulty))
 			TermMsg("Unable to display SelHeroSing");
-		if ( a5 == 2 )
-		{
-			dword_5256E8 = 1;
-			goto LABEL_6;
-		}
-		dword_5256E8 = 0;
-	}
-	else if ( !UiSelHeroMultDialog(
-				   pfile_ui_set_hero_infos,
-				   pfile_ui_save_create,
-				   pfile_delete_save,
-				   pfile_ui_set_class_stats,
-				   &a5,
-				   &a6,
-				   chr_name_str) )
-	{
+
+		if (a5 == 2)
+			dword_5256E8 = TRUE;
+		else
+			dword_5256E8 = FALSE;
+
+	} else if (!UiSelHeroMultDialog(
+	               pfile_ui_set_hero_infos,
+	               pfile_ui_save_create,
+	               pfile_delete_save,
+	               pfile_ui_set_class_stats,
+	               &a5,
+	               &a6,
+	               gszHero)) {
 		TermMsg("Can't load multiplayer dialog");
 	}
-	if ( a5 == 4 )
-	{
+	if (a5 == 4) {
 		SErrSetLastError(1223);
 		return 0;
 	}
-LABEL_6:
+
 	pfile_create_player_description(cdesc, cdlen);
-	if ( multi )
-	{
-		if ( mode == 'BNET' )
-			v10 = a6 || !plr[myplr].pBattleNet;
+	if (multi) {
+		if (mode == 'BNET')
+			*multi = a6 || !plr[myplr].pBattleNet;
 		else
-			v10 = a6;
-		*multi = v10;
+			*multi = a6;
 	}
-	if ( cname )
-	{
-		if ( clen )
-			SStrCopy(cname, chr_name_str, clen);
-	}
+	if (cname && clen)
+		SStrCopy(cname, gszHero, clen);
+
 	return 1;
 }
-// 5256E8: using guessed type int dword_5256E8;
-// 679660: using guessed type char gbMaxPlayers;
 
 void __cdecl mainmenu_loop()
 {
-	int v1; // eax
-	int a2; // [esp+0h] [ebp-4h]
+	BOOL done;
+	int menu;
 
-	//mainmenu_refresh_music(); // This is breaking my game. 
-	do
-	{
-		while ( 1 )
-		{
-			a2 = 0;
-			if ( !UiMainMenuDialog("Diablo v1.09", &a2, effects_play_sound, 30) )
-				TermMsg("Unable to display mainmenu");
-			if ( a2 == 1 )
-				break;
-			switch ( a2 )
-			{
-				case MAINMENU_MULTIPLAYER:
-					v1 = mainmenu_multi_player();
-					goto LABEL_15;
-				case MAINMENU_REPLAY_INTRO:
-					goto LABEL_10;
-				case MAINMENU_SHOW_CREDITS:
-					UiCreditsDialog(16);
-					break;
-				case MAINMENU_EXIT_DIABLO:
-					goto LABEL_16;
-				case MAINMENU_ATTRACT_MODE:
-LABEL_10:
-					if ( gbActive )
-						mainmenu_play_intro();
-					break;
-			}
+	done = FALSE;
+	mainmenu_refresh_music();
+
+	do {
+		menu = 0;
+		if (!UiMainMenuDialog("Diablo v1.09", &menu, effects_play_sound, 30))
+			TermMsg("Unable to display mainmenu");
+
+		switch (menu) {
+		case MAINMENU_SINGLE_PLAYER:
+			if (!mainmenu_single_player())
+				done = TRUE;
+			break;
+		case MAINMENU_MULTIPLAYER:
+			if (!mainmenu_multi_player())
+				done = TRUE;
+			break;
+		case MAINMENU_REPLAY_INTRO:
+		case MAINMENU_ATTRACT_MODE:
+			if (gbActive)
+				mainmenu_play_intro();
+			break;
+		case MAINMENU_SHOW_CREDITS:
+			UiCreditsDialog(16);
+			break;
+		case MAINMENU_EXIT_DIABLO:
+			done = TRUE;
+			break;
 		}
-		v1 = mainmenu_single_player();
-LABEL_15:
-		;
-	}
-	while ( v1 );
-LABEL_16:
+	} while (done == FALSE);
+
 	music_stop();
 }
 // 634980: using guessed type int gbActive;
 
-int __cdecl mainmenu_single_player()
+BOOL __cdecl mainmenu_single_player()
 {
 	gbMaxPlayers = 1;
 	return mainmenu_init_menu(1);
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-int __fastcall mainmenu_init_menu(int a1)
+BOOL __fastcall mainmenu_init_menu(int type)
 {
-	int v1; // esi
-	int v3; // esi
+	BOOL success;
 
-	v1 = a1;
-	if ( a1 == 4 )
-		return 1;
+	if (type == 4)
+		return TRUE;
+
 	music_stop();
-	v3 = diablo_init_menu(v1 != 2, v1 != 3);
-	if ( v3 )
+
+	success = StartGame(type != 2, type != 3);
+	if (success)
 		mainmenu_refresh_music();
-	return v3;
+
+	return success;
 }
 
-int __cdecl mainmenu_multi_player()
+BOOL __cdecl mainmenu_multi_player()
 {
 	gbMaxPlayers = MAX_PLRS;
 	return mainmenu_init_menu(3);
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 void __cdecl mainmenu_play_intro()
 {

@@ -1,12 +1,12 @@
 // ref: 0x1000523E
 BOOL __stdcall UiGetDefaultStats(int pclass, _uidefaultstats *pStats)
 {
-	if ( !pStats )
+	if (!pStats)
 		return 0;
-	pStats->strength = defstats[pclass][0];
-	pStats->magic = defstats[pclass][1];
+	pStats->strength  = defstats[pclass][0];
+	pStats->magic     = defstats[pclass][1];
 	pStats->dexterity = defstats[pclass][2];
-	pStats->vitality = defstats[pclass][3];
+	pStats->vitality  = defstats[pclass][3];
 	return 1;
 }
 

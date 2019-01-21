@@ -2,27 +2,27 @@
 #ifndef __CURSOR_H__
 #define __CURSOR_H__
 
-extern int cursH; // weak
-extern int icursH28; // idb
-extern int cursW; // idb
+extern int cursH;      // weak
+extern int icursH28;   // idb
+extern int cursW;      // idb
 extern int pcursmonst; // idb
-extern int icursW28; // idb
+extern int icursW28;   // idb
 extern void *pCursCels;
-extern int icursH; // weak
+extern int icursH;        // weak
 extern char pcursinvitem; // weak
-extern int icursW; // weak
-extern char pcursitem; // weak
-extern char pcursobj; // weak
-extern char pcursplr; // weak
+extern int icursW;        // weak
+extern char pcursitem;    // weak
+extern char pcursobj;     // weak
+extern char pcursplr;     // weak
 extern int cursmx;
 extern int cursmy;
 extern int dword_4B8CCC; // weak
-extern int pcurs; // idb
+extern int pcurs;        // idb
 
 void __cdecl InitCursor();
 void __cdecl FreeCursor();
 void __fastcall SetICursor(int i);
-void __fastcall SetCursor(int i);
+void __fastcall SetCursor_(int i);
 void __fastcall NewCursor(int i);
 void __cdecl InitLevelCursor();
 void __cdecl CheckTown();

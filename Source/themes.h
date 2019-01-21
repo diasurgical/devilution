@@ -3,31 +3,31 @@
 #define __THEMES_H__
 
 extern int numthemes; // idb
-extern bool armorFlag; // weak
+extern BOOL armorFlag;
 extern int ThemeGoodIn[4];
-extern bool weaponFlag; // weak
-extern bool treasureFlag; // weak
-extern bool mFountainFlag; // weak
-extern bool cauldronFlag; // weak
-extern bool tFountainFlag; // weak
-extern int zharlib; // weak
-extern int themex; // idb
-extern int themey; // idb
+extern BOOL weaponFlag;
+extern BOOLEAN treasureFlag;  // weak
+extern BOOLEAN mFountainFlag; // weak
+extern BOOLEAN cauldronFlag;  // weak
+extern BOOLEAN tFountainFlag; // weak
+extern int zharlib;
+extern int themex;    // idb
+extern int themey;    // idb
 extern int themeVar1; // idb
 extern ThemeStruct themes[MAXTHEMES];
-extern bool pFountainFlag; // weak
-extern bool bFountainFlag; // weak
-extern bool bCrossFlag; // weak
+extern BOOLEAN pFountainFlag; // weak
+extern BOOLEAN bFountainFlag; // weak
+extern BOOL bCrossFlag;
 
-bool __fastcall TFit_Shrine(int i);
-bool __fastcall TFit_Obj5(int t);
-bool __fastcall TFit_SkelRoom(int t);
-bool __fastcall TFit_GoatShrine(int t);
-bool __fastcall CheckThemeObj3(int xp, int yp, int t, int f);
-bool __fastcall TFit_Obj3(int t);
-bool __fastcall CheckThemeReqs(int t);
-bool __fastcall SpecialThemeFit(int i, int t);
-bool __fastcall CheckThemeRoom(int tv);
+BOOLEAN __fastcall TFit_Shrine(int i);
+BOOLEAN __fastcall TFit_Obj5(int t);
+BOOLEAN __fastcall TFit_SkelRoom(int t);
+BOOLEAN __fastcall TFit_GoatShrine(int t);
+BOOL __fastcall CheckThemeObj3(int xp, int yp, int t, int f);
+BOOLEAN __fastcall TFit_Obj3(int t);
+BOOLEAN __fastcall CheckThemeReqs(int t);
+BOOLEAN __fastcall SpecialThemeFit(int i, int t);
+BOOLEAN __fastcall CheckThemeRoom(int tv);
 void __cdecl InitThemes();
 void __cdecl HoldThemeRooms();
 void __fastcall PlaceThemeMonsts(int t, int f);

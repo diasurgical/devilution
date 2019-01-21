@@ -2,16 +2,13 @@
 
 #include "../types.h"
 
-#ifndef NO_GLOBALS
 int help_select_line; // weak
-int dword_634494; // weak
+int dword_634494;     // weak
 int helpflag;
 int displayinghelp[22]; /* check, does nothing? */
-int HelpTop; // weak
-#endif
+int HelpTop;            // weak
 
-const char gszHelpText[] =
-{
+const char gszHelpText[] = {
 	"$Keyboard Shortcuts:|"
 	"F1:    Open Help Screen|"
 	"Esc:   Display Main Menu|"
@@ -90,19 +87,19 @@ void __cdecl InitHelp()
 
 void __cdecl DrawHelp()
 {
-	int v0; // edi
-	const char *v1; // esi
-	int v2; // edx
-	signed int v3; // ecx
-	char v4; // al
-	unsigned char v5; // al
-	_BYTE *i; // eax
-	int v7; // eax
-	signed int v8; // edx
-	char v9; // cl
-	unsigned char v10; // cl
-	text_color color; // [esp+Ch] [ebp-8h]
-	int help_line_nr; // [esp+10h] [ebp-4h]
+	int v0;                   // edi
+	const char *v1;           // esi
+	int v2;                   // edx
+	signed int v3;            // ecx
+	char v4;                  // al
+	unsigned char v5;         // al
+	_BYTE *i;                 // eax
+	int v7;                   // eax
+	signed int v8;            // edx
+	char v9;                  // cl
+	unsigned char v10;        // cl
+	text_color color;         // [esp+Ch] [ebp-8h]
+	int help_line_nr;         // [esp+10h] [ebp-4h]
 	signed int help_line_nra; // [esp+10h] [ebp-4h]
 
 	DrawSTextHelp();
@@ -111,112 +108,93 @@ void __cdecl DrawHelp()
 	DrawSLine(5);
 	v0 = help_select_line;
 	v1 = gszHelpText;
-	if ( help_select_line > 0 )
-	{
+	if (help_select_line > 0) {
 		help_line_nr = help_select_line;
-		do
-		{
+		do {
 			v2 = 0;
 			v3 = 0;
-			while ( !*v1 )
+			while (!*v1)
 				++v1;
-			if ( *v1 == '$' )
+			if (*v1 == '$')
 				++v1;
 			v4 = *v1;
-			if ( *v1 != '&' )
-			{
-				if ( v4 == ('|') )
+			if (*v1 != '&') {
+				if (v4 == ('|'))
 					goto LABEL_47;
-				while ( v3 < 577 )
-				{
-					if ( !v4 )
-					{
+				while (v3 < 577) {
+					if (!v4) {
 						do
 							++v1;
-						while ( !*v1 );
+						while (!*v1);
 					}
 					v5 = *v1;
 					tempstr[v2++] = *v1++;
 					v3 += fontkern[fontframe[fontidx[v5]]] + 1;
 					v4 = *v1;
-					if ( *v1 == ('|') )
-					{
-						if ( v3 < 577 )
+					if (*v1 == ('|')) {
+						if (v3 < 577)
 							goto LABEL_18;
 						break;
 					}
 				}
-				for ( i = (unsigned char *)&tempstr[v2]-1; *i != ' '; --i )
+				for (i = (unsigned char *)&tempstr[v2] - 1; *i != ' '; --i)
 					--v1;
-LABEL_18:
-				if ( *v1 == ('|') )
-LABEL_47:
+			LABEL_18:
+				if (*v1 == ('|'))
+				LABEL_47:
 					++v1;
 			}
 			--help_line_nr;
-		}
-		while ( help_line_nr );
+		} while (help_line_nr);
 	}
 	help_line_nra = 7;
-	do
-	{
+	do {
 		v7 = 0;
 		v8 = 0;
-		while ( !*v1 )
+		while (!*v1)
 			++v1;
-		if ( *v1 == '$' )
-		{
+		if (*v1 == '$') {
 			++v1;
 			_LOBYTE(color) = COL_RED;
-		}
-		else
-		{
+		} else {
 			_LOBYTE(color) = COL_WHITE;
 		}
 		v9 = *v1;
-		if ( *v1 == '&' )
-		{
+		if (*v1 == '&') {
 			HelpTop = v0;
-		}
-		else
-		{
-			if ( v9 == ('|') )
+		} else {
+			if (v9 == ('|'))
 				goto LABEL_48;
-			while ( v8 < 577 )
-			{
-				if ( !v9 )
-				{
+			while (v8 < 577) {
+				if (!v9) {
 					do
 						++v1;
-					while ( !*v1 );
+					while (!*v1);
 				}
 				v10 = *v1;
 				tempstr[v7++] = *v1++;
 				v8 += fontkern[fontframe[fontidx[v10]]] + 1;
 				v9 = *v1;
-				if ( *v1 == ('|') )
-				{
-					if ( v8 < 577 )
+				if (*v1 == ('|')) {
+					if (v8 < 577)
 						goto LABEL_39;
 					break;
 				}
 			}
-			while ( tempstr[--v7] != ' ' )
+			while (tempstr[--v7] != ' ')
 				--v1;
-LABEL_39:
-			if ( v7 )
-			{
+		LABEL_39:
+			if (v7) {
 				tempstr[v7] = 0;
 				DrawHelpLine(0, help_line_nra, tempstr, color);
 				v0 = help_select_line;
 			}
-			if ( *v1 == ('|') )
-LABEL_48:
+			if (*v1 == ('|'))
+			LABEL_48:
 				++v1;
 		}
 		++help_line_nra;
-	}
-	while ( help_line_nra < 22 );
+	} while (help_line_nra < 22);
 	PrintSString(0, 23, 1u, "Press ESC to end or the arrow keys to scroll.", COL_GOLD, 0);
 }
 // 634490: using guessed type int help_select_line;
@@ -224,23 +202,21 @@ LABEL_48:
 
 void __fastcall DrawHelpLine(int always_0, int help_line_nr, char *text, text_color color)
 {
-	signed int v4; // ebx
-	int v5; // edi
-	unsigned char i; // al
+	signed int v4;    // ebx
+	int v5;           // edi
+	unsigned char i;  // al
 	unsigned char v7; // al
-	int v8; // esi
+	int v8;           // esi
 
 	v4 = 0;
 	v5 = screen_y_times_768[SStringY[help_line_nr] + 204] + always_0 + 96;
-	for ( i = *text; *text; i = *text )
-	{
+	for (i = *text; *text; i = *text) {
 		++text;
 		v7 = fontframe[fontidx[i]];
 		v8 = v7;
 		v4 += fontkern[v7] + 1;
-		if ( v7 )
-		{
-			if ( v4 <= 577 )
+		if (v7) {
+			if (v4 <= 577)
 				CPrintString(v5, v7, color);
 		}
 		v5 += fontkern[v8] + 1;
@@ -258,14 +234,14 @@ void __cdecl DisplayHelp()
 
 void __cdecl HelpScrollUp()
 {
-	if ( help_select_line > 0 )
+	if (help_select_line > 0)
 		--help_select_line;
 }
 // 634490: using guessed type int help_select_line;
 
 void __cdecl HelpScrollDown()
 {
-	if ( help_select_line < HelpTop )
+	if (help_select_line < HelpTop)
 		++help_select_line;
 }
 // 634490: using guessed type int help_select_line;

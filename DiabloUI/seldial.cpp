@@ -67,7 +67,7 @@ int __stdcall SelDial_1000B0CF(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam
 	{
 		if ( Msg <= 0x105 )
 		{
-			v7 = (HWND)SDrawGetFrameWindow();
+			v7 = (HWND)SDrawGetFrameWindow(NULL);
 			SendMessageA(v7, Msg, wParam, lParam);
 			return SDlgDefDialogProc(hWnd, Msg, wParam, lParam);
 		}

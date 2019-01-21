@@ -3,9 +3,9 @@
 #define __ERROR_H__
 
 extern char msgtable[80];
-extern char msgdelay; // weak
-extern char msgflag; // weak
-extern char msgcnt; // weak
+extern char msgdelay;
+extern char msgflag;
+extern char msgcnt;
 
 void __fastcall InitDiabloMsg(char e);
 void __cdecl ClrDiabloMsg();

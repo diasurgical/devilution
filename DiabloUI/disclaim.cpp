@@ -3,7 +3,7 @@ BOOL __stdcall UiBetaDisclaimer(int a1)
 {
 	int v1; // eax
 
-	v1 = (int)SDrawGetFrameWindow();
+	v1 = (int)SDrawGetFrameWindow(NULL);
 	SDlgDialogBoxParam(ghUiInst, "DISCLAIMER_DIALOG", v1, disclaim_WndProc, a1);
 	return 1;
 }
@@ -14,39 +14,26 @@ LRESULT __stdcall disclaim_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lP
 {
 	HWND v5; // eax
 
-	if ( Msg > 0x111 )
-	{
-		if ( Msg != 513 && Msg != 516 )
-		{
-			if ( Msg == 528 )
-			{
-				if ( (_WORD)wParam == 513 || (_WORD)wParam == 516 )
+	if (Msg > 0x111) {
+		if (Msg != 513 && Msg != 516) {
+			if (Msg == 528) {
+				if ((_WORD)wParam == 513 || (_WORD)wParam == 516)
 					disclaim_FadeFromDisclaim(hWnd);
-			}
-			else if ( Msg == 2024 )
-			{
-				if ( !Fade_CheckRange5() )
+			} else if (Msg == 2024) {
+				if (!Fade_CheckRange5())
 					Fade_SetFadeTimer((int)hWnd);
 				return 0;
 			}
 			return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 		}
-	}
-	else if ( Msg != 273 )
-	{
-		if ( Msg != 2 )
-		{
-			if ( Msg != 256 )
-			{
-				if ( Msg > 0x103 )
-				{
-					if ( Msg <= 0x105 )
-					{
-						v5 = (HWND)SDrawGetFrameWindow();
+	} else if (Msg != 273) {
+		if (Msg != 2) {
+			if (Msg != 256) {
+				if (Msg > 0x103) {
+					if (Msg <= 0x105) {
+						v5 = (HWND)SDrawGetFrameWindow(NULL);
 						SendMessageA(v5, Msg, wParam, lParam);
-					}
-					else if ( Msg == 272 )
-					{
+					} else if (Msg == 272) {
 						disclaim_LoadDisclaimGFX(hWnd);
 						PostMessageA(hWnd, 0x7E8u, 0, 0);
 						return 1;
@@ -82,14 +69,13 @@ void __fastcall disclaim_LoadDisclaimGFX(HWND hWnd)
 	DWORD *v2; // eax MAPDST
 
 	v2 = local_AllocWndLongData();
-	if ( v2 )
-	{
+	if (v2) {
 		SetWindowLongA(hWnd, -21, (LONG)v2);
 		local_LoadArtWithPal(hWnd, 0, &nullcharacter, -1, 1, "ui_art\\disclaim.pcx", (BYTE **)v2, v2 + 1, 0);
 		Fade_NoInputAndArt(hWnd, 0);
 	}
-	Doom_ParseWndProc3(hWnd, disclaim_msgtbl1, 5);
-	Doom_ParseWndProc3(hWnd, disclaim_msgtbl2, 2);
+	Doom_ParseWndProc3(hWnd, disclaim_msgtbl1, AF_BIGGRAY);
+	Doom_ParseWndProc3(hWnd, disclaim_msgtbl2, AF_MED);
 }
 
 // ref: 0x10006552

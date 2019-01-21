@@ -16,7 +16,7 @@ void __cdecl TakeGoldCheat();
 void __cdecl MaxSpellsCheat();
 void __fastcall SetSpellLevelCheat(char spl, int spllvl);
 void __cdecl SetAllSpellsCheat();
-void __fastcall PrintDebugPlayer(bool bNextPlayer);
+void __fastcall PrintDebugPlayer(BOOLEAN bNextPlayer);
 void __cdecl PrintDebugQuest();
 void __fastcall PrintDebugMonster(int m);
 void __cdecl GetDebugMonster();

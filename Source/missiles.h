@@ -9,7 +9,7 @@ extern int nummissiles; // idb
 extern int ManashieldFlag;
 extern ChainStruct chain[MAXMISSILES];
 extern int MissilePreFlag; // weak
-extern int numchains; // weak
+extern int numchains;      // weak
 
 void __fastcall GetDamageAmt(int i, int *mind, int *maxd);
 int __fastcall CheckBlock(int fx, int fy, int tx, int ty);
@@ -23,10 +23,10 @@ void __fastcall PutMissile(int i);
 void __fastcall GetMissilePos(int i);
 void __fastcall MoveMissilePos(int i);
 BOOL __fastcall MonsterTrapHit(int m, int mindam, int maxdam, int dist, int t, int shift);
-bool __fastcall MonsterMHit(int pnum, int m, int mindam, int maxdam, int dist, int t, int shift);
-bool __fastcall PlayerMHit(int pnum, int m, int dist, int mind, int maxd, int mtype, int shift, int earflag);
-bool __fastcall Plr2PlrMHit(int pnum, int p, int mindam, int maxdam, int dist, int mtype, int shift);
-void __fastcall CheckMissileCol(int i, int mindam, int maxdam, bool shift, int mx, int my, int nodel);
+BOOLEAN __fastcall MonsterMHit(int pnum, int m, int mindam, int maxdam, int dist, int t, int shift);
+BOOLEAN __fastcall PlayerMHit(int pnum, int m, int dist, int mind, int maxd, int mtype, int shift, int earflag);
+BOOLEAN __fastcall Plr2PlrMHit(int pnum, int p, int mindam, int maxdam, int dist, int mtype, int shift);
+void __fastcall CheckMissileCol(int i, int mindam, int maxdam, BOOLEAN shift, int mx, int my, int nodel);
 void __fastcall SetMissAnim(int mi, int animtype);
 void __fastcall SetMissDir(int mi, int dir);
 void __fastcall LoadMissileGFX(BYTE mi);
@@ -50,7 +50,7 @@ void __fastcall AddLightctrl(int mi, int sx, int sy, int dx, int dy, int midir, 
 void __fastcall AddLightning(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam);
 void __fastcall AddMisexp(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam);
 void __fastcall AddWeapexp(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam);
-bool __fastcall CheckIfTrig(int x, int y);
+BOOLEAN __fastcall CheckIfTrig(int x, int y);
 void __fastcall AddTown(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam);
 void __fastcall AddFlash(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam);
 void __fastcall AddFlash2(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam);
@@ -95,7 +95,7 @@ void __fastcall AddTelekinesis(int mi, int sx, int sy, int dx, int dy, int midir
 void __fastcall AddBoneSpirit(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam);
 void __fastcall AddRportal(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam);
 void __fastcall AddDiabApoca(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam);
-int __fastcall AddMissile(int sx, int sy, int v1, int v2, int midir, int mitype, int micaster, int id, int v3, int spllvl);
+int __fastcall AddMissile(int sx, int sy, int dx, int dy, int midir, int mitype, int micaster, int id, int midam, int spllvl);
 int __fastcall Sentfire(int i, int sx, int sy);
 void __fastcall MI_Dummy(int i);
 void __fastcall MI_Golem(int i);

@@ -1,5 +1,5 @@
 // ref: 0x10010306
-void __fastcall TitleSnd_SetSoundFunction(void (__stdcall *func)(char *file))
+void __fastcall TitleSnd_SetSoundFunction(void(__stdcall *func)(char *file))
 {
 	gfnSoundFunction = func;
 }
@@ -13,14 +13,14 @@ void __cdecl TitleSnd_InitSoundFunc()
 // ref: 0x10010315
 void __cdecl TitleSnd_PlayMoveSound()
 {
-	if ( gfnSoundFunction )
+	if (gfnSoundFunction)
 		gfnSoundFunction("sfx\\items\\titlemov.wav");
 }
 
 // ref: 0x1001031F
 void __cdecl TitleSnd_PlaySelectSound()
 {
-	if ( gfnSoundFunction )
+	if (gfnSoundFunction)
 		gfnSoundFunction("sfx\\items\\titlslct.wav");
 }
 

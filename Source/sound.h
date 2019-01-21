@@ -2,17 +2,10 @@
 #ifndef __SOUND_H__
 #define __SOUND_H__
 
-extern float sound_cpp_init_value;
 extern IDirectSoundBuffer *DSBs[8];
-extern LPDIRECTSOUND sglpDS;
 extern char gbSndInited;
-extern int sglMusicVolume;
-extern int sglSoundVolume;
-extern HMODULE hDsound_dll; // idb
-extern void *sgpMusicTrack;
-extern IDirectSoundBuffer *sglpDSB;
+extern HMODULE hDsound_dll;
 
-void __cdecl sound_cpp_init();
 void __fastcall snd_update(BOOL bStopAll);
 void __fastcall snd_stop_snd(TSnd *pSnd);
 BOOL __fastcall snd_playing(TSnd *pSnd);
@@ -36,15 +29,11 @@ int __fastcall sound_get_or_set_sound_volume(int volume);
 
 /* rdata */
 
-extern const int sound_inf; // weak
-
 /* data */
 
-extern UCHAR gbMusicOn;
-extern UCHAR gbSoundOn;
-extern char gbDupSounds; // weak
-extern int sgnMusicTrack;
-extern char *sgszMusicTracks[6];
+extern BYTE gbMusicOn;
+extern BYTE gbSoundOn;
+extern BYTE gbDupSounds;
 extern char unk_volume[4][2];
 
 #endif /* __SOUND_H__ */

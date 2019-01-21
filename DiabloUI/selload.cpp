@@ -2,47 +2,39 @@
 LRESULT __stdcall SelLoad_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
 	HWND v4; // eax
-	int v5; // edx
+	int v5;  // edx
 	HWND v6; // eax
 	HWND v7; // eax
 	HWND v9; // eax
 
-	if ( Msg == 2 )
-	{
+	if (Msg == 2) {
 		SelLoad_DeleteProcsAndSpin(hWnd);
 		return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 	}
-	if ( Msg <= 0x103 )
+	if (Msg <= 0x103)
 		return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
-	if ( Msg <= 0x105 )
-	{
-		v9 = (HWND)SDrawGetFrameWindow();
+	if (Msg <= 0x105) {
+		v9 = (HWND)SDrawGetFrameWindow(NULL);
 		SendMessageA(v9, Msg, wParam, lParam);
 		return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 	}
-	if ( Msg == 272 )
-	{
+	if (Msg == 272) {
 		SelLoad_LoadFocusAndMsg(hWnd);
 		return 0;
 	}
-	if ( Msg != 273 )
-	{
-		if ( Msg != 275 )
-		{
-			if ( Msg == 513 )
-			{
+	if (Msg != 273) {
+		if (Msg != 275) {
+			if (Msg == 513) {
 				v4 = GetDlgItem(hWnd, 1056);
-				if ( local_GetBottomRect(hWnd, v4, (unsigned short)lParam, (unsigned int)lParam >> 16) )
-				{
+				if (local_GetBottomRect(hWnd, v4, (unsigned short)lParam, (unsigned int)lParam >> 16)) {
 					v5 = 1;
-LABEL_19:
+				LABEL_19:
 					SelLoad_SelectSndLoad(hWnd, v5);
 					return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 				}
 				v6 = GetDlgItem(hWnd, 1054);
-				if ( local_GetBottomRect(hWnd, v6, (unsigned short)lParam, (unsigned int)lParam >> 16) )
-				{
-LABEL_21:
+				if (local_GetBottomRect(hWnd, v6, (unsigned short)lParam, (unsigned int)lParam >> 16)) {
+				LABEL_21:
 					v5 = 2;
 					goto LABEL_19;
 				}
@@ -53,18 +45,14 @@ LABEL_21:
 		Focus_DoBlitSpinIncFrame(hWnd, v7);
 		return 0;
 	}
-	if ( HIWORD(wParam) == 7 )
-	{
+	if (HIWORD(wParam) == 7) {
 		Focus_GetAndBlitSpin(hWnd, lParam);
-	}
-	else
-	{
-		if ( HIWORD(wParam) != 6 )
-		{
+	} else {
+		if (HIWORD(wParam) != 6) {
 			v5 = 1;
-			if ( HIWORD(wParam) == 5 || (_WORD)wParam == 1 )
+			if (HIWORD(wParam) == 5 || (_WORD)wParam == 1)
 				goto LABEL_19;
-			if ( (_WORD)wParam != 2 )
+			if ((_WORD)wParam != 2)
 				return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 			goto LABEL_21;
 		}
@@ -91,8 +79,8 @@ void __fastcall SelLoad_DeleteProcsAndSpin(HWND hWnd)
 // ref: 0x1000E34B
 void __fastcall SelLoad_LoadFocusAndMsg(HWND hWnd)
 {
-	HWND v2; // edi
-	LONG v3; // eax
+	HWND v2;         // edi
+	LONG v3;         // eax
 	char Buffer[32]; // [esp+8h] [ebp-20h]
 
 	v2 = GetParent(hWnd);
@@ -101,9 +89,9 @@ void __fastcall SelLoad_LoadFocusAndMsg(HWND hWnd)
 	v3 = GetWindowLongA(v2, -21);
 	SetWindowLongA(hWnd, -21, v3);
 	local_DoUiWndProc(hWnd, (DWORD *)selload_msgtbl3);
-	Doom_ParseWndProc3(hWnd, selload_msgtbl1, 5);
-	Doom_ParseWndProcs(hWnd, selload_msgtbl2, 4, 0);
-	Doom_ParseWndProcs(hWnd, selload_msgtbl3, 2, 1);
+	Doom_ParseWndProc3(hWnd, selload_msgtbl1, AF_BIGGRAY);
+	Doom_ParseWndProcs(hWnd, selload_msgtbl2, AF_BIG, 0);
+	Doom_ParseWndProcs(hWnd, selload_msgtbl3, AF_MED, 1);
 	Focus_LoadSpinner("ui_art\\focus16.pcx");
 	SDlgSetTimer((int)hWnd, 1, 55, 0);
 }
@@ -111,14 +99,13 @@ void __fastcall SelLoad_LoadFocusAndMsg(HWND hWnd)
 // ref: 0x1000E3E2
 void __fastcall SelLoad_SelectSndLoad(HWND hWnd, int a2)
 {
-	int v2; // esi
+	int v2;  // esi
 	HWND v4; // eax
 
 	v2 = a2;
 	TitleSnd_PlaySelectSound();
 	SDlgKillTimer((int)hWnd, 1);
-	if ( v2 == 1 )
-	{
+	if (v2 == 1) {
 		v4 = GetFocus();
 		v2 = GetWindowLongA(v4, -12);
 	}

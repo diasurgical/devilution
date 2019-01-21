@@ -22,9 +22,9 @@ void __cdecl DiabEdit_SetupWindow()
 	WNDCLASSA WndClass; // [esp+0h] [ebp-28h]
 
 	memset(&WndClass, 0, 0x28u);
-	WndClass.style = 64;
-	WndClass.lpfnWndProc = DiabEdit_WndProc;
-	WndClass.hInstance = GetModuleHandleA(0);
+	WndClass.style         = 64;
+	WndClass.lpfnWndProc   = DiabEdit_WndProc;
+	WndClass.hInstance     = GetModuleHandleA(0);
 	WndClass.lpszClassName = "DIABLOEDIT";
 	RegisterClassA(&WndClass);
 }
@@ -32,36 +32,24 @@ void __cdecl DiabEdit_SetupWindow()
 // ref: 0x100057E8
 LRESULT __stdcall DiabEdit_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
-	if ( Msg <= 0x113 )
-	{
-		if ( Msg == 275 )
-		{
+	if (Msg <= 0x113) {
+		if (Msg == 275) {
 			DiabEdit_GetCursorProp(hWnd);
 			return 0;
 		}
-		if ( Msg == 1 )
-		{
+		if (Msg == 1) {
 			DiabEdit_SetRestrictTimer(hWnd);
-		}
-		else if ( Msg == 2 )
-		{
+		} else if (Msg == 2) {
 			DiabEdit_RemoveAllProps(hWnd);
-		}
-		else
-		{
-			if ( Msg != 7 )
-			{
-				if ( Msg == 15 )
-				{
+		} else {
+			if (Msg != 7) {
+				if (Msg == 15) {
 					DiabEdit_DoPaintBMP(hWnd);
-				}
-				else
-				{
-					if ( Msg == 135 )
+				} else {
+					if (Msg == 135)
 						return 129;
-					if ( Msg != 256 )
-					{
-						if ( Msg == 258 )
+					if (Msg != 256) {
+						if (Msg == 258)
 							DiabEdit_RestrictAndLimit(hWnd, wParam, lParam);
 						return DefWindowProcA(hWnd, Msg, wParam, lParam);
 					}
@@ -73,25 +61,22 @@ LRESULT __stdcall DiabEdit_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lP
 		}
 		return DefWindowProcA(hWnd, Msg, wParam, lParam);
 	}
-	switch ( Msg )
-	{
-		case 0x201u:
-			SetFocus(hWnd);
-			return DefWindowProcA(hWnd, Msg, wParam, lParam);
-		case 0x400u:
-			SetWindowTextA(hWnd, &nullcharacter);
-			DiabEdit_SendWndCommand(hWnd, 3u);
-			return 0;
-		case 0x401u:
-			SetPropA(hWnd, "LIMIT", (HANDLE)wParam);
-			return 0;
-		case 0x402u:
-			return (LRESULT)GetPropA(hWnd, "LIMIT");
+	switch (Msg) {
+	case 0x201u:
+		SetFocus(hWnd);
+		return DefWindowProcA(hWnd, Msg, wParam, lParam);
+	case 0x400u:
+		SetWindowTextA(hWnd, &nullcharacter);
+		DiabEdit_SendWndCommand(hWnd, 3u);
+		return 0;
+	case 0x401u:
+		SetPropA(hWnd, "LIMIT", (HANDLE)wParam);
+		return 0;
+	case 0x402u:
+		return (LRESULT)GetPropA(hWnd, "LIMIT");
 	}
-	if ( Msg != 1027 )
-	{
-		if ( Msg == 1028 )
-		{
+	if (Msg != 1027) {
+		if (Msg == 1028) {
 			DiabEdit_SetRestrictString(hWnd, lParam);
 			return 0;
 		}
@@ -103,7 +88,7 @@ LRESULT __stdcall DiabEdit_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lP
 // ref: 0x1000591C
 void __fastcall DiabEdit_SendWndCommand(HWND hWnd, WORD a2)
 {
-	int v4; // ST08_4
+	int v4;  // ST08_4
 	HWND v5; // eax
 
 	v4 = (a2 << 16) | (unsigned short)GetWindowLongA(hWnd, -12);
@@ -114,28 +99,25 @@ void __fastcall DiabEdit_SendWndCommand(HWND hWnd, WORD a2)
 // ref: 0x1000594E
 void __fastcall DiabEdit_GetCursorProp(HWND hWnd)
 {
-	size_t v2; // eax
-	char *v3; // esi
+	size_t v2;        // eax
+	char *v3;         // esi
 	char String[256]; // [esp+Ch] [ebp-100h]
 
 	String[0] = nullcharacter;
 	memset(&String[1], 0, 0xFCu);
 	*(_WORD *)&String[253] = 0;
-	String[255] = 0;
-	if ( GetPropA(hWnd, "CURSOR") )
-	{
+	String[255]            = 0;
+	if (GetPropA(hWnd, "CURSOR")) {
 		SetPropA(hWnd, "CURSOR", 0);
 		DiabEdit_SendWndCommand(hWnd, 3u);
-	}
-	else
-	{
+	} else {
 		SetPropA(hWnd, "CURSOR", (void *)HANDLE_FLAG_INHERIT);
 		GetWindowTextA(hWnd, String, 255);
-		String[254] = 0;
-		v2 = strlen(String);
+		String[254]    = 0;
+		v2             = strlen(String);
 		String[v2 + 1] = 0;
-		v3 = &String[v2];
-		String[v2] = 124;
+		v3             = &String[v2];
+		String[v2]     = 124;
 		SetWindowTextA(hWnd, String);
 		DiabEdit_SendWndCommand(hWnd, 3u);
 		*v3 = 0;
@@ -147,54 +129,48 @@ void __fastcall DiabEdit_GetCursorProp(HWND hWnd)
 void __fastcall DiabEdit_RestrictAndLimit(HWND hWnd, WPARAM wParam, LPARAM lParam)
 {
 	unsigned char v3; // bl
-	char *v4; // eax
-	char v5; // cl
-	signed int v6; // eax
-	signed int v7; // esi
+	char *v4;         // eax
+	char v5;          // cl
+	signed int v6;    // eax
+	signed int v7;    // esi
 	//char v8; // [esp+7h] [ebp-105h]
 	char String[256]; // [esp+8h] [ebp-104h]
 
 	String[0] = nullcharacter;
-	v3 = wParam;
+	v3        = wParam;
 	memset(&String[1], 0, 0xFCu);
 	*(_WORD *)&String[253] = 0;
-	String[255] = 0;
-	if ( (_BYTE)wParam == 8 )
+	String[255]            = 0;
+	if ((_BYTE)wParam == 8)
 		goto LABEL_9;
-	if ( (unsigned char)wParam < 0x20u || (unsigned char)wParam > 0x7Eu && (unsigned char)wParam < 0xC0u )
+	if ((unsigned char)wParam < 0x20u || (unsigned char)wParam > 0x7Eu && (unsigned char)wParam < 0xC0u)
 		return;
 	v4 = (char *)GetPropA(hWnd, "RESTRICTED");
-	if ( !v4 || (v5 = *v4) == 0 )
-	{
-LABEL_9:
+	if (!v4 || (v5 = *v4) == 0) {
+	LABEL_9:
 		GetWindowTextA(hWnd, String, 255);
 		String[254] = 0;
-		v6 = strlen(String);
-		v7 = v6;
-		if ( v3 == 8 )
-		{
-			if ( v6 )
-			{
-				String[v6-1] = 0; // *(&v8 + v6) = 0;
+		v6          = strlen(String);
+		v7          = v6;
+		if (v3 == 8) {
+			if (v6) {
+				String[v6 - 1] = 0; // *(&v8 + v6) = 0;
 				goto LABEL_14;
 			}
-		}
-		else if ( v6 < (signed int)GetPropA(hWnd, "LIMIT") )
-		{
-			String[v7] = v3;
+		} else if (v6 < (signed int)GetPropA(hWnd, "LIMIT")) {
+			String[v7]     = v3;
 			String[v7 + 1] = 0;
-LABEL_14:
+		LABEL_14:
 			SetWindowTextA(hWnd, String);
 			goto LABEL_15;
 		}
-LABEL_15:
+	LABEL_15:
 		DiabEdit_GetCursorProp(hWnd);
 		return;
 	}
-	while ( v3 != v5 )
-	{
+	while (v3 != v5) {
 		v5 = *++v4;
-		if ( !*v4 )
+		if (!*v4)
 			goto LABEL_9;
 	}
 }
@@ -210,16 +186,14 @@ void __fastcall DiabEdit_SetTextAndProp(HWND hWnd, WPARAM wParam, LPARAM lParam)
 	String[0] = nullcharacter;
 	memset(&String[1], 0, 0xFCu);
 	*(_WORD *)&String[253] = 0;
-	String[255] = 0;
-	v4 = wParam;
+	String[255]            = 0;
+	v4                     = wParam;
 	GetWindowTextA(hWnd, String, 255);
 	String[254] = 0;
-	v5 = strlen(String);
-	if ( v4 == 37 )
-	{
-		if ( v5 )
-		{
-			String[v5-1] = 0; // *(&v6 + v5) = 0;
+	v5          = strlen(String);
+	if (v4 == 37) {
+		if (v5) {
+			String[v5 - 1] = 0; // *(&v6 + v5) = 0;
 			SetWindowTextA(hWnd, String);
 		}
 		DiabEdit_GetCursorProp(hWnd);
@@ -230,12 +204,11 @@ void __fastcall DiabEdit_SetTextAndProp(HWND hWnd, WPARAM wParam, LPARAM lParam)
 void __fastcall DiabEdit_SetRestrictString(HWND hWnd, LPARAM lParam)
 {
 	const char *v2; // edi
-	char *v3; // eax MAPDST
+	char *v3;       // eax MAPDST
 
 	v2 = (const char *)lParam;
 	v3 = (char *)GetPropA(hWnd, "RESTRICTED");
-	if ( v3 )
-	{
+	if (v3) {
 		strncpy(v3, v2, 0xFFu);
 		v3[255] = 0;
 	}
@@ -248,7 +221,7 @@ void __fastcall DiabEdit_SetRestrictTimer(HWND hWnd)
 
 	SDlgSetTimer((int)hWnd, 1, 500, 0);
 	SetPropA(hWnd, "CURSOR", 0);
-	v2 = (unsigned char *)SMemAlloc(0x100u, "C:\\Src\\Diablo\\DiabloUI\\DiabEdit.cpp", 185, 0);
+	v2  = (unsigned char *)SMemAlloc(0x100u, "C:\\Src\\Diablo\\DiabloUI\\DiabEdit.cpp", 185, 0);
 	*v2 = 0;
 	SetPropA(hWnd, "RESTRICTED", v2);
 }
@@ -262,6 +235,6 @@ void __fastcall DiabEdit_RemoveAllProps(HWND hWnd)
 	RemovePropA(hWnd, "LIMIT");
 	RemovePropA(hWnd, "CURSOR");
 	v2 = RemovePropA(hWnd, "RESTRICTED");
-	if ( v2 )
+	if (v2)
 		SMemFree(v2, "C:\\Src\\Diablo\\DiabloUI\\DiabEdit.cpp", 200, 0);
 }

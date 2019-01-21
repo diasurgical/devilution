@@ -3,7 +3,7 @@
 #define __HELP_H__
 
 extern int help_select_line; // weak
-extern int dword_634494; // weak
+extern int dword_634494;     // weak
 extern int helpflag;
 extern int displayinghelp[22];
 extern int HelpTop; // weak

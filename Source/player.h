@@ -5,21 +5,19 @@
 extern int plr_lframe_size; // idb
 extern int plr_wframe_size; // idb
 extern UCHAR plr_gfx_flag;
-extern int player_cpp_init_value; // weak
 extern int plr_aframe_size; // idb
 extern int myplr;
 extern PlayerStruct plr[MAX_PLRS];
 extern int plr_fframe_size; // idb
 extern int plr_qframe_size; // idb
-extern int deathflag; // idb
+extern BOOL deathflag;      // idb
 extern int plr_hframe_size; // idb
 extern int plr_bframe_size; // idb
 extern UCHAR plr_gfx_bflag;
 extern int plr_sframe_size; // idb
-extern int deathdelay; // weak
+extern int deathdelay;      // weak
 extern int plr_dframe_size; // idb
 
-void __cdecl player_cpp_init();
 void __fastcall SetPlayerGPtrs(UCHAR *pData, UCHAR **pAnim); /* unsigned char *+** */
 void __fastcall LoadPlrGFX(int pnum, player_graphic gfxflag);
 void __fastcall InitPlayerGFX(int pnum);
@@ -60,7 +58,7 @@ void __fastcall RemovePlrFromMap(int pnum);
 void __fastcall StartPlrHit(int pnum, int dam, BOOL forcehit);
 void __fastcall RespawnDeadItem(ItemStruct *itm, int x, int y);
 void __fastcall StartPlayerKill(int pnum, int earflag);
-void __fastcall PlrDeadItem(int pnum, struct ItemStruct *itm, int xx, int yy);
+void __fastcall PlrDeadItem(int pnum, ItemStruct *itm, int xx, int yy);
 void __fastcall DropHalfPlayersGold(int pnum);
 void __fastcall SyncPlrKill(int pnum, int earflag);
 void __fastcall j_StartPlayerKill(int pnum, int earflag);
@@ -113,7 +111,6 @@ void __cdecl PlayDungMsgs();
 
 /* rdata */
 
-extern const int player_inf;
 extern const char ArmourChar[4];
 extern const char WepChar[10];
 extern const char CharChar[4];
@@ -133,7 +130,7 @@ extern int VitalityTbl[3];
 extern int ToBlkTbl[3];
 extern char *ClassStrTblOld[3];
 extern int MaxStats[3][4];
-extern int ExpLvlsTbl[51];
+extern int ExpLvlsTbl[MAXCHARLEVEL];
 extern char *ClassStrTbl[3];
 extern unsigned char fix[9];
 

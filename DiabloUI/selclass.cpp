@@ -2,47 +2,39 @@
 LRESULT __stdcall SelClass_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
 	HWND v4; // eax
-	int v5; // edx
+	int v5;  // edx
 	HWND v6; // eax
 	HWND v7; // eax
 	HWND v9; // eax
 
-	if ( Msg == 2 )
-	{
+	if (Msg == 2) {
 		SelClass_FreeClassMsgTbl(hWnd);
 		return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 	}
-	if ( Msg <= 0x103 )
+	if (Msg <= 0x103)
 		return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
-	if ( Msg <= 0x105 )
-	{
-		v9 = (HWND)SDrawGetFrameWindow();
+	if (Msg <= 0x105) {
+		v9 = (HWND)SDrawGetFrameWindow(NULL);
 		SendMessageA(v9, Msg, wParam, lParam);
 		return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 	}
-	if ( Msg == 272 )
-	{
+	if (Msg == 272) {
 		SelClass_LoadClassFocus(hWnd);
 		return 0;
 	}
-	if ( Msg != 273 )
-	{
-		if ( Msg != 275 )
-		{
-			if ( Msg == 513 )
-			{
+	if (Msg != 273) {
+		if (Msg != 275) {
+			if (Msg == 513) {
 				v4 = GetDlgItem(hWnd, 1056);
-				if ( local_GetBottomRect(hWnd, v4, (unsigned short)lParam, (unsigned int)lParam >> 16) )
-				{
+				if (local_GetBottomRect(hWnd, v4, (unsigned short)lParam, (unsigned int)lParam >> 16)) {
 					v5 = 1;
-LABEL_19:
+				LABEL_19:
 					SelClass_CheckClassSpawn(hWnd, v5);
 					return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 				}
 				v6 = GetDlgItem(hWnd, 1054);
-				if ( local_GetBottomRect(hWnd, v6, (unsigned short)lParam, (unsigned int)lParam >> 16) )
-				{
-LABEL_21:
+				if (local_GetBottomRect(hWnd, v6, (unsigned short)lParam, (unsigned int)lParam >> 16)) {
+				LABEL_21:
 					v5 = 2;
 					goto LABEL_19;
 				}
@@ -53,18 +45,14 @@ LABEL_21:
 		Focus_DoBlitSpinIncFrame(hWnd, v7);
 		return 0;
 	}
-	if ( HIWORD(wParam) == 7 )
-	{
+	if (HIWORD(wParam) == 7) {
 		Focus_GetAndBlitSpin(hWnd, lParam);
-	}
-	else
-	{
-		if ( HIWORD(wParam) != 6 )
-		{
+	} else {
+		if (HIWORD(wParam) != 6) {
 			v5 = 1;
-			if ( HIWORD(wParam) == 5 || (_WORD)wParam == 1 )
+			if (HIWORD(wParam) == 5 || (_WORD)wParam == 1)
 				goto LABEL_19;
-			if ( (_WORD)wParam != 2 )
+			if ((_WORD)wParam != 2)
 				return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 			goto LABEL_21;
 		}
@@ -92,14 +80,14 @@ void __fastcall SelClass_FreeClassMsgTbl(HWND hWnd)
 // ref: 0x10009EFD
 void __fastcall SelClass_LoadClassFocus(HWND hWnd)
 {
-	HWND v1; // edi
-	HWND v2; // esi
-	LONG v3; // eax
+	HWND v1;         // edi
+	HWND v2;         // esi
+	LONG v3;         // eax
 	char Buffer[32]; // [esp+8h] [ebp-20h]
 
 	v1 = hWnd;
 	v2 = GetParent(hWnd);
-	if ( SelHero_GetHeroIsGood() == 1 )
+	if (SelHero_GetHeroIsGood() == 1)
 		LoadStringA(ghUiInst, 0x20u, Buffer, 31);
 	else
 		LoadStringA(ghUiInst, 0x1Fu, Buffer, 31);
@@ -107,9 +95,9 @@ void __fastcall SelClass_LoadClassFocus(HWND hWnd)
 	v3 = GetWindowLongA(v2, -21);
 	SetWindowLongA(v1, -21, v3);
 	local_DoUiWndProc(v1, (DWORD *)selclass_msgtbl3);
-	Doom_ParseWndProc3(v1, selclass_msgtbl1, 5);
-	Doom_ParseWndProcs(v1, selclass_msgtbl2, 4, 0);
-	Doom_ParseWndProcs(v1, selclass_msgtbl3, 2, 1);
+	Doom_ParseWndProc3(v1, selclass_msgtbl1, AF_BIGGRAY);
+	Doom_ParseWndProcs(v1, selclass_msgtbl2, AF_BIG, 0);
+	Doom_ParseWndProcs(v1, selclass_msgtbl3, AF_MED, 1);
 	Focus_LoadSpinner("ui_art\\focus.pcx");
 	SDlgSetTimer((int)v1, 1, 55, 0);
 }
@@ -117,21 +105,21 @@ void __fastcall SelClass_LoadClassFocus(HWND hWnd)
 // ref: 0x10009FA2
 void __fastcall SelClass_SetDefaultStats(HWND hWnd, int a2)
 {
-	char v2; // bl
-	HWND v4; // eax
-	_uiheroinfo pInfo; // [esp+8h] [ebp-34h]
+	char v2;             // bl
+	HWND v4;             // eax
+	_uiheroinfo pInfo;   // [esp+8h] [ebp-34h]
 	_uidefaultstats a2a; // [esp+34h] [ebp-8h]
 
 	v2 = a2;
 	SelHero_SetClassStats(a2 - 1062, &a2a);
 	memset(&pInfo, 0, 0x2Cu);
-	pInfo.strength = a2a.strength;
-	pInfo.magic = a2a.magic;
+	pInfo.strength  = a2a.strength;
+	pInfo.magic     = a2a.magic;
 	pInfo.dexterity = a2a.dexterity;
-	pInfo.vitality = a2a.vitality;
-	pInfo.level = 1;
+	pInfo.vitality  = a2a.vitality;
+	pInfo.level     = 1;
 	pInfo.heroclass = v2 - 38;
-	v4 = GetParent(hWnd);
+	v4              = GetParent(hWnd);
 	SelHero_PrintHeroInfo(v4, &pInfo);
 }
 
@@ -141,16 +129,12 @@ void __fastcall SelClass_CheckClassSpawn(HWND hWnd, int a2)
 	HWND v4; // eax
 	HWND v5; // eax
 
-	if ( DiabloUI_GetSpawned() && a2 == 1 && (v4 = GetFocus(), GetWindowLongA(v4, -12) != 1062) )
-	{
+	if (DiabloUI_GetSpawned() && a2 == 1 && (v4 = GetFocus(), GetWindowLongA(v4, -12) != 1062)) {
 		SelYesNo_SpawnErrDialog(hWnd, 69, 0);
-	}
-	else
-	{
+	} else {
 		TitleSnd_PlaySelectSound();
 		SDlgKillTimer((int)hWnd, 1);
-		if ( a2 == 1 )
-		{
+		if (a2 == 1) {
 			v5 = GetFocus();
 			a2 = GetWindowLongA(v5, -12);
 		}

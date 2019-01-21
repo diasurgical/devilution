@@ -78,7 +78,7 @@ LONG STORMAPI SFileGetFileSize(HANDLE hFile, LPDWORD lpFileSizeHigh) rInt;
 BOOL STORMAPI SFileOpenArchive(const char *szMpqName, DWORD dwPriority, DWORD dwFlags, HANDLE *phMpq) rBool;
 BOOL STORMAPI SFileOpenFile(const char *filename, HANDLE *phFile) rBool;
 BOOL STORMAPI SFileOpenFileEx(HANDLE hMpq, const char *szFileName, DWORD dwSearchScope, HANDLE *phFile) rBool;
-BOOL STORMAPI SFileReadFile(HANDLE hFile, void *buffer, DWORD nNumberOfBytesToRead, DWORD *read, LONG lpDistanceToMoveHigh) rBool;
+BOOL STORMAPI SFileReadFile(HANDLE hFile, void *buffer, DWORD nNumberOfBytesToRead, DWORD *read, LONG *lpDistanceToMoveHigh) rBool;
 
 void STORMAPI SFileSetLocale(LCID lcLocale) rVoid;
 
@@ -226,14 +226,14 @@ int STORMAPI SBigToBinaryBuffer(void *buffer, int length, int a3, int a4) rInt;
 
 void __stdcall SDrawMessageBox(char *,char *,int) rVoid;
 void __cdecl SDrawDestroy(void) rVoid;
-bool __cdecl StormDestroy(void) rBool;
-bool __stdcall SFileSetBasePath(char *) rBool;
+BOOLEAN __cdecl StormDestroy(void) rBool;
+BOOLEAN __stdcall SFileSetBasePath(char *) rBool;
 void __cdecl SDrawRealizePalette(void) rVoid;
 BOOL __cdecl SVidPlayContinue(void) rBool;
-bool __stdcall SNetGetOwnerTurnsWaiting(int *) rBool;
+BOOL __stdcall SNetGetOwnerTurnsWaiting(DWORD *) rBool;
 void * __stdcall SNetUnregisterEventHandler(int,void (__stdcall*)(struct _SNETEVENT *)) rPVoid;
 void * __stdcall SNetRegisterEventHandler(int,void (__stdcall*)(struct _SNETEVENT *)) rPVoid;
-bool __stdcall SNetSetBasePlayer(int) rBool;
+BOOLEAN __stdcall SNetSetBasePlayer(int) rBool;
 int __stdcall SNetInitializeProvider(unsigned long,struct _SNETPROGRAMDATA *,struct _SNETPLAYERDATA *,struct _SNETUIDATA *,struct _SNETVERSIONDATA *) rInt;
 int __stdcall SNetGetProviderCaps(struct _SNETCAPS *) rInt;
 int __stdcall SFileSetFilePointer(HANDLE,int,HANDLE,int) rInt;
@@ -248,3 +248,4 @@ BOOL __stdcall SDlgKillTimer(int a1, int a2) rBool;
 BOOL __stdcall SDlgDrawBitmap(HWND hWnd, int a2, int a3, int a4, int a5, int a6, int a7) rBool;
 BOOL __stdcall SDlgDialogBoxParam(HINSTANCE hInst, char *szDialog, int a3, WNDPROC func, int a5) rBool;
 BOOL __stdcall SGdiTextOut(void *pBuffer, int x, int y, int mask, char *str, int len) rBool;
+BOOL __stdcall SFileEnableDirectAccess(BOOL enable) rBool;

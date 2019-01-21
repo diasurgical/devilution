@@ -3,40 +3,26 @@
 #define __MULTI_H__
 
 extern char gbSomebodyWonGameKludge; // weak
-extern char pkdata_6761C0[4100];
 extern char szPlayerDescript[128];
 extern short sgwPackPlrOffsetTbl[MAX_PLRS];
 extern PkPlayerStruct netplr[MAX_PLRS];
-extern char sgbPlayerTurnBitTbl[MAX_PLRS];
-extern char sgbPlayerLeftGameTbl[MAX_PLRS];
-extern int multi_cpp_init_value; // weak
-extern int sgbSentThisCycle; // idb
 extern int dword_678628; // weak
-extern char gbActivePlayers; // weak
+extern BYTE gbActivePlayers;
 extern char gbGameDestroyed; // weak
-extern char sgbSendDeltaTbl[MAX_PLRS];
-extern _gamedata sgGameInitInfo;
-extern char byte_678640; // weak
-extern int sglTimeoutStart; // weak
-extern int sgdwPlayerLeftReasonTbl[MAX_PLRS];
-extern char pkdata_678658[4100];
-extern unsigned int sgdwGameLoops; // idb
-extern UCHAR gbMaxPlayers;
-extern char sgbTimeout; // weak
+extern char byte_678640;     // weak
+extern BYTE gbMaxPlayers;
 extern char szPlayerName[128];
-extern char gbDeltaSender; // weak
-extern int sgbNetInited; // weak
+extern BYTE gbDeltaSender; // weak
 extern int player_state[MAX_PLRS];
 
-void __cdecl multi_cpp_init();
-void __fastcall multi_msg_add(unsigned char *a1, unsigned char a2);
-void __fastcall NetSendLoPri(unsigned char *pbMsg, unsigned char bLen);
-void __fastcall multi_copy_packet(void *a1, void *packet, int size);
-void __fastcall multi_send_packet(void *packet, int dwSize);
+void __fastcall multi_msg_add(BYTE *a1, unsigned char a2);
+void __fastcall NetSendLoPri(BYTE *pbMsg, BYTE bLen);
+void __fastcall multi_copy_packet(TBuffer *a1, void *packet, BYTE size);
+void __fastcall multi_send_packet(void *packet, BYTE dwSize);
 void __fastcall NetRecvPlrData(TPkt *pkt);
-void __fastcall NetSendHiPri(unsigned char *pbMsg, unsigned char bLen);
-unsigned char *__fastcall multi_recv_packet(void *packet, unsigned char *a2, int *a3);
-void __fastcall multi_send_msg_packet(int a1, unsigned char *a2, unsigned char len);
+void __fastcall NetSendHiPri(BYTE *pbMsg, BYTE bLen);
+unsigned char *__fastcall multi_recv_packet(TBuffer *packet, unsigned char *a2, int *a3);
+void __fastcall multi_send_msg_packet(int a1, BYTE *a2, BYTE len);
 void __cdecl multi_msg_countdown();
 void __fastcall multi_parse_turn(int pnum, int turn);
 void __fastcall multi_handle_turn_upper_bit(int pnum);
@@ -45,7 +31,7 @@ void __cdecl multi_clear_left_tbl();
 void __fastcall multi_player_left_msg(int pnum, int left);
 void __cdecl multi_net_ping();
 int __cdecl multi_handle_delta();
-int __fastcall multi_check_pkt_valid(char *a1);
+int __fastcall multi_check_pkt_valid(TBuffer *a1);
 void __cdecl multi_mon_seeds();
 void __cdecl multi_begin_timeout();
 void __cdecl multi_check_drop_player();
@@ -57,7 +43,7 @@ void __cdecl NetClose();
 char __fastcall multi_event_handler(int a1);
 void __stdcall multi_handle_events(_SNETEVENT *pEvt);
 int __fastcall NetInit(int bSinglePlayer, int *pfExitProgram);
-void __fastcall multi_clear_pkt(char *a1);
+void __fastcall buffer_init(TBuffer *pBuf);
 void __fastcall multi_send_pinfo(int pnum, char cmd);
 int __fastcall InitNewSeed(int newseed);
 void __cdecl SetupLocalCoords();
