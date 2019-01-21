@@ -43,7 +43,7 @@ set(SOURCES
     Source/cursor.cpp
     Source/dead.cpp
     Source/debug.cpp
-#   Source/diablo.cpp
+    Source/diablo.cpp
     Source/doom.cpp
     Source/drlg_l1.cpp
     Source/drlg_l2.cpp
@@ -112,7 +112,6 @@ set(ORIGINAL_SOURCES
     Source/nthread.cpp
     Source/restrict.cpp
     Source/sound.cpp
-    Source/diablo.cpp
 )
 
 set(STUB_SOURCES
@@ -135,7 +134,6 @@ set(STUB_SOURCES
     Stub/storm_net.cpp
     Stub/validate.cpp
     Stub/sdlrender.cpp
-    Stub/diablo.cpp
     Stub/gamemenu.cpp
 
     3rdParty/StormLib/src/FileStream.cpp

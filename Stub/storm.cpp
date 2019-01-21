@@ -367,3 +367,8 @@ int __stdcall SNetGetProviderCaps(struct _SNETCAPS *)
 {
 	UNIMPLEMENTED();
 }
+
+BOOL __stdcall SFileEnableDirectAccess(BOOL enable)
+{
+	DUMMY();
+}

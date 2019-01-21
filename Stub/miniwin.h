@@ -556,6 +556,9 @@ HFILE WINAPI OpenFile(LPCSTR lpFileName, LPOFSTRUCT lpReOpenBuff, UINT uStyle);
 //#define VK_OEM_8 0xDF
 //#define VK_OEM_102 0xE2
 
+#define MK_SHIFT 0x0004
+#define MK_LBUTTON 0x0001
+
 //
 // Total fakes
 //

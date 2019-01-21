@@ -108,7 +108,7 @@ HFILE WINAPI OpenFile(LPCSTR lpFileName, LPOFSTRUCT lpReOpenBuff, UINT uStyle)
 
 VOID WINAPI InitializeCriticalSection(LPCRITICAL_SECTION lpCriticalSection)
 {
-	UNIMPLEMENTED();
+	DUMMY();
 }
 
 VOID WINAPI EnterCriticalSection(LPCRITICAL_SECTION lpCriticalSection)
@@ -123,7 +123,7 @@ VOID WINAPI LeaveCriticalSection(LPCRITICAL_SECTION lpCriticalSection)
 
 VOID WINAPI DeleteCriticalSection(LPCRITICAL_SECTION lpCriticalSection)
 {
-	UNIMPLEMENTED();
+	DUMMY();
 }
 
 DWORD WINAPI WaitForSingleObject(HANDLE hHandle, DWORD dwMilliseconds)
