@@ -22,7 +22,7 @@ BOOL STORMAPI SNetDropPlayer(int playerid, DWORD flags)
 	UNIMPLEMENTED();
 }
 
-BOOL STORMAPI SNetGetGameInfo(int type, void *dst, size_t length, size_t *byteswritten)
+BOOL STORMAPI SNetGetGameInfo(int type, void *dst, unsigned int length, unsigned int *byteswritten)
 {
 	DUMMY();
 	return TRUE;
@@ -50,7 +50,7 @@ BOOL STORMAPI SNetReceiveTurns(int a1, int arraysize, char **arraydata, unsigned
 	UNIMPLEMENTED();
 }
 
-BOOL STORMAPI SNetSendTurn(char *data, size_t databytes)
+BOOL STORMAPI SNetSendTurn(char *data, unsigned int databytes)
 {
 	UNIMPLEMENTED();
 }
@@ -170,7 +170,7 @@ HWND STORMAPI SDrawGetFrameWindow(HWND *sdraw_framewindow)
 //	UNIMPLEMENTED();
 //}
 
-void *STORMAPI SMemAlloc(size_t amount, char *logfilename, int logline, char defaultValue)
+void *STORMAPI SMemAlloc(unsigned int amount, char *logfilename, int logline, char defaultValue)
 {
 	// fprintf(stderr, "%s: %d (%s:%d)\n", __FUNCTION__, amount, logfilename, logline);
 	assert(amount != -1);
@@ -185,7 +185,7 @@ BOOL STORMAPI SMemFree(void *location, char *logfilename, int logline, char defa
 	return TRUE;
 }
 
-void *STORMAPI SMemReAlloc(void *location, size_t amount, char *logfilename, int logline, char defaultValue)
+void *STORMAPI SMemReAlloc(void *location, unsigned int amount, char *logfilename, int logline, char defaultValue)
 {
 	UNIMPLEMENTED();
 }
@@ -196,7 +196,7 @@ BOOL STORMAPI SRegLoadData(const char *keyname, const char *valuename, int size,
 	UNIMPLEMENTED();
 }
 
-BOOL STORMAPI SRegLoadString(const char *keyname, const char *valuename, BYTE flags, char *buffer, size_t buffersize)
+BOOL STORMAPI SRegLoadString(const char *keyname, const char *valuename, BYTE flags, char *buffer, unsigned int buffersize)
 {
 	UNIMPLEMENTED();
 }
@@ -250,7 +250,7 @@ BOOL STORMAPI SErrDisplayError(DWORD dwErrMsg, const char *logfilename, int logl
 	UNIMPLEMENTED();
 }
 
-BOOL STORMAPI SErrGetErrorStr(DWORD dwErrCode, char *buffer, size_t bufferchars)
+BOOL STORMAPI SErrGetErrorStr(DWORD dwErrCode, char *buffer, unsigned int bufferchars)
 {
 	UNIMPLEMENTED();
 }
@@ -265,12 +265,12 @@ void STORMAPI SErrSetLastError(DWORD dwErrCode)
 	nLastError = dwErrCode;
 }
 
-void STORMAPI SMemCopy(void *dest, const void *source, size_t size)
+void STORMAPI SMemCopy(void *dest, const void *source, unsigned int size)
 {
 	UNIMPLEMENTED();
 }
 
-void STORMAPI SMemFill(void *location, size_t length, char fillWith)
+void STORMAPI SMemFill(void *location, unsigned int length, char fillWith)
 {
 	UNIMPLEMENTED();
 }
@@ -290,12 +290,12 @@ int STORMAPI SStrCopy(char *dest, const char *src, int max_length)
 	UNIMPLEMENTED();
 }
 
-int STORMAPI SStrCmp(const char *string1, const char *string2, size_t size)
+int STORMAPI SStrCmp(const char *string1, const char *string2, unsigned int size)
 {
 	UNIMPLEMENTED();
 }
 
-int STORMAPI SStrCmpI(const char *string1, const char *string2, size_t size)
+int STORMAPI SStrCmpI(const char *string1, const char *string2, unsigned int size)
 {
 	UNIMPLEMENTED();
 }

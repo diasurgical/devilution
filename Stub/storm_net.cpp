@@ -40,7 +40,7 @@ BOOL STORMAPI SNetReceiveMessage(int *senderplayerid, char **data, int *databyte
 	return TRUE;
 }
 
-BOOL STORMAPI SNetSendMessage(int playerID, void *data, size_t databytes)
+BOOL STORMAPI SNetSendMessage(int playerID, void *data, unsigned int databytes)
 {
 	DUMMY();
 
