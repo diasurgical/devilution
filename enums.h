@@ -2252,9 +2252,8 @@ typedef enum _mainmenu_selections {
 	MAINMENU_ATTRACT_MODE  = 6,
 } _mainmenu_selections;
 
-enum menus
+typedef enum menus
 {
-	SPLASH,
 	MAINMENU,
 	SINGLEPLAYER_LOAD,
 	SINGLEPLAYER_CLASSES,
@@ -2265,7 +2264,7 @@ enum menus
 	MULTIPLAYER_BNET_GATEWAYS,
 	MULTIPLAYER_ERROR,
 	CREDIT,
-};
+} menus;
 
 enum TXT_JUST {
 	JustLeft   = 0,

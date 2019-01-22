@@ -1012,6 +1012,7 @@ void LoadTitelArt(char *pszFile)
 	}
 
 	LoadArtWithPal(pszFile, &pPcxTitleImage, 1, dwData);
+	ApplyGamma(logical_palette, orig_palette, 256);
 	gdwTitleWidth = dwData[0];
 	gdwTitleHeight = dwData[1];
 	TitleImageLoaded = true;
@@ -1043,6 +1044,8 @@ void ShowCredts()
 			PrintText16Gold(0, 50 + (i * pFont16[1]) - ybase, the_long_credits[creditline + i], JustCentre);
 		}
 	}
+
+	SetFadeLevel(256);
 }
 
 ///////////////////////////Renders
@@ -1139,9 +1142,11 @@ void RenderDiabloSplashPage()
 
 	PrintText24Silver(-1, 410, "Copyright \xA9 1996-2001 Blizzard Entertainment", JustCentre);
 	RenderDiabloLogo();
+
+	SetFadeLevel(256);
 }
 
-void RenderDiabloMainPage()
+void RenderDiabloMainPage(char *name)
 {
 	char *pszFile = "ui_art\\mainmenu.pcx";
 	if (false) //DiabloUI_GetSpawned()
@@ -1172,10 +1177,10 @@ void RenderDiabloMainPage()
 
 	DrawSelector42(0, selectorTop, 0, 85, 43);
 
-	PrintText16Silver(17, 444, gszProductName);
+	PrintText16Silver(17, 444, name);
 
-	//ADD_PlrStringXY(0, 600 - 150, 640, "DedicaTed To David Brevik, Erich Schaefer, Max Schaefer,", COL_BLUE);// Red isn't red
-	//ADD_PlrStringXY(0, 600 - 130, 640, " MaTT Uelman, and The Blizzard North Team ThaT Gave Us A Childhood.", COL_BLUE);
+	DrawMouse();
+	SetFadeLevel(256);
 }
 
 void RenderStats(char *lvl, char *str, char *mag, char *dex, char *vit)
@@ -1222,6 +1227,8 @@ void RenderDiabloSinglePlayerPage()
 	PrintText30Gold(279, 429, "OK");
 	PrintText30Gold(378, 429, "Delete");
 	PrintText30Gold(501, 429, "Cancel");
+	DrawMouse();
+	SetFadeLevel(256);
 }
 
 void LoadClickBoxes(int numberofchars)
@@ -1270,53 +1277,6 @@ void LoadClickBoxes(int numberofchars)
 
 int LoadedFont = 0;
 int TotalPlayers = 0;
-
-void DrawPreGameOptions(int ShowClasses)
-{
-	LoadTitelArt("ui_art\\selhero.pcx");
-	DrawArtImage(0, 0, gdwTitleWidth, gdwTitleHeight, 0, pPcxTitleImage);
-	RenderDiabloLogoSm();
-
-	DrawArtImage(30, 211, gdwHeroWidth, gdwHeroHeight, 0, pPcxHeroImage);
-
-	char *GameOptions[2] = { "New Game", "Load Game" };
-
-	// this should not be hard coded.
-	int x = 280;
-	int y = 256;
-
-	if (ShowClasses == 1) {
-		for (int i = 0; i < 2; i++) {
-			y += 40;
-			PrintText16Silver(x, y, GameOptions[i]);
-		}
-	}
-}
-
-void DrawPreGameDifficultySelection(int HeroClass, int ShowClasses)
-{
-	LoadTitelArt("ui_art\\selhero.pcx");
-	DrawArtImage(0, 0, gdwTitleWidth, gdwTitleHeight, 0, pPcxTitleImage);
-	RenderDiabloLogoSm();
-
-	DrawArtImage(30, 211, gdwHeroWidth, gdwHeroHeight, 0, pPcxHeroImage);
-
-	RenderStats("1", "30", "10", "20", "25");
-
-	char *GameOptions[3] = { "Normal", "Nightmare", "Hell" };
-
-	// this should not be hard coded.
-	int x = 280;
-	int y = 256;
-	DrawArtImage(30, 211, gdwHeroWidth, gdwHeroHeight, HeroClass, pPcxHeroImage);
-
-	if (ShowClasses == 1) {
-		for (int i = 0; i < 3; i++) {
-			y += 40;
-			PrintText16Silver(x, y, GameOptions[i]);
-		}
-	}
-}
 
 void RenderDefaultStats(int HeroClass)
 {
@@ -1383,6 +1343,9 @@ void CreateHeroMenu()
 
 	PrintText30Gold(329, 429, "OK");
 	PrintText30Gold(451, 429, "Cancel");
+
+	DrawMouse();
+	SetFadeLevel(256);
 }
 
 void RenderUndecidedHeroName(int HeroClass)
@@ -1408,4 +1371,64 @@ void RenderUndecidedHeroName(int HeroClass)
 
 	PrintText30Gold(329, 429, "OK");
 	PrintText30Gold(451, 429, "Cancel");
+
+	DrawMouse();
+	SetFadeLevel(256);
+}
+
+void DrawPreGameOptions(int HeroClass, int ShowClasses)
+{
+	LoadTitelArt("ui_art\\selhero.pcx");
+	DrawArtImage(0, 0, gdwTitleWidth, gdwTitleHeight, 0, pPcxTitleImage);
+	RenderDiabloLogoSm();
+
+	DrawArtImage(30, 211, gdwHeroWidth, gdwHeroHeight, 0, pPcxHeroImage);
+
+	char *GameOptions[2] = { "New Game", "Load Game" };
+
+	// this should not be hard coded.
+	int x = 280;
+	int y = 256;
+
+	if (ShowClasses == 1) {
+		for (int i = 0; i < 2; i++) {
+			y += 40;
+			PrintText16Silver(x, y, GameOptions[i]);
+		}
+	}
+
+	RenderDefaultStats(HeroClass);
+
+	DrawMouse();
+	SetFadeLevel(256);
+}
+
+void DrawPreGameDifficultySelection(int HeroClass, int ShowClasses)
+{
+	LoadTitelArt("ui_art\\selhero.pcx");
+	DrawArtImage(0, 0, gdwTitleWidth, gdwTitleHeight, 0, pPcxTitleImage);
+	RenderDiabloLogoSm();
+
+	DrawArtImage(30, 211, gdwHeroWidth, gdwHeroHeight, 0, pPcxHeroImage);
+
+	RenderStats("1", "30", "10", "20", "25");
+
+	char *GameOptions[3] = { "Normal", "Nightmare", "Hell" };
+
+	// this should not be hard coded.
+	int x = 280;
+	int y = 256;
+	DrawArtImage(30, 211, gdwHeroWidth, gdwHeroHeight, HeroClass, pPcxHeroImage);
+
+	if (ShowClasses == 1) {
+		for (int i = 0; i < 3; i++) {
+			y += 40;
+			PrintText16Silver(x, y, GameOptions[i]);
+		}
+	}
+
+	RenderDefaultStats(HeroClass);
+
+	DrawMouse();
+	SetFadeLevel(256);
 }
