@@ -59,7 +59,7 @@ void LoadCharNamesintoMemory()
 			pfile_SFileCloseArchive(CharFile);
 		}
 
-		p_hero_names += 32;
+		p_hero_names += PLR_NAME_LEN;
 	}
 
 	// memcpy(shero_names, hero_names, sizeof(hero_names));

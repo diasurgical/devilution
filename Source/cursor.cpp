@@ -340,7 +340,7 @@ void __cdecl CheckCursMove()
 			cursmy = my + 1;
 			pcursmonst = d_monster - 1;
 		}
-		if (!towner[pcursmonst]._tSelFlag)
+		if (pcursmonst != -1 && !towner[pcursmonst]._tSelFlag) //BUGFIX
 			pcursmonst = -1;
 	} else {
 		if (dword_4B8CCC != -1) {

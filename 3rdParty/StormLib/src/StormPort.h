@@ -167,7 +167,12 @@
   #endif
 
   // MINIWIN change
+  // (original calling conventions confuse address-sanitizer)
+  #if 0
   #define WINAPI __attribute__((stdcall))
+  #else
+  #define WINAPI
+  #endif
 
   #define FILE_BEGIN    SEEK_SET
   #define FILE_CURRENT  SEEK_CUR

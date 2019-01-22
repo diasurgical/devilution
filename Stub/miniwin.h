@@ -1,11 +1,5 @@
 #pragma once
 
-#ifdef NO_GLOBALS
-#define STATIC extern
-#else
-#define STATIC static
-#endif
-
 #include <vector>
 
 #include <ctype.h>
@@ -27,6 +21,8 @@
 #define NO_ERROR 0
 
 // Calling conventions
+// (original calling conventions confuse address-sanitizer)
+#if 0
 #define __cdecl __attribute__((cdecl))
 #define __fastcall __attribute__((fastcall))
 #define __stdcall __attribute__((stdcall))
@@ -34,6 +30,15 @@
 #define APIENTRY __stdcall
 #define WINAPI __stdcall
 #define WINAPIV __cdecl
+#else
+#define __cdecl
+#define __fastcall
+#define __stdcall
+#define CALLBACK
+#define APIENTRY
+#define WINAPI
+#define WINAPIV
+#endif
 
 #define ALIGNED(n) __attribute__((aligned(n)))
 
@@ -53,7 +58,7 @@ typedef int32_t LONG;
 typedef uint8_t BOOLEAN;
 
 typedef LONG *PLONG;
-typedef unsigned long ULONG;
+typedef uint32_t ULONG;
 typedef ULONG *PULONG;
 typedef unsigned short USHORT;
 typedef USHORT *PUSHORT;
@@ -61,7 +66,7 @@ typedef unsigned char UCHAR;
 typedef UCHAR *PUCHAR;
 typedef char *PSZ;
 
-typedef unsigned long DWORD;
+typedef uint32_t DWORD;
 typedef int BOOL, WINBOOL;
 typedef unsigned char BYTE;
 typedef unsigned short WORD;
@@ -200,7 +205,7 @@ typedef struct tagMSG {
 } MSG, *LPMSG;
 
 // sdl wave?!?
-#define MAKEFOURCC SDL_FOURCC 
+#define MAKEFOURCC SDL_FOURCC
 typedef uint8_t FOURCC;
 typedef struct {
   FOURCC ckid;

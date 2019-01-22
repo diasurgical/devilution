@@ -118,7 +118,7 @@ void __fastcall music_start(int nTrack)
 		file = sgpMusicTrack;
 		bytestoread = (int)SFileGetFileSize((HANDLE)file, 0);
 		buffer = DiabloAllocPtr(bytestoread);
-		SFileReadFile(file, (char *)buffer, bytestoread, (unsigned long *)&nread, 0);
+		SFileReadFile(file, (char *)buffer, bytestoread, (LPDWORD)&nread, 0);
 
 		SDL_RWops *rw = SDL_RWFromMem(buffer, bytestoread);
 
@@ -141,7 +141,7 @@ void LoadAndPlaySound(char *FilePath, int lVolume, int lPan)
 	file = SFXbuffer;
 	bytestoread = (int)SFileGetFileSize((HANDLE)file, 0);
 	SFXbuffer = DiabloAllocPtr(bytestoread);
-	SFileReadFile(file, (char *)SFXbuffer, bytestoread, (unsigned long *)&nrread, 0);
+	SFileReadFile(file, (char *)SFXbuffer, bytestoread, (LPDWORD)&nrread, 0);
 
 	SDL_RWops *rw = SDL_RWFromMem(SFXbuffer, bytestoread);
 	Mix_Chunk *SoundFX = Mix_LoadWAV_RW(rw, 1);
@@ -165,8 +165,7 @@ BOOL __fastcall snd_playing(TSnd *pSnd)
 
 void __fastcall snd_play_snd(TSnd *pSnd, int lVolume, int lPan)
 {
-
-	Mix_PlayChannel(-1, (Mix_Chunk *)pSnd, 0);
+	Mix_PlayChannel(-1, pSnd->chunk, 0);
 }
 
 void __fastcall snd_stop_snd(TSnd *pSnd)
@@ -189,11 +188,16 @@ TSnd *__fastcall sound_file_load(char *path)
 	SFileOpenFile(path, &file);
 	bytestoread = (int)SFileGetFileSize((HANDLE)file, 0);
 	MSFXBuffer = DiabloAllocPtr(bytestoread);
-	SFileReadFile(file, (char *)MSFXBuffer, bytestoread, (unsigned long *)&nrread, 0);
+	SFileReadFile(file, (char *)MSFXBuffer, bytestoread, (LPDWORD)&nrread, 0);
 	SDL_RWops *rw = SDL_RWFromMem(MSFXBuffer, bytestoread);
 	Mix_Chunk *SoundFX = Mix_LoadWAV_RW(rw, 1);
 
-	return (TSnd *)SoundFX;
+	TSnd *fx = malloc(sizeof(TSnd));
+	fx->chunk = SoundFX;
+	fx->start_tc = 0;
+	fx->sound_path = NULL;
+
+	return fx;
 
 	//	printf("Sound_File_Load %s\n", path);
 	// UNIMPLEMENTED();
