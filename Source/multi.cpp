@@ -938,7 +938,7 @@ int __fastcall multi_upgrade(int *a1)
 	int status; // [esp+4h] [ebp-4h]
 
 	v1 = a1;
-	SNetPerformUpgrade((unsigned long *)&status);
+	SNetPerformUpgrade((LPDWORD)&status);
 	result = 1;
 	if (status && status != 1) {
 		if (status == 2) {

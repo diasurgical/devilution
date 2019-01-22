@@ -212,7 +212,7 @@ void __fastcall LoadL1Dungeon(char *sFileName, int vx, int vy)
 void __cdecl DRLG_L1Floor()
 {
 	int i, j;
-	long rv;
+	LONG rv;
 
 	for (j = 0; j < DMAXY; j++) {
 		for (i = 0; i < DMAXX; i++) {
@@ -502,7 +502,7 @@ void __cdecl DRLG_FreeL1SP()
 void __fastcall DRLG_L5(int entry)
 {
 	int i, j;
-	long minarea;
+	LONG minarea;
 	BOOL doneflag;
 
 	switch (currlevel) {

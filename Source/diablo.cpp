@@ -536,7 +536,7 @@ void __fastcall diablo_reload_process(HMODULE hModule)
 				CloseHandle(hMap);
 				ExitProcess(0);
 			}
-			if (InterlockedIncrement((long *)v4)) {
+			if (InterlockedIncrement((LPLONG)v4)) {
 				v6 = GetForegroundWindow();
 				do {
 					hWnd = v6;
