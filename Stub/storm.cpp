@@ -125,7 +125,7 @@ BOOL STORMAPI SFileGetFileArchive(HANDLE hFile, HANDLE archive)
 BOOL STORMAPI SFileOpenFile(const char *filename, HANDLE *phFile)
 {
 	//eprintf("%s: %s\n", __FUNCTION__, filename);
-	
+
 	BOOL result;
 
 
@@ -358,7 +358,7 @@ int __stdcall SNetInitializeProvider(unsigned long a1, struct _SNETPROGRAMDATA *
 {
 	DUMMY();
 
-	ui_info->selectnamecallback(0, 0, 0, 0, 0, NULL, 0, NULL, 0, NULL);
+	ui_info->selectnamecallback(client_info, user_info, ui_info, fileinfo, 0, NULL, 0, NULL, 0, NULL);
 
 	return TRUE;
 }

@@ -27,10 +27,10 @@ void __stdcall mainmenu_create_hero(char *name_1, char *name_2)
 }
 
 int __stdcall mainmenu_select_hero_dialog(
-    const _SNETPROGRAMDATA *u1,
-    const _SNETPLAYERDATA *u2,
-    const _SNETUIDATA *u3,
-    const _SNETVERSIONDATA *u4,
+    const _SNETPROGRAMDATA *client_info,
+    const _SNETPLAYERDATA *user_info,
+    const _SNETUIDATA *ui_info,
+    const _SNETVERSIONDATA *fileinfo,
     DWORD mode,
     char *cname, DWORD clen,
     char *cdesc, DWORD cdlen,
@@ -62,7 +62,7 @@ int __stdcall mainmenu_select_hero_dialog(
 	               &dlgresult,
 	               &a6,
 	               gszHero)) {
-		TedlgresultrmMsg("Can't load multiplayer dialog");
+		TermMsg("Can't load multiplayer dialog");
 	}
 	if (dlgresult == 4) {
 		SErrSetLastError(1223);
