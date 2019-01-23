@@ -349,19 +349,13 @@ int __fastcall multi_check_pkt_valid(TBuffer *a1)
 
 void __cdecl multi_mon_seeds()
 {
-	unsigned int v0; // eax
-	int v1;          // edx
-	int *v2;         // ecx
-	int v3;          // esi
+	int i;
+	DWORD l;
 
-	v0 = _rotr(++sgdwGameLoops, 8);
-	v1 = 0;
-	v2 = &monster[0]._mAISeed;
-	do {
-		v3 = v1++ + v0;
-		*v2 = v3;
-		v2 += 57;
-	} while ((signed int)v2 < (signed int)&monster[MAXMONSTERS]._mAISeed);
+	sgdwGameLoops++;
+	l = _rotr(sgdwGameLoops, 8);
+	for (i = 0; i < 200; i++)
+		monster[i]._mAISeed = l + i;
 }
 
 void __cdecl multi_begin_timeout()
