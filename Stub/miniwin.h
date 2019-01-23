@@ -89,11 +89,11 @@ typedef unsigned int *PUINT;
 typedef long long INT64 ALIGNED(8);
 typedef unsigned long long UINT64 ALIGNED(8);
 
-typedef int INT_PTR, *PINT_PTR;
-typedef unsigned int UINT_PTR, *PUINT_PTR;
+typedef intptr_t INT_PTR, *PINT_PTR;
+typedef uintptr_t UINT_PTR, *PUINT_PTR;
 
-typedef int32_t LONG_PTR, *PLONG_PTR;
-typedef uint32_t ULONG_PTR, *PULONG_PTR;
+typedef intptr_t LONG_PTR, *PLONG_PTR;
+typedef uintptr_t ULONG_PTR, *PULONG_PTR;
 typedef ULONG_PTR SIZE_T;
 
 typedef ULONG_PTR DWORD_PTR, *PDWORD_PTR;

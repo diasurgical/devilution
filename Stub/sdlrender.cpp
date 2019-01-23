@@ -925,7 +925,7 @@ void DrawPCXString(int x, int y, int w, int h, BYTE *str, BYTE *font, void *pBuf
 	}
 }
 
-int __fastcall GetPCXFontWidth(char *str, BYTE *font)
+int __fastcall GetPCXFontWidth(unsigned char *str, BYTE *font)
 {
 	int i;
 	int len = 0;

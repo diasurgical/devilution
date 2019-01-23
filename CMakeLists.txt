@@ -39,6 +39,7 @@ endif()
 # Note: In Debug mode, GCC generates spurious memory references that upset Valgrind,
 # these options fix that.
 string(APPEND CMAKE_CXX_FLAGS_DEBUG " -fno-omit-frame-pointer")
+string(APPEND CMAKE_CXX_FLAGS_DEBUG " -fsanitize=address -fsanitize-recover=address")
 
 find_package(SDL2 REQUIRED)
 find_package(SDL2_mixer REQUIRED)
@@ -60,7 +61,7 @@ set(SOURCES
     Source/encrypt.cpp
     Source/engine.cpp
     Source/error.cpp
-#   Source/gamemenu.cpp
+    Source/gamemenu.cpp
     Source/gendung.cpp
     Source/gmenu.cpp
     Source/help.cpp
@@ -141,7 +142,6 @@ set(STUB_SOURCES
     Stub/storm_net.cpp
 #   Stub/validate.cpp
     Stub/sdlrender.cpp
-    Stub/gamemenu.cpp
 
     3rdParty/StormLib/src/FileStream.cpp
     3rdParty/StormLib/src/SBaseCommon.cpp

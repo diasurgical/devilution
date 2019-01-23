@@ -32,9 +32,6 @@ extern int debugmonsttypes;   // weak
 extern int PauseMode;         // weak
 extern char sgbMouseDown;     // weak
 extern int color_cycle_timer; // weak
-extern bool CUSTOM_SDL_KEY_LSHIFT;
-
-
 
 void __cdecl FreeGameMem();
 BOOL __fastcall StartGame(BOOL bNewGame, BOOL bSinglePlayer);
