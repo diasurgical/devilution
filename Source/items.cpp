@@ -4191,38 +4191,26 @@ void __fastcall BubbleSwapItem(ItemStruct *a, ItemStruct *b)
 
 void __cdecl SortSmith()
 {
-	int v0;        // esi
-	int *v1;       // eax
-	signed int v2; // ecx
-	int *v3;       // eax
-	int v4;        // ebx
-	INT_PTR v5;    // edi
+	int j, k;
+	BOOL sorted;
 
-	v0 = 0;
-	if (smithitem[1]._itype != -1) {
-		v1 = &smithitem[1]._itype;
-		do {
-			v1 += 92;
-			++v0;
-		} while (*v1 != -1);
+	j = 0;
+	while (smithitem[j + 1]._itype != -1) {
+		j++;
 	}
-	v2 = 0;
-	while (v0 > 0 && !v2) {
-		v2 = 1;
-		if (v0 > 0) {
-			v3 = &smithitem[0].IDidx;
-			v4 = v0;
-			do {
-				v5 = (INT_PTR)(v3 + 92);
-				if (*v3 > v3[92]) {
-					BubbleSwapItem((ItemStruct *)(v3 - 90), (ItemStruct *)(v3 + 2));
-					v2 = 0;
+
+	sorted = FALSE;
+	while (j > 0 && !sorted) {
+		sorted = TRUE;
+		if (j > 0) {
+			for (k = 0; k < j; k++) {
+				if (smithitem[k].IDidx > smithitem[k + 1].IDidx) {
+					BubbleSwapItem(&smithitem[k], &smithitem[k + 1]);
+					sorted = FALSE;
 				}
-				--v4;
-				v3 = (int *)v5;
-			} while (v4);
+			}
 		}
-		--v0;
+		j--;
 	}
 }
 
@@ -4397,38 +4385,26 @@ int __fastcall RndWitchItem(int lvl)
 
 void __cdecl SortWitch()
 {
-	signed int v0; // esi
-	int *v1;       // eax
-	signed int v2; // ecx
-	int *v3;       // eax
-	int v4;        // ebx
-	INT_PTR v5;    // edi
+	int j, k;
+	BOOL sorted;
 
-	v0 = 3;
-	if (witchitem[4]._itype != -1) {
-		v1 = &witchitem[4]._itype;
-		do {
-			v1 += 92;
-			++v0;
-		} while (*v1 != -1);
+	j = 3;
+	while (witchitem[j + 1]._itype != -1) {
+		j++;
 	}
-	v2 = 0;
-	while (v0 > 3 && !v2) {
-		v2 = 1;
-		if (v0 > 3) {
-			v3 = &witchitem[3].IDidx;
-			v4 = v0 - 3;
-			do {
-				v5 = (INT_PTR)(v3 + 92);
-				if (*v3 > v3[92]) {
-					BubbleSwapItem((ItemStruct *)(v3 - 90), (ItemStruct *)(v3 + 2));
-					v2 = 0;
+
+	sorted = FALSE;
+	while (j > 3 && !sorted) {
+		sorted = TRUE;
+		if (j > 3) {
+			for (k = 3; k < j; k++) {
+				if (witchitem[k].IDidx > witchitem[k + 1].IDidx) {
+					BubbleSwapItem(&witchitem[k], &witchitem[k + 1]);
+					sorted = FALSE;
 				}
-				--v4;
-				v3 = (int *)v5;
-			} while (v4);
+			}
 		}
-		--v0;
+		j--;
 	}
 }
 
@@ -4622,38 +4598,26 @@ int __fastcall RndHealerItem(int lvl)
 
 void __cdecl SortHealer()
 {
-	signed int v0; // esi
-	int *v1;       // eax
-	signed int v2; // ecx
-	int *v3;       // eax
-	int v4;        // ebx
-	INT_PTR v5;    // edi
+	int j, k;
+	BOOL sorted;
 
-	v0 = 2;
-	if (healitem[3]._itype != -1) {
-		v1 = &healitem[3]._itype;
-		do {
-			v1 += 92;
-			++v0;
-		} while (*v1 != -1);
+	j = 2;
+	while (healitem[j + 1]._itype != -1) {
+		j++;
 	}
-	v2 = 0;
-	while (v0 > 2 && !v2) {
-		v2 = 1;
-		if (v0 > 2) {
-			v3 = &healitem[2].IDidx;
-			v4 = v0 - 2;
-			do {
-				v5 = (INT_PTR)(v3 + 92);
-				if (*v3 > v3[92]) {
-					BubbleSwapItem((ItemStruct *)(v3 - 90), (ItemStruct *)(v3 + 2));
-					v2 = 0;
+
+	sorted = FALSE;
+	while (j > 2 && !sorted) {
+		sorted = TRUE;
+		if (j > 2) {
+			for (k = 2; k < j; k++) {
+				if (healitem[k].IDidx > healitem[k + 1].IDidx) {
+					BubbleSwapItem(&healitem[k], &healitem[k + 1]);
+					sorted = FALSE;
 				}
-				--v4;
-				v3 = (int *)v5;
-			} while (v4);
+			}
 		}
-		--v0;
+		j--;
 	}
 }
 
