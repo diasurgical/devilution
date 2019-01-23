@@ -16,7 +16,7 @@ BOOL gbRunGameResult;
 int zoomflag; // weak
 BOOL gbProcessPlayers;
 int glEndSeed[NUMLEVELS];
-BOOL dword_5256E8;
+BOOL gbLoadGame;
 HINSTANCE ghInst; // idb
 int DebugMonsters[10];
 char cineflag;   // weak
@@ -102,7 +102,7 @@ BOOL __fastcall StartGame(BOOL bNewGame, BOOL bSinglePlayer)
 
 	do {
 		fExitProgram = FALSE;
-		dword_5256E8 = 0;
+		gbLoadGame = FALSE;
 
 		if (!NetInit(bSinglePlayer, &fExitProgram)) {
 			gbRunGameResult = !fExitProgram;
@@ -117,7 +117,7 @@ BOOL __fastcall StartGame(BOOL bNewGame, BOOL bSinglePlayer)
 			InitPortals();
 			InitDungMsgs(myplr);
 		}
-		if (!gbValidSaveFile || !dword_5256E8)
+		if (!gbValidSaveFile || !gbLoadGame)
 			uMsg = WM_DIABNEWGAME;
 		else
 			uMsg = WM_DIABLOADGAME;
