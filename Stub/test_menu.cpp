@@ -105,7 +105,7 @@ int __fastcall TEMP_diablo_init_menu(int a1, int bSinglePlayer)
 	while ( 1 )
 	{
 		pfExitProgram = 0;
-		dword_5256E8 = 0;
+		gbLoadGame = FALSE;
 		if ( !NetInit(v2, &pfExitProgram) )
 			break;
 		byte_678640 = 0;
@@ -394,10 +394,10 @@ int __stdcall mainmenu_select_hero_dialog(const struct _SNETPROGRAMDATA *u1,cons
 			// TermMsg("Unable to display SelHeroSing");
 		// if ( a5 == 2 )
 		// {
-			// dword_5256E8 = 1;
+			// gbLoadGame = TRUE;
 			// goto LABEL_6;
 		// }
-		// dword_5256E8 = 0;
+		// gbLoadGame = FALSE;
 	// }
 	// else if ( !UiSelHeroMultDialog(
 				   // pfile_ui_set_hero_infos,
@@ -740,7 +740,7 @@ void __cdecl paint_title_screen()
 
 }
 
-char *the_long_ass_credits[] = 
+char *the_long_ass_credits[] =
 {
 	"","","","","","","","","","","","",
 	"$-- Devilution --",
@@ -2179,7 +2179,7 @@ void __cdecl mainmenu_loop()
 			{
 				break;
 			}
-			TranslateMessage(&Msg); 
+			TranslateMessage(&Msg);
 			DispatchMessage(&Msg);
 		}
 		if(gbStopGame) {

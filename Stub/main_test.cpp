@@ -16,7 +16,7 @@ const char *__asan_default_options()
 static void init()
 {
 	//init_archives();
-	
+
 
 
 	//encrypt_init_lookup_table();
@@ -70,7 +70,7 @@ void XStartGame()
 
 	// 	printf("V2 STUFF : %i bSinglePlayer : %i", v2, &pfExitProgram);
 	// 	pfExitProgram = 0;
-	// 	dword_5256E8 = 0;
+	// 	gbLoadGame = FALSE;
 	// 	byte_678640 = 0;
 	// 	InitLevels();
 	// 	InitQuests();
@@ -89,11 +89,11 @@ void XStartGame()
 int main(int argc, char **argv)
 {
 	//printf("Start\n\n");
-	
+
 	//music_start(5);
 
 
-	
+
 	//#define O(f) fprintf(stderr, "offsetof(%s) = %d\n", #f, offsetof(PlayerStruct, f))
 	//
 	//	O(_pRSplType);
@@ -113,7 +113,7 @@ int main(int argc, char **argv)
 	// test_levelgen();
 	// test_newgame();
 
-	
+
 	WinMain(NULL, NULL, argc > 1 ? argv[1] : "", 0);
 
 	eprintf("Done!\n");

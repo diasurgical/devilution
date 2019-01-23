@@ -37,34 +37,34 @@ int __stdcall mainmenu_select_hero_dialog(
     BOOL *multi)
 {
 	int a6 = 1;
-	int a5 = 0;
+	int dlgresult = 0;
 	if (gbMaxPlayers == 1) {
 		if (!UiSelHeroSingDialog(
 		        pfile_ui_set_hero_infos,
 		        pfile_ui_save_create,
 		        pfile_delete_save,
 		        pfile_ui_set_class_stats,
-		        &a5,
+		        &dlgresult,
 		        gszHero,
 		        &gnDifficulty))
 			TermMsg("Unable to display SelHeroSing");
 
-		if (a5 == 2)
-			dword_5256E8 = TRUE;
+		if (dlgresult == 2)
+			gbLoadGame = TRUE;
 		else
-			dword_5256E8 = FALSE;
+			gbLoadGame = FALSE;
 
 	} else if (!UiSelHeroMultDialog(
 	               pfile_ui_set_hero_infos,
 	               pfile_ui_save_create,
 	               pfile_delete_save,
 	               pfile_ui_set_class_stats,
-	               &a5,
+	               &dlgresult,
 	               &a6,
 	               gszHero)) {
-		TermMsg("Can't load multiplayer dialog");
+		TedlgresultrmMsg("Can't load multiplayer dialog");
 	}
-	if (a5 == 4) {
+	if (dlgresult == 4) {
 		SErrSetLastError(1223);
 		return 0;
 	}

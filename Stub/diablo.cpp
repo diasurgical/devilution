@@ -26,7 +26,7 @@ int gbRunGameResult; // weak
 int zoomflag; // weak
 int gbProcessPlayers; // weak
 int glEndSeed[NUMLEVELS];
-int dword_5256E8; // weak
+BOOL gbLoadGame;
 HINSTANCE ghInst; // idb
 int DebugMonsters[10];
 char cineflag; // weak
@@ -135,11 +135,11 @@ BOOL __fastcall StartGame(BOOL a1, BOOL bSinglePlayer)
 	while ( 1 )
 	{
 		pfExitProgram = 0;
-		dword_5256E8 = 0;
+		gbLoadGame = FALSE;
 		if ( !NetInit(v2, &pfExitProgram) )
 			break;
 		byte_678640 = 0;
-		if ( (v3 || !gbValidSaveFile) && (InitLevels(), InitQuests(), InitPortals(), InitDungMsgs(myplr), !gbValidSaveFile) || (v4 = WM_DIABLOADGAME, !dword_5256E8) )
+		if ( (v3 || !gbValidSaveFile) && (InitLevels(), InitQuests(), InitPortals(), InitDungMsgs(myplr), !gbValidSaveFile) || (v4 = WM_DIABLOADGAME, !gbLoadGame) )
 		{
 			v4 = WM_DIABNEWGAME;
 		}
@@ -155,7 +155,6 @@ LABEL_11:
 	return gbRunGameResult;
 }
 // 525698: using guessed type int gbRunGameResult;
-// 5256E8: using guessed type int dword_5256E8;
 // 678640: using guessed type char byte_678640;
 
 void __fastcall run_game_loop(unsigned int uMsg)
