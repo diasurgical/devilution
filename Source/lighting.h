@@ -16,7 +16,7 @@ extern int visionid;
 extern char *pLightTbl; /* todo: struct? */
 extern BOOL lightflag;
 
-void __fastcall SetLightFX(int *x, int *y, short *s_r, short *s_g, int *s_b, int *d_r, int *d_g, int *d_b);
+void __fastcall SetLightFX(int *x, int *y, short *s_r, short *s_g, PINT_PTR s_b, PINT_PTR d_r, int *d_g, int *d_b);
 void __fastcall DoLighting(int nXPos, int nYPos, int nRadius, int Lnum);
 void __fastcall DoUnLight(int nXPos, int nYPos, int nRadius);
 void __fastcall DoUnVision(int nXPos, int nYPos, int nRadius);

@@ -723,7 +723,7 @@ void __cdecl InitItems()
 		v0[11] = 0;
 		v0[10] = 0;
 		v0 += 92;
-	} while ((signed int)v0 < (signed int)&item[MAXITEMS + 1]._ix);
+	} while ((INT_PTR)v0 < (INT_PTR)&item[MAXITEMS + 1]._ix);
 	v1 = 0;
 	memset(itemactive, 0, sizeof(itemactive));
 	do {
@@ -4196,7 +4196,7 @@ void __cdecl SortSmith()
 	signed int v2; // ecx
 	int *v3;       // eax
 	int v4;        // ebx
-	int v5;        // edi
+	INT_PTR v5;    // edi
 
 	v0 = 0;
 	if (smithitem[1]._itype != -1) {
@@ -4213,7 +4213,7 @@ void __cdecl SortSmith()
 			v3 = &smithitem[0].IDidx;
 			v4 = v0;
 			do {
-				v5 = (int)(v3 + 92);
+				v5 = (INT_PTR)(v3 + 92);
 				if (*v3 > v3[92]) {
 					BubbleSwapItem((ItemStruct *)(v3 - 90), (ItemStruct *)(v3 + 2));
 					v2 = 0;
@@ -4402,7 +4402,7 @@ void __cdecl SortWitch()
 	signed int v2; // ecx
 	int *v3;       // eax
 	int v4;        // ebx
-	int v5;        // edi
+	INT_PTR v5;    // edi
 
 	v0 = 3;
 	if (witchitem[4]._itype != -1) {
@@ -4419,7 +4419,7 @@ void __cdecl SortWitch()
 			v3 = &witchitem[3].IDidx;
 			v4 = v0 - 3;
 			do {
-				v5 = (int)(v3 + 92);
+				v5 = (INT_PTR)(v3 + 92);
 				if (*v3 > v3[92]) {
 					BubbleSwapItem((ItemStruct *)(v3 - 90), (ItemStruct *)(v3 + 2));
 					v2 = 0;
@@ -4627,7 +4627,7 @@ void __cdecl SortHealer()
 	signed int v2; // ecx
 	int *v3;       // eax
 	int v4;        // ebx
-	int v5;        // edi
+	INT_PTR v5;    // edi
 
 	v0 = 2;
 	if (healitem[3]._itype != -1) {
@@ -4644,7 +4644,7 @@ void __cdecl SortHealer()
 			v3 = &healitem[2].IDidx;
 			v4 = v0 - 2;
 			do {
-				v5 = (int)(v3 + 92);
+				v5 = (INT_PTR)(v3 + 92);
 				if (*v3 > v3[92]) {
 					BubbleSwapItem((ItemStruct *)(v3 - 90), (ItemStruct *)(v3 + 2));
 					v2 = 0;

@@ -451,7 +451,7 @@ unsigned char byte_49463C[18][18] = /* unused */
 
 unsigned char RadiusAdj[23] = { 0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 4, 3, 2, 2, 2, 1, 1, 1, 0, 0, 0, 0 };
 
-void __fastcall SetLightFX(int *x, int *y, short *s_r, short *s_g, int *s_b, int *d_r, int *d_g, int *d_b)
+void __fastcall SetLightFX(int *x, int *y, short *s_r, short *s_g, PINT_PTR s_b, PINT_PTR d_r, int *d_g, int *d_b)
 {
 	short *v8;   // eax
 	int v9;      // edx
@@ -467,7 +467,7 @@ void __fastcall SetLightFX(int *x, int *y, short *s_r, short *s_g, int *s_b, int
 	*(_DWORD *)s_g = v9;
 	s_ra = (short *)*s_b;
 	*s_b = 7 - *d_r;
-	*d_r = (int)s_ra;
+	*d_r = (INT_PTR)s_ra;
 	*x = *(_DWORD *)v8 - *s_b;
 	*v10 = *(_DWORD *)s_g - *d_r;
 	if (*x < 0) {
@@ -519,8 +519,8 @@ void __fastcall DoLighting(int nXPos, int nYPos, int nRadius, int Lnum)
 	int v38;        // edi
 	short s_r[2];   // [esp+Ch] [ebp-44h]
 	short s_g[2];   // [esp+10h] [ebp-40h]
-	int s_b;        // [esp+14h] [ebp-3Ch]
-	int d_r;        // [esp+18h] [ebp-38h]
+	INT_PTR s_b;    // [esp+14h] [ebp-3Ch]
+	INT_PTR d_r;    // [esp+18h] [ebp-38h]
 	int v43;        // [esp+1Ch] [ebp-34h]
 	int v44;        // [esp+20h] [ebp-30h]
 	int v45;        // [esp+24h] [ebp-2Ch]
@@ -933,7 +933,7 @@ void __fastcall DoVision(int nXPos, int nYPos, int nRadius, unsigned char doauto
 			++v20;
 			v8 += 30;
 			v19 = v8;
-		} while ((signed int)v8 < (signed int)&vCrawlTable[23][1]);
+		} while ((INT_PTR)v8 < (INT_PTR)&vCrawlTable[23][1]);
 		++v27;
 	} while (v27 < 4);
 }
@@ -968,15 +968,15 @@ void __cdecl MakeLightTable()
 	unsigned char v11;  // al
 	char *v12;          // ebx
 	char *v13;          // ebx
-	int v14;            // ecx
+	INT_PTR v14;        // ecx
 	signed int v15;     // esi
 	char v16;           // al
 	int v17;            // edx
-	int v18;            // ebx
+	INT_PTR v18;        // ebx
 	signed int v19;     // esi
 	_BYTE *v20;         // ebx
 	char *v21;          // ebx
-	int v22;            // edi
+	INT_PTR v22;        // edi
 	unsigned char *v23; // esi
 	signed int v24;     // edx
 	unsigned char *v25; // esi
@@ -996,7 +996,7 @@ void __cdecl MakeLightTable()
 	int v39;            // esi
 	double v40;         // st7
 	double v41;         // st6
-	int v42;            // ecx
+	INT_PTR v42;        // ecx
 	char *v43;          // ecx
 	BOOLEAN v44;        // zf
 	char v45[16];       // [esp+14h] [ebp-2Ch] /* check */
@@ -1004,9 +1004,9 @@ void __cdecl MakeLightTable()
 	int v47;            // [esp+28h] [ebp-18h]
 	char *v48;          // [esp+2Ch] [ebp-14h]
 	int v49;            // [esp+30h] [ebp-10h]
-	int v50;            // [esp+34h] [ebp-Ch]
-	int v51;            // [esp+38h] [ebp-8h]
-	int v52;            // [esp+3Ch] [ebp-4h]
+	INT_PTR v50;        // [esp+34h] [ebp-Ch]
+	INT_PTR v51;        // [esp+38h] [ebp-8h]
+	INT_PTR v52;        // [esp+3Ch] [ebp-4h]
 
 	v51 = 0;
 	v0 = pLightTbl;
@@ -1111,7 +1111,7 @@ void __cdecl MakeLightTable()
 					++v15;
 				} while (v15 < 16);
 				*v13 = 0;
-				v18 = (int)(v13 + 1);
+				v18 = (INT_PTR)(v13 + 1);
 				*(_DWORD *)v18 = *(_DWORD *)&v45[1];
 				*(_DWORD *)(v18 + 4) = *(_DWORD *)&v45[5];
 				*(_DWORD *)(v18 + 8) = *(_DWORD *)&v45[9];
@@ -1131,7 +1131,7 @@ void __cdecl MakeLightTable()
 		*v13 = 0;
 		v21 = v13 + 1;
 		memset(v21, 1u, 0x1Cu);
-		v22 = (int)(v21 + 28);
+		v22 = (INT_PTR)(v21 + 28);
 		*(_WORD *)v22 = 257;
 		*(_BYTE *)(v22 + 2) = 1;
 		v12 = v21 + 255;
@@ -1187,7 +1187,7 @@ void __cdecl MakeLightTable()
 		--v33;
 	} while (v33);
 	v35 = 0;
-	v51 = (int)dung_map_radius;
+	v51 = (INT_PTR)dung_map_radius;
 	v52 = 8;
 	do {
 		v36 = 0;
@@ -1224,7 +1224,7 @@ void __cdecl MakeLightTable()
 						v41 = 0.5;
 					else
 						v41 = -0.5;
-					v42 = (int)v48;
+					v42 = (INT_PTR)v48;
 					v51 += 8;
 					v48[v38++] = (signed __int64)(v41 + v40);
 				} while (v38 < 16);
@@ -1237,7 +1237,7 @@ void __cdecl MakeLightTable()
 			v37 = v43;
 		} while (v52 > -8);
 		--v49;
-	} while ((signed int)v43 < (signed int)&dung_map_rgba[16384]);
+	} while ((INT_PTR)v43 < (INT_PTR)&dung_map_rgba[16384]);
 }
 // 525728: using guessed type int light4flag;
 
