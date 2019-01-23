@@ -3,14 +3,12 @@
 #include "../types.h"
 #include "_asm.cpp"
 
-#ifndef NO_GLOBALS
 int WorldBoolFlag = 0;
 unsigned int gdwCurrentMask = 0;
 // char world_4B3264 = 0;
 unsigned char *gpCelFrame = NULL;
 unsigned int *gpDrawMask = NULL;
 // char world_4B326D[16] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-#endif
 
 unsigned int RightMask[32] = {
 	0xEAAAAAAA, 0xF5555555, 0xFEAAAAAA, 0xFF555555, 0xFFEAAAAA, 0xFFF55555, 0xFFFEAAAA, 0xFFFF5555,

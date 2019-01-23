@@ -64,8 +64,6 @@ char *spszMsgTbl[4] = {
 };                                                      // weak
 char *spszMsgKeyTbl[4] = { "F9", "F10", "F11", "F12" }; // weak
 
-bool CUSTOM_SDL_KEY_LSHIFT;
-
 void __cdecl FreeGameMem()
 {
 	void *p;

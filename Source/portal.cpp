@@ -2,10 +2,8 @@
 
 #include "../types.h"
 
-#ifndef NO_GLOBALS
 PortalStruct portal[MAXPORTAL];
 int portalindex;
-#endif
 
 int WarpDropX[MAXPORTAL] = { 57, 59, 61, 63 };
 int WarpDropY[MAXPORTAL] = { 40, 40, 40, 40 };

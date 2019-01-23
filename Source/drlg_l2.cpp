@@ -2,7 +2,6 @@
 
 #include "../types.h"
 
-#ifndef NO_GLOBALS
 int nSx1;
 int nSx2; // weak
 int nSy1;
@@ -11,7 +10,6 @@ int nRoomCnt;
 char predungeon[40][40];
 ROOMNODE RoomList[81];
 HALLNODE *pHallList;
-#endif
 
 int Area_Min = 2;  // weak
 int Room_Max = 10; // weak

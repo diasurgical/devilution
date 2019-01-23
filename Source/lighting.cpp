@@ -2,7 +2,6 @@
 
 #include "../types.h"
 
-#ifndef NO_GLOBALS
 LightListStruct VisionList[32];
 char lightactive[32];
 LightListStruct LightList[32];
@@ -16,7 +15,6 @@ char dung_map_rgba[16384]; /* int [64][64] short [64][128] char [64][256] */
 int visionid;
 char *pLightTbl; /* todo: struct? */
 BOOL lightflag;
-#endif
 
 char CrawlTable[2749] = {
 	1,

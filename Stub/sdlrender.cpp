@@ -31,6 +31,7 @@ bool SinglePlayerMenuItemsLoaded = 0;
 bool DiabloImageLoaded = 0;
 bool DiabloMainMenuListLoaded = 0;
 bool TitleImageLoaded = false;
+int SelectedItem = 1;
 
 void *pPcxLogoImage;
 int gdwLogoWidth;

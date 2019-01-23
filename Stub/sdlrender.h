@@ -55,6 +55,7 @@ extern int gdwCreditsWidth;
 extern int gdwCreditsHeight;
 
 extern bool TitleImageLoaded;
+extern int SelectedItem;
 
 extern int totalFrames;
 //extern SDL_Texture* spriteSheet;

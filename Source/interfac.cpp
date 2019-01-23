@@ -86,7 +86,7 @@ void __fastcall ShowProgress(unsigned int uMsg)
 	DrawCutscene();
 	PaletteFadeIn(8);
 	IncProgress();
-	stream_update(); // What is this?
+	stream_update();
 	IncProgress();
 	switch (uMsg) {
 	case WM_DIABNEXTLVL:

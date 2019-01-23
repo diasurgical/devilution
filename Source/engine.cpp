@@ -1,7 +1,6 @@
 //HEADER_GOES_HERE
 
 #include "../types.h"
-#include "miniwin_sdl.h"
 
 char gbPixelCol;  // automap pixel color 8-bit (palette entry)
 int dword_52B970; // BOOLEAN flip - if y < x
@@ -1534,17 +1533,6 @@ int __fastcall random(BYTE idx, int v)
 		return GetRndSeed() % v;
 	return (GetRndSeed() >> 16) % v;
 }
-
-#ifndef MINIWIN
-struct engine_cpp_init_2
-{
-	engine_cpp_init_2()
-	{
-		mem_init_mutex();
-		mem_atexit_mutex();
-	}
-} _engine_cpp_init_2;
-#endif
 
 #ifndef _MSC_VER
 __attribute__((constructor))

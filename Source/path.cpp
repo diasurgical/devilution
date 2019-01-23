@@ -2,7 +2,6 @@
 
 #include "../types.h"
 
-#ifndef NO_GLOBALS
 // preallocated nodes, search is terminated after 300 nodes are visited
 PATHNODE path_nodes[MAXPATHNODES];
 // size of the pnode_tblptr stack
@@ -19,7 +18,6 @@ PATHNODE *pnode_ptr;
 PATHNODE *pnode_tblptr[MAXPATHNODES];
 // a linked list of the A* frontier, sorted by distance
 PATHNODE *path_2_nodes;
-#endif
 
 // for iterating over the 8 possible movement directions
 const char pathxdir[8] = { -1, -1, 1, 1, -1, 0, 1, 0 };

@@ -2,9 +2,7 @@
 
 #include "../types.h"
 
-#ifndef NO_GLOBALS
 SHA1Context sgSHA1[3];
-#endif
 
 void __cdecl SHA1Clear()
 {

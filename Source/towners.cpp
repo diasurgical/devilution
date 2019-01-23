@@ -2,7 +2,6 @@
 
 #include "../types.h"
 
-#ifndef NO_GLOBALS
 int storeflag; // weak
 int sgnCowMsg;
 int numtowners; // idb
@@ -11,7 +10,6 @@ int bannerflag;  // weak // unused 0x6AAC28
 int boyloadflag; // weak
 BYTE *pCowCels;
 TownerStruct towner[16];
-#endif
 
 const int snSFX[3][3] = {
 	{ PS_WARR52, PS_ROGUE52, PS_MAGE52 },

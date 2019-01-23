@@ -113,16 +113,7 @@ BOOL __fastcall pfile_open_archive(BOOL a1, unsigned int save_num)
     if ( a1 && gbMaxPlayers > 1 )
         mpqapi_update_multi_creation_time(save_num);
     return FALSE;
-
-
-
-
-
 #else
-
-
-
-
 	char FileName[MAX_PATH];
 
 	pfile_get_save_path(FileName, sizeof(FileName), save_num);
@@ -132,9 +123,7 @@ BOOL __fastcall pfile_open_archive(BOOL a1, unsigned int save_num)
 	if (a1 && gbMaxPlayers > 1)
 		mpqapi_update_multi_creation_time(save_num);
 	return FALSE;
-
 #endif
-
 }
 
 void __fastcall pfile_get_save_path(char *pszBuf, DWORD dwBufSize, unsigned int save_num)
@@ -399,8 +388,8 @@ HANDLE __fastcall pfile_open_save_archive(int *unused, unsigned int save_num)
         return archive;
     return NULL;
 #else   // IF NOT ANDROID
-    char SrcStr[MAX_PATH];
-    HANDLE archive;
+	char SrcStr[MAX_PATH];
+	HANDLE archive;
 
 	pfile_get_save_path(SrcStr, sizeof(SrcStr), save_num);
 	if (SFileOpenArchive(SrcStr, 0x7000, 0, &archive))

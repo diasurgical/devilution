@@ -32,16 +32,8 @@ nthread_c_init(void)
 	nthread_cleanup_mutex_atexit();
 }
 
-#ifndef MINIWIN
-struct nthread_cpp_init_2
-{
-	nthread_cpp_init_2()
-	{
-		nthread_init_mutex();
-		nthread_cleanup_mutex_atexit();
-	}
-} _nthread_cpp_init_2;
-#endif
+SEG_ALLOCATE(SEGMENT_C_INIT)
+_PVFV nthread_c_init_funcs[] = { &nthread_c_init };
 
 void __cdecl nthread_init_mutex()
 {

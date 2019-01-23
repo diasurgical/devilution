@@ -3,12 +3,6 @@
 #define __PFILE_H__
 
 extern BOOL gbValidSaveFile; // idb
-extern char hero_names[MAX_CHARACTERS][PLR_NAME_LEN];
-
-
-
-
-
 
 void __cdecl pfile_init_save_directory();
 void __fastcall pfile_check_available_space(char *pszDir);

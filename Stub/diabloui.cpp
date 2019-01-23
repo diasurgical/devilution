@@ -5,8 +5,8 @@
 #include "stubs.h"
 
 char chr_name_str[16];
+char hero_names[MAX_CHARACTERS][PLR_NAME_LEN];
 
-int SelectedItem = 1;
 int SelectedItemMax = 0;
 int MenuItem[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 int PreviousItem[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
