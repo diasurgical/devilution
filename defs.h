@@ -159,5 +159,9 @@ typedef void (*_PVFV)(void);
 #pragma data_seg(SEGMENT_C_INIT)
 #pragma data_seg() // Switch back to the default segment
 // Call function pointer arrays and place them in the segments created above
-// #define SEG_ALLOCATE(SEGMENT) __declspec(allocate(SEGMENT))
+#ifdef _MSC_VER
+#define SEG_ALLOCATE(SEGMENT) __declspec(allocate(SEGMENT))
+#else
 #define SEG_ALLOCATE(SEGMENT)
+#endif
+
