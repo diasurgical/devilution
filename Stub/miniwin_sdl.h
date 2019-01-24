@@ -6,6 +6,7 @@
 #include <SDL2/SDL.h>
 //#include <SDL_image.h>
 #include <SDL_mixer.h>
+#include <SDL_thread.h>
 //#include "SDL_FontCache.h"
 
 #define SDL_CHECK(e) assert(e == 0)

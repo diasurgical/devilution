@@ -63,6 +63,5 @@ void DrawDlg(char *pszFmt, ...)
 char *__cdecl TraceLastError()
 {
 	DUMMY();
-
-	return NULL;
+	return "";
 }

@@ -38,7 +38,7 @@ endif()
 
 # Note: In Debug mode, GCC generates spurious memory references that upset Valgrind,
 # these options fix that.
-string(APPEND CMAKE_CXX_FLAGS_DEBUG " -fno-omit-frame-pointer")
+string(APPEND CMAKE_CXX_FLAGS_DEBUG " -Og -fno-omit-frame-pointer")
 string(APPEND CMAKE_CXX_FLAGS_DEBUG " -fsanitize=address -fsanitize-recover=address")
 
 find_package(SDL2 REQUIRED)
@@ -102,6 +102,8 @@ set(SOURCES
     Source/track.cpp
     Source/trigs.cpp
     Source/wave.cpp
+    Source/dthread.cpp
+    Source/nthread.cpp
 
     3rdParty/PKWare/explode.cpp
     3rdParty/PKWare/implode.cpp
@@ -111,13 +113,11 @@ set(SOURCES
 set(ORIGINAL_SOURCES
     Source/capture.cpp
     Source/appfat.cpp
-    Source/dthread.cpp
     Source/dx.cpp
     Source/fault.cpp
     Source/init.cpp
     Source/logging.cpp
     Source/movie.cpp
-    Source/nthread.cpp
     Source/restrict.cpp
     Source/sound.cpp
 )
@@ -127,18 +127,17 @@ set(STUB_SOURCES
     Stub/miniwin_rand.cpp
     Stub/appfat.cpp
     Stub/capture.cpp
-    Stub/dthread.cpp
     Stub/dx.cpp
     Stub/fault.cpp
     Stub/init.cpp
     Stub/movie.cpp
-    Stub/nthread.cpp
     Stub/restrict.cpp
     Stub/sound.cpp
     Stub/storm.cpp
     Stub/diabloui.cpp
     Stub/miniwin_io.cpp
     Stub/miniwin_msg_sdl.cpp
+    Stub/miniwin_thread.cpp
     Stub/storm_net.cpp
 #   Stub/validate.cpp
     Stub/sdlrender.cpp

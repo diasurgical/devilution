@@ -13,6 +13,8 @@
 // For _rotr()
 #include <x86intrin.h>
 
+#include <SDL_mutex.h>
+
 // Constants
 #define CONST const
 #define TRUE true
@@ -109,6 +111,7 @@ typedef LONG_PTR LRESULT;
 // Handles
 //
 typedef void *HANDLE;
+#define INVALID_HANDLE_VALUE ((HANDLE)-1)
 #define INVALID_HANDLE ((HANDLE)-1)
 #define HFILE_ERROR ((HFILE)-1)
 
@@ -131,6 +134,8 @@ typedef LRESULT(CALLBACK *WNDPROC)(HWND, UINT, WPARAM, LPARAM);
 #define HIWORD(l) ((WORD)((((DWORD_PTR)(l)) >> 16) & 0xffff))
 
 #define InterlockedIncrement(x) __sync_add_and_fetch(x, 1)
+
+#define INFINITE 0xFFFFFFFF
 
 typedef struct waveformat_tag {
 	WORD wFormatTag;
@@ -281,6 +286,7 @@ typedef struct _LIST_ENTRY {
 	struct _LIST_ENTRY *Blink;
 } LIST_ENTRY, *PLIST_ENTRY;
 
+#if 0
 typedef struct _RTL_CRITICAL_SECTION_DEBUG {
 	WORD Type;
 	WORD CreatorBackTraceIndex;
@@ -301,13 +307,14 @@ typedef struct {
 	HANDLE LockSemaphore;
 	ULONG_PTR SpinCount;
 } CRITICAL_SECTION, *LPCRITICAL_SECTION;
+#else
+typedef SDL_mutex *CRITICAL_SECTION, **LPCRITICAL_SECTION;
+#endif
 
 VOID WINAPI InitializeCriticalSection(LPCRITICAL_SECTION lpCriticalSection);
 VOID WINAPI EnterCriticalSection(LPCRITICAL_SECTION lpCriticalSection);
 VOID WINAPI LeaveCriticalSection(LPCRITICAL_SECTION lpCriticalSection);
 VOID WINAPI DeleteCriticalSection(LPCRITICAL_SECTION lpCriticalSection);
-
-DWORD WINAPI WaitForSingleObject(HANDLE hHandle, DWORD dwMilliseconds);
 
 DWORD WINAPI GetTickCount(VOID);
 
@@ -319,6 +326,9 @@ WINBOOL WINAPI CloseHandle(HANDLE hObject);
 HANDLE WINAPI CreateEventA(LPSECURITY_ATTRIBUTES lpEventAttributes, WINBOOL bManualReset, WINBOOL bInitialState,
                            LPCSTR lpName);
 #define CreateEvent CreateEventA
+BOOL WINAPI SetEvent(HANDLE hEvent);
+BOOL WINAPI ResetEvent(HANDLE hEvent);
+DWORD WINAPI WaitForSingleObject(HANDLE hHandle, DWORD dwMilliseconds);
 
 WINBOOL WINAPI SetCursorPos(int X, int Y);
 int WINAPI ShowCursor(WINBOOL bShow);

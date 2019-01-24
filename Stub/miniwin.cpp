@@ -106,38 +106,6 @@ HFILE WINAPI OpenFile(LPCSTR lpFileName, LPOFSTRUCT lpReOpenBuff, UINT uStyle)
 	UNIMPLEMENTED();
 }
 
-VOID WINAPI InitializeCriticalSection(LPCRITICAL_SECTION lpCriticalSection)
-{
-	DUMMY();
-}
-
-VOID WINAPI EnterCriticalSection(LPCRITICAL_SECTION lpCriticalSection)
-{
-	DUMMY_ONCE();
-}
-
-VOID WINAPI LeaveCriticalSection(LPCRITICAL_SECTION lpCriticalSection)
-{
-	DUMMY_ONCE();
-}
-
-VOID WINAPI DeleteCriticalSection(LPCRITICAL_SECTION lpCriticalSection)
-{
-	DUMMY();
-}
-
-DWORD WINAPI WaitForSingleObject(HANDLE hHandle, DWORD dwMilliseconds)
-{
-	UNIMPLEMENTED();
-}
-
-HANDLE WINAPI CreateEventA(LPSECURITY_ATTRIBUTES lpEventAttributes, WINBOOL bManualReset, WINBOOL bInitialState,
-                           LPCSTR lpName)
-{
-	DUMMY_PRINT("%s", nullstr(lpName));
-	return NULL;
-}
-
 HWND WINAPI SetCapture(HWND hWnd)
 {
 	DUMMY_ONCE();
@@ -181,23 +149,6 @@ HWND WINAPI FindWindowA(LPCSTR lpClassName, LPCSTR lpWindowName)
 	return NULL;
 }
 
-HANDLE WINAPI GetCurrentThread(VOID)
-{
-	DUMMY_ONCE();
-	return NULL;
-}
-
-DWORD WINAPI GetCurrentThreadId(VOID)
-{
-	UNIMPLEMENTED();
-}
-
-WINBOOL WINAPI SetThreadPriority(HANDLE hThread, int nPriority)
-{
-	DUMMY_ONCE();
-	return TRUE;
-}
-
 VOID WINAPI GetSystemInfo(LPSYSTEM_INFO lpSystemInfo)
 {
 	DUMMY();
@@ -221,12 +172,6 @@ int WINAPI GetDeviceCaps(HDC hdc, int index)
 }
 
 UINT WINAPI GetSystemPaletteEntries(HDC hdc, UINT iStart, UINT cEntries, LPPALETTEENTRY pPalEntries)
-{
-	UNIMPLEMENTED();
-}
-
-uintptr_t __cdecl _beginthreadex(void *_Security, unsigned _StackSize, unsigned(__stdcall *_StartAddress)(void *),
-                                 void *_ArgList, unsigned _InitFlag, unsigned *_ThrdAddr)
 {
 	UNIMPLEMENTED();
 }
