@@ -16,32 +16,38 @@ DWORD nLastError = 0;
 BOOL STORMAPI SFileDdaBeginEx(HANDLE directsound, DWORD flags, DWORD mask, unsigned __int32 lDistanceToMove,
                               signed __int32 volume, signed int a6, int a7)
 {
-	UNIMPLEMENTED();
+	DUMMY();
+	return 0;
 }
 
 BOOL STORMAPI SFileDdaDestroy()
 {
-	UNIMPLEMENTED();
+	DUMMY();
+	return 0;
 }
 
 BOOL STORMAPI SFileDdaEnd(HANDLE directsound)
 {
-	UNIMPLEMENTED();
+	DUMMY();
+	return 0;
 }
 
 BOOL STORMAPI SFileDdaGetPos(HANDLE directsound, int a2, int a3)
 {
-	UNIMPLEMENTED();
+	DUMMY();
+	return 0;
 }
 
 BOOL STORMAPI SFileDdaInitialize(HANDLE directsound)
 {
-	UNIMPLEMENTED();
+	DUMMY();
+	return 0;
 }
 
 BOOL STORMAPI SFileDdaSetVolume(HANDLE directsound, signed int bigvolume, signed int volume)
 {
-	UNIMPLEMENTED();
+	DUMMY();
+	return 0;
 }
 
 BOOL STORMAPI SFileGetFileArchive(HANDLE hFile, HANDLE archive)

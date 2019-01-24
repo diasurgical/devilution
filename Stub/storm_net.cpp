@@ -42,7 +42,7 @@ BOOL STORMAPI SNetReceiveMessage(int *senderplayerid, char **data, int *databyte
 
 BOOL STORMAPI SNetSendMessage(int playerID, void *data, unsigned int databytes)
 {
-	DUMMY();
+	DUMMY_ONCE();
 
 	snet_messages.push_back(StubMessage{playerID, std::string((char *)data, databytes)});
 	return TRUE;
@@ -99,7 +99,7 @@ BOOL STORMAPI SNetPerformUpgrade(DWORD *upgradestatus)
 BOOL STORMAPI SNetReceiveTurns(int a1, int arraysize, char **arraydata, unsigned int *arraydatabytes,
                                DWORD *arrayplayerstatus)
 {
-	DUMMY();
+	DUMMY_ONCE();
 	return TRUE;
 }
 
@@ -123,7 +123,7 @@ BOOL STORMAPI SNetSendServerChatCommand(const char *command)
 
 BOOL STORMAPI SNetGetTurnsInTransit(int *turns)
 {
-	DUMMY();
+	DUMMY_ONCE();
 	return TRUE;
 }
 

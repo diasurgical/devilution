@@ -221,7 +221,7 @@ class StubDraw : public IDirectDraw
 	METHOD HRESULT SetDisplayMode(DWORD dwWidth, DWORD dwHeight, DWORD dwBPP) { UNIMPLEMENTED(); }
 	METHOD HRESULT WaitForVerticalBlank(DWORD dwFlags, HANDLE hEvent)
 	{
-		DUMMY();
+		DUMMY_ONCE();
 		return S_OK;
 	}
 };
