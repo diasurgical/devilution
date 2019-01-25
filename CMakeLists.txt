@@ -155,9 +155,7 @@ set(STUB_SOURCES
     3rdParty/StormLib/src/SFileReadFile.cpp
 )
 
-include(CMake/SDL2_fixed.cmake)
-
-include_directories(${SDL2_INCLUDE_DIRS}
+include_directories(${SDL2_INCLUDE_DIR}
                     ${SDL2_MIXER_INCLUDE_DIR})
 
 include_directories(. Stub)
@@ -192,7 +190,7 @@ add_executable(devilution
 
 target_link_libraries(devilution PUBLIC
     m
-    ${SDL2_LIBRARIES}
+    ${SDL2_LIBRARY}
     ${SDL2_MIXER_LIBRARIES}
 )
 
