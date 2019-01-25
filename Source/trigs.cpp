@@ -154,48 +154,26 @@ void __cdecl InitTownTriggers()
 
 void __cdecl InitL1Triggers()
 {
-	int v0;            // edi
-	signed int v1;     // esi
-	int *v2;           // edx
-	int *v3;           // ecx
-	TriggerStruct *v4; // eax
-	int(*v5)[112];     // [esp+Ch] [ebp-8h]
-	int(*v6)[112];     // [esp+10h] [ebp-4h]
-
-	v0 = 0;
+	int i, j;
 	trigflag[4] = 0;
-	v5 = dPiece;
-	do {
-		v1 = 0;
-		v6 = v5;
-		v2 = &trigs[trigflag[4]]._tmsg;
-		v3 = &trigs[trigflag[4]]._ty;
-		v4 = &trigs[trigflag[4]];
-		do {
-			if ((*v6)[0] == 129) {
+
+	for (j = 0; j < MAXDUNX; j++) {
+		for (i = 0; i < MAXDUNY; i++) {
+			if (dPiece[i][j] == 129) {
+				trigs[trigflag[4]]._tx = i;
+				trigs[trigflag[4]]._ty = j;
+				trigs[trigflag[4]]._tmsg = WM_DIABPREVLVL;
 				++trigflag[4];
-				v4->_tx = v1;
-				*v3 = v0;
-				*v2 = WM_DIABPREVLVL;
-				++v4;
-				v3 += 4;
-				v2 += 4;
 			}
-			if ((*v6)[0] == 115) {
+
+			if (dPiece[i][j] == 115) {
+				trigs[trigflag[4]]._tx = i;
+				trigs[trigflag[4]]._ty = j;
+				trigs[trigflag[4]]._tmsg = WM_DIABNEXTLVL;
 				++trigflag[4];
-				v4->_tx = v1;
-				*v3 = v0;
-				*v2 = WM_DIABNEXTLVL;
-				++v4;
-				v3 += 4;
-				v2 += 4;
 			}
-			++v6;
-			++v1;
-		} while (v1 < 112);
-		v5 = (int(*)[112])((char *)v5 + 4);
-		++v0;
-	} while ((signed int)v5 < (signed int)dPiece[1]);
+		}
+	}
 	trigflag[3] = 0;
 }
 
