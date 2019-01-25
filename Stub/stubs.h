@@ -23,7 +23,7 @@
 		} \
 	} while(0)
 
-#define DUMMY_PRINT(fmt, ...) eprintf("DUMMY: %s : " fmt "\n", __FUNCTION__, __VA_ARGS__)
+#define DUMMY_PRINT(fmt, ...) eprintf("DUMMY: %s : " fmt "\n", __FUNCTION__, ## __VA_ARGS__)
 
 static inline const char *nullstr(const char *a)
 {

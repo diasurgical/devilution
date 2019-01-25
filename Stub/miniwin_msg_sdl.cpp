@@ -4,21 +4,10 @@
  */
 #include "../types.h"
 
-PlayerStruct *PlayerS;
-
-
-
-
-
-
 static std::deque<MSG> message_queue;
 
 static int translate_sdl_key(SDL_Keysym key)
 {
-
-
-
-
 	int sym = key.sym;
 	switch (sym) {
 	case SDLK_ESCAPE:
@@ -69,18 +58,12 @@ static int translate_sdl_key(SDL_Keysym key)
 		return VK_OEM_PERIOD;
 	case SDLK_COMMA:
 		return VK_OEM_COMMA;
-
-//	case SDLK_LSHIFT:
-//	printf("Fooooooo\n");
-		//PlayerS._pmode = 5;
-		//
-//		return VK_SHIFT;
+	case SDLK_LSHIFT:
+		return VK_SHIFT;
 	case SDLK_RSHIFT:
-		// Not handled yet
-		return -1;
+		return VK_SHIFT; // why not?
 
 	default:
-
 		if (sym >= SDLK_a && sym <= SDLK_z) {
 			return 'A' + (sym - SDLK_a);
 		} else if (sym >= SDLK_0 && sym <= SDLK_9) {
@@ -88,100 +71,125 @@ static int translate_sdl_key(SDL_Keysym key)
 		} else if (sym >= SDLK_F1 && sym <= SDLK_F12) {
 			return VK_F1 + (sym - SDLK_F1);
 		}
-
-
 		DUMMY_PRINT("unknown key: name=%s sym=0x%X scan=%d mod=0x%X", SDL_GetKeyName(sym), sym, key.scancode, key.mod);
 		return -1;
 	}
 }
 
+WPARAM keystate_for_mouse(WPARAM ret)
+{
+	const Uint8 *keystate = SDL_GetKeyboardState(NULL);
+	ret |= keystate[SDL_SCANCODE_LSHIFT] ? MK_SHIFT : 0;
+	// XXX: other MK_* codes not implemented
+	return ret;
+}
+
+static WINBOOL false_avail()
+{
+	DUMMY_PRINT("return FALSE although event avaliable");
+	return FALSE;
+}
+
 WINBOOL WINAPI PeekMessageA(LPMSG lpMsg, HWND hWnd, UINT wMsgFilterMin, UINT wMsgFilterMax, UINT wRemoveMsg)
 {
-	// DUMMY_PRINT("hwnd: %d", hWnd);
-	assert(wMsgFilterMin == 0 && wMsgFilterMax == 0);
+	if(wMsgFilterMin != 0)
+		UNIMPLEMENTED();
+	if(wMsgFilterMax != 0)
+		UNIMPLEMENTED();
+	if(hWnd != NULL)
+		UNIMPLEMENTED();
+
 	if (wRemoveMsg == PM_NOREMOVE) {
-		// XXX: This does not actually fill out lpMsg properly
-		lpMsg->hwnd = (HWND)-1;
-		lpMsg->message = 0;
-
+		// This does not actually fill out lpMsg, but this is ok
+		// since the engine never uses it in this case
 		return !message_queue.empty() || SDL_PollEvent(NULL);
-	} else if (wRemoveMsg == PM_REMOVE) {
-		if (!message_queue.empty()) {
-			*lpMsg = message_queue.front();
-			message_queue.pop_front();
-			return TRUE;
-		}
+	}
+	if (wRemoveMsg != PM_REMOVE) {
+		UNIMPLEMENTED();
+	}
 
-		SDL_Event e;
-		int pending = SDL_PollEvent(&e);
-		if (!pending) {
-			return FALSE;
-		}
-
-		lpMsg->hwnd = hWnd;
-		lpMsg->lParam = 0;
-		lpMsg->wParam = 0;
-
-		switch (e.type) {
-		case SDL_QUIT: {
-			lpMsg->message = WM_QUIT;
-			break;
-		}
-
-		case SDL_KEYDOWN:
-		case SDL_KEYUP: {
-			int key = translate_sdl_key(e.key.keysym);
-			if (key == -1) {
-				return FALSE;
-			}
-
-			lpMsg->message = e.type == SDL_KEYDOWN ? WM_KEYFIRST : WM_KEYUP;
-			lpMsg->wParam = (DWORD)key;
-			// Hack: Encode modifier in lParam for TranslateMessage later
-			lpMsg->lParam = e.key.keysym.mod << 16;
-			break;
-		}
-
-		case SDL_MOUSEMOTION: {
-			lpMsg->message = WM_MOUSEMOVE;
-			lpMsg->lParam = (e.motion.y << 16) | (e.motion.x & 0xFFFF);
-			break;
-		}
-
-		case SDL_MOUSEBUTTONDOWN:
-		case SDL_MOUSEBUTTONUP: {
-			int button = e.button.button;
-			if (button != SDL_BUTTON_LEFT && button != SDL_BUTTON_RIGHT) {
-				return FALSE;
-			}
-			bool left = button == SDL_BUTTON_LEFT;
-			lpMsg->message = e.type == SDL_MOUSEBUTTONDOWN ? (left ? WM_LBUTTONDOWN : WM_RBUTTONDOWN)
-			                                               : (left ? WM_LBUTTONUP : WM_RBUTTONUP);
-			lpMsg->lParam = (e.button.y << 16) | (e.button.x & 0xFFFF);
-			break;
-		}
-
-		case SDL_TEXTINPUT:
-		case SDL_WINDOWEVENT: {
-			return FALSE;
-		}
-
-		default: {
-			DUMMY_PRINT("unknown SDL message 0x%X", e.type);
-			return FALSE;
-		}
-		}
-
+	if (!message_queue.empty()) {
+		*lpMsg = message_queue.front();
+		message_queue.pop_front();
 		return TRUE;
 	}
-	UNIMPLEMENTED();
+
+	SDL_Event e;
+	int pending = SDL_PollEvent(&e);
+	if (!pending) {
+		return FALSE;
+	}
+
+	lpMsg->hwnd = hWnd;
+	lpMsg->lParam = 0;
+	lpMsg->wParam = 0;
+
+	switch (e.type) {
+	case SDL_QUIT:
+		lpMsg->message = WM_QUIT;
+		break;
+	case SDL_KEYDOWN:
+	case SDL_KEYUP:
+		{
+			int key = translate_sdl_key(e.key.keysym);
+			if (key == -1)
+				return false_avail();
+			lpMsg->message = e.type == SDL_KEYDOWN ? WM_KEYDOWN : WM_KEYUP;
+			lpMsg->wParam = (DWORD)key;
+			// HACK: Encode modifier in lParam for TranslateMessage later
+			lpMsg->lParam = e.key.keysym.mod << 16;
+		}
+		break;
+	case SDL_MOUSEMOTION:
+		lpMsg->message = WM_MOUSEMOVE;
+		lpMsg->lParam = (e.motion.y << 16) | (e.motion.x & 0xFFFF);
+		lpMsg->wParam = keystate_for_mouse(0);
+		break;
+	case SDL_MOUSEBUTTONDOWN:
+		{
+			int button = e.button.button;
+			if(button == SDL_BUTTON_LEFT) {
+				lpMsg->message = WM_LBUTTONDOWN;
+				lpMsg->lParam = (e.button.y << 16) | (e.button.x & 0xFFFF);
+				lpMsg->wParam = keystate_for_mouse(MK_LBUTTON);
+			} else if(button == SDL_BUTTON_RIGHT) {
+				lpMsg->message = WM_RBUTTONDOWN;
+				lpMsg->lParam = (e.button.y << 16) | (e.button.x & 0xFFFF);
+				lpMsg->wParam = keystate_for_mouse(MK_RBUTTON);
+			} else {
+				return false_avail();
+			}
+		}
+		break;
+	case SDL_MOUSEBUTTONUP:
+		{
+			int button = e.button.button;
+			if(button == SDL_BUTTON_LEFT) {
+				lpMsg->message = WM_LBUTTONUP;
+				lpMsg->lParam = (e.button.y << 16) | (e.button.x & 0xFFFF);
+				lpMsg->wParam = keystate_for_mouse(0);
+			} else if(button == SDL_BUTTON_RIGHT) {
+				lpMsg->message = WM_RBUTTONUP;
+				lpMsg->lParam = (e.button.y << 16) | (e.button.x & 0xFFFF);
+				lpMsg->wParam = keystate_for_mouse(0);
+			} else {
+				return false_avail();
+			}
+		}
+		break;
+	case SDL_TEXTINPUT:
+	case SDL_WINDOWEVENT:
+		return false_avail();
+	default:
+		DUMMY_PRINT("unknown SDL message 0x%X", e.type);
+		return false_avail();
+	}
+	return TRUE;
 }
 
 WINBOOL WINAPI TranslateMessage(CONST MSG *lpMsg)
 {
-	DUMMY_ONCE();
 	assert(lpMsg->hwnd == 0);
-
 	if (lpMsg->message == WM_KEYDOWN) {
 		int key = lpMsg->wParam;
 		unsigned mod = (DWORD)lpMsg->lParam >> 16;
