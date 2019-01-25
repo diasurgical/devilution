@@ -211,6 +211,8 @@ BOOL __stdcall UiMainMenuDialog(char *name, int *menu, void(__stdcall *fnSound)(
 					Sleep(250); // Wait for soudn to play
 					return TRUE;
 				case SDLK_RETURN:
+				case SDLK_KP_ENTER:
+				case SDLK_SPACE:
 					switch (SelectedItem) {
 					case MAINMENU_SINGLE_PLAYER:
 						fnSound("sfx\\items\\titlslct.wav");
@@ -349,6 +351,8 @@ BOOL __stdcall UiSelHeroSingDialog(BOOL(__stdcall *fninfo)(BOOL(__stdcall *fninf
 					effects_play_sound("sfx\\items\\titlemov.wav");
 					break;
 				case SDLK_RETURN:
+				case SDLK_KP_ENTER:
+				case SDLK_SPACE:
 					switch (submenu) {
 					case SINGLEPLAYER_LOAD:
 						if (SelectedItem == SelectedItemMax) {
