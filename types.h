@@ -7,14 +7,10 @@
 
 #ifdef MINIWIN
 #include "miniwin.h"
-#include <SDL2/SDL.h>
-#include <SDL_mixer.h>
-#endif
-
-#ifdef ANDROID
-#include "miniwin.h"
-#include <SDL.h>
-#include <SDL_mixer.h>
+#include "miniwin_sdl.h"
+#include "stubs.h"
+#include "sdlrender.h"
+#include "sound.h"
 #endif
 
 #ifdef __WIN32__

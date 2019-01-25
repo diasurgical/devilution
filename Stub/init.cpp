@@ -1,8 +1,4 @@
-#include <dirent.h>
-#include <string>
-
 #include "../types.h"
-#include "stubs.h"
 
 #ifndef NO_GLOBALS
 void *diabdat_mpq;

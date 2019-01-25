@@ -1,5 +1,4 @@
 #include "../types.h"
-#include "stubs.h"
 
 #ifndef NO_GLOBALS
 BOOL loop_movie;

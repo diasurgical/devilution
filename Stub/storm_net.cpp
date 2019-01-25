@@ -2,11 +2,7 @@
  *
  * A minimal implementation of the Storm network stack necessary for local play.
  */
-#include <deque>
-#include <string>
-
 #include "../types.h"
-#include "stubs.h"
 
 struct StubMessage {
 	int playerid;

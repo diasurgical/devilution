@@ -1,10 +1,4 @@
-#include <fcntl.h>
-#include <sys/stat.h>
-#include <unistd.h>
-
-#include "miniwin.h"
-
-#include "stubs.h"
+#include "../types.h"
 
 DWORD last_error;
 

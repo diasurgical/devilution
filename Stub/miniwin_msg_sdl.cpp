@@ -2,13 +2,7 @@
  * *
  * Windows message handling and keyboard event conversion for SDL.
  */
-#include <deque>
-
-#include "miniwin_sdl.h"
-
 #include "../types.h"
-#include "stubs.h"
-
 
 PlayerStruct *PlayerS;
 

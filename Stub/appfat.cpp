@@ -1,7 +1,4 @@
-#include <stdarg.h>
-
 #include "../types.h"
-#include "stubs.h"
 
 char empty_string = 0;
 

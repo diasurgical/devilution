@@ -1,8 +1,4 @@
-#include <vector>
-
 #include "../types.h"
-#include "sdlrender.h"
-#include "stubs.h"
 
 char chr_name_str[16];
 char hero_names[MAX_CHARACTERS][PLR_NAME_LEN];

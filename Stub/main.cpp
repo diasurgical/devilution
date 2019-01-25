@@ -1,7 +1,4 @@
-#include <string>
-
 #include "../types.h"
-#include "stubs.h"
 
 static std::string build_cmdline(int argc, char **argv)
 {

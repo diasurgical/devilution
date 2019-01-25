@@ -111,5 +111,5 @@ void RenderDefaultStats(int HeroClass);
 void DrawPreGameOptions(int HeroClass, int ShowClasses);
 void DrawPreGameDifficultySelection(int HeroClass, int ShowClasses);
 int GetCenterOffset(int w, int bw = 0);
-void DrawPCXString(int x, int y, int w, int h, char *str, BYTE *font, void *pBuff);
+void DrawPCXString(int x, int y, int w, int h, BYTE *str, BYTE *font, void *pBuff);
 void DrawArtWithMask(int SX, int SY, int SW, int SH, int nFrame, BYTE bMask, void *pBuffer);

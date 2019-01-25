@@ -1,5 +1,4 @@
 #include "../types.h"
-#include "stubs.h"
 
 DWORD nLastError = 0;
 

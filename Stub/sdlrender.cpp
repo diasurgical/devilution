@@ -1,6 +1,4 @@
 #include "../types.h"
-#include "miniwin_sdl.h"
-#include "stubs.h"
 
 int SCREEN_WIDTH = 640;
 int SCREEN_HEIGHT = 480;

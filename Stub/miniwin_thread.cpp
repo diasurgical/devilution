@@ -1,7 +1,4 @@
-#include "miniwin_sdl.h"
-
 #include "../types.h"
-#include "stubs.h"
 
 struct event_emul {
 	SDL_mutex *mutex;
@@ -23,20 +20,22 @@ uintptr_t __cdecl _beginthreadex(void *_Security, unsigned _StackSize, unsigned(
 	return (uintptr_t)ret;
 }
 
-HANDLE WINAPI GetCurrentThread(VOID)
-{
-	DUMMY_ONCE();
-	return NULL;
-}
-
 DWORD WINAPI GetCurrentThreadId(VOID)
 {
+	// DWORD is compatible with SDL_threadID
 	return SDL_GetThreadID(NULL);
+}
+
+HANDLE WINAPI GetCurrentThread(VOID)
+{
+	// Only used for SetThreadPriority, which is unimplemented
+	return NULL;
 }
 
 WINBOOL WINAPI SetThreadPriority(HANDLE hThread, int nPriority)
 {
-	DUMMY_ONCE();
+	// SDL cannot set the priority of the non-current thread
+	// (and e.g. unprivileged processes on Linux cannot increase it)
 	return TRUE;
 }
 
@@ -64,14 +63,16 @@ VOID WINAPI DeleteCriticalSection(LPCRITICAL_SECTION lpCriticalSection)
 HANDLE WINAPI CreateEventA(LPSECURITY_ATTRIBUTES lpEventAttributes, WINBOOL bManualReset, WINBOOL bInitialState,
                            LPCSTR lpName)
 {
-	if(lpEventAttributes != NULL)
-		UNIMPLEMENTED();
-	if(bManualReset != TRUE) {
-		// This is used by diablo.cc to check whether
-		// the game is already running.
-		// We allow multiple instances anyway.
+	if(lpName != NULL && !strcmp(lpName, "DiabloEvent")) {
+		// This is used by diablo.cpp to check whether
+		// the game is already running
+		// (we do not want to replicate this behaviour anyway)
 		return NULL;
 	}
+	if(lpEventAttributes != NULL)
+		UNIMPLEMENTED();
+	if(bManualReset != TRUE)
+		UNIMPLEMENTED();
 	if(bInitialState != FALSE)
 		UNIMPLEMENTED();
 	if(lpName != NULL)
@@ -112,6 +113,6 @@ DWORD WINAPI WaitForSingleObject(HANDLE hHandle, DWORD dwMilliseconds)
 		ret = SDL_CondWaitTimeout(e->cond, e->mutex, dwMilliseconds);
 	SDL_CondSignal(e->cond);
 	SDL_UnlockMutex(e->mutex);
-	return ret; // return value not meaningful
+	return ret; // return value different from WinAPI
 }
 

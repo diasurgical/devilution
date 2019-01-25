@@ -1,13 +1,26 @@
 #pragma once
 
 #include <assert.h>
+#include <stdarg.h>
+#include <dirent.h>
 #include <vector>
+#include <deque>
+#include <string>
+#include <functional>
+#include <iostream>
+#include <utility>
 
 #include <SDL2/SDL.h>
 //#include <SDL_image.h>
 #include <SDL_mixer.h>
 #include <SDL_thread.h>
 //#include "SDL_FontCache.h"
+
+typedef SDL_mutex *CRITICAL_SECTION, **LPCRITICAL_SECTION;
+VOID WINAPI InitializeCriticalSection(LPCRITICAL_SECTION lpCriticalSection);
+VOID WINAPI EnterCriticalSection(LPCRITICAL_SECTION lpCriticalSection);
+VOID WINAPI LeaveCriticalSection(LPCRITICAL_SECTION lpCriticalSection);
+VOID WINAPI DeleteCriticalSection(LPCRITICAL_SECTION lpCriticalSection);
 
 #define SDL_CHECK(e) assert(e == 0)
 

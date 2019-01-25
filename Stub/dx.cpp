@@ -1,10 +1,5 @@
-#include "dx_stub.h"
-#include "miniwin_sdl.h"
-
 #include "../types.h"
-#include "stubs.h"
 
-#ifndef NO_GLOBALS
 Screen *gpBuffer;
 
 IDirectDraw *lpDDInterface;
@@ -14,7 +9,6 @@ IDirectDrawPalette *lpDDPalette;
 
 char gbBackBuf; // unread
 char gbEmulate; // unread
-#endif
 
 SDL_Window *window;
 SDL_Renderer *renderer;

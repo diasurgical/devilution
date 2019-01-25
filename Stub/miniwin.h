@@ -1,9 +1,10 @@
 #pragma once
 
-#include <vector>
-
 #include <ctype.h>
 #include <math.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <unistd.h>
 #include <stdarg.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -12,8 +13,7 @@
 #include <time.h>
 // For _rotr()
 #include <x86intrin.h>
-
-#include <SDL_mutex.h>
+#include <vector>
 
 // Constants
 #define CONST const
@@ -286,7 +286,7 @@ typedef struct _LIST_ENTRY {
 	struct _LIST_ENTRY *Blink;
 } LIST_ENTRY, *PLIST_ENTRY;
 
-#if 0
+#if 0 //replaced
 typedef struct _RTL_CRITICAL_SECTION_DEBUG {
 	WORD Type;
 	WORD CreatorBackTraceIndex;
@@ -307,14 +307,12 @@ typedef struct {
 	HANDLE LockSemaphore;
 	ULONG_PTR SpinCount;
 } CRITICAL_SECTION, *LPCRITICAL_SECTION;
-#else
-typedef SDL_mutex *CRITICAL_SECTION, **LPCRITICAL_SECTION;
-#endif
 
 VOID WINAPI InitializeCriticalSection(LPCRITICAL_SECTION lpCriticalSection);
 VOID WINAPI EnterCriticalSection(LPCRITICAL_SECTION lpCriticalSection);
 VOID WINAPI LeaveCriticalSection(LPCRITICAL_SECTION lpCriticalSection);
 VOID WINAPI DeleteCriticalSection(LPCRITICAL_SECTION lpCriticalSection);
+#endif
 
 DWORD WINAPI GetTickCount(VOID);
 
@@ -363,6 +361,8 @@ HWND WINAPI FindWindowA(LPCSTR lpClassName, LPCSTR lpWindowName);
 #define THREAD_PRIORITY_HIGHEST THREAD_BASE_PRIORITY_MAX
 #define THREAD_PRIORITY_ABOVE_NORMAL (THREAD_PRIORITY_HIGHEST - 1)
 
+uintptr_t __cdecl _beginthreadex(void *_Security, unsigned _StackSize, unsigned(__stdcall *_StartAddress)(void *),
+                                 void *_ArgList, unsigned _InitFlag, unsigned *_ThrdAddr);
 HANDLE WINAPI GetCurrentThread(VOID);
 DWORD WINAPI GetCurrentThreadId(VOID);
 WINBOOL WINAPI SetThreadPriority(HANDLE hThread, int nPriority);
@@ -379,8 +379,6 @@ WINBOOL WINAPI TextOutA(HDC hdc, int x, int y, LPCSTR lpString, int c);
 int WINAPI GetDeviceCaps(HDC hdc, int index);
 UINT WINAPI GetSystemPaletteEntries(HDC hdc, UINT iStart, UINT cEntries, LPPALETTEENTRY pPalEntries);
 
-uintptr_t __cdecl _beginthreadex(void *_Security, unsigned _StackSize, unsigned(__stdcall *_StartAddress)(void *),
-                                 void *_ArgList, unsigned _InitFlag, unsigned *_ThrdAddr);
 int WINAPIV wsprintfA(LPSTR, LPCSTR, ...);
 #define wsprintf wsprintfA
 int __cdecl _strcmpi(const char *_Str1, const char *_Str2);

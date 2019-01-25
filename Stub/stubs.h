@@ -1,9 +1,7 @@
 #pragma once
 
-#include "miniwin_sdl.h"
-
-
 #include <assert.h>
+#include <stdlib.h>
 #include <stdio.h>
 
 #define eprintf(...) fprintf(stderr, __VA_ARGS__)
