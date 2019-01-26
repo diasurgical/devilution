@@ -3,11 +3,11 @@
 #define __NTHREAD_H__
 
 extern char byte_679704; // weak
-extern int gdwMsgLenTbl[4];
+extern int gdwMsgLenTbl[MAX_PLRS];
 extern int gdwDeltaBytesSec;    // weak
 extern char nthread_should_run; // weak
 extern DWORD gdwTurnsInTransit; // weak
-extern int glpMsgTbl[4];
+extern int glpMsgTbl[MAX_PLRS];
 extern unsigned int glpNThreadId;
 extern int turn_upper_bit;    // weak
 extern char byte_679758;      // weak
