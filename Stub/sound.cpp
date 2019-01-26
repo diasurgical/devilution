@@ -199,7 +199,7 @@ TSnd *__fastcall sound_file_load(char *path)
 
 void __fastcall sound_file_cleanup(TSnd *sound_file)
 {
-	UNIMPLEMENTED();
+	DUMMY();
 }
 
 int __fastcall sound_get_or_set_sound_volume(int volume)
