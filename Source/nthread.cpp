@@ -3,12 +3,12 @@
 #include "../types.h"
 
 char byte_679704; // weak
-int gdwMsgLenTbl[4];
+int gdwMsgLenTbl[MAX_PLRS];
 static CRITICAL_SECTION sgMemCrit;
 int gdwDeltaBytesSec;    // weak
 char nthread_should_run; // weak
 DWORD gdwTurnsInTransit; // weak
-int glpMsgTbl[4];
+int glpMsgTbl[MAX_PLRS];
 unsigned int glpNThreadId;
 char sgbSyncCountdown;   // weak
 int turn_upper_bit;      // weak
