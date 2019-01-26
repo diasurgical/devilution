@@ -1404,7 +1404,7 @@ void __fastcall CheckMissileCol(int i, int mindam, int maxdam, BOOLEAN shift, in
 			    maxdam,
 			    missile[v8]._mitype,
 			    shift,
-			    _LOBYTE(missile[v8]._miAnimType) == 4);
+			    _LOBYTE(missile[v8]._miAnimType) == MFILE_FIREWAL);
 		LABEL_35:
 			if (v17) {
 				if (!(_BYTE)nodel)
@@ -2273,7 +2273,7 @@ void __fastcall AddWeapexp(int mi, int sx, int sy, int dx, int dy, int midir, in
 	missile[v9]._miVar2 = dx;
 	missile[v9]._mimfnum = 0;
 	if (dx == 1)
-		SetMissAnim(mi, 5);
+		SetMissAnim(mi, MFILE_MAGBLOS);
 	else
 		SetMissAnim(mi, MFILE_MINILTNG);
 	missile[v9]._mirange = missile[v9]._miAnimLen - 1;
@@ -3962,7 +3962,7 @@ void __fastcall MI_LArrow(int i)
 	v2 = missile[i]._miAnimType;
 	--missile[v1]._mirange;
 	v3 = missile[i]._misource;
-	if (v2 == 26 || v2 == 5) {
+	if (v2 == MFILE_MINILTNG || v2 == MFILE_MAGBLOS) {
 		ChangeLight(missile[v1]._mlid, missile[v1]._mix, missile[v1]._miy, missile[v1]._miAnimFrame + 5);
 		v18 = missiledata[missile[v1]._mitype].mResist;
 		v32 = missiledata[missile[v1]._mitype].mResist;
@@ -4038,7 +4038,7 @@ void __fastcall MI_LArrow(int i)
 			missile[v1]._mityoff -= v14;
 			GetMissilePos(ia);
 			if (missile[v1]._mitype == MIS_LARROW)
-				SetMissAnim(ia, 26);
+				SetMissAnim(ia, MFILE_MINILTNG);
 			else
 				SetMissAnim(ia, MFILE_MAGBLOS);
 			missile[v1]._mirange = missile[v1]._miAnimLen - 1;
@@ -4438,7 +4438,7 @@ void __fastcall MI_Fireball(int i)
 	}
 	fx = v7;
 	fy = v8;
-	if (_LOBYTE(missile[v1]._miAnimType) == 19) {
+	if (_LOBYTE(missile[v1]._miAnimType) == MFILE_KRULL) {
 		if (!v4) {
 			v10 = missile[v1]._mlid;
 			missile[v1]._miDelFlag = 1;
@@ -5372,7 +5372,7 @@ void __fastcall MI_Stone(int i)
 	v2 = missile[i]._miVar2;
 	--missile[v1]._mirange;
 	v3 = v2;
-	if (!monster[v3]._mhitpoints && _LOBYTE(missile[v1]._miAnimType) != 18) {
+	if (!monster[v3]._mhitpoints && _LOBYTE(missile[v1]._miAnimType) != MFILE_MAGBALL) {
 		missile[v1]._mimfnum = 0;
 		missile[v1]._miDrawFlag = TRUE;
 		SetMissAnim(i, MFILE_SHATTER1);
@@ -5388,7 +5388,7 @@ void __fastcall MI_Stone(int i)
 			else
 				monster[v3]._mmode = missile[v1]._miVar1;
 		}
-		if (_LOBYTE(missile[v1]._miAnimType) == 18)
+		if (_LOBYTE(missile[v1]._miAnimType) == MFILE_MAGBALL)
 			PutMissile(ia);
 	} else {
 		missile[v1]._miDelFlag = 1;
@@ -5946,7 +5946,7 @@ void __fastcall MI_Cbolt(int i)
 	ia = i;
 	v1 = i;
 	--missile[v1]._mirange;
-	v2 = _LOBYTE(missile[i]._miAnimType) == 3;
+	v2 = _LOBYTE(missile[i]._miAnimType) == MFILE_LGHNING;
 	bpath[0] = -1;
 	bpath[1] = 0;
 	bpath[2] = 1;
@@ -6019,7 +6019,7 @@ void __fastcall MI_Hbolt(int i)
 	v1 = i;
 	v2 = i;
 	--missile[v2]._mirange;
-	if (_LOBYTE(missile[i]._miAnimType) == 28) {
+	if (_LOBYTE(missile[i]._miAnimType) == MFILE_HOLYEXPL) {
 		ChangeLight(missile[v2]._mlid, missile[v2]._mix, missile[v2]._miy, missile[v2]._miAnimFrame + 7);
 		if (!missile[v2]._mirange) {
 			v7 = missile[v2]._mlid;
@@ -6086,7 +6086,7 @@ void __fastcall MI_Element(int i)
 	--missile[v1]._mirange;
 	v2 = missile[i]._midam;
 	ty = missile[i]._misource;
-	if (_LOBYTE(missile[i]._miAnimType) == 19) {
+	if (_LOBYTE(missile[i]._miAnimType) == MFILE_KRULL) {
 		v3 = missile[i]._misource;
 		v4 = missile[v1]._mix;
 		y = missile[v1]._miy;
