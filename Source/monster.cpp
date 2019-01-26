@@ -6640,7 +6640,7 @@ BOOL __fastcall PosOkMonst(int i, int x, int y)
 	if (ret && dMissile[x][y] && i >= 0) {
 		mi = dMissile[x][y];
 		if (mi > 0) {
-			if (missile[mi]._mitype == MIS_FIREWALL) {
+			if (missile[mi - 1]._mitype == MIS_FIREWALL) { // BUGFIX: 'mi' should be 'mi - 1' (corrected)
 				fire = TRUE;
 			} else {
 				for (j = 0; j < nummissiles; j++) {
@@ -6672,7 +6672,7 @@ BOOL __fastcall PosOkMonst2(int i, int x, int y)
 	if (ret && dMissile[x][y] && i >= 0) { //37
 		mi = dMissile[x][y];
 		if (mi > 0) {
-			if (missile[mi]._mitype == MIS_FIREWALL) {
+			if (missile[mi - 1]._mitype == MIS_FIREWALL) { // BUGFIX: 'mi' should be 'mi - 1' (corrected)
 				fire = TRUE;
 			} else {
 				for (j = 0; j < nummissiles; j++) {
