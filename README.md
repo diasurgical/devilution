@@ -52,26 +52,20 @@ Make sure to enable these when installing (or modify your installation):
 - Requires "Visual C++ MFC for x86 and x64" (For afxres.h)
 - Requires "Windows Universal CRT SDK" (For ctype.h)
 
-### Building XDiablo (For Linux)
+### Building deviltuionX (native Linux build)
+Note: The 64bit builds are currently not in a playable state, as such you might want to force a 32bit build.
+
 Install the dependencies on your machine:
 ```
-sudo dpkg --add-architecture i386
-sudo apt-get install cmake gcovr g++-multilib libc6-dev-i386 libsdl2-dev:i386 libsdl2-mixer-dev:i386 nasm pkg-config
+sudo apt-get install cmake libsdl2-dev libsdl2-mixer-dev
 ```
-
-Add `-lSDL2_mixer` to the `SDL2_LIBRARIES` variables in SDL's CMAKE file.
-Normally found under: `/usr/lib/i386-linux-gnu/cmake/SDL2/sdl2-config.cmake`
-
-One of the last lines will have smilar to:
-```set(SDL2_LIBRARIES "-L${SDL2_LIBDIR} -lSDL2 ")```
-Add `-lSDL2_mixer` to the end of it's value:
-```set(SDL2_LIBRARIES "-L${SDL2_LIBDIR} -lSDL2 -lSDL2_mixer ")```
 
 Now run the following commands:
 ```
+mkdir build
 cd build
 cmake ..
-make -j$(nproc) devilution
+make -j$(nproc)
 ```
 
 *To run the game:*
@@ -81,6 +75,19 @@ Copy the "diablodat.mpq" from your Diablo CD to the Diablo directory and make su
 Run `./devilution`
 
 Please keep in mind that this is still being worked on and is missing parts of UI and SoundEffects are not properly playing now.
+
+### Building deviltuionX 32bit on 64bit platforms
+```
+sudo apt-get install cmake g++-multilib libsdl2-dev:i386 libsdl2-mixer-dev:i386
+```
+
+Now run the following commands:
+```
+mkdir build32
+cd build32
+FORCE32=1 cmake ..
+make -j$(nproc)
+```
 
 ### Building with MinGW
 - Execute `make MINGW32=1` for **MinGW32** or `make` for **MinGW64**. Optionally add `debug` to build with debug features.
