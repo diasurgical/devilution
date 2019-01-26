@@ -49,7 +49,7 @@ int __fastcall InitNewSeed(int newseed);
 void __cdecl SetupLocalCoords();
 int __fastcall multi_init_single(_SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info, _SNETUIDATA *ui_info);
 int __fastcall multi_init_multi(_SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info, _SNETUIDATA *ui_info, int *a4);
-int __fastcall multi_upgrade(int *a1);
+BOOL __fastcall multi_upgrade(int *pfExitProgram);
 void __fastcall multi_player_joins(int pnum, TCmdPlrInfoHdr *cmd, int a3);
 
 /* rdata */

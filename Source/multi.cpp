@@ -931,23 +931,25 @@ int __fastcall multi_init_multi(_SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *
 // 678640: using guessed type char byte_678640;
 // 679660: using guessed type char gbMaxPlayers;
 
-int __fastcall multi_upgrade(int *a1)
+BOOL __fastcall multi_upgrade(int *pfExitProgram)
 {
-	int *v1;    // esi
-	int result; // eax
-	int status; // [esp+4h] [ebp-4h]
+	BOOL result;
+	int status;
 
-	v1 = a1;
 	SNetPerformUpgrade((LPDWORD)&status);
-	result = 1;
+	result = TRUE;
 	if (status && status != 1) {
-		if (status == 2) {
-			*v1 = 1;
-		} else if (status == -1) {
-			DrawDlg("Network upgrade failed");
+		if (status != 2) {
+			if (status == -1) {
+				DrawDlg("Network upgrade failed");
+			}
+		} else {
+			*pfExitProgram = 1;
 		}
-		result = 0;
+
+		result = FALSE;
 	}
+
 	return result;
 }
 
