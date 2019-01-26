@@ -22,17 +22,7 @@
 
 #define NO_ERROR 0
 
-// Calling conventions
-// (original calling conventions confuse address-sanitizer)
-#if 0
-#define __cdecl __attribute__((cdecl))
-#define __fastcall __attribute__((fastcall))
-#define __stdcall __attribute__((stdcall))
-#define CALLBACK __stdcall
-#define APIENTRY __stdcall
-#define WINAPI __stdcall
-#define WINAPIV __cdecl
-#else
+// Remove calling conventions (original calling conventions confuse address-sanitizer and aren't supported by all compilers)
 #define __cdecl
 #define __fastcall
 #define __stdcall
@@ -40,7 +30,6 @@
 #define APIENTRY
 #define WINAPI
 #define WINAPIV
-#endif
 
 #define ALIGNED(n) __attribute__((aligned(n)))
 
@@ -285,34 +274,6 @@ typedef struct _LIST_ENTRY {
 	struct _LIST_ENTRY *Flink;
 	struct _LIST_ENTRY *Blink;
 } LIST_ENTRY, *PLIST_ENTRY;
-
-#if 0 //replaced
-typedef struct _RTL_CRITICAL_SECTION_DEBUG {
-	WORD Type;
-	WORD CreatorBackTraceIndex;
-	struct _RTL_CRITICAL_SECTION *CriticalSection;
-	LIST_ENTRY ProcessLocksList;
-	DWORD EntryCount;
-	DWORD ContentionCount;
-	DWORD Flags;
-	WORD CreatorBackTraceIndexHigh;
-	WORD SpareWORD;
-} RTL_CRITICAL_SECTION_DEBUG, *PRTL_CRITICAL_SECTION_DEBUG;
-
-typedef struct {
-	PRTL_CRITICAL_SECTION_DEBUG DebugInfo;
-	LONG LockCount;
-	LONG RecursionCount;
-	HANDLE OwningThread;
-	HANDLE LockSemaphore;
-	ULONG_PTR SpinCount;
-} CRITICAL_SECTION, *LPCRITICAL_SECTION;
-
-VOID WINAPI InitializeCriticalSection(LPCRITICAL_SECTION lpCriticalSection);
-VOID WINAPI EnterCriticalSection(LPCRITICAL_SECTION lpCriticalSection);
-VOID WINAPI LeaveCriticalSection(LPCRITICAL_SECTION lpCriticalSection);
-VOID WINAPI DeleteCriticalSection(LPCRITICAL_SECTION lpCriticalSection);
-#endif
 
 DWORD WINAPI GetTickCount(VOID);
 
