@@ -226,7 +226,7 @@ char byte_1002973C;       // idb
 char byte_100297BC;       // idb
 int dword_1002983C;       // weak
 int dword_10029840;       // weak
-int dword_10029844;       // weak
+int gnDlinkPlayerid;      // weak
 void *dword_10029848;     // idb
 int dword_1002984C;       // weak
 int disclaim_cpp_float;   // weak
@@ -264,7 +264,7 @@ int dword_1002A130;          // weak
 int dword_1002A134;          // weak
 int dword_1002A138;          // weak
 int dword_1002A13C;          // weak
-int dword_1002A140;          // weak
+int gnModemPlayerid;         // weak
 int dword_1002A144;          // weak
 int dword_1002A148;          // weak
 void *dword_1002A14C;        // idb
@@ -339,7 +339,7 @@ BYTE *selhero_buffer;
 int dword_1002A49C;    // weak
 void *dword_1002A4A0;  // idb
 int dword_1002A4A4;    // weak
-int dword_1002A4A8;    // weak
+int gnIpxPlayerid;     // weak
 int dword_1002A4AC;    // weak
 int dword_1002A4B0;    // weak
 int dword_1002A4B4;    // weak

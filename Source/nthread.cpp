@@ -3,12 +3,12 @@
 #include "../types.h"
 
 char byte_679704; // weak
-int gdwMsgLenTbl[4];
+int gdwMsgLenTbl[MAX_PLRS];
 static CRITICAL_SECTION sgMemCrit;
 int gdwDeltaBytesSec;    // weak
 char nthread_should_run; // weak
 DWORD gdwTurnsInTransit; // weak
-int glpMsgTbl[4];
+int glpMsgTbl[MAX_PLRS];
 unsigned int glpNThreadId;
 char sgbSyncCountdown;   // weak
 int turn_upper_bit;      // weak
@@ -147,7 +147,7 @@ void __cdecl nthread_set_turn_upper_bit()
 }
 // 679754: using guessed type int turn_upper_bit;
 
-void __fastcall nthread_start(BOOLEAN set_turn_upper_bit)
+void __fastcall nthread_start(BOOL set_turn_upper_bit)
 {
 	char *err;                   // eax
 	unsigned int largestMsgSize; // esi

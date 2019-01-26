@@ -165,7 +165,7 @@ void __cdecl j_DiabloUI_cpp_init();
 void __cdecl DiabloUI_cpp_init();
 
 signed int DirLink_10005CFA();
-BOOL __fastcall DirLink_10005D05(int a1, int a2, int a3, _DWORD *a4, int a5, int a6);
+BOOL __fastcall DirLink_10005D05(int a1, int a2, int a3, _DWORD *a4, int a5, int playerid);
 int __stdcall DirLink_10005D63(HWND hWnd, UINT Msg, WPARAM wParam, unsigned int lParam);
 int __fastcall DirLink_10005EB2(HWND hDlg, int a2);
 int UNKCALL DirLink_10005F1F(HWND hDlg); // idb
@@ -301,7 +301,7 @@ signed int Modem_10008648();
 int Modem_10008653();
 int Modem_10008659();
 int UNKCALL Modem_1000865F(char *); // idb
-BOOL __fastcall Modem_10008680(int a1, int a2, int a3, _DWORD *a4, int a5, int a6);
+BOOL __fastcall Modem_10008680(int a1, int a2, int a3, _DWORD *a4, int a5, int playerid);
 int __stdcall Modem_100086DE(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam); // idb
 void **UNKCALL Modem_1000879E(HWND hDlg);
 BOOL UNKCALL Modem_100087DB(HWND hWnd);
@@ -449,7 +449,7 @@ BOOL __stdcall UiSelHeroSingDialog(BOOL(__stdcall *fninfo)(BOOL(__stdcall *fninf
 
 void *SelIPX_1000C610();
 signed int SelIPX_1000C629();
-BOOL __fastcall SelIPX_1000C634(int a1, int a2, int a3, _DWORD *a4, int a5, int a6);
+BOOL __fastcall SelIPX_1000C634(int a1, int a2, int a3, _DWORD *a4, int a5, int playerid);
 int __stdcall SelIPX_1000C692(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam); // idb
 LONG __fastcall SelIPX_1000C818(HWND hDlg, int nIDDlgItem);
 HWND UNKCALL SelIPX_1000C982(HWND hDlg);

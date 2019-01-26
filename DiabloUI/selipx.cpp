@@ -17,7 +17,7 @@ signed int SelIPX_1000C629() { return 0; }
 // 1002A4A4: using guessed type int dword_1002A4A4;
 
 // ref: 0x1000C634
-BOOL __fastcall SelIPX_1000C634(int a1, int a2, int a3, _DWORD *a4, int a5, int a6) { return 0; }
+BOOL __fastcall SelIPX_1000C634(int a1, int a2, int a3, _DWORD *a4, int a5, int playerid) { return 0; }
 /* {
 	int v6; // esi
 
@@ -25,7 +25,7 @@ BOOL __fastcall SelIPX_1000C634(int a1, int a2, int a3, _DWORD *a4, int a5, int 
 	dword_1002A4AC = a2;
 	dword_1002A4BC = a5;
 	dword_1002A4A0 = a4;
-	dword_1002A4A8 = a6;
+	gnIpxPlayerid = playerid;
 	artfont_10001159();
 	v6 = SDlgDialogBoxParam(hInstance, "SELIPXGAME_DIALOG", a4[2], SelIPX_1000C692, 0);
 	artfont_100010C8();
@@ -33,7 +33,7 @@ BOOL __fastcall SelIPX_1000C634(int a1, int a2, int a3, _DWORD *a4, int a5, int 
 } */
 // 10010370: using guessed type int __stdcall SDlgDialogBoxParam(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
 // 1002A49C: using guessed type int dword_1002A49C;
-// 1002A4A8: using guessed type int dword_1002A4A8;
+// 1002A4A8: using guessed type int gnIpxPlayerid;
 // 1002A4AC: using guessed type int dword_1002A4AC;
 // 1002A4BC: using guessed type int dword_1002A4BC;
 
@@ -1063,7 +1063,7 @@ HWND USERCALL SelIPX_1000D3C5(HWND hDlg, int a2) { return 0; }
 						 dword_1002A49C,
 						 (int)&v11,
 						 dword_1002A4BC,
-						 dword_1002A4A8,
+						 gnIpxPlayerid,
 						 0,
 						 (int)&v10) )
 				{
@@ -1081,7 +1081,7 @@ HWND USERCALL SelIPX_1000D3C5(HWND hDlg, int a2) { return 0; }
 } */
 // 1000D3C5: could not find valid save-restore pair for ebp
 // 1002A49C: using guessed type int dword_1002A49C;
-// 1002A4A8: using guessed type int dword_1002A4A8;
+// 1002A4A8: using guessed type int gnIpxPlayerid;
 // 1002A4AC: using guessed type int dword_1002A4AC;
 // 1002A4BC: using guessed type int dword_1002A4BC;
 
@@ -1168,7 +1168,7 @@ int __fastcall SelIPX_1000D5B0(int a1, int a2) { return 0; }
 	Connect_10004028((int)&v9, 128, (int)&v7, 128);
 	if ( UiAuthCallback(2, (int)&v9, &v7, 0, (char *)(v2 + 140), &v6, 256) )
 	{
-		if ( SNetJoinGame(*(_DWORD *)(v2 + 4), v2 + 12, 0, &v9, &v7, dword_1002A4A8) )
+		if ( SNetJoinGame(*(_DWORD *)(v2 + 4), v2 + 12, 0, &v9, &v7, gnIpxPlayerid) )
 			return SelIPX_1000D3A0(v10, 1);
 		if ( SErrGetLastError() == -2062548871 )
 			LoadStringA(hInstance, 0x32u, &Buffer, 127);
@@ -1185,7 +1185,7 @@ int __fastcall SelIPX_1000D5B0(int a1, int a2) { return 0; }
 } */
 // 10010406: using guessed type _DWORD __stdcall SErrGetLastError();
 // 10010430: using guessed type int __stdcall SNetJoinGame(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
-// 1002A4A8: using guessed type int dword_1002A4A8;
+// 1002A4A8: using guessed type int gnIpxPlayerid;
 
 // ref: 0x1000D696
 HWND __fastcall SelIPX_1000D696(HWND hDlg, int a2, int a3) { return 0; }
