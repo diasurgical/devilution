@@ -1516,42 +1516,23 @@ LABEL_39:
 
 void __fastcall SetMissAnim(int mi, int animtype)
 {
-	int v2;             // ecx
-	int v3;             // esi
-	int v4;             // edi
-	int v5;             // eax
-	int v6;             // edx
-	int v7;             // esi
-	int v8;             // eax
-	int v9;             // eax
-	unsigned char *v10; // edi
-	int v11;            // eax
+	int dir = missile[mi]._mimfnum;
 
-	v2 = mi;
-	v3 = missile[v2]._mimfnum;
-	_LOBYTE(missile[v2]._miAnimType) = animtype;
-	v4 = misfiledata[animtype].mFlags;
-	v5 = v3 + 236 * animtype;
-	v6 = v3 + 59 * animtype;
-	v7 = misfiledata[0].mAnimDelay[v5];
-	v8 = misfiledata[0].mAnimLen[v5];
-	missile[v2]._miAnimCnt = 0;
-	missile[v2]._miAnimLen = v8;
-	v9 = misfiledata[0].mAnimWidth[v6];
-	missile[v2]._miAnimFlags = v4;
-	v10 = misfiledata[0].mAnimData[v6];
-	missile[v2]._miAnimWidth = v9;
-	v11 = misfiledata[0].mAnimWidth2[v6];
-	missile[v2]._miAnimData = v10;
-	missile[v2]._miAnimDelay = v7;
-	missile[v2]._miAnimWidth2 = v11;
-	missile[v2]._miAnimFrame = 1;
+	missile[mi]._miAnimType = animtype;
+	missile[mi]._miAnimFlags = misfiledata[animtype].mFlags;
+	missile[mi]._miAnimData = misfiledata[animtype].mAnimData[dir];
+	missile[mi]._miAnimDelay = misfiledata[animtype].mAnimDelay[dir];
+	missile[mi]._miAnimLen = misfiledata[animtype].mAnimLen[dir];
+	missile[mi]._miAnimWidth = misfiledata[animtype].mAnimWidth[dir];
+	missile[mi]._miAnimWidth2 = misfiledata[animtype].mAnimWidth2[dir];
+	missile[mi]._miAnimCnt = 0;
+	missile[mi]._miAnimFrame = 1;
 }
 
 void __fastcall SetMissDir(int mi, int dir)
 {
 	missile[mi]._mimfnum = dir;
-	SetMissAnim(mi, _LOBYTE(missile[mi]._miAnimType));
+	SetMissAnim(mi, missile[mi]._miAnimType);
 }
 
 // TODO: replace `int mi` parameter with `missile_graphic_id mi`
