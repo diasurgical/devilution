@@ -4210,7 +4210,7 @@ void __cdecl SortSmith()
 				}
 			}
 		}
-		--j;
+		j--;
 	}
 }
 
@@ -4404,7 +4404,7 @@ void __cdecl SortWitch()
 				}
 			}
 		}
-		--j;
+		j--;
 	}
 }
 
@@ -4617,7 +4617,7 @@ void __cdecl SortHealer()
 				}
 			}
 		}
-		--j;
+		j--;
 	}
 }
 
