@@ -147,7 +147,7 @@ void __cdecl nthread_set_turn_upper_bit()
 }
 // 679754: using guessed type int turn_upper_bit;
 
-void __fastcall nthread_start(BOOLEAN set_turn_upper_bit)
+void __fastcall nthread_start(BOOL set_turn_upper_bit)
 {
 	char *err;                   // eax
 	unsigned int largestMsgSize; // esi

@@ -27,7 +27,7 @@ int SelGame_1000B67E() { return 0; }
 // 1002A404: using guessed type int dword_1002A404;
 
 // ref: 0x1000B684
-int __stdcall UiSelectGame(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info, _SNETUIDATA *ui_info, _SNETVERSIONDATA *file_info, int *a6) { return 0; }
+int __stdcall UiSelectGame(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info, _SNETUIDATA *ui_info, _SNETVERSIONDATA *file_info, int *playerid) { return 0; }
 /* {
 	int v6; // eax
 	CHAR v8; // [esp+4h] [ebp-110h]
@@ -58,18 +58,18 @@ int __stdcall UiSelectGame(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYERDAT
 	v17 = &v12;
 	v18 = &v8;
 	if ( SelGame_1000B671() )
-		return SelIPX_1000C634(a1, a2, (int)&v16, (_DWORD *)a4, a5, a6);
+		return SelIPX_1000C634(a1, a2, (int)&v16, (_DWORD *)a4, a5, playerid);
 	v6 = SelGame_1000B67E();
 	switch ( v6 )
 	{
 		case 1230002254:
-			return SelIPX_1000C634(a1, a2, (int)&v16, (_DWORD *)a4, a5, a6);
+			return SelIPX_1000C634(a1, a2, (int)&v16, (_DWORD *)a4, a5, playerid);
 		case 1297040461:
-			return Modem_10008680(a1, a2, (int)&v16, (_DWORD *)a4, a5, a6);
+			return Modem_10008680(a1, a2, (int)&v16, (_DWORD *)a4, a5, playerid);
 		case 1396916812:
-			return DirLink_10005D05(a1, a2, (int)&v16, (_DWORD *)a4, a5, a6);
+			return DirLink_10005D05(a1, a2, (int)&v16, (_DWORD *)a4, a5, playerid);
 	}
-	return SNetSelectGame(a1, a2, &v16, a4, a5, a6);
+	return SNetSelectGame(a1, a2, &v16, a4, a5, playerid);
 } */
 // 10010490: using guessed type int __stdcall SNetSelectGame(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
 

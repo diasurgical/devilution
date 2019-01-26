@@ -22,7 +22,7 @@ void __fastcall nthread_terminate_game(const char *pszFcn);
 int __fastcall nthread_send_and_recv_turn(int cur_turn, int turn_delta);
 int __fastcall nthread_recv_turns(int *pfSendAsync);
 void __cdecl nthread_set_turn_upper_bit();
-void __fastcall nthread_start(BOOLEAN set_turn_upper_bit);
+void __fastcall nthread_start(BOOL set_turn_upper_bit);
 unsigned int __stdcall nthread_handler(void *a1);
 void __cdecl nthread_cleanup();
 void __fastcall nthread_ignore_mutex(BOOL bStart);
