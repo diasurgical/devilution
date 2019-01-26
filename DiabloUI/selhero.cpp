@@ -213,7 +213,14 @@ BOOL __fastcall UiValidPlayerName(char *name)
 }
 
 // ref: 0x1000BBB4
-BOOL __stdcall UiSelHeroMultDialog(BOOL(__stdcall *fninfo)(BOOL(__stdcall *fninfofunc)(_uiheroinfo *)), BOOL(__stdcall *fncreate)(_uiheroinfo *), BOOL(__stdcall *fnremove)(_uiheroinfo *), BOOL(__stdcall *fnstats)(unsigned int, _uidefaultstats *), int *dlgresult, int *a6, char *name)
+BOOL __stdcall UiSelHeroMultDialog(
+    BOOL(__stdcall *fninfo)(BOOL(__stdcall *fninfofunc)(_uiheroinfo *)),
+    BOOL(__stdcall *fncreate)(_uiheroinfo *),
+    BOOL(__stdcall *fnremove)(_uiheroinfo *),
+    BOOL(__stdcall *fnstats)(unsigned int, _uidefaultstats *),
+    int *dlgresult,
+    int *hero_is_created,
+    char *name)
 {
 	int v7; // eax
 	int v8; // eax
@@ -232,8 +239,8 @@ BOOL __stdcall UiSelHeroMultDialog(BOOL(__stdcall *fninfo)(BOOL(__stdcall *fninf
 		*dlgresult = v8;
 	if (name)
 		strcpy(name, selhero_heronamestr);
-	if (a6)
-		*a6 = selhero_is_created;
+	if (hero_is_created)
+		*hero_is_created = selhero_is_created;
 	return 1;
 }
 // 10010382: using guessed type _DWORD __stdcall SDrawGetFrameWindow();
@@ -704,7 +711,14 @@ BOOL __stdcall SelHero_GetHeroInfo(_uiheroinfo *pInfo)
 // 1002A428: using guessed type int selhero_numheroesleft;
 
 // ref: 0x1000C57A
-BOOL __stdcall UiSelHeroSingDialog(BOOL(__stdcall *fninfo)(BOOL(__stdcall *fninfofunc)(_uiheroinfo *)), BOOL(__stdcall *fncreate)(_uiheroinfo *), BOOL(__stdcall *fnremove)(_uiheroinfo *), BOOL(__stdcall *fnstats)(unsigned int, _uidefaultstats *), int *dlgresult, char *name, int *difficulty)
+BOOL __stdcall UiSelHeroSingDialog(
+    BOOL(__stdcall *fninfo)(BOOL(__stdcall *fninfofunc)(_uiheroinfo *)),
+    BOOL(__stdcall *fncreate)(_uiheroinfo *),
+    BOOL(__stdcall *fnremove)(_uiheroinfo *),
+    BOOL(__stdcall *fnstats)(unsigned int, _uidefaultstats *),
+    int *dlgresult,
+    char *name,
+    int *difficulty)
 {
 	int v7; // eax
 	int v8; // edi
