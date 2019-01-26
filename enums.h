@@ -1273,9 +1273,9 @@ typedef enum missile_graphic_id {
 	MFILE_SCBSEXPC = 0x2B,
 	MFILE_SCUBMISD = 0x2C,
 	MFILE_SCBSEXPD = 0x2D,
-	MFILE_NULL     = 0x2E,
+	MFILE_NONE     = 0x2E, // check if issue is upstream (swap MFILE_NONE and MFILE_NULL)
 	MFILE_INVALID  = 0x2F,
-	MFILE_NONE     = 0xFF,
+	MFILE_NULL     = 0xFF,
 } missile_graphic_id;
 
 typedef enum _mai_id {
