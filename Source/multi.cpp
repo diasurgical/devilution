@@ -7,7 +7,7 @@ TBuffer sgHiPriBuf;
 char szPlayerDescript[128];
 short sgwPackPlrOffsetTbl[MAX_PLRS];
 PkPlayerStruct netplr[MAX_PLRS];
-char sgbPlayerTurnBitTbl[MAX_PLRS];
+BYTE sgbPlayerTurnBitTbl[MAX_PLRS];
 char sgbPlayerLeftGameTbl[MAX_PLRS];
 int sgbSentThisCycle; // idb
 int dword_678628;     // weak
