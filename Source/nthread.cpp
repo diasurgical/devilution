@@ -3,12 +3,12 @@
 #include "../types.h"
 
 char byte_679704; // weak
-int gdwMsgLenTbl[4];
+int gdwMsgLenTbl[MAX_PLRS];
 static CRITICAL_SECTION sgMemCrit;
 int gdwDeltaBytesSec;    // weak
 char nthread_should_run; // weak
 DWORD gdwTurnsInTransit; // weak
-int glpMsgTbl[4];
+char *glpMsgTbl[MAX_PLRS];
 unsigned int glpNThreadId;
 char sgbSyncCountdown;   // weak
 int turn_upper_bit;      // weak
@@ -116,7 +116,7 @@ int __fastcall nthread_recv_turns(int *pfSendAsync)
 	sgbPacketCountdown = byte_679704;
 	if (!hasCountedDown)
 		goto LABEL_11;
-	if (SNetReceiveTurns(0, 4, (char **)glpMsgTbl, (unsigned int *)gdwMsgLenTbl, (LPDWORD)player_state)) {
+	if (SNetReceiveTurns(0, MAX_PLRS, (char **)glpMsgTbl, (unsigned int *)gdwMsgLenTbl, (LPDWORD)player_state)) {
 		if (!byte_679758) {
 			byte_679758 = 1;
 			last_tick = GetTickCount();
