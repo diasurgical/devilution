@@ -40,24 +40,28 @@ BOOL STORMAPI SNetSendMessage(int playerID, void *data, unsigned int databytes)
 {
 	DUMMY_ONCE();
 
-	snet_messages.push_back(StubMessage{playerID, std::string((char *)data, databytes)});
+	snet_messages.push_back(StubMessage{ playerID, std::string((char *)data, databytes) });
 	return TRUE;
 }
 
 int __stdcall SNetInitializeProvider(unsigned long a1, struct _SNETPROGRAMDATA *client_info,
-                                     struct _SNETPLAYERDATA *user_info, struct _SNETUIDATA *ui_info,
-                                     struct _SNETVERSIONDATA *fileinfo)
+    struct _SNETPLAYERDATA *user_info, struct _SNETUIDATA *ui_info,
+    struct _SNETVERSIONDATA *fileinfo)
 {
 	DUMMY();
 
-	ui_info->selectnamecallback(client_info, user_info, ui_info, fileinfo, 0, NULL, 0, NULL, 0, NULL);
+    char *cname;
+    char *cdesc;
+    BOOL *multi;
 
-	return TRUE;
+	BOOL result = ui_info->selectnamecallback(client_info, user_info, ui_info, fileinfo, 0, cname, 0, cdesc, 0, multi);
+
+	return result;
 }
 
 BOOL STORMAPI SNetCreateGame(const char *pszGameName, const char *pszGamePassword, const char *pszGameStatString,
-                             DWORD dwGameType, char *GameTemplateData, int GameTemplateSize, int playerCount,
-                             char *creatorName, char *a11, int *playerID)
+    DWORD dwGameType, char *GameTemplateData, int GameTemplateSize, int playerCount,
+    char *creatorName, char *a11, int *playerID)
 {
 	DUMMY();
 	return TRUE;
@@ -93,7 +97,7 @@ BOOL STORMAPI SNetPerformUpgrade(DWORD *upgradestatus)
 }
 
 BOOL STORMAPI SNetReceiveTurns(int a1, int arraysize, char **arraydata, unsigned int *arraydatabytes,
-                               DWORD *arrayplayerstatus)
+    DWORD *arrayplayerstatus)
 {
 	DUMMY_ONCE();
 	return TRUE;
@@ -147,7 +151,7 @@ BOOLEAN __stdcall SNetSetBasePlayer(int)
 	return TRUE;
 }
 
-int __stdcall SNetGetProviderCaps(struct _SNETCAPS * caps)
+int __stdcall SNetGetProviderCaps(struct _SNETCAPS *caps)
 {
 	memset(caps, 0, sizeof(struct _SNETCAPS));
 	caps->maxplayers = 1;

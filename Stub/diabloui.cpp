@@ -169,7 +169,7 @@ void UiInitialize()
 	LoadCharNamesintoMemory();
 }
 
-BOOL __stdcall UiMainMenuDialog(char *name, int *menu, void(__stdcall *fnSound)(char *file), int a4)
+BOOL __stdcall UiMainMenuDialog(char *name, int *pdwResult, void(__stdcall *fnSound)(char *file), int a4)
 {
 	TitleImageLoaded = false;
 	SelectedItemMax = 5;
@@ -202,7 +202,7 @@ BOOL __stdcall UiMainMenuDialog(char *name, int *menu, void(__stdcall *fnSound)(
 					fnSound("sfx\\items\\titlemov.wav");
 					break;
 				case SDLK_ESCAPE:
-					*menu = MAINMENU_EXIT_DIABLO;
+					*pdwResult = MAINMENU_EXIT_DIABLO;
 					fnSound("sfx\\items\\titlslct.wav");
 					Sleep(250); // Wait for soudn to play
 					return TRUE;
@@ -212,24 +212,24 @@ BOOL __stdcall UiMainMenuDialog(char *name, int *menu, void(__stdcall *fnSound)(
 					switch (SelectedItem) {
 					case MAINMENU_SINGLE_PLAYER:
 						fnSound("sfx\\items\\titlslct.wav");
-						*menu = MAINMENU_SINGLE_PLAYER;
+						*pdwResult = MAINMENU_SINGLE_PLAYER;
 						return TRUE;
 					case MAINMENU_MULTIPLAYER:
 						fnSound("sfx\\items\\titlslct.wav");
-						*menu = MAINMENU_MULTIPLAYER;
+						*pdwResult = MAINMENU_MULTIPLAYER;
 						return TRUE;
 					case MAINMENU_REPLAY_INTRO:
 						fnSound("sfx\\items\\titlslct.wav");
-						*menu = MAINMENU_REPLAY_INTRO;
+						*pdwResult = MAINMENU_REPLAY_INTRO;
 						return TRUE;
 					case MAINMENU_SHOW_CREDITS:
 						fnSound("sfx\\items\\titlslct.wav");
-						*menu = MAINMENU_SHOW_CREDITS;
+						*pdwResult = MAINMENU_SHOW_CREDITS;
 						return TRUE;
 					case MAINMENU_EXIT_DIABLO:
 						fnSound("sfx\\items\\titlslct.wav");
 						Sleep(250); // Wait for soudn to play
-						*menu = MAINMENU_EXIT_DIABLO;
+						*pdwResult = MAINMENU_EXIT_DIABLO;
 						return TRUE;
 					}
 					break;
@@ -241,24 +241,24 @@ BOOL __stdcall UiMainMenuDialog(char *name, int *menu, void(__stdcall *fnSound)(
 
 					if (IsInside(x, y, ItemLeft, ItemTop, ItemWidth, ItemHeight)) {
 						fnSound("sfx\\items\\titlslct.wav");
-						*menu = MAINMENU_SINGLE_PLAYER;
+						*pdwResult = MAINMENU_SINGLE_PLAYER;
 						return TRUE;
 					} else if (IsInside(x, y, ItemLeft, ItemTop + ItemHeight + 1, ItemWidth, ItemHeight)) {
 						fnSound("sfx\\items\\titlslct.wav");
-						*menu = MAINMENU_MULTIPLAYER;
+						*pdwResult = MAINMENU_MULTIPLAYER;
 						return TRUE;
 					} else if (IsInside(x, y, ItemLeft, ItemTop + ItemHeight * 2 + 1, ItemWidth, ItemHeight)) {
 						fnSound("sfx\\items\\titlslct.wav");
-						*menu = MAINMENU_REPLAY_INTRO;
+						*pdwResult = MAINMENU_REPLAY_INTRO;
 						return TRUE;
 					} else if (IsInside(x, y, ItemLeft, ItemTop + ItemHeight * 3 + 2, ItemWidth, ItemHeight)) {
 						fnSound("sfx\\items\\titlslct.wav");
-						*menu = MAINMENU_SHOW_CREDITS;
+						*pdwResult = MAINMENU_SHOW_CREDITS;
 						return TRUE;
 					} else if (IsInside(x, y, ItemLeft, ItemTop + ItemHeight * 4 + 3, ItemWidth, ItemHeight)) {
 						fnSound("sfx\\items\\titlslct.wav");
 						Sleep(250); // Wait for soudn to play
-						*menu = MAINMENU_EXIT_DIABLO;
+						*pdwResult = MAINMENU_EXIT_DIABLO;
 						return TRUE;
 					}
 				}
@@ -266,7 +266,7 @@ BOOL __stdcall UiMainMenuDialog(char *name, int *menu, void(__stdcall *fnSound)(
 			case SDL_QUIT:
 				fnSound("sfx\\items\\titlslct.wav");
 				Sleep(250); // Wait for soudn to play
-				*menu = MAINMENU_EXIT_DIABLO;
+				*pdwResult = MAINMENU_EXIT_DIABLO;
 				return TRUE;
 			}
 		}
@@ -283,9 +283,13 @@ static BOOL __stdcall ui_add_hero_info(_uiheroinfo *info)
 	return TRUE;
 }
 
-BOOL __stdcall UiSelHeroSingDialog(BOOL(__stdcall *fninfo)(BOOL(__stdcall *fninfofunc)(_uiheroinfo *)),
-    BOOL(__stdcall *fncreate)(_uiheroinfo *), BOOL(__stdcall *fnremove)(_uiheroinfo *),
-    BOOL(__stdcall *fnstats)(unsigned int, _uidefaultstats *), int *dlgresult, char *name,
+BOOL __stdcall UiSelHeroSingDialog(
+    BOOL(__stdcall *fninfo)(BOOL(__stdcall *fninfofunc)(_uiheroinfo *)),
+    BOOL(__stdcall *fncreate)(_uiheroinfo *),
+    BOOL(__stdcall *fnremove)(_uiheroinfo *),
+    BOOL(__stdcall *fnstats)(unsigned int, _uidefaultstats *),
+    int *dlgresult,
+    char *name,
     int *difficulty)
 {
 	TitleImageLoaded = false;
@@ -325,6 +329,7 @@ BOOL __stdcall UiSelHeroSingDialog(BOOL(__stdcall *fninfo)(BOOL(__stdcall *fninf
 						break;
 					}
 
+					*dlgresult = 4;
 					return TRUE;
 				case SDLK_BACKSPACE:
 					if (NewHeroNameIndex > 0) {
@@ -602,7 +607,7 @@ int __stdcall UiProgressDialog(HWND window, char *msg, int a3, void *fnfunc, int
 
 BOOL __stdcall UiSelHeroMultDialog(BOOL(__stdcall *fninfo)(BOOL(__stdcall *fninfofunc)(_uiheroinfo *)),
     BOOL(__stdcall *fncreate)(_uiheroinfo *), BOOL(__stdcall *fnremove)(_uiheroinfo *),
-    BOOL(__stdcall *fnstats)(unsigned int, _uidefaultstats *), int *dlgresult, int *a6,
+    BOOL(__stdcall *fnstats)(unsigned int, _uidefaultstats *), int *dlgresult, int *hero_is_created,
     char *name)
 {
 	TitleImageLoaded = false;

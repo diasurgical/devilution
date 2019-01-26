@@ -171,7 +171,6 @@ void __fastcall snd_stop_snd(TSnd *pSnd)
 void *MSFXBuffer;
 TSnd *__fastcall sound_file_load(char *path)
 {
-
 	int bytestoread;
 	int nrread;
 	void *file;
