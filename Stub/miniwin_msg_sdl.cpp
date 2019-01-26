@@ -59,9 +59,8 @@ static int translate_sdl_key(SDL_Keysym key)
 	case SDLK_COMMA:
 		return VK_OEM_COMMA;
 	case SDLK_LSHIFT:
-		return VK_SHIFT;
 	case SDLK_RSHIFT:
-		return VK_SHIFT; // why not?
+		return VK_SHIFT;
 
 	default:
 		if (sym >= SDLK_a && sym <= SDLK_z) {
