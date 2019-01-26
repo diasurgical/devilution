@@ -19,35 +19,35 @@ BOOLEAN screensaver_enabled_prev;
 char gszVersionNumber[260] = "internal version unknown";
 char gszProductName[260] = "Diablo v1.09";
 
-void __fastcall init_cleanup(BOOLEAN show_cursor)
+void __fastcall init_cleanup(BOOL show_cursor)
 {
-	int v1; // edi
-
-	v1 = show_cursor;
 	pfile_flush_W();
 	init_disable_screensaver(0);
 	init_run_office_from_start_menu();
+
 	if (diabdat_mpq) {
 		SFileCloseArchive(diabdat_mpq);
-		diabdat_mpq = 0;
+		diabdat_mpq = NULL;
 	}
 	if (patch_rt_mpq) {
 		SFileCloseArchive(patch_rt_mpq);
-		patch_rt_mpq = 0;
+		patch_rt_mpq = NULL;
 	}
 	if (unused_mpq) {
 		SFileCloseArchive(unused_mpq);
-		unused_mpq = 0;
+		unused_mpq = NULL;
 	}
+
 	UiDestroy();
 	effects_cleanup_sfx();
 	sound_cleanup();
 	NetClose();
 	dx_cleanup();
-	MI_Dummy(v1);
+	MI_Dummy(show_cursor);
 	StormDestroy();
-	if (v1)
-		ShowCursor(1);
+
+	if (show_cursor)
+		ShowCursor(TRUE);
 }
 
 void __cdecl init_run_office_from_start_menu()
