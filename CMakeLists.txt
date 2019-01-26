@@ -9,6 +9,7 @@ if(POLICY CMP0067)
 endif()
 
 include(CMake/out_of_tree.cmake)
+include(CMake/cotire.cmake)
 
 # This *must* be included before calling `project()`, due to setting early compiler flags.
 if($ENV{FORCE32})
@@ -193,6 +194,8 @@ target_link_libraries(devilution PUBLIC
     ${SDL2_LIBRARY}
     ${SDL2_MIXER_LIBRARIES}
 )
+
+cotire(devilution)
 
 # xxhash fast hashing library
 add_library(xxhash STATIC 3rdParty/xxhash/xxhash.c)
