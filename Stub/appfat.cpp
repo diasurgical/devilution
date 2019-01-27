@@ -15,12 +15,12 @@ void TermMsg(char *pszFmt, ...)
 	abort();
 }
 
-void __fastcall ErrDlg(int template_id, int error_code, char *log_file_path, int log_line_nr)
+void __fastcall ErrDlg(int template_id, DWORD error_code, char *log_file_path, int log_line_nr)
 {
 	UNIMPLEMENTED();
 }
 
-void __fastcall ErrOkDlg(int template_id, int error_code, char *log_file_path, int log_line_nr)
+void __fastcall ErrOkDlg(int template_id, DWORD error_code, char *log_file_path, int log_line_nr)
 {
 	UNIMPLEMENTED();
 }
@@ -42,7 +42,7 @@ void __fastcall FileErrDlg(const char *error)
 	UNIMPLEMENTED();
 }
 
-void __fastcall DDErrMsg(int error_code, int log_line_nr, char *log_file_path)
+void __fastcall DDErrMsg(DWORD error_code, int log_line_nr, char *log_file_path)
 {
 	UNIMPLEMENTED();
 }
