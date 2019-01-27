@@ -804,8 +804,8 @@ void DrawArtImage(int SX, int SY, int SW, int SH, int nFrame, void *pBuffer)
 	BYTE *src = (BYTE *)pBuffer + (SW * SH * nFrame);
 	BYTE *dst = (BYTE *)&gpBuffer->row[SY].pixels[SX];
 
-	for (int i = 0; i < SH; i++, src += SW, dst += 768) {
-		for (int j = 0; j < SW; j++) {
+	for (int i = 0; i < SH && i + SY < SCREEN_HEIGHT; i++, src += SW, dst += 768) {
+		for (int j = 0; j < SW && j + SX < SCREEN_WIDTH; j++) {
 			dst[j] = src[j];
 		}
 	}
@@ -816,8 +816,8 @@ void DrawArtWithMask(int SX, int SY, int SW, int SH, int nFrame, BYTE bMask, voi
 	BYTE *src = (BYTE *)pBuffer + (SW * SH * nFrame);
 	BYTE *dst = (BYTE *)&gpBuffer->row[SY].pixels[SX];
 
-	for (int i = 0; i < SH; i++, src += SW, dst += 768) {
-		for (int j = 0; j < SW; j++) {
+	for (int i = 0; i < SH && i + SY < SCREEN_HEIGHT; i++, src += SW, dst += 768) {
+		for (int j = 0; j < SW && j + SX < SCREEN_WIDTH; j++) {
 			if (src[j] != bMask)
 				dst[j] = src[j];
 		}
