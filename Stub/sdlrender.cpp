@@ -6,30 +6,9 @@ int SCREEN_HEIGHT = 480;
 int LogoWidth;
 int LogoHeight;
 
-SDL_Rect textureRect;
-SDL_Rect windowRect;
-SDL_Rect CusorLocation;
-
-SDL_Rect SinglePlrBox;
-SDL_Rect MultiPlrBox;
-SDL_Rect ReplayIntroBox;
-SDL_Rect ShowCreditsBox;
-SDL_Rect ExitBox;
-
-// DiabloMenu Items
-
-SDL_Rect MainMenuItemsWRect;
-SDL_Rect MainMenuItemsTRect;
-SDL_Rect CreateHeroBox;
-SDL_Rect SinglePlayerMenuCancelBox;
-
-SDL_Event input;
-
-bool SinglePlayerMenuItemsLoaded = 0;
-bool DiabloImageLoaded = 0;
-bool DiabloMainMenuListLoaded = 0;
 bool TitleImageLoaded = false;
 int SelectedItem = 1;
+int TotalPlayers = 0;
 
 void *pPcxLogoImage;
 int gdwLogoWidth;
@@ -49,9 +28,6 @@ void *pPcxCursorImage;
 int gdwHeroHeight;
 int gdwHeroWidth;
 void *pPcxHeroImage;
-
-int gdwSHeroHeight;
-int gdwSHeroWidth;
 
 int gdwFont16Width;
 int gdwFont16Height;
@@ -77,11 +53,6 @@ void *pPcxFont42gImage;
 void *pPcxFont42yImage;
 unsigned char *pFont42;
 
-void *GameTitle;
-int GameTitleHeight;
-int GameTitleWidth;
-
-void *TitleMenuText;
 void *MenuPentegram16;
 void *MenuPentegram;
 void *MenuPentegram42;
@@ -92,28 +63,8 @@ char HeroUndecidedName[17];
 
 _uiheroinfo heroarray[10];
 
-struct timespec ts;
-
 //////////////////////////////////////
 // things I need to unload...
-
-int FontLoaded = 0;
-
-SDL_Texture *CreditsTexture;
-SDL_Texture *MainMenuItemsTexture;
-SDL_Texture *DiablologoAnimT;
-SDL_Texture *CursorTexture;
-SDL_Texture *MenuSelectNewHeroTexture;
-SDL_Texture *CreateHeroDialogTextureW;
-SDL_Texture *CreateHeroDialogTextureR;
-SDL_Texture *CreateHeroDialogTextureS;
-
-SDL_Surface *CreditsSurface;
-SDL_Surface *MainMenuItemsSurface;
-SDL_Surface *MenuSelectNewHeroSurface;
-SDL_Surface *CreateHeroDialogSurface;
-SDL_Surface *CursorImg;
-SDL_Surface *DiabloTitle;
 
 int bloaded = 0;
 
@@ -623,7 +574,7 @@ PALETTEENTRY pcxPal[256];
 
 void __fastcall LoadPalInMem(PALETTEENTRY *pPal)
 {
-	int i; // eax
+	int i;
 
 	for (i = 0; i < 256; i++) {
 		orig_palette[i].peFlags = 0;
@@ -654,8 +605,8 @@ BOOL __cdecl LoadArtImage(char *pszFile, void **pBuffer, int frames, DWORD *data
 
 BOOL __cdecl LoadArtWithPal(char *pszFile, void **pBuffer, int frames, DWORD *data)
 {
-	DWORD width;  // [esp+44h] [ebp-8h]
-	DWORD height; // [esp+48h] [ebp-4h] MAPDST
+	DWORD width;
+	DWORD height;
 
 	*pBuffer = NULL;
 
@@ -667,12 +618,11 @@ BOOL __cdecl LoadArtWithPal(char *pszFile, void **pBuffer, int frames, DWORD *da
 
 	LoadPalInMem(pcxPal);
 
-	//lpDDPalette->SetEntries(0, 0, 256, orig_palette);
-
 	if (pBuffer && data) {
 		data[0] = width;
 		data[1] = height / frames;
 	}
+
 	return 1;
 }
 
@@ -824,20 +774,6 @@ void FreeMenuItems()
 	mem_free_dbg(tmp);
 }
 
-char gLDirectory[FILENAME_MAX];
-void GetWorkingLocationOfFile(char *RelativeFile)
-{
-	GetCurrentDir(gLDirectory, FILENAME_MAX);
-	strcat(gLDirectory, RelativeFile);
-}
-
-uint32_t XgetTick()
-{
-	unsigned theTick = 0U;
-	printf("This is supposed to replace GitTicks()");
-	return theTick;
-}
-
 void SdlDiabloMainWindow()
 {
 	SDL_ShowCursor(SDL_DISABLE);
@@ -873,17 +809,6 @@ void DrawArtImage(int SX, int SY, int SW, int SH, int nFrame, void *pBuffer)
 			dst[j] = src[j];
 		}
 	}
-}
-void LoadDiabloMenuLogoImage()
-{
-}
-
-void DiabloMainMenuItemsLoaded()
-{
-}
-
-void CreateMainDiabloMenu()
-{
 }
 
 void DrawArtWithMask(int SX, int SY, int SW, int SH, int nFrame, BYTE bMask, void *pBuffer)
@@ -1071,35 +996,11 @@ void RenderDiabloLogoSm()
 	AnimateDiabloLogo(0, gdwLogoSmWidth, gdwLogoSmHeight, pPcxLogoSmImage);
 }
 
-void DrawCursor(int mx, int my)
-{
-	SDL_GetMouseState(&mx, &my);
-
-	int lines = gdwCursorWidth;
-
-	DrawArtWithMask(mx, my, gdwCursorWidth, lines, 0, 0, pPcxCursorImage);
-	j_unlock_buf_priv(0); //FIXME 0?
-}
-
 void DrawMouse()
 {
-
 	SDL_GetMouseState(&MouseX, &MouseY);
-	int lines = gdwCursorHeight;
-	// if(MouseY > 480-gdwCursorHeight)
-	// 	lines -= (MouseY - (480-gdwCursorHeight));
-	// int mx = MouseX;
-	// if(mx < 0) mx = 0;
-	// if(mx >639) mx = 639;
-	// int my = MouseY;
-	// if(my < 0) my = 0;
-	// if(my > 480) my = 480;
 
-	// frame_width = InvItemWidth[frame];
-
-	//	lock_buf_priv();
-	DrawArtWithMask(MouseX, MouseY, gdwCursorWidth, lines, 0, 0, pPcxCursorImage);
-	//	unlock_buf_priv();
+	DrawArtWithMask(MouseX, MouseY, gdwCursorWidth, gdwCursorHeight, 0, 0, pPcxCursorImage);
 }
 
 void AnimateSelector(int x, int y, int width, int padding, int spacing, int swidth, void *pBuffer)
@@ -1229,53 +1130,6 @@ void RenderDiabloSinglePlayerPage()
 	DrawMouse();
 	SetFadeLevel(256);
 }
-
-void LoadClickBoxes(int numberofchars)
-{
-	SDL_Rect Charpos1;
-	Charpos1.x = -1;
-	Charpos1.y = -1;
-	Charpos1.h = -1;
-	Charpos1.w = -1;
-
-	SDL_Rect Charpos2;
-	Charpos2.x = -1;
-	Charpos2.y = -1;
-	Charpos2.h = -1;
-	Charpos2.w = -1;
-
-	SDL_Rect Charpos3;
-	Charpos3.x = -1;
-	Charpos3.y = -1;
-	Charpos3.h = -1;
-	Charpos3.w = -1;
-
-	SDL_Rect Charpos4;
-	Charpos4.x = -1;
-	Charpos4.y = -1;
-	Charpos4.h = -1;
-	Charpos4.w = -1;
-
-	SDL_Rect Charpos5;
-	Charpos5.x = -1;
-	Charpos5.y = -1;
-	Charpos5.h = -1;
-	Charpos5.w = -1;
-
-	SDL_Rect Charpos6;
-	Charpos6.x = -1;
-	Charpos6.y = -1;
-	Charpos6.h = -1;
-	Charpos6.w = -1;
-
-	// The menu doesn't fit past 6 chars.
-	SDL_Rect Charpos7;
-	SDL_Rect Charpos8;
-	SDL_Rect Charpos9;
-}
-
-int LoadedFont = 0;
-int TotalPlayers = 0;
 
 void RenderDefaultStats(int HeroClass)
 {
