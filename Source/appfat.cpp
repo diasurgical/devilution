@@ -275,7 +275,6 @@ void __fastcall center_window(HWND hDlg)
 {
 	LONG w, h;
 	int screenW, screenH;
-	char *v4;
 	struct tagRECT Rect;
 	HDC hdc;
 
