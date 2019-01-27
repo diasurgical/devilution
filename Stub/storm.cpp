@@ -277,4 +277,5 @@ void __cdecl SDrawRealizePalette(void)
 BOOL __stdcall SFileEnableDirectAccess(BOOL enable)
 {
 	DUMMY();
+	return TRUE;
 }
