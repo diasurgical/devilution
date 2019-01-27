@@ -50,7 +50,7 @@ void __fastcall mem_free_dbg(void *p);
 BYTE *__fastcall LoadFileInMem(char *pszName, int *pdwFileLen);
 void __fastcall LoadFileWithMem(char *pszName, void *buf);
 void __fastcall Cl2ApplyTrans(unsigned char *p, unsigned char *ttbl, int last_frame);
-void __fastcall Cl2DecodeFrm1(int x, int y, char *pCelBuff, int nCel, int width, int dir1, int dir2);
+void __fastcall Cl2DecodeFrm1(int x, int y, char *pCelBuff, int nCel, int width, INT_PTR dir1, INT_PTR dir2);
 void __fastcall Cl2DecDatFrm1(char *buffer, char *frame_content, int a3, int width);
 void __fastcall Cl2DecodeFrm2(char colour, int screen_x, int screen_y, char *pCelBuff, int nCel, int frame_width, int a7, int a8);
 void __fastcall Cl2DecDatFrm2(char *buffer, char *a2, int a3, int a4, char a5);

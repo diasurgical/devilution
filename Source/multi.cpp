@@ -146,7 +146,7 @@ unsigned char *__fastcall multi_recv_packet(TBuffer *packet, unsigned char *a2, 
 			v5 = (BYTE *)&v7[v6];
 			*a3 -= v6;
 		}
-		memcpy(v3->bData, v5, (size_t)&v3->bData[v3->dwNextWriteOffset - (_DWORD)v5 + 1]); /* memcpy_0 */
+		memcpy(v3->bData, v5, (size_t)&v3->bData[v3->dwNextWriteOffset - (UINT_PTR)v5 + 1]); /* memcpy_0 */
 		v3->dwNextWriteOffset += (char *)v3 - (char *)v5 + 4;
 		result = v8;
 	}

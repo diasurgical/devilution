@@ -201,7 +201,7 @@ void __fastcall CelDecDatLightEntry(unsigned char n, char *LightIndex, char **pD
 void __fastcall CelDecDatLightTrans(char *pDecodeTo, char *pRLEBytes, int frame_content_size, int frame_width)
 {
 	char *v4;         // esi
-	int v5;           // edi
+	INT_PTR v5;       // edi
 	char *v6;         // ebx
 	int v7;           // edx
 	unsigned int v8;  // eax
@@ -222,7 +222,7 @@ void __fastcall CelDecDatLightTrans(char *pDecodeTo, char *pRLEBytes, int frame_
 	if (pDecodeTo && pRLEBytes) {
 		v27 = &pLightTbl[256 * light_table_index];
 		v4 = pRLEBytes;
-		v5 = (int)pDecodeTo;
+		v5 = (INT_PTR)pDecodeTo;
 		v6 = &pRLEBytes[frame_content_size];
 		v28 = (unsigned char)pDecodeTo & 1;
 		do {
@@ -987,7 +987,7 @@ void __fastcall CelDecodeRect(char *pBuff, int always_0, int dst_height, int dst
 	char *v7;         // ebx
 	char *v8;         // esi
 	char *v9;         // edi
-	int v10;          // ebx
+	UINT_PTR v10;     // ebx
 	int v11;          // edx
 	unsigned int v12; // eax
 	unsigned int v13; // ecx
@@ -1000,7 +1000,7 @@ void __fastcall CelDecodeRect(char *pBuff, int always_0, int dst_height, int dst
 		v8 = &pCelBuff[*(_DWORD *)v7];
 		v9 = &pBuff[dst_width * dst_height + always_0];
 		dst_widtha = frame_width + dst_width;
-		v10 = (int)&v8[*((_DWORD *)v7 + 1) - *(_DWORD *)v7];
+		v10 = (UINT_PTR)&v8[*((_DWORD *)v7 + 1) - *(_DWORD *)v7];
 		do {
 			v11 = frame_width;
 			do {
@@ -1670,11 +1670,11 @@ void __fastcall Cl2ApplyTrans(unsigned char *p, unsigned char *ttbl, int last_fr
 	}
 }
 
-void __fastcall Cl2DecodeFrm1(int x, int y, char *pCelBuff, int nCel, int width, int dir1, int dir2)
+void __fastcall Cl2DecodeFrm1(int x, int y, char *pCelBuff, int nCel, int width, INT_PTR dir1, INT_PTR dir2)
 {
 	char *v8;        // edx
-	char *v9;        // ecx
-	int v10;         // ecx
+	LONG v9;        // ecx
+	INT_PTR v10;     // ecx
 	int v11;         // eax
 	char *pCelBuffa; // [esp+18h] [ebp+8h]
 
@@ -1682,12 +1682,12 @@ void __fastcall Cl2DecodeFrm1(int x, int y, char *pCelBuff, int nCel, int width,
 		v8 = pCelBuff;
 		if (pCelBuff) {
 			if (nCel > 0) {
-				v9 = *(char **)&pCelBuff[4 * nCel];
+				v9 = *(LONG*)&pCelBuff[4 * nCel];
 				pCelBuffa = v9;
-				v10 = (int)&v9[(_DWORD)v8];
+				v10 = (INT_PTR)&v8[v9];
 				if (*(_WORD *)(v10 + dir1)) {
 					if (dir2 == 8 || (v11 = *(unsigned short *)(v10 + dir2), !*(_WORD *)(v10 + dir2)))
-						v11 = *((_DWORD *)v8 + nCel + 1) - (_DWORD)pCelBuffa;
+						v11 = *((_DWORD *)v8 + nCel + 1) - (UINT_PTR)pCelBuffa;
 					Cl2DecDatFrm1(
 					    (char *)gpBuffer + screen_y_times_768[y - 16 * dir1] + x,
 					    (char *)(*(unsigned short *)(v10 + dir1) + v10),

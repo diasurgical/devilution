@@ -6,7 +6,7 @@ int __fastcall codec_decode(void *pbSrcDst, int size, char *pszPassword)
 {
 	unsigned int v3; // ebx
 	char *v4;        // esi
-	int v5;          // ebx
+	INT_PTR v5;      // ebx
 	signed int v7;   // ecx
 	int v8;          // esi
 	char v9[128];    // [esp+8h] [ebp-98h]
