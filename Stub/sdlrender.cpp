@@ -974,16 +974,18 @@ void ShowCredts()
 
 ///////////////////////////Renders
 
+int GetAnimationFrame(int frames)
+{
+	int frame = (SDL_GetTicks() / 60) % frames;
+
+	return frame > frames ? 0 : frame;
+}
+
 void AnimateDiabloLogo(int t, int w, int h, void *pBuffer)
 {
-	int MyPcxDelay = 60;
-	int MyPcxFRAME = (SDL_GetTicks() / MyPcxDelay) % 15;
-	MyPcxFRAME++;
-	if (MyPcxFRAME == 15) {
-		MyPcxFRAME = 0;
-	}
+	int frame = GetAnimationFrame(15);
 
-	DrawArtWithMask(GetCenterOffset(w), t, w, h, MyPcxFRAME, 250, pBuffer);
+	DrawArtWithMask(GetCenterOffset(w), t, w, h, frame, 250, pBuffer);
 }
 
 void RenderDiabloLogo()
@@ -1005,19 +1007,13 @@ void DrawMouse()
 
 void AnimateSelector(int x, int y, int width, int padding, int spacing, int swidth, void *pBuffer)
 {
-	int Pentframe = (SDL_GetTicks() / 60) % 8;
-
-	Pentframe++;
-	if (Pentframe == 8) {
-		Pentframe = 0;
-	}
-
 	width = width ? width : SCREEN_WIDTH;
 	x += GetCenterOffset(swidth, width);
 	y += (SelectedItem - 1) * spacing;
 
-	DrawArtWithMask(x - width / 2 + padding, y, swidth, swidth, Pentframe, 250, pBuffer);
-	DrawArtWithMask(x + width / 2 - padding, y, swidth, swidth, Pentframe, 250, pBuffer);
+	int frame = GetAnimationFrame(8);
+	DrawArtWithMask(x - width / 2 + padding, y, swidth, swidth, frame, 250, pBuffer);
+	DrawArtWithMask(x + width / 2 - padding, y, swidth, swidth, frame, 250, pBuffer);
 }
 
 void DrawSelector16(int x, int y, int width, int padding, int spacing)
