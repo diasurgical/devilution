@@ -119,7 +119,7 @@ BOOL __fastcall CopyProt_LoadCopyStuff(HWND hWnd, int a2)
 	v13               = LockResource(copyprot_artpal);
 	if (v5)
 		SDlgSetBitmapI(hWnd, 0, &nullcharacter, -1, 1, v5, 0, 284, 148, -1);
-	ShowCursor(1);
+	ShowCursor(TRUE);
 	Fade_SetInputWindow(hWnd);
 	if (v6)
 		local_FitButtonDlg(hWnd, msgs, v6, data);
@@ -135,7 +135,7 @@ BOOL __fastcall CopyProt_LoadCopyStuff(HWND hWnd, int a2)
 // ref: 0x1000430C
 void __fastcall CopyProt_EndCopyDlg(HWND hWnd, int a2)
 {
-	ShowCursor(0);
+	ShowCursor(FALSE);
 	SDlgEndDialog(hWnd, (HANDLE)a2);
 }
 

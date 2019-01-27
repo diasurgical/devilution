@@ -14,7 +14,7 @@ extern void *patch_rt_mpq;
 extern int killed_mom_parent; // weak
 extern BOOLEAN screensaver_enabled_prev;
 
-void __fastcall init_cleanup(BOOLEAN show_cursor);
+void __fastcall init_cleanup(BOOL show_cursor);
 void __cdecl init_run_office_from_start_menu();
 void __fastcall init_run_office(char *dir);
 void __fastcall init_disable_screensaver(BOOLEAN disable);
