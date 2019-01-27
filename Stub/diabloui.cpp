@@ -821,13 +821,11 @@ BOOL __stdcall UiSelHeroMultDialog(
 	fninfo(&ui_add_hero_info);
 
 	if (CreateSinglePlayerChar) {
-		const char *test_name = HeroUndecidedName;
-		DUMMY_PRINT("create hero: %s", test_name);
-
-		strcpy(name, test_name);
+		strcpy(name, "testname");
+		DUMMY_PRINT("create hero: %s", name);
 
 		_uiheroinfo hero_info = { 1 };
-		strcpy(hero_info.name, test_name);
+		strcpy(hero_info.name, name);
 		hero_info.heroclass = HeroChosen;
 
 		fncreate(&hero_info);
@@ -967,15 +965,24 @@ int __stdcall UiSelectProvider(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYE
 					switch (SelectedItem) {
 					case 1:
 						effects_play_sound("sfx\\items\\titlslct.wav");
-						done = !SNetInitializeProvider('ipc', client_info, user_info, ui_info, file_info);
+						done = SNetInitializeProvider('ipc', client_info, user_info, ui_info, file_info);
+						TitleImageLoaded = false;
+						SelectedItem = 1;
+						SelectedItemMax = 3;
 						break;
 					case 2:
 						effects_play_sound("sfx\\items\\titlslct.wav");
-						done = !SNetInitializeProvider('dial', client_info, user_info, ui_info, file_info);
+						done = SNetInitializeProvider('dial', client_info, user_info, ui_info, file_info);
+						TitleImageLoaded = false;
+						SelectedItem = 1;
+						SelectedItemMax = 3;
 						break;
 					case 3:
 						effects_play_sound("sfx\\items\\titlslct.wav");
-						done = !SNetInitializeProvider('null', client_info, user_info, ui_info, file_info);
+						done = SNetInitializeProvider('null', client_info, user_info, ui_info, file_info);
+						TitleImageLoaded = false;
+						SelectedItem = 1;
+						SelectedItemMax = 3;
 						break;
 					}
 					break;
@@ -1007,7 +1014,7 @@ int __stdcall UiSelectProvider(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYE
 		}
 	}
 
-	return false;
+	return TRUE;
 }
 
 int __stdcall UiCreatePlayerDescription(_uiheroinfo *info, int mode, char *desc)
