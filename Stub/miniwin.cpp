@@ -52,7 +52,8 @@ VOID WINAPI Sleep(DWORD dwMilliseconds)
 
 HANDLE WINAPI FindFirstFileA(LPCSTR lpFileName, LPWIN32_FIND_DATAA lpFindFileData)
 {
-	UNIMPLEMENTED();
+	DUMMY();
+	return (HANDLE)-1;
 }
 
 WINBOOL WINAPI FindClose(HANDLE hFindFile)
@@ -62,7 +63,7 @@ WINBOOL WINAPI FindClose(HANDLE hFindFile)
 
 UINT WINAPI GetWindowsDirectoryA(LPSTR lpBuffer, UINT uSize)
 {
-	UNIMPLEMENTED();
+	DUMMY();
 }
 
 WINBOOL WINAPI GetDiskFreeSpaceA(LPCSTR lpRootPathName, LPDWORD lpSectorsPerCluster, LPDWORD lpBytesPerSector,
@@ -97,7 +98,8 @@ WINBOOL WINAPI CopyFileA(LPCSTR lpExistingFileName, LPCSTR lpNewFileName, WINBOO
 
 HFILE WINAPI OpenFile(LPCSTR lpFileName, LPOFSTRUCT lpReOpenBuff, UINT uStyle)
 {
-	UNIMPLEMENTED();
+	DUMMY();
+	return HFILE_ERROR;
 }
 
 HWND WINAPI SetCapture(HWND hWnd)

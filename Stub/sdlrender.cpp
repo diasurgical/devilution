@@ -1338,7 +1338,7 @@ void CreateHeroMenu()
 		selectorTop += 1; // "Rouge" and "Sorcerer" has a smaller gap then other items
 	}
 
-	DrawSelector(x, selectorTop - 2, w, 39, 26);
+	DrawSelector(x, selectorTop - 2, w, 39, 33);
 
 	PrintText30Gold(329, 429, "OK");
 	PrintText30Gold(451, 429, "Cancel");
@@ -1427,6 +1427,48 @@ void DrawPreGameDifficultySelection(int HeroClass, int ShowClasses)
 	}
 
 	RenderDefaultStats(HeroClass);
+
+	DrawMouse();
+	SetFadeLevel(256);
+}
+
+void DrawSelMultiConnection()
+{
+	LoadTitelArt("ui_art\\selgame.pcx");
+	DrawArtImage(0, 0, gdwTitleWidth, gdwTitleHeight, 0, pPcxTitleImage);
+	RenderDiabloLogoSm();
+
+	PrintText30Silver(-1, 161, "Multi Player Game", JustCentre);
+
+	int w = 334;
+	int x = 280;
+	int y = 261;
+
+	PrintText30Silver(x, 211, "Select Connection", JustCentre, w);
+
+	char *connections[3] = { "Local Area Network (IPC)", "Modem", "Direct Cable Connection" };
+
+	int selectorTop = y;
+
+	for (int i = 0; i < 3; i++) {
+		PrintText16Gold(x - 1, y, connections[i], JustCentre, w);
+		y += 26;
+	}
+
+	DrawSelector16(x, selectorTop - 2, w, 35, 26);
+
+	PrintText16Silver(35, 218, "Players Supported: 4");
+
+	PrintText16Silver(35, 256, "Requirements:");
+	// TODO need a word wrap function
+	PrintText16Silver(35, 275, "All computers must be");
+	PrintText16Silver(35, 291, "connected to an");
+	PrintText16Silver(35, 307, "IPX-compatible network.");
+
+	PrintText24Silver(26, 356, "no gateway needed", JustCentre, 226);
+
+	PrintText30Gold(349, 429, "OK");
+	PrintText30Gold(476, 429, "Cancel");
 
 	DrawMouse();
 	SetFadeLevel(256);

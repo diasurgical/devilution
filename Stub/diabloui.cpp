@@ -88,7 +88,7 @@ BOOL IsInsideRect(int x, int y, SDL_Rect rect)
 void InitHiracy()
 {
 	MenuItem[SINGLEPLAYER_CLASSES] = 3;
-	MenuItem[MULTIPLAYER_CONNECTIONS] = 4;
+	MenuItem[MULTIPLAYER_CONNECTIONS] = 3;
 	MenuItem[MULTIPLAYER_LOBBY] = 2;
 	MenuItem[MULTIPLAYER_DIFFICULTY] = 3;
 	MenuItem[MULTIPLAYER_BNET_GATEWAYS] = 3;
@@ -96,7 +96,6 @@ void InitHiracy()
 	PreviousItem[SINGLEPLAYER_CLASSES] = SINGLEPLAYER_LOAD;
 	PreviousItem[SINGLEPLAYER_NAME] = SINGLEPLAYER_CLASSES;
 	PreviousItem[MULTIPLAYER_CONNECTIONS] = MAINMENU;
-	PreviousItem[MULTIPLAYER_LOBBY] = MULTIPLAYER_CONNECTIONS;
 	PreviousItem[MULTIPLAYER_DIFFICULTY] = MULTIPLAYER_LOBBY;
 	PreviousItem[MULTIPLAYER_BNET_GATEWAYS] = MULTIPLAYER_CONNECTIONS;
 	PreviousItem[MULTIPLAYER_ERROR] = MAINMENU;
@@ -172,6 +171,7 @@ void UiInitialize()
 BOOL __stdcall UiMainMenuDialog(char *name, int *pdwResult, void(__stdcall *fnSound)(char *file), int a4)
 {
 	TitleImageLoaded = false;
+	SelectedItem = 1;
 	SelectedItemMax = 5;
 	SDL_Event event;
 	int x, y;
@@ -234,6 +234,7 @@ BOOL __stdcall UiMainMenuDialog(char *name, int *pdwResult, void(__stdcall *fnSo
 					}
 					break;
 				}
+				break;
 			case SDL_MOUSEBUTTONDOWN:
 				if (event.button.button == SDL_BUTTON_LEFT) {
 					x = event.button.x;
@@ -264,8 +265,6 @@ BOOL __stdcall UiMainMenuDialog(char *name, int *pdwResult, void(__stdcall *fnSo
 				}
 				break;
 			case SDL_QUIT:
-				fnSound("sfx\\items\\titlslct.wav");
-				Sleep(250); // Wait for soudn to play
 				*pdwResult = MAINMENU_EXIT_DIABLO;
 				return TRUE;
 			}
@@ -293,7 +292,6 @@ BOOL __stdcall UiSelHeroSingDialog(
     int *difficulty)
 {
 	TitleImageLoaded = false;
-	DUMMY();
 
 	submenu = SINGLEPLAYER_LOAD;
 	if (!TotalPlayers) {
@@ -301,6 +299,7 @@ BOOL __stdcall UiSelHeroSingDialog(
 		submenu = SINGLEPLAYER_CLASSES;
 	}
 
+	SelectedItem = 1;
 	SelectedItemMax = MenuItem[submenu];
 	SDL_Event event;
 	int x, y;
@@ -388,6 +387,7 @@ BOOL __stdcall UiSelHeroSingDialog(
 						}
 					break;
 				}
+				break;
 			case SDL_MOUSEBUTTONDOWN:
 				if (event.button.button == SDL_BUTTON_LEFT) {
 					x = event.button.x;
@@ -543,6 +543,9 @@ BOOL __stdcall UiSelHeroSingDialog(
 					}
 				}
 				break;
+			case SDL_QUIT:
+				SDL_Quit();
+				exit(0);
 			}
 		}
 	}
@@ -605,203 +608,214 @@ int __stdcall UiProgressDialog(HWND window, char *msg, int a3, void *fnfunc, int
 	UNIMPLEMENTED();
 }
 
-BOOL __stdcall UiSelHeroMultDialog(BOOL(__stdcall *fninfo)(BOOL(__stdcall *fninfofunc)(_uiheroinfo *)),
-    BOOL(__stdcall *fncreate)(_uiheroinfo *), BOOL(__stdcall *fnremove)(_uiheroinfo *),
-    BOOL(__stdcall *fnstats)(unsigned int, _uidefaultstats *), int *dlgresult, int *hero_is_created,
+BOOL __stdcall UiSelHeroMultDialog(
+    BOOL(__stdcall *fninfo)(BOOL(__stdcall *fninfofunc)(_uiheroinfo *)),
+    BOOL(__stdcall *fncreate)(_uiheroinfo *),
+    BOOL(__stdcall *fnremove)(_uiheroinfo *),
+    BOOL(__stdcall *fnstats)(unsigned int, _uidefaultstats *),
+    int *dlgresult,
+    int *hero_is_created,
     char *name)
 {
+	DUMMY();
 	TitleImageLoaded = false;
+	submenu = MULTIPLAYER_LOBBY;
+
+	SelectedItem = 1;
 	SelectedItemMax = MenuItem[submenu];
 	SDL_Event event;
 	int x, y;
 
-	switch (submenu) {
-	case MULTIPLAYER_LOBBY:
-		DrawPreGameOptions(HeroChosen, 1);
-		break;
-	case MULTIPLAYER_DIFFICULTY:
-		DrawPreGameDifficultySelection(HeroChosen, 1);
-		break;
-	}
-
-	if (SDL_PollEvent(&event)) {
-		switch (event.type) {
-		case SDL_KEYDOWN:
-			switch (event.key.keysym.sym) {
-			case SDLK_ESCAPE:
-				SetMenu(PreviousItem[submenu]);
-				break;
-			case SDLK_BACKSPACE:
-				if (NewHeroNameIndex > 0) {
-					HeroUndecidedName[NewHeroNameIndex - 1] = 0;
-					NewHeroNameIndex--;
-				}
-				break;
-			case SDLK_UP:
-				SelectedItem--;
-				if (SelectedItem < 1) {
-					SelectedItem = SelectedItemMax ? SelectedItemMax : 1;
-				}
-				effects_play_sound("sfx\\items\\titlemov.wav");
-				break;
-			case SDLK_DOWN:
-				SelectedItem++;
-				if (SelectedItem > SelectedItemMax) {
-					SelectedItem = 1;
-				}
-				effects_play_sound("sfx\\items\\titlemov.wav");
-				break;
-			default:
-				char letter = event.key.keysym.sym;
-				if (int(letter) > 96 && int(letter) < 123 || int(letter) == 32)
-
-					if (NewHeroNameIndex < 17) {
-						HeroUndecidedName[NewHeroNameIndex] = letter;
-						NewHeroNameIndex++;
-					}
-				break;
-			}
-		case SDL_KEYUP:
+	int done = false;
+	while (done == false) {
+		switch (submenu) {
+		case MULTIPLAYER_LOBBY:
+			DrawPreGameOptions(HeroChosen, 1);
+			break;
+		case MULTIPLAYER_DIFFICULTY:
+			DrawPreGameDifficultySelection(HeroChosen, 1);
 			break;
 		}
 
-		// If a key was pressed
-		if (event.type == SDL_MOUSEBUTTONDOWN /*&& event.button.clicks == 2*/) {
-
-			if (event.button.button == SDL_BUTTON_LEFT) {
-				x = event.button.x;
-				y = event.button.y;
-				printf("X %d , Y %d\n", x, y);
-
-				int ItemLeft;
-				int ItemTop;
-				int ItemHeight;
-				int ItemWidth;
-
-				int CreateHeroOkBoxX = 330;
-				int CreateHeroOkBoxY = 441;
-				int CreateHeroCanBBoxX = 445;
-				int CreateHeroCanBBoxY = 473;
-
-				SDL_Rect CreateHeroCancelBox;
-				CreateHeroCancelBox.y = 550;
-				CreateHeroCancelBox.x = 675;
-				CreateHeroCancelBox.w = 100;
-				CreateHeroCancelBox.h = 30;
-
-				clock_t start, end;
-				double cpu_time_used;
-
-				switch (submenu) {
-				case 5:
-					if (timestart == 0) {
-						start = clock();
-						timestart = 1;
-					}
-
-					end = clock();
-
-					cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
-
-					printf("TIEM DELAY %f\n", cpu_time_used);
-
-					SDL_Rect NewGameBox;
-					NewGameBox.y = 350;
-					NewGameBox.x = 280;
-					NewGameBox.w = 300;
-					NewGameBox.h = 30;
-
-					SDL_Rect LoadGameBox;
-					LoadGameBox.y = 392;
-					LoadGameBox.x = 280;
-					LoadGameBox.w = 300;
-					LoadGameBox.h = 30;
-					// X450 Y 392 ;
-					// X 447 Y 428
-
-					if (cpu_time_used > 0.5 && IsInsideRect(x, y, NewGameBox)) {
-						printf(" New Game I was hit\n\n\n");
-						SetMenu(MULTIPLAYER_DIFFICULTY);
-						cpu_time_used = 0;
-						timestart = 0;
-						start = 0;
-					} else if (cpu_time_used > 0.5 && IsInsideRect(x, y, LoadGameBox)) {
-
-						printf(" Load Game I was hit\n\n\n");
+		if (SDL_PollEvent(&event)) {
+			switch (event.type) {
+			case SDL_KEYDOWN:
+				switch (event.key.keysym.sym) {
+				case SDLK_ESCAPE:
+					if (PreviousItem[submenu]) {
+						SetMenu(PreviousItem[submenu]);
 						break;
-					} else if (IsInsideRect(x, y, CreateHeroCancelBox)) {
-						timestart = 0;
-						cpu_time_used = 0;
-						start = 0;
-						end = 0;
-						cpu_time_used = 0;
-
-						printf("Cancel\n\n\n");
-
-						SetMenu(SINGLEPLAYER_CLASSES); // TODO skip to main menu if no valid saves
 					}
+
+					*dlgresult = 4;
+					return TRUE;
+				case SDLK_UP:
+					SelectedItem--;
+					if (SelectedItem < 1) {
+						SelectedItem = SelectedItemMax ? SelectedItemMax : 1;
+					}
+					effects_play_sound("sfx\\items\\titlemov.wav");
 					break;
-				case MULTIPLAYER_DIFFICULTY:
-					if (timestart == 0) {
-						start = clock();
-						timestart = 1;
+				case SDLK_DOWN:
+					SelectedItem++;
+					if (SelectedItem > SelectedItemMax) {
+						SelectedItem = 1;
 					}
-
-					end = clock();
-					cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
-
-					// int x = 280;
-					// int y = 430;
-
-					SDL_Rect NormalSelectBox;
-					NormalSelectBox.y = 350;
-					NormalSelectBox.x = 280;
-					NormalSelectBox.w = 300;
-					NormalSelectBox.h = 30;
-
-					SDL_Rect NightmareSelectBox;
-					NightmareSelectBox.y = 392;
-					NightmareSelectBox.x = 280;
-					NightmareSelectBox.w = 300;
-					NightmareSelectBox.h = 30;
-					// X450 Y 392 ;
-
-					SDL_Rect HellSelectBox;
-					HellSelectBox.y = 428;
-					HellSelectBox.x = 280;
-					HellSelectBox.w = 300;
-					HellSelectBox.h = 30;
-					// X 447 Y 428
-
-					if (cpu_time_used > 0.5 && IsInsideRect(x, y, NormalSelectBox)) {
-						StartNewGame = 1;
-						gnDifficulty = DIFF_NORMAL;
+					effects_play_sound("sfx\\items\\titlemov.wav");
+					break;
+				case SDLK_RETURN:
+				case SDLK_KP_ENTER:
+				case SDLK_SPACE:
+					switch (submenu) {
+					case MULTIPLAYER_LOBBY:
+						SetMenu(MULTIPLAYER_DIFFICULTY);
 						break;
-					} else if (cpu_time_used > 0.5 && IsInsideRect(x, y, NightmareSelectBox)) {
-						StartNewGame = 1;
-						gnDifficulty = DIFF_NIGHTMARE;
+					case MULTIPLAYER_DIFFICULTY:
+						CreateSinglePlayerChar = 1;
+						done = true;
 						break;
-					} else if (cpu_time_used > 1 && IsInsideRect(x, y, HellSelectBox)) {
-						gnDifficulty = DIFF_HELL;
-						StartNewGame = 1;
-						break;
-					} else if (IsInsideRect(x, y, CreateHeroCancelBox)) {
-						timestart = 0;
-						cpu_time_used = 0;
-						start = 0;
-						end = 0;
-						cpu_time_used = 0;
-
-						printf("Cancel\n\n\n");
-						SetMenu(MULTIPLAYER_LOBBY);
 					}
 					break;
 				}
+				break;
+			case SDL_MOUSEBUTTONDOWN:
+				if (event.button.button == SDL_BUTTON_LEFT) {
+					x = event.button.x;
+					y = event.button.y;
+					printf("X %d , Y %d\n", x, y);
+
+					int ItemLeft;
+					int ItemTop;
+					int ItemHeight;
+					int ItemWidth;
+
+					int CreateHeroOkBoxX = 330;
+					int CreateHeroOkBoxY = 441;
+					int CreateHeroCanBBoxX = 445;
+					int CreateHeroCanBBoxY = 473;
+
+					SDL_Rect CreateHeroCancelBox;
+					CreateHeroCancelBox.y = 550;
+					CreateHeroCancelBox.x = 675;
+					CreateHeroCancelBox.w = 100;
+					CreateHeroCancelBox.h = 30;
+
+					clock_t start, end;
+					double cpu_time_used;
+
+					switch (submenu) {
+					case 5:
+						if (timestart == 0) {
+							start = clock();
+							timestart = 1;
+						}
+
+						end = clock();
+
+						cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
+
+						printf("TIEM DELAY %f\n", cpu_time_used);
+
+						SDL_Rect NewGameBox;
+						NewGameBox.y = 350;
+						NewGameBox.x = 280;
+						NewGameBox.w = 300;
+						NewGameBox.h = 30;
+
+						SDL_Rect LoadGameBox;
+						LoadGameBox.y = 392;
+						LoadGameBox.x = 280;
+						LoadGameBox.w = 300;
+						LoadGameBox.h = 30;
+						// X450 Y 392 ;
+						// X 447 Y 428
+
+						if (cpu_time_used > 0.5 && IsInsideRect(x, y, NewGameBox)) {
+							printf(" New Game I was hit\n\n\n");
+							SetMenu(MULTIPLAYER_DIFFICULTY);
+							cpu_time_used = 0;
+							timestart = 0;
+							start = 0;
+						} else if (cpu_time_used > 0.5 && IsInsideRect(x, y, LoadGameBox)) {
+
+							printf(" Load Game I was hit\n\n\n");
+							break;
+						} else if (IsInsideRect(x, y, CreateHeroCancelBox)) {
+							timestart = 0;
+							cpu_time_used = 0;
+							start = 0;
+							end = 0;
+							cpu_time_used = 0;
+
+							printf("Cancel\n\n\n");
+
+							SetMenu(SINGLEPLAYER_CLASSES); // TODO skip to main menu if no valid saves
+						}
+						break;
+					case MULTIPLAYER_DIFFICULTY:
+						if (timestart == 0) {
+							start = clock();
+							timestart = 1;
+						}
+
+						end = clock();
+						cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
+
+						// int x = 280;
+						// int y = 430;
+
+						SDL_Rect NormalSelectBox;
+						NormalSelectBox.y = 350;
+						NormalSelectBox.x = 280;
+						NormalSelectBox.w = 300;
+						NormalSelectBox.h = 30;
+
+						SDL_Rect NightmareSelectBox;
+						NightmareSelectBox.y = 392;
+						NightmareSelectBox.x = 280;
+						NightmareSelectBox.w = 300;
+						NightmareSelectBox.h = 30;
+						// X450 Y 392 ;
+
+						SDL_Rect HellSelectBox;
+						HellSelectBox.y = 428;
+						HellSelectBox.x = 280;
+						HellSelectBox.w = 300;
+						HellSelectBox.h = 30;
+						// X 447 Y 428
+
+						if (cpu_time_used > 0.5 && IsInsideRect(x, y, NormalSelectBox)) {
+							StartNewGame = 1;
+							gnDifficulty = DIFF_NORMAL;
+							break;
+						} else if (cpu_time_used > 0.5 && IsInsideRect(x, y, NightmareSelectBox)) {
+							StartNewGame = 1;
+							gnDifficulty = DIFF_NIGHTMARE;
+							break;
+						} else if (cpu_time_used > 1 && IsInsideRect(x, y, HellSelectBox)) {
+							gnDifficulty = DIFF_HELL;
+							StartNewGame = 1;
+							break;
+						} else if (IsInsideRect(x, y, CreateHeroCancelBox)) {
+							timestart = 0;
+							cpu_time_used = 0;
+							start = 0;
+							end = 0;
+							cpu_time_used = 0;
+
+							printf("Cancel\n\n\n");
+							SetMenu(MULTIPLAYER_LOBBY);
+						}
+						break;
+					}
+				}
+				break;
+			case SDL_QUIT:
+				SDL_Quit();
+				exit(0);
 			}
 		}
 	}
-
-	return TRUE;
 
 	hero_infos.clear();
 	fninfo(&ui_add_hero_info);
@@ -897,15 +911,103 @@ BOOL __stdcall UiArtCallback(int game_type, unsigned int art_code, PALETTEENTRY 
 }
 
 int __stdcall UiSelectGame(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info, _SNETUIDATA *ui_info,
-    _SNETVERSIONDATA *file_info, int *a6)
+    _SNETVERSIONDATA *file_info, int *playerId)
 {
-	UNIMPLEMENTED();
+	DUMMY();
+	*playerId = 0;
+	return 1;
 }
 
 int __stdcall UiSelectProvider(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info, _SNETUIDATA *ui_info,
     _SNETVERSIONDATA *file_info, int *type)
 {
-	UNIMPLEMENTED();
+	int gameType = 0;
+
+	TitleImageLoaded = false;
+	SelectedItem = 1;
+	SelectedItemMax = 3;
+	SDL_Event event;
+	int x, y;
+	int ItemTop = 191;
+	int ItemHeight = 42;
+	int ItemWidth = 515;
+	int ItemLeft = GetCenterOffset(ItemWidth);
+
+	bool done = false;
+	while (done == false) {
+		DrawSelMultiConnection();
+		if (SDL_PollEvent(&event)) {
+			switch (event.type) {
+			case SDL_KEYDOWN:
+				switch (event.key.keysym.sym) {
+				case SDLK_UP:
+					SelectedItem--;
+					if (SelectedItem < MAINMENU_SINGLE_PLAYER) {
+						SelectedItem = SelectedItemMax;
+					}
+					effects_play_sound("sfx\\items\\titlemov.wav");
+					break;
+				case SDLK_DOWN:
+					SelectedItem++;
+					if (SelectedItem > SelectedItemMax) {
+						SelectedItem = MAINMENU_SINGLE_PLAYER;
+					}
+					effects_play_sound("sfx\\items\\titlemov.wav");
+					break;
+				case SDLK_ESCAPE:
+					if (PreviousItem[submenu]) {
+						SetMenu(PreviousItem[submenu]);
+						break;
+					}
+
+					return FALSE;
+				case SDLK_RETURN:
+				case SDLK_KP_ENTER:
+				case SDLK_SPACE:
+					switch (SelectedItem) {
+					case 1:
+						effects_play_sound("sfx\\items\\titlslct.wav");
+						done = !SNetInitializeProvider('ipc', client_info, user_info, ui_info, file_info);
+						break;
+					case 2:
+						effects_play_sound("sfx\\items\\titlslct.wav");
+						done = !SNetInitializeProvider('dial', client_info, user_info, ui_info, file_info);
+						break;
+					case 3:
+						effects_play_sound("sfx\\items\\titlslct.wav");
+						done = !SNetInitializeProvider('null', client_info, user_info, ui_info, file_info);
+						break;
+					}
+					break;
+				}
+				break;
+			case SDL_MOUSEBUTTONDOWN:
+				if (event.button.button == SDL_BUTTON_LEFT) {
+					x = event.button.x;
+					y = event.button.y;
+
+					if (IsInside(x, y, ItemLeft, ItemTop, ItemWidth, ItemHeight)) {
+						effects_play_sound("sfx\\items\\titlslct.wav");
+						done = true;
+						break;
+					} else if (IsInside(x, y, ItemLeft, ItemTop + ItemHeight + 1, ItemWidth, ItemHeight)) {
+						effects_play_sound("sfx\\items\\titlslct.wav");
+						break;
+					} else if (IsInside(x, y, ItemLeft, ItemTop + ItemHeight * 2 + 1, ItemWidth, ItemHeight)) {
+						effects_play_sound("sfx\\items\\titlslct.wav");
+						done = true;
+						break;
+					}
+				}
+				break;
+			case SDL_QUIT:
+				SDL_Quit();
+				exit(0);
+			}
+		}
+	}
+
+	return false;
 }
 
 int __stdcall UiCreatePlayerDescription(_uiheroinfo *info, int mode, char *desc)

@@ -136,7 +136,8 @@ void *STORMAPI SMemReAlloc(void *location, unsigned int amount, char *logfilenam
 BOOL STORMAPI SRegLoadData(const char *keyname, const char *valuename, int size, LPBYTE lpData, BYTE flags,
                            LPDWORD lpcbData)
 {
-	UNIMPLEMENTED();
+	DUMMY();
+	return 0;
 }
 
 BOOL STORMAPI SRegLoadString(const char *keyname, const char *valuename, BYTE flags, char *buffer, unsigned int buffersize)
