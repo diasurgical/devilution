@@ -153,8 +153,14 @@ BOOLEAN __stdcall SNetSetBasePlayer(int)
 
 int __stdcall SNetGetProviderCaps(struct _SNETCAPS *caps)
 {
-	memset(caps, 0, sizeof(struct _SNETCAPS));
-	caps->maxplayers = 1;
-	caps->bytessec = 100000;
+	caps->size = 0; // engine writes only ?!?
+	caps->flags = 0; // unused
+	caps->maxmessagesize = 512; // capped to 512; underflow if < 24
+	caps->maxqueuesize = 0; // unused
+	caps->maxplayers = gbMaxPlayers;  // capped to 4
+	caps->bytessec = 100000; // ?
+	caps->latencyms = 0; // unused
+	caps->defaultturnssec = 10; // ?
+	caps->defaultturnsintransit = 10; // ?
 	return 1;
 }

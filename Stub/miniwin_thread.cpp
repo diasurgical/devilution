@@ -1,5 +1,8 @@
 #include "../types.h"
 
+static std::set<HANDLE> threads;
+static std::set<HANDLE> events;
+
 struct event_emul {
 	SDL_mutex *mutex;
 	SDL_cond *cond;
@@ -15,8 +18,9 @@ uintptr_t __cdecl _beginthreadex(void *_Security, unsigned _StackSize, unsigned(
 	if(_InitFlag != 0)
 		UNIMPLEMENTED();
 	// WARNING: wrong return type of _StartAddress
-	SDL_Thread *ret = SDL_CreateThread((SDL_ThreadFunction)_StartAddress, "", _ArgList);
+	SDL_Thread *ret = SDL_CreateThread((SDL_ThreadFunction)_StartAddress, NULL, _ArgList);
 	*_ThrdAddr = SDL_GetThreadID(ret);
+	threads.insert((HANDLE)ret);
 	return (uintptr_t)ret;
 }
 
@@ -81,6 +85,7 @@ HANDLE WINAPI CreateEventA(LPSECURITY_ATTRIBUTES lpEventAttributes, WINBOOL bMan
 	ret = (struct event_emul*)malloc(sizeof(struct event_emul));
 	ret->mutex = SDL_CreateMutex();
 	ret->cond = SDL_CreateCond();
+	events.insert((HANDLE*)ret);
 	return ret;
 }
 
@@ -102,7 +107,7 @@ BOOL WINAPI ResetEvent(HANDLE hEvent)
 	return 1;
 }
 
-DWORD WINAPI WaitForSingleObject(HANDLE hHandle, DWORD dwMilliseconds)
+static DWORD wait_for_sdl_cond(HANDLE hHandle, DWORD dwMilliseconds)
 {
 	struct event_emul *e = (struct event_emul*)hHandle;
 	SDL_LockMutex(e->mutex);
@@ -113,6 +118,25 @@ DWORD WINAPI WaitForSingleObject(HANDLE hHandle, DWORD dwMilliseconds)
 		ret = SDL_CondWaitTimeout(e->cond, e->mutex, dwMilliseconds);
 	SDL_CondSignal(e->cond);
 	SDL_UnlockMutex(e->mutex);
-	return ret; // return value different from WinAPI
+	return ret;
+}
+
+static DWORD wait_for_sdl_thread(HANDLE hHandle, DWORD dwMilliseconds)
+{
+	if(dwMilliseconds != INFINITE)
+		UNIMPLEMENTED();
+	SDL_Thread *t = (SDL_Thread*)hHandle;
+	SDL_WaitThread(t, NULL);
+	return 0;
+}
+
+DWORD WINAPI WaitForSingleObject(HANDLE hHandle, DWORD dwMilliseconds)
+{
+	// return value different from WinAPI
+	if(threads.find(hHandle) != threads.end())
+		return wait_for_sdl_thread(hHandle, dwMilliseconds);
+	if(events.find(hHandle) != threads.end())
+		return wait_for_sdl_cond(hHandle, dwMilliseconds);
+	UNIMPLEMENTED();
 }
 
