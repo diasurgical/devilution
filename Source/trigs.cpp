@@ -154,24 +154,35 @@ void __cdecl InitTownTriggers()
 
 void __cdecl InitL1Triggers()
 {
-	int i, j;
+	int j, i;
+	int *_tmsg, *_ty, *_tx;
+
 	trigflag[4] = 0;
-
-	for (j = 0; j < MAXDUNX; j++) {
-		for (i = 0; i < MAXDUNY; i++) {
+	for (j = 0; j < MAXDUNY; j++) {
+		i = 0;
+		_tmsg = &trigs[trigflag[4]]._tmsg;
+		_ty = &trigs[trigflag[4]]._ty;
+		_tx = &trigs[trigflag[4]]._tx;
+		while (i < MAXDUNX) {
 			if (dPiece[i][j] == 129) {
-				trigs[trigflag[4]]._tx = i;
-				trigs[trigflag[4]]._ty = j;
-				trigs[trigflag[4]]._tmsg = WM_DIABPREVLVL;
-				++trigflag[4];
+				trigflag[4]++;
+				*_tx = i;
+				*_ty = j;
+				*_tmsg = WM_DIABPREVLVL;
+				_tx += sizeof(int*);
+				_ty += sizeof(int *);
+				_tmsg += sizeof(int *);
 			}
-
 			if (dPiece[i][j] == 115) {
-				trigs[trigflag[4]]._tx = i;
-				trigs[trigflag[4]]._ty = j;
-				trigs[trigflag[4]]._tmsg = WM_DIABNEXTLVL;
-				++trigflag[4];
+				trigflag[4]++;
+				*_tx = i;
+				*_ty = j;
+				*_tmsg = WM_DIABNEXTLVL;
+				_tx += sizeof(int *);
+				_ty += sizeof(int *);
+				_tmsg += sizeof(int *);
 			}
+			i++;
 		}
 	}
 	trigflag[3] = 0;
