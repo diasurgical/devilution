@@ -728,7 +728,7 @@ void SdlDiabloMainWindow()
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
 
-	window = SDL_CreateWindow("Diablo", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
+	window = SDL_CreateWindow("Diablo", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_RESIZABLE);
 
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
 	printf("Window And Renderer Created!\n");
@@ -1014,6 +1014,16 @@ void RenderDiabloLogoSm()
 void DrawMouse()
 {
 	SDL_GetMouseState(&MouseX, &MouseY);
+
+	float scaleX;
+	SDL_RenderGetScale(renderer, &scaleX, NULL);
+	MouseX /= scaleX;
+	MouseY /= scaleX;
+
+	SDL_Rect view;
+	SDL_RenderGetViewport(renderer, &view);
+	MouseX -= view.x;
+	MouseY -= view.y;
 
 	DrawArtWithMask(MouseX, MouseY, gdwCursorWidth, gdwCursorHeight, 0, 0, pPcxCursorImage);
 }
