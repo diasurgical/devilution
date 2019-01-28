@@ -15,8 +15,22 @@ DWORD nLastError = 0;
 BOOL STORMAPI SFileDdaBeginEx(HANDLE directsound, DWORD flags, DWORD mask, unsigned __int32 lDistanceToMove,
                               signed __int32 volume, signed int a6, int a7)
 {
-	DUMMY();
-	return 0;
+	DUMMY(); // Todo track when the sound can be released, see sfx_stop()
+	int bytestoread;
+	int nrread;
+	void *SFXbuffer;
+	SFXbuffer = directsound;
+
+	bytestoread = (int)SFileGetFileSize(directsound, 0);
+	SFXbuffer = DiabloAllocPtr(bytestoread);
+	SFileReadFile(directsound, (char *)SFXbuffer, bytestoread, (LPDWORD)&nrread, 0);
+
+	SDL_RWops *rw = SDL_RWFromMem(SFXbuffer, bytestoread);
+	Mix_Chunk *SoundFX = Mix_LoadWAV_RW(rw, 1);
+
+	Mix_PlayChannel(-1, SoundFX, 0);
+
+	return 1;
 }
 
 BOOL STORMAPI SFileDdaDestroy()
