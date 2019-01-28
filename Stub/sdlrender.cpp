@@ -956,7 +956,7 @@ BOOL ShowCredts()
 			printf("TTF_OpenFont: %s\n", TTF_GetError());
 		} else {
 			TTF_SetFontStyle(font, TTF_STYLE_BOLD);
-			TTF_SetFontKerning(font, 0);
+			TTF_SetFontHinting(font, TTF_HINTING_MONO);
 		}
 		LoadTitelArt("ui_art\\credits.pcx");
 	}
