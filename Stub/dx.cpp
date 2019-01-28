@@ -317,8 +317,19 @@ BOOL STORMAPI SDrawUpdatePalette(unsigned int firstentry, unsigned int numentrie
 
 WINBOOL WINAPI SetCursorPos(int X, int Y)
 {
-	DUMMY();
+	assert(renderer);
 	assert(window);
+
+	SDL_Rect view;
+	SDL_RenderGetViewport(renderer, &view);
+	X += view.x;
+	Y += view.y;
+
+	float scaleX;
+	SDL_RenderGetScale(renderer, &scaleX, NULL);
+	X *= scaleX;
+	Y *= scaleX;
+
 	SDL_WarpMouseInWindow(window, X, Y);
 	return TRUE;
 }
