@@ -16,6 +16,7 @@ void __cdecl UiDestroy()
 
 BOOL __stdcall UiTitleDialog(int a1)
 {
+	fadeValue = 0;
 	TitleImageLoaded = false;
 	SDL_Event event;
 	while (1) {
@@ -170,6 +171,7 @@ void UiInitialize()
 
 BOOL __stdcall UiMainMenuDialog(char *name, int *pdwResult, void(__stdcall *fnSound)(char *file), int a4)
 {
+	fadeValue = 0;
 	TitleImageLoaded = false;
 	SelectedItem = 1;
 	SelectedItemMax = 5;
@@ -291,6 +293,7 @@ BOOL __stdcall UiSelHeroSingDialog(
     char *name,
     int *difficulty)
 {
+	fadeValue = 0;
 	TitleImageLoaded = false;
 
 	submenu = SINGLEPLAYER_LOAD;
@@ -618,6 +621,7 @@ BOOL __stdcall UiSelHeroMultDialog(
     char *name)
 {
 	DUMMY();
+	fadeValue = 0;
 	TitleImageLoaded = false;
 	submenu = MULTIPLAYER_LOBBY;
 
@@ -836,11 +840,19 @@ BOOL __stdcall UiSelHeroMultDialog(
 
 BOOL __stdcall UiCreditsDialog(int a1)
 {
+	if (!TTF_WasInit() && TTF_Init() == -1) {
+		printf("TTF_Init: %s\n", TTF_GetError());
+		exit(1);
+	}
+
+	nottheend = TRUE;
+	lineCount = 13;
+	creditline = -lineCount;
+	lastYbase = 0;
+	fadeValue = 0;
 	TitleImageLoaded = false;
 	SDL_Event event;
-	while (1) {
-		ShowCredts();
-
+	while (ShowCredts()) {
 		if (SDL_PollEvent(&event)) {
 			switch (event.type) {
 			case SDL_KEYDOWN:
@@ -853,7 +865,7 @@ BOOL __stdcall UiCreditsDialog(int a1)
 		}
 	}
 
-	return FALSE;
+	return TRUE;
 }
 
 void __cdecl UiProfileCallback()
@@ -921,6 +933,7 @@ int __stdcall UiSelectProvider(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYE
 {
 	int gameType = 0;
 
+	fadeValue = 0;
 	TitleImageLoaded = false;
 	SelectedItem = 1;
 	SelectedItemMax = 3;

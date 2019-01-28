@@ -43,6 +43,7 @@ string(APPEND CMAKE_CXX_FLAGS_DEBUG " -Og -fno-omit-frame-pointer")
 string(APPEND CMAKE_CXX_FLAGS_DEBUG " -fsanitize=address -fsanitize-recover=address")
 
 find_package(SDL2 REQUIRED)
+find_package(SDL2_ttf REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 
 set(SOURCES
@@ -157,6 +158,7 @@ set(STUB_SOURCES
 )
 
 include_directories(${SDL2_INCLUDE_DIR}
+                    ${SDL2_TTF_INCLUDE_DIR}
                     ${SDL2_MIXER_INCLUDE_DIR})
 
 include_directories(. Stub)
@@ -192,6 +194,7 @@ add_executable(devilution
 target_link_libraries(devilution PUBLIC
     m
     ${SDL2_LIBRARY}
+    ${SDL2_TTF_LIBRARIES}
     ${SDL2_MIXER_LIBRARIES}
 )
 

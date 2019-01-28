@@ -54,6 +54,12 @@ extern void *pPcxCreditsImage;
 extern int gdwCreditsWidth;
 extern int gdwCreditsHeight;
 
+extern int fadeValue;
+extern int lineCount;
+extern int creditline;
+extern BOOL nottheend;
+extern int lastYbase;
+
 extern bool TitleImageLoaded;
 extern int SelectedItem;
 
@@ -98,7 +104,7 @@ void RenderDiabloMainPage(char *name);
 char *GetWorkingDirectory();
 void CreateMainDiabloMenu();
 void RenderDiabloSinglePlayerPage();
-void ShowCredts();
+BOOL ShowCredts();
 void RenderCharNames();
 void FreeMenuItems();
 BOOL __cdecl LoadArtImage(char *pszFile, void **pBuffer, int frames, DWORD *data);
