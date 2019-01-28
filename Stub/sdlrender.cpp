@@ -726,17 +726,14 @@ void FreeMenuItems()
 
 void SdlDiabloMainWindow()
 {
-	SDL_ShowCursor(SDL_DISABLE);
 	SDL_Init(SDL_INIT_EVERYTHING);
-	SDL_Init(SDL_INIT_VIDEO);
 
 	window = SDL_CreateWindow("Diablo", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
 
 	renderer = SDL_CreateRenderer(window, -1, 0);
 	printf("Window And Renderer Created!\n");
 
-	SDL_RenderSetLogicalSize(renderer, 640, 480);
-	const int pitch = SCREEN_WIDTH + 64 + 64;
+	SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	surface = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_HEIGHT, 32, 0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF);
 	assert(surface);

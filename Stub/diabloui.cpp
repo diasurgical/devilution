@@ -156,14 +156,11 @@ void UiInitialize()
 {
 	InitHiracy();
 	LoadUiGFX();
-	snd_init(0);
-	music_start(5);
 
 	if (!window) {
 		SdlDiabloMainWindow();
 	}
-
-	ClearScreenBuffer();
+	ShowCursor(FALSE);
 
 	LoadHeroStats();
 	LoadCharNamesintoMemory();
