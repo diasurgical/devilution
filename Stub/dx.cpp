@@ -268,7 +268,6 @@ void __fastcall dx_init(HWND hWnd)
 /** Copy the palette surface to the main backbuffer */
 void sdl_update_entire_surface()
 {
-
 	assert(surface && pal_surface);
 	SDL_Rect src_rect = {64, 160, 640, 480};
 	SDL_CHECK(SDL_BlitSurface(pal_surface, &src_rect, surface, NULL));
@@ -296,9 +295,7 @@ void __fastcall j_lock_buf_priv(BYTE idx)
 
 
 		pal_surface = SDL_CreateRGBSurfaceFrom(gpBuffer, pitch, 160 + 480 + 16, 8, pitch, 0, 0, 0, 0);
-		SDL_SetSurfacePalette(pal_surface, palette);
 		assert(pal_surface);
-
 		SDL_CHECK(SDL_SetSurfacePalette(pal_surface, palette));
 	}
 
