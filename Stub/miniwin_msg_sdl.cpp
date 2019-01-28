@@ -16,6 +16,8 @@ static int translate_sdl_key(SDL_Keysym key)
 		return VK_RETURN;
 	case SDLK_TAB:
 		return VK_TAB;
+	case SDLK_SPACE:
+		return VK_SPACE;
 	case SDLK_BACKSPACE:
 		return VK_BACK;
 
