@@ -25,8 +25,7 @@ SDL_Palette *palette;
 /**
  * Is #sdl_pal_surface dirty?
  *
- * This is required so the front buffer would not be updated twice per game loop in unlock_buf_priv()
- * which causes the cursor to flicker.
+ * This is required so the front buffer would not be updated twice per game loop in unlock_buf_priv().
  */
 bool surface_dirty;
 
@@ -55,7 +54,6 @@ class StubSurface : public IDirectDrawSurface
 	{
 		DUMMY_ONCE();
 
-
 		assert(lpDDSrcSurface == lpDDSBackBuf);
 
 		int w = lpSrcRect->right - lpSrcRect->left + 1;
@@ -64,24 +62,11 @@ class StubSurface : public IDirectDrawSurface
 		SDL_Rect src_rect = {lpSrcRect->left, lpSrcRect->top, w, h};
 		SDL_Rect dst_rect = {(int)dwX, (int)dwY, w, h};
 
-
-		//printf("SRC   %d %d %d %d \n",src_rect.x, src_rect.y, src_rect.w, src_rect.h  );
-		//printf("DST   %d %d %d %d \n",dst_rect.x, dst_rect.y, dst_rect.w, dst_rect.h  );
-
 		// Convert from 8-bit to 32-bit
-
-
 		SDL_CHECK(SDL_BlitSurface(pal_surface, &src_rect, surface, &dst_rect));
 
-		//char * foo = "dasdasdas";
-		//printf("I CRASH\n %s ", *foo);
-
-
-		//64 160 640 480
-		//0 0 640 480
 		surface_dirty = true;
 		return S_OK;
-
 	}
 
 	METHOD HRESULT DeleteAttachedSurface(DWORD dwFlags, LPDIRECTDRAWSURFACE lpDDSAttachedSurface) { UNIMPLEMENTED(); }
@@ -228,34 +213,9 @@ static StubPalette stub_palette;
 // Main functions
 //
 
-void sdl_init_video()
-{
-	SDL_CHECK(SDL_Init(SDL_INIT_VIDEO));
-	//moved to SDLrender.cpp
-
-/*
-
-	window =  SDL_CreateWindow("devil-test", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WINDOW_SHOWN);
-	assert(window);
-
-	// Hack since ShowCursor is called before dx_init()
-	SDL_ShowCursor(SDL_DISABLE);
-
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
-	assert(renderer);
-
-
-	// FUTURE: Use SDL_CreateRGBSurfaceWithFormat with SDL_PIXELFORMAT_RGBA8888
-	palette = SDL_AllocPalette(256);
-
-	assert(palette);*/
-}
-
 void __fastcall dx_init(HWND hWnd)
 {
 	DUMMY();
-
-	sdl_init_video();
 
 	gbActive = TRUE;
 
@@ -293,7 +253,6 @@ void __fastcall j_lock_buf_priv(BYTE idx)
 		printf("SIZE OF SCREEN %d\n", sizeof(Screen));
 		gpBufEnd += (unsigned int)gpBuffer;
 
-
 		pal_surface = SDL_CreateRGBSurfaceFrom(gpBuffer, pitch, 160 + 480 + 16, 8, pitch, 0, 0, 0, 0);
 		assert(pal_surface);
 		SDL_CHECK(SDL_SetSurfacePalette(pal_surface, palette));
@@ -304,10 +263,7 @@ void __fastcall j_lock_buf_priv(BYTE idx)
 
 void __fastcall j_unlock_buf_priv(BYTE idx)
 {
-
 	gpBufEnd -= (unsigned int)gpBufEnd;
-
-
 
 	if (!surface_dirty) {
 		return;
@@ -325,15 +281,8 @@ void __cdecl dx_reinit()
 // Storm functions
 //
 
-
-
 BOOL STORMAPI SDrawUpdatePalette(unsigned int firstentry, unsigned int numentries, PALETTEENTRY *pPalEntries, int a4)
 {
-//	DUMMY_PRINT("first: %d num: %d", firstentry, numentries);
-
-
-
-
 	assert(firstentry == 0);
 	assert(numentries == 256);
 
