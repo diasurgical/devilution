@@ -557,25 +557,6 @@ void __fastcall LoadPalInMem(PALETTEENTRY *pPal)
 
 BOOL __cdecl LoadArtImage(char *pszFile, void **pBuffer, int frames, DWORD *data)
 {
-	DWORD width;  // [esp+44h] [ebp-8h]
-	DWORD height; // [esp+48h] [ebp-4h] MAPDST
-
-	*pBuffer = NULL;
-
-	if (!SBmpLoadImage(pszFile, 0, 0, 0, &width, &height, 0))
-		return 0;
-	*pBuffer = SMemAlloc(height * width, "U:\\DiabloUI\\Ui\\local.cpp", 88, 0);
-	if (!SBmpLoadImage(pszFile, NULL, *pBuffer, height * width, 0, 0, 0))
-		return 0;
-	if (pBuffer && data) {
-		data[0] = width;
-		data[1] = height / frames;
-	}
-	return 1;
-}
-
-BOOL __cdecl LoadArtWithPal(char *pszFile, void **pBuffer, int frames, DWORD *data)
-{
 	DWORD width;
 	DWORD height;
 
@@ -586,9 +567,6 @@ BOOL __cdecl LoadArtWithPal(char *pszFile, void **pBuffer, int frames, DWORD *da
 	*pBuffer = SMemAlloc(height * width, "U:\\DiabloUI\\Ui\\local.cpp", 88, 0);
 	if (!SBmpLoadImage(pszFile, pcxPal, *pBuffer, height * width, 0, 0, 0))
 		return 0;
-
-	LoadPalInMem(pcxPal);
-
 	if (pBuffer && data) {
 		data[0] = width;
 		data[1] = height / frames;
@@ -907,7 +885,8 @@ void LoadTitelArt(char *pszFile)
 		return;
 	}
 
-	LoadArtWithPal(pszFile, &pPcxTitleImage, 1, dwData);
+	LoadArtImage(pszFile, &pPcxTitleImage, 1, dwData);
+	LoadPalInMem(pcxPal);
 	ApplyGamma(logical_palette, orig_palette, 256);
 	gdwTitleWidth = dwData[0];
 	gdwTitleHeight = dwData[1];
