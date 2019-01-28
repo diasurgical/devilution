@@ -57,8 +57,6 @@ void *MenuPentegram16;
 void *MenuPentegram;
 void *MenuPentegram42;
 
-void *pDiabfrCel;
-
 char HeroUndecidedName[17];
 
 _uiheroinfo heroarray[10];
@@ -543,7 +541,7 @@ BOOL nottheend = TRUE;
 /////////////////////////////////////////
 PALETTEENTRY pcxPal[256];
 
-void __fastcall LoadPalInMem(PALETTEENTRY *pPal)
+void LoadPalInMem(PALETTEENTRY *pPal)
 {
 	int i;
 
@@ -555,7 +553,7 @@ void __fastcall LoadPalInMem(PALETTEENTRY *pPal)
 	}
 }
 
-BOOL __cdecl LoadArtImage(char *pszFile, void **pBuffer, int frames, DWORD *data)
+BOOL LoadArtImage(char *pszFile, void **pBuffer, int frames, DWORD *data)
 {
 	DWORD width;
 	DWORD height;
@@ -746,26 +744,14 @@ void SdlDiabloMainWindow()
 	j_lock_buf_priv(0); //FIXME 0?
 }
 
-void DrawArtImage(int SX, int SY, int SW, int SH, int nFrame, void *pBuffer)
+void DrawArtImage(int SX, int SY, int SW, int SH, int nFrame, void *pBuffer, BYTE *bMask = NULL)
 {
 	BYTE *src = (BYTE *)pBuffer + (SW * SH * nFrame);
 	BYTE *dst = (BYTE *)&gpBuffer->row[SY].pixels[SX];
 
 	for (int i = 0; i < SH && i + SY < SCREEN_HEIGHT; i++, src += SW, dst += 768) {
 		for (int j = 0; j < SW && j + SX < SCREEN_WIDTH; j++) {
-			dst[j] = src[j];
-		}
-	}
-}
-
-void DrawArtWithMask(int SX, int SY, int SW, int SH, int nFrame, BYTE bMask, void *pBuffer)
-{
-	BYTE *src = (BYTE *)pBuffer + (SW * SH * nFrame);
-	BYTE *dst = (BYTE *)&gpBuffer->row[SY].pixels[SX];
-
-	for (int i = 0; i < SH && i + SY < SCREEN_HEIGHT; i++, src += SW, dst += 768) {
-		for (int j = 0; j < SW && j + SX < SCREEN_WIDTH; j++) {
-			if (src[j] != bMask)
+			if (bMask == NULL || src[j] != *bMask)
 				dst[j] = src[j];
 		}
 	}
@@ -782,11 +768,13 @@ int GetCenterOffset(int w, int bw = 0)
 
 void DrawPCXString(int x, int y, int w, int h, BYTE *str, BYTE *font, void *pBuff)
 {
-	int i;
 	int len = 0;
+	BYTE mask = 32;
 	BYTE chr;
+	int i;
+
 	for (i = 0; i < strlen(str); i++) {
-		DrawArtWithMask(x + len, y, w, h, str[i], 32, pBuff);
+		DrawArtImage(x + len, y, w, h, str[i], pBuff, &mask);
 		chr = font[str[i] + 2];
 		if (chr)
 			len += chr;
@@ -795,7 +783,7 @@ void DrawPCXString(int x, int y, int w, int h, BYTE *str, BYTE *font, void *pBuf
 	}
 }
 
-int __fastcall GetPCXFontWidth(unsigned char *str, BYTE *font)
+int GetPCXFontWidth(unsigned char *str, BYTE *font)
 {
 	int i;
 	int len = 0;
@@ -996,9 +984,10 @@ BOOL ShowCredts()
 
 void AnimateDiabloLogo(int t, int w, int h, void *pBuffer)
 {
+	BYTE mask = 250;
 	int frame = GetAnimationFrame(15);
 
-	DrawArtWithMask(GetCenterOffset(w), t, w, h, frame, 250, pBuffer);
+	DrawArtImage(GetCenterOffset(w), t, w, h, frame, pBuffer, &mask);
 }
 
 void RenderDiabloLogo()
@@ -1013,6 +1002,8 @@ void RenderDiabloLogoSm()
 
 void DrawMouse()
 {
+	BYTE mask = 0;
+
 	SDL_GetMouseState(&MouseX, &MouseY);
 
 	float scaleX;
@@ -1025,18 +1016,20 @@ void DrawMouse()
 	MouseX -= view.x;
 	MouseY -= view.y;
 
-	DrawArtWithMask(MouseX, MouseY, gdwCursorWidth, gdwCursorHeight, 0, 0, pPcxCursorImage);
+	DrawArtImage(MouseX, MouseY, gdwCursorWidth, gdwCursorHeight, 0, pPcxCursorImage, &mask);
 }
 
 void AnimateSelector(int x, int y, int width, int padding, int spacing, int swidth, void *pBuffer)
 {
+	BYTE mask = 250;
+
 	width = width ? width : SCREEN_WIDTH;
 	x += GetCenterOffset(swidth, width);
 	y += (SelectedItem - 1) * spacing;
 
 	int frame = GetAnimationFrame(8);
-	DrawArtWithMask(x - width / 2 + padding, y, swidth, swidth, frame, 250, pBuffer);
-	DrawArtWithMask(x + width / 2 - padding, y, swidth, swidth, frame, 250, pBuffer);
+	DrawArtImage(x - width / 2 + padding, y, swidth, swidth, frame, pBuffer, &mask);
+	DrawArtImage(x + width / 2 - padding, y, swidth, swidth, frame, pBuffer, &mask);
 }
 
 void DrawSelector16(int x, int y, int width, int padding, int spacing)

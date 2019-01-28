@@ -8,6 +8,10 @@ int MenuItem[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 int PreviousItem[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 int submenu = 0;
 
+bool CreateSinglePlayerChar;
+bool StartNewGame;
+int HeroChosen = 0;
+
 void __cdecl UiDestroy()
 {
 	DUMMY();

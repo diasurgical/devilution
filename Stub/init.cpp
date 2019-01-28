@@ -1,19 +1,23 @@
+//HEADER_GOES_HERE
+
 #include "../types.h"
 
-#ifndef NO_GLOBALS
-void *diabdat_mpq;
-void *patch_rt_mpq;
-
 _SNETVERSIONDATA fileinfo;
+int gbActive; // weak
+char diablo_exe_path[260];
+void *unused_mpq;
+char patch_rt_mpq_path[260];
 WNDPROC CurrentProc;
-int gbActive;
-#endif
+void *diabdat_mpq;
+char diabdat_mpq_path[260];
+void *patch_rt_mpq;
+int killed_mom_parent; // weak
+BOOLEAN screensaver_enabled_prev;
+
+/* data */
 
 char gszVersionNumber[260] = "internal version unknown";
 char gszProductName[260] = "Diablo v1.09";
-bool StartNewGame;
-bool CreateSinglePlayerChar;
-int HeroChosen = 0;
 
 /**
  * Case insensitive search for a file name in a directory.

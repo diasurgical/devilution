@@ -8,11 +8,11 @@ extern int gdwFont16Height;
 extern void *pPcxFont16sImage;
 extern void *pPcxFont16gImage;
 
+extern unsigned char *pFont24;
 extern int gdwFont24Width;
 extern int gdwFont24Height;
 extern void *pPcxFont24sImage;
 extern void *pPcxFont24gImage;
-extern unsigned char *pFont24;
 
 extern unsigned char *pFont30;
 extern int gdwFont30Width;
@@ -24,9 +24,6 @@ extern unsigned char *pFont42;
 extern int gdwFont42Width;
 extern int gdwFont42Height;
 extern void *pPcxFont42gImage;
-
-extern void *pTitlqtxtCel;
-extern void *pDiabfrCel;
 
 extern void *pPcxLogoImage;
 extern int gdwLogoWidth;
@@ -49,11 +46,6 @@ extern int gdwSHeroWidth;
 extern void *pPcxSHeroImage;
 extern void *pMedTextCels;
 
-extern void *pPcxGameImage;
-extern void *pPcxCreditsImage;
-extern int gdwCreditsWidth;
-extern int gdwCreditsHeight;
-
 extern int fadeValue;
 extern int lineCount;
 extern int creditline;
@@ -63,30 +55,9 @@ extern int lastYbase;
 extern bool TitleImageLoaded;
 extern int SelectedItem;
 
-extern int totalFrames;
-//extern SDL_Texture* spriteSheet;
-extern SDL_Surface *DiabloTitle;
-extern SDL_Event input;
-
 extern int SCREEN_WIDTH;
 extern int SCREEN_HEIGHT;
 extern int TotalPlayers;
-
-extern SDL_Rect textureRect;
-extern SDL_Rect windowRect;
-
-//Menu0 //Main Menu rects
-extern SDL_Rect SinglePlrBox;
-extern SDL_Rect MultiPlrBox;
-extern SDL_Rect ReplayIntroBox;
-extern SDL_Rect ShowCreditsBox;
-extern SDL_Rect ExitBox;
-
-extern bool StartNewGame;
-extern bool CreateSinglePlayerChar;
-extern int HeroChosen;
-
-extern void *TitleMenuText;
 
 extern void *MenuPentegram16;
 extern void *MenuPentegram;
@@ -94,29 +65,17 @@ extern void *MenuPentegram42;
 
 extern char HeroUndecidedName[17];
 
-extern SDL_Rect SinglePlayerMenuCancelBox;
-extern SDL_Rect CreateHeroBox;
-void CreateMenuDialogBox();
-void CreateDiabloMainMenuz();
 void SdlDiabloMainWindow();
 void RenderDiabloSplashPage();
 void RenderDiabloMainPage(char *name);
-char *GetWorkingDirectory();
-void CreateMainDiabloMenu();
 void RenderDiabloSinglePlayerPage();
 BOOL ShowCredts();
-void RenderCharNames();
 void FreeMenuItems();
-BOOL __cdecl LoadArtImage(char *pszFile, void **pBuffer, int frames, DWORD *data);
-void DrawMouse();
-void DrawCursor(int mx, int my);
+BOOL LoadArtImage(char *pszFile, void **pBuffer, int frames, DWORD *data);
 void CreateHeroMenu();
 void RenderUndecidedHeroName(int HeroClass);
 void LoadHeroStats();
-void RenderDefaultStats(int HeroClass);
 void DrawPreGameOptions(int HeroClass, int ShowClasses);
 void DrawPreGameDifficultySelection(int HeroClass, int ShowClasses);
 void DrawSelMultiConnection();
 int GetCenterOffset(int w, int bw = 0);
-void DrawPCXString(int x, int y, int w, int h, BYTE *str, BYTE *font, void *pBuff);
-void DrawArtWithMask(int SX, int SY, int SW, int SH, int nFrame, BYTE bMask, void *pBuffer);
