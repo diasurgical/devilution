@@ -951,11 +951,11 @@ BOOL ShowCredts()
 {
 	if (!TitleImageLoaded) {
 		// TODO locate font dynamically, and use fallback font if missing
-		font = TTF_OpenFont("/usr/share/fonts/truetype/msttcorefonts/Times_New_Roman.ttf", 17);
+		font = TTF_OpenFont("/usr/share/fonts/truetype/msttcorefonts/Times_New_Roman_Bold.ttf", 17);
 		if (font == NULL) {
 			printf("TTF_OpenFont: %s\n", TTF_GetError());
 		} else {
-			TTF_SetFontStyle(font, TTF_STYLE_BOLD);
+			TTF_SetFontKerning(font, FALSE);
 			TTF_SetFontHinting(font, TTF_HINTING_MONO);
 		}
 		LoadTitelArt("ui_art\\credits.pcx");
