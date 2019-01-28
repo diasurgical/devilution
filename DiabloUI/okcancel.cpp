@@ -56,7 +56,7 @@ LRESULT __stdcall OkCancel_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lP
 	HWND v9; // eax
 
 	if (Msg == 2) {
-		ShowCursor(0);
+		ShowCursor(FALSE);
 		OkCancel_FreeDlgBmp(hWnd);
 		return (LRESULT)SDlgDefDialogProc(hWnd, Msg, (HDC)wParam, (HWND)lParam);
 	}
@@ -98,7 +98,7 @@ LRESULT __stdcall OkCancel_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lP
 		v6 = 2;
 		goto LABEL_16;
 	}
-	ShowCursor(1);
+	ShowCursor(TRUE);
 	if (!OkCancel_LoadOkCancGFX(hWnd, (DWORD *)lParam))
 		SDlgEndDialog(hWnd, (HANDLE)0xFF000000);
 	return 1;
