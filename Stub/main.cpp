@@ -1,5 +1,10 @@
 #include "../types.h"
 
+extern "C" const char *__asan_default_options()
+{
+	return "halt_on_error=0";
+}
+
 static std::string build_cmdline(int argc, char **argv)
 {
 	std::string str;
@@ -13,7 +18,7 @@ static std::string build_cmdline(int argc, char **argv)
 }
 
 int main(int argc, char **argv)
-{	
+{
 	auto cmdline = build_cmdline(argc, argv);
 	return WinMain(NULL, NULL, cmdline.c_str(), 0);
 }

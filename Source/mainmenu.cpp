@@ -34,7 +34,7 @@ int __stdcall mainmenu_select_hero_dialog(
     char *cdesc, DWORD cdlen,
     BOOL *multi)
 {
-	int a6 = 1;
+	BOOL hero_is_created = TRUE;
 	int dlgresult = 0;
 	if (gbMaxPlayers == 1) {
 		if (!UiSelHeroSingDialog(
@@ -58,7 +58,7 @@ int __stdcall mainmenu_select_hero_dialog(
 	               pfile_delete_save,
 	               pfile_ui_set_class_stats,
 	               &dlgresult,
-	               &a6,
+	               &hero_is_created,
 	               gszHero)) {
 		TermMsg("Can't load multiplayer dialog");
 	}
@@ -70,9 +70,9 @@ int __stdcall mainmenu_select_hero_dialog(
 	pfile_create_player_description(cdesc, cdlen);
 	if (multi) {
 		if (mode == 'BNET')
-			*multi = a6 || !plr[myplr].pBattleNet;
+			*multi = hero_is_created || !plr[myplr].pBattleNet;
 		else
-			*multi = a6;
+			*multi = hero_is_created;
 	}
 	if (cname && clen)
 		SStrCopy(cname, gszHero, clen);

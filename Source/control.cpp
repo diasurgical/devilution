@@ -193,14 +193,14 @@ void __fastcall DrawSpellCel(int xp, int yp, char *Trans, int nCel, int w)
 	unsigned int v11; // ecx
 	char v14;         // cf
 	unsigned int v15; // ecx
-	int v18;          // [esp+Ch] [ebp-Ch]
+	INT_PTR v18;      // [esp+Ch] [ebp-Ch]
 	int _EAX;
 	unsigned char *_EBX;
 
 	v5 = &Trans[4 * nCel];
 	v6 = &Trans[*(_DWORD *)v5];
 	v7 = (char *)gpBuffer + screen_y_times_768[yp] + xp;
-	v18 = (int)&v6[*((_DWORD *)v5 + 1) - *(_DWORD *)v5];
+	v18 = (INT_PTR)&v6[*((_DWORD *)v5 + 1) - *(_DWORD *)v5];
 	_EBX = splTrans;
 	do {
 		v9 = w;
@@ -523,7 +523,7 @@ void __cdecl DrawSpellList()
 			++v4;
 			v26 *= (__int64)2;
 			v23 = v4;
-		} while ((signed int)v20 < (signed int)&spelldata[MAX_SPELLS].sTownSpell);
+		} while ((INT_PTR)v20 < (INT_PTR)&spelldata[MAX_SPELLS].sTownSpell);
 		if (v25 && v17 != 636)
 			v17 -= 56;
 		if (v17 == 20) {
@@ -615,7 +615,7 @@ void __fastcall CPrintString(int No, unsigned int glyph, unsigned char col)
 	int *v3;          // ebx
 	char *v4;         // esi
 	char *v5;         // edi
-	int v6;           // ebx
+	INT_PTR v6;       // ebx
 	signed int v7;    // edx
 	unsigned int v8;  // eax
 	unsigned int v9;  // ecx
@@ -637,7 +637,7 @@ void __fastcall CPrintString(int No, unsigned int glyph, unsigned char col)
 	v3 = (int *)((char *)pPanelText + 4 * glyph);
 	v4 = (char *)pPanelText + *v3;
 	v5 = (char *)gpBuffer + No;
-	v6 = (int)&v4[v3[1] - *v3];
+	v6 = (INT_PTR)&v4[v3[1] - *v3];
 	if ((_BYTE)col) {
 		if ((unsigned char)col == 1) {
 			do {
@@ -2607,7 +2607,7 @@ void __cdecl DrawTalkPan()
 		LABEL_21:
 			a1 += 21720;
 			++v10;
-			if ((signed int)a1 >= (signed int)&plr[4]._pName)
+			if ((INT_PTR)a1 >= (INT_PTR)&plr[4]._pName)
 				return;
 		}
 		if (byte_4B894C[v10]) {
@@ -2836,7 +2836,7 @@ void __cdecl control_press_enter()
 				break;
 			++v1;
 			++v0;
-		} while ((signed int)v1 < (signed int)&sgszTalkSave[8]);
+		} while ((INT_PTR)v1 < (INT_PTR)&sgszTalkSave[8]);
 		if (v0 < 8) {
 			v2 = sgbNextTalkSave;
 			v3 = (sgbNextTalkSave - 1) & 7;

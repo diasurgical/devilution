@@ -47,7 +47,7 @@ void __fastcall buffer_init(TBuffer *pBuf);
 void __fastcall multi_send_pinfo(int pnum, char cmd);
 int __fastcall InitNewSeed(int newseed);
 void __cdecl SetupLocalCoords();
-int __fastcall multi_init_single(_SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info, _SNETUIDATA *ui_info);
+BOOL __fastcall multi_init_single(_SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info, _SNETUIDATA *ui_info);
 BOOL __fastcall multi_init_multi(_SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info, _SNETUIDATA *ui_info, int *pfExitProgram);
 BOOL __fastcall multi_upgrade(int *pfExitProgram);
 void __fastcall multi_player_joins(int pnum, TCmdPlrInfoHdr *cmd, int a3);

@@ -375,7 +375,7 @@ void __fastcall LoadL2Dungeon(char *sFileName, int vx, int vy)
 	signed int v6;     // eax
 	signed int v7;     // ecx
 	int v8;            // esi
-	int v9;            // eax
+	INT_PTR v9;        // eax
 	int v10;           // ebx
 	int v11;           // edi
 	char *v12;         // eax
@@ -420,7 +420,7 @@ void __fastcall LoadL2Dungeon(char *sFileName, int vx, int vy)
 		++v5;
 	} while (v5 < 40);
 	v8 = *v4;
-	v9 = (int)(v4 + 2);
+	v9 = (INT_PTR)(v4 + 2);
 	v10 = 0;
 	v11 = v4[2];
 	v12 = (char *)(v9 + 2);
@@ -489,7 +489,7 @@ void __fastcall LoadL2Dungeon(char *sFileName, int vx, int vy)
 		} while (v21);
 		v33 = (int(*)[112])((char *)v33 + 4);
 		++v18;
-	} while ((signed int)v33 < (signed int)dPiece[1]);
+	} while ((INT_PTR)v33 < (INT_PTR)dPiece[1]);
 	v24 = 0;
 	v25 = dPiece;
 	do {
@@ -511,7 +511,7 @@ void __fastcall LoadL2Dungeon(char *sFileName, int vx, int vy)
 		} while (v28);
 		v25 = (int(*)[112])((char *)v25 + 4);
 		++v24;
-	} while ((signed int)v25 < (signed int)dPiece[1]);
+	} while ((INT_PTR)v25 < (INT_PTR)dPiece[1]);
 	ViewX = v30;
 	ViewY = vy;
 	SetMapMonsters((unsigned char *)ptr, 0, 0);
@@ -562,7 +562,7 @@ void __cdecl DRLG_L2Pass3()
 			--v3;
 		} while (v3);
 		v1 += 2;
-	} while ((signed int)v1 < (signed int)dPiece[2]);
+	} while ((INT_PTR)v1 < (INT_PTR)dPiece[2]);
 	v4 = 0;
 	v14 = &dPiece[17][16];
 	do {
@@ -989,8 +989,8 @@ BOOLEAN __fastcall DRLG_L2PlaceMiniSet(unsigned char *miniset, int tmin, int tma
 	int v31;            // [esp+14h] [ebp-20h]
 	int v32;            // [esp+18h] [ebp-1Ch]
 	signed int v33;     // [esp+1Ch] [ebp-18h]
-	int v34;            // [esp+20h] [ebp-14h]
-	int v35;            // [esp+24h] [ebp-10h]
+	INT_PTR v34;        // [esp+20h] [ebp-14h]
+	INT_PTR v35;        // [esp+24h] [ebp-10h]
 	int v36;            // [esp+28h] [ebp-Ch]
 	int max;            // [esp+2Ch] [ebp-8h]
 	//int v38; // [esp+30h] [ebp-4h]
@@ -1084,7 +1084,7 @@ BOOLEAN __fastcall DRLG_L2PlaceMiniSet(unsigned char *miniset, int tmin, int tma
 				if (v34 > 0) {
 					v26 = &dungeon[v13][v24 + v14];
 					do {
-						v27 = v29[(_DWORD)miniset];
+						v27 = v29[(UINT_PTR)miniset];
 						if (v27)
 							*v26 = v27;
 						++miniset;
@@ -1147,8 +1147,8 @@ void __fastcall DRLG_L2PlaceRndSet(unsigned char *miniset, int rndper)
 	int v27;            // [esp+28h] [ebp-1Ch]
 	int v28;            // [esp+2Ch] [ebp-18h]
 	int v29;            // [esp+30h] [ebp-14h]
-	signed int v30;     // [esp+34h] [ebp-10h]
-	signed int v31;     // [esp+38h] [ebp-Ch]
+	INT_PTR v30;        // [esp+34h] [ebp-10h]
+	INT_PTR v31;        // [esp+38h] [ebp-Ch]
 	int v32;            // [esp+3Ch] [ebp-8h]
 	signed int v33;     // [esp+40h] [ebp-4h]
 
@@ -1368,7 +1368,7 @@ void __cdecl DRLG_L2Shadows()
 					}
 				}
 				v1 += 7;
-			} while ((signed int)v1 < (signed int)&SPATSL2[2].s1);
+			} while ((INT_PTR)v1 < (INT_PTR)&SPATSL2[2].s1);
 			v0 += 40;
 			--v9;
 		} while (v9);
@@ -2971,7 +2971,7 @@ void __cdecl DRLG_InitL2Vals()
 		} while (v4);
 		v1 = (int(*)[112])((char *)v1 + 4);
 		++v0;
-	} while ((signed int)v1 < (signed int)dPiece[1]);
+	} while ((INT_PTR)v1 < (INT_PTR)dPiece[1]);
 	v6 = 0;
 	v7 = dPiece;
 	do {
@@ -2993,5 +2993,5 @@ void __cdecl DRLG_InitL2Vals()
 		} while (v10);
 		v7 = (int(*)[112])((char *)v7 + 4);
 		++v6;
-	} while ((signed int)v7 < (signed int)dPiece[1]);
+	} while ((INT_PTR)v7 < (INT_PTR)dPiece[1]);
 }

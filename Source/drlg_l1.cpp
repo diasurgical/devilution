@@ -269,7 +269,7 @@ void __cdecl DRLG_L1Pass3()
 			--v3;
 		} while (v3);
 		v1 += 2;
-	} while ((signed int)v1 < (signed int)dPiece[2]);
+	} while ((INT_PTR)v1 < (INT_PTR)dPiece[2]);
 	v4 = 0;
 	v14 = &dPiece[17][16]; /* check */
 	do {
@@ -365,7 +365,7 @@ void __cdecl DRLG_InitL1Vals()
 		} while (v6);
 		v7 = (int(*)[112])((char *)v7 + 4);
 		++v0;
-	} while ((signed int)v7 < (signed int)dPiece[1]);
+	} while ((INT_PTR)v7 < (INT_PTR)dPiece[1]);
 }
 
 void __fastcall LoadPreL1Dungeon(char *sFileName, int vx, int vy)
