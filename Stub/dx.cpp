@@ -238,6 +238,10 @@ void sdl_present_surface()
 	assert(!SDL_MUSTLOCK(surface));
 	SDL_CHECK(SDL_UpdateTexture(texture, NULL, surface->pixels, surface->pitch));//pitch is 2560
 
+	// Clear the entire screen to our selected color.
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+	SDL_RenderClear(renderer);
+
 	SDL_CHECK(SDL_RenderCopy(renderer, texture, NULL, NULL));
 	SDL_RenderPresent(renderer);
 
