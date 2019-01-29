@@ -719,11 +719,12 @@ void FreeMenuItems()
 	tmp = pPcxFont42yImage;
 	pPcxFont42yImage = NULL;
 	mem_free_dbg(tmp);
-	TTF_Quit();
 }
 
 void SdlDiabloMainWindow()
 {
+	atexit(SDL_Quit);
+	atexit(TTF_Quit);
 	SDL_Init(SDL_INIT_EVERYTHING);
 
 	window = SDL_CreateWindow("Diablo", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_RESIZABLE);

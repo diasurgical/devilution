@@ -32,7 +32,6 @@ BOOL __stdcall UiTitleDialog(int a1)
 			case SDL_MOUSEBUTTONDOWN:
 				return TRUE;
 			case SDL_QUIT:
-				SDL_Quit();
 				exit(0);
 			}
 		}
@@ -548,7 +547,6 @@ BOOL __stdcall UiSelHeroSingDialog(
 				}
 				break;
 			case SDL_QUIT:
-				SDL_Quit();
 				exit(0);
 			}
 		}
@@ -816,7 +814,6 @@ BOOL __stdcall UiSelHeroMultDialog(
 				}
 				break;
 			case SDL_QUIT:
-				SDL_Quit();
 				exit(0);
 			}
 		}
@@ -860,7 +857,6 @@ BOOL __stdcall UiCreditsDialog(int a1)
 			case SDL_MOUSEBUTTONDOWN:
 				return TRUE;
 			case SDL_QUIT:
-				SDL_Quit();
 				exit(0);
 			}
 		}
@@ -1022,7 +1018,6 @@ int __stdcall UiSelectProvider(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYE
 				}
 				break;
 			case SDL_QUIT:
-				SDL_Quit();
 				exit(0);
 			}
 		}

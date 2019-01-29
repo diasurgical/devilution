@@ -13,6 +13,7 @@ static int translate_sdl_key(SDL_Keysym key)
 	case SDLK_ESCAPE:
 		return VK_ESCAPE;
 	case SDLK_RETURN:
+	case SDLK_KP_ENTER:
 		return VK_RETURN;
 	case SDLK_TAB:
 		return VK_TAB;
@@ -63,6 +64,8 @@ static int translate_sdl_key(SDL_Keysym key)
 	case SDLK_LSHIFT:
 	case SDLK_RSHIFT:
 		return VK_SHIFT;
+	case SDLK_PRINTSCREEN:
+		return VK_SNAPSHOT;
 
 	default:
 		if (sym >= SDLK_a && sym <= SDLK_z) {
