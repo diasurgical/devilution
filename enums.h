@@ -2267,12 +2267,6 @@ typedef enum menus
 	CREDIT,
 } menus;
 
-enum TXT_JUST {
-	JustLeft   = 0,
-	JustCentre = 1,
-	JustRight  = 2,
-};
-
 typedef enum panel_button_id {
 	PANBTN_CHARINFO  = 0,
 	PANBTN_QLOG      = 1,

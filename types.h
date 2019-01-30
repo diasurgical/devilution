@@ -9,7 +9,7 @@
 #include "miniwin.h"
 #include "miniwin_sdl.h"
 #include "stubs.h"
-#include "sdlrender.h"
+#include "DiabloUI/sdlrender.h"
 #include "sound.h"
 #endif
 

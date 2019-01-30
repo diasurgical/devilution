@@ -59,6 +59,7 @@ set(SOURCES
     Source/drlg_l2.cpp
     Source/drlg_l3.cpp
     Source/drlg_l4.cpp
+    Source/dthread.cpp
     Source/effects.cpp
     Source/encrypt.cpp
     Source/engine.cpp
@@ -80,6 +81,7 @@ set(SOURCES
     Source/msgcmd.cpp
     Source/msg.cpp
     Source/multi.cpp
+    Source/nthread.cpp
     Source/objects.cpp
     Source/pack.cpp
     Source/palette.cpp
@@ -104,8 +106,6 @@ set(SOURCES
     Source/track.cpp
     Source/trigs.cpp
     Source/wave.cpp
-    Source/dthread.cpp
-    Source/nthread.cpp
 
     3rdParty/PKWare/explode.cpp
     3rdParty/PKWare/implode.cpp
@@ -113,8 +113,8 @@ set(SOURCES
 
 # Stubbed out sources, for reference
 set(ORIGINAL_SOURCES
-    Source/capture.cpp
     Source/appfat.cpp
+    Source/capture.cpp
     Source/dx.cpp
     Source/fault.cpp
     Source/init.cpp
@@ -125,24 +125,29 @@ set(ORIGINAL_SOURCES
 )
 
 set(STUB_SOURCES
-    Stub/miniwin.cpp
-    Stub/miniwin_rand.cpp
     Stub/appfat.cpp
     Stub/capture.cpp
     Stub/dx.cpp
     Stub/fault.cpp
     Stub/init.cpp
+    Stub/miniwin.cpp
+    Stub/miniwin_io.cpp
+    Stub/miniwin_msg_sdl.cpp
+    Stub/miniwin_rand.cpp
+    Stub/miniwin_thread.cpp
     Stub/movie.cpp
     Stub/restrict.cpp
     Stub/sound.cpp
     Stub/storm.cpp
-    Stub/diabloui.cpp
-    Stub/miniwin_io.cpp
-    Stub/miniwin_msg_sdl.cpp
-    Stub/miniwin_thread.cpp
     Stub/storm_net.cpp
-#   Stub/validate.cpp
-    Stub/sdlrender.cpp
+
+    Stub/DiabloUI/credits.cpp
+    Stub/DiabloUI/diabloui.cpp
+    Stub/DiabloUI/mainmenu.cpp
+    Stub/DiabloUI/sdlrender.cpp
+    Stub/DiabloUI/selconn.cpp
+    Stub/DiabloUI/selhero.cpp
+    Stub/DiabloUI/title.cpp
 
     3rdParty/StormLib/src/FileStream.cpp
     3rdParty/StormLib/src/SBaseCommon.cpp
