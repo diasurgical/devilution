@@ -80,13 +80,15 @@ int __stdcall SNetGetProviderCaps(struct _SNETCAPS *caps)
 	return devilution_net::inst->SNetGetProviderCaps(caps);
 }
 
+/**
+ * @brief Called by engine for single, called by ui for multi
+ * @param provider BNET, IPXN, MODM, SCBL or UDPN
+ * @param fileinfo Ignore
+ */
 int __stdcall SNetInitializeProvider(unsigned long provider, struct _SNETPROGRAMDATA *client_info,
     struct _SNETPLAYERDATA *user_info, struct _SNETUIDATA *ui_info,
     struct _SNETVERSIONDATA *fileinfo)
 {
-	// called by engine for single
-	// called by ui for multi
-	// Ignore: fileinfo
 	if (provider == 'UDPN')
 		devilution_net::inst = std::make_unique<devilution_net_udp>();
 	else if (provider == 'SCBL' || provider == 0)
@@ -101,12 +103,13 @@ int __stdcall SNetInitializeProvider(unsigned long provider, struct _SNETPROGRAM
 	return TRUE;
 }
 
+/**
+ * @brief Called by engine for single, called by ui for multi
+ */
 BOOL STORMAPI SNetCreateGame(const char *pszGameName, const char *pszGamePassword, const char *pszGameStatString,
     DWORD dwGameType, char *GameTemplateData, int GameTemplateSize, int playerCount,
     char *creatorName, char *a11, int *playerID)
 {
-	// called by engine for single
-	// called by ui for multi
 	// hack: cannot create game until UI is ready
 	//       first instance will create, second will join
 	int ret;
@@ -116,9 +119,11 @@ BOOL STORMAPI SNetCreateGame(const char *pszGameName, const char *pszGamePasswor
 	return TRUE;
 }
 
+/**
+ * @brief Is this the mirror image of SNetGetTurnsInTransit?
+ */
 BOOL __stdcall SNetGetOwnerTurnsWaiting(DWORD *turns)
 {
-	// Is this the mirror image of SNetGetTurnsInTransit?
 	*turns = 0;
 	return TRUE;
 }
@@ -129,22 +134,27 @@ BOOL STORMAPI SNetGetTurnsInTransit(int *turns)
 	return TRUE;
 }
 
+/**
+ * @brief engine calls this only once with argument 1
+ */
 BOOLEAN __stdcall SNetSetBasePlayer(int)
 {
-	// engine calls this only once with argument 1
 	return TRUE;
 }
 
+/**
+ * @brief since we never signal STORM_ERROR_REQUIRES_UPGRADE the engine will not call this function
+ */
 BOOL STORMAPI SNetPerformUpgrade(DWORD *upgradestatus)
 {
-	// since we never signal STORM_ERROR_REQUIRES_UPGRADE
-	// the engine will not call this function
 	UNIMPLEMENTED();
 }
 
+/**
+ * @brief not called from engine
+ */
 BOOL STORMAPI SNetSetGameMode(DWORD modeFlags, bool makePublic)
 {
-	// not called from engine
 	UNIMPLEMENTED();
 	return TRUE;
 }
