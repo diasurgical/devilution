@@ -166,7 +166,7 @@ include_directories(${SDL2_INCLUDE_DIR}
                     ${SDL2_TTF_INCLUDE_DIR}
                     ${SDL2_MIXER_INCLUDE_DIR})
 
-include_directories(. Stub)
+include_directories(. Stub 3rdParty/asio/include)
 
 # FUTURE: use add_compile_definitions()
 add_definitions(
