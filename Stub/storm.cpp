@@ -109,6 +109,114 @@ BOOL STORMAPI SFileOpenFile(const char *filename, HANDLE *phFile)
 // 	UNIMPLEMENTED();
 // }
 
+BOOL __stdcall SBmpLoadImage(const char *pszFileName, PALETTEENTRY *pPalette, BYTE *pBuffer, DWORD dwBuffersize, DWORD *pdwWidth, DWORD *dwHeight, DWORD *pdwBpp)
+{
+	HANDLE hFile;
+	size_t size;
+	PCXHeader pcxhdr;
+	BYTE paldata[256][3];
+	BYTE *dataPtr, *fileBuffer;
+	BYTE byte;
+
+	if (pdwWidth)
+		*pdwWidth = 0;
+	if (dwHeight)
+		*dwHeight = 0;
+	if (pdwBpp)
+		*pdwBpp = 0;
+
+	if (!pszFileName || !*pszFileName) {
+		return false;
+	}
+
+	if (pBuffer && !dwBuffersize) {
+		return false;
+	}
+
+	if (!pPalette && !pBuffer && !pdwWidth && !dwHeight) {
+		return false;
+	}
+
+	if (!SFileOpenFile(pszFileName, &hFile)) {
+		return false;
+	}
+
+	while (strchr(pszFileName, 92))
+		pszFileName = strchr(pszFileName, 92) + 1;
+
+	while (strchr(pszFileName + 1, 46))
+		pszFileName = strchr(pszFileName, 46);
+
+	// omit all types except PCX
+	if (!pszFileName || _strcmpi(pszFileName, ".pcx")) {
+		return false;
+	}
+
+	if (!SFileReadFile(hFile, &pcxhdr, 128, 0, 0)) {
+		SFileCloseFile(hFile);
+		return false;
+	}
+
+	int width = pcxhdr.xmax - pcxhdr.xmin + 1;
+	int height = pcxhdr.ymax - pcxhdr.ymin + 1;
+
+	if (pdwWidth)
+		*pdwWidth = width;
+	if (dwHeight)
+		*dwHeight = height;
+	if (pdwBpp)
+		*pdwBpp = pcxhdr.bitsPerPixel;
+
+	if (!pBuffer) {
+		SFileSetFilePointer(hFile, 0, 0, 2);
+		fileBuffer = NULL;
+	} else {
+		size = SFileGetFileSize(hFile, 0) - SFileSetFilePointer(hFile, 0, 0, 1);
+		fileBuffer = (BYTE *)malloc(size);
+	}
+
+	if (fileBuffer) {
+		SFileReadFile(hFile, fileBuffer, size, 0, 0);
+		dataPtr = fileBuffer;
+
+		for (int j = 0; j < height; j++) {
+			for (int x = 0; x < width; dataPtr++) {
+				byte = *dataPtr;
+				if (byte < 0xC0) {
+					*pBuffer = byte;
+					*pBuffer++;
+					x++;
+					continue;
+				}
+				dataPtr++;
+
+				for (int i = 0; i < (byte & 0x3F); i++) {
+					*pBuffer = *dataPtr;
+					*pBuffer++;
+					x++;
+				}
+			}
+		}
+
+		free(fileBuffer);
+	}
+
+	if (pPalette && pcxhdr.bitsPerPixel == 8) {
+		SFileSetFilePointer(hFile, -768, 0, 1);
+		SFileReadFile(hFile, paldata, 768, 0, 0);
+		for (int i = 0; i < 256; i++) {
+			pPalette[i].peRed = paldata[i][0];
+			pPalette[i].peGreen = paldata[i][1];
+			pPalette[i].peBlue = paldata[i][2];
+			pPalette[i].peFlags = 0;
+		}
+	}
+
+	SFileCloseFile(hFile);
+
+	return true;
+}
+
 // int __stdcall SFileSetFilePointer(HANDLE, int, HANDLE, int)
 // {
 // 	UNIMPLEMENTED();

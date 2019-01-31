@@ -607,7 +607,7 @@ STORMAPI
 SBmpLoadImage(
     const char   *pszFileName,
     PALETTEENTRY *pPalette ,
-    void         *pBuffer,
+    BYTE         *pBuffer,
     DWORD        dwBuffersize,
     DWORD        *pdwWidth,
     DWORD        *pdwHeight,
