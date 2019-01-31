@@ -76,7 +76,7 @@ void __cdecl Connect_cpp_init();
 BOOL __stdcall UiGetDataCallback(int game_type, int data_code, void *a3, int a4, int a5);
 BOOL __stdcall UiSoundCallback(int a1, int type, int a3);
 BOOL __stdcall UiAuthCallback(int a1, char *a2, char *a3, char a4, char *a5, LPSTR lpBuffer, int cchBufferMax);
-BOOL __stdcall UiDrawDescCallback(int arg0, COLORREF color, LPCSTR lpString, char *a4, int a5, UINT align, time_t a7, HDC *a8);
+BOOL __stdcall UiDrawDescCallback(int game_type, COLORREF color, LPCSTR lpString, char *a4, int a5, UINT align, time_t a7, HDC *a8);
 BOOL __stdcall UiCategoryCallback(int a1, int a2, int a3, int a4, int a5, _DWORD *a6, _DWORD *a7);
 int __fastcall Connect_GetRankFromLevel(char *str);
 BOOL __fastcall Connect_DiffFromString(char *str, _gamedata *gamedata, int a3, int a4);
