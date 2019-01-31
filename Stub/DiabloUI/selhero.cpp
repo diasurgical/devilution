@@ -68,7 +68,7 @@ void selhero_Render()
 
 	DrawSelector16(x, selectorTop + 3, w, 32, 26);
 
-	RenderStats("-", "-", "-", "-", "-");
+	RenderStats("--", "--", "--", "--", "--");
 
 	PrintText30Gold(279, 429, "OK");
 	PrintText30Gold(378, 429, "Delete");
@@ -101,7 +101,7 @@ void selhero_Render_DifficultySelection(int HeroClass, int ShowClasses)
 	RenderDefaultStats(HeroClass);
 }
 
-void DrawPreGameOptions(int HeroClass, int ShowClasses)
+void selhero_Render_GameType(int HeroClass, int ShowClasses)
 {
 	DrawArtImage(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, pPcxTitleImage);
 	RenderDiabloLogoSm();
@@ -398,7 +398,7 @@ BOOL __stdcall UiSelHeroMultDialog(
 	while (endMenu == false) {
 		switch (submenu) {
 		case MULTIPLAYER_LOBBY:
-			DrawPreGameOptions(HeroChosen, 1);
+			selhero_Render_GameType(HeroChosen, 1);
 			break;
 		case MULTIPLAYER_DIFFICULTY:
 			selhero_Render_DifficultySelection(HeroChosen, 1);
