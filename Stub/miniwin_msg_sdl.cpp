@@ -120,8 +120,7 @@ WINBOOL WINAPI PeekMessageA(LPMSG lpMsg, HWND hWnd, UINT wMsgFilterMin, UINT wMs
 	}
 
 	SDL_Event e;
-	int pending = SDL_PollEvent(&e);
-	if (!pending) {
+	if (!SDL_PollEvent(&e)) {
 		return FALSE;
 	}
 

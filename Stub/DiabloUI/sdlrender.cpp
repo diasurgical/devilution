@@ -99,6 +99,7 @@ void SdlDiabloMainWindow()
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
 	printf("Window And Renderer Created!\n");
 
+	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
 	SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	surface = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_HEIGHT, 32, 0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF);
