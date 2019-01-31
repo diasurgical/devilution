@@ -1,19 +1,19 @@
 #pragma once
 
 #include <ctype.h>
-#include <math.h>
 #include <fcntl.h>
-#include <sys/stat.h>
-#include <unistd.h>
+#include <math.h>
 #include <stdarg.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/stat.h>
 #include <time.h>
+#include <unistd.h>
 // For _rotr()
-#include <x86intrin.h>
 #include <vector>
+#include <x86intrin.h>
 
 // Constants
 #define CONST const
@@ -202,11 +202,11 @@ typedef struct tagMSG {
 #define MAKEFOURCC SDL_FOURCC
 typedef uint8_t FOURCC;
 typedef struct {
-  FOURCC ckid;
-  DWORD  cksize;
-  FOURCC fccType;
-  DWORD  dwDataOffset;
-  DWORD  dwFlags;
+	FOURCC ckid;
+	DWORD cksize;
+	FOURCC fccType;
+	DWORD dwDataOffset;
+	DWORD dwFlags;
 } MMCKINFO;
 #define FOURCC_RIFF MAKEFOURCC('W', 'A', 'V', 'E')
 
@@ -283,7 +283,7 @@ VOID WINAPI SetLastError(DWORD dwErrCode);
 WINBOOL WINAPI CloseHandle(HANDLE hObject);
 
 HANDLE WINAPI CreateEventA(LPSECURITY_ATTRIBUTES lpEventAttributes, WINBOOL bManualReset, WINBOOL bInitialState,
-                           LPCSTR lpName);
+    LPCSTR lpName);
 #define CreateEvent CreateEventA
 BOOL WINAPI SetEvent(HANDLE hEvent);
 BOOL WINAPI ResetEvent(HANDLE hEvent);
@@ -323,7 +323,7 @@ HWND WINAPI FindWindowA(LPCSTR lpClassName, LPCSTR lpWindowName);
 #define THREAD_PRIORITY_ABOVE_NORMAL (THREAD_PRIORITY_HIGHEST - 1)
 
 uintptr_t __cdecl _beginthreadex(void *_Security, unsigned _StackSize, unsigned(__stdcall *_StartAddress)(void *),
-                                 void *_ArgList, unsigned _InitFlag, unsigned *_ThrdAddr);
+    void *_ArgList, unsigned _InitFlag, unsigned *_ThrdAddr);
 HANDLE WINAPI GetCurrentThread(VOID);
 DWORD WINAPI GetCurrentThreadId(VOID);
 WINBOOL WINAPI SetThreadPriority(HANDLE hThread, int nPriority);
@@ -395,8 +395,7 @@ typedef struct _OFSTRUCT {
 #define STANDARD_RIGHTS_REQUIRED 0x000F0000
 
 #define SECTION_ALL_ACCESS \
-	(STANDARD_RIGHTS_REQUIRED | SECTION_QUERY | SECTION_MAP_WRITE | SECTION_MAP_READ | SECTION_MAP_EXECUTE | \
-	 SECTION_EXTEND_SIZE)
+	(STANDARD_RIGHTS_REQUIRED | SECTION_QUERY | SECTION_MAP_WRITE | SECTION_MAP_READ | SECTION_MAP_EXECUTE | SECTION_EXTEND_SIZE)
 
 #define CREATE_NEW_PROCESS_GROUP 0x200
 
@@ -409,18 +408,18 @@ typedef struct _PROCESS_INFORMATION {
 
 typedef void *LPSTARTUPINFOA;
 WINBOOL WINAPI CreateProcessA(LPCSTR lpApplicationName, LPSTR lpCommandLine, LPSECURITY_ATTRIBUTES lpProcessAttributes,
-                              LPSECURITY_ATTRIBUTES lpThreadAttributes, WINBOOL bInheritHandles, DWORD dwCreationFlags,
-                              LPVOID lpEnvironment, LPCSTR lpCurrentDirectory, LPSTARTUPINFOA lpStartupInfo,
-                              LPPROCESS_INFORMATION lpProcessInformation);
+    LPSECURITY_ATTRIBUTES lpThreadAttributes, WINBOOL bInheritHandles, DWORD dwCreationFlags,
+    LPVOID lpEnvironment, LPCSTR lpCurrentDirectory, LPSTARTUPINFOA lpStartupInfo,
+    LPPROCESS_INFORMATION lpProcessInformation);
 #define CreateProcess CreateProcessA
 VOID WINAPI ExitProcess(UINT uExitCode);
 DWORD WINAPI GetCurrentProcessId(VOID);
 
 HANDLE WINAPI CreateFileMappingA(HANDLE hFile, LPSECURITY_ATTRIBUTES lpFileMappingAttributes, DWORD flProtect,
-                                 DWORD dwMaximumSizeHigh, DWORD dwMaximumSizeLow, LPCSTR lpName);
+    DWORD dwMaximumSizeHigh, DWORD dwMaximumSizeLow, LPCSTR lpName);
 #define CreateFileMapping CreateFileMappingA
 LPVOID WINAPI MapViewOfFile(HANDLE hFileMappingObject, DWORD dwDesiredAccess, DWORD dwFileOffsetHigh,
-                            DWORD dwFileOffsetLow, SIZE_T dwNumberOfBytesToMap);
+    DWORD dwFileOffsetLow, SIZE_T dwNumberOfBytesToMap);
 WINBOOL WINAPI UnmapViewOfFile(LPCVOID lpBaseAddress);
 
 DWORD WINAPI WaitForInputIdle(HANDLE hProcess, DWORD dwMilliseconds);
@@ -429,11 +428,11 @@ HWND WINAPI GetWindow(HWND hWnd, UINT uCmd);
 DWORD WINAPI GetWindowThreadProcessId(HWND hWnd, LPDWORD lpdwProcessId);
 
 DWORD WINAPI GetPrivateProfileStringA(LPCSTR lpAppName, LPCSTR lpKeyName, LPCSTR lpDefault, LPSTR lpReturnedString,
-                                      DWORD nSize, LPCSTR lpFileName);
+    DWORD nSize, LPCSTR lpFileName);
 #define GetPrivateProfileString GetPrivateProfileStringA
 
 WINBOOL WINAPI WriteFile(HANDLE hFile, LPCVOID lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten,
-                         LPOVERLAPPED lpOverlapped);
+    LPOVERLAPPED lpOverlapped);
 DWORD WINAPI SetFilePointer(HANDLE hFile, LONG lDistanceToMove, PLONG lpDistanceToMoveHigh, DWORD dwMoveMethod);
 WINBOOL WINAPI SetEndOfFile(HANDLE hFile);
 DWORD WINAPI GetFileAttributesA(LPCSTR lpFileName);
@@ -444,16 +443,16 @@ HANDLE WINAPI FindFirstFileA(LPCSTR lpFileName, LPWIN32_FIND_DATAA lpFindFileDat
 #define FindFirstFile FindFirstFileA
 WINBOOL WINAPI FindClose(HANDLE hFindFile);
 HANDLE WINAPI CreateFileA(LPCSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode,
-                          LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition,
-                          DWORD dwFlagsAndAttributes, HANDLE hTemplateFile);
+    LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition,
+    DWORD dwFlagsAndAttributes, HANDLE hTemplateFile);
 #define CreateFile CreateFileA
 WINBOOL WINAPI ReadFile(HANDLE hFile, LPVOID lpBuffer, DWORD nNumberOfBytesToRead, LPDWORD lpNumberOfBytesRead,
-                        LPOVERLAPPED lpOverlapped);
+    LPOVERLAPPED lpOverlapped);
 DWORD WINAPI GetFileSize(HANDLE hFile, LPDWORD lpFileSizeHigh);
 UINT WINAPI GetWindowsDirectoryA(LPSTR lpBuffer, UINT uSize);
 #define GetWindowsDirectory GetWindowsDirectoryA
 WINBOOL WINAPI GetDiskFreeSpaceA(LPCSTR lpRootPathName, LPDWORD lpSectorsPerCluster, LPDWORD lpBytesPerSector,
-                                 LPDWORD lpNumberOfFreeClusters, LPDWORD lpTotalNumberOfClusters);
+    LPDWORD lpNumberOfFreeClusters, LPDWORD lpTotalNumberOfClusters);
 #define GetDiskFreeSpace GetDiskFreeSpaceA
 DWORD WINAPI GetModuleFileNameA(HMODULE hModule, LPSTR lpFilename, DWORD nSize);
 #define GetModuleFileName GetModuleFileNameA

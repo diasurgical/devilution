@@ -1,22 +1,22 @@
 #pragma once
 
 #include <assert.h>
-#include <stdarg.h>
-#include <dirent.h>
-#include <vector>
 #include <deque>
-#include <queue>
-#include <set>
-#include <string>
+#include <dirent.h>
 #include <functional>
 #include <iostream>
-#include <utility>
 #include <memory>
+#include <queue>
+#include <set>
+#include <stdarg.h>
+#include <string>
+#include <utility>
+#include <vector>
 
 #include <SDL2/SDL.h>
-#include <SDL_ttf.h>
 #include <SDL_mixer.h>
 #include <SDL_thread.h>
+#include <SDL_ttf.h>
 
 typedef SDL_mutex *CRITICAL_SECTION, **LPCRITICAL_SECTION;
 VOID WINAPI InitializeCriticalSection(LPCRITICAL_SECTION lpCriticalSection);

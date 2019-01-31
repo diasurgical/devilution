@@ -1,2 +1,1 @@
 extern void IsPlayMusic();
-

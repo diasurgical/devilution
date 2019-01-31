@@ -97,11 +97,11 @@ static WINBOOL false_avail()
 
 WINBOOL WINAPI PeekMessageA(LPMSG lpMsg, HWND hWnd, UINT wMsgFilterMin, UINT wMsgFilterMax, UINT wRemoveMsg)
 {
-	if(wMsgFilterMin != 0)
+	if (wMsgFilterMin != 0)
 		UNIMPLEMENTED();
-	if(wMsgFilterMax != 0)
+	if (wMsgFilterMax != 0)
 		UNIMPLEMENTED();
-	if(hWnd != NULL)
+	if (hWnd != NULL)
 		UNIMPLEMENTED();
 
 	if (wRemoveMsg == PM_NOREMOVE) {
@@ -133,54 +133,48 @@ WINBOOL WINAPI PeekMessageA(LPMSG lpMsg, HWND hWnd, UINT wMsgFilterMin, UINT wMs
 		lpMsg->message = WM_QUIT;
 		break;
 	case SDL_KEYDOWN:
-	case SDL_KEYUP:
-		{
-			int key = translate_sdl_key(e.key.keysym);
-			if (key == -1)
-				return false_avail();
-			lpMsg->message = e.type == SDL_KEYDOWN ? WM_KEYDOWN : WM_KEYUP;
-			lpMsg->wParam = (DWORD)key;
-			// HACK: Encode modifier in lParam for TranslateMessage later
-			lpMsg->lParam = e.key.keysym.mod << 16;
-		}
-		break;
+	case SDL_KEYUP: {
+		int key = translate_sdl_key(e.key.keysym);
+		if (key == -1)
+			return false_avail();
+		lpMsg->message = e.type == SDL_KEYDOWN ? WM_KEYDOWN : WM_KEYUP;
+		lpMsg->wParam = (DWORD)key;
+		// HACK: Encode modifier in lParam for TranslateMessage later
+		lpMsg->lParam = e.key.keysym.mod << 16;
+	} break;
 	case SDL_MOUSEMOTION:
 		lpMsg->message = WM_MOUSEMOVE;
 		lpMsg->lParam = (e.motion.y << 16) | (e.motion.x & 0xFFFF);
 		lpMsg->wParam = keystate_for_mouse(0);
 		break;
-	case SDL_MOUSEBUTTONDOWN:
-		{
-			int button = e.button.button;
-			if(button == SDL_BUTTON_LEFT) {
-				lpMsg->message = WM_LBUTTONDOWN;
-				lpMsg->lParam = (e.button.y << 16) | (e.button.x & 0xFFFF);
-				lpMsg->wParam = keystate_for_mouse(MK_LBUTTON);
-			} else if(button == SDL_BUTTON_RIGHT) {
-				lpMsg->message = WM_RBUTTONDOWN;
-				lpMsg->lParam = (e.button.y << 16) | (e.button.x & 0xFFFF);
-				lpMsg->wParam = keystate_for_mouse(MK_RBUTTON);
-			} else {
-				return false_avail();
-			}
+	case SDL_MOUSEBUTTONDOWN: {
+		int button = e.button.button;
+		if (button == SDL_BUTTON_LEFT) {
+			lpMsg->message = WM_LBUTTONDOWN;
+			lpMsg->lParam = (e.button.y << 16) | (e.button.x & 0xFFFF);
+			lpMsg->wParam = keystate_for_mouse(MK_LBUTTON);
+		} else if (button == SDL_BUTTON_RIGHT) {
+			lpMsg->message = WM_RBUTTONDOWN;
+			lpMsg->lParam = (e.button.y << 16) | (e.button.x & 0xFFFF);
+			lpMsg->wParam = keystate_for_mouse(MK_RBUTTON);
+		} else {
+			return false_avail();
 		}
-		break;
-	case SDL_MOUSEBUTTONUP:
-		{
-			int button = e.button.button;
-			if(button == SDL_BUTTON_LEFT) {
-				lpMsg->message = WM_LBUTTONUP;
-				lpMsg->lParam = (e.button.y << 16) | (e.button.x & 0xFFFF);
-				lpMsg->wParam = keystate_for_mouse(0);
-			} else if(button == SDL_BUTTON_RIGHT) {
-				lpMsg->message = WM_RBUTTONUP;
-				lpMsg->lParam = (e.button.y << 16) | (e.button.x & 0xFFFF);
-				lpMsg->wParam = keystate_for_mouse(0);
-			} else {
-				return false_avail();
-			}
+	} break;
+	case SDL_MOUSEBUTTONUP: {
+		int button = e.button.button;
+		if (button == SDL_BUTTON_LEFT) {
+			lpMsg->message = WM_LBUTTONUP;
+			lpMsg->lParam = (e.button.y << 16) | (e.button.x & 0xFFFF);
+			lpMsg->wParam = keystate_for_mouse(0);
+		} else if (button == SDL_BUTTON_RIGHT) {
+			lpMsg->message = WM_RBUTTONUP;
+			lpMsg->lParam = (e.button.y << 16) | (e.button.x & 0xFFFF);
+			lpMsg->wParam = keystate_for_mouse(0);
+		} else {
+			return false_avail();
 		}
-		break;
+	} break;
 	case SDL_TEXTINPUT:
 	case SDL_WINDOWEVENT:
 		return false_avail();

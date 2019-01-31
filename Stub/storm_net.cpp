@@ -2,7 +2,7 @@
 
 BOOL STORMAPI SNetReceiveMessage(int *senderplayerid, char **data, int *databytes)
 {
-	if(!devilution_net::inst->SNetReceiveMessage(senderplayerid, data, databytes)) {
+	if (!devilution_net::inst->SNetReceiveMessage(senderplayerid, data, databytes)) {
 		SErrSetLastError(STORM_ERROR_NO_MESSAGES_WAITING);
 		return FALSE;
 	}
@@ -15,11 +15,11 @@ BOOL STORMAPI SNetSendMessage(int playerID, void *data, unsigned int databytes)
 }
 
 BOOL STORMAPI SNetReceiveTurns(int a1, int arraysize, char **arraydata, unsigned int *arraydatabytes,
-                               DWORD *arrayplayerstatus)
+    DWORD *arrayplayerstatus)
 {
-	if(a1 != 0)
+	if (a1 != 0)
 		UNIMPLEMENTED();
-	if(arraysize != MAX_PLRS)
+	if (arraysize != MAX_PLRS)
 		UNIMPLEMENTED();
 	return devilution_net::inst->SNetReceiveTurns(arraydata, arraydatabytes, arrayplayerstatus);
 }
@@ -58,13 +58,13 @@ BOOL STORMAPI SNetSendServerChatCommand(const char *command)
 	return TRUE;
 }
 
-void *__stdcall SNetUnregisterEventHandler(int evtype, void(__stdcall * func)(struct _SNETEVENT *))
+void *__stdcall SNetUnregisterEventHandler(int evtype, void(__stdcall *func)(struct _SNETEVENT *))
 {
 	DUMMY();
 	return NULL;
 }
 
-void *__stdcall SNetRegisterEventHandler(int evtype, void(__stdcall * func)(struct _SNETEVENT *))
+void *__stdcall SNetRegisterEventHandler(int evtype, void(__stdcall *func)(struct _SNETEVENT *))
 {
 	// need to handle:
 	// EVENT_TYPE_PLAYER_LEAVE_GAME
@@ -81,15 +81,15 @@ int __stdcall SNetGetProviderCaps(struct _SNETCAPS *caps)
 }
 
 int __stdcall SNetInitializeProvider(unsigned long a1, struct _SNETPROGRAMDATA *client_info,
-                                     struct _SNETPLAYERDATA *user_info, struct _SNETUIDATA *ui_info,
-                                     struct _SNETVERSIONDATA *fileinfo)
+    struct _SNETPLAYERDATA *user_info, struct _SNETUIDATA *ui_info,
+    struct _SNETVERSIONDATA *fileinfo)
 {
 	// called by engine for single
 	// called by ui for multi
 	// Ignore: fileinfo
-	if(a1 == 'UDPN')
+	if (a1 == 'UDPN')
 		devilution_net::inst = std::make_unique<devilution_net_udp>();
-	else if(a1 == 'SCBL' || a1 == 'NULL' || a1 == 0)
+	else if (a1 == 'SCBL' || a1 == 'NULL' || a1 == 0)
 		devilution_net::inst = std::make_unique<devilution_net_single>();
 	else
 		ABORT();
@@ -102,21 +102,21 @@ int __stdcall SNetInitializeProvider(unsigned long a1, struct _SNETPROGRAMDATA *
 }
 
 BOOL STORMAPI SNetCreateGame(const char *pszGameName, const char *pszGamePassword, const char *pszGameStatString,
-                             DWORD dwGameType, char *GameTemplateData, int GameTemplateSize, int playerCount,
-                             char *creatorName, char *a11, int *playerID)
+    DWORD dwGameType, char *GameTemplateData, int GameTemplateSize, int playerCount,
+    char *creatorName, char *a11, int *playerID)
 {
 	// called by engine for single
 	// called by ui for multi
 	// hack: cannot create game until UI is ready
 	//       first instance will create, second will join
 	int ret;
-	if(ret = devilution_net::inst->create("0.0.0.0", "mypass") == -1)
+	if (ret = devilution_net::inst->create("0.0.0.0", "mypass") == -1)
 		ret = devilution_net::inst->join("127.0.0.1", "mypass");
 	*playerID = ret;
 	return TRUE;
 }
 
-BOOL __stdcall SNetGetOwnerTurnsWaiting(DWORD * turns)
+BOOL __stdcall SNetGetOwnerTurnsWaiting(DWORD *turns)
 {
 	// Is this the mirror image of SNetGetTurnsInTransit?
 	*turns = 0;

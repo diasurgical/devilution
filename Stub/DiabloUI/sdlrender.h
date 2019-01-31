@@ -91,4 +91,3 @@ void RenderDiabloLogo();
 void RenderDiabloLogoSm();
 void SdlDiabloMainWindow();
 void SetMenu(int MenuId);
-

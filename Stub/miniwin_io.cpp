@@ -12,8 +12,8 @@ void TranslateFileName(char *dst, int dstLen, const char *src)
 }
 
 HANDLE WINAPI CreateFileA(LPCSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode,
-                          LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition,
-                          DWORD dwFlagsAndAttributes, HANDLE hTemplateFile)
+    LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition,
+    DWORD dwFlagsAndAttributes, HANDLE hTemplateFile)
 {
 	char name[260];
 	TranslateFileName(name, sizeof(name), lpFileName);
@@ -37,7 +37,7 @@ HANDLE WINAPI CreateFileA(LPCSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShar
 }
 
 WINBOOL WINAPI ReadFile(HANDLE hFile, LPVOID lpBuffer, DWORD nNumberOfBytesToRead, LPDWORD lpNumberOfBytesRead,
-                        LPOVERLAPPED lpOverlapped)
+    LPOVERLAPPED lpOverlapped)
 {
 	DUMMY_ONCE();
 
@@ -60,7 +60,7 @@ DWORD WINAPI GetFileSize(HANDLE hFile, LPDWORD lpFileSizeHigh)
 }
 
 WINBOOL WINAPI WriteFile(HANDLE hFile, LPCVOID lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten,
-                         LPOVERLAPPED lpOverlapped)
+    LPOVERLAPPED lpOverlapped)
 {
 	DUMMY_ONCE();
 

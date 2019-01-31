@@ -67,7 +67,7 @@ UINT WINAPI GetWindowsDirectoryA(LPSTR lpBuffer, UINT uSize)
 }
 
 WINBOOL WINAPI GetDiskFreeSpaceA(LPCSTR lpRootPathName, LPDWORD lpSectorsPerCluster, LPDWORD lpBytesPerSector,
-                                 LPDWORD lpNumberOfFreeClusters, LPDWORD lpTotalNumberOfClusters)
+    LPDWORD lpNumberOfFreeClusters, LPDWORD lpTotalNumberOfClusters)
 {
 	UNIMPLEMENTED();
 }
@@ -173,9 +173,9 @@ UINT WINAPI GetSystemPaletteEntries(HDC hdc, UINT iStart, UINT cEntries, LPPALET
 }
 
 WINBOOL WINAPI CreateProcessA(LPCSTR lpApplicationName, LPSTR lpCommandLine, LPSECURITY_ATTRIBUTES lpProcessAttributes,
-                              LPSECURITY_ATTRIBUTES lpThreadAttributes, WINBOOL bInheritHandles, DWORD dwCreationFlags,
-                              LPVOID lpEnvironment, LPCSTR lpCurrentDirectory, LPSTARTUPINFOA lpStartupInfo,
-                              LPPROCESS_INFORMATION lpProcessInformation)
+    LPSECURITY_ATTRIBUTES lpThreadAttributes, WINBOOL bInheritHandles, DWORD dwCreationFlags,
+    LPVOID lpEnvironment, LPCSTR lpCurrentDirectory, LPSTARTUPINFOA lpStartupInfo,
+    LPPROCESS_INFORMATION lpProcessInformation)
 {
 	UNIMPLEMENTED();
 }
@@ -191,7 +191,7 @@ DWORD WINAPI GetCurrentProcessId(VOID)
 }
 
 HANDLE WINAPI CreateFileMappingA(HANDLE hFile, LPSECURITY_ATTRIBUTES lpFileMappingAttributes, DWORD flProtect,
-                                 DWORD dwMaximumSizeHigh, DWORD dwMaximumSizeLow, LPCSTR lpName)
+    DWORD dwMaximumSizeHigh, DWORD dwMaximumSizeLow, LPCSTR lpName)
 {
 	DUMMY();
 	assert(hFile == (HANDLE)-1);
@@ -199,7 +199,7 @@ HANDLE WINAPI CreateFileMappingA(HANDLE hFile, LPSECURITY_ATTRIBUTES lpFileMappi
 }
 
 LPVOID WINAPI MapViewOfFile(HANDLE hFileMappingObject, DWORD dwDesiredAccess, DWORD dwFileOffsetHigh,
-                            DWORD dwFileOffsetLow, SIZE_T dwNumberOfBytesToMap)
+    DWORD dwFileOffsetLow, SIZE_T dwNumberOfBytesToMap)
 {
 	UNIMPLEMENTED();
 }
@@ -230,7 +230,7 @@ DWORD WINAPI GetWindowThreadProcessId(HWND hWnd, LPDWORD lpdwProcessId)
 }
 
 DWORD WINAPI GetPrivateProfileStringA(LPCSTR lpAppName, LPCSTR lpKeyName, LPCSTR lpDefault, LPSTR lpReturnedString,
-                                      DWORD nSize, LPCSTR lpFileName)
+    DWORD nSize, LPCSTR lpFileName)
 {
 	UNIMPLEMENTED();
 }

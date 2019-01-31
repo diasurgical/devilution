@@ -9,13 +9,13 @@ struct event_emul {
 };
 
 uintptr_t __cdecl _beginthreadex(void *_Security, unsigned _StackSize, unsigned(__stdcall *_StartAddress)(void *),
-                                 void *_ArgList, unsigned _InitFlag, unsigned *_ThrdAddr)
+    void *_ArgList, unsigned _InitFlag, unsigned *_ThrdAddr)
 {
-	if(_Security != NULL)
+	if (_Security != NULL)
 		UNIMPLEMENTED();
-	if(_StackSize != 0)
+	if (_StackSize != 0)
 		UNIMPLEMENTED();
-	if(_InitFlag != 0)
+	if (_InitFlag != 0)
 		UNIMPLEMENTED();
 	// WARNING: wrong return type of _StartAddress
 	SDL_Thread *ret = SDL_CreateThread((SDL_ThreadFunction)_StartAddress, NULL, _ArgList);
@@ -65,33 +65,33 @@ VOID WINAPI DeleteCriticalSection(LPCRITICAL_SECTION lpCriticalSection)
 }
 
 HANDLE WINAPI CreateEventA(LPSECURITY_ATTRIBUTES lpEventAttributes, WINBOOL bManualReset, WINBOOL bInitialState,
-                           LPCSTR lpName)
+    LPCSTR lpName)
 {
-	if(lpName != NULL && !strcmp(lpName, "DiabloEvent")) {
+	if (lpName != NULL && !strcmp(lpName, "DiabloEvent")) {
 		// This is used by diablo.cpp to check whether
 		// the game is already running
 		// (we do not want to replicate this behaviour anyway)
 		return NULL;
 	}
-	if(lpEventAttributes != NULL)
+	if (lpEventAttributes != NULL)
 		UNIMPLEMENTED();
-	if(bManualReset != TRUE)
+	if (bManualReset != TRUE)
 		UNIMPLEMENTED();
-	if(bInitialState != FALSE)
+	if (bInitialState != FALSE)
 		UNIMPLEMENTED();
-	if(lpName != NULL)
+	if (lpName != NULL)
 		UNIMPLEMENTED();
 	struct event_emul *ret;
-	ret = (struct event_emul*)malloc(sizeof(struct event_emul));
+	ret = (struct event_emul *)malloc(sizeof(struct event_emul));
 	ret->mutex = SDL_CreateMutex();
 	ret->cond = SDL_CreateCond();
-	events.insert((HANDLE*)ret);
+	events.insert((HANDLE *)ret);
 	return ret;
 }
 
 BOOL WINAPI SetEvent(HANDLE hEvent)
 {
-	struct event_emul *e = (struct event_emul*)hEvent;
+	struct event_emul *e = (struct event_emul *)hEvent;
 	SDL_LockMutex(e->mutex);
 	SDL_CondSignal(e->cond);
 	SDL_UnlockMutex(e->mutex);
@@ -100,7 +100,7 @@ BOOL WINAPI SetEvent(HANDLE hEvent)
 
 BOOL WINAPI ResetEvent(HANDLE hEvent)
 {
-	struct event_emul *e = (struct event_emul*)hEvent;
+	struct event_emul *e = (struct event_emul *)hEvent;
 	SDL_LockMutex(e->mutex);
 	SDL_CondWaitTimeout(e->cond, e->mutex, 0);
 	SDL_UnlockMutex(e->mutex);
@@ -109,10 +109,10 @@ BOOL WINAPI ResetEvent(HANDLE hEvent)
 
 static DWORD wait_for_sdl_cond(HANDLE hHandle, DWORD dwMilliseconds)
 {
-	struct event_emul *e = (struct event_emul*)hHandle;
+	struct event_emul *e = (struct event_emul *)hHandle;
 	SDL_LockMutex(e->mutex);
 	DWORD ret;
-	if(dwMilliseconds == INFINITE)
+	if (dwMilliseconds == INFINITE)
 		ret = SDL_CondWait(e->cond, e->mutex);
 	else
 		ret = SDL_CondWaitTimeout(e->cond, e->mutex, dwMilliseconds);
@@ -123,9 +123,9 @@ static DWORD wait_for_sdl_cond(HANDLE hHandle, DWORD dwMilliseconds)
 
 static DWORD wait_for_sdl_thread(HANDLE hHandle, DWORD dwMilliseconds)
 {
-	if(dwMilliseconds != INFINITE)
+	if (dwMilliseconds != INFINITE)
 		UNIMPLEMENTED();
-	SDL_Thread *t = (SDL_Thread*)hHandle;
+	SDL_Thread *t = (SDL_Thread *)hHandle;
 	SDL_WaitThread(t, NULL);
 	return 0;
 }
@@ -133,10 +133,9 @@ static DWORD wait_for_sdl_thread(HANDLE hHandle, DWORD dwMilliseconds)
 DWORD WINAPI WaitForSingleObject(HANDLE hHandle, DWORD dwMilliseconds)
 {
 	// return value different from WinAPI
-	if(threads.find(hHandle) != threads.end())
+	if (threads.find(hHandle) != threads.end())
 		return wait_for_sdl_thread(hHandle, dwMilliseconds);
-	if(events.find(hHandle) != threads.end())
+	if (events.find(hHandle) != threads.end())
 		return wait_for_sdl_cond(hHandle, dwMilliseconds);
 	UNIMPLEMENTED();
 }
-

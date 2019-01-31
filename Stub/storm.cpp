@@ -13,7 +13,7 @@ DWORD nLastError = 0;
 // }
 
 BOOL STORMAPI SFileDdaBeginEx(HANDLE directsound, DWORD flags, DWORD mask, unsigned __int32 lDistanceToMove,
-                              signed __int32 volume, signed int a6, int a7)
+    signed __int32 volume, signed int a6, int a7)
 {
 	DUMMY(); // Todo track when the sound can be released, see sfx_stop()
 	int bytestoread;
@@ -84,7 +84,6 @@ BOOL STORMAPI SFileOpenFile(const char *filename, HANDLE *phFile)
 	//eprintf("%s: %s\n", __FUNCTION__, filename);
 
 	BOOL result;
-
 
 	result = patch_rt_mpq && SFileOpenFileEx((HANDLE)patch_rt_mpq, filename, 0, phFile);
 	if (!result) {
@@ -256,7 +255,7 @@ void *STORMAPI SMemReAlloc(void *location, unsigned int amount, char *logfilenam
 }
 
 BOOL STORMAPI SRegLoadData(const char *keyname, const char *valuename, int size, LPBYTE lpData, BYTE flags,
-                           LPDWORD lpcbData)
+    LPDWORD lpcbData)
 {
 	DUMMY();
 	return 0;
@@ -311,7 +310,7 @@ BOOL STORMAPI SRegSaveValue(const char *keyname, const char *valuename, BYTE fla
 //}
 
 BOOL STORMAPI SErrDisplayError(DWORD dwErrMsg, const char *logfilename, int logline, const char *message,
-                               BOOL allowOption, int exitCode)
+    BOOL allowOption, int exitCode)
 {
 	UNIMPLEMENTED();
 }

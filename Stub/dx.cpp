@@ -35,20 +35,37 @@ bool surface_dirty;
 
 #define METHOD virtual __stdcall
 
-class StubSurface : public IDirectDrawSurface
-{
-	METHOD HRESULT QueryInterface(REFIID refiid, LPVOID *lpvoid) { UNIMPLEMENTED(); };
-	METHOD ULONG AddRef() { UNIMPLEMENTED(); };
-	METHOD ULONG Release() { UNIMPLEMENTED(); };
+class StubSurface : public IDirectDrawSurface {
+	METHOD HRESULT QueryInterface(REFIID refiid, LPVOID *lpvoid)
+	{
+		UNIMPLEMENTED();
+	};
+	METHOD ULONG AddRef()
+	{
+		UNIMPLEMENTED();
+	};
+	METHOD ULONG Release()
+	{
+		UNIMPLEMENTED();
+	};
 
-	METHOD HRESULT AddAttachedSurface(LPDIRECTDRAWSURFACE lpDDSAttachedSurface) { UNIMPLEMENTED(); }
-	METHOD HRESULT AddOverlayDirtyRect(LPRECT lpRect) { UNIMPLEMENTED(); }
-	METHOD HRESULT Blt(LPRECT lpDestRect, LPDIRECTDRAWSURFACE lpDDSrcSurface, LPRECT lpSrcRect, DWORD dwFlags,
-	                   LPDDBLTFX lpDDBltFx)
+	METHOD HRESULT AddAttachedSurface(LPDIRECTDRAWSURFACE lpDDSAttachedSurface)
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT BltBatch(LPDDBLTBATCH lpDDBltBatch, DWORD dwCount, DWORD dwFlags) { UNIMPLEMENTED(); }
+	METHOD HRESULT AddOverlayDirtyRect(LPRECT lpRect)
+	{
+		UNIMPLEMENTED();
+	}
+	METHOD HRESULT Blt(LPRECT lpDestRect, LPDIRECTDRAWSURFACE lpDDSrcSurface, LPRECT lpSrcRect, DWORD dwFlags,
+	    LPDDBLTFX lpDDBltFx)
+	{
+		UNIMPLEMENTED();
+	}
+	METHOD HRESULT BltBatch(LPDDBLTBATCH lpDDBltBatch, DWORD dwCount, DWORD dwFlags)
+	{
+		UNIMPLEMENTED();
+	}
 
 	METHOD HRESULT BltFast(DWORD dwX, DWORD dwY, LPDIRECTDRAWSURFACE lpDDSrcSurface, LPRECT lpSrcRect, DWORD dwTrans)
 	{
@@ -59,8 +76,8 @@ class StubSurface : public IDirectDrawSurface
 		int w = lpSrcRect->right - lpSrcRect->left + 1;
 		int h = lpSrcRect->bottom - lpSrcRect->top + 1;
 
-		SDL_Rect src_rect = {lpSrcRect->left, lpSrcRect->top, w, h};
-		SDL_Rect dst_rect = {(int)dwX, (int)dwY, w, h};
+		SDL_Rect src_rect = { lpSrcRect->left, lpSrcRect->top, w, h };
+		SDL_Rect dst_rect = { (int)dwX, (int)dwY, w, h };
 
 		// Convert from 8-bit to 32-bit
 		SDL_CHECK(SDL_BlitSurface(pal_surface, &src_rect, surface, &dst_rect));
@@ -69,7 +86,10 @@ class StubSurface : public IDirectDrawSurface
 		return S_OK;
 	}
 
-	METHOD HRESULT DeleteAttachedSurface(DWORD dwFlags, LPDIRECTDRAWSURFACE lpDDSAttachedSurface) { UNIMPLEMENTED(); }
+	METHOD HRESULT DeleteAttachedSurface(DWORD dwFlags, LPDIRECTDRAWSURFACE lpDDSAttachedSurface)
+	{
+		UNIMPLEMENTED();
+	}
 	METHOD HRESULT EnumAttachedSurfaces(LPVOID lpContext, LPDDENUMSURFACESCALLBACK lpEnumSurfacesCallback)
 	{
 		UNIMPLEMENTED();
@@ -78,15 +98,30 @@ class StubSurface : public IDirectDrawSurface
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT Flip(LPDIRECTDRAWSURFACE lpDDSurfaceTargetOverride, DWORD dwFlags) { UNIMPLEMENTED(); }
+	METHOD HRESULT Flip(LPDIRECTDRAWSURFACE lpDDSurfaceTargetOverride, DWORD dwFlags)
+	{
+		UNIMPLEMENTED();
+	}
 	METHOD HRESULT GetAttachedSurface(LPDDSCAPS lpDDSCaps, LPDIRECTDRAWSURFACE *lplpDDAttachedSurface)
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT GetBltStatus(DWORD dwFlags) { UNIMPLEMENTED(); }
-	METHOD HRESULT GetCaps(LPDDSCAPS lpDDSCaps) { UNIMPLEMENTED(); }
-	METHOD HRESULT GetClipper(LPDIRECTDRAWCLIPPER *lplpDDClipper) { UNIMPLEMENTED(); }
-	METHOD HRESULT GetColorKey(DWORD dwFlags, LPDDCOLORKEY lpDDColorKey) { UNIMPLEMENTED(); }
+	METHOD HRESULT GetBltStatus(DWORD dwFlags)
+	{
+		UNIMPLEMENTED();
+	}
+	METHOD HRESULT GetCaps(LPDDSCAPS lpDDSCaps)
+	{
+		UNIMPLEMENTED();
+	}
+	METHOD HRESULT GetClipper(LPDIRECTDRAWCLIPPER *lplpDDClipper)
+	{
+		UNIMPLEMENTED();
+	}
+	METHOD HRESULT GetColorKey(DWORD dwFlags, LPDDCOLORKEY lpDDColorKey)
+	{
+		UNIMPLEMENTED();
+	}
 
 	METHOD HRESULT GetDC(HDC *lphDC)
 	{
@@ -94,12 +129,30 @@ class StubSurface : public IDirectDrawSurface
 		return S_OK;
 	}
 
-	METHOD HRESULT GetFlipStatus(DWORD dwFlags) { UNIMPLEMENTED(); }
-	METHOD HRESULT GetOverlayPosition(LPLONG lplX, LPLONG lplY) { UNIMPLEMENTED(); }
-	METHOD HRESULT GetPalette(LPDIRECTDRAWPALETTE *lplpDDPalette) { UNIMPLEMENTED(); }
-	METHOD HRESULT GetPixelFormat(LPDDPIXELFORMAT lpDDPixelFormat) { UNIMPLEMENTED(); }
-	METHOD HRESULT GetSurfaceDesc(LPDDSURFACEDESC lpDDSurfaceDesc) { UNIMPLEMENTED(); }
-	METHOD HRESULT Initialize(LPDIRECTDRAW lpDD, LPDDSURFACEDESC lpDDSurfaceDesc) { UNIMPLEMENTED(); }
+	METHOD HRESULT GetFlipStatus(DWORD dwFlags)
+	{
+		UNIMPLEMENTED();
+	}
+	METHOD HRESULT GetOverlayPosition(LPLONG lplX, LPLONG lplY)
+	{
+		UNIMPLEMENTED();
+	}
+	METHOD HRESULT GetPalette(LPDIRECTDRAWPALETTE *lplpDDPalette)
+	{
+		UNIMPLEMENTED();
+	}
+	METHOD HRESULT GetPixelFormat(LPDDPIXELFORMAT lpDDPixelFormat)
+	{
+		UNIMPLEMENTED();
+	}
+	METHOD HRESULT GetSurfaceDesc(LPDDSURFACEDESC lpDDSurfaceDesc)
+	{
+		UNIMPLEMENTED();
+	}
+	METHOD HRESULT Initialize(LPDIRECTDRAW lpDD, LPDDSURFACEDESC lpDDSurfaceDesc)
+	{
+		UNIMPLEMENTED();
+	}
 
 	METHOD HRESULT IsLost()
 	{
@@ -118,57 +171,106 @@ class StubSurface : public IDirectDrawSurface
 		return S_OK;
 	}
 
-	METHOD HRESULT Restore() { UNIMPLEMENTED(); }
-	METHOD HRESULT SetClipper(LPDIRECTDRAWCLIPPER lpDDClipper) { UNIMPLEMENTED(); }
-	METHOD HRESULT SetColorKey(DWORD dwFlags, LPDDCOLORKEY lpDDColorKey) { UNIMPLEMENTED(); }
-	METHOD HRESULT SetOverlayPosition(LONG lX, LONG lY) { UNIMPLEMENTED(); }
-	METHOD HRESULT SetPalette(LPDIRECTDRAWPALETTE lpDDPalette) { UNIMPLEMENTED(); }
-	METHOD HRESULT Unlock(LPVOID lpSurfaceData) { UNIMPLEMENTED(); }
-	METHOD HRESULT UpdateOverlay(LPRECT lpSrcRect, LPDIRECTDRAWSURFACE lpDDDestSurface, LPRECT lpDestRect,
-	                             DWORD dwFlags, LPDDOVERLAYFX lpDDOverlayFx)
+	METHOD HRESULT Restore()
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT UpdateOverlayDisplay(DWORD dwFlags) { UNIMPLEMENTED(); }
-	METHOD HRESULT UpdateOverlayZOrder(DWORD dwFlags, LPDIRECTDRAWSURFACE lpDDSReference) { UNIMPLEMENTED(); }
+	METHOD HRESULT SetClipper(LPDIRECTDRAWCLIPPER lpDDClipper)
+	{
+		UNIMPLEMENTED();
+	}
+	METHOD HRESULT SetColorKey(DWORD dwFlags, LPDDCOLORKEY lpDDColorKey)
+	{
+		UNIMPLEMENTED();
+	}
+	METHOD HRESULT SetOverlayPosition(LONG lX, LONG lY)
+	{
+		UNIMPLEMENTED();
+	}
+	METHOD HRESULT SetPalette(LPDIRECTDRAWPALETTE lpDDPalette)
+	{
+		UNIMPLEMENTED();
+	}
+	METHOD HRESULT Unlock(LPVOID lpSurfaceData)
+	{
+		UNIMPLEMENTED();
+	}
+	METHOD HRESULT UpdateOverlay(LPRECT lpSrcRect, LPDIRECTDRAWSURFACE lpDDDestSurface, LPRECT lpDestRect,
+	    DWORD dwFlags, LPDDOVERLAYFX lpDDOverlayFx)
+	{
+		UNIMPLEMENTED();
+	}
+	METHOD HRESULT UpdateOverlayDisplay(DWORD dwFlags)
+	{
+		UNIMPLEMENTED();
+	}
+	METHOD HRESULT UpdateOverlayZOrder(DWORD dwFlags, LPDIRECTDRAWSURFACE lpDDSReference)
+	{
+		UNIMPLEMENTED();
+	}
 };
 
-class StubPalette : public IDirectDrawPalette
-{
-	METHOD HRESULT QueryInterface(REFIID refiid, LPVOID *lpvoid) { UNIMPLEMENTED(); };
-	METHOD ULONG AddRef() { UNIMPLEMENTED(); };
-	METHOD ULONG Release() { UNIMPLEMENTED(); };
+class StubPalette : public IDirectDrawPalette {
+	METHOD HRESULT QueryInterface(REFIID refiid, LPVOID *lpvoid)
+	{
+		UNIMPLEMENTED();
+	};
+	METHOD ULONG AddRef()
+	{
+		UNIMPLEMENTED();
+	};
+	METHOD ULONG Release()
+	{
+		UNIMPLEMENTED();
+	};
 
-	METHOD HRESULT GetCaps(LPDWORD lpdwCaps) { UNIMPLEMENTED(); };
+	METHOD HRESULT GetCaps(LPDWORD lpdwCaps)
+	{
+		UNIMPLEMENTED();
+	};
 	METHOD HRESULT GetEntries(DWORD dwFlags, DWORD dwBase, DWORD dwNumEntries, LPPALETTEENTRY lpEntries)
 	{
 		UNIMPLEMENTED();
 	};
-	METHOD HRESULT Initialize(LPDIRECTDRAW lpDD, DWORD dwFlags, LPPALETTEENTRY lpDDColorTable) { UNIMPLEMENTED(); };
+	METHOD HRESULT Initialize(LPDIRECTDRAW lpDD, DWORD dwFlags, LPPALETTEENTRY lpDDColorTable)
+	{
+		UNIMPLEMENTED();
+	};
 	METHOD HRESULT SetEntries(DWORD dwFlags, DWORD dwStartingEntry, DWORD dwCount, LPPALETTEENTRY lpEntries)
 	{
 		UNIMPLEMENTED();
 	};
 };
 
-class StubDraw : public IDirectDraw
-{
-	METHOD HRESULT QueryInterface(REFIID refiid, LPVOID *lpvoid) { UNIMPLEMENTED(); };
-	METHOD ULONG AddRef() { UNIMPLEMENTED(); };
-	METHOD ULONG Release() { UNIMPLEMENTED(); };
+class StubDraw : public IDirectDraw {
+	METHOD HRESULT QueryInterface(REFIID refiid, LPVOID *lpvoid)
+	{
+		UNIMPLEMENTED();
+	};
+	METHOD ULONG AddRef()
+	{
+		UNIMPLEMENTED();
+	};
+	METHOD ULONG Release()
+	{
+		UNIMPLEMENTED();
+	};
 
-	METHOD HRESULT Compact() { UNIMPLEMENTED(); }
+	METHOD HRESULT Compact()
+	{
+		UNIMPLEMENTED();
+	}
 	METHOD HRESULT CreateClipper(DWORD dwFlags, LPDIRECTDRAWCLIPPER *lplpDDClipper, IUnknown *pUnkOuter)
 	{
 		UNIMPLEMENTED();
 	}
 	METHOD HRESULT CreatePalette(DWORD dwFlags, LPPALETTEENTRY lpColorTable, LPDIRECTDRAWPALETTE *lplpDDPalette,
-	                             IUnknown *pUnkOuter)
+	    IUnknown *pUnkOuter)
 	{
 		UNIMPLEMENTED();
 	}
 	METHOD HRESULT CreateSurface(LPDDSURFACEDESC lpDDSurfaceDesc, LPDIRECTDRAWSURFACE *lplpDDSurface,
-	                             IUnknown *pUnkOuter)
+	    IUnknown *pUnkOuter)
 	{
 		UNIMPLEMENTED();
 	}
@@ -177,27 +279,63 @@ class StubDraw : public IDirectDraw
 		UNIMPLEMENTED();
 	}
 	METHOD HRESULT EnumDisplayModes(DWORD dwFlags, LPDDSURFACEDESC lpDDSurfaceDesc, LPVOID lpContext,
-	                                LPDDENUMMODESCALLBACK lpEnumModesCallback)
+	    LPDDENUMMODESCALLBACK lpEnumModesCallback)
 	{
 		UNIMPLEMENTED();
 	}
 	METHOD HRESULT EnumSurfaces(DWORD dwFlags, LPDDSURFACEDESC lpDDSD, LPVOID lpContext,
-	                            LPDDENUMSURFACESCALLBACK lpEnumSurfacesCallback)
+	    LPDDENUMSURFACESCALLBACK lpEnumSurfacesCallback)
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT FlipToGDISurface() { UNIMPLEMENTED(); }
-	METHOD HRESULT GetCaps(LPDDCAPS lpDDDriverCaps, LPDDCAPS lpDDHELCaps) { UNIMPLEMENTED(); }
-	METHOD HRESULT GetDisplayMode(LPDDSURFACEDESC lpDDSurfaceDesc) { UNIMPLEMENTED(); }
-	METHOD HRESULT GetFourCCCodes(LPDWORD lpNumCodes, LPDWORD lpCodes) { UNIMPLEMENTED(); }
-	METHOD HRESULT GetGDISurface(LPDIRECTDRAWSURFACE *lplpGDIDDSurface) { UNIMPLEMENTED(); }
-	METHOD HRESULT GetMonitorFrequency(LPDWORD lpdwFrequency) { UNIMPLEMENTED(); }
-	METHOD HRESULT GetScanLine(LPDWORD lpdwScanLine) { UNIMPLEMENTED(); }
-	METHOD HRESULT GetVerticalBlankStatus(BOOL *lpbIsInVB) { UNIMPLEMENTED(); }
-	METHOD HRESULT Initialize(GUID *lpGUID) { UNIMPLEMENTED(); }
-	METHOD HRESULT RestoreDisplayMode() { UNIMPLEMENTED(); }
-	METHOD HRESULT SetCooperativeLevel(HWND hWnd, DWORD dwFlags) { UNIMPLEMENTED(); }
-	METHOD HRESULT SetDisplayMode(DWORD dwWidth, DWORD dwHeight, DWORD dwBPP) { UNIMPLEMENTED(); }
+	METHOD HRESULT FlipToGDISurface()
+	{
+		UNIMPLEMENTED();
+	}
+	METHOD HRESULT GetCaps(LPDDCAPS lpDDDriverCaps, LPDDCAPS lpDDHELCaps)
+	{
+		UNIMPLEMENTED();
+	}
+	METHOD HRESULT GetDisplayMode(LPDDSURFACEDESC lpDDSurfaceDesc)
+	{
+		UNIMPLEMENTED();
+	}
+	METHOD HRESULT GetFourCCCodes(LPDWORD lpNumCodes, LPDWORD lpCodes)
+	{
+		UNIMPLEMENTED();
+	}
+	METHOD HRESULT GetGDISurface(LPDIRECTDRAWSURFACE *lplpGDIDDSurface)
+	{
+		UNIMPLEMENTED();
+	}
+	METHOD HRESULT GetMonitorFrequency(LPDWORD lpdwFrequency)
+	{
+		UNIMPLEMENTED();
+	}
+	METHOD HRESULT GetScanLine(LPDWORD lpdwScanLine)
+	{
+		UNIMPLEMENTED();
+	}
+	METHOD HRESULT GetVerticalBlankStatus(BOOL *lpbIsInVB)
+	{
+		UNIMPLEMENTED();
+	}
+	METHOD HRESULT Initialize(GUID *lpGUID)
+	{
+		UNIMPLEMENTED();
+	}
+	METHOD HRESULT RestoreDisplayMode()
+	{
+		UNIMPLEMENTED();
+	}
+	METHOD HRESULT SetCooperativeLevel(HWND hWnd, DWORD dwFlags)
+	{
+		UNIMPLEMENTED();
+	}
+	METHOD HRESULT SetDisplayMode(DWORD dwWidth, DWORD dwHeight, DWORD dwBPP)
+	{
+		UNIMPLEMENTED();
+	}
 	METHOD HRESULT WaitForVerticalBlank(DWORD dwFlags, HANDLE hEvent)
 	{
 		DUMMY_ONCE();
@@ -229,14 +367,14 @@ void __fastcall dx_init(HWND hWnd)
 void sdl_update_entire_surface()
 {
 	assert(surface && pal_surface);
-	SDL_Rect src_rect = {64, 160, 640, 480};
+	SDL_Rect src_rect = { 64, 160, 640, 480 };
 	SDL_CHECK(SDL_BlitSurface(pal_surface, &src_rect, surface, NULL));
 }
 
 void sdl_present_surface()
 {
 	assert(!SDL_MUSTLOCK(surface));
-	SDL_CHECK(SDL_UpdateTexture(texture, NULL, surface->pixels, surface->pitch));//pitch is 2560
+	SDL_CHECK(SDL_UpdateTexture(texture, NULL, surface->pixels, surface->pitch)); //pitch is 2560
 
 	// Clear the entire screen to our selected color.
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
