@@ -257,7 +257,7 @@ int GetAnimationFrame(int frames, int fps = 60)
 	return frame > frames ? 0 : frame;
 }
 
-void UiFadeIn(int steps)
+bool UiFadeIn(int steps)
 {
 	if (fadeValue < 256) {
 		fadeValue += steps;
