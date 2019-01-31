@@ -24,14 +24,16 @@ BOOL __stdcall UiTitleDialog(int a1)
 	title_Loade();
 
 	bool endMenu = false;
+	int timeOut = SDL_GetTicks() + 7000;
 
 	SDL_Event event;
-	while (1) {
+	while (!endMenu && SDL_GetTicks() < timeOut) {
 		title_Render();
+		UiFadeIn();
 
-		if (SDL_PollEvent(&event)) {
+		while (SDL_PollEvent(&event)) {
 			switch (event.type) {
-			case SDL_KEYDOWN:
+			case SDL_KEYDOWN: // all except arrow
 			case SDL_MOUSEBUTTONDOWN:
 				endMenu = true;
 				break;
@@ -40,12 +42,9 @@ BOOL __stdcall UiTitleDialog(int a1)
 			}
 		}
 
-		if (!endMenu) {
-			UiFadeIn();
-		} else if (UiFadeOut()) {
-			break;
-		}
+		CapFPS();
 	}
+	BlackPalette();
 
 	title_Free();
 

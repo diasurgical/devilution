@@ -64,10 +64,13 @@ int __stdcall UiSelectProvider(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYE
 	SelectedItemMax = 5;
 	SDL_Event event;
 
-	bool done = false;
-	while (done == false) {
+	bool endMenu = false;
+	while (!endMenu) {
 		selconn_Render();
-		if (SDL_PollEvent(&event)) {
+		DrawMouse();
+		UiFadeIn();
+
+		while (SDL_PollEvent(&event)) {
 			switch (event.type) {
 			case SDL_KEYDOWN:
 				switch (event.key.keysym.sym) {
@@ -97,19 +100,19 @@ int __stdcall UiSelectProvider(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYE
 					effects_play_sound("sfx\\items\\titlslct.wav");
 					switch (SelectedItem) {
 					case 1:
-						done = SNetInitializeProvider('BNET', client_info, user_info, ui_info, file_info);
+						endMenu = SNetInitializeProvider('BNET', client_info, user_info, ui_info, file_info);
 						break;
 					case 2:
-						done = SNetInitializeProvider('IPXN', client_info, user_info, ui_info, file_info);
+						endMenu = SNetInitializeProvider('IPXN', client_info, user_info, ui_info, file_info);
 						break;
 					case 3:
-						done = SNetInitializeProvider('MODM', client_info, user_info, ui_info, file_info);
+						endMenu = SNetInitializeProvider('MODM', client_info, user_info, ui_info, file_info);
 						break;
 					case 4:
-						done = SNetInitializeProvider('SCBL', client_info, user_info, ui_info, file_info);
+						endMenu = SNetInitializeProvider('SCBL', client_info, user_info, ui_info, file_info);
 						break;
 					case 5:
-						done = SNetInitializeProvider('UDPN', client_info, user_info, ui_info, file_info);
+						endMenu = SNetInitializeProvider('UDPN', client_info, user_info, ui_info, file_info);
 						break;
 					}
 					SelectedItem = 1;
@@ -122,14 +125,9 @@ int __stdcall UiSelectProvider(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYE
 			}
 		}
 
-		DrawMouse();
-
-		if (!done) {
-			UiFadeIn();
-		} else if (UiFadeOut()) {
-			break;
-		}
+		CapFPS();
 	}
+	BlackPalette();
 
 	selconn_Free();
 

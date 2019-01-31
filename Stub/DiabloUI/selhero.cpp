@@ -211,8 +211,6 @@ BOOL __stdcall UiSelHeroSingDialog(
 {
 	selhero_Loade();
 
-	bool endMenu = false;
-
 	submenu = SINGLEPLAYER_LOAD;
 	if (!TotalPlayers) {
 		PreviousItem[SINGLEPLAYER_CLASSES] = 0;
@@ -224,8 +222,8 @@ BOOL __stdcall UiSelHeroSingDialog(
 	SDL_Event event;
 	int x, y;
 
-	bool done = false;
-	while (done == false) {
+	bool endMenu = false;
+	while (!endMenu) {
 		switch (submenu) {
 		case SINGLEPLAYER_LOAD:
 			selhero_Render();
@@ -238,7 +236,10 @@ BOOL __stdcall UiSelHeroSingDialog(
 			break;
 		}
 
-		if (SDL_PollEvent(&event)) {
+		DrawMouse();
+		UiFadeIn();
+
+		while (SDL_PollEvent(&event)) {
 			switch (event.type) {
 			case SDL_KEYDOWN:
 				switch (event.key.keysym.sym) {
@@ -290,7 +291,7 @@ BOOL __stdcall UiSelHeroSingDialog(
 					case SINGLEPLAYER_NAME:
 						CreateSinglePlayerChar = 1;
 						const char *test_name = HeroUndecidedName;
-						done = true;
+						endMenu = true;
 						break;
 					}
 					break;
@@ -340,14 +341,9 @@ BOOL __stdcall UiSelHeroSingDialog(
 			}
 		}
 
-		DrawMouse();
-
-		if (!endMenu) {
-			UiFadeIn();
-		} else if (UiFadeOut()) {
-			break;
-		}
+		CapFPS();
 	}
+	BlackPalette();
 
 	if (*dlgresult != 4) {
 		hero_infos.clear();
@@ -397,10 +393,9 @@ BOOL __stdcall UiSelHeroMultDialog(
 	SelectedItem = 1;
 	SelectedItemMax = MenuItem[submenu];
 	SDL_Event event;
-	bool endMenu = false;
 
-	int done = false;
-	while (done == false) {
+	int endMenu = false;
+	while (endMenu == false) {
 		switch (submenu) {
 		case MULTIPLAYER_LOBBY:
 			DrawPreGameOptions(HeroChosen, 1);
@@ -410,7 +405,10 @@ BOOL __stdcall UiSelHeroMultDialog(
 			break;
 		}
 
-		if (SDL_PollEvent(&event)) {
+		DrawMouse();
+		UiFadeIn();
+
+		while (SDL_PollEvent(&event)) {
 			switch (event.type) {
 			case SDL_KEYDOWN:
 				switch (event.key.keysym.sym) {
@@ -445,7 +443,7 @@ BOOL __stdcall UiSelHeroMultDialog(
 						break;
 					case MULTIPLAYER_DIFFICULTY:
 						CreateSinglePlayerChar = 1;
-						done = true;
+						endMenu = true;
 						break;
 					}
 					break;
@@ -565,14 +563,9 @@ BOOL __stdcall UiSelHeroMultDialog(
 			}
 		}
 
-		DrawMouse();
-
-		if (!endMenu) {
-			UiFadeIn();
-		} else if (UiFadeOut()) {
-			break;
-		}
+		CapFPS();
 	}
+	BlackPalette();
 
 	hero_infos.clear();
 	fninfo(&ui_add_hero_info);

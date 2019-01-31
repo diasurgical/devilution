@@ -27,9 +27,6 @@ void mainmenu_Render(char *name)
 	DrawSelector42(0, selectorTop, 0, 85, 43);
 
 	PrintText16Silver(17, 444, name);
-
-	DrawMouse();
-	UiFadeIn();
 }
 
 void mainmenu_Loade()
@@ -68,10 +65,12 @@ BOOL __stdcall UiMainMenuDialog(char *name, int *pdwResult, void(__stdcall *fnSo
 
 	bool endMenu = false;
 
-	while (1) {
+	while (!endMenu) {
 		mainmenu_Render(name);
+		DrawMouse();
+		UiFadeIn();
 
-		if (SDL_PollEvent(&event)) {
+		while (SDL_PollEvent(&event)) {
 			switch (event.type) {
 			case SDL_KEYDOWN:
 				switch (event.key.keysym.sym) {
@@ -167,12 +166,10 @@ BOOL __stdcall UiMainMenuDialog(char *name, int *pdwResult, void(__stdcall *fnSo
 			}
 		}
 
-		if (!endMenu) {
-			UiFadeIn();
-		} else if (UiFadeOut()) {
-			break;
-		}
+		CapFPS();
 	}
+
+	BlackPalette();
 
 	mainmenu_Free();
 

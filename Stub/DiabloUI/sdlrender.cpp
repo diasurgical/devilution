@@ -257,6 +257,16 @@ int GetAnimationFrame(int frames, int fps = 60)
 	return frame > frames ? 0 : frame;
 }
 
+int frameEnd = 0;
+void CapFPS()
+{
+	int now = SDL_GetTicks();
+	frameEnd += 1000 / 60;
+	if (now < frameEnd) {
+		SDL_Delay(frameEnd - now);
+	}
+}
+
 bool UiFadeIn(int steps)
 {
 	if (fadeValue < 256) {
@@ -269,20 +279,6 @@ bool UiFadeIn(int steps)
 	SetFadeLevel(fadeValue);
 
 	return fadeValue == 256;
-}
-
-bool UiFadeOut(int steps)
-{
-	if (fadeValue > 0) {
-		fadeValue -= 256 / steps;
-		if (fadeValue < 0) {
-			fadeValue = 0;
-		}
-	}
-
-	SetFadeLevel(fadeValue);
-
-	return fadeValue == 0;
 }
 
 ///////////////////////////Renders

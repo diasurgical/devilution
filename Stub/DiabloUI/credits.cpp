@@ -554,10 +554,12 @@ BOOL __stdcall UiCreditsDialog(int a1)
 	bool endMenu = false;
 
 	SDL_Event event;
-	while (1) {
+	while (!endMenu && lineCount > 0) {
 		credts_Render();
+		DrawMouse();
+		UiFadeIn();
 
-		if (SDL_PollEvent(&event)) {
+		while (SDL_PollEvent(&event)) {
 			switch (event.type) {
 			case SDL_KEYDOWN:
 			case SDL_MOUSEBUTTONDOWN:
@@ -568,12 +570,9 @@ BOOL __stdcall UiCreditsDialog(int a1)
 			}
 		}
 
-		if (!endMenu && lineCount > 0) {
-			UiFadeIn();
-		} else if (UiFadeOut()) {
-			break;
-		}
+		CapFPS();
 	}
+	BlackPalette();
 
 	credts_Free();
 
