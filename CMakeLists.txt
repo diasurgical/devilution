@@ -204,9 +204,3 @@ target_link_libraries(devilution PUBLIC
 )
 
 cotire(devilution)
-
-# xxhash fast hashing library
-add_library(xxhash STATIC 3rdParty/xxhash/xxhash.c)
-set_source_files_properties(3rdParty/xxhash/xxhash.c PROPERTIES LANGUAGE CXX)
-target_include_directories(xxhash PUBLIC 3rdParty/xxhash)
-target_compile_options(xxhash PRIVATE -O3 -fno-pie -fno-pic)
