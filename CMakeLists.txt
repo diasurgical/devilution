@@ -45,6 +45,7 @@ string(APPEND CMAKE_CXX_FLAGS_DEBUG " -fsanitize=address -fsanitize-recover=addr
 find_package(SDL2 REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 find_package(SDL2_mixer REQUIRED)
+find_package(sodium REQUIRED)
 
 set(SOURCES
     Source/automap.cpp
@@ -164,12 +165,14 @@ set(STUB_SOURCES
 
 include_directories(${SDL2_INCLUDE_DIR}
                     ${SDL2_TTF_INCLUDE_DIR}
-                    ${SDL2_MIXER_INCLUDE_DIR})
+                    ${SDL2_MIXER_INCLUDE_DIR}
+					${sodium_INCLUDE_DIR})
 
 include_directories(. Stub 3rdParty/asio/include)
 
 # FUTURE: use add_compile_definitions()
 add_definitions(
+    -DASIO_STANDALONE
     -D_DEBUG
     -DMINIWIN
     # Skip fades and other fluff
@@ -201,6 +204,7 @@ target_link_libraries(devilution PUBLIC
     ${SDL2_LIBRARY}
     ${SDL2_TTF_LIBRARIES}
     ${SDL2_MIXER_LIBRARIES}
+    ${sodium_LIBRARY_RELEASE}
 )
 
 cotire(devilution)
