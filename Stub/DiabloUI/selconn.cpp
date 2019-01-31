@@ -90,31 +90,30 @@ int __stdcall UiSelectProvider(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYE
 						SetMenu(PreviousItem[submenu]);
 						break;
 					}
-
 					return FALSE;
 				case SDLK_RETURN:
 				case SDLK_KP_ENTER:
 				case SDLK_SPACE:
+					effects_play_sound("sfx\\items\\titlslct.wav");
 					switch (SelectedItem) {
 					case 1:
-						effects_play_sound("sfx\\items\\titlslct.wav");
-						done = SNetInitializeProvider('ipc', client_info, user_info, ui_info, file_info);
-						SelectedItem = 1;
-						SelectedItemMax = 3;
+						done = SNetInitializeProvider('BNET', client_info, user_info, ui_info, file_info);
 						break;
 					case 2:
-						effects_play_sound("sfx\\items\\titlslct.wav");
-						done = SNetInitializeProvider('dial', client_info, user_info, ui_info, file_info);
-						SelectedItem = 1;
-						SelectedItemMax = 3;
+						done = SNetInitializeProvider('IPXN', client_info, user_info, ui_info, file_info);
 						break;
 					case 3:
-						effects_play_sound("sfx\\items\\titlslct.wav");
-						done = SNetInitializeProvider('null', client_info, user_info, ui_info, file_info);
-						SelectedItem = 1;
-						SelectedItemMax = 3;
+						done = SNetInitializeProvider('MODM', client_info, user_info, ui_info, file_info);
+						break;
+					case 4:
+						done = SNetInitializeProvider('SCBL', client_info, user_info, ui_info, file_info);
+						break;
+					case 5:
+						done = SNetInitializeProvider('UDPN', client_info, user_info, ui_info, file_info);
 						break;
 					}
+					SelectedItem = 1;
+					SelectedItemMax = 3;
 					break;
 				}
 				break;

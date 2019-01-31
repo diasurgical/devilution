@@ -44,7 +44,7 @@ BOOL STORMAPI SNetSendMessage(int playerID, void *data, unsigned int databytes)
 	return TRUE;
 }
 
-int __stdcall SNetInitializeProvider(unsigned long a1, struct _SNETPROGRAMDATA *client_info,
+int __stdcall SNetInitializeProvider(unsigned long provider, struct _SNETPROGRAMDATA *client_info,
     struct _SNETPLAYERDATA *user_info, struct _SNETUIDATA *ui_info,
     struct _SNETVERSIONDATA *fileinfo)
 {
@@ -54,7 +54,7 @@ int __stdcall SNetInitializeProvider(unsigned long a1, struct _SNETPROGRAMDATA *
     char *cdesc;
     BOOL *multi;
 
-	BOOL result = ui_info->selectnamecallback(client_info, user_info, ui_info, fileinfo, 0, cname, 0, cdesc, 0, multi);
+	BOOL result = ui_info->selectnamecallback(client_info, user_info, ui_info, fileinfo, provider, cname, 0, cdesc, 0, multi);
 
 	return result;
 }

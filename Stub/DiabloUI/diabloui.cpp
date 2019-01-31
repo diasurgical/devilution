@@ -197,7 +197,7 @@ void __stdcall UiMessageBoxCallback(HWND hWnd, char *lpText, LPCSTR lpCaption, U
 	UNIMPLEMENTED();
 }
 
-BOOL __stdcall UiDrawDescCallback(int arg0, COLORREF color, LPCSTR lpString, char *a4, int a5, UINT align, time_t a7,
+BOOL __stdcall UiDrawDescCallback(int game_type, COLORREF color, LPCSTR lpString, char *a4, int a5, UINT align, time_t a7,
     HDC *a8)
 {
 	UNIMPLEMENTED();
