@@ -80,16 +80,16 @@ int __stdcall SNetGetProviderCaps(struct _SNETCAPS *caps)
 	return devilution_net::inst->SNetGetProviderCaps(caps);
 }
 
-int __stdcall SNetInitializeProvider(unsigned long a1, struct _SNETPROGRAMDATA *client_info,
+int __stdcall SNetInitializeProvider(unsigned long provider, struct _SNETPROGRAMDATA *client_info,
     struct _SNETPLAYERDATA *user_info, struct _SNETUIDATA *ui_info,
     struct _SNETVERSIONDATA *fileinfo)
 {
 	// called by engine for single
 	// called by ui for multi
 	// Ignore: fileinfo
-	if (a1 == 'UDPN')
+	if (provider == 'UDPN')
 		devilution_net::inst = std::make_unique<devilution_net_udp>();
-	else if (a1 == 'SCBL' || a1 == 'NULL' || a1 == 0)
+	else if (provider == 'SCBL' || provider == 0)
 		devilution_net::inst = std::make_unique<devilution_net_single>();
 	else
 		ABORT();
