@@ -460,8 +460,8 @@ void __cdecl multi_process_network_packets()
 			multi_clear_left_tbl();
 			v1 = pkt;
 			v2 = pkt;
-			if ((unsigned int)len >= 0x13
-			    && *(_DWORD *)arglist < 4u
+			if ((unsigned int)len >= sizeof(TPktHdr)
+			    && *(_DWORD *)arglist < MAX_PLRS
 			    && pkt->wCheck == 'ip'
 			    && (unsigned short)pkt->wLen == len) {
 				v3 = *(_DWORD *)arglist;

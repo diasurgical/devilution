@@ -1,70 +1,32 @@
-/** @file
- *
- * A minimal implementation of the Storm network stack necessary for local play.
- */
 #include "../types.h"
-
-struct StubMessage {
-	int playerid;
-	std::string data;
-};
-
-/** A queue of messages waiting to be processed. */
-static std::deque<StubMessage> snet_messages;
-/**
- * Last message returned from SNetReceiveMessage().
- * Must always be kept alive because the caller will read the data afterwards.
- */
-static StubMessage snet_current_message;
 
 BOOL STORMAPI SNetReceiveMessage(int *senderplayerid, char **data, int *databytes)
 {
-	DUMMY_ONCE();
-
-	if (snet_messages.empty()) {
+	if(!devilution_net::inst->SNetReceiveMessage(senderplayerid, data, databytes)) {
 		SErrSetLastError(STORM_ERROR_NO_MESSAGES_WAITING);
 		return FALSE;
 	}
-
-	snet_current_message = std::move(snet_messages.front());
-	snet_messages.pop_front();
-
-	*senderplayerid = snet_current_message.playerid;
-	*data = const_cast<char *>(snet_current_message.data.data());
-	*databytes = snet_current_message.data.size();
-
 	return TRUE;
 }
 
 BOOL STORMAPI SNetSendMessage(int playerID, void *data, unsigned int databytes)
 {
-	DUMMY_ONCE();
-
-	snet_messages.push_back(StubMessage{ playerID, std::string((char *)data, databytes) });
-	return TRUE;
+	return devilution_net::inst->SNetSendMessage(playerID, data, databytes);
 }
 
-int __stdcall SNetInitializeProvider(unsigned long provider, struct _SNETPROGRAMDATA *client_info,
-    struct _SNETPLAYERDATA *user_info, struct _SNETUIDATA *ui_info,
-    struct _SNETVERSIONDATA *fileinfo)
+BOOL STORMAPI SNetReceiveTurns(int a1, int arraysize, char **arraydata, unsigned int *arraydatabytes,
+                               DWORD *arrayplayerstatus)
 {
-	DUMMY();
-
-    char *cname;
-    char *cdesc;
-    BOOL *multi;
-
-	BOOL result = ui_info->selectnamecallback(client_info, user_info, ui_info, fileinfo, provider, cname, 0, cdesc, 0, multi);
-
-	return result;
+	if(a1 != 0)
+		UNIMPLEMENTED();
+	if(arraysize != MAX_PLRS)
+		UNIMPLEMENTED();
+	return devilution_net::inst->SNetReceiveTurns(arraydata, arraydatabytes, arrayplayerstatus);
 }
 
-BOOL STORMAPI SNetCreateGame(const char *pszGameName, const char *pszGamePassword, const char *pszGameStatString,
-    DWORD dwGameType, char *GameTemplateData, int GameTemplateSize, int playerCount,
-    char *creatorName, char *a11, int *playerID)
+BOOL STORMAPI SNetSendTurn(char *data, unsigned int databytes)
 {
-	DUMMY();
-	return TRUE;
+	return devilution_net::inst->SNetSendTurn(data, databytes);
 }
 
 BOOL STORMAPI SNetDestroy()
@@ -90,77 +52,99 @@ BOOL STORMAPI SNetLeaveGame(int type)
 	return TRUE;
 }
 
-BOOL STORMAPI SNetPerformUpgrade(DWORD *upgradestatus)
-{
-	DUMMY();
-	return TRUE;
-}
-
-BOOL STORMAPI SNetReceiveTurns(int a1, int arraysize, char **arraydata, unsigned int *arraydatabytes,
-    DWORD *arrayplayerstatus)
-{
-	DUMMY_ONCE();
-	return TRUE;
-}
-
-BOOL STORMAPI SNetSendTurn(char *data, unsigned int databytes)
-{
-	DUMMY();
-	return TRUE;
-}
-
-BOOL STORMAPI SNetSetGameMode(DWORD modeFlags, bool makePublic)
-{
-	DUMMY();
-	return TRUE;
-}
-
 BOOL STORMAPI SNetSendServerChatCommand(const char *command)
 {
 	DUMMY();
 	return TRUE;
 }
 
-BOOL STORMAPI SNetGetTurnsInTransit(int *turns)
-{
-	DUMMY_ONCE();
-	return TRUE;
-}
-
-BOOL __stdcall SNetGetOwnerTurnsWaiting(DWORD *)
+void *__stdcall SNetUnregisterEventHandler(int evtype, void(__stdcall * func)(struct _SNETEVENT *))
 {
 	DUMMY();
-	return TRUE;
+	return NULL;
 }
 
-void *__stdcall SNetUnregisterEventHandler(int, void(__stdcall *)(struct _SNETEVENT *))
+void *__stdcall SNetRegisterEventHandler(int evtype, void(__stdcall * func)(struct _SNETEVENT *))
 {
+	// need to handle:
+	// EVENT_TYPE_PLAYER_LEAVE_GAME
+	// EVENT_TYPE_PLAYER_CREATE_GAME (raised during SNetCreateGame?)
+	// EVENT_TYPE_PLAYER_MESSAGE
+	// all by the same function
 	DUMMY();
-	return (void *)-1;
-}
-
-void *__stdcall SNetRegisterEventHandler(int, void(__stdcall *)(struct _SNETEVENT *))
-{
-	DUMMY();
-	return (void *)-1;
-}
-
-BOOLEAN __stdcall SNetSetBasePlayer(int)
-{
-	DUMMY();
-	return TRUE;
+	return (void *)func;
 }
 
 int __stdcall SNetGetProviderCaps(struct _SNETCAPS *caps)
 {
-	caps->size = 0; // engine writes only ?!?
-	caps->flags = 0; // unused
-	caps->maxmessagesize = 512; // capped to 512; underflow if < 24
-	caps->maxqueuesize = 0; // unused
-	caps->maxplayers = gbMaxPlayers;  // capped to 4
-	caps->bytessec = 100000; // ?
-	caps->latencyms = 0; // unused
-	caps->defaultturnssec = 10; // ?
-	caps->defaultturnsintransit = 10; // ?
-	return 1;
+	return devilution_net::inst->SNetGetProviderCaps(caps);
+}
+
+int __stdcall SNetInitializeProvider(unsigned long a1, struct _SNETPROGRAMDATA *client_info,
+                                     struct _SNETPLAYERDATA *user_info, struct _SNETUIDATA *ui_info,
+                                     struct _SNETVERSIONDATA *fileinfo)
+{
+	// called by engine for single
+	// called by ui for multi
+	// Ignore: fileinfo
+	if(a1 == 'UDPN')
+		devilution_net::inst = std::make_unique<devilution_net_udp>();
+	else if(a1 == 'SCBL' || a1 == 'NULL' || a1 == 0)
+		devilution_net::inst = std::make_unique<devilution_net_single>();
+	else
+		ABORT();
+
+	char *cname;
+	char *cdesc;
+	BOOL *multi;
+	ui_info->selectnamecallback(client_info, user_info, ui_info, fileinfo, 0, cname, 0, cdesc, 0, multi);
+	return TRUE;
+}
+
+BOOL STORMAPI SNetCreateGame(const char *pszGameName, const char *pszGamePassword, const char *pszGameStatString,
+                             DWORD dwGameType, char *GameTemplateData, int GameTemplateSize, int playerCount,
+                             char *creatorName, char *a11, int *playerID)
+{
+	// called by engine for single
+	// called by ui for multi
+	// hack: cannot create game until UI is ready
+	//       first instance will create, second will join
+	int ret;
+	if(ret = devilution_net::inst->create("0.0.0.0", "mypass") == -1)
+		ret = devilution_net::inst->join("127.0.0.1", "mypass");
+	*playerID = ret;
+	return TRUE;
+}
+
+BOOL __stdcall SNetGetOwnerTurnsWaiting(DWORD * turns)
+{
+	// Is this the mirror image of SNetGetTurnsInTransit?
+	*turns = 0;
+	return TRUE;
+}
+
+BOOL STORMAPI SNetGetTurnsInTransit(int *turns)
+{
+	*turns = 0; // We do not queue turns at all
+	return TRUE;
+}
+
+BOOLEAN __stdcall SNetSetBasePlayer(int)
+{
+	// engine calls this only once with argument 1
+	return TRUE;
+}
+
+BOOL STORMAPI SNetPerformUpgrade(DWORD *upgradestatus)
+{
+	// since we never signal STORM_ERROR_REQUIRES_UPGRADE
+	// the engine will not call this function
+	UNIMPLEMENTED();
+}
+
+BOOL STORMAPI SNetSetGameMode(DWORD modeFlags, bool makePublic)
+{
+	// not called from engine
+	UNIMPLEMENTED();
+	return TRUE;
 }

@@ -12,6 +12,12 @@
 		abort(); \
 	} while(0)
 
+#define ABORT() \
+	do { \
+		eprintf("ABORT: %s @ %s:%d\n", __FUNCTION__, __FILE__, __LINE__); \
+		abort(); \
+	} while(0)
+
 #define DUMMY() eprintf("DUMMY: %s @ %s:%d\n", __FUNCTION__, __FILE__, __LINE__)
 
 #define DUMMY_ONCE() \

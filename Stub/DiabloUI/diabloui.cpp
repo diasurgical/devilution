@@ -217,8 +217,7 @@ BOOL __stdcall UiArtCallback(int game_type, unsigned int art_code, PALETTEENTRY 
 int __stdcall UiSelectGame(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info, _SNETUIDATA *ui_info,
     _SNETVERSIONDATA *file_info, int *playerId)
 {
-	DUMMY();
-	*playerId = 0;
+	SNetCreateGame(NULL, NULL, NULL, 0, NULL, 0, MAX_PLRS, NULL, NULL, playerId);
 	return 1;
 }
 

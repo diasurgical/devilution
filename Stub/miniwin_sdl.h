@@ -5,11 +5,13 @@
 #include <dirent.h>
 #include <vector>
 #include <deque>
+#include <queue>
 #include <set>
 #include <string>
 #include <functional>
 #include <iostream>
 #include <utility>
+#include <memory>
 
 #include <SDL2/SDL.h>
 #include <SDL_ttf.h>
