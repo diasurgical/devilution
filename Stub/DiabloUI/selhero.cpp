@@ -224,6 +224,8 @@ BOOL __stdcall UiSelHeroSingDialog(
 
 	bool endMenu = false;
 	while (!endMenu) {
+		CapFPS();
+
 		switch (submenu) {
 		case SINGLEPLAYER_LOAD:
 			selhero_Render();
@@ -340,8 +342,6 @@ BOOL __stdcall UiSelHeroSingDialog(
 				exit(0);
 			}
 		}
-
-		CapFPS();
 	}
 	BlackPalette();
 
@@ -396,6 +396,8 @@ BOOL __stdcall UiSelHeroMultDialog(
 
 	int endMenu = false;
 	while (endMenu == false) {
+		CapFPS();
+
 		switch (submenu) {
 		case MULTIPLAYER_LOBBY:
 			selhero_Render_GameType(HeroChosen, 1);
@@ -562,8 +564,6 @@ BOOL __stdcall UiSelHeroMultDialog(
 				exit(0);
 			}
 		}
-
-		CapFPS();
 	}
 	BlackPalette();
 

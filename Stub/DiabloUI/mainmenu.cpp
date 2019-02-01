@@ -66,6 +66,7 @@ BOOL __stdcall UiMainMenuDialog(char *name, int *pdwResult, void(__stdcall *fnSo
 	bool endMenu = false;
 
 	while (!endMenu) {
+		CapFPS();
 		mainmenu_Render(name);
 		DrawMouse();
 		UiFadeIn();
@@ -165,8 +166,6 @@ BOOL __stdcall UiMainMenuDialog(char *name, int *pdwResult, void(__stdcall *fnSo
 				break;
 			}
 		}
-
-		CapFPS();
 	}
 
 	BlackPalette();

@@ -66,6 +66,7 @@ int __stdcall UiSelectProvider(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYE
 
 	bool endMenu = false;
 	while (!endMenu) {
+		CapFPS();
 		selconn_Render();
 		DrawMouse();
 		UiFadeIn();
@@ -124,8 +125,6 @@ int __stdcall UiSelectProvider(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYE
 				exit(0);
 			}
 		}
-
-		CapFPS();
 	}
 	BlackPalette();
 

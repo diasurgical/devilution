@@ -28,6 +28,7 @@ BOOL __stdcall UiTitleDialog(int a1)
 
 	SDL_Event event;
 	while (!endMenu && SDL_GetTicks() < timeOut) {
+		CapFPS();
 		title_Render();
 		UiFadeIn();
 
@@ -41,8 +42,6 @@ BOOL __stdcall UiTitleDialog(int a1)
 				exit(0);
 			}
 		}
-
-		CapFPS();
 	}
 	BlackPalette();
 

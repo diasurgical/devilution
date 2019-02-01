@@ -555,8 +555,8 @@ BOOL __stdcall UiCreditsDialog(int a1)
 
 	SDL_Event event;
 	while (!endMenu && lineCount > 0) {
+		CapFPS();
 		credts_Render();
-		DrawMouse();
 		UiFadeIn();
 
 		while (SDL_PollEvent(&event)) {
@@ -569,8 +569,6 @@ BOOL __stdcall UiCreditsDialog(int a1)
 				exit(0);
 			}
 		}
-
-		CapFPS();
 	}
 	BlackPalette();
 

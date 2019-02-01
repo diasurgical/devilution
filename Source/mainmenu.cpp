@@ -47,6 +47,7 @@ int __stdcall mainmenu_select_hero_dialog(
 		        &gnDifficulty))
 			TermMsg("Unable to display SelHeroSing");
 
+
 		if (dlgresult == 2)
 			gbLoadGame = TRUE;
 		else
