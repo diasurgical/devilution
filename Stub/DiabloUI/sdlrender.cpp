@@ -190,7 +190,11 @@ void SdlDiabloMainWindow()
 	atexit(TTF_Quit);
 	SDL_Init(SDL_INIT_EVERYTHING);
 
-	window = SDL_CreateWindow("Diablo", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_RESIZABLE);
+	int flags = SDL_WINDOW_FULLSCREEN_DESKTOP;
+	if (!fullscreen) {
+		flags = SDL_WINDOW_RESIZABLE;
+	}
+	window = SDL_CreateWindow("Diablo", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, flags);
 
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
 	printf("Window And Renderer Created!\n");
