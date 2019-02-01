@@ -278,7 +278,6 @@ int dvlnet_udp::SNetGetProviderCaps(struct _SNETCAPS *caps)
 	return 1;
 }
 
-
 void *dvlnet_udp::SNetUnregisterEventHandler(event_type evtype, void(__stdcall *func)(struct _SNETEVENT *))
 {
 	registered_handlers.erase(evtype);

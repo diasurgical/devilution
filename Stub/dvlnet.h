@@ -107,22 +107,26 @@ public:
 		plr_t newplr();
 		plr_t oldplr();
 		const buffer_t &info();
-
-		template<class P> void process_data(P &self);
 	};
 
-	class packet_in : public packet {
+	template<class P> class packet_proc : public packet {
 	public:
 		using packet::packet;
+		void process_data();
+	};
+
+	class packet_in : public packet_proc<packet_in> {
+	public:
+		using packet_proc<packet_in>::packet_proc;
 		void create(buffer_t buf);
 		void process_element(buffer_t &x);
 		template <class T> void process_element(T &x);
 		void decrypt();
 	};
 
-	class packet_out : public packet {
+	class packet_out : public packet_proc<packet_out> {
 	public:
-		using packet::packet;
+		using packet_proc<packet_out>::packet_proc;
 		void create(packet_type t, plr_t s, plr_t d, buffer_t m);
 		void create(packet_type t, plr_t s, plr_t d, turn_t u);
 		void create(packet_type t, plr_t s, plr_t d, cookie_t c);
@@ -186,8 +190,9 @@ private:
 	void run_event_handler(_SNETEVENT &ev);
 };
 
-template<class P> void dvlnet_udp::packet::process_data(P &self)
+template<class P> void dvlnet_udp::packet_proc<P>::process_data()
 {
+	P &self = static_cast<P&>(*this);
 	self.process_element(m_type);
 	self.process_element(m_src);
 	self.process_element(m_dest);

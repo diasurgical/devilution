@@ -116,7 +116,7 @@ void dvlnet_udp::packet_in::decrypt()
 		decrypted_buffer = encrypted_buffer;
 	}
 
-	process_data(*this);
+	process_data();
 
 	have_decrypted = true;
 }
@@ -212,7 +212,7 @@ void dvlnet_udp::packet_out::encrypt()
 	if (have_encrypted)
 		return;
 
-	process_data(*this);
+	process_data();
 
 	if (!disable_encryption) {
 		auto len_cleartext = encrypted_buffer.size();
