@@ -251,7 +251,7 @@ BOOL __stdcall UiSelHeroSingDialog(
 						break;
 					}
 
-					*dlgresult = 4;
+					*dlgresult = EXIT_MENU;
 					endMenu = true;
 					break;
 				case SDLK_BACKSPACE:
@@ -281,6 +281,8 @@ BOOL __stdcall UiSelHeroSingDialog(
 					case SINGLEPLAYER_LOAD:
 						if (SelectedItem == SelectedItemMax) {
 							SetMenu(SINGLEPLAYER_CLASSES);
+						} else {
+							*dlgresult = LOAD_GAME;
 						}
 						break;
 					case SINGLEPLAYER_CLASSES:
@@ -365,7 +367,7 @@ BOOL __stdcall UiSelHeroSingDialog(
 
 			const char *test_name = chr_name_str;
 			if (!StartNewGame) {
-				*dlgresult = 2; // This means load game
+				*dlgresult = LOAD_GAME;
 			}
 			strcpy(name, test_name);
 		}
@@ -420,7 +422,7 @@ BOOL __stdcall UiSelHeroMultDialog(
 						break;
 					}
 
-					*dlgresult = 4;
+					*dlgresult = EXIT_MENU;
 					return TRUE;
 				case SDLK_UP:
 					SelectedItem--;
