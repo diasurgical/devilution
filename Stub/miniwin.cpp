@@ -92,15 +92,24 @@ WINBOOL WINAPI GetDiskFreeSpaceA(LPCSTR lpRootPathName, LPDWORD lpSectorsPerClus
 }
 
 /**
- * @brief Normally this would get the exe path, but Diablo uses it to find the save game folder
+ * @brief Used for getting save path, by removing up to and including the last "\"
  */
 DWORD WINAPI GetModuleFileNameA(HMODULE hModule, LPSTR lpFilename, DWORD nSize)
 {
-	assert(nSize >= 16);
 	char *name = SDL_GetPrefPath("diasurgical", "devilution");
-	strcat(name, "\\devilution");
+
+	if (strlen(name) >= nSize) {
+		printf("Save path longer then %d: %s\n", nSize, name);
+		ABORT();
+	}
+
 	strncpy(lpFilename, name, nSize);
-	return strlen(name);
+	SDL_free(name);
+
+	int len = strlen(lpFilename);
+	lpFilename[len-1] = '\\';
+
+	return len;
 }
 
 WINBOOL WINAPI GetComputerNameA(LPSTR lpBuffer, LPDWORD nSize)
