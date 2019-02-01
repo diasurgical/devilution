@@ -29,6 +29,21 @@ BOOL STORMAPI SNetSendTurn(char *data, unsigned int databytes)
 	return devilution_net::inst->SNetSendTurn(data, databytes);
 }
 
+int __stdcall SNetGetProviderCaps(struct _SNETCAPS *caps)
+{
+	return devilution_net::inst->SNetGetProviderCaps(caps);
+}
+
+void *__stdcall SNetUnregisterEventHandler(int evtype, void(__stdcall *func)(struct _SNETEVENT *))
+{
+	return devilution_net::inst->SNetUnregisterEventHandler(evtype, func);
+}
+
+void *__stdcall SNetRegisterEventHandler(int evtype, void(__stdcall *func)(struct _SNETEVENT *))
+{
+	return devilution_net::inst->SNetRegisterEventHandler(evtype, func);
+}
+
 BOOL STORMAPI SNetDestroy()
 {
 	DUMMY();
@@ -58,28 +73,6 @@ BOOL STORMAPI SNetSendServerChatCommand(const char *command)
 	return TRUE;
 }
 
-void *__stdcall SNetUnregisterEventHandler(int evtype, void(__stdcall *func)(struct _SNETEVENT *))
-{
-	DUMMY();
-	return NULL;
-}
-
-void *__stdcall SNetRegisterEventHandler(int evtype, void(__stdcall *func)(struct _SNETEVENT *))
-{
-	// need to handle:
-	// EVENT_TYPE_PLAYER_LEAVE_GAME
-	// EVENT_TYPE_PLAYER_CREATE_GAME (raised during SNetCreateGame?)
-	// EVENT_TYPE_PLAYER_MESSAGE
-	// all by the same function
-	DUMMY();
-	return (void *)func;
-}
-
-int __stdcall SNetGetProviderCaps(struct _SNETCAPS *caps)
-{
-	return devilution_net::inst->SNetGetProviderCaps(caps);
-}
-
 /**
  * @brief Called by engine for single, called by ui for multi
  * @param provider BNET, IPXN, MODM, SCBL or UDPN
@@ -89,12 +82,15 @@ int __stdcall SNetInitializeProvider(unsigned long provider, struct _SNETPROGRAM
     struct _SNETPLAYERDATA *user_info, struct _SNETUIDATA *ui_info,
     struct _SNETVERSIONDATA *fileinfo)
 {
-	if (provider == 'UDPN')
-		devilution_net::inst = std::make_unique<devilution_net_udp>();
-	else if (provider == 'SCBL' || provider == 0)
+	if (provider == 'UDPN') {
+		devilution_net::buffer_t game_init_info((char*)client_info->initdata,
+												(char*)client_info->initdata + client_info->initdatabytes);
+		devilution_net::inst = std::make_unique<devilution_net_udp>(std::move(game_init_info));
+	} else if (provider == 'SCBL' || provider == 0) {
 		devilution_net::inst = std::make_unique<devilution_net_single>();
-	else
+	} else {
 		ABORT();
+	}
 
 	char *cname;
 	char *cdesc;

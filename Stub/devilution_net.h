@@ -18,6 +18,10 @@ public:
 	virtual bool SNetReceiveTurns(char **data, unsigned int *size, DWORD *status) = 0;
 	virtual bool SNetSendTurn(char *data, unsigned int size) = 0;
 	virtual int SNetGetProviderCaps(struct _SNETCAPS *caps) = 0;
+	virtual void *SNetRegisterEventHandler(event_type evtype, void(__stdcall *func)(struct _SNETEVENT *)) = 0;
+	virtual void *SNetUnregisterEventHandler(event_type evtype, void(__stdcall *func)(struct _SNETEVENT *)) = 0;
+
+	virtual ~devilution_net() {}
 };
 
 class devilution_net_single : public devilution_net {
@@ -61,12 +65,30 @@ public:
 
 	virtual bool SNetReceiveTurns(char **data, unsigned int *size, DWORD *status)
 	{
+		// todo: check that this is safe
+		return true;
 	}
 	virtual bool SNetSendTurn(char *data, unsigned int size)
 	{
+		// todo: check that this is safe
+		return true;
 	}
 	virtual int SNetGetProviderCaps(struct _SNETCAPS *caps)
 	{
+		// todo: check that this is safe
+		return true;
+	}
+	virtual void *SNetRegisterEventHandler(event_type evtype, void(__stdcall *func)(struct _SNETEVENT *))
+	{
+		// not called in real singleplayer mode
+		// not needed in pseudo multiplayer mode (?)
+		return this;
+	}
+	virtual void *SNetUnregisterEventHandler(event_type evtype, void(__stdcall *func)(struct _SNETEVENT *))
+	{
+		// not called in real singleplayer mode
+		// not needed in pseudo multiplayer mode (?)
+		return this;
 	}
 };
 
@@ -77,7 +99,7 @@ public:
 
 class devilution_net_udp : public devilution_net {
 public:
-	devilution_net_udp();
+	devilution_net_udp(buffer_t info);
 	virtual int create(std::string addrstr, std::string passwd);
 	virtual int join(std::string addrstr, std::string passwd);
 
@@ -86,6 +108,8 @@ public:
 	virtual bool SNetReceiveTurns(char **data, unsigned int *size, DWORD *status);
 	virtual bool SNetSendTurn(char *data, unsigned int size);
 	virtual int SNetGetProviderCaps(struct _SNETCAPS *caps);
+	virtual void *SNetRegisterEventHandler(event_type evtype, void(__stdcall *func)(struct _SNETEVENT *));
+	virtual void *SNetUnregisterEventHandler(event_type evtype, void(__stdcall *func)(struct _SNETEVENT *));
 
 	static constexpr unsigned short max_packet_size = 0xFFFF;
 
@@ -125,6 +149,7 @@ public:
 		cookie_t m_cookie;
 		plr_t m_newplr;
 		plr_t m_oldplr;
+		buffer_t m_info;
 
 		buffer_t encrypted_buffer;
 		buffer_t decrypted_buffer;
@@ -151,7 +176,7 @@ public:
 		void create(packet_type t, plr_t s, plr_t d, buffer_t m);
 		void create(packet_type t, plr_t s, plr_t d, turn_t u);
 		void create(packet_type t, plr_t s, plr_t d, cookie_t c);
-		void create(packet_type t, plr_t s, plr_t d, cookie_t c, plr_t n);
+		void create(packet_type t, plr_t s, plr_t d, cookie_t c, plr_t n, buffer_t i);
 		void create(packet_type t, plr_t s, plr_t d, plr_t o);
 		void create(std::vector<unsigned char> buf);
 
@@ -165,6 +190,7 @@ public:
 		cookie_t cookie();
 		plr_t newplr();
 		plr_t oldplr();
+		const buffer_t &info();
 
 		void encrypt();
 		void decrypt();
@@ -177,15 +203,14 @@ private:
 	static constexpr daddr_t ADDR_MASTER = 0xFE;
 	static constexpr int ACTIVE = 60;
 
+	std::map<event_type, void(__stdcall *)(struct _SNETEVENT *)> registered_handlers;
+	buffer_t game_init_info;
+
 	struct message_t {
 		int sender; // change int to something else in devilution code later
 		buffer_t payload;
-		message_t()
-		    : sender(-1)
-		    , payload({}){};
-		message_t(int s, buffer_t p)
-		    : sender(s)
-		    , payload(p){};
+		message_t() : sender(-1), payload({}) {};
+		message_t(int s, buffer_t p) : sender(s), payload(p) {};
 	};
 
 	message_t message_last;
@@ -215,6 +240,7 @@ private:
 	void send(packet &pkt, endpoint sender = none);
 	void recv_decrypted(packet &pkt, endpoint sender);
 	std::set<endpoint> dests_for_addr(plr_t dest, endpoint sender);
+	void run_event_handler(_SNETEVENT &ev);
 };
 
 template <class mode>
@@ -236,6 +262,7 @@ void devilution_net_udp::packet::process_data()
 	case PT_JOIN_ACCEPT:
 		process_element(mode(), m_cookie);
 		process_element(mode(), m_newplr);
+		process_element(mode(), m_info);
 		break;
 	case PT_LEAVE_GAME:
 		break;

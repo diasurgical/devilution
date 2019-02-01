@@ -57,7 +57,8 @@ void devilution_net_udp::packet::create(devilution_net_udp::packet_type t,
     devilution_net_udp::plr_t s,
     devilution_net_udp::plr_t d,
     devilution_net_udp::cookie_t c,
-    devilution_net_udp::plr_t n)
+	devilution_net_udp::plr_t n,
+	devilution_net_udp::buffer_t i)
 {
 	if (have_encrypted || have_decrypted)
 		ABORT();
@@ -69,6 +70,7 @@ void devilution_net_udp::packet::create(devilution_net_udp::packet_type t,
 	m_dest = d;
 	m_cookie = c;
 	m_newplr = n;
+	m_info = i;
 }
 
 void devilution_net_udp::packet::create(devilution_net_udp::packet_type t,
@@ -168,6 +170,15 @@ devilution_net_udp::plr_t devilution_net_udp::packet::oldplr()
 	return m_oldplr;
 }
 
+const devilution_net_udp::buffer_t &devilution_net_udp::packet::info()
+{
+	if (!have_decrypted)
+		ABORT();
+	if (m_type != PT_JOIN_ACCEPT)
+		throw devilution_net_udp::packet_exception();
+	return m_info;
+}
+
 void devilution_net_udp::packet::encrypt()
 {
 	if (!have_decrypted)
@@ -220,10 +231,11 @@ void devilution_net_udp::packet::decrypt()
 	have_decrypted = true;
 }
 
-devilution_net_udp::devilution_net_udp()
+devilution_net_udp::devilution_net_udp(buffer_t info)
 {
 	if (sodium_init() < 0)
 		abort();
+	game_init_info = std::move(info);
 }
 
 int devilution_net_udp::create(std::string addrstr, std::string passwd)
@@ -357,8 +369,17 @@ void devilution_net_udp::handle_join_request(packet &pkt, endpoint sender)
 		}
 	}
 	packet reply(key);
-	reply.create(PT_JOIN_ACCEPT, plr_self, ADDR_BROADCAST, pkt.cookie(), i);
+	reply.create(PT_JOIN_ACCEPT, plr_self, ADDR_BROADCAST, pkt.cookie(), i, game_init_info);
 	send(reply);
+}
+
+void devilution_net_udp::run_event_handler(_SNETEVENT &ev)
+{
+	auto f = registered_handlers[static_cast<event_type>(ev.eventid)];
+	if(f) {
+		printf("RUNNING HANDLER");
+		f(&ev);
+	}
 }
 
 void devilution_net_udp::handle_accept(packet &pkt)
@@ -367,6 +388,13 @@ void devilution_net_udp::handle_accept(packet &pkt)
 		return; // already have player id
 	if (pkt.cookie() == cookie_self)
 		plr_self = pkt.newplr();
+	_SNETEVENT ev;
+	ev.eventid = EVENT_TYPE_PLAYER_CREATE_GAME;
+	ev.playerid = plr_self;
+	ev.data = pkt.info().data();
+	ev.databytes = pkt.info().size();
+	printf("GOT SEED!!");
+	run_event_handler(ev);
 }
 
 void devilution_net_udp::recv_decrypted(packet &pkt, endpoint sender)
@@ -482,4 +510,22 @@ int devilution_net_udp::SNetGetProviderCaps(struct _SNETCAPS *caps)
 	caps->defaultturnssec = 10;      // ?
 	caps->defaultturnsintransit = 1; // maximum acceptable number of turns in queue?
 	return 1;
+}
+
+
+void *devilution_net_udp::SNetUnregisterEventHandler(event_type evtype, void(__stdcall *func)(struct _SNETEVENT *))
+{
+	registered_handlers.erase(evtype);
+	return (void*)func;
+}
+
+void *devilution_net_udp::SNetRegisterEventHandler(event_type evtype, void(__stdcall *func)(struct _SNETEVENT *))
+{
+	registered_handlers[evtype] = func;
+	return (void*)func;
+	// need to handle:
+	// EVENT_TYPE_PLAYER_LEAVE_GAME
+	// EVENT_TYPE_PLAYER_CREATE_GAME (raised during SNetCreateGame?)
+	// EVENT_TYPE_PLAYER_MESSAGE
+	// all by the same function
 }
