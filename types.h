@@ -56,7 +56,7 @@
 #include "3rdParty/PKWare/pkware.h"
 
 #ifdef MINIWIN
-#include "devilution_net.h"
+#include "dvlnet.h"
 #endif
 
 // If defined, use copy protection [Default -> Defined]

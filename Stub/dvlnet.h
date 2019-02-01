@@ -4,15 +4,13 @@
 #include <asio/ts/io_context.hpp>
 #include <asio/ts/net.hpp>
 
-class devilution_net {
+class dvlnet {
 public:
 	typedef std::vector<unsigned char> buffer_t;
-
-	static std::unique_ptr<devilution_net> inst;
+	static std::unique_ptr<dvlnet> inst;
 
 	virtual int create(std::string addrstr, std::string passwd) = 0;
 	virtual int join(std::string addrstr, std::string passwd) = 0;
-
 	virtual bool SNetReceiveMessage(int *sender, char **data, int *size) = 0;
 	virtual bool SNetSendMessage(int dest, void *data, unsigned int size) = 0;
 	virtual bool SNetReceiveTurns(char **data, unsigned int *size, DWORD *status) = 0;
@@ -20,76 +18,25 @@ public:
 	virtual int SNetGetProviderCaps(struct _SNETCAPS *caps) = 0;
 	virtual void *SNetRegisterEventHandler(event_type evtype, void(__stdcall *func)(struct _SNETEVENT *)) = 0;
 	virtual void *SNetUnregisterEventHandler(event_type evtype, void(__stdcall *func)(struct _SNETEVENT *)) = 0;
-
-	virtual ~devilution_net() {}
+	virtual ~dvlnet() {}
 };
 
-class devilution_net_single : public devilution_net {
+class dvlnet_null: public dvlnet {
 private:
 	std::queue<buffer_t> message_queue;
 	buffer_t message_last;
 	const int plr_single = 0;
 
 public:
-	virtual int create(std::string addrstr, std::string passwd)
-	{
-		return plr_single;
-	}
-
-	virtual int join(std::string addrstr, std::string passwd)
-	{
-		ABORT();
-	}
-
-	virtual bool SNetReceiveMessage(int *sender, char **data, int *size)
-	{
-		if (message_queue.empty())
-			return false;
-		message_last = message_queue.front();
-		message_queue.pop();
-		*sender = plr_single;
-		*size = message_last.size();
-		*data = reinterpret_cast<char *>(message_last.data());
-		return true;
-	}
-
-	virtual bool SNetSendMessage(int dest, void *data, unsigned int size)
-	{
-		if (dest == plr_single || dest == SNPLAYER_ALL) {
-			auto raw_message = reinterpret_cast<unsigned char *>(data);
-			buffer_t message(raw_message, raw_message + size);
-			message_queue.push(message);
-		}
-		return true;
-	}
-
-	virtual bool SNetReceiveTurns(char **data, unsigned int *size, DWORD *status)
-	{
-		// todo: check that this is safe
-		return true;
-	}
-	virtual bool SNetSendTurn(char *data, unsigned int size)
-	{
-		// todo: check that this is safe
-		return true;
-	}
-	virtual int SNetGetProviderCaps(struct _SNETCAPS *caps)
-	{
-		// todo: check that this is safe
-		return true;
-	}
-	virtual void *SNetRegisterEventHandler(event_type evtype, void(__stdcall *func)(struct _SNETEVENT *))
-	{
-		// not called in real singleplayer mode
-		// not needed in pseudo multiplayer mode (?)
-		return this;
-	}
-	virtual void *SNetUnregisterEventHandler(event_type evtype, void(__stdcall *func)(struct _SNETEVENT *))
-	{
-		// not called in real singleplayer mode
-		// not needed in pseudo multiplayer mode (?)
-		return this;
-	}
+	virtual int create(std::string addrstr, std::string passwd);
+	virtual int join(std::string addrstr, std::string passwd);
+	virtual bool SNetReceiveMessage(int *sender, char **data, int *size);
+	virtual bool SNetSendMessage(int dest, void *data, unsigned int size);
+	virtual bool SNetReceiveTurns(char **data, unsigned int *size, DWORD *status);
+	virtual bool SNetSendTurn(char *data, unsigned int size);
+	virtual int SNetGetProviderCaps(struct _SNETCAPS *caps);
+	virtual void *SNetRegisterEventHandler(event_type evtype, void(__stdcall *func)(struct _SNETEVENT *));
+	virtual void *SNetUnregisterEventHandler(event_type evtype, void(__stdcall *func)(struct _SNETEVENT *));
 };
 
 // exact meaning yet to be worked out
@@ -97,9 +44,9 @@ public:
 #define PS_ACTIVE 0x40000
 #define PS_CONNECTED 0x10000
 
-class devilution_net_udp : public devilution_net {
+class dvlnet_udp : public dvlnet {
 public:
-	devilution_net_udp(buffer_t info);
+	dvlnet_udp(buffer_t info);
 	virtual int create(std::string addrstr, std::string passwd);
 	virtual int join(std::string addrstr, std::string passwd);
 
@@ -124,23 +71,12 @@ public:
 	typedef uint32_t cookie_t;
 	typedef int turn_t; // change int to something else in devilution code later
 	typedef std::array<unsigned char, crypto_secretbox_KEYBYTES> key_t;
-	class packet_exception : public std::exception {
-	};
+	class packet_exception : public std::exception {};
 	typedef asio::ip::udp::endpoint endpoint;
 	static const endpoint none;
 
 	class packet {
-	private:
-		class encrypt_mode_t {
-		};
-		class decrypt_mode_t {
-		};
-
-		bool have_encrypted = false;
-		bool have_decrypted = false;
-
-		const key_t &key;
-
+	protected:
 		packet_type m_type;
 		plr_t m_src;
 		plr_t m_dest;
@@ -151,34 +87,14 @@ public:
 		plr_t m_oldplr;
 		buffer_t m_info;
 
+		const key_t &key;
+		bool have_encrypted = false;
+		bool have_decrypted = false;
 		buffer_t encrypted_buffer;
 		buffer_t decrypted_buffer;
 
-		template <class mode>
-		void process_data();
-		template <class T>
-		void process_element(encrypt_mode_t, T &x);
-		template <class T>
-		void process_element(decrypt_mode_t, T &x);
-		void process_element(encrypt_mode_t, buffer_t &x);
-		void process_element(decrypt_mode_t, buffer_t &x);
-		template <class T>
-		static const unsigned char *begin(const T &x);
-		template <class T>
-		static const unsigned char *end(const T &x);
-
 	public:
-		packet(const key_t &k)
-		    : key(k)
-		{
-		}
-
-		void create(packet_type t, plr_t s, plr_t d, buffer_t m);
-		void create(packet_type t, plr_t s, plr_t d, turn_t u);
-		void create(packet_type t, plr_t s, plr_t d, cookie_t c);
-		void create(packet_type t, plr_t s, plr_t d, cookie_t c, plr_t n, buffer_t i);
-		void create(packet_type t, plr_t s, plr_t d, plr_t o);
-		void create(std::vector<unsigned char> buf);
+		packet(const key_t &k) : key(k) {};
 
 		const buffer_t &data();
 
@@ -192,9 +108,36 @@ public:
 		plr_t oldplr();
 		const buffer_t &info();
 
-		void encrypt();
+		template<class P> void process_data(P &self);
+	};
+
+	class packet_in : public packet {
+	public:
+		using packet::packet;
+		void create(buffer_t buf);
+		void process_element(buffer_t &x);
+		template <class T> void process_element(T &x);
 		void decrypt();
 	};
+
+	class packet_out : public packet {
+	public:
+		using packet::packet;
+		void create(packet_type t, plr_t s, plr_t d, buffer_t m);
+		void create(packet_type t, plr_t s, plr_t d, turn_t u);
+		void create(packet_type t, plr_t s, plr_t d, cookie_t c);
+		void create(packet_type t, plr_t s, plr_t d, cookie_t c, plr_t n, buffer_t i);
+		void create(packet_type t, plr_t s, plr_t d, plr_t o);
+		void process_element(buffer_t &x);
+		template <class T> void process_element(T &x);
+		template <class T> static const unsigned char *begin(const T &x);
+		template <class T> static const unsigned char *end(const T &x);
+		void encrypt();
+	};
+
+	typedef std::unique_ptr<packet> upacket;
+	upacket make_packet(buffer_t buf);
+	template<typename T, typename... Args> upacket make_packet(T t, Args... args);
 
 private:
 	static constexpr unsigned short default_port = 6112;
@@ -234,54 +177,63 @@ private:
 	unsigned short bind();
 	void setup_password(std::string pw);
 
-	void handle_join_request(packet &pkt, endpoint sender);
-	void handle_accept(packet &pkt);
+	void handle_join_request(upacket &pkt, endpoint sender);
+	void handle_accept(upacket &pkt);
 	void recv();
-	void send(packet &pkt, endpoint sender = none);
-	void recv_decrypted(packet &pkt, endpoint sender);
+	void send(upacket &pkt, endpoint sender = none);
+	void recv_decrypted(upacket &pkt, endpoint sender);
 	std::set<endpoint> dests_for_addr(plr_t dest, endpoint sender);
 	void run_event_handler(_SNETEVENT &ev);
 };
 
-template <class mode>
-void devilution_net_udp::packet::process_data()
+template<class P> void dvlnet_udp::packet::process_data(P &self)
 {
-	process_element(mode(), m_type);
-	process_element(mode(), m_src);
-	process_element(mode(), m_dest);
+	self.process_element(m_type);
+	self.process_element(m_src);
+	self.process_element(m_dest);
 	switch (m_type) {
 	case PT_MESSAGE:
-		process_element(mode(), m_message);
+		self.process_element(m_message);
 		break;
 	case PT_TURN:
-		process_element(mode(), m_turn);
+		self.process_element(m_turn);
 		break;
 	case PT_JOIN_REQUEST:
-		process_element(mode(), m_cookie);
+		self.process_element(m_cookie);
 		break;
 	case PT_JOIN_ACCEPT:
-		process_element(mode(), m_cookie);
-		process_element(mode(), m_newplr);
-		process_element(mode(), m_info);
+		self.process_element(m_cookie);
+		self.process_element(m_newplr);
+		self.process_element(m_info);
 		break;
 	case PT_LEAVE_GAME:
 		break;
 	}
 }
 
-template <class T>
-void devilution_net_udp::packet::process_element(encrypt_mode_t, T &x)
+inline dvlnet_udp::upacket dvlnet_udp::make_packet(buffer_t buf)
 {
-	encrypted_buffer.insert(encrypted_buffer.end(), begin(x), end(x));
+	auto ret = std::make_unique<packet_in>(key);
+	ret->create(std::move(buf));
+	ret->decrypt();
+	return ret;
 }
 
-inline void devilution_net_udp::packet::process_element(encrypt_mode_t, buffer_t &x)
+template<typename T, typename... Args> dvlnet_udp::upacket dvlnet_udp::make_packet(T t, Args... args)
 {
-	encrypted_buffer.insert(encrypted_buffer.end(), x.begin(), x.end());
+	auto ret = std::make_unique<packet_out>(key);
+	ret->create(t, args...);
+	ret->encrypt();
+	return ret;
 }
 
-template <class T>
-void devilution_net_udp::packet::process_element(decrypt_mode_t, T &x)
+inline void dvlnet_udp::packet_in::process_element(buffer_t &x)
+{
+	x.insert(x.begin(), decrypted_buffer.begin(), decrypted_buffer.end());
+	decrypted_buffer.resize(0);
+}
+
+template <class T> void dvlnet_udp::packet_in::process_element(T &x)
 {
 	if (decrypted_buffer.size() < sizeof(T))
 		throw packet_exception();
@@ -289,20 +241,22 @@ void devilution_net_udp::packet::process_element(decrypt_mode_t, T &x)
 	decrypted_buffer.erase(decrypted_buffer.begin(), decrypted_buffer.begin() + sizeof(T));
 }
 
-inline void devilution_net_udp::packet::process_element(decrypt_mode_t, buffer_t &x)
+inline void dvlnet_udp::packet_out::process_element(buffer_t &x)
 {
-	x.insert(x.begin(), decrypted_buffer.begin(), decrypted_buffer.end());
-	decrypted_buffer.resize(0);
+	encrypted_buffer.insert(encrypted_buffer.end(), x.begin(), x.end());
 }
 
-template <class T>
-const unsigned char *devilution_net_udp::packet::begin(const T &x)
+template <class T> void dvlnet_udp::packet_out::process_element(T &x)
+{
+	encrypted_buffer.insert(encrypted_buffer.end(), begin(x), end(x));
+}
+
+template <class T> const unsigned char *dvlnet_udp::packet_out::begin(const T &x)
 {
 	return reinterpret_cast<const unsigned char *>(&x);
 }
 
-template <class T>
-const unsigned char *devilution_net_udp::packet::end(const T &x)
+template <class T> const unsigned char *dvlnet_udp::packet_out::end(const T &x)
 {
 	return reinterpret_cast<const unsigned char *>(&x) + sizeof(T);
 }
