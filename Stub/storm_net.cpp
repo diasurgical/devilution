@@ -99,8 +99,7 @@ int __stdcall SNetInitializeProvider(unsigned long provider, struct _SNETPROGRAM
 	char *cname;
 	char *cdesc;
 	BOOL *multi;
-	ui_info->selectnamecallback(client_info, user_info, ui_info, fileinfo, 0, cname, 0, cdesc, 0, multi);
-	return TRUE;
+	return ui_info->selectnamecallback(client_info, user_info, ui_info, fileinfo, provider, cname, 0, cdesc, 0, multi);
 }
 
 /**

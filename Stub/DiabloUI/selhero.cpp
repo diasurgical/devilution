@@ -567,18 +567,20 @@ BOOL __stdcall UiSelHeroMultDialog(
 	}
 	BlackPalette();
 
-	hero_infos.clear();
-	fninfo(&ui_add_hero_info);
+	if (*dlgresult != 4) {
+		hero_infos.clear();
+		fninfo(&ui_add_hero_info);
 
-	if (CreateSinglePlayerChar) {
-		strcpy(name, "testname");
-		DUMMY_PRINT("create hero: %s", name);
+		if (CreateSinglePlayerChar) {
+			strcpy(name, "testname");
+			DUMMY_PRINT("create hero: %s", name);
 
-		_uiheroinfo hero_info = { 1 };
-		strcpy(hero_info.name, name);
-		hero_info.heroclass = HeroChosen;
+			_uiheroinfo hero_info = { 1 };
+			strcpy(hero_info.name, name);
+			hero_info.heroclass = HeroChosen;
 
-		fncreate(&hero_info);
+			fncreate(&hero_info);
+		}
 	}
 
 	selhero_Free();
