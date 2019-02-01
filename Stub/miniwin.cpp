@@ -1,4 +1,5 @@
 #include "../types.h"
+#include <sys/statvfs.h>
 
 DWORD last_error;
 
@@ -25,6 +26,11 @@ int WINAPIV wsprintfA(LPSTR dest, LPCSTR format, ...)
 	va_list args;
 	va_start(args, format);
 	return vsprintf(dest, format, args);
+}
+
+int WINAPIV wvsprintfA(LPSTR dest, LPCSTR format, va_list arglist)
+{
+	return vsnprintf(dest, 256, format, arglist);
 }
 
 int __cdecl _strcmpi(const char *_Str1, const char *_Str2)
@@ -61,22 +67,38 @@ WINBOOL WINAPI FindClose(HANDLE hFindFile)
 	UNIMPLEMENTED();
 }
 
+/**
+ * @brief Normally this would get the Windows install, but Diablo uses it to find the old save game folder
+ */
 UINT WINAPI GetWindowsDirectoryA(LPSTR lpBuffer, UINT uSize)
 {
-	DUMMY();
+	char *name = SDL_GetPrefPath("diasurgical", "devilution");
+	strncpy(lpBuffer, name, uSize);
+
+	return strlen(name);
 }
 
 WINBOOL WINAPI GetDiskFreeSpaceA(LPCSTR lpRootPathName, LPDWORD lpSectorsPerCluster, LPDWORD lpBytesPerSector,
     LPDWORD lpNumberOfFreeClusters, LPDWORD lpTotalNumberOfClusters)
 {
-	UNIMPLEMENTED();
+	struct statvfs fiData;
+	int success = statvfs("/", &fiData);
+	*lpBytesPerSector = fiData.f_frsize;
+	*lpSectorsPerCluster = 1;
+	*lpNumberOfFreeClusters = fiData.f_bavail;
+	*lpTotalNumberOfClusters = fiData.f_blocks;
+
+	return success >= 0;
 }
 
+/**
+ * @brief Normally this would get the exe path, but Diablo uses it to find the save game folder
+ */
 DWORD WINAPI GetModuleFileNameA(HMODULE hModule, LPSTR lpFilename, DWORD nSize)
 {
-	DUMMY();
 	assert(nSize >= 16);
-	const char *name = ".\\diablo.exe";
+	char *name = SDL_GetPrefPath("diasurgical", "devilution");
+	strcat(name, "\\devilution");
 	strncpy(lpFilename, name, nSize);
 	return strlen(name);
 }
@@ -116,7 +138,8 @@ WINBOOL WINAPI ReleaseCapture(VOID)
 
 WINBOOL WINAPI DestroyWindow(HWND hWnd)
 {
-	UNIMPLEMENTED();
+	DUMMY();
+	return TRUE;
 }
 
 HWND WINAPI GetLastActivePopup(HWND hWnd)
@@ -164,7 +187,31 @@ int WINAPI ReleaseDC(HWND hWnd, HDC hDC)
 
 int WINAPI GetDeviceCaps(HDC hdc, int index)
 {
-	UNIMPLEMENTED();
+	SDL_DisplayMode current;
+
+	SDL_GetCurrentDisplayMode(0, &current);
+
+	if (index == HORZRES) {
+		return current.w;
+	} else if (index == VERTRES) {
+		current.h;
+	}
+
+	return 0;
+}
+
+BOOL GetWindowRect(HWND hDlg, tagRECT *Rect)
+{
+	int x, y, w, h;
+	SDL_SetWindowPosition(window, &x, &y);
+	SDL_GetWindowSize(window, &w, h);
+
+	Rect->right = x;
+	Rect->top = y;
+	Rect->left = w + x;
+	Rect->bottom = h + y;
+
+	return TRUE;
 }
 
 UINT WINAPI GetSystemPaletteEntries(HDC hdc, UINT iStart, UINT cEntries, LPPALETTEENTRY pPalEntries)
@@ -233,4 +280,16 @@ DWORD WINAPI GetPrivateProfileStringA(LPCSTR lpAppName, LPCSTR lpKeyName, LPCSTR
     DWORD nSize, LPCSTR lpFileName)
 {
 	UNIMPLEMENTED();
+}
+
+int MessageBoxA(HWND hWnd, const char *Text, const char *Title, UINT Flags)
+{
+	Uint32 SDLFlags = 0;
+	if (Flags & MB_ICONHAND) {
+		SDLFlags |= SDL_MESSAGEBOX_ERROR;
+	} else if (Flags & MB_ICONEXCLAMATION) {
+		SDLFlags |= SDL_MESSAGEBOX_WARNING;
+	}
+
+	SDL_ShowSimpleMessageBox(SDLFlags, Title, Text, window) < 0 ? -1 : 0;
 }

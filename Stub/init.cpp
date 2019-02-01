@@ -19,6 +19,35 @@ BOOLEAN screensaver_enabled_prev;
 char gszVersionNumber[260] = "internal version unknown";
 char gszProductName[260] = "Diablo v1.09";
 
+void __fastcall init_cleanup(BOOL show_cursor)
+{
+	pfile_flush_W();
+
+	if (diabdat_mpq) {
+		SFileCloseArchive(diabdat_mpq);
+		diabdat_mpq = NULL;
+	}
+	if (patch_rt_mpq) {
+		SFileCloseArchive(patch_rt_mpq);
+		patch_rt_mpq = NULL;
+	}
+	if (unused_mpq) {
+		SFileCloseArchive(unused_mpq);
+		unused_mpq = NULL;
+	}
+
+	UiDestroy();
+	effects_cleanup_sfx();
+	//sound_cleanup();
+	NetClose();
+	dx_cleanup();
+	MI_Dummy(show_cursor);
+	//StormDestroy();
+
+	if (show_cursor)
+		ShowCursor(TRUE);
+}
+
 /**
  * Case insensitive search for a file name in a directory.
  * @return Empty string when not found.
@@ -61,7 +90,7 @@ void __fastcall init_create_window(int nCmdShow)
 {
 	DUMMY();
 
-	// pfile_init_save_directory();
+	pfile_init_save_directory();
 
 	dx_init(NULL);
 	snd_init(NULL);

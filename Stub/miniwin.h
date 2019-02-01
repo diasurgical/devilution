@@ -336,12 +336,17 @@ int WINAPI ReleaseDC(HWND hWnd, HDC hDC);
 WINBOOL WINAPI TextOutA(HDC hdc, int x, int y, LPCSTR lpString, int c);
 #define TextOut TextOutA
 
+#define HORZRES 8
+#define VERTRES 10
 #define NUMRESERVED 106
 int WINAPI GetDeviceCaps(HDC hdc, int index);
+BOOL GetWindowRect(HWND hDlg, tagRECT *Rect);
 UINT WINAPI GetSystemPaletteEntries(HDC hdc, UINT iStart, UINT cEntries, LPPALETTEENTRY pPalEntries);
 
 int WINAPIV wsprintfA(LPSTR, LPCSTR, ...);
 #define wsprintf wsprintfA
+int WINAPIV wvsprintfA(LPSTR dest, LPCSTR format, va_list arglist);
+#define wvsprintf wvsprintfA
 int __cdecl _strcmpi(const char *_Str1, const char *_Str2);
 char *__cdecl _itoa(int _Value, char *_Dest, int _Radix);
 
@@ -369,6 +374,8 @@ struct _WIN32_FIND_DATAA {
 typedef struct _WIN32_FIND_DATAA *LPWIN32_FIND_DATAA;
 
 typedef void *LPOVERLAPPED;
+
+typedef BOOL(CALLBACK *DLGPROC)(HWND, UINT, WPARAM, LPARAM);
 
 #define OFS_MAXPATHNAME 128
 #define MAX_PATH 260
@@ -430,6 +437,8 @@ DWORD WINAPI GetWindowThreadProcessId(HWND hWnd, LPDWORD lpdwProcessId);
 DWORD WINAPI GetPrivateProfileStringA(LPCSTR lpAppName, LPCSTR lpKeyName, LPCSTR lpDefault, LPSTR lpReturnedString,
     DWORD nSize, LPCSTR lpFileName);
 #define GetPrivateProfileString GetPrivateProfileStringA
+int MessageBoxA(HWND hWnd, const char *Text, const char *Title, UINT Flags);
+#define MessageBox MessageBoxA
 
 WINBOOL WINAPI WriteFile(HANDLE hFile, LPCVOID lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten,
     LPOVERLAPPED lpOverlapped);
@@ -479,6 +488,8 @@ HFILE WINAPI OpenFile(LPCSTR lpFileName, LPOFSTRUCT lpReOpenBuff, UINT uStyle);
 #define WM_KEYUP 0x0101
 #define WM_SYSKEYDOWN 0x0104
 
+#define WM_INITDIALOG 0x0110
+#define WM_COMMAND 0x0111
 #define WM_SYSCOMMAND 0x0112
 
 #define WM_CHAR 0x0102
@@ -532,6 +543,20 @@ HFILE WINAPI OpenFile(LPCSTR lpFileName, LPOFSTRUCT lpReOpenBuff, UINT uStyle);
 #define MK_SHIFT 0x0004
 #define MK_LBUTTON 0x0001
 #define MK_RBUTTON 0x0002
+
+#define MB_TASKMODAL 0x00002000L
+#define MB_ICONHAND 0x00000010L
+#define MB_ICONEXCLAMATION 0x00000030L
+
+#define FORMAT_MESSAGE_FROM_SYSTEM 0x00001000
+
+#define HWND_NOTOPMOST (HWND) - 2
+#define HWND_TOP (HWND)0
+
+#define SWP_NOACTIVATE 0x0010
+#define SWP_NOMOVE 0x0002
+#define SWP_NOSIZE 0x0004
+#define SWP_NOZORDER 0x0001
 
 //
 // Total fakes

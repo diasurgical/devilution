@@ -66,6 +66,13 @@ typedef enum TXT_JUST {
 	JustRight = 2,
 } TXT_JUST;
 
+DWORD FormatMessage(DWORD dwFlags, LPCVOID lpSource, DWORD dwMessageId, DWORD dwLanguageId, char *lpBuffer, DWORD nSize, va_list *Arguments);
+int MAKEINTRESOURCE(int i);
+int DialogBoxParam(HINSTANCE hInstance, int msgId, HWND hWndParent, DLGPROC lpDialogFunc, LPARAM dwInitParam);
+BOOL SetDlgItemText(HWND hDlg, int nIDDlgItem, LPCSTR lpString);
+BOOL EndDialog(HWND hDlg, INT_PTR nResult);
+BOOL SetWindowPos(HWND hWnd, HWND hWndInsertAfter, int X, int Y, int cx, int cy, UINT uFlags);
+
 bool IsInsideRect(const SDL_Event *event, const SDL_Rect *rect);
 bool LoadArtImage(char *pszFile, void **pBuffer, int frames, DWORD *data, PALETTEENTRY *pPalette = NULL);
 bool UiFadeIn(int steps = 16);

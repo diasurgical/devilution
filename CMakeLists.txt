@@ -48,6 +48,7 @@ find_package(SDL2_mixer REQUIRED)
 find_package(sodium REQUIRED)
 
 set(SOURCES
+    Source/appfat.cpp
     Source/automap.cpp
     Source/codec.cpp
     Source/control.cpp
@@ -114,7 +115,6 @@ set(SOURCES
 
 # Stubbed out sources, for reference
 set(ORIGINAL_SOURCES
-    Source/appfat.cpp
     Source/capture.cpp
     Source/dx.cpp
     Source/fault.cpp
@@ -126,7 +126,6 @@ set(ORIGINAL_SOURCES
 )
 
 set(STUB_SOURCES
-    Stub/appfat.cpp
     Stub/capture.cpp
     Stub/dx.cpp
     Stub/fault.cpp

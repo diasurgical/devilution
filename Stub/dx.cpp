@@ -363,6 +363,11 @@ void __fastcall dx_init(HWND hWnd)
 	lpDDPalette = &stub_palette;
 }
 
+void __cdecl dx_cleanup()
+{
+	DUMMY();
+}
+
 /** Copy the palette surface to the main backbuffer */
 void sdl_update_entire_surface()
 {

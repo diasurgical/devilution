@@ -59,6 +59,102 @@ char HeroUndecidedName[17];
 
 _uiheroinfo heroarray[10];
 
+char *errorTitle[] = {
+	"Direct Draw Error",
+	"Out of Memory Error",
+	"Direct Draw Error",
+	"Data File Error",
+	"Direct Sound Error",
+	"Out of Disk Space",
+	"Direct Draw Error",
+	"Data File Error",
+	"Windows 2000 Restricted User Advisory",
+	"Read-Only Directory Error",
+};
+char *errorMessages[] = {
+	"Diablo was unable to properly initialize your video card using DirectX.\nPlease try the following solutions to correct the problem:\n\n    Use the Diablo setup program \"SETUP.EXE\" provided on the Diablo CD-ROM to install DirectX 3.0.\n\n    Install the most recent DirectX video drivers provided by the manufacturer of your video card.\nA list of video card manufactuers can be found at: http://www.blizzard.com/support/vendors.htm\n\nIf you continue to have problems with DirectX, please contact Microsoft's Technical Support at:\n\n\nIf you continue to have problems, we have also included Microsoft DirectX 2.0 drivers on the Diablo CD-ROM.\nThis older version of DirectX may work in cases where DirectX 3.0 does not.\n\n    USA telephone: 1-800-426-9400\n    International telephone: 206-882-8080\n    http://www.microsoft.com\n\n\nThe error encountered while trying to initialize the video card was:\n\n    %s",
+	"Diablo has exhausted all the memory on your system.\nThis problem can likely be corrected by changing the virtual memory settings for Windows.\nEnsure that your system has at least 10 megabytes of free disk space, then check your virtual memory settings:\n\nFor Windows 95:\n    Select \"Settings - Control Panel\" from the \"Start\" menu\n    Run the \"System\" control panel applet\n    Select the \"Performance\" tab, and press \"Virtual Memory\"\n    Use the \"Let Windows manage my virtual memory...\" option\n\nFor Windows NT:\n    Select \"Settings - Control Panel\" from the \"Start\" menu\n    Run the \"System\" control panel applet\n    Select the \"Performance\" tab\n    Press \"Change\" in \"Virtual Memory\" settings\n    Ensure that the virtual memory file is at least 32 megabytes\n\nThe error encountered was:\n\n    %s",
+	"Diablo was unable to open a required file.\nPlease ensure that the Diablo disc is in the CDROM drive.\nIf this problem persists, try uninstalling and reinstalling Diablo using the program \"SETUP.EXE\" on the Diablo CD-ROM.\n\n\nThe problem occurred while trying to load a file\n\n    %s",
+	"Diablo was unable to find the file \"ddraw.dll\", which is a component of Microsoft DirectX.\nPlease run the program \"SETUP.EXE\" on the Diablo CD-ROM and install Microsoft DirectX.\n\nIf you continue to have problems with DirectX, please contact Microsoft's Technical Support at:\n\n    USA telephone: 1-800-426-9400\n    International telephone: 206-882-8080\n    http://www.microsoft.com\n\n\nThe error encountered while trying to initialize DirectX was:\n\n    %s",
+	"Diablo was unable to find the file \"dsound.dll\", which is a component of Microsoft DirectX.\nPlease run the program \"SETUP.EXE\" on the Diablo CD-ROM and install Microsoft DirectX.\n\nIf you continue to have problems with DirectX, please contact Microsoft's Technical Support at:\n\n    USA telephone: 1-800-426-9400\n    International telephone: 206-882-8080\n    http://www.microsoft.com\n\n\nThe error encountered while trying to initialize DirectX was:\n\n    %s",
+	"Diablo requires at least 10 megabytes of free disk space to run properly.\nThe disk:\n\n%s\n\nhas less than 10 megabytes of free space left.\n\nPlease free some space on your drive and run Diablo again.",
+	"Diablo was unable to switch video modes.\nThis is a common problem for computers with more than one video card.\nTo correct this problem, please set your video resolution to 640 x 480 and try running Diablo again.\n\nFor Windows 95 and Windows NT\n    Select \"Settings - Control Panel\" from the \"Start\" menu\n    Run the \"Display\" control panel applet\n    Select the \"Settings\" tab\n    Set the \"Desktop Area\" to \"640 x 480 pixels\"\n\n\nThe error encountered while trying to switch video modes was:\n\n    %s",
+	"Diablo cannot read a required data file.\nYour Diablo CD may not be in the CDROM drive.\nPlease ensure that the Diablo disc is in the CDROM drive and press OK.\nTo leave the program, press Exit.\n    %s",
+	"In order to install, play or patch Diablo using the Windows 2000 operating system,\nyou will need to log in as either an Administrator or as a Power User.\n\nUsers, also known as Restricted Users, do not have sufficient access to install or play the game properly.\n\nIf you have further questions regarding User Rights in Windows 2000, please refer to your Windows 2000 documentation or contact your system administrator.",
+	"Diablo is being run from:\n\n    %s\n\n\nDiablo or the current user does not seem to have write privilages in this directory. Contact your system administrator.\n\nNote that Windows 2000 Restricted Users can not write to the Windows or Program Files directory hierarchies.",
+};
+
+DWORD FormatMessage(
+    DWORD dwFlags,
+    LPCVOID lpSource,
+    DWORD dwMessageId,
+    DWORD dwLanguageId,
+    char *lpBuffer,
+    DWORD nSize,
+    va_list *Arguments)
+{
+	DUMMY();
+	return 0;
+}
+
+int MAKEINTRESOURCE(int i)
+{
+	switch (i) {
+	case IDD_DIALOG1:
+		return 0;
+	case IDD_DIALOG2:
+		return 1;
+	case IDD_DIALOG3:
+		return 2;
+	case IDD_DIALOG4:
+		return 3;
+	case IDD_DIALOG5:
+		return 4;
+	case IDD_DIALOG7:
+		return 5;
+	case IDD_DIALOG8:
+		return 6;
+	case IDD_DIALOG9:
+		return 7;
+	case IDD_DIALOG10:
+		return 8;
+	case IDD_DIALOG11:
+		return 9;
+	}
+}
+
+int DialogBoxParam(HINSTANCE hInstance, int msgId, HWND hWndParent, DLGPROC lpDialogFunc, LPARAM dwInitParam)
+{
+	char text[1024];
+	snprintf(text, 1024, errorMessages[msgId], dwInitParam);
+
+	return SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, errorTitle[msgId], text, window) < 0 ? -1 : 0;
+}
+
+BOOL SetDlgItemText(HWND hDlg, int nIDDlgItem, LPCSTR lpString)
+{
+	return FALSE;
+}
+
+BOOL EndDialog(HWND hDlg, INT_PTR nResult)
+{
+	return FALSE;
+}
+
+BOOL SetWindowPos(
+    HWND hWnd,
+    HWND hWndInsertAfter,
+    int X,
+    int Y,
+    int cx,
+    int cy,
+    UINT uFlags)
+{
+	SDL_SetWindowPosition(window, X, Y);
+
+	return TRUE;
+}
+
 bool LoadArtImage(char *pszFile, void **pBuffer, int frames, DWORD *data, PALETTEENTRY *pPalette = NULL)
 {
 	DWORD width;

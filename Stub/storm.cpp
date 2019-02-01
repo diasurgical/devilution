@@ -317,7 +317,8 @@ BOOL STORMAPI SErrDisplayError(DWORD dwErrMsg, const char *logfilename, int logl
 
 BOOL STORMAPI SErrGetErrorStr(DWORD dwErrCode, char *buffer, unsigned int bufferchars)
 {
-	UNIMPLEMENTED();
+	DUMMY();
+	return FALSE;
 }
 
 DWORD STORMAPI SErrGetLastError()
@@ -365,11 +366,11 @@ int STORMAPI SStrCmpI(const char *string1, const char *string2, unsigned int siz
 	UNIMPLEMENTED();
 }
 
-// void __stdcall SDrawMessageBox(char *, char *, int)
-//{
-//	UNIMPLEMENTED();
-//}
-//
+void __stdcall SDrawMessageBox(char *Text, char *Title, int Flags)
+{
+	MessageBox(NULL, Text, Title, Flags);
+}
+
 // void __cdecl SDrawDestroy(void)
 //{
 //	UNIMPLEMENTED();
