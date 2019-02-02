@@ -55,8 +55,6 @@ void progress_Render(int progress)
 	int x = GetCenterOffset(280);
 	int y = GetCenterOffset(144, SCREEN_HEIGHT);
 
-	BYTE mask = 250;
-	BYTE maskWhite = 255;
 	DrawArtImage(x, y, 284, 148, 0, pPcxSPopupImage);
 	DrawArtImage(GetCenterOffset(228), y + 52, 232, 38, 0, pPcxProgBGImage, NULL, 228);
 	if (progress) {
