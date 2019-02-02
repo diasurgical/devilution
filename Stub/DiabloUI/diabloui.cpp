@@ -1,7 +1,5 @@
 #include "../../types.h"
 
-char hero_names[MAX_CHARACTERS][PLR_NAME_LEN];
-
 int SelectedItemMax = 0;
 int MenuItem[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 int PreviousItem[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -11,31 +9,6 @@ void __cdecl UiDestroy()
 {
 	DUMMY();
 	FreeMenuItems();
-}
-
-void LoadCharNamesintoMemory()
-{
-	PkPlayerStruct pkplr;
-	HANDLE CharFile;
-	char *p_hero_names = *hero_names; // Not sure if this is correct
-
-	memset(hero_names, 0, 0x140u);
-
-	for (int i = 0; i < MAX_CHARACTERS; i++) {
-		CharFile = pfile_open_save_archive(NULL, i);
-		if (CharFile) {
-			if (pfile_read_hero(CharFile, &pkplr)) {
-				strcpy(p_hero_names, pkplr.pName);
-				UnPackPlayer(&pkplr, 0, 0);
-				pfile_archive_contains_game(CharFile, 0); // FIXME: what is the second argument?
-			}
-			pfile_SFileCloseArchive(CharFile);
-		}
-
-		p_hero_names += PLR_NAME_LEN;
-	}
-
-	// memcpy(shero_names, hero_names, sizeof(hero_names));
 }
 
 void SetMenu(int MenuId)
@@ -55,6 +28,7 @@ bool IsInsideRect(const SDL_Event *event, const SDL_Rect *rect)
 
 void InitHiracy()
 {
+	MenuItem[SINGLEPLAYER_LOAD] = 1;
 	MenuItem[SINGLEPLAYER_CLASSES] = 3;
 	MenuItem[MULTIPLAYER_CONNECTIONS] = 3;
 	MenuItem[MULTIPLAYER_LOBBY] = 2;
@@ -126,9 +100,6 @@ void UiInitialize()
 		SdlDiabloMainWindow();
 	}
 	ShowCursor(FALSE);
-
-	LoadHeroStats();
-	LoadCharNamesintoMemory();
 }
 
 int __cdecl UiProfileGetString()

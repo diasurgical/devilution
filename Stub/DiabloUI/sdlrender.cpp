@@ -8,7 +8,6 @@ int LogoHeight;
 
 int fadeValue = 0;
 int SelectedItem = 1;
-int TotalPlayers = 0;
 
 void *pPcxLogoImage;
 int gdwLogoWidth;
@@ -54,10 +53,6 @@ unsigned char *pFont42;
 void *MenuPentegram16;
 void *MenuPentegram;
 void *MenuPentegram42;
-
-char HeroUndecidedName[17];
-
-_uiheroinfo heroarray[10];
 
 char *errorTitle[] = {
 	"Direct Draw Error",
@@ -447,14 +442,4 @@ void DrawSelector(int x, int y, int width, int padding, int spacing)
 void DrawSelector42(int x, int y, int width, int padding, int spacing)
 {
 	AnimateSelector(x, y, width, padding, spacing, 42, MenuPentegram42);
-}
-
-void SetHeroStats(_uiheroinfo *a1)
-{
-	memcpy(&heroarray[TotalPlayers], a1, sizeof(_uiheroinfo));
-}
-
-void LoadHeroStats()
-{
-	pfile_ui_set_hero_infos(SetHeroStats);
 }
