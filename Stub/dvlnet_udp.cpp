@@ -141,13 +141,10 @@ void dvlnet_udp::handle_join_request(upacket &pkt, endpoint sender)
 
 void dvlnet_udp::run_event_handler(_SNETEVENT &ev)
 {
-	/* disable until UI ready
 	auto f = registered_handlers[static_cast<event_type>(ev.eventid)];
 	if(f) {
-		printf("RUNNING HANDLER");
 		f(&ev);
 	}
-	*/
 }
 
 void dvlnet_udp::handle_accept(upacket &pkt)
@@ -159,9 +156,8 @@ void dvlnet_udp::handle_accept(upacket &pkt)
 	_SNETEVENT ev;
 	ev.eventid = EVENT_TYPE_PLAYER_CREATE_GAME;
 	ev.playerid = plr_self;
-	ev.data = pkt->info().data();
+	ev.data = const_cast<unsigned char*>(pkt->info().data());
 	ev.databytes = pkt->info().size();
-	printf("GOT SEED!!");
 	run_event_handler(ev);
 }
 
@@ -193,8 +189,7 @@ void dvlnet_udp::recv_decrypted(upacket &pkt, endpoint sender)
 		message_queue.push(message_t(pkt->src(), pkt->message()));
 		break;
 	case PT_TURN:
-		turn_last[pkt->src()] = pkt->turn();
-		turn_new[pkt->src()] = true;
+		turn_queue[pkt->src()].push(pkt->turn());
 		break;
 	case PT_JOIN_ACCEPT:
 		handle_accept(pkt);
@@ -245,11 +240,12 @@ bool dvlnet_udp::SNetReceiveTurns(char **data, unsigned int *size, DWORD *status
 		if (i == plr_self || nexthop_table[i] != none) {
 			status[i] |= (PS_ACTIVE | PS_CONNECTED);
 		}
-		size[i] = sizeof(turn_t);
-		if (turn_new[i] = true) {
-			status[i] |= PS_HASMSG;
+		if (!turn_queue[i].empty()) {
+			size[i] = sizeof(turn_t);
+			status[i] |= PS_TURN_ARRIVED;
+			turn_last[i] = turn_queue[i].front();
+			turn_queue[i].pop();
 			data[i] = reinterpret_cast<char *>(&turn_last[i]);
-			turn_new[i] = false;
 		}
 	}
 	return true;

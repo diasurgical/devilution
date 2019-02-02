@@ -40,9 +40,9 @@ public:
 };
 
 // exact meaning yet to be worked out
-#define PS_HASMSG 0x20000
-#define PS_ACTIVE 0x40000
 #define PS_CONNECTED 0x10000
+#define PS_TURN_ARRIVED 0x20000
+#define PS_ACTIVE 0x40000
 
 class dvlnet_udp : public dvlnet {
 public:
@@ -163,7 +163,7 @@ private:
 	message_t message_last;
 	std::queue<message_t> message_queue;
 	std::array<turn_t, MAX_PLRS> turn_last = { 0 };
-	std::array<bool, MAX_PLRS> turn_new = { false };
+	std::array<std::queue<turn_t>, MAX_PLRS> turn_queue;
 
 	plr_t plr_self = ADDR_BROADCAST;
 	unsigned short udpport_self = 0;
