@@ -2,7 +2,7 @@
 
 BOOL STORMAPI SNetReceiveMessage(int *senderplayerid, char **data, int *databytes)
 {
-	if (!devilution_net::inst->SNetReceiveMessage(senderplayerid, data, databytes)) {
+	if (!dvlnet::inst->SNetReceiveMessage(senderplayerid, data, databytes)) {
 		SErrSetLastError(STORM_ERROR_NO_MESSAGES_WAITING);
 		return FALSE;
 	}
@@ -11,7 +11,7 @@ BOOL STORMAPI SNetReceiveMessage(int *senderplayerid, char **data, int *databyte
 
 BOOL STORMAPI SNetSendMessage(int playerID, void *data, unsigned int databytes)
 {
-	return devilution_net::inst->SNetSendMessage(playerID, data, databytes);
+	return dvlnet::inst->SNetSendMessage(playerID, data, databytes);
 }
 
 BOOL STORMAPI SNetReceiveTurns(int a1, int arraysize, char **arraydata, unsigned int *arraydatabytes,
@@ -21,12 +21,27 @@ BOOL STORMAPI SNetReceiveTurns(int a1, int arraysize, char **arraydata, unsigned
 		UNIMPLEMENTED();
 	if (arraysize != MAX_PLRS)
 		UNIMPLEMENTED();
-	return devilution_net::inst->SNetReceiveTurns(arraydata, arraydatabytes, arrayplayerstatus);
+	return dvlnet::inst->SNetReceiveTurns(arraydata, arraydatabytes, arrayplayerstatus);
 }
 
 BOOL STORMAPI SNetSendTurn(char *data, unsigned int databytes)
 {
-	return devilution_net::inst->SNetSendTurn(data, databytes);
+	return dvlnet::inst->SNetSendTurn(data, databytes);
+}
+
+int __stdcall SNetGetProviderCaps(struct _SNETCAPS *caps)
+{
+	return dvlnet::inst->SNetGetProviderCaps(caps);
+}
+
+void *__stdcall SNetUnregisterEventHandler(int evtype, void(__stdcall *func)(struct _SNETEVENT *))
+{
+	return dvlnet::inst->SNetUnregisterEventHandler(evtype, func);
+}
+
+void *__stdcall SNetRegisterEventHandler(int evtype, void(__stdcall *func)(struct _SNETEVENT *))
+{
+	return dvlnet::inst->SNetRegisterEventHandler(evtype, func);
 }
 
 BOOL STORMAPI SNetDestroy()
@@ -58,28 +73,6 @@ BOOL STORMAPI SNetSendServerChatCommand(const char *command)
 	return TRUE;
 }
 
-void *__stdcall SNetUnregisterEventHandler(int evtype, void(__stdcall *func)(struct _SNETEVENT *))
-{
-	DUMMY();
-	return NULL;
-}
-
-void *__stdcall SNetRegisterEventHandler(int evtype, void(__stdcall *func)(struct _SNETEVENT *))
-{
-	// need to handle:
-	// EVENT_TYPE_PLAYER_LEAVE_GAME
-	// EVENT_TYPE_PLAYER_CREATE_GAME (raised during SNetCreateGame?)
-	// EVENT_TYPE_PLAYER_MESSAGE
-	// all by the same function
-	DUMMY();
-	return (void *)func;
-}
-
-int __stdcall SNetGetProviderCaps(struct _SNETCAPS *caps)
-{
-	return devilution_net::inst->SNetGetProviderCaps(caps);
-}
-
 /**
  * @brief Called by engine for single, called by ui for multi
  * @param provider BNET, IPXN, MODM, SCBL or UDPN
@@ -89,12 +82,15 @@ int __stdcall SNetInitializeProvider(unsigned long provider, struct _SNETPROGRAM
     struct _SNETPLAYERDATA *user_info, struct _SNETUIDATA *ui_info,
     struct _SNETVERSIONDATA *fileinfo)
 {
-	if (provider == 'UDPN')
-		devilution_net::inst = std::make_unique<devilution_net_udp>();
-	else if (provider == 'SCBL' || provider == 0)
-		devilution_net::inst = std::make_unique<devilution_net_single>();
-	else
+	if (provider == 'UDPN') {
+		dvlnet::buffer_t game_init_info((char*)client_info->initdata,
+												(char*)client_info->initdata + client_info->initdatabytes);
+		dvlnet::inst = std::make_unique<dvlnet_udp>(std::move(game_init_info));
+	} else if (provider == 'SCBL' || provider == 0) {
+		dvlnet::inst = std::make_unique<dvlnet_null>();
+	} else {
 		ABORT();
+	}
 
 	char *cname; DWORD cnameLen = 16;
 	char *cdesc; DWORD cdescLen = 128;
@@ -112,8 +108,8 @@ BOOL STORMAPI SNetCreateGame(const char *pszGameName, const char *pszGamePasswor
 	// hack: cannot create game until UI is ready
 	//       first instance will create, second will join
 	int ret;
-	if (ret = devilution_net::inst->create("0.0.0.0", "mypass") == -1)
-		ret = devilution_net::inst->join("127.0.0.1", "mypass");
+	if (ret = dvlnet::inst->create("0.0.0.0", "mypass") == -1)
+		ret = dvlnet::inst->join("127.0.0.1", "mypass");
 	*playerID = ret;
 	return TRUE;
 }

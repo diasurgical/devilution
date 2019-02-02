@@ -130,7 +130,7 @@ BOOL __fastcall UiValidPlayerName(char *name)
 
 int __stdcall UiProgressDialog(HWND window, char *msg, int a3, void *fnfunc, int a5)
 {
-	UNIMPLEMENTED();
+	DUMMY();
 }
 
 void __cdecl UiProfileCallback()

@@ -8,6 +8,7 @@
 #include <memory>
 #include <queue>
 #include <set>
+#include <map>
 #include <stdarg.h>
 #include <string>
 #include <utility>
