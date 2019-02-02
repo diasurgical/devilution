@@ -1146,6 +1146,10 @@ void __fastcall PM_ChangeLightOff(int pnum)
 		TermMsg("PM_ChangeLightOff: illegal player %d", pnum);
 	}
 
+	// check if issue is upstream
+	if(plr[pnum]._plid == -1)
+		return;
+
 	l = &LightList[plr[pnum]._plid];
 	ymul = -1;
 	x = 2 * plr[pnum]._pyoff + plr[pnum]._pxoff;
