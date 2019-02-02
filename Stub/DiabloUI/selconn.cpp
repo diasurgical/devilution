@@ -13,30 +13,36 @@ void selconn_Render()
 
 	PrintText30Silver(x, 211, "Select Connection", JustCentre, w);
 
-	char *connections[5] = {
-		"Battle.net",
-		"Local Area Network (IPC)",
-		"Modem",
-		"Direct Cable Connection",
+	char *connections[2] = {
+		//"Battle.net",
+		//"Local Area Network (IPC)",
+		//"Modem",
+		//"Direct Cable Connection",
 		"Local Area Network (UDP)"
+		,"Solo"
 	};
 
 	int selectorTop = y;
 
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < 2; i++) {
 		PrintText16Gold(x - 1, y, connections[i], JustCentre, w);
 		y += 26;
 	}
 
 	DrawSelector16(x, selectorTop - 2, w, 35, 26);
 
-	PrintText16Silver(35, 218, "Players Supported: 4");
-
-	PrintText16Silver(35, 256, "Requirements:");
-	// TODO need a word wrap function
-	PrintText16Silver(35, 275, "All computers must be");
-	PrintText16Silver(35, 291, "connected to an");
-	PrintText16Silver(35, 307, "IPX-compatible network.");
+	if (SelectedItem == 1) {
+		PrintText16Silver(35, 218, "Players Supported: 4");
+		PrintText16Silver(35, 256, "Requirements:");
+		// TODO need a word wrap function
+		PrintText16Silver(35, 275, "All computers must be");
+		PrintText16Silver(35, 291, "connected to an");
+		PrintText16Silver(35, 307, "UDP-compatible network.");
+	} else {
+		PrintText16Silver(35, 218, "Players Supported: 1");
+		PrintText16Silver(35, 256, "Play by your self with");
+		PrintText16Silver(35, 275, "no network exposure.");
+	}
 
 	PrintText24Silver(26, 356, "no gateway needed", JustCentre, 226);
 
@@ -61,7 +67,7 @@ int __stdcall UiSelectProvider(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYE
 	selconn_Loade();
 
 	SelectedItem = 1;
-	SelectedItemMax = 5;
+	SelectedItemMax = 2;
 	SDL_Event event;
 
 	bool endMenu = false;
@@ -100,6 +106,7 @@ int __stdcall UiSelectProvider(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYE
 				case SDLK_SPACE:
 					effects_play_sound("sfx\\items\\titlslct.wav");
 					switch (SelectedItem) {
+					/*
 					case 1:
 						endMenu = SNetInitializeProvider('BNET', client_info, user_info, ui_info, file_info);
 						break;
@@ -112,8 +119,12 @@ int __stdcall UiSelectProvider(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYE
 					case 4:
 						endMenu = SNetInitializeProvider('SCBL', client_info, user_info, ui_info, file_info);
 						break;
-					case 5:
+					case 5:*/
+					case 1:
 						endMenu = SNetInitializeProvider('UDPN', client_info, user_info, ui_info, file_info);
+						break;
+					case 2:
+						endMenu = SNetInitializeProvider('SCBL', client_info, user_info, ui_info, file_info);
 						break;
 					}
 					SelectedItem = 1;
