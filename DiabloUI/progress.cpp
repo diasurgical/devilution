@@ -10,7 +10,7 @@ signed int Progress_10009480() { return 0; }
 // 1002A2EC: using guessed type int dword_1002A2EC;
 
 // ref: 0x1000948B
-int __stdcall UiProgressDialog(HWND window, char *msg, int a3, void *fnfunc, int a5) { return 0; }
+int __stdcall UiProgressDialog(HWND window, char *msg, int enable, int(__cdecl *fnfunc)(), int rate) { return 0; }
 /* {
 	HWND v5; // eax
 	BOOL result; // eax
@@ -18,8 +18,8 @@ int __stdcall UiProgressDialog(HWND window, char *msg, int a3, void *fnfunc, int
 	dword_1002A2E8 = -1;
 	dword_1002A2F8 = 0;
 	dword_1002A2F4 = a4;
-	bEnable = a3;
-	dword_1002A2F0 = a5;
+	bEnable = enable;
+	dword_1002A2F0 = rate;
 	v5 = (HWND)SDlgCreateDialogParam(hInstance, "PROGRESS_DIALOG", a1, Progress_100094F4, a2);
 	result = 0;
 	if ( v5 )
@@ -148,7 +148,7 @@ BOOL __fastcall Progress_10009675(HWND hWnd, const CHAR *a2) { return 0; }
 	v10 = 2;
 	v11 = 0;
 	if ( dword_1002A2F0 )
-		SDlgSetTimer(hWnd, 1, 0x3E8u / dword_1002A2F0, 0);
+		SDlgSetTimer(hWnd, 1, 1000 / dword_1002A2F0, 0);
 	else
 		SDlgSetTimer(hWnd, 1, 50, 0);
 	local_10007944((int)v2, 0, &byte_10029448, -1, 1, (int)"ui_art\\spopup.pcx", &dword_1002A318, 0, 0);
