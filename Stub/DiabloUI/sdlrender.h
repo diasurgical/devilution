@@ -2,6 +2,8 @@
 
 #include "../../types.h"
 
+extern TTF_Font *font;
+
 extern unsigned char *pFont16;
 extern int gdwFont16Width;
 extern int gdwFont16Height;
@@ -74,12 +76,12 @@ BOOL EndDialog(HWND hDlg, INT_PTR nResult);
 BOOL SetWindowPos(HWND hWnd, HWND hWndInsertAfter, int X, int Y, int cx, int cy, UINT uFlags);
 
 bool IsInsideRect(const SDL_Event *event, const SDL_Rect *rect);
-bool LoadArtImage(char *pszFile, void **pBuffer, int frames, DWORD *data, PALETTEENTRY *pPalette = NULL);
+bool LoadArtImage(char *pszFile, void **pBuffer, int frames, DWORD *data = NULL, PALETTEENTRY *pPalette = NULL);
 bool UiFadeIn(int steps = 16);
 int GetAnimationFrame(int frames, int fps = 60);
 int GetCenterOffset(int w, int bw = 0);
 void CapFPS();
-void DrawArtImage(int SX, int SY, int SW, int SH, int nFrame, void *pBuffer, BYTE *bMask = NULL);
+void DrawArtImage(int SX, int SY, int SW, int SH, int nFrame, void *pBuffer, BYTE *bMask = NULL, int RW = 0);
 void DrawMouse();
 void DrawSelector16(int x, int y, int width, int padding, int spacing);
 void DrawSelector(int x, int y, int width, int padding, int spacing);

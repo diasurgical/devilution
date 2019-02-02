@@ -147,6 +147,7 @@ set(STUB_SOURCES
     Stub/DiabloUI/credits.cpp
     Stub/DiabloUI/diabloui.cpp
     Stub/DiabloUI/mainmenu.cpp
+    Stub/DiabloUI/progress.cpp
     Stub/DiabloUI/sdlrender.cpp
     Stub/DiabloUI/selconn.cpp
     Stub/DiabloUI/selhero.cpp

@@ -1,5 +1,6 @@
 #include "../../types.h"
 
+TTF_Font *font;
 int SelectedItemMax = 0;
 int MenuItem[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 int PreviousItem[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -9,6 +10,8 @@ void __cdecl UiDestroy()
 {
 	DUMMY();
 	FreeMenuItems();
+	mem_free_dbg(font);
+	font = NULL;
 }
 
 void SetMenu(int MenuId)
@@ -47,9 +50,9 @@ void LoadUiGFX()
 {
 	DWORD dwData[2];
 
-	LoadArtImage("ui_art\\focus16.pcx", &MenuPentegram16, 8, NULL);
-	LoadArtImage("ui_art\\focus.pcx", &MenuPentegram, 8, NULL);
-	LoadArtImage("ui_art\\focus42.pcx", &MenuPentegram42, 8, NULL);
+	LoadArtImage("ui_art\\focus16.pcx", &MenuPentegram16, 8);
+	LoadArtImage("ui_art\\focus.pcx", &MenuPentegram, 8);
+	LoadArtImage("ui_art\\focus42.pcx", &MenuPentegram42, 8);
 
 	LoadArtImage("ui_art\\cursor.pcx", &pPcxCursorImage, 1, dwData);
 	gdwCursorWidth = dwData[0];
@@ -68,19 +71,19 @@ void LoadUiGFX()
 	gdwHeroHeight = dwData[1];
 
 	pFont16 = LoadFileInMem("ui_art\\font16.bin", 0);
-	LoadArtImage("ui_art\\font16s.pcx", &pPcxFont16sImage, 256, NULL);
+	LoadArtImage("ui_art\\font16s.pcx", &pPcxFont16sImage, 256);
 	LoadArtImage("ui_art\\font16g.pcx", &pPcxFont16gImage, 256, dwData);
 	gdwFont16Width = dwData[0];
 	gdwFont16Height = dwData[1];
 
 	pFont24 = LoadFileInMem("ui_art\\font24.bin", 0);
-	LoadArtImage("ui_art\\font24s.pcx", &pPcxFont24sImage, 256, NULL);
+	LoadArtImage("ui_art\\font24s.pcx", &pPcxFont24sImage, 256);
 	LoadArtImage("ui_art\\font24g.pcx", &pPcxFont24gImage, 256, dwData);
 	gdwFont24Width = dwData[0];
 	gdwFont24Height = dwData[1];
 
 	pFont30 = LoadFileInMem("ui_art\\font30.bin", 0);
-	LoadArtImage("ui_art\\font30s.pcx", &pPcxFont30sImage, 256, NULL);
+	LoadArtImage("ui_art\\font30s.pcx", &pPcxFont30sImage, 256);
 	LoadArtImage("ui_art\\font30g.pcx", &pPcxFont30gImage, 256, dwData);
 	gdwFont30Width = dwData[0];
 	gdwFont30Height = dwData[1];
@@ -89,6 +92,24 @@ void LoadUiGFX()
 	LoadArtImage("ui_art\\font42g.pcx", &pPcxFont42gImage, 256, dwData);
 	gdwFont42Width = dwData[0];
 	gdwFont42Height = dwData[1];
+}
+
+void InitFont()
+{
+	if (!TTF_WasInit() && TTF_Init() == -1) {
+		printf("TTF_Init: %s\n", TTF_GetError());
+		exit(1);
+	}
+
+	// TODO locate font dynamically, and use fallback font if missing
+	font = TTF_OpenFont("/usr/share/fonts/truetype/msttcorefonts/Times_New_Roman_Bold.ttf", 17);
+	if (font == NULL) {
+		printf("TTF_OpenFont: %s\n", TTF_GetError());
+		return;
+	}
+
+	TTF_SetFontKerning(font, FALSE);
+	TTF_SetFontHinting(font, TTF_HINTING_MONO);
 }
 
 void UiInitialize()
@@ -100,6 +121,7 @@ void UiInitialize()
 		SdlDiabloMainWindow();
 	}
 	ShowCursor(FALSE);
+	InitFont();
 }
 
 int __cdecl UiProfileGetString()
@@ -126,11 +148,6 @@ void __stdcall UiAppActivate(BOOL bActive)
 BOOL __fastcall UiValidPlayerName(char *name)
 {
 	UNIMPLEMENTED();
-}
-
-int __stdcall UiProgressDialog(HWND window, char *msg, int a3, void *fnfunc, int a5)
-{
-	DUMMY();
 }
 
 void __cdecl UiProfileCallback()

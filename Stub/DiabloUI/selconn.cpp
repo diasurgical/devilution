@@ -46,7 +46,7 @@ void selconn_Render()
 
 void selconn_Loade()
 {
-	LoadTitelArt("ui_art\\selgame.pcx");
+	LoadTitelArt("ui_art\\selconn.pcx");
 }
 
 void selconn_Free()

@@ -2,7 +2,6 @@
 
 #define CREDIT_LINES 13
 
-TTF_Font *font;
 int creditLine;
 int ybase;
 int lastYbase;
@@ -471,29 +470,12 @@ char *the_long_credits[] = {
 void credts_Loade()
 {
 	LoadTitelArt("ui_art\\credits.pcx");
-
-	if (!TTF_WasInit() && TTF_Init() == -1) {
-		printf("TTF_Init: %s\n", TTF_GetError());
-		exit(1);
-	}
-
-	// TODO locate font dynamically, and use fallback font if missing
-	font = TTF_OpenFont("/usr/share/fonts/truetype/msttcorefonts/Times_New_Roman_Bold.ttf", 17);
-	if (font == NULL) {
-		printf("TTF_OpenFont: %s\n", TTF_GetError());
-		return;
-	}
-
-	TTF_SetFontKerning(font, FALSE);
-	TTF_SetFontHinting(font, TTF_HINTING_MONO);
 }
 
 void credts_Free()
 {
 	mem_free_dbg(pPcxTitleImage);
 	pPcxTitleImage = NULL;
-	mem_free_dbg(font);
-	font = NULL;
 }
 
 void credts_Render()
@@ -534,8 +516,8 @@ void credts_Render()
 			}
 
 			if (text_surface = TTF_RenderUTF8_Solid(font, the_long_credits[creditLine + i] + offset, color)) {
-				SDL_Rect src_rect = { 0, -y, 640, 251 };
-				SDL_Rect dsc_rect = { 64 + x, 160 + 114, 640, 480 };
+				SDL_Rect src_rect = { 0, -y, SCREEN_WIDTH, 251 };
+				SDL_Rect dsc_rect = { 64 + x, 160 + 114, SCREEN_WIDTH, SCREEN_HEIGHT };
 				SDL_BlitSurface(text_surface, &src_rect, pal_surface, &dsc_rect);
 				SDL_FreeSurface(text_surface);
 			}

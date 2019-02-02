@@ -372,7 +372,7 @@ void __cdecl dx_cleanup()
 void sdl_update_entire_surface()
 {
 	assert(surface && pal_surface);
-	SDL_Rect src_rect = { 64, 160, 640, 480 };
+	SDL_Rect src_rect = { 64, 160, SCREEN_WIDTH, SCREEN_HEIGHT };
 	SDL_CHECK(SDL_BlitSurface(pal_surface, &src_rect, surface, NULL));
 }
 
@@ -395,12 +395,12 @@ void __fastcall j_lock_buf_priv(BYTE idx)
 {
 	if (!gpBuffer) {
 		printf("GpBuffer Created\n");
-		const int pitch = 640 + 64 + 64;
+		const int pitch = SCREEN_WIDTH + 64 + 64;
 		gpBuffer = (Screen *)malloc(sizeof(Screen));
 		printf("SIZE OF SCREEN %d\n", sizeof(Screen));
 		gpBufEnd += (unsigned int)gpBuffer;
 
-		pal_surface = SDL_CreateRGBSurfaceFrom(gpBuffer, pitch, 160 + 480 + 16, 8, pitch, 0, 0, 0, 0);
+		pal_surface = SDL_CreateRGBSurfaceFrom(gpBuffer, pitch, 160 + SCREEN_HEIGHT + 16, 8, pitch, 0, 0, 0, 0);
 		assert(pal_surface);
 		SDL_CHECK(SDL_SetSurfacePalette(pal_surface, palette));
 	}

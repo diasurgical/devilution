@@ -150,7 +150,7 @@ BOOL SetWindowPos(
 	return TRUE;
 }
 
-bool LoadArtImage(char *pszFile, void **pBuffer, int frames, DWORD *data, PALETTEENTRY *pPalette = NULL)
+bool LoadArtImage(char *pszFile, void **pBuffer, int frames, DWORD *data, PALETTEENTRY *pPalette)
 {
 	DWORD width;
 	DWORD height;
@@ -200,7 +200,7 @@ void SdlDiabloMainWindow()
 	surface = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_HEIGHT, 32, 0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF);
 	assert(surface);
 
-	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, 640, 480);
+	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, SCREEN_WIDTH, SCREEN_HEIGHT);
 	assert(texture);
 
 	palette = SDL_AllocPalette(256);
@@ -208,14 +208,15 @@ void SdlDiabloMainWindow()
 	j_lock_buf_priv(0); //FIXME 0?
 }
 
-void DrawArtImage(int SX, int SY, int SW, int SH, int nFrame, void *pBuffer, BYTE *bMask = NULL)
+void DrawArtImage(int SX, int SY, int SW, int SH, int nFrame, void *pBuffer, BYTE *bMask, int RW)
 {
 	BYTE *src = (BYTE *)pBuffer + (SW * SH * nFrame);
 	BYTE *dst = (BYTE *)&gpBuffer->row[SY].pixels[SX];
+	RW = RW ?: SW;
 
 	for (int i = 0; i < SH && i + SY < SCREEN_HEIGHT; i++, src += SW, dst += 768) {
 		for (int j = 0; j < SW && j + SX < SCREEN_WIDTH; j++) {
-			if (bMask == NULL || src[j] != *bMask)
+			if (j < RW && (bMask == NULL || src[j] != *bMask))
 				dst[j] = src[j];
 		}
 	}
