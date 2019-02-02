@@ -81,10 +81,10 @@ if (UNIX)
         HINTS ${${XPREFIX}_INCLUDE_DIRS}
     )
     find_library(sodium_LIBRARY_DEBUG NAMES ${${XPREFIX}_LIBRARIES}
-        HINTS ${${XPREFIX}_LIBRARY_DIRS}
+        HINTS ${${XPREFIX}_LIBRARY_DIRS} /
     )
     find_library(sodium_LIBRARY_RELEASE NAMES ${${XPREFIX}_LIBRARIES}
-        HINTS ${${XPREFIX}_LIBRARY_DIRS}
+        HINTS ${${XPREFIX}_LIBRARY_DIRS} /
     )
 
 
