@@ -22,7 +22,7 @@ void progress_Loade(char *msg)
 	dwSmlButHeight = dwData[1];
 
 	if (font != NULL) {
-		SDL_Color color = palette->colors[224];
+		SDL_Color color = { 243, 243, 243 };
 
 		msgSurface = TTF_RenderUTF8_Solid(font, msg, color);
 		cancleSurface = TTF_RenderUTF8_Solid(font, "Cancel", color);
@@ -76,9 +76,6 @@ void progress_Render(int progress)
 
 int __stdcall UiProgressDialog(HWND window, char *msg, int enable, int(__cdecl *fnfunc)(), int rate)
 {
-	int delay = rate ? 1000 / rate : 50;
-
-	SetFadeLevel(256);
 	progress_Loade(msg);
 
 	bool endMenu = false;
@@ -89,7 +86,6 @@ int __stdcall UiProgressDialog(HWND window, char *msg, int enable, int(__cdecl *
 		CapFPS();
 
 		progress = fnfunc();
-		printf("progress %d\n", progress);
 
 		progress_Render(progress);
 		DrawMouse();
