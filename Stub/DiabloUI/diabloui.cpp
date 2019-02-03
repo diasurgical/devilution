@@ -237,9 +237,29 @@ int __cdecl UiProfileGetString()
 	return 0;
 }
 
-void __stdcall UiSetupPlayerInfo(char *infostr, _uiheroinfo *pInfo, int type)
+char connect_plrinfostr[128];
+char connect_categorystr[128];
+void __stdcall UiSetupPlayerInfo(char *infostr, _uiheroinfo *pInfo, DWORD type)
 {
-	DUMMY_PRINT("chr: %s", infostr);
+	DUMMY();
+	SStrCopy(connect_plrinfostr, infostr, 128);
+	char format[32];
+	strncpy(format, (char *)&type, 4);
+	strcat(format, " %d %d %d %d %d %d %d %d %d");
+
+	snprintf(
+	    connect_categorystr,
+	    128,
+	    format,
+	    pInfo->level,
+	    pInfo->heroclass,
+	    pInfo->herorank,
+	    pInfo->strength,
+	    pInfo->magic,
+	    pInfo->dexterity,
+	    pInfo->vitality,
+	    pInfo->gold,
+	    pInfo->spawned);
 }
 
 BOOL __stdcall UiCopyProtError(int *pdwResult)
@@ -316,9 +336,27 @@ int __stdcall UiSelectGame(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYERDAT
 	return 1;
 }
 
-int __stdcall UiCreatePlayerDescription(_uiheroinfo *info, int mode, char *desc)
+BOOL __stdcall UiCreatePlayerDescription(_uiheroinfo *info, DWORD mode, char *desc)
 {
-	UNIMPLEMENTED();
+	char format[32];
+	strncpy(format, (char *)&mode, 4);
+	strcat(format, " %d %d %d %d %d %d %d %d %d");
+
+	snprintf(
+	    desc,
+	    128,
+	    format,
+	    info->level,
+	    info->heroclass,
+	    info->herorank,
+	    info->strength,
+	    info->magic,
+	    info->dexterity,
+	    info->vitality,
+	    info->gold,
+	    info->spawned);
+
+	return TRUE;
 }
 
 void DrawArt(int screenX, int screenY, Art *art, int nFrame, int drawW)

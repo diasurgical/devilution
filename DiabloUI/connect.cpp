@@ -849,7 +849,7 @@ void __stdcall UiCreateGameCriteria(_uiheroinfo *pInfo, char *str)
 }
 
 // ref: 0x10003FD6
-BOOL __stdcall UiCreatePlayerDescription(_uiheroinfo *info, int mode, char *desc)
+BOOL __stdcall UiCreatePlayerDescription(_uiheroinfo *info, DWORD mode, char *desc)
 {
 	connect_charname = (char *)mode;
 	Connect_MakeDescString(info, desc, 0x80u);
@@ -857,7 +857,7 @@ BOOL __stdcall UiCreatePlayerDescription(_uiheroinfo *info, int mode, char *desc
 }
 
 // ref: 0x10003FF7
-void __stdcall UiSetupPlayerInfo(char *infostr, _uiheroinfo *pInfo, int type)
+void __stdcall UiSetupPlayerInfo(char *infostr, _uiheroinfo *pInfo, DWORD type)
 {
 	connect_charname = (char *)type;
 	SStrCopy(connect_plrinfostr, infostr, 128);

@@ -353,7 +353,8 @@ int STORMAPI SMemCmp(void *location1, void *location2, DWORD size)
 
 int STORMAPI SStrCopy(char *dest, const char *src, int max_length)
 {
-	UNIMPLEMENTED();
+	strncpy(dest, src, max_length);
+	return strlen(dest);
 }
 
 int STORMAPI SStrCmp(const char *string1, const char *string2, unsigned int size)

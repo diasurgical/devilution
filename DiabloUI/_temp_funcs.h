@@ -84,8 +84,8 @@ void __fastcall Connect_SetDiffString(_gamedata *gamedata, const char *str1, cha
 BOOL __fastcall Connect_GetHeroInfoConc(const char *a1, _uiheroinfo *pInfo);
 void __fastcall Connect_MakeDescString(_uiheroinfo *a1, char *name, size_t size);
 void __stdcall UiCreateGameCriteria(_uiheroinfo *pInfo, char *str);
-BOOL __stdcall UiCreatePlayerDescription(_uiheroinfo *info, int mode, char *desc);
-void __stdcall UiSetupPlayerInfo(char *infostr, _uiheroinfo *pInfo, int type);
+BOOL __stdcall UiCreatePlayerDescription(_uiheroinfo *info, DWORD mode, char *desc);
+void __stdcall UiSetupPlayerInfo(char *infostr, _uiheroinfo *pInfo, DWORD type);
 void __fastcall Connect_CopyPlrDescStrings(char *str1, int size1, char *str2, int size2);
 
 BOOL __stdcall UiCopyProtError(int *pdwResult);

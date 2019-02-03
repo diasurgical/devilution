@@ -49,8 +49,8 @@ BOOL __stdcall UiCreateGameCallback(int a1, int a2, int a3, int a4, int a5, int 
 BOOL __stdcall UiArtCallback(int game_type, unsigned int art_code, PALETTEENTRY *pPalette, void *pBuffer, DWORD dwBuffersize, DWORD *pdwWidth, DWORD *pdwHeight, DWORD *pdwBpp);
 int __stdcall UiSelectGame(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info, _SNETUIDATA *ui_info, _SNETVERSIONDATA *file_info, int *a6);
 int __stdcall UiSelectProvider(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info, _SNETUIDATA *ui_info, _SNETVERSIONDATA *file_info, int *type);
-BOOL __stdcall UiCreatePlayerDescription(_uiheroinfo *info, int mode, char *desc);
-void __stdcall UiSetupPlayerInfo(char *infostr, _uiheroinfo *pInfo, int type);
+BOOL __stdcall UiCreatePlayerDescription(_uiheroinfo *info, DWORD mode, char *desc);
+void __stdcall UiSetupPlayerInfo(char *infostr, _uiheroinfo *pInfo, DWORD type);
 void __stdcall UiCreateGameCriteria(_uiheroinfo *pInfo, char *str);
 BOOL __stdcall UiGetDefaultStats(int pclass, _uidefaultstats *pStats);
 BOOL __stdcall UiBetaDisclaimer(int a1);
