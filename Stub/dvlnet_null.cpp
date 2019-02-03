@@ -48,8 +48,16 @@ bool dvlnet_null::SNetSendTurn(char *data, unsigned int size)
 
 int dvlnet_null::SNetGetProviderCaps(struct _SNETCAPS *caps)
 {
-	// todo: check that this is safe
-	return true;
+	caps->size = 0;                  // engine writes only ?!?
+	caps->flags = 0;                 // unused
+	caps->maxmessagesize = 512;      // capped to 512; underflow if < 24
+	caps->maxqueuesize = 0;          // unused
+	caps->maxplayers = MAX_PLRS;     // capped to 4
+	caps->bytessec = 1000000;        // ?
+	caps->latencyms = 0;             // unused
+	caps->defaultturnssec = 10;      // ?
+	caps->defaultturnsintransit = 1; // maximum acceptable number of turns in queue?
+	return 1;
 }
 
 void *dvlnet_null::SNetRegisterEventHandler(event_type evtype, void(__stdcall *func)(struct _SNETEVENT *))
