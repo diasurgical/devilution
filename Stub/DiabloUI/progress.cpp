@@ -51,9 +51,9 @@ void progress_Render(BYTE progress)
 	int y = GetCenterOffset(144, SCREEN_HEIGHT);
 
 	DrawArt(x, y, &ArtPopupSm);
-	DrawArt(GetCenterOffset(228), y + 52, &ArtProgBG, 0, 228);
+	DrawArt(GetCenterOffset(227), y + 52, &ArtProgBG, 0, 227);
 	if (progress) {
-		DrawArt(GetCenterOffset(228), y + 52, &ProgFil, 0, 228 * progress / 100);
+		DrawArt(GetCenterOffset(227), y + 52, &ProgFil, 0, 227 * progress / 100);
 	}
 	DrawArt(GetCenterOffset(110), y + 99, &ButImage, 2, 110);
 

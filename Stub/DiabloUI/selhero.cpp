@@ -6,11 +6,11 @@ _uiheroinfo heroInfo;
 
 void RenderStats()
 {
-	char lvl[3] = "--";
-	char str[3] = "--";
-	char mag[3] = "--";
-	char dex[3] = "--";
-	char vit[3] = "--";
+	char lvl[4] = "--";
+	char str[4] = "--";
+	char mag[4] = "--";
+	char dex[4] = "--";
+	char vit[4] = "--";
 
 	if (heroInfo.heroclass != UI_NUM_CLASSES) {
 		sprintf(lvl, "%d", heroInfo.level);
@@ -32,7 +32,7 @@ void RenderStats()
 	DrawArtStr(149, 422, AFT_SMALL, AFC_SILVER, vit, JustCentre, 61);
 }
 
-void selhero_Render()
+void selhero_Render(bool multiPlayer)
 {
 	heroInfo.heroclass = UI_NUM_CLASSES;
 	if (SelectedItem <= selhero_SaveCount) {
@@ -42,7 +42,11 @@ void selhero_Render()
 	DrawArt(0, 0, &ArtBackground);
 	DrawLogo();
 
-	DrawArtStr(-1, 161, AFT_BIG, AFC_SILVER, "Single Player Characters", JustCentre);
+	char *title = "Single Player Characters";
+	if (multiPlayer) {
+		title = "Multi Player Characters";
+	}
+	DrawArtStr(-1, 161, AFT_BIG, AFC_SILVER, title, JustCentre);
 
 	DrawArt(30, 211, &ArtHero, heroInfo.heroclass);
 	RenderStats();
@@ -67,7 +71,7 @@ void selhero_Render()
 	DrawArtStr(501, 429, AFT_BIG, AFC_GOLD, "Cancel");
 }
 
-void selhero_Render_DifficultySelection()
+void selhero_Render_Name(bool multiPlayer)
 {
 	DrawArt(0, 0, &ArtBackground);
 	DrawLogo();
@@ -75,47 +79,12 @@ void selhero_Render_DifficultySelection()
 	DrawArt(30, 211, &ArtHero, heroInfo.heroclass);
 	RenderStats();
 
-	char *GameOptions[3] = { "Normal", "Nightmare", "Hell" };
-
-	// this should not be hard coded.
-	int x = 280;
-	int y = 256;
-
-	for (int i = 0; i < 3; i++) {
-		y += 40;
-		DrawArtStr(x, y, AFT_SMALL, AFC_SILVER, GameOptions[i]);
+	char *title = "New Single Player Hero";
+	if (multiPlayer) {
+		title = "New Multi Player Hero";
 	}
-}
 
-void selhero_Render_GameType()
-{
-	DrawArt(0, 0, &ArtBackground);
-	DrawLogo();
-
-	DrawArt(30, 211, &ArtHero, heroInfo.heroclass);
-	RenderStats();
-
-	char *GameOptions[2] = { "New Game", "Load Game" };
-
-	// this should not be hard coded.
-	int x = 280;
-	int y = 256;
-
-	for (int i = 0; i < 2; i++) {
-		y += 40;
-		DrawArtStr(x, y, AFT_SMALL, AFC_SILVER, GameOptions[i]);
-	}
-}
-
-void selhero_Render_Name()
-{
-	DrawArt(0, 0, &ArtBackground);
-	DrawLogo();
-
-	DrawArt(30, 211, &ArtHero, heroInfo.heroclass);
-	RenderStats();
-
-	DrawArtStr(-1, 161, AFT_BIG, AFC_SILVER, "New Single Player Hero", JustCentre);
+	DrawArtStr(-1, 161, AFT_BIG, AFC_SILVER, title, JustCentre);
 
 	int w = 369;
 	int x = 241;
@@ -141,7 +110,7 @@ void selhero_Render_Name()
 
 // Have this load the function above and then render it in the main menu.
 // Cnacel box is also needed.
-void selhero_Render_ClassSelector()
+void selhero_Render_ClassSelector(bool multiPlayer)
 {
 	DrawArt(0, 0, &ArtBackground);
 	DrawLogo();
@@ -149,7 +118,11 @@ void selhero_Render_ClassSelector()
 	DrawArt(30, 211, &ArtHero, heroInfo.heroclass);
 	RenderStats();
 
-	DrawArtStr(-1, 161, AFT_BIG, AFC_SILVER, "New Single Player Hero", JustCentre);
+	char *title = "New Single Player Hero";
+	if (multiPlayer) {
+		title = "New Multi Player Hero";
+	}
+	DrawArtStr(-1, 161, AFT_BIG, AFC_SILVER, title, JustCentre);
 
 	int w = 369;
 	int x = 241;
@@ -215,16 +188,12 @@ void selhero_setDefaultStats(BOOL(__stdcall *fnstats)(unsigned int, _uidefaultst
 	heroInfo.vitality = defaults.vitality;
 }
 
-BOOL __stdcall UiSelHeroSingDialog(
-    BOOL(__stdcall *fninfo)(BOOL(__stdcall *fninfofunc)(_uiheroinfo *)),
+bool UiSelHeroDialog(
     BOOL(__stdcall *fncreate)(_uiheroinfo *),
     BOOL(__stdcall *fnremove)(_uiheroinfo *),
     BOOL(__stdcall *fnstats)(unsigned int, _uidefaultstats *),
-    int *dlgresult,
-    char *name,
-    int *difficulty)
+    bool multiPlayer)
 {
-	selhero_Loade(fninfo);
 	MenuItem[SINGLEPLAYER_LOAD] = 1 + selhero_SaveCount;
 
 	submenu = SINGLEPLAYER_LOAD;
@@ -238,24 +207,20 @@ BOOL __stdcall UiSelHeroSingDialog(
 
 	int nameLen;
 	SDL_Event event;
-	int x, y;
 
-	*difficulty = gnDifficulty; // BUGFIX this replicates a bug that allowed setting deficulity in SP
-
-	bool endMenu = false;
-	while (!endMenu) {
+	while (1) {
 		CapFPS();
 
 		switch (submenu) {
 		case SINGLEPLAYER_LOAD:
-			selhero_Render();
+			selhero_Render(multiPlayer);
 			break;
 		case SINGLEPLAYER_CLASSES:
 			selhero_setDefaultStats(fnstats);
-			selhero_Render_ClassSelector();
+			selhero_Render_ClassSelector(multiPlayer);
 			break;
 		case SINGLEPLAYER_NAME:
-			selhero_Render_Name();
+			selhero_Render_Name(multiPlayer);
 			break;
 		}
 
@@ -272,9 +237,7 @@ BOOL __stdcall UiSelHeroSingDialog(
 						break;
 					}
 
-					*dlgresult = EXIT_MENU;
-					endMenu = true;
-					break;
+					return FALSE;
 				case SDLK_BACKSPACE:
 					nameLen = strlen(heroInfo.name);
 					if (nameLen > 0) {
@@ -306,20 +269,12 @@ BOOL __stdcall UiSelHeroSingDialog(
 							break;
 						}
 
-						strcpy(name, heroInfo.name);
-						*dlgresult = LOAD_GAME;
-						endMenu = true;
-						break;
+						return true;
 					case SINGLEPLAYER_CLASSES:
 						SetMenu(SINGLEPLAYER_NAME);
 						break;
 					case SINGLEPLAYER_NAME:
-						if (!heroInfo.hassaved) {
-							fncreate(&heroInfo);
-						}
-						strcpy(name, heroInfo.name);
-						endMenu = true;
-						break;
+						return true;
 					}
 					break;
 				default:
@@ -343,10 +298,90 @@ BOOL __stdcall UiSelHeroSingDialog(
 		}
 	}
 
+	return TRUE;
+}
+
+BOOL __stdcall UiSelHeroSingDialog(
+    BOOL(__stdcall *fninfo)(BOOL(__stdcall *fninfofunc)(_uiheroinfo *)),
+    BOOL(__stdcall *fncreate)(_uiheroinfo *),
+    BOOL(__stdcall *fnremove)(_uiheroinfo *),
+    BOOL(__stdcall *fnstats)(unsigned int, _uidefaultstats *),
+    int *dlgresult,
+    char *name,
+    int *difficulty)
+{
+	selhero_Loade(fninfo);
+	if (!UiSelHeroDialog(fncreate, fnremove, fnstats, false)) {
+		*dlgresult = EXIT_MENU;
+	} else {
+		strcpy(name, heroInfo.name);
+
+		if (!heroInfo.hassaved) {
+			fncreate(&heroInfo); // todo don't overwrite
+		} else if (heroInfo.hassaved) {
+			*dlgresult = LOAD_GAME;
+		}
+	}
+
 	BlackPalette();
 	selhero_Free();
 
 	return TRUE;
+}
+
+//////////////////////////////////////////
+//            MULTI PLAYER              //
+//////////////////////////////////////////
+
+void selhero_multi_Loade()
+{
+	LoadBackgroundArt("ui_art\\selgame.pcx");
+}
+
+void selhero_multi_Free()
+{
+	mem_free_dbg(ArtBackground.data);
+	ArtBackground.data = NULL;
+}
+
+void selhero_Render_DifficultySelection()
+{
+	DrawArt(0, 0, &ArtBackground);
+	DrawLogo();
+
+	DrawArt(30, 211, &ArtHero, heroInfo.heroclass);
+	RenderStats();
+
+	char *GameOptions[3] = { "Normal", "Nightmare", "Hell" };
+
+	// this should not be hard coded.
+	int x = 280;
+	int y = 256;
+
+	for (int i = 0; i < 3; i++) {
+		y += 40;
+		DrawArtStr(x, y, AFT_SMALL, AFC_SILVER, GameOptions[i]);
+	}
+}
+
+void selhero_Render_GameSelection()
+{
+	DrawArt(0, 0, &ArtBackground);
+	DrawLogo();
+
+	DrawArt(30, 211, &ArtHero, heroInfo.heroclass);
+	RenderStats();
+
+	char *GameOptions[2] = { "New Game", "Load Game" };
+
+	// this should not be hard coded.
+	int x = 280;
+	int y = 256;
+
+	for (int i = 0; i < 2; i++) {
+		y += 40;
+		DrawArtStr(x, y, AFT_SMALL, AFC_SILVER, GameOptions[i]);
+	}
 }
 
 BOOL __stdcall UiSelHeroMultDialog(
@@ -359,14 +394,19 @@ BOOL __stdcall UiSelHeroMultDialog(
     char *name)
 {
 	*hero_is_created = false;
-	BOOL success = UiSelHeroSingDialog(fninfo, fncreate, fnremove, fnstats, dlgresult, name, &gnDifficulty);
-	if (!success) {
-		return FALSE;
-	} else if (*dlgresult == EXIT_MENU) {
+
+	selhero_Loade(fninfo);
+	bool playerSelected = UiSelHeroDialog(fncreate, fnremove, fnstats, true);
+	BlackPalette();
+	selhero_Free();
+	if (!playerSelected) {
+		*dlgresult = EXIT_MENU;
 		return TRUE;
 	}
 
-	selhero_Loade(fninfo);
+	strcpy(name, heroInfo.name);
+
+	selhero_multi_Loade();
 
 	submenu = MULTIPLAYER_LOBBY;
 
@@ -380,7 +420,7 @@ BOOL __stdcall UiSelHeroMultDialog(
 
 		switch (submenu) {
 		case MULTIPLAYER_LOBBY:
-			selhero_Render_GameType();
+			selhero_Render_GameSelection();
 			break;
 		case MULTIPLAYER_DIFFICULTY:
 			selhero_Render_DifficultySelection();
