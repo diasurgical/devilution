@@ -1321,7 +1321,7 @@ void __stdcall SDlgSetCursor(HWND hWnd, HCURSOR a2, int a3, int *a4);
 BOOL __stdcall SDlgSetTimer(int a1, int a2, int a3, void (__stdcall *a4)(int, int, int, int));
 BOOL __stdcall SDlgKillTimer(int a1, int a2);
 BOOL __stdcall SDlgDrawBitmap(HWND hWnd, int a2, int a3, int a4, int a5, int a6, int a7);
-BOOL __stdcall SDlgDialogBoxParam(HINSTANCE hInst, char *szDialog, int a3, WNDPROC func, int a5);
+BOOL __stdcall SDlgDialogBoxParam(HINSTANCE hInst, char *szDialog, int hWnd, WNDPROC func, int selhero_is_good);
 BOOL __stdcall SGdiTextOut(void *pBuffer, int x, int y, int mask, char *str, int len);
 BOOL __stdcall SFileEnableDirectAccess(BOOL enable);
 
