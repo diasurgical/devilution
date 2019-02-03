@@ -2,11 +2,11 @@
 
 void mainmenu_Render(char *name)
 {
-	DrawArtImage(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, pPcxTitleImage);
+	DrawArt(0, 0, &ArtBackground);
 
 	// scrollrt_draw_cursor_back_buffer(); // Doesn't work?
 
-	RenderDiabloLogoSm();
+	DrawLogo();
 
 	int menuTop = 192;
 	char *MENIITEMS[5] = { "Single Player", "Multi Player", "Replay Intro", "Show Credits", "Exit Diablo" };
@@ -16,7 +16,7 @@ void mainmenu_Render(char *name)
 		if (i > 1) {
 			y -= 1; // "Multi Player" and "Replay Intro" has a smaller gap then other items
 		}
-		PrintText42Gold(-1, y, MENIITEMS[i], 1);
+		DrawArtStr(-1, y, AFT_HUGE, AFC_GOLD, MENIITEMS[i], 1);
 	}
 
 	int selectorTop = menuTop;
@@ -24,9 +24,9 @@ void mainmenu_Render(char *name)
 		selectorTop -= 1; // "Multi Player" and "Replay Intro" has a smaller gap then other items
 	}
 
-	DrawSelector42(0, selectorTop, 0, 85, 43);
+	DrawSelector(0, selectorTop, 0, 85, 43, FOCUS_BIG);
 
-	PrintText16Silver(17, 444, name);
+	DrawArtStr(17, 444, AFT_SMALL, AFC_SILVER, name);
 }
 
 void mainmenu_Loade()
@@ -34,13 +34,13 @@ void mainmenu_Loade()
 	char *pszFile = "ui_art\\mainmenu.pcx";
 	if (false) //DiabloUI_GetSpawned()
 		pszFile = "ui_art\\swmmenu.pcx";
-	LoadTitelArt(pszFile);
+	LoadBackgroundArt(pszFile);
 }
 
 void mainmenu_Free()
 {
-	mem_free_dbg(pPcxTitleImage);
-	pPcxTitleImage = NULL;
+	mem_free_dbg(ArtBackground.data);
+	ArtBackground.data = NULL;
 }
 
 BOOL __stdcall UiMainMenuDialog(char *name, int *pdwResult, void(__stdcall *fnSound)(char *file), int a4)

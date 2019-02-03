@@ -2,21 +2,21 @@
 
 void title_Render()
 {
-	DrawArtImage(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, pPcxTitleImage);
+	DrawArt(0, 0, &ArtBackground);
 
-	PrintText24Silver(-1, 410, "Copyright \xA9 1996-2001 Blizzard Entertainment", JustCentre);
-	RenderDiabloLogo();
+	DrawArtStr(-1, 410, AFT_MED, AFC_SILVER, "Copyright \xA9 1996-2001 Blizzard Entertainment", JustCentre);
+	DrawLogo(182, LOGO_BIG);
 }
 
 void title_Loade()
 {
-	LoadTitelArt("ui_art\\title.pcx");
+	LoadBackgroundArt("ui_art\\title.pcx");
 }
 
 void title_Free()
 {
-	mem_free_dbg(pPcxTitleImage);
-	pPcxTitleImage = NULL;
+	mem_free_dbg(ArtBackground.data);
+	ArtBackground.data = NULL;
 }
 
 BOOL __stdcall UiTitleDialog(int a1)

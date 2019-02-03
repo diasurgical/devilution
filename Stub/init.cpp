@@ -91,6 +91,31 @@ void __fastcall init_create_window(int nCmdShow)
 	DUMMY();
 
 	pfile_init_save_directory();
+	atexit(SDL_Quit);
+	atexit(TTF_Quit);
+	SDL_Init(SDL_INIT_EVERYTHING);
+
+	int flags = SDL_WINDOW_FULLSCREEN_DESKTOP;
+	if (!fullscreen) {
+		flags = SDL_WINDOW_RESIZABLE;
+	}
+	window = SDL_CreateWindow("Diablo", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, flags);
+
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
+	printf("Window And Renderer Created!\n");
+
+	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
+	SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+	surface = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_HEIGHT, 32, 0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF);
+	assert(surface);
+
+	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, SCREEN_WIDTH, SCREEN_HEIGHT);
+	assert(texture);
+
+	palette = SDL_AllocPalette(256);
+
+	j_lock_buf_priv(0); //FIXME 0?
 
 	dx_init(NULL);
 	snd_init(NULL);

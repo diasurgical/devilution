@@ -148,7 +148,6 @@ set(STUB_SOURCES
     Stub/DiabloUI/diabloui.cpp
     Stub/DiabloUI/mainmenu.cpp
     Stub/DiabloUI/progress.cpp
-    Stub/DiabloUI/sdlrender.cpp
     Stub/DiabloUI/selconn.cpp
     Stub/DiabloUI/selhero.cpp
     Stub/DiabloUI/title.cpp
@@ -169,7 +168,7 @@ set(STUB_SOURCES
 include_directories(${SDL2_INCLUDE_DIR}
                     ${SDL2_TTF_INCLUDE_DIR}
                     ${SDL2_MIXER_INCLUDE_DIR}
-					${sodium_INCLUDE_DIR})
+                    ${sodium_INCLUDE_DIR})
 
 include_directories(. Stub 3rdParty/asio/include)
 

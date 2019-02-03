@@ -28,16 +28,16 @@ void RenderStats()
 		sprintf(vit, "%d", heroInfo.vitality);
 	}
 
-	PrintText16Silver(31, 323, "Level:", JustRight, 118);
-	PrintText16Silver(149, 323, lvl, JustCentre, 61);
-	PrintText16Silver(31, 358, "Strength:", JustRight, 118);
-	PrintText16Silver(149, 358, str, JustCentre, 61);
-	PrintText16Silver(31, 380, "Magic:", JustRight, 118);
-	PrintText16Silver(149, 380, mag, JustCentre, 61);
-	PrintText16Silver(31, 401, "Dexterity:", JustRight, 118);
-	PrintText16Silver(149, 401, dex, JustCentre, 61);
-	PrintText16Silver(31, 422, "Vitality:", JustRight, 118);
-	PrintText16Silver(149, 422, vit, JustCentre, 61);
+	DrawArtStr(31, 323, AFT_SMALL, AFC_SILVER, "Level:", JustRight, 118);
+	DrawArtStr(149, 323, AFT_SMALL, AFC_SILVER, lvl, JustCentre, 61);
+	DrawArtStr(31, 358, AFT_SMALL, AFC_SILVER, "Strength:", JustRight, 118);
+	DrawArtStr(149, 358, AFT_SMALL, AFC_SILVER, str, JustCentre, 61);
+	DrawArtStr(31, 380, AFT_SMALL, AFC_SILVER, "Magic:", JustRight, 118);
+	DrawArtStr(149, 380, AFT_SMALL, AFC_SILVER, mag, JustCentre, 61);
+	DrawArtStr(31, 401, AFT_SMALL, AFC_SILVER, "Dexterity:", JustRight, 118);
+	DrawArtStr(149, 401, AFT_SMALL, AFC_SILVER, dex, JustCentre, 61);
+	DrawArtStr(31, 422, AFT_SMALL, AFC_SILVER, "Vitality:", JustRight, 118);
+	DrawArtStr(149, 422, AFT_SMALL, AFC_SILVER, vit, JustCentre, 61);
 }
 
 void selhero_Render()
@@ -47,40 +47,40 @@ void selhero_Render()
 		memcpy(&heroInfo, &heros[SelectedItem - 1], sizeof(heroInfo));
 	}
 
-	DrawArtImage(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, pPcxTitleImage);
-	RenderDiabloLogoSm();
+	DrawArt(0, 0, &ArtBackground);
+	DrawLogo();
 
-	PrintText30Silver(-1, 161, "Single Player Characters", JustCentre);
+	DrawArtStr(-1, 161, AFT_BIG, AFC_SILVER, "Single Player Characters", JustCentre);
 
-	DrawArtImage(30, 211, gdwHeroWidth, gdwHeroHeight, heroInfo.heroclass, pPcxHeroImage);
+	DrawArt(30, 211, &ArtHero, heroInfo.heroclass);
 	RenderStats();
 
 	int w = 369;
 	int x = 241;
 
-	PrintText30Silver(x - 1, 211, "Select Hero", JustCentre, w);
+	DrawArtStr(x - 1, 211, AFT_BIG, AFC_SILVER, "Select Hero", JustCentre, w);
 
 	int selectorTop = 256;
 	int y = selectorTop;
 	for (int i = 0; i < selhero_SaveCount; i++) {
-		PrintText24Gold(x - 1, y, heros[i].name, JustCentre, w);
+		DrawArtStr(x - 1, y, AFT_MED, AFC_GOLD, heros[i].name, JustCentre, w);
 		y += 26;
 	}
-	PrintText24Gold(x - 1, y, "New Hero", JustCentre, w);
+	DrawArtStr(x - 1, y, AFT_MED, AFC_GOLD, "New Hero", JustCentre, w);
 
-	DrawSelector16(x, selectorTop + 3, w, 32, 26);
+	DrawSelector(x, selectorTop + 3, w, 32, 26, FOCUS_SMALL);
 
-	PrintText30Gold(279, 429, "OK");
-	PrintText30Gold(378, 429, "Delete");
-	PrintText30Gold(501, 429, "Cancel");
+	DrawArtStr(279, 429, AFT_BIG, AFC_GOLD, "OK");
+	DrawArtStr(378, 429, AFT_BIG, AFC_GOLD, "Delete");
+	DrawArtStr(501, 429, AFT_BIG, AFC_GOLD, "Cancel");
 }
 
 void selhero_Render_DifficultySelection()
 {
-	DrawArtImage(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, pPcxTitleImage);
-	RenderDiabloLogoSm();
+	DrawArt(0, 0, &ArtBackground);
+	DrawLogo();
 
-	DrawArtImage(30, 211, gdwHeroWidth, gdwHeroHeight, heroInfo.heroclass, pPcxHeroImage);
+	DrawArt(30, 211, &ArtHero, heroInfo.heroclass);
 	RenderStats();
 
 	char *GameOptions[3] = { "Normal", "Nightmare", "Hell" };
@@ -91,16 +91,16 @@ void selhero_Render_DifficultySelection()
 
 	for (int i = 0; i < 3; i++) {
 		y += 40;
-		PrintText16Silver(x, y, GameOptions[i]);
+		DrawArtStr(x, y, AFT_SMALL, AFC_SILVER, GameOptions[i]);
 	}
 }
 
 void selhero_Render_GameType()
 {
-	DrawArtImage(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, pPcxTitleImage);
-	RenderDiabloLogoSm();
+	DrawArt(0, 0, &ArtBackground);
+	DrawLogo();
 
-	DrawArtImage(30, 211, gdwHeroWidth, gdwHeroHeight, heroInfo.heroclass, pPcxHeroImage);
+	DrawArt(30, 211, &ArtHero, heroInfo.heroclass);
 	RenderStats();
 
 	char *GameOptions[2] = { "New Game", "Load Game" };
@@ -111,25 +111,25 @@ void selhero_Render_GameType()
 
 	for (int i = 0; i < 2; i++) {
 		y += 40;
-		PrintText16Silver(x, y, GameOptions[i]);
+		DrawArtStr(x, y, AFT_SMALL, AFC_SILVER, GameOptions[i]);
 	}
 }
 
 void selhero_Render_Name()
 {
-	DrawArtImage(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, pPcxTitleImage);
-	RenderDiabloLogoSm();
+	DrawArt(0, 0, &ArtBackground);
+	DrawLogo();
 
-	DrawArtImage(30, 211, gdwHeroWidth, gdwHeroHeight, heroInfo.heroclass, pPcxHeroImage);
+	DrawArt(30, 211, &ArtHero, heroInfo.heroclass);
 	RenderStats();
 
-	PrintText30Silver(-1, 161, "New Single Player Hero", JustCentre);
+	DrawArtStr(-1, 161, AFT_BIG, AFC_SILVER, "New Single Player Hero", JustCentre);
 
 	int w = 369;
 	int x = 241;
 	int y = 318;
 
-	PrintText30Silver(x - 1, 211, "Enter Name", JustCentre, w);
+	DrawArtStr(x - 1, 211, AFT_BIG, AFC_SILVER, "Enter Name", JustCentre, w);
 
 	DrawSelector(x, y - 2, w, 39, 26);
 
@@ -137,31 +137,32 @@ void selhero_Render_Name()
 	strcpy(lable, heroInfo.name);
 	if (GetAnimationFrame(2, 500)) {
 		lable[strlen(lable)] = '|';
+		lable[strlen(lable) + 1] = '\0';
 	}
 
-	PrintText24Gold(x + 67, y, lable); // todo add blinking "|"
+	DrawArtStr(x + 67, y, AFT_MED, AFC_GOLD, lable); // todo add blinking "|"
 
-	PrintText30Gold(329, 429, "OK");
-	PrintText30Gold(451, 429, "Cancel");
+	DrawArtStr(329, 429, AFT_BIG, AFC_GOLD, "OK");
+	DrawArtStr(451, 429, AFT_BIG, AFC_GOLD, "Cancel");
 }
 
 // Have this load the function above and then render it in the main menu.
 // Cnacel box is also needed.
 void selhero_Render_ClassSelector()
 {
-	DrawArtImage(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, pPcxTitleImage);
-	RenderDiabloLogoSm();
+	DrawArt(0, 0, &ArtBackground);
+	DrawLogo();
 
-	DrawArtImage(30, 211, gdwHeroWidth, gdwHeroHeight, heroInfo.heroclass, pPcxHeroImage);
+	DrawArt(30, 211, &ArtHero, heroInfo.heroclass);
 	RenderStats();
 
-	PrintText30Silver(-1, 161, "New Single Player Hero", JustCentre);
+	DrawArtStr(-1, 161, AFT_BIG, AFC_SILVER, "New Single Player Hero", JustCentre);
 
 	int w = 369;
 	int x = 241;
 	int y = 285;
 
-	PrintText30Silver(x - 1, 211, "Choose Class", JustCentre, w);
+	DrawArtStr(x - 1, 211, AFT_BIG, AFC_SILVER, "Choose Class", JustCentre, w);
 
 	char *heroclasses[3] = { "Warrior", "Rogue", "Sorcerer" };
 
@@ -171,7 +172,7 @@ void selhero_Render_ClassSelector()
 		if (i > 1) {
 			y += 1; // "Rouge" and "Sorcerer" has a smaller gap then other items
 		}
-		PrintText24Gold(x - 1, y, heroclasses[i], JustCentre, w);
+		DrawArtStr(x - 1, y, AFT_MED, AFC_GOLD, heroclasses[i], JustCentre, w);
 		y += 33;
 	}
 
@@ -181,8 +182,8 @@ void selhero_Render_ClassSelector()
 
 	DrawSelector(x, selectorTop - 2, w, 39, 33);
 
-	PrintText30Gold(329, 429, "OK");
-	PrintText30Gold(451, 429, "Cancel");
+	DrawArtStr(329, 429, AFT_BIG, AFC_GOLD, "OK");
+	DrawArtStr(451, 429, AFT_BIG, AFC_GOLD, "Cancel");
 }
 
 BOOL __stdcall SelHero_GetHeroInfo(_uiheroinfo *pInfo)
@@ -195,7 +196,7 @@ BOOL __stdcall SelHero_GetHeroInfo(_uiheroinfo *pInfo)
 
 void selhero_Loade(BOOL(__stdcall *fninfo)(BOOL(__stdcall *fninfofunc)(_uiheroinfo *)))
 {
-	LoadTitelArt("ui_art\\selhero.pcx");
+	LoadBackgroundArt("ui_art\\selhero.pcx");
 
 	hero_infos.clear();
 	fninfo(ui_add_hero_info);
@@ -209,8 +210,8 @@ void selhero_Loade(BOOL(__stdcall *fninfo)(BOOL(__stdcall *fninfofunc)(_uiheroin
 
 void selhero_Free()
 {
-	mem_free_dbg(pPcxTitleImage);
-	pPcxTitleImage = NULL;
+	mem_free_dbg(ArtBackground.data);
+	ArtBackground.data = NULL;
 }
 
 void selhero_setDefaultStats(BOOL(__stdcall *fnstats)(unsigned int, _uidefaultstats *))
@@ -288,7 +289,7 @@ BOOL __stdcall UiSelHeroSingDialog(
 				case SDLK_BACKSPACE:
 					nameLen = strlen(heroInfo.name);
 					if (nameLen > 0) {
-						heroInfo.name[nameLen-1] = '\0';
+						heroInfo.name[nameLen - 1] = '\0';
 					}
 					break;
 				case SDLK_UP:
@@ -338,11 +339,12 @@ BOOL __stdcall UiSelHeroSingDialog(
 					}
 
 					char letter = event.key.keysym.sym;
-					if (int(letter) > 96 && int(letter) < 123 || int(letter) == 32)
+					if (int(letter) > 96 && int(letter) < 123 || int(letter) == 32) {
 						nameLen = strlen(heroInfo.name);
 						if (nameLen < 15) {
 							heroInfo.name[nameLen] = letter;
 						}
+					}
 					break;
 				}
 				break;
@@ -403,7 +405,7 @@ BOOL __stdcall UiSelHeroMultDialog(
 					}
 
 					*dlgresult = EXIT_MENU;
-					return TRUE;
+					endMenu = true;
 				case SDLK_UP:
 					SelectedItem--;
 					if (SelectedItem < 1) {

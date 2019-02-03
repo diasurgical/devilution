@@ -5,11 +5,115 @@ int SelectedItemMax = 0;
 int MenuItem[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 int PreviousItem[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 int submenu = 0;
+BYTE *FontTables[4];
+Art ArtFonts[4][2];
+Art ArtLogos[3];
+Art ArtFocus[3];
+Art ArtBackground;
+Art ArtCursor;
+Art ArtHero;
+
+int SCREEN_WIDTH = 640;
+int SCREEN_HEIGHT = 480;
+
+int fadeValue = 0;
+int SelectedItem = 1;
+
+char *errorTitle[] = {
+	"Direct Draw Error",
+	"Out of Memory Error",
+	"Direct Draw Error",
+	"Data File Error",
+	"Direct Sound Error",
+	"Out of Disk Space",
+	"Direct Draw Error",
+	"Data File Error",
+	"Windows 2000 Restricted User Advisory",
+	"Read-Only Directory Error",
+};
+char *errorMessages[] = {
+	"Diablo was unable to properly initialize your video card using DirectX.\nPlease try the following solutions to correct the problem:\n\n    Use the Diablo setup program \"SETUP.EXE\" provided on the Diablo CD-ROM to install DirectX 3.0.\n\n    Install the most recent DirectX video drivers provided by the manufacturer of your video card.\nA list of video card manufactuers can be found at: http://www.blizzard.com/support/vendors.htm\n\nIf you continue to have problems with DirectX, please contact Microsoft's Technical Support at:\n\n\nIf you continue to have problems, we have also included Microsoft DirectX 2.0 drivers on the Diablo CD-ROM.\nThis older version of DirectX may work in cases where DirectX 3.0 does not.\n\n    USA telephone: 1-800-426-9400\n    International telephone: 206-882-8080\n    http://www.microsoft.com\n\n\nThe error encountered while trying to initialize the video card was:\n\n    %s",
+	"Diablo has exhausted all the memory on your system.\nThis problem can likely be corrected by changing the virtual memory settings for Windows.\nEnsure that your system has at least 10 megabytes of free disk space, then check your virtual memory settings:\n\nFor Windows 95:\n    Select \"Settings - Control Panel\" from the \"Start\" menu\n    Run the \"System\" control panel applet\n    Select the \"Performance\" tab, and press \"Virtual Memory\"\n    Use the \"Let Windows manage my virtual memory...\" option\n\nFor Windows NT:\n    Select \"Settings - Control Panel\" from the \"Start\" menu\n    Run the \"System\" control panel applet\n    Select the \"Performance\" tab\n    Press \"Change\" in \"Virtual Memory\" settings\n    Ensure that the virtual memory file is at least 32 megabytes\n\nThe error encountered was:\n\n    %s",
+	"Diablo was unable to open a required file.\nPlease ensure that the Diablo disc is in the CDROM drive.\nIf this problem persists, try uninstalling and reinstalling Diablo using the program \"SETUP.EXE\" on the Diablo CD-ROM.\n\n\nThe problem occurred while trying to load a file\n\n    %s",
+	"Diablo was unable to find the file \"ddraw.dll\", which is a component of Microsoft DirectX.\nPlease run the program \"SETUP.EXE\" on the Diablo CD-ROM and install Microsoft DirectX.\n\nIf you continue to have problems with DirectX, please contact Microsoft's Technical Support at:\n\n    USA telephone: 1-800-426-9400\n    International telephone: 206-882-8080\n    http://www.microsoft.com\n\n\nThe error encountered while trying to initialize DirectX was:\n\n    %s",
+	"Diablo was unable to find the file \"dsound.dll\", which is a component of Microsoft DirectX.\nPlease run the program \"SETUP.EXE\" on the Diablo CD-ROM and install Microsoft DirectX.\n\nIf you continue to have problems with DirectX, please contact Microsoft's Technical Support at:\n\n    USA telephone: 1-800-426-9400\n    International telephone: 206-882-8080\n    http://www.microsoft.com\n\n\nThe error encountered while trying to initialize DirectX was:\n\n    %s",
+	"Diablo requires at least 10 megabytes of free disk space to run properly.\nThe disk:\n\n%s\n\nhas less than 10 megabytes of free space left.\n\nPlease free some space on your drive and run Diablo again.",
+	"Diablo was unable to switch video modes.\nThis is a common problem for computers with more than one video card.\nTo correct this problem, please set your video resolution to 640 x 480 and try running Diablo again.\n\nFor Windows 95 and Windows NT\n    Select \"Settings - Control Panel\" from the \"Start\" menu\n    Run the \"Display\" control panel applet\n    Select the \"Settings\" tab\n    Set the \"Desktop Area\" to \"640 x 480 pixels\"\n\n\nThe error encountered while trying to switch video modes was:\n\n    %s",
+	"Diablo cannot read a required data file.\nYour Diablo CD may not be in the CDROM drive.\nPlease ensure that the Diablo disc is in the CDROM drive and press OK.\nTo leave the program, press Exit.\n    %s",
+	"In order to install, play or patch Diablo using the Windows 2000 operating system,\nyou will need to log in as either an Administrator or as a Power User.\n\nUsers, also known as Restricted Users, do not have sufficient access to install or play the game properly.\n\nIf you have further questions regarding User Rights in Windows 2000, please refer to your Windows 2000 documentation or contact your system administrator.",
+	"Diablo is being run from:\n\n    %s\n\n\nDiablo or the current user does not seem to have write privilages in this directory. Contact your system administrator.\n\nNote that Windows 2000 Restricted Users can not write to the Windows or Program Files directory hierarchies.",
+};
+
+DWORD FormatMessage(
+    DWORD dwFlags,
+    LPCVOID lpSource,
+    DWORD dwMessageId,
+    DWORD dwLanguageId,
+    char *lpBuffer,
+    DWORD nSize,
+    va_list *Arguments)
+{
+	DUMMY();
+	return 0;
+}
+
+int MAKEINTRESOURCE(int i)
+{
+	switch (i) {
+	case IDD_DIALOG1:
+		return 0;
+	case IDD_DIALOG2:
+		return 1;
+	case IDD_DIALOG3:
+		return 2;
+	case IDD_DIALOG4:
+		return 3;
+	case IDD_DIALOG5:
+		return 4;
+	case IDD_DIALOG7:
+		return 5;
+	case IDD_DIALOG8:
+		return 6;
+	case IDD_DIALOG9:
+		return 7;
+	case IDD_DIALOG10:
+		return 8;
+	case IDD_DIALOG11:
+		return 9;
+	}
+}
+
+int DialogBoxParam(HINSTANCE hInstance, int msgId, HWND hWndParent, DLGPROC lpDialogFunc, LPARAM dwInitParam)
+{
+	char text[1024];
+	snprintf(text, 1024, errorMessages[msgId], dwInitParam);
+
+	return SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, errorTitle[msgId], text, window) < 0 ? -1 : 0;
+}
+
+BOOL SetDlgItemText(HWND hDlg, int nIDDlgItem, LPCSTR lpString)
+{
+	return FALSE;
+}
+
+BOOL EndDialog(HWND hDlg, INT_PTR nResult)
+{
+	return FALSE;
+}
+
+BOOL SetWindowPos(HWND hWnd, HWND hWndInsertAfter, int X, int Y, int cx, int cy, UINT uFlags)
+{
+	SDL_SetWindowPosition(window, X, Y);
+
+	return TRUE;
+}
 
 void __cdecl UiDestroy()
 {
 	DUMMY();
-	FreeMenuItems();
+	mem_free_dbg(ArtHero.data);
+	ArtHero.data = NULL;
+
 	mem_free_dbg(font);
 	font = NULL;
 }
@@ -46,52 +150,59 @@ void InitHiracy()
 	PreviousItem[MULTIPLAYER_ERROR] = MAINMENU;
 }
 
+void LoadArt(char *pszFile, Art *art, int frames, PALETTEENTRY *pPalette)
+{
+	if (art == NULL || art->data != NULL)
+		return;
+
+	if (!SBmpLoadImage(pszFile, 0, 0, 0, &art->width, &art->height, 0))
+		return;
+
+	art->data = malloc(art->width * art->height);
+	if (!SBmpLoadImage(pszFile, pPalette, art->data, art->width * art->height, 0, 0, 0))
+		return;
+
+	if (art->data == NULL)
+		return;
+
+	art->height /= frames;
+
+	return art;
+}
+
+void LoadMaskedArtFont(char *pszFile, Art *art, int frames, int mask = 250)
+{
+	LoadArt(pszFile, art, frames);
+	art->masked = true;
+	art->mask = mask;
+}
+
+void LoadArtFont(char *pszFile, int size, int color)
+{
+	LoadMaskedArtFont(pszFile, &ArtFonts[size][color], 256, 32);
+}
+
 void LoadUiGFX()
 {
-	DWORD dwData[2];
+	FontTables[AFT_SMALL] = LoadFileInMem("ui_art\\font16.bin", 0);
+	FontTables[AFT_MED] = LoadFileInMem("ui_art\\font24.bin", 0);
+	FontTables[AFT_BIG] = LoadFileInMem("ui_art\\font30.bin", 0);
+	FontTables[AFT_HUGE] = LoadFileInMem("ui_art\\font42.bin", 0);
+	LoadArtFont("ui_art\\font16s.pcx", AFT_SMALL, AFC_SILVER);
+	LoadArtFont("ui_art\\font16g.pcx", AFT_SMALL, AFC_GOLD);
+	LoadArtFont("ui_art\\font24s.pcx", AFT_MED, AFC_SILVER);
+	LoadArtFont("ui_art\\font24g.pcx", AFT_MED, AFC_GOLD);
+	LoadArtFont("ui_art\\font30s.pcx", AFT_BIG, AFC_SILVER);
+	LoadArtFont("ui_art\\font30g.pcx", AFT_BIG, AFC_GOLD);
+	LoadArtFont("ui_art\\font42g.pcx", AFT_HUGE, AFC_GOLD);
 
-	LoadArtImage("ui_art\\focus16.pcx", &MenuPentegram16, 8);
-	LoadArtImage("ui_art\\focus.pcx", &MenuPentegram, 8);
-	LoadArtImage("ui_art\\focus42.pcx", &MenuPentegram42, 8);
-
-	LoadArtImage("ui_art\\cursor.pcx", &pPcxCursorImage, 1, dwData);
-	gdwCursorWidth = dwData[0];
-	gdwCursorHeight = dwData[1];
-
-	LoadArtImage("ui_art\\logo.pcx", &pPcxLogoImage, 15, dwData);
-	gdwLogoWidth = dwData[0];
-	gdwLogoHeight = dwData[1];
-
-	LoadArtImage("ui_art\\smlogo.pcx", &pPcxLogoSmImage, 15, dwData);
-	gdwLogoSmWidth = dwData[0];
-	gdwLogoSmHeight = dwData[1];
-
-	LoadArtImage("ui_art\\heros.pcx", &pPcxHeroImage, 4, dwData);
-	gdwHeroWidth = dwData[0];
-	gdwHeroHeight = dwData[1];
-
-	pFont16 = LoadFileInMem("ui_art\\font16.bin", 0);
-	LoadArtImage("ui_art\\font16s.pcx", &pPcxFont16sImage, 256);
-	LoadArtImage("ui_art\\font16g.pcx", &pPcxFont16gImage, 256, dwData);
-	gdwFont16Width = dwData[0];
-	gdwFont16Height = dwData[1];
-
-	pFont24 = LoadFileInMem("ui_art\\font24.bin", 0);
-	LoadArtImage("ui_art\\font24s.pcx", &pPcxFont24sImage, 256);
-	LoadArtImage("ui_art\\font24g.pcx", &pPcxFont24gImage, 256, dwData);
-	gdwFont24Width = dwData[0];
-	gdwFont24Height = dwData[1];
-
-	pFont30 = LoadFileInMem("ui_art\\font30.bin", 0);
-	LoadArtImage("ui_art\\font30s.pcx", &pPcxFont30sImage, 256);
-	LoadArtImage("ui_art\\font30g.pcx", &pPcxFont30gImage, 256, dwData);
-	gdwFont30Width = dwData[0];
-	gdwFont30Height = dwData[1];
-
-	pFont42 = LoadFileInMem("ui_art\\font42.bin", 0);
-	LoadArtImage("ui_art\\font42g.pcx", &pPcxFont42gImage, 256, dwData);
-	gdwFont42Width = dwData[0];
-	gdwFont42Height = dwData[1];
+	LoadMaskedArtFont("ui_art\\logo.pcx", &ArtLogos[LOGO_BIG], 15);
+	LoadMaskedArtFont("ui_art\\smlogo.pcx", &ArtLogos[LOGO_MED], 15);
+	LoadMaskedArtFont("ui_art\\focus16.pcx", &ArtFocus[FOCUS_SMALL], 8);
+	LoadMaskedArtFont("ui_art\\focus.pcx", &ArtFocus[FOCUS_MED], 8);
+	LoadMaskedArtFont("ui_art\\focus42.pcx", &ArtFocus[FOCUS_BIG], 8);
+	LoadMaskedArtFont("ui_art\\cursor.pcx", &ArtCursor, 1, 0);
+	LoadArt("ui_art\\heros.pcx", &ArtHero, 4);
 }
 
 void InitFont()
@@ -116,10 +227,6 @@ void UiInitialize()
 {
 	InitHiracy();
 	LoadUiGFX();
-
-	if (!window) {
-		SdlDiabloMainWindow();
-	}
 	ShowCursor(FALSE);
 	InitFont();
 }
@@ -212,4 +319,153 @@ int __stdcall UiSelectGame(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYERDAT
 int __stdcall UiCreatePlayerDescription(_uiheroinfo *info, int mode, char *desc)
 {
 	UNIMPLEMENTED();
+}
+
+void DrawArt(int screenX, int screenY, Art *art, int nFrame, int drawW)
+{
+	BYTE *src = (BYTE *)art->data + (art->width * art->height * nFrame);
+	BYTE *dst = (BYTE *)&gpBuffer->row[screenY].pixels[screenX];
+	drawW = drawW ?: art->width;
+
+	for (int i = 0; i < art->height && i + screenY < SCREEN_HEIGHT; i++, src += art->width, dst += 768) {
+		for (int j = 0; j < art->width && j + screenX < SCREEN_WIDTH; j++) {
+			if (j < drawW && (!art->masked || src[j] != art->mask))
+				dst[j] = src[j];
+		}
+	}
+}
+
+int GetCenterOffset(int w, int bw = 0)
+{
+	if (bw == 0) {
+		bw = SCREEN_WIDTH;
+	}
+
+	return bw / 2 - w / 2;
+}
+
+int GetStrWidth(BYTE *str, int size)
+{
+	int strWidth = 0;
+
+	for (int i = 0; i < strlen(str); i++) {
+		BYTE w = FontTables[size][str[i] + 2];
+		if (w)
+			strWidth += w;
+		else
+			strWidth += FontTables[size][0];
+	}
+
+	return strWidth;
+}
+
+int TextAlignment(char *text, TXT_JUST align, int bw, int size)
+{
+	if (align != JustLeft) {
+		int w = GetStrWidth(text, size);
+		if (align == JustCentre) {
+			return GetCenterOffset(w, bw);
+		} else if (align == JustRight) {
+			return bw - w;
+		}
+	}
+
+	return 0;
+}
+
+void DrawArtStr(int x, int y, int size, int color, BYTE *str, TXT_JUST align, int bw)
+{
+	x += TextAlignment(str, align, bw, size);
+
+	for (int i = 0; i < strlen(str); i++) {
+		BYTE w = FontTables[size][str[i] + 2];
+		if (!w)
+			w = FontTables[size][0];
+		DrawArt(x, y, &ArtFonts[size][color], str[i], w);
+		x += w;
+	}
+}
+
+void LoadPalInMem(PALETTEENTRY *pPal)
+{
+	for (int i = 0; i < 256; i++) {
+		orig_palette[i].peFlags = 0;
+		orig_palette[i].peRed = pPal[i].peRed;
+		orig_palette[i].peGreen = pPal[i].peGreen;
+		orig_palette[i].peBlue = pPal[i].peBlue;
+	}
+}
+
+void LoadBackgroundArt(char *pszFile)
+{
+	PALETTEENTRY pPal[256];
+
+	fadeValue = 0;
+	LoadArt(pszFile, &ArtBackground, 1, pPal);
+	LoadPalInMem(pPal);
+	ApplyGamma(logical_palette, orig_palette, 256);
+}
+
+int GetAnimationFrame(int frames, int fps = 60)
+{
+	int frame = (SDL_GetTicks() / fps) % frames;
+
+	return frame > frames ? 0 : frame;
+}
+
+int frameEnd = 0;
+void CapFPS()
+{
+	int now = SDL_GetTicks();
+	frameEnd += 1000 / 60;
+	if (now < frameEnd) {
+		SDL_Delay(frameEnd - now);
+	}
+}
+
+bool UiFadeIn(int steps)
+{
+	if (fadeValue < 256) {
+		fadeValue += steps;
+		if (fadeValue > 256) {
+			fadeValue = 256;
+		}
+	}
+
+	SetFadeLevel(fadeValue);
+
+	return fadeValue == 256;
+}
+
+void DrawLogo(int t, int size)
+{
+	DrawArt(GetCenterOffset(ArtLogos[size].width), t, &ArtLogos[size], GetAnimationFrame(15));
+}
+
+void DrawMouse()
+{
+	SDL_GetMouseState(&MouseX, &MouseY);
+
+	float scaleX;
+	SDL_RenderGetScale(renderer, &scaleX, NULL);
+	MouseX /= scaleX;
+	MouseY /= scaleX;
+
+	SDL_Rect view;
+	SDL_RenderGetViewport(renderer, &view);
+	MouseX -= view.x;
+	MouseY -= view.y;
+
+	DrawArt(MouseX, MouseY, &ArtCursor);
+}
+
+void DrawSelector(int x, int y, int width, int padding, int spacing, int size)
+{
+	width = width ? width : SCREEN_WIDTH;
+	x += GetCenterOffset(ArtFocus[size].width, width);
+	y += (SelectedItem - 1) * spacing;
+
+	int frame = GetAnimationFrame(8);
+	DrawArt(x - width / 2 + padding, y, &ArtFocus[size], frame);
+	DrawArt(x + width / 2 - padding, y, &ArtFocus[size], frame);
 }

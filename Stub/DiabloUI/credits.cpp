@@ -469,18 +469,18 @@ char *the_long_credits[] = {
 
 void credts_Loade()
 {
-	LoadTitelArt("ui_art\\credits.pcx");
+	LoadBackgroundArt("ui_art\\credits.pcx");
 }
 
 void credts_Free()
 {
-	mem_free_dbg(pPcxTitleImage);
-	pPcxTitleImage = NULL;
+	mem_free_dbg(ArtBackground.data);
+	ArtBackground.data = NULL;
 }
 
 void credts_Render()
 {
-	DrawArtImage(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, pPcxTitleImage);
+	DrawArt(0, 0, &ArtBackground);
 
 	int lineHeight = 22;
 

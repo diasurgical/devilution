@@ -2,62 +2,54 @@
 
 #include "../../types.h"
 
+typedef enum _artFocus {
+	FOCUS_SMALL,
+	FOCUS_MED,
+	FOCUS_BIG,
+} _artFocus;
+
+typedef enum _artLogo {
+	LOGO_SMALL,
+	LOGO_MED,
+	LOGO_BIG,
+} _artLogo;
+
+typedef enum _artFontTables {
+	AFT_SMALL,
+	AFT_MED,
+	AFT_BIG,
+	AFT_HUGE,
+} _artFontTables;
+
+typedef enum _artFontColors {
+	AFC_SILVER,
+	AFC_GOLD,
+} _artFontColors;
+
+typedef struct Art {
+	BYTE *data;
+	DWORD width;
+	DWORD height;
+	bool masked = false;
+	BYTE mask;
+} Art;
+
 extern TTF_Font *font;
 
-extern unsigned char *pFont16;
-extern int gdwFont16Width;
-extern int gdwFont16Height;
-extern void *pPcxFont16sImage;
-extern void *pPcxFont16gImage;
-
-extern unsigned char *pFont24;
-extern int gdwFont24Width;
-extern int gdwFont24Height;
-extern void *pPcxFont24sImage;
-extern void *pPcxFont24gImage;
-
-extern unsigned char *pFont30;
-extern int gdwFont30Width;
-extern int gdwFont30Height;
-extern void *pPcxFont30sImage;
-extern void *pPcxFont30gImage;
-
-extern unsigned char *pFont42;
-extern int gdwFont42Width;
-extern int gdwFont42Height;
-extern void *pPcxFont42gImage;
-
-extern void *pPcxLogoImage;
-extern int gdwLogoWidth;
-extern int gdwLogoHeight;
-extern void *pPcxLogoSmImage;
-extern int gdwLogoSmWidth;
-extern int gdwLogoSmHeight;
-
-extern void *pPcxTitleImage;
-extern int gdwCursorHeight;
-extern int gdwCursorWidth;
-extern void *pPcxCursorImage;
-extern int gdwHeroHeight;
-extern int gdwHeroWidth;
-extern void *pPcxHeroImage;
-extern int gdwSHeroHeight;
-extern int gdwSHeroWidth;
-extern void *pPcxSHeroImage;
-extern void *pMedTextCels;
+extern BYTE *FontTables[4];
+extern Art ArtFonts[4][2];
+extern Art ArtLogos[3];
+extern Art ArtFocus[3];
+extern Art ArtBackground;
+extern Art ArtCursor;
+extern Art ArtHero;
 
 extern int SelectedItem;
 extern int SelectedItemMax;
 
 extern int SCREEN_WIDTH;
 extern int SCREEN_HEIGHT;
-extern int TotalPlayers;
 
-extern void *MenuPentegram16;
-extern void *MenuPentegram;
-extern void *MenuPentegram42;
-
-extern char HeroUndecidedName[17];
 extern int MenuItem[10];
 extern int PreviousItem[10];
 extern int submenu;
@@ -76,27 +68,15 @@ BOOL EndDialog(HWND hDlg, INT_PTR nResult);
 BOOL SetWindowPos(HWND hWnd, HWND hWndInsertAfter, int X, int Y, int cx, int cy, UINT uFlags);
 
 bool IsInsideRect(const SDL_Event *event, const SDL_Rect *rect);
-bool LoadArtImage(char *pszFile, void **pBuffer, int frames, DWORD *data = NULL, PALETTEENTRY *pPalette = NULL);
 bool UiFadeIn(int steps = 16);
 int GetAnimationFrame(int frames, int fps = 60);
 int GetCenterOffset(int w, int bw = 0);
 void CapFPS();
-void DrawArtImage(int SX, int SY, int SW, int SH, int nFrame, void *pBuffer, BYTE *bMask = NULL, int RW = 0);
+void DrawArt(int screenX, int screenY, Art *art, int nFrame = 0, int drawW = 0);
+void DrawArtStr(int x, int y, int size, int color, BYTE *str, TXT_JUST align = JustLeft, int bw = 0);
+void DrawLogo(int t = 0, int size = LOGO_MED);
 void DrawMouse();
-void DrawSelector16(int x, int y, int width, int padding, int spacing);
-void DrawSelector(int x, int y, int width, int padding, int spacing);
-void DrawSelector42(int x, int y, int width, int padding, int spacing);
-void FreeMenuItems();
-void LoadHeroStats();
-void LoadTitelArt(char *pszFile);
-void PrintText16Gold(int x, int y, char *text, TXT_JUST align = JustLeft, int bw = 0);
-void PrintText16Silver(int x, int y, char *text, TXT_JUST align = JustLeft, int bw = 0);
-void PrintText24Gold(int x, int y, char *text, TXT_JUST align = JustLeft, int bw = 0);
-void PrintText24Silver(int x, int y, char *text, TXT_JUST align = JustLeft, int bw = 0);
-void PrintText30Gold(int x, int y, char *text, TXT_JUST align = JustLeft, int bw = 0);
-void PrintText30Silver(int x, int y, char *text, TXT_JUST align = JustLeft, int bw = 0);
-void PrintText42Gold(int x, int y, char *text, TXT_JUST align = JustLeft, int bw = 0);
-void RenderDiabloLogo();
-void RenderDiabloLogoSm();
-void SdlDiabloMainWindow();
+void DrawSelector(int x, int y, int width, int padding, int spacing, int size = FOCUS_MED);
+void LoadArt(char *pszFile, Art *art, int frames = 1, PALETTEENTRY *pPalette = NULL);
+void LoadBackgroundArt(char *pszFile);
 void SetMenu(int MenuId);

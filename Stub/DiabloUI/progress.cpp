@@ -1,72 +1,66 @@
 #include "../../types.h"
 
-void *pPcxSPopupImage;
-void *pPcxProgBGImage;
-void *pPcxProgFillImage;
-void *pPcxSmlButImage;
-int dwSmlButWidth, dwSmlButHeight;
+Art ArtPopupSm;
+Art ArtProgBG;
+Art ProgFil;
+Art ButImage;
 SDL_Surface *msgSurface;
 SDL_Surface *cancleSurface;
-int w;
+int textWidth;
 
 void progress_Loade(char *msg)
 {
-	DWORD dwData[2];
-
-	LoadTitelArt("ui_art\\black.pcx");
-	LoadArtImage("ui_art\\spopup.pcx", &pPcxSPopupImage, 1);
-	LoadArtImage("ui_art\\prog_bg.pcx", &pPcxProgBGImage, 1);
-	LoadArtImage("ui_art\\prog_fil.pcx", &pPcxProgFillImage, 1);
-	LoadArtImage("ui_art\\but_sml.pcx", &pPcxSmlButImage, 15, dwData);
-	dwSmlButWidth = dwData[0];
-	dwSmlButHeight = dwData[1];
+	LoadBackgroundArt("ui_art\\black.pcx");
+	LoadArt("ui_art\\spopup.pcx", &ArtPopupSm);
+	LoadArt("ui_art\\prog_bg.pcx", &ArtProgBG);
+	LoadArt("ui_art\\prog_fil.pcx", &ProgFil);
+	LoadArt("ui_art\\but_sml.pcx", &ButImage, 15);
 
 	if (font != NULL) {
 		SDL_Color color = { 243, 243, 243 };
 
 		msgSurface = TTF_RenderUTF8_Solid(font, msg, color);
 		cancleSurface = TTF_RenderUTF8_Solid(font, "Cancel", color);
-		TTF_SizeUTF8(font, "Cancel", &w, NULL);
+		TTF_SizeUTF8(font, "Cancel", &textWidth, NULL);
 	}
 }
 
 void progress_Free()
 {
-	mem_free_dbg(pPcxTitleImage);
-	pPcxTitleImage = NULL;
-	mem_free_dbg(pPcxSPopupImage);
-	pPcxSPopupImage = NULL;
-	mem_free_dbg(pPcxProgBGImage);
-	pPcxProgBGImage = NULL;
-	mem_free_dbg(pPcxProgFillImage);
-	pPcxProgFillImage = NULL;
-	mem_free_dbg(pPcxSmlButImage);
-	pPcxSmlButImage = NULL;
+	mem_free_dbg(ArtBackground.data);
+	ArtBackground.data = NULL;
+	mem_free_dbg(ArtPopupSm.data);
+	ArtPopupSm.data = NULL;
+	mem_free_dbg(ArtProgBG.data);
+	ArtProgBG.data = NULL;
+	mem_free_dbg(ProgFil.data);
+	ProgFil.data = NULL;
+	mem_free_dbg(ButImage.data);
+	ButImage.data = NULL;
 	SDL_FreeSurface(msgSurface);
 	msgSurface = NULL;
 	SDL_FreeSurface(cancleSurface);
 	cancleSurface = NULL;
 }
 
-void progress_Render(int progress)
+void progress_Render(BYTE progress)
 {
-	DrawArtImage(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, pPcxTitleImage);
+	DrawArt(0, 0, &ArtBackground);
 
 	int x = GetCenterOffset(280);
 	int y = GetCenterOffset(144, SCREEN_HEIGHT);
 
-	DrawArtImage(x, y, 284, 148, 0, pPcxSPopupImage);
-	DrawArtImage(GetCenterOffset(228), y + 52, 232, 38, 0, pPcxProgBGImage, NULL, 228);
+	DrawArt(x, y, &ArtPopupSm);
+	DrawArt(GetCenterOffset(228), y + 52, &ArtProgBG, 0, 228);
 	if (progress) {
-		DrawArtImage(GetCenterOffset(228), y + 52, 232, 38, 0, pPcxProgFillImage, NULL, 228 * progress / 100);
+		DrawArt(GetCenterOffset(228), y + 52, &ProgFil, 0, 228 * progress / 100);
 	}
-	DrawArtImage(GetCenterOffset(dwSmlButWidth - 2), y + 99, dwSmlButWidth, dwSmlButHeight, 2, pPcxSmlButImage, NULL, dwSmlButWidth - 2);
+	DrawArt(GetCenterOffset(110), y + 99, &ButImage, 2, 110);
 
 	if (msgSurface) {
-		SDL_Rect src_rect = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 		SDL_Rect dsc_rect = { 64 + x + 50, 160 + y + 8, SCREEN_WIDTH, SCREEN_HEIGHT };
 		SDL_BlitSurface(msgSurface, NULL, pal_surface, &dsc_rect);
-		dsc_rect.x = 64 + GetCenterOffset(w) - 1;
+		dsc_rect.x = 64 + GetCenterOffset(textWidth) - 1;
 		dsc_rect.y = 160 + y + 99 + 4;
 		SDL_BlitSurface(cancleSurface, NULL, pal_surface, &dsc_rect);
 	}

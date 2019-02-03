@@ -479,9 +479,7 @@ WINBOOL WINAPI SetCursorPos(int X, int Y)
 
 int WINAPI ShowCursor(WINBOOL bShow)
 {
-	if (window) {
-		SDL_ShowCursor(bShow ? SDL_ENABLE : SDL_DISABLE);
-	}
+	SDL_ShowCursor(bShow ? SDL_ENABLE : SDL_DISABLE);
 
 	return bShow;
 }
