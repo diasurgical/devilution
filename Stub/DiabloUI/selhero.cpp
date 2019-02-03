@@ -4,14 +4,6 @@ int selhero_SaveCount = 0;
 _uiheroinfo heros[MAX_CHARACTERS];
 _uiheroinfo heroInfo;
 
-static std::vector<_uiheroinfo> hero_infos;
-
-static BOOL __stdcall ui_add_hero_info(_uiheroinfo *info)
-{
-	hero_infos.emplace_back(*info);
-	return TRUE;
-}
-
 void RenderStats()
 {
 	char lvl[3] = "--";
@@ -136,8 +128,9 @@ void selhero_Render_Name()
 	char lable[16];
 	strcpy(lable, heroInfo.name);
 	if (GetAnimationFrame(2, 500)) {
-		lable[strlen(lable)] = '|';
-		lable[strlen(lable) + 1] = '\0';
+		int len = strlen(lable);
+		lable[len] = '|';
+		lable[len + 1] = '\0';
 	}
 
 	DrawArtStr(x + 67, y, AFT_MED, AFC_GOLD, lable); // todo add blinking "|"
@@ -198,13 +191,9 @@ void selhero_Loade(BOOL(__stdcall *fninfo)(BOOL(__stdcall *fninfofunc)(_uiheroin
 {
 	LoadBackgroundArt("ui_art\\selhero.pcx");
 
-	hero_infos.clear();
-	fninfo(ui_add_hero_info);
-
 	selhero_SaveCount = 0;
 	fninfo(SelHero_GetHeroInfo);
 
-	//memset(heroInfo, 0, sizeof(_uiheroinfo));
 	heroInfo.heroclass = UI_NUM_CLASSES;
 }
 
@@ -297,14 +286,14 @@ BOOL __stdcall UiSelHeroSingDialog(
 					if (SelectedItem < 1) {
 						SelectedItem = SelectedItemMax ? SelectedItemMax : 1;
 					}
-					effects_play_sound("sfx\\items\\titlemov.wav");
+					UiPlayMoveSound();
 					break;
 				case SDLK_DOWN:
 					SelectedItem++;
 					if (SelectedItem > SelectedItemMax) {
 						SelectedItem = 1;
 					}
-					effects_play_sound("sfx\\items\\titlemov.wav");
+					UiPlayMoveSound();
 					break;
 				case SDLK_RETURN:
 				case SDLK_KP_ENTER:
@@ -366,12 +355,19 @@ BOOL __stdcall UiSelHeroMultDialog(
     BOOL(__stdcall *fnremove)(_uiheroinfo *),
     BOOL(__stdcall *fnstats)(unsigned int, _uidefaultstats *),
     int *dlgresult,
-    int *hero_is_created,
+    BOOL *hero_is_created,
     char *name)
 {
+	*hero_is_created = false;
+	BOOL success = UiSelHeroSingDialog(fninfo, fncreate, fnremove, fnstats, dlgresult, name, &gnDifficulty);
+	if (!success) {
+		return FALSE;
+	} else if (*dlgresult == EXIT_MENU) {
+		return TRUE;
+	}
+
 	selhero_Loade(fninfo);
 
-	DUMMY();
 	submenu = MULTIPLAYER_LOBBY;
 
 	SelectedItem = 1;
@@ -411,14 +407,14 @@ BOOL __stdcall UiSelHeroMultDialog(
 					if (SelectedItem < 1) {
 						SelectedItem = SelectedItemMax ? SelectedItemMax : 1;
 					}
-					effects_play_sound("sfx\\items\\titlemov.wav");
+					UiPlayMoveSound();
 					break;
 				case SDLK_DOWN:
 					SelectedItem++;
 					if (SelectedItem > SelectedItemMax) {
 						SelectedItem = 1;
 					}
-					effects_play_sound("sfx\\items\\titlemov.wav");
+					UiPlayMoveSound();
 					break;
 				case SDLK_RETURN:
 				case SDLK_KP_ENTER:
@@ -428,11 +424,7 @@ BOOL __stdcall UiSelHeroMultDialog(
 						SetMenu(MULTIPLAYER_DIFFICULTY);
 						break;
 					case MULTIPLAYER_DIFFICULTY:
-						strcpy(heroInfo.name, "testname");
 						strcpy(name, heroInfo.name);
-						if (!heroInfo.hassaved) {
-							fncreate(&heroInfo);
-						}
 						*dlgresult = NEW_GAME;
 						endMenu = true;
 						break;

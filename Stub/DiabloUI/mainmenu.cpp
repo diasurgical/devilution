@@ -4,8 +4,6 @@ void mainmenu_Render(char *name)
 {
 	DrawArt(0, 0, &ArtBackground);
 
-	// scrollrt_draw_cursor_back_buffer(); // Doesn't work?
-
 	DrawLogo();
 
 	int menuTop = 192;
@@ -45,6 +43,7 @@ void mainmenu_Free()
 
 BOOL __stdcall UiMainMenuDialog(char *name, int *pdwResult, void(__stdcall *fnSound)(char *file), int a4)
 {
+	gfnSoundFunction = fnSound;
 	mainmenu_Loade();
 
 	SelectedItem = 1;
@@ -91,7 +90,7 @@ BOOL __stdcall UiMainMenuDialog(char *name, int *pdwResult, void(__stdcall *fnSo
 					break;
 				case SDLK_ESCAPE:
 					*pdwResult = MAINMENU_EXIT_DIABLO;
-					fnSound("sfx\\items\\titlslct.wav");
+					UiPlaySelectSound();
 					Sleep(250); // Wait for soudn to play
 					endMenu = true;
 					break;
@@ -100,27 +99,27 @@ BOOL __stdcall UiMainMenuDialog(char *name, int *pdwResult, void(__stdcall *fnSo
 				case SDLK_SPACE:
 					switch (SelectedItem) {
 					case MAINMENU_SINGLE_PLAYER:
-						fnSound("sfx\\items\\titlslct.wav");
+						UiPlaySelectSound();
 						*pdwResult = MAINMENU_SINGLE_PLAYER;
 						endMenu = true;
 						break;
 					case MAINMENU_MULTIPLAYER:
-						fnSound("sfx\\items\\titlslct.wav");
+						UiPlaySelectSound();
 						*pdwResult = MAINMENU_MULTIPLAYER;
 						endMenu = true;
 						break;
 					case MAINMENU_REPLAY_INTRO:
-						fnSound("sfx\\items\\titlslct.wav");
+						UiPlaySelectSound();
 						*pdwResult = MAINMENU_REPLAY_INTRO;
 						endMenu = true;
 						break;
 					case MAINMENU_SHOW_CREDITS:
-						fnSound("sfx\\items\\titlslct.wav");
+						UiPlaySelectSound();
 						*pdwResult = MAINMENU_SHOW_CREDITS;
 						endMenu = true;
 						break;
 					case MAINMENU_EXIT_DIABLO:
-						fnSound("sfx\\items\\titlslct.wav");
+						UiPlaySelectSound();
 						Sleep(250); // Wait for sound to play
 						*pdwResult = MAINMENU_EXIT_DIABLO;
 						endMenu = true;
@@ -132,27 +131,27 @@ BOOL __stdcall UiMainMenuDialog(char *name, int *pdwResult, void(__stdcall *fnSo
 			case SDL_MOUSEBUTTONDOWN:
 				if (event.button.button == SDL_BUTTON_LEFT) {
 					if (IsInsideRect(&event, &SinglePlayer)) {
-						fnSound("sfx\\items\\titlslct.wav");
+						UiPlaySelectSound();
 						*pdwResult = MAINMENU_SINGLE_PLAYER;
 						endMenu = true;
 						break;
 					} else if (IsInsideRect(&event, &MultiPlayer)) {
-						fnSound("sfx\\items\\titlslct.wav");
+						UiPlaySelectSound();
 						*pdwResult = MAINMENU_MULTIPLAYER;
 						endMenu = true;
 						break;
 					} else if (IsInsideRect(&event, &ReplayIntro)) {
-						fnSound("sfx\\items\\titlslct.wav");
+						UiPlaySelectSound();
 						*pdwResult = MAINMENU_REPLAY_INTRO;
 						endMenu = true;
 						break;
 					} else if (IsInsideRect(&event, &ShowCredits)) {
-						fnSound("sfx\\items\\titlslct.wav");
+						UiPlaySelectSound();
 						*pdwResult = MAINMENU_SHOW_CREDITS;
 						endMenu = true;
 						break;
 					} else if (IsInsideRect(&event, &ExitDiablo)) {
-						fnSound("sfx\\items\\titlslct.wav");
+						UiPlaySelectSound();
 						Sleep(250); // Wait for soudn to play
 						*pdwResult = MAINMENU_EXIT_DIABLO;
 						endMenu = true;

@@ -330,7 +330,7 @@ BOOL(__stdcall *selhero_fncreate)
 (_uiheroinfo *);
 char selhero_herodex[4];
 _uiheroinfo *sgpHeroInfo;
-int selhero_is_created; // weak
+BOOL selhero_is_created; // weak
 _uiheroinfo heroinfo_create;
 int selhero_is_good; // idb
 char selhero_herostr[4];

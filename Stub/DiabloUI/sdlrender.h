@@ -60,6 +60,8 @@ typedef enum TXT_JUST {
 	JustRight = 2,
 } TXT_JUST;
 
+extern void(__stdcall *gfnSoundFunction)(char *file);
+
 DWORD FormatMessage(DWORD dwFlags, LPCVOID lpSource, DWORD dwMessageId, DWORD dwLanguageId, char *lpBuffer, DWORD nSize, va_list *Arguments);
 int MAKEINTRESOURCE(int i);
 int DialogBoxParam(HINSTANCE hInstance, int msgId, HWND hWndParent, DLGPROC lpDialogFunc, LPARAM dwInitParam);
@@ -80,3 +82,5 @@ void DrawSelector(int x, int y, int width, int padding, int spacing, int size = 
 void LoadArt(char *pszFile, Art *art, int frames = 1, PALETTEENTRY *pPalette = NULL);
 void LoadBackgroundArt(char *pszFile);
 void SetMenu(int MenuId);
+void UiPlayMoveSound();
+void UiPlaySelectSound();

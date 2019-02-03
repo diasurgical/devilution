@@ -53,6 +53,8 @@ void selconn_Render()
 void selconn_Loade()
 {
 	LoadBackgroundArt("ui_art\\selconn.pcx");
+	SelectedItem = 1;
+	SelectedItemMax = 2;
 }
 
 void selconn_Free()
@@ -66,8 +68,6 @@ int __stdcall UiSelectProvider(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYE
 {
 	selconn_Loade();
 
-	SelectedItem = 1;
-	SelectedItemMax = 2;
 	SDL_Event event;
 
 	bool rv = true;
@@ -87,14 +87,14 @@ int __stdcall UiSelectProvider(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYE
 					if (SelectedItem < MAINMENU_SINGLE_PLAYER) {
 						SelectedItem = SelectedItemMax;
 					}
-					effects_play_sound("sfx\\items\\titlemov.wav");
+					UiPlayMoveSound();
 					break;
 				case SDLK_DOWN:
 					SelectedItem++;
 					if (SelectedItem > SelectedItemMax) {
 						SelectedItem = MAINMENU_SINGLE_PLAYER;
 					}
-					effects_play_sound("sfx\\items\\titlemov.wav");
+					UiPlayMoveSound();
 					break;
 				case SDLK_ESCAPE:
 					if (PreviousItem[submenu]) {
@@ -107,33 +107,33 @@ int __stdcall UiSelectProvider(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYE
 				case SDLK_RETURN:
 				case SDLK_KP_ENTER:
 				case SDLK_SPACE:
-					effects_play_sound("sfx\\items\\titlslct.wav");
-					selconn_Free();
+					UiPlaySelectSound();
+					DWORD provider;
 					switch (SelectedItem) {
 					/*
 					case 1:
-						endMenu = SNetInitializeProvider('BNET', client_info, user_info, ui_info, file_info);
+						provider = 'BNET';
 						break;
 					case 2:
-						endMenu = SNetInitializeProvider('IPXN', client_info, user_info, ui_info, file_info);
+						provider = 'IPXN';
 						break;
 					case 3:
-						endMenu = SNetInitializeProvider('MODM', client_info, user_info, ui_info, file_info);
+						provider = 'MODM';
 						break;
 					case 4:
-						endMenu = SNetInitializeProvider('SCBL', client_info, user_info, ui_info, file_info);
+						provider = 'SCBL';
 						break;
 					case 5:*/
 					case 1:
-						endMenu = SNetInitializeProvider('UDPN', client_info, user_info, ui_info, file_info);
+						provider = 'UDPN';
 						break;
 					case 2:
-						endMenu = SNetInitializeProvider('SCBL', client_info, user_info, ui_info, file_info);
+						provider = 'SCBL';
 						break;
 					}
+					selconn_Free();
+					endMenu = SNetInitializeProvider('SCBL', client_info, user_info, ui_info, file_info);
 					selconn_Loade();
-					SelectedItem = 1;
-					SelectedItemMax = 3;
 					break;
 				}
 				break;

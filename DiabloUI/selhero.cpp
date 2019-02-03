@@ -219,7 +219,7 @@ BOOL __stdcall UiSelHeroMultDialog(
     BOOL(__stdcall *fnremove)(_uiheroinfo *),
     BOOL(__stdcall *fnstats)(unsigned int, _uidefaultstats *),
     int *dlgresult,
-    int *hero_is_created,
+    BOOL *hero_is_created,
     char *name)
 {
 	int v7; // eax

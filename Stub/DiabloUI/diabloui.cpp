@@ -13,6 +13,8 @@ Art ArtBackground;
 Art ArtCursor;
 Art ArtHero;
 
+void(__stdcall *gfnSoundFunction)(char *file);
+
 int SCREEN_WIDTH = 640;
 int SCREEN_HEIGHT = 480;
 
@@ -120,7 +122,7 @@ void __cdecl UiDestroy()
 
 void SetMenu(int MenuId)
 {
-	effects_play_sound("sfx\\items\\titlslct.wav");
+	UiPlaySelectSound();
 
 	submenu = MenuId;
 	SelectedItem = 1;
@@ -306,6 +308,19 @@ BOOL __stdcall UiSoundCallback(int a1, int type, int a3)
 {
 	UNIMPLEMENTED();
 }
+
+void UiPlayMoveSound()
+{
+	if (gfnSoundFunction)
+		gfnSoundFunction("sfx\\items\\titlemov.wav");
+}
+
+void UiPlaySelectSound()
+{
+	if (gfnSoundFunction)
+		gfnSoundFunction("sfx\\items\\titlslct.wav");
+}
+
 
 void __stdcall UiMessageBoxCallback(HWND hWnd, char *lpText, LPCSTR lpCaption, UINT uType)
 {
