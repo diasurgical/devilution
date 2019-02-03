@@ -8,7 +8,7 @@ SDL_Surface *msgSurface;
 SDL_Surface *cancleSurface;
 int textWidth;
 
-void progress_Loade(char *msg)
+void progress_Load(char *msg)
 {
 	LoadBackgroundArt("ui_art\\black.pcx");
 	LoadArt("ui_art\\spopup.pcx", &ArtPopupSm);
@@ -68,7 +68,7 @@ void progress_Render(BYTE progress)
 
 int __stdcall UiProgressDialog(HWND window, char *msg, int enable, int(__cdecl *fnfunc)(), int rate)
 {
-	progress_Loade(msg);
+	progress_Load(msg);
 
 	bool endMenu = false;
 	int progress = 0;
@@ -76,9 +76,7 @@ int __stdcall UiProgressDialog(HWND window, char *msg, int enable, int(__cdecl *
 	SDL_Event event;
 	while (!endMenu && progress < 100) {
 		CapFPS();
-
 		progress = fnfunc();
-
 		progress_Render(progress);
 		DrawMouse();
 		SetFadeLevel(256);
@@ -86,6 +84,17 @@ int __stdcall UiProgressDialog(HWND window, char *msg, int enable, int(__cdecl *
 		while (SDL_PollEvent(&event)) {
 			switch (event.type) {
 			case SDL_KEYDOWN:
+				switch (event.key.keysym.sym) {
+				case SDLK_ESCAPE:
+				case SDLK_RETURN:
+				case SDLK_KP_ENTER:
+				case SDLK_SPACE:
+					break;
+				default:
+					continue;
+				}
+				endMenu = true;
+				break;
 			case SDL_MOUSEBUTTONDOWN:
 				endMenu = true;
 				break;
@@ -95,7 +104,6 @@ int __stdcall UiProgressDialog(HWND window, char *msg, int enable, int(__cdecl *
 		}
 	}
 	BlackPalette();
-
 	progress_Free();
 
 	return progress == 100;

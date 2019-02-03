@@ -467,7 +467,7 @@ char *the_long_credits[] = {
 	NULL
 };
 
-void credts_Loade()
+void credts_Load()
 {
 	LoadBackgroundArt("ui_art\\credits.pcx");
 }
@@ -527,7 +527,7 @@ void credts_Render()
 
 BOOL __stdcall UiCreditsDialog(int a1)
 {
-	credts_Loade();
+	credts_Load();
 
 	creditEnd = false;
 	lineCount = CREDIT_LINES;

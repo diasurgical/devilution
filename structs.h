@@ -1304,7 +1304,7 @@ typedef struct _SNETUIDATA {
 	    const struct _SNETPLAYERDATA *,
 	    const struct _SNETUIDATA *,
 	    const struct _SNETVERSIONDATA *,
-	    DWORD provider, /* e.g. 'IPXN', 'BNET' etc. */
+	    DWORD provider, /* e.g. 'BNET', 'IPXN', 'MODM', 'SCBL' */
 	    char *, DWORD,  /* character name will be copied here */
 	    char *, DWORD,  /* character "description" will be copied here (used to advertise games) */
 	    BOOL *          /* new character? - unsure about this */

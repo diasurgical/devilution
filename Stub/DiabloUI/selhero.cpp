@@ -160,7 +160,7 @@ BOOL __stdcall SelHero_GetHeroInfo(_uiheroinfo *pInfo)
 	return TRUE;
 }
 
-void selhero_Loade(BOOL(__stdcall *fninfo)(BOOL(__stdcall *fninfofunc)(_uiheroinfo *)))
+void selhero_Load(BOOL(__stdcall *fninfo)(BOOL(__stdcall *fninfofunc)(_uiheroinfo *)))
 {
 	LoadBackgroundArt("ui_art\\selhero.pcx");
 
@@ -188,117 +188,150 @@ void selhero_setDefaultStats(BOOL(__stdcall *fnstats)(unsigned int, _uidefaultst
 	heroInfo.vitality = defaults.vitality;
 }
 
+bool selhero_Event(bool *aborted)
+{
+	SDL_Event event;
+	while (SDL_PollEvent(&event)) {
+		switch (event.type) {
+		case SDL_KEYDOWN:
+			if (UiFocuseNavigation(&event))
+				break;
+			switch (event.key.keysym.sym) {
+			case SDLK_ESCAPE:
+				*aborted = true;
+				return true;
+			case SDLK_RETURN:
+			case SDLK_KP_ENTER:
+			case SDLK_SPACE:
+				if (SelectedItem == SelectedItemMax) {
+					memset(&heroInfo.name, 0, sizeof(heroInfo.name));
+					SetMenu(SELHERO_CLASSES);
+					break;
+				}
+				return true;
+			}
+			break;
+		case SDL_QUIT:
+			exit(0);
+		}
+	}
+
+	return false;
+}
+
+bool selhero_Event_ClassSelector(bool *aborted)
+{
+	SDL_Event event;
+	while (SDL_PollEvent(&event)) {
+		switch (event.type) {
+		case SDL_KEYDOWN:
+			if (UiFocuseNavigation(&event, true))
+				break;
+			switch (event.key.keysym.sym) {
+			case SDLK_ESCAPE:
+				if (selhero_SaveCount) {
+					SetMenu(SELHERO_LOAD);
+					SelectedItemMax = 1 + selhero_SaveCount;
+					break;
+				}
+				*aborted = true;
+				return true;
+			case SDLK_RETURN:
+			case SDLK_KP_ENTER:
+			case SDLK_SPACE:
+				SetMenu(SELHERO_NAME);
+				break;
+			}
+			break;
+		case SDL_QUIT:
+			exit(0);
+		}
+	}
+
+	return false;
+}
+
+bool selhero_Event_Name()
+{
+	int nameLen;
+	SDL_Event event;
+	while (SDL_PollEvent(&event)) {
+		switch (event.type) {
+		case SDL_KEYDOWN:
+			switch (event.key.keysym.sym) {
+			case SDLK_ESCAPE:
+				SetMenu(SELHERO_CLASSES);
+				break;
+			case SDLK_BACKSPACE:
+			case SDLK_LEFT:
+				nameLen = strlen(heroInfo.name);
+				if (nameLen > 0) {
+					heroInfo.name[nameLen - 1] = '\0';
+				}
+				break;
+			case SDLK_RETURN:
+			case SDLK_KP_ENTER:
+				return true;
+			default:
+				char letter = event.key.keysym.sym;
+				if (int(letter) > 96 && int(letter) < 123 || int(letter) == 32) {
+					nameLen = strlen(heroInfo.name);
+					if (nameLen < 15) {
+						heroInfo.name[nameLen] = letter;
+					}
+				}
+				break;
+			}
+			break;
+		case SDL_QUIT:
+			exit(0);
+		}
+	}
+
+	return false;
+}
+
 bool UiSelHeroDialog(
     BOOL(__stdcall *fncreate)(_uiheroinfo *),
     BOOL(__stdcall *fnremove)(_uiheroinfo *),
     BOOL(__stdcall *fnstats)(unsigned int, _uidefaultstats *),
     bool multiPlayer)
 {
-	MenuItem[SINGLEPLAYER_LOAD] = 1 + selhero_SaveCount;
-
-	submenu = SINGLEPLAYER_LOAD;
-	if (!selhero_SaveCount) {
-		PreviousItem[SINGLEPLAYER_CLASSES] = 0;
-		submenu = SINGLEPLAYER_CLASSES;
-	}
+	bool aborted = false;
+	bool endMenu = false;
 
 	SelectedItem = 1;
-	SelectedItemMax = MenuItem[submenu];
+	submenu = SELHERO_LOAD;
+	SelectedItemMax = 1 + selhero_SaveCount;
+	if (!selhero_SaveCount) {
+		submenu = SELHERO_CLASSES;
+		SelectedItemMax = 3;
+	}
 
-	int nameLen;
-	SDL_Event event;
-
-	while (1) {
+	while (endMenu == false) {
 		CapFPS();
 
 		switch (submenu) {
-		case SINGLEPLAYER_LOAD:
+		case SELHERO_LOAD:
 			selhero_Render(multiPlayer);
+			endMenu = selhero_Event(&aborted);
 			break;
-		case SINGLEPLAYER_CLASSES:
+		case SELHERO_CLASSES:
 			selhero_setDefaultStats(fnstats);
 			selhero_Render_ClassSelector(multiPlayer);
+			endMenu = selhero_Event_ClassSelector(&aborted);
 			break;
-		case SINGLEPLAYER_NAME:
+		case SELHERO_NAME:
 			selhero_Render_Name(multiPlayer);
+			endMenu = selhero_Event_Name();
 			break;
 		}
 
 		DrawMouse();
 		UiFadeIn();
-
-		while (SDL_PollEvent(&event)) {
-			switch (event.type) {
-			case SDL_KEYDOWN:
-				switch (event.key.keysym.sym) {
-				case SDLK_ESCAPE:
-					if (PreviousItem[submenu]) {
-						SetMenu(PreviousItem[submenu]);
-						break;
-					}
-
-					return FALSE;
-				case SDLK_BACKSPACE:
-					nameLen = strlen(heroInfo.name);
-					if (nameLen > 0) {
-						heroInfo.name[nameLen - 1] = '\0';
-					}
-					break;
-				case SDLK_UP:
-					SelectedItem--;
-					if (SelectedItem < 1) {
-						SelectedItem = SelectedItemMax ? SelectedItemMax : 1;
-					}
-					UiPlayMoveSound();
-					break;
-				case SDLK_DOWN:
-					SelectedItem++;
-					if (SelectedItem > SelectedItemMax) {
-						SelectedItem = 1;
-					}
-					UiPlayMoveSound();
-					break;
-				case SDLK_RETURN:
-				case SDLK_KP_ENTER:
-				case SDLK_SPACE:
-					switch (submenu) {
-					case SINGLEPLAYER_LOAD:
-						if (SelectedItem == SelectedItemMax) {
-							memset(&heroInfo.name, 0, sizeof(heroInfo.name));
-							SetMenu(SINGLEPLAYER_CLASSES);
-							break;
-						}
-
-						return true;
-					case SINGLEPLAYER_CLASSES:
-						SetMenu(SINGLEPLAYER_NAME);
-						break;
-					case SINGLEPLAYER_NAME:
-						return true;
-					}
-					break;
-				default:
-					if (submenu != SINGLEPLAYER_NAME) {
-						break;
-					}
-
-					char letter = event.key.keysym.sym;
-					if (int(letter) > 96 && int(letter) < 123 || int(letter) == 32) {
-						nameLen = strlen(heroInfo.name);
-						if (nameLen < 15) {
-							heroInfo.name[nameLen] = letter;
-						}
-					}
-					break;
-				}
-				break;
-			case SDL_QUIT:
-				exit(0);
-			}
-		}
 	}
 
-	return TRUE;
+	return aborted;
 }
 
 BOOL __stdcall UiSelHeroSingDialog(
@@ -310,8 +343,8 @@ BOOL __stdcall UiSelHeroSingDialog(
     char *name,
     int *difficulty)
 {
-	selhero_Loade(fninfo);
-	if (!UiSelHeroDialog(fncreate, fnremove, fnstats, false)) {
+	selhero_Load(fninfo);
+	if (UiSelHeroDialog(fncreate, fnremove, fnstats, false)) {
 		*dlgresult = EXIT_MENU;
 	} else {
 		strcpy(name, heroInfo.name);
@@ -333,7 +366,7 @@ BOOL __stdcall UiSelHeroSingDialog(
 //            MULTI PLAYER              //
 //////////////////////////////////////////
 
-void selhero_multi_Loade()
+void selhero_multi_Load()
 {
 	LoadBackgroundArt("ui_art\\selgame.pcx");
 }
@@ -362,6 +395,81 @@ void selhero_Render_DifficultySelection()
 		y += 40;
 		DrawArtStr(x, y, AFT_SMALL, AFC_SILVER, GameOptions[i]);
 	}
+}
+
+bool selhero_Event_GameSelection(int *dlgresult)
+{
+	SDL_Event event;
+	while (SDL_PollEvent(&event)) {
+		switch (event.type) {
+		case SDL_KEYDOWN:
+			if (UiFocuseNavigation(&event))
+				break;
+			switch (event.key.keysym.sym) {
+			case SDLK_ESCAPE:
+				*dlgresult = EXIT_MENU;
+				return true;
+			case SDLK_RETURN:
+			case SDLK_KP_ENTER:
+			case SDLK_SPACE:
+				SetMenu(SELHERO_DIFFICULTY);
+				break;
+			}
+			break;
+		case SDL_QUIT:
+			exit(0);
+		}
+	}
+
+	return false;
+}
+
+bool selhero_Event_DifficultySelection(int *dlgresult)
+{
+	SDL_Event event;
+	while (SDL_PollEvent(&event)) {
+		switch (event.type) {
+		case SDL_KEYDOWN:
+			if (UiFocuseNavigation(&event, true))
+				break;
+			switch (event.key.keysym.sym) {
+			case SDLK_ESCAPE:
+				SetMenu(SELHERO_SELECT_GAME);
+				break;
+			case SDLK_RETURN:
+			case SDLK_KP_ENTER:
+			case SDLK_SPACE:
+				*dlgresult = NEW_GAME;
+				return true;
+			}
+			break;
+		case SDL_MOUSEBUTTONDOWN:
+			if (event.button.button == SDL_BUTTON_LEFT) {
+				SDL_Rect CreateHeroCancelBox;
+				CreateHeroCancelBox.y = 550;
+				CreateHeroCancelBox.x = 675;
+				CreateHeroCancelBox.w = 100;
+				CreateHeroCancelBox.h = 30;
+
+				SDL_Rect NormalSelectBox;
+				NormalSelectBox.x = 280;
+				NormalSelectBox.y = 350;
+				NormalSelectBox.w = 300;
+				NormalSelectBox.h = 30;
+
+				if (IsInsideRect(&event, &NormalSelectBox)) {
+					gnDifficulty = DIFF_NORMAL;
+					*dlgresult = LOAD_GAME;
+				}
+				break;
+			}
+			break;
+		case SDL_QUIT:
+			exit(0);
+		}
+	}
+
+	return false;
 }
 
 void selhero_Render_GameSelection()
@@ -395,112 +503,45 @@ BOOL __stdcall UiSelHeroMultDialog(
 {
 	*hero_is_created = false;
 
-	selhero_Loade(fninfo);
-	bool playerSelected = UiSelHeroDialog(fncreate, fnremove, fnstats, true);
+	selhero_Load(fninfo);
+	bool abort = UiSelHeroDialog(fncreate, fnremove, fnstats, true);
 	BlackPalette();
 	selhero_Free();
-	if (!playerSelected) {
+	if (abort) {
 		*dlgresult = EXIT_MENU;
 		return TRUE;
 	}
 
 	strcpy(name, heroInfo.name);
 
-	selhero_multi_Loade();
+	selhero_multi_Load();
 
-	submenu = MULTIPLAYER_LOBBY;
+	submenu = SELHERO_SELECT_GAME;
 
 	SelectedItem = 1;
-	SelectedItemMax = MenuItem[submenu];
-	SDL_Event event;
+	SelectedItemMax = 2;
 
-	int endMenu = false;
+	bool endMenu = false;
 	while (endMenu == false) {
 		CapFPS();
 
 		switch (submenu) {
-		case MULTIPLAYER_LOBBY:
+		case SELHERO_SELECT_GAME:
 			selhero_Render_GameSelection();
+			endMenu = selhero_Event_GameSelection(dlgresult);
 			break;
-		case MULTIPLAYER_DIFFICULTY:
+		case SELHERO_DIFFICULTY:
 			selhero_Render_DifficultySelection();
+			endMenu = selhero_Event_DifficultySelection(dlgresult);
 			break;
 		}
 
 		DrawMouse();
 		UiFadeIn();
+	}
 
-		while (SDL_PollEvent(&event)) {
-			switch (event.type) {
-			case SDL_KEYDOWN:
-				switch (event.key.keysym.sym) {
-				case SDLK_ESCAPE:
-					if (PreviousItem[submenu]) {
-						SetMenu(PreviousItem[submenu]);
-						break;
-					}
-
-					*dlgresult = EXIT_MENU;
-					endMenu = true;
-				case SDLK_UP:
-					SelectedItem--;
-					if (SelectedItem < 1) {
-						SelectedItem = SelectedItemMax ? SelectedItemMax : 1;
-					}
-					UiPlayMoveSound();
-					break;
-				case SDLK_DOWN:
-					SelectedItem++;
-					if (SelectedItem > SelectedItemMax) {
-						SelectedItem = 1;
-					}
-					UiPlayMoveSound();
-					break;
-				case SDLK_RETURN:
-				case SDLK_KP_ENTER:
-				case SDLK_SPACE:
-					switch (submenu) {
-					case MULTIPLAYER_LOBBY:
-						SetMenu(MULTIPLAYER_DIFFICULTY);
-						break;
-					case MULTIPLAYER_DIFFICULTY:
-						strcpy(name, heroInfo.name);
-						*dlgresult = NEW_GAME;
-						endMenu = true;
-						break;
-					}
-					break;
-				}
-				break;
-			case SDL_MOUSEBUTTONDOWN:
-				if (event.button.button == SDL_BUTTON_LEFT) {
-					SDL_Rect CreateHeroCancelBox;
-					CreateHeroCancelBox.y = 550;
-					CreateHeroCancelBox.x = 675;
-					CreateHeroCancelBox.w = 100;
-					CreateHeroCancelBox.h = 30;
-
-					switch (submenu) {
-					case MULTIPLAYER_DIFFICULTY:
-						SDL_Rect NormalSelectBox;
-						NormalSelectBox.x = 280;
-						NormalSelectBox.y = 350;
-						NormalSelectBox.w = 300;
-						NormalSelectBox.h = 30;
-
-						if (IsInsideRect(&event, &NormalSelectBox)) {
-							strcpy(name, heroInfo.name);
-							gnDifficulty = DIFF_NORMAL;
-							*dlgresult = LOAD_GAME;
-						}
-						break;
-					}
-				}
-				break;
-			case SDL_QUIT:
-				exit(0);
-			}
-		}
+	if (*dlgresult != EXIT_MENU) {
+		strcpy(name, heroInfo.name);
 	}
 
 	BlackPalette();

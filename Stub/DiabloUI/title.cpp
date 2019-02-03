@@ -8,7 +8,7 @@ void title_Render()
 	DrawLogo(182, LOGO_BIG);
 }
 
-void title_Loade()
+void title_Load()
 {
 	LoadBackgroundArt("ui_art\\title.pcx");
 }
@@ -21,7 +21,7 @@ void title_Free()
 
 BOOL __stdcall UiTitleDialog(int a1)
 {
-	title_Loade();
+	title_Load();
 
 	bool endMenu = false;
 	int timeOut = SDL_GetTicks() + 7000;
@@ -34,7 +34,13 @@ BOOL __stdcall UiTitleDialog(int a1)
 
 		while (SDL_PollEvent(&event)) {
 			switch (event.type) {
-			case SDL_KEYDOWN: // all except arrow
+			case SDL_KEYDOWN:
+				if (event.key.keysym.sym == SDLK_UP
+				    || event.key.keysym.sym == SDLK_UP
+				    || event.key.keysym.sym == SDLK_LEFT
+				    || event.key.keysym.sym == SDLK_RIGHT) {
+					break;
+				}
 			case SDL_MOUSEBUTTONDOWN:
 				endMenu = true;
 				break;

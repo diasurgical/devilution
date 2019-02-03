@@ -50,7 +50,7 @@ void selconn_Render()
 	DrawArtStr(476, 429, AFT_BIG, AFC_GOLD, "Cancel");
 }
 
-void selconn_Loade()
+void selconn_Load()
 {
 	LoadBackgroundArt("ui_art\\selconn.pcx");
 	SelectedItem = 1;
@@ -63,10 +63,15 @@ void selconn_Free()
 	ArtBackground.data = NULL;
 }
 
-int __stdcall UiSelectProvider(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info, _SNETUIDATA *ui_info,
-    _SNETVERSIONDATA *file_info, int *type)
+int __stdcall UiSelectProvider(
+    int a1,
+    _SNETPROGRAMDATA *client_info,
+    _SNETPLAYERDATA *user_info,
+    _SNETUIDATA *ui_info,
+    _SNETVERSIONDATA *file_info,
+    int *type)
 {
-	selconn_Loade();
+	selconn_Load();
 
 	SDL_Event event;
 
@@ -81,26 +86,10 @@ int __stdcall UiSelectProvider(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYE
 		while (SDL_PollEvent(&event)) {
 			switch (event.type) {
 			case SDL_KEYDOWN:
+				if (UiFocuseNavigation(&event))
+					break;
 				switch (event.key.keysym.sym) {
-				case SDLK_UP:
-					SelectedItem--;
-					if (SelectedItem < MAINMENU_SINGLE_PLAYER) {
-						SelectedItem = SelectedItemMax;
-					}
-					UiPlayMoveSound();
-					break;
-				case SDLK_DOWN:
-					SelectedItem++;
-					if (SelectedItem > SelectedItemMax) {
-						SelectedItem = MAINMENU_SINGLE_PLAYER;
-					}
-					UiPlayMoveSound();
-					break;
 				case SDLK_ESCAPE:
-					if (PreviousItem[submenu]) {
-						SetMenu(PreviousItem[submenu]);
-						break;
-					}
 					rv = false;
 					endMenu = true;
 					break;
@@ -133,7 +122,7 @@ int __stdcall UiSelectProvider(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYE
 					}
 					selconn_Free();
 					endMenu = SNetInitializeProvider('SCBL', client_info, user_info, ui_info, file_info);
-					selconn_Loade();
+					selconn_Load();
 					break;
 				}
 				break;

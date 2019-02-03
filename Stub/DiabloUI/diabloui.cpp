@@ -1,9 +1,7 @@
 #include "../../types.h"
 
 TTF_Font *font;
-int SelectedItemMax = 0;
-int MenuItem[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-int PreviousItem[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+int SelectedItemMax = 1;
 int submenu = 0;
 BYTE *FontTables[4];
 Art ArtFonts[4][2];
@@ -120,36 +118,74 @@ void __cdecl UiDestroy()
 	font = NULL;
 }
 
+void UiFocuse(int itemIndex, bool wrap)
+{
+	SelectedItem = itemIndex;
+
+	if (!wrap) {
+		if (SelectedItem < 1) {
+			SelectedItem = 1;
+			return;
+		} else if (SelectedItem > SelectedItemMax) {
+			SelectedItem = SelectedItemMax ?: 1;
+			return;
+		}
+	} else if (SelectedItem < 1) {
+		SelectedItem = SelectedItemMax ?: 1;
+	} else if (SelectedItem > SelectedItemMax) {
+		SelectedItem = 1;
+	}
+
+	UiPlayMoveSound();
+}
+
+bool UiFocuseNavigation(SDL_Event *event, bool wrap)
+{
+	switch (event->key.keysym.sym) {
+	case SDLK_UP:
+		UiFocuse(SelectedItem - 1, wrap);
+		return true;
+	case SDLK_DOWN:
+		UiFocuse(SelectedItem + 1, wrap);
+		return true;
+	case SDLK_TAB:
+		if (SDL_GetModState() & (KMOD_LSHIFT | KMOD_RSHIFT))
+			UiFocuse(SelectedItem - 1, wrap);
+		else
+			UiFocuse(SelectedItem + 1, wrap);
+		return true;
+	case SDLK_PAGEUP:
+		SelectedItem = 1;
+		return true;
+	case SDLK_PAGEDOWN:
+		SelectedItem = SelectedItemMax;
+		return true;
+	}
+
+	return false;
+}
+
 void SetMenu(int MenuId)
 {
 	UiPlaySelectSound();
 
 	submenu = MenuId;
 	SelectedItem = 1;
-	SelectedItemMax = MenuItem[MenuId];
+	switch (MenuId) {
+	case SELHERO_CLASSES:
+	case SELHERO_DIFFICULTY:
+		SelectedItemMax = 3;
+		break;
+	default:
+		SelectedItemMax = 1;
+		break;
+	}
 }
 
 bool IsInsideRect(const SDL_Event *event, const SDL_Rect *rect)
 {
 	const SDL_Point point = { event->button.x, event->button.y };
 	return SDL_PointInRect(&point, rect);
-}
-
-void InitHiracy()
-{
-	MenuItem[SINGLEPLAYER_LOAD] = 1;
-	MenuItem[SINGLEPLAYER_CLASSES] = 3;
-	MenuItem[MULTIPLAYER_CONNECTIONS] = 3;
-	MenuItem[MULTIPLAYER_LOBBY] = 2;
-	MenuItem[MULTIPLAYER_DIFFICULTY] = 3;
-	MenuItem[MULTIPLAYER_BNET_GATEWAYS] = 3;
-
-	PreviousItem[SINGLEPLAYER_CLASSES] = SINGLEPLAYER_LOAD;
-	PreviousItem[SINGLEPLAYER_NAME] = SINGLEPLAYER_CLASSES;
-	PreviousItem[MULTIPLAYER_CONNECTIONS] = MAINMENU;
-	PreviousItem[MULTIPLAYER_DIFFICULTY] = MULTIPLAYER_LOBBY;
-	PreviousItem[MULTIPLAYER_BNET_GATEWAYS] = MULTIPLAYER_CONNECTIONS;
-	PreviousItem[MULTIPLAYER_ERROR] = MAINMENU;
 }
 
 void LoadArt(char *pszFile, Art *art, int frames, PALETTEENTRY *pPalette)
@@ -227,7 +263,6 @@ void InitFont()
 
 void UiInitialize()
 {
-	InitHiracy();
 	LoadUiGFX();
 	ShowCursor(FALSE);
 	InitFont();
@@ -321,7 +356,6 @@ void UiPlaySelectSound()
 		gfnSoundFunction("sfx\\items\\titlslct.wav");
 }
 
-
 void __stdcall UiMessageBoxCallback(HWND hWnd, char *lpText, LPCSTR lpCaption, UINT uType)
 {
 	UNIMPLEMENTED();
@@ -380,7 +414,7 @@ void DrawArt(int screenX, int screenY, Art *art, int nFrame, int drawW)
 	BYTE *dst = (BYTE *)&gpBuffer->row[screenY].pixels[screenX];
 	drawW = drawW ?: art->width;
 
-	for (int i = 0; i < art->height && i + screenY < SCREEN_HEIGHT; i++, src += art->width, dst += 768) {
+	for (int i = 0; i < art->height && i + screenY < SCREEN_HEIGHT; i++, src += art->width, dst += ROW_PITCH) {
 		for (int j = 0; j < art->width && j + screenX < SCREEN_WIDTH; j++) {
 			if (j < drawW && (!art->masked || src[j] != art->mask))
 				dst[j] = src[j];

@@ -27,7 +27,7 @@ void mainmenu_Render(char *name)
 	DrawArtStr(17, 444, AFT_SMALL, AFC_SILVER, name);
 }
 
-void mainmenu_Loade()
+void mainmenu_Load()
 {
 	char *pszFile = "ui_art\\mainmenu.pcx";
 	if (false) //DiabloUI_GetSpawned()
@@ -44,7 +44,7 @@ void mainmenu_Free()
 BOOL __stdcall UiMainMenuDialog(char *name, int *pdwResult, void(__stdcall *fnSound)(char *file), int a4)
 {
 	gfnSoundFunction = fnSound;
-	mainmenu_Loade();
+	mainmenu_Load();
 
 	SelectedItem = 1;
 	SelectedItemMax = 5;
@@ -73,21 +73,9 @@ BOOL __stdcall UiMainMenuDialog(char *name, int *pdwResult, void(__stdcall *fnSo
 		while (SDL_PollEvent(&event)) {
 			switch (event.type) {
 			case SDL_KEYDOWN:
+				if (UiFocuseNavigation(&event, true))
+					break;
 				switch (event.key.keysym.sym) {
-				case SDLK_UP:
-					SelectedItem--;
-					if (SelectedItem < MAINMENU_SINGLE_PLAYER) {
-						SelectedItem = SelectedItemMax;
-					}
-					fnSound("sfx\\items\\titlemov.wav");
-					break;
-				case SDLK_DOWN:
-					SelectedItem++;
-					if (SelectedItem > SelectedItemMax) {
-						SelectedItem = MAINMENU_SINGLE_PLAYER;
-					}
-					fnSound("sfx\\items\\titlemov.wav");
-					break;
 				case SDLK_ESCAPE:
 					*pdwResult = MAINMENU_EXIT_DIABLO;
 					UiPlaySelectSound();

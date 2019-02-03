@@ -50,8 +50,6 @@ extern int SelectedItemMax;
 extern int SCREEN_WIDTH;
 extern int SCREEN_HEIGHT;
 
-extern int MenuItem[10];
-extern int PreviousItem[10];
 extern int submenu;
 
 typedef enum TXT_JUST {
@@ -82,5 +80,7 @@ void DrawSelector(int x, int y, int width, int padding, int spacing, int size = 
 void LoadArt(char *pszFile, Art *art, int frames = 1, PALETTEENTRY *pPalette = NULL);
 void LoadBackgroundArt(char *pszFile);
 void SetMenu(int MenuId);
+void UiFocuse(int move, bool wrap = false);
+bool UiFocuseNavigation(SDL_Event *event, bool wrap = false);
 void UiPlayMoveSound();
 void UiPlaySelectSound();
