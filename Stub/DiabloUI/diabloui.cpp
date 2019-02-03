@@ -245,7 +245,7 @@ void __stdcall UiSetupPlayerInfo(char *infostr, _uiheroinfo *pInfo, DWORD type)
 {
 	DUMMY();
 	SStrCopy(connect_plrinfostr, infostr, 128);
-	char format[32];
+	char format[32] = "";
 	strncpy(format, (char *)&type, 4);
 	strcat(format, " %d %d %d %d %d %d %d %d %d");
 
@@ -353,7 +353,7 @@ int __stdcall UiSelectGame(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYERDAT
 
 BOOL __stdcall UiCreatePlayerDescription(_uiheroinfo *info, DWORD mode, char *desc)
 {
-	char format[32];
+	char format[32] = "";
 	strncpy(format, (char *)&mode, 4);
 	strcat(format, " %d %d %d %d %d %d %d %d %d");
 
