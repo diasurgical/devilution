@@ -149,7 +149,7 @@ bool UiFocuseNavigation(SDL_Event *event, bool wrap)
 		UiFocuse(SelectedItem + 1, wrap);
 		return true;
 	case SDLK_TAB:
-		if (SDL_GetModState() & (KMOD_LSHIFT | KMOD_RSHIFT))
+		if (SDL_GetModState() & KMOD_SHIFT)
 			UiFocuse(SelectedItem - 1, wrap);
 		else
 			UiFocuse(SelectedItem + 1, wrap);
@@ -311,7 +311,17 @@ void __stdcall UiAppActivate(BOOL bActive)
 
 BOOL __fastcall UiValidPlayerName(char *name)
 {
-	UNIMPLEMENTED();
+	if (!strlen(name))
+		return FALSE;
+
+	if (strpbrk(name, ",<>%&\\\"?*#/:") || strpbrk(name, " "))
+		return FALSE;
+
+	for (char *letter = name; *letter; letter++)
+		if (letter < 0x20 || letter > 0x7E && letter < 0xC0)
+			return FALSE;
+
+	return TRUE;
 }
 
 void __cdecl UiProfileCallback()

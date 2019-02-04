@@ -1,4 +1,5 @@
 #include "../../types.h"
+#include <iconv.h>
 
 int selhero_SaveCount = 0;
 _uiheroinfo heros[MAX_CHARACTERS];
@@ -94,7 +95,7 @@ void selhero_Render_Name(bool multiPlayer)
 
 	DrawSelector(x, y - 2, w, 39, 26);
 
-	char lable[16];
+	char lable[17];
 	strcpy(lable, heroInfo.name);
 	if (GetAnimationFrame(2, 500)) {
 		int len = strlen(lable);
@@ -240,6 +241,7 @@ bool selhero_Event_ClassSelector(bool *aborted)
 			case SDLK_KP_ENTER:
 			case SDLK_SPACE:
 				SetMenu(SELHERO_NAME);
+				SDL_StartTextInput();
 				break;
 			}
 			break;
@@ -251,40 +253,64 @@ bool selhero_Event_ClassSelector(bool *aborted)
 	return false;
 }
 
+bool selhero_CatToName(char *in_buf)
+{
+	iconv_t cd = iconv_open("ISO_8859-1//TRANSLIT//IGNORE", "UTF-8");
+	if (cd == (iconv_t)-1) {
+		TermMsg("Failed to load iconv!");
+	}
+
+	size_t in_left = strlen(in_buf);
+	char output[SDL_TEXTINPUTEVENT_TEXT_SIZE] = "";
+	char *out_buf = output;
+	size_t out_left = sizeof(output) - 1;
+
+	while (in_left && out_left) {
+		iconv(cd, &in_buf, &in_left, &out_buf, &out_left);
+	}
+	iconv_close(cd);
+	strncat(heroInfo.name, output, 15 - strlen(heroInfo.name));
+}
+
 bool selhero_Event_Name()
 {
-	int nameLen;
 	SDL_Event event;
 	while (SDL_PollEvent(&event)) {
+
+
 		switch (event.type) {
+		case SDL_QUIT:
+			exit(0);
+			break;
 		case SDL_KEYDOWN:
 			switch (event.key.keysym.sym) {
+			case SDLK_v:
+				if (SDL_GetModState() & KMOD_CTRL) {
+					selhero_CatToName(SDL_GetClipboardText());
+				}
+				break;
 			case SDLK_ESCAPE:
+				SDL_StopTextInput();
 				SetMenu(SELHERO_CLASSES);
+				break;
+			case SDLK_RETURN:
+			case SDLK_RETURN2:
+			case SDLK_KP_ENTER:
+				SDL_StopTextInput();
+				return true;
 				break;
 			case SDLK_BACKSPACE:
 			case SDLK_LEFT:
-				nameLen = strlen(heroInfo.name);
+				int nameLen = strlen(heroInfo.name);
 				if (nameLen > 0) {
 					heroInfo.name[nameLen - 1] = '\0';
 				}
 				break;
-			case SDLK_RETURN:
-			case SDLK_KP_ENTER:
-				return true;
-			default:
-				char letter = event.key.keysym.sym;
-				if (int(letter) > 96 && int(letter) < 123 || int(letter) == 32) {
-					nameLen = strlen(heroInfo.name);
-					if (nameLen < 15) {
-						heroInfo.name[nameLen] = letter;
-					}
-				}
-				break;
 			}
 			break;
-		case SDL_QUIT:
-			exit(0);
+		case SDL_TEXTINPUT:
+			selhero_CatToName(event.text.text);
+			break;
 		}
 	}
 
