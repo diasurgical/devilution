@@ -140,9 +140,11 @@ set(STUB_SOURCES
     Stub/sound.cpp
     Stub/storm.cpp
     Stub/storm_net.cpp
-    Stub/dvlnet_null.cpp
-    Stub/dvlnet_udp.cpp
-    Stub/dvlnet_udp_packet.cpp
+
+    Stub/dvlnet/loopback.cpp
+    Stub/dvlnet/packet.cpp
+    Stub/dvlnet/base.cpp
+    Stub/dvlnet/udp_p2p.cpp
 
     Stub/DiabloUI/credits.cpp
     Stub/DiabloUI/diabloui.cpp

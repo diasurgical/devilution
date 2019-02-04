@@ -1,18 +1,18 @@
 #include "../types.h"
 
-std::unique_ptr<dvlnet> dvlnet::inst;
+using namespace dvlnet;
 
-int dvlnet_null::create(std::string addrstr, std::string passwd)
+int loopback::create(std::string addrstr, std::string passwd)
 {
 	return plr_single;
 }
 
-int dvlnet_null::join(std::string addrstr, std::string passwd)
+int loopback::join(std::string addrstr, std::string passwd)
 {
 	ABORT();
 }
 
-bool dvlnet_null::SNetReceiveMessage(int *sender, char **data, int *size)
+bool loopback::SNetReceiveMessage(int *sender, char **data, int *size)
 {
 	if (message_queue.empty())
 		return false;
@@ -24,7 +24,7 @@ bool dvlnet_null::SNetReceiveMessage(int *sender, char **data, int *size)
 	return true;
 }
 
-bool dvlnet_null::SNetSendMessage(int dest, void *data, unsigned int size)
+bool loopback::SNetSendMessage(int dest, void *data, unsigned int size)
 {
 	if (dest == plr_single || dest == SNPLAYER_ALL) {
 		auto raw_message = reinterpret_cast<unsigned char *>(data);
@@ -34,19 +34,19 @@ bool dvlnet_null::SNetSendMessage(int dest, void *data, unsigned int size)
 	return true;
 	}
 
-bool dvlnet_null::SNetReceiveTurns(char **data, unsigned int *size, DWORD *status)
+bool loopback::SNetReceiveTurns(char **data, unsigned int *size, DWORD *status)
 {
 	// todo: check that this is safe
 	return true;
 }
 
-bool dvlnet_null::SNetSendTurn(char *data, unsigned int size)
+bool loopback::SNetSendTurn(char *data, unsigned int size)
 {
 	// todo: check that this is safe
 	return true;
 }
 
-int dvlnet_null::SNetGetProviderCaps(struct _SNETCAPS *caps)
+int loopback::SNetGetProviderCaps(struct _SNETCAPS *caps)
 {
 	caps->size = 0;                  // engine writes only ?!?
 	caps->flags = 0;                 // unused
@@ -60,14 +60,14 @@ int dvlnet_null::SNetGetProviderCaps(struct _SNETCAPS *caps)
 	return 1;
 }
 
-void *dvlnet_null::SNetRegisterEventHandler(event_type evtype, void(__stdcall *func)(struct _SNETEVENT *))
+void *loopback::SNetRegisterEventHandler(event_type evtype, void(__stdcall *func)(struct _SNETEVENT *))
 {
 	// not called in real singleplayer mode
 	// not needed in pseudo multiplayer mode (?)
 	return this;
 }
 
-void *dvlnet_null::SNetUnregisterEventHandler(event_type evtype, void(__stdcall *func)(struct _SNETEVENT *))
+void *loopback::SNetUnregisterEventHandler(event_type evtype, void(__stdcall *func)(struct _SNETEVENT *))
 {
 	// not called in real singleplayer mode
 	// not needed in pseudo multiplayer mode (?)

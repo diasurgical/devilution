@@ -1,8 +1,10 @@
 #include "../types.h"
 
+static std::unique_ptr<dvlnet::dvlnet> dvlnet_inst;
+
 BOOL STORMAPI SNetReceiveMessage(int *senderplayerid, char **data, int *databytes)
 {
-	if (!dvlnet::inst->SNetReceiveMessage(senderplayerid, data, databytes)) {
+	if (!dvlnet_inst->SNetReceiveMessage(senderplayerid, data, databytes)) {
 		SErrSetLastError(STORM_ERROR_NO_MESSAGES_WAITING);
 		return FALSE;
 	}
@@ -11,7 +13,7 @@ BOOL STORMAPI SNetReceiveMessage(int *senderplayerid, char **data, int *databyte
 
 BOOL STORMAPI SNetSendMessage(int playerID, void *data, unsigned int databytes)
 {
-	return dvlnet::inst->SNetSendMessage(playerID, data, databytes);
+	return dvlnet_inst->SNetSendMessage(playerID, data, databytes);
 }
 
 BOOL STORMAPI SNetReceiveTurns(int a1, int arraysize, char **arraydata, unsigned int *arraydatabytes,
@@ -21,27 +23,27 @@ BOOL STORMAPI SNetReceiveTurns(int a1, int arraysize, char **arraydata, unsigned
 		UNIMPLEMENTED();
 	if (arraysize != MAX_PLRS)
 		UNIMPLEMENTED();
-	return dvlnet::inst->SNetReceiveTurns(arraydata, arraydatabytes, arrayplayerstatus);
+	return dvlnet_inst->SNetReceiveTurns(arraydata, arraydatabytes, arrayplayerstatus);
 }
 
 BOOL STORMAPI SNetSendTurn(char *data, unsigned int databytes)
 {
-	return dvlnet::inst->SNetSendTurn(data, databytes);
+	return dvlnet_inst->SNetSendTurn(data, databytes);
 }
 
 int __stdcall SNetGetProviderCaps(struct _SNETCAPS *caps)
 {
-	return dvlnet::inst->SNetGetProviderCaps(caps);
+	return dvlnet_inst->SNetGetProviderCaps(caps);
 }
 
 void *__stdcall SNetUnregisterEventHandler(int evtype, void(__stdcall *func)(struct _SNETEVENT *))
 {
-	return dvlnet::inst->SNetUnregisterEventHandler(evtype, func);
+	return dvlnet_inst->SNetUnregisterEventHandler(evtype, func);
 }
 
 void *__stdcall SNetRegisterEventHandler(int evtype, void(__stdcall *func)(struct _SNETEVENT *))
 {
-	return dvlnet::inst->SNetRegisterEventHandler(evtype, func);
+	return dvlnet_inst->SNetRegisterEventHandler(evtype, func);
 }
 
 BOOL STORMAPI SNetDestroy()
@@ -85,9 +87,9 @@ int __stdcall SNetInitializeProvider(unsigned long provider, struct _SNETPROGRAM
 	if (provider == 'UDPN') {
 		dvlnet::buffer_t game_init_info((char*)client_info->initdata,
 												(char*)client_info->initdata + client_info->initdatabytes);
-		dvlnet::inst = std::make_unique<dvlnet_udp>(std::move(game_init_info));
+		dvlnet_inst = std::make_unique<dvlnet::udp_p2p>(std::move(game_init_info));
 	} else if (provider == 'SCBL' || provider == 0) {
-		dvlnet::inst = std::make_unique<dvlnet_null>();
+		dvlnet_inst = std::make_unique<dvlnet::loopback>();
 	} else {
 		ABORT();
 	}
@@ -105,8 +107,8 @@ BOOL STORMAPI SNetCreateGame(const char *pszGameName, const char *pszGamePasswor
 	// hack: cannot create game until UI is ready
 	//       first instance will create, second will join
 	int ret;
-	if (ret = dvlnet::inst->create("0.0.0.0", "mypass") == -1)
-		ret = dvlnet::inst->join("127.0.0.1", "mypass");
+	if (ret = dvlnet_inst->create("0.0.0.0", "mypass") == -1)
+		ret = dvlnet_inst->join("127.0.0.1", "mypass");
 	*playerID = ret;
 	return TRUE;
 }
