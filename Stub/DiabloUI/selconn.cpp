@@ -7,7 +7,7 @@ void selconn_Render()
 
 	DrawArtStr(-1, 161, AFT_BIG, AFC_SILVER, "Multi Player Game", JustCentre);
 
-	int w = 334;
+	int w = 335;
 	int x = 280;
 	int y = 261;
 
@@ -22,14 +22,15 @@ void selconn_Render()
 		"Solo",
 	};
 
+	int spacing = 26;
 	int selectorTop = y;
 
 	for (int i = 0; i < 2; i++) {
-		DrawArtStr(x - 1, y, AFT_SMALL, AFC_GOLD, connections[i], JustCentre, w);
-		y += 26;
+		DrawArtStr(x, y, AFT_SMALL, AFC_GOLD, connections[i], JustCentre, w);
+		y += spacing;
 	}
 
-	DrawSelector(x, selectorTop - 2, w, 35, 26, FOCUS_SMALL);
+	DrawSelector(x, selectorTop - 2, w, 25, spacing, FOCUS_SMALL);
 
 	if (SelectedItem == 1) {
 		DrawArtStr(35, 218, AFT_SMALL, AFC_SILVER, "Players Supported: 4");

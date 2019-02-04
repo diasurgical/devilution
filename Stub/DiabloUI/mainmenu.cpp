@@ -9,20 +9,13 @@ void mainmenu_Render(char *name)
 	int menuTop = 192;
 	char *MENIITEMS[5] = { "Single Player", "Multi Player", "Replay Intro", "Show Credits", "Exit Diablo" };
 
+	int spacing = 43;
 	for (int i = 0; i < 5; i++) {
-		int y = menuTop + i * 43;
-		if (i > 1) {
-			y -= 1; // "Multi Player" and "Replay Intro" has a smaller gap then other items
-		}
-		DrawArtStr(-1, y, AFT_HUGE, AFC_GOLD, MENIITEMS[i], 1);
+		int y = menuTop + i * spacing;
+		DrawArtStr(0, y, AFT_HUGE, AFC_GOLD, MENIITEMS[i], 1);
 	}
 
-	int selectorTop = menuTop;
-	if (SelectedItem > 2) {
-		selectorTop -= 1; // "Multi Player" and "Replay Intro" has a smaller gap then other items
-	}
-
-	DrawSelector(0, selectorTop, 0, 85, 43, FOCUS_BIG);
+	DrawSelector(0, menuTop, 0, 65, spacing, FOCUS_BIG);
 
 	DrawArtStr(17, 444, AFT_SMALL, AFC_SILVER, name);
 }
@@ -50,17 +43,17 @@ BOOL __stdcall UiMainMenuDialog(char *name, int *pdwResult, void(__stdcall *fnSo
 	SelectedItemMax = 5;
 	SDL_Event event;
 
-	int ItemHeight = 42;
+	int ItemHeight = 43;
 	SDL_Rect SinglePlayer = { 0, 191, 515, ItemHeight };
 	SinglePlayer.x = GetCenterOffset(SinglePlayer.w);
 	SDL_Rect MultiPlayer = SinglePlayer;
-	MultiPlayer.y += ItemHeight * 1 + 1;
+	MultiPlayer.y += ItemHeight * 1;
 	SDL_Rect ReplayIntro = MultiPlayer;
-	ReplayIntro.y += ItemHeight * 2 + 0;
+	ReplayIntro.y += ItemHeight * 2;
 	SDL_Rect ShowCredits = ReplayIntro;
-	ShowCredits.y += ItemHeight * 3 + 1;
+	ShowCredits.y += ItemHeight * 3;
 	SDL_Rect ExitDiablo = ShowCredits;
-	ExitDiablo.y += ItemHeight * 4 + 1;
+	ExitDiablo.y += ItemHeight * 4;
 
 	bool endMenu = false;
 

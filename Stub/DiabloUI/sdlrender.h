@@ -76,7 +76,7 @@ void DrawArt(int screenX, int screenY, Art *art, int nFrame = 0, int drawW = 0);
 void DrawArtStr(int x, int y, int size, int color, BYTE *str, TXT_JUST align = JustLeft, int bw = 0);
 void DrawLogo(int t = 0, int size = LOGO_MED);
 void DrawMouse();
-void DrawSelector(int x, int y, int width, int padding, int spacing, int size = FOCUS_MED);
+void DrawSelector(int x, int y, int width, int padding, int spacing = 0, int size = FOCUS_MED);
 void LoadArt(char *pszFile, Art *art, int frames = 1, PALETTEENTRY *pPalette = NULL);
 void LoadBackgroundArt(char *pszFile);
 void SetMenu(int MenuId);

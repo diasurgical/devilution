@@ -52,20 +52,21 @@ void selhero_Render(bool multiPlayer)
 	DrawArt(30, 211, &ArtHero, heroInfo.heroclass);
 	RenderStats();
 
-	int w = 369;
+	int w = 368;
 	int x = 241;
 
-	DrawArtStr(x - 1, 211, AFT_BIG, AFC_SILVER, "Select Hero", JustCentre, w);
+	DrawArtStr(x, 211, AFT_BIG, AFC_SILVER, "Select Hero", JustCentre, w);
 
+	int spacing = 26;
 	int selectorTop = 256;
 	int y = selectorTop;
 	for (int i = 0; i < selhero_SaveCount; i++) {
-		DrawArtStr(x - 1, y, AFT_MED, AFC_GOLD, heros[i].name, JustCentre, w);
-		y += 26;
+		DrawArtStr(x, y, AFT_MED, AFC_GOLD, heros[i].name, JustCentre, w);
+		y += spacing;
 	}
-	DrawArtStr(x - 1, y, AFT_MED, AFC_GOLD, "New Hero", JustCentre, w);
+	DrawArtStr(x, y, AFT_MED, AFC_GOLD, "New Hero", JustCentre, w);
 
-	DrawSelector(x, selectorTop + 3, w, 32, 26, FOCUS_SMALL);
+	DrawSelector(x, selectorTop + 3, w, 24, spacing, FOCUS_SMALL);
 
 	DrawArtStr(279, 429, AFT_BIG, AFC_GOLD, "OK");
 	DrawArtStr(378, 429, AFT_BIG, AFC_GOLD, "Delete");
@@ -87,13 +88,13 @@ void selhero_Render_Name(bool multiPlayer)
 
 	DrawArtStr(-1, 161, AFT_BIG, AFC_SILVER, title, JustCentre);
 
-	int w = 369;
+	int w = 368;
 	int x = 241;
 	int y = 318;
 
-	DrawArtStr(x - 1, 211, AFT_BIG, AFC_SILVER, "Enter Name", JustCentre, w);
+	DrawArtStr(x, 211, AFT_BIG, AFC_SILVER, "Enter Name", JustCentre, w);
 
-	DrawSelector(x, y - 2, w, 39, 26);
+	DrawSelector(x, y - 2, w, 24);
 
 	char lable[17];
 	strcpy(lable, heroInfo.name);
@@ -129,25 +130,18 @@ void selhero_Render_ClassSelector(bool multiPlayer)
 	int x = 241;
 	int y = 285;
 
-	DrawArtStr(x - 1, 211, AFT_BIG, AFC_SILVER, "Choose Class", JustCentre, w);
+	DrawArtStr(x, 211, AFT_BIG, AFC_SILVER, "Choose Class", JustCentre, w);
 
 	char *heroclasses[3] = { "Warrior", "Rogue", "Sorcerer" };
 
+	int spacing = 33;
 	int selectorTop = y;
-
 	for (int i = 0; i < 3; i++) {
-		if (i > 1) {
-			y += 1; // "Rouge" and "Sorcerer" has a smaller gap then other items
-		}
-		DrawArtStr(x - 1, y, AFT_MED, AFC_GOLD, heroclasses[i], JustCentre, w);
-		y += 33;
+		DrawArtStr(x, y, AFT_MED, AFC_GOLD, heroclasses[i], JustCentre, w);
+		y += spacing;
 	}
 
-	if (SelectedItem > 1) {
-		selectorTop += 1; // "Rouge" and "Sorcerer" has a smaller gap then other items
-	}
-
-	DrawSelector(x, selectorTop - 2, w, 39, 33);
+	DrawSelector(x, selectorTop - 2, w, 39, spacing);
 
 	DrawArtStr(329, 429, AFT_BIG, AFC_GOLD, "OK");
 	DrawArtStr(451, 429, AFT_BIG, AFC_GOLD, "Cancel");
@@ -232,7 +226,7 @@ bool selhero_Event_ClassSelector(bool *aborted)
 			case SDLK_ESCAPE:
 				if (selhero_SaveCount) {
 					SetMenu(SELHERO_LOAD);
-					SelectedItemMax = 1 + selhero_SaveCount;
+					SelectedItemMax += selhero_SaveCount;
 					break;
 				}
 				*aborted = true;
@@ -241,6 +235,7 @@ bool selhero_Event_ClassSelector(bool *aborted)
 			case SDLK_KP_ENTER:
 			case SDLK_SPACE:
 				SetMenu(SELHERO_NAME);
+				memset(heroInfo.name, '\0', 16);
 				SDL_StartTextInput();
 				break;
 			}
@@ -276,7 +271,6 @@ bool selhero_Event_Name()
 {
 	SDL_Event event;
 	while (SDL_PollEvent(&event)) {
-
 
 		switch (event.type) {
 		case SDL_QUIT:
@@ -357,6 +351,10 @@ bool UiSelHeroDialog(
 		UiFadeIn();
 	}
 
+	if (!aborted && !heroInfo.hassaved) {
+		fncreate(&heroInfo); // todo don't overwrite
+	}
+
 	return aborted;
 }
 
@@ -375,9 +373,7 @@ BOOL __stdcall UiSelHeroSingDialog(
 	} else {
 		strcpy(name, heroInfo.name);
 
-		if (!heroInfo.hassaved) {
-			fncreate(&heroInfo); // todo don't overwrite
-		} else if (heroInfo.hassaved) {
+		if (heroInfo.hassaved) {
 			*dlgresult = LOAD_GAME;
 		}
 	}
@@ -408,19 +404,56 @@ void selhero_Render_DifficultySelection()
 	DrawArt(0, 0, &ArtBackground);
 	DrawLogo();
 
-	DrawArt(30, 211, &ArtHero, heroInfo.heroclass);
-	RenderStats();
+	DrawArtStr(-1, 161, AFT_BIG, AFC_SILVER, "Create Game", JustCentre);
 
-	char *GameOptions[3] = { "Normal", "Nightmare", "Hell" };
+	int w = 333;
+	int x = 281;
+	int y = 282;
 
-	// this should not be hard coded.
-	int x = 280;
-	int y = 256;
+	DrawArtStr(x, 211, AFT_BIG, AFC_SILVER, "Select Difficulty", JustCentre, w);
 
-	for (int i = 0; i < 3; i++) {
-		y += 40;
-		DrawArtStr(x, y, AFT_SMALL, AFC_SILVER, GameOptions[i]);
+	char *gameOptions[] = { "Normal", "Nightmare", "Hell" };
+
+	DrawArtStr(23, 211, AFT_BIG, AFC_SILVER, gameOptions[SelectedItem - 1], JustCentre, 226);
+	if (SelectedItem == 1) {
+		DrawArtStr(35, 256, AFT_SMALL, AFC_SILVER, "Normal Difficulty");
+		DrawArtStr(35, 272, AFT_SMALL, AFC_SILVER, "This is where a starting");
+		DrawArtStr(35, 288, AFT_SMALL, AFC_SILVER, "character should begin");
+		DrawArtStr(35, 304, AFT_SMALL, AFC_SILVER, "the quest to defeat");
+		DrawArtStr(35, 320, AFT_SMALL, AFC_SILVER, "Diablo.");
+	} else if (SelectedItem == 2) {
+		DrawArtStr(35, 256, AFT_SMALL, AFC_SILVER, "Nightmare Difficulty");
+		DrawArtStr(35, 272, AFT_SMALL, AFC_SILVER, "The denizens of the");
+		DrawArtStr(35, 288, AFT_SMALL, AFC_SILVER, "Labyrinth have been");
+		DrawArtStr(35, 304, AFT_SMALL, AFC_SILVER, "bolstered and will prove");
+		DrawArtStr(35, 320, AFT_SMALL, AFC_SILVER, "to be a greater");
+		DrawArtStr(35, 336, AFT_SMALL, AFC_SILVER, "challenge. This is");
+		DrawArtStr(35, 352, AFT_SMALL, AFC_SILVER, "recommended for");
+		DrawArtStr(35, 368, AFT_SMALL, AFC_SILVER, "experienced characters");
+		DrawArtStr(35, 384, AFT_SMALL, AFC_SILVER, "only.");
+	} else if (SelectedItem == 3) {
+		DrawArtStr(35, 256, AFT_SMALL, AFC_SILVER, "Hell Difficulty");
+		DrawArtStr(35, 272, AFT_SMALL, AFC_SILVER, "The most powerful of");
+		DrawArtStr(35, 288, AFT_SMALL, AFC_SILVER, "the underworld's");
+		DrawArtStr(35, 304, AFT_SMALL, AFC_SILVER, "creatures lurk at the");
+		DrawArtStr(35, 320, AFT_SMALL, AFC_SILVER, "gateway into Hell. Only");
+		DrawArtStr(35, 336, AFT_SMALL, AFC_SILVER, "the most experienced");
+		DrawArtStr(35, 352, AFT_SMALL, AFC_SILVER, "characters should");
+		DrawArtStr(35, 368, AFT_SMALL, AFC_SILVER, "venture in this realm.");
 	}
+
+	int selectorTop = y;
+
+	int spacing = 26;
+	for (int i = 0; i < 3; i++) {
+		DrawArtStr(x, y, AFT_MED, AFC_GOLD, gameOptions[i], JustCentre, w);
+		y += spacing;
+	}
+
+	DrawSelector(x, selectorTop + 3, w, 19, spacing, FOCUS_SMALL);
+
+	DrawArtStr(349, 429, AFT_BIG, AFC_GOLD, "OK");
+	DrawArtStr(471, 429, AFT_BIG, AFC_GOLD, "Cancel");
 }
 
 bool selhero_Event_GameSelection(int *dlgresult)
@@ -461,10 +494,22 @@ bool selhero_Event_DifficultySelection(int *dlgresult)
 			switch (event.key.keysym.sym) {
 			case SDLK_ESCAPE:
 				SetMenu(SELHERO_SELECT_GAME);
+				SelectedItemMax += 1;
 				break;
 			case SDLK_RETURN:
 			case SDLK_KP_ENTER:
 			case SDLK_SPACE:
+				switch (SelectedItem) {
+				case 1:
+					gnDifficulty = DIFF_NORMAL;
+					break;
+				case 2:
+					gnDifficulty = DIFF_NIGHTMARE;
+					break;
+				case 3:
+					gnDifficulty = DIFF_HELL;
+					break;
+				}
 				*dlgresult = NEW_GAME;
 				return true;
 			}
@@ -500,22 +545,46 @@ bool selhero_Event_DifficultySelection(int *dlgresult)
 
 void selhero_Render_GameSelection()
 {
+
 	DrawArt(0, 0, &ArtBackground);
 	DrawLogo();
 
-	DrawArt(30, 211, &ArtHero, heroInfo.heroclass);
-	RenderStats();
+	DrawArtStr(-1, 161, AFT_BIG, AFC_SILVER, "Join UPD Game", JustCentre);
 
-	char *GameOptions[2] = { "New Game", "Load Game" };
+	int w = 333;
+	int x = 281;
+	int y = 282;
 
-	// this should not be hard coded.
-	int x = 280;
-	int y = 256;
+	DrawArtStr(x, 211, AFT_BIG, AFC_SILVER, "Select Action", JustCentre, w);
 
-	for (int i = 0; i < 2; i++) {
-		y += 40;
-		DrawArtStr(x, y, AFT_SMALL, AFC_SILVER, GameOptions[i]);
+	char *gameOptions[] = { "Create Game", "Enter IP", "Localhost" };
+
+	DrawArtStr(35, 211, AFT_MED, AFC_SILVER, "Description:");
+	if (SelectedItem == 1) {
+		DrawArtStr(35, 256, AFT_SMALL, AFC_SILVER, "Create a new game with");
+		DrawArtStr(35, 272, AFT_SMALL, AFC_SILVER, "a difficulty setting of");
+		DrawArtStr(35, 288, AFT_SMALL, AFC_SILVER, "your choice.");
+	} else if (SelectedItem == 2) {
+		DrawArtStr(35, 256, AFT_SMALL, AFC_SILVER, "Join a game directly");
+		DrawArtStr(35, 272, AFT_SMALL, AFC_SILVER, "via a know host IP.");
+	} else {
+		DrawArtStr(35, 256, AFT_SMALL, AFC_SILVER, "Normal Difficulty");
+		DrawArtStr(35, 272, AFT_SMALL, AFC_SILVER, "Created by Localhost, A");
+		DrawArtStr(35, 288, AFT_SMALL, AFC_SILVER, "level 1 Warrior.");
 	}
+
+	int selectorTop = y;
+
+	int spacing = 26;
+	for (int i = 0; i < 3; i++) {
+		DrawArtStr(x, y, AFT_MED, AFC_GOLD, gameOptions[i], JustCentre, w);
+		y += spacing;
+	}
+
+	DrawSelector(x, selectorTop + 3, w, 19, spacing, FOCUS_SMALL);
+
+	DrawArtStr(349, 429, AFT_BIG, AFC_GOLD, "OK");
+	DrawArtStr(471, 429, AFT_BIG, AFC_GOLD, "Cancel");
 }
 
 BOOL __stdcall UiSelHeroMultDialog(
@@ -545,7 +614,7 @@ BOOL __stdcall UiSelHeroMultDialog(
 	submenu = SELHERO_SELECT_GAME;
 
 	SelectedItem = 1;
-	SelectedItemMax = 2;
+	SelectedItemMax = 2 + 1;
 
 	bool endMenu = false;
 	while (endMenu == false) {

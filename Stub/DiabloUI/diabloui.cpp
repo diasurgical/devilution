@@ -176,6 +176,9 @@ void SetMenu(int MenuId)
 	case SELHERO_DIFFICULTY:
 		SelectedItemMax = 3;
 		break;
+	case SELHERO_SELECT_GAME:
+		SelectedItemMax = 2;
+		break;
 	default:
 		SelectedItemMax = 1;
 		break;
@@ -559,10 +562,9 @@ void DrawMouse()
 void DrawSelector(int x, int y, int width, int padding, int spacing, int size)
 {
 	width = width ? width : SCREEN_WIDTH;
-	x += GetCenterOffset(ArtFocus[size].width, width);
 	y += (SelectedItem - 1) * spacing;
 
 	int frame = GetAnimationFrame(8);
-	DrawArt(x - width / 2 + padding, y, &ArtFocus[size], frame);
-	DrawArt(x + width / 2 - padding, y, &ArtFocus[size], frame);
+	DrawArt(x + padding, y, &ArtFocus[size], frame);
+	DrawArt(x + width - padding - ArtFocus[size].width, y, &ArtFocus[size], frame);
 }
