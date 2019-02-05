@@ -4,7 +4,8 @@ void title_Render()
 {
 	DrawArt(0, 0, &ArtBackground);
 
-	DrawArtStr(-1, 410, AFT_MED, AFC_SILVER, "Copyright \xA9 1996-2001 Blizzard Entertainment", JustCentre);
+	DrawArtStr(0, 410, AFT_MED, AFC_SILVER, "Copyright \xA9 1996-2001 Blizzard Entertainment", JustCentre);
+
 	DrawLogo(182, LOGO_BIG);
 }
 

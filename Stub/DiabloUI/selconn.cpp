@@ -5,7 +5,7 @@ void selconn_Render()
 	DrawArt(0, 0, &ArtBackground);
 	DrawLogo();
 
-	DrawArtStr(-1, 161, AFT_BIG, AFC_SILVER, "Multi Player Game", JustCentre);
+	DrawArtStr(0, 161, AFT_BIG, AFC_SILVER, "Multi Player Game", JustCentre);
 
 	int w = 335;
 	int x = 280;
@@ -122,7 +122,7 @@ int __stdcall UiSelectProvider(
 						break;
 					}
 					selconn_Free();
-					endMenu = SNetInitializeProvider('SCBL', client_info, user_info, ui_info, file_info);
+					endMenu = SNetInitializeProvider(provider, client_info, user_info, ui_info, file_info);
 					selconn_Load();
 					break;
 				}

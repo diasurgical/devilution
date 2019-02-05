@@ -47,7 +47,7 @@ void selhero_Render(bool multiPlayer)
 	if (multiPlayer) {
 		title = "Multi Player Characters";
 	}
-	DrawArtStr(-1, 161, AFT_BIG, AFC_SILVER, title, JustCentre);
+	DrawArtStr(0, 161, AFT_BIG, AFC_SILVER, title, JustCentre);
 
 	DrawArt(30, 211, &ArtHero, heroInfo.heroclass);
 	RenderStats();
@@ -86,7 +86,7 @@ void selhero_Render_Name(bool multiPlayer)
 		title = "New Multi Player Hero";
 	}
 
-	DrawArtStr(-1, 161, AFT_BIG, AFC_SILVER, title, JustCentre);
+	DrawArtStr(0, 161, AFT_BIG, AFC_SILVER, title, JustCentre);
 
 	int w = 368;
 	int x = 241;
@@ -124,7 +124,7 @@ void selhero_Render_ClassSelector(bool multiPlayer)
 	if (multiPlayer) {
 		title = "New Multi Player Hero";
 	}
-	DrawArtStr(-1, 161, AFT_BIG, AFC_SILVER, title, JustCentre);
+	DrawArtStr(0, 161, AFT_BIG, AFC_SILVER, title, JustCentre);
 
 	int w = 369;
 	int x = 241;
@@ -404,7 +404,7 @@ void selhero_Render_DifficultySelection()
 	DrawArt(0, 0, &ArtBackground);
 	DrawLogo();
 
-	DrawArtStr(-1, 161, AFT_BIG, AFC_SILVER, "Create Game", JustCentre);
+	DrawArtStr(0, 161, AFT_BIG, AFC_SILVER, "Create Game", JustCentre);
 
 	int w = 333;
 	int x = 281;
@@ -549,7 +549,7 @@ void selhero_Render_GameSelection()
 	DrawArt(0, 0, &ArtBackground);
 	DrawLogo();
 
-	DrawArtStr(-1, 161, AFT_BIG, AFC_SILVER, "Join UPD Game", JustCentre);
+	DrawArtStr(0, 161, AFT_BIG, AFC_SILVER, "Join UPD Game", JustCentre);
 
 	int w = 333;
 	int x = 281;
