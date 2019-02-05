@@ -232,7 +232,7 @@ void __cdecl DRLG_L1Pass3()
 	long v1, v2, v3, v4, lv;
 
 	// Initialize the entire dungeon piece ID map with dirt.
-	const DIRT = 22;
+	const int DIRT = 22;
 	lv = pMegaTiles[(DIRT-1)*4+0];
 	v1 = pMegaTiles[(DIRT-1)*4+0];
 	v2 = pMegaTiles[(DIRT-1)*4+1];
