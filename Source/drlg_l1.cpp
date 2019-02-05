@@ -253,10 +253,10 @@ void __cdecl DRLG_L1Pass3()
 	for (yy = 0; yy < 40; yy++) {
 		i = 16;
 		for (xx = 0; xx < 40; xx++) {
-			v1 = pMegaTiles[(dungeon[xx][yy]-1)*4 + 0] + 1;
-			v2 = pMegaTiles[(dungeon[xx][yy]-1)*4 + 1] + 1;
-			v3 = pMegaTiles[(dungeon[xx][yy]-1)*4 + 2] + 1;
-			v4 = pMegaTiles[(dungeon[xx][yy]-1)*4 + 3] + 1;
+			v1 = pMegaTiles[(dungeon[xx][yy]-1)*4 + 0];
+			v2 = pMegaTiles[(dungeon[xx][yy]-1)*4 + 1];
+			v3 = pMegaTiles[(dungeon[xx][yy]-1)*4 + 2];
+			v4 = pMegaTiles[(dungeon[xx][yy]-1)*4 + 3];
 			dPiece[i][j] = v1 + 1;
 			dPiece[i+1][j] = v2 + 1;
 			dPiece[i][j+1] = v3 + 1;
