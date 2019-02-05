@@ -116,7 +116,7 @@ int __fastcall nthread_recv_turns(int *pfSendAsync)
 	sgbPacketCountdown = byte_679704;
 	if (!hasCountedDown)
 		goto LABEL_11;
-	if (SNetReceiveTurns(0, 4, (char **)glpMsgTbl, (unsigned int *)gdwMsgLenTbl, (LPDWORD)player_state)) {
+	if (SNetReceiveTurns(0, MAX_PLRS, (char **)glpMsgTbl, (unsigned int *)gdwMsgLenTbl, (LPDWORD)player_state)) {
 		if (!byte_679758) {
 			byte_679758 = 1;
 			last_tick = GetTickCount();
