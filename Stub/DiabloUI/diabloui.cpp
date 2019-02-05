@@ -211,7 +211,7 @@ void LoadArt(char *pszFile, Art *art, int frames, PALETTEENTRY *pPalette)
 	return art;
 }
 
-void LoadMaskedArtFont(char *pszFile, Art *art, int frames, int mask = 250)
+void LoadMaskedArtFont(char *pszFile, Art *art, int frames, int mask)
 {
 	LoadArt(pszFile, art, frames);
 	art->masked = true;
@@ -237,7 +237,6 @@ void LoadUiGFX()
 	LoadArtFont("ui_art\\font30g.pcx", AFT_BIG, AFC_GOLD);
 	LoadArtFont("ui_art\\font42g.pcx", AFT_HUGE, AFC_GOLD);
 
-	LoadMaskedArtFont("ui_art\\logo.pcx", &ArtLogos[LOGO_BIG], 15);
 	LoadMaskedArtFont("ui_art\\smlogo.pcx", &ArtLogos[LOGO_MED], 15);
 	LoadMaskedArtFont("ui_art\\focus16.pcx", &ArtFocus[FOCUS_SMALL], 8);
 	LoadMaskedArtFont("ui_art\\focus.pcx", &ArtFocus[FOCUS_MED], 8);
@@ -506,7 +505,7 @@ void LoadBackgroundArt(char *pszFile)
 	ApplyGamma(logical_palette, orig_palette, 256);
 }
 
-int GetAnimationFrame(int frames, int fps = 60)
+int GetAnimationFrame(int frames, int fps)
 {
 	int frame = (SDL_GetTicks() / fps) % frames;
 

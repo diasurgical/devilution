@@ -78,6 +78,7 @@ void DrawLogo(int t = 0, int size = LOGO_MED);
 void DrawMouse();
 void DrawSelector(int x, int y, int width, int padding, int spacing = 0, int size = FOCUS_MED);
 void LoadArt(char *pszFile, Art *art, int frames = 1, PALETTEENTRY *pPalette = NULL);
+void LoadMaskedArtFont(char *pszFile, Art *art, int frames, int mask = 250);
 void LoadBackgroundArt(char *pszFile);
 void SetMenu(int MenuId);
 void UiFocuse(int move, bool wrap = false);
