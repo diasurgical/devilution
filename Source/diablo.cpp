@@ -1579,31 +1579,31 @@ void __cdecl LoadLvlGFX()
 	switch (leveltype) {
 	case DTYPE_TOWN:
 		pDungeonCels = LoadFileInMem("Levels\\TownData\\Town.CEL", 0);
-		pMegaTiles = LoadFileInMem("Levels\\TownData\\Town.TIL", 0);
+		pMegaTiles = (WORD *)LoadFileInMem("Levels\\TownData\\Town.TIL", 0);
 		pLevelPieces = LoadFileInMem("Levels\\TownData\\Town.MIN", 0);
 		level_special_cel = LoadFileInMem("Levels\\TownData\\TownS.CEL", 0);
 		break;
 	case DTYPE_CATHEDRAL:
 		pDungeonCels = LoadFileInMem("Levels\\L1Data\\L1.CEL", 0);
-		pMegaTiles = LoadFileInMem("Levels\\L1Data\\L1.TIL", 0);
+		pMegaTiles = (WORD *)LoadFileInMem("Levels\\L1Data\\L1.TIL", 0);
 		pLevelPieces = LoadFileInMem("Levels\\L1Data\\L1.MIN", 0);
 		level_special_cel = LoadFileInMem("Levels\\L1Data\\L1S.CEL", 0);
 		break;
 	case DTYPE_CATACOMBS:
 		pDungeonCels = LoadFileInMem("Levels\\L2Data\\L2.CEL", 0);
-		pMegaTiles = LoadFileInMem("Levels\\L2Data\\L2.TIL", 0);
+		pMegaTiles = (WORD *)LoadFileInMem("Levels\\L2Data\\L2.TIL", 0);
 		pLevelPieces = LoadFileInMem("Levels\\L2Data\\L2.MIN", 0);
 		level_special_cel = LoadFileInMem("Levels\\L2Data\\L2S.CEL", 0);
 		break;
 	case DTYPE_CAVES:
 		pDungeonCels = LoadFileInMem("Levels\\L3Data\\L3.CEL", 0);
-		pMegaTiles = LoadFileInMem("Levels\\L3Data\\L3.TIL", 0);
+		pMegaTiles = (WORD *)LoadFileInMem("Levels\\L3Data\\L3.TIL", 0);
 		pLevelPieces = LoadFileInMem("Levels\\L3Data\\L3.MIN", 0);
 		level_special_cel = LoadFileInMem("Levels\\L1Data\\L1S.CEL", 0);
 		break;
 	case DTYPE_HELL:
 		pDungeonCels = LoadFileInMem("Levels\\L4Data\\L4.CEL", 0);
-		pMegaTiles = LoadFileInMem("Levels\\L4Data\\L4.TIL", 0);
+		pMegaTiles = (WORD *)LoadFileInMem("Levels\\L4Data\\L4.TIL", 0);
 		pLevelPieces = LoadFileInMem("Levels\\L4Data\\L4.MIN", 0);
 		level_special_cel = LoadFileInMem("Levels\\L2Data\\L2S.CEL", 0);
 		break;
