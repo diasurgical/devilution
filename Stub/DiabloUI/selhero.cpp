@@ -1,101 +1,119 @@
-#include "../../types.h"
+#include "selhero.h"
 #include <iconv.h>
 
 int selhero_SaveCount = 0;
 _uiheroinfo heros[MAX_CHARACTERS];
 _uiheroinfo heroInfo;
+char listItems[6][16];
+char textStats[5][4];
+char title[32];
+char selhero_Lable[32];
+char selhero_Description[256];
+int selhero_result;
+bool selhero_return;
+bool selhero_endMenu;
+bool selhero_endMenu_Single;
+int submenu = 0;
+bool isMultiPlayer;
+bool heroIsCreated;
 
-void RenderStats()
+BOOL(__stdcall *gfnHeroStats)
+(unsigned int, _uidefaultstats *);
+
+UI_Item SELHERO_DIALOG[] = {
+	{ { 0, 0, 640, 480 }, UI_IMAGE, 0, 0, NULL, &ArtBackground },
+	{ { 24, 161, 590, 35 }, UI_TEXT, UIS_CENTER | UIS_BIG, 0, title },
+	{ { 30, 211, 180, 76 }, UI_IMAGE, 0, UI_NUM_CLASSES, NULL, &ArtHero },
+	{ { 39, 323, 110, 21 }, UI_TEXT, UIS_RIGHT, 0, "Level:" },
+	{ { 159, 323, 40, 21 }, UI_TEXT, UIS_CENTER, 0, textStats[0] },
+	{ { 39, 358, 110, 21 }, UI_TEXT, UIS_RIGHT, 0, "Strength:" },
+	{ { 159, 358, 40, 21 }, UI_TEXT, UIS_CENTER, 0, textStats[1] },
+	{ { 39, 380, 110, 21 }, UI_TEXT, UIS_RIGHT, 0, "Magic:" },
+	{ { 159, 380, 40, 21 }, UI_TEXT, UIS_CENTER, 0, textStats[2] },
+	{ { 39, 401, 110, 21 }, UI_TEXT, UIS_RIGHT, 0, "Dexterity:" },
+	{ { 159, 401, 40, 21 }, UI_TEXT, UIS_CENTER, 0, textStats[3] },
+	{ { 39, 422, 110, 21 }, UI_TEXT, UIS_RIGHT, 0, "Vitality:" },
+	{ { 159, 422, 40, 21 }, UI_TEXT, UIS_CENTER, 0, textStats[4] },
+};
+
+UI_Item SELLIST_DIALOG[] = {
+	{ { 264, 211, 320, 33 }, UI_TEXT, UIS_CENTER | UIS_BIG, 0, "Select Hero" },
+	{ { 265, 256, 320, 26 }, UI_LIST, UIS_CENTER | UIS_MED | UIS_GOLD, 0, listItems[0] },
+	{ { 265, 282, 320, 26 }, UI_LIST, UIS_CENTER | UIS_MED | UIS_GOLD, 1, listItems[1] },
+	{ { 265, 308, 320, 26 }, UI_LIST, UIS_CENTER | UIS_MED | UIS_GOLD, 2, listItems[2] },
+	{ { 265, 334, 320, 26 }, UI_LIST, UIS_CENTER | UIS_MED | UIS_GOLD, 3, listItems[3] },
+	{ { 265, 360, 320, 26 }, UI_LIST, UIS_CENTER | UIS_MED | UIS_GOLD, 4, listItems[4] },
+	{ { 265, 386, 320, 26 }, UI_LIST, UIS_CENTER | UIS_MED | UIS_GOLD, 5, listItems[5] },
+	{ { 239, 429, 120, 35 }, UI_BUTTON, UIS_CENTER | UIS_BIG | UIS_GOLD, 0, "OK", UiFocusNavigationSelect },
+	{ { 364, 429, 120, 35 }, UI_BUTTON, UIS_CENTER | UIS_BIG | UIS_DISABLED, 0, "Delete" },
+	{ { 489, 429, 120, 35 }, UI_BUTTON, UIS_CENTER | UIS_BIG | UIS_GOLD, 0, "Cancel" },
+};
+
+UI_Item SELCLASS_DIALOG[] = {
+	{ { 264, 211, 320, 33 }, UI_TEXT, UIS_CENTER | UIS_BIG, 0, "Choose Class" },
+	{ { 264, 285, 320, 33 }, UI_LIST, UIS_CENTER | UIS_MED | UIS_GOLD, UI_WARRIOR, "Warrior" },
+	{ { 264, 318, 320, 33 }, UI_LIST, UIS_CENTER | UIS_MED | UIS_GOLD, UI_ROGUE, "Rogue" },
+	{ { 264, 352, 320, 33 }, UI_LIST, UIS_CENTER | UIS_MED | UIS_GOLD, UI_SORCERER, "Sorcerer" },
+	{ { 279, 429, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_BIG | UIS_GOLD, 0, "OK", UiFocusNavigationSelect },
+	{ { 429, 429, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_BIG | UIS_GOLD, 0, "Cancel" },
+};
+
+UI_Item ENTERNAME_DIALOG[] = {
+	{ { 264, 211, 320, 33 }, UI_TEXT, UIS_CENTER | UIS_BIG, 0, "Enter Name" },
+	{ { 265, 317, 320, 33 }, UI_EDIT, UIS_LIST | UIS_MED | UIS_GOLD, 0, heroInfo.name, 15 },
+	{ { 279, 429, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_BIG | UIS_GOLD, 0, "OK", UiFocusNavigationSelect },
+	{ { 429, 429, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_BIG | UIS_GOLD, 0, "Cancel" },
+};
+
+UI_Item SELLOAD_DIALOG[] = {
+	{ { 264, 211, 320, 33 }, UI_TEXT, UIS_CENTER | UIS_BIG, 0, "Save File Exists" },
+	{ { 265, 285, 320, 26 }, UI_LIST, UIS_CENTER | UIS_MED | UIS_GOLD, 0, "Load Game" },
+	{ { 265, 318, 320, 26 }, UI_LIST, UIS_CENTER | UIS_MED | UIS_GOLD, 1, "New Game" },
+	{ { 279, 427, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_VCENTER | UIS_BIG | UIS_GOLD, 0, "OK", UiFocusNavigationSelect },
+	{ { 429, 427, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_VCENTER | UIS_BIG | UIS_GOLD, 0, "Cancel" },
+};
+
+UI_Item SELUDPGAME_DIALOG[] = {
+	{ { 0, 0, 640, 480 }, UI_IMAGE, 0, 0, NULL, &ArtBackground },
+	{ { 25, 161, 590, 35 }, UI_TEXT, UIS_CENTER | UIS_BIG, 0, "Join UDP Games" },
+	{ { 300, 211, 295, 33 }, UI_TEXT, UIS_CENTER | UIS_BIG, 0, "Select Action" },
+	{ { 305, 255, 285, 26 }, UI_LIST, UIS_CENTER | UIS_MED | UIS_GOLD, 0, "Create Game" },
+	{ { 305, 281, 285, 26 }, UI_LIST, UIS_CENTER | UIS_MED | UIS_GOLD, 1, "Enter IP" },
+	{ { 305, 307, 285, 26 }, UI_LIST, UIS_CENTER | UIS_MED | UIS_GOLD, 2, "Localhost" },
+	{ { 305, 333, 285, 26 }, UI_LIST, UIS_CENTER | UIS_MED | UIS_GOLD },
+	{ { 305, 359, 285, 26 }, UI_LIST, UIS_CENTER | UIS_MED | UIS_GOLD },
+	{ { 305, 385, 285, 26 }, UI_LIST, UIS_CENTER | UIS_MED | UIS_GOLD },
+	{ { 35, 211, 205, 33 }, UI_TEXT, UIS_MED, 0, "Description:" },
+	{ { 35, 256, 205, 192 }, UI_TEXT, 0, 0, selhero_Description }, // Description
+	{ { 299, 427, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_VCENTER | UIS_BIG | UIS_GOLD, 0, "OK", UiFocusNavigationSelect },
+	{ { 449, 427, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_VCENTER | UIS_BIG | UIS_GOLD, 0, "Cancel" },
+};
+
+UI_Item SELDIFF_DIALOG[] = {
+	{ { 0, 0, 640, 480 }, UI_IMAGE, 0, 0, NULL, &ArtBackground },
+	{ { 24, 161, 590, 35 }, UI_TEXT, UIS_CENTER | UIS_BIG, 0, "Create Game" },
+	{ { 299, 211, 295, 35 }, UI_TEXT, UIS_CENTER | UIS_BIG, 0, "Select Difficulty" },
+	{ { 300, 282, 295, 26 }, UI_LIST, UIS_CENTER | UIS_MED | UIS_GOLD, DIFF_NORMAL, "Normal" },
+	{ { 300, 308, 295, 26 }, UI_LIST, UIS_CENTER | UIS_MED | UIS_GOLD, DIFF_NIGHTMARE, "Nightmare" },
+	{ { 300, 334, 295, 26 }, UI_LIST, UIS_CENTER | UIS_MED | UIS_GOLD, DIFF_HELL, "Hell" },
+	{ { 34, 211, 205, 33 }, UI_TEXT, UIS_CENTER | UIS_BIG, 0, selhero_Lable }, // DIFF
+	{ { 35, 256, 205, 192 }, UI_TEXT, 0, 0, selhero_Description },             // Description
+	{ { 299, 427, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_VCENTER | UIS_BIG | UIS_GOLD, 0, "OK", UiFocusNavigationSelect },
+	{ { 449, 427, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_VCENTER | UIS_BIG | UIS_GOLD, 0, "Cancel" },
+};
+
+void selhero_SetStats()
 {
-	char lvl[4] = "--";
-	char str[4] = "--";
-	char mag[4] = "--";
-	char dex[4] = "--";
-	char vit[4] = "--";
-
-	if (heroInfo.heroclass != UI_NUM_CLASSES) {
-		sprintf(lvl, "%d", heroInfo.level);
-		sprintf(str, "%d", heroInfo.strength);
-		sprintf(mag, "%d", heroInfo.magic);
-		sprintf(dex, "%d", heroInfo.dexterity);
-		sprintf(vit, "%d", heroInfo.vitality);
-	}
-
-	DrawArtStr(31, 323, AFT_SMALL, AFC_SILVER, "Level:", JustRight, 118);
-	DrawArtStr(149, 323, AFT_SMALL, AFC_SILVER, lvl, JustCentre, 61);
-	DrawArtStr(31, 358, AFT_SMALL, AFC_SILVER, "Strength:", JustRight, 118);
-	DrawArtStr(149, 358, AFT_SMALL, AFC_SILVER, str, JustCentre, 61);
-	DrawArtStr(31, 380, AFT_SMALL, AFC_SILVER, "Magic:", JustRight, 118);
-	DrawArtStr(149, 380, AFT_SMALL, AFC_SILVER, mag, JustCentre, 61);
-	DrawArtStr(31, 401, AFT_SMALL, AFC_SILVER, "Dexterity:", JustRight, 118);
-	DrawArtStr(149, 401, AFT_SMALL, AFC_SILVER, dex, JustCentre, 61);
-	DrawArtStr(31, 422, AFT_SMALL, AFC_SILVER, "Vitality:", JustRight, 118);
-	DrawArtStr(149, 422, AFT_SMALL, AFC_SILVER, vit, JustCentre, 61);
+	SELHERO_DIALOG[2].value = heroInfo.heroclass;
+	sprintf(textStats[0], "%d", heroInfo.level);
+	sprintf(textStats[1], "%d", heroInfo.strength);
+	sprintf(textStats[2], "%d", heroInfo.magic);
+	sprintf(textStats[3], "%d", heroInfo.dexterity);
+	sprintf(textStats[4], "%d", heroInfo.vitality);
 }
 
-void selhero_Render(bool multiPlayer)
+void selhero_Render_Name()
 {
-	heroInfo.heroclass = UI_NUM_CLASSES;
-	if (SelectedItem <= selhero_SaveCount) {
-		memcpy(&heroInfo, &heros[SelectedItem - 1], sizeof(heroInfo));
-	}
-
-	DrawArt(0, 0, &ArtBackground);
-	DrawLogo();
-
-	char *title = "Single Player Characters";
-	if (multiPlayer) {
-		title = "Multi Player Characters";
-	}
-	DrawArtStr(0, 161, AFT_BIG, AFC_SILVER, title, JustCentre);
-
-	DrawArt(30, 211, &ArtHero, heroInfo.heroclass);
-	RenderStats();
-
-	int w = 368;
-	int x = 241;
-
-	DrawArtStr(x, 211, AFT_BIG, AFC_SILVER, "Select Hero", JustCentre, w);
-
-	int spacing = 26;
-	int selectorTop = 256;
-	int y = selectorTop;
-	for (int i = 0; i < selhero_SaveCount; i++) {
-		DrawArtStr(x, y, AFT_MED, AFC_GOLD, heros[i].name, JustCentre, w);
-		y += spacing;
-	}
-	DrawArtStr(x, y, AFT_MED, AFC_GOLD, "New Hero", JustCentre, w);
-
-	DrawSelector(x, selectorTop + 3, w, 24, spacing, FOCUS_SMALL);
-
-	DrawArtStr(279, 429, AFT_BIG, AFC_GOLD, "OK");
-	DrawArtStr(378, 429, AFT_BIG, AFC_GOLD, "Delete");
-	DrawArtStr(501, 429, AFT_BIG, AFC_GOLD, "Cancel");
-}
-
-void selhero_Render_Name(bool multiPlayer)
-{
-	DrawArt(0, 0, &ArtBackground);
-	DrawLogo();
-
-	DrawArt(30, 211, &ArtHero, heroInfo.heroclass);
-	RenderStats();
-
-	char *title = "New Single Player Hero";
-	if (multiPlayer) {
-		title = "New Multi Player Hero";
-	}
-
-	DrawArtStr(0, 161, AFT_BIG, AFC_SILVER, title, JustCentre);
-
-	int w = 368;
-	int x = 241;
-	int y = 318;
-
-	DrawArtStr(x, 211, AFT_BIG, AFC_SILVER, "Enter Name", JustCentre, w);
-
-	DrawSelector(x, y - 2, w, 24);
-
 	char lable[17];
 	strcpy(lable, heroInfo.name);
 	if (GetAnimationFrame(2, 500)) {
@@ -103,48 +121,9 @@ void selhero_Render_Name(bool multiPlayer)
 		lable[len] = '|';
 		lable[len + 1] = '\0';
 	}
+	ENTERNAME_DIALOG[1].caption = lable;
 
-	DrawArtStr(x + 67, y, AFT_MED, AFC_GOLD, lable); // todo add blinking "|"
-
-	DrawArtStr(329, 429, AFT_BIG, AFC_GOLD, "OK");
-	DrawArtStr(451, 429, AFT_BIG, AFC_GOLD, "Cancel");
-}
-
-// Have this load the function above and then render it in the main menu.
-// Cnacel box is also needed.
-void selhero_Render_ClassSelector(bool multiPlayer)
-{
-	DrawArt(0, 0, &ArtBackground);
-	DrawLogo();
-
-	DrawArt(30, 211, &ArtHero, heroInfo.heroclass);
-	RenderStats();
-
-	char *title = "New Single Player Hero";
-	if (multiPlayer) {
-		title = "New Multi Player Hero";
-	}
-	DrawArtStr(0, 161, AFT_BIG, AFC_SILVER, title, JustCentre);
-
-	int w = 369;
-	int x = 241;
-	int y = 285;
-
-	DrawArtStr(x, 211, AFT_BIG, AFC_SILVER, "Choose Class", JustCentre, w);
-
-	char *heroclasses[3] = { "Warrior", "Rogue", "Sorcerer" };
-
-	int spacing = 33;
-	int selectorTop = y;
-	for (int i = 0; i < 3; i++) {
-		DrawArtStr(x, y, AFT_MED, AFC_GOLD, heroclasses[i], JustCentre, w);
-		y += spacing;
-	}
-
-	DrawSelector(x, selectorTop - 2, w, 39, spacing);
-
-	DrawArtStr(329, 429, AFT_BIG, AFC_GOLD, "OK");
-	DrawArtStr(451, 429, AFT_BIG, AFC_GOLD, "Cancel");
+	UiRenderItems(ENTERNAME_DIALOG, size(ENTERNAME_DIALOG));
 }
 
 BOOL __stdcall SelHero_GetHeroInfo(_uiheroinfo *pInfo)
@@ -155,100 +134,151 @@ BOOL __stdcall SelHero_GetHeroInfo(_uiheroinfo *pInfo)
 	return TRUE;
 }
 
+void selhero_Focus_List(int value)
+{
+	if (selhero_SaveCount && value < selhero_SaveCount) {
+		memcpy(&heroInfo, &heros[value], sizeof(heroInfo));
+		selhero_SetStats();
+		return;
+	}
+
+	SELHERO_DIALOG[2].value = UI_NUM_CLASSES;
+	sprintf(textStats[0], "--");
+	sprintf(textStats[1], "--");
+	sprintf(textStats[2], "--");
+	sprintf(textStats[3], "--");
+	sprintf(textStats[4], "--");
+}
+
+void selhero_Select_ClassSelector(int value)
+{
+	submenu = SELHERO_NAME;
+	sprintf(title, "New Single Player Hero");
+	if (isMultiPlayer) {
+		sprintf(title, "New Multi Player Hero");
+	}
+	memset(heroInfo.name, '\0', 16);
+	SDL_StartTextInput();
+}
+
+void selhero_Focus_ClassSelector(int value)
+{
+	_uidefaultstats defaults;
+	gfnHeroStats(value, &defaults);
+
+	heroInfo.level = 1;
+	heroInfo.heroclass = value;
+	heroInfo.strength = defaults.strength;
+	heroInfo.magic = defaults.magic;
+	heroInfo.dexterity = defaults.dexterity;
+	heroInfo.vitality = defaults.vitality;
+
+	selhero_SetStats();
+}
+
+void selhero_Select_List(int value)
+{
+	if (value == selhero_SaveCount) {
+		submenu = SELHERO_CLASSES;
+		UiInitList(0, 2, selhero_Focus_ClassSelector, selhero_Select_ClassSelector);
+		memset(&heroInfo.name, 0, sizeof(heroInfo.name));
+		sprintf(title, "New Single Player Hero");
+		if (isMultiPlayer) {
+			sprintf(title, "New Multi Player Hero");
+		}
+		return;
+	}
+
+	heroIsCreated = true;
+	selhero_return = false;
+	selhero_endMenu = true;
+}
+
 void selhero_Load(BOOL(__stdcall *fninfo)(BOOL(__stdcall *fninfofunc)(_uiheroinfo *)))
 {
 	LoadBackgroundArt("ui_art\\selhero.pcx");
 
 	selhero_SaveCount = 0;
 	fninfo(SelHero_GetHeroInfo);
-
-	heroInfo.heroclass = UI_NUM_CLASSES;
 }
 
 void selhero_Free()
 {
 	mem_free_dbg(ArtBackground.data);
 	ArtBackground.data = NULL;
+	memset(listItems, 0, sizeof(listItems));
 }
 
-void selhero_setDefaultStats(BOOL(__stdcall *fnstats)(unsigned int, _uidefaultstats *))
+void selhero_List_Esc()
 {
-	_uidefaultstats defaults;
-	fnstats(SelectedItem - 1, &defaults);
-
-	heroInfo.heroclass = SelectedItem - 1;
-	heroInfo.strength = defaults.strength;
-	heroInfo.magic = defaults.magic;
-	heroInfo.dexterity = defaults.dexterity;
-	heroInfo.vitality = defaults.vitality;
+	selhero_return = true;
+	selhero_endMenu = true;
 }
 
-bool selhero_Event(bool *aborted)
+void selhero_Event_List()
 {
 	SDL_Event event;
 	while (SDL_PollEvent(&event)) {
+		if (UiFocusNavigation(&event))
+			continue;
+		if (UiItemMouseEvents(&event, SELLIST_DIALOG, size(SELLIST_DIALOG)))
+			continue;
 		switch (event.type) {
 		case SDL_KEYDOWN:
-			if (UiFocuseNavigation(&event))
+			if (event.key.keysym.sym == SDLK_ESCAPE) {
+				selhero_List_Esc();
 				break;
-			switch (event.key.keysym.sym) {
-			case SDLK_ESCAPE:
-				*aborted = true;
-				return true;
-			case SDLK_RETURN:
-			case SDLK_KP_ENTER:
-			case SDLK_SPACE:
-				if (SelectedItem == SelectedItemMax) {
-					memset(&heroInfo.name, 0, sizeof(heroInfo.name));
-					SetMenu(SELHERO_CLASSES);
-					break;
-				}
-				return true;
 			}
 			break;
 		case SDL_QUIT:
 			exit(0);
 		}
 	}
-
-	return false;
 }
 
-bool selhero_Event_ClassSelector(bool *aborted)
+void selhero_init_List()
+{
+	submenu = SELHERO_LIST;
+	UiInitList(0, selhero_SaveCount, selhero_Focus_List, selhero_Select_List);
+	int i;
+	for (i = 0; i < selhero_SaveCount && i < 6; i++) {
+		sprintf(listItems[i], heros[i].name);
+	}
+	if (i < 6)
+		sprintf(listItems[i], "New Hero");
+
+	sprintf(title, "Single Player Characters");
+	if (isMultiPlayer) {
+		sprintf(title, "Multi Player Characters");
+	}
+}
+
+void selhero_Event_ClassSelector()
 {
 	SDL_Event event;
 	while (SDL_PollEvent(&event)) {
+		if (UiFocusNavigation(&event))
+			continue;
+		if (UiItemMouseEvents(&event, SELCLASS_DIALOG, size(SELCLASS_DIALOG)))
+			continue;
 		switch (event.type) {
 		case SDL_KEYDOWN:
-			if (UiFocuseNavigation(&event, true))
-				break;
-			switch (event.key.keysym.sym) {
-			case SDLK_ESCAPE:
+			if (event.key.keysym.sym == SDLK_ESCAPE) {
 				if (selhero_SaveCount) {
-					SetMenu(SELHERO_LOAD);
-					SelectedItemMax += selhero_SaveCount;
+					selhero_init_List();
 					break;
 				}
-				*aborted = true;
-				return true;
-			case SDLK_RETURN:
-			case SDLK_KP_ENTER:
-			case SDLK_SPACE:
-				SetMenu(SELHERO_NAME);
-				memset(heroInfo.name, '\0', 16);
-				SDL_StartTextInput();
-				break;
+				selhero_return = true;
+				selhero_endMenu = true;
 			}
 			break;
 		case SDL_QUIT:
 			exit(0);
 		}
 	}
-
-	return false;
 }
 
-bool selhero_CatToName(char *in_buf)
+void selhero_CatToName(char *in_buf)
 {
 	iconv_t cd = iconv_open("ISO_8859-1//TRANSLIT//IGNORE", "UTF-8");
 	if (cd == (iconv_t)-1) {
@@ -267,11 +297,10 @@ bool selhero_CatToName(char *in_buf)
 	strncat(heroInfo.name, output, 15 - strlen(heroInfo.name));
 }
 
-bool selhero_Event_Name()
+void selhero_Event_Name()
 {
 	SDL_Event event;
 	while (SDL_PollEvent(&event)) {
-
 		switch (event.type) {
 		case SDL_QUIT:
 			exit(0);
@@ -285,13 +314,13 @@ bool selhero_Event_Name()
 				break;
 			case SDLK_ESCAPE:
 				SDL_StopTextInput();
-				SetMenu(SELHERO_CLASSES);
+				selhero_Select_List(selhero_SaveCount);
 				break;
 			case SDLK_RETURN:
 			case SDLK_RETURN2:
 			case SDLK_KP_ENTER:
 				SDL_StopTextInput();
-				return true;
+				selhero_endMenu = true;
 				break;
 			case SDLK_BACKSPACE:
 			case SDLK_LEFT:
@@ -307,55 +336,88 @@ bool selhero_Event_Name()
 			break;
 		}
 	}
+}
 
-	return false;
+void selhero_Event_Load()
+{
+	SDL_Event event;
+	while (SDL_PollEvent(&event)) {
+		if (UiFocusNavigation(&event, true))
+			continue;
+		if (UiItemMouseEvents(&event, SELLOAD_DIALOG, size(SELLOAD_DIALOG)))
+			continue;
+		switch (event.type) {
+		case SDL_KEYDOWN:
+			switch (event.key.keysym.sym) {
+			case SDLK_ESCAPE:
+				selhero_result = EXIT_MENU;
+				selhero_endMenu_Single = true;
+			}
+			break;
+		case SDL_QUIT:
+			exit(0);
+		}
+	}
 }
 
 bool UiSelHeroDialog(
     BOOL(__stdcall *fncreate)(_uiheroinfo *),
     BOOL(__stdcall *fnremove)(_uiheroinfo *),
-    BOOL(__stdcall *fnstats)(unsigned int, _uidefaultstats *),
     bool multiPlayer)
 {
-	bool aborted = false;
-	bool endMenu = false;
+	isMultiPlayer = multiPlayer;
+	selhero_return = false;
+	selhero_endMenu = false;
+	heroIsCreated = false;
 
-	SelectedItem = 1;
-	submenu = SELHERO_LOAD;
-	SelectedItemMax = 1 + selhero_SaveCount;
-	if (!selhero_SaveCount) {
-		submenu = SELHERO_CLASSES;
-		SelectedItemMax = 3;
+	if (selhero_SaveCount) {
+		selhero_init_List();
+	} else {
+		selhero_Select_List(selhero_SaveCount);
 	}
 
-	while (endMenu == false) {
-		CapFPS();
-
+	while (!selhero_endMenu) {
+		UiRenderItems(SELHERO_DIALOG, size(SELHERO_DIALOG));
 		switch (submenu) {
-		case SELHERO_LOAD:
-			selhero_Render(multiPlayer);
-			endMenu = selhero_Event(&aborted);
+		case SELHERO_LIST:
+			UiRenderItems(SELLIST_DIALOG, size(SELLIST_DIALOG));
+			selhero_Event_List();
 			break;
 		case SELHERO_CLASSES:
-			selhero_setDefaultStats(fnstats);
-			selhero_Render_ClassSelector(multiPlayer);
-			endMenu = selhero_Event_ClassSelector(&aborted);
+			UiRenderItems(SELCLASS_DIALOG, size(SELCLASS_DIALOG));
+			selhero_Event_ClassSelector();
 			break;
 		case SELHERO_NAME:
-			selhero_Render_Name(multiPlayer);
-			endMenu = selhero_Event_Name();
+			selhero_Render_Name();
+			selhero_Event_Name();
 			break;
 		}
 
+		DrawLogo();
 		DrawMouse();
 		UiFadeIn();
 	}
 
-	if (!aborted && !heroInfo.hassaved) {
-		fncreate(&heroInfo); // todo don't overwrite
+	if (!heroIsCreated) {
+		fncreate(&heroInfo);
 	}
 
-	return aborted;
+	return selhero_return;
+}
+
+void selhero_Select_Load(int value)
+{
+	selhero_endMenu_Single = true;
+	if (value == 0) {
+		selhero_result = LOAD_GAME;
+		return;
+	}
+
+	selhero_result = NEW_GAME;
+}
+
+void selhero_Focus_Load(int value)
+{
 }
 
 BOOL __stdcall UiSelHeroSingDialog(
@@ -367,20 +429,38 @@ BOOL __stdcall UiSelHeroSingDialog(
     char *name,
     int *difficulty)
 {
-	selhero_Load(fninfo);
-	if (UiSelHeroDialog(fncreate, fnremove, fnstats, false)) {
-		*dlgresult = EXIT_MENU;
-	} else {
-		strcpy(name, heroInfo.name);
+	gfnHeroStats = fnstats;
 
-		if (heroInfo.hassaved) {
-			*dlgresult = LOAD_GAME;
+	selhero_Load(fninfo);
+	bool abort = UiSelHeroDialog(fncreate, fnremove, false);
+	if (abort) {
+		BlackPalette();
+		selhero_Free();
+		*dlgresult = EXIT_MENU;
+		return TRUE;
+	}
+
+	strcpy(name, heroInfo.name);
+
+	if (heroInfo.hassaved) {
+		UiInitList(0, 1, selhero_Focus_Load, selhero_Select_Load);
+		sprintf(title, "Single Player Characters");
+
+		selhero_endMenu_Single = false;
+		while (!selhero_endMenu_Single) {
+			UiRenderItems(SELHERO_DIALOG, size(SELHERO_DIALOG));
+			UiRenderItems(SELLOAD_DIALOG, size(SELLOAD_DIALOG));
+			DrawLogo();
+			DrawMouse();
+			UiFadeIn();
+			selhero_Event_Load();
 		}
 	}
 
 	BlackPalette();
 	selhero_Free();
 
+	*dlgresult = selhero_result;
 	return TRUE;
 }
 
@@ -399,192 +479,107 @@ void selhero_multi_Free()
 	ArtBackground.data = NULL;
 }
 
-void selhero_Render_DifficultySelection()
+void selhero_Focus_Diff(int value)
 {
-	DrawArt(0, 0, &ArtBackground);
-	DrawLogo();
-
-	DrawArtStr(0, 161, AFT_BIG, AFC_SILVER, "Create Game", JustCentre);
-
-	int w = 333;
-	int x = 281;
-	int y = 282;
-
-	DrawArtStr(x, 211, AFT_BIG, AFC_SILVER, "Select Difficulty", JustCentre, w);
-
-	char *gameOptions[] = { "Normal", "Nightmare", "Hell" };
-
-	DrawArtStr(23, 211, AFT_BIG, AFC_SILVER, gameOptions[SelectedItem - 1], JustCentre, 226);
-	if (SelectedItem == 1) {
-		DrawArtStr(35, 256, AFT_SMALL, AFC_SILVER, "Normal Difficulty");
-		DrawArtStr(35, 272, AFT_SMALL, AFC_SILVER, "This is where a starting");
-		DrawArtStr(35, 288, AFT_SMALL, AFC_SILVER, "character should begin");
-		DrawArtStr(35, 304, AFT_SMALL, AFC_SILVER, "the quest to defeat");
-		DrawArtStr(35, 320, AFT_SMALL, AFC_SILVER, "Diablo.");
-	} else if (SelectedItem == 2) {
-		DrawArtStr(35, 256, AFT_SMALL, AFC_SILVER, "Nightmare Difficulty");
-		DrawArtStr(35, 272, AFT_SMALL, AFC_SILVER, "The denizens of the");
-		DrawArtStr(35, 288, AFT_SMALL, AFC_SILVER, "Labyrinth have been");
-		DrawArtStr(35, 304, AFT_SMALL, AFC_SILVER, "bolstered and will prove");
-		DrawArtStr(35, 320, AFT_SMALL, AFC_SILVER, "to be a greater");
-		DrawArtStr(35, 336, AFT_SMALL, AFC_SILVER, "challenge. This is");
-		DrawArtStr(35, 352, AFT_SMALL, AFC_SILVER, "recommended for");
-		DrawArtStr(35, 368, AFT_SMALL, AFC_SILVER, "experienced characters");
-		DrawArtStr(35, 384, AFT_SMALL, AFC_SILVER, "only.");
-	} else if (SelectedItem == 3) {
-		DrawArtStr(35, 256, AFT_SMALL, AFC_SILVER, "Hell Difficulty");
-		DrawArtStr(35, 272, AFT_SMALL, AFC_SILVER, "The most powerful of");
-		DrawArtStr(35, 288, AFT_SMALL, AFC_SILVER, "the underworld's");
-		DrawArtStr(35, 304, AFT_SMALL, AFC_SILVER, "creatures lurk at the");
-		DrawArtStr(35, 320, AFT_SMALL, AFC_SILVER, "gateway into Hell. Only");
-		DrawArtStr(35, 336, AFT_SMALL, AFC_SILVER, "the most experienced");
-		DrawArtStr(35, 352, AFT_SMALL, AFC_SILVER, "characters should");
-		DrawArtStr(35, 368, AFT_SMALL, AFC_SILVER, "venture in this realm.");
+	switch (value) {
+	case DIFF_NORMAL:
+		sprintf(selhero_Lable, "Normal");
+		sprintf(selhero_Description, "Normal Difficulty\nThis is where a starting character should begin the quest to defeat Diablo.");
+		break;
+	case DIFF_NIGHTMARE:
+		sprintf(selhero_Lable, "Nightmare");
+		sprintf(selhero_Description, "Nightmare Difficulty\nThe denizens of the Labyrinth have been bolstered and will prove to be a greater challenge. This is recommended for experienced characters only.");
+		break;
+	case DIFF_HELL:
+		sprintf(selhero_Lable, "Hell");
+		sprintf(selhero_Description, "Hell Difficulty\nThe most powerful of the underworld's creatures lurk at the gateway into Hell. Only the most experienced characters should venture in this realm.");
+		break;
 	}
 
-	int selectorTop = y;
-
-	int spacing = 26;
-	for (int i = 0; i < 3; i++) {
-		DrawArtStr(x, y, AFT_MED, AFC_GOLD, gameOptions[i], JustCentre, w);
-		y += spacing;
+	for (auto &item : SELDIFF_DIALOG) {
+		if (item.caption != NULL && !(item.flags & (UIS_VCENTER | UIS_CENTER)))
+			WordWrap(&item);
 	}
-
-	DrawSelector(x, selectorTop + 3, w, 19, spacing, FOCUS_SMALL);
-
-	DrawArtStr(349, 429, AFT_BIG, AFC_GOLD, "OK");
-	DrawArtStr(471, 429, AFT_BIG, AFC_GOLD, "Cancel");
 }
 
-bool selhero_Event_GameSelection(int *dlgresult)
+void selhero_Select_Diff(int value)
+{
+	gnDifficulty = value;
+	selhero_result = NEW_GAME;
+}
+
+void selhero_Select_GameSelection(int value)
+{
+	submenu = SELHERO_DIFFICULTY;
+	UiInitList(0, 2, selhero_Focus_Diff, selhero_Select_Diff);
+}
+
+void selhero_Event_GameSelection()
 {
 	SDL_Event event;
 	while (SDL_PollEvent(&event)) {
+		if (UiFocusNavigation(&event))
+			continue;
+		if (UiItemMouseEvents(&event, SELUDPGAME_DIALOG, size(SELUDPGAME_DIALOG)))
+			continue;
 		switch (event.type) {
 		case SDL_KEYDOWN:
-			if (UiFocuseNavigation(&event))
-				break;
-			switch (event.key.keysym.sym) {
-			case SDLK_ESCAPE:
-				*dlgresult = EXIT_MENU;
-				return true;
-			case SDLK_RETURN:
-			case SDLK_KP_ENTER:
-			case SDLK_SPACE:
-				SetMenu(SELHERO_DIFFICULTY);
-				break;
+			if (event.key.keysym.sym == SDLK_ESCAPE) {
+				selhero_result = EXIT_MENU;
+				selhero_endMenu_Single = true;
 			}
 			break;
 		case SDL_QUIT:
 			exit(0);
 		}
 	}
-
-	return false;
 }
 
-bool selhero_Event_DifficultySelection(int *dlgresult)
+void selhero_Focus_GameSelection(int value)
+{
+	switch (value) {
+	case 0:
+		sprintf(selhero_Description, "Create a new game with a difficulty setting of your choice.");
+		break;
+	case 1:
+		sprintf(selhero_Description, "Join a game directly via a know host IP.");
+		break;
+	default:
+		sprintf(selhero_Description, "%s.\nCreated by %s, a level %d %s.", "Normal Difficulty", "Localhost", 1, "Warrior");
+		break;
+	}
+
+	for (auto &item : SELUDPGAME_DIALOG) {
+		if (item.caption != NULL && !(item.flags & (UIS_VCENTER | UIS_CENTER)))
+			WordWrap(&item);
+	}
+}
+
+void selhero_Event_DifficultySelection()
 {
 	SDL_Event event;
 	while (SDL_PollEvent(&event)) {
+		if (UiFocusNavigation(&event))
+			continue;
+		if (UiItemMouseEvents(&event, SELDIFF_DIALOG, size(SELDIFF_DIALOG)))
+			continue;
 		switch (event.type) {
 		case SDL_KEYDOWN:
-			if (UiFocuseNavigation(&event, true))
-				break;
 			switch (event.key.keysym.sym) {
 			case SDLK_ESCAPE:
-				SetMenu(SELHERO_SELECT_GAME);
-				SelectedItemMax += 1;
+				submenu = SELHERO_SELECT_GAME;
+				UiInitList(0, 2, selhero_Focus_GameSelection, selhero_Select_GameSelection);
 				break;
 			case SDLK_RETURN:
 			case SDLK_KP_ENTER:
 			case SDLK_SPACE:
-				switch (SelectedItem) {
-				case 1:
-					gnDifficulty = DIFF_NORMAL;
-					break;
-				case 2:
-					gnDifficulty = DIFF_NIGHTMARE;
-					break;
-				case 3:
-					gnDifficulty = DIFF_HELL;
-					break;
-				}
-				*dlgresult = NEW_GAME;
-				return true;
-			}
-			break;
-		case SDL_MOUSEBUTTONDOWN:
-			if (event.button.button == SDL_BUTTON_LEFT) {
-				SDL_Rect CreateHeroCancelBox;
-				CreateHeroCancelBox.y = 550;
-				CreateHeroCancelBox.x = 675;
-				CreateHeroCancelBox.w = 100;
-				CreateHeroCancelBox.h = 30;
-
-				SDL_Rect NormalSelectBox;
-				NormalSelectBox.x = 280;
-				NormalSelectBox.y = 350;
-				NormalSelectBox.w = 300;
-				NormalSelectBox.h = 30;
-
-				if (IsInsideRect(&event, &NormalSelectBox)) {
-					gnDifficulty = DIFF_NORMAL;
-					*dlgresult = LOAD_GAME;
-				}
-				break;
+				selhero_endMenu_Single = true;
 			}
 			break;
 		case SDL_QUIT:
 			exit(0);
 		}
 	}
-
-	return false;
-}
-
-void selhero_Render_GameSelection()
-{
-
-	DrawArt(0, 0, &ArtBackground);
-	DrawLogo();
-
-	DrawArtStr(0, 161, AFT_BIG, AFC_SILVER, "Join UPD Game", JustCentre);
-
-	int w = 333;
-	int x = 281;
-	int y = 282;
-
-	DrawArtStr(x, 211, AFT_BIG, AFC_SILVER, "Select Action", JustCentre, w);
-
-	char *gameOptions[] = { "Create Game", "Enter IP", "Localhost" };
-
-	DrawArtStr(35, 211, AFT_MED, AFC_SILVER, "Description:");
-	if (SelectedItem == 1) {
-		DrawArtStr(35, 256, AFT_SMALL, AFC_SILVER, "Create a new game with");
-		DrawArtStr(35, 272, AFT_SMALL, AFC_SILVER, "a difficulty setting of");
-		DrawArtStr(35, 288, AFT_SMALL, AFC_SILVER, "your choice.");
-	} else if (SelectedItem == 2) {
-		DrawArtStr(35, 256, AFT_SMALL, AFC_SILVER, "Join a game directly");
-		DrawArtStr(35, 272, AFT_SMALL, AFC_SILVER, "via a know host IP.");
-	} else {
-		DrawArtStr(35, 256, AFT_SMALL, AFC_SILVER, "Normal Difficulty");
-		DrawArtStr(35, 272, AFT_SMALL, AFC_SILVER, "Created by Localhost, A");
-		DrawArtStr(35, 288, AFT_SMALL, AFC_SILVER, "level 1 Warrior.");
-	}
-
-	int selectorTop = y;
-
-	int spacing = 26;
-	for (int i = 0; i < 3; i++) {
-		DrawArtStr(x, y, AFT_MED, AFC_GOLD, gameOptions[i], JustCentre, w);
-		y += spacing;
-	}
-
-	DrawSelector(x, selectorTop + 3, w, 19, spacing, FOCUS_SMALL);
-
-	DrawArtStr(349, 429, AFT_BIG, AFC_GOLD, "OK");
-	DrawArtStr(471, 429, AFT_BIG, AFC_GOLD, "Cancel");
 }
 
 BOOL __stdcall UiSelHeroMultDialog(
@@ -596,10 +591,11 @@ BOOL __stdcall UiSelHeroMultDialog(
     BOOL *hero_is_created,
     char *name)
 {
+	gfnHeroStats = fnstats;
 	*hero_is_created = false;
 
 	selhero_Load(fninfo);
-	bool abort = UiSelHeroDialog(fncreate, fnremove, fnstats, true);
+	bool abort = UiSelHeroDialog(fncreate, fnremove, true);
 	BlackPalette();
 	selhero_Free();
 	if (abort) {
@@ -612,35 +608,28 @@ BOOL __stdcall UiSelHeroMultDialog(
 	selhero_multi_Load();
 
 	submenu = SELHERO_SELECT_GAME;
+	UiInitList(0, 2, selhero_Focus_GameSelection, selhero_Select_GameSelection);
 
-	SelectedItem = 1;
-	SelectedItemMax = 2 + 1;
-
-	bool endMenu = false;
-	while (endMenu == false) {
-		CapFPS();
-
+	selhero_endMenu_Single = false;
+	while (!selhero_endMenu_Single) {
 		switch (submenu) {
 		case SELHERO_SELECT_GAME:
-			selhero_Render_GameSelection();
-			endMenu = selhero_Event_GameSelection(dlgresult);
+			UiRenderItems(SELUDPGAME_DIALOG, size(SELUDPGAME_DIALOG));
+			selhero_Event_GameSelection();
 			break;
 		case SELHERO_DIFFICULTY:
-			selhero_Render_DifficultySelection();
-			endMenu = selhero_Event_DifficultySelection(dlgresult);
+			UiRenderItems(SELDIFF_DIALOG, size(SELDIFF_DIALOG));
+			selhero_Event_DifficultySelection();
 			break;
 		}
-
+		DrawLogo();
 		DrawMouse();
 		UiFadeIn();
-	}
-
-	if (*dlgresult != EXIT_MENU) {
-		strcpy(name, heroInfo.name);
 	}
 
 	BlackPalette();
 	selhero_Free();
 
+	*dlgresult = selhero_result;
 	return TRUE;
 }

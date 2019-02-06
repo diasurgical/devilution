@@ -2252,15 +2252,6 @@ typedef enum _mainmenu_selections {
 	MAINMENU_ATTRACT_MODE  = 6,
 } _mainmenu_selections;
 
-typedef enum menus
-{
-	SELHERO_LOAD,
-	SELHERO_CLASSES,
-	SELHERO_NAME,
-	SELHERO_SELECT_GAME,
-	SELHERO_DIFFICULTY,
-} menus;
-
 typedef enum dlgresults
 {
 	NEW_GAME = 0,

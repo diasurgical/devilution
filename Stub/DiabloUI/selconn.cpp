@@ -1,67 +1,108 @@
-#include "../../types.h"
+#include "selconn.h"
 
-void selconn_Render()
-{
-	DrawArt(0, 0, &ArtBackground);
-	DrawLogo();
+char selconn_MaxPlayers[21];
+char selconn_Description[64];
+char selconn_Gateway[129];
+bool selconn_ReturnValue = false;
+bool selconn_EndMenu = false;
+_SNETPROGRAMDATA *selconn_ClientInfo;
+_SNETPLAYERDATA *selconn_UserInfo;
+_SNETUIDATA *selconn_UiInfo;
+_SNETVERSIONDATA *selconn_FileInfo;
 
-	DrawArtStr(0, 161, AFT_BIG, AFC_SILVER, "Multi Player Game", JustCentre);
-
-	int w = 335;
-	int x = 280;
-	int y = 261;
-
-	DrawArtStr(x, 211, AFT_BIG, AFC_SILVER, "Select Connection", JustCentre, w);
-
-	char *connections[2] = {
-		//"Battle.net",
-		//"Local Area Network (IPC)",
-		//"Modem",
-		//"Direct Cable Connection",
-		"Local Area Network (UDP)",
-		"Solo",
-	};
-
-	int spacing = 26;
-	int selectorTop = y;
-
-	for (int i = 0; i < 2; i++) {
-		DrawArtStr(x, y, AFT_SMALL, AFC_GOLD, connections[i], JustCentre, w);
-		y += spacing;
-	}
-
-	DrawSelector(x, selectorTop - 2, w, 25, spacing, FOCUS_SMALL);
-
-	if (SelectedItem == 1) {
-		DrawArtStr(35, 218, AFT_SMALL, AFC_SILVER, "Players Supported: 4");
-		DrawArtStr(35, 256, AFT_SMALL, AFC_SILVER, "Requirements:");
-		// TODO need a word wrap function
-		DrawArtStr(35, 275, AFT_SMALL, AFC_SILVER, "All computers must be");
-		DrawArtStr(35, 291, AFT_SMALL, AFC_SILVER, "connected to an");
-		DrawArtStr(35, 307, AFT_SMALL, AFC_SILVER, "UDP-compatible network.");
-	} else {
-		DrawArtStr(35, 218, AFT_SMALL, AFC_SILVER, "Players Supported: 1");
-		DrawArtStr(35, 256, AFT_SMALL, AFC_SILVER, "Play by your self with");
-		DrawArtStr(35, 275, AFT_SMALL, AFC_SILVER, "no network exposure.");
-	}
-
-	DrawArtStr(26, 356, AFT_MED, AFC_SILVER, "no gateway needed", JustCentre, 226);
-
-	DrawArtStr(349, 429, AFT_BIG, AFC_GOLD, "OK");
-	DrawArtStr(476, 429, AFT_BIG, AFC_GOLD, "Cancel");
-}
+UI_Item SELCONNECT_DIALOG[] = {
+	{ { 0, 0, 640, 480 }, UI_IMAGE, 0, 0, NULL, &ArtBackground },
+	{ { 24, 161, 590, 35 }, UI_TEXT, UIS_CENTER | UIS_BIG, 0, "Multi Player Game" },
+	{ { 300, 211, 295, 33 }, UI_TEXT, UIS_CENTER | UIS_BIG, 0, "Select Connection" },
+	{ { 305, 256, 285, 26 }, UI_LIST, UIS_CENTER | UIS_VCENTER | UIS_GOLD, 0, "Local Area Network (UDP)" },
+	{ { 305, 282, 285, 26 }, UI_LIST, UIS_CENTER | UIS_VCENTER | UIS_GOLD, 1, "Solo" },
+	{ { 305, 308, 285, 26 }, UI_LIST, UIS_CENTER | UIS_VCENTER | UIS_GOLD },
+	{ { 305, 334, 285, 26 }, UI_LIST, UIS_CENTER | UIS_VCENTER | UIS_GOLD },
+	{ { 305, 360, 285, 26 }, UI_LIST, UIS_CENTER | UIS_VCENTER | UIS_GOLD },
+	{ { 305, 386, 285, 26 }, UI_LIST, UIS_CENTER | UIS_VCENTER | UIS_GOLD },
+	{ { 35, 218, 205, 21 }, UI_TEXT, 0, 0, selconn_MaxPlayers }, // Max players
+	{ { 35, 256, 205, 21 }, UI_TEXT, 0, 0, "Requirements:" },
+	{ { 35, 275, 205, 66 }, UI_TEXT, 0, 0, selconn_Description }, //Description
+	{ { 30, 356, 220, 31 }, UI_TEXT, UIS_CENTER | UIS_MED, 0, "no gateway needed" },
+	{ { 35, 393, 205, 21 }, UI_TEXT, UIS_CENTER, 0, selconn_Gateway }, // Gateway
+	{ { 16, 427, 250, 35 }, UI_BUTTON, UIS_CENTER | UIS_VCENTER | UIS_BIG | UIS_GOLD | UIS_HIDDEN, 0, "Change Gateway" },
+	{ { 299, 427, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_VCENTER | UIS_BIG | UIS_GOLD, 0, "OK", UiFocusNavigationSelect },
+	{ { 454, 427, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_VCENTER | UIS_BIG | UIS_GOLD, 0, "Cancel", selconn_Esc },
+};
 
 void selconn_Load()
 {
 	LoadBackgroundArt("ui_art\\selconn.pcx");
-	SelectedItem = 1;
-	SelectedItemMax = 2;
+	UiInitList(0, 1, selconn_Focus, selconn_Select);
 }
 
 void selconn_Free()
 {
 	mem_free_dbg(ArtBackground.data);
 	ArtBackground.data = NULL;
+}
+
+void selconn_Esc()
+{
+	selconn_ReturnValue = false;
+	selconn_EndMenu = true;
+}
+
+void selconn_Focus(int value)
+{
+	int players = 4;
+	switch (value) {
+	case 0:
+		sprintf(selconn_Description, "All computers must be connected to an UDP-compatible network.");
+		players = 4;
+		break;
+	case 1:
+		sprintf(selconn_Description, "Play by your self with no network exposure.");
+		players = 1;
+		break;
+	}
+
+	sprintf(selconn_MaxPlayers, "Players Supported: %d", players);
+
+	for (auto &item : SELCONNECT_DIALOG) {
+		if (item.caption != NULL && !(item.flags & (UIS_VCENTER | UIS_CENTER)))
+			WordWrap(&item);
+	}
+}
+
+void selconn_Select(int value)
+{
+	DWORD provider;
+	switch (value) {
+	case 0:
+		provider = 'UDPN';
+		break;
+	case 1:
+		provider = 'SCBL';
+		break;
+	}
+
+	selconn_Free();
+	selconn_EndMenu = SNetInitializeProvider(provider, selconn_ClientInfo, selconn_UserInfo, selconn_UiInfo, selconn_FileInfo);
+	selconn_Load();
+}
+
+bool selconn_Event(SDL_Event *event)
+{
+	switch (event->type) {
+	case SDL_KEYDOWN:
+		if (UiFocusNavigation(event))
+			return true;
+		if (event->key.keysym.sym == SDLK_ESCAPE) {
+			selconn_Esc();
+			return true;
+		}
+		break;
+	case SDL_QUIT:
+		exit(0);
+	}
+
+	return false;
 }
 
 int __stdcall UiSelectProvider(
@@ -72,69 +113,30 @@ int __stdcall UiSelectProvider(
     _SNETVERSIONDATA *file_info,
     int *type)
 {
+	selconn_ClientInfo = client_info;
+	selconn_UserInfo = user_info;
+	selconn_UiInfo = ui_info;
+	selconn_FileInfo = file_info;
 	selconn_Load();
 
 	SDL_Event event;
 
-	bool rv = true;
-	bool endMenu = false;
-	while (!endMenu) {
-		CapFPS();
-		selconn_Render();
+	selconn_ReturnValue = true;
+	selconn_EndMenu = false;
+	while (!selconn_EndMenu) {
+		UiRenderItems(SELCONNECT_DIALOG, size(SELCONNECT_DIALOG));
+		DrawLogo();
 		DrawMouse();
 		UiFadeIn();
 
 		while (SDL_PollEvent(&event)) {
-			switch (event.type) {
-			case SDL_KEYDOWN:
-				if (UiFocuseNavigation(&event))
-					break;
-				switch (event.key.keysym.sym) {
-				case SDLK_ESCAPE:
-					rv = false;
-					endMenu = true;
-					break;
-				case SDLK_RETURN:
-				case SDLK_KP_ENTER:
-				case SDLK_SPACE:
-					UiPlaySelectSound();
-					DWORD provider;
-					switch (SelectedItem) {
-					/*
-					case 1:
-						provider = 'BNET';
-						break;
-					case 2:
-						provider = 'IPXN';
-						break;
-					case 3:
-						provider = 'MODM';
-						break;
-					case 4:
-						provider = 'SCBL';
-						break;
-					case 5:*/
-					case 1:
-						provider = 'UDPN';
-						break;
-					case 2:
-						provider = 'SCBL';
-						break;
-					}
-					selconn_Free();
-					endMenu = SNetInitializeProvider(provider, client_info, user_info, ui_info, file_info);
-					selconn_Load();
-					break;
-				}
-				break;
-			case SDL_QUIT:
-				exit(0);
-			}
+			if (selconn_Event(&event))
+				continue;
+			UiItemMouseEvents(&event, SELCONNECT_DIALOG, size(SELCONNECT_DIALOG));
 		}
 	}
 	BlackPalette();
-
 	selconn_Free();
 
-	return rv;
+	return selconn_ReturnValue;
 }

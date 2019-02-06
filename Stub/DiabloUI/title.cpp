@@ -1,12 +1,5 @@
 #include "../../types.h"
 
-void title_Render()
-{
-	DrawArt(0, 0, &ArtBackground);
-	DrawArtStr(0, 409, AFT_MED, AFC_SILVER, "Copyright \xA9 1996-2001 Blizzard Entertainment", JustCentre);
-	DrawLogo(182, LOGO_BIG);
-}
-
 void title_Load()
 {
 	LoadBackgroundArt("ui_art\\title.pcx");
@@ -23,6 +16,11 @@ void title_Free()
 
 BOOL __stdcall UiTitleDialog(int a1)
 {
+	UI_Item TITLESCREEN_DIALOG[] = {
+		{ { 0, 0, 640, 480 }, UI_IMAGE, 0, 0, NULL, &ArtBackground },
+		{ { 49, 410, 550, 26 }, UI_TEXT, UIS_MED | UIS_CENTER, 0, "Copyright \xA9 1996-2001 Blizzard Entertainment" },
+	};
+
 	title_Load();
 
 	bool endMenu = false;
@@ -30,13 +28,13 @@ BOOL __stdcall UiTitleDialog(int a1)
 
 	SDL_Event event;
 	while (!endMenu && SDL_GetTicks() < timeOut) {
-		CapFPS();
-		title_Render();
+		UiRenderItems(TITLESCREEN_DIALOG, size(TITLESCREEN_DIALOG));
+		DrawLogo(182, LOGO_BIG);
 		UiFadeIn();
 
 		while (SDL_PollEvent(&event)) {
 			switch (event.type) {
-			case SDL_KEYDOWN:/*
+			case SDL_KEYDOWN: /* To match the original uncomment this
 				if (event.key.keysym.sym == SDLK_UP
 				    || event.key.keysym.sym == SDLK_UP
 				    || event.key.keysym.sym == SDLK_LEFT

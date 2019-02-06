@@ -537,7 +537,6 @@ BOOL __stdcall UiCreditsDialog(int a1)
 
 	SDL_Event event;
 	while (!endMenu && lineCount > 0) {
-		CapFPS();
 		credts_Render();
 		UiFadeIn();
 

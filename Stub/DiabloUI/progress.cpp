@@ -75,7 +75,6 @@ int __stdcall UiProgressDialog(HWND window, char *msg, int enable, int(__cdecl *
 
 	SDL_Event event;
 	while (!endMenu && progress < 100) {
-		CapFPS();
 		progress = fnfunc();
 		progress_Render(progress);
 		DrawMouse();
