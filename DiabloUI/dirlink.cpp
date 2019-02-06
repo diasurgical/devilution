@@ -116,9 +116,9 @@ int __fastcall DirLink_10005EB2(HWND hDlg, int a2) { return 0; }
 	v3 = a2;
 	v4 = GetDlgItem(hDlg, 1102);
 	if ( v3 == 1100 )
-		LoadStringA(hInstance, 0x2Au, &Buffer, 255);
+		LoadStringA(hInstance, 0x2Au, &Buffer, 255);//"Create a new game with a difficulty setting of your choice."
 	else
-		LoadStringA(hInstance, 0x2Fu, &Buffer, 255);
+		LoadStringA(hInstance, 0x2Fu, &Buffer, 255);//"A direct link connection was not detected. Check your cable connections and confirm that the connected computer has created a game, then retry."
 	v5 = GetWindowLongA(v4, -21);
 	local_10007FA4(v5, &Buffer);
 	return Doom_10006A13(v2, (int *)&unk_10022A40, 1);
@@ -238,7 +238,7 @@ HWND UNKCALL DirLink_100060D1(HWND arg) { return 0; }
 		}
 		else
 		{
-			LoadStringA(hInstance, 0x2Bu, &Buffer, 127);
+			LoadStringA(hInstance, 0x2Bu, &Buffer, 127);//"\n\nA multi player game was not detected!"
 			result = (HWND)SelYesNo_1000FD39((int)v1, &Buffer, 0, 0);
 		}
 	}
@@ -305,9 +305,9 @@ int UNKCALL DirLink_100061E1(void *arg) { return 0; }
 		if ( SNetJoinGame(dword_10029738, &byte_1002973C, 0, &v6, &v7, gnDlinkPlayerid) )
 			return DirLink_10006047(v1, 1);
 		if ( SErrGetLastError() == -2062548871 )
-			LoadStringA(hInstance, 0x32u, &Buffer, 127);
+			LoadStringA(hInstance, 0x32u, &Buffer, 127);//"\nUnable to join the detected game. Your version of Diablo is incompatible with the game creator's version."
 		else
-			LoadStringA(hInstance, 0x25u, &Buffer, 127);
+			LoadStringA(hInstance, 0x25u, &Buffer, 127);//"\n\nUnable to join game \"%s.\""
 		wsprintfA(&v4, &Buffer, &byte_1002973C);
 		v2 = &v4;
 	}
@@ -339,7 +339,7 @@ int UNKCALL DirLink_100062BF(void *arg, int a2, char *a3, char *a4) { return 0; 
 		result = SErrGetLastError();
 		if ( result == -2062548871 )
 		{
-			LoadStringA(hInstance, 0x32u, &Buffer, 127);
+			LoadStringA(hInstance, 0x32u, &Buffer, 127);//"\nUnable to join the detected game. Your version of Diablo is incompatible with the game creator's version."
 			SelYesNo_1000FD39(v4, &Buffer, 0, 0);
 			result = DirLink_10006047(v4, 2);
 		}

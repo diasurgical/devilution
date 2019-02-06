@@ -162,7 +162,7 @@ BOOL __fastcall SelHero_IsNameReserved(char *name)
 	_strlwr(SrcStr);
 	v1 = 19;
 	while (1) {
-		LoadStringA(ghUiInst, v1, Buffer, 15);
+		LoadStringA(ghUiInst, v1, Buffer, 15);//"gvdl", "dvou", "tiju"0 "cjudi", "bttipmf", "ojhhfs", "cmj{{bse", "benjo"
 		SelHero_SetLastNamePos(Buffer);
 		_strlwr(Buffer);
 		result = (BOOL)strstr(SrcStr, Buffer);
@@ -336,10 +336,10 @@ void __fastcall SelHero_DoStuffWithStrings(HWND hWnd)
 	char Buffer[32];    // [esp+9Ch] [ebp-24h]
 
 	if (SelHero_GetHeroIsGood() == 1)
-		LoadStringA(ghUiInst, 0x23u, Buffer, 31);
+		LoadStringA(ghUiInst, 0x23u, Buffer, 31);//"Delete Multi Player Hero"
 	else
-		LoadStringA(ghUiInst, 0x22u, Buffer, 31);
-	LoadStringA(ghUiInst, 7u, string64, 63);
+		LoadStringA(ghUiInst, 0x22u, Buffer, 31);//"Delete Single Player Hero"
+	LoadStringA(ghUiInst, 7u, string64, 63);//"\nAre you sure you want to delete the character \"%s\"?"
 	wsprintfA(dialogstr, string64, selhero_heronamestr);
 	if (SelYesNo_YesNoDialog(hWnd, dialogstr, Buffer, 1) != 2) {
 		v1 = SelHero_GetHeroSlotFromName(sgpHeroInfo, selhero_heronamestr);
@@ -347,14 +347,14 @@ void __fastcall SelHero_DoStuffWithStrings(HWND hWnd)
 			if (selhero_fnremove(v1)) {
 				sgpHeroInfo = SelHero_GetNextHeroFromStr(sgpHeroInfo, selhero_heronamestr);
 				--selhero_numheroesleft;
-				LoadStringA(ghUiInst, 0x1Eu, string64, 15);
+				LoadStringA(ghUiInst, 0x1Eu, string64, 15);//"New Hero"
 				if (!strcmp(string64, sgpHeroInfo->name)) {
 					PostMessageA(hWnd, 0xBD1u, 0, 0);
 					return;
 				}
 				SelHero_PrintHeroInfo(hWnd, sgpHeroInfo);
 			} else {
-				LoadStringA(ghUiInst, 0x11u, string64, 63);
+				LoadStringA(ghUiInst, 0x11u, string64, 63);//"\n\nDelete character failed."
 				SelYesNo_SelOkDialog(hWnd, string64, Buffer, 1);
 			}
 		}
@@ -457,7 +457,7 @@ void __fastcall SelHero_DoHeroSelClass(HWND hWnd)
 
 	v2 = SDlgDialogBoxParam(ghUiInst, "SELCLASS_DIALOG", (int)hWnd, SelClass_WndProc, 0);
 	if (v2 == -1 || v2 == 2) {
-		LoadStringA(ghUiInst, 0x1Eu, Buffer, 31);
+		LoadStringA(ghUiInst, 0x1Eu, Buffer, 31);//"New Hero"
 		if (!strcmp(Buffer, sgpHeroInfo->name))
 			SelHero_DoHeroEndFade(hWnd, 4);
 		else
@@ -501,17 +501,17 @@ BOOL __fastcall SelHero_CreateHero(HWND hWnd, char *name)
 	char Buffer[32];     // [esp+11Ch] [ebp-28h]
 
 	if (SelHero_GetHeroIsGood() == 1)
-		LoadStringA(ghUiInst, 0x20u, Buffer, 31);
+		LoadStringA(ghUiInst, 0x20u, Buffer, 31);//multi
 	else
-		LoadStringA(ghUiInst, 0x1Fu, Buffer, 31);
+		LoadStringA(ghUiInst, 0x1Fu, Buffer, 31);//"New Single Player Hero"
 	if (!UiValidPlayerName(name)) {
-		LoadStringA(ghUiInst, 0xFu, v5, 127);
+		LoadStringA(ghUiInst, 0xFu, v5, 127);//"\nInvalid name. A name cannot contain spaces, reserved characters, or reserved words."
 		SelYesNo_SelOkDialog(hWnd, v5, Buffer, 1);
 		return 0;
 	}
 	v2 = SelHero_GetHeroSlotFromName(sgpHeroInfo, name);
 	if (v2) {
-		LoadStringA(ghUiInst, 8u, v5, 127);
+		LoadStringA(ghUiInst, 8u, v5, 127);//"\nCharacter already exists. Do you want to overwrite \"%s\"?"
 		wsprintfA(dialogstr, v5, v2->name);
 		if (SelYesNo_YesNoDialog(hWnd, dialogstr, Buffer, 1) == 2)
 			return 0;
@@ -519,7 +519,7 @@ BOOL __fastcall SelHero_CreateHero(HWND hWnd, char *name)
 	strcpy(heroinfo_create.name, name);
 	heroinfo_create.hassaved = 0;
 	if (!selhero_fncreate(&heroinfo_create)) {
-		LoadStringA(ghUiInst, 0x10u, v5, 127);
+		LoadStringA(ghUiInst, 0x10u, v5, 127);//"\n\nUnable to create character."
 		OkCancel_DoOkDialog(hWnd, v5, 1);
 		return 0;
 	}
@@ -678,13 +678,13 @@ void __fastcall SelHero_SelectHeroRegion(HWND hWnd)
 
 	v2       = SelHero_AllocHeroInfo();
 	v2->next = 0;
-	LoadStringA(ghUiInst, 0x1Eu, v2->name, 15);
+	LoadStringA(ghUiInst, 0x1Eu, v2->name, 15);//"New Hero"
 	v2->level             = 0;
 	sgpHeroInfo           = SelRegn_SetNextHero(sgpHeroInfo, v2);
 	v3                    = sgpHeroInfo;
 	selhero_numheroesleft = 1;
 	if (!selhero_fninfo(SelHero_GetHeroInfo)) {
-		LoadStringA(ghUiInst, 0x12u, Buffer, 64);
+		LoadStringA(ghUiInst, 0x12u, Buffer, 64);//"\n\nUnable to read character files."
 		OkCancel_DoOkDialog(hWnd, Buffer, 1);
 	}
 	if (v3 == sgpHeroInfo)

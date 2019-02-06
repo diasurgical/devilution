@@ -170,9 +170,9 @@ LONG __fastcall SelIPX_1000C818(HWND hDlg, int nIDDlgItem) { return 0; }
 					if ( Connect_10003DAF(&v10, (int)&v16, (int)&v19, (int)&v18)
 					  && Connect_10003E61((const char *)v18, &v13) )
 					{
-						LoadStringA(hInstance, v17 + 1003, &Buffer, 31);
-						LoadStringA(hInstance, v15 + 4, &v12, 31);
-						LoadStringA(hInstance, 0x31u, &v9, 127);
+						LoadStringA(hInstance, v17 + 1003, &Buffer, 31);//"Normal Difficulty","Nightmare Difficulty", "Hell Difficulty"
+						LoadStringA(hInstance, v15 + 4, &v12, 31);//"Warrior","Rogue","Sorcerer"
+						LoadStringA(hInstance, 0x31u, &v9, 127);//"%s.\nCreated by %s, a level %d %s."
 						wsprintfA(&v8, &v9, &Buffer, v19, v14, &v12);
 						v6 = GetWindowLongA(hWnd, -21);
 						v7 = &v8;
@@ -550,7 +550,7 @@ HWND UNKCALL SelIPX_1000CD4A(HWND hWnd) { return 0; }
 	if ( SelGame_1000B67E() != 1230002254 )
 	{
 		v5 = GetDlgItem(v1, 1038);
-		LoadStringA(hInstance, 0x4Du, &Buffer, 63);
+		LoadStringA(hInstance, 0x4Du, &Buffer, 63);//"Join Games"
 		SetWindowTextA(v5, &Buffer);
 	}
 	Doom_100068AB(v1, (int *)&unk_100230F0, 5);
@@ -567,8 +567,8 @@ HWND UNKCALL SelIPX_1000CD4A(HWND hWnd) { return 0; }
 		*(_DWORD *)(v6 + 4) = 0;
 		*(_BYTE *)(dword_1002A4B4 + 140) = 0;
 		*(_DWORD *)dword_1002A4B4 = 0;
-		LoadStringA(hInstance, 0x24u, (LPSTR)(dword_1002A4B4 + 12), 127);
-		LoadStringA(hInstance, 0x2Au, (LPSTR)(dword_1002A4B4 + 140), 127);
+		LoadStringA(hInstance, 0x24u, (LPSTR)(dword_1002A4B4 + 12), 127);//"Create Game"
+		LoadStringA(hInstance, 0x2Au, (LPSTR)(dword_1002A4B4 + 140), 127);//"Create a new game with a difficulty setting of your choice."
 	}
 	SNetEnumGames(0, 0, SelIPX_1000CAD5, 0);
 	SelIPX_1000CB83(v1, (const char *)dword_1002A4B4);
@@ -1171,9 +1171,9 @@ int __fastcall SelIPX_1000D5B0(int a1, int a2) { return 0; }
 		if ( SNetJoinGame(*(_DWORD *)(v2 + 4), v2 + 12, 0, &v9, &v7, gnIpxPlayerid) )
 			return SelIPX_1000D3A0(v10, 1);
 		if ( SErrGetLastError() == -2062548871 )
-			LoadStringA(hInstance, 0x32u, &Buffer, 127);
+			LoadStringA(hInstance, 0x32u, &Buffer, 127);//"\nUnable to join the detected game. Your version of Diablo is incompatible with the game creator's version."
 		else
-			LoadStringA(hInstance, 0x25u, &Buffer, 127);
+			LoadStringA(hInstance, 0x25u, &Buffer, 127);//"\n\nUnable to join game \"%s.\""
 		wsprintfA(&v5, &Buffer, v2 + 12);
 		v3 = &v5;
 	}

@@ -387,7 +387,7 @@ BOOL __stdcall UiAuthCallback(int a1, char *a2, char *a3, char a4, char *a5, LPS
 	v8            = strlen(a5) + 1;
 	if (v7 > 0x100 || v8 > 0x100) {
 		if (lpBuffer)
-			LoadStringA(ghUiInst, 0x413u, lpBuffer, cchBufferMax);
+			LoadStringA(ghUiInst, 0x413u, lpBuffer, cchBufferMax);//"Error: Unable to authorize. String too long."
 		return 0;
 	}
 	memcpy(a1a, a3, v7);
@@ -397,7 +397,7 @@ BOOL __stdcall UiAuthCallback(int a1, char *a2, char *a3, char a4, char *a5, LPS
 			if (!(a4 & 9)) {
 				v9 = 0;
 				while (1) {
-					LoadStringA(ghUiInst, v9 + 4, Buffer, 256);
+					LoadStringA(ghUiInst, v9 + 4, Buffer, 256);//"Warrior", "Rogue", "Sorcerer"
 					if (strstr(v17, Buffer))
 						break;
 					if (++v9 >= 3)
@@ -407,7 +407,7 @@ BOOL __stdcall UiAuthCallback(int a1, char *a2, char *a3, char a4, char *a5, LPS
 					goto LABEL_20;
 				*(_DWORD *)&GameData.bDiff = 1;
 			LABEL_16:
-				LoadStringA(ghUiInst, 0x408u, Buffer, 256);
+				LoadStringA(ghUiInst, 0x408u, Buffer, 256);//"(L"
 				v10 = strstr(v17, Buffer);
 				if (v10) {
 					v11 = strlen(Buffer);
@@ -419,7 +419,7 @@ BOOL __stdcall UiAuthCallback(int a1, char *a2, char *a3, char a4, char *a5, LPS
 					return 1;
 			LABEL_20:
 				if (lpBuffer) {
-					LoadStringA(ghUiInst, 0x415u, v15, 256);
+					LoadStringA(ghUiInst, 0x415u, v15, 256);//"\"%s\" is a restricted channel, and you are not authorized to enter."
 					v14 = sprintf(Buffer, v15, v17) + 1;
 					if (cchBufferMax >= v14) {
 						memcpy(lpBuffer, Buffer, v14);
@@ -435,19 +435,19 @@ BOOL __stdcall UiAuthCallback(int a1, char *a2, char *a3, char a4, char *a5, LPS
 			if (GameData.bDiff == 1) {
 				if (heroinfo.level < 20u) {
 					if (lpBuffer)
-						LoadStringA(ghUiInst, 0x411u, lpBuffer, cchBufferMax);
+						LoadStringA(ghUiInst, 0x411u, lpBuffer, cchBufferMax);//"Your character must reach level 20 before you can enter a multiplayer game of Nightmare difficulty."
 					return 0;
 				}
 			} else if (GameData.bDiff == 2 && heroinfo.level < 30u) {
 				if (lpBuffer)
-					LoadStringA(ghUiInst, 0x412u, lpBuffer, cchBufferMax);
+					LoadStringA(ghUiInst, 0x412u, lpBuffer, cchBufferMax);//"Your character must reach level 30 before you can enter a multiplayer game of Hell Difficulty."
 				return 0;
 			}
 		}
 		return 1;
 	}
 	if (lpBuffer)
-		LoadStringA(ghUiInst, 0x414u, lpBuffer, cchBufferMax);
+		LoadStringA(ghUiInst, 0x414u, lpBuffer, cchBufferMax);//"Error: Unable to authorize. Unrecognized character information."
 	return 0;
 }
 
@@ -510,7 +510,7 @@ BOOL __stdcall UiDrawDescCallback(int game_type, COLORREF color, LPCSTR lpString
 		} else {
 			v14 = a8 && a4;
 			if (gamedata.bDiff < 3u)
-				LoadStringA(ghUiInst, gamedata.bDiff + 1003, Buffer, 128);
+				LoadStringA(ghUiInst, gamedata.bDiff + 1003, Buffer, 128);//"Normal Difficulty", "Nightmare Difficulty", "Hell Difficulty"
 			if (align & 2 && v14) {
 				GetTextMetricsA(v8[6], &tm);
 				lpStringa = (LPCSTR)(tm.tmHeight + tm.tmExternalLeading);
@@ -518,7 +518,7 @@ BOOL __stdcall UiDrawDescCallback(int game_type, COLORREF color, LPCSTR lpString
 				align = SetTextAlign(v8[6], 1u);
 				v15   = strlen(Buffer);
 				TextOutA(v8[6], 0, 0, Buffer, v15);
-				LoadStringA(ghUiInst, 0x409u, String, 128);
+				LoadStringA(ghUiInst, 0x409u, String, 128);//"Creator: "
 				MoveToEx(v8[6], (int)v8[7], (int)v8[8] + (_DWORD)lpStringa, 0);
 				v16 = strlen(String);
 				TextOutA(v8[6], 0, 0, String, v16);
@@ -531,12 +531,12 @@ BOOL __stdcall UiDrawDescCallback(int game_type, COLORREF color, LPCSTR lpString
 				connect_color_text = 0;
 				if (a7) {
 					SetTextAlign(v8[6], 1u);
-					LoadStringA(ghUiInst, 0x40Cu, &heroinfo.name[8], 32);
-					LoadStringA(ghUiInst, 0x40Du, v31, 32);
+					LoadStringA(ghUiInst, 0x40Cu, &heroinfo.name[8], 32);//"%s:  %d:%02d%s"
+					LoadStringA(ghUiInst, 0x40Du, v31, 32);//"Time"
 					v18 = localtime(&a7);
 					v19 = v18;
 					if (v18) {
-						LoadStringA(ghUiInst, (v18->tm_hour > 12) + 1034, (LPSTR)&rc.top, 10);
+						LoadStringA(ghUiInst, (v18->tm_hour > 12) + 1034, (LPSTR)&rc.top, 10);//"am"/"pm"
 						v20 = v19->tm_hour;
 						if (v20 > 12)
 							v19->tm_hour = v20 - 12;

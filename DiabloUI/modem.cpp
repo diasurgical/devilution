@@ -312,7 +312,7 @@ int UNKCALL Modem_1000893D(HWND hWnd) { return 0; }
 	v2 = *(_DWORD *)(dword_1002A138 + 24);
 	v11 = 0;
 	v10 = v2;
-	LoadStringA(hInstance, 0x47u, &Buffer, 31);
+	LoadStringA(hInstance, 0x47u, &Buffer, 31);//"Game %d"
 	wsprintfA(&v4, &Buffer, dword_1002A130);
 	if ( CreaDung_100051D8(
 			 (int)&v8,
@@ -366,24 +366,24 @@ int __fastcall Modem_10008A38(HWND hWnd, int a2) { return 0; }
 		switch ( dword_1002A12C )
 		{
 			case -2062548871:
-				LoadStringA(hInstance, 0x32u, &Buffer, 127);
+				LoadStringA(hInstance, 0x32u, &Buffer, 127);//"\nUnable to join the detected game. Your version of Diablo is incompatible with the game creator's version."
 				break;
 			case 54:
-				LoadStringA(hInstance, 0x42u, &Buffer, 127);
+				LoadStringA(hInstance, 0x42u, &Buffer, 127);//"\n\nUnable to connect. The number dialed was busy."
 				break;
 			case 1204:
-				LoadStringA(hInstance, 0x4Cu, &Buffer, 127);
+				LoadStringA(hInstance, 0x4Cu, &Buffer, 127);//"Modem not detected. Please ensure that your modem is turned on and connected correctly."
 				break;
 			case 1222:
-				LoadStringA(hInstance, 0x41u, &Buffer, 127);
+				LoadStringA(hInstance, 0x41u, &Buffer, 127);//"\n\nUnable to dial. No dial tone was detected."
 				break;
 			case 1223:
 				goto LABEL_18;
 			case 2250:
-				LoadStringA(hInstance, 0x40u, &Buffer, 127);
+				LoadStringA(hInstance, 0x40u, &Buffer, 127);//"\n\nUnable to connect. There was no answer at the number dialed."
 				break;
 			default:
-				LoadStringA(hInstance, 0x33u, &Buffer, 127);
+				LoadStringA(hInstance, 0x33u, &Buffer, 127);//"\nUnable to establish a connection. A game of Diablo was not detected at the specified phone number."
 				break;
 		}
 		SelYesNo_1000FD39((int)v3, &Buffer, 0, 1);

@@ -134,24 +134,24 @@ HWND __fastcall SelDial_1000B1FB(HWND hWnd, int a2) { return 0; }
 
 	v2 = a2;
 	v3 = hWnd;
-	LoadStringA(hInstance, 0x39u, &Buffer, 63);
+	LoadStringA(hInstance, 0x39u, &Buffer, 63);//"Description:"
 	if ( v2 == 1117 )
 	{
 		if ( Modem_1000855D() )
-			LoadStringA(hInstance, 0x43u, &v6, 255);
+			LoadStringA(hInstance, 0x43u, &v6, 255);//"Create a new game with a difficulty setting of your choice. The connected player can join your game after you create it."
 		else
-			LoadStringA(hInstance, 0x36u, &v6, 255);
+			LoadStringA(hInstance, 0x36u, &v6, 255);//"Create a new game with a difficulty setting of your choice. Another player can dial in and join your game in progress."
 	}
 	else if ( v2 == 1118 )
 	{
 		if ( Modem_1000855D() )
-			LoadStringA(hInstance, 0x44u, &v6, 255);
+			LoadStringA(hInstance, 0x44u, &v6, 255);//"Join the game created by the person that you currently have a connection with."
 		else
-			LoadStringA(hInstance, 0x37u, &v6, 255);
+			LoadStringA(hInstance, 0x37u, &v6, 255);//"Enter and call a number not listed here and join a game already in progress at that number."
 	}
 	else
 	{
-		LoadStringA(hInstance, 0x38u, &v6, 255);
+		LoadStringA(hInstance, 0x38u, &v6, 255);//"Call the selected number and join a game already in progress at that number."
 	}
 	v4 = GetParent(v3);
 	return Modem_10008563(v4, &Buffer, (int)&v6);
@@ -259,9 +259,9 @@ HWND UNKCALL SelDial_1000B3D8(HWND hDlg) { return 0; }
 		v4 = Modem_1000863D();
 		v5 = Modem_1000865F(v4);
 		if ( v5 <= Modem_10008659() )
-			LoadStringA(hInstance, 0x4Au, &Buffer, 63);
+			LoadStringA(hInstance, 0x4Au, &Buffer, 63);//"Join Previous Game"
 		else
-			LoadStringA(hInstance, 0x4Bu, &Buffer, 63);
+			LoadStringA(hInstance, 0x4Bu, &Buffer, 63);//"Join New Game"
 		v6 = GetWindowLongA(v3, -21);
 		local_10007FA4(v6, &Buffer);
 		result = (HWND)Doom_1000680A(v1, (int *)&unk_10022FB0, 0, 1);
@@ -333,7 +333,7 @@ HWND USERCALL SelDial_1000B483(HWND hWnd, int a2) { return 0; }
 		}
 		while ( (signed int)v6 < (signed int)&dword_1002A400 );
 		SelDial_1000B5D9();
-		LoadStringA(hInstance, 0x34u, (LPSTR)&v13, 31);
+		LoadStringA(hInstance, 0x34u, (LPSTR)&v13, 31);//"Call %s"
 		v7 = 0;
 		v15 = byte_1002A380;
 		do

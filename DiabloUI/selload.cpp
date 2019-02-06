@@ -84,7 +84,7 @@ void __fastcall SelLoad_LoadFocusAndMsg(HWND hWnd)
 	char Buffer[32]; // [esp+8h] [ebp-20h]
 
 	v2 = GetParent(hWnd);
-	LoadStringA(ghUiInst, 0x1Du, Buffer, 31);
+	LoadStringA(ghUiInst, 0x1Du, Buffer, 31);//"Single Player Characters"
 	SelHero_SetStringWithMsg(v2, Buffer);
 	v3 = GetWindowLongA(v2, -21);
 	SetWindowLongA(hWnd, -21, v3);

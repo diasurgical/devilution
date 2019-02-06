@@ -231,9 +231,9 @@ void __fastcall SelList_ShowListWindow(HWND hWnd)
 	v2 = GetParent(hWnd);
 	SelList_DoListOldProc(hWnd);
 	if (SelHero_GetHeroIsGood() == 1)
-		LoadStringA(ghUiInst, 0x1Cu, Buffer, 31);
+		LoadStringA(ghUiInst, 0x1Cu, Buffer, 31);//multi
 	else
-		LoadStringA(ghUiInst, 0x1Du, Buffer, 31);
+		LoadStringA(ghUiInst, 0x1Du, Buffer, 31);//"Single Player Characters"
 	SelHero_SetStringWithMsg(v2, Buffer);
 	v3 = GetWindowLongA(v2, -21);
 	SetWindowLongA(hWnd, -21, v3);

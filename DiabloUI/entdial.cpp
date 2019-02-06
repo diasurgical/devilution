@@ -96,8 +96,8 @@ HWND USERCALL EntDial_10006DB8(HWND hWnd, int a2) { return 0; }
 	SendMessageA(v5, 0x401u, 0x1Fu, 0);
 	SendMessageA(v5, 0x404u, 0, (LPARAM)"<>%&?");
 	v10 = a2;
-	LoadStringA(hInstance, 0x3Bu, (LPSTR)&v9, 63);
-	LoadStringA(hInstance, 0x3Au, (LPSTR)&v8, 255);
+	LoadStringA(hInstance, 0x3Bu, (LPSTR)&v9, 63);//"Description:"
+	LoadStringA(hInstance, 0x3Au, (LPSTR)&v8, 255);//"Enter the number you want to call exactly as you would dial it. We recommend including a code to disable call waiting."
 	v6 = GetParent(v2);
 	return Modem_10008563(v6, (const char *)&v9, (int)&v8);
 } */

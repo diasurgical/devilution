@@ -186,7 +186,7 @@ int __fastcall SelYesNo_SpawnErrDialog(HWND hWnd, int string_rsrc, int is_popup)
 	yesno_is_popup      = is_popup;
 	yesno_remove_focus  = 0;
 	yesno_hero_name     = 0;
-	yesno_dialog_string = Buffer;
+	yesno_dialog_string = Buffer; // "The Rogue and Sorcerer are only available in the full retail version of Diablo. For ordering information call (800) 953-SNOW."
 	YesNoFunc           = 0;
 	return SDlgDialogBoxParam(ghUiInst, "SPAWNERR_DIALOG", (int)hWnd, SelYesNo_WndProc, 0);
 }

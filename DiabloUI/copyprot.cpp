@@ -6,9 +6,9 @@ BOOL __stdcall UiCopyProtError(int *pdwResult)
 	char Buffer[128]; // [esp+0h] [ebp-80h]
 
 	if (DiabloUI_GetSpawned())
-		LoadStringA(ghUiInst, 0x3Fu, Buffer, 127);
+		LoadStringA(ghUiInst, 0x3Fu, Buffer, 127);//"Unable to locate the Spawned Diablo data file."
 	else
-		LoadStringA(ghUiInst, 0x1Bu, Buffer, 127);
+		LoadStringA(ghUiInst, 0x1Bu, Buffer, 127);//"Please insert the Diablo CD into your CD-ROM drive and press 'OK'."
 	v1 = (int)SDrawGetFrameWindow(NULL);
 	v2 = SDlgDialogBoxParam(ghUiInst, "OKCANCEL_DIALOG", v1, CopyProt_WndProc, (int)Buffer);
 	if (pdwResult)

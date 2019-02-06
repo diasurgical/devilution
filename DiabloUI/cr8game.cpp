@@ -39,10 +39,10 @@ BOOL __fastcall cr8game_GetSnetCreaGame(HWND hWnd)
 		v13 = SNetCreateGame(cr8_gamename, cr8_gamepassword, a4, v7, v6, v5, v4, a2, 0, v3);
 		if (!v13) {
 			if (SErrGetLastError() == 183) {
-				LoadStringA(ghUiInst, 0x40Fu, Buffer, 128);
+				LoadStringA(ghUiInst, 0x40Fu, Buffer, 128);//"There is already a game running using the name: %s."
 				sprintf(Text, Buffer, cr8_gamename);
 			} else {
-				LoadStringA(ghUiInst, 0x410u, Text, 256);
+				LoadStringA(ghUiInst, 0x410u, Text, 256);//"Unable to create game."
 			}
 			UiMessageBoxCallback(hWnd, Text, 0, 0x30u);
 		}
@@ -121,7 +121,7 @@ LRESULT __stdcall cr8game_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPa
 					if (SelHero_IsNameReserved(cr8_gamename)
 					    || SelHero_NameHasChar(cr8_gamename, &nullcharacter)
 					    || !cr8game_CheckValidGameName(cr8_gamename)) {
-						LoadStringA(ghUiInst, 0x404u, Buffer, 256);
+						LoadStringA(ghUiInst, 0x404u, Buffer, 256);//"Invalid name. A valid name must not contain reserved words or reserved characters."
 						OkCancel_DoOkDialog(hWnd, Buffer, 1);
 						cr8_gamename[0] = 0;
 					} else {
@@ -134,7 +134,7 @@ LRESULT __stdcall cr8game_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPa
 							SDlgEndDialog(hWnd, (void *)HANDLE_FLAG_INHERIT);
 					}
 				} else {
-					LoadStringA(ghUiInst, 0x3F0u, Buffer, 256);
+					LoadStringA(ghUiInst, 0x3F0u, Buffer, 256);//"Unable to locate the Spawned Diablo data file."
 					OkCancel_DoOkDialog(hWnd, Buffer, 1);
 				}
 			} else {
@@ -151,6 +151,9 @@ LRESULT __stdcall cr8game_WndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPa
 							}
 							cr8game_BlitCr8Dialog(hWnd, a2);
 							v7 = GetDlgItem(hWnd, 1040);
+							//"Normal Difficulty\nThis is where a starting character should begin the quest to defeat Diablo."
+							//"Nightmare Difficulty\nThe denizens of the Labyrinth have been bolstered and will prove to be a greater challenge. This is recommended for experienced characters only."
+							//"Hell Difficulty\nThe most powerful of the underworld's creatures lurk at the gateway into Hell. Only the most experienced characters should venture in this realm."
 							cr8game_SetWindowStr(v7, 1029, a2);
 							v4                 = 273;
 							cr8_dword_1002966C = a2;

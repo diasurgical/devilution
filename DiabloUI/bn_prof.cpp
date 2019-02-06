@@ -411,8 +411,8 @@ HINSTANCE __fastcall bn_prof_10001B0A(HWND a1, const CHAR *a2) { return 0; }
 				SetActiveWindow(v8);
 				v9 = (HWND)SDrawGetFrameWindow(NULL);
 				ShowWindow(v9, 0);
-				LoadStringA(hInstance, 0x50u, &Buffer, 512);
-				LoadStringA(hInstance, 0x51u, &Caption, 64);
+				LoadStringA(hInstance, 0x50u, &Buffer, 512);//"Battle.net was unable to launch your default browser."
+				LoadStringA(hInstance, 0x51u, &Caption, 64);//"Battle.net"
 				UiMessageBoxCallback(hWnd, &Buffer, &Caption, 0x30u);
 			}
 		}
@@ -769,7 +769,8 @@ void __cdecl UiProfileDraw() { return; }
 	v35 = dword_10029414;
 	if ( !SBltROP3Clipped(a9, &v30, &v36, a10, dword_1002942C, &v22, &v34, dword_1002940C, 0, 13369376) )
 		return 0;
-	if ( !LoadStringA(hInstance, 0x4Fu, Buffer, 255) )
+	if ( !LoadStringA(hInstance, 0x4Fu, Buffer, 255) ) // 79, 	"If this character has no Battle.net password, you must create a Battle.net account by pressing the \"New Account\" button. While creating the new account you may rename your character."
+
 		return 0;
 	v11 = MulDiv(12, 96, 72);
 	v12 = CreateFontA(-v11, 0, 0, 0, 400, 0, 0, 0, 0, 0, 0, 0, 0x20u, "Arial");

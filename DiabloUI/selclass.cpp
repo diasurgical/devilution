@@ -88,9 +88,9 @@ void __fastcall SelClass_LoadClassFocus(HWND hWnd)
 	v1 = hWnd;
 	v2 = GetParent(hWnd);
 	if (SelHero_GetHeroIsGood() == 1)
-		LoadStringA(ghUiInst, 0x20u, Buffer, 31);
+		LoadStringA(ghUiInst, 0x20u, Buffer, 31);//multi
 	else
-		LoadStringA(ghUiInst, 0x1Fu, Buffer, 31);
+		LoadStringA(ghUiInst, 0x1Fu, Buffer, 31);//single
 	SelHero_SetStringWithMsg(v2, Buffer);
 	v3 = GetWindowLongA(v2, -21);
 	SetWindowLongA(v1, -21, v3);

@@ -141,7 +141,7 @@ HWND __fastcall SelConn_1000A226(HWND hDlg, int nIDDlgItem) { return 0; }
 					v6 = result;
 					if ( result )
 					{
-						LoadStringA(hInstance, 0x21u, &Buffer, 63);
+						LoadStringA(hInstance, 0x21u, &Buffer, 63);//"Players Supported: %d"
 						if ( dword_1002A370 )
 						{
 							v7 = *(_DWORD *)(dword_1002A370 + 24);
@@ -883,13 +883,13 @@ int UNKCALL SelConn_1000AC30(HWND arg) { return 0; }
 			v4 = SErrGetLastError();
 			v5 = v1;
 			if ( v4 == 1222 )
-				v6 = 46;
+				v6 = 46;//"\nUnable to detect a modem. Please install or configure a modem."
 			else
-				v6 = 53;
+				v6 = 53;//"\n\nUnable to initialize the selected device."
 			goto LABEL_14;
 		case 1396916812:
 LABEL_17:
-			v6 = 44;
+			v6 = 44;//"\n\nUnable to initialize selected connection method."
 			v5 = v1;
 LABEL_14:
 			result = SelConn_1000AE19(v5, v6);

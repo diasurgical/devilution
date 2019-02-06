@@ -214,10 +214,10 @@ void __fastcall CreaDung_DoSnetCreaGame(HWND hWnd)
 		} else {
 			creadung_lasterror = SErrGetLastError();
 			if (creadung_lasterror == 183) {
-				LoadStringA(ghUiInst, 0x49u, v5, 127);
+				LoadStringA(ghUiInst, 0x49u, v5, 127);//"Unable to create game. The game \"%s\" already exists."
 				wsprintfA(Buffer, v5, creadung_gamename);
 			} else {
-				LoadStringA(ghUiInst, 0x26u, Buffer, 191);
+				LoadStringA(ghUiInst, 0x26u, Buffer, 191);//"\n\nUnable to create game."
 			}
 			SelYesNo_SelOkDialog(hWnd, Buffer, 0, 0);
 		}
