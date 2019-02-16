@@ -78,7 +78,7 @@ Please keep in mind that this is still being worked on and is missing parts of U
 
 ### Building deviltuionX 32bit on 64bit platforms
 ```
-sudo apt-get install cmake g++-multilib libsdl2-dev:i386 libsdl2-mixer-dev:i386 libsdl2-ttf-dev:i386 libsodium-dev:i386
+sudo apt-get install cmake g++-multilib libsdl2-dev:i386 libsdl2-mixer-dev:i386 libsdl2-ttf-dev:i386 libsodium-dev libsodium-dev:i386
 ```
 
 Now run the following commands:
