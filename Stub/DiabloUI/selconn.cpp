@@ -27,13 +27,13 @@ UI_Item SELCONNECT_DIALOG[] = {
 	{ { 35, 393, 205, 21 }, UI_TEXT, UIS_CENTER, 0, selconn_Gateway }, // Gateway
 	{ { 16, 427, 250, 35 }, UI_BUTTON, UIS_CENTER | UIS_VCENTER | UIS_BIG | UIS_GOLD | UIS_HIDDEN, 0, "Change Gateway" },
 	{ { 299, 427, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_VCENTER | UIS_BIG | UIS_GOLD, 0, "OK", UiFocusNavigationSelect },
-	{ { 454, 427, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_VCENTER | UIS_BIG | UIS_GOLD, 0, "Cancel", selconn_Esc },
+	{ { 454, 427, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_VCENTER | UIS_BIG | UIS_GOLD, 0, "Cancel", UiFocusNavigationEsc },
 };
 
 void selconn_Load()
 {
 	LoadBackgroundArt("ui_art\\selconn.pcx");
-	UiInitList(0, 1, selconn_Focus, selconn_Select);
+	UiInitList(0, 1, selconn_Focus, selconn_Select, selconn_Esc, SELCONNECT_DIALOG, size(SELCONNECT_DIALOG));
 }
 
 void selconn_Free()
@@ -87,24 +87,6 @@ void selconn_Select(int value)
 	selconn_Load();
 }
 
-bool selconn_Event(SDL_Event *event)
-{
-	switch (event->type) {
-	case SDL_KEYDOWN:
-		if (UiFocusNavigation(event))
-			return true;
-		if (event->key.keysym.sym == SDLK_ESCAPE) {
-			selconn_Esc();
-			return true;
-		}
-		break;
-	case SDL_QUIT:
-		exit(0);
-	}
-
-	return false;
-}
-
 int __stdcall UiSelectProvider(
     int a1,
     _SNETPROGRAMDATA *client_info,
@@ -119,21 +101,10 @@ int __stdcall UiSelectProvider(
 	selconn_FileInfo = file_info;
 	selconn_Load();
 
-	SDL_Event event;
-
 	selconn_ReturnValue = true;
 	selconn_EndMenu = false;
 	while (!selconn_EndMenu) {
-		UiRenderItems(SELCONNECT_DIALOG, size(SELCONNECT_DIALOG));
-		DrawLogo();
-		DrawMouse();
-		UiFadeIn();
-
-		while (SDL_PollEvent(&event)) {
-			if (selconn_Event(&event))
-				continue;
-			UiItemMouseEvents(&event, SELCONNECT_DIALOG, size(SELCONNECT_DIALOG));
-		}
+		UiRender();
 	}
 	BlackPalette();
 	selconn_Free();

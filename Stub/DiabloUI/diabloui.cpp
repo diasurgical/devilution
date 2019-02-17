@@ -1,4 +1,5 @@
 #include "../../types.h"
+#include <iconv.h>
 
 TTF_Font *font;
 int SelectedItemMin = 1;
@@ -12,8 +13,14 @@ Art ArtCursor;
 Art ArtHero;
 
 void(__stdcall *gfnSoundFunction)(char *file);
-void(__stdcall *gfnListSelect)(int value);
 void(__stdcall *gfnListFocus)(int value);
+void(__stdcall *gfnListSelect)(int value);
+void(__stdcall *gfnListEsc)(int value);
+UI_Item *gUiItems;
+int gUiItemCnt;
+bool UiItemsWraps;
+char *UiTextInput;
+int UiTextInputLen;
 
 int SCREEN_WIDTH = 640;
 int SCREEN_HEIGHT = 480;
@@ -120,15 +127,28 @@ void __cdecl UiDestroy()
 	font = NULL;
 }
 
-void UiInitList(int min, int max, void(__stdcall *fnFocus)(int value), void(__stdcall *fnSelect)(int value))
+void UiInitList(int min, int max, void(__stdcall *fnFocus)(int value), void(__stdcall *fnSelect)(int value), void(__stdcall *fnEsc)(), UI_Item *items, int itemCnt, bool itemsWraps)
 {
 	SelectedItem = min;
 	SelectedItemMin = min;
 	SelectedItemMax = max;
 	gfnListFocus = fnFocus;
 	gfnListSelect = fnSelect;
+	gfnListEsc = fnEsc;
+	gUiItems = items;
+	gUiItemCnt = itemCnt;
+	UiItemsWraps = itemsWraps;
 	if (fnFocus)
 		fnFocus(min);
+
+	SDL_StopTextInput(); // input is enabled by default
+	for (int i = 0; i < itemCnt; i++) {
+		if (items[i].type == UI_EDIT) {
+			SDL_StartTextInput();
+			UiTextInput = items[i].caption;
+			UiTextInputLen = items[i].value;
+		}
+	}
 }
 
 void UiPlayMoveSound()
@@ -170,36 +190,88 @@ void UiFocus(int itemIndex, bool wrap = false)
 		gfnListFocus(itemIndex);
 }
 
-bool UiFocusNavigation(SDL_Event *event, bool wrap)
+void selhero_CatToName(char *in_buf, char *out_buf, int cnt)
 {
-	if (event->type != SDL_KEYDOWN) {
-		return false;
+	iconv_t cd = iconv_open("ISO_8859-1//TRANSLIT//IGNORE", "UTF-8");
+	if (cd == (iconv_t)-1) {
+		TermMsg("Failed to load iconv!");
 	}
 
-	switch (event->key.keysym.sym) {
-	case SDLK_UP:
-		UiFocus(SelectedItem - 1, wrap);
+	size_t in_left = strlen(in_buf);
+	char output[SDL_TEXTINPUTEVENT_TEXT_SIZE] = "";
+	char *iso_buf = output;
+	size_t out_left = sizeof(output) - 1;
+
+	while (in_left && out_left) {
+		iconv(cd, &in_buf, &in_left, &iso_buf, &out_left);
+	}
+	iconv_close(cd);
+	strncat(out_buf, output, cnt - strlen(out_buf));
+}
+
+bool UiFocusNavigation(SDL_Event *event)
+{
+	if (event->type == SDL_QUIT)
+		exit(0);
+
+	if (event->type == SDL_KEYDOWN) {
+		switch (event->key.keysym.sym) {
+		case SDLK_UP:
+			UiFocus(SelectedItem - 1, UiItemsWraps);
+			return true;
+		case SDLK_DOWN:
+			UiFocus(SelectedItem + 1, UiItemsWraps);
+			return true;
+		case SDLK_TAB:
+			if (SDL_GetModState() & KMOD_SHIFT)
+				UiFocus(SelectedItem - 1, UiItemsWraps);
+			else
+				UiFocus(SelectedItem + 1, UiItemsWraps);
+			return true;
+		case SDLK_PAGEUP:
+			UiFocus(SelectedItemMin);
+			return true;
+		case SDLK_PAGEDOWN:
+			UiFocus(SelectedItemMax);
+			return true;
+		case SDLK_RETURN:
+		case SDLK_KP_ENTER:
+		case SDLK_SPACE:
+			UiFocusNavigationSelect();
+			return true;
+		}
+	}
+
+	if (SDL_IsTextInputActive()) {
+		switch (event->type) {
+		case SDL_KEYDOWN:
+			switch (event->key.keysym.sym) {
+			case SDLK_v:
+				if (SDL_GetModState() & KMOD_CTRL) {
+					selhero_CatToName(SDL_GetClipboardText(), UiTextInput, UiTextInputLen);
+				}
+				return true;
+			case SDLK_BACKSPACE:
+			case SDLK_LEFT:
+				int nameLen = strlen(UiTextInput);
+				if (nameLen > 0) {
+					UiTextInput[nameLen - 1] = '\0';
+				}
+				return true;
+			}
+			break;
+		case SDL_TEXTINPUT:
+			selhero_CatToName(event->text.text, UiTextInput, UiTextInputLen);
+			return true;
+		}
+	}
+
+	if (gUiItems && gUiItemCnt && UiItemMouseEvents(event, gUiItems, gUiItemCnt))
 		return true;
-	case SDLK_DOWN:
-		UiFocus(SelectedItem + 1, wrap);
+
+	if (gfnListEsc && event->type == SDL_KEYDOWN && event->key.keysym.sym == SDLK_ESCAPE) {
+		UiFocusNavigationEsc();
 		return true;
-	case SDLK_TAB:
-		if (SDL_GetModState() & KMOD_SHIFT)
-			UiFocus(SelectedItem - 1, wrap);
-		else
-			UiFocus(SelectedItem + 1, wrap);
-		return true;
-	case SDLK_PAGEUP:
-		UiFocus(SelectedItemMin);
-		return true;
-	case SDLK_PAGEDOWN:
-		UiFocus(SelectedItemMax);
-		return true;
-	case SDLK_RETURN:
-	case SDLK_KP_ENTER:
-	case SDLK_SPACE:
-		UiFocusNavigationSelect();
-		break;
 	}
 
 	return false;
@@ -208,8 +280,25 @@ bool UiFocusNavigation(SDL_Event *event, bool wrap)
 void UiFocusNavigationSelect()
 {
 	UiPlaySelectSound();
+	if (SDL_IsTextInputActive()) {
+		SDL_StopTextInput();
+		UiTextInput = NULL;
+		UiTextInputLen = 0;
+	}
 	if (gfnListSelect)
 		gfnListSelect(SelectedItem);
+}
+
+void UiFocusNavigationEsc()
+{
+	UiPlaySelectSound();
+	if (SDL_IsTextInputActive()) {
+		SDL_StopTextInput();
+		UiTextInput = NULL;
+		UiTextInputLen = 0;
+	}
+	if (gfnListEsc)
+		gfnListEsc(SelectedItem);
 }
 
 bool IsInsideRect(const SDL_Event *event, const SDL_Rect *rect)
@@ -562,6 +651,10 @@ void DrawArtStr(UI_Item *item)
 		DrawArt(sx, sy, &ArtFonts[size][color], *(BYTE *)&item->caption[i], w);
 		sx += w;
 	}
+
+	if (item->type == UI_EDIT && GetAnimationFrame(2, 500)) {
+		DrawArt(sx, sy, &ArtFonts[size][color], '|');
+	}
 }
 
 void LoadPalInMem(PALETTEENTRY *pPal)
@@ -591,7 +684,7 @@ int GetAnimationFrame(int frames, int fps)
 	return frame > frames ? 0 : frame;
 }
 
-bool UiFadeIn(int steps)
+void UiFadeIn(int steps)
 {
 	if (fadeValue < 256) {
 		fadeValue += steps;
@@ -601,13 +694,10 @@ bool UiFadeIn(int steps)
 	}
 
 	SetFadeLevel(fadeValue);
-
-	return fadeValue == 256;
 }
 
 void UiRenderItemDebug(UI_Item item)
 {
-	return;
 	item.rect.x += 64; // pal_surface is shifted?
 	item.rect.y += 160;
 	SDL_FillRect(pal_surface, &item.rect, random(0, 255));
@@ -637,13 +727,26 @@ void DrawEditBox(UI_Item item)
 	DrawArtStr(&item);
 }
 
+float freq = SDL_GetPerformanceFrequency();
+
+void UiRender()
+{
+	SDL_Event event;
+	while (SDL_PollEvent(&event)) {
+		UiFocusNavigation(&event);
+	}
+	UiRenderItems(gUiItems, gUiItemCnt);
+	DrawLogo();
+	DrawMouse();
+	UiFadeIn();
+}
+
 void UiRenderItems(UI_Item *items, int size)
 {
 	for (int i = 0; i < size; i++) {
 		if (items[i].flags & UIS_HIDDEN)
 			continue;
 
-		UiRenderItemDebug(items[i]);
 		switch (items[i].type) {
 		case UI_EDIT:
 			DrawEditBox(items[i]);

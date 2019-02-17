@@ -51,17 +51,6 @@ typedef enum UiFlags {
 	UIS_HIDDEN   = 0x10000000000000,
 } UiFlags;
 
-typedef enum selheromenu_selections
-{
-	SELHERO_LIST,
-	SELHERO_CLASSES,
-	SELHERO_NAME,
-	SELHERO_LOAD,
-	SELHERO_SELECT_GAME,
-	SELHERO_DIFFICULTY,
-} selheromenu_selections;
-
-
 typedef struct Art {
 	BYTE *data;
 	DWORD width;
@@ -114,8 +103,8 @@ int DialogBoxParam(HINSTANCE hInstance, int msgId, HWND hWndParent, DLGPROC lpDi
 int MAKEINTRESOURCE(int i);
 
 bool IsInsideRect(const SDL_Event *event, const SDL_Rect *rect);
-bool UiFadeIn(int steps = 16);
-bool UiFocusNavigation(SDL_Event *event, bool wrap = false);
+void UiFadeIn(int steps = 16);
+bool UiFocusNavigation(SDL_Event *event);
 bool UiItemMouseEvents(SDL_Event *event, UI_Item *items, int size);
 int GetAnimationFrame(int frames, int fps = 60);
 int GetCenterOffset(int w, int bw = 0);
@@ -127,6 +116,8 @@ void LoadBackgroundArt(char *pszFile);
 void LoadMaskedArtFont(char *pszFile, Art *art, int frames, int mask = 250);
 void SetMenu(int MenuId);
 void UiFocusNavigationSelect();
-void UiInitList(int min, int max, void(__stdcall *fnFocus)(int value) = NULL, void(__stdcall *fnSelect)(int value) = NULL);
+void UiFocusNavigationEsc();
+void UiInitList(int min, int max, void(__stdcall *fnFocus)(int value), void(__stdcall *fnSelect)(int value), void(__stdcall *fnEsc)(), UI_Item *items, int size, bool wraps = false);
+void UiRender();
 void UiRenderItems(UI_Item *items, int size);
 void WordWrap(UI_Item *item);

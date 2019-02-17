@@ -1,5 +1,4 @@
 #include "selhero.h"
-#include <iconv.h>
 
 int selhero_SaveCount = 0;
 _uiheroinfo heros[MAX_CHARACTERS];
@@ -13,7 +12,6 @@ int selhero_result;
 bool selhero_return;
 bool selhero_endMenu;
 bool selhero_endMenu_Single;
-int submenu = 0;
 bool isMultiPlayer;
 bool heroIsCreated;
 
@@ -46,7 +44,7 @@ UI_Item SELLIST_DIALOG[] = {
 	{ { 265, 386, 320, 26 }, UI_LIST, UIS_CENTER | UIS_MED | UIS_GOLD, 5, listItems[5] },
 	{ { 239, 429, 120, 35 }, UI_BUTTON, UIS_CENTER | UIS_BIG | UIS_GOLD, 0, "OK", UiFocusNavigationSelect },
 	{ { 364, 429, 120, 35 }, UI_BUTTON, UIS_CENTER | UIS_BIG | UIS_DISABLED, 0, "Delete" },
-	{ { 489, 429, 120, 35 }, UI_BUTTON, UIS_CENTER | UIS_BIG | UIS_GOLD, 0, "Cancel" },
+	{ { 489, 429, 120, 35 }, UI_BUTTON, UIS_CENTER | UIS_BIG | UIS_GOLD, 0, "Cancel", UiFocusNavigationEsc },
 };
 
 UI_Item SELCLASS_DIALOG[] = {
@@ -55,14 +53,14 @@ UI_Item SELCLASS_DIALOG[] = {
 	{ { 264, 318, 320, 33 }, UI_LIST, UIS_CENTER | UIS_MED | UIS_GOLD, UI_ROGUE, "Rogue" },
 	{ { 264, 352, 320, 33 }, UI_LIST, UIS_CENTER | UIS_MED | UIS_GOLD, UI_SORCERER, "Sorcerer" },
 	{ { 279, 429, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_BIG | UIS_GOLD, 0, "OK", UiFocusNavigationSelect },
-	{ { 429, 429, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_BIG | UIS_GOLD, 0, "Cancel" },
+	{ { 429, 429, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_BIG | UIS_GOLD, 0, "Cancel", UiFocusNavigationEsc },
 };
 
 UI_Item ENTERNAME_DIALOG[] = {
 	{ { 264, 211, 320, 33 }, UI_TEXT, UIS_CENTER | UIS_BIG, 0, "Enter Name" },
-	{ { 265, 317, 320, 33 }, UI_EDIT, UIS_LIST | UIS_MED | UIS_GOLD, 0, heroInfo.name, 15 },
+	{ { 265, 317, 320, 33 }, UI_EDIT, UIS_LIST | UIS_MED | UIS_GOLD, 15, heroInfo.name },
 	{ { 279, 429, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_BIG | UIS_GOLD, 0, "OK", UiFocusNavigationSelect },
-	{ { 429, 429, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_BIG | UIS_GOLD, 0, "Cancel" },
+	{ { 429, 429, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_BIG | UIS_GOLD, 0, "Cancel", UiFocusNavigationEsc },
 };
 
 UI_Item SELLOAD_DIALOG[] = {
@@ -70,7 +68,7 @@ UI_Item SELLOAD_DIALOG[] = {
 	{ { 265, 285, 320, 26 }, UI_LIST, UIS_CENTER | UIS_MED | UIS_GOLD, 0, "Load Game" },
 	{ { 265, 318, 320, 26 }, UI_LIST, UIS_CENTER | UIS_MED | UIS_GOLD, 1, "New Game" },
 	{ { 279, 427, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_VCENTER | UIS_BIG | UIS_GOLD, 0, "OK", UiFocusNavigationSelect },
-	{ { 429, 427, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_VCENTER | UIS_BIG | UIS_GOLD, 0, "Cancel" },
+	{ { 429, 427, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_VCENTER | UIS_BIG | UIS_GOLD, 0, "Cancel", UiFocusNavigationEsc },
 };
 
 UI_Item SELUDPGAME_DIALOG[] = {
@@ -86,7 +84,7 @@ UI_Item SELUDPGAME_DIALOG[] = {
 	{ { 35, 211, 205, 33 }, UI_TEXT, UIS_MED, 0, "Description:" },
 	{ { 35, 256, 205, 192 }, UI_TEXT, 0, 0, selhero_Description }, // Description
 	{ { 299, 427, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_VCENTER | UIS_BIG | UIS_GOLD, 0, "OK", UiFocusNavigationSelect },
-	{ { 449, 427, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_VCENTER | UIS_BIG | UIS_GOLD, 0, "Cancel" },
+	{ { 449, 427, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_VCENTER | UIS_BIG | UIS_GOLD, 0, "Cancel", UiFocusNavigationEsc },
 };
 
 UI_Item SELDIFF_DIALOG[] = {
@@ -99,7 +97,7 @@ UI_Item SELDIFF_DIALOG[] = {
 	{ { 34, 211, 205, 33 }, UI_TEXT, UIS_CENTER | UIS_BIG, 0, selhero_Lable }, // DIFF
 	{ { 35, 256, 205, 192 }, UI_TEXT, 0, 0, selhero_Description },             // Description
 	{ { 299, 427, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_VCENTER | UIS_BIG | UIS_GOLD, 0, "OK", UiFocusNavigationSelect },
-	{ { 449, 427, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_VCENTER | UIS_BIG | UIS_GOLD, 0, "Cancel" },
+	{ { 449, 427, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_VCENTER | UIS_BIG | UIS_GOLD, 0, "Cancel", UiFocusNavigationEsc },
 };
 
 void selhero_SetStats()
@@ -110,20 +108,6 @@ void selhero_SetStats()
 	sprintf(textStats[2], "%d", heroInfo.magic);
 	sprintf(textStats[3], "%d", heroInfo.dexterity);
 	sprintf(textStats[4], "%d", heroInfo.vitality);
-}
-
-void selhero_Render_Name()
-{
-	char lable[17];
-	strcpy(lable, heroInfo.name);
-	if (GetAnimationFrame(2, 500)) {
-		int len = strlen(lable);
-		lable[len] = '|';
-		lable[len + 1] = '\0';
-	}
-	ENTERNAME_DIALOG[1].caption = lable;
-
-	UiRenderItems(ENTERNAME_DIALOG, size(ENTERNAME_DIALOG));
 }
 
 BOOL __stdcall SelHero_GetHeroInfo(_uiheroinfo *pInfo)
@@ -150,15 +134,24 @@ void selhero_Focus_List(int value)
 	sprintf(textStats[4], "--");
 }
 
+void selhero_Name_Esc()
+{
+	selhero_Select_List(selhero_SaveCount);
+}
+
+void selhero_Select_Name(int value)
+{
+	selhero_endMenu = true;
+}
+
 void selhero_Select_ClassSelector(int value)
 {
-	submenu = SELHERO_NAME;
 	sprintf(title, "New Single Player Hero");
 	if (isMultiPlayer) {
 		sprintf(title, "New Multi Player Hero");
 	}
-	memset(heroInfo.name, '\0', 16);
-	SDL_StartTextInput();
+	memset(heroInfo.name, '\0', sizeof(heroInfo.name));
+	UiInitList(0, 0, NULL, selhero_Select_Name, selhero_Name_Esc, ENTERNAME_DIALOG, size(ENTERNAME_DIALOG));
 }
 
 void selhero_Focus_ClassSelector(int value)
@@ -179,8 +172,7 @@ void selhero_Focus_ClassSelector(int value)
 void selhero_Select_List(int value)
 {
 	if (value == selhero_SaveCount) {
-		submenu = SELHERO_CLASSES;
-		UiInitList(0, 2, selhero_Focus_ClassSelector, selhero_Select_ClassSelector);
+		UiInitList(0, 2, selhero_Focus_ClassSelector, selhero_Select_ClassSelector, selhero_ClassSelector_Esc, SELCLASS_DIALOG, size(SELCLASS_DIALOG));
 		memset(&heroInfo.name, 0, sizeof(heroInfo.name));
 		sprintf(title, "New Single Player Hero");
 		if (isMultiPlayer) {
@@ -215,31 +207,9 @@ void selhero_List_Esc()
 	selhero_endMenu = true;
 }
 
-void selhero_Event_List()
-{
-	SDL_Event event;
-	while (SDL_PollEvent(&event)) {
-		if (UiFocusNavigation(&event))
-			continue;
-		if (UiItemMouseEvents(&event, SELLIST_DIALOG, size(SELLIST_DIALOG)))
-			continue;
-		switch (event.type) {
-		case SDL_KEYDOWN:
-			if (event.key.keysym.sym == SDLK_ESCAPE) {
-				selhero_List_Esc();
-				break;
-			}
-			break;
-		case SDL_QUIT:
-			exit(0);
-		}
-	}
-}
-
 void selhero_init_List()
 {
-	submenu = SELHERO_LIST;
-	UiInitList(0, selhero_SaveCount, selhero_Focus_List, selhero_Select_List);
+	UiInitList(0, selhero_SaveCount, selhero_Focus_List, selhero_Select_List, selhero_List_Esc, SELLIST_DIALOG, size(SELLIST_DIALOG));
 	int i;
 	for (i = 0; i < selhero_SaveCount && i < 6; i++) {
 		sprintf(listItems[i], heros[i].name);
@@ -253,119 +223,24 @@ void selhero_init_List()
 	}
 }
 
-void selhero_Event_ClassSelector()
+void selhero_ClassSelector_Esc()
 {
-	SDL_Event event;
-	while (SDL_PollEvent(&event)) {
-		if (UiFocusNavigation(&event))
-			continue;
-		if (UiItemMouseEvents(&event, SELCLASS_DIALOG, size(SELCLASS_DIALOG)))
-			continue;
-		switch (event.type) {
-		case SDL_KEYDOWN:
-			if (event.key.keysym.sym == SDLK_ESCAPE) {
-				if (selhero_SaveCount) {
-					selhero_init_List();
-					break;
-				}
-				selhero_return = true;
-				selhero_endMenu = true;
-			}
-			break;
-		case SDL_QUIT:
-			exit(0);
-		}
+	if (selhero_SaveCount) {
+		selhero_init_List();
+		return;
 	}
+
+	selhero_List_Esc();
 }
 
-void selhero_CatToName(char *in_buf)
+void selhero_Esc()
 {
-	iconv_t cd = iconv_open("ISO_8859-1//TRANSLIT//IGNORE", "UTF-8");
-	if (cd == (iconv_t)-1) {
-		TermMsg("Failed to load iconv!");
-	}
-
-	size_t in_left = strlen(in_buf);
-	char output[SDL_TEXTINPUTEVENT_TEXT_SIZE] = "";
-	char *out_buf = output;
-	size_t out_left = sizeof(output) - 1;
-
-	while (in_left && out_left) {
-		iconv(cd, &in_buf, &in_left, &out_buf, &out_left);
-	}
-	iconv_close(cd);
-	strncat(heroInfo.name, output, 15 - strlen(heroInfo.name));
+	selhero_endMenu_Single = true;
+	selhero_result = EXIT_MENU;
 }
 
-void selhero_Event_Name()
+bool UiSelHeroDialog(BOOL(__stdcall *fncreate)(_uiheroinfo *), BOOL(__stdcall *fnremove)(_uiheroinfo *))
 {
-	SDL_Event event;
-	while (SDL_PollEvent(&event)) {
-		switch (event.type) {
-		case SDL_QUIT:
-			exit(0);
-			break;
-		case SDL_KEYDOWN:
-			switch (event.key.keysym.sym) {
-			case SDLK_v:
-				if (SDL_GetModState() & KMOD_CTRL) {
-					selhero_CatToName(SDL_GetClipboardText());
-				}
-				break;
-			case SDLK_ESCAPE:
-				SDL_StopTextInput();
-				selhero_Select_List(selhero_SaveCount);
-				break;
-			case SDLK_RETURN:
-			case SDLK_RETURN2:
-			case SDLK_KP_ENTER:
-				SDL_StopTextInput();
-				selhero_endMenu = true;
-				break;
-			case SDLK_BACKSPACE:
-			case SDLK_LEFT:
-				int nameLen = strlen(heroInfo.name);
-				if (nameLen > 0) {
-					heroInfo.name[nameLen - 1] = '\0';
-				}
-				break;
-			}
-			break;
-		case SDL_TEXTINPUT:
-			selhero_CatToName(event.text.text);
-			break;
-		}
-	}
-}
-
-void selhero_Event_Load()
-{
-	SDL_Event event;
-	while (SDL_PollEvent(&event)) {
-		if (UiFocusNavigation(&event, true))
-			continue;
-		if (UiItemMouseEvents(&event, SELLOAD_DIALOG, size(SELLOAD_DIALOG)))
-			continue;
-		switch (event.type) {
-		case SDL_KEYDOWN:
-			switch (event.key.keysym.sym) {
-			case SDLK_ESCAPE:
-				selhero_result = EXIT_MENU;
-				selhero_endMenu_Single = true;
-			}
-			break;
-		case SDL_QUIT:
-			exit(0);
-		}
-	}
-}
-
-bool UiSelHeroDialog(
-    BOOL(__stdcall *fncreate)(_uiheroinfo *),
-    BOOL(__stdcall *fnremove)(_uiheroinfo *),
-    bool multiPlayer)
-{
-	isMultiPlayer = multiPlayer;
 	selhero_return = false;
 	selhero_endMenu = false;
 	heroIsCreated = false;
@@ -378,24 +253,7 @@ bool UiSelHeroDialog(
 
 	while (!selhero_endMenu) {
 		UiRenderItems(SELHERO_DIALOG, size(SELHERO_DIALOG));
-		switch (submenu) {
-		case SELHERO_LIST:
-			UiRenderItems(SELLIST_DIALOG, size(SELLIST_DIALOG));
-			selhero_Event_List();
-			break;
-		case SELHERO_CLASSES:
-			UiRenderItems(SELCLASS_DIALOG, size(SELCLASS_DIALOG));
-			selhero_Event_ClassSelector();
-			break;
-		case SELHERO_NAME:
-			selhero_Render_Name();
-			selhero_Event_Name();
-			break;
-		}
-
-		DrawLogo();
-		DrawMouse();
-		UiFadeIn();
+		UiRender();
 	}
 
 	if (!heroIsCreated) {
@@ -432,8 +290,8 @@ BOOL __stdcall UiSelHeroSingDialog(
 	gfnHeroStats = fnstats;
 
 	selhero_Load(fninfo);
-	bool abort = UiSelHeroDialog(fncreate, fnremove, false);
-	if (abort) {
+	isMultiPlayer = false;
+	if (UiSelHeroDialog(fncreate, fnremove)) {
 		BlackPalette();
 		selhero_Free();
 		*dlgresult = EXIT_MENU;
@@ -443,17 +301,13 @@ BOOL __stdcall UiSelHeroSingDialog(
 	strcpy(name, heroInfo.name);
 
 	if (heroInfo.hassaved) {
-		UiInitList(0, 1, selhero_Focus_Load, selhero_Select_Load);
+		UiInitList(0, 1, selhero_Focus_Load, selhero_Select_Load, selhero_Esc, SELLOAD_DIALOG, size(SELLOAD_DIALOG), true);
 		sprintf(title, "Single Player Characters");
 
 		selhero_endMenu_Single = false;
 		while (!selhero_endMenu_Single) {
 			UiRenderItems(SELHERO_DIALOG, size(SELHERO_DIALOG));
-			UiRenderItems(SELLOAD_DIALOG, size(SELLOAD_DIALOG));
-			DrawLogo();
-			DrawMouse();
-			UiFadeIn();
-			selhero_Event_Load();
+			UiRender();
 		}
 	}
 
@@ -479,6 +333,13 @@ void selhero_multi_Free()
 	ArtBackground.data = NULL;
 }
 
+void selhero_Select_Diff(int value)
+{
+	selhero_endMenu_Single = true;
+	selhero_result = NEW_GAME;
+	gnDifficulty = value;
+}
+
 void selhero_Focus_Diff(int value)
 {
 	switch (value) {
@@ -502,37 +363,9 @@ void selhero_Focus_Diff(int value)
 	}
 }
 
-void selhero_Select_Diff(int value)
-{
-	gnDifficulty = value;
-	selhero_result = NEW_GAME;
-}
-
 void selhero_Select_GameSelection(int value)
 {
-	submenu = SELHERO_DIFFICULTY;
-	UiInitList(0, 2, selhero_Focus_Diff, selhero_Select_Diff);
-}
-
-void selhero_Event_GameSelection()
-{
-	SDL_Event event;
-	while (SDL_PollEvent(&event)) {
-		if (UiFocusNavigation(&event))
-			continue;
-		if (UiItemMouseEvents(&event, SELUDPGAME_DIALOG, size(SELUDPGAME_DIALOG)))
-			continue;
-		switch (event.type) {
-		case SDL_KEYDOWN:
-			if (event.key.keysym.sym == SDLK_ESCAPE) {
-				selhero_result = EXIT_MENU;
-				selhero_endMenu_Single = true;
-			}
-			break;
-		case SDL_QUIT:
-			exit(0);
-		}
-	}
+	UiInitList(0, 2, selhero_Focus_Diff, selhero_Select_Diff, selhero_init_GameSelection, SELDIFF_DIALOG, size(SELDIFF_DIALOG));
 }
 
 void selhero_Focus_GameSelection(int value)
@@ -555,31 +388,9 @@ void selhero_Focus_GameSelection(int value)
 	}
 }
 
-void selhero_Event_DifficultySelection()
+void selhero_init_GameSelection()
 {
-	SDL_Event event;
-	while (SDL_PollEvent(&event)) {
-		if (UiFocusNavigation(&event))
-			continue;
-		if (UiItemMouseEvents(&event, SELDIFF_DIALOG, size(SELDIFF_DIALOG)))
-			continue;
-		switch (event.type) {
-		case SDL_KEYDOWN:
-			switch (event.key.keysym.sym) {
-			case SDLK_ESCAPE:
-				submenu = SELHERO_SELECT_GAME;
-				UiInitList(0, 2, selhero_Focus_GameSelection, selhero_Select_GameSelection);
-				break;
-			case SDLK_RETURN:
-			case SDLK_KP_ENTER:
-			case SDLK_SPACE:
-				selhero_endMenu_Single = true;
-			}
-			break;
-		case SDL_QUIT:
-			exit(0);
-		}
-	}
+	UiInitList(0, 2, selhero_Focus_GameSelection, selhero_Select_GameSelection, selhero_Esc, SELUDPGAME_DIALOG, size(SELUDPGAME_DIALOG));
 }
 
 BOOL __stdcall UiSelHeroMultDialog(
@@ -595,7 +406,8 @@ BOOL __stdcall UiSelHeroMultDialog(
 	*hero_is_created = false;
 
 	selhero_Load(fninfo);
-	bool abort = UiSelHeroDialog(fncreate, fnremove, true);
+	isMultiPlayer = true;
+	bool abort = UiSelHeroDialog(fncreate, fnremove);
 	BlackPalette();
 	selhero_Free();
 	if (abort) {
@@ -606,25 +418,11 @@ BOOL __stdcall UiSelHeroMultDialog(
 	strcpy(name, heroInfo.name);
 
 	selhero_multi_Load();
-
-	submenu = SELHERO_SELECT_GAME;
-	UiInitList(0, 2, selhero_Focus_GameSelection, selhero_Select_GameSelection);
+	selhero_init_GameSelection();
 
 	selhero_endMenu_Single = false;
 	while (!selhero_endMenu_Single) {
-		switch (submenu) {
-		case SELHERO_SELECT_GAME:
-			UiRenderItems(SELUDPGAME_DIALOG, size(SELUDPGAME_DIALOG));
-			selhero_Event_GameSelection();
-			break;
-		case SELHERO_DIFFICULTY:
-			UiRenderItems(SELDIFF_DIALOG, size(SELDIFF_DIALOG));
-			selhero_Event_DifficultySelection();
-			break;
-		}
-		DrawLogo();
-		DrawMouse();
-		UiFadeIn();
+		UiRender();
 	}
 
 	BlackPalette();
