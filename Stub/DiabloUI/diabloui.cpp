@@ -494,13 +494,6 @@ BOOL __stdcall UiArtCallback(int game_type, unsigned int art_code, PALETTEENTRY 
 	UNIMPLEMENTED();
 }
 
-int __stdcall UiSelectGame(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info, _SNETUIDATA *ui_info,
-    _SNETVERSIONDATA *file_info, int *playerId)
-{
-	SNetCreateGame(NULL, NULL, NULL, 0, NULL, 0, MAX_PLRS, NULL, NULL, playerId);
-	return 1;
-}
-
 BOOL __stdcall UiCreatePlayerDescription(_uiheroinfo *info, DWORD mode, char *desc)
 {
 	char format[32] = "";

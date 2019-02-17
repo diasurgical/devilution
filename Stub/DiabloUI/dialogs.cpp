@@ -1,12 +1,5 @@
 #include "../../types.h"
 
-UI_Item ENTERIP_DIALOG[] = {
-	{ { 305, 210, 285, 33 }, UI_TEXT, UIS_CENTER, 0, "Enter IP" },
-	{ { 305, 314, 285, 33 }, UI_EDIT, UIS_LIST, 128 }, // input
-	{ { 300, 426, 140, 35 }, UI_BUTTON, 0, 0, "OK" },
-	{ { 450, 426, 140, 35 }, UI_BUTTON, 0, 0, "Cancel" },
-};
-
 UI_Item OKCANCEL_DIALOG[] = {
 	{ { 180, 168, 280, 144 }, UI_IMAGE, 0, 0, "ui_art\\spopup.pcx" },
 	{ { 200, 180, 240, 80 }, UI_TEXT, UIS_CENTER }, // message

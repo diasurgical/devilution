@@ -146,12 +146,13 @@ set(STUB_SOURCES
     Stub/dvlnet/base.cpp
     Stub/dvlnet/udp_p2p.cpp
 
-    Stub/DiabloUI/dialogs.cpp
     Stub/DiabloUI/credits.cpp
     Stub/DiabloUI/diabloui.cpp
+    Stub/DiabloUI/dialogs.cpp
     Stub/DiabloUI/mainmenu.cpp
     Stub/DiabloUI/progress.cpp
     Stub/DiabloUI/selconn.cpp
+    Stub/DiabloUI/selgame.cpp
     Stub/DiabloUI/selhero.cpp
     Stub/DiabloUI/title.cpp
 

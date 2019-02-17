@@ -13,6 +13,12 @@ _SNETVERSIONDATA *selconn_FileInfo;
 UI_Item SELCONNECT_DIALOG[] = {
 	{ { 0, 0, 640, 480 }, UI_IMAGE, 0, 0, NULL, &ArtBackground },
 	{ { 24, 161, 590, 35 }, UI_TEXT, UIS_CENTER | UIS_BIG, 0, "Multi Player Game" },
+	{ { 35, 218, 205, 21 }, UI_TEXT, 0, 0, selconn_MaxPlayers }, // Max players
+	{ { 35, 256, 205, 21 }, UI_TEXT, 0, 0, "Requirements:" },
+	{ { 35, 275, 205, 66 }, UI_TEXT, 0, 0, selconn_Description }, //Description
+	{ { 30, 356, 220, 31 }, UI_TEXT, UIS_CENTER | UIS_MED, 0, "no gateway needed" },
+	{ { 35, 393, 205, 21 }, UI_TEXT, UIS_CENTER, 0, selconn_Gateway }, // Gateway
+	{ { 16, 427, 250, 35 }, UI_BUTTON, UIS_CENTER | UIS_VCENTER | UIS_BIG | UIS_GOLD | UIS_HIDDEN, 0, "Change Gateway" },
 	{ { 300, 211, 295, 33 }, UI_TEXT, UIS_CENTER | UIS_BIG, 0, "Select Connection" },
 	{ { 305, 256, 285, 26 }, UI_LIST, UIS_CENTER | UIS_VCENTER | UIS_GOLD, 0, "Local Area Network (UDP)" },
 	{ { 305, 282, 285, 26 }, UI_LIST, UIS_CENTER | UIS_VCENTER | UIS_GOLD, 1, "Solo" },
@@ -20,12 +26,6 @@ UI_Item SELCONNECT_DIALOG[] = {
 	{ { 305, 334, 285, 26 }, UI_LIST, UIS_CENTER | UIS_VCENTER | UIS_GOLD },
 	{ { 305, 360, 285, 26 }, UI_LIST, UIS_CENTER | UIS_VCENTER | UIS_GOLD },
 	{ { 305, 386, 285, 26 }, UI_LIST, UIS_CENTER | UIS_VCENTER | UIS_GOLD },
-	{ { 35, 218, 205, 21 }, UI_TEXT, 0, 0, selconn_MaxPlayers }, // Max players
-	{ { 35, 256, 205, 21 }, UI_TEXT, 0, 0, "Requirements:" },
-	{ { 35, 275, 205, 66 }, UI_TEXT, 0, 0, selconn_Description }, //Description
-	{ { 30, 356, 220, 31 }, UI_TEXT, UIS_CENTER | UIS_MED, 0, "no gateway needed" },
-	{ { 35, 393, 205, 21 }, UI_TEXT, UIS_CENTER, 0, selconn_Gateway }, // Gateway
-	{ { 16, 427, 250, 35 }, UI_BUTTON, UIS_CENTER | UIS_VCENTER | UIS_BIG | UIS_GOLD | UIS_HIDDEN, 0, "Change Gateway" },
 	{ { 299, 427, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_VCENTER | UIS_BIG | UIS_GOLD, 0, "OK", UiFocusNavigationSelect },
 	{ { 454, 427, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_VCENTER | UIS_BIG | UIS_GOLD, 0, "Cancel", UiFocusNavigationEsc },
 };
