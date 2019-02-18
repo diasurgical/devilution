@@ -104,13 +104,16 @@ BOOL STORMAPI SNetCreateGame(const char *pszGameName, const char *pszGamePasswor
     DWORD dwGameType, char *GameTemplateData, int GameTemplateSize, int playerCount,
     char *creatorName, char *a11, int *playerID)
 {
-	// hack: cannot create game until UI is ready
-	//       first instance will create, second will join
-	int ret;
-	if (ret = dvlnet_inst->create("0.0.0.0", "mypass") == -1)
-		ret = dvlnet_inst->join("127.0.0.1", "mypass");
-	*playerID = ret;
-	return TRUE;
+	*playerID = dvlnet_inst->create("0.0.0.0", pszGamePassword);
+
+	return *playerID != -1;
+}
+
+BOOL STORMAPI SNetJoinGame(int id, char *pszGameName, char *pszGamePassword, char *playerName, char *userStats, int *playerID)
+{
+	*playerID = dvlnet_inst->join(pszGameName, pszGamePassword);
+
+	return *playerID != -1;
 }
 
 /**

@@ -44,8 +44,14 @@ int udp_p2p::create(std::string addrstr, std::string passwd)
 
 int udp_p2p::join(std::string addrstr, std::string passwd)
 {
+	sock = asio::ip::udp::socket(io_context); // to be removed later
 	setup_password(passwd);
 	auto ipaddr = asio::ip::make_address(addrstr);
+	if (ipaddr.is_v4())
+		sock.open(asio::ip::udp::v4());
+	else if (ipaddr.is_v6())
+		sock.open(asio::ip::udp::v6());
+	sock.non_blocking(true);
 	endpoint themaster(ipaddr, default_port);
 	sock.connect(themaster);
 	master = themaster;

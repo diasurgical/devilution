@@ -1,13 +1,17 @@
 #include "selgame.h"
 
 char selgame_Lable[32];
+char selgame_Ip[129];
 char selgame_Description[256];
-bool selgame_start;
+bool selgame_enteringGame;
 bool selgame_endMenu;
+int* gdwPlayerId;
 
 UI_Item SELUDPGAME_DIALOG[] = {
 	{ { 0, 0, 640, 480 }, UI_IMAGE, 0, 0, NULL, &ArtBackground },
-	{ { 25, 161, 590, 35 }, UI_TEXT, UIS_CENTER | UIS_BIG, 0, "Join UDP Games" },
+	{ { 24, 161, 590, 35 }, UI_TEXT, UIS_CENTER | UIS_BIG, 0, "Join UDP Games" },
+	{ { 35, 211, 205, 33 }, UI_TEXT, UIS_MED, 0, "Description:" },
+	{ { 35, 256, 205, 192 }, UI_TEXT, 0, 0, selgame_Description }, // Description
 	{ { 300, 211, 295, 33 }, UI_TEXT, UIS_CENTER | UIS_BIG, 0, "Select Action" },
 	{ { 305, 255, 285, 26 }, UI_LIST, UIS_CENTER | UIS_MED | UIS_GOLD, 0, "Create Game" },
 	{ { 305, 281, 285, 26 }, UI_LIST, UIS_CENTER | UIS_MED | UIS_GOLD, 1, "Enter IP" },
@@ -15,8 +19,6 @@ UI_Item SELUDPGAME_DIALOG[] = {
 	{ { 305, 333, 285, 26 }, UI_LIST, UIS_CENTER | UIS_MED | UIS_GOLD },
 	{ { 305, 359, 285, 26 }, UI_LIST, UIS_CENTER | UIS_MED | UIS_GOLD },
 	{ { 305, 385, 285, 26 }, UI_LIST, UIS_CENTER | UIS_MED | UIS_GOLD },
-	{ { 35, 211, 205, 33 }, UI_TEXT, UIS_MED, 0, "Description:" },
-	{ { 35, 256, 205, 192 }, UI_TEXT, 0, 0, selgame_Description }, // Description
 	{ { 299, 427, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_VCENTER | UIS_BIG | UIS_GOLD, 0, "OK", UiFocusNavigationSelect },
 	{ { 449, 427, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_VCENTER | UIS_BIG | UIS_GOLD, 0, "Cancel", UiFocusNavigationEsc },
 };
@@ -24,21 +26,25 @@ UI_Item SELUDPGAME_DIALOG[] = {
 UI_Item SELDIFF_DIALOG[] = {
 	{ { 0, 0, 640, 480 }, UI_IMAGE, 0, 0, NULL, &ArtBackground },
 	{ { 24, 161, 590, 35 }, UI_TEXT, UIS_CENTER | UIS_BIG, 0, "Create Game" },
+	{ { 34, 211, 205, 33 }, UI_TEXT, UIS_CENTER | UIS_BIG, 0, selgame_Lable }, // DIFF
+	{ { 35, 256, 205, 192 }, UI_TEXT, 0, 0, selgame_Description },             // Description
 	{ { 299, 211, 295, 35 }, UI_TEXT, UIS_CENTER | UIS_BIG, 0, "Select Difficulty" },
 	{ { 300, 282, 295, 26 }, UI_LIST, UIS_CENTER | UIS_MED | UIS_GOLD, DIFF_NORMAL, "Normal" },
 	{ { 300, 308, 295, 26 }, UI_LIST, UIS_CENTER | UIS_MED | UIS_GOLD, DIFF_NIGHTMARE, "Nightmare" },
 	{ { 300, 334, 295, 26 }, UI_LIST, UIS_CENTER | UIS_MED | UIS_GOLD, DIFF_HELL, "Hell" },
-	{ { 34, 211, 205, 33 }, UI_TEXT, UIS_CENTER | UIS_BIG, 0, selgame_Lable }, // DIFF
-	{ { 35, 256, 205, 192 }, UI_TEXT, 0, 0, selgame_Description },             // Description
 	{ { 299, 427, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_VCENTER | UIS_BIG | UIS_GOLD, 0, "OK", UiFocusNavigationSelect },
 	{ { 449, 427, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_VCENTER | UIS_BIG | UIS_GOLD, 0, "Cancel", UiFocusNavigationEsc },
 };
 
 UI_Item ENTERIP_DIALOG[] = {
-	{ { 305, 210, 285, 33 }, UI_TEXT, UIS_CENTER, 0, "Enter IP" },
-	{ { 305, 314, 285, 33 }, UI_EDIT, UIS_LIST, 128 }, // input
-	{ { 300, 426, 140, 35 }, UI_BUTTON, 0, 0, "OK" },
-	{ { 450, 426, 140, 35 }, UI_BUTTON, 0, 0, "Cancel" },
+	{ { 0, 0, 640, 480 }, UI_IMAGE, 0, 0, NULL, &ArtBackground },
+	{ { 24, 161, 590, 35 }, UI_TEXT, UIS_CENTER | UIS_BIG, 0, "Join UDP Games" },
+	{ { 35, 211, 205, 33 }, UI_TEXT, UIS_MED, 0, "Description:" },
+	{ { 35, 256, 205, 192 }, UI_TEXT, 0, 0, selgame_Description }, // Description
+	{ { 305, 211, 285, 33 }, UI_TEXT, UIS_CENTER | UIS_BIG, 0, "Enter IP" },
+	{ { 305, 314, 285, 33 }, UI_EDIT, UIS_LIST | UIS_MED | UIS_GOLD, 128, selgame_Ip },
+	{ { 300, 426, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_VCENTER | UIS_BIG | UIS_GOLD, 0, "OK" },
+	{ { 450, 426, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_VCENTER | UIS_BIG | UIS_GOLD, 0, "Cancel" },
 };
 
 void selgame_Free()
@@ -59,7 +65,7 @@ void selgame_GameSelection_Focus(int value)
 		sprintf(selgame_Description, "Create a new game with a difficulty setting of your choice.");
 		break;
 	case 1:
-		sprintf(selgame_Description, "Join a game directly via a know host IP.");
+		sprintf(selgame_Description, "Enter an IP and join a game already in progress at that address.");
 		break;
 	default:
 		sprintf(selgame_Description, "%s.\nCreated by %s, a level %d %s.", "Normal Difficulty", "Localhost", 1, "Warrior");
@@ -72,15 +78,34 @@ void selgame_GameSelection_Focus(int value)
 	}
 }
 
+void selgame_Ip_Select(int value)
+{
+	if (!SNetJoinGame(value, selgame_Ip, "mypass", NULL, NULL, gdwPlayerId))
+		TermMsg("Unable to establish a connection. A game of Diablo was not detected at the specified IP address.");
+
+	selgame_endMenu = true;
+	selgame_enteringGame = true;
+}
+
 void selgame_GameSelection_Select(int value)
 {
-	UiInitList(0, 2, selgame_Diff_Focus, selgame_Diff_Select, selgame_GameSelection_Init, SELDIFF_DIALOG, size(SELDIFF_DIALOG));
+	switch (value) {
+	case 0:
+		UiInitList(0, 2, selgame_Diff_Focus, selgame_Diff_Select, selgame_GameSelection_Init, SELDIFF_DIALOG, size(SELDIFF_DIALOG));
+		break;
+	case 1:
+		UiInitList(0, 0, NULL, selgame_Ip_Select, selgame_GameSelection_Init, ENTERIP_DIALOG, size(ENTERIP_DIALOG));
+		break;
+	default:
+		sprintf(selgame_Ip, "127.0.0.1");
+		selgame_Ip_Select(0);
+		break;
+	}
 }
 
 void selgame_GameSelection_Esc()
 {
 	selgame_endMenu = true;
-	selgame_start = false;
 }
 
 void selgame_Diff_Focus(int value)
@@ -109,16 +134,19 @@ void selgame_Diff_Focus(int value)
 void selgame_Diff_Select(int value)
 {
 	selgame_endMenu = true;
-	selgame_start = true;
+	selgame_enteringGame = true;
 	gnDifficulty = value;
+	if (!SNetCreateGame(NULL, "mypass", NULL, 0, NULL, 0, MAX_PLRS, NULL, NULL, gdwPlayerId))
+		TermMsg("Unable to create game.");
 }
 
 int __stdcall UiSelectGame(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info, _SNETUIDATA *ui_info,
     _SNETVERSIONDATA *file_info, int *playerId)
 {
+	gdwPlayerId = playerId;
 	LoadBackgroundArt("ui_art\\selgame.pcx");
 	selgame_GameSelection_Init();
-	selgame_start = false;
+	selgame_enteringGame = false;
 
 	selgame_endMenu = false;
 	while (!selgame_endMenu) {
@@ -127,8 +155,5 @@ int __stdcall UiSelectGame(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYERDAT
 	BlackPalette();
 	selgame_Free();
 
-	if (selgame_start)
-		SNetCreateGame(NULL, NULL, NULL, 0, NULL, 0, MAX_PLRS, NULL, NULL, playerId);
-
-	return selgame_start;
+	return selgame_enteringGame;
 }
