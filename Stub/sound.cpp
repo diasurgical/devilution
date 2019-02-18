@@ -1,14 +1,5 @@
 #include "../types.h"
 
-/*
-#ifndef NO_GLOBALS
-char gbSndInited;
-char gbDupSounds;
-UCHAR gbMusicOn;
-UCHAR gbSoundOn;
-#endif
-*/
-
 bool SoundInited;
 char gbSndInited;
 BYTE gbDupSounds;

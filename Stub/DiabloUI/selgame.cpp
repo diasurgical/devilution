@@ -43,8 +43,8 @@ UI_Item ENTERIP_DIALOG[] = {
 	{ { 35, 256, 205, 192 }, UI_TEXT, 0, 0, selgame_Description }, // Description
 	{ { 305, 211, 285, 33 }, UI_TEXT, UIS_CENTER | UIS_BIG, 0, "Enter IP" },
 	{ { 305, 314, 285, 33 }, UI_EDIT, UIS_LIST | UIS_MED | UIS_GOLD, 128, selgame_Ip },
-	{ { 300, 426, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_VCENTER | UIS_BIG | UIS_GOLD, 0, "OK" },
-	{ { 450, 426, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_VCENTER | UIS_BIG | UIS_GOLD, 0, "Cancel" },
+	{ { 299, 427, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_VCENTER | UIS_BIG | UIS_GOLD, 0, "OK", UiFocusNavigationSelect },
+	{ { 449, 427, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_VCENTER | UIS_BIG | UIS_GOLD, 0, "Cancel", UiFocusNavigationEsc },
 };
 
 void selgame_Free()

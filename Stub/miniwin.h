@@ -572,9 +572,6 @@ typedef struct {
 // MSCVRT emulation
 //
 
-int rand_miniwin(void);
-void srand_miniwin(unsigned int seed);
-
 extern void LoadCharNames();
 extern void LoadAndPlaySound(char *FilePath, int lVolume, int lPan);
 extern void DrawArtWithMask(int SX, int SY, int SW, int SH, int nFrame, BYTE bMask, void *pBuffer);

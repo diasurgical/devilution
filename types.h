@@ -3,18 +3,11 @@
 #ifndef _TYPES_H
 #define _TYPES_H
 
+#define WIN32_LEAN_AND_MEAN
+
 #include "resource.h"
 
-#ifdef MINIWIN
-#include "miniwin.h"
-#include "miniwin_sdl.h"
-#include "stubs.h"
-#include "DiabloUI/sdlrender.h"
-#include "sound.h"
-#endif
-
-#ifdef __WIN32__
-#define WIN32_LEAN_AND_MEAN
+#ifdef ORIGWIN
 
 #include <windows.h>
 #include <mmsystem.h>
@@ -28,7 +21,6 @@
 #include <process.h>
 #include <shlobj.h>
 #include <shellapi.h>
-#endif
 
 #ifdef __GNUC__
 #include <ctype.h>
@@ -47,6 +39,16 @@
 #pragma warning(disable : 4146) // negative unsigned
 #endif
 
+#endif // ORIGWIN
+
+#ifdef MINIWIN
+#include "miniwin.h"
+#include "miniwin_sdl.h"
+#include "stubs.h"
+#include "DiabloUI/sdlrender.h"
+#include "sound.h"
+#endif
+
 #include "defs.h"
 #include "enums.h"
 #include "structs.h"
@@ -57,6 +59,7 @@
 
 #ifdef MINIWIN
 #include "dvlnet/dvlnet.h"
+#include "miniwin_rand.h"
 #endif
 
 // If defined, use copy protection [Default -> Defined]
