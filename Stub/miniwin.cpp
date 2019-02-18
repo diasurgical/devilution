@@ -114,7 +114,9 @@ DWORD WINAPI GetModuleFileNameA(HMODULE hModule, LPSTR lpFilename, DWORD nSize)
 
 WINBOOL WINAPI GetComputerNameA(LPSTR lpBuffer, LPDWORD nSize)
 {
-	UNIMPLEMENTED();
+	DUMMY();
+	strncpy(lpBuffer, "localhost", *nSize);
+	*nSize = strlen(lpBuffer);
 }
 
 WINBOOL WINAPI DeleteFileA(LPCSTR lpFileName)
