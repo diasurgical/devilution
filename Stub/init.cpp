@@ -95,7 +95,7 @@ void __fastcall init_create_window(int nCmdShow)
 	atexit(TTF_Quit);
 	SDL_Init(SDL_INIT_EVERYTHING);
 
-	int flags = SDL_WINDOW_FULLSCREEN_DESKTOP;
+	int flags = SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_INPUT_GRABBED;
 	if (!fullscreen) {
 		flags = SDL_WINDOW_RESIZABLE;
 	}

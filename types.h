@@ -46,7 +46,6 @@
 #include "miniwin_sdl.h"
 #include "stubs.h"
 #include "DiabloUI/sdlrender.h"
-#include "sound.h"
 #endif
 
 #include "defs.h"
