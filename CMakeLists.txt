@@ -144,6 +144,9 @@ set(STUB_SOURCES
     Stub/dvlnet/loopback.cpp
     Stub/dvlnet/packet.cpp
     Stub/dvlnet/base.cpp
+    Stub/dvlnet/frame_queue.cpp
+    Stub/dvlnet/tcp_client.cpp
+    Stub/dvlnet/tcp_server.cpp
     Stub/dvlnet/udp_p2p.cpp
 
     Stub/DiabloUI/credits.cpp

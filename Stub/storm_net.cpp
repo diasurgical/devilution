@@ -54,7 +54,8 @@ BOOL STORMAPI SNetDestroy()
 
 BOOL STORMAPI SNetDropPlayer(int playerid, DWORD flags)
 {
-	UNIMPLEMENTED();
+	DUMMY();
+	return TRUE;
 }
 
 BOOL STORMAPI SNetGetGameInfo(int type, void *dst, unsigned int length, unsigned int *byteswritten)
@@ -65,8 +66,7 @@ BOOL STORMAPI SNetGetGameInfo(int type, void *dst, unsigned int length, unsigned
 
 BOOL STORMAPI SNetLeaveGame(int type)
 {
-	DUMMY();
-	return TRUE;
+	return dvlnet_inst->SNetLeaveGame(type);
 }
 
 BOOL STORMAPI SNetSendServerChatCommand(const char *command)
@@ -86,8 +86,8 @@ int __stdcall SNetInitializeProvider(unsigned long provider, struct _SNETPROGRAM
 {
 	if (provider == 'UDPN') {
 		dvlnet::buffer_t game_init_info((char*)client_info->initdata,
-												(char*)client_info->initdata + client_info->initdatabytes);
-		dvlnet_inst = std::make_unique<dvlnet::udp_p2p>(std::move(game_init_info));
+		                                (char*)client_info->initdata + client_info->initdatabytes);
+		dvlnet_inst = std::make_unique<dvlnet::tcp_client>(std::move(game_init_info));
 	} else if (provider == 'SCBL' || provider == 0) {
 		dvlnet_inst = std::make_unique<dvlnet::loopback>();
 	} else {
