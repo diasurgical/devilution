@@ -42,7 +42,7 @@ namespace dvlnet {
 		};
 
 		message_t message_last;
-		std::queue<message_t> message_queue;
+		std::deque<message_t> message_queue;
 		std::array<turn_t, MAX_PLRS> turn_last = {};
 		std::array<std::queue<turn_t>, MAX_PLRS> turn_queue;
 		std::array<bool, MAX_PLRS> active_table = {};
@@ -57,5 +57,8 @@ namespace dvlnet {
 		void handle_accept(packet& pkt);
 		void recv_local(packet& pkt);
 		void run_event_handler(_SNETEVENT& ev);
+
+	private:
+		void clear_msg(plr_t plr);
 	};
 }

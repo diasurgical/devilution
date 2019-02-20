@@ -214,6 +214,7 @@ void __fastcall DeltaExportData(int pnum)
 			dstEnd = DeltaExportMonster(dstEnd, sgLevels[i].monster);
 			size = msg_comp_level(dst, dstEnd);
 			dthread_send_delta(pnum, i + CMD_DLEVEL_0, dst, size);
+			dstEnd = dst + 1; // BUGFIX (pending upstream)
 		}
 		dstEnd = DeltaExportJunk(dstEnd);
 		size = msg_comp_level(dst, dstEnd);
@@ -283,7 +284,7 @@ BYTE *__fastcall DeltaExportJunk(BYTE *dst)
 		}
 	}
 
-	for (i = 0; i < MAXQUESTS; i++) {
+	for (i = 0; i < MAXMULTIQUESTS; i++) {
 		if (questlist[i]._qflags & 1) {
 			mq = &sgJunk.quests[i];
 			mq->qlog = quests[i]._qlog;
@@ -1290,7 +1291,7 @@ void __fastcall DeltaImportJunk(BYTE *src)
 		}
 	}
 
-	for (i = 0; i < MAXMULTIQUESTS; i++) {
+	for (i = 0; i < MAXMULTIQUESTS; i++) { // BUGFIX (pending upstream)
 		if (questlist[i]._qflags & 1) {
 			memcpy(&sgJunk.quests[i], src, sizeof(MultiQuests));
 			src += sizeof(MultiQuests);
