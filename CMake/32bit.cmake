@@ -1,6 +1,7 @@
 message(STATUS "Using 32-bit toolchain")
 
 set(CMAKE_CXX_FLAGS -m32 CACHE STRING "")
+set(CMAKE_C_FLAGS -m32 CACHE STRING "")
 
 # Affects pkg-config
 set_property(GLOBAL PROPERTY FIND_LIBRARY_USE_LIB32_PATHS TRUE)

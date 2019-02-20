@@ -6,9 +6,6 @@ BYTE gbDupSounds;
 unsigned char channels = 8; // defines how many channels, respectively how many *.wav files can be played at the same time
 UCHAR gbMusicOn;
 UCHAR gbSoundOn;
-Mix_Music *gMusic = NULL;
-Mix_Chunk *sample;
-Mix_Music *music;
 
 char *sgszMusicTracks[6] = { "Music\\DTowne.wav", "Music\\DLvlA.wav", "Music\\DLvlB.wav",
 	"Music\\DLvlC.wav", "Music\\DLvlD.wav", "Music\\Dintro.wav" };
@@ -16,12 +13,7 @@ char *sgszMusicTracks[6] = { "Music\\DTowne.wav", "Music\\DLvlA.wav", "Music\\DL
 void __fastcall snd_init(HWND hWnd)
 {
 	DUMMY();
-	/* for some reason function __fastcall snd_init seems to be used twice at this time*/
 	printf("\nSND INIT\n");
-	// Initialize SDL.
-	if (SDL_Init(SDL_INIT_AUDIO) < 0) {
-		printf("ERROR : %s\n\n", SDL_GetError());
-	}
 
 	/* following function Mix_AllocateChannels allocates the number of channels of simultaneously played sounds.*/
 	printf("Opened %i sound channels\n\n", Mix_AllocateChannels(channels));

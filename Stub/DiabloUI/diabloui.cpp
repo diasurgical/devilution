@@ -664,7 +664,6 @@ void LoadBackgroundArt(char *pszFile)
 {
 	PALETTEENTRY pPal[256];
 
-	fadeValue = 0;
 	LoadArt(pszFile, &ArtBackground, 1, pPal);
 	LoadPalInMem(pPal);
 	ApplyGamma(logical_palette, orig_palette, 256);
@@ -719,8 +718,6 @@ void DrawEditBox(UI_Item item)
 	item.rect.w -= 86;
 	DrawArtStr(&item);
 }
-
-float freq = SDL_GetPerformanceFrequency();
 
 void UiRender()
 {

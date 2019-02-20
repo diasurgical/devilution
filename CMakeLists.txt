@@ -159,6 +159,10 @@ set(STUB_SOURCES
     Stub/DiabloUI/selhero.cpp
     Stub/DiabloUI/title.cpp
 
+    3rdParty/libsmacker/smk_bitstream.c
+    3rdParty/libsmacker/smk_hufftree.c
+    3rdParty/libsmacker/smacker.c
+
     3rdParty/StormLib/src/FileStream.cpp
     3rdParty/StormLib/src/SBaseCommon.cpp
     3rdParty/StormLib/src/SBaseFileTable.cpp
