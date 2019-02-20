@@ -1,6 +1,5 @@
-#include "../3rdParty/libsmacker/smacker.h"
-#include "../3rdParty/libsmackerdec/include/SmackerDecoder.h"
 #include "../types.h"
+#include "../3rdParty/libsmacker/smacker.h"
 
 BYTE movie_playing;
 BOOL loop_movie; // TODO
