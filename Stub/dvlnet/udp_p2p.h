@@ -1,7 +1,6 @@
 namespace dvlnet {
 	class udp_p2p : public base {
 	public:
-		udp_p2p(buffer_t info);
 		virtual int create(std::string addrstr, std::string passwd);
 		virtual int join(std::string addrstr, std::string passwd);
 		virtual void poll();

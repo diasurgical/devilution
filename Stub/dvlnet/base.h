@@ -10,8 +10,6 @@
 namespace dvlnet {
 	class base : public dvlnet {
 	public:
-		base(buffer_t info);
-
 		virtual int create(std::string addrstr, std::string passwd) = 0;
 		virtual int join(std::string addrstr, std::string passwd) = 0;
 
@@ -30,6 +28,7 @@ namespace dvlnet {
 		virtual void poll() = 0;
 		virtual void send(packet& pkt) = 0;
 
+		void setup_gameinfo(buffer_t info);
 	protected:
 		std::map<event_type, snet_event_func> registered_handlers;
 		buffer_t game_init_info;

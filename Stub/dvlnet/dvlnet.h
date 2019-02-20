@@ -6,6 +6,7 @@
 #include <asio/ts/net.hpp>
 
 namespace dvlnet {
+	typedef std::vector<unsigned char> buffer_t;
 	typedef void(__stdcall *snet_event_func)(struct _SNETEVENT*);
 	class dvlnet_exception : public std::exception {};
 
@@ -26,6 +27,7 @@ namespace dvlnet {
 		virtual void* SNetUnregisterEventHandler(event_type evtype,
 		                                         snet_event_func func) = 0;
 		virtual bool SNetLeaveGame(int type) = 0;
+		virtual void setup_gameinfo(buffer_t info) = 0;
 		virtual ~dvlnet() {}
 	};
 }

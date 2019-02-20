@@ -1,21 +1,24 @@
 #include "selgame.h"
 
 char selgame_Lable[32];
-char selgame_Ip[129];
+char selgame_Ip[129] = "127.0.0.1"; // CONFIG
 char selgame_Description[256];
 bool selgame_enteringGame;
 bool selgame_endMenu;
 int* gdwPlayerId;
 
+static _SNETPROGRAMDATA* m_client_info;
+extern DWORD provider;
+
 UI_Item SELUDPGAME_DIALOG[] = {
 	{ { 0, 0, 640, 480 }, UI_IMAGE, 0, 0, NULL, &ArtBackground },
-	{ { 24, 161, 590, 35 }, UI_TEXT, UIS_CENTER | UIS_BIG, 0, "Join UDP Games" },
+	{ { 24, 161, 590, 35 }, UI_TEXT, UIS_CENTER | UIS_BIG, 0, "Join TCP/UDP Games" },
 	{ { 35, 211, 205, 33 }, UI_TEXT, UIS_MED, 0, "Description:" },
 	{ { 35, 256, 205, 192 }, UI_TEXT, 0, 0, selgame_Description }, // Description
 	{ { 300, 211, 295, 33 }, UI_TEXT, UIS_CENTER | UIS_BIG, 0, "Select Action" },
 	{ { 305, 255, 285, 26 }, UI_LIST, UIS_CENTER | UIS_MED | UIS_GOLD, 0, "Create Game" },
 	{ { 305, 281, 285, 26 }, UI_LIST, UIS_CENTER | UIS_MED | UIS_GOLD, 1, "Enter IP" },
-	{ { 305, 307, 285, 26 }, UI_LIST, UIS_CENTER | UIS_MED | UIS_GOLD, 2, "Localhost" },
+	{ { 305, 307, 285, 26 }, UI_LIST, UIS_CENTER | UIS_MED | UIS_GOLD },
 	{ { 305, 333, 285, 26 }, UI_LIST, UIS_CENTER | UIS_MED | UIS_GOLD },
 	{ { 305, 359, 285, 26 }, UI_LIST, UIS_CENTER | UIS_MED | UIS_GOLD },
 	{ { 305, 385, 285, 26 }, UI_LIST, UIS_CENTER | UIS_MED | UIS_GOLD },
@@ -55,7 +58,11 @@ void selgame_Free()
 
 void selgame_GameSelection_Init()
 {
-	UiInitList(0, 2, selgame_GameSelection_Focus, selgame_GameSelection_Select, selgame_GameSelection_Esc, SELUDPGAME_DIALOG, size(SELUDPGAME_DIALOG));
+	if(provider == 'SCBL') {
+		selgame_GameSelection_Select(0);
+	} else {
+		UiInitList(0, 1, selgame_GameSelection_Focus, selgame_GameSelection_Select, selgame_GameSelection_Esc, SELUDPGAME_DIALOG, size(SELUDPGAME_DIALOG));
+	}
 }
 
 void selgame_GameSelection_Focus(int value)
@@ -66,9 +73,6 @@ void selgame_GameSelection_Focus(int value)
 		break;
 	case 1:
 		sprintf(selgame_Description, "Enter an IP and join a game already in progress at that address.");
-		break;
-	default:
-		sprintf(selgame_Description, "%s.\nCreated by %s, a level %d %s.", "Normal Difficulty", "Localhost", 1, "Warrior");
 		break;
 	}
 
@@ -95,10 +99,6 @@ void selgame_GameSelection_Select(int value)
 		break;
 	case 1:
 		UiInitList(0, 0, NULL, selgame_Ip_Select, selgame_GameSelection_Init, ENTERIP_DIALOG, size(ENTERIP_DIALOG));
-		break;
-	default:
-		sprintf(selgame_Ip, "127.0.0.1");
-		selgame_Ip_Select(0);
 		break;
 	}
 }
@@ -135,8 +135,11 @@ void selgame_Diff_Select(int value)
 {
 	selgame_endMenu = true;
 	selgame_enteringGame = true;
-	gnDifficulty = value;
-	if (!SNetCreateGame(NULL, "mypass", NULL, 0, NULL, 0, MAX_PLRS, NULL, NULL, gdwPlayerId))
+
+	_gamedata* info = m_client_info->initdata;
+	info->bDiff = value;
+
+	if (!SNetCreateGame(NULL, "mypass", NULL, 0, (char*)info, sizeof(_gamedata), MAX_PLRS, NULL, NULL, gdwPlayerId))
 		TermMsg("Unable to create game.");
 }
 
@@ -144,6 +147,7 @@ int __stdcall UiSelectGame(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYERDAT
     _SNETVERSIONDATA *file_info, int *playerId)
 {
 	gdwPlayerId = playerId;
+	m_client_info = client_info;
 	LoadBackgroundArt("ui_art\\selgame.pcx");
 	selgame_GameSelection_Init();
 	selgame_enteringGame = false;

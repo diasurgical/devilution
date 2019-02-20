@@ -2,11 +2,6 @@
 
 using namespace dvlnet;
 
-tcp_client::tcp_client(buffer_t info) :
-	base(std::move(info))
-{
-}
-
 int tcp_client::create(std::string addrstr, std::string passwd)
 {
 	local_server = std::make_unique<tcp_server>(ioc, addrstr,

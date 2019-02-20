@@ -4,11 +4,6 @@ using namespace dvlnet;
 
 const udp_p2p::endpoint udp_p2p::none;
 
-udp_p2p::udp_p2p(buffer_t info) :
-	base(info)
-{
-}
-
 int udp_p2p::create(std::string addrstr, std::string passwd)
 {
 	sock = asio::ip::udp::socket(io_context);// to be removed later

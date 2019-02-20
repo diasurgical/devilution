@@ -2,7 +2,7 @@
 
 using namespace dvlnet;
 
-base::base(buffer_t info)
+void base::setup_gameinfo(buffer_t info)
 {
 	game_init_info = std::move(info);
 }

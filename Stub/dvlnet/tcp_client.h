@@ -3,7 +3,6 @@
 namespace dvlnet {
 	class tcp_client : public base {
 	public:
-		tcp_client(buffer_t info);
 		int create(std::string addrstr, std::string passwd);
 		int join(std::string addrstr, std::string passwd);
 

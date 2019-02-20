@@ -84,10 +84,10 @@ int __stdcall SNetInitializeProvider(unsigned long provider, struct _SNETPROGRAM
     struct _SNETPLAYERDATA *user_info, struct _SNETUIDATA *ui_info,
     struct _SNETVERSIONDATA *fileinfo)
 {
-	if (provider == 'UDPN') {
-		dvlnet::buffer_t game_init_info((char*)client_info->initdata,
-		                                (char*)client_info->initdata + client_info->initdatabytes);
-		dvlnet_inst = std::make_unique<dvlnet::tcp_client>(std::move(game_init_info));
+	if (provider == 'TCPN') {
+		dvlnet_inst = std::make_unique<dvlnet::tcp_client>();
+	} else if (provider == 'UDPN') {
+		dvlnet_inst = std::make_unique<dvlnet::tcp_client>();
 	} else if (provider == 'SCBL' || provider == 0) {
 		dvlnet_inst = std::make_unique<dvlnet::loopback>();
 	} else {
@@ -104,6 +104,10 @@ BOOL STORMAPI SNetCreateGame(const char *pszGameName, const char *pszGamePasswor
     DWORD dwGameType, char *GameTemplateData, int GameTemplateSize, int playerCount,
     char *creatorName, char *a11, int *playerID)
 {
+	if(GameTemplateSize != 8)
+		ABORT();
+	dvlnet::buffer_t game_init_info(GameTemplateData, GameTemplateData + GameTemplateSize);
+	dvlnet_inst->setup_gameinfo(std::move(game_init_info));
 	*playerID = dvlnet_inst->create("0.0.0.0", pszGamePassword);
 
 	return *playerID != -1;

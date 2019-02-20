@@ -10,6 +10,8 @@ _SNETPLAYERDATA *selconn_UserInfo;
 _SNETUIDATA *selconn_UiInfo;
 _SNETVERSIONDATA *selconn_FileInfo;
 
+DWORD provider;
+
 UI_Item SELCONNECT_DIALOG[] = {
 	{ { 0, 0, 640, 480 }, UI_IMAGE, 0, 0, NULL, &ArtBackground },
 	{ { 24, 161, 590, 35 }, UI_TEXT, UIS_CENTER | UIS_BIG, 0, "Multi Player Game" },
@@ -20,9 +22,9 @@ UI_Item SELCONNECT_DIALOG[] = {
 	{ { 35, 393, 205, 21 }, UI_TEXT, UIS_CENTER, 0, selconn_Gateway }, // Gateway
 	{ { 16, 427, 250, 35 }, UI_BUTTON, UIS_CENTER | UIS_VCENTER | UIS_BIG | UIS_GOLD | UIS_HIDDEN, 0, "Change Gateway" },
 	{ { 300, 211, 295, 33 }, UI_TEXT, UIS_CENTER | UIS_BIG, 0, "Select Connection" },
-	{ { 305, 256, 285, 26 }, UI_LIST, UIS_CENTER | UIS_VCENTER | UIS_GOLD, 0, "Local Area Network (UDP)" },
-	{ { 305, 282, 285, 26 }, UI_LIST, UIS_CENTER | UIS_VCENTER | UIS_GOLD, 1, "Solo" },
-	{ { 305, 308, 285, 26 }, UI_LIST, UIS_CENTER | UIS_VCENTER | UIS_GOLD },
+	{ { 305, 256, 285, 26 }, UI_LIST, UIS_CENTER | UIS_VCENTER | UIS_GOLD, 0, "Client-Server (TCP)" },
+	{ { 305, 282, 285, 26 }, UI_LIST, UIS_CENTER | UIS_VCENTER | UIS_GOLD, 1, "Peer-to-Peer (UDP)" },
+	{ { 305, 308, 285, 26 }, UI_LIST, UIS_CENTER | UIS_VCENTER | UIS_GOLD, 2, "Loopback" },
 	{ { 305, 334, 285, 26 }, UI_LIST, UIS_CENTER | UIS_VCENTER | UIS_GOLD },
 	{ { 305, 360, 285, 26 }, UI_LIST, UIS_CENTER | UIS_VCENTER | UIS_GOLD },
 	{ { 305, 386, 285, 26 }, UI_LIST, UIS_CENTER | UIS_VCENTER | UIS_GOLD },
@@ -33,7 +35,7 @@ UI_Item SELCONNECT_DIALOG[] = {
 void selconn_Load()
 {
 	LoadBackgroundArt("ui_art\\selconn.pcx");
-	UiInitList(0, 1, selconn_Focus, selconn_Select, selconn_Esc, SELCONNECT_DIALOG, size(SELCONNECT_DIALOG));
+	UiInitList(0, 2, selconn_Focus, selconn_Select, selconn_Esc, SELCONNECT_DIALOG, size(SELCONNECT_DIALOG));
 }
 
 void selconn_Free()
@@ -53,11 +55,15 @@ void selconn_Focus(int value)
 	int players = 4;
 	switch (value) {
 	case 0:
-		sprintf(selconn_Description, "All computers must be connected to an UDP-compatible network.");
+		sprintf(selconn_Description, "All computers must be connected to a TCP-compatible network.");
 		players = 4;
 		break;
 	case 1:
-		sprintf(selconn_Description, "Play by your self with no network exposure.");
+		sprintf(selconn_Description, "All computers must be connected to a UDP-compatible network.");
+		players = 4;
+		break;
+	case 2:
+		sprintf(selconn_Description, "Play by yourself with no network exposure.");
 		players = 1;
 		break;
 	}
@@ -72,12 +78,14 @@ void selconn_Focus(int value)
 
 void selconn_Select(int value)
 {
-	DWORD provider;
 	switch (value) {
 	case 0:
-		provider = 'UDPN';
+		provider = 'TCPN';
 		break;
 	case 1:
+		provider = 'UDPN';
+		break;
+	case 2:
 		provider = 'SCBL';
 		break;
 	}
