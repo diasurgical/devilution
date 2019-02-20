@@ -664,6 +664,7 @@ void LoadBackgroundArt(char *pszFile)
 {
 	PALETTEENTRY pPal[256];
 
+	fadeValue = 0;
 	LoadArt(pszFile, &ArtBackground, 1, pPal);
 	LoadPalInMem(pPal);
 	ApplyGamma(logical_palette, orig_palette, 256);

@@ -87,7 +87,7 @@ int __stdcall SNetInitializeProvider(unsigned long provider, struct _SNETPROGRAM
 	if (provider == 'TCPN') {
 		dvlnet_inst = std::make_unique<dvlnet::tcp_client>();
 	} else if (provider == 'UDPN') {
-		dvlnet_inst = std::make_unique<dvlnet::tcp_client>();
+		dvlnet_inst = std::make_unique<dvlnet::udp_p2p>();
 	} else if (provider == 'SCBL' || provider == 0) {
 		dvlnet_inst = std::make_unique<dvlnet::loopback>();
 	} else {

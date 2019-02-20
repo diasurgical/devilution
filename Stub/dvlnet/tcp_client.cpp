@@ -5,7 +5,7 @@ using namespace dvlnet;
 int tcp_client::create(std::string addrstr, std::string passwd)
 {
 	local_server = std::make_unique<tcp_server>(ioc, addrstr,
-	                                            default_port, passwd);
+	                                            6112, passwd);
 	return join(local_server->localhost_self(), passwd);
 }
 
@@ -13,7 +13,7 @@ int tcp_client::join(std::string addrstr, std::string passwd)
 {
 	setup_password(passwd);
 	auto ipaddr = asio::ip::make_address(addrstr);
-	sock.connect(asio::ip::tcp::endpoint(ipaddr, default_port));
+	sock.connect(asio::ip::tcp::endpoint(ipaddr, 6112));
 	start_recv();
 	{ // hack: try to join for 5 seconds
 		randombytes_buf(reinterpret_cast<unsigned char*>(&cookie_self),
