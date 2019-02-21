@@ -133,74 +133,46 @@ void __cdecl DRLG_Init_Globals()
 
 void __fastcall LoadL1Dungeon(char *sFileName, int vx, int vy)
 {
-	char *v3;          // esi
-	unsigned char *v4; // esi
-	signed int v5;     // ecx
-	signed int v6;     // eax
-	signed int v7;     // edx
-	int v8;            // edi
-	int v9;            // ebx
-	char *v10;         // eax
-	int v11;           // ecx
-	char v12;          // dl
-	int v13;           // [esp+Ch] [ebp-Ch]
-	int v14;           // [esp+10h] [ebp-8h]
-	int v15;           // [esp+14h] [ebp-4h]
+	int i, j, rw, rh;
+	unsigned char *pLevelMap;
+	unsigned char *lm;
 
-	v13 = vx;
 	dminx = 16;
 	dminy = 16;
-	v3 = sFileName;
 	dmaxx = 96;
 	dmaxy = 96;
 	DRLG_InitTrans();
-	v4 = LoadFileInMem(v3, 0);
-	v5 = 0;
-	do {
-		v6 = v5;
-		v7 = 40;
-		do {
-			mydflags[0][v6] = 0;
-			dungeon[0][v6] = 22;
-			v6 += 40;
-			--v7;
-		} while (v7);
-		++v5;
-	} while (v5 < 40);
-	v15 = 0;
-	v8 = *v4;
-	v9 = v4[2];
-	v10 = (char *)(v4 + 4);
-	if (v9 > 0) {
-		do {
-			if (v8 > 0) {
-				v11 = v15;
-				v14 = v8;
-				do {
-					v12 = *v10;
-					if (*v10) {
-						mydflags[0][v11] |= 0x80u;
-						dungeon[0][v11] = v12;
-					} else {
-						dungeon[0][v11] = 13;
-					}
-					v11 += 40;
-					v10 += 2;
-					--v14;
-				} while (v14);
+	pLevelMap = LoadFileInMem(sFileName, 0);
+	for (j = 0; j < 40; j++) {
+		for (i = 0; i < 40; i++) {
+			dungeon[i][j] = 22;
+			mydflags[i][j] = 0;
+		}
+	}
+	rw = pLevelMap[0];
+	lm = pLevelMap + 2;
+	rh = lm[0];
+	lm += 2;
+	for (j = 0; j < rh; j++) {
+		for (i = 0; i < rw; i++) {
+			if (*lm) {
+				dungeon[i][j] = *lm;
+				mydflags[i][j] |= 0x80;
+			} else {
+				dungeon[i][j] = 13;
 			}
-			++v15;
-		} while (v15 < v9);
+			lm += 2;
+		}
 	}
 	DRLG_L1Floor();
-	ViewX = v13;
+	ViewX = vx;
 	ViewY = vy;
 	DRLG_L1Pass3();
 	DRLG_Init_Globals();
 	DRLG_InitL1Vals();
-	SetMapMonsters(v4, 0, 0);
-	SetMapObjects(v4, 0, 0);
-	mem_free_dbg(v4);
+	SetMapMonsters(pLevelMap, 0, 0);
+	SetMapObjects(pLevelMap, 0, 0);
+	mem_free_dbg(pLevelMap);
 }
 // 5CF328: using guessed type int dmaxx;
 // 5CF32C: using guessed type int dmaxy;
