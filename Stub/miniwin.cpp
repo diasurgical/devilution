@@ -290,7 +290,11 @@ DWORD WINAPI GetWindowThreadProcessId(HWND hWnd, LPDWORD lpdwProcessId)
 DWORD WINAPI GetPrivateProfileStringA(LPCSTR lpAppName, LPCSTR lpKeyName, LPCSTR lpDefault, LPSTR lpReturnedString,
     DWORD nSize, LPCSTR lpFileName)
 {
-	UNIMPLEMENTED();
+	DUMMY();
+
+	strncpy(lpReturnedString, lpDefault, nSize);
+
+	return strlen(lpReturnedString);
 }
 
 int MessageBoxA(HWND hWnd, const char *Text, const char *Title, UINT Flags)
