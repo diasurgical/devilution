@@ -31,7 +31,7 @@ void __fastcall play_movie(char *pszMovie, BOOL user_can_close)
 	}
 
 	/* file meta-info */
-	unsigned int width, height, nFrames;
+	unsigned long width, height, nFrames;
 	/* arrays for audio track metadata */
 	unsigned char a_trackmask, a_channels[7], a_depth[7];
 	unsigned long a_rate[7];
