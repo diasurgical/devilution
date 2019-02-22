@@ -53,7 +53,7 @@ Make sure to enable these when installing (or modify your installation):
 - Requires "Windows Universal CRT SDK" (For ctype.h)
 
 ### Building deviltuionX (native Linux build)
-Note: The 64bit builds are currently not in a playable state, as such you might want to force a 32bit build.
+Note: Since 64-bit builds are currently not in a playable state, it is advised to build in a 32-bit environment. Another possibility is a 32-bit build on a multilib system (see below).
 
 Install the dependencies on your machine:
 ```
@@ -68,6 +68,10 @@ cmake ..
 make -j$(nproc)
 ```
 
+*Arguments to cmake:*
+
+The default build type is `Debug`. This can be changed with `-DCMAKE_BUILD_TYPE=Release`. Independently of this, the debug mode of the Diablo engine is always enabled by default. It can be disabled with `-DDEBUG=OFF`. Finally, in debug builds the address sanitizer is enabled by default. This can be disabled with `-DASAN=OFF`.
+
 *To run the game:*
 
 Copy the compiled devilution executable to your Diablo directory.
@@ -76,7 +80,7 @@ Run `./devilution`
 
 Please keep in mind that this is still being worked on and is missing parts of UI and SoundEffects are not properly playing now.
 
-### Building deviltuionX 32bit on 64bit platforms
+### Building deviltuionX 32-bit on 64-bit (multilib) platforms
 ```
 sudo apt-get install cmake g++-multilib libsdl2-dev:i386 libsdl2-mixer-dev:i386 libsdl2-ttf-dev:i386 libsodium-dev libsodium-dev:i386
 ```
@@ -85,8 +89,8 @@ Now run the following commands:
 ```
 mkdir build32
 cd build32
-FORCE32=1 cmake ..
-make -j$(nproc)
+linux32 cmake -DCMAKE_TOOLCHAIN_FILE=../CMake/32bit.cmake ..
+linux32 make -j$(nproc)
 ```
 
 ### Building with MinGW
