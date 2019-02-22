@@ -18,7 +18,7 @@
 // Compression support
 
 // Include functions from Pkware Data Compression Library
-#include "3rdParty/PKWare/pkware.h"
+#include "../../PKWare/pkware.h"
 
 #ifdef FULL
 // Include functions from Huffmann compression

@@ -29,9 +29,38 @@ find_package(SDL2_ttf REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 find_package(sodium REQUIRED)
 
-set(SOURCES
+add_library(smacker STATIC
+  3rdParty/libsmacker/smk_bitstream.c
+  3rdParty/libsmacker/smk_hufftree.c
+  3rdParty/libsmacker/smacker.c)
+
+add_library(Radon STATIC
+  3rdParty/Radon/Radon/source/File.cpp
+  3rdParty/Radon/Radon/source/Key.cpp
+  3rdParty/Radon/Radon/source/Named.cpp
+  3rdParty/Radon/Radon/source/Section.cpp)
+
+add_library(StormLib STATIC
+  3rdParty/StormLib/src/FileStream.cpp
+  3rdParty/StormLib/src/SBaseCommon.cpp
+  3rdParty/StormLib/src/SBaseFileTable.cpp
+  3rdParty/StormLib/src/SBaseSubTypes.cpp
+  3rdParty/StormLib/src/SCompression.cpp
+  3rdParty/StormLib/src/SFileExtractFile.cpp
+  3rdParty/StormLib/src/SFileFindFile.cpp
+  3rdParty/StormLib/src/SFileGetFileInfo.cpp
+  3rdParty/StormLib/src/SFileOpenArchive.cpp
+  3rdParty/StormLib/src/SFileOpenFileEx.cpp
+  3rdParty/StormLib/src/SFileReadFile.cpp)
+
+add_library(PKWare STATIC
+  3rdParty/PKWare/explode.cpp
+  3rdParty/PKWare/implode.cpp)
+
+add_library(devilution STATIC
   Source/appfat.cpp
   Source/automap.cpp
+# Source/capture.cpp
   Source/codec.cpp
   Source/control.cpp
   Source/cursor.cpp
@@ -39,6 +68,7 @@ set(SOURCES
   Source/debug.cpp
   Source/diablo.cpp
   Source/doom.cpp
+# Source/dx.cpp
   Source/drlg_l1.cpp
   Source/drlg_l2.cpp
   Source/drlg_l3.cpp
@@ -48,19 +78,23 @@ set(SOURCES
   Source/encrypt.cpp
   Source/engine.cpp
   Source/error.cpp
+# Source/fault.cpp
   Source/gamemenu.cpp
   Source/gendung.cpp
   Source/gmenu.cpp
   Source/help.cpp
+# Source/init.cpp
   Source/interfac.cpp
   Source/inv.cpp
   Source/items.cpp
   Source/lighting.cpp
   Source/loadsave.cpp
+# Source/logging.cpp
   Source/mainmenu.cpp
   Source/minitext.cpp
   Source/missiles.cpp
   Source/monster.cpp
+# Source/movie.cpp
   Source/mpqapi.cpp
   Source/msgcmd.cpp
   Source/msg.cpp
@@ -76,9 +110,11 @@ set(SOURCES
   Source/portal.cpp
   Source/quests.cpp
   Source/render.cpp
+# Source/restrict.cpp
   Source/scrollrt.cpp
   Source/setmaps.cpp
   Source/sha.cpp
+# Source/sound.cpp
   Source/spells.cpp
   Source/stores.cpp
   Source/sync.cpp
@@ -89,109 +125,88 @@ set(SOURCES
   Source/towners.cpp
   Source/track.cpp
   Source/trigs.cpp
-  Source/wave.cpp
+  Source/wave.cpp)
+target_include_directories(devilution PRIVATE SourceS)
 
-  3rdParty/PKWare/explode.cpp
-  3rdParty/PKWare/implode.cpp)
+add_executable(devilutionx
+  SourceX/capture.cpp
+  SourceX/dx.cpp
+  SourceX/fault.cpp
+  SourceX/init.cpp
+  SourceX/miniwin.cpp
+  SourceX/miniwin_io.cpp
+  SourceX/miniwin_msg_sdl.cpp
+  SourceX/stub_rand.cpp
+  SourceX/miniwin_thread.cpp
+  SourceX/movie.cpp
+  SourceX/restrict.cpp
+  SourceX/sound.cpp
+  SourceX/storm.cpp
+  SourceX/storm_net.cpp
+  SourceX/dvlnet/loopback.cpp
+  SourceX/dvlnet/packet.cpp
+  SourceX/dvlnet/base.cpp
+  SourceX/dvlnet/frame_queue.cpp
+  SourceX/dvlnet/tcp_client.cpp
+  SourceX/dvlnet/tcp_server.cpp
+  SourceX/dvlnet/udp_p2p.cpp
+  SourceX/DiabloUI/credits.cpp
+  SourceX/DiabloUI/diabloui.cpp
+  SourceX/DiabloUI/dialogs.cpp
+  SourceX/DiabloUI/mainmenu.cpp
+  SourceX/DiabloUI/progress.cpp
+  SourceX/DiabloUI/selconn.cpp
+  SourceX/DiabloUI/selgame.cpp
+  SourceX/DiabloUI/selhero.cpp
+  SourceX/DiabloUI/title.cpp
+  SourceX/main.cpp)
+target_include_directories(devilutionx PRIVATE SourceS SourceX 3rdParty/asio/include)
 
-# Stubbed out sources, for reference
-set(ORIGINAL_SOURCES
-  Source/capture.cpp
-  Source/dx.cpp
-  Source/fault.cpp
-  Source/init.cpp
-  Source/logging.cpp
-  Source/movie.cpp
-  Source/restrict.cpp
-  Source/sound.cpp)
+target_link_libraries(devilution PUBLIC
+  StormLib
+  smacker
+  Radon
+  PKWare
+  SDL2::SDL2main
+  SDL2::SDL2_ttf
+  SDL2::SDL2_mixer)
 
-set(STUB_SOURCES
-  Stub/capture.cpp
-  Stub/dx.cpp
-  Stub/fault.cpp
-  Stub/init.cpp
-  Stub/miniwin.cpp
-  Stub/miniwin_io.cpp
-  Stub/miniwin_msg_sdl.cpp
-  Stub/miniwin_rand.cpp
-  Stub/miniwin_thread.cpp
-  Stub/movie.cpp
-  Stub/restrict.cpp
-  Stub/sound.cpp
-  Stub/storm.cpp
-  Stub/storm_net.cpp
+target_link_libraries(devilutionx PRIVATE
+  devilution
+  sodium)
 
-  Stub/dvlnet/loopback.cpp
-  Stub/dvlnet/packet.cpp
-  Stub/dvlnet/base.cpp
-  Stub/dvlnet/frame_queue.cpp
-  Stub/dvlnet/tcp_client.cpp
-  Stub/dvlnet/tcp_server.cpp
-  Stub/dvlnet/udp_p2p.cpp
-
-  Stub/DiabloUI/credits.cpp
-  Stub/DiabloUI/diabloui.cpp
-  Stub/DiabloUI/dialogs.cpp
-  Stub/DiabloUI/mainmenu.cpp
-  Stub/DiabloUI/progress.cpp
-  Stub/DiabloUI/selconn.cpp
-  Stub/DiabloUI/selgame.cpp
-  Stub/DiabloUI/selhero.cpp
-  Stub/DiabloUI/title.cpp
-
-  Stub/main.cpp
-
-  3rdParty/libsmacker/smk_bitstream.c
-  3rdParty/libsmacker/smk_hufftree.c
-  3rdParty/libsmacker/smacker.c
-
-  3rdParty/Radon/Radon/source/File.cpp
-  3rdParty/Radon/Radon/source/Key.cpp
-  3rdParty/Radon/Radon/source/Named.cpp
-  3rdParty/Radon/Radon/source/Section.cpp
-
-  3rdParty/StormLib/src/FileStream.cpp
-  3rdParty/StormLib/src/SBaseCommon.cpp
-  3rdParty/StormLib/src/SBaseFileTable.cpp
-  3rdParty/StormLib/src/SBaseSubTypes.cpp
-  3rdParty/StormLib/src/SCompression.cpp
-  3rdParty/StormLib/src/SFileExtractFile.cpp
-  3rdParty/StormLib/src/SFileFindFile.cpp
-  3rdParty/StormLib/src/SFileGetFileInfo.cpp
-  3rdParty/StormLib/src/SFileOpenArchive.cpp
-  3rdParty/StormLib/src/SFileOpenFileEx.cpp
-  3rdParty/StormLib/src/SFileReadFile.cpp)
-
-add_executable(devilution ${SOURCES} ${STUB_SOURCES})
-target_link_libraries(devilution PRIVATE SDL2::SDL2main SDL2::SDL2_ttf SDL2::SDL2_mixer sodium)
-target_include_directories(devilution PRIVATE . Stub 3rdParty/asio/include)
-target_compile_definitions(devilution PRIVATE
-  ASIO_STANDALONE
-  MINIWIN
+target_compile_definitions(devilution PUBLIC
+  DEVILUTION_STUB
   "$<$<BOOL:${DEBUG}>:_DEBUG>"
   # Skip fades and other fluff
   FASTER)
 
+target_compile_definitions(devilutionx PUBLIC ASIO_STANDALONE)
+
 # Enable ASAN in Debug mode
 if(ASAN)
-  target_compile_options(devilution PRIVATE "$<$<CONFIG:Debug>:-fsanitize=address;-fsanitize-recover=address>")
-  target_link_libraries(devilution PRIVATE "$<$<CONFIG:Debug>:-fsanitize=address;-fsanitize-recover=address>")
+  target_compile_options(devilution PUBLIC "$<$<CONFIG:Debug>:-fsanitize=address;-fsanitize-recover=address>")
+  target_link_libraries(devilution PUBLIC "$<$<CONFIG:Debug>:-fsanitize=address;-fsanitize-recover=address>")
 endif()
 
 # Note: In Debug mode, GCC generates spurious memory references that upset Valgrind,
 # these options fix that.
-target_compile_options(devilution PRIVATE $<$<CONFIG:Debug>:-fno-omit-frame-pointer>)
+target_compile_options(devilution PUBLIC $<$<CONFIG:Debug>:-fno-omit-frame-pointer>)
 
 # Ignore serious warnings due to "quality" of decompiled code
-target_compile_options(devilution PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-fpermissive> -Wno-write-strings -Wno-multichar)
+# Currently, disable ignore all warnings (-w), to be removed later
+target_compile_options(devilution PRIVATE -fpermissive -Wno-write-strings -Wno-multichar -w)
 # Disable optimizations that can break non-standards-conforming code
 target_compile_options(devilution PRIVATE -fno-aggressive-loop-optimizations -fno-strict-aliasing)
+# Warnings for devilutionX
+target_compile_options(devilution PUBLIC -Wno-unknown-pragmas)
+target_compile_options(devilutionx PRIVATE -fpermissive -Wall -Wextra -Wno-multichar)
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   # Style issues
-  target_compile_options(devilution PRIVATE -Wno-parentheses -Wno-logical-op-parentheses -Wno-bitwise-op-parentheses)
+  target_compile_options(devilutionx PRIVATE -Wno-parentheses -Wno-logical-op-parentheses -Wno-bitwise-op-parentheses)
   # Silence warnings about __int64 alignment hack not always being applicable
-  target_compile_options(devilution PRIVATE -Wno-ignored-attributes)
+  target_compile_options(devilutionx PRIVATE -Wno-ignored-attributes)
   # Fix: error: cast from pointer to smaller type 'unsigned char' loses information
-  target_compile_options(devilution PRIVATE -fms-extensions)
+  target_compile_options(devilutionx PRIVATE -fms-extensions)
 endif()

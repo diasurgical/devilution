@@ -18,7 +18,7 @@ namespace radon
 
 		Section* getSection(const std::string & name);
 
-		void File::addSection(const std::string & name);
+		void addSection(const std::string & name);
 
 		void saveToFile();
 

@@ -7,7 +7,7 @@
 
 #include "resource.h"
 
-#ifdef ORIGWIN
+#ifndef DEVILUTION_STUB
 
 #include <windows.h>
 #include <mmsystem.h>
@@ -39,13 +39,10 @@
 #pragma warning(disable : 4146) // negative unsigned
 #endif
 
-#endif // ORIGWIN
+#else
 
-#ifdef MINIWIN
 #include "miniwin.h"
-#include "miniwin_sdl.h"
-#include "stubs.h"
-#include "DiabloUI/sdlrender.h"
+
 #endif
 
 #include "defs.h"
@@ -56,9 +53,10 @@
 #include "3rdParty/Storm/Source/storm.h"
 #include "3rdParty/PKWare/pkware.h"
 
-#ifdef MINIWIN
-#include "dvlnet/dvlnet.h"
-#include "miniwin_rand.h"
+#ifdef DEVILUTION_STUB
+
+#include "stub_rand.h"
+
 #endif
 
 // If defined, use copy protection [Default -> Defined]
