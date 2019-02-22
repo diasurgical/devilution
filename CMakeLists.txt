@@ -163,6 +163,11 @@ set(STUB_SOURCES
     3rdParty/libsmacker/smk_hufftree.c
     3rdParty/libsmacker/smacker.c
 
+    3rdParty/Radon/Radon/source/File.cpp
+    3rdParty/Radon/Radon/source/Key.cpp
+    3rdParty/Radon/Radon/source/Named.cpp
+    3rdParty/Radon/Radon/source/Section.cpp
+
     3rdParty/StormLib/src/FileStream.cpp
     3rdParty/StormLib/src/SBaseCommon.cpp
     3rdParty/StormLib/src/SBaseFileTable.cpp
