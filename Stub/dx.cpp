@@ -361,6 +361,7 @@ void __fastcall dx_init(HWND hWnd)
 	lpDDSPrimary = &stub_surface;
 	lpDDSBackBuf = &stub_surface;
 	lpDDPalette = &stub_palette;
+	LoadGamma();
 }
 
 void __cdecl dx_cleanup()

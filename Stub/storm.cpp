@@ -1,6 +1,19 @@
+#include "../3rdParty/Radon/Radon/include/Radon.hpp"
 #include "../types.h"
 
 DWORD nLastError = 0;
+
+std::string getIniPath()
+{
+	char path[280];
+	int len = GetModuleFileName(ghInst, path, 260);
+	path[len - 1] = '/';
+	strcat(path, "diablo.ini");
+
+	return path;
+}
+
+radon::File ini(getIniPath());
 
 // BOOL STORMAPI SFileCloseArchive(HANDLE hArchive)
 // {
@@ -254,37 +267,87 @@ void *STORMAPI SMemReAlloc(void *location, unsigned int amount, char *logfilenam
 	UNIMPLEMENTED();
 }
 
-BOOL STORMAPI SRegLoadData(const char *keyname, const char *valuename, int size, LPBYTE lpData, BYTE flags,
-    LPDWORD lpcbData)
+bool getIniValue(const char *sectionName, const char *keyName, char *string, int stringSize, int *dataSize = NULL)
 {
-	DUMMY();
-	return 0;
+	radon::Section* section = ini.getSection(sectionName);
+	if (!section)
+		return false;
+
+	radon::Key *key = section->getKey(keyName);
+	if (!key)
+		return false;
+
+	std::string value = key->getStringValue();
+	if (dataSize)
+		*dataSize = value.length();
+
+	if (string)
+		strncpy(string, value.c_str(), stringSize);
+
+	return true;
+}
+
+void setIniValue(const char *sectionName, const char *keyName, char *value, int len = 0)
+{
+	radon::Section* section = ini.getSection(sectionName);
+	if (!section) {
+		ini.addSection(sectionName);
+		section = ini.getSection(sectionName);
+	}
+
+	std::string stringValue(value, len ?: strlen(value));
+
+	radon::Key *key = section->getKey(keyName);
+	if (!key) {
+		section->addKey(radon::Key(keyName, stringValue));
+	} else {
+		key->setValue(stringValue);
+	}
+
+	ini.saveToFile();
+}
+
+BOOL STORMAPI SRegLoadData(const char *keyname, const char *valuename, int size, LPBYTE lpData, BYTE flags, LPDWORD lpcbData)
+{
+	return getIniValue(keyname, valuename, lpData, size, lpcbData);
 }
 
 BOOL STORMAPI SRegLoadString(const char *keyname, const char *valuename, BYTE flags, char *buffer, unsigned int buffersize)
 {
-	UNIMPLEMENTED();
+	return getIniValue(keyname, valuename, buffer, buffersize);
 }
 
 BOOL STORMAPI SRegLoadValue(const char *keyname, const char *valuename, BYTE flags, int *value)
 {
-	DUMMY_PRINT("key: %s value: %s", keyname, valuename);
+	char string[10];
+	if (getIniValue(keyname, valuename, string, 10)) {
+		*value = strtol(string, NULL, 10);
+		return TRUE;
+	}
+
 	return FALSE;
 }
 
 BOOL STORMAPI SRegSaveData(const char *keyname, const char *valuename, int size, BYTE *lpData, DWORD cbData)
 {
-	UNIMPLEMENTED();
+	setIniValue(keyname, valuename, (char *)lpData, cbData);
+
+	return TRUE;
 }
 
 BOOL STORMAPI SRegSaveString(const char *keyname, const char *valuename, BYTE flags, char *string)
 {
-	UNIMPLEMENTED();
+	setIniValue(keyname, valuename, string);
+
+	return TRUE;
 }
 
 BOOL STORMAPI SRegSaveValue(const char *keyname, const char *valuename, BYTE flags, DWORD result)
 {
-	DUMMY_PRINT("key: %s value: %s", keyname, valuename);
+	char str[10];
+	sprintf(str, "%d", result);
+	setIniValue(keyname, valuename, str);
+
 	return TRUE;
 }
 

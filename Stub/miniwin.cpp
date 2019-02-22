@@ -107,7 +107,7 @@ DWORD WINAPI GetModuleFileNameA(HMODULE hModule, LPSTR lpFilename, DWORD nSize)
 	SDL_free(name);
 
 	int len = strlen(lpFilename);
-	lpFilename[len-1] = '\\';
+	lpFilename[len - 1] = '\\';
 
 	return len;
 }
@@ -290,7 +290,10 @@ DWORD WINAPI GetWindowThreadProcessId(HWND hWnd, LPDWORD lpdwProcessId)
 DWORD WINAPI GetPrivateProfileStringA(LPCSTR lpAppName, LPCSTR lpKeyName, LPCSTR lpDefault, LPSTR lpReturnedString,
     DWORD nSize, LPCSTR lpFileName)
 {
-	UNIMPLEMENTED();
+	if (!SRegLoadString(lpAppName, lpKeyName, 0, lpReturnedString, nSize)) {
+		strncpy(lpReturnedString, lpDefault, nSize);
+		SRegSaveString(lpAppName, lpKeyName, 0, lpReturnedString);
+	}
 }
 
 int MessageBoxA(HWND hWnd, const char *Text, const char *Title, UINT Flags)
