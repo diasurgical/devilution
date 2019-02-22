@@ -24,12 +24,11 @@ namespace radon
 
 				while (std::getline(stream, buffer))
 				{
-					buffer.erase(std::remove(buffer.begin(), buffer.end(), ' '), buffer.end());
 					if (buffer[0] == ';' || buffer[0] == '#') continue;
 					if (buffer[0] == '[')
 					{
 						nameOfCurrent = buffer.substr(buffer.find("[") + 1, buffer.find("]") - 1);
-						sections.push_back(std::unique_ptr<Section>(new Section(nameOfCurrent)));
+						sections.push_back(Section(nameOfCurrent));
 					}
 					else
 					{
@@ -38,7 +37,7 @@ namespace radon
 						std::string nameOfElement = buffer.substr(0, equalsPosition);
 						std::string valueOfElement = buffer.substr(equalsPosition + 1, buffer.size());
 
-						sections.back()->addKey(Key(nameOfElement, valueOfElement));
+						sections.back().addKey(Key(nameOfElement, valueOfElement));
 					}
 				}
 			}
@@ -46,23 +45,23 @@ namespace radon
 	}
 
 
-	std::unique_ptr<Section> File::getSection(const std::string & name)
+	Section *File::getSection(const std::string & name)
 	{
 		for (auto & section : sections)
 		{
-			if (section->getName() == name)
+			if (section.getName() == name)
 			{
-				return std::make_unique<Section>(*section);
+				return &section;
 			}
 		}
 
-		assert(1);
+		return nullptr;
 	}
 
 
-	void File::addSection(Section & category)
+	void File::addSection(const std::string & name)
 	{
-		sections.push_back(std::make_unique<Section>(category));
+		sections.push_back(Section(name));
 	}
 
 
@@ -72,8 +71,8 @@ namespace radon
 
 		for (auto & section : sections)
 		{
-			file << "[" << section->getName() << "] \n";
-			for (auto & key : section->keys)
+			file << "[" << section.getName() << "] \n";
+			for (auto & key : section.keys)
 			{
 				file << key.getName() << "=" << key.getStringValue() << "\n";
 			}

@@ -16,14 +16,14 @@ namespace radon
 
 		File(const std::string & path, bool reading = true);
 
-		std::unique_ptr<Section> getSection(const std::string & name);
+		Section* getSection(const std::string & name);
 
-		void addSection(Section & category);
+		void File::addSection(const std::string & name);
 
 		void saveToFile();
 
 	private:
-		std::vector<std::unique_ptr<Section>> sections;
+		std::vector<Section> sections;
 		std::string path;
 	};
 }

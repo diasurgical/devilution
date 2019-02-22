@@ -17,21 +17,19 @@ namespace radon
 	{
 	}
 
-
-	Key Section::getKey(const std::string & name)
+	Key *Section::getKey(const std::string & name)
 	{
-		for each (auto var in keys)
+		for (auto & key : keys)
 		{
-			if (var.getName() == name)
-				return var;
+			if (key.getName() == name)
+				return &key;
 		}
 
-		assert(1);
+		return nullptr;
 	}
 
-
-	void Section::addKey(Key & variable)
+	void Section::addKey(Key key)
 	{
-		keys.push_back(variable);
+		keys.push_back(key);
 	}
 }
