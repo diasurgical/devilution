@@ -1,5 +1,17 @@
 #pragma once
 
+#include <string>
+#include <memory>
+#include <asio/ts/buffer.hpp>
+#include <asio/ts/internet.hpp>
+#include <asio/ts/io_context.hpp>
+#include <asio/ts/net.hpp>
+
+#include "dvlnet/packet.h"
+#include "dvlnet/frame_queue.h"
+#include "dvlnet/base.h"
+#include "dvlnet/tcp_server.h"
+
 namespace dvlnet {
 	class tcp_client : public base {
 	public:

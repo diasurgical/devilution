@@ -1,6 +1,7 @@
-#include "pchheader.h"
+#include "pch.h"
+#include "dvlnet/abstract_net.h"
 
-static std::unique_ptr<dvlnet::dvlnet> dvlnet_inst;
+static std::unique_ptr<dvlnet::abstract_net> dvlnet_inst;
 
 BOOL STORMAPI SNetReceiveMessage(int *senderplayerid, char **data, int *databytes)
 {
@@ -84,16 +85,7 @@ int __stdcall SNetInitializeProvider(unsigned long provider, struct _SNETPROGRAM
     struct _SNETPLAYERDATA *user_info, struct _SNETUIDATA *ui_info,
     struct _SNETVERSIONDATA *fileinfo)
 {
-	if (provider == 'TCPN') {
-		dvlnet_inst = std::make_unique<dvlnet::tcp_client>();
-	} else if (provider == 'UDPN') {
-		dvlnet_inst = std::make_unique<dvlnet::udp_p2p>();
-	} else if (provider == 'SCBL' || provider == 0) {
-		dvlnet_inst = std::make_unique<dvlnet::loopback>();
-	} else {
-		ABORT();
-	}
-
+	dvlnet_inst = dvlnet::abstract_net::make_net(provider);
 	return ui_info->selectnamecallback(client_info, user_info, ui_info, fileinfo, provider, NULL, 0, NULL, 0, NULL);
 }
 

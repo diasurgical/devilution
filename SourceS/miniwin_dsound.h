@@ -1,3 +1,5 @@
+#pragma once
+
 typedef void *LPDSBCAPS, *LPCDSBUFFERDESC;
 
 struct IDirectSound;

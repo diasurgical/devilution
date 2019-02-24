@@ -1,7 +1,13 @@
 #pragma once
 
+#include <string>
+#include <queue>
+
+#include "devilution.h"
+#include "dvlnet/abstract_net.h"
+
 namespace dvlnet {
-	class loopback : public dvlnet {
+	class loopback : public abstract_net {
 	private:
 		std::queue<buffer_t> message_queue;
 		buffer_t message_last;

@@ -1,5 +1,15 @@
 #pragma once
 
+#include <string>
+#include <map>
+#include <deque>
+#include <array>
+#include <memory>
+
+#include "devilution.h"
+#include "dvlnet/abstract_net.h"
+#include "dvlnet/packet.h"
+
 #define PS_CONNECTED 0x10000
 #define PS_TURN_ARRIVED 0x20000
 #define PS_ACTIVE 0x40000
@@ -8,7 +18,7 @@
 #define LEAVE_ENDING 0x40000004
 
 namespace dvlnet {
-	class base : public dvlnet {
+	class base : public abstract_net {
 	public:
 		virtual int create(std::string addrstr, std::string passwd) = 0;
 		virtual int join(std::string addrstr, std::string passwd) = 0;
@@ -43,7 +53,7 @@ namespace dvlnet {
 		message_t message_last;
 		std::deque<message_t> message_queue;
 		std::array<turn_t, MAX_PLRS> turn_last = {};
-		std::array<std::queue<turn_t>, MAX_PLRS> turn_queue;
+		std::array<std::deque<turn_t>, MAX_PLRS> turn_queue;
 		std::array<bool, MAX_PLRS> active_table = {};
 		std::array<bool, MAX_PLRS> connected_table = {};
 

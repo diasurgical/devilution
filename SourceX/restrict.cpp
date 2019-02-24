@@ -1,4 +1,4 @@
-#include "pchheader.h"
+#include "pch.h"
 
 BOOL __cdecl RestrictedTest()
 {

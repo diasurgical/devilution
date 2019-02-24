@@ -1,5 +1,17 @@
 #pragma once
 
+#include <string>
+#include <memory>
+#include <array>
+#include <asio/ts/buffer.hpp>
+#include <asio/ts/internet.hpp>
+#include <asio/ts/io_context.hpp>
+#include <asio/ts/net.hpp>
+
+#include "dvlnet/packet.h"
+#include "dvlnet/abstract_net.h"
+#include "dvlnet/frame_queue.h"
+
 namespace dvlnet {
 	class server_exception : public dvlnet_exception {};
 

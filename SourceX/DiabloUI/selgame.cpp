@@ -1,4 +1,4 @@
-#include "pchheader.h"
+#include "pch.h"
 #include "selgame.h"
 
 char selgame_Lable[32];

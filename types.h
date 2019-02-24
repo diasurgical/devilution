@@ -53,12 +53,6 @@
 #include "3rdParty/Storm/Source/storm.h"
 #include "3rdParty/PKWare/pkware.h"
 
-#ifdef DEVILUTION_STUB
-
-#include "stub_rand.h"
-
-#endif
-
 // If defined, use copy protection [Default -> Defined]
 //#define COPYPROT
 // If defined, don't reload for debuggers [Default -> Undefined]

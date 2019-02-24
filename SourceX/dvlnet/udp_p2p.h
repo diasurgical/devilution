@@ -1,3 +1,15 @@
+#pragma once
+
+#include <string>
+#include <set>
+#include <asio/ts/buffer.hpp>
+#include <asio/ts/internet.hpp>
+#include <asio/ts/io_context.hpp>
+#include <asio/ts/net.hpp>
+
+#include "dvlnet/packet.h"
+#include "dvlnet/base.h"
+
 namespace dvlnet {
 	class udp_p2p : public base {
 	public:

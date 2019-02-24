@@ -12,6 +12,11 @@ endif()
 
 option(ASAN "Enable address sanitizer" ON)
 option(DEBUG "Enable debug mode in engine" ON)
+option(COTIRE "Enable cotire" OFF)
+
+if(COTIRE)
+  include(CMake/cotire.cmake)
+endif()
 
 list(APPEND CMAKE_MODULE_PATH "${devilutionX_SOURCE_DIR}/CMake")
 
@@ -143,6 +148,7 @@ add_executable(devilutionx
   SourceX/sound.cpp
   SourceX/storm.cpp
   SourceX/storm_net.cpp
+  SourceX/dvlnet/abstract_net.cpp
   SourceX/dvlnet/loopback.cpp
   SourceX/dvlnet/packet.cpp
   SourceX/dvlnet/base.cpp
@@ -160,7 +166,8 @@ add_executable(devilutionx
   SourceX/DiabloUI/selhero.cpp
   SourceX/DiabloUI/title.cpp
   SourceX/main.cpp)
-target_include_directories(devilutionx PRIVATE SourceS SourceX 3rdParty/asio/include)
+
+target_include_directories(devilutionx PRIVATE SourceS SourceX 3rdParty/asio/include .)
 
 target_link_libraries(devilution PUBLIC
   StormLib
@@ -200,7 +207,7 @@ target_compile_options(devilution PRIVATE -fpermissive -Wno-write-strings -Wno-m
 target_compile_options(devilution PRIVATE -fno-aggressive-loop-optimizations -fno-strict-aliasing)
 # Warnings for devilutionX
 target_compile_options(devilution PUBLIC -Wno-unknown-pragmas)
-target_compile_options(devilutionx PRIVATE -fpermissive -Wall -Wextra -Wno-multichar)
+target_compile_options(devilutionx PRIVATE -fpermissive -Wall -Wextra -Wno-multichar -Wno-unused-parameter)
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   # Style issues
@@ -209,4 +216,12 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   target_compile_options(devilutionx PRIVATE -Wno-ignored-attributes)
   # Fix: error: cast from pointer to smaller type 'unsigned char' loses information
   target_compile_options(devilutionx PRIVATE -fms-extensions)
+endif()
+
+if(COTIRE)
+  set_target_properties(devilutionx PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
+  set_target_properties(devilutionx PROPERTIES
+    COTIRE_PREFIX_HEADER_INCLUDE_PATH "${devilutionX_SOURCE_DIR}"
+	COTIRE_PREFIX_HEADER_IGNORE_PATH "${devilutionX_SOURCE_DIR}/SourceX")
+  cotire(devilutionx)
 endif()

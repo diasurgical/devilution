@@ -1,4 +1,6 @@
-#include "pchheader.h"
+#include "dvlnet/base.h"
+
+#include <algorithm>
 
 using namespace dvlnet;
 
@@ -55,7 +57,7 @@ void base::recv_local(packet& pkt)
 		message_queue.push_back(message_t(pkt.src(), pkt.message()));
 		break;
 	case PT_TURN:
-		turn_queue[pkt.src()].push(pkt.turn());
+		turn_queue[pkt.src()].push_back(pkt.turn());
 		break;
 	case PT_JOIN_ACCEPT:
 		handle_accept(pkt);
@@ -76,10 +78,12 @@ void base::recv_local(packet& pkt)
 			connected_table[pkt.newplr()] = false;
 			active_table[pkt.newplr()] = false;
 			clear_msg(pkt.newplr());
-			turn_queue[pkt.newplr()] = {};
+			turn_queue[pkt.newplr()].clear();
 		} else {
 			// problem
 		}
+		break;
+	default:
 		break;
 		// otherwise drop
 	}
@@ -134,7 +138,7 @@ bool base::SNetReceiveTurns(char** data, unsigned int* size, DWORD* status)
 			size[i] = sizeof(turn_t);
 			status[i] |= PS_TURN_ARRIVED;
 			turn_last[i] = turn_queue[i].front();
-			turn_queue[i].pop();
+			turn_queue[i].pop_front();
 			data[i] = reinterpret_cast<char*>(&turn_last[i]);
 		}
 	}

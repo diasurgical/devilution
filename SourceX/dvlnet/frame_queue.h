@@ -1,5 +1,9 @@
 #pragma once
 
+#include <deque>
+
+#include "dvlnet/abstract_net.h"
+
 namespace dvlnet {
 	class frame_queue_exception : public dvlnet_exception {};
 

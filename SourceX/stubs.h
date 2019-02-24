@@ -35,3 +35,9 @@ static inline const char *nullstr(const char *a)
 {
 	return a ? a : "(null)";
 }
+
+#define ASSERT(x)                                                                   \
+	if (!(x)) {                                                                     \
+		fprintf(stderr, "Assertion failed in %s:%d: %s\n", __FILE__, __LINE__, #x); \
+		abort();                                                                    \
+	}

@@ -1,4 +1,4 @@
-#include "pchheader.h"
+#include "dvlnet/udp_p2p.h"
 
 using namespace dvlnet;
 
@@ -109,7 +109,7 @@ std::set<udp_p2p::endpoint> udp_p2p::dests_for_addr(plr_t dest, endpoint sender)
 	if (dest == plr_self)
 		return ret;
 
-	if (0 <= dest && dest < MAX_PLRS) {
+	if (dest < MAX_PLRS) {
 		if (active_table[dest])
 			ret.insert(nexthop_table[dest]);
 	} else if (dest == PLR_BROADCAST) {
@@ -153,7 +153,7 @@ void udp_p2p::recv_decrypted(packet& pkt, endpoint sender)
 		}
 	}
 	// normal packets
-	if (pkt.src() < 0 || pkt.src() >= MAX_PLRS)
+	if (pkt.src() >= MAX_PLRS)
 		return;                    //drop packet
 	if (active_table[pkt.src()]) { //WRONG?!?
 		if (sender != nexthop_table[pkt.src()])

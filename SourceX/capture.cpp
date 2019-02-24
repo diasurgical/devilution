@@ -1,4 +1,4 @@
-#include "pchheader.h"
+#include "pch.h"
 
 void __cdecl CaptureScreen()
 {

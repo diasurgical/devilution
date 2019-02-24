@@ -1,11 +1,17 @@
 #pragma once
 
+#include <vector>
+#include <memory>
+
+#include "devilution.h"
+
 namespace dvlnet {
 	typedef std::vector<unsigned char> buffer_t;
 	typedef void(__stdcall *snet_event_func)(struct _SNETEVENT*);
+	typedef unsigned long provider_t;
 	class dvlnet_exception : public std::exception {};
 
-	class dvlnet {
+	class abstract_net {
 	public:
 		virtual int create(std::string addrstr, std::string passwd) = 0;
 		virtual int join(std::string addrstr, std::string passwd) = 0;
@@ -23,15 +29,9 @@ namespace dvlnet {
 		                                         snet_event_func func) = 0;
 		virtual bool SNetLeaveGame(int type) = 0;
 		virtual void setup_gameinfo(buffer_t info) = 0;
-		virtual ~dvlnet() {}
+		virtual ~abstract_net();
+
+		static std::unique_ptr<abstract_net> make_net(provider_t provider);
 	};
 }
-
-#include "dvlnet/packet.h"
-#include "dvlnet/frame_queue.h"
-#include "dvlnet/loopback.h"
-#include "dvlnet/base.h"
-#include "dvlnet/tcp_server.h"
-#include "dvlnet/tcp_client.h"
-#include "dvlnet/udp_p2p.h"
 

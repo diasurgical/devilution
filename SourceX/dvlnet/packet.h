@@ -1,5 +1,12 @@
 #pragma once
 
+#include <string>
+#include <memory>
+#include <array>
+#include <sodium.h>
+
+#include "dvlnet/abstract_net.h"
+
 namespace dvlnet {
 	enum packet_type : uint8_t {
 		PT_MESSAGE = 0x01,

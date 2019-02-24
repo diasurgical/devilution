@@ -1,3 +1,5 @@
+#pragma once
+
 #include <SDL.h>
 
 typedef SDL_mutex *CRITICAL_SECTION, **LPCRITICAL_SECTION;

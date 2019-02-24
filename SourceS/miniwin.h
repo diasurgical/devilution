@@ -580,3 +580,4 @@ extern BOOL __cdecl LoadArtWithPal(char *pszFile, void **pBuffer, int frames, DW
 #include "miniwin_dsound.h"
 #include "miniwin_sdlrender.h"
 #include "miniwin_thread.h"
+#include "miniwin_rand.h"

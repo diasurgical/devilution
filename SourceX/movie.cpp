@@ -1,4 +1,4 @@
-#include "pchheader.h"
+#include "pch.h"
 #include "../3rdParty/libsmacker/smacker.h"
 
 BYTE movie_playing;

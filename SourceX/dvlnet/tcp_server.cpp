@@ -1,4 +1,5 @@
-#include "pchheader.h"
+#include "pch.h"
+#include "dvlnet/tcp_server.h"
 
 using namespace dvlnet;
 
@@ -120,7 +121,7 @@ void tcp_server::send_packet(packet& pkt)
 			if(i != pkt.src() && connections[i])
 				start_send(connections[i], pkt);
 	} else {
-		if(pkt.dest() < 0 || pkt.dest() >= MAX_PLRS)
+		if(pkt.dest() >= MAX_PLRS)
 			throw server_exception();
 		if((pkt.dest() != pkt.src()) && connections[pkt.dest()])
 			start_send(connections[pkt.dest()], pkt);

@@ -1,4 +1,4 @@
-#include "pchheader.h"
+#include "pch.h"
 
 UI_Item OKCANCEL_DIALOG[] = {
 	{ { 180, 168, 280, 144 }, UI_IMAGE, 0, 0, "ui_art\\spopup.pcx" },
