@@ -52,7 +52,7 @@ BOOL __fastcall snd_playing(TSnd *pSnd)
 
 void __fastcall snd_play_snd(TSnd *pSnd, int lVolume, int lPan)
 {
-	Mix_PlayChannel(-1, pSnd->chunk, 0);
+	Mix_PlayChannel(-1, (void*)(pSnd->DSB), 0);
 }
 
 TSnd *__fastcall sound_file_load(char *path)
@@ -72,7 +72,8 @@ TSnd *__fastcall sound_file_load(char *path)
 	Mix_Chunk *SoundFX = Mix_LoadWAV_RW(rw, 1);
 
 	TSnd *fx = malloc(sizeof(TSnd));
-	fx->chunk = SoundFX;
+	memset(fx, 0, sizeof(TSnd));
+	fx->DSB = (void*)SoundFX;
 	fx->start_tc = 0;
 	fx->sound_path = NULL;
 

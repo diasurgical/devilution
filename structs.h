@@ -443,7 +443,6 @@ typedef struct CKINFO {
 	DWORD dwOffset;
 } CKINFO;
 
-#ifndef DEVILUTION_STUB // Hack for SDL_mixer
 typedef struct TSnd {
 	WAVEFORMATEX fmt;
 	CKINFO chunk;
@@ -451,14 +450,6 @@ typedef struct TSnd {
 	LPDIRECTSOUNDBUFFER DSB;
 	int start_tc;
 } TSnd;
-#else
-struct Mix_Chunk;
-typedef struct TSnd {
-	char *sound_path;
-	Mix_Chunk *chunk;
-	int start_tc;
-} TSnd;
-#endif
 
 #pragma pack(push, 1)
 typedef struct TSFX {
