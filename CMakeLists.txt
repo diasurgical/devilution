@@ -169,17 +169,16 @@ add_executable(devilutionx
 
 target_include_directories(devilutionx PRIVATE SourceS SourceX 3rdParty/asio/include .)
 
-target_link_libraries(devilution PUBLIC
-  StormLib
-  smacker
-  Radon
-  PKWare
-  SDL2::SDL2main
-  SDL2::SDL2_ttf
-  SDL2::SDL2_mixer)
+target_link_libraries(devilution PUBLIC PKWare)
 
 target_link_libraries(devilutionx PRIVATE
   devilution
+  StormLib
+  smacker
+  Radon
+  SDL2::SDL2main
+  SDL2::SDL2_ttf
+  SDL2::SDL2_mixer
   sodium)
 
 target_compile_definitions(devilution PUBLIC
@@ -222,6 +221,6 @@ if(COTIRE)
   set_target_properties(devilutionx PROPERTIES COTIRE_ADD_UNITY_BUILD FALSE)
   set_target_properties(devilutionx PROPERTIES
     COTIRE_PREFIX_HEADER_INCLUDE_PATH "${devilutionX_SOURCE_DIR}"
-	COTIRE_PREFIX_HEADER_IGNORE_PATH "${devilutionX_SOURCE_DIR}/SourceX")
+    COTIRE_PREFIX_HEADER_IGNORE_PATH "${devilutionX_SOURCE_DIR}/SourceX")
   cotire(devilutionx)
 endif()

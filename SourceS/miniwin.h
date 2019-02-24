@@ -195,9 +195,14 @@ typedef struct tagMSG {
 	POINT pt;
 } MSG, *LPMSG;
 
-// sdl wave?!?
-#define MAKEFOURCC SDL_FOURCC
-typedef uint8_t FOURCC;
+#define MAKEFOURCC(x, y, z, w) \
+	(((uint32_t)((uint8_t)x)) \
+	 | (((uint32_t)((uint8_t)y)) << 8) \
+	 | (((uint32_t)((uint8_t)z)) << 16) \
+	 | (((uint32_t)((uint8_t)w)) << 24))
+
+typedef uint32_t FOURCC;
+
 typedef struct {
 	FOURCC ckid;
 	DWORD cksize;
@@ -205,6 +210,7 @@ typedef struct {
 	DWORD dwDataOffset;
 	DWORD dwFlags;
 } MMCKINFO;
+
 #define FOURCC_RIFF MAKEFOURCC('W', 'A', 'V', 'E')
 
 //
@@ -578,6 +584,6 @@ extern BOOL __cdecl LoadArtWithPal(char *pszFile, void **pBuffer, int frames, DW
 
 #include "miniwin_ddraw.h"
 #include "miniwin_dsound.h"
-#include "miniwin_sdlrender.h"
+#include "miniwin_ui.h"
 #include "miniwin_thread.h"
 #include "miniwin_rand.h"

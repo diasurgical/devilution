@@ -12,9 +12,10 @@
 #include <utility>
 #include <vector>
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <SDL_mixer.h>
 #include <SDL_thread.h>
 #include <SDL_ttf.h>
 
 #include "devilution.h"
+#include "DiabloUI/diabloui.h"

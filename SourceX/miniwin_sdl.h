@@ -1,5 +1,7 @@
 #pragma once
 
+#include <SDL.h>
+
 #define SDL_CHECK(e) assert(e == 0)
 
 extern SDL_Window *window;
