@@ -35,7 +35,7 @@ char unk_volume[4][2] = {
 
 void __fastcall snd_update(BOOL bStopAll)
 {
-	DUMMY_PRINT("snd_update: %d", bStopAll);
+	DUMMY_ONCE();
 }
 
 void __fastcall snd_stop_snd(TSnd *pSnd)
@@ -81,7 +81,7 @@ TSnd *__fastcall sound_file_load(char *path)
 
 void __fastcall sound_file_cleanup(TSnd *sound_file)
 {
-	DUMMY();
+	DUMMY_ONCE();
 }
 
 void __fastcall snd_init(HWND hWnd)

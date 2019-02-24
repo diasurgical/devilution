@@ -328,8 +328,15 @@ DWORD __fastcall GetPlrGFXSize(char *szCel)
 	for (c = 0; c < sizeof(ClassStrTbl) / sizeof(ClassStrTbl[0]); c++) {
 		for (a = 0; ArmourChar[a]; a++) {
 			for (w = 0; WepChar[w]; w++) { // BUGFIX loads non-existing animagions; DT is only for N, BT is only for U, D & H
+				if (szCel[0] == 'D' && szCel[1] == 'T' && WepChar[w] != 'N') {
+					continue;   //Death has no weapon^M
+				}
+				if (szCel[0] == 'B' && szCel[1] == 'L' && (WepChar[w] != 'U' || WepChar[w] != 'D' || WepChar[w] != 'H')) {
+					continue;   //No block with out weapon
+				}
 				sprintf(prefix, "%c%c%c", CharChar[c], ArmourChar[a], WepChar[w]);
 				sprintf(pszName, "PlrGFX\\%s\\%s\\%s%s.CL2", ClassStrTbl[c], prefix, prefix, szCel);
+
 				if (WOpenFile(pszName, &file, TRUE)) {
 					size = WGetFileSize(file, 0);
 					WCloseFile(file);
