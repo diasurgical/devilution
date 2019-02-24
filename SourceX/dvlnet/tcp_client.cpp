@@ -1,4 +1,5 @@
 #include "dvlnet/tcp_client.h"
+#include <functional>
 
 using namespace dvlnet;
 

@@ -286,7 +286,7 @@ VOID WINAPI SetLastError(DWORD dwErrCode);
 WINBOOL WINAPI CloseHandle(HANDLE hObject);
 
 HANDLE WINAPI CreateEventA(LPSECURITY_ATTRIBUTES lpEventAttributes, WINBOOL bManualReset, WINBOOL bInitialState,
-    LPCSTR lpName);
+                           LPCSTR lpName);
 #define CreateEvent CreateEventA
 BOOL WINAPI SetEvent(HANDLE hEvent);
 BOOL WINAPI ResetEvent(HANDLE hEvent);
@@ -326,7 +326,7 @@ HWND WINAPI FindWindowA(LPCSTR lpClassName, LPCSTR lpWindowName);
 #define THREAD_PRIORITY_ABOVE_NORMAL (THREAD_PRIORITY_HIGHEST - 1)
 
 uintptr_t __cdecl _beginthreadex(void *_Security, unsigned _StackSize, unsigned(__stdcall *_StartAddress)(void *),
-    void *_ArgList, unsigned _InitFlag, unsigned *_ThrdAddr);
+                                 void *_ArgList, unsigned _InitFlag, unsigned *_ThrdAddr);
 HANDLE WINAPI GetCurrentThread(VOID);
 DWORD WINAPI GetCurrentThreadId(VOID);
 WINBOOL WINAPI SetThreadPriority(HANDLE hThread, int nPriority);
@@ -418,18 +418,18 @@ typedef struct _PROCESS_INFORMATION {
 
 typedef void *LPSTARTUPINFOA;
 WINBOOL WINAPI CreateProcessA(LPCSTR lpApplicationName, LPSTR lpCommandLine, LPSECURITY_ATTRIBUTES lpProcessAttributes,
-    LPSECURITY_ATTRIBUTES lpThreadAttributes, WINBOOL bInheritHandles, DWORD dwCreationFlags,
-    LPVOID lpEnvironment, LPCSTR lpCurrentDirectory, LPSTARTUPINFOA lpStartupInfo,
-    LPPROCESS_INFORMATION lpProcessInformation);
+                              LPSECURITY_ATTRIBUTES lpThreadAttributes, WINBOOL bInheritHandles, DWORD dwCreationFlags,
+                              LPVOID lpEnvironment, LPCSTR lpCurrentDirectory, LPSTARTUPINFOA lpStartupInfo,
+                              LPPROCESS_INFORMATION lpProcessInformation);
 #define CreateProcess CreateProcessA
 VOID WINAPI ExitProcess(UINT uExitCode);
 DWORD WINAPI GetCurrentProcessId(VOID);
 
 HANDLE WINAPI CreateFileMappingA(HANDLE hFile, LPSECURITY_ATTRIBUTES lpFileMappingAttributes, DWORD flProtect,
-    DWORD dwMaximumSizeHigh, DWORD dwMaximumSizeLow, LPCSTR lpName);
+                                 DWORD dwMaximumSizeHigh, DWORD dwMaximumSizeLow, LPCSTR lpName);
 #define CreateFileMapping CreateFileMappingA
 LPVOID WINAPI MapViewOfFile(HANDLE hFileMappingObject, DWORD dwDesiredAccess, DWORD dwFileOffsetHigh,
-    DWORD dwFileOffsetLow, SIZE_T dwNumberOfBytesToMap);
+                            DWORD dwFileOffsetLow, SIZE_T dwNumberOfBytesToMap);
 WINBOOL WINAPI UnmapViewOfFile(LPCVOID lpBaseAddress);
 
 DWORD WINAPI WaitForInputIdle(HANDLE hProcess, DWORD dwMilliseconds);
@@ -438,13 +438,33 @@ HWND WINAPI GetWindow(HWND hWnd, UINT uCmd);
 DWORD WINAPI GetWindowThreadProcessId(HWND hWnd, LPDWORD lpdwProcessId);
 
 DWORD WINAPI GetPrivateProfileStringA(LPCSTR lpAppName, LPCSTR lpKeyName, LPCSTR lpDefault, LPSTR lpReturnedString,
-    DWORD nSize, LPCSTR lpFileName);
+                                      DWORD nSize, LPCSTR lpFileName);
 #define GetPrivateProfileString GetPrivateProfileStringA
 int MessageBoxA(HWND hWnd, const char *Text, const char *Title, UINT Flags);
 #define MessageBox MessageBoxA
+typedef LONG LSTATUS, HKEY, REGSAM, PHKEY;
+#define HKEY_CURRENT_USER 1
+#define KEY_READ 0x20019
+#define KEY_WRITE 0x20006
+#define REG_SZ 1
+LSTATUS RegOpenKeyExA(HKEY hKey, LPCSTR lpSubKey, DWORD ulOptions, REGSAM samDesired, PHKEY phkResult);
+#define RegOpenKeyEx RegOpenKeyExA
+LSTATUS RegQueryValueExA(HKEY hKey, LPCSTR lpValueName, LPDWORD lpReserved, LPDWORD lpType, BYTE *lpData, LPDWORD lpcbData);
+#define RegQueryValueEx RegQueryValueExA
+LSTATUS RegSetValueExA(HKEY hKey, LPCSTR lpValueName, DWORD Reserved, DWORD dwType, const BYTE *lpData, DWORD cbData);
+#define RegSetValueEx RegSetValueExA
+LSTATUS RegCloseKeyA(HKEY hKey);
+#define RegCloseKey RegCloseKeyA
+void PostQuitMessage(int nExitCode);
+LRESULT DefWindowProcA(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+#define DefWindowProc DefWindowProcA
+LONG GetWindowLongA(HWND hWnd, int nIndex);
+#define GetWindowLong GetWindowLongA
+LONG SetWindowLongA(HWND hWnd, int nIndex, LONG dwNewLong);
+#define SetWindowLong SetWindowLongA
 
 WINBOOL WINAPI WriteFile(HANDLE hFile, LPCVOID lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten,
-    LPOVERLAPPED lpOverlapped);
+                         LPOVERLAPPED lpOverlapped);
 DWORD WINAPI SetFilePointer(HANDLE hFile, LONG lDistanceToMove, PLONG lpDistanceToMoveHigh, DWORD dwMoveMethod);
 WINBOOL WINAPI SetEndOfFile(HANDLE hFile);
 DWORD WINAPI GetFileAttributesA(LPCSTR lpFileName);
@@ -455,16 +475,16 @@ HANDLE WINAPI FindFirstFileA(LPCSTR lpFileName, LPWIN32_FIND_DATAA lpFindFileDat
 #define FindFirstFile FindFirstFileA
 WINBOOL WINAPI FindClose(HANDLE hFindFile);
 HANDLE WINAPI CreateFileA(LPCSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode,
-    LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition,
-    DWORD dwFlagsAndAttributes, HANDLE hTemplateFile);
+                          LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition,
+                          DWORD dwFlagsAndAttributes, HANDLE hTemplateFile);
 #define CreateFile CreateFileA
 WINBOOL WINAPI ReadFile(HANDLE hFile, LPVOID lpBuffer, DWORD nNumberOfBytesToRead, LPDWORD lpNumberOfBytesRead,
-    LPOVERLAPPED lpOverlapped);
+                        LPOVERLAPPED lpOverlapped);
 DWORD WINAPI GetFileSize(HANDLE hFile, LPDWORD lpFileSizeHigh);
 UINT WINAPI GetWindowsDirectoryA(LPSTR lpBuffer, UINT uSize);
 #define GetWindowsDirectory GetWindowsDirectoryA
 WINBOOL WINAPI GetDiskFreeSpaceA(LPCSTR lpRootPathName, LPDWORD lpSectorsPerCluster, LPDWORD lpBytesPerSector,
-    LPDWORD lpNumberOfFreeClusters, LPDWORD lpTotalNumberOfClusters);
+                                 LPDWORD lpNumberOfFreeClusters, LPDWORD lpTotalNumberOfClusters);
 #define GetDiskFreeSpace GetDiskFreeSpaceA
 DWORD WINAPI GetModuleFileNameA(HMODULE hModule, LPSTR lpFilename, DWORD nSize);
 #define GetModuleFileName GetModuleFileNameA
@@ -475,6 +495,10 @@ WINBOOL WINAPI DeleteFileA(LPCSTR lpFileName);
 WINBOOL WINAPI CopyFileA(LPCSTR lpExistingFileName, LPCSTR lpNewFileName, WINBOOL bFailIfExists);
 #define CopyFile CopyFileA
 HFILE WINAPI OpenFile(LPCSTR lpFileName, LPOFSTRUCT lpReOpenBuff, UINT uStyle);
+
+#define GWL_STYLE (-16)
+
+#define WS_SYSMENU 0x00080000L
 
 //
 // Events
@@ -497,6 +521,15 @@ HFILE WINAPI OpenFile(LPCSTR lpFileName, LPOFSTRUCT lpReOpenBuff, UINT uStyle);
 
 #define WM_CHAR 0x0102
 #define WM_CAPTURECHANGED 0x0215
+
+#define WM_CREATE          0x0001
+#define WM_DESTROY         0x0002
+#define WM_PAINT           0x000F
+#define WM_CLOSE           0x0010
+#define WM_ERASEBKGND      0x0014
+#define WM_ACTIVATEAPP     0x001C
+#define WM_QUERYNEWPALETTE 0x030F
+#define WM_PALETTECHANGED  0x0311
 
 #define SC_CLOSE 0xF060
 

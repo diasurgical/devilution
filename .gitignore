@@ -3,6 +3,7 @@
 
 #ignore cmake cache
 /build/
+/build32/
 .vscode/tasks.json
 
 # ELF object file.

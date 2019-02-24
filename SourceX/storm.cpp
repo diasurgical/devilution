@@ -439,12 +439,12 @@ void __stdcall SDrawMessageBox(char *Text, char *Title, int Flags)
 //{
 //	UNIMPLEMENTED();
 //}
-//
-// bool __cdecl StormDestroy(void)
-//{
-//	UNIMPLEMENTED();
-//}
-//
+
+BOOLEAN __cdecl StormDestroy(void)
+{
+	DUMMY();
+}
+
 // bool __stdcall SFileSetBasePath(char *)
 //{
 //	UNIMPLEMENTED();

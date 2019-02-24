@@ -79,7 +79,7 @@ UINT WINAPI GetWindowsDirectoryA(LPSTR lpBuffer, UINT uSize)
 }
 
 WINBOOL WINAPI GetDiskFreeSpaceA(LPCSTR lpRootPathName, LPDWORD lpSectorsPerCluster, LPDWORD lpBytesPerSector,
-    LPDWORD lpNumberOfFreeClusters, LPDWORD lpTotalNumberOfClusters)
+                                 LPDWORD lpNumberOfFreeClusters, LPDWORD lpTotalNumberOfClusters)
 {
 	struct statvfs fiData;
 	int success = statvfs("/", &fiData);
@@ -231,9 +231,9 @@ UINT WINAPI GetSystemPaletteEntries(HDC hdc, UINT iStart, UINT cEntries, LPPALET
 }
 
 WINBOOL WINAPI CreateProcessA(LPCSTR lpApplicationName, LPSTR lpCommandLine, LPSECURITY_ATTRIBUTES lpProcessAttributes,
-    LPSECURITY_ATTRIBUTES lpThreadAttributes, WINBOOL bInheritHandles, DWORD dwCreationFlags,
-    LPVOID lpEnvironment, LPCSTR lpCurrentDirectory, LPSTARTUPINFOA lpStartupInfo,
-    LPPROCESS_INFORMATION lpProcessInformation)
+                              LPSECURITY_ATTRIBUTES lpThreadAttributes, WINBOOL bInheritHandles, DWORD dwCreationFlags,
+                              LPVOID lpEnvironment, LPCSTR lpCurrentDirectory, LPSTARTUPINFOA lpStartupInfo,
+                              LPPROCESS_INFORMATION lpProcessInformation)
 {
 	UNIMPLEMENTED();
 }
@@ -249,7 +249,7 @@ DWORD WINAPI GetCurrentProcessId(VOID)
 }
 
 HANDLE WINAPI CreateFileMappingA(HANDLE hFile, LPSECURITY_ATTRIBUTES lpFileMappingAttributes, DWORD flProtect,
-    DWORD dwMaximumSizeHigh, DWORD dwMaximumSizeLow, LPCSTR lpName)
+                                 DWORD dwMaximumSizeHigh, DWORD dwMaximumSizeLow, LPCSTR lpName)
 {
 	DUMMY();
 	assert(hFile == (HANDLE)-1);
@@ -257,7 +257,7 @@ HANDLE WINAPI CreateFileMappingA(HANDLE hFile, LPSECURITY_ATTRIBUTES lpFileMappi
 }
 
 LPVOID WINAPI MapViewOfFile(HANDLE hFileMappingObject, DWORD dwDesiredAccess, DWORD dwFileOffsetHigh,
-    DWORD dwFileOffsetLow, SIZE_T dwNumberOfBytesToMap)
+                            DWORD dwFileOffsetLow, SIZE_T dwNumberOfBytesToMap)
 {
 	UNIMPLEMENTED();
 }
@@ -288,7 +288,7 @@ DWORD WINAPI GetWindowThreadProcessId(HWND hWnd, LPDWORD lpdwProcessId)
 }
 
 DWORD WINAPI GetPrivateProfileStringA(LPCSTR lpAppName, LPCSTR lpKeyName, LPCSTR lpDefault, LPSTR lpReturnedString,
-    DWORD nSize, LPCSTR lpFileName)
+                                      DWORD nSize, LPCSTR lpFileName)
 {
 	if (!SRegLoadString(lpAppName, lpKeyName, 0, lpReturnedString, nSize)) {
 		strncpy(lpReturnedString, lpDefault, nSize);
@@ -306,4 +306,63 @@ int MessageBoxA(HWND hWnd, const char *Text, const char *Title, UINT Flags)
 	}
 
 	SDL_ShowSimpleMessageBox(SDLFlags, Title, Text, window) < 0 ? -1 : 0;
+}
+
+LSTATUS RegOpenKeyExA(HKEY hKey, LPCSTR lpSubKey, DWORD ulOptions, REGSAM samDesired, PHKEY phkResult)
+{
+	return 1;
+};
+
+/**
+ * @brief This is only ever used to enable or disable the screen saver in a hackish way
+ * For all other settings operation SReg* from Storm is used instead.
+ */
+LSTATUS RegQueryValueExA(HKEY hKey, LPCSTR lpValueName, LPDWORD lpReserved, LPDWORD lpType, BYTE *lpData, LPDWORD lpcbData)
+{
+	if (SDL_IsScreenSaverEnabled()) {
+		lpData[0] = '0';
+		lpData[1] = '\0';
+	}
+
+	return 1;
+};
+
+/**
+ * @brief This is only ever used to enable or disable the screen saver in a hackish way
+ * For all other settings operation SReg* from Storm is used instead.
+ */
+LSTATUS RegSetValueExA(HKEY hKey, LPCSTR lpValueName, DWORD Reserved, DWORD dwType, const BYTE *lpData, DWORD cbData)
+{
+	if (lpData[0] == '0') {
+		SDL_DisableScreenSaver();
+	} else {
+		SDL_EnableScreenSaver();
+	}
+
+	return 1;
+};
+
+LSTATUS RegCloseKeyA(HKEY hKey)
+{
+	return 1;
+};
+
+void PostQuitMessage(int nExitCode)
+{
+	DUMMY(); // Possibly use SDL_PumpEvents
+}
+
+LRESULT DefWindowProcA(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
+{
+	DUMMY();
+}
+
+LONG GetWindowLongA(HWND hWnd, int nIndex)
+{
+	DUMMY();
+}
+
+LONG SetWindowLongA(HWND hWnd, int nIndex, LONG dwNewLong)
+{
+	DUMMY();
 }

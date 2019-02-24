@@ -30,7 +30,8 @@ DECLARE_INTERFACE_(IDirectSoundBuffer, IUnknown)
 	// clang-format on
 };
 
-typedef void *LPDIRECTSOUNDBUFFER, *LPDSCAPS, *LPUNKNOWN, *LPCGUID;
+typedef IDirectSoundBuffer *LPDIRECTSOUNDBUFFER;
+typedef void *LPDSCAPS, *LPUNKNOWN, *LPCGUID;
 
 DECLARE_INTERFACE_(IDirectSound, IUnknown)
 {

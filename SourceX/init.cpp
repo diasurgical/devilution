@@ -20,6 +20,8 @@ char gszProductName[260] = "Diablo v1.09";
 void __fastcall init_cleanup(BOOL show_cursor)
 {
 	pfile_flush_W();
+	init_disable_screensaver(0);
+	init_run_office_from_start_menu();
 
 	if (diabdat_mpq) {
 		SFileCloseArchive(diabdat_mpq);
@@ -36,14 +38,50 @@ void __fastcall init_cleanup(BOOL show_cursor)
 
 	UiDestroy();
 	effects_cleanup_sfx();
-	//sound_cleanup();
+	sound_cleanup();
 	NetClose();
 	dx_cleanup();
 	MI_Dummy(show_cursor);
-	//StormDestroy();
+	StormDestroy();
 
 	if (show_cursor)
 		ShowCursor(TRUE);
+}
+
+void __cdecl init_run_office_from_start_menu()
+{
+	DUMMY();
+}
+// 634CA0: using guessed type int killed_mom_parent;
+
+// SDL_DisableScreenSaver
+void __fastcall init_disable_screensaver(BOOLEAN disable)
+{
+	BOOLEAN v1;     // al
+	char Data[16];  // [esp+4h] [ebp-20h]
+	DWORD Type;     // [esp+14h] [ebp-10h]
+	DWORD cbData;   // [esp+18h] [ebp-Ch]
+	HKEY phkResult; // [esp+1Ch] [ebp-8h]
+	BOOLEAN v6;     // [esp+20h] [ebp-4h]
+
+	// BUGFIX: this is probably the worst possible way to do this. Alternatives: ExtEscape() with SETPOWERMANAGEMENT,
+	// SystemParametersInfo() with SPI_SETSCREENSAVEACTIVE/SPI_SETPOWEROFFACTIVE/SPI_SETLOWPOWERACTIVE
+
+	v6 = disable;
+	if (!RegOpenKeyEx(HKEY_CURRENT_USER, "Control Panel\\Desktop", 0, KEY_READ | KEY_WRITE, &phkResult)) {
+		if (v6) {
+			cbData = 16;
+			if (!RegQueryValueEx(phkResult, "ScreenSaveActive", 0, &Type, (LPBYTE)Data, &cbData))
+				screensaver_enabled_prev = Data[0] != '0';
+			v1 = 0;
+		} else {
+			v1 = screensaver_enabled_prev;
+		}
+		Data[1] = 0;
+		Data[0] = (v1 != 0) + '0';
+		RegSetValueEx(phkResult, "ScreenSaveActive", 0, REG_SZ, (const BYTE *)Data, 2u);
+		RegCloseKey(phkResult);
+	}
 }
 
 /**
@@ -84,6 +122,11 @@ static std::string find_file_in_std_directories(const char *file)
 	TermMsg("Required file %s not found", file);
 }
 
+void FakeWMDestroy()
+{
+	MainWndProc(NULL, WM_DESTROY, NULL, NULL);
+}
+
 void __fastcall init_create_window(int nCmdShow)
 {
 	DUMMY();
@@ -120,11 +163,76 @@ void __fastcall init_create_window(int nCmdShow)
 
 	init_archives();
 	gmenu_init_menu();
+	atexit(FakeWMDestroy);
 }
 
 LRESULT __stdcall MainWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
-	UNIMPLEMENTED();
+	if (Msg > WM_ERASEBKGND) {
+		if (Msg == WM_ACTIVATEAPP) {
+			init_activate_window(hWnd, wParam);
+		} else {
+			if (Msg == WM_QUERYNEWPALETTE) {
+				SDrawRealizePalette();
+				return 1;
+			}
+			if (Msg == WM_PALETTECHANGED && (HWND)wParam != hWnd)
+				SDrawRealizePalette();
+		}
+	} else {
+		switch (Msg) {
+		case WM_ERASEBKGND:
+			return 0;
+		case WM_CREATE:
+			ghMainWnd = hWnd;
+			break;
+		case WM_DESTROY:
+			init_cleanup(1);
+			ghMainWnd = 0;
+			PostQuitMessage(0);
+			break;
+		case WM_PAINT:
+			drawpanflag = 255;
+			break;
+		case WM_CLOSE:
+			return 0;
+		}
+	}
+	return DefWindowProc(hWnd, Msg, wParam, lParam);
+}
+
+void __fastcall init_activate_window(HWND hWnd, BOOLEAN bActive)
+{
+	LONG dwNewLong; // eax
+
+	gbActive = bActive;
+	UiAppActivate(bActive);
+	dwNewLong = GetWindowLong(hWnd, GWL_STYLE);
+
+	if (gbActive && fullscreen)
+		dwNewLong &= ~WS_SYSMENU;
+	else
+		dwNewLong |= WS_SYSMENU;
+
+	SetWindowLong(hWnd, GWL_STYLE, dwNewLong);
+
+	if (gbActive) {
+		drawpanflag = 255;
+		ResetPal();
+	}
+}
+// 52571C: using guessed type int drawpanflag;
+// 634980: using guessed type int gbActive;
+
+LRESULT __stdcall WindowProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
+{
+	LRESULT result; // eax
+
+	if (CurrentProc)
+		result = CurrentProc(hWnd, Msg, wParam, lParam);
+	else
+		result = MainWndProc(hWnd, Msg, wParam, lParam);
+	return result;
 }
 
 WNDPROC __fastcall SetWindowProc(WNDPROC NewProc)
