@@ -13,9 +13,10 @@ endif()
 option(ASAN "Enable address sanitizer" ON)
 option(DEBUG "Enable debug mode in engine" ON)
 option(COTIRE "Enable cotire" OFF)
+option(BINARY_RELEASE "Dynamically link only glibc and SDL2" OFF)
 
-if(COTIRE)
-  include(CMake/cotire.cmake)
+if(BINARY_RELEASE)
+  set(sodium_USE_STATIC_LIBS ON)
 endif()
 
 list(APPEND CMAKE_MODULE_PATH "${devilutionX_SOURCE_DIR}/CMake")
@@ -23,12 +24,19 @@ list(APPEND CMAKE_MODULE_PATH "${devilutionX_SOURCE_DIR}/CMake")
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
+set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
+set(THREADS_PREFER_PTHREAD_FLAG TRUE)
 
 if(NOT CMAKE_SIZEOF_VOID_P EQUAL 4)
   message(WARNING "sizeof(void*) == ${CMAKE_SIZEOF_VOID_P}.")
   message(WARNING [[Not 32-bit, highly experimental!]])
 endif()
 
+if(COTIRE)
+  include(CMake/cotire.cmake)
+endif()
+
+find_package(Threads REQUIRED)
 find_package(SDL2 REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 find_package(SDL2_mixer REQUIRED)
@@ -168,13 +176,14 @@ add_executable(devilutionx
 
 target_include_directories(devilutionx PRIVATE SourceS SourceX 3rdParty/asio/include .)
 
-target_link_libraries(devilution PUBLIC PKWare)
+target_link_libraries(devilution PUBLIC PKWare Threads::Threads)
 
 target_link_libraries(devilutionx PRIVATE
   devilution
   StormLib
   smacker
   Radon
+  Threads::Threads
   SDL2::SDL2main
   SDL2::SDL2_ttf
   SDL2::SDL2_mixer
@@ -192,6 +201,10 @@ target_compile_definitions(devilutionx PUBLIC ASIO_STANDALONE)
 if(ASAN)
   target_compile_options(devilution PUBLIC "$<$<CONFIG:Debug>:-fsanitize=address;-fsanitize-recover=address>")
   target_link_libraries(devilution PUBLIC "$<$<CONFIG:Debug>:-fsanitize=address;-fsanitize-recover=address>")
+endif()
+
+if(BINARY_RELEASE)
+  target_link_libraries(devilution PUBLIC "-static-libgcc -static-libstdc++")
 endif()
 
 # Note: In Debug mode, GCC generates spurious memory references that upset Valgrind,
