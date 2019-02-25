@@ -117,6 +117,7 @@ WINBOOL WINAPI GetComputerNameA(LPSTR lpBuffer, LPDWORD nSize)
 	DUMMY();
 	strncpy(lpBuffer, "localhost", *nSize);
 	*nSize = strlen(lpBuffer);
+	return TRUE;
 }
 
 DWORD GetFileVersionInfoSizeA(LPCSTR lptstrFilename, LPDWORD lpdwHandle)
@@ -262,7 +263,7 @@ HWND CreateWindowExA(
     LPVOID lpParam)
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
-		SDL_Log("SDL_RenderSetLogicalSize: %s\n", SDL_GetError());
+		SDL_Log("SDL_Init: %s\n", SDL_GetError());
 		return 1;
 	}
 	atexit(SDL_Quit);
@@ -274,38 +275,6 @@ HWND CreateWindowExA(
 	window = SDL_CreateWindow(lpWindowName, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, nWidth, nHeight, flags);
 	atexit(FakeWMDestroy);
 
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
-	if (renderer == NULL) {
-		SDL_Log("SDL_CreateRenderer: %s\n", SDL_GetError());
-		return NULL;
-	}
-
-	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
-	if (SDL_RenderSetLogicalSize(renderer, nWidth, nHeight) != 0) {
-		SDL_Log("SDL_RenderSetLogicalSize: %s\n", SDL_GetError());
-		return NULL;
-	}
-
-	surface = SDL_CreateRGBSurface(0, nWidth, nHeight, 32, 0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF);
-	if (surface == NULL) {
-		SDL_Log("SDL_CreateRGBSurface: %s\n", SDL_GetError());
-		return NULL;
-	}
-
-	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, nWidth, nHeight);
-	if (texture == NULL) {
-		SDL_Log("SDL_CreateTexture: %s\n", SDL_GetError());
-		return NULL;
-	}
-
-	palette = SDL_AllocPalette(256);
-	if (palette == NULL) {
-		SDL_Log("SDL_AllocPalette: %s\n", SDL_GetError());
-		return NULL;
-	}
-
-	j_lock_buf_priv(0); //FIXME 0?
-
 	return window;
 }
 
@@ -314,6 +283,8 @@ HWND CreateWindowExA(
  */
 BOOL UpdateWindow(HWND hWnd)
 {
+	DUMMY();
+	return TRUE;
 }
 
 BOOL ShowWindow(HWND hWnd, int nCmdShow)
@@ -323,11 +294,14 @@ BOOL ShowWindow(HWND hWnd, int nCmdShow)
 	} else if (nCmdShow == SW_SHOWNORMAL) {
 		SDL_ShowWindow(window);
 	}
+
+	return TRUE;
 }
 
 WINUSERAPI ATOM WINAPI RegisterClassExA(const WNDCLASSEX *lpwcx)
 {
 	DUMMY();
+	return 1;
 }
 
 /**
@@ -337,10 +311,12 @@ int GetSystemMetrics(int nIndex)
 {
 	switch (nIndex) {
 	case SM_CXSCREEN:
-		return 640;
+		return SCREEN_WIDTH;
 	case SM_CYSCREEN:
-		return 480;
+		return SCREEN_HEIGHT;
 	}
+
+	return 0;
 }
 
 /**
@@ -357,6 +333,7 @@ HGDIOBJ GetStockObject(int i)
 HICON LoadIconA(HINSTANCE hInstance, LPCSTR lpIconName)
 {
 	DUMMY(); //SDL_SetWindowIcon
+	return NULL;
 }
 
 /**
@@ -365,11 +342,13 @@ HICON LoadIconA(HINSTANCE hInstance, LPCSTR lpIconName)
 HANDLE LoadImageA(HINSTANCE hInst, LPCSTR name, UINT type, int cx, int cy, UINT fuLoad)
 {
 	DUMMY();
+	return NULL;
 }
 
 HCURSOR LoadCursorA(HINSTANCE hInstance, LPCSTR lpCursorName)
 {
 	DUMMY(); //SDL_CreateCursor
+	return NULL;
 }
 
 /**
@@ -437,19 +416,24 @@ VOID WINAPI GetSystemInfo(LPSYSTEM_INFO lpSystemInfo)
 
 HDC WINAPI GetDC(HWND hWnd)
 {
-	UNIMPLEMENTED();
+	DUMMY();
+	return NULL;
 }
 
 int WINAPI ReleaseDC(HWND hWnd, HDC hDC)
 {
-	UNIMPLEMENTED();
+	DUMMY();
+	return 0;
 }
 
 int WINAPI GetDeviceCaps(HDC hdc, int index)
 {
 	SDL_DisplayMode current;
 
-	SDL_GetCurrentDisplayMode(0, &current);
+	if (SDL_GetCurrentDisplayMode(0, &current) != 0) {
+		SDL_Log("SDL_GetCurrentDisplayMode: %s", SDL_GetError());
+		return 0;
+	}
 
 	if (index == HORZRES) {
 		return current.w;
@@ -476,7 +460,8 @@ BOOL GetWindowRect(HWND hDlg, tagRECT *Rect)
 
 UINT WINAPI GetSystemPaletteEntries(HDC hdc, UINT iStart, UINT cEntries, LPPALETTEENTRY pPalEntries)
 {
-	UNIMPLEMENTED();
+	DUMMY();
+	return 0;
 }
 
 WINBOOL WINAPI CreateProcessA(LPCSTR lpApplicationName, LPSTR lpCommandLine, LPSECURITY_ATTRIBUTES lpProcessAttributes,
@@ -599,14 +584,17 @@ void PostQuitMessage(int nExitCode)
 LRESULT DefWindowProcA(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
 	DUMMY();
+	return NULL;
 }
 
 LONG GetWindowLongA(HWND hWnd, int nIndex)
 {
 	DUMMY();
+	return 0;
 }
 
 LONG SetWindowLongA(HWND hWnd, int nIndex, LONG dwNewLong)
 {
 	DUMMY();
+	return 0;
 }

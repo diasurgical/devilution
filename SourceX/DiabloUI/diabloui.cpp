@@ -90,6 +90,8 @@ int MAKEINTRESOURCE(int i)
 	case IDD_DIALOG11:
 		return 9;
 	}
+
+	return -1;
 }
 
 int DialogBoxParam(HINSTANCE hInstance, int msgId, HWND hWndParent, DLGPROC lpDialogFunc, LPARAM dwInitParam)
@@ -425,7 +427,7 @@ BOOL __stdcall UiCopyProtError(int *pdwResult)
 
 void __stdcall UiAppActivate(BOOL bActive)
 {
-	UNIMPLEMENTED();
+	DUMMY();
 }
 
 BOOL __fastcall UiValidPlayerName(char *name)

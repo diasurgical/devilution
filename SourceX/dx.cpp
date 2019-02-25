@@ -80,7 +80,10 @@ class StubSurface : public IDirectDrawSurface {
 		SDL_Rect dst_rect = { (int)dwX, (int)dwY, w, h };
 
 		// Convert from 8-bit to 32-bit
-		SDL_CHECK(SDL_BlitSurface(pal_surface, &src_rect, surface, &dst_rect));
+		if (SDL_BlitSurface(pal_surface, &src_rect, surface, &dst_rect) != 0) {
+			SDL_Log("SDL_BlitSurface: %s\n", SDL_GetError());
+			return E_FAIL;
+		}
 
 		surface_dirty = true;
 		return S_OK;
@@ -189,7 +192,8 @@ class StubSurface : public IDirectDrawSurface {
 	}
 	METHOD HRESULT SetPalette(LPDIRECTDRAWPALETTE lpDDPalette)
 	{
-		UNIMPLEMENTED();
+		DUMMY();
+		return S_OK;
 	}
 	METHOD HRESULT Unlock(LPVOID lpSurfaceData)
 	{
@@ -267,7 +271,8 @@ class StubDraw : public IDirectDraw {
 	METHOD HRESULT CreatePalette(DWORD dwFlags, LPPALETTEENTRY lpColorTable, LPDIRECTDRAWPALETTE *lplpDDPalette,
 	    IUnknown *pUnkOuter)
 	{
-		UNIMPLEMENTED();
+		DUMMY();
+		return S_OK;
 	}
 	METHOD HRESULT CreateSurface(LPDDSURFACEDESC lpDDSurfaceDesc, LPDIRECTDRAWSURFACE *lplpDDSurface,
 	    IUnknown *pUnkOuter)
@@ -354,14 +359,58 @@ static StubPalette stub_palette;
 void __fastcall dx_init(HWND hWnd)
 {
 	DUMMY();
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
+	if (renderer == NULL) {
+		SDL_Log("SDL_CreateRenderer: %s\n", SDL_GetError());
+		return NULL;
+	}
 
-	gbActive = TRUE;
+	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
+	if (SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH, SCREEN_HEIGHT) != 0) {
+		SDL_Log("SDL_RenderSetLogicalSize: %s\n", SDL_GetError());
+		return NULL;
+	}
+
+	surface = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_HEIGHT, 32, 0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF);
+	if (surface == NULL) {
+		SDL_Log("SDL_CreateRGBSurface: %s\n", SDL_GetError());
+		return NULL;
+	}
+
+	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, SCREEN_WIDTH, SCREEN_HEIGHT);
+	if (texture == NULL) {
+		SDL_Log("SDL_CreateTexture: %s\n", SDL_GetError());
+		return NULL;
+	}
+
+	palette = SDL_AllocPalette(256);
+	if (palette == NULL) {
+		SDL_Log("SDL_AllocPalette: %s\n", SDL_GetError());
+		return NULL;
+	}
+
+	const int pitch = 64 + SCREEN_WIDTH + 64;
+	gpBuffer = malloc(sizeof(Screen));
+	gpBufEnd += (unsigned int)gpBuffer;
+
+	pal_surface = SDL_CreateRGBSurfaceFrom(gpBuffer, pitch, 160 + SCREEN_HEIGHT + 16, 8, pitch, 0, 0, 0, 0);
+	if (pal_surface == NULL) {
+		SDL_Log("SDL_CreateRGBSurfaceFrom: %s\n", SDL_GetError());
+		return NULL;
+	}
+
+	if (SDL_SetSurfacePalette(pal_surface, palette) != 0) {
+		SDL_Log("SDL_SetSurfacePalette: %s\n", SDL_GetError());
+		return NULL;
+	}
+
+	MainWndProc(NULL, WM_ACTIVATEAPP, TRUE, NULL);
 
 	lpDDInterface = &stub_draw;
 	lpDDSPrimary = &stub_surface;
 	lpDDSBackBuf = &stub_surface;
 	lpDDPalette = &stub_palette;
-	LoadGamma();
+	palette_init();
 }
 
 void __cdecl dx_cleanup()
@@ -374,19 +423,25 @@ void sdl_update_entire_surface()
 {
 	assert(surface && pal_surface);
 	SDL_Rect src_rect = { 64, 160, SCREEN_WIDTH, SCREEN_HEIGHT };
-	SDL_CHECK(SDL_BlitSurface(pal_surface, &src_rect, surface, NULL));
+	if (SDL_BlitSurface(pal_surface, &src_rect, surface, NULL) != 0) {
+		SDL_Log("SDL_BlitSurface: %s\n", SDL_GetError());
+	}
 }
 
 void sdl_present_surface()
 {
 	assert(!SDL_MUSTLOCK(surface));
-	SDL_CHECK(SDL_UpdateTexture(texture, NULL, surface->pixels, surface->pitch)); //pitch is 2560
+	if (SDL_UpdateTexture(texture, NULL, surface->pixels, surface->pitch) != 0) { //pitch is 2560
+		SDL_Log("SDL_UpdateTexture: %s\n", SDL_GetError());
+	}
 
 	// Clear the entire screen to our selected color.
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
 
-	SDL_CHECK(SDL_RenderCopy(renderer, texture, NULL, NULL));
+	if (SDL_RenderCopy(renderer, texture, NULL, NULL) != 0) {
+		SDL_Log("SDL_RenderCopy: %s\n", SDL_GetError());
+	}
 	SDL_RenderPresent(renderer);
 
 	surface_dirty = false;
@@ -394,18 +449,6 @@ void sdl_present_surface()
 
 void __fastcall j_lock_buf_priv(BYTE idx)
 {
-	if (!gpBuffer) {
-		printf("GpBuffer Created\n");
-		const int pitch = SCREEN_WIDTH + 64 + 64;
-		gpBuffer = (Screen *)malloc(sizeof(Screen));
-		printf("SIZE OF SCREEN %d\n", sizeof(Screen));
-		gpBufEnd += (unsigned int)gpBuffer;
-
-		pal_surface = SDL_CreateRGBSurfaceFrom(gpBuffer, pitch, 160 + SCREEN_HEIGHT + 16, 8, pitch, 0, 0, 0, 0);
-		assert(pal_surface);
-		SDL_CHECK(SDL_SetSurfacePalette(pal_surface, palette));
-	}
-
 	j_unlock_buf_priv(idx); // what is idx?
 }
 
@@ -445,7 +488,10 @@ BOOL STORMAPI SDrawUpdatePalette(unsigned int firstentry, unsigned int numentrie
 	}
 
 	assert(palette);
-	SDL_CHECK(SDL_SetPaletteColors(palette, colors, firstentry, numentries));
+	if (SDL_SetPaletteColors(palette, colors, firstentry, numentries) != 0) {
+		SDL_Log("SDL_SetPaletteColors: %s\n", SDL_GetError());
+		return FALSE;
+	}
 
 	if (pal_surface) {
 		sdl_update_entire_surface();

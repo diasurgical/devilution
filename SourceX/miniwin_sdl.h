@@ -2,8 +2,6 @@
 
 #include <SDL.h>
 
-#define SDL_CHECK(e) assert(e == 0)
-
 extern SDL_Window *window;
 extern SDL_Renderer *renderer;
 extern SDL_Texture *texture;

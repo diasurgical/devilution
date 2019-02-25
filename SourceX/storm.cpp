@@ -443,11 +443,13 @@ void __stdcall SDrawMessageBox(char *Text, char *Title, int Flags)
 BOOLEAN __cdecl StormDestroy(void)
 {
 	DUMMY();
+	return TRUE;
 }
 
 BOOLEAN __stdcall SFileSetBasePath(char *)
 {
 	DUMMY();
+	return TRUE;
 }
 
 void __cdecl SDrawRealizePalette(void)
