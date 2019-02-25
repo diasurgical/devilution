@@ -367,6 +367,7 @@ void InitFont()
 		printf("TTF_Init: %s\n", TTF_GetError());
 		exit(1);
 	}
+	atexit(TTF_Quit);
 
 	// TODO locate font dynamically, and use fallback font if missing
 	font = TTF_OpenFont("/usr/share/fonts/truetype/msttcorefonts/Times_New_Roman_Bold.ttf", 17);

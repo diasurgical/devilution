@@ -88,7 +88,7 @@ add_library(devilution STATIC
   Source/gendung.cpp
   Source/gmenu.cpp
   Source/help.cpp
-# Source/init.cpp
+  Source/init.cpp
   Source/interfac.cpp
   Source/inv.cpp
   Source/items.cpp
@@ -137,7 +137,6 @@ add_executable(devilutionx
   SourceX/capture.cpp
   SourceX/dx.cpp
   SourceX/fault.cpp
-  SourceX/init.cpp
   SourceX/miniwin.cpp
   SourceX/miniwin_io.cpp
   SourceX/miniwin_msg_sdl.cpp

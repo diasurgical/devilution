@@ -74,12 +74,17 @@ UINT WINAPI GetWindowsDirectoryA(LPSTR lpBuffer, UINT uSize)
 {
 	char *name = SDL_GetPrefPath("diasurgical", "devilution");
 	strncpy(lpBuffer, name, uSize);
+	SDL_free(name);
 
-	return strlen(name);
+	DWORD len = strlen(lpBuffer);
+
+	lpBuffer[len - 1] = '\0';
+
+	return len - 1;
 }
 
 WINBOOL WINAPI GetDiskFreeSpaceA(LPCSTR lpRootPathName, LPDWORD lpSectorsPerCluster, LPDWORD lpBytesPerSector,
-                                 LPDWORD lpNumberOfFreeClusters, LPDWORD lpTotalNumberOfClusters)
+    LPDWORD lpNumberOfFreeClusters, LPDWORD lpTotalNumberOfClusters)
 {
 	struct statvfs fiData;
 	int success = statvfs("/", &fiData);
@@ -97,16 +102,11 @@ WINBOOL WINAPI GetDiskFreeSpaceA(LPCSTR lpRootPathName, LPDWORD lpSectorsPerClus
 DWORD WINAPI GetModuleFileNameA(HMODULE hModule, LPSTR lpFilename, DWORD nSize)
 {
 	char *name = SDL_GetPrefPath("diasurgical", "devilution");
-
-	if (strlen(name) >= nSize) {
-		printf("Save path longer then %d: %s\n", nSize, name);
-		ABORT();
-	}
-
 	strncpy(lpFilename, name, nSize);
 	SDL_free(name);
 
-	int len = strlen(lpFilename);
+	DWORD len = strlen(lpFilename);
+
 	lpFilename[len - 1] = '\\';
 
 	return len;
@@ -117,6 +117,69 @@ WINBOOL WINAPI GetComputerNameA(LPSTR lpBuffer, LPDWORD nSize)
 	DUMMY();
 	strncpy(lpBuffer, "localhost", *nSize);
 	*nSize = strlen(lpBuffer);
+}
+
+DWORD GetFileVersionInfoSizeA(LPCSTR lptstrFilename, LPDWORD lpdwHandle)
+{
+	DUMMY();
+	*lpdwHandle = 0;
+
+	return 1532;
+}
+
+BOOL GetFileVersionInfoA(LPCSTR lptstrFilename, DWORD dwHandle, DWORD dwLen, LPVOID lpData)
+{
+	DUMMY();
+	*(int *)lpData = 16711836; // TODO use actual version freom .rc
+
+	return TRUE;
+}
+
+BOOL VerQueryValueA(LPCVOID pBlock, LPCSTR lpSubBlock, LPVOID *lplpBuffer, PUINT puLen)
+{
+	DUMMY();
+	VS_FIXEDFILEINFO lpBuffer;
+
+	// Set internal version, TODO use actual version freom .rc
+	lpBuffer.dwProductVersionMS = 1;
+	lpBuffer.dwProductVersionMS <<= 16;
+	lpBuffer.dwProductVersionMS |= 0 & 0xFFFF;
+	lpBuffer.dwProductVersionLS = 9;
+	lpBuffer.dwProductVersionLS <<= 16;
+	lpBuffer.dwProductVersionLS |= 2 & 0xFFFF;
+	*lplpBuffer = (LPVOID *)&lpBuffer;
+
+	return TRUE;
+}
+
+DWORD GetCurrentDirectory(DWORD nBufferLength, LPTSTR lpBuffer)
+{
+	char *base_path = SDL_GetBasePath();
+	if (!base_path) {
+		base_path = SDL_strdup("./");
+	}
+
+	strncpy(lpBuffer, base_path, nBufferLength);
+	SDL_free(base_path);
+
+	DWORD len = strlen(lpBuffer);
+
+	lpBuffer[len - 1] = '\\';
+
+	return len;
+}
+
+DWORD GetLogicalDriveStringsA(DWORD nBufferLength, LPSTR lpBuffer)
+{
+	DUMMY();
+	sprintf(lpBuffer, "/");
+
+	return 3;
+}
+
+UINT GetDriveTypeA(LPCSTR lpRootPathName)
+{
+	return DRIVE_CDROM;
 }
 
 WINBOOL WINAPI DeleteFileA(LPCSTR lpFileName)
@@ -179,6 +242,192 @@ HWND WINAPI FindWindowA(LPCSTR lpClassName, LPCSTR lpWindowName)
 	return NULL;
 }
 
+void FakeWMDestroy()
+{
+	MainWndProc(NULL, WM_DESTROY, NULL, NULL);
+}
+
+HWND CreateWindowExA(
+    DWORD dwExStyle,
+    LPCSTR lpClassName,
+    LPCSTR lpWindowName,
+    DWORD dwStyle,
+    int X,
+    int Y,
+    int nWidth,
+    int nHeight,
+    HWND hWndParent,
+    HMENU hMenu,
+    HINSTANCE hInstance,
+    LPVOID lpParam)
+{
+	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
+		SDL_Log("SDL_RenderSetLogicalSize: %s\n", SDL_GetError());
+		return 1;
+	}
+	atexit(SDL_Quit);
+
+	int flags = SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_INPUT_GRABBED;
+	if (!fullscreen) {
+		flags = SDL_WINDOW_RESIZABLE;
+	}
+	window = SDL_CreateWindow(lpWindowName, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, nWidth, nHeight, flags);
+	atexit(FakeWMDestroy);
+
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
+	if (renderer == NULL) {
+		SDL_Log("SDL_CreateRenderer: %s\n", SDL_GetError());
+		return NULL;
+	}
+
+	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
+	if (SDL_RenderSetLogicalSize(renderer, nWidth, nHeight) != 0) {
+		SDL_Log("SDL_RenderSetLogicalSize: %s\n", SDL_GetError());
+		return NULL;
+	}
+
+	surface = SDL_CreateRGBSurface(0, nWidth, nHeight, 32, 0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF);
+	if (surface == NULL) {
+		SDL_Log("SDL_CreateRGBSurface: %s\n", SDL_GetError());
+		return NULL;
+	}
+
+	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, nWidth, nHeight);
+	if (texture == NULL) {
+		SDL_Log("SDL_CreateTexture: %s\n", SDL_GetError());
+		return NULL;
+	}
+
+	palette = SDL_AllocPalette(256);
+	if (palette == NULL) {
+		SDL_Log("SDL_AllocPalette: %s\n", SDL_GetError());
+		return NULL;
+	}
+
+	j_lock_buf_priv(0); //FIXME 0?
+
+	return window;
+}
+
+/**
+ * @brief Appears to be used to clear the FB on init
+ */
+BOOL UpdateWindow(HWND hWnd)
+{
+}
+
+BOOL ShowWindow(HWND hWnd, int nCmdShow)
+{
+	if (nCmdShow == SW_HIDE) {
+		SDL_HideWindow(window);
+	} else if (nCmdShow == SW_SHOWNORMAL) {
+		SDL_ShowWindow(window);
+	}
+}
+
+WINUSERAPI ATOM WINAPI RegisterClassExA(const WNDCLASSEX *lpwcx)
+{
+	DUMMY();
+}
+
+/**
+ * @brief Because we don't change resolution it dosen't make sens to use SDL_GetCurrentDisplayMode
+ */
+int GetSystemMetrics(int nIndex)
+{
+	switch (nIndex) {
+	case SM_CXSCREEN:
+		return 640;
+	case SM_CYSCREEN:
+		return 480;
+	}
+}
+
+/**
+ * @brief Used for getting a black brush
+ */
+HGDIOBJ GetStockObject(int i)
+{
+	return NULL;
+}
+
+/**
+ * @brief Used to load window icon
+ */
+HICON LoadIconA(HINSTANCE hInstance, LPCSTR lpIconName)
+{
+	DUMMY(); //SDL_SetWindowIcon
+}
+
+/**
+ * @brief Used to load small window icon
+ */
+HANDLE LoadImageA(HINSTANCE hInst, LPCSTR name, UINT type, int cx, int cy, UINT fuLoad)
+{
+	DUMMY();
+}
+
+HCURSOR LoadCursorA(HINSTANCE hInstance, LPCSTR lpCursorName)
+{
+	DUMMY(); //SDL_CreateCursor
+}
+
+/**
+ * @brief Used to shutdown a MS Office 95 tool bar
+ */
+HWND WINAPI GetForegroundWindow(VOID)
+{
+	return NULL;
+}
+
+/**
+ * @brief Used to shutdown a MS Office 95 tool bar
+ */
+int GetClassName(HWND hWnd, LPTSTR lpClassName, int nMaxCount)
+{
+	return 0;
+}
+
+/**
+ * @brief Used to find MS Office 95
+ */
+HRESULT SHGetSpecialFolderLocation(HWND hwnd, int csidl, PIDLIST_ABSOLUTE *ppidl)
+{
+	return NULL;
+}
+
+/**
+ * @brief Used to find MS Office 95
+ */
+HINSTANCE ShellExecuteA(HWND hwnd, LPCSTR lpOperation, LPCSTR lpFile, LPCSTR lpParameters, LPCSTR lpDirectory, INT nShowCmd)
+{
+	return NULL;
+}
+
+/**
+ * @brief Used to find MS Office 95
+ */
+HWND GetDesktopWindow()
+{
+	return NULL;
+}
+
+/**
+ * @brief Used to find MS Office 95
+ */
+BOOL SHGetPathFromIDListA(PCIDLIST_ABSOLUTE pidl, LPSTR pszPath)
+{
+	return FALSE;
+}
+
+/**
+ * @brief Used to find MS Office 95
+ */
+BOOL FindNextFileA(HANDLE hFindFile, LPWIN32_FIND_DATAA lpFindFileData)
+{
+	return FALSE;
+}
+
 VOID WINAPI GetSystemInfo(LPSYSTEM_INFO lpSystemInfo)
 {
 	DUMMY();
@@ -231,9 +480,9 @@ UINT WINAPI GetSystemPaletteEntries(HDC hdc, UINT iStart, UINT cEntries, LPPALET
 }
 
 WINBOOL WINAPI CreateProcessA(LPCSTR lpApplicationName, LPSTR lpCommandLine, LPSECURITY_ATTRIBUTES lpProcessAttributes,
-                              LPSECURITY_ATTRIBUTES lpThreadAttributes, WINBOOL bInheritHandles, DWORD dwCreationFlags,
-                              LPVOID lpEnvironment, LPCSTR lpCurrentDirectory, LPSTARTUPINFOA lpStartupInfo,
-                              LPPROCESS_INFORMATION lpProcessInformation)
+    LPSECURITY_ATTRIBUTES lpThreadAttributes, WINBOOL bInheritHandles, DWORD dwCreationFlags,
+    LPVOID lpEnvironment, LPCSTR lpCurrentDirectory, LPSTARTUPINFOA lpStartupInfo,
+    LPPROCESS_INFORMATION lpProcessInformation)
 {
 	UNIMPLEMENTED();
 }
@@ -249,7 +498,7 @@ DWORD WINAPI GetCurrentProcessId(VOID)
 }
 
 HANDLE WINAPI CreateFileMappingA(HANDLE hFile, LPSECURITY_ATTRIBUTES lpFileMappingAttributes, DWORD flProtect,
-                                 DWORD dwMaximumSizeHigh, DWORD dwMaximumSizeLow, LPCSTR lpName)
+    DWORD dwMaximumSizeHigh, DWORD dwMaximumSizeLow, LPCSTR lpName)
 {
 	DUMMY();
 	assert(hFile == (HANDLE)-1);
@@ -257,7 +506,7 @@ HANDLE WINAPI CreateFileMappingA(HANDLE hFile, LPSECURITY_ATTRIBUTES lpFileMappi
 }
 
 LPVOID WINAPI MapViewOfFile(HANDLE hFileMappingObject, DWORD dwDesiredAccess, DWORD dwFileOffsetHigh,
-                            DWORD dwFileOffsetLow, SIZE_T dwNumberOfBytesToMap)
+    DWORD dwFileOffsetLow, SIZE_T dwNumberOfBytesToMap)
 {
 	UNIMPLEMENTED();
 }
@@ -268,11 +517,6 @@ WINBOOL WINAPI UnmapViewOfFile(LPCVOID lpBaseAddress)
 }
 
 DWORD WINAPI WaitForInputIdle(HANDLE hProcess, DWORD dwMilliseconds)
-{
-	UNIMPLEMENTED();
-}
-
-HWND WINAPI GetForegroundWindow(VOID)
 {
 	UNIMPLEMENTED();
 }
@@ -288,7 +532,7 @@ DWORD WINAPI GetWindowThreadProcessId(HWND hWnd, LPDWORD lpdwProcessId)
 }
 
 DWORD WINAPI GetPrivateProfileStringA(LPCSTR lpAppName, LPCSTR lpKeyName, LPCSTR lpDefault, LPSTR lpReturnedString,
-                                      DWORD nSize, LPCSTR lpFileName)
+    DWORD nSize, LPCSTR lpFileName)
 {
 	if (!SRegLoadString(lpAppName, lpKeyName, 0, lpReturnedString, nSize)) {
 		strncpy(lpReturnedString, lpDefault, nSize);

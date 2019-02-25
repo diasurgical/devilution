@@ -1,5 +1,5 @@
-#include "pch.h"
 #include "../3rdParty/Radon/Radon/include/Radon.hpp"
+#include "pch.h"
 
 DWORD nLastError = 0;
 
@@ -269,7 +269,7 @@ void *STORMAPI SMemReAlloc(void *location, unsigned int amount, char *logfilenam
 
 bool getIniValue(const char *sectionName, const char *keyName, char *string, int stringSize, int *dataSize = NULL)
 {
-	radon::Section* section = ini.getSection(sectionName);
+	radon::Section *section = ini.getSection(sectionName);
 	if (!section)
 		return false;
 
@@ -289,7 +289,7 @@ bool getIniValue(const char *sectionName, const char *keyName, char *string, int
 
 void setIniValue(const char *sectionName, const char *keyName, char *value, int len = 0)
 {
-	radon::Section* section = ini.getSection(sectionName);
+	radon::Section *section = ini.getSection(sectionName);
 	if (!section) {
 		ini.addSection(sectionName);
 		section = ini.getSection(sectionName);
@@ -445,10 +445,10 @@ BOOLEAN __cdecl StormDestroy(void)
 	DUMMY();
 }
 
-// bool __stdcall SFileSetBasePath(char *)
-//{
-//	UNIMPLEMENTED();
-//}
+BOOLEAN __stdcall SFileSetBasePath(char *)
+{
+	DUMMY();
+}
 
 void __cdecl SDrawRealizePalette(void)
 {
