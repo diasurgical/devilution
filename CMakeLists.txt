@@ -13,9 +13,20 @@ endif()
 option(ASAN "Enable address sanitizer" ON)
 option(DEBUG "Enable debug mode in engine" ON)
 option(COTIRE "Enable cotire" OFF)
-option(BINARY_RELEASE "Dynamically link only glibc and SDL2" OFF)
+option(DIST "Dynamically link only glibc and SDL2" OFF)
+option(FASTER "Enable FASTER in engine" ON)
+option(BINARY_RELEASE "Enable options for binary release" OFF)
 
 if(BINARY_RELEASE)
+  set(CMAKE_BUILD_TYPE "Release")
+  set(ASAN OFF)
+  set(DEBUG OFF)
+  set(COTIRE OFF)
+  set(DIST ON)
+  set(FASTER OFF)
+endif()
+
+if(DIST)
   set(sodium_USE_STATIC_LIBS ON)
 endif()
 
@@ -193,18 +204,18 @@ target_compile_definitions(devilution PUBLIC
   DEVILUTION_STUB
   "$<$<BOOL:${DEBUG}>:_DEBUG>"
   # Skip fades and other fluff
-  FASTER)
+  "$<$<BOOL:${FASTER}>:FASTER>")
 
 target_compile_definitions(devilutionx PUBLIC ASIO_STANDALONE)
 
 # Enable ASAN in Debug mode
 if(ASAN)
-  target_compile_options(devilution PUBLIC "$<$<CONFIG:Debug>:-fsanitize=address;-fsanitize-recover=address>")
-  target_link_libraries(devilution PUBLIC "$<$<CONFIG:Debug>:-fsanitize=address;-fsanitize-recover=address>")
+  target_compile_options(devilution PUBLIC -fsanitize=address -fsanitize-recover=address)
+  target_link_libraries(devilution PUBLIC -fsanitize=address -fsanitize-recover=address)
 endif()
 
-if(BINARY_RELEASE)
-  target_link_libraries(devilution PUBLIC "-static-libgcc -static-libstdc++")
+if(DIST)
+  target_link_libraries(devilutionx PUBLIC -static-libgcc -static-libstdc++)
 endif()
 
 # Note: In Debug mode, GCC generates spurious memory references that upset Valgrind,
@@ -215,7 +226,10 @@ target_compile_options(devilution PUBLIC $<$<CONFIG:Debug>:-fno-omit-frame-point
 # Currently, disable ignore all warnings (-w), to be removed later
 target_compile_options(devilution PRIVATE -fpermissive -Wno-write-strings -Wno-multichar -w)
 # Disable optimizations that can break non-standards-conforming code
-target_compile_options(devilution PRIVATE -fno-aggressive-loop-optimizations -fno-strict-aliasing)
+target_compile_options(devilution PRIVATE -fno-strict-aliasing)
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+  target_compile_options(devilution PRIVATE -fno-aggressive-loop-optimizations)
+endif()
 # Warnings for devilutionX
 target_compile_options(devilution PUBLIC -Wno-unknown-pragmas)
 target_compile_options(devilutionx PRIVATE -fpermissive -Wall -Wextra -Wno-multichar -Wno-unused-parameter)
