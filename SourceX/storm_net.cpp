@@ -1,5 +1,5 @@
-#include "pch.h"
 #include "dvlnet/abstract_net.h"
+#include "pch.h"
 
 static std::unique_ptr<dvlnet::abstract_net> dvlnet_inst;
 
@@ -39,12 +39,12 @@ int __stdcall SNetGetProviderCaps(struct _SNETCAPS *caps)
 
 void *__stdcall SNetUnregisterEventHandler(int evtype, void(__stdcall *func)(struct _SNETEVENT *))
 {
-	return dvlnet_inst->SNetUnregisterEventHandler(evtype, func);
+	return dvlnet_inst->SNetUnregisterEventHandler(*(event_type *)&evtype, func);
 }
 
 void *__stdcall SNetRegisterEventHandler(int evtype, void(__stdcall *func)(struct _SNETEVENT *))
 {
-	return dvlnet_inst->SNetRegisterEventHandler(evtype, func);
+	return dvlnet_inst->SNetRegisterEventHandler(*(event_type *)&evtype, func);
 }
 
 BOOL STORMAPI SNetDestroy()
@@ -96,7 +96,7 @@ BOOL STORMAPI SNetCreateGame(const char *pszGameName, const char *pszGamePasswor
     DWORD dwGameType, char *GameTemplateData, int GameTemplateSize, int playerCount,
     char *creatorName, char *a11, int *playerID)
 {
-	if(GameTemplateSize != 8)
+	if (GameTemplateSize != 8)
 		ABORT();
 	dvlnet::buffer_t game_init_info(GameTemplateData, GameTemplateData + GameTemplateSize);
 	dvlnet_inst->setup_gameinfo(std::move(game_init_info));

@@ -245,7 +245,7 @@ HWND WINAPI FindWindowA(LPCSTR lpClassName, LPCSTR lpWindowName)
 
 void FakeWMDestroy()
 {
-	MainWndProc(NULL, WM_DESTROY, NULL, NULL);
+	MainWndProc(NULL, WM_DESTROY, 0, NULL);
 }
 
 HWND CreateWindowExA(
@@ -264,7 +264,7 @@ HWND CreateWindowExA(
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
 		SDL_Log("SDL_Init: %s\n", SDL_GetError());
-		return 1;
+		return NULL;
 	}
 	atexit(SDL_Quit);
 

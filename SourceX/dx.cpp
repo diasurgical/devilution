@@ -362,46 +362,46 @@ void __fastcall dx_init(HWND hWnd)
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
 	if (renderer == NULL) {
 		SDL_Log("SDL_CreateRenderer: %s\n", SDL_GetError());
-		return NULL;
+		return;
 	}
 
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "2");
 	if (SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH, SCREEN_HEIGHT) != 0) {
 		SDL_Log("SDL_RenderSetLogicalSize: %s\n", SDL_GetError());
-		return NULL;
+		return;
 	}
 
 	surface = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_HEIGHT, 32, 0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF);
 	if (surface == NULL) {
 		SDL_Log("SDL_CreateRGBSurface: %s\n", SDL_GetError());
-		return NULL;
+		return;
 	}
 
 	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, SCREEN_WIDTH, SCREEN_HEIGHT);
 	if (texture == NULL) {
 		SDL_Log("SDL_CreateTexture: %s\n", SDL_GetError());
-		return NULL;
+		return;
 	}
 
 	palette = SDL_AllocPalette(256);
 	if (palette == NULL) {
 		SDL_Log("SDL_AllocPalette: %s\n", SDL_GetError());
-		return NULL;
+		return;
 	}
 
 	const int pitch = 64 + SCREEN_WIDTH + 64;
-	gpBuffer = malloc(sizeof(Screen));
+	gpBuffer = (Screen *)malloc(sizeof(Screen));
 	gpBufEnd += (unsigned int)gpBuffer;
 
 	pal_surface = SDL_CreateRGBSurfaceFrom(gpBuffer, pitch, 160 + SCREEN_HEIGHT + 16, 8, pitch, 0, 0, 0, 0);
 	if (pal_surface == NULL) {
 		SDL_Log("SDL_CreateRGBSurfaceFrom: %s\n", SDL_GetError());
-		return NULL;
+		return;
 	}
 
 	if (SDL_SetSurfacePalette(pal_surface, palette) != 0) {
 		SDL_Log("SDL_SetSurfacePalette: %s\n", SDL_GetError());
-		return NULL;
+		return;
 	}
 
 	MainWndProc(NULL, WM_ACTIVATEAPP, TRUE, NULL);

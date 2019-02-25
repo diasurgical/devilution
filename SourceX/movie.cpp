@@ -1,5 +1,5 @@
-#include "pch.h"
 #include "../3rdParty/libsmacker/smacker.h"
+#include "pch.h"
 
 BYTE movie_playing;
 BOOL loop_movie; // TODO
@@ -18,7 +18,7 @@ void __fastcall play_movie(char *pszMovie, BOOL user_can_close)
 	HANDLE directsound;
 	SFileOpenFile(pszMovie, &directsound);
 
-	char *fileBuffer;
+	BYTE *fileBuffer;
 
 	int bytestoread = SFileGetFileSize(directsound, 0);
 	fileBuffer = DiabloAllocPtr(bytestoread);

@@ -317,7 +317,7 @@ void LoadArt(char *pszFile, Art *art, int frames, PALETTEENTRY *pPalette)
 	if (!SBmpLoadImage(pszFile, 0, 0, 0, &art->width, &art->height, 0))
 		return;
 
-	art->data = malloc(art->width * art->height);
+	art->data = (BYTE *)malloc(art->width * art->height);
 	if (!SBmpLoadImage(pszFile, pPalette, art->data, art->width * art->height, 0, 0, 0))
 		return;
 
@@ -325,8 +325,6 @@ void LoadArt(char *pszFile, Art *art, int frames, PALETTEENTRY *pPalette)
 		return;
 
 	art->height /= frames;
-
-	return art;
 }
 
 void LoadMaskedArtFont(char *pszFile, Art *art, int frames, int mask)
@@ -439,7 +437,7 @@ BOOL __fastcall UiValidPlayerName(char *name)
 		return FALSE;
 
 	for (char *letter = name; *letter; letter++)
-		if (letter < 0x20 || letter > 0x7E && letter < 0xC0)
+		if (*letter < 0x20 || *letter > 0x7E && *letter < 0xC0)
 			return FALSE;
 
 	return TRUE;
@@ -547,7 +545,7 @@ int GetStrWidth(BYTE *str, int size)
 {
 	int strWidth = 0;
 
-	for (int i = 0; i < strlen(str); i++) {
+	for (int i = 0; i < strlen((char *)str); i++) {
 		BYTE w = FontTables[size][str[i] + 2];
 		if (w)
 			strWidth += w;
@@ -575,7 +573,7 @@ int TextAlignment(UI_Item *item, TXT_JUST align, _artFontTables size)
 void WordWrap(UI_Item *item)
 {
 	int lineStart = 0;
-	int len = strlen(item->caption);
+	int len = strlen((char *)item->caption);
 	for (int i = 0; i <= len; i++) {
 		if (item->caption[i] == '\n') {
 			lineStart = i + 1;
@@ -637,7 +635,7 @@ void DrawArtStr(UI_Item *item)
 	if (item->flags & UIS_VCENTER)
 		sy += (item->rect.h - ArtFonts[size][color].height) / 2;
 
-	for (int i = 0; i < strlen(item->caption); i++) {
+	for (int i = 0; i < strlen((char *)item->caption); i++) {
 		if (item->caption[i] == '\n') {
 			sx = x;
 			sy += ArtFonts[size][color].height;
@@ -755,7 +753,7 @@ void UiRenderItems(UI_Item *items, int size)
 			DrawArtStr(&items[i]);
 			break;
 		case UI_IMAGE:
-			DrawArt(items[i].rect.x, items[i].rect.y, items[i].context, items[i].value, items[i].rect.w);
+			DrawArt(items[i].rect.x, items[i].rect.y, (Art *)items[i].context, items[i].value, items[i].rect.w);
 			break;
 		default:
 			UiRenderItemDebug(items[i]);
