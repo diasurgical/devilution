@@ -131,7 +131,7 @@ DWORD GetFileVersionInfoSizeA(LPCSTR lptstrFilename, LPDWORD lpdwHandle)
 BOOL GetFileVersionInfoA(LPCSTR lptstrFilename, DWORD dwHandle, DWORD dwLen, LPVOID lpData)
 {
 	DUMMY();
-	*(int *)lpData = 16711836; // TODO use actual version freom .rc
+	*(int *)lpData = 16711836; // TODO use actual version from .rc
 
 	return TRUE;
 }
@@ -139,9 +139,9 @@ BOOL GetFileVersionInfoA(LPCSTR lptstrFilename, DWORD dwHandle, DWORD dwLen, LPV
 BOOL VerQueryValueA(LPCVOID pBlock, LPCSTR lpSubBlock, LPVOID *lplpBuffer, PUINT puLen)
 {
 	DUMMY();
-	VS_FIXEDFILEINFO lpBuffer;
+	static VS_FIXEDFILEINFO lpBuffer;
 
-	// Set internal version, TODO use actual version freom .rc
+	// Set internal version, TODO use actual version from .rc
 	lpBuffer.dwProductVersionMS = 1;
 	lpBuffer.dwProductVersionMS <<= 16;
 	lpBuffer.dwProductVersionMS |= 0 & 0xFFFF;

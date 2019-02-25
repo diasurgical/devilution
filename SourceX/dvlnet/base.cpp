@@ -192,8 +192,10 @@ void* base::SNetRegisterEventHandler(event_type evtype, snet_event_func func)
 
 bool base::SNetLeaveGame(int type)
 {
-	auto pkt = pktfty->make_packet<PT_DISCONNECT>(plr_self, PLR_BROADCAST,
-	                                              plr_self, type);
-	send(*pkt);
+	if(pktfty) {
+		auto pkt = pktfty->make_packet<PT_DISCONNECT>(plr_self, PLR_BROADCAST,
+		                                              plr_self, type);
+		send(*pkt);
+	}
 	return true;
 }
