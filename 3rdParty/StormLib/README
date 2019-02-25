@@ -9,3 +9,4 @@ Implementation changes:
 * Use `stdcall` calling convention.
 * Use external Storm error handling (`SErrGetLastError()` etc.)
 * Convert pathnames to Unix-style slashes.
+* Bugfixes, with comment: // BUGFIX (devilutionX)

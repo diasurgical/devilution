@@ -99,6 +99,7 @@ static bool BaseFile_Create(TFileStream * pStream)
         if(handle == -1)
         {
             nLastError = errno;
+            pStream->Base.File.hFile = INVALID_HANDLE_VALUE; // BUGFIX (devilutionX)
             return false;
         }
         
@@ -151,6 +152,7 @@ static bool BaseFile_Open(TFileStream * pStream, const TCHAR * szFileName, DWORD
         if(handle == -1)
         {
             nLastError = errno;
+            pStream->Base.File.hFile = INVALID_HANDLE_VALUE; // BUGFIX (devilutionX)
             return false;
         }
 
@@ -159,6 +161,7 @@ static bool BaseFile_Open(TFileStream * pStream, const TCHAR * szFileName, DWORD
         {
             nLastError = errno;
             close(handle);
+            pStream->Base.File.hFile = INVALID_HANDLE_VALUE; // BUGFIX (devilutionX)
             return false;
         }
 
