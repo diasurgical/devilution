@@ -101,14 +101,12 @@ BOOL STORMAPI SNetCreateGame(const char *pszGameName, const char *pszGamePasswor
 	dvlnet::buffer_t game_init_info(GameTemplateData, GameTemplateData + GameTemplateSize);
 	dvlnet_inst->setup_gameinfo(std::move(game_init_info));
 	*playerID = dvlnet_inst->create("0.0.0.0", pszGamePassword);
-
 	return *playerID != -1;
 }
 
 BOOL STORMAPI SNetJoinGame(int id, char *pszGameName, char *pszGamePassword, char *playerName, char *userStats, int *playerID)
 {
 	*playerID = dvlnet_inst->join(pszGameName, pszGamePassword);
-
 	return *playerID != -1;
 }
 

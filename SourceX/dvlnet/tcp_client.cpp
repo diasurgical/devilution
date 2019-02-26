@@ -1,22 +1,28 @@
 #include "dvlnet/tcp_client.h"
+
 #include <functional>
+#include <system_error>
 
 using namespace dvlnet;
 
 int tcp_client::create(std::string addrstr, std::string passwd)
 {
-	local_server = std::make_unique<tcp_server>(ioc, addrstr,
-	                                            6112, passwd);
-	return join(local_server->localhost_self(), passwd);
+	try {
+		auto port = default_port;
+		local_server = std::make_unique<tcp_server>(ioc, addrstr, port, passwd);
+		return join(local_server->localhost_self(), passwd);
+	} catch(std::system_error) {
+		return -1;
+	}
 }
 
 int tcp_client::join(std::string addrstr, std::string passwd)
 {
 	setup_password(passwd);
 	auto ipaddr = asio::ip::make_address(addrstr);
-	sock.connect(asio::ip::tcp::endpoint(ipaddr, 6112));
+	sock.connect(asio::ip::tcp::endpoint(ipaddr, default_port));
 	start_recv();
-	{ // hack: try to join for 5 seconds
+	{
 		randombytes_buf(reinterpret_cast<unsigned char*>(&cookie_self),
 		                sizeof(cookie_t));
 		auto pkt = pktfty->make_packet<PT_JOIN_REQUEST>(PLR_BROADCAST,

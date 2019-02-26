@@ -7,6 +7,7 @@ using namespace dvlnet;
 void base::setup_gameinfo(buffer_t info)
 {
 	game_init_info = std::move(info);
+	pktfty = std::make_unique<packet_factory>();
 }
 
 void base::setup_password(std::string pw)
@@ -192,10 +193,8 @@ void* base::SNetRegisterEventHandler(event_type evtype, snet_event_func func)
 
 bool base::SNetLeaveGame(int type)
 {
-	if(pktfty) {
-		auto pkt = pktfty->make_packet<PT_DISCONNECT>(plr_self, PLR_BROADCAST,
-		                                              plr_self, type);
-		send(*pkt);
-	}
+	auto pkt = pktfty->make_packet<PT_DISCONNECT>(plr_self, PLR_BROADCAST,
+	                                              plr_self, type);
+	send(*pkt);
 	return true;
 }

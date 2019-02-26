@@ -243,7 +243,7 @@ namespace dvlnet {
 	public:
 		static constexpr unsigned short max_packet_size = 0xFFFF;
 
-		packet_factory(std::string pw);
+		packet_factory(std::string pw = "");
 		std::unique_ptr<packet> make_packet(buffer_t buf);
 		template<packet_type t, typename... Args>
 		std::unique_ptr<packet> make_packet(Args... args);

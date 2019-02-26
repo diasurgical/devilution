@@ -18,7 +18,7 @@ namespace dvlnet {
 		int create(std::string addrstr, std::string passwd);
 		int join(std::string addrstr, std::string passwd);
 
-		static constexpr unsigned short default_port = 6112;
+		constexpr static unsigned short default_port = 6112;
 
 		virtual void poll();
 		virtual void send(packet& pkt);

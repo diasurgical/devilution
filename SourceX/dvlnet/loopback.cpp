@@ -32,7 +32,7 @@ bool loopback::SNetSendMessage(int dest, void* data, unsigned int size)
 		message_queue.push(message);
 	}
 	return true;
-	}
+}
 
 bool loopback::SNetReceiveTurns(char** data, unsigned int* size, DWORD* status)
 {
