@@ -1,7 +1,9 @@
 #include "dvlnet/tcp_client.h"
 
 #include <functional>
+#include <thread>
 #include <system_error>
+#include <sodium.h>
 
 using namespace dvlnet;
 
@@ -18,9 +20,16 @@ int tcp_client::create(std::string addrstr, std::string passwd)
 
 int tcp_client::join(std::string addrstr, std::string passwd)
 {
+	constexpr int ms_sleep = 10;
+	constexpr int no_sleep = 250;
+
 	setup_password(passwd);
-	auto ipaddr = asio::ip::make_address(addrstr);
-	sock.connect(asio::ip::tcp::endpoint(ipaddr, default_port));
+	try {
+		auto ipaddr = asio::ip::make_address(addrstr);
+		sock.connect(asio::ip::tcp::endpoint(ipaddr, default_port));
+	} catch(std::exception e) {
+		return -1;
+	}
 	start_recv();
 	{
 		randombytes_buf(reinterpret_cast<unsigned char*>(&cookie_self),
@@ -29,11 +38,11 @@ int tcp_client::join(std::string addrstr, std::string passwd)
 		                                                PLR_MASTER, cookie_self,
 		                                                game_init_info);
 		send(*pkt);
-		for (auto i = 0; i < 5; ++i) {
+		for (auto i = 0; i < no_sleep; ++i) {
 			poll();
 			if (plr_self != PLR_BROADCAST)
 				break; // join successful
-			sleep(1);
+			std::this_thread::sleep_for(std::chrono::milliseconds(ms_sleep));
 		}
 	}
 	return (plr_self == PLR_BROADCAST ? -1 : plr_self);
