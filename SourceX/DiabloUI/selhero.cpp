@@ -135,11 +135,13 @@ void selhero_List_Select(int value)
 		return;
 	}
 
+	UiInitList(0, 0, NULL, NULL, NULL, NULL, 0);
 	selhero_endMenu = true;
 }
 
 void selhero_List_Esc()
 {
+	UiInitList(0, 0, NULL, NULL, NULL, NULL, 0);
 	selhero_endMenu = true;
 	selhero_result = EXIT_MENU;
 }
@@ -181,6 +183,7 @@ void selhero_ClassSelector_Esc()
 
 void selhero_Name_Select(int value)
 {
+	UiInitList(0, 0, NULL, NULL, NULL, NULL, 0);
 	gfnHeroCreate(&heroInfo);
 	selhero_endMenu = true;
 }
@@ -196,6 +199,7 @@ void selhero_Load_Focus(int value)
 
 void selhero_Load_Select(int value)
 {
+	UiInitList(0, 0, NULL, NULL, NULL, NULL, 0);
 	selhero_endMenu = true;
 	if (value == 0) {
 		selhero_result = LOAD_GAME;

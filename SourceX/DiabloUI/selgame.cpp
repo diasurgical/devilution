@@ -85,6 +85,8 @@ void selgame_GameSelection_Focus(int value)
 
 void selgame_Ip_Select(int value)
 {
+	UiInitList(0, 0, NULL, NULL, NULL, NULL, 0);
+
 	if (!SNetJoinGame(value, selgame_Ip, "mypass", NULL, NULL, gdwPlayerId))
 		TermMsg("Unable to establish a connection. A game of Diablo was not detected at the specified IP address.");
 
@@ -106,6 +108,7 @@ void selgame_GameSelection_Select(int value)
 
 void selgame_GameSelection_Esc()
 {
+	UiInitList(0, 0, NULL, NULL, NULL, NULL, 0);
 	selgame_endMenu = true;
 }
 
@@ -134,6 +137,7 @@ void selgame_Diff_Focus(int value)
 
 void selgame_Diff_Select(int value)
 {
+	UiInitList(0, 0, NULL, NULL, NULL, NULL, 0);
 	selgame_endMenu = true;
 	selgame_enteringGame = true;
 
