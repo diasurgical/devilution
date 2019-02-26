@@ -29,26 +29,26 @@ int fadeValue = 0;
 int SelectedItem = 0;
 
 char *errorTitle[] = {
-	"Direct Draw Error",
+	"SDL Error",
 	"Out of Memory Error",
-	"Direct Draw Error",
+	"SDL Error",
 	"Data File Error",
-	"Direct Sound Error",
+	"SDL Error",
 	"Out of Disk Space",
-	"Direct Draw Error",
+	"SDL Error",
 	"Data File Error",
 	"Windows 2000 Restricted User Advisory",
 	"Read-Only Directory Error",
 };
 char *errorMessages[] = {
-	"Diablo was unable to properly initialize your video card using DirectX.\nPlease try the following solutions to correct the problem:\n\n    Use the Diablo setup program \"SETUP.EXE\" provided on the Diablo CD-ROM to install DirectX 3.0.\n\n    Install the most recent DirectX video drivers provided by the manufacturer of your video card.\nA list of video card manufactuers can be found at: http://www.blizzard.com/support/vendors.htm\n\nIf you continue to have problems with DirectX, please contact Microsoft's Technical Support at:\n\n\nIf you continue to have problems, we have also included Microsoft DirectX 2.0 drivers on the Diablo CD-ROM.\nThis older version of DirectX may work in cases where DirectX 3.0 does not.\n\n    USA telephone: 1-800-426-9400\n    International telephone: 206-882-8080\n    http://www.microsoft.com\n\n\nThe error encountered while trying to initialize the video card was:\n\n    %s",
-	"Diablo has exhausted all the memory on your system.\nThis problem can likely be corrected by changing the virtual memory settings for Windows.\nEnsure that your system has at least 10 megabytes of free disk space, then check your virtual memory settings:\n\nFor Windows 95:\n    Select \"Settings - Control Panel\" from the \"Start\" menu\n    Run the \"System\" control panel applet\n    Select the \"Performance\" tab, and press \"Virtual Memory\"\n    Use the \"Let Windows manage my virtual memory...\" option\n\nFor Windows NT:\n    Select \"Settings - Control Panel\" from the \"Start\" menu\n    Run the \"System\" control panel applet\n    Select the \"Performance\" tab\n    Press \"Change\" in \"Virtual Memory\" settings\n    Ensure that the virtual memory file is at least 32 megabytes\n\nThe error encountered was:\n\n    %s",
-	"Diablo was unable to open a required file.\nPlease ensure that the Diablo disc is in the CDROM drive.\nIf this problem persists, try uninstalling and reinstalling Diablo using the program \"SETUP.EXE\" on the Diablo CD-ROM.\n\n\nThe problem occurred while trying to load a file\n\n    %s",
+	"Diablo was unable to properly initialize SDL.\nPlease try the following solutions to correct the problem:\n\n    Install the most recent SDL provided for your distribution.\n\nIf you continue to have problems with SDL, create an issue on GitHub:\n    https://github.com/diasurgical/devilutionX/issues\n\n\nThe error encountered while trying to initialize was:\n\n    %s",
+	"Diablo has exhausted all the memory on your system.\nMake sure you have at least 512MB of free system memory\n\nThe error encountered was:\n\n    %s",
+	"Diablo was unable to open a required file.\nPlease ensure that the diabdat.mpq is in the same folder as Devilution.\nIf this problem persists, try checking that the md5 of diabdat.mpq is either 011bc6518e6166206231080a4440b373 or 68f049866b44688a7af65ba766bef75a.\n\n\nThe problem occurred while trying to load a file.\n\n    %s",
 	"Diablo was unable to find the file \"ddraw.dll\", which is a component of Microsoft DirectX.\nPlease run the program \"SETUP.EXE\" on the Diablo CD-ROM and install Microsoft DirectX.\n\nIf you continue to have problems with DirectX, please contact Microsoft's Technical Support at:\n\n    USA telephone: 1-800-426-9400\n    International telephone: 206-882-8080\n    http://www.microsoft.com\n\n\nThe error encountered while trying to initialize DirectX was:\n\n    %s",
 	"Diablo was unable to find the file \"dsound.dll\", which is a component of Microsoft DirectX.\nPlease run the program \"SETUP.EXE\" on the Diablo CD-ROM and install Microsoft DirectX.\n\nIf you continue to have problems with DirectX, please contact Microsoft's Technical Support at:\n\n    USA telephone: 1-800-426-9400\n    International telephone: 206-882-8080\n    http://www.microsoft.com\n\n\nThe error encountered while trying to initialize DirectX was:\n\n    %s",
 	"Diablo requires at least 10 megabytes of free disk space to run properly.\nThe disk:\n\n%s\n\nhas less than 10 megabytes of free space left.\n\nPlease free some space on your drive and run Diablo again.",
 	"Diablo was unable to switch video modes.\nThis is a common problem for computers with more than one video card.\nTo correct this problem, please set your video resolution to 640 x 480 and try running Diablo again.\n\nFor Windows 95 and Windows NT\n    Select \"Settings - Control Panel\" from the \"Start\" menu\n    Run the \"Display\" control panel applet\n    Select the \"Settings\" tab\n    Set the \"Desktop Area\" to \"640 x 480 pixels\"\n\n\nThe error encountered while trying to switch video modes was:\n\n    %s",
-	"Diablo cannot read a required data file.\nYour Diablo CD may not be in the CDROM drive.\nPlease ensure that the Diablo disc is in the CDROM drive and press OK.\nTo leave the program, press Exit.\n    %s",
+	"Diablo cannot read a required data file.\nYour diabdat.mpq may not be in the Deviluition folder.\nPlease ensure that the filename is in all lower case and not read-only, and try again.\n    %s",
 	"In order to install, play or patch Diablo using the Windows 2000 operating system,\nyou will need to log in as either an Administrator or as a Power User.\n\nUsers, also known as Restricted Users, do not have sufficient access to install or play the game properly.\n\nIf you have further questions regarding User Rights in Windows 2000, please refer to your Windows 2000 documentation or contact your system administrator.",
 	"Diablo is being run from:\n\n    %s\n\n\nDiablo or the current user does not seem to have write privilages in this directory. Contact your system administrator.\n\nNote that Windows 2000 Restricted Users can not write to the Windows or Program Files directory hierarchies.",
 };
