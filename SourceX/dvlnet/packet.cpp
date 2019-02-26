@@ -162,7 +162,7 @@ packet_factory::packet_factory(std::string pw)
 		ABORT();
 	//pw.resize(std::min(pw.size(), crypto_pwhash_PASSWD_MAX));
 	//pw.resize(std::max(pw.size(), crypto_pwhash_PASSWD_MIN), 0);
-	std::string salt("devilution-salt");
+	std::string salt("devilution-salt 0.1.0");
 	salt.resize(crypto_pwhash_SALTBYTES, 0);
 	if (crypto_pwhash(key.data(), crypto_secretbox_KEYBYTES,
 	                  pw.data(), pw.size(),
