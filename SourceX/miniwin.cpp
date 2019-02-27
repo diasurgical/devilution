@@ -464,6 +464,14 @@ UINT WINAPI GetSystemPaletteEntries(HDC hdc, UINT iStart, UINT cEntries, LPPALET
 	return 0;
 }
 
+BOOL GetVersionExA(LPOSVERSIONINFOA lpVersionInformation)
+{
+	lpVersionInformation->dwMajorVersion = 5;
+	lpVersionInformation->dwMinorVersion = 0;
+	lpVersionInformation->dwPlatformId = VER_PLATFORM_WIN32_NT;
+	return TRUE;
+}
+
 WINBOOL WINAPI CreateProcessA(LPCSTR lpApplicationName, LPSTR lpCommandLine, LPSECURITY_ATTRIBUTES lpProcessAttributes,
     LPSECURITY_ATTRIBUTES lpThreadAttributes, WINBOOL bInheritHandles, DWORD dwCreationFlags,
     LPVOID lpEnvironment, LPCSTR lpCurrentDirectory, LPSTARTUPINFOA lpStartupInfo,

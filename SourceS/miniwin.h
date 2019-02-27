@@ -483,6 +483,20 @@ typedef struct _OFSTRUCT {
 	CHAR szPathName[OFS_MAXPATHNAME];
 } OFSTRUCT, *LPOFSTRUCT, *POFSTRUCT;
 
+#define VER_PLATFORM_WIN32_NT 2
+
+typedef struct _OSVERSIONINFOA {
+  DWORD dwOSVersionInfoSize;
+  DWORD dwMajorVersion;
+  DWORD dwMinorVersion;
+  DWORD dwBuildNumber;
+  DWORD dwPlatformId;
+  CHAR  szCSDVersion[128];
+} OSVERSIONINFO, *LPOSVERSIONINFOA;
+
+BOOL GetVersionExA(LPOSVERSIONINFOA lpVersionInformation);
+#define GetVersionEx GetVersionExA
+
 #define SEC_COMMIT 0x8000000
 #define PAGE_READWRITE 0x04
 

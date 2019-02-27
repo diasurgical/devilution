@@ -134,7 +134,7 @@ add_library(devilution STATIC
   Source/portal.cpp
   Source/quests.cpp
   Source/render.cpp
-# Source/restrict.cpp
+  Source/restrict.cpp
   Source/scrollrt.cpp
   Source/setmaps.cpp
   Source/sha.cpp
@@ -162,7 +162,6 @@ add_executable(devilutionx
   SourceX/stub_rand.cpp
   SourceX/miniwin_thread.cpp
   SourceX/movie.cpp
-  SourceX/restrict.cpp
   SourceX/sound.cpp
   SourceX/storm.cpp
   SourceX/storm_net.cpp
