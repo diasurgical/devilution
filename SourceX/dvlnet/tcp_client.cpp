@@ -39,7 +39,11 @@ int tcp_client::join(std::string addrstr, std::string passwd)
 		                                                game_init_info);
 		send(*pkt);
 		for (auto i = 0; i < no_sleep; ++i) {
-			poll();
+			try {
+				poll();
+			} catch (const std::runtime_error e) {
+				return -1;
+			}
 			if (plr_self != PLR_BROADCAST)
 				break; // join successful
 			std::this_thread::sleep_for(std::chrono::milliseconds(ms_sleep));
