@@ -67,6 +67,7 @@ typedef WORD *LPWORD;
 typedef long *LPLONG;
 typedef DWORD *LPDWORD;
 typedef void *LPVOID;
+typedef void *PVOID;
 typedef const void *LPCVOID;
 typedef void *HBRUSH;
 typedef void *HMENU;
@@ -218,6 +219,21 @@ typedef struct {
 	DWORD dwFlags;
 } MMCKINFO;
 
+//
+// System time is represented with the following structure:
+//
+
+typedef struct _SYSTEMTIME {
+	WORD wYear;
+	WORD wMonth;
+	WORD wDayOfWeek;
+	WORD wDay;
+	WORD wHour;
+	WORD wMinute;
+	WORD wSecond;
+	WORD wMilliseconds;
+} SYSTEMTIME, *PSYSTEMTIME, *LPSYSTEMTIME;
+
 typedef struct tagWNDCLASSEXA {
 	UINT cbSize;
 	UINT style;
@@ -268,8 +284,6 @@ typedef WORD ATOM;
 
 #define GW_HWNDNEXT 2
 
-#define FILE_ATTRIBUTE_DIRECTORY 0x00000010
-
 #define STDMETHOD(name) STDMETHOD_(HRESULT, name)
 #define STDMETHOD_(type, name) virtual WINAPI type name
 
@@ -296,8 +310,6 @@ typedef struct tagPALETTEENTRY {
 	BYTE peBlue;
 	BYTE peFlags;
 } PALETTEENTRY, *PPALETTEENTRY, *LPPALETTEENTRY;
-
-typedef void *LPTOP_LEVEL_EXCEPTION_FILTER, *PEXCEPTION_POINTERS;
 
 typedef struct _SYSTEM_INFO {
 	union {
@@ -392,6 +404,10 @@ int GetSystemMetrics(int nIndex);
 HGDIOBJ GetStockObject(int i);
 HCURSOR LoadCursorA(HINSTANCE hInstance, LPCSTR lpCursorName);
 #define LoadCursor LoadCursorA
+BOOL GetUserNameA(LPSTR lpBuffer, LPDWORD pcbBuffer);
+#define GetUserName GetUserNameA
+void GetLocalTime(LPSYSTEMTIME lpSystemTime);
+
 HICON LoadIconA(HINSTANCE hInstance, LPCSTR lpIconName);
 #define LoadIcon LoadIconA
 HANDLE LoadImageA(HINSTANCE hInst, LPCSTR name, UINT type, int cx, int cy, UINT fuLoad);
@@ -401,6 +417,14 @@ BOOL SHGetPathFromIDListA(PCIDLIST_ABSOLUTE pidl, LPSTR pszPath);
 HINSTANCE ShellExecuteA(HWND hwnd, LPCSTR lpOperation, LPCSTR lpFile, LPCSTR lpParameters, LPCSTR lpDirectory, INT nShowCmd);
 #define ShellExecute ShellExecuteA
 int GetClassName(HWND hWnd, LPTSTR lpClassName, int nMaxCount);
+
+typedef LONG(WINAPI *PTOP_LEVEL_EXCEPTION_FILTER)(
+    struct _EXCEPTION_POINTERS *ExceptionInfo);
+typedef PTOP_LEVEL_EXCEPTION_FILTER LPTOP_LEVEL_EXCEPTION_FILTER;
+LPTOP_LEVEL_EXCEPTION_FILTER WINAPI SetUnhandledExceptionFilter(LPTOP_LEVEL_EXCEPTION_FILTER lpTopLevelExceptionFilter);
+
+HMODULE GetModuleHandleA(LPCSTR lpModuleName);
+#define GetModuleHandle GetModuleHandleA
 
 #define THREAD_BASE_PRIORITY_MAX 2
 #define THREAD_PRIORITY_NORMAL 0
@@ -428,6 +452,8 @@ int WINAPI GetDeviceCaps(HDC hdc, int index);
 BOOL GetWindowRect(HWND hDlg, tagRECT *Rect);
 UINT WINAPI GetSystemPaletteEntries(HDC hdc, UINT iStart, UINT cEntries, LPPALETTEENTRY pPalEntries);
 
+#define _snprintf snprintf
+#define _vsnprintf vsnprintf
 int WINAPIV wsprintfA(LPSTR, LPCSTR, ...);
 #define wsprintf wsprintfA
 int WINAPIV wvsprintfA(LPSTR dest, LPCSTR format, va_list arglist);
@@ -442,14 +468,19 @@ char *__cdecl _strlwr(char *str);
 //
 #define FILE_BEGIN 0
 #define FILE_CURRENT 1
+#define FILE_END 2
 #define FILE_FLAG_WRITE_THROUGH 0x80000000
 #define CREATE_ALWAYS 2
 #define GENERIC_READ 0x80000000L
 #define GENERIC_WRITE 0x40000000L
 #define OPEN_EXISTING 3
+#define OPEN_ALWAYS 4
 #define ERROR_FILE_NOT_FOUND 2
+#define FILE_ATTRIBUTE_NORMAL 128
 #define FILE_ATTRIBUTE_HIDDEN 0x00000002
 #define FILE_ATTRIBUTE_SYSTEM 0x00000004
+#define FILE_ATTRIBUTE_DIRECTORY 0x00000010
+#define FILE_SHARE_READ 1
 
 #define OFS_MAXPATHNAME 128
 #define MAX_PATH 260
@@ -472,7 +503,89 @@ typedef struct _WIN32_FIND_DATAA {
 
 typedef void *LPOVERLAPPED;
 
+typedef struct _IMAGE_FILE_HEADER {
+	WORD Machine;
+	WORD NumberOfSections;
+	DWORD TimeDateStamp;
+	DWORD PointerToSymbolTable;
+	DWORD NumberOfSymbols;
+	WORD SizeOfOptionalHeader;
+	WORD Characteristics;
+} IMAGE_FILE_HEADER, *PIMAGE_FILE_HEADER;
+
+//
+// Calculate the byte offset of a field in a structure of type type.
+//
+
+#define FIELD_OFFSET(type, field) ((LONG)(INT_PTR) & (((type *)0)->field))
+#define IMAGE_FIRST_SECTION(ntheader) ((PIMAGE_SECTION_HEADER)((UINT_PTR)ntheader + FIELD_OFFSET(IMAGE_NT_HEADERS, OptionalHeader) + ((PIMAGE_NT_HEADERS)(ntheader))->FileHeader.SizeOfOptionalHeader))
+
 typedef BOOL(CALLBACK *DLGPROC)(HWND, UINT, WPARAM, LPARAM);
+
+#define IMAGE_NT_SIGNATURE 0x00004550 // PE00
+
+typedef struct _IMAGE_OPTIONAL_HEADER {
+	WORD Magic;
+	BYTE MajorLinkerVersion;
+	BYTE MinorLinkerVersion;
+	DWORD SizeOfCode;
+	DWORD SizeOfInitializedData;
+	DWORD SizeOfUninitializedData;
+	DWORD AddressOfEntryPoint;
+	DWORD BaseOfCode;
+	DWORD BaseOfData;
+	DWORD ImageBase;
+	DWORD SectionAlignment;
+	DWORD FileAlignment;
+	WORD MajorOperatingSystemVersion;
+	WORD MinorOperatingSystemVersion;
+	WORD MajorImageVersion;
+	WORD MinorImageVersion;
+	WORD MajorSubsystemVersion;
+	WORD MinorSubsystemVersion;
+	DWORD Win32VersionValue;
+	DWORD SizeOfImage;
+	DWORD SizeOfHeaders;
+	DWORD CheckSum;
+	WORD Subsystem;
+	WORD DllCharacteristics;
+	DWORD SizeOfStackReserve;
+	DWORD SizeOfStackCommit;
+	DWORD SizeOfHeapReserve;
+	DWORD SizeOfHeapCommit;
+	DWORD LoaderFlags;
+	DWORD NumberOfRvaAndSizes;
+} IMAGE_OPTIONAL_HEADER32, *PIMAGE_OPTIONAL_HEADER32;
+
+typedef struct _IMAGE_NT_HEADERS {
+	DWORD Signature;
+	IMAGE_FILE_HEADER FileHeader;
+	IMAGE_OPTIONAL_HEADER32 OptionalHeader;
+} IMAGE_NT_HEADERS, *PIMAGE_NT_HEADERS;
+
+#define IMAGE_DOS_SIGNATURE 0x5A4D
+
+typedef struct _IMAGE_DOS_HEADER {
+	WORD e_magic;
+	WORD e_cblp;
+	WORD e_cp;
+	WORD e_crlc;
+	WORD e_cparhdr;
+	WORD e_minalloc;
+	WORD e_maxalloc;
+	WORD e_ss;
+	WORD e_sp;
+	WORD e_csum;
+	WORD e_ip;
+	WORD e_cs;
+	WORD e_lfarlc;
+	WORD e_ovno;
+	WORD e_res[4];
+	WORD e_oemid;
+	WORD e_oeminfo;
+	WORD e_res2[10];
+	LONG e_lfanew;
+} IMAGE_DOS_HEADER, *PIMAGE_DOS_HEADER;
 
 typedef struct _OFSTRUCT {
 	BYTE cBytes;
@@ -486,16 +599,34 @@ typedef struct _OFSTRUCT {
 #define VER_PLATFORM_WIN32_NT 2
 
 typedef struct _OSVERSIONINFOA {
-  DWORD dwOSVersionInfoSize;
-  DWORD dwMajorVersion;
-  DWORD dwMinorVersion;
-  DWORD dwBuildNumber;
-  DWORD dwPlatformId;
-  CHAR  szCSDVersion[128];
+	DWORD dwOSVersionInfoSize;
+	DWORD dwMajorVersion;
+	DWORD dwMinorVersion;
+	DWORD dwBuildNumber;
+	DWORD dwPlatformId;
+	CHAR szCSDVersion[128];
 } OSVERSIONINFO, *LPOSVERSIONINFOA;
+
+typedef struct _IMAGE_SECTION_HEADER {
+	union {
+		DWORD PhysicalAddress;
+		DWORD VirtualSize;
+	} Misc;
+	DWORD VirtualAddress;
+	DWORD SizeOfRawData;
+	DWORD PointerToRawData;
+	DWORD PointerToRelocations;
+	DWORD PointerToLinenumbers;
+	WORD NumberOfRelocations;
+	WORD NumberOfLinenumbers;
+	DWORD Characteristics;
+} IMAGE_SECTION_HEADER, *PIMAGE_SECTION_HEADER;
 
 BOOL GetVersionExA(LPOSVERSIONINFOA lpVersionInformation);
 #define GetVersionEx GetVersionExA
+
+void lstrcpynA(LPSTR lpString1, LPCSTR lpString2, int iMaxLength);
+#define lstrcpyn lstrcpynA
 
 #define SEC_COMMIT 0x8000000
 #define PAGE_READWRITE 0x04
@@ -536,6 +667,9 @@ HANDLE WINAPI CreateFileMappingA(HANDLE hFile, LPSECURITY_ATTRIBUTES lpFileMappi
 LPVOID WINAPI MapViewOfFile(HANDLE hFileMappingObject, DWORD dwDesiredAccess, DWORD dwFileOffsetHigh,
     DWORD dwFileOffsetLow, SIZE_T dwNumberOfBytesToMap);
 WINBOOL WINAPI UnmapViewOfFile(LPCVOID lpBaseAddress);
+
+LPVOID VirtualAlloc(LPVOID lpAddress, SIZE_T dwSize, DWORD flAllocationType, DWORD flProtect);
+BOOL VirtualFree(LPVOID lpAddress, SIZE_T dwSize, DWORD dwFreeType);
 
 DWORD WINAPI WaitForInputIdle(HANDLE hProcess, DWORD dwMilliseconds);
 HWND WINAPI GetForegroundWindow(VOID);
@@ -705,7 +839,62 @@ HFILE WINAPI OpenFile(LPCSTR lpFileName, LPOFSTRUCT lpReOpenBuff, UINT uStyle);
 #define MB_ICONHAND 0x00000010L
 #define MB_ICONEXCLAMATION 0x00000030L
 
+#define FORMAT_MESSAGE_IGNORE_INSERTS 0x00000200
+#define FORMAT_MESSAGE_FROM_HMODULE 0x00000800
 #define FORMAT_MESSAGE_FROM_SYSTEM 0x00001000
+
+#define STATUS_BREAKPOINT ((DWORD)0x80000003L)
+#define STATUS_GUARD_PAGE_VIOLATION ((DWORD)0x80000001L)
+#define STATUS_FLOAT_DIVIDE_BY_ZERO ((DWORD)0xC000008EL)
+#define STATUS_SINGLE_STEP ((DWORD)0x80000004L)
+#define STATUS_ARRAY_BOUNDS_EXCEEDED ((DWORD)0xC000008CL)
+#define STATUS_ACCESS_VIOLATION ((DWORD)0xC0000005L)
+#define STATUS_IN_PAGE_ERROR ((DWORD)0xC0000006L)
+#define STATUS_ILLEGAL_INSTRUCTION ((DWORD)0xC000001DL)
+#define STATUS_DATATYPE_MISALIGNMENT ((DWORD)0x80000002L)
+#define STATUS_FLOAT_DENORMAL_OPERAND ((DWORD)0xC000008DL)
+#define STATUS_NONCONTINUABLE_EXCEPTION ((DWORD)0xC0000025L)
+#define STATUS_INTEGER_DIVIDE_BY_ZERO ((DWORD)0xC0000094L)
+#define STATUS_INVALID_HANDLE ((DWORD)0xC0000008L)
+#define STATUS_FLOAT_OVERFLOW ((DWORD)0xC0000091L)
+#define STATUS_ILLEGAL_INSTRUCTION ((DWORD)0xC000001DL)
+#define STATUS_GUARD_PAGE_VIOLATION ((DWORD)0x80000001L)
+#define STATUS_ILLEGAL_INSTRUCTION ((DWORD)0xC000001DL)
+#define STATUS_INTEGER_OVERFLOW ((DWORD)0xC0000095L)
+#define STATUS_PRIVILEGED_INSTRUCTION ((DWORD)0xC0000096L)
+#define STATUS_FLOAT_UNDERFLOW ((DWORD)0xC0000093L)
+#define STATUS_FLOAT_INEXACT_RESULT ((DWORD)0xC000008FL)
+#define STATUS_FLOAT_INVALID_OPERATION ((DWORD)0xC0000090L)
+#define STATUS_FLOAT_STACK_CHECK ((DWORD)0xC0000092L)
+#define STATUS_INVALID_DISPOSITION ((DWORD)0xC0000026L)
+#define STATUS_STACK_OVERFLOW ((DWORD)0xC00000FDL)
+
+#define EXCEPTION_CONTINUE_SEARCH 0x0
+#define EXCEPTION_ACCESS_VIOLATION STATUS_ACCESS_VIOLATION
+#define EXCEPTION_BREAKPOINT STATUS_BREAKPOINT
+#define EXCEPTION_GUARD_PAGE STATUS_GUARD_PAGE_VIOLATION
+#define EXCEPTION_FLT_DIVIDE_BY_ZERO STATUS_FLOAT_DIVIDE_BY_ZERO
+#define EXCEPTION_SINGLE_STEP STATUS_SINGLE_STEP
+#define EXCEPTION_ARRAY_BOUNDS_EXCEEDED STATUS_ARRAY_BOUNDS_EXCEEDED
+#define EXCEPTION_IN_PAGE_ERROR STATUS_IN_PAGE_ERROR
+#define EXCEPTION_ILLEGAL_INSTRUCTION STATUS_ILLEGAL_INSTRUCTION
+#define EXCEPTION_DATATYPE_MISALIGNMENT STATUS_DATATYPE_MISALIGNMENT
+#define EXCEPTION_FLT_DENORMAL_OPERAND STATUS_FLOAT_DENORMAL_OPERAND
+#define EXCEPTION_NONCONTINUABLE_EXCEPTION STATUS_NONCONTINUABLE_EXCEPTION
+#define EXCEPTION_INT_DIVIDE_BY_ZERO STATUS_INTEGER_DIVIDE_BY_ZERO
+#define EXCEPTION_INVALID_HANDLE STATUS_INVALID_HANDLE
+#define EXCEPTION_FLT_OVERFLOW STATUS_FLOAT_OVERFLOW
+#define EXCEPTION_ILLEGAL_INSTRUCTION STATUS_ILLEGAL_INSTRUCTION
+#define EXCEPTION_GUARD_PAGE STATUS_GUARD_PAGE_VIOLATION
+#define EXCEPTION_ILLEGAL_INSTRUCTION STATUS_ILLEGAL_INSTRUCTION
+#define EXCEPTION_INT_OVERFLOW STATUS_INTEGER_OVERFLOW
+#define EXCEPTION_PRIV_INSTRUCTION STATUS_PRIVILEGED_INSTRUCTION
+#define EXCEPTION_FLT_UNDERFLOW STATUS_FLOAT_UNDERFLOW
+#define EXCEPTION_FLT_INEXACT_RESULT STATUS_FLOAT_INEXACT_RESULT
+#define EXCEPTION_FLT_INVALID_OPERATION STATUS_FLOAT_INVALID_OPERATION
+#define EXCEPTION_FLT_STACK_CHECK STATUS_FLOAT_STACK_CHECK
+#define EXCEPTION_INVALID_DISPOSITION STATUS_INVALID_DISPOSITION
+#define EXCEPTION_STACK_OVERFLOW STATUS_STACK_OVERFLOW
 
 #define HWND_NOTOPMOST (HWND) - 2
 #define HWND_TOP (HWND)0
@@ -714,6 +903,107 @@ HFILE WINAPI OpenFile(LPCSTR lpFileName, LPOFSTRUCT lpReOpenBuff, UINT uStyle);
 #define SWP_NOMOVE 0x0002
 #define SWP_NOSIZE 0x0004
 #define SWP_NOZORDER 0x0001
+
+typedef struct _CONTEXT {
+
+	//
+	// The flags values within this flag control the contents of
+	// a CONTEXT record.
+	//
+	// If the context record is used as an input parameter, then
+	// for each portion of the context record controlled by a flag
+	// whose value is set, it is assumed that that portion of the
+	// context record contains valid context. If the context record
+	// is being used to modify a threads context, then only that
+	// portion of the threads context will be modified.
+	//
+	// If the context record is used as an IN OUT parameter to capture
+	// the context of a thread, then only those portions of the thread's
+	// context corresponding to set flags will be returned.
+	//
+	// The context record is never used as an OUT only parameter.
+	//
+
+	DWORD ContextFlags;
+
+	//
+	// This section is specified/returned if CONTEXT_DEBUG_REGISTERS is
+	// set in ContextFlags.  Note that CONTEXT_DEBUG_REGISTERS is NOT
+	// included in CONTEXT_FULL.
+	//
+
+	DWORD Dr0;
+	DWORD Dr1;
+	DWORD Dr2;
+	DWORD Dr3;
+	DWORD Dr6;
+	DWORD Dr7;
+
+	//
+	// This section is specified/returned if the
+	// ContextFlags word contians the flag CONTEXT_SEGMENTS.
+	//
+
+	DWORD SegGs;
+	DWORD SegFs;
+	DWORD SegEs;
+	DWORD SegDs;
+
+	//
+	// This section is specified/returned if the
+	// ContextFlags word contians the flag CONTEXT_INTEGER.
+	//
+
+	DWORD Edi;
+	DWORD Esi;
+	DWORD Ebx;
+	DWORD Edx;
+	DWORD Ecx;
+	DWORD Eax;
+
+	//
+	// This section is specified/returned if the
+	// ContextFlags word contians the flag CONTEXT_CONTROL.
+	//
+
+	DWORD Ebp;
+	DWORD Eip;
+	DWORD SegCs;  // MUST BE SANITIZED
+	DWORD EFlags; // MUST BE SANITIZED
+	DWORD Esp;
+	DWORD SegSs;
+} CONTEXT;
+
+typedef CONTEXT *PCONTEXT;
+
+//
+// Exception record definition.
+//
+
+typedef struct _EXCEPTION_RECORD {
+	DWORD ExceptionCode;
+	DWORD ExceptionFlags;
+	struct _EXCEPTION_RECORD *ExceptionRecord;
+	PVOID ExceptionAddress;
+	DWORD NumberParameters;
+} EXCEPTION_RECORD;
+
+typedef EXCEPTION_RECORD *PEXCEPTION_RECORD;
+
+typedef struct _EXCEPTION_POINTERS {
+	PEXCEPTION_RECORD ExceptionRecord;
+	PCONTEXT ContextRecord;
+} EXCEPTION_POINTERS, *PEXCEPTION_POINTERS;
+
+typedef struct _MEMORY_BASIC_INFORMATION {
+	PVOID BaseAddress;
+	PVOID AllocationBase;
+	DWORD AllocationProtect;
+	SIZE_T RegionSize;
+	DWORD State;
+	DWORD Protect;
+	DWORD Type;
+} MEMORY_BASIC_INFORMATION, *PMEMORY_BASIC_INFORMATION;
 
 //
 // Total fakes
@@ -724,6 +1014,10 @@ typedef struct {
 typedef struct {
 	DWORD cb;
 } STARTUPINFOA;
+
+BOOL IsBadReadPtr(const VOID *lp, UINT_PTR ucb);
+BOOL IsBadWritePtr(LPVOID lp, UINT_PTR ucb);
+SIZE_T VirtualQuery(LPCVOID lpAddress, PMEMORY_BASIC_INFORMATION lpBuffer, SIZE_T dwLength);
 
 //
 // MSCVRT emulation

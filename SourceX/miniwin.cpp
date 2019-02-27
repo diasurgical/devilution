@@ -351,12 +351,65 @@ HCURSOR LoadCursorA(HINSTANCE hInstance, LPCSTR lpCursorName)
 	return NULL;
 }
 
+BOOL IsBadReadPtr(const VOID *lp, UINT_PTR ucb)
+{
+	UNIMPLEMENTED();
+	return TRUE;
+}
+
+BOOL IsBadWritePtr(LPVOID lp, UINT_PTR ucb)
+{
+	UNIMPLEMENTED();
+	return TRUE;
+}
+
+SIZE_T VirtualQuery(LPCVOID lpAddress, PMEMORY_BASIC_INFORMATION lpBuffer, SIZE_T dwLength)
+{
+	UNIMPLEMENTED();
+	return FALSE;
+}
+
+LPVOID VirtualAlloc(LPVOID lpAddress, SIZE_T dwSize, DWORD flAllocationType, DWORD flProtect)
+{
+	UNIMPLEMENTED();
+	return NULL;
+}
+
+BOOL VirtualFree(LPVOID lpAddress, SIZE_T dwSize, DWORD dwFreeType)
+{
+	UNIMPLEMENTED();
+	return FALSE;
+}
+
+void GetLocalTime(LPSYSTEMTIME lpSystemTime)
+{
+	UNIMPLEMENTED();
+}
+
 /**
  * @brief Used to shutdown a MS Office 95 tool bar
  */
 HWND WINAPI GetForegroundWindow(VOID)
 {
 	return NULL;
+}
+
+LPTOP_LEVEL_EXCEPTION_FILTER WINAPI SetUnhandledExceptionFilter(LPTOP_LEVEL_EXCEPTION_FILTER lpTopLevelExceptionFilter)
+{
+	DUMMY();
+	return lpTopLevelExceptionFilter;
+}
+
+HMODULE GetModuleHandleA(LPCSTR lpModuleName)
+{
+	UNIMPLEMENTED();
+	return NULL;
+}
+
+BOOL GetUserNameA(LPSTR lpBuffer, LPDWORD pcbBuffer)
+{
+	UNIMPLEMENTED();
+	return FALSE;
 }
 
 /**
@@ -448,7 +501,7 @@ BOOL GetWindowRect(HWND hDlg, tagRECT *Rect)
 {
 	int x, y, w, h;
 	SDL_SetWindowPosition(window, &x, &y);
-	SDL_GetWindowSize(window, &w, h);
+	SDL_GetWindowSize(window, &w, &h);
 
 	Rect->right = x;
 	Rect->top = y;
@@ -472,12 +525,18 @@ BOOL GetVersionExA(LPOSVERSIONINFOA lpVersionInformation)
 	return TRUE;
 }
 
+void lstrcpynA(LPSTR lpString1, LPCSTR lpString2, int iMaxLength)
+{
+	strncpy(lpString1, lpString2, iMaxLength);
+}
+
 WINBOOL WINAPI CreateProcessA(LPCSTR lpApplicationName, LPSTR lpCommandLine, LPSECURITY_ATTRIBUTES lpProcessAttributes,
     LPSECURITY_ATTRIBUTES lpThreadAttributes, WINBOOL bInheritHandles, DWORD dwCreationFlags,
     LPVOID lpEnvironment, LPCSTR lpCurrentDirectory, LPSTARTUPINFOA lpStartupInfo,
     LPPROCESS_INFORMATION lpProcessInformation)
 {
 	UNIMPLEMENTED();
+	return FALSE;
 }
 
 VOID WINAPI ExitProcess(UINT uExitCode)
@@ -488,6 +547,7 @@ VOID WINAPI ExitProcess(UINT uExitCode)
 DWORD WINAPI GetCurrentProcessId(VOID)
 {
 	UNIMPLEMENTED();
+	return 0;
 }
 
 HANDLE WINAPI CreateFileMappingA(HANDLE hFile, LPSECURITY_ATTRIBUTES lpFileMappingAttributes, DWORD flProtect,

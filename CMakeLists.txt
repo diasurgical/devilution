@@ -102,7 +102,7 @@ add_library(devilution STATIC
   Source/encrypt.cpp
   Source/engine.cpp
   Source/error.cpp
-# Source/fault.cpp
+  Source/fault.cpp
   Source/gamemenu.cpp
   Source/gendung.cpp
   Source/gmenu.cpp
@@ -113,7 +113,7 @@ add_library(devilution STATIC
   Source/items.cpp
   Source/lighting.cpp
   Source/loadsave.cpp
-# Source/logging.cpp
+  Source/logging.cpp
   Source/mainmenu.cpp
   Source/minitext.cpp
   Source/missiles.cpp
@@ -155,7 +155,6 @@ target_include_directories(devilution PRIVATE SourceS)
 add_executable(devilutionx
   SourceX/capture.cpp
   SourceX/dx.cpp
-  SourceX/fault.cpp
   SourceX/miniwin.cpp
   SourceX/miniwin_io.cpp
   SourceX/miniwin_msg_sdl.cpp

@@ -73,6 +73,11 @@ typedef struct _DDSURFACEDESC {
 #define DDERR_SURFACELOST MAKE_DDHRESULT(450)
 #define DDERR_WASSTILLDRAWING MAKE_DDHRESULT(540)
 #define DDERR_SURFACEBUSY MAKE_DDHRESULT(430)
+/*
+ * returned when the position of the overlay on the destionation is no longer
+ * legal for that destionation.
+ */
+#define DDERR_INVALIDPOSITION MAKE_DDHRESULT(579)
 
 #define DDERR_ALREADYINITIALIZED MAKE_DDHRESULT(5)
 #define DDERR_BLTFASTCANTCLIP MAKE_DDHRESULT(574)
