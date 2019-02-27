@@ -100,7 +100,10 @@ BOOL STORMAPI SNetCreateGame(const char *pszGameName, const char *pszGamePasswor
 		ABORT();
 	dvlnet::buffer_t game_init_info(GameTemplateData, GameTemplateData + GameTemplateSize);
 	dvlnet_inst->setup_gameinfo(std::move(game_init_info));
-	*playerID = dvlnet_inst->create("0.0.0.0", pszGamePassword);
+
+	char addrstr[129] = "0.0.0.0";
+	SRegLoadString("dvlnet", "bindaddr", 0, addrstr, 128);
+	*playerID = dvlnet_inst->create(addrstr, pszGamePassword);
 	return *playerID != -1;
 }
 

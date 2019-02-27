@@ -2,7 +2,7 @@
 #include "selgame.h"
 
 char selgame_Lable[32];
-char selgame_Ip[129] = "127.0.0.1"; // CONFIG
+char selgame_Ip[129] = "";
 char selgame_Password[16] = "";
 char selgame_Description[256];
 bool selgame_enteringGame;
@@ -82,6 +82,7 @@ void selgame_GameSelection_Init()
 		return;
 	}
 
+	SRegLoadString("Phone Book", "Entry1", 0, selgame_Ip, 128);
 	UiInitList(0, 1, selgame_GameSelection_Focus, selgame_GameSelection_Select, selgame_GameSelection_Esc, SELUDPGAME_DIALOG, size(SELUDPGAME_DIALOG));
 }
 
@@ -181,6 +182,7 @@ void selgame_Password_Select(int value)
 	selgame_endMenu = true;
 
 	if (selgame_selectedGame) {
+		SRegSaveString("Phone Book", "Entry1", 0, selgame_Ip);
 		if (!SNetJoinGame(selgame_selectedGame, selgame_Ip, selgame_Password, NULL, NULL, gdwPlayerId)) {
 			DrawDlg("Unable to establish a connection. A game of Devilution 0.1.0 was not detected at the specified IP address.");
 			selgame_Password_Init(selgame_selectedGame);
