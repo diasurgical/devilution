@@ -84,7 +84,7 @@ add_library(PKWare STATIC
 add_library(devilution STATIC
   Source/appfat.cpp
   Source/automap.cpp
-# Source/capture.cpp
+  Source/capture.cpp
   Source/codec.cpp
   Source/control.cpp
   Source/cursor.cpp
@@ -153,7 +153,6 @@ add_library(devilution STATIC
 target_include_directories(devilution PRIVATE SourceS)
 
 add_executable(devilutionx
-  SourceX/capture.cpp
   SourceX/dx.cpp
   SourceX/miniwin.cpp
   SourceX/miniwin_io.cpp

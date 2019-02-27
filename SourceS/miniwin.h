@@ -249,6 +249,17 @@ typedef struct tagWNDCLASSEXA {
 	HICON hIconSm;
 } WNDCLASSEXA;
 
+typedef unsigned long _fsize_t; /* Could be 64 bits for Win32 */
+
+struct _finddata_t {
+    unsigned    attrib;
+    time_t      time_create;    /* -1 for FAT file systems */
+    time_t      time_access;    /* -1 for FAT file systems */
+    time_t      time_write;
+    _fsize_t    size;
+    char        name[260];
+};
+
 typedef WORD ATOM;
 #define WINUSERAPI
 #define WNDCLASSEX WNDCLASSEXA
@@ -407,6 +418,8 @@ HCURSOR LoadCursorA(HINSTANCE hInstance, LPCSTR lpCursorName);
 BOOL GetUserNameA(LPSTR lpBuffer, LPDWORD pcbBuffer);
 #define GetUserName GetUserNameA
 void GetLocalTime(LPSYSTEMTIME lpSystemTime);
+long __cdecl _findfirst(const char *, struct _finddata_t *);
+int __cdecl _findnext(long, struct _finddata_t *);
 
 HICON LoadIconA(HINSTANCE hInstance, LPCSTR lpIconName);
 #define LoadIcon LoadIconA

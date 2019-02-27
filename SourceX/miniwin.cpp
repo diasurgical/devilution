@@ -386,6 +386,18 @@ void GetLocalTime(LPSYSTEMTIME lpSystemTime)
 	UNIMPLEMENTED();
 }
 
+long __cdecl _findfirst(const char *, struct _finddata_t *)
+{
+	UNIMPLEMENTED();
+	return -1;
+}
+
+int __cdecl _findnext(long, struct _finddata_t *)
+{
+	UNIMPLEMENTED();
+	return -1;
+}
+
 /**
  * @brief Used to shutdown a MS Office 95 tool bar
  */
