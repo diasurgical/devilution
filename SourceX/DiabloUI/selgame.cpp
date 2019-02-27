@@ -3,12 +3,15 @@
 
 char selgame_Lable[32];
 char selgame_Ip[129] = "127.0.0.1"; // CONFIG
+char selgame_Password[16] = "";
 char selgame_Description[256];
 bool selgame_enteringGame;
+int selgame_selectedGame;
 bool selgame_endMenu;
-int* gdwPlayerId;
+int *gdwPlayerId;
+int gbDifficulty;
 
-static _SNETPROGRAMDATA* m_client_info;
+static _SNETPROGRAMDATA *m_client_info;
 extern DWORD provider;
 
 UI_Item SELUDPGAME_DIALOG[] = {
@@ -51,6 +54,17 @@ UI_Item ENTERIP_DIALOG[] = {
 	{ { 449, 427, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_VCENTER | UIS_BIG | UIS_GOLD, 0, "Cancel", UiFocusNavigationEsc },
 };
 
+UI_Item ENTERPASSWORD_DIALOG[] = {
+	{ { 0, 0, 640, 480 }, UI_IMAGE, 0, 0, NULL, &ArtBackground },
+	{ { 24, 161, 590, 35 }, UI_TEXT, UIS_CENTER | UIS_BIG, 0, "Join UDP Games" },
+	{ { 35, 211, 205, 33 }, UI_TEXT, UIS_MED, 0, "Description:" },
+	{ { 35, 256, 205, 192 }, UI_TEXT, 0, 0, selgame_Description }, // Description
+	{ { 305, 211, 285, 33 }, UI_TEXT, UIS_CENTER | UIS_BIG, 0, "Enter Password" },
+	{ { 305, 314, 285, 33 }, UI_EDIT, UIS_LIST | UIS_MED | UIS_GOLD, 15, selgame_Password },
+	{ { 299, 427, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_VCENTER | UIS_BIG | UIS_GOLD, 0, "OK", UiFocusNavigationSelect },
+	{ { 449, 427, 140, 35 }, UI_BUTTON, UIS_CENTER | UIS_VCENTER | UIS_BIG | UIS_GOLD, 0, "Cancel", UiFocusNavigationEsc },
+};
+
 void selgame_Free()
 {
 	mem_free_dbg(ArtBackground.data);
@@ -59,11 +73,16 @@ void selgame_Free()
 
 void selgame_GameSelection_Init()
 {
-	if(provider == 'SCBL') {
+	selgame_enteringGame = false;
+	selgame_selectedGame = 0;
+
+	if (provider == 'SCBL') {
+		selgame_enteringGame = true;
 		selgame_GameSelection_Select(0);
-	} else {
-		UiInitList(0, 1, selgame_GameSelection_Focus, selgame_GameSelection_Select, selgame_GameSelection_Esc, SELUDPGAME_DIALOG, size(SELUDPGAME_DIALOG));
+		return;
 	}
+
+	UiInitList(0, 1, selgame_GameSelection_Focus, selgame_GameSelection_Select, selgame_GameSelection_Esc, SELUDPGAME_DIALOG, size(SELUDPGAME_DIALOG));
 }
 
 void selgame_GameSelection_Focus(int value)
@@ -83,25 +102,17 @@ void selgame_GameSelection_Focus(int value)
 	}
 }
 
-void selgame_Ip_Select(int value)
-{
-	UiInitList(0, 0, NULL, NULL, NULL, NULL, 0);
-
-	if (!SNetJoinGame(value, selgame_Ip, "mypass", NULL, NULL, gdwPlayerId))
-		TermMsg("Unable to establish a connection. A game of Diablo was not detected at the specified IP address.");
-
-	selgame_endMenu = true;
-	selgame_enteringGame = true;
-}
-
 void selgame_GameSelection_Select(int value)
 {
+	selgame_enteringGame = true;
+	selgame_selectedGame = value;
+
 	switch (value) {
 	case 0:
-		UiInitList(0, 2, selgame_Diff_Focus, selgame_Diff_Select, selgame_GameSelection_Init, SELDIFF_DIALOG, size(SELDIFF_DIALOG));
+		UiInitList(0, 2, selgame_Diff_Focus, selgame_Diff_Select, selgame_Diff_Esc, SELDIFF_DIALOG, size(SELDIFF_DIALOG));
 		break;
 	case 1:
-		UiInitList(0, 0, NULL, selgame_Ip_Select, selgame_GameSelection_Init, ENTERIP_DIALOG, size(ENTERIP_DIALOG));
+		UiInitList(0, 0, NULL, selgame_Password_Init, selgame_GameSelection_Init, ENTERIP_DIALOG, size(ENTERIP_DIALOG));
 		break;
 	}
 }
@@ -109,6 +120,7 @@ void selgame_GameSelection_Select(int value)
 void selgame_GameSelection_Esc()
 {
 	UiInitList(0, 0, NULL, NULL, NULL, NULL, 0);
+	selgame_enteringGame = false;
 	selgame_endMenu = true;
 }
 
@@ -137,15 +149,57 @@ void selgame_Diff_Focus(int value)
 
 void selgame_Diff_Select(int value)
 {
+	gbDifficulty = value;
+
+	if (provider == 'SCBL') {
+		selgame_Password_Select(0);
+		return;
+	}
+
+	selgame_Password_Init(0);
+}
+
+void selgame_Diff_Esc()
+{
+	if (provider == 'SCBL') {
+		selgame_GameSelection_Esc();
+		return;
+	}
+
+	selgame_GameSelection_Init();
+}
+
+void selgame_Password_Init(int value)
+{
+	memset(&selgame_Password, 0, sizeof(selgame_Password));
+	UiInitList(0, 0, NULL, selgame_Password_Select, selgame_Password_Esc, ENTERPASSWORD_DIALOG, size(ENTERPASSWORD_DIALOG));
+}
+
+void selgame_Password_Select(int value)
+{
 	UiInitList(0, 0, NULL, NULL, NULL, NULL, 0);
 	selgame_endMenu = true;
-	selgame_enteringGame = true;
 
-	_gamedata* info = m_client_info->initdata;
-	info->bDiff = value;
+	if (selgame_selectedGame) {
+		if (!SNetJoinGame(selgame_selectedGame, selgame_Ip, selgame_Password, NULL, NULL, gdwPlayerId)) {
+			DrawDlg("Unable to establish a connection. A game of Devilution 0.1.0 was not detected at the specified IP address.");
+			selgame_Password_Init(selgame_selectedGame);
+		}
+		return;
+	}
 
-	if (!SNetCreateGame(NULL, "mypass", NULL, 0, (char*)info, sizeof(_gamedata), MAX_PLRS, NULL, NULL, gdwPlayerId))
-		TermMsg("Unable to create game.");
+	_gamedata *info = m_client_info->initdata;
+	info->bDiff = gbDifficulty;
+
+	if (!SNetCreateGame(NULL, selgame_Password, NULL, 0, (char *)info, sizeof(_gamedata), MAX_PLRS, NULL, NULL, gdwPlayerId)) {
+		DrawDlg("Unable to create game.");
+		selgame_Password_Init(0);
+	}
+}
+
+void selgame_Password_Esc()
+{
+	selgame_GameSelection_Select(selgame_selectedGame);
 }
 
 int __stdcall UiSelectGame(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info, _SNETUIDATA *ui_info,
@@ -155,7 +209,6 @@ int __stdcall UiSelectGame(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYERDAT
 	m_client_info = client_info;
 	LoadBackgroundArt("ui_art\\selgame.pcx");
 	selgame_GameSelection_Init();
-	selgame_enteringGame = false;
 
 	selgame_endMenu = false;
 	while (!selgame_endMenu) {

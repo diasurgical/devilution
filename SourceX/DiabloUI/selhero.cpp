@@ -15,7 +15,8 @@ bool isMultiPlayer;
 
 BOOL(__stdcall *gfnHeroStats)
 (unsigned int, _uidefaultstats *);
-BOOL(__stdcall *gfnHeroCreate)(_uiheroinfo *);
+BOOL(__stdcall *gfnHeroCreate)
+(_uiheroinfo *);
 
 UI_Item SELHERO_DIALOG[] = {
 	{ { 0, 0, 640, 480 }, UI_IMAGE, 0, 0, NULL, &ArtBackground },

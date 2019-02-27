@@ -283,6 +283,9 @@ void UiFocusNavigationSelect()
 {
 	UiPlaySelectSound();
 	if (SDL_IsTextInputActive()) {
+		if (strlen(UiTextInput) == 0) {
+			return;
+		}
 		SDL_StopTextInput();
 		UiTextInput = NULL;
 		UiTextInputLen = 0;
