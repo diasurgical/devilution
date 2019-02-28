@@ -52,7 +52,7 @@ Make sure to enable these when installing (or modify your installation):
 - Requires "Visual C++ MFC for x86 and x64" (For afxres.h)
 - Requires "Windows Universal CRT SDK" (For ctype.h)
 
-### Building deviltuionX (native Linux build)
+### Building devilutionX (native Linux build)
 Note: Since 64-bit builds are currently not in a playable state, it is advised to build in a 32-bit environment. Another possibility is a 32-bit build on a multilib system (see below).
 
 Install the dependencies on your machine:
