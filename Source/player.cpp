@@ -327,7 +327,7 @@ DWORD __fastcall GetPlrGFXSize(char *szCel)
 
 	for (c = 0; c < sizeof(ClassStrTbl) / sizeof(ClassStrTbl[0]); c++) {
 		for (a = 0; ArmourChar[a]; a++) {
-			for (w = 0; WepChar[w]; w++) {
+			for (w = 0; WepChar[w]; w++) { // BUGFIX loads non-existing animagions; DT is only for N, BT is only for U, D & H
 				sprintf(prefix, "%c%c%c", CharChar[c], ArmourChar[a], WepChar[w]);
 				sprintf(pszName, "PlrGFX\\%s\\%s\\%s%s.CL2", ClassStrTbl[c], prefix, prefix, szCel);
 				if (WOpenFile(pszName, &file, TRUE)) {
