@@ -6256,81 +6256,57 @@ LABEL_13:
 
 void __cdecl ProcessMissiles()
 {
-	int v0;  // eax
-	int i;   // edx
-	int v2;  // ecx
-	int v3;  // edx
-	int v4;  // edi
-	int v5;  // esi
-	int *v6; // eax
-	int v7;  // ecx
-	int *v8; // eax
-	int v9;  // esi
-	int v10; // esi
-	int v11; // edx
+	int i, mi;
 
-	v0 = nummissiles;
-	for (i = 0; i < v0; dMissile[0][v2] = 0) {
-		v2 = 112 * missile[missileactive[i]]._mix + missile[missileactive[i]]._miy;
-		dFlags[0][v2] &= ~DFLAG_MISSILE;
-		++i;
+	for (i = 0; i < nummissiles; i++) {
+		dFlags[missile[missileactive[i]]._mix][missile[missileactive[i]]._miy] &= ~DFLAG_MISSILE;
+		dMissile[missile[missileactive[i]]._mix][missile[missileactive[i]]._miy] = 0;
 	}
-	v3 = 0;
-	while (v3 < v0) {
-		if (missile[missileactive[v3]]._miDelFlag) {
-			DeleteMissile(missileactive[v3], v3);
-			v0 = nummissiles;
-			v3 = 0;
+
+	i = 0;
+	while (i < nummissiles) {
+		if (missile[missileactive[i]]._miDelFlag) {
+			DeleteMissile(missileactive[i], i);
+			i = 0;
 		} else {
-			++v3;
+			i++;
 		}
 	}
-	v4 = 0;
+
 	MissilePreFlag = 0;
 	ManashieldFlag = 0;
-	if (v0 > 0) {
-		do {
-			v5 = missileactive[v4];
-			missiledata[missile[v5]._mitype].mProc(missileactive[v4]);
-			if (!(missile[v5]._miAnimFlags & 2)) {
-				v6 = &missile[v5]._miAnimCnt;
-				++*v6;
-				if (missile[v5]._miAnimCnt >= missile[v5]._miAnimDelay) {
-					v7 = missile[v5]._miAnimAdd;
-					*v6 = 0;
-					v8 = &missile[v5]._miAnimFrame;
-					v9 = missile[v5]._miAnimLen;
-					*v8 += v7;
-					if (*v8 > v9)
-						*v8 = 1;
-					if (*v8 < 1)
-						*v8 = v9;
-				}
-			}
-			v0 = nummissiles;
-			++v4;
-		} while (v4 < nummissiles);
-		if (ManashieldFlag) {
-			v10 = 0;
-			if (nummissiles > 0) {
-				do {
-					if (missile[missileactive[v10]]._mitype == MIS_MANASHIELD) {
-						MI_Manashield(missileactive[v10]);
-						v0 = nummissiles;
-					}
-					++v10;
-				} while (v10 < v0);
+
+	for (i = 0; i < nummissiles; i++) {
+		mi = missileactive[i];
+		missiledata[missile[mi]._mitype].mProc(missileactive[i]);
+		if (!(missile[mi]._miAnimFlags & MFLAG_LOCK_ANIMATION)) {
+			missile[mi]._miAnimCnt++;
+			if (missile[mi]._miAnimCnt >= missile[mi]._miAnimDelay) {
+				missile[mi]._miAnimCnt = 0;
+				missile[mi]._miAnimFrame += missile[mi]._miAnimAdd;
+				if (missile[mi]._miAnimFrame > missile[mi]._miAnimLen)
+					missile[mi]._miAnimFrame = 1;
+				if (missile[mi]._miAnimFrame < 1)
+					missile[mi]._miAnimFrame = missile[mi]._miAnimLen;
 			}
 		}
 	}
-	v11 = 0;
-	while (v11 < v0) {
-		if (missile[missileactive[v11]]._miDelFlag) {
-			DeleteMissile(missileactive[v11], v11);
-			v0 = nummissiles;
-			v11 = 0;
+
+	if (ManashieldFlag) {
+		for (i = 0; i < nummissiles; i++) {
+			if (missile[missileactive[i]]._mitype == MIS_MANASHIELD) {
+				MI_Manashield(missileactive[i]);
+			}
+		}
+	}
+
+	i = 0;
+	while (i < nummissiles) {
+		if (missile[missileactive[i]]._miDelFlag) {
+			DeleteMissile(missileactive[i], i);
+			i = 0;
 		} else {
-			++v11;
+			i++;
 		}
 	}
 }
