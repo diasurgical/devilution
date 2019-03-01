@@ -414,24 +414,21 @@ void __fastcall GetDamageAmt(int i, int *mind, int *maxd)
 	}
 }
 
-int __fastcall CheckBlock(int fx, int fy, int tx, int ty)
+BOOL __fastcall CheckBlock(int fx, int fy, int tx, int ty)
 {
-	int v4; // edi
-	int v5; // esi
-	int v6; // ebx
-	int v7; // eax
+	int pn;
+	BOOL coll;
 
-	v4 = fy;
-	v5 = fx;
-	v6 = 0;
-	while (v5 != tx || v4 != ty) {
-		v7 = GetDirection(v5, v4, tx, ty);
-		v5 += XDirAdd[v7];
-		v4 += YDirAdd[v7];
-		if (nSolidTable[dPiece[v5][v4]])
-			v6 = 1;
+	coll = FALSE;
+	while (fx != tx || fy != ty) {
+		pn = GetDirection(fx, fy, tx, ty);
+		fx += XDirAdd[pn];
+		fy += YDirAdd[pn];
+		if (nSolidTable[dPiece[fx][fy]])
+			coll = TRUE;
 	}
-	return v6;
+
+	return coll;
 }
 
 int __fastcall FindClosest(int sx, int sy, int rad)
