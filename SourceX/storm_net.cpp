@@ -24,7 +24,11 @@ BOOL STORMAPI SNetReceiveTurns(int a1, int arraysize, char **arraydata, unsigned
 		UNIMPLEMENTED();
 	if (arraysize != MAX_PLRS)
 		UNIMPLEMENTED();
-	return dvlnet_inst->SNetReceiveTurns(arraydata, arraydatabytes, arrayplayerstatus);
+	if (!dvlnet_inst->SNetReceiveTurns(arraydata, arraydatabytes, arrayplayerstatus)) {
+		SErrSetLastError(STORM_ERROR_NO_MESSAGES_WAITING);
+		return FALSE;
+	}
+	return TRUE;
 }
 
 BOOL STORMAPI SNetSendTurn(char *data, unsigned int databytes)
@@ -55,8 +59,7 @@ BOOL STORMAPI SNetDestroy()
 
 BOOL STORMAPI SNetDropPlayer(int playerid, DWORD flags)
 {
-	DUMMY();
-	return TRUE;
+	return dvlnet_inst->SNetDropPlayer(playerid, flags);
 }
 
 BOOL STORMAPI SNetGetGameInfo(int type, void *dst, unsigned int length, unsigned int *byteswritten)
@@ -118,14 +121,12 @@ BOOL STORMAPI SNetJoinGame(int id, char *pszGameName, char *pszGamePassword, cha
  */
 BOOL __stdcall SNetGetOwnerTurnsWaiting(DWORD *turns)
 {
-	*turns = 0;
-	return TRUE;
+	return dvlnet_inst->SNetGetOwnerTurnsWaiting(turns);
 }
 
 BOOL STORMAPI SNetGetTurnsInTransit(int *turns)
 {
-	*turns = 0; // We do not queue turns at all
-	return TRUE;
+	return dvlnet_inst->SNetGetTurnsInTransit(turns);
 }
 
 /**

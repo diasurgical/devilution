@@ -27,6 +27,8 @@ int tcp_client::join(std::string addrstr, std::string passwd)
 	try {
 		auto ipaddr = asio::ip::make_address(addrstr);
 		sock.connect(asio::ip::tcp::endpoint(ipaddr, default_port));
+		asio::ip::tcp::no_delay option(true);
+		sock.set_option(option);
 	} catch(std::exception e) {
 		return -1;
 	}
@@ -59,10 +61,15 @@ void tcp_client::poll()
 
 void tcp_client::handle_recv(const asio::error_code& error, size_t bytes_read)
 {
-	if(error)
-		throw std::runtime_error("");
-	if(bytes_read == 0)
-		throw std::runtime_error("");
+	if(error) {
+		// error in recv from server
+		// returning and doing nothing should be the same
+		// as if all connections to other clients were lost
+		return;
+	}
+	if(bytes_read == 0) {
+		throw std::runtime_error("error: read 0 bytes from server");
+	}
 	recv_buffer.resize(bytes_read);
 	recv_queue.write(std::move(recv_buffer));
 	recv_buffer.resize(frame_queue::max_frame_size);

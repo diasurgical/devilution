@@ -27,6 +27,9 @@ namespace dvlnet {
 		virtual void *SNetUnregisterEventHandler(event_type evtype,
 		                                         snet_event_func func);
 		virtual bool SNetLeaveGame(int type);
-		virtual void setup_gameinfo(buffer_t info) {}
+		virtual bool SNetDropPlayer(int playerid, DWORD flags);
+		virtual bool SNetGetOwnerTurnsWaiting(DWORD *turns);
+		virtual bool SNetGetTurnsInTransit(int *turns);
+		virtual void setup_gameinfo(buffer_t info);
 	};
 }

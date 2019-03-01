@@ -16,6 +16,7 @@
 
 #define LEAVE_NORMAL 3
 #define LEAVE_ENDING 0x40000004
+#define LEAVE_DROP 0x40000006
 
 namespace dvlnet {
 	class base : public abstract_net {
@@ -34,6 +35,9 @@ namespace dvlnet {
 		virtual void* SNetUnregisterEventHandler(event_type evtype,
 		                                         snet_event_func func);
 		virtual bool SNetLeaveGame(int type);
+		virtual bool SNetDropPlayer(int playerid, DWORD flags);
+		virtual bool SNetGetOwnerTurnsWaiting(DWORD *turns);
+		virtual bool SNetGetTurnsInTransit(int *turns);
 
 		virtual void poll() = 0;
 		virtual void send(packet& pkt) = 0;
@@ -54,7 +58,6 @@ namespace dvlnet {
 		std::deque<message_t> message_queue;
 		std::array<turn_t, MAX_PLRS> turn_last = {};
 		std::array<std::deque<turn_t>, MAX_PLRS> turn_queue;
-		std::array<bool, MAX_PLRS> active_table = {};
 		std::array<bool, MAX_PLRS> connected_table = {};
 
 		plr_t plr_self = PLR_BROADCAST;
@@ -68,6 +71,7 @@ namespace dvlnet {
 		void run_event_handler(_SNETEVENT& ev);
 
 	private:
+		plr_t get_owner();
 		void clear_msg(plr_t plr);
 	};
 }

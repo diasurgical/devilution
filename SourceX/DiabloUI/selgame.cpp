@@ -45,7 +45,7 @@ UI_Item SELDIFF_DIALOG[] = {
 
 UI_Item ENTERIP_DIALOG[] = {
 	{ { 0, 0, 640, 480 }, UI_IMAGE, 0, 0, NULL, &ArtBackground },
-	{ { 24, 161, 590, 35 }, UI_TEXT, UIS_CENTER | UIS_BIG, 0, "Join UDP Games" },
+	{ { 24, 161, 590, 35 }, UI_TEXT, UIS_CENTER | UIS_BIG, 0, "Join TCP/UDP Games" },
 	{ { 35, 211, 205, 33 }, UI_TEXT, UIS_MED, 0, "Description:" },
 	{ { 35, 256, 205, 192 }, UI_TEXT, 0, 0, selgame_Description }, // Description
 	{ { 305, 211, 285, 33 }, UI_TEXT, UIS_CENTER | UIS_BIG, 0, "Enter IP" },
@@ -56,7 +56,7 @@ UI_Item ENTERIP_DIALOG[] = {
 
 UI_Item ENTERPASSWORD_DIALOG[] = {
 	{ { 0, 0, 640, 480 }, UI_IMAGE, 0, 0, NULL, &ArtBackground },
-	{ { 24, 161, 590, 35 }, UI_TEXT, UIS_CENTER | UIS_BIG, 0, "Join UDP Games" },
+	{ { 24, 161, 590, 35 }, UI_TEXT, UIS_CENTER | UIS_BIG, 0, "Join TCP/UDP Games" },
 	{ { 35, 211, 205, 33 }, UI_TEXT, UIS_MED, 0, "Description:" },
 	{ { 35, 256, 205, 192 }, UI_TEXT, 0, 0, selgame_Description }, // Description
 	{ { 305, 211, 285, 33 }, UI_TEXT, UIS_CENTER | UIS_BIG, 0, "Enter Password" },

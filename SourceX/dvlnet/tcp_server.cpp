@@ -1,6 +1,8 @@
 #include "dvlnet/tcp_server.h"
 #include <functional>
 
+#include "dvlnet/base.h"
+
 using namespace dvlnet;
 
 tcp_server::tcp_server(asio::io_context& ioc, std::string bindaddr,
@@ -157,6 +159,8 @@ void tcp_server::handle_accept(scc con, const asio::error_code& ec)
 	if(next_free() == PLR_BROADCAST) {
 		drop_connection(con);
 	} else {
+		asio::ip::tcp::no_delay option(true);
+		con->socket.set_option(option);
 		con->timeout = timeout_connect;
 		start_recv(con);
 		start_timeout(con);
@@ -192,9 +196,11 @@ void tcp_server::drop_connection(scc con)
 {
 	if(con->plr != PLR_BROADCAST) {
 		auto pkt = pktfty.make_packet<PT_DISCONNECT>(PLR_MASTER, PLR_BROADCAST,
-		                                             con->plr, 0);
+		                                             con->plr, LEAVE_DROP);
 		connections[con->plr] = nullptr;
 		send_packet(*pkt);
+		// TODO: investigate if it is really ok for the server to
+		//       drop a client directly.
 	}
 	con->timer.cancel();
 	con->socket.close();

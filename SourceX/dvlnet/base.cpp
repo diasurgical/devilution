@@ -25,10 +25,13 @@ void base::run_event_handler(_SNETEVENT& ev)
 
 void base::handle_accept(packet& pkt)
 {
-	if (plr_self != PLR_BROADCAST)
+	if (plr_self != PLR_BROADCAST) {
 		return; // already have player id
-	if (pkt.cookie() == cookie_self)
+	}
+	if (pkt.cookie() == cookie_self) {
 		plr_self = pkt.newplr();
+		connected_table[plr_self] = true;
+	}
 	if (game_init_info != pkt.info()) {
 		// we joined and did not create
 		_SNETEVENT ev;
@@ -53,6 +56,9 @@ void base::clear_msg(plr_t plr)
 
 void base::recv_local(packet& pkt)
 {
+	if(pkt.src() < MAX_PLRS) {
+		connected_table[pkt.src()] = true;
+	}
 	switch (pkt.type()) {
 	case PT_MESSAGE:
 		message_queue.push_back(message_t(pkt.src(), pkt.message()));
@@ -64,24 +70,24 @@ void base::recv_local(packet& pkt)
 		handle_accept(pkt);
 		break;
 	case PT_CONNECT:
-		connected_table[pkt.newplr()] = true;
-		active_table[pkt.newplr()] = true;
+		connected_table[pkt.newplr()] = true; // this can probably be removed
 		break;
 	case PT_DISCONNECT:
 		if (pkt.newplr() != plr_self) {
-			auto leaveinfo = pkt.leaveinfo();
-			_SNETEVENT ev;
-			ev.eventid = EVENT_TYPE_PLAYER_LEAVE_GAME;
-			ev.playerid = pkt.newplr();
-			ev.data = reinterpret_cast<unsigned char*>(&leaveinfo);
-			ev.databytes = sizeof(leaveinfo_t);
-			run_event_handler(ev);
-			connected_table[pkt.newplr()] = false;
-			active_table[pkt.newplr()] = false;
-			clear_msg(pkt.newplr());
-			turn_queue[pkt.newplr()].clear();
+			if(connected_table[pkt.newplr()]) {
+				auto leaveinfo = pkt.leaveinfo();
+				_SNETEVENT ev;
+				ev.eventid = EVENT_TYPE_PLAYER_LEAVE_GAME;
+				ev.playerid = pkt.newplr();
+				ev.data = reinterpret_cast<unsigned char*>(&leaveinfo);
+				ev.databytes = sizeof(leaveinfo_t);
+				run_event_handler(ev);
+				connected_table[pkt.newplr()] = false;
+				clear_msg(pkt.newplr());
+				turn_queue[pkt.newplr()].clear();
+			}
 		} else {
-			// problem
+			ABORT(); // we were dropped by the owner?!?
 		}
 		break;
 	default:
@@ -127,32 +133,48 @@ bool base::SNetSendMessage(int playerID, void* data, unsigned int size)
 bool base::SNetReceiveTurns(char** data, unsigned int* size, DWORD* status)
 {
 	poll();
-	for (auto i = 0; i < MAX_PLRS; ++i) {
+	bool all_turns_arrived = true;
+	for(auto i = 0; i < MAX_PLRS; ++i) {
 		status[i] = 0;
-		if (active_table[i] || i == plr_self) {
-			status[i] |= PS_ACTIVE;
-		}
-		if (connected_table[i] || i == plr_self) {
+		if(connected_table[i]) {
 			status[i] |= PS_CONNECTED;
-		}
-		if (!turn_queue[i].empty()) {
-			size[i] = sizeof(turn_t);
-			status[i] |= PS_TURN_ARRIVED;
-			turn_last[i] = turn_queue[i].front();
-			turn_queue[i].pop_front();
-			data[i] = reinterpret_cast<char*>(&turn_last[i]);
+			if(turn_queue[i].empty())
+				all_turns_arrived = false;
 		}
 	}
-	return true;
+	if(all_turns_arrived) {
+		for (auto i = 0; i < MAX_PLRS; ++i) {
+			if(connected_table[i]) {
+				size[i] = sizeof(turn_t);
+				status[i] |= PS_ACTIVE;
+				status[i] |= PS_TURN_ARRIVED;
+				turn_last[i] = turn_queue[i].front();
+				turn_queue[i].pop_front();
+				data[i] = reinterpret_cast<char*>(&turn_last[i]);
+			}
+		}
+		return true;
+	} else {
+		for (auto i = 0; i < MAX_PLRS; ++i) {
+			if(connected_table[i]) {
+				if(!turn_queue[i].empty()) {
+					status[i] |= PS_ACTIVE;
+				}
+			}
+		}
+		printf("FALSEE!!\n");
+		return false;
+	}
 }
 
 bool base::SNetSendTurn(char* data, unsigned int size)
 {
 	if (size != sizeof(turn_t))
 		ABORT();
-	auto pkt = pktfty->make_packet<PT_TURN>(plr_self, PLR_BROADCAST,
-	                                        *reinterpret_cast<turn_t*>(data));
+	turn_t turn = *reinterpret_cast<turn_t*>(data);
+	auto pkt = pktfty->make_packet<PT_TURN>(plr_self, PLR_BROADCAST, turn);
 	send(*pkt);
+	turn_queue[plr_self].push_back(pkt->turn());
 	return true;
 }
 
@@ -196,5 +218,38 @@ bool base::SNetLeaveGame(int type)
 	auto pkt = pktfty->make_packet<PT_DISCONNECT>(plr_self, PLR_BROADCAST,
 	                                              plr_self, type);
 	send(*pkt);
+	return true;
+}
+
+bool base::SNetDropPlayer(int playerid, DWORD flags)
+{
+	auto pkt = pktfty->make_packet<PT_DISCONNECT>(plr_self,
+	                                              PLR_BROADCAST,
+	                                              (plr_t)playerid,
+	                                              (leaveinfo_t)flags);
+	send(*pkt);
+	recv_local(*pkt);
+	return true;
+}
+
+plr_t base::get_owner()
+{
+	for(auto i = 0; i < MAX_PLRS; ++i) {
+		if(connected_table[i]) {
+			return i;
+		}
+	}
+	return PLR_BROADCAST; // should be unreachable
+}
+
+bool base::SNetGetOwnerTurnsWaiting(DWORD *turns)
+{
+	*turns = turn_queue[get_owner()].size();
+	return true;
+}
+
+bool base::SNetGetTurnsInTransit(int *turns)
+{
+	*turns = turn_queue[plr_self].size();
 	return true;
 }

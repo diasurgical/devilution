@@ -110,11 +110,11 @@ std::set<udp_p2p::endpoint> udp_p2p::dests_for_addr(plr_t dest, endpoint sender)
 		return ret;
 
 	if (dest < MAX_PLRS) {
-		if (active_table[dest])
+		if (connected_table[dest])
 			ret.insert(nexthop_table[dest]);
 	} else if (dest == PLR_BROADCAST) {
 		for (auto i = 0; i < MAX_PLRS; ++i)
-			if (i != plr_self && active_table[i])
+			if (i != plr_self && connected_table[i])
 				ret.insert(nexthop_table[i]);
 		ret.insert(connection_requests_pending.begin(),
 		           connection_requests_pending.end());
@@ -155,13 +155,12 @@ void udp_p2p::recv_decrypted(packet& pkt, endpoint sender)
 	// normal packets
 	if (pkt.src() >= MAX_PLRS)
 		return;                    //drop packet
-	if (active_table[pkt.src()]) { //WRONG?!?
+	if (connected_table[pkt.src()]) { //WRONG?!?
 		if (sender != nexthop_table[pkt.src()])
 			return; //rpfilter fail: drop packet
 	} else {
 		nexthop_table[pkt.src()] = sender; // new connection: accept
 	}
-	active_table[pkt.src()] = true;
 	connected_table[pkt.src()] = true;
 	if (pkt.dest() != plr_self && pkt.dest() != PLR_BROADCAST)
 		return; //packet not for us, drop

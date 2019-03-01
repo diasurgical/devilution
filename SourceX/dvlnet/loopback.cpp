@@ -81,3 +81,24 @@ bool loopback::SNetLeaveGame(int type)
 {
 	return true;
 }
+
+bool loopback::SNetDropPlayer(int playerid, DWORD flags)
+{
+	return true;
+}
+
+void loopback::setup_gameinfo(buffer_t info)
+{
+}
+
+bool loopback::SNetGetOwnerTurnsWaiting(DWORD *turns)
+{
+	*turns = 0;
+	return true;
+}
+
+bool loopback::SNetGetTurnsInTransit(int *turns)
+{
+	*turns = 0;
+	return true;
+}

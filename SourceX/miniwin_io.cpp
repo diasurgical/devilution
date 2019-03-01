@@ -1,5 +1,7 @@
 #include "pch.h"
 
+static std::set<HANDLE> files;
+
 void TranslateFileName(char *dst, int dstLen, const char *src)
 {
 	for (int i = 0; i < dstLen; i++) {
@@ -33,6 +35,7 @@ HANDLE WINAPI CreateFileA(LPCSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShar
 	}
 	int fd = open(name, flags, mode);
 
+	files.insert((HANDLE)fd);
 	return (HANDLE)fd;
 }
 
@@ -128,9 +131,10 @@ WINBOOL WINAPI SetFileAttributesA(LPCSTR lpFileName, DWORD dwFileAttributes)
 
 WINBOOL WINAPI CloseHandle(HANDLE hObject)
 {
-	DUMMY();
-
-	int ret = close((int)hObject);
-	assert(ret == 0);
+	if(files.find(hObject) != files.end()) {
+		int ret = close((int)hObject);
+		assert(ret == 0);
+		files.erase(hObject);
+	}
 	return TRUE;
 }
