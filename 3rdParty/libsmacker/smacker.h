@@ -98,6 +98,8 @@ unsigned long smk_get_audio_size(const smk object, unsigned char track);
 
 /** rewind to first frame and unpack */
 char smk_first(smk object);
+/** was the pallet updated this frame */
+unsigned char smk_palette_updated(smk s);
 /** advance to next frame and unpack */
 char smk_next(smk object);
 /** seek to first keyframe before/at N in an smk */

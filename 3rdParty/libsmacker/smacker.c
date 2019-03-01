@@ -1356,6 +1356,11 @@ error:
 	return -1;
 }
 
+unsigned char smk_palette_updated(smk s)
+{
+	return s->frame_type[s->cur_frame] & 0x01;
+}
+
 /* advance to next frame */
 char smk_next(smk s)
 {
