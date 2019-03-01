@@ -26,10 +26,8 @@ void __fastcall play_movie(char *pszMovie, BOOL user_can_close)
 
 	/* file meta-info */
 	unsigned long width, height, nFrames;
-	/* arrays for audio track metadata */
-	unsigned char a_trackmask, a_channels[7], a_depth[7];
+	unsigned char a_channels[7], a_depth[7];
 	unsigned long a_rate[7];
-
 	unsigned char *palette_data;
 
 	smk smacker;
@@ -38,29 +36,28 @@ void __fastcall play_movie(char *pszMovie, BOOL user_can_close)
 	if (smacker != NULL) {
 		double usPerFrame;
 		smk_info_all(smacker, NULL, &nFrames, &usPerFrame);
-		smk_info_audio(smacker, &a_trackmask, a_channels, a_depth, a_rate);
+		smk_info_video(smacker, &width, &height, NULL);
 
-		if (a_depth[0] && Mix_OpenAudio(a_rate[0], a_depth[0] == 16 ? AUDIO_S16LSB : AUDIO_U8, a_channels[0], 1024) < 0) {
-			printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
+		smk_info_audio(smacker, NULL, a_channels, a_depth, a_rate);
+		SDL_AudioDeviceID deviceId;
+		if (a_depth[0] != 0) {
+			SDL_AudioSpec audioFormat;
+			SDL_zero(audioFormat);
+			audioFormat.freq = a_rate[0];
+			audioFormat.format = a_depth[0] == 16 ? AUDIO_S16 : AUDIO_U8;
+			audioFormat.channels = a_channels[0];
+
+			deviceId = SDL_OpenAudioDevice(NULL, 0, &audioFormat, NULL, 0);
+			if (deviceId == 0) {
+				printf("SDL_OpenAudioDevice: %s\n", SDL_GetError());
+				movie_playing = false;
+			} else {
+				SDL_PauseAudioDevice(deviceId, 0); /* start audio playing. */
+			}
 		}
 
-		smk_enable_audio(smacker, 0, true);
+		smk_enable_all(smacker, -1);
 		smk_first(smacker); // Decode first frame
-
-		char *audioBuffer = (char *)DiabloAllocPtr((nFrames + 15) * 3000); // first frame is 16x, 3000 looks like a safe perframe size
-		unsigned char *chunkBuffer = smk_get_audio(smacker, 0);
-		int audioIdx = 0;
-		do {
-			for (int i = 0; i < smk_get_audio_size(smacker, 0); i++, audioIdx++) {
-				audioBuffer[audioIdx] = chunkBuffer[i];
-			}
-		} while (smk_next(smacker) != SMK_DONE);
-
-		Mix_Chunk *Song = Mix_QuickLoad_RAW(audioBuffer, audioIdx);
-
-		smk_enable_audio(smacker, 0, false);
-		smk_enable_video(smacker, true);
-		smk_first(smacker); // Rewind
 
 		smk_info_video(smacker, &width, &height, NULL);
 		SDL_DestroyTexture(texture);
@@ -88,8 +85,6 @@ void __fastcall play_movie(char *pszMovie, BOOL user_can_close)
 		SDL_Event event;
 		double frameEnd = SDL_GetTicks() * 1000 + usPerFrame;
 
-		Mix_PlayChannel(-1, Song, 0);
-
 		do {
 			while (SDL_PollEvent(&event)) {
 				switch (event.type) {
@@ -102,6 +97,10 @@ void __fastcall play_movie(char *pszMovie, BOOL user_can_close)
 				case SDL_QUIT:
 					exit(0);
 				}
+			}
+
+			if (a_depth[0] != 0 && SDL_QueueAudio(deviceId, smk_get_audio(smacker, 0), smk_get_audio_size(smacker, 0)) == -1) {
+				printf("SDL_QueueAudio: %s\n", SDL_GetError());
 			}
 
 			now = SDL_GetTicks() * 1000;
@@ -144,14 +143,14 @@ void __fastcall play_movie(char *pszMovie, BOOL user_can_close)
 			frameEnd += usPerFrame;
 		} while (smk_next(smacker) != SMK_DONE && movie_playing);
 
+		if (a_depth[0] != 0) {
+			SDL_ClearQueuedAudio(deviceId);
+			SDL_CloseAudioDevice(deviceId);
+		}
 		smk_close(smacker);
 
 		SDL_DestroyTexture(texture);
 		texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, SCREEN_WIDTH, SCREEN_HEIGHT);
 		SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
-
-		if (a_depth[0] && Mix_OpenAudio(44100, AUDIO_S16LSB, 2, 1024) < 0) {
-			printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
-		}
 	}
 }
