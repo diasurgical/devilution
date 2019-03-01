@@ -12,7 +12,7 @@ extern int MissilePreFlag; // weak
 extern int numchains;      // weak
 
 void __fastcall GetDamageAmt(int i, int *mind, int *maxd);
-int __fastcall CheckBlock(int fx, int fy, int tx, int ty);
+BOOL __fastcall CheckBlock(int fx, int fy, int tx, int ty);
 int __fastcall FindClosest(int sx, int sy, int rad);
 int __fastcall GetSpellLevel(int id, int sn);
 int __fastcall GetDirection8(int x1, int y1, int x2, int y2);
