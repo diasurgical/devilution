@@ -5522,8 +5522,8 @@ void __fastcall MAI_Lazurus(int i)
 		return;
 	}
 
-	mx = Monst->_my;
-	my = Monst->_mx;
+	mx = Monst->_mx;
+	my = Monst->_my;
 	md = M_GetDir(i);
 	if (dFlags[mx][my] & DFLAG_VISIBLE) {
 		if (gbMaxPlayers == 1) {
