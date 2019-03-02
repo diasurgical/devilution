@@ -102,8 +102,9 @@ void packet_in::decrypt()
 	if (have_decrypted)
 		return;
 	if (!disable_encryption) {
-		if (encrypted_buffer.size() < crypto_secretbox_NONCEBYTES +
-			crypto_secretbox_MACBYTES + sizeof(packet_type) + 2 * sizeof(plr_t))
+		if (encrypted_buffer.size() < crypto_secretbox_NONCEBYTES
+		    + crypto_secretbox_MACBYTES
+		    + sizeof(packet_type) + 2*sizeof(plr_t))
 			throw packet_exception();
 		auto pktlen = (encrypted_buffer.size()
 		               - crypto_secretbox_NONCEBYTES
@@ -118,7 +119,7 @@ void packet_in::decrypt()
 		                               key.data()))
 			throw packet_exception();
 	} else {
-		if (encrypted_buffer.size() < sizeof(packet_type) + 2 * sizeof(plr_t))
+		if (encrypted_buffer.size() < sizeof(packet_type) + 2*sizeof(plr_t))
 			throw packet_exception();
 		decrypted_buffer = encrypted_buffer;
 	}

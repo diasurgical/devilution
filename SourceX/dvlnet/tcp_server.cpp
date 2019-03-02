@@ -1,5 +1,7 @@
 #include "dvlnet/tcp_server.h"
+
 #include <functional>
+#include <chrono>
 
 #include "dvlnet/base.h"
 
@@ -18,10 +20,10 @@ tcp_server::tcp_server(asio::io_context& ioc, std::string bindaddr,
 std::string tcp_server::localhost_self()
 {
 	auto addr = acceptor->local_endpoint().address();
-	if(addr.is_unspecified()) {
-		if(addr.is_v4()) {
+	if (addr.is_unspecified()) {
+		if (addr.is_v4()) {
 			return asio::ip::address_v4::loopback().to_string();
-		} else if(addr.is_v6()) {
+		} else if (addr.is_v6()) {
 			return asio::ip::address_v6::loopback().to_string();
 		} else {
 			ABORT();
@@ -38,16 +40,16 @@ tcp_server::scc tcp_server::make_connection()
 
 plr_t tcp_server::next_free()
 {
-	for(plr_t i = 0; i < MAX_PLRS; ++i)
-		if(!connections[i])
+	for (plr_t i = 0; i < MAX_PLRS; ++i)
+		if (!connections[i])
 			return i;
 	return PLR_BROADCAST;
 }
 
 bool tcp_server::empty()
 {
-	for(plr_t i = 0; i < MAX_PLRS; ++i)
-		if(connections[i])
+	for (plr_t i = 0; i < MAX_PLRS; ++i)
+		if (connections[i])
 			return false;
 	return true;
 }
@@ -63,28 +65,28 @@ void tcp_server::start_recv(scc con)
 void tcp_server::handle_recv(scc con, const asio::error_code& ec,
                              size_t bytes_read)
 {
-	if(ec || bytes_read == 0) {
+	if (ec || bytes_read == 0) {
 		drop_connection(con);
 		return;
 	}
 	con->recv_buffer.resize(bytes_read);
 	con->recv_queue.write(std::move(con->recv_buffer));
-    con->recv_buffer.resize(frame_queue::max_frame_size);
-    while(con->recv_queue.packet_ready()) {
-	    try {
-		    auto pkt = pktfty.make_packet(con->recv_queue.read_packet());
-		    if(con->plr == PLR_BROADCAST) {
-			    handle_recv_newplr(con, *pkt);
-		    } else {
-			    con->timeout = timeout_active;
-			    handle_recv_packet(*pkt);
-		    }
-	    } catch (dvlnet_exception e) {
-		    drop_connection(con);
-		    return;
-	    }
-    }
-    start_recv(con);
+	con->recv_buffer.resize(frame_queue::max_frame_size);
+	while (con->recv_queue.packet_ready()) {
+		try {
+			auto pkt = pktfty.make_packet(con->recv_queue.read_packet());
+			if (con->plr == PLR_BROADCAST) {
+				handle_recv_newplr(con, *pkt);
+			} else {
+				con->timeout = timeout_active;
+				handle_recv_packet(*pkt);
+			}
+		} catch (dvlnet_exception e) {
+			drop_connection(con);
+			return;
+		}
+	}
+	start_recv(con);
 }
 
 void tcp_server::send_connect(scc con)
@@ -97,9 +99,9 @@ void tcp_server::send_connect(scc con)
 void tcp_server::handle_recv_newplr(scc con, packet& pkt)
 {
 	auto newplr = next_free();
-	if(newplr == PLR_BROADCAST)
+	if (newplr == PLR_BROADCAST)
 		throw server_exception();
-	if(empty())
+	if (empty())
 		game_init_info = pkt.info();
 	auto reply = pktfty.make_packet<PT_JOIN_ACCEPT>(PLR_MASTER, PLR_BROADCAST,
 	                                                pkt.cookie(), newplr,
@@ -118,14 +120,14 @@ void tcp_server::handle_recv_packet(packet& pkt)
 
 void tcp_server::send_packet(packet& pkt)
 {
-	if(pkt.dest() == PLR_BROADCAST) {
-		for(auto i = 0; i < MAX_PLRS; ++i)
-			if(i != pkt.src() && connections[i])
+	if (pkt.dest() == PLR_BROADCAST) {
+		for (auto i = 0; i < MAX_PLRS; ++i)
+			if (i != pkt.src() && connections[i])
 				start_send(connections[i], pkt);
 	} else {
-		if(pkt.dest() >= MAX_PLRS)
+		if (pkt.dest() >= MAX_PLRS)
 			throw server_exception();
-		if((pkt.dest() != pkt.src()) && connections[pkt.dest()])
+		if ((pkt.dest() != pkt.src()) && connections[pkt.dest()])
 			start_send(connections[pkt.dest()], pkt);
 	}
 }
@@ -156,7 +158,7 @@ void tcp_server::start_accept()
 
 void tcp_server::handle_accept(scc con, const asio::error_code& ec)
 {
-	if(next_free() == PLR_BROADCAST) {
+	if (next_free() == PLR_BROADCAST) {
 		drop_connection(con);
 	} else {
 		asio::ip::tcp::no_delay option(true);
@@ -177,15 +179,15 @@ void tcp_server::start_timeout(scc con)
 
 void tcp_server::handle_timeout(scc con, const asio::error_code& ec)
 {
-	if(ec) {
+	if (ec) {
 		drop_connection(con);
 		return;
 	}
-	if(con->timeout > 0)
+	if (con->timeout > 0)
 		con->timeout -= 1;
-	if(con->timeout < 0)
+	if (con->timeout < 0)
 		con->timeout = 0;
-	if(!con->timeout) {
+	if (!con->timeout) {
 		drop_connection(con);
 		return;
 	}
@@ -194,7 +196,7 @@ void tcp_server::handle_timeout(scc con, const asio::error_code& ec)
 
 void tcp_server::drop_connection(scc con)
 {
-	if(con->plr != PLR_BROADCAST) {
+	if (con->plr != PLR_BROADCAST) {
 		auto pkt = pktfty.make_packet<PT_DISCONNECT>(PLR_MASTER, PLR_BROADCAST,
 		                                             con->plr, LEAVE_DROP);
 		connections[con->plr] = nullptr;

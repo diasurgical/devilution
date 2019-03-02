@@ -18,7 +18,7 @@ void base::setup_password(std::string pw)
 void base::run_event_handler(_SNETEVENT& ev)
 {
 	auto f = registered_handlers[static_cast<event_type>(ev.eventid)];
-	if(f) {
+	if (f) {
 		f(&ev);
 	}
 }
@@ -56,7 +56,7 @@ void base::clear_msg(plr_t plr)
 
 void base::recv_local(packet& pkt)
 {
-	if(pkt.src() < MAX_PLRS) {
+	if (pkt.src() < MAX_PLRS) {
 		connected_table[pkt.src()] = true;
 	}
 	switch (pkt.type()) {
@@ -74,7 +74,7 @@ void base::recv_local(packet& pkt)
 		break;
 	case PT_DISCONNECT:
 		if (pkt.newplr() != plr_self) {
-			if(connected_table[pkt.newplr()]) {
+			if (connected_table[pkt.newplr()]) {
 				auto leaveinfo = pkt.leaveinfo();
 				_SNETEVENT ev;
 				ev.eventid = EVENT_TYPE_PLAYER_LEAVE_GAME;
@@ -123,7 +123,7 @@ bool base::SNetSendMessage(int playerID, void* data, unsigned int size)
 		dest = PLR_BROADCAST;
 	else
 		dest = playerID;
-	if(dest != plr_self) {
+	if (dest != plr_self) {
 		auto pkt = pktfty->make_packet<PT_MESSAGE>(plr_self, dest, message);
 		send(*pkt);
 	}
@@ -134,17 +134,17 @@ bool base::SNetReceiveTurns(char** data, unsigned int* size, DWORD* status)
 {
 	poll();
 	bool all_turns_arrived = true;
-	for(auto i = 0; i < MAX_PLRS; ++i) {
+	for (auto i = 0; i < MAX_PLRS; ++i) {
 		status[i] = 0;
-		if(connected_table[i]) {
+		if (connected_table[i]) {
 			status[i] |= PS_CONNECTED;
-			if(turn_queue[i].empty())
+			if (turn_queue[i].empty())
 				all_turns_arrived = false;
 		}
 	}
-	if(all_turns_arrived) {
+	if (all_turns_arrived) {
 		for (auto i = 0; i < MAX_PLRS; ++i) {
-			if(connected_table[i]) {
+			if (connected_table[i]) {
 				size[i] = sizeof(turn_t);
 				status[i] |= PS_ACTIVE;
 				status[i] |= PS_TURN_ARRIVED;
@@ -156,8 +156,8 @@ bool base::SNetReceiveTurns(char** data, unsigned int* size, DWORD* status)
 		return true;
 	} else {
 		for (auto i = 0; i < MAX_PLRS; ++i) {
-			if(connected_table[i]) {
-				if(!turn_queue[i].empty()) {
+			if (connected_table[i]) {
+				if (!turn_queue[i].empty()) {
 					status[i] |= PS_ACTIVE;
 				}
 			}
@@ -202,12 +202,12 @@ void* base::SNetUnregisterEventHandler(event_type evtype, snet_event_func func)
 void* base::SNetRegisterEventHandler(event_type evtype, snet_event_func func)
 {
 	/*
-	engine registers handler for:
-	EVENT_TYPE_PLAYER_LEAVE_GAME
-	EVENT_TYPE_PLAYER_CREATE_GAME (should be raised during SNetCreateGame
-	                              for non-creating player)
-	EVENT_TYPE_PLAYER_MESSAGE (for bnet? not implemented)
-	(engine uses same function for all three)
+	  engine registers handler for:
+	  EVENT_TYPE_PLAYER_LEAVE_GAME
+	  EVENT_TYPE_PLAYER_CREATE_GAME (should be raised during SNetCreateGame
+	  for non-creating player)
+	  EVENT_TYPE_PLAYER_MESSAGE (for bnet? not implemented)
+	  (engine uses same function for all three)
 	*/
 	registered_handlers[evtype] = func;
 	return (void*)func;
@@ -234,8 +234,8 @@ bool base::SNetDropPlayer(int playerid, DWORD flags)
 
 plr_t base::get_owner()
 {
-	for(auto i = 0; i < MAX_PLRS; ++i) {
-		if(connected_table[i]) {
+	for (auto i = 0; i < MAX_PLRS; ++i) {
+		if (connected_table[i]) {
 			return i;
 		}
 	}

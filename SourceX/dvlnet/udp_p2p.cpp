@@ -16,7 +16,7 @@ int udp_p2p::create(std::string addrstr, std::string passwd)
 	sock.non_blocking(true);
 	unsigned short port = default_port;
 	/*
-	while(port <= default_port+try_ports) {
+	while (port <= default_port+try_ports) {
 		try {
 			sock.bind(asio::ip::udp::endpoint(asio::ip::address_v6(), port));
 		} catch (std::exception e) {
@@ -50,7 +50,7 @@ int udp_p2p::join(std::string addrstr, std::string passwd)
 	master = themaster;
 	{ // hack: try to join for 5 seconds
 		randombytes_buf(reinterpret_cast<unsigned char *>(&cookie_self),
-		    sizeof(cookie_t));
+		                sizeof(cookie_t));
 		auto pkt = pktfty->make_packet<PT_JOIN_REQUEST>(PLR_BROADCAST,
 		                                                PLR_MASTER, cookie_self,
 		                                                game_init_info);

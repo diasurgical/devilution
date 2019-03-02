@@ -14,7 +14,7 @@ buffer_t frame_queue::read(size_t s)
 	if(current_size < s)
 		throw frame_queue_exception();
 	buffer_t ret;
-	while(s > 0 && s >= buffer_deque.front().size()) {
+	while (s > 0 && s >= buffer_deque.front().size()) {
 		s -= buffer_deque.front().size();
 		current_size -= buffer_deque.front().size();
 		ret.insert(ret.end(),
@@ -50,7 +50,7 @@ bool frame_queue::packet_ready()
 			throw frame_queue_exception();
 	}
 	if(size() >= nextsize)
-			return true;
+		return true;
 	else
 		return false;
 }
