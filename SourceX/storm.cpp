@@ -61,7 +61,7 @@ BOOL STORMAPI SFileDdaEnd(HANDLE directsound)
 BOOL STORMAPI SFileDdaGetPos(HANDLE directsound, int a2, int a3)
 {
 	DUMMY_ONCE();
-	return 0;
+	return TRUE;
 }
 
 BOOL STORMAPI SFileDdaInitialize(HANDLE directsound)
