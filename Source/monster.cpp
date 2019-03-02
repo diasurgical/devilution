@@ -5453,7 +5453,7 @@ void __fastcall MAI_Zhar(int i)
 
 	Monst->_mdir = md;
 
-	if (Monst->_mmode == MM_STAND)
+	if (monster[i]._mmode == MM_STAND)
 		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
 }
 
@@ -5461,7 +5461,6 @@ void __fastcall MAI_SnotSpil(int i)
 {
 	int mx, my, md;
 	MonsterStruct *Monst;
-
 
 	if ((DWORD)i >= MAXMONSTERS)
 		TermMsg("MAI_SnotSpil: Invalid monster %d", i);
@@ -5504,7 +5503,7 @@ void __fastcall MAI_SnotSpil(int i)
 
 	Monst->_mdir = md;
 
-	if (Monst->_mmode == MM_STAND)
+	if (monster[i]._mmode == MM_STAND)
 		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
 }
 // 5CF330: using guessed type int setpc_h;
@@ -5556,7 +5555,7 @@ void __fastcall MAI_Lazurus(int i)
 
 	Monst->_mdir = md;
 
-	if (Monst->_mmode == MM_STAND || Monst->_mmode == MM_TALK)
+	if (monster[i]._mmode == MM_STAND || monster[i]._mmode == MM_TALK)
 		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
 }
 // 679660: using guessed type char gbMaxPlayers;
