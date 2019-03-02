@@ -5666,7 +5666,7 @@ void __fastcall MAI_Warlord(int i)
 
 	Monst->_mdir = md;
 
-	if (Monst->_mmode == MM_STAND || Monst->_mmode == MM_TALK)
+	if (monster[i]._mmode == MM_STAND || monster[i]._mmode == MM_TALK)
 		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[Monst->_mdir];
 }
 
