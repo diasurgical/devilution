@@ -1,6 +1,7 @@
 #include "../3rdParty/libsmacker/smacker.h"
 #include "pch.h"
 
+PALETTEENTRY previousPalette[256];
 BYTE movie_playing;
 BOOL loop_movie; // TODO
 
@@ -63,6 +64,8 @@ void __fastcall play_movie(char *pszMovie, BOOL user_can_close)
 		SDL_DestroyTexture(texture);
 		texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, width, height);
 		SDL_RenderSetLogicalSize(renderer, width, height);
+
+		memcpy(previousPalette, orig_palette, 1024);
 
 		// Copy frame to buffer
 		SDL_Surface *videoSurface = SDL_CreateRGBSurfaceWithFormatFrom(
@@ -140,6 +143,7 @@ void __fastcall play_movie(char *pszMovie, BOOL user_can_close)
 			if (now < frameEnd) {
 				usleep(frameEnd - now); // wait with next frame if the system is to fast
 			}
+
 			frameEnd += usPerFrame;
 			if (smk_next(smacker) == SMK_DONE) {
 				if (loop_movie)
@@ -154,6 +158,8 @@ void __fastcall play_movie(char *pszMovie, BOOL user_can_close)
 			SDL_CloseAudioDevice(deviceId);
 		}
 		smk_close(smacker);
+
+		memcpy(orig_palette, previousPalette, 1024);
 
 		SDL_DestroyTexture(texture);
 		texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, SCREEN_WIDTH, SCREEN_HEIGHT);
