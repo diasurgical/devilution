@@ -141,7 +141,13 @@ void __fastcall play_movie(char *pszMovie, BOOL user_can_close)
 				usleep(frameEnd - now); // wait with next frame if the system is to fast
 			}
 			frameEnd += usPerFrame;
-		} while (smk_next(smacker) != SMK_DONE && movie_playing);
+			if (smk_next(smacker) == SMK_DONE) {
+				if (loop_movie)
+					smk_first(smacker);
+				else
+					movie_playing = false;
+			}
+		} while (movie_playing);
 
 		if (a_depth[0] != 0) {
 			SDL_ClearQueuedAudio(deviceId);
