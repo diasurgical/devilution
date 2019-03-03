@@ -278,6 +278,12 @@ HWND CreateWindowExA(
 	return window;
 }
 
+BOOL InvalidateRect(HWND hWnd, const RECT *lpRect, BOOL bErase)
+{
+	DUMMY();
+	return TRUE;
+}
+
 /**
  * @brief Appears to be used to clear the FB on init
  */

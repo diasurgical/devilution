@@ -1,4 +1,5 @@
 #include "../3rdParty/Radon/Radon/include/Radon.hpp"
+#include "../3rdParty/libsmacker/smacker.h"
 #include "pch.h"
 
 DWORD nLastError = 0;
@@ -360,17 +361,193 @@ BOOL STORMAPI SRegSaveValue(const char *keyname, const char *valuename, BYTE fla
 //{
 //	UNIMPLEMENTED();
 //}
-//
-// BOOL STORMAPI SVidPlayBegin(char *filename, int arg4, int a3, int a4, int a5, int a6, HANDLE
-// *video)
-//{
-//	UNIMPLEMENTED();
-//}
-//
-// BOOL STORMAPI SVidPlayEnd(HANDLE video)
-//{
-//	UNIMPLEMENTED();
-//}
+
+double SVidFrameEnd;
+double SVidFrameLength;
+BYTE SVidLoop;
+smk SVidSMK;
+PALETTEENTRY SVidPreviousPalette[256];
+SDL_Palette *SVidPalette;
+SDL_Surface *SVidSurface;
+BYTE *SVidBuffer;
+SDL_AudioDeviceID deviceId;
+
+BOOL STORMAPI SVidPlayBegin(char *filename, int a2, int a3, int a4, int a5, int flags, HANDLE *video)
+{
+	if (flags & 0x10000 || flags & 0x20000000) {
+		return FALSE;
+	}
+
+	SVidLoop = flags & 0x40000;
+	bool enableVideo = !(flags & 0x100000);
+	bool enableAudio = !(flags & 0x1000000);
+	//0x8 // Non-interlaced
+	//0x200, 0x800 // Upscale video
+	//0x80000 // Center horizontally
+	//0x800000 // Edge detection
+	//0x200800 // Clear FB
+
+	SFileOpenFile(filename, video);
+
+	int bytestoread = SFileGetFileSize(*video, 0);
+	SVidBuffer = DiabloAllocPtr(bytestoread);
+	SFileReadFile(*video, SVidBuffer, bytestoread, NULL, 0);
+
+	SVidSMK = smk_open_memory(SVidBuffer, bytestoread);
+	if (SVidSMK == NULL) {
+		return FALSE;
+	}
+
+	deviceId = 0;
+	unsigned char channels[7], depth[7];
+	unsigned long rate[7];
+	smk_info_audio(SVidSMK, NULL, channels, depth, rate);
+	if (enableAudio && depth[0] != 0) {
+		smk_enable_audio(SVidSMK, 0, enableAudio);
+		SDL_AudioSpec audioFormat;
+		SDL_zero(audioFormat);
+		audioFormat.freq = rate[0];
+		audioFormat.format = depth[0] == 16 ? AUDIO_S16 : AUDIO_U8;
+		audioFormat.channels = channels[0];
+
+		deviceId = SDL_OpenAudioDevice(NULL, 0, &audioFormat, NULL, 0);
+		if (deviceId == 0) {
+			SDL_Log("SDL_OpenAudioDevice: %s\n", SDL_GetError());
+			return FALSE;
+		} else {
+			SDL_PauseAudioDevice(deviceId, 0); /* start audio playing. */
+		}
+	}
+
+	unsigned long width, height, nFrames;
+	smk_info_all(SVidSMK, NULL, &nFrames, &SVidFrameLength);
+	smk_info_video(SVidSMK, &width, &height, NULL);
+
+	smk_enable_video(SVidSMK, enableVideo);
+	smk_first(SVidSMK); // Decode first frame
+
+	smk_info_video(SVidSMK, &width, &height, NULL);
+	SDL_DestroyTexture(texture);
+	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, width, height);
+	SDL_RenderSetLogicalSize(renderer, width, height);
+	memcpy(SVidPreviousPalette, orig_palette, 1024);
+
+	// Copy frame to buffer
+	SVidSurface = SDL_CreateRGBSurfaceWithFormatFrom(
+	    smk_get_video(SVidSMK),
+	    width,
+	    height,
+	    8,
+	    width,
+	    SDL_PIXELFORMAT_INDEX8);
+
+	SVidPalette = SDL_AllocPalette(256);
+	if (SDL_SetSurfacePalette(SVidSurface, SVidPalette) != 0) {
+		SDL_Log("SDL_SetSurfacePalette: %s\n", SDL_GetError());
+		return FALSE;
+	}
+
+	SVidFrameEnd = SDL_GetTicks() * 1000 + SVidFrameLength;
+
+	return TRUE;
+}
+
+BOOL SVidLoadNextFrame()
+{
+	SVidFrameEnd += SVidFrameLength;
+
+	if (smk_next(SVidSMK) == SMK_DONE) {
+		if (!SVidLoop) {
+			return FALSE;
+		}
+
+		smk_first(SVidSMK);
+	}
+
+	return TRUE;
+}
+
+BOOL __cdecl SVidPlayContinue(void)
+{
+	if (smk_palette_updated(SVidSMK)) {
+		SDL_Color colors[256];
+		unsigned char *palette_data = smk_get_palette(SVidSMK);
+
+		for (int i = 0; i < 256; i++) {
+			colors[i].r = palette_data[i * 3 + 0];
+			colors[i].g = palette_data[i * 3 + 1];
+			colors[i].b = palette_data[i * 3 + 2];
+			colors[i].a = SDL_ALPHA_OPAQUE;
+
+			orig_palette[i].peFlags = 0;
+			orig_palette[i].peRed = palette_data[i * 3 + 0];
+			orig_palette[i].peGreen = palette_data[i * 3 + 1];
+			orig_palette[i].peBlue = palette_data[i * 3 + 2];
+		}
+		memcpy(logical_palette, orig_palette, 1024);
+
+		if (SDL_SetPaletteColors(SVidPalette, colors, 0, 256) != 0) {
+			SDL_Log("SDL_SetPaletteColors: %s\n", SDL_GetError());
+			return FALSE;
+		}
+	}
+
+	if (SDL_GetTicks() * 1000 >= SVidFrameEnd) {
+		return SVidLoadNextFrame(); // Skip video and audio if the system is to slow
+	}
+
+	printf("oiasjdf %d\n", deviceId);
+	if (deviceId && SDL_QueueAudio(deviceId, smk_get_audio(SVidSMK, 0), smk_get_audio_size(SVidSMK, 0)) == -1) {
+		SDL_Log("SDL_QueueAudio: %s\n", SDL_GetError());
+		return FALSE;
+	}
+
+	if (SDL_GetTicks() * 1000 >= SVidFrameEnd) {
+		return SVidLoadNextFrame(); // Skip video if the system is to slow
+	}
+
+	SDL_Rect pal_surface_offset = { 64, 160, 0, 0 };
+	if (SDL_BlitSurface(SVidSurface, NULL, pal_surface, &pal_surface_offset) != 0) {
+		SDL_Log("SDL_BlitSurface: %s\n", SDL_GetError());
+		return FALSE;
+	}
+
+	SetFadeLevel(256); // present frame
+
+	double now = SDL_GetTicks() * 1000;
+	if (now < SVidFrameEnd) {
+		usleep(SVidFrameEnd - now); // wait with next frame if the system is to fast
+	}
+
+	return SVidLoadNextFrame();
+}
+
+BOOL STORMAPI SVidPlayEnd(HANDLE video)
+{
+	if (deviceId) {
+		SDL_ClearQueuedAudio(deviceId);
+		SDL_CloseAudioDevice(deviceId);
+		deviceId = 0;
+	}
+
+	if (SVidSMK)
+		smk_close(SVidSMK);
+
+	if (SVidBuffer) {
+		mem_free_dbg(SVidBuffer);
+		SVidBuffer = NULL;
+	}
+
+	SFileCloseFile(video);
+	video = NULL;
+
+	memcpy(orig_palette, SVidPreviousPalette, 1024);
+	SDL_DestroyTexture(texture);
+	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, SCREEN_WIDTH, SCREEN_HEIGHT);
+	SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+	return TRUE;
+}
 
 BOOL STORMAPI SErrDisplayError(DWORD dwErrMsg, const char *logfilename, int logline, const char *message,
     BOOL allowOption, int exitCode)
@@ -456,11 +633,6 @@ void __cdecl SDrawRealizePalette(void)
 {
 	DUMMY();
 }
-
-// bool __cdecl SVidPlayContinue(void)
-//{
-//	UNIMPLEMENTED();
-//}
 
 BOOL __stdcall SFileEnableDirectAccess(BOOL enable)
 {

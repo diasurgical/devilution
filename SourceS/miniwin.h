@@ -252,12 +252,12 @@ typedef struct tagWNDCLASSEXA {
 typedef unsigned long _fsize_t; /* Could be 64 bits for Win32 */
 
 struct _finddata_t {
-    unsigned    attrib;
-    time_t      time_create;    /* -1 for FAT file systems */
-    time_t      time_access;    /* -1 for FAT file systems */
-    time_t      time_write;
-    _fsize_t    size;
-    char        name[260];
+	unsigned attrib;
+	time_t time_create; /* -1 for FAT file systems */
+	time_t time_access; /* -1 for FAT file systems */
+	time_t time_write;
+	_fsize_t size;
+	char name[260];
 };
 
 typedef WORD ATOM;
@@ -407,6 +407,7 @@ HWND CreateWindowExA(
 #define CreateWindowEx CreateWindowExA
 HWND WINAPI FindWindowA(LPCSTR lpClassName, LPCSTR lpWindowName);
 #define FindWindow FindWindowA
+BOOL InvalidateRect(HWND hWnd, const RECT *lpRect, BOOL bErase);
 BOOL UpdateWindow(HWND hWnd);
 BOOL ShowWindow(HWND hWnd, int nCmdShow);
 WINUSERAPI ATOM WINAPI RegisterClassExA(const WNDCLASSEX *lpwcx);

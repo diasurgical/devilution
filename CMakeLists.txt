@@ -118,7 +118,7 @@ add_library(devilution STATIC
   Source/minitext.cpp
   Source/missiles.cpp
   Source/monster.cpp
-# Source/movie.cpp
+  Source/movie.cpp
   Source/mpqapi.cpp
   Source/msgcmd.cpp
   Source/msg.cpp
@@ -159,7 +159,6 @@ add_executable(devilutionx
   SourceX/miniwin_msg_sdl.cpp
   SourceX/stub_rand.cpp
   SourceX/miniwin_thread.cpp
-  SourceX/movie.cpp
   SourceX/sound.cpp
   SourceX/storm.cpp
   SourceX/storm_net.cpp
