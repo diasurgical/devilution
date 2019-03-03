@@ -67,6 +67,7 @@ void __fastcall play_movie(char *pszMovie, BOOL user_can_close)
 
 		memcpy(previousPalette, orig_palette, 1024);
 
+
 		// Copy frame to buffer
 		SDL_Surface *videoSurface = SDL_CreateRGBSurfaceWithFormatFrom(
 		    smk_get_video(smacker),
@@ -124,7 +125,7 @@ void __fastcall play_movie(char *pszMovie, BOOL user_can_close)
 					orig_palette[i].peGreen = palette_data[i * 3 + 1];
 					orig_palette[i].peBlue = palette_data[i * 3 + 2];
 				}
-				ApplyGamma(logical_palette, orig_palette, 256);
+				memcpy(logical_palette, orig_palette, 1024);
 
 				if (SDL_SetPaletteColors(vpalette, colors, 0, 256) != 0) {
 					SDL_Log("SDL_SetPaletteColors: %s\n", SDL_GetError());
