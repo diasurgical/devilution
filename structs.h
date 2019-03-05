@@ -401,7 +401,7 @@ typedef struct MissileStruct {
 	int _mityoff;
 	int _mimfnum;
 	int _mispllvl;
-	int _miDelFlag;
+	BOOL _miDelFlag;
 	BYTE _miAnimType;
 	int _miAnimFlags;
 	unsigned char *_miAnimData;

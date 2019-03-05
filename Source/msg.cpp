@@ -207,14 +207,15 @@ void __fastcall DeltaExportData(int pnum)
 
 	if (sgbDeltaChanged) {
 		dst = (BYTE *)DiabloAllocPtr(4722);
-		dstEnd = dst + 1;
 		for (i = 0; i < NUMLEVELS; i++) {
+			dstEnd = dst + 1;
 			dstEnd = DeltaExportItem(dstEnd, sgLevels[i].item);
 			dstEnd = DeltaExportObject(dstEnd, sgLevels[i].object);
 			dstEnd = DeltaExportMonster(dstEnd, sgLevels[i].monster);
 			size = msg_comp_level(dst, dstEnd);
 			dthread_send_delta(pnum, i + CMD_DLEVEL_0, dst, size);
 		}
+		dstEnd = dst + 1;
 		dstEnd = DeltaExportJunk(dstEnd);
 		size = msg_comp_level(dst, dstEnd);
 		dthread_send_delta(pnum, CMD_DLEVEL_JUNK, dst, size);
@@ -283,7 +284,7 @@ BYTE *__fastcall DeltaExportJunk(BYTE *dst)
 		}
 	}
 
-	for (i = 0; i < MAXQUESTS; i++) {
+	for (i = 0; i < MAXMULTIQUESTS; i++) {
 		if (questlist[i]._qflags & 1) {
 			mq = &sgJunk.quests[i];
 			mq->qlog = quests[i]._qlog;
