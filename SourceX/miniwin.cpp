@@ -518,7 +518,7 @@ int WINAPI GetDeviceCaps(HDC hdc, int index)
 BOOL GetWindowRect(HWND hDlg, tagRECT *Rect)
 {
 	int x, y, w, h;
-	SDL_SetWindowPosition(window, &x, &y);
+	SDL_GetWindowPosition(window, &x, &y);
 	SDL_GetWindowSize(window, &w, &h);
 
 	Rect->right = x;
@@ -669,7 +669,7 @@ void PostQuitMessage(int nExitCode)
 
 LRESULT DefWindowProcA(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
-	DUMMY();
+	DUMMY_ONCE();
 	return NULL;
 }
 

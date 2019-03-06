@@ -33,7 +33,6 @@ BOOL STORMAPI SFileDdaBeginEx(HANDLE directsound, DWORD flags, DWORD mask, unsig
 	int bytestoread;
 	int nrread;
 	void *SFXbuffer;
-	SFXbuffer = directsound;
 
 	bytestoread = (int)SFileGetFileSize(directsound, 0);
 	SFXbuffer = DiabloAllocPtr(bytestoread);
@@ -310,7 +309,7 @@ void setIniValue(const char *sectionName, const char *keyName, char *value, int 
 
 BOOL STORMAPI SRegLoadData(const char *keyname, const char *valuename, int size, LPBYTE lpData, BYTE flags, LPDWORD lpcbData)
 {
-	return getIniValue(keyname, valuename, lpData, size, lpcbData);
+	return getIniValue(keyname, valuename, (char *)lpData, size, (int *)lpcbData);
 }
 
 BOOL STORMAPI SRegLoadString(const char *keyname, const char *valuename, BYTE flags, char *buffer, unsigned int buffersize)
@@ -471,7 +470,7 @@ BOOL __cdecl SVidPlayContinue(void)
 {
 	if (smk_palette_updated(SVidSMK)) {
 		SDL_Color colors[256];
-		unsigned char *palette_data = smk_get_palette(SVidSMK);
+		const unsigned char *palette_data = smk_get_palette(SVidSMK);
 
 		for (int i = 0; i < 256; i++) {
 			colors[i].r = palette_data[i * 3 + 0];
@@ -496,7 +495,6 @@ BOOL __cdecl SVidPlayContinue(void)
 		return SVidLoadNextFrame(); // Skip video and audio if the system is to slow
 	}
 
-	printf("oiasjdf %d\n", deviceId);
 	if (deviceId && SDL_QueueAudio(deviceId, smk_get_audio(SVidSMK, 0), smk_get_audio_size(SVidSMK, 0)) == -1) {
 		SDL_Log("SDL_QueueAudio: %s\n", SDL_GetError());
 		return FALSE;
