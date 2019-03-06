@@ -27,7 +27,7 @@ radon::File ini(getIniPath());
 // }
 
 BOOL STORMAPI SFileDdaBeginEx(HANDLE directsound, DWORD flags, DWORD mask, unsigned __int32 lDistanceToMove,
-    signed __int32 volume, signed int a6, int a7)
+    signed __int32 volume, signed int pan, int a7)
 {
 	DUMMY(); // Todo track when the sound can be released, see sfx_stop()
 	int bytestoread;
