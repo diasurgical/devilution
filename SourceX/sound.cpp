@@ -131,7 +131,7 @@ void __fastcall sound_create_primary_buffer(HANDLE music_track)
 void __cdecl sound_cleanup()
 {
 	snd_update(TRUE);
-	//SVidDestroy();
+	SVidDestroy();
 	SFileDdaDestroy();
 
 	if (sglpDS) {
@@ -215,7 +215,7 @@ int __fastcall sound_get_or_set_music_volume(int volume)
 	sglMusicVolume = volume;
 
 	if (sgpMusicTrack)
-		Mix_VolumeMusic(128 - 128 * volume / -1600);
+		SFileDdaSetVolume(sgpMusicTrack, volume, 0);
 
 	return sglMusicVolume;
 }

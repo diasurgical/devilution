@@ -72,8 +72,9 @@ BOOL STORMAPI SFileDdaInitialize(HANDLE directsound)
 
 BOOL STORMAPI SFileDdaSetVolume(HANDLE directsound, signed int bigvolume, signed int volume)
 {
-	DUMMY();
-	return 0;
+	Mix_VolumeMusic(128 - 128 * bigvolume / -1600);
+
+	return TRUE;
 }
 
 BOOL STORMAPI SFileGetFileArchive(HANDLE hFile, HANDLE archive)
@@ -351,11 +352,11 @@ BOOL STORMAPI SRegSaveValue(const char *keyname, const char *valuename, BYTE fla
 	return TRUE;
 }
 
-// BOOL STORMAPI SVidDestroy()
-//{
-//	UNIMPLEMENTED();
-//}
-//
+BOOL STORMAPI SVidDestroy()
+{
+	DUMMY();
+}
+
 // BOOL STORMAPI SVidInitialize(HANDLE video)
 //{
 //	UNIMPLEMENTED();
@@ -535,6 +536,9 @@ BOOL STORMAPI SVidPlayEnd(HANDLE video)
 		mem_free_dbg(SVidBuffer);
 		SVidBuffer = NULL;
 	}
+
+	SDL_FreePalette(SVidPalette);
+	SDL_FreeSurface(SVidSurface);
 
 	SFileCloseFile(video);
 	video = NULL;
