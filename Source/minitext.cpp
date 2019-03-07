@@ -97,56 +97,56 @@ void __cdecl DrawQTextBack()
 void __fastcall PrintQTextChr(int screen_x, int screen_y, char *cel_buf, int frame)
 {
 	char *v4;         // ebx
-	char *v5;         // esi
-	char *v6;         // edi
+	char *celGlyph;         // esi
+	char *screenGlyph;         // edi
 	int v7;           // ebx
 	signed int v8;    // edx
 	unsigned int v9;  // eax
 	unsigned int v10; // ecx
 	char v11;         // cf
-	unsigned int v12; // ecx
-	char *v13;        // [esp+14h] [ebp-8h]
-	char *v14;        // [esp+18h] [ebp-4h]
+	unsigned int glyphSize; // ecx
+	char *topRow;        // [esp+14h] [ebp-8h]
+	char *bottomRow;        // [esp+18h] [ebp-4h]
 
-	v13 = (char *)gpBuffer + screen_y_times_768[209];
-	v14 = (char *)gpBuffer + screen_y_times_768[469];
+	topRow = (char *)gpBuffer + screen_y_times_768[209];
+	bottomRow = (char *)gpBuffer + screen_y_times_768[469];
 	v4 = &cel_buf[4 * frame];
-	v5 = &cel_buf[*(_DWORD *)v4];
-	v6 = (char *)gpBuffer + screen_y_times_768[screen_y] + screen_x;
-	v7 = (int)&v5[*((_DWORD *)v4 + 1) - *(_DWORD *)v4];
+	celGlyph = &cel_buf[*(_DWORD *)v4];
+	screenGlyph = (char *)gpBuffer + screen_y_times_768[screen_y] + screen_x;
+	v7 = (int)&celGlyph[*((_DWORD *)v4 + 1) - *(_DWORD *)v4];
 	do {
 		v8 = 22;
 		do {
 			while (1) {
-				v9 = (unsigned char)*v5++;
+				v9 = (unsigned char)*celGlyph++;
 				if ((v9 & 0x80u) == 0)
 					break;
 				_LOBYTE(v9) = -(char)v9;
-				v6 += v9;
+				screenGlyph += v9;
 				v8 -= v9;
 				if (!v8)
 					goto LABEL_15;
 			}
 			v8 -= v9;
-			if (v6 < v13 || v6 > v14) {
-				v5 += v9;
-				v6 += v9;
+			if (screenGlyph < topRow || screenGlyph > bottomRow) {
+				celGlyph += v9;
+				screenGlyph += v9;
 			} else {
 				v10 = v9 >> 1;
-				if (!(v9 & 1) || (*v6 = *v5, ++v5, ++v6, v10)) {
+				if (!(v9 & 1) || (*screenGlyph = *celGlyph, ++celGlyph, ++screenGlyph, v10)) {
 					v11 = v10 & 1;
 					v12 = v9 >> 2;
-					if (!v11 || (*(_WORD *)v6 = *(_WORD *)v5, v5 += 2, v6 += 2, v12)) {
-						qmemcpy(v6, v5, 4 * v12);
-						v5 += 4 * v12;
-						v6 += 4 * v12;
+					if (!v11 || (*(_WORD *)screenGlyph = *(_WORD *)celGlyph, celGlyph += 2, screenGlyph += 2, glyphSize)) {
+						qmemcpy(screenGlyph, celGlyph, 4 * glyphSize);
+						celGlyph += 4 * glyphSize;
+						screenGlyph += 4 * glyphSize;
 					}
 				}
 			}
 		} while (v8);
 	LABEL_15:
-		v6 -= 790;
-	} while ((char *)v7 != v5);
+		screenGlyph -= 790;
+	} while ((char *)v7 != celGlyph);
 }
 
 void __cdecl DrawQText()
