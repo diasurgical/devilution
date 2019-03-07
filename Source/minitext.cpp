@@ -135,7 +135,7 @@ void __fastcall PrintQTextChr(int screen_x, int screen_y, char *cel_buf, int fra
 				v10 = v9 >> 1;
 				if (!(v9 & 1) || (*screenGlyph = *celGlyph, ++celGlyph, ++screenGlyph, v10)) {
 					v11 = v10 & 1;
-					v12 = v9 >> 2;
+					glyphSize = v9 >> 2;
 					if (!v11 || (*(_WORD *)screenGlyph = *(_WORD *)celGlyph, celGlyph += 2, screenGlyph += 2, glyphSize)) {
 						qmemcpy(screenGlyph, celGlyph, 4 * glyphSize);
 						celGlyph += 4 * glyphSize;
