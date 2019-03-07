@@ -1614,7 +1614,7 @@ void __fastcall LoadFileWithMem(char *pszName, void *buf)
 	char *v2; // ebx
 	char *v3; // edi
 	int v4;   // esi
-	void *a1; // [esp+Ch] [ebp-4h]
+	HANDLE a1; // [esp+Ch] [ebp-4h]
 
 	v2 = (char *)buf;
 	v3 = pszName;
