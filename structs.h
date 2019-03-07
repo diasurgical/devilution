@@ -1262,7 +1262,7 @@ typedef struct _SNETPROGRAMDATA {
 	int versionid;
 	int reserved1;
 	int maxplayers;
-	void *initdata;
+	_gamedata *initdata;
 	int initdatabytes;
 	void *reserved2;
 	int optcategorybits;
