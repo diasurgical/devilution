@@ -53,96 +53,65 @@ int QuestGroup4[2] = { QTYPE_VEIL, QTYPE_WARLRD };
 
 void __cdecl InitQuests()
 {
-	char v0;           // dl
-	unsigned char *v1; // esi
-	unsigned char *v2; // eax
-	unsigned char *v3; // ecx
-	int *v4;           // eax
-	int v5;            // ebp
-	unsigned int v6;   // edi
-	//int v7; // eax
-	unsigned char v8; // al
-	unsigned char v9; // al
-	char v10;         // al
-	int v13;          // eax
-	int v15;          // eax
-	int v17;          // eax
-	int v19;          // eax
-	char v20;         // [esp+8h] [ebp-4h]
-
-	v0 = gbMaxPlayers;
-	v1 = &quests[0]._qactive;
+	int initiatedQuests;
+	int i;
+	
 	if (gbMaxPlayers == 1) {
-		v2 = &quests[0]._qactive;
-		do {
-			*v2 = 0;
-			v2 += 24;
-		} while ((signed int)v2 < (signed int)&quests[MAXQUESTS]._qactive);
+		for (i = 0; i < MAXQUESTS; i++) {
+			quests[i]._qactive = 0;
+		}
 	} else {
-		v3 = &quests[0]._qactive;
-		v4 = &questlist[0]._qflags;
-		do {
-			if (!(*(_BYTE *)v4 & 1))
-				*v3 = 0;
-			v4 += 5;
-			v3 += 24;
-		} while ((signed int)v4 < (signed int)&questlist[MAXQUESTS]._qflags);
+		for (i = 0; i < MAXQUESTS; i++) {
+			if (!(questlist[i]._qflags & 1)) {
+				quests[i]._qactive = 0;
+			}
+		}
 	}
-	v5 = 0;
+
+	initiatedQuests = 0;
 	questlog = 0;
 	ALLQUESTS = 1;
 	WaterDone = 0;
-	v20 = 0;
-	v6 = 0;
-	do {
-		if ((unsigned char)v0 <= 1u || questlist[v6]._qflags & 1) {
-			*(v1 - 1) = questlist[v6]._qdtype;
-			if ((unsigned char)v0 <= 1u) {
-				v8 = questlist[v6]._qdlvl;
-				*v1 = 1;
-				*(v1 - 2) = v8;
-				v1[13] = 0;
-				*(_DWORD *)(v1 + 18) = 0;
-			} else {
-				*(v1 - 2) = questlist[v6]._qdmultlvl;
-				//_LOBYTE(v7) = delta_quest_inited(v5);
-				if (!delta_quest_inited(v5)) {
-					*v1 = 1;
-					v1[13] = 0;
-					*(_DWORD *)(v1 + 18) = 0;
+
+	for (i = 0; i < MAXQUESTS; i++) {
+		if (gbMaxPlayers <= 1u || questlist[i]._qflags & 1) {
+			quests[i]._qtype = questlist[i]._qdtype;
+			if (gbMaxPlayers > 1) {
+				quests[i]._qlevel = questlist[i]._qdmultlvl;
+				if (!delta_quest_inited(initiatedQuests)) {
+					quests[i]._qactive = 1;
+					quests[i]._qvar1 = 0;
+					quests[i]._qlog = 0;
 				}
-				v0 = gbMaxPlayers;
-				++v5;
+				++initiatedQuests;
+			} else {
+				quests[i]._qactive = 1;
+				quests[i]._qlevel = questlist[i]._qdlvl;
+				quests[i]._qvar1 = 0;
+				quests[i]._qlog = 0;
 			}
-			v9 = questlist[v6]._qslvl;
-			*(_DWORD *)(v1 + 2) = 0;
-			v1[10] = v9;
-			v1[11] = v20;
-			v1[1] = questlist[v6]._qlvlt;
-			v10 = questlist[v6]._qdmsg;
-			*(_DWORD *)(v1 + 6) = 0;
-			v1[14] = 0;
-			v1[12] = v10;
+
+			quests[i]._qtx = 0;
+			quests[i]._qslvl = questlist[i]._qslvl;
+			quests[i]._qidx = i;
+			quests[i]._qlvltype = questlist[i]._qlvlt;
+			quests[i]._qty = 0;
+			quests[i]._qvar2 = 0;
+			quests[i]._qmsg = questlist[i]._qdmsg;
 		}
-		++v20;
-		++v6;
-		v1 += 24;
-	} while (v6 < MAXQUESTS);
-	if (v0 == 1) {
+	}
+
+	if (gbMaxPlayers == 1) {
 		SetRndSeed(glSeedTbl[15]);
 		if (random(0, 2))
 			quests[QTYPE_PW]._qactive = 0;
 		else
 			quests[QTYPE_KING]._qactive = 0;
-		v13 = random(0, 3);
-		quests[QuestGroup1[v13]]._qactive = 0;
-		v15 = random(0, 3);
-		quests[QuestGroup2[v15]]._qactive = 0;
-		v17 = random(0, 3);
-		quests[QuestGroup3[v17]]._qactive = 0;
-		v19 = random(0, 2);
-		v0 = gbMaxPlayers;
-		quests[QuestGroup4[v19]]._qactive = 0;
+
+		quests[QuestGroup1[random(0, 3)]]._qactive = 0;
+		quests[QuestGroup2[random(0, 3)]]._qactive = 0;
+		quests[QuestGroup3[random(0, 3)]]._qactive = 0;
+		quests[QuestGroup4[random(0, 2)]]._qactive = 0;
 	}
 #ifdef _DEBUG
 	if (questdebug != -1)
@@ -153,7 +122,7 @@ void __cdecl InitQuests()
 	if (!quests[QTYPE_INFRA]._qactive)
 		quests[QTYPE_INFRA]._qvar2 = 2;
 	quests[QTYPE_BOL]._qvar1 = 1;
-	if (v0 != 1)
+	if (gbMaxPlayers != 1)
 		quests[QTYPE_VB]._qvar1 = 2;
 }
 // 679660: using guessed type char gbMaxPlayers;
