@@ -55,6 +55,7 @@ void __cdecl InitQuests()
 {
 	int initiatedQuests;
 	int i;
+	unsigned int z;
 	
 	if (gbMaxPlayers == 1) {
 		for (i = 0; i < MAXQUESTS; i++) {
@@ -73,31 +74,31 @@ void __cdecl InitQuests()
 	ALLQUESTS = 1;
 	WaterDone = 0;
 
-	for (i = 0; i < MAXQUESTS; i++) {
-		if (gbMaxPlayers <= 1u || questlist[i]._qflags & 1) {
-			quests[i]._qtype = questlist[i]._qdtype;
+	for (z = 0; z < MAXQUESTS; z++) {
+		if (gbMaxPlayers <= 1 || questlist[z]._qflags & 1) {
+			quests[z]._qtype = questlist[z]._qdtype;
 			if (gbMaxPlayers > 1) {
-				quests[i]._qlevel = questlist[i]._qdmultlvl;
+				quests[z]._qlevel = questlist[z]._qdmultlvl;
 				if (!delta_quest_inited(initiatedQuests)) {
-					quests[i]._qactive = 1;
-					quests[i]._qvar1 = 0;
-					quests[i]._qlog = 0;
+					quests[z]._qactive = 1;
+					quests[z]._qvar1 = 0;
+					quests[z]._qlog = 0;
 				}
 				++initiatedQuests;
 			} else {
-				quests[i]._qactive = 1;
-				quests[i]._qlevel = questlist[i]._qdlvl;
-				quests[i]._qvar1 = 0;
-				quests[i]._qlog = 0;
+				quests[z]._qactive = 1;
+				quests[z]._qlevel = questlist[z]._qdlvl;
+				quests[z]._qvar1 = 0;
+				quests[z]._qlog = 0;
 			}
 
-			quests[i]._qtx = 0;
-			quests[i]._qslvl = questlist[i]._qslvl;
-			quests[i]._qidx = i;
-			quests[i]._qlvltype = questlist[i]._qlvlt;
-			quests[i]._qty = 0;
-			quests[i]._qvar2 = 0;
-			quests[i]._qmsg = questlist[i]._qdmsg;
+			quests[z]._qtx = 0;
+			quests[z]._qslvl = questlist[z]._qslvl;
+			quests[z]._qidx = z;
+			quests[z]._qlvltype = questlist[z]._qlvlt;
+			quests[z]._qty = 0;
+			quests[z]._qvar2 = 0;
+			quests[z]._qmsg = questlist[z]._qdmsg;
 		}
 	}
 
@@ -108,10 +109,10 @@ void __cdecl InitQuests()
 		else
 			quests[QTYPE_KING]._qactive = 0;
 
-		quests[QuestGroup1[random(0, 3)]]._qactive = 0;
-		quests[QuestGroup2[random(0, 3)]]._qactive = 0;
-		quests[QuestGroup3[random(0, 3)]]._qactive = 0;
-		quests[QuestGroup4[random(0, 2)]]._qactive = 0;
+		quests[QuestGroup1[random(0, sizeof(QuestGroup1) / sizeof(int))]]._qactive = 0;
+		quests[QuestGroup2[random(0, sizeof(QuestGroup2) / sizeof(int))]]._qactive = 0;
+		quests[QuestGroup3[random(0, sizeof(QuestGroup3) / sizeof(int))]]._qactive = 0;
+		quests[QuestGroup4[random(0, sizeof(QuestGroup4) / sizeof(int))]]._qactive = 0;
 	}
 #ifdef _DEBUG
 	if (questdebug != -1)
