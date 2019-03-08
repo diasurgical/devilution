@@ -3,7 +3,12 @@
 #include <ctype.h>
 #include <fcntl.h>
 #include <math.h>
+// work around https://reviews.llvm.org/D51265
+#ifdef __MACH__
+#include "macos_stdarg.h"
+#else
 #include <stdarg.h>
+#endif
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -277,7 +282,7 @@ typedef WORD ATOM;
 #define CS_HREDRAW 0x0001
 #define CS_VREDRAW 0x0002
 
-#define IDC_ARROW 0x1 // Dummy value
+#define IDC_ARROW (LPCSTR)0x1 // Dummy value
 
 #define CSIDL_STARTMENU 0x000b
 
