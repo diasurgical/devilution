@@ -5,12 +5,12 @@
 _SNETVERSIONDATA fileinfo;
 int gbActive; // weak
 char diablo_exe_path[260];
-void *unused_mpq;
+HANDLE unused_mpq;
 char patch_rt_mpq_path[260];
 WNDPROC CurrentProc;
-void *diabdat_mpq;
+HANDLE diabdat_mpq;
 char diabdat_mpq_path[260];
-void *patch_rt_mpq;
+HANDLE patch_rt_mpq;
 int killed_mom_parent; // weak
 BOOLEAN screensaver_enabled_prev;
 
@@ -126,7 +126,7 @@ void __fastcall init_disable_screensaver(BOOLEAN disable)
 	// SystemParametersInfo() with SPI_SETSCREENSAVEACTIVE/SPI_SETPOWEROFFACTIVE/SPI_SETLOWPOWERACTIVE
 
 	v6 = disable;
-	if (!RegOpenKeyEx(HKEY_CURRENT_USER, "Control Panel\\Desktop", 0, KEY_READ | KEY_WRITE, &phkResult)) {
+	if (!RegOpenKeyEx(HKEY_CURRENT_USER, "Control Panel\\Desktop", 0, KEY_READ | KEY_WRITE, (PHKEY)&phkResult)) {
 		if (v6) {
 			cbData = 16;
 			if (!RegQueryValueEx(phkResult, "ScreenSaveActive", 0, &Type, (LPBYTE)Data, &cbData))
@@ -228,7 +228,7 @@ void __cdecl init_await_mom_parent_exit()
 
 void __cdecl init_archives()
 {
-	void *a1; // [esp+8h] [ebp-8h]
+	HANDLE a1; // [esp+8h] [ebp-8h]
 #ifdef COPYPROT
 	int v1; // [esp+Ch] [ebp-4h]
 #endif
@@ -257,7 +257,7 @@ void __cdecl init_archives()
 	patch_rt_mpq = init_test_access(patch_rt_mpq_path, "\\patch_rt.mpq", "DiabloInstall", 2000, FS_PC);
 }
 
-void *__fastcall init_test_access(char *mpq_path, char *mpq_name, char *reg_loc, int flags, int fs)
+HANDLE __fastcall init_test_access(char *mpq_path, char *mpq_name, char *reg_loc, int flags, int fs)
 {
 	char *v5;           // esi
 	char *v7;           // eax
@@ -265,7 +265,7 @@ void *__fastcall init_test_access(char *mpq_path, char *mpq_name, char *reg_loc,
 	char Buffer[260];   // [esp+110h] [ebp-210h]
 	char v15[260];      // [esp+214h] [ebp-10Ch]
 	char *mpq_namea;    // [esp+318h] [ebp-8h]
-	void *archive;      // [esp+31Ch] [ebp-4h]
+	HANDLE archive;      // [esp+31Ch] [ebp-4h]
 
 	mpq_namea = mpq_name;
 	v5 = mpq_path;
@@ -331,7 +331,7 @@ char *__fastcall init_strip_trailing_slash(char *path)
 	return result;
 }
 
-int __fastcall init_read_test_file(char *mpq_path, char *mpq_name, int flags, void **archive)
+int __fastcall init_read_test_file(char *mpq_path, char *mpq_name, int flags, HANDLE *archive)
 {
 	char *v4;         // edi
 	DWORD v5;         // eax
