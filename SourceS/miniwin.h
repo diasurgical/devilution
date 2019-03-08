@@ -4,7 +4,7 @@
 #include <fcntl.h>
 #include <math.h>
 // work around https://reviews.llvm.org/D51265
-#ifdef __MACH__
+#ifdef __APPLE__
 #include "macos_stdarg.h"
 #else
 #include <stdarg.h>
