@@ -58,10 +58,7 @@ char *__cdecl _itoa(int _Value, char *_Dest, int _Radix)
 
 DWORD WINAPI GetTickCount(VOID)
 {
-	struct timespec now;
-	if (clock_gettime(CLOCK_MONOTONIC, &now))
-		return 0;
-	return now.tv_sec * 1000.0 + now.tv_nsec / 1000000.0;
+	return SDL_GetTicks();
 }
 
 VOID WINAPI Sleep(DWORD dwMilliseconds)
