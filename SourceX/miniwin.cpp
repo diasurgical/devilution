@@ -1,5 +1,7 @@
 #include "pch.h"
+#ifndef _WIN32
 #include <sys/statvfs.h>
+#endif
 
 DWORD last_error;
 
@@ -96,14 +98,25 @@ UINT WINAPI GetWindowsDirectoryA(LPSTR lpBuffer, UINT uSize)
 WINBOOL WINAPI GetDiskFreeSpaceA(LPCSTR lpRootPathName, LPDWORD lpSectorsPerCluster, LPDWORD lpBytesPerSector,
     LPDWORD lpNumberOfFreeClusters, LPDWORD lpTotalNumberOfClusters)
 {
+    #ifndef _WIN32
 	struct statvfs fiData;
 	int success = statvfs("/", &fiData);
 	*lpBytesPerSector = fiData.f_frsize;
 	*lpSectorsPerCluster = 1;
 	*lpNumberOfFreeClusters = fiData.f_bavail;
-	*lpTotalNumberOfClusters = fiData.f_blocks;
-
-	return success >= 0;
+    *lpTotalNumberOfClusters = fiData.f_blocks;
+    
+    return success >= 0;
+	#else
+    // Todo give windows the real GetDiskFreeSpace
+    DUMMY();
+    *lpBytesPerSector = 1;
+    *lpSectorsPerCluster = 1;
+    *lpNumberOfFreeClusters = 10 << 20;
+    *lpTotalNumberOfClusters = 10 << 20;
+    
+    return true;
+	#endif
 }
 
 /**
