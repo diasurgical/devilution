@@ -387,7 +387,7 @@ void __fastcall OffsetSTextY(int y, int yo)
 	stext[y]._syoff = yo;
 }
 
-void __fastcall AddSText(int x, int y, int j, char *str, int clr, int sel)
+void __fastcall AddSText(int x, int y, int j, char *str, char clr, int sel)
 {
 	stext[y]._sx = x;
 	stext[y]._syoff = 0;
@@ -1532,29 +1532,24 @@ void __cdecl S_StartHealer()
 
 void __fastcall S_ScrollHBuy(int idx)
 {
-	int v1;   // esi
-	int v2;   // edi
-	int *v3;  // esi
-	int iclr; // [esp+8h] [ebp-4h]
+	int i;
+	char iclr;
 
-	v1 = idx;
-	v2 = 5;
 	ClearSText(5, 21);
 	stextup = 5;
-	v3 = &healitem[v1]._iStatFlag;
-	do {
-		if (*(v3 - 87) != -1) {
-			_LOBYTE(iclr) = COL_WHITE;
-			if (!*v3)
-				_LOBYTE(iclr) = COL_RED;
-			AddSText(20, v2, 0, (char *)v3 - 295, iclr, 1);
-			AddSTextVal(v2, *(v3 - 39));
-			PrintStoreItem((ItemStruct *)(v3 - 89), v2 + 1, iclr);
-			stextdown = v2;
-			v3 += 92;
+	for (i = 5; i < 20; i += 4) {
+		if (healitem[idx]._itype != -1) {
+			iclr = COL_WHITE;
+			if (!healitem[idx]._iStatFlag)
+				iclr = COL_RED;
+			AddSText(20, i, 0, healitem[idx]._iName, iclr, 1);
+			AddSTextVal(i, healitem[idx]._iIvalue);
+			PrintStoreItem(&healitem[idx], i + 1, iclr);
+			stextdown = i;
+			idx++;
 		}
-		v2 += 4;
-	} while (v2 < 20);
+	}
+
 	if (!stext[stextsel]._ssel && stextsel != 22)
 		stextsel = stextdown;
 }
