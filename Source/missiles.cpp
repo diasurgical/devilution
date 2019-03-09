@@ -3518,45 +3518,27 @@ void __fastcall AddCbolt(int mi, int sx, int sy, int dx, int dy, int midir, int 
 
 void __fastcall AddHbolt(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int id, int dam)
 {
-	int v9;         // esi
-	int v10;        // ecx
-	int v11;        // edi
-	int v12;        // eax
-	int v13;        // eax
-	int v14;        // esi
-	int v15;        // eax
-	signed int v17; // [esp-4h] [ebp-14h]
-	int i;          // [esp+Ch] [ebp-4h]
+	int sp;
 
-	v9 = dy;
-	i = mi;
-	v10 = dx;
-	v11 = sx;
 	if (sx == dx && sy == dy) {
-		v10 = XDirAdd[midir] + dx;
-		v9 = YDirAdd[midir] + dy;
 		dx += XDirAdd[midir];
+		dy += YDirAdd[midir];
 	}
-	if (id == -1) {
-		v17 = 16;
-		goto LABEL_8;
+	if (id != -1) {
+		sp = 2 * missile[mi]._mispllvl + 16;
+		if (sp >= 63) {
+			sp = 63;
+		}
+	} else {
+		sp = 16;
 	}
-	v12 = 2 * missile[i]._mispllvl + 16;
-	if (v12 >= 63) {
-		v17 = 63;
-	LABEL_8:
-		v12 = v17;
-	}
-	GetMissileVel(i, sx, sy, v10, v9, v12);
-	v13 = GetDirection16(v11, sy, dx, v9);
-	SetMissDir(i, v13);
-	v14 = i;
-	missile[v14]._mirange = 256;
-	missile[v14]._miVar1 = v11;
-	missile[v14]._miVar2 = sy;
-	v15 = AddLight(v11, sy, 8);
-	missile[v14]._mlid = v15;
-	missile[v14]._midam = random(69, 10) + plr[id]._pLevel + 9;
+	GetMissileVel(mi, sx, sy, dx, dy, sp);
+	SetMissDir(mi, GetDirection16(sx, sy, dx, dy));
+	missile[mi]._mirange = 256;
+	missile[mi]._miVar1 = sx;
+	missile[mi]._miVar2 = sy;
+	missile[mi]._mlid = AddLight(sx, sy, 8);
+	missile[mi]._midam = random(69, 10) + plr[id]._pLevel + 9;
 	UseMana(id, 31);
 }
 
