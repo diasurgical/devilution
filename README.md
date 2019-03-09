@@ -36,9 +36,9 @@ The default build type is `Debug`. This can be changed with `-DCMAKE_BUILD_TYPE=
 
 *To run the game:*
 
-Copy the compiled devilution executable to your Diablo directory.
-Copy the "diablodat.mpq" from your Diablo CD to the Diablo directory and make sure it is LOWERCASE.
-Run `./devilution`
+ - Copy the compiled devilution executable to your Diablo directory.
+ - Copy the "diablodat.mpq" from your Diablo CD to the Diablo directory and make sure it is LOWERCASE.
+ - Run `./devilution`
 
 Please keep in mind that this is still being worked on and is missing parts of UI and SoundEffects are not properly playing now.
 
@@ -75,8 +75,8 @@ make -j$(sysctl -n hw.physicalcpu)
 Once compiled, the devilutionx binary will serve as a replacement for `Diablo.exe`. The following files from the original game patched to 1.09(b) need to be present: `diabdat.mpq`. If `COPYPROT` was defined when compiling, the Diablo CD will also be required.
 
 # Multiplayer
-TCP/IP only requires the host to expose port 6112
-UPD/IP requires that all players expose port 6112
+ - TCP/IP only requires the host to expose port 6112
+ - UPD/IP requires that all players expose port 6112
 
 All games are encrypted and password protected.
 
