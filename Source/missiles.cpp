@@ -3007,7 +3007,7 @@ void __fastcall AddEtherealize(int mi, int sx, int sy, int dx, int dy, int midir
 	int i;
 
 	missile[mi]._mirange = 16 * plr[id]._pLevel >> 1;
-	for (i = missile[mi]._mispllvl; i > 0; i--) {
+	for (i = 0; i < missile[mi]._mispllvl; i++) {
 		missile[mi]._mirange += missile[mi]._mirange >> 3;
 	}
 	missile[mi]._mirange += missile[mi]._mirange * plr[id]._pISplDur >> 7;
