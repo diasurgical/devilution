@@ -5,6 +5,7 @@ os:
   
 addons:
   homebrew:
+    update: true
     packages:
     - cmake
     - sdl2_mixer
