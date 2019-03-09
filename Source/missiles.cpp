@@ -3083,7 +3083,7 @@ void __fastcall AddHeal(int mi, int sx, int sy, int dx, int dy, int midir, int m
 		do {
 			v12 += (random(57, 4) + 1) << 6;
 			++v10;
-		} while (v10 < plr[id]._pLevel);
+		} while (v10 < plr[v9]._pLevel);
 	}
 	v20 = 0;
 	for (i = v19; v20 < missile[i]._mispllvl; ++v20) {
