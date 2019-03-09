@@ -2984,7 +2984,7 @@ void __fastcall AddGolem(int mi, int sx, int sy, int dx, int dy, int midir, int 
 	int mx;
 
 	missile[mi]._miDelFlag = FALSE;
-	for (i = 0; i < nummissiles; ++i) {
+	for (i = 0; i < nummissiles; i++) {
 		mx = missileactive[i];
 		if (missile[mx]._mitype == MIS_GOLEM) {
 			if (mx != mi && missile[mx]._misource == id) {
@@ -3007,10 +3007,10 @@ void __fastcall AddEtherealize(int mi, int sx, int sy, int dx, int dy, int midir
 	int i;
 
 	missile[mi]._mirange = 16 * plr[id]._pLevel >> 1;
-	for (i = missile[mi]._mispllvl; i > 0; --i) {
+	for (i = missile[mi]._mispllvl; i > 0; i--) {
 		missile[mi]._mirange += missile[mi]._mirange >> 3;
 	}
-	missile[mi]._mirange += (missile[mi]._mirange * plr[id]._pISplDur >> 7);
+	missile[mi]._mirange += missile[mi]._mirange * plr[id]._pISplDur >> 7;
 	missile[mi]._miVar1 = plr[id]._pHitPoints;
 	missile[mi]._miVar2 = plr[id]._pHPBase;
 	if (!(_BYTE)mienemy)
@@ -3083,7 +3083,7 @@ void __fastcall AddHeal(int mi, int sx, int sy, int dx, int dy, int midir, int m
 		do {
 			v12 += (random(57, 4) + 1) << 6;
 			++v10;
-		} while (v10 < plr[v9]._pLevel);
+		} while (v10 < plr[id]._pLevel);
 	}
 	v20 = 0;
 	for (i = v19; v20 < missile[i]._mispllvl; ++v20) {
