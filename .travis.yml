@@ -6,6 +6,7 @@ os:
 addons:
   homebrew:
     packages:
+    - cmake
     - sdl2_mixer
     - sdl2_ttf
     - libsodium
