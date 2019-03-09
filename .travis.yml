@@ -7,7 +7,6 @@ addons:
   homebrew:
     update: true
     packages:
-    - cmake
     - sdl2_mixer
     - sdl2_ttf
     - libsodium
@@ -17,6 +16,3 @@ script:
      - cd build
      - cmake ..
      - make -j$(sysctl -n hw.physicalcpu)
-  
-after_success:
-    - ./devilutionx
