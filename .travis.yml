@@ -14,7 +14,7 @@ install:
   - brew upgrade cmake
 
 script:
-     - mkdir build
-     - cd build
-     - cmake ..
-     - make -j$(sysctl -n hw.physicalcpu)
+  - mkdir build
+  - cd build
+  - cmake ..
+  - make -j$(sysctl -n hw.physicalcpu)
