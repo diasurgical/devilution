@@ -2980,50 +2980,28 @@ void __fastcall AddStone(int mi, int sx, int sy, int dx, int dy, int midir, int 
 
 void __fastcall AddGolem(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9;      // eax
-	int v10;     // ebx
-	int v11;     // edi
-	int v12;     // ecx
-	BOOLEAN v13; // zf
-	BOOLEAN v14; // sf
-	int v15;     // esi
-	int v16;     // esi
-	int v17;     // [esp+Ch] [ebp-8h]
-	int v18;     // [esp+10h] [ebp-4h]
+	int i;
+	int mx;
 
-	v18 = mi;
-	v9 = mi;
-	v10 = id;
-	v11 = nummissiles;
-	v12 = 0;
-	v13 = nummissiles == 0;
-	v14 = nummissiles < 0;
-	missile[v9]._miDelFlag = FALSE;
-	if (v14 || v13) {
-	LABEL_6:
-		missile[v9]._miVar1 = sx;
-		missile[v9]._miVar2 = sy;
-		missile[v9]._miVar4 = dx;
-		missile[v9]._miVar5 = dy;
-		if ((monster[v10]._mx != 1 || monster[v10]._my) && v10 == myplr)
-			M_StartKill(v10, v10);
-		UseMana(id, 21);
-	} else {
-		while (1) {
-			v15 = missileactive[v12];
-			v17 = v15;
-			v16 = v15;
-			if (missile[v16]._mitype == MIS_GOLEM) {
-				v10 = id;
-				if (v17 != v18 && missile[v16]._misource == id)
-					break;
+	missile[mi]._miDelFlag = FALSE;
+	for (i = 0; i < nummissiles; ++i) {
+		mx = missileactive[i];
+		if (missile[mx]._mitype == MIS_GOLEM) {
+			if (mx != mi && missile[mx]._misource == id) {
+				missile[mi]._miDelFlag = TRUE;
+				return;
 			}
-			if (++v12 >= v11)
-				goto LABEL_6;
 		}
-		missile[v9]._miDelFlag = TRUE;
 	}
+	missile[mi]._miVar1 = sx;
+	missile[mi]._miVar2 = sy;
+	missile[mi]._miVar4 = dx;
+	missile[mi]._miVar5 = dy;
+	if ((monster[id]._mx != 1 || monster[id]._my) && id == myplr)
+		M_StartKill(id, id);
+	UseMana(id, 21);
 }
+
 
 void __fastcall AddEtherealize(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
