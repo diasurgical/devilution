@@ -5,12 +5,13 @@ os:
   
 addons:
   homebrew:
-    update: true
     packages:
-    - cmake
     - sdl2_mixer
     - sdl2_ttf
     - libsodium
+    
+install:
+  - brew upgrade cmake
 
 script:
      - mkdir build
