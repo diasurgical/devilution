@@ -9,18 +9,16 @@ notifications:
     on_failure: change # default: always
 
 addons:
-  # Packages for Linux
   apt:
+    packages:
+      - mingw-w64
+  homebrew:
     packages:
       - mingw-w64
 
 env:
   - MAKE_BUILD=make
   - MAKE_BUILD=debug
-
-before_install:
-  # Packages for OSX
-  - if [ $TRAVIS_OS_NAME = osx ]; then brew install mingw-w64; fi
 
 before_script:
   - touch storm.dll
