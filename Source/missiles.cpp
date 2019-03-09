@@ -3376,7 +3376,7 @@ void __fastcall AddDisarm(int mi, int sx, int sy, int dx, int dy, int midir, int
 
 void __fastcall AddApoca(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	signed int i;
+	int i;
 
 	missile[mi]._miVar1 = 8;
 	missile[mi]._miVar2 = sy - 8;
@@ -3392,12 +3392,8 @@ void __fastcall AddApoca(int mi, int sx, int sy, int dx, int dy, int midir, int 
 		missile[mi]._miVar4 = 1;
 	if (sx + 8 >= MAXDUNX)
 		missile[mi]._miVar5 = MAXDUNX - 1;
-	i = 0;
-	if (plr[id]._pLevel > 0) {
-		do {
-			missile[mi]._midam += random(67, 6) + 1;
-			++i;
-		} while (i < plr[id]._pLevel);
+	for (i = 0; i < plr[id]._pLevel; i++) {
+		missile[mi]._midam += random(67, 6) + 1;
 	}
 	missile[mi]._miDelFlag = FALSE;
 	missile[mi]._mirange = 255;
