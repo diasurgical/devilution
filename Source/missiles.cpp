@@ -2180,35 +2180,25 @@ void __fastcall AddLightctrl(int mi, int sx, int sy, int dx, int dy, int midir, 
 
 void __fastcall AddLightning(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9; // esi
-
-	v9 = mi;
-	missile[v9]._misx = dx;
-	missile[v9]._misy = dy;
+	missile[mi]._misx = dx;
+	missile[mi]._misy = dy;
 	if (midir >= 0) {
-		missile[v9]._mixoff = missile[midir]._mixoff;
-		missile[v9]._miyoff = missile[midir]._miyoff;
-		mi = missile[midir]._mitxoff;
-		missile[v9]._mitxoff = mi;
-		missile[v9]._mityoff = missile[midir]._mityoff;
+		missile[mi]._mixoff = missile[midir]._mixoff;
+		missile[mi]._miyoff = missile[midir]._miyoff;
+		missile[mi]._mitxoff = missile[midir]._mitxoff;
+		missile[mi]._mityoff = missile[midir]._mityoff;
 	}
-	missile[v9]._miAnimFrame = random(52, 8) + 1;
-	if (midir < 0)
-		goto LABEL_9;
-	if ((_BYTE)mienemy == 1) {
-		if (id != -1) {
-			missile[v9]._mirange = 10;
-			goto LABEL_10;
-		}
-	LABEL_9:
-		missile[v9]._mirange = 8;
-		goto LABEL_10;
+	missile[mi]._miAnimFrame = random(52, 8) + 1;
+
+	if (midir < 0 || (_BYTE)mienemy == 1 || id == -1) {
+		if (midir < 0 || id == -1)
+			missile[mi]._mirange = 8;
+		else
+			missile[mi]._mirange = 10;
+	} else {
+		  missile[mi]._mirange = (missile[mi]._mispllvl >> 1) + 6;
 	}
-	if (id == -1)
-		goto LABEL_9;
-	missile[v9]._mirange = (missile[v9]._mispllvl >> 1) + 6;
-LABEL_10:
-	missile[v9]._mlid = AddLight(missile[v9]._mix, missile[v9]._miy, 4);
+	missile[mi]._mlid = AddLight(missile[mi]._mix, missile[mi]._miy, 4);
 }
 
 void __fastcall AddMisexp(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
