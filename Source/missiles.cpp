@@ -2061,27 +2061,16 @@ void __fastcall AddTeleport(int mi, int sx, int sy, int dx, int dy, int midir, i
 
 void __fastcall AddLightball(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9;  // edi
-	int v10; // esi
-	int v11; // esi
-	int v13; // eax
-	int v14; // eax
-
-	v9 = sx;
-	v10 = mi;
 	GetMissileVel(mi, sx, sy, dx, dy, 16);
-	v11 = v10;
-	missile[v11]._midam = dam;
-	v13 = random(63, 8);
-	missile[v11]._mirange = 255;
-	missile[v11]._miAnimFrame = v13 + 1;
-	if (id >= 0) {
-		v14 = plr[id].WorldY;
-		missile[v11]._miVar1 = plr[id].WorldX;
-		missile[v11]._miVar2 = v14;
+	missile[mi]._midam = dam;
+	missile[mi]._miAnimFrame = random(63, 8) + 1;
+	missile[mi]._mirange = 255;
+	if (id < 0) {
+		missile[mi]._miVar1 = sx;
+		missile[mi]._miVar2 = sy;
 	} else {
-		missile[v11]._miVar1 = v9;
-		missile[v11]._miVar2 = sy;
+		missile[mi]._miVar1 = plr[id].WorldX;
+		missile[mi]._miVar2 = plr[id].WorldY;
 	}
 }
 
@@ -2180,35 +2169,25 @@ void __fastcall AddLightctrl(int mi, int sx, int sy, int dx, int dy, int midir, 
 
 void __fastcall AddLightning(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9; // esi
-
-	v9 = mi;
-	missile[v9]._misx = dx;
-	missile[v9]._misy = dy;
+	missile[mi]._misx = dx;
+	missile[mi]._misy = dy;
 	if (midir >= 0) {
-		missile[v9]._mixoff = missile[midir]._mixoff;
-		missile[v9]._miyoff = missile[midir]._miyoff;
-		mi = missile[midir]._mitxoff;
-		missile[v9]._mitxoff = mi;
-		missile[v9]._mityoff = missile[midir]._mityoff;
+		missile[mi]._mixoff = missile[midir]._mixoff;
+		missile[mi]._miyoff = missile[midir]._miyoff;
+		missile[mi]._mitxoff = missile[midir]._mitxoff;
+		missile[mi]._mityoff = missile[midir]._mityoff;
 	}
-	missile[v9]._miAnimFrame = random(52, 8) + 1;
-	if (midir < 0)
-		goto LABEL_9;
-	if ((_BYTE)mienemy == 1) {
-		if (id != -1) {
-			missile[v9]._mirange = 10;
-			goto LABEL_10;
-		}
-	LABEL_9:
-		missile[v9]._mirange = 8;
-		goto LABEL_10;
+	missile[mi]._miAnimFrame = random(52, 8) + 1;
+
+	if (midir < 0 || (_BYTE)mienemy == 1 || id == -1) {
+		if (midir < 0 || id == -1)
+			missile[mi]._mirange = 8;
+		else
+			missile[mi]._mirange = 10;
+	} else {
+		  missile[mi]._mirange = (missile[mi]._mispllvl >> 1) + 6;
 	}
-	if (id == -1)
-		goto LABEL_9;
-	missile[v9]._mirange = (missile[v9]._mispllvl >> 1) + 6;
-LABEL_10:
-	missile[v9]._mlid = AddLight(missile[v9]._mix, missile[v9]._miy, 4);
+	missile[mi]._mlid = AddLight(missile[mi]._mix, missile[mi]._miy, 4);
 }
 
 void __fastcall AddMisexp(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
@@ -3109,47 +3088,26 @@ void __fastcall AddHealOther(int mi, int sx, int sy, int dx, int dy, int midir, 
 
 void __fastcall AddElement(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9;  // ebx
-	int v10; // edi
-	int v11; // eax
-	int v13; // eax
-	int v14; // esi
-	int v15; // ecx
-	int v16; // eax
-	int x;   // [esp+Ch] [ebp-8h]
-	int i;   // [esp+10h] [ebp-4h]
+	int i;
 
-	v9 = dx;
-	v10 = dy;
-	x = sx;
-	i = mi;
 	if (sx == dx && sy == dy) {
-		v9 = XDirAdd[midir] + dx;
-		v10 = YDirAdd[midir] + dy;
+		dx += XDirAdd[midir];
+		dy += YDirAdd[midir];
 	}
-	v11 = random(60, 10);
-	v13 = 2 * (plr[id]._pLevel + random(60, 10) + v11) + 4;
-	v14 = i;
-	v15 = missile[i]._mispllvl;
-	missile[i]._midam = v13;
-	if (v15 > 0) {
-		do {
-			v13 += v13 >> 3;
-			--v15;
-		} while (v15);
-		missile[v14]._midam = v13;
+	missile[mi]._midam = 2 * (plr[id]._pLevel + random(60, 10) + random(60, 10)) + 4;
+	for (i = 0; i < missile[mi]._mispllvl; i++) {
+		missile[mi]._midam += missile[mi]._midam >> 3;
 	}
-	missile[v14]._midam >>= 1;
-	GetMissileVel(i, x, sy, v9, v10, 16);
-	v16 = GetDirection8(x, sy, v9, v10);
-	SetMissDir(i, v16);
-	missile[v14]._miVar3 = 0;
-	missile[v14]._mirange = 256;
-	missile[v14]._miVar1 = x;
-	missile[v14]._miVar2 = sy;
-	missile[v14]._miVar4 = v9;
-	missile[v14]._miVar5 = v10;
-	missile[v14]._mlid = AddLight(x, sy, 8);
+	missile[mi]._midam >>= 1;
+	GetMissileVel(mi, sx, sy, dx, dy, 16);
+	SetMissDir(mi, GetDirection8(sx, sy, dx, dy));
+	missile[mi]._mirange = 256;
+	missile[mi]._miVar1 = sx;
+	missile[mi]._miVar2 = sy;
+	missile[mi]._miVar3 = 0;
+	missile[mi]._miVar4 = dx;
+	missile[mi]._miVar5 = dy;
+	missile[mi]._mlid = AddLight(sx, sy, 8);
 	UseMana(id, 29);
 }
 
@@ -3243,90 +3201,45 @@ void __fastcall AddFirewallC(int mi, int sx, int sy, int dx, int dy, int midir, 
 
 void __fastcall AddInfra(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9;  // ecx
-	int v10; // eax
-	int v11; // edx
+	int i;
 
-	v9 = mi;
-	v10 = 1584;
-	v11 = missile[v9]._mispllvl;
-	missile[v9]._mirange = 1584;
-	if (v11 > 0) {
-		do {
-			v10 += v10 >> 3;
-			--v11;
-		} while (v11);
-		missile[v9]._mirange = v10;
+	missile[mi]._mirange = 1584;
+	for (i = 0; i < missile[mi]._mispllvl; i++) {
+		missile[mi]._mirange += missile[mi]._mirange >> 3;
 	}
-	missile[v9]._mirange += missile[v9]._mirange * plr[id]._pISplDur >> 7;
+	missile[mi]._mirange += missile[mi]._mirange * plr[id]._pISplDur >> 7;
 	if (!(_BYTE)mienemy)
 		UseMana(id, 9);
 }
 
 void __fastcall AddWave(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9; // ecx
-
-	v9 = mi;
-	missile[v9]._miVar3 = 0;
-	missile[v9]._miVar4 = 0;
-	missile[v9]._miVar1 = dx;
-	missile[v9]._miVar2 = dy;
-	missile[v9]._mirange = 1;
-	missile[v9]._miAnimFrame = 4;
+	missile[mi]._miVar1 = dx;
+	missile[mi]._miVar2 = dy;
+	missile[mi]._miVar3 = 0;
+	missile[mi]._miVar4 = 0;
+	missile[mi]._mirange = 1;
+	missile[mi]._miAnimFrame = 4;
 	UseMana(id, 15);
 }
 
 void __fastcall AddNova(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9;  // esi
-	int v10; // eax
-	int v12; // ebx
-	int v13; // eax
-	int v15; // ebx
-	int v16; // eax
-	int v18; // ebx
-	int v19; // eax
-	int v21; // ebx
-	int v22; // eax
-	int v23; // ecx
-	int v24; // eax
-	int v25; // eax
-	int v27; // edi
-	int v28; // eax
+	int k;
 
-	v9 = mi;
-	missile[v9]._miVar1 = dx;
-	missile[v9]._miVar2 = dy;
-	if (id == -1) {
-		v25 = random(66, 3);
-		v27 = v25;
-		v28 = random(66, 3);
-		missile[v9]._midam = ((unsigned int)currlevel >> 1) + random(66, 3) + v28 + v27;
-	} else {
-		v10 = random(66, 6);
-		v12 = v10;
-		v13 = random(66, 6);
-		v15 = v13 + v12;
-		v16 = random(66, 6);
-		v18 = v16 + v15;
-		v19 = random(66, 6);
-		v21 = v19 + v18;
-		v22 = random(66, 6);
-		v23 = missile[v9]._mispllvl;
-		v24 = (v22 + v21 + plr[id]._pLevel + 5) >> 1;
-		missile[v9]._midam = v24;
-		if (v23 > 0) {
-			do {
-				v24 += v24 >> 3;
-				--v23;
-			} while (v23);
-			missile[v9]._midam = v24;
+	missile[mi]._miVar1 = dx;
+	missile[mi]._miVar2 = dy;
+	if (id != -1) {
+		missile[mi]._midam = (random(66, 6) + random(66, 6) + random(66, 6) + random(66, 6) + random(66, 6) + plr[id]._pLevel + 5) >> 1;
+		for (k = 0; k < missile[mi]._mispllvl; k++) {
+			missile[mi]._midam += missile[mi]._midam >> 3;
 		}
 		if (!(_BYTE)mienemy)
 			UseMana(id, 18);
+	} else {
+		missile[mi]._midam = ((DWORD)currlevel >> 1) + random(66, 3) + random(66, 3) + random(66, 3);
 	}
-	missile[v9]._mirange = 1;
+	missile[mi]._mirange = 1;
 }
 
 void __fastcall AddRepair(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
@@ -3393,60 +3306,40 @@ void __fastcall AddApoca(int mi, int sx, int sy, int dx, int dy, int midir, int 
 
 void __fastcall AddFlame(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9;  // esi
-	int v11; // eax
-	int v13; // edi
-	int v14; // eax
+	int i;
 
-	v9 = mi;
 	missile[mi]._miVar2 = 0;
 	if (dam > 0)
-		missile[v9]._miVar2 = 5 * dam;
-	missile[v9]._misx = dx;
-	missile[v9]._misy = dy;
-	missile[v9]._mixoff = missile[midir]._mixoff;
-	missile[v9]._miyoff = missile[midir]._miyoff;
-	missile[v9]._mitxoff = missile[midir]._mitxoff;
-	missile[v9]._mityoff = missile[midir]._mityoff;
-	missile[v9]._mirange = missile[v9]._miVar2 + 20;
-	missile[v9]._mlid = AddLight(sx, sy, 1);
-	if ((_BYTE)mienemy) {
-		missile[v9]._midam = (unsigned char)monster[id].mMinDamage
-		    + random(
-		          77,
-		          (unsigned char)monster[id].mMaxDamage - (unsigned char)monster[id].mMinDamage + 1);
+		missile[mi]._miVar2 = 5 * dam;
+	missile[mi]._misx = dx;
+	missile[mi]._misy = dy;
+	missile[mi]._mixoff = missile[midir]._mixoff;
+	missile[mi]._miyoff = missile[midir]._miyoff;
+	missile[mi]._mitxoff = missile[midir]._mitxoff;
+	missile[mi]._mityoff = missile[midir]._mityoff;
+	missile[mi]._mirange = missile[mi]._miVar2 + 20;
+	missile[mi]._mlid = AddLight(sx, sy, 1);
+	if (!(_BYTE)mienemy) {
+		i = random(79, plr[id]._pLevel) + random(79, 2);
+		missile[mi]._midam = 8 * i + 16 + ((8 * i + 16) >> 1);
 	} else {
-		v11 = random(79, plr[id]._pLevel);
-		v13 = v11;
-		v14 = random(79, 2);
-		missile[v9]._midam = 8 * (v14 + v13) + 16 + ((8 * (v14 + v13) + 16) >> 1);
+		missile[mi]._midam = monster[id].mMinDamage + random(77, monster[id].mMaxDamage - monster[id].mMinDamage + 1);
 	}
 }
 
 void __fastcall AddFlamec(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9;  // esi
-	int v10; // edx
-	int v11; // ebx
-	int v12; // ecx
-	int v13; // eax
-
-	v9 = sx;
-	v10 = dx;
-	v11 = mi;
-	v12 = dy;
-	if (v9 == dx && sy == dy) {
-		v10 = XDirAdd[midir] + dx;
-		v12 = YDirAdd[midir] + dy;
+	if (sx == dx && sy == dy) {
+		dx += XDirAdd[midir];
+		dy += YDirAdd[midir];
 	}
-	GetMissileVel(v11, v9, sy, v10, v12, 32);
+	GetMissileVel(mi, sx, sy, dx, dy, 32);
 	if (!(_BYTE)mienemy)
 		UseMana(id, 20);
-	v13 = v11;
-	missile[v13]._miVar3 = 0;
-	missile[v13]._miVar2 = sy;
-	missile[v13]._miVar1 = v9;
-	missile[v13]._mirange = 256;
+	missile[mi]._miVar3 = 0;
+	missile[mi]._miVar2 = sy;
+	missile[mi]._miVar1 = sx;
+	missile[mi]._mirange = 256;
 }
 
 void __fastcall AddCbolt(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int id, int dam)
@@ -3515,29 +3408,21 @@ void __fastcall AddHbolt(int mi, int sx, int sy, int dx, int dy, int midir, int 
 
 void __fastcall AddResurrect(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9; // esi
-
-	v9 = mi;
 	UseMana(id, 32);
 	if (id == myplr)
 		SetCursor_(CURSOR_RESURRECT);
-	missile[v9]._miDelFlag = TRUE;
+	missile[mi]._miDelFlag = TRUE;
 }
 
 void __fastcall AddResurrectBeam(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9;  // ecx
-	int v10; // eax
-
-	v9 = mi;
-	missile[v9]._mixvel = 0;
-	missile[v9]._miyvel = 0;
-	missile[v9]._mix = dx;
-	missile[v9]._misx = dx;
-	v10 = misfiledata[36].mAnimLen[0];
-	missile[v9]._miy = dy;
-	missile[v9]._misy = dy;
-	missile[v9]._mirange = v10;
+	missile[mi]._mix = dx;
+	missile[mi]._miy = dy;
+	missile[mi]._misx = dx;
+	missile[mi]._misy = dy;
+	missile[mi]._mixvel = 0;
+	missile[mi]._miyvel = 0;
+	missile[mi]._mirange = misfiledata[36].mAnimLen[0];
 }
 
 void __fastcall AddTelekinesis(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
