@@ -3402,33 +3402,24 @@ void __fastcall AddApoca(int mi, int sx, int sy, int dx, int dy, int midir, int 
 
 void __fastcall AddFlame(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9;  // esi
-	int v11; // eax
-	int v13; // edi
-	int v14; // eax
+	int i;
 
-	v9 = mi;
 	missile[mi]._miVar2 = 0;
 	if (dam > 0)
-		missile[v9]._miVar2 = 5 * dam;
-	missile[v9]._misx = dx;
-	missile[v9]._misy = dy;
-	missile[v9]._mixoff = missile[midir]._mixoff;
-	missile[v9]._miyoff = missile[midir]._miyoff;
-	missile[v9]._mitxoff = missile[midir]._mitxoff;
-	missile[v9]._mityoff = missile[midir]._mityoff;
-	missile[v9]._mirange = missile[v9]._miVar2 + 20;
-	missile[v9]._mlid = AddLight(sx, sy, 1);
-	if ((_BYTE)mienemy) {
-		missile[v9]._midam = (unsigned char)monster[id].mMinDamage
-		    + random(
-		          77,
-		          (unsigned char)monster[id].mMaxDamage - (unsigned char)monster[id].mMinDamage + 1);
+		missile[mi]._miVar2 = 5 * dam;
+	missile[mi]._misx = dx;
+	missile[mi]._misy = dy;
+	missile[mi]._mixoff = missile[midir]._mixoff;
+	missile[mi]._miyoff = missile[midir]._miyoff;
+	missile[mi]._mitxoff = missile[midir]._mitxoff;
+	missile[mi]._mityoff = missile[midir]._mityoff;
+	missile[mi]._mirange = missile[mi]._miVar2 + 20;
+	missile[mi]._mlid = AddLight(sx, sy, 1);
+	if (!(_BYTE)mienemy) {
+		i = random(79, plr[id]._pLevel) + random(79, 2);
+		missile[mi]._midam = 8 * i + 16 + ((8 * i + 16) >> 1);
 	} else {
-		v11 = random(79, plr[id]._pLevel);
-		v13 = v11;
-		v14 = random(79, 2);
-		missile[v9]._midam = 8 * (v14 + v13) + 16 + ((8 * (v14 + v13) + 16) >> 1);
+		missile[mi]._midam = (unsigned char)monster[id].mMinDamage + random(77, (unsigned char)monster[id].mMaxDamage - (unsigned char)monster[id].mMinDamage + 1);
 	}
 }
 
