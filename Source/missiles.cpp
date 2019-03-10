@@ -3434,28 +3434,17 @@ void __fastcall AddFlame(int mi, int sx, int sy, int dx, int dy, int midir, int 
 
 void __fastcall AddFlamec(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9;  // esi
-	int v10; // edx
-	int v11; // ebx
-	int v12; // ecx
-	int v13; // eax
-
-	v9 = sx;
-	v10 = dx;
-	v11 = mi;
-	v12 = dy;
-	if (v9 == dx && sy == dy) {
-		v10 = XDirAdd[midir] + dx;
-		v12 = YDirAdd[midir] + dy;
+	if (sx == dx && sy == dy) {
+		dx += XDirAdd[midir];
+		dy += YDirAdd[midir];
 	}
-	GetMissileVel(v11, v9, sy, v10, v12, 32);
+	GetMissileVel(mi, sx, sy, dx, dy, 32);
 	if (!(_BYTE)mienemy)
 		UseMana(id, 20);
-	v13 = v11;
-	missile[v13]._miVar3 = 0;
-	missile[v13]._miVar2 = sy;
-	missile[v13]._miVar1 = v9;
-	missile[v13]._mirange = 256;
+	missile[mi]._miVar3 = 0;
+	missile[mi]._miVar2 = sy;
+	missile[mi]._miVar1 = sx;
+	missile[mi]._mirange = 256;
 }
 
 void __fastcall AddCbolt(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int id, int dam)
