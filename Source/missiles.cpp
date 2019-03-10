@@ -2169,22 +2169,13 @@ void __fastcall AddFireball(int mi, int sx, int sy, int dx, int dy, int midir, i
 
 void __fastcall AddLightctrl(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9;  // edi
-	int v10; // ebx
-	int v11; // esi
-	int v13; // eax
-
-	v9 = sx;
-	v10 = mi;
 	if (!dam && !(_BYTE)mienemy)
 		UseMana(id, 3);
-	v11 = v10;
-	missile[v11]._miVar1 = v9;
-	missile[v11]._miVar2 = sy;
-	GetMissileVel(v10, v9, sy, dx, dy, 32);
-	v13 = random(52, 8);
-	missile[v11]._mirange = 256;
-	missile[v11]._miAnimFrame = v13 + 1;
+	missile[mi]._miVar1 = sx;
+	missile[mi]._miVar2 = sy;
+	GetMissileVel(mi, sx, sy, dx, dy, 32);
+	missile[mi]._mirange = 256;
+	missile[mi]._miAnimFrame = random(52, 8) + 1;
 }
 
 void __fastcall AddLightning(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
