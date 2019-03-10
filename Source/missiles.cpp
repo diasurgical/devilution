@@ -3252,22 +3252,13 @@ void __fastcall AddFirewallC(int mi, int sx, int sy, int dx, int dy, int midir, 
 
 void __fastcall AddInfra(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9;  // ecx
-	int v10; // eax
-	int v11; // edx
+	int i;
 
-	v9 = mi;
-	v10 = 1584;
-	v11 = missile[v9]._mispllvl;
-	missile[v9]._mirange = 1584;
-	if (v11 > 0) {
-		do {
-			v10 += v10 >> 3;
-			--v11;
-		} while (v11);
-		missile[v9]._mirange = v10;
+	missile[mi]._mirange = 1584;
+	for (i = 0; i < missile[mi]._mispllvl; i++) {
+		missile[mi]._mirange += missile[mi]._mirange >> 3;
 	}
-	missile[v9]._mirange += missile[v9]._mirange * plr[id]._pISplDur >> 7;
+	missile[mi]._mirange += missile[mi]._mirange * plr[id]._pISplDur >> 7;
 	if (!(_BYTE)mienemy)
 		UseMana(id, 9);
 }
@@ -3483,7 +3474,6 @@ void __fastcall AddResurrectBeam(int mi, int sx, int sy, int dx, int dy, int mid
 	missile[mi]._mixvel = 0;
 	missile[mi]._miyvel = 0;
 	missile[mi]._mirange = misfiledata[36].mAnimLen[0];
-
 }
 
 void __fastcall AddTelekinesis(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
