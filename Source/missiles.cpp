@@ -2163,8 +2163,8 @@ void __fastcall AddLightctrl(int mi, int sx, int sy, int dx, int dy, int midir, 
 	missile[mi]._miVar1 = sx;
 	missile[mi]._miVar2 = sy;
 	GetMissileVel(mi, sx, sy, dx, dy, 32);
-	missile[mi]._mirange = 256;
 	missile[mi]._miAnimFrame = random(52, 8) + 1;
+	missile[mi]._mirange = 256;
 }
 
 void __fastcall AddLightning(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
