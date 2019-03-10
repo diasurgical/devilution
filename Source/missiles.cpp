@@ -3519,18 +3519,14 @@ void __fastcall AddResurrect(int mi, int sx, int sy, int dx, int dy, int midir, 
 
 void __fastcall AddResurrectBeam(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9;  // ecx
-	int v10; // eax
+	missile[mi]._mix = dx;
+	missile[mi]._miy = dy;
+	missile[mi]._misx = dx;
+	missile[mi]._misy = dy;
+	missile[mi]._mixvel = 0;
+	missile[mi]._miyvel = 0;
+	missile[mi]._mirange = misfiledata[36].mAnimLen[0];
 
-	v9 = mi;
-	missile[v9]._mixvel = 0;
-	missile[v9]._miyvel = 0;
-	missile[v9]._mix = dx;
-	missile[v9]._misx = dx;
-	v10 = misfiledata[36].mAnimLen[0];
-	missile[v9]._miy = dy;
-	missile[v9]._misy = dy;
-	missile[v9]._mirange = v10;
 }
 
 void __fastcall AddTelekinesis(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
