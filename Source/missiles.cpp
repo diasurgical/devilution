@@ -2076,29 +2076,17 @@ void __fastcall AddLightball(int mi, int sx, int sy, int dx, int dy, int midir, 
 
 void __fastcall AddFirewall(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9;  // ST20_4
-	int i;   // ST1C_4
-	int v11; // esi
-	int v12; // eax
-	int v14; // eax
-	int v15; // eax
-	int v16; // eax
+	int i;
 
-	v9 = sx;
-	i = mi;
-	v11 = i;
-	v12 = random(53, 10);
-	missile[v11]._midam = 16 * (random(53, 10) + v12 + plr[id]._pLevel + 2) >> 1;
-	GetMissileVel(i, v9, sy, dx, dy, 16);
-	v14 = missile[i]._mispllvl;
-	missile[v11]._mirange = 10;
-	if (v14 > 0)
-		missile[v11]._mirange = 2 * (5 * v14 + 5);
-	v15 = ((missile[v11]._mirange * plr[id]._pISplDur >> 3) & 0xFFFFFFF0) + 16 * missile[v11]._mirange;
-	missile[v11]._mirange = v15;
-	v16 = v15 - missile[v11]._miAnimLen;
-	missile[v11]._miVar2 = 0;
-	missile[v11]._miVar1 = v16;
+	missile[mi]._midam = 16 * (random(53, 10) + random(53, 10) + plr[id]._pLevel + 2) >> 1;
+	GetMissileVel(mi, sx, sy, dx, dy, 16);
+	missile[mi]._mirange = 10;
+	i = missile[mi]._mispllvl;
+	if (i > 0)
+		missile[mi]._mirange = 10 * (i + 1);
+	missile[mi]._mirange = ((missile[mi]._mirange * plr[id]._pISplDur >> 3) & 0xFFFFFFF0) + 16 * missile[mi]._mirange;
+	missile[mi]._miVar1 = missile[mi]._mirange - missile[mi]._miAnimLen;
+	missile[mi]._miVar2 = 0;
 }
 
 void __fastcall AddFireball(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
