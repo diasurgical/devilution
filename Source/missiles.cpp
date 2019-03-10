@@ -3374,7 +3374,7 @@ void __fastcall AddFlame(int mi, int sx, int sy, int dx, int dy, int midir, int 
 		i = random(79, plr[id]._pLevel) + random(79, 2);
 		missile[mi]._midam = 8 * i + 16 + ((8 * i + 16) >> 1);
 	} else {
-		missile[mi]._midam = (unsigned char)monster[id].mMinDamage + random(77, (unsigned char)monster[id].mMaxDamage - (unsigned char)monster[id].mMinDamage + 1);
+		missile[mi]._midam = monster[id].mMinDamage + random(77, monster[id].mMaxDamage - monster[id].mMinDamage + 1);
 	}
 }
 
