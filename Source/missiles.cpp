@@ -2185,7 +2185,7 @@ void __fastcall AddLightning(int mi, int sx, int sy, int dx, int dy, int midir, 
 		else
 			missile[mi]._mirange = 10;
 	} else {
-		  missile[mi]._mirange = (missile[mi]._mispllvl >> 1) + 6;
+		missile[mi]._mirange = (missile[mi]._mispllvl >> 1) + 6;
 	}
 	missile[mi]._mlid = AddLight(missile[mi]._mix, missile[mi]._miy, 4);
 }
