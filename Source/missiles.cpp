@@ -3288,54 +3288,21 @@ void __fastcall AddWave(int mi, int sx, int sy, int dx, int dy, int midir, int m
 
 void __fastcall AddNova(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9;  // esi
-	int v10; // eax
-	int v12; // ebx
-	int v13; // eax
-	int v15; // ebx
-	int v16; // eax
-	int v18; // ebx
-	int v19; // eax
-	int v21; // ebx
-	int v22; // eax
-	int v23; // ecx
-	int v24; // eax
-	int v25; // eax
-	int v27; // edi
-	int v28; // eax
+	int k;
 
-	v9 = mi;
-	missile[v9]._miVar1 = dx;
-	missile[v9]._miVar2 = dy;
-	if (id == -1) {
-		v25 = random(66, 3);
-		v27 = v25;
-		v28 = random(66, 3);
-		missile[v9]._midam = ((unsigned int)currlevel >> 1) + random(66, 3) + v28 + v27;
-	} else {
-		v10 = random(66, 6);
-		v12 = v10;
-		v13 = random(66, 6);
-		v15 = v13 + v12;
-		v16 = random(66, 6);
-		v18 = v16 + v15;
-		v19 = random(66, 6);
-		v21 = v19 + v18;
-		v22 = random(66, 6);
-		v23 = missile[v9]._mispllvl;
-		v24 = (v22 + v21 + plr[id]._pLevel + 5) >> 1;
-		missile[v9]._midam = v24;
-		if (v23 > 0) {
-			do {
-				v24 += v24 >> 3;
-				--v23;
-			} while (v23);
-			missile[v9]._midam = v24;
+	missile[mi]._miVar1 = dx;
+	missile[mi]._miVar2 = dy;
+	if (id != -1) {
+		missile[mi]._midam = (random(66, 6) + random(66, 6) + random(66, 6) + random(66, 6) + random(66, 6) + plr[id]._pLevel + 5) >> 1;
+		for (k = 0; k < missile[mi]._mispllvl; k++) {
+			missile[mi]._midam += missile[mi]._midam >> 3;
 		}
 		if (!(_BYTE)mienemy)
 			UseMana(id, 18);
+	} else {
+		missile[mi]._midam = ((DWORD)currlevel >> 1) + random(66, 3) + random(66, 3) + random(66, 3);
 	}
-	missile[v9]._mirange = 1;
+	missile[mi]._mirange = 1;
 }
 
 void __fastcall AddRepair(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
