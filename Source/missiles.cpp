@@ -3274,15 +3274,12 @@ void __fastcall AddInfra(int mi, int sx, int sy, int dx, int dy, int midir, int 
 
 void __fastcall AddWave(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9; // ecx
-
-	v9 = mi;
-	missile[v9]._miVar3 = 0;
-	missile[v9]._miVar4 = 0;
-	missile[v9]._miVar1 = dx;
-	missile[v9]._miVar2 = dy;
-	missile[v9]._mirange = 1;
-	missile[v9]._miAnimFrame = 4;
+	missile[mi]._miVar1 = dx;
+	missile[mi]._miVar2 = dy;
+	missile[mi]._miVar3 = 0;
+	missile[mi]._miVar4 = 0;
+	missile[mi]._mirange = 1;
+	missile[mi]._miAnimFrame = 4;
 	UseMana(id, 15);
 }
 
