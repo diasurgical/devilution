@@ -38,7 +38,7 @@ BOOL STORMAPI SFileDdaBeginEx(HANDLE directsound, DWORD flags, DWORD mask, unsig
 	SFXbuffer = DiabloAllocPtr(bytestoread);
 	SFileReadFile(directsound, (char *)SFXbuffer, bytestoread, (LPDWORD)&nrread, 0);
 
-	SDL_RWops *rw = SDL_RWFromMem(SFXbuffer, bytestoread);
+	SDL_RWops *rw = SDL_RWFromConstMem(SFXbuffer, bytestoread);
 	Mix_Chunk *SoundFX = Mix_LoadWAV_RW(rw, 1);
 
 	Mix_PlayChannel(-1, SoundFX, 0);
@@ -72,7 +72,7 @@ BOOL STORMAPI SFileDdaInitialize(HANDLE directsound)
 
 BOOL STORMAPI SFileDdaSetVolume(HANDLE directsound, signed int bigvolume, signed int volume)
 {
-	Mix_VolumeMusic(128 - 128 * bigvolume / -1600);
+	Mix_VolumeMusic(MIX_MAX_VOLUME - MIX_MAX_VOLUME * bigvolume / VOLUME_MIN);
 
 	return TRUE;
 }
@@ -251,7 +251,7 @@ HWND STORMAPI SDrawGetFrameWindow(HWND *sdraw_framewindow)
 void *STORMAPI SMemAlloc(unsigned int amount, char *logfilename, int logline, char defaultValue)
 {
 	// fprintf(stderr, "%s: %d (%s:%d)\n", __FUNCTION__, amount, logfilename, logline);
-	assert(amount != -1);
+	assert(amount != -1u);
 	return malloc(amount);
 }
 
@@ -352,15 +352,17 @@ BOOL STORMAPI SRegSaveValue(const char *keyname, const char *valuename, BYTE fla
 	return TRUE;
 }
 
+BOOL STORMAPI SVidInitialize(HANDLE video)
+{
+	DUMMY();
+	return TRUE;
+}
+
 BOOL STORMAPI SVidDestroy()
 {
 	DUMMY();
+	return TRUE;
 }
-
-// BOOL STORMAPI SVidInitialize(HANDLE video)
-//{
-//	UNIMPLEMENTED();
-//}
 
 double SVidFrameEnd;
 double SVidFrameLength;
