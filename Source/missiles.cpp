@@ -3559,40 +3559,25 @@ void __fastcall AddTelekinesis(int mi, int sx, int sy, int dx, int dy, int midir
 
 void __fastcall AddBoneSpirit(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9;  // ebx
-	int v10; // edi
-	int v11; // esi
-	int v12; // eax
-	int v13; // eax
-	int mia; // [esp+Ch] [ebp-8h]
-	int x;   // [esp+10h] [ebp-4h]
-
-	v9 = dx;
-	v10 = dy;
-	x = sx;
-	mia = mi;
 	if (sx == dx && sy == dy) {
-		v9 = XDirAdd[midir] + dx;
-		v10 = YDirAdd[midir] + dy;
+		dx = XDirAdd[midir] + dx;
+		dy = YDirAdd[midir] + dy;
 	}
-	v11 = mi;
 	missile[mi]._midam = 0;
-	GetMissileVel(mi, sx, sy, v9, v10, 16);
-	v12 = GetDirection8(x, sy, v9, v10);
-	SetMissDir(mia, v12);
-	missile[v11]._miVar3 = 0;
-	missile[v11]._mirange = 256;
-	missile[v11]._miVar1 = x;
-	missile[v11]._miVar2 = sy;
-	missile[v11]._miVar4 = v9;
-	missile[v11]._miVar5 = v10;
-	missile[v11]._mlid = AddLight(x, sy, 8);
+	GetMissileVel(mi, sx, sy, dx, dy, 16);
+	SetMissDir(mi, GetDirection8(sx, sy, dx, dy));
+	missile[mi]._mirange = 256;
+	missile[mi]._miVar1 = sx;
+	missile[mi]._miVar2 = sy;
+	missile[mi]._miVar3 = 0;
+	missile[mi]._miVar4 = dx;
+	missile[mi]._miVar5 = dy;
+	missile[mi]._mlid = AddLight(sx, sy, 8);
 	if (!(_BYTE)mienemy) {
 		UseMana(id, 36);
-		v13 = id;
 		drawhpflag = TRUE;
-		plr[v13]._pHPBase -= 384;
-		plr[v13]._pHitPoints -= 384;
+		plr[id]._pHitPoints -= 384;
+		plr[id]._pHPBase -= 384;
 		if (plr[id]._pHitPoints <= 0)
 			SyncPlrKill(id, 0);
 	}
