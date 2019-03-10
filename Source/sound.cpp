@@ -186,7 +186,6 @@ BOOL __fastcall sound_file_reload(TSnd *sound_file, LPDIRECTSOUNDBUFFER DSB)
 #else
 	if (DSB->lpVtbl->Restore(DSB))
 #endif
-		return FALSE;
 
 	rv = FALSE;
 
