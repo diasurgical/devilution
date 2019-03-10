@@ -3524,13 +3524,10 @@ void __fastcall AddHbolt(int mi, int sx, int sy, int dx, int dy, int midir, int 
 
 void __fastcall AddResurrect(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9; // esi
-
-	v9 = mi;
 	UseMana(id, 32);
 	if (id == myplr)
 		SetCursor_(CURSOR_RESURRECT);
-	missile[v9]._miDelFlag = TRUE;
+	missile[mi]._miDelFlag = TRUE;
 }
 
 void __fastcall AddResurrectBeam(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
