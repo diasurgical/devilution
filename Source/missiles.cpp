@@ -2061,27 +2061,16 @@ void __fastcall AddTeleport(int mi, int sx, int sy, int dx, int dy, int midir, i
 
 void __fastcall AddLightball(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9;  // edi
-	int v10; // esi
-	int v11; // esi
-	int v13; // eax
-	int v14; // eax
-
-	v9 = sx;
-	v10 = mi;
 	GetMissileVel(mi, sx, sy, dx, dy, 16);
-	v11 = v10;
-	missile[v11]._midam = dam;
-	v13 = random(63, 8);
-	missile[v11]._mirange = 255;
-	missile[v11]._miAnimFrame = v13 + 1;
-	if (id >= 0) {
-		v14 = plr[id].WorldY;
-		missile[v11]._miVar1 = plr[id].WorldX;
-		missile[v11]._miVar2 = v14;
+	missile[mi]._midam = dam;
+	missile[mi]._miAnimFrame = random(63, 8) + 1;
+	missile[mi]._mirange = 255;
+	if (id < 0) {
+		missile[mi]._miVar1 = sx;
+		missile[mi]._miVar2 = sy;
 	} else {
-		missile[v11]._miVar1 = v9;
-		missile[v11]._miVar2 = sy;
+		missile[mi]._miVar1 = plr[id].WorldX;
+		missile[mi]._miVar2 = plr[id].WorldY;
 	}
 }
 
