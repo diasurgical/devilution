@@ -1722,81 +1722,50 @@ void __cdecl InitMissiles()
 
 void __fastcall AddLArrow(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9;  // esi
-	int v10; // ebx
-	int v11; // edi
-	int v12; // eax
-	int v14; // eax
-	int v15; // esi
-	int v16; // [esp-4h] [ebp-14h]
-	int mia; // [esp+Ch] [ebp-4h]
-
-	v9 = dx;
-	v10 = sx;
-	v11 = dy;
-	mia = mi;
 	if (sx == dx && sy == dy) {
-		v9 = XDirAdd[midir] + dx;
-		v11 = YDirAdd[midir] + dy;
+		dx += XDirAdd[midir];
+		dy += YDirAdd[midir];
 	}
-	if ((_BYTE)mienemy) {
-		GetMissileVel(mi, v10, sy, v9, v11, 32);
-	}
-	v12 = id;
-	if (plr[id]._pClass == PC_ROGUE) {
-		v16 = (plr[v12]._pLevel >> 2) + 31;
-		GetMissileVel(mi, v10, sy, v9, v11, v16);
-	} else if (plr[id]._pClass == PC_SORCERER)
-		GetMissileVel(mi, v10, sy, v9, v11, 32);
-	else
-		GetMissileVel(mi, v10, sy, v9, v11, (plr[v12]._pLevel >> 3) + 31);
-	v14 = GetDirection16(v10, sy, v9, v11);
-	SetMissDir(mia, v14);
-	v15 = mia;
-	missile[v15]._mirange = 256;
-	missile[v15]._miVar1 = v10;
-	missile[v15]._miVar2 = sy;
-	missile[v15]._mlid = AddLight(v10, sy, 5);
+	if (!(_BYTE)mienemy) {
+		if (plr[id]._pClass == PC_ROGUE)
+			GetMissileVel(mi, sx, sy, dx, dy, (plr[id]._pLevel >> 2) + 31);
+		else if (plr[id]._pClass == PC_WARRIOR)
+			GetMissileVel(mi, sx, sy, dx, dy, (plr[id]._pLevel >> 3) + 31);
+		else
+			GetMissileVel(mi, sx, sy, dx, dy, 32);
+	} else
+		GetMissileVel(mi, sx, sy, dx, dy, 32);
+
+	SetMissDir(mi, GetDirection16(sx, sy, dx, dy));
+	missile[mi]._mirange = 256;
+	missile[mi]._miVar1 = sx;
+	missile[mi]._miVar2 = sy;
+	missile[mi]._mlid = AddLight(sx, sy, 5);
 }
 
 void __fastcall AddArrow(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9;  // ebx
-	int v10; // esi
-	int v11; // edi
-	int v12; // eax
-	int v14; // esi
-	int v15; // eax
-	int x1;  // [esp+8h] [ebp-8h]
-	int i;   // [esp+Ch] [ebp-4h]
+	int av;
 
-	v9 = dy;
-	v10 = dx;
-	x1 = sx;
-	i = mi;
 	if (sx == dx && sy == dy) {
-		v10 = XDirAdd[midir] + dx;
-		v9 = YDirAdd[midir] + dy;
 		dx += XDirAdd[midir];
+		dy += YDirAdd[midir];
 	}
-	if ((_BYTE)mienemy) {
-		GetMissileVel(mi, sx, sy, v10, v9, 32);
-	} else {
-		v11 = id;
-		v12 = 32;
+	if (!(_BYTE)mienemy) {
+		av = 32;
 		if (plr[id]._pIFlags & 4) {
-			v12 = random(64, 32) + 16;
+			av = random(64, 32) + 16;
 		}
-		if (plr[v11]._pClass == PC_ROGUE)
-			v12 += (plr[v11]._pLevel - 1) >> 2;
-		if (plr[v11]._pClass == PC_WARRIOR)
-			v12 += (plr[v11]._pLevel - 1) >> 3;
-		GetMissileVel(i, x1, sy, v10, v9, v12);
+		if (plr[id]._pClass == PC_ROGUE)
+			av += (plr[id]._pLevel - 1) >> 2;
+		if (plr[id]._pClass == PC_WARRIOR)
+			av += (plr[id]._pLevel - 1) >> 3;
+		GetMissileVel(mi, sx, sy, dx, dy, av);
+	} else {
+		GetMissileVel(mi, sx, sy, dx, dy, 32);
 	}
-	v14 = i;
-	v15 = GetDirection16(x1, sy, dx, v9);
-	missile[v14]._mirange = 256;
-	missile[v14]._miAnimFrame = v15 + 1;
+	missile[mi]._miAnimFrame = GetDirection16(sx, sy, dx, dy) + 1;
+	missile[mi]._mirange = 256;
 }
 
 void __fastcall GetVileMissPos(int mi, int dx, int dy)
