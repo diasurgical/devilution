@@ -650,28 +650,18 @@ int __fastcall GetDirection16(int x1, int y1, int x2, int y2)
 
 void __fastcall DeleteMissile(int mi, int i)
 {
-	int v2;     // edi
-	int v3;     // ebx
-	int v4;     // esi
-	int v5;     // eax
-	BOOLEAN v6; // zf
-	BOOLEAN v7; // sf
+	int src;
 
-	v2 = mi;
-	v3 = i;
 	if (missile[mi]._mitype == MIS_MANASHIELD) {
-		v4 = missile[mi]._misource;
-		if (v4 == myplr)
+		src = missile[mi]._misource;
+		if (src == myplr)
 			NetSendCmd(TRUE, CMD_REMSHIELD);
-		plr[v4].pManaShield = 0;
+		plr[src].pManaShield = 0;
 	}
-	v5 = nummissiles - 1;
-	v6 = nummissiles == 1;
-	v7 = nummissiles - 1 < 0;
-	missileavail[-nummissiles + MAXMISSILES] = v2; /* *(&missile[0]._mitype - nummissiles) = v2; */
-	nummissiles = v5;
-	if (!v7 && !v6 && v3 != v5)
-		missileactive[v3] = missileactive[v5];
+	missileavail[-nummissiles + MAXMISSILES] = mi;
+	nummissiles--;
+	if (nummissiles > 0 && i != nummissiles)
+		missileactive[mi] = missileactive[nummissiles];
 }
 
 void __fastcall GetMissileVel(int i, int sx, int sy, int dx, int dy, int v)
