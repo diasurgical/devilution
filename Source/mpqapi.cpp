@@ -103,25 +103,21 @@ void __fastcall mpqapi_update_multi_creation_time(DWORD dwChar)
 
 BOOLEAN __fastcall mpqapi_reg_store_modification_time(char *pbData, int dwLen)
 {
-	int v2;          // ebx
-	char *v3;        // ebp
-	char *v4;        // edi
-	unsigned int v5; // esi
-	char *v6;        // ecx
+	char *pbCurrentData;
+	unsigned int i;
+	char *pbDataToXor;
 
-	v2 = dwLen;
-	v3 = pbData;
-	v4 = pbData;
+	pbCurrentData = pbData;
 	if ((unsigned int)dwLen >= 8) {
-		v5 = (unsigned int)dwLen >> 3;
+		i = (unsigned int)dwLen >> 3;
 		do {
-			v6 = v4;
-			v4 += 8;
-			mpqapi_xor_buf(v6);
-			--v5;
-		} while (v5);
+			pbDataToXor = pbCurrentData;
+			pbCurrentData += 8;
+			mpqapi_xor_buf(pbDataToXor);
+			--i;
+		} while (i);
 	}
-	return SRegSaveData("Diablo", "Video Player ", 0, (unsigned char *)v3, v2);
+	return SRegSaveData("Diablo", "Video Player ", 0, (unsigned char *)pbData, dwLen);
 }
 
 void __fastcall mpqapi_remove_hash_entry(const char *pszName)
