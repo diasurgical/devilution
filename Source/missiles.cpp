@@ -3436,84 +3436,67 @@ void __fastcall AddDiabApoca(int mi, int sx, int sy, int dx, int dy, int midir, 
 
 int __fastcall AddMissile(int sx, int sy, int dx, int dy, int midir, int mitype, int micaster, int id, int midam, int spllvl)
 {
-	int v10;  // esi
-	int v11;  // ecx
-	int v12;  // ecx
-	int v13;  // ebx
-	int v14;  // esi
-	int v15;  // esi
-	int v16;  // edi
-	int v17;  // ecx
-	char v18; // al
-	int v19;  // edx
-	int v20;  // ecx
-	int v21;  // eax
-	int sya;  // [esp+8h] [ebp-8h]
-	int sxa;  // [esp+Ch] [ebp-4h]
+	int i, mi;
 
-	sya = sy;
-	sxa = sx;
 	if (nummissiles >= MAXMISSILES)
 		return -1;
-	if (mitype != MIS_MANASHIELD || plr[id].pManaShield != 1)
-		goto LABEL_9;
-	if (currlevel != plr[id].plrlevel)
-		return -1;
-	v10 = 0;
-	if (nummissiles > 0) {
-		do {
-			v11 = missileactive[v10];
-			if (missile[v11]._mitype == MIS_MANASHIELD && missile[v11]._misource == id)
+
+	if (mitype == MIS_MANASHIELD && plr[id].pManaShield == 1) {
+		if (currlevel != plr[id].plrlevel)
+			return -1;
+
+		for (i = 0; i < nummissiles; i++) {
+			mi = missileactive[i];
+			if (missile[mi]._mitype == MIS_MANASHIELD && missile[mi]._misource == id)
 				return -1;
-		} while (++v10 < nummissiles);
+		}
 	}
-LABEL_9:
-	v12 = nummissiles;
-	v13 = missileavail[0];
-	v14 = missileavail[-nummissiles++ + 124]; /* MAXMISSILES */
-	missileavail[0] = v14;
-	v15 = v13;
-	missile[v15]._mitype = mitype;
-	v16 = mitype;
-	missileactive[v12] = v13;
-	v17 = missiledata[mitype].mDraw;
-	missile[v15]._micaster = (char)micaster;
-	v18 = missiledata[mitype].mFileNum;
-	missile[v15]._misource = id;
-	v19 = midir;
-	missile[v15]._miDrawFlag = v17;
-	_LOBYTE(missile[v15]._miAnimType) = v18;
-	missile[v15]._mispllvl = spllvl;
-	missile[v15]._mimfnum = midir;
-	if (v18 == -1 || misfiledata[(unsigned char)v18].mAnimFAmt < 8u)
-		v19 = 0;
-	SetMissDir(v13, v19);
-	v20 = sya;
-	missile[v15]._mlid = -1;
-	missile[v15]._mixoff = 0;
-	missile[v15]._miyoff = 0;
-	missile[v15]._mitxoff = 0;
-	missile[v15]._mityoff = 0;
-	missile[v15]._miDelFlag = FALSE;
-	missile[v15]._miLightFlag = 0;
-	missile[v15]._miPreFlag = 0;
-	missile[v15]._miUniqTrans = 0;
-	missile[v15]._miHitFlag = 0;
-	missile[v15]._midist = 0;
-	missile[v15]._mirnd = 0;
-	v21 = missiledata[v16].mlSFX;
-	missile[v15]._mix = sxa;
-	missile[v15]._misx = sxa;
-	missile[v15]._miy = sya;
-	missile[v15]._misy = sya;
-	missile[v15]._miAnimAdd = 1;
-	missile[v15]._midam = midam;
-	if (v21 != -1) {
-		PlaySfxLoc(v21, sxa, sya);
-		v20 = sya;
+
+	mi = missileavail[0];
+
+	missileavail[0] = missileavail[MAXMISSILES - nummissiles - 1];
+	missileactive[nummissiles] = mi;
+	nummissiles++;
+
+	missile[mi]._mitype = mitype;
+	missile[mi]._micaster = (char)micaster;
+	missile[mi]._misource = id;
+	missile[mi]._miAnimType = missiledata[mitype].mFileNum;
+	missile[mi]._miDrawFlag = missiledata[mitype].mDraw;
+	missile[mi]._mimfnum = midir;
+	missile[mi]._mispllvl = spllvl;
+
+	if (missile[mi]._miAnimType == 255 || misfiledata[missile[mi]._miAnimType].mAnimFAmt < 8)
+		SetMissDir(mi, 0);
+	else
+		SetMissDir(mi, midir);
+
+	missile[mi]._mix = sx;
+	missile[mi]._miy = sy;
+	missile[mi]._mixoff = 0;
+	missile[mi]._miyoff = 0;
+	missile[mi]._misx = sx;
+	missile[mi]._misy = sy;
+	missile[mi]._mitxoff = 0;
+	missile[mi]._mityoff = 0;
+	missile[mi]._miDelFlag = FALSE;
+	missile[mi]._miAnimAdd = 1;
+	missile[mi]._miLightFlag = 0;
+	missile[mi]._miPreFlag = 0;
+	missile[mi]._miUniqTrans = 0;
+	missile[mi]._midam = midam;
+	missile[mi]._miHitFlag = 0;
+	missile[mi]._midist = 0;
+	missile[mi]._mlid = -1;
+	missile[mi]._mirnd = 0;
+
+	if (missiledata[mitype].mlSFX != -1) {
+		PlaySfxLoc(missiledata[mitype].mlSFX, sx, sy);
 	}
-	missiledata[v16].mAddProc(v13, sxa, v20, dx, dy, midir, micaster, id, midam);
-	return v13;
+
+	missiledata[mitype].mAddProc(mi, sx, sy, dx, dy, midir, micaster, id, midam);
+
+	return mi;
 }
 
 int __fastcall Sentfire(int i, int sx, int sy)
