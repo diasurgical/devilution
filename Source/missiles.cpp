@@ -2765,24 +2765,13 @@ void __fastcall AddFlare(int mi, int sx, int sy, int dx, int dy, int midir, int 
 
 void __fastcall AddAcid(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9;  // esi
-	int v10; // edi
-	int v11; // eax
-	int v12; // eax
-	int v13; // ecx
-
-	v9 = sx;
-	v10 = mi;
 	GetMissileVel(mi, sx, sy, dx, dy, 16);
-	v11 = GetDirection16(v9, sy, dx, dy);
-	SetMissDir(v10, v11);
-	v12 = v10;
-	v13 = (unsigned char)monster[id]._mint;
-	missile[v12]._mlid = -1;
-	missile[v12]._miVar1 = v9;
-	missile[v12]._miVar2 = sy;
-	missile[v12]._mirange = 5 * (v13 + 4);
-	PutMissile(v10);
+	SetMissDir(mi, GetDirection16(sx, sy, dx, dy));
+	missile[mi]._mlid = -1;
+	missile[mi]._miVar1 = sx;
+	missile[mi]._miVar2 = sy;
+	missile[mi]._mirange = 5 * (monster[id]._mint + 4);
+	PutMissile(mi);
 }
 
 void __fastcall miss_null_1D(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
