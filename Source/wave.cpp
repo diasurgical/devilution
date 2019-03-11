@@ -202,7 +202,7 @@ BOOL __fastcall ReadWaveSection(MEMFILE *pMemFile, DWORD id, CKINFO *chunk)
 	return chunk->dwOffset != (DWORD)-1;
 }
 
-void *__fastcall LoadWaveFile(HANDLE hsFile, WAVEFORMATEX *pwfx, CKINFO *chunk)
+BYTE *__fastcall LoadWaveFile(HANDLE hsFile, WAVEFORMATEX *pwfx, CKINFO *chunk)
 {
 	MEMFILE wave_file;
 
