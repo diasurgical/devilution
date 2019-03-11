@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 LightListStruct VisionList[32];
 char lightactive[32];
 LightListStruct LightList[32];
@@ -1581,3 +1583,5 @@ void __cdecl lighting_color_cycling()
 	}
 }
 // 525728: using guessed type int light4flag;
+
+DEVILUTION_END_NAMESPACE

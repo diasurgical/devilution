@@ -1,3 +1,7 @@
+#pragma once
+
+namespace dvl {
+
 void selhero_List_Init();
 void selhero_List_Focus(int value);
 void selhero_List_Select(int value);
@@ -9,3 +13,5 @@ void selhero_Name_Select(int value);
 void selhero_Name_Esc();
 void selhero_Load_Focus(int value);
 void selhero_Load_Select(int value);
+
+}

@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 int doom_quest_time;
 int doom_stars_drawn;
 void *pDoomCel;
@@ -97,3 +99,5 @@ void __cdecl doom_draw()
 
 	CelDecodeOnly(64, 511, pDoomCel, 1, 640);
 }
+
+DEVILUTION_END_NAMESPACE

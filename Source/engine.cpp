@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 char gbPixelCol;  // automap pixel color 8-bit (palette entry)
 int dword_52B970; // BOOLEAN flip - if y < x
 int orgseed;      // weak
@@ -2432,3 +2434,5 @@ void __fastcall PlayInGameMovie(char *pszMovie)
 	drawpanflag = 255;
 }
 // 52571C: using guessed type int drawpanflag;
+
+DEVILUTION_END_NAMESPACE

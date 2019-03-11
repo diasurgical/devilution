@@ -18,7 +18,7 @@
 #define LEAVE_ENDING 0x40000004
 #define LEAVE_DROP 0x40000006
 
-namespace dvlnet {
+namespace dvl { namespace net {
 	class base : public abstract_net {
 	public:
 		virtual int create(std::string addrstr, std::string passwd) = 0;
@@ -74,4 +74,4 @@ namespace dvlnet {
 		plr_t get_owner();
 		void clear_msg(plr_t plr);
 	};
-}
+}}

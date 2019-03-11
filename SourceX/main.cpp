@@ -20,5 +20,7 @@ static std::string build_cmdline(int argc, char **argv)
 int main(int argc, char **argv)
 {
 	auto cmdline = build_cmdline(argc, argv);
-	return WinMain(NULL, NULL, (char *)cmdline.c_str(), 0);
+	return dvl::WinMain(NULL, NULL, (char *)cmdline.c_str(), 0);
 }
+
+

@@ -1,5 +1,7 @@
 #include "pch.h"
 
+namespace dvl {
+
 Screen *gpBuffer;
 
 IDirectDraw *lpDDInterface;
@@ -539,4 +541,6 @@ WINBOOL WINAPI TextOutA(HDC hdc, int x, int y, LPCSTR lpString, int c)
 	SDL_SetWindowTitle(window, lpString);
 
 	return TRUE;
+}
+
 }

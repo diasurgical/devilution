@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 void *sgpBackCel;
 int sgdwProgress;
 int progress_id; // idb
@@ -356,3 +358,5 @@ void __fastcall InitCutscene(unsigned int uMsg)
 		goto LABEL_33;
 	}
 }
+
+DEVILUTION_END_NAMESPACE

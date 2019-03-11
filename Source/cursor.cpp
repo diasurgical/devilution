@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 int cursH;      // weak
 int icursH28;   // idb
 int cursW;      // idb
@@ -692,3 +694,5 @@ void __cdecl CheckCursMove()
 // 52569C: using guessed type int zoomflag;
 // 52575C: using guessed type int doomflag;
 // 69BD04: using guessed type int questlog;
+
+DEVILUTION_END_NAMESPACE

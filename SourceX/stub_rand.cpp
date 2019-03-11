@@ -1,5 +1,7 @@
 #include "devilution.h"
 
+namespace dvl {
+
 unsigned int rand_state = 1;
 
 int rand(void)
@@ -11,4 +13,6 @@ int rand(void)
 void srand(unsigned int seed)
 {
 	rand_state = seed;
+}
+
 }

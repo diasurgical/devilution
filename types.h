@@ -39,11 +39,19 @@
 #pragma warning(disable : 4146) // negative unsigned
 #endif
 
+#define DEVILUTION_BEGIN_NAMESPACE
+#define DEVILUTION_END_NAMESPACE
+
 #else
+
+#define DEVILUTION_BEGIN_NAMESPACE namespace dvl {
+#define DEVILUTION_END_NAMESPACE }
 
 #include "miniwin.h"
 
 #endif
+
+DEVILUTION_BEGIN_NAMESPACE
 
 #include "defs.h"
 #include "enums.h"
@@ -144,5 +152,7 @@
 //#ifdef __cplusplus
 //}
 //#endif
+
+DEVILUTION_END_NAMESPACE
 
 #endif

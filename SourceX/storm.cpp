@@ -2,7 +2,9 @@
 #include "../3rdParty/libsmacker/smacker.h"
 #include "pch.h"
 
-DWORD nLastError = 0;
+namespace dvl {
+
+extern "C" DWORD nLastError = 0;
 
 std::string getIniPath()
 {
@@ -642,4 +644,6 @@ BOOL __stdcall SFileEnableDirectAccess(BOOL enable)
 {
 	DUMMY();
 	return TRUE;
+}
+
 }

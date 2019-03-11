@@ -1,8 +1,8 @@
 #include "pch.h"
 
-static std::set<HANDLE> files;
+namespace dvl {
 
-void TranslateFileName(char *dst, int dstLen, const char *src)
+extern "C" void TranslateFileName(char *dst, int dstLen, const char *src)
 {
 	for (int i = 0; i < dstLen; i++) {
 		char c = *src++;
@@ -12,6 +12,8 @@ void TranslateFileName(char *dst, int dstLen, const char *src)
 		}
 	}
 }
+
+static std::set<HANDLE> files;
 
 HANDLE WINAPI CreateFileA(LPCSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode,
     LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition,
@@ -137,4 +139,6 @@ WINBOOL WINAPI CloseHandle(HANDLE hObject)
 		files.erase(hObject);
 	}
 	return TRUE;
+}
+
 }

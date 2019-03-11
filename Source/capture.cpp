@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 void __cdecl CaptureScreen()
 {
 	HANDLE hObject;
@@ -184,3 +186,5 @@ void __fastcall RedPalette(PALETTEENTRY *pal)
 	lpDDPalette->lpVtbl->SetEntries(lpDDPalette, 0, 0, 256, red);
 #endif
 }
+
+DEVILUTION_END_NAMESPACE

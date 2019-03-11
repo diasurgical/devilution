@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 char msgtable[80];
 char msgdelay;
 char msgflag;
@@ -162,3 +164,5 @@ void __cdecl DrawDiabloMsg()
 			msgflag = msgtable[msgcnt];
 	}
 }
+
+DEVILUTION_END_NAMESPACE

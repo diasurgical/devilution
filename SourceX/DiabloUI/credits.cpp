@@ -2,6 +2,8 @@
 
 #define CREDIT_LINES 13
 
+namespace dvl {
+
 int creditLine;
 int ybase;
 int lastYbase;
@@ -556,4 +558,6 @@ BOOL __stdcall UiCreditsDialog(int a1)
 	credts_Free();
 
 	return TRUE;
+}
+
 }

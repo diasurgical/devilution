@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 _SNETVERSIONDATA fileinfo;
 int gbActive; // weak
 char diablo_exe_path[260];
@@ -472,3 +474,5 @@ WNDPROC __fastcall SetWindowProc(WNDPROC NewProc)
 	CurrentProc = NewProc;
 	return OldProc;
 }
+
+DEVILUTION_END_NAMESPACE

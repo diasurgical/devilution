@@ -313,6 +313,6 @@
 //
 
 #define bool int
-void TranslateFileName(char* dst, int dstLen, const char* src);
+extern "C" void TranslateFileName(char* dst, int dstLen, const char* src);
 
 #endif // __STORMPORT_H__

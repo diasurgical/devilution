@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 void *pSquareCel;
 char dMonsDbg[NUMLEVELS][MAXDUNX][MAXDUNY];
 char dFlagDbg[NUMLEVELS][MAXDUNX][MAXDUNY];
@@ -227,3 +229,5 @@ void __cdecl NextDebugMonster()
 	NetSendCmdString(1 << myplr, dstr);
 }
 #endif
+
+DEVILUTION_END_NAMESPACE

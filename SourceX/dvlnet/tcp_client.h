@@ -12,7 +12,7 @@
 #include "dvlnet/base.h"
 #include "dvlnet/tcp_server.h"
 
-namespace dvlnet {
+namespace dvl { namespace net {
 	class tcp_client : public base {
 	public:
 		int create(std::string addrstr, std::string passwd);
@@ -34,4 +34,4 @@ namespace dvlnet {
 		void start_recv();
 		void handle_send(const asio::error_code& error, size_t bytes_sent);
 	};
-}
+}}

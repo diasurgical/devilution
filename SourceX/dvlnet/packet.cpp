@@ -1,6 +1,6 @@
 #include "dvlnet/packet.h"
 
-using namespace dvlnet;
+namespace dvl { namespace net {
 
 static constexpr bool disable_encryption = false;
 
@@ -173,3 +173,5 @@ packet_factory::packet_factory(std::string pw)
 	                  crypto_pwhash_ALG_DEFAULT))
 		ABORT();
 }
+
+}}

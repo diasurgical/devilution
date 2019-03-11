@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-using namespace dvlnet;
+namespace dvl { namespace net {
 
 void base::setup_gameinfo(buffer_t info)
 {
@@ -253,3 +253,5 @@ bool base::SNetGetTurnsInTransit(int *turns)
 	*turns = turn_queue[plr_self].size();
 	return true;
 }
+
+}}

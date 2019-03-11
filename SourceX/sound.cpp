@@ -3,6 +3,8 @@
 #include "../types.h"
 #include "pch.h"
 
+namespace dvl {
+
 LPDIRECTSOUNDBUFFER DSBs[8];
 LPDIRECTSOUND sglpDS;
 char gbSndInited;
@@ -440,3 +442,5 @@ void fill_audio(void *udata, Uint8 *stream, int len)
 	audio_len -= len;
 }
 */
+
+}

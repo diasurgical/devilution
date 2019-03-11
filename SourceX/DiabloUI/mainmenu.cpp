@@ -1,5 +1,7 @@
 #include "pch.h"
 
+namespace dvl {
+
 int MainMenuResult;
 UI_Item MAINMENU_DIALOG[] = {
 	{ { 0, 0, 640, 480 }, UI_IMAGE, 0, 0, NULL, &ArtBackground },
@@ -55,4 +57,6 @@ BOOL __stdcall UiMainMenuDialog(char *name, int *pdwResult, void(__stdcall *fnSo
 
 	*pdwResult = MainMenuResult;
 	return TRUE;
+}
+
 }

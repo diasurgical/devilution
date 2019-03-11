@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 DWORD hashtable[1280];
 
 void __fastcall Decrypt(void *block, DWORD size, DWORD key)
@@ -157,3 +159,5 @@ void __fastcall PkwareDecompress(void *param, int recv_size, int dwMaxBytes)
 	mem_free_dbg(ptr);
 	mem_free_dbg(pbOutBuff);
 }
+
+DEVILUTION_END_NAMESPACE

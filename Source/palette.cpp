@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 PALETTEENTRY logical_palette[256];
 PALETTEENTRY system_palette[256];
 PALETTEENTRY orig_palette[256];
@@ -300,3 +302,5 @@ void __fastcall palette_set_color_cycling(BOOLEAN enabled)
 {
 	color_cycling_enabled = enabled;
 }
+
+DEVILUTION_END_NAMESPACE

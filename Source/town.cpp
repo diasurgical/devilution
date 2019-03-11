@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 void __fastcall town_clear_upper_buf(unsigned char *a1)
 {
 	unsigned char *v1; // edi
@@ -1506,3 +1508,5 @@ void __fastcall CreateTown(int entry)
 // 5D2458: using guessed type int dminx;
 // 5D245C: using guessed type int dminy;
 // 6ABB30: using guessed type int TWarpFrom;
+
+DEVILUTION_END_NAMESPACE

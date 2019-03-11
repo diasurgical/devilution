@@ -1,5 +1,7 @@
 #include "pch.h"
 
+namespace dvl {
+
 void title_Load()
 {
 	LoadBackgroundArt("ui_art\\title.pcx");
@@ -54,4 +56,6 @@ BOOL __stdcall UiTitleDialog(int a1)
 	title_Free();
 
 	return TRUE;
+}
+
 }

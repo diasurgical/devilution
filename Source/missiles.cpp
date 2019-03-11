@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 int missileactive[MAXMISSILES];
 int missileavail[MAXMISSILES];
 MissileStruct missile[MAXMISSILES];
@@ -6350,3 +6352,5 @@ void __fastcall ClearMissileSpot(int mi)
 	dFlags[missile[mi]._mix][missile[mi]._miy] &= ~DFLAG_MISSILE;
 	dMissile[missile[mi]._mix][missile[mi]._miy] = 0;
 }
+
+DEVILUTION_END_NAMESPACE

@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 int __fastcall codec_decode(void *pbSrcDst, int size, char *pszPassword)
 {
 	unsigned int v3; // ebx
@@ -152,3 +154,5 @@ void __fastcall codec_encode(void *pbSrcDst, int size, int size_64, char *pszPas
 }
 // 4036BE: using guessed type char var_AC[128];
 // 4036BE: using guessed type char dst[20];
+
+DEVILUTION_END_NAMESPACE

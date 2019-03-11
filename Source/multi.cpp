@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 char gbSomebodyWonGameKludge; // weak
 TBuffer sgHiPriBuf;
 char szPlayerDescript[128];
@@ -1009,3 +1011,5 @@ void __fastcall multi_player_joins(int pnum, TCmdPlrInfoHdr *cmd, int a3)
 		}
 	}
 }
+
+DEVILUTION_END_NAMESPACE

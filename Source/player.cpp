@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 int plr_lframe_size;
 int plr_wframe_size;
 UCHAR plr_gfx_flag = 0;
@@ -4157,3 +4159,5 @@ void __cdecl PlayDungMsgs()
 	}
 }
 // 52A554: using guessed type int sfxdelay;
+
+DEVILUTION_END_NAMESPACE

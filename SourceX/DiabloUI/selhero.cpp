@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "selhero.h"
 
+namespace dvl {
+
 int selhero_SaveCount = 0;
 _uiheroinfo heros[MAX_CHARACTERS];
 _uiheroinfo heroInfo;
@@ -277,4 +279,6 @@ BOOL __stdcall UiSelHeroMultDialog(
 {
 	isMultiPlayer = true;
 	return UiSelHeroDialog(fninfo, fncreate, fnstats, dlgresult, name);
+}
+
 }

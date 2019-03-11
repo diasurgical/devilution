@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 int trapid;  // weak
 int trapdir; // weak
 unsigned char *pObjCels[40];
@@ -5781,3 +5783,5 @@ void __fastcall GetObjectStr(int i)
 }
 // 4B883C: using guessed type int infoclr;
 // 5CF31D: using guessed type char setlevel;
+
+DEVILUTION_END_NAMESPACE

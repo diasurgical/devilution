@@ -1,7 +1,9 @@
 #include "dvlnet/abstract_net.h"
 #include "pch.h"
 
-static std::unique_ptr<dvlnet::abstract_net> dvlnet_inst;
+namespace dvl {
+
+static std::unique_ptr<net::abstract_net> dvlnet_inst;
 
 BOOL STORMAPI SNetReceiveMessage(int *senderplayerid, char **data, int *databytes)
 {
@@ -88,7 +90,7 @@ int __stdcall SNetInitializeProvider(unsigned long provider, struct _SNETPROGRAM
     struct _SNETPLAYERDATA *user_info, struct _SNETUIDATA *ui_info,
     struct _SNETVERSIONDATA *fileinfo)
 {
-	dvlnet_inst = dvlnet::abstract_net::make_net(provider);
+	dvlnet_inst = net::abstract_net::make_net(provider);
 	return ui_info->selectnamecallback(client_info, user_info, ui_info, fileinfo, provider, NULL, 0, NULL, 0, NULL);
 }
 
@@ -101,7 +103,7 @@ BOOL STORMAPI SNetCreateGame(const char *pszGameName, const char *pszGamePasswor
 {
 	if (GameTemplateSize != 8)
 		ABORT();
-	dvlnet::buffer_t game_init_info(GameTemplateData, GameTemplateData + GameTemplateSize);
+	net::buffer_t game_init_info(GameTemplateData, GameTemplateData + GameTemplateSize);
 	dvlnet_inst->setup_gameinfo(std::move(game_init_info));
 
 	char addrstr[129] = "0.0.0.0";
@@ -152,4 +154,6 @@ BOOL STORMAPI SNetSetGameMode(DWORD modeFlags, bool makePublic)
 {
 	UNIMPLEMENTED();
 	return TRUE;
+}
+
 }

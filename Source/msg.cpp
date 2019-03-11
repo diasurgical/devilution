@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 static DWORD sgdwOwnerWait;
 static DWORD sgdwRecvOffset;
 static int sgnCurrMegaPlayer;
@@ -2492,3 +2494,5 @@ int __fastcall On_REMSHIELD(TCmd *pCmd, int pnum)
 
 	return sizeof(*pCmd);
 }
+
+DEVILUTION_END_NAMESPACE

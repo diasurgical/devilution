@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 HWND ghMainWnd;
 int glMid1Seed[NUMLEVELS];
 int glMid2Seed[NUMLEVELS];
@@ -1990,3 +1992,5 @@ void __cdecl diablo_color_cyc_logic()
 	}
 }
 // 52574C: using guessed type int color_cycle_timer;
+
+DEVILUTION_END_NAMESPACE

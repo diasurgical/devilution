@@ -6,7 +6,7 @@
 #include "devilution.h"
 #include "dvlnet/abstract_net.h"
 
-namespace dvlnet {
+namespace dvl { namespace net {
 	class loopback : public abstract_net {
 	private:
 		std::queue<buffer_t> message_queue;
@@ -32,4 +32,4 @@ namespace dvlnet {
 		virtual bool SNetGetTurnsInTransit(int *turns);
 		virtual void setup_gameinfo(buffer_t info);
 	};
-}
+}}

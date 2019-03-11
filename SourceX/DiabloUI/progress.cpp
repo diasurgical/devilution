@@ -1,5 +1,7 @@
 #include "pch.h"
 
+namespace dvl {
+
 Art ArtPopupSm;
 Art ArtProgBG;
 Art ProgFil;
@@ -106,4 +108,6 @@ int __stdcall UiProgressDialog(HWND window, char *msg, int enable, int(__cdecl *
 	progress_Free();
 
 	return progress == 100;
+}
+
 }

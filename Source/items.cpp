@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 int itemactive[MAXITEMS];
 int uitemflag;
 int itemavail[MAXITEMS];
@@ -4987,3 +4989,5 @@ void __fastcall PutItemRecord(int seed, WORD ci, int index)
 		} while (v3 < gnNumGetRecords);
 	}
 }
+
+DEVILUTION_END_NAMESPACE

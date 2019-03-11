@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 SHA1Context sgSHA1[3];
 
 void __cdecl SHA1Clear()
@@ -127,3 +129,5 @@ void __fastcall SHA1Init(SHA1Context *context)
 	context->state[3] = 0x10325476;
 	context->state[4] = 0xC3D2E1F0;
 }
+
+DEVILUTION_END_NAMESPACE

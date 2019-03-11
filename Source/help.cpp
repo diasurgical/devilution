@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 int help_select_line; // weak
 int dword_634494;     // weak
 int helpflag;
@@ -246,3 +248,5 @@ void __cdecl HelpScrollDown()
 }
 // 634490: using guessed type int help_select_line;
 // 634960: using guessed type int HelpTop;
+
+DEVILUTION_END_NAMESPACE

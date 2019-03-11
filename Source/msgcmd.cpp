@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 /* TODO: decompile and fix, commands are NOT deleted properly */
 
 ChatCmd sgChat_Cmd;
@@ -244,3 +246,5 @@ void __fastcall msgcmd_cleanup_extern_msg(ServerCommand **extern_msgs)
 		extern_msgs[1] = 0;
 	}
 }
+
+DEVILUTION_END_NAMESPACE

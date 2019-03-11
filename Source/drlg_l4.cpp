@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 int diabquad1x; // weak
 int diabquad1y; // weak
 int diabquad3x; // idb
@@ -2944,3 +2946,5 @@ void __cdecl DRLG_L4Pass3()
 		++v4;
 	} while (v4 < 40);
 }
+
+DEVILUTION_END_NAMESPACE

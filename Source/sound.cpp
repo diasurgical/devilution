@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 LPDIRECTSOUNDBUFFER DSBs[8];
 LPDIRECTSOUND sglpDS;
 char gbSndInited;
@@ -501,3 +503,5 @@ int __fastcall sound_get_or_set_sound_volume(int volume)
 
 	return sglSoundVolume;
 }
+
+DEVILUTION_END_NAMESPACE

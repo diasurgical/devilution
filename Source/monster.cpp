@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 // Tracks which missile files are already loaded
 int MissileFileFlag;
 
@@ -6993,3 +6995,5 @@ void __fastcall decode_enemy(int m, int enemy)
 		monster[m]._menemyy = monster[enemy]._mfuty;
 	}
 }
+
+DEVILUTION_END_NAMESPACE

@@ -1,0 +1,321 @@
+#pragma once
+
+// Basic types
+#define __int8 char
+#define __int16 short
+#define __int32 int
+#define __int64 long long
+
+#define INVALID_HANDLE_VALUE ((HANDLE)-1)
+#define INVALID_HANDLE ((HANDLE)-1)
+#define HFILE_ERROR ((HFILE)-1)
+
+//
+// Intrinsics
+//
+#define LOBYTE(w) ((BYTE)(((DWORD_PTR)(w)) & 0xff))
+#define HIBYTE(w) ((BYTE)((((DWORD_PTR)(w)) >> 8) & 0xff))
+#define LOWORD(l) ((WORD)(((DWORD_PTR)(l)) & 0xffff))
+#define HIWORD(l) ((WORD)((((DWORD_PTR)(l)) >> 16) & 0xffff))
+
+#define InterlockedIncrement(x) __sync_add_and_fetch(x, 1)
+
+#define INFINITE 0xFFFFFFFF
+
+#define MAKEFOURCC(x, y, z, w)             \
+	(((uint32_t)((uint8_t)x))              \
+	    | (((uint32_t)((uint8_t)y)) << 8)  \
+	    | (((uint32_t)((uint8_t)z)) << 16) \
+	    | (((uint32_t)((uint8_t)w)) << 24))
+
+#define WINUSERAPI
+
+#define FOURCC_RIFF MAKEFOURCC('W', 'A', 'V', 'E')
+
+#define ERROR_ALREADY_EXISTS 183
+
+#define CreateEvent CreateEventA
+
+#define PM_NOREMOVE 0x0000
+#define PM_REMOVE 0x0001
+
+#define WM_QUIT 0x0012
+
+#define PeekMessage PeekMessageA
+#define DispatchMessage DispatchMessageA
+#define PostMessage PostMessageA
+#define CreateWindowEx CreateWindowExA
+#define FindWindow FindWindowA
+#define RegisterClassEx RegisterClassExA
+#define LoadCursor LoadCursorA
+#define GetUserName GetUserNameA
+#define LoadIcon LoadIconA
+#define LoadImage LoadImageA
+#define SHGetPathFromIDList SHGetPathFromIDListA
+#define ShellExecute ShellExecuteA
+#define GetModuleHandle GetModuleHandleA
+
+#define THREAD_BASE_PRIORITY_MAX 2
+#define THREAD_PRIORITY_NORMAL 0
+#define THREAD_PRIORITY_HIGHEST THREAD_BASE_PRIORITY_MAX
+#define THREAD_PRIORITY_ABOVE_NORMAL (THREAD_PRIORITY_HIGHEST - 1)
+
+#define TextOut TextOutA
+
+#define HORZRES 8
+#define VERTRES 10
+#define NUMRESERVED 106
+
+#define _snprintf snprintf
+#define _vsnprintf vsnprintf
+#define wsprintf wsprintfA
+#define wvsprintf wvsprintfA
+
+//
+// File I/O
+//
+
+#define FILE_BEGIN 0
+#define FILE_CURRENT 1
+#define FILE_END 2
+#define FILE_FLAG_WRITE_THROUGH 0x80000000
+#define CREATE_ALWAYS 2
+#define GENERIC_READ 0x80000000L
+#define GENERIC_WRITE 0x40000000L
+#define OPEN_EXISTING 3
+#define OPEN_ALWAYS 4
+#define ERROR_FILE_NOT_FOUND 2
+#define FILE_ATTRIBUTE_NORMAL 128
+#define FILE_ATTRIBUTE_HIDDEN 0x00000002
+#define FILE_ATTRIBUTE_SYSTEM 0x00000004
+#define FILE_ATTRIBUTE_DIRECTORY 0x00000010
+#define FILE_SHARE_READ 1
+
+#define OFS_MAXPATHNAME DVL_OFS_MAXPATHNAME
+#define MAX_PATH DVL_MAX_PATH
+
+//
+// Calculate the byte offset of a field in a structure of type type.
+//
+
+#define FIELD_OFFSET(type, field) ((LONG)(INT_PTR) & (((type *)0)->field))
+#define IMAGE_FIRST_SECTION(ntheader) ((PIMAGE_SECTION_HEADER)((UINT_PTR)ntheader + FIELD_OFFSET(IMAGE_NT_HEADERS, OptionalHeader) + ((PIMAGE_NT_HEADERS)(ntheader))->FileHeader.SizeOfOptionalHeader))
+
+#define IMAGE_NT_SIGNATURE 0x00004550 // PE00
+#define IMAGE_DOS_SIGNATURE 0x5A4D
+#define VER_PLATFORM_WIN32_NT 2
+
+#define GetVersionEx GetVersionExA
+
+#define lstrcpyn lstrcpynA
+
+#define SEC_COMMIT 0x8000000
+#define PAGE_READWRITE 0x04
+
+#define FILE_MAP_ALL_ACCESS SECTION_ALL_ACCESS
+#define SECTION_QUERY 0x0001
+#define SECTION_MAP_WRITE 0x0002
+#define SECTION_MAP_READ 0x0004
+#define SECTION_MAP_EXECUTE 0x0008
+#define SECTION_EXTEND_SIZE 0x0010
+#define SECTION_MAP_EXECUTE_EXPLICIT 0x0020
+#define STANDARD_RIGHTS_REQUIRED 0x000F0000
+
+#define SECTION_ALL_ACCESS \
+	(STANDARD_RIGHTS_REQUIRED | SECTION_QUERY | SECTION_MAP_WRITE | SECTION_MAP_READ | SECTION_MAP_EXECUTE | SECTION_EXTEND_SIZE)
+
+#define CREATE_NEW_PROCESS_GROUP 0x200
+
+#define CreateProcess CreateProcessA
+#define CreateFileMapping CreateFileMappingA
+#define GetPrivateProfileString GetPrivateProfileStringA
+#define MessageBox MessageBoxA
+
+#define HKEY_CURRENT_USER 1
+#define KEY_READ 0x20019
+#define KEY_WRITE 0x20006
+#define REG_SZ 1
+
+#define RegOpenKeyEx RegOpenKeyExA
+#define RegQueryValueEx RegQueryValueExA
+#define RegSetValueEx RegSetValueExA
+#define RegCloseKey RegCloseKeyA
+#define DefWindowProc DefWindowProcA
+#define GetWindowLong GetWindowLongA
+#define SetWindowLong SetWindowLongA
+
+#define GetFileAttributes GetFileAttributesA
+#define SetFileAttributes SetFileAttributesA
+#define FindFirstFile FindFirstFileA
+#define FindNextFile FindNextFileA
+#define CreateFile CreateFileA
+#define GetWindowsDirectory GetWindowsDirectoryA
+#define GetLogicalDriveStrings GetLogicalDriveStringsA
+#define GetDriveType GetDriveTypeA
+#define GetDiskFreeSpace GetDiskFreeSpaceA
+#define GetModuleFileName GetModuleFileNameA
+#define GetComputerName GetComputerNameA
+#define GetFileVersionInfoSize GetFileVersionInfoSizeA
+#define GetFileVersionInfo GetFileVersionInfoA
+#define VerQueryValue VerQueryValueA
+#define DeleteFile DeleteFileA
+#define CopyFile CopyFileA
+
+#define GWL_STYLE (-16)
+
+#define WS_POPUP 0x80000000L
+#define WS_SYSMENU 0x00080000L
+
+#define DRIVE_CDROM 5
+
+//
+// Events
+//
+#define WM_MOUSEFIRST 0x0200
+#define WM_MOUSEMOVE 0x0200
+#define WM_LBUTTONDOWN 0x0201
+#define WM_LBUTTONUP 0x0202
+#define WM_RBUTTONDOWN 0x0204
+#define WM_RBUTTONUP 0x0205
+
+#define WM_KEYFIRST 0x0100
+#define WM_KEYDOWN 0x0100
+#define WM_KEYUP 0x0101
+#define WM_SYSKEYDOWN 0x0104
+
+#define WM_INITDIALOG 0x0110
+#define WM_COMMAND 0x0111
+#define WM_SYSCOMMAND 0x0112
+
+#define WM_CHAR 0x0102
+#define WM_CAPTURECHANGED 0x0215
+
+#define WM_CREATE 0x0001
+#define WM_DESTROY 0x0002
+#define WM_PAINT 0x000F
+#define WM_CLOSE 0x0010
+#define WM_QUERYENDSESSION 0x0011
+#define WM_ERASEBKGND 0x0014
+#define WM_ACTIVATEAPP 0x001C
+#define WM_QUERYNEWPALETTE 0x030F
+#define WM_PALETTECHANGED 0x0311
+
+#define SC_CLOSE 0xF060
+
+#define VK_RETURN 0x0D
+#define VK_BACK 0x08
+#define VK_SHIFT 0x10
+#define VK_ESCAPE 0x1B
+#define VK_SPACE 0x20
+#define VK_LEFT 0x25
+#define VK_UP 0x26
+#define VK_RIGHT 0x27
+#define VK_DOWN 0x28
+
+#define VK_F1 0x70
+#define VK_F2 0x71
+#define VK_F3 0x72
+#define VK_F4 0x73
+#define VK_F5 0x74
+#define VK_F6 0x75
+#define VK_F7 0x76
+#define VK_F8 0x77
+#define VK_F9 0x78
+#define VK_F10 0x79
+#define VK_F11 0x7A
+#define VK_F12 0x7B
+
+#define VK_TAB 0x09
+#define VK_PAUSE 0x13
+#define VK_PRIOR 0x21
+#define VK_NEXT 0x22
+#define VK_SNAPSHOT 0x2C
+
+#define VK_OEM_1 0xBA
+#define VK_OEM_PLUS 0xBB
+#define VK_OEM_COMMA 0xBC
+#define VK_OEM_MINUS 0xBD
+#define VK_OEM_PERIOD 0xBE
+#define VK_OEM_2 0xBF
+#define VK_OEM_3 0xC0
+#define VK_OEM_4 0xDB
+#define VK_OEM_5 0xDC
+#define VK_OEM_6 0xDD
+#define VK_OEM_7 0xDE
+//#define VK_OEM_8 0xDF
+//#define VK_OEM_102 0xE2
+
+#define MK_SHIFT 0x0004
+#define MK_LBUTTON 0x0001
+#define MK_RBUTTON 0x0002
+
+#define MB_TASKMODAL 0x00002000L
+#define MB_ICONHAND 0x00000010L
+#define MB_ICONEXCLAMATION 0x00000030L
+
+#define FORMAT_MESSAGE_IGNORE_INSERTS 0x00000200
+#define FORMAT_MESSAGE_FROM_HMODULE 0x00000800
+#define FORMAT_MESSAGE_FROM_SYSTEM 0x00001000
+
+#define STATUS_BREAKPOINT ((DWORD)0x80000003L)
+#define STATUS_GUARD_PAGE_VIOLATION ((DWORD)0x80000001L)
+#define STATUS_FLOAT_DIVIDE_BY_ZERO ((DWORD)0xC000008EL)
+#define STATUS_SINGLE_STEP ((DWORD)0x80000004L)
+#define STATUS_ARRAY_BOUNDS_EXCEEDED ((DWORD)0xC000008CL)
+#define STATUS_ACCESS_VIOLATION ((DWORD)0xC0000005L)
+#define STATUS_IN_PAGE_ERROR ((DWORD)0xC0000006L)
+#define STATUS_ILLEGAL_INSTRUCTION ((DWORD)0xC000001DL)
+#define STATUS_DATATYPE_MISALIGNMENT ((DWORD)0x80000002L)
+#define STATUS_FLOAT_DENORMAL_OPERAND ((DWORD)0xC000008DL)
+#define STATUS_NONCONTINUABLE_EXCEPTION ((DWORD)0xC0000025L)
+#define STATUS_INTEGER_DIVIDE_BY_ZERO ((DWORD)0xC0000094L)
+#define STATUS_INVALID_HANDLE ((DWORD)0xC0000008L)
+#define STATUS_FLOAT_OVERFLOW ((DWORD)0xC0000091L)
+#define STATUS_ILLEGAL_INSTRUCTION ((DWORD)0xC000001DL)
+#define STATUS_GUARD_PAGE_VIOLATION ((DWORD)0x80000001L)
+#define STATUS_ILLEGAL_INSTRUCTION ((DWORD)0xC000001DL)
+#define STATUS_INTEGER_OVERFLOW ((DWORD)0xC0000095L)
+#define STATUS_PRIVILEGED_INSTRUCTION ((DWORD)0xC0000096L)
+#define STATUS_FLOAT_UNDERFLOW ((DWORD)0xC0000093L)
+#define STATUS_FLOAT_INEXACT_RESULT ((DWORD)0xC000008FL)
+#define STATUS_FLOAT_INVALID_OPERATION ((DWORD)0xC0000090L)
+#define STATUS_FLOAT_STACK_CHECK ((DWORD)0xC0000092L)
+#define STATUS_INVALID_DISPOSITION ((DWORD)0xC0000026L)
+#define STATUS_STACK_OVERFLOW ((DWORD)0xC00000FDL)
+
+#define EXCEPTION_CONTINUE_SEARCH 0x0
+#define EXCEPTION_ACCESS_VIOLATION STATUS_ACCESS_VIOLATION
+#define EXCEPTION_BREAKPOINT STATUS_BREAKPOINT
+#define EXCEPTION_GUARD_PAGE STATUS_GUARD_PAGE_VIOLATION
+#define EXCEPTION_FLT_DIVIDE_BY_ZERO STATUS_FLOAT_DIVIDE_BY_ZERO
+#define EXCEPTION_SINGLE_STEP STATUS_SINGLE_STEP
+#define EXCEPTION_ARRAY_BOUNDS_EXCEEDED STATUS_ARRAY_BOUNDS_EXCEEDED
+#define EXCEPTION_IN_PAGE_ERROR STATUS_IN_PAGE_ERROR
+#define EXCEPTION_ILLEGAL_INSTRUCTION STATUS_ILLEGAL_INSTRUCTION
+#define EXCEPTION_DATATYPE_MISALIGNMENT STATUS_DATATYPE_MISALIGNMENT
+#define EXCEPTION_FLT_DENORMAL_OPERAND STATUS_FLOAT_DENORMAL_OPERAND
+#define EXCEPTION_NONCONTINUABLE_EXCEPTION STATUS_NONCONTINUABLE_EXCEPTION
+#define EXCEPTION_INT_DIVIDE_BY_ZERO STATUS_INTEGER_DIVIDE_BY_ZERO
+#define EXCEPTION_INVALID_HANDLE STATUS_INVALID_HANDLE
+#define EXCEPTION_FLT_OVERFLOW STATUS_FLOAT_OVERFLOW
+#define EXCEPTION_ILLEGAL_INSTRUCTION STATUS_ILLEGAL_INSTRUCTION
+#define EXCEPTION_GUARD_PAGE STATUS_GUARD_PAGE_VIOLATION
+#define EXCEPTION_ILLEGAL_INSTRUCTION STATUS_ILLEGAL_INSTRUCTION
+#define EXCEPTION_INT_OVERFLOW STATUS_INTEGER_OVERFLOW
+#define EXCEPTION_PRIV_INSTRUCTION STATUS_PRIVILEGED_INSTRUCTION
+#define EXCEPTION_FLT_UNDERFLOW STATUS_FLOAT_UNDERFLOW
+#define EXCEPTION_FLT_INEXACT_RESULT STATUS_FLOAT_INEXACT_RESULT
+#define EXCEPTION_FLT_INVALID_OPERATION STATUS_FLOAT_INVALID_OPERATION
+#define EXCEPTION_FLT_STACK_CHECK STATUS_FLOAT_STACK_CHECK
+#define EXCEPTION_INVALID_DISPOSITION STATUS_INVALID_DISPOSITION
+#define EXCEPTION_STACK_OVERFLOW STATUS_STACK_OVERFLOW
+
+#define HWND_NOTOPMOST (HWND) - 2
+#define HWND_TOP (HWND)0
+
+#define SWP_NOACTIVATE 0x0010
+#define SWP_NOMOVE 0x0002
+#define SWP_NOSIZE 0x0004
+#define SWP_NOZORDER 0x0001
+
+#define OF_EXIST 1

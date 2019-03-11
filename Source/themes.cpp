@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 int numthemes; // idb
 BOOL armorFlag;
 int ThemeGoodIn[4];
@@ -1220,3 +1222,5 @@ void __cdecl CreateThemeRooms()
 		UpdateL4Trans();
 	}
 }
+
+DEVILUTION_END_NAMESPACE

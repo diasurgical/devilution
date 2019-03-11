@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 short sync_word_6AA708[MAXMONSTERS];
 int syncmonsters; // weak
 short sync_word_6AA89C[MAXMONSTERS];
@@ -342,3 +344,5 @@ void __cdecl sync_clear_pkt()
 	memset(sync_word_6AA89C, 255, 0x190u);
 }
 // 6AA898: using guessed type int syncmonsters;
+
+DEVILUTION_END_NAMESPACE

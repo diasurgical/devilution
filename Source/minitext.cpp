@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 int qtexty; // weak
 char *qtextptr;
 int qtextSpd;     // weak
@@ -255,3 +257,5 @@ void __cdecl DrawQText()
 // 646D04: using guessed type int scrolltexty;
 // 646D08: using guessed type int sgLastScroll;
 // 428202: using guessed type char qstr[128];
+
+DEVILUTION_END_NAMESPACE

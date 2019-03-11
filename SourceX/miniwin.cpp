@@ -3,6 +3,8 @@
 #include <sys/statvfs.h>
 #endif
 
+namespace dvl {
+
 DWORD last_error;
 
 DWORD WINAPI GetLastError(VOID)
@@ -329,7 +331,7 @@ BOOL ShowWindow(HWND hWnd, int nCmdShow)
 	return TRUE;
 }
 
-WINUSERAPI ATOM WINAPI RegisterClassExA(const WNDCLASSEX *lpwcx)
+WINUSERAPI ATOM WINAPI RegisterClassExA(const WNDCLASSEXA *lpwcx)
 {
 	DUMMY();
 	return 1;
@@ -713,4 +715,6 @@ LONG SetWindowLongA(HWND hWnd, int nIndex, LONG dwNewLong)
 {
 	DUMMY();
 	return 0;
+}
+
 }

@@ -1,0 +1,671 @@
+#pragma once
+
+namespace dvl {
+
+static constexpr auto DVL_OFS_MAXPATHNAME = 128;
+static constexpr auto DVL_MAX_PATH = 260;
+
+typedef char CHAR;
+typedef uint16_t SHORT;
+typedef int32_t LONG;
+typedef uint8_t BOOLEAN;
+
+typedef LONG *PLONG;
+typedef uint32_t ULONG;
+typedef ULONG *PULONG;
+typedef unsigned short USHORT;
+typedef USHORT *PUSHORT;
+typedef unsigned char UCHAR;
+typedef UCHAR *PUCHAR;
+typedef char *PSZ;
+
+typedef uint32_t DWORD;
+typedef int BOOL, WINBOOL;
+typedef unsigned char BYTE;
+typedef unsigned short WORD;
+typedef float FLOAT;
+typedef FLOAT *PFLOAT;
+typedef BOOL *LPBOOL;
+typedef BYTE *LPBYTE;
+typedef int *LPINT;
+typedef WORD *LPWORD;
+typedef long *LPLONG;
+typedef DWORD *LPDWORD;
+typedef void *LPVOID;
+typedef void *PVOID;
+typedef const void *LPCVOID;
+typedef void *HBRUSH;
+typedef void *HMENU;
+typedef void *HICON;
+typedef void *LPITEMIDLIST;
+typedef LPITEMIDLIST PIDLIST_ABSOLUTE;
+typedef LPITEMIDLIST PCIDLIST_ABSOLUTE;
+
+typedef int INT;
+typedef unsigned int UINT;
+typedef unsigned int *PUINT;
+
+// GCC qword alignment is 4, MSVC is 8, work around by introducing a more aligned type
+typedef long long INT64;
+typedef unsigned long long UINT64;
+
+typedef intptr_t INT_PTR, *PINT_PTR;
+typedef uintptr_t UINT_PTR, *PUINT_PTR;
+
+typedef intptr_t LONG_PTR, *PLONG_PTR;
+typedef uintptr_t ULONG_PTR, *PULONG_PTR;
+typedef ULONG_PTR SIZE_T;
+
+typedef ULONG_PTR DWORD_PTR, *PDWORD_PTR;
+
+typedef CHAR *LPSTR;
+typedef CHAR *LPTSTR;
+typedef const CHAR *LPCSTR;
+
+typedef UINT_PTR WPARAM;
+typedef LONG_PTR LPARAM;
+typedef LONG_PTR LRESULT;
+
+//
+// Handles
+//
+typedef void *HANDLE;
+
+typedef HANDLE HWND, HGDIOBJ, HMODULE, HDC, HRGN, HINSTANCE, HPALETTE, HFILE, HCURSOR;
+
+typedef LONG LCID;
+
+typedef DWORD COLORREF;
+
+typedef LONG HRESULT;
+
+typedef LRESULT(CALLBACK *WNDPROC)(HWND, UINT, WPARAM, LPARAM);
+
+typedef struct waveformat_tag {
+	WORD wFormatTag;
+	WORD nChannels;
+	DWORD nSamplesPerSec;
+	DWORD nAvgBytesPerSec;
+	WORD nBlockAlign;
+} WAVEFORMAT, *PWAVEFORMAT, *LPWAVEFORMAT;
+
+typedef struct pcmwaveformat_tag {
+	WAVEFORMAT wf;
+	WORD wBitsPerSample;
+} PCMWAVEFORMAT, *PPCMWAVEFORMAT, *LPPCMWAVEFORMAT;
+
+typedef struct tWAVEFORMATEX {
+	WORD wFormatTag;
+	WORD nChannels;
+	DWORD nSamplesPerSec;
+	DWORD nAvgBytesPerSec;
+	WORD nBlockAlign;
+	WORD wBitsPerSample;
+	WORD cbSize;
+} WAVEFORMATEX, *LPWAVEFORMATEX, *LPCWAVEFORMATEX;
+
+typedef struct _FILETIME {
+	DWORD dwLowDateTime;
+	DWORD dwHighDateTime;
+} FILETIME, *LPFILETIME;
+
+typedef struct tagRECT {
+	LONG left;
+	LONG top;
+	LONG right;
+	LONG bottom;
+} RECT;
+
+typedef RECT *LPRECT;
+
+typedef struct tagPOINT {
+	LONG x;
+	LONG y;
+} POINT;
+
+typedef struct tagSIZE {
+	LONG cx;
+	LONG cy;
+} SIZE;
+
+typedef struct tagVS_FIXEDFILEINFO {
+	DWORD dwSignature;
+	DWORD dwStrucVersion;
+	DWORD dwFileVersionMS;
+	DWORD dwFileVersionLS;
+	DWORD dwProductVersionMS;
+	DWORD dwProductVersionLS;
+	DWORD dwFileFlagsMask;
+	DWORD dwFileFlags;
+	DWORD dwFileOS;
+	DWORD dwFileType;
+	DWORD dwFileSubtype;
+	DWORD dwFileDateMS;
+	DWORD dwFileDateLS;
+} VS_FIXEDFILEINFO;
+
+typedef struct tagMSG {
+	HWND hwnd;
+	UINT message;
+	WPARAM wParam;
+	LPARAM lParam;
+	DWORD time;
+	POINT pt;
+} MSG, *LPMSG;
+
+typedef uint32_t FOURCC;
+
+typedef struct {
+	FOURCC ckid;
+	DWORD cksize;
+	FOURCC fccType;
+	DWORD dwDataOffset;
+	DWORD dwFlags;
+} MMCKINFO;
+
+//
+// System time is represented with the following structure:
+//
+
+typedef struct _SYSTEMTIME {
+	WORD wYear;
+	WORD wMonth;
+	WORD wDayOfWeek;
+	WORD wDay;
+	WORD wHour;
+	WORD wMinute;
+	WORD wSecond;
+	WORD wMilliseconds;
+} SYSTEMTIME, *PSYSTEMTIME, *LPSYSTEMTIME;
+
+typedef struct tagWNDCLASSEXA {
+	UINT cbSize;
+	UINT style;
+	WNDPROC lpfnWndProc;
+	int cbClsExtra;
+	int cbWndExtra;
+	HINSTANCE hInstance;
+	HICON hIcon;
+	HCURSOR hCursor;
+	HBRUSH hbrBackground;
+	LPCSTR lpszMenuName;
+	LPCSTR lpszClassName;
+	HICON hIconSm;
+} WNDCLASSEXA;
+
+typedef unsigned long _fsize_t; /* Could be 64 bits for Win32 */
+
+struct _finddata_t {
+	unsigned attrib;
+	time_t time_create; /* -1 for FAT file systems */
+	time_t time_access; /* -1 for FAT file systems */
+	time_t time_write;
+	_fsize_t size;
+	char name[260];
+};
+
+typedef WORD ATOM;
+
+//
+// Everything else
+//
+typedef struct tagPALETTEENTRY {
+	BYTE peRed;
+	BYTE peGreen;
+	BYTE peBlue;
+	BYTE peFlags;
+} PALETTEENTRY, *PPALETTEENTRY, *LPPALETTEENTRY;
+
+typedef struct _SYSTEM_INFO {
+	union {
+		DWORD dwOemId;
+		struct {
+			WORD wProcessorArchitecture;
+			WORD wReserved;
+		};
+	};
+	DWORD dwPageSize;
+	LPVOID lpMinimumApplicationAddress;
+	LPVOID lpMaximumApplicationAddress;
+	DWORD_PTR dwActiveProcessorMask;
+	DWORD dwNumberOfProcessors;
+	DWORD dwProcessorType;
+	DWORD dwAllocationGranularity;
+	WORD wProcessorLevel;
+	WORD wProcessorRevision;
+} SYSTEM_INFO, *LPSYSTEM_INFO;
+
+typedef void *LPSECURITY_ATTRIBUTES;
+
+typedef struct _LIST_ENTRY {
+	struct _LIST_ENTRY *Flink;
+	struct _LIST_ENTRY *Blink;
+} LIST_ENTRY, *PLIST_ENTRY;
+
+DWORD WINAPI GetTickCount(VOID);
+
+DWORD WINAPI GetLastError(VOID);
+VOID WINAPI SetLastError(DWORD dwErrCode);
+
+WINBOOL WINAPI CloseHandle(HANDLE hObject);
+
+HANDLE WINAPI CreateEventA(LPSECURITY_ATTRIBUTES lpEventAttributes, WINBOOL bManualReset, WINBOOL bInitialState,
+    LPCSTR lpName);
+BOOL WINAPI SetEvent(HANDLE hEvent);
+BOOL WINAPI ResetEvent(HANDLE hEvent);
+DWORD WINAPI WaitForSingleObject(HANDLE hHandle, DWORD dwMilliseconds);
+
+WINBOOL WINAPI SetCursorPos(int X, int Y);
+int WINAPI ShowCursor(WINBOOL bShow);
+HWND WINAPI SetCapture(HWND hWnd);
+WINBOOL WINAPI ReleaseCapture(VOID);
+
+SHORT WINAPI GetAsyncKeyState(int vKey);
+
+WINBOOL WINAPI PeekMessageA(LPMSG lpMsg, HWND hWnd, UINT wMsgFilterMin, UINT wMsgFilterMax, UINT wRemoveMsg);
+
+WINBOOL WINAPI TranslateMessage(CONST MSG *lpMsg);
+LRESULT WINAPI DispatchMessageA(CONST MSG *lpMsg);
+WINBOOL WINAPI PostMessageA(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+
+WINBOOL WINAPI DestroyWindow(HWND hWnd);
+HWND WINAPI GetLastActivePopup(HWND hWnd);
+HWND WINAPI GetTopWindow(HWND hWnd);
+WINBOOL WINAPI SetForegroundWindow(HWND hWnd);
+HWND WINAPI SetFocus(HWND hWnd);
+HWND GetDesktopWindow();
+HRESULT SHGetSpecialFolderLocation(HWND hwnd, int csidl, PIDLIST_ABSOLUTE *ppidl);
+HWND CreateWindowExA(
+    DWORD dwExStyle,
+    LPCSTR lpClassName,
+    LPCSTR lpWindowName,
+    DWORD dwStyle,
+    int X,
+    int Y,
+    int nWidth,
+    int nHeight,
+    HWND hWndParent,
+    HMENU hMenu,
+    HINSTANCE hInstance,
+    LPVOID lpParam);
+HWND WINAPI FindWindowA(LPCSTR lpClassName, LPCSTR lpWindowName);
+BOOL InvalidateRect(HWND hWnd, const RECT *lpRect, BOOL bErase);
+BOOL UpdateWindow(HWND hWnd);
+BOOL ShowWindow(HWND hWnd, int nCmdShow);
+WINUSERAPI ATOM WINAPI RegisterClassExA(const WNDCLASSEXA *lpwcx);
+int GetSystemMetrics(int nIndex);
+HGDIOBJ GetStockObject(int i);
+HCURSOR LoadCursorA(HINSTANCE hInstance, LPCSTR lpCursorName);
+BOOL GetUserNameA(LPSTR lpBuffer, LPDWORD pcbBuffer);
+void GetLocalTime(LPSYSTEMTIME lpSystemTime);
+long __cdecl _findfirst(const char *, struct _finddata_t *);
+int __cdecl _findnext(long, struct _finddata_t *);
+
+HICON LoadIconA(HINSTANCE hInstance, LPCSTR lpIconName);
+HANDLE LoadImageA(HINSTANCE hInst, LPCSTR name, UINT type, int cx, int cy, UINT fuLoad);
+BOOL SHGetPathFromIDListA(PCIDLIST_ABSOLUTE pidl, LPSTR pszPath);
+HINSTANCE ShellExecuteA(HWND hwnd, LPCSTR lpOperation, LPCSTR lpFile, LPCSTR lpParameters, LPCSTR lpDirectory, INT nShowCmd);
+int GetClassName(HWND hWnd, LPTSTR lpClassName, int nMaxCount);
+
+typedef LONG(WINAPI *PTOP_LEVEL_EXCEPTION_FILTER)(
+    struct _EXCEPTION_POINTERS *ExceptionInfo);
+typedef PTOP_LEVEL_EXCEPTION_FILTER LPTOP_LEVEL_EXCEPTION_FILTER;
+LPTOP_LEVEL_EXCEPTION_FILTER WINAPI SetUnhandledExceptionFilter(LPTOP_LEVEL_EXCEPTION_FILTER lpTopLevelExceptionFilter);
+
+HMODULE GetModuleHandleA(LPCSTR lpModuleName);
+
+uintptr_t __cdecl _beginthreadex(void *_Security, unsigned _StackSize, unsigned(__stdcall *_StartAddress)(void *),
+                                 void *_ArgList, unsigned _InitFlag, unsigned *_ThrdAddr);
+HANDLE WINAPI GetCurrentThread(VOID);
+DWORD WINAPI GetCurrentThreadId(VOID);
+WINBOOL WINAPI SetThreadPriority(HANDLE hThread, int nPriority);
+VOID WINAPI Sleep(DWORD dwMilliseconds);
+
+VOID WINAPI GetSystemInfo(LPSYSTEM_INFO lpSystemInfo);
+
+HDC WINAPI GetDC(HWND hWnd);
+int WINAPI ReleaseDC(HWND hWnd, HDC hDC);
+WINBOOL WINAPI TextOutA(HDC hdc, int x, int y, LPCSTR lpString, int c);
+
+int WINAPI GetDeviceCaps(HDC hdc, int index);
+BOOL GetWindowRect(HWND hDlg, tagRECT *Rect);
+UINT WINAPI GetSystemPaletteEntries(HDC hdc, UINT iStart, UINT cEntries, LPPALETTEENTRY pPalEntries);
+
+int WINAPIV wsprintfA(LPSTR, LPCSTR, ...);
+int WINAPIV wvsprintfA(LPSTR dest, LPCSTR format, va_list arglist);
+int __cdecl _strcmpi(const char *_Str1, const char *_Str2);
+char *__cdecl _itoa(int _Value, char *_Dest, int _Radix);
+
+char *__cdecl _strlwr(char *str);
+
+//
+// File I/O
+//
+
+typedef struct _WIN32_FIND_DATAA {
+	DWORD dwFileAttributes;
+	FILETIME ftCreationTime;
+	FILETIME ftLastAccessTime;
+	FILETIME ftLastWriteTime;
+	DWORD nFileSizeHigh;
+	DWORD nFileSizeLow;
+	DWORD dwReserved0;
+	DWORD dwReserved1;
+	CHAR cFileName[DVL_MAX_PATH];
+	CHAR cAlternateFileName[14];
+	DWORD dwFileType;
+	DWORD dwCreatorType;
+	WORD wFinderFlags;
+} WIN32_FIND_DATAA, *LPWIN32_FIND_DATAA;
+
+typedef void *LPOVERLAPPED;
+
+typedef struct _IMAGE_FILE_HEADER {
+	WORD Machine;
+	WORD NumberOfSections;
+	DWORD TimeDateStamp;
+	DWORD PointerToSymbolTable;
+	DWORD NumberOfSymbols;
+	WORD SizeOfOptionalHeader;
+	WORD Characteristics;
+} IMAGE_FILE_HEADER, *PIMAGE_FILE_HEADER;
+
+typedef BOOL(CALLBACK *DLGPROC)(HWND, UINT, WPARAM, LPARAM);
+
+typedef struct _IMAGE_OPTIONAL_HEADER {
+	WORD Magic;
+	BYTE MajorLinkerVersion;
+	BYTE MinorLinkerVersion;
+	DWORD SizeOfCode;
+	DWORD SizeOfInitializedData;
+	DWORD SizeOfUninitializedData;
+	DWORD AddressOfEntryPoint;
+	DWORD BaseOfCode;
+	DWORD BaseOfData;
+	DWORD ImageBase;
+	DWORD SectionAlignment;
+	DWORD FileAlignment;
+	WORD MajorOperatingSystemVersion;
+	WORD MinorOperatingSystemVersion;
+	WORD MajorImageVersion;
+	WORD MinorImageVersion;
+	WORD MajorSubsystemVersion;
+	WORD MinorSubsystemVersion;
+	DWORD Win32VersionValue;
+	DWORD SizeOfImage;
+	DWORD SizeOfHeaders;
+	DWORD CheckSum;
+	WORD Subsystem;
+	WORD DllCharacteristics;
+	DWORD SizeOfStackReserve;
+	DWORD SizeOfStackCommit;
+	DWORD SizeOfHeapReserve;
+	DWORD SizeOfHeapCommit;
+	DWORD LoaderFlags;
+	DWORD NumberOfRvaAndSizes;
+} IMAGE_OPTIONAL_HEADER32, *PIMAGE_OPTIONAL_HEADER32;
+
+typedef struct _IMAGE_NT_HEADERS {
+	DWORD Signature;
+	IMAGE_FILE_HEADER FileHeader;
+	IMAGE_OPTIONAL_HEADER32 OptionalHeader;
+} IMAGE_NT_HEADERS, *PIMAGE_NT_HEADERS;
+
+typedef struct _IMAGE_DOS_HEADER {
+	WORD e_magic;
+	WORD e_cblp;
+	WORD e_cp;
+	WORD e_crlc;
+	WORD e_cparhdr;
+	WORD e_minalloc;
+	WORD e_maxalloc;
+	WORD e_ss;
+	WORD e_sp;
+	WORD e_csum;
+	WORD e_ip;
+	WORD e_cs;
+	WORD e_lfarlc;
+	WORD e_ovno;
+	WORD e_res[4];
+	WORD e_oemid;
+	WORD e_oeminfo;
+	WORD e_res2[10];
+	LONG e_lfanew;
+} IMAGE_DOS_HEADER, *PIMAGE_DOS_HEADER;
+
+typedef struct _OFSTRUCT {
+	BYTE cBytes;
+	BYTE fFixedDisk;
+	WORD nErrCode;
+	WORD Reserved1;
+	WORD Reserved2;
+	CHAR szPathName[DVL_OFS_MAXPATHNAME];
+} OFSTRUCT, *LPOFSTRUCT, *POFSTRUCT;
+
+typedef struct _OSVERSIONINFOA {
+	DWORD dwOSVersionInfoSize;
+	DWORD dwMajorVersion;
+	DWORD dwMinorVersion;
+	DWORD dwBuildNumber;
+	DWORD dwPlatformId;
+	CHAR szCSDVersion[128];
+} OSVERSIONINFO, *LPOSVERSIONINFOA;
+
+typedef struct _IMAGE_SECTION_HEADER {
+	union {
+		DWORD PhysicalAddress;
+		DWORD VirtualSize;
+	} Misc;
+	DWORD VirtualAddress;
+	DWORD SizeOfRawData;
+	DWORD PointerToRawData;
+	DWORD PointerToRelocations;
+	DWORD PointerToLinenumbers;
+	WORD NumberOfRelocations;
+	WORD NumberOfLinenumbers;
+	DWORD Characteristics;
+} IMAGE_SECTION_HEADER, *PIMAGE_SECTION_HEADER;
+
+BOOL GetVersionExA(LPOSVERSIONINFOA lpVersionInformation);
+
+void lstrcpynA(LPSTR lpString1, LPCSTR lpString2, int iMaxLength);
+
+typedef struct _PROCESS_INFORMATION {
+	HANDLE hProcess;
+	HANDLE hThread;
+	DWORD dwProcessId;
+	DWORD dwThreadId;
+} PROCESS_INFORMATION, *PPROCESS_INFORMATION, *LPPROCESS_INFORMATION;
+
+typedef void *LPSTARTUPINFOA;
+WINBOOL WINAPI CreateProcessA(LPCSTR lpApplicationName, LPSTR lpCommandLine, LPSECURITY_ATTRIBUTES lpProcessAttributes,
+    LPSECURITY_ATTRIBUTES lpThreadAttributes, WINBOOL bInheritHandles, DWORD dwCreationFlags,
+    LPVOID lpEnvironment, LPCSTR lpCurrentDirectory, LPSTARTUPINFOA lpStartupInfo,
+    LPPROCESS_INFORMATION lpProcessInformation);
+
+VOID WINAPI ExitProcess(UINT uExitCode);
+DWORD WINAPI GetCurrentProcessId(VOID);
+
+HANDLE WINAPI CreateFileMappingA(HANDLE hFile, LPSECURITY_ATTRIBUTES lpFileMappingAttributes, DWORD flProtect,
+    DWORD dwMaximumSizeHigh, DWORD dwMaximumSizeLow, LPCSTR lpName);
+LPVOID WINAPI MapViewOfFile(HANDLE hFileMappingObject, DWORD dwDesiredAccess, DWORD dwFileOffsetHigh,
+    DWORD dwFileOffsetLow, SIZE_T dwNumberOfBytesToMap);
+WINBOOL WINAPI UnmapViewOfFile(LPCVOID lpBaseAddress);
+
+LPVOID VirtualAlloc(LPVOID lpAddress, SIZE_T dwSize, DWORD flAllocationType, DWORD flProtect);
+BOOL VirtualFree(LPVOID lpAddress, SIZE_T dwSize, DWORD dwFreeType);
+
+DWORD WINAPI WaitForInputIdle(HANDLE hProcess, DWORD dwMilliseconds);
+HWND WINAPI GetForegroundWindow(VOID);
+HWND WINAPI GetWindow(HWND hWnd, UINT uCmd);
+DWORD WINAPI GetWindowThreadProcessId(HWND hWnd, LPDWORD lpdwProcessId);
+
+DWORD WINAPI GetPrivateProfileStringA(LPCSTR lpAppName, LPCSTR lpKeyName, LPCSTR lpDefault, LPSTR lpReturnedString,
+    DWORD nSize, LPCSTR lpFileName);
+int MessageBoxA(HWND hWnd, const char *Text, const char *Title, UINT Flags);
+typedef LONG LSTATUS, HKEY, REGSAM, PHKEY;
+
+LSTATUS RegOpenKeyExA(HKEY hKey, LPCSTR lpSubKey, DWORD ulOptions, REGSAM samDesired, PHKEY phkResult);
+LSTATUS RegQueryValueExA(HKEY hKey, LPCSTR lpValueName, LPDWORD lpReserved, LPDWORD lpType, BYTE *lpData, LPDWORD lpcbData);
+LSTATUS RegSetValueExA(HKEY hKey, LPCSTR lpValueName, DWORD Reserved, DWORD dwType, const BYTE *lpData, DWORD cbData);
+LSTATUS RegCloseKeyA(HKEY hKey);
+void PostQuitMessage(int nExitCode);
+LRESULT DefWindowProcA(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+LONG GetWindowLongA(HWND hWnd, int nIndex);
+LONG SetWindowLongA(HWND hWnd, int nIndex, LONG dwNewLong);
+
+WINBOOL WINAPI WriteFile(HANDLE hFile, LPCVOID lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten,
+    LPOVERLAPPED lpOverlapped);
+DWORD WINAPI SetFilePointer(HANDLE hFile, LONG lDistanceToMove, PLONG lpDistanceToMoveHigh, DWORD dwMoveMethod);
+WINBOOL WINAPI SetEndOfFile(HANDLE hFile);
+DWORD WINAPI GetFileAttributesA(LPCSTR lpFileName);
+WINBOOL WINAPI SetFileAttributesA(LPCSTR lpFileName, DWORD dwFileAttributes);
+HANDLE WINAPI FindFirstFileA(LPCSTR lpFileName, LPWIN32_FIND_DATAA lpFindFileData);
+BOOL FindNextFileA(HANDLE hFindFile, LPWIN32_FIND_DATAA lpFindFileData);
+WINBOOL WINAPI FindClose(HANDLE hFindFile);
+HANDLE WINAPI CreateFileA(LPCSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode,
+    LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition,
+    DWORD dwFlagsAndAttributes, HANDLE hTemplateFile);
+WINBOOL WINAPI ReadFile(HANDLE hFile, LPVOID lpBuffer, DWORD nNumberOfBytesToRead, LPDWORD lpNumberOfBytesRead,
+    LPOVERLAPPED lpOverlapped);
+DWORD WINAPI GetFileSize(HANDLE hFile, LPDWORD lpFileSizeHigh);
+UINT WINAPI GetWindowsDirectoryA(LPSTR lpBuffer, UINT uSize);
+DWORD GetCurrentDirectory(DWORD nBufferLength, LPTSTR lpBuffer);
+DWORD GetLogicalDriveStringsA(DWORD nBufferLength, LPSTR lpBuffer);
+UINT GetDriveTypeA(LPCSTR lpRootPathName);
+WINBOOL WINAPI GetDiskFreeSpaceA(LPCSTR lpRootPathName, LPDWORD lpSectorsPerCluster, LPDWORD lpBytesPerSector,
+    LPDWORD lpNumberOfFreeClusters, LPDWORD lpTotalNumberOfClusters);
+DWORD WINAPI GetModuleFileNameA(HMODULE hModule, LPSTR lpFilename, DWORD nSize);
+WINBOOL WINAPI GetComputerNameA(LPSTR lpBuffer, LPDWORD nSize);
+DWORD GetFileVersionInfoSizeA(LPCSTR lptstrFilename, LPDWORD lpdwHandle);
+BOOL GetFileVersionInfoA(LPCSTR lptstrFilename, DWORD dwHandle, DWORD dwLen, LPVOID lpData);
+BOOL VerQueryValueA(LPCVOID pBlock, LPCSTR lpSubBlock, LPVOID *lplpBuffer, PUINT puLen);
+WINBOOL WINAPI DeleteFileA(LPCSTR lpFileName);
+WINBOOL WINAPI CopyFileA(LPCSTR lpExistingFileName, LPCSTR lpNewFileName, WINBOOL bFailIfExists);
+HFILE WINAPI OpenFile(LPCSTR lpFileName, LPOFSTRUCT lpReOpenBuff, UINT uStyle);
+
+typedef struct _CONTEXT {
+
+	//
+	// The flags values within this flag control the contents of
+	// a CONTEXT record.
+	//
+	// If the context record is used as an input parameter, then
+	// for each portion of the context record controlled by a flag
+	// whose value is set, it is assumed that that portion of the
+	// context record contains valid context. If the context record
+	// is being used to modify a threads context, then only that
+	// portion of the threads context will be modified.
+	//
+	// If the context record is used as an IN OUT parameter to capture
+	// the context of a thread, then only those portions of the thread's
+	// context corresponding to set flags will be returned.
+	//
+	// The context record is never used as an OUT only parameter.
+	//
+
+	DWORD ContextFlags;
+
+	//
+	// This section is specified/returned if CONTEXT_DEBUG_REGISTERS is
+	// set in ContextFlags.  Note that CONTEXT_DEBUG_REGISTERS is NOT
+	// included in CONTEXT_FULL.
+	//
+
+	DWORD Dr0;
+	DWORD Dr1;
+	DWORD Dr2;
+	DWORD Dr3;
+	DWORD Dr6;
+	DWORD Dr7;
+
+	//
+	// This section is specified/returned if the
+	// ContextFlags word contians the flag CONTEXT_SEGMENTS.
+	//
+
+	DWORD SegGs;
+	DWORD SegFs;
+	DWORD SegEs;
+	DWORD SegDs;
+
+	//
+	// This section is specified/returned if the
+	// ContextFlags word contians the flag CONTEXT_INTEGER.
+	//
+
+	DWORD Edi;
+	DWORD Esi;
+	DWORD Ebx;
+	DWORD Edx;
+	DWORD Ecx;
+	DWORD Eax;
+
+	//
+	// This section is specified/returned if the
+	// ContextFlags word contians the flag CONTEXT_CONTROL.
+	//
+
+	DWORD Ebp;
+	DWORD Eip;
+	DWORD SegCs;  // MUST BE SANITIZED
+	DWORD EFlags; // MUST BE SANITIZED
+	DWORD Esp;
+	DWORD SegSs;
+} CONTEXT;
+
+typedef CONTEXT *PCONTEXT;
+
+//
+// Exception record definition.
+//
+
+typedef struct _EXCEPTION_RECORD {
+	DWORD ExceptionCode;
+	DWORD ExceptionFlags;
+	struct _EXCEPTION_RECORD *ExceptionRecord;
+	PVOID ExceptionAddress;
+	DWORD NumberParameters;
+} EXCEPTION_RECORD;
+
+typedef EXCEPTION_RECORD *PEXCEPTION_RECORD;
+
+typedef struct _EXCEPTION_POINTERS {
+	PEXCEPTION_RECORD ExceptionRecord;
+	PCONTEXT ContextRecord;
+} EXCEPTION_POINTERS, *PEXCEPTION_POINTERS;
+
+typedef struct _MEMORY_BASIC_INFORMATION {
+	PVOID BaseAddress;
+	PVOID AllocationBase;
+	DWORD AllocationProtect;
+	SIZE_T RegionSize;
+	DWORD State;
+	DWORD Protect;
+	DWORD Type;
+} MEMORY_BASIC_INFORMATION, *PMEMORY_BASIC_INFORMATION;
+
+//
+// Total fakes
+//
+typedef struct {
+} SOCKADDR, GUID, *LPGUID;
+
+typedef struct {
+	DWORD cb;
+} STARTUPINFOA;
+
+BOOL IsBadReadPtr(const VOID *lp, UINT_PTR ucb);
+BOOL IsBadWritePtr(LPVOID lp, UINT_PTR ucb);
+SIZE_T VirtualQuery(LPCVOID lpAddress, PMEMORY_BASIC_INFORMATION lpBuffer, SIZE_T dwLength);
+
+//
+// MSCVRT emulation
+//
+
+extern void LoadCharNames();
+extern void LoadAndPlaySound(char *FilePath, int lVolume, int lPan);
+extern void DrawArtWithMask(int SX, int SY, int SW, int SH, int nFrame, BYTE bMask, void *pBuffer);
+extern BOOL __cdecl LoadArtWithPal(char *pszFile, void **pBuffer, int frames, DWORD *data);
+
+}

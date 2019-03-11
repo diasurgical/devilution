@@ -3,6 +3,8 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 
+namespace dvl {
+
 typedef enum _artFocus {
 	FOCUS_SMALL,
 	FOCUS_MED,
@@ -115,3 +117,5 @@ void UiInitList(int min, int max, void(__stdcall *fnFocus)(int value), void(__st
 void UiRender();
 void UiRenderItems(UI_Item *items, int size);
 void WordWrap(UI_Item *item);
+
+}

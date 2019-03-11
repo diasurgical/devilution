@@ -2,7 +2,7 @@
 
 #include "dvlnet/packet.h"
 
-using namespace dvlnet;
+namespace dvl { namespace net {
 
 size_t frame_queue::size()
 {
@@ -74,3 +74,5 @@ buffer_t frame_queue::make_frame(buffer_t packetbuf)
 	ret.insert(ret.end(), packetbuf.begin(), packetbuf.end());
 	return std::move(ret);
 }
+
+}}

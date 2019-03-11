@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 // BUGFIX: constant data should be const
 unsigned char SkelKingTrans1[8] = {
 	19, 47, 26, 55,
@@ -190,3 +192,5 @@ void __cdecl LoadSetMap()
 		break;
 	}
 }
+
+DEVILUTION_END_NAMESPACE

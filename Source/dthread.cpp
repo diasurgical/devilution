@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 static CRITICAL_SECTION sgMemCrit; // idb
 unsigned int glpDThreadId;         // idb
 TMegaPkt *sgpInfoHead;             /* may not be right struct */
@@ -169,3 +171,5 @@ void __cdecl dthread_cleanup()
 		sgpInfoHead = tmp1;
 	}
 }
+
+DEVILUTION_END_NAMESPACE

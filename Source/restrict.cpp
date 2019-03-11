@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 BOOL __cdecl SystemSupported()
 {
 	OSVERSIONINFO VersionInformation;
@@ -58,3 +60,5 @@ BOOL __cdecl ReadOnlyTest()
 	}
 	return ret;
 }
+
+DEVILUTION_END_NAMESPACE

@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 BOOL __fastcall WCloseFile(HANDLE file)
 {
 	return SFileCloseFile(file);
@@ -213,3 +215,5 @@ void *__fastcall LoadWaveFile(HANDLE hsFile, WAVEFORMATEX *pwfx, CKINFO *chunk)
 	}
 	return wave_file.buf;
 }
+
+DEVILUTION_END_NAMESPACE

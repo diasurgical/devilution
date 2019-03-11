@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 // preallocated nodes, search is terminated after 300 nodes are visited
 PATHNODE path_nodes[MAXPATHNODES];
 // size of the pnode_tblptr stack
@@ -372,3 +374,5 @@ PATHNODE *__cdecl path_new_step()
 	memset(new_node, 0, sizeof(PATHNODE));
 	return new_node;
 }
+
+DEVILUTION_END_NAMESPACE

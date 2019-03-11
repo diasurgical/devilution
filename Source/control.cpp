@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 char sgbNextTalkSave; // weak
 char sgbTalkSavePos;  // weak
 void *pDurIcons;
@@ -2877,3 +2879,5 @@ void __fastcall control_up_down(char a1)
 	strcpy(sgszTalkMsg, sgszTalkSave[v1]);
 }
 // 4B84CD: using guessed type char sgbTalkSavePos;
+
+DEVILUTION_END_NAMESPACE

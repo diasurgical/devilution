@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 static TMsg *sgpTimedMsgHead;
 
 int __fastcall tmsg_get(BYTE *pbMsg, DWORD dwMaxLen)
@@ -49,3 +51,5 @@ void *__cdecl tmsg_cleanup()
 	}
 	return sgpTimedMsgHead;
 }
+
+DEVILUTION_END_NAMESPACE

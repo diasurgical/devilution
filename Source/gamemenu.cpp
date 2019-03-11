@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 TMenuItem sgSingleMenu[6] = {
 	// clang-format off
 	//   dwFlags, pszStr,        fnMenu
@@ -298,3 +300,5 @@ void __cdecl gamemenu_color_cycling()
 	palette_set_color_cycling(palette_get_colour_cycling() == 0);
 	sgOptionMenu[3].pszStr = color_cycling_toggle_names[palette_get_colour_cycling() & 1];
 }
+
+DEVILUTION_END_NAMESPACE

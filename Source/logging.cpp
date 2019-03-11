@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 static CRITICAL_SECTION sgMemCrit;
 CHAR FileName[260]; // idb
 char log_buffer[388];
@@ -208,3 +210,5 @@ void __cdecl log_dump_computer_info()
 	    SystemTime.wSecond,
 	    log_buffer);
 }
+
+DEVILUTION_END_NAMESPACE

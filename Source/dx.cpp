@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 Screen *sgpBackBuf;
 LPDIRECTDRAW lpDDInterface;
 IDirectDrawPalette *lpDDPalette; // idb
@@ -351,3 +353,5 @@ void __cdecl dx_reinit()
 
 	LeaveCriticalSection(&sgMemCrit);
 }
+
+DEVILUTION_END_NAMESPACE

@@ -10,7 +10,7 @@
 #include "dvlnet/packet.h"
 #include "dvlnet/base.h"
 
-namespace dvlnet {
+namespace dvl { namespace net {
 	class udp_p2p : public base {
 	public:
 		virtual int create(std::string addrstr, std::string passwd);
@@ -42,4 +42,4 @@ namespace dvlnet {
 		std::set<endpoint> dests_for_addr(plr_t dest, endpoint sender);
 		void recv_decrypted(packet& pkt, endpoint sender);
 	};
-}
+}}

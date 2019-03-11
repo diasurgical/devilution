@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "selgame.h"
 
+namespace dvl {
+
 char selgame_Lable[32];
 char selgame_Ip[129] = "";
 char selgame_Password[16] = "";
@@ -220,4 +222,6 @@ int __stdcall UiSelectGame(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYERDAT
 	selgame_Free();
 
 	return selgame_enteringGame;
+}
+
 }

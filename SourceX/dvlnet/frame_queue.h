@@ -4,7 +4,7 @@
 
 #include "dvlnet/abstract_net.h"
 
-namespace dvlnet {
+namespace dvl { namespace net {
 	class frame_queue_exception : public dvlnet_exception {};
 
 	class frame_queue {
@@ -25,4 +25,4 @@ namespace dvlnet {
 
 		static buffer_t make_frame(buffer_t packetbuf);
 	};
-}
+}}

@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 int sfxdelay; // weak
 int sfxdnum;
 HANDLE sfx_stream;
@@ -1257,3 +1259,5 @@ void __stdcall effects_play_sound(char *snd_file)
 		}
 	}
 }
+
+DEVILUTION_END_NAMESPACE

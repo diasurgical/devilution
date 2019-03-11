@@ -7,7 +7,7 @@
 
 #include "dvlnet/abstract_net.h"
 
-namespace dvlnet {
+namespace dvl { namespace net {
 	enum packet_type : uint8_t {
 		PT_MESSAGE = 0x01,
 		PT_TURN = 0x02,
@@ -265,4 +265,4 @@ namespace dvlnet {
 		ret->encrypt();
 		return ret;
 	}
-}
+}}

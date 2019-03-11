@@ -4,6 +4,8 @@
  * Windows message handling and keyboard event conversion for SDL.
  */
 
+namespace dvl {
+
 static std::deque<MSG> message_queue;
 
 static int translate_sdl_key(SDL_Keysym key)
@@ -297,4 +299,6 @@ WINBOOL WINAPI PostMessageA(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 	message_queue.push_back(msg);
 
 	return TRUE;
+}
+
 }

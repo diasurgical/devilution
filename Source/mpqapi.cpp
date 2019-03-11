@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 int sgdwMpqOffset; // idb
 char mpq_buf[4096];
 _HASHENTRY *sgpHashTbl;
@@ -735,3 +737,5 @@ BOOLEAN __cdecl mpqapi_can_seek()
 		result = SetEndOfFile(sghArchive);
 	return result;
 }
+
+DEVILUTION_END_NAMESPACE

@@ -1,5 +1,7 @@
 #include "pch.h"
 
+namespace dvl {
+
 UI_Item OKCANCEL_DIALOG[] = {
 	{ { 180, 168, 280, 144 }, UI_IMAGE, 0, 0, "ui_art\\spopup.pcx" },
 	{ { 200, 180, 240, 80 }, UI_TEXT, UIS_CENTER }, // message
@@ -35,3 +37,5 @@ UI_Item SPAWNERR_DIALOG[] = {
 	{ { 140, 199, 400, 177 }, UI_TEXT, 0, 0, "The Rogue and Sorcerer are only available in the full retail version of Diablo. For ordering information call (800) 953-SNOW." },
 	{ { 230, 407, 180, 43 }, UI_BUTTON, 0, 0, "OK" },
 };
+
+}

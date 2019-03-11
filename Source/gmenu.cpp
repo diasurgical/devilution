@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 void *optbar_cel;
 BOOLEAN byte_634464; // weak
 void *PentSpin_cel;
@@ -462,3 +464,5 @@ void __fastcall gmenu_slider_3(TMenuItem *pItem, int dwTicks)
 {
 	pItem->dwFlags ^= (pItem->dwFlags ^ (dwTicks << 12)) & 0xFFF000;
 }
+
+DEVILUTION_END_NAMESPACE

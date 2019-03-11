@@ -196,6 +196,7 @@ target_link_libraries(devilutionx PRIVATE
   SDL2::SDL2_mixer
   sodium)
 
+target_compile_definitions(devilution PRIVATE DEVILUTION_ENGINE)
 target_compile_definitions(devilution PUBLIC
   DEVILUTION_STUB
   "$<$<BOOL:${DEBUG}>:_DEBUG>"

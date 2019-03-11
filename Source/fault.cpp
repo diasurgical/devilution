@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 LPTOP_LEVEL_EXCEPTION_FILTER lpTopLevelExceptionFilter; // idb
 
 #ifndef _MSC_VER
@@ -254,3 +256,5 @@ LPTOP_LEVEL_EXCEPTION_FILTER __cdecl exception_get_filter()
 {
 	return lpTopLevelExceptionFilter;
 }
+
+DEVILUTION_END_NAMESPACE

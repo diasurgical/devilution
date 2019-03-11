@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 #define PASSWORD_SINGLE "xrgyrkj1"
 #define PASSWORD_MULTI "szqnlsk1"
 
@@ -694,3 +696,5 @@ void __fastcall pfile_update(BOOL force_save)
 		}
 	}
 }
+
+DEVILUTION_END_NAMESPACE

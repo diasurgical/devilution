@@ -12,7 +12,7 @@
 #include "dvlnet/abstract_net.h"
 #include "dvlnet/frame_queue.h"
 
-namespace dvlnet {
+namespace dvl { namespace net {
 	class server_exception : public dvlnet_exception {};
 
 	class tcp_server {
@@ -61,4 +61,4 @@ namespace dvlnet {
 		void handle_timeout(scc con, const asio::error_code& ec);
 		void drop_connection(scc con);
 	};
-}
+}}

@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 int light_table_index; // weak
 int screen_y_times_768[1024];
 unsigned int sgdwCursWdtOld; // idb
@@ -3032,3 +3034,5 @@ void __cdecl DrawAndBlit()
 }
 // 4B8960: using guessed type int talkflag;
 // 52571C: using guessed type int drawpanflag;
+
+DEVILUTION_END_NAMESPACE

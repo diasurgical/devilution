@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 static BYTE sgbIsScrolling;
 static DWORD sgdwLastWalk;
 static BOOL sgbIsWalking;
@@ -47,3 +49,5 @@ BOOL __cdecl track_isscrolling()
 {
 	return sgbIsScrolling;
 }
+
+DEVILUTION_END_NAMESPACE

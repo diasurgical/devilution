@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 PortalStruct portal[MAXPORTAL];
 int portalindex;
 
@@ -174,3 +176,5 @@ BOOL __fastcall PosOkPortal(int lvl, int x, int y)
 	}
 	return FALSE;
 }
+
+DEVILUTION_END_NAMESPACE

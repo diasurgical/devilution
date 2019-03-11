@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 int qtopline; // idb
 int questlog; // weak
 void *pQLogCel;
@@ -1130,3 +1132,5 @@ void __fastcall SetMultiQuest(int q, int s, int l, int v1)
 			*v6 = v1;
 	}
 }
+
+DEVILUTION_END_NAMESPACE

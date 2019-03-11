@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 int trigflag[MAXTRIGGERS];
 TriggerStruct trigs[MAXTRIGGERS];
 int TWarpFrom; // weak
@@ -1213,3 +1215,5 @@ void __cdecl CheckTriggers()
 }
 // 679660: using guessed type char gbMaxPlayers;
 // 6ABB30: using guessed type int TWarpFrom;
+
+DEVILUTION_END_NAMESPACE

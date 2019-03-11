@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 BOOL invflag;
 void *pInvCels;
 int drawsbarflag; // idb
@@ -2786,3 +2788,5 @@ int __cdecl DropItemBeforeTrig()
 	SetCursor_(CURSOR_HAND);
 	return 1;
 }
+
+DEVILUTION_END_NAMESPACE

@@ -8,7 +8,7 @@
 #include <stdexcept>
 #include <sodium.h>
 
-using namespace dvlnet;
+namespace dvl { namespace net {
 
 int tcp_client::create(std::string addrstr, std::string passwd)
 {
@@ -102,3 +102,5 @@ void tcp_client::send(packet& pkt)
 	                  std::bind(&tcp_client::handle_send, this,
 	                            std::placeholders::_1, std::placeholders::_2));
 }
+
+}}

@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 // unused, this was probably for blood boil/burn
 int spurtndx;
 DeadStruct dead[MAXDEAD];
@@ -92,3 +94,5 @@ void __cdecl SetDead()
 		}
 	}
 }
+
+DEVILUTION_END_NAMESPACE

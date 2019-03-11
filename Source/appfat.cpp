@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 char sz_error_buf[256];
 BOOL terminating;
 int cleanup_thread_id;
@@ -397,3 +399,5 @@ void __fastcall DirErrorDlg(char *error)
 
 	TermMsg(NULL);
 }
+
+DEVILUTION_END_NAMESPACE

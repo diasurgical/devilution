@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "selconn.h"
 
+namespace dvl {
+
 char selconn_MaxPlayers[21];
 char selconn_Description[64];
 char selconn_Gateway[129];
@@ -119,4 +121,6 @@ int __stdcall UiSelectProvider(
 	selconn_Free();
 
 	return selconn_ReturnValue;
+}
+
 }

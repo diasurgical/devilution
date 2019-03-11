@@ -1,5 +1,7 @@
 #include "pch.h"
 
+namespace dvl {
+
 static std::set<uintptr_t> threads;
 static std::set<uintptr_t> events;
 
@@ -138,4 +140,6 @@ DWORD WINAPI WaitForSingleObject(HANDLE hHandle, DWORD dwMilliseconds)
 	if (events.find((uintptr_t)hHandle) != threads.end())
 		return wait_for_sdl_cond(hHandle, dwMilliseconds);
 	UNIMPLEMENTED();
+}
+
 }

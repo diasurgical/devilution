@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 BYTE movie_playing;
 BOOL loop_movie;
 
@@ -64,3 +66,5 @@ LRESULT __stdcall MovieWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam
 
 	return MainWndProc(hWnd, Msg, wParam, lParam);
 }
+
+DEVILUTION_END_NAMESPACE

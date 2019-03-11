@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 char byte_679704; // weak
 int gdwMsgLenTbl[MAX_PLRS];
 static CRITICAL_SECTION sgMemCrit;
@@ -296,3 +298,5 @@ BOOL __fastcall nthread_has_500ms_passed(BOOL unused)
 }
 // 679660: using guessed type char gbMaxPlayers;
 // 679764: using guessed type int last_tick;
+
+DEVILUTION_END_NAMESPACE

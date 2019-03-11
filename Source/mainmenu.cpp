@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 char gszHero[16];
 
 /* data */
@@ -156,3 +158,5 @@ void __cdecl mainmenu_play_intro()
 	play_movie("gendata\\diablo1.smk", 1);
 	mainmenu_refresh_music();
 }
+
+DEVILUTION_END_NAMESPACE

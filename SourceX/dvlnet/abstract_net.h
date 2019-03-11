@@ -7,7 +7,7 @@
 
 #include "devilution.h"
 
-namespace dvlnet {
+namespace dvl { namespace net {
 	typedef std::vector<unsigned char> buffer_t;
 	typedef void(__stdcall *snet_event_func)(struct _SNETEVENT*);
 	typedef unsigned long provider_t;
@@ -38,5 +38,5 @@ namespace dvlnet {
 
 		static std::unique_ptr<abstract_net> make_net(provider_t provider);
 	};
-}
+}}
 

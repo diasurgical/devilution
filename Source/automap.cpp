@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 // BUGFIX: only the first 256 elements are ever read
 WORD automaptype[512];
 static int MapX;
@@ -638,3 +640,5 @@ void __cdecl AutomapZoomReset()
 	AMPlayerX = AutoMapYPos >> 1;
 	AMPlayerY = AMPlayerX >> 1;
 }
+
+DEVILUTION_END_NAMESPACE

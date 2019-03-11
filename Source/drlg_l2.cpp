@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 int nSx1;
 int nSx2; // weak
 int nSy1;
@@ -2995,3 +2997,5 @@ void __cdecl DRLG_InitL2Vals()
 		++v6;
 	} while ((INT_PTR)v7 < (INT_PTR)dPiece[1]);
 }
+
+DEVILUTION_END_NAMESPACE

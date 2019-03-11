@@ -1,6 +1,8 @@
 //HEADER_GOES_HERE
 
 #include "../types.h"
+
+DEVILUTION_BEGIN_NAMESPACE
 #include "_asm.cpp"
 
 int WorldBoolFlag = 0;
@@ -5212,3 +5214,5 @@ void __fastcall world_draw_black_tile(unsigned char *pbDst)
 	} while (yy_32 != 32);
 }
 #endif
+
+DEVILUTION_END_NAMESPACE

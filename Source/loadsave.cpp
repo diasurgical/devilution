@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 unsigned char *tbuff;
 
 void __fastcall LoadGame(BOOL firstflag)
@@ -700,3 +702,5 @@ void __cdecl LoadLevel()
 	mem_free_dbg(LoadBuff);
 }
 // 642A18: using guessed type int dolighting;
+
+DEVILUTION_END_NAMESPACE

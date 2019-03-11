@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 int storeflag; // weak
 int sgnCowMsg;
 int numtowners; // idb
@@ -1030,3 +1032,5 @@ void __fastcall CowSFX(int pnum)
 		PlaySfxLoc(CowPlaying, plr[pnum].WorldX, plr[pnum].WorldY);
 	}
 }
+
+DEVILUTION_END_NAMESPACE

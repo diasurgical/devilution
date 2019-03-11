@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 SpellData spelldata[MAX_SPELLS] = {
 	// clang-format off
 	// sName,    sManaCost, sType,           sNameText,         sSkillText, sBookLvl, sStaffLvl, sTargeted, sTownSpell, sMinInt, sSFX,     sMissiles[3],                      sManaAdj, sMinMana, sStaffMin, sStaffMax, sBookCost, sStaffCost
@@ -323,3 +325,5 @@ void __fastcall DoHealOther(int pnum, int rid)
 		drawhpflag = TRUE;
 	}
 }
+
+DEVILUTION_END_NAMESPACE

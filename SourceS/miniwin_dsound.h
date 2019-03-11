@@ -1,5 +1,7 @@
 #pragma once
 
+namespace dvl {
+
 typedef void *LPDSBCAPS, *LPCDSBUFFERDESC;
 
 struct IDirectSound;
@@ -107,3 +109,5 @@ DECLARE_INTERFACE_(IDirectSound, IUnknown)
 #define DSERR_INVALIDPARAM 0x80070057
 #define DSERR_ALLOCATED MAKE_DSHRESULT(10)
 #define DSERR_CONTROLUNAVAIL MAKE_DSHRESULT(30)
+
+}

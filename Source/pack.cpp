@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 void __fastcall PackPlayer(PkPlayerStruct *pPack, int pnum, BOOL manashield)
 {
 	PlayerStruct *pPlayer; // edi
@@ -252,3 +254,5 @@ void __fastcall UnPackItem(PkItemStruct *is, ItemStruct *id)
 		qmemcpy(v3, &item[MAXITEMS], sizeof(ItemStruct));
 	}
 }
+
+DEVILUTION_END_NAMESPACE

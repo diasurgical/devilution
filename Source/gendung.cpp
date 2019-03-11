@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 short level_frame_types[2048];
 int themeCount;
 char nTransTable[2049];
@@ -1242,3 +1244,5 @@ void __cdecl InitLevels()
 }
 // 52572C: using guessed type int leveldebug;
 // 5CF31D: using guessed type char setlevel;
+
+DEVILUTION_END_NAMESPACE

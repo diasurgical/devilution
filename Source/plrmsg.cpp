@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 static unsigned char plr_msg_slot;
 _plrmsg plr_msgs[PMSG_COUNT];
 
@@ -145,3 +147,5 @@ void __fastcall PrintPlrMsg(unsigned int x, unsigned int y, unsigned int width, 
 			break;
 	}
 }
+
+DEVILUTION_END_NAMESPACE

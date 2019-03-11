@@ -1,5 +1,7 @@
 #pragma once
 
+namespace dvl {
+
 typedef struct _DDCOLORKEY {
 	DWORD dwColorSpaceLowValue;
 	DWORD dwColorSpaceHighValue;
@@ -296,3 +298,5 @@ DECLARE_INTERFACE_(IDirectDraw,IUnknown)
 	STDMETHOD(WaitForVerticalBlank)(THIS_ DWORD dwFlags, HANDLE hEvent) PURE;
 	// clang-format on
 };
+
+}

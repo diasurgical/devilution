@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 char L5dungeon[80][80];
 char mydflags[40][40];
 int setloadflag; // weak
@@ -1843,3 +1845,5 @@ void __cdecl DRLG_L5CornerFix()
 		++v0;
 	} while (v0 < 39);
 }
+
+DEVILUTION_END_NAMESPACE

@@ -1,6 +1,6 @@
 #include "dvlnet/udp_p2p.h"
 
-using namespace dvlnet;
+namespace dvl { namespace net {
 
 const udp_p2p::endpoint udp_p2p::none;
 
@@ -166,3 +166,5 @@ void udp_p2p::recv_decrypted(packet& pkt, endpoint sender)
 		return; //packet not for us, drop
 	recv_local(pkt);
 }
+
+}}

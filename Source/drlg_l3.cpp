@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 char lavapool;  // weak
 int abyssx;     // weak
 int lockoutcnt; // weak
@@ -2570,3 +2572,5 @@ void __fastcall LoadPreL3Dungeon(char *sFileName, int vx, int vy)
 	memcpy(pdungeon, dungeon, 0x640u);
 	mem_free_dbg(v5);
 }
+
+DEVILUTION_END_NAMESPACE

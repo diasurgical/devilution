@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 int stextup;    // weak
 int storenumh;  // weak
 int stextlhold; // weak
@@ -3737,3 +3739,5 @@ void __cdecl ReleaseStoreBtn()
 }
 // 6A8A2C: using guessed type char stextscrldbtn;
 // 6AA704: using guessed type char stextscrlubtn;
+
+DEVILUTION_END_NAMESPACE

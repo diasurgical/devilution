@@ -2,6 +2,8 @@
 
 #include "../types.h"
 
+DEVILUTION_BEGIN_NAMESPACE
+
 /* todo: move text out of struct */
 
 const TextDataStruct alltext[259] = {
@@ -509,3 +511,5 @@ const TextDataStruct alltext[259] = {
 	    1, 5, TSFX_TAVERN0 }
 };
 const int gdwAllTextEntries = 259; /* unused */
+
+DEVILUTION_END_NAMESPACE

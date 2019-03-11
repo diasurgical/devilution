@@ -1,6 +1,8 @@
 #include "pch.h"
 #include <iconv.h>
 
+namespace dvl {
+
 TTF_Font *font;
 int SelectedItemMin = 1;
 int SelectedItemMax = 1;
@@ -822,4 +824,6 @@ void DrawMouse()
 	MouseY -= view.y;
 
 	DrawArt(MouseX, MouseY, &ArtCursor);
+}
+
 }
