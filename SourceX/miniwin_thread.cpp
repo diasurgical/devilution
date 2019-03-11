@@ -26,13 +26,13 @@ uintptr_t __cdecl _beginthreadex(void *_Security, unsigned _StackSize, unsigned(
 	return (uintptr_t)ret;
 }
 
-DWORD WINAPI GetCurrentThreadId(VOID)
+DWORD WINAPI GetCurrentThreadId()
 {
 	// DWORD is compatible with SDL_threadID
 	return SDL_GetThreadID(NULL);
 }
 
-HANDLE WINAPI GetCurrentThread(VOID)
+HANDLE WINAPI GetCurrentThread()
 {
 	// Only used for SetThreadPriority, which is unimplemented
 	return NULL;
@@ -45,23 +45,23 @@ WINBOOL WINAPI SetThreadPriority(HANDLE hThread, int nPriority)
 	return TRUE;
 }
 
-VOID WINAPI InitializeCriticalSection(LPCRITICAL_SECTION lpCriticalSection)
+void WINAPI InitializeCriticalSection(LPCRITICAL_SECTION lpCriticalSection)
 {
 	SDL_mutex *m = SDL_CreateMutex();
 	*lpCriticalSection = m;
 }
 
-VOID WINAPI EnterCriticalSection(LPCRITICAL_SECTION lpCriticalSection)
+void WINAPI EnterCriticalSection(LPCRITICAL_SECTION lpCriticalSection)
 {
 	SDL_LockMutex(*((SDL_mutex **)lpCriticalSection));
 }
 
-VOID WINAPI LeaveCriticalSection(LPCRITICAL_SECTION lpCriticalSection)
+void WINAPI LeaveCriticalSection(LPCRITICAL_SECTION lpCriticalSection)
 {
 	SDL_UnlockMutex(*((SDL_mutex **)lpCriticalSection));
 }
 
-VOID WINAPI DeleteCriticalSection(LPCRITICAL_SECTION lpCriticalSection)
+void WINAPI DeleteCriticalSection(LPCRITICAL_SECTION lpCriticalSection)
 {
 	SDL_DestroyMutex(*((SDL_mutex **)lpCriticalSection));
 }
@@ -114,7 +114,7 @@ static DWORD wait_for_sdl_cond(HANDLE hHandle, DWORD dwMilliseconds)
 	struct event_emul *e = (struct event_emul *)hHandle;
 	SDL_LockMutex(e->mutex);
 	DWORD ret;
-	if (dwMilliseconds == INFINITE)
+	if (dwMilliseconds == DVL_INFINITE)
 		ret = SDL_CondWait(e->cond, e->mutex);
 	else
 		ret = SDL_CondWaitTimeout(e->cond, e->mutex, dwMilliseconds);
@@ -125,7 +125,7 @@ static DWORD wait_for_sdl_cond(HANDLE hHandle, DWORD dwMilliseconds)
 
 static DWORD wait_for_sdl_thread(HANDLE hHandle, DWORD dwMilliseconds)
 {
-	if (dwMilliseconds != INFINITE)
+	if (dwMilliseconds != DVL_INFINITE)
 		UNIMPLEMENTED();
 	SDL_Thread *t = (SDL_Thread *)hHandle;
 	SDL_WaitThread(t, NULL);

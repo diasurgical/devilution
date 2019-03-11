@@ -68,7 +68,7 @@ DWORD FormatMessage(
 	return 0;
 }
 
-LPCSTR MAKEINTRESOURCE(int i)
+LPCSTR DVL_MAKEINTRESOURCE(int i)
 {
 	switch (i) {
 	case IDD_DIALOG1:

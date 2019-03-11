@@ -36,14 +36,23 @@
 #define WINAPIV
 #define WINUSERAPI
 
-#define VOID void
+#ifndef _WIN32
+#define __int8 char
+#define __int16 short
+#define __int32 int
+#define __int64 long long
+#endif
 
 #include "miniwin_misc.h"
 #include "miniwin_com.h"
-#include "miniwin_ddraw.h"
-#include "miniwin_dsound.h"
 #include "miniwin_ui.h"
 #include "miniwin_thread.h"
 #include "miniwin_rand.h"
 
+#ifdef DEVILUTION_ENGINE
 #include "miniwin_macro.h"
+//#include "miniwin_com_macro.h"
+#include "miniwin_ddraw_macro.h"
+#endif
+
+#include "miniwin_com_macro.h" // fix later

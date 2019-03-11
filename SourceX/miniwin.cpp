@@ -7,12 +7,12 @@ namespace dvl {
 
 DWORD last_error;
 
-DWORD WINAPI GetLastError(VOID)
+DWORD WINAPI GetLastError()
 {
 	return last_error;
 }
 
-VOID WINAPI SetLastError(DWORD dwErrCode)
+void WINAPI SetLastError(DWORD dwErrCode)
 {
 	last_error = dwErrCode;
 }
@@ -62,12 +62,12 @@ char *__cdecl _itoa(int _Value, char *_Dest, int _Radix)
 	return _Dest;
 }
 
-DWORD WINAPI GetTickCount(VOID)
+DWORD WINAPI GetTickCount()
 {
 	return SDL_GetTicks();
 }
 
-VOID WINAPI Sleep(DWORD dwMilliseconds)
+void WINAPI Sleep(DWORD dwMilliseconds)
 {
 	usleep(dwMilliseconds * 1000);
 }
@@ -207,7 +207,7 @@ DWORD GetLogicalDriveStringsA(DWORD nBufferLength, LPSTR lpBuffer)
 
 UINT GetDriveTypeA(LPCSTR lpRootPathName)
 {
-	return DRIVE_CDROM;
+	return DVL_DRIVE_CDROM;
 }
 
 WINBOOL WINAPI DeleteFileA(LPCSTR lpFileName)
@@ -223,7 +223,7 @@ WINBOOL WINAPI CopyFileA(LPCSTR lpExistingFileName, LPCSTR lpNewFileName, WINBOO
 HFILE WINAPI OpenFile(LPCSTR lpFileName, LPOFSTRUCT lpReOpenBuff, UINT uStyle)
 {
 	DUMMY();
-	return HFILE_ERROR;
+	return DVL_HFILE_ERROR;
 }
 
 HWND WINAPI SetCapture(HWND hWnd)
@@ -232,7 +232,7 @@ HWND WINAPI SetCapture(HWND hWnd)
 	return hWnd;
 }
 
-WINBOOL WINAPI ReleaseCapture(VOID)
+WINBOOL WINAPI ReleaseCapture()
 {
 	DUMMY_ONCE();
 	return TRUE;
@@ -384,7 +384,7 @@ HCURSOR LoadCursorA(HINSTANCE hInstance, LPCSTR lpCursorName)
 	return NULL;
 }
 
-BOOL IsBadReadPtr(const VOID *lp, UINT_PTR ucb)
+BOOL IsBadReadPtr(const void *lp, UINT_PTR ucb)
 {
 	UNIMPLEMENTED();
 	return TRUE;
@@ -434,7 +434,7 @@ int __cdecl _findnext(long, struct _finddata_t *)
 /**
  * @brief Used to shutdown a MS Office 95 tool bar
  */
-HWND WINAPI GetForegroundWindow(VOID)
+HWND WINAPI GetForegroundWindow()
 {
 	return NULL;
 }
@@ -505,7 +505,7 @@ BOOL FindNextFileA(HANDLE hFindFile, LPWIN32_FIND_DATAA lpFindFileData)
 	return FALSE;
 }
 
-VOID WINAPI GetSystemInfo(LPSYSTEM_INFO lpSystemInfo)
+void WINAPI GetSystemInfo(LPSYSTEM_INFO lpSystemInfo)
 {
 	DUMMY();
 	memset(lpSystemInfo, 0, sizeof(*lpSystemInfo));
@@ -533,10 +533,10 @@ int WINAPI GetDeviceCaps(HDC hdc, int index)
 		return 0;
 	}
 
-	if (index == HORZRES) {
+	if (index == DVL_HORZRES) {
 		return current.w;
 	}
-	if (index == VERTRES) {
+	if (index == DVL_VERTRES) {
 		return current.h;
 	}
 
@@ -567,7 +567,7 @@ BOOL GetVersionExA(LPOSVERSIONINFOA lpVersionInformation)
 {
 	lpVersionInformation->dwMajorVersion = 5;
 	lpVersionInformation->dwMinorVersion = 0;
-	lpVersionInformation->dwPlatformId = VER_PLATFORM_WIN32_NT;
+	lpVersionInformation->dwPlatformId = DVL_VER_PLATFORM_WIN32_NT;
 	return TRUE;
 }
 
@@ -585,12 +585,12 @@ WINBOOL WINAPI CreateProcessA(LPCSTR lpApplicationName, LPSTR lpCommandLine, LPS
 	return FALSE;
 }
 
-VOID WINAPI ExitProcess(UINT uExitCode)
+void WINAPI ExitProcess(UINT uExitCode)
 {
 	UNIMPLEMENTED();
 }
 
-DWORD WINAPI GetCurrentProcessId(VOID)
+DWORD WINAPI GetCurrentProcessId()
 {
 	UNIMPLEMENTED();
 	return 0;

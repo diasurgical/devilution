@@ -1,14 +1,8 @@
 #pragma once
 
-// Basic types
-#define __int8 char
-#define __int16 short
-#define __int32 int
-#define __int64 long long
-
 #define INVALID_HANDLE_VALUE ((HANDLE)-1)
 #define INVALID_HANDLE ((HANDLE)-1)
-#define HFILE_ERROR ((HFILE)-1)
+#define HFILE_ERROR DVL_HFILE_ERROR
 
 //
 // Intrinsics
@@ -20,7 +14,7 @@
 
 #define InterlockedIncrement(x) __sync_add_and_fetch(x, 1)
 
-#define INFINITE 0xFFFFFFFF
+#define INFINITE DVL_INFINITE;
 
 #define MAKEFOURCC(x, y, z, w)             \
 	(((uint32_t)((uint8_t)x))              \
@@ -36,10 +30,10 @@
 
 #define CreateEvent CreateEventA
 
-#define PM_NOREMOVE 0x0000
-#define PM_REMOVE 0x0001
+#define PM_NOREMOVE DVL_PM_NOREMOVE
+#define PM_REMOVE DVL_PM_REMOVE
 
-#define WM_QUIT 0x0012
+#define WM_QUIT DVL_WM_QUIT
 
 #define PeekMessage PeekMessageA
 #define DispatchMessage DispatchMessageA
@@ -62,8 +56,8 @@
 
 #define TextOut TextOutA
 
-#define HORZRES 8
-#define VERTRES 10
+#define HORZRES DVL_HORZRES
+#define VERTRES DVL_VERTRES
 #define NUMRESERVED 106
 
 #define _snprintf snprintf
@@ -75,16 +69,16 @@
 // File I/O
 //
 
-#define FILE_BEGIN 0
-#define FILE_CURRENT 1
+#define FILE_BEGIN DVL_FILE_BEGIN
+#define FILE_CURRENT DVL_FILE_CURRENT
 #define FILE_END 2
 #define FILE_FLAG_WRITE_THROUGH 0x80000000
-#define CREATE_ALWAYS 2
-#define GENERIC_READ 0x80000000L
-#define GENERIC_WRITE 0x40000000L
-#define OPEN_EXISTING 3
+#define CREATE_ALWAYS DVL_CREATE_ALWAYS
+#define GENERIC_READ DVL_GENERIC_READ
+#define GENERIC_WRITE DVL_GENERIC_WRITE
+#define OPEN_EXISTING DVL_OPEN_EXISTING
 #define OPEN_ALWAYS 4
-#define ERROR_FILE_NOT_FOUND 2
+#define ERROR_FILE_NOT_FOUND DVL_ERROR_FILE_NOT_FOUND
 #define FILE_ATTRIBUTE_NORMAL 128
 #define FILE_ATTRIBUTE_HIDDEN 0x00000002
 #define FILE_ATTRIBUTE_SYSTEM 0x00000004
@@ -103,7 +97,7 @@
 
 #define IMAGE_NT_SIGNATURE 0x00004550 // PE00
 #define IMAGE_DOS_SIGNATURE 0x5A4D
-#define VER_PLATFORM_WIN32_NT 2
+#define VER_PLATFORM_WIN32_NT DVL_VER_PLATFORM_WIN32_NT
 
 #define GetVersionEx GetVersionExA
 
@@ -166,92 +160,13 @@
 #define WS_POPUP 0x80000000L
 #define WS_SYSMENU 0x00080000L
 
-#define DRIVE_CDROM 5
+#define DRIVE_CDROM DVL_DRIVE_CDROM
 
 //
 // Events
 //
-#define WM_MOUSEFIRST 0x0200
-#define WM_MOUSEMOVE 0x0200
-#define WM_LBUTTONDOWN 0x0201
-#define WM_LBUTTONUP 0x0202
-#define WM_RBUTTONDOWN 0x0204
-#define WM_RBUTTONUP 0x0205
 
-#define WM_KEYFIRST 0x0100
-#define WM_KEYDOWN 0x0100
-#define WM_KEYUP 0x0101
-#define WM_SYSKEYDOWN 0x0104
-
-#define WM_INITDIALOG 0x0110
-#define WM_COMMAND 0x0111
-#define WM_SYSCOMMAND 0x0112
-
-#define WM_CHAR 0x0102
-#define WM_CAPTURECHANGED 0x0215
-
-#define WM_CREATE 0x0001
-#define WM_DESTROY 0x0002
-#define WM_PAINT 0x000F
-#define WM_CLOSE 0x0010
-#define WM_QUERYENDSESSION 0x0011
-#define WM_ERASEBKGND 0x0014
-#define WM_ACTIVATEAPP 0x001C
-#define WM_QUERYNEWPALETTE 0x030F
-#define WM_PALETTECHANGED 0x0311
-
-#define SC_CLOSE 0xF060
-
-#define VK_RETURN 0x0D
-#define VK_BACK 0x08
-#define VK_SHIFT 0x10
-#define VK_ESCAPE 0x1B
-#define VK_SPACE 0x20
-#define VK_LEFT 0x25
-#define VK_UP 0x26
-#define VK_RIGHT 0x27
-#define VK_DOWN 0x28
-
-#define VK_F1 0x70
-#define VK_F2 0x71
-#define VK_F3 0x72
-#define VK_F4 0x73
-#define VK_F5 0x74
-#define VK_F6 0x75
-#define VK_F7 0x76
-#define VK_F8 0x77
-#define VK_F9 0x78
-#define VK_F10 0x79
-#define VK_F11 0x7A
-#define VK_F12 0x7B
-
-#define VK_TAB 0x09
-#define VK_PAUSE 0x13
-#define VK_PRIOR 0x21
-#define VK_NEXT 0x22
-#define VK_SNAPSHOT 0x2C
-
-#define VK_OEM_1 0xBA
-#define VK_OEM_PLUS 0xBB
-#define VK_OEM_COMMA 0xBC
-#define VK_OEM_MINUS 0xBD
-#define VK_OEM_PERIOD 0xBE
-#define VK_OEM_2 0xBF
-#define VK_OEM_3 0xC0
-#define VK_OEM_4 0xDB
-#define VK_OEM_5 0xDC
-#define VK_OEM_6 0xDD
-#define VK_OEM_7 0xDE
-//#define VK_OEM_8 0xDF
-//#define VK_OEM_102 0xE2
-
-#define MK_SHIFT 0x0004
-#define MK_LBUTTON 0x0001
-#define MK_RBUTTON 0x0002
-
-#define MB_TASKMODAL 0x00002000L
-#define MB_ICONHAND 0x00000010L
-#define MB_ICONEXCLAMATION 0x00000030L
+// were here
 
 #define FORMAT_MESSAGE_IGNORE_INSERTS 0x00000200
 #define FORMAT_MESSAGE_FROM_HMODULE 0x00000800
@@ -319,3 +234,5 @@
 #define SWP_NOZORDER 0x0001
 
 #define OF_EXIST 1
+
+#define MAKEINTRESOURCE DVL_MAKEINTRESOURCE

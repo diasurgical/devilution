@@ -9,7 +9,7 @@ extern "C" DWORD nLastError = 0;
 std::string getIniPath()
 {
 	char path[280];
-	int len = GetModuleFileName(ghInst, path, 260);
+	int len = GetModuleFileNameA(ghInst, path, 260);
 	path[len - 1] = '/';
 	strcat(path, "diablo.ini");
 
@@ -615,7 +615,7 @@ int STORMAPI SStrCmpI(const char *string1, const char *string2, unsigned int siz
 
 void __stdcall SDrawMessageBox(char *Text, char *Title, int Flags)
 {
-	MessageBox(NULL, Text, Title, Flags);
+	MessageBoxA(NULL, Text, Title, Flags);
 }
 
 // void __cdecl SDrawDestroy(void)

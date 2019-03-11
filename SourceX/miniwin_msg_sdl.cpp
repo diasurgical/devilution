@@ -106,12 +106,12 @@ WINBOOL WINAPI PeekMessageA(LPMSG lpMsg, HWND hWnd, UINT wMsgFilterMin, UINT wMs
 	if (hWnd != NULL)
 		UNIMPLEMENTED();
 
-	if (wRemoveMsg == PM_NOREMOVE) {
+	if (wRemoveMsg == DVL_PM_NOREMOVE) {
 		// This does not actually fill out lpMsg, but this is ok
 		// since the engine never uses it in this case
 		return !message_queue.empty() || SDL_PollEvent(NULL);
 	}
-	if (wRemoveMsg != PM_REMOVE) {
+	if (wRemoveMsg != DVL_PM_REMOVE) {
 		UNIMPLEMENTED();
 	}
 
@@ -132,7 +132,7 @@ WINBOOL WINAPI PeekMessageA(LPMSG lpMsg, HWND hWnd, UINT wMsgFilterMin, UINT wMs
 
 	switch (e.type) {
 	case SDL_QUIT:
-		lpMsg->message = WM_QUIT;
+		lpMsg->message = DVL_WM_QUIT;
 		break;
 	case SDL_KEYDOWN:
 	case SDL_KEYUP: {

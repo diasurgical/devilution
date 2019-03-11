@@ -38,7 +38,7 @@ bool surface_dirty;
 #define METHOD virtual __stdcall
 
 class StubSurface : public IDirectDrawSurface {
-	METHOD HRESULT QueryInterface(REFIID refiid, LPVOID *lpvoid)
+	METHOD HRESULT QueryInterface(DVL_REFIID refiid, LPVOID *lpvoid)
 	{
 		UNIMPLEMENTED();
 	};
@@ -84,11 +84,11 @@ class StubSurface : public IDirectDrawSurface {
 		// Convert from 8-bit to 32-bit
 		if (SDL_BlitSurface(pal_surface, &src_rect, surface, &dst_rect) != 0) {
 			SDL_Log("SDL_BlitSurface: %s\n", SDL_GetError());
-			return E_FAIL;
+			return DVL_E_FAIL;
 		}
 
 		surface_dirty = true;
-		return S_OK;
+		return DVL_S_OK;
 	}
 
 	METHOD HRESULT DeleteAttachedSurface(DWORD dwFlags, LPDIRECTDRAWSURFACE lpDDSAttachedSurface)
@@ -131,7 +131,7 @@ class StubSurface : public IDirectDrawSurface {
 	METHOD HRESULT GetDC(HDC *lphDC)
 	{
 		DUMMY_ONCE();
-		return S_OK;
+		return DVL_S_OK;
 	}
 
 	METHOD HRESULT GetFlipStatus(DWORD dwFlags)
@@ -162,7 +162,7 @@ class StubSurface : public IDirectDrawSurface {
 	METHOD HRESULT IsLost()
 	{
 		DUMMY_ONCE();
-		return S_OK;
+		return DVL_S_OK;
 	}
 
 	METHOD HRESULT Lock(LPRECT lpDestRect, LPDDSURFACEDESC lpDDSurfaceDesc, DWORD dwFlags, HANDLE hEvent)
@@ -173,7 +173,7 @@ class StubSurface : public IDirectDrawSurface {
 	METHOD HRESULT ReleaseDC(HDC hDC)
 	{
 		DUMMY_ONCE();
-		return S_OK;
+		return DVL_S_OK;
 	}
 
 	METHOD HRESULT Restore()
@@ -195,7 +195,7 @@ class StubSurface : public IDirectDrawSurface {
 	METHOD HRESULT SetPalette(LPDIRECTDRAWPALETTE lpDDPalette)
 	{
 		DUMMY();
-		return S_OK;
+		return DVL_S_OK;
 	}
 	METHOD HRESULT Unlock(LPVOID lpSurfaceData)
 	{
@@ -217,7 +217,7 @@ class StubSurface : public IDirectDrawSurface {
 };
 
 class StubPalette : public IDirectDrawPalette {
-	METHOD HRESULT QueryInterface(REFIID refiid, LPVOID *lpvoid)
+	METHOD HRESULT QueryInterface(DVL_REFIID refiid, LPVOID *lpvoid)
 	{
 		UNIMPLEMENTED();
 	};
@@ -249,7 +249,7 @@ class StubPalette : public IDirectDrawPalette {
 };
 
 class StubDraw : public IDirectDraw {
-	METHOD HRESULT QueryInterface(REFIID refiid, LPVOID *lpvoid)
+	METHOD HRESULT QueryInterface(DVL_REFIID refiid, LPVOID *lpvoid)
 	{
 		UNIMPLEMENTED();
 	};
@@ -274,7 +274,7 @@ class StubDraw : public IDirectDraw {
 	    IUnknown *pUnkOuter)
 	{
 		DUMMY();
-		return S_OK;
+		return DVL_S_OK;
 	}
 	METHOD HRESULT CreateSurface(LPDDSURFACEDESC lpDDSurfaceDesc, LPDIRECTDRAWSURFACE *lplpDDSurface,
 	    IUnknown *pUnkOuter)
@@ -346,7 +346,7 @@ class StubDraw : public IDirectDraw {
 	METHOD HRESULT WaitForVerticalBlank(DWORD dwFlags, HANDLE hEvent)
 	{
 		DUMMY_ONCE();
-		return S_OK;
+		return DVL_S_OK;
 	}
 };
 
@@ -406,7 +406,7 @@ void __fastcall dx_init(HWND hWnd)
 		return;
 	}
 
-	MainWndProc(NULL, WM_ACTIVATEAPP, TRUE, NULL);
+	MainWndProc(NULL, DVL_WM_ACTIVATEAPP, TRUE, NULL);
 
 	lpDDInterface = &stub_draw;
 	lpDDSPrimary = &stub_surface;

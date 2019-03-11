@@ -1,6 +1,8 @@
 #pragma once
 
-namespace dvl {
+#ifndef DEVILUTION_MINIWIN_COM
+#error
+#endif
 
 typedef void *LPDSBCAPS, *LPCDSBUFFERDESC;
 
@@ -109,5 +111,3 @@ DECLARE_INTERFACE_(IDirectSound, IUnknown)
 #define DSERR_INVALIDPARAM 0x80070057
 #define DSERR_ALLOCATED MAKE_DSHRESULT(10)
 #define DSERR_CONTROLUNAVAIL MAKE_DSHRESULT(30)
-
-}

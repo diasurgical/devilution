@@ -24,13 +24,13 @@ HANDLE WINAPI CreateFileA(LPCSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShar
 
 	DUMMY_PRINT("file: %s (%s)", lpFileName, name);
 
-	assert(dwDesiredAccess == GENERIC_READ | GENERIC_WRITE);
+	assert(dwDesiredAccess == DVL_GENERIC_READ | DVL_GENERIC_WRITE);
 
 	int flags = O_RDWR;
 	mode_t mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
-	if (dwCreationDisposition == OPEN_EXISTING) {
+	if (dwCreationDisposition == DVL_OPEN_EXISTING) {
 		// Nothing
-	} else if (dwCreationDisposition == CREATE_ALWAYS) {
+	} else if (dwCreationDisposition == DVL_CREATE_ALWAYS) {
 		flags |= O_CREAT | O_TRUNC;
 	} else {
 		UNIMPLEMENTED();
@@ -85,9 +85,9 @@ DWORD WINAPI SetFilePointer(HANDLE hFile, LONG lDistanceToMove, PLONG lpDistance
 
 	assert(!lpDistanceToMoveHigh);
 	int whence;
-	if (dwMoveMethod == FILE_BEGIN) {
+	if (dwMoveMethod == DVL_FILE_BEGIN) {
 		whence = SEEK_SET;
-	} else if (dwMoveMethod == FILE_CURRENT) {
+	} else if (dwMoveMethod == DVL_FILE_CURRENT) {
 		whence = SEEK_CUR;
 	} else {
 		UNIMPLEMENTED();
@@ -118,7 +118,7 @@ DWORD WINAPI GetFileAttributesA(LPCSTR lpFileName)
 	int res = stat(name, &s);
 
 	if (res == -1) {
-		SetLastError(ERROR_FILE_NOT_FOUND);
+		SetLastError(DVL_ERROR_FILE_NOT_FOUND);
 		return (DWORD)-1;
 	}
 

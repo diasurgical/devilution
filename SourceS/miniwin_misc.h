@@ -242,10 +242,10 @@ typedef struct _LIST_ENTRY {
 	struct _LIST_ENTRY *Blink;
 } LIST_ENTRY, *PLIST_ENTRY;
 
-DWORD WINAPI GetTickCount(VOID);
+DWORD WINAPI GetTickCount();
 
-DWORD WINAPI GetLastError(VOID);
-VOID WINAPI SetLastError(DWORD dwErrCode);
+DWORD WINAPI GetLastError();
+void WINAPI SetLastError(DWORD dwErrCode);
 
 WINBOOL WINAPI CloseHandle(HANDLE hObject);
 
@@ -258,7 +258,7 @@ DWORD WINAPI WaitForSingleObject(HANDLE hHandle, DWORD dwMilliseconds);
 WINBOOL WINAPI SetCursorPos(int X, int Y);
 int WINAPI ShowCursor(WINBOOL bShow);
 HWND WINAPI SetCapture(HWND hWnd);
-WINBOOL WINAPI ReleaseCapture(VOID);
+WINBOOL WINAPI ReleaseCapture();
 
 SHORT WINAPI GetAsyncKeyState(int vKey);
 
@@ -316,12 +316,12 @@ HMODULE GetModuleHandleA(LPCSTR lpModuleName);
 
 uintptr_t __cdecl _beginthreadex(void *_Security, unsigned _StackSize, unsigned(__stdcall *_StartAddress)(void *),
                                  void *_ArgList, unsigned _InitFlag, unsigned *_ThrdAddr);
-HANDLE WINAPI GetCurrentThread(VOID);
-DWORD WINAPI GetCurrentThreadId(VOID);
+HANDLE WINAPI GetCurrentThread();
+DWORD WINAPI GetCurrentThreadId();
 WINBOOL WINAPI SetThreadPriority(HANDLE hThread, int nPriority);
-VOID WINAPI Sleep(DWORD dwMilliseconds);
+void WINAPI Sleep(DWORD dwMilliseconds);
 
-VOID WINAPI GetSystemInfo(LPSYSTEM_INFO lpSystemInfo);
+void WINAPI GetSystemInfo(LPSYSTEM_INFO lpSystemInfo);
 
 HDC WINAPI GetDC(HWND hWnd);
 int WINAPI ReleaseDC(HWND hWnd, HDC hDC);
@@ -483,8 +483,8 @@ WINBOOL WINAPI CreateProcessA(LPCSTR lpApplicationName, LPSTR lpCommandLine, LPS
     LPVOID lpEnvironment, LPCSTR lpCurrentDirectory, LPSTARTUPINFOA lpStartupInfo,
     LPPROCESS_INFORMATION lpProcessInformation);
 
-VOID WINAPI ExitProcess(UINT uExitCode);
-DWORD WINAPI GetCurrentProcessId(VOID);
+void WINAPI ExitProcess(UINT uExitCode);
+DWORD WINAPI GetCurrentProcessId();
 
 HANDLE WINAPI CreateFileMappingA(HANDLE hFile, LPSECURITY_ATTRIBUTES lpFileMappingAttributes, DWORD flProtect,
     DWORD dwMaximumSizeHigh, DWORD dwMaximumSizeLow, LPCSTR lpName);
@@ -496,7 +496,7 @@ LPVOID VirtualAlloc(LPVOID lpAddress, SIZE_T dwSize, DWORD flAllocationType, DWO
 BOOL VirtualFree(LPVOID lpAddress, SIZE_T dwSize, DWORD dwFreeType);
 
 DWORD WINAPI WaitForInputIdle(HANDLE hProcess, DWORD dwMilliseconds);
-HWND WINAPI GetForegroundWindow(VOID);
+HWND WINAPI GetForegroundWindow();
 HWND WINAPI GetWindow(HWND hWnd, UINT uCmd);
 DWORD WINAPI GetWindowThreadProcessId(HWND hWnd, LPDWORD lpdwProcessId);
 
@@ -655,7 +655,7 @@ typedef struct {
 	DWORD cb;
 } STARTUPINFOA;
 
-BOOL IsBadReadPtr(const VOID *lp, UINT_PTR ucb);
+BOOL IsBadReadPtr(const void *lp, UINT_PTR ucb);
 BOOL IsBadWritePtr(LPVOID lp, UINT_PTR ucb);
 SIZE_T VirtualQuery(LPCVOID lpAddress, PMEMORY_BASIC_INFORMATION lpBuffer, SIZE_T dwLength);
 
@@ -667,5 +667,113 @@ extern void LoadCharNames();
 extern void LoadAndPlaySound(char *FilePath, int lVolume, int lPan);
 extern void DrawArtWithMask(int SX, int SY, int SW, int SH, int nFrame, BYTE bMask, void *pBuffer);
 extern BOOL __cdecl LoadArtWithPal(char *pszFile, void **pBuffer, int frames, DWORD *data);
+
+static constexpr auto DVL_WM_ACTIVATEAPP = 0x001C;
+static const auto DVL_HFILE_ERROR = (HFILE)-1;
+static constexpr auto DVL_DRIVE_CDROM = 5;
+static constexpr auto DVL_WM_DESTROY = 0x0002;
+static constexpr auto DVL_HORZRES = 8;
+static constexpr auto DVL_VERTRES = 10;
+static constexpr auto DVL_VER_PLATFORM_WIN32_NT = 2;
+
+static constexpr auto DVL_CREATE_ALWAYS = 2;
+static constexpr auto DVL_GENERIC_READ = 0x80000000L;
+static constexpr auto DVL_GENERIC_WRITE = 0x40000000L;
+static constexpr auto DVL_OPEN_EXISTING = 3;
+static constexpr auto DVL_FILE_BEGIN = 0;
+static constexpr auto DVL_FILE_CURRENT = 1;
+static constexpr auto DVL_ERROR_FILE_NOT_FOUND = 2;
+
+static constexpr auto DVL_PM_NOREMOVE = 0x0000;
+static constexpr auto DVL_PM_REMOVE = 0x0001;
+static constexpr auto DVL_WM_QUIT = 0x0012;
+static constexpr auto DVL_INFINITE = 0xFFFFFFFF;
+
+/// Change to constexpr later
+//
+// Events
+//
+#define WM_MOUSEFIRST 0x0200
+#define WM_MOUSEMOVE 0x0200
+#define WM_LBUTTONDOWN 0x0201
+#define WM_LBUTTONUP 0x0202
+#define WM_RBUTTONDOWN 0x0204
+#define WM_RBUTTONUP 0x0205
+
+#define WM_KEYFIRST 0x0100
+#define WM_KEYDOWN 0x0100
+#define WM_KEYUP 0x0101
+#define WM_SYSKEYDOWN 0x0104
+
+#define WM_INITDIALOG 0x0110
+#define WM_COMMAND 0x0111
+#define WM_SYSCOMMAND 0x0112
+
+#define WM_CHAR 0x0102
+#define WM_CAPTURECHANGED 0x0215
+
+#define WM_CREATE 0x0001
+#define WM_DESTROY DVL_WM_DESTROY
+#define WM_PAINT 0x000F
+#define WM_CLOSE 0x0010
+#define WM_QUERYENDSESSION 0x0011
+#define WM_ERASEBKGND 0x0014
+#define WM_ACTIVATEAPP DVL_WM_ACTIVATEAPP
+#define WM_QUERYNEWPALETTE 0x030F
+#define WM_PALETTECHANGED 0x0311
+
+#define SC_CLOSE 0xF060
+
+#define VK_RETURN 0x0D
+#define VK_BACK 0x08
+#define VK_SHIFT 0x10
+#define VK_ESCAPE 0x1B
+#define VK_SPACE 0x20
+#define VK_LEFT 0x25
+#define VK_UP 0x26
+#define VK_RIGHT 0x27
+#define VK_DOWN 0x28
+
+#define VK_F1 0x70
+#define VK_F2 0x71
+#define VK_F3 0x72
+#define VK_F4 0x73
+#define VK_F5 0x74
+#define VK_F6 0x75
+#define VK_F7 0x76
+#define VK_F8 0x77
+#define VK_F9 0x78
+#define VK_F10 0x79
+#define VK_F11 0x7A
+#define VK_F12 0x7B
+
+#define VK_TAB 0x09
+#define VK_PAUSE 0x13
+#define VK_PRIOR 0x21
+#define VK_NEXT 0x22
+#define VK_SNAPSHOT 0x2C
+
+#define VK_OEM_1 0xBA
+#define VK_OEM_PLUS 0xBB
+#define VK_OEM_COMMA 0xBC
+#define VK_OEM_MINUS 0xBD
+#define VK_OEM_PERIOD 0xBE
+#define VK_OEM_2 0xBF
+#define VK_OEM_3 0xC0
+#define VK_OEM_4 0xDB
+#define VK_OEM_5 0xDC
+#define VK_OEM_6 0xDD
+#define VK_OEM_7 0xDE
+//#define VK_OEM_8 0xDF
+//#define VK_OEM_102 0xE2
+
+#define MK_SHIFT 0x0004
+#define MK_LBUTTON 0x0001
+#define MK_RBUTTON 0x0002
+
+#define MB_TASKMODAL 0x00002000L
+#define MB_ICONHAND 0x00000010L
+#define MB_ICONEXCLAMATION 0x00000030L
+
 
 }
