@@ -27,6 +27,8 @@
 #ifndef __STORMPORT_H__
 #define __STORMPORT_H__
 
+#define STORMAPI
+
 #ifndef __cplusplus
   #define bool char
   #define true 1
@@ -170,13 +172,7 @@
     #define _countof(x)  (sizeof(x) / sizeof(x[0]))
   #endif
 
-  // MINIWIN change
-  // (original calling conventions confuse address-sanitizer)
-  #if 0
   #define WINAPI __attribute__((stdcall))
-  #else
-  #define WINAPI
-  #endif
 
   #define FILE_BEGIN    SEEK_SET
   #define FILE_CURRENT  SEEK_CUR

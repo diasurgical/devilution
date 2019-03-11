@@ -9,6 +9,14 @@
 #pragma push_macro("WINUSERAPI")
 #endif
 
+#undef __cdecl
+#undef __fastcall
+#undef __stdcall
+#undef CALLBACK
+#undef APIENTRY
+#undef WINAPI
+#undef WINAPIV
+#undef WINUSERAPI
 #define __cdecl
 #define __fastcall
 #define __stdcall

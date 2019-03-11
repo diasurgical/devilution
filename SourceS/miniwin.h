@@ -30,7 +30,7 @@
 #define __int8 char
 #define __int16 short
 #define __int32 int
-#define __int64 long long
+#define __int64 long long __attribute__((aligned(8)))
 #endif
 
 #include "miniwin_misc.h"

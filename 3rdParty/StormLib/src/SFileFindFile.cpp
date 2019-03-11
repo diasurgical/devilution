@@ -378,7 +378,7 @@ static void FreeMPQSearch(TMPQSearch *& hs)
 //-----------------------------------------------------------------------------
 // Public functions
 
-HANDLE WINAPI SFileFindFirstFile(HANDLE hMpq, const char * szMask, SFILE_FIND_DATA * lpFindFileData, const TCHAR * szListFile)
+HANDLE STORMAPI SFileFindFirstFile(HANDLE hMpq, const char * szMask, SFILE_FIND_DATA * lpFindFileData, const TCHAR * szListFile)
 {
     TMPQArchive * ha = (TMPQArchive *)hMpq;
     TMPQSearch * hs = NULL;
@@ -446,7 +446,7 @@ HANDLE WINAPI SFileFindFirstFile(HANDLE hMpq, const char * szMask, SFILE_FIND_DA
     return (HANDLE)hs;
 }
 
-bool WINAPI SFileFindNextFile(HANDLE hFind, SFILE_FIND_DATA * lpFindFileData)
+bool STORMAPI SFileFindNextFile(HANDLE hFind, SFILE_FIND_DATA * lpFindFileData)
 {
     TMPQSearch * hs = IsValidSearchHandle(hFind);
     int nError = ERROR_SUCCESS;
@@ -465,7 +465,7 @@ bool WINAPI SFileFindNextFile(HANDLE hFind, SFILE_FIND_DATA * lpFindFileData)
     return (nError == ERROR_SUCCESS);
 }
 
-bool WINAPI SFileFindClose(HANDLE hFind)
+bool STORMAPI SFileFindClose(HANDLE hFind)
 {
     TMPQSearch * hs = IsValidSearchHandle(hFind);
 

@@ -678,7 +678,7 @@ static int Decompress_ADPCM_stereo(void * pvOutBuffer, int * pcbOutBuffer, void 
 /*                                                                           */
 /*****************************************************************************/
 
-int WINAPI SCompImplode(void * pvOutBuffer, int * pcbOutBuffer, void * pvInBuffer, int cbInBuffer)
+int STORMAPI SCompImplode(void * pvOutBuffer, int * pcbOutBuffer, void * pvInBuffer, int cbInBuffer)
 {
     int cbOutBuffer;
 
@@ -710,7 +710,7 @@ int WINAPI SCompImplode(void * pvOutBuffer, int * pcbOutBuffer, void * pvInBuffe
 /*                                                                           */
 /*****************************************************************************/
 
-int WINAPI SCompExplode(void * pvOutBuffer, int * pcbOutBuffer, void * pvInBuffer, int cbInBuffer)
+int STORMAPI SCompExplode(void * pvOutBuffer, int * pcbOutBuffer, void * pvInBuffer, int cbInBuffer)
 {
     int cbOutBuffer;
 
@@ -774,7 +774,7 @@ static TCompressTable cmp_table[] =
 #endif
 };
 
-int WINAPI SCompCompress(void * pvOutBuffer, int * pcbOutBuffer, void * pvInBuffer, int cbInBuffer, unsigned uCompressionMask, int nCmpType, int nCmpLevel)
+int STORMAPI SCompCompress(void * pvOutBuffer, int * pcbOutBuffer, void * pvInBuffer, int cbInBuffer, unsigned uCompressionMask, int nCmpType, int nCmpLevel)
 {
     COMPRESS CompressFuncArray[0x10];                       // Array of compression functions, applied sequentially
     unsigned char CompressByte[0x10];                       // CompressByte for each method in the CompressFuncArray array
@@ -928,7 +928,7 @@ static TDecompressTable dcmp_table[] =
 #endif
 };
 
-int WINAPI SCompDecompress(void * pvOutBuffer, int * pcbOutBuffer, void * pvInBuffer, int cbInBuffer)
+int STORMAPI SCompDecompress(void * pvOutBuffer, int * pcbOutBuffer, void * pvInBuffer, int cbInBuffer)
 {
     unsigned char * pbWorkBuffer = NULL;
     unsigned char * pbOutBuffer = (unsigned char *)pvOutBuffer;
@@ -1034,7 +1034,7 @@ int WINAPI SCompDecompress(void * pvOutBuffer, int * pcbOutBuffer, void * pvInBu
     return nResult;
 }
 
-int WINAPI SCompDecompress2(void * pvOutBuffer, int * pcbOutBuffer, void * pvInBuffer, int cbInBuffer)
+int STORMAPI SCompDecompress2(void * pvOutBuffer, int * pcbOutBuffer, void * pvInBuffer, int cbInBuffer)
 {
     DECOMPRESS pfnDecompress1 = NULL;
     DECOMPRESS pfnDecompress2 = NULL;

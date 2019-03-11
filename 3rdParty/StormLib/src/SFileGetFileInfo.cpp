@@ -131,7 +131,7 @@ static bool GetFilePatchChain(TMPQFile * hf, void * pvFileInfo, DWORD cbFileInfo
 //  cbFileInfo - Size of the buffer pointed by pvFileInfo
 //  pcbLengthNeeded - Receives number of bytes necessary to store the information
 
-bool WINAPI SFileGetFileInfo(
+bool STORMAPI SFileGetFileInfo(
     HANDLE hMpqOrFile,
     SFileInfoClass InfoClass,
     void * pvFileInfo,
@@ -860,7 +860,7 @@ bool WINAPI SFileGetFileInfo(
 }
 
 #ifdef FULL
-bool WINAPI SFileFreeFileInfo(void * pvFileInfo, SFileInfoClass InfoClass)
+bool STORMAPI SFileFreeFileInfo(void * pvFileInfo, SFileInfoClass InfoClass)
 {
     switch(InfoClass)
     {
@@ -963,7 +963,7 @@ static int CreatePseudoFileName(HANDLE hFile, TFileEntry * pFileEntry, char * sz
     return ERROR_CAN_NOT_COMPLETE;
 }
 
-bool WINAPI SFileGetFileName(HANDLE hFile, char * szFileName)
+bool STORMAPI SFileGetFileName(HANDLE hFile, char * szFileName)
 {
     TMPQFile * hf = (TMPQFile *)hFile;  // MPQ File handle
     int nError = ERROR_INVALID_HANDLE;

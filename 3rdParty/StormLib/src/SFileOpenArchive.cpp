@@ -127,12 +127,12 @@ static int VerifyMpqTablePositions(TMPQArchive * ha, ULONGLONG FileSize)
 // SFileGetLocale and SFileSetLocale
 // Set the locale for all newly opened files
 
-LCID WINAPI SFileGetLocale()
+LCID STORMAPI SFileGetLocale()
 {
     return lcFileLocale;
 }
 
-LCID WINAPI SFileSetLocale(LCID lcNewLocale)
+LCID STORMAPI SFileSetLocale(LCID lcNewLocale)
 {
     lcFileLocale = lcNewLocale;
     return lcFileLocale;
@@ -146,7 +146,7 @@ LCID WINAPI SFileSetLocale(LCID lcNewLocale)
 //   dwFlags    - See MPQ_OPEN_XXX in StormLib.h
 //   phMpq      - Pointer to store open archive handle
 
-bool WINAPI SFileOpenArchive(
+bool STORMAPI SFileOpenArchive(
     const TCHAR * szMpqName,
     DWORD dwPriority,
     DWORD dwFlags,
@@ -470,12 +470,12 @@ bool WINAPI SFileOpenArchive(
 
 #ifdef FULL
 //-----------------------------------------------------------------------------
-// bool WINAPI SFileSetDownloadCallback(HANDLE, SFILE_DOWNLOAD_CALLBACK, void *);
+// bool STORMAPI SFileSetDownloadCallback(HANDLE, SFILE_DOWNLOAD_CALLBACK, void *);
 //
 // Sets a callback that is called when content is downloaded from the master MPQ
 //
 
-bool WINAPI SFileSetDownloadCallback(HANDLE hMpq, SFILE_DOWNLOAD_CALLBACK DownloadCB, void * pvUserData)
+bool STORMAPI SFileSetDownloadCallback(HANDLE hMpq, SFILE_DOWNLOAD_CALLBACK DownloadCB, void * pvUserData)
 {
     TMPQArchive * ha = (TMPQArchive *)hMpq;
 
@@ -498,7 +498,7 @@ bool WINAPI SFileSetDownloadCallback(HANDLE hMpq, SFILE_DOWNLOAD_CALLBACK Downlo
 // and terminating without calling SFileCloseArchive might corrupt the archive.
 //
 
-bool WINAPI SFileFlushArchive(HANDLE hMpq)
+bool STORMAPI SFileFlushArchive(HANDLE hMpq)
 {
     TMPQArchive * ha;
     int nResultError = ERROR_SUCCESS;
@@ -590,7 +590,7 @@ bool WINAPI SFileFlushArchive(HANDLE hMpq)
 // bool SFileCloseArchive(HANDLE hMpq);
 //
 
-bool WINAPI SFileCloseArchive(HANDLE hMpq)
+bool STORMAPI SFileCloseArchive(HANDLE hMpq)
 {
     TMPQArchive * ha = IsValidMpqHandle(hMpq);
     bool bResult = true;

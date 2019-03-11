@@ -470,9 +470,9 @@ typedef enum _SFileInfoClass
 #define CCB_COMPACTING_FILES                4   // Compacting archive (dwParam1 = current, dwParam2 = total)
 #define CCB_CLOSING_ARCHIVE                 5   // Closing archive: No params used
                                       
-typedef void (WINAPI * SFILE_DOWNLOAD_CALLBACK)(void * pvUserData, ULONGLONG ByteOffset, DWORD dwTotalBytes);
-typedef void (WINAPI * SFILE_ADDFILE_CALLBACK)(void * pvUserData, DWORD dwBytesWritten, DWORD dwTotalBytes, bool bFinalCall);
-typedef void (WINAPI * SFILE_COMPACT_CALLBACK)(void * pvUserData, DWORD dwWorkType, ULONGLONG BytesProcessed, ULONGLONG TotalBytes);
+typedef void (STORMAPI * SFILE_DOWNLOAD_CALLBACK)(void * pvUserData, ULONGLONG ByteOffset, DWORD dwTotalBytes);
+typedef void (STORMAPI * SFILE_ADDFILE_CALLBACK)(void * pvUserData, DWORD dwBytesWritten, DWORD dwTotalBytes, bool bFinalCall);
+typedef void (STORMAPI * SFILE_COMPACT_CALLBACK)(void * pvUserData, DWORD dwWorkType, ULONGLONG BytesProcessed, ULONGLONG TotalBytes);
 
 typedef struct TFileStream TFileStream;
 
@@ -970,131 +970,131 @@ void FileStream_Close(TFileStream * pStream);
 // Functions prototypes for Storm.dll
 
 // Typedefs for functions exported by Storm.dll
-typedef LCID  (WINAPI * SFILESETLOCALE)(LCID);
-typedef bool  (WINAPI * SFILEOPENARCHIVE)(const char *, DWORD, DWORD, HANDLE *);
-typedef bool  (WINAPI * SFILECLOSEARCHIVE)(HANDLE);
-typedef bool  (WINAPI * SFILEOPENFILEEX)(HANDLE, const char *, DWORD, HANDLE *);
-typedef bool  (WINAPI * SFILECLOSEFILE)(HANDLE);
-typedef DWORD (WINAPI * SFILEGETFILESIZE)(HANDLE, LPDWORD);
-typedef DWORD (WINAPI * SFILESETFILEPOINTER)(HANDLE, LONG, LONG *, DWORD);
-typedef bool  (WINAPI * SFILEREADFILE)(HANDLE, void *, DWORD, LPDWORD, LPOVERLAPPED);
+typedef LCID  (STORMAPI * SFILESETLOCALE)(LCID);
+typedef bool  (STORMAPI * SFILEOPENARCHIVE)(const char *, DWORD, DWORD, HANDLE *);
+typedef bool  (STORMAPI * SFILECLOSEARCHIVE)(HANDLE);
+typedef bool  (STORMAPI * SFILEOPENFILEEX)(HANDLE, const char *, DWORD, HANDLE *);
+typedef bool  (STORMAPI * SFILECLOSEFILE)(HANDLE);
+typedef DWORD (STORMAPI * SFILEGETFILESIZE)(HANDLE, LPDWORD);
+typedef DWORD (STORMAPI * SFILESETFILEPOINTER)(HANDLE, LONG, LONG *, DWORD);
+typedef bool  (STORMAPI * SFILEREADFILE)(HANDLE, void *, DWORD, LPDWORD, LPOVERLAPPED);
 
 //-----------------------------------------------------------------------------
 // Functions for manipulation with StormLib global flags
 
-LCID   WINAPI SFileGetLocale();
-LCID   WINAPI SFileSetLocale(LCID lcNewLocale);
+LCID   STORMAPI SFileGetLocale();
+LCID   STORMAPI SFileSetLocale(LCID lcNewLocale);
 
 //-----------------------------------------------------------------------------
 // Functions for archive manipulation
 
-bool   WINAPI SFileOpenArchive(const TCHAR * szMpqName, DWORD dwPriority, DWORD dwFlags, HANDLE * phMpq);
-bool   WINAPI SFileCreateArchive(const TCHAR * szMpqName, DWORD dwCreateFlags, DWORD dwMaxFileCount, HANDLE * phMpq);
-bool   WINAPI SFileCreateArchive2(const TCHAR * szMpqName, PSFILE_CREATE_MPQ pCreateInfo, HANDLE * phMpq);
+bool   STORMAPI SFileOpenArchive(const TCHAR * szMpqName, DWORD dwPriority, DWORD dwFlags, HANDLE * phMpq);
+bool   STORMAPI SFileCreateArchive(const TCHAR * szMpqName, DWORD dwCreateFlags, DWORD dwMaxFileCount, HANDLE * phMpq);
+bool   STORMAPI SFileCreateArchive2(const TCHAR * szMpqName, PSFILE_CREATE_MPQ pCreateInfo, HANDLE * phMpq);
 
-bool   WINAPI SFileSetDownloadCallback(HANDLE hMpq, SFILE_DOWNLOAD_CALLBACK DownloadCB, void * pvUserData);
-bool   WINAPI SFileFlushArchive(HANDLE hMpq);
-bool   WINAPI SFileCloseArchive(HANDLE hMpq);
+bool   STORMAPI SFileSetDownloadCallback(HANDLE hMpq, SFILE_DOWNLOAD_CALLBACK DownloadCB, void * pvUserData);
+bool   STORMAPI SFileFlushArchive(HANDLE hMpq);
+bool   STORMAPI SFileCloseArchive(HANDLE hMpq);
 
 // Adds another listfile into MPQ. The currently added listfile(s) remain,
 // so you can use this API to combining more listfiles.
 // Note that this function is internally called by SFileFindFirstFile
-int    WINAPI SFileAddListFile(HANDLE hMpq, const TCHAR * szListFile);
+int    STORMAPI SFileAddListFile(HANDLE hMpq, const TCHAR * szListFile);
 
 // Archive compacting
-bool   WINAPI SFileSetCompactCallback(HANDLE hMpq, SFILE_COMPACT_CALLBACK CompactCB, void * pvUserData);
-bool   WINAPI SFileCompactArchive(HANDLE hMpq, const TCHAR * szListFile, bool bReserved);
+bool   STORMAPI SFileSetCompactCallback(HANDLE hMpq, SFILE_COMPACT_CALLBACK CompactCB, void * pvUserData);
+bool   STORMAPI SFileCompactArchive(HANDLE hMpq, const TCHAR * szListFile, bool bReserved);
 
 // Changing the maximum file count
-DWORD  WINAPI SFileGetMaxFileCount(HANDLE hMpq);
-bool   WINAPI SFileSetMaxFileCount(HANDLE hMpq, DWORD dwMaxFileCount);
+DWORD  STORMAPI SFileGetMaxFileCount(HANDLE hMpq);
+bool   STORMAPI SFileSetMaxFileCount(HANDLE hMpq, DWORD dwMaxFileCount);
 
 // Changing (attributes) file
-DWORD  WINAPI SFileGetAttributes(HANDLE hMpq);
-bool   WINAPI SFileSetAttributes(HANDLE hMpq, DWORD dwFlags);
-bool   WINAPI SFileUpdateFileAttributes(HANDLE hMpq, const char * szFileName);
+DWORD  STORMAPI SFileGetAttributes(HANDLE hMpq);
+bool   STORMAPI SFileSetAttributes(HANDLE hMpq, DWORD dwFlags);
+bool   STORMAPI SFileUpdateFileAttributes(HANDLE hMpq, const char * szFileName);
 
 //-----------------------------------------------------------------------------
 // Functions for manipulation with patch archives
 
-bool   WINAPI SFileOpenPatchArchive(HANDLE hMpq, const TCHAR * szPatchMpqName, const char * szPatchPathPrefix, DWORD dwFlags);
-bool   WINAPI SFileIsPatchedArchive(HANDLE hMpq);
+bool   STORMAPI SFileOpenPatchArchive(HANDLE hMpq, const TCHAR * szPatchMpqName, const char * szPatchPathPrefix, DWORD dwFlags);
+bool   STORMAPI SFileIsPatchedArchive(HANDLE hMpq);
 
 //-----------------------------------------------------------------------------
 // Functions for file manipulation
 
 // Reading from MPQ file
-bool   WINAPI SFileHasFile(HANDLE hMpq, const char * szFileName);
-bool   WINAPI SFileOpenFileEx(HANDLE hMpq, const char * szFileName, DWORD dwSearchScope, HANDLE * phFile);
-DWORD  WINAPI SFileGetFileSize(HANDLE hFile, LPDWORD pdwFileSizeHigh);
-DWORD  WINAPI SFileSetFilePointer(HANDLE hFile, LONG lFilePos, LONG * plFilePosHigh, DWORD dwMoveMethod);
-bool   WINAPI SFileReadFile(HANDLE hFile, void * lpBuffer, DWORD dwToRead, LPDWORD pdwRead, LPOVERLAPPED lpOverlapped);
-bool   WINAPI SFileCloseFile(HANDLE hFile);
+bool   STORMAPI SFileHasFile(HANDLE hMpq, const char * szFileName);
+bool   STORMAPI SFileOpenFileEx(HANDLE hMpq, const char * szFileName, DWORD dwSearchScope, HANDLE * phFile);
+DWORD  STORMAPI SFileGetFileSize(HANDLE hFile, LPDWORD pdwFileSizeHigh);
+DWORD  STORMAPI SFileSetFilePointer(HANDLE hFile, LONG lFilePos, LONG * plFilePosHigh, DWORD dwMoveMethod);
+bool   STORMAPI SFileReadFile(HANDLE hFile, void * lpBuffer, DWORD dwToRead, LPDWORD pdwRead, LPOVERLAPPED lpOverlapped);
+bool   STORMAPI SFileCloseFile(HANDLE hFile);
 
 // Retrieving info about a file in the archive
-bool   WINAPI SFileGetFileInfo(HANDLE hMpqOrFile, SFileInfoClass InfoClass, void * pvFileInfo, DWORD cbFileInfo, LPDWORD pcbLengthNeeded);
-bool   WINAPI SFileGetFileName(HANDLE hFile, char * szFileName);
-bool   WINAPI SFileFreeFileInfo(void * pvFileInfo, SFileInfoClass InfoClass);
+bool   STORMAPI SFileGetFileInfo(HANDLE hMpqOrFile, SFileInfoClass InfoClass, void * pvFileInfo, DWORD cbFileInfo, LPDWORD pcbLengthNeeded);
+bool   STORMAPI SFileGetFileName(HANDLE hFile, char * szFileName);
+bool   STORMAPI SFileFreeFileInfo(void * pvFileInfo, SFileInfoClass InfoClass);
 
 // High-level extract function
-bool   WINAPI SFileExtractFile(HANDLE hMpq, const char * szToExtract, const TCHAR * szExtracted, DWORD dwSearchScope);
+bool   STORMAPI SFileExtractFile(HANDLE hMpq, const char * szToExtract, const TCHAR * szExtracted, DWORD dwSearchScope);
 
 //-----------------------------------------------------------------------------
 // Functions for file and archive verification
 
 // Generates file CRC32
-bool   WINAPI SFileGetFileChecksums(HANDLE hMpq, const char * szFileName, LPDWORD pdwCrc32, char * pMD5);
+bool   STORMAPI SFileGetFileChecksums(HANDLE hMpq, const char * szFileName, LPDWORD pdwCrc32, char * pMD5);
 
 // Verifies file against its checksums stored in (attributes) attributes (depending on dwFlags).
 // For dwFlags, use one or more of MPQ_ATTRIBUTE_MD5
-DWORD  WINAPI SFileVerifyFile(HANDLE hMpq, const char * szFileName, DWORD dwFlags);
+DWORD  STORMAPI SFileVerifyFile(HANDLE hMpq, const char * szFileName, DWORD dwFlags);
 
 // Verifies raw data of the archive. Only works for MPQs version 4 or newer
-int    WINAPI SFileVerifyRawData(HANDLE hMpq, DWORD dwWhatToVerify, const char * szFileName);
+int    STORMAPI SFileVerifyRawData(HANDLE hMpq, DWORD dwWhatToVerify, const char * szFileName);
 
 // Verifies the signature, if present
-bool   WINAPI SFileSignArchive(HANDLE hMpq, DWORD dwSignatureType);
-DWORD  WINAPI SFileVerifyArchive(HANDLE hMpq);
+bool   STORMAPI SFileSignArchive(HANDLE hMpq, DWORD dwSignatureType);
+DWORD  STORMAPI SFileVerifyArchive(HANDLE hMpq);
 
 //-----------------------------------------------------------------------------
 // Functions for file searching
 
-HANDLE WINAPI SFileFindFirstFile(HANDLE hMpq, const char * szMask, SFILE_FIND_DATA * lpFindFileData, const TCHAR * szListFile);
-bool   WINAPI SFileFindNextFile(HANDLE hFind, SFILE_FIND_DATA * lpFindFileData);
-bool   WINAPI SFileFindClose(HANDLE hFind);
+HANDLE STORMAPI SFileFindFirstFile(HANDLE hMpq, const char * szMask, SFILE_FIND_DATA * lpFindFileData, const TCHAR * szListFile);
+bool   STORMAPI SFileFindNextFile(HANDLE hFind, SFILE_FIND_DATA * lpFindFileData);
+bool   STORMAPI SFileFindClose(HANDLE hFind);
 
-HANDLE WINAPI SListFileFindFirstFile(HANDLE hMpq, const TCHAR * szListFile, const char * szMask, SFILE_FIND_DATA * lpFindFileData);
-bool   WINAPI SListFileFindNextFile(HANDLE hFind, SFILE_FIND_DATA * lpFindFileData);
-bool   WINAPI SListFileFindClose(HANDLE hFind);
+HANDLE STORMAPI SListFileFindFirstFile(HANDLE hMpq, const TCHAR * szListFile, const char * szMask, SFILE_FIND_DATA * lpFindFileData);
+bool   STORMAPI SListFileFindNextFile(HANDLE hFind, SFILE_FIND_DATA * lpFindFileData);
+bool   STORMAPI SListFileFindClose(HANDLE hFind);
 
 // Locale support
-int    WINAPI SFileEnumLocales(HANDLE hMpq, const char * szFileName, LCID * plcLocales, LPDWORD pdwMaxLocales, DWORD dwSearchScope);
+int    STORMAPI SFileEnumLocales(HANDLE hMpq, const char * szFileName, LCID * plcLocales, LPDWORD pdwMaxLocales, DWORD dwSearchScope);
 
 //-----------------------------------------------------------------------------
 // Support for adding files to the MPQ
 
-bool   WINAPI SFileCreateFile(HANDLE hMpq, const char * szArchivedName, ULONGLONG FileTime, DWORD dwFileSize, LCID lcLocale, DWORD dwFlags, HANDLE * phFile);
-bool   WINAPI SFileWriteFile(HANDLE hFile, const void * pvData, DWORD dwSize, DWORD dwCompression);
-bool   WINAPI SFileFinishFile(HANDLE hFile);
+bool   STORMAPI SFileCreateFile(HANDLE hMpq, const char * szArchivedName, ULONGLONG FileTime, DWORD dwFileSize, LCID lcLocale, DWORD dwFlags, HANDLE * phFile);
+bool   STORMAPI SFileWriteFile(HANDLE hFile, const void * pvData, DWORD dwSize, DWORD dwCompression);
+bool   STORMAPI SFileFinishFile(HANDLE hFile);
 
-bool   WINAPI SFileAddFileEx(HANDLE hMpq, const TCHAR * szFileName, const char * szArchivedName, DWORD dwFlags, DWORD dwCompression, DWORD dwCompressionNext = MPQ_COMPRESSION_NEXT_SAME);
-bool   WINAPI SFileAddFile(HANDLE hMpq, const TCHAR * szFileName, const char * szArchivedName, DWORD dwFlags); 
-bool   WINAPI SFileAddWave(HANDLE hMpq, const TCHAR * szFileName, const char * szArchivedName, DWORD dwFlags, DWORD dwQuality); 
-bool   WINAPI SFileRemoveFile(HANDLE hMpq, const char * szFileName, DWORD dwSearchScope);
-bool   WINAPI SFileRenameFile(HANDLE hMpq, const char * szOldFileName, const char * szNewFileName);
-bool   WINAPI SFileSetFileLocale(HANDLE hFile, LCID lcNewLocale);
-bool   WINAPI SFileSetDataCompression(DWORD DataCompression);
+bool   STORMAPI SFileAddFileEx(HANDLE hMpq, const TCHAR * szFileName, const char * szArchivedName, DWORD dwFlags, DWORD dwCompression, DWORD dwCompressionNext = MPQ_COMPRESSION_NEXT_SAME);
+bool   STORMAPI SFileAddFile(HANDLE hMpq, const TCHAR * szFileName, const char * szArchivedName, DWORD dwFlags); 
+bool   STORMAPI SFileAddWave(HANDLE hMpq, const TCHAR * szFileName, const char * szArchivedName, DWORD dwFlags, DWORD dwQuality); 
+bool   STORMAPI SFileRemoveFile(HANDLE hMpq, const char * szFileName, DWORD dwSearchScope);
+bool   STORMAPI SFileRenameFile(HANDLE hMpq, const char * szOldFileName, const char * szNewFileName);
+bool   STORMAPI SFileSetFileLocale(HANDLE hFile, LCID lcNewLocale);
+bool   STORMAPI SFileSetDataCompression(DWORD DataCompression);
 
-bool   WINAPI SFileSetAddFileCallback(HANDLE hMpq, SFILE_ADDFILE_CALLBACK AddFileCB, void * pvUserData);
+bool   STORMAPI SFileSetAddFileCallback(HANDLE hMpq, SFILE_ADDFILE_CALLBACK AddFileCB, void * pvUserData);
 
 //-----------------------------------------------------------------------------
 // Compression and decompression
 
-int    WINAPI SCompImplode    (void * pvOutBuffer, int * pcbOutBuffer, void * pvInBuffer, int cbInBuffer);
-int    WINAPI SCompExplode    (void * pvOutBuffer, int * pcbOutBuffer, void * pvInBuffer, int cbInBuffer);
-int    WINAPI SCompCompress   (void * pvOutBuffer, int * pcbOutBuffer, void * pvInBuffer, int cbInBuffer, unsigned uCompressionMask, int nCmpType, int nCmpLevel);
-int    WINAPI SCompDecompress (void * pvOutBuffer, int * pcbOutBuffer, void * pvInBuffer, int cbInBuffer);
-int    WINAPI SCompDecompress2(void * pvOutBuffer, int * pcbOutBuffer, void * pvInBuffer, int cbInBuffer);
+int    STORMAPI SCompImplode    (void * pvOutBuffer, int * pcbOutBuffer, void * pvInBuffer, int cbInBuffer);
+int    STORMAPI SCompExplode    (void * pvOutBuffer, int * pcbOutBuffer, void * pvInBuffer, int cbInBuffer);
+int    STORMAPI SCompCompress   (void * pvOutBuffer, int * pcbOutBuffer, void * pvInBuffer, int cbInBuffer, unsigned uCompressionMask, int nCmpType, int nCmpLevel);
+int    STORMAPI SCompDecompress (void * pvOutBuffer, int * pcbOutBuffer, void * pvInBuffer, int cbInBuffer);
+int    STORMAPI SCompDecompress2(void * pvOutBuffer, int * pcbOutBuffer, void * pvInBuffer, int cbInBuffer);
 
 //-----------------------------------------------------------------------------
 // Non-Windows support for SetLastError/GetLastError
@@ -1110,8 +1110,8 @@ DWORD   GetLastError();
 
 extern DWORD nLastError;
 
-DWORD WINAPI SErrGetLastError();
-void WINAPI SErrSetLastError(DWORD dwErrCode);
+DWORD STORMAPI SErrGetLastError();
+void STORMAPI SErrSetLastError(DWORD dwErrCode);
 
 #define SetLastError SErrSetLastError
 #define GetLastError SErrGetLastError

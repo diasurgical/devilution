@@ -6,7 +6,7 @@ Cosmetic changes:
 
 Implementation changes:
 * Redefine `bool` to `BOOL`.
-* Use `stdcall` calling convention.
+* Use STORMAPI instead of WINAPI for calling convention (and define it as nothing).
 * Use external Storm error handling (`SErrGetLastError()` etc.)
 * Convert pathnames to Unix-style slashes.
 * Bugfixes, with comment: // BUGFIX (devilutionX)
