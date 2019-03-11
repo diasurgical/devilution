@@ -1924,22 +1924,14 @@ void __fastcall AddFirebolt(int mi, int sx, int sy, int dx, int dy, int midir, i
 
 void __fastcall AddMagmaball(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9;  // esi
-	int v10; // edi
-	int i;   // ST1C_4
-
-	v9 = mi;
-	v10 = sx;
-	i = mi;
 	GetMissileVel(mi, sx, sy, dx, dy, 16);
-	v9 *= 176;
-	*(int *)((char *)&missile[0]._mitxoff + v9) += 3 * *(int *)((char *)&missile[0]._mixvel + v9);
-	*(int *)((char *)&missile[0]._mityoff + v9) += 3 * *(int *)((char *)&missile[0]._miyvel + v9);
-	GetMissilePos(i);
-	*(int *)((char *)&missile[0]._mirange + v9) = 256;
-	*(int *)((char *)&missile[0]._miVar1 + v9) = v10;
-	*(int *)((char *)&missile[0]._miVar2 + v9) = sy;
-	*(int *)((char *)&missile[0]._mlid + v9) = AddLight(v10, sy, 8);
+	missile[mi]._mitxoff += 3 * missile[mi]._mixvel;
+	missile[mi]._mityoff += 3 * missile[mi]._miyvel;
+	GetMissilePos(mi);
+	missile[mi]._mirange = 256;
+	missile[mi]._miVar1 = sx;
+	missile[mi]._miVar2 = sy;
+	missile[mi]._mlid = AddLight(sx, sy, 8);
 }
 
 void __fastcall miss_null_33(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
