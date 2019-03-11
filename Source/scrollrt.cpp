@@ -67,7 +67,7 @@ void __cdecl ClearCursor() // CODE_FIX: this was supposed to be in cursor.cpp
 	sgdwCursWdtOld = 0;
 }
 
-void __fastcall DrawMissile(int x, int y, int sx, int sy, int a5, int a6, int del_flag)
+void __fastcall DrawMissile(int x, int y, int sx, int sy, int a5, int a6, BOOL del_flag)
 {
 	int v7;             // ebx
 	char v8;            // al
@@ -151,7 +151,7 @@ void __fastcall DrawMissile(int x, int y, int sx, int sy, int a5, int a6, int de
 	}
 }
 
-void __fastcall DrawClippedMissile(int x, int y, int sx, int sy, int a5, int a6, int a7)
+void __fastcall DrawClippedMissile(int x, int y, int sx, int sy, int a5, int a6, BOOL a7)
 {
 	int v7;             // ebx
 	char v8;            // al
@@ -880,7 +880,7 @@ void __fastcall scrollrt_draw_clipped_dungeon(char *a1, int sx, int sy, int a4, 
 	if (visiondebug && v50 & DFLAG_LIT)
 		Cel2DecodeHdrOnly(dst_buf, (char *)pSquareCel, 1, 64, 0, 8);
 	if (MissilePreFlag && v50 & DFLAG_MISSILE)
-		DrawClippedMissile(a1a, sy, a4, a5, 0, 8, 1);
+		DrawClippedMissile(a1a, sy, a4, a5, 0, 8, TRUE);
 	if (light_table_index < lightmax) {
 		if (v7) {
 			v11 = &dead[(v7 & 0x1F) - 1];
@@ -1010,7 +1010,7 @@ void __fastcall scrollrt_draw_clipped_dungeon(char *a1, int sx, int sy, int a4, 
 		}
 	}
 	if (v50 & 1)
-		DrawClippedMissile(a1a, sy, a4, a5, 0, 8, 0);
+		DrawClippedMissile(a1a, sy, a4, a5, 0, 8, FALSE);
 	if (v47 && light_table_index < lightmax)
 		DrawClippedObject(a1a, sy, a4, a5, 0, 0, 8);
 	if (v49) {
@@ -1476,7 +1476,7 @@ void __fastcall scrollrt_draw_clipped_dungeon_2(char *buffer, int x, int y, int 
 		Cel2DecodeHdrOnly(dst_buf, (char *)pSquareCel, 1, 64, a5, 8);
 	if (MissilePreFlag && v53 & DFLAG_MISSILE) {
 		v13 = sx;
-		DrawClippedMissile(a1, y, sx, sy, a5, 8, 1);
+		DrawClippedMissile(a1, y, sx, sy, a5, 8, TRUE);
 	} else {
 		v13 = sx;
 	}
@@ -1611,7 +1611,7 @@ void __fastcall scrollrt_draw_clipped_dungeon_2(char *buffer, int x, int y, int 
 		}
 	}
 	if (v53 & DFLAG_MISSILE)
-		DrawClippedMissile(a1, y, v13, sy, a5, 8, 0);
+		DrawClippedMissile(a1, y, v13, sy, a5, 8, FALSE);
 	if (v50 && light_table_index < lightmax)
 		DrawClippedObject(a1, y, v13, sy, 0, a5, 8);
 	if (v52) {
@@ -2019,7 +2019,7 @@ void __fastcall scrollrt_draw_dungeon(char *buffer, int x, int y, int a4, int a5
 	if (visiondebug && v52 & DFLAG_LIT)
 		CelDecodeHdrOnly(dst_buf, (char *)pSquareCel, 1, 64, 0, a5);
 	if (MissilePreFlag && v52 & DFLAG_MISSILE)
-		DrawMissile(xa, y, sx, sy, 0, a5, 1);
+		DrawMissile(xa, y, sx, sy, 0, a5, TRUE);
 	if (light_table_index < lightmax) {
 		if (v9) {
 			v13 = &dead[(v9 & 0x1F) - 1];
@@ -2149,7 +2149,7 @@ void __fastcall scrollrt_draw_dungeon(char *buffer, int x, int y, int a4, int a5
 		}
 	}
 	if (v52 & DFLAG_MISSILE)
-		DrawMissile(xa, y, sx, sy, 0, a5, 0);
+		DrawMissile(xa, y, sx, sy, 0, a5, FALSE);
 	if (v49 && light_table_index < lightmax)
 		DrawObject(xa, y, sx, sy, 0, 0, a5);
 	if (v51) {
