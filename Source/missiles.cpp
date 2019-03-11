@@ -2936,20 +2936,15 @@ void __fastcall miss_null_23(int mi, int sx, int sy, int dx, int dy, int midir, 
 
 void __fastcall AddBoom(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9;  // ecx
-	int v10; // edx
-
-	v9 = mi;
-	missile[v9]._miy = dy;
-	missile[v9]._misy = dy;
-	missile[v9]._mix = dx;
-	missile[v9]._misx = dx;
-	missile[v9]._midam = dam;
-	v10 = missile[v9]._miAnimLen;
-	missile[v9]._mixvel = 0;
-	missile[v9]._miyvel = 0;
-	missile[v9]._mirange = v10;
-	missile[v9]._miVar1 = 0;
+	missile[mi]._mix = dx;
+	missile[mi]._miy = dy;
+	missile[mi]._misx = dx;
+	missile[mi]._misy = dy;
+	missile[mi]._mixvel = 0;
+	missile[mi]._miyvel = 0;
+	missile[mi]._midam = dam;
+	missile[mi]._mirange = missile[mi]._miAnimLen;
+	missile[mi]._miVar1 = 0;
 }
 
 void __fastcall AddHeal(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
