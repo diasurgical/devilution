@@ -213,7 +213,7 @@ void __fastcall town_draw_clipped_town(BYTE *buffer, int x, int y, int sx, int s
 		v7 = v29;
 	}
 	if (dFlags[0][v7] & DFLAG_MISSILE)
-		DrawClippedMissile(xa, y, sx, sy, 0, 8, 0);
+		DrawClippedMissile(xa, y, sx, sy, 0, 8, FALSE);
 }
 // 4B8CC0: using guessed type char pcursitem;
 // 4B8CC2: using guessed type char pcursplr;
@@ -473,7 +473,7 @@ void __fastcall town_draw_clipped_town_2(int x, int y, int a3, int a4, int a5, i
 		v9 = v31;
 	}
 	if (dFlags[0][v9] & DFLAG_MISSILE)
-		DrawClippedMissile(xa, a3, sx, sy, a5, 8, 0);
+		DrawClippedMissile(xa, a3, sx, sy, a5, 8, FALSE);
 }
 // 4B8CC0: using guessed type char pcursitem;
 // 4B8CC2: using guessed type char pcursplr;
@@ -693,7 +693,7 @@ void __fastcall town_draw_town_all(BYTE *buffer, int x, int y, int a4, int dir, 
 			town_draw_e_flag(buffer - 64, x - 1, y + 1, a4, dir, sx - 64, sy);
 	}
 	if (dFlags[x][y] & DFLAG_MISSILE)
-		DrawMissile(x, y, sx, sy, 0, dir, 0);
+		DrawMissile(x, y, sx, sy, 0, dir, FALSE);
 }
 // 4B8CC0: using guessed type char pcursitem;
 // 4B8CC2: using guessed type char pcursplr;
