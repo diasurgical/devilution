@@ -3023,25 +3023,19 @@ void __fastcall miss_null_1F(int mi, int sx, int sy, int dx, int dy, int midir, 
 }
 
 void __fastcall miss_null_23(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
-{
-	int v9;  // esi
-	int v10; // edx
-	int v11; // eax
-
-	v9 = mi;
-	missile[v9]._mix = sx;
-	missile[v9]._miy = sy;
-	missile[v9]._misx = sx;
-	missile[v9]._misy = sy;
-	v10 = 0;
-	missile[v9]._midam = dam;
-	missile[v9]._misource = id;
-	if (dam != 1)
-		v10 = 1;
-	SetMissDir(mi, v10);
-	v11 = missile[v9]._miAnimLen;
-	missile[v9]._miLightFlag = 1;
-	missile[v9]._mirange = v11;
+{ 
+	missile[mi]._midam = dam;
+	missile[mi]._mix = sx;
+	missile[mi]._miy = sy;
+	missile[mi]._misx = sx;
+	missile[mi]._misy = sy;
+	missile[mi]._misource = id;
+	if (dam == 1)
+		SetMissDir(mi, 0);
+	else
+		SetMissDir(mi, 1);
+	missile[mi]._miLightFlag = 1;
+	missile[mi]._mirange = missile[mi]._miAnimLen;
 }
 
 void __fastcall AddBoom(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
