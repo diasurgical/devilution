@@ -101,15 +101,15 @@ void __fastcall mpqapi_update_multi_creation_time(DWORD dwChar)
 {
 }
 
-BOOLEAN __fastcall mpqapi_reg_store_modification_time(char *pbData, int dwLen)
+BOOLEAN __fastcall mpqapi_reg_store_modification_time(char *pbData, DWORD dwLen)
 {
 	char *pbCurrentData;
-	unsigned int i;
+	DWORD i;
 	char *pbDataToXor;
 
 	pbCurrentData = pbData;
-	if ((unsigned int)dwLen >= 8) {
-		i = (unsigned int)dwLen >> 3;
+	if (dwLen >= 8) {
+		i = dwLen >> 3;
 		do {
 			pbDataToXor = pbCurrentData;
 			pbCurrentData += 8;
@@ -117,6 +117,7 @@ BOOLEAN __fastcall mpqapi_reg_store_modification_time(char *pbData, int dwLen)
 			--i;
 		} while (i);
 	}
+
 	return SRegSaveData("Diablo", "Video Player ", 0, (unsigned char *)pbData, dwLen);
 }
 
