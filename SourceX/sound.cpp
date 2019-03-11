@@ -193,9 +193,6 @@ void __fastcall sound_CreateSoundBuffer(TSnd *sound_file)
 	DSB.lpwfxFormat = &sound_file->fmt;
 	DSB.dwSize = sizeof(DSBUFFERDESC);
 	DSB.dwFlags = DSBCAPS_CTRLVOLUME | DSBCAPS_CTRLPAN | DSBCAPS_STATIC;
-
-	if (error_code != ERROR_SUCCESS)
-		DSErrMsg(error_code, 282, "C:\\Src\\Diablo\\Source\\SOUND.CPP");
 }
 
 void __fastcall sound_file_cleanup(TSnd *sound_file)
