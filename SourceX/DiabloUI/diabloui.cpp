@@ -14,10 +14,10 @@ Art ArtBackground;
 Art ArtCursor;
 Art ArtHero;
 
-void(__stdcall *gfnSoundFunction)(char *file);
-void(__stdcall *gfnListFocus)(int value);
-void(__stdcall *gfnListSelect)(int value);
-void(__stdcall *gfnListEsc)();
+void(*gfnSoundFunction)(char *file);
+void(*gfnListFocus)(int value);
+void(*gfnListSelect)(int value);
+void(*gfnListEsc)();
 UI_Item *gUiItems;
 int gUiItemCnt;
 bool UiItemsWraps;
@@ -121,7 +121,7 @@ BOOL SetWindowPos(HWND hWnd, HWND hWndInsertAfter, int X, int Y, int cx, int cy,
 	return TRUE;
 }
 
-void __cdecl UiDestroy()
+void UiDestroy()
 {
 	DUMMY();
 	mem_free_dbg(ArtHero.data);
@@ -131,7 +131,7 @@ void __cdecl UiDestroy()
 	font = NULL;
 }
 
-void UiInitList(int min, int max, void(__stdcall *fnFocus)(int value), void(__stdcall *fnSelect)(int value), void(__stdcall *fnEsc)(), UI_Item *items, int itemCnt, bool itemsWraps)
+void UiInitList(int min, int max, void(*fnFocus)(int value), void(*fnSelect)(int value), void(*fnEsc)(), UI_Item *items, int itemCnt, bool itemsWraps)
 {
 	SelectedItem = min;
 	SelectedItemMin = min;
@@ -392,7 +392,7 @@ void UiInitialize()
 	InitFont();
 }
 
-int __cdecl UiProfileGetString()
+int UiProfileGetString()
 {
 	DUMMY();
 	return 0;
@@ -400,7 +400,7 @@ int __cdecl UiProfileGetString()
 
 char connect_plrinfostr[128];
 char connect_categorystr[128];
-void __stdcall UiSetupPlayerInfo(char *infostr, _uiheroinfo *pInfo, DWORD type)
+void UiSetupPlayerInfo(char *infostr, _uiheroinfo *pInfo, DWORD type)
 {
 	DUMMY();
 	SStrCopy(connect_plrinfostr, infostr, 128);
@@ -423,17 +423,17 @@ void __stdcall UiSetupPlayerInfo(char *infostr, _uiheroinfo *pInfo, DWORD type)
 	    pInfo->spawned);
 }
 
-BOOL __stdcall UiCopyProtError(int *pdwResult)
+BOOL UiCopyProtError(int *pdwResult)
 {
 	UNIMPLEMENTED();
 }
 
-void __stdcall UiAppActivate(BOOL bActive)
+void UiAppActivate(BOOL bActive)
 {
 	DUMMY();
 }
 
-BOOL __fastcall UiValidPlayerName(char *name)
+BOOL UiValidPlayerName(char *name)
 {
 	if (!strlen(name))
 		return FALSE;
@@ -448,59 +448,59 @@ BOOL __fastcall UiValidPlayerName(char *name)
 	return TRUE;
 }
 
-void __cdecl UiProfileCallback()
+void UiProfileCallback()
 {
 	UNIMPLEMENTED();
 }
 
-void __cdecl UiProfileDraw()
+void UiProfileDraw()
 {
 	UNIMPLEMENTED();
 }
 
-BOOL __stdcall UiCategoryCallback(int a1, int a2, int a3, int a4, int a5, _DWORD *a6, _DWORD *a7)
+BOOL UiCategoryCallback(int a1, int a2, int a3, int a4, int a5, _DWORD *a6, _DWORD *a7)
 {
 	UNIMPLEMENTED();
 }
 
-BOOL __stdcall UiGetDataCallback(int game_type, int data_code, void *a3, int a4, int a5)
+BOOL UiGetDataCallback(int game_type, int data_code, void *a3, int a4, int a5)
 {
 	UNIMPLEMENTED();
 }
 
-BOOL __stdcall UiAuthCallback(int a1, char *a2, char *a3, char a4, char *a5, LPSTR lpBuffer, int cchBufferMax)
+BOOL UiAuthCallback(int a1, char *a2, char *a3, char a4, char *a5, LPSTR lpBuffer, int cchBufferMax)
 {
 	UNIMPLEMENTED();
 }
 
-BOOL __stdcall UiSoundCallback(int a1, int type, int a3)
+BOOL UiSoundCallback(int a1, int type, int a3)
 {
 	UNIMPLEMENTED();
 }
 
-void __stdcall UiMessageBoxCallback(HWND hWnd, char *lpText, LPCSTR lpCaption, UINT uType)
+void UiMessageBoxCallback(HWND hWnd, char *lpText, LPCSTR lpCaption, UINT uType)
 {
 	UNIMPLEMENTED();
 }
 
-BOOL __stdcall UiDrawDescCallback(int game_type, COLORREF color, LPCSTR lpString, char *a4, int a5, UINT align, time_t a7,
+BOOL UiDrawDescCallback(int game_type, COLORREF color, LPCSTR lpString, char *a4, int a5, UINT align, time_t a7,
     HDC *a8)
 {
 	UNIMPLEMENTED();
 }
 
-BOOL __stdcall UiCreateGameCallback(int a1, int a2, int a3, int a4, int a5, int a6)
+BOOL UiCreateGameCallback(int a1, int a2, int a3, int a4, int a5, int a6)
 {
 	UNIMPLEMENTED();
 }
 
-BOOL __stdcall UiArtCallback(int game_type, unsigned int art_code, PALETTEENTRY *pPalette, void *pBuffer,
+BOOL UiArtCallback(int game_type, unsigned int art_code, PALETTEENTRY *pPalette, void *pBuffer,
     DWORD dwBuffersize, DWORD *pdwWidth, DWORD *pdwHeight, DWORD *pdwBpp)
 {
 	UNIMPLEMENTED();
 }
 
-BOOL __stdcall UiCreatePlayerDescription(_uiheroinfo *info, DWORD mode, char *desc)
+BOOL UiCreatePlayerDescription(_uiheroinfo *info, DWORD mode, char *desc)
 {
 	char format[32] = "";
 	strncpy(format, (char *)&mode, 4);

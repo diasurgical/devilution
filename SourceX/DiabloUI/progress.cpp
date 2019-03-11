@@ -68,7 +68,7 @@ void progress_Render(BYTE progress)
 	}
 }
 
-int __stdcall UiProgressDialog(HWND window, char *msg, int enable, int(__cdecl *fnfunc)(), int rate)
+int UiProgressDialog(HWND window, char *msg, int enable, int(*fnfunc)(), int rate)
 {
 	progress_Load(msg);
 

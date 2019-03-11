@@ -206,7 +206,7 @@ void selgame_Password_Esc()
 	selgame_GameSelection_Select(selgame_selectedGame);
 }
 
-int __stdcall UiSelectGame(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info, _SNETUIDATA *ui_info,
+int UiSelectGame(int a1, _SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info, _SNETUIDATA *ui_info,
     _SNETVERSIONDATA *file_info, int *playerId)
 {
 	gdwPlayerId = playerId;

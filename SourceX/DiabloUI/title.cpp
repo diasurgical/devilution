@@ -16,7 +16,7 @@ void title_Free()
 	ArtLogos[LOGO_BIG].data = NULL;
 }
 
-BOOL __stdcall UiTitleDialog(int a1)
+BOOL UiTitleDialog(int a1)
 {
 	UI_Item TITLESCREEN_DIALOG[] = {
 		{ { 0, 0, 640, 480 }, UI_IMAGE, 0, 0, NULL, &ArtBackground },

@@ -527,7 +527,7 @@ void credts_Render()
 	}
 }
 
-BOOL __stdcall UiCreditsDialog(int a1)
+BOOL UiCreditsDialog(int a1)
 {
 	credts_Load();
 

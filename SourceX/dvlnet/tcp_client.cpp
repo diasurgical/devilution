@@ -1,12 +1,11 @@
 #include "dvlnet/tcp_client.h"
 
 #include <functional>
-#include <thread>
-#include <chrono>
 #include <exception>
 #include <system_error>
 #include <stdexcept>
 #include <sodium.h>
+#include <SDL.h>
 
 namespace dvl { namespace net {
 
@@ -51,7 +50,7 @@ int tcp_client::join(std::string addrstr, std::string passwd)
 			}
 			if (plr_self != PLR_BROADCAST)
 				break; // join successful
-			std::this_thread::sleep_for(std::chrono::milliseconds(ms_sleep));
+			SDL_Delay(ms_sleep);
 		}
 	}
 	return (plr_self == PLR_BROADCAST ? -1 : plr_self);

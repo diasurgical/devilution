@@ -26,16 +26,6 @@
 
 #define NO_ERROR 0
 
-// Remove calling conventions (original calling conventions confuse address-sanitizer and aren't supported by all compilers)
-#define __cdecl
-#define __fastcall
-#define __stdcall
-#define CALLBACK
-#define APIENTRY
-#define WINAPI
-#define WINAPIV
-#define WINUSERAPI
-
 #ifndef _WIN32
 #define __int8 char
 #define __int16 short

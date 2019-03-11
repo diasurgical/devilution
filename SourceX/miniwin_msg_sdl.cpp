@@ -97,7 +97,7 @@ static WINBOOL false_avail()
 	return FALSE;
 }
 
-WINBOOL WINAPI PeekMessageA(LPMSG lpMsg, HWND hWnd, UINT wMsgFilterMin, UINT wMsgFilterMax, UINT wRemoveMsg)
+WINBOOL PeekMessageA(LPMSG lpMsg, HWND hWnd, UINT wMsgFilterMin, UINT wMsgFilterMax, UINT wRemoveMsg)
 {
 	if (wMsgFilterMin != 0)
 		UNIMPLEMENTED();
@@ -192,7 +192,7 @@ WINBOOL WINAPI PeekMessageA(LPMSG lpMsg, HWND hWnd, UINT wMsgFilterMin, UINT wMs
 	return TRUE;
 }
 
-WINBOOL WINAPI TranslateMessage(CONST MSG *lpMsg)
+WINBOOL TranslateMessage(CONST MSG *lpMsg)
 {
 	assert(lpMsg->hwnd == 0);
 	if (lpMsg->message == WM_KEYDOWN) {
@@ -267,14 +267,14 @@ WINBOOL WINAPI TranslateMessage(CONST MSG *lpMsg)
 	return TRUE;
 }
 
-SHORT WINAPI GetAsyncKeyState(int vKey)
+SHORT GetAsyncKeyState(int vKey)
 {
 	DUMMY_ONCE();
 	// TODO: Not handled yet.
 	return 0;
 }
 
-LRESULT WINAPI DispatchMessageA(CONST MSG *lpMsg)
+LRESULT DispatchMessageA(CONST MSG *lpMsg)
 {
 	DUMMY_ONCE();
 	assert(lpMsg->hwnd == 0);
@@ -284,7 +284,7 @@ LRESULT WINAPI DispatchMessageA(CONST MSG *lpMsg)
 	return CurrentProc(lpMsg->hwnd, lpMsg->message, lpMsg->wParam, lpMsg->lParam);
 }
 
-WINBOOL WINAPI PostMessageA(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
+WINBOOL PostMessageA(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
 	DUMMY();
 

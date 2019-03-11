@@ -15,9 +15,9 @@ int selhero_result;
 bool selhero_endMenu;
 bool isMultiPlayer;
 
-BOOL(__stdcall *gfnHeroStats)
+BOOL(*gfnHeroStats)
 (unsigned int, _uidefaultstats *);
-BOOL(__stdcall *gfnHeroCreate)
+BOOL(*gfnHeroCreate)
 (_uiheroinfo *);
 
 UI_Item SELHERO_DIALOG[] = {
@@ -212,7 +212,7 @@ void selhero_Load_Select(int value)
 	selhero_result = NEW_GAME;
 }
 
-BOOL __stdcall SelHero_GetHeroInfo(_uiheroinfo *pInfo)
+BOOL SelHero_GetHeroInfo(_uiheroinfo *pInfo)
 {
 	heros[selhero_SaveCount] = *pInfo;
 	selhero_SaveCount++;
@@ -221,9 +221,9 @@ BOOL __stdcall SelHero_GetHeroInfo(_uiheroinfo *pInfo)
 }
 
 BOOL UiSelHeroDialog(
-    BOOL(__stdcall *fninfo)(BOOL(__stdcall *fninfofunc)(_uiheroinfo *)),
-    BOOL(__stdcall *fncreate)(_uiheroinfo *),
-    BOOL(__stdcall *fnstats)(unsigned int, _uidefaultstats *),
+    BOOL(*fninfo)(BOOL(*fninfofunc)(_uiheroinfo *)),
+    BOOL(*fncreate)(_uiheroinfo *),
+    BOOL(*fnstats)(unsigned int, _uidefaultstats *),
     int *dlgresult,
     char *name)
 {
@@ -255,11 +255,11 @@ BOOL UiSelHeroDialog(
 	return TRUE;
 }
 
-BOOL __stdcall UiSelHeroSingDialog(
-    BOOL(__stdcall *fninfo)(BOOL(__stdcall *fninfofunc)(_uiheroinfo *)),
-    BOOL(__stdcall *fncreate)(_uiheroinfo *),
-    BOOL(__stdcall *fnremove)(_uiheroinfo *),
-    BOOL(__stdcall *fnstats)(unsigned int, _uidefaultstats *),
+BOOL UiSelHeroSingDialog(
+    BOOL(*fninfo)(BOOL(*fninfofunc)(_uiheroinfo *)),
+    BOOL(*fncreate)(_uiheroinfo *),
+    BOOL(*fnremove)(_uiheroinfo *),
+    BOOL(*fnstats)(unsigned int, _uidefaultstats *),
     int *dlgresult,
     char *name,
     int *difficulty)
@@ -268,11 +268,11 @@ BOOL __stdcall UiSelHeroSingDialog(
 	return UiSelHeroDialog(fninfo, fncreate, fnstats, dlgresult, name);
 }
 
-BOOL __stdcall UiSelHeroMultDialog(
-    BOOL(__stdcall *fninfo)(BOOL(__stdcall *fninfofunc)(_uiheroinfo *)),
-    BOOL(__stdcall *fncreate)(_uiheroinfo *),
-    BOOL(__stdcall *fnremove)(_uiheroinfo *),
-    BOOL(__stdcall *fnstats)(unsigned int, _uidefaultstats *),
+BOOL UiSelHeroMultDialog(
+    BOOL(*fninfo)(BOOL(*fninfofunc)(_uiheroinfo *)),
+    BOOL(*fncreate)(_uiheroinfo *),
+    BOOL(*fnremove)(_uiheroinfo *),
+    BOOL(*fnstats)(unsigned int, _uidefaultstats *),
     int *dlgresult,
     BOOL *hero_is_created,
     char *name)

@@ -35,7 +35,7 @@ char unk_volume[4][2] = {
 	{ 30, -31 }
 };
 
-void __fastcall snd_update(BOOL bStopAll)
+void snd_update(BOOL bStopAll)
 {
 	DWORD error_code, i;
 
@@ -45,14 +45,14 @@ void __fastcall snd_update(BOOL bStopAll)
 	Mix_HaltChannel(-1);
 }
 
-void __fastcall snd_stop_snd(TSnd *pSnd)
+void snd_stop_snd(TSnd *pSnd)
 {
 	DUMMY_ONCE();
 	if (pSnd && pSnd->DSB)
 		Mix_HaltChannel(-1);
 }
 
-BOOL __fastcall snd_playing(TSnd *pSnd)
+BOOL snd_playing(TSnd *pSnd)
 {
 	DWORD error_code; // TODO should probably be HRESULT
 
@@ -67,7 +67,7 @@ BOOL __fastcall snd_playing(TSnd *pSnd)
 	return FALSE;
 }
 
-void __fastcall snd_play_snd(TSnd *pSnd, int lVolume, int lPan)
+void snd_play_snd(TSnd *pSnd, int lVolume, int lPan)
 {
 	LPDIRECTSOUNDBUFFER DSB;
 	DWORD tc;
@@ -111,7 +111,7 @@ void __fastcall snd_play_snd(TSnd *pSnd, int lVolume, int lPan)
 	pSnd->start_tc = tc;
 }
 
-LPDIRECTSOUNDBUFFER __fastcall sound_dup_channel(LPDIRECTSOUNDBUFFER DSB)
+LPDIRECTSOUNDBUFFER sound_dup_channel(LPDIRECTSOUNDBUFFER DSB)
 {
 	DWORD i;
 
@@ -126,7 +126,7 @@ LPDIRECTSOUNDBUFFER __fastcall sound_dup_channel(LPDIRECTSOUNDBUFFER DSB)
 	return NULL;
 }
 
-BOOL __fastcall sound_file_reload(TSnd *sound_file, LPDIRECTSOUNDBUFFER DSB)
+BOOL sound_file_reload(TSnd *sound_file, LPDIRECTSOUNDBUFFER DSB)
 {
 	HANDLE file;
 	LPVOID buf1, buf2;
@@ -145,7 +145,7 @@ BOOL __fastcall sound_file_reload(TSnd *sound_file, LPDIRECTSOUNDBUFFER DSB)
 	return rv;
 }
 
-TSnd *__fastcall sound_file_load(char *path)
+TSnd *sound_file_load(char *path)
 {
 	HANDLE file;
 	BYTE *wave_file;
@@ -184,7 +184,7 @@ TSnd *__fastcall sound_file_load(char *path)
 }
 // 456F07: could not find valid save-restore pair for esi
 
-void __fastcall sound_CreateSoundBuffer(TSnd *sound_file)
+void sound_CreateSoundBuffer(TSnd *sound_file)
 {
 	DUMMY_ONCE();
 	DSBUFFERDESC DSB;
@@ -197,7 +197,7 @@ void __fastcall sound_CreateSoundBuffer(TSnd *sound_file)
 	DSB.dwFlags = DSBCAPS_CTRLVOLUME | DSBCAPS_CTRLPAN | DSBCAPS_STATIC;
 }
 
-void __fastcall sound_file_cleanup(TSnd *sound_file)
+void sound_file_cleanup(TSnd *sound_file)
 {
 	if (sound_file) {
 		if (sound_file->DSB) {
@@ -210,7 +210,7 @@ void __fastcall sound_file_cleanup(TSnd *sound_file)
 	}
 }
 
-void __fastcall snd_init(HWND hWnd)
+void snd_init(HWND hWnd)
 {
 	DUMMY();
 	sound_load_volume("Sound Volume", &sglSoundVolume);
@@ -231,7 +231,7 @@ void __fastcall snd_init(HWND hWnd)
 	gbSndInited = true;
 }
 
-void __fastcall sound_load_volume(char *value_name, int *value)
+void sound_load_volume(char *value_name, int *value)
 {
 	int v = *value;
 	if (!SRegLoadValue("Diablo", value_name, 0, &v)) {
@@ -247,7 +247,7 @@ void __fastcall sound_load_volume(char *value_name, int *value)
 	*value -= *value % 100;
 }
 
-void __fastcall sound_create_primary_buffer(HANDLE music_track)
+void sound_create_primary_buffer(HANDLE music_track)
 {
 	DUMMY();
 	HRESULT error_code;
@@ -301,10 +301,10 @@ void __fastcall sound_create_primary_buffer(HANDLE music_track)
 }
 // 69F100: using guessed type int sglpDSB;
 
-HRESULT __fastcall sound_DirectSoundCreate(LPGUID lpGuid, LPDIRECTSOUND *ppDS, LPUNKNOWN pUnkOuter)
+HRESULT sound_DirectSoundCreate(LPGUID lpGuid, LPDIRECTSOUND *ppDS, LPUNKNOWN pUnkOuter)
 {
 	UNIMPLEMENTED();
-	HRESULT(WINAPI * DirectSoundCreate)
+	HRESULT(* DirectSoundCreate)
 	(LPGUID lpGuid, LPDIRECTSOUND * ppDS, LPUNKNOWN pUnkOuter);
 
 	if (hDsound_dll == NULL) {
@@ -319,7 +319,7 @@ HRESULT __fastcall sound_DirectSoundCreate(LPGUID lpGuid, LPDIRECTSOUND *ppDS, L
 	return DirectSoundCreate(lpGuid, ppDS, pUnkOuter);
 }
 
-void __cdecl sound_cleanup()
+void sound_cleanup()
 {
 	snd_update(TRUE);
 	SVidDestroy();
@@ -337,12 +337,12 @@ void __cdecl sound_cleanup()
 	}
 }
 
-void __fastcall sound_store_volume(char *key, int value)
+void sound_store_volume(char *key, int value)
 {
 	SRegSaveValue("Diablo", key, 0, value);
 }
 
-void __cdecl music_stop()
+void music_stop()
 {
 	if (sgpMusicTrack) {
 		Mix_HaltMusic();
@@ -352,7 +352,7 @@ void __cdecl music_stop()
 	}
 }
 
-void __fastcall music_start(int nTrack)
+void music_start(int nTrack)
 {
 	BOOL success;
 
@@ -384,7 +384,7 @@ void __fastcall music_start(int nTrack)
 	}
 }
 
-void __fastcall sound_disable_music(BOOL disable)
+void sound_disable_music(BOOL disable)
 {
 	if (disable) {
 		music_stop();
@@ -393,7 +393,7 @@ void __fastcall sound_disable_music(BOOL disable)
 	}
 }
 
-int __fastcall sound_get_or_set_music_volume(int volume)
+int sound_get_or_set_music_volume(int volume)
 {
 	if (volume == 1)
 		return sglMusicVolume;
@@ -406,7 +406,7 @@ int __fastcall sound_get_or_set_music_volume(int volume)
 	return sglMusicVolume;
 }
 
-int __fastcall sound_get_or_set_sound_volume(int volume)
+int sound_get_or_set_sound_volume(int volume)
 {
 	if (volume == 1)
 		return sglSoundVolume;

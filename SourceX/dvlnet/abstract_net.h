@@ -9,7 +9,7 @@
 
 namespace dvl { namespace net {
 	typedef std::vector<unsigned char> buffer_t;
-	typedef void(__stdcall *snet_event_func)(struct _SNETEVENT*);
+	typedef void(*snet_event_func)(struct _SNETEVENT*);
 	typedef unsigned long provider_t;
 	class dvlnet_exception : public std::exception {};
 

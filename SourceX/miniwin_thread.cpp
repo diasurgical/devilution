@@ -10,7 +10,7 @@ struct event_emul {
 	SDL_cond *cond;
 };
 
-uintptr_t __cdecl _beginthreadex(void *_Security, unsigned _StackSize, unsigned(__stdcall *_StartAddress)(void *),
+uintptr_t _beginthreadex(void *_Security, unsigned _StackSize, unsigned(*_StartAddress)(void *),
     void *_ArgList, unsigned _InitFlag, unsigned *_ThrdAddr)
 {
 	if (_Security != NULL)
@@ -26,47 +26,47 @@ uintptr_t __cdecl _beginthreadex(void *_Security, unsigned _StackSize, unsigned(
 	return (uintptr_t)ret;
 }
 
-DWORD WINAPI GetCurrentThreadId()
+DWORD GetCurrentThreadId()
 {
 	// DWORD is compatible with SDL_threadID
 	return SDL_GetThreadID(NULL);
 }
 
-HANDLE WINAPI GetCurrentThread()
+HANDLE GetCurrentThread()
 {
 	// Only used for SetThreadPriority, which is unimplemented
 	return NULL;
 }
 
-WINBOOL WINAPI SetThreadPriority(HANDLE hThread, int nPriority)
+WINBOOL SetThreadPriority(HANDLE hThread, int nPriority)
 {
 	// SDL cannot set the priority of the non-current thread
 	// (and e.g. unprivileged processes on Linux cannot increase it)
 	return TRUE;
 }
 
-void WINAPI InitializeCriticalSection(LPCRITICAL_SECTION lpCriticalSection)
+void InitializeCriticalSection(LPCRITICAL_SECTION lpCriticalSection)
 {
 	SDL_mutex *m = SDL_CreateMutex();
 	*lpCriticalSection = m;
 }
 
-void WINAPI EnterCriticalSection(LPCRITICAL_SECTION lpCriticalSection)
+void EnterCriticalSection(LPCRITICAL_SECTION lpCriticalSection)
 {
 	SDL_LockMutex(*((SDL_mutex **)lpCriticalSection));
 }
 
-void WINAPI LeaveCriticalSection(LPCRITICAL_SECTION lpCriticalSection)
+void LeaveCriticalSection(LPCRITICAL_SECTION lpCriticalSection)
 {
 	SDL_UnlockMutex(*((SDL_mutex **)lpCriticalSection));
 }
 
-void WINAPI DeleteCriticalSection(LPCRITICAL_SECTION lpCriticalSection)
+void DeleteCriticalSection(LPCRITICAL_SECTION lpCriticalSection)
 {
 	SDL_DestroyMutex(*((SDL_mutex **)lpCriticalSection));
 }
 
-HANDLE WINAPI CreateEventA(LPSECURITY_ATTRIBUTES lpEventAttributes, WINBOOL bManualReset, WINBOOL bInitialState,
+HANDLE CreateEventA(LPSECURITY_ATTRIBUTES lpEventAttributes, WINBOOL bManualReset, WINBOOL bInitialState,
     LPCSTR lpName)
 {
 	if (lpName != NULL && !strcmp(lpName, "DiabloEvent")) {
@@ -91,7 +91,7 @@ HANDLE WINAPI CreateEventA(LPSECURITY_ATTRIBUTES lpEventAttributes, WINBOOL bMan
 	return ret;
 }
 
-BOOL WINAPI SetEvent(HANDLE hEvent)
+BOOL SetEvent(HANDLE hEvent)
 {
 	struct event_emul *e = (struct event_emul *)hEvent;
 	SDL_LockMutex(e->mutex);
@@ -100,7 +100,7 @@ BOOL WINAPI SetEvent(HANDLE hEvent)
 	return 1;
 }
 
-BOOL WINAPI ResetEvent(HANDLE hEvent)
+BOOL ResetEvent(HANDLE hEvent)
 {
 	struct event_emul *e = (struct event_emul *)hEvent;
 	SDL_LockMutex(e->mutex);
@@ -132,7 +132,7 @@ static DWORD wait_for_sdl_thread(HANDLE hHandle, DWORD dwMilliseconds)
 	return 0;
 }
 
-DWORD WINAPI WaitForSingleObject(HANDLE hHandle, DWORD dwMilliseconds)
+DWORD WaitForSingleObject(HANDLE hHandle, DWORD dwMilliseconds)
 {
 	// return value different from WinAPI
 	if (threads.find((uintptr_t)hHandle) != threads.end())

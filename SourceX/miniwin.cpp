@@ -7,17 +7,17 @@ namespace dvl {
 
 DWORD last_error;
 
-DWORD WINAPI GetLastError()
+DWORD GetLastError()
 {
 	return last_error;
 }
 
-void WINAPI SetLastError(DWORD dwErrCode)
+void SetLastError(DWORD dwErrCode)
 {
 	last_error = dwErrCode;
 }
 
-char __cdecl *_strlwr(char *str)
+char *_strlwr(char *str)
 {
 	for (char *p = str; *p; ++p) {
 		*p = tolower(*p);
@@ -25,24 +25,24 @@ char __cdecl *_strlwr(char *str)
 	return str;
 }
 
-int WINAPIV wsprintfA(LPSTR dest, LPCSTR format, ...)
+int wsprintfA(LPSTR dest, LPCSTR format, ...)
 {
 	va_list args;
 	va_start(args, format);
 	return vsprintf(dest, format, args);
 }
 
-int WINAPIV wvsprintfA(LPSTR dest, LPCSTR format, va_list arglist)
+int wvsprintfA(LPSTR dest, LPCSTR format, va_list arglist)
 {
 	return vsnprintf(dest, 256, format, arglist);
 }
 
-int __cdecl _strcmpi(const char *_Str1, const char *_Str2)
+int _strcmpi(const char *_Str1, const char *_Str2)
 {
 	return strcasecmp(_Str1, _Str2);
 }
 
-char *__cdecl _itoa(int _Value, char *_Dest, int _Radix)
+char *_itoa(int _Value, char *_Dest, int _Radix)
 {
 	switch (_Radix) {
 	case 8:
@@ -62,23 +62,23 @@ char *__cdecl _itoa(int _Value, char *_Dest, int _Radix)
 	return _Dest;
 }
 
-DWORD WINAPI GetTickCount()
+DWORD GetTickCount()
 {
 	return SDL_GetTicks();
 }
 
-void WINAPI Sleep(DWORD dwMilliseconds)
+void Sleep(DWORD dwMilliseconds)
 {
 	usleep(dwMilliseconds * 1000);
 }
 
-HANDLE WINAPI FindFirstFileA(LPCSTR lpFileName, LPWIN32_FIND_DATAA lpFindFileData)
+HANDLE FindFirstFileA(LPCSTR lpFileName, LPWIN32_FIND_DATAA lpFindFileData)
 {
 	DUMMY();
 	return (HANDLE)-1;
 }
 
-WINBOOL WINAPI FindClose(HANDLE hFindFile)
+WINBOOL FindClose(HANDLE hFindFile)
 {
 	UNIMPLEMENTED();
 }
@@ -86,7 +86,7 @@ WINBOOL WINAPI FindClose(HANDLE hFindFile)
 /**
  * @brief Normally this would get the Windows install, but Diablo uses it to find the old save game folder
  */
-UINT WINAPI GetWindowsDirectoryA(LPSTR lpBuffer, UINT uSize)
+UINT GetWindowsDirectoryA(LPSTR lpBuffer, UINT uSize)
 {
 	char *name = SDL_GetPrefPath("diasurgical", "devilution");
 	strncpy(lpBuffer, name, uSize);
@@ -99,7 +99,7 @@ UINT WINAPI GetWindowsDirectoryA(LPSTR lpBuffer, UINT uSize)
 	return len - 1;
 }
 
-WINBOOL WINAPI GetDiskFreeSpaceA(LPCSTR lpRootPathName, LPDWORD lpSectorsPerCluster, LPDWORD lpBytesPerSector,
+WINBOOL GetDiskFreeSpaceA(LPCSTR lpRootPathName, LPDWORD lpSectorsPerCluster, LPDWORD lpBytesPerSector,
     LPDWORD lpNumberOfFreeClusters, LPDWORD lpTotalNumberOfClusters)
 {
 #ifndef _WIN32
@@ -126,7 +126,7 @@ WINBOOL WINAPI GetDiskFreeSpaceA(LPCSTR lpRootPathName, LPDWORD lpSectorsPerClus
 /**
  * @brief Used for getting save path, by removing up to and including the last "\"
  */
-DWORD WINAPI GetModuleFileNameA(HMODULE hModule, LPSTR lpFilename, DWORD nSize)
+DWORD GetModuleFileNameA(HMODULE hModule, LPSTR lpFilename, DWORD nSize)
 {
 	char *name = SDL_GetPrefPath("diasurgical", "devilution");
 	strncpy(lpFilename, name, nSize);
@@ -139,7 +139,7 @@ DWORD WINAPI GetModuleFileNameA(HMODULE hModule, LPSTR lpFilename, DWORD nSize)
 	return len;
 }
 
-WINBOOL WINAPI GetComputerNameA(LPSTR lpBuffer, LPDWORD nSize)
+WINBOOL GetComputerNameA(LPSTR lpBuffer, LPDWORD nSize)
 {
 	DUMMY();
 	strncpy(lpBuffer, "localhost", *nSize);
@@ -210,61 +210,61 @@ UINT GetDriveTypeA(LPCSTR lpRootPathName)
 	return DVL_DRIVE_CDROM;
 }
 
-WINBOOL WINAPI DeleteFileA(LPCSTR lpFileName)
+WINBOOL DeleteFileA(LPCSTR lpFileName)
 {
 	UNIMPLEMENTED();
 }
 
-WINBOOL WINAPI CopyFileA(LPCSTR lpExistingFileName, LPCSTR lpNewFileName, WINBOOL bFailIfExists)
+WINBOOL CopyFileA(LPCSTR lpExistingFileName, LPCSTR lpNewFileName, WINBOOL bFailIfExists)
 {
 	UNIMPLEMENTED();
 }
 
-HFILE WINAPI OpenFile(LPCSTR lpFileName, LPOFSTRUCT lpReOpenBuff, UINT uStyle)
+HFILE OpenFile(LPCSTR lpFileName, LPOFSTRUCT lpReOpenBuff, UINT uStyle)
 {
 	DUMMY();
 	return DVL_HFILE_ERROR;
 }
 
-HWND WINAPI SetCapture(HWND hWnd)
+HWND SetCapture(HWND hWnd)
 {
 	DUMMY_ONCE();
 	return hWnd;
 }
 
-WINBOOL WINAPI ReleaseCapture()
+WINBOOL ReleaseCapture()
 {
 	DUMMY_ONCE();
 	return TRUE;
 }
 
-WINBOOL WINAPI DestroyWindow(HWND hWnd)
+WINBOOL DestroyWindow(HWND hWnd)
 {
 	DUMMY();
 	return TRUE;
 }
 
-HWND WINAPI GetLastActivePopup(HWND hWnd)
+HWND GetLastActivePopup(HWND hWnd)
 {
 	UNIMPLEMENTED();
 }
 
-HWND WINAPI GetTopWindow(HWND hWnd)
+HWND GetTopWindow(HWND hWnd)
 {
 	UNIMPLEMENTED();
 }
 
-WINBOOL WINAPI SetForegroundWindow(HWND hWnd)
+WINBOOL SetForegroundWindow(HWND hWnd)
 {
 	UNIMPLEMENTED();
 }
 
-HWND WINAPI SetFocus(HWND hWnd)
+HWND SetFocus(HWND hWnd)
 {
 	UNIMPLEMENTED();
 }
 
-HWND WINAPI FindWindowA(LPCSTR lpClassName, LPCSTR lpWindowName)
+HWND FindWindowA(LPCSTR lpClassName, LPCSTR lpWindowName)
 {
 	DUMMY_PRINT("class: %s window: %s", nullstr(lpClassName), nullstr(lpWindowName));
 	return NULL;
@@ -331,7 +331,7 @@ BOOL ShowWindow(HWND hWnd, int nCmdShow)
 	return TRUE;
 }
 
-WINUSERAPI ATOM WINAPI RegisterClassExA(const WNDCLASSEXA *lpwcx)
+ATOM RegisterClassExA(const WNDCLASSEXA *lpwcx)
 {
 	DUMMY();
 	return 1;
@@ -419,13 +419,13 @@ void GetLocalTime(LPSYSTEMTIME lpSystemTime)
 	UNIMPLEMENTED();
 }
 
-long __cdecl _findfirst(const char *, struct _finddata_t *)
+long _findfirst(const char *, struct _finddata_t *)
 {
 	UNIMPLEMENTED();
 	return -1;
 }
 
-int __cdecl _findnext(long, struct _finddata_t *)
+int _findnext(long, struct _finddata_t *)
 {
 	UNIMPLEMENTED();
 	return -1;
@@ -434,12 +434,12 @@ int __cdecl _findnext(long, struct _finddata_t *)
 /**
  * @brief Used to shutdown a MS Office 95 tool bar
  */
-HWND WINAPI GetForegroundWindow()
+HWND GetForegroundWindow()
 {
 	return NULL;
 }
 
-LPTOP_LEVEL_EXCEPTION_FILTER WINAPI SetUnhandledExceptionFilter(LPTOP_LEVEL_EXCEPTION_FILTER lpTopLevelExceptionFilter)
+LPTOP_LEVEL_EXCEPTION_FILTER SetUnhandledExceptionFilter(LPTOP_LEVEL_EXCEPTION_FILTER lpTopLevelExceptionFilter)
 {
 	DUMMY();
 	return lpTopLevelExceptionFilter;
@@ -505,26 +505,26 @@ BOOL FindNextFileA(HANDLE hFindFile, LPWIN32_FIND_DATAA lpFindFileData)
 	return FALSE;
 }
 
-void WINAPI GetSystemInfo(LPSYSTEM_INFO lpSystemInfo)
+void GetSystemInfo(LPSYSTEM_INFO lpSystemInfo)
 {
 	DUMMY();
 	memset(lpSystemInfo, 0, sizeof(*lpSystemInfo));
 	lpSystemInfo->dwPageSize = 4096;
 }
 
-HDC WINAPI GetDC(HWND hWnd)
+HDC GetDC(HWND hWnd)
 {
 	DUMMY();
 	return NULL;
 }
 
-int WINAPI ReleaseDC(HWND hWnd, HDC hDC)
+int ReleaseDC(HWND hWnd, HDC hDC)
 {
 	DUMMY();
 	return 0;
 }
 
-int WINAPI GetDeviceCaps(HDC hdc, int index)
+int GetDeviceCaps(HDC hdc, int index)
 {
 	SDL_DisplayMode current;
 
@@ -557,7 +557,7 @@ BOOL GetWindowRect(HWND hDlg, tagRECT *Rect)
 	return TRUE;
 }
 
-UINT WINAPI GetSystemPaletteEntries(HDC hdc, UINT iStart, UINT cEntries, LPPALETTEENTRY pPalEntries)
+UINT GetSystemPaletteEntries(HDC hdc, UINT iStart, UINT cEntries, LPPALETTEENTRY pPalEntries)
 {
 	DUMMY();
 	return 0;
@@ -576,7 +576,7 @@ void lstrcpynA(LPSTR lpString1, LPCSTR lpString2, int iMaxLength)
 	strncpy(lpString1, lpString2, iMaxLength);
 }
 
-WINBOOL WINAPI CreateProcessA(LPCSTR lpApplicationName, LPSTR lpCommandLine, LPSECURITY_ATTRIBUTES lpProcessAttributes,
+WINBOOL CreateProcessA(LPCSTR lpApplicationName, LPSTR lpCommandLine, LPSECURITY_ATTRIBUTES lpProcessAttributes,
     LPSECURITY_ATTRIBUTES lpThreadAttributes, WINBOOL bInheritHandles, DWORD dwCreationFlags,
     LPVOID lpEnvironment, LPCSTR lpCurrentDirectory, LPSTARTUPINFOA lpStartupInfo,
     LPPROCESS_INFORMATION lpProcessInformation)
@@ -585,18 +585,18 @@ WINBOOL WINAPI CreateProcessA(LPCSTR lpApplicationName, LPSTR lpCommandLine, LPS
 	return FALSE;
 }
 
-void WINAPI ExitProcess(UINT uExitCode)
+void ExitProcess(UINT uExitCode)
 {
 	UNIMPLEMENTED();
 }
 
-DWORD WINAPI GetCurrentProcessId()
+DWORD GetCurrentProcessId()
 {
 	UNIMPLEMENTED();
 	return 0;
 }
 
-HANDLE WINAPI CreateFileMappingA(HANDLE hFile, LPSECURITY_ATTRIBUTES lpFileMappingAttributes, DWORD flProtect,
+HANDLE CreateFileMappingA(HANDLE hFile, LPSECURITY_ATTRIBUTES lpFileMappingAttributes, DWORD flProtect,
     DWORD dwMaximumSizeHigh, DWORD dwMaximumSizeLow, LPCSTR lpName)
 {
 	DUMMY();
@@ -604,33 +604,33 @@ HANDLE WINAPI CreateFileMappingA(HANDLE hFile, LPSECURITY_ATTRIBUTES lpFileMappi
 	return NULL;
 }
 
-LPVOID WINAPI MapViewOfFile(HANDLE hFileMappingObject, DWORD dwDesiredAccess, DWORD dwFileOffsetHigh,
+LPVOID MapViewOfFile(HANDLE hFileMappingObject, DWORD dwDesiredAccess, DWORD dwFileOffsetHigh,
     DWORD dwFileOffsetLow, SIZE_T dwNumberOfBytesToMap)
 {
 	UNIMPLEMENTED();
 }
 
-WINBOOL WINAPI UnmapViewOfFile(LPCVOID lpBaseAddress)
+WINBOOL UnmapViewOfFile(LPCVOID lpBaseAddress)
 {
 	UNIMPLEMENTED();
 }
 
-DWORD WINAPI WaitForInputIdle(HANDLE hProcess, DWORD dwMilliseconds)
+DWORD WaitForInputIdle(HANDLE hProcess, DWORD dwMilliseconds)
 {
 	UNIMPLEMENTED();
 }
 
-HWND WINAPI GetWindow(HWND hWnd, UINT uCmd)
+HWND GetWindow(HWND hWnd, UINT uCmd)
 {
 	UNIMPLEMENTED();
 }
 
-DWORD WINAPI GetWindowThreadProcessId(HWND hWnd, LPDWORD lpdwProcessId)
+DWORD GetWindowThreadProcessId(HWND hWnd, LPDWORD lpdwProcessId)
 {
 	UNIMPLEMENTED();
 }
 
-DWORD WINAPI GetPrivateProfileStringA(LPCSTR lpAppName, LPCSTR lpKeyName, LPCSTR lpDefault, LPSTR lpReturnedString,
+DWORD GetPrivateProfileStringA(LPCSTR lpAppName, LPCSTR lpKeyName, LPCSTR lpDefault, LPSTR lpReturnedString,
     DWORD nSize, LPCSTR lpFileName)
 {
 	if (!SRegLoadString(lpAppName, lpKeyName, 0, lpReturnedString, nSize)) {

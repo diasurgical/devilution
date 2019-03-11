@@ -35,7 +35,7 @@ bool surface_dirty;
 // DirectDraw COM interface stub implementations
 //
 
-#define METHOD virtual __stdcall
+#define METHOD virtual 
 
 class StubSurface : public IDirectDrawSurface {
 	METHOD HRESULT QueryInterface(DVL_REFIID refiid, LPVOID *lpvoid)
@@ -358,7 +358,7 @@ static StubPalette stub_palette;
 // Main functions
 //
 
-void __fastcall dx_init(HWND hWnd)
+void dx_init(HWND hWnd)
 {
 	DUMMY();
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
@@ -415,7 +415,7 @@ void __fastcall dx_init(HWND hWnd)
 	palette_init();
 }
 
-void __cdecl dx_cleanup()
+void dx_cleanup()
 {
 	DUMMY();
 }
@@ -449,12 +449,12 @@ void sdl_present_surface()
 	surface_dirty = false;
 }
 
-void __fastcall j_lock_buf_priv(BYTE idx)
+void j_lock_buf_priv(BYTE idx)
 {
 	j_unlock_buf_priv(idx); // what is idx?
 }
 
-void __fastcall j_unlock_buf_priv(BYTE idx)
+void j_unlock_buf_priv(BYTE idx)
 {
 	gpBufEnd -= (uintptr_t)gpBufEnd;
 
@@ -465,7 +465,7 @@ void __fastcall j_unlock_buf_priv(BYTE idx)
 	sdl_present_surface();
 }
 
-void __cdecl dx_reinit()
+void dx_reinit()
 {
 	UNIMPLEMENTED();
 }
@@ -474,7 +474,7 @@ void __cdecl dx_reinit()
 // Storm functions
 //
 
-BOOL STORMAPI SDrawUpdatePalette(unsigned int firstentry, unsigned int numentries, PALETTEENTRY *pPalEntries, int a4)
+BOOL SDrawUpdatePalette(unsigned int firstentry, unsigned int numentries, PALETTEENTRY *pPalEntries, int a4)
 {
 	assert(firstentry == 0);
 	assert(numentries == 256);
@@ -507,7 +507,7 @@ BOOL STORMAPI SDrawUpdatePalette(unsigned int firstentry, unsigned int numentrie
 // Windows API functions
 //
 
-WINBOOL WINAPI SetCursorPos(int X, int Y)
+WINBOOL SetCursorPos(int X, int Y)
 {
 	assert(renderer);
 	assert(window);
@@ -526,14 +526,14 @@ WINBOOL WINAPI SetCursorPos(int X, int Y)
 	return TRUE;
 }
 
-int WINAPI ShowCursor(WINBOOL bShow)
+int ShowCursor(WINBOOL bShow)
 {
 	SDL_ShowCursor(bShow ? SDL_ENABLE : SDL_DISABLE);
 
 	return bShow;
 }
 
-WINBOOL WINAPI TextOutA(HDC hdc, int x, int y, LPCSTR lpString, int c)
+WINBOOL TextOutA(HDC hdc, int x, int y, LPCSTR lpString, int c)
 {
 	DUMMY_ONCE();
 

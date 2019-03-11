@@ -15,7 +15,7 @@ extern "C" void TranslateFileName(char *dst, int dstLen, const char *src)
 
 static std::set<HANDLE> files;
 
-HANDLE WINAPI CreateFileA(LPCSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode,
+HANDLE CreateFileA(LPCSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode,
     LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition,
     DWORD dwFlagsAndAttributes, HANDLE hTemplateFile)
 {
@@ -41,7 +41,7 @@ HANDLE WINAPI CreateFileA(LPCSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShar
 	return fd;
 }
 
-WINBOOL WINAPI ReadFile(HANDLE hFile, LPVOID lpBuffer, DWORD nNumberOfBytesToRead, LPDWORD lpNumberOfBytesRead,
+WINBOOL ReadFile(HANDLE hFile, LPVOID lpBuffer, DWORD nNumberOfBytesToRead, LPDWORD lpNumberOfBytesRead,
     LPOVERLAPPED lpOverlapped)
 {
 	DUMMY_ONCE();
@@ -53,7 +53,7 @@ WINBOOL WINAPI ReadFile(HANDLE hFile, LPVOID lpBuffer, DWORD nNumberOfBytesToRea
 	return TRUE;
 }
 
-DWORD WINAPI GetFileSize(HANDLE hFile, LPDWORD lpFileSizeHigh)
+DWORD GetFileSize(HANDLE hFile, LPDWORD lpFileSizeHigh)
 {
 	DUMMY_ONCE();
 
@@ -64,7 +64,7 @@ DWORD WINAPI GetFileSize(HANDLE hFile, LPDWORD lpFileSizeHigh)
 	return s.st_size;
 }
 
-WINBOOL WINAPI WriteFile(HANDLE hFile, LPCVOID lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten,
+WINBOOL WriteFile(HANDLE hFile, LPCVOID lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten,
     LPOVERLAPPED lpOverlapped)
 {
 	DUMMY_ONCE();
@@ -79,7 +79,7 @@ WINBOOL WINAPI WriteFile(HANDLE hFile, LPCVOID lpBuffer, DWORD nNumberOfBytesToW
 	return TRUE;
 }
 
-DWORD WINAPI SetFilePointer(HANDLE hFile, LONG lDistanceToMove, PLONG lpDistanceToMoveHigh, DWORD dwMoveMethod)
+DWORD SetFilePointer(HANDLE hFile, LONG lDistanceToMove, PLONG lpDistanceToMoveHigh, DWORD dwMoveMethod)
 {
 	DUMMY_ONCE();
 
@@ -96,7 +96,7 @@ DWORD WINAPI SetFilePointer(HANDLE hFile, LONG lDistanceToMove, PLONG lpDistance
 	return (DWORD)ret;
 }
 
-WINBOOL WINAPI SetEndOfFile(HANDLE hFile)
+WINBOOL SetEndOfFile(HANDLE hFile)
 {
 	DUMMY_ONCE();
 
@@ -107,7 +107,7 @@ WINBOOL WINAPI SetEndOfFile(HANDLE hFile)
 	return TRUE;
 }
 
-DWORD WINAPI GetFileAttributesA(LPCSTR lpFileName)
+DWORD GetFileAttributesA(LPCSTR lpFileName)
 {
 	char name[260];
 	TranslateFileName(name, sizeof(name), lpFileName);
@@ -125,13 +125,13 @@ DWORD WINAPI GetFileAttributesA(LPCSTR lpFileName)
 	return 0x80;
 }
 
-WINBOOL WINAPI SetFileAttributesA(LPCSTR lpFileName, DWORD dwFileAttributes)
+WINBOOL SetFileAttributesA(LPCSTR lpFileName, DWORD dwFileAttributes)
 {
 	DUMMY_PRINT("file: %s", lpFileName);
 	return TRUE;
 }
 
-WINBOOL WINAPI CloseHandle(HANDLE hObject)
+WINBOOL CloseHandle(HANDLE hObject)
 {
 	if (files.find(hObject) != files.end()) {
 		int ret = close((intptr_t)hObject);

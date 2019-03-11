@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.13)
 
 include(CMake/out_of_tree.cmake)
 
@@ -64,7 +64,7 @@ add_library(Radon STATIC
   3rdParty/Radon/Radon/source/Named.cpp
   3rdParty/Radon/Radon/source/Section.cpp)
 
-add_library(StormLib STATIC
+add_library(StormLib OBJECT
   3rdParty/StormLib/src/FileStream.cpp
   3rdParty/StormLib/src/SBaseCommon.cpp
   3rdParty/StormLib/src/SBaseFileTable.cpp
@@ -77,11 +77,11 @@ add_library(StormLib STATIC
   3rdParty/StormLib/src/SFileOpenFileEx.cpp
   3rdParty/StormLib/src/SFileReadFile.cpp)
 
-add_library(PKWare STATIC
+add_library(PKWare OBJECT
   3rdParty/PKWare/explode.cpp
   3rdParty/PKWare/implode.cpp)
 
-add_library(devilution STATIC
+add_library(devilution OBJECT
   Source/appfat.cpp
   Source/automap.cpp
   Source/capture.cpp
@@ -183,10 +183,10 @@ add_executable(devilutionx
 
 target_include_directories(devilutionx PRIVATE SourceS SourceX 3rdParty/asio/include .)
 
-target_link_libraries(devilution PUBLIC PKWare Threads::Threads)
-
+target_link_libraries(devilution PRIVATE Threads::Threads)
 target_link_libraries(devilutionx PRIVATE
   devilution
+  PKWare
   StormLib
   smacker
   Radon
@@ -213,6 +213,10 @@ endif()
 
 if(DIST)
   target_link_libraries(devilutionx PUBLIC -static-libgcc -static-libstdc++)
+endif()
+
+if(WIN32)
+  target_link_libraries(devilutionx PRIVATE wsock32 ws2_32 wininet)
 endif()
 
 # Note: In Debug mode, GCC generates spurious memory references that upset Valgrind,

@@ -96,7 +96,7 @@ constexpr size_t size(T (&)[N])
 	return N;
 }
 
-extern void(__stdcall *gfnSoundFunction)(char *file);
+extern void(*gfnSoundFunction)(char *file);
 
 bool IsInsideRect(const SDL_Event *event, const SDL_Rect *rect);
 void UiFadeIn(int steps = 16);
@@ -113,7 +113,7 @@ void LoadMaskedArtFont(char *pszFile, Art *art, int frames, int mask = 250);
 void SetMenu(int MenuId);
 void UiFocusNavigationSelect();
 void UiFocusNavigationEsc();
-void UiInitList(int min, int max, void(__stdcall *fnFocus)(int value), void(__stdcall *fnSelect)(int value), void(__stdcall *fnEsc)(), UI_Item *items, int size, bool wraps = false);
+void UiInitList(int min, int max, void(*fnFocus)(int value), void(*fnSelect)(int value), void(*fnEsc)(), UI_Item *items, int size, bool wraps = false);
 void UiRender();
 void UiRenderItems(UI_Item *items, int size);
 void WordWrap(UI_Item *item);

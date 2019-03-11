@@ -18,17 +18,17 @@ std::string getIniPath()
 
 radon::File ini(getIniPath());
 
-// BOOL STORMAPI SFileCloseArchive(HANDLE hArchive)
+// BOOL SFileCloseArchive(HANDLE hArchive)
 // {
 // 	UNIMPLEMENTED();
 // }
 
-// BOOL STORMAPI SFileCloseFile(HANDLE hFile)
+// BOOL SFileCloseFile(HANDLE hFile)
 // {
 // 	UNIMPLEMENTED();
 // }
 
-BOOL STORMAPI SFileDdaBeginEx(HANDLE directsound, DWORD flags, DWORD mask, unsigned __int32 lDistanceToMove,
+BOOL SFileDdaBeginEx(HANDLE directsound, DWORD flags, DWORD mask, unsigned __int32 lDistanceToMove,
     signed __int32 volume, signed int pan, int a7)
 {
 	DUMMY(); // Todo track when the sound can be released, see sfx_stop()
@@ -48,54 +48,54 @@ BOOL STORMAPI SFileDdaBeginEx(HANDLE directsound, DWORD flags, DWORD mask, unsig
 	return 1;
 }
 
-BOOL STORMAPI SFileDdaDestroy()
+BOOL SFileDdaDestroy()
 {
 	DUMMY();
 	return 0;
 }
 
-BOOL STORMAPI SFileDdaEnd(HANDLE directsound)
+BOOL SFileDdaEnd(HANDLE directsound)
 {
 	DUMMY();
 	return 0;
 }
 
-BOOL STORMAPI SFileDdaGetPos(HANDLE directsound, int a2, int a3)
+BOOL SFileDdaGetPos(HANDLE directsound, int a2, int a3)
 {
 	DUMMY_ONCE();
 	return TRUE;
 }
 
-BOOL STORMAPI SFileDdaInitialize(HANDLE directsound)
+BOOL SFileDdaInitialize(HANDLE directsound)
 {
 	DUMMY();
 	return 0;
 }
 
-BOOL STORMAPI SFileDdaSetVolume(HANDLE directsound, signed int bigvolume, signed int volume)
+BOOL SFileDdaSetVolume(HANDLE directsound, signed int bigvolume, signed int volume)
 {
 	Mix_VolumeMusic(MIX_MAX_VOLUME - MIX_MAX_VOLUME * bigvolume / VOLUME_MIN);
 
 	return TRUE;
 }
 
-BOOL STORMAPI SFileGetFileArchive(HANDLE hFile, HANDLE *archive)
+BOOL SFileGetFileArchive(HANDLE hFile, HANDLE *archive)
 {
 	UNIMPLEMENTED();
 }
 
-// LONG STORMAPI SFileGetFileSize(HANDLE hFile, LPDWORD lpFileSizeHigh)
+// LONG SFileGetFileSize(HANDLE hFile, LPDWORD lpFileSizeHigh)
 // {
 // 	UNIMPLEMENTED();
 // }
 
-// BOOL STORMAPI SFileOpenArchive(const char *szMpqName, DWORD dwPriority, DWORD dwFlags, HANDLE
+// BOOL SFileOpenArchive(const char *szMpqName, DWORD dwPriority, DWORD dwFlags, HANDLE
 // *phMpq)
 // {
 // 	UNIMPLEMENTED();
 // }
 
-BOOL STORMAPI SFileOpenFile(const char *filename, HANDLE *phFile)
+BOOL SFileOpenFile(const char *filename, HANDLE *phFile)
 {
 	//eprintf("%s: %s\n", __FUNCTION__, filename);
 
@@ -112,19 +112,19 @@ BOOL STORMAPI SFileOpenFile(const char *filename, HANDLE *phFile)
 	return result;
 }
 
-// BOOL STORMAPI SFileOpenFileEx(HANDLE hMpq, const char *szFileName, DWORD dwSearchScope, HANDLE
+// BOOL SFileOpenFileEx(HANDLE hMpq, const char *szFileName, DWORD dwSearchScope, HANDLE
 // *phFile)
 // {
 // 	UNIMPLEMENTED();
 // }
 
-// BOOL STORMAPI SFileReadFile(HANDLE hFile, void *buffer, DWORD nNumberOfBytesToRead, DWORD *read,
+// BOOL SFileReadFile(HANDLE hFile, void *buffer, DWORD nNumberOfBytesToRead, DWORD *read,
 // LONG lpDistanceToMoveHigh)
 // {
 // 	UNIMPLEMENTED();
 // }
 
-BOOL __stdcall SBmpLoadImage(const char *pszFileName, PALETTEENTRY *pPalette, BYTE *pBuffer, DWORD dwBuffersize, DWORD *pdwWidth, DWORD *dwHeight, DWORD *pdwBpp)
+BOOL SBmpLoadImage(const char *pszFileName, PALETTEENTRY *pPalette, BYTE *pBuffer, DWORD dwBuffersize, DWORD *pdwWidth, DWORD *dwHeight, DWORD *pdwBpp)
 {
 	HANDLE hFile;
 	size_t size;
@@ -232,32 +232,32 @@ BOOL __stdcall SBmpLoadImage(const char *pszFileName, PALETTEENTRY *pPalette, BY
 	return true;
 }
 
-// int __stdcall SFileSetFilePointer(HANDLE, int, HANDLE, int)
+// int SFileSetFilePointer(HANDLE, int, HANDLE, int)
 // {
 // 	UNIMPLEMENTED();
 // }
 
-HWND STORMAPI SDrawGetFrameWindow(HWND *sdraw_framewindow)
+HWND SDrawGetFrameWindow(HWND *sdraw_framewindow)
 {
 	DUMMY();
 	return NULL;
 }
 
-// BOOL STORMAPI SDrawManualInitialize(HWND hWnd, LPDIRECTDRAW ddInterface, LPDIRECTDRAWSURFACE
+// BOOL SDrawManualInitialize(HWND hWnd, LPDIRECTDRAW ddInterface, LPDIRECTDRAWSURFACE
 // primarySurface, LPDIRECTDRAWSURFACE surface2, LPDIRECTDRAWSURFACE surface3, LPDIRECTDRAWSURFACE
 // backSurface, LPDIRECTDRAWPALETTE ddPalette, HPALETTE hPalette)
 //{
 //	UNIMPLEMENTED();
 //}
 
-void *STORMAPI SMemAlloc(unsigned int amount, char *logfilename, int logline, char defaultValue)
+void *SMemAlloc(unsigned int amount, char *logfilename, int logline, char defaultValue)
 {
 	// fprintf(stderr, "%s: %d (%s:%d)\n", __FUNCTION__, amount, logfilename, logline);
 	assert(amount != -1u);
 	return malloc(amount);
 }
 
-BOOL STORMAPI SMemFree(void *location, char *logfilename, int logline, char defaultValue)
+BOOL SMemFree(void *location, char *logfilename, int logline, char defaultValue)
 {
 	// fprintf(stderr, "%s: (%s:%d)\n", __FUNCTION__, logfilename, logline);
 	assert(location);
@@ -265,7 +265,7 @@ BOOL STORMAPI SMemFree(void *location, char *logfilename, int logline, char defa
 	return TRUE;
 }
 
-void *STORMAPI SMemReAlloc(void *location, unsigned int amount, char *logfilename, int logline, char defaultValue)
+void *SMemReAlloc(void *location, unsigned int amount, char *logfilename, int logline, char defaultValue)
 {
 	UNIMPLEMENTED();
 }
@@ -310,17 +310,17 @@ void setIniValue(const char *sectionName, const char *keyName, char *value, int 
 	ini.saveToFile();
 }
 
-BOOL STORMAPI SRegLoadData(const char *keyname, const char *valuename, int size, LPBYTE lpData, BYTE flags, LPDWORD lpcbData)
+BOOL SRegLoadData(const char *keyname, const char *valuename, int size, LPBYTE lpData, BYTE flags, LPDWORD lpcbData)
 {
 	return getIniValue(keyname, valuename, (char *)lpData, size, (int *)lpcbData);
 }
 
-BOOL STORMAPI SRegLoadString(const char *keyname, const char *valuename, BYTE flags, char *buffer, unsigned int buffersize)
+BOOL SRegLoadString(const char *keyname, const char *valuename, BYTE flags, char *buffer, unsigned int buffersize)
 {
 	return getIniValue(keyname, valuename, buffer, buffersize);
 }
 
-BOOL STORMAPI SRegLoadValue(const char *keyname, const char *valuename, BYTE flags, int *value)
+BOOL SRegLoadValue(const char *keyname, const char *valuename, BYTE flags, int *value)
 {
 	char string[10];
 	if (getIniValue(keyname, valuename, string, 10)) {
@@ -331,21 +331,21 @@ BOOL STORMAPI SRegLoadValue(const char *keyname, const char *valuename, BYTE fla
 	return FALSE;
 }
 
-BOOL STORMAPI SRegSaveData(const char *keyname, const char *valuename, int size, BYTE *lpData, DWORD cbData)
+BOOL SRegSaveData(const char *keyname, const char *valuename, int size, BYTE *lpData, DWORD cbData)
 {
 	setIniValue(keyname, valuename, (char *)lpData, cbData);
 
 	return TRUE;
 }
 
-BOOL STORMAPI SRegSaveString(const char *keyname, const char *valuename, BYTE flags, char *string)
+BOOL SRegSaveString(const char *keyname, const char *valuename, BYTE flags, char *string)
 {
 	setIniValue(keyname, valuename, string);
 
 	return TRUE;
 }
 
-BOOL STORMAPI SRegSaveValue(const char *keyname, const char *valuename, BYTE flags, DWORD result)
+BOOL SRegSaveValue(const char *keyname, const char *valuename, BYTE flags, DWORD result)
 {
 	char str[10];
 	sprintf(str, "%d", result);
@@ -354,13 +354,13 @@ BOOL STORMAPI SRegSaveValue(const char *keyname, const char *valuename, BYTE fla
 	return TRUE;
 }
 
-BOOL STORMAPI SVidInitialize(HANDLE video)
+BOOL SVidInitialize(HANDLE video)
 {
 	DUMMY();
 	return TRUE;
 }
 
-BOOL STORMAPI SVidDestroy()
+BOOL SVidDestroy()
 {
 	DUMMY();
 	return TRUE;
@@ -376,7 +376,7 @@ SDL_Surface *SVidSurface;
 BYTE *SVidBuffer;
 SDL_AudioDeviceID deviceId;
 
-BOOL STORMAPI SVidPlayBegin(char *filename, int a2, int a3, int a4, int a5, int flags, HANDLE *video)
+BOOL SVidPlayBegin(char *filename, int a2, int a3, int a4, int a5, int flags, HANDLE *video)
 {
 	if (flags & 0x10000 || flags & 0x20000000) {
 		return FALSE;
@@ -471,7 +471,7 @@ BOOL SVidLoadNextFrame()
 	return TRUE;
 }
 
-BOOL __cdecl SVidPlayContinue(void)
+BOOL SVidPlayContinue(void)
 {
 	if (smk_palette_updated(SVidSMK)) {
 		SDL_Color colors[256];
@@ -525,7 +525,7 @@ BOOL __cdecl SVidPlayContinue(void)
 	return SVidLoadNextFrame();
 }
 
-BOOL STORMAPI SVidPlayEnd(HANDLE video)
+BOOL SVidPlayEnd(HANDLE video)
 {
 	if (deviceId) {
 		SDL_ClearQueuedAudio(deviceId);
@@ -555,92 +555,92 @@ BOOL STORMAPI SVidPlayEnd(HANDLE video)
 	return TRUE;
 }
 
-BOOL STORMAPI SErrDisplayError(DWORD dwErrMsg, const char *logfilename, int logline, const char *message,
+BOOL SErrDisplayError(DWORD dwErrMsg, const char *logfilename, int logline, const char *message,
     BOOL allowOption, int exitCode)
 {
 	UNIMPLEMENTED();
 }
 
-BOOL STORMAPI SErrGetErrorStr(DWORD dwErrCode, char *buffer, unsigned int bufferchars)
+BOOL SErrGetErrorStr(DWORD dwErrCode, char *buffer, unsigned int bufferchars)
 {
 	DUMMY();
 	return FALSE;
 }
 
-DWORD STORMAPI SErrGetLastError()
+DWORD SErrGetLastError()
 {
 	return nLastError;
 }
 
-void STORMAPI SErrSetLastError(DWORD dwErrCode)
+void SErrSetLastError(DWORD dwErrCode)
 {
 	nLastError = dwErrCode;
 }
 
-void STORMAPI SMemCopy(void *dest, const void *source, unsigned int size)
+void SMemCopy(void *dest, const void *source, unsigned int size)
 {
 	UNIMPLEMENTED();
 }
 
-void STORMAPI SMemFill(void *location, unsigned int length, char fillWith)
+void SMemFill(void *location, unsigned int length, char fillWith)
 {
 	UNIMPLEMENTED();
 }
 
-void STORMAPI SMemZero(void *location, DWORD length)
+void SMemZero(void *location, DWORD length)
 {
 	UNIMPLEMENTED();
 }
 
-int STORMAPI SMemCmp(void *location1, void *location2, DWORD size)
+int SMemCmp(void *location1, void *location2, DWORD size)
 {
 	UNIMPLEMENTED();
 }
 
-int STORMAPI SStrCopy(char *dest, const char *src, int max_length)
+int SStrCopy(char *dest, const char *src, int max_length)
 {
 	strncpy(dest, src, max_length);
 	return strlen(dest);
 }
 
-int STORMAPI SStrCmp(const char *string1, const char *string2, unsigned int size)
+int SStrCmp(const char *string1, const char *string2, unsigned int size)
 {
 	UNIMPLEMENTED();
 }
 
-int STORMAPI SStrCmpI(const char *string1, const char *string2, unsigned int size)
+int SStrCmpI(const char *string1, const char *string2, unsigned int size)
 {
 	UNIMPLEMENTED();
 }
 
-void __stdcall SDrawMessageBox(char *Text, char *Title, int Flags)
+void SDrawMessageBox(char *Text, char *Title, int Flags)
 {
 	MessageBoxA(NULL, Text, Title, Flags);
 }
 
-// void __cdecl SDrawDestroy(void)
+// void SDrawDestroy(void)
 //{
 //	UNIMPLEMENTED();
 //}
 
-BOOLEAN __cdecl StormDestroy(void)
+BOOLEAN StormDestroy(void)
 {
 	DUMMY();
 	return TRUE;
 }
 
-BOOLEAN __stdcall SFileSetBasePath(char *)
+BOOLEAN SFileSetBasePath(char *)
 {
 	DUMMY();
 	return TRUE;
 }
 
-void __cdecl SDrawRealizePalette(void)
+void SDrawRealizePalette(void)
 {
 	DUMMY();
 }
 
-BOOL __stdcall SFileEnableDirectAccess(BOOL enable)
+BOOL SFileEnableDirectAccess(BOOL enable)
 {
 	DUMMY();
 	return TRUE;

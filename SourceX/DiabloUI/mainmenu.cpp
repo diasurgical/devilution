@@ -23,7 +23,7 @@ void mainmenu_Esc()
 	UiMainMenuSelect(MAINMENU_EXIT_DIABLO);
 }
 
-void mainmenu_Load(char *name, void(__stdcall *fnSound)(char *file))
+void mainmenu_Load(char *name, void(*fnSound)(char *file))
 {
 	gfnSoundFunction = fnSound;
 	MAINMENU_DIALOG[6].caption = name;
@@ -44,7 +44,7 @@ void mainmenu_Free()
 	ArtBackground.data = NULL;
 }
 
-BOOL __stdcall UiMainMenuDialog(char *name, int *pdwResult, void(__stdcall *fnSound)(char *file), int a4)
+BOOL UiMainMenuDialog(char *name, int *pdwResult, void(*fnSound)(char *file), int a4)
 {
 	mainmenu_Load(name, fnSound);
 

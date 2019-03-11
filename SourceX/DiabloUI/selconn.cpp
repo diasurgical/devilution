@@ -98,7 +98,7 @@ void selconn_Select(int value)
 	selconn_Load();
 }
 
-int __stdcall UiSelectProvider(
+int UiSelectProvider(
     int a1,
     _SNETPROGRAMDATA *client_info,
     _SNETPLAYERDATA *user_info,
