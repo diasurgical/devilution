@@ -2452,13 +2452,10 @@ void __fastcall AddFlash2(int mi, int sx, int sy, int dx, int dy, int midir, int
 
 void __fastcall AddManashield(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9; // eax
-
-	v9 = mi;
-	missile[v9]._miVar8 = -1;
-	missile[v9]._mirange = 48 * plr[id]._pLevel;
-	missile[v9]._miVar1 = plr[id]._pHitPoints;
-	missile[v9]._miVar2 = plr[id]._pHPBase;
+	missile[mi]._mirange = 48 * plr[id]._pLevel;
+	missile[mi]._miVar1 = plr[id]._pHitPoints;
+	missile[mi]._miVar2 = plr[id]._pHPBase;
+	missile[mi]._miVar8 = -1;
 	if (!(_BYTE)mienemy)
 		UseMana(id, 11);
 	if (id == myplr)
