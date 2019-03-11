@@ -3481,27 +3481,14 @@ void __fastcall AddRportal(int mi, int sx, int sy, int dx, int dy, int midir, in
 
 void __fastcall AddDiabApoca(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	signed int v9; // edi
-	int *v10;      // esi
-	//int v11; // eax
-	int x1;  // [esp+4h] [ebp-8h]
-	int v13; // [esp+8h] [ebp-4h]
+	int pnum;
 
-	v9 = 0;
-	x1 = sx;
-	v13 = mi;
-	if (gbMaxPlayers) {
-		v10 = &plr[0]._py;
-		do {
-			if (*((_BYTE *)v10 - 39)) {
-				//_LOBYTE(v11) = LineClear(x1, sy, *(v10 - 1), *v10);
-				if (LineClear(x1, sy, *(v10 - 1), *v10))
-					AddMissile(0, 0, *(v10 - 1), *v10, 0, MIS_BOOM2, mienemy, id, dam, 0);
-				mi = v13;
+	for (pnum = 0; pnum < gbMaxPlayers; pnum++) {
+		if (plr[pnum].plractive) {
+			if (LineClear(sx, sy, plr[pnum]._px, plr[pnum]._py)) {
+				AddMissile(0, 0, plr[pnum]._px, plr[pnum]._py, 0, MIS_BOOM2, mienemy, id, dam, 0);
 			}
-			++v9;
-			v10 += 5430;
-		} while (v9 < (unsigned char)gbMaxPlayers);
+		}
 	}
 	missile[mi]._miDelFlag = TRUE;
 }
