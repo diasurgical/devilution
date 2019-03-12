@@ -114,7 +114,7 @@ void __cdecl FillSolidBlockTbls()
 			nMissileTable[i] = 1;
 		if(bv & 8)
 			nTransTable[i] = 1;
-		if((bv & 0x80) != 0)
+		if(bv & 0x80)
 			nTrapTable[i] = 1;
 		block_lvid[i] = (bv & 0x70) >> 4; /* beta: (bv >> 4) & 7 */
 	}
