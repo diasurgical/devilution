@@ -25,3 +25,10 @@ jobs:
       - run: cd build32 && cmake -DCMAKE_TOOLCHAIN_FILE=../CMake/32bit.cmake ..
       - run: cd build32 && make -j$(nproc)
       - store_artifacts: {path: ./build32/devilutionx, destination: devilutionx_linux_x86}
+
+workflows:
+  version: 2
+  testflow:
+    jobs:
+      - build
+      - build32
