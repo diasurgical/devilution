@@ -2329,46 +2329,26 @@ void __fastcall AddTown(int mi, int sx, int sy, int dx, int dy, int midir, int m
 
 void __fastcall AddFlash(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9;         // esi
-	signed int v10; // ebx
-	char *v11;      // edi
-	int v12;        // ecx
-	int v13;        // eax
-	int v14;        // eax
+	int i;
 
-	v9 = mi;
-	if ((_BYTE)mienemy) {
-		v14 = 2 * SLOBYTE(monster[id].mLevel);
-		goto LABEL_12;
+	if (!(_BYTE)mienemy && id != -1) {
+		missile[mi]._midam = 0;
+		for (i = 0; i <= plr[id]._pLevel; i++) {
+			missile[mi]._midam += random(55, 20) + 1;
+		}
+		for (i = 0; i < missile[mi]._mispllvl; i++) {
+			missile[mi]._midam += missile[mi]._midam >> 3;
+		}
+		missile[mi]._midam += missile[mi]._midam >> 1;
+		UseMana(id, 4);
+	} else {
+		if (!(_BYTE)mienemy) {
+			missile[mi]._midam = currlevel >> 1;
+		} else {
+			missile[mi]._midam = monster[id].mLevel << 1;
+		}
 	}
-	if (id == -1) {
-		v14 = (unsigned int)currlevel >> 1;
-	LABEL_12:
-		missile[v9]._midam = v14;
-		goto LABEL_13;
-	}
-	v10 = 0;
-	v11 = &plr[id]._pLevel;
-	missile[v9]._midam = 0;
-	if (*v11 >= 0) {
-		do {
-			missile[v9]._midam += random(55, 20) + 1;
-			++v10;
-		} while (v10 <= *v11);
-	}
-	v12 = missile[v9]._mispllvl;
-	if (v12 > 0) {
-		v13 = missile[v9]._midam;
-		do {
-			v13 += v13 >> 3;
-			--v12;
-		} while (v12);
-		missile[v9]._midam = v13;
-	}
-	missile[v9]._midam += missile[v9]._midam >> 1;
-	UseMana(id, 4);
-LABEL_13:
-	missile[v9]._mirange = 19;
+	missile[mi]._mirange = 19;
 }
 
 void __fastcall AddFlash2(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
