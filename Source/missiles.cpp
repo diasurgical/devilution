@@ -658,10 +658,10 @@ void __fastcall DeleteMissile(int mi, int i)
 			NetSendCmd(TRUE, CMD_REMSHIELD);
 		plr[src].pManaShield = FALSE;
 	}
-	missileavail[-nummissiles + MAXMISSILES] = mi;
+	missileavail[MAXMISSILES - nummissiles] = mi;
 	nummissiles--;
 	if (nummissiles > 0 && i != nummissiles)
-		missileactive[mi] = missileactive[nummissiles];
+		missileactive[i] = missileactive[nummissiles];
 }
 
 void __fastcall GetMissileVel(int i, int sx, int sy, int dx, int dy, int v)
@@ -2909,7 +2909,7 @@ void __fastcall miss_null_1F(int mi, int sx, int sy, int dx, int dy, int midir, 
 }
 
 void __fastcall miss_null_23(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
-{ 
+{
 	missile[mi]._midam = dam;
 	missile[mi]._mix = sx;
 	missile[mi]._miy = sy;
