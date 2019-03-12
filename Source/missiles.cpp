@@ -2670,38 +2670,26 @@ void __fastcall AddRhino(int mi, int sx, int sy, int dx, int dy, int midir, int 
 
 void __fastcall miss_null_32(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9;          // esi
-	int v10;         // ebx
-	AnimStruct *v11; // edi
-	int v12;         // eax
-	CMonster *v13;   // ecx
-	BOOLEAN v14;     // zf
-	int v15;         // ecx
+	AnimStruct *anim; 
 
-	v9 = id;
-	v10 = mi;
-	v11 = &monster[id].MType->Anims[MA_WALK];
+	anim = &monster[id].MType->Anims[MA_WALK];
 	GetMissileVel(mi, sx, sy, dx, dy, 16);
-	v12 = v10;
-	missile[v12]._mimfnum = midir;
-	missile[v12]._miAnimFlags = 0;
-	missile[v12]._miAnimData = v11->Data[midir];
-	missile[v12]._miAnimDelay = v11->Rate;
-	missile[v12]._miAnimLen = v11->Frames;
-	v13 = monster[id].MType;
-	missile[v12]._miAnimWidth = v13->width;
-	missile[v12]._miAnimWidth2 = v13->width2;
-	v14 = monster[id]._uniqtype == 0;
-	missile[v12]._miAnimAdd = 1;
-	missile[v12]._miVar1 = 0;
-	missile[v12]._miVar2 = 0;
-	missile[v12]._miLightFlag = 1;
-	if (!v14)
-		missile[v12]._miUniqTrans = (unsigned char)monster[v9]._uniqtrans + 1;
-	v15 = monster[v9]._mx;
-	missile[v12]._mirange = 256;
-	dMonster[v15][monster[v9]._my] = 0;
-	PutMissile(v10);
+	missile[mi]._mimfnum = midir;
+	missile[mi]._miAnimFlags = 0;
+	missile[mi]._miAnimData = anim->Data[midir];
+	missile[mi]._miAnimDelay = anim->Rate;
+	missile[mi]._miAnimLen = anim->Frames;
+	missile[mi]._miAnimWidth = monster[id].MType->width;
+	missile[mi]._miAnimWidth2 = monster[id].MType->width2;
+	missile[mi]._miAnimAdd = 1;
+	missile[mi]._miVar1 = 0;
+	missile[mi]._miVar2 = 0;
+	missile[mi]._miLightFlag = 1;
+	if (monster[id]._uniqtype != 0)
+		missile[mi]._miUniqTrans = monster[id]._uniqtrans + 1;
+	dMonster[monster[id]._mx][monster[id]._my] = 0;
+	missile[mi]._mirange = 256;
+	PutMissile(mi);
 }
 
 void __fastcall AddFlare(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
