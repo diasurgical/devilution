@@ -7,7 +7,7 @@ jobs:
     steps:
       - checkout
       - run: apt-get update -y
-      - run: apt-get install -y --no-install-recommends cmake libsdl2-dev libsdl2-mixer-dev libsdl2-ttf-dev libsodium-dev
+      - run: apt-get install -y cmake libsdl2-dev libsdl2-mixer-dev libsdl2-ttf-dev libsodium-dev
       - run: mkdir build32
       - run: cd build32 && cmake ..
       - run: cd build32 && make -j$(nproc)
