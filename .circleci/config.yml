@@ -9,5 +9,6 @@ jobs:
       - run: apt-get update -y
       - run: apt-get install -y g++ cmake libsdl2-dev libsdl2-mixer-dev libsdl2-ttf-dev libsodium-dev
       - run: mkdir build32
-      - run: cd build32 && cmake ..
-      - run: cd build32 && make -j$(nproc)
+      - run: cd build && cmake ..
+      - run: cd build && make -j$(nproc)
+      - store_artifacts: {path: ./build/devilutionx, destination: devilutionx_linux_x64}
