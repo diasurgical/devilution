@@ -2338,40 +2338,24 @@ void __fastcall AddFlash(int mi, int sx, int sy, int dx, int dy, int midir, int 
 
 void __fastcall AddFlash2(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9;         // esi
-	char *v10;      // edi
-	signed int v11; // ebx
-	int v12;        // ecx
-	int v13;        // eax
-	int v14;        // eax
-	int v15;        // [esp+4h] [ebp-4h]
+	int i;
 
-	v15 = mi;
 	if (!(_BYTE)mienemy) {
-		if (id == -1) {
-			missile[mi]._midam = (unsigned int)currlevel >> 1;
+		if (id != -1) {
+			missile[mi]._midam = 0;
+			for (i = 0; i <= plr[id]._pLevel; i++) {
+				missile[mi]._midam += random(56, 2) + 1;
+			}
+			for (i = 0; i < missile[mi]._mispllvl; i++) {
+				missile[mi]._midam += missile[mi]._midam >> 3;
+			}
+			missile[mi]._midam += missile[mi]._midam >> 1;
 		} else {
-			v9 = mi;
-			v10 = &plr[id]._pLevel;
-			v11 = 0;
-			for (missile[mi]._midam = 0; v11 <= *v10; ++v11) {
-				missile[v9]._midam += random(56, 2) + 1;
-			}
-			v12 = missile[v9]._mispllvl;
-			if (v12 > 0) {
-				v13 = missile[v9]._midam;
-				do {
-					v13 += v13 >> 3;
-					--v12;
-				} while (v12);
-				missile[v9]._midam = v13;
-			}
-			missile[v9]._midam += missile[v9]._midam >> 1;
+			missile[mi]._midam = currlevel >> 1;
 		}
 	}
-	v14 = v15;
-	missile[v14]._miPreFlag = TRUE;
-	missile[v14]._mirange = 19;
+	missile[mi]._miPreFlag = TRUE;
+	missile[mi]._mirange = 19;
 }
 
 void __fastcall AddManashield(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
@@ -2635,7 +2619,7 @@ void __fastcall AddRhino(int mi, int sx, int sy, int dx, int dy, int midir, int 
 
 void __fastcall miss_null_32(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	AnimStruct *anim; 
+	AnimStruct *anim;
 
 	anim = &monster[id].MType->Anims[MA_WALK];
 	GetMissileVel(mi, sx, sy, dx, dy, 16);
