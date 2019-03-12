@@ -314,7 +314,7 @@ LPTOP_LEVEL_EXCEPTION_FILTER WINAPI SetUnhandledExceptionFilter(LPTOP_LEVEL_EXCE
 
 HMODULE GetModuleHandleA(LPCSTR lpModuleName);
 
-uintptr_t __cdecl _beginthreadex(void *_Security, unsigned _StackSize, unsigned(__stdcall *_StartAddress)(void *),
+uintptr_t __cdecl DVL_beginthreadex(void *_Security, unsigned _StackSize, unsigned(__stdcall *_StartAddress)(void *),
                                  void *_ArgList, unsigned _InitFlag, unsigned *_ThrdAddr);
 HANDLE WINAPI GetCurrentThread();
 DWORD WINAPI GetCurrentThreadId();

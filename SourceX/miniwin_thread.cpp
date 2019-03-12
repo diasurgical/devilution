@@ -10,7 +10,20 @@ struct event_emul {
 	SDL_cond *cond;
 };
 
-uintptr_t _beginthreadex(void *_Security, unsigned _StackSize, unsigned(*_StartAddress)(void *),
+struct func_translate {
+	unsigned int (*func)(void*);
+	void* arg;
+};
+
+static int SDLCALL thread_translate(void* ptr)
+{
+	func_translate* ftptr = static_cast<func_translate*>(ptr);
+	auto ret = ftptr->func(ftptr->arg);
+	delete ftptr;
+	return ret;
+}
+
+uintptr_t DVL_beginthreadex(void *_Security, unsigned _StackSize, unsigned(*_StartAddress)(void *),
     void *_ArgList, unsigned _InitFlag, unsigned *_ThrdAddr)
 {
 	if (_Security != NULL)
@@ -19,8 +32,10 @@ uintptr_t _beginthreadex(void *_Security, unsigned _StackSize, unsigned(*_StartA
 		UNIMPLEMENTED();
 	if (_InitFlag != 0)
 		UNIMPLEMENTED();
-	// WARNING: wrong return type of _StartAddress
-	SDL_Thread *ret = SDL_CreateThread((SDL_ThreadFunction)_StartAddress, NULL, _ArgList);
+	func_translate* ft = new func_translate;
+	ft->func = _StartAddress;
+	ft->arg = _ArgList;
+	SDL_Thread *ret = SDL_CreateThread(thread_translate, NULL, ft);
 	*_ThrdAddr = SDL_GetThreadID(ret);
 	threads.insert((uintptr_t)ret);
 	return (uintptr_t)ret;

@@ -238,3 +238,4 @@
 #define MAKEINTRESOURCE DVL_MAKEINTRESOURCE
 
 #define _finddata_t DVL_finddata_t
+#define _beginthreadex DVL_beginthreadex
