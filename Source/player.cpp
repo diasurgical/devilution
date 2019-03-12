@@ -667,7 +667,7 @@ void __fastcall CreatePlayer(int pnum, char c)
 	plr[pnum].pTownWarps = 0;
 	plr[pnum].pLvlLoad = 0;
 	plr[pnum].pBattleNet = 0;
-	plr[pnum].pManaShield = 0;
+	plr[pnum].pManaShield = FALSE;
 
 	InitDungMsgs(pnum);
 	CreatePlrItems(pnum);
@@ -843,7 +843,7 @@ void __fastcall InitPlayer(int pnum, BOOL FirstTime)
 		} else {
 			plr[pnum]._pwtype = WT_MELEE;
 		}
-		plr[pnum].pManaShield = 0;
+		plr[pnum].pManaShield = FALSE;
 	}
 
 	if (plr[pnum].plrlevel == currlevel || leveldebug) {

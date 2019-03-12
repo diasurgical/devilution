@@ -67,7 +67,7 @@ void __fastcall PackPlayer(PkPlayerStruct *pPack, int pnum, BOOL manashield)
 	if (gbMaxPlayers == 1 || manashield)
 		pPack->pManaShield = pPlayer->pManaShield;
 	else
-		pPack->pManaShield = 0;
+		pPack->pManaShield = FALSE;
 }
 // 679660: using guessed type char gbMaxPlayers;
 

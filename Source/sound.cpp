@@ -191,8 +191,8 @@ BOOL __fastcall sound_file_reload(TSnd *sound_file, LPDIRECTSOUNDBUFFER DSB)
 
 	rv = FALSE;
 
-	WOpenFile(sound_file->sound_path, &file, 0);
-	WSetFilePointer(file, sound_file->chunk.dwOffset, 0, 0);
+	WOpenFile(sound_file->sound_path, &file, FALSE);
+	WSetFilePointer(file, sound_file->chunk.dwOffset, NULL, 0);
 
 #ifdef __cplusplus
 	if (DSB->Lock(0, sound_file->chunk.dwSize, &buf1, &size1, &buf2, &size2, 0) == DS_OK) {
@@ -215,7 +215,8 @@ BOOL __fastcall sound_file_reload(TSnd *sound_file, LPDIRECTSOUNDBUFFER DSB)
 
 TSnd *__fastcall sound_file_load(char *path)
 {
-	void *file, *wave_file;
+	HANDLE file;
+	BYTE *wave_file;
 	TSnd *pSnd;
 	LPVOID buf1, buf2;
 	DWORD size1, size2;
@@ -224,8 +225,8 @@ TSnd *__fastcall sound_file_load(char *path)
 	if (!sglpDS)
 		return NULL;
 
-	WOpenFile(path, &file, 0);
-	pSnd = (TSnd *)DiabloAllocPtr(40);
+	WOpenFile(path, &file, FALSE);
+	pSnd = (TSnd *)DiabloAllocPtr(sizeof(TSnd));
 	memset(pSnd, 0, sizeof(TSnd));
 	pSnd->sound_path = path;
 	pSnd->start_tc = GetTickCount() - 81;
@@ -244,7 +245,7 @@ TSnd *__fastcall sound_file_load(char *path)
 	if (error_code != DS_OK)
 		DSErrMsg(error_code, 318, "C:\\Src\\Diablo\\Source\\SOUND.CPP");
 
-	memcpy(buf1, (char *)wave_file + pSnd->chunk.dwOffset, size1);
+	memcpy(buf1, wave_file + pSnd->chunk.dwOffset, size1);
 
 #ifdef __cplusplus
 	error_code = pSnd->DSB->Unlock(buf1, size1, buf2, size2);
@@ -254,7 +255,7 @@ TSnd *__fastcall sound_file_load(char *path)
 	if (error_code != DS_OK)
 		DSErrMsg(error_code, 325, "C:\\Src\\Diablo\\Source\\SOUND.CPP");
 
-	mem_free_dbg(wave_file);
+	mem_free_dbg((void *)wave_file);
 	WCloseFile(file);
 
 	return pSnd;
@@ -315,7 +316,7 @@ void __fastcall snd_init(HWND hWnd)
 #else
 	if (sglpDS && sglpDS->lpVtbl->SetCooperativeLevel(sglpDS, hWnd, DSSCL_EXCLUSIVE) == DS_OK)
 #endif
-		sound_create_primary_buffer(0);
+		sound_create_primary_buffer(NULL);
 
 	SVidInitialize(sglpDS);
 	SFileDdaInitialize(sglpDS);
@@ -443,7 +444,7 @@ void __cdecl music_stop()
 	if (sgpMusicTrack) {
 		SFileDdaEnd(sgpMusicTrack);
 		SFileCloseFile(sgpMusicTrack);
-		sgpMusicTrack = 0;
+		sgpMusicTrack = NULL;
 		sgnMusicTrack = 6;
 	}
 }
@@ -464,7 +465,7 @@ void __fastcall music_start(int nTrack)
 #endif
 		sound_create_primary_buffer(sgpMusicTrack);
 		if (!success) {
-			sgpMusicTrack = 0;
+			sgpMusicTrack = NULL;
 		} else {
 			SFileDdaBeginEx(sgpMusicTrack, 0x40000, 0x40000, 0, sglMusicVolume, 0, 0);
 			sgnMusicTrack = nTrack;
