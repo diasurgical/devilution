@@ -1934,18 +1934,11 @@ void __fastcall AddMagmaball(int mi, int sx, int sy, int dx, int dy, int midir, 
 
 void __fastcall miss_null_33(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9;  // esi
-	int v10; // edi
-	int v11; // eax
-
-	v9 = sx;
-	v10 = mi;
 	GetMissileVel(mi, sx, sy, dx, dy, 16);
-	v11 = v10;
-	missile[v11]._mirange = 256;
-	missile[v11]._miVar1 = v9;
-	missile[v11]._miVar2 = sy;
-	PutMissile(v10);
+	missile[mi]._mirange = 256;
+	missile[mi]._miVar1 = sx;
+	missile[mi]._miVar2 = sy;
+	PutMissile(mi);
 }
 
 void __fastcall AddTeleport(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
