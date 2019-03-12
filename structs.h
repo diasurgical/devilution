@@ -322,7 +322,7 @@ typedef struct PlayerStruct {
 	unsigned char pDungMsgs;
 	unsigned char pLvlLoad;
 	unsigned char pBattleNet;
-	unsigned char pManaShield;
+	BOOLEAN pManaShield;
 	char bReserved[3];
 	short wReserved[8];
 	DWORD pDiabloKillLevel;
@@ -414,13 +414,13 @@ typedef struct MissileStruct {
 	int _miAnimFrame;
 	BOOL _miDrawFlag;
 	int _miLightFlag;
-	int _miPreFlag;
+	BOOL _miPreFlag;
 	int _miUniqTrans;
 	int _mirange;
 	int _misource;
 	int _micaster;
 	int _midam;
-	int _miHitFlag;
+	BOOL _miHitFlag;
 	int _midist;
 	int _mlid;
 	int _mirnd;
@@ -1409,7 +1409,7 @@ typedef struct PkPlayerStruct {
 	char pDungMsgs;
 	char pLvlLoad;
 	char pBattleNet;
-	char pManaShield;
+	BOOLEAN pManaShield;
 	char bReserved[3];
 	short wReserved[8];
 	int pDiabloKillLevel;

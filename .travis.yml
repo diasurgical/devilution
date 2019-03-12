@@ -2,7 +2,7 @@ language: cpp
 
 os:
   - osx
-  
+
 addons:
   homebrew:
     packages:
