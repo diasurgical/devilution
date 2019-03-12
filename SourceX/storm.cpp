@@ -2,6 +2,8 @@
 #include "../3rdParty/libsmacker/smacker.h"
 #include "pch.h"
 
+#include <unistd.h>
+
 namespace dvl {
 
 extern "C" DWORD nLastError = 0;

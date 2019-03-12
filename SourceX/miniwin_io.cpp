@@ -1,5 +1,9 @@
 #include "pch.h"
 
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <unistd.h>
+
 namespace dvl {
 
 extern "C" void TranslateFileName(char *dst, int dstLen, const char *src)

@@ -12,6 +12,13 @@ namespace dvl {
 #pragma push_macro("THIS")
 #pragma push_macro("PURE")
 #pragma push_macro("REFIID")
+#undef DECLARE_INTERFACE_
+#undef STDMETHOD
+#undef STDMETHOD_
+#undef THIS_
+#undef THIS
+#undef PURE
+#undef REFIID
 #endif
 
 //

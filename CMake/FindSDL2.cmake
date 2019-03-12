@@ -214,6 +214,8 @@ if(SDL2_FOUND)
 			set(SDL2MAIN_LIBRARIES SDL2::SDL2main_real ${SDL2MAIN_LIBRARIES})
 		endif()
 		if(MINGW)
+			# Bugfix
+			set(SDL2MAIN_LIBRARIES -Wl,--whole-archive ${SDL2MAIN_LIBRARIES} -Wl,--no-whole-archive)
 			# MinGW requires some additional libraries to appear earlier in the link line.
 			if(SDL2PC_LIBRARIES)
 				# Use pkgconfig-suggested extra libraries if available.

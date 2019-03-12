@@ -1,7 +1,6 @@
 #pragma once
 
 #include <ctype.h>
-#include <fcntl.h>
 #include <math.h>
 // work around https://reviews.llvm.org/D51265
 #ifdef __APPLE__
@@ -13,11 +12,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/stat.h>
 #include <time.h>
-#include <unistd.h>
 // For _rotr()
+#ifdef DEVILUTION_ENGINE
 #include <x86intrin.h>
+#endif
 
 // Constants
 #define CONST const

@@ -236,3 +236,5 @@
 #define OF_EXIST 1
 
 #define MAKEINTRESOURCE DVL_MAKEINTRESOURCE
+
+#define _finddata_t DVL_finddata_t

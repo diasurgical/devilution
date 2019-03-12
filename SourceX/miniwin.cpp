@@ -3,6 +3,8 @@
 #include <sys/statvfs.h>
 #endif
 
+#include <SDL.h>
+
 namespace dvl {
 
 DWORD last_error;
@@ -69,7 +71,7 @@ DWORD GetTickCount()
 
 void Sleep(DWORD dwMilliseconds)
 {
-	usleep(dwMilliseconds * 1000);
+	SDL_Delay(dwMilliseconds);
 }
 
 HANDLE FindFirstFileA(LPCSTR lpFileName, LPWIN32_FIND_DATAA lpFindFileData)
@@ -419,13 +421,13 @@ void GetLocalTime(LPSYSTEMTIME lpSystemTime)
 	UNIMPLEMENTED();
 }
 
-long _findfirst(const char *, struct _finddata_t *)
+long _findfirst(const char *, struct DVL_finddata_t *)
 {
 	UNIMPLEMENTED();
 	return -1;
 }
 
-int _findnext(long, struct _finddata_t *)
+int _findnext(long, struct DVL_finddata_t *)
 {
 	UNIMPLEMENTED();
 	return -1;

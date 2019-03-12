@@ -217,6 +217,7 @@ endif()
 
 if(WIN32)
   target_link_libraries(devilutionx PRIVATE wsock32 ws2_32 wininet)
+  target_compile_options(devilution PUBLIC $<$<CONFIG:Debug>:-gstabs>)
 endif()
 
 # Note: In Debug mode, GCC generates spurious memory references that upset Valgrind,

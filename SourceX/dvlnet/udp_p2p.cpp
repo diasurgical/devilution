@@ -59,7 +59,7 @@ int udp_p2p::join(std::string addrstr, std::string passwd)
 			recv();
 			if (plr_self != PLR_BROADCAST)
 				break; // join successful
-			sleep(1);
+			SDL_Delay(1000);
 		}
 	}
 	return (plr_self == PLR_BROADCAST ? 4 : plr_self);

@@ -195,7 +195,7 @@ typedef struct tagWNDCLASSEXA {
 
 typedef unsigned long _fsize_t; /* Could be 64 bits for Win32 */
 
-struct _finddata_t {
+struct DVL_finddata_t {
 	unsigned attrib;
 	time_t time_create; /* -1 for FAT file systems */
 	time_t time_access; /* -1 for FAT file systems */
@@ -298,8 +298,8 @@ HGDIOBJ GetStockObject(int i);
 HCURSOR LoadCursorA(HINSTANCE hInstance, LPCSTR lpCursorName);
 BOOL GetUserNameA(LPSTR lpBuffer, LPDWORD pcbBuffer);
 void GetLocalTime(LPSYSTEMTIME lpSystemTime);
-long __cdecl _findfirst(const char *, struct _finddata_t *);
-int __cdecl _findnext(long, struct _finddata_t *);
+long __cdecl _findfirst(const char *, struct DVL_finddata_t *);
+int __cdecl _findnext(long, struct DVL_finddata_t *);
 
 HICON LoadIconA(HINSTANCE hInstance, LPCSTR lpIconName);
 HANDLE LoadImageA(HINSTANCE hInst, LPCSTR name, UINT type, int cx, int cy, UINT fuLoad);

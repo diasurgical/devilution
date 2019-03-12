@@ -63,11 +63,12 @@ Install the dependencies using [Homebrew](https://brew.sh/):
 brew install cmake sdl2_mixer sdl2_ttf libsodium pkg-config
 ```
 
-### Cross-compiling using MinGW (work in progress, does not yet compile)
-Use the following cmake invocation:
+### Cross-compiling using MinGW (work in progress, currently crashes)
+You `PATH` must contain `i686-w64-mingw32-gcc` and `i686-w64-mingw32-gcc`. Use the following cmake invocation:
 ```
-cmake -DCMAKE_TOOLCHAIN_FILE=../CMake/mingwcc.cmake -DCROSS_PREFIX=/path/to/crosstool-NG/prefix ..
+cmake -DCMAKE_TOOLCHAIN_FILE=../CMake/mingwcc.cmake ..
 ```
+Use `-DCROSS_PREFIX=/path/to/prefix` if the `i686-w64-mingw32` directory is not in `/usr`.
 
 Now run the following commands:
 ```
