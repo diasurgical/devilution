@@ -1,5 +1,6 @@
 #include "pch.h"
-#include <iconv.h>
+#include <string>
+#include "utf8.h"
 
 namespace dvl {
 
@@ -196,21 +197,9 @@ void UiFocus(int itemIndex, bool wrap = false)
 
 void selhero_CatToName(char *in_buf, char *out_buf, int cnt)
 {
-	iconv_t cd = iconv_open("ISO_8859-1//TRANSLIT//IGNORE", "UTF-8");
-	if (cd == (iconv_t)-1) {
-		TermMsg("Failed to load iconv!");
-	}
-
-	size_t in_left = strlen(in_buf);
-	char output[SDL_TEXTINPUTEVENT_TEXT_SIZE] = "";
-	char *iso_buf = output;
-	size_t out_left = sizeof(output) - 1;
-
-	while (in_left && out_left) {
-		iconv(cd, &in_buf, &in_left, &iso_buf, &out_left);
-	}
-	iconv_close(cd);
-	strncat(out_buf, output, cnt - strlen(out_buf));
+	std::string output = utf8_to_latin1(in_buf);
+	output.resize(SDL_TEXTINPUTEVENT_TEXT_SIZE - 1);
+	strncat(out_buf, output.c_str(), cnt - strlen(out_buf));
 }
 
 bool UiFocusNavigation(SDL_Event *event)
