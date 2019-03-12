@@ -1,0 +1,13 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: debian:stretch
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run: apt-get install cmake g++-multilib libsdl2-dev:i386 libsdl2-mixer-dev:i386 libsdl2-ttf-dev:i386 libsodium-dev libsodium-dev:i386
+      - run: mkdir build32
+      - run: cd build32
+      - run: linux32 cmake -DCMAKE_TOOLCHAIN_FILE=../CMake/32bit.cmake ..
+      - run: linux32 make -j$(nproc)
