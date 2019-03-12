@@ -39,7 +39,12 @@ HANDLE CreateFileA(LPCSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode,
 	} else {
 		UNIMPLEMENTED();
 	}
+#ifdef _WIN32
+	//replace this later by something portable
+	HANDLE fd = (HANDLE)open(name, flags | _O_BINARY, mode);
+#else
 	HANDLE fd = (HANDLE)open(name, flags, mode);
+#endif
 
 	files.insert(fd);
 	return fd;
