@@ -3908,29 +3908,21 @@ void __fastcall mi_null_33(int i)
 
 void __fastcall MI_Acidpud(int i)
 {
-	int v1; // ebx
-	int v2; // esi
-	int v3; // ST0C_4
-	int v4; // edx
-	int v5; // edi
+	int range;
 
-	v1 = i;
-	v2 = i;
-	v3 = missile[i]._miy;
-	v4 = missile[i]._midam;
-	--missile[v2]._mirange;
-	v5 = missile[i]._mirange;
-	CheckMissileCol(i, v4, v4, 1, missile[i]._mix, v3, 0);
-	missile[v2]._mirange = v5;
-	if (!v5) {
-		if (missile[v2]._mimfnum) {
-			missile[v2]._miDelFlag = TRUE;
+	--missile[i]._mirange;
+	range = missile[i]._mirange;
+	CheckMissileCol(i, missile[i]._midam, missile[i]._midam, 1, missile[i]._mix, missile[i]._miy, 0);
+	missile[i]._mirange = range;
+	if (!range) {
+		if (missile[i]._mimfnum) {
+			missile[i]._miDelFlag = TRUE;
 		} else {
-			SetMissDir(v1, 1);
-			missile[v2]._mirange = missile[v2]._miAnimLen;
+			SetMissDir(i, 1);
+			missile[i]._mirange = missile[i]._miAnimLen;
 		}
 	}
-	PutMissile(v1);
+	PutMissile(i);
 }
 
 void __fastcall MI_Firewall(int i)
