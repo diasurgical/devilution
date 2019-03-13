@@ -5191,19 +5191,11 @@ void __fastcall MI_FirewallC(int i)
 
 void __fastcall MI_Infra(int i)
 {
-	int v1;  // eax
-	int *v2; // ecx
-	int v3;  // esi
-	int v4;  // ecx
-
-	v1 = i;
-	v2 = &missile[i]._mirange;
-	v3 = --*v2;
-	v4 = missile[v1]._misource;
-	plr[missile[v1]._misource]._pInfraFlag = 1;
-	if (!v3) {
-		missile[v1]._miDelFlag = TRUE;
-		CalcPlrItemVals(v4, 1);
+	missile[i]._mirange--;
+	plr[missile[i]._misource]._pInfraFlag = 1;
+	if (!missile[i]._mirange) {
+		missile[i]._miDelFlag = TRUE;
+		CalcPlrItemVals(missile[i]._misource, 1);
 	}
 }
 
