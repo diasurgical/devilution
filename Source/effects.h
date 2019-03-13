@@ -4,7 +4,7 @@
 
 extern int sfxdelay; // weak
 extern int sfxdnum;
-extern void *sfx_stream;
+extern HANDLE sfx_stream;
 extern TSFX *sfx_data_cur;
 
 BOOL __fastcall effect_is_playing(int nSFX);
@@ -33,7 +33,5 @@ extern const int effects_inf;              // weak
 extern const char monster_action_sounds[]; // idb
 
 /* data */
-
-extern TSFX sgSFX[NUM_SFX];
 
 #endif /* __EFFECTS_H__ */

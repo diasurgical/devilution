@@ -152,6 +152,7 @@ __inline WORD __ROR2__(WORD value, DWORD count)
 // Typedef for the function pointer
 typedef void (*_PVFV)(void);
 
+#if defined(_MSC_VER) && !defined(__APPLE__)
 // Define our segment names
 #define SEGMENT_C_INIT ".CRT$XCU"
 
@@ -160,4 +161,6 @@ typedef void (*_PVFV)(void);
 #pragma data_seg() // Switch back to the default segment
 // Call function pointer arrays and place them in the segments created above
 #define SEG_ALLOCATE(SEGMENT) __declspec(allocate(SEGMENT))
-
+#else
+#define SEG_ALLOCATE(SEGMENT)
+#endif

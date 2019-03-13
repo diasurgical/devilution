@@ -16,7 +16,7 @@ BOOL gbRunGameResult;
 int zoomflag; // weak
 BOOL gbProcessPlayers;
 int glEndSeed[NUMLEVELS];
-BOOL dword_5256E8;
+BOOL gbLoadGame;
 HINSTANCE ghInst; // idb
 int DebugMonsters[10];
 char cineflag;   // weak
@@ -102,7 +102,7 @@ BOOL __fastcall StartGame(BOOL bNewGame, BOOL bSinglePlayer)
 
 	do {
 		fExitProgram = FALSE;
-		dword_5256E8 = 0;
+		gbLoadGame = FALSE;
 
 		if (!NetInit(bSinglePlayer, &fExitProgram)) {
 			gbRunGameResult = !fExitProgram;
@@ -117,7 +117,7 @@ BOOL __fastcall StartGame(BOOL bNewGame, BOOL bSinglePlayer)
 			InitPortals();
 			InitDungMsgs(myplr);
 		}
-		if (!gbValidSaveFile || !dword_5256E8)
+		if (!gbValidSaveFile || !gbLoadGame)
 			uMsg = WM_DIABNEWGAME;
 		else
 			uMsg = WM_DIABLOADGAME;
@@ -139,7 +139,7 @@ void __fastcall run_game_loop(unsigned int uMsg)
 	//int v6; // eax
 	signed int v7;    // [esp+8h] [ebp-24h]
 	WNDPROC saveProc; // [esp+Ch] [ebp-20h]
-	MSG msg;       // [esp+10h] [ebp-1Ch]
+	MSG msg;          // [esp+10h] [ebp-1Ch]
 
 	nthread_ignore_mutex(1);
 	start_game(uMsg);
@@ -534,7 +534,7 @@ void __fastcall diablo_reload_process(HMODULE hModule)
 				CloseHandle(hMap);
 				ExitProcess(0);
 			}
-			if (InterlockedIncrement((long *)v4)) {
+			if (InterlockedIncrement((LPLONG)v4)) {
 				v6 = GetForegroundWindow();
 				do {
 					hWnd = v6;

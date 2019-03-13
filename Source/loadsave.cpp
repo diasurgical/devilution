@@ -523,7 +523,7 @@ void __cdecl SaveLevel()
 	if (!currlevel)
 		glSeedTbl[0] = GetRndSeed();
 
-	 dwLen = codec_get_encoded_len(FILEBUFF);
+	dwLen = codec_get_encoded_len(FILEBUFF);
 	SaveBuff = DiabloAllocPtr(dwLen);
 	tbuff = SaveBuff;
 

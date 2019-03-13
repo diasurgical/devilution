@@ -2,9 +2,9 @@
 
 #include "../types.h"
 
-char gbPixelCol;           // automap pixel color 8-bit (palette entry)
-int dword_52B970;          // BOOLEAN flip - if y < x
-int orgseed;               // weak
+char gbPixelCol;  // automap pixel color 8-bit (palette entry)
+int dword_52B970; // BOOLEAN flip - if y < x
+int orgseed;      // weak
 int sgnWidth;
 int sglGameSeed; // weak
 static CRITICAL_SECTION sgMemCrit;
@@ -1468,7 +1468,7 @@ void __fastcall DrawLine(int x0, int y0, int x1, int y1, UCHAR col)
 
 int __fastcall GetDirection(int x1, int y1, int x2, int y2)
 {
-	int mx,  my;
+	int mx, my;
 	int md, ny;
 
 	mx = x2 - x1;
@@ -1537,7 +1537,8 @@ int __fastcall random(BYTE idx, int v)
 #ifndef _MSC_VER
 __attribute__((constructor))
 #endif
-static void engine_c_init(void)
+static void
+engine_c_init(void)
 {
 	mem_init_mutex();
 	mem_atexit_mutex();
@@ -1613,7 +1614,7 @@ void __fastcall LoadFileWithMem(char *pszName, void *buf)
 	char *v2; // ebx
 	char *v3; // edi
 	int v4;   // esi
-	void *a1; // [esp+Ch] [ebp-4h]
+	HANDLE a1; // [esp+Ch] [ebp-4h]
 
 	v2 = (char *)buf;
 	v3 = pszName;

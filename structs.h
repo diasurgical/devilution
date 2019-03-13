@@ -52,7 +52,7 @@ typedef struct ItemDataStruct {
 	char iItemId;
 	char *iName;
 	char *iSName;
-	int iMinMLvl;
+	char iMinMLvl;
 	int iDurability;
 	int iMinDam;
 	int iMaxDam;
@@ -322,7 +322,7 @@ typedef struct PlayerStruct {
 	unsigned char pDungMsgs;
 	unsigned char pLvlLoad;
 	unsigned char pBattleNet;
-	unsigned char pManaShield;
+	BOOLEAN pManaShield;
 	char bReserved[3];
 	short wReserved[8];
 	DWORD pDiabloKillLevel;
@@ -401,8 +401,8 @@ typedef struct MissileStruct {
 	int _mityoff;
 	int _mimfnum;
 	int _mispllvl;
-	int _miDelFlag;
-	int _miAnimType;
+	BOOL _miDelFlag;
+	BYTE _miAnimType;
 	int _miAnimFlags;
 	unsigned char *_miAnimData;
 	int _miAnimDelay;
@@ -414,13 +414,13 @@ typedef struct MissileStruct {
 	int _miAnimFrame;
 	BOOL _miDrawFlag;
 	int _miLightFlag;
-	int _miPreFlag;
+	BOOL _miPreFlag;
 	int _miUniqTrans;
 	int _mirange;
 	int _misource;
 	int _micaster;
 	int _midam;
-	int _miHitFlag;
+	BOOL _miHitFlag;
 	int _midist;
 	int _mlid;
 	int _mirnd;
@@ -1204,6 +1204,47 @@ typedef struct Screen { /* create union for work data vs visible data */
 } Screen;
 
 //////////////////////////////////////////////////
+// diabloui
+//////////////////////////////////////////////////
+
+// TPDEF PTR FCN VOID PLAYSND
+
+typedef struct _gamedata {
+	int dwSeed;
+	unsigned char bDiff;
+} _gamedata;
+
+typedef struct _uidefaultstats {
+	unsigned short strength;
+	unsigned short magic;
+	unsigned short dexterity;
+	unsigned short vitality;
+} _uidefaultstats;
+
+typedef struct _uiheroinfo {
+	struct _uiheroinfo *next;
+	char name[16];
+	unsigned short level;
+	unsigned char heroclass;
+	unsigned char herorank;
+	unsigned short strength;
+	unsigned short magic;
+	unsigned short dexterity;
+	unsigned short vitality;
+	int gold;
+	int hassaved;
+	int spawned;
+} _uiheroinfo;
+
+// TPDEF PTR FCN UCHAR ENUMHEROPROC
+// TPDEF PTR FCN UCHAR ENUMHEROS
+// TPDEF PTR FCN UCHAR CREATEHERO
+// TPDEF PTR FCN UCHAR DELETEHERO
+// TPDEF PTR FCN UCHAR GETDEFHERO
+
+// TPDEF PTR FCN INT PROGRESSFCN
+
+//////////////////////////////////////////////////
 // storm
 //////////////////////////////////////////////////
 
@@ -1262,7 +1303,7 @@ typedef struct _SNETPROGRAMDATA {
 	int versionid;
 	int reserved1;
 	int maxplayers;
-	void *initdata;
+	_gamedata *initdata;
 	int initdatabytes;
 	void *reserved2;
 	int optcategorybits;
@@ -1314,47 +1355,6 @@ typedef struct _SNETVERSIONDATA {
 
 // TPDEF PTR FCN UCHAR SNETSPIBIND
 // TPDEF PTR FCN UCHAR SNETSPIQUERY
-
-//////////////////////////////////////////////////
-// diabloui
-//////////////////////////////////////////////////
-
-// TPDEF PTR FCN VOID PLAYSND
-
-typedef struct _gamedata {
-	int dwSeed;
-	unsigned char bDiff;
-} _gamedata;
-
-typedef struct _uidefaultstats {
-	unsigned short strength;
-	unsigned short magic;
-	unsigned short dexterity;
-	unsigned short vitality;
-} _uidefaultstats;
-
-typedef struct _uiheroinfo {
-	struct _uiheroinfo *next;
-	char name[16];
-	unsigned short level;
-	unsigned char heroclass;
-	unsigned char herorank;
-	unsigned short strength;
-	unsigned short magic;
-	unsigned short dexterity;
-	unsigned short vitality;
-	int gold;
-	int hassaved;
-	int spawned;
-} _uiheroinfo;
-
-// TPDEF PTR FCN UCHAR ENUMHEROPROC
-// TPDEF PTR FCN UCHAR ENUMHEROS
-// TPDEF PTR FCN UCHAR CREATEHERO
-// TPDEF PTR FCN UCHAR DELETEHERO
-// TPDEF PTR FCN UCHAR GETDEFHERO
-
-// TPDEF PTR FCN INT PROGRESSFCN
 
 //////////////////////////////////////////////////
 // pack
@@ -1409,7 +1409,7 @@ typedef struct PkPlayerStruct {
 	char pDungMsgs;
 	char pLvlLoad;
 	char pBattleNet;
-	char pManaShield;
+	BOOLEAN pManaShield;
 	char bReserved[3];
 	short wReserved[8];
 	int pDiabloKillLevel;

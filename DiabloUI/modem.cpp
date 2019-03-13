@@ -116,7 +116,7 @@ int UNKCALL Modem_1000865F(char *arg) { return 0; }
 } */
 
 // ref: 0x10008680
-BOOL __fastcall Modem_10008680(int a1, int a2, int a3, _DWORD *a4, int a5, int a6) { return 0; }
+BOOL __fastcall Modem_10008680(int a1, int a2, int a3, _DWORD *a4, int a5, int playerid) { return 0; }
 /* {
 	int v6; // esi
 
@@ -124,7 +124,7 @@ BOOL __fastcall Modem_10008680(int a1, int a2, int a3, _DWORD *a4, int a5, int a
 	dword_1002A138 = a2;
 	dword_1002A144 = a5;
 	dword_1002A14C = a4;
-	dword_1002A140 = a6;
+	gnModemPlayerid = playerid;
 	artfont_10001159();
 	v6 = SDlgDialogBoxParam(hInstance, "MODEM_DIALOG", a4[2], Modem_100086DE, 0);
 	artfont_100010C8();
@@ -133,7 +133,7 @@ BOOL __fastcall Modem_10008680(int a1, int a2, int a3, _DWORD *a4, int a5, int a
 // 10010370: using guessed type int __stdcall SDlgDialogBoxParam(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
 // 1002A138: using guessed type int dword_1002A138;
 // 1002A13C: using guessed type int dword_1002A13C;
-// 1002A140: using guessed type int dword_1002A140;
+// 1002A140: using guessed type int gnModemPlayerid;
 // 1002A144: using guessed type int dword_1002A144;
 
 // ref: 0x100086DE
@@ -320,7 +320,7 @@ int UNKCALL Modem_1000893D(HWND hWnd) { return 0; }
 			 dword_1002A13C,
 			 (int)&v5,
 			 dword_1002A144,
-			 dword_1002A140,
+			 gnModemPlayerid,
 			 1,
 			 (int)&v4) )
 	{
@@ -344,7 +344,7 @@ int UNKCALL Modem_1000893D(HWND hWnd) { return 0; }
 // 1002A130: using guessed type int dword_1002A130;
 // 1002A138: using guessed type int dword_1002A138;
 // 1002A13C: using guessed type int dword_1002A13C;
-// 1002A140: using guessed type int dword_1002A140;
+// 1002A140: using guessed type int gnModemPlayerid;
 // 1002A144: using guessed type int dword_1002A144;
 
 // ref: 0x10008A38
@@ -423,7 +423,7 @@ void __cdecl Modem_10008B42(char *a1) { return; }
 	v1 = &byte_1002A154;
 	if ( !dword_1002A124 )
 		v1 = a1;
-	dword_1002A120 = SNetJoinGame(0, v1, 0, &v2, &v3, dword_1002A140);
+	dword_1002A120 = SNetJoinGame(0, v1, 0, &v2, &v3, gnModemPlayerid);
 	if ( !dword_1002A120 )
 		dword_1002A12C = SErrGetLastError();
 	dword_1002A148 = 1;
@@ -435,7 +435,7 @@ void __cdecl Modem_10008B42(char *a1) { return; }
 // 1002A120: using guessed type int dword_1002A120;
 // 1002A124: using guessed type int dword_1002A124;
 // 1002A12C: using guessed type int dword_1002A12C;
-// 1002A140: using guessed type int dword_1002A140;
+// 1002A140: using guessed type int gnModemPlayerid;
 // 1002A148: using guessed type int dword_1002A148;
 
 // ref: 0x10008BB7

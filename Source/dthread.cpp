@@ -5,16 +5,17 @@
 static CRITICAL_SECTION sgMemCrit; // idb
 unsigned int glpDThreadId;         // idb
 TMegaPkt *sgpInfoHead;             /* may not be right struct */
-char byte_52A508;                  // weak
-HANDLE sghWorkToDoEvent;           // idb
+BOOLEAN dthread_running;
+HANDLE sghWorkToDoEvent;
 
 /* rdata */
-static HANDLE sghThread = (HANDLE)0xFFFFFFFF; // idb
+static HANDLE sghThread = INVALID_HANDLE_VALUE;
 
 #ifndef _MSC_VER
 __attribute__((constructor))
 #endif
-static void dthread_c_init(void)
+static void
+dthread_c_init(void)
 {
 	dthread_init_mutex();
 	dthread_cleanup_mutex_atexit();
@@ -40,14 +41,12 @@ void __cdecl dthread_cleanup_mutex()
 
 void __fastcall dthread_remove_player(int pnum)
 {
-	int v1;      // edi
-	TMegaPkt *i; // eax
+	TMegaPkt *pkt;
 
-	v1 = pnum;
 	EnterCriticalSection(&sgMemCrit);
-	for (i = sgpInfoHead; i; i = i->pNext) {
-		if (i->dwSpaceLeft == v1)
-			i->dwSpaceLeft = 4;
+	for (pkt = sgpInfoHead; pkt; pkt = pkt->pNext) {
+		if (pkt->dwSpaceLeft == pnum)
+			pkt->dwSpaceLeft = 4;
 	}
 	LeaveCriticalSection(&sgMemCrit);
 }
@@ -56,114 +55,117 @@ void __fastcall dthread_send_delta(int pnum, char cmd, void *pbSrc, int dwLen)
 {
 	TMegaPkt *pkt;
 	TMegaPkt *p;
-	TMegaPkt **last;
 
-	if (gbMaxPlayers != 1) {
-		pkt = (TMegaPkt *)DiabloAllocPtr(dwLen + 20);
-		pkt->pNext = 0;
-		pkt->dwSpaceLeft = pnum;
-		pkt->data[0] = cmd;
-		*(_DWORD *)&pkt->data[4] = dwLen;
-		memcpy(&pkt->data[8], pbSrc, dwLen);
-		EnterCriticalSection(&sgMemCrit);
-		last = &sgpInfoHead;
-		for (p = sgpInfoHead; p != NULL; p = p->pNext) {
-			last = &p->pNext;
-		}
-		*last = pkt;
-		SetEvent(sghWorkToDoEvent);
-		LeaveCriticalSection(&sgMemCrit);
+	if (gbMaxPlayers == 1) {
+		return;
 	}
+
+	pkt = (TMegaPkt *)DiabloAllocPtr(dwLen + 20);
+	pkt->pNext = NULL;
+	pkt->dwSpaceLeft = pnum;
+	pkt->data[0] = cmd;
+	*(_DWORD *)&pkt->data[4] = dwLen;
+	memcpy(&pkt->data[8], pbSrc, dwLen);
+	EnterCriticalSection(&sgMemCrit);
+	p = (TMegaPkt *)&sgpInfoHead;
+	while (p->pNext) {
+		p = p->pNext;
+	}
+	p->pNext = pkt;
+
+	SetEvent(sghWorkToDoEvent);
+	LeaveCriticalSection(&sgMemCrit);
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 void __cdecl dthread_start()
 {
-	char *v0; // eax
-	char *v1; // eax
+	char *error_buf;
 
-	if (gbMaxPlayers != 1) {
-		sghWorkToDoEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
-		if (!sghWorkToDoEvent) {
-			v0 = TraceLastError();
-			TermMsg("dthread:1\n%s", v0);
-		}
-		byte_52A508 = 1;
-		sghThread = (HANDLE)_beginthreadex(NULL, 0, dthread_handler, NULL, 0, &glpDThreadId);
-		if (sghThread == (HANDLE)-1) {
-			v1 = TraceLastError();
-			TermMsg("dthread2:\n%s", v1);
-		}
+	if (gbMaxPlayers == 1) {
+		return;
+	}
+
+	sghWorkToDoEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
+	if (!sghWorkToDoEvent) {
+		error_buf = TraceLastError();
+		TermMsg("dthread:1\n%s", error_buf);
+	}
+
+	dthread_running = TRUE;
+
+	sghThread = (HANDLE)_beginthreadex(NULL, 0, dthread_handler, NULL, 0, &glpDThreadId);
+	if (sghThread == INVALID_HANDLE_VALUE) {
+		error_buf = TraceLastError();
+		TermMsg("dthread2:\n%s", error_buf);
 	}
 }
-// 52A508: using guessed type char byte_52A508;
-// 679660: using guessed type char gbMaxPlayers;
 
-unsigned int __stdcall dthread_handler(void *a1)
+unsigned int __stdcall dthread_handler(void *unused)
 {
-	char *v1;        // eax
-	TMegaPkt *v2;    // esi
-	int v3;          // ecx
-	unsigned int v4; // edi
+	char *error_buf;
+	TMegaPkt *pkt;
+	DWORD dwMilliseconds;
 
-	while (byte_52A508) {
+	while (dthread_running) {
 		if (!sgpInfoHead && WaitForSingleObject(sghWorkToDoEvent, 0xFFFFFFFF) == -1) {
-			v1 = TraceLastError();
-			TermMsg("dthread4:\n%s", v1);
+			error_buf = TraceLastError();
+			TermMsg("dthread4:\n%s", error_buf);
 		}
+
 		EnterCriticalSection(&sgMemCrit);
-		v2 = sgpInfoHead;
+		pkt = sgpInfoHead;
 		if (sgpInfoHead)
 			sgpInfoHead = sgpInfoHead->pNext;
 		else
 			ResetEvent(sghWorkToDoEvent);
 		LeaveCriticalSection(&sgMemCrit);
-		if (v2) {
-			v3 = v2->dwSpaceLeft;
-			if (v3 != 4)
-				multi_send_zero_packet(v3, v2->data[0], &v2->data[8], *(_DWORD *)&v2->data[4]);
-			v4 = 1000 * *(_DWORD *)&v2->data[4] / (unsigned int)gdwDeltaBytesSec;
-			if (v4 >= 1)
-				v4 = 1;
-			mem_free_dbg(v2);
-			if (v4)
-				Sleep(v4);
+
+		if (pkt) {
+			if (pkt->dwSpaceLeft != 4)
+				multi_send_zero_packet(pkt->dwSpaceLeft, pkt->data[0], &pkt->data[8], *(_DWORD *)&pkt->data[4]);
+
+			dwMilliseconds = 1000 * *(_DWORD *)&pkt->data[4] / gdwDeltaBytesSec;
+			if (dwMilliseconds >= 1)
+				dwMilliseconds = 1;
+
+			mem_free_dbg(pkt);
+
+			if (dwMilliseconds)
+				Sleep(dwMilliseconds);
 		}
 	}
+
 	return 0;
 }
-// 52A508: using guessed type char byte_52A508;
 // 679730: using guessed type int gdwDeltaBytesSec;
 
 void __cdecl dthread_cleanup()
 {
-	char *v0;     // eax
-	TMegaPkt *v1; // eax
-	TMegaPkt *v2; // esi
+	char *error_buf;
+	TMegaPkt *tmp1, *tmp2;
 
-	if (sghWorkToDoEvent) {
-		byte_52A508 = 0;
-		SetEvent(sghWorkToDoEvent);
-		if (sghThread != (HANDLE)-1 && glpDThreadId != GetCurrentThreadId()) {
-			if (WaitForSingleObject(sghThread, 0xFFFFFFFF) == -1) {
-				v0 = TraceLastError();
-				TermMsg("dthread3:\n(%s)", v0);
-			}
-			CloseHandle(sghThread);
-			sghThread = (HANDLE)-1;
+	if (sghWorkToDoEvent == NULL) {
+		return;
+	}
+
+	dthread_running = FALSE;
+	SetEvent(sghWorkToDoEvent);
+	if (sghThread != INVALID_HANDLE_VALUE && glpDThreadId != GetCurrentThreadId()) {
+		if (WaitForSingleObject(sghThread, 0xFFFFFFFF) == -1) {
+			error_buf = TraceLastError();
+			TermMsg("dthread3:\n(%s)", error_buf);
 		}
-		CloseHandle(sghWorkToDoEvent);
-		v1 = sgpInfoHead;
-		sghWorkToDoEvent = 0;
-		if (sgpInfoHead) {
-			do {
-				v2 = v1->pNext;
-				sgpInfoHead = 0;
-				mem_free_dbg(v1);
-				v1 = v2;
-				sgpInfoHead = v2;
-			} while (v2);
-		}
+		CloseHandle(sghThread);
+		sghThread = INVALID_HANDLE_VALUE;
+	}
+	CloseHandle(sghWorkToDoEvent);
+	sghWorkToDoEvent = NULL;
+
+	while (sgpInfoHead) {
+		tmp1 = sgpInfoHead->pNext;
+		tmp2 = sgpInfoHead;
+		sgpInfoHead = NULL;
+		mem_free_dbg(tmp2);
+		sgpInfoHead = tmp1;
 	}
 }
-// 52A508: using guessed type char byte_52A508;

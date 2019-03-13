@@ -7,7 +7,8 @@ LPTOP_LEVEL_EXCEPTION_FILTER lpTopLevelExceptionFilter; // idb
 #ifndef _MSC_VER
 __attribute__((constructor))
 #endif
-static void exception_c_init(void)
+static void
+exception_c_init(void)
 {
 	exception_install_filter();
 	j_exception_init_filter();
@@ -231,7 +232,7 @@ char *__fastcall exception_get_error_type(DWORD dwMessageId, LPSTR lpString1, DW
 		CASE_EXCEPTION(v4, ACCESS_VIOLATION);
 	default:
 		ntdll = GetModuleHandle("NTDLL.DLL");
-		if (!FormatMessage(FORMAT_MESSAGE_FROM_HMODULE | FORMAT_MESSAGE_IGNORE_INSERTS, ntdll, dwMessageId, 0, lpString1, nSize, NULL)) {
+		if (!FormatMessage(FORMAT_MESSAGE_FROM_HMODULE | FORMAT_MESSAGE_IGNORE_INSERTS, (LPCVOID)ntdll, dwMessageId, 0, lpString1, nSize, NULL)) {
 			v4 = "*unknown*";
 		}
 	}

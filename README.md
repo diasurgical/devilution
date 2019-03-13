@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/diasurgical/devilution.svg?branch=master)](https://travis-ci.org/diasurgical/devilution)
 [![Build status](https://ci.appveyor.com/api/projects/status/ssk0xjhoka1uu940?svg=true)](https://ci.appveyor.com/project/galaxyhaxz/devilution)
+[![Build status](https://img.shields.io/github/downloads/diasurgical/devilution/total.svg)](https://github.com/diasurgical/devilution/releases)
 
 [Discord Channel](https://discord.gg/aQBQdDe)
 
@@ -7,6 +8,8 @@
 Diablo devolved - magic behind the 1996 computer game
 
 Reverse engineered by GalaXyHaXz in 2018
+
+**Note**, Devilution requires an original copy of `diabdat.mpq`. None of the Diablo 1 game assets are provided by this project. To get a legitimate copy of the game assets, please refer to the [GoG release of Diablo 1](https://www.gog.com/game/diablo).
 
 # Introduction
 While most titles from Blizzard receive years of love and support, Diablo stayed in the shadows. Abandoned in favour of a sequel, it remained full of bugs and unfinished potential. The game was last patched in 2001 before being discontinued altogether, a problem I wanted to fix. I played Diablo extensively as a teenager, but as time passed it became difficult to run the game on newer hardware. The lack of many improvements found in the sequel also kept it from ageing well. At first the game appeared to be a lost cause, but thankfully a little oversight in 1997 made it not so.
@@ -109,6 +112,9 @@ That's a tricky question. Under the DMCA, reverse-engineering has exceptions for
 - Climax Studios & Sony - secretly helping with their undercover QA :P
 - Blizzard North - wait, this was a typo!
 - Depression - reason to waste four months of my life doing this ;)
+
+# Changelog
+[From the beginning until release](docs/CHANGELOG.md)
 
 # Legal
 This software is being released to the Public Domain. No assets of Diablo are being provided. You must own a copy of Diablo and have access to the assets beforehand in order to use this software.

@@ -106,7 +106,6 @@ int ExpLvlsTbl[MAXCHARLEVEL] = {
 char *ClassStrTbl[3] = { "Warrior", "Rogue", "Sorceror" };
 unsigned char fix[9] = { 0u, 0u, 3u, 3u, 3u, 6u, 6u, 6u, 8u }; /* PM_ChangeLightOff local type */
 
-
 void __fastcall SetPlayerGPtrs(UCHAR *pData, UCHAR **pAnim)
 {
 	int i;
@@ -317,7 +316,7 @@ DWORD __fastcall GetPlrGFXSize(char *szCel)
 {
 	char prefix[16];
 	char pszName[256];
-	void *file;
+	HANDLE file;
 	int c, a, w;
 	DWORD size, result;
 
@@ -328,7 +327,7 @@ DWORD __fastcall GetPlrGFXSize(char *szCel)
 
 	for (c = 0; c < sizeof(ClassStrTbl) / sizeof(ClassStrTbl[0]); c++) {
 		for (a = 0; ArmourChar[a]; a++) {
-			for (w = 0; WepChar[w]; w++) {
+			for (w = 0; WepChar[w]; w++) { // BUGFIX loads non-existing animagions; DT is only for N, BT is only for U, D & H
 				sprintf(prefix, "%c%c%c", CharChar[c], ArmourChar[a], WepChar[w]);
 				sprintf(pszName, "PlrGFX\\%s\\%s\\%s%s.CL2", ClassStrTbl[c], prefix, prefix, szCel);
 				if (WOpenFile(pszName, &file, TRUE)) {
@@ -659,7 +658,7 @@ void __fastcall CreatePlayer(int pnum, char c)
 	plr[pnum].pTownWarps = 0;
 	plr[pnum].pLvlLoad = 0;
 	plr[pnum].pBattleNet = 0;
-	plr[pnum].pManaShield = 0;
+	plr[pnum].pManaShield = FALSE;
 
 	InitDungMsgs(pnum);
 	CreatePlrItems(pnum);
@@ -835,7 +834,7 @@ void __fastcall InitPlayer(int pnum, BOOL FirstTime)
 		} else {
 			plr[pnum]._pwtype = WT_MELEE;
 		}
-		plr[pnum].pManaShield = 0;
+		plr[pnum].pManaShield = FALSE;
 	}
 
 	if (plr[pnum].plrlevel == currlevel || leveldebug) {
@@ -1928,7 +1927,7 @@ void __fastcall SyncPlrKill(int pnum, int earflag)
 
 	for (i = 0; i < nummissiles; i++) {
 		ma = missileactive[i];
-		if (missile[ma]._mitype == MIS_MANASHIELD && missile[ma]._misource == pnum && missile[ma]._miDelFlag == 0) {
+		if (missile[ma]._mitype == MIS_MANASHIELD && missile[ma]._misource == pnum && missile[ma]._miDelFlag == FALSE) {
 			if (earflag != -1) {
 				missile[ma]._miVar8 = earflag;
 			}

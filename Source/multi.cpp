@@ -7,12 +7,12 @@ TBuffer sgHiPriBuf;
 char szPlayerDescript[128];
 short sgwPackPlrOffsetTbl[MAX_PLRS];
 PkPlayerStruct netplr[MAX_PLRS];
-char sgbPlayerTurnBitTbl[MAX_PLRS];
+BYTE sgbPlayerTurnBitTbl[MAX_PLRS];
 char sgbPlayerLeftGameTbl[MAX_PLRS];
-int sgbSentThisCycle;     // idb
-int dword_678628;         // weak
-BYTE gbActivePlayers;     // weak
-char gbGameDestroyed;     // weak
+int sgbSentThisCycle; // idb
+int dword_678628;     // weak
+BYTE gbActivePlayers; // weak
+char gbGameDestroyed; // weak
 char sgbSendDeltaTbl[MAX_PLRS];
 _gamedata sgGameInitInfo;
 char byte_678640;    // weak
@@ -349,19 +349,13 @@ int __fastcall multi_check_pkt_valid(TBuffer *a1)
 
 void __cdecl multi_mon_seeds()
 {
-	unsigned int v0; // eax
-	int v1;          // edx
-	int *v2;         // ecx
-	int v3;          // esi
+	int i;
+	DWORD l;
 
-	v0 = _rotr(++sgdwGameLoops, 8);
-	v1 = 0;
-	v2 = &monster[0]._mAISeed;
-	do {
-		v3 = v1++ + v0;
-		*v2 = v3;
-		v2 += 57;
-	} while ((signed int)v2 < (signed int)&monster[MAXMONSTERS]._mAISeed);
+	sgdwGameLoops++;
+	l = _rotr(sgdwGameLoops, 8);
+	for (i = 0; i < 200; i++)
+		monster[i]._mAISeed = l + i;
 }
 
 void __cdecl multi_begin_timeout()
@@ -466,8 +460,8 @@ void __cdecl multi_process_network_packets()
 			multi_clear_left_tbl();
 			v1 = pkt;
 			v2 = pkt;
-			if ((unsigned int)len >= 0x13
-			    && *(_DWORD *)arglist < 4u
+			if ((unsigned int)len >= sizeof(TPktHdr)
+			    && *(_DWORD *)arglist < MAX_PLRS
 			    && pkt->wCheck == 'ip'
 			    && (unsigned short)pkt->wLen == len) {
 				v3 = *(_DWORD *)arglist;
@@ -868,86 +862,87 @@ void __cdecl SetupLocalCoords()
 // 5CF31D: using guessed type char setlevel;
 // 679660: using guessed type char gbMaxPlayers;
 
-int __fastcall multi_init_single(_SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info, _SNETUIDATA *ui_info)
+BOOL __fastcall multi_init_single(_SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info, _SNETUIDATA *ui_info)
 {
-	//int v3; // eax
-	int result; // eax
-	//int v5; // eax
-	char *v6; // eax
+	int unused;
 
-	//_LOBYTE(v3) = SNetInitializeProvider(0, client_info, user_info, ui_info, &fileinfo);
-	if (SNetInitializeProvider(0, client_info, user_info, ui_info, &fileinfo)) {
-		ui_info = 0;
-		//_LOBYTE(v5) = SNetCreateGame("local", "local", "local", 0, (char *)&sgGameInitInfo.dwSeed, 8, 1, "local", "local", (int *)&ui_info);
-		if (!SNetCreateGame("local", "local", "local", 0, (char *)&sgGameInitInfo.dwSeed, 8, 1, "local", "local", (int *)&ui_info)) {
-			v6 = TraceLastError();
-			TermMsg("SNetCreateGame1:\n%s", v6);
-		}
-		myplr = 0;
-		gbMaxPlayers = 1;
-		result = 1;
-	} else {
+	if (!SNetInitializeProvider(0, client_info, user_info, ui_info, &fileinfo)) {
 		SErrGetLastError();
-		result = 0;
+		return FALSE;
 	}
-	return result;
+
+	unused = 0;
+	if (!SNetCreateGame("local", "local", "local", 0, (char *)&sgGameInitInfo.dwSeed, 8, 1, "local", "local", &unused)) {
+		TermMsg("SNetCreateGame1:\n%s", TraceLastError());
+	}
+
+	myplr = 0;
+	gbMaxPlayers = 1;
+
+	return TRUE;
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-int __fastcall multi_init_multi(_SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info, _SNETUIDATA *ui_info, int *a4)
+BOOL __fastcall multi_init_multi(_SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info, _SNETUIDATA *ui_info, int *pfExitProgram)
 {
-	_SNETPLAYERDATA *v4; // ebx
-	signed int i;        // edi
-	int a6;              // [esp+Ch] [ebp-Ch]
-	int a2;              // [esp+10h] [ebp-8h]
-	int type;            // [esp+14h] [ebp-4h]
+	BOOL first;
+	int playerId;
+	int type;
 
-	v4 = user_info;
-	a2 = (int)client_info;
-	for (i = 1;; i = 0) {
-		type = 0;
+	for (first = TRUE;; first = FALSE) {
+		type = 0x00;
 		if (byte_678640) {
-			if (!UiSelectProvider(0, (_SNETPROGRAMDATA *)a2, v4, ui_info, &fileinfo, &type)
-			    && (!i || SErrGetLastError() != STORM_ERROR_REQUIRES_UPGRADE || !multi_upgrade(a4))) {
-				return 0;
+			if (!UiSelectProvider(0, client_info, user_info, ui_info, &fileinfo, &type)
+			    && (!first || SErrGetLastError() != STORM_ERROR_REQUIRES_UPGRADE || !multi_upgrade(pfExitProgram))) {
+				return FALSE;
 			}
 			if (type == 'BNET')
 				plr[0].pBattleNet = 1;
 		}
+
 		multi_event_handler(1);
-		if (UiSelectGame(1, (_SNETPROGRAMDATA *)a2, v4, ui_info, &fileinfo, &a6))
+		if (UiSelectGame(1, client_info, user_info, ui_info, &fileinfo, &playerId))
 			break;
+
 		byte_678640 = 1;
 	}
-	if ((unsigned int)a6 >= MAX_PLRS)
-		return 0;
-	myplr = a6;
-	gbMaxPlayers = MAX_PLRS;
-	pfile_read_player_from_save();
-	if (type == 'BNET')
-		plr[myplr].pBattleNet = 1;
-	return 1;
+
+	if ((DWORD)playerId >= MAX_PLRS) {
+		return FALSE;
+	} else {
+		myplr = playerId;
+		gbMaxPlayers = MAX_PLRS;
+
+		pfile_read_player_from_save();
+
+		if (type == 'BNET')
+			plr[myplr].pBattleNet = 1;
+
+		return TRUE;
+	}
 }
 // 678640: using guessed type char byte_678640;
 // 679660: using guessed type char gbMaxPlayers;
 
-int __fastcall multi_upgrade(int *a1)
+BOOL __fastcall multi_upgrade(int *pfExitProgram)
 {
-	int *v1;    // esi
-	int result; // eax
-	int status; // [esp+4h] [ebp-4h]
+	BOOL result;
+	int status;
 
-	v1 = a1;
-	SNetPerformUpgrade((unsigned long *)&status);
-	result = 1;
+	SNetPerformUpgrade((LPDWORD)&status);
+	result = TRUE;
 	if (status && status != 1) {
-		if (status == 2) {
-			*v1 = 1;
-		} else if (status == -1) {
-			DrawDlg("Network upgrade failed");
+		if (status != 2) {
+			if (status == -1) {
+				DrawDlg("Network upgrade failed");
+			}
+		} else {
+			*pfExitProgram = 1;
 		}
-		result = 0;
+
+		result = FALSE;
 	}
+
 	return result;
 }
 

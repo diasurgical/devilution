@@ -45,7 +45,7 @@ int __stdcall Progress_100094F4(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPara
 
 	if ( Msg == 2 )
 	{
-		ShowCursor(0);
+		ShowCursor(FALSE);
 		Progress_100095EC();
 	}
 	else if ( Msg > 0x103 )
@@ -64,7 +64,7 @@ int __stdcall Progress_100094F4(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lPara
 					v5 = (void *)SDrawGetFrameWindow(NULL);
 					local_1000812B(v5);
 					local_1000812B(hWnd);
-					ShowCursor(1);
+					ShowCursor(TRUE);
 					return 1;
 				case 0x111u:
 					if ( (_WORD)wParam == 2 )

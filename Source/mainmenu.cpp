@@ -25,44 +25,44 @@ void __stdcall mainmenu_create_hero(char *name_1, char *name_2)
 }
 
 int __stdcall mainmenu_select_hero_dialog(
-    const _SNETPROGRAMDATA *u1,
-    const _SNETPLAYERDATA *u2,
-    const _SNETUIDATA *u3,
-    const _SNETVERSIONDATA *u4,
+    const _SNETPROGRAMDATA *client_info,
+    const _SNETPLAYERDATA *user_info,
+    const _SNETUIDATA *ui_info,
+    const _SNETVERSIONDATA *fileinfo,
     DWORD mode,
     char *cname, DWORD clen,
     char *cdesc, DWORD cdlen,
     BOOL *multi)
 {
-	int a6 = 1;
-	int a5 = 0;
+	BOOL hero_is_created = TRUE;
+	int dlgresult = 0;
 	if (gbMaxPlayers == 1) {
 		if (!UiSelHeroSingDialog(
 		        pfile_ui_set_hero_infos,
 		        pfile_ui_save_create,
 		        pfile_delete_save,
 		        pfile_ui_set_class_stats,
-		        &a5,
+		        &dlgresult,
 		        gszHero,
 		        &gnDifficulty))
 			TermMsg("Unable to display SelHeroSing");
 
-		if (a5 == 2)
-			dword_5256E8 = TRUE;
+		if (dlgresult == 2)
+			gbLoadGame = TRUE;
 		else
-			dword_5256E8 = FALSE;
+			gbLoadGame = FALSE;
 
 	} else if (!UiSelHeroMultDialog(
 	               pfile_ui_set_hero_infos,
 	               pfile_ui_save_create,
 	               pfile_delete_save,
 	               pfile_ui_set_class_stats,
-	               &a5,
-	               &a6,
+	               &dlgresult,
+	               &hero_is_created,
 	               gszHero)) {
 		TermMsg("Can't load multiplayer dialog");
 	}
-	if (a5 == 4) {
+	if (dlgresult == 4) {
 		SErrSetLastError(1223);
 		return 0;
 	}
@@ -70,9 +70,9 @@ int __stdcall mainmenu_select_hero_dialog(
 	pfile_create_player_description(cdesc, cdlen);
 	if (multi) {
 		if (mode == 'BNET')
-			*multi = a6 || !plr[myplr].pBattleNet;
+			*multi = hero_is_created || !plr[myplr].pBattleNet;
 		else
-			*multi = a6;
+			*multi = hero_is_created;
 	}
 	if (cname && clen)
 		SStrCopy(cname, gszHero, clen);

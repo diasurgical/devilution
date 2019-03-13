@@ -3,12 +3,12 @@
 #include "../types.h"
 
 char byte_679704; // weak
-int gdwMsgLenTbl[4];
+int gdwMsgLenTbl[MAX_PLRS];
 static CRITICAL_SECTION sgMemCrit;
 int gdwDeltaBytesSec;    // weak
 char nthread_should_run; // weak
 DWORD gdwTurnsInTransit; // weak
-int glpMsgTbl[4];
+int glpMsgTbl[MAX_PLRS];
 unsigned int glpNThreadId;
 char sgbSyncCountdown;   // weak
 int turn_upper_bit;      // weak
@@ -25,7 +25,8 @@ static HANDLE sghThread = (HANDLE)0xFFFFFFFF; // idb
 #ifndef _MSC_VER
 __attribute__((constructor))
 #endif
-static void nthread_c_init(void)
+static void
+nthread_c_init(void)
 {
 	nthread_init_mutex();
 	nthread_cleanup_mutex_atexit();
@@ -115,7 +116,7 @@ int __fastcall nthread_recv_turns(int *pfSendAsync)
 	sgbPacketCountdown = byte_679704;
 	if (!hasCountedDown)
 		goto LABEL_11;
-	if (SNetReceiveTurns(0, 4, (char **)glpMsgTbl, (unsigned int *)gdwMsgLenTbl, (unsigned long *)player_state)) {
+	if (SNetReceiveTurns(0, MAX_PLRS, (char **)glpMsgTbl, (unsigned int *)gdwMsgLenTbl, (LPDWORD)player_state)) {
 		if (!byte_679758) {
 			byte_679758 = 1;
 			last_tick = GetTickCount();
@@ -146,7 +147,7 @@ void __cdecl nthread_set_turn_upper_bit()
 }
 // 679754: using guessed type int turn_upper_bit;
 
-void __fastcall nthread_start(BOOLEAN set_turn_upper_bit)
+void __fastcall nthread_start(BOOL set_turn_upper_bit)
 {
 	char *err;                   // eax
 	unsigned int largestMsgSize; // esi

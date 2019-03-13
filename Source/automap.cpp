@@ -6,7 +6,7 @@
 WORD automaptype[512];
 static int MapX;
 static int MapY;
-BOOL automapflag; // idb
+BOOL automapflag;    // idb
 char AmShiftTab[32]; // [31]?
 unsigned char automapview[DMAXX][DMAXY];
 int AutoMapScale;   // idb
@@ -58,19 +58,19 @@ void __cdecl InitAutomap()
 
 	j = 50;
 
-	for(i = 0; i < 31; i++) {
+	for (i = 0; i < 31; i++) {
 		d = (j << 6) / 100;
 		AmShiftTab[i] = 2 * (320 / d) + 1;
-		if(320 % d)
+		if (320 % d)
 			AmShiftTab[i]++;
-		if(320 % d >= (j << 5) / 100)
+		if (320 % d >= (j << 5) / 100)
 			AmShiftTab[i]++;
 		j += 5;
 	}
 
 	memset(automaptype, 0, sizeof(automaptype));
 
-	switch(leveltype) {
+	switch (leveltype) {
 	case DTYPE_CATHEDRAL:
 		pAFile = LoadFileInMem("Levels\\L1Data\\L1.AMP", (int *)&dwTiles);
 		dwTiles >>= 1;
@@ -93,7 +93,7 @@ void __cdecl InitAutomap()
 
 	pTmp = pAFile;
 
-	for(i = 1; i <= dwTiles; i++) {
+	for (i = 1; i <= dwTiles; i++) {
 		b1 = *pTmp++;
 		b2 = *pTmp++;
 		automaptype[i] = b1 + (b2 << 8);
@@ -102,8 +102,8 @@ void __cdecl InitAutomap()
 	mem_free_dbg(pAFile);
 	memset(automapview, 0, sizeof(automapview));
 
-	for(y = 0; y < MAXDUNY; y++) {
-		for(x = 0; x < MAXDUNX; x++)
+	for (y = 0; y < MAXDUNY; y++) {
+		for (x = 0; x < MAXDUNX; x++)
 			dFlags[x][y] &= ~DFLAG_EXPLORED;
 	}
 }
@@ -578,16 +578,18 @@ void __fastcall SetAutomapView(int x, int y)
 		if (solid) {
 			if (GetAutomapType(xx, yy + 1, FALSE) == 0x4007)
 				automapview[xx][yy + 1] = 1;
-		} else if (GetAutomapType(xx - 1, yy, FALSE) & 0x4000)
+		} else if (GetAutomapType(xx - 1, yy, FALSE) & 0x4000) {
 			automapview[xx - 1][yy] = 1;
-		break;
+		}
+		return;
 	case 3:
 		if (solid) {
 			if (GetAutomapType(xx + 1, yy, FALSE) == 0x4007)
 				automapview[xx + 1][yy] = 1;
-		} else if (GetAutomapType(xx, yy - 1, FALSE) & 0x4000)
+		} else if (GetAutomapType(xx, yy - 1, FALSE) & 0x4000) {
 			automapview[xx][yy - 1] = 1;
-		break;
+		}
+		return;
 	case 4:
 		if (solid) {
 			if (GetAutomapType(xx, yy + 1, FALSE) == 0x4007)
@@ -602,24 +604,27 @@ void __fastcall SetAutomapView(int x, int y)
 			if (GetAutomapType(xx - 1, yy - 1, FALSE) & 0x4000)
 				automapview[xx - 1][yy - 1] = 1;
 		}
-		break;
+		return;
 	case 5:
 		if (solid) {
 			if (GetAutomapType(xx, yy - 1, FALSE) & 0x4000)
 				automapview[xx][yy - 1] = 1;
 			if (GetAutomapType(xx, yy + 1, FALSE) == 0x4007)
 				automapview[xx][yy + 1] = 1;
-		} else if (GetAutomapType(xx - 1, yy, FALSE) & 0x4000)
+		} else if (GetAutomapType(xx - 1, yy, FALSE) & 0x4000) {
 			automapview[xx - 1][yy] = 1;
-		break;
+		}
+		return;
 	case 6:
 		if (solid) {
 			if (GetAutomapType(xx - 1, yy, FALSE) & 0x4000)
 				automapview[xx - 1][yy] = 1;
 			if (GetAutomapType(xx + 1, yy, FALSE) == 0x4007)
 				automapview[xx + 1][yy] = 1;
-		} else if (GetAutomapType(xx, yy - 1, FALSE) & 0x4000)
+		} else if (GetAutomapType(xx, yy - 1, FALSE) & 0x4000) {
 			automapview[xx][yy - 1] = 1;
+		}
+		return;
 	}
 }
 

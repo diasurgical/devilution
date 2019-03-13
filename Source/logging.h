@@ -2,7 +2,7 @@
 #ifndef __LOGGING_H__
 #define __LOGGING_H__
 
-extern CHAR FileName[260];     // idb
+extern CHAR FileName[260]; // idb
 extern char log_buffer[388];
 extern LPCVOID lpAddress;           // idb
 extern DWORD nNumberOfBytesToWrite; // idb
@@ -11,7 +11,7 @@ void __cdecl log_init_mutex();
 void __cdecl j_log_cleanup_mutex();
 void __cdecl log_cleanup_mutex(void);
 void __cdecl log_flush(BOOLEAN force_close);
-void *__cdecl log_create(); // should be HANDLE
+HANDLE __cdecl log_create(); // should be HANDLE
 void __fastcall log_get_version(VS_FIXEDFILEINFO *file_info);
 void log_printf(const char *pszFmt, ...); // LogMessage
 void __cdecl log_dump_computer_info();

@@ -71,61 +71,55 @@ short dpiece_defs_map_2[16][MAXDUNX][MAXDUNY];
 
 void __cdecl FillSolidBlockTbls()
 {
-	unsigned char *v0; // eax
-	char *v1;          // ecx
-	unsigned char *v2; // esi
-	int v3;            // edx
-	unsigned char v4;  // bl
-	int size;          // [esp+8h] [ebp-4h]
+	unsigned char bv;
+	unsigned int dwTiles;
+	unsigned char *pSBFile, *pTmp;
+	int i;
 
 	memset(nBlockTable, 0, sizeof(nBlockTable));
 	memset(nSolidTable, 0, sizeof(nSolidTable));
 	memset(nTransTable, 0, sizeof(nTransTable));
 	memset(nMissileTable, 0, sizeof(nMissileTable));
 	memset(nTrapTable, 0, sizeof(nTrapTable));
-	if (leveltype != DTYPE_TOWN) {
-		switch (leveltype) {
-		case DTYPE_CATHEDRAL:
-			v1 = "Levels\\L1Data\\L1.SOL";
-			break;
-		case DTYPE_CATACOMBS:
-			v1 = "Levels\\L2Data\\L2.SOL";
-			break;
-		case DTYPE_CAVES:
-			v1 = "Levels\\L3Data\\L3.SOL";
-			break;
-		case DTYPE_HELL:
-			v1 = "Levels\\L4Data\\L4.SOL";
-			break;
-		default:
-			TermMsg("FillSolidBlockTbls");
-			// v0 = (unsigned char *)size; /* check error */
-			goto LABEL_13;
-		}
-	} else {
-		v1 = "Levels\\TownData\\Town.SOL";
+
+	switch(leveltype) {
+	case DTYPE_TOWN:
+		pSBFile = LoadFileInMem("Levels\\TownData\\Town.SOL", (int *)&dwTiles);
+		break;
+	case DTYPE_CATHEDRAL:
+		pSBFile = LoadFileInMem("Levels\\L1Data\\L1.SOL", (int *)&dwTiles);
+		break;
+	case DTYPE_CATACOMBS:
+		pSBFile = LoadFileInMem("Levels\\L2Data\\L2.SOL", (int *)&dwTiles);
+		break;
+	case DTYPE_CAVES:
+		pSBFile = LoadFileInMem("Levels\\L3Data\\L3.SOL", (int *)&dwTiles);
+		break;
+	case DTYPE_HELL:
+		pSBFile = LoadFileInMem("Levels\\L4Data\\L4.SOL", (int *)&dwTiles);
+		break;
+	default:
+		TermMsg("FillSolidBlockTbls");
 	}
-	v0 = LoadFileInMem(v1, &size);
-LABEL_13:
-	v2 = v0;
-	if ((unsigned int)size >= 1) {
-		v3 = 0;
-		do {
-			v4 = *v2++;
-			if (v4 & 1)
-				nSolidTable[v3 + 1] = 1;
-			if (v4 & 2)
-				nBlockTable[v3 + 1] = 1;
-			if (v4 & 4)
-				nMissileTable[v3 + 1] = 1;
-			if (v4 & 8)
-				nTransTable[v3 + 1] = 1;
-			if ((v4 & 0x80u) != 0)
-				nTrapTable[v3 + 1] = TRUE;
-			block_lvid[v3++ + 1] = (v4 >> 4) & 7;
-		} while (v3 + 1 <= (unsigned int)size);
+
+	pTmp = pSBFile;
+
+	for(i = 1; i <= dwTiles; i++) {
+		bv = *pTmp++;
+		if(bv & 1)
+			nSolidTable[i] = 1;
+		if(bv & 2)
+			nBlockTable[i] = 1;
+		if(bv & 4)
+			nMissileTable[i] = 1;
+		if(bv & 8)
+			nTransTable[i] = 1;
+		if(bv & 0x80)
+			nTrapTable[i] = 1;
+		block_lvid[i] = (bv & 0x70) >> 4; /* beta: (bv >> 4) & 7 */
 	}
-	mem_free_dbg(v0);
+
+	mem_free_dbg(pSBFile);
 }
 
 void __cdecl gendung_418D91()

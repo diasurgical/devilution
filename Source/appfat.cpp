@@ -3,8 +3,8 @@
 #include "../types.h"
 
 char sz_error_buf[256];
-int terminating;       // weak
-int cleanup_thread_id; // weak
+BOOL terminating;
+int cleanup_thread_id;
 
 // delete overloads the delete operator.
 //void operator delete(void *ptr)
@@ -14,39 +14,44 @@ int cleanup_thread_id; // weak
 //	}
 //}
 
-char *__fastcall GetErrorStr(int error_code)
+char *__fastcall GetErrorStr(DWORD error_code)
 {
-	int v1;          // edi
-	unsigned int v2; // eax
-	signed int v4;   // eax
-	char *i;         // ecx
+	DWORD upper_code;
+	int size;
+	char *chr;
 
-	v1 = error_code;
-	v2 = ((unsigned int)error_code >> 16) & 0x1FFF;
-	if (v2 == 0x0878) {
+	upper_code = (error_code >> 16) & 0x1FFF;
+	if (upper_code == 0x0878) {
 		TraceErrorDS(error_code, sz_error_buf, 256);
-	} else if (v2 == 0x0876) {
+	} else if (upper_code == 0x0876) {
 		TraceErrorDD(error_code, sz_error_buf, 256);
-	} else {
-		if (!SErrGetErrorStr(error_code, sz_error_buf, 256) && !FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, NULL, v1, 0x400u, sz_error_buf, 0x100u, NULL))
-			wsprintf(sz_error_buf, "unknown error 0x%08x", v1);
+	} else if (!SErrGetErrorStr(error_code, sz_error_buf, 256)
+	    && !FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, NULL, error_code, 0x400, sz_error_buf, 0x100, NULL)) {
+		wsprintf(sz_error_buf, "unknown error 0x%08x", error_code);
 	}
-	v4 = strlen(sz_error_buf);
-	for (i = &sz_error_buf[v4 - 1]; v4 > 0; *i = 0) {
-		--v4;
-		--i;
-		if (*i != '\r' && *i != '\n')
+
+	size = strlen(sz_error_buf);
+
+	chr = &sz_error_buf[size - 1];
+	while (size > 0) {
+		size--;
+		chr--;
+
+		if (*chr != '\r' && *chr != '\n')
 			break;
+
+		*chr = 0x00;
 	}
+
 	return sz_error_buf;
 }
 
 #define CASE_ERROR(v, errName) \
-	case errName:              \
+	case (DWORD)errName:              \
 		v = #errName;          \
 		break;
 
-void __fastcall TraceErrorDD(int error_code, char *error_buf, int error_buf_len)
+void __fastcall TraceErrorDD(DWORD error_code, char *error_buf, int error_buf_len)
 {
 	const char *v3; // eax
 	char v4[20];    // [esp+0h] [ebp-14h]
@@ -158,7 +163,7 @@ void __fastcall TraceErrorDD(int error_code, char *error_buf, int error_buf_len)
 	strncpy(error_buf, v3, error_buf_len);
 }
 
-void __fastcall TraceErrorDS(int error_code, char *error_buf, int error_buf_len)
+void __fastcall TraceErrorDS(DWORD error_code, char *error_buf, int error_buf_len)
 {
 	const char *v3; // eax
 	char v4[20];    // [esp+0h] [ebp-14h]
@@ -187,22 +192,22 @@ void __fastcall TraceErrorDS(int error_code, char *error_buf, int error_buf_len)
 
 char *__cdecl TraceLastError()
 {
-	int v0; // eax
-
-	v0 = GetLastError();
-	return GetErrorStr(v0);
+	return GetErrorStr(GetLastError());
 }
 
 void TermMsg(char *pszFmt, ...)
 {
-	va_list arglist; // [esp+8h] [ebp+8h]
+	va_list va;
 
-	va_start(arglist, pszFmt);
+	va_start(va, pszFmt);
 	FreeDlg();
+
 	if (pszFmt)
-		MsgBox(pszFmt, arglist);
-	va_end(arglist);
-	init_cleanup(0);
+		MsgBox(pszFmt, va);
+
+	va_end(va);
+
+	init_cleanup(FALSE);
 	exit(1);
 }
 
@@ -219,20 +224,21 @@ void __fastcall MsgBox(char *pszFmt, va_list va)
 void __cdecl FreeDlg()
 {
 	if (terminating && cleanup_thread_id != GetCurrentThreadId())
-		Sleep(20000u);
-	terminating = 1;
+		Sleep(20000);
+
+	terminating = TRUE;
 	cleanup_thread_id = GetCurrentThreadId();
+
 	dx_cleanup();
-	if ((unsigned char)gbMaxPlayers > 1u) {
+
+	if (gbMaxPlayers > 1) {
 		if (SNetLeaveGame(3))
-			Sleep(2000u);
+			Sleep(2000);
 	}
+
 	SNetDestroy();
-	ShowCursor(1);
+	ShowCursor(TRUE);
 }
-// 4B7A34: using guessed type int terminating;
-// 4B7A38: using guessed type int cleanup_thread_id;
-// 679660: using guessed type char gbMaxPlayers;
 
 void DrawDlg(char *pszFmt, ...)
 {
@@ -245,169 +251,149 @@ void DrawDlg(char *pszFmt, ...)
 	SDrawMessageBox(text, "Diablo", MB_TASKMODAL | MB_ICONEXCLAMATION);
 }
 
-void __fastcall DDErrMsg(int error_code, int log_line_nr, char *log_file_path)
+void __fastcall DDErrMsg(DWORD error_code, int log_line_nr, char *log_file_path)
 {
-	int v3;   // esi
-	char *v4; // eax
+	char *msg;
 
-	v3 = log_line_nr;
 	if (error_code) {
-		v4 = GetErrorStr(error_code);
-		TermMsg("Direct draw error (%s:%d)\n%s", log_file_path, v3, v4);
+		msg = GetErrorStr(error_code);
+		TermMsg("Direct draw error (%s:%d)\n%s", log_file_path, log_line_nr, msg);
 	}
 }
 
-void __fastcall DSErrMsg(int error_code, int log_line_nr, char *log_file_path)
+void __fastcall DSErrMsg(DWORD error_code, int log_line_nr, char *log_file_path)
 {
-	int v3;   // esi
-	char *v4; // eax
+	char *msg;
 
-	v3 = log_line_nr;
 	if (error_code) {
-		v4 = GetErrorStr(error_code);
-		TermMsg("Direct sound error (%s:%d)\n%s", log_file_path, v3, v4);
+		msg = GetErrorStr(error_code);
+		TermMsg("Direct sound error (%s:%d)\n%s", log_file_path, log_line_nr, msg);
 	}
 }
 
 void __fastcall center_window(HWND hDlg)
 {
-	LONG v1;             // esi
-	LONG v2;             // edi
-	int v3;              // ebx
-	char *v4;            // eax
-	struct tagRECT Rect; // [esp+Ch] [ebp-1Ch]
-	int v6;              // [esp+1Ch] [ebp-Ch]
-	HDC hdc;             // [esp+20h] [ebp-8h]
-	HWND hWnd;           // [esp+24h] [ebp-4h]
+	LONG w, h;
+	int screenW, screenH;
+	struct tagRECT Rect;
+	HDC hdc;
 
-	hWnd = hDlg;
 	GetWindowRect(hDlg, &Rect);
-	v1 = Rect.right - Rect.left;
-	v2 = Rect.bottom - Rect.top;
-	hdc = GetDC(hWnd);
-	v6 = GetDeviceCaps(hdc, HORZRES);
-	v3 = GetDeviceCaps(hdc, VERTRES);
-	ReleaseDC(hWnd, hdc);
-	if (!SetWindowPos(hWnd, HWND_TOP, (v6 - v1) / 2, (v3 - v2) / 2, 0, 0, SWP_NOZORDER | SWP_NOSIZE)) {
-		v4 = TraceLastError();
-		TermMsg("center_window: %s", v4);
+	w = Rect.right - Rect.left;
+	h = Rect.bottom - Rect.top;
+	hdc = GetDC(hDlg);
+	screenW = GetDeviceCaps(hdc, HORZRES);
+	screenH = GetDeviceCaps(hdc, VERTRES);
+	ReleaseDC(hDlg, hdc);
+
+	if (!SetWindowPos(hDlg, HWND_TOP, (screenW - w) / 2, (screenH - h) / 2, 0, 0, SWP_NOZORDER | SWP_NOSIZE)) {
+		TermMsg("center_window: %s", TraceLastError());
 	}
 }
 
-void __fastcall ErrDlg(int template_id, int error_code, char *log_file_path, int log_line_nr)
+void __fastcall ErrDlg(int template_id, DWORD error_code, char *log_file_path, int log_line_nr)
 {
-	int v4;                  // ebx
-	int v5;                  // edi
-	char *v6;                // esi
-	char *v7;                // eax
-	char *v8;                // eax
-	LPARAM dwInitParam[128]; // [esp+Ch] [ebp-200h]
+	char *size;
+	LPARAM dwInitParam[128];
 
-	v4 = error_code;
-	v5 = template_id;
 	FreeDlg();
-	v6 = log_file_path;
-	v7 = strrchr(log_file_path, '\\');
-	if (v7)
-		v6 = v7 + 1;
-	v8 = GetErrorStr(v4);
-	wsprintf((LPSTR)dwInitParam, "%s\nat: %s line %d", v8, v6, log_line_nr);
-	if (DialogBoxParam(ghInst, MAKEINTRESOURCE(v5), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)dwInitParam) == -1)
-		TermMsg("ErrDlg: %d", v5);
-	TermMsg(0);
+
+	size = strrchr(log_file_path, '\\');
+	if (size)
+		log_file_path = size + 1;
+
+	wsprintf((LPSTR)dwInitParam, "%s\nat: %s line %d", GetErrorStr(error_code), log_file_path, log_line_nr);
+	if (DialogBoxParam(ghInst, MAKEINTRESOURCE(template_id), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)dwInitParam) == -1)
+		TermMsg("ErrDlg: %d", template_id);
+
+	TermMsg(NULL);
 }
 
 BOOL __stdcall FuncDlg(HWND hDlg, UINT uMsg, WPARAM wParam, char *text)
 {
-	if (uMsg == WM_INITDIALOG) {
+	switch (uMsg) {
+	case WM_INITDIALOG:
 		TextDlg(hDlg, text);
-	} else {
-		if (uMsg != WM_COMMAND)
-			return 0;
-		if ((_WORD)wParam == 1) {
+		break;
+	case WM_COMMAND:
+		if ((WORD)wParam == 1) {
 			EndDialog(hDlg, 1);
-		} else if ((_WORD)wParam == 2) {
+		} else if ((WORD)wParam == 2) {
 			EndDialog(hDlg, 0);
 		}
+		break;
+	default:
+		return FALSE;
 	}
-	return 1;
+
+	return TRUE;
 }
 
 void __fastcall TextDlg(HWND hDlg, char *text)
 {
-	char *v2; // esi
-	HWND v3;  // edi
-
-	v2 = text;
-	v3 = hDlg;
 	center_window(hDlg);
-	if (v2)
-		SetDlgItemText(v3, 1000, v2);
+
+	if (text)
+		SetDlgItemText(hDlg, 1000, text);
 }
 
-void __fastcall ErrOkDlg(int template_id, int error_code, char *log_file_path, int log_line_nr)
+void __fastcall ErrOkDlg(int template_id, DWORD error_code, char *log_file_path, int log_line_nr)
 {
-	char *v4;                // esi
-	int v5;                  // edi
-	unsigned short v6;       // bx
-	char *v7;                // eax
-	char *v8;                // eax
-	LPARAM dwInitParam[128]; // [esp+Ch] [ebp-200h]
+	char *size;
+	LPARAM dwInitParam[128];
 
-	v4 = log_file_path;
-	v5 = error_code;
-	v6 = template_id;
-	v7 = strrchr(log_file_path, '\\');
-	if (v7)
-		v4 = v7 + 1;
-	v8 = GetErrorStr(v5);
-	wsprintf((LPSTR)dwInitParam, "%s\nat: %s line %d", v8, v4, log_line_nr);
-	DialogBoxParam(ghInst, MAKEINTRESOURCE(v6), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)dwInitParam);
+	size = strrchr(log_file_path, '\\');
+	if (size)
+		log_file_path = size + 1;
+
+	wsprintf((LPSTR)dwInitParam, "%s\nat: %s line %d", GetErrorStr(error_code), log_file_path, log_line_nr);
+	DialogBoxParam(ghInst, MAKEINTRESOURCE(template_id), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)dwInitParam);
 }
 
 void __fastcall FileErrDlg(const char *error)
 {
-	const char *v1; // esi
-
-	v1 = error;
 	FreeDlg();
-	if (!v1)
-		v1 = "";
-	if (DialogBoxParam(ghInst, MAKEINTRESOURCE(IDD_DIALOG3), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)v1) == -1)
+
+	if (!error)
+		error = "";
+
+	if (DialogBoxParam(ghInst, MAKEINTRESOURCE(IDD_DIALOG3), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)error) == -1)
 		TermMsg("FileErrDlg");
-	TermMsg(0);
+
+	TermMsg(NULL);
 }
 
 void __fastcall DiskFreeDlg(char *error)
 {
-	char *v1; // esi
-
-	v1 = error;
 	FreeDlg();
-	if (DialogBoxParam(ghInst, MAKEINTRESOURCE(IDD_DIALOG7), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)v1) == -1)
+
+	if (DialogBoxParam(ghInst, MAKEINTRESOURCE(IDD_DIALOG7), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)error) == -1)
 		TermMsg("DiskFreeDlg");
-	TermMsg(0);
+
+	TermMsg(NULL);
 }
 
 BOOL __cdecl InsertCDDlg()
 {
-	int v0; // edi
+	int nResult;
 
-	ShowCursor(1);
-	v0 = DialogBoxParam(ghInst, MAKEINTRESOURCE(IDD_DIALOG9), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM) "");
-	if (v0 == -1)
+	ShowCursor(TRUE);
+
+	nResult = DialogBoxParam(ghInst, MAKEINTRESOURCE(IDD_DIALOG9), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM) "");
+	if (nResult == -1)
 		TermMsg("InsertCDDlg");
-	ShowCursor(0);
-	return v0 == 1;
+
+	ShowCursor(FALSE);
+
+	return nResult == 1;
 }
 
 void __fastcall DirErrorDlg(char *error)
 {
-	char *v1; // esi
-
-	v1 = error;
 	FreeDlg();
-	if (DialogBoxParam(ghInst, MAKEINTRESOURCE(IDD_DIALOG11), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)v1) == -1)
+
+	if (DialogBoxParam(ghInst, MAKEINTRESOURCE(IDD_DIALOG11), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)error) == -1)
 		TermMsg("DirErrorDlg");
-	TermMsg(0);
+
+	TermMsg(NULL);
 }
