@@ -324,9 +324,9 @@ BOOL UpdateWindow(HWND hWnd)
 
 BOOL ShowWindow(HWND hWnd, int nCmdShow)
 {
-	if (nCmdShow == SW_HIDE) {
+	if (nCmdShow == DVL_SW_HIDE) {
 		SDL_HideWindow(window);
-	} else if (nCmdShow == SW_SHOWNORMAL) {
+	} else if (nCmdShow == DVL_SW_SHOWNORMAL) {
 		SDL_ShowWindow(window);
 	}
 
@@ -345,9 +345,9 @@ ATOM RegisterClassExA(const WNDCLASSEXA *lpwcx)
 int GetSystemMetrics(int nIndex)
 {
 	switch (nIndex) {
-	case SM_CXSCREEN:
+	case DVL_SM_CXSCREEN:
 		return SCREEN_WIDTH;
-	case SM_CYSCREEN:
+	case DVL_SM_CYSCREEN:
 		return SCREEN_HEIGHT;
 	}
 

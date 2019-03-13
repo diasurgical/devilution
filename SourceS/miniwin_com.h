@@ -43,8 +43,8 @@ struct IUnknown {
 	// clang-format on
 };
 
-#include "miniwin_ddraw.h"
-#include "miniwin_dsound.h"
+#include "miniwin_com_ddraw.h"
+#include "miniwin_com_dsound.h"
 
 #ifndef DEVILUTION_ENGINE
 #pragma pop_macro("DECLARE_INTERFACE_")
@@ -58,7 +58,11 @@ struct IUnknown {
 
 #undef DEVILUTION_MINIWIN_COM
 
-static constexpr HRESULT DVL_E_FAIL = 0x80004005L;
-static constexpr HRESULT DVL_S_OK = 0;
+constexpr HRESULT DVL_E_FAIL = 0x80004005L;
+constexpr HRESULT DVL_S_OK = 0;
 
+constexpr auto DVL_SW_HIDE = 0;
+constexpr auto DVL_SW_SHOWNORMAL = 1;
+constexpr auto DVL_SM_CXSCREEN = 0;
+constexpr auto DVL_SM_CYSCREEN = 1;
 }

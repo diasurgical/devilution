@@ -194,7 +194,7 @@ void sound_CreateSoundBuffer(TSnd *sound_file)
 	DSB.dwBufferBytes = sound_file->chunk.dwSize;
 	DSB.lpwfxFormat = &sound_file->fmt;
 	DSB.dwSize = sizeof(DSBUFFERDESC);
-	DSB.dwFlags = DSBCAPS_CTRLVOLUME | DSBCAPS_CTRLPAN | DSBCAPS_STATIC;
+	DSB.dwFlags = DVL_DSBCAPS_CTRLVOLUME | DVL_DSBCAPS_CTRLPAN | DVL_DSBCAPS_STATIC;
 }
 
 void sound_file_cleanup(TSnd *sound_file)
@@ -257,14 +257,14 @@ void sound_create_primary_buffer(HANDLE music_track)
 	if (!music_track) {
 		memset(&dsbuf, 0, sizeof(DSBUFFERDESC));
 		dsbuf.dwSize = sizeof(DSBUFFERDESC);
-		dsbuf.dwFlags = DSBCAPS_PRIMARYBUFFER;
+		dsbuf.dwFlags = DVL_DSBCAPS_PRIMARYBUFFER;
 
 #ifdef __cplusplus
 		error_code = sglpDS->CreateSoundBuffer(&dsbuf, &sglpDSB, NULL);
 #else
 		error_code = sglpDS->lpVtbl->CreateSoundBuffer(sglpDS, &dsbuf, &sglpDSB, NULL);
 #endif
-		if (error_code != DS_OK)
+		if (error_code != DVL_DS_OK)
 			DSErrMsg(error_code, 375, "C:\\Src\\Diablo\\Source\\SOUND.CPP");
 	}
 
@@ -277,12 +277,12 @@ void sound_create_primary_buffer(HANDLE music_track)
 #else
 		error_code = sglpDS->lpVtbl->GetCaps(sglpDS, &dsbcaps);
 #endif
-		if (error_code != DS_OK)
+		if (error_code != DVL_DS_OK)
 			DSErrMsg(error_code, 383, "C:\\Src\\Diablo\\Source\\SOUND.CPP");
 
 		if (!music_track || !LoadWaveFormat(music_track, &format)) {
 			memset(&format, 0, sizeof(WAVEFORMATEX));
-			format.wFormatTag = WAVE_FORMAT_PCM;
+			format.wFormatTag = DVL_WAVE_FORMAT_PCM;
 			format.nSamplesPerSec = 22050;
 			format.wBitsPerSample = 16;
 			format.cbSize = 0;

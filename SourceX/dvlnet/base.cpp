@@ -162,7 +162,6 @@ bool base::SNetReceiveTurns(char** data, unsigned int* size, DWORD* status)
 				}
 			}
 		}
-		printf("FALSEE!!\n");
 		return false;
 	}
 }
