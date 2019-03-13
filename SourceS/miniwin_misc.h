@@ -264,8 +264,8 @@ SHORT WINAPI GetAsyncKeyState(int vKey);
 
 WINBOOL WINAPI PeekMessageA(LPMSG lpMsg, HWND hWnd, UINT wMsgFilterMin, UINT wMsgFilterMax, UINT wRemoveMsg);
 
-WINBOOL WINAPI TranslateMessage(CONST MSG *lpMsg);
-LRESULT WINAPI DispatchMessageA(CONST MSG *lpMsg);
+WINBOOL WINAPI TranslateMessage(const MSG *lpMsg);
+LRESULT WINAPI DispatchMessageA(const MSG *lpMsg);
 WINBOOL WINAPI PostMessageA(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
 
 WINBOOL WINAPI DestroyWindow(HWND hWnd);
@@ -689,91 +689,87 @@ static constexpr auto DVL_PM_REMOVE = 0x0001;
 static constexpr auto DVL_WM_QUIT = 0x0012;
 static constexpr auto DVL_INFINITE = 0xFFFFFFFF;
 
-/// Change to constexpr later
 //
 // Events
 //
-#define WM_MOUSEFIRST 0x0200
-#define WM_MOUSEMOVE 0x0200
-#define WM_LBUTTONDOWN 0x0201
-#define WM_LBUTTONUP 0x0202
-#define WM_RBUTTONDOWN 0x0204
-#define WM_RBUTTONUP 0x0205
+static constexpr auto DVL_WM_MOUSEFIRST = 0x0200;
+static constexpr auto DVL_WM_MOUSEMOVE = 0x0200;
+static constexpr auto DVL_WM_LBUTTONDOWN = 0x0201;
+static constexpr auto DVL_WM_LBUTTONUP = 0x0202;
+static constexpr auto DVL_WM_RBUTTONDOWN = 0x0204;
+static constexpr auto DVL_WM_RBUTTONUP = 0x0205;
 
-#define WM_KEYFIRST 0x0100
-#define WM_KEYDOWN 0x0100
-#define WM_KEYUP 0x0101
-#define WM_SYSKEYDOWN 0x0104
+static constexpr auto DVL_WM_KEYFIRST = 0x0100;
+static constexpr auto DVL_WM_KEYDOWN = 0x0100;
+static constexpr auto DVL_WM_KEYUP = 0x0101;
+static constexpr auto DVL_WM_SYSKEYDOWN = 0x0104;
 
-#define WM_INITDIALOG 0x0110
-#define WM_COMMAND 0x0111
-#define WM_SYSCOMMAND 0x0112
+static constexpr auto DVL_WM_INITDIALOG = 0x0110;
+static constexpr auto DVL_WM_COMMAND = 0x0111;
+static constexpr auto DVL_WM_SYSCOMMAND = 0x0112;
 
-#define WM_CHAR 0x0102
-#define WM_CAPTURECHANGED 0x0215
+static constexpr auto DVL_WM_CHAR = 0x0102;
+static constexpr auto DVL_WM_CAPTURECHANGED = 0x0215;
 
-#define WM_CREATE 0x0001
-#define WM_DESTROY DVL_WM_DESTROY
-#define WM_PAINT 0x000F
-#define WM_CLOSE 0x0010
-#define WM_QUERYENDSESSION 0x0011
-#define WM_ERASEBKGND 0x0014
-#define WM_ACTIVATEAPP DVL_WM_ACTIVATEAPP
-#define WM_QUERYNEWPALETTE 0x030F
-#define WM_PALETTECHANGED 0x0311
+static constexpr auto DVL_WM_CREATE = 0x0001;
+static constexpr auto DVL_WM_PAINT = 0x000F;
+static constexpr auto DVL_WM_CLOSE = 0x0010;
+static constexpr auto DVL_WM_QUERYENDSESSION = 0x0011;
+static constexpr auto DVL_WM_ERASEBKGND = 0x0014;
+static constexpr auto DVL_WM_QUERYNEWPALETTE = 0x030F;
+static constexpr auto DVL_WM_PALETTECHANGED = 0x0311;
 
-#define SC_CLOSE 0xF060
+static constexpr auto DVL_SC_CLOSE = 0xF060;
 
-#define VK_RETURN 0x0D
-#define VK_BACK 0x08
-#define VK_SHIFT 0x10
-#define VK_ESCAPE 0x1B
-#define VK_SPACE 0x20
-#define VK_LEFT 0x25
-#define VK_UP 0x26
-#define VK_RIGHT 0x27
-#define VK_DOWN 0x28
+static constexpr auto DVL_VK_RETURN = 0x0D;
+static constexpr auto DVL_VK_BACK = 0x08;
+static constexpr auto DVL_VK_SHIFT = 0x10;
+static constexpr auto DVL_VK_ESCAPE = 0x1B;
+static constexpr auto DVL_VK_SPACE = 0x20;
+static constexpr auto DVL_VK_LEFT = 0x25;
+static constexpr auto DVL_VK_UP = 0x26;
+static constexpr auto DVL_VK_RIGHT = 0x27;
+static constexpr auto DVL_VK_DOWN = 0x28;
 
-#define VK_F1 0x70
-#define VK_F2 0x71
-#define VK_F3 0x72
-#define VK_F4 0x73
-#define VK_F5 0x74
-#define VK_F6 0x75
-#define VK_F7 0x76
-#define VK_F8 0x77
-#define VK_F9 0x78
-#define VK_F10 0x79
-#define VK_F11 0x7A
-#define VK_F12 0x7B
+static constexpr auto DVL_VK_F1 = 0x70;
+static constexpr auto DVL_VK_F2 = 0x71;
+static constexpr auto DVL_VK_F3 = 0x72;
+static constexpr auto DVL_VK_F4 = 0x73;
+static constexpr auto DVL_VK_F5 = 0x74;
+static constexpr auto DVL_VK_F6 = 0x75;
+static constexpr auto DVL_VK_F7 = 0x76;
+static constexpr auto DVL_VK_F8 = 0x77;
+static constexpr auto DVL_VK_F9 = 0x78;
+static constexpr auto DVL_VK_F10 = 0x79;
+static constexpr auto DVL_VK_F11 = 0x7A;
+static constexpr auto DVL_VK_F12 = 0x7B;
 
-#define VK_TAB 0x09
-#define VK_PAUSE 0x13
-#define VK_PRIOR 0x21
-#define VK_NEXT 0x22
-#define VK_SNAPSHOT 0x2C
+static constexpr auto DVL_VK_TAB = 0x09;
+static constexpr auto DVL_VK_PAUSE = 0x13;
+static constexpr auto DVL_VK_PRIOR = 0x21;
+static constexpr auto DVL_VK_NEXT = 0x22;
+static constexpr auto DVL_VK_SNAPSHOT = 0x2C;
 
-#define VK_OEM_1 0xBA
-#define VK_OEM_PLUS 0xBB
-#define VK_OEM_COMMA 0xBC
-#define VK_OEM_MINUS 0xBD
-#define VK_OEM_PERIOD 0xBE
-#define VK_OEM_2 0xBF
-#define VK_OEM_3 0xC0
-#define VK_OEM_4 0xDB
-#define VK_OEM_5 0xDC
-#define VK_OEM_6 0xDD
-#define VK_OEM_7 0xDE
-//#define VK_OEM_8 0xDF
-//#define VK_OEM_102 0xE2
+static constexpr auto DVL_VK_OEM_1 = 0xBA;
+static constexpr auto DVL_VK_OEM_PLUS = 0xBB;
+static constexpr auto DVL_VK_OEM_COMMA = 0xBC;
+static constexpr auto DVL_VK_OEM_MINUS = 0xBD;
+static constexpr auto DVL_VK_OEM_PERIOD = 0xBE;
+static constexpr auto DVL_VK_OEM_2 = 0xBF;
+static constexpr auto DVL_VK_OEM_3 = 0xC0;
+static constexpr auto DVL_VK_OEM_4 = 0xDB;
+static constexpr auto DVL_VK_OEM_5 = 0xDC;
+static constexpr auto DVL_VK_OEM_6 = 0xDD;
+static constexpr auto DVL_VK_OEM_7 = 0xDE;
+//static constexpr auto DVL_VK_OEM_8 = 0xDF;
+//static constexpr auto DVL_VK_OEM_102 = 0xE2;
 
-#define MK_SHIFT 0x0004
-#define MK_LBUTTON 0x0001
-#define MK_RBUTTON 0x0002
+static constexpr auto DVL_MK_SHIFT = 0x0004;
+static constexpr auto DVL_MK_LBUTTON = 0x0001;
+static constexpr auto DVL_MK_RBUTTON = 0x0002;
 
-#define MB_TASKMODAL 0x00002000L
-#define MB_ICONHAND 0x00000010L
-#define MB_ICONEXCLAMATION 0x00000030L
-
+static constexpr auto DVL_MB_TASKMODAL = 0x00002000L;
+static constexpr auto DVL_MB_ICONHAND = 0x00000010L;
+static constexpr auto DVL_MB_ICONEXCLAMATION = 0x00000030L;
 
 }

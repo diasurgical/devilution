@@ -18,13 +18,6 @@
 #include <x86intrin.h>
 #endif
 
-// Constants
-#define CONST const
-#define TRUE true
-#define FALSE false
-
-#define NO_ERROR 0
-
 #ifndef _WIN32
 #define __int8 char
 #define __int16 short
@@ -39,7 +32,7 @@
 #include "miniwin_rand.h"
 
 #ifdef DEVILUTION_ENGINE
-#include "miniwin_macro.h"
+#include "miniwin_misc_macro.h"
 //#include "miniwin_com_macro.h"
 #include "miniwin_ddraw_macro.h"
 #endif

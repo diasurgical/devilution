@@ -557,7 +557,7 @@ BOOL UiCreditsDialog(int a1)
 
 	credts_Free();
 
-	return TRUE;
+	return true;
 }
 
 }

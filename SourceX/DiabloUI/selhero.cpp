@@ -217,7 +217,7 @@ BOOL SelHero_GetHeroInfo(_uiheroinfo *pInfo)
 	heros[selhero_SaveCount] = *pInfo;
 	selhero_SaveCount++;
 
-	return TRUE;
+	return true;
 }
 
 BOOL UiSelHeroDialog(
@@ -252,7 +252,7 @@ BOOL UiSelHeroDialog(
 	strcpy(name, heroInfo.name);
 
 	*dlgresult = selhero_result;
-	return TRUE;
+	return true;
 }
 
 BOOL UiSelHeroSingDialog(

@@ -107,19 +107,19 @@ int DialogBoxParam(HINSTANCE hInstance, LPCSTR msgId, HWND hWndParent, DLGPROC l
 
 BOOL SetDlgItemText(HWND hDlg, int nIDDlgItem, LPCSTR lpString)
 {
-	return FALSE;
+	return false;
 }
 
 BOOL EndDialog(HWND hDlg, INT_PTR nResult)
 {
-	return FALSE;
+	return false;
 }
 
 BOOL SetWindowPos(HWND hWnd, HWND hWndInsertAfter, int X, int Y, int cx, int cy, UINT uFlags)
 {
 	SDL_SetWindowPosition(window, X, Y);
 
-	return TRUE;
+	return true;
 }
 
 void UiDestroy()
@@ -370,14 +370,14 @@ void InitFont()
 		return;
 	}
 
-	TTF_SetFontKerning(font, FALSE);
+	TTF_SetFontKerning(font, false);
 	TTF_SetFontHinting(font, TTF_HINTING_MONO);
 }
 
 void UiInitialize()
 {
 	LoadUiGFX();
-	ShowCursor(FALSE);
+	ShowCursor(false);
 	InitFont();
 }
 
@@ -425,16 +425,16 @@ void UiAppActivate(BOOL bActive)
 BOOL UiValidPlayerName(char *name)
 {
 	if (!strlen(name))
-		return FALSE;
+		return false;
 
 	if (strpbrk(name, ",<>%&\\\"?*#/:") || strpbrk(name, " "))
-		return FALSE;
+		return false;
 
 	for (char *letter = name; *letter; letter++)
 		if (*letter < 0x20 || *letter > 0x7E && *letter < 0xC0)
-			return FALSE;
+			return false;
 
-	return TRUE;
+	return true;
 }
 
 void UiProfileCallback()
@@ -509,7 +509,7 @@ BOOL UiCreatePlayerDescription(_uiheroinfo *info, DWORD mode, char *desc)
 	    info->gold,
 	    info->spawned);
 
-	return TRUE;
+	return true;
 }
 
 void DrawArt(int screenX, int screenY, Art *art, int nFrame, int drawW)

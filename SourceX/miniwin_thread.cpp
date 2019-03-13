@@ -57,7 +57,7 @@ WINBOOL SetThreadPriority(HANDLE hThread, int nPriority)
 {
 	// SDL cannot set the priority of the non-current thread
 	// (and e.g. unprivileged processes on Linux cannot increase it)
-	return TRUE;
+	return true;
 }
 
 void InitializeCriticalSection(LPCRITICAL_SECTION lpCriticalSection)
@@ -92,9 +92,9 @@ HANDLE CreateEventA(LPSECURITY_ATTRIBUTES lpEventAttributes, WINBOOL bManualRese
 	}
 	if (lpEventAttributes != NULL)
 		UNIMPLEMENTED();
-	if (bManualReset != TRUE)
+	if (bManualReset != true)
 		UNIMPLEMENTED();
-	if (bInitialState != FALSE)
+	if (bInitialState != false)
 		UNIMPLEMENTED();
 	if (lpName != NULL)
 		UNIMPLEMENTED();

@@ -56,7 +56,7 @@ BOOL UiMainMenuDialog(char *name, int *pdwResult, void(*fnSound)(char *file), in
 	mainmenu_Free();
 
 	*pdwResult = MainMenuResult;
-	return TRUE;
+	return true;
 }
 
 }

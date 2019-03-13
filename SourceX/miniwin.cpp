@@ -146,7 +146,7 @@ WINBOOL GetComputerNameA(LPSTR lpBuffer, LPDWORD nSize)
 	DUMMY();
 	strncpy(lpBuffer, "localhost", *nSize);
 	*nSize = strlen(lpBuffer);
-	return TRUE;
+	return true;
 }
 
 DWORD GetFileVersionInfoSizeA(LPCSTR lptstrFilename, LPDWORD lpdwHandle)
@@ -162,7 +162,7 @@ BOOL GetFileVersionInfoA(LPCSTR lptstrFilename, DWORD dwHandle, DWORD dwLen, LPV
 	DUMMY();
 	*(int *)lpData = 16711836; // TODO use actual version from .rc
 
-	return TRUE;
+	return true;
 }
 
 BOOL VerQueryValueA(LPCVOID pBlock, LPCSTR lpSubBlock, LPVOID *lplpBuffer, PUINT puLen)
@@ -179,7 +179,7 @@ BOOL VerQueryValueA(LPCVOID pBlock, LPCSTR lpSubBlock, LPVOID *lplpBuffer, PUINT
 	lpBuffer.dwProductVersionLS |= 2 & 0xFFFF;
 	*lplpBuffer = (LPVOID *)&lpBuffer;
 
-	return TRUE;
+	return true;
 }
 
 DWORD GetCurrentDirectory(DWORD nBufferLength, LPTSTR lpBuffer)
@@ -237,13 +237,13 @@ HWND SetCapture(HWND hWnd)
 WINBOOL ReleaseCapture()
 {
 	DUMMY_ONCE();
-	return TRUE;
+	return true;
 }
 
 WINBOOL DestroyWindow(HWND hWnd)
 {
 	DUMMY();
-	return TRUE;
+	return true;
 }
 
 HWND GetLastActivePopup(HWND hWnd)
@@ -274,7 +274,7 @@ HWND FindWindowA(LPCSTR lpClassName, LPCSTR lpWindowName)
 
 void FakeWMDestroy()
 {
-	MainWndProc(NULL, WM_DESTROY, 0, NULL);
+	MainWndProc(NULL, DVL_WM_DESTROY, 0, NULL);
 }
 
 HWND CreateWindowExA(
@@ -310,7 +310,7 @@ HWND CreateWindowExA(
 BOOL InvalidateRect(HWND hWnd, const RECT *lpRect, BOOL bErase)
 {
 	DUMMY();
-	return TRUE;
+	return true;
 }
 
 /**
@@ -319,7 +319,7 @@ BOOL InvalidateRect(HWND hWnd, const RECT *lpRect, BOOL bErase)
 BOOL UpdateWindow(HWND hWnd)
 {
 	DUMMY();
-	return TRUE;
+	return true;
 }
 
 BOOL ShowWindow(HWND hWnd, int nCmdShow)
@@ -330,7 +330,7 @@ BOOL ShowWindow(HWND hWnd, int nCmdShow)
 		SDL_ShowWindow(window);
 	}
 
-	return TRUE;
+	return true;
 }
 
 ATOM RegisterClassExA(const WNDCLASSEXA *lpwcx)
@@ -389,19 +389,19 @@ HCURSOR LoadCursorA(HINSTANCE hInstance, LPCSTR lpCursorName)
 BOOL IsBadReadPtr(const void *lp, UINT_PTR ucb)
 {
 	UNIMPLEMENTED();
-	return TRUE;
+	return true;
 }
 
 BOOL IsBadWritePtr(LPVOID lp, UINT_PTR ucb)
 {
 	UNIMPLEMENTED();
-	return TRUE;
+	return true;
 }
 
 SIZE_T VirtualQuery(LPCVOID lpAddress, PMEMORY_BASIC_INFORMATION lpBuffer, SIZE_T dwLength)
 {
 	UNIMPLEMENTED();
-	return FALSE;
+	return false;
 }
 
 LPVOID VirtualAlloc(LPVOID lpAddress, SIZE_T dwSize, DWORD flAllocationType, DWORD flProtect)
@@ -413,7 +413,7 @@ LPVOID VirtualAlloc(LPVOID lpAddress, SIZE_T dwSize, DWORD flAllocationType, DWO
 BOOL VirtualFree(LPVOID lpAddress, SIZE_T dwSize, DWORD dwFreeType)
 {
 	UNIMPLEMENTED();
-	return FALSE;
+	return false;
 }
 
 void GetLocalTime(LPSYSTEMTIME lpSystemTime)
@@ -456,7 +456,7 @@ HMODULE GetModuleHandleA(LPCSTR lpModuleName)
 BOOL GetUserNameA(LPSTR lpBuffer, LPDWORD pcbBuffer)
 {
 	UNIMPLEMENTED();
-	return FALSE;
+	return false;
 }
 
 /**
@@ -496,7 +496,7 @@ HWND GetDesktopWindow()
  */
 BOOL SHGetPathFromIDListA(PCIDLIST_ABSOLUTE pidl, LPSTR pszPath)
 {
-	return FALSE;
+	return false;
 }
 
 /**
@@ -504,7 +504,7 @@ BOOL SHGetPathFromIDListA(PCIDLIST_ABSOLUTE pidl, LPSTR pszPath)
  */
 BOOL FindNextFileA(HANDLE hFindFile, LPWIN32_FIND_DATAA lpFindFileData)
 {
-	return FALSE;
+	return false;
 }
 
 void GetSystemInfo(LPSYSTEM_INFO lpSystemInfo)
@@ -556,7 +556,7 @@ BOOL GetWindowRect(HWND hDlg, tagRECT *Rect)
 	Rect->left = w + x;
 	Rect->bottom = h + y;
 
-	return TRUE;
+	return true;
 }
 
 UINT GetSystemPaletteEntries(HDC hdc, UINT iStart, UINT cEntries, LPPALETTEENTRY pPalEntries)
@@ -570,7 +570,7 @@ BOOL GetVersionExA(LPOSVERSIONINFOA lpVersionInformation)
 	lpVersionInformation->dwMajorVersion = 5;
 	lpVersionInformation->dwMinorVersion = 0;
 	lpVersionInformation->dwPlatformId = DVL_VER_PLATFORM_WIN32_NT;
-	return TRUE;
+	return true;
 }
 
 void lstrcpynA(LPSTR lpString1, LPCSTR lpString2, int iMaxLength)
@@ -584,7 +584,7 @@ WINBOOL CreateProcessA(LPCSTR lpApplicationName, LPSTR lpCommandLine, LPSECURITY
     LPPROCESS_INFORMATION lpProcessInformation)
 {
 	UNIMPLEMENTED();
-	return FALSE;
+	return false;
 }
 
 void ExitProcess(UINT uExitCode)
@@ -644,9 +644,9 @@ DWORD GetPrivateProfileStringA(LPCSTR lpAppName, LPCSTR lpKeyName, LPCSTR lpDefa
 int MessageBoxA(HWND hWnd, const char *Text, const char *Title, UINT Flags)
 {
 	Uint32 SDLFlags = 0;
-	if (Flags & MB_ICONHAND) {
+	if (Flags & DVL_MB_ICONHAND) {
 		SDLFlags |= SDL_MESSAGEBOX_ERROR;
-	} else if (Flags & MB_ICONEXCLAMATION) {
+	} else if (Flags & DVL_MB_ICONEXCLAMATION) {
 		SDLFlags |= SDL_MESSAGEBOX_WARNING;
 	}
 
@@ -695,13 +695,13 @@ LSTATUS RegCloseKeyA(HKEY hKey)
 void PostQuitMessage(int nExitCode)
 {
 	DUMMY();
-	PostMessageA(NULL, WM_QUERYENDSESSION, 0, 0);
+	PostMessageA(NULL, DVL_WM_QUERYENDSESSION, 0, 0);
 }
 
 LRESULT DefWindowProcA(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
 	DUMMY_ONCE();
-	if (Msg == WM_QUERYENDSESSION)
+	if (Msg == DVL_WM_QUERYENDSESSION)
 		exit(0);
 
 	return NULL;

@@ -59,7 +59,7 @@ WINBOOL ReadFile(HANDLE hFile, LPVOID lpBuffer, DWORD nNumberOfBytesToRead, LPDW
 	int len = read((intptr_t)hFile, lpBuffer, nNumberOfBytesToRead);
 	assert(len != -1);
 	*lpNumberOfBytesRead = len;
-	return TRUE;
+	return true;
 }
 
 DWORD GetFileSize(HANDLE hFile, LPDWORD lpFileSizeHigh)
@@ -82,10 +82,10 @@ WINBOOL WriteFile(HANDLE hFile, LPCVOID lpBuffer, DWORD nNumberOfBytesToWrite, L
 	ssize_t len = write((intptr_t)hFile, lpBuffer, nNumberOfBytesToWrite);
 	if (len == -1) {
 		*lpNumberOfBytesWritten = 0;
-		return FALSE;
+		return false;
 	}
 	*lpNumberOfBytesWritten = (DWORD)len;
-	return TRUE;
+	return true;
 }
 
 DWORD SetFilePointer(HANDLE hFile, LONG lDistanceToMove, PLONG lpDistanceToMoveHigh, DWORD dwMoveMethod)
@@ -113,7 +113,7 @@ WINBOOL SetEndOfFile(HANDLE hFile)
 	assert(cur != -1);
 	int res = ftruncate((intptr_t)hFile, cur);
 	assert(res == 0);
-	return TRUE;
+	return true;
 }
 
 DWORD GetFileAttributesA(LPCSTR lpFileName)
@@ -137,7 +137,7 @@ DWORD GetFileAttributesA(LPCSTR lpFileName)
 WINBOOL SetFileAttributesA(LPCSTR lpFileName, DWORD dwFileAttributes)
 {
 	DUMMY_PRINT("file: %s", lpFileName);
-	return TRUE;
+	return true;
 }
 
 WINBOOL CloseHandle(HANDLE hObject)
@@ -147,7 +147,7 @@ WINBOOL CloseHandle(HANDLE hObject)
 		assert(ret == 0);
 		files.erase(hObject);
 	}
-	return TRUE;
+	return true;
 }
 
 }

@@ -9,9 +9,9 @@ BOOL SNetReceiveMessage(int *senderplayerid, char **data, int *databytes)
 {
 	if (!dvlnet_inst->SNetReceiveMessage(senderplayerid, data, databytes)) {
 		SErrSetLastError(STORM_ERROR_NO_MESSAGES_WAITING);
-		return FALSE;
+		return false;
 	}
-	return TRUE;
+	return true;
 }
 
 BOOL SNetSendMessage(int playerID, void *data, unsigned int databytes)
@@ -28,9 +28,9 @@ BOOL SNetReceiveTurns(int a1, int arraysize, char **arraydata, unsigned int *arr
 		UNIMPLEMENTED();
 	if (!dvlnet_inst->SNetReceiveTurns(arraydata, arraydatabytes, arrayplayerstatus)) {
 		SErrSetLastError(STORM_ERROR_NO_MESSAGES_WAITING);
-		return FALSE;
+		return false;
 	}
-	return TRUE;
+	return true;
 }
 
 BOOL SNetSendTurn(char *data, unsigned int databytes)
@@ -56,7 +56,7 @@ void *SNetRegisterEventHandler(int evtype, void(*func)(struct _SNETEVENT *))
 BOOL SNetDestroy()
 {
 	DUMMY();
-	return TRUE;
+	return true;
 }
 
 BOOL SNetDropPlayer(int playerid, DWORD flags)
@@ -67,7 +67,7 @@ BOOL SNetDropPlayer(int playerid, DWORD flags)
 BOOL SNetGetGameInfo(int type, void *dst, unsigned int length, unsigned int *byteswritten)
 {
 	DUMMY();
-	return TRUE;
+	return true;
 }
 
 BOOL SNetLeaveGame(int type)
@@ -78,7 +78,7 @@ BOOL SNetLeaveGame(int type)
 BOOL SNetSendServerChatCommand(const char *command)
 {
 	DUMMY();
-	return TRUE;
+	return true;
 }
 
 /**
@@ -136,7 +136,7 @@ BOOL SNetGetTurnsInTransit(int *turns)
  */
 BOOLEAN SNetSetBasePlayer(int)
 {
-	return TRUE;
+	return true;
 }
 
 /**
@@ -153,7 +153,7 @@ BOOL SNetPerformUpgrade(DWORD *upgradestatus)
 BOOL SNetSetGameMode(DWORD modeFlags, bool makePublic)
 {
 	UNIMPLEMENTED();
-	return TRUE;
+	return true;
 }
 
 }

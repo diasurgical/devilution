@@ -406,7 +406,7 @@ void dx_init(HWND hWnd)
 		return;
 	}
 
-	MainWndProc(NULL, DVL_WM_ACTIVATEAPP, TRUE, NULL);
+	MainWndProc(NULL, DVL_WM_ACTIVATEAPP, true, NULL);
 
 	lpDDInterface = &stub_draw;
 	lpDDSPrimary = &stub_surface;
@@ -492,7 +492,7 @@ BOOL SDrawUpdatePalette(unsigned int firstentry, unsigned int numentries, PALETT
 	assert(palette);
 	if (SDL_SetPaletteColors(palette, colors, firstentry, numentries) != 0) {
 		SDL_Log("SDL_SetPaletteColors: %s\n", SDL_GetError());
-		return FALSE;
+		return false;
 	}
 
 	if (pal_surface) {
@@ -500,7 +500,7 @@ BOOL SDrawUpdatePalette(unsigned int firstentry, unsigned int numentries, PALETT
 		sdl_present_surface();
 	}
 
-	return TRUE;
+	return true;
 }
 
 //
@@ -523,7 +523,7 @@ WINBOOL SetCursorPos(int X, int Y)
 	Y *= scaleX;
 
 	SDL_WarpMouseInWindow(window, X, Y);
-	return TRUE;
+	return true;
 }
 
 int ShowCursor(WINBOOL bShow)
@@ -540,7 +540,7 @@ WINBOOL TextOutA(HDC hdc, int x, int y, LPCSTR lpString, int c)
 	assert(window);
 	SDL_SetWindowTitle(window, lpString);
 
-	return TRUE;
+	return true;
 }
 
 }

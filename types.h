@@ -155,6 +155,7 @@ DEVILUTION_BEGIN_NAMESPACE
 //#endif
 
 #include "miniwin_popdecl.h"
+
 DEVILUTION_END_NAMESPACE
 
 #endif

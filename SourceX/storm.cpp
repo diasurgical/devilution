@@ -65,7 +65,7 @@ BOOL SFileDdaEnd(HANDLE directsound)
 BOOL SFileDdaGetPos(HANDLE directsound, int a2, int a3)
 {
 	DUMMY_ONCE();
-	return TRUE;
+	return true;
 }
 
 BOOL SFileDdaInitialize(HANDLE directsound)
@@ -78,7 +78,7 @@ BOOL SFileDdaSetVolume(HANDLE directsound, signed int bigvolume, signed int volu
 {
 	Mix_VolumeMusic(MIX_MAX_VOLUME - MIX_MAX_VOLUME * bigvolume / VOLUME_MIN);
 
-	return TRUE;
+	return true;
 }
 
 BOOL SFileGetFileArchive(HANDLE hFile, HANDLE *archive)
@@ -264,7 +264,7 @@ BOOL SMemFree(void *location, char *logfilename, int logline, char defaultValue)
 	// fprintf(stderr, "%s: (%s:%d)\n", __FUNCTION__, logfilename, logline);
 	assert(location);
 	free(location);
-	return TRUE;
+	return true;
 }
 
 void *SMemReAlloc(void *location, unsigned int amount, char *logfilename, int logline, char defaultValue)
@@ -327,24 +327,24 @@ BOOL SRegLoadValue(const char *keyname, const char *valuename, BYTE flags, int *
 	char string[10];
 	if (getIniValue(keyname, valuename, string, 10)) {
 		*value = strtol(string, NULL, 10);
-		return TRUE;
+		return true;
 	}
 
-	return FALSE;
+	return false;
 }
 
 BOOL SRegSaveData(const char *keyname, const char *valuename, int size, BYTE *lpData, DWORD cbData)
 {
 	setIniValue(keyname, valuename, (char *)lpData, cbData);
 
-	return TRUE;
+	return true;
 }
 
 BOOL SRegSaveString(const char *keyname, const char *valuename, BYTE flags, char *string)
 {
 	setIniValue(keyname, valuename, string);
 
-	return TRUE;
+	return true;
 }
 
 BOOL SRegSaveValue(const char *keyname, const char *valuename, BYTE flags, DWORD result)
@@ -353,19 +353,19 @@ BOOL SRegSaveValue(const char *keyname, const char *valuename, BYTE flags, DWORD
 	sprintf(str, "%d", result);
 	setIniValue(keyname, valuename, str);
 
-	return TRUE;
+	return true;
 }
 
 BOOL SVidInitialize(HANDLE video)
 {
 	DUMMY();
-	return TRUE;
+	return true;
 }
 
 BOOL SVidDestroy()
 {
 	DUMMY();
-	return TRUE;
+	return true;
 }
 
 double SVidFrameEnd;
@@ -381,7 +381,7 @@ SDL_AudioDeviceID deviceId;
 BOOL SVidPlayBegin(char *filename, int a2, int a3, int a4, int a5, int flags, HANDLE *video)
 {
 	if (flags & 0x10000 || flags & 0x20000000) {
-		return FALSE;
+		return false;
 	}
 
 	SVidLoop = flags & 0x40000;
@@ -401,7 +401,7 @@ BOOL SVidPlayBegin(char *filename, int a2, int a3, int a4, int a5, int flags, HA
 
 	SVidSMK = smk_open_memory(SVidBuffer, bytestoread);
 	if (SVidSMK == NULL) {
-		return FALSE;
+		return false;
 	}
 
 	deviceId = 0;
@@ -419,7 +419,7 @@ BOOL SVidPlayBegin(char *filename, int a2, int a3, int a4, int a5, int flags, HA
 		deviceId = SDL_OpenAudioDevice(NULL, 0, &audioFormat, NULL, 0);
 		if (deviceId == 0) {
 			SDL_Log("SDL_OpenAudioDevice: %s\n", SDL_GetError());
-			return FALSE;
+			return false;
 		} else {
 			SDL_PauseAudioDevice(deviceId, 0); /* start audio playing. */
 		}
@@ -450,12 +450,12 @@ BOOL SVidPlayBegin(char *filename, int a2, int a3, int a4, int a5, int flags, HA
 	SVidPalette = SDL_AllocPalette(256);
 	if (SDL_SetSurfacePalette(SVidSurface, SVidPalette) != 0) {
 		SDL_Log("SDL_SetSurfacePalette: %s\n", SDL_GetError());
-		return FALSE;
+		return false;
 	}
 
 	SVidFrameEnd = SDL_GetTicks() * 1000 + SVidFrameLength;
 
-	return TRUE;
+	return true;
 }
 
 BOOL SVidLoadNextFrame()
@@ -464,13 +464,13 @@ BOOL SVidLoadNextFrame()
 
 	if (smk_next(SVidSMK) == SMK_DONE) {
 		if (!SVidLoop) {
-			return FALSE;
+			return false;
 		}
 
 		smk_first(SVidSMK);
 	}
 
-	return TRUE;
+	return true;
 }
 
 BOOL SVidPlayContinue(void)
@@ -494,7 +494,7 @@ BOOL SVidPlayContinue(void)
 
 		if (SDL_SetPaletteColors(SVidPalette, colors, 0, 256) != 0) {
 			SDL_Log("SDL_SetPaletteColors: %s\n", SDL_GetError());
-			return FALSE;
+			return false;
 		}
 	}
 
@@ -504,7 +504,7 @@ BOOL SVidPlayContinue(void)
 
 	if (deviceId && SDL_QueueAudio(deviceId, smk_get_audio(SVidSMK, 0), smk_get_audio_size(SVidSMK, 0)) == -1) {
 		SDL_Log("SDL_QueueAudio: %s\n", SDL_GetError());
-		return FALSE;
+		return false;
 	}
 
 	if (SDL_GetTicks() * 1000 >= SVidFrameEnd) {
@@ -514,7 +514,7 @@ BOOL SVidPlayContinue(void)
 	SDL_Rect pal_surface_offset = { 64, 160, 0, 0 };
 	if (SDL_BlitSurface(SVidSurface, NULL, pal_surface, &pal_surface_offset) != 0) {
 		SDL_Log("SDL_BlitSurface: %s\n", SDL_GetError());
-		return FALSE;
+		return false;
 	}
 
 	SetFadeLevel(256); // present frame
@@ -554,7 +554,7 @@ BOOL SVidPlayEnd(HANDLE video)
 	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, SCREEN_WIDTH, SCREEN_HEIGHT);
 	SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-	return TRUE;
+	return true;
 }
 
 BOOL SErrDisplayError(DWORD dwErrMsg, const char *logfilename, int logline, const char *message,
@@ -566,7 +566,7 @@ BOOL SErrDisplayError(DWORD dwErrMsg, const char *logfilename, int logline, cons
 BOOL SErrGetErrorStr(DWORD dwErrCode, char *buffer, unsigned int bufferchars)
 {
 	DUMMY();
-	return FALSE;
+	return false;
 }
 
 DWORD SErrGetLastError()
@@ -628,13 +628,13 @@ void SDrawMessageBox(char *Text, char *Title, int Flags)
 BOOLEAN StormDestroy(void)
 {
 	DUMMY();
-	return TRUE;
+	return true;
 }
 
 BOOLEAN SFileSetBasePath(char *)
 {
 	DUMMY();
-	return TRUE;
+	return true;
 }
 
 void SDrawRealizePalette(void)
@@ -645,7 +645,7 @@ void SDrawRealizePalette(void)
 BOOL SFileEnableDirectAccess(BOOL enable)
 {
 	DUMMY();
-	return TRUE;
+	return true;
 }
 
 }

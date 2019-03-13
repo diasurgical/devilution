@@ -16,9 +16,9 @@ LPDIRECTSOUNDBUFFER sglpDSB;
 
 /* data */
 
-BYTE gbMusicOn = TRUE;
-BYTE gbSoundOn = TRUE;
-BYTE gbDupSounds = TRUE;
+BYTE gbMusicOn = true;
+BYTE gbSoundOn = true;
+BYTE gbDupSounds = true;
 int sgnMusicTrack = 6;
 char *sgszMusicTracks[NUM_MUSIC] = {
 	"Music\\DTowne.wav",
@@ -57,14 +57,14 @@ BOOL snd_playing(TSnd *pSnd)
 	DWORD error_code; // TODO should probably be HRESULT
 
 	if (!pSnd)
-		return FALSE;
+		return false;
 
 	if (pSnd->DSB == NULL)
-		return FALSE;
+		return false;
 
 	DUMMY_ONCE();
 
-	return FALSE;
+	return false;
 }
 
 void snd_play_snd(TSnd *pSnd, int lVolume, int lPan)
@@ -135,9 +135,9 @@ BOOL sound_file_reload(TSnd *sound_file, LPDIRECTSOUNDBUFFER DSB)
 
 	DUMMY_ONCE();
 
-	rv = FALSE;
+	rv = false;
 
-	WOpenFile(sound_file->sound_path, &file, FALSE);
+	WOpenFile(sound_file->sound_path, &file, false);
 	WSetFilePointer(file, sound_file->chunk.dwOffset, NULL, 0);
 
 	WCloseFile(file);
@@ -157,7 +157,7 @@ TSnd *sound_file_load(char *path)
 	if (!gbSndInited)
 		return NULL;
 
-	WOpenFile(path, &file, FALSE);
+	WOpenFile(path, &file, false);
 	pSnd = (TSnd *)DiabloAllocPtr(sizeof(TSnd));
 	memset(pSnd, 0, sizeof(TSnd));
 	pSnd->sound_path = path;
@@ -321,7 +321,7 @@ HRESULT sound_DirectSoundCreate(LPGUID lpGuid, LPDIRECTSOUND *ppDS, LPUNKNOWN pU
 
 void sound_cleanup()
 {
-	snd_update(TRUE);
+	snd_update(true);
 	SVidDestroy();
 	SFileDdaDestroy();
 
@@ -331,7 +331,7 @@ void sound_cleanup()
 	}
 
 	if (gbSndInited) {
-		gbSndInited = FALSE;
+		gbSndInited = false;
 		sound_store_volume("Sound Volume", sglSoundVolume);
 		sound_store_volume("Music Volume", sglMusicVolume);
 	}
@@ -360,11 +360,11 @@ void music_start(int nTrack)
 	music_stop();
 	if (gbSndInited && gbMusicOn) {
 #ifdef _DEBUG
-		SFileEnableDirectAccess(FALSE);
+		SFileEnableDirectAccess(false);
 #endif
 		success = SFileOpenFile(sgszMusicTracks[nTrack], &sgpMusicTrack);
 #ifdef _DEBUG
-		SFileEnableDirectAccess(TRUE);
+		SFileEnableDirectAccess(true);
 #endif
 		sound_create_primary_buffer(sgpMusicTrack);
 		if (!success) {

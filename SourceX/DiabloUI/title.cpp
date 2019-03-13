@@ -55,7 +55,7 @@ BOOL UiTitleDialog(int a1)
 
 	title_Free();
 
-	return TRUE;
+	return true;
 }
 
 }
