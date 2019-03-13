@@ -3852,39 +3852,32 @@ LABEL_39:
 
 void __fastcall MI_Lightball(int i)
 {
-	int v1;  // esi
-	int v2;  // ebx
-	int v3;  // eax
-	int v4;  // edi
-	char v5; // al
-	int v6;  // eax
-	int v7;  // eax
-	int ia;  // [esp+Ch] [ebp-8h]
-	int v10; // [esp+10h] [ebp-4h]
+	int tx, ty, j, oi;
+	char obj;
 
-	v1 = i;
-	ia = i;
-	v2 = missile[i]._miVar1;
-	missile[v1]._mitxoff += missile[i]._mixvel;
-	v3 = missile[i]._miyvel;
-	v4 = missile[i]._miVar2;
-	--missile[v1]._mirange;
-	missile[v1]._mityoff += v3;
+	tx = missile[i]._miVar1;
+	missile[i]._mitxoff += missile[i]._mixvel;
+	ty = missile[i]._miVar2;
+	missile[i]._mirange--;
+	missile[i]._mityoff += missile[i]._miyvel;
 	GetMissilePos(i);
-	v10 = missile[v1]._mirange;
-	CheckMissileCol(ia, missile[v1]._midam, missile[v1]._midam, 0, missile[v1]._mix, missile[v1]._miy, 0);
-	if (missile[v1]._miHitFlag)
-		missile[v1]._mirange = v10;
-	v5 = dObject[v2][v4];
-	if (v5 && v2 == missile[v1]._mix && v4 == missile[v1]._miy) {
-		v6 = v5 <= 0 ? -1 - v5 : v5 - 1;
-		v7 = object[v6]._otype;
-		if (v7 == OBJ_SHRINEL || v7 == OBJ_SHRINER)
-			missile[v1]._mirange = v10;
+	j = missile[i]._mirange;
+	CheckMissileCol(i, missile[i]._midam, missile[i]._midam, 0, missile[i]._mix, missile[i]._miy, 0);
+	if (missile[i]._miHitFlag == TRUE)
+		missile[i]._mirange = j;
+	obj = dObject[tx][ty];
+	if (obj && tx == missile[i]._mix && ty == missile[i]._miy) {
+		if (obj > 0) {
+			oi = obj - 1;
+		} else {
+			oi = -1 - obj;
+		}
+		if (object[oi]._otype == OBJ_SHRINEL || object[oi]._otype == OBJ_SHRINER)
+			missile[i]._mirange = j;
 	}
-	if (!missile[v1]._mirange)
-		missile[v1]._miDelFlag = TRUE;
-	PutMissile(ia);
+	if (!missile[i]._mirange)
+		missile[i]._miDelFlag = TRUE;
+	PutMissile(i);
 }
 
 void __fastcall mi_null_33(int i)
