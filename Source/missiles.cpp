@@ -3889,21 +3889,14 @@ void __fastcall MI_Lightball(int i)
 
 void __fastcall mi_null_33(int i)
 {
-	int v1; // edi
-	int v2; // esi
-	int v3; // eax
-
-	v1 = i;
-	v2 = i;
-	v3 = missile[i]._mixvel;
-	--missile[v2]._mirange;
-	missile[v2]._mitxoff += v3;
-	missile[v2]._mityoff += missile[i]._miyvel;
+	missile[i]._mirange--;
+	missile[i]._mitxoff += missile[i]._mixvel;
+	missile[i]._mityoff += missile[i]._miyvel;
 	GetMissilePos(i);
-	CheckMissileCol(v1, missile[v2]._midam, missile[v2]._midam, 0, missile[v2]._mix, missile[v2]._miy, 0);
-	if (!missile[v2]._mirange)
-		missile[v2]._miDelFlag = TRUE;
-	PutMissile(v1);
+	CheckMissileCol(i, missile[i]._midam, missile[i]._midam, 0, missile[i]._mix, missile[i]._miy, 0);
+	if (!missile[i]._mirange)
+		missile[i]._miDelFlag = TRUE;
+	PutMissile(i);
 }
 
 void __fastcall MI_Acidpud(int i)
