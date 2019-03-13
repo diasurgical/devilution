@@ -2178,7 +2178,7 @@ void __fastcall AddWeapexp(int mi, int sx, int sy, int dx, int dy, int midir, in
 	missile[v9]._mirange = missile[v9]._miAnimLen - 1;
 }
 
-BOOLEAN __fastcall CheckIfTrig(int x, int y)
+BOOL __fastcall CheckIfTrig(int x, int y)
 {
 	int v2;  // edi
 	int v3;  // ebx
@@ -2208,105 +2208,54 @@ BOOLEAN __fastcall CheckIfTrig(int x, int y)
 
 void __fastcall AddTown(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9;    // ebx
-	int v10;   // esi
-	int v11;   // edi
-	int v12;   // eax
-	int v13;   // ecx
-	char *v14; // eax
-	int v15;   // eax
-	//int v16; // eax
-	int v17;         // ecx
-	int v18;         // eax
-	int v19;         // eax
-	int v20;         // ecx
-	int v21;         // eax
-	int v22;         // ST0C_4
-	int CrawlNum[6]; // [esp+Ch] [ebp-28h]
-	int i;           // [esp+24h] [ebp-10h]
-	char *v25;       // [esp+28h] [ebp-Ch]
-	int v26;         // [esp+2Ch] [ebp-8h]
-	int v27;         // [esp+30h] [ebp-4h]
-	int x;           // [esp+40h] [ebp+Ch]
+	int i, j, k, mx, tx, ty, CrawlNum[6] = { 0, 3, 12, 45, 94, 159 };
 
-	_LOBYTE(v9) = dx;
-	i = mi;
-	v10 = mi;
-	CrawlNum[0] = 0;
-	CrawlNum[1] = 3;
-	CrawlNum[2] = 12;
-	CrawlNum[3] = 45;
-	CrawlNum[4] = 94;
-	CrawlNum[5] = 159;
+	tx = dx;
 	if (currlevel) {
-		_LOBYTE(v11) = dx;
-		missile[v10]._miDelFlag = TRUE;
-		v26 = 0;
-		do {
-			v12 = CrawlNum[v26];
-			v13 = (unsigned char)CrawlTable[v12];
-			v27 = (unsigned char)CrawlTable[v12];
-			if (v13 > 0) {
-				v14 = &CrawlTable[v12 + 2];
-				v25 = v14;
-				while (1) {
-					v9 = dx + (char)*(v14 - 1);
-					v11 = dy + (char)*v14;
-					if (v9 > 0 && v9 < MAXDUNX && v11 > 0 && v11 < MAXDUNY) {
-						v15 = v11 + 112 * v9;
-						if (!(dObject[0][v15] | dPlayer[0][v15] | dMissile[0][v15] | nSolidTable[dPiece[0][v15]] | (unsigned char)nMissileTable[dPiece[0][v15]])) {
-							//_LOBYTE(v16) = CheckIfTrig(v9, v11);
-							if (!CheckIfTrig(v9, v11))
-								break;
+		missile[mi]._miDelFlag = TRUE;
+		for (j = 0; j < 6; j++) {
+			k = CrawlNum[j] + 2;
+			for (i = (unsigned char)CrawlTable[CrawlNum[j]]; i > 0; i--) {
+				tx = dx + CrawlTable[k - 1];
+				ty = dy + CrawlTable[k];
+				if (tx > 0 && tx < MAXDUNX && ty > 0 && ty < MAXDUNY) {
+					if (!(dObject[tx][ty] | dPlayer[tx][ty] | dMissile[tx][ty] | nSolidTable[dPiece[tx][ty]] | (unsigned char)nMissileTable[dPiece[tx][ty]])) {
+						if (!CheckIfTrig(tx, ty)) {
+							missile[mi]._miDelFlag = FALSE;
+							missile[mi]._mix = tx;
+							missile[mi]._miy = ty;
+							missile[mi]._misx = tx;
+							missile[mi]._misy = ty;
+							j = 6;
+							break;
 						}
 					}
-					v14 = v25 + 2;
-					--v27;
-					v25 += 2;
-					if (v27 <= 0)
-						goto LABEL_14;
 				}
-				missile[v10]._miDelFlag = FALSE;
-				missile[v10]._mix = v9;
-				missile[v10]._miy = v11;
-				missile[v10]._misx = v9;
-				missile[v10]._misy = v11;
-				v26 = 6;
+				k += 2;
 			}
-		LABEL_14:
-			++v26;
-		} while (v26 < 6);
+		}
 	} else {
-		_LOBYTE(v11) = dy;
-		missile[v10]._mix = dx;
-		missile[v10]._miy = dy;
-		missile[v10]._misx = dx;
-		missile[v10]._misy = dy;
-		missile[v10]._miDelFlag = FALSE;
+		ty = dy;
+		missile[mi]._mix = tx;
+		missile[mi]._miy = ty;
+		missile[mi]._misx = tx;
+		missile[mi]._misy = ty;
+		missile[mi]._miDelFlag = FALSE;
 	}
-	v17 = nummissiles;
-	missile[v10]._miVar2 = 0;
-	v27 = 0;
-	missile[v10]._mirange = 100;
-	for (missile[v10]._miVar1 = 100 - missile[v10]._miAnimLen; v27 < v17; ++v27) {
-		v18 = missileactive[v27];
-		x = v18;
-		v19 = v18;
-		if (missile[v19]._mitype == MIS_TOWN && x != i && missile[v19]._misource == id)
-			missile[v19]._mirange = 0;
+	missile[mi]._mirange = 100;
+	missile[mi]._miVar1 = 100 - missile[mi]._miAnimLen;
+	missile[mi]._miVar2 = 0;
+	for (i = 0; i < nummissiles; i++) {
+		mx = missileactive[i];
+		if (missile[mx]._mitype == MIS_TOWN && mx != mi && missile[mx]._misource == id)
+			missile[mx]._mirange = 0;
 	}
-	PutMissile(i);
-	_HIWORD(v21) = _HIWORD(id);
-	if (id == myplr && !missile[v10]._miDelFlag && currlevel) {
-		if (setlevel) {
-			_LOWORD(v21) = leveltype;
-			v22 = v21;
-			_LOWORD(v21) = setlvlnum;
-			NetSendCmdLocParam3(TRUE, CMD_ACTIVATEPORTAL, v9, v11, v21, v22, 1);
+	PutMissile(mi);
+	if (id == myplr && !missile[mi]._miDelFlag && currlevel) {
+		if (!setlevel) {
+			NetSendCmdLocParam3(TRUE, CMD_ACTIVATEPORTAL, tx, ty, currlevel, leveltype, 0);
 		} else {
-			_LOWORD(v20) = leveltype;
-			_LOWORD(v21) = currlevel;
-			NetSendCmdLocParam3(TRUE, CMD_ACTIVATEPORTAL, v9, v11, v21, v20, 0);
+			NetSendCmdLocParam3(TRUE, CMD_ACTIVATEPORTAL, tx, ty, setlvlnum, leveltype, 1);
 		}
 	}
 }
@@ -2655,7 +2604,7 @@ void __fastcall AddRhino(int mi, int sx, int sy, int dx, int dy, int midir, int 
 
 void __fastcall miss_null_32(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	AnimStruct *anim; 
+	AnimStruct *anim;
 
 	anim = &monster[id].MType->Anims[MA_WALK];
 	GetMissileVel(mi, sx, sy, dx, dy, 16);
