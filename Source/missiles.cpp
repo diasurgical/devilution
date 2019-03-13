@@ -3956,7 +3956,7 @@ void __fastcall MI_Firewall(int i)
 		if (!missile[i]._miVar2)
 			missile[i]._mlid = AddLight(missile[i]._mix, missile[i]._miy, ExpLight[0]);
 		ChangeLight(missile[i]._mlid, missile[i]._mix, missile[i]._miy, ExpLight[missile[i]._miVar2]);
-		++missile[i]._miVar2;
+		missile[i]._miVar2++;
 	}
 	PutMissile(i);
 }
