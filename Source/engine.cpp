@@ -340,7 +340,7 @@ void __fastcall CelDecDatLightOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSi
 
 	src = pRLEBytes;
 	dst = pDecodeTo;
-	tbl = &pLightTbl[light_table_index * 256];
+	tbl = (BYTE *)&pLightTbl[light_table_index * 256];
 	w = nWidth;
 
 	for(; src != &pRLEBytes[nDataSize]; dst -= 768 + w) {
@@ -504,7 +504,7 @@ void __fastcall CelDecDatLightTrans(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataS
 
 	src = pRLEBytes;
 	dst = pDecodeTo;
-	tbl = &pLightTbl[light_table_index * 256];
+	tbl = (BYTE *)&pLightTbl[light_table_index * 256];
 	w = nWidth;
 	shift = (BYTE)dst & 1;
 
@@ -1063,7 +1063,7 @@ void __fastcall Cel2DecDatLightOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataS
 
 	src = pRLEBytes;
 	dst = pDecodeTo;
-	tbl = &pLightTbl[light_table_index * 256];
+	tbl = (BYTE *)&pLightTbl[light_table_index * 256];
 	w = nWidth;
 
 	for(; src != &pRLEBytes[nDataSize]; dst -= 768 + w) {
@@ -1242,7 +1242,7 @@ void __fastcall Cel2DecDatLightTrans(BYTE *pDecodeTo, BYTE *pRLEBytes, int nData
 
 	src = pRLEBytes;
 	dst = pDecodeTo;
-	tbl = &pLightTbl[light_table_index * 256];
+	tbl = (BYTE *)&pLightTbl[light_table_index * 256];
 	w = nWidth;
 	shift = (BYTE)dst & 1;
 
