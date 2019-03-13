@@ -3444,79 +3444,32 @@ void __fastcall MI_Dummy(int i)
 
 void __fastcall MI_Golem(int i)
 {
-	int v1;           // esi
-	int v2;           // eax
-	int v3;           // eax
-	BOOLEAN v4;       // zf
-	int v5;           // eax
-	int v6;           // ecx
-	char *v7;         // eax
-	int v8;           // ebx
-	int v9;           // edi
-	int v10;          // edx
-	int v11;          // ecx
-	int CrawlNum[6];  // [esp+4h] [ebp-38h]
-	int arglist;      // [esp+1Ch] [ebp-20h]
-	int mi;           // [esp+20h] [ebp-1Ch]
-	unsigned int v16; // [esp+24h] [ebp-18h]
-	int v17;          // [esp+28h] [ebp-14h]
-	int v18;          // [esp+2Ch] [ebp-10h]
-	char *v19;        // [esp+30h] [ebp-Ch]
-	int v20;          // [esp+34h] [ebp-8h]
-	int v21;          // [esp+38h] [ebp-4h]
+	int CrawlNum[6] = { 0, 3, 12, 45, 94, 159 };
+	int tx, ty, dp, l,m, src, k, tid;
 
-	mi = i;
-	v1 = i;
-	v2 = missile[i]._misource;
-	arglist = v2;
-	v3 = v2;
-	v4 = monster[v3]._mx == 1;
-	CrawlNum[0] = 0;
-	CrawlNum[1] = 3;
-	CrawlNum[2] = 12;
-	CrawlNum[3] = 45;
-	CrawlNum[4] = 94;
-	CrawlNum[5] = 159;
-	if (!v4 || monster[v3]._my)
-		goto LABEL_17;
-	v21 = 0;
-	do {
-		v5 = CrawlNum[v21];
-		v6 = (unsigned char)CrawlTable[v5];
-		v20 = (unsigned char)CrawlTable[v5];
-		if (v6 <= 0)
-			goto LABEL_16;
-		v7 = &CrawlTable[v5 + 2];
-		v19 = v7;
-		while (1) {
-			v8 = missile[v1]._miVar4 + (char)*(v7 - 1);
-			v9 = missile[v1]._miVar5 + (char)*v7;
-			if (v8 <= 0 || v8 >= MAXDUNX || v9 <= 0 || v9 >= MAXDUNY)
-				goto LABEL_13;
-			v10 = missile[v1]._miVar2;
-			v11 = missile[v1]._miVar1;
-			v18 = v9 + 112 * v8;
-			v16 = 4 * v18;
-			v17 = dPiece[0][v18];
-			if (LineClear(v11, v10, v8, v9)) {
-				if (!(dMonster[0][v16 / 4] | nSolidTable[v17] | dObject[0][v18]))
-					break;
+	src = missile[i]._misource;
+	if (monster[src]._mx == 1 && !monster[src]._my) {
+		for (l = 0; l < 6; l++) {
+			k = CrawlNum[l];
+			tid = k + 2;
+			for (m = (unsigned char)CrawlTable[k];m > 0; m--){
+				tx = missile[i]._miVar4 + CrawlTable[tid - 1];
+				ty = missile[i]._miVar5 + CrawlTable[tid];
+				if (tx > 0 && tx < MAXDUNX && ty > 0 && ty < MAXDUNY) {
+					dp = dPiece[tx][ty];
+					if (LineClear(missile[i]._miVar1, missile[i]._miVar2, tx, ty)) {
+						if (!(dMonster[tx][ty] | nSolidTable[dp] | dObject[tx][ty])) {
+							l = 6;
+							SpawnGolum(src, tx, ty, i);
+							break;
+						}
+					}
+				}
+				tid += 2;
 			}
-			v7 = v19;
-		LABEL_13:
-			v7 += 2;
-			--v20;
-			v19 = v7;
-			if (v20 <= 0)
-				goto LABEL_16;
 		}
-		v21 = 6;
-		SpawnGolum(arglist, v8, v9, mi);
-	LABEL_16:
-		++v21;
-	} while (v21 < 6);
-LABEL_17:
-	missile[v1]._miDelFlag = TRUE;
+	}
+	missile[i]._miDelFlag = TRUE;
 }
 
 void __fastcall MI_SetManashield(int i)
