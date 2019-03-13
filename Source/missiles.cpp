@@ -4915,38 +4915,28 @@ void __fastcall MI_Teleport(int i)
 
 void __fastcall MI_Stone(int i)
 {
-	int v1;     // esi
-	int v2;     // edi
-	int v3;     // edi
-	BOOLEAN v4; // zf
-	BOOLEAN v5; // sf
-	int ia;     // [esp+Ch] [ebp-4h]
+	int m;
 
-	v1 = i;
-	ia = i;
-	v2 = missile[i]._miVar2;
-	--missile[v1]._mirange;
-	v3 = v2;
-	if (!monster[v3]._mhitpoints && _LOBYTE(missile[v1]._miAnimType) != MFILE_MAGBALL) {
-		missile[v1]._mimfnum = 0;
-		missile[v1]._miDrawFlag = TRUE;
+	missile[i]._mirange--;
+	m = missile[i]._miVar2;
+	if (!monster[m]._mhitpoints && missile[i]._miAnimType != MFILE_SHATTER1) {
+		missile[i]._mimfnum = 0;
+		missile[i]._miDrawFlag = TRUE;
 		SetMissAnim(i, MFILE_SHATTER1);
-		missile[v1]._mirange = 11;
+		missile[i]._mirange = 11;
 	}
-	if (monster[v3]._mmode == MM_STONE) {
-		if (!missile[v1]._mirange) {
-			v4 = monster[v3]._mhitpoints == 0;
-			v5 = monster[v3]._mhitpoints < 0;
-			missile[v1]._miDelFlag = TRUE;
-			if (v5 || v4)
-				AddDead(monster[v3]._mx, monster[v3]._my, stonendx, (direction)monster[v3]._mdir);
-			else
-				monster[v3]._mmode = missile[v1]._miVar1;
-		}
-		if (_LOBYTE(missile[v1]._miAnimType) == MFILE_MAGBALL)
-			PutMissile(ia);
+	if (monster[m]._mmode != MM_STONE) {
+		missile[i]._miDelFlag = TRUE;
 	} else {
-		missile[v1]._miDelFlag = TRUE;
+		if (!missile[i]._mirange) {
+			missile[i]._miDelFlag = TRUE;
+			if (monster[m]._mhitpoints > 0)
+				monster[m]._mmode = missile[i]._miVar1;
+			else
+				AddDead(monster[m]._mx, monster[m]._my, stonendx, (direction)monster[m]._mdir);
+		}
+		if (missile[i]._miAnimType == MFILE_SHATTER1)
+			PutMissile(i);
 	}
 }
 
