@@ -5192,10 +5192,10 @@ void __fastcall MI_FirewallC(int i)
 void __fastcall MI_Infra(int i)
 {
 	missile[i]._mirange--;
-	plr[missile[i]._misource]._pInfraFlag = 1;
+	plr[missile[i]._misource]._pInfraFlag = TRUE;
 	if (!missile[i]._mirange) {
 		missile[i]._miDelFlag = TRUE;
-		CalcPlrItemVals(missile[i]._misource, 1);
+		CalcPlrItemVals(missile[i]._misource, TRUE);
 	}
 }
 
