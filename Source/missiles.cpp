@@ -4952,19 +4952,14 @@ void __fastcall MI_Stone(int i)
 
 void __fastcall MI_Boom(int i)
 {
-	int v1; // edi
-	int v2; // esi
-
-	v1 = i;
-	v2 = i;
-	--missile[v2]._mirange;
+	missile[i]._mirange--;
 	if (!missile[i]._miVar1)
-		CheckMissileCol(i, missile[v2]._midam, missile[v2]._midam, 0, missile[v2]._mix, missile[v2]._miy, 1);
-	if (missile[v2]._miHitFlag)
-		missile[v2]._miVar1 = 1;
-	if (!missile[v2]._mirange)
-		missile[v2]._miDelFlag = TRUE;
-	PutMissile(v1);
+		CheckMissileCol(i, missile[i]._midam, missile[i]._midam, 0, missile[i]._mix, missile[i]._miy, 1);
+	if (missile[i]._miHitFlag == TRUE)
+		missile[i]._miVar1 = 1;
+	if (!missile[i]._mirange)
+		missile[i]._miDelFlag = TRUE;
+	PutMissile(i);
 }
 
 void __fastcall MI_Rhino(int i)
