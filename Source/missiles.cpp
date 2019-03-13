@@ -4828,38 +4828,21 @@ void __fastcall MI_Misexp(int i)
 
 void __fastcall MI_Acidsplat(int i)
 {
-	int v1; // eax
-	int v2; // edx
-	int v3; // edx
-	int v4; // edx
-	int v5; // ST1C_4
+	int monst, dam;
 
-	v1 = i;
-	v2 = missile[i]._mirange;
-	if (v2 == missile[i]._miAnimLen) {
-		++missile[v1]._mix;
-		++missile[v1]._miy;
-		missile[v1]._miyoff -= 32;
+	if (missile[i]._mirange == missile[i]._miAnimLen) {
+		missile[i]._mix++;
+		missile[i]._miy++;
+		missile[i]._miyoff -= 32;
 	}
-	v3 = v2 - 1;
-	missile[v1]._mirange = v3;
-	if (v3) {
-		PutMissile(i);
+	missile[i]._mirange--;
+	if (!missile[i]._mirange) {
+		monst = missile[i]._misource;
+		dam = missile[i]._mispllvl;
+		missile[i]._miDelFlag = TRUE;
+		AddMissile(missile[i]._mix, missile[i]._miy, i, 0, missile[i]._mimfnum, MIS_ACIDPUD, 1, monst, (monster[monst].MData->mLevel >= 2) + 1, dam);
 	} else {
-		v4 = missile[v1]._misource;
-		v5 = missile[v1]._mispllvl;
-		missile[v1]._miDelFlag = TRUE;
-		AddMissile(
-		    missile[v1]._mix,
-		    missile[v1]._miy,
-		    i,
-		    0,
-		    missile[v1]._mimfnum,
-		    MIS_ACIDPUD,
-		    1,
-		    v4,
-		    (monster[v4].MData->mLevel >= 2) + 1,
-		    v5);
+		PutMissile(i);
 	}
 }
 
