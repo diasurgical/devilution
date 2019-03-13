@@ -4732,59 +4732,32 @@ void __fastcall mi_null_11(int i)
 
 void __fastcall MI_Weapexp(int i)
 {
-	int v1;           // esi
-	int v2;           // ecx
-	int v3;           // eax
-	int v4;           // ecx
-	BOOLEAN v5;       // zf
-	int v6;           // edx
-	int v7;           // eax
-	int v8;           // eax
-	int v9;           // ecx
-	int ExpLight[10]; // [esp+4h] [ebp-2Ch]
-	int ia;           // [esp+2Ch] [ebp-4h]
+	int id, mind, maxd;
+	int ExpLight[10] = { 9, 10, 11, 12, 11, 10, 8, 6, 4, 2 };
 
-	ia = i;
-	v1 = i;
-	--missile[v1]._mirange;
-	ExpLight[0] = 9;
-	ExpLight[1] = 10;
-	ExpLight[5] = 10;
-	v2 = missile[i]._mitype;
-	ExpLight[2] = 11;
-	ExpLight[4] = 11;
-	v3 = missile[v1]._misource;
-	v4 = v2;
-	v5 = missile[v1]._miVar2 == 1;
-	ExpLight[3] = 12;
-	ExpLight[6] = 8;
-	ExpLight[7] = 6;
-	ExpLight[8] = 4;
-	ExpLight[9] = 2;
-	if (v5) {
-		v6 = plr[v3]._pIFMinDam;
-		v7 = plr[v3]._pIFMaxDam;
-		missiledata[v4].mResist = MISR_FIRE;
+	missile[i]._mirange--;
+	if (missile[i]._miVar2 == 1) {
+		mind = plr[id]._pIFMinDam;
+		maxd = plr[id]._pIFMaxDam;
+		missiledata[missile[i]._mitype].mResist = MISR_FIRE;
 	} else {
-		v6 = plr[v3]._pILMinDam;
-		v7 = plr[v3]._pILMaxDam;
-		missiledata[v4].mResist = MISR_LIGHTNING;
+		mind = plr[id]._pILMinDam;
+		maxd = plr[id]._pILMaxDam;
+		missiledata[missile[i]._mitype].mResist = MISR_LIGHTNING;
 	}
-	CheckMissileCol(ia, v6, v7, 0, missile[v1]._mix, missile[v1]._miy, 0);
-	v8 = missile[v1]._miVar1;
-	if (v8) {
-		if (missile[v1]._mirange)
-			ChangeLight(missile[v1]._mlid, missile[v1]._mix, missile[v1]._miy, ExpLight[v8]);
+	CheckMissileCol(i, mind, maxd, 0, missile[i]._mix, missile[i]._miy, 0);
+	if (!missile[i]._miVar1) {
+		missile[i]._mlid = AddLight(missile[i]._mix, missile[i]._miy, 9);
 	} else {
-		missile[v1]._mlid = AddLight(missile[v1]._mix, missile[v1]._miy, 9);
+		if (missile[i]._mirange)
+			ChangeLight(missile[i]._mlid, missile[i]._mix, missile[i]._miy, ExpLight[missile[i]._miVar1]);
 	}
-	++missile[v1]._miVar1;
-	if (missile[v1]._mirange) {
-		PutMissile(ia);
+	missile[i]._miVar1++;
+	if (!missile[i]._mirange) {
+		missile[i]._miDelFlag = TRUE;
+		AddUnLight(missile[i]._mlid);
 	} else {
-		v9 = missile[v1]._mlid;
-		missile[v1]._miDelFlag = TRUE;
-		AddUnLight(v9);
+		PutMissile(i);
 	}
 }
 
