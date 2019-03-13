@@ -4717,16 +4717,11 @@ void __fastcall MI_Chain(int i)
 
 void __fastcall mi_null_11(int i)
 {
-	int v1;     // eax
-	BOOLEAN v2; // zf
-
-	v1 = i;
-	v2 = missile[i]._mirange == 1;
-	--missile[v1]._mirange;
-	if (v2)
-		missile[v1]._miDelFlag = TRUE;
-	if (missile[v1]._miAnimFrame == missile[v1]._miAnimLen)
-		missile[v1]._miPreFlag = TRUE;
+	missile[i]._mirange--;
+	if (!missile[i]._mirange)
+		missile[i]._miDelFlag = TRUE;
+	if (missile[i]._miAnimFrame == missile[i]._miAnimLen)
+		missile[i]._miPreFlag = TRUE;
 	PutMissile(i);
 }
 
