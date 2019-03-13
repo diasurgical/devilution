@@ -4865,51 +4865,32 @@ void __fastcall MI_Acidsplat(int i)
 
 void __fastcall MI_Teleport(int i)
 {
-	int v1;      // edi
-	int v2;      // ebx
-	int *v3;     // eax
-	int v4;      // esi
-	int v5;      // ecx
-	int v6;      // edx
-	int v7;      // ecx
-	int v8;      // edx
-	int v9;      // edx
-	int v10;     // eax
-	BOOLEAN v11; // zf
+	int id;
 
-	v1 = i;
-	v2 = missile[i]._misource;
-	v3 = &missile[i]._mirange;
-	if (--*v3 > 0) {
-		v4 = v2;
-		v5 = plr[v2].WorldX;
-		v6 = plr[v2].WorldY;
-		dPlayer[plr[v2].WorldX][v6] = 0;
-		PlrClrTrans(v5, v6);
-		v7 = missile[v1]._mix;
-		v8 = missile[v1]._miy;
-		plr[v4].WorldX = v7;
-		plr[v4].WorldY = v8;
-		plr[v4]._px = v7;
-		plr[v4]._py = v8;
-		plr[v4]._poldx = v7;
-		plr[v4]._poldy = v8;
-		PlrDoTrans(v7, v8);
-		v9 = plr[v2].WorldX;
-		missile[v1]._miVar1 = 1;
-		v10 = plr[v2].WorldY;
-		v11 = leveltype == DTYPE_TOWN;
-		dPlayer[v9][v10] = v2 + 1;
-		if (!v11) {
-			ChangeLightXY(plr[v4]._plid, v9, v10);
-			ChangeVisionXY(plr[v4]._pvid, plr[v4].WorldX, plr[v4].WorldY);
-		}
-		if (v2 == myplr) {
-			ViewX = plr[v4].WorldX - ScrollInfo._sdx;
-			ViewY = plr[v4].WorldY - ScrollInfo._sdy;
-		}
+	id = missile[i]._misource;
+	missile[i]._mirange--;
+	if (missile[i]._mirange <= 0) {
+		missile[i]._miDelFlag = TRUE;
 	} else {
-		missile[v1]._miDelFlag = TRUE;
+		dPlayer[plr[id].WorldX][plr[id].WorldY] = 0;
+		PlrClrTrans(plr[id].WorldX, plr[id].WorldY);
+		plr[id].WorldX = missile[i]._mix;
+		plr[id].WorldY = missile[i]._miy;
+		plr[id]._px = missile[i]._mix;
+		plr[id]._py = missile[i]._miy;
+		plr[id]._poldx = missile[i]._mix;
+		plr[id]._poldy = missile[i]._miy;
+		PlrDoTrans(missile[i]._mix, missile[i]._miy);
+		missile[i]._miVar1 = 1;
+		dPlayer[plr[id].WorldX][plr[id].WorldY] = id + 1;
+		if (leveltype != DTYPE_TOWN) {
+			ChangeLightXY(plr[id]._plid, plr[id].WorldX, plr[id].WorldY);
+			ChangeVisionXY(plr[id]._pvid, plr[id].WorldX, plr[id].WorldY);
+		}
+		if (id == myplr) {
+			ViewX = plr[id].WorldX - ScrollInfo._sdx;
+			ViewY = plr[id].WorldY - ScrollInfo._sdy;
+		}
 	}
 }
 
