@@ -2178,32 +2178,15 @@ void __fastcall AddWeapexp(int mi, int sx, int sy, int dx, int dy, int midir, in
 	missile[v9]._mirange = missile[v9]._miAnimLen - 1;
 }
 
-BOOLEAN __fastcall CheckIfTrig(int x, int y)
+BOOL __fastcall CheckIfTrig(int x, int y)
 {
-	int v2;  // edi
-	int v3;  // ebx
-	int *v4; // esi
-	int v5;  // eax
-	int v7;  // [esp+Ch] [ebp-4h]
+	int i;
 
-	v7 = 0;
-	v2 = y;
-	v3 = x;
-	if (trigflag[4] <= 0)
-		return 0;
-	v4 = &trigs[0]._ty;
-	while (1) {
-		v5 = *(v4 - 1);
-		if (v3 == v5 && v2 == *v4)
-			break;
-		if (abs(v5 - v3) < 2 && abs(*v4 - v2) < 2)
-			break;
-		++v7;
-		v4 += 4;
-		if (v7 >= trigflag[4])
-			return 0;
+	for (i = 0; i < trigflag[4]; i++){
+		if ((x == trigs[i]._tx && y == trigs[i]._ty) || (abs(trigs[i]._tx - x) < 2 && abs(trigs[i]._ty - y) < 2))
+			return 1;
 	}
-	return 1;
+	return 0;
 }
 
 void __fastcall AddTown(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
