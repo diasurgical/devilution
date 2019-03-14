@@ -3921,58 +3921,30 @@ void __fastcall MI_Acidpud(int i)
 
 void __fastcall MI_Firewall(int i)
 {
-	int v1;           // esi
-	int v3;           // ecx
-	int v4;           // eax
-	int ExpLight[14]; // [esp+8h] [ebp-3Ch]
-	int ia;           // [esp+40h] [ebp-4h]
+	int ExpLight[14] = { 2, 3, 4, 5, 5, 6, 7, 8, 9, 10, 11, 12, 12};
 
-	v1 = i;
-	ExpLight[3] = 5;
-	ExpLight[4] = 5;
-	ExpLight[11] = 12;
-	ExpLight[12] = 12;
-	--missile[v1]._mirange;
-	ExpLight[0] = 2;
-	ExpLight[1] = 3;
-	ExpLight[2] = 4;
-	ExpLight[5] = 6;
-	ExpLight[6] = 7;
-	ExpLight[7] = 8;
-	ExpLight[8] = 9;
-	ExpLight[9] = 10;
-	ExpLight[10] = 11;
-	ia = i;
-	ExpLight[13] = 0;
+	missile[i]._mirange--;
 	if (missile[i]._mirange == missile[i]._miVar1) {
 		SetMissDir(i, 1);
-		missile[v1]._miAnimFrame = random(83, 11) + 1;
+		missile[i]._miAnimFrame = random(83, 11) + 1;
 	}
-	if (missile[v1]._mirange == missile[v1]._miAnimLen - 1) {
-		SetMissDir(ia, 0);
-		missile[v1]._miAnimAdd = -1;
-		missile[v1]._miAnimFrame = 13;
+	if (missile[i]._mirange == missile[i]._miAnimLen - 1) {
+		SetMissDir(i, 0);
+		missile[i]._miAnimAdd = -1;
+		missile[i]._miAnimFrame = 13;
 	}
-	CheckMissileCol(ia, missile[v1]._midam, missile[v1]._midam, 1, missile[v1]._mix, missile[v1]._miy, 1);
-	if (!missile[v1]._mirange) {
-		v3 = missile[v1]._mlid;
-		missile[v1]._miDelFlag = TRUE;
-		AddUnLight(v3);
+	CheckMissileCol(i, missile[i]._midam, missile[i]._midam, 1, missile[i]._mix, missile[i]._miy, 1);
+	if (!missile[i]._mirange) {
+		missile[i]._miDelFlag = TRUE;
+		AddUnLight(missile[i]._mlid);
 	}
-	if (missile[v1]._mimfnum) {
-		if (missile[v1]._mirange) {
-			if (missile[v1]._miAnimAdd != -1) {
-				v4 = missile[v1]._miVar2;
-				if (v4 < 12) {
-					if (!v4)
-						missile[v1]._mlid = AddLight(missile[v1]._mix, missile[v1]._miy, ExpLight[0]);
-					ChangeLight(missile[v1]._mlid, missile[v1]._mix, missile[v1]._miy, ExpLight[missile[v1]._miVar2]);
-					++missile[v1]._miVar2;
-				}
-			}
-		}
+	if (missile[i]._mimfnum && missile[i]._mirange && missile[i]._miAnimAdd != -1 && missile[i]._miVar2 < 12) {
+		if (!missile[i]._miVar2)
+			missile[i]._mlid = AddLight(missile[i]._mix, missile[i]._miy, ExpLight[0]);
+		ChangeLight(missile[i]._mlid, missile[i]._mix, missile[i]._miy, ExpLight[missile[i]._miVar2]);
+		missile[i]._miVar2++;
 	}
-	PutMissile(ia);
+	PutMissile(i);
 }
 
 void __fastcall MI_Fireball(int i)
