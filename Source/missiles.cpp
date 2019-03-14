@@ -646,23 +646,17 @@ void __fastcall DeleteMissile(int mi, int i)
 
 void __fastcall GetMissileVel(int i, int sx, int sy, int dx, int dy, int v)
 {
-	int v6;     // eax
-	double v7;  // ST18_8
-	double v8;  // ST10_8
-	int v9;     // esi
-	double v10; // st7
+	double dxp,dyp,dr;
 
 	if (dx != sx || dy != sy) {
-		v7 = (double)((dx + sy - sx - dy) << 21);
-		v8 = (double)((dy + dx - sx - sy) << 21);
-		v9 = i;
-		v10 = 1.0 / sqrt(v8 * v8 + v7 * v7);
-		missile[v9]._mixvel = (signed __int64)((double)(v << 16) * v7 * v10);
-		missile[v9]._miyvel = (signed __int64)((double)(v << 15) * v8 * v10);
+		dxp = (dx + sy - sx - dy) << 21;
+		dyp = (dy + dx - sx - sy) << 21;
+		dr = sqrt(dxp * dxp + dyp * dyp);
+		missile[i]._mixvel = (dxp * (v << 16)) / dr;
+		missile[i]._miyvel = (dyp * (v << 15)) / dr;
 	} else {
-		v6 = i;
-		missile[v6]._mixvel = 0;
-		missile[v6]._miyvel = 0;
+		missile[i]._mixvel = 0;
+		missile[i]._miyvel = 0;
 	}
 }
 
