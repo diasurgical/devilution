@@ -772,4 +772,4 @@ constexpr auto DVL_MB_TASKMODAL = 0x00002000L;
 constexpr auto DVL_MB_ICONHAND = 0x00000010L;
 constexpr auto DVL_MB_ICONEXCLAMATION = 0x00000030L;
 
-}
+}  // namespace dvl

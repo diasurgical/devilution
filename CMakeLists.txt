@@ -154,11 +154,11 @@ target_include_directories(devilution PRIVATE SourceS)
 
 add_executable(devilutionx
   SourceX/dx.cpp
-  SourceX/miniwin.cpp
-  SourceX/miniwin_io.cpp
-  SourceX/miniwin_msg_sdl.cpp
-  SourceX/stub_rand.cpp
-  SourceX/miniwin_thread.cpp
+  SourceX/miniwin/misc.cpp
+  SourceX/miniwin/misc_io.cpp
+  SourceX/miniwin/misc_msg.cpp
+  SourceX/miniwin/rand.cpp
+  SourceX/miniwin/thread.cpp
   SourceX/sound.cpp
   SourceX/storm.cpp
   SourceX/storm_net.cpp

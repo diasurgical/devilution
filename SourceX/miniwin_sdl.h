@@ -16,12 +16,3 @@ void sdl_present_surface();
 void sdl_update_entire_surface();
 
 }
-
-#ifdef __WINDOWS__
-#include <direct.h>
-#define GetCurrentDir _getcwd
-#else
-#include <unistd.h>
-#define GetCurrentDir getcwd
-#endif
-

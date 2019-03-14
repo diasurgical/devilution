@@ -24,7 +24,7 @@
  * occurs, this pointer will be a guess that depends on the particular
  * error, but it will always advance at least one byte.
  */
-static void *
+inline void *
 utf8_decode(void *buf, uint32_t *c, int *e)
 {
     static const char lengths[] = {
@@ -67,7 +67,7 @@ utf8_decode(void *buf, uint32_t *c, int *e)
     return next;
 }
 
-static std::string utf8_to_latin1(const char* in)
+inline std::string utf8_to_latin1(const char* in)
 {
 	std::string instr(in);
 	instr.resize(instr.size() + 4);

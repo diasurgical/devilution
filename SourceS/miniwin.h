@@ -25,13 +25,13 @@
 #define __int64 long long __attribute__((aligned(8)))
 #endif
 
-#include "miniwin_misc.h"
-#include "miniwin_com.h"
-#include "miniwin_ui.h"
-#include "miniwin_thread.h"
-#include "miniwin_rand.h"
+#include "miniwin/misc.h"
+#include "miniwin/com.h"
+#include "miniwin/ui.h"
+#include "miniwin/thread.h"
+#include "miniwin/rand.h"
 
 #ifdef DEVILUTION_ENGINE
-#include "miniwin_misc_macro.h"
-#include "miniwin_com_macro.h"
+#include "miniwin/misc_macro.h"
+#include "miniwin/com_macro.h"
 #endif

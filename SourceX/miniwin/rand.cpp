@@ -1,8 +1,10 @@
+#include <stdint.h>
+
 #include "devilution.h"
 
 namespace dvl {
 
-unsigned int rand_state = 1;
+static uint32_t rand_state = 0;
 
 int rand(void)
 {
@@ -10,9 +12,9 @@ int rand(void)
 	return (rand_state >> 16) & 0x7FFF;
 }
 
-void srand(unsigned int seed)
+void srand(uint32_t seed)
 {
 	rand_state = seed;
 }
 
-}
+}  // namespace dvl

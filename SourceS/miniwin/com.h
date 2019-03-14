@@ -43,8 +43,8 @@ struct IUnknown {
 	// clang-format on
 };
 
-#include "miniwin_com_ddraw.inc"
-#include "miniwin_com_dsound.inc"
+#include "miniwin/com/ddraw.inc"
+#include "miniwin/com/dsound.inc"
 
 #ifndef DEVILUTION_ENGINE
 #pragma pop_macro("DECLARE_INTERFACE_")
@@ -65,4 +65,5 @@ constexpr auto DVL_SW_HIDE = 0;
 constexpr auto DVL_SW_SHOWNORMAL = 1;
 constexpr auto DVL_SM_CXSCREEN = 0;
 constexpr auto DVL_SM_CYSCREEN = 1;
-}
+
+}  // namespace dvl

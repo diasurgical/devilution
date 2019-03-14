@@ -3,6 +3,6 @@
 namespace dvl {
 
 int rand(void);
-void srand(unsigned int seed);
+void srand(uint32_t seed);
 
-}
+}  // namespace dvl
