@@ -940,7 +940,7 @@ void __fastcall PrintQLString(int x, int y, unsigned char cjustflag, char *str, 
 		v12 = v8 + v6 + 76;
 		if (!cjustflag)
 			v12 = v6 + 76;
-		CelDecodeOnly(v12, v5 + 205, pCelBuff, ALLQUESTS, 12);
+		CelDecodeOnly(v12, v5 + 205, (BYTE *)pCelBuff, ALLQUESTS, 12);
 	}
 	v13 = 0;
 	v19 = 0;
@@ -963,7 +963,7 @@ void __fastcall PrintQLString(int x, int y, unsigned char cjustflag, char *str, 
 			v16 = v8 + v6 + 100;
 		else
 			v16 = 340 - v6;
-		CelDecodeOnly(v16, v5 + 205, pCelBuff, ALLQUESTS, 12);
+		CelDecodeOnly(v16, v5 + 205, (BYTE *)pCelBuff, ALLQUESTS, 12);
 	}
 }
 // 69BE90: using guessed type int qline;
@@ -974,7 +974,7 @@ void __cdecl DrawQuestLog()
 	int i;  // esi
 
 	PrintQLString(0, 2, 1u, "Quest Log", 3);
-	CelDecodeOnly(64, 511, pQLogCel, 1, 320);
+	CelDecodeOnly(64, 511, (BYTE *)pQLogCel, 1, 320);
 	v0 = qtopline;
 	for (i = 0; i < numqlines; ++i) {
 		PrintQLString(0, v0, 1u, questlist[qlist[i]]._qlstr, 0);

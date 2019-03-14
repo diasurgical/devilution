@@ -2480,7 +2480,7 @@ int __fastcall On_NOVA(TCmdLoc *pCmd, int pnum)
 int __fastcall On_SETSHIELD(TCmd *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1)
-		plr[pnum].pManaShield = 1;
+		plr[pnum].pManaShield = TRUE;
 
 	return sizeof(*pCmd);
 }
@@ -2488,7 +2488,7 @@ int __fastcall On_SETSHIELD(TCmd *pCmd, int pnum)
 int __fastcall On_REMSHIELD(TCmd *pCmd, int pnum)
 {
 	if (gbBufferMsgs != 1)
-		plr[pnum].pManaShield = 0;
+		plr[pnum].pManaShield = FALSE;
 
 	return sizeof(*pCmd);
 }

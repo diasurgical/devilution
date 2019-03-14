@@ -150,7 +150,7 @@ void __cdecl DrawInv()
 	BOOL invtest[40];
 	int frame, frame_width, colour, screen_x, screen_y, i, j, ii;
 
-	CelDecodeOnly(384, 511, pInvCels, 1, 320);
+	CelDecodeOnly(384, 511, (BYTE *)pInvCels, 1, 320);
 
 	if (plr[myplr].InvBody[INVLOC_HEAD]._itype != ITYPE_NONE) {
 		InvDrawSlotBack(517, 219, 2 * INV_SLOT_SIZE_PX, 2 * INV_SLOT_SIZE_PX);
@@ -170,7 +170,7 @@ void __cdecl DrawInv()
 		}
 
 		if (plr[myplr].InvBody[INVLOC_HEAD]._iStatFlag) {
-			CelDrawHdrOnly(517, 219, (char *)pCursCels, frame, frame_width, 0, 8);
+			CelDrawHdrOnly(517, 219, (BYTE *)pCursCels, frame, frame_width, 0, 8);
 		} else {
 			CelDrawHdrLightRed(517, 219, (char *)pCursCels, frame, frame_width, 0, 8, 1);
 		}
@@ -194,7 +194,7 @@ void __cdecl DrawInv()
 		}
 
 		if (plr[myplr].InvBody[INVLOC_RING_LEFT]._iStatFlag) {
-			CelDrawHdrOnly(432, 365, (char *)pCursCels, frame, frame_width, 0, 8);
+			CelDrawHdrOnly(432, 365, (BYTE *)pCursCels, frame, frame_width, 0, 8);
 		} else {
 			CelDrawHdrLightRed(432, 365, (char *)pCursCels, frame, frame_width, 0, 8, 1);
 		}
@@ -218,7 +218,7 @@ void __cdecl DrawInv()
 		}
 
 		if (plr[myplr].InvBody[INVLOC_RING_RIGHT]._iStatFlag) {
-			CelDrawHdrOnly(633, 365, (char *)pCursCels, frame, frame_width, 0, 8);
+			CelDrawHdrOnly(633, 365, (BYTE *)pCursCels, frame, frame_width, 0, 8);
 		} else {
 			CelDrawHdrLightRed(633, 365, (char *)pCursCels, frame, frame_width, 0, 8, 1);
 		}
@@ -242,7 +242,7 @@ void __cdecl DrawInv()
 		}
 
 		if (plr[myplr].InvBody[INVLOC_AMULET]._iStatFlag) {
-			CelDrawHdrOnly(589, 220, (char *)pCursCels, frame, frame_width, 0, 8);
+			CelDrawHdrOnly(589, 220, (BYTE *)pCursCels, frame, frame_width, 0, 8);
 		} else {
 			CelDrawHdrLightRed(589, 220, (char *)pCursCels, frame, frame_width, 0, 8, 1);
 		}
@@ -269,7 +269,7 @@ void __cdecl DrawInv()
 		}
 
 		if (plr[myplr].InvBody[INVLOC_HAND_LEFT]._iStatFlag) {
-			CelDrawHdrOnly(screen_x, screen_y, (char *)pCursCels, frame, frame_width, 0, 8);
+			CelDrawHdrOnly(screen_x, screen_y, (BYTE *)pCursCels, frame, frame_width, 0, 8);
 		} else {
 			CelDrawHdrLightRed(screen_x, screen_y, (char *)pCursCels, frame, frame_width, 0, 8, 1);
 		}
@@ -309,7 +309,7 @@ void __cdecl DrawInv()
 		}
 
 		if (plr[myplr].InvBody[INVLOC_HAND_RIGHT]._iStatFlag) {
-			CelDrawHdrOnly(screen_x, screen_y, (char *)pCursCels, frame, frame_width, 0, 8);
+			CelDrawHdrOnly(screen_x, screen_y, (BYTE *)pCursCels, frame, frame_width, 0, 8);
 		} else {
 			CelDrawHdrLightRed(screen_x, screen_y, (char *)pCursCels, frame, frame_width, 0, 8, 1);
 		}
@@ -333,7 +333,7 @@ void __cdecl DrawInv()
 		}
 
 		if (plr[myplr].InvBody[INVLOC_CHEST]._iStatFlag) {
-			CelDrawHdrOnly(517, 320, (char *)pCursCels, frame, frame_width, 0, 8);
+			CelDrawHdrOnly(517, 320, (BYTE *)pCursCels, frame, frame_width, 0, 8);
 		} else {
 			CelDrawHdrLightRed(517, 320, (char *)pCursCels, frame, frame_width, 0, 8, 1);
 		}
@@ -377,7 +377,7 @@ void __cdecl DrawInv()
 				CelDrawHdrOnly(
 				    InvRect[j + SLOTXY_INV_FIRST].X + 64,
 				    InvRect[j + SLOTXY_INV_FIRST].Y + 159,
-				    (char *)pCursCels, frame, frame_width, 0, 8);
+				    (BYTE *)pCursCels, frame, frame_width, 0, 8);
 			} else {
 				CelDrawHdrLightRed(
 				    InvRect[j + SLOTXY_INV_FIRST].X + 64,
@@ -422,7 +422,7 @@ void __cdecl DrawInvBelt()
 		}
 
 		if (plr[myplr].SpdList[i]._iStatFlag)
-			CelDrawHdrOnly(InvRect[i + 65].X + 64, InvRect[i + 65].Y + 159, (char *)pCursCels, frame, frame_width, 0, 8);
+			CelDrawHdrOnly(InvRect[i + 65].X + 64, InvRect[i + 65].Y + 159, (BYTE *)pCursCels, frame, frame_width, 0, 8);
 		else
 			CelDrawHdrLightRed(InvRect[i + 65].X + 64, InvRect[i + 65].Y + 159, (char *)pCursCels, frame, frame_width, 0, 8, 1);
 
