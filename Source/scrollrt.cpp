@@ -840,7 +840,7 @@ void __fastcall scrollrt_draw_clipped_dungeon(char *a1, int sx, int sy, int a4, 
 	v40 = *v10;
 	v41 = *(v10 - 1);
 	if (visiondebug && v50 & DFLAG_LIT)
-		Cel2DecodeHdrOnly(dst_buf, (char *)pSquareCel, 1, 64, 0, 8);
+		Cel2DecodeHdrOnly((BYTE *)dst_buf, (BYTE *)pSquareCel, 1, 64, 0, 8);
 	if (MissilePreFlag && v50 & DFLAG_MISSILE)
 		DrawClippedMissile(a1a, sy, a4, a5, 0, 8, TRUE);
 	if (light_table_index < lightmax) {
@@ -1113,7 +1113,7 @@ void __fastcall DrawClippedObject(int x, int y, int ox, int oy, BOOL pre, int a6
 	if(object[bv]._oLight)
 		Cel2DecodeHdrLight(sx, sy, (char *)object[bv]._oAnimData, object[bv]._oAnimFrame, object[bv]._oAnimWidth, a6, dir);
 	else
-		Cel2DrawHdrOnly(sx, sy, (char *)object[bv]._oAnimData, object[bv]._oAnimFrame, object[bv]._oAnimWidth, a6, dir);
+		Cel2DrawHdrOnly(sx, sy, object[bv]._oAnimData, object[bv]._oAnimFrame, object[bv]._oAnimWidth, a6, dir);
 }
 // 4B8CC1: using guessed type char pcursobj;
 
@@ -1436,7 +1436,7 @@ void __fastcall scrollrt_draw_clipped_dungeon_2(char *buffer, int x, int y, int 
 	v43 = *v12;
 	v44 = *(v12 - 1);
 	if (visiondebug && v53 & DFLAG_LIT)
-		Cel2DecodeHdrOnly(dst_buf, (char *)pSquareCel, 1, 64, a5, 8);
+		Cel2DecodeHdrOnly((BYTE *)dst_buf, (BYTE *)pSquareCel, 1, 64, a5, 8);
 	if (MissilePreFlag && v53 & DFLAG_MISSILE) {
 		v13 = sx;
 		DrawClippedMissile(a1, y, sx, sy, a5, 8, TRUE);
@@ -1980,7 +1980,7 @@ void __fastcall scrollrt_draw_dungeon(char *buffer, int x, int y, int a4, int a5
 	v42 = *v12;
 	v43 = *(v12 - 1);
 	if (visiondebug && v52 & DFLAG_LIT)
-		CelDecodeHdrOnly(dst_buf, (char *)pSquareCel, 1, 64, 0, a5);
+		CelDecodeHdrOnly((BYTE *)dst_buf, (BYTE *)pSquareCel, 1, 64, 0, a5);
 	if (MissilePreFlag && v52 & DFLAG_MISSILE)
 		DrawMissile(xa, y, sx, sy, 0, a5, TRUE);
 	if (light_table_index < lightmax) {
@@ -2255,7 +2255,7 @@ void __fastcall DrawObject(int x, int y, int ox, int oy, BOOL pre, int a6, int d
 	} else {
 		/// ASSERT: assert(object[bv]._oAnimData);
 		if(object[bv]._oAnimData) // BUGFIX: _oAnimData was already checked, this is redundant
-			CelDrawHdrOnly(sx, sy, (char *)object[bv]._oAnimData, object[bv]._oAnimFrame, object[bv]._oAnimWidth, a6, dir);
+			CelDrawHdrOnly(sx, sy, object[bv]._oAnimData, object[bv]._oAnimFrame, object[bv]._oAnimWidth, a6, dir);
 	}
 }
 // 4B8CC1: using guessed type char pcursobj;
@@ -2715,7 +2715,7 @@ void __cdecl scrollrt_draw_cursor_item()
 				v10 = v3 + 1;
 				gpBufEnd = (unsigned char *)gpBuffer + screen_y_times_768[640] - v0 - 2;
 				if (pcurs < 12) {
-					Cel2DrawHdrOnly(v9 + 64, v1 + v10 + 159, (char *)pCursCels, pcurs, v0, 0, 8);
+					Cel2DrawHdrOnly(v9 + 64, v1 + v10 + 159, (BYTE *)pCursCels, pcurs, v0, 0, 8);
 				} else {
 					colour = ICOL_WHITE;
 					if (plr[myplr].HoldItem._iMagical != ITEM_QUALITY_NORMAL)
@@ -2728,7 +2728,7 @@ void __cdecl scrollrt_draw_cursor_item()
 					if (colour == ICOL_RED)
 						Cel2DrawHdrLightRed(v12, v13, (char *)pCursCels, pcurs, cursW, 0, 8, 1);
 					else
-						Cel2DrawHdrOnly(v12, v13, (char *)pCursCels, pcurs, cursW, 0, 8);
+						Cel2DrawHdrOnly(v12, v13, (BYTE *)pCursCels, pcurs, cursW, 0, 8);
 				}
 			}
 		}

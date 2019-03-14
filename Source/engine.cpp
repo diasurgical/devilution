@@ -14,337 +14,584 @@ int dword_52B99C; // BOOLEAN valid - if x/y are in bounds
 const int rand_increment = 1;           // unused
 const int rand_multiplier = 0x015A4E35; // unused
 
-void __fastcall CelDrawDatOnly(char *pDecodeTo, char *pRLEBytes, int dwRLESize, int dwRLEWdt)
+void __fastcall CelDrawDatOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 {
-	char *v4;         // esi
-	char *v5;         // edi
-	int v6;           // edx
-	unsigned int v7;  // eax
-	unsigned int v8;  // ecx
-	char v9;          // cf
-	unsigned int v10; // ecx
-	char *v11;        // [esp+4h] [ebp-8h]
+	int w;
 
-	v11 = pRLEBytes;
-	if (pDecodeTo && pRLEBytes) {
-		v4 = pRLEBytes;
-		v5 = pDecodeTo;
-		do {
-			v6 = dwRLEWdt;
-			do {
-				while (1) {
-					v7 = (unsigned char)*v4++;
-					if ((v7 & 0x80u) == 0)
-						break;
-					_LOBYTE(v7) = -(char)v7;
-					v5 += v7;
-					v6 -= v7;
-					if (!v6)
-						goto LABEL_14;
-				}
-				v6 -= v7;
-				v8 = v7 >> 1;
-				if (v7 & 1) {
-					*v5++ = *v4++;
-					if (!v8)
-						continue;
-				}
-				v9 = v8 & 1;
-				v10 = v7 >> 2;
-				if (v9) {
-					*(_WORD *)v5 = *(_WORD *)v4;
-					v4 += 2;
-					v5 += 2;
-					if (!v10)
-						continue;
-				}
-				qmemcpy(v5, v4, 4 * v10);
-				v4 += 4 * v10;
-				v5 += 4 * v10;
-			} while (v6);
-		LABEL_14:
-			v5 += -dwRLEWdt - 768;
-		} while (&v11[dwRLESize] != v4);
+	/// ASSERT: assert(pDecodeTo != NULL);
+	if(!pDecodeTo)
+		return;
+	/// ASSERT: assert(pRLEBytes != NULL);
+	if(!pRLEBytes)
+		return;
+
+#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+	__asm {
+		mov		esi, pRLEBytes
+		mov		edi, pDecodeTo
+		mov		eax, 768
+		add		eax, nWidth
+		mov		w, eax
+		mov		ebx, nDataSize
+		add		ebx, esi
+	label1:
+		mov		edx, nWidth
+	label2:
+		xor		eax, eax
+		lodsb
+		or		al, al
+		js		label6
+		sub		edx, eax
+		mov		ecx, eax
+		shr		ecx, 1
+		jnb		label3
+		movsb
+		jecxz	label5
+	label3:
+		shr		ecx, 1
+		jnb		label4
+		movsw
+		jecxz	label5
+	label4:
+		rep movsd
+	label5:
+		or		edx, edx
+		jz		label7
+		jmp		label2
+	label6:
+		neg		al
+		add		edi, eax
+		sub		edx, eax
+		jnz		label2
+	label7:
+		sub		edi, w
+		cmp		ebx, esi
+		jnz		label1
 	}
-}
+#else
+	int i;
+	BYTE width;
+	BYTE *src, *dst;
 
-void __fastcall CelDecodeOnly(int screen_x, int screen_y, void *pCelBuff, int frame, int frame_width)
-{
-	if (gpBuffer) {
-		if (pCelBuff)
-			CelDrawDatOnly(
-			    (char *)gpBuffer + screen_y_times_768[screen_y] + screen_x,
-			    (char *)pCelBuff + *((_DWORD *)pCelBuff + frame),
-			    *((_DWORD *)pCelBuff + frame + 1) - *((_DWORD *)pCelBuff + frame),
-			    frame_width);
-	}
-}
+	src = pRLEBytes;
+	dst = pDecodeTo;
+	w = nWidth;
 
-void __fastcall CelDecDatOnly(char *pBuff, char *pCelBuff, int frame, int frame_width)
-{
-	if (pCelBuff) {
-		if (pBuff)
-			CelDrawDatOnly(
-			    pBuff,
-			    &pCelBuff[*(_DWORD *)&pCelBuff[4 * frame]],
-			    *(_DWORD *)&pCelBuff[4 * frame + 4] - *(_DWORD *)&pCelBuff[4 * frame],
-			    frame_width);
-	}
-}
-
-void __fastcall CelDrawHdrOnly(int screen_x, int screen_y, char *pCelBuff, int frame, int frame_width, int always_0, int direction)
-{
-	int v7;   // edx
-	char *v8; // eax
-	int v9;   // edi
-	int v10;  // ecx
-	int v11;  // [esp+Ch] [ebp-8h]
-	int v12;  // [esp+10h] [ebp-4h]
-
-	v12 = screen_y;
-	v11 = screen_x;
-	if (gpBuffer) {
-		if (pCelBuff) {
-			v7 = *(_DWORD *)&pCelBuff[4 * frame];
-			v8 = &pCelBuff[v7];
-			v9 = *(unsigned short *)&pCelBuff[v7 + always_0];
-			if (*(_WORD *)&pCelBuff[v7 + always_0]) {
-				if (direction != 8 && *(_WORD *)&v8[direction])
-					v10 = *(unsigned short *)&v8[direction] - v9;
-				else
-					v10 = *(_DWORD *)&pCelBuff[4 * frame + 4] - v7 - v9;
-				CelDrawDatOnly(
-				    (char *)gpBuffer + screen_y_times_768[v12 - 16 * always_0] + v11,
-				    &v8[v9],
-				    v10,
-				    frame_width);
+	for(; src != &pRLEBytes[nDataSize]; dst -= 768 + w) {
+		for(i = w; i;) {
+			width = *src++;
+			if(!(width & 0x80)) {
+				i -= width;
+				if(width & 1) {
+					dst[0] = src[0];
+					src++;
+					dst++;
+				}
+				width >>= 1;
+				if(width & 1) {
+					dst[0] = src[0];
+					dst[1] = src[1];
+					src += 2;
+					dst += 2;
+				}
+				width >>= 1;
+				for(; width; width--) {
+					dst[0] = src[0];
+					dst[1] = src[1];
+					dst[2] = src[2];
+					dst[3] = src[3];
+					src += 4;
+					dst += 4;
+				}
+			} else {
+				width = -(char)width;
+				dst += width;
+				i -= width;
 			}
 		}
 	}
+#endif
 }
 
-void __fastcall CelDecodeHdrOnly(char *pBuff, char *pCelBuff, int frame, int frame_width, int always_0, int direction)
+void __fastcall CelDecodeOnly(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth)
 {
-	int v6;   // esi
-	char *v7; // eax
-	int v8;   // ebx
-	int v9;   // edx
-	int v10;  // edx
+	BYTE *tmp;
+	DWORD *pFrameTable;
 
-	if (pCelBuff) {
-		if (pBuff) {
-			v6 = *(_DWORD *)&pCelBuff[4 * frame];
-			v7 = &pCelBuff[v6];
-			v8 = *(unsigned short *)&pCelBuff[v6 + always_0];
-			if (*(_WORD *)&pCelBuff[v6 + always_0]) {
-				v9 = *(_DWORD *)&pCelBuff[4 * frame + 4] - v6;
-				if (direction != 8 && *(_WORD *)&v7[direction])
-					v10 = *(unsigned short *)&v7[direction] - v8;
-				else
-					v10 = v9 - v8;
-				CelDrawDatOnly(pBuff, &v7[v8], v10, frame_width);
+	/// ASSERT: assert(gpBuffer);
+	if(!gpBuffer)
+		return;
+	/// ASSERT: assert(pCelBuff != NULL);
+	if(!pCelBuff)
+		return;
+
+	tmp = (BYTE *)gpBuffer;
+	pFrameTable = (DWORD *)pCelBuff;
+
+	CelDrawDatOnly(
+		&tmp[sx + screen_y_times_768[sy]],
+		&pCelBuff[pFrameTable[nCel]],
+		pFrameTable[nCel + 1] - pFrameTable[nCel],
+		nWidth);
+}
+
+void __fastcall CelDecDatOnly(BYTE *pBuff, BYTE *pCelBuff, int nCel, int nWidth)
+{
+	DWORD *pFrameTable;
+
+	/// ASSERT: assert(pCelBuff != NULL);
+	if(!pCelBuff)
+		return;
+	/// ASSERT: assert(pBuff != NULL);
+	if(!pBuff)
+		return;
+
+	pFrameTable = (DWORD *)pCelBuff;
+
+	CelDrawDatOnly(
+		pBuff,
+		&pCelBuff[pFrameTable[nCel]],
+		pFrameTable[nCel + 1] - pFrameTable[nCel],
+		nWidth);
+}
+
+void __fastcall CelDrawHdrOnly(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int always_0, int dir)
+{
+	int v1, v2, nDataSize;
+	BYTE *pRLEBytes, *tmp;
+	DWORD *pFrameTable;
+
+	/// ASSERT: assert(gpBuffer);
+	if(!gpBuffer)
+		return;
+	/// ASSERT: assert(pCelBuff != NULL);
+	if(!pCelBuff)
+		return;
+
+	pFrameTable = (DWORD *)pCelBuff;
+	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
+	v1 = *(WORD *)&pRLEBytes[always_0];
+
+	if(!v1)
+		return;
+
+	nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
+
+	if(dir == 8)
+		v2 = 0;
+	else
+		v2 = *(WORD *)&pRLEBytes[dir];
+	if(v2)
+		nDataSize = v2 - v1;
+	else
+		nDataSize -= v1;
+
+	tmp = (BYTE *)gpBuffer;
+	CelDrawDatOnly(
+		&tmp[sx + screen_y_times_768[sy - 16 * always_0]],
+		&pRLEBytes[v1],
+		nDataSize,
+		nWidth);
+}
+
+void __fastcall CelDecodeHdrOnly(BYTE *pBuff, BYTE *pCelBuff, int nCel, int nWidth, int always_0, int dir)
+{
+	int v1, v2, nDataSize;
+	BYTE *pRLEBytes;
+	DWORD *pFrameTable;
+
+	/// ASSERT: assert(pCelBuff != NULL);
+	if(!pCelBuff)
+		return;
+	/// ASSERT: assert(pBuff != NULL);
+	if(!pBuff)
+		return;
+
+	pFrameTable = (DWORD *)pCelBuff;
+	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
+	v1 = *(WORD *)&pRLEBytes[always_0];
+
+	if(!v1)
+		return;
+
+	nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
+
+	if(dir == 8)
+		v2 = 0;
+	else
+		v2 = *(WORD *)&pRLEBytes[dir];
+	if(v2)
+		nDataSize = v2 - v1;
+	else
+		nDataSize -= v1;
+
+	CelDrawDatOnly(pBuff, &pRLEBytes[v1], nDataSize, nWidth);
+}
+
+void __fastcall CelDecDatLightOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
+{
+	int w;
+	BYTE *tbl;
+
+	/// ASSERT: assert(pDecodeTo != NULL);
+	if(!pDecodeTo)
+		return;
+	/// ASSERT: assert(pRLEBytes != NULL);
+	if(!pRLEBytes)
+		return;
+
+#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+	__asm {
+		mov		eax, light_table_index
+		shl		eax, 8
+		add		eax, pLightTbl
+		mov		tbl, eax
+		mov		esi, pRLEBytes
+		mov		edi, pDecodeTo
+		mov		eax, 768
+		add		eax, nWidth
+		mov		w, eax
+		mov		ebx, nDataSize
+		add		ebx, esi
+	label1:
+		mov		edx, nWidth
+	label2:
+		xor		eax, eax
+		lodsb
+		or		al, al
+		js		label3
+		push	ebx
+		mov		ebx, tbl
+		sub		edx, eax
+		mov		ecx, eax
+		push	edx
+		call	CelDecDatLightEntry
+		pop		edx
+		pop		ebx
+		or		edx, edx
+		jnz		label2
+		jmp		label4
+	label3:
+		neg		al
+		add		edi, eax
+		sub		edx, eax
+		jnz		label2
+	label4:
+		sub		edi, w
+		cmp		ebx, esi
+		jnz		label1
+		jmp		labexit
+	}
+
+	/* Assembly Macro */
+	__asm {
+	CelDecDatLightEntry:
+		shr		cl, 1
+		jnb		label5
+		mov		dl, [esi]
+		mov		dl, [ebx+edx]
+		mov		[edi], dl
+		add		esi, 1
+		add		edi, 1
+	label5:
+		shr		cl, 1
+		jnb		label6
+		mov		dl, [esi]
+		mov		ch, [ebx+edx]
+		mov		[edi], ch
+		mov		dl, [esi+1]
+		mov		ch, [ebx+edx]
+		mov		[edi+1], ch
+		add		esi, 2
+		add		edi, 2
+	label6:
+		test	cl, cl
+		jz		labret
+	label7:
+		mov		eax, [esi]
+		add		esi, 4
+		mov		dl, al
+		mov		ch, [ebx+edx]
+		mov		dl, ah
+		ror		eax, 10h
+		mov		[edi], ch
+		mov		ch, [ebx+edx]
+		mov		dl, al
+		mov		[edi+1], ch
+		mov		ch, [ebx+edx]
+		mov		dl, ah
+		mov		[edi+2], ch
+		mov		ch, [ebx+edx]
+		mov		[edi+3], ch
+		add		edi, 4
+		dec		cl
+		jnz		label7
+	labret:
+		retn
+	}
+
+	__asm {
+	labexit:
+	}
+#else
+	int i;
+	BYTE width;
+	BYTE *src, *dst;
+
+	src = pRLEBytes;
+	dst = pDecodeTo;
+	tbl = (BYTE *)&pLightTbl[light_table_index * 256];
+	w = nWidth;
+
+	for(; src != &pRLEBytes[nDataSize]; dst -= 768 + w) {
+		for(i = w; i;) {
+			width = *src++;
+			if(!(width & 0x80)) {
+				i -= width;
+				if(width & 1) {
+					dst[0] = tbl[src[0]];
+					src++;
+					dst++;
+				}
+				width >>= 1;
+				if(width & 1) {
+					dst[0] = tbl[src[0]];
+					dst[1] = tbl[src[1]];
+					src += 2;
+					dst += 2;
+				}
+				width >>= 1;
+				for(; width; width--) {
+					dst[0] = tbl[src[0]];
+					dst[1] = tbl[src[1]];
+					dst[2] = tbl[src[2]];
+					dst[3] = tbl[src[3]];
+					src += 4;
+					dst += 4;
+				}
+			} else {
+				width = -(char)width;
+				dst += width;
+				i -= width;
 			}
 		}
 	}
-}
-
-void __fastcall CelDecDatLightOnly(char *pDecodeTo, char *pRLEBytes, int frame_content_size, int frame_width)
-{
-	char *v4; // esi
-	char *v5; // edi
-	char *v6; // ebx
-	int v7;   // edx
-	int v8;   // eax
-	int v9;   // ST00_4
-	char *a3; // [esp+Ch] [ebp-10h]
-
-	if (pDecodeTo && pRLEBytes) {
-		a3 = &pLightTbl[256 * light_table_index];
-		v4 = pRLEBytes;
-		v5 = pDecodeTo;
-		v6 = &pRLEBytes[frame_content_size];
-		do {
-			v7 = frame_width;
-			do {
-				while (1) {
-					v8 = (unsigned char)*v4++;
-					if ((v8 & 0x80u) != 0) /* check sign */
-						break;
-					v9 = v7 - v8;
-					CelDecDatLightEntry(v8, a3, &v5, &v4);
-					v7 = v9;
-					if (!v9)
-						goto LABEL_9;
-				}
-				_LOBYTE(v8) = -(char)v8;
-				v5 += v8;
-				v7 -= v8;
-			} while (v7);
-		LABEL_9:
-			v5 += -frame_width - 768;
-		} while (v6 != v4);
-	}
+#endif
 }
 // 69BEF8: using guessed type int light_table_index;
 
-void __fastcall CelDecDatLightEntry(unsigned char n, char *LightIndex, char **pDecodeTo, char **pRLEBytes)
+void __fastcall CelDecDatLightTrans(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 {
-	int i;
+	int w;
+	BOOL shift;
+	BYTE *tbl;
 
-	for (i = 0; i < n; i++) {
-		**pDecodeTo = LightIndex[**pRLEBytes];
-		(*pRLEBytes)++;
-		(*pDecodeTo)++;
+	/// ASSERT: assert(pDecodeTo != NULL);
+	if(!pDecodeTo)
+		return;
+	/// ASSERT: assert(pRLEBytes != NULL);
+	if(!pRLEBytes)
+		return;
+
+#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+	__asm {
+		mov		eax, light_table_index
+		shl		eax, 8
+		add		eax, pLightTbl
+		mov		tbl, eax
+		mov		esi, pRLEBytes
+		mov		edi, pDecodeTo
+		mov		eax, 768
+		add		eax, nWidth
+		mov		w, eax
+		mov		ebx, nDataSize
+		add		ebx, esi
+		mov		eax, edi
+		and		eax, 1
+		mov		shift, eax
+	label1:
+		mov		edx, nWidth
+	label2:
+		xor		eax, eax
+		lodsb
+		or		al, al
+		js		label9
+		push	ebx
+		mov		ebx, tbl
+		sub		edx, eax
+		mov		ecx, eax
+		mov		eax, edi
+		and		eax, 1
+		cmp		eax, shift
+		jnz		label5
+		shr		ecx, 1
+		jnb		label3
+		inc		esi
+		inc		edi
+		jecxz	label8
+		jmp		label6
+	label3:
+		shr		ecx, 1
+		jnb		label4
+		inc		esi
+		inc		edi
+		lodsb
+		xlat
+		stosb
+		jecxz	label8
+	label4:
+		lodsd
+		inc		edi
+		ror		eax, 8
+		xlat
+		stosb
+		ror		eax, 10h
+		inc		edi
+		xlat
+		stosb
+		loop	label4
+		jmp		label8
+	label5:
+		shr		ecx, 1
+		jnb		label6
+		lodsb
+		xlat
+		stosb
+		jecxz	label8
+		jmp		label3
+	label6:
+		shr		ecx, 1
+		jnb		label7
+		lodsb
+		xlat
+		stosb
+		inc		esi
+		inc		edi
+		jecxz	label8
+	label7:
+		lodsd
+		xlat
+		stosb
+		inc		edi
+		ror		eax, 10h
+		xlat
+		stosb
+		inc		edi
+		loop	label7
+	label8:
+		pop		ebx
+		or		edx, edx
+		jz		label10
+		jmp		label2
+	label9:
+		neg		al
+		add		edi, eax
+		sub		edx, eax
+		jnz		label2
+	label10:
+		sub		edi, w
+		mov		eax, shift
+		inc		eax
+		and		eax, 1
+		mov		shift, eax
+		cmp		ebx, esi
+		jnz		label1
 	}
-}
+#else
+	int i;
+	BYTE width;
+	BYTE *src, *dst;
 
-void __fastcall CelDecDatLightTrans(char *pDecodeTo, char *pRLEBytes, int frame_content_size, int frame_width)
-{
-	char *v4;         // esi
-	int v5;           // edi
-	char *v6;         // ebx
-	int v7;           // edx
-	unsigned int v8;  // eax
-	unsigned int v10; // ecx
-	char v11;         // cf
-	unsigned int v12; // ecx
-	char *v13;        // esi
-	_BYTE *v14;       // edi
-	_BYTE *v18;       // edi
-	unsigned int v21; // ecx
-	_BYTE *v25;       // edi
-	char *v26;        // [esp-4h] [ebp-24h]
-	char *v27;        // [esp+Ch] [ebp-14h]
-	int v28;          // [esp+14h] [ebp-Ch]
-	int _EAX;
-	char *_EBX;
+	src = pRLEBytes;
+	dst = pDecodeTo;
+	tbl = (BYTE *)&pLightTbl[light_table_index * 256];
+	w = nWidth;
+	shift = (BYTE)dst & 1;
 
-	if (pDecodeTo && pRLEBytes) {
-		v27 = &pLightTbl[256 * light_table_index];
-		v4 = pRLEBytes;
-		v5 = (int)pDecodeTo;
-		v6 = &pRLEBytes[frame_content_size];
-		v28 = (unsigned char)pDecodeTo & 1;
-		do {
-			v7 = frame_width;
-			do {
-				while (1) {
-					v8 = (unsigned char)*v4++;
-					if ((v8 & 0x80u) != 0)
-						break;
-					v26 = v6;
-					_EBX = v27;
-					v7 -= v8;
-					if ((v5 & 1) == v28) {
-						v10 = v8 >> 1;
-						if (!(v8 & 1))
-							goto LABEL_10;
-						++v4;
-						++v5;
-						if (v10) {
-						LABEL_17:
-							v11 = v10 & 1;
-							v21 = v10 >> 1;
-							if (!v11)
-								goto LABEL_26;
-							_EAX = *v4;
-							ASM_XLAT(_EAX, _EBX);
-							*(_BYTE *)v5 = _EAX;
-							v4 += 2;
-							v5 += 2;
-							if (v21) {
-							LABEL_26:
-								do {
-									_EAX = *(_DWORD *)v4;
-									v4 += 4;
-									ASM_XLAT(_EAX, _EBX);
-									*(_BYTE *)v5 = _EAX;
-									v25 = (_BYTE *)(v5 + 2);
-									_EAX = _rotr(_EAX, 16);
-									ASM_XLAT(_EAX, _EBX);
-									*v25 = _EAX;
-									v5 = (int)(v25 + 2);
-									--v21;
-								} while (v21);
-							}
-							goto LABEL_20;
-						}
+	for(; src != &pRLEBytes[nDataSize]; dst -= 768 + w, shift = (shift + 1) & 1) {
+		for(i = w; i;) {
+			width = *src++;
+			if(!(width & 0x80)) {
+				i -= width;
+				if(((BYTE)dst & 1) == shift) {
+					if(!(width & 1)) {
+						goto L_ODD;
 					} else {
-						v10 = v8 >> 1;
-						if (!(v8 & 1))
-							goto LABEL_17;
-						_EAX = *v4++;
-						ASM_XLAT(_EAX, _EBX);
-						*(_BYTE *)v5++ = _EAX;
-						if (v10) {
-						LABEL_10:
-							v11 = v10 & 1;
-							v12 = v10 >> 1;
-							if (!v11)
-								goto LABEL_27;
-							v13 = v4 + 1;
-							v14 = (_BYTE *)(v5 + 1);
-							_EAX = *v13;
-							v4 = v13 + 1;
-							ASM_XLAT(_EAX, _EBX);
-							*v14 = _EAX;
-							v5 = (int)(v14 + 1);
-							if (v12) {
-							LABEL_27:
-								do {
-									_EAX = *(_DWORD *)v4;
-									v4 += 4;
-									v18 = (_BYTE *)(v5 + 1);
-									_EAX = _rotr(_EAX, 8);
-									ASM_XLAT(_EAX, _EBX);
-									*v18 = _EAX;
-									_EAX = _rotr(_EAX, 16);
-									v18 += 2;
-									ASM_XLAT(_EAX, _EBX);
-									*v18 = _EAX;
-									v5 = (int)(v18 + 1);
-									--v12;
-								} while (v12);
-							}
-							goto LABEL_20;
+						src++;
+						dst++;
+L_EVEN:
+						width >>= 1;
+						if(width & 1) {
+							dst[0] = tbl[src[0]];
+							src += 2;
+							dst += 2;
+						}
+						width >>= 1;
+						for(; width; width--) {
+							dst[0] = tbl[src[0]];
+							dst[2] = tbl[src[2]];
+							src += 4;
+							dst += 4;
 						}
 					}
-				LABEL_20:
-					v6 = v26;
-					if (!v7)
-						goto LABEL_23;
+				} else {
+					if(!(width & 1)) {
+						goto L_EVEN;
+					} else {
+						dst[0] = tbl[src[0]];
+						src++;
+						dst++;
+L_ODD:
+						width >>= 1;
+						if(width & 1) {
+							dst[1] = tbl[src[1]];
+							src += 2;
+							dst += 2;
+						}
+						width >>= 1;
+						for(; width; width--) {
+							dst[1] = tbl[src[1]];
+							dst[3] = tbl[src[3]];
+							src += 4;
+							dst += 4;
+						}
+					}
 				}
-				_LOBYTE(v8) = -(char)v8;
-				v5 += v8;
-				v7 -= v8;
-			} while (v7);
-		LABEL_23:
-			v5 -= frame_width + 768;
-			v28 = ((_BYTE)v28 + 1) & 1;
-		} while (v6 != v4);
+			} else {
+				width = -(char)width;
+				dst += width;
+				i -= width;
+			}
+		}
 	}
+#endif
 }
 // 69BEF8: using guessed type int light_table_index;
 
-void __fastcall CelDecodeLightOnly(int screen_x, int screen_y, char *pCelBuff, int frame, int frame_width)
+void __fastcall CelDecodeLightOnly(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth)
 {
-	int v5;   // ebx
-	int v6;   // esi
-	char *v7; // edx
-	char *v8; // ecx
-	int v9;   // [esp-8h] [ebp-14h]
+	int nDataSize;
+	BYTE *pDecodeTo, *pRLEBytes, *tmp;
+	DWORD *pFrameTable;
 
-	v5 = screen_y;
-	if (gpBuffer && pCelBuff) {
-		v6 = *(_DWORD *)&pCelBuff[4 * frame];
-		v7 = &pCelBuff[v6];
-		v8 = (char *)gpBuffer + screen_y_times_768[v5] + screen_x;
-		v9 = *(_DWORD *)&pCelBuff[4 * frame + 4] - v6;
-		if (light_table_index)
-			CelDecDatLightOnly(v8, v7, v9, frame_width);
-		else
-			CelDrawDatOnly(v8, v7, v9, frame_width);
-	}
+	/// ASSERT: assert(gpBuffer);
+	if(!gpBuffer)
+		return;
+	/// ASSERT: assert(pCelBuff != NULL);
+	if(!pCelBuff)
+		return;
+
+	tmp = (BYTE *)gpBuffer;
+	pFrameTable = (DWORD *)pCelBuff;
+
+	nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
+	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
+	pDecodeTo = &tmp[sx + screen_y_times_768[sy]];
+
+	if(light_table_index)
+		CelDecDatLightOnly(pDecodeTo, pRLEBytes, nDataSize, nWidth);
+	else
+		CelDrawDatOnly(pDecodeTo, pRLEBytes, nDataSize, nWidth);
 }
 // 69BEF8: using guessed type int light_table_index;
 
@@ -378,9 +625,9 @@ void __fastcall CelDecodeHdrLightOnly(int screen_x, int screen_y, char *pCelBuff
 				v13 = &v10[(_DWORD)cel_buf];
 				v14 = (char *)gpBuffer + screen_y_times_768[v7 - 16 * always_0] + v15;
 				if (light_table_index)
-					CelDecDatLightOnly(v14, v13, v12, frame_width);
+					CelDecDatLightOnly((BYTE *)v14, (BYTE *)v13, v12, frame_width);
 				else
-					CelDrawDatOnly(v14, v13, v12, frame_width);
+					CelDrawDatOnly((BYTE *)v14, (BYTE *)v13, v12, frame_width);
 			}
 		}
 	}
@@ -411,11 +658,11 @@ void __fastcall CelDecodeHdrLightTrans(char *pBuff, char *pCelBuff, int frame, i
 					v11 = v10 - v9;
 				v12 = &v8[v9];
 				if (cel_transparency_active) {
-					CelDecDatLightTrans(pBuff, v12, v11, frame_width);
+					CelDecDatLightTrans((BYTE *)pBuff, (BYTE *)v12, v11, frame_width);
 				} else if (light_table_index) {
-					CelDecDatLightOnly(pBuff, v12, v11, frame_width);
+					CelDecDatLightOnly((BYTE *)pBuff, (BYTE *)v12, v11, frame_width);
 				} else {
-					CelDrawDatOnly(pBuff, v12, v11, frame_width);
+					CelDrawDatOnly((BYTE *)pBuff, (BYTE *)v12, v11, frame_width);
 				}
 			}
 		}
@@ -508,305 +755,559 @@ void __fastcall CelDrawHdrLightRed(int screen_x, int screen_y, char *pCelBuff, i
 }
 // 525728: using guessed type int light4flag;
 
-void __fastcall Cel2DecDatOnly(char *pDecodeTo, char *pRLEBytes, int frame_content_size, int frame_width)
+void __fastcall Cel2DecDatOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 {
-	char *v4;         // esi
-	char *v5;         // edi
-	int v6;           // edx
-	unsigned int v7;  // eax
-	unsigned int v8;  // ecx
-	char v9;          // cf
-	unsigned int v10; // ecx
-	char *v11;        // [esp+4h] [ebp-8h]
+	int w;
 
-	v11 = pRLEBytes;
-	if (pDecodeTo && pRLEBytes && gpBuffer) {
-		v4 = pRLEBytes;
-		v5 = pDecodeTo;
-		do {
-			v6 = frame_width;
-			do {
-				while (1) {
-					v7 = (unsigned char)*v4++;
-					if ((v7 & 0x80u) == 0)
-						break;
-					_LOBYTE(v7) = -(char)v7;
-					v5 += v7;
-					v6 -= v7;
-					if (!v6)
-						goto LABEL_17;
-				}
-				v6 -= v7;
-				if (v5 < (char *)gpBufEnd) {
-					v8 = v7 >> 1;
-					if (!(v7 & 1) || (*v5 = *v4, ++v4, ++v5, v8)) {
-						v9 = v8 & 1;
-						v10 = v7 >> 2;
-						if (!v9 || (*(_WORD *)v5 = *(_WORD *)v4, v4 += 2, v5 += 2, v10)) {
-							qmemcpy(v5, v4, 4 * v10);
-							v4 += 4 * v10;
-							v5 += 4 * v10;
-						}
+	/// ASSERT: assert(pDecodeTo != NULL);
+	if(!pDecodeTo)
+		return;
+	/// ASSERT: assert(pRLEBytes != NULL);
+	if(!pRLEBytes)
+		return;
+	/// ASSERT: assert(gpBuffer);
+	if(!gpBuffer)
+		return;
+
+#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+	__asm {
+		mov		esi, pRLEBytes
+		mov		edi, pDecodeTo
+		mov		eax, 768
+		add		eax, nWidth
+		mov		w, eax
+		mov		ebx, nDataSize
+		add		ebx, esi
+	label1:
+		mov		edx, nWidth
+	label2:
+		xor		eax, eax
+		lodsb
+		or		al, al
+		js		label7
+		sub		edx, eax
+		cmp		edi, gpBufEnd
+		jb		label3
+		add		esi, eax
+		add		edi, eax
+		jmp		label6
+	label3:
+		mov		ecx, eax
+		shr		ecx, 1
+		jnb		label4
+		movsb
+		jecxz	label6
+	label4:
+		shr		ecx, 1
+		jnb		label5
+		movsw
+		jecxz	label6
+	label5:
+		rep movsd
+	label6:
+		or		edx, edx
+		jz		label8
+		jmp		label2
+	label7:
+		neg		al
+		add		edi, eax
+		sub		edx, eax
+		jnz		label2
+	label8:
+		sub		edi, w
+		cmp		ebx, esi
+		jnz		label1
+	}
+#else
+	int i;
+	BYTE width;
+	BYTE *src, *dst;
+
+	src = pRLEBytes;
+	dst = pDecodeTo;
+	w = nWidth;
+
+	for(; src != &pRLEBytes[nDataSize]; dst -= 768 + w) {
+		for(i = w; i;) {
+			width = *src++;
+			if(!(width & 0x80)) {
+				i -= width;
+				if(dst < gpBufEnd) {
+					if(width & 1) {
+						dst[0] = src[0];
+						src++;
+						dst++;
+					}
+					width >>= 1;
+					if(width & 1) {
+						dst[0] = src[0];
+						dst[1] = src[1];
+						src += 2;
+						dst += 2;
+					}
+					width >>= 1;
+					for(; width; width--) {
+						dst[0] = src[0];
+						dst[1] = src[1];
+						dst[2] = src[2];
+						dst[3] = src[3];
+						src += 4;
+						dst += 4;
 					}
 				} else {
-					v4 += v7;
-					v5 += v7;
+					src += width;
+					dst += width;
 				}
-			} while (v6);
-		LABEL_17:
-			v5 += -frame_width - 768;
-		} while (&v11[frame_content_size] != v4);
+			} else {
+				width = -(char)width;
+				dst += width;
+				i -= width;
+			}
+		}
 	}
+#endif
 }
 // 69CF0C: using guessed type int gpBufEnd;
 
-void __fastcall Cel2DrawHdrOnly(int screen_x, int screen_y, char *pCelBuff, int frame, int frame_width, int a6, int direction)
+void __fastcall Cel2DrawHdrOnly(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int always_0, int dir)
 {
-	int v7;   // edx
-	char *v8; // eax
-	int v9;   // edi
-	int v10;  // ecx
-	int v11;  // [esp+Ch] [ebp-8h]
-	int v12;  // [esp+10h] [ebp-4h]
+	int v1, v2, nDataSize;
+	BYTE *pRLEBytes, *tmp;
+	DWORD *pFrameTable;
 
-	v12 = screen_y;
-	v11 = screen_x;
-	if (gpBuffer) {
-		if (pCelBuff) {
-			v7 = *(_DWORD *)&pCelBuff[4 * frame];
-			v8 = &pCelBuff[v7];
-			v9 = *(unsigned short *)&pCelBuff[v7 + a6];
-			if (*(_WORD *)&pCelBuff[v7 + a6]) {
-				if (direction != 8 && *(_WORD *)&v8[direction])
-					v10 = *(unsigned short *)&v8[direction] - v9;
-				else
-					v10 = *(_DWORD *)&pCelBuff[4 * frame + 4] - v7 - v9;
-				Cel2DecDatOnly(
-				    (char *)gpBuffer + screen_y_times_768[v12 - 16 * a6] + v11,
-				    &v8[v9],
-				    v10,
-				    frame_width);
-			}
-		}
-	}
+	/// ASSERT: assert(gpBuffer);
+	if(!gpBuffer)
+		return;
+	/// ASSERT: assert(pCelBuff != NULL);
+	if(!pCelBuff)
+		return;
+
+	pFrameTable = (DWORD *)pCelBuff;
+	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
+	v1 = *(WORD *)&pRLEBytes[always_0];
+
+	if(!v1)
+		return;
+
+	nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
+
+	if(dir == 8)
+		v2 = 0;
+	else
+		v2 = *(WORD *)&pRLEBytes[dir];
+	if(v2)
+		nDataSize = v2 - v1;
+	else
+		nDataSize -= v1;
+
+	tmp = (BYTE *)gpBuffer;
+	Cel2DecDatOnly(
+		&tmp[sx + screen_y_times_768[sy - 16 * always_0]],
+		&pRLEBytes[v1],
+		nDataSize,
+		nWidth);
 }
 
-void __fastcall Cel2DecodeHdrOnly(char *pBuff, char *pCelBuff, int frame, int frame_width, int a5, int direction)
+void __fastcall Cel2DecodeHdrOnly(BYTE *pBuff, BYTE *pCelBuff, int nCel, int nWidth, int always_0, int dir)
 {
-	int v6;   // edi
-	char *v7; // esi
-	int v8;   // ebx
-	int v9;   // eax
-	int v10;  // edx
-	int v11;  // eax
+	int v1, v2, nDataSize;
+	BYTE *pRLEBytes;
+	DWORD *pFrameTable;
 
-	if (pCelBuff) {
-		if (pBuff) {
-			v6 = *(_DWORD *)&pCelBuff[4 * frame];
-			v7 = &pCelBuff[v6];
-			v8 = *(unsigned short *)&pCelBuff[v6 + a5];
-			if (*(_WORD *)&pCelBuff[v6 + a5]) {
-				v9 = *(_DWORD *)&pCelBuff[4 * frame + 4] - v6;
-				v10 = *(unsigned short *)&v7[direction];
-				if (direction == 8)
-					v10 = 0;
-				if (v10)
-					v11 = v10 - v8;
-				else
-					v11 = v9 - v8;
-				Cel2DecDatOnly(pBuff, &v7[v8], v11, frame_width);
-			}
-		}
-	}
+	/// ASSERT: assert(pCelBuff != NULL);
+	if(!pCelBuff)
+		return;
+	/// ASSERT: assert(pBuff != NULL);
+	if(!pBuff)
+		return;
+
+	pFrameTable = (DWORD *)pCelBuff;
+	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
+	v1 = *(WORD *)&pRLEBytes[always_0];
+
+	if(!v1)
+		return;
+
+	nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
+
+	v2 = *(WORD *)&pRLEBytes[dir];
+	if(dir == 8)
+		v2 = 0;
+	if(v2)
+		nDataSize = v2 - v1;
+	else
+		nDataSize -= v1;
+
+	Cel2DecDatOnly(pBuff, &pRLEBytes[v1], nDataSize, nWidth);
 }
 
-void __fastcall Cel2DecDatLightOnly(char *pDecodeTo, char *pRLEBytes, int frame_content_size, int frame_width)
+void __fastcall Cel2DecDatLightOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 {
-	char *v4; // esi
-	char *v5; // edi
-	char *v6; // ebx
-	int v7;   // edx
-	int v8;   // eax
-	int v9;   // ST00_4
-	char *a3; // [esp+Ch] [ebp-10h]
+	int w;
+	BYTE *tbl;
 
-	if (pDecodeTo && pRLEBytes && gpBuffer) {
-		a3 = &pLightTbl[256 * light_table_index];
-		v4 = pRLEBytes;
-		v5 = pDecodeTo;
-		v6 = &pRLEBytes[frame_content_size];
-		do {
-			v7 = frame_width;
-			do {
-				while (1) {
-					v8 = (unsigned __int8)*v4++;
-					if ((v8 & 0x80u) == 0) /* check sign */
-						break;
-					_LOBYTE(v8) = -(char)v8;
-					v5 += v8;
-					v7 -= v8;
-					if (!v7)
-						goto LABEL_13;
-				}
-				v7 -= v8;
-				if (v5 < (char *)gpBufEnd) {
-					v9 = v7;
-					Cel2DecDatLightEntry(v8, a3, &v5, &v4);
-					v7 = v9;
+	/// ASSERT: assert(pDecodeTo != NULL);
+	if(!pDecodeTo)
+		return;
+	/// ASSERT: assert(pRLEBytes != NULL);
+	if(!pRLEBytes)
+		return;
+	/// ASSERT: assert(gpBuffer);
+	if(!gpBuffer)
+		return;
+
+#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+	__asm {
+		mov		eax, light_table_index
+		shl		eax, 8
+		add		eax, pLightTbl
+		mov		tbl, eax
+		mov		esi, pRLEBytes
+		mov		edi, pDecodeTo
+		mov		eax, 768
+		add		eax, nWidth
+		mov		w, eax
+		mov		ebx, nDataSize
+		add		ebx, esi
+	label1:
+		mov		edx, nWidth
+	label2:
+		xor		eax, eax
+		lodsb
+		or		al, al
+		js		label5
+		push	ebx
+		mov		ebx, tbl
+		sub		edx, eax
+		cmp		edi, gpBufEnd
+		jb		label3
+		add		esi, eax
+		add		edi, eax
+		jmp		label4
+	label3:
+		mov		ecx, eax
+		push	edx
+		call	Cel2DecDatLightEntry
+		pop		edx
+	label4:
+		pop		ebx
+		or		edx, edx
+		jz		label6
+		jmp		label2
+	label5:
+		neg		al
+		add		edi, eax
+		sub		edx, eax
+		jnz		label2
+	label6:
+		sub		edi, w
+		cmp		ebx, esi
+		jnz		label1
+		jmp		labexit
+	}
+
+	/* Assembly Macro */
+	__asm {
+	Cel2DecDatLightEntry:
+		shr		cl, 1
+		jnb		label7
+		mov		dl, [esi]
+		mov		dl, [ebx+edx]
+		mov		[edi], dl
+		add		esi, 1
+		add		edi, 1
+	label7:
+		shr		cl, 1
+		jnb		label8
+		mov		dl, [esi]
+		mov		ch, [ebx+edx]
+		mov		[edi], ch
+		mov		dl, [esi+1]
+		mov		ch, [ebx+edx]
+		mov		[edi+1], ch
+		add		esi, 2
+		add		edi, 2
+	label8:
+		test	cl, cl
+		jz		labret
+	label9:
+		mov		eax, [esi]
+		add		esi, 4
+		mov		dl, al
+		mov		ch, [ebx+edx]
+		mov		dl, ah
+		ror		eax, 10h
+		mov		[edi], ch
+		mov		ch, [ebx+edx]
+		mov		dl, al
+		mov		[edi+1], ch
+		mov		ch, [ebx+edx]
+		mov		dl, ah
+		mov		[edi+2], ch
+		mov		ch, [ebx+edx]
+		mov		[edi+3], ch
+		add		edi, 4
+		dec		cl
+		jnz		label9
+	labret:
+		retn
+	}
+
+	__asm {
+	labexit:
+	}
+#else
+	int i;
+	BYTE width;
+	BYTE *src, *dst;
+
+	src = pRLEBytes;
+	dst = pDecodeTo;
+	tbl = (BYTE *)&pLightTbl[light_table_index * 256];
+	w = nWidth;
+
+	for(; src != &pRLEBytes[nDataSize]; dst -= 768 + w) {
+		for(i = w; i;) {
+			width = *src++;
+			if(!(width & 0x80)) {
+				i -= width;
+				if(dst < gpBufEnd) {
+					if(width & 1) {
+						dst[0] = tbl[src[0]];
+						src++;
+						dst++;
+					}
+					width >>= 1;
+					if(width & 1) {
+						dst[0] = tbl[src[0]];
+						dst[1] = tbl[src[1]];
+						src += 2;
+						dst += 2;
+					}
+					width >>= 1;
+					for(; width; width--) {
+						dst[0] = tbl[src[0]];
+						dst[1] = tbl[src[1]];
+						dst[2] = tbl[src[2]];
+						dst[3] = tbl[src[3]];
+						src += 4;
+						dst += 4;
+					}
 				} else {
-					v4 += v8;
-					v5 += v8;
+					src += width;
+					dst += width;
 				}
-			} while (v7);
-		LABEL_13:
-			v5 += -frame_width - 768;
-		} while (v6 != v4);
+			} else {
+				width = -(char)width;
+				dst += width;
+				i -= width;
+			}
+		}
 	}
+#endif
 }
 // 69BEF8: using guessed type int light_table_index;
 // 69CF0C: using guessed type int gpBufEnd;
 
-void __fastcall Cel2DecDatLightEntry(unsigned char n, char *LightIndex, char **pDecodeTo, char **pRLEBytes)
+void __fastcall Cel2DecDatLightTrans(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 {
-	int i;
+	int w;
+	BOOL shift;
+	BYTE *tbl;
 
-	for (i = 0; i < n; i++) {
-		**pDecodeTo = LightIndex[**pRLEBytes];
-		(*pRLEBytes)++;
-		(*pDecodeTo)++;
+	/// ASSERT: assert(pDecodeTo != NULL);
+	if(!pDecodeTo)
+		return;
+	/// ASSERT: assert(pRLEBytes != NULL);
+	if(!pRLEBytes)
+		return;
+	/// ASSERT: assert(gpBuffer);
+	if(!gpBuffer)
+		return;
+
+#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+	__asm {
+		mov		eax, light_table_index
+		shl		eax, 8
+		add		eax, pLightTbl
+		mov		tbl, eax
+		mov		esi, pRLEBytes
+		mov		edi, pDecodeTo
+		mov		eax, 768
+		add		eax, nWidth
+		mov		w, eax
+		mov		ebx, nDataSize
+		add		ebx, esi
+		mov		eax, edi
+		and		eax, 1
+		mov		shift, eax
+	label1:
+		mov		edx, nWidth
+	label2:
+		xor		eax, eax
+		lodsb
+		or		al, al
+		js		label10
+		push	ebx
+		mov		ebx, tbl
+		sub		edx, eax
+		cmp		edi, gpBufEnd
+		jb		label3
+		add		esi, eax
+		add		edi, eax
+		jmp		label9
+	label3:
+		mov		ecx, eax
+		mov		eax, edi
+		and		eax, 1
+		cmp		eax, shift
+		jnz		label6
+		shr		ecx, 1
+		jnb		label4
+		inc		esi
+		inc		edi
+		jecxz	label9
+		jmp		label7
+	label4:
+		shr		ecx, 1
+		jnb		label5
+		inc		esi
+		inc		edi
+		lodsb
+		xlat
+		stosb
+		jecxz	label9
+	label5:
+		lodsd
+		inc		edi
+		ror		eax, 8
+		xlat
+		stosb
+		ror		eax, 10h
+		inc		edi
+		xlat
+		stosb
+		loop	label5
+		jmp		label9
+	label6:
+		shr		ecx, 1
+		jnb		label7
+		lodsb
+		xlat
+		stosb
+		jecxz	label9
+		jmp		label4
+	label7:
+		shr		ecx, 1
+		jnb		label8
+		lodsb
+		xlat
+		stosb
+		inc		esi
+		inc		edi
+		jecxz	label9
+	label8:
+		lodsd
+		xlat
+		stosb
+		inc		edi
+		ror		eax, 10h
+		xlat
+		stosb
+		inc		edi
+		loop	label8
+	label9:
+		pop		ebx
+		or		edx, edx
+		jz		label11
+		jmp		label2
+	label10:
+		neg		al
+		add		edi, eax
+		sub		edx, eax
+		jnz		label2
+	label11:
+		sub		edi, w
+		mov		eax, shift
+		inc		eax
+		and		eax, 1
+		mov		shift, eax
+		cmp		ebx, esi
+		jnz		label1
 	}
-}
+#else
+	int i;
+	BYTE width;
+	BYTE *src, *dst;
 
-void __fastcall Cel2DecDatLightTrans(char *pDecodeTo, char *pRLEBytes, int frame_content_size, int frame_width)
-{
-	char *v4;         // esi
-	unsigned int v5;  // edi
-	char *v6;         // ebx
-	int v7;           // edx
-	unsigned int v8;  // eax
-	unsigned int v10; // ecx
-	char v11;         // cf
-	unsigned int v12; // ecx
-	char *v13;        // esi
-	_BYTE *v14;       // edi
-	_BYTE *v18;       // edi
-	unsigned int v21; // ecx
-	_BYTE *v25;       // edi
-	char *v26;        // [esp-4h] [ebp-24h]
-	char *v27;        // [esp+Ch] [ebp-14h]
-	int v28;          // [esp+14h] [ebp-Ch]
-	int _EAX;
-	char *_EBX;
+	src = pRLEBytes;
+	dst = pDecodeTo;
+	tbl = (BYTE *)&pLightTbl[light_table_index * 256];
+	w = nWidth;
+	shift = (BYTE)dst & 1;
 
-	if (pDecodeTo && pRLEBytes && gpBuffer) {
-		v27 = &pLightTbl[256 * light_table_index];
-		v4 = pRLEBytes;
-		v5 = (unsigned int)pDecodeTo;
-		v6 = &pRLEBytes[frame_content_size];
-		v28 = (unsigned char)pDecodeTo & 1;
-		do {
-			v7 = frame_width;
-			do {
-				while (1) {
-					v8 = (unsigned char)*v4++;
-					if ((v8 & 0x80u) != 0)
-						break;
-					v26 = v6;
-					_EBX = v27;
-					v7 -= v8;
-					if (v5 < (unsigned int)gpBufEnd) {
-						if ((v5 & 1) == v28) {
-							v10 = v8 >> 1;
-							if (!(v8 & 1))
-								goto LABEL_13;
-							++v4;
-							++v5;
-							if (v10) {
-							LABEL_20:
-								v11 = v10 & 1;
-								v21 = v10 >> 1;
-								if (!v11)
-									goto LABEL_29;
-								_EAX = *v4;
-								ASM_XLAT(_EAX, _EBX);
-								*(_BYTE *)v5 = _EAX;
-								v4 += 2;
-								v5 += 2;
-								if (v21) {
-								LABEL_29:
-									do {
-										_EAX = *(_DWORD *)v4;
-										v4 += 4;
-										ASM_XLAT(_EAX, _EBX);
-										*(_BYTE *)v5 = _EAX;
-										v25 = (_BYTE *)(v5 + 2);
-										_EAX = _rotr(_EAX, 16);
-										ASM_XLAT(_EAX, _EBX);
-										*v25 = _EAX;
-										v5 = (unsigned int)(v25 + 2);
-										--v21;
-									} while (v21);
-								}
-								goto LABEL_23;
-							}
+	for(; src != &pRLEBytes[nDataSize]; dst -= 768 + w, shift = (shift + 1) & 1) {
+		for(i = w; i;) {
+			width = *src++;
+			if(!(width & 0x80)) {
+				i -= width;
+				if(dst < gpBufEnd) {
+					if(((BYTE)dst & 1) == shift) {
+						if(!(width & 1)) {
+							goto L_ODD;
 						} else {
-							v10 = v8 >> 1;
-							if (!(v8 & 1))
-								goto LABEL_20;
-							_EAX = *v4++;
-							ASM_XLAT(_EAX, _EBX);
-							*(_BYTE *)v5++ = _EAX;
-							if (v10) {
-							LABEL_13:
-								v11 = v10 & 1;
-								v12 = v10 >> 1;
-								if (!v11)
-									goto LABEL_30;
-								v13 = v4 + 1;
-								v14 = (_BYTE *)(v5 + 1);
-								_EAX = *v13;
-								v4 = v13 + 1;
-								ASM_XLAT(_EAX, _EBX);
-								*v14 = _EAX;
-								v5 = (unsigned int)(v14 + 1);
-								if (v12) {
-								LABEL_30:
-									do {
-										_EAX = *(_DWORD *)v4;
-										v4 += 4;
-										v18 = (_BYTE *)(v5 + 1);
-										_EAX = _rotr(_EAX, 8);
-										ASM_XLAT(_EAX, _EBX);
-										*v18 = _EAX;
-										_EAX = _rotr(_EAX, 16);
-										v18 += 2;
-										ASM_XLAT(_EAX, _EBX);
-										*v18 = _EAX;
-										v5 = (unsigned int)(v18 + 1);
-										--v12;
-									} while (v12);
-								}
-								goto LABEL_23;
+							src++;
+							dst++;
+L_EVEN:
+							width >>= 1;
+							if(width & 1) {
+								dst[0] = tbl[src[0]];
+								src += 2;
+								dst += 2;
+							}
+							width >>= 1;
+							for(; width; width--) {
+								dst[0] = tbl[src[0]];
+								dst[2] = tbl[src[2]];
+								src += 4;
+								dst += 4;
 							}
 						}
 					} else {
-						v4 += v8;
-						v5 += v8;
+						if(!(width & 1)) {
+							goto L_EVEN;
+						} else {
+							dst[0] = tbl[src[0]];
+							src++;
+							dst++;
+L_ODD:
+							width >>= 1;
+							if(width & 1) {
+								dst[1] = tbl[src[1]];
+								src += 2;
+								dst += 2;
+							}
+							width >>= 1;
+							for(; width; width--) {
+								dst[1] = tbl[src[1]];
+								dst[3] = tbl[src[3]];
+								src += 4;
+								dst += 4;
+							}
+						}
 					}
-				LABEL_23:
-					v6 = v26;
-					if (!v7)
-						goto LABEL_26;
+				} else {
+					src += width;
+					dst += width;
 				}
-				_LOBYTE(v8) = -(char)v8;
-				v5 += v8;
-				v7 -= v8;
-			} while (v7);
-		LABEL_26:
-			v5 -= frame_width + 768;
-			v28 = ((_BYTE)v28 + 1) & 1;
-		} while (v6 != v4);
+			} else {
+				width = -(char)width;
+				dst += width;
+				i -= width;
+			}
+		}
 	}
+#endif
 }
 // 69BEF8: using guessed type int light_table_index;
 // 69CF0C: using guessed type int gpBufEnd;
@@ -845,9 +1346,9 @@ void __fastcall Cel2DecodeHdrLight(int screen_x, int screen_y, char *pCelBuff, i
 				v15 = &v10[(_DWORD)cel_buf];
 				v16 = (char *)gpBuffer + screen_y_times_768[v7 - 16 * a6] + screen_x;
 				if (light_table_index)
-					Cel2DecDatLightOnly(v16, v15, v14, frame_width);
+					Cel2DecDatLightOnly((BYTE *)v16, (BYTE *)v15, v14, frame_width);
 				else
-					Cel2DecDatOnly(v16, v15, v14, frame_width);
+					Cel2DecDatOnly((BYTE *)v16, (BYTE *)v15, v14, frame_width);
 			}
 		}
 	}
@@ -881,11 +1382,11 @@ void __fastcall Cel2DecodeLightTrans(char *dst_buf, char *pCelBuff, int frame, i
 				v12 = v10 - v9;
 			v13 = &v8[v9];
 			if (cel_transparency_active) {
-				Cel2DecDatLightTrans(dst_buf, v13, v12, frame_width);
+				Cel2DecDatLightTrans((BYTE *)dst_buf, (BYTE *)v13, v12, frame_width);
 			} else if (light_table_index) {
-				Cel2DecDatLightOnly(dst_buf, v13, v12, frame_width);
+				Cel2DecDatLightOnly((BYTE *)dst_buf, (BYTE *)v13, v12, frame_width);
 			} else {
-				Cel2DecDatOnly(dst_buf, v13, v12, frame_width);
+				Cel2DecDatOnly((BYTE *)dst_buf, (BYTE *)v13, v12, frame_width);
 			}
 		}
 	}
