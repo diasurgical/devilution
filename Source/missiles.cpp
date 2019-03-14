@@ -3910,7 +3910,7 @@ void __fastcall MI_Acidpud(int i)
 {
 	int range;
 
-	--missile[i]._mirange;
+	missile[i]._mirange--;
 	range = missile[i]._mirange;
 	CheckMissileCol(i, missile[i]._midam, missile[i]._midam, 1, missile[i]._mix, missile[i]._miy, 0);
 	missile[i]._mirange = range;
