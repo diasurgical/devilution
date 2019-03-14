@@ -26,5 +26,5 @@
 
 #define MAKE_HRESULT(sev, fac, code) ((HRESULT)(((uint32_t)(sev) << 31) | ((uint32_t)(fac) << 16) | ((uint32_t)(code))))
 
-#include "miniwin_com_macro_ddraw.h"
-#include "miniwin_com_macro_dsound.h"
+#include "miniwin_com_macro_ddraw.inc"
+#include "miniwin_com_macro_dsound.inc"

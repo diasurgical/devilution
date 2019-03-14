@@ -1,9 +1,3 @@
-#pragma once
-
-#ifndef DEVILUTION_MINIWIN_COM
-#error
-#endif
-
 typedef void *LPDSBCAPS, *LPCDSBUFFERDESC;
 
 struct IDirectSound;

@@ -1,9 +1,3 @@
-#pragma once
-
-#ifndef DEVILUTION_MINIWIN_COM
-#error
-#endif
-
 typedef struct _DDCOLORKEY {
 	DWORD dwColorSpaceLowValue;
 	DWORD dwColorSpaceHighValue;

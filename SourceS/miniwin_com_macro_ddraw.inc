@@ -1,5 +1,3 @@
-#pragma once
-
 #define _FACDD 0x876
 #define MAKE_DDHRESULT(code) MAKE_HRESULT(1, _FACDD, code)
 

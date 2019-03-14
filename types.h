@@ -47,7 +47,7 @@
 #define DEVILUTION_BEGIN_NAMESPACE namespace dvl {
 #define DEVILUTION_END_NAMESPACE }
 
-#include "miniwin_pushdecl.h"
+#include "miniwin_pushdecl.inc"
 #include "miniwin.h"
 
 #endif
@@ -154,7 +154,7 @@ DEVILUTION_BEGIN_NAMESPACE
 //}
 //#endif
 
-#include "miniwin_popdecl.h"
+#include "miniwin_popdecl.inc"
 
 DEVILUTION_END_NAMESPACE
 

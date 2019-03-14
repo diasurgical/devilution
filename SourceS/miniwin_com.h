@@ -43,8 +43,8 @@ struct IUnknown {
 	// clang-format on
 };
 
-#include "miniwin_com_ddraw.h"
-#include "miniwin_com_dsound.h"
+#include "miniwin_com_ddraw.inc"
+#include "miniwin_com_dsound.inc"
 
 #ifndef DEVILUTION_ENGINE
 #pragma pop_macro("DECLARE_INTERFACE_")
