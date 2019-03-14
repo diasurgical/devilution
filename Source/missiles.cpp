@@ -3455,7 +3455,7 @@ void __fastcall MI_Golem(int i)
 			for (m = (unsigned char)CrawlTable[k];m > 0; m--){
 				tx = missile[i]._miVar4 + CrawlTable[tid - 1];
 				ty = missile[i]._miVar5 + CrawlTable[tid];
-				if (tx > 0 && tx < MAXDUNX && ty > 0 && ty < MAXDUNY) {
+				if (0 < tx && tx < MAXDUNX && 0 < ty && ty < MAXDUNY) {
 					dp = dPiece[tx][ty];
 					if (LineClear(missile[i]._miVar1, missile[i]._miVar2, tx, ty)) {
 						if (!(dMonster[tx][ty] | nSolidTable[dp] | dObject[tx][ty])) {
