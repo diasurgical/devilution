@@ -4790,7 +4790,7 @@ void __fastcall MI_Weapexp(int i)
 
 void __fastcall MI_Misexp(int i)
 {
-	int ExpLight[10]={9,10,11,12,11,10,8,6,4,2}; // [esp+8h] [ebp-28h]
+	int ExpLight[10]={9, 10, 11, 12, 11, 10, 8, 6, 4, 2};
 
 	missile[i]._mirange--;
 	if (!missile[i]._mirange) {
