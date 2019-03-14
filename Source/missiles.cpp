@@ -2186,7 +2186,7 @@ BOOL __fastcall CheckIfTrig(int x, int y)
 		if ((x == trigs[i]._tx && y == trigs[i]._ty) || (abs(trigs[i]._tx - x) < 2 && abs(trigs[i]._ty - y) < 2))
 			return 1;
 	}
-	return 0;
+	return FALSE;
 }
 
 void __fastcall AddTown(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
