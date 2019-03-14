@@ -603,7 +603,7 @@ void __fastcall S_ScrollSBuy(int idx)
 			AddSTextVal(y, smithitem[idx]._iIvalue);
 			PrintStoreItem(&smithitem[idx], y + 1, clr);
 			stextdown = y;
-			++idx;
+			idx++;
 		}
 	}
 
