@@ -2184,7 +2184,7 @@ BOOL __fastcall CheckIfTrig(int x, int y)
 
 	for (i = 0; i < trigflag[4]; i++){
 		if ((x == trigs[i]._tx && y == trigs[i]._ty) || (abs(trigs[i]._tx - x) < 2 && abs(trigs[i]._ty - y) < 2))
-			return 1;
+			return TRUE;
 	}
 	return FALSE;
 }
