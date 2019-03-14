@@ -679,7 +679,7 @@ void __fastcall GetMissileVel(int i, int sx, int sy, int dx, int dy, int v)
 	double dxp,dyp,dr;
 
 	if (dx != sx || dy != sy) {
-		dxp = (double)((dx + sy - sx - dy) << 21);
+		dxp = (dx + sy - sx - dy) << 21;
 		dyp = (double)((dy + dx - sx - sy) << 21);
 		dr = sqrt(dxp * dxp + dyp * dyp);
 		missile[i]._mixvel = (dxp * (v << 16)) / dr;
