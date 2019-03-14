@@ -46,14 +46,14 @@ extern int numpanbtns; // weak
 extern void *pStatusPanel;
 extern char panelstr[256];
 extern int panelflag; // weak
-extern unsigned char spell_trans[256];
+extern unsigned char SplTransTbl[256];
 extern int initialDropGoldValue; // idb
 extern void *pSpellCels;
 extern int panbtndown;   // weak
 extern void *pTalkPanel; // idb
 extern int spselflag;    // weak
 
-void __fastcall DrawSpellCel(int xp, int yp, char *Trans, int nCel, int w);
+void __fastcall DrawSpellCel(int xp, int yp, BYTE *Trans, int nCel, int w);
 void __fastcall SetSpellTrans(char t);
 void __cdecl DrawSpell();
 void __cdecl DrawSpellList();
