@@ -512,18 +512,6 @@ int __fastcall GetSpellLevel(int id, int sn)
 
 int __fastcall GetDirection8(int x1, int y1, int x2, int y2)
 {
-	int v5;         // esi
-	int v6;         // eax
-	int v7;         // eax
-	int result;     // eax
-	char lrtoul[3]; // [esp+10Ch] [ebp-Ch]
-	char urtoll[3]; // [esp+10Fh] [ebp-9h]
-	char lltour[3]; // [esp+112h] [ebp-6h]
-	char ultolr[3]; // [esp+115h] [ebp-3h]
-
-	int v9 = y1;
-	int v4 = x1;
-
 	unsigned char Dirs[16][16] = {
 		{ 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 		{ 2, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -542,37 +530,29 @@ int __fastcall GetDirection8(int x1, int y1, int x2, int y2)
 		{ 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
 		{ 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
 	};
+	unsigned char trans[4][3] = { { 3, 4, 5 },
+		{ 3, 2, 1 },
+		{ 7, 0, 1 },
+		{ 7, 6, 5 } };
+	int mx, my, md;
 
-	lrtoul[0] = 3;
-	lrtoul[1] = 4;
-	lrtoul[2] = 5;
-	urtoll[0] = 3;
-	urtoll[1] = 2;
-	urtoll[2] = 1;
-	ultolr[0] = 7;
-	ultolr[1] = 6;
-	ultolr[2] = 5;
-	lltour[0] = 7;
-	lltour[1] = 0;
-	lltour[2] = 1;
-	v5 = abs(x2 - x1);
-	if (v5 > 15)
-		v5 = 15;
-	v6 = abs(y2 - v9);
-	if (v6 > 15)
-		v6 = 15;
-	v7 = Dirs[v6][v5];
-	if (v4 <= x2) {
-		if (v9 <= y2)
-			result = (unsigned char)lltour[v7];
+	mx = abs(x2 - x1);
+	if (mx > 15)
+		mx = 15;
+	my = abs(y2 - y1);
+	if (my > 15)
+		my = 15;
+	md = Dirs[my][mx];
+	if (x1 > x2) {
+		if (y1 > y2)
+			md = trans[0][md];
 		else
-			result = (unsigned char)ultolr[v7];
-	} else if (v9 <= y2) {
-		result = (unsigned char)urtoll[v7];
-	} else {
-		result = (unsigned char)lrtoul[v7];
-	}
-	return result;
+			md = trans[1][md];
+	} else if (y1 > y2)
+		md = trans[3][md];
+	else
+		md = trans[2][md];
+	return md;
 }
 
 int __fastcall GetDirection16(int x1, int y1, int x2, int y2)
