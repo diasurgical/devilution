@@ -4569,39 +4569,19 @@ void __fastcall MI_Weapexp(int i)
 
 void __fastcall MI_Misexp(int i)
 {
-	int v1;           // edi
-	int v2;           // esi
-	BOOLEAN v3;       // zf
-	int v4;           // ecx
-	int v5;           // eax
-	int ExpLight[10]; // [esp+8h] [ebp-28h]
+	int ExpLight[10]={9, 10, 11, 12, 11, 10, 8, 6, 4, 2};
 
-	v1 = i;
-	v2 = i;
-	ExpLight[0] = 9;
-	v3 = missile[i]._mirange == 1;
-	--missile[v2]._mirange;
-	ExpLight[1] = 10;
-	ExpLight[3] = 12;
-	ExpLight[2] = 11;
-	ExpLight[4] = 11;
-	ExpLight[5] = 10;
-	ExpLight[6] = 8;
-	ExpLight[7] = 6;
-	ExpLight[8] = 4;
-	ExpLight[9] = 2;
-	if (v3) {
-		v4 = missile[v2]._mlid;
-		missile[v2]._miDelFlag = TRUE;
-		AddUnLight(v4);
+	missile[i]._mirange--;
+	if (!missile[i]._mirange) {
+		missile[i]._miDelFlag = TRUE;
+		AddUnLight(missile[i]._mlid);
 	} else {
-		v5 = missile[v2]._miVar1;
-		if (v5)
-			ChangeLight(missile[v2]._mlid, missile[v2]._mix, missile[v2]._miy, ExpLight[v5]);
+		if (!missile[i]._miVar1)
+			missile[i]._mlid = AddLight(missile[i]._mix, missile[i]._miy, 9);
 		else
-			missile[v2]._mlid = AddLight(missile[v2]._mix, missile[v2]._miy, 9);
-		++missile[v2]._miVar1;
-		PutMissile(v1);
+			ChangeLight(missile[i]._mlid, missile[i]._mix, missile[i]._miy, ExpLight[missile[i]._miVar1]);
+		missile[i]._miVar1++;
+		PutMissile(i);
 	}
 }
 
