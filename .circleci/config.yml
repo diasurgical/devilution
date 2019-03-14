@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  linux_x86_64:
     docker:
       - image: debian:stretch-backports
     working_directory: ~/repo
@@ -12,7 +12,7 @@ jobs:
       - run: cd build && cmake ..
       - run: cd build && make -j$(nproc)
       - store_artifacts: {path: ./build/devilutionx, destination: devilutionx_linux_x86_64}
-  build32:
+  linux_x86:
     docker:
       - image: debian:stretch-backports
     working_directory: ~/repo
@@ -30,5 +30,5 @@ workflows:
   version: 2
   testflow:
     jobs:
-      - build
-      - build32
+      - linux_x86_64
+      - linux_x86
