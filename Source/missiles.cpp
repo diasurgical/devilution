@@ -2208,7 +2208,9 @@ BOOL __fastcall CheckIfTrig(int x, int y)
 
 void __fastcall AddTown(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int i, j, k, mx, tx, ty, CrawlNum[6] = { 0, 3, 12, 45, 94, 159 };
+	int i, j, k, mx, tx, ty;
+	int CrawlNum[6] = { 0, 3, 12, 45, 94, 159 };
+
 
 	tx = dx;
 	if (currlevel) {
