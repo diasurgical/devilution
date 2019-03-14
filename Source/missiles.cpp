@@ -2215,7 +2215,7 @@ void __fastcall AddTown(int mi, int sx, int sy, int dx, int dy, int midir, int m
 		missile[mi]._miDelFlag = TRUE;
 		for (j = 0; j < 6; j++) {
 			k = CrawlNum[j] + 2;
-			for (i = (unsigned char)CrawlTable[CrawlNum[j]]; i > 0; i--) {
+			for (i = 0; i < (unsigned char)CrawlTable[CrawlNum[j]]; i++) {
 				tx = dx + CrawlTable[k - 1];
 				ty = dy + CrawlTable[k];
 				if (tx > 0 && tx < MAXDUNX && ty > 0 && ty < MAXDUNY) {
