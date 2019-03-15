@@ -191,8 +191,8 @@ void __fastcall town_draw_clipped_town(BYTE *buffer, int x, int y, int sx, int s
 		v20 = sy + plr[v19]._pyoff;
 		v21 = sx + plr[v19]._pxoff - plr[v19]._pAnimWidth2;
 		if (v18 == pcursplr)
-			Cl2DecodeClrHL(165, v21, v20, (char *)plr[v19]._pAnimData, plr[v19]._pAnimFrame, plr[v19]._pAnimWidth, 0, 8);
-		Cl2DecodeFrm4(v21, v20, (char *)plr[v19]._pAnimData, plr[v19]._pAnimFrame, plr[v19]._pAnimWidth, 0, 8);
+			Cl2DecodeClrHL(165, v21, v20, plr[v19]._pAnimData, plr[v19]._pAnimFrame, plr[v19]._pAnimWidth, 0, 8);
+		Cl2DecodeFrm4(v21, v20, plr[v19]._pAnimData, plr[v19]._pAnimFrame, plr[v19]._pAnimWidth, 0, 8);
 		if (some_flag && plr[v19]._peflag)
 			town_draw_clipped_e_flag((BYTE *)v27 - 64, xa - 1, y + 1, sx - 64, sy);
 		v7 = v29;
@@ -206,8 +206,8 @@ void __fastcall town_draw_clipped_town(BYTE *buffer, int x, int y, int sx, int s
 		v25 = sy + plr[v24]._pyoff;
 		v26 = sx + plr[v24]._pxoff - plr[v24]._pAnimWidth2;
 		if (v23 == pcursplr)
-			Cl2DecodeClrHL(165, v26, v25, (char *)plr[v24]._pAnimData, plr[v24]._pAnimFrame, plr[v24]._pAnimWidth, 0, 8);
-		Cl2DecodeFrm4(v26, v25, (char *)plr[v24]._pAnimData, plr[v24]._pAnimFrame, plr[v24]._pAnimWidth, 0, 8);
+			Cl2DecodeClrHL(165, v26, v25, plr[v24]._pAnimData, plr[v24]._pAnimFrame, plr[v24]._pAnimWidth, 0, 8);
+		Cl2DecodeFrm4(v26, v25, plr[v24]._pAnimData, plr[v24]._pAnimFrame, plr[v24]._pAnimWidth, 0, 8);
 		if (some_flag && plr[v24]._peflag)
 			town_draw_clipped_e_flag((BYTE *)v27 - 64, xa - 1, y + 1, sx - 64, sy);
 		v7 = v29;
@@ -451,8 +451,8 @@ void __fastcall town_draw_clipped_town_2(int x, int y, int a3, int a4, int a5, i
 		v22 = sy + plr[v21]._pyoff;
 		v23 = sx + plr[v21]._pxoff - plr[v21]._pAnimWidth2;
 		if (v20 == pcursplr)
-			Cl2DecodeClrHL(165, v23, v22, (char *)plr[v21]._pAnimData, plr[v21]._pAnimFrame, plr[v21]._pAnimWidth, a5, 8);
-		Cl2DecodeFrm4(v23, v22, (char *)plr[v21]._pAnimData, plr[v21]._pAnimFrame, plr[v21]._pAnimWidth, a5, 8);
+			Cl2DecodeClrHL(165, v23, v22, plr[v21]._pAnimData, plr[v21]._pAnimFrame, plr[v21]._pAnimWidth, a5, 8);
+		Cl2DecodeFrm4(v23, v22, plr[v21]._pAnimData, plr[v21]._pAnimFrame, plr[v21]._pAnimWidth, a5, 8);
 		if (some_flag && plr[v21]._peflag)
 			town_draw_clipped_e_flag_2((BYTE *)(v29 - 64), xa - 1, a3 + 1, a4, a5, sx - 64, sy);
 		v9 = v31;
@@ -466,8 +466,8 @@ void __fastcall town_draw_clipped_town_2(int x, int y, int a3, int a4, int a5, i
 		v27 = sy + plr[v26]._pyoff;
 		v28 = sx + plr[v26]._pxoff - plr[v26]._pAnimWidth2;
 		if (v25 == pcursplr)
-			Cl2DecodeClrHL(165, v28, v27, (char *)plr[v26]._pAnimData, plr[v26]._pAnimFrame, plr[v26]._pAnimWidth, a5, 8);
-		Cl2DecodeFrm4(v28, v27, (char *)plr[v26]._pAnimData, plr[v26]._pAnimFrame, plr[v26]._pAnimWidth, a5, 8);
+			Cl2DecodeClrHL(165, v28, v27, plr[v26]._pAnimData, plr[v26]._pAnimFrame, plr[v26]._pAnimWidth, a5, 8);
+		Cl2DecodeFrm4(v28, v27, plr[v26]._pAnimData, plr[v26]._pAnimFrame, plr[v26]._pAnimWidth, a5, 8);
 		if (some_flag && plr[v26]._peflag)
 			town_draw_clipped_e_flag_2((BYTE *)(v29 - 64), xa - 1, a3 + 1, a4, a5, sx - 64, sy);
 		v9 = v31;
@@ -675,8 +675,8 @@ void __fastcall town_draw_town_all(BYTE *buffer, int x, int y, int a4, int dir, 
 		yy = sy + plr[pnum]._pyoff;
 		xx = sx + plr[pnum]._pxoff - plr[pnum]._pAnimWidth2;
 		if (pnum == pcursplr)
-			Cl2DecodeFrm2(PAL16_BEIGE + 5, xx, yy, (char *)plr[pnum]._pAnimData, plr[pnum]._pAnimFrame, plr[pnum]._pAnimWidth, 0, dir);
-		Cl2DecodeFrm1(xx, yy, (char *)plr[pnum]._pAnimData, plr[pnum]._pAnimFrame, plr[pnum]._pAnimWidth, 0, dir);
+			Cl2DecodeFrm2(PAL16_BEIGE + 5, xx, yy, plr[pnum]._pAnimData, plr[pnum]._pAnimFrame, plr[pnum]._pAnimWidth, 0, dir);
+		Cl2DecodeFrm1(xx, yy, plr[pnum]._pAnimData, plr[pnum]._pAnimFrame, plr[pnum]._pAnimWidth, 0, dir);
 		if (some_flag && plr[pnum]._peflag)
 			town_draw_e_flag(buffer - 64, x - 1, y + 1, a4, dir, sx - 64, sy);
 	}
@@ -687,8 +687,8 @@ void __fastcall town_draw_town_all(BYTE *buffer, int x, int y, int a4, int dir, 
 		yy = sy + plr[pnum]._pyoff;
 		xx = sx + plr[pnum]._pxoff - plr[pnum]._pAnimWidth2;
 		if (pnum == pcursplr)
-			Cl2DecodeFrm2(PAL16_BEIGE + 5, xx, yy, (char *)plr[pnum]._pAnimData, plr[pnum]._pAnimFrame, plr[pnum]._pAnimWidth, 0, dir);
-		Cl2DecodeFrm1(xx, yy, (char *)plr[pnum]._pAnimData, plr[pnum]._pAnimFrame, plr[pnum]._pAnimWidth, 0, dir);
+			Cl2DecodeFrm2(PAL16_BEIGE + 5, xx, yy, plr[pnum]._pAnimData, plr[pnum]._pAnimFrame, plr[pnum]._pAnimWidth, 0, dir);
+		Cl2DecodeFrm1(xx, yy, plr[pnum]._pAnimData, plr[pnum]._pAnimFrame, plr[pnum]._pAnimWidth, 0, dir);
 		if (some_flag && plr[pnum]._peflag)
 			town_draw_e_flag(buffer - 64, x - 1, y + 1, a4, dir, sx - 64, sy);
 	}
