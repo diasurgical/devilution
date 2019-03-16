@@ -35,7 +35,7 @@ BOOL SFileDdaBeginEx(HANDLE directsound, DWORD flags, DWORD mask, unsigned __int
     signed __int32 volume, signed int pan, int a7)
 {
 	DWORD bytestoread = SFileGetFileSize(directsound, 0);
-	char *SFXbuffer = malloc(bytestoread);
+	char *SFXbuffer = (char*)malloc(bytestoread);
 	SFileReadFile(directsound, SFXbuffer, bytestoread, NULL, 0);
 
 	SDL_RWops *rw = SDL_RWFromConstMem(SFXbuffer, bytestoread);
@@ -44,14 +44,14 @@ BOOL SFileDdaBeginEx(HANDLE directsound, DWORD flags, DWORD mask, unsigned __int
 
 	Mix_PlayChannel(0, SFileChunk, 0);
 
-	return TRUE;
+	return true;
 }
 
 BOOL SFileDdaDestroy()
 {
 	Mix_FreeChunk(SFileChunk);
 
-	return TRUE;
+	return true;
 }
 
 BOOL SFileDdaEnd(HANDLE directsound)
@@ -68,7 +68,7 @@ BOOL SFileDdaGetPos(HANDLE directsound, int *current, int *end)
 		*current = *end;
 	}
 
-	return TRUE;
+	return true;
 }
 
 BOOL SFileDdaInitialize(HANDLE directsound)
