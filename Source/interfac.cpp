@@ -39,7 +39,7 @@ void __cdecl DrawCutscene()
 	unsigned int v0; // esi
 
 	j_lock_buf_priv(1);
-	CelDecodeOnly(64, 639, sgpBackCel, 1, 640);
+	CelDecodeOnly(64, 639, (BYTE *)sgpBackCel, 1, 640);
 	v0 = 0;
 	if (sgdwProgress) {
 		do

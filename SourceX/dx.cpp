@@ -35,17 +35,7 @@ bool surface_dirty;
 // DirectDraw COM interface stub implementations
 //
 
-#define METHOD virtual 
-
 class StubSurface : public IDirectDrawSurface {
-	METHOD HRESULT QueryInterface(DVL_REFIID refiid, LPVOID *lpvoid)
-	{
-		UNIMPLEMENTED();
-	};
-	METHOD ULONG AddRef()
-	{
-		UNIMPLEMENTED();
-	};
 	METHOD ULONG Release()
 	{
 		UNIMPLEMENTED();
@@ -217,14 +207,6 @@ class StubSurface : public IDirectDrawSurface {
 };
 
 class StubPalette : public IDirectDrawPalette {
-	METHOD HRESULT QueryInterface(DVL_REFIID refiid, LPVOID *lpvoid)
-	{
-		UNIMPLEMENTED();
-	};
-	METHOD ULONG AddRef()
-	{
-		UNIMPLEMENTED();
-	};
 	METHOD ULONG Release()
 	{
 		UNIMPLEMENTED();
@@ -249,14 +231,6 @@ class StubPalette : public IDirectDrawPalette {
 };
 
 class StubDraw : public IDirectDraw {
-	METHOD HRESULT QueryInterface(DVL_REFIID refiid, LPVOID *lpvoid)
-	{
-		UNIMPLEMENTED();
-	};
-	METHOD ULONG AddRef()
-	{
-		UNIMPLEMENTED();
-	};
 	METHOD ULONG Release()
 	{
 		UNIMPLEMENTED();

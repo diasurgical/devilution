@@ -81,6 +81,7 @@ typedef LONG HRESULT;
 
 typedef LRESULT(CALLBACK *WNDPROC)(HWND, UINT, WPARAM, LPARAM);
 
+#pragma pack(push, 1)
 typedef struct waveformat_tag {
 	WORD wFormatTag;
 	WORD nChannels;
@@ -103,6 +104,7 @@ typedef struct tWAVEFORMATEX {
 	WORD wBitsPerSample;
 	WORD cbSize;
 } WAVEFORMATEX, *LPWAVEFORMATEX, *LPCWAVEFORMATEX;
+#pragma pack(pop)
 
 typedef struct _FILETIME {
 	DWORD dwLowDateTime;

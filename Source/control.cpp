@@ -53,7 +53,7 @@ int numpanbtns; // weak
 void *pStatusPanel;
 char panelstr[256];
 int panelflag; // weak
-unsigned char splTrans[256];
+unsigned char SplTransTbl[256];
 int initialDropGoldValue; // idb
 void *pSpellCels;
 int panbtndown;   // weak
@@ -185,79 +185,129 @@ int SpellPages[6][7] = {
 	{ -1, -1, -1, -1, -1, -1, -1 }
 };
 
-void __fastcall DrawSpellCel(int xp, int yp, char *Trans, int nCel, int w)
+void __fastcall DrawSpellCel(int xp, int yp, BYTE *Trans, int nCel, int w)
 {
-	char *v5;         // ebx
-	char *v6;         // esi
-	char *v7;         // edi
-	int v9;           // edx
-	unsigned int v10; // eax
-	unsigned int v11; // ecx
-	char v14;         // cf
-	unsigned int v15; // ecx
-	INT_PTR v18;      // [esp+Ch] [ebp-Ch]
-	int _EAX;
-	unsigned char *_EBX;
+	BYTE *tmp, *dst, *tbl, *end;
 
-	v5 = &Trans[4 * nCel];
-	v6 = &Trans[*(_DWORD *)v5];
-	v7 = (char *)gpBuffer + screen_y_times_768[yp] + xp;
-	v18 = (INT_PTR)&v6[*((_DWORD *)v5 + 1) - *(_DWORD *)v5];
-	_EBX = splTrans;
-	do {
-		v9 = w;
-		do {
-			while (1) {
-				v10 = (unsigned char)*v6++;
-				if ((v10 & 0x80u) == 0)
-					break;
-				_LOBYTE(v10) = -(char)v10;
-				v7 += v10;
-				v9 -= v10;
-				if (!v9)
-					goto LABEL_12;
+	/// ASSERT: assert(gpBuffer);
+
+	tmp = (BYTE *)gpBuffer; /* remove when fixed */
+	dst = &tmp[screen_y_times_768[yp] + xp];
+	tbl = SplTransTbl;
+
+#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+	__asm {
+		mov		ebx, Trans
+		mov		eax, nCel
+		shl		eax, 2
+		add		ebx, eax
+		mov		eax, [ebx+4]
+		sub		eax, [ebx]
+		mov		end, eax
+		mov		esi, Trans
+		add		esi, [ebx]
+		mov		edi, dst
+		mov		eax, end
+		add		eax, esi
+		mov		end, eax
+		mov		ebx, tbl
+	label1:
+		mov		edx, w
+	label2:
+		xor		eax, eax
+		lodsb
+		or		al, al
+		js		label6
+		sub		edx, eax
+		mov		ecx, eax
+		shr		ecx, 1
+		jnb		label3
+		lodsb
+		xlat
+		stosb
+		jecxz	label5
+	label3:
+		shr		ecx, 1
+		jnb		label4
+		lodsw
+		xlat
+		ror		ax, 8
+		xlat
+		ror		ax, 8
+		stosw
+		jecxz	label5
+	label4:
+		lodsd
+		xlat
+		ror		eax, 8
+		xlat
+		ror		eax, 8
+		xlat
+		ror		eax, 8
+		xlat
+		ror		eax, 8
+		stosd
+		loop	label4
+	label5:
+		or		edx, edx
+		jz		label7
+		jmp		label2
+	label6:
+		neg		al
+		add		edi, eax
+		sub		edx, eax
+		jnz		label2
+	label7:
+		sub		edi, 768
+		sub		edi, w
+		cmp		esi, end
+		jnz		label1
+	}
+#else
+	int i;
+	BYTE width;
+	BYTE *src;
+	DWORD *pFrameTable;
+
+	pFrameTable = (DWORD *)&Trans[4 * nCel];
+	src = &Trans[pFrameTable[0]];
+	end = &src[pFrameTable[1] - pFrameTable[0]];
+
+	for(; src != end; dst -= 768 + w) {
+		for(i = w; i;) {
+			width = *src++;
+			if(!(width & 0x80)) {
+				i -= width;
+				// asm_cel_light_edge(width, tbl, dst, src);
+				if(width & 1) {
+					dst[0] = tbl[src[0]];
+					src++;
+					dst++;
+				}
+				width >>= 1;
+				if(width & 1) {
+					dst[0] = tbl[src[0]];
+					dst[1] = tbl[src[1]];
+					src += 2;
+					dst += 2;
+				}
+				width >>= 1;
+				for(; width; width--) {
+					dst[0] = tbl[src[0]];
+					dst[1] = tbl[src[1]];
+					dst[2] = tbl[src[2]];
+					dst[3] = tbl[src[3]];
+					src += 4;
+					dst += 4;
+				}
+			} else {
+				width = -(char)width;
+				dst += width;
+				i -= width;
 			}
-			v9 -= v10;
-			v11 = v10 >> 1;
-			if (v10 & 1) {
-				_EAX = *v6++;
-				ASM_XLAT(_EAX, _EBX);
-				*v7++ = _EAX;
-				if (!v11)
-					continue;
-			}
-			v14 = v11 & 1;
-			v15 = v11 >> 1;
-			if (!v14)
-				goto LABEL_15;
-			_EAX = *(_WORD *)v6;
-			v6 += 2;
-			ASM_XLAT(_EAX, _EBX);
-			_EAX = __ROR2__(_EAX, 8);
-			ASM_XLAT(_EAX, _EBX);
-			*(_WORD *)v7 = __ROR2__(_EAX, 8);
-			v7 += 2;
-			if (v15) {
-			LABEL_15:
-				do {
-					_EAX = *(_DWORD *)v6;
-					v6 += 4;
-					ASM_XLAT(_EAX, _EBX);
-					_EAX = _rotr(_EAX, 8);
-					ASM_XLAT(_EAX, _EBX);
-					_EAX = _rotr(_EAX, 8);
-					ASM_XLAT(_EAX, _EBX);
-					_EAX = _rotr(_EAX, 8);
-					ASM_XLAT(_EAX, _EBX);
-					*(_DWORD *)v7 = _rotr(_EAX, 8);
-					v7 += 4;
-					--v15;
-				} while (v15);
-			}
-		} while (v9);
-	LABEL_12:
-		v7 = &v7[-w - 768];
-	} while (v6 != (char *)v18);
+		}
+	}
+#endif
 }
 
 void __fastcall SetSpellTrans(char t)
@@ -266,53 +316,54 @@ void __fastcall SetSpellTrans(char t)
 
 	if (t == RSPLTYPE_SKILL) {
 		for (i = 0; i < 128; i++)
-			splTrans[i] = i;
+			SplTransTbl[i] = i;
 	}
 	for (i = 128; i < 256; i++)
-		splTrans[i] = i;
-	splTrans[255] = 0;
+		SplTransTbl[i] = i;
+	SplTransTbl[255] = 0;
 
 	switch (t) {
 	case RSPLTYPE_SPELL:
-		splTrans[PAL8_YELLOW] = PAL16_BLUE + 1;
-		splTrans[PAL8_YELLOW + 1] = PAL16_BLUE + 3;
-		splTrans[PAL8_YELLOW + 2] = PAL16_BLUE + 5;
+		SplTransTbl[PAL8_YELLOW] = PAL16_BLUE + 1;
+		SplTransTbl[PAL8_YELLOW + 1] = PAL16_BLUE + 3;
+		SplTransTbl[PAL8_YELLOW + 2] = PAL16_BLUE + 5;
 		for (i = PAL16_BLUE; i < PAL16_BLUE + 16; i++) {
-			splTrans[PAL16_BEIGE - PAL16_BLUE + i] = i;
-			splTrans[PAL16_YELLOW - PAL16_BLUE + i] = i;
-			splTrans[PAL16_ORANGE - PAL16_BLUE + i] = i;
+			SplTransTbl[PAL16_BEIGE - PAL16_BLUE + i] = i;
+			SplTransTbl[PAL16_YELLOW - PAL16_BLUE + i] = i;
+			SplTransTbl[PAL16_ORANGE - PAL16_BLUE + i] = i;
 		}
-		return;
+		break;
 	case RSPLTYPE_SCROLL:
-		splTrans[PAL8_YELLOW] = PAL16_BEIGE + 1;
-		splTrans[PAL8_YELLOW + 1] = PAL16_BEIGE + 3;
-		splTrans[PAL8_YELLOW + 2] = PAL16_BEIGE + 5;
+		SplTransTbl[PAL8_YELLOW] = PAL16_BEIGE + 1;
+		SplTransTbl[PAL8_YELLOW + 1] = PAL16_BEIGE + 3;
+		SplTransTbl[PAL8_YELLOW + 2] = PAL16_BEIGE + 5;
 		for (i = PAL16_BEIGE; i < PAL16_BEIGE + 16; i++) {
-			splTrans[PAL16_YELLOW - PAL16_BEIGE + i] = i;
-			splTrans[PAL16_ORANGE - PAL16_BEIGE + i] = i;
+			SplTransTbl[PAL16_YELLOW - PAL16_BEIGE + i] = i;
+			SplTransTbl[PAL16_ORANGE - PAL16_BEIGE + i] = i;
 		}
-		return;
+		break;
 	case RSPLTYPE_CHARGES:
-		splTrans[PAL8_YELLOW] = PAL16_ORANGE + 1;
-		splTrans[PAL8_YELLOW + 1] = PAL16_ORANGE + 3;
-		splTrans[PAL8_YELLOW + 2] = PAL16_ORANGE + 5;
+		SplTransTbl[PAL8_YELLOW] = PAL16_ORANGE + 1;
+		SplTransTbl[PAL8_YELLOW + 1] = PAL16_ORANGE + 3;
+		SplTransTbl[PAL8_YELLOW + 2] = PAL16_ORANGE + 5;
 		for (i = PAL16_ORANGE; i < PAL16_ORANGE + 16; i++) {
-			splTrans[PAL16_BEIGE - PAL16_ORANGE + i] = i;
-			splTrans[PAL16_YELLOW - PAL16_ORANGE + i] = i;
+			SplTransTbl[PAL16_BEIGE - PAL16_ORANGE + i] = i;
+			SplTransTbl[PAL16_YELLOW - PAL16_ORANGE + i] = i;
 		}
-		return;
+		break;
 	case RSPLTYPE_INVALID:
-		splTrans[PAL8_YELLOW] = PAL16_GRAY + 1;
-		splTrans[PAL8_YELLOW + 1] = PAL16_GRAY + 3;
-		splTrans[PAL8_YELLOW + 2] = PAL16_GRAY + 5;
+		SplTransTbl[PAL8_YELLOW] = PAL16_GRAY + 1;
+		SplTransTbl[PAL8_YELLOW + 1] = PAL16_GRAY + 3;
+		SplTransTbl[PAL8_YELLOW + 2] = PAL16_GRAY + 5;
 		for (i = PAL16_GRAY; i < PAL16_GRAY + 15; i++) {
-			splTrans[PAL16_BEIGE - PAL16_GRAY + i] = i;
-			splTrans[PAL16_YELLOW - PAL16_GRAY + i] = i;
-			splTrans[PAL16_ORANGE - PAL16_GRAY + i] = i;
+			SplTransTbl[PAL16_BEIGE - PAL16_GRAY + i] = i;
+			SplTransTbl[PAL16_YELLOW - PAL16_GRAY + i] = i;
+			SplTransTbl[PAL16_ORANGE - PAL16_GRAY + i] = i;
 		}
-		splTrans[PAL16_BEIGE + 15] = 0;
-		splTrans[PAL16_YELLOW + 15] = 0;
-		splTrans[PAL16_ORANGE + 15] = 0;
+		SplTransTbl[PAL16_BEIGE + 15] = 0;
+		SplTransTbl[PAL16_YELLOW + 15] = 0;
+		SplTransTbl[PAL16_ORANGE + 15] = 0;
+		break;
 	}
 }
 
@@ -344,9 +395,9 @@ void __cdecl DrawSpell()
 		v2 = RSPLTYPE_INVALID;
 	SetSpellTrans(v2);
 	if (v6 == -1)
-		DrawSpellCel(629, 631, (char *)pSpellCels, 27, 56);
+		DrawSpellCel(629, 631, (BYTE *)pSpellCels, 27, 56);
 	else
-		DrawSpellCel(629, 631, (char *)pSpellCels, (char)SpellITbl[v3], 56);
+		DrawSpellCel(629, 631, (BYTE *)pSpellCels, (char)SpellITbl[v3], 56);
 }
 
 void __cdecl DrawSpellList()
@@ -432,11 +483,11 @@ void __cdecl DrawSpellList()
 			}
 			if (!currlevel && !*v20)
 				SetSpellTrans(RSPLTYPE_INVALID);
-			DrawSpellCel(v17, xp, (char *)pSpellCels, (char)SpellITbl[v4], 56);
+			DrawSpellCel(v17, xp, (BYTE *)pSpellCels, (char)SpellITbl[v4], 56);
 			if (MouseX >= v17 - 64 && MouseX < v17 - 64 + 56 && MouseY >= v22 && MouseY < v22 + 56) {
 				pSpell = v4;
 				pSplType = v1;
-				DrawSpellCel(v17, xp, (char *)pSpellCels, yp, 56);
+				DrawSpellCel(v17, xp, (BYTE *)pSpellCels, yp, 56);
 				if (v1) {
 					switch (v1) {
 					case RSPLTYPE_SPELL:
@@ -502,7 +553,7 @@ void __cdecl DrawSpellList()
 				v16 = 0;
 				do {
 					if (plr[v0]._pSplHotKey[v16] == pSpell && plr[v0]._pSplTHotKey[v16] == pSplType) {
-						DrawSpellCel(v17, xp, (char *)pSpellCels, v16 + 48, 56);
+						DrawSpellCel(v17, xp, (BYTE *)pSpellCels, v16 + 48, 56);
 						sprintf(tempstr, "Spell Hot Key #F%i", v16 + 5);
 						AddPanelString(tempstr, 1);
 						v0 = myplr;
@@ -1069,19 +1120,19 @@ void __cdecl DrawCtrlPan()
 	do {
 		v2 = *v1;
 		if (panbtn[v0])
-			CelDecodeOnly(v2 + 64, v1[1] + 178, pPanelButtons, v0 + 1, 71);
+			CelDecodeOnly(v2 + 64, v1[1] + 178, (BYTE *)pPanelButtons, v0 + 1, 71);
 		else
 			DrawPanelBox(v2, v1[1] - 336, 71, 20, v2 + 64, v1[1] + 160);
 		++v0;
 		v1 += 5;
 	} while (v0 < 6);
 	if (numpanbtns == 8) {
-		CelDecodeOnly(151, 634, pMultiBtns, panbtn[6] + 1, 33);
+		CelDecodeOnly(151, 634, (BYTE *)pMultiBtns, panbtn[6] + 1, 33);
 		if (FriendlyMode)
 			v3 = panbtn[7] + 3;
 		else
 			v3 = panbtn[7] + 5;
-		CelDecodeOnly(591, 634, pMultiBtns, v3, 33);
+		CelDecodeOnly(591, 634, (BYTE *)pMultiBtns, v3, 33);
 	}
 }
 // 484368: using guessed type int FriendlyMode;
@@ -1725,7 +1776,7 @@ void __cdecl DrawChr()
 	int v30;     // [esp+54h] [ebp-8h]
 	char a5[4];  // [esp+58h] [ebp-4h]
 
-	CelDecodeOnly(64, 511, pChrPanel, 1, 320);
+	CelDecodeOnly(64, 511, (BYTE *)pChrPanel, 1, 320);
 	ADD_PlrStringXY(20, 32, 151, plr[myplr]._pName, 0);
 	if (plr[myplr]._pClass == PC_WARRIOR) {
 		ADD_PlrStringXY(168, 32, 299, "Warrior", 0);
@@ -1888,13 +1939,13 @@ void __cdecl DrawChr()
 		ADD_PlrStringXY(95, 266, 126, a4, 2);
 		v22 = plr[myplr]._pClass;
 		if (plr[myplr]._pBaseStr < MaxStats[v22][ATTRIB_STR])
-			CelDecodeOnly(201, 319, pChrButtons, chrbtn[0] + 2, 41);
+			CelDecodeOnly(201, 319, (BYTE *)pChrButtons, chrbtn[0] + 2, 41);
 		if (plr[myplr]._pBaseMag < MaxStats[v22][ATTRIB_MAG])
-			CelDecodeOnly(201, 347, pChrButtons, chrbtn[1] + 4, 41);
+			CelDecodeOnly(201, 347, (BYTE *)pChrButtons, chrbtn[1] + 4, 41);
 		if (plr[myplr]._pBaseDex < MaxStats[v22][ATTRIB_DEX])
-			CelDecodeOnly(201, 376, pChrButtons, chrbtn[2] + 6, 41);
+			CelDecodeOnly(201, 376, (BYTE *)pChrButtons, chrbtn[2] + 6, 41);
 		if (plr[myplr]._pBaseVit < MaxStats[v22][ATTRIB_VIT])
-			CelDecodeOnly(201, 404, pChrButtons, chrbtn[3] + 8, 41);
+			CelDecodeOnly(201, 404, (BYTE *)pChrButtons, chrbtn[3] + 8, 41);
 	}
 	v23 = plr[myplr]._pMaxHP;
 	a5[0] = v23 > plr[myplr]._pMaxHPBase;
@@ -2030,7 +2081,7 @@ void __cdecl DrawLevelUpIcon()
 	if (!stextflag) {
 		v0 = (lvlbtndown != 0) + 2;
 		ADD_PlrStringXY(0, 303, 120, "Level Up", 0);
-		CelDecodeOnly(104, 495, pChrButtons, v0, 41);
+		CelDecodeOnly(104, 495, (BYTE *)pChrButtons, v0, 41);
 	}
 }
 // 4B851C: using guessed type int lvlbtndown;
@@ -2198,7 +2249,7 @@ int __fastcall DrawDurIcon4Item(ItemStruct *pItem, int x, int c)
 LABEL_18:
 	if (v5 > 2)
 		v7 += 8;
-	CelDecodeOnly(v4, 495, pDurIcons, v7, 32);
+	CelDecodeOnly(v4, 495, (BYTE *)pDurIcons, v7, 32);
 	return v4 - 40;
 }
 
@@ -2290,8 +2341,8 @@ void __cdecl DrawSpellBook()
 	int v11;       // [esp+18h] [ebp-10h]
 	int v12;       // [esp+1Ch] [ebp-Ch]
 
-	CelDecodeOnly(384, 511, pSpellBkCel, 1, 320);
-	CelDecodeOnly(76 * sbooktab + 391, 508, pSBkBtnCel, sbooktab + 1, 76);
+	CelDecodeOnly(384, 511, (BYTE *)pSpellBkCel, 1, 320);
+	CelDecodeOnly(76 * sbooktab + 391, 508, (BYTE *)pSBkBtnCel, sbooktab + 1, 76);
 	v9 = 1;
 	v8 = 214;
 	v0 = plr[myplr]._pISpells | plr[myplr]._pMemSpells | plr[myplr]._pAblSpells;
@@ -2301,10 +2352,10 @@ void __cdecl DrawSpellBook()
 		if (v2 != -1 && (v1 & v0)) {
 			v7 = GetSBookTrans(v2, TRUE);
 			SetSpellTrans(v7);
-			DrawSpellCel(395, v8 + 1, (char *)pSBkIconCels, (char)SpellITbl[v2], MAX_SPELLS);
+			DrawSpellCel(395, v8 + 1, (BYTE *)pSBkIconCels, (char)SpellITbl[v2], MAX_SPELLS);
 			if (v2 == plr[myplr]._pRSpell && v7 == _LOBYTE(plr[myplr]._pRSplType)) {
 				SetSpellTrans(RSPLTYPE_SKILL);
-				DrawSpellCel(395, v8 + 1, (char *)pSBkIconCels, 43, MAX_SPELLS);
+				DrawSpellCel(395, v8 + 1, (BYTE *)pSBkIconCels, 43, MAX_SPELLS);
 			}
 			PrintSBookStr(10, v8 - 22, 0, spelldata[v2].sNameText, 0);
 			v3 = GetSBookTrans(v2, FALSE);
@@ -2433,7 +2484,7 @@ void __fastcall DrawGoldSplit(int amount)
 
 	screen_x = 0;
 	v1 = amount;
-	CelDecodeOnly(415, 338, pGBoxBuff, 1, 261);
+	CelDecodeOnly(415, 338, (BYTE *)pGBoxBuff, 1, 261);
 	sprintf(tempstr, "You have %u gold", initialDropGoldValue);
 	ADD_PlrStringXY(366, 87, 600, tempstr, 3);
 	v2 = get_pieces_str(initialDropGoldValue);
@@ -2452,7 +2503,7 @@ void __fastcall DrawGoldSplit(int amount)
 		}
 		screen_xa = screen_x + 452;
 	}
-	CelDecodeOnly(screen_xa, 300, pCelBuff, frame_4B8800, 12);
+	CelDecodeOnly(screen_xa, 300, (BYTE *)pCelBuff, frame_4B8800, 12);
 	frame_4B8800 = (frame_4B8800 & 7) + 1;
 }
 
@@ -2600,7 +2651,7 @@ void __cdecl DrawTalkPan()
 		} while (v4 < 39);
 		*v3 = 0;
 	LABEL_10:
-		CelDecDatOnly((char *)gpBuffer + a4, (char *)pCelBuff, frame, 12);
+		CelDecDatOnly((BYTE *)gpBuffer + a4, (BYTE *)pCelBuff, frame, 12);
 		v5 = 0;
 		a1 = plr[0]._pName;
 		v10 = 0;
@@ -2628,7 +2679,7 @@ void __cdecl DrawTalkPan()
 			if (talkbtndown[v5])
 				v7 = (v5 != 0) + 5;
 		}
-		CelDecodeOnly(236, 18 * v5 + 596, pTalkBtns, v7, 61);
+		CelDecodeOnly(236, 18 * v5 + 596, (BYTE *)pTalkBtns, v7, 61);
 		goto LABEL_18;
 	}
 }

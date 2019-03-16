@@ -149,7 +149,7 @@ void __cdecl FreeStoreMem()
 
 void __cdecl DrawSTextBack()
 {
-	CelDecodeOnly(408, 487, pSTextBoxCels, 1, 271);
+	CelDecodeOnly(408, 487, (BYTE *)pSTextBoxCels, 1, 271);
 
 #define TRANS_RECT_X 347
 #define TRANS_RECT_Y 28
@@ -216,7 +216,7 @@ void __fastcall PrintSString(int x, int y, unsigned char cjustflag, char *str, i
 			v14 = v27 + v30 + v8 - 20;
 		else
 			v14 = v27 + v8 - 20;
-		CelDecodeOnly(v14, v6 + 205, pCelBuff, InStoreFlag, 12);
+		CelDecodeOnly(v14, v6 + 205, (BYTE *)pCelBuff, InStoreFlag, 12);
 	}
 	v29 = 0;
 	if (v28 > 0) {
@@ -250,7 +250,7 @@ void __fastcall PrintSString(int x, int y, unsigned char cjustflag, char *str, i
 			v22 = v27 + v30 + v8 + 4;
 		else
 			v22 = 660 - v8;
-		CelDecodeOnly(v22, v6 + 205, pCelBuff, InStoreFlag, 12);
+		CelDecodeOnly(v22, v6 + 205, (BYTE *)pCelBuff, InStoreFlag, 12);
 	}
 }
 // 6A09E0: using guessed type char stextsize;
@@ -311,18 +311,18 @@ void __fastcall DrawSArrows(int y1, int y2)
 	v4 = SStringY[y1] + 204;
 	v5 = *v2 + 204;
 	if (stextscrlubtn == -1)
-		CelDecodeOnly(665, v4, pSTextSlidCels, 10, 12);
+		CelDecodeOnly(665, v4, (BYTE *)pSTextSlidCels, 10, 12);
 	else
-		CelDecodeOnly(665, v4, pSTextSlidCels, 12, 12);
+		CelDecodeOnly(665, v4, (BYTE *)pSTextSlidCels, 12, 12);
 	if (stextscrldbtn == -1)
-		CelDecodeOnly(665, v5, pSTextSlidCels, 9, 12);
+		CelDecodeOnly(665, v5, (BYTE *)pSTextSlidCels, 9, 12);
 	else
-		CelDecodeOnly(665, v5, pSTextSlidCels, 11, 12);
+		CelDecodeOnly(665, v5, (BYTE *)pSTextSlidCels, 11, 12);
 	while (1) {
 		v4 += 12;
 		if (v4 >= v5)
 			break;
-		CelDecodeOnly(665, v4, pSTextSlidCels, 14, 12);
+		CelDecodeOnly(665, v4, (BYTE *)pSTextSlidCels, 14, 12);
 	}
 	v6 = stextsel;
 	if (stextsel == 22)
@@ -331,7 +331,7 @@ void __fastcall DrawSArrows(int y1, int y2)
 		v7 = 0;
 	else
 		v7 = (*v2 - SStringY[v3] - 24) * (1000 * (stextsval + ((v6 - stextup) >> 2)) / (storenumh - 1)) / 1000;
-	CelDecodeOnly(665, SStringY[v3 + 1] + v7 + 204, pSTextSlidCels, 13, 12);
+	CelDecodeOnly(665, SStringY[v3 + 1] + v7 + 204, (BYTE *)pSTextSlidCels, 13, 12);
 }
 // 69F108: using guessed type int stextup;
 // 69F10C: using guessed type int storenumh;

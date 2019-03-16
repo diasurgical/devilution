@@ -100,23 +100,23 @@ void __cdecl DrawDiabloMsg()
 	signed int v17;      // [esp+Ch] [ebp-8h]
 	signed int screen_x; // [esp+10h] [ebp-4h]
 
-	CelDecodeOnly(165, 318, pSTextSlidCels, 1, 12);
-	CelDecodeOnly(591, 318, pSTextSlidCels, 4, 12);
-	CelDecodeOnly(165, 366, pSTextSlidCels, 2, 12);
-	CelDecodeOnly(591, 366, pSTextSlidCels, 3, 12);
+	CelDecodeOnly(165, 318, (BYTE *)pSTextSlidCels, 1, 12);
+	CelDecodeOnly(591, 318, (BYTE *)pSTextSlidCels, 4, 12);
+	CelDecodeOnly(165, 366, (BYTE *)pSTextSlidCels, 2, 12);
+	CelDecodeOnly(591, 366, (BYTE *)pSTextSlidCels, 3, 12);
 	screen_x = 173;
 	v16 = 35;
 	do {
-		CelDecodeOnly(screen_x, 318, pSTextSlidCels, 5, 12);
-		CelDecodeOnly(screen_x, 366, pSTextSlidCels, 7, 12);
+		CelDecodeOnly(screen_x, 318, (BYTE *)pSTextSlidCels, 5, 12);
+		CelDecodeOnly(screen_x, 366, (BYTE *)pSTextSlidCels, 7, 12);
 		screen_x += 12;
 		--v16;
 	} while (v16);
 	v0 = 330;
 	v1 = 3;
 	do {
-		CelDecodeOnly(165, v0, pSTextSlidCels, 6, 12);
-		CelDecodeOnly(591, v0, pSTextSlidCels, 8, 12);
+		CelDecodeOnly(165, v0, (BYTE *)pSTextSlidCels, 6, 12);
+		CelDecodeOnly(591, v0, (BYTE *)pSTextSlidCels, 8, 12);
 		v0 += 12;
 		--v1;
 	} while (v1);

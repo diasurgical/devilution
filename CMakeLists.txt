@@ -159,6 +159,7 @@ add_executable(devilutionx
   SourceX/miniwin/misc_msg.cpp
   SourceX/miniwin/rand.cpp
   SourceX/miniwin/thread.cpp
+  SourceX/miniwin_dsound.cpp
   SourceX/sound.cpp
   SourceX/storm.cpp
   SourceX/storm_net.cpp

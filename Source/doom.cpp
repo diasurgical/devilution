@@ -97,7 +97,7 @@ void __cdecl doom_draw()
 		}
 	}
 
-	CelDecodeOnly(64, 511, pDoomCel, 1, 640);
+	CelDecodeOnly(64, 511, (BYTE *)pDoomCel, 1, 640);
 }
 
 DEVILUTION_END_NAMESPACE
