@@ -26,41 +26,44 @@ radon::File ini(getIniPath());
 // 	UNIMPLEMENTED();
 // }
 
+Mix_Chunk *SFileChunk;
 BOOL STORMAPI SFileDdaBeginEx(HANDLE directsound, DWORD flags, DWORD mask, unsigned __int32 lDistanceToMove,
     signed __int32 volume, signed int pan, int a7)
 {
-	DUMMY(); // Todo track when the sound can be released, see sfx_stop()
-	int bytestoread;
-	int nrread;
-	void *SFXbuffer;
-
-	bytestoread = (int)SFileGetFileSize(directsound, 0);
-	SFXbuffer = DiabloAllocPtr(bytestoread);
-	SFileReadFile(directsound, (char *)SFXbuffer, bytestoread, (LPDWORD)&nrread, 0);
+	DWORD bytestoread = SFileGetFileSize(directsound, 0);
+	char *SFXbuffer = malloc(bytestoread);
+	SFileReadFile(directsound, SFXbuffer, bytestoread, NULL, 0);
 
 	SDL_RWops *rw = SDL_RWFromConstMem(SFXbuffer, bytestoread);
-	Mix_Chunk *SoundFX = Mix_LoadWAV_RW(rw, 1);
+	SFileChunk = Mix_LoadWAV_RW(rw, 1);
+	free(SFXbuffer);
 
-	Mix_PlayChannel(-1, SoundFX, 0);
+	Mix_PlayChannel(0, SFileChunk, 0);
 
-	return 1;
+	return TRUE;
 }
 
 BOOL STORMAPI SFileDdaDestroy()
 {
-	DUMMY();
-	return 0;
+	Mix_FreeChunk(SFileChunk);
+
+	return TRUE;
 }
 
 BOOL STORMAPI SFileDdaEnd(HANDLE directsound)
 {
-	DUMMY();
-	return 0;
+	Mix_HaltChannel(0);
 }
 
-BOOL STORMAPI SFileDdaGetPos(HANDLE directsound, int a2, int a3)
+BOOL STORMAPI SFileDdaGetPos(HANDLE directsound, int *current, int *end)
 {
-	DUMMY_ONCE();
+	*current = 0;
+	*end = 1;
+
+	if (Mix_GetChunk(0) != SFileChunk || !Mix_Playing(0)) {
+		*current = *end;
+	}
+
 	return TRUE;
 }
 
