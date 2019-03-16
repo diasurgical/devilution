@@ -2437,7 +2437,7 @@ void __fastcall miss_null_11(int mi, int sx, int sy, int dx, int dy, int midir, 
 	SetMissDir(mi, dx);
 	v10 = v9;
 	missile[v10]._midam = 0;
-	missile[v10]._miLightFlag = 1;
+	missile[v10]._miLightFlag = TRUE;
 	missile[v10]._mirange = 250;
 }
 
@@ -2454,7 +2454,7 @@ void __fastcall miss_null_12(int mi, int sx, int sy, int dx, int dy, int midir, 
 	SetMissDir(mi, v9);
 	v11 = v10;
 	missile[v11]._midam = 0;
-	missile[v11]._miLightFlag = 1;
+	missile[v11]._miLightFlag = TRUE;
 	missile[v11]._mirange = 250;
 }
 
@@ -2473,7 +2473,7 @@ void __fastcall miss_null_13(int mi, int sx, int sy, int dx, int dy, int midir, 
 	v11 = v10;
 	v12 = missile[v10]._miAnimLen;
 	missile[v11]._midam = 0;
-	missile[v11]._miLightFlag = 1;
+	missile[v11]._miLightFlag = TRUE;
 	missile[v11]._mirange = v12;
 }
 
@@ -2503,7 +2503,7 @@ void __fastcall AddRhino(int mi, int sx, int sy, int dx, int dy, int midir, int 
 		missile[mi]._miAnimFrame = 7;
 	missile[mi]._miVar1 = 0;
 	missile[mi]._miVar2 = 0;
-	missile[mi]._miLightFlag = 1;
+	missile[mi]._miLightFlag = TRUE;
 	if (monster[id]._uniqtype != 0) {
 		missile[mi]._miUniqTrans = monster[id]._uniqtrans + 1;
 		missile[mi]._mlid = monster[id].mlid;
@@ -2528,7 +2528,7 @@ void __fastcall miss_null_32(int mi, int sx, int sy, int dx, int dy, int midir, 
 	missile[mi]._miAnimAdd = 1;
 	missile[mi]._miVar1 = 0;
 	missile[mi]._miVar2 = 0;
-	missile[mi]._miLightFlag = 1;
+	missile[mi]._miLightFlag = TRUE;
 	if (monster[id]._uniqtype != 0)
 		missile[mi]._miUniqTrans = monster[id]._uniqtrans + 1;
 	dMonster[monster[id]._mx][monster[id]._my] = 0;
@@ -2606,7 +2606,7 @@ void __fastcall AddAcidpud(int mi, int sx, int sy, int dx, int dy, int midir, in
 	missile[v9]._miyvel = 0;
 	missile[v9]._mixoff = 0;
 	missile[v9]._miyoff = 0;
-	missile[v9]._miLightFlag = 1;
+	missile[v9]._miLightFlag = TRUE;
 	v11 = random(50, 15);
 	missile[v9]._miPreFlag = TRUE;
 	missile[v9]._mirange = v11 + 40 * ((unsigned char)monster[v10]._mint + 1);
@@ -2752,7 +2752,7 @@ void __fastcall miss_null_23(int mi, int sx, int sy, int dx, int dy, int midir, 
 		SetMissDir(mi, 0);
 	else
 		SetMissDir(mi, 1);
-	missile[mi]._miLightFlag = 1;
+	missile[mi]._miLightFlag = TRUE;
 	missile[mi]._mirange = missile[mi]._miAnimLen;
 }
 
@@ -3275,7 +3275,7 @@ int __fastcall AddMissile(int sx, int sy, int dx, int dy, int midir, int mitype,
 	missile[mi]._mityoff = 0;
 	missile[mi]._miDelFlag = FALSE;
 	missile[mi]._miAnimAdd = 1;
-	missile[mi]._miLightFlag = 0;
+	missile[mi]._miLightFlag = FALSE;
 	missile[mi]._miPreFlag = FALSE;
 	missile[mi]._miUniqTrans = 0;
 	missile[mi]._midam = midam;
