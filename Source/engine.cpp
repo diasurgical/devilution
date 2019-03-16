@@ -2,6 +2,10 @@
 
 #include "../types.h"
 
+#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#pragma warning (disable : 4731) // frame pointer register 'ebp' modified by inline assembly code
+#endif
+
 char gbPixelCol;  // automap pixel color 8-bit (palette entry)
 int dword_52B970; // BOOLEAN flip - if y < x
 int orgseed;      // weak
@@ -2129,796 +2133,1327 @@ void __fastcall LoadFileWithMem(char *pszName, void *buf)
 	WCloseFile(a1);
 }
 
-void __fastcall Cl2ApplyTrans(unsigned char *p, unsigned char *ttbl, int last_frame)
+void __fastcall Cl2ApplyTrans(BYTE *p, BYTE *ttbl, int nCel)
 {
-	int v3;            // eax
-	int v4;            // edi
-	int v5;            // esi
-	unsigned char *v6; // eax
-	char v7;           // bl
-	unsigned char v8;  // bl
-	int v9;            // edi
-	int i;             // [esp+0h] [ebp-4h]
+	int i, nDataSize;
+	char width;
+	BYTE *dst;
+	DWORD *pFrameTable;
 
-	v3 = 1;
-	for (i = 1; i <= last_frame; ++i) {
-		v4 = *(_DWORD *)&p[4 * v3];
-		v5 = *(_DWORD *)&p[4 * v3 + 4] - v4 - 10;
-		v6 = &p[v4 + 10];
-		while (v5) {
-			v7 = *v6++;
-			--v5;
-			if (v7 < 0) {
-				v8 = -v7;
-				if ((char)v8 <= 65) {
-					v5 -= (char)v8;
-					if (v8) {
-						v9 = v8;
-						do {
-							*v6 = ttbl[*v6];
-							++v6;
-							--v9;
-						} while (v9);
+	/// ASSERT: assert(p != NULL);
+	/// ASSERT: assert(ttbl != NULL);
+
+	for(i = 1; i <= nCel; i++) {
+		pFrameTable = (DWORD *)&p[4 * i];
+		dst = &p[pFrameTable[0] + 10];
+		nDataSize = pFrameTable[1] - pFrameTable[0] - 10;
+		while(nDataSize) {
+			width = *dst++;
+			nDataSize--;
+			/// ASSERT: assert(nDataSize >= 0);
+			if(width < 0) {
+				width = -width;
+				if(width > 65) {
+					nDataSize--;
+					/// ASSERT: assert(nDataSize >= 0);
+					*dst = ttbl[*dst];
+					dst++;
+				} else {
+					nDataSize -= width;
+					/// ASSERT: assert(nDataSize >= 0);
+					while(width) {
+						*dst = ttbl[*dst];
+						dst++;
+						width--;
 					}
-				} else {
-					--v5;
-					*v6 = ttbl[*v6];
-					++v6;
-				}
-			}
-		}
-		v3 = i + 1;
-	}
-}
-
-void __fastcall Cl2DecodeFrm1(int x, int y, char *pCelBuff, int nCel, int width, int dir1, int dir2)
-{
-	char *v8;        // edx
-	char *v9;        // ecx
-	int v10;         // ecx
-	int v11;         // eax
-	char *pCelBuffa; // [esp+18h] [ebp+8h]
-
-	if (gpBuffer) {
-		v8 = pCelBuff;
-		if (pCelBuff) {
-			if (nCel > 0) {
-				v9 = *(char **)&pCelBuff[4 * nCel];
-				pCelBuffa = v9;
-				v10 = (int)&v9[(_DWORD)v8];
-				if (*(_WORD *)(v10 + dir1)) {
-					if (dir2 == 8 || (v11 = *(unsigned short *)(v10 + dir2), !*(_WORD *)(v10 + dir2)))
-						v11 = *((_DWORD *)v8 + nCel + 1) - (_DWORD)pCelBuffa;
-					Cl2DecDatFrm1(
-					    (char *)gpBuffer + screen_y_times_768[y - 16 * dir1] + x,
-					    (char *)(*(unsigned short *)(v10 + dir1) + v10),
-					    v11 - *(unsigned short *)(v10 + dir1),
-					    width);
 				}
 			}
 		}
 	}
 }
 
-void __fastcall Cl2DecDatFrm1(char *buffer, char *frame_content, int a3, int width) /* fix */
+void __fastcall Cl2DecodeFrm1(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int always_0, int dir)
 {
-	char *v4; // esi
-	char *v5; // edi
-	int v6;   // eax
-	int v7;   // ebx
-	int v8;   // ecx
-	char v9;  // dl
-	char v10; // dl
-	int v11;  // edx
+	int hdr, nDataSize;
+	BYTE *pRLEBytes, *tmp;
+	DWORD *pFrameTable;
 
-	v4 = frame_content;
-	v5 = buffer;
-	v6 = 0;
-	v7 = width;
-	v8 = a3;
-	do {
-		_LOBYTE(v6) = *v4++;
-		--v8;
-		if ((v6 & 0x80u) == 0) {
-			do {
-				if (v6 <= v7) {
-					v11 = v6;
-					v5 += v6;
-					v6 = 0;
-				} else {
-					v11 = v7;
-					v5 += v7;
-					v6 -= v7;
+	/// ASSERT: assert(gpBuffer != NULL);
+	if(!gpBuffer)
+		return;
+	/// ASSERT: assert(pCelBuff != NULL);
+	if(!pCelBuff)
+		return;
+	/// ASSERT: assert(nCel > 0);
+	if(nCel <= 0)
+		return;
+
+	pFrameTable = (DWORD *)pCelBuff;
+	/// ASSERT: assert(nCel <= (int) pFrameTable[0]);
+
+	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
+	hdr = *(WORD *)&pRLEBytes[always_0];
+	if(!hdr)
+		return;
+
+	if(dir == 8)
+		nDataSize = 0;
+	else
+		nDataSize = *(WORD *)&pRLEBytes[dir];
+	if(!nDataSize)
+		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
+
+	tmp = (BYTE *)gpBuffer;
+	Cl2DecDatFrm1(
+		&tmp[sx + screen_y_times_768[sy - 16 * always_0]],
+		&pRLEBytes[hdr],
+		nDataSize - hdr,
+		nWidth);
+}
+
+void __fastcall Cl2DecDatFrm1(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
+{
+#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+	__asm {
+		push	ebx
+		push	esi
+		push	edi
+		mov		esi, edx /// UNSAFE: use 'mov esi, pRLEBytes'
+		mov		edi, ecx /// UNSAFE: use 'mov edi, pDecodeTo'
+		xor		eax, eax
+		mov		ebx, nWidth
+		mov		ecx, nDataSize
+	label1:
+		mov		al, [esi]
+		inc		esi
+		dec		ecx
+		test	al, al
+		jns		label6
+		neg		al
+		cmp		al, 41h
+		jle		label3
+		sub		al, 41h
+		dec		ecx
+		mov		dl, [esi]
+		inc		esi
+		sub		ebx, eax
+	label2:
+		mov		[edi], dl
+		dec		eax
+		lea		edi, [edi+1]
+		jnz		label2
+		jmp		label5
+	label3:
+		sub		ecx, eax
+		sub		ebx, eax
+	label4:
+		mov		dl, [esi]
+		inc		esi
+		mov		[edi], dl
+		dec		eax
+		lea		edi, [edi+1]
+		jnz		label4
+	label5:
+		test	ebx, ebx
+		jnz		label10
+		mov		ebx, nWidth
+		sub		edi, 768
+		sub		edi, ebx
+		jmp		label10
+	label6:
+		cmp		eax, ebx
+		jle		label7
+		mov		edx, ebx
+		add		edi, ebx
+		sub		eax, ebx
+		jmp		label8
+	label7:
+		mov		edx, eax
+		add		edi, eax
+		xor		eax, eax
+	label8:
+		sub		ebx, edx
+		jnz		label9
+		mov		ebx, nWidth
+		sub		edi, 768
+		sub		edi, ebx
+	label9:
+		test	eax, eax
+		jnz		label6
+	label10:
+		test	ecx, ecx
+		jnz		label1
+		pop		edi
+		pop		esi
+		pop		ebx
+	}
+#else
+	int w;
+	char width;
+	BYTE fill;
+	BYTE *src, *dst;
+
+	src = pRLEBytes;
+	dst = pDecodeTo;
+	w = nWidth;
+
+	while(nDataSize) {
+		width = *src++;
+		nDataSize--;
+		if(width < 0) {
+			width = -width;
+			if(width > 65) {
+				width -= 65;
+				nDataSize--;
+				fill = *src++;
+				w -= width;
+				while(width) {
+					*dst = fill;
+					dst++;
+					width--;
 				}
-				v7 -= v11;
-				if (!v7) {
-					v7 = width;
-					v5 = &v5[-width - 768];
+				if(!w) {
+					w = nWidth;
+					dst -= 768 + w;
 				}
-			} while (v6);
-		} else {
-			_LOBYTE(v6) = -(char)v6;
-			if ((char)v6 <= 65) {
-				v8 -= v6;
-				v7 -= v6;
-				do {
-					v10 = *v4++;
-					*v5 = v10;
-					--v6;
-					++v5;
-				} while (v6);
+				continue;
 			} else {
-				_LOBYTE(v6) = v6 - 65;
-				--v8;
-				v9 = *v4++;
-				v7 -= v6;
-				do {
-					*v5 = v9;
-					--v6;
-					++v5;
-				} while (v6);
-			}
-			if (!v7) {
-				v7 = width;
-				v5 = &v5[-width - 768];
-			}
-		}
-	} while (v8);
-}
-
-void __fastcall Cl2DecodeFrm2(char colour, int screen_x, int screen_y, char *pCelBuff, int nCel, int frame_width, int a7, int a8)
-{
-	int v8;   // ebx
-	char *v9; // edx
-	int v10;  // eax
-	int v11;  // [esp+Ch] [ebp-8h]
-
-	v11 = screen_x;
-	if (gpBuffer) {
-		if (pCelBuff) {
-			if (nCel > 0) {
-				v8 = *(_DWORD *)&pCelBuff[4 * nCel];
-				v9 = &pCelBuff[v8];
-				if (*(_WORD *)&pCelBuff[v8 + a7]) {
-					if (a8 == 8 || (v10 = *(unsigned short *)&v9[a8], !*(_WORD *)&v9[a8]))
-						v10 = *(_DWORD *)&pCelBuff[4 * nCel + 4] - v8;
-					Cl2DecDatFrm2(
-					    (char *)gpBuffer + screen_y_times_768[screen_y - 16 * a7] + v11,
-					    &v9[*(unsigned short *)&pCelBuff[v8 + a7]],
-					    v10 - *(unsigned short *)&pCelBuff[v8 + a7],
-					    frame_width,
-					    colour);
+				nDataSize -= width;
+				w -= width;
+				while(width) {
+					*dst = *src;
+					src++;
+					dst++;
+					width--;
 				}
-			}
-		}
-	}
-}
-
-void __fastcall Cl2DecDatFrm2(char *buffer, char *frame_content, int a3, int frame_width, char colour)
-{
-	char *v5; // esi
-	char *v6; // edi
-	int v7;   // eax
-	int v8;   // ebx
-	int v9;   // ecx
-	char v10; // dl
-	char v11; // dh
-	char v12; // dh
-	int v13;  // edx
-
-	v5 = frame_content;
-	v6 = buffer;
-	v7 = 0;
-	v8 = frame_width;
-	v9 = a3;
-	v10 = colour;
-	do {
-		_LOBYTE(v7) = *v5++;
-		--v9;
-		if ((v7 & 0x80u) != 0) {
-			_LOBYTE(v7) = -(char)v7;
-			if ((char)v7 <= 65) {
-				v9 -= v7;
-				v8 -= v7;
-				do {
-					v12 = *v5++;
-					if (v12) {
-						*(v6 - 1) = v10;
-						v6[1] = v10;
-						*(v6 - 768) = v10;
-						v6[768] = v10;
-					}
-					--v7;
-					++v6;
-				} while (v7);
-				goto LABEL_12;
-			}
-			_LOBYTE(v7) = v7 - 65;
-			--v9;
-			v11 = *v5++;
-			if (v11) {
-				*(v6 - 1) = v10;
-				v8 -= v7;
-				v6[v7] = v10;
-				do {
-					*(v6 - 768) = v10;
-					v6[768] = v10;
-					--v7;
-					++v6;
-				} while (v7);
-			LABEL_12:
-				if (!v8) {
-					v8 = frame_width;
-					v6 = &v6[-frame_width - 768];
+				if(!w) {
+					w = nWidth;
+					dst -= 768 + w;
 				}
 				continue;
 			}
 		}
-		do {
-			if (v7 <= v8) {
-				v13 = v7;
-				v6 += v7;
-				v7 = 0;
+		while(width) {
+			if(width > w) {
+				dst += w;
+				width -= w;
+				w = 0;
 			} else {
-				v13 = v8;
-				v6 += v8;
-				v7 -= v8;
+				dst += width;
+				w -= width;
+				width = 0;
 			}
-			v8 -= v13;
-			if (!v8) {
-				v8 = frame_width;
-				v6 = &v6[-frame_width - 768];
-			}
-		} while (v7);
-		v10 = colour;
-	} while (v9);
-}
-
-void __fastcall Cl2DecodeFrm3(int screen_x, int screen_y, char *pCelBuff, int nCel, int frame_width, int a6, int a7, char a8)
-{
-	char *v8;        // edi
-	int v9;          // ebx
-	char *v10;       // esi
-	int v11;         // eax
-	int v12;         // eax
-	char *v13;       // esi
-	int v14;         // edi
-	int v15;         // eax
-	int v16;         // eax
-	char *pCelBuffa; // [esp+18h] [ebp+8h]
-
-	if (gpBuffer) {
-		v8 = pCelBuff;
-		if (pCelBuff) {
-			if (nCel > 0) {
-				v9 = *(_DWORD *)&pCelBuff[4 * nCel];
-				v10 = &pCelBuff[v9];
-				v11 = *(unsigned short *)&pCelBuff[v9 + a6];
-				pCelBuffa = (char *)*(unsigned short *)&pCelBuff[v9 + a6];
-				if (v11) {
-					if (a7 == 8 || (v12 = *(unsigned short *)&v10[a7], !*(_WORD *)&v10[a7]))
-						v12 = *(_DWORD *)&v8[4 * nCel + 4] - v9;
-					v13 = &v10[(_DWORD)pCelBuffa];
-					v14 = v12 - (_DWORD)pCelBuffa;
-					v15 = -(light4flag != 0);
-					_LOWORD(v15) = v15 & 0xF400;
-					v16 = v15 + 4096;
-					if (a8 == 2)
-						v16 += 256;
-					if (a8 >= 4)
-						v16 = v16 + (a8 << 8) - 256;
-					Cl2DecDatLightTbl1(
-					    (char *)gpBuffer + screen_y_times_768[screen_y - 16 * a6] + screen_x,
-					    v13,
-					    v14,
-					    frame_width,
-					    &pLightTbl[v16]);
-				}
+			if(!w) {
+				w = nWidth;
+				dst -= 768 + w;
 			}
 		}
 	}
+#endif
+}
+
+void __fastcall Cl2DecodeFrm2(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int always_0, int dir)
+{
+	int hdr, nDataSize;
+	BYTE *pRLEBytes, *tmp;
+	DWORD *pFrameTable;
+
+	/// ASSERT: assert(gpBuffer != NULL);
+	if(!gpBuffer)
+		return;
+	/// ASSERT: assert(pCelBuff != NULL);
+	if(!pCelBuff)
+		return;
+	/// ASSERT: assert(nCel > 0);
+	if(nCel <= 0)
+		return;
+
+	pFrameTable = (DWORD *)pCelBuff;
+	/// ASSERT: assert(nCel <= (int) pFrameTable[0]);
+
+	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
+	hdr = *(WORD *)&pRLEBytes[always_0];
+	if(!hdr)
+		return;
+
+	if(dir == 8)
+		nDataSize = 0;
+	else
+		nDataSize = *(WORD *)&pRLEBytes[dir];
+	if(!nDataSize)
+		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
+
+	tmp = (BYTE *)gpBuffer;
+	Cl2DecDatFrm2(
+		&tmp[sx + screen_y_times_768[sy - 16 * always_0]],
+		&pRLEBytes[hdr],
+		nDataSize - hdr,
+		nWidth,
+		col);
+}
+
+void __fastcall Cl2DecDatFrm2(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, char col)
+{
+#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+	__asm {
+		push	ebx
+		push	esi
+		push	edi
+		mov		esi, edx /// UNSAFE: use 'mov esi, pRLEBytes'
+		mov		edi, ecx /// UNSAFE: use 'mov edi, pDecodeTo'
+		xor		eax, eax
+		mov		ebx, nWidth
+		xor		edx, edx
+		mov		ecx, nDataSize
+		mov		dl, col
+	label1:
+		mov		al, [esi]
+		inc		esi
+		dec		ecx
+		test	al, al
+		jns		label7
+		neg		al
+		cmp		al, 41h
+		jle		label3
+		sub		al, 41h
+		dec		ecx
+		mov		dh, [esi]
+		inc		esi
+		test	dh, dh
+		jz		label7
+		mov		[edi-1], dl
+		sub		ebx, eax
+		mov		[edi+eax], dl
+	label2:
+		mov		[edi-768], dl
+		mov		[edi+768], dl
+		dec		eax
+		lea		edi, [edi+1]
+		jnz		label2
+		jmp		label6
+	label3:
+		sub		ecx, eax
+		sub		ebx, eax
+	label4:
+		mov		dh, [esi]
+		inc		esi
+		test	dh, dh
+		jz		label5
+		mov		[edi-1], dl
+		mov		[edi+1], dl
+		mov		[edi-768], dl
+		mov		[edi+768], dl
+	label5:
+		dec		eax
+		lea		edi, [edi+1]
+		jnz		label4
+	label6:
+		test	ebx, ebx
+		jnz		label11
+		mov		ebx, nWidth
+		sub		edi, 768
+		sub		edi, ebx
+		jmp		label11
+	label7:
+		cmp		eax, ebx
+		jle		label8
+		mov		edx, ebx
+		add		edi, ebx
+		sub		eax, ebx
+		jmp		label9
+	label8:
+		mov		edx, eax
+		add		edi, eax
+		xor		eax, eax
+	label9:
+		sub		ebx, edx
+		jnz		label10
+		mov		ebx, nWidth
+		sub		edi, 768
+		sub		edi, ebx
+	label10:
+		test	eax, eax
+		jnz		label7
+		mov		dl, col
+	label11:
+		test	ecx, ecx
+		jnz		label1
+		pop		edi
+		pop		esi
+		pop		ebx
+	}
+#else
+	int w;
+	char width;
+	BYTE *src, *dst;
+
+	src = pRLEBytes;
+	dst = pDecodeTo;
+	w = nWidth;
+
+	while(nDataSize) {
+		width = *src++;
+		nDataSize--;
+		if(width < 0) {
+			width = -width;
+			if(width > 65) {
+				width -= 65;
+				nDataSize--;
+				if(*src++) {
+					w -= width;
+					dst[-1] = col;
+					dst[width] = col;
+					while(width) {
+						dst[-768] = col;
+						dst[768] = col;
+						dst++;
+						width--;
+					}
+					if(!w) {
+						w = nWidth;
+						dst -= 768 + w;
+					}
+					continue;
+				}
+			} else {
+				nDataSize -= width;
+				w -= width;
+				while(width) {
+					if(*src++) {
+						dst[-1] = col;
+						dst[1] = col;
+						dst[-768] = col;
+						dst[768] = col;
+					}
+					dst++;
+					width--;
+				}
+				if(!w) {
+					w = nWidth;
+					dst -= 768 + w;
+				}
+				continue;
+			}
+		}
+		while(width) {
+			if(width > w) {
+				dst += w;
+				width -= w;
+				w = 0;
+			} else {
+				dst += width;
+				w -= width;
+				width = 0;
+			}
+			if(!w) {
+				w = nWidth;
+				dst -= 768 + w;
+			}
+		}
+	}
+#endif
+}
+
+void __fastcall Cl2DecodeFrm3(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int always_0, int dir, char light)
+{
+	int hdr, idx, nDataSize;
+	BYTE *pRLEBytes, *tmp;
+	DWORD *pFrameTable;
+
+	/// ASSERT: assert(gpBuffer != NULL);
+	if(!gpBuffer)
+		return;
+	/// ASSERT: assert(pCelBuff != NULL);
+	if(!pCelBuff)
+		return;
+	/// ASSERT: assert(nCel > 0);
+	if(nCel <= 0)
+		return;
+
+	pFrameTable = (DWORD *)pCelBuff;
+	/// ASSERT: assert(nCel <= (int) pFrameTable[0]);
+
+	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
+	hdr = *(WORD *)&pRLEBytes[always_0];
+	if(!hdr)
+		return;
+
+	if(dir == 8)
+		nDataSize = 0;
+	else
+		nDataSize = *(WORD *)&pRLEBytes[dir];
+	if(!nDataSize)
+		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
+
+	idx = light4flag ? 1024 : 4096;
+	if(light == 2)
+		idx += 256;
+	if(light >= 4)
+		idx += (light - 1) << 8;
+
+	tmp = (BYTE *)gpBuffer;
+	Cl2DecDatLightTbl1(
+		&tmp[sx + screen_y_times_768[sy - 16 * always_0]],
+		&pRLEBytes[hdr],
+		nDataSize - hdr,
+		nWidth,
+		(BYTE *)&pLightTbl[idx]);
 }
 // 525728: using guessed type int light4flag;
 
-void __fastcall Cl2DecDatLightTbl1(char *a1, char *a2, int a3, int a4, char *unused_lindex) /* check 5th arg */
+void __fastcall Cl2DecDatLightTbl1(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, BYTE *pTable)
 {
-	char *v5; // esi
-	char *v6; // edi
-	int v7;   // ebx
-	int v8;   // ecx
-	int v9;   // eax
-	int v10;  // edx
-	char v11; // dl
+#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+	__asm {
+		push	ebx
+		push	esi
+		push	edi
+		mov		esi, edx /// UNSAFE: use 'mov esi, pRLEBytes'
+		mov		edi, ecx /// UNSAFE: use 'mov edi, pDecodeTo'
+		mov		ebx, nWidth
+		mov		ecx, nDataSize
+		mov		edx, pTable
+		push	ebp
+		mov		sgnWidth, ebx
+		mov		ebp, edx
+		xor		eax, eax
+		xor		edx, edx
+	label1:
+		mov		al, [esi]
+		inc		esi
+		dec		ecx
+		test	al, al
+		jns		label6
+		neg		al
+		cmp		al, 41h
+		jle		label3
+		sub		al, 41h
+		dec		ecx
+		sub		ebx, eax
+		mov		dl, [esi]
+		inc		esi
+		mov		dl, [ebp+edx]
+	label2:
+		mov		[edi], dl
+		dec		eax
+		lea		edi, [edi+1]
+		jnz		label2
+		jmp		label5
+	label3:
+		sub		ecx, eax
+		sub		ebx, eax
+	label4:
+		mov		dl, [esi]
+		inc		esi
+		mov		dl, [ebp+edx]
+		mov		[edi], dl
+		dec		eax
+		lea		edi, [edi+1]
+		jnz		label4
+	label5:
+		test	ebx, ebx
+		jnz		label10
+		mov		ebx, sgnWidth
+		sub		edi, 768
+		sub		edi, ebx
+		jmp		label10
+	label6:
+		cmp		eax, ebx
+		jle		label7
+		mov		edx, ebx
+		add		edi, ebx
+		sub		eax, ebx
+		jmp		label8
+	label7:
+		mov		edx, eax
+		add		edi, eax
+		xor		eax, eax
+	label8:
+		sub		ebx, edx
+		jnz		label9
+		mov		ebx, sgnWidth
+		sub		edi, 768
+		sub		edi, ebx
+	label9:
+		test	eax, eax
+		jnz		label6
+	label10:
+		test	ecx, ecx
+		jnz		label1
+		pop		ebp
+		pop		edi
+		pop		esi
+		pop		ebx
+	}
+#else
+	int w;
+	char width;
+	BYTE fill;
+	BYTE *src, *dst;
 
-	v5 = a2;
-	v6 = a1;
-	v7 = a4;
-	v8 = a3;
-	sgnWidth = a4;
-	v9 = 0;
-	v10 = 0;
-	do {
-		_LOBYTE(v9) = *v5++;
-		--v8;
-		if ((v9 & 0x80u) == 0) {
-			do {
-				if (v9 <= v7) {
-					v10 = v9;
-					v6 += v9;
-					v9 = 0;
-				} else {
-					v10 = v7;
-					v6 += v7;
-					v9 -= v7;
+	src = pRLEBytes;
+	dst = pDecodeTo;
+	w = nWidth;
+	sgnWidth = nWidth;
+
+	while(nDataSize) {
+		width = *src++;
+		nDataSize--;
+		if(width < 0) {
+			width = -width;
+			if(width > 65) {
+				width -= 65;
+				nDataSize--;
+				fill = pTable[*src++];
+				w -= width;
+				while(width) {
+					*dst = fill;
+					dst++;
+					width--;
 				}
-				v7 -= v10;
-				if (!v7) {
-					v7 = sgnWidth;
-					v6 = &v6[-sgnWidth - 768];
+				if(!w) {
+					w = sgnWidth;
+					dst -= 768 + w;
 				}
-			} while (v9);
-		} else {
-			_LOBYTE(v9) = -(char)v9;
-			if ((char)v9 <= 65) {
-				v8 -= v9;
-				v7 -= v9;
-				do {
-					_LOBYTE(v10) = *v5++;
-					*v6 = unused_lindex[v10];
-					--v9;
-					++v6;
-				} while (v9);
+				continue;
 			} else {
-				_LOBYTE(v9) = v9 - 65;
-				--v8;
-				v7 -= v9;
-				_LOBYTE(v10) = *v5++;
-				v11 = unused_lindex[v10];
-				do {
-					*v6 = v11;
-					--v9;
-					++v6;
-				} while (v9);
-			}
-			if (!v7) {
-				v7 = sgnWidth;
-				v6 = &v6[-sgnWidth - 768];
+				nDataSize -= width;
+				w -= width;
+				while(width) {
+					*dst = pTable[*src];
+					src++;
+					dst++;
+					width--;
+				}
+				if(!w) {
+					w = sgnWidth;
+					dst -= 768 + w;
+				}
+				continue;
 			}
 		}
-	} while (v8);
-}
-// 52B978: using guessed type int sgnWidth;
-
-void __fastcall Cl2DecodeLightTbl(int screen_x, int screen_y, char *pCelBuff, int nCel, int frame_width, int a6, int a7)
-{
-	int v7;          // esi
-	char *v8;        // edi
-	int v9;          // ebx
-	char *v10;       // edx
-	int v11;         // eax
-	int v12;         // eax
-	int v13;         // eax
-	char *v14;       // edx
-	char *v15;       // ecx
-	char *pCelBuffa; // [esp+18h] [ebp+8h]
-
-	v7 = screen_y;
-	if (gpBuffer) {
-		v8 = pCelBuff;
-		if (pCelBuff) {
-			if (nCel > 0) {
-				v9 = *(_DWORD *)&pCelBuff[4 * nCel];
-				v10 = &pCelBuff[v9];
-				v11 = *(unsigned short *)&pCelBuff[v9 + a6];
-				pCelBuffa = (char *)*(unsigned short *)&pCelBuff[v9 + a6];
-				if (v11) {
-					if (a7 == 8 || (v12 = *(unsigned short *)&v10[a7], !*(_WORD *)&v10[a7]))
-						v12 = *(_DWORD *)&v8[4 * nCel + 4] - v9;
-					v13 = v12 - (_DWORD)pCelBuffa;
-					v14 = &v10[(_DWORD)pCelBuffa];
-					v15 = (char *)gpBuffer + screen_y_times_768[v7 - 16 * a6] + screen_x;
-					if (light_table_index)
-						Cl2DecDatLightTbl1(
-						    v15,
-						    v14,
-						    v13,
-						    frame_width,
-						    &pLightTbl[256 * light_table_index]);
-					else
-						Cl2DecDatFrm1(v15, v14, v13, frame_width);
-				}
+		while(width) {
+			if(width > w) {
+				dst += w;
+				width -= w;
+				w = 0;
+			} else {
+				dst += width;
+				w -= width;
+				width = 0;
+			}
+			if(!w) {
+				w = sgnWidth;
+				dst -= 768 + w;
 			}
 		}
 	}
+#endif
+}
+// 52B978: using guessed type int sgnWidth;
+
+void __fastcall Cl2DecodeLightTbl(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int always_0, int dir)
+{
+	int hdr, nDataSize;
+	BYTE *pRLEBytes, *pDecodeTo, *tmp;
+	DWORD *pFrameTable;
+
+	/// ASSERT: assert(gpBuffer != NULL);
+	if(!gpBuffer)
+		return;
+	/// ASSERT: assert(pCelBuff != NULL);
+	if(!pCelBuff)
+		return;
+	/// ASSERT: assert(nCel > 0);
+	if(nCel <= 0)
+		return;
+
+	pFrameTable = (DWORD *)pCelBuff;
+	/// ASSERT: assert(nCel <= (int) pFrameTable[0]);
+
+	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
+	hdr = *(WORD *)&pRLEBytes[always_0];
+	if(!hdr)
+		return;
+
+	if(dir == 8)
+		nDataSize = 0;
+	else
+		nDataSize = *(WORD *)&pRLEBytes[dir];
+	if(!nDataSize)
+		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
+
+	tmp = (BYTE *)gpBuffer;
+	pDecodeTo = &tmp[sx + screen_y_times_768[sy - 16 * always_0]];
+
+	if(light_table_index)
+		Cl2DecDatLightTbl1(pDecodeTo, &pRLEBytes[hdr], nDataSize - hdr, nWidth, (BYTE *)&pLightTbl[light_table_index * 256]);
+	else
+		Cl2DecDatFrm1(pDecodeTo, &pRLEBytes[hdr], nDataSize - hdr, nWidth);
 }
 // 69BEF8: using guessed type int light_table_index;
 
-void __fastcall Cl2DecodeFrm4(int screen_x, int screen_y, char *pCelBuff, int nCel, int frame_width, int a6, int a7)
+void __fastcall Cl2DecodeFrm4(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int always_0, int dir)
 {
-	int v7;          // ebx
-	char *v8;        // edx
-	char *v9;        // ecx
-	int v10;         // ecx
-	int v11;         // eax
-	int v12;         // [esp+Ch] [ebp-4h]
-	char *pCelBuffa; // [esp+18h] [ebp+8h]
+	int hdr, nDataSize;
+	BYTE *pRLEBytes, *tmp;
+	DWORD *pFrameTable;
 
-	v7 = screen_y;
-	v12 = screen_x;
-	if (gpBuffer) {
-		v8 = pCelBuff;
-		if (pCelBuff) {
-			if (nCel > 0) {
-				v9 = *(char **)&pCelBuff[4 * nCel];
-				pCelBuffa = v9;
-				v10 = (int)&v9[(_DWORD)v8];
-				if (*(_WORD *)(v10 + a6)) {
-					if (a7 == 8 || (v11 = *(unsigned short *)(v10 + a7), !*(_WORD *)(v10 + a7)))
-						v11 = *(_DWORD *)&v8[4 * nCel + 4] - (_DWORD)pCelBuffa;
-					Cl2DecDatFrm4(
-					    (char *)gpBuffer + screen_y_times_768[v7 - 16 * a6] + v12,
-					    (char *)(*(unsigned short *)(v10 + a6) + v10),
-					    v11 - *(unsigned short *)(v10 + a6),
-					    frame_width);
-				}
-			}
-		}
-	}
+	/// ASSERT: assert(gpBuffer != NULL);
+	if(!gpBuffer)
+		return;
+	/// ASSERT: assert(pCelBuff != NULL);
+	if(!pCelBuff)
+		return;
+	/// ASSERT: assert(nCel > 0);
+	if(nCel <= 0)
+		return;
+
+	pFrameTable = (DWORD *)pCelBuff;
+	/// ASSERT: assert(nCel <= (int) pFrameTable[0]);
+
+	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
+	hdr = *(WORD *)&pRLEBytes[always_0];
+	if(!hdr)
+		return;
+
+	if(dir == 8)
+		nDataSize = 0;
+	else
+		nDataSize = *(WORD *)&pRLEBytes[dir];
+	if(!nDataSize)
+		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
+
+	tmp = (BYTE *)gpBuffer;
+	Cl2DecDatFrm4(
+		&tmp[sx + screen_y_times_768[sy - 16 * always_0]],
+		&pRLEBytes[hdr],
+		nDataSize - hdr,
+		nWidth);
 }
 
-void __fastcall Cl2DecDatFrm4(char *buffer, char *a2, int a3, int frame_width)
+void __fastcall Cl2DecDatFrm4(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 {
-	char *v4; // esi
-	char *v5; // edi
-	int v6;   // eax
-	int v7;   // ebx
-	int v8;   // ecx
-	char v9;  // dl
-	char v10; // dl
-	int v11;  // edx
+#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+	__asm {
+		push	ebx
+		push	esi
+		push	edi
+		mov		esi, edx /// UNSAFE: use 'mov esi, pRLEBytes'
+		mov		edi, ecx /// UNSAFE: use 'mov edi, pDecodeTo'
+		xor		eax, eax
+		mov		ebx, nWidth
+		mov		ecx, nDataSize
+	label1:
+		mov		al, [esi]
+		inc		esi
+		dec		ecx
+		test	al, al
+		jns		label7
+		neg		al
+		cmp		al, 41h
+		jle		label3
+		sub		al, 41h
+		dec		ecx
+		mov		dl, [esi]
+		inc		esi
+		cmp		edi, gpBufEnd
+		jge		label7
+		sub		ebx, eax
+	label2:
+		mov		[edi], dl
+		dec		eax
+		lea		edi, [edi+1]
+		jnz		label2
+		jmp		label6
+	label3:
+		sub		ecx, eax
+		cmp		edi, gpBufEnd
+		jl		label4
+		add		esi, eax
+		jmp		label7
+	label4:
+		sub		ebx, eax
+	label5:
+		mov		dl, [esi]
+		inc		esi
+		mov		[edi], dl
+		dec		eax
+		lea		edi, [edi+1]
+		jnz		label5
+	label6:
+		test	ebx, ebx
+		jnz		label11
+		mov		ebx, nWidth
+		sub		edi, 768
+		sub		edi, ebx
+		jmp		label11
+	label7:
+		cmp		eax, ebx
+		jle		label8
+		mov		edx, ebx
+		add		edi, ebx
+		sub		eax, ebx
+		jmp		label9
+	label8:
+		mov		edx, eax
+		add		edi, eax
+		xor		eax, eax
+	label9:
+		sub		ebx, edx
+		jnz		label10
+		mov		ebx, nWidth
+		sub		edi, 768
+		sub		edi, ebx
+	label10:
+		test	eax, eax
+		jnz		label7
+	label11:
+		test	ecx, ecx
+		jnz		label1
+		pop		edi
+		pop		esi
+		pop		ebx
+	}
+#else
+	int w;
+	char width;
+	BYTE fill;
+	BYTE *src, *dst;
 
-	v4 = a2;
-	v5 = buffer;
-	v6 = 0;
-	v7 = frame_width;
-	v8 = a3;
-	do {
-		_LOBYTE(v6) = *v4++;
-		--v8;
-		if ((v6 & 0x80u) != 0) {
-			_LOBYTE(v6) = -(char)v6;
-			if ((char)v6 <= 65) {
-				v8 -= v6;
-				if (v5 < (char *)gpBufEnd) {
-					v7 -= v6;
-					do {
-						v10 = *v4++;
-						*v5 = v10;
-						--v6;
-						++v5;
-					} while (v6);
-					goto LABEL_12;
-				}
-				v4 += v6;
-			} else {
-				_LOBYTE(v6) = v6 - 65;
-				--v8;
-				v9 = *v4++;
-				if (v5 < (char *)gpBufEnd) {
-					v7 -= v6;
-					do {
-						*v5 = v9;
-						--v6;
-						++v5;
-					} while (v6);
-				LABEL_12:
-					if (!v7) {
-						v7 = frame_width;
-						v5 = &v5[-frame_width - 768];
+	src = pRLEBytes;
+	dst = pDecodeTo;
+	w = nWidth;
+
+	while(nDataSize) {
+		width = *src++;
+		nDataSize--;
+		if(width < 0) {
+			width = -width;
+			if(width > 65) {
+				width -= 65;
+				nDataSize--;
+				fill = *src++;
+				if(dst < gpBufEnd) {
+					w -= width;
+					while(width) {
+						*dst = fill;
+						dst++;
+						width--;
+					}
+					if(!w) {
+						w = nWidth;
+						dst -= 768 + w;
 					}
 					continue;
 				}
-			}
-		}
-		do {
-			if (v6 <= v7) {
-				v11 = v6;
-				v5 += v6;
-				v6 = 0;
 			} else {
-				v11 = v7;
-				v5 += v7;
-				v6 -= v7;
-			}
-			v7 -= v11;
-			if (!v7) {
-				v7 = frame_width;
-				v5 = &v5[-frame_width - 768];
-			}
-		} while (v6);
-	} while (v8);
-}
-// 69CF0C: using guessed type int gpBufEnd;
-
-void __fastcall Cl2DecodeClrHL(char colour, int screen_x, int screen_y, char *pCelBuff, int nCel, int frame_width, int a7, int a8)
-{
-	int v8;   // ebx
-	char *v9; // edx
-	int v10;  // ecx
-	int v11;  // eax
-	int v12;  // [esp+Ch] [ebp-8h]
-	char a5;  // [esp+10h] [ebp-4h]
-
-	v12 = screen_x;
-	a5 = colour;
-	if (gpBuffer) {
-		if (pCelBuff) {
-			if (nCel > 0) {
-				v8 = *(_DWORD *)&pCelBuff[4 * nCel];
-				v9 = &pCelBuff[v8];
-				v10 = *(unsigned short *)&pCelBuff[v8 + a7];
-				if (*(_WORD *)&pCelBuff[v8 + a7]) {
-					if (a8 == 8 || (v11 = *(unsigned short *)&v9[a8], !*(_WORD *)&v9[a8]))
-						v11 = *(_DWORD *)&pCelBuff[4 * nCel + 4] - v8;
-					gpBufEnd -= 768;
-					Cl2DecDatClrHL(
-					    (char *)gpBuffer + screen_y_times_768[screen_y - 16 * a7] + v12,
-					    &v9[v10],
-					    v11 - v10,
-					    frame_width,
-					    a5);
-					gpBufEnd += 768;
+				nDataSize -= width;
+				if(dst < gpBufEnd) {
+					w -= width;
+					while(width) {
+						*dst = *src;
+						src++;
+						dst++;
+						width--;
+					}
+					if(!w) {
+						w = nWidth;
+						dst -= 768 + w;
+					}
+					continue;
+				} else {
+					src += width;
 				}
 			}
 		}
+		while(width) {
+			if(width > w) {
+				dst += w;
+				width -= w;
+				w = 0;
+			} else {
+				dst += width;
+				w -= width;
+				width = 0;
+			}
+			if(!w) {
+				w = nWidth;
+				dst -= 768 + w;
+			}
+		}
 	}
+#endif
 }
 // 69CF0C: using guessed type int gpBufEnd;
 
-void __fastcall Cl2DecDatClrHL(char *dst_buf, char *frame_content, int a3, int frame_width, char colour)
+void __fastcall Cl2DecodeClrHL(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int always_0, int dir)
 {
-	char *v5; // esi
-	char *v6; // edi
-	int v7;   // eax
-	int v8;   // ebx
-	int v9;   // ecx
-	char v10; // dl
-	char v11; // dh
-	char v12; // dh
-	int v13;  // edx
+	int hdr, nDataSize;
+	BYTE *pRLEBytes, *tmp;
+	DWORD *pFrameTable;
 
-	v5 = frame_content;
-	v6 = dst_buf;
-	v7 = 0;
-	v8 = frame_width;
-	v9 = a3;
-	v10 = colour;
-	do {
-		_LOBYTE(v7) = *v5++;
-		--v9;
-		if ((v7 & 0x80u) != 0) {
-			_LOBYTE(v7) = -(char)v7;
-			if ((char)v7 <= 65) {
-				v9 -= v7;
-				if (v6 < (char *)gpBufEnd) {
-					v8 -= v7;
-					do {
-						v12 = *v5++;
-						if (v12) {
-							*(v6 - 1) = v10;
-							v6[1] = v10;
-							*(v6 - 768) = v10;
-							v6[768] = v10;
+	/// ASSERT: assert(gpBuffer != NULL);
+	if(!gpBuffer)
+		return;
+	/// ASSERT: assert(pCelBuff != NULL);
+	if(!pCelBuff)
+		return;
+	/// ASSERT: assert(nCel > 0);
+	if(nCel <= 0)
+		return;
+
+	pFrameTable = (DWORD *)pCelBuff;
+	/// ASSERT: assert(nCel <= (int) pFrameTable[0]);
+
+	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
+	hdr = *(WORD *)&pRLEBytes[always_0];
+	if(!hdr)
+		return;
+
+	if(dir == 8)
+		nDataSize = 0;
+	else
+		nDataSize = *(WORD *)&pRLEBytes[dir];
+	if(!nDataSize)
+		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
+
+	tmp = (BYTE *)gpBuffer;
+	gpBufEnd -= 768;
+	Cl2DecDatClrHL(
+		&tmp[sx + screen_y_times_768[sy - 16 * always_0]],
+		&pRLEBytes[hdr],
+		nDataSize - hdr,
+		nWidth,
+		col);
+	gpBufEnd += 768;
+}
+// 69CF0C: using guessed type int gpBufEnd;
+
+void __fastcall Cl2DecDatClrHL(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, char col)
+{
+#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+	__asm {
+		push	ebx
+		push	esi
+		push	edi
+		mov		esi, edx /// UNSAFE: use 'mov esi, pRLEBytes'
+		mov		edi, ecx /// UNSAFE: use 'mov edi, pDecodeTo'
+		xor		eax, eax
+		mov		ebx, nWidth
+		xor		edx, edx
+		mov		ecx, nDataSize
+		mov		dl, col
+	label1:
+		mov		al, [esi]
+		inc		esi
+		dec		ecx
+		test	al, al
+		jns		label9
+		neg		al
+		cmp		al, 41h
+		jle		label3
+		sub		al, 41h
+		dec		ecx
+		mov		dh, [esi]
+		inc		esi
+		test	dh, dh
+		jz		label9
+		cmp		edi, gpBufEnd
+		jge		label9
+		mov		[edi-1], dl
+		sub		ebx, eax
+		mov		[edi+eax], dl
+	label2:
+		mov		[edi-768], dl
+		mov		[edi+768], dl
+		dec		eax
+		lea		edi, [edi+1]
+		jnz		label2
+		jmp		label7
+	label3:
+		sub		ecx, eax
+		cmp		edi, gpBufEnd
+		jl		label4
+		add		esi, eax
+		jmp		label9
+	label4:
+		sub		ebx, eax
+	label5:
+		mov		dh, [esi]
+		inc		esi
+		test	dh, dh
+		jz		label6
+		mov		[edi-1], dl
+		mov		[edi+1], dl
+		mov		[edi-768], dl
+		mov		[edi+768], dl
+	label6:
+		dec		eax
+		lea		edi, [edi+1]
+		jnz		label5
+	label7:
+		test	ebx, ebx
+		jnz		label13
+		mov		ebx, nWidth
+		sub		edi, 768
+		sub		edi, ebx
+		jmp		label13
+	label9:
+		cmp		eax, ebx
+		jle		label10
+		mov		edx, ebx
+		add		edi, ebx
+		sub		eax, ebx
+		jmp		label11
+	label10:
+		mov		edx, eax
+		add		edi, eax
+		xor		eax, eax
+	label11:
+		sub		ebx, edx
+		jnz		label12
+		mov		ebx, nWidth
+		sub		edi, 768
+		sub		edi, ebx
+	label12:
+		test	eax, eax
+		jnz		label9
+		mov		dl, col
+	label13:
+		test	ecx, ecx
+		jnz		label1
+		pop		edi
+		pop		esi
+		pop		ebx
+	}
+#else
+	int w;
+	char width;
+	BYTE *src, *dst;
+
+	src = pRLEBytes;
+	dst = pDecodeTo;
+	w = nWidth;
+
+	while(nDataSize) {
+		width = *src++;
+		nDataSize--;
+		if(width < 0) {
+			width = -width;
+			if(width > 65) {
+				width -= 65;
+				nDataSize--;
+				if(*src++ && dst < gpBufEnd) {
+					w -= width;
+					dst[-1] = col;
+					dst[width] = col;
+					while(width) {
+						dst[-768] = col;
+						dst[768] = col;
+						dst++;
+						width--;
+					}
+					if(!w) {
+						w = nWidth;
+						dst -= 768 + w;
+					}
+					continue;
+				}
+			} else {
+				nDataSize -= width;
+				if(dst < gpBufEnd) {
+					w -= width;
+					while(width) {
+						if(*src++) {
+							dst[-1] = col;
+							dst[1] = col;
+							dst[-768] = col;
+							dst[768] = col;
 						}
-						--v7;
-						++v6;
-					} while (v7);
-					goto LABEL_15;
-				}
-				v5 += v7;
-			} else {
-				_LOBYTE(v7) = v7 - 65;
-				--v9;
-				v11 = *v5++;
-				if (v11 && v6 < (char *)gpBufEnd) {
-					*(v6 - 1) = v10;
-					v8 -= v7;
-					v6[v7] = v10;
-					do {
-						*(v6 - 768) = v10;
-						v6[768] = v10;
-						--v7;
-						++v6;
-					} while (v7);
-				LABEL_15:
-					if (!v8) {
-						v8 = frame_width;
-						v6 = &v6[-frame_width - 768];
+						dst++;
+						width--;
+					}
+					if(!w) {
+						w = nWidth;
+						dst -= 768 + w;
 					}
 					continue;
+				} else {
+					src += width;
 				}
 			}
 		}
-		do {
-			if (v7 <= v8) {
-				v13 = v7;
-				v6 += v7;
-				v7 = 0;
+		while(width) {
+			if(width > w) {
+				dst += w;
+				width -= w;
+				w = 0;
 			} else {
-				v13 = v8;
-				v6 += v8;
-				v7 -= v8;
+				dst += width;
+				w -= width;
+				width = 0;
 			}
-			v8 -= v13;
-			if (!v8) {
-				v8 = frame_width;
-				v6 = &v6[-frame_width - 768];
-			}
-		} while (v7);
-		v10 = colour;
-	} while (v9);
-}
-// 69CF0C: using guessed type int gpBufEnd;
-
-void __fastcall Cl2DecodeFrm5(int screen_x, int screen_y, char *pCelBuff, int nCel, int frame_width, int a6, int a7, char a8)
-{
-	char *v8;        // edi
-	int v9;          // ebx
-	char *v10;       // esi
-	int v11;         // eax
-	int v12;         // eax
-	char *v13;       // esi
-	int v14;         // edi
-	int v15;         // eax
-	int v16;         // eax
-	char *pCelBuffa; // [esp+18h] [ebp+8h]
-
-	if (gpBuffer) {
-		v8 = pCelBuff;
-		if (pCelBuff) {
-			if (nCel > 0) {
-				v9 = *(_DWORD *)&pCelBuff[4 * nCel];
-				v10 = &pCelBuff[v9];
-				v11 = *(unsigned __int16 *)&pCelBuff[v9 + a6];
-				pCelBuffa = (char *)*(unsigned __int16 *)&pCelBuff[v9 + a6];
-				if (v11) {
-					if (a7 == 8 || (v12 = *(unsigned __int16 *)&v10[a7], !*(_WORD *)&v10[a7]))
-						v12 = *(_DWORD *)&v8[4 * nCel + 4] - v9;
-					v13 = &v10[(_DWORD)pCelBuffa];
-					v14 = v12 - (_DWORD)pCelBuffa;
-					v15 = -(light4flag != 0);
-					_LOWORD(v15) = v15 & 0xF400;
-					v16 = v15 + 4096;
-					if (a8 == 2)
-						v16 += 256;
-					if (a8 >= 4)
-						v16 = v16 + (a8 << 8) - 256;
-					Cl2DecDatLightTbl2(
-					    (char *)gpBuffer + screen_y_times_768[screen_y - 16 * a6] + screen_x,
-					    v13,
-					    v14,
-					    frame_width,
-					    &pLightTbl[v16]);
-				}
+			if(!w) {
+				w = nWidth;
+				dst -= 768 + w;
 			}
 		}
 	}
+#endif
+}
+// 69CF0C: using guessed type int gpBufEnd;
+
+void __fastcall Cl2DecodeFrm5(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int always_0, int dir, char light)
+{
+	int hdr, idx, nDataSize;
+	BYTE *pRLEBytes, *tmp;
+	DWORD *pFrameTable;
+
+	/// ASSERT: assert(gpBuffer != NULL);
+	if(!gpBuffer)
+		return;
+	/// ASSERT: assert(pCelBuff != NULL);
+	if(!pCelBuff)
+		return;
+	/// ASSERT: assert(nCel > 0);
+	if(nCel <= 0)
+		return;
+
+	pFrameTable = (DWORD *)pCelBuff;
+	/// ASSERT: assert(nCel <= (int) pFrameTable[0]);
+
+	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
+	hdr = *(WORD *)&pRLEBytes[always_0];
+	if(!hdr)
+		return;
+
+	if(dir == 8)
+		nDataSize = 0;
+	else
+		nDataSize = *(WORD *)&pRLEBytes[dir];
+	if(!nDataSize)
+		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
+
+	idx = light4flag ? 1024 : 4096;
+	if(light == 2)
+		idx += 256;
+	if(light >= 4)
+		idx += (light - 1) << 8;
+
+	tmp = (BYTE *)gpBuffer;
+	Cl2DecDatLightTbl2(
+		&tmp[sx + screen_y_times_768[sy - 16 * always_0]],
+		&pRLEBytes[hdr],
+		nDataSize - hdr,
+		nWidth,
+		(BYTE *)&pLightTbl[idx]);
 }
 // 525728: using guessed type int light4flag;
 
-void __fastcall Cl2DecDatLightTbl2(char *dst_buf, char *a2, int a3, int frame_width, char *a5) /* check 5th arg */
+void __fastcall Cl2DecDatLightTbl2(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, BYTE *pTable)
 {
-	char *v5; // esi
-	char *v6; // edi
-	int v7;   // ebx
-	int v8;   // ecx
-	int v9;   // eax
-	int v10;  // edx
-	char v11; // dl
+#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+	__asm {
+		push	ebx
+		push	esi
+		push	edi
+		mov		esi, edx /// UNSAFE: use 'mov esi, pRLEBytes'
+		mov		edi, ecx /// UNSAFE: use 'mov edi, pDecodeTo'
+		mov		ebx, nWidth
+		mov		ecx, nDataSize
+		mov		edx, pTable
+		push	ebp
+		mov		sgnWidth, ebx
+		mov		ebp, edx
+		xor		eax, eax
+		xor		edx, edx
+	label1:
+		mov		al, [esi]
+		inc		esi
+		dec		ecx
+		test	al, al
+		jns		label7
+		neg		al
+		cmp		al, 41h
+		jle		label3
+		sub		al, 41h
+		dec		ecx
+		mov		dl, [esi]
+		inc		esi
+		mov		dl, [ebp+edx]
+		cmp		edi, gpBufEnd
+		jge		label7
+		sub		ebx, eax
+	label2:
+		mov		[edi], dl
+		dec		eax
+		lea		edi, [edi+1]
+		jnz		label2
+		jmp		label6
+	label3:
+		sub		ecx, eax
+		cmp		edi, gpBufEnd
+		jl		label4
+		add		esi, eax
+		jmp		label7
+	label4:
+		sub		ebx, eax
+	label5:
+		mov		dl, [esi]
+		inc		esi
+		mov		dl, [ebp+edx]
+		mov		[edi], dl
+		dec		eax
+		lea		edi, [edi+1]
+		jnz		label5
+	label6:
+		test	ebx, ebx
+		jnz		label11
+		mov		ebx, sgnWidth
+		sub		edi, 768
+		sub		edi, ebx
+		jmp		label11
+	label7:
+		cmp		eax, ebx
+		jle		label8
+		mov		edx, ebx
+		add		edi, ebx
+		sub		eax, ebx
+		jmp		label9
+	label8:
+		mov		edx, eax
+		add		edi, eax
+		xor		eax, eax
+	label9:
+		sub		ebx, edx
+		jnz		label10
+		mov		ebx, sgnWidth
+		sub		edi, 768
+		sub		edi, ebx
+	label10:
+		test	eax, eax
+		jnz		label7
+	label11:
+		test	ecx, ecx
+		jnz		label1
+		pop		ebp
+		pop		edi
+		pop		esi
+		pop		ebx
+	}
+#else
+	int w;
+	char width;
+	BYTE fill;
+	BYTE *src, *dst;
 
-	v5 = a2;
-	v6 = dst_buf;
-	v7 = frame_width;
-	v8 = a3;
-	sgnWidth = frame_width;
-	v9 = 0;
-	v10 = 0;
-	do {
-		_LOBYTE(v9) = *v5++;
-		--v8;
-		if ((v9 & 0x80u) != 0) {
-			_LOBYTE(v9) = -(char)v9;
-			if ((char)v9 <= 65) {
-				v8 -= v9;
-				if (v6 < (char *)gpBufEnd) {
-					v7 -= v9;
-					do {
-						_LOBYTE(v10) = *v5++;
-						*v6 = a5[v10];
-						--v9;
-						++v6;
-					} while (v9);
-					goto LABEL_12;
-				}
-				v5 += v9;
-			} else {
-				_LOBYTE(v9) = v9 - 65;
-				--v8;
-				_LOBYTE(v10) = *v5++;
-				v11 = a5[v10];
-				if (v6 < (char *)gpBufEnd) {
-					v7 -= v9;
-					do {
-						*v6 = v11;
-						--v9;
-						++v6;
-					} while (v9);
-				LABEL_12:
-					if (!v7) {
-						v7 = sgnWidth;
-						v6 = &v6[-sgnWidth - 768];
+	src = pRLEBytes;
+	dst = pDecodeTo;
+	w = nWidth;
+	sgnWidth = nWidth;
+
+	while(nDataSize) {
+		width = *src++;
+		nDataSize--;
+		if(width < 0) {
+			width = -width;
+			if(width > 65) {
+				width -= 65;
+				nDataSize--;
+				fill = pTable[*src++];
+				if(dst < gpBufEnd) {
+					w -= width;
+					while(width) {
+						*dst = fill;
+						dst++;
+						width--;
+					}
+					if(!w) {
+						w = sgnWidth;
+						dst -= 768 + w;
 					}
 					continue;
 				}
+			} else {
+				nDataSize -= width;
+				if(dst < gpBufEnd) {
+					w -= width;
+					while(width) {
+						*dst = pTable[*src];
+						src++;
+						dst++;
+						width--;
+					}
+					if(!w) {
+						w = sgnWidth;
+						dst -= 768 + w;
+					}
+					continue;
+				} else {
+					src += width;
+				}
 			}
 		}
-		do {
-			if (v9 <= v7) {
-				v10 = v9;
-				v6 += v9;
-				v9 = 0;
+		while(width) {
+			if(width > w) {
+				dst += w;
+				width -= w;
+				w = 0;
 			} else {
-				v10 = v7;
-				v6 += v7;
-				v9 -= v7;
+				dst += width;
+				w -= width;
+				width = 0;
 			}
-			v7 -= v10;
-			if (!v7) {
-				v7 = sgnWidth;
-				v6 = &v6[-sgnWidth - 768];
+			if(!w) {
+				w = sgnWidth;
+				dst -= 768 + w;
 			}
-		} while (v9);
-	} while (v8);
+		}
+	}
+#endif
 }
 // 52B978: using guessed type int sgnWidth;
 // 69CF0C: using guessed type int gpBufEnd;
 
-void __fastcall Cl2DecodeFrm6(int screen_x, int screen_y, char *pCelBuff, int nCel, int frame_width, int a6, int a7)
+void __fastcall Cl2DecodeFrm6(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int always_0, int dir)
 {
-	int v7;          // esi
-	char *v8;        // edi
-	int v9;          // ebx
-	char *v10;       // edx
-	int v11;         // eax
-	int v12;         // eax
-	int v13;         // eax
-	char *v14;       // edx
-	char *v15;       // ecx
-	char *pCelBuffa; // [esp+18h] [ebp+8h]
+	int hdr, nDataSize;
+	BYTE *pRLEBytes, *pDecodeTo, *tmp;
+	DWORD *pFrameTable;
 
-	v7 = screen_y;
-	if (gpBuffer) {
-		v8 = pCelBuff;
-		if (pCelBuff) {
-			if (nCel > 0) {
-				v9 = *(_DWORD *)&pCelBuff[4 * nCel];
-				v10 = &pCelBuff[v9];
-				v11 = *(unsigned short *)&pCelBuff[v9 + a6];
-				pCelBuffa = (char *)*(unsigned short *)&pCelBuff[v9 + a6];
-				if (v11) {
-					if (a7 == 8 || (v12 = *(unsigned short *)&v10[a7], !*(_WORD *)&v10[a7]))
-						v12 = *(_DWORD *)&v8[4 * nCel + 4] - v9;
-					v13 = v12 - (_DWORD)pCelBuffa;
-					v14 = &v10[(_DWORD)pCelBuffa];
-					v15 = (char *)gpBuffer + screen_y_times_768[v7 - 16 * a6] + screen_x;
-					if (light_table_index)
-						Cl2DecDatLightTbl2(v15, v14, v13, frame_width, &pLightTbl[256 * light_table_index]);
-					else
-						Cl2DecDatFrm4(v15, v14, v13, frame_width);
-				}
-			}
-		}
-	}
+	/// ASSERT: assert(gpBuffer != NULL);
+	if(!gpBuffer)
+		return;
+	/// ASSERT: assert(pCelBuff != NULL);
+	if(!pCelBuff)
+		return;
+	/// ASSERT: assert(nCel > 0);
+	if(nCel <= 0)
+		return;
+
+	pFrameTable = (DWORD *)pCelBuff;
+	/// ASSERT: assert(nCel <= (int) pFrameTable[0]);
+
+	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
+	hdr = *(WORD *)&pRLEBytes[always_0];
+	if(!hdr)
+		return;
+
+	if(dir == 8)
+		nDataSize = 0;
+	else
+		nDataSize = *(WORD *)&pRLEBytes[dir];
+	if(!nDataSize)
+		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
+
+	tmp = (BYTE *)gpBuffer;
+	pDecodeTo = &tmp[sx + screen_y_times_768[sy - 16 * always_0]];
+
+	if(light_table_index)
+		Cl2DecDatLightTbl2(pDecodeTo, &pRLEBytes[hdr], nDataSize - hdr, nWidth, (BYTE *)&pLightTbl[light_table_index * 256]);
+	else
+		Cl2DecDatFrm4(pDecodeTo, &pRLEBytes[hdr], nDataSize - hdr, nWidth);
 }
 // 69BEF8: using guessed type int light_table_index;
 
