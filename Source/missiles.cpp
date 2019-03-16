@@ -5451,14 +5451,9 @@ void __fastcall MI_Bonespirit(int i)
 
 void __fastcall MI_ResurrectBeam(int i)
 {
-	int v1;     // eax
-	BOOLEAN v2; // zf
-
-	v1 = i;
-	v2 = missile[i]._mirange == 1;
-	--missile[v1]._mirange;
-	if (v2)
-		missile[v1]._miDelFlag = TRUE;
+	missile[i]._mirange--;
+	if (missile[i]._mirange == 0)
+		missile[i]._miDelFlag = TRUE;
 	PutMissile(i);
 }
 
