@@ -470,13 +470,13 @@ int  STORMAPI Ordinal224(int a1);
 BOOL STORMAPI SFileCloseArchive(HANDLE hArchive);
 BOOL STORMAPI SFileCloseFile(HANDLE hFile);
 
-BOOL STORMAPI SFileDdaBeginEx(HANDLE directsound, DWORD flags, DWORD mask, unsigned __int32 lDistanceToMove, signed __int32 volume, signed int a6, int a7);
+BOOL STORMAPI SFileDdaBeginEx(HANDLE hFile, DWORD flags, DWORD mask, unsigned __int32 lDistanceToMove, signed __int32 volume, signed int pan, int a7);
 BOOL STORMAPI SFileDdaDestroy();
-BOOL STORMAPI SFileDdaEnd(HANDLE directsound);
-BOOL STORMAPI SFileDdaGetPos(HANDLE directsound, int a2, int a3);
+BOOL STORMAPI SFileDdaEnd(HANDLE hFile);
+BOOL STORMAPI SFileDdaGetPos(HANDLE hFile, int *current, int *end);
 
 BOOL STORMAPI SFileDdaInitialize(HANDLE directsound);
-BOOL STORMAPI SFileDdaSetVolume(HANDLE directsound, signed int bigvolume, signed int volume);
+BOOL STORMAPI SFileDdaSetVolume(HANDLE hFile, signed int bigvolume, signed int volume);
 BOOL STORMAPI SFileDestroy();
 
 BOOL STORMAPI SFileGetFileArchive(HANDLE hFile, HANDLE *archive);
@@ -594,7 +594,7 @@ STORMAPI
 SBmpLoadImage(
     const char   *pszFileName,
     PALETTEENTRY *pPalette ,
-    void         *pBuffer,
+    BYTE         *pBuffer,
     DWORD        dwBuffersize,
     DWORD        *pdwWidth,
     DWORD        *pdwHeight,
@@ -898,7 +898,7 @@ BOOL STORMAPI STransCreateI(void *pBuffer, int width, int height, int bpp, int a
 BOOL STORMAPI SVidDestroy();
 BOOL STORMAPI SVidGetSize(HANDLE video, int width, int height, int zero);
 BOOL STORMAPI SVidInitialize(HANDLE video);
-BOOL STORMAPI SVidPlayBegin(char *filename, int arg4, int a3, int a4, int a5, int a6, HANDLE* video);
+BOOL STORMAPI SVidPlayBegin(char *filename, int a2, int a3, int a4, int a5, int flags, HANDLE *video);
 
 BOOL STORMAPI SVidPlayContinueSingle(HANDLE video, int a2, int a3);
 BOOL STORMAPI SVidPlayEnd(HANDLE video);
@@ -1308,7 +1308,7 @@ void __stdcall SDlgSetCursor(HWND hWnd, HCURSOR a2, int a3, int *a4);
 BOOL __stdcall SDlgSetTimer(int a1, int a2, int a3, void (__stdcall *a4)(int, int, int, int));
 BOOL __stdcall SDlgKillTimer(int a1, int a2);
 BOOL __stdcall SDlgDrawBitmap(HWND hWnd, int a2, int a3, int a4, int a5, int a6, int a7);
-BOOL __stdcall SDlgDialogBoxParam(HINSTANCE hInst, char *szDialog, int a3, WNDPROC func, int a5);
+BOOL __stdcall SDlgDialogBoxParam(HINSTANCE hInst, char *szDialog, int hWnd, WNDPROC func, int selhero_is_good);
 BOOL __stdcall SGdiTextOut(void *pBuffer, int x, int y, int mask, char *str, int len);
 BOOL __stdcall SFileEnableDirectAccess(BOOL enable);
 
