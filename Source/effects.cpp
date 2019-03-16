@@ -1161,7 +1161,7 @@ void __cdecl sound_update()
 		//v3 = v1;
 		if (sfx_stream) {
 			//_LOBYTE(v2) = SFileDdaGetPos(sfx_stream, (int)&v4, (int)&v3);
-			if (SFileDdaGetPos(sfx_stream, (INT_PTR)&v4, (INT_PTR)&v3)) {
+			if (SFileDdaGetPos(sfx_stream, &v4, &v3)) {
 				if (v4 >= v3)
 					sfx_stop();
 			}
