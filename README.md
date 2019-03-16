@@ -7,8 +7,6 @@
 # DevilutionX
 Diablo build for modern operating systems
 
-**Note**, DevilutionX requires an original copy of `diabdat.mpq`. None of the Diablo 1 game assets are provided by this project. To get a legitimate copy of the game assets, please refer to the [GoG release of Diablo 1](https://www.gog.com/game/diablo).
-
 # How To Play:
  - Copy diabdat.mpq from your CD, or GoG install folder, to the DevilutionX game directory ; Make sure it is all lowercase.
  - [Download DevilutionX](https://github.com/diasurgical/devilutionX/releases), or build from source
@@ -44,16 +42,35 @@ The default build type is `Debug`. This can be changed with `-DCMAKE_BUILD_TYPE=
 Please keep in mind that this is still being worked on and is missing parts of UI and SoundEffects are not properly playing now.
 
 ### Building deviltuionX 32-bit on 64-bit Linux (multilib) platforms
+Install the dependencies on your machine:
 ```
 sudo apt-get install cmake g++-multilib libsdl2-dev:i386 libsdl2-mixer-dev:i386 libsdl2-ttf-dev:i386 libsodium-dev libsodium-dev:i386
 ```
 
 Now run the following commands:
 ```
-mkdir build32
-cd build32
+mkdir build
+cd build
 linux32 cmake -DCMAKE_TOOLCHAIN_FILE=../CMake/32bit.cmake ..
 linux32 make -j$(nproc)
+```
+
+### Cross-compiling for Windows via MinGW
+Install the dependencies on your machine:
+
+Download and place the 32bit MinGW Development Libraries of [SDL2](https://www.libsdl.org/download-2.0.php), [SDL2_mixer](https://www.libsdl.org/projects/SDL_mixer/), [SDL2_ttf](https://www.libsdl.org/projects/SDL_ttf/) and [Libsodium](https://github.com/jedisct1/libsodium/releases) in `/user/i686-w64-mingw32`.
+
+```
+sudo apt-get install cmake gcc-mingw-w64-i686 g++-mingw-w64-i686
+```
+Use `-DCROSS_PREFIX=/path/to/prefix` if the `i686-w64-mingw32` directory is not in `/usr`.
+
+Now run the following commands:
+```
+mkdir build
+cd build
+cmake -DASAN=OFF -DCMAKE_TOOLCHAIN_FILE=../CMake/mingwcc.cmake ..
+make -j$(nproc)
 ```
 
 ### Building devilutionX on macOS
@@ -63,13 +80,6 @@ Install the dependencies using [Homebrew](https://brew.sh/):
 ```
 brew install cmake sdl2_mixer sdl2_ttf libsodium pkg-config
 ```
-
-### Cross-compiling using MinGW
-You `PATH` must contain `i686-w64-mingw32-gcc` and `i686-w64-mingw32-gcc`. Use the following cmake invocation:
-```
-cmake -DCMAKE_TOOLCHAIN_FILE=../CMake/mingwcc.cmake ..
-```
-Use `-DCROSS_PREFIX=/path/to/prefix` if the `i686-w64-mingw32` directory is not in `/usr`.
 
 Now run the following commands:
 ```
@@ -101,31 +111,13 @@ Here are some screenshots of a few things I tinkered around with, to demonstrate
 # F.A.Q.
 > Wow, does this mean I can download and play Diablo for free now?
 
-No, you'll need access to the data from the original game. Blizzard has discontinued Diablo, but there's plenty of used copies floating around. (I'm still using an original 1996-disc in 2018 without problems)
-> Cool, so I fired your mod up, but there's no 1080p or new features?
-
-Devilution aims to keep the original code unaltered, for documentation purposes.
-> So will you ever add cross-platform support or new features in the future?
-
-Yes! However, this will be a **_side project_** based on Devilution. I have yet to announce the project.
-> When and what can I expect from the upcoming project?
-
-Honestly I have no idea. More than 1,200 hours went into creating Devilution, and I have other things going on right now. Maybe in 6-12 months? The goal is to create a native Linux port, convert to OpenGL, modernize the UI, etc. you get the drill. There has to be some surprises. ;)
-> Ok, so I'm playing Devilution now and all the sudden it crashed. NOW WHAT??
+No, you'll need access to the data from the original game. To get a legitimate copy of the game assets, please refer to the [GoG release of Diablo 1](https://www.gog.com/game/diablo).
+> Ok, so I'm playing DevilutionX now and all the sudden it crashed. NOW WHAT??
 
 Open an issue and provide as much information as possible (OS version, etc.) including any crash logs.
 > I thought I'd fix the crash myself, but after looking at the code its a disaster. Do you speak v2-34-v8?
 
 That is the result of decompiled code. Whenever a program is compiled, much of the source is optimized and stripped away, so it's nearly impossible to decompile it back. Have patience. Everything will be cleaned up eventually. :)
-> Will you be reverse engineering Diablo II next? Ooooh please!
-
-Absolutely not. Diablo II would require far more work and is still supported by Blizzard. Setting that aside, there are rumours that the game will be remastered which takes the point out of it.
-> Are you interested in working for me? I have this game I want you to reverse...
-
-Sorry, but no. This project is time consuming enough as it is, and it's just a hobby.
-> I think that's about all, but is Devilution even legal?
-
-That's a tricky question. Under the DMCA, reverse-engineering has exceptions for the purpose of documentation and interoperability. Devilution provides the necessary documentation needed to achieve the latter. However, it falls into an entirely grey area. The real question is whether or not Blizzard deems it necessary to take action.
 
 # Credits
 - [sanctuary](https://github.com/sanctuary) - extensively documenting Diablo's game engine
@@ -135,9 +127,6 @@ That's a tricky question. Under the DMCA, reverse-engineering has exceptions for
 - Climax Studios & Sony - secretly helping with their undercover QA :P
 - Blizzard North - wait, this was a typo!
 - Depression - reason to waste four months of my life doing this ;)
-
-# Changelog
-[From the beginning until release](docs/CHANGELOG.md)
 
 # Legal
 This software is being released to the Public Domain. No assets of Diablo are being provided. You must own a copy of Diablo and have access to the assets beforehand in order to use this software.

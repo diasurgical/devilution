@@ -1147,25 +1147,15 @@ void __cdecl sound_stop()
 
 void __cdecl sound_update()
 {
-	//int v0; // ebp
-	//unsigned int v1; // ecx
-	//	int v2; // eax
-	unsigned int v3; // [esp-Ch] [ebp-Ch]
-	unsigned int v4; // [esp-8h] [ebp-8h]
-	//int v5; // [esp-4h] [ebp-4h]
+	int current, end;
 
-	if (gbSndInited) {
-		snd_update(0);
-		//v5 = v0;
-		//v4 = v1;
-		//v3 = v1;
-		if (sfx_stream) {
-			//_LOBYTE(v2) = SFileDdaGetPos(sfx_stream, (int)&v4, (int)&v3);
-			if (SFileDdaGetPos(sfx_stream, &v4, &v3)) {
-				if (v4 >= v3)
-					sfx_stop();
-			}
-		}
+	if (!gbSndInited) {
+		return;
+	}
+
+	snd_update(FALSE);
+	if (sfx_stream != NULL && SFileDdaGetPos(sfx_stream, &current, &end) && current >= end) {
+		sfx_stop();
 	}
 }
 // 415DBA: could not find valid save-restore pair for ebp

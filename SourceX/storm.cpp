@@ -31,12 +31,12 @@ radon::File ini(getIniPath());
 // }
 
 Mix_Chunk *SFileChunk;
-BOOL SFileDdaBeginEx(HANDLE directsound, DWORD flags, DWORD mask, unsigned __int32 lDistanceToMove,
+BOOL SFileDdaBeginEx(HANDLE hFile, DWORD flags, DWORD mask, unsigned __int32 lDistanceToMove,
     signed __int32 volume, signed int pan, int a7)
 {
-	DWORD bytestoread = SFileGetFileSize(directsound, 0);
-	char *SFXbuffer = (char*)malloc(bytestoread);
-	SFileReadFile(directsound, SFXbuffer, bytestoread, NULL, 0);
+	DWORD bytestoread = SFileGetFileSize(hFile, 0);
+	char *SFXbuffer = (char *)malloc(bytestoread);
+	SFileReadFile(hFile, SFXbuffer, bytestoread, NULL, 0);
 
 	SDL_RWops *rw = SDL_RWFromConstMem(SFXbuffer, bytestoread);
 	SFileChunk = Mix_LoadWAV_RW(rw, 1);
@@ -54,12 +54,14 @@ BOOL SFileDdaDestroy()
 	return true;
 }
 
-BOOL SFileDdaEnd(HANDLE directsound)
+BOOL SFileDdaEnd(HANDLE hFile)
 {
 	Mix_HaltChannel(0);
+
+	return true;
 }
 
-BOOL SFileDdaGetPos(HANDLE directsound, int *current, int *end)
+BOOL SFileDdaGetPos(HANDLE hFile, int *current, int *end)
 {
 	*current = 0;
 	*end = 1;
@@ -73,11 +75,10 @@ BOOL SFileDdaGetPos(HANDLE directsound, int *current, int *end)
 
 BOOL SFileDdaInitialize(HANDLE directsound)
 {
-	DUMMY();
-	return 0;
+	return true;
 }
 
-BOOL SFileDdaSetVolume(HANDLE directsound, signed int bigvolume, signed int volume)
+BOOL SFileDdaSetVolume(HANDLE hFile, signed int bigvolume, signed int volume)
 {
 	Mix_VolumeMusic(MIX_MAX_VOLUME - MIX_MAX_VOLUME * bigvolume / VOLUME_MIN);
 
@@ -87,6 +88,7 @@ BOOL SFileDdaSetVolume(HANDLE directsound, signed int bigvolume, signed int volu
 BOOL SFileGetFileArchive(HANDLE hFile, HANDLE *archive)
 {
 	UNIMPLEMENTED();
+	return true;
 }
 
 // LONG SFileGetFileSize(HANDLE hFile, LPDWORD lpFileSizeHigh)

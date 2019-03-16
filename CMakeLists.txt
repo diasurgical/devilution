@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.7)
 
 include(CMake/out_of_tree.cmake)
 
@@ -217,6 +217,7 @@ if(DIST)
 endif()
 
 if(WIN32)
+  cmake_minimum_required(VERSION 3.13)
   target_link_libraries(devilutionx PRIVATE wsock32 ws2_32 wininet)
   target_compile_options(devilution PUBLIC $<$<CONFIG:Debug>:-gstabs>)
 endif()

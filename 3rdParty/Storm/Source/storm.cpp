@@ -64,13 +64,13 @@ int STORMAPI Ordinal224(int a1) rInt;
 BOOL STORMAPI SFileCloseArchive(HANDLE hArchive) rBool;
 BOOL STORMAPI SFileCloseFile(HANDLE hFile) rBool;
 
-BOOL STORMAPI SFileDdaBeginEx(HANDLE directsound, DWORD flags, DWORD mask, unsigned __int32 lDistanceToMove, signed __int32 volume, signed int a6, int a7) rBool;
+BOOL STORMAPI SFileDdaBeginEx(HANDLE hFile, DWORD flags, DWORD mask, unsigned __int32 lDistanceToMove, signed __int32 volume, signed int a6, int a7) rBool;
 BOOL STORMAPI SFileDdaDestroy() rBool;
-BOOL STORMAPI SFileDdaEnd(HANDLE directsound) rBool;
-BOOL STORMAPI SFileDdaGetPos(HANDLE directsound, int a2, int a3) rBool;
+BOOL STORMAPI SFileDdaEnd(HANDLE hFile) rBool;
+BOOL STORMAPI SFileDdaGetPos(HANDLE hFile, int *current, int *end) rBool;
 
 BOOL STORMAPI SFileDdaInitialize(HANDLE directsound) rBool;
-BOOL STORMAPI SFileDdaSetVolume(HANDLE directsound, signed int bigvolume, signed int volume) rBool;
+BOOL STORMAPI SFileDdaSetVolume(HANDLE hFile, signed int bigvolume, signed int volume) rBool;
 BOOL STORMAPI SFileDestroy() rBool;
 
 BOOL STORMAPI SFileGetFileArchive(HANDLE hFile, HANDLE *archive) rBool;
@@ -169,7 +169,7 @@ BOOL STORMAPI STransCreateI(void *pBuffer, int width, int height, int bpp, int a
 BOOL STORMAPI SVidDestroy() rBool;
 BOOL STORMAPI SVidGetSize(HANDLE video, int width, int height, int zero) rBool;
 BOOL STORMAPI SVidInitialize(HANDLE video) rBool;
-BOOL STORMAPI SVidPlayBegin(char *filename, int arg4, int a3, int a4, int a5, int a6, HANDLE* video) rBool;
+BOOL STORMAPI SVidPlayBegin(char *filename, int a2, int a3, int a4, int a5, int flags, HANDLE *video) rBool;
 
 BOOL STORMAPI SVidPlayContinueSingle(HANDLE video, int a2, int a3) rBool;
 BOOL STORMAPI SVidPlayEnd(HANDLE video) rBool;
