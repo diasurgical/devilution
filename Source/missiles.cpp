@@ -2479,50 +2479,37 @@ void __fastcall miss_null_13(int mi, int sx, int sy, int dx, int dy, int midir, 
 
 void __fastcall AddRhino(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9;          // esi
-	CMonster *v10;   // eax
-	char v11;        // cl
-	AnimStruct *v12; // edi
-	int v13;         // eax
-	CMonster *v14;   // ecx
-	char v15;        // cl
-	BOOLEAN v16;     // zf
-	int i;           // [esp+8h] [ebp-4h]
+	AnimStruct *anim;
 
-	v9 = id;
-	i = mi;
-	v10 = monster[id].MType;
-	v11 = v10->mtype;
-	if (v10->mtype < MT_HORNED || v11 > MT_OBLORD) {
-		if (v11 < MT_NSNAKE || (v12 = &v10->Anims[MA_ATTACK], v11 > MT_GSNAKE))
-			v12 = &v10->Anims[MA_WALK];
+	if (monster[id].MType->mtype < MT_HORNED || monster[id].MType->mtype > MT_OBLORD) {
+		if (monster[id].MType->mtype < MT_NSNAKE || monster[id].MType->mtype > MT_GSNAKE) {
+			anim = &monster[id].MType->Anims[MA_WALK];
+		} else {
+			anim = &monster[id].MType->Anims[MA_ATTACK];
+		}
 	} else {
-		v12 = &v10->Anims[MA_SPECIAL];
+		anim = &monster[id].MType->Anims[MA_SPECIAL];
 	}
-	GetMissileVel(i, sx, sy, dx, dy, 18);
-	v13 = i;
-	missile[v13]._miAnimFlags = 0;
-	missile[v13]._mimfnum = midir;
-	missile[v13]._miAnimData = v12->Data[midir];
-	missile[v13]._miAnimDelay = v12->Rate;
-	missile[v13]._miAnimLen = v12->Frames;
-	v14 = monster[v9].MType;
-	missile[v13]._miAnimWidth = v14->width;
-	missile[v13]._miAnimWidth2 = v14->width2;
-	missile[v13]._miAnimAdd = 1;
-	v15 = v14->mtype;
-	if (v15 >= MT_NSNAKE && v15 <= MT_GSNAKE)
-		missile[v13]._miAnimFrame = 7;
-	missile[v13]._miVar1 = 0;
-	missile[v13]._miVar2 = 0;
-	v16 = monster[v9]._uniqtype == 0;
-	missile[v13]._miLightFlag = 1;
-	if (!v16) {
-		missile[v13]._miUniqTrans = (unsigned char)monster[v9]._uniqtrans + 1;
-		missile[v13]._mlid = (unsigned char)monster[v9].mlid;
+	GetMissileVel(mi, sx, sy, dx, dy, 18);
+	missile[mi]._miAnimFlags = 0;
+	missile[mi]._mimfnum = midir;
+	missile[mi]._miAnimData = anim->Data[midir];
+	missile[mi]._miAnimDelay = anim->Rate;
+	missile[mi]._miAnimLen = anim->Frames;
+	missile[mi]._miAnimWidth = monster[id].MType->width;
+	missile[mi]._miAnimWidth2 = monster[id].MType->width2;
+	missile[mi]._miAnimAdd = 1;
+	if (monster[id].MType->mtype >= MT_NSNAKE && monster[id].MType->mtype <= MT_GSNAKE)
+		missile[mi]._miAnimFrame = 7;
+	missile[mi]._miVar1 = 0;
+	missile[mi]._miVar2 = 0;
+	missile[mi]._miLightFlag = 1;
+	if (monster[id]._uniqtype != 0) {
+		missile[mi]._miUniqTrans = monster[id]._uniqtrans + 1;
+		missile[mi]._mlid = monster[id].mlid;
 	}
-	missile[v13]._mirange = 256;
-	PutMissile(i);
+	missile[mi]._mirange = 256;
+	PutMissile(mi);
 }
 
 void __fastcall miss_null_32(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
