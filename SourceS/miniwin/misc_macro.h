@@ -27,7 +27,7 @@
 
 #define WINUSERAPI
 
-#define FOURCC_RIFF MAKEFOURCC('W', 'A', 'V', 'E')
+#define FOURCC_RIFF MAKEFOURCC('R', 'I', 'F', 'F')
 
 #define ERROR_ALREADY_EXISTS 183
 

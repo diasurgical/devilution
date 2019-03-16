@@ -44,7 +44,7 @@ void snd_update(BOOL bStopAll)
 			continue;
 
 #ifdef __cplusplus
-		if (!bStopAll && !DSBs[i]->GetStatus(&error_code) && error_code == DSBSTATUS_PLAYING)
+		if (!bStopAll && !DSBs[i]->GetStatus(&error_code) && error_code == DVL_DSBSTATUS_PLAYING)
 			continue;
 
 		DSBs[i]->Stop();
@@ -86,7 +86,7 @@ BOOL snd_playing(TSnd *pSnd)
 #else
 	if (pSnd->DSB->lpVtbl->GetStatus(pSnd->DSB, &error_code))
 #endif
-		return FALSE;
+		return false;
 
 	return error_code == DVL_DSBSTATUS_PLAYING;
 }
@@ -137,8 +137,8 @@ void snd_play_snd(TSnd *pSnd, int lVolume, int lPan)
 	error_code = DSB->lpVtbl->Play(DSB, 0, 0, 0);
 #endif
 
-	if (error_code != DSERR_BUFFERLOST) {
-		if (error_code != DS_OK) {
+	if (error_code != DVL_DSERR_BUFFERLOST) {
+		if (error_code != DVL_DS_OK) {
 			DSErrMsg(error_code, 261, "C:\\Src\\Diablo\\Source\\SOUND.CPP");
 		}
 	} else if (sound_file_reload(pSnd, DSB)) {
@@ -163,9 +163,9 @@ LPDIRECTSOUNDBUFFER sound_dup_channel(LPDIRECTSOUNDBUFFER DSB)
 	for (i = 0; i < 8; i++) {
 		if (!DSBs[i]) {
 #ifdef __cplusplus
-			if (sglpDS->DuplicateSoundBuffer(DSB, &DSBs[i]) != DS_OK) {
+			if (sglpDS->DuplicateSoundBuffer(DSB, &DSBs[i]) != DVL_DS_OK) {
 #else
-			if (sglpDS->lpVtbl->DuplicateSoundBuffer(sglpDS, DSB, &DSBs[i]) != DS_OK) {
+			if (sglpDS->lpVtbl->DuplicateSoundBuffer(sglpDS, DSB, &DSBs[i]) != DVL_DS_OK) {
 #endif
 				return NULL;
 			}
@@ -189,7 +189,7 @@ BOOL sound_file_reload(TSnd *sound_file, LPDIRECTSOUNDBUFFER DSB)
 #else
 	if (DSB->lpVtbl->Restore(DSB))
 #endif
-		return FALSE;
+		return false;
 
 	rv = false;
 
@@ -197,16 +197,16 @@ BOOL sound_file_reload(TSnd *sound_file, LPDIRECTSOUNDBUFFER DSB)
 	WSetFilePointer(file, sound_file->chunk.dwOffset, NULL, 0);
 
 #ifdef __cplusplus
-	if (DSB->Lock(0, sound_file->chunk.dwSize, &buf1, &size1, &buf2, &size2, 0) == DS_OK) {
+	if (DSB->Lock(0, sound_file->chunk.dwSize, &buf1, &size1, &buf2, &size2, 0) == DVL_DS_OK) {
 		WReadFile(file, buf1, size1);
-		if (DSB->Unlock(buf1, size1, buf2, size2) == DS_OK)
-			rv = TRUE;
+		if (DSB->Unlock(buf1, size1, buf2, size2) == DVL_DS_OK)
+			rv = true;
 	}
 #else
-	if (DSB->lpVtbl->Lock(DSB, 0, sound_file->chunk.dwSize, &buf1, &size1, &buf2, &size2, 0) == DS_OK) {
+	if (DSB->lpVtbl->Lock(DSB, 0, sound_file->chunk.dwSize, &buf1, &size1, &buf2, &size2, 0) == DVL_DS_OK) {
 		WReadFile(file, buf1, size1);
-		if (DSB->lpVtbl->Unlock(DSB, buf1, size1, buf2, size2) == DS_OK)
-			rv = TRUE;
+		if (DSB->lpVtbl->Unlock(DSB, buf1, size1, buf2, size2) == DVL_DS_OK)
+			rv = true;
 	}
 #endif
 
@@ -244,7 +244,7 @@ TSnd *sound_file_load(char *path)
 #else
 	error_code = pSnd->DSB->lpVtbl->Lock(pSnd->DSB, 0, pSnd->chunk.dwSize, &buf1, &size1, &buf2, &size2, 0);
 #endif
-	if (error_code != DS_OK)
+	if (error_code != DVL_DS_OK)
 		DSErrMsg(error_code, 318, "C:\\Src\\Diablo\\Source\\SOUND.CPP");
 
 	memcpy(buf1, wave_file + pSnd->chunk.dwOffset, size1);
@@ -254,7 +254,7 @@ TSnd *sound_file_load(char *path)
 #else
 	error_code = pSnd->DSB->lpVtbl->Unlock(pSnd->DSB, buf1, size1, buf2, size2);
 #endif
-	if (error_code != DS_OK)
+	if (error_code != DVL_DS_OK)
 		DSErrMsg(error_code, 325, "C:\\Src\\Diablo\\Source\\SOUND.CPP");
 
 	mem_free_dbg((void *)wave_file);
@@ -284,7 +284,7 @@ void sound_CreateSoundBuffer(TSnd *sound_file)
 #else
 	error_code = sglpDS->lpVtbl->CreateSoundBuffer(sglpDS, &DSB, &sound_file->DSB, NULL);
 #endif
-	if (error_code != ERROR_SUCCESS)
+	if (error_code != DVL_ERROR_SUCCESS)
 		DSErrMsg(error_code, 282, "C:\\Src\\Diablo\\Source\\SOUND.CPP");
 }
 
@@ -314,13 +314,13 @@ void snd_init(HWND hWnd)
 	sound_load_volume("Music Volume", &sglMusicVolume);
 	gbMusicOn = sglMusicVolume > VOLUME_MIN;
 
-	if (sound_DirectSoundCreate(NULL, &sglpDS, NULL) != DS_OK)
+	if (sound_DirectSoundCreate(NULL, &sglpDS, NULL) != DVL_DS_OK)
 		sglpDS = NULL;
 
 #ifdef __cplusplus
-	if (sglpDS && sglpDS->SetCooperativeLevel(hWnd, DSSCL_EXCLUSIVE) == DS_OK)
+	if (sglpDS && sglpDS->SetCooperativeLevel(hWnd, DVL_DSSCL_EXCLUSIVE) == DVL_DS_OK)
 #else
-	if (sglpDS && sglpDS->lpVtbl->SetCooperativeLevel(sglpDS, hWnd, DSSCL_EXCLUSIVE) == DS_OK)
+	if (sglpDS && sglpDS->lpVtbl->SetCooperativeLevel(sglpDS, hWnd, DVL_DSSCL_EXCLUSIVE) == DVL_DS_OK)
 #endif
 		sound_create_primary_buffer(NULL);
 

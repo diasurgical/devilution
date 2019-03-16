@@ -36,30 +36,30 @@ bool surface_dirty;
 //
 
 class StubSurface : public IDirectDrawSurface {
-	METHOD ULONG Release()
+	virtual ULONG Release()
 	{
 		UNIMPLEMENTED();
 	};
 
-	METHOD HRESULT AddAttachedSurface(LPDIRECTDRAWSURFACE lpDDSAttachedSurface)
+	virtual HRESULT AddAttachedSurface(LPDIRECTDRAWSURFACE lpDDSAttachedSurface)
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT AddOverlayDirtyRect(LPRECT lpRect)
+	virtual HRESULT AddOverlayDirtyRect(LPRECT lpRect)
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT Blt(LPRECT lpDestRect, LPDIRECTDRAWSURFACE lpDDSrcSurface, LPRECT lpSrcRect, DWORD dwFlags,
+	virtual HRESULT Blt(LPRECT lpDestRect, LPDIRECTDRAWSURFACE lpDDSrcSurface, LPRECT lpSrcRect, DWORD dwFlags,
 	    LPDDBLTFX lpDDBltFx)
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT BltBatch(LPDDBLTBATCH lpDDBltBatch, DWORD dwCount, DWORD dwFlags)
+	virtual HRESULT BltBatch(LPDDBLTBATCH lpDDBltBatch, DWORD dwCount, DWORD dwFlags)
 	{
 		UNIMPLEMENTED();
 	}
 
-	METHOD HRESULT BltFast(DWORD dwX, DWORD dwY, LPDIRECTDRAWSURFACE lpDDSrcSurface, LPRECT lpSrcRect, DWORD dwTrans)
+	virtual HRESULT BltFast(DWORD dwX, DWORD dwY, LPDIRECTDRAWSURFACE lpDDSrcSurface, LPRECT lpSrcRect, DWORD dwTrans)
 	{
 		DUMMY_ONCE();
 
@@ -81,243 +81,243 @@ class StubSurface : public IDirectDrawSurface {
 		return DVL_S_OK;
 	}
 
-	METHOD HRESULT DeleteAttachedSurface(DWORD dwFlags, LPDIRECTDRAWSURFACE lpDDSAttachedSurface)
+	virtual HRESULT DeleteAttachedSurface(DWORD dwFlags, LPDIRECTDRAWSURFACE lpDDSAttachedSurface)
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT EnumAttachedSurfaces(LPVOID lpContext, LPDDENUMSURFACESCALLBACK lpEnumSurfacesCallback)
+	virtual HRESULT EnumAttachedSurfaces(LPVOID lpContext, LPDDENUMSURFACESCALLBACK lpEnumSurfacesCallback)
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT EnumOverlayZOrders(DWORD dwFlags, LPVOID lpContext, LPDDENUMSURFACESCALLBACK lpfnCallback)
+	virtual HRESULT EnumOverlayZOrders(DWORD dwFlags, LPVOID lpContext, LPDDENUMSURFACESCALLBACK lpfnCallback)
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT Flip(LPDIRECTDRAWSURFACE lpDDSurfaceTargetOverride, DWORD dwFlags)
+	virtual HRESULT Flip(LPDIRECTDRAWSURFACE lpDDSurfaceTargetOverride, DWORD dwFlags)
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT GetAttachedSurface(LPDDSCAPS lpDDSCaps, LPDIRECTDRAWSURFACE *lplpDDAttachedSurface)
+	virtual HRESULT GetAttachedSurface(LPDDSCAPS lpDDSCaps, LPDIRECTDRAWSURFACE *lplpDDAttachedSurface)
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT GetBltStatus(DWORD dwFlags)
+	virtual HRESULT GetBltStatus(DWORD dwFlags)
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT GetCaps(LPDDSCAPS lpDDSCaps)
+	virtual HRESULT GetCaps(LPDDSCAPS lpDDSCaps)
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT GetClipper(LPDIRECTDRAWCLIPPER *lplpDDClipper)
+	virtual HRESULT GetClipper(LPDIRECTDRAWCLIPPER *lplpDDClipper)
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT GetColorKey(DWORD dwFlags, LPDDCOLORKEY lpDDColorKey)
+	virtual HRESULT GetColorKey(DWORD dwFlags, LPDDCOLORKEY lpDDColorKey)
 	{
 		UNIMPLEMENTED();
 	}
 
-	METHOD HRESULT GetDC(HDC *lphDC)
+	virtual HRESULT GetDC(HDC *lphDC)
 	{
 		DUMMY_ONCE();
 		return DVL_S_OK;
 	}
 
-	METHOD HRESULT GetFlipStatus(DWORD dwFlags)
+	virtual HRESULT GetFlipStatus(DWORD dwFlags)
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT GetOverlayPosition(LPLONG lplX, LPLONG lplY)
+	virtual HRESULT GetOverlayPosition(LPLONG lplX, LPLONG lplY)
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT GetPalette(LPDIRECTDRAWPALETTE *lplpDDPalette)
+	virtual HRESULT GetPalette(LPDIRECTDRAWPALETTE *lplpDDPalette)
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT GetPixelFormat(LPDDPIXELFORMAT lpDDPixelFormat)
+	virtual HRESULT GetPixelFormat(LPDDPIXELFORMAT lpDDPixelFormat)
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT GetSurfaceDesc(LPDDSURFACEDESC lpDDSurfaceDesc)
+	virtual HRESULT GetSurfaceDesc(LPDDSURFACEDESC lpDDSurfaceDesc)
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT Initialize(LPDIRECTDRAW lpDD, LPDDSURFACEDESC lpDDSurfaceDesc)
+	virtual HRESULT Initialize(LPDIRECTDRAW lpDD, LPDDSURFACEDESC lpDDSurfaceDesc)
 	{
 		UNIMPLEMENTED();
 	}
 
-	METHOD HRESULT IsLost()
+	virtual HRESULT IsLost()
 	{
 		DUMMY_ONCE();
 		return DVL_S_OK;
 	}
 
-	METHOD HRESULT Lock(LPRECT lpDestRect, LPDDSURFACEDESC lpDDSurfaceDesc, DWORD dwFlags, HANDLE hEvent)
+	virtual HRESULT Lock(LPRECT lpDestRect, LPDDSURFACEDESC lpDDSurfaceDesc, DWORD dwFlags, HANDLE hEvent)
 	{
 		UNIMPLEMENTED();
 	}
 
-	METHOD HRESULT ReleaseDC(HDC hDC)
+	virtual HRESULT ReleaseDC(HDC hDC)
 	{
 		DUMMY_ONCE();
 		return DVL_S_OK;
 	}
 
-	METHOD HRESULT Restore()
+	virtual HRESULT Restore()
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT SetClipper(LPDIRECTDRAWCLIPPER lpDDClipper)
+	virtual HRESULT SetClipper(LPDIRECTDRAWCLIPPER lpDDClipper)
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT SetColorKey(DWORD dwFlags, LPDDCOLORKEY lpDDColorKey)
+	virtual HRESULT SetColorKey(DWORD dwFlags, LPDDCOLORKEY lpDDColorKey)
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT SetOverlayPosition(LONG lX, LONG lY)
+	virtual HRESULT SetOverlayPosition(LONG lX, LONG lY)
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT SetPalette(LPDIRECTDRAWPALETTE lpDDPalette)
+	virtual HRESULT SetPalette(LPDIRECTDRAWPALETTE lpDDPalette)
 	{
 		DUMMY();
 		return DVL_S_OK;
 	}
-	METHOD HRESULT Unlock(LPVOID lpSurfaceData)
+	virtual HRESULT Unlock(LPVOID lpSurfaceData)
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT UpdateOverlay(LPRECT lpSrcRect, LPDIRECTDRAWSURFACE lpDDDestSurface, LPRECT lpDestRect,
+	virtual HRESULT UpdateOverlay(LPRECT lpSrcRect, LPDIRECTDRAWSURFACE lpDDDestSurface, LPRECT lpDestRect,
 	    DWORD dwFlags, LPDDOVERLAYFX lpDDOverlayFx)
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT UpdateOverlayDisplay(DWORD dwFlags)
+	virtual HRESULT UpdateOverlayDisplay(DWORD dwFlags)
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT UpdateOverlayZOrder(DWORD dwFlags, LPDIRECTDRAWSURFACE lpDDSReference)
+	virtual HRESULT UpdateOverlayZOrder(DWORD dwFlags, LPDIRECTDRAWSURFACE lpDDSReference)
 	{
 		UNIMPLEMENTED();
 	}
 };
 
 class StubPalette : public IDirectDrawPalette {
-	METHOD ULONG Release()
+	virtual ULONG Release()
 	{
 		UNIMPLEMENTED();
 	};
 
-	METHOD HRESULT GetCaps(LPDWORD lpdwCaps)
+	virtual HRESULT GetCaps(LPDWORD lpdwCaps)
 	{
 		UNIMPLEMENTED();
 	};
-	METHOD HRESULT GetEntries(DWORD dwFlags, DWORD dwBase, DWORD dwNumEntries, LPPALETTEENTRY lpEntries)
+	virtual HRESULT GetEntries(DWORD dwFlags, DWORD dwBase, DWORD dwNumEntries, LPPALETTEENTRY lpEntries)
 	{
 		UNIMPLEMENTED();
 	};
-	METHOD HRESULT Initialize(LPDIRECTDRAW lpDD, DWORD dwFlags, LPPALETTEENTRY lpDDColorTable)
+	virtual HRESULT Initialize(LPDIRECTDRAW lpDD, DWORD dwFlags, LPPALETTEENTRY lpDDColorTable)
 	{
 		UNIMPLEMENTED();
 	};
-	METHOD HRESULT SetEntries(DWORD dwFlags, DWORD dwStartingEntry, DWORD dwCount, LPPALETTEENTRY lpEntries)
+	virtual HRESULT SetEntries(DWORD dwFlags, DWORD dwStartingEntry, DWORD dwCount, LPPALETTEENTRY lpEntries)
 	{
 		UNIMPLEMENTED();
 	};
 };
 
 class StubDraw : public IDirectDraw {
-	METHOD ULONG Release()
+	virtual ULONG Release()
 	{
 		UNIMPLEMENTED();
 	};
 
-	METHOD HRESULT Compact()
+	virtual HRESULT Compact()
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT CreateClipper(DWORD dwFlags, LPDIRECTDRAWCLIPPER *lplpDDClipper, IUnknown *pUnkOuter)
+	virtual HRESULT CreateClipper(DWORD dwFlags, LPDIRECTDRAWCLIPPER *lplpDDClipper, IUnknown *pUnkOuter)
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT CreatePalette(DWORD dwFlags, LPPALETTEENTRY lpColorTable, LPDIRECTDRAWPALETTE *lplpDDPalette,
+	virtual HRESULT CreatePalette(DWORD dwFlags, LPPALETTEENTRY lpColorTable, LPDIRECTDRAWPALETTE *lplpDDPalette,
 	    IUnknown *pUnkOuter)
 	{
 		DUMMY();
 		return DVL_S_OK;
 	}
-	METHOD HRESULT CreateSurface(LPDDSURFACEDESC lpDDSurfaceDesc, LPDIRECTDRAWSURFACE *lplpDDSurface,
+	virtual HRESULT CreateSurface(LPDDSURFACEDESC lpDDSurfaceDesc, LPDIRECTDRAWSURFACE *lplpDDSurface,
 	    IUnknown *pUnkOuter)
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT DuplicateSurface(LPDIRECTDRAWSURFACE lpDDSurface, LPDIRECTDRAWSURFACE *lplpDupDDSurface)
+	virtual HRESULT DuplicateSurface(LPDIRECTDRAWSURFACE lpDDSurface, LPDIRECTDRAWSURFACE *lplpDupDDSurface)
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT EnumDisplayModes(DWORD dwFlags, LPDDSURFACEDESC lpDDSurfaceDesc, LPVOID lpContext,
+	virtual HRESULT EnumDisplayModes(DWORD dwFlags, LPDDSURFACEDESC lpDDSurfaceDesc, LPVOID lpContext,
 	    LPDDENUMMODESCALLBACK lpEnumModesCallback)
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT EnumSurfaces(DWORD dwFlags, LPDDSURFACEDESC lpDDSD, LPVOID lpContext,
+	virtual HRESULT EnumSurfaces(DWORD dwFlags, LPDDSURFACEDESC lpDDSD, LPVOID lpContext,
 	    LPDDENUMSURFACESCALLBACK lpEnumSurfacesCallback)
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT FlipToGDISurface()
+	virtual HRESULT FlipToGDISurface()
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT GetCaps(LPDDCAPS lpDDDriverCaps, LPDDCAPS lpDDHELCaps)
+	virtual HRESULT GetCaps(LPDDCAPS lpDDDriverCaps, LPDDCAPS lpDDHELCaps)
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT GetDisplayMode(LPDDSURFACEDESC lpDDSurfaceDesc)
+	virtual HRESULT GetDisplayMode(LPDDSURFACEDESC lpDDSurfaceDesc)
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT GetFourCCCodes(LPDWORD lpNumCodes, LPDWORD lpCodes)
+	virtual HRESULT GetFourCCCodes(LPDWORD lpNumCodes, LPDWORD lpCodes)
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT GetGDISurface(LPDIRECTDRAWSURFACE *lplpGDIDDSurface)
+	virtual HRESULT GetGDISurface(LPDIRECTDRAWSURFACE *lplpGDIDDSurface)
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT GetMonitorFrequency(LPDWORD lpdwFrequency)
+	virtual HRESULT GetMonitorFrequency(LPDWORD lpdwFrequency)
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT GetScanLine(LPDWORD lpdwScanLine)
+	virtual HRESULT GetScanLine(LPDWORD lpdwScanLine)
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT GetVerticalBlankStatus(BOOL *lpbIsInVB)
+	virtual HRESULT GetVerticalBlankStatus(BOOL *lpbIsInVB)
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT Initialize(GUID *lpGUID)
+	virtual HRESULT Initialize(GUID *lpGUID)
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT RestoreDisplayMode()
+	virtual HRESULT RestoreDisplayMode()
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT SetCooperativeLevel(HWND hWnd, DWORD dwFlags)
+	virtual HRESULT SetCooperativeLevel(HWND hWnd, DWORD dwFlags)
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT SetDisplayMode(DWORD dwWidth, DWORD dwHeight, DWORD dwBPP)
+	virtual HRESULT SetDisplayMode(DWORD dwWidth, DWORD dwHeight, DWORD dwBPP)
 	{
 		UNIMPLEMENTED();
 	}
-	METHOD HRESULT WaitForVerticalBlank(DWORD dwFlags, HANDLE hEvent)
+	virtual HRESULT WaitForVerticalBlank(DWORD dwFlags, HANDLE hEvent)
 	{
 		DUMMY_ONCE();
 		return DVL_S_OK;

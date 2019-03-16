@@ -20,10 +20,11 @@
 #include "devilution.h"
 #include "DiabloUI/diabloui.h"
 
+namespace dvl {
 
 struct DirectSoundBuffer : public IDirectSoundBuffer {
 public:
-	METHOD ULONG Release();
+	virtual ULONG Release();
 	BOOL GetStatus(LPDWORD pdwStatus);
 	HRESULT Lock(DWORD dwOffset, DWORD dwBytes, LPVOID *ppvAudioPtr1, LPDWORD pdwAudioBytes1,
 	    LPVOID *ppvAudioPtr2, LPDWORD pdwAudioBytes2, DWORD dwFlags);
@@ -39,3 +40,5 @@ public:
         int pan = 0;
         Mix_Chunk *chunk;
 };
+
+}  // namespace dvl

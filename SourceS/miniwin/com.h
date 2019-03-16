@@ -37,11 +37,15 @@ typedef void *DVL_REFIID;
 
 struct IUnknown {
 	// clang-format off
-	STDMETHOD(QueryInterface)(THIS_ REFIID, LPVOID *) PURE;
-	STDMETHOD_(ULONG, AddRef)(THIS) PURE;
 	STDMETHOD_(ULONG, Release)(THIS) PURE;
 	// clang-format on
 };
+
+template<class T, class U, class V> constexpr HRESULT DVL_MAKE_HRESULT(T&& sev, U&& fac, V&& code)
+{
+        return (((uint32_t)(sev) << 31) | ((uint32_t)(fac) << 16) | ((uint32_t)(code)));
+}
+
 
 #include "miniwin/com/ddraw.inc"
 #include "miniwin/com/dsound.inc"

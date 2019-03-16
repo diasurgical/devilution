@@ -161,8 +161,8 @@ packet_factory::packet_factory(std::string pw)
 {
 	if (sodium_init() < 0)
 		ABORT();
-	pw.resize(std::min(pw.size(), crypto_pwhash_argon2id_PASSWD_MAX));
-	pw.resize(std::max(pw.size(), crypto_pwhash_argon2id_PASSWD_MIN), 0);
+	pw.resize(std::min<std::size_t>(pw.size(), crypto_pwhash_argon2id_PASSWD_MAX));
+	pw.resize(std::max<std::size_t>(pw.size(), crypto_pwhash_argon2id_PASSWD_MIN), 0);
 	std::string salt("devilution-salt 0.1.0");
 	salt.resize(crypto_pwhash_argon2id_SALTBYTES, 0);
 	if (crypto_pwhash(key.data(), crypto_secretbox_KEYBYTES,

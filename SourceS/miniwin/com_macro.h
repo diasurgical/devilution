@@ -24,7 +24,7 @@
 #define E_FAIL DVL_E_FAIL
 #define S_OK DVL_S_OK
 
-#define MAKE_HRESULT(sev, fac, code) ((HRESULT)(((uint32_t)(sev) << 31) | ((uint32_t)(fac) << 16) | ((uint32_t)(code))))
+#define MAKE_HRESULT DVL_MAKE_HRESULT
 
 #include "miniwin/com/ddraw_macro.inc"
 #include "miniwin/com/dsound_macro.inc"

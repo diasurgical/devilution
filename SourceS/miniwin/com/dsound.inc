@@ -27,20 +27,6 @@ DECLARE_INTERFACE_(IDirectSoundBuffer, IUnknown)
 	// clang-format on
 };
 
-<<<<<<< HEAD:SourceS/miniwin/com/dsound.inc
-=======
-#define DSBCAPS_PRIMARYBUFFER 0x00000001
-#define DSBCAPS_STATIC 0x00000002
-#define DSBCAPS_CTRLPAN 0x00000040
-#define DSBCAPS_CTRLVOLUME 0x00000080
-
-#define DSSCL_EXCLUSIVE 0x00000003
-
-#define WAVE_FORMAT_PCM 1
-
-#define ERROR_SUCCESS 0L
-
->>>>>>> master:SourceS/miniwin_dsound.h
 typedef IDirectSoundBuffer *LPDIRECTSOUNDBUFFER;
 typedef void *LPUNKNOWN, *LPCGUID;
 
@@ -81,39 +67,30 @@ DECLARE_INTERFACE_(IDirectSound, IUnknown)
 	// clang-format on
 };
 
-<<<<<<< HEAD:SourceS/miniwin/com/dsound.inc
+class DirectSound : public IDirectSound {
+public:
+	virtual ULONG Release();
+	virtual HRESULT CreateSoundBuffer(LPCDSBUFFERDESC pcDSBufferDesc, LPDIRECTSOUNDBUFFER *ppDSBuffer, LPUNKNOWN pUnkOute);
+	virtual HRESULT GetCaps(LPDSCAPS pDSCaps);
+	virtual HRESULT DuplicateSoundBuffer(LPDIRECTSOUNDBUFFER pDSBufferOriginal, LPDIRECTSOUNDBUFFER *ppDSBufferDuplicate);
+	virtual HRESULT SetCooperativeLevel(HWND hwnd, DWORD dwLevel);
+};
+
+const auto DVL__FACDS = 0x878;
+
+template<class T> constexpr HRESULT DVL_MAKE_DSHRESULT(T&& code)
+{
+	return DVL_MAKE_HRESULT(1, DVL__FACDS, code);
+}
+
 const auto DVL_DSBCAPS_PRIMARYBUFFER = 0x00000001;
 const auto DVL_DSBCAPS_STATIC = 0x00000002;
 const auto DVL_DSBCAPS_CTRLPAN = 0x00000040;
 const auto DVL_DSBCAPS_CTRLVOLUME = 0x00000080;
 const auto DVL_WAVE_FORMAT_PCM = 1;
 const auto DVL_DS_OK = 0;
-=======
-#define _FACDS 0x878
-#define MAKE_DSHRESULT(code) MAKE_HRESULT(1, _FACDS, code)
-
-#define DSBSTATUS_PLAYING 0x00000001
-
-#define E_NOINTERFACE 0x80004002
-#define DSERR_PRIOLEVELNEEDED MAKE_DSHRESULT(70)
-#define DSERR_BADFORMAT MAKE_DSHRESULT(100)
-#define DSERR_NODRIVER MAKE_DSHRESULT(120)
-#define DSERR_ALREADYINITIALIZED MAKE_DSHRESULT(130)
-#define DSERR_BUFFERLOST MAKE_DSHRESULT(150)
-#define DS_OK 0
-#define DSERR_INVALIDCALL MAKE_DSHRESULT(50)
-#define DSERR_NOAGGREGATION 0x80040110
-#define DSERR_OUTOFMEMORY 0x8007000E
-#define DSERR_INVALIDPARAM 0x80070057
-#define DSERR_ALLOCATED MAKE_DSHRESULT(10)
-#define DSERR_CONTROLUNAVAIL MAKE_DSHRESULT(30)
-
-class DirectSound : public IDirectSound {
-public:
-	METHOD ULONG Release();
-	METHOD HRESULT CreateSoundBuffer(LPCDSBUFFERDESC pcDSBufferDesc, LPDIRECTSOUNDBUFFER *ppDSBuffer, LPUNKNOWN pUnkOute);
-	METHOD HRESULT GetCaps(LPDSCAPS pDSCaps);
-	METHOD HRESULT DuplicateSoundBuffer(LPDIRECTSOUNDBUFFER pDSBufferOriginal, LPDIRECTSOUNDBUFFER *ppDSBufferDuplicate);
-	METHOD HRESULT SetCooperativeLevel(HWND hwnd, DWORD dwLevel);
-};
->>>>>>> master:SourceS/miniwin_dsound.h
+const auto DVL_DSERR_INVALIDPARAM = 0x80070057;
+const auto DVL_ERROR_SUCCESS = 0L;
+const auto DVL_DSSCL_EXCLUSIVE = 0x00000003;
+const auto DVL_DSBSTATUS_PLAYING = 0x00000001;
+const auto DVL_DSERR_BUFFERLOST = DVL_MAKE_DSHRESULT(150);
