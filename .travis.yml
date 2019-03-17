@@ -14,5 +14,4 @@ deploy:
   file: "build/devilutionX.dmg"
   skip_cleanup: true
   on:
-		repo: master
     tags: true
