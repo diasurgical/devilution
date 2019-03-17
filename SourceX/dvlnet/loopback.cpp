@@ -1,4 +1,5 @@
 #include "dvlnet/loopback.h"
+#include "stubs.h"
 
 namespace dvl { namespace net {
 

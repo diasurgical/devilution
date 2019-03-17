@@ -1,5 +1,7 @@
 #include "dvlnet/udp_p2p.h"
 
+#include <SDL.h>
+
 namespace dvl { namespace net {
 
 const udp_p2p::endpoint udp_p2p::none;

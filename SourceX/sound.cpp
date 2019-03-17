@@ -1,7 +1,8 @@
-//HEADER_GOES_HERE
+#include "devilution.h"
 
-#include "../types.h"
-#include "pch.h"
+#include <SDL_mixer.h>
+
+#include "stubs.h"
 
 namespace dvl {
 

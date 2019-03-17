@@ -1,9 +1,13 @@
-#include "pch.h"
 #ifndef _WIN32
 #include <sys/statvfs.h>
 #endif
 
 #include <SDL.h>
+
+#include "devilution.h"
+#include "stubs.h"
+#include "dx.h"
+#include "DiabloUI/diabloui.h"
 
 namespace dvl {
 

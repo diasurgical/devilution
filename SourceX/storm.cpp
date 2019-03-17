@@ -1,8 +1,14 @@
 #include "../3rdParty/Radon/Radon/include/Radon.hpp"
 #include "../3rdParty/libsmacker/smacker.h"
-#include "pch.h"
 
 #include <unistd.h>
+#include <SDL.h>
+#include <SDL_mixer.h>
+
+#include "devilution.h"
+#include "stubs.h"
+#include "DiabloUI/diabloui.h"
+#include "dx.h"
 
 namespace dvl {
 

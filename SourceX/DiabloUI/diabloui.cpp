@@ -1,6 +1,10 @@
-#include "pch.h"
 #include <string>
+
+#include "devilution.h"
+#include "DiabloUI/diabloui.h"
+#include "dx.h"
 #include "utf8.h"
+#include "stubs.h"
 
 namespace dvl {
 

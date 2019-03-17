@@ -1,8 +1,10 @@
-#include "pch.h"
-
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <set>
+
+#include "devilution.h"
+#include "stubs.h"
 
 namespace dvl {
 
