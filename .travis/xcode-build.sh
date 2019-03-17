@@ -26,7 +26,7 @@ echo "============= Build SDL2 ============="
 xcodebuild -project "SDL2-2.0.9/Xcode/SDL/SDL.xcodeproj" -scheme "Framework" build -configuration Release CONFIGURATION_BUILD_DIR="~/Library/Frameworks" ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO
 
 echo "============= Build SDL2_mixer ============="
-xcodebuild -project "SDL2_mixer-2.0.4/Xcode/SDL_mixer.xcodeproj" -scheme "Framework" build -configuration Release ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO DERIVED_DATA_DIR="$(pwd)/libs/SDL2_mixer-2.0.4/Xcode/DerivedData"
+xcodebuild -project "SDL2_mixer-2.0.4/Xcode/SDL_mixer.xcodeproj" -scheme "Framework" build -configuration Release ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -derivedDataPath "SDL2_mixer-2.0.4/Xcode/DerivedData/"
 cp -a SDL2_mixer-2.0.4/Xcode/DerivedData/SDL_mixer/Build/Products/Release/SDL2_mixer.framework ~/Library/Frameworks
 
 echo "============= Build libpng ============="
@@ -39,15 +39,15 @@ sudo cp -a libpng-1.6.36/build/Release/libpng16.16.36.0.dylib /usr/local/lib/lib
 
 echo "============= Build Freetype ============="
 mkdir freetype-2.9.1/build
-cd freetype-2.9.1
-cmake -S . -B ./build -G"Xcode" -D BUILD_FRAMEWORK:BOOL=true
-cd ..
+cd freetype-2.9.1/build
+cmake .. -G"Xcode" -D BUILD_FRAMEWORK:BOOL=true
+cd ../..
 xcodebuild -project "freetype-2.9.1/build/freetype.xcodeproj" -scheme "ALL_BUILD" build -configuration Release ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO
 
 echo "============= Build SDL2_ttf ============="
 rm -vr SDL2_ttf-2.0.15/Xcode/Frameworks/FreeType.framework
 cp -a freetype-2.9.1/build/Release/freetype.framework SDL2_ttf-2.0.15/Xcode/Frameworks/FreeType.framework
-xcodebuild -project "SDL2_ttf-2.0.15/Xcode/SDL_ttf.xcodeproj" -scheme "Framework" build -configuration Release ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO DERIVED_DATA_DIR="$(pwd)/libs/SDL2_ttf-2.0.15/Xcode/DerivedData"
+xcodebuild -project "SDL2_ttf-2.0.15/Xcode/SDL_ttf.xcodeproj" -scheme "Framework" build -configuration Release ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO  -derivedDataPath "SDL2_ttf-2.0.15/Xcode/DerivedData/"
 cp -a SDL2_ttf-2.0.15/Xcode/DerivedData/SDL_ttf/Build/Products/Release/SDL2_ttf.framework ~/Library/Frameworks
 
 echo "============= Build Libsodium ============="
