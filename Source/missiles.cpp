@@ -4734,7 +4734,7 @@ void __fastcall mi_null_32(int i)
 		missile[i]._miAnimData = monster[src].MType->Anims[MA_WALK].Data[missile[i]._mimfnum];
 		missile[i]._miVar2++;
 		if (j > 0)
-			missile[i]._miVar1 |= 1u;
+			missile[i]._miVar1 |= 1;
 	}
 	MoveMissilePos(i);
 	PutMissile(i);
