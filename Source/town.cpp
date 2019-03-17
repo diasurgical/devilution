@@ -2,83 +2,143 @@
 
 #include "../types.h"
 
-void __fastcall town_clear_upper_buf(unsigned char *a1)
+void __fastcall town_clear_upper_buf(BYTE *pBuff)
 {
-	unsigned char *v1; // edi
-	signed int v2;     // edx
-	signed int v3;     // ebx
-	unsigned char *v4; // edi
-	signed int v5;     // edx
-	signed int v6;     // ebx
-	unsigned char *v7; // edi
+	/// ASSERT: assert(gpBuffer);
 
-	v1 = a1;
-	v2 = 30;
-	v3 = 1;
-	while (v1 >= gpBufEnd) {
-		v4 = &v1[v2];
-		memset(v4, 0, 4 * v3);
-		v1 = &v4[4 * v3 - 832 + v2];
-		if (!v2) {
-			v5 = 2;
-			v6 = 15;
-			do {
-				if (v1 < gpBufEnd)
-					break;
-				v7 = &v1[v5];
-				memset(v7, 0, 4 * v6);
-				v1 = &v7[4 * v6-- - 832 + v5];
-				v5 += 2;
-			} while (v5 != 32);
-			return;
-		}
-		v2 -= 2;
-		++v3;
+#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+	__asm {
+		mov		edi, pBuff
+		mov		edx, 30
+		mov		ebx, 1
+		xor		eax, eax
+	label1:
+		cmp		edi, gpBufEnd
+		jb		label4
+		add		edi, edx
+		mov		ecx, ebx
+		rep stosd
+		add		edi, edx
+		sub		edi, 768 + 64
+		or		edx, edx
+		jz		label2
+		sub		edx, 2
+		inc		ebx
+		jmp		label1
+	label2:
+		mov		edx, 2
+		mov		ebx, 15
+	label3:
+		cmp		edi, gpBufEnd
+		jb		label4
+		add		edi, edx
+		mov		ecx, ebx
+		rep stosd
+		add		edi, edx
+		sub		edi, 768 + 64
+		dec		ebx
+		add		edx, 2
+		cmp		edx, 32
+		jnz		label3
+	label4:
+		nop
 	}
+#else
+	int i, j, k;
+	BYTE *dst;
+
+	dst = pBuff;
+
+	for(i = 30, j = 1; i >= 0 && dst >= gpBufEnd; i -= 2, j++, dst -= 768 + 64) {
+		dst += i;
+		for(k = 0; k < 4 * j; k++)
+			*dst++ = 0;
+		dst += i;
+	}
+	for(i = 2, j = 15; i != 32 && dst >= gpBufEnd; i += 2, j--, dst -= 768 + 64) {
+		dst += i;
+		for(k = 0; k < 4 * j; k++)
+			*dst++ = 0;
+		dst += i;
+	}
+#endif
 }
 // 69CF0C: using guessed type int gpBufEnd;
 
-void __fastcall town_clear_low_buf(unsigned char *y_related)
+void __fastcall town_clear_low_buf(BYTE *pBuff)
 {
-	unsigned char *v1; // edi
-	signed int v2;     // edx
-	signed int i;      // ebx
-	unsigned char *v4; // edi
-	unsigned char *v5; // edi
-	signed int v6;     // edx
-	signed int v7;     // ebx
-	unsigned char *v8; // edi
-	unsigned char *v9; // edi
+	/// ASSERT: assert(gpBuffer);
 
-	v1 = y_related;
-	v2 = 30;
-	for (i = 1;; ++i) {
-		if (v1 < gpBufEnd) {
-			v5 = &v1[v2];
-			memset(v5, 0, 4 * i);
-			v4 = &v5[4 * i + v2];
-		} else {
-			v4 = v1 + 64;
-		}
-		v1 = v4 - 832;
-		if (!v2)
-			break;
-		v2 -= 2;
+#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+	__asm {
+		mov		edi, pBuff
+		mov		edx, 30
+		mov		ebx, 1
+		xor		eax, eax
+	label1:
+		cmp		edi, gpBufEnd
+		jb		label2
+		add		edi, 64
+		jmp		label3
+	label2:
+		add		edi, edx
+		mov		ecx, ebx
+		rep stosd
+		add		edi, edx
+	label3:
+		sub		edi, 768 + 64
+		or		edx, edx
+		jz		label4
+		sub		edx, 2
+		inc		ebx
+		jmp		label1
+	label4:
+		mov		edx, 2
+		mov		ebx, 15
+	label5:
+		cmp		edi, gpBufEnd
+		jb		label6
+		add		edi, 64
+		jmp		label7
+	label6:
+		add		edi, edx
+		mov		ecx, ebx
+		rep stosd
+		add		edi, edx
+	label7:
+		sub		edi, 768 + 64
+		dec		ebx
+		add		edx, 2
+		cmp		edx, 32
+		jnz		label5
 	}
-	v6 = 2;
-	v7 = 15;
-	do {
-		if (v1 < gpBufEnd) {
-			v9 = &v1[v6];
-			memset(v9, 0, 4 * v7);
-			v8 = &v9[4 * v7 + v6];
+#else
+	int i, j, k;
+	BYTE *dst;
+
+	dst = pBuff;
+
+	for(i = 30, j = 1; i >= 0; i -= 2, j++, dst -= 768 + 64) {
+		if(dst < gpBufEnd) {
+			dst += i;
+			for(k = 0; k < 4 * j; k++)
+				*dst++ = 0;
+			dst += i;
 		} else {
-			v8 = v1 + 64;
+			dst += 64;
 		}
-		v1 = v8 - 832;
-		--v7;
-		v6 += 2;
-	} while (v6 != 32);
+	}
+	for(i = 2, j = 15; i != 32; i += 2, j--, dst -= 768 + 64) {
+		if(dst < gpBufEnd) {
+			dst += i;
+			for(k = 0; k < 4 * j; k++)
+				*dst++ = 0;
+			dst += i;
+		} else {
+			dst += 64;
+		}
+	}
+#endif
 }
 // 69CF0C: using guessed type int gpBufEnd;
 
