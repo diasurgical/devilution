@@ -1023,20 +1023,20 @@ void __cdecl InitControlPan()
 	pSpellCels = LoadFileInMem("CtrlPan\\SpelIcon.CEL", 0);
 	SetSpellTrans(RSPLTYPE_SKILL);
 	pStatusPanel = LoadFileInMem("CtrlPan\\Panel8.CEL", 0);
-	CelDecodeRect((char *)pBtmBuff, 0, 143, 640, (char *)pStatusPanel, 1, 640);
+	CelDecodeRect((BYTE *)pBtmBuff, 0, 143, 640, (BYTE *)pStatusPanel, 1, 640);
 	v1 = pStatusPanel;
 	pStatusPanel = 0;
 	mem_free_dbg(v1);
 	pStatusPanel = LoadFileInMem("CtrlPan\\P8Bulbs.CEL", 0);
-	CelDecodeRect(pLifeBuff, 0, 87, 88, (char *)pStatusPanel, 1, 88);
-	CelDecodeRect(pManaBuff, 0, 87, 88, (char *)pStatusPanel, 2, 88);
+	CelDecodeRect((BYTE *)pLifeBuff, 0, 87, 88, (BYTE *)pStatusPanel, 1, 88);
+	CelDecodeRect((BYTE *)pManaBuff, 0, 87, 88, (BYTE *)pStatusPanel, 2, 88);
 	v2 = pStatusPanel;
 	pStatusPanel = 0;
 	mem_free_dbg(v2);
 	talkflag = 0;
 	if (gbMaxPlayers != 1) {
 		pTalkPanel = LoadFileInMem("CtrlPan\\TalkPanl.CEL", 0);
-		CelDecodeRect((char *)pBtmBuff, 0, 287, 640, (char *)pTalkPanel, 1, 640);
+		CelDecodeRect((BYTE *)pBtmBuff, 0, 287, 640, (BYTE *)pTalkPanel, 1, 640);
 		v3 = pTalkPanel;
 		pTalkPanel = 0;
 		mem_free_dbg(v3);
