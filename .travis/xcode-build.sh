@@ -27,12 +27,13 @@ xcodebuild -project "SDL2-2.0.9/Xcode/SDL/SDL.xcodeproj" -scheme "Framework" bui
 
 echo "============= Build SDL2_mixer ============="
 xcodebuild -project "SDL2_mixer-2.0.4/Xcode/SDL_mixer.xcodeproj" -scheme "Framework" build -configuration Release ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO -derivedDataPath "SDL2_mixer-2.0.4/Xcode/DerivedData/"
-cp -a SDL2_mixer-2.0.4/Xcode/DerivedData/SDL_mixer/Build/Products/Release/SDL2_mixer.framework ~/Library/Frameworks
+cp -a SDL2_mixer-2.0.4/Xcode/DerivedData/Build/Products/Release/SDL2_mixer.framework ~/Library/Frameworks
 
 echo "============= Build libpng ============="
 mkdir libpng-1.6.36/build
-cd
-cmake -S ./libpng-1.6.36/ -B ./libpng-1.6.36/build/ -G"Xcode"
+cd libpng-1.6.36/build
+cmake .. -G"Xcode"
+cd ../../
 xcodebuild -project "libpng-1.6.36/build/libpng.xcodeproj" -scheme "ALL_BUILD" build -configuration Release ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO
 sudo mv /usr/local/lib/libpng16.16.dylib /usr/local/lib/libpng16.16_o.dylib
 sudo cp -a libpng-1.6.36/build/Release/libpng16.16.36.0.dylib /usr/local/lib/libpng16.16.dylib
@@ -48,7 +49,7 @@ echo "============= Build SDL2_ttf ============="
 rm -vr SDL2_ttf-2.0.15/Xcode/Frameworks/FreeType.framework
 cp -a freetype-2.9.1/build/Release/freetype.framework SDL2_ttf-2.0.15/Xcode/Frameworks/FreeType.framework
 xcodebuild -project "SDL2_ttf-2.0.15/Xcode/SDL_ttf.xcodeproj" -scheme "Framework" build -configuration Release ARCHS="i386 x86_64" ONLY_ACTIVE_ARCH=NO  -derivedDataPath "SDL2_ttf-2.0.15/Xcode/DerivedData/"
-cp -a SDL2_ttf-2.0.15/Xcode/DerivedData/SDL_ttf/Build/Products/Release/SDL2_ttf.framework ~/Library/Frameworks
+cp -a SDL2_ttf-2.0.15/Xcode/DerivedData/Build/Products/Release/SDL2_ttf.framework ~/Library/Frameworks
 
 echo "============= Build Libsodium ============="
 cp 3rdParty/libsodium/osxi386.sh libs/libsodium-1.0.17/dist-build/osxi386.sh
