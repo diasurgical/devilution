@@ -5505,33 +5505,26 @@ void __cdecl ProcessMissiles()
 
 void __cdecl missiles_process_charge()
 {
-	int v0;         // ebx
-	int i;          // edi
-	int v2;         // ecx
-	int v3;         // esi
-	BOOLEAN v4;     // zf
-	CMonster *v5;   // eax
-	char v6;        // dl
-	AnimStruct *v7; // eax
+	CMonster *mon;
+	AnimStruct *anim;
+	MissileStruct *mis;
+	int i, mi;
 
-	v0 = nummissiles;
-	for (i = 0; i < v0; ++i) {
-		v2 = missileactive[i];
-		v3 = missile[v2]._mimfnum;
-		v4 = missile[v2]._mitype == MIS_RHINO;
-		missile[v2]._miAnimData = misfiledata[0].mAnimData[v3 + 59 * _LOBYTE(missile[v2]._miAnimType)];
-		if (v4) {
-			v5 = monster[missile[v2]._misource].MType;
-			v6 = v5->mtype;
-			if (v5->mtype < MT_HORNED || v6 > MT_OBLORD) {
-				if (v6 < MT_NSNAKE || v6 > MT_GSNAKE)
-					v7 = &v5->Anims[MA_WALK];
-				else
-					v7 = &v5->Anims[MA_ATTACK];
+	for (i = 0; i < nummissiles; i++) {
+		mi = missileactive[i];
+		mis = &missile[mi];
+		mis->_miAnimData = misfiledata[mis->_miAnimType].mAnimData[mis->_mimfnum];
+		if (mis->_mitype == MIS_RHINO) {
+			mon = monster[mis->_misource].MType;
+			if (mon->mtype >= MT_HORNED && mon->mtype <= MT_OBLORD) {
+				anim = &mon->Anims[MA_SPECIAL];
 			} else {
-				v7 = &v5->Anims[MA_SPECIAL];
+				if (mon->mtype >= MT_NSNAKE && mon->mtype <= MT_GSNAKE)
+					anim = &mon->Anims[MA_ATTACK];
+				else
+					anim = &mon->Anims[MA_WALK];
 			}
-			missile[v2]._miAnimData = v7->Data[v3];
+			missile[mi]._miAnimData = anim->Data[mis->_mimfnum];
 		}
 	}
 }
