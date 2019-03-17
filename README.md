@@ -31,7 +31,7 @@ make -j$(nproc)
 
 *Arguments to cmake:*
 
-The default build type is `Debug`. This can be changed with `-DCMAKE_BUILD_TYPE=Release`. Independently of this, the debug mode of the Diablo engine is always enabled by default. It can be disabled with `-DDEBUG=OFF`. Finally, in debug builds the address sanitizer is enabled by default. This can be disabled with `-DASAN=OFF`.
+The default build type is `Debug`. This can be changed with `-DBINARY_RELEASE=ON`. Independently of this, the debug mode of the Diablo engine is always enabled by default. It can be disabled with `-DDEBUG=OFF`. Finally, in debug builds the address sanitizer is enabled by default. This can be disabled with `-DASAN=OFF`.
 
 *To run the game:*
 
