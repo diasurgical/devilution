@@ -5425,53 +5425,24 @@ void __fastcall MI_ResurrectBeam(int i)
 
 void __fastcall MI_Rportal(int i)
 {
-	int v1;           // esi
-	int v2;           // eax
-	int v3;           // ecx
-	int ExpLight[17]; // [esp+8h] [ebp-48h]
-	int ia;           // [esp+4Ch] [ebp-4h]
+	int ExpLight[17] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 15, 15 };
 
-	v1 = i;
-	ExpLight[14] = 15;
-	ExpLight[15] = 15;
-	ExpLight[16] = 15;
-	v2 = missile[i]._mirange;
-	ia = i;
-	ExpLight[0] = 1;
-	ExpLight[1] = 2;
-	ExpLight[2] = 3;
-	ExpLight[3] = 4;
-	ExpLight[4] = 5;
-	ExpLight[5] = 6;
-	ExpLight[6] = 7;
-	ExpLight[7] = 8;
-	ExpLight[8] = 9;
-	ExpLight[9] = 10;
-	ExpLight[10] = 11;
-	ExpLight[11] = 12;
-	ExpLight[12] = 13;
-	ExpLight[13] = 14;
-	if (v2 > 1)
-		missile[v1]._mirange = v2 - 1;
-	if (missile[v1]._mirange == missile[v1]._miVar1)
+	if (missile[i]._mirange > 1)
+		missile[i]._mirange--;
+	if (missile[i]._mirange == missile[i]._miVar1)
 		SetMissDir(i, 1);
-	if (currlevel && missile[v1]._mimfnum != 1) {
-		if (!missile[v1]._mirange) {
-		LABEL_12:
-			v3 = missile[v1]._mlid;
-			missile[v1]._miDelFlag = TRUE;
-			AddUnLight(v3);
-			goto LABEL_13;
-		}
-		if (!missile[v1]._miVar2)
-			missile[v1]._mlid = AddLight(missile[v1]._mix, missile[v1]._miy, 1);
-		ChangeLight(missile[v1]._mlid, missile[v1]._mix, missile[v1]._miy, ExpLight[missile[v1]._miVar2]);
-		++missile[v1]._miVar2;
+
+	if (currlevel && missile[i]._mimfnum != 1 && missile[i]._mirange != 0) {
+		if (!missile[i]._miVar2)
+			missile[i]._mlid = AddLight(missile[i]._mix, missile[i]._miy, 1);
+		ChangeLight(missile[i]._mlid, missile[i]._mix, missile[i]._miy, ExpLight[missile[i]._miVar2]);
+		missile[i]._miVar2++;
 	}
-	if (!missile[v1]._mirange)
-		goto LABEL_12;
-LABEL_13:
-	PutMissile(ia);
+	if (!missile[i]._mirange) {
+		missile[i]._miDelFlag = TRUE;
+		AddUnLight(missile[i]._mlid);
+	}
+	PutMissile(i);
 }
 
 void __cdecl ProcessMissiles()
