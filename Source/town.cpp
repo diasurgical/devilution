@@ -151,7 +151,7 @@ void __fastcall town_draw_clipped_town(BYTE *buffer, int x, int y, int sx, int s
 			    item[v10]._iAnimWidth,
 			    0,
 			    8);
-		Cel2DrawHdrOnly(v11, sy, (char *)item[v10]._iAnimData, item[v10]._iAnimFrame, item[v10]._iAnimWidth, 0, 8);
+		Cel2DrawHdrOnly(v11, sy, item[v10]._iAnimData, item[v10]._iAnimFrame, item[v10]._iAnimWidth, 0, 8);
 	}
 	if (dFlags[0][v7] & DFLAG_MONSTER) {
 		v12 = -1 - dMonster[x][y - 1]; // -1 - *(&dword_52D204 + v7); /* check */
@@ -166,7 +166,7 @@ void __fastcall town_draw_clipped_town(BYTE *buffer, int x, int y, int sx, int s
 			    towner[v12]._tAnimWidth,
 			    0,
 			    8);
-		Cel2DrawHdrOnly(v13, sy, (char *)towner[v12]._tAnimData, towner[v12]._tAnimFrame, towner[v12]._tAnimWidth, 0, 8);
+		Cel2DrawHdrOnly(v13, sy, towner[v12]._tAnimData, towner[v12]._tAnimFrame, towner[v12]._tAnimWidth, 0, 8);
 	}
 	v14 = dMonster[0][v7];
 	if (v14 > 0) {
@@ -183,7 +183,7 @@ void __fastcall town_draw_clipped_town(BYTE *buffer, int x, int y, int sx, int s
 			    towner[v16]._tAnimWidth,
 			    0,
 			    8);
-		Cel2DrawHdrOnly(v17, sy, (char *)towner[v16]._tAnimData, towner[v16]._tAnimFrame, towner[v16]._tAnimWidth, 0, 8);
+		Cel2DrawHdrOnly(v17, sy, towner[v16]._tAnimData, towner[v16]._tAnimFrame, towner[v16]._tAnimWidth, 0, 8);
 	}
 	if (dFlags[0][v7] & DFLAG_PLAYER) {
 		v18 = -1 - dPlayer[x][y - 1]; // -1 - *((_BYTE *)&themeLoc[49].height + v7 + 3);
@@ -191,8 +191,8 @@ void __fastcall town_draw_clipped_town(BYTE *buffer, int x, int y, int sx, int s
 		v20 = sy + plr[v19]._pyoff;
 		v21 = sx + plr[v19]._pxoff - plr[v19]._pAnimWidth2;
 		if (v18 == pcursplr)
-			Cl2DecodeClrHL(165, v21, v20, (char *)plr[v19]._pAnimData, plr[v19]._pAnimFrame, plr[v19]._pAnimWidth, 0, 8);
-		Cl2DecodeFrm4(v21, v20, (char *)plr[v19]._pAnimData, plr[v19]._pAnimFrame, plr[v19]._pAnimWidth, 0, 8);
+			Cl2DecodeClrHL(165, v21, v20, plr[v19]._pAnimData, plr[v19]._pAnimFrame, plr[v19]._pAnimWidth, 0, 8);
+		Cl2DecodeFrm4(v21, v20, plr[v19]._pAnimData, plr[v19]._pAnimFrame, plr[v19]._pAnimWidth, 0, 8);
 		if (some_flag && plr[v19]._peflag)
 			town_draw_clipped_e_flag((BYTE *)v27 - 64, xa - 1, y + 1, sx - 64, sy);
 		v7 = v29;
@@ -206,8 +206,8 @@ void __fastcall town_draw_clipped_town(BYTE *buffer, int x, int y, int sx, int s
 		v25 = sy + plr[v24]._pyoff;
 		v26 = sx + plr[v24]._pxoff - plr[v24]._pAnimWidth2;
 		if (v23 == pcursplr)
-			Cl2DecodeClrHL(165, v26, v25, (char *)plr[v24]._pAnimData, plr[v24]._pAnimFrame, plr[v24]._pAnimWidth, 0, 8);
-		Cl2DecodeFrm4(v26, v25, (char *)plr[v24]._pAnimData, plr[v24]._pAnimFrame, plr[v24]._pAnimWidth, 0, 8);
+			Cl2DecodeClrHL(165, v26, v25, plr[v24]._pAnimData, plr[v24]._pAnimFrame, plr[v24]._pAnimWidth, 0, 8);
+		Cl2DecodeFrm4(v26, v25, plr[v24]._pAnimData, plr[v24]._pAnimFrame, plr[v24]._pAnimWidth, 0, 8);
 		if (some_flag && plr[v24]._peflag)
 			town_draw_clipped_e_flag((BYTE *)v27 - 64, xa - 1, y + 1, sx - 64, sy);
 		v7 = v29;
@@ -411,7 +411,7 @@ void __fastcall town_draw_clipped_town_2(int x, int y, int a3, int a4, int a5, i
 			    item[v12]._iAnimWidth,
 			    a5,
 			    8);
-		Cel2DrawHdrOnly(v13, sy, (char *)item[v12]._iAnimData, item[v12]._iAnimFrame, item[v12]._iAnimWidth, a5, 8);
+		Cel2DrawHdrOnly(v13, sy, item[v12]._iAnimData, item[v12]._iAnimFrame, item[v12]._iAnimWidth, a5, 8);
 	}
 	if (dFlags[0][v9] & DFLAG_MONSTER) {
 		v14 = -1 - dMonster[x][y - 1]; // -1 - *(&dword_52D204 + v9); /* check */
@@ -426,7 +426,7 @@ void __fastcall town_draw_clipped_town_2(int x, int y, int a3, int a4, int a5, i
 			    towner[v14]._tAnimWidth,
 			    a5,
 			    8);
-		Cel2DrawHdrOnly(v15, sy, (char *)towner[v14]._tAnimData, towner[v14]._tAnimFrame, towner[v14]._tAnimWidth, a5, 8);
+		Cel2DrawHdrOnly(v15, sy, towner[v14]._tAnimData, towner[v14]._tAnimFrame, towner[v14]._tAnimWidth, a5, 8);
 	}
 	v16 = dMonster[0][v9];
 	if (v16 > 0) {
@@ -443,7 +443,7 @@ void __fastcall town_draw_clipped_town_2(int x, int y, int a3, int a4, int a5, i
 			    towner[v18]._tAnimWidth,
 			    a5,
 			    8);
-		Cel2DrawHdrOnly(v19, sy, (char *)towner[v18]._tAnimData, towner[v18]._tAnimFrame, towner[v18]._tAnimWidth, a5, 8);
+		Cel2DrawHdrOnly(v19, sy, towner[v18]._tAnimData, towner[v18]._tAnimFrame, towner[v18]._tAnimWidth, a5, 8);
 	}
 	if (dFlags[0][v9] & DFLAG_PLAYER) {
 		v20 = -1 - dPlayer[x][y - 1]; // -1 - *((_BYTE *)&themeLoc[49].height + v9 + 3);
@@ -451,8 +451,8 @@ void __fastcall town_draw_clipped_town_2(int x, int y, int a3, int a4, int a5, i
 		v22 = sy + plr[v21]._pyoff;
 		v23 = sx + plr[v21]._pxoff - plr[v21]._pAnimWidth2;
 		if (v20 == pcursplr)
-			Cl2DecodeClrHL(165, v23, v22, (char *)plr[v21]._pAnimData, plr[v21]._pAnimFrame, plr[v21]._pAnimWidth, a5, 8);
-		Cl2DecodeFrm4(v23, v22, (char *)plr[v21]._pAnimData, plr[v21]._pAnimFrame, plr[v21]._pAnimWidth, a5, 8);
+			Cl2DecodeClrHL(165, v23, v22, plr[v21]._pAnimData, plr[v21]._pAnimFrame, plr[v21]._pAnimWidth, a5, 8);
+		Cl2DecodeFrm4(v23, v22, plr[v21]._pAnimData, plr[v21]._pAnimFrame, plr[v21]._pAnimWidth, a5, 8);
 		if (some_flag && plr[v21]._peflag)
 			town_draw_clipped_e_flag_2((BYTE *)(v29 - 64), xa - 1, a3 + 1, a4, a5, sx - 64, sy);
 		v9 = v31;
@@ -466,8 +466,8 @@ void __fastcall town_draw_clipped_town_2(int x, int y, int a3, int a4, int a5, i
 		v27 = sy + plr[v26]._pyoff;
 		v28 = sx + plr[v26]._pxoff - plr[v26]._pAnimWidth2;
 		if (v25 == pcursplr)
-			Cl2DecodeClrHL(165, v28, v27, (char *)plr[v26]._pAnimData, plr[v26]._pAnimFrame, plr[v26]._pAnimWidth, a5, 8);
-		Cl2DecodeFrm4(v28, v27, (char *)plr[v26]._pAnimData, plr[v26]._pAnimFrame, plr[v26]._pAnimWidth, a5, 8);
+			Cl2DecodeClrHL(165, v28, v27, plr[v26]._pAnimData, plr[v26]._pAnimFrame, plr[v26]._pAnimWidth, a5, 8);
+		Cl2DecodeFrm4(v28, v27, plr[v26]._pAnimData, plr[v26]._pAnimFrame, plr[v26]._pAnimWidth, a5, 8);
 		if (some_flag && plr[v26]._peflag)
 			town_draw_clipped_e_flag_2((BYTE *)(v29 - 64), xa - 1, a3 + 1, a4, a5, sx - 64, sy);
 		v9 = v31;
@@ -654,29 +654,29 @@ void __fastcall town_draw_town_all(BYTE *buffer, int x, int y, int a4, int dir, 
 		xx = sx - item[ii]._iAnimWidth2;
 		if (ii == pcursitem)
 			CelDecodeClr(ICOL_BLUE, xx, sy, (char *)item[ii]._iAnimData, item[ii]._iAnimFrame, item[ii]._iAnimWidth, 0, dir);
-		CelDrawHdrOnly(xx, sy, (char *)item[ii]._iAnimData, item[ii]._iAnimFrame, item[ii]._iAnimWidth, 0, dir);
+		CelDrawHdrOnly(xx, sy, item[ii]._iAnimData, item[ii]._iAnimFrame, item[ii]._iAnimWidth, 0, dir);
 	}
 	if (dFlags[x][y] & DFLAG_MONSTER) {
 		mi = -1 - dMonster[x][y - 1];
 		xx = sx - towner[mi]._tAnimWidth2;
 		if (mi == pcursmonst)
 			CelDecodeClr(PAL16_BEIGE + 6, xx, sy, (char *)towner[mi]._tAnimData, towner[mi]._tAnimFrame, towner[mi]._tAnimWidth, 0, dir);
-		CelDrawHdrOnly(xx, sy, (char *)towner[mi]._tAnimData, towner[mi]._tAnimFrame, towner[mi]._tAnimWidth, 0, dir);
+		CelDrawHdrOnly(xx, sy, towner[mi]._tAnimData, towner[mi]._tAnimFrame, towner[mi]._tAnimWidth, 0, dir);
 	}
 	if (dMonster[x][y] > 0) {
 		mi = dMonster[x][y] - 1;
 		xx = sx - towner[mi]._tAnimWidth2;
 		if (mi == pcursmonst)
 			CelDecodeClr(PAL16_BEIGE + 6, xx, sy, (char *)towner[mi]._tAnimData, towner[mi]._tAnimFrame, towner[mi]._tAnimWidth, 0, dir);
-		CelDrawHdrOnly(xx, sy, (char *)towner[mi]._tAnimData, towner[mi]._tAnimFrame, towner[mi]._tAnimWidth, 0, dir);
+		CelDrawHdrOnly(xx, sy, towner[mi]._tAnimData, towner[mi]._tAnimFrame, towner[mi]._tAnimWidth, 0, dir);
 	}
 	if (dFlags[x][y] & DFLAG_PLAYER) {
 		pnum = -1 - dPlayer[x][y - 1];
 		yy = sy + plr[pnum]._pyoff;
 		xx = sx + plr[pnum]._pxoff - plr[pnum]._pAnimWidth2;
 		if (pnum == pcursplr)
-			Cl2DecodeFrm2(PAL16_BEIGE + 5, xx, yy, (char *)plr[pnum]._pAnimData, plr[pnum]._pAnimFrame, plr[pnum]._pAnimWidth, 0, dir);
-		Cl2DecodeFrm1(xx, yy, (char *)plr[pnum]._pAnimData, plr[pnum]._pAnimFrame, plr[pnum]._pAnimWidth, 0, dir);
+			Cl2DecodeFrm2(PAL16_BEIGE + 5, xx, yy, plr[pnum]._pAnimData, plr[pnum]._pAnimFrame, plr[pnum]._pAnimWidth, 0, dir);
+		Cl2DecodeFrm1(xx, yy, plr[pnum]._pAnimData, plr[pnum]._pAnimFrame, plr[pnum]._pAnimWidth, 0, dir);
 		if (some_flag && plr[pnum]._peflag)
 			town_draw_e_flag(buffer - 64, x - 1, y + 1, a4, dir, sx - 64, sy);
 	}
@@ -687,8 +687,8 @@ void __fastcall town_draw_town_all(BYTE *buffer, int x, int y, int a4, int dir, 
 		yy = sy + plr[pnum]._pyoff;
 		xx = sx + plr[pnum]._pxoff - plr[pnum]._pAnimWidth2;
 		if (pnum == pcursplr)
-			Cl2DecodeFrm2(PAL16_BEIGE + 5, xx, yy, (char *)plr[pnum]._pAnimData, plr[pnum]._pAnimFrame, plr[pnum]._pAnimWidth, 0, dir);
-		Cl2DecodeFrm1(xx, yy, (char *)plr[pnum]._pAnimData, plr[pnum]._pAnimFrame, plr[pnum]._pAnimWidth, 0, dir);
+			Cl2DecodeFrm2(PAL16_BEIGE + 5, xx, yy, plr[pnum]._pAnimData, plr[pnum]._pAnimFrame, plr[pnum]._pAnimWidth, 0, dir);
+		Cl2DecodeFrm1(xx, yy, plr[pnum]._pAnimData, plr[pnum]._pAnimFrame, plr[pnum]._pAnimWidth, 0, dir);
 		if (some_flag && plr[pnum]._peflag)
 			town_draw_e_flag(buffer - 64, x - 1, y + 1, a4, dir, sx - 64, sy);
 	}

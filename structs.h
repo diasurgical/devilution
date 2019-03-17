@@ -413,7 +413,7 @@ typedef struct MissileStruct {
 	int _miAnimAdd;
 	int _miAnimFrame;
 	BOOL _miDrawFlag;
-	int _miLightFlag;
+	BOOL _miLightFlag;
 	BOOL _miPreFlag;
 	int _miUniqTrans;
 	int _mirange;
