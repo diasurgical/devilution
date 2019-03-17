@@ -4700,78 +4700,44 @@ void __fastcall MI_Rhino(int i)
 
 void __fastcall mi_null_32(int i)
 {
-	int v1;  // edi
-	int v2;  // esi
-	int v3;  // ebx
-	int v4;  // edi
-	int v5;  // eax
-	int v6;  // eax
-	int v7;  // ecx
-	int v8;  // eax
-	int v9;  // eax
-	int v10; // ebx
-	int v11; // eax
-	//int v12; // eax
-	int v13;            // ecx
-	int v14;            // ecx
-	unsigned char *v15; // eax
-	int v16;            // [esp+Ch] [ebp-14h]
-	int arglist;        // [esp+10h] [ebp-10h]
-	int x;              // [esp+14h] [ebp-Ch]
-	int y;              // [esp+18h] [ebp-8h]
-	int a3;             // [esp+1Ch] [ebp-4h]
+	int src, enemy, ax, ay, bx, by, cx, cy, j;
 
-	v1 = i;
-	arglist = i;
 	GetMissilePos(i);
-	v2 = v1;
-	v3 = missile[v1]._mix;
-	a3 = missile[v1]._miy;
-	missile[v2]._mitxoff += missile[v1]._mixvel;
-	missile[v2]._mityoff += missile[v1]._miyvel;
-	GetMissilePos(v1);
-	v4 = missile[v1]._misource;
-	y = missile[v2]._miy;
-	v5 = monster[v4]._menemy;
-	x = missile[v2]._mix;
-	if (monster[v4]._mFlags & MFLAG_TARGETS_MONSTER) {
-		v9 = v5;
-		v7 = monster[v9]._mx;
-		v8 = monster[v9]._my;
+	ax = missile[i]._mix;
+	ay = missile[i]._miy;
+	missile[i]._mitxoff += missile[i]._mixvel;
+	missile[i]._mityoff += missile[i]._miyvel;
+	GetMissilePos(i);
+	src = missile[i]._misource;
+	bx = missile[i]._mix;
+	by = missile[i]._miy;
+	enemy = monster[src]._menemy;
+	if (!(monster[src]._mFlags & MFLAG_TARGETS_MONSTER)) {
+		cx = plr[enemy].WorldX;
+		cy = plr[enemy].WorldY;
 	} else {
-		v6 = v5;
-		v7 = plr[v6].WorldX;
-		v8 = plr[v6].WorldY;
+		cx = monster[enemy]._mx;
+		cy = monster[enemy]._my;
 	}
-	v16 = v8;
-	if ((missile[v2]._mix != v3 || y != a3)
-	    && (missile[v2]._miVar1 & 1 && (abs(v3 - v7) >= 4 || abs(a3 - v16) >= 4) || missile[v2]._miVar2 > 1)
-	    && PosOkMonst(missile[v2]._misource, v3, a3)) {
-		MissToMonst(arglist, v3, a3);
-		v10 = v16;
-		missile[v2]._miDelFlag = TRUE;
+	if ((bx != ax || by != ay) && (missile[i]._miVar1 & 1 && (abs(ax - cx) >= 4 || abs(ay - cy) >= 4) || missile[i]._miVar2 > 1) && PosOkMonst(missile[i]._misource, ax, ay)) {
+		MissToMonst(i, ax, ay);
+		missile[i]._miDelFlag = TRUE;
+	} else if (!(monster[src]._mFlags & MFLAG_TARGETS_MONSTER)) {
+		j = dPlayer[bx][by];
 	} else {
-		v11 = x;
-		if (monster[v4]._mFlags & MFLAG_TARGETS_MONSTER)
-			v10 = dMonster[v11][y];
-		else
-			v10 = dPlayer[v11][y];
+		j = dMonster[bx][by];
 	}
-	//_LOBYTE(v12) = PosOkMissile(x, y);
-	if (!PosOkMissile(x, y) || v10 > 0 && !(missile[v2]._miVar1 & 1)) {
-		missile[v2]._mixvel = -missile[v2]._mixvel;
-		v13 = missile[v2]._mimfnum;
-		missile[v2]._miyvel = -missile[v2]._miyvel;
-		v14 = opposite[v13];
-		missile[v2]._mimfnum = v14;
-		v15 = monster[v4].MType->Anims[MA_WALK].Data[v14];
-		++missile[v2]._miVar2;
-		missile[v2]._miAnimData = v15;
-		if (v10 > 0)
-			missile[v2]._miVar1 |= 1u;
+	if (!PosOkMissile(bx, by) || j > 0 && !(missile[i]._miVar1 & 1)) {
+		missile[i]._mixvel *= -1;
+		missile[i]._miyvel *= -1;
+		missile[i]._mimfnum = opposite[missile[i]._mimfnum];
+		missile[i]._miAnimData = monster[src].MType->Anims[MA_WALK].Data[missile[i]._mimfnum];
+		missile[i]._miVar2++;
+		if (j > 0)
+			missile[i]._miVar1 |= 1;
 	}
-	MoveMissilePos(arglist);
-	PutMissile(arglist);
+	MoveMissilePos(i);
+	PutMissile(i);
 }
 
 void __fastcall MI_FirewallC(int i)
