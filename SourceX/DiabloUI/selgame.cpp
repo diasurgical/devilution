@@ -186,7 +186,7 @@ void selgame_Password_Select(int value)
 	if (selgame_selectedGame) {
 		SRegSaveString("Phone Book", "Entry1", 0, selgame_Ip);
 		if (!SNetJoinGame(selgame_selectedGame, selgame_Ip, selgame_Password, NULL, NULL, gdwPlayerId)) {
-			DrawDlg("Unable to establish a connection. A game of Devilution 0.1.0 was not detected at the specified IP address.");
+			DrawDlg("Unable to establish a connection. A game of Devilution 0.2.0 was not detected at the specified IP address.");
 			selgame_Password_Init(selgame_selectedGame);
 		}
 		return;
