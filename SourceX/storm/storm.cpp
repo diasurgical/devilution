@@ -225,7 +225,7 @@ BOOL SBmpLoadImage(const char *pszFileName, PALETTEENTRY *pPalette, BYTE *pBuffe
 				byte = *dataPtr;
 				if (byte < 0xC0) {
 					*pBuffer = byte;
-					*pBuffer++;
+					pBuffer++;
 					x++;
 					continue;
 				}
@@ -233,7 +233,7 @@ BOOL SBmpLoadImage(const char *pszFileName, PALETTEENTRY *pPalette, BYTE *pBuffe
 
 				for (int i = 0; i < (byte & 0x3F); i++) {
 					*pBuffer = *dataPtr;
-					*pBuffer++;
+					pBuffer++;
 					x++;
 				}
 			}
