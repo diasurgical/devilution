@@ -4127,15 +4127,18 @@ void __fastcall UseItem(int p, int Mid, int spl)
 	}
 }
 
-BOOLEAN __fastcall StoreStatOk(ItemStruct *h)
+BOOL __fastcall StoreStatOk(ItemStruct *h)
 {
-	BOOLEAN sf; // al
+	BOOL sf;
 
-	sf = 1;
-	if (plr[myplr]._pStrength < h->_iMinStr
-	    || plr[myplr]._pMagic < h->_iMinMag
-	    || plr[myplr]._pDexterity < h->_iMinDex)
-		sf = 0;
+	sf = TRUE;
+	if (plr[myplr]._pStrength < h->_iMinStr)
+		sf = FALSE;
+	if (plr[myplr]._pMagic < h->_iMinMag)
+		sf = FALSE;
+	if (plr[myplr]._pDexterity < h->_iMinDex)
+		sf = FALSE;
+
 	return sf;
 }
 
