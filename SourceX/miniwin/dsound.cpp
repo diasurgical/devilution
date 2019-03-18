@@ -1,4 +1,4 @@
-#include "miniwin_dsound.h"
+#include "miniwin/dsound.h"
 
 #include <SDL.h>
 

@@ -1,9 +1,8 @@
-#include "../3rdParty/Radon/Radon/include/Radon.hpp"
-#include "../3rdParty/libsmacker/smacker.h"
-
 #include <unistd.h>
 #include <SDL.h>
 #include <SDL_mixer.h>
+#include <Radon.hpp>
+#include <smacker.h>
 
 #include "devilution.h"
 #include "stubs.h"
@@ -12,7 +11,18 @@
 
 namespace dvl {
 
-extern "C" DWORD nLastError = 0;
+DWORD nLastError = 0;
+
+void TranslateFileName(char *dst, int dstLen, const char *src)
+{
+	for (int i = 0; i < dstLen; i++) {
+		char c = *src++;
+		dst[i] = c == '\\' ? '/' : c;
+		if (!c) {
+			break;
+		}
+	}
+}
 
 std::string getIniPath()
 {

@@ -159,12 +159,14 @@ add_executable(devilutionx
   SourceX/miniwin/misc.cpp
   SourceX/miniwin/misc_io.cpp
   SourceX/miniwin/misc_msg.cpp
+  SourceX/miniwin/misc_dx.cpp
   SourceX/miniwin/rand.cpp
   SourceX/miniwin/thread.cpp
-  SourceX/miniwin_dsound.cpp
+  SourceX/miniwin/dsound.cpp
   SourceX/sound.cpp
-  SourceX/storm.cpp
-  SourceX/storm_net.cpp
+  SourceX/storm/storm.cpp
+  SourceX/storm/storm_net.cpp
+  SourceX/storm/storm_dx.cpp
   SourceX/dvlnet/abstract_net.cpp
   SourceX/dvlnet/loopback.cpp
   SourceX/dvlnet/packet.cpp
@@ -185,7 +187,11 @@ add_executable(devilutionx
   SourceX/main.cpp)
 
 target_include_directories(devilution PUBLIC Source SourceS)
-target_include_directories(devilutionx PRIVATE SourceX 3rdParty/asio/include)
+target_include_directories(devilutionx PRIVATE
+  SourceX
+  3rdParty/asio/include
+  3rdParty/Radon/Radon/include
+  3rdParty/libsmacker)
 
 target_link_libraries(devilution PUBLIC Threads::Threads)
 target_link_libraries(devilutionx PRIVATE
