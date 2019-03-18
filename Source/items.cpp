@@ -1177,7 +1177,7 @@ void __fastcall CalcPlrItemMin(int pnum)
 	}
 
 	pi = p->SpdList;
-	for (i = MAXBELTITEMS; i; i--) {
+	for (i = MAXBELTITEMS; i != 0; i--) {
 		if (pi->_itype != -1) {
 			pi->_iStatFlag = ItemMinStats(p, pi);
 		}
