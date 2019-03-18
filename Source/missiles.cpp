@@ -4905,43 +4905,28 @@ void __fastcall MI_Blodboil(int i)
 
 void __fastcall MI_Flame(int i)
 {
-	int v1; // ebx
-	int v2; // esi
-	int v3; // ST0C_4
-	int v4; // edx
-	int v5; // edi
-	int v6; // ST08_4
-	int v7; // eax
-	int v8; // eax
-	int v9; // ecx
+	int k;
 
-	v1 = i;
-	v2 = i;
-	v3 = missile[i]._miy;
-	v4 = missile[i]._midam;
-	--missile[v2]._mirange;
-	v5 = missile[i]._mirange;
-	v6 = missile[i]._mix;
-	--missile[v2]._miVar2;
-	CheckMissileCol(i, v4, v4, 1, v6, v3, 0);
-	if (!missile[v2]._mirange && missile[v2]._miHitFlag)
-		missile[v2]._mirange = v5;
-	v7 = missile[v2]._miVar2;
-	if (!v7)
-		missile[v2]._miAnimFrame = 20;
-	if (v7 <= 0) {
-		v8 = missile[v2]._miAnimFrame;
-		if (v8 > 11)
-			v8 = 24 - v8;
-		ChangeLight(missile[v2]._mlid, missile[v2]._mix, missile[v2]._miy, v8);
+	missile[i]._mirange--;
+	k = missile[i]._mirange;
+	missile[i]._miVar2--;
+	CheckMissileCol(i, missile[i]._midam, missile[i]._midam, 1, missile[i]._mix, missile[i]._miy, 0);
+	if (missile[i]._mirange == 0 && missile[i]._miHitFlag == TRUE)
+		missile[i]._mirange = k;
+	if (!missile[i]._miVar2)
+		missile[i]._miAnimFrame = 20;
+	if (missile[i]._miVar2 <= 0) {
+		k = missile[i]._miAnimFrame;
+		if (k > 11)
+			k = 24 - k;
+		ChangeLight(missile[i]._mlid, missile[i]._mix, missile[i]._miy, k);
 	}
-	if (!missile[v2]._mirange) {
-		v9 = missile[v2]._mlid;
-		missile[v2]._miDelFlag = TRUE;
-		AddUnLight(v9);
+	if (!missile[i]._mirange) {
+		missile[i]._miDelFlag = TRUE;
+		AddUnLight(missile[i]._mlid);
 	}
-	if (missile[v2]._miVar2 <= 0)
-		PutMissile(v1);
+	if (missile[i]._miVar2 <= 0)
+		PutMissile(i);
 }
 
 void __fastcall MI_Flamec(int i)
