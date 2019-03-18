@@ -96,14 +96,13 @@ void __cdecl DrawQTextBack()
 
 void __fastcall PrintQTextChr(int sx, int sy, BYTE *pCelBuff, int nCel)
 {
-	BYTE *dst, *pStart, *pEnd, *end, *tmp;
+	BYTE *dst, *pStart, *pEnd, *end;
 
 	/// ASSERT: assert(gpBuffer);
 
-	tmp = (BYTE *)gpBuffer;
-	dst = &tmp[sx + screen_y_times_768[sy]];
-	pStart = &tmp[screen_y_times_768[209]];
-	pEnd = &tmp[screen_y_times_768[469]];
+	dst = &gpBuffer[sx + screen_y_times_768[sy]];
+	pStart = &gpBuffer[screen_y_times_768[209]];
+	pEnd = &gpBuffer[screen_y_times_768[469]];
 
 #if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
 	__asm {

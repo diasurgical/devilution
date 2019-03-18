@@ -3765,8 +3765,8 @@ void __fastcall DrawULine(int y)
 	char *v2;      // edi
 	signed int v3; // edx
 
-	v1 = &gpBuffer->row[25].pixels[26];
-	v2 = &gpBuffer->row_unused_1[0].pixels[screen_y_times_768[SStringY[y] + 198] + 26];
+	v1 = (char *)&gpBuffer[SCREENXY(26, 25)];
+	v2 = (char *)&gpBuffer[screen_y_times_768[SStringY[y] + 198] + 26 + 64];
 	v3 = 3;
 	do {
 		qmemcpy(v2, v1, 0x10A); /* find real fix */
