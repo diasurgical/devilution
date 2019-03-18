@@ -1303,94 +1303,121 @@ void __cdecl town_init_dpiece_defs_map()
 // 5C3000: using guessed type int scr_pix_width;
 // 5C3004: using guessed type int scr_pix_height;
 
-void __fastcall T_FillSector(unsigned char *P3Tiles, unsigned char *pSector, int xi, int yi, int w, int h) /* check 7 params: int AddSec */
+void __fastcall T_FillSector(unsigned char *P3Tiles, unsigned char *pSector, int xi, int yi, int w, int h)
 {
-	int v7;             // ebx
-	int v8;             // edx
-	int v9;             // edi
-	int *v10;           // ecx
-	int v11;            // eax
-	unsigned char *v12; // esi
-	unsigned short v13; // ax
-	int v14;            // eax
-	int v15;            // [esp+4h] [ebp-14h]
-	int v16;            // [esp+8h] [ebp-10h]
-	unsigned char *v17; // [esp+Ch] [ebp-Ch]
-	unsigned char *v18; // [esp+10h] [ebp-8h]
-	signed int v19;     // [esp+14h] [ebp-4h]
-	int a4;             // [esp+24h] [ebp+Ch]
-	int a6;             // [esp+2Ch] [ebp+14h]
+	int i, j, xx, yy;
+	long v1, v2, v3, v4, ii;
 
-	v7 = h;
-	v17 = pSector;
-	v8 = yi;
-	v18 = P3Tiles;
-	v19 = 4;
-	if (h > 0) {
-		do {
-			v9 = w;
-			if (w > 0) {
-				v10 = &dPiece[1][v8 + 112 * xi];
-				do {
-					v11 = *(unsigned short *)&v17[v19];
-					if ((_WORD)v11) {
-						v12 = &v18[8 * (v11 - 1)];
-						v13 = *(_WORD *)v12;
-						v12 += 2;
-						v14 = v13 + 1;
-						a4 = v14;
-						_LOWORD(v14) = *(_WORD *)v12;
-						v12 += 2;
-						a6 = ++v14;
-						_LOWORD(v14) = *(_WORD *)v12;
-						v16 = ++v14;
-						_LOWORD(v14) = *((_WORD *)v12 + 1);
-						v15 = v14 + 1;
-					} else {
-						a4 = 0;
-						a6 = 0;
-						v16 = 0;
-						v15 = 0;
-					}
-					v19 += 2;
-					*(v10 - 112) = a4;
-					*v10 = a6;
-					*(v10 - 111) = v16;
-					v10[1] = v15;
-					v10 += 224;
-					--v9;
-				} while (v9);
+	ii = 4;
+	yy = yi;
+	for(j = 0; j < h; j++) {
+		xx = xi;
+		for(i = 0; i < w; i++) {
+#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+			__asm {
+				mov		esi, pSector
+				mov		eax, ii
+				add		esi, eax
+				xor		eax, eax
+				lodsw
+				or		eax, eax
+				jz		label1
+				dec		eax
+				mov		esi, P3Tiles
+				shl		eax, 3
+				add		esi, eax
+				xor		eax, eax
+				lodsw
+				inc		eax
+				mov		v1, eax
+				lodsw
+				inc		eax
+				mov		v2, eax
+				lodsw
+				inc		eax
+				mov		v3, eax
+				lodsw
+				inc		eax
+				mov		v4, eax
+				jmp		label2
+			label1:
+				mov		v1, eax
+				mov		v2, eax
+				mov		v3, eax
+				mov		v4, eax
+			label2:
+				nop
 			}
-			v8 += 2;
-			--v7;
-		} while (v7);
+#else
+			WORD *Map;
+
+			Map = (WORD *)&pSector[ii];
+			if(*Map) {
+				v1 = *((WORD *)&P3Tiles[(*Map-1)*8])+1;
+				v2 = *((WORD *)&P3Tiles[(*Map-1)*8]+1)+1;
+				v3 = *((WORD *)&P3Tiles[(*Map-1)*8]+2)+1;
+				v4 = *((WORD *)&P3Tiles[(*Map-1)*8]+3)+1;
+			} else {
+				v1 = 0;
+				v2 = 0;
+				v3 = 0;
+				v4 = 0;
+			}
+#endif
+			dPiece[xx][yy] = v1;
+			dPiece[xx + 1][yy] = v2;
+			dPiece[xx][yy + 1] = v3;
+			dPiece[xx + 1][yy + 1] = v4;
+			xx += 2;
+			ii += 2;
+		}
+		yy += 2;
 	}
 }
 
 void __fastcall T_FillTile(unsigned char *P3Tiles, int xx, int yy, int t)
 {
-	unsigned char *v4; // esi
-	unsigned short v5; // ax
-	int v6;            // eax
-	int v7;            // ST10_4
-	int v8;            // ST0C_4
-	int v9;            // ST08_4
+	long v1, v2, v3, v4;
 
-	v4 = &P3Tiles[8 * (t - 1)];
-	v5 = *(_WORD *)v4;
-	v4 += 2;
-	v6 = v5 + 1;
-	v7 = v6;
-	_LOWORD(v6) = *(_WORD *)v4;
-	v4 += 2;
-	v8 = ++v6;
-	_LOWORD(v6) = *(_WORD *)v4;
-	v9 = ++v6;
-	_LOWORD(v6) = *((_WORD *)v4 + 1);
-	dPiece[xx][yy] = v7;
-	dPiece[xx + 1][yy] = v8;
-	dPiece[xx][yy + 1] = v9;
-	dPiece[xx + 1][yy + 1] = v6 + 1;
+#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+	__asm {
+		mov		eax, t
+		dec		eax
+		mov		esi, P3Tiles
+		shl		eax, 3
+		add		esi, eax
+		xor		eax, eax
+		lodsw
+		inc		eax
+		mov		v1, eax
+		lodsw
+		inc		eax
+		mov		v2, eax
+		lodsw
+		inc		eax
+		mov		v3, eax
+		lodsw
+		inc		eax
+		mov		v4, eax
+		jmp		label1
+		mov		v1, eax
+		mov		v2, eax
+		mov		v3, eax
+		mov		v4, eax
+	label1:
+		nop
+	}
+#else
+	v1 = *((WORD *)&P3Tiles[(t-1)*8])+1;
+	v2 = *((WORD *)&P3Tiles[(t-1)*8]+1)+1;
+	v3 = *((WORD *)&P3Tiles[(t-1)*8]+2)+1;
+	v4 = *((WORD *)&P3Tiles[(t-1)*8]+3)+1;
+#endif
+
+	dPiece[xx][yy] = v1;
+	dPiece[xx + 1][yy] = v2;
+	dPiece[xx][yy + 1] = v3;
+	dPiece[xx + 1][yy + 1] = v4;
 }
 
 void __cdecl T_Pass3()
