@@ -1193,12 +1193,18 @@ void __fastcall CalcPlrItemMin(int pnum)
 	} while (v7);
 }
 
-BOOLEAN __fastcall ItemMinStats(PlayerStruct *p, ItemStruct *x)
+BOOL __fastcall ItemMinStats(PlayerStruct *p, ItemStruct *x)
 {
-	if (p->_pStrength < x->_iMinStr || p->_pMagic < x->_iMinMag || p->_pDexterity < x->_iMinDex)
-		return 0;
-	else
-		return 1;
+	if (p->_pMagic < x->_iMinMag)
+		return FALSE;
+
+	if (p->_pStrength < x->_iMinStr)
+		return FALSE;
+
+	if (p->_pDexterity < x->_iMinDex)
+		return FALSE;
+
+	return TRUE;
 }
 
 void __fastcall CalcPlrBookVals(int p)
