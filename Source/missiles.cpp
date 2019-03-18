@@ -557,19 +557,7 @@ int __fastcall GetDirection8(int x1, int y1, int x2, int y2)
 
 int __fastcall GetDirection16(int x1, int y1, int x2, int y2)
 {
-	int v5;         // esi
-	int v6;         // eax
-	int v7;         // eax
-	int result;     // eax
-	char lrtoul[5]; // [esp+10Ch] [ebp-20h]
-	char urtoll[5]; // [esp+114h] [ebp-18h]
-	char lltour[5]; // [esp+11Ch] [ebp-10h]
-	char ultolr[5]; // [esp+124h] [ebp-8h]
-
-	int v9 = y1;
-	int v4 = x1;
-
-	unsigned char Dirs[16][16] = {
+	BYTE Dirs[16][16] = {
 		{ 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 		{ 4, 2, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 		{ 4, 3, 2, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -587,45 +575,30 @@ int __fastcall GetDirection16(int x1, int y1, int x2, int y2)
 		{ 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2 },
 		{ 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2 }
 	};
+	BYTE urtoll[5] = { 6, 7, 8, 9, 10 };
+	BYTE ultolr[5] = { 6, 5, 4, 3, 2 };
+	BYTE lltour[5] = { 14, 13, 12, 11, 10 };
+	BYTE lrtoul[5] = { 14, 15, 0, 1, 2 };
+	int mx, my, md;
 
-	urtoll[0] = 6;
-	urtoll[1] = 7;
-	urtoll[2] = 8;
-	urtoll[3] = 9;
-	urtoll[4] = 10;
-	ultolr[0] = 6;
-	ultolr[1] = 5;
-	ultolr[2] = 4;
-	ultolr[3] = 3;
-	ultolr[4] = 2;
-	lltour[0] = 14;
-	lltour[1] = 13;
-	lltour[2] = 12;
-	lltour[3] = 11;
-	lltour[4] = 10;
-	lrtoul[0] = 14;
-	lrtoul[1] = 15;
-	lrtoul[2] = 0;
-	lrtoul[3] = 1;
-	lrtoul[4] = 2;
-	v5 = abs(x2 - x1);
-	if (v5 > 15)
-		v5 = 15;
-	v6 = abs(y2 - v9);
-	if (v6 > 15)
-		v6 = 15;
-	v7 = Dirs[v6][v5];
-	if (v4 <= x2) {
-		if (v9 <= y2)
-			result = (unsigned char)lrtoul[v7];
+	mx = abs(x2 - x1);
+	if (mx > 15)
+		mx = 15;
+	my = abs(y2 - y1);
+	if (my > 15)
+		my = 15;
+	md = Dirs[my][mx];
+	if (x1 > x2) {
+		if (y1 > y2)
+			md = urtoll[md];
 		else
-			result = (unsigned char)lltour[v7];
-	} else if (v9 <= y2) {
-		result = (unsigned char)ultolr[v7];
+			md = ultolr[md];
+	} else if (y1 > y2) {
+		md = lltour[md];
 	} else {
-		result = (unsigned char)urtoll[v7];
+		md = lrtoul[md];
 	}
-	return result;
+	return md;
 }
 
 void __fastcall DeleteMissile(int mi, int i)
