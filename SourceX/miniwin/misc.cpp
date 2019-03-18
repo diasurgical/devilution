@@ -276,7 +276,7 @@ HWND FindWindowA(LPCSTR lpClassName, LPCSTR lpWindowName)
 
 void FakeWMDestroy()
 {
-	MainWndProc(NULL, DVL_WM_DESTROY, 0, NULL);
+	MainWndProc(NULL, DVL_WM_DESTROY, 0, 0);
 }
 
 HWND CreateWindowExA(
@@ -641,6 +641,7 @@ DWORD GetPrivateProfileStringA(LPCSTR lpAppName, LPCSTR lpKeyName, LPCSTR lpDefa
 		strncpy(lpReturnedString, lpDefault, nSize);
 		SRegSaveString(lpAppName, lpKeyName, 0, lpReturnedString);
 	}
+	return 0;  // dummy return value
 }
 
 int MessageBoxA(HWND hWnd, const char *Text, const char *Title, UINT Flags)
@@ -706,7 +707,7 @@ LRESULT DefWindowProcA(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 	if (Msg == DVL_WM_QUERYENDSESSION)
 		exit(0);
 
-	return NULL;
+	return 0;
 }
 
 LONG GetWindowLongA(HWND hWnd, int nIndex)

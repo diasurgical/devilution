@@ -90,11 +90,11 @@ DWORD SetFilePointer(HANDLE hFile, LONG lDistanceToMove, PLONG lpDistanceToMoveH
 		file->pos = lDistanceToMove;
 	} else if (dwMoveMethod == DVL_FILE_CURRENT) {
 		file->pos += lDistanceToMove;
-		if(file->buf.size() < file->pos + 1)
-			file->buf.resize(file->pos + 1);
 	} else {
 		UNIMPLEMENTED();
 	}
+	if(file->buf.size() < file->pos + 1)
+		file->buf.resize(file->pos + 1);
 	return file->pos;
 }
 
