@@ -646,7 +646,7 @@ void __fastcall DeleteMissile(int mi, int i)
 
 void __fastcall GetMissileVel(int i, int sx, int sy, int dx, int dy, int v)
 {
-	double dxp,dyp,dr;
+	double dxp, dyp, dr;
 
 	if (dx != sx || dy != sy) {
 		dxp = (dx + sy - sx - dy) << 21;
@@ -726,43 +726,47 @@ void __fastcall GetMissilePos(int i)
 
 void __fastcall MoveMissilePos(int i)
 {
-	int v1;        // esi
-	signed int v2; // ebx
-	signed int v3; // edi
-	//signed int v4; // [esp+Ch] [ebp-4h]
+	int dx,dy;
 
-	v1 = i;
 	switch (missile[i]._mimfnum) {
-	case 0:
-	case 1:
-	case 7:
-		v2 = 1;
-		goto LABEL_3;
-	case 2:
-		v2 = 0;
-	LABEL_3:
-		v3 = 1;
+	case DIR_S:
+		dx = 1;
+		dy = 1;
 		break;
-	case 3:
-	case 4:
-	case 5:
-		v2 = 0;
-		goto LABEL_7;
-	case 6:
-		v2 = 1;
-	LABEL_7:
-		v3 = 0;
+	case DIR_SW:
+		dx = 1;
+		dy = 1;
 		break;
-	default:
-		v2 = 0; // v4; /* check */
-		v3 = 0; // v4;
+	case DIR_W:
+		dx = 0;
+		dy = 1;
+		break;
+	case DIR_NW:
+		dx = 0;
+		dy = 0;
+		break;
+	case DIR_N:
+		dx = 0;
+		dy = 0;
+		break;
+	case DIR_NE:
+		dx = 0;
+		dy = 0;
+		break;
+	case DIR_E:
+		dx = 1;
+		dy = 0;
+		break;
+	case DIR_SE:
+		dx = 1;
+		dy = 1;
 		break;
 	}
-	if (PosOkMonst(missile[v1]._misource, v2 + missile[v1]._mix, v3 + missile[v1]._miy)) {
-		missile[v1]._mix += v2;
-		missile[v1]._miy += v3;
-		missile[v1]._mixoff += 32 * v3 - 32 * v2;
-		missile[v1]._miyoff -= 16 * v2 + 16 * v3;
+	if (PosOkMonst(missile[i]._misource, missile[i]._mix + dx,missile[i]._miy + dy)) {
+		missile[i]._mix += dx;
+		missile[i]._miy += dy;
+		missile[i]._mixoff += (dy << 5) - (dx << 5);
+		missile[i]._miyoff -= (dy << 4) + (dx << 4);
 	}
 }
 
@@ -2156,7 +2160,7 @@ BOOL __fastcall CheckIfTrig(int x, int y)
 {
 	int i;
 
-	for (i = 0; i < trigflag[4]; i++){
+	for (i = 0; i < trigflag[4]; i++) {
 		if ((x == trigs[i]._tx && y == trigs[i]._ty) || (abs(trigs[i]._tx - x) < 2 && abs(trigs[i]._ty - y) < 2))
 			return TRUE;
 	}
@@ -2167,7 +2171,6 @@ void __fastcall AddTown(int mi, int sx, int sy, int dx, int dy, int midir, int m
 {
 	int i, j, k, mx, tx, ty;
 	int CrawlNum[6] = { 0, 3, 12, 45, 94, 159 };
-
 
 	tx = dx;
 	if (currlevel) {
@@ -3340,14 +3343,14 @@ void __fastcall MI_Dummy(int i)
 void __fastcall MI_Golem(int i)
 {
 	int CrawlNum[6] = { 0, 3, 12, 45, 94, 159 };
-	int tx, ty, dp, l,m, src, k, tid;
+	int tx, ty, dp, l, m, src, k, tid;
 
 	src = missile[i]._misource;
 	if (monster[src]._mx == 1 && !monster[src]._my) {
 		for (l = 0; l < 6; l++) {
 			k = CrawlNum[l];
 			tid = k + 2;
-			for (m = (unsigned char)CrawlTable[k];m > 0; m--){
+			for (m = (unsigned char)CrawlTable[k]; m > 0; m--) {
 				tx = missile[i]._miVar4 + CrawlTable[tid - 1];
 				ty = missile[i]._miVar5 + CrawlTable[tid];
 				if (0 < tx && tx < MAXDUNX && 0 < ty && ty < MAXDUNY) {
@@ -3761,7 +3764,7 @@ void __fastcall MI_Acidpud(int i)
 
 void __fastcall MI_Firewall(int i)
 {
-	int ExpLight[14] = { 2, 3, 4, 5, 5, 6, 7, 8, 9, 10, 11, 12, 12};
+	int ExpLight[14] = { 2, 3, 4, 5, 5, 6, 7, 8, 9, 10, 11, 12, 12 };
 
 	missile[i]._mirange--;
 	if (missile[i]._mirange == missile[i]._miVar1) {
@@ -4525,7 +4528,7 @@ void __fastcall MI_Weapexp(int i)
 
 void __fastcall MI_Misexp(int i)
 {
-	int ExpLight[10]={9, 10, 11, 12, 11, 10, 8, 6, 4, 2};
+	int ExpLight[10] = { 9, 10, 11, 12, 11, 10, 8, 6, 4, 2 };
 
 	missile[i]._mirange--;
 	if (!missile[i]._mirange) {
