@@ -129,15 +129,19 @@ WINBOOL CloseHandle(HANDLE hObject)
 		return true;
 	std::unique_ptr<memfile> ufile(file);  // ensure that delete file is
 	                                       // called on returning
+	bool ret = true;
 	std::ofstream filestream(file->path + ".tmp", std::ios::binary);
 	if (filestream.fail())
-		return false;
+		ret = false;
 	filestream.write(file->buf.data(), file->buf.size());
-	if(filestream.fail())
-		return false;
-	if(std::rename((file->path + ".tmp").c_str(), file->path.c_str()))
-		return false;
-	return true;
+	if (filestream.fail())
+		ret = false;
+	if (std::rename((file->path + ".tmp").c_str(), file->path.c_str()))
+		ret = false;
+	if(!ret) {
+		DialogBoxParam(ghInst, DVL_MAKEINTRESOURCE(IDD_DIALOG7), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)file->path.c_str());
+	}
+	return ret;
 }
 
 }  // namespace dvl
