@@ -1,4 +1,5 @@
 #include <string>
+#include <SDL.h>
 
 #include "devilution.h"
 
