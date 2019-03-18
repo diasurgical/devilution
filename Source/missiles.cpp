@@ -557,7 +557,7 @@ int __fastcall GetDirection8(int x1, int y1, int x2, int y2)
 
 int __fastcall GetDirection16(int x1, int y1, int x2, int y2)
 {
-	unsigned char Dirs[16][16] = {
+	BYTE Dirs[16][16] = {
 		{ 99, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 		{ 4, 2, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 		{ 4, 3, 2, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0 },
