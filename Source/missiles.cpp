@@ -726,7 +726,7 @@ void __fastcall GetMissilePos(int i)
 
 void __fastcall MoveMissilePos(int i)
 {
-	int dx,dy;
+	int dx, dy;
 
 	switch (missile[i]._mimfnum) {
 	case DIR_S:
@@ -762,7 +762,7 @@ void __fastcall MoveMissilePos(int i)
 		dy = 1;
 		break;
 	}
-	if (PosOkMonst(missile[i]._misource, missile[i]._mix + dx,missile[i]._miy + dy)) {
+	if (PosOkMonst(missile[i]._misource, missile[i]._mix + dx, missile[i]._miy + dy)) {
 		missile[i]._mix += dx;
 		missile[i]._miy += dy;
 		missile[i]._mixoff += (dy << 5) - (dx << 5);
@@ -5188,50 +5188,39 @@ void __fastcall MI_Cbolt(int i)
 
 void __fastcall MI_Hbolt(int i)
 {
-	int v1; // edi
-	int v2; // esi
-	int v3; // eax
-	int v4; // edx
-	int v5; // ecx
-	int v6; // ST10_4
-	int v7; // ecx
+	int dam;
 
-	v1 = i;
-	v2 = i;
-	--missile[v2]._mirange;
-	if (_LOBYTE(missile[i]._miAnimType) == MFILE_HOLYEXPL) {
-		ChangeLight(missile[v2]._mlid, missile[v2]._mix, missile[v2]._miy, missile[v2]._miAnimFrame + 7);
-		if (!missile[v2]._mirange) {
-			v7 = missile[v2]._mlid;
-			missile[v2]._miDelFlag = TRUE;
-			AddUnLight(v7);
+	missile[i]._mirange--;
+	if (missile[i]._miAnimType != MFILE_HOLYEXPL) {
+		missile[i]._mitxoff += missile[i]._mixvel;
+		missile[i]._mityoff += missile[i]._miyvel;
+		GetMissilePos(i);
+		dam = missile[i]._midam;
+		if (missile[i]._mix != missile[i]._misx || missile[i]._miy != missile[i]._misy) {
+			CheckMissileCol(i, dam, dam, 0, missile[i]._mix, missile[i]._miy, 0);
+			}
+		if (!missile[i]._mirange) {
+			missile[i]._mitxoff -= missile[i]._mixvel;
+			missile[i]._mityoff -= missile[i]._miyvel;
+			GetMissilePos(i);
+			missile[i]._mimfnum = 0;
+			SetMissAnim(i, MFILE_HOLYEXPL);
+			missile[i]._mirange = missile[i]._miAnimLen - 1;
+		} else {
+			if (missile[i]._mix != missile[i]._miVar1 || missile[i]._miy != missile[i]._miVar2) {
+				missile[i]._miVar1 = missile[i]._mix;
+				missile[i]._miVar2 = missile[i]._miy;
+				ChangeLight(missile[i]._mlid, missile[i]._mix, missile[i]._miy, 8);
+			}
 		}
 	} else {
-		missile[v2]._mitxoff += missile[v2]._mixvel;
-		missile[v2]._mityoff += missile[v2]._miyvel;
-		GetMissilePos(i);
-		v3 = missile[v2]._mix;
-		if (v3 != missile[v2]._misx || missile[v2]._miy != missile[v2]._misy)
-			CheckMissileCol(v1, missile[v2]._midam, missile[v2]._midam, 0, v3, missile[v2]._miy, 0);
-		if (missile[v2]._mirange) {
-			v4 = missile[v2]._mix;
-			if (v4 != missile[v2]._miVar1 || missile[v2]._miy != missile[v2]._miVar2) {
-				v5 = missile[v2]._mlid;
-				missile[v2]._miVar1 = v4;
-				v6 = missile[v2]._miy;
-				missile[v2]._miVar2 = v6;
-				ChangeLight(v5, v4, v6, 8);
-			}
-		} else {
-			missile[v2]._mitxoff -= missile[v2]._mixvel;
-			missile[v2]._mityoff -= missile[v2]._miyvel;
-			GetMissilePos(v1);
-			missile[v2]._mimfnum = 0;
-			SetMissAnim(v1, MFILE_HOLYEXPL);
-			missile[v2]._mirange = missile[v2]._miAnimLen - 1;
+		ChangeLight(missile[i]._mlid, missile[i]._mix, missile[i]._miy, missile[i]._miAnimFrame + 7);
+		if (!missile[i]._mirange) {
+			missile[i]._miDelFlag = TRUE;
+			AddUnLight(missile[i]._mlid);
 		}
 	}
-	PutMissile(v1);
+	PutMissile(i);
 }
 
 void __fastcall MI_Element(int i)
