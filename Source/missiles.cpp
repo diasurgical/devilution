@@ -575,10 +575,10 @@ int __fastcall GetDirection16(int x1, int y1, int x2, int y2)
 		{ 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2 },
 		{ 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2 }
 	};
-	unsigned char urtoll[5] = { 6, 7, 8, 9, 10 };
-	unsigned char ultolr[5] = { 6, 5, 4, 3, 2 };
-	unsigned char lltour[5] = { 14, 13, 12, 11, 10 };
-	unsigned char lrtoul[5] = { 14, 15, 0, 1, 2 };
+	BYTE urtoll[5] = { 6, 7, 8, 9, 10 };
+	BYTE ultolr[5] = { 6, 5, 4, 3, 2 };
+	BYTE lltour[5] = { 14, 13, 12, 11, 10 };
+	BYTE lrtoul[5] = { 14, 15, 0, 1, 2 };
 	int mx, my, md;
 
 	mx = abs(x2 - x1);
