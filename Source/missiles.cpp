@@ -1527,19 +1527,12 @@ void __fastcall LoadMissileGFX(BYTE mi)
 
 void __cdecl InitMissileGFX()
 {
-	char v0;           // bl
-	unsigned char *v1; // esi
+    int mi;
 
-	v0 = 0;
-	if (misfiledata[0].mAnimFAmt) {
-		v1 = &misfiledata[0].mAnimFAmt;
-		do {
-			if (!(v1[7] & 1))
-				LoadMissileGFX(v0);
-			v1 += 236;
-			++v0;
-		} while (*v1);
-	}
+    for (mi = 0; misfiledata[mi].mAnimFAmt; mi++) {
+        if (!(misfiledata[mi].mFlags & MFLAG_HIDDEN))
+            LoadMissileGFX(mi);
+    }
 }
 
 void __fastcall FreeMissileGFX(int mi)
