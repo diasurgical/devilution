@@ -708,7 +708,7 @@ void __cdecl S_StartSBuy()
 	for (i = 0; smithitem[i]._itype != -1; i++)
 		++storenumh;
 	stextsmax = storenumh - 4;
-	if (storenumh - 4 < 0)
+	if (stextsmax < 0)
 		stextsmax = 0;
 }
 // 69F10C: using guessed type int storenumh;
