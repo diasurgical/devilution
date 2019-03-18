@@ -705,7 +705,7 @@ void __cdecl S_StartSBuy()
 	AddSText(0, 22, 1, "Back", COL_WHITE, 0);
 	OffsetSTextY(22, 6);
 	storenumh = 0;
-	for (i = 0; smithitem[i]._itype != -1; ++i)
+	for (i = 0; smithitem[i]._itype != -1; i++)
 		++storenumh;
 	stextsmax = storenumh - 4;
 	if (storenumh - 4 < 0)
