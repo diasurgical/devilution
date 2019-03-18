@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.12)
 
 include(CMake/out_of_tree.cmake)
 
@@ -215,7 +215,7 @@ target_compile_definitions(devilutionx PRIVATE ASIO_STANDALONE)
 
 if(ASAN)
   target_compile_options(devilution PUBLIC -fsanitize=address -fsanitize-recover=address)
-  target_link_options(devilution PUBLIC -fsanitize=address -fsanitize-recover=address)
+  target_link_libraries(devilution PUBLIC -fsanitize=address -fsanitize-recover=address)
 endif()
 
 if(DIST)
