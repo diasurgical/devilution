@@ -1164,41 +1164,39 @@ void __fastcall CalcSelfItems(int pnum)
 
 void __fastcall CalcPlrItemMin(int pnum)
 {
-	PlayerStruct *v1; // ecx
-	PlayerStruct *v2; // esi
-	ItemStruct *v3;   // edi
-	int v4;           // ebp
-	ItemStruct *v6;   // edi
-	signed int v7;    // ebp
+	PlayerStruct *p;
+	ItemStruct *pi;
+	int i;
 
-	v1 = &plr[pnum];
-	v2 = v1;
-	v3 = v1->InvList;
-	if (v1->_pNumInv) {
-		v4 = v1->_pNumInv;
-		do {
-			v3->_iStatFlag = ItemMinStats(v2, v3);
-			++v3;
-			--v4;
-		} while (v4);
+	p = &plr[pnum];
+	pi = p->InvList;
+
+	for (i = p->_pNumInv; i; i--) {
+		pi->_iStatFlag = ItemMinStats(p, pi);
+		pi++;
 	}
-	v6 = v2->SpdList;
-	v7 = MAXBELTITEMS;
-	do {
-		if (v6->_itype != -1) {
-			v6->_iStatFlag = ItemMinStats(v2, v6);
+
+	pi = p->SpdList;
+	for (i = MAXBELTITEMS; i != 0; i--) {
+		if (pi->_itype != -1) {
+			pi->_iStatFlag = ItemMinStats(p, pi);
 		}
-		++v6;
-		--v7;
-	} while (v7);
+		pi++;
+	}
 }
 
-BOOLEAN __fastcall ItemMinStats(PlayerStruct *p, ItemStruct *x)
+BOOL __fastcall ItemMinStats(PlayerStruct *p, ItemStruct *x)
 {
-	if (p->_pStrength < x->_iMinStr || p->_pMagic < x->_iMinMag || p->_pDexterity < x->_iMinDex)
-		return 0;
-	else
-		return 1;
+	if (p->_pMagic < x->_iMinMag)
+		return FALSE;
+
+	if (p->_pStrength < x->_iMinStr)
+		return FALSE;
+
+	if (p->_pDexterity < x->_iMinDex)
+		return FALSE;
+
+	return TRUE;
 }
 
 void __fastcall CalcPlrBookVals(int p)

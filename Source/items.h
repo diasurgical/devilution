@@ -23,7 +23,7 @@ void __fastcall CalcPlrScrolls(int p);
 void __fastcall CalcPlrStaff(int pnum);
 void __fastcall CalcSelfItems(int pnum);
 void __fastcall CalcPlrItemMin(int pnum);
-BOOLEAN __fastcall ItemMinStats(PlayerStruct *p, ItemStruct *x);
+BOOL __fastcall ItemMinStats(PlayerStruct *p, ItemStruct *x);
 void __fastcall CalcPlrBookVals(int p);
 void __fastcall CalcPlrInv(int p, BOOL Loadgfx);
 void __fastcall SetPlrHandItem(ItemStruct *h, int idata);
