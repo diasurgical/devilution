@@ -185,12 +185,11 @@ int SpellPages[6][7] = {
 
 void __fastcall DrawSpellCel(int xp, int yp, BYTE *Trans, int nCel, int w)
 {
-	BYTE *tmp, *dst, *tbl, *end;
+	BYTE *dst, *tbl, *end;
 
 	/// ASSERT: assert(gpBuffer);
 
-	tmp = (BYTE *)gpBuffer; /* remove when fixed */
-	dst = &tmp[screen_y_times_768[yp] + xp];
+	dst = &gpBuffer[xp + screen_y_times_768[yp]];
 	tbl = SplTransTbl;
 
 #if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
@@ -844,7 +843,7 @@ void __fastcall DrawPanelBox(int x, int y, int w, int h, int sx, int sy)
 	unsigned int v11; // ecx
 
 	v6 = (char *)pBtmBuff + 640 * y + x;
-	v7 = &gpBuffer->row_unused_1[sy].col_unused_1[sx];
+	v7 = (char *)&gpBuffer[768 * sy + sx];
 	v8 = h;
 	do {
 		v9 = w >> 1;
@@ -870,7 +869,7 @@ void __fastcall SetFlaskHeight(char *buf, int min, int max, int c, int r)
 	int v7;   // edx
 
 	v5 = &buf[88 * min];
-	v6 = &gpBuffer->row_unused_1[r].col_unused_1[c];
+	v6 = (char *)&gpBuffer[768 * r + c];
 	v7 = max - min;
 	do {
 		qmemcpy(v6, v5, 0x58u);
@@ -2268,7 +2267,7 @@ void __cdecl RedBack()
 	_LOWORD(v0) = v0 & 0xF400;
 	v12 = v0 + 768 * 6;
 	if (leveltype == DTYPE_HELL) {
-		v7 = gpBuffer->row[0].pixels;
+		v7 = (char *)&gpBuffer[SCREENXY(0, 0)];
 		_EBX = &pLightTbl[v12];
 		v9 = 352;
 		do {
@@ -2284,7 +2283,7 @@ void __cdecl RedBack()
 			--v9;
 		} while (v9);
 	} else {
-		v1 = gpBuffer->row[0].pixels;
+		v1 = (char *)&gpBuffer[SCREENXY(0, 0)];
 		_EBX = &pLightTbl[v12];
 		v3 = 352;
 		do {

@@ -281,8 +281,8 @@ void __cdecl DrawInv()
 
 			CelDecodeHdrLightTrans(
 			    frame_width == INV_SLOT_SIZE_PX
-			        ? (BYTE *)&gpBuffer->row[160].pixels[581]
-			        : (BYTE *)&gpBuffer->row[160].pixels[567],
+			        ? &gpBuffer[SCREENXY(581, 160)]
+			        : &gpBuffer[SCREENXY(567, 160)],
 			    (BYTE *)pCursCels, frame, frame_width, 0, 8);
 
 			cel_transparency_active = 0;
