@@ -1,4 +1,3 @@
-#include <unistd.h>
 #include <SDL.h>
 #include <SDL_mixer.h>
 #include <Radon.hpp>
@@ -545,7 +544,7 @@ BOOL SVidPlayContinue(void)
 
 	double now = SDL_GetTicks() * 1000;
 	if (now < SVidFrameEnd) {
-		usleep(SVidFrameEnd - now); // wait with next frame if the system is to fast
+		SDL_Delay((SVidFrameEnd - now)/1000); // wait with next frame if the system is to fast
 	}
 
 	return SVidLoadNextFrame();
