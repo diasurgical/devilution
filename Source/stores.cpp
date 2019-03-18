@@ -706,7 +706,7 @@ void __cdecl S_StartSBuy()
 	OffsetSTextY(22, 6);
 	storenumh = 0;
 	for (i = 0; smithitem[i]._itype != -1; i++)
-		++storenumh;
+		storenumh++;
 	stextsmax = storenumh - 4;
 	if (stextsmax < 0)
 		stextsmax = 0;
