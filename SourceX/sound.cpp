@@ -8,7 +8,7 @@ namespace dvl {
 
 LPDIRECTSOUNDBUFFER DSBs[8];
 LPDIRECTSOUND sglpDS;
-char gbSndInited;
+BOOLEAN gbSndInited;
 int sglMusicVolume;
 int sglSoundVolume;
 HMODULE hDsound_dll;

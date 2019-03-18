@@ -2465,7 +2465,7 @@ void __fastcall DrawZoom(int x, int y)
 LABEL_24:
 	v11 = (_WORD *)((char *)gpBuffer + a6b);
 	v12 = (char *)gpBuffer + a5a;
-	v13 = &gpBuffer->row_unused_1[1].col_unused_1[a6b];
+	v13 = (char *)&gpBuffer[a6b + 768];
 	v14 = 176;
 	do {
 		v15 = v19;
@@ -2501,7 +2501,7 @@ void __cdecl ClearScreenBuffer()
 	j_lock_buf_priv(3);
 
 	for (i = 0; i < 480; i++)
-		memset(gpBuffer->row[i].pixels, 0, 640);
+		memset(&gpBuffer[SCREENXY(0, i)], 0, 640);
 
 	j_unlock_buf_priv(3);
 }
@@ -2629,7 +2629,7 @@ void __cdecl scrollrt_draw_cursor_back_buffer()
 	if (sgdwCursWdt) {
 		v1 = sgdwCursY;
 		v2 = sgSaveBack;
-		v3 = &gpBuffer->row[sgdwCursY].pixels[sgdwCursX];
+		v3 = (char *)&gpBuffer[SCREENXY(sgdwCursX, sgdwCursY)];
 		v4 = sgdwCursHgt;
 		if (sgdwCursHgt) {
 			v5 = sgdwCursHgt;
@@ -2701,7 +2701,7 @@ void __cdecl scrollrt_draw_cursor_item()
 				v14 = sgSaveBack;
 				v6 = 1 - v3 + v5;
 				sgdwCursHgt = v6;
-				v7 = &gpBuffer->row[v3].pixels[v2 & 0xFFFFFFFC];
+				v7 = (char *)&gpBuffer[SCREENXY(v2 & 0xFFFFFFFC, v3)];
 				if (v6) {
 					v8 = v6;
 					do {

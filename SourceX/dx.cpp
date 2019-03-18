@@ -6,7 +6,7 @@
 
 namespace dvl {
 
-Screen *gpBuffer;
+BYTE *gpBuffer;
 
 IDirectDraw *lpDDInterface;
 IDirectDrawSurface *lpDDSPrimary;
@@ -370,7 +370,7 @@ void dx_init(HWND hWnd)
 	}
 
 	const int pitch = 64 + SCREEN_WIDTH + 64;
-	gpBuffer = (Screen *)malloc(sizeof(Screen));
+	gpBuffer = (BYTE *)malloc(656 * 768);
 	gpBufEnd += (uintptr_t)gpBuffer;
 
 	pal_surface = SDL_CreateRGBSurfaceFrom(gpBuffer, pitch, 160 + SCREEN_HEIGHT + 16, 8, pitch, 0, 0, 0, 0);
