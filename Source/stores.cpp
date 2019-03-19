@@ -202,7 +202,7 @@ void __fastcall PrintSString(int x, int y, unsigned char cjustflag, char *str, i
 		if (v28 > 0) {
 			do {
 				v13 = (unsigned char)str[v11++];
-				v12 += fontkern[fontframe[fontidx[v13]]] + 1;
+				v12 += fontkern[fontframe[gbFontTransTbl[v13]]] + 1;
 			} while (v11 < v28);
 		}
 		if (v12 < v25)
@@ -219,7 +219,7 @@ void __fastcall PrintSString(int x, int y, unsigned char cjustflag, char *str, i
 	v29 = 0;
 	if (v28 > 0) {
 		do {
-			v15 = fontframe[fontidx[(unsigned char)str[v29]]];
+			v15 = fontframe[gbFontTransTbl[(unsigned char)str[v29]]];
 			v16 = v15;
 			v17 = v30 + fontkern[v15] + 1;
 			v30 += fontkern[v15] + 1;
@@ -236,9 +236,9 @@ void __fastcall PrintSString(int x, int y, unsigned char cjustflag, char *str, i
 		v19 = screen_y_times_768[v6 + 204] - v8 + 656;
 		v20 = strlen(valstr);
 		while ((--v20 & 0x80000000) == 0) {
-			v21 = fontframe[fontidx[(unsigned char)valstr[v20]]];
+			v21 = fontframe[gbFontTransTbl[(unsigned char)valstr[v20]]];
 			v19 += -1 - fontkern[v21];
-			if (fontframe[fontidx[(unsigned char)valstr[v20]]])
+			if (fontframe[gbFontTransTbl[(unsigned char)valstr[v20]]])
 				CPrintString(v19, v21, col);
 		}
 		v8 = v26;

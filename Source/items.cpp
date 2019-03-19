@@ -3730,7 +3730,7 @@ void __fastcall PrintUString(int x, int y, int cjustflag, char *str, int col)
 			goto LABEL_16;
 		do {
 			v11 = (unsigned char)str[v9++];
-			v10 += fontkern[fontframe[fontidx[v11]]] + 1;
+			v10 += fontkern[fontframe[gbFontTransTbl[v11]]] + 1;
 		} while (v9 < v15);
 		if (v10 < 257)
 		LABEL_16:
@@ -3741,7 +3741,7 @@ void __fastcall PrintUString(int x, int y, int cjustflag, char *str, int col)
 	a3 = 0;
 	if (v15 > 0) {
 		while (1) {
-			v13 = fontframe[fontidx[(unsigned char)v5[v12]]];
+			v13 = fontframe[gbFontTransTbl[(unsigned char)v5[v12]]];
 			v14 = v13;
 			v8 += fontkern[v13] + 1;
 			if (v13) {
