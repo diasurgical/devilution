@@ -15,7 +15,7 @@ extern int numitems;
 extern int gnNumGetRecords;
 
 void __cdecl InitItemGFX();
-BOOLEAN __fastcall ItemPlace(int xp, int yp);
+BOOL __fastcall ItemPlace(int xp, int yp);
 void __cdecl AddInitItems();
 void __cdecl InitItems();
 void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx);
@@ -80,7 +80,7 @@ void __fastcall DoRecharge(int pnum, int cii);
 void __fastcall RechargeItem(ItemStruct *i, int r);
 void __fastcall PrintItemOil(char IDidx);
 void __fastcall PrintItemPower(char plidx, ItemStruct *x);
-void __cdecl DrawUBack();
+void __cdecl DrawUTextBack();
 void __fastcall PrintUString(int x, int y, int cjustflag, char *str, int col);
 void __fastcall DrawULine(int y);
 void __cdecl DrawUniqueInfo();

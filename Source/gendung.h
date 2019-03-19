@@ -32,7 +32,7 @@ extern BOOLEAN nTrapTable[2049];
 extern BYTE leveltype;
 extern unsigned char currlevel; // idb
 extern char TransList[256];
-extern BYTE nSolidTable[2049];
+extern BOOLEAN nSolidTable[2049];
 extern int level_frame_count[2048];
 extern ScrollStruct ScrollInfo;
 extern void *pDungeonCels;
