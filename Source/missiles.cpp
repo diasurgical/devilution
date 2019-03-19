@@ -1527,12 +1527,12 @@ void __fastcall LoadMissileGFX(BYTE mi)
 
 void __cdecl InitMissileGFX()
 {
-    int mi;
+	int mi;
 
-    for (mi = 0; misfiledata[mi].mAnimFAmt; mi++) {
-        if (!(misfiledata[mi].mFlags & MFLAG_HIDDEN))
-            LoadMissileGFX(mi);
-    }
+	for (mi = 0; misfiledata[mi].mAnimFAmt; mi++) {
+		if (!(misfiledata[mi].mFlags & MFLAG_HIDDEN))
+			LoadMissileGFX(mi);
+	}
 }
 
 void __fastcall FreeMissileGFX(int mi)
@@ -1589,54 +1589,35 @@ void __cdecl FreeMissiles2()
 
 void __cdecl InitMissiles()
 {
-	int v0;        // eax
-	int i;         // esi
-	int v2;        // eax
-	int v3;        // eax
-	int v4;        // edx
-	int *v5;       // eax
-	signed int v6; // ecx
-	_BYTE *v7;     // eax
-	signed int v8; // edx
+	int mi, src, i, j;
 
-	v0 = myplr;
-	_LOBYTE(plr[v0]._pSpellFlags) &= 0xFEu;
-	if (plr[v0]._pInfraFlag == 1) {
+	plr[myplr]._pSpellFlags &= 0xFE;
+	if (plr[myplr]._pInfraFlag == TRUE) {
 		for (i = 0; i < nummissiles; ++i) {
-			v2 = missileactive[i];
-			if (missile[v2]._mitype == MIS_INFRA) {
-				v3 = missile[v2]._misource;
-				if (v3 == myplr)
-					CalcPlrItemVals(v3, 1);
+			mi = missileactive[i];
+			if (missile[mi]._mitype == MIS_INFRA) {
+				src = missile[mi]._misource;
+				if (src == myplr)
+					CalcPlrItemVals(src, 1);
 			}
 		}
 	}
-	v4 = 0;
-	memset(missileactive, 0, sizeof(missileactive));
 	nummissiles = 0;
-	do {
-		missileavail[v4] = v4;
-		++v4;
-	} while (v4 < MAXMISSILES);
+	for (i = 0; i < MAXMISSILES; i++) {
+		missileavail[i] = i;
+		missileactive[i] = 0;
+	}
 	numchains = 0;
-	v5 = &chain[0]._mitype;
-	do {
-		*(v5 - 1) = -1;
-		*v5 = 0;
-		v5[1] = 0;
-		v5 += 3;
-	} while ((signed int)v5 < (signed int)&chain[MAXMISSILES]._mitype);
-	v6 = 0;
-	do {
-		v7 = (unsigned char *)dFlags + v6;
-		v8 = 112;
-		do {
-			*v7 &= ~DFLAG_MISSILE;
-			v7 += 112;
-			--v8;
-		} while (v8);
-		++v6;
-	} while (v6 < 112);
+	for (i = 0; i < MAXMISSILES; i++) {
+		chain[i].idx = -1;
+		chain[i]._mitype = 0;
+		chain[i]._mirange = 0;
+	}
+	for (j = 0; j < MAXDUNY; j++) {
+		for (i = 0; i < MAXDUNX; i++) {
+			dFlags[i][j] &= ~DFLAG_MISSILE;
+		}
+	}
 }
 // 64CCD8: using guessed type int numchains;
 
