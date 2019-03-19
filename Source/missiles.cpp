@@ -3258,7 +3258,7 @@ void __fastcall MI_LArrow(int i)
 				maxd = plr[p]._pILMaxDam;
 			} else {
 				mind = random(68, 10) + currlevel + 1;
-				maxd = random(68, 10) + 2 * currlevel + 1;
+				maxd = random(68, 10) + 1 + currlevel * 2;
 			}
 			missiledata[MIS_LARROW].mResist = MISR_LIGHTNING;
 			CheckMissileCol(i, mind, maxd, 0, missile[i]._mix, missile[i]._miy, 1);
