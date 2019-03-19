@@ -13,6 +13,7 @@ function get_libs {
 
 function decompress_libs {
     echo "============= Unzip Libs ============="
+
     tar -zxvf SDL2-2.0.9.tar.gz
     tar -zxvf SDL2_mixer-2.0.4.tar.gz
     tar -zxvf SDL2_ttf-2.0.15.tar.gz
@@ -108,7 +109,7 @@ function set_working_dir() {
     fi
 }
 
-function build_all_x64 (){
+function build_all_x86 (){
     set_working_dir
     get_libs
     decompress_libs
@@ -122,7 +123,7 @@ function build_all_x64 (){
     create_dmg
 }
 
-function build_all_x86 (){
+function build_all_x64 (){
     brew install sdl2 sdl2_mixer sdl2_ttf libsodium
     brew upgrade cmake
     mkdir build
