@@ -3268,7 +3268,7 @@ void __fastcall MI_LArrow(int i)
 				mind = plr[p]._pIFMinDam;
 				maxd = plr[p]._pIFMaxDam;
 			} else {
-				mind = random(68, 10) + currlevel + 1;
+				mind = random(68, 10) + 1 + currlevel;
 				maxd = random(68, 10) + 1 + currlevel * 2;
 			}
 			missiledata[MIS_FARROW].mResist = MISR_FIRE;
