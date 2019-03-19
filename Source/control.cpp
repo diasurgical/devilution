@@ -1480,71 +1480,56 @@ void __cdecl CheckBtnUp()
 
 void __cdecl FreeControlPan()
 {
-	void *v0;  // ecx
-	void *v1;  // ecx
-	void *v2;  // ecx
-	void *v3;  // ecx
-	void *v4;  // ecx
-	void *v5;  // ecx
-	void *v6;  // ecx
-	void *v7;  // ecx
-	void *v8;  // ecx
-	void *v9;  // ecx
-	void *v10; // ecx
-	void *v11; // ecx
-	void *v12; // ecx
-	void *v13; // ecx
-	void *v14; // ecx
-	void *v15; // ecx
+	void *ptr;
 
-	v0 = pBtmBuff;
-	pBtmBuff = 0;
-	mem_free_dbg(v0);
-	v1 = pManaBuff;
-	pManaBuff = 0;
-	mem_free_dbg(v1);
-	v2 = pLifeBuff;
-	pLifeBuff = 0;
-	mem_free_dbg(v2);
-	v3 = pPanelText;
-	pPanelText = 0;
-	mem_free_dbg(v3);
-	v4 = pChrPanel;
-	pChrPanel = 0;
-	mem_free_dbg(v4);
-	v5 = pSpellCels;
-	pSpellCels = 0;
-	mem_free_dbg(v5);
-	v6 = pPanelButtons;
-	pPanelButtons = 0;
-	mem_free_dbg(v6);
-	v7 = pMultiBtns;
-	pMultiBtns = 0;
-	mem_free_dbg(v7);
-	v8 = pTalkBtns;
-	pTalkBtns = 0;
-	mem_free_dbg(v8);
-	v9 = pChrButtons;
-	pChrButtons = 0;
-	mem_free_dbg(v9);
-	v10 = pDurIcons;
-	pDurIcons = 0;
-	mem_free_dbg(v10);
-	v11 = pQLogCel;
-	pQLogCel = 0;
-	mem_free_dbg(v11);
-	v12 = pSpellBkCel;
-	pSpellBkCel = 0;
-	mem_free_dbg(v12);
-	v13 = pSBkBtnCel;
-	pSBkBtnCel = 0;
-	mem_free_dbg(v13);
-	v14 = pSBkIconCels;
-	pSBkIconCels = 0;
-	mem_free_dbg(v14);
-	v15 = pGBoxBuff;
-	pGBoxBuff = 0;
-	mem_free_dbg(v15);
+	ptr = pBtmBuff;
+	pBtmBuff = NULL;
+	mem_free_dbg(ptr);
+	ptr = pManaBuff;
+	pManaBuff = NULL;
+	mem_free_dbg(ptr);
+	ptr = pLifeBuff;
+	pLifeBuff = NULL;
+	mem_free_dbg(ptr);
+	ptr = pPanelText;
+	pPanelText = NULL;
+	mem_free_dbg(ptr);
+	ptr = pChrPanel;
+	pChrPanel = NULL;
+	mem_free_dbg(ptr);
+	ptr = pSpellCels;
+	pSpellCels = NULL;
+	mem_free_dbg(ptr);
+	ptr = pPanelButtons;
+	pPanelButtons = NULL;
+	mem_free_dbg(ptr);
+	ptr = pMultiBtns;
+	pMultiBtns = NULL;
+	mem_free_dbg(ptr);
+	ptr = pTalkBtns;
+	pTalkBtns = NULL;
+	mem_free_dbg(ptr);
+	ptr = pChrButtons;
+	pChrButtons = NULL;
+	mem_free_dbg(ptr);
+	ptr = pDurIcons;
+	pDurIcons = NULL;
+	mem_free_dbg(ptr);
+	ptr = pQLogCel;
+	pQLogCel = NULL;
+	mem_free_dbg(ptr);
+	ptr = pSpellBkCel;
+	pSpellBkCel = NULL;
+	mem_free_dbg(ptr);
+	ptr = pSBkBtnCel;
+	pSBkBtnCel = NULL;
+	mem_free_dbg(ptr);
+	ptr = pSBkIconCels;
+	pSBkIconCels = NULL;
+	mem_free_dbg(ptr);
+	ptr = pGBoxBuff;
+	pGBoxBuff = NULL;
+	mem_free_dbg(ptr);
 }
 
 int __fastcall control_WriteStringToBuffer(char *str)
