@@ -1527,42 +1527,31 @@ void __fastcall LoadMissileGFX(BYTE mi)
 
 void __cdecl InitMissileGFX()
 {
-    int mi;
+	int mi;
 
-    for (mi = 0; misfiledata[mi].mAnimFAmt; mi++) {
-        if (!(misfiledata[mi].mFlags & MFLAG_HIDDEN))
-            LoadMissileGFX(mi);
-    }
+	for (mi = 0; misfiledata[mi].mAnimFAmt; mi++) {
+		if (!(misfiledata[mi].mFlags & MFLAG_HIDDEN))
+			LoadMissileGFX(mi);
+	}
 }
 
 void __fastcall FreeMissileGFX(int mi)
 {
-	int v1;            // esi
-	unsigned char *v2; // ecx
-	signed int v3;     // ebx
-	void **v4;         // edi
-	void *v5;          // ecx
+	int i;
+	void *p;
 
-	v1 = mi;
 	if (misfiledata[mi].mFlags & MFLAG_ALLOW_SPECIAL) {
-		v2 = misfiledata[v1].mAnimData[0];
-		if (v2) {
-			mem_free_dbg(&v2[-4 * misfiledata[v1].mAnimFAmt]);
-			misfiledata[v1].mAnimData[0] = 0;
+		if (misfiledata[mi].mAnimData[0]) {
+			mem_free_dbg(&misfiledata[mi].mAnimData[0][-4 * misfiledata[mi].mAnimFAmt]);
+			misfiledata[mi].mAnimData[0] = 0;
 		}
 	} else {
-		v3 = 0;
-		if (misfiledata[v1].mAnimFAmt) {
-			v4 = (void **)misfiledata[v1].mAnimData;
-			do {
-				v5 = *v4;
-				if (*v4) {
-					*v4 = 0;
-					mem_free_dbg(v5);
-				}
-				++v3;
-				++v4;
-			} while (v3 < misfiledata[v1].mAnimFAmt);
+		for (i = 0; i < misfiledata[mi].mAnimFAmt; i++) {
+			if (misfiledata[mi].mAnimData[i]) {
+				p = misfiledata[mi].mAnimData[i];
+				misfiledata[mi].mAnimData[i] = 0;
+				mem_free_dbg(p);
+			}
 		}
 	}
 }
