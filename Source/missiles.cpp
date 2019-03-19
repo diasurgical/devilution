@@ -2301,15 +2301,10 @@ void __fastcall AddChain(int mi, int sx, int sy, int dx, int dy, int midir, int 
 
 void __fastcall miss_null_11(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9;  // esi
-	int v10; // eax
-
-	v9 = mi;
 	SetMissDir(mi, dx);
-	v10 = v9;
-	missile[v10]._midam = 0;
-	missile[v10]._miLightFlag = TRUE;
-	missile[v10]._mirange = 250;
+	missile[mi]._midam = 0;
+	missile[mi]._miLightFlag = TRUE;
+	missile[mi]._mirange = 250;
 }
 
 void __fastcall miss_null_12(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
