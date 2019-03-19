@@ -4966,6 +4966,7 @@ void __fastcall MI_Cbolt(int i)
 {
 	int sx, sy, dy, md;
 	int bpath[16] = { -1, 0, 1, -1, 0, 1, -1, -1, 0, 0, 1, 1, 0, 1, -1, 0 };
+
 	missile[i]._mirange--;
 	if (missile[i]._miAnimType != MFILE_LGHNING) {
 		if (!missile[i]._miVar3) {
