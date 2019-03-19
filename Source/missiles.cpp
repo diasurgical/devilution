@@ -1481,7 +1481,9 @@ void __fastcall LoadMissileGFX(BYTE mi)
 	char pszName[256];
 	int i;
 	BYTE *file;
-	MisFileData *mfd = &misfiledata[mi];
+	MisFileData *mfd;
+
+	mfd = &misfiledata[mi];
 	if (mfd->mFlags & MFLAG_ALLOW_SPECIAL) {
 		sprintf(pszName, "Missiles\\%s.CEL", mfd->mName);
 		file = LoadFileInMem(pszName, 0);
