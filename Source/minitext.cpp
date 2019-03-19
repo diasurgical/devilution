@@ -41,15 +41,14 @@ int qscroll_spd_tbl[9] = { 2, 4, 6, 8, 0, -1, -2, -3, -4 };
 
 void __cdecl FreeQuestText()
 {
-	void *v0; // ecx
-	void *v1; // ecx
+	void *ptr;
 
-	v0 = pMedTextCels;
-	pMedTextCels = 0;
-	mem_free_dbg(v0);
-	v1 = pTextBoxCels;
-	pTextBoxCels = 0;
-	mem_free_dbg(v1);
+	ptr = pMedTextCels;
+	pMedTextCels = NULL;
+	mem_free_dbg(ptr);
+	ptr = pTextBoxCels;
+	pTextBoxCels = NULL;
+	mem_free_dbg(ptr);
 }
 
 void __cdecl InitQuestText()
