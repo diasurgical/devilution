@@ -3816,27 +3816,19 @@ LABEL_27:
 
 void __fastcall MI_Lightning(int i)
 {
-	int v1; // edi
-	int v2; // esi
-	int v3; // eax
-	int v4; // ebx
-	int v5; // ecx
+	int j;
 
-	v1 = i;
-	v2 = i;
-	v3 = missile[i]._mix;
-	--missile[v2]._mirange;
-	v4 = missile[i]._mirange;
-	if (v3 != missile[i]._misx || missile[v2]._miy != missile[v2]._misy)
-		CheckMissileCol(i, missile[v2]._midam, missile[v2]._midam, 1, v3, missile[v2]._miy, 0);
-	if (missile[v2]._miHitFlag)
-		missile[v2]._mirange = v4;
-	if (!missile[v2]._mirange) {
-		v5 = missile[v2]._mlid;
-		missile[v2]._miDelFlag = TRUE;
-		AddUnLight(v5);
+	missile[i]._mirange--;
+	j = missile[i]._mirange;
+	if (missile[i]._mix != missile[i]._misx || missile[i]._miy != missile[i]._misy)
+		CheckMissileCol(i, missile[i]._midam, missile[i]._midam, 1, missile[i]._mix, missile[i]._miy, 0);
+	if (missile[i]._miHitFlag == TRUE)
+		missile[i]._mirange = j;
+	if (!missile[i]._mirange) {
+		missile[i]._miDelFlag = TRUE;
+		AddUnLight(missile[i]._mlid);
 	}
-	PutMissile(v1);
+	PutMissile(i);
 }
 
 void __fastcall MI_Town(int i)
