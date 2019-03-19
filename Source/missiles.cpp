@@ -3291,7 +3291,7 @@ void __fastcall MI_LArrow(int i)
 			}
 		} else {
 			mind = random(68, 10) + currlevel + 1;
-			maxd = random(68, 10) + 2 * currlevel + 1;
+			maxd = random(68, 10) + 1 + currlevel * 2;
 		}
 
 		if (missile[i]._mix != missile[i]._misx || missile[i]._miy != missile[i]._misy) {
