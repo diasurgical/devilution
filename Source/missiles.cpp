@@ -3286,7 +3286,7 @@ void __fastcall MI_LArrow(int i)
 				mind = plr[p]._pIMinDam;
 				maxd = plr[p]._pIMaxDam;
 			} else {
-				mind = (unsigned char)monster[p].mMinDamage;
+				mind = monster[p].mMinDamage;
 				maxd = (unsigned char)monster[p].mMaxDamage;
 			}
 		} else {
