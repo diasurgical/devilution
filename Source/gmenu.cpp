@@ -63,7 +63,7 @@ void __fastcall gmenu_print_text(int x, int y, char *pszStr)
 	v5 = x;
 	for (i = *pszStr; *v3; i = *v3) {
 		++v3;
-		v7 = lfontframe[fontidx[i]];
+		v7 = lfontframe[gbFontTransTbl[i]];
 		if (v7)
 			CelDecodeLightOnly(v5, v4, (BYTE *)BigTGold_cel, v7, 46);
 		v5 += lfontkern[v7] + 2;
@@ -280,7 +280,7 @@ int __fastcall gmenu_get_lfont(TMenuItem *pItem)
 	if (pItem->dwFlags & 0x40000000)
 		return 490;
 	v2 = pItem->pszStr;
-	for (i = 0;; i += lfontkern[lfontframe[fontidx[v4]]] + 2) {
+	for (i = 0;; i += lfontkern[lfontframe[gbFontTransTbl[v4]]] + 2) {
 		v4 = *v2;
 		if (!*v2)
 			break;

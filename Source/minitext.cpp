@@ -244,7 +244,7 @@ void __cdecl DrawQText()
 			if (*i == 124 || v1 >= 543)
 				break;
 			v4 = *i++;
-			v5 = fontidx[v4];
+			v5 = gbFontTransTbl[v4];
 			if (v5) {
 				qstr[v2] = v5;
 				v1 += mfontkern[mfontframe[v5]] + 2;
@@ -269,7 +269,7 @@ void __cdecl DrawQText()
 			v9 = qstr;
 			do {
 				++v0;
-				v10 = mfontframe[fontidx[v8]];
+				v10 = mfontframe[gbFontTransTbl[v8]];
 				if (*v0 == 10)
 					++v0;
 				if (v10)
