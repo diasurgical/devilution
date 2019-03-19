@@ -15,8 +15,8 @@ static CRITICAL_SECTION sgMemCrit;
 int SeedCount;    // weak
 int dword_52B99C; // BOOLEAN valid - if x/y are in bounds
 
-const int rand_increment = 1;           // unused
-const int rand_multiplier = 0x015A4E35; // unused
+const int rand_increment = 1;
+const int rand_multiplier = 0x015A4E35;
 
 void __fastcall CelDrawDatOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 {
@@ -2321,7 +2321,7 @@ void __fastcall SetRndSeed(int s)
 int __cdecl GetRndSeed()
 {
 	SeedCount++;
-	sglGameSeed = 0x015A4E35 * sglGameSeed + 1;
+	sglGameSeed = rand_multiplier * sglGameSeed + rand_increment;
 	return abs(sglGameSeed);
 }
 // 52B97C: using guessed type int sglGameSeed;
