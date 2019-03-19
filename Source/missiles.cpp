@@ -3936,35 +3936,22 @@ void __fastcall MI_Flash(int i)
 
 void __fastcall MI_Flash2(int i)
 {
-	int v1;     // edi
-	int v2;     // esi
-	int v3;     // eax
-	int v4;     // eax
-	BOOLEAN v5; // zf
-	int v6;     // esi
-
-	v1 = i;
-	v2 = i;
 	if (!missile[i]._micaster) {
-		v3 = missile[v2]._misource;
-		if (v3 != -1)
-			plr[v3]._pInvincible = 1;
+		if (missile[i]._misource != -1)
+			plr[missile[i]._misource]._pInvincible = 1;
 	}
-	v4 = missile[v2]._miy;
-	--missile[v2]._mirange;
-	CheckMissileCol(i, missile[v2]._midam, missile[v2]._midam, 1, missile[v2]._mix - 1, v4 - 1, 1);
-	CheckMissileCol(v1, missile[v2]._midam, missile[v2]._midam, 1, missile[v2]._mix, missile[v2]._miy - 1, 1);
-	CheckMissileCol(v1, missile[v2]._midam, missile[v2]._midam, 1, missile[v2]._mix + 1, missile[v2]._miy - 1, 1);
-	if (!missile[v2]._mirange) {
-		v5 = missile[v2]._micaster == 0;
-		missile[v2]._miDelFlag = TRUE;
-		if (v5) {
-			v6 = missile[v2]._misource;
-			if (v6 != -1)
-				plr[v6]._pInvincible = 0;
+	missile[i]._mirange--;
+	CheckMissileCol(i, missile[i]._midam, missile[i]._midam, 1, missile[i]._mix - 1, missile[i]._miy - 1, 1);
+	CheckMissileCol(i, missile[i]._midam, missile[i]._midam, 1, missile[i]._mix, missile[i]._miy - 1, 1);
+	CheckMissileCol(i, missile[i]._midam, missile[i]._midam, 1, missile[i]._mix + 1, missile[i]._miy - 1, 1);
+	if (!missile[i]._mirange) {
+		missile[i]._miDelFlag = TRUE;
+		if (missile[i]._micaster == 0) {
+			if (missile[i]._misource != -1)
+				plr[missile[i]._misource]._pInvincible = 0;
 		}
 	}
-	PutMissile(v1);
+	PutMissile(i);
 }
 
 void __fastcall MI_Manashield(int i)
