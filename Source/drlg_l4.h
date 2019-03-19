@@ -26,7 +26,7 @@ void __cdecl DRLG_FreeL4SP();
 void __fastcall DRLG_L4SetSPRoom(int rx1, int ry1);
 void __cdecl L4SaveQuads();
 void __fastcall DRLG_L4SetRoom(unsigned char *pSetPiece, int rx1, int ry1);
-void __fastcall DRLG_LoadDiabQuads(BOOLEAN preflag);
+void __fastcall DRLG_LoadDiabQuads(BOOL preflag);
 BOOLEAN __fastcall IsDURWall(char d);
 BOOLEAN __fastcall IsDLLWall(char dd);
 void __cdecl L4FixRim();

@@ -72,27 +72,23 @@ void __fastcall gmenu_print_text(int x, int y, char *pszStr)
 
 void __cdecl FreeGMenu()
 {
-	void *v0; // ecx
-	void *v1; // ecx
-	void *v2; // ecx
-	void *v3; // ecx
-	void *v4; // ecx
+	void *ptr;
 
-	v0 = sgpLogo;
-	sgpLogo = 0;
-	mem_free_dbg(v0);
-	v1 = BigTGold_cel;
-	BigTGold_cel = 0;
-	mem_free_dbg(v1);
-	v2 = PentSpin_cel;
-	PentSpin_cel = 0;
-	mem_free_dbg(v2);
-	v3 = option_cel;
-	option_cel = 0;
-	mem_free_dbg(v3);
-	v4 = optbar_cel;
-	optbar_cel = 0;
-	mem_free_dbg(v4);
+	ptr = sgpLogo;
+	sgpLogo = NULL;
+	mem_free_dbg(ptr);
+	ptr = BigTGold_cel;
+	BigTGold_cel = NULL;
+	mem_free_dbg(ptr);
+	ptr = PentSpin_cel;
+	PentSpin_cel = NULL;
+	mem_free_dbg(ptr);
+	ptr = option_cel;
+	option_cel = NULL;
+	mem_free_dbg(ptr);
+	ptr = optbar_cel;
+	optbar_cel = NULL;
+	mem_free_dbg(ptr);
 }
 
 void __cdecl gmenu_init_menu()
