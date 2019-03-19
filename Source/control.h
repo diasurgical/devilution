@@ -17,15 +17,15 @@ extern BOOL drawmanaflag; // idb
 extern BOOL chrbtnactive;
 extern BYTE *pPanelText;
 extern int frame_4B8800; // idb
-extern char *pLifeBuff;
-extern void *pBtmBuff;
+extern BYTE *pLifeBuff;
+extern BYTE *pBtmBuff;
 extern void *pTalkBtns;
 extern int pstrjust[4];
 extern int pnumlines; // idb
 extern BOOL pinfoflag;
 extern int talkbtndown[3];
 extern int pSpell; // weak
-extern char *pManaBuff;
+extern BYTE *pManaBuff;
 extern int infoclr; // weak
 extern void *pGBoxBuff;
 extern void *pSBkBtnCel;
@@ -65,8 +65,8 @@ void __fastcall AddPanelString(char *str, BOOL just);
 void __cdecl ClearPanel();
 void __fastcall DrawPanelBox(int x, int y, int w, int h, int sx, int sy);
 void __cdecl InitPanelStr();
-void __fastcall SetFlaskHeight(char *buf, int min, int max, int c, int r);
-void __fastcall DrawFlask(void *a1, int a2, int a3, void *a4, int a5, int a6);
+void __fastcall SetFlaskHeight(BYTE *pCelBuff, int min, int max, int c, int r);
+void __fastcall DrawFlask(BYTE *pCelBuff, int w, int nSrcOff, BYTE *pBuff, int nDstOff, int h);
 void __cdecl DrawLifeFlask();
 void __cdecl UpdateLifeFlask();
 void __cdecl DrawManaFlask();
