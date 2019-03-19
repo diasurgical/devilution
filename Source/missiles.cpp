@@ -1896,57 +1896,33 @@ void __fastcall AddFirewall(int mi, int sx, int sy, int dx, int dy, int midir, i
 
 void __fastcall AddFireball(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9;       // edi
-	int v10;      // eax
-	int v12;      // ecx
-	int v13;      // edx
-	int v14;      // esi
-	int v15;      // eax
-	int v16;      // esi
-	int i;        // [esp+Ch] [ebp-4h]
-	int mienemya; // [esp+28h] [ebp+18h]
+	int i;
 
-	v9 = sx;
-	i = mi;
-	if (sx == dx) {
-		mi = dy;
-		if (sy == dy) {
-			mi = YDirAdd[midir] + dy;
-			dx += XDirAdd[midir];
-			dy += YDirAdd[midir];
-		}
+	if (sx == dx && sy == dy) {
+		dx += XDirAdd[midir];
+		dy += YDirAdd[midir];
 	}
-	if ((_BYTE)mienemy) {
-		v14 = 16;
-	} else {
-		v10 = random(60, 10);
-		v12 = 2 * (plr[id]._pLevel + random(60, 10) + v10) + 4;
-		v13 = missile[i]._mispllvl;
-		missile[i]._midam = v12;
-		if (v13 > 0) {
-			mienemya = v13;
-			do {
-				v12 += v12 >> 3;
-				--mienemya;
-			} while (mienemya);
-			missile[i]._midam = v12;
+	if (!(_BYTE)mienemy) {
+		missile[mi]._midam = 2 * (plr[id]._pLevel + random(60, 10) + random(60, 10)) + 4;
+		for (i = 0; i < missile[mi]._mispllvl; i++) {
+			missile[mi]._midam += missile[mi]._midam >> 3;
 		}
-		v14 = 2 * v13 + 16;
-		if (v14 > 50)
-			v14 = 50;
+		i = 2 * missile[mi]._mispllvl + 16;
+		if (i > 50)
+			i = 50;
 		UseMana(id, 12);
+	} else {
+		i = 16;
 	}
-	GetMissileVel(i, v9, sy, dx, dy, v14);
-	v15 = GetDirection16(v9, sy, dx, dy);
-	SetMissDir(i, v15);
-	v16 = i;
-	missile[v16]._miVar3 = 0;
-	missile[v16]._mirange = 256;
-	missile[v16]._miVar1 = v9;
-	missile[v16]._miVar2 = sy;
-	missile[v16]._miVar4 = v9;
-	missile[v16]._miVar5 = sy;
-	missile[v16]._mlid = AddLight(v9, sy, 8);
+	GetMissileVel(mi, sx, sy, dx, dy, i);
+	SetMissDir(mi, GetDirection16(sx, sy, dx, dy));
+	missile[mi]._mirange = 256;
+	missile[mi]._miVar1 = sx;
+	missile[mi]._miVar2 = sy;
+	missile[mi]._miVar3 = 0;
+	missile[mi]._miVar4 = sx;
+	missile[mi]._miVar5 = sy;
+	missile[mi]._mlid = AddLight(sx, sy, 8);
 }
 
 void __fastcall AddLightctrl(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
