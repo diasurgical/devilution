@@ -2290,12 +2290,9 @@ void __fastcall AddGuardian(int mi, int sx, int sy, int dx, int dy, int midir, i
 
 void __fastcall AddChain(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9; // ecx
-
-	v9 = mi;
-	missile[v9]._miVar1 = dx;
-	missile[v9]._miVar2 = dy;
-	missile[v9]._mirange = 1;
+	missile[mi]._miVar1 = dx;
+	missile[mi]._miVar2 = dy;
+	missile[mi]._mirange = 1;
 	UseMana(id, 14);
 }
 
