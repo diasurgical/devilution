@@ -1591,7 +1591,7 @@ void __cdecl InitMissiles()
 {
 	int mi, src, i, j;
 
-	plr[myplr]._pSpellFlags &= 0xFE;
+	plr[myplr]._pSpellFlags &= ~0x1;
 	if (plr[myplr]._pInfraFlag == TRUE) {
 		for (i = 0; i < nummissiles; ++i) {
 			mi = missileactive[i];
