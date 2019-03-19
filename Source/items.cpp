@@ -3692,7 +3692,7 @@ void __fastcall PrintItemPower(char plidx, ItemStruct *x)
 	}
 }
 
-void __cdecl DrawUBack()
+void __cdecl DrawUTextBack()
 {
 	CelDecodeOnly(88, 487, (BYTE *)pSTextBoxCels, 1, 271);
 
@@ -3759,22 +3759,39 @@ void __fastcall PrintUString(int x, int y, int cjustflag, char *str, int col)
 
 void __fastcall DrawULine(int y)
 {
-	char *v1;      // esi
-	char *v2;      // edi
-	signed int v3; // edx
+	/// ASSERT: assert(gpBuffer);
 
-	v1 = (char *)&gpBuffer[SCREENXY(26, 25)];
-	v2 = (char *)&gpBuffer[screen_y_times_768[SStringY[y] + 198] + 26 + 64];
-	v3 = 3;
-	do {
-		qmemcpy(v2, v1, 0x10A); /* find real fix */
-		v1 += 264;
-		v2 += 264;
-		*v2 = *v1;
-		v1 += 504;
-		v2 += 504;
-		--v3;
-	} while (v3);
+#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+	int yy;
+
+	yy = screen_y_times_768[SStringY[y] + 198] + 26 + 64;
+
+	__asm {
+		mov		esi, gpBuffer
+		mov		edi, esi
+		add		esi, SCREENXY(26, 25)
+		add		edi, yy
+		mov		ebx, 768 - 266
+		mov		edx, 3
+	copyline:
+		mov		ecx, 266 / 4
+		rep movsd
+		movsw
+		add		esi, ebx
+		add		edi, ebx
+		dec		edx
+		jnz		copyline
+	}
+#else
+	int i;
+	BYTE *src, *dst;
+
+	src = &gpBuffer[SCREENXY(26, 25)];
+	dst = &gpBuffer[screen_y_times_768[SStringY[y] + 198] + 26 + 64];
+
+	for(i = 0; i < 3; i++, src += 768, dst += 768)
+		memcpy(dst, src, 266);
+#endif
 }
 
 void __cdecl DrawUniqueInfo()
@@ -3785,7 +3802,7 @@ void __cdecl DrawUniqueInfo()
 
 	if (!chrflag && !questlog) {
 		v0 = curruitem._iUid;
-		DrawUBack();
+		DrawUTextBack();
 		v1 = v0;
 		PrintUString(0, 2, 1, UniqueItemList[v1].UIName, 3);
 		DrawULine(5);
