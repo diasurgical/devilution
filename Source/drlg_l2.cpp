@@ -756,11 +756,11 @@ void __cdecl DRLG_LoadL2SP()
 
 void __cdecl DRLG_FreeL2SP()
 {
-	char *v0; // ecx
+	char *ptr;
 
-	v0 = pSetPiece_2;
-	pSetPiece_2 = 0;
-	mem_free_dbg(v0);
+	ptr = pSetPiece_2;
+	pSetPiece_2 = NULL;
+	mem_free_dbg(ptr);
 }
 
 void __fastcall DRLG_L2(int entry)
