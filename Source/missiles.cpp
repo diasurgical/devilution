@@ -3938,7 +3938,7 @@ void __fastcall MI_Flash2(int i)
 {
 	if (!missile[i]._micaster) {
 		if (missile[i]._misource != -1)
-			plr[missile[i]._misource]._pInvincible = 1;
+			plr[missile[i]._misource]._pInvincible = TRUE;
 	}
 	missile[i]._mirange--;
 	CheckMissileCol(i, missile[i]._midam, missile[i]._midam, 1, missile[i]._mix - 1, missile[i]._miy - 1, 1);
