@@ -649,19 +649,22 @@ void __cdecl InitItemGFX()
 	memset(UniqueItemFlag, 0, sizeof(UniqueItemFlag));
 }
 
-BOOLEAN __fastcall ItemPlace(int xp, int yp)
+BOOL __fastcall ItemPlace(int xp, int yp)
 {
-	int v2;         // ecx
-	int v3;         // eax
-	BOOLEAN result; // al
+	if (dMonster[xp][yp])
+		return FALSE;
+	if (dPlayer[xp][yp])
+		return FALSE;
+	if (dItem[xp][yp])
+		return FALSE;
+	if (dObject[xp][yp])
+		return FALSE;
+	if (dFlags[xp][yp] & DFLAG_POPULATED)
+		return FALSE;
+	if (nSolidTable[dPiece[xp][yp]])
+		return FALSE;
 
-	v2 = xp;
-	v3 = v2 * 112 + yp;
-	if (dMonster[0][v3] || dPlayer[v2][yp] || dItem[v2][yp] || dObject[v2][yp] || dFlags[v2][yp] & DFLAG_POPULATED)
-		result = 0;
-	else
-		result = nSolidTable[dPiece[0][v3]] == 0;
-	return result;
+	return TRUE;
 }
 
 void __cdecl AddInitItems()
