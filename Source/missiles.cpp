@@ -1473,9 +1473,6 @@ void __fastcall SetMissDir(int mi, int dir)
 	SetMissAnim(mi, missile[mi]._miAnimType);
 }
 
-// TODO: replace `int mi` parameter with `missile_graphic_id mi`
-// to enable the compiler to optimize int to char properly
-// check for example the calls in `InitMonsterGFX`
 void __fastcall LoadMissileGFX(BYTE mi)
 {
 	char pszName[256];
@@ -1488,7 +1485,7 @@ void __fastcall LoadMissileGFX(BYTE mi)
 		sprintf(pszName, "Missiles\\%s.CEL", mfd->mName);
 		file = LoadFileInMem(pszName, 0);
 		for (i = 0; i < mfd->mAnimFAmt; i++)
-			mfd->mAnimData[i] = &file[*(_DWORD *)&file[4 * i]];
+			mfd->mAnimData[i] = &file[((int *)file)[i]];
 	} else if (mfd->mAnimFAmt == 1) {
 		sprintf(pszName, "Missiles\\%s.CEL", mfd->mName);
 		if (!mfd->mAnimData[0])
