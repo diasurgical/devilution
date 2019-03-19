@@ -3166,41 +3166,21 @@ int __fastcall AddMissile(int sx, int sy, int dx, int dy, int midir, int mitype,
 
 int __fastcall Sentfire(int i, int sx, int sy)
 {
-	int v3; // esi
-	int v4; // ebx
-	int v5; // edi
-	//int v6; // eax
-	int v7;    // eax
-	int v8;    // eax
-	int v9;    // edi
-	int midir; // ST30_4
-	int v11;   // ecx
-	int v12;   // eax
-	//int v13; // edx
-	int mi; // [esp+Ch] [ebp-8h]
+	int ex, dir;
 
-	mi = i;
-	v3 = i;
-	v4 = sx;
-	v5 = 0;
-	//_LOBYTE(v6) = LineClear(missile[i]._mix, missile[i]._miy, sx, sy);
+	ex = 0;
 	if (LineClear(missile[i]._mix, missile[i]._miy, sx, sy)) {
-		v7 = dMonster[v4][sy];
-		if (v7 > 0 && monster[v7 - 1]._mhitpoints >> 6 > 0 && v7 - 1 > 3) /* fix monstactive */
-		{
-			v8 = GetDirection(missile[v3]._mix, missile[v3]._miy, v4, sy);
-			v9 = missile[v3]._misource;
-			midir = v8;
-			v11 = missile[v3]._misource;
-			missile[v3]._miVar3 = missileavail[0];
-			v12 = GetSpellLevel(v11, 1);
-			AddMissile(missile[v3]._mix, missile[v3]._miy, v4, sy, midir, MIS_FIREBOLT, 0, v9, missile[v3]._midam, v12); /* check mtype v13 */
-			v5 = -1;
-			SetMissDir(mi, 2);
-			missile[v3]._miVar2 = 3;
+		if (dMonster[sx][sy] > 0 && monster[dMonster[sx][sy] - 1]._mhitpoints >> 6 > 0 && dMonster[sx][sy] - 1 > 3) {
+			dir = GetDirection(missile[i]._mix, missile[i]._miy, sx, sy);
+			missile[i]._miVar3 = missileavail[0];
+			AddMissile(missile[i]._mix, missile[i]._miy, sx, sy, dir, MIS_FIREBOLT, 0, missile[i]._misource, missile[i]._midam, GetSpellLevel(missile[i]._misource, 1));
+			ex = -1;
+			SetMissDir(i, 2);
+			missile[i]._miVar2 = 3;
 		}
 	}
-	return v5;
+
+	return ex;
 }
 
 void __fastcall MI_Dummy(int i)
@@ -4848,7 +4828,7 @@ void __fastcall MI_Flamec(int i)
 
 void __fastcall MI_Cbolt(int i)
 {
-	int sx, sy, dy, md;
+	int md;
 	int bpath[16] = { -1, 0, 1, -1, 0, 1, -1, -1, 0, 0, 1, 1, 0, 1, -1, 0 };
 
 	missile[i]._mirange--;
