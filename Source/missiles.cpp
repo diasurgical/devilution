@@ -4828,51 +4828,34 @@ void __fastcall MI_Wave(int i)
 
 void __fastcall MI_Nova(int i)
 {
-	int v1;              // edi
-	int v2;              // edx
-	int eax1;            // eax
-	int v4;              // ebx
-	unsigned char *v5;   // esi
-	int v6;              // eax
-	BOOLEAN v7;          // zf
-	int v8;              // [esp+Ch] [ebp-18h]
-	int sy;              // [esp+10h] [ebp-14h]
-	int id;              // [esp+14h] [ebp-10h]
-	int v3;              // [esp+18h] [ebp-Ch]
-	int midir;           // [esp+1Ch] [ebp-8h]
-	signed int micaster; // [esp+20h] [ebp-4h]
+	int k, id, sx, sy, dir, en, sx1, sy1, dam;
 
-	v1 = i;
-	v2 = 0;
-	eax1 = missile[i]._misource;
-	v4 = missile[i]._mix;
-	v3 = missile[i]._midam;
-	v8 = 0;
+	sx1 = 0;
+	sy1 = 0;
 	id = missile[i]._misource;
+	dam = missile[i]._midam;
+	sx = missile[i]._mix;
 	sy = missile[i]._miy;
-	if (eax1 == -1) {
-		midir = 0;
-		micaster = 1;
+	if (id != -1) {
+		en = 0;
+		dir = plr[id]._pdir;
 	} else {
-		micaster = 0;
-		midir = plr[eax1]._pdir;
+		dir = 0;
+		en = 1;
 	}
-	v5 = &vCrawlTable[0][7];
-	do {
-		v6 = *(v5 - 1);
-		if (v2 != v6 || v8 != *v5) {
-			AddMissile(v4, sy, v4 + v6, sy + *v5, midir, MIS_LIGHTBALL, micaster, id, v3, missile[v1]._mispllvl);
-			AddMissile(v4, sy, v4 - *(v5 - 1), sy - *v5, midir, MIS_LIGHTBALL, micaster, id, v3, missile[v1]._mispllvl);
-			AddMissile(v4, sy, v4 - *(v5 - 1), sy + *v5, midir, MIS_LIGHTBALL, micaster, id, v3, missile[v1]._mispllvl);
-			AddMissile(v4, sy, v4 + *(v5 - 1), sy - *v5, midir, MIS_LIGHTBALL, micaster, id, v3, missile[v1]._mispllvl);
-			v2 = *(v5 - 1);
-			v8 = *v5;
+	for (k = 0; k < 23; k++) {
+		if (sx1 != vCrawlTable[k][6] || sy1 != vCrawlTable[k][7]) {
+			AddMissile(sx, sy, sx + vCrawlTable[k][6], sy + vCrawlTable[k][7], dir, MIS_LIGHTBALL, en, id, dam, missile[i]._mispllvl);
+			AddMissile(sx, sy, sx - vCrawlTable[k][6], sy - vCrawlTable[k][7], dir, MIS_LIGHTBALL, en, id, dam, missile[i]._mispllvl);
+			AddMissile(sx, sy, sx - vCrawlTable[k][6], sy + vCrawlTable[k][7], dir, MIS_LIGHTBALL, en, id, dam, missile[i]._mispllvl);
+			AddMissile(sx, sy, sx + vCrawlTable[k][6], sy - vCrawlTable[k][7], dir, MIS_LIGHTBALL, en, id, dam, missile[i]._mispllvl);
+			sx1 = vCrawlTable[k][6];
+			sy1 = vCrawlTable[k][7];
 		}
-		v5 += 30;
-	} while ((signed int)v5 < (signed int)&vCrawlTable[23][7]);
-	v7 = missile[v1]._mirange-- == 1;
-	if (v7)
-		missile[v1]._miDelFlag = TRUE;
+	}
+	missile[i]._mirange--;
+	if (missile[i]._mirange == 0)
+		missile[i]._miDelFlag = TRUE;
 }
 
 void __fastcall MI_Blodboil(int i)
