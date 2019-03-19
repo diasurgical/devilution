@@ -84,7 +84,7 @@ No, you'll need access to the data from the original game. Blizzard has disconti
 Devilution aims to keep the original code unaltered, for documentation purposes.
 > So will you ever add cross-platform support or new features in the future?
 
-Yes! This has been done as a side project, please se [DevilutionX](https://github.com/diasurgical/devilutionX).
+Yes! This has been done as a side project, please see [DevilutionX](https://github.com/diasurgical/devilutionX).
 > When and what can I expect from the upcoming project?
 
 Honestly I have no idea. More than 1,200 hours went into creating Devilution, and I have other things going on right now. Maybe in 6-12 months? The goal is to create a native Linux port, convert to OpenGL, modernize the UI, etc. you get the drill. There has to be some surprises. ;)
