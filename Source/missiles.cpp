@@ -3290,7 +3290,7 @@ void __fastcall MI_LArrow(int i)
 				maxd = monster[p].mMaxDamage;
 			}
 		} else {
-			mind = random(68, 10) + currlevel + 1;
+			mind = random(68, 10) + 1 + currlevel;
 			maxd = random(68, 10) + 1 + currlevel * 2;
 		}
 
