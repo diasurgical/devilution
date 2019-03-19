@@ -655,46 +655,31 @@ void __fastcall PutMissile(int i)
 
 void __fastcall GetMissilePos(int i)
 {
-	int v1;  // ecx
-	int v2;  // eax
-	int v3;  // esi
-	int v4;  // edi
-	int v5;  // edx
-	int v6;  // edi
-	int v7;  // esi
-	int v8;  // edi
-	int v9;  // edx
-	int v10; // esi
-	int v11; // edx
-	int v12; // [esp+Ch] [ebp-8h]
+	int mx, my, dx, dy, lx, ly;
 
-	v1 = i;
-	v2 = missile[v1]._mityoff >> 16;
-	v3 = missile[v1]._mitxoff >> 16;
-	v4 = 2 * v2 + v3;
-	v5 = 2 * v2 - v3;
-	if (v4 >= 0) {
-		v7 = v4 >> 3;
-		v8 = v4 >> 6;
+	mx = missile[i]._mitxoff >> 16;
+	my = missile[i]._mityoff >> 16;
+	dx = mx + 2 * my;
+	dy = 2 * my - mx;
+	if (dx < 0) {
+		lx = -(-dx >> 3);
+		dx = -(-dx >> 6);
 	} else {
-		v6 = -v4;
-		v7 = -(v6 >> 3);
-		v8 = -(v6 >> 6);
+		lx = dx >> 3;
+		dx = dx >> 6;
 	}
-	v12 = v7;
-	if (v5 >= 0) {
-		v10 = v5 >> 3;
-		v11 = v5 >> 6;
+	if (dy < 0) {
+		ly = -(-dy >> 3);
+		dy = -(-dy >> 6);
 	} else {
-		v9 = -v5;
-		v10 = -(v9 >> 3);
-		v11 = -(v9 >> 6);
+		ly = dy >> 3;
+		dy = dy >> 6;
 	}
-	missile[v1]._mix = v8 + missile[v1]._misx;
-	missile[v1]._miy = v11 + missile[v1]._misy;
-	missile[v1]._mixoff = (missile[v1]._mitxoff >> 16) + 32 * v11 - 32 * v8;
-	missile[v1]._miyoff = v2 - 16 * v11 - 16 * v8;
-	ChangeLightOff(missile[v1]._mlid, v12 - 8 * v8, v10 - 8 * v11);
+	missile[i]._mix = dx + missile[i]._misx;
+	missile[i]._miy = dy + missile[i]._misy;
+	missile[i]._mixoff = mx + (dy << 5) - (dx << 5);
+	missile[i]._miyoff = my - (dx << 4) - (dy << 4);
+	ChangeLightOff(missile[i]._mlid, lx - (dx << 3), ly - (dy << 3));
 }
 
 void __fastcall MoveMissilePos(int i)
