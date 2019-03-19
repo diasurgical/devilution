@@ -1,24 +1,40 @@
-#include "../3rdParty/Radon/Radon/include/Radon.hpp"
-#include "../3rdParty/libsmacker/smacker.h"
-#include "pch.h"
+#include <SDL.h>
+#include <SDL_mixer.h>
+#include <Radon.hpp>
+#include <smacker.h>
 
-#include <unistd.h>
+#include "devilution.h"
+#include "stubs.h"
+#include "DiabloUI/diabloui.h"
+#include "dx.h"
 
 namespace dvl {
 
-extern "C" DWORD nLastError = 0;
+DWORD nLastError = 0;
 
-std::string getIniPath()
+static std::string getIniPath()
 {
-	char path[280];
-	int len = GetModuleFileNameA(ghInst, path, 260);
+	char path[DVL_MAX_PATH];
+	int len = GetModuleFileNameA(ghInst, path, DVL_MAX_PATH);
 	path[len - 1] = '/';
 	strcat(path, "diablo.ini");
 
 	return path;
 }
 
-radon::File ini(getIniPath());
+static radon::File ini(getIniPath());
+static Mix_Chunk *SFileChunk;
+
+void TranslateFileName(char *dst, int dstLen, const char *src)
+{
+	for (int i = 0; i < dstLen; i++) {
+		char c = *src++;
+		dst[i] = c == '\\' ? '/' : c;
+		if (!c) {
+			break;
+		}
+	}
+}
 
 // BOOL SFileCloseArchive(HANDLE hArchive)
 // {
@@ -30,7 +46,6 @@ radon::File ini(getIniPath());
 // 	UNIMPLEMENTED();
 // }
 
-Mix_Chunk *SFileChunk;
 BOOL SFileDdaBeginEx(HANDLE hFile, DWORD flags, DWORD mask, unsigned __int32 lDistanceToMove,
     signed __int32 volume, signed int pan, int a7)
 {
@@ -42,6 +57,9 @@ BOOL SFileDdaBeginEx(HANDLE hFile, DWORD flags, DWORD mask, unsigned __int32 lDi
 	SFileChunk = Mix_LoadWAV_RW(rw, 1);
 	free(SFXbuffer);
 
+	Mix_Volume(0, MIX_MAX_VOLUME - MIX_MAX_VOLUME * volume / VOLUME_MIN);
+	int panned = 255 - 255 * abs(pan) / 10000;
+	Mix_SetPanning(0, pan <= 0 ? 255 : panned, pan >= 0 ? 255 : panned);
 	Mix_PlayChannel(0, SFileChunk, 0);
 
 	return true;
@@ -206,7 +224,7 @@ BOOL SBmpLoadImage(const char *pszFileName, PALETTEENTRY *pPalette, BYTE *pBuffe
 				byte = *dataPtr;
 				if (byte < 0xC0) {
 					*pBuffer = byte;
-					*pBuffer++;
+					pBuffer++;
 					x++;
 					continue;
 				}
@@ -214,7 +232,7 @@ BOOL SBmpLoadImage(const char *pszFileName, PALETTEENTRY *pPalette, BYTE *pBuffe
 
 				for (int i = 0; i < (byte & 0x3F); i++) {
 					*pBuffer = *dataPtr;
-					*pBuffer++;
+					pBuffer++;
 					x++;
 				}
 			}
@@ -526,7 +544,7 @@ BOOL SVidPlayContinue(void)
 
 	double now = SDL_GetTicks() * 1000;
 	if (now < SVidFrameEnd) {
-		usleep(SVidFrameEnd - now); // wait with next frame if the system is to fast
+		SDL_Delay((SVidFrameEnd - now)/1000); // wait with next frame if the system is to fast
 	}
 
 	return SVidLoadNextFrame();

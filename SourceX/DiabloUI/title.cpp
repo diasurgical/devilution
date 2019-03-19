@@ -1,4 +1,5 @@
-#include "pch.h"
+#include "devilution.h"
+#include "DiabloUI/diabloui.h"
 
 namespace dvl {
 
@@ -26,7 +27,7 @@ BOOL UiTitleDialog(int a1)
 	title_Load();
 
 	bool endMenu = false;
-	int timeOut = SDL_GetTicks() + 7000;
+	Uint32 timeOut = SDL_GetTicks() + 7000;
 
 	SDL_Event event;
 	while (!endMenu && SDL_GetTicks() < timeOut) {

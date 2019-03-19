@@ -1,6 +1,10 @@
-#include "pch.h"
 #include <string>
+
+#include "devilution.h"
+#include "DiabloUI/diabloui.h"
+#include "dx.h"
 #include "utf8.h"
+#include "stubs.h"
 
 namespace dvl {
 
@@ -483,7 +487,7 @@ BOOL UiCreateGameCallback(int a1, int a2, int a3, int a4, int a5, int a6)
 	UNIMPLEMENTED();
 }
 
-BOOL UiArtCallback(int game_type, unsigned int art_code, PALETTEENTRY *pPalette, void *pBuffer,
+BOOL UiArtCallback(int game_type, unsigned int art_code, PALETTEENTRY *pPalette, BYTE *pBuffer,
     DWORD dwBuffersize, DWORD *pdwWidth, DWORD *pdwHeight, DWORD *pdwBpp)
 {
 	UNIMPLEMENTED();
@@ -515,7 +519,7 @@ BOOL UiCreatePlayerDescription(_uiheroinfo *info, DWORD mode, char *desc)
 void DrawArt(int screenX, int screenY, Art *art, int nFrame, int drawW)
 {
 	BYTE *src = (BYTE *)art->data + (art->width * art->height * nFrame);
-	BYTE *dst = (BYTE *)&gpBuffer->row[screenY].pixels[screenX];
+	BYTE *dst = &gpBuffer[screenX + 64 + (screenY + 160) * 768];
 	drawW = drawW ?: art->width;
 
 	for (int i = 0; i < art->height && i + screenY < SCREEN_HEIGHT; i++, src += art->width, dst += ROW_PITCH) {
@@ -539,7 +543,7 @@ int GetStrWidth(char *str, int size)
 {
 	int strWidth = 0;
 
-	for (int i = 0; i < strlen((char *)str); i++) {
+	for (size_t i = 0; i < strlen((char *)str); i++) {
 		BYTE w = FontTables[size][*(BYTE *)&str[i] + 2];
 		if (w)
 			strWidth += w;
@@ -629,7 +633,7 @@ void DrawArtStr(UI_Item *item)
 	if (item->flags & UIS_VCENTER)
 		sy += (item->rect.h - ArtFonts[size][color].height) / 2;
 
-	for (int i = 0; i < strlen((char *)item->caption); i++) {
+	for (size_t i = 0; i < strlen((char *)item->caption); i++) {
 		if (item->caption[i] == '\n') {
 			sx = x;
 			sy += ArtFonts[size][color].height;
