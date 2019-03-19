@@ -931,7 +931,7 @@ void __fastcall PrintQLString(int x, int y, unsigned char cjustflag, char *str, 
 			goto LABEL_24;
 		do {
 			v11 = (unsigned char)str[v9++];
-			v10 += fontkern[fontframe[fontidx[v11]]] + 1;
+			v10 += fontkern[fontframe[gbFontTransTbl[v11]]] + 1;
 		} while (v9 < v20);
 		if (v10 < 257)
 		LABEL_24:
@@ -948,7 +948,7 @@ void __fastcall PrintQLString(int x, int y, unsigned char cjustflag, char *str, 
 	v19 = 0;
 	if (v20 > 0) {
 		do {
-			v14 = fontframe[fontidx[(unsigned char)str[v13]]];
+			v14 = fontframe[gbFontTransTbl[(unsigned char)str[v13]]];
 			v15 = v14;
 			v8 += fontkern[v14] + 1;
 			if (v14 && v8 <= 257) {

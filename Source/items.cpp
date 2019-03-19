@@ -651,19 +651,22 @@ void __cdecl InitItemGFX()
 	memset(UniqueItemFlag, 0, sizeof(UniqueItemFlag));
 }
 
-BOOLEAN __fastcall ItemPlace(int xp, int yp)
+BOOL __fastcall ItemPlace(int xp, int yp)
 {
-	int v2;         // ecx
-	int v3;         // eax
-	BOOLEAN result; // al
+	if (dMonster[xp][yp])
+		return FALSE;
+	if (dPlayer[xp][yp])
+		return FALSE;
+	if (dItem[xp][yp])
+		return FALSE;
+	if (dObject[xp][yp])
+		return FALSE;
+	if (dFlags[xp][yp] & DFLAG_POPULATED)
+		return FALSE;
+	if (nSolidTable[dPiece[xp][yp]])
+		return FALSE;
 
-	v2 = xp;
-	v3 = v2 * 112 + yp;
-	if (dMonster[0][v3] || dPlayer[v2][yp] || dItem[v2][yp] || dObject[v2][yp] || dFlags[v2][yp] & DFLAG_POPULATED)
-		result = 0;
-	else
-		result = nSolidTable[dPiece[0][v3]] == 0;
-	return result;
+	return TRUE;
 }
 
 void __cdecl AddInitItems()
@@ -1166,41 +1169,39 @@ void __fastcall CalcSelfItems(int pnum)
 
 void __fastcall CalcPlrItemMin(int pnum)
 {
-	PlayerStruct *v1; // ecx
-	PlayerStruct *v2; // esi
-	ItemStruct *v3;   // edi
-	int v4;           // ebp
-	ItemStruct *v6;   // edi
-	signed int v7;    // ebp
+	PlayerStruct *p;
+	ItemStruct *pi;
+	int i;
 
-	v1 = &plr[pnum];
-	v2 = v1;
-	v3 = v1->InvList;
-	if (v1->_pNumInv) {
-		v4 = v1->_pNumInv;
-		do {
-			v3->_iStatFlag = ItemMinStats(v2, v3);
-			++v3;
-			--v4;
-		} while (v4);
+	p = &plr[pnum];
+	pi = p->InvList;
+
+	for (i = p->_pNumInv; i; i--) {
+		pi->_iStatFlag = ItemMinStats(p, pi);
+		pi++;
 	}
-	v6 = v2->SpdList;
-	v7 = MAXBELTITEMS;
-	do {
-		if (v6->_itype != -1) {
-			v6->_iStatFlag = ItemMinStats(v2, v6);
+
+	pi = p->SpdList;
+	for (i = MAXBELTITEMS; i != 0; i--) {
+		if (pi->_itype != -1) {
+			pi->_iStatFlag = ItemMinStats(p, pi);
 		}
-		++v6;
-		--v7;
-	} while (v7);
+		pi++;
+	}
 }
 
-BOOLEAN __fastcall ItemMinStats(PlayerStruct *p, ItemStruct *x)
+BOOL __fastcall ItemMinStats(PlayerStruct *p, ItemStruct *x)
 {
-	if (p->_pStrength < x->_iMinStr || p->_pMagic < x->_iMinMag || p->_pDexterity < x->_iMinDex)
-		return 0;
-	else
-		return 1;
+	if (p->_pMagic < x->_iMinMag)
+		return FALSE;
+
+	if (p->_pStrength < x->_iMinStr)
+		return FALSE;
+
+	if (p->_pDexterity < x->_iMinDex)
+		return FALSE;
+
+	return TRUE;
 }
 
 void __fastcall CalcPlrBookVals(int p)
@@ -3696,7 +3697,7 @@ void __fastcall PrintItemPower(char plidx, ItemStruct *x)
 	}
 }
 
-void __cdecl DrawUBack()
+void __cdecl DrawUTextBack()
 {
 	CelDecodeOnly(88, 487, (BYTE *)pSTextBoxCels, 1, 271);
 
@@ -3734,7 +3735,7 @@ void __fastcall PrintUString(int x, int y, int cjustflag, char *str, int col)
 			goto LABEL_16;
 		do {
 			v11 = (unsigned char)str[v9++];
-			v10 += fontkern[fontframe[fontidx[v11]]] + 1;
+			v10 += fontkern[fontframe[gbFontTransTbl[v11]]] + 1;
 		} while (v9 < v15);
 		if (v10 < 257)
 		LABEL_16:
@@ -3745,7 +3746,7 @@ void __fastcall PrintUString(int x, int y, int cjustflag, char *str, int col)
 	a3 = 0;
 	if (v15 > 0) {
 		while (1) {
-			v13 = fontframe[fontidx[(unsigned char)v5[v12]]];
+			v13 = fontframe[gbFontTransTbl[(unsigned char)v5[v12]]];
 			v14 = v13;
 			v8 += fontkern[v13] + 1;
 			if (v13) {
@@ -3763,22 +3764,39 @@ void __fastcall PrintUString(int x, int y, int cjustflag, char *str, int col)
 
 void __fastcall DrawULine(int y)
 {
-	char *v1;      // esi
-	char *v2;      // edi
-	signed int v3; // edx
+	/// ASSERT: assert(gpBuffer);
 
-	v1 = (char *)&gpBuffer[SCREENXY(26, 25)];
-	v2 = (char *)&gpBuffer[screen_y_times_768[SStringY[y] + 198] + 26 + 64];
-	v3 = 3;
-	do {
-		qmemcpy(v2, v1, 0x10A); /* find real fix */
-		v1 += 264;
-		v2 += 264;
-		*v2 = *v1;
-		v1 += 504;
-		v2 += 504;
-		--v3;
-	} while (v3);
+#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+	int yy;
+
+	yy = screen_y_times_768[SStringY[y] + 198] + 26 + 64;
+
+	__asm {
+		mov		esi, gpBuffer
+		mov		edi, esi
+		add		esi, SCREENXY(26, 25)
+		add		edi, yy
+		mov		ebx, 768 - 266
+		mov		edx, 3
+	copyline:
+		mov		ecx, 266 / 4
+		rep movsd
+		movsw
+		add		esi, ebx
+		add		edi, ebx
+		dec		edx
+		jnz		copyline
+	}
+#else
+	int i;
+	BYTE *src, *dst;
+
+	src = &gpBuffer[SCREENXY(26, 25)];
+	dst = &gpBuffer[screen_y_times_768[SStringY[y] + 198] + 26 + 64];
+
+	for(i = 0; i < 3; i++, src += 768, dst += 768)
+		memcpy(dst, src, 266);
+#endif
 }
 
 void __cdecl DrawUniqueInfo()
@@ -3789,7 +3807,7 @@ void __cdecl DrawUniqueInfo()
 
 	if (!chrflag && !questlog) {
 		v0 = curruitem._iUid;
-		DrawUBack();
+		DrawUTextBack();
 		v1 = v0;
 		PrintUString(0, 2, 1, UniqueItemList[v1].UIName, 3);
 		DrawULine(5);

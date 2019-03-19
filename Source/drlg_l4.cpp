@@ -308,11 +308,11 @@ void __cdecl DRLG_LoadL4SP()
 
 void __cdecl DRLG_FreeL4SP()
 {
-	char *v0; // ecx
+	char *ptr;
 
-	v0 = pSetPiece_2;
-	pSetPiece_2 = 0;
-	mem_free_dbg(v0);
+	ptr = pSetPiece_2;
+	pSetPiece_2 = NULL;
+	mem_free_dbg(ptr);
 }
 
 void __fastcall DRLG_L4SetSPRoom(int rx1, int ry1)
@@ -442,47 +442,42 @@ void __fastcall DRLG_L4SetRoom(unsigned char *pSetPiece, int rx1, int ry1)
 	}
 }
 
-void __fastcall DRLG_LoadDiabQuads(BOOLEAN preflag)
+void __fastcall DRLG_LoadDiabQuads(BOOL preflag)
 {
-	BOOLEAN v1;        // esi
-	unsigned char *v2; // edi
-	char *v3;          // ecx
-	unsigned char *v4; // edi
-	char *v5;          // ecx
-	unsigned char *v6; // edi
-	char *v7;          // ecx
-	unsigned char *v8; // esi
+	BYTE *dun;
 
-	v1 = preflag;
-	v2 = LoadFileInMem("Levels\\L4Data\\diab1.DUN", 0);
+	dun = LoadFileInMem("Levels\\L4Data\\diab1.DUN", 0);
 	diabquad1x = l4holdx + 4;
 	diabquad1y = l4holdy + 4;
-	DRLG_L4SetRoom(v2, l4holdx + 4, l4holdy + 4);
-	mem_free_dbg(v2);
-	v3 = "Levels\\L4Data\\diab2b.DUN";
-	if (!v1)
-		v3 = "Levels\\L4Data\\diab2a.DUN";
-	v4 = LoadFileInMem(v3, 0);
-	diabquad2y = l4holdy + 1;
+	DRLG_L4SetRoom(dun, diabquad1x, diabquad1y);
+	mem_free_dbg(dun);
+
+	if (!preflag)
+		dun = LoadFileInMem("Levels\\L4Data\\diab2a.DUN", 0);
+	else
+		dun = LoadFileInMem("Levels\\L4Data\\diab2b.DUN", 0);
 	diabquad2x = 27 - l4holdx;
-	DRLG_L4SetRoom(v4, 27 - l4holdx, l4holdy + 1);
-	mem_free_dbg(v4);
-	v5 = "Levels\\L4Data\\diab3b.DUN";
-	if (!v1)
-		v5 = "Levels\\L4Data\\diab3a.DUN";
-	v6 = LoadFileInMem(v5, 0);
+	diabquad2y = l4holdy + 1;
+	DRLG_L4SetRoom(dun, diabquad2x, diabquad2y);
+	mem_free_dbg(dun);
+
+	if (!preflag)
+		dun = LoadFileInMem("Levels\\L4Data\\diab3a.DUN", 0);
+	else
+		dun = LoadFileInMem("Levels\\L4Data\\diab3b.DUN", 0);
 	diabquad3x = l4holdx + 1;
 	diabquad3y = 27 - l4holdy;
-	DRLG_L4SetRoom(v6, l4holdx + 1, 27 - l4holdy);
-	mem_free_dbg(v6);
-	v7 = "Levels\\L4Data\\diab4b.DUN";
-	if (!v1)
-		v7 = "Levels\\L4Data\\diab4a.DUN";
-	v8 = LoadFileInMem(v7, 0);
-	diabquad4y = 28 - l4holdy;
+	DRLG_L4SetRoom(dun, diabquad3x, diabquad3y);
+	mem_free_dbg(dun);
+
+	if (!preflag)
+		dun = LoadFileInMem("Levels\\L4Data\\diab4a.DUN", 0);
+	else
+		dun = LoadFileInMem("Levels\\L4Data\\diab4b.DUN", 0);
 	diabquad4x = 28 - l4holdx;
-	DRLG_L4SetRoom(v8, 28 - l4holdx, 28 - l4holdy);
-	mem_free_dbg(v8);
+	diabquad4y = 28 - l4holdy;
+	DRLG_L4SetRoom(dun, diabquad4x, diabquad4y);
+	mem_free_dbg(dun);
 }
 // 5289C4: using guessed type int diabquad1x;
 // 5289C8: using guessed type int diabquad1y;

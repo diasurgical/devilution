@@ -120,7 +120,7 @@ void __fastcall PrintPlrMsg(unsigned int x, unsigned int y, unsigned int width, 
 
 		while (1) {
 			if (*sstr) {
-				c = fontidx[(unsigned char)*sstr++];
+				c = gbFontTransTbl[(unsigned char)*sstr++];
 				c = fontframe[c];
 				len += fontkern[c] + 1;
 				if (!c) // allow wordwrap on blank glyph
@@ -134,7 +134,7 @@ void __fastcall PrintPlrMsg(unsigned int x, unsigned int y, unsigned int width, 
 		}
 
 		while (str < endstr) {
-			c = fontidx[(unsigned char)*str++];
+			c = gbFontTransTbl[(unsigned char)*str++];
 			c = fontframe[c];
 			if (c)
 				CPrintString(screen, c, col);

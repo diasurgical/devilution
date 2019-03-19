@@ -137,7 +137,7 @@ void __cdecl DrawDiabloMsg()
 		goto LABEL_27;
 	do {
 		v12 = (unsigned char)tempstr[v11++];
-		v10 += fontkern[fontframe[fontidx[v12]]] + 1;
+		v10 += fontkern[fontframe[gbFontTransTbl[v12]]] + 1;
 	} while (v11 < v9);
 	if (v10 < 442)
 	LABEL_27:
@@ -145,7 +145,7 @@ void __cdecl DrawDiabloMsg()
 	v13 = 0;
 	if (v9 > 0) {
 		do {
-			v14 = fontframe[fontidx[(unsigned char)tempstr[v13]]];
+			v14 = fontframe[gbFontTransTbl[(unsigned char)tempstr[v13]]];
 			if (v14)
 				CPrintString(v8, v14, 3);
 			++v13;

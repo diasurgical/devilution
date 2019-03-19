@@ -90,7 +90,7 @@ Install the some tools using [Homebrew](https://brew.sh/):
 brew install automake autoconf libtool
 ```
 
-Get and build the dependencies 
+Get and build the dependencies
 ```
 $ ./xcode-build.sh --get-libs --build-libs
 ```

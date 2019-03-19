@@ -131,7 +131,7 @@ void __cdecl DrawHelp()
 					}
 					v5 = *v1;
 					tempstr[v2++] = *v1++;
-					v3 += fontkern[fontframe[fontidx[v5]]] + 1;
+					v3 += fontkern[fontframe[gbFontTransTbl[v5]]] + 1;
 					v4 = *v1;
 					if (*v1 == ('|')) {
 						if (v3 < 577)
@@ -175,7 +175,7 @@ void __cdecl DrawHelp()
 				}
 				v10 = *v1;
 				tempstr[v7++] = *v1++;
-				v8 += fontkern[fontframe[fontidx[v10]]] + 1;
+				v8 += fontkern[fontframe[gbFontTransTbl[v10]]] + 1;
 				v9 = *v1;
 				if (*v1 == ('|')) {
 					if (v8 < 577)
@@ -214,7 +214,7 @@ void __fastcall DrawHelpLine(int always_0, int help_line_nr, char *text, text_co
 	v5 = screen_y_times_768[SStringY[help_line_nr] + 204] + always_0 + 96;
 	for (i = *text; *text; i = *text) {
 		++text;
-		v7 = fontframe[fontidx[i]];
+		v7 = fontframe[gbFontTransTbl[i]];
 		v8 = v7;
 		v4 += fontkern[v7] + 1;
 		if (v7) {

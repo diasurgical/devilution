@@ -432,7 +432,7 @@ void __cdecl DrawInvBelt()
 		    && plr[myplr].SpdList[i]._iStatFlag
 		    && plr[myplr].SpdList[i]._itype != ITYPE_GOLD) {
 			fi = i + 49;
-			ff = fontframe[fontidx[fi]];
+			ff = fontframe[gbFontTransTbl[fi]];
 			CPrintString(InvRect[i + 65].X + 64 + screen_y_times_768[InvRect[i + 65].Y + 159] - fontkern[ff] + 28, ff, 0);
 		}
 	}

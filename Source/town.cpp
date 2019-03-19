@@ -476,7 +476,7 @@ void __fastcall town_draw_clipped_town_2(int x, int y, int a3, int a4, int a5, i
 		Cel2DrawHdrOnly(v13, sy, item[v12]._iAnimData, item[v12]._iAnimFrame, item[v12]._iAnimWidth, a5, 8);
 	}
 	if (dFlags[0][v9] & DFLAG_MONSTER) {
-		v14 = -1 - dMonster[x][y - 1]; // -1 - *(&dword_52D204 + v9); /* check */
+		v14 = -1 - dMonster[y][a3 - 1]; // -1 - *(&dword_52D204 + v9); /* check */
 		v15 = sx - towner[v14]._tAnimWidth2;
 		if (v14 == pcursmonst)
 			CelDrawHdrClrHL(
@@ -508,7 +508,7 @@ void __fastcall town_draw_clipped_town_2(int x, int y, int a3, int a4, int a5, i
 		Cel2DrawHdrOnly(v19, sy, towner[v18]._tAnimData, towner[v18]._tAnimFrame, towner[v18]._tAnimWidth, a5, 8);
 	}
 	if (dFlags[0][v9] & DFLAG_PLAYER) {
-		v20 = -1 - dPlayer[x][y - 1]; // -1 - *((_BYTE *)&themeLoc[49].height + v9 + 3);
+		v20 = -1 - dPlayer[y][a3 - 1]; // -1 - *((_BYTE *)&themeLoc[49].height + v9 + 3);
 		v21 = v20;
 		v22 = sy + plr[v21]._pyoff;
 		v23 = sx + plr[v21]._pxoff - plr[v21]._pAnimWidth2;

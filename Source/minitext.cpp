@@ -43,15 +43,14 @@ int qscroll_spd_tbl[9] = { 2, 4, 6, 8, 0, -1, -2, -3, -4 };
 
 void __cdecl FreeQuestText()
 {
-	void *v0; // ecx
-	void *v1; // ecx
+	void *ptr;
 
-	v0 = pMedTextCels;
-	pMedTextCels = 0;
-	mem_free_dbg(v0);
-	v1 = pTextBoxCels;
-	pTextBoxCels = 0;
-	mem_free_dbg(v1);
+	ptr = pMedTextCels;
+	pMedTextCels = NULL;
+	mem_free_dbg(ptr);
+	ptr = pTextBoxCels;
+	pTextBoxCels = NULL;
+	mem_free_dbg(ptr);
 }
 
 void __cdecl InitQuestText()
@@ -246,7 +245,7 @@ void __cdecl DrawQText()
 			if (*i == 124 || v1 >= 543)
 				break;
 			v4 = *i++;
-			v5 = fontidx[v4];
+			v5 = gbFontTransTbl[v4];
 			if (v5) {
 				qstr[v2] = v5;
 				v1 += mfontkern[mfontframe[v5]] + 2;
@@ -271,7 +270,7 @@ void __cdecl DrawQText()
 			v9 = qstr;
 			do {
 				++v0;
-				v10 = mfontframe[fontidx[v8]];
+				v10 = mfontframe[gbFontTransTbl[v8]];
 				if (*v0 == 10)
 					++v0;
 				if (v10)

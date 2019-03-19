@@ -413,13 +413,13 @@ void __cdecl InitObjectGFX()
 
 void __cdecl FreeObjectGFX()
 {
-	int i;    // esi
-	void *v1; // ecx
+	int i;
+	void *ptr;
 
-	for (i = 0; i < numobjfiles; ++i) {
-		v1 = (void *)pObjCels[i];
-		pObjCels[i] = 0;
-		mem_free_dbg(v1);
+	for (i = 0; i < numobjfiles; i++) {
+		ptr = pObjCels[i];
+		pObjCels[i] = NULL;
+		mem_free_dbg(ptr);
 	}
 	numobjfiles = 0;
 }
@@ -2657,10 +2657,10 @@ void __fastcall ObjSetMini(int x, int y, int v)
 		mov		v4, eax
 	}
 #else
-	v1 = *((WORD *)&pMegaTiles[((WORD)v-1)*8])+1;
-	v2 = *((WORD *)&pMegaTiles[((WORD)v-1)*8]+1)+1;
-	v3 = *((WORD *)&pMegaTiles[((WORD)v-1)*8]+2)+1;
-	v4 = *((WORD *)&pMegaTiles[((WORD)v-1)*8]+3)+1;
+	v1 = *((WORD *)&pMegaTiles[((WORD)v - 1) * 8]) + 1;
+	v2 = *((WORD *)&pMegaTiles[((WORD)v - 1) * 8] + 1) + 1;
+	v3 = *((WORD *)&pMegaTiles[((WORD)v - 1) * 8] + 2) + 1;
+	v4 = *((WORD *)&pMegaTiles[((WORD)v - 1) * 8] + 3) + 1;
 #endif
 
 	xx = 2 * x + 16;

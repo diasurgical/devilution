@@ -225,11 +225,11 @@ void __fastcall ShowProgress(unsigned int uMsg)
 
 void __cdecl FreeInterface()
 {
-	void *v0; // ecx
+	void *ptr;
 
-	v0 = sgpBackCel;
-	sgpBackCel = 0;
-	mem_free_dbg(v0);
+	ptr = sgpBackCel;
+	sgpBackCel = NULL;
+	mem_free_dbg(ptr);
 }
 
 void __fastcall InitCutscene(unsigned int uMsg)

@@ -758,11 +758,11 @@ void __cdecl DRLG_LoadL2SP()
 
 void __cdecl DRLG_FreeL2SP()
 {
-	char *v0; // ecx
+	char *ptr;
 
-	v0 = pSetPiece_2;
-	pSetPiece_2 = 0;
-	mem_free_dbg(v0);
+	ptr = pSetPiece_2;
+	pSetPiece_2 = NULL;
+	mem_free_dbg(ptr);
 }
 
 void __fastcall DRLG_L2(int entry)
@@ -1859,19 +1859,21 @@ void __fastcall AddHall(int nX1, int nY1, int nX2, int nY2, int nHd)
 
 void __fastcall GetHall(int *nX1, int *nY1, int *nX2, int *nY2, int *nHd)
 {
-	HALLNODE *v5; // esi
-	HALLNODE *v6; // ecx
+	HALLNODE *p1;
+	HALLNODE *p2;
 
-	v5 = pHallList->pNext;
+	p1 = pHallList->pNext;
 	*nX1 = pHallList->nHallx1;
 	*nY1 = pHallList->nHally1;
 	*nX2 = pHallList->nHallx2;
 	*nY2 = pHallList->nHally2;
 	*nHd = pHallList->nHalldir;
-	v6 = pHallList;
-	pHallList = 0;
-	mem_free_dbg(v6);
-	pHallList = v5;
+
+	p2 = pHallList;
+	pHallList = NULL;
+	mem_free_dbg(p2);
+
+	pHallList = p1;
 }
 
 void __fastcall ConnectHall(int nX1, int nY1, int nX2, int nY2, int nHd)

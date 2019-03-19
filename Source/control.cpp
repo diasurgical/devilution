@@ -21,7 +21,7 @@ int dropGoldValue; // idb
 BOOL drawmanaflag; // idb
 BOOL chrbtnactive;
 char sgszTalkMsg[80];
-void *pPanelText;
+BYTE *pPanelText;
 int frame_4B8800; // idb
 char *pLifeBuff;
 void *pBtmBuff;
@@ -111,33 +111,23 @@ const int lineoffset[25] = {
 	768 * 606 + 241,
 	768 * 617 + 241
 };
-const unsigned char fontidx[256] = {
-	0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-	1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-	1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-	1, 1, 32, 33, 34, 35, 36, 37, 38, 39,
-	40, 41, 42, 43, 44, 45, 46, 47, 48, 49,
-	50, 51, 52, 53, 54, 55, 56, 57, 58, 59,
-	60, 61, 62, 63, 64, 65, 66, 67, 68, 69,
-	70, 71, 72, 73, 74, 75, 76, 77, 78, 79,
-	80, 81, 82, 83, 84, 85, 86, 87, 88, 89,
-	90, 91, 92, 93, 94, 95, 96, 97, 98, 99,
-	100, 101, 102, 103, 104, 105, 106, 107, 108, 109,
-	110, 111, 112, 113, 114, 115, 116, 117, 118, 119,
-	120, 121, 122, 123, 124, 125, 126, 1, 67, 117,
-	101, 97, 97, 97, 97, 99, 101, 101, 101, 105,
-	105, 105, 65, 65, 69, 97, 65, 111, 111, 111,
-	117, 117, 121, 79, 85, 99, 76, 89, 80, 102,
-	97, 105, 111, 117, 110, 78, 97, 111, 63, 1,
-	1, 1, 1, 33, 60, 62, 111, 43, 50, 51,
-	39, 117, 80, 46, 44, 49, 48, 62, 1, 1,
-	1, 63, 65, 65, 65, 65, 65, 65, 65, 67,
-	69, 69, 69, 69, 73, 73, 73, 73, 68, 78,
-	79, 79, 79, 79, 79, 88, 48, 85, 85, 85,
-	85, 89, 98, 66, 97, 97, 97, 97, 97, 97,
-	97, 99, 101, 101, 101, 101, 105, 105, 105, 105,
-	111, 110, 111, 111, 111, 111, 111, 47, 48, 117,
-	117, 117, 117, 121, 98, 121
+const unsigned char gbFontTransTbl[256] = {
+	'\0', 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
+	0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
+	' ',  '!',  '\"', '#',  '$',  '%',  '&',  '\'', '(',  ')',  '*',  '+',  ',',  '-',  '.',  '/',
+	'0',  '1',  '2',  '3',  '4',  '5',  '6',  '7',  '8',  '9',  ':',  ';',  '<',  '=',  '>',  '?',
+	'@',  'A',  'B',  'C',  'D',  'E',  'F',  'G',  'H',  'I',  'J',  'K',  'L',  'M',  'N',  'O',
+	'P',  'Q',  'R',  'S',  'T',  'U',  'V',  'W',  'X',  'Y',  'Z',  '[',  '\\', ']',  '^',  '_',
+	'`',  'a',  'b',  'c',  'd',  'e',  'f',  'g',  'h',  'i',  'j',  'k',  'l',  'm',  'n',  'o',
+	'p',  'q',  'r',  's',  't',  'u',  'v',  'w',  'x',  'y',  'z',  '{',  '|',  '}',  '~',  0x01,
+	'C',  'u',  'e',  'a',  'a',  'a',  'a',  'c',  'e',  'e',  'e',  'i',  'i',  'i',  'A',  'A',
+	'E',  'a',  'A',  'o',  'o',  'o',  'u',  'u',  'y',  'O',  'U',  'c',  'L',  'Y',  'P',  'f',
+	'a',  'i',  'o',  'u',  'n',  'N',  'a',  'o',  '?',  0x01, 0x01, 0x01, 0x01, '!',  '<',  '>',
+	'o',  '+',  '2',  '3',  '\'', 'u',  'P',  '.',  ',',  '1',  '0',  '>',  0x01, 0x01, 0x01, '?',
+	'A',  'A',  'A',  'A',  'A',  'A',  'A',  'C',  'E',  'E',  'E',  'E',  'I',  'I',  'I',  'I',
+	'D',  'N',  'O',  'O',  'O',  'O',  'O',  'X',  '0',  'U',  'U',  'U',  'U',  'Y',  'b',  'B',
+	'a',  'a',  'a',  'a',  'a',  'a',  'a',  'c',  'e',  'e',  'e',  'e',  'i',  'i',  'i',  'i',
+	'o',  'n',  'o',  'o',  'o',  'o',  'o',  '/',  '0',  'u',  'u',  'u',  'u',  'y',  'b',  'y'
 };
 
 /* data */
@@ -662,162 +652,296 @@ void __fastcall ToggleSpell(int slot)
 }
 // 52571C: using guessed type int drawpanflag;
 
-void __fastcall CPrintString(int No, unsigned int glyph, unsigned char col)
+void __fastcall CPrintString(int nOffset, int nCel, char col)
 {
-	int *v3;          // ebx
-	char *v4;         // esi
-	char *v5;         // edi
-	INT_PTR v6;       // ebx
-	signed int v7;    // edx
-	unsigned int v8;  // eax
-	unsigned int v9;  // ecx
-	char v10;         // cf
-	unsigned int v11; // ecx
-	signed int v12;   // edx
-	int v13;          // eax
-	int v14;          // ecx
-	char v15;         // al
-	signed int v16;   // edx
-	int v17;          // eax
-	int v18;          // ecx
-	char v19;         // al
-	signed int v20;   // edx
-	int v21;          // eax
-	int v22;          // ecx
-	char v23;         // al
+	/// ASSERT: assert(gpBuffer);
 
-	v3 = (int *)((char *)pPanelText + 4 * glyph);
-	v4 = (char *)pPanelText + *v3;
-	v5 = (char *)gpBuffer + No;
-	v6 = (INT_PTR)&v4[v3[1] - *v3];
-	if ((_BYTE)col) {
-		if ((unsigned char)col == 1) {
-			do {
-				v12 = 13;
-				do {
-					while (1) {
-						v13 = (unsigned char)*v4++;
-						if ((v13 & 0x80u) == 0)
-							break;
-						_LOBYTE(v13) = -(char)v13;
-						v5 += v13;
-						v12 -= v13;
-						if (!v12)
-							goto LABEL_28;
-					}
-					v12 -= v13;
-					v14 = v13;
-					do {
-						v15 = *v4++;
-						if ((unsigned char)v15 > 0xFDu) {
-							v15 = -65;
-						} else if ((unsigned char)v15 >= 0xF0u) {
-							v15 -= 62;
-						}
-						*v5++ = v15;
-						--v14;
-					} while (v14);
-				} while (v12);
-			LABEL_28:
-				v5 -= 781;
-			} while ((char *)v6 != v4);
-		} else if ((unsigned char)col == 2) {
-			do {
-				v16 = 13;
-				do {
-					while (1) {
-						v17 = (unsigned char)*v4++;
-						if ((v17 & 0x80u) == 0)
-							break;
-						_LOBYTE(v17) = -(char)v17;
-						v5 += v17;
-						v16 -= v17;
-						if (!v16)
-							goto LABEL_39;
-					}
-					v16 -= v17;
-					v18 = v17;
-					do {
-						v19 = *v4++;
-						if ((unsigned char)v19 >= 0xF0u)
-							v19 -= 16;
-						*v5++ = v19;
-						--v18;
-					} while (v18);
-				} while (v16);
-			LABEL_39:
-				v5 -= 781;
-			} while ((char *)v6 != v4);
-		} else {
-			do {
-				v20 = 13;
-				do {
-					while (1) {
-						v21 = (unsigned char)*v4++;
-						if ((v21 & 0x80u) == 0)
-							break;
-						_LOBYTE(v21) = -(char)v21;
-						v5 += v21;
-						v20 -= v21;
-						if (!v20)
-							goto LABEL_52;
-					}
-					v20 -= v21;
-					v22 = v21;
-					do {
-						v23 = *v4++;
-						if ((unsigned char)v23 >= 0xF0u) {
-							if ((unsigned char)v23 >= 0xFEu)
-								v23 = -49;
-							else
-								v23 -= 46;
-						}
-						*v5++ = v23;
-						--v22;
-					} while (v22);
-				} while (v20);
-			LABEL_52:
-				v5 -= 781;
-			} while ((char *)v6 != v4);
-		}
-	} else {
-		do {
-			v7 = 13;
-			do {
-				while (1) {
-					v8 = (unsigned char)*v4++;
-					if ((v8 & 0x80u) == 0)
-						break;
-					_LOBYTE(v8) = -(char)v8;
-					v5 += v8;
-					v7 -= v8;
-					if (!v7)
-						goto LABEL_15;
-				}
-				v7 -= v8;
-				v9 = v8 >> 1;
-				if (v8 & 1) {
-					*v5++ = *v4++;
-					if (!v9)
-						continue;
-				}
-				v10 = v9 & 1;
-				v11 = v8 >> 2;
-				if (v10) {
-					*(_WORD *)v5 = *(_WORD *)v4;
-					v4 += 2;
-					v5 += 2;
-					if (!v11)
-						continue;
-				}
-				qmemcpy(v5, v4, 4 * v11);
-				v4 += 4 * v11;
-				v5 += 4 * v11;
-			} while (v7);
-		LABEL_15:
-			v5 -= 781;
-		} while ((char *)v6 != v4);
+#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+	__asm {
+		mov		ebx, pPanelText
+		mov		eax, nCel
+		shl		eax, 2
+		add		ebx, eax
+		mov		edx, [ebx+4]
+		sub		edx, [ebx]
+		mov		esi, pPanelText
+		add		esi, [ebx]
+		mov		edi, gpBuffer
+		add		edi, nOffset
+		mov		ebx, edx
+		add		ebx, esi
+		xor		edx, edx
+		mov		dl, col
+		cmp		edx, COL_WHITE
+		jz		c0_label1
+		cmp		edx, COL_BLUE
+		jz		c1_label1
+		cmp		edx, COL_RED
+		jz		c2_label1
+		jmp		d_label1
+
+	// Case 0
+	c0_label1:
+		mov		edx, 13
+	c0_label2:
+		xor		eax, eax
+		lodsb
+		or		al, al
+		js		c0_label6
+		sub		edx, eax
+		mov		ecx, eax
+		shr		ecx, 1
+		jnb		c0_label3
+		movsb
+		jecxz	c0_label5
+	c0_label3:
+		shr		ecx, 1
+		jnb		c0_label4
+		movsw
+		jecxz	c0_label5
+	c0_label4:
+		rep movsd
+	c0_label5:
+		or		edx, edx
+		jz		c0_label7
+		jmp		c0_label2
+	c0_label6:
+		neg		al
+		add		edi, eax
+		sub		edx, eax
+		jnz		c0_label2
+	c0_label7:
+		sub		edi, 768 + 13
+		cmp		ebx, esi
+		jnz		c0_label1
+		jmp		labret
+
+	// Case 1
+	c1_label1:
+		mov		edx, 13
+	c1_label2:
+		xor		eax, eax
+		lodsb
+		or		al, al
+		js		c1_label6
+		sub		edx, eax
+		mov		ecx, eax
+	c1_label3:
+		lodsb
+		cmp		al, PAL16_GRAY + 13
+		ja		c1_label4
+		cmp		al, PAL16_GRAY
+		jb		c1_label5
+		sub		al, PAL16_GRAY - (PAL16_BLUE + 2)
+		jmp		c1_label5
+	c1_label4:
+		mov		al, PAL16_BLUE + 15
+	c1_label5:
+		stosb
+		loop	c1_label3
+		or		edx, edx
+		jz		c1_label7
+		jmp		c1_label2
+	c1_label6:
+		neg		al
+		add		edi, eax
+		sub		edx, eax
+		jnz		c1_label2
+	c1_label7:
+		sub		edi, 768 + 13
+		cmp		ebx, esi
+		jnz		c1_label1
+		jmp		labret
+
+	// Case 2
+	c2_label1:
+		mov		edx, 13
+	c2_label2:
+		xor		eax, eax
+		lodsb
+		or		al, al
+		js		c2_label5
+		sub		edx, eax
+		mov		ecx, eax
+	c2_label3:
+		lodsb
+		cmp		al, PAL16_GRAY
+		jb		c2_label4
+		sub		al, PAL16_GRAY - PAL16_RED
+	c2_label4:
+		stosb
+		loop	c2_label3
+		or		edx, edx
+		jz		c2_label6
+		jmp		c2_label2
+	c2_label5:
+		neg		al
+		add		edi, eax
+		sub		edx, eax
+		jnz		c2_label2
+	c2_label6:
+		sub		edi, 768 + 13
+		cmp		ebx, esi
+		jnz		c2_label1
+		jmp		labret
+
+	// Default
+	d_label1:
+		mov		edx, 13
+	d_label2:
+		xor		eax, eax
+		lodsb
+		or		al, al
+		js		d_label6
+		sub		edx, eax
+		mov		ecx, eax
+	d_label3:
+		lodsb
+		cmp		al, PAL16_GRAY
+		jb		d_label5
+		cmp		al, PAL16_GRAY + 14
+		jnb		d_label4
+		sub		al, PAL16_GRAY - (PAL16_YELLOW + 2)
+		jmp		d_label5
+	d_label4:
+		mov		al, PAL16_YELLOW + 15
+	d_label5:
+		stosb
+		loop	d_label3
+		or		edx, edx
+		jz		d_label7
+		jmp		d_label2
+	d_label6:
+		neg		al
+		add		edi, eax
+		sub		edx, eax
+		jnz		d_label2
+	d_label7:
+		sub		edi, 768 + 13
+		cmp		ebx, esi
+		jnz		d_label1
+
+	labret:
 	}
+#else
+	int i;
+	BYTE width, pix;
+	BYTE *src, *dst, *end;
+	DWORD *pFrameTable;
+
+	pFrameTable = (DWORD *)&pPanelText[4 * nCel];
+	src = &pPanelText[pFrameTable[0]];
+	end = &src[pFrameTable[1] - pFrameTable[0]];
+	dst = &gpBuffer[nOffset];
+
+	switch(col) {
+	case COL_WHITE:
+		for(; src != end; dst -= 768 + 13) {
+			for(i = 13; i;) {
+				width = *src++;
+				if(!(width & 0x80)) {
+					i -= width;
+					if(width & 1) {
+						dst[0] = src[0];
+						src++;
+						dst++;
+					}
+					width >>= 1;
+					if(width & 1) {
+						dst[0] = src[0];
+						dst[1] = src[1];
+						src += 2;
+						dst += 2;
+					}
+					width >>= 1;
+					while(width) {
+						dst[0] = src[0];
+						dst[1] = src[1];
+						dst[2] = src[2];
+						dst[3] = src[3];
+						src += 4;
+						dst += 4;
+						width--;
+					}
+				} else {
+					width = -(char)width;
+					dst += width;
+					i -= width;
+				}
+			}
+		}
+		break;
+	case COL_BLUE:
+		for(; src != end; dst -= 768 + 13) {
+			for(i = 13; i;) {
+				width = *src++;
+				if(!(width & 0x80)) {
+					i -= width;
+					while(width) {
+						pix = *src++;
+						if(pix > PAL16_GRAY + 13)
+							pix = PAL16_BLUE + 15;
+						else if(pix >= PAL16_GRAY)
+							pix -= PAL16_GRAY - (PAL16_BLUE + 2);
+						*dst++ = pix;
+						width--;
+					}
+				} else {
+					width = -(char)width;
+					dst += width;
+					i -= width;
+				}
+			}
+		}
+		break;
+	case COL_RED:
+		for(; src != end; dst -= 768 + 13) {
+			for(i = 13; i;) {
+				width = *src++;
+				if(!(width & 0x80)) {
+					i -= width;
+					while(width) {
+						pix = *src++;
+						if(pix >= PAL16_GRAY)
+							pix -= PAL16_GRAY - PAL16_RED;
+						*dst++ = pix;
+						width--;
+					}
+				} else {
+					width = -(char)width;
+					dst += width;
+					i -= width;
+				}
+			}
+		}
+		break;
+	default:
+		for(; src != end; dst -= 768 + 13) {
+			for(i = 13; i;) {
+				width = *src++;
+				if(!(width & 0x80)) {
+					i -= width;
+					while(width) {
+						pix = *src++;
+						if(pix >= PAL16_GRAY) {
+							if(pix >= PAL16_GRAY + 14)
+								pix = PAL16_YELLOW + 15;
+							else
+								pix -= PAL16_GRAY - (PAL16_YELLOW + 2);
+						}
+						*dst++ = pix;
+						width--;
+					}
+				} else {
+					width = -(char)width;
+					dst += width;
+					i -= width;
+				}
+			}
+		}
+		break;
+	}
+#endif
 }
 
 void __fastcall AddPanelString(char *str, BOOL just)
@@ -1482,71 +1606,56 @@ void __cdecl CheckBtnUp()
 
 void __cdecl FreeControlPan()
 {
-	void *v0;  // ecx
-	void *v1;  // ecx
-	void *v2;  // ecx
-	void *v3;  // ecx
-	void *v4;  // ecx
-	void *v5;  // ecx
-	void *v6;  // ecx
-	void *v7;  // ecx
-	void *v8;  // ecx
-	void *v9;  // ecx
-	void *v10; // ecx
-	void *v11; // ecx
-	void *v12; // ecx
-	void *v13; // ecx
-	void *v14; // ecx
-	void *v15; // ecx
+	void *ptr;
 
-	v0 = pBtmBuff;
-	pBtmBuff = 0;
-	mem_free_dbg(v0);
-	v1 = pManaBuff;
-	pManaBuff = 0;
-	mem_free_dbg(v1);
-	v2 = pLifeBuff;
-	pLifeBuff = 0;
-	mem_free_dbg(v2);
-	v3 = pPanelText;
-	pPanelText = 0;
-	mem_free_dbg(v3);
-	v4 = pChrPanel;
-	pChrPanel = 0;
-	mem_free_dbg(v4);
-	v5 = pSpellCels;
-	pSpellCels = 0;
-	mem_free_dbg(v5);
-	v6 = pPanelButtons;
-	pPanelButtons = 0;
-	mem_free_dbg(v6);
-	v7 = pMultiBtns;
-	pMultiBtns = 0;
-	mem_free_dbg(v7);
-	v8 = pTalkBtns;
-	pTalkBtns = 0;
-	mem_free_dbg(v8);
-	v9 = pChrButtons;
-	pChrButtons = 0;
-	mem_free_dbg(v9);
-	v10 = pDurIcons;
-	pDurIcons = 0;
-	mem_free_dbg(v10);
-	v11 = pQLogCel;
-	pQLogCel = 0;
-	mem_free_dbg(v11);
-	v12 = pSpellBkCel;
-	pSpellBkCel = 0;
-	mem_free_dbg(v12);
-	v13 = pSBkBtnCel;
-	pSBkBtnCel = 0;
-	mem_free_dbg(v13);
-	v14 = pSBkIconCels;
-	pSBkIconCels = 0;
-	mem_free_dbg(v14);
-	v15 = pGBoxBuff;
-	pGBoxBuff = 0;
-	mem_free_dbg(v15);
+	ptr = pBtmBuff;
+	pBtmBuff = NULL;
+	mem_free_dbg(ptr);
+	ptr = pManaBuff;
+	pManaBuff = NULL;
+	mem_free_dbg(ptr);
+	ptr = pLifeBuff;
+	pLifeBuff = NULL;
+	mem_free_dbg(ptr);
+	ptr = pPanelText;
+	pPanelText = NULL;
+	mem_free_dbg(ptr);
+	ptr = pChrPanel;
+	pChrPanel = NULL;
+	mem_free_dbg(ptr);
+	ptr = pSpellCels;
+	pSpellCels = NULL;
+	mem_free_dbg(ptr);
+	ptr = pPanelButtons;
+	pPanelButtons = NULL;
+	mem_free_dbg(ptr);
+	ptr = pMultiBtns;
+	pMultiBtns = NULL;
+	mem_free_dbg(ptr);
+	ptr = pTalkBtns;
+	pTalkBtns = NULL;
+	mem_free_dbg(ptr);
+	ptr = pChrButtons;
+	pChrButtons = NULL;
+	mem_free_dbg(ptr);
+	ptr = pDurIcons;
+	pDurIcons = NULL;
+	mem_free_dbg(ptr);
+	ptr = pQLogCel;
+	pQLogCel = NULL;
+	mem_free_dbg(ptr);
+	ptr = pSpellBkCel;
+	pSpellBkCel = NULL;
+	mem_free_dbg(ptr);
+	ptr = pSBkBtnCel;
+	pSBkBtnCel = NULL;
+	mem_free_dbg(ptr);
+	ptr = pSBkIconCels;
+	pSBkIconCels = NULL;
+	mem_free_dbg(ptr);
+	ptr = pGBoxBuff;
+	pGBoxBuff = NULL;
+	mem_free_dbg(ptr);
 }
 
 int __fastcall control_WriteStringToBuffer(char *str)
@@ -1560,7 +1669,7 @@ int __fastcall control_WriteStringToBuffer(char *str)
 		if (!*str)
 			return 1;
 		++str;
-		v1 += fontkern[fontframe[fontidx[v2]]];
+		v1 += fontkern[fontframe[gbFontTransTbl[v2]]];
 	} while (v1 < 125);
 	return 0;
 }
@@ -1696,7 +1805,7 @@ void __fastcall control_print_info_str(int y, char *str, BOOLEAN center, int lin
 			goto LABEL_14;
 		do {
 			++v8;
-			v7 += fontkern[fontframe[fontidx[v6]]] + 2;
+			v7 += fontkern[fontframe[gbFontTransTbl[v6]]] + 2;
 			v6 = *v8;
 		} while (*v8);
 		if (v7 < 288)
@@ -1709,7 +1818,7 @@ void __fastcall control_print_info_str(int y, char *str, BOOLEAN center, int lin
 		if (!*v5)
 			break;
 		++v5;
-		v9 = fontidx[v11];
+		v9 = gbFontTransTbl[v11];
 		_LOBYTE(v9) = fontframe[v9];
 		v10 = (unsigned char)v9;
 		v4 += fontkern[(unsigned char)v9] + 2;
@@ -1734,7 +1843,7 @@ void __fastcall PrintGameStr(int x, int y, char *str, int color)
 	v5 = screen_y_times_768[y + 160] + x + 64;
 	for (i = *str; *v4; i = *v4) {
 		++v4;
-		v7 = fontframe[fontidx[i]];
+		v7 = fontframe[gbFontTransTbl[i]];
 		if (v7)
 			CPrintString(v5, v7, color);
 		v5 += fontkern[v7] + 1;
@@ -1991,7 +2100,7 @@ void __fastcall ADD_PlrStringXY(int x, int y, int width, char *pszStr, char col)
 		v11 = *pszStr;
 		do {
 			++v6;
-			v10 += fontkern[fontframe[fontidx[v11]]] + 1;
+			v10 += fontkern[fontframe[gbFontTransTbl[v11]]] + 1;
 			v11 = *v6;
 		} while (*v6);
 	}
@@ -2000,7 +2109,7 @@ void __fastcall ADD_PlrStringXY(int x, int y, int width, char *pszStr, char col)
 	widthb = v9 + widtha;
 	while (v7) {
 		++pszStr;
-		v12 = fontframe[fontidx[v7]];
+		v12 = fontframe[gbFontTransTbl[v7]];
 		v13 = v12;
 		v9 += fontkern[v12] + 1;
 		if (v12) {
@@ -2037,7 +2146,7 @@ void __fastcall MY_PlrStringXY(int x, int y, int width, char *pszStr, char col, 
 		v11 = *pszStr;
 		do {
 			++v10;
-			v8 += base + fontkern[fontframe[fontidx[v11]]];
+			v8 += base + fontkern[fontframe[gbFontTransTbl[v11]]];
 			v11 = *v10;
 		} while (*v10);
 	}
@@ -2046,7 +2155,7 @@ void __fastcall MY_PlrStringXY(int x, int y, int width, char *pszStr, char col, 
 	widthb = v16 + widtha;
 	while (v7) {
 		++v6;
-		v12 = fontframe[fontidx[v7]];
+		v12 = fontframe[gbFontTransTbl[v7]];
 		v13 = v12;
 		v16 += base + fontkern[v12];
 		if (v12) {
@@ -2415,7 +2524,7 @@ void __fastcall PrintSBookStr(int x, int y, BOOLEAN cjustflag, char *pszStr, int
 			goto LABEL_14;
 		do {
 			++v9;
-			v6 += fontkern[fontframe[fontidx[v8]]] + 1;
+			v6 += fontkern[fontframe[gbFontTransTbl[v8]]] + 1;
 			v8 = *v9;
 		} while (*v9);
 		if (v6 < 222)
@@ -2428,7 +2537,7 @@ void __fastcall PrintSBookStr(int x, int y, BOOLEAN cjustflag, char *pszStr, int
 		if (!*v5)
 			break;
 		++v5;
-		v10 = fontframe[fontidx[v12]];
+		v10 = fontframe[gbFontTransTbl[v12]];
 		v11 = v10;
 		v7 += fontkern[v10] + 1;
 		if (v10) {
@@ -2498,7 +2607,7 @@ void __fastcall DrawGoldSplit(int amount)
 		v3 = tempstr[0];
 		for (i = 0; i < v3; v3 = tempstr[i]) {
 			++i;
-			screen_x += fontkern[fontframe[fontidx[(unsigned char)v3]]] + 1;
+			screen_x += fontkern[fontframe[gbFontTransTbl[(unsigned char)v3]]] + 1;
 		}
 		screen_xa = screen_x + 452;
 	}
@@ -2703,7 +2812,7 @@ char *__fastcall control_print_talk_msg(char *msg, int x, int y, int *a4, int ju
 	if (!v7)
 		return 0;
 	while (1) {
-		v10 = fontframe[fontidx[v7]];
+		v10 = fontframe[gbFontTransTbl[v7]];
 		v11 = v10;
 		a3 = v8 + fontkern[v10] + 1;
 		if (a3 > 514)

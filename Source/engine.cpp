@@ -17,8 +17,8 @@ static CRITICAL_SECTION sgMemCrit;
 int SeedCount;    // weak
 int dword_52B99C; // BOOLEAN valid - if x/y are in bounds
 
-const int rand_increment = 1;           // unused
-const int rand_multiplier = 0x015A4E35; // unused
+const int rand_increment = 1;
+const int rand_multiplier = 0x015A4E35;
 
 void __fastcall CelDrawDatOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 {
@@ -1972,34 +1972,62 @@ void __fastcall CelDrawHdrClrHL(char col, int sx, int sy, BYTE *pCelBuff, int nC
 }
 // 69CF0C: using guessed type int gpBufEnd;
 
-void __fastcall ENG_set_pixel(int screen_x, int screen_y, UCHAR pixel)
+void __fastcall ENG_set_pixel(int sx, int sy, BYTE col)
 {
-	UCHAR *v3; // edi
+	BYTE *dst;
 
-	if (screen_y >= 0 && screen_y < 640 && screen_x >= 64 && screen_x < 704) {
-		v3 = (UCHAR *)gpBuffer + screen_y_times_768[screen_y] + screen_x;
-		if (v3 < gpBufEnd)
-			*v3 = pixel;
+	/// ASSERT: assert(gpBuffer);
+
+	if(sy < 0 || sy >= 640 || sx < 64 || sx >= 704)
+		return;
+
+	dst = &gpBuffer[sx + screen_y_times_768[sy]];
+
+#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+	__asm {
+		mov		edi, dst
+		cmp		edi, gpBufEnd
+		jnb		label1
+		mov		al, col
+		mov		[edi], al
+	label1:
 	}
+#else
+	if(dst < gpBufEnd)
+		*dst = col;
+#endif
 }
 // 69CF0C: using guessed type int gpBufEnd;
 
-void __fastcall engine_draw_pixel(int x, int y)
+void __fastcall engine_draw_pixel(int sx, int sy)
 {
-	_BYTE *v2; // eax
+	BYTE *dst;
 
-	if (dword_52B970) {
-		if (!dword_52B99C || x >= 0 && x < 640 && y >= 64 && y < 704) {
-			v2 = (unsigned char *)gpBuffer + screen_y_times_768[x] + y;
-			goto LABEL_14;
-		}
-	} else if (!dword_52B99C || y >= 0 && y < 640 && x >= 64 && x < 704) {
-		v2 = (unsigned char *)gpBuffer + screen_y_times_768[y] + x;
-	LABEL_14:
-		if (v2 < gpBufEnd)
-			*v2 = gbPixelCol;
-		return;
+	/// ASSERT: assert(gpBuffer);
+
+	if(dword_52B970) {
+		if(dword_52B99C && (sx < 0 || sx >= 640 || sy < 64 || sy >= 704))
+			return;
+		dst = &gpBuffer[sy + screen_y_times_768[sx]];
+	} else {
+		if(dword_52B99C && (sy < 0 || sy >= 640 || sx < 64 || sx >= 704))
+			return;
+		dst = &gpBuffer[sx + screen_y_times_768[sy]];
 	}
+
+#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+	__asm {
+		mov		edi, dst
+		cmp		edi, gpBufEnd
+		jnb		label1
+		mov		al, gbPixelCol
+		mov		[edi], al
+	label1:
+	}
+#else
+	if(dst < gpBufEnd)
+		*dst = gbPixelCol;
+#endif
 }
 // 52B96C: using guessed type char gbPixelCol;
 // 52B970: using guessed type int dword_52B970;
@@ -2295,7 +2323,7 @@ void __fastcall SetRndSeed(int s)
 int __cdecl GetRndSeed()
 {
 	SeedCount++;
-	sglGameSeed = 0x015A4E35 * sglGameSeed + 1;
+	sglGameSeed = rand_multiplier * sglGameSeed + rand_increment;
 	return abs(sglGameSeed);
 }
 // 52B97C: using guessed type int sglGameSeed;

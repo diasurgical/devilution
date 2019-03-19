@@ -204,7 +204,7 @@ void __fastcall PrintSString(int x, int y, unsigned char cjustflag, char *str, i
 		if (v28 > 0) {
 			do {
 				v13 = (unsigned char)str[v11++];
-				v12 += fontkern[fontframe[fontidx[v13]]] + 1;
+				v12 += fontkern[fontframe[gbFontTransTbl[v13]]] + 1;
 			} while (v11 < v28);
 		}
 		if (v12 < v25)
@@ -221,7 +221,7 @@ void __fastcall PrintSString(int x, int y, unsigned char cjustflag, char *str, i
 	v29 = 0;
 	if (v28 > 0) {
 		do {
-			v15 = fontframe[fontidx[(unsigned char)str[v29]]];
+			v15 = fontframe[gbFontTransTbl[(unsigned char)str[v29]]];
 			v16 = v15;
 			v17 = v30 + fontkern[v15] + 1;
 			v30 += fontkern[v15] + 1;
@@ -238,9 +238,9 @@ void __fastcall PrintSString(int x, int y, unsigned char cjustflag, char *str, i
 		v19 = screen_y_times_768[v6 + 204] - v8 + 656;
 		v20 = strlen(valstr);
 		while ((--v20 & 0x80000000) == 0) {
-			v21 = fontframe[fontidx[(unsigned char)valstr[v20]]];
+			v21 = fontframe[gbFontTransTbl[(unsigned char)valstr[v20]]];
 			v19 += -1 - fontkern[v21];
-			if (fontframe[fontidx[(unsigned char)valstr[v20]]])
+			if (fontframe[gbFontTransTbl[(unsigned char)valstr[v20]]])
 				CPrintString(v19, v21, col);
 		}
 		v8 = v26;
@@ -259,41 +259,49 @@ void __fastcall PrintSString(int x, int y, unsigned char cjustflag, char *str, i
 
 void __fastcall DrawSLine(int y)
 {
-	int v1;         // eax
-	int v2;         // eax
-	char *v3;       // esi
-	char *v4;       // edi
-	signed int v5;  // edx
-	char *v6;       // edi
-	char *v7;       // esi
-	signed int v8;  // [esp+0h] [ebp-10h]
-	signed int v9;  // [esp+8h] [ebp-8h]
-	signed int v10; // [esp+Ch] [ebp-4h]
+	int xy, yy, width, line;
 
-	v1 = screen_y_times_768[SStringY[y] + 198];
-	if (stextsize == 1) {
-		v8 = 142170;
-		v2 = v1 + 90;
-		v10 = 146;
-		v9 = 182;
+	if(stextsize == 1) {
+		xy = SCREENXY(26, 25);
+		yy = screen_y_times_768[SStringY[y] + 198] + 26 + 64;
+		width = 586 / 4;
+		line = 768 - 586;
 	} else {
-		v8 = 142490;
-		v2 = v1 + 410;
-		v10 = 66;
-		v9 = 502;
+		xy = SCREENXY(346, 25);
+		yy = screen_y_times_768[SStringY[y] + 198] + 346 + 64;
+		width = 266 / 4;
+		line = 768 - 266;
 	}
-	v3 = (char *)gpBuffer + v8;
-	v4 = (char *)gpBuffer + v2;
-	v5 = 3;
-	do {
-		qmemcpy(v4, v3, 4 * v10);
-		v7 = &v3[4 * v10];
-		v6 = &v4[4 * v10];
-		*(_WORD *)v6 = *(_WORD *)v7;
-		v3 = &v7[v9 + 2];
-		v4 = &v6[v9 + 2];
-		--v5;
-	} while (v5);
+
+	/// ASSERT: assert(gpBuffer);
+
+#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+	__asm {
+		mov		esi, gpBuffer
+		mov		edi, esi
+		add		esi, xy
+		add		edi, yy
+		mov		ebx, line
+		mov		edx, 3
+	copyline:
+		mov		ecx, width
+		rep movsd
+		movsw
+		add		esi, ebx
+		add		edi, ebx
+		dec		edx
+		jnz		copyline
+	}
+#else
+	int i;
+	BYTE *src, *dst;
+
+	src = &gpBuffer[xy];
+	dst = &gpBuffer[yy];
+
+	for(i = 0; i < 3; i++, src += 768, dst += 768)
+		memcpy(dst, src, 768 - line);
+#endif
 }
 // 6A09E0: using guessed type char stextsize;
 

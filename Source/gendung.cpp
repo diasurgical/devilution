@@ -34,7 +34,7 @@ BOOLEAN nTrapTable[2049];
 BYTE leveltype;
 unsigned char currlevel; // idb
 char TransList[256];
-BYTE nSolidTable[2049];
+BOOLEAN nSolidTable[2049];
 int level_frame_count[2048];
 ScrollStruct ScrollInfo;
 void *pDungeonCels;

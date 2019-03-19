@@ -474,11 +474,11 @@ void __cdecl DRLG_LoadL1SP()
 
 void __cdecl DRLG_FreeL1SP()
 {
-	void *v0; // ecx
+	void *ptr;
 
-	v0 = pSetPiece;
-	pSetPiece = 0;
-	mem_free_dbg(v0);
+	ptr = pSetPiece;
+	pSetPiece = NULL;
+	mem_free_dbg(ptr);
 }
 
 void __fastcall DRLG_L5(int entry)

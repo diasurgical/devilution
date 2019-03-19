@@ -942,11 +942,11 @@ void __fastcall DoVision(int nXPos, int nYPos, int nRadius, unsigned char doauto
 
 void __cdecl FreeLightTable()
 {
-	char *v0; // ecx
+	char *ptr;
 
-	v0 = pLightTbl;
-	pLightTbl = 0;
-	mem_free_dbg(v0);
+	ptr = pLightTbl;
+	pLightTbl = NULL;
+	mem_free_dbg(ptr);
 }
 
 void __cdecl InitLightTable()
