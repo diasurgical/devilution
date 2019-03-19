@@ -3373,45 +3373,31 @@ void __fastcall MI_LArrow(int i)
 
 void __fastcall MI_Arrow(int i)
 {
-	int v1; // esi
-	int v2; // eax
-	int v3; // eax
-	int v4; // eax
-	int v5; // eax
-	int v6; // edx
-	int v7; // eax
-	int v8; // eax
-	int v9; // ecx
-	int ia; // [esp+4h] [ebp-4h]
+	int p, mind, maxd;
 
-	v1 = i;
-	ia = i;
-	v2 = missile[i]._mixvel;
-	--missile[v1]._mirange;
-	missile[v1]._mitxoff += v2;
-	v3 = missile[i]._miyvel;
-	++missile[v1]._midist;
-	missile[v1]._mityoff += v3;
+	missile[i]._mirange--;
+	missile[i]._midist++;
+	missile[i]._mitxoff += missile[i]._mixvel;
+	missile[i]._mityoff += missile[i]._miyvel;
 	GetMissilePos(i);
-	v4 = missile[v1]._misource;
-	if (v4 == -1) {
-		v6 = currlevel;
-		v7 = 2 * currlevel;
-	} else if (missile[v1]._micaster) {
-		v8 = v4;
-		v6 = (unsigned char)monster[v8].mMinDamage;
-		v7 = (unsigned char)monster[v8].mMaxDamage;
+	p = missile[i]._misource;
+	if (p != -1) {
+		if (!missile[i]._micaster) {
+			mind = plr[p]._pIMinDam;
+			maxd = plr[p]._pIMaxDam;
+		} else {
+			mind = monster[p].mMinDamage;
+			maxd = monster[p].mMaxDamage;
+		}
 	} else {
-		v5 = v4;
-		v6 = plr[v5]._pIMinDam;
-		v7 = plr[v5]._pIMaxDam;
+		mind = currlevel;
+		maxd = 2 * currlevel;
 	}
-	v9 = missile[v1]._mix;
-	if (v9 != missile[v1]._misx || missile[v1]._miy != missile[v1]._misy)
-		CheckMissileCol(ia, v6, v7, 0, v9, missile[v1]._miy, 0);
-	if (!missile[v1]._mirange)
-		missile[v1]._miDelFlag = TRUE;
-	PutMissile(ia);
+	if (missile[i]._mix != missile[i]._misx || missile[i]._miy != missile[i]._misy)
+		CheckMissileCol(i, mind, maxd, 0, missile[i]._mix, missile[i]._miy, 0);
+	if (!missile[i]._mirange)
+		missile[i]._miDelFlag = TRUE;
+	PutMissile(i);
 }
 
 void __fastcall MI_Firebolt(int i)
