@@ -2452,17 +2452,12 @@ void __fastcall AddAcid(int mi, int sx, int sy, int dx, int dy, int midir, int m
 
 void __fastcall miss_null_1D(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9;  // ecx
-	int v10; // eax
-
-	v9 = mi;
-	missile[v9]._midam = dam;
-	missile[v9]._mirange = 50;
-	v10 = 50 - missile[v9]._miAnimLen;
-	missile[v9]._mixvel = 0;
-	missile[v9]._miyvel = 0;
-	missile[v9]._miVar1 = v10;
-	missile[v9]._miVar2 = 0;
+	missile[mi]._midam = dam;
+	missile[mi]._mirange = 50;
+	missile[mi]._mixvel = 0;
+	missile[mi]._miyvel = 0;
+	missile[mi]._miVar1 = 50 - missile[mi]._miAnimLen;
+	missile[mi]._miVar2 = 0;
 }
 
 void __fastcall AddAcidpud(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
