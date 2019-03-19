@@ -3915,7 +3915,7 @@ void __fastcall MI_Flash(int i)
 		missile[i]._miDelFlag = TRUE;
 		if (missile[i]._micaster == 0) {
 			if (missile[i]._misource != -1)
-				plr[missile[i]._misource]._pInvincible = 0;
+				plr[missile[i]._misource]._pInvincible = FALSE;
 		}
 	}
 	PutMissile(i);
