@@ -4078,52 +4078,34 @@ LABEL_33:
 
 void __fastcall MI_Etherealize(int i)
 {
-	int v1;     // ebx
-	int v2;     // esi
-	int v3;     // edi
-	int v4;     // edi
-	int v5;     // edx
-	int v6;     // eax
-	int v7;     // ecx
-	int v8;     // edx
-	BOOLEAN v9; // zf
-	char v10;   // al
+	int src;
 
-	v1 = i;
-	v2 = i;
-	v3 = missile[i]._misource;
-	--missile[v2]._mirange;
-	v4 = v3;
-	v5 = plr[v4]._pxoff;
-	v6 = plr[v4].WorldX;
-	v7 = plr[v4].WorldY;
-	missile[v2]._mix = v6;
-	missile[v2]._mitxoff = v5 << 16;
-	v8 = plr[v4]._pyoff << 16;
-	v9 = plr[v4]._pmode == PM_WALK3;
-	missile[v2]._miy = v7;
-	missile[v2]._mityoff = v8;
-	if (v9) {
-		missile[v2]._misx = plr[v4]._px;
-		missile[v2]._misy = plr[v4]._py;
+	src = missile[i]._misource;
+	missile[i]._mirange--;
+	missile[i]._mix = plr[src].WorldX;
+	missile[i]._miy = plr[src].WorldY;
+	missile[i]._mitxoff = plr[src]._pxoff << 16;
+	missile[i]._mityoff = plr[src]._pyoff << 16;
+	if (plr[src]._pmode == PM_WALK3) {
+		missile[i]._misx = plr[src]._px;
+		missile[i]._misy = plr[src]._py;
 	} else {
-		missile[v2]._misx = v6;
-		missile[v2]._misy = v7;
+		missile[i]._misx = missile[i]._mix;
+		missile[i]._misy = missile[i]._miy;
 	}
-	GetMissilePos(v1);
-	if (plr[v4]._pmode == PM_WALK3) {
-		if (plr[v4]._pdir == 2)
-			++missile[v2]._mix;
+	GetMissilePos(i);
+	if (plr[src]._pmode == PM_WALK3) {
+		if (plr[src]._pdir == 2)
+			missile[i]._mix++;
 		else
-			++missile[v2]._miy;
+			missile[i]._miy++;
 	}
-	_LOBYTE(plr[v4]._pSpellFlags) |= 1u;
-	v10 = plr[v4]._pSpellFlags;
-	if (!missile[v2]._mirange || plr[v4]._pHitPoints <= 0) {
-		missile[v2]._miDelFlag = TRUE;
-		_LOBYTE(plr[v4]._pSpellFlags) = v10 & 0xFE;
+	plr[src]._pSpellFlags |= 1;
+	if (!missile[i]._mirange || plr[src]._pHitPoints <= 0) {
+		missile[i]._miDelFlag = TRUE;
+		plr[src]._pSpellFlags &= ~0x1;
 	}
-	PutMissile(v1);
+	PutMissile(i);
 }
 
 void __fastcall MI_Firemove(int i)
