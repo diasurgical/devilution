@@ -1484,10 +1484,9 @@ void __fastcall LoadMissileGFX(BYTE mi)
 	MisFileData *mfd = &misfiledata[mi];
 	if (mfd->mFlags & MFLAG_ALLOW_SPECIAL) {
 		sprintf(pszName, "Missiles\\%s.CEL", mfd->mName);
-		//file = LoadFileInMem(pszName, 0);
-		mfd->mAnimData[0] = LoadFileInMem(pszName, 0);
-		//for (i = 0; i < mfd->mAnimFAmt; i++)
-			//mfd->mAnimData[i] = &file[*(_DWORD *)&file[4 * i]];
+		file = LoadFileInMem(pszName, 0);
+		for (i = 0; i < mfd->mAnimFAmt; i++)
+			mfd->mAnimData[i] = &file[*(_DWORD *)&file[4 * i]];
 	} else if (mfd->mAnimFAmt == 1) {
 		sprintf(pszName, "Missiles\\%s.CEL", mfd->mName);
 		if (!mfd->mAnimData[0])
