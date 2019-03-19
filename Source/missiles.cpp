@@ -3106,7 +3106,7 @@ int __fastcall AddMissile(int sx, int sy, int dx, int dy, int midir, int mitype,
 	if (nummissiles >= MAXMISSILES)
 		return -1;
 
-	if (mitype == MIS_MANASHIELD && plr[id].pManaShield) {
+	if (mitype == MIS_MANASHIELD && plr[id].pManaShield == TRUE) {
 		if (currlevel != plr[id].plrlevel)
 			return -1;
 
@@ -4908,50 +4908,26 @@ void __fastcall MI_Flame(int i)
 
 void __fastcall MI_Flamec(int i)
 {
-	int v1; // edi
-	int v2; // esi
-	int v3; // eax
-	int v4; // ebx
-	int v5; // ecx
-	int v6; // edx
-	int v7; // eax
-	int v8; // eax
+	int id, src;
 
-	v1 = i;
-	v2 = i;
-	v3 = missile[i]._mixvel;
-	--missile[v2]._mirange;
-	missile[v2]._mitxoff += v3;
-	v4 = missile[i]._misource;
-	missile[v2]._mityoff += missile[i]._miyvel;
+	missile[i]._mirange--;
+	missile[i]._mitxoff += missile[i]._mixvel;
+	src = missile[i]._misource;
+	missile[i]._mityoff += missile[i]._miyvel;
 	GetMissilePos(i);
-	v5 = missile[v2]._mix;
-	if (v5 != missile[v2]._miVar1 || missile[v2]._miy != missile[v2]._miVar2) {
-		v6 = missile[v2]._miy;
-		v7 = dPiece[v5][v6];
-		if (nMissileTable[v7]) {
-			missile[v2]._mirange = 0;
+	if (missile[i]._mix != missile[i]._miVar1 || missile[i]._miy != missile[i]._miVar2) {
+		id = dPiece[missile[i]._mix][missile[i]._miy];
+		if (!nMissileTable[id]) {
+			AddMissile(missile[i]._mix, missile[i]._miy, missile[i]._misx, missile[i]._misy, i, MIS_FLAME, missile[i]._micaster, src, missile[i]._miVar3, missile[i]._mispllvl);
 		} else {
-			_LOBYTE(v7) = missile[v2]._micaster;
-			AddMissile(
-			    v5,
-			    v6,
-			    missile[v2]._misx,
-			    missile[v2]._misy,
-			    v1,
-			    MIS_FLAME,
-			    v7,
-			    v4,
-			    missile[v2]._miVar3,
-			    missile[v2]._mispllvl);
+			missile[i]._mirange = 0;
 		}
-		v8 = missile[v2]._mix;
-		++missile[v2]._miVar3;
-		missile[v2]._miVar1 = v8;
-		missile[v2]._miVar2 = missile[v2]._miy;
+		missile[i]._miVar1 = missile[i]._mix;
+		missile[i]._miVar2 = missile[i]._miy;
+		missile[i]._miVar3++;
 	}
-	if (!missile[v2]._mirange || missile[v2]._miVar3 == 3)
-		missile[v2]._miDelFlag = TRUE;
+	if (!missile[i]._mirange || missile[i]._miVar3 == 3)
+		missile[i]._miDelFlag = TRUE;
 }
 
 void __fastcall MI_Cbolt(int i)
