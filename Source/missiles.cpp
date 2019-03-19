@@ -1473,53 +1473,29 @@ void __fastcall SetMissDir(int mi, int dir)
 	SetMissAnim(mi, missile[mi]._miAnimType);
 }
 
-// TODO: replace `int mi` parameter with `missile_graphic_id mi`
-// to enable the compiler to optimize int to char properly
-// check for example the calls in `InitMonsterGFX`
 void __fastcall LoadMissileGFX(BYTE mi)
 {
-	MisFileData *v1;   // esi
-	unsigned char *v2; // eax
-	signed int v3;     // ecx
-	int *v4;           // edx
-	int v5;            // edi
-	unsigned char v6;  // cl
-	int v7;            // eax
-	_DWORD *v8;        // edi
-	int v9;            // ebx
-	char arglist[256]; // [esp+8h] [ebp-100h]
+	char pszName[256];
+	int i;
+	BYTE *file;
+	MisFileData *mfd;
 
-	v1 = &misfiledata[(unsigned char)mi];
-	if (v1->mFlags & MFLAG_ALLOW_SPECIAL) {
-		sprintf(arglist, "Missiles\\%s.CL2", v1->mName);
-		v2 = LoadFileInMem(arglist, 0);
-		v3 = 0;
-		if (v1->mAnimFAmt) {
-			v4 = (int *)v1->mAnimData;
-			do {
-				v5 = (int)&v2[*(_DWORD *)&v2[4 * v3++]];
-				*v4 = v5;
-				++v4;
-			} while (v3 < v1->mAnimFAmt);
-		}
+	mfd = &misfiledata[mi];
+	if (mfd->mFlags & MFLAG_ALLOW_SPECIAL) {
+		sprintf(pszName, "Missiles\\%s.CEL", mfd->mName);
+		file = LoadFileInMem(pszName, 0);
+		for (i = 0; i < mfd->mAnimFAmt; i++)
+			mfd->mAnimData[i] = &file[((int *)file)[i]];
+	} else if (mfd->mAnimFAmt == 1) {
+		sprintf(pszName, "Missiles\\%s.CEL", mfd->mName);
+		if (!mfd->mAnimData[0])
+			mfd->mAnimData[0] = LoadFileInMem(pszName, 0);
 	} else {
-		v6 = v1->mAnimFAmt;
-		if (v6 == 1) {
-			sprintf(arglist, "Missiles\\%s.CL2", v1->mName);
-			if (!v1->mAnimData[0])
-				v1->mAnimData[0] = LoadFileInMem(arglist, 0);
-		} else {
-			v7 = 0;
-			if (v6) {
-				v8 = (unsigned int *)v1->mAnimData;
-				do {
-					v9 = v7 + 1;
-					sprintf(arglist, "Missiles\\%s%i.CL2", v1->mName, v7 + 1);
-					if (!*v8)
-						*v8 = (unsigned int)LoadFileInMem(arglist, 0);
-					v7 = v9;
-					++v8;
-				} while (v9 < v1->mAnimFAmt);
+		for (i = 0; i < mfd->mAnimFAmt; i++) {
+			sprintf(pszName, "Missiles\\%s%i.CEL", mfd->mName, i + 1);
+			if (!mfd->mAnimData[i]) {
+				file = LoadFileInMem(pszName, 0);
+				mfd->mAnimData[i] = file;
 			}
 		}
 	}
