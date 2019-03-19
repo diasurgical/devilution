@@ -1503,12 +1503,12 @@ void __fastcall LoadMissileGFX(BYTE mi)
 
 void __cdecl InitMissileGFX()
 {
-    int mi;
+	int mi;
 
-    for (mi = 0; misfiledata[mi].mAnimFAmt; mi++) {
-        if (!(misfiledata[mi].mFlags & MFLAG_HIDDEN))
-            LoadMissileGFX(mi);
-    }
+	for (mi = 0; misfiledata[mi].mAnimFAmt; mi++) {
+		if (!(misfiledata[mi].mFlags & MFLAG_HIDDEN))
+			LoadMissileGFX(mi);
+	}
 }
 
 void __fastcall FreeMissileGFX(int mi)
@@ -1666,49 +1666,23 @@ void __fastcall AddArrow(int mi, int sx, int sy, int dx, int dy, int midir, int 
 
 void __fastcall GetVileMissPos(int mi, int dx, int dy)
 {
-	signed int v3;  // edi
-	int v4;         // ebx
-	int v5;         // esi
-	int v6;         // eax
-	int v7;         // eax
-	int v8;         // [esp+Ch] [ebp-14h]
-	int v9;         // [esp+10h] [ebp-10h]
-	signed int v10; // [esp+14h] [ebp-Ch]
-	signed int v11; // [esp+18h] [ebp-8h]
-	signed int v12; // [esp+1Ch] [ebp-4h]
+	int xx, yy, k, j, i;
 
-	v8 = dx;
-	v9 = mi;
-	v12 = 1;
-	v3 = -1;
-	do {
-		v11 = v3;
-		if (v3 <= v12) {
-			while (2) {
-				v10 = v3;
-				v4 = v11 + dy;
-				v5 = v3 + v8;
-				do {
-					if (PosOkPlayer(myplr, v5, v4)) {
-						v7 = v9;
-						missile[v7]._mix = v5;
-						missile[v7]._miy = v4;
-						return;
-					}
-					++v10;
-					++v5;
-				} while (v10 <= v12);
-				if (++v11 <= v12)
-					continue;
-				break;
+	for (k = 1; k < 50; k++) {
+		for (j = -k; j <= k; j++) {
+			yy = j + dy;
+			for (i = -k; i <= k; i++) {
+				xx = i + dx;
+				if (PosOkPlayer(myplr, xx, yy)) {
+					missile[mi]._mix = xx;
+					missile[mi]._miy = yy;
+					return;
+				}
 			}
 		}
-		++v12;
-		--v3;
-	} while (v3 > -50);
-	v6 = v9;
-	missile[v6]._mix = v8;
-	missile[v6]._miy = dy;
+	}
+	missile[mi]._mix = dx;
+	missile[mi]._miy = dy;
 }
 
 void __fastcall AddRndTeleport(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
