@@ -66,9 +66,9 @@ DEVILUTION_BEGIN_NAMESPACE
 //#define COPYPROT
 // If defined, don't reload for debuggers [Default -> Undefined]
 // Note that with patch 1.03 the command line was hosed, this is required to pass arguments to the game
-#ifdef _DEBUG
+//#ifdef _DEBUG
 #define DEBUGGER
-#endif
+//#endif
 // If defined, don't fry the CPU [Default -> Undefined]
 #define SLEEP
 // If defined, use standard memcpy() in place of qmemcpy() [Default -> Undefined]

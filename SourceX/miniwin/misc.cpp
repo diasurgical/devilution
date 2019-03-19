@@ -583,11 +583,9 @@ DWORD GetCurrentProcessId()
 }
 
 HANDLE CreateFileMappingA(HANDLE hFile, LPSECURITY_ATTRIBUTES lpFileMappingAttributes, DWORD flProtect,
-    DWORD dwMaximumSizeHigh, DWORD dwMaximumSizeLow, LPCSTR lpName)
+                          DWORD dwMaximumSizeHigh, DWORD dwMaximumSizeLow, LPCSTR lpName)
 {
-	DUMMY();
-	assert(hFile == (HANDLE)-1);
-	return NULL;
+	UNIMPLEMENTED();
 }
 
 LPVOID MapViewOfFile(HANDLE hFileMappingObject, DWORD dwDesiredAccess, DWORD dwFileOffsetHigh,
