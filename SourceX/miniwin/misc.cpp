@@ -4,7 +4,6 @@
 #include "stubs.h"
 #include "dx.h"
 #include "DiabloUI/diabloui.h"
-#include <glob.h>
 #include <string>
 
 namespace dvl {
@@ -407,29 +406,15 @@ void GetLocalTime(LPSYSTEMTIME lpSystemTime)
 	UNIMPLEMENTED();
 }
 
-glob_t globbuf;
-int _findfirsti;
-/**
- * @return The value is not unique, but the engine only users one at a time
- */
 long _findfirst(const char *pattern, struct DVL_finddata_t *finder)
 {
-	glob(pattern, 0, NULL, &globbuf);
-	_findfirsti = 0;
-	return _findnext(0, finder);
+	DUMMY();
+	return -1;
 }
 
 int _findnext(long, struct DVL_finddata_t *finder)
 {
-	while (_findfirsti < globbuf.gl_pathc) {
-		strncpy(finder->name, globbuf.gl_pathv[_findfirsti], DVL_MAX_PATH);
-		_findfirsti++;
-		return 0;
-	}
-
-	if (globbuf.gl_pathc > 0)
-		globfree(&globbuf);
-
+	UNIMPLEMENTED();
 	return -1;
 }
 
