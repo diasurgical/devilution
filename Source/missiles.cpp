@@ -2438,20 +2438,16 @@ void __fastcall miss_null_1D(int mi, int sx, int sy, int dx, int dy, int midir, 
 
 void __fastcall AddAcidpud(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9;  // esi
-	int v10; // edi
-	int v11; // eax
+	int monst;
 
-	v9 = mi;
-	v10 = missile[mi]._misource;
-	missile[v9]._mixvel = 0;
-	missile[v9]._miyvel = 0;
-	missile[v9]._mixoff = 0;
-	missile[v9]._miyoff = 0;
-	missile[v9]._miLightFlag = TRUE;
-	v11 = random(50, 15);
-	missile[v9]._miPreFlag = TRUE;
-	missile[v9]._mirange = v11 + 40 * ((unsigned char)monster[v10]._mint + 1);
+	monst = missile[mi]._misource;
+	missile[mi]._mixvel = 0;
+	missile[mi]._miyvel = 0;
+	missile[mi]._mixoff = 0;
+	missile[mi]._miyoff = 0;
+	missile[mi]._miLightFlag = TRUE;
+	missile[mi]._mirange = random(50, 15) + 40 * (monster[monst]._mint + 1);
+	missile[mi]._miPreFlag = TRUE;
 }
 
 void __fastcall AddStone(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
