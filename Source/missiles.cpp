@@ -2316,21 +2316,12 @@ void __fastcall miss_null_12(int mi, int sx, int sy, int dx, int dy, int midir, 
 
 void __fastcall miss_null_13(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	signed int v9; // edx
-	int v10;       // esi
-	int v11;       // eax
-	int v12;       // ecx
-
-	v9 = dx;
-	v10 = mi;
 	if (dx > 3)
-		v9 = 2;
-	SetMissDir(mi, v9);
-	v11 = v10;
-	v12 = missile[v10]._miAnimLen;
-	missile[v11]._midam = 0;
-	missile[v11]._miLightFlag = TRUE;
-	missile[v11]._mirange = v12;
+		dx = 2;
+	SetMissDir(mi, dx);
+	missile[mi]._midam = 0;
+	missile[mi]._miLightFlag = TRUE;
+	missile[mi]._mirange = missile[mi]._miAnimLen;
 }
 
 void __fastcall AddRhino(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
