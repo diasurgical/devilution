@@ -2306,19 +2306,12 @@ void __fastcall miss_null_11(int mi, int sx, int sy, int dx, int dy, int midir, 
 
 void __fastcall miss_null_12(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	signed int v9; // edx
-	int v10;       // esi
-	int v11;       // eax
-
-	v9 = dx;
-	v10 = mi;
 	if (dx > 3)
-		v9 = 2;
-	SetMissDir(mi, v9);
-	v11 = v10;
-	missile[v11]._midam = 0;
-	missile[v11]._miLightFlag = TRUE;
-	missile[v11]._mirange = 250;
+		dx = 2;
+	SetMissDir(mi, dx);
+	missile[mi]._midam = 0;
+	missile[mi]._miLightFlag = TRUE;
+	missile[mi]._mirange = 250;
 }
 
 void __fastcall miss_null_13(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
