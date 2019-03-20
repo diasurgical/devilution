@@ -138,6 +138,7 @@ WINBOOL CloseHandle(HANDLE hObject)
 		filestream.write(file->buf.data(), file->buf.size());
 		if (filestream.fail())
 			throw std::runtime_error("ofstream::write");
+		filestream.close();
 		std::remove(file->path.c_str());
 		if (std::rename((file->path + ".tmp").c_str(), file->path.c_str()))
 			throw std::runtime_error("rename");
