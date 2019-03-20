@@ -4,6 +4,8 @@
 #include "stubs.h"
 #include "dx.h"
 #include "DiabloUI/diabloui.h"
+#include <glob.h>
+#include <string>
 
 namespace dvl {
 
@@ -405,15 +407,29 @@ void GetLocalTime(LPSYSTEMTIME lpSystemTime)
 	UNIMPLEMENTED();
 }
 
-long _findfirst(const char *, struct DVL_finddata_t *)
+glob_t globbuf;
+int _findfirsti;
+/**
+ * @return The value is not unique, but the engine only users one at a time
+ */
+long _findfirst(const char *pattern, struct DVL_finddata_t *finder)
 {
-	UNIMPLEMENTED();
-	return -1;
+	glob(pattern, 0, NULL, &globbuf);
+	_findfirsti = 0;
+	return _findnext(0, finder);
 }
 
-int _findnext(long, struct DVL_finddata_t *)
+int _findnext(long, struct DVL_finddata_t *finder)
 {
-	UNIMPLEMENTED();
+	while (_findfirsti < globbuf.gl_pathc) {
+		strncpy(finder->name, globbuf.gl_pathv[_findfirsti], DVL_MAX_PATH);
+		_findfirsti++;
+		return 0;
+	}
+
+	if (globbuf.gl_pathc > 0)
+		globfree(&globbuf);
+
 	return -1;
 }
 
@@ -583,7 +599,7 @@ DWORD GetCurrentProcessId()
 }
 
 HANDLE CreateFileMappingA(HANDLE hFile, LPSECURITY_ATTRIBUTES lpFileMappingAttributes, DWORD flProtect,
-                          DWORD dwMaximumSizeHigh, DWORD dwMaximumSizeLow, LPCSTR lpName)
+    DWORD dwMaximumSizeHigh, DWORD dwMaximumSizeLow, LPCSTR lpName)
 {
 	UNIMPLEMENTED();
 }
@@ -621,7 +637,7 @@ DWORD GetPrivateProfileStringA(LPCSTR lpAppName, LPCSTR lpKeyName, LPCSTR lpDefa
 		strncpy(lpReturnedString, lpDefault, nSize);
 		SRegSaveString(lpAppName, lpKeyName, 0, lpReturnedString);
 	}
-	return 0;  // dummy return value
+	return 0; // dummy return value
 }
 
 int MessageBoxA(HWND hWnd, const char *Text, const char *Title, UINT Flags)

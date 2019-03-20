@@ -222,7 +222,13 @@ class StubPalette : public IDirectDrawPalette {
 	};
 	virtual HRESULT GetEntries(DWORD dwFlags, DWORD dwBase, DWORD dwNumEntries, LPPALETTEENTRY lpEntries)
 	{
-		UNIMPLEMENTED();
+		for (int i = 0; i < dwNumEntries; i++) {
+			lpEntries[i].peFlags = 0;
+			lpEntries[i].peRed = system_palette[i].peRed;
+			lpEntries[i].peGreen = system_palette[i].peGreen;
+			lpEntries[i].peBlue = system_palette[i].peBlue;
+		}
+		return DVL_S_OK;
 	};
 	virtual HRESULT Initialize(LPDIRECTDRAW lpDD, DWORD dwFlags, LPPALETTEENTRY lpDDColorTable)
 	{
@@ -230,7 +236,14 @@ class StubPalette : public IDirectDrawPalette {
 	};
 	virtual HRESULT SetEntries(DWORD dwFlags, DWORD dwStartingEntry, DWORD dwCount, LPPALETTEENTRY lpEntries)
 	{
-		UNIMPLEMENTED();
+		for (int i = 0; i < dwCount; i++) {
+			system_palette[i].peFlags = 0;
+			system_palette[i].peRed = lpEntries[i].peRed;
+			system_palette[i].peGreen = lpEntries[i].peGreen;
+			system_palette[i].peBlue = lpEntries[i].peBlue;
+		}
+		palette_update();
+		return DVL_S_OK;
 	};
 };
 
@@ -448,4 +461,4 @@ void dx_reinit()
 	UNIMPLEMENTED();
 }
 
-}  // namespace dvl
+} // namespace dvl
