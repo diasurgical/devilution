@@ -2609,17 +2609,19 @@ void __fastcall AddBoom(int mi, int sx, int sy, int dx, int dy, int midir, int m
 
 void __fastcall AddHeal(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int i;         
-	signed int HealAmount = (random(57, 10) + 1) << 6;
-	for(i = 0 ; i <  plr[id]._pLevel ; i++){
+	int i;
+	int HealAmount;
+	
+	HealAmount = (random(57, 10) + 1) << 6;
+	for (i = 0; i < plr[id]._pLevel; i++) {
 		HealAmount += (random(57, 4) + 1) << 6;
 	}
 	for (i = 0; i < missile[mi]._mispllvl; i++) {
 		HealAmount += (random(57, 6) + 1) << 6;
 	}
-	
+
 	if (plr[id]._pClass == PC_WARRIOR)
-		HealAmount *= 2;
+		HealAmount += HealAmount;
 
 	if (plr[id]._pClass == PC_ROGUE)
 		HealAmount += HealAmount >> 1;
@@ -2636,10 +2638,6 @@ void __fastcall AddHeal(int mi, int sx, int sy, int dx, int dy, int midir, int m
 	missile[mi]._miDelFlag = TRUE;
 	drawhpflag = TRUE;
 }
-
-
-
-
 
 void __fastcall AddHealOther(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
