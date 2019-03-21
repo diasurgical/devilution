@@ -417,55 +417,38 @@ void __cdecl gendung_418D91()
 
 void __fastcall gendung_4191BF(int frames)
 {
-	int v1;        // edi
-	signed int v2; // eax
-	int i;         // esi
+	int i;
+	BOOL doneflag;
 
-	v1 = frames;
-	v2 = 0;
-	while (v1 > 0 && !v2) {
-		v2 = 1;
-		for (i = 0; i < v1; ++i) {
-			if (level_frame_count[i] < level_frame_count[i + 1]) {
+	doneflag = FALSE;
+	while(frames > 0 && !doneflag) {
+		doneflag = TRUE;
+		for(i = 0; i < frames; i++) {
+			if(level_frame_count[i] < level_frame_count[i + 1]) {
 				gendung_4191FB(i, i + 1);
-				v2 = 0;
+				doneflag = FALSE;
 			}
 		}
-		--v1;
+		frames--;
 	}
 }
 
-void __fastcall gendung_4191FB(int a1, int a2)
+void __fastcall gendung_4191FB(int f1, int f2)
 {
-	int v2;    // esi
-	int *v3;   // edi
-	short *v4; // edx
-	int v5;    // ST10_4
-	int *v6;   // edi
-	int *v7;   // eax
-	int v8;    // ST10_4
-	short *v9; // ecx
-	int v10;   // edx
+	int swap;
 
-	v2 = a2;
-	v3 = &level_frame_count[a1];
-	v4 = &level_frame_types[a2];
-	v2 *= 4;
-	v5 = *v3;
-	*v3 = *(int *)((char *)level_frame_count + v2);
-	v6 = &tile_defs[a1];
-	*(int *)((char *)level_frame_count + v2) = v5;
-	v7 = &level_frame_sizes[a1];
-	v8 = *v6;
-	*v6 = *(int *)((char *)tile_defs + v2);
-	*(int *)((char *)tile_defs + v2) = v8;
-	v9 = &level_frame_types[a1];
-	_LOWORD(v6) = *v9;
-	*v9 = *v4;
-	*v4 = (signed short)v6;
-	v10 = *v7;
-	*v7 = *(int *)((char *)level_frame_sizes + v2);
-	*(int *)((char *)level_frame_sizes + v2) = v10;
+	swap = level_frame_count[f1];
+	level_frame_count[f1] = level_frame_count[f2];
+	level_frame_count[f2] = swap;
+	swap = tile_defs[f1];
+	tile_defs[f1] = tile_defs[f2];
+	tile_defs[f2] = swap;
+	swap = (WORD)level_frame_types[f1];
+	level_frame_types[f1] = level_frame_types[f2];
+	level_frame_types[f2] = swap;
+	swap = level_frame_sizes[f1];
+	level_frame_sizes[f1] = level_frame_sizes[f2];
+	level_frame_sizes[f2] = swap;
 }
 
 int __fastcall gendung_get_dpiece_num_from_coord(int x, int y)
@@ -473,9 +456,9 @@ int __fastcall gendung_get_dpiece_num_from_coord(int x, int y)
 	if (x < MAXDUNY - y)
 		return (y + y * y + x * (x + 2 * y + 3)) / 2;
 
-	x = MAXDUNY - x - 1;
+	x = MAXDUNX - x - 1;
 	y = MAXDUNY - y - 1;
-	return MAXDUNX * MAXDUNY - (y + y * y + x * (x + 2 * y + 3)) / 2 - 1;
+	return MAXDUNX * MAXDUNY - ((y + y * y + x * (x + 2 * y + 3)) / 2 + 1);
 }
 
 void __cdecl gendung_4192C2()

@@ -72,7 +72,7 @@ extern short dpiece_defs_map_2[16][MAXDUNX][MAXDUNY];
 void __cdecl FillSolidBlockTbls();
 void __cdecl gendung_418D91();
 void __fastcall gendung_4191BF(int frames);
-void __fastcall gendung_4191FB(int a1, int a2);
+void __fastcall gendung_4191FB(int f1, int f2);
 int __fastcall gendung_get_dpiece_num_from_coord(int x, int y);
 void __cdecl gendung_4192C2();
 void __cdecl SetDungeonMicros();
