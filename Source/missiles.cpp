@@ -4327,7 +4327,7 @@ void __fastcall MI_Rhino(int i)
 	GetMissilePos(i);
 	omx = missile[i]._mix;
 	omy = missile[i]._miy;
-	if (!PosOkMonst(monst, missile[i]._mix, missile[i]._miy) || monster[monst]._mAi == AI_SNAKE && !PosOkMonst(monst, mix2, miy2)) {
+	if (!PosOkMonst(monst, missile[i]._mix, missile[i]._miy) || (monster[monst]._mAi == AI_SNAKE && !PosOkMonst(monst, mix2, miy2))) {
 		MissToMonst(i, mix, miy);
 		missile[i]._miDelFlag = TRUE;
 		return;
