@@ -4301,69 +4301,48 @@ void __fastcall MI_Boom(int i)
 
 void __fastcall MI_Rhino(int i)
 {
-	int v1;      // ebx
-	int v2;      // esi
-	int v3;      // edi
-	int v4;      // edi
-	int v5;      // eax
-	int v6;      // eax
-	int v7;      // ebx
-	BOOLEAN v8;  // zf
-	int x;       // [esp+Ch] [ebp-1Ch]
-	int v10;     // [esp+10h] [ebp-18h]
-	int y;       // [esp+14h] [ebp-14h]
-	int a2;      // [esp+18h] [ebp-10h]
-	int a3;      // [esp+1Ch] [ebp-Ch]
-	int arglist; // [esp+20h] [ebp-8h]
-	int a1;      // [esp+24h] [ebp-4h]
+	int mix, miy, mix2, miy2, omx, omy, monst;
 
-	v1 = i;
-	v2 = i;
-	arglist = i;
-	v3 = missile[i]._misource;
-	a1 = v3;
-	v4 = v3;
-	if (monster[v4]._mmode != MM_CHARGE)
-		goto LABEL_12;
-	GetMissilePos(i);
-	v5 = missile[v2]._mix;
-	x = v5;
-	v10 = missile[v2]._miy;
-	dMonster[v5][v10] = 0;
-	v6 = missile[v2]._mixvel;
-	if (monster[v4]._mAi == AI_SNAKE) {
-		missile[v2]._mitxoff += 2 * v6;
-		missile[v2]._mityoff += 2 * missile[v2]._miyvel;
-		GetMissilePos(v1);
-		a2 = missile[v2]._mix;
-		a3 = missile[v2]._miy;
-		missile[v2]._mitxoff -= missile[v2]._mixvel;
-		missile[v2]._mityoff -= missile[v2]._miyvel;
-	} else {
-		missile[v2]._mitxoff += v6;
-		missile[v2]._mityoff += missile[v2]._miyvel;
-	}
-	GetMissilePos(v1);
-	v7 = missile[v2]._mix;
-	y = missile[v2]._miy;
-	if (!PosOkMonst(a1, missile[v2]._mix, missile[v2]._miy) || monster[v4]._mAi == AI_SNAKE && !PosOkMonst(a1, a2, a3)) {
-		MissToMonst(arglist, x, v10);
-	LABEL_12:
-		missile[v2]._miDelFlag = TRUE;
+	monst = missile[i]._misource;
+	if (monster[monst]._mmode != MM_CHARGE) {
+		missile[i]._miDelFlag = TRUE;
 		return;
 	}
-	v8 = monster[v4]._uniqtype == 0;
-	monster[v4]._mfutx = v7;
-	monster[v4]._moldx = v7;
-	dMonster[v7][y] = -1 - a1;
-	monster[v4]._mx = v7;
-	monster[v4]._mfuty = y;
-	monster[v4]._moldy = y;
-	monster[v4]._my = y;
-	if (!v8)
-		ChangeLightXY(missile[v2]._mlid, v7, y);
-	MoveMissilePos(arglist);
-	PutMissile(arglist);
+	GetMissilePos(i);
+	mix = missile[i]._mix;
+	miy = missile[i]._miy;
+	dMonster[mix][miy] = 0;
+	if (monster[monst]._mAi == AI_SNAKE) {
+		missile[i]._mitxoff += 2 * missile[i]._mixvel;
+		missile[i]._mityoff += 2 * missile[i]._miyvel;
+		GetMissilePos(i);
+		mix2 = missile[i]._mix;
+		miy2 = missile[i]._miy;
+		missile[i]._mitxoff -= missile[i]._mixvel;
+		missile[i]._mityoff -= missile[i]._miyvel;
+	} else {
+		missile[i]._mitxoff += missile[i]._mixvel;
+		missile[i]._mityoff += missile[i]._miyvel;
+	}
+	GetMissilePos(i);
+	omx = missile[i]._mix;
+	omy = missile[i]._miy;
+	if (!PosOkMonst(monst, missile[i]._mix, missile[i]._miy) || monster[monst]._mAi == AI_SNAKE && !PosOkMonst(monst, mix2, miy2)) {
+		MissToMonst(i, mix, miy);
+		missile[i]._miDelFlag = TRUE;
+		return;
+	}
+	monster[monst]._mfutx = omx;
+	monster[monst]._moldx = omx;
+	dMonster[omx][omy] = -1 - monst;
+	monster[monst]._mx = omx;
+	monster[monst]._mfuty = omy;
+	monster[monst]._moldy = omy;
+	monster[monst]._my = omy;
+	if (monster[monst]._uniqtype != 0)
+		ChangeLightXY(missile[i]._mlid, omx, omy);
+	MoveMissilePos(i);
+	PutMissile(i);
 }
 
 void __fastcall mi_null_32(int i)
