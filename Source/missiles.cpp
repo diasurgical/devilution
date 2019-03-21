@@ -2609,49 +2609,37 @@ void __fastcall AddBoom(int mi, int sx, int sy, int dx, int dy, int midir, int m
 
 void __fastcall AddHeal(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9;         // esi
-	signed int v10; // ebx
-	int v12;        // edi
-	int i;          // ebx
-	int v15;        // ecx
-	int *v16;       // eax
-	int *v17;       // eax
-	int v18;        // esi
-	int v19;        // [esp+Ch] [ebp-8h]
-	int v20;        // [esp+10h] [ebp-4h]
+	int i;         
+	signed int HealAmount = (random(57, 10) + 1) << 6;
+	for(i = 0 ; i <  plr[id]._pLevel ; i++){
+		HealAmount += (random(57, 4) + 1) << 6;
+	}
+	for (i = 0; i < missile[mi]._mispllvl; i++) {
+		HealAmount += (random(57, 6) + 1) << 6;
+	}
+	
+	if (plr[id]._pClass == PC_WARRIOR)
+		HealAmount *= 2;
 
-	v19 = mi;
-	v9 = id;
-	v10 = 0;
-	v12 = (random(57, 10) + 1) << 6;
-	if (plr[id]._pLevel > 0) {
-		do {
-			v12 += (random(57, 4) + 1) << 6;
-			++v10;
-		} while (v10 < plr[v9]._pLevel);
-	}
-	v20 = 0;
-	for (i = v19; v20 < missile[i]._mispllvl; ++v20) {
-		v12 += (random(57, 6) + 1) << 6;
-	}
-	if (plr[v9]._pClass == PC_WARRIOR)
-		v12 *= 2;
-	if (plr[v9]._pClass == PC_ROGUE)
-		v12 += v12 >> 1;
-	v15 = plr[v9]._pMaxHP;
-	v16 = &plr[v9]._pHitPoints;
-	*v16 += v12;
-	if (plr[v9]._pHitPoints > v15)
-		*v16 = v15;
-	v17 = &plr[v9]._pHPBase;
-	v18 = plr[v9]._pMaxHPBase;
-	*v17 += v12;
-	if (*v17 > v18)
-		*v17 = v18;
+	if (plr[id]._pClass == PC_ROGUE)
+		HealAmount += HealAmount >> 1;
+
+	plr[id]._pHitPoints += HealAmount;
+	if (plr[id]._pHitPoints > plr[id]._pMaxHP)
+		plr[id]._pHitPoints = plr[id]._pMaxHP;
+
+	plr[id]._pHPBase += HealAmount;
+	if (plr[id]._pHPBase > plr[id]._pMaxHPBase)
+		plr[id]._pHPBase = plr[id]._pMaxHPBase;
+
 	UseMana(id, 2);
-	missile[i]._miDelFlag = TRUE;
+	missile[mi]._miDelFlag = TRUE;
 	drawhpflag = TRUE;
 }
+
+
+
+
 
 void __fastcall AddHealOther(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
