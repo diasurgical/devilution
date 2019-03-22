@@ -125,7 +125,6 @@ function build_all_x86 (){
 
 function build_all_x64 (){
     brew install sdl2 sdl2_mixer sdl2_ttf libsodium
-    brew upgrade cmake
     mkdir build
     cd build
     cmake ..

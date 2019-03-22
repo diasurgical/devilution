@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.7)
 
 include(CMake/out_of_tree.cmake)
 
@@ -35,6 +35,11 @@ if(NIGHTLY_BUILD)
   set(FASTER ON)
 endif()
 
+if(WIN32)
+  set(ASAN OFF)
+  set(DIST ON)
+endif()
+
 if(DIST)
   set(sodium_USE_STATIC_LIBS ON)
 endif()
@@ -67,7 +72,7 @@ add_library(Radon STATIC
   3rdParty/Radon/Radon/source/Named.cpp
   3rdParty/Radon/Radon/source/Section.cpp)
 
-add_library(StormLib OBJECT
+add_library(StormLib STATIC
   3rdParty/StormLib/src/FileStream.cpp
   3rdParty/StormLib/src/SBaseCommon.cpp
   3rdParty/StormLib/src/SBaseFileTable.cpp
@@ -80,11 +85,11 @@ add_library(StormLib OBJECT
   3rdParty/StormLib/src/SFileOpenFileEx.cpp
   3rdParty/StormLib/src/SFileReadFile.cpp)
 
-add_library(PKWare OBJECT
+add_library(PKWare STATIC
   3rdParty/PKWare/explode.cpp
   3rdParty/PKWare/implode.cpp)
 
-add_library(devilution OBJECT
+add_library(devilution STATIC
   Source/appfat.cpp
   Source/automap.cpp
   Source/capture.cpp

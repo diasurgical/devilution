@@ -5,9 +5,6 @@ SET(CMAKE_SYSTEM_NAME Windows)
 # workaround
 list(APPEND CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES "${CROSS_PREFIX}/i686-w64-mingw32/include")
 
-set(ASAN OFF)
-set(DIST ON)
-
 SET(CMAKE_C_COMPILER   "i686-w64-mingw32-gcc")
 SET(CMAKE_CXX_COMPILER "i686-w64-mingw32-g++")
 
