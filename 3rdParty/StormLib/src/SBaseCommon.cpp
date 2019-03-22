@@ -1708,6 +1708,7 @@ bool VerifyDataBlockHash(void * pvDataBlock, DWORD cbDataBlock, LPBYTE expected_
     return (memcmp(md5_digest, expected_md5, MD5_DIGEST_SIZE) == 0);
 #else
 	assert(0);
+	return false;
 #endif
 }
 
