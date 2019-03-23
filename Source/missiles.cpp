@@ -1657,7 +1657,8 @@ void __fastcall AddRndTeleport(int mi, int sx, int sy, int dx, int dy, int midir
 
 	nTries = 0;
 	do {
-		if (++nTries > 500) {
+		nTries++;
+		if (nTries > 500) {
 			r1 = 0;
 			r2 = 0;
 			break;
