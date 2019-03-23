@@ -81,7 +81,7 @@ Below are a few examples of some simple improvements made to the game. It is pla
 
 > Wow, does this mean I can download and play Diablo for free now?
 
-No, you'll need access to the data from the original game. Blizzard discontinued Diablo, but it is available on the GoG platform. Additionally there are plenty of used copies for sale online. (I'm still using an original 1996-disc without problems)
+No, you'll need access to the data from the original game. Blizzard discontinued Diablo, but it is available on the GOG.com platform. Additionally there are plenty of used copies for sale online. (I'm still using an original 1996-disc without problems)
 > Cool, so I fired your mod up, but there's no 1080p or new features?
 
 Devilution aims to keep the original code unaltered, for documentation purposes.
