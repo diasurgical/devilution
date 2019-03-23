@@ -14,7 +14,7 @@ Status | Platform
  - Install SDL2 (including SDL2_mixer and SDL2_ttf) make sure to get the appropriate 32bit or 64bit version.
  - Run `./devilutionx`
 
-Please keep in mind that this is still being worked on and is missing parts of UI and some minor bugs: https://github.com/diasurgical/devilutionX/milestone/1
+Please keep in mind that this is still being worked on and is missing parts of UI and some minor bugs, see [milestone 1](https://github.com/diasurgical/devilutionX/milestone/1) for a full list of known issues.
 
 # Building from Source
 ## 32-bit building on 64-bit platforms
