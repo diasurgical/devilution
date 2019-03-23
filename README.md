@@ -17,8 +17,22 @@ Diablo build for modern operating systems
  - Install SDL2 (including SDL2_mixer and SDL2_ttf) make sure to get the appropriate 32bit or 64bit version.
  - Run `./devilutionx`
 
+### Building deviltuionX 32-bit on 64-bit Linux (multilib) platforms
+Install the dependencies on your machine:
+```
+sudo apt-get install cmake g++-multilib libsdl2-dev:i386 libsdl2-mixer-dev:i386 libsdl2-ttf-dev:i386 libsodium-dev libsodium-dev:i386
+```
+
+Now run the following commands:
+```
+mkdir build
+cd build
+linux32 cmake -DCMAKE_TOOLCHAIN_FILE=../CMake/32bit.cmake ..
+linux32 make -j$(nproc)
+```
+
 ### Building devilutionX (native Linux build)
-Note: Since 64-bit builds are currently not in a playable state, it is advised to build in a 32-bit environment. Another possibility is a 32-bit build on a multilib system (see below).
+*Note: Since 64-bit builds are currently not in a playable state, it is advised to build in a 32-bit environment. Another possibility is a 32-bit build on a multilib system (see below).*
 
 Install the dependencies on your machine:
 ```
@@ -44,20 +58,6 @@ The default build type is `Debug`. This can be changed with `-DBINARY_RELEASE=ON
  - Run `./devilution`
 
 Please keep in mind that this is still being worked on and is missing parts of UI and SoundEffects are not properly playing now.
-
-### Building deviltuionX 32-bit on 64-bit Linux (multilib) platforms
-Install the dependencies on your machine:
-```
-sudo apt-get install cmake g++-multilib libsdl2-dev:i386 libsdl2-mixer-dev:i386 libsdl2-ttf-dev:i386 libsodium-dev libsodium-dev:i386
-```
-
-Now run the following commands:
-```
-mkdir build
-cd build
-linux32 cmake -DCMAKE_TOOLCHAIN_FILE=../CMake/32bit.cmake ..
-linux32 make -j$(nproc)
-```
 
 ### Cross-compiling for Windows via MinGW
 Install the dependencies on your machine:
