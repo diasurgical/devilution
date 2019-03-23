@@ -68,14 +68,17 @@ Devilution is functional over both GoG's Battle.net server and IPX using an ipx-
 Below are a few examples of some simple improvements made to the game. It is planned in the future to create tools for designing dungeons and graphics.
 
 <details><summary>Example 1: Monster lifebar and item highlighting</summary>
+
 ![Monster lifebar+items](https://github.com/diasurgical/scalpel/blob/master/screens/mod1.png)
 </details>
 <details><summary>Example 2: New Diablo 2-like trade screen</summary>
+
 ![New trade screen](https://github.com/diasurgical/scalpel/blob/master/screens/mod2.png)
 </details>
 
 # F.A.Q.
 <details><summary>Click to reveal</summary>
+
 > Wow, does this mean I can download and play Diablo for free now?
 
 No, you'll need access to the data from the original game. Blizzard discontinued Diablo, but it is available on the GoG platform. Additionally there are plenty of used copies for sale online. (I'm still using an original 1996-disc without problems)
