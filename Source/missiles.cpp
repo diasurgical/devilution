@@ -1653,7 +1653,7 @@ void __fastcall GetVileMissPos(int mi, int dx, int dy)
 
 void __fastcall AddRndTeleport(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int pn, r1, r2, dirok, nTries;
+	int pn, r1, r2, nTries;
 
 	nTries = 0;
 	do {
@@ -1680,7 +1680,6 @@ void __fastcall AddRndTeleport(int mi, int sx, int sy, int dx, int dy, int midir
 			UseMana(id, 10);
 	} else {
 		pn = dObject[dx][dy] - 1;
-		
 		if (object[pn]._otype == OBJ_MCIRCLE1 || object[pn]._otype == OBJ_MCIRCLE2) {
 			missile[mi]._mix = dx;
 			missile[mi]._miy = dy;
