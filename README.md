@@ -31,9 +31,9 @@ All games are encrypted and password protected.
 # Modding
 Here are some screenshots to demonstrate the relative ease of improving the game:
 
-![Screenshot 1: Monster lifebar+items](https://s33.postimg.cc/6xnnhhlmn/diabuimon.png "Monster lifebar+items")
+![Screenshot 1: Monster lifebar+items](https://github.com/diasurgical/scalpel/blob/master/screens/mod1.png)
 
-![Screenshot 2: New trade screen](https://s22.postimg.cc/5i5k91vht/diabstore.png "New trade screen, items that couldn't spawn")
+![Screenshot 2: New trade screen](https://github.com/diasurgical/scalpel/blob/master/screens/mod2.png)
 
 # F.A.Q.
 > Wow, does this mean I can download and play Diablo for free now?
