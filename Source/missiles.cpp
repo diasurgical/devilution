@@ -1724,71 +1724,34 @@ void __fastcall miss_null_33(int mi, int sx, int sy, int dx, int dy, int midir, 
 
 void __fastcall AddTeleport(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9;          // esi
-	int v10;         // eax
-	int v11;         // ecx
-	char *v12;       // edx
-	int v13;         // ecx
-	int v14;         // eax
-	int v15;         // edx
-	int v16;         // ebx
-	int v17;         // edi
-	int v18;         // edx
-	int CrawlNum[6]; // [esp+Ch] [ebp-28h]
-	int v20;         // [esp+24h] [ebp-10h]
-	char *v21;       // [esp+28h] [ebp-Ch]
-	int v22;         // [esp+2Ch] [ebp-8h]
-	int v23;         // [esp+30h] [ebp-4h]
+	int i, pn, k, j, tx, ty;
+	int CrawlNum[6] = { 0, 3, 12, 45, 94, 159 };
 
-	CrawlNum[0] = 0;
-	v9 = mi;
-	v23 = 0;
-	CrawlNum[1] = 3;
-	CrawlNum[2] = 12;
-	CrawlNum[3] = 45;
-	CrawlNum[4] = 94;
-	CrawlNum[5] = 159;
 	missile[mi]._miDelFlag = TRUE;
-	do {
-		v10 = CrawlNum[v23];
-		v11 = (unsigned char)CrawlTable[v10];
-		v22 = (unsigned char)CrawlTable[v10];
-		if (v11 <= 0)
-			goto LABEL_13;
-		v12 = &CrawlTable[v10 + 2];
-		v21 = &CrawlTable[v10 + 2];
-		while (1) {
-			v13 = dx + (char)*(v12 - 1);
-			v14 = dy + (char)*v12;
-			if (v13 <= 0 || v13 >= MAXDUNX || v14 <= 0 || v14 >= MAXDUNY)
-				goto LABEL_10;
-			v15 = v14 + 112 * v13;
-			v16 = dPlayer[0][v15];
-			v17 = v15;
-			v18 = dObject[0][v15];
-			v20 = v17 * 4;
-			if (!(dMonster[0][v17] | v18 | v16 | nSolidTable[dPiece[0][v17]]))
-				break;
-			v12 = v21;
-		LABEL_10:
-			v12 += 2;
-			--v22;
-			v21 = v12;
-			if (v22 <= 0)
-				goto LABEL_13;
+	for (i = 0; i < 6; i++) {
+		k = CrawlNum[i];
+		pn = k + 2;
+		for (j = (unsigned char)CrawlTable[k]; j > 0; j--) {
+			tx = dx + CrawlTable[pn - 1];
+			ty = dy + CrawlTable[pn];
+			if (0 < tx && tx < MAXDUNX && 0 < ty && ty < MAXDUNY) {
+				if (!(dMonster[tx][ty] | dObject[tx][ty] | dPlayer[tx][ty] | nSolidTable[dPiece[tx][ty]])) {
+					missile[mi]._miDelFlag = FALSE;
+					missile[mi]._mix = tx;
+					missile[mi]._miy = ty;
+					missile[mi]._misx = tx;
+					missile[mi]._misy = ty;
+					i = 6;
+					break;
+				}
+			}
+			pn += 2;
 		}
-		missile[v9]._miDelFlag = FALSE;
-		missile[v9]._mix = v13;
-		missile[v9]._miy = v14;
-		missile[v9]._misx = v13;
-		missile[v9]._misy = v14;
-		v23 = 6;
-	LABEL_13:
-		++v23;
-	} while (v23 < 6);
-	if (!missile[v9]._miDelFlag) {
+	}
+
+	if (!missile[mi]._miDelFlag) {
 		UseMana(id, 23);
-		missile[v9]._mirange = 2;
+		missile[mi]._mirange = 2;
 	}
 }
 
