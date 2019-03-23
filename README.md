@@ -8,9 +8,6 @@ Status | Platform
 
 [Discord Channel](https://discord.gg/aQBQdDe)
 
-# DevilutionX
-Diablo build for modern operating systems
-
 # How To Play:
  - Copy diabdat.mpq from your CD, or GoG install folder, to the DevilutionX game directory ; Make sure it is all lowercase.
  - [Download DevilutionX](https://github.com/diasurgical/devilutionX/releases), or build from source
