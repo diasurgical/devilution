@@ -2611,7 +2611,7 @@ void __fastcall AddHeal(int mi, int sx, int sy, int dx, int dy, int midir, int m
 {
 	int i;
 	int HealAmount;
-	
+
 	HealAmount = (random(57, 10) + 1) << 6;
 	for (i = 0; i < plr[id]._pLevel; i++) {
 		HealAmount += (random(57, 4) + 1) << 6;
@@ -2688,74 +2688,40 @@ void __fastcall AddIdentify(int mi, int sx, int sy, int dx, int dy, int midir, i
 
 void __fastcall AddFirewallC(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9;    // esi
-	int v10;   // eax
-	int v11;   // ecx
-	char *v12; // eax
-	int v13;   // ebx
-	int v14;   // edi
-	//int v15; // eax
-	int CrawlNum[6]; // [esp+Ch] [ebp-30h]
-	int v17;         // [esp+24h] [ebp-18h]
-	int v18;         // [esp+28h] [ebp-14h]
-	char *v19;       // [esp+2Ch] [ebp-10h]
-	int x1;          // [esp+30h] [ebp-Ch]
-	int v21;         // [esp+34h] [ebp-8h]
-	int v22;         // [esp+38h] [ebp-4h]
+	int i, j, k, tx, ty, pn;
+	int CrawlNum[6] = { 0, 3, 12, 45, 94, 159 };
 
-	CrawlNum[0] = 0;
-	v9 = mi;
-	v22 = 0;
-	x1 = sx;
-	CrawlNum[1] = 3;
-	CrawlNum[2] = 12;
-	CrawlNum[3] = 45;
-	CrawlNum[4] = 94;
-	CrawlNum[5] = 159;
 	missile[mi]._miDelFlag = TRUE;
-	do {
-		v10 = CrawlNum[v22];
-		v11 = (unsigned char)CrawlTable[v10];
-		v21 = (unsigned char)CrawlTable[v10];
-		if (v11 <= 0)
-			goto LABEL_16;
-		v12 = &CrawlTable[v10 + 2];
-		v19 = v12;
-		while (1) {
-			v13 = dx + (char)*(v12 - 1);
-			v14 = dy + (char)*v12;
-			if (v13 <= 0 || v13 >= MAXDUNX || v14 <= 0 || v14 >= MAXDUNY)
-				goto LABEL_13;
-			v18 = v14 + 112 * v13;
-			v17 = dPiece[0][v18];
-			//_LOBYTE(v15) = LineClear(x1, sy, v13, v14);
-			if (LineClear(x1, sy, v13, v14)) {
-				if ((x1 != v13 || sy != v14) && !(nSolidTable[v17] | dObject[0][v18]))
-					break;
+	for (i = 0; i < 6; i++) {
+		k = CrawlNum[i];
+		pn = k + 2;
+		for (j = (unsigned char)CrawlTable[k]; j > 0; j--) {
+			tx = dx + CrawlTable[pn - 1];
+			ty = dy + CrawlTable[pn];
+			if (0 < tx && tx < MAXDUNX && 0 < ty && ty < MAXDUNY) {
+				k = dPiece[tx][ty];
+				if (LineClear(sx, sy, tx, ty)) {
+					if ((sx != tx || sy != ty) && !(nSolidTable[k] | dObject[tx][ty])) {
+						missile[mi]._miDelFlag = FALSE;
+						missile[mi]._miVar1 = tx;
+						missile[mi]._miVar2 = ty;
+						missile[mi]._miVar5 = tx;
+						missile[mi]._miVar6 = ty;
+						i = 6;
+						break;
+					}
+				}
 			}
-			v12 = v19;
-		LABEL_13:
-			v12 += 2;
-			--v21;
-			v19 = v12;
-			if (v21 <= 0)
-				goto LABEL_16;
+			pn += 2;
 		}
-		missile[v9]._miDelFlag = FALSE;
-		missile[v9]._miVar1 = v13;
-		missile[v9]._miVar2 = v14;
-		missile[v9]._miVar5 = v13;
-		missile[v9]._miVar6 = v14;
-		v22 = 6;
-	LABEL_16:
-		++v22;
-	} while (v22 < 6);
-	if (missile[v9]._miDelFlag != TRUE) {
-		missile[v9]._miVar7 = 0;
-		missile[v9]._miVar8 = 0;
-		missile[v9]._miVar3 = (midir - 2) & 7;
-		missile[v9]._mirange = 7;
-		missile[v9]._miVar4 = (midir + 2) & 7;
+	}
+
+	if (missile[mi]._miDelFlag != TRUE) {
+		missile[mi]._miVar7 = 0;
+		missile[mi]._miVar8 = 0;
+		missile[mi]._miVar3 = (midir - 2) & 7;
+		missile[mi]._miVar4 = (midir + 2) & 7;
+		missile[mi]._mirange = 7;
 		UseMana(id, 6);
 	}
 }
