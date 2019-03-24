@@ -433,68 +433,26 @@ BOOL __fastcall CheckBlock(int fx, int fy, int tx, int ty)
 
 int __fastcall FindClosest(int sx, int sy, int rad)
 {
-	int v3;           // eax
-	int v4;           // eax
-	int v5;           // ebx
-	char *v6;         // esi
-	int v7;           // eax
-	int v8;           // ecx
-	int v9;           // edi
-	int CrawlNum[19]; // [esp+0h] [ebp-58h]
-	int fy;           // [esp+4Ch] [ebp-Ch]
-	int v13;          // [esp+50h] [ebp-8h]
-	int fx;           // [esp+54h] [ebp-4h]
+	int j, i, mid, tx, ty, cr;
+	int CrawlNum[19] = { 0, 3, 12, 45, 94, 159, 240, 337, 450, 579, 724, 885, 1062, 1255, 1464, 1689, 1930, 2187, 2460 };
 
-	CrawlNum[0] = 0;
-	fy = sy;
-	fx = sx;
-	CrawlNum[1] = 3;
-	CrawlNum[2] = 12;
-	CrawlNum[3] = 45;
-	CrawlNum[4] = 94;
-	CrawlNum[5] = 159;
-	CrawlNum[6] = 240;
-	CrawlNum[7] = 337;
-	CrawlNum[8] = 450;
-	CrawlNum[9] = 579;
-	CrawlNum[10] = 724;
-	CrawlNum[11] = 885;
-	CrawlNum[12] = 1062;
-	CrawlNum[13] = 1255;
-	CrawlNum[14] = 1464;
-	CrawlNum[15] = 1689;
-	CrawlNum[16] = 1930;
-	CrawlNum[17] = 2187;
-	CrawlNum[18] = 2460;
 	if (rad > 19)
 		rad = 19;
-	v3 = 1;
-	v13 = 1;
-	if (rad <= 1)
-		return -1;
-	while (1) {
-		v4 = CrawlNum[v3];
-		v5 = (unsigned char)CrawlTable[v4];
-		if (v5 > 0)
-			break;
-	LABEL_13:
-		v3 = v13++ + 1;
-		if (v13 >= rad)
-			return -1;
-	}
-	v6 = &CrawlTable[v4 + 2];
-	while (1) {
-		v7 = fx + (char)*(v6 - 1);
-		v8 = fy + (char)*v6;
-		if (v7 > 0 && v7 < MAXDUNX && v8 > 0 && v8 < MAXDUNY) {
-			v9 = dMonster[v7][v8];
-			if (v9 > 0 && !CheckBlock(fx, fy, v7, fy + (char)*v6))
-				return v9 - 1;
+
+	for (i = 1; i < rad; i++) {
+		cr = CrawlNum[i] + 2;
+		for (j = (unsigned char)CrawlTable[CrawlNum[i]]; j > 0; j--) {
+			tx = sx + CrawlTable[cr - 1];
+			ty = sy + CrawlTable[cr];
+			if (tx > 0 && tx < MAXDUNX && ty > 0 && ty < MAXDUNY) {
+				mid = dMonster[tx][ty];
+				if (mid > 0 && !CheckBlock(sx, sy, tx, ty))
+					return mid - 1;
+			}
+			cr += 2;
 		}
-		v6 += 2;
-		if (--v5 <= 0)
-			goto LABEL_13;
 	}
+	return -1;
 }
 
 int __fastcall GetSpellLevel(int id, int sn)
