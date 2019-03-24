@@ -3923,88 +3923,33 @@ void __fastcall MI_Guardian(int i)
 
 void __fastcall MI_Chain(int i)
 {
-	int v1;           // esi
-	int ST1C_4_1;     // ST1C_4
-	int v3;           // edi
-	int v4;           // ebx
-	int v5;           // eax
-	int v6;           // ST18_4
-	int v7;           // eax
-	int v8;           // edi
-	int v9;           // ecx
-	int v10;          // eax
-	char *v11;        // ecx
-	int v12;          // ebx
-	int v13;          // eax
-	int v14;          // eax
-	BOOLEAN v15;      // zf
-	int CrawlNum[19]; // [esp+Ch] [ebp-68h]
-	int v2;           // [esp+58h] [ebp-1Ch]
-	int v18;          // [esp+5Ch] [ebp-18h]
-	char *v19;        // [esp+60h] [ebp-14h]
-	int id;           // [esp+64h] [ebp-10h]
-	int sx;           // [esp+68h] [ebp-Ch]
-	int sy;           // [esp+6Ch] [ebp-8h]
-	int j;            // [esp+70h] [ebp-4h]
+	int sx, sy, id, l, n, m, k, rad, tx, ty, dir;
+	int CrawlNum[19] = { 0, 3, 12, 45, 94, 159, 240, 337, 450, 579, 724, 885, 1062, 1255, 1464, 1689, 1930, 2187, 2460 };
 
-	CrawlNum[0] = 0;
-	v1 = i;
-	CrawlNum[1] = 3;
-	ST1C_4_1 = missile[i]._miVar2;
-	v3 = missile[i]._mix;
-	v4 = missile[i]._miy;
-	v5 = missile[i]._misource;
-	v6 = missile[i]._miVar1;
-	CrawlNum[2] = 12;
-	CrawlNum[3] = 45;
-	CrawlNum[4] = 94;
-	CrawlNum[5] = 159;
-	CrawlNum[6] = 240;
-	CrawlNum[7] = 337;
-	CrawlNum[8] = 450;
-	CrawlNum[9] = 579;
-	CrawlNum[10] = 724;
-	CrawlNum[11] = 885;
-	CrawlNum[12] = 1062;
-	CrawlNum[13] = 1255;
-	CrawlNum[14] = 1464;
-	CrawlNum[15] = 1689;
-	CrawlNum[16] = 1930;
-	CrawlNum[17] = 2187;
-	CrawlNum[18] = 2460;
-	id = v5;
-	sx = v3;
-	sy = v4;
-	v7 = GetDirection(v3, v4, v6, ST1C_4_1);
-	AddMissile(v3, v4, missile[v1]._miVar1, missile[v1]._miVar2, v7, MIS_LIGHTCTRL, 0, id, 1, missile[v1]._mispllvl);
-	v8 = missile[v1]._mispllvl + 3;
-	if (v8 > 19)
-		v8 = 19;
-	for (j = 1; j < v8; ++j) {
-		v9 = CrawlNum[j];
-		v10 = (unsigned char)CrawlTable[v9];
-		if (v10 > 0) {
-			v11 = &CrawlTable[v9 + 2];
-			v18 = v10;
-			v19 = v11;
-			do {
-				v12 = sx + (char)*(v11 - 1);
-				v13 = sy + (char)*v11;
-				v2 = sy + (char)*v11;
-				if (v12 > 0 && v12 < MAXDUNX && v13 > 0 && v13 < MAXDUNY && dMonster[v12][v13] > 0) {
-					v14 = GetDirection(sx, sy, v12, v13);
-					AddMissile(sx, sy, v12, v2, v14, MIS_LIGHTCTRL, 0, id, 1, missile[v1]._mispllvl);
-					v11 = v19;
-				}
-				v11 += 2;
-				v15 = v18-- == 1;
-				v19 = v11;
-			} while (!v15);
+	id = missile[i]._misource;
+	sx = missile[i]._mix;
+	sy = missile[i]._miy;
+	dir = GetDirection(sx, sy, missile[i]._miVar1, missile[i]._miVar2);
+	AddMissile(sx, sy, missile[i]._miVar1, missile[i]._miVar2, dir, MIS_LIGHTCTRL, 0, id, 1, missile[i]._mispllvl);
+	rad = missile[i]._mispllvl + 3;
+	if (rad > 19)
+		rad = 19;
+	for (m = 1; m < rad; m++) {
+		k = CrawlNum[m];
+		l = k + 2;
+		for (n = (unsigned char)CrawlTable[k]; n > 0; n--) {
+			tx = sx + CrawlTable[l - 1];
+			ty = sy + CrawlTable[l];
+			if (tx > 0 && tx < MAXDUNX && ty > 0 && ty < MAXDUNY && dMonster[tx][ty] > 0) {
+				dir = GetDirection(sx, sy, tx, ty);
+				AddMissile(sx, sy, tx, ty, dir, MIS_LIGHTCTRL, 0, id, 1, missile[i]._mispllvl);
+			}
+			l += 2;
 		}
 	}
-	v15 = missile[v1]._mirange-- == 1;
-	if (v15)
-		missile[v1]._miDelFlag = TRUE;
+	missile[i]._mirange--;
+	if (!missile[i]._mirange)
+		missile[i]._miDelFlag = TRUE;
 }
 
 void __fastcall mi_null_11(int i)
