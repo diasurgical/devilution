@@ -4481,7 +4481,7 @@ void __fastcall MI_Apoca(int i)
 		}
 	}
 
-	if (exit == 1) {
+	if (exit == TRUE) {
 		missile[i]._miVar2 = j - 1;
 		missile[i]._miVar4 = k;
 	} else {
