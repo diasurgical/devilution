@@ -4473,7 +4473,7 @@ void __fastcall MI_Apoca(int i)
 		for (k = missile[i]._miVar4; k < missile[i]._miVar5 && !exit; k++) {
 			if (dMonster[k][j] > 3 && !nSolidTable[dPiece[k][j]]) {
 				AddMissile(k, j, k, j, plr[id]._pdir, MIS_BOOM, 0, id, missile[i]._midam, 0);
-				exit = 1;
+				exit = TRUE;
 			}
 		}
 		if (!exit) {
