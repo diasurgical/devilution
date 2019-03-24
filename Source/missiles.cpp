@@ -2611,7 +2611,7 @@ void __fastcall AddHeal(int mi, int sx, int sy, int dx, int dy, int midir, int m
 {
 	int i;
 	int HealAmount;
-	
+
 	HealAmount = (random(57, 10) + 1) << 6;
 	for (i = 0; i < plr[id]._pLevel; i++) {
 		HealAmount += (random(57, 4) + 1) << 6;
@@ -4464,54 +4464,27 @@ void __fastcall MI_Infra(int i)
 
 void __fastcall MI_Apoca(int i)
 {
-	int v1;        // esi
-	int v2;        // edi
-	signed int v3; // eax
-	int v4;        // ecx
-	int v5;        // ebx
-	int id;        // [esp+8h] [ebp-8h]
-	int v7;        // [esp+Ch] [ebp-4h]
+	int j, k, id, exit;
 
-	v1 = i;
-	v2 = missile[i]._miVar2;
 	id = missile[i]._misource;
-	v3 = 0;
-	if (v2 >= missile[i]._miVar3)
-		goto LABEL_18;
-	do {
-		if (v3)
-			break;
-		v4 = missile[v1]._miVar4;
-		v7 = missile[v1]._miVar4;
-		if (v4 >= missile[v1]._miVar5) {
-		LABEL_11:
-			missile[v1]._miVar4 = missile[v1]._miVar6;
-		} else {
-			v5 = v2 + 112 * v4;
-			while (!v3) {
-				if (dMonster[0][v5] > 3 && !nSolidTable[dPiece[0][v5]]) {
-					AddMissile(v4, v2, v4, v2, plr[id]._pdir, MIS_BOOM, 0, id, missile[v1]._midam, 0);
-					v4 = v7;
-					v3 = 1;
-				}
-				++v4;
-				v5 += 112;
-				v7 = v4;
-				if (v4 >= missile[v1]._miVar5) {
-					if (v3)
-						break;
-					goto LABEL_11;
-				}
+	exit = 0;
+	for (j = missile[i]._miVar2; j < missile[i]._miVar3 && !exit; j++) {
+		for (k = missile[i]._miVar4; k < missile[i]._miVar5 && !exit; k++) {
+			if (dMonster[k][j] > 3 && !nSolidTable[dPiece[k][j]]) {
+				AddMissile(k, j, k, j, plr[id]._pdir, MIS_BOOM, 0, id, missile[i]._midam, 0);
+				exit = 1;
 			}
 		}
-		++v2;
-	} while (v2 < missile[v1]._miVar3);
-	if (v3 != 1) {
-	LABEL_18:
-		missile[v1]._miDelFlag = TRUE;
+		if (!exit) {
+			missile[i]._miVar4 = missile[i]._miVar6;
+		}
+	}
+
+	if (exit == 1) {
+		missile[i]._miVar2 = j - 1;
+		missile[i]._miVar4 = k;
 	} else {
-		missile[v1]._miVar2 = v2 - 1;
-		missile[v1]._miVar4 = v7;
+		missile[i]._miDelFlag = TRUE;
 	}
 }
 
