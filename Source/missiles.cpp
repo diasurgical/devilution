@@ -1653,54 +1653,39 @@ void __fastcall GetVileMissPos(int mi, int dx, int dy)
 
 void __fastcall AddRndTeleport(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9;      // eax
-	int v11;     // esi
-	int v12;     // eax
-	int v14;     // edi
-	int v16;     // eax
-	BOOLEAN v17; // zf
-	int v18;     // ecx
-	int v19;     // ecx
-	int v20;     // [esp+Ch] [ebp-Ch]
-	int mia;     // [esp+10h] [ebp-8h]
-	int v22;     // [esp+14h] [ebp-4h]
+	int pn, r1, r2, nTries;
 
-	v22 = 0;
-	v20 = sx;
-	mia = mi;
-	while (++v22 <= 500) {
-		v9 = random(58, 3);
-		v11 = v9 + 4;
-		v12 = random(58, 3);
-		v14 = v12 + 4;
+	nTries = 0;
+	do {
+		nTries++;
+		if (nTries > 500) {
+			r1 = 0;
+			r2 = 0;
+			break;
+		}
+		r1 = random(58, 3) + 4;
+		r2 = random(58, 3) + 4;
 		if (random(58, 2) == 1)
-			v11 = -v11;
+			r1 = -r1;
 		if (random(58, 2) == 1)
-			v14 = -v14;
-		mi = 4 * (sy + v14 + 112 * (v11 + v20));
-		if (!nSolidTable[dPiece[0][mi / 4u]] && !dObject[v11 + v20][sy + v14] && !dMonster[0][mi / 4u])
-			goto LABEL_12;
-	}
-	v11 = 0;
-	v14 = 0;
-LABEL_12:
-	v16 = mia;
-	missile[v16]._miVar1 = 0;
-	v17 = setlevel == 0;
-	missile[v16]._mirange = 2;
-	if (v17 || setlvlnum != SL_VILEBETRAYER) {
-		missile[v16]._mix = v20 + v11;
-		missile[v16]._miy = sy + v14;
+			r2 = -r2;
+
+	} while (nSolidTable[dPiece[r1 + sx][sy + r2]] || dObject[r1 + sx][sy + r2] || dMonster[r1 + sx][sy + r2]);
+
+	missile[mi]._miVar1 = 0;
+	missile[mi]._mirange = 2;
+	if (setlevel == 0 || setlvlnum != SL_VILEBETRAYER) {
+		missile[mi]._mix = sx + r1;
+		missile[mi]._miy = sy + r2;
 		if (!(_BYTE)mienemy)
 			UseMana(id, 10);
 	} else {
-		v18 = object[dObject[dx][dy] - 1]._otype;
-		if (v18 == OBJ_MCIRCLE1 || v18 == OBJ_MCIRCLE2) {
-			v19 = myplr;
-			missile[v16]._mix = dx;
-			missile[v16]._miy = dy;
-			if (!PosOkPlayer(v19, dx, dy))
-				GetVileMissPos(mia, dx, dy);
+		pn = dObject[dx][dy] - 1;
+		if (object[pn]._otype == OBJ_MCIRCLE1 || object[pn]._otype == OBJ_MCIRCLE2) {
+			missile[mi]._mix = dx;
+			missile[mi]._miy = dy;
+			if (!PosOkPlayer(myplr, dx, dy))
+				GetVileMissPos(mi, dx, dy);
 		}
 	}
 }
@@ -2611,7 +2596,7 @@ void __fastcall AddHeal(int mi, int sx, int sy, int dx, int dy, int midir, int m
 {
 	int i;
 	int HealAmount;
-	
+
 	HealAmount = (random(57, 10) + 1) << 6;
 	for (i = 0; i < plr[id]._pLevel; i++) {
 		HealAmount += (random(57, 4) + 1) << 6;
