@@ -4468,7 +4468,7 @@ void __fastcall MI_Apoca(int i)
 	BOOL exit;
 
 	id = missile[i]._misource;
-	exit = 0;
+	exit = FALSE;
 	for (j = missile[i]._miVar2; j < missile[i]._miVar3 && !exit; j++) {
 		for (k = missile[i]._miVar4; k < missile[i]._miVar5 && !exit; k++) {
 			if (dMonster[k][j] > 3 && !nSolidTable[dPiece[k][j]]) {
