@@ -2078,119 +2078,57 @@ void __fastcall AddFiremove(int mi, int sx, int sy, int dx, int dy, int midir, i
 
 void __fastcall AddGuardian(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9;    // edi
-	int v10;   // esi
-	int v11;   // esi
-	int v12;   // eax
-	int v13;   // ecx
-	int v14;   // eax
-	int v15;   // ecx
-	char *v16; // eax
-	int v17;   // ebx
-	int v18;   // edi
-	//int v19; // eax
-	int v20;          // edx
-	int v21;          // ecx
-	int v22;          // eax
-	int v23;          // ecx
-	int v24;          // eax
-	int v25;          // eax
-	int v26;          // eax
-	int v27;          // eax
-	int CrawlNum[6];  // [esp+8h] [ebp-38h]
-	unsigned int v29; // [esp+20h] [ebp-20h]
-	int v30;          // [esp+24h] [ebp-1Ch]
-	int v31;          // [esp+28h] [ebp-18h]
-	int x1;           // [esp+2Ch] [ebp-14h]
-	int v33;          // [esp+30h] [ebp-10h]
-	char *v34;        // [esp+34h] [ebp-Ch]
-	int v35;          // [esp+38h] [ebp-8h]
-	int v36;          // [esp+3Ch] [ebp-4h]
+	int i, pn, k, j, tx, ty;
+	int CrawlNum[6] = { 0, 3, 12, 45, 94, 159 };
 
-	CrawlNum[0] = 0;
-	v9 = 21720 * id;
-	x1 = sx;
-	v10 = mi;
-	CrawlNum[1] = 3;
-	CrawlNum[2] = 12;
-	CrawlNum[3] = 45;
-	CrawlNum[4] = 94;
-	CrawlNum[5] = 159;
-	v33 = 21720 * id;
-	v11 = v10;
-	v12 = random(62, 10) + (plr[id]._pLevel >> 1) + 1;
-	v13 = missile[v11]._mispllvl;
-	missile[v11]._midam = v12;
-	if (v13 > 0) {
-		do {
-			v12 += v12 >> 3;
-			--v13;
-		} while (v13);
-		missile[v11]._midam = v12;
+	missile[mi]._midam = random(62, 10) + (plr[id]._pLevel >> 1) + 1;
+	for (i = missile[mi]._mispllvl; i > 0; i--) {
+		missile[mi]._midam += missile[mi]._midam >> 3;
 	}
-	v36 = 0;
-	missile[v11]._miDelFlag = TRUE;
-	do {
-		v14 = CrawlNum[v36];
-		v15 = (unsigned char)CrawlTable[v14];
-		v35 = (unsigned char)CrawlTable[v14];
-		if (v15 <= 0)
-			goto LABEL_18;
-		v16 = &CrawlTable[v14 + 2];
-		v34 = v16;
-		while (1) {
-			v17 = dx + (char)*(v16 - 1);
-			v18 = dy + (char)*v16;
-			v30 = v18 + 112 * (dx + (char)*(v16 - 1));
-			v29 = 4 * v30;
-			v31 = dPiece[0][v30];
-			if (v17 <= 0 || v17 >= MAXDUNX || v18 <= 0 || v18 >= MAXDUNY)
-				goto LABEL_14;
-			//_LOBYTE(v19) = LineClear(x1, sy, v17, v18);
-			if (LineClear(x1, sy, v17, v18)) {
-				if (!(dMonster[0][v29 / 4] | dObject[0][v30] | dMissile[0][v30] | nSolidTable[v31] | (unsigned char)nMissileTable[v31]))
-					break;
+
+	missile[mi]._miDelFlag = TRUE;
+	for (i = 0; i < 6; i++) {
+		pn = CrawlNum[i];
+		k = pn + 2;
+		for (j = (unsigned char)CrawlTable[pn]; j > 0; j--) {
+			tx = dx + CrawlTable[k - 1];
+			ty = dy + CrawlTable[k];
+			pn = dPiece[tx][ty];
+			if (tx > 0 && tx < MAXDUNX && ty > 0 && ty < MAXDUNY) {
+				if (LineClear(sx, sy, tx, ty)) {
+					if (!(dMonster[tx][ty] | dObject[tx][ty] | dMissile[tx][ty] | nSolidTable[pn] | (unsigned char)nMissileTable[pn])) {
+						missile[mi]._miDelFlag = FALSE;
+						missile[mi]._mix = tx;
+						missile[mi]._miy = ty;
+						missile[mi]._misx = tx;
+						missile[mi]._misy = ty;
+						UseMana(id, 13);
+						i = 6;
+						break;
+					}
+				}
 			}
-			v16 = v34;
-		LABEL_14:
-			v16 += 2;
-			--v35;
-			v34 = v16;
-			if (v35 <= 0)
-				goto LABEL_17;
+			k += 2;
 		}
-		missile[v11]._miDelFlag = FALSE;
-		missile[v11]._mix = v17;
-		missile[v11]._miy = v18;
-		missile[v11]._misx = v17;
-		missile[v11]._misy = v18;
-		UseMana(id, 13);
-		v36 = 6;
-	LABEL_17:
-		v9 = v33;
-	LABEL_18:
-		++v36;
-	} while (v36 < 6);
-	if (missile[v11]._miDelFlag != TRUE) {
-		v20 = missile[v11]._miy;
-		v21 = missile[v11]._mix;
-		missile[v11]._misource = id;
-		v22 = AddLight(v21, v20, 1);
-		v23 = missile[v11]._mispllvl;
-		missile[v11]._mlid = v22;
-		v24 = v23 + (*(&plr[0]._pLevel + v9) >> 1);
-		v25 = (v24 * *(int *)((char *)&plr[0]._pISplDur + v9) >> 7) + v24;
-		missile[v11]._mirange = v25;
-		if (v25 > 30)
-			missile[v11]._mirange = 30;
-		missile[v11]._mirange *= 16;
-		if (missile[v11]._mirange < 30)
-			missile[v11]._mirange = 30;
-		v26 = missile[v11]._mirange;
-		missile[v11]._miVar3 = 1;
-		v27 = v26 - missile[v11]._miAnimLen;
-		missile[v11]._miVar2 = 0;
-		missile[v11]._miVar1 = v27;
+	}
+
+	if (missile[mi]._miDelFlag != TRUE) {
+		missile[mi]._misource = id;
+		missile[mi]._mlid = AddLight(missile[mi]._mix, missile[mi]._miy, 1);
+
+		missile[mi]._mirange = plr[id]._pLevel >> 1;
+		missile[mi]._mirange += missile[mi]._mispllvl;
+		missile[mi]._mirange += (missile[mi]._mirange * plr[id]._pISplDur) >> 7;
+
+		if (missile[mi]._mirange > 30)
+			missile[mi]._mirange = 30;
+		missile[mi]._mirange <<= 4;
+		if (missile[mi]._mirange < 30)
+			missile[mi]._mirange = 30;
+
+		missile[mi]._miVar1 = missile[mi]._mirange - missile[mi]._miAnimLen;
+		missile[mi]._miVar3 = 1;
+		missile[mi]._miVar2 = 0;
 	}
 }
 
