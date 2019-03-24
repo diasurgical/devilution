@@ -3948,7 +3948,7 @@ void __fastcall MI_Chain(int i)
 		}
 	}
 	missile[i]._mirange--;
-	if (!missile[i]._mirange)
+	if (missile[i]._mirange == 0)
 		missile[i]._miDelFlag = TRUE;
 }
 
