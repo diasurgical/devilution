@@ -4464,7 +4464,8 @@ void __fastcall MI_Infra(int i)
 
 void __fastcall MI_Apoca(int i)
 {
-	int j, k, id, exit;
+	int j, k, id;
+	BOOL exit;
 
 	id = missile[i]._misource;
 	exit = 0;
