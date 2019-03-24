@@ -2360,6 +2360,7 @@ void __fastcall AddStone(int mi, int sx, int sy, int dx, int dy, int midir, int 
 {
 	int i, j, k, l, tx, ty, mid;
 	int CrawlNum[6] = { 0, 3, 12, 45, 94, 159 };
+
 	missile[mi]._misource = id;
 	for (i = 0; i < 6; i++) {
 		k = CrawlNum[i];
