@@ -1651,54 +1651,36 @@ void __fastcall AddRndTeleport(int mi, int sx, int sy, int dx, int dy, int midir
 
 void __fastcall AddFirebolt(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int id, int dam)
 {
-	int v9;         // ebx
-	int v10;        // esi
-	int v11;        // edi
-	int v12;        // eax
-	int v13;        // eax
-	int v14;        // eax
-	int v15;        // esi
-	signed int v16; // [esp-4h] [ebp-14h]
-	int i;          // [esp+Ch] [ebp-4h]
-	int micastera;  // [esp+28h] [ebp+18h]
+	int i, mx, sp;
 
-	v9 = dx;
-	v10 = dy;
-	v11 = sx;
-	i = mi;
 	if (sx == dx && sy == dy) {
-		v9 = XDirAdd[midir] + dx;
-		v10 = YDirAdd[midir] + dy;
+		dx += XDirAdd[midir];
+		dy += YDirAdd[midir];
 	}
-	if ((_BYTE)micaster) {
-		v16 = 26;
-		goto LABEL_17;
+	if (!(_BYTE)micaster) {
+		for (i = 0; i < nummissiles; i++) {
+			mx = missileactive[i];
+			if (missile[mx]._mitype == MIS_GUARDIAN && missile[mx]._misource == id && missile[mx]._miVar3 == mi)
+				break;
+		}
+		if (i == nummissiles)
+			UseMana(id, 1);
+		if (id != -1) {
+			sp = 2 * missile[mi]._mispllvl + 16;
+			if (sp >= 63)
+				sp = 63;
+		} else {
+			sp = 16;
+		}
+	} else {
+		sp = 26;
 	}
-	for (micastera = 0; micastera < nummissiles; ++micastera) {
-		v12 = missileactive[micastera];
-		if (missile[v12]._mitype == MIS_GUARDIAN && missile[v12]._misource == id && missile[v12]._miVar3 == mi)
-			break;
-	}
-	if (micastera == nummissiles)
-		UseMana(id, 1);
-	if (id == -1) {
-		v16 = 16;
-		goto LABEL_17;
-	}
-	v13 = 2 * missile[i]._mispllvl + 16;
-	if (v13 >= 63) {
-		v16 = 63;
-	LABEL_17:
-		v13 = v16;
-	}
-	GetMissileVel(i, v11, sy, v9, v10, v13);
-	v14 = GetDirection16(v11, sy, v9, v10);
-	SetMissDir(i, v14);
-	v15 = i;
-	missile[v15]._mirange = 256;
-	missile[v15]._miVar1 = v11;
-	missile[v15]._miVar2 = sy;
-	missile[v15]._mlid = AddLight(v11, sy, 8);
+	GetMissileVel(mi, sx, sy, dx, dy, sp);
+	SetMissDir(mi, GetDirection16(sx, sy, dx, dy));
+	missile[mi]._mirange = 256;
+	missile[mi]._miVar1 = sx;
+	missile[mi]._miVar2 = sy;
+	missile[mi]._mlid = AddLight(sx, sy, 8);
 }
 
 void __fastcall AddMagmaball(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
