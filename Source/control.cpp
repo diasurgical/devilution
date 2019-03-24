@@ -23,15 +23,15 @@ BOOL chrbtnactive;
 char sgszTalkMsg[80];
 BYTE *pPanelText;
 int frame_4B8800; // idb
-char *pLifeBuff;
-void *pBtmBuff;
+BYTE *pLifeBuff;
+BYTE *pBtmBuff;
 void *pTalkBtns;
 int pstrjust[4];
 int pnumlines; // idb
 BOOL pinfoflag;
 int talkbtndown[3];
 int pSpell; // weak
-char *pManaBuff;
+BYTE *pManaBuff;
 int infoclr;       // weak
 int sgbPlrTalkTbl; // weak // should be char [4]
 void *pGBoxBuff;
@@ -961,76 +961,155 @@ void __cdecl ClearPanel()
 
 void __fastcall DrawPanelBox(int x, int y, int w, int h, int sx, int sy)
 {
-	char *v6;         // esi
-	char *v7;         // edi
-	int v8;           // edx
-	unsigned int v9;  // ecx
-	char v10;         // cf
-	unsigned int v11; // ecx
+	int nSrcOff, nDstOff;
 
-	v6 = (char *)pBtmBuff + 640 * y + x;
-	v7 = (char *)&gpBuffer[768 * sy + sx];
-	v8 = h;
-	do {
-		v9 = w >> 1;
-		if (!(w & 1) || (*v7 = *v6, ++v6, ++v7, v9)) {
-			v10 = v9 & 1;
-			v11 = w >> 2;
-			if (!v10 || (*(_WORD *)v7 = *(_WORD *)v6, v6 += 2, v7 += 2, v11)) {
-				qmemcpy(v7, v6, 4 * v11);
-				v6 += 4 * v11;
-				v7 += 4 * v11;
-			}
+	/// ASSERT: assert(gpBuffer);
+
+	nSrcOff = x + 640 * y;
+	nDstOff = sx + 768 * sy;
+
+#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+	__asm {
+		mov		esi, pBtmBuff
+		add		esi, nSrcOff
+		mov		edi, gpBuffer
+		add		edi, nDstOff
+		xor		ebx, ebx
+		mov		bx, word ptr w
+		xor		edx, edx
+		mov		dx, word ptr h
+	label1:
+		mov		ecx, ebx
+		shr		ecx, 1
+		jnb		label2
+		movsb
+		jecxz	label4
+	label2:
+		shr		ecx, 1
+		jnb		label3
+		movsw
+		jecxz	label4
+	label3:
+		rep movsd
+	label4:
+		add		esi, 640
+		sub		esi, ebx
+		add		edi, 768
+		sub		edi, ebx
+		dec		edx
+		jnz		label1
+	}
+#else
+	int wdt, hgt;
+	BYTE *src, *dst;
+
+	src = &pBtmBuff[nSrcOff];
+	dst = &gpBuffer[nDstOff];
+
+	for(hgt = h; hgt; hgt--, src += 640 - w, dst += 768 - w) {
+		wdt = w;
+		if(wdt & 1) {
+			dst[0] = src[0];
+			src++;
+			dst++;
 		}
-		v6 = &v6[-w + 640];
-		v7 = &v7[-w + 768];
-		--v8;
-	} while (v8);
+		wdt >>= 1;
+		if(wdt & 1) {
+			dst[0] = src[0];
+			dst[1] = src[1];
+			src += 2;
+			dst += 2;
+		}
+		wdt >>= 1;
+		while(wdt) {
+			dst[0] = src[0];
+			dst[1] = src[1];
+			dst[2] = src[2];
+			dst[3] = src[3];
+			src += 4;
+			dst += 4;
+			wdt--;
+		}
+	}
+#endif
 }
 
-void __fastcall SetFlaskHeight(char *buf, int min, int max, int c, int r)
+void __fastcall SetFlaskHeight(BYTE *pCelBuff, int min, int max, int c, int r)
 {
-	char *v5; // esi
-	char *v6; // edi
-	int v7;   // edx
+	int nSrcOff, nDstOff, w;
 
-	v5 = &buf[88 * min];
-	v6 = (char *)&gpBuffer[768 * r + c];
-	v7 = max - min;
-	do {
-		qmemcpy(v6, v5, 0x58u);
-		v5 += 88;
-		v6 += 768;
-		--v7;
-	} while (v7);
+	/// ASSERT: assert(gpBuffer);
+
+	nSrcOff = 88 * min;
+	nDstOff = c + 768 * r;
+	w = max - min;
+
+#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+	__asm {
+		mov		esi, pCelBuff
+		add		esi, nSrcOff
+		mov		edi, gpBuffer
+		add		edi, nDstOff
+		mov		edx, w
+	label1:
+		mov		ecx, 88 / 4
+		rep movsd
+		add		edi, 768 - 88
+		dec		edx
+		jnz		label1
+	}
+#else
+	BYTE *src, *dst;
+
+	src = &pCelBuff[nSrcOff];
+	dst = &gpBuffer[nDstOff];
+
+	for(; w; w--, src += 88, dst += 768)
+		memcpy(dst, src, 88);
+#endif
 }
 
-void __fastcall DrawFlask(void *a1, int a2, int a3, void *a4, int a5, int a6)
+void __fastcall DrawFlask(BYTE *pCelBuff, int w, int nSrcOff, BYTE *pBuff, int nDstOff, int h)
 {
-	char *v6;      // esi
-	_BYTE *v7;     // edi
-	int v8;        // edx
-	signed int v9; // ecx
-	char v10;      // al
-	int v11;       // [esp+Ch] [ebp-4h]
+#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+	__asm {
+		mov		esi, pCelBuff
+		add		esi, nSrcOff
+		mov		edi, pBuff
+		add		edi, nDstOff
+		mov		edx, h
+	label1:
+		mov		ecx, 59
+	label2:
+		lodsb
+		or		al, al
+		jz		label3
+		mov		[edi], al
+	label3:
+		inc		edi
+		loop	label2
+		add		esi, w
+		sub		esi, 59
+		add		edi, 768 - 59
+		dec		edx
+		jnz		label1
+	}
+#else
+	int wdt, hgt;
+	BYTE *src, *dst;
 
-	v11 = a2;
-	v6 = (char *)a1 + a3;
-	v7 = (unsigned char *)a4 + a5;
-	v8 = a6;
-	do {
-		v9 = 59;
-		do {
-			v10 = *v6++;
-			if (v10)
-				*v7 = v10;
-			++v7;
-			--v9;
-		} while (v9);
-		v6 = &v6[v11 - 59];
-		v7 += 709;
-		--v8;
-	} while (v8);
+	src = &pCelBuff[nSrcOff];
+	dst = &pBuff[nDstOff];
+
+	for(hgt = h; hgt; hgt--, src += w - 59, dst += 768 - 59) {
+		for(wdt = 59; wdt; wdt--) {
+			if(*src)
+				*dst = *src;
+			src++;
+			dst++;
+		}
+	}
+#endif
 }
 
 void __cdecl DrawLifeFlask()
@@ -1137,9 +1216,9 @@ void __cdecl InitControlPan()
 		v0 = 288 * 640;
 	pBtmBuff = DiabloAllocPtr(v0);
 	memset(pBtmBuff, 0, v0);
-	pManaBuff = (char *)DiabloAllocPtr(0x1E40);
+	pManaBuff = DiabloAllocPtr(0x1E40);
 	memset(pManaBuff, 0, 0x1E40);
-	pLifeBuff = (char *)DiabloAllocPtr(0x1E40);
+	pLifeBuff = DiabloAllocPtr(0x1E40);
 	memset(pLifeBuff, 0, 0x1E40);
 	pPanelText = LoadFileInMem("CtrlPan\\SmalText.CEL", 0);
 	pChrPanel = LoadFileInMem("Data\\Char.CEL", 0);
@@ -2363,52 +2442,78 @@ LABEL_18:
 
 void __cdecl RedBack()
 {
-	int v0;         // eax
-	char *v1;       // edi
-	signed int v3;  // edx
-	signed int v4;  // ecx
-	char *v7;       // edi
-	signed int v9;  // edx
-	signed int v10; // ecx
-	int v12;        // [esp+8h] [ebp-4h]
-	int _EAX;
-	char *_EBX;
+	int idx;
 
-	v0 = -(light4flag != 0);
-	_LOWORD(v0) = v0 & 0xF400;
-	v12 = v0 + 768 * 6;
-	if (leveltype == DTYPE_HELL) {
-		v7 = (char *)&gpBuffer[SCREENXY(0, 0)];
-		_EBX = &pLightTbl[v12];
-		v9 = 352;
-		do {
-			v10 = 640;
-			do {
-				_EAX = *v7;
-				if ((unsigned char)*v7 >= 32)
-					ASM_XLAT(_EAX, _EBX);
-				*v7++ = _EAX;
-				--v10;
-			} while (v10);
-			v7 += 128;
-			--v9;
-		} while (v9);
+	idx = light4flag ? 1536 : 4608;
+
+	/// ASSERT: assert(gpBuffer);
+
+#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+	if(leveltype != DTYPE_HELL) {
+		__asm {
+			mov		edi, gpBuffer
+			add		edi, SCREENXY(0, 0)
+			mov		ebx, pLightTbl
+			add		ebx, idx
+			mov		edx, 352
+		lx_label1:
+			mov		ecx, 640
+		lx_label2:
+			mov		al, [edi]
+			xlat
+			stosb
+			loop	lx_label2
+			add		edi, 768 - 640
+			dec		edx
+			jnz		lx_label1
+		}
 	} else {
-		v1 = (char *)&gpBuffer[SCREENXY(0, 0)];
-		_EBX = &pLightTbl[v12];
-		v3 = 352;
-		do {
-			v4 = 640;
-			do {
-				_EAX = *v1;
-				ASM_XLAT(_EAX, _EBX);
-				*v1++ = _EAX;
-				--v4;
-			} while (v4);
-			v1 += 128;
-			--v3;
-		} while (v3);
+		__asm {
+			mov		edi, gpBuffer
+			add		edi, SCREENXY(0, 0)
+			mov		ebx, pLightTbl
+			add		ebx, idx
+			mov		edx, 352
+		l4_label1:
+			mov		ecx, 640
+		l4_label2:
+			mov		al, [edi]
+			cmp		al, 32
+			jb		l4_label3
+			xlat
+		l4_label3:
+			stosb
+			loop	l4_label2
+			add		edi, 768 - 640
+			dec		edx
+			jnz		l4_label1
+		}
 	}
+#else
+	int w, h;
+	BYTE *dst, *tbl;
+
+	if(leveltype != DTYPE_HELL) {
+		dst = &gpBuffer[SCREENXY(0, 0)];
+		tbl = (BYTE *)&pLightTbl[idx];
+		for(h = 352; h; h--, dst += 768 - 640) {
+			for(w = 640; w; w--) {
+				*dst = tbl[*dst];
+				dst++;
+			}
+		}
+	} else {
+		dst = &gpBuffer[SCREENXY(0, 0)];
+		tbl = (BYTE *)&pLightTbl[idx];
+		for(h = 352; h; h--, dst += 768 - 640) {
+			for(w = 640; w; w--) {
+				if(*dst >= 32)
+					*dst = tbl[*dst];
+				dst++;
+			}
+		}
+	}
+#endif
 }
 // 525728: using guessed type int light4flag;
 

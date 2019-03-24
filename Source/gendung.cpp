@@ -4,14 +4,14 @@
 
 DEVILUTION_BEGIN_NAMESPACE
 
-short level_frame_types[2048];
+WORD level_frame_types[MAXTILES];
 int themeCount;
 char nTransTable[2049];
 //int dword_52D204;
 int dMonster[MAXDUNX][MAXDUNY];
 char dungeon[40][40];
 char dObject[MAXDUNX][MAXDUNY];
-void *pSpeedCels;
+BYTE *pSpeedCels;
 int nlevel_frames; // weak
 char pdungeon[40][40];
 char dDead[MAXDUNX][MAXDUNY];
@@ -23,9 +23,9 @@ char dflags[40][40];
 int dPiece[MAXDUNX][MAXDUNY];
 char dTransVal[MAXDUNX][MAXDUNY];
 int setloadflag_2; // weak
-int tile_defs[2048];
+int tile_defs[MAXTILES];
 BYTE *pMegaTiles;
-void *pLevelPieces;
+BYTE *pLevelPieces;
 int gnDifficulty; // idb
 char block_lvid[2049];
 //char byte_5B78EB;
@@ -35,10 +35,10 @@ BYTE leveltype;
 unsigned char currlevel; // idb
 char TransList[256];
 BOOLEAN nSolidTable[2049];
-int level_frame_count[2048];
+int level_frame_count[MAXTILES];
 ScrollStruct ScrollInfo;
-void *pDungeonCels;
-int speed_cel_frame_num_from_light_index_frame_num[16][128];
+BYTE *pDungeonCels;
+int speed_cel_frame_num_from_light_index_frame_num[128][16];
 THEME_LOC themeLoc[MAXTHEMES];
 char dPlayer[MAXDUNX][MAXDUNY];
 int dword_5C2FF8;   // weak
@@ -51,7 +51,7 @@ void *level_special_cel;
 char dFlags[MAXDUNX][MAXDUNY];
 char dItem[MAXDUNX][MAXDUNY];
 BYTE setlvlnum;
-int level_frame_sizes[2048];
+int level_frame_sizes[MAXTILES];
 char nMissileTable[2049];
 char *pSetPiece_2;
 char setlvltype; // weak
@@ -69,7 +69,7 @@ int setpc_y;     // idb
 char dMissile[MAXDUNX][MAXDUNY];
 int dminx; // weak
 int dminy; // weak
-short dpiece_defs_map_2[16][MAXDUNX][MAXDUNY];
+WORD dpiece_defs_map_2[MAXDUNX][MAXDUNY][16];
 
 void __cdecl FillSolidBlockTbls()
 {
@@ -126,348 +126,362 @@ void __cdecl FillSolidBlockTbls()
 
 void __cdecl gendung_418D91()
 {
-	signed int v0;                 // edx
-	short(*v1)[MAXDUNX][MAXDUNY];  // edi
-	short(*v2)[MAXDUNX][MAXDUNY];  // esi
-	signed int v3;                 // ebx
-	int i;                         // edx
-	short v5;                      // ax
-	int v6;                        // ecx
-	signed int v7;                 // edx
-	int v8;                        // eax
-	int v9;                        // edi
-	char *v10;                     // esi
-	int j;                         // ecx
-	unsigned char v12;             // al
-	unsigned char *v13;            // esi
-	int v14;                       // ecx
-	signed int v15;                // edx
-	int v16;                       // eax
-	int v17;                       // ecx
-	unsigned char v18;             // al
-	signed int v19;                // ecx
-	int v20;                       // edi
-	int v21;                       // edx
-	int v22;                       // edi
-	int v23;                       // eax
-	int v24;                       // eax
-	BOOLEAN v25;                   // zf
-	int v26;                       // edx
-	char *v27;                     // esi
-	char *v28;                     // edi
-	int k;                         // ecx
-	char *v33;                     // esi
-	char *v34;                     // edi
-	int v36;                       // ecx
-	signed int v37;                // edx
-	int v38;                       // eax
-	int v39;                       // ecx
-	short(*v42)[MAXDUNX][MAXDUNY]; // esi
-	short v43;                     // ax
-	unsigned short v44;            // dx
-	short v45;                     // ax
-	int v46;                       // [esp-4h] [ebp-38h]
-	int v47;                       // [esp-4h] [ebp-38h]
-	int v48;                       // [esp+Ch] [ebp-28h]
-	int(*v49)[128];                // [esp+10h] [ebp-24h]
-	int(*v50)[112];                // [esp+10h] [ebp-24h]
-	int v51;                       // [esp+14h] [ebp-20h]
-	short(*v52)[MAXDUNX][MAXDUNY]; // [esp+14h] [ebp-20h]
-	signed int v53;                // [esp+18h] [ebp-1Ch]
-	int v54;                       // [esp+18h] [ebp-1Ch]
-	short(*v55)[MAXDUNX][MAXDUNY]; // [esp+18h] [ebp-1Ch]
-	int v56;                       // [esp+1Ch] [ebp-18h]
-	int(*v57)[112];                // [esp+1Ch] [ebp-18h]
-	signed int v58;                // [esp+20h] [ebp-14h]
-	int v59;                       // [esp+20h] [ebp-14h]
-	int v60;                       // [esp+24h] [ebp-10h]
-	signed int v61;                // [esp+24h] [ebp-10h]
-	int v62;                       // [esp+28h] [ebp-Ch]
-	int v63;                       // [esp+2Ch] [ebp-8h]
-	signed int v64;                // [esp+30h] [ebp-4h]
-	signed int v65;                // [esp+30h] [ebp-4h]
-	int _EAX;
-	char *_EBX;
+	int i, j, x, y;
+	int total_frames, blocks, total_size, frameidx, lfs_adder, blk_cnt, currtile, nDataSize;
+	WORD m;
+	BOOL blood_flag;
+	WORD *pMap;
+	DWORD *pFrameTable;
+#if (_MSC_VER < 800) || (_MSC_VER > 1200)
+	int k, l;
+	BYTE width, pix;
+	BYTE *src, *dst, *tbl;
+#endif
 
-	v0 = 0;
-	memset(level_frame_types, 0, sizeof(level_frame_types));
-	memset(level_frame_count, 0, sizeof(level_frame_count));
-	do {
-		tile_defs[v0] = v0;
-		++v0;
-	} while (v0 < 2048);
-	v1 = dpiece_defs_map_2;
-	v48 = 2 * (leveltype == DTYPE_HELL) + 10;
-	do {
-		v2 = v1;
-		v3 = 112;
-		do {
-			for (i = 0; i < v48; ++i) {
-				v5 = (*v2)[0][i];
-				if ((*v2)[0][i]) {
-					v6 = v5 & 0xFFF;
-					++level_frame_count[v6];
-					level_frame_types[v6] = v5 & 0x7000;
+	for(i = 0; i < MAXTILES; i++) {
+		tile_defs[i] = i;
+		level_frame_count[i] = 0;
+		level_frame_types[i] = 0;
+	}
+
+	if(leveltype != DTYPE_HELL)
+		blocks = 10;
+	else
+		blocks = 12;
+
+	for(y = 0; y < MAXDUNY; y++) {
+		for(x = 0; x < MAXDUNX; x++) {
+			for(i = 0; i < blocks; i++) {
+				pMap = dpiece_defs_map_2[x][y];
+				if(pMap[i]) {
+					level_frame_count[pMap[i] & 0xFFF]++;
+					level_frame_types[pMap[i] & 0xFFF] = pMap[i] & 0x7000;
 				}
 			}
-			v2 = (short(*)[MAXDUNX][MAXDUNY])((char *)v2 + 3584);
-			--v3;
-		} while (v3);
-		v1 = (short(*)[MAXDUNX][MAXDUNY])((char *)v1 + 32);
-	} while ((signed int)v1 < (signed int)dpiece_defs_map_2[0][16]); /* check */
-	v7 = 1;
-	nlevel_frames = *(_DWORD *)pDungeonCels & 0xFFFF;
-	v8 = nlevel_frames;
-	if (nlevel_frames > 1) {
-		do {
-			level_frame_sizes[v7] = (*((_DWORD *)pDungeonCels + v7 + 1) - *((_DWORD *)pDungeonCels + v7)) & 0xFFFF;
-			v8 = nlevel_frames;
-			++v7;
-		} while (v7 < nlevel_frames);
+		}
 	}
-	v9 = 0;
+
+	pFrameTable = (DWORD *)pDungeonCels;
+	nlevel_frames = pFrameTable[0] & 0xFFFF;
+
+	for(i = 1; i < nlevel_frames; i++) {
+#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+		__asm {
+			mov		ebx, pDungeonCels
+			mov		eax, i
+			shl		eax, 2
+			add		ebx, eax
+			mov		eax, [ebx+4]
+			sub		eax, [ebx]
+			mov		nDataSize, eax
+		}
+#else
+		nDataSize = pFrameTable[i + 1] - pFrameTable[i];
+#endif
+		level_frame_sizes[i] = nDataSize & 0xFFFF;
+	}
+
 	level_frame_sizes[0] = 0;
-	if (leveltype == DTYPE_HELL && v8 > 0) {
-		do {
-			if (!v9)
+
+	if(leveltype == DTYPE_HELL) {
+		for(i = 0; i < nlevel_frames; i++) {
+			if(!i)
 				level_frame_count[0] = 0;
-			v53 = 1;
-			if (level_frame_count[v9]) {
-				if (level_frame_types[v9] == 4096) {
-					v13 = (unsigned char *)pDungeonCels + *((_DWORD *)pDungeonCels + v9);
-					v14 = 32;
-					do {
-						v46 = v14;
-						v15 = 32;
-						do {
-							while (1) {
-								v16 = *v13++;
-								if ((v16 & 0x80u) == 0)
-									break;
-								_LOBYTE(v16) = -(char)v16;
-								v15 -= v16;
-								if (!v15)
-									goto LABEL_36;
-							}
-							v15 -= v16;
-							v17 = v16;
-							do {
-								v18 = *v13++;
-								if (v18 && v18 < 0x20u)
-									v53 = 0;
-								--v17;
-							} while (v17);
-						} while (v15);
-					LABEL_36:
-						v14 = v46 - 1;
-					} while (v46 != 1);
+			blood_flag = TRUE;
+			if(level_frame_count[i]) {
+				if(level_frame_types[i] != 0x1000) {
+#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+					j = level_frame_sizes[i];
+					__asm {
+						mov		ebx, pDungeonCels
+						mov		eax, i
+						shl		eax, 2
+						add		ebx, eax
+						mov		esi, pDungeonCels
+						add		esi, [ebx]
+						xor		ebx, ebx
+						mov		ecx, j
+						jecxz	l1_label3
+					l1_label1:
+						lodsb
+						cmp		al, 0
+						jz		l1_label2
+						cmp		al, 32
+						jnb		l1_label2
+						mov		blood_flag, ebx
+					l1_label2:
+						loop	l1_label1
+					l1_label3:
+						nop
+					}
+#else
+					src = &pDungeonCels[pFrameTable[i]];
+					for(j = level_frame_sizes[i]; j; j--) {
+						pix = *src++;
+						if(pix && pix < 32)
+							blood_flag = FALSE;
+					}
+#endif
 				} else {
-					v10 = (char *)pDungeonCels + *((_DWORD *)pDungeonCels + v9);
-					for (j = level_frame_sizes[v9]; j; --j) {
-						v12 = *v10++;
-						if (v12 && v12 < 0x20u)
-							v53 = 0;
+#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+					__asm {
+						mov		ebx, pDungeonCels
+						mov		eax, i
+						shl		eax, 2
+						add		ebx, eax
+						mov		esi, pDungeonCels
+						add		esi, [ebx]
+						xor		ebx, ebx
+						mov		ecx, 32
+					l2_label1:
+						push	ecx
+						mov		edx, 32
+					l2_label2:
+						xor		eax, eax
+						lodsb
+						or		al, al
+						js		l2_label5
+						sub		edx, eax
+						mov		ecx, eax
+					l2_label3:
+						lodsb
+						cmp		al, 0
+						jz		l2_label4
+						cmp		al, 32
+						jnb		l2_label4
+						mov		blood_flag, ebx
+					l2_label4:
+						loop	l2_label3
+						or		edx, edx
+						jz		l2_label6
+						jmp		l2_label2
+					l2_label5:
+						neg		al
+						sub		edx, eax
+						jnz		l2_label2
+					l2_label6:
+						pop		ecx
+						loop	l2_label1
 					}
+#else
+					src = &pDungeonCels[pFrameTable[i]];
+					for(k = 32; k; k--) {
+						for(l = 32; l;) {
+							width = *src++;
+							if(!(width & 0x80)) {
+								l -= width;
+								while(width) {
+									pix = *src++;
+									if(pix && pix < 32)
+										blood_flag = FALSE;
+									width--;
+								}
+							} else {
+								width = -(char)width;
+								l -= width;
+							}
+						}
+					}
+#endif
 				}
-				if (!v53)
-					level_frame_count[v9] = 0;
+				if(!blood_flag)
+					level_frame_count[i] = 0;
 			}
-			++v9;
-		} while (v9 < nlevel_frames);
+		}
 	}
-	gendung_4191BF(2047);
-	v19 = 0;
-	v20 = 0;
-	if (light4flag) {
-		do {
-			v21 = level_frame_sizes[v20++];
-			v19 += 2 * v21;
-		} while (v19 < 0x100000);
+
+	gendung_4191BF(MAXTILES - 1);
+	total_size = 0;
+	total_frames = 0;
+
+	if(light4flag) {
+		while(total_size < 0x100000) {
+			total_size += level_frame_sizes[total_frames] << 1;
+			total_frames++;
+		}
 	} else {
-		do
-			v19 += 14 * level_frame_sizes[v20++];
-		while (v19 < 0x100000);
+		while(total_size < 0x100000) {
+			total_size += (level_frame_sizes[total_frames] << 4) - (level_frame_sizes[total_frames] << 1);
+			total_frames++;
+		}
 	}
-	v22 = v20 - 1;
-	v58 = v22;
-	if (v22 > 128) {
-		v58 = 128;
-		v22 = 128;
-	}
-	v23 = -(light4flag != 0);
-	v63 = 0;
-	_LOBYTE(v23) = v23 & 0xF4;
-	v54 = 0;
-	v60 = v23 + 15;
-	if (v22 > 0) {
-		v56 = 0;
-		v49 = speed_cel_frame_num_from_light_index_frame_num;
-		do {
-			v24 = v54;
-			v25 = level_frame_types[v54] == 4096;
-			v62 = tile_defs[v54];
-			(*v49)[0] = v62;
-			if (v25) {
-				v65 = 1;
-				if (v60 > 1) {
-					do {
-						speed_cel_frame_num_from_light_index_frame_num[0][v65 + v56] = v63;
-						v33 = (char *)pDungeonCels + *((_DWORD *)pDungeonCels + v62);
-						v34 = (char *)pSpeedCels + v63;
-						_EBX = &pLightTbl[256 * v65];
-						v36 = 32;
-						do {
-							v47 = v36;
-							v37 = 32;
-							do {
-								while (1) {
-									v38 = (unsigned char)*v33++;
-									*v34++ = v38;
-									if ((v38 & 0x80u) == 0)
-										break;
-									_LOBYTE(v38) = -(char)v38;
-									v37 -= v38;
-									if (!v37)
-										goto LABEL_63;
-								}
-								v37 -= v38;
-								v39 = v38;
-								do {
-									_EAX = *v33++;
-									ASM_XLAT(_EAX, _EBX);
-									*v34++ = _EAX;
-									--v39;
-								} while (v39);
-							} while (v37);
-						LABEL_63:
-							v36 = v47 - 1;
-						} while (v47 != 1);
-						v63 += level_frame_sizes[v54];
-						++v65;
-					} while (v65 < v60);
-					goto LABEL_65;
+
+	total_frames--;
+	if(total_frames > 128)
+		total_frames = 128;
+
+	frameidx = 0; /* move into loop ? */
+
+	if(light4flag)
+		blk_cnt = 3;
+	else
+		blk_cnt = 15;
+
+	for(i = 0; i < total_frames; i++) {
+		currtile = tile_defs[i];
+		speed_cel_frame_num_from_light_index_frame_num[i][0] = currtile;
+		if(level_frame_types[i] != 0x1000) {
+			lfs_adder = level_frame_sizes[i];
+			for(j = 1; j < blk_cnt; j++) {
+				speed_cel_frame_num_from_light_index_frame_num[i][j] = frameidx;
+#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+				__asm {
+					mov		ebx, pDungeonCels
+					mov		eax, currtile
+					shl		eax, 2
+					add		ebx, eax
+					mov		esi, pDungeonCels
+					add		esi, [ebx]
+					mov		edi, pSpeedCels
+					add		edi, frameidx
+					mov		ebx, j
+					shl		ebx, 8
+					add		ebx, pLightTbl
+					mov		ecx, lfs_adder
+					jecxz	l3_label2
+				l3_label1:
+					lodsb
+					xlat
+					stosb
+					loop	l3_label1
+				l3_label2:
+					nop
 				}
-			} else {
-				v26 = level_frame_sizes[v24];
-				v51 = level_frame_sizes[v24];
-				v64 = 1;
-				if (v60 > 1) {
-					do {
-						speed_cel_frame_num_from_light_index_frame_num[0][v64 + v56] = v63;
-						v27 = (char *)pDungeonCels + *((_DWORD *)pDungeonCels + v62);
-						v28 = (char *)pSpeedCels + v63;
-						_EBX = &pLightTbl[256 * v64];
-						for (k = v51; k; --k) {
-							_EAX = *v27++;
-							ASM_XLAT(_EAX, _EBX);
-							*v28++ = _EAX;
-						}
-						v63 += v26;
-						++v64;
-					} while (v64 < v60);
-				LABEL_65:
-					v22 = v58;
-					goto LABEL_66;
+#else
+				src = &pDungeonCels[pFrameTable[currtile]];
+				dst = &pSpeedCels[frameidx];
+				tbl = (BYTE *)&pLightTbl[256 * j];
+				for(k = lfs_adder; k; k--) {
+					*dst++ = tbl[*src++];
 				}
+#endif
+				frameidx += lfs_adder;
 			}
-		LABEL_66:
-			++v54;
-			v49 = (int(*)[128])((char *)v49 + 64);
-			v56 += 16;
-		} while (v54 < v22);
-	}
-	v57 = dPiece;
-	v55 = dpiece_defs_map_2;
-	do {
-		v61 = 112;
-		v52 = v55;
-		v50 = v57;
-		do {
-			if ((*v50)[0] && v48 > 0) {
-				v42 = v52;
-				v59 = v48;
-				do {
-					v43 = *(_WORD *)v42;
-					if (*(_WORD *)v42) {
-						v44 = 0;
-						if (v22 > 0) {
-							do {
-								if ((v43 & 0xFFF) == tile_defs[v44]) {
-									v45 = v44 + level_frame_types[v44];
-									v44 = v22;
-									v43 = v45 + -32768;
-								}
-								++v44;
-							} while (v44 < v22);
-							*(_WORD *)v42 = v43;
+		} else {
+			for(j = 1; j < blk_cnt; j++) {
+				speed_cel_frame_num_from_light_index_frame_num[i][j] = frameidx;
+#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+				__asm {
+					mov		ebx, pDungeonCels
+					mov		eax, currtile
+					shl		eax, 2
+					add		ebx, eax
+					mov		esi, pDungeonCels
+					add		esi, [ebx]
+					mov		edi, pSpeedCels
+					add		edi, frameidx
+					mov		ebx, j
+					shl		ebx, 8
+					add		ebx, pLightTbl
+					mov		ecx, 32
+				l4_label1:
+					push	ecx
+					mov		edx, 32
+				l4_label2:
+					xor		eax, eax
+					lodsb
+					stosb
+					or		al, al
+					js		l4_label4
+					sub		edx, eax
+					mov		ecx, eax
+				l4_label3:
+					lodsb
+					xlat
+					stosb
+					loop	l4_label3
+					or		edx, edx
+					jz		l4_label5
+					jmp		l4_label2
+				l4_label4:
+					neg		al
+					sub		edx, eax
+					jnz		l4_label2
+				l4_label5:
+					pop		ecx
+					loop	l4_label1
+				}
+#else
+				src = &pDungeonCels[pFrameTable[currtile]];
+				dst = &pSpeedCels[frameidx];
+				tbl = (BYTE *)&pLightTbl[256 * j];
+				for(k = 32; k; k--) {
+					for(l = 32; l;) {
+						width = *src++;
+						*dst++ = width;
+						if(!(width & 0x80)) {
+							l -= width;
+							while(width) {
+								*dst++ = tbl[*src++];
+								width--;
+							}
+						} else {
+							width = -(char)width;
+							l -= width;
 						}
 					}
-					v42 = (short(*)[MAXDUNX][MAXDUNY])((char *)v42 + 2);
-					--v59;
-				} while (v59);
+				}
+#endif
+				frameidx += level_frame_sizes[i];
 			}
-			++v50;
-			v52 = (short(*)[MAXDUNX][MAXDUNY])((char *)v52 + 3584);
-			--v61;
-		} while (v61);
-		v55 = (short(*)[MAXDUNX][MAXDUNY])((char *)v55 + 32);
-		v57 = (int(*)[112])((char *)v57 + 4);
-	} while ((signed int)v55 < (signed int)dpiece_defs_map_2[0][16]); /* check */
+		}
+	}
+
+	for(y = 0; y < MAXDUNY; y++) {
+		for(x = 0; x < MAXDUNX; x++) {
+			if(dPiece[x][y]) {
+				pMap = dpiece_defs_map_2[x][y];
+				for(i = 0; i < blocks; i++) {
+					if(pMap[i]) {
+						for(m = 0; m < total_frames; m++) {
+							if((pMap[i] & 0xFFF) == tile_defs[m]) {
+								pMap[i] = m + level_frame_types[m] + 0x8000;
+								m = total_frames;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }
 // 525728: using guessed type int light4flag;
 // 53CD4C: using guessed type int nlevel_frames;
 
 void __fastcall gendung_4191BF(int frames)
 {
-	int v1;        // edi
-	signed int v2; // eax
-	int i;         // esi
+	int i;
+	BOOL doneflag;
 
-	v1 = frames;
-	v2 = 0;
-	while (v1 > 0 && !v2) {
-		v2 = 1;
-		for (i = 0; i < v1; ++i) {
-			if (level_frame_count[i] < level_frame_count[i + 1]) {
+	doneflag = FALSE;
+	while(frames > 0 && !doneflag) {
+		doneflag = TRUE;
+		for(i = 0; i < frames; i++) {
+			if(level_frame_count[i] < level_frame_count[i + 1]) {
 				gendung_4191FB(i, i + 1);
-				v2 = 0;
+				doneflag = FALSE;
 			}
 		}
-		--v1;
+		frames--;
 	}
 }
 
-void __fastcall gendung_4191FB(int a1, int a2)
+void __fastcall gendung_4191FB(int f1, int f2)
 {
-	int v2;    // esi
-	int *v3;   // edi
-	short *v4; // edx
-	int v5;    // ST10_4
-	int *v6;   // edi
-	int *v7;   // eax
-	int v8;    // ST10_4
-	short *v9; // ecx
-	int v10;   // edx
+	int swap;
 
-	v2 = a2;
-	v3 = &level_frame_count[a1];
-	v4 = &level_frame_types[a2];
-	v2 *= 4;
-	v5 = *v3;
-	*v3 = *(int *)((char *)level_frame_count + v2);
-	v6 = &tile_defs[a1];
-	*(int *)((char *)level_frame_count + v2) = v5;
-	v7 = &level_frame_sizes[a1];
-	v8 = *v6;
-	*v6 = *(int *)((char *)tile_defs + v2);
-	*(int *)((char *)tile_defs + v2) = v8;
-	v9 = &level_frame_types[a1];
-	_LOWORD(v6) = *v9;
-	*v9 = *v4;
-	*v4 = (signed short)v6;
-	v10 = *v7;
-	*v7 = *(int *)((char *)level_frame_sizes + v2);
-	*(int *)((char *)level_frame_sizes + v2) = v10;
+	swap = level_frame_count[f1];
+	level_frame_count[f1] = level_frame_count[f2];
+	level_frame_count[f2] = swap;
+	swap = tile_defs[f1];
+	tile_defs[f1] = tile_defs[f2];
+	tile_defs[f2] = swap;
+	swap = level_frame_types[f1];
+	level_frame_types[f1] = level_frame_types[f2];
+	level_frame_types[f2] = swap;
+	swap = level_frame_sizes[f1];
+	level_frame_sizes[f1] = level_frame_sizes[f2];
+	level_frame_sizes[f2] = swap;
 }
 
 int __fastcall gendung_get_dpiece_num_from_coord(int x, int y)
@@ -475,87 +489,60 @@ int __fastcall gendung_get_dpiece_num_from_coord(int x, int y)
 	if (x < MAXDUNY - y)
 		return (y + y * y + x * (x + 2 * y + 3)) / 2;
 
-	x = MAXDUNY - x - 1;
+	x = MAXDUNX - x - 1;
 	y = MAXDUNY - y - 1;
-	return MAXDUNX * MAXDUNY - (y + y * y + x * (x + 2 * y + 3)) / 2 - 1;
+	return MAXDUNX * MAXDUNY - ((y + y * y + x * (x + 2 * y + 3)) / 2) - 1;
 }
 
 void __cdecl gendung_4192C2()
 {
-	short(*v0)[MAXDUNX][MAXDUNY]; // ebx
-	int v1;                       // ebp
-	short(*v2)[MAXDUNX][MAXDUNY]; // esi
-	char *v3;                     // edi
-	int x;                        // [esp+10h] [ebp-4h]
+	int i, x, y;
 
-	x = 0;
-	v0 = dpiece_defs_map_2;
-	do {
-		v1 = 0;
-		do {
-			v2 = v0;
-			v3 = (char *)dpiece_defs_map_1 + 32 * gendung_get_dpiece_num_from_coord(x, v1++);
-			v0 = (short(*)[MAXDUNX][MAXDUNY])((char *)v0 + 32);
-			qmemcpy(v3, v2, 0x20u);
-		} while (v1 < 112);
-		++x;
-	} while ((signed int)v0 < (signed int)&dpiece_defs_map_2[16][0][0]);
+	for(x = 0; x < MAXDUNX; x++) {
+		for(y = 0; y < MAXDUNY; y++) {
+			for(i = 0; i < 16; i++) {
+				dpiece_defs_map_1[gendung_get_dpiece_num_from_coord(x, y)][i] = dpiece_defs_map_2[x][y][i];
+			}
+		}
+	}
 }
 
 void __cdecl SetDungeonMicros()
 {
-	signed int v0;                // esi
-	short(*v1)[MAXDUNX][MAXDUNY]; // edx
-	int(*v2)[112];                // ebp
-	int v3;                       // eax
-	char *v4;                     // eax
-	signed int i;                 // ecx
-	_WORD *v6;                    // edi
-	int j;                        // ecx
-	short(*v8)[MAXDUNX][MAXDUNY]; // [esp+8h] [ebp-Ch]
-	int(*v9)[112];                // [esp+Ch] [ebp-8h]
-	signed int v10;               // [esp+10h] [ebp-4h]
+	int i, x, y, lv, blocks;
+	WORD *pMap, *pPiece;
 
-	if (leveltype == DTYPE_HELL) {
-		dword_5A5594 = 12;
-		v0 = 16;
-	} else {
+	if(leveltype != DTYPE_HELL) {
 		dword_5A5594 = 10;
-		v0 = 10;
+		blocks = 10;
+	} else {
+		dword_5A5594 = 12;
+		blocks = 16;
 	}
-	v9 = dPiece;
-	v8 = dpiece_defs_map_2;
-	do {
-		v1 = v8;
-		v2 = v9;
-		v10 = 112;
-		do {
-			if ((*v2)[0]) {
-				v3 = (*v2)[0] - 1;
-				if (leveltype == DTYPE_HELL)
-					v4 = (char *)pLevelPieces + 32 * v3;
+
+	for(y = 0; y < MAXDUNY; y++) {
+		for(x = 0; x < MAXDUNX; x++) {
+			lv = dPiece[x][y];
+			pMap = dpiece_defs_map_2[x][y];
+			if(lv) {
+				lv--;
+				if(leveltype != DTYPE_HELL)
+					pPiece = (WORD *)&pLevelPieces[20 * lv];
 				else
-					v4 = (char *)pLevelPieces + 20 * v3;
-				for (i = 0; i < v0; ++i)
-					(*v1)[0][i] = *(_WORD *)&v4[2 * (v0 + (i & 1) - (i & 0xE)) - 4];
-			} else if (v0 > 0) {
-				memset(v1, 0, 4 * ((unsigned int)v0 >> 1));
-				v6 = (_WORD *)((char *)v1 + 4 * ((unsigned int)v0 >> 1));
-				for (j = v0 & 1; j; --j) {
-					*v6 = 0;
-					++v6;
-				}
+					pPiece = (WORD *)&pLevelPieces[32 * lv];
+				for(i = 0; i < blocks; i++)
+					pMap[i] = pPiece[(i & 1) + blocks - 2 - (i & 0xE)];
+			} else {
+				for(i = 0; i < blocks; i++)
+					pMap[i] = 0;
 			}
-			++v2;
-			v1 = (short(*)[MAXDUNX][MAXDUNY])((char *)v1 + 3584);
-			--v10;
-		} while (v10);
-		v8 = (short(*)[MAXDUNX][MAXDUNY])((char *)v8 + 32);
-		v9 = (int(*)[112])((char *)v9 + 4);
-	} while ((signed int)v8 < (signed int)dpiece_defs_map_2[0][16]); /* check */
+		}
+	}
+
 	gendung_418D91();
 	gendung_4192C2();
-	if (zoomflag) {
+
+	if(zoomflag) {
 		scr_pix_width = 640;
 		scr_pix_height = 352;
 		dword_5C2FF8 = 10;

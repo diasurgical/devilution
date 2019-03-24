@@ -2,14 +2,14 @@
 #ifndef __GENDUNG_H__
 #define __GENDUNG_H__
 
-extern short level_frame_types[2048];
+extern WORD level_frame_types[MAXTILES];
 extern int themeCount;
 extern char nTransTable[2049];
 //int dword_52D204;
 extern int dMonster[MAXDUNX][MAXDUNY];
 extern char dungeon[40][40];
 extern char dObject[MAXDUNX][MAXDUNY];
-extern void *pSpeedCels;
+extern BYTE *pSpeedCels;
 extern int nlevel_frames; // weak
 extern char pdungeon[40][40];
 extern char dDead[MAXDUNX][MAXDUNY];
@@ -21,9 +21,9 @@ extern char dflags[40][40];
 extern int dPiece[MAXDUNX][MAXDUNY];
 extern char dTransVal[MAXDUNX][MAXDUNY];
 extern int setloadflag_2; // weak
-extern int tile_defs[2048];
+extern int tile_defs[MAXTILES];
 extern BYTE *pMegaTiles;
-extern void *pLevelPieces;
+extern BYTE *pLevelPieces;
 extern int gnDifficulty; // idb
 extern char block_lvid[2049];
 //char byte_5B78EB;
@@ -33,10 +33,10 @@ extern BYTE leveltype;
 extern unsigned char currlevel; // idb
 extern char TransList[256];
 extern BOOLEAN nSolidTable[2049];
-extern int level_frame_count[2048];
+extern int level_frame_count[MAXTILES];
 extern ScrollStruct ScrollInfo;
-extern void *pDungeonCels;
-extern int speed_cel_frame_num_from_light_index_frame_num[16][128];
+extern BYTE *pDungeonCels;
+extern int speed_cel_frame_num_from_light_index_frame_num[128][16];
 extern THEME_LOC themeLoc[MAXTHEMES];
 extern char dPlayer[MAXDUNX][MAXDUNY];
 extern int dword_5C2FF8;   // weak
@@ -49,7 +49,7 @@ extern void *level_special_cel;
 extern char dFlags[MAXDUNX][MAXDUNY];
 extern char dItem[MAXDUNX][MAXDUNY];
 extern BYTE setlvlnum;
-extern int level_frame_sizes[2048];
+extern int level_frame_sizes[MAXTILES];
 extern char nMissileTable[2049];
 extern char *pSetPiece_2;
 extern char setlvltype; // weak
@@ -67,12 +67,12 @@ extern int setpc_y;     // idb
 extern char dMissile[MAXDUNX][MAXDUNY];
 extern int dminx; // weak
 extern int dminy; // weak
-extern short dpiece_defs_map_2[16][MAXDUNX][MAXDUNY];
+extern WORD dpiece_defs_map_2[MAXDUNX][MAXDUNY][16];
 
 void __cdecl FillSolidBlockTbls();
 void __cdecl gendung_418D91();
 void __fastcall gendung_4191BF(int frames);
-void __fastcall gendung_4191FB(int a1, int a2);
+void __fastcall gendung_4191FB(int f1, int f2);
 int __fastcall gendung_get_dpiece_num_from_coord(int x, int y);
 void __cdecl gendung_4192C2();
 void __cdecl SetDungeonMicros();

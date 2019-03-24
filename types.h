@@ -75,9 +75,6 @@ DEVILUTION_BEGIN_NAMESPACE
 // Will be replaced with [rep movsd] if optimization is used
 #define FAST_MEMCPY
 
-/* temp macro for asm XLAT */
-#define ASM_XLAT(eax, ebx) eax = (eax & 0xFFFFFF00) + LOBYTE(ebx[LOBYTE(eax)])
-
 // header files
 //#ifdef __cplusplus
 //extern "C" {

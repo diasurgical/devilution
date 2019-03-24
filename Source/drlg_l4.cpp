@@ -2858,88 +2858,100 @@ void __cdecl DRLG_L4Corners()
 
 void __cdecl DRLG_L4Pass3()
 {
-	int v0;             // eax
-	int *v1;            // esi
-	int *v2;            // eax
-	signed int v3;      // ecx
-	signed int v4;      // ebx
-	int *v5;            // ecx
-	unsigned char *v6;  // edi
-	unsigned short *v7; // esi
-	unsigned short v8;  // ax
-	int v9;             // eax
-	signed int v10;     // [esp+Ch] [ebp-1Ch]
-	int *v11;           // [esp+10h] [ebp-18h]
-	int v12;            // [esp+14h] [ebp-14h]
-	int v13;            // [esp+18h] [ebp-10h]
-	int v14;            // [esp+18h] [ebp-10h]
-	int v15;            // [esp+1Ch] [ebp-Ch]
-	int v16;            // [esp+1Ch] [ebp-Ch]
-	int v17;            // [esp+20h] [ebp-8h]
-	int v18;            // [esp+20h] [ebp-8h]
-	int v19;            // [esp+24h] [ebp-4h]
-	int v20;            // [esp+24h] [ebp-4h]
+	int i, j, xx, yy;
+	long v1, v2, v3, v4, lv;
 
-	v0 = *((unsigned short *)pMegaTiles + 116) + 1;
-	v19 = *((unsigned short *)pMegaTiles + 116) + 1;
-	_LOWORD(v0) = *((_WORD *)pMegaTiles + 117);
-	v17 = ++v0;
-	_LOWORD(v0) = *((_WORD *)pMegaTiles + 118);
-	v15 = ++v0;
-	_LOWORD(v0) = *((_WORD *)pMegaTiles + 119);
-	v13 = v0 + 1;
-	v1 = dPiece[1];
-	do {
-		v2 = v1;
-		v3 = 56;
-		do {
-			*(v2 - 112) = v19;
-			*v2 = v17;
-			*(v2 - 111) = v15;
-			v2[1] = v13;
-			v2 += 224;
-			--v3;
-		} while (v3);
-		v1 += 2;
-	} while ((signed int)v1 < (signed int)dPiece[2]);
-	v4 = 0;
-	v11 = &dPiece[17][16];
-	do {
-		v5 = v11;
-		v6 = (unsigned char *)dungeon + v4;
-		v10 = 40;
-		do {
-			v12 = *v6 - 1;
-			if (v12 < 0) {
-				v20 = 0;
-				v18 = 0;
-				v16 = 0;
-				v14 = 0;
+	lv = 30-1;
+
+#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+	__asm {
+		mov		esi, pMegaTiles
+		mov		eax, lv
+		shl		eax, 3
+		add		esi, eax
+		xor		eax, eax
+		lodsw
+		inc		eax
+		mov		v1, eax
+		lodsw
+		inc		eax
+		mov		v2, eax
+		lodsw
+		inc		eax
+		mov		v3, eax
+		lodsw
+		inc		eax
+		mov		v4, eax
+	}
+#else
+	v1 = *((WORD *)&pMegaTiles[lv*8])+1;
+	v2 = *((WORD *)&pMegaTiles[lv*8]+1)+1;
+	v3 = *((WORD *)&pMegaTiles[lv*8]+2)+1;
+	v4 = *((WORD *)&pMegaTiles[lv*8]+3)+1;
+#endif
+
+	for(j = 0; j < MAXDUNY; j += 2) {
+		for(i = 0; i < MAXDUNX; i += 2) {
+			dPiece[i][j] = v1;
+			dPiece[i+1][j] = v2;
+			dPiece[i][j+1] = v3;
+			dPiece[i+1][j+1] = v4;
+		}
+	}
+
+	yy = 16;
+	for(j = 0; j < DMAXY; j++) {
+		xx = 16;
+		for(i = 0; i < DMAXX; i++) {
+			lv = (unsigned char)dungeon[i][j]-1;
+#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+			if(lv >= 0) {
+				__asm {
+					mov		esi, pMegaTiles
+					mov		eax, lv
+					shl		eax, 3
+					add		esi, eax
+					xor		eax, eax
+					lodsw
+					inc		eax
+					mov		v1, eax
+					lodsw
+					inc		eax
+					mov		v2, eax
+					lodsw
+					inc		eax
+					mov		v3, eax
+					lodsw
+					inc		eax
+					mov		v4, eax
+				}
 			} else {
-				v7 = (unsigned short *)((char *)pMegaTiles + 8 * v12);
-				v8 = *v7;
-				++v7;
-				v9 = v8 + 1;
-				v20 = v9;
-				_LOWORD(v9) = *v7;
-				++v7;
-				v18 = ++v9;
-				_LOWORD(v9) = *v7;
-				v16 = ++v9;
-				_LOWORD(v9) = v7[1];
-				v14 = v9 + 1;
+				v1 = 0;
+				v2 = 0;
+				v3 = 0;
+				v4 = 0;
 			}
-			v6 += 40;
-			*(v5 - 112) = v20;
-			*v5 = v18;
-			*(v5 - 111) = v16;
-			v5[1] = v14;
-			v5 += 224;
-			--v10;
-		} while (v10);
-		v11 += 2;
-		++v4;
-	} while (v4 < 40);
+#else
+			if(lv >= 0) {
+				v1 = *((WORD *)&pMegaTiles[lv*8])+1;
+				v2 = *((WORD *)&pMegaTiles[lv*8]+1)+1;
+				v3 = *((WORD *)&pMegaTiles[lv*8]+2)+1;
+				v4 = *((WORD *)&pMegaTiles[lv*8]+3)+1;
+			} else {
+				v1 = 0;
+				v2 = 0;
+				v3 = 0;
+				v4 = 0;
+			}
+#endif
+			dPiece[xx][yy] = v1;
+			dPiece[xx+1][yy] = v2;
+			dPiece[xx][yy+1] = v3;
+			dPiece[xx+1][yy+1] = v4;
+			xx += 2;
+		}
+		yy += 2;
+	}
 }
 
 DEVILUTION_END_NAMESPACE

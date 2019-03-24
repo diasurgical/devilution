@@ -964,33 +964,17 @@ LABEL_17:
 
 void __cdecl Freeupstairs()
 {
-	int *v0;       // ecx
-	int v1;        // ebx
-	char *v2;      // eax
-	signed int v3; // edi
-	char *v4;      // edx
-	signed int v5; // esi
+	int i, yy, xx, tx, ty;
 
-	if (trigflag[4] > 0) {
-		v0 = &trigs[0]._ty;
-		v1 = trigflag[4];
-		do {
-			v2 = &dFlags[*(v0 - 1) - 2][*v0 - 2]; /* v2 = &nBlockTable[112 * *(v0 - 1) + 1830 + *v0]; check */
-			v3 = 5;
-			do {
-				v4 = v2;
-				v5 = 5;
-				do {
-					*v4 |= DFLAG_POPULATED;
-					v4 += 112;
-					--v5;
-				} while (v5);
-				++v2;
-				--v3;
-			} while (v3);
-			v0 += 4;
-			--v1;
-		} while (v1);
+	for (i = 0; i < trigflag[4]; i++) {
+		tx = trigs[i]._tx;
+		ty = trigs[i]._ty;
+
+		for (yy = 0; yy < MAXTRIGGERS; yy++) {
+			for (xx = 0; xx < MAXTRIGGERS; xx++) {
+				dFlags[tx - 2 + xx][ty - 2 + yy] |= DFLAG_POPULATED;
+			}
+		}
 	}
 }
 
