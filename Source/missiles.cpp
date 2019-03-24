@@ -3926,6 +3926,7 @@ void __fastcall MI_Chain(int i)
 	int sx, sy, id, l, n, m, k, rad, tx, ty, dir;
 	int CrawlNum[19] = { 0, 3, 12, 45, 94, 159, 240, 337, 450, 579, 724, 885, 1062, 1255, 1464, 1689, 1930, 2187, 2460 };
 
+
 	id = missile[i]._misource;
 	sx = missile[i]._mix;
 	sy = missile[i]._miy;
