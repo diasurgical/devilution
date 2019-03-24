@@ -16,7 +16,7 @@ char dDead[MAXDUNX][MAXDUNY];
 WORD dpiece_defs_map_1[MAXDUNX * MAXDUNY][16];
 char dTransVal2[MAXDUNX][MAXDUNY];
 char TransVal; // weak
-int dword_5A5594;
+int MicroTileLen;
 char dflags[40][40];
 int dPiece[MAXDUNX][MAXDUNY];
 char dTransVal[MAXDUNX][MAXDUNY];
@@ -36,7 +36,7 @@ BOOLEAN nSolidTable[2049];
 int level_frame_count[MAXTILES];
 ScrollStruct ScrollInfo;
 BYTE *pDungeonCels;
-int speed_cel_frame_num_from_light_index_frame_num[128][16];
+int SpeedFrameTbl[128][16];
 THEME_LOC themeLoc[MAXTHEMES];
 char dPlayer[MAXDUNX][MAXDUNY];
 int dword_5C2FF8;   // weak
@@ -122,7 +122,7 @@ void __cdecl FillSolidBlockTbls()
 	mem_free_dbg(pSBFile);
 }
 
-void __cdecl gendung_418D91()
+void __cdecl MakeSpeedCels()
 {
 	int i, j, x, y;
 	int total_frames, blocks, total_size, frameidx, lfs_adder, blk_cnt, currtile, nDataSize;
@@ -288,7 +288,7 @@ void __cdecl gendung_418D91()
 		}
 	}
 
-	gendung_4191BF(MAXTILES - 1);
+	SortTiles(MAXTILES - 1);
 	total_size = 0;
 	total_frames = 0;
 
@@ -317,11 +317,11 @@ void __cdecl gendung_418D91()
 
 	for(i = 0; i < total_frames; i++) {
 		currtile = tile_defs[i];
-		speed_cel_frame_num_from_light_index_frame_num[i][0] = currtile;
+		SpeedFrameTbl[i][0] = currtile;
 		if(level_frame_types[i] != 0x1000) {
 			lfs_adder = level_frame_sizes[i];
 			for(j = 1; j < blk_cnt; j++) {
-				speed_cel_frame_num_from_light_index_frame_num[i][j] = frameidx;
+				SpeedFrameTbl[i][j] = frameidx;
 #if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
 				__asm {
 					mov		ebx, pDungeonCels
@@ -357,7 +357,7 @@ void __cdecl gendung_418D91()
 			}
 		} else {
 			for(j = 1; j < blk_cnt; j++) {
-				speed_cel_frame_num_from_light_index_frame_num[i][j] = frameidx;
+				SpeedFrameTbl[i][j] = frameidx;
 #if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
 				__asm {
 					mov		ebx, pDungeonCels
@@ -446,7 +446,7 @@ void __cdecl gendung_418D91()
 // 525728: using guessed type int light4flag;
 // 53CD4C: using guessed type int nlevel_frames;
 
-void __fastcall gendung_4191BF(int frames)
+void __fastcall SortTiles(int frames)
 {
 	int i;
 	BOOL doneflag;
@@ -456,7 +456,7 @@ void __fastcall gendung_4191BF(int frames)
 		doneflag = TRUE;
 		for(i = 0; i < frames; i++) {
 			if(level_frame_count[i] < level_frame_count[i + 1]) {
-				gendung_4191FB(i, i + 1);
+				SwapTile(i, i + 1);
 				doneflag = FALSE;
 			}
 		}
@@ -464,7 +464,7 @@ void __fastcall gendung_4191BF(int frames)
 	}
 }
 
-void __fastcall gendung_4191FB(int f1, int f2)
+void __fastcall SwapTile(int f1, int f2)
 {
 	int swap;
 
@@ -482,7 +482,7 @@ void __fastcall gendung_4191FB(int f1, int f2)
 	level_frame_sizes[f2] = swap;
 }
 
-int __fastcall gendung_get_dpiece_num_from_coord(int x, int y)
+int __fastcall IsometricCoord(int x, int y)
 {
 	if (x < MAXDUNY - y)
 		return (y + y * y + x * (x + 2 * y + 3)) / 2;
@@ -492,14 +492,14 @@ int __fastcall gendung_get_dpiece_num_from_coord(int x, int y)
 	return MAXDUNX * MAXDUNY - ((y + y * y + x * (x + 2 * y + 3)) / 2) - 1;
 }
 
-void __cdecl gendung_4192C2()
+void __cdecl SetSpeedCels()
 {
 	int i, x, y;
 
 	for(x = 0; x < MAXDUNX; x++) {
 		for(y = 0; y < MAXDUNY; y++) {
 			for(i = 0; i < 16; i++) {
-				dpiece_defs_map_1[gendung_get_dpiece_num_from_coord(x, y)][i] = dpiece_defs_map_2[x][y][i];
+				dpiece_defs_map_1[IsometricCoord(x, y)][i] = dpiece_defs_map_2[x][y][i];
 			}
 		}
 	}
@@ -511,10 +511,10 @@ void __cdecl SetDungeonMicros()
 	WORD *pMap, *pPiece;
 
 	if(leveltype != DTYPE_HELL) {
-		dword_5A5594 = 10;
+		MicroTileLen = 10;
 		blocks = 10;
 	} else {
-		dword_5A5594 = 12;
+		MicroTileLen = 12;
 		blocks = 16;
 	}
 
@@ -537,8 +537,8 @@ void __cdecl SetDungeonMicros()
 		}
 	}
 
-	gendung_418D91();
-	gendung_4192C2();
+	MakeSpeedCels();
+	SetSpeedCels();
 
 	if(zoomflag) {
 		scr_pix_width = 640;

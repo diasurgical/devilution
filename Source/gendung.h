@@ -16,7 +16,7 @@ extern char dDead[MAXDUNX][MAXDUNY];
 extern WORD dpiece_defs_map_1[MAXDUNX * MAXDUNY][16];
 extern char dTransVal2[MAXDUNX][MAXDUNY];
 extern char TransVal; // weak
-extern int dword_5A5594;
+extern int MicroTileLen;
 extern char dflags[40][40];
 extern int dPiece[MAXDUNX][MAXDUNY];
 extern char dTransVal[MAXDUNX][MAXDUNY];
@@ -36,7 +36,7 @@ extern BOOLEAN nSolidTable[2049];
 extern int level_frame_count[MAXTILES];
 extern ScrollStruct ScrollInfo;
 extern BYTE *pDungeonCels;
-extern int speed_cel_frame_num_from_light_index_frame_num[128][16];
+extern int SpeedFrameTbl[128][16];
 extern THEME_LOC themeLoc[MAXTHEMES];
 extern char dPlayer[MAXDUNX][MAXDUNY];
 extern int dword_5C2FF8;   // weak
@@ -70,11 +70,11 @@ extern int dminy; // weak
 extern WORD dpiece_defs_map_2[MAXDUNX][MAXDUNY][16];
 
 void __cdecl FillSolidBlockTbls();
-void __cdecl gendung_418D91();
-void __fastcall gendung_4191BF(int frames);
-void __fastcall gendung_4191FB(int f1, int f2);
-int __fastcall gendung_get_dpiece_num_from_coord(int x, int y);
-void __cdecl gendung_4192C2();
+void __cdecl MakeSpeedCels();
+void __fastcall SortTiles(int frames);
+void __fastcall SwapTile(int f1, int f2);
+int __fastcall IsometricCoord(int x, int y);
+void __cdecl SetSpeedCels();
 void __cdecl SetDungeonMicros();
 void __cdecl DRLG_InitTrans();
 void __fastcall DRLG_MRectTrans(int x1, int y1, int x2, int y2);

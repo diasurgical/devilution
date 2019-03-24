@@ -7,7 +7,7 @@ void __fastcall drawTopArchesUpperScreen(unsigned char *pbDst)
 	unsigned char *src; // esi MAPDST
 	short cel_type_16; // ax MAPDST
 
-	gpCelFrame = (unsigned char *)speed_cel_frame_num_from_light_index_frame_num;
+	gpCelFrame = (unsigned char *)SpeedFrameTbl;
 	dst = pbDst;
 	if ( !(_BYTE)light_table_index )
 	{
@@ -2330,7 +2330,7 @@ void __fastcall drawBottomArchesUpperScreen(unsigned char *pbDst, unsigned int *
 	short cel_type_16; // ax MAPDST
 	unsigned char *tbl;
 
-	gpCelFrame = (unsigned char *)speed_cel_frame_num_from_light_index_frame_num;
+	gpCelFrame = (unsigned char *)SpeedFrameTbl;
 	dst = pbDst;
 	gpDrawMask = pMask;
 	if ( !(_BYTE)light_table_index )
@@ -3498,7 +3498,7 @@ void __fastcall drawUpperScreen(unsigned char *pbDst)
 			}
 		}
 	}
-	gpCelFrame = (unsigned char *)speed_cel_frame_num_from_light_index_frame_num;
+	gpCelFrame = (unsigned char *)SpeedFrameTbl;
 	dst = pbDst;
 	if ( !(_BYTE)light_table_index )
 	{
@@ -4615,7 +4615,7 @@ void __fastcall drawTopArchesLowerScreen(unsigned char *pbDst)
 	unsigned char *src; // esi MAPDST
 	short cel_type_16; // ax MAPDST
 
-	gpCelFrame = (unsigned char *)speed_cel_frame_num_from_light_index_frame_num;
+	gpCelFrame = (unsigned char *)SpeedFrameTbl;
 	dst = pbDst;
 	if ( !(_BYTE)light_table_index )
 	{
@@ -7381,7 +7381,7 @@ void __fastcall drawBottomArchesLowerScreen(unsigned char *pbDst, unsigned int *
 	unsigned char *src; // esi MAPDST
 	unsigned char *tbl;
 
-	gpCelFrame = (unsigned char *)speed_cel_frame_num_from_light_index_frame_num;
+	gpCelFrame = (unsigned char *)SpeedFrameTbl;
 	dst = pbDst;
 	gpDrawMask = pMask;
 	if ( (_BYTE)light_table_index )
@@ -8889,7 +8889,7 @@ void __fastcall drawLowerScreen(unsigned char *pbDst)
 			}
 		}
 	}
-	gpCelFrame = (unsigned char *)speed_cel_frame_num_from_light_index_frame_num;
+	gpCelFrame = (unsigned char *)SpeedFrameTbl;
 	dst = pbDst;
 	if ( (_BYTE)light_table_index )
 	{
