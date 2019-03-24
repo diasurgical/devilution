@@ -2358,85 +2358,48 @@ void __fastcall AddAcidpud(int mi, int sx, int sy, int dx, int dy, int midir, in
 
 void __fastcall AddStone(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
 {
-	int v9;          // eax
-	int v10;         // edx
-	int v11;         // esi
-	int v12;         // edi
-	int v13;         // ecx
-	char *v14;       // ecx
-	int v15;         // ebx
-	int v16;         // ebx
-	int v17;         // edi
-	int *v18;        // edi
-	int v19;         // ecx
-	int v20;         // edx
-	int v21;         // ecx
-	int v22;         // edx
-	int *v23;        // eax
-	int CrawlNum[6]; // [esp+Ch] [ebp-20h]
-	int v25;         // [esp+24h] [ebp-8h]
-	int v26;         // [esp+28h] [ebp-4h]
-
-	v9 = mi;
-	CrawlNum[0] = 0;
-	v26 = 0;
-	v10 = id;
-	v11 = id;
-	CrawlNum[1] = 3;
-	CrawlNum[2] = 12;
-	CrawlNum[3] = 45;
-	CrawlNum[4] = 94;
-	CrawlNum[5] = 159;
+	int i, j, k, l, tx, ty, mid;
+	int CrawlNum[6] = { 0, 3, 12, 45, 94, 159 };
 	missile[mi]._misource = id;
-	do {
-		v12 = CrawlNum[v26];
-		v13 = (unsigned char)CrawlTable[v12];
-		v25 = (unsigned char)CrawlTable[v12];
-		if (v13 > 0) {
-			v14 = &CrawlTable[v12 + 2];
-			while (1) {
-				v10 = dx + (char)*(v14 - 1);
-				v11 = dy + (char)*v14;
-				if (v10 > 0 && v10 < MAXDUNX && v11 > 0 && v11 < MAXDUNY) {
-					v15 = dMonster[v10][v11];
-					v16 = v15 <= 0 ? -1 - v15 : v15 - 1;
-					if (v16 > 3 && monster[v16]._mAi != AI_DIABLO) {
-						v17 = monster[v16]._mmode;
-						if (v17 != MM_FADEIN && v17 != MM_FADEOUT && v17 != MM_CHARGE)
-							break;
+	for (i = 0; i < 6; i++) {
+		k = CrawlNum[i];
+		l = k + 2;
+		for (j = (unsigned char)CrawlTable[k]; j > 0; j--) {
+			tx = dx + CrawlTable[l - 1];
+			ty = dy + CrawlTable[l];
+			if (tx > 0 && tx < MAXDUNX && ty > 0 && ty < MAXDUNY) {
+				mid = dMonster[tx][ty];
+				mid = mid > 0 ? mid - 1 : -1 - mid;
+				if (mid > 3 && monster[mid]._mAi != AI_DIABLO) {
+					if (monster[mid]._mmode != MM_FADEIN && monster[mid]._mmode != MM_FADEOUT && monster[mid]._mmode != MM_CHARGE) {
+						j = -99;
+						i = 6;
+						missile[mi]._miVar1 = monster[mid]._mmode;
+						missile[mi]._miVar2 = mid;
+						monster[mid]._mmode = MM_STONE;
+						break;
 					}
 				}
-				v14 += 2;
-				if (--v25 <= 0)
-					goto LABEL_19;
 			}
-			v25 = -99;
-			v26 = 6;
-			missile[v9]._miVar2 = v16;
-			v18 = (int *)&monster[v16]._mmode;
-			v19 = *v18;
-			*v18 = MM_STONE;
-			missile[v9]._miVar1 = v19;
+			l += 2;
 		}
-	LABEL_19:
-		++v26;
-	} while (v26 < 6);
-	if (v25 == -99) {
-		missile[v9]._mix = v10;
-		missile[v9]._misx = v10;
-		v20 = missile[v9]._mispllvl + 6;
-		v21 = v20 * plr[id]._pISplDur >> 7;
-		missile[v9]._miy = v11;
-		missile[v9]._misy = v11;
-		v22 = v21 + v20;
-		v23 = &missile[v9]._mirange;
-		*v23 = v22;
-		if (v22 > 15)
-			*v23 = 15;
-		*v23 *= 16;
-		UseMana(id, 8);
+	}
+
+	if (j != -99) {
+		missile[mi]._miDelFlag = TRUE;
 	} else {
-		missile[v9]._miDelFlag = TRUE;
+		missile[mi]._mix = tx;
+		missile[mi]._miy = ty;
+		missile[mi]._misx = tx;
+		missile[mi]._misy = ty;
+		missile[mi]._mirange = 6;
+		missile[mi]._mirange += missile[mi]._mispllvl;
+		missile[mi]._mirange += (missile[mi]._mirange * plr[id]._pISplDur) >> 7;
+
+		if (missile[mi]._mirange > 15)
+			missile[mi]._mirange = 15;
+		missile[mi]._mirange <<= 4;
+		UseMana(id, 8);
 	}
 }
 
