@@ -4375,79 +4375,30 @@ void __fastcall mi_null_32(int i)
 
 void __fastcall MI_FirewallC(int i)
 {
-	int v1;     // esi
-	int v2;     // edx
-	BOOLEAN v3; // zf
-	int v4;     // eax
-	int v5;     // edi
-	int v6;     // ecx
-	int v7;     // ebx
-	int v8;     // eax
-	int v9;     // edi
-	int v10;    // ecx
-	int v11;    // ebx
-	int id;     // [esp+Ch] [ebp-4h]
+	int tx, ty, id;
 
-	v1 = i;
-	v2 = missile[i]._misource;
-	v3 = missile[i]._mirange == 1;
-	--missile[v1]._mirange;
-	id = v2;
-	if (v3) {
-		missile[v1]._miDelFlag = TRUE;
+	id = missile[i]._misource;
+	missile[i]._mirange--;
+	if (!missile[i]._mirange) {
+		missile[i]._miDelFlag = TRUE;
 	} else {
-		v4 = missile[v1]._miVar3;
-		v5 = missile[v1]._miVar1 + XDirAdd[v4];
-		v6 = missile[v1]._miVar2;
-		v7 = v6 + YDirAdd[v4];
-		if (nMissileTable[dPiece[missile[v1]._miVar1][v6]]
-		    || missile[v1]._miVar8
-		    || v5 <= 0
-		    || v5 >= MAXDUNX
-		    || v7 <= 0
-		    || v7 >= MAXDUNY) {
-			missile[v1]._miVar8 = 1;
+		tx = missile[i]._miVar1 + XDirAdd[missile[i]._miVar3];
+		ty = missile[i]._miVar2 + YDirAdd[missile[i]._miVar3];
+		if (!nMissileTable[dPiece[missile[i]._miVar1][missile[i]._miVar2]] && !missile[i]._miVar8 && tx > 0 && tx < MAXDUNX && ty > 0 && ty < MAXDUNY) {
+			AddMissile(missile[i]._miVar1, missile[i]._miVar2, missile[i]._miVar1, missile[i]._miVar2, plr[id]._pdir, MIS_FIREWALL, 0, id, 0, missile[i]._mispllvl);
+			missile[i]._miVar1 = tx;
+			missile[i]._miVar2 = ty;
 		} else {
-			AddMissile(
-			    missile[v1]._miVar1,
-			    v6,
-			    missile[v1]._miVar1,
-			    v6,
-			    plr[v2]._pdir,
-			    MIS_FIREWALL,
-			    0,
-			    v2,
-			    0,
-			    missile[v1]._mispllvl);
-			v2 = id;
-			missile[v1]._miVar1 = v5;
-			missile[v1]._miVar2 = v7;
+			missile[i]._miVar8 = 1;
 		}
-		v8 = missile[v1]._miVar4;
-		v9 = missile[v1]._miVar5 + XDirAdd[v8];
-		v10 = missile[v1]._miVar6;
-		v11 = v10 + YDirAdd[v8];
-		if (nMissileTable[dPiece[missile[v1]._miVar5][v10]]
-		    || missile[v1]._miVar7
-		    || v9 <= 0
-		    || v9 >= MAXDUNX
-		    || v11 <= 0
-		    || v11 >= MAXDUNY) {
-			missile[v1]._miVar7 = 1;
+		tx = missile[i]._miVar5 + XDirAdd[missile[i]._miVar4];
+		ty = missile[i]._miVar6 + YDirAdd[missile[i]._miVar4];
+		if (!nMissileTable[dPiece[missile[i]._miVar5][missile[i]._miVar6]] && !missile[i]._miVar7 && tx > 0 && tx < MAXDUNX && ty > 0 && ty < MAXDUNY) {
+			AddMissile(missile[i]._miVar5, missile[i]._miVar6, missile[i]._miVar5, missile[i]._miVar6, plr[id]._pdir, MIS_FIREWALL, 0, id, 0, missile[i]._mispllvl);
+			missile[i]._miVar5 = tx;
+			missile[i]._miVar6 = ty;
 		} else {
-			AddMissile(
-			    missile[v1]._miVar5,
-			    v10,
-			    missile[v1]._miVar5,
-			    v10,
-			    plr[v2]._pdir,
-			    MIS_FIREWALL,
-			    0,
-			    v2,
-			    0,
-			    missile[v1]._mispllvl);
-			missile[v1]._miVar5 = v9;
-			missile[v1]._miVar6 = v11;
+			missile[i]._miVar7 = 1;
 		}
 	}
 }
