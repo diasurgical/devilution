@@ -16,7 +16,7 @@ void __fastcall town_draw_upper(int x, int y, int sx, int sy, int a5, int a6, in
 void __fastcall T_DrawGame(int x, int y);
 void __fastcall T_DrawZoom(int x, int y);
 void __fastcall T_DrawView(int StartX, int StartY);
-void __cdecl town_init_dpiece_defs_map();
+void __cdecl SetTownMicros();
 void __fastcall T_FillSector(unsigned char *P3Tiles, unsigned char *pSector, int xi, int yi, int w, int h);
 void __fastcall T_FillTile(unsigned char *P3Tiles, int xx, int yy, int t);
 void __cdecl T_Pass3();

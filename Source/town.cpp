@@ -149,7 +149,7 @@ void __fastcall town_draw_clipped_e_flag(BYTE *buffer, int x, int y, int sx, int
 	WORD *defs;
 
 	buf = buffer;
-	defs = dpiece_defs_map_1[gendung_get_dpiece_num_from_coord(x, y)];
+	defs = dpiece_defs_map_1[IsometricCoord(x, y)];
 
 	for (i = 0; i < 12; i += 2) {
 		level_cel_block = defs[i];
@@ -313,7 +313,7 @@ void __fastcall town_draw_lower(int x, int y, int sx, int sy, int a5, int some_f
 			v7 = &screen_y_times_768[sy];
 			a1 = (unsigned char *)&gpBuffer[*v7 + 32 + sx];
 			v25 = 1;
-			v8 = (char *)dpiece_defs_map_1 + 32 * gendung_get_dpiece_num_from_coord(x, y);
+			v8 = (char *)dpiece_defs_map_1 + 32 * IsometricCoord(x, y);
 			do {
 				v9 = *(unsigned short *)&v8[2 * v25];
 				level_cel_block = *(unsigned short *)&v8[2 * v25];
@@ -343,7 +343,7 @@ void __fastcall town_draw_lower(int x, int y, int sx, int sy, int a5, int some_f
 		do {
 			if (y >= 0 && y < MAXDUNY && v12 >= 0 && v12 < MAXDUNX * 112 && (level_cel_block = dPiece[0][v12 + y]) != 0) {
 				v13 = (unsigned char *)gpBuffer + *v11 + sx;
-				v14 = (char *)dpiece_defs_map_1 + 32 * gendung_get_dpiece_num_from_coord(xa, ya);
+				v14 = (char *)dpiece_defs_map_1 + 32 * IsometricCoord(xa, ya);
 				v26 = 0;
 				do {
 					v15 = *(unsigned short *)&v14[2 * v26];
@@ -376,7 +376,7 @@ void __fastcall town_draw_lower(int x, int y, int sx, int sy, int a5, int some_f
 		if (y >= 0 && y < MAXDUNY && xa >= 0 && xa < MAXDUNX && (level_cel_block = dPiece[xa][y]) != 0) {
 			v18 = &screen_y_times_768[v6];
 			v19 = (unsigned char *)gpBuffer + *v18 + sx;
-			v20 = (char *)dpiece_defs_map_1 + 32 * gendung_get_dpiece_num_from_coord(xa, ya);
+			v20 = (char *)dpiece_defs_map_1 + 32 * IsometricCoord(xa, ya);
 			v27 = 0;
 			do {
 				v21 = *(unsigned short *)&v20[2 * v27];
@@ -405,7 +405,7 @@ void __fastcall town_draw_clipped_e_flag_2(BYTE *buffer, int x, int y, int a4, i
 	else
 		buf = buffer + 768 * 32 * a4;
 
-	defs = dpiece_defs_map_1[gendung_get_dpiece_num_from_coord(x, y)];
+	defs = dpiece_defs_map_1[IsometricCoord(x, y)];
 
 	for (i = 0; i < 6; i++) {
 		if (a4 <= i) {
@@ -581,7 +581,7 @@ void __fastcall town_draw_lower_2(int x, int y, int sx, int sy, int a5, int a6, 
 				v9 = &screen_y_times_768[sy];
 				a1 = (unsigned char *)gpBuffer + *v9 + sx - 24544;
 				sxa = 0;
-				v10 = &dpiece_defs_map_1[0][16 * gendung_get_dpiece_num_from_coord(x, y) + 3];
+				v10 = &dpiece_defs_map_1[0][16 * IsometricCoord(x, y) + 3];
 				v23 = v10;
 				do {
 					if (a6 <= sxa) {
@@ -620,7 +620,7 @@ LABEL_18:
 			if (ya >= 0 && ya < MAXDUNY && v14 >= 0 && v14 < MAXDUNX * 112 && (level_cel_block = dPiece[0][v14 + ya]) != 0) {
 				a1a = (unsigned char *)gpBuffer + *v13 + v11 - 768 * 32;
 				sxb = 0;
-				v15 = &dpiece_defs_map_1[0][16 * gendung_get_dpiece_num_from_coord(xa, ya) + 3];
+				v15 = &dpiece_defs_map_1[0][16 * IsometricCoord(xa, ya) + 3];
 				do {
 					if (a6 <= sxb) {
 						v16 = (unsigned short)*(v15 - 1);
@@ -657,7 +657,7 @@ LABEL_18:
 			v20 = &screen_y_times_768[v8];
 			a1b = (unsigned char *)gpBuffer + *v20 + v11 - 768 * 32;
 			sxc = 0;
-			v21 = &dpiece_defs_map_1[0][16 * gendung_get_dpiece_num_from_coord(xa, ya) + 2];
+			v21 = &dpiece_defs_map_1[0][16 * IsometricCoord(xa, ya) + 2];
 			do {
 				if (a6 <= sxc) {
 					v22 = (unsigned short)*v21;
@@ -685,7 +685,7 @@ void __fastcall town_draw_e_flag(BYTE *buffer, int x, int y, int a4, int dir, in
 	WORD *defs;
 
 	buf = buffer;
-	defs = dpiece_defs_map_1[gendung_get_dpiece_num_from_coord(x, y)];
+	defs = dpiece_defs_map_1[IsometricCoord(x, y)];
 
 	for (i = 0; i < 7; i++) {
 		if (a4 >= i) {
@@ -809,7 +809,7 @@ void __fastcall town_draw_upper(int x, int y, int sx, int sy, int a5, int a6, in
 			if (!v10) {
 				a1 = (int *)&gpBuffer[sx + 32 + screen_y_times_768[sy]];
 				sxa = 0;
-				v12 = &dpiece_defs_map_1[0][16 * gendung_get_dpiece_num_from_coord(x, y) + 1];
+				v12 = &dpiece_defs_map_1[0][16 * IsometricCoord(x, y) + 1];
 				do {
 					if (a6 >= sxa) {
 						v13 = (unsigned short)*v12;
@@ -849,7 +849,7 @@ LABEL_19:
 				v17 = gpBuffer;
 				if (!v10) {
 					v18 = (unsigned char *)gpBuffer + v14 + screen_y_times_768[sy];
-					v19 = (char *)dpiece_defs_map_1 + 32 * gendung_get_dpiece_num_from_coord(xa, ya);
+					v19 = (char *)dpiece_defs_map_1 + 32 * IsometricCoord(xa, ya);
 					sxb = 0;
 					do {
 						if (a6 >= sxb) {
@@ -893,7 +893,7 @@ LABEL_19:
 			v23 = sy;
 			if (!v10) {
 				v24 = (unsigned char *)gpBuffer + v14 + screen_y_times_768[sy];
-				v25 = (char *)dpiece_defs_map_1 + 32 * gendung_get_dpiece_num_from_coord(xa, v7);
+				v25 = (char *)dpiece_defs_map_1 + 32 * IsometricCoord(xa, v7);
 				sxc = 0;
 				do {
 					if (a6 >= sxc) {
@@ -1250,7 +1250,7 @@ void __fastcall T_DrawView(int StartX, int StartY)
 // 69CF94: using guessed type int cel_transparency_active;
 // 6AA705: using guessed type char stextflag;
 
-void __cdecl town_init_dpiece_defs_map()
+void __cdecl SetTownMicros()
 {
 	int(*v0)[112]; // ebx
 	int v1;        // ebp
@@ -1268,7 +1268,7 @@ void __cdecl town_init_dpiece_defs_map()
 		v1 = 0;
 		do {
 			v2 = (*v0)[0];
-			v3 = (char *)dpiece_defs_map_1 + 32 * gendung_get_dpiece_num_from_coord(v1, y);
+			v3 = (char *)dpiece_defs_map_1 + 32 * IsometricCoord(v1, y);
 			if (v2) {
 				v4 = (char *)pLevelPieces + 32 * v2 - 32;
 				v5 = 0;
@@ -1586,7 +1586,7 @@ void __fastcall CreateTown(int entry)
 		v2 = (int(*)[112])((char *)v2 + 4);
 		++v1;
 	} while ((signed int)v2 < (signed int)dPiece[1]);
-	town_init_dpiece_defs_map();
+	SetTownMicros();
 }
 // 5CF328: using guessed type int dmaxx;
 // 5CF32C: using guessed type int dmaxy;

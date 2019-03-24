@@ -609,7 +609,7 @@ void __fastcall scrollrt_draw_lower(int x, int y, int sx, int sy, int a5, int so
 	v7 = x;
 	sya = y;
 	sxa = x;
-	v8 = (unsigned short *)((char *)dpiece_defs_map_1 + 32 * gendung_get_dpiece_num_from_coord(x, y));
+	v8 = (unsigned short *)((char *)dpiece_defs_map_1 + 32 * IsometricCoord(x, y));
 	if (some_flag) {
 		if (v6 < 0x70 && v7 < 0x70) {
 			v9 = v7;
@@ -696,7 +696,7 @@ LABEL_23:
 						drawLowerScreen(v29 + 32);
 					arch_draw_type = 0;
 					v31 = 2;
-					for (i = 2; i < dword_5A5594; i += 2) {
+					for (i = 2; i < MicroTileLen; i += 2) {
 						v29 -= 24576;
 						level_cel_block = v8[v31];
 						if (level_cel_block)
@@ -1151,7 +1151,7 @@ void __fastcall scrollrt_draw_clipped_e_flag(char *buffer, int x, int y, int a4,
 	v11 = (unsigned char)(nTransTable[v7] & TransList[v9]);
 	light_table_index = v8;
 	cel_transparency_active = v11;
-	v12 = gendung_get_dpiece_num_from_coord(x, y);
+	v12 = IsometricCoord(x, y);
 	arch_draw_type = 1;
 	v13 = (unsigned short *)((char *)dpiece_defs_map_1 + 32 * v12);
 	v14 = *v13;
@@ -1166,7 +1166,7 @@ void __fastcall scrollrt_draw_clipped_e_flag(char *buffer, int x, int y, int a4,
 	arch_draw_type = 0;
 	pbDst = a1;
 	v16 = 2;
-	for (i = 2; i < dword_5A5594; i += 2) {
+	for (i = 2; i < MicroTileLen; i += 2) {
 		pbDst -= 24576;
 		level_cel_block = v13[v16];
 		if (level_cel_block)
@@ -1224,7 +1224,7 @@ void __fastcall scrollrt_draw_lower_2(int x, int y, int sx, int sy, int a5, int 
 	a1 = y;
 	xa = x;
 	v8 = sx;
-	v29 = (char *)dpiece_defs_map_1 + 32 * gendung_get_dpiece_num_from_coord(x, y);
+	v29 = (char *)dpiece_defs_map_1 + 32 * IsometricCoord(x, y);
 	if (some_flag) {
 		if (v7 >= 0 && v7 < MAXDUNY && xa >= 0 && xa < MAXDUNX) {
 			v9 = 112 * xa + v7;
@@ -1235,7 +1235,7 @@ void __fastcall scrollrt_draw_lower_2(int x, int y, int sx, int sy, int a5, int 
 				a6a = 0;
 				cel_transparency_active = (unsigned char)(nTransTable[v10] & TransList[dung_map[0][v9]]);
 				a1a = (unsigned char *)gpBuffer + screen_y_times_768[sy] + v8 - 24544;
-				if ((dword_5A5594 >> 1) - 1 > 0) {
+				if ((MicroTileLen >> 1) - 1 > 0) {
 					v24 = (unsigned short *)(v29 + 6);
 					do {
 						if (a6 <= a6a) {
@@ -1247,7 +1247,7 @@ void __fastcall scrollrt_draw_lower_2(int x, int y, int sx, int sy, int a5, int 
 						a1a -= 24576;
 						++a6a;
 						v24 += 2;
-					} while (a6a < (dword_5A5594 >> 1) - 1);
+					} while (a6a < (MicroTileLen >> 1) - 1);
 				}
 				v12 = 2 * a6 + 2;
 				if (v12 < 8)
@@ -1286,7 +1286,7 @@ void __fastcall scrollrt_draw_lower_2(int x, int y, int sx, int sy, int a5, int 
 					a6b = 0;
 					cel_transparency_active = (unsigned char)(nTransTable[v15] & TransList[dung_map[0][v14]]);
 					v16 = (unsigned char *)gpBuffer + screen_y_times_768[sy] + v8 - 24576;
-					if ((dword_5A5594 >> 1) - 1 > 0) {
+					if ((MicroTileLen >> 1) - 1 > 0) {
 						a5a = (unsigned short *)(v29 + 6);
 						do {
 							if (a6 <= a6b) {
@@ -1302,7 +1302,7 @@ void __fastcall scrollrt_draw_lower_2(int x, int y, int sx, int sy, int a5, int 
 							++a6b;
 							a5a += 2;
 							v16 -= 24576;
-						} while (a6b < (dword_5A5594 >> 1) - 1);
+						} while (a6b < (MicroTileLen >> 1) - 1);
 					}
 					if (2 * a6 + 2 < 8)
 						scrollrt_draw_clipped_dungeon_2(
@@ -1336,7 +1336,7 @@ void __fastcall scrollrt_draw_lower_2(int x, int y, int sx, int sy, int a5, int 
 				a6c = 0;
 				cel_transparency_active = (unsigned char)(nTransTable[v20] & TransList[dung_map[0][v19]]);
 				a1b = (unsigned char *)gpBuffer + screen_y_times_768[sy] + v8 - 24576;
-				if ((dword_5A5594 >> 1) - 1 > 0) {
+				if ((MicroTileLen >> 1) - 1 > 0) {
 					a5b = (unsigned short *)(v29 + 4);
 					do {
 						if (a6 <= a6c) {
@@ -1348,7 +1348,7 @@ void __fastcall scrollrt_draw_lower_2(int x, int y, int sx, int sy, int a5, int 
 						a1b -= 24576;
 						++a6c;
 						a5b += 2;
-					} while (a6c < (dword_5A5594 >> 1) - 1);
+					} while (a6c < (MicroTileLen >> 1) - 1);
 				}
 				v22 = 2 * a6 + 2;
 				if (v22 < 8)
@@ -1649,7 +1649,7 @@ void __fastcall scrollrt_draw_clipped_e_flag_2(char *buffer, int x, int y, int a
 	v12 = (unsigned char)(nTransTable[v8] & TransList[v10]);
 	light_table_index = v9;
 	cel_transparency_active = v12;
-	v13 = (unsigned short *)((char *)dpiece_defs_map_1 + 32 * gendung_get_dpiece_num_from_coord(x, y));
+	v13 = (unsigned short *)((char *)dpiece_defs_map_1 + 32 * IsometricCoord(x, y));
 	if (!a4) {
 		v14 = v13[2];
 		level_cel_block = v13[2];
@@ -1754,7 +1754,7 @@ void __fastcall scrollrt_draw_upper(int x, int y, int sx, int sy, int a5, int a6
 	v8 = x;
 	ya = y;
 	xa = x;
-	v9 = (unsigned short *)((char *)dpiece_defs_map_1 + 32 * gendung_get_dpiece_num_from_coord(x, y));
+	v9 = (unsigned short *)((char *)dpiece_defs_map_1 + 32 * IsometricCoord(x, y));
 	a5a = 2 * a6 + 2;
 	if (a5a > 8)
 		a5a = 8;
@@ -1837,7 +1837,7 @@ void __fastcall scrollrt_draw_upper(int x, int y, int sx, int sy, int a5, int a6
 					if (v27)
 						drawUpperScreen(v26 + 32);
 					arch_draw_type = 0;
-					for (i = 1; i < (dword_5A5594 >> 1) - 1; ++i) {
+					for (i = 1; i < (MicroTileLen >> 1) - 1; ++i) {
 						v26 -= 24576;
 						if (a6 >= i) {
 							v28 = v9[2 * i];
@@ -2299,7 +2299,7 @@ void __fastcall scrollrt_draw_e_flag(char *buffer, int x, int y, int a4, int a5,
 	a1 = (unsigned char *)v8;
 	v25 = (unsigned char *)v8;
 	cel_transparency_active = v14 & v13;
-	v16 = gendung_get_dpiece_num_from_coord(xa, y);
+	v16 = IsometricCoord(xa, y);
 	arch_draw_type = 1;
 	v17 = (unsigned short *)((char *)dpiece_defs_map_1 + 32 * v16);
 	v18 = *v17;
@@ -2312,7 +2312,7 @@ void __fastcall scrollrt_draw_e_flag(char *buffer, int x, int y, int a4, int a5,
 	if (v19)
 		drawUpperScreen(a1 + 32);
 	arch_draw_type = 0;
-	for (i = 1; i < (dword_5A5594 >> 1) - 1; ++i) {
+	for (i = 1; i < (MicroTileLen >> 1) - 1; ++i) {
 		v25 -= 24576;
 		if (a4 >= i) {
 			v20 = v17[2 * i];

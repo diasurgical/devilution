@@ -96,7 +96,7 @@ void __fastcall drawTopArchesUpperScreen(unsigned char *pbDst)
 	signed int i;              // edx MAPDST
 	signed int j;              // ecx MAPDST
 
-	gpCelFrame = (unsigned char *)speed_cel_frame_num_from_light_index_frame_num;
+	gpCelFrame = (unsigned char *)SpeedFrameTbl;
 	dst = pbDst;
 	if (!(_BYTE)light_table_index) {
 		if (level_cel_block & 0x8000)
@@ -1120,7 +1120,7 @@ void __fastcall drawBottomArchesUpperScreen(unsigned char *pbDst, unsigned int *
 	signed int i;              // ecx MAPDST
 	unsigned char *tbl;
 
-	gpCelFrame = (unsigned char *)speed_cel_frame_num_from_light_index_frame_num;
+	gpCelFrame = (unsigned char *)SpeedFrameTbl;
 	dst = pbDst;
 	gpDrawMask = pMask;
 	if (!(_BYTE)light_table_index) {
@@ -1772,7 +1772,7 @@ void __fastcall drawUpperScreen(unsigned char *pbDst)
 			}
 		}
 	}
-	gpCelFrame = (unsigned char *)speed_cel_frame_num_from_light_index_frame_num;
+	gpCelFrame = (unsigned char *)SpeedFrameTbl;
 	dst = pbDst;
 	if (!(_BYTE)light_table_index) {
 		if (level_cel_block & 0x8000)
@@ -2378,7 +2378,7 @@ void __fastcall drawTopArchesLowerScreen(unsigned char *pbDst)
 	signed int i;              // edx MAPDST
 	signed int j;              // ecx MAPDST
 
-	gpCelFrame = (unsigned char *)speed_cel_frame_num_from_light_index_frame_num;
+	gpCelFrame = (unsigned char *)SpeedFrameTbl;
 	dst = pbDst;
 	if (!(_BYTE)light_table_index) {
 		if (level_cel_block & 0x8000)
@@ -3615,7 +3615,7 @@ void __fastcall drawBottomArchesLowerScreen(unsigned char *pbDst, unsigned int *
 	unsigned int n_draw_shift; // ecx MAPDST
 	unsigned char *tbl;
 
-	gpCelFrame = (unsigned char *)speed_cel_frame_num_from_light_index_frame_num;
+	gpCelFrame = (unsigned char *)SpeedFrameTbl;
 	dst = pbDst;
 	gpDrawMask = pMask;
 	if ((_BYTE)light_table_index) {
@@ -4427,7 +4427,7 @@ void __fastcall drawLowerScreen(unsigned char *pbDst)
 			}
 		}
 	}
-	gpCelFrame = (unsigned char *)speed_cel_frame_num_from_light_index_frame_num;
+	gpCelFrame = (unsigned char *)SpeedFrameTbl;
 	dst = pbDst;
 	if ((_BYTE)light_table_index) {
 		if ((_BYTE)light_table_index == lightmax) {
