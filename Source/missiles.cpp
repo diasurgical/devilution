@@ -2169,8 +2169,8 @@ void __fastcall AddGuardian(int mi, int sx, int sy, int dx, int dy, int midir, i
 	for (i = 0; i < 6; i++) {
 		pn = CrawlNum[i];
 		k = pn + 2;
-		for (j = (unsigned char)CrawlTable[pn];j>0;j--){
-			tx = dx + CrawlTable[k-1];
+		for (j = (unsigned char)CrawlTable[pn]; j > 0; j--) {
+			tx = dx + CrawlTable[k - 1];
 			ty = dy + CrawlTable[k];
 			pn = dPiece[tx][ty];
 			if (tx > 0 && tx < MAXDUNX && ty > 0 && ty < MAXDUNY) {
@@ -2198,7 +2198,6 @@ void __fastcall AddGuardian(int mi, int sx, int sy, int dx, int dy, int midir, i
 		missile[mi]._mirange = plr[id]._pLevel >> 1;
 		missile[mi]._mirange += missile[mi]._mispllvl;
 		missile[mi]._mirange += (missile[mi]._mirange * plr[id]._pISplDur) >> 7;
-	
 
 		if (missile[mi]._mirange > 30)
 			missile[mi]._mirange = 30;
