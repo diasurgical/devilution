@@ -160,15 +160,10 @@ void __fastcall UnPackPlayer(PkPlayerStruct *pPack, int pnum, BOOL killok)
 	pPlayer->_pGold = pPack->pGold;
 	pPlayer->_pMaxHPBase = pPack->pMaxHPBase;
 	pPlayer->_pHPBase = pPack->pHPBase;
-	//pPlayer->_pHPBase = v6;
 	if (!killok)
-		if ((signed int)(pPlayer->_pHPBase & 0xFFFFFFC0) < 64)
+		if ((int)(pPlayer->_pHPBase & 0xFFFFFFC0) < 64)
 			pPlayer->_pHPBase = 64;
-	{
-	//	pPlayer->_pHPBase &= (DWORD)0xC0;
-	//	if (pPlayer->_pHPBase < 64)
-		//	pPlayer->_pHPBase = 64;
-	}
+
 	pPlayer->_pMaxManaBase = pPack->pMaxManaBase;
 	pPlayer->_pManaBase = pPack->pManaBase;
 	pPlayer->_pMemSpells = pPack->pMemSpells;
