@@ -216,13 +216,6 @@ void __fastcall UnPackPlayer(PkPlayerStruct *pPack, int pnum, BOOLEAN killok)
 // find real name reference below, possibly [sizeof(item[])/sizeof(ItemStruct)]
 void __fastcall UnPackItem(PkItemStruct *is, ItemStruct *id)
 {
-	PkItemStruct *v2; // esi
-	ItemStruct *v3;   // edi
-	int v5;           // ecx
-
-	v2 = is;
-	v3 = id;
-
 	if (is->idx == -1) {
 		id->_itype = -1;
 	} else {
@@ -231,7 +224,7 @@ void __fastcall UnPackItem(PkItemStruct *is, ItemStruct *id)
 			    MAXITEMS,
 			    is->iCreateInfo,
 			    is->iSeed,
-			    is->bId,
+			    (unsigned char)is->bId,
 			    (unsigned char)is->bDur,
 			    (unsigned char)is->bMDur,
 			    (unsigned char)is->bCh,
@@ -239,16 +232,14 @@ void __fastcall UnPackItem(PkItemStruct *is, ItemStruct *id)
 			    (unsigned short)is->wValue,
 			    is->dwBuff);
 		} else {
-			v5 = (unsigned short)is->wValue;
-			_LOWORD(v5) = v2->iCreateInfo;
-			RecreateItem(MAXITEMS, is->idx, v5, v2->iSeed, (unsigned short)v2->wValue);
-			item[MAXITEMS]._iMagical = (unsigned char)v2->bId >> 1;
-			item[MAXITEMS]._iIdentified = v2->bId & 1;
-			item[MAXITEMS]._iDurability = (unsigned char)v2->bDur;
-			item[MAXITEMS]._iMaxDur = (unsigned char)v2->bMDur;
-			item[MAXITEMS]._iCharges = (unsigned char)v2->bCh;
-			item[MAXITEMS]._iMaxCharges = (unsigned char)v2->bMCh;
+			RecreateItem(MAXITEMS, (unsigned short)is->idx, is->iCreateInfo, is->iSeed, (unsigned short)is->wValue);
+			item[MAXITEMS]._iMagical = (unsigned char)is->bId >> 1;
+			item[MAXITEMS]._iIdentified = is->bId & 1;
+			item[MAXITEMS]._iDurability = (unsigned char)is->bDur;
+			item[MAXITEMS]._iMaxDur = (unsigned char)is->bMDur;
+			item[MAXITEMS]._iCharges = (unsigned char)is->bCh;
+			item[MAXITEMS]._iMaxCharges = (unsigned char)is->bMCh;
 		}
-		qmemcpy(v3, &item[MAXITEMS], sizeof(ItemStruct));
+		*id = item[MAXITEMS];
 	}
 }
