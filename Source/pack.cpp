@@ -71,31 +71,24 @@ void __fastcall PackPlayer(PkPlayerStruct *pPack, int pnum, BOOL manashield)
 
 void __fastcall PackItem(PkItemStruct *id, ItemStruct *is)
 {
-	short v2; // ax
-	short v3; // bx
-
 	if (is->_itype == -1) {
 		id->idx = -1;
 	} else {
 		id->idx = is->IDidx;
 		if (is->IDidx == IDI_EAR) {
-			_LOBYTE(v2) = 0;
-			_LOBYTE(v3) = 0;
-			_HIBYTE(v2) = is->_iName[7];
-			id->iCreateInfo = is->_iName[8] | v2;
+			id->iCreateInfo = is->_iName[8] | (is->_iName[7] << 8);
 			id->iSeed = is->_iName[12] | ((is->_iName[11] | ((is->_iName[10] | (is->_iName[9] << 8)) << 8)) << 8);
 			id->bId = is->_iName[13];
 			id->bDur = is->_iName[14];
 			id->bMDur = is->_iName[15];
 			id->bCh = is->_iName[16];
 			id->bMCh = is->_iName[17];
-			_HIBYTE(v3) = is->_iName[18];
-			id->wValue = _LOWORD(is->_ivalue) | v3 | ((_LOWORD(is->_iCurs) - 19) << 6);
+			id->wValue = is->_ivalue | (is->_iName[18] << 8) | ((is->_iCurs - 19) << 6);
 			id->dwBuff = is->_iName[22] | ((is->_iName[21] | ((is->_iName[20] | (is->_iName[19] << 8)) << 8)) << 8);
 		} else {
 			id->iSeed = is->_iSeed;
 			id->iCreateInfo = is->_iCreateInfo;
-			id->bId = _LOBYTE(is->_iIdentified) + 2 * is->_iMagical;
+			id->bId = is->_iIdentified + 2 * is->_iMagical;
 			id->bDur = is->_iDurability;
 			id->bMDur = is->_iMaxDur;
 			id->bCh = is->_iCharges;
