@@ -675,35 +675,33 @@ void __cdecl AddInitItems()
 	int yy; // eax
 	int j;  // eax
 
-	i = random(11, 3) + 3;
-	if (i > 0) {
-		do {
-			ii = itemavail[0];
-			itemactive[numitems] = itemavail[0];
-			itemavail[0] = itemavail[MAXITEMS - numitems - 1];
-			do {
-				xx = random(12, 80) + 16;
-				yy = random(12, 80) + 16;
-			} while (!ItemPlace(xx, yy));
-			item[ii]._ix = xx;
-			item[ii]._iy = yy;
-			dItem[xx][yy] = ii + 1;
-			j = GetRndSeed();
-			item[ii]._iSeed = j;
-			SetRndSeed(j);
-			if (random(12, 2))
-				GetItemAttrs(ii, IDI_HEAL, currlevel);
-			else
-				GetItemAttrs(ii, IDI_MANA, currlevel);
-			item[ii]._iCreateInfo = currlevel + -32768;
-			SetupItem(ii);
-			item[ii]._iAnimFlag = 0;
-			item[ii]._iAnimFrame = item[ii]._iAnimLen;
-			item[ii]._iSelFlag = 1;
-			DeltaAddItem(ii);
-			++numitems;
-			--i;
-		} while (i);
+	for (j = random(11, 3) + 3; j > 0; j--) {
+		ii = itemavail[0];
+		itemavail[0] = itemavail[MAXITEMS - numitems - 1];
+		itemactive[numitems] = ii;
+		xx = random(12, 80) + 16;
+		yy = random(12, 80) + 16;
+		for (i = ItemPlace(xx, yy); !i; i = ItemPlace(xx, yy)) {
+			xx = random(12, 80) + 16;
+			yy = random(12, 80) + 16;
+		}
+		item[ii]._ix = xx;
+		item[ii]._iy = yy;
+		dItem[xx][yy] = ii + 1;
+		i = GetRndSeed();
+		item[ii]._iSeed = i;
+		SetRndSeed(i);
+		if (random(12, 2))
+			GetItemAttrs(ii, IDI_HEAL, currlevel);
+		else
+			GetItemAttrs(ii, IDI_MANA, currlevel);
+		item[ii]._iCreateInfo = currlevel + -32768;
+		SetupItem(ii);
+		item[ii]._iAnimFlag = 0;
+		item[ii]._iAnimFrame = item[ii]._iAnimLen;
+		item[ii]._iSelFlag = 1;
+		DeltaAddItem(ii);
+		numitems++;
 	}
 }
 
