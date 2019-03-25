@@ -41,14 +41,20 @@ void __fastcall PackPlayer(PkPlayerStruct *pPack, int pnum, BOOL manashield)
 	pki = pPack->InvBody;
 	pi = pPlayer->InvBody;
 
-	for (i = 0; i < 7; i++)
-		PackItem(pki++, pi++);
+	for (i = 0; i < 7; i++) {
+		PackItem(pki, pi);
+		pki++;
+		pi++;
+	}
 
 	pki = pPack->InvList;
 	pi = pPlayer->InvList;
 
-	for (i = 0; i < 40; i++)
-		PackItem(pki++, pi++);
+	for (i = 0; i < 40; i++) {
+		PackItem(pki, pi);
+		pki++;
+		pi++;
+	}
 
 	for (i = 0; i < 40; i++)
 		pPack->InvGrid[i] = pPlayer->InvGrid[i];
@@ -57,8 +63,11 @@ void __fastcall PackPlayer(PkPlayerStruct *pPack, int pnum, BOOL manashield)
 	pki = pPack->SpdList;
 	pi = pPlayer->SpdList;
 
-	for (i = 0; i < MAXBELTITEMS; i++)
-		PackItem(pki++, pi++);
+	for (i = 0; i < MAXBELTITEMS; i++) {
+		PackItem(pki, pi);
+		pki++;
+		pi++;
+	}
 
 	pPack->pDiabloKillLevel = pPlayer->pDiabloKillLevel;
 
