@@ -792,26 +792,15 @@ void __fastcall AddL1Objs(int x1, int y1, int x2, int y2)
 
 void __fastcall AddL2Objs(int x1, int y1, int x2, int y2)
 {
-	int v4;  // ebx
-	int *v5; // esi
-	int v6;  // edi
-	int x;   // [esp+0h] [ebp-8h]
-	int y;   // [esp+4h] [ebp-4h]
+	int i, j, pn;
 
-	x = x1;
-	for (y = y1; y < y2; ++y) {
-		v4 = x;
-		if (x < x2) {
-			v5 = (int *)((char *)dPiece + 4 * (y + 112 * x));
-			do {
-				v6 = *v5;
-				if (*v5 == 13 || v6 == 541)
-					AddObject(OBJ_L2LDOOR, v4, y);
-				if (v6 == 17 || v6 == 542)
-					AddObject(OBJ_L2RDOOR, v4, y);
-				++v4;
-				v5 += 112;
-			} while (v4 < x2);
+	for (i = y1; i < y2; i++) {
+		for (j = x1; j < x2; j++) {
+			pn = dPiece[j][i];
+			if (pn == 13 || pn == 541)
+				AddObject(OBJ_L2LDOOR, j, i);
+			if (pn == 17 || pn == 542)
+				AddObject(OBJ_L2RDOOR, j, i);
 		}
 	}
 }
