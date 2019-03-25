@@ -127,10 +127,10 @@ void __fastcall VerifyGoldSeeds(PlayerStruct *pPlayer)
 
 void __fastcall UnPackPlayer(PkPlayerStruct *pPack, int pnum, BOOL killok)
 {
-	PlayerStruct *pPlayer; // esi
-	int i;                 // [esp+10h] [ebp-8h]
-	ItemStruct *pi;        // [esp+14h] [ebp-4h]
-	PkItemStruct *pki;     // [esp+20h] [ebp+8h]
+	PlayerStruct *pPlayer;
+	int i;
+	ItemStruct *pi;
+	PkItemStruct *pki;
 
 	pPlayer = &plr[pnum];
 	ClearPlrRVars(pPlayer);
