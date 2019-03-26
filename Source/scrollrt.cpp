@@ -436,116 +436,104 @@ void __fastcall DrawView(int StartX, int StartY)
 
 void __fastcall DrawGame(int x, int y)
 {
-	int v2;         // esi
-	int v3;         // ebx
-	int v4;         // edi
-	int v5;         // edi
-	int v6;         // esi
-	int v7;         // edi
-	int v8;         // esi
-	int v9;         // edi
-	int v10;        // esi
-	signed int v11; // [esp+Ch] [ebp-10h]
-	signed int a6;  // [esp+10h] [ebp-Ch]
-	signed int a6a; // [esp+10h] [ebp-Ch]
-	signed int a5;  // [esp+14h] [ebp-8h]
-	int ya;         // [esp+18h] [ebp-4h]
+	int i, sx, sy, chunks, blocks;
 
-	dword_5C2FF8 = 10;
-	v2 = ScrollInfo._sxoff + 64;
-	v3 = x - 10;
-	ya = y - 1;
-	a5 = 10;
-	v4 = ScrollInfo._syoff + 175;
 	scr_pix_width = 640;
 	scr_pix_height = 352;
+	dword_5C2FF8 = 10;
 	dword_5C2FFC = 11;
-	v11 = 8;
-	if (chrflag || questlog) {
-		ya = y - 3;
-		v3 += 2;
-		v2 = ScrollInfo._sxoff + 352;
-		a5 = 6;
+
+	sx = ScrollInfo._sxoff + 64;
+	sy = ScrollInfo._syoff + 175;
+	x -= 10;
+	y--;
+	chunks = 10;
+	blocks = 8;
+
+	if(chrflag || questlog) {
+		x += 2;
+		y -= 2;
+		sx += 288;
+		chunks = 6;
 	}
-	if (invflag || sbookflag) {
-		ya -= 2;
-		v3 += 2;
-		v2 -= 32;
-		a5 = 6;
+	if(invflag || sbookflag) {
+		x += 2;
+		y -= 2;
+		sx -= 32;
+		chunks = 6;
 	}
-	switch (ScrollInfo._sdir) {
-	case DIR_SW:
-		goto LABEL_9;
-	case DIR_W:
-		++a5;
-	LABEL_9:
-		v4 = ScrollInfo._syoff + 143;
-		--v3;
-		--ya;
-		goto LABEL_15;
-	case DIR_NW:
-		goto LABEL_13;
-	case DIR_N:
-		v11 = 9;
-		goto LABEL_13;
-	case DIR_NE:
-		goto LABEL_15;
-	case DIR_E:
-		v11 = 9;
-		goto LABEL_12;
-	case DIR_SE:
-	LABEL_12:
-		v2 -= 64;
-		--v3;
-		++ya;
-	LABEL_13:
-		++a5;
+
+	switch(ScrollInfo._sdir) {
+	case 0:
 		break;
-	case DIR_OMNI:
-		v2 -= 64;
-		v4 = ScrollInfo._syoff + 143;
-		v3 -= 2;
-		++a5;
-	LABEL_15:
-		v11 = 9;
+	case 2:
+		chunks++;
+	case 1:
+		sy -= 32;
+		x--;
+		y--;
+		blocks++;
 		break;
-	default:
+	case 4:
+		blocks++;
+	case 3:
+		chunks++;
+		break;
+	case 5:
+		blocks++;
+		break;
+	case 6:
+		blocks++;
+	case 7:
+		sx -= 64;
+		x--;
+		y++;
+		chunks++;
+		break;
+	case 8:
+		sx -= 64;
+		sy -= 32;
+		x -= 2;
+		chunks++;
+		blocks++;
 		break;
 	}
-	a6 = 0;
-	gpBufEnd = (unsigned char *)gpBuffer + screen_y_times_768[160];
-	do {
-		scrollrt_draw_upper(v3, ya++, v2, v4, a5, a6, 0);
-		v5 = v4 + 16;
-		v6 = v2 - 32;
-		scrollrt_draw_upper(v3++, ya, v6, v5, a5, a6, 1);
-		v2 = v6 + 32;
-		v4 = v5 + 16;
-		++a6;
-	} while (a6 < 4);
-	gpBufEnd = (unsigned char *)gpBuffer + screen_y_times_768[512];
-	if (v11 > 0) {
-		do {
-			scrollrt_draw_lower(v3, ya++, v2, v4, a5, 0);
-			v7 = v4 + 16;
-			v8 = v2 - 32;
-			scrollrt_draw_lower(v3++, ya, v8, v7, a5, 1);
-			v2 = v8 + 32;
-			v4 = v7 + 16;
-			--v11;
-		} while (v11);
+
+	/// ASSERT: assert(gpBuffer);
+	gpBufEnd = &gpBuffer[screen_y_times_768[160]];
+	for(i = 0; i < 4; i++) {
+		scrollrt_draw_upper(x, y, sx, sy, chunks, i, 0);
+		y++;
+		sx -= 32;
+		sy += 16;
+		scrollrt_draw_upper(x, y, sx, sy, chunks, i, 1);
+		x++;
+		sx += 32;
+		sy += 16;
+	}
+	/// ASSERT: assert(gpBuffer);
+	gpBufEnd = &gpBuffer[screen_y_times_768[512]];
+	for(i = 0; i < blocks; i++) {
+		scrollrt_draw_lower(x, y, sx, sy, chunks, 0);
+		y++;
+		sx -= 32;
+		sy += 16;
+		scrollrt_draw_lower(x, y, sx, sy, chunks, 1);
+		x++;
+		sx += 32;
+		sy += 16;
 	}
 	arch_draw_type = 0;
-	a6a = 0;
-	do {
-		scrollrt_draw_lower_2(v3, ya++, v2, v4, a5, a6a, 0);
-		v9 = v4 + 16;
-		v10 = v2 - 32;
-		scrollrt_draw_lower_2(v3++, ya, v10, v9, a5, a6a, 1);
-		v2 = v10 + 32;
-		v4 = v9 + 16;
-		++a6a;
-	} while (a6a < 4);
+	for(i = 0; i < 4; i++) {
+		scrollrt_draw_lower_2(x, y, sx, sy, chunks, i, 0);
+		y++;
+		sx -= 32;
+		sy += 16;
+		scrollrt_draw_lower_2(x, y, sx, sy, chunks, i, 1);
+		x++;
+		sx += 32;
+		sy += 16;
+	}
 }
 // 4B8968: using guessed type int sbookflag;
 // 5C2FF8: using guessed type int dword_5C2FF8;
@@ -2076,150 +2064,159 @@ void __fastcall scrollrt_draw_e_flag(BYTE *pBuff, int x, int y, int a4, int a5, 
 
 void __fastcall DrawZoom(int x, int y)
 {
-	int v2;         // edi
-	int v3;         // ebx
-	int v4;         // esi
-	int v5;         // esi
-	int v6;         // edi
-	int v7;         // esi
-	int v8;         // edi
-	int v9;         // esi
-	int v10;        // edi
-	_WORD *v11;     // edi
-	char *v12;      // esi
-	char *v13;      // ebx
-	signed int v14; // edx
-	signed int v15; // ecx
-	short v16;      // ax
-	int v17;        // eax
-	signed int v18; // [esp+Ch] [ebp-10h]
-	signed int v19; // [esp+Ch] [ebp-10h]
-	signed int a5;  // [esp+10h] [ebp-Ch]
-	int a5a;        // [esp+10h] [ebp-Ch]
-	signed int a6;  // [esp+14h] [ebp-8h]
-	signed int a6a; // [esp+14h] [ebp-8h]
-	int a6b;        // [esp+14h] [ebp-8h]
-	int ya;         // [esp+18h] [ebp-4h]
+	int i, sx, sy, chunks, blocks;
+	int wdt, nSrcOff, nDstOff;
 
-	v2 = ScrollInfo._sxoff + 64;
-	dword_5C2FF8 = 6;
-	dword_5C2FFC = 6;
-	v3 = x - 6;
-	ya = y - 1;
-	a5 = 6;
-	v4 = ScrollInfo._syoff + 143;
 	scr_pix_width = 384;
 	scr_pix_height = 192;
-	v18 = 3;
-	switch (ScrollInfo._sdir) {
-	case DIR_SW:
-		goto LABEL_3;
-	case DIR_W:
-		a5 = 7;
-	LABEL_3:
-		v4 = ScrollInfo._syoff + 111;
-		v3 = x - 7;
-		ya = y - 2;
-		goto LABEL_9;
-	case DIR_NW:
-		goto LABEL_7;
-	case DIR_N:
-		v18 = 4;
-		goto LABEL_7;
-	case DIR_NE:
-		goto LABEL_9;
-	case DIR_E:
-		v18 = 4;
-		goto LABEL_6;
-	case DIR_SE:
-	LABEL_6:
-		v2 = ScrollInfo._sxoff;
-		v3 = x - 7;
-		ya = y;
-	LABEL_7:
-		a5 = 7;
+	dword_5C2FF8 = 6;
+	dword_5C2FFC = 6;
+
+	sx = ScrollInfo._sxoff + 64;
+	sy = ScrollInfo._syoff + 143;
+	x -= 6;
+	y--;
+	chunks = 6;
+	blocks = 3;
+
+	switch(ScrollInfo._sdir) {
+	case 0:
 		break;
-	case DIR_OMNI:
-		v2 = ScrollInfo._sxoff;
-		v4 = ScrollInfo._syoff + 111;
-		a5 = 7;
-		v3 = x - 8;
-	LABEL_9:
-		v18 = 4;
+	case 2:
+		chunks++;
+	case 1:
+		sy -= 32;
+		x--;
+		y--;
+		blocks++;
 		break;
-	default:
+	case 4:
+		blocks++;
+	case 3:
+		chunks++;
+		break;
+	case 5:
+		blocks++;
+		break;
+	case 6:
+		blocks++;
+	case 7:
+		sx -= 64;
+		x--;
+		y++;
+		chunks++;
+		break;
+	case 8:
+		sx -= 64;
+		sy -= 32;
+		x -= 2;
+		chunks++;
+		blocks++;
 		break;
 	}
-	a6 = 0;
-	gpBufEnd = (unsigned char *)gpBuffer + screen_y_times_768[143];
-	do {
-		scrollrt_draw_upper(v3, ya++, v2, v4, a5, a6, 0);
-		v5 = v4 + 16;
-		v6 = v2 - 32;
-		scrollrt_draw_upper(v3++, ya, v6, v5, a5, a6, 1);
-		v2 = v6 + 32;
-		v4 = v5 + 16;
-		++a6;
-	} while (a6 < 4);
-	gpBufEnd = (unsigned char *)gpBuffer + screen_y_times_768[320];
-	if (v18 > 0) {
-		do {
-			scrollrt_draw_lower(v3, ya++, v2, v4, a5, 0);
-			v7 = v4 + 16;
-			v8 = v2 - 32;
-			scrollrt_draw_lower(v3++, ya, v8, v7, a5, 1);
-			v2 = v8 + 32;
-			v4 = v7 + 16;
-			--v18;
-		} while (v18);
+
+	/// ASSERT: assert(gpBuffer);
+	gpBufEnd = &gpBuffer[screen_y_times_768[143]];
+	for(i = 0; i < 4; i++) {
+		scrollrt_draw_upper(x, y, sx, sy, chunks, i, 0);
+		y++;
+		sx -= 32;
+		sy += 16;
+		scrollrt_draw_upper(x, y, sx, sy, chunks, i, 1);
+		x++;
+		sx += 32;
+		sy += 16;
+	}
+	/// ASSERT: assert(gpBuffer);
+	gpBufEnd = &gpBuffer[screen_y_times_768[320]];
+	for(i = 0; i < blocks; i++) {
+		scrollrt_draw_lower(x, y, sx, sy, chunks, 0);
+		y++;
+		sx -= 32;
+		sy += 16;
+		scrollrt_draw_lower(x, y, sx, sy, chunks, 1);
+		x++;
+		sx += 32;
+		sy += 16;
 	}
 	arch_draw_type = 0;
-	a6a = 0;
-	do {
-		scrollrt_draw_lower_2(v3, ya++, v2, v4, a5, a6a, 0);
-		v9 = v4 + 16;
-		v10 = v2 - 32;
-		scrollrt_draw_lower_2(v3++, ya, v10, v9, a5, a6a, 1);
-		v2 = v10 + 32;
-		v4 = v9 + 16;
-		++a6a;
-	} while (a6a < 4);
-	if (chrflag || questlog) {
-		a6b = 392064;
-		goto LABEL_23;
+	for(i = 0; i < 4; i++) {
+		scrollrt_draw_lower_2(x, y, sx, sy, chunks, i, 0);
+		y++;
+		sx -= 32;
+		sy += 16;
+		scrollrt_draw_lower_2(x, y, sx, sy, chunks, i, 1);
+		x++;
+		sx += 32;
+		sy += 16;
 	}
-	if (invflag || sbookflag) {
-		a6b = 391744;
-	LABEL_23:
-		a5a = 245168;
-		v19 = 160;
-		goto LABEL_24;
+
+	if(chrflag || questlog) {
+		nSrcOff = SCREENXY(112, 159);
+		nDstOff = SCREENXY(320, 350);
+		wdt = 160;
+	} else if(invflag || sbookflag) {
+		nSrcOff = SCREENXY(112, 159);
+		nDstOff = SCREENXY(0, 350);
+		wdt = 160;
+	} else {
+		nSrcOff = SCREENXY(32, 159);
+		nDstOff = SCREENXY(0, 350);
+		wdt = 320;
 	}
-	a5a = 245088;
-	a6b = 391744;
-	v19 = 320;
-LABEL_24:
-	v11 = (_WORD *)((char *)gpBuffer + a6b);
-	v12 = (char *)gpBuffer + a5a;
-	v13 = (char *)&gpBuffer[a6b + 768];
-	v14 = 176;
-	do {
-		v15 = v19;
-		do {
-			_LOBYTE(v16) = *v12++;
-			_HIBYTE(v16) = v16;
-			*v11 = v16;
-			*(_WORD *)v13 = v16;
-			++v11;
-			v13 += 2;
-			--v15;
-		} while (v15);
-		v12 += -v19 - 768;
-		v17 = 2 * (v19 + 768);
-		v13 -= v17;
-		v11 = (_WORD *)((char *)v11 - v17);
-		--v14;
-	} while (v14);
+
+	/// ASSERT: assert(gpBuffer);
+
+#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+	__asm {
+		mov		esi, gpBuffer
+		mov		edx, nDstOff
+		mov		edi, esi
+		mov		ecx, nSrcOff
+		add		edi, edx
+		add		esi, ecx
+		mov		ebx, edi
+		add		ebx, 768
+		mov		edx, 176
+	label1:
+		mov		ecx, wdt
+	label2:
+		mov		al, [esi]
+		inc		esi
+		mov		ah, al
+		mov		[edi], ax
+		mov		[ebx], ax
+		add		edi, 2
+		add		ebx, 2
+		dec		ecx
+		jnz		label2
+		mov		eax, 768
+		add		eax, wdt
+		sub		esi, eax
+		add		eax, eax
+		sub		ebx, eax
+		sub		edi, eax
+		dec		edx
+		jnz		label1
+	}
+#else
+	int hgt;
+	BYTE *src, *dst1, *dst2;
+
+	src = &gpBuffer[nSrcOff];
+	dst1 = &gpBuffer[nDstOff];
+	dst2 = &gpBuffer[nDstOff + 768];
+
+	for(hgt = 176; hgt != 0; hgt--, src -= 768 + wdt, dst1 -= 2 * (768 + wdt), dst2 -= 2 * (768 + wdt)) {
+		for(i = wdt; i != 0; i--) {
+			*dst1++ = *src;
+			*dst1++ = *src;
+			*dst2++ = *src;
+			*dst2++ = *src;
+			src++;
+		}
+	}
+#endif
 }
 // 4B8968: using guessed type int sbookflag;
 // 5C2FF8: using guessed type int dword_5C2FF8;
