@@ -28,7 +28,7 @@ void __cdecl InitRndBarrels();
 void __fastcall AddL1Objs(int x1, int y1, int x2, int y2);
 void __fastcall AddL2Objs(int x1, int y1, int x2, int y2);
 void __fastcall AddL3Objs(int x1, int y1, int x2, int y2);
-BOOLEAN __fastcall WallTrapLocOk(int xp, int yp);
+BOOL __fastcall WallTrapLocOk(int xp, int yp);
 void __cdecl AddL2Torches();
 BOOL __fastcall TorchLocOK(int xp, int yp);
 void __cdecl AddObjTraps();
