@@ -1538,20 +1538,22 @@ void __cdecl InitMissileGFX()
 void __fastcall FreeMissileGFX(int mi)
 {
 	int i;
-	void *p;
+	DWORD *pFrameTable;
 
 	if (misfiledata[mi].mFlags & MFLAG_ALLOW_SPECIAL) {
 		if (misfiledata[mi].mAnimData[0]) {
-			mem_free_dbg(&misfiledata[mi].mAnimData[0][-4 * misfiledata[mi].mAnimFAmt]);
-			misfiledata[mi].mAnimData[0] = 0;
+			pFrameTable = (DWORD *)misfiledata[mi].mAnimData[0];
+			mem_free_dbg(&pFrameTable[-misfiledata[mi].mAnimFAmt]);
+			misfiledata[mi].mAnimData[0] = NULL;
 		}
-	} else {
-		for (i = 0; i < misfiledata[mi].mAnimFAmt; i++) {
-			if (misfiledata[mi].mAnimData[i]) {
-				p = misfiledata[mi].mAnimData[i];
-				misfiledata[mi].mAnimData[i] = 0;
-				mem_free_dbg(p);
-			}
+		return;
+	}
+
+	for (i = 0; i < misfiledata[mi].mAnimFAmt; i++) {
+		if (misfiledata[mi].mAnimData[i]) {
+			pFrameTable = (DWORD *)misfiledata[mi].mAnimData[i];
+			misfiledata[mi].mAnimData[i] = NULL;
+			mem_free_dbg(pFrameTable);
 		}
 	}
 }
