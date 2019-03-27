@@ -809,10 +809,12 @@ void __fastcall AddL3Objs(int x1, int y1, int x2, int y2)
 	}
 }
 
-BOOLEAN __fastcall WallTrapLocOk(int xp, int yp)
+BOOL __fastcall WallTrapLocOk(int xp, int yp)
 {
-	return (~dFlags[xp][yp] & DFLAG_POPULATED) >> 3;
-}
+	if (dFlags[xp][yp] & DFLAG_POPULATED)
+		return FALSE;
+	return TRUE;
+} 
 
 void __cdecl AddL2Torches()
 {
