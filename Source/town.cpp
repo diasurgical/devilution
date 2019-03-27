@@ -184,7 +184,7 @@ void __fastcall town_draw_clipped_town(BYTE *pBuff, int x, int y, int sx, int sy
 		}
 		Cel2DrawHdrOnly(px, sy, item[bv]._iAnimData, item[bv]._iAnimFrame, item[bv]._iAnimWidth, 0, 8);
 	}
-	if(dFlags[x][y] & 0x10) {
+	if(dFlags[x][y] & DFLAG_MONSTER) {
 		mi = -(dMonster[x][y - 1] + 1);
 		px = sx - towner[mi]._tAnimWidth2;
 		if(mi == pcursmonst) {
@@ -200,7 +200,7 @@ void __fastcall town_draw_clipped_town(BYTE *pBuff, int x, int y, int sx, int sy
 		}
 		Cel2DrawHdrOnly(px, sy, towner[mi]._tAnimData, towner[mi]._tAnimFrame, towner[mi]._tAnimWidth, 0, 8);
 	}
-	if(dFlags[x][y] & 0x20) {
+	if(dFlags[x][y] & DFLAG_PLAYER) {
 		bv = -(dPlayer[x][y - 1] + 1);
 		px = sx + plr[bv]._pxoff - plr[bv]._pAnimWidth2;
 		py = sy + plr[bv]._pyoff;
@@ -212,7 +212,7 @@ void __fastcall town_draw_clipped_town(BYTE *pBuff, int x, int y, int sx, int sy
 			town_draw_clipped_e_flag(pBuff - 64, x - 1, y + 1, sx - 64, sy);
 		}
 	}
-	if(dFlags[x][y] & 4) {
+	if(dFlags[x][y] & DFLAG_DEAD_PLAYER) {
 		DrawDeadPlayer(x, y, sx, sy, 0, 8, 1);
 	}
 	if(dPlayer[x][y] > 0) {
@@ -227,7 +227,7 @@ void __fastcall town_draw_clipped_town(BYTE *pBuff, int x, int y, int sx, int sy
 			town_draw_clipped_e_flag(pBuff - 64, x - 1, y + 1, sx - 64, sy);
 		}
 	}
-	if(dFlags[x][y] & 1) {
+	if(dFlags[x][y] & DFLAG_MISSILE) {
 		DrawClippedMissile(x, y, sx, sy, 0, 8, 0);
 	}
 }
@@ -367,7 +367,7 @@ void __fastcall town_draw_clipped_town_2(BYTE *pBuff, int x, int y, int a4, int 
 		}
 		Cel2DrawHdrOnly(px, sy, item[bv]._iAnimData, item[bv]._iAnimFrame, item[bv]._iAnimWidth, a5, 8);
 	}
-	if(dFlags[x][y] & 0x10) {
+	if(dFlags[x][y] & DFLAG_MONSTER) {
 		mi = -(dMonster[x][y - 1] + 1);
 		px = sx - towner[mi]._tAnimWidth2;
 		if(mi == pcursmonst) {
@@ -383,7 +383,7 @@ void __fastcall town_draw_clipped_town_2(BYTE *pBuff, int x, int y, int a4, int 
 		}
 		Cel2DrawHdrOnly(px, sy, towner[mi]._tAnimData, towner[mi]._tAnimFrame, towner[mi]._tAnimWidth, a5, 8);
 	}
-	if(dFlags[x][y] & 0x20) {
+	if(dFlags[x][y] & DFLAG_PLAYER) {
 		bv = -(dPlayer[x][y - 1] + 1);
 		px = sx + plr[bv]._pxoff - plr[bv]._pAnimWidth2;
 		py = sy + plr[bv]._pyoff;
@@ -395,7 +395,7 @@ void __fastcall town_draw_clipped_town_2(BYTE *pBuff, int x, int y, int a4, int 
 			town_draw_clipped_e_flag_2(pBuff - 64, x - 1, y + 1, a4, a5, sx - 64, sy);
 		}
 	}
-	if(dFlags[x][y] & 4) {
+	if(dFlags[x][y] & DFLAG_DEAD_PLAYER) {
 		DrawDeadPlayer(x, y, sx, sy, a5, 8, 1);
 	}
 	if(dPlayer[x][y] > 0) {
@@ -410,7 +410,7 @@ void __fastcall town_draw_clipped_town_2(BYTE *pBuff, int x, int y, int a4, int 
 			town_draw_clipped_e_flag_2(pBuff - 64, x - 1, y + 1, a4, a5, sx - 64, sy);
 		}
 	}
-	if(dFlags[x][y] & 1) {
+	if(dFlags[x][y] & DFLAG_MISSILE) {
 		DrawClippedMissile(x, y, sx, sy, a5, 8, 0);
 	}
 }
@@ -558,7 +558,7 @@ void __fastcall town_draw_town_all(BYTE *pBuff, int x, int y, int a4, int dir, i
 		/// ASSERT: assert(item[bv]._iAnimData);
 		CelDrawHdrOnly(px, sy, item[bv]._iAnimData, item[bv]._iAnimFrame, item[bv]._iAnimWidth, 0, dir);
 	}
-	if(dFlags[x][y] & 0x10) {
+	if(dFlags[x][y] & DFLAG_MONSTER) {
 		mi = -(dMonster[x][y - 1] + 1);
 		px = sx - towner[mi]._tAnimWidth2;
 		if(mi == pcursmonst) {
@@ -576,7 +576,7 @@ void __fastcall town_draw_town_all(BYTE *pBuff, int x, int y, int a4, int dir, i
 		/// ASSERT: assert(towner[mi]._tAnimData);
 		CelDrawHdrOnly(px, sy, towner[mi]._tAnimData, towner[mi]._tAnimFrame, towner[mi]._tAnimWidth, 0, dir);
 	}
-	if(dFlags[x][y] & 0x20) {
+	if(dFlags[x][y] & DFLAG_PLAYER) {
 		bv = -(dPlayer[x][y - 1] + 1);
 		px = sx + plr[bv]._pxoff - plr[bv]._pAnimWidth2;
 		py = sy + plr[bv]._pyoff;
@@ -589,7 +589,7 @@ void __fastcall town_draw_town_all(BYTE *pBuff, int x, int y, int a4, int dir, i
 			town_draw_e_flag(pBuff - 64, x - 1, y + 1, a4, dir, sx - 64, sy);
 		}
 	}
-	if(dFlags[x][y] & 4) {
+	if(dFlags[x][y] & DFLAG_DEAD_PLAYER) {
 		DrawDeadPlayer(x, y, sx, sy, 0, dir, 0);
 	}
 	if(dPlayer[x][y] > 0) {
@@ -605,7 +605,7 @@ void __fastcall town_draw_town_all(BYTE *pBuff, int x, int y, int a4, int dir, i
 			town_draw_e_flag(pBuff - 64, x - 1, y + 1, a4, dir, sx - 64, sy);
 		}
 	}
-	if(dFlags[x][y] & 1) {
+	if(dFlags[x][y] & DFLAG_MISSILE) {
 		DrawMissile(x, y, sx, sy, 0, dir, 0);
 	}
 }
@@ -739,45 +739,45 @@ void __fastcall T_DrawGame(int x, int y)
 	}
 
 	switch(ScrollInfo._sdir) {
-	case 0:
+	case SDIR_NONE:
 		break;
-	case 1:
+	case SDIR_N:
 		sy -= 32;
 		x--;
 		y--;
 		blocks++;
 		break;
-	case 2:
+	case SDIR_NE:
 		sy -= 32;
 		x--;
 		y--;
 		chunks++;
 		blocks++;
 		break;
-	case 3:
+	case SDIR_E:
 		chunks++;
 		break;
-	case 4:
+	case SDIR_SE:
 		chunks++;
 		blocks++;
 		break;
-	case 5:
+	case SDIR_S:
 		blocks++;
 		break;
-	case 6:
+	case SDIR_SW:
 		sx -= 64;
 		x--;
 		y++;
 		chunks++;
 		blocks++;
 		break;
-	case 7:
+	case SDIR_W:
 		sx -= 64;
 		x--;
 		y++;
 		chunks++;
 		break;
-	case 8:
+	case SDIR_NW:
 		sx -= 64;
 		sy -= 32;
 		x -= 2;
@@ -847,45 +847,45 @@ void __fastcall T_DrawZoom(int x, int y)
 	blocks = 0;
 
 	switch(ScrollInfo._sdir) {
-	case 0:
+	case SDIR_NONE:
 		break;
-	case 1:
+	case SDIR_N:
 		sy -= 32;
 		x--;
 		y--;
 		blocks++;
 		break;
-	case 2:
+	case SDIR_NE:
 		sy -= 32;
 		x--;
 		y--;
 		chunks++;
 		blocks++;
 		break;
-	case 3:
+	case SDIR_E:
 		chunks++;
 		break;
-	case 4:
+	case SDIR_SE:
 		chunks++;
 		blocks++;
 		break;
-	case 5:
+	case SDIR_S:
 		blocks++;
 		break;
-	case 6:
+	case SDIR_SW:
 		sx -= 64;
 		x--;
 		y++;
 		chunks++;
 		blocks++;
 		break;
-	case 7:
+	case SDIR_W:
 		sx -= 64;
 		x--;
 		y++;
 		chunks++;
 		break;
-	case 8:
+	case SDIR_NW:
 		sx -= 64;
 		sy -= 32;
 		x -= 2;
