@@ -423,22 +423,21 @@ void __cdecl FreeObjectGFX()
 }
 // 67D7C4: using guessed type int numobjfiles;
 
-BOOLEAN __fastcall RndLocOk(int xp, int yp)
+BOOL __fastcall RndLocOk(int xp, int yp)
 {
-	int v2;         // ecx
-	int v3;         // eax
-	int v4;         // eax
-	BOOLEAN result; // eax
-
-	v2 = xp;
-	v3 = v2 * 112 + yp;
-	result = 0;
-	if (!dMonster[0][v3] && !dPlayer[v2][yp] && !dObject[v2][yp] && !(dFlags[v2][yp] & DFLAG_POPULATED)) {
-		v4 = dPiece[0][v3];
-		if (!nSolidTable[v4] && (leveltype != 1 || v4 <= 126 || v4 >= 144))
-			result = 1;
-	}
-	return result;
+	if (dMonster[xp][yp])
+		return FALSE;
+	if (dPlayer[xp][yp])
+		return FALSE;
+	if (dObject[xp][yp])
+		return FALSE;
+	if (dFlags[xp][yp] & DFLAG_POPULATED)
+		return FALSE;
+	if (nSolidTable[dPiece[xp][yp]])
+		return FALSE;
+	if (leveltype != 1 || dPiece[xp][yp] <= 126 || dPiece[xp][yp] >= 144)
+		return TRUE;
+	return FALSE;
 }
 
 void __fastcall InitRndLocObj(int min, int max, int objtype)
