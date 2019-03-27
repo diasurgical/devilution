@@ -766,15 +766,15 @@ void __fastcall AddL1Objs(int x1, int y1, int x2, int y2)
 {
 	int i, j, pn;
 
-	for (i = y1; i < y2; i++) {
-		for (j = x1; j < x2; j++) {
-			pn = dPiece[j][i];
+	for (j = y1; j < y2; j++) {
+		for (i = x1; i < x2; i++) {
+			pn = dPiece[i][j];
 			if (pn == 270)
-				AddObject(OBJ_L1LIGHT, j, i);
+				AddObject(OBJ_L1LIGHT, i, j);
 			if (pn == 44 || pn == 51 || pn == 214)
-				AddObject(OBJ_L1LDOOR, j, i);
+				AddObject(OBJ_L1LDOOR, i, j);
 			if (pn == 46 || pn == 56)
-				AddObject(OBJ_L1RDOOR, j, i);
+				AddObject(OBJ_L1RDOOR, i, j);
 		}
 	}
 }
@@ -783,13 +783,13 @@ void __fastcall AddL2Objs(int x1, int y1, int x2, int y2)
 {
 	int i, j, pn;
 
-	for (i = y1; i < y2; i++) {
-		for (j = x1; j < x2; j++) {
-			pn = dPiece[j][i];
+	for (j = y1; j < y2; j++) {
+		for (i = x1; i < x2; i++) {
+			pn = dPiece[i][j];
 			if (pn == 13 || pn == 541)
-				AddObject(OBJ_L2LDOOR, j, i);
+				AddObject(OBJ_L2LDOOR, i, j);
 			if (pn == 17 || pn == 542)
-				AddObject(OBJ_L2RDOOR, j, i);
+				AddObject(OBJ_L2RDOOR, i, j);
 		}
 	}
 }
@@ -798,13 +798,13 @@ void __fastcall AddL3Objs(int x1, int y1, int x2, int y2)
 {
 	int i, j, pn;
 
-	for (i = y1; i < y2; i++) {
-		for (j = x1; j < x2; j++) {
-			pn = dPiece[j][i];
+	for (j = y1; j < y2; j++) {
+		for (i = x1; i < x2; i++) {
+			pn = dPiece[i][j];
 			if (pn == 531)
-				AddObject(OBJ_L3LDOOR, j, i);
+				AddObject(OBJ_L3LDOOR, i, j);
 			if (pn == 534)
-				AddObject(OBJ_L3RDOOR, j, i);
+				AddObject(OBJ_L3RDOOR, i, j);
 		}
 	}
 }
