@@ -466,7 +466,7 @@ void __fastcall DrawGame(int x, int y)
 	switch(ScrollInfo._sdir) {
 	case SDIR_NONE:
 		break;
-	case SDIR_NE: /* fixme swapped */
+	case SDIR_NE:
 		chunks++;
 	case SDIR_N:
 		sy -= 32;
@@ -474,7 +474,7 @@ void __fastcall DrawGame(int x, int y)
 		y--;
 		blocks++;
 		break;
-	case SDIR_SE: /* fixme swapped */
+	case SDIR_SE:
 		blocks++;
 	case SDIR_E:
 		chunks++;
@@ -2082,7 +2082,7 @@ void __fastcall DrawZoom(int x, int y)
 	switch(ScrollInfo._sdir) {
 	case SDIR_NONE:
 		break;
-	case SDIR_NE: /* swaped SDIR_N */
+	case SDIR_NE:
 		chunks++;
 	case SDIR_N:
 		sy -= 32;
@@ -2090,7 +2090,7 @@ void __fastcall DrawZoom(int x, int y)
 		y--;
 		blocks++;
 		break;
-	case SDIR_SE: /* swaped SDIR_E */
+	case SDIR_SE:
 		blocks++;
 	case SDIR_E:
 		chunks++;
