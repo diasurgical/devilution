@@ -134,16 +134,15 @@ void __fastcall VerifyGoldSeeds(PlayerStruct *pPlayer)
 	}
 }
 
-void __fastcall UnPackPlayer(PkPlayerStruct *pPack, int pnum, BOOLEAN killok)
+void __fastcall UnPackPlayer(PkPlayerStruct *pPack, int pnum, BOOL killok)
 {
-	PlayerStruct *pPlayer; // esi
-	signed int v6;         // eax
-	int i;                 // [esp+10h] [ebp-8h]
-	ItemStruct *pi;        // [esp+14h] [ebp-4h]
-	PkItemStruct *pki;     // [esp+20h] [ebp+8h]
+	PlayerStruct *pPlayer;
+	int i;
+	ItemStruct *pi;
+	PkItemStruct *pki;
 
 	pPlayer = &plr[pnum];
-	ClearPlrRVars(&plr[pnum]);
+	ClearPlrRVars(pPlayer);
 	pPlayer->WorldX = (unsigned char)pPack->px;
 	pPlayer->WorldY = (unsigned char)pPack->py;
 	pPlayer->_px = (unsigned char)pPack->px;
@@ -169,13 +168,11 @@ void __fastcall UnPackPlayer(PkPlayerStruct *pPack, int pnum, BOOLEAN killok)
 	pPlayer->_pExperience = pPack->pExperience;
 	pPlayer->_pGold = pPack->pGold;
 	pPlayer->_pMaxHPBase = pPack->pMaxHPBase;
-	v6 = pPack->pHPBase;
-	pPlayer->_pHPBase = v6;
-	if (!killok) {
-		_LOBYTE(v6) = v6 & 0xC0;
-		if (v6 < 64)
+	pPlayer->_pHPBase = pPack->pHPBase;
+	if (!killok)
+		if ((int)(pPlayer->_pHPBase & 0xFFFFFFC0) < 64)
 			pPlayer->_pHPBase = 64;
-	}
+
 	pPlayer->_pMaxManaBase = pPack->pMaxManaBase;
 	pPlayer->_pManaBase = pPack->pManaBase;
 	pPlayer->_pMemSpells = pPack->pMemSpells;
@@ -186,14 +183,20 @@ void __fastcall UnPackPlayer(PkPlayerStruct *pPack, int pnum, BOOLEAN killok)
 	pki = pPack->InvBody;
 	pi = pPlayer->InvBody;
 
-	for (i = 0; i < 7; i++)
-		UnPackItem(pki++, pi++);
+	for (i = 0; i < 7; i++) {
+		UnPackItem(pki, pi);
+		pki++;
+		pi++;
+	}
 
 	pki = pPack->InvList;
 	pi = pPlayer->InvList;
 
-	for (i = 0; i < 40; i++)
-		UnPackItem(pki++, pi++);
+	for (i = 0; i < 40; i++) {
+		UnPackItem(pki, pi);
+		pki++;
+		pi++;
+	}
 
 	for (i = 0; i < 40; i++)
 		pPlayer->InvGrid[i] = pPack->InvGrid[i];
@@ -204,8 +207,11 @@ void __fastcall UnPackPlayer(PkPlayerStruct *pPack, int pnum, BOOLEAN killok)
 	pki = pPack->SpdList;
 	pi = pPlayer->SpdList;
 
-	for (i = 0; i < MAXBELTITEMS; i++)
-		UnPackItem(pki++, pi++);
+	for (i = 0; i < MAXBELTITEMS; i++) {
+		UnPackItem(pki, pi);
+		pki++;
+		pi++;
+	}
 
 	if (pnum == myplr) {
 		for (i = 0; i < 20; i++)
