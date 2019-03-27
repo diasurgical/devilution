@@ -95,7 +95,7 @@ void __fastcall AddTelekinesis(int mi, int sx, int sy, int dx, int dy, int midir
 void __fastcall AddBoneSpirit(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam);
 void __fastcall AddRportal(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam);
 void __fastcall AddDiabApoca(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam);
-int __fastcall AddMissile(int sx, int sy, int dx, int dy, int midir, int mitype, int micaster, int id, int midam, int spllvl);
+int __fastcall AddMissile(int sx, int sy, int dx, int dy, int midir, int mitype, char micaster, int id, int midam, int spllvl);
 int __fastcall Sentfire(int i, int sx, int sy);
 void __fastcall MI_Dummy(int i);
 void __fastcall MI_Golem(int i);

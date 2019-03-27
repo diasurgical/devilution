@@ -3099,7 +3099,7 @@ void __fastcall AddDiabApoca(int mi, int sx, int sy, int dx, int dy, int midir, 
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-int __fastcall AddMissile(int sx, int sy, int dx, int dy, int midir, int mitype, int micaster, int id, int midam, int spllvl)
+int __fastcall AddMissile(int sx, int sy, int dx, int dy, int midir, int mitype, char micaster, int id, int midam, int spllvl)
 {
 	int i, mi;
 
@@ -3124,7 +3124,7 @@ int __fastcall AddMissile(int sx, int sy, int dx, int dy, int midir, int mitype,
 	nummissiles++;
 
 	missile[mi]._mitype = mitype;
-	missile[mi]._micaster = (char)micaster;
+	missile[mi]._micaster = micaster;
 	missile[mi]._misource = id;
 	missile[mi]._miAnimType = missiledata[mitype].mFileNum;
 	missile[mi]._miDrawFlag = missiledata[mitype].mDraw;
@@ -4918,7 +4918,18 @@ void __fastcall MI_Flamec(int i)
 	if (missile[i]._mix != missile[i]._miVar1 || missile[i]._miy != missile[i]._miVar2) {
 		id = dPiece[missile[i]._mix][missile[i]._miy];
 		if (!nMissileTable[id]) {
-			AddMissile(missile[i]._mix, missile[i]._miy, missile[i]._misx, missile[i]._misy, i, MIS_FLAME, missile[i]._micaster, src, missile[i]._miVar3, missile[i]._mispllvl);
+			AddMissile(
+				missile[i]._mix,
+				missile[i]._miy,
+				missile[i]._misx,
+				missile[i]._misy,
+				i,
+				MIS_FLAME,
+				missile[i]._micaster,
+				src,
+				missile[i]._miVar3,
+				missile[i]._mispllvl
+			);
 		} else {
 			missile[i]._mirange = 0;
 		}
