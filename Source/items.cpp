@@ -1458,49 +1458,40 @@ void __fastcall CreatePlrItems(int p)
 
 BOOL __fastcall ItemSpaceOk(int i, int j)
 {
-	int v2;     // eax
-	int v3;     // esi
-	char v4;    // cl
-	int v5;     // ecx
-	char v6;    // cl
-	BOOLEAN v7; // sf
-	char v8;    // cl
-	char v9;    // al
+	int oi;
 
-	if (i < 0)
-		return 0;
-	if (i >= MAXDUNX)
-		return 0;
-	if (j < 0)
-		return 0;
-	if (j >= MAXDUNY)
-		return 0;
-	v2 = i;
-	v3 = 112 * i + j;
-	if (dMonster[0][v3] || dPlayer[v2][j] || dItem[v2][j])
-		return 0;
-	v4 = dObject[v2][j];
-	if (v4) {
-		v5 = v4 <= 0 ? -1 - v4 : v4 - 1;
-		if (object[v5]._oSolidFlag)
-			return 0;
+	if (i < 0 || i >= MAXDUNX || j < 0 || j >= MAXDUNY)
+		return FALSE;
+
+	if (dMonster[i][j])
+		return FALSE;
+
+	if (dPlayer[i][j])
+		return FALSE;
+
+	if (dItem[i][j])
+		return FALSE;
+
+	if (dObject[i][j]) {
+		oi = dObject[i][j] > 0 ? dObject[i][j] - 1 : -(dObject[i][j] + 1) ;
+		if (object[oi]._oSolidFlag)
+			return FALSE;
 	}
-	v6 = dObject[v2 + 1][j + 1];
-	v7 = v6 < 0;
-	if (v6 > 0) {
-		if (object[v6 - 1]._oSelFlag) /* check */
-			return 0;
-		v7 = v6 < 0;
+
+	if (dObject[i + 1][j + 1] > 0 && object[dObject[i + 1][j + 1] - 1]._oSelFlag)
+		return FALSE;
+
+	if (dObject[i + 1][j + 1] < 0 && object[-(dObject[i + 1][j + 1] + 1)]._oSelFlag)
+		return FALSE;
+
+	if (dObject[i + 1][j] > 0
+	    && dObject[i][j + 1] > 0
+	    && object[dObject[i + 1][j] - 1]._oSelFlag
+	    && object[dObject[i][j + 1] - 1]._oSelFlag) {
+		return FALSE;
 	}
-	if (!v7 || !object[-(v6 + 1)]._oSelFlag) {
-		v8 = dObject[v2 + 1][j];
-		if (v8 <= 0)
-			return nSolidTable[dPiece[0][v3]] == 0;
-		v9 = dObject[v2][j + 1];
-		if (v9 <= 0 || !object[v8 - 1]._oSelFlag || !object[v9 - 1]._oSelFlag)
-			return nSolidTable[dPiece[0][v3]] == 0;
-	}
-	return 0;
+
+	return !nSolidTable[dPiece[i][j]];
 }
 
 BOOL __fastcall GetItemSpace(int x, int y, char inum)
@@ -3792,7 +3783,7 @@ void __fastcall DrawULine(int y)
 	src = &gpBuffer[SCREENXY(26, 25)];
 	dst = &gpBuffer[screen_y_times_768[SStringY[y] + 198] + 26 + 64];
 
-	for(i = 0; i < 3; i++, src += 768, dst += 768)
+	for (i = 0; i < 3; i++, src += 768, dst += 768)
 		memcpy(dst, src, 266);
 #endif
 }
