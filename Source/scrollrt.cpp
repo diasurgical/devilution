@@ -2477,101 +2477,121 @@ void __cdecl scrollrt_draw_cursor_item()
 
 void __fastcall DrawMain(int dwHgt, int draw_desc, int draw_hp, int draw_mana, int draw_sbar, int draw_btn)
 {
-	signed int v6; // ebp
-	DWORD v7;      // ebx
-	int v8;        // esi
-	int v9;        // eax
-	signed int a4; // [esp+1Ch] [ebp-8h]
+	int ysize;
+	DWORD dwTicks;
+	BOOL retry;
+	HRESULT hDDVal;
 
-	a4 = dwHgt;
-	if (gbActive && lpDDSPrimary) {
-#ifdef __cplusplus
-		if (lpDDSPrimary->IsLost() == DDERR_SURFACELOST) {
-			if (lpDDSPrimary->Restore())
-				return;
-#else
-		if (lpDDSPrimary->lpVtbl->IsLost(lpDDSPrimary) == DDERR_SURFACELOST) {
-			if (lpDDSPrimary->lpVtbl->Restore(lpDDSPrimary))
-				return;
-#endif
-			ResetPal();
-			a4 = 480;
-		}
-		if (lpDDSBackBuf == NULL) {
-			v6 = 1;
-		LABEL_8:
-			v7 = GetTickCount();
-			while (1) {
-				DDS_desc.dwSize = 108;
-#ifdef __cplusplus
-				v8 = lpDDSPrimary->Lock(NULL, &DDS_desc, DDLOCK_WRITEONLY | DDLOCK_WAIT, NULL);
-#else
-				v8 = lpDDSPrimary->lpVtbl->Lock(lpDDSPrimary, NULL, &DDS_desc, DDLOCK_WRITEONLY | DDLOCK_WAIT, NULL);
-#endif
-				if (!v8)
-					break;
-				if (v7 - GetTickCount() > 5000)
-					goto LABEL_17;
-				Sleep(1u);
-				if (v8 == DDERR_SURFACELOST)
-					return;
-				if (v8 != DDERR_WASSTILLDRAWING && v8 != DDERR_SURFACEBUSY) {
-					if (v6 && v8 == E_FAIL) {
-						v6 = 0;
-						dx_reinit();
-						a4 = 480;
-						goto LABEL_8;
-					}
-				LABEL_17:
-					if (v8 != DDERR_SURFACELOST && v8 != DDERR_WASSTILLDRAWING && v8 != DDERR_SURFACEBUSY) {
-						DDErrMsg(v8, 3707, "C:\\Src\\Diablo\\Source\\SCROLLRT.CPP");
-						break;
-					}
-					return;
-				}
-			}
-		}
-		if (a4 > 0)
-			DoBlitScreen(0, 0, 640, a4);
-		if (a4 < 480) {
-			if (draw_sbar)
-				DoBlitScreen(204, 357, 232, 28);
-			if (draw_desc)
-				DoBlitScreen(176, 398, 288, 60);
-			if (draw_mana) {
-				DoBlitScreen(460, 352, 88, 72);
-				DoBlitScreen(564, 416, 56, 56);
-			}
-			if (draw_hp)
-				DoBlitScreen(96, 352, 88, 72);
-			if (draw_btn) {
-				DoBlitScreen(8, 357, 72, 119);
-				DoBlitScreen(556, 357, 72, 48);
-				if ((unsigned char)gbMaxPlayers > 1u) {
-					DoBlitScreen(84, 443, 36, 32);
-					DoBlitScreen(524, 443, 36, 32);
-				}
-			}
-			if (sgdwCursWdtOld)
-				DoBlitScreen(sgdwCursXOld, sgdwCursYOld, sgdwCursWdtOld, sgdwCursHgtOld);
-			if (sgdwCursWdt)
-				DoBlitScreen(sgdwCursX, sgdwCursY, sgdwCursWdt, sgdwCursHgt);
-		}
-		if (lpDDSBackBuf == NULL) {
-#ifdef __cplusplus
-			v9 = lpDDSPrimary->Unlock(NULL);
-#else
-			v9 = lpDDSPrimary->lpVtbl->Unlock(lpDDSPrimary, NULL);
-#endif
-			if (v9 != DDERR_SURFACELOST) {
-				if (v9)
-					DDErrMsg(v9, 3779, "C:\\Src\\Diablo\\Source\\SCROLLRT.CPP");
-			}
-		}
-#ifdef _DEBUG
-		DrawFPS();
-#endif
+	ysize = dwHgt;
+
+	if(!gbActive || lpDDSPrimary == NULL) {
+		return;
 	}
+
+#ifdef __cplusplus
+	if(lpDDSPrimary->IsLost() == DDERR_SURFACELOST) {
+		if(lpDDSPrimary->Restore() != DD_OK) {
+			return;
+		}
+#else
+	if(lpDDSPrimary->lpVtbl->IsLost(lpDDSPrimary) == DDERR_SURFACELOST) {
+		if(lpDDSPrimary->lpVtbl->Restore(lpDDSPrimary) != DD_OK) {
+			return;
+		}
+#endif
+		ResetPal();
+		ysize = 480;
+	}
+
+	if(lpDDSBackBuf == NULL) {
+		retry = TRUE;
+		dwTicks = GetTickCount();
+		while(1) {
+			DDS_desc.dwSize = sizeof(DDS_desc);
+#ifdef __cplusplus
+			hDDVal = lpDDSPrimary->Lock(NULL, &DDS_desc, DDLOCK_WRITEONLY|DDLOCK_WAIT, NULL);
+#else
+			hDDVal = lpDDSPrimary->lpVtbl->Lock(lpDDSPrimary, NULL, &DDS_desc, DDLOCK_WRITEONLY|DDLOCK_WAIT, NULL);
+#endif
+			if(hDDVal == DD_OK) {
+				break;
+			}
+			if(dwTicks - GetTickCount() > 5000) {
+				break;
+			}
+			Sleep(1);
+			if(hDDVal == DDERR_SURFACELOST) {
+				return;
+			}
+			if(hDDVal != DDERR_WASSTILLDRAWING && hDDVal != DDERR_SURFACEBUSY) {
+				if(!retry || hDDVal != DDERR_GENERIC) {
+					break;
+				}
+				retry = FALSE;
+				dx_reinit();
+				ysize = 480;
+				dwTicks = GetTickCount();
+			}
+		}
+		if(hDDVal == DDERR_SURFACELOST
+		|| hDDVal == DDERR_WASSTILLDRAWING
+		|| hDDVal == DDERR_SURFACEBUSY) {
+			return;
+		}
+		if(hDDVal != DD_OK) {
+			DDErrMsg(hDDVal, 3707, "C:\\Src\\Diablo\\Source\\SCROLLRT.CPP");
+		}
+	}
+
+	/// ASSERT: assert(ysize >= 0 && ysize <= 480);
+
+	if(ysize > 0) {
+		DoBlitScreen(0, 0, 640, ysize);
+	}
+	if(ysize < 480) {
+		if(draw_sbar) {
+			DoBlitScreen(204, 357, 232, 28);
+		}
+		if(draw_desc) {
+			DoBlitScreen(176, 398, 288, 60);
+		}
+		if(draw_mana) {
+			DoBlitScreen(460, 352, 88, 72);
+			DoBlitScreen(564, 416, 56, 56);
+		}
+		if(draw_hp) {
+			DoBlitScreen(96, 352, 88, 72);
+		}
+		if(draw_btn) {
+			DoBlitScreen(8, 357, 72, 119);
+			DoBlitScreen(556, 357, 72, 48);
+			if(gbMaxPlayers > 1) {
+				DoBlitScreen(84, 443, 36, 32);
+				DoBlitScreen(524, 443, 36, 32);
+			}
+		}
+		if(sgdwCursWdtOld != 0) {
+			DoBlitScreen(sgdwCursXOld, sgdwCursYOld, sgdwCursWdtOld, sgdwCursHgtOld);
+		}
+		if(sgdwCursWdt != 0) {
+			DoBlitScreen(sgdwCursX, sgdwCursY, sgdwCursWdt, sgdwCursHgt);
+		}
+	}
+
+	if(lpDDSBackBuf == NULL) {
+#ifdef __cplusplus
+		hDDVal = lpDDSPrimary->Unlock(NULL);
+#else
+		hDDVal = lpDDSPrimary->lpVtbl->Unlock(lpDDSPrimary, NULL);
+#endif
+		if(hDDVal != DDERR_SURFACELOST && hDDVal != DD_OK) {
+			DDErrMsg(hDDVal, 3779, "C:\\Src\\Diablo\\Source\\SCROLLRT.CPP");
+		}
+	}
+
+#ifdef _DEBUG
+	DrawFPS();
+#endif
 }
 // 634980: using guessed type int gbActive;
 // 679660: using guessed type char gbMaxPlayers;
