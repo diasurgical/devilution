@@ -41,14 +41,20 @@ void __fastcall PackPlayer(PkPlayerStruct *pPack, int pnum, BOOL manashield)
 	pki = pPack->InvBody;
 	pi = pPlayer->InvBody;
 
-	for (i = 0; i < 7; i++)
-		PackItem(pki++, pi++);
+	for (i = 0; i < 7; i++) {
+		PackItem(pki, pi);
+		pki++;
+		pi++;
+	}
 
 	pki = pPack->InvList;
 	pi = pPlayer->InvList;
 
-	for (i = 0; i < 40; i++)
-		PackItem(pki++, pi++);
+	for (i = 0; i < 40; i++) {
+		PackItem(pki, pi);
+		pki++;
+		pi++;
+	}
 
 	for (i = 0; i < 40; i++)
 		pPack->InvGrid[i] = pPlayer->InvGrid[i];
@@ -57,8 +63,11 @@ void __fastcall PackPlayer(PkPlayerStruct *pPack, int pnum, BOOL manashield)
 	pki = pPack->SpdList;
 	pi = pPlayer->SpdList;
 
-	for (i = 0; i < MAXBELTITEMS; i++)
-		PackItem(pki++, pi++);
+	for (i = 0; i < MAXBELTITEMS; i++) {
+		PackItem(pki, pi);
+		pki++;
+		pi++;
+	}
 
 	pPack->pDiabloKillLevel = pPlayer->pDiabloKillLevel;
 
@@ -125,16 +134,15 @@ void __fastcall VerifyGoldSeeds(PlayerStruct *pPlayer)
 	}
 }
 
-void __fastcall UnPackPlayer(PkPlayerStruct *pPack, int pnum, BOOLEAN killok)
+void __fastcall UnPackPlayer(PkPlayerStruct *pPack, int pnum, BOOL killok)
 {
-	PlayerStruct *pPlayer; // esi
-	signed int v6;         // eax
-	int i;                 // [esp+10h] [ebp-8h]
-	ItemStruct *pi;        // [esp+14h] [ebp-4h]
-	PkItemStruct *pki;     // [esp+20h] [ebp+8h]
+	PlayerStruct *pPlayer;
+	int i;
+	ItemStruct *pi;
+	PkItemStruct *pki;
 
 	pPlayer = &plr[pnum];
-	ClearPlrRVars(&plr[pnum]);
+	ClearPlrRVars(pPlayer);
 	pPlayer->WorldX = (unsigned char)pPack->px;
 	pPlayer->WorldY = (unsigned char)pPack->py;
 	pPlayer->_px = (unsigned char)pPack->px;
@@ -160,13 +168,11 @@ void __fastcall UnPackPlayer(PkPlayerStruct *pPack, int pnum, BOOLEAN killok)
 	pPlayer->_pExperience = pPack->pExperience;
 	pPlayer->_pGold = pPack->pGold;
 	pPlayer->_pMaxHPBase = pPack->pMaxHPBase;
-	v6 = pPack->pHPBase;
-	pPlayer->_pHPBase = v6;
-	if (!killok) {
-		_LOBYTE(v6) = v6 & 0xC0;
-		if (v6 < 64)
+	pPlayer->_pHPBase = pPack->pHPBase;
+	if (!killok)
+		if ((int)(pPlayer->_pHPBase & 0xFFFFFFC0) < 64)
 			pPlayer->_pHPBase = 64;
-	}
+
 	pPlayer->_pMaxManaBase = pPack->pMaxManaBase;
 	pPlayer->_pManaBase = pPack->pManaBase;
 	pPlayer->_pMemSpells = pPack->pMemSpells;
@@ -177,14 +183,20 @@ void __fastcall UnPackPlayer(PkPlayerStruct *pPack, int pnum, BOOLEAN killok)
 	pki = pPack->InvBody;
 	pi = pPlayer->InvBody;
 
-	for (i = 0; i < 7; i++)
-		UnPackItem(pki++, pi++);
+	for (i = 0; i < 7; i++) {
+		UnPackItem(pki, pi);
+		pki++;
+		pi++;
+	}
 
 	pki = pPack->InvList;
 	pi = pPlayer->InvList;
 
-	for (i = 0; i < 40; i++)
-		UnPackItem(pki++, pi++);
+	for (i = 0; i < 40; i++) {
+		UnPackItem(pki, pi);
+		pki++;
+		pi++;
+	}
 
 	for (i = 0; i < 40; i++)
 		pPlayer->InvGrid[i] = pPack->InvGrid[i];
@@ -195,8 +207,11 @@ void __fastcall UnPackPlayer(PkPlayerStruct *pPack, int pnum, BOOLEAN killok)
 	pki = pPack->SpdList;
 	pi = pPlayer->SpdList;
 
-	for (i = 0; i < MAXBELTITEMS; i++)
-		UnPackItem(pki++, pi++);
+	for (i = 0; i < MAXBELTITEMS; i++) {
+		UnPackItem(pki, pi);
+		pki++;
+		pi++;
+	}
 
 	if (pnum == myplr) {
 		for (i = 0; i < 20; i++)
@@ -216,13 +231,6 @@ void __fastcall UnPackPlayer(PkPlayerStruct *pPack, int pnum, BOOLEAN killok)
 // find real name reference below, possibly [sizeof(item[])/sizeof(ItemStruct)]
 void __fastcall UnPackItem(PkItemStruct *is, ItemStruct *id)
 {
-	PkItemStruct *v2; // esi
-	ItemStruct *v3;   // edi
-	int v5;           // ecx
-
-	v2 = is;
-	v3 = id;
-
 	if (is->idx == -1) {
 		id->_itype = -1;
 	} else {
@@ -231,7 +239,7 @@ void __fastcall UnPackItem(PkItemStruct *is, ItemStruct *id)
 			    MAXITEMS,
 			    is->iCreateInfo,
 			    is->iSeed,
-			    is->bId,
+			    (unsigned char)is->bId,
 			    (unsigned char)is->bDur,
 			    (unsigned char)is->bMDur,
 			    (unsigned char)is->bCh,
@@ -239,16 +247,14 @@ void __fastcall UnPackItem(PkItemStruct *is, ItemStruct *id)
 			    (unsigned short)is->wValue,
 			    is->dwBuff);
 		} else {
-			v5 = (unsigned short)is->wValue;
-			_LOWORD(v5) = v2->iCreateInfo;
-			RecreateItem(MAXITEMS, is->idx, v5, v2->iSeed, (unsigned short)v2->wValue);
-			item[MAXITEMS]._iMagical = (unsigned char)v2->bId >> 1;
-			item[MAXITEMS]._iIdentified = v2->bId & 1;
-			item[MAXITEMS]._iDurability = (unsigned char)v2->bDur;
-			item[MAXITEMS]._iMaxDur = (unsigned char)v2->bMDur;
-			item[MAXITEMS]._iCharges = (unsigned char)v2->bCh;
-			item[MAXITEMS]._iMaxCharges = (unsigned char)v2->bMCh;
+			RecreateItem(MAXITEMS, (unsigned short)is->idx, is->iCreateInfo, is->iSeed, (unsigned short)is->wValue);
+			item[MAXITEMS]._iMagical = (unsigned char)is->bId >> 1;
+			item[MAXITEMS]._iIdentified = is->bId & 1;
+			item[MAXITEMS]._iDurability = (unsigned char)is->bDur;
+			item[MAXITEMS]._iMaxDur = (unsigned char)is->bMDur;
+			item[MAXITEMS]._iCharges = (unsigned char)is->bCh;
+			item[MAXITEMS]._iMaxCharges = (unsigned char)is->bMCh;
 		}
-		qmemcpy(v3, &item[MAXITEMS], sizeof(ItemStruct));
+		*id = item[MAXITEMS];
 	}
 }

@@ -1555,29 +1555,27 @@ void __cdecl ProcessVisionList()
 
 void __cdecl lighting_color_cycling()
 {
-	char *v0;       // eax
-	signed int v1;  // ebx
-	char *v2;       // eax
-	char *v3;       // edi
-	char v4;        // dl
-	const void *v5; // esi
+	int i, j, l;
+	BYTE col;
+	BYTE *tbl;
 
-	if (leveltype == DTYPE_HELL) {
-		v0 = pLightTbl;
-		if ((light4flag != 0 ? 4 : 16) > 0) {
-			v1 = light4flag != 0 ? 4 : 16;
-			do {
-				v2 = v0 + 1;
-				v3 = v2;
-				v4 = *v2;
-				v5 = v2 + 1;
-				v2 += 30;
-				qmemcpy(v3, v5, 0x1Eu);
-				*v2 = v4;
-				v0 = v2 + 225;
-				--v1;
-			} while (v1);
+	l = light4flag ? 4 : 16;
+
+	if(leveltype != DTYPE_HELL) {
+		return;
+	}
+
+	tbl = (BYTE *)pLightTbl;
+
+	for(j = 0; j < l; j++) {
+		tbl++;
+		col = *tbl;
+		for(i = 0; i < 30; i++) {
+			tbl[0] = tbl[1];
+			tbl++;
 		}
+		*tbl = col;
+		tbl += 225;
 	}
 }
 // 525728: using guessed type int light4flag;

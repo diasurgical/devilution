@@ -9,7 +9,7 @@ ItemStruct curruitem;
 ItemGetRecordStruct itemrecord[MAXITEMS];
 ItemStruct item[MAXITEMS + 1];
 BOOL itemhold[3][3];
-unsigned char *Item2Frm[35];
+unsigned char *itemanims[35];
 int UniqueItemFlag[128];
 int numitems;
 int gnNumGetRecords;
@@ -643,7 +643,7 @@ void __cdecl InitItemGFX()
 	v0 = 0;
 	do {
 		sprintf(arglist, "Items\\%s.CEL", ItemDropStrs[v0]);
-		Item2Frm[v0] = LoadFileInMem(arglist, 0);
+		itemanims[v0] = LoadFileInMem(arglist, 0);
 		++v0;
 	} while (v0 < 35);
 	memset(UniqueItemFlag, 0, sizeof(UniqueItemFlag));
@@ -2483,7 +2483,7 @@ void __fastcall SetupItem(int i)
 	item[i]._iAnimWidth = 96;
 	item[i]._iAnimWidth2 = 16;
 	il = ItemAnimLs[it];
-	item[i]._iAnimData = Item2Frm[it];
+	item[i]._iAnimData = itemanims[it];
 	item[i]._iAnimLen = il;
 	item[i]._iIdentified = FALSE;
 	item[i]._iPostDraw = 0;
@@ -3149,7 +3149,7 @@ void __fastcall RespawnItem(int i, BOOL FlipFlag)
 	it = ItemCAnimTbl[item[i]._iCurs];
 	il = ItemAnimLs[it];
 	item[i]._iAnimLen = il;
-	item[i]._iAnimData = Item2Frm[it];
+	item[i]._iAnimData = itemanims[it];
 	item[i]._iPostDraw = 0;
 	item[i]._iRequest = FALSE;
 
@@ -3245,15 +3245,15 @@ void __cdecl FreeItemGFX()
 	void *v1; // ecx
 
 	for (i = 0; i < 35; i++) {
-		v1 = (void *)Item2Frm[i];
-		Item2Frm[i] = 0;
+		v1 = (void *)itemanims[i];
+		itemanims[i] = 0;
 		mem_free_dbg(v1);
 	}
 }
 
 void __fastcall GetItemFrm(int i)
 {
-	item[i]._iAnimData = Item2Frm[ItemCAnimTbl[item[i]._iCurs]];
+	item[i]._iAnimData = itemanims[ItemCAnimTbl[item[i]._iCurs]];
 }
 
 void __fastcall GetItemStr(int i)

@@ -7,14 +7,12 @@
 # Devilution
 Diablo devolved - magic behind the 1996 computer game
 
-Reverse engineered by GalaXyHaXz in 2018
-
 **Note**, Devilution requires an original copy of `diabdat.mpq`. None of the Diablo 1 game assets are provided by this project. To get a legitimate copy of the game assets, please refer to the [GoG release of Diablo 1](https://www.gog.com/game/diablo).
 
 # Introduction
-While most titles from Blizzard receive years of love and support, Diablo stayed in the shadows. Abandoned in favour of a sequel, it remained full of bugs and unfinished potential. The game was last patched in 2001 before being discontinued altogether, a problem I wanted to fix. I played Diablo extensively as a teenager, but as time passed it became difficult to run the game on newer hardware. The lack of many improvements found in the sequel also kept it from ageing well. At first the game appeared to be a lost cause, but thankfully a little oversight in 1997 made it not so.
+While most titles from Blizzard receive years of love and support, Diablo stayed in the shadows. Abandoned in favor of a sequel, it remained full of bugs and unfinished potential. The game was last patched in 2001 before being discontinued altogether, a problem I wanted to fix. I played Diablo extensively as a teenager, but as time passed it became difficult to run the game on newer hardware. The lack of many improvements made in Diablo II also laid it to rest. At first the game appeared to be a lost cause, but thankfully a little oversight in 1997 made it not so.
 
-With Diablo's development team moving on the source code was given to **Synergistic Software** to handle the expansion. Less known however is that it was also given to **Climax Studios** to create a PlayStation port. Now Sony has long been known for letting things slide; _especially_ in Japan. Anything from leaking prototypes to full source code and Diablo was no exception. Symbolic information was accidentally left on the Japanese port. Normally used for debugging, a symbol file contains a map of everything generated during compile time. This includes file names, functions, structures, variables, and more! To top it all off a special build is hidden on the PC release in `DIABDAT.MPQ -> D1221A.MPQ -> DIABLO.EXE`! This build contains debug tools and assert strings further giving away code information.
+Diablo's development team moved on to Diablo II while passing the source code down to **Synergistic Software** for Hellfire. Less known however is that it was also given to **Climax Studios** to create a PlayStation port. Now Sony has long been known for letting things slide; _especially_ in Japan. Anything from leaking prototypes to entire game source codes and Diablo was no exception. Symbolic information was accidentally left on the Japanese port. Normally used for debugging, a symbol file contains a map of everything generated during compile time. This includes file names, functions, structures, variables, and more! To top it all off a special build is hidden on the PC release in `DIABDAT.MPQ -> D1221A.MPQ -> DIABLO.EXE`! This build contains debug tools and assert strings further giving away code information.
 
 After months of piecing these mistakes together, Devilution was born. I present to you a reconstructed form of Diablo's original source code! Once more shall the heroes of Sanctuary return to the depths below!
 
@@ -26,14 +24,12 @@ In order to ensure that everything is preserved, Devilution keeps everything as 
 As a side goal Devilution tries to document the unused and cut content from the final game. Development of Diablo was rushed near the end--many ideas were scrapped and multiplayer was quickly hacked in. By examining the source, we can see various quirks of planned development.
 
 # Compiling
-Diablo was developed on Windows 95 using Visual C++ 4.20 and later 5.10 and 6 for newer patches. Devilution is optimized for the same tools originally used but is also compatible with modern setups.
+Diablo was developed on Windows 95 using Visual C++ 4.20 and later 5.10 and 6 for newer patches. Devilution aims to be compatible with both the original and modern tools, but will adhere to standards used for the original compiler.
 
 ### Building with Visual C++ 6
 - Open the project workspace `Diablo.dsw`, choose `Debug` or `Release`, and then `Build Diablo.exe`.
 
-To build a binary with functions compiled as close as possible to the original, use [Visual C++ 6](https://winworldpc.com/product/visual-c/6x) with Service Pack 5 and the [Processor Pack](https://download.microsoft.com/download/vb60ent/update/6/w9x2kxp/en-us/vcpp5.exe) (**important for proper code generation!**)
-
-If you aim to build a binary as close as possible to the original one you will also need [Visual C++ 5](https://winworldpc.com/product/visual-c/5x) with [Service Pack 3](http://www.mediafire.com/file/jw4j4sd5dnzze4p/VS97SP3.zip), since the original binary as linked with the older linker from that. Sadly, you cannot use the old linker right out of VC6, so you'll need to link manually or via the `MakefileVC` in the project root.
+To build a binary with functions compiled as close as possible to the original, use [Visual C++ 6](https://winworldpc.com/product/visual-c/6x) with Service Pack 5 and the [Processor Pack](https://download.microsoft.com/download/vb60ent/update/6/w9x2kxp/en-us/vcpp5.exe) (**important for proper code generation!**) You will also need [Visual C++ 5](https://winworldpc.com/product/visual-c/5x) with [Service Pack 3](http://www.mediafire.com/file/jw4j4sd5dnzze4p/VS97SP3.zip), since the original binary was linked with the older linker from that. Sadly, you cannot use the old linker right out of VC6, so you'll need to link manually or via the `MakefileVC` in the project root.
 
 ### Building with Visual Studio 2010-2017
 - Open the project solution `Diablo.sln`, choose `Debug` or `Release`, and then `Build Solution`.
@@ -63,48 +59,51 @@ Once compiled, the Devilution binary will serve as a replacement for `Diablo.exe
 Additionally, Strange Bytes' [DirectDraw patch](http://www.strangebytes.com/index.php/projects/1-diablo-1-windows-7-vista-patch) is recommended to help fix compatibility issues and run the game in windowed mode.
 
 # Multiplayer
-TODO
+Devilution is functional over both GoG's Battle.net server and IPX using an ipx-wrapper. Additionally if `Standard.snp` from StarCraft 1.16.1 is used, local UDP play also becomes available. There are programs like ZeroTier to connect UDP globally.
 
 # Contributing
 [Guidelines](docs/CONTRIBUTING.md)
 
 # Modding
-Here are some screenshots of a few things I tinkered around with, to demonstrate the relative ease of improving the game:
+Below are a few examples of some simple improvements made to the game. It is planned in the future to create tools for designing dungeons and graphics.
 
-![Screenshot 1: Monster lifebar+items](https://s33.postimg.cc/6xnnhhlmn/diabuimon.png "Monster lifebar+items")
+<details><summary>Example 1: Monster lifebar and item highlighting</summary>
 
-![Screenshot 2: New trade screen](https://s22.postimg.cc/5i5k91vht/diabstore.png "New trade screen, items that couldn't spawn")
+![Monster lifebar+items](https://github.com/diasurgical/scalpel/blob/master/screens/mod1.png)
+</details>
+<details><summary>Example 2: New Diablo 2-like trade screen</summary>
+
+![New trade screen](https://github.com/diasurgical/scalpel/blob/master/screens/mod2.png)
+</details>
 
 # F.A.Q.
+<details><summary>Click to reveal</summary>
+
 > Wow, does this mean I can download and play Diablo for free now?
 
-No, you'll need access to the data from the original game. Blizzard has discontinued Diablo, but there's plenty of used copies floating around. (I'm still using an original 1996-disc in 2018 without problems)
+No, you'll need access to the data from the original game. Blizzard discontinued Diablo, but it is available on the GOG.com platform. Additionally there are plenty of used copies for sale online. (I'm still using an original 1996-disc without problems)
 > Cool, so I fired your mod up, but there's no 1080p or new features?
 
 Devilution aims to keep the original code unaltered, for documentation purposes.
 > So will you ever add cross-platform support or new features in the future?
 
 Yes! This has been done as a side project, please see [DevilutionX](https://github.com/diasurgical/devilutionX).
-> When and what can I expect from the upcoming project?
-
-Honestly I have no idea. More than 1,200 hours went into creating Devilution, and I have other things going on right now. Maybe in 6-12 months? The goal is to create a native Linux port, convert to OpenGL, modernize the UI, etc. you get the drill. There has to be some surprises. ;)
 > Ok, so I'm playing Devilution now and all the sudden it crashed. NOW WHAT??
 
 Open an issue and provide as much information as possible (OS version, etc.) including any crash logs.
 > I thought I'd fix the crash myself, but after looking at the code its a disaster. Do you speak v2-34-v8?
 
 That is the result of decompiled code. Whenever a program is compiled, much of the source is optimized and stripped away, so it's nearly impossible to decompile it back. Have patience. Everything will be cleaned up eventually. :)
-> Will you be reverse engineering Diablo II next? Ooooh please!
+> What about Hellfire?
 
-Absolutely not. Diablo II would require far more work and is still supported by Blizzard. Setting that aside, there are rumours that the game will be remastered which takes the point out of it.
-> Are you interested in working for me? I have this game I want you to reverse...
-
-Sorry, but no. This project is time consuming enough as it is, and it's just a hobby.
+Hellfire was a bit of a flop on the developer's part. Support may come in the future once the base game is finished.
 > I think that's about all, but is Devilution even legal?
 
-That's a tricky question. Under the DMCA, reverse-engineering has exceptions for the purpose of documentation and interoperability. Devilution provides the necessary documentation needed to achieve the latter. However, it falls into an entirely grey area. The real question is whether or not Blizzard deems it necessary to take action.
+That's a tricky question. Under the DMCA, reverse-engineering has exceptions for the purpose of documentation and interoperability. Devilution provides the necessary documentation needed to achieve the latter. However, it falls into an entirely gray area. The real question is whether or not Blizzard deems it necessary to take action.
+</details>
 
 # Credits
+- Reverse engineered by GalaXyHaXz in 2018
 - [sanctuary](https://github.com/sanctuary) - extensively documenting Diablo's game engine
 - [BWAPI Team](https://github.com/bwapi) - providing library API to work with Storm
 - [Ladislav Zezula](https://github.com/ladislav-zezula) - reversing PKWARE library, further documenting Storm
@@ -113,14 +112,16 @@ That's a tricky question. Under the DMCA, reverse-engineering has exceptions for
 - Blizzard North - wait, this was a typo!
 - Depression - reason to waste four months of my life doing this ;)
 
+And a special thanks to all the support and people who work on this project to make it possible! <3
+
 # Changelog
 [From the beginning until release](docs/CHANGELOG.md)
 
 # Legal
-This software is being released to the Public Domain. No assets of Diablo are being provided. You must own a copy of Diablo and have access to the assets beforehand in order to use this software.
+Devilution is released to the Public Domain. The documentation and function provided by Devilution may only be utilized with assets provided by ownership of Diablo.
 
 Battle.net(R) - Copyright (C) 1996 Blizzard Entertainment, Inc. All rights reserved. Battle.net and Blizzard Entertainment are trademarks or registered trademarks of Blizzard Entertainment, Inc. in the U.S. and/or other countries.
 
 Diablo(R) - Copyright (C) 1996 Blizzard Entertainment, Inc. All rights reserved. Diablo and Blizzard Entertainment are trademarks or registered trademarks of Blizzard Entertainment, Inc. in the U.S. and/or other countries.
 
-This software is in no way associated with or endorsed by Blizzard Entertainment(R).
+Devilution and any of its' maintainers are in no way associated with or endorsed by Blizzard Entertainment(R).

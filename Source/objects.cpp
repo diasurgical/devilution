@@ -423,22 +423,21 @@ void __cdecl FreeObjectGFX()
 }
 // 67D7C4: using guessed type int numobjfiles;
 
-BOOLEAN __fastcall RndLocOk(int xp, int yp)
+BOOL __fastcall RndLocOk(int xp, int yp)
 {
-	int v2;         // ecx
-	int v3;         // eax
-	int v4;         // eax
-	BOOLEAN result; // eax
-
-	v2 = xp;
-	v3 = v2 * 112 + yp;
-	result = 0;
-	if (!dMonster[0][v3] && !dPlayer[v2][yp] && !dObject[v2][yp] && !(dFlags[v2][yp] & DFLAG_POPULATED)) {
-		v4 = dPiece[0][v3];
-		if (!nSolidTable[v4] && (leveltype != 1 || v4 <= 126 || v4 >= 144))
-			result = 1;
-	}
-	return result;
+	if (dMonster[xp][yp])
+		return FALSE;
+	if (dPlayer[xp][yp])
+		return FALSE;
+	if (dObject[xp][yp])
+		return FALSE;
+	if (dFlags[xp][yp] & DFLAG_POPULATED)
+		return FALSE;
+	if (nSolidTable[dPiece[xp][yp]])
+		return FALSE;
+	if (leveltype != 1 || dPiece[xp][yp] <= 126 || dPiece[xp][yp] >= 144)
+		return TRUE;
+	return FALSE;
 }
 
 void __fastcall InitRndLocObj(int min, int max, int objtype)
@@ -764,88 +763,57 @@ void __cdecl InitRndBarrels()
 
 void __fastcall AddL1Objs(int x1, int y1, int x2, int y2)
 {
-	int v4;  // ebx
-	int *v5; // edi
-	int v6;  // esi
-	int x;   // [esp+0h] [ebp-8h]
-	int y;   // [esp+4h] [ebp-4h]
+	int i, j, pn;
 
-	x = x1;
-	for (y = y1; y < y2; ++y) {
-		v4 = x;
-		if (x < x2) {
-			v5 = (int *)((char *)dPiece + 4 * (y + 112 * x));
-			do {
-				v6 = *v5;
-				if (*v5 == 270)
-					AddObject(OBJ_L1LIGHT, v4, y);
-				if (v6 == 44 || v6 == 51 || v6 == 214)
-					AddObject(OBJ_L1LDOOR, v4, y);
-				if (v6 == 46 || v6 == 56)
-					AddObject(OBJ_L1RDOOR, v4, y);
-				++v4;
-				v5 += 112;
-			} while (v4 < x2);
+	for (j = y1; j < y2; j++) {
+		for (i = x1; i < x2; i++) {
+			pn = dPiece[i][j];
+			if (pn == 270)
+				AddObject(OBJ_L1LIGHT, i, j);
+			if (pn == 44 || pn == 51 || pn == 214)
+				AddObject(OBJ_L1LDOOR, i, j);
+			if (pn == 46 || pn == 56)
+				AddObject(OBJ_L1RDOOR, i, j);
 		}
 	}
 }
 
 void __fastcall AddL2Objs(int x1, int y1, int x2, int y2)
 {
-	int v4;  // ebx
-	int *v5; // esi
-	int v6;  // edi
-	int x;   // [esp+0h] [ebp-8h]
-	int y;   // [esp+4h] [ebp-4h]
+	int i, j, pn;
 
-	x = x1;
-	for (y = y1; y < y2; ++y) {
-		v4 = x;
-		if (x < x2) {
-			v5 = (int *)((char *)dPiece + 4 * (y + 112 * x));
-			do {
-				v6 = *v5;
-				if (*v5 == 13 || v6 == 541)
-					AddObject(OBJ_L2LDOOR, v4, y);
-				if (v6 == 17 || v6 == 542)
-					AddObject(OBJ_L2RDOOR, v4, y);
-				++v4;
-				v5 += 112;
-			} while (v4 < x2);
+	for (j = y1; j < y2; j++) {
+		for (i = x1; i < x2; i++) {
+			pn = dPiece[i][j];
+			if (pn == 13 || pn == 541)
+				AddObject(OBJ_L2LDOOR, i, j);
+			if (pn == 17 || pn == 542)
+				AddObject(OBJ_L2RDOOR, i, j);
 		}
 	}
 }
 
 void __fastcall AddL3Objs(int x1, int y1, int x2, int y2)
 {
-	int v4;  // edi
-	int *v5; // esi
-	int v6;  // ebx
-	int x;   // [esp+0h] [ebp-8h]
-	int y;   // [esp+4h] [ebp-4h]
+	int i, j, pn;
 
-	x = x1;
-	for (y = y1; y < y2; ++y) {
-		v4 = x;
-		if (x < x2) {
-			v5 = (int *)((char *)dPiece + 4 * (y + 112 * x));
-			do {
-				v6 = *v5;
-				if (*v5 == 531)
-					AddObject(OBJ_L3LDOOR, v4, y);
-				if (v6 == 534)
-					AddObject(OBJ_L3RDOOR, v4, y);
-				++v4;
-				v5 += 112;
-			} while (v4 < x2);
+	for (j = y1; j < y2; j++) {
+		for (i = x1; i < x2; i++) {
+			pn = dPiece[i][j];
+			if (pn == 531)
+				AddObject(OBJ_L3LDOOR, i, j);
+			if (pn == 534)
+				AddObject(OBJ_L3RDOOR, i, j);
 		}
 	}
 }
 
-BOOLEAN __fastcall WallTrapLocOk(int xp, int yp)
+BOOL __fastcall WallTrapLocOk(int xp, int yp)
 {
-	return (~dFlags[xp][yp] & DFLAG_POPULATED) >> 3;
-}
+	if (dFlags[xp][yp] & DFLAG_POPULATED)
+		return FALSE;
+	return TRUE;
+} 
 
 void __cdecl AddL2Torches()
 {
@@ -2592,7 +2560,7 @@ void __fastcall ObjSetMicro(int dx, int dy, int pn)
 
 	dPiece[dx][dy] = pn;
 	v3 = pn - 1;
-	v4 = (char *)dpiece_defs_map_1 + 32 * gendung_get_dpiece_num_from_coord(dx, dy);
+	v4 = (char *)dpiece_defs_map_1 + 32 * IsometricCoord(dx, dy);
 	if (leveltype == DTYPE_HELL) {
 		v7 = (char *)pLevelPieces + 32 * v3;
 		v8 = 0;
@@ -2623,8 +2591,8 @@ void __fastcall objects_set_door_piece(int x, int y)
 	v4 = dPiece[x][y] - 1;
 	v5 = *((_WORD *)pLevelPieces + 10 * (unsigned short)v4 + 8);
 	v6 = *((_WORD *)pLevelPieces + 10 * (unsigned short)v4 + 9);
-	dpiece_defs_map_1[0][16 * gendung_get_dpiece_num_from_coord(x, y)] = v5;
-	dpiece_defs_map_1[0][16 * gendung_get_dpiece_num_from_coord(v3, v2) + 1] = v6;
+	dpiece_defs_map_1[0][16 * IsometricCoord(x, y)] = v5;
+	dpiece_defs_map_1[0][16 * IsometricCoord(v3, v2) + 1] = v6;
 }
 
 void __fastcall ObjSetMini(int x, int y, int v)

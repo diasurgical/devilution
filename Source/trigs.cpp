@@ -431,71 +431,53 @@ void __cdecl InitVPTriggers()
 	trigs[0]._tmsg = WM_DIABRTNLVL;
 }
 
-unsigned char __cdecl ForceTownTrig()
+BOOL __cdecl ForceTownTrig()
 {
-	int v0;        // edx
-	int *v1;       // esi
-	int v2;        // edx
-	int *v3;       // esi
-	signed int v4; // esi
-	signed int v5; // edx
+	int i, j, k, l;
+	
+	for (i = 0; TownDownList[i] != -1; i++) {
+		if (dPiece[cursmx][cursmy] == TownDownList[i]) {
+			strcpy(infostr, "Down to dungeon");
+			cursmx = 25;
+			cursmy = 29;
+			return TRUE;
+		}
+	}
 
-	v0 = TownDownList[0];
-	if (TownDownList[0] != -1) {
-		v1 = TownDownList;
-		while (dPiece[cursmx][cursmy] != v0) {
-			++v1;
-			v0 = *v1;
-			if (*v1 == -1)
-				goto LABEL_5;
-		}
-		strcpy(infostr, "Down to dungeon");
-		cursmx = 25;
-		cursmy = 29;
-		return 1;
-	}
-LABEL_5:
 	if (trigflag[0]) {
-		v2 = TownWarp1List[0];
-		if (TownWarp1List[0] != -1) {
-			v3 = TownWarp1List;
-			while (dPiece[cursmx][cursmy] != v2) {
-				++v3;
-				v2 = *v3;
-				if (*v3 == -1)
-					goto LABEL_13;
+		for (j = 0; TownWarp1List[j] != -1; j++) {
+			if (dPiece[cursmx][cursmy] == TownWarp1List[j]) {
+				strcpy(infostr, "Down to catacombs");
+				cursmx = 49;
+				cursmy = 21;
+				return TRUE;
 			}
-			strcpy(infostr, "Down to catacombs");
-			cursmx = 49;
-			cursmy = 21;
-			return 1;
 		}
 	}
-LABEL_13:
+
 	if (trigflag[1]) {
-		v4 = 1199;
-		while (dPiece[cursmx][cursmy] != v4) {
-			if (++v4 > 1220)
-				goto LABEL_17;
+		for (k = 1199; k <= 1220; k++) {
+			if (dPiece[cursmx][cursmy] == k) {
+				strcpy(infostr, "Down to caves");
+				cursmx = 17;
+				cursmy = 69;
+				return TRUE;
+			}
 		}
-		strcpy(infostr, "Down to caves");
-		cursmx = 17;
-		cursmy = 69;
-		return 1;
 	}
-LABEL_17:
+
 	if (trigflag[2]) {
-		v5 = 1240;
-		while (dPiece[cursmx][cursmy] != v5) {
-			if (++v5 > 1255)
-				return 0;
+		for (l = 1240; l <= 1254; l++) {
+			if (dPiece[cursmx][cursmy] == l) {
+				strcpy(infostr, "Down to hell");
+				cursmx = 41;
+				cursmy = 80;
+				return TRUE;
+			}
 		}
-		strcpy(infostr, "Down to hell");
-		cursmx = 41;
-		cursmy = 80;
-		return 1;
 	}
-	return 0;
+
+	return FALSE;
 }
 
 unsigned char __cdecl ForceL1Trig()
@@ -962,33 +944,17 @@ LABEL_17:
 
 void __cdecl Freeupstairs()
 {
-	int *v0;       // ecx
-	int v1;        // ebx
-	char *v2;      // eax
-	signed int v3; // edi
-	char *v4;      // edx
-	signed int v5; // esi
+	int i, yy, xx, tx, ty;
 
-	if (trigflag[4] > 0) {
-		v0 = &trigs[0]._ty;
-		v1 = trigflag[4];
-		do {
-			v2 = &dFlags[*(v0 - 1) - 2][*v0 - 2]; /* v2 = &nBlockTable[112 * *(v0 - 1) + 1830 + *v0]; check */
-			v3 = 5;
-			do {
-				v4 = v2;
-				v5 = 5;
-				do {
-					*v4 |= DFLAG_POPULATED;
-					v4 += 112;
-					--v5;
-				} while (v5);
-				++v2;
-				--v3;
-			} while (v3);
-			v0 += 4;
-			--v1;
-		} while (v1);
+	for (i = 0; i < trigflag[4]; i++) {
+		tx = trigs[i]._tx;
+		ty = trigs[i]._ty;
+
+		for (yy = 0; yy < MAXTRIGGERS; yy++) {
+			for (xx = 0; xx < MAXTRIGGERS; xx++) {
+				dFlags[tx - 2 + xx][ty - 2 + yy] |= DFLAG_POPULATED;
+			}
+		}
 	}
 }
 

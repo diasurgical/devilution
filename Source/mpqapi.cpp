@@ -257,18 +257,13 @@ int __fastcall mpqapi_get_hash_index(short index, int hash_a, int hash_b, int lo
 
 void __fastcall mpqapi_remove_hash_entries(BOOL(__stdcall *fnGetName)(DWORD, char *))
 {
-	BOOL(__stdcall * v1)
-	(DWORD, char *); // edi
-	DWORD v2;        // esi
-	BOOL i;          // eax
-	DWORD v4;        // eax
-	char v5[260];    // [esp+8h] [ebp-104h]
+	DWORD dwIndex;
+	BOOL i;
+	char pszFileName[260];
 
-	v1 = fnGetName;
-	v2 = 1;
-	for (i = fnGetName(0, v5); i; i = v1(v4, v5)) {
-		mpqapi_remove_hash_entry(v5);
-		v4 = v2++;
+	dwIndex = 1;
+	for (i = fnGetName(0, pszFileName); i; i = fnGetName(dwIndex++, pszFileName)) {
+		mpqapi_remove_hash_entry(pszFileName);
 	}
 }
 

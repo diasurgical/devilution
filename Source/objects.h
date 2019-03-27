@@ -16,7 +16,7 @@ extern int numobjfiles; // weak
 
 void __cdecl InitObjectGFX();
 void __cdecl FreeObjectGFX();
-BOOLEAN __fastcall RndLocOk(int xp, int yp);
+BOOL __fastcall RndLocOk(int xp, int yp);
 void __fastcall InitRndLocObj(int min, int max, int objtype);
 void __fastcall InitRndLocBigObj(int min, int max, int objtype);
 void __fastcall InitRndLocObj5x5(int min, int max, int objtype);
@@ -28,7 +28,7 @@ void __cdecl InitRndBarrels();
 void __fastcall AddL1Objs(int x1, int y1, int x2, int y2);
 void __fastcall AddL2Objs(int x1, int y1, int x2, int y2);
 void __fastcall AddL3Objs(int x1, int y1, int x2, int y2);
-BOOLEAN __fastcall WallTrapLocOk(int xp, int yp);
+BOOL __fastcall WallTrapLocOk(int xp, int yp);
 void __cdecl AddL2Torches();
 BOOL __fastcall TorchLocOK(int xp, int yp);
 void __cdecl AddObjTraps();
