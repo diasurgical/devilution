@@ -359,7 +359,7 @@ typedef struct TextDataStruct {
 
 typedef struct MissileData {
 	unsigned char mName;
-	void(__fastcall *mAddProc)(int, int, int, int, int, int, int, int, int);
+	void(__fastcall *mAddProc)(int, int, int, int, int, int, char, int, int);
 	void(__fastcall *mProc)(int);
 	BOOL mDraw;
 	unsigned char mType;
