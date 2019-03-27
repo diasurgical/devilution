@@ -47,7 +47,7 @@ void __fastcall DrawMain(int dwHgt, int draw_desc, int draw_hp, int draw_mana, i
 #ifdef _DEBUG
 void __cdecl DrawFPS();
 #endif
-void __fastcall DoBlitScreen(int dwX, int dwY, int dwWdt, int dwHgt);
+void __fastcall DoBlitScreen(DWORD dwX, DWORD dwY, DWORD dwWdt, DWORD dwHgt);
 void __cdecl DrawAndBlit();
 
 /* rdata */

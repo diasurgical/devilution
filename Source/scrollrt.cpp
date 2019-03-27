@@ -2232,12 +2232,33 @@ LABEL_24:
 
 void __cdecl ClearScreenBuffer()
 {
-	int i; // edx
-
 	j_lock_buf_priv(3);
 
-	for (i = 0; i < 480; i++)
-		memset(&gpBuffer[SCREENXY(0, i)], 0, 640);
+	/// ASSERT: assert(gpBuffer);
+
+#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+	__asm {
+		mov		edi, gpBuffer
+		add		edi, SCREENXY(0, 0)
+		mov		edx, 480
+		xor		eax, eax
+	zeroline:
+		mov		ecx, 640 / 4
+		rep stosd
+		add		edi, 768 - 640
+		dec		edx
+		jnz		zeroline
+	}
+#else
+	int i;
+	BYTE *dst;
+
+	dst = &gpBuffer[SCREENXY(0, 0)];
+
+	for(i = 0; i < 480; i++, dst += 768) {
+		memset(dst, 0, 640);
+	}
+#endif
 
 	j_unlock_buf_priv(3);
 }
@@ -2611,67 +2632,91 @@ void __cdecl DrawFPS()
 }
 #endif
 
-void __fastcall DoBlitScreen(int dwX, int dwY, int dwWdt, int dwHgt)
+void __fastcall DoBlitScreen(DWORD dwX, DWORD dwY, DWORD dwWdt, DWORD dwHgt)
 {
-	int v4;             // esi
-	int v5;             // edi
-	int v6;             // ecx
-	char *v7;           // esi
-	char *v8;           // edi
-	int v9;             // edx
-	RECT Rect;          // [esp+Ch] [ebp-20h]
-	int v14;            // [esp+1Ch] [ebp-10h]
-	LONG v15;           // [esp+20h] [ebp-Ch]
-	int v16;            // [esp+24h] [ebp-8h]
-	LONG v17;           // [esp+28h] [ebp-4h]
-	HRESULT error_code; // [esp+34h] [ebp+8h]
-	int error_codea;    // [esp+34h] [ebp+8h]
-	int a4;             // [esp+38h] [ebp+Ch]
+	int nSrcOff, nDstOff, nSrcWdt, nDstWdt;
+	DWORD dwTicks;
+	HRESULT hDDVal;
+	RECT SrcRect;
 
-	v4 = dwY;
-	v5 = dwX;
-	if (lpDDSBackBuf != NULL) {
-		Rect.left = dwX + 64;
-		Rect.right = dwX + 64 + dwWdt - 1;
-		Rect.top = dwY + 160;
-		Rect.bottom = dwY + 160 + dwHgt - 1;
-		a4 = GetTickCount();
-		while (1) {
+	/// ASSERT: assert(! (dwX & 3));
+	/// ASSERT: assert(! (dwWdt & 3));
+
+	if(lpDDSBackBuf != NULL) {
+		SrcRect.left = dwX + 64;
+		SrcRect.top = dwY + 160;
+		SrcRect.right = SrcRect.left + dwWdt - 1;
+		SrcRect.bottom = SrcRect.top + dwHgt - 1;
+		/// ASSERT: assert(! gpBuffer);
+		dwTicks = GetTickCount();
+		while(1) {
 #ifdef __cplusplus
-			error_code = lpDDSPrimary->BltFast(v5, v4, lpDDSBackBuf, &Rect, DDBLTFAST_WAIT);
+			hDDVal = lpDDSPrimary->BltFast(dwX, dwY, lpDDSBackBuf, &SrcRect, DDBLTFAST_WAIT);
 #else
-			error_code = lpDDSPrimary->lpVtbl->BltFast(lpDDSPrimary, v5, v4, lpDDSBackBuf, &Rect, DDBLTFAST_WAIT);
+			hDDVal = lpDDSPrimary->lpVtbl->BltFast(lpDDSPrimary, dwX, dwY, lpDDSBackBuf, &SrcRect, DDBLTFAST_WAIT);
 #endif
-			if (!error_code)
+			if(hDDVal == DD_OK) {
 				break;
-			if (a4 - GetTickCount() <= 5000) {
-				Sleep(1u);
-				if (error_code == DDERR_SURFACELOST)
-					return;
-				if (error_code == DDERR_WASSTILLDRAWING || error_code == DDERR_SURFACEBUSY)
-					continue;
 			}
-			if (error_code != DDERR_SURFACELOST && error_code != DDERR_WASSTILLDRAWING && error_code != DDERR_SURFACEBUSY)
-				DDErrMsg(error_code, 3596, "C:\\Src\\Diablo\\Source\\SCROLLRT.CPP");
-			return;
+			if(dwTicks - GetTickCount() > 5000) {
+				break;
+			}
+			Sleep(1);
+			if(hDDVal == DDERR_SURFACELOST) {
+				return;
+			}
+			if(hDDVal != DDERR_WASSTILLDRAWING && hDDVal != DDERR_SURFACEBUSY) {
+				break;
+			}
+		}
+		if(hDDVal != DDERR_SURFACELOST
+		&& hDDVal != DDERR_WASSTILLDRAWING
+		&& hDDVal != DDERR_SURFACEBUSY
+		&& hDDVal != DD_OK) {
+			DDErrMsg(hDDVal, 3596, "C:\\Src\\Diablo\\Source\\SCROLLRT.CPP");
 		}
 	} else {
-		v14 = 768 * dwY + dwX + 0x1E040;
-		v17 = DDS_desc.lPitch - dwWdt;
-		v15 = dwX + dwY * DDS_desc.lPitch;
-		v6 = 768 - dwWdt;
-		error_codea = (unsigned int)dwWdt >> 2;
-		v16 = v6;
+		nSrcOff = SCREENXY(dwX, dwY);
+		nDstOff = dwX + dwY * DDS_desc.lPitch;
+		nSrcWdt = 768 - dwWdt;
+		nDstWdt = DDS_desc.lPitch - dwWdt;
+		dwWdt >>= 2;
+
 		j_lock_buf_priv(6);
-		v7 = (char *)gpBuffer + v14;
-		v8 = (char *)DDS_desc.lpSurface + v15;
-		v9 = dwHgt;
-		do {
-			qmemcpy(v8, v7, 4 * error_codea);
-			v7 += 4 * error_codea + v16;
-			v8 += 4 * error_codea + v17;
-			--v9;
-		} while (v9);
+
+		/// ASSERT: assert(gpBuffer);
+
+#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+		__asm {
+			mov		esi, gpBuffer
+			mov		edi, DDS_desc.lpSurface
+			add		esi, nSrcOff
+			add		edi, nDstOff
+			mov		eax, nSrcWdt
+			mov		ebx, nDstWdt
+			mov		edx, dwHgt
+		blitline:
+			mov		ecx, dwWdt
+			rep movsd
+			add		esi, eax
+			add		edi, ebx
+			dec		edx
+			jnz		blitline
+		}
+#else
+		int wdt, hgt;
+		BYTE *src, *dst;
+
+		src = &gpBuffer[nSrcOff];
+		dst = (BYTE *)DDS_desc.lpSurface + nDstOff;
+
+		for(hgt = 0; hgt < dwHgt; hgt++, src += nSrcWdt, dst += nDstWdt) {
+			for(wdt = 0; wdt < 4 * dwWdt; wdt++) {
+				*dst++ = *src++;
+			}
+		}
+#endif
+
 		j_unlock_buf_priv(6);
 	}
 }
