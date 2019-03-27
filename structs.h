@@ -1346,16 +1346,16 @@ typedef struct _SNETVERSIONDATA {
 
 #pragma pack(push, 1)
 typedef struct PkItemStruct {
-	int iSeed;
-	short iCreateInfo;
-	short idx;
-	char bId;
-	char bDur;
-	char bMDur;
-	char bCh;
-	char bMCh;
-	short wValue;
-	int dwBuff;
+	DWORD iSeed;
+	WORD iCreateInfo;
+	WORD idx;
+	BYTE bId;
+	BYTE bDur;
+	BYTE bMDur;
+	BYTE bCh;
+	BYTE bMCh;
+	WORD wValue;
+	DWORD dwBuff;
 } PkItemStruct;
 
 typedef struct PkPlayerStruct {
@@ -1363,19 +1363,19 @@ typedef struct PkPlayerStruct {
 	char destAction;
 	char destParam1;
 	char destParam2;
-	char plrlevel;
-	char px;
-	char py;
-	char targx;
-	char targy;
+	BYTE plrlevel;
+	BYTE px;
+	BYTE py;
+	BYTE targx;
+	BYTE targy;
 	char pName[32];
 	char pClass;
-	char pBaseStr;
-	char pBaseMag;
-	char pBaseDex;
-	char pBaseVit;
+	BYTE pBaseStr;
+	BYTE pBaseMag;
+	BYTE pBaseDex;
+	BYTE pBaseVit;
 	char pLevel;
-	char pStatPts;
+	BYTE pStatPts;
 	int pExperience;
 	int pGold;
 	int pHPBase;
@@ -1387,7 +1387,7 @@ typedef struct PkPlayerStruct {
 	PkItemStruct InvBody[7];
 	PkItemStruct InvList[40];
 	char InvGrid[40];
-	char _pNumInv;
+	BYTE _pNumInv;
 	PkItemStruct SpdList[MAXBELTITEMS];
 	char pTownWarps;
 	char pDungMsgs;

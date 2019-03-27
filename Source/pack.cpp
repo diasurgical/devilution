@@ -80,31 +80,24 @@ void __fastcall PackPlayer(PkPlayerStruct *pPack, int pnum, BOOL manashield)
 
 void __fastcall PackItem(PkItemStruct *id, ItemStruct *is)
 {
-	short v2; // ax
-	short v3; // bx
-
 	if (is->_itype == -1) {
-		id->idx = -1;
+		id->idx = 0xFFFF;
 	} else {
 		id->idx = is->IDidx;
 		if (is->IDidx == IDI_EAR) {
-			_LOBYTE(v2) = 0;
-			_LOBYTE(v3) = 0;
-			_HIBYTE(v2) = is->_iName[7];
-			id->iCreateInfo = is->_iName[8] | v2;
+			id->iCreateInfo = is->_iName[8] | (is->_iName[7] << 8);
 			id->iSeed = is->_iName[12] | ((is->_iName[11] | ((is->_iName[10] | (is->_iName[9] << 8)) << 8)) << 8);
 			id->bId = is->_iName[13];
 			id->bDur = is->_iName[14];
 			id->bMDur = is->_iName[15];
 			id->bCh = is->_iName[16];
 			id->bMCh = is->_iName[17];
-			_HIBYTE(v3) = is->_iName[18];
-			id->wValue = _LOWORD(is->_ivalue) | v3 | ((_LOWORD(is->_iCurs) - 19) << 6);
+			id->wValue = is->_ivalue | (is->_iName[18] << 8) | ((is->_iCurs - 19) << 6);
 			id->dwBuff = is->_iName[22] | ((is->_iName[21] | ((is->_iName[20] | (is->_iName[19] << 8)) << 8)) << 8);
 		} else {
 			id->iSeed = is->_iSeed;
 			id->iCreateInfo = is->_iCreateInfo;
-			id->bId = _LOBYTE(is->_iIdentified) + 2 * is->_iMagical;
+			id->bId = is->_iIdentified + 2 * is->_iMagical;
 			id->bDur = is->_iDurability;
 			id->bMDur = is->_iMaxDur;
 			id->bCh = is->_iCharges;
@@ -143,28 +136,28 @@ void __fastcall UnPackPlayer(PkPlayerStruct *pPack, int pnum, BOOL killok)
 
 	pPlayer = &plr[pnum];
 	ClearPlrRVars(pPlayer);
-	pPlayer->WorldX = (unsigned char)pPack->px;
-	pPlayer->WorldY = (unsigned char)pPack->py;
-	pPlayer->_px = (unsigned char)pPack->px;
-	pPlayer->_py = (unsigned char)pPack->py;
-	pPlayer->_ptargx = (unsigned char)pPack->targx;
-	pPlayer->_ptargy = (unsigned char)pPack->targy;
-	pPlayer->plrlevel = (unsigned char)pPack->plrlevel;
+	pPlayer->WorldX = pPack->px;
+	pPlayer->WorldY = pPack->py;
+	pPlayer->_px = pPack->px;
+	pPlayer->_py = pPack->py;
+	pPlayer->_ptargx = pPack->targx;
+	pPlayer->_ptargy = pPack->targy;
+	pPlayer->plrlevel = pPack->plrlevel;
 	ClrPlrPath(pnum);
 	pPlayer->destAction = ACTION_NONE;
 	strcpy(pPlayer->_pName, pPack->pName);
 	pPlayer->_pClass = pPack->pClass;
 	InitPlayer(pnum, TRUE);
-	pPlayer->_pBaseStr = (unsigned char)pPack->pBaseStr;
-	pPlayer->_pStrength = (unsigned char)pPack->pBaseStr;
-	pPlayer->_pBaseMag = (unsigned char)pPack->pBaseMag;
-	pPlayer->_pMagic = (unsigned char)pPack->pBaseMag;
-	pPlayer->_pBaseDex = (unsigned char)pPack->pBaseDex;
-	pPlayer->_pDexterity = (unsigned char)pPack->pBaseDex;
-	pPlayer->_pBaseVit = (unsigned char)pPack->pBaseVit;
-	pPlayer->_pVitality = (unsigned char)pPack->pBaseVit;
+	pPlayer->_pBaseStr = pPack->pBaseStr;
+	pPlayer->_pStrength = pPack->pBaseStr;
+	pPlayer->_pBaseMag = pPack->pBaseMag;
+	pPlayer->_pMagic = pPack->pBaseMag;
+	pPlayer->_pBaseDex = pPack->pBaseDex;
+	pPlayer->_pDexterity = pPack->pBaseDex;
+	pPlayer->_pBaseVit = pPack->pBaseVit;
+	pPlayer->_pVitality = pPack->pBaseVit;
 	pPlayer->_pLevel = pPack->pLevel;
-	pPlayer->_pStatPts = (unsigned char)pPack->pStatPts;
+	pPlayer->_pStatPts = pPack->pStatPts;
 	pPlayer->_pExperience = pPack->pExperience;
 	pPlayer->_pGold = pPack->pGold;
 	pPlayer->_pMaxHPBase = pPack->pMaxHPBase;
@@ -201,7 +194,7 @@ void __fastcall UnPackPlayer(PkPlayerStruct *pPack, int pnum, BOOL killok)
 	for (i = 0; i < 40; i++)
 		pPlayer->InvGrid[i] = pPack->InvGrid[i];
 
-	pPlayer->_pNumInv = (unsigned char)pPack->_pNumInv;
+	pPlayer->_pNumInv = pPack->_pNumInv;
 	VerifyGoldSeeds(pPlayer);
 
 	pki = pPack->SpdList;
@@ -231,7 +224,7 @@ void __fastcall UnPackPlayer(PkPlayerStruct *pPack, int pnum, BOOL killok)
 // find real name reference below, possibly [sizeof(item[])/sizeof(ItemStruct)]
 void __fastcall UnPackItem(PkItemStruct *is, ItemStruct *id)
 {
-	if (is->idx == -1) {
+	if (is->idx == 0xFFFF) {
 		id->_itype = -1;
 	} else {
 		if (is->idx == IDI_EAR) {
@@ -239,21 +232,21 @@ void __fastcall UnPackItem(PkItemStruct *is, ItemStruct *id)
 			    MAXITEMS,
 			    is->iCreateInfo,
 			    is->iSeed,
-			    (unsigned char)is->bId,
-			    (unsigned char)is->bDur,
-			    (unsigned char)is->bMDur,
-			    (unsigned char)is->bCh,
-			    (unsigned char)is->bMCh,
-			    (unsigned short)is->wValue,
+			    is->bId,
+			    is->bDur,
+			    is->bMDur,
+			    is->bCh,
+			    is->bMCh,
+			    is->wValue,
 			    is->dwBuff);
 		} else {
-			RecreateItem(MAXITEMS, (unsigned short)is->idx, is->iCreateInfo, is->iSeed, (unsigned short)is->wValue);
-			item[MAXITEMS]._iMagical = (unsigned char)is->bId >> 1;
+			RecreateItem(MAXITEMS, is->idx, is->iCreateInfo, is->iSeed, is->wValue);
+			item[MAXITEMS]._iMagical = is->bId >> 1;
 			item[MAXITEMS]._iIdentified = is->bId & 1;
-			item[MAXITEMS]._iDurability = (unsigned char)is->bDur;
-			item[MAXITEMS]._iMaxDur = (unsigned char)is->bMDur;
-			item[MAXITEMS]._iCharges = (unsigned char)is->bCh;
-			item[MAXITEMS]._iMaxCharges = (unsigned char)is->bMCh;
+			item[MAXITEMS]._iDurability = is->bDur;
+			item[MAXITEMS]._iMaxDur = is->bMDur;
+			item[MAXITEMS]._iCharges = is->bCh;
+			item[MAXITEMS]._iMaxCharges = is->bMCh;
 		}
 		*id = item[MAXITEMS];
 	}
