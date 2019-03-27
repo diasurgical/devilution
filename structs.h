@@ -217,7 +217,7 @@ typedef struct PlayerStruct {
 	unsigned char _pInvincible;
 	char _pLightRad;
 	unsigned char _pLvlChanging;
-	char _pName[32];
+	char _pName[PLR_NAME_LEN];
 	// plr_class enum value.
 	// TODO: this could very well be `enum plr_class _pClass`
 	// since there are 3 bytes of alingment after this field.
@@ -1061,7 +1061,7 @@ typedef struct TownerStruct {
 	int _tVar2;
 	int _tVar3;
 	int _tVar4;
-	char _tName[32];
+	char _tName[PLR_NAME_LEN];
 	unsigned char *_tNAnim[8];
 	int _tNFrames;
 	unsigned char *_tNData;
@@ -1368,7 +1368,7 @@ typedef struct PkPlayerStruct {
 	BYTE py;
 	BYTE targx;
 	BYTE targy;
-	char pName[32];
+	char pName[PLR_NAME_LEN];
 	char pClass;
 	BYTE pBaseStr;
 	BYTE pBaseMag;
@@ -1385,8 +1385,8 @@ typedef struct PkPlayerStruct {
 	char pSplLvl[MAX_SPELLS];
 	unsigned __int64 pMemSpells;
 	PkItemStruct InvBody[7];
-	PkItemStruct InvList[40];
-	char InvGrid[40];
+	PkItemStruct InvList[NUM_INV_GRID_ELEM];
+	char InvGrid[NUM_INV_GRID_ELEM];
 	BYTE _pNumInv;
 	PkItemStruct SpdList[MAXBELTITEMS];
 	char pTownWarps;

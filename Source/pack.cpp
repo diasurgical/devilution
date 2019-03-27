@@ -4,12 +4,12 @@
 
 void __fastcall PackPlayer(PkPlayerStruct *pPack, int pnum, BOOL manashield)
 {
-	PlayerStruct *pPlayer; // edi
-	int i;                 // [esp+8h] [ebp-Ch]
-	ItemStruct *pi;        // [esp+Ch] [ebp-8h]
-	PkItemStruct *pki;     // [esp+10h] [ebp-4h]
+	PlayerStruct *pPlayer;
+	int i;
+	ItemStruct *pi;
+	PkItemStruct *pki;
 
-	memset(pPack, 0, 0x4F2);
+	memset(pPack, 0, sizeof(*pPack));
 	pPlayer = &plr[pnum];
 	pPack->destAction = pPlayer->destAction;
 	pPack->destParam1 = pPlayer->destParam1;
@@ -50,13 +50,13 @@ void __fastcall PackPlayer(PkPlayerStruct *pPack, int pnum, BOOL manashield)
 	pki = pPack->InvList;
 	pi = pPlayer->InvList;
 
-	for (i = 0; i < 40; i++) {
+	for (i = 0; i < NUM_INV_GRID_ELEM; i++) {
 		PackItem(pki, pi);
 		pki++;
 		pi++;
 	}
 
-	for (i = 0; i < 40; i++)
+	for (i = 0; i < NUM_INV_GRID_ELEM; i++)
 		pPack->InvGrid[i] = pPlayer->InvGrid[i];
 
 	pPack->_pNumInv = pPlayer->_pNumInv;
@@ -76,7 +76,6 @@ void __fastcall PackPlayer(PkPlayerStruct *pPack, int pnum, BOOL manashield)
 	else
 		pPack->pManaShield = FALSE;
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 void __fastcall PackItem(PkItemStruct *id, ItemStruct *is)
 {
@@ -110,8 +109,7 @@ void __fastcall PackItem(PkItemStruct *id, ItemStruct *is)
 
 void __fastcall VerifyGoldSeeds(PlayerStruct *pPlayer)
 {
-	int i; // ebp
-	int j; // ecx
+	int i, j;
 
 	for (i = 0; i < pPlayer->_pNumInv; i++) {
 		if (pPlayer->InvList[i].IDidx == IDI_GOLD && pPlayer->_pNumInv > 0) {
@@ -185,13 +183,13 @@ void __fastcall UnPackPlayer(PkPlayerStruct *pPack, int pnum, BOOL killok)
 	pki = pPack->InvList;
 	pi = pPlayer->InvList;
 
-	for (i = 0; i < 40; i++) {
+	for (i = 0; i < NUM_INV_GRID_ELEM; i++) {
 		UnPackItem(pki, pi);
 		pki++;
 		pi++;
 	}
 
-	for (i = 0; i < 40; i++)
+	for (i = 0; i < NUM_INV_GRID_ELEM; i++)
 		pPlayer->InvGrid[i] = pPack->InvGrid[i];
 
 	pPlayer->_pNumInv = pPack->_pNumInv;
