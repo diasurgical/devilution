@@ -365,7 +365,7 @@ void __cdecl InitObjectGFX()
 	for (i = 0; AllObjects[i].oload != -1; i++) {
 		if (AllObjects[i].oload == 1
 		    && (int)currlevel >= AllObjects[i].ominlvl
-		    && (signed int)currlevel <= AllObjects[i].omaxlvl) {
+		    && (int)currlevel <= AllObjects[i].omaxlvl) {
 			fileload[AllObjects[i].ofindex] = TRUE;
 		}
 		if (AllObjects[i].otheme != -1) {
