@@ -481,45 +481,27 @@ void __fastcall InitRndLocObj(int min, int max, int objtype)
 
 void __fastcall InitRndLocBigObj(int min, int max, int objtype)
 {
-	int i, numobjs, xp, yp, xpm1, xpp1, ypm2, ypm1, ypp1;
+	int i, xp, yp, numobjs;
 
-	numobjs = min + random(140, max - min);
-	i = 0;
-	if (numobjs > 0) {
-		for (;;){
-			do {
-				xp = random(140, 80) + 16;
-				yp = random(140, 80) + 16;
-				xpm1 = xp - 1;
-				ypm2 = yp - 2;
-			} while (!RndLocOk(xpm1, ypm2));
-			if (RndLocOk(xp, ypm2)) {
-				xpp1 = xp + 1;
-				if (RndLocOk(xpp1, ypm2)){
-					ypm1 = yp - 1;
-					if (RndLocOk(xpm1, ypm1)) {
-						if (RndLocOk(xp, ypm1)) {
-							if (RndLocOk(xpp1, ypm1)) {
-								if (RndLocOk(xpm1, yp)) {
-									if (RndLocOk(xp, yp)) {
-										if (RndLocOk(xpp1, yp)) {
-											ypp1 = yp + 1;
-											if (RndLocOk(xpm1, ypp1)) {
-												if (RndLocOk(xp, ypp1)) {
-													if (RndLocOk(xpp1, ypp1)) {
-														AddObject(objtype, xp, yp);
-														if (++i >= numobjs)
-															break;
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
+	numobjs = random(140, max - min) + min;
+	for (i = 0; i < numobjs; i++) {
+		while (1) {
+			xp = random(140, 80) + 16;
+			yp = random(140, 80) + 16;
+			if (RndLocOk(xp - 1, yp - 2)
+			    && RndLocOk(xp, yp - 2)
+			    && RndLocOk(xp + 1, yp - 2)
+			    && RndLocOk(xp - 1, yp - 1)
+			    && RndLocOk(xp, yp - 1)
+			    && RndLocOk(xp + 1, yp - 1)
+			    && RndLocOk(xp - 1, yp)
+			    && RndLocOk(xp, yp)
+			    && RndLocOk(xp + 1, yp)
+			    && RndLocOk(xp - 1, yp + 1)
+			    && RndLocOk(xp, yp + 1)
+			    && RndLocOk(xp + 1, yp + 1)) {
+				AddObject(objtype, xp, yp);
+				break;
 			}
 		}
 	}
