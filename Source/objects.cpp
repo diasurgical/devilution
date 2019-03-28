@@ -4585,17 +4585,10 @@ int __fastcall FindValidShrine(int i)
 
 void __fastcall OperateGoatShrine(int pnum, int i, int sType)
 {
-	int v3; // edi
-	int v4; // ebx
-	int v5; // esi
-
-	v3 = i;
-	v4 = pnum;
-	v5 = i;
 	SetRndSeed(object[i]._oRndSeed);
-	object[v5]._oVar1 = FindValidShrine(v3);
-	OperateShrine(v4, v3, sType);
-	object[v5]._oAnimDelay = 2;
+	object[i]._oVar1 = FindValidShrine(i);
+	OperateShrine(pnum, i, sType);
+	object[i]._oAnimDelay = 2;
 	drawpanflag = 255;
 }
 // 52571C: using guessed type int drawpanflag;
