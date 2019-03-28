@@ -356,55 +356,39 @@ int StoryText[3][3] = {
 
 void __cdecl InitObjectGFX()
 {
-	ObjDataStruct *v0;          // eax
-	char *v1;                   // esi
-	unsigned char v2;           // cl
-	int v3;                     // edx
-	int i;                      // eax
-	char v5;                    // al
-	signed int v7;              // ebx
-	char *v8;                   // ST08_4
-	unsigned char *v9;          // eax
-	int v10;                    // ecx
-	unsigned char fileload[56]; // [esp+4h] [ebp-58h]
-	char filestr[32];           // [esp+3Ch] [ebp-20h]
+	BOOLEAN fileload[56];
+	char filestr[32];
+	int i, j;
 
-	memset(fileload, 0, sizeof(fileload));
-	if (AllObjects[0].oload != -1) {
-		v0 = AllObjects;
-		v1 = &AllObjects[0].otheme;
-		do {
-			if (v0->oload == 1 && currlevel >= (signed int)(char)*(v1 - 3) && currlevel <= (signed int)(char)*(v1 - 2))
-				fileload[(char)*(v1 - 4)] = 1;
-			v2 = *v1;
-			if (*v1 != -1) {
-				v3 = numthemes;
-				for (i = 0; i < v3; ++i) {
-					if (themes[i].ttype == v2)
-						fileload[(char)*(v1 - 4)] = 1;
-				}
-			}
-			v5 = v1[1];
-			if (v5 != -1) {
-				if (QuestStatus(v5))
-					fileload[(char)*(v1 - 4)] = 1;
-			}
-			v1 += 44;
-			v0 = (ObjDataStruct *)(v1 - 5);
-		} while (*(v1 - 5) != -1);
-	}
-	v7 = 0;
-	do {
-		if (fileload[v7]) {
-			v8 = ObjMasterLoadList[v7];
-			ObjFileList[numobjfiles] = v7;
-			sprintf(filestr, "Objects\\%s.CEL", v8);
-			v9 = LoadFileInMem(filestr, 0);
-			v10 = numobjfiles++;
-			pObjCels[v10] = v9;
+	memset(fileload, FALSE, sizeof(fileload));
+
+	for (i = 0; AllObjects[i].oload != -1; i++) {
+		if (AllObjects[i].oload == 1
+		    && (signed int)currlevel >= AllObjects[i].ominlvl
+		    && (signed int)currlevel <= AllObjects[i].omaxlvl) {
+			fileload[AllObjects[i].ofindex] = TRUE;
 		}
-		++v7;
-	} while (v7 < 56);
+		if (AllObjects[i].otheme != -1) {
+			for (j = 0; j < numthemes; j++) {
+				if ((char)themes[j].ttype == AllObjects[i].otheme)
+					fileload[AllObjects[i].ofindex] = TRUE;
+			}
+		}
+
+		if (AllObjects[i].oquest != -1) {
+			if (QuestStatus(AllObjects[i].oquest))
+				fileload[AllObjects[i].ofindex] = TRUE;
+		}
+	}
+
+	for (i = 0; i < 56; i++) {
+		if (fileload[i]) {
+			ObjFileList[numobjfiles] = i;
+			sprintf(filestr, "Objects\\%s.CEL", ObjMasterLoadList[i]);
+			pObjCels[numobjfiles] = LoadFileInMem(filestr, 0);
+			numobjfiles++;
+		}
+	}
 }
 // 67D7C4: using guessed type int numobjfiles;
 // 44121D: using guessed type char fileload[56];
