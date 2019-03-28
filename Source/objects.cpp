@@ -1570,28 +1570,19 @@ void __fastcall SetBookMsg(int i, int msg)
 
 void __fastcall AddL1Door(int i, int x, int y, int ot)
 {
-	int v4;  // ecx
-	int v5;  // edx
-	int *v6; // eax
-	int v7;  // edx
-	int v8;  // eax
-	int v9;  // eax
+	int p1, p2;
 
-	v4 = i;
-	v5 = 112 * x;
-	object[v4]._oDoorFlag = 1;
+	object[i]._oDoorFlag = 1;
 	if (ot == 1) {
-		v6 = (int *)((char *)dPiece + 4 * (y + v5));
-		v7 = *v6;
-		v8 = *(v6 - 1);
+		p1 = dPiece[x][y];
+		p2 = dPiece[x][y - 1];
 	} else {
-		v9 = v5 + y;
-		v7 = dPiece[0][v5 + y];
-		v8 = dPiece[-1][v5 + y]; // *(_DWORD *)&dflags[28][4 * v9 + 32]; /* check */
+		p1 = dPiece[x][y];
+		p2 = dPiece[x - 1][y];
 	}
-	object[v4]._oVar4 = 0;
-	object[v4]._oVar1 = v7;
-	object[v4]._oVar2 = v8;
+	object[i]._oVar1 = p1;
+	object[i]._oVar2 = p2;
+	object[i]._oVar4 = 0;
 }
 
 void __fastcall AddSCambBook(int i)
