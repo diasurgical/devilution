@@ -1540,13 +1540,13 @@ void __cdecl InitMissiles()
 }
 // 64CCD8: using guessed type int numchains;
 
-void __fastcall AddLArrow(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddLArrow(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	if (sx == dx && sy == dy) {
 		dx += XDirAdd[midir];
 		dy += YDirAdd[midir];
 	}
-	if (!(_BYTE)mienemy) {
+	if (!mienemy) {
 		if (plr[id]._pClass == PC_ROGUE)
 			GetMissileVel(mi, sx, sy, dx, dy, (plr[id]._pLevel >> 2) + 31);
 		else if (plr[id]._pClass == PC_WARRIOR)
@@ -1563,7 +1563,7 @@ void __fastcall AddLArrow(int mi, int sx, int sy, int dx, int dy, int midir, int
 	missile[mi]._mlid = AddLight(sx, sy, 5);
 }
 
-void __fastcall AddArrow(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddArrow(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	int av;
 
@@ -1571,7 +1571,7 @@ void __fastcall AddArrow(int mi, int sx, int sy, int dx, int dy, int midir, int 
 		dx += XDirAdd[midir];
 		dy += YDirAdd[midir];
 	}
-	if (!(_BYTE)mienemy) {
+	if (!mienemy) {
 		av = 32;
 		if (plr[id]._pIFlags & 4) {
 			av = random(64, 32) + 16;
@@ -1609,7 +1609,7 @@ void __fastcall GetVileMissPos(int mi, int dx, int dy)
 	missile[mi]._miy = dy;
 }
 
-void __fastcall AddRndTeleport(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddRndTeleport(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	int pn, r1, r2, nTries;
 
@@ -1635,7 +1635,7 @@ void __fastcall AddRndTeleport(int mi, int sx, int sy, int dx, int dy, int midir
 	if (setlevel == 0 || setlvlnum != SL_VILEBETRAYER) {
 		missile[mi]._mix = sx + r1;
 		missile[mi]._miy = sy + r2;
-		if (!(_BYTE)mienemy)
+		if (!mienemy)
 			UseMana(id, 10);
 	} else {
 		pn = dObject[dx][dy] - 1;
@@ -1649,7 +1649,7 @@ void __fastcall AddRndTeleport(int mi, int sx, int sy, int dx, int dy, int midir
 }
 // 5CF31D: using guessed type char setlevel;
 
-void __fastcall AddFirebolt(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int id, int dam)
+void __fastcall AddFirebolt(int mi, int sx, int sy, int dx, int dy, int midir, char micaster, int id, int dam)
 {
 	int i, mx, sp;
 
@@ -1657,7 +1657,7 @@ void __fastcall AddFirebolt(int mi, int sx, int sy, int dx, int dy, int midir, i
 		dx += XDirAdd[midir];
 		dy += YDirAdd[midir];
 	}
-	if (!(_BYTE)micaster) {
+	if (!micaster) {
 		for (i = 0; i < nummissiles; i++) {
 			mx = missileactive[i];
 			if (missile[mx]._mitype == MIS_GUARDIAN && missile[mx]._misource == id && missile[mx]._miVar3 == mi)
@@ -1683,7 +1683,7 @@ void __fastcall AddFirebolt(int mi, int sx, int sy, int dx, int dy, int midir, i
 	missile[mi]._mlid = AddLight(sx, sy, 8);
 }
 
-void __fastcall AddMagmaball(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddMagmaball(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	GetMissileVel(mi, sx, sy, dx, dy, 16);
 	missile[mi]._mitxoff += 3 * missile[mi]._mixvel;
@@ -1695,7 +1695,7 @@ void __fastcall AddMagmaball(int mi, int sx, int sy, int dx, int dy, int midir, 
 	missile[mi]._mlid = AddLight(sx, sy, 8);
 }
 
-void __fastcall miss_null_33(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall miss_null_33(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	GetMissileVel(mi, sx, sy, dx, dy, 16);
 	missile[mi]._mirange = 256;
@@ -1704,7 +1704,7 @@ void __fastcall miss_null_33(int mi, int sx, int sy, int dx, int dy, int midir, 
 	PutMissile(mi);
 }
 
-void __fastcall AddTeleport(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddTeleport(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	int i, pn, k, j, tx, ty;
 	int CrawlNum[6] = { 0, 3, 12, 45, 94, 159 };
@@ -1737,7 +1737,7 @@ void __fastcall AddTeleport(int mi, int sx, int sy, int dx, int dy, int midir, i
 	}
 }
 
-void __fastcall AddLightball(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddLightball(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	GetMissileVel(mi, sx, sy, dx, dy, 16);
 	missile[mi]._midam = dam;
@@ -1752,7 +1752,7 @@ void __fastcall AddLightball(int mi, int sx, int sy, int dx, int dy, int midir, 
 	}
 }
 
-void __fastcall AddFirewall(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddFirewall(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	int i;
 
@@ -1767,7 +1767,7 @@ void __fastcall AddFirewall(int mi, int sx, int sy, int dx, int dy, int midir, i
 	missile[mi]._miVar2 = 0;
 }
 
-void __fastcall AddFireball(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddFireball(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	int i;
 
@@ -1775,7 +1775,7 @@ void __fastcall AddFireball(int mi, int sx, int sy, int dx, int dy, int midir, i
 		dx += XDirAdd[midir];
 		dy += YDirAdd[midir];
 	}
-	if (!(_BYTE)mienemy) {
+	if (!mienemy) {
 		missile[mi]._midam = 2 * (plr[id]._pLevel + random(60, 10) + random(60, 10)) + 4;
 		for (i = 0; i < missile[mi]._mispllvl; i++) {
 			missile[mi]._midam += missile[mi]._midam >> 3;
@@ -1798,9 +1798,9 @@ void __fastcall AddFireball(int mi, int sx, int sy, int dx, int dy, int midir, i
 	missile[mi]._mlid = AddLight(sx, sy, 8);
 }
 
-void __fastcall AddLightctrl(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddLightctrl(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
-	if (!dam && !(_BYTE)mienemy)
+	if (!dam && !mienemy)
 		UseMana(id, 3);
 	missile[mi]._miVar1 = sx;
 	missile[mi]._miVar2 = sy;
@@ -1809,7 +1809,7 @@ void __fastcall AddLightctrl(int mi, int sx, int sy, int dx, int dy, int midir, 
 	missile[mi]._mirange = 256;
 }
 
-void __fastcall AddLightning(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddLightning(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	missile[mi]._misx = dx;
 	missile[mi]._misy = dy;
@@ -1821,7 +1821,7 @@ void __fastcall AddLightning(int mi, int sx, int sy, int dx, int dy, int midir, 
 	}
 	missile[mi]._miAnimFrame = random(52, 8) + 1;
 
-	if (midir < 0 || (_BYTE)mienemy == 1 || id == -1) {
+	if (midir < 0 || mienemy == 1 || id == -1) {
 		if (midir < 0 || id == -1)
 			missile[mi]._mirange = 8;
 		else
@@ -1832,7 +1832,7 @@ void __fastcall AddLightning(int mi, int sx, int sy, int dx, int dy, int midir, 
 	missile[mi]._mlid = AddLight(missile[mi]._mix, missile[mi]._miy, 4);
 }
 
-void __fastcall AddMisexp(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddMisexp(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	int v9;        // edi
 	CMonster *v10; // esi
@@ -1867,7 +1867,7 @@ void __fastcall AddMisexp(int mi, int sx, int sy, int dx, int dy, int midir, int
 	missile[v11]._mirange = missile[v9]._miAnimLen;
 }
 
-void __fastcall AddWeapexp(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddWeapexp(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	int v9; // esi
 
@@ -1899,7 +1899,7 @@ BOOL __fastcall CheckIfTrig(int x, int y)
 	return FALSE;
 }
 
-void __fastcall AddTown(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddTown(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	int i, j, k, mx, tx, ty;
 	int CrawlNum[6] = { 0, 3, 12, 45, 94, 159 };
@@ -1955,11 +1955,11 @@ void __fastcall AddTown(int mi, int sx, int sy, int dx, int dy, int midir, int m
 }
 // 5CF31D: using guessed type char setlevel;
 
-void __fastcall AddFlash(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddFlash(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	int i;
 
-	if (!(_BYTE)mienemy && id != -1) {
+	if (!mienemy && id != -1) {
 		missile[mi]._midam = 0;
 		for (i = 0; i <= plr[id]._pLevel; i++) {
 			missile[mi]._midam += random(55, 20) + 1;
@@ -1970,7 +1970,7 @@ void __fastcall AddFlash(int mi, int sx, int sy, int dx, int dy, int midir, int 
 		missile[mi]._midam += missile[mi]._midam >> 1;
 		UseMana(id, 4);
 	} else {
-		if (!(_BYTE)mienemy) {
+		if (!mienemy) {
 			missile[mi]._midam = currlevel >> 1;
 		} else {
 			missile[mi]._midam = monster[id].mLevel << 1;
@@ -1979,11 +1979,11 @@ void __fastcall AddFlash(int mi, int sx, int sy, int dx, int dy, int midir, int 
 	missile[mi]._mirange = 19;
 }
 
-void __fastcall AddFlash2(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddFlash2(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	int i;
 
-	if (!(_BYTE)mienemy) {
+	if (!mienemy) {
 		if (id != -1) {
 			missile[mi]._midam = 0;
 			for (i = 0; i <= plr[id]._pLevel; i++) {
@@ -2001,20 +2001,20 @@ void __fastcall AddFlash2(int mi, int sx, int sy, int dx, int dy, int midir, int
 	missile[mi]._mirange = 19;
 }
 
-void __fastcall AddManashield(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddManashield(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	missile[mi]._mirange = 48 * plr[id]._pLevel;
 	missile[mi]._miVar1 = plr[id]._pHitPoints;
 	missile[mi]._miVar2 = plr[id]._pHPBase;
 	missile[mi]._miVar8 = -1;
-	if (!(_BYTE)mienemy)
+	if (!mienemy)
 		UseMana(id, 11);
 	if (id == myplr)
 		NetSendCmd(TRUE, CMD_SETSHIELD);
 	plr[id].pManaShield = TRUE;
 }
 
-void __fastcall AddFiremove(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddFiremove(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	int v9;  // edi
 	int v10; // ebx
@@ -2034,7 +2034,7 @@ void __fastcall AddFiremove(int mi, int sx, int sy, int dx, int dy, int midir, i
 	*(int *)((char *)&missile[0]._mirange + v11) = 255;
 }
 
-void __fastcall AddGuardian(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddGuardian(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	int i, pn, k, j, tx, ty;
 	int CrawlNum[6] = { 0, 3, 12, 45, 94, 159 };
@@ -2090,7 +2090,7 @@ void __fastcall AddGuardian(int mi, int sx, int sy, int dx, int dy, int midir, i
 	}
 }
 
-void __fastcall AddChain(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddChain(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	missile[mi]._miVar1 = dx;
 	missile[mi]._miVar2 = dy;
@@ -2098,7 +2098,7 @@ void __fastcall AddChain(int mi, int sx, int sy, int dx, int dy, int midir, int 
 	UseMana(id, 14);
 }
 
-void __fastcall miss_null_11(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall miss_null_11(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	SetMissDir(mi, dx);
 	missile[mi]._midam = 0;
@@ -2106,7 +2106,7 @@ void __fastcall miss_null_11(int mi, int sx, int sy, int dx, int dy, int midir, 
 	missile[mi]._mirange = 250;
 }
 
-void __fastcall miss_null_12(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall miss_null_12(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	if (dx > 3)
 		dx = 2;
@@ -2116,7 +2116,7 @@ void __fastcall miss_null_12(int mi, int sx, int sy, int dx, int dy, int midir, 
 	missile[mi]._mirange = 250;
 }
 
-void __fastcall miss_null_13(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall miss_null_13(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	if (dx > 3)
 		dx = 2;
@@ -2126,7 +2126,7 @@ void __fastcall miss_null_13(int mi, int sx, int sy, int dx, int dy, int midir, 
 	missile[mi]._mirange = missile[mi]._miAnimLen;
 }
 
-void __fastcall AddRhino(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddRhino(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	AnimStruct *anim;
 
@@ -2161,7 +2161,7 @@ void __fastcall AddRhino(int mi, int sx, int sy, int dx, int dy, int midir, int 
 	PutMissile(mi);
 }
 
-void __fastcall miss_null_32(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall miss_null_32(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	AnimStruct *anim;
 
@@ -2185,7 +2185,7 @@ void __fastcall miss_null_32(int mi, int sx, int sy, int dx, int dy, int midir, 
 	PutMissile(mi);
 }
 
-void __fastcall AddFlare(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddFlare(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	if (sx == dx && sy == dy) {
 		dx += XDirAdd[midir];
@@ -2196,7 +2196,7 @@ void __fastcall AddFlare(int mi, int sx, int sy, int dx, int dy, int midir, int 
 	missile[mi]._miVar1 = sx;
 	missile[mi]._miVar2 = sy;
 	missile[mi]._mlid = AddLight(sx, sy, 8);
-	if (!(_BYTE)mienemy) {
+	if (!mienemy) {
 		UseMana(id, 35);
 		drawhpflag = TRUE;
 		plr[id]._pHitPoints -= 320;
@@ -2217,7 +2217,7 @@ void __fastcall AddFlare(int mi, int sx, int sy, int dx, int dy, int midir, int 
 	}
 }
 
-void __fastcall AddAcid(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddAcid(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	GetMissileVel(mi, sx, sy, dx, dy, 16);
 	SetMissDir(mi, GetDirection16(sx, sy, dx, dy));
@@ -2228,7 +2228,7 @@ void __fastcall AddAcid(int mi, int sx, int sy, int dx, int dy, int midir, int m
 	PutMissile(mi);
 }
 
-void __fastcall miss_null_1D(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall miss_null_1D(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	missile[mi]._midam = dam;
 	missile[mi]._mirange = 50;
@@ -2238,7 +2238,7 @@ void __fastcall miss_null_1D(int mi, int sx, int sy, int dx, int dy, int midir, 
 	missile[mi]._miVar2 = 0;
 }
 
-void __fastcall AddAcidpud(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddAcidpud(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	int monst;
 
@@ -2252,7 +2252,7 @@ void __fastcall AddAcidpud(int mi, int sx, int sy, int dx, int dy, int midir, in
 	missile[mi]._miPreFlag = TRUE;
 }
 
-void __fastcall AddStone(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddStone(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	int i, j, k, l, tx, ty, mid;
 	int CrawlNum[6] = { 0, 3, 12, 45, 94, 159 };
@@ -2300,7 +2300,7 @@ void __fastcall AddStone(int mi, int sx, int sy, int dx, int dy, int midir, int 
 	}
 }
 
-void __fastcall AddGolem(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddGolem(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	int i;
 	int mx;
@@ -2324,7 +2324,7 @@ void __fastcall AddGolem(int mi, int sx, int sy, int dx, int dy, int midir, int 
 	UseMana(id, 21);
 }
 
-void __fastcall AddEtherealize(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddEtherealize(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	int i;
 
@@ -2335,16 +2335,16 @@ void __fastcall AddEtherealize(int mi, int sx, int sy, int dx, int dy, int midir
 	missile[mi]._mirange += missile[mi]._mirange * plr[id]._pISplDur >> 7;
 	missile[mi]._miVar1 = plr[id]._pHitPoints;
 	missile[mi]._miVar2 = plr[id]._pHPBase;
-	if (!(_BYTE)mienemy)
+	if (!mienemy)
 		UseMana(id, 25);
 }
 
-void __fastcall miss_null_1F(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall miss_null_1F(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	missile[mi]._miDelFlag = TRUE;
 }
 
-void __fastcall miss_null_23(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall miss_null_23(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	missile[mi]._midam = dam;
 	missile[mi]._mix = sx;
@@ -2360,7 +2360,7 @@ void __fastcall miss_null_23(int mi, int sx, int sy, int dx, int dy, int midir, 
 	missile[mi]._mirange = missile[mi]._miAnimLen;
 }
 
-void __fastcall AddBoom(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddBoom(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	missile[mi]._mix = dx;
 	missile[mi]._miy = dy;
@@ -2373,7 +2373,7 @@ void __fastcall AddBoom(int mi, int sx, int sy, int dx, int dy, int midir, int m
 	missile[mi]._miVar1 = 0;
 }
 
-void __fastcall AddHeal(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddHeal(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	int i;
 	int HealAmount;
@@ -2405,7 +2405,7 @@ void __fastcall AddHeal(int mi, int sx, int sy, int dx, int dy, int midir, int m
 	drawhpflag = TRUE;
 }
 
-void __fastcall AddHealOther(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddHealOther(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	missile[mi]._miDelFlag = TRUE;
 	UseMana(id, 34);
@@ -2413,7 +2413,7 @@ void __fastcall AddHealOther(int mi, int sx, int sy, int dx, int dy, int midir, 
 		SetCursor_(CURSOR_HEALOTHER);
 }
 
-void __fastcall AddElement(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddElement(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	int i;
 
@@ -2438,7 +2438,7 @@ void __fastcall AddElement(int mi, int sx, int sy, int dx, int dy, int midir, in
 	UseMana(id, 29);
 }
 
-void __fastcall AddIdentify(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddIdentify(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	missile[mi]._miDelFlag = TRUE;
 	UseMana(id, 5);
@@ -2452,7 +2452,7 @@ void __fastcall AddIdentify(int mi, int sx, int sy, int dx, int dy, int midir, i
 }
 // 4B8968: using guessed type int sbookflag;
 
-void __fastcall AddFirewallC(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddFirewallC(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	int i, j, k, tx, ty, pn;
 	int CrawlNum[6] = { 0, 3, 12, 45, 94, 159 };
@@ -2492,7 +2492,7 @@ void __fastcall AddFirewallC(int mi, int sx, int sy, int dx, int dy, int midir, 
 	}
 }
 
-void __fastcall AddInfra(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddInfra(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	int i;
 
@@ -2501,11 +2501,11 @@ void __fastcall AddInfra(int mi, int sx, int sy, int dx, int dy, int midir, int 
 		missile[mi]._mirange += missile[mi]._mirange >> 3;
 	}
 	missile[mi]._mirange += missile[mi]._mirange * plr[id]._pISplDur >> 7;
-	if (!(_BYTE)mienemy)
+	if (!mienemy)
 		UseMana(id, 9);
 }
 
-void __fastcall AddWave(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddWave(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	missile[mi]._miVar1 = dx;
 	missile[mi]._miVar2 = dy;
@@ -2516,7 +2516,7 @@ void __fastcall AddWave(int mi, int sx, int sy, int dx, int dy, int midir, int m
 	UseMana(id, 15);
 }
 
-void __fastcall AddNova(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddNova(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	int k;
 
@@ -2527,7 +2527,7 @@ void __fastcall AddNova(int mi, int sx, int sy, int dx, int dy, int midir, int m
 		for (k = 0; k < missile[mi]._mispllvl; k++) {
 			missile[mi]._midam += missile[mi]._midam >> 3;
 		}
-		if (!(_BYTE)mienemy)
+		if (!mienemy)
 			UseMana(id, 18);
 	} else {
 		missile[mi]._midam = ((DWORD)currlevel >> 1) + random(66, 3) + random(66, 3) + random(66, 3);
@@ -2535,7 +2535,7 @@ void __fastcall AddNova(int mi, int sx, int sy, int dx, int dy, int midir, int m
 	missile[mi]._mirange = 1;
 }
 
-void __fastcall AddRepair(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddRepair(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	missile[mi]._miDelFlag = TRUE;
 	UseMana(id, 26);
@@ -2549,7 +2549,7 @@ void __fastcall AddRepair(int mi, int sx, int sy, int dx, int dy, int midir, int
 }
 // 4B8968: using guessed type int sbookflag;
 
-void __fastcall AddRecharge(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddRecharge(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	missile[mi]._miDelFlag = TRUE;
 	UseMana(id, 27);
@@ -2563,7 +2563,7 @@ void __fastcall AddRecharge(int mi, int sx, int sy, int dx, int dy, int midir, i
 }
 // 4B8968: using guessed type int sbookflag;
 
-void __fastcall AddDisarm(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddDisarm(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	missile[mi]._miDelFlag = TRUE;
 	UseMana(id, 28);
@@ -2571,7 +2571,7 @@ void __fastcall AddDisarm(int mi, int sx, int sy, int dx, int dy, int midir, int
 		SetCursor_(CURSOR_DISARM);
 }
 
-void __fastcall AddApoca(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddApoca(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	int i;
 
@@ -2597,7 +2597,7 @@ void __fastcall AddApoca(int mi, int sx, int sy, int dx, int dy, int midir, int 
 	UseMana(id, 24);
 }
 
-void __fastcall AddFlame(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddFlame(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	int i;
 
@@ -2612,7 +2612,7 @@ void __fastcall AddFlame(int mi, int sx, int sy, int dx, int dy, int midir, int 
 	missile[mi]._mityoff = missile[midir]._mityoff;
 	missile[mi]._mirange = missile[mi]._miVar2 + 20;
 	missile[mi]._mlid = AddLight(sx, sy, 1);
-	if (!(_BYTE)mienemy) {
+	if (!mienemy) {
 		i = random(79, plr[id]._pLevel) + random(79, 2);
 		missile[mi]._midam = 8 * i + 16 + ((8 * i + 16) >> 1);
 	} else {
@@ -2620,14 +2620,14 @@ void __fastcall AddFlame(int mi, int sx, int sy, int dx, int dy, int midir, int 
 	}
 }
 
-void __fastcall AddFlamec(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddFlamec(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	if (sx == dx && sy == dy) {
 		dx += XDirAdd[midir];
 		dy += YDirAdd[midir];
 	}
 	GetMissileVel(mi, sx, sy, dx, dy, 32);
-	if (!(_BYTE)mienemy)
+	if (!mienemy)
 		UseMana(id, 20);
 	missile[mi]._miVar3 = 0;
 	missile[mi]._miVar2 = sy;
@@ -2635,7 +2635,7 @@ void __fastcall AddFlamec(int mi, int sx, int sy, int dx, int dy, int midir, int
 	missile[mi]._mirange = 256;
 }
 
-void __fastcall AddCbolt(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int id, int dam)
+void __fastcall AddCbolt(int mi, int sx, int sy, int dx, int dy, int midir, char micaster, int id, int dam)
 {
 	int v9;  // esi
 	int v10; // eax
@@ -2673,7 +2673,7 @@ void __fastcall AddCbolt(int mi, int sx, int sy, int dx, int dy, int midir, int 
 	missile[v9]._mirange = 256;
 }
 
-void __fastcall AddHbolt(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int id, int dam)
+void __fastcall AddHbolt(int mi, int sx, int sy, int dx, int dy, int midir, char micaster, int id, int dam)
 {
 	int sp;
 
@@ -2699,7 +2699,7 @@ void __fastcall AddHbolt(int mi, int sx, int sy, int dx, int dy, int midir, int 
 	UseMana(id, 31);
 }
 
-void __fastcall AddResurrect(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddResurrect(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	UseMana(id, 32);
 	if (id == myplr)
@@ -2707,7 +2707,7 @@ void __fastcall AddResurrect(int mi, int sx, int sy, int dx, int dy, int midir, 
 	missile[mi]._miDelFlag = TRUE;
 }
 
-void __fastcall AddResurrectBeam(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddResurrectBeam(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	missile[mi]._mix = dx;
 	missile[mi]._miy = dy;
@@ -2718,7 +2718,7 @@ void __fastcall AddResurrectBeam(int mi, int sx, int sy, int dx, int dy, int mid
 	missile[mi]._mirange = misfiledata[36].mAnimLen[0];
 }
 
-void __fastcall AddTelekinesis(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddTelekinesis(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	missile[mi]._miDelFlag = TRUE;
 	UseMana(id, 33);
@@ -2726,7 +2726,7 @@ void __fastcall AddTelekinesis(int mi, int sx, int sy, int dx, int dy, int midir
 		SetCursor_(CURSOR_TELEKINESIS);
 }
 
-void __fastcall AddBoneSpirit(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddBoneSpirit(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	if (sx == dx && sy == dy) {
 		dx = XDirAdd[midir] + dx;
@@ -2742,7 +2742,7 @@ void __fastcall AddBoneSpirit(int mi, int sx, int sy, int dx, int dy, int midir,
 	missile[mi]._miVar4 = dx;
 	missile[mi]._miVar5 = dy;
 	missile[mi]._mlid = AddLight(sx, sy, 8);
-	if (!(_BYTE)mienemy) {
+	if (!mienemy) {
 		UseMana(id, 36);
 		drawhpflag = TRUE;
 		plr[id]._pHitPoints -= 384;
@@ -2752,7 +2752,7 @@ void __fastcall AddBoneSpirit(int mi, int sx, int sy, int dx, int dy, int midir,
 	}
 }
 
-void __fastcall AddRportal(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddRportal(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	missile[mi]._mix = sx;
 	missile[mi]._miy = sy;
@@ -2764,7 +2764,7 @@ void __fastcall AddRportal(int mi, int sx, int sy, int dx, int dy, int midir, in
 	PutMissile(mi);
 }
 
-void __fastcall AddDiabApoca(int mi, int sx, int sy, int dx, int dy, int midir, int mienemy, int id, int dam)
+void __fastcall AddDiabApoca(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
 	int pnum;
 
@@ -2779,14 +2779,14 @@ void __fastcall AddDiabApoca(int mi, int sx, int sy, int dx, int dy, int midir, 
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-int __fastcall AddMissile(int sx, int sy, int dx, int dy, int midir, int mitype, int micaster, int id, int midam, int spllvl)
+int __fastcall AddMissile(int sx, int sy, int dx, int dy, int midir, int mitype, char micaster, int id, int midam, int spllvl)
 {
 	int i, mi;
 
 	if (nummissiles >= MAXMISSILES)
 		return -1;
 
-	if (mitype == MIS_MANASHIELD && plr[id].pManaShield) {
+	if (mitype == MIS_MANASHIELD && plr[id].pManaShield == TRUE) {
 		if (currlevel != plr[id].plrlevel)
 			return -1;
 
@@ -2804,7 +2804,7 @@ int __fastcall AddMissile(int sx, int sy, int dx, int dy, int midir, int mitype,
 	nummissiles++;
 
 	missile[mi]._mitype = mitype;
-	missile[mi]._micaster = (char)micaster;
+	missile[mi]._micaster = micaster;
 	missile[mi]._misource = id;
 	missile[mi]._miAnimType = missiledata[mitype].mFileNum;
 	missile[mi]._miDrawFlag = missiledata[mitype].mDraw;
@@ -4264,50 +4264,37 @@ void __fastcall MI_Flame(int i)
 
 void __fastcall MI_Flamec(int i)
 {
-	int v1; // edi
-	int v2; // esi
-	int v3; // eax
-	int v4; // ebx
-	int v5; // ecx
-	int v6; // edx
-	int v7; // eax
-	int v8; // eax
+	int id, src;
 
-	v1 = i;
-	v2 = i;
-	v3 = missile[i]._mixvel;
-	--missile[v2]._mirange;
-	missile[v2]._mitxoff += v3;
-	v4 = missile[i]._misource;
-	missile[v2]._mityoff += missile[i]._miyvel;
+	missile[i]._mirange--;
+	missile[i]._mitxoff += missile[i]._mixvel;
+	src = missile[i]._misource;
+	missile[i]._mityoff += missile[i]._miyvel;
 	GetMissilePos(i);
-	v5 = missile[v2]._mix;
-	if (v5 != missile[v2]._miVar1 || missile[v2]._miy != missile[v2]._miVar2) {
-		v6 = missile[v2]._miy;
-		v7 = dPiece[v5][v6];
-		if (nMissileTable[v7]) {
-			missile[v2]._mirange = 0;
-		} else {
-			_LOBYTE(v7) = missile[v2]._micaster;
+	if (missile[i]._mix != missile[i]._miVar1 || missile[i]._miy != missile[i]._miVar2) {
+		id = dPiece[missile[i]._mix][missile[i]._miy];
+		if (!nMissileTable[id]) {
 			AddMissile(
-			    v5,
-			    v6,
-			    missile[v2]._misx,
-			    missile[v2]._misy,
-			    v1,
-			    MIS_FLAME,
-			    v7,
-			    v4,
-			    missile[v2]._miVar3,
-			    missile[v2]._mispllvl);
+				missile[i]._mix,
+				missile[i]._miy,
+				missile[i]._misx,
+				missile[i]._misy,
+				i,
+				MIS_FLAME,
+				missile[i]._micaster,
+				src,
+				missile[i]._miVar3,
+				missile[i]._mispllvl
+			);
+		} else {
+			missile[i]._mirange = 0;
 		}
-		v8 = missile[v2]._mix;
-		++missile[v2]._miVar3;
-		missile[v2]._miVar1 = v8;
-		missile[v2]._miVar2 = missile[v2]._miy;
+		missile[i]._miVar1 = missile[i]._mix;
+		missile[i]._miVar2 = missile[i]._miy;
+		missile[i]._miVar3++;
 	}
-	if (!missile[v2]._mirange || missile[v2]._miVar3 == 3)
-		missile[v2]._miDelFlag = TRUE;
+	if (!missile[i]._mirange || missile[i]._miVar3 == 3)
+		missile[i]._miDelFlag = TRUE;
 }
 
 void __fastcall MI_Cbolt(int i)
