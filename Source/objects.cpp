@@ -1433,7 +1433,7 @@ void __fastcall SetMapObjects(unsigned char *pMap, int startx, int starty)
 // 67D7C4: using guessed type int numobjfiles;
 // 4427C5: using guessed type int var_10C[56];
 
-void __fastcall DeleteObject(int oi, int i)
+void __fastcall DeleteObject_(int oi, int i)
 {
 	int ox, oy;
 
@@ -2477,7 +2477,7 @@ LABEL_45:
 	v6 = 0;
 	while (v6 < nobjects) {
 		if (object[objectactive[v6]]._oDelFlag) {
-			DeleteObject(objectactive[v6], v6);
+			DeleteObject_(objectactive[v6], v6);
 			v6 = 0;
 		} else {
 			++v6;
