@@ -881,7 +881,7 @@ void __cdecl AddObjTraps()
 							v11 = (char)(v7 - 1);
 							object[v11]._oVar2 = v0;
 							object[v11]._oVar1 = x;
-							object[v3]._oTrapFlag = 1;
+							object[v3]._oTrapFlag = TRUE;
 							goto LABEL_28;
 						}
 					}
@@ -921,7 +921,7 @@ void __cdecl AddChestTraps()
 				if (v3 >= OBJ_CHEST1 && v3 <= OBJ_CHEST3 && !object[v2]._oTrapFlag && random(0, 100) < 10) {
 					object[v2]._otype += OBJ_BOOKCASER;
 					v4 = leveltype == DTYPE_CATACOMBS;
-					object[v2]._oTrapFlag = 1;
+					object[v2]._oTrapFlag = TRUE;
 					if (v4)
 						v5 = random(0, 2);
 					else
@@ -1494,9 +1494,9 @@ void __fastcall SetupObject(int i, int x, int y, int ot)
 	object[v4]._oBreak = AllObjects[v5].oBreak;
 	object[v4]._oDelFlag = 0;
 	object[v4]._oSelFlag = AllObjects[v5].oSelFlag;
-	object[v4]._oPreFlag = 0;
-	object[v4]._oTrapFlag = 0;
-	object[v4]._oDoorFlag = 0;
+	object[v4]._oPreFlag = FALSE;
+	object[v4]._oTrapFlag = FALSE;
+	object[v4]._oDoorFlag = FALSE;
 }
 
 void __fastcall SetObjMapRange(int i, int x1, int y1, int x2, int y2, int v)
@@ -1515,28 +1515,19 @@ void __fastcall SetBookMsg(int i, int msg)
 
 void __fastcall AddL1Door(int i, int x, int y, int ot)
 {
-	int v4;  // ecx
-	int v5;  // edx
-	int *v6; // eax
-	int v7;  // edx
-	int v8;  // eax
-	int v9;  // eax
+	int p1, p2;
 
-	v4 = i;
-	v5 = 112 * x;
-	object[v4]._oDoorFlag = 1;
+	object[i]._oDoorFlag = TRUE;
 	if (ot == 1) {
-		v6 = (int *)((char *)dPiece + 4 * (y + v5));
-		v7 = *v6;
-		v8 = *(v6 - 1);
+		p1 = dPiece[x][y];
+		p2 = dPiece[x][y - 1];
 	} else {
-		v9 = v5 + y;
-		v7 = dPiece[0][v5 + y];
-		v8 = dPiece[-1][v5 + y]; // *(_DWORD *)&dflags[28][4 * v9 + 32]; /* check */
+		p1 = dPiece[x][y];
+		p2 = dPiece[x - 1][y];
 	}
-	object[v4]._oVar4 = 0;
-	object[v4]._oVar1 = v7;
-	object[v4]._oVar2 = v8;
+	object[i]._oVar1 = p1;
+	object[i]._oVar2 = p2;
+	object[i]._oVar4 = 0;
 }
 
 void __fastcall AddSCambBook(int i)
@@ -1590,7 +1581,7 @@ void __fastcall AddL2Door(int i, int x, int y, int ot)
 	int v4; // esi
 
 	v4 = i;
-	object[i]._oDoorFlag = 1;
+	object[i]._oDoorFlag = TRUE;
 	if (ot == OBJ_L2LDOOR)
 		ObjSetMicro(x, y, 538);
 	else
@@ -1603,7 +1594,7 @@ void __fastcall AddL3Door(int i, int x, int y, int ot)
 	int v4; // esi
 
 	v4 = i;
-	object[i]._oDoorFlag = 1;
+	object[i]._oDoorFlag = TRUE;
 	if (ot == OBJ_L3LDOOR)
 		ObjSetMicro(x, y, 531);
 	else
@@ -1676,7 +1667,7 @@ void __fastcall AddShrine(int i)
 {
 	int val, j, slist[26];
 
-	object[i]._oPreFlag = 1;
+	object[i]._oPreFlag = TRUE;
 	for (j = 0; j < 26; j++) {
 		if (currlevel < shrinemin[j] || currlevel > shrinemax[j]) {
 			slist[j] = 0;
@@ -1715,7 +1706,7 @@ void __fastcall AddBookcase(int i)
 
 	v1 = i;
 	object[v1]._oRndSeed = GetRndSeed();
-	object[v1]._oPreFlag = 1;
+	object[v1]._oPreFlag = TRUE;
 }
 
 void __fastcall AddPurifyingFountain(int i)
@@ -1749,7 +1740,7 @@ void __fastcall AddDecap(int i)
 	v2 = GetRndSeed();
 	object[v1]._oRndSeed = v2;
 	v4 = random(151, 8);
-	object[v1]._oPreFlag = 1;
+	object[v1]._oPreFlag = TRUE;
 	object[v1]._oAnimFrame = v4 + 1;
 }
 
@@ -1771,7 +1762,7 @@ void __fastcall AddMagicCircle(int i)
 	v2 = GetRndSeed();
 	object[v1]._oVar6 = 0;
 	object[v1]._oRndSeed = v2;
-	object[v1]._oPreFlag = 1;
+	object[v1]._oPreFlag = TRUE;
 	object[v1]._oVar5 = 1;
 }
 
@@ -1836,7 +1827,7 @@ void __fastcall AddWeaponRack(int i)
 void __fastcall AddTorturedBody(int i)
 {
 	object[i]._oRndSeed = GetRndSeed();
-	object[i]._oPreFlag = 1;
+	object[i]._oPreFlag = TRUE;
 	object[i]._oAnimFrame = random(0, 4) + 1;
 }
 
@@ -2317,7 +2308,7 @@ void __fastcall Obj_Trap(int i)
 				AddMissile(sx, sy, dx, dy, dir, object[i]._oVar3, 1, -1, 0, 0);
 				PlaySfxLoc(IS_TRAP, object[oti]._ox, object[oti]._oy);
 			}
-			object[oti]._oTrapFlag = 0;
+			object[oti]._oTrapFlag = FALSE;
 		}
 	}
 }
@@ -2807,7 +2798,7 @@ void __fastcall OperateL1RDoor(int pnum, int oi, unsigned char sendflag)
 				ObjSetMicro(v5 - 1, v6, object[v3]._oVar2);
 			}
 			object[v3]._oAnimFrame -= 2;
-			object[v3]._oPreFlag = 0;
+			object[v3]._oPreFlag = FALSE;
 		} else {
 			if (pnum == myplr && sendflag)
 				NetSendCmdParam1(TRUE, CMD_OPENDOOR, oi);
@@ -2817,7 +2808,7 @@ void __fastcall OperateL1RDoor(int pnum, int oi, unsigned char sendflag)
 			dArch[v5][v6] = 8;
 			objects_set_door_piece(v5, v6 - 1);
 			object[v3]._oAnimFrame += 2;
-			object[v3]._oPreFlag = 1;
+			object[v3]._oPreFlag = TRUE;
 			DoorSet(param1, v5 - 1, v6);
 			object[v3]._oVar4 = 1;
 			object[v3]._oSelFlag = 2;
@@ -2871,7 +2862,7 @@ void __fastcall OperateL1LDoor(int pnum, int oi, unsigned char sendflag)
 				ObjSetMicro(v5, v6 - 1, object[v3]._oVar2);
 			}
 			object[v3]._oAnimFrame -= 2;
-			object[v3]._oPreFlag = 0;
+			object[v3]._oPreFlag = FALSE;
 		} else {
 			if (pnum == myplr && sendflag)
 				NetSendCmdParam1(TRUE, CMD_OPENDOOR, oi);
@@ -2884,7 +2875,7 @@ void __fastcall OperateL1LDoor(int pnum, int oi, unsigned char sendflag)
 			dArch[v5][v6] = 7;
 			objects_set_door_piece(v5 - 1, v6);
 			object[v3]._oAnimFrame += 2;
-			object[v3]._oPreFlag = 1;
+			object[v3]._oPreFlag = TRUE;
 			DoorSet(param1, v5, v6 - 1);
 			object[v3]._oVar4 = 1;
 			object[v3]._oSelFlag = 2;
@@ -2926,7 +2917,7 @@ void __fastcall OperateL2RDoor(int pnum, int oi, unsigned char sendflag)
 			object[v3]._oSelFlag = 3;
 			ObjSetMicro(v8, v5, 540);
 			object[v3]._oAnimFrame -= 2;
-			object[v3]._oPreFlag = 0;
+			object[v3]._oPreFlag = FALSE;
 		} else {
 			if (pnum == myplr && sendflag)
 				NetSendCmdParam1(TRUE, CMD_OPENDOOR, oi);
@@ -2934,7 +2925,7 @@ void __fastcall OperateL2RDoor(int pnum, int oi, unsigned char sendflag)
 				PlaySfxLoc(IS_DOOROPEN, object[v3]._ox, object[v3]._oy);
 			ObjSetMicro(v8, v5, 17);
 			object[v3]._oAnimFrame += 2;
-			object[v3]._oPreFlag = 1;
+			object[v3]._oPreFlag = TRUE;
 			object[v3]._oVar4 = 1;
 			object[v3]._oSelFlag = 2;
 		}
@@ -2975,7 +2966,7 @@ void __fastcall OperateL2LDoor(int pnum, int oi, unsigned char sendflag)
 			object[v3]._oSelFlag = 3;
 			ObjSetMicro(v8, v5, 538);
 			object[v3]._oAnimFrame -= 2;
-			object[v3]._oPreFlag = 0;
+			object[v3]._oPreFlag = FALSE;
 		} else {
 			if (pnum == myplr && sendflag)
 				NetSendCmdParam1(TRUE, CMD_OPENDOOR, oi);
@@ -2983,7 +2974,7 @@ void __fastcall OperateL2LDoor(int pnum, int oi, unsigned char sendflag)
 				PlaySfxLoc(IS_DOOROPEN, object[v3]._ox, object[v3]._oy);
 			ObjSetMicro(v8, v5, 13);
 			object[v3]._oAnimFrame += 2;
-			object[v3]._oPreFlag = 1;
+			object[v3]._oPreFlag = TRUE;
 			object[v3]._oVar4 = 1;
 			object[v3]._oSelFlag = 2;
 		}
@@ -3024,7 +3015,7 @@ void __fastcall OperateL3RDoor(int pnum, int oi, unsigned char sendflag)
 			object[v3]._oSelFlag = 3;
 			ObjSetMicro(v8, v5, 534);
 			object[v3]._oAnimFrame -= 2;
-			object[v3]._oPreFlag = 0;
+			object[v3]._oPreFlag = FALSE;
 		} else {
 			if (pnum == myplr && sendflag)
 				NetSendCmdParam1(TRUE, CMD_OPENDOOR, oi);
@@ -3032,7 +3023,7 @@ void __fastcall OperateL3RDoor(int pnum, int oi, unsigned char sendflag)
 				PlaySfxLoc(IS_DOOROPEN, object[v3]._ox, object[v3]._oy);
 			ObjSetMicro(v8, v5, 541);
 			object[v3]._oAnimFrame += 2;
-			object[v3]._oPreFlag = 1;
+			object[v3]._oPreFlag = TRUE;
 			object[v3]._oVar4 = 1;
 			object[v3]._oSelFlag = 2;
 		}
@@ -3073,7 +3064,7 @@ void __fastcall OperateL3LDoor(int pnum, int oi, unsigned char sendflag)
 			object[v3]._oSelFlag = 3;
 			ObjSetMicro(v8, v5, 531);
 			object[v3]._oAnimFrame -= 2;
-			object[v3]._oPreFlag = 0;
+			object[v3]._oPreFlag = FALSE;
 		} else {
 			if (pnum == myplr && sendflag)
 				NetSendCmdParam1(TRUE, CMD_OPENDOOR, oi);
@@ -3081,7 +3072,7 @@ void __fastcall OperateL3LDoor(int pnum, int oi, unsigned char sendflag)
 				PlaySfxLoc(IS_DOOROPEN, object[v3]._ox, object[v3]._oy);
 			ObjSetMicro(v8, v5, 538);
 			object[v3]._oAnimFrame += 2;
-			object[v3]._oPreFlag = 1;
+			object[v3]._oPreFlag = TRUE;
 			object[v3]._oVar4 = 1;
 			object[v3]._oSelFlag = 2;
 		}
@@ -3521,7 +3512,7 @@ void __fastcall OperateChest(int pnum, int i, unsigned char sendmsg)
 			}
 		LABEL_25:
 			AddMissile(object[v3]._ox, object[v3]._oy, plr[param1].WorldX, plr[param1].WorldY, v7, v10, 1, -1, 0, 0);
-			object[v3]._oTrapFlag = 0;
+			object[v3]._oTrapFlag = FALSE;
 		LABEL_26:
 			if (param1 == myplr)
 				NetSendCmdParam2(FALSE, CMD_PLROPOBJ, param1, param2);
@@ -3802,12 +3793,12 @@ void __fastcall TryDisarm(int pnum, int i)
 					v8 = 1;
 				if (v8 && dObject[object[v9]._oVar1][object[v9]._oVar2] - 1 == v12) {
 					object[v9]._oVar4 = 1;
-					object[v4]._oTrapFlag = 0;
+					object[v4]._oTrapFlag = FALSE;
 				}
 			}
 			v11 = object[v4]._otype;
 			if (v11 >= OBJ_TCHEST1 && v11 <= OBJ_TCHEST3)
-				object[v4]._oTrapFlag = 0;
+				object[v4]._oTrapFlag = FALSE;
 		}
 	}
 }
@@ -5172,7 +5163,7 @@ void __fastcall BreakBarrel(int pnum, int i, int dam, unsigned char forcebreak, 
 			object[v5]._oSolidFlag = FALSE;
 			object[v5]._oMissFlag = TRUE;
 			object[v5]._oSelFlag = 0;
-			object[v5]._oPreFlag = 1;
+			object[v5]._oPreFlag = TRUE;
 			if (v6) {
 				v8 = object[v5]._ox;
 				v15 = object[v5]._oy;
