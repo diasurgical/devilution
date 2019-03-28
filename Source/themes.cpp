@@ -220,36 +220,22 @@ BOOLEAN __fastcall TFit_GoatShrine(int t)
 
 BOOL __fastcall CheckThemeObj3(int xp, int yp, int t, int f)
 {
-	int i; // edi
+	int i;
 
-	i = 0;
-	while (1) {
-		if (xp + trm3x[i] < 0) {
-			break;
-		}
-		if (yp + trm3y[i] < 0) {
-			break;
-		}
-		if (nSolidTable[dPiece[xp + trm3x[i]][yp + trm3y[i]]]) {
-			break;
-		}
-		if (dung_map[xp + trm3x[i]][yp + trm3y[i]] != themes[t].ttval) {
-			break;
-		}
-		if (dObject[xp + trm3x[i]][yp + trm3y[i]]) {
-			break;
-		}
-		if (f != -1) {
-			if (!random(0, f)) {
-				break;
-			}
-		}
-		++i;
-		if (i >= 9) {
-			return 1;
-		}
+	for (i = 0; i < 9; i++) {
+		if (xp + trm3x[i] < 0 || yp + trm3y[i] < 0)
+			return FALSE;
+		if (nSolidTable[dPiece[xp + trm3x[i]][yp + trm3y[i]]])
+			return FALSE;
+		if (dung_map[xp + trm3x[i]][yp + trm3y[i]] != themes[t].ttval)
+			return FALSE;
+		if (dObject[xp + trm3x[i]][yp + trm3y[i]])
+			return FALSE;
+		if (f != -1 && !random(0, f))
+			return FALSE;
 	}
-	return 0;
+
+	return TRUE;
 }
 
 BOOLEAN __fastcall TFit_Obj3(int t)
@@ -639,16 +625,14 @@ void __cdecl InitThemes()
 // HoldThemeRooms marks theme rooms as populated.
 void __cdecl HoldThemeRooms()
 {
-	int i;
-	int x;
-	int y;
+	int i, x, y;
 
 	if (currlevel != 16) {
 		if (leveltype == DTYPE_CATHEDRAL) {
 			for (i = 0; i < numthemes; i++) {
 				for (y = 0; y < MAXDUNY; y++) {
 					for (x = 0; x < MAXDUNX; x++) {
-						if (dung_map[x][y] == themes[i].ttval) {
+						if (dung_map[x][y] == (char)themes[i].ttval) {
 							dFlags[x][y] |= DFLAG_POPULATED;
 						}
 					}
@@ -667,12 +651,9 @@ void __cdecl HoldThemeRooms()
 //    - f: frequency (1/f likelihood of adding monster).
 void __fastcall PlaceThemeMonsts(int t, int f)
 {
-	int xp;
-	int yp;
-	int mtype;
+	int xp, yp;
 	int scattertypes[111];
-	int numscattypes;
-	int i;
+	int numscattypes, mtype, i;
 
 	numscattypes = 0;
 	for (i = 0; i < nummtypes; i++) {
@@ -699,9 +680,7 @@ void __fastcall PlaceThemeMonsts(int t, int f)
 //    - t: theme number (index into themes array).
 void __fastcall Theme_Barrel(int t)
 {
-	int xp;
-	int yp;
-	int r;
+	int xp, yp, r;
 	char barrnd[4] = { 2, 6, 4, 8 };
 	char monstrnd[4] = { 5, 7, 3, 9 };
 
@@ -747,8 +726,7 @@ void __fastcall Theme_Shrine(int t)
 void __fastcall Theme_MonstPit(int t)
 {
 	int r;
-	int ixp;
-	int iyp;
+	int ixp, iyp;
 	char monstrnd[4] = { 6, 7, 3, 9 };
 
 	r = random(0, 100) + 1;
@@ -783,8 +761,7 @@ void __fastcall Theme_MonstPit(int t)
 //    - t: theme number (index into themes array).
 void __fastcall Theme_SkelRoom(int t)
 {
-	int xp;
-	int yp;
+	int xp, yp;
 	char monstrnd[4] = { 6, 7, 3, 9 };
 
 	TFit_SkelRoom(t);
@@ -874,8 +851,7 @@ void __fastcall Theme_Treasure(int t)
 //    - t: theme number (index into themes array).
 void __fastcall Theme_Library(int t)
 {
-	int xp;
-	int yp;
+	int xp, yp;
 	int oi;
 	char librnd[4] = { 1, 2, 2, 5 };
 	char monstrnd[4] = { 5, 7, 3, 9 };
@@ -919,8 +895,7 @@ void __fastcall Theme_Library(int t)
 //    - t: theme number (index into themes array).
 void __fastcall Theme_Torture(int t)
 {
-	int xp;
-	int yp;
+	int xp, yp;
 	char tortrnd[4] = { 6, 8, 3, 8 };
 	char monstrnd[4] = { 6, 8, 3, 9 };
 
@@ -957,8 +932,7 @@ void __fastcall Theme_BloodFountain(int t)
 //    - t: theme number (index into themes array).
 void __fastcall Theme_Decap(int t)
 {
-	int xp;
-	int yp;
+	int xp, yp;
 	char decaprnd[4] = { 6, 8, 3, 8 };
 	char monstrnd[4] = { 6, 8, 3, 9 };
 
@@ -995,8 +969,7 @@ void __fastcall Theme_PurifyingFountain(int t)
 //    - t: theme number (index into themes array).
 void __fastcall Theme_ArmorStand(int t)
 {
-	int xp;
-	int yp;
+	int xp, yp;
 	char armorrnd[4] = { 6, 8, 3, 8 };
 	char monstrnd[4] = { 6, 7, 3, 9 };
 
@@ -1025,8 +998,7 @@ void __fastcall Theme_ArmorStand(int t)
 //    - t: theme number (index into themes array).
 void __fastcall Theme_GoatShrine(int t)
 {
-	int xx;
-	int yy;
+	int xx, yy;
 
 	TFit_GoatShrine(t);
 	AddObject(OBJ_GOATSHRINE, themex, themey);
@@ -1084,8 +1056,7 @@ void __fastcall Theme_TearFountain(int t)
 //    - t: theme number (index into themes array).
 void __fastcall Theme_BrnCross(int t)
 {
-	int xp;
-	int yp;
+	int xp, yp;
 	char monstrnd[4] = { 6, 8, 3, 9 };
 	char bcrossrnd[4] = { 5, 7, 3, 8 };
 
@@ -1110,8 +1081,7 @@ void __fastcall Theme_BrnCross(int t)
 //    - t: theme number (index into themes array).
 void __fastcall Theme_WeaponRack(int t)
 {
-	int xp;
-	int yp;
+	int xp, yp;
 	char weaponrnd[4] = { 6, 8, 5, 8 };
 	char monstrnd[4] = { 6, 7, 3, 9 };
 
@@ -1137,8 +1107,7 @@ void __fastcall Theme_WeaponRack(int t)
 // UpdateL4Trans sets each value of the transparency map to 1.
 void __cdecl UpdateL4Trans()
 {
-	int i;
-	int j;
+	int i, j;
 
 	for (j = 0; j < MAXDUNY; j++) {
 		for (i = 0; i < MAXDUNX; i++) {
@@ -1161,7 +1130,7 @@ void __cdecl CreateThemeRooms()
 	for (i = 0; i < numthemes; i++) {
 		themex = 0;
 		themey = 0;
-		switch (themes[i].ttype) {
+		switch ((char)themes[i].ttype) {
 		case THEME_BARREL:
 			Theme_Barrel(i);
 			break;
