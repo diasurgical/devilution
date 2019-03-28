@@ -527,50 +527,29 @@ void __fastcall InitRndLocBigObj(int min, int max, int objtype)
 
 void __fastcall InitRndLocObj5x5(int min, int max, int objtype)
 {
-	int v3;         // esi
-	int v4;         // edx
-	int v6;         // ebx
-	int v7;         // eax
-	int v9;         // edi
-	int v10;        // esi
-	int v11;        // edx
-	signed int v12; // [esp+Ch] [ebp-14h]
-	int v13;        // [esp+10h] [ebp-10h]
-	int v14;        // [esp+14h] [ebp-Ch]
-	signed int v15; // [esp+18h] [ebp-8h]
-	signed int v16; // [esp+1Ch] [ebp-4h]
+	BOOL exit;
+	int xp, yp, numobjs, i, k, m, n;
 
-	v3 = min;
-	v4 = max - min;
-	v13 = 0;
-	v6 = v3 + random(139, v4);
-	if (v6 > 0) {
-		do {
-			v14 = 0;
-			while (1) {
-				v12 = 1;
-				v7 = random(139, 80);
-				v9 = v7 + 16;
-				v15 = -2;
-				v10 = random(139, 80) + 16;
-				do {
-					v16 = -2;
-					v11 = v15 + v10;
-					do {
-						if (!RndLocOk(v16 + v9, v11))
-							v12 = 0;
-						++v16;
-					} while (v16 <= 2);
-					++v15;
-				} while (v15 <= 2);
-				if (v12)
-					break;
-				if (++v14 > 20000)
-					return;
+	numobjs = min + random(139, max - min);
+	for (i = 0; i < numobjs; i++) {
+		k = 0;
+		for (;;) {
+			exit = TRUE;
+			xp = random(139, 80) + 16;
+			yp = random(139, 80) + 16;
+			for (n = -2; n <= 2; n++) {
+				for (m = -2; m <= 2; m++) {
+					if (!RndLocOk(xp + m, yp + n))
+						exit = FALSE;
+				}
 			}
-			AddObject(objtype, v9, v10);
-			++v13;
-		} while (v13 < v6);
+			if (exit)
+				break;
+			k++;
+			if (k > 20000)
+				return;
+		}
+		AddObject(objtype, xp, yp);
 	}
 }
 
