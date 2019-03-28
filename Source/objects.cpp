@@ -4840,20 +4840,11 @@ LABEL_12:
 
 void __fastcall OperateStoryBook(int pnum, int i)
 {
-	unsigned short v2; // di
-	int v3;            // esi
-	int v4;            // ST04_4
-	int v5;            // edx
-
-	v2 = i;
-	v3 = i;
 	if (object[i]._oSelFlag && !deltaload && !qtextflag && pnum == myplr) {
-		v4 = object[v3]._oy;
-		v5 = object[v3]._ox;
-		object[v3]._oAnimFrame = object[v3]._oVar4;
-		PlaySfxLoc(IS_ISCROL, v5, v4);
-		InitQTextMsg(object[v3]._oVar2);
-		NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, v2);
+		object[i]._oAnimFrame = object[i]._oVar4;
+		PlaySfxLoc(IS_ISCROL, object[i]._ox, object[i]._oy);
+		InitQTextMsg(object[i]._oVar2);
+		NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, i);
 	}
 }
 // 646D00: using guessed type char qtextflag;
