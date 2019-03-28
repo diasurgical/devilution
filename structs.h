@@ -662,9 +662,9 @@ typedef struct ObjectStruct {
 	BOOL _oSolidFlag;
 	BOOL _oMissFlag;
 	char _oSelFlag; // check
-	int _oPreFlag;
-	int _oTrapFlag;
-	int _oDoorFlag;
+	BOOL _oPreFlag;
+	BOOL _oTrapFlag;
+	BOOL _oDoorFlag;
 	int _olid;
 	int _oRndSeed;
 	int _oVar1;
