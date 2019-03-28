@@ -4,23 +4,23 @@
 
 int light_table_index; // weak
 int screen_y_times_768[1024];
-unsigned int sgdwCursWdtOld; // idb
-int sgdwCursX;               // idb
-int sgdwCursY;               // idb
+DWORD sgdwCursWdtOld; // idb
+DWORD sgdwCursX;               // idb
+DWORD sgdwCursY;               // idb
 unsigned char *gpBufEnd;     // weak
-int sgdwCursHgt;
+DWORD sgdwCursHgt;
 DWORD level_cel_block; // weak
-int sgdwCursXOld;      // idb
-int sgdwCursYOld;      // idb
+DWORD sgdwCursXOld;      // idb
+DWORD sgdwCursYOld;      // idb
 char arch_draw_type;   // weak
 DDSURFACEDESC DDS_desc;
 int cel_transparency_active; // weak
 int level_piece_id;          // weak
-int sgdwCursWdt;
+DWORD sgdwCursWdt;
 void (__fastcall *DrawPlrProc)(int, int, int, int, int, BYTE *, int, int, int, int);
-char sgSaveBack[8192];
+BYTE sgSaveBack[8192];
 int draw_monster_num; // weak
-int sgdwCursHgtOld;   // idb
+DWORD sgdwCursHgtOld;   // idb
 
 /* data */
 
@@ -2348,21 +2348,24 @@ void __cdecl EnableFrameCount()
 
 void __fastcall scrollrt_draw_game_screen(BOOL draw_cursor)
 {
-	int dwHgt; // edi
+	int hgt;
 
-	if (drawpanflag == 255) {
+	if(drawpanflag == 255) {
 		drawpanflag = 0;
-		dwHgt = 480;
+		hgt = 480;
 	} else {
-		dwHgt = 0;
+		hgt = 0;
 	}
-	if (draw_cursor) {
+
+	if(draw_cursor) {
 		j_lock_buf_priv(0);
 		scrollrt_draw_cursor_item();
 		j_unlock_buf_priv(0);
 	}
-	DrawMain(dwHgt, 0, 0, 0, 0, 0);
-	if (draw_cursor) {
+
+	DrawMain(hgt, 0, 0, 0, 0, 0);
+
+	if(draw_cursor) {
 		j_lock_buf_priv(0);
 		scrollrt_draw_cursor_back_buffer();
 		j_unlock_buf_priv(0);
@@ -2372,122 +2375,99 @@ void __fastcall scrollrt_draw_game_screen(BOOL draw_cursor)
 
 void __cdecl scrollrt_draw_cursor_back_buffer()
 {
-	int v0;   // edx
-	int v1;   // eax
-	char *v2; // edi
-	char *v3; // esi
-	int v4;   // ecx
-	int v5;   // ebx
+	int i;
+	BYTE *src, *dst;
 
-	v0 = sgdwCursWdt;
-	if (sgdwCursWdt) {
-		v1 = sgdwCursY;
-		v2 = sgSaveBack;
-		v3 = (char *)&gpBuffer[SCREENXY(sgdwCursX, sgdwCursY)];
-		v4 = sgdwCursHgt;
-		if (sgdwCursHgt) {
-			v5 = sgdwCursHgt;
-			do {
-				memcpy(v3, v2, v0);
-				v0 = sgdwCursWdt;
-				v2 += sgdwCursWdt;
-				v3 += 768;
-				--v5;
-			} while (v5);
-			v1 = sgdwCursY;
-			v4 = sgdwCursHgt;
-		}
-		sgdwCursWdt = 0;
-		sgdwCursXOld = sgdwCursX;
-		sgdwCursYOld = v1;
-		sgdwCursWdtOld = v0;
-		sgdwCursHgtOld = v4;
+	if(sgdwCursWdt == 0) {
+		return;
 	}
+
+	/// ASSERT: assert(gpBuffer);
+	src = sgSaveBack;
+	dst = &gpBuffer[SCREENXY(sgdwCursX, sgdwCursY)];
+
+	for(i = sgdwCursHgt; i != 0; i--, src += sgdwCursWdt, dst += 768) {
+		memcpy(dst, src, sgdwCursWdt);
+	}
+
+	sgdwCursXOld = sgdwCursX;
+	sgdwCursYOld = sgdwCursY;
+	sgdwCursWdtOld = sgdwCursWdt;
+	sgdwCursHgtOld = sgdwCursHgt;
+	sgdwCursWdt = 0;
 }
 
 void __cdecl scrollrt_draw_cursor_item()
 {
-	int v0;            // ebp
-	int v1;            // edx
-	int v2;            // edi
-	int v3;            // esi
-	unsigned int v4;   // eax
-	unsigned int v5;   // eax
-	int v6;            // eax
-	char *v7;          // ebx
-	int v8;            // ebp
-	int v9;            // edi
-	int v10;           // esi
-	signed int colour; // ebx
-	int v12;           // edi
-	int v13;           // edx
-	char *v14;         // [esp+10h] [ebp-4h]
+	int i, mx, my, col;
+	BYTE *src, *dst;
 
-	if (pcurs > 0) {
-		v0 = cursW;
-		if (cursW) {
-			v1 = cursH;
-			if (cursH) {
-				v2 = MouseX - 1;
-				if (MouseX - 1 >= 0) {
-					if (v2 > 639)
-						return;
-				} else {
-					v2 = 0;
-				}
-				v3 = MouseY - 1;
-				if (MouseY - 1 >= 0) {
-					if (v3 > 479)
-						return;
-				} else {
-					v3 = 0;
-				}
-				v4 = v2 + cursW + 1;
-				if (v4 > 0x27F)
-					v4 = 639;
-				_LOBYTE(v4) = v4 | 3;
-				sgdwCursY = v3;
-				sgdwCursX = v2 & 0xFFFFFFFC;
-				sgdwCursWdt = v4 - (v2 & 0xFFFFFFFC) + 1;
-				v5 = cursH + v3 + 1;
-				if (v5 > 0x1DF)
-					v5 = 479;
-				v14 = sgSaveBack;
-				v6 = 1 - v3 + v5;
-				sgdwCursHgt = v6;
-				v7 = (char *)&gpBuffer[SCREENXY(v2 & 0xFFFFFFFC, v3)];
-				if (v6) {
-					v8 = v6;
-					do {
-						memcpy(v14, v7, sgdwCursWdt);
-						v14 += sgdwCursWdt;
-						v7 += 768;
-						--v8;
-					} while (v8);
-					v0 = cursW;
-					v1 = cursH;
-				}
-				v9 = v2 + 1;
-				v10 = v3 + 1;
-				gpBufEnd = (unsigned char *)gpBuffer + screen_y_times_768[640] - v0 - 2;
-				if (pcurs < 12) {
-					Cel2DrawHdrOnly(v9 + 64, v1 + v10 + 159, (BYTE *)pCursCels, pcurs, v0, 0, 8);
-				} else {
-					colour = ICOL_WHITE;
-					if (plr[myplr].HoldItem._iMagical != ITEM_QUALITY_NORMAL)
-						colour = ICOL_BLUE;
-					if (!plr[myplr].HoldItem._iStatFlag)
-						colour = ICOL_RED;
-					v12 = v9 + 64;
-					CelDrawHdrClrHL(colour, v12, v1 + v10 + 159, (BYTE *)pCursCels, pcurs, v0, 0, 8);
-					v13 = cursH + v10 + 159;
-					if (colour == ICOL_RED)
-						Cel2DrawHdrLightRed(v12, v13, (BYTE *)pCursCels, pcurs, cursW, 0, 8, 1);
-					else
-						Cel2DrawHdrOnly(v12, v13, (BYTE *)pCursCels, pcurs, cursW, 0, 8);
-				}
-			}
+	/// ASSERT: assert(! sgdwCursWdt);
+
+	if(pcurs <= 0 || cursW == 0 || cursH == 0) {
+		return;
+	}
+
+	mx = MouseX - 1;
+	if(mx < 0) {
+		mx = 0;
+	} else if(mx > 640 - 1) {
+		return;
+	}
+	my = MouseY - 1;
+	if(my < 0) {
+		my = 0;
+	} else if(my > 480 - 1) {
+		return;
+	}
+
+	sgdwCursX = mx;
+	sgdwCursWdt = sgdwCursX + cursW + 1;
+	if(sgdwCursWdt > 640 - 1) {
+		sgdwCursWdt = 640 - 1;
+	}
+	sgdwCursX &= ~3;
+	sgdwCursWdt |= 3;
+	sgdwCursWdt -= sgdwCursX;
+	sgdwCursWdt++;
+
+	sgdwCursY = my;
+	sgdwCursHgt = sgdwCursY + cursH + 1;
+	if(sgdwCursHgt > 480 - 1) {
+		sgdwCursHgt = 480 - 1;
+	}
+	sgdwCursHgt -= sgdwCursY;
+	sgdwCursHgt++;
+
+	/// ASSERT: assert(sgdwCursWdt * sgdwCursHgt < sizeof sgSaveBack);
+	/// ASSERT: assert(gpBuffer);
+	dst = sgSaveBack;
+	src = &gpBuffer[SCREENXY(sgdwCursX, sgdwCursY)];
+
+	for(i = sgdwCursHgt; i != 0; i--, dst += sgdwCursWdt, src += 768) {
+		memcpy(dst, src, sgdwCursWdt);
+	}
+
+	mx++;
+	my++;
+	gpBufEnd = &gpBuffer[screen_y_times_768[640] - cursW - 2];
+
+	if(pcurs >= CURSOR_FIRSTITEM) {
+		col = PAL16_YELLOW + 5;
+		if(plr[myplr].HoldItem._iMagical != 0) {
+			col = PAL16_BLUE + 5;
 		}
+		if(!plr[myplr].HoldItem._iStatFlag) {
+			col = PAL16_RED + 5;
+		}
+		CelDrawHdrClrHL(col, mx + 64, my + cursH + 160 - 1, (BYTE *)pCursCels, pcurs, cursW, 0, 8);
+		if(col != PAL16_RED + 5) {
+			Cel2DrawHdrOnly(mx + 64, my + cursH + 160 - 1, (BYTE *)pCursCels, pcurs, cursW, 0, 8);
+		} else {
+			Cel2DrawHdrLightRed(mx + 64, my + cursH + 160 - 1, (BYTE *)pCursCels, pcurs, cursW, 0, 8, 1);
+		}
+	} else {
+		Cel2DrawHdrOnly(mx + 64, my + cursH + 160 - 1, (BYTE *)pCursCels, pcurs, cursW, 0, 8);
 	}
 }
 // 4B8C9C: using guessed type int cursH;
