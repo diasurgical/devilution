@@ -1435,18 +1435,15 @@ void __fastcall SetMapObjects(unsigned char *pMap, int startx, int starty)
 
 void __fastcall DeleteObject_(int oi, int i)
 {
-	int v2;     // eax
-	BOOLEAN v3; // zf
-	BOOLEAN v4; // sf
+	int ox, oy;
 
-	dObject[object[oi]._ox][object[oi]._oy] = 0;
-	v2 = nobjects - 1;
-	v3 = nobjects == 1;
-	v4 = nobjects - 1 < 0;
-	objectavail[-nobjects + MAXOBJECTS] = oi; /* *(&object[0]._otype - nobjects) = oi; */
-	nobjects = v2;
-	if (!v4 && !v3 && i != v2)
-		objectactive[i] = objectactive[v2];
+	ox = object[oi]._ox;
+	oy = object[oi]._oy;
+	dObject[ox][oy] = 0;
+	objectavail[-nobjects + MAXOBJECTS] = oi;
+	nobjects--;
+	if (nobjects > 0 && i != nobjects)
+		objectactive[i] = objectactive[nobjects];
 }
 
 void __fastcall SetupObject(int i, int x, int y, int ot)
