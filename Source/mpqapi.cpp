@@ -326,7 +326,7 @@ _BLOCKENTRY *__fastcall mpqapi_add_file(const char *pszName, _BLOCKENTRY *pBlk, 
 	return v12;
 }
 
-BOOLEAN __fastcall mpqapi_write_file_contents(const char *pszName, const BYTE *pbData, int dwLen, _BLOCKENTRY *pBlk)
+BOOL __fastcall mpqapi_write_file_contents(const char *pszName, const BYTE *pbData, int dwLen, _BLOCKENTRY *pBlk)
 {
 	const char *v4;              // esi
 	const char *v5;              // eax
