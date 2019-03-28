@@ -442,39 +442,25 @@ BOOL __fastcall RndLocOk(int xp, int yp)
 
 void __fastcall InitRndLocObj(int min, int max, int objtype)
 {
-	int i, numobjs, xp, yp, xpm1, ypm1, xpp1, ypp1;
+	int i, xp, yp, numobjs;
 
-	numobjs = min + random(139, max - min);
-	i = 0;
-	if (numobjs > 0) {
-		for(;;) {
-			do {
-				xp = random(139, 80) + 16;
-				yp = random(139, 80) + 16;
-				xpm1 = xp - 1;
-				ypm1 = yp - 1;
-			} while (!RndLocOk(xp-1, yp-1));
+	numobjs = random(139, max - min) + min;
 
-			if (RndLocOk(xp, ypm1)) {
-				xpp1 = xp + 1;
-				if (RndLocOk(xpp1, ypm1)) {
-					if (RndLocOk(xpm1, yp)) {
-						if (RndLocOk(xp, yp)) {
-							if (RndLocOk(xpp1, yp)) {
-								ypp1 = yp + 1;
-								if (RndLocOk(xpm1, ypp1)) {
-									if (RndLocOk(xp, ypp1)) {
-										if (RndLocOk(xpp1, ypp1)) {
-											AddObject(objtype, xp, yp);
-											if (++i >= numobjs)
-												break;
-										}
-									}
-								}
-							}
-						}
-					}
-				}
+	for (i = 0; i < numobjs; i++) {
+		while (1) {
+			xp = random(139, 80) + 16;
+			yp = random(139, 80) + 16;
+			if (RndLocOk(xp - 1, yp - 1)
+			    && RndLocOk(xp, yp - 1)
+			    && RndLocOk(xp + 1, yp - 1)
+			    && RndLocOk(xp - 1, yp)
+			    && RndLocOk(xp, yp)
+			    && RndLocOk(xp + 1, yp)
+			    && RndLocOk(xp - 1, yp + 1)
+			    && RndLocOk(xp, yp + 1)
+			    && RndLocOk(xp + 1, yp + 1)) {
+				AddObject(objtype, xp, yp);
+				break;
 			}
 		}
 	}
