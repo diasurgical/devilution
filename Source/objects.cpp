@@ -321,12 +321,12 @@ char *shrinestrs[NUM_SHRINETYPE] = {
 	"Glimmering",
 	"Tainted"
 };
-unsigned char shrinemin[NUM_SHRINETYPE] = {
+char shrinemin[NUM_SHRINETYPE] = {
 	1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 	1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 	1, 1, 1, 1, 1, 1
 };
-unsigned char shrinemax[NUM_SHRINETYPE] = {
+char shrinemax[NUM_SHRINETYPE] = {
 	16, 16, 16, 16, 16, 16, 16, 8, 16, 16,
 	16, 16, 16, 16, 16, 16, 16, 16, 16, 16,
 	16, 16, 16, 16, 16, 16
@@ -486,7 +486,7 @@ void __fastcall InitRndLocBigObj(int min, int max, int objtype)
 	numobjs = min + random(140, max - min);
 	i = 0;
 	if (numobjs > 0) {
-		for (;;){
+		for (;;) {
 			do {
 				xp = random(140, 80) + 16;
 				yp = random(140, 80) + 16;
@@ -495,7 +495,7 @@ void __fastcall InitRndLocBigObj(int min, int max, int objtype)
 			} while (!RndLocOk(xpm1, ypm2));
 			if (RndLocOk(xp, ypm2)) {
 				xpp1 = xp + 1;
-				if (RndLocOk(xpp1, ypm2)){
+				if (RndLocOk(xpp1, ypm2)) {
 					ypm1 = yp - 1;
 					if (RndLocOk(xpm1, ypm1)) {
 						if (RndLocOk(xp, ypm1)) {
@@ -1742,7 +1742,7 @@ void __fastcall AddShrine(int i)
 	v3 = 0;
 	object[i]._oPreFlag = 1;
 	do {
-		if (v2 < (char)shrinemin[v3] || v2 > (char)shrinemax[v3]) {
+		if (v2 < shrinemin[v3] || v2 > shrinemax[v3]) {
 			v4 = &slist[v3];
 			*v4 = 0;
 		} else {
@@ -4568,22 +4568,25 @@ void __fastcall OperateArmorStand(int pnum, int i, unsigned char sendmsg)
 
 int __fastcall FindValidShrine(int i)
 {
-	BOOLEAN done; // esi
-	int rv;       // eax
-	BOOLEAN v3;   // zf
-
+	BOOL done;
+	int rv;
 	do {
-		done = 0;
-		do {
+		done = FALSE;
+		while (!done) {
 			rv = random(0, 26);
 			if (currlevel >= shrinemin[rv] && currlevel <= shrinemax[rv] && rv != 8)
-				done = 1;
-		} while (!done);
-		if (gbMaxPlayers == 1)
-			v3 = shrineavail[rv] == 2;
-		else
-			v3 = shrineavail[rv] == 1;
-	} while (v3);
+				done = TRUE;
+		}
+		if (gbMaxPlayers != 1) {
+			if (shrineavail[rv] != 1) {
+				break;
+			}
+		} else {
+			if (shrineavail[rv] != 2) {
+				break;
+			}
+		}
+	} while (1);
 	return rv;
 }
 // 679660: using guessed type char gbMaxPlayers;
