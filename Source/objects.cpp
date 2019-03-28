@@ -576,32 +576,27 @@ void __fastcall InitRndLocObj5x5(int min, int max, int objtype)
 
 void __cdecl ClrAllObjects()
 {
-	int *v0; // eax
-	int v1;  // edx
+	int i;
 
-	v0 = &object[0]._oy;
-	do {
-		*(v0 - 1) = 0;
-		*v0 = 0;
-		v0[3] = 0;
-		v0[4] = 0;
-		v0[5] = 0;
-		v0[6] = 0;
-		v0[7] = 0;
-		v0[10] = 0;
-		v0[20] = 0;
-		v0[21] = 0;
-		v0[22] = 0;
-		v0[23] = 0;
-		v0 += 30;
-	} while ((signed int)v0 < (signed int)&object[MAXOBJECTS]._oy);
-	v1 = 0;
-	memset(objectactive, 0, sizeof(objectactive));
+	for (i = 0; i < MAXOBJECTS; i++) {
+		object[i]._ox = 0;
+		object[i]._oy = 0;
+		object[i]._oAnimData = 0;
+		object[i]._oAnimDelay = 0;
+		object[i]._oAnimCnt = 0;
+		object[i]._oAnimLen = 0;
+		object[i]._oAnimFrame = 0;
+		object[i]._oDelFlag = 0;
+		object[i]._oVar1 = 0;
+		object[i]._oVar2 = 0;
+		object[i]._oVar3 = 0;
+		object[i]._oVar4 = 0;
+	}
 	nobjects = 0;
-	do {
-		objectavail[v1] = v1;
-		++v1;
-	} while (v1 < MAXOBJECTS);
+	for (i = 0; i < MAXOBJECTS; i++) {
+		objectavail[i] = i;
+		objectactive[i] = 0;
+	}
 	trapdir = 0;
 	trapid = 1;
 	leverid = 1;
@@ -814,7 +809,7 @@ BOOL __fastcall WallTrapLocOk(int xp, int yp)
 	if (dFlags[xp][yp] & DFLAG_POPULATED)
 		return FALSE;
 	return TRUE;
-} 
+}
 
 void __cdecl AddL2Torches()
 {
