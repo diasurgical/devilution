@@ -486,7 +486,7 @@ void __fastcall InitRndLocBigObj(int min, int max, int objtype)
 	numobjs = min + random(140, max - min);
 	i = 0;
 	if (numobjs > 0) {
-		for (;;){
+		for (;;) {
 			do {
 				xp = random(140, 80) + 16;
 				yp = random(140, 80) + 16;
@@ -495,7 +495,7 @@ void __fastcall InitRndLocBigObj(int min, int max, int objtype)
 			} while (!RndLocOk(xpm1, ypm2));
 			if (RndLocOk(xp, ypm2)) {
 				xpp1 = xp + 1;
-				if (RndLocOk(xpp1, ypm2)){
+				if (RndLocOk(xpp1, ypm2)) {
 					ypm1 = yp - 1;
 					if (RndLocOk(xpm1, ypm1)) {
 						if (RndLocOk(xp, ypm1)) {
@@ -1729,41 +1729,36 @@ void __fastcall AddBarrel(int i)
 
 void __fastcall AddShrine(int i)
 {
-	int v1;        // esi
-	signed int v2; // edi
-	signed int v3; // eax
-	int *v4;       // ecx
-	BOOLEAN v5;    // zf
-	int v6;        // eax
-	int slist[26]; // [esp+8h] [ebp-68h]
+	int val, j, slist[26];
 
-	v1 = i;
-	v2 = currlevel;
-	v3 = 0;
 	object[i]._oPreFlag = 1;
-	do {
-		if (v2 < (char)shrinemin[v3] || v2 > (char)shrinemax[v3]) {
-			v4 = &slist[v3];
-			*v4 = 0;
+	for (j = 0; j < 26; j++) {
+		if (currlevel < (char)shrinemin[j] || currlevel > (char)shrinemax[j]) {
+			slist[j] = 0;
 		} else {
-			v4 = &slist[v3];
-			*v4 = 1;
+			slist[j] = 1;
 		}
-		if (gbMaxPlayers == 1)
-			v5 = shrineavail[v3] == 2;
-		else
-			v5 = shrineavail[v3] == 1;
-		if (v5)
-			*v4 = 0;
-		++v3;
-	} while (v3 < 26);
-	do {
-		v6 = random(150, 26);
-	} while (!slist[v6]);
-	object[v1]._oVar1 = v6;
+		if (gbMaxPlayers != 1) {
+			if (shrineavail[j] == 1) {
+				slist[j] = 0;
+			}
+		} else {
+			if (shrineavail[j] == 2) {
+				slist[j] = 0;
+			}
+		}
+	}
+	while (1) {
+		val = random(150, 26);
+		if (slist[val]) {
+			break;
+		}
+	}
+
+	object[i]._oVar1 = val;
 	if (random(150, 2)) {
-		object[v1]._oAnimFrame = 12;
-		object[v1]._oAnimLen = 22;
+		object[i]._oAnimFrame = 12;
+		object[i]._oAnimLen = 22;
 	}
 }
 // 679660: using guessed type char gbMaxPlayers;
