@@ -92,34 +92,34 @@ void __cdecl LoadSysPal()
 
 void __fastcall LoadPalette(char *pszFileName)
 {
-	int i;                // eax
-	char PalData[256][3]; // [esp+0h] [ebp-304h]
-	HANDLE pBuf;           // [esp+300h] [ebp-4h]
+	int i;
+	void *pBuf;
+	BYTE PalData[256][3];
+
+	/// ASSERT: assert(pszFileName);
 
 	WOpenFile(pszFileName, &pBuf, 0);
-	WReadFile(pBuf, (char *)PalData, 768);
+	WReadFile(pBuf, (char *)PalData, sizeof(PalData));
 	WCloseFile(pBuf);
 
-	for (i = 0; i < 256; i++) {
-		orig_palette[i].peFlags = 0;
+	for(i = 0; i < 256; i++) {
 		orig_palette[i].peRed = PalData[i][0];
 		orig_palette[i].peGreen = PalData[i][1];
 		orig_palette[i].peBlue = PalData[i][2];
+		orig_palette[i].peFlags = 0;
 	}
 }
 
 void __fastcall LoadRndLvlPal(int l)
 {
-	char *pszPal;     // ecx
-	char szTemp[260]; // [esp+4h] [ebp-104h]
+	char szFileName[MAX_PATH];
 
-	if (l) {
-		sprintf(szTemp, "Levels\\L%iData\\L%i_%i.PAL", l, l, random(0, 4) + 1);
-		pszPal = szTemp;
+	if(l == DTYPE_TOWN) {
+		LoadPalette("Levels\\TownData\\Town.pal");
 	} else {
-		pszPal = "Levels\\TownData\\Town.pal";
+		sprintf(szFileName, "Levels\\L%iData\\L%i_%i.PAL", l, l, random(0, 4) + 1);
+		LoadPalette(szFileName);
 	}
-	LoadPalette(pszPal);
 }
 
 void __cdecl ResetPal()
@@ -165,22 +165,17 @@ void __cdecl palette_update()
 
 void __fastcall ApplyGamma(PALETTEENTRY *dst, PALETTEENTRY *src, int n)
 {
-	PALETTEENTRY *v3; // edi
-	PALETTEENTRY *v4; // esi
-	double v5;        // [esp+18h] [ebp-Ch]
+	int i;
+	double g;
 
-	v3 = src;
-	v4 = dst;
-	v5 = (double)gamma_correction * 0.01;
-	if (n > 0) {
-		do {
-			v4->peRed = pow(v3->peRed * 0.00390625, v5) * 256.0;
-			v4->peGreen = pow(v3->peGreen * 0.00390625, v5) * 256.0;
-			v4->peBlue = pow(v3->peBlue * 0.00390625, v5) * 256.0;
-			++v4;
-			++v3;
-			--n;
-		} while (n);
+	g = gamma_correction / 100.0;
+
+	for(i = 0; i < n; i++) {
+		dst->peRed = pow(src->peRed / 256.0, g) * 256.0;
+		dst->peGreen = pow(src->peGreen / 256.0, g) * 256.0;
+		dst->peBlue = pow(src->peBlue / 256.0, g) * 256.0;
+		dst++;
+		src++;
 	}
 }
 
