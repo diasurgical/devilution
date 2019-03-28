@@ -5,7 +5,7 @@
 int sgdwMpqOffset; // idb
 char mpq_buf[4096];
 _HASHENTRY *sgpHashTbl;
-BOOLEAN save_archive_modified; // weak
+BOOL save_archive_modified; // weak
 _BLOCKENTRY *sgpBlockTbl;
 BOOLEAN save_archive_open; // weak
 
@@ -269,19 +269,16 @@ void __fastcall mpqapi_remove_hash_entries(BOOL(__stdcall *fnGetName)(DWORD, cha
 
 BOOL __fastcall mpqapi_write_file(const char *pszName, const BYTE *pbData, DWORD dwLen)
 {
-	const BYTE *v3;  // edi
-	const char *v4;  // esi
-	_BLOCKENTRY *v5; // eax
+	_BLOCKENTRY *blockEntry;
 
-	v3 = pbData;
-	v4 = pszName;
-	save_archive_modified = 1;
+	save_archive_modified = TRUE;
 	mpqapi_remove_hash_entry(pszName);
-	v5 = mpqapi_add_file(v4, 0, 0);
-	if (mpqapi_write_file_contents(v4, v3, dwLen, v5))
-		return 1;
-	mpqapi_remove_hash_entry(v4);
-	return 0;
+	blockEntry = mpqapi_add_file(pszName, 0, 0);
+	if (!mpqapi_write_file_contents(pszName, pbData, dwLen, blockEntry)) {
+		mpqapi_remove_hash_entry(pszName);
+		return FALSE;
+	}
+	return TRUE;
 }
 // 65AB0C: using guessed type int save_archive_modified;
 
