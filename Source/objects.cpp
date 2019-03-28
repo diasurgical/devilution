@@ -4842,17 +4842,12 @@ void __fastcall OperateStoryBook(int pnum, int i)
 
 void __fastcall OperateLazStand(int pnum, int i)
 {
-	int v2; // eax
-	int v3; // edx
-	int xx; // [esp+4h] [ebp-8h]
-	int yy; // [esp+8h] [ebp-4h]
+	int xx, yy;
 
-	v2 = i;
 	if (object[i]._oSelFlag && !deltaload && !qtextflag && pnum == myplr) {
-		v3 = object[v2]._oy;
-		++object[v2]._oAnimFrame;
-		object[v2]._oSelFlag = 0;
-		GetSuperItemLoc(object[v2]._ox, v3, &xx, &yy);
+		object[i]._oAnimFrame++;
+		object[i]._oSelFlag = 0;
+		GetSuperItemLoc(object[i]._ox, object[i]._oy, &xx, &yy);
 		SpawnQuestItem(33, xx, yy, 0, 0);
 	}
 }
