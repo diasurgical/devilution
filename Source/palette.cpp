@@ -259,25 +259,19 @@ void __fastcall PaletteFadeOut(int fr)
 
 void __cdecl palette_update_caves()
 {
-	BYTE v0;       // cx
-	signed int v1; // esi
-	signed int v2; // eax
-	BYTE v4;       // [esp+6h] [ebp-2h]
-	BYTE v5;
+	int i;
+	PALETTEENTRY col;
 
-	v0 = system_palette[1].peRed;
-	v5 = system_palette[1].peGreen;
-	v4 = system_palette[1].peBlue;
-	v1 = 1;
-	do {
-		v2 = v1++;
-		system_palette[v2].peRed = system_palette[v2 + 1].peRed;
-		system_palette[v2].peGreen = system_palette[v2 + 1].peGreen;
-		system_palette[v2].peBlue = system_palette[v2 + 1].peBlue;
-	} while (v1 < 31);
-	system_palette[v1].peRed = v0;
-	system_palette[v1].peGreen = v5;
-	system_palette[v1].peBlue = v4;
+	col = system_palette[1];
+	for(i = 1; i < 31; i++) {
+		system_palette[i].peRed = system_palette[i + 1].peRed;
+		system_palette[i].peGreen = system_palette[i + 1].peGreen;
+		system_palette[i].peBlue = system_palette[i + 1].peBlue;
+	}
+	system_palette[i].peRed = col.peRed;
+	system_palette[i].peGreen = col.peGreen;
+	system_palette[i].peBlue = col.peBlue;
+
 	palette_update();
 }
 
