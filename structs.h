@@ -217,7 +217,7 @@ typedef struct PlayerStruct {
 	unsigned char _pInvincible;
 	char _pLightRad;
 	unsigned char _pLvlChanging;
-	char _pName[32];
+	char _pName[PLR_NAME_LEN];
 	// plr_class enum value.
 	// TODO: this could very well be `enum plr_class _pClass`
 	// since there are 3 bytes of alingment after this field.
@@ -1061,7 +1061,7 @@ typedef struct TownerStruct {
 	int _tVar2;
 	int _tVar3;
 	int _tVar4;
-	char _tName[32];
+	char _tName[PLR_NAME_LEN];
 	unsigned char *_tNAnim[8];
 	int _tNFrames;
 	unsigned char *_tNData;
@@ -1346,16 +1346,16 @@ typedef struct _SNETVERSIONDATA {
 
 #pragma pack(push, 1)
 typedef struct PkItemStruct {
-	int iSeed;
-	short iCreateInfo;
-	short idx;
-	char bId;
-	char bDur;
-	char bMDur;
-	char bCh;
-	char bMCh;
-	short wValue;
-	int dwBuff;
+	DWORD iSeed;
+	WORD iCreateInfo;
+	WORD idx;
+	BYTE bId;
+	BYTE bDur;
+	BYTE bMDur;
+	BYTE bCh;
+	BYTE bMCh;
+	WORD wValue;
+	DWORD dwBuff;
 } PkItemStruct;
 
 typedef struct PkPlayerStruct {
@@ -1363,19 +1363,19 @@ typedef struct PkPlayerStruct {
 	char destAction;
 	char destParam1;
 	char destParam2;
-	char plrlevel;
-	char px;
-	char py;
-	char targx;
-	char targy;
-	char pName[32];
+	BYTE plrlevel;
+	BYTE px;
+	BYTE py;
+	BYTE targx;
+	BYTE targy;
+	char pName[PLR_NAME_LEN];
 	char pClass;
-	char pBaseStr;
-	char pBaseMag;
-	char pBaseDex;
-	char pBaseVit;
+	BYTE pBaseStr;
+	BYTE pBaseMag;
+	BYTE pBaseDex;
+	BYTE pBaseVit;
 	char pLevel;
-	char pStatPts;
+	BYTE pStatPts;
 	int pExperience;
 	int pGold;
 	int pHPBase;
@@ -1385,9 +1385,9 @@ typedef struct PkPlayerStruct {
 	char pSplLvl[MAX_SPELLS];
 	unsigned __int64 pMemSpells;
 	PkItemStruct InvBody[7];
-	PkItemStruct InvList[40];
-	char InvGrid[40];
-	char _pNumInv;
+	PkItemStruct InvList[NUM_INV_GRID_ELEM];
+	char InvGrid[NUM_INV_GRID_ELEM];
+	BYTE _pNumInv;
 	PkItemStruct SpdList[MAXBELTITEMS];
 	char pTownWarps;
 	char pDungMsgs;
