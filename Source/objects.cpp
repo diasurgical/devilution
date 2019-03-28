@@ -4513,13 +4513,15 @@ int __fastcall FindValidShrine(int i)
 {
 	BOOL done;
 	int rv;
-	do {
+
+	while (1) {
 		done = FALSE;
 		while (!done) {
 			rv = random(0, 26);
 			if (currlevel >= shrinemin[rv] && currlevel <= shrinemax[rv] && rv != 8)
 				done = TRUE;
 		}
+
 		if (gbMaxPlayers != 1) {
 			if (shrineavail[rv] != 1) {
 				break;
@@ -4529,7 +4531,8 @@ int __fastcall FindValidShrine(int i)
 				break;
 			}
 		}
-	} while (1);
+	}
+
 	return rv;
 }
 // 679660: using guessed type char gbMaxPlayers;
