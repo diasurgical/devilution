@@ -321,12 +321,12 @@ char *shrinestrs[NUM_SHRINETYPE] = {
 	"Glimmering",
 	"Tainted"
 };
-unsigned char shrinemin[NUM_SHRINETYPE] = {
+char shrinemin[NUM_SHRINETYPE] = {
 	1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 	1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 	1, 1, 1, 1, 1, 1
 };
-unsigned char shrinemax[NUM_SHRINETYPE] = {
+char shrinemax[NUM_SHRINETYPE] = {
 	16, 16, 16, 16, 16, 16, 16, 8, 16, 16,
 	16, 16, 16, 16, 16, 16, 16, 16, 16, 16,
 	16, 16, 16, 16, 16, 16
@@ -1681,7 +1681,7 @@ void __fastcall AddShrine(int i)
 
 	object[i]._oPreFlag = 1;
 	for (j = 0; j < 26; j++) {
-		if (currlevel < (char)shrinemin[j] || currlevel > (char)shrinemax[j]) {
+		if (currlevel < shrinemin[j] || currlevel > shrinemax[j]) {
 			slist[j] = 0;
 		} else {
 			slist[j] = 1;
@@ -4511,22 +4511,28 @@ void __fastcall OperateArmorStand(int pnum, int i, unsigned char sendmsg)
 
 int __fastcall FindValidShrine(int i)
 {
-	BOOLEAN done; // esi
-	int rv;       // eax
-	BOOLEAN v3;   // zf
+	BOOL done;
+	int rv;
 
-	do {
-		done = 0;
-		do {
+	while (1) {
+		done = FALSE;
+		while (!done) {
 			rv = random(0, 26);
 			if (currlevel >= shrinemin[rv] && currlevel <= shrinemax[rv] && rv != 8)
-				done = 1;
-		} while (!done);
-		if (gbMaxPlayers == 1)
-			v3 = shrineavail[rv] == 2;
-		else
-			v3 = shrineavail[rv] == 1;
-	} while (v3);
+				done = TRUE;
+		}
+
+		if (gbMaxPlayers != 1) {
+			if (shrineavail[rv] != 1) {
+				break;
+			}
+		} else {
+			if (shrineavail[rv] != 2) {
+				break;
+			}
+		}
+	}
+
 	return rv;
 }
 // 679660: using guessed type char gbMaxPlayers;
