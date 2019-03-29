@@ -421,8 +421,6 @@ BOOLEAN __fastcall SpecialThemeFit(int i, int t)
 			}
 		}
 		break;
-	default:
-		return rv;
 	}
 	return rv;
 }

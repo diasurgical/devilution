@@ -417,8 +417,6 @@ void __fastcall diablo_parse_flags(char *args)
 			case 'x':
 				fullscreen = FALSE;
 				break;
-			default:
-				break;
 			}
 #else
 			tolower(*args++);
@@ -1547,8 +1545,6 @@ void __fastcall PressChar(int vkey)
 					StoresCheat();
 				return;
 #endif
-			default:
-				return;
 			}
 		}
 	}

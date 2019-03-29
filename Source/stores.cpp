@@ -1920,8 +1920,6 @@ void __fastcall StartStore(char s)
 		case STORE_BARMAID:
 			S_StartBarMaid();
 			break;
-		default:
-			break;
 		}
 
 		for (i = 0; i < 24; i++) {
@@ -2072,8 +2070,6 @@ void __cdecl STextESC()
 		case STORE_IDSHOW:
 			StartStore(STORE_SIDENTIFY);
 			break;
-		default:
-			return;
 		}
 	}
 }
@@ -3645,8 +3641,6 @@ void __cdecl STextEnter()
 		case STORE_BARMAID:
 			S_BarmaidEnter();
 			break;
-		default:
-			return;
 		}
 	}
 }

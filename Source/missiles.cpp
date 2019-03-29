@@ -409,8 +409,6 @@ void __fastcall GetDamageAmt(int i, int *mind, int *maxd)
 	LABEL_74:
 		*v16 = v5;
 		break;
-	default:
-		return;
 	}
 }
 
