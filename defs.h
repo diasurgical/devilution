@@ -85,6 +85,14 @@
 
 #define SCREENXY(x, y)	((x) + 64 + (((y) + 160) * 768))
 
+#define MemFreeDbg(p)	\
+{						\
+	void *p__p;			\
+	p__p = p;			\
+	p = NULL;			\
+	mem_free_dbg(p__p);	\
+}
+
 #ifndef INVALID_FILE_ATTRIBUTES
 #define INVALID_FILE_ATTRIBUTES ((DWORD)-1)
 #endif

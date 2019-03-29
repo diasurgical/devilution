@@ -66,25 +66,13 @@ char *spszMsgKeyTbl[4] = { "F9", "F10", "F11", "F12" }; // weak
 
 void __cdecl FreeGameMem()
 {
-	void *p;
-
 	music_stop();
 
-	p = pDungeonCels; /* todo: macro */
-	pDungeonCels = NULL;
-	mem_free_dbg(p);
-	p = pMegaTiles;
-	pMegaTiles = NULL;
-	mem_free_dbg(p);
-	p = pLevelPieces;
-	pLevelPieces = NULL;
-	mem_free_dbg(p);
-	p = level_special_cel;
-	level_special_cel = NULL;
-	mem_free_dbg(p);
-	p = pSpeedCels;
-	pSpeedCels = NULL;
-	mem_free_dbg(p);
+	MemFreeDbg(pDungeonCels);
+	MemFreeDbg(pMegaTiles);
+	MemFreeDbg(pLevelPieces);
+	MemFreeDbg(level_special_cel);
+	MemFreeDbg(pSpeedCels);
 
 	FreeMissiles();
 	FreeMonsters();
