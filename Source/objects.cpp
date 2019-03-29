@@ -1739,15 +1739,10 @@ void __fastcall AddVilebook(int i)
 
 void __fastcall AddMagicCircle(int i)
 {
-	int v1; // esi
-	int v2; // eax
-
-	v1 = i;
-	v2 = GetRndSeed();
-	object[v1]._oVar6 = 0;
-	object[v1]._oRndSeed = v2;
-	object[v1]._oPreFlag = TRUE;
-	object[v1]._oVar5 = 1;
+	object[i]._oRndSeed = GetRndSeed();
+	object[i]._oPreFlag = TRUE;
+	object[i]._oVar5 = 1;
+	object[i]._oVar6 = 0;
 }
 
 void __fastcall AddBookstand(int i)
