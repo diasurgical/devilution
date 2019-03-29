@@ -3,7 +3,7 @@
 #include "../types.h"
 
 char L5dungeon[80][80];
-char mydflags[40][40];
+char mydflags[DMAXX][DMAXY];
 int setloadflag; // weak
 int HR1;
 int HR2;
@@ -449,8 +449,6 @@ void __fastcall DRLG_L5(int entry)
 	case 3:
 	case 4:
 		minarea = 761;
-		break;
-	default:
 		break;
 	}
 
@@ -1196,8 +1194,6 @@ void __fastcall L5HorizWall(int i, int j, char p, int dx)
 		if (p == 4)
 			p = 27;
 		break;
-	default:
-		break;
 	}
 
 	if (random(0, 6) == 5)
@@ -1246,8 +1242,6 @@ void __fastcall L5VertWall(int i, int j, char p, int dy)
 			p = 35;
 		if (p == 4)
 			p = 37;
-		break;
-	default:
 		break;
 	}
 

@@ -1662,8 +1662,6 @@ void __cdecl CheckBtnUp()
 					case PANBTN_FRIENDLY:
 						FriendlyMode = FriendlyMode == 0;
 						break;
-					default:
-						break;
 					}
 				}
 			}

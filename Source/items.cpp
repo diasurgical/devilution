@@ -2310,8 +2310,6 @@ void __fastcall SaveItemPower(int i, int power, int param1, int param2, int minv
 	LABEL_62:
 		*v12 -= v10;
 		break;
-	default:
-		break;
 	}
 	v43 = v8;
 	if (item[v43]._iVAdd1 || item[v43]._iVMult1) {
@@ -2459,8 +2457,6 @@ void __fastcall GetItemBonus(int i, int idata, int minlvl, int maxlvl, int onlyg
 		case ITYPE_AMULET:
 			GetItemPower(i, minlvl, maxlvl, 1, onlygood);
 			break;
-		default:
-			return;
 		}
 	}
 }

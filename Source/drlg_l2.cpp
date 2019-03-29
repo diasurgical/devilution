@@ -393,7 +393,7 @@ void __fastcall LoadL2Dungeon(char *sFileName, int vx, int vy)
 		for(i = 0; i < rw; i++) {
 			if(*lm != 0) {
 				dungeon[i][j] = *lm;
-				dflags[i][j] |= 0x80;
+				dflags[i][j] |= DFLAG_EXPLORED;
 			} else {
 				dungeon[i][j] = 3;
 			}
@@ -567,7 +567,7 @@ void __fastcall LoadPreL2Dungeon(char *sFileName, int vx, int vy)
 		for(i = 0; i < rw; i++) {
 			if(*lm != 0) {
 				dungeon[i][j] = *lm;
-				dflags[i][j] |= 0x80;
+				dflags[i][j] |= DFLAG_EXPLORED;
 			} else {
 				dungeon[i][j] = 3;
 			}
@@ -2094,8 +2094,6 @@ void __fastcall DoPatternCheck(int i, int j)
 					LABEL_25:
 						if (v7)
 							goto LABEL_26;
-						break;
-					default:
 						break;
 					}
 				}

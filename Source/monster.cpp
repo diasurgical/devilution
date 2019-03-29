@@ -5850,8 +5850,6 @@ void __cdecl ProcessMonsters()
 			LABEL_48:
 				v25 = v19;
 				break;
-			default:
-				break;
 			}
 			if (!v25)
 				break;

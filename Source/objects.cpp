@@ -2006,8 +2006,6 @@ void __fastcall AddObject(int ot, int ox, int oy)
 		case OBJ_WEAPONRACK:
 			AddWeaponRack(v6);
 			break;
-		default:
-			break;
 		}
 		v7 = v6;
 		v8 = object[v7]._oAnimWidth - 64;
@@ -4879,8 +4877,6 @@ void __fastcall OperateObject(int pnum, int i, BOOL TeleFlag)
 	case OBJ_SIGNCHEST:
 		OperateInnSignChest(v3, i);
 		break;
-	default:
-		return;
 	}
 }
 
@@ -5039,8 +5035,6 @@ void __fastcall SyncOpObject(int pnum, int cmd, int i)
 	case OBJ_SIGNCHEST:
 		OperateInnSignChest(pnum, i);
 		break;
-	default:
-		return;
 	}
 }
 
@@ -5613,8 +5607,6 @@ void __fastcall GetObjectStr(int i)
 		break;
 	case OBJ_SLAINHERO:
 		strcpy(infostr, "Slain Hero");
-		break;
-	default:
 		break;
 	}
 	if (plr[myplr]._pClass == PC_ROGUE) {
