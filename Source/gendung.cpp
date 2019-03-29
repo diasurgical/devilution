@@ -686,27 +686,16 @@ void __cdecl DRLG_InitSetPC()
 
 void __cdecl DRLG_SetPC()
 {
-	int v0;   // ebx
-	int v1;   // edx
-	int v2;   // ecx
-	int v3;   // esi
-	int i;    // eax
-	int v5;   // ebp
-	char *v6; // edi
+	int i, j, x, y, w, h;
 
-	v0 = 0;
-	v1 = 2 * setpc_w;
-	v2 = 2 * setpc_h;
-	v3 = 2 * setpc_x + 16;
-	for (i = 2 * setpc_y + 16; v0 < v2; ++v0) {
-		if (v1 > 0) {
-			v5 = v1;
-			v6 = &dFlags[v3][v0 + i];
-			do {
-				*v6 |= DFLAG_POPULATED;
-				v6 += 112;
-				--v5;
-			} while (v5);
+	w = 2 * setpc_w;
+	h = 2 * setpc_h;
+	x = 2 * setpc_x + 16;
+	y = 2 * setpc_y + 16;
+
+	for(j = 0; j < h; j++) {
+		for(i = 0; i < w; i++) {
+			dFlags[i + x][j + y] |= 8;
 		}
 	}
 }
@@ -715,151 +704,102 @@ void __cdecl DRLG_SetPC()
 
 void __fastcall Make_SetPC(int x, int y, int w, int h)
 {
-	int v4;   // eax
-	int v5;   // esi
-	int v6;   // ebx
-	int i;    // eax
-	int v8;   // edx
-	char *v9; // ecx
-	int wa;   // [esp+14h] [ebp+8h]
+	int i, j, dx, dy, dh, dw;
 
-	v4 = w;
-	wa = 0;
-	v5 = 2 * v4;
-	v6 = 2 * x + 16;
-	for (i = 2 * y + 16; wa < 2 * h; ++wa) {
-		if (v5 > 0) {
-			v8 = v5;
-			v9 = &dFlags[v6][wa + i];
-			do {
-				*v9 |= DFLAG_POPULATED;
-				v9 += 112;
-				--v8;
-			} while (v8);
+	dw = 2 * w;
+	dh = 2 * h;
+	dx = 2 * x + 16;
+	dy = 2 * y + 16;
+
+	for(j = 0; j < dh; j++) {
+		for(i = 0; i < dw; i++) {
+			dFlags[i + dx][j + dy] |= 8;
 		}
 	}
 }
 
-BOOLEAN __fastcall DRLG_WillThemeRoomFit(int floor, int x, int y, int minSize, int maxSize, int *width, int *height)
+BOOL __fastcall DRLG_WillThemeRoomFit(int floor, int x, int y, int minSize, int maxSize, int *width, int *height)
 {
-	int v7;             // esi
-	int v8;             // edi
-	int v10;            // ebx
-	int v11;            // edx
-	unsigned char *v12; // eax
-	int v13;            // eax
-	int i;              // eax
-	int v15;            // eax
-	int v16;            // esi
-	int v17;            // eax
-	int v18;            // edx
-	int v19;            // ecx
-	int v21;            // eax
-	int v22;            // esi
-	int yArray[20];     // [esp+8h] [ebp-BCh]
-	int xArray[20];     // [esp+58h] [ebp-6Ch]
-	int v25;            // [esp+A8h] [ebp-1Ch]
-	int v26;            // [esp+ACh] [ebp-18h]
-	int v27;            // [esp+B0h] [ebp-14h]
-	int v28;            // [esp+B4h] [ebp-10h]
-	char *v29;          // [esp+B8h] [ebp-Ch]
-	int v30;            // [esp+BCh] [ebp-8h]
-	int v31;            // [esp+C0h] [ebp-4h]
+	int ii, xx, yy;
+	int xSmallest, ySmallest;
+	int xArray[20], yArray[20];
+	int xCount, yCount;
+	BOOL yFlag, xFlag;
 
-	v28 = 1;
-	v27 = 1;
-	v7 = x;
-	v8 = 0;
-	v25 = floor;
-	v31 = 0;
-	v30 = 0;
-	if (x > 40 - maxSize && y > 40 - maxSize)
-		return 0;
-	if (!SkipThemeRoom(x, y))
-		return 0;
+	yFlag = TRUE;
+	xFlag = TRUE;
+	xCount = 0;
+	yCount = 0;
+
+	if(x > DMAXX - maxSize && y > DMAXY - maxSize) {
+		return FALSE;
+	}
+	if(!SkipThemeRoom(x, y)) {
+		return FALSE;
+	}
+
 	memset(xArray, 0, sizeof(xArray));
 	memset(yArray, 0, sizeof(yArray));
-	if (maxSize > 0) {
-		v10 = 40 * v7;
-		v26 = 40 * v7;
-		v29 = dungeon[v7];
-		do {
-			if (v27) {
-				v11 = v7;
-				if (v7 < v7 + maxSize) {
-					v12 = (unsigned char *)dungeon + v8 + v10 + y;
-					do {
-						if (*v12 == v25) {
-							++v31;
-						} else {
-							if (v11 >= minSize)
-								break;
-							v27 = 0;
-						}
-						++v11;
-						v12 += 40;
-					} while (v11 < v7 + maxSize);
-					v10 = v26;
-				}
-				if (v27) {
-					v13 = v31;
-					v31 = 0;
-					xArray[v8] = v13;
-				}
-			}
-			if (v28) {
-				for (i = y; i < y + maxSize; ++i) {
-					if ((unsigned char)v29[i] == v25) {
-						++v30;
-					} else {
-						if (i >= minSize)
-							break;
-						v28 = 0;
+
+	for(ii = 0; ii < maxSize; ii++) {
+		if(xFlag) {
+			for(xx = x; xx < x + maxSize; xx++) {
+				if((unsigned char)dungeon[xx][y + ii] != floor) {
+					if(xx >= minSize) {
+						break;
 					}
-				}
-				if (v28) {
-					v15 = v30;
-					v30 = 0;
-					yArray[v8] = v15;
+					xFlag = FALSE;
+				} else {
+					xCount++;
 				}
 			}
-			v29 += 40;
-			++v8;
-		} while (v8 < maxSize);
-		v8 = 0;
-	}
-	v16 = minSize;
-	v17 = 0;
-	if (minSize > 0) {
-		while (xArray[v17] >= minSize && yArray[v17] >= minSize) {
-			if (++v17 >= minSize)
-				goto LABEL_32;
+			if(xFlag) {
+				xArray[ii] = xCount;
+				xCount = 0;
+			}
 		}
-		return 0;
-	}
-LABEL_32:
-	v18 = xArray[0];
-	v19 = yArray[0];
-	if (maxSize > 0) {
-		while (1) {
-			v21 = xArray[v8];
-			if (v21 < v16)
-				break;
-			v22 = yArray[v8];
-			if (v22 < minSize)
-				break;
-			if (v21 < v18)
-				v18 = xArray[v8];
-			if (v22 < v19)
-				v19 = yArray[v8];
-			if (++v8 >= maxSize)
-				break;
-			v16 = minSize;
+		if(yFlag) {
+			for(yy = y; yy < y + maxSize; yy++) {
+				if((unsigned char)dungeon[x + ii][yy] != floor) {
+					if(yy >= minSize) {
+						break;
+					}
+					yFlag = FALSE;
+				} else {
+					yCount++;
+				}
+			}
+			if(yFlag) {
+				yArray[ii] = yCount;
+				yCount = 0;
+			}
 		}
 	}
-	*width = v18 - 2;
-	*height = v19 - 2;
-	return 1;
+
+	for(ii = 0; ii < minSize; ii++) {
+		if(xArray[ii] < minSize || yArray[ii] < minSize) {
+			return FALSE;
+		}
+	}
+
+	xSmallest = xArray[0];
+	ySmallest = yArray[0];
+
+	for(ii = 0; ii < maxSize; ii++) {
+		if(xArray[ii] < minSize || yArray[ii] < minSize) {
+			break;
+		}
+		if(xArray[ii] < xSmallest) {
+			xSmallest = xArray[ii];
+		}
+		if(yArray[ii] < ySmallest) {
+			ySmallest = yArray[ii];
+		}
+	}
+
+	*width = xSmallest - 2;
+	*height = ySmallest - 2;
+	return TRUE;
 }
 // 41965B: using guessed type int var_6C[20];
 // 41965B: using guessed type int var_BC[20];
@@ -1189,7 +1129,7 @@ void __cdecl DRLG_HoldThemeRooms()
 	}
 }
 
-BOOLEAN __fastcall SkipThemeRoom(int x, int y)
+BOOL __fastcall SkipThemeRoom(int x, int y)
 {
 	int i;         // ebx
 	THEME_LOC *v3; // eax
