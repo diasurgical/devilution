@@ -1543,7 +1543,7 @@ void __fastcall FreeMissileGFX(int mi)
 	if (misfiledata[mi].mFlags & MFLAG_ALLOW_SPECIAL) {
 		if (misfiledata[mi].mAnimData[0]) {
 			pFrameTable = (DWORD *)misfiledata[mi].mAnimData[0];
-			mem_free_dbg(&pFrameTable[-misfiledata[mi].mAnimFAmt]);
+			mem_free_dbg(&pFrameTable[-misfiledata[mi].mAnimFAmt]); // TODO find a cleaner way to access the offeset
 			misfiledata[mi].mAnimData[0] = NULL;
 		}
 		return;
