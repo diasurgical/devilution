@@ -134,28 +134,32 @@ void __cdecl DRLG_Init_Globals()
 void __fastcall LoadL1Dungeon(char *sFileName, int vx, int vy)
 {
 	int i, j, rw, rh;
-	unsigned char *pLevelMap;
-	unsigned char *lm;
+	BYTE *pLevelMap, *lm;
 
 	dminx = 16;
 	dminy = 16;
 	dmaxx = 96;
 	dmaxy = 96;
+
 	DRLG_InitTrans();
 	pLevelMap = LoadFileInMem(sFileName, 0);
-	for (j = 0; j < 40; j++) {
-		for (i = 0; i < 40; i++) {
+
+	for(j = 0; j < DMAXY; j++) {
+		for(i = 0; i < DMAXX; i++) {
 			dungeon[i][j] = 22;
 			mydflags[i][j] = 0;
 		}
 	}
-	rw = pLevelMap[0];
-	lm = pLevelMap + 2;
-	rh = lm[0];
+
+	lm = pLevelMap;
+	rw = *lm;
 	lm += 2;
-	for (j = 0; j < rh; j++) {
-		for (i = 0; i < rw; i++) {
-			if (*lm) {
+	rh = *lm;
+	lm += 2;
+
+	for(j = 0; j < rh; j++) {
+		for(i = 0; i < rw; i++) {
+			if(*lm != 0) {
 				dungeon[i][j] = *lm;
 				mydflags[i][j] |= 0x80;
 			} else {
@@ -164,6 +168,7 @@ void __fastcall LoadL1Dungeon(char *sFileName, int vx, int vy)
 			lm += 2;
 		}
 	}
+
 	DRLG_L1Floor();
 	ViewX = vx;
 	ViewY = vy;
@@ -327,76 +332,50 @@ void __cdecl DRLG_InitL1Vals()
 
 void __fastcall LoadPreL1Dungeon(char *sFileName, int vx, int vy)
 {
-	unsigned char *v3; // ebx
-	signed int v4;     // ecx
-	signed int v5;     // eax
-	signed int v6;     // edx
-	int v7;            // esi
-	int v8;            // edi
-	char *v9;          // eax
-	int v10;           // ecx
-	char v11;          // dl
-	signed int v12;    // esi
-	signed int v13;    // eax
-	signed int v14;    // edi
-	int v15;           // [esp+Ch] [ebp-8h]
-	int v16;           // [esp+10h] [ebp-4h]
+	int i, j, rw, rh;
+	BYTE *pLevelMap, *lm;
 
 	dminx = 16;
 	dminy = 16;
 	dmaxx = 96;
 	dmaxy = 96;
-	v3 = LoadFileInMem(sFileName, 0);
-	v4 = 0;
-	do {
-		v5 = v4;
-		v6 = 40;
-		do {
-			mydflags[0][v5] = 0;
-			dungeon[0][v5] = 22;
-			v5 += 40;
-			--v6;
-		} while (v6);
-		++v4;
-	} while (v4 < 40);
-	v16 = 0;
-	v7 = *v3;
-	v8 = v3[2];
-	v9 = (char *)(v3 + 4);
-	if (v8 > 0) {
-		do {
-			if (v7 > 0) {
-				v10 = v16;
-				v15 = v7;
-				do {
-					v11 = *v9;
-					if (*v9) {
-						mydflags[0][v10] |= 0x80u;
-						dungeon[0][v10] = v11;
-					} else {
-						dungeon[0][v10] = 13;
-					}
-					v10 += 40;
-					v9 += 2;
-					--v15;
-				} while (v15);
-			}
-			++v16;
-		} while (v16 < v8);
+
+	pLevelMap = LoadFileInMem(sFileName, 0);
+
+	for(j = 0; j < DMAXY; j++) {
+		for(i = 0; i < DMAXX; i++) {
+			dungeon[i][j] = 22;
+			mydflags[i][j] = 0;
+		}
 	}
+
+	lm = pLevelMap;
+	rw = *lm;
+	lm += 2;
+	rh = *lm;
+	lm += 2;
+
+	for(j = 0; j < rh; j++) {
+		for(i = 0; i < rw; i++) {
+			if(*lm != 0) {
+				dungeon[i][j] = *lm;
+				mydflags[i][j] |= 0x80;
+			} else {
+				dungeon[i][j] = 13;
+			}
+			lm += 2;
+		}
+	}
+
 	DRLG_L1Floor();
-	v12 = 0;
-	do {
-		v13 = v12;
-		v14 = 40;
-		do {
-			pdungeon[0][v13] = dungeon[0][v13];
-			v13 += 40;
-			--v14;
-		} while (v14);
-		++v12;
-	} while (v12 < 40);
-	mem_free_dbg(v3);
+
+	for(j = 0; j < DMAXY; j++) {
+		for(i = 0; i < DMAXX; i++) {
+			pdungeon[i][j] = dungeon[i][j];
+		}
+	}
+
+	mem_free_dbg(pLevelMap);
 }
 // 5CF328: using guessed type int dmaxx;
 // 5CF32C: using guessed type int dmaxy;
