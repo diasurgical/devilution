@@ -285,69 +285,44 @@ void __cdecl DRLG_L1Pass3()
 
 void __cdecl DRLG_InitL1Vals()
 {
-	int v0;        // esi
-	int(*v1)[112]; // edx
-	char *v2;      // ecx
-	int v3;        // eax
-	char v4;       // al
-	char v5;       // [esp-4h] [ebp-18h]
-	signed int v6; // [esp+Ch] [ebp-8h]
-	int(*v7)[112]; // [esp+10h] [ebp-4h]
+	int i, j, pc;
 
-	v0 = 0;
-	v7 = dPiece;
-	do {
-		v1 = v7;
-		v2 = (char *)dArch + v0;
-		v6 = 112;
-		do {
-			v3 = (*v1)[0];
-			if ((*v1)[0] != 12) {
-				if (v3 == 11)
-					goto LABEL_21;
-				if (v3 != 71) {
-					if (v3 == 259) {
-						v5 = 5;
-					LABEL_9:
-						v4 = v5;
-						goto LABEL_22;
-					}
-					if (v3 == 249 || v3 == 325)
-						goto LABEL_21;
-					if (v3 != 321) {
-						if (v3 == 255) {
-							v5 = 4;
-							goto LABEL_9;
-						}
-						if (v3 != 211) {
-							if (v3 == 344)
-								goto LABEL_21;
-							if (v3 != 341) {
-								if (v3 == 331)
-									goto LABEL_21;
-								if (v3 != 418) {
-									if (v3 != 421)
-										goto LABEL_23;
-								LABEL_21:
-									v4 = 2;
-									goto LABEL_22;
-								}
-							}
-						}
-					}
-				}
+	for(j = 0; j < MAXDUNY; j++) {
+		for(i = 0; i < MAXDUNX; i++) {
+			if(dPiece[i][j] == 12) {
+				pc = 1;
+			} else if(dPiece[i][j] == 11) {
+				pc = 2;
+			} else if(dPiece[i][j] == 71) {
+				pc = 1;
+			} else if(dPiece[i][j] == 259) {
+				pc = 5;
+			} else if(dPiece[i][j] == 249) {
+				pc = 2;
+			} else if(dPiece[i][j] == 325) {
+				pc = 2;
+			} else if(dPiece[i][j] == 321) {
+				pc = 1;
+			} else if(dPiece[i][j] == 255) {
+				pc = 4;
+			} else if(dPiece[i][j] == 211) {
+				pc = 1;
+			} else if(dPiece[i][j] == 344) {
+				pc = 2;
+			} else if(dPiece[i][j] == 341) {
+				pc = 1;
+			} else if(dPiece[i][j] == 331) {
+				pc = 2;
+			} else if(dPiece[i][j] == 418) {
+				pc = 1;
+			} else if(dPiece[i][j] == 421) {
+				pc = 2;
+			} else {
+				continue;
 			}
-			v4 = 1;
-		LABEL_22:
-			*v2 = v4;
-		LABEL_23:
-			++v1;
-			v2 += 112;
-			--v6;
-		} while (v6);
-		v7 = (int(*)[112])((char *)v7 + 4);
-		++v0;
-	} while ((signed int)v7 < (signed int)dPiece[1]);
+			dArch[i][j] = pc;
+		}
+	}
 }
 
 void __fastcall LoadPreL1Dungeon(char *sFileName, int vx, int vy)
