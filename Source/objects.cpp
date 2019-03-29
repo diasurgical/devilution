@@ -1761,8 +1761,7 @@ void __fastcall AddPedistal(int i)
 
 void __fastcall AddStoryBook(int i)
 {
-	int bookframe; // eax
-	int v7;        // eax
+	int bookframe;
 
 	SetRndSeed(glSeedTbl[16]);
 	bookframe = random(0, 3);
@@ -1775,9 +1774,8 @@ void __fastcall AddStoryBook(int i)
 	if (currlevel == 12)
 		object[i]._oVar2 = StoryText[bookframe][2];
 	object[i]._oVar3 = ((unsigned int)currlevel >> 2) + 3 * bookframe - 1;
-	v7 = 5 - 2 * bookframe;
-	object[i]._oAnimFrame = v7;
-	object[i]._oVar4 = v7 + 1;
+	object[i]._oAnimFrame = 5 - 2 * bookframe;
+	object[i]._oVar4 = object[i]._oAnimFrame + 1;
 }
 
 void __fastcall AddWeaponRack(int i)
