@@ -88,7 +88,7 @@ void __cdecl dthread_start()
 	sghWorkToDoEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
 	if (!sghWorkToDoEvent) {
 		error_buf = TraceLastError();
-		TermMsg("dthread:1\n%s", error_buf);
+		app_fatal("dthread:1\n%s", error_buf);
 	}
 
 	dthread_running = TRUE;
@@ -96,7 +96,7 @@ void __cdecl dthread_start()
 	sghThread = (HANDLE)_beginthreadex(NULL, 0, dthread_handler, NULL, 0, &glpDThreadId);
 	if (sghThread == INVALID_HANDLE_VALUE) {
 		error_buf = TraceLastError();
-		TermMsg("dthread2:\n%s", error_buf);
+		app_fatal("dthread2:\n%s", error_buf);
 	}
 }
 
@@ -109,7 +109,7 @@ unsigned int __stdcall dthread_handler(void *unused)
 	while (dthread_running) {
 		if (!sgpInfoHead && WaitForSingleObject(sghWorkToDoEvent, 0xFFFFFFFF) == -1) {
 			error_buf = TraceLastError();
-			TermMsg("dthread4:\n%s", error_buf);
+			app_fatal("dthread4:\n%s", error_buf);
 		}
 
 		EnterCriticalSection(&sgMemCrit);
@@ -153,7 +153,7 @@ void __cdecl dthread_cleanup()
 	if (sghThread != INVALID_HANDLE_VALUE && glpDThreadId != GetCurrentThreadId()) {
 		if (WaitForSingleObject(sghThread, 0xFFFFFFFF) == -1) {
 			error_buf = TraceLastError();
-			TermMsg("dthread3:\n(%s)", error_buf);
+			app_fatal("dthread3:\n(%s)", error_buf);
 		}
 		CloseHandle(sghThread);
 		sghThread = INVALID_HANDLE_VALUE;

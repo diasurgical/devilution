@@ -179,7 +179,7 @@ LABEL_2:
 	}
 	v8 = v3 + v2 == sgdwMpqOffset;
 	if (v3 + v2 > sgdwMpqOffset) {
-		TermMsg("MPQ free list error");
+		app_fatal("MPQ free list error");
 		v8 = v3 + v2 == sgdwMpqOffset;
 	}
 	if (v8) {
@@ -204,7 +204,7 @@ _BLOCKENTRY *__fastcall mpqapi_new_block(int *block_index)
 		++v2;
 		++result;
 		if (v2 >= 0x800) {
-			TermMsg("Out of free block entries");
+			app_fatal("Out of free block entries");
 			return 0;
 		}
 	}
@@ -300,7 +300,7 @@ _BLOCKENTRY *__fastcall mpqapi_add_file(const char *pszName, _BLOCKENTRY *pBlk, 
 	v5 = Hash(v3, 1);
 	v11 = Hash(v3, 2);
 	if (mpqapi_get_hash_index(v4, v5, v11, 0) != -1)
-		TermMsg("Hash collision between \"%s\" and existing file\n", v3);
+		app_fatal("Hash collision between \"%s\" and existing file\n", v3);
 	v6 = 2048;
 	v7 = v4 & 0x7FF;
 	while (1) {
@@ -315,7 +315,7 @@ _BLOCKENTRY *__fastcall mpqapi_add_file(const char *pszName, _BLOCKENTRY *pBlk, 
 		}
 	}
 	if (v6 < 0)
-		TermMsg("Out of hash space");
+		app_fatal("Out of hash space");
 	if (!v12)
 		v12 = mpqapi_new_block(&block_index);
 	v9 = v7;

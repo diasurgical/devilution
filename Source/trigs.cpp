@@ -1130,7 +1130,7 @@ void __cdecl CheckTriggers()
 			TWarpFrom = currlevel;
 			StartNewLvl(myplr, v4, 0);
 		} else {
-			TermMsg("Unknown trigger msg");
+			app_fatal("Unknown trigger msg");
 		}
 		goto LABEL_34;
 	}

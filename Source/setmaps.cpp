@@ -75,7 +75,7 @@ int __fastcall ObjIndex(int x, int y)
 		if (object[oi]._ox == x && object[oi]._oy == y)
 			return oi;
 	}
-	TermMsg("ObjIndex: Active object not found at (%d,%d)", x, y);
+	app_fatal("ObjIndex: Active object not found at (%d,%d)", x, y);
 	return -1;
 }
 

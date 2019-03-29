@@ -374,7 +374,7 @@ void __fastcall InitCutscene(unsigned int uMsg)
 		v6 = "Gendata\\Cutstart.pal";
 		goto LABEL_30;
 	default:
-		TermMsg("Unknown progress mode");
+		app_fatal("Unknown progress mode");
 		goto LABEL_33;
 	}
 }

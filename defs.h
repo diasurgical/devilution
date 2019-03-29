@@ -93,6 +93,14 @@
 	mem_free_dbg(p__p);	\
 }
 
+#undef assert
+
+#ifndef _DEBUG
+#define assert(exp) ((void)0)
+#else
+#define assert(exp) (void)( (exp) || (assert_fail(__LINE__, __FILE__, #exp), 0) )
+#endif
+
 #ifndef INVALID_FILE_ATTRIBUTES
 #define INVALID_FILE_ATTRIBUTES ((DWORD)-1)
 #endif

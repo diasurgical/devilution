@@ -2401,7 +2401,7 @@ BYTE *__fastcall LoadFileInMem(char *pszName, int *pdwFileLen)
 		*pdwFileLen = fileLen;
 
 	if (!fileLen)
-		TermMsg("Zero length SFILE:\n%s", pszName);
+		app_fatal("Zero length SFILE:\n%s", pszName);
 
 	buf = (BYTE *)DiabloAllocPtr(fileLen);
 
@@ -2421,11 +2421,11 @@ void __fastcall LoadFileWithMem(char *pszName, void *buf)
 	v2 = (char *)buf;
 	v3 = pszName;
 	if (!buf)
-		TermMsg("LoadFileWithMem(NULL):\n%s", pszName);
+		app_fatal("LoadFileWithMem(NULL):\n%s", pszName);
 	WOpenFile(v3, &a1, 0);
 	v4 = WGetFileSize(a1, 0);
 	if (!v4)
-		TermMsg("Zero length SFILE:\n%s", v3);
+		app_fatal("Zero length SFILE:\n%s", v3);
 	WReadFile(a1, v2, v4);
 	WCloseFile(a1);
 }
