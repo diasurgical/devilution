@@ -1695,12 +1695,13 @@ void __fastcall AddBookcase(int i)
 
 void __fastcall AddPurifyingFountain(int i)
 {
-	char *v1; // eax
+	int ox, oy;
 
-	v1 = &dObject[object[i]._ox][object[i]._oy];
-	*(v1 - 1) = -1 - i;
-	*(v1 - 112) = -1 - i;
-	*(v1 - 113) = -1 - i;
+	ox = object[i]._ox;
+	oy = object[i]._oy;
+	dObject[ox][oy-1] = -1 - i;
+	dObject[ox-1][oy] = -1 - i;
+	dObject[ox-1][oy - 1] = -1 - i;
 	object[i]._oRndSeed = GetRndSeed();
 }
 
