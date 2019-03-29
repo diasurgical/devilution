@@ -1758,26 +1758,11 @@ void __fastcall AddBookstand(int i)
 
 void __fastcall AddPedistal(int i)
 {
-	int v1; // ecx
-	int v2; // eax
-	int v3; // edx
-	int v4; // esi
-	int v5; // esi
-	int v6; // eax
-
-	v1 = i;
-	v2 = setpc_x;
-	v3 = setpc_y;
-	v4 = setpc_w;
-	object[v1]._oVar1 = setpc_x;
-	v5 = v2 + v4;
-	v6 = setpc_h;
-	object[v1]._oVar3 = v5;
-	object[v1]._oVar2 = v3;
-	object[v1]._oVar4 = v3 + v6;
+	object[i]._oVar1 = setpc_x;
+	object[i]._oVar2 = setpc_y;
+	object[i]._oVar3 = setpc_x + setpc_w;
+	object[i]._oVar4 = setpc_y + setpc_h;
 }
-// 5CF330: using guessed type int setpc_h;
-// 5CF334: using guessed type int setpc_w;
 
 void __fastcall AddStoryBook(int i)
 {
