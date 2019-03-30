@@ -5216,29 +5216,18 @@ void __fastcall SyncLever(int i)
 
 void __fastcall SyncQSTLever(int i)
 {
-	int v1;  // esi
-	int v2;  // edx
-	int v3;  // ecx
-	int v4;  // ST04_4
-	char v5; // bl
-	int v6;  // ST00_4
+	int tren;
 
-	v1 = i;
 	if (object[i]._oAnimFrame == object[i]._oVar6) {
-		ObjChangeMapResync(object[v1]._oVar1, object[v1]._oVar2, object[v1]._oVar3, object[v1]._oVar4);
-		if (object[v1]._otype == OBJ_BLINDBOOK) {
-			v2 = object[v1]._oVar2;
-			v3 = object[v1]._oVar1;
-			v4 = object[v1]._oVar4;
-			v5 = TransVal;
-			v6 = object[v1]._oVar3;
+		ObjChangeMapResync(object[i]._oVar1, object[i]._oVar2, object[i]._oVar3, object[i]._oVar4);
+		if (object[i]._otype == OBJ_BLINDBOOK) {
+			tren = TransVal;
 			TransVal = 9;
-			DRLG_MRectTrans(v3, v2, v6, v4);
-			TransVal = v5;
+			DRLG_MRectTrans(object[i]._oVar1, object[i]._oVar2, object[i]._oVar3, object[i]._oVar4);
+			TransVal = tren;
 		}
 	}
 }
-// 5A5590: using guessed type char TransVal;
 
 void __fastcall SyncPedistal(int i)
 {
