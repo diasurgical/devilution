@@ -6,7 +6,7 @@ Status | Platform
 [![CircleCI](https://circleci.com/gh/diasurgical/devilutionX.svg?style=svg)](https://circleci.com/gh/diasurgical/devilutionX) | Linux 32bit & 64bit, Windows 32bit
 [![Build Status](https://travis-ci.org/diasurgical/devilutionX.svg?branch=master)](https://travis-ci.org/diasurgical/devilutionX) | macOS 32bit & 64bit
 
-![Discord Channel](https://avatars3.githubusercontent.com/u/1965106?s=32&v=4) [Discord Chat Channel](https://discord.gg/aQBQdDe)
+![Discord Channel](https://avatars3.githubusercontent.com/u/1965106?s=16&v=4) [Discord Chat Channel](https://discord.gg/aQBQdDe)
 
 # How To Play:
  - Copy diabdat.mpq from your CD, or GoG install folder, to the DevilutionX game directory ; Make sure it is all lowercase.
