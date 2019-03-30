@@ -345,11 +345,12 @@ void __fastcall TraceErrorDD(HRESULT hError, char *pszBuffer, DWORD dwMaxChars)
 	case DDERR_CANNOTATTACHSURFACE:
 		szError = "DDERR_CANNOTATTACHSURFACE";
 		break;
-	default:
+	default: {
 		const char szUnknown[] = "DDERR unknown 0x%x";
 		/// ASSERT: assert(dwMaxChars >= sizeof(szUnknown) + 10);
 		sprintf(pszBuffer, szUnknown, hError);
 		return;
+	}
 	}
 
 	strncpy(pszBuffer, szError, dwMaxChars);
@@ -399,11 +400,12 @@ void __fastcall TraceErrorDS(HRESULT hError, char *pszBuffer, DWORD dwMaxChars)
 	case DSERR_CONTROLUNAVAIL:
 		szError = "DSERR_CONTROLUNAVAIL";
 		break;
-	default:
+	default: {
 		const char szUnknown[] = "DSERR unknown 0x%x";
 		/// ASSERT: assert(dwMaxChars >= sizeof(szUnknown) + 10);
 		sprintf(pszBuffer, szUnknown, hError);
 		return;
+	}
 	}
 
 	strncpy(pszBuffer, szError, dwMaxChars);
