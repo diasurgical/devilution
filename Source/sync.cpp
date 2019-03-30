@@ -231,7 +231,7 @@ int __fastcall SyncData(int pnum, TSyncHeader *packet)
 	v3 = (TSyncMonster *)(&packet->bPInvId + 1);
 	v4 = pnum;
 	if (packet->bCmd != CMD_SYNCDATA)
-		TermMsg("bad sync command");
+		app_fatal("bad sync command");
 	if (gbBufferMsgs != 1 && v4 != myplr) {
 		v5 = v2->wLen;
 		if (v5 >= 5u) {

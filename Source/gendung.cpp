@@ -99,7 +99,7 @@ void __cdecl FillSolidBlockTbls()
 		pSBFile = LoadFileInMem("Levels\\L4Data\\L4.SOL", (int *)&dwTiles);
 		break;
 	default:
-		TermMsg("FillSolidBlockTbls");
+		app_fatal("FillSolidBlockTbls");
 	}
 
 	pTmp = pSBFile;

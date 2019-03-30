@@ -195,7 +195,7 @@ char *__cdecl TraceLastError()
 	return GetErrorStr(GetLastError());
 }
 
-void TermMsg(char *pszFmt, ...)
+void app_fatal(const char *pszFmt, ...)
 {
 	va_list va;
 
@@ -211,7 +211,7 @@ void TermMsg(char *pszFmt, ...)
 	exit(1);
 }
 
-void __fastcall MsgBox(char *pszFmt, va_list va)
+void __fastcall MsgBox(const char *pszFmt, va_list va)
 {
 	char Text[256]; // [esp+0h] [ebp-100h]
 
@@ -251,13 +251,20 @@ void DrawDlg(char *pszFmt, ...)
 	SDrawMessageBox(text, "Diablo", MB_TASKMODAL | MB_ICONEXCLAMATION);
 }
 
+#ifdef _DEBUG
+void __fastcall assert_fail(int nLineNo, const char *pszFile, const char *pszFail)
+{
+	app_fatal("assertion failed (%d:%s)\n%s", nLineNo, pszFile, pszFail);
+}
+#endif
+
 void __fastcall DDErrMsg(DWORD error_code, int log_line_nr, char *log_file_path)
 {
 	char *msg;
 
 	if (error_code) {
 		msg = GetErrorStr(error_code);
-		TermMsg("Direct draw error (%s:%d)\n%s", log_file_path, log_line_nr, msg);
+		app_fatal("Direct draw error (%s:%d)\n%s", log_file_path, log_line_nr, msg);
 	}
 }
 
@@ -267,7 +274,7 @@ void __fastcall DSErrMsg(DWORD error_code, int log_line_nr, char *log_file_path)
 
 	if (error_code) {
 		msg = GetErrorStr(error_code);
-		TermMsg("Direct sound error (%s:%d)\n%s", log_file_path, log_line_nr, msg);
+		app_fatal("Direct sound error (%s:%d)\n%s", log_file_path, log_line_nr, msg);
 	}
 }
 
@@ -287,7 +294,7 @@ void __fastcall center_window(HWND hDlg)
 	ReleaseDC(hDlg, hdc);
 
 	if (!SetWindowPos(hDlg, HWND_TOP, (screenW - w) / 2, (screenH - h) / 2, 0, 0, SWP_NOZORDER | SWP_NOSIZE)) {
-		TermMsg("center_window: %s", TraceLastError());
+		app_fatal("center_window: %s", TraceLastError());
 	}
 }
 
@@ -304,9 +311,9 @@ void __fastcall ErrDlg(int template_id, DWORD error_code, char *log_file_path, i
 
 	wsprintf((LPSTR)dwInitParam, "%s\nat: %s line %d", GetErrorStr(error_code), log_file_path, log_line_nr);
 	if (DialogBoxParam(ghInst, MAKEINTRESOURCE(template_id), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)dwInitParam) == -1)
-		TermMsg("ErrDlg: %d", template_id);
+		app_fatal("ErrDlg: %d", template_id);
 
-	TermMsg(NULL);
+	app_fatal(NULL);
 }
 
 BOOL __stdcall FuncDlg(HWND hDlg, UINT uMsg, WPARAM wParam, char *text)
@@ -358,9 +365,9 @@ void __fastcall FileErrDlg(const char *error)
 		error = "";
 
 	if (DialogBoxParam(ghInst, MAKEINTRESOURCE(IDD_DIALOG3), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)error) == -1)
-		TermMsg("FileErrDlg");
+		app_fatal("FileErrDlg");
 
-	TermMsg(NULL);
+	app_fatal(NULL);
 }
 
 void __fastcall DiskFreeDlg(char *error)
@@ -368,9 +375,9 @@ void __fastcall DiskFreeDlg(char *error)
 	FreeDlg();
 
 	if (DialogBoxParam(ghInst, MAKEINTRESOURCE(IDD_DIALOG7), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)error) == -1)
-		TermMsg("DiskFreeDlg");
+		app_fatal("DiskFreeDlg");
 
-	TermMsg(NULL);
+	app_fatal(NULL);
 }
 
 BOOL __cdecl InsertCDDlg()
@@ -381,7 +388,7 @@ BOOL __cdecl InsertCDDlg()
 
 	nResult = DialogBoxParam(ghInst, MAKEINTRESOURCE(IDD_DIALOG9), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM) "");
 	if (nResult == -1)
-		TermMsg("InsertCDDlg");
+		app_fatal("InsertCDDlg");
 
 	ShowCursor(FALSE);
 
@@ -393,7 +400,7 @@ void __fastcall DirErrorDlg(char *error)
 	FreeDlg();
 
 	if (DialogBoxParam(ghInst, MAKEINTRESOURCE(IDD_DIALOG11), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)error) == -1)
-		TermMsg("DirErrorDlg");
+		app_fatal("DirErrorDlg");
 
-	TermMsg(NULL);
+	app_fatal(NULL);
 }

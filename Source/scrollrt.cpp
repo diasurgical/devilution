@@ -83,13 +83,13 @@ void __fastcall DrawMissile(int x, int y, int sx, int sy, int a5, int a6, BOOL p
 			if(m->_mix == x && m->_miy == y && m->_miPreFlag == pre && m->_miDrawFlag) {
 				pCelBuff = m->_miAnimData;
 				if(!pCelBuff) {
-					// TermMsg("Draw Missile type %d: NULL Cel Buffer", m->_mitype);
+					// app_fatal("Draw Missile type %d: NULL Cel Buffer", m->_mitype);
 					return;
 				}
 				nCel = m->_miAnimFrame;
 				pFrameTable = (DWORD *)pCelBuff;
 				if(nCel < 1 || pFrameTable[0] > 50 || nCel > (int)pFrameTable[0]) {
-					// TermMsg("Draw Missile: frame %d of %d, missile type==%d", nCel, pFrameTable[0], m->_mitype);
+					// app_fatal("Draw Missile: frame %d of %d, missile type==%d", nCel, pFrameTable[0], m->_mitype);
 					return;
 				}
 				mx = sx + m->_mixoff - m->_miAnimWidth2;
@@ -107,13 +107,13 @@ void __fastcall DrawMissile(int x, int y, int sx, int sy, int a5, int a6, BOOL p
 		if(m->_miPreFlag == pre && m->_miDrawFlag) {
 			pCelBuff = m->_miAnimData;
 			if(!pCelBuff) {
-				// TermMsg("Draw Missile 2 type %d: NULL Cel Buffer", m->_mitype);
+				// app_fatal("Draw Missile 2 type %d: NULL Cel Buffer", m->_mitype);
 				return;
 			}
 			nCel = m->_miAnimFrame;
 			pFrameTable = (DWORD *)pCelBuff;
 			if(nCel < 1 || pFrameTable[0] > 50 || nCel > (int)pFrameTable[0]) {
-				// TermMsg("Draw Missile 2: frame %d of %d, missile type==%d", nCel, pFrameTable[0], m->_mitype);
+				// app_fatal("Draw Missile 2: frame %d of %d, missile type==%d", nCel, pFrameTable[0], m->_mitype);
 				return;
 			}
 			mx = sx + m->_mixoff - m->_miAnimWidth2;
@@ -144,13 +144,13 @@ void __fastcall DrawClippedMissile(int x, int y, int sx, int sy, int a5, int a6,
 			if(m->_mix == x && m->_miy == y && m->_miPreFlag == pre && m->_miDrawFlag) {
 				pCelBuff = m->_miAnimData;
 				if(!pCelBuff) {
-					// TermMsg("Draw Missile type %d Clipped: NULL Cel Buffer", m->_mitype);
+					// app_fatal("Draw Missile type %d Clipped: NULL Cel Buffer", m->_mitype);
 					return;
 				}
 				nCel = m->_miAnimFrame;
 				pFrameTable = (DWORD *)pCelBuff;
 				if(nCel < 1 || pFrameTable[0] > 50 || nCel > (int)pFrameTable[0]) {
-					// TermMsg("Draw Clipped Missile: frame %d of %d, missile type==%d", nCel, pFrameTable[0], m->_mitype);
+					// app_fatal("Draw Clipped Missile: frame %d of %d, missile type==%d", nCel, pFrameTable[0], m->_mitype);
 					return;
 				}
 				mx = sx + m->_mixoff - m->_miAnimWidth2;
@@ -168,13 +168,13 @@ void __fastcall DrawClippedMissile(int x, int y, int sx, int sy, int a5, int a6,
 		if(m->_miPreFlag == pre && m->_miDrawFlag) {
 			pCelBuff = m->_miAnimData;
 			if(!pCelBuff) {
-				// TermMsg("Draw Missile 2 type %d Clipped: NULL Cel Buffer", m->_mitype);
+				// app_fatal("Draw Missile 2 type %d Clipped: NULL Cel Buffer", m->_mitype);
 				return;
 			}
 			nCel = m->_miAnimFrame;
 			pFrameTable = (DWORD *)pCelBuff;
 			if(nCel < 1 || pFrameTable[0] > 50 || nCel > (int)pFrameTable[0]) {
-				// TermMsg("Draw Clipped Missile 2: frame %d of %d, missile type==%d", nCel, pFrameTable[0], m->_mitype);
+				// app_fatal("Draw Clipped Missile 2: frame %d of %d, missile type==%d", nCel, pFrameTable[0], m->_mitype);
 				return;
 			}
 			mx = sx + m->_mixoff - m->_miAnimWidth2;
@@ -208,13 +208,13 @@ void __fastcall DrawDeadPlayer(int x, int y, int sx, int sy, int a5, int a6, BOO
 		if(p->plractive && !p->_pHitPoints && p->plrlevel == (unsigned char)currlevel && p->WorldX == x && p->WorldY == y) {
 			pCelBuff = p->_pAnimData;
 			if(!pCelBuff) {
-				// TermMsg("Drawing dead player %d \"%s\": NULL Cel Buffer", i, p->_pName);
+				// app_fatal("Drawing dead player %d \"%s\": NULL Cel Buffer", i, p->_pName);
 				break;
 			}
 			nCel = p->_pAnimFrame;
 			pFrameTable = (DWORD *)pCelBuff;
 			if(nCel < 1 || pFrameTable[0] > 50 || nCel > (int)pFrameTable[0]) {
-				// TermMsg("Drawing dead player %d \"%s\": facing %d, frame %d of %d", i, p->_pName, p->_pdir, nCel, pFrameTable[0]);
+				// app_fatal("Drawing dead player %d \"%s\": facing %d, frame %d of %d", i, p->_pName, p->_pdir, nCel, pFrameTable[0]);
 				break;
 			}
 			dFlags[x][y] |= DFLAG_DEAD_PLAYER;
@@ -232,7 +232,7 @@ void __fastcall DrawPlayer(int pnum, int x, int y, int px, int py, BYTE *pCelBuf
 
 	if(dFlags[x][y] & DFLAG_LIT || plr[myplr]._pInfraFlag || !setlevel && !currlevel) {
 		if(!pCelBuff) {
-			// TermMsg("Drawing player %d \"%s\": NULL Cel Buffer", pnum, plr[pnum]._pName);
+			// app_fatal("Drawing player %d \"%s\": NULL Cel Buffer", pnum, plr[pnum]._pName);
 			return;
 		}
 		pFrameTable = (DWORD *)pCelBuff;
@@ -241,7 +241,7 @@ void __fastcall DrawPlayer(int pnum, int x, int y, int px, int py, BYTE *pCelBuf
 			const char *szMode = "unknown action";
 			if(plr[pnum]._pmode <= 11)
 				szMode = szPlrModeAssert[plr[pnum]._pmode];
-			TermMsg(
+			app_fatal(
 				"Drawing player %d \"%s\" %s: facing %d, frame %d of %d",
 				pnum,
 				plr[pnum]._pName,
@@ -308,7 +308,7 @@ void __fastcall DrawClippedPlayer(int pnum, int x, int y, int px, int py, BYTE *
 
 	if(dFlags[x][y] & DFLAG_LIT || plr[myplr]._pInfraFlag) {
 		if(!pCelBuff) {
-			// TermMsg("Drawing player %d \"%s\" clipped: NULL Cel Buffer", pnum, plr[pnum]._pName);
+			// app_fatal("Drawing player %d \"%s\" clipped: NULL Cel Buffer", pnum, plr[pnum]._pName);
 			return;
 		}
 		pFrameTable = (DWORD *)pCelBuff;
@@ -317,7 +317,7 @@ void __fastcall DrawClippedPlayer(int pnum, int x, int y, int px, int py, BYTE *
 			const char *szMode = "unknown action";
 			if(plr[pnum]._pmode <= 11)
 				szMode = szPlrModeAssert[plr[pnum]._pmode];
-			TermMsg(
+			app_fatal(
 				"Drawing player %d \"%s\" %s clipped: facing %d, frame %d of %d",
 				pnum,
 				plr[pnum]._pName,
@@ -943,13 +943,13 @@ void __fastcall DrawClippedMonster(int x, int y, int mx, int my, int m, int a6, 
 	DWORD *pFrameTable;
 
 	if((DWORD)m >= MAXMONSTERS) {
-		// TermMsg("Draw Monster Clipped: tried to draw illegal monster %d", m);
+		// app_fatal("Draw Monster Clipped: tried to draw illegal monster %d", m);
 		return;
 	}
 
 	pCelBuff = monster[m]._mAnimData;
 	if(!pCelBuff) {
-		// TermMsg("Draw Monster \"%s\" Clipped: NULL Cel Buffer", monster[m].mName);
+		// app_fatal("Draw Monster \"%s\" Clipped: NULL Cel Buffer", monster[m].mName);
 		return;
 	}
 
@@ -960,7 +960,7 @@ void __fastcall DrawClippedMonster(int x, int y, int mx, int my, int m, int a6, 
 		const char *szMode = "unknown action";
 		if(monster[m]._mmode <= 17)
 			szMode = szMonModeAssert[monster[m]._mmode];
-		TermMsg(
+		app_fatal(
 			"Draw Monster \"%s\" %s Clipped: facing %d, frame %d of %d",
 			monster[m].mName,
 			szMode,
@@ -1020,14 +1020,14 @@ void __fastcall DrawClippedObject(int x, int y, int ox, int oy, BOOL pre, int a6
 
 	pCelBuff = object[bv]._oAnimData;
 	if(!pCelBuff) {
-		// TermMsg("Draw Object type %d Clipped: NULL Cel Buffer", object[bv]._otype);
+		// app_fatal("Draw Object type %d Clipped: NULL Cel Buffer", object[bv]._otype);
 		return;
 	}
 
 	nCel = object[bv]._oAnimFrame;
 	pFrameTable = (DWORD *)pCelBuff;
 	if(nCel < 1 || pFrameTable[0] > 50 || nCel > (int)pFrameTable[0]) {
-		// TermMsg("Draw Clipped Object: frame %d of %d, object type==%d", nCel, pFrameTable[0], object[bv]._otype);
+		// app_fatal("Draw Clipped Object: frame %d of %d, object type==%d", nCel, pFrameTable[0], object[bv]._otype);
 		return;
 	}
 
@@ -1908,13 +1908,13 @@ void __fastcall DrawMonster(int x, int y, int mx, int my, int m, int a6, int a7)
 	DWORD *pFrameTable;
 
 	if((DWORD)m >= MAXMONSTERS) {
-		// TermMsg("Draw Monster: tried to draw illegal monster %d", m);
+		// app_fatal("Draw Monster: tried to draw illegal monster %d", m);
 		return;
 	}
 
 	pCelBuff = monster[m]._mAnimData;
 	if(!pCelBuff) {
-		// TermMsg("Draw Monster \"%s\": NULL Cel Buffer", monster[m].mName);
+		// app_fatal("Draw Monster \"%s\": NULL Cel Buffer", monster[m].mName);
 		return;
 	}
 
@@ -1925,7 +1925,7 @@ void __fastcall DrawMonster(int x, int y, int mx, int my, int m, int a6, int a7)
 		const char *szMode = "unknown action";
 		if(monster[m]._mmode <= 17)
 			szMode = szMonModeAssert[monster[m]._mmode];
-		TermMsg(
+		app_fatal(
 			"Draw Monster \"%s\" %s: facing %d, frame %d of %d",
 			monster[m].mName,
 			szMode,
@@ -1985,14 +1985,14 @@ void __fastcall DrawObject(int x, int y, int ox, int oy, BOOL pre, int a6, int d
 
 	pCelBuff = object[bv]._oAnimData;
 	if(!pCelBuff) {
-		// TermMsg("Draw Object type %d: NULL Cel Buffer", object[bv]._otype);
+		// app_fatal("Draw Object type %d: NULL Cel Buffer", object[bv]._otype);
 		return;
 	}
 
 	nCel = object[bv]._oAnimFrame;
 	pFrameTable = (DWORD *)pCelBuff;
 	if(nCel < 1 || pFrameTable[0] > 50 || nCel > (int)pFrameTable[0]) {
-		// TermMsg("Draw Object: frame %d of %d, object type==%d", nCel, pFrameTable[0], object[bv]._otype);
+		// app_fatal("Draw Object: frame %d of %d, object type==%d", nCel, pFrameTable[0], object[bv]._otype);
 		return;
 	}
 

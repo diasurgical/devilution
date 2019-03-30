@@ -1219,7 +1219,7 @@ void __fastcall DeltaImportData(BYTE cmd, DWORD recv_offset)
 		src = DeltaImportObject(src, sgLevels[i].object);
 		DeltaImportMonster(src, sgLevels[i].monster);
 	} else {
-		TermMsg("msg:1");
+		app_fatal("msg:1");
 	}
 
 	sgbDeltaChunks++;
@@ -1486,7 +1486,7 @@ BOOL __fastcall delta_get_item(TCmdGItem *pI, BYTE bLevel)
 					sgbDeltaChanged = 1;
 					return TRUE;
 				} else {
-					TermMsg("delta:1");
+					app_fatal("delta:1");
 				}
 				return result;
 			}
@@ -1629,7 +1629,7 @@ void __fastcall delta_put_item(TCmdPItem *pI, int x, int y, BYTE bLevel)
 			    && pD->dwSeed == pI->dwSeed) {
 				if (pD->bCmd == CMD_ACK_PLRINFO)
 					return;
-				TermMsg("Trying to drop a floor item?");
+				app_fatal("Trying to drop a floor item?");
 			}
 		}
 

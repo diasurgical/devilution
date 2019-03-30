@@ -19,7 +19,7 @@ void __fastcall LoadGame(BOOL firstflag)
 	tbuff = LoadBuff;
 
 	if (ILoad() != 'RETL')
-		TermMsg("Invalid save file");
+		app_fatal("Invalid save file");
 
 	setlevel = OLoad();
 	setlvlnum = WLoad();

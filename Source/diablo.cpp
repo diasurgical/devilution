@@ -1013,7 +1013,7 @@ void __fastcall diablo_hotkey_msg(int dwMsg)
 	v1 = dwMsg;
 	if (gbMaxPlayers != 1) {
 		if (!GetModuleFileName(ghInst, Filename, 0x104u))
-			TermMsg("Can't get program name");
+			app_fatal("Can't get program name");
 		v2 = strrchr(Filename, '\\');
 		if (v2)
 			*v2 = 0;
@@ -1596,7 +1596,7 @@ void __cdecl LoadLvlGFX()
 		level_special_cel = LoadFileInMem("Levels\\L2Data\\L2S.CEL", 0);
 		break;
 	default:
-		TermMsg("LoadLvlGFX");
+		app_fatal("LoadLvlGFX");
 		return;
 	}
 }
@@ -1647,7 +1647,7 @@ void __fastcall CreateLevel(int lvldir)
 		hnd = 4;
 		break;
 	default:
-		TermMsg("CreateLevel");
+		app_fatal("CreateLevel");
 		return;
 	}
 

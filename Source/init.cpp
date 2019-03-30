@@ -163,7 +163,7 @@ void __fastcall init_create_window(int nCmdShow)
 	wcex.lpszClassName = "DIABLO";
 	wcex.hIconSm = (HICON)LoadImage(ghInst, MAKEINTRESOURCE(IDI_ICON1), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
 	if (!RegisterClassEx(&wcex))
-		TermMsg("Unable to register window class");
+		app_fatal("Unable to register window class");
 	if (GetSystemMetrics(SM_CXSCREEN) >= 640)
 		nWidth = GetSystemMetrics(SM_CXSCREEN);
 	else
@@ -174,7 +174,7 @@ void __fastcall init_create_window(int nCmdShow)
 		nHeight = 480;
 	hWnd = CreateWindowEx(0, "DIABLO", "DIABLO", WS_POPUP, 0, 0, nWidth, nHeight, NULL, NULL, ghInst, NULL);
 	if (!hWnd)
-		TermMsg("Unable to create main window");
+		app_fatal("Unable to create main window");
 	ShowWindow(hWnd, SW_SHOWNORMAL); // nCmdShow used only in beta: ShowWindow(hWnd, nCmdShow)
 	UpdateWindow(hWnd);
 	init_await_mom_parent_exit();
@@ -270,12 +270,12 @@ HANDLE __fastcall init_test_access(char *mpq_path, char *mpq_name, char *reg_loc
 	mpq_namea = mpq_name;
 	v5 = mpq_path;
 	if (!GetCurrentDirectory(0x104u, Buffer))
-		TermMsg("Can't get program path");
+		app_fatal("Can't get program path");
 	init_strip_trailing_slash(Buffer);
 	if (!SFileSetBasePath(Buffer))
-		TermMsg("SFileSetBasePath");
+		app_fatal("SFileSetBasePath");
 	if (!GetModuleFileName(ghInst, Filename, 0x104u))
-		TermMsg("Can't get program name");
+		app_fatal("Can't get program name");
 	v7 = strrchr(Filename, '\\');
 	if (v7)
 		*v7 = 0;
