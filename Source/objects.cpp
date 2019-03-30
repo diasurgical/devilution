@@ -2685,16 +2685,13 @@ void __fastcall DoorSet(int oi, int dx, int dy)
 
 void __cdecl RedoPlayerVision()
 {
-	int *v0; // esi
+	int p;
 
-	v0 = &plr[0].plrlevel;
-	do {
-		if (*((_BYTE *)v0 - 23)) {
-			if (currlevel == *v0)
-				ChangeVisionXY(v0[27], v0[1], v0[2]);
+	for (p = 0; p < MAX_PLRS; p++) {
+		if (plr[p].plractive && currlevel == plr[p].plrlevel) {
+			ChangeVisionXY(plr[p]._pvid, plr[p].WorldX, plr[p].WorldY);
 		}
-		v0 += 5430;
-	} while ((signed int)v0 < (signed int)&plr[4].plrlevel);
+	}
 }
 
 void __fastcall OperateL1RDoor(int pnum, int oi, unsigned char sendflag)
