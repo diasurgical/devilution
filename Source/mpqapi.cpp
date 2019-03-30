@@ -65,10 +65,13 @@ BOOL __fastcall mpqapi_reg_load_modification_time(char *dst, int size)
 	iSize = size;
 	pszDst = dst;
 	memset(dst, 0, size);
-	if (SRegLoadData("Diablo", "Video Player ", 0, (unsigned char *)pszDst, iSize, (LPDWORD)&nbytes_read))
-		if (nbytes_read != size)
-			return FALSE;
+	if (!SRegLoadData("Diablo", "Video Player ", 0, (unsigned char *)pszDst, iSize, (LPDWORD)&nbytes_read)) {
+		return FALSE;
+	}
 
+	if (nbytes_read != size)
+		return FALSE;
+			
 	for (; iSize >= 8; iSize -=8) {
 		pbData = pszDst;
 		pszDst += 8;
@@ -77,6 +80,7 @@ BOOL __fastcall mpqapi_reg_load_modification_time(char *dst, int size)
 
 	return TRUE;
 }
+
 void __fastcall mpqapi_xor_buf(char *pbData)
 {
 	signed int v1; // eax
