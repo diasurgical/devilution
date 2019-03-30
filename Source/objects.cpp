@@ -1699,9 +1699,9 @@ void __fastcall AddPurifyingFountain(int i)
 
 	ox = object[i]._ox;
 	oy = object[i]._oy;
-	dObject[ox][oy-1] = -1 - i;
-	dObject[ox-1][oy] = -1 - i;
-	dObject[ox-1][oy - 1] = -1 - i;
+	dObject[ox][oy - 1] = -1 - i;
+	dObject[ox - 1][oy] = -1 - i;
+	dObject[ox - 1][oy - 1] = -1 - i;
 	object[i]._oRndSeed = GetRndSeed();
 }
 
@@ -4586,61 +4586,38 @@ BOOLEAN __fastcall OperateFountains(int pnum, int i)
 // 52571C: using guessed type int drawpanflag;
 // 676190: using guessed type int deltaload;
 
-void __fastcall OperateWeaponRack(int pnum, int i, unsigned char sendmsg)
+void __fastcall OperateWeaponRack(int pnum, int i, BOOL sendmsg)
 {
-	unsigned short v3; // di
-	int v4;            // esi
-	int v6;            // eax
-	int v7;            // eax
-	int v8;            // eax
-	int v9;            // eax
-	BOOLEAN v10;       // zf
-	int v11;           // ecx
-	int v12;           // edx
-	signed int v13;    // [esp-4h] [ebp-14h]
-	int v14;           // [esp+Ch] [ebp-4h]
+	int weaponType;
 
-	v3 = i;
-	v4 = i;
-	v14 = pnum;
 	if (!object[i]._oSelFlag)
 		return;
-	SetRndSeed(object[v4]._oRndSeed);
-	v6 = random(0, 4);
-	if (v6) {
-		v7 = v6 - 1;
-		if (!v7) {
-			v13 = ITYPE_AXE;
-			goto LABEL_7;
-		}
-		v8 = v7 - 1;
-		if (!v8) {
-			v13 = ITYPE_BOW;
-			goto LABEL_7;
-		}
-		if (v8 == 1) {
-			v13 = ITYPE_MACE;
-		LABEL_7:
-			v9 = v13;
-			goto LABEL_12;
-		}
-		v9 = sendmsg;
-	} else {
-		v9 = ITYPE_SWORD;
+	SetRndSeed(object[i]._oRndSeed);
+
+	switch (random(0, 4)) {
+	case 2:
+		weaponType = ITYPE_BOW;
+		break;
+	case 1:
+		weaponType = ITYPE_AXE;
+		break;
+	case 3:
+		weaponType = ITYPE_MACE;
+		break;
+	case 0:
+		weaponType = ITYPE_SWORD;
+		break;
 	}
-LABEL_12:
-	++object[v4]._oAnimFrame;
-	v10 = deltaload == 0;
-	object[v4]._oSelFlag = 0;
-	if (v10) {
-		v11 = object[v4]._ox;
-		v12 = object[v4]._oy;
-		if (leveltype <= 1u)
-			CreateTypeItem(v11, v12, 0, v9, 0, sendmsg, 0);
+
+	object[i]._oAnimFrame++;
+	object[i]._oSelFlag = 0;
+	if (!deltaload) {
+		if (leveltype > 1)
+			CreateTypeItem(object[i]._ox, object[i]._oy, 1, weaponType, 0, sendmsg, 0);
 		else
-			CreateTypeItem(v11, v12, 1u, v9, 0, sendmsg, 0);
-		if (v14 == myplr)
-			NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, v3);
+			CreateTypeItem(object[i]._ox, object[i]._oy, 0, weaponType, 0, sendmsg, 0);
+		if (pnum == myplr)
+			NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, i);
 	}
 }
 // 676190: using guessed type int deltaload;
@@ -4947,7 +4924,7 @@ void __fastcall SyncOpObject(int pnum, int cmd, int i)
 		break;
 	case OBJ_WARWEAP:
 	case OBJ_WEAPONRACK:
-		OperateWeaponRack(pnum, i, 0);
+		OperateWeaponRack(pnum, i, FALSE);
 		break;
 	case OBJ_MUSHPATCH:
 		OperateMushPatch(pnum, i);
