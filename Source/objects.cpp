@@ -3633,44 +3633,30 @@ void __fastcall OperatePedistal(int pnum, int i)
 
 void __fastcall TryDisarm(int pnum, int i)
 {
-	int v2;        // edi
-	int v3;        // esi
-	int v4;        // esi
-	int v5;        // edi
-	int v6;        // ebx
-	int j;         // edx
-	signed int v8; // edi
-	int v9;        // eax
-	int v10;       // ecx
-	int v11;       // eax
-	int v12;       // [esp+Ch] [ebp-4h]
+	int j, oi, oti, trapdisper;
+	BOOL checkflag;
 
-	v2 = pnum;
-	v3 = i;
-	v12 = i;
 	if (pnum == myplr)
 		SetCursor_(CURSOR_HAND);
-	v4 = v3;
-	if (object[v4]._oTrapFlag) {
-		v5 = 2 * plr[v2]._pDexterity - 5 * currlevel;
-		if (random(154, 100) <= v5) {
-			v6 = nobjects;
-			for (j = 0; j < v6; ++j) {
-				v8 = 0;
-				v9 = objectactive[j];
-				v10 = object[v9]._otype;
-				if (v10 == OBJ_TRAPL)
-					v8 = 1;
-				if (v10 == OBJ_TRAPR)
-					v8 = 1;
-				if (v8 && dObject[object[v9]._oVar1][object[v9]._oVar2] - 1 == v12) {
-					object[v9]._oVar4 = 1;
-					object[v4]._oTrapFlag = FALSE;
+	if (object[i]._oTrapFlag) {
+		trapdisper = 2 * plr[pnum]._pDexterity - 5 * currlevel;
+		if (random(154, 100) <= trapdisper) {
+			for (j = 0; j < nobjects; j++) {
+				checkflag = FALSE;
+				oi = objectactive[j];
+				oti = object[oi]._otype;
+				if (oti == OBJ_TRAPL)
+					checkflag = TRUE;
+				if (oti == OBJ_TRAPR)
+					checkflag = TRUE;
+				if (checkflag && dObject[object[oi]._oVar1][object[oi]._oVar2] - 1 == i) {
+					object[oi]._oVar4 = 1;
+					object[i]._oTrapFlag = FALSE;
 				}
 			}
-			v11 = object[v4]._otype;
-			if (v11 >= OBJ_TCHEST1 && v11 <= OBJ_TCHEST3)
-				object[v4]._oTrapFlag = FALSE;
+			oti = object[i]._otype;
+			if (oti >= OBJ_TCHEST1 && oti <= OBJ_TCHEST3)
+				object[i]._oTrapFlag = FALSE;
 		}
 	}
 }
