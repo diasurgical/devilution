@@ -4270,38 +4270,27 @@ void __fastcall OperateSkelBook(int pnum, int i, unsigned char sendmsg)
 }
 // 676190: using guessed type int deltaload;
 
-void __fastcall OperateBookCase(int pnum, int i, unsigned char sendmsg)
+void __fastcall OperateBookCase(int pnum, int i, BOOL sendmsg)
 {
-	unsigned short v3; // di
-	int v4;            // ebp
-	int v5;            // esi
-	BOOLEAN v6;        // zf
-	//int v7; // eax
-
-	v3 = i;
-	v4 = pnum;
-	v5 = i;
 	if (object[i]._oSelFlag) {
 		if (!deltaload)
-			PlaySfxLoc(IS_ISCROL, object[v5]._ox, object[v5]._oy);
-		object[v5]._oAnimFrame -= 2;
-		v6 = deltaload == 0;
-		object[v5]._oSelFlag = 0;
-		if (v6) {
-			SetRndSeed(object[v5]._oRndSeed);
-			CreateTypeItem(object[v5]._ox, object[v5]._oy, 0, ITYPE_MISC, 24, sendmsg, 0);
-			//_LOBYTE(v7) = QuestStatus(QTYPE_ZHAR);
+			PlaySfxLoc(IS_ISCROL, object[i]._ox, object[i]._oy);
+		object[i]._oAnimFrame -= 2;
+		object[i]._oSelFlag = 0;
+		if (!deltaload) {
+			SetRndSeed(object[i]._oRndSeed);
+			CreateTypeItem(object[i]._ox, object[i]._oy, 0, ITYPE_MISC, 24, sendmsg, 0);
 			if (QuestStatus(QTYPE_ZHAR)
 			    && monster[4].mName == UniqMonst[2].mName
 			    && monster[4]._msquelch == -1
 			    && monster[4]._mhitpoints) {
 				monster[4].mtalkmsg = QUEST_ZHAR2;
 				M_StartStand(0, monster[4]._mdir);
-				_LOBYTE(monster[4]._mgoal) = MGOAL_SHOOT;
+				monster[4]._mgoal = MGOAL_SHOOT;
 				monster[4]._mmode = MM_TALK;
 			}
-			if (v4 == myplr)
-				NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, v3);
+			if (pnum == myplr)
+				NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, i);
 		}
 	}
 }
@@ -4911,7 +4900,7 @@ void __fastcall SyncOpObject(int pnum, int cmd, int i)
 		break;
 	case OBJ_BOOKCASEL:
 	case OBJ_BOOKCASER:
-		OperateBookCase(pnum, i, 0);
+		OperateBookCase(pnum, i, FALSE);
 		break;
 	case OBJ_DECAP:
 		OperateDecap(pnum, i, 0);
