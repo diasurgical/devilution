@@ -697,7 +697,7 @@ void __cdecl AddInitItems()
 				GetItemAttrs(ii, IDI_MANA, currlevel);
 			item[ii]._iCreateInfo = currlevel + -32768;
 			SetupItem(ii);
-			item[ii]._iAnimFlag = 0;
+			item[ii]._iAnimFlag = FALSE;
 			item[ii]._iAnimFrame = item[ii]._iAnimLen;
 			item[ii]._iSelFlag = 1;
 			DeltaAddItem(ii);
@@ -2467,24 +2467,23 @@ void __fastcall GetItemBonus(int i, int idata, int minlvl, int maxlvl, int onlyg
 
 void __fastcall SetupItem(int i)
 {
-	int it; // eax
-	int il; // eax
+	int it, il;
 
 	it = ItemCAnimTbl[item[i]._iCurs];
 	item[i]._iAnimWidth = 96;
 	item[i]._iAnimWidth2 = 16;
-	il = ItemAnimLs[it];
 	item[i]._iAnimData = itemanims[it];
+	il = ItemAnimLs[it];
 	item[i]._iAnimLen = il;
 	item[i]._iIdentified = FALSE;
-	item[i]._iPostDraw = 0;
+	item[i]._iPostDraw = FALSE;
 
 	if (!plr[myplr].pLvlLoad) {
 		item[i]._iSelFlag = 0;
 		il = 1;
-		item[i]._iAnimFlag = 1;
+		item[i]._iAnimFlag = TRUE;
 	} else {
-		item[i]._iAnimFlag = 0;
+		item[i]._iAnimFlag = FALSE;
 		item[i]._iSelFlag = 1;
 	}
 
@@ -3070,9 +3069,9 @@ LABEL_13:
 		dItem[x][y] = v12 + 1;
 		GetItemAttrs(v12, itemid, currlevel);
 		SetupItem(v12);
-		item[v13]._iPostDraw = 1;
+		item[v13]._iPostDraw = TRUE;
 		if (selflag) {
-			item[v13]._iAnimFlag = 0;
+			item[v13]._iAnimFlag = FALSE;
 			item[v13]._iSelFlag = selflag;
 			item[v13]._iAnimFrame = item[v13]._iAnimLen;
 		}
@@ -3125,7 +3124,7 @@ void __cdecl SpawnRock()
 		SetupItem(v4);
 		++numitems;
 		item[v6]._iSelFlag = 2;
-		item[v6]._iPostDraw = 1;
+		item[v6]._iPostDraw = TRUE;
 		item[v6]._iAnimFrame = 11;
 	}
 }
@@ -3141,15 +3140,15 @@ void __fastcall RespawnItem(int i, BOOL FlipFlag)
 	il = ItemAnimLs[it];
 	item[i]._iAnimLen = il;
 	item[i]._iAnimData = itemanims[it];
-	item[i]._iPostDraw = 0;
+	item[i]._iPostDraw = FALSE;
 	item[i]._iRequest = FALSE;
 
 	if (FlipFlag) {
 		item[i]._iSelFlag = 0;
 		il = 1;
-		item[i]._iAnimFlag = 1;
+		item[i]._iAnimFlag = TRUE;
 	} else {
-		item[i]._iAnimFlag = 0;
+		item[i]._iAnimFlag = FALSE;
 		item[i]._iSelFlag = 1;
 	}
 
@@ -3220,7 +3219,7 @@ void __cdecl ProcessItems()
 					PlaySfxLoc(ItemDropSnds[ItemCAnimTbl[item[ii]._iCurs]], item[ii]._ix, item[ii]._iy);
 
 				if (item[ii]._iAnimFrame >= item[ii]._iAnimLen) {
-					item[ii]._iAnimFlag = 0;
+					item[ii]._iAnimFlag = FALSE;
 					item[ii]._iAnimFrame = item[ii]._iAnimLen;
 					item[ii]._iSelFlag = 1;
 				}
@@ -4800,7 +4799,7 @@ int __cdecl ItemNoFlippy()
 	int r; // ecx
 
 	r = itemactive[numitems - 1];
-	item[r]._iAnimFlag = 0;
+	item[r]._iAnimFlag = FALSE;
 	item[r]._iAnimFrame = item[r]._iAnimLen;
 	item[r]._iSelFlag = 1;
 
