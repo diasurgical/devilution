@@ -2135,24 +2135,15 @@ void __fastcall Obj_Sarc(int i)
 
 void __fastcall ActivateTrapLine(int ttype, int tid)
 {
-	int v2; // edi
-	int i;  // ebp
-	int v4; // esi
-	int v5; // edx
-	int v6; // ecx
-	int v7; // [esp+8h] [ebp-4h]
+	int i, oi;
 
-	v2 = 0;
-	v7 = tid;
-	for (i = ttype; v2 < nobjects; ++v2) {
-		v4 = objectactive[v2];
-		if (object[v4]._otype == i && object[v4]._oVar1 == v7) {
-			v5 = object[v4]._oy;
-			v6 = object[v4]._ox;
-			object[v4]._oVar4 = 1;
-			object[v4]._oAnimFlag = 1;
-			object[v4]._oAnimDelay = 1;
-			object[v4]._olid = AddLight(v6, v5, 1);
+	for (i = ttype; i < nobjects; i++) {
+		oi = objectactive[i];
+		if (object[oi]._otype == i && object[oi]._oVar1 == tid) {
+			object[oi]._oVar4 = 1;
+			object[oi]._oAnimFlag = 1;
+			object[oi]._oAnimDelay = 1;
+			object[oi]._olid = AddLight(object[oi]._ox, object[oi]._oy, 1);
 		}
 	}
 }
