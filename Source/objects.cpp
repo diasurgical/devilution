@@ -1818,48 +1818,27 @@ void __fastcall AddTorturedBody(int i)
 
 void __fastcall GetRndObjLoc(int randarea, int *xx, int *yy)
 {
-	int *v3;    // ebx
-	int v4;     // eax
-	int v6;     // eax
-	int v7;     // esi
-	BOOLEAN v8; // eax
-	int v9;     // edi
-	int v10;    // [esp+Ch] [ebp-Ch]
-	int v11;    // [esp+10h] [ebp-8h]
-	int v12;    // [esp+14h] [ebp-4h]
+	BOOL failed;
+	int i, j, tries;
 
-	v3 = xx;
-	v12 = randarea;
-	if (randarea) {
-		v10 = 0;
-		while (1) {
-		LABEL_3:
-			if (++v10 > 1000 && v12 > 1)
-				--v12;
-			v4 = random(0, MAXDUNX);
-			*v3 = v4;
-			v6 = random(0, MAXDUNY);
-			v7 = v6;
-			*yy = v6;
-			v8 = 0;
-			v11 = 0;
-			if (v12 <= 0)
-				break;
-			while (!v8) {
-				v9 = 0;
-				do {
-					if (v8)
-						break;
-					v8 = RndLocOk(v11 + *v3, v7 + v9++) == 0;
-				} while (v9 < v12);
-				randarea = ++v11;
-				if (v11 >= v12) {
-					if (v8)
-						goto LABEL_3;
-					return;
-				}
+	if (randarea == 0)
+		return;
+
+	tries = 0;
+	while (1) {
+		tries++;
+		if (tries > 1000 && randarea > 1)
+			randarea--;
+		*xx = random(0, MAXDUNX);
+		*yy = random(0, MAXDUNY);
+		failed = FALSE;
+		for (i = 0; i < randarea && !failed; i++) {
+			for (j = 0; j < randarea && !failed; j++) {
+				failed = !RndLocOk(i + *xx, j + *yy);
 			}
 		}
+		if (!failed)
+			break;
 	}
 }
 
