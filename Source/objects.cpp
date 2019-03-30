@@ -3540,34 +3540,21 @@ void __fastcall OperateInnSignChest(int pnum, int i)
 
 void __fastcall OperateSlainHero(int pnum, int i, unsigned char sendmsg)
 {
-	unsigned short v3; // di
-	int v4;            // esi
-	int v5;            // eax
-	BOOLEAN v6;        // zf
-	int v8;            // ecx
-
-	v3 = i;
-	v4 = pnum;
-	v5 = i;
 	if (object[i]._oSelFlag) {
-		v6 = deltaload == 0;
-		object[v5]._oSelFlag = 0;
-		if (v6) {
+		object[i]._oSelFlag = 0;
+		if (!deltaload) {
 			if (plr[pnum]._pClass == PC_WARRIOR) {
-				CreateMagicArmor(object[v5]._ox, object[v5]._oy, 9, ICURS_BREAST_PLATE, 0, 1);
-				v8 = PS_WARR9;
+				CreateMagicArmor(object[i]._ox, object[i]._oy, 9, ICURS_BREAST_PLATE, 0, 1);
+				PlaySfxLoc(PS_WARR9, plr[myplr].WorldX, plr[myplr].WorldY);
 			} else if (plr[pnum]._pClass == PC_ROGUE) {
-				CreateMagicWeapon(object[v5]._ox, object[v5]._oy, 3, ICURS_LONG_WAR_BOW, 0, 1);
-				v8 = PS_ROGUE9;
+				CreateMagicWeapon(object[i]._ox, object[i]._oy, 3, ICURS_LONG_WAR_BOW, 0, 1);
+				PlaySfxLoc(PS_ROGUE9, plr[myplr].WorldX, plr[myplr].WorldY);
 			} else if (plr[pnum]._pClass == PC_SORCERER) {
-				CreateSpellBook(object[v5]._ox, object[v5]._oy, 3, 0, 1);
-				v8 = PS_MAGE9;
+				CreateSpellBook(object[i]._ox, object[i]._oy, 3, 0, 1);
+				PlaySfxLoc(PS_MAGE9, plr[myplr].WorldX, plr[myplr].WorldY);
 			}
-			PlaySfxLoc(v8, plr[myplr].WorldX, plr[myplr].WorldY);
-
-			if (v4 == myplr)
-				NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, v3);
-			return;
+			if (pnum == myplr)
+				NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, i);
 		}
 	}
 }
