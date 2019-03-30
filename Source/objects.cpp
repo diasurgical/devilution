@@ -3346,7 +3346,7 @@ void __fastcall OperateSChambBk(int pnum, int i)
 	}
 }
 
-void __fastcall OperateChest(int pnum, int i, unsigned char sendmsg)
+void __fastcall OperateChest(int pnum, int i, BOOL sendmsg)
 {
 	int v3;         // esi
 	BOOLEAN v4;     // zf
@@ -3481,7 +3481,7 @@ void __fastcall OperateInnSignChest(int pnum, int i)
 }
 // 676190: using guessed type int deltaload;
 
-void __fastcall OperateSlainHero(int pnum, int i, unsigned char sendmsg)
+void __fastcall OperateSlainHero(int pnum, int i, BOOL sendmsg)
 {
 	if (object[i]._oSelFlag) {
 		object[i]._oSelFlag = 0;
@@ -3544,7 +3544,7 @@ void __fastcall OperateTrapLvr(int i)
 	}
 }
 
-void __fastcall OperateSarc(int pnum, int i, unsigned char sendmsg)
+void __fastcall OperateSarc(int pnum, int i, BOOL sendmsg)
 {
 	if (object[i]._oSelFlag) {
 		if (!deltaload)
@@ -4223,7 +4223,7 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 // 52571C: using guessed type int drawpanflag;
 // 676190: using guessed type int deltaload;
 
-void __fastcall OperateSkelBook(int pnum, int i, unsigned char sendmsg)
+void __fastcall OperateSkelBook(int pnum, int i, BOOL sendmsg)
 {
 	unsigned short v3; // di
 	int v4;            // esi
@@ -4258,7 +4258,7 @@ void __fastcall OperateSkelBook(int pnum, int i, unsigned char sendmsg)
 }
 // 676190: using guessed type int deltaload;
 
-void __fastcall OperateBookCase(int pnum, int i, unsigned char sendmsg)
+void __fastcall OperateBookCase(int pnum, int i, BOOL sendmsg)
 {
 	unsigned short v3; // di
 	int v4;            // ebp
@@ -4295,7 +4295,7 @@ void __fastcall OperateBookCase(int pnum, int i, unsigned char sendmsg)
 }
 // 676190: using guessed type int deltaload;
 
-void __fastcall OperateDecap(int pnum, int i, unsigned char sendmsg)
+void __fastcall OperateDecap(int pnum, int i, BOOL sendmsg)
 {
 	unsigned short v3; // bp
 	int v4;            // esi
@@ -4320,7 +4320,7 @@ void __fastcall OperateDecap(int pnum, int i, unsigned char sendmsg)
 }
 // 676190: using guessed type int deltaload;
 
-void __fastcall OperateArmorStand(int pnum, int i, unsigned char sendmsg)
+void __fastcall OperateArmorStand(int pnum, int i, BOOL sendmsg)
 {
 	unsigned short v3; // di
 	int v4;            // esi
@@ -4574,7 +4574,7 @@ BOOLEAN __fastcall OperateFountains(int pnum, int i)
 // 52571C: using guessed type int drawpanflag;
 // 676190: using guessed type int deltaload;
 
-void __fastcall OperateWeaponRack(int pnum, int i, unsigned char sendmsg)
+void __fastcall OperateWeaponRack(int pnum, int i, BOOL sendmsg)
 {
 	unsigned short v3; // di
 	int v4;            // esi

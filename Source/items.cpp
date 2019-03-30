@@ -2851,7 +2851,7 @@ void __fastcall CreateItem(int uid, int x, int y)
 }
 // 422290: could not find valid save-restore pair for esi
 
-void __fastcall CreateRndItem(int x, int y, unsigned char onlygood, unsigned char sendmsg, int delta)
+void __fastcall CreateRndItem(int x, int y, unsigned char onlygood, BOOL sendmsg, int delta)
 {
 	int idx; // edi
 	int ii;  // esi
@@ -2895,7 +2895,7 @@ void __fastcall SetupAllUseful(int ii, int iseed, int lvl)
 	SetupItem(ii);
 }
 
-void __fastcall CreateRndUseful(int pnum, int x, int y, unsigned char sendmsg)
+void __fastcall CreateRndUseful(int pnum, int x, int y, BOOL sendmsg)
 {
 	int ii; // esi
 
