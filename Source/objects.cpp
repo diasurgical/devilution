@@ -3291,33 +3291,17 @@ void __fastcall OperateBook(int pnum, int i)
 
 void __fastcall OperateBookLever(int pnum, int i)
 {
-	int v2;       // esi
-	int v3;       // edi
-	int v4;       // ebp
-	int v5;       // edx
-	int v6;       // eax
-	int v7;       // ST0C_4
-	int v8;       // edx
-	char v9;      // bl
-	int v10;      // ST08_4
-	int v11;      // ecx
-	int v12;      // ecx
-	int v13;      // [esp+Ch] [ebp-8h]
-	short param1; // [esp+10h] [ebp-4h]
+	int x, y, tren;
 
-	param1 = i;
-	v2 = i;
-	v13 = pnum;
-	v3 = 2 * setpc_x + 16;
-	v4 = 2 * setpc_y + 16;
+	x = 2 * setpc_x + 16;
+	y = 2 * setpc_y + 16;
 	if (object[i]._oSelFlag && !qtextflag) {
-		v5 = object[v2]._otype;
-		if (v5 == OBJ_BLINDBOOK && !quests[QTYPE_BLIND]._qvar1) {
+		if (object[i]._otype == OBJ_BLINDBOOK && !quests[QTYPE_BLIND]._qvar1) {
 			quests[QTYPE_BLIND]._qactive = 2;
 			quests[QTYPE_BLIND]._qlog = 1;
 			quests[QTYPE_BLIND]._qvar1 = 1;
 		}
-		if (v5 == OBJ_BLOODBOOK && !quests[QTYPE_BLOOD]._qvar1) {
+		if (object[i]._otype == OBJ_BLOODBOOK && !quests[QTYPE_BLOOD]._qvar1) {
 			quests[QTYPE_BLOOD]._qactive = 2;
 			quests[QTYPE_BLOOD]._qlog = 1;
 			quests[QTYPE_BLOOD]._qvar1 = 1;
@@ -3325,36 +3309,29 @@ void __fastcall OperateBookLever(int pnum, int i)
 			SpawnQuestItem(21, 2 * setpc_x + 31, 2 * setpc_y + 26, 0, 1);
 			SpawnQuestItem(21, 2 * setpc_x + 25, 2 * setpc_y + 33, 0, 1);
 		}
-		v6 = object[v2]._otype;
-		if (v6 == OBJ_STEELTOME && !quests[QTYPE_WARLRD]._qvar1) {
+		object[i]._otype = object[i]._otype;
+		if (object[i]._otype == OBJ_STEELTOME && !quests[QTYPE_WARLRD]._qvar1) {
 			quests[QTYPE_WARLRD]._qactive = 2;
 			quests[QTYPE_WARLRD]._qlog = 1;
 			quests[QTYPE_WARLRD]._qvar1 = 1;
 		}
-		if (object[v2]._oAnimFrame != object[v2]._oVar6) {
-			if (v6 != OBJ_BLOODBOOK)
-				ObjChangeMap(object[v2]._oVar1, object[v2]._oVar2, object[v2]._oVar3, object[v2]._oVar4);
-			if (object[v2]._otype == OBJ_BLINDBOOK) {
-				CreateItem(3, v3 + 5, v4 + 5);
-				v7 = object[v2]._oVar4;
-				v8 = object[v2]._oVar2;
-				v9 = TransVal;
-				v10 = object[v2]._oVar3;
-				v11 = object[v2]._oVar1;
+		if (object[i]._oAnimFrame != object[i]._oVar6) {
+			if (object[i]._otype != OBJ_BLOODBOOK)
+				ObjChangeMap(object[i]._oVar1, object[i]._oVar2, object[i]._oVar3, object[i]._oVar4);
+			if (object[i]._otype == OBJ_BLINDBOOK) {
+				CreateItem(3, x + 5, y + 5);
+				tren = TransVal;
 				TransVal = 9;
-				DRLG_MRectTrans(v11, v8, v10, v7);
-				TransVal = v9;
+				DRLG_MRectTrans(object[i]._oVar1, object[i]._oVar2, object[i]._oVar3, object[i]._oVar4);
+				TransVal = tren;
 			}
 		}
-		v12 = object[v2]._oVar7;
-		object[v2]._oAnimFrame = object[v2]._oVar6;
-		InitQTextMsg(v12);
-		if (v13 == myplr)
-			NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, param1);
+		object[i]._oAnimFrame = object[i]._oVar6;
+		InitQTextMsg(object[i]._oVar7);
+		if (pnum == myplr)
+			NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, i);
 	}
 }
-// 5A5590: using guessed type char TransVal;
-// 646D00: using guessed type char qtextflag;
 
 void __fastcall OperateSChambBk(int pnum, int i)
 {
