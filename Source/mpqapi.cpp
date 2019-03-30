@@ -215,16 +215,7 @@ _BLOCKENTRY *__fastcall mpqapi_new_block(int *block_index)
 
 int __fastcall mpqapi_get_hash_index_of_path(const char *pszName) // FetchHandle
 {
-	const char *v1; // esi
-	int v2;         // ST00_4
-	int v3;         // edi
-	short v4;       // ax
-
-	v1 = pszName;
-	v2 = Hash(pszName, 2); // MPQ_HASH_NAME_B
-	v3 = Hash(v1, 1);      // MPQ_HASH_NAME_A
-	v4 = Hash(v1, 0);      // MPQ_HASH_TABLE_INDEX
-	return mpqapi_get_hash_index(v4, v3, v2, 0);
+	return mpqapi_get_hash_index(Hash(pszName, 0), Hash(pszName, 1), Hash(pszName, 2), 0);
 }
 
 int __fastcall mpqapi_get_hash_index(short index, int hash_a, int hash_b, int locale)
