@@ -1838,7 +1838,7 @@ void __fastcall GetStaffSpell(int i, int lvl, unsigned char onlygood)
 
 void __fastcall GetItemAttrs(int i, int idata, int lvl)
 {
-	int rndv; // eax
+	int rndv;
 
 	item[i]._itype = AllItemsList[idata].itype;
 	item[i]._iCurs = AllItemsList[idata].iCurs;
@@ -1848,19 +1848,14 @@ void __fastcall GetItemAttrs(int i, int idata, int lvl)
 	item[i]._iClass = AllItemsList[idata].iClass;
 	item[i]._iMinDam = AllItemsList[idata].iMinDam;
 	item[i]._iMaxDam = AllItemsList[idata].iMaxDam;
-	item[i]._iMiscId = AllItemsList[idata].iMiscId;
 	item[i]._iAC = AllItemsList[idata].iMinAC + random(20, AllItemsList[idata].iMaxAC - AllItemsList[idata].iMinAC + 1);
 	item[i]._iFlags = AllItemsList[idata].iFlags;
+	item[i]._iMiscId = AllItemsList[idata].iMiscId;
 	item[i]._iSpell = AllItemsList[idata].iSpell;
+	item[i]._iMagical = ITEM_QUALITY_NORMAL;
 	item[i]._ivalue = AllItemsList[idata].iValue;
 	item[i]._iIvalue = AllItemsList[idata].iValue;
-	item[i]._iMagical = ITEM_QUALITY_NORMAL;
-	item[i]._iDurability = AllItemsList[idata].iDurability;
-	item[i]._iMaxDur = AllItemsList[idata].iDurability;
 	item[i]._iVAdd1 = 0;
-	item[i]._iMinStr = AllItemsList[idata].iMinStr;
-	item[i]._iMinMag = AllItemsList[idata].iMinMag;
-	item[i]._iMinDex = AllItemsList[idata].iMinDex;
 	item[i]._iVMult1 = 0;
 	item[i]._iVAdd2 = 0;
 	item[i]._iVMult2 = 0;
@@ -1873,6 +1868,11 @@ void __fastcall GetItemAttrs(int i, int idata, int lvl)
 	item[i]._iPLVit = 0;
 	item[i]._iCharges = 0;
 	item[i]._iMaxCharges = 0;
+	item[i]._iDurability = AllItemsList[idata].iDurability;
+	item[i]._iMaxDur = AllItemsList[idata].iDurability;
+	item[i]._iMinStr = AllItemsList[idata].iMinStr;
+	item[i]._iMinMag = AllItemsList[idata].iMinMag;
+	item[i]._iMinDex = AllItemsList[idata].iMinDex;
 	item[i]._iPLFR = 0;
 	item[i]._iPLLR = 0;
 	item[i]._iPLMR = 0;
@@ -1881,8 +1881,6 @@ void __fastcall GetItemAttrs(int i, int idata, int lvl)
 	item[i]._iPLGetHit = 0;
 	item[i]._iPLLight = 0;
 	item[i]._iSplLvlAdd = 0;
-	item[i]._iPrePower = -1;
-	item[i]._iSufPower = -1;
 	item[i]._iRequest = FALSE;
 	item[i]._iFMinDam = 0;
 	item[i]._iFMaxDam = 0;
@@ -1891,15 +1889,17 @@ void __fastcall GetItemAttrs(int i, int idata, int lvl)
 	item[i]._iPLEnAc = 0;
 	item[i]._iPLMana = 0;
 	item[i]._iPLHP = 0;
+	item[i]._iPrePower = -1;
+	item[i]._iSufPower = -1;
 
 	if (AllItemsList[idata].iMiscId == IMISC_BOOK)
 		GetBookSpell(i, lvl);
 
 	if (item[i]._itype == ITYPE_GOLD) {
-		if (gnDifficulty) /* clean this up, NORMAL */
-			rndv = lvl;
-		else
+		if (gnDifficulty == DIFF_NORMAL)
 			rndv = 5 * currlevel + random(21, 10 * currlevel);
+		else
+			rndv = lvl;
 
 		if (gnDifficulty == DIFF_NIGHTMARE)
 			rndv = 5 * (currlevel + 16) + random(21, 10 * (currlevel + 16));
@@ -1913,13 +1913,13 @@ void __fastcall GetItemAttrs(int i, int idata, int lvl)
 
 		item[i]._ivalue = rndv;
 
-		if (rndv < 2500)
-			item[i]._iCurs = (rndv > 1000) + 4;
-		else
+		if (rndv >= 2500)
 			item[i]._iCurs = ICURS_GOLD_LARGE;
+		else
+			item[i]._iCurs = (rndv > 1000) + 4;
 	}
 }
-// 5BB1ED: using guessed type char leveltype;
+
 
 int __fastcall RndPL(int param1, int param2)
 {
