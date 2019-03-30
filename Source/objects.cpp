@@ -4309,28 +4309,16 @@ void __fastcall OperateBookCase(int pnum, int i, unsigned char sendmsg)
 
 void __fastcall OperateDecap(int pnum, int i, unsigned char sendmsg)
 {
-	unsigned short v3; // bp
-	int v4;            // esi
-	int v5;            // edi
-	int *v6;           // eax
-	BOOLEAN v7;        // zf
-
-	v3 = i;
-	v4 = i;
-	v5 = pnum;
-	v6 = (int *)&object[i]._oSelFlag;
-	if (*(_BYTE *)v6) {
-		v7 = deltaload == 0;
-		*(_BYTE *)v6 = 0;
-		if (v7) {
-			SetRndSeed(object[v4]._oRndSeed);
-			CreateRndItem(object[v4]._ox, object[v4]._oy, 0, sendmsg, 0);
-			if (v5 == myplr)
-				NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, v3);
+	if (object[i]._oSelFlag) {
+		object[i]._oSelFlag = 0;
+		if (!deltaload) {
+			SetRndSeed(object[i]._oRndSeed);
+			CreateRndItem(object[i]._ox, object[i]._oy, 0, sendmsg, 0);
+			if (pnum == myplr)
+				NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, i);
 		}
 	}
 }
-// 676190: using guessed type int deltaload;
 
 void __fastcall OperateArmorStand(int pnum, int i, unsigned char sendmsg)
 {
