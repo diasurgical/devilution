@@ -457,14 +457,16 @@ int __fastcall FindClosest(int sx, int sy, int rad)
 
 int __fastcall GetSpellLevel(int id, int sn)
 {
-	int result; // eax
+	int result;
 
 	if (id == myplr)
 		result = plr[id]._pISplLvlAdd + plr[id]._pSplLvl[sn];
 	else
 		result = 1;
+
 	if (result < 0)
 		result = 0;
+
 	return result;
 }
 
@@ -1999,22 +2001,14 @@ void __fastcall AddManashield(int mi, int sx, int sy, int dx, int dy, int midir,
 
 void __fastcall AddFiremove(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
-	int v9;  // edi
-	int v10; // ebx
-	int v11; // esi
-
-	v9 = mi;
-	v10 = sx;
-	v11 = mi;
-	v11 *= 176;
-	*(int *)((char *)&missile[0]._midam + v11) = random(59, 10) + plr[id]._pLevel + 1;
-	GetMissileVel(v9, v10, sy, dx, dy, 16);
-	*(int *)((char *)&missile[0]._miVar1 + v11) = 0;
-	*(int *)((char *)&missile[0]._miVar2 + v11) = 0;
-	++*(int *)((char *)&missile[0]._mix + v11);
-	++*(int *)((char *)&missile[0]._miy + v11);
-	*(int *)((char *)&missile[0]._miyoff + v11) -= 32;
-	*(int *)((char *)&missile[0]._mirange + v11) = 255;
+  missile[mi]._midam = random(59, 10) + plr[id]._pLevel + 1;
+  GetMissileVel(mi, sx, sy, dx, dy, 16);
+  missile[mi]._mirange = 255;
+  missile[mi]._miVar1 = 0;
+  missile[mi]._miVar2 = 0;
+  missile[mi]._mix++;
+  missile[mi]._miy++;
+  missile[mi]._miyoff -= 32;
 }
 
 void __fastcall AddGuardian(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
