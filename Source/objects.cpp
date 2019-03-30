@@ -586,56 +586,41 @@ void __cdecl AddCandles()
 
 void __fastcall AddBookLever(int lx1, int ly1, int lx2, int ly2, int x1, int y1, int x2, int y2, int msg)
 {
-	int v9;         // esi
-	int v10;        // edi
-	signed int v11; // ebx
-	int v12;        // edx
-	//int v13; // eax
-	//int v14; // eax
-	//int v15; // eax
-	int v16;        // esi
-	signed int v17; // [esp+Ch] [ebp-Ch]
-	int v18;        // [esp+10h] [ebp-8h]
-	signed int v19; // [esp+14h] [ebp-4h]
+	BOOL exit;
+	int xp, yp, ob, k, m, n;
 
-	v18 = 0;
-	while (1) {
-		v17 = 1;
-		v9 = random(139, 80) + 16;
-		v10 = random(139, 80) + 16;
-		v11 = -2;
-		do {
-			v19 = -2;
-			v12 = v11 + v10;
-			do {
-				if (!RndLocOk(v19 + v9, v12))
-					v17 = 0;
-				++v19;
-			} while (v19 <= 2);
-			++v11;
-		} while (v11 <= 2);
-		if (v17)
+	k = 0;
+	for (;;) {
+		exit = TRUE;
+		xp = random(139, 80) + 16;
+		yp = random(139, 80) + 16;
+		for (n = -2; n <= 2; n++) {
+			for (m = -2; m <= 2; m++) {
+				if (!RndLocOk(xp + m, yp + n))
+					exit = FALSE;
+			}
+		}
+		if (exit)
 			break;
-		if (++v18 > 20000)
+		k++;
+		if (k > 20000)
 			return;
 	}
-	//_LOBYTE(v13) = QuestStatus(QTYPE_BLIND);
+
 	if (QuestStatus(QTYPE_BLIND))
-		AddObject(OBJ_BLINDBOOK, v9, v10);
-	//_LOBYTE(v14) = QuestStatus(QTYPE_WARLRD);
+		AddObject(OBJ_BLINDBOOK, xp, yp);
 	if (QuestStatus(QTYPE_WARLRD))
-		AddObject(OBJ_STEELTOME, v9, v10);
-	//_LOBYTE(v15) = QuestStatus(QTYPE_BLOOD);
+		AddObject(OBJ_STEELTOME, xp, yp);
 	if (QuestStatus(QTYPE_BLOOD)) {
-		v9 = 2 * setpc_x + 25;
-		v10 = 2 * setpc_y + 40;
-		AddObject(OBJ_BLOODBOOK, v9, v10);
+		xp = 2 * setpc_x + 25;
+		yp = 2 * setpc_y + 40;
+		AddObject(OBJ_BLOODBOOK, xp, yp);
 	}
-	v16 = dObject[v9][v10] - 1;
-	SetObjMapRange(v16, x1, y1, x2, y2, leverid);
-	SetBookMsg(v16, msg);
-	++leverid;
-	object[v16]._oVar6 = object[v16]._oAnimFrame + 1;
+	ob = dObject[xp][yp] - 1;
+	SetObjMapRange(ob, x1, y1, x2, y2, leverid);
+	SetBookMsg(ob, msg);
+	leverid++;
+	object[ob]._oVar6 = object[ob]._oAnimFrame + 1;
 }
 
 void __cdecl InitRndBarrels()
