@@ -2135,24 +2135,15 @@ void __fastcall Obj_Sarc(int i)
 
 void __fastcall ActivateTrapLine(int ttype, int tid)
 {
-	int v2; // edi
-	int i;  // ebp
-	int v4; // esi
-	int v5; // edx
-	int v6; // ecx
-	int v7; // [esp+8h] [ebp-4h]
+	int i, oi;
 
-	v2 = 0;
-	v7 = tid;
-	for (i = ttype; v2 < nobjects; ++v2) {
-		v4 = objectactive[v2];
-		if (object[v4]._otype == i && object[v4]._oVar1 == v7) {
-			v5 = object[v4]._oy;
-			v6 = object[v4]._ox;
-			object[v4]._oVar4 = 1;
-			object[v4]._oAnimFlag = 1;
-			object[v4]._oAnimDelay = 1;
-			object[v4]._olid = AddLight(v6, v5, 1);
+	for (i = ttype; i < nobjects; i++) {
+		oi = objectactive[i];
+		if (object[oi]._otype == i && object[oi]._oVar1 == tid) {
+			object[oi]._oVar4 = 1;
+			object[oi]._oAnimFlag = 1;
+			object[oi]._oAnimDelay = 1;
+			object[oi]._olid = AddLight(object[oi]._ox, object[oi]._oy, 1);
 		}
 	}
 }
@@ -2685,16 +2676,13 @@ void __fastcall DoorSet(int oi, int dx, int dy)
 
 void __cdecl RedoPlayerVision()
 {
-	int *v0; // esi
+	int p;
 
-	v0 = &plr[0].plrlevel;
-	do {
-		if (*((_BYTE *)v0 - 23)) {
-			if (currlevel == *v0)
-				ChangeVisionXY(v0[27], v0[1], v0[2]);
+	for (p = 0; p < MAX_PLRS; p++) {
+		if (plr[p].plractive && currlevel == plr[p].plrlevel) {
+			ChangeVisionXY(plr[p]._pvid, plr[p].WorldX, plr[p].WorldY);
 		}
-		v0 += 5430;
-	} while ((signed int)v0 < (signed int)&plr[4].plrlevel);
+	}
 }
 
 void __fastcall OperateL1RDoor(int pnum, int oi, unsigned char sendflag)
@@ -4235,40 +4223,24 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 // 52571C: using guessed type int drawpanflag;
 // 676190: using guessed type int deltaload;
 
-void __fastcall OperateSkelBook(int pnum, int i, unsigned char sendmsg)
+void __fastcall OperateSkelBook(int pnum, int i, BOOL sendmsg)
 {
-	unsigned short v3; // di
-	int v4;            // esi
-	BOOLEAN v5;        // zf
-	int v7;            // eax
-	int v8;            // ecx
-	int v9;            // edx
-	int v10;           // [esp+Ch] [ebp-4h]
-
-	v3 = i;
-	v4 = i;
-	v10 = pnum;
 	if (object[i]._oSelFlag) {
 		if (!deltaload)
-			PlaySfxLoc(IS_ISCROL, object[v4]._ox, object[v4]._oy);
-		object[v4]._oAnimFrame += 2;
-		v5 = deltaload == 0;
-		object[v4]._oSelFlag = 0;
-		if (v5) {
-			SetRndSeed(object[v4]._oRndSeed);
-			v7 = random(161, 5);
-			v8 = object[v4]._ox;
-			v9 = object[v4]._oy;
-			if (v7)
-				CreateTypeItem(v8, v9, 0, ITYPE_MISC, 21, sendmsg, 0);
+			PlaySfxLoc(IS_ISCROL, object[i]._ox, object[i]._oy);
+		object[i]._oAnimFrame += 2;
+		object[i]._oSelFlag = 0;
+		if (!deltaload) {
+			SetRndSeed(object[i]._oRndSeed);
+			if (random(161, 5))
+				CreateTypeItem(object[i]._ox, object[i]._oy, 0, ITYPE_MISC, 21, sendmsg, 0);
 			else
-				CreateTypeItem(v8, v9, 0, ITYPE_MISC, 24, sendmsg, 0);
-			if (v10 == myplr)
-				NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, v3);
+				CreateTypeItem(object[i]._ox, object[i]._oy, 0, ITYPE_MISC, 24, sendmsg, 0);
+			if (pnum == myplr)
+				NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, i);
 		}
 	}
 }
-// 676190: using guessed type int deltaload;
 
 void __fastcall OperateBookCase(int pnum, int i, BOOL sendmsg)
 {
@@ -4896,7 +4868,7 @@ void __fastcall SyncOpObject(int pnum, int cmd, int i)
 		break;
 	case OBJ_SKELBOOK:
 	case OBJ_BOOKSTAND:
-		OperateSkelBook(pnum, i, 0);
+		OperateSkelBook(pnum, i, FALSE);
 		break;
 	case OBJ_BOOKCASEL:
 	case OBJ_BOOKCASER:
@@ -5205,29 +5177,18 @@ void __fastcall SyncLever(int i)
 
 void __fastcall SyncQSTLever(int i)
 {
-	int v1;  // esi
-	int v2;  // edx
-	int v3;  // ecx
-	int v4;  // ST04_4
-	char v5; // bl
-	int v6;  // ST00_4
+	int tren;
 
-	v1 = i;
 	if (object[i]._oAnimFrame == object[i]._oVar6) {
-		ObjChangeMapResync(object[v1]._oVar1, object[v1]._oVar2, object[v1]._oVar3, object[v1]._oVar4);
-		if (object[v1]._otype == OBJ_BLINDBOOK) {
-			v2 = object[v1]._oVar2;
-			v3 = object[v1]._oVar1;
-			v4 = object[v1]._oVar4;
-			v5 = TransVal;
-			v6 = object[v1]._oVar3;
+		ObjChangeMapResync(object[i]._oVar1, object[i]._oVar2, object[i]._oVar3, object[i]._oVar4);
+		if (object[i]._otype == OBJ_BLINDBOOK) {
+			tren = TransVal;
 			TransVal = 9;
-			DRLG_MRectTrans(v3, v2, v6, v4);
-			TransVal = v5;
+			DRLG_MRectTrans(object[i]._oVar1, object[i]._oVar2, object[i]._oVar3, object[i]._oVar4);
+			TransVal = tren;
 		}
 	}
 }
-// 5A5590: using guessed type char TransVal;
 
 void __fastcall SyncPedistal(int i)
 {
