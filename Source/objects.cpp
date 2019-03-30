@@ -4223,40 +4223,24 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 // 52571C: using guessed type int drawpanflag;
 // 676190: using guessed type int deltaload;
 
-void __fastcall OperateSkelBook(int pnum, int i, unsigned char sendmsg)
+void __fastcall OperateSkelBook(int pnum, int i, BOOL sendmsg)
 {
-	unsigned short v3; // di
-	int v4;            // esi
-	BOOLEAN v5;        // zf
-	int v7;            // eax
-	int v8;            // ecx
-	int v9;            // edx
-	int v10;           // [esp+Ch] [ebp-4h]
-
-	v3 = i;
-	v4 = i;
-	v10 = pnum;
 	if (object[i]._oSelFlag) {
 		if (!deltaload)
-			PlaySfxLoc(IS_ISCROL, object[v4]._ox, object[v4]._oy);
-		object[v4]._oAnimFrame += 2;
-		v5 = deltaload == 0;
-		object[v4]._oSelFlag = 0;
-		if (v5) {
-			SetRndSeed(object[v4]._oRndSeed);
-			v7 = random(161, 5);
-			v8 = object[v4]._ox;
-			v9 = object[v4]._oy;
-			if (v7)
-				CreateTypeItem(v8, v9, 0, ITYPE_MISC, 21, sendmsg, 0);
+			PlaySfxLoc(IS_ISCROL, object[i]._ox, object[i]._oy);
+		object[i]._oAnimFrame += 2;
+		object[i]._oSelFlag = 0;
+		if (!deltaload) {
+			SetRndSeed(object[i]._oRndSeed);
+			if (random(161, 5))
+				CreateTypeItem(object[i]._ox, object[i]._oy, 0, ITYPE_MISC, 21, sendmsg, 0);
 			else
-				CreateTypeItem(v8, v9, 0, ITYPE_MISC, 24, sendmsg, 0);
-			if (v10 == myplr)
-				NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, v3);
+				CreateTypeItem(object[i]._ox, object[i]._oy, 0, ITYPE_MISC, 24, sendmsg, 0);
+			if (pnum == myplr)
+				NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, i);
 		}
 	}
 }
-// 676190: using guessed type int deltaload;
 
 void __fastcall OperateBookCase(int pnum, int i, unsigned char sendmsg)
 {
@@ -4895,7 +4879,7 @@ void __fastcall SyncOpObject(int pnum, int cmd, int i)
 		break;
 	case OBJ_SKELBOOK:
 	case OBJ_BOOKSTAND:
-		OperateSkelBook(pnum, i, 0);
+		OperateSkelBook(pnum, i, FALSE);
 		break;
 	case OBJ_BOOKCASEL:
 	case OBJ_BOOKCASER:
