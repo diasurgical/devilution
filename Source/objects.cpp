@@ -3358,35 +3358,30 @@ void __fastcall OperateBookLever(int pnum, int i)
 
 void __fastcall OperateSChambBk(int pnum, int i)
 {
-	int v2;        // esi
-	int j;         // edi
-	signed int v5; // ecx
-	//int speech_id; // [esp+4h] [ebp-4h]
+	int j, textdef;
 
-	v2 = i;
 	if (object[i]._oSelFlag && !qtextflag) {
-		if (object[v2]._oAnimFrame != object[v2]._oVar6) {
-			ObjChangeMapResync(object[v2]._oVar1, object[v2]._oVar2, object[v2]._oVar3, object[v2]._oVar4);
-			for (j = 0; j < nobjects; ++j)
+		if (object[i]._oAnimFrame != object[i]._oVar6) {
+			ObjChangeMapResync(object[i]._oVar1, object[i]._oVar2, object[i]._oVar3, object[i]._oVar4);
+			for (j = 0; j < nobjects; j++)
 				SyncObjectAnim(objectactive[j]);
 		}
-		object[v2]._oAnimFrame = object[v2]._oVar6;
+		object[i]._oAnimFrame = object[i]._oVar6;
 		if (quests[QTYPE_BONE]._qactive == 1) {
 			quests[QTYPE_BONE]._qactive = 2;
 			quests[QTYPE_BONE]._qlog = 1;
 		}
 		if (plr[myplr]._pClass == PC_WARRIOR) {
-			v5 = QUEST_BONER;
+			textdef = QUEST_BONER;
 		} else if (plr[myplr]._pClass == PC_ROGUE) {
-			v5 = QUEST_RBONER;
+			textdef = QUEST_RBONER;
 		} else if (plr[myplr]._pClass == PC_SORCERER) {
-			v5 = QUEST_MBONER;
+			textdef = QUEST_MBONER;
 		}
-		quests[QTYPE_BONE]._qmsg = v5;
-		InitQTextMsg(v5);
+		quests[QTYPE_BONE]._qmsg = textdef;
+		InitQTextMsg(textdef);
 	}
 }
-// 646D00: using guessed type char qtextflag;
 
 void __fastcall OperateChest(int pnum, int i, unsigned char sendmsg)
 {
