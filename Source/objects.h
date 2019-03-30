@@ -116,7 +116,7 @@ void __fastcall OperatePedistal(int pnum, int i);
 void __fastcall TryDisarm(int pnum, int i);
 int __fastcall ItemMiscIdIdx(int imiscid);
 void __fastcall OperateShrine(int pnum, int i, int sType);
-void __fastcall OperateSkelBook(int pnum, int i, unsigned char sendmsg);
+void __fastcall OperateSkelBook(int pnum, int i, BOOL sendmsg);
 void __fastcall OperateBookCase(int pnum, int i, unsigned char sendmsg);
 void __fastcall OperateDecap(int pnum, int i, unsigned char sendmsg);
 void __fastcall OperateArmorStand(int pnum, int i, unsigned char sendmsg);
