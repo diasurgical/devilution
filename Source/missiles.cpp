@@ -1825,37 +1825,32 @@ void __fastcall AddLightning(int mi, int sx, int sy, int dx, int dy, int midir, 
 
 void __fastcall AddMisexp(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
-	int v9;        // edi
-	CMonster *v10; // esi
-	int v11;       // eax
-	int v12;       // ecx
+	CMonster *mon;
 
-	v9 = mi;
-	if ((_BYTE)mienemy && id > 0) {
-		v10 = monster[id].MType;
-		if (v10->mtype == MT_SUCCUBUS)
+	if (mienemy && id > 0) {
+		mon = monster[id].MType;
+		if (mon->mtype == MT_SUCCUBUS)
 			SetMissAnim(mi, MFILE_FLAREEXP);
-		if (v10->mtype == MT_SNOWWICH)
-			SetMissAnim(v9, MFILE_SCBSEXPB);
-		if (v10->mtype == MT_HLSPWN)
-			SetMissAnim(v9, MFILE_SCBSEXPD);
-		if (v10->mtype == MT_SOLBRNR)
-			SetMissAnim(v9, MFILE_SCBSEXPC);
+		if (mon->mtype == MT_SNOWWICH)
+			SetMissAnim(mi, MFILE_SCBSEXPB);
+		if (mon->mtype == MT_HLSPWN)
+			SetMissAnim(mi, MFILE_SCBSEXPD);
+		if (mon->mtype == MT_SOLBRNR)
+			SetMissAnim(mi, MFILE_SCBSEXPC);
 	}
-	v11 = v9;
-	missile[v11]._mix = missile[dx]._mix;
-	missile[v11]._miy = missile[dx]._miy;
-	missile[v11]._misx = missile[dx]._misx;
-	missile[v11]._misy = missile[dx]._misy;
-	missile[v11]._mixoff = missile[dx]._mixoff;
-	missile[v11]._miyoff = missile[dx]._miyoff;
-	missile[v11]._mitxoff = missile[dx]._mitxoff;
-	v12 = missile[dx]._mityoff;
-	missile[v11]._mixvel = 0;
-	missile[v11]._miyvel = 0;
-	missile[v11]._miVar1 = 0;
-	missile[v11]._mityoff = v12;
-	missile[v11]._mirange = missile[v9]._miAnimLen;
+
+	missile[mi]._mix = missile[dx]._mix;
+	missile[mi]._miy = missile[dx]._miy;
+	missile[mi]._misx = missile[dx]._misx;
+	missile[mi]._misy = missile[dx]._misy;
+	missile[mi]._mixoff = missile[dx]._mixoff;
+	missile[mi]._miyoff = missile[dx]._miyoff;
+	missile[mi]._mitxoff = missile[dx]._mitxoff;
+	missile[mi]._mityoff = missile[dx]._mityoff;
+	missile[mi]._mixvel = 0;
+	missile[mi]._miyvel = 0;
+	missile[mi]._mirange = missile[mi]._miAnimLen;
+	missile[mi]._miVar1 = 0;
 }
 
 void __fastcall AddWeapexp(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
