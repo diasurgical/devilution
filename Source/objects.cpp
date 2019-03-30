@@ -3462,40 +3462,32 @@ void __fastcall OperateChest(int pnum, int i, unsigned char sendmsg)
 
 void __fastcall OperateMushPatch(int pnum, int i)
 {
-	int v2;     // esi
-	BOOLEAN v3; // zf
-	int v5;     // ecx
-	int xx;     // [esp+8h] [ebp-8h]
-	int yy;     // [esp+Ch] [ebp-4h]
+	int x, y;
 
 	if (quests[QTYPE_BLKM]._qactive != 2 || quests[QTYPE_BLKM]._qvar1 < QS_TOMEGIVEN) {
 		if (!deltaload && pnum == myplr) {
 			if (plr[myplr]._pClass == PC_WARRIOR) {
-				v5 = PS_WARR13;
+				PlaySFX(PS_WARR13);
 			} else if (plr[myplr]._pClass == PC_ROGUE) {
-				v5 = PS_ROGUE13;
+				PlaySFX(PS_ROGUE13);
 			} else if (plr[myplr]._pClass == PC_SORCERER) {
-				v5 = PS_MAGE13;
+				PlaySFX(PS_MAGE13);
 			}
-			PlaySFX(v5);
 		}
 	} else {
-		v2 = i;
 		if (object[i]._oSelFlag) {
 			if (!deltaload)
-				PlaySfxLoc(IS_CHEST, object[v2]._ox, object[v2]._oy);
-			++object[v2]._oAnimFrame;
-			v3 = deltaload == 0;
-			object[v2]._oSelFlag = 0;
-			if (v3) {
-				GetSuperItemLoc(object[v2]._ox, object[v2]._oy, &xx, &yy);
-				SpawnQuestItem(IDI_MUSHROOM, xx, yy, 0, 0);
+				PlaySfxLoc(IS_CHEST, object[i]._ox, object[i]._oy);
+			object[i]._oAnimFrame++;
+			object[i]._oSelFlag = 0;
+			if (!deltaload) {
+				GetSuperItemLoc(object[i]._ox, object[i]._oy, &x, &y);
+				SpawnQuestItem(IDI_MUSHROOM, x, y, 0, 0);
 				quests[QTYPE_BLKM]._qvar1 = QS_MUSHSPAWNED;
 			}
 		}
 	}
 }
-// 676190: using guessed type int deltaload;
 
 void __fastcall OperateInnSignChest(int pnum, int i)
 {
