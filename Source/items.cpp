@@ -3023,58 +3023,42 @@ void __fastcall RecreateEar(int ii, unsigned short ic, int iseed, int Id, int du
 
 void __fastcall SpawnQuestItem(int itemid, int x, int y, int randarea, int selflag)
 {
-	int i;       // ebx
-	BOOL failed; // eax
-	int j;       // esi
-	int v12;     // ebx
-	int v13;     // esi
-	int tries;   // [esp+10h] [ebp-4h]
+	BOOL failed;
+	int i, j, tries;
 
 	if (randarea) {
 		tries = 0;
 		while (1) {
-		LABEL_3:
-			if (++tries > 1000 && randarea > 1)
-				--randarea;
-
+			tries++;
+			if (tries > 1000 && randarea > 1)
+				randarea--;
 			x = random(0, MAXDUNX);
 			y = random(0, MAXDUNY);
-			i = 0;
-			failed = 0;
-			if (randarea <= 0)
-				break;
-			while (!failed) {
-				for (j = 0; j < randarea; j++) {
-					if (failed)
-						break;
-
-					failed = ItemSpaceOk(i + x, j + y) == 0;
-				}
-
-				if (++i >= randarea) {
-					if (failed)
-						goto LABEL_3;
-					goto LABEL_13;
+			failed = FALSE;
+			for (i = 0; i < randarea && !failed; i++) {
+				for (j = 0; j < randarea && !failed; j++) {
+					failed = !ItemSpaceOk(i + x, j + y);
 				}
 			}
+			if (!failed)
+				break;
 		}
 	}
-LABEL_13:
+
 	if (numitems < MAXITEMS) {
-		v12 = itemavail[0];
-		v13 = itemavail[0];
-		item[v13]._ix = x;
-		itemactive[numitems] = v12;
-		item[v13]._iy = y;
+		i = itemavail[0];
 		itemavail[0] = itemavail[MAXITEMS - numitems - 1];
-		dItem[x][y] = v12 + 1;
-		GetItemAttrs(v12, itemid, currlevel);
-		SetupItem(v12);
-		item[v13]._iPostDraw = 1;
+		itemactive[numitems] = i;
+		item[i]._ix = x;
+		item[i]._iy = y;
+		dItem[x][y] = i + 1;
+		GetItemAttrs(i, itemid, currlevel);
+		SetupItem(i);
+		item[i]._iPostDraw = 1;
 		if (selflag) {
-			item[v13]._iAnimFlag = 0;
-			item[v13]._iSelFlag = selflag;
-			item[v13]._iAnimFrame = item[v13]._iAnimLen;
+			item[i]._iAnimFlag = 0;
+			item[i]._iSelFlag = selflag;
+			item[i]._iAnimFrame = item[i]._iAnimLen;
 		}
 		++numitems;
 	}
