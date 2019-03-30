@@ -889,10 +889,10 @@ void __cdecl AddChestTraps()
 	int i, j;
 	char oi;
 
-	for (i = 0; i < 112; ++i) {
-		for (j = 0; j < 112; ++j) {
-			if (dObject[j][i] > 0) {
-				oi = dObject[j][i] - 1;
+	for (j = 0; j < MAXDUNY; j++) {
+		for (i = 0; i < MAXDUNX; i++) {
+			if (dObject[i][j] > 0) {
+				oi = dObject[i][j] - 1;
 				if (object[oi]._otype >= OBJ_CHEST1 && object[oi]._otype <= OBJ_CHEST3 && !object[oi]._oTrapFlag && random(0, 100) < 10) {
 					object[oi]._otype += OBJ_BOOKCASER;
 					object[oi]._oTrapFlag = TRUE;
