@@ -675,7 +675,7 @@ void __cdecl AddInitItems()
 	rnd = random(11, 3) + 3;
 	for (j = 0; j < rnd; ++j) {
 		i = itemavail[0];
-		itemavail[0] = itemavail[127 - numitems - 1];
+		itemavail[0] = itemavail[MAXITEMS - numitems - 1];
 		itemactive[numitems] = i;
 		x = random(12, 80) + 16;
 		y = random(12, 80) + 16;
