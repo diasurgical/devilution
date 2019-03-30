@@ -871,38 +871,25 @@ void __cdecl AddObjTraps()
 
 void __cdecl AddChestTraps()
 {
-	signed int v0; // ebp
-	_BYTE *v1;     // ebx
-	int v2;        // esi
-	int v3;        // eax
-	BOOLEAN v4;    // zf
-	int v5;        // eax
-	signed int v6; // [esp+10h] [ebp-4h]
+	int i, j;
+	char oi;
 
-	v0 = 0;
-	do {
-		v1 = (unsigned char *)dObject + v0;
-		v6 = 112;
-		do {
-			if (*v1 > 0) {
-				v2 = (char)(*v1 - 1);
-				v3 = object[v2]._otype;
-				if (v3 >= OBJ_CHEST1 && v3 <= OBJ_CHEST3 && !object[v2]._oTrapFlag && random(0, 100) < 10) {
-					object[v2]._otype += OBJ_BOOKCASER;
-					v4 = leveltype == DTYPE_CATACOMBS;
-					object[v2]._oTrapFlag = TRUE;
-					if (v4)
-						v5 = random(0, 2);
-					else
-						v5 = random(0, 3);
-					object[v2]._oVar4 = v5;
+	for (j = 0; j < MAXDUNY; j++) {
+		for (i = 0; i < MAXDUNX; i++) {
+			if (dObject[i][j] > 0) {
+				oi = dObject[i][j] - 1;
+				if (object[oi]._otype >= OBJ_CHEST1 && object[oi]._otype <= OBJ_CHEST3 && !object[oi]._oTrapFlag && random(0, 100) < 10) {
+					object[oi]._otype += OBJ_BOOKCASER;
+					object[oi]._oTrapFlag = TRUE;
+					if (leveltype == DTYPE_CATACOMBS) {
+						object[oi]._oVar4 = random(0, 2);
+					} else {
+						object[oi]._oVar4 = random(0, 3);
+					}
 				}
 			}
-			v1 += 112;
-			--v6;
-		} while (v6);
-		++v0;
-	} while (v0 < 112);
+		}
+	}
 }
 
 void __fastcall LoadMapObjects(unsigned char *pMap, int startx, int starty, int x1, int y1, int w, int h, int leveridx)
