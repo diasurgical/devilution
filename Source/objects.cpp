@@ -3504,35 +3504,28 @@ void __fastcall OperateMushPatch(int pnum, int i)
 
 void __fastcall OperateInnSignChest(int pnum, int i)
 {
-	int v4;     // esi
-	BOOLEAN v5; // zf
-	int xx;     // [esp+8h] [ebp-8h]
-	int yy;     // [esp+Ch] [ebp-4h]
+	int x, y;
 
-	if (quests[QTYPE_BOL]._qvar1 == 2) {
-		v4 = i;
-		if (object[i]._oSelFlag) {
-			if (!deltaload)
-				PlaySfxLoc(IS_CHEST, object[v4]._ox, object[v4]._oy);
-			object[v4]._oAnimFrame += 2;
-			v5 = deltaload == 0;
-			object[v4]._oSelFlag = 0;
-			if (v5) {
-				GetSuperItemLoc(object[v4]._ox, object[v4]._oy, &xx, &yy);
-				SpawnQuestItem(IDI_BANNER, xx, yy, 0, 0);
+	if (quests[QTYPE_BOL]._qvar1 != 2) {
+		if (!deltaload && pnum == myplr) {
+			if (plr[myplr]._pClass == PC_WARRIOR) {
+				PlaySFX(PS_WARR24);
+			} else if (plr[myplr]._pClass == PC_ROGUE) {
+				PlaySFX(PS_ROGUE24);
+			} else if (plr[myplr]._pClass == PC_SORCERER) {
+				PlaySFX(PS_MAGE24);
 			}
 		}
-	} else if (!deltaload && pnum == myplr) {
-		switch (plr[myplr]._pClass) {
-		case PC_WARRIOR:
-			PlaySFX(PS_WARR24);
-			break;
-		case PC_ROGUE:
-			PlaySFX(PS_ROGUE24);
-			break;
-		case PC_SORCERER:
-			PlaySFX(PS_MAGE24);
-			break;
+	} else {
+		if (object[i]._oSelFlag) {
+			if (!deltaload)
+				PlaySfxLoc(IS_CHEST, object[i]._ox, object[i]._oy);
+			object[i]._oAnimFrame += 2;
+			object[i]._oSelFlag = 0;
+			if (!deltaload) {
+				GetSuperItemLoc(object[i]._ox, object[i]._oy, &x, &y);
+				SpawnQuestItem(IDI_BANNER, x, y, 0, 0);
+			}
 		}
 	}
 }
