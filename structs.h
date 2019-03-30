@@ -85,7 +85,7 @@ typedef struct ItemStruct {
 	int _itype;
 	int _ix;
 	int _iy;
-	int _iAnimFlag;
+	BOOL _iAnimFlag;
 	unsigned char *_iAnimData; // PSX name -> ItemFrame
 	int _iAnimLen;
 	int _iAnimFrame;
@@ -93,7 +93,7 @@ typedef struct ItemStruct {
 	int _iAnimWidth2; // width 2?
 	int _isin;        // set when item is flagged for deletion, deprecated in 1.02
 	char _iSelFlag;
-	int _iPostDraw;
+	BOOL _iPostDraw;
 	BOOL _iIdentified;
 	char _iMagical;
 	char _iName[64];

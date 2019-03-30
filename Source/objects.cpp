@@ -3291,33 +3291,17 @@ void __fastcall OperateBook(int pnum, int i)
 
 void __fastcall OperateBookLever(int pnum, int i)
 {
-	int v2;       // esi
-	int v3;       // edi
-	int v4;       // ebp
-	int v5;       // edx
-	int v6;       // eax
-	int v7;       // ST0C_4
-	int v8;       // edx
-	char v9;      // bl
-	int v10;      // ST08_4
-	int v11;      // ecx
-	int v12;      // ecx
-	int v13;      // [esp+Ch] [ebp-8h]
-	short param1; // [esp+10h] [ebp-4h]
+	int x, y, tren;
 
-	param1 = i;
-	v2 = i;
-	v13 = pnum;
-	v3 = 2 * setpc_x + 16;
-	v4 = 2 * setpc_y + 16;
+	x = 2 * setpc_x + 16;
+	y = 2 * setpc_y + 16;
 	if (object[i]._oSelFlag && !qtextflag) {
-		v5 = object[v2]._otype;
-		if (v5 == OBJ_BLINDBOOK && !quests[QTYPE_BLIND]._qvar1) {
+		if (object[i]._otype == OBJ_BLINDBOOK && !quests[QTYPE_BLIND]._qvar1) {
 			quests[QTYPE_BLIND]._qactive = 2;
 			quests[QTYPE_BLIND]._qlog = 1;
 			quests[QTYPE_BLIND]._qvar1 = 1;
 		}
-		if (v5 == OBJ_BLOODBOOK && !quests[QTYPE_BLOOD]._qvar1) {
+		if (object[i]._otype == OBJ_BLOODBOOK && !quests[QTYPE_BLOOD]._qvar1) {
 			quests[QTYPE_BLOOD]._qactive = 2;
 			quests[QTYPE_BLOOD]._qlog = 1;
 			quests[QTYPE_BLOOD]._qvar1 = 1;
@@ -3325,68 +3309,56 @@ void __fastcall OperateBookLever(int pnum, int i)
 			SpawnQuestItem(21, 2 * setpc_x + 31, 2 * setpc_y + 26, 0, 1);
 			SpawnQuestItem(21, 2 * setpc_x + 25, 2 * setpc_y + 33, 0, 1);
 		}
-		v6 = object[v2]._otype;
-		if (v6 == OBJ_STEELTOME && !quests[QTYPE_WARLRD]._qvar1) {
+		object[i]._otype = object[i]._otype;
+		if (object[i]._otype == OBJ_STEELTOME && !quests[QTYPE_WARLRD]._qvar1) {
 			quests[QTYPE_WARLRD]._qactive = 2;
 			quests[QTYPE_WARLRD]._qlog = 1;
 			quests[QTYPE_WARLRD]._qvar1 = 1;
 		}
-		if (object[v2]._oAnimFrame != object[v2]._oVar6) {
-			if (v6 != OBJ_BLOODBOOK)
-				ObjChangeMap(object[v2]._oVar1, object[v2]._oVar2, object[v2]._oVar3, object[v2]._oVar4);
-			if (object[v2]._otype == OBJ_BLINDBOOK) {
-				CreateItem(3, v3 + 5, v4 + 5);
-				v7 = object[v2]._oVar4;
-				v8 = object[v2]._oVar2;
-				v9 = TransVal;
-				v10 = object[v2]._oVar3;
-				v11 = object[v2]._oVar1;
+		if (object[i]._oAnimFrame != object[i]._oVar6) {
+			if (object[i]._otype != OBJ_BLOODBOOK)
+				ObjChangeMap(object[i]._oVar1, object[i]._oVar2, object[i]._oVar3, object[i]._oVar4);
+			if (object[i]._otype == OBJ_BLINDBOOK) {
+				CreateItem(3, x + 5, y + 5);
+				tren = TransVal;
 				TransVal = 9;
-				DRLG_MRectTrans(v11, v8, v10, v7);
-				TransVal = v9;
+				DRLG_MRectTrans(object[i]._oVar1, object[i]._oVar2, object[i]._oVar3, object[i]._oVar4);
+				TransVal = tren;
 			}
 		}
-		v12 = object[v2]._oVar7;
-		object[v2]._oAnimFrame = object[v2]._oVar6;
-		InitQTextMsg(v12);
-		if (v13 == myplr)
-			NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, param1);
+		object[i]._oAnimFrame = object[i]._oVar6;
+		InitQTextMsg(object[i]._oVar7);
+		if (pnum == myplr)
+			NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, i);
 	}
 }
-// 5A5590: using guessed type char TransVal;
-// 646D00: using guessed type char qtextflag;
 
 void __fastcall OperateSChambBk(int pnum, int i)
 {
-	int v2;        // esi
-	int j;         // edi
-	signed int v5; // ecx
-	//int speech_id; // [esp+4h] [ebp-4h]
+	int j, textdef;
 
-	v2 = i;
 	if (object[i]._oSelFlag && !qtextflag) {
-		if (object[v2]._oAnimFrame != object[v2]._oVar6) {
-			ObjChangeMapResync(object[v2]._oVar1, object[v2]._oVar2, object[v2]._oVar3, object[v2]._oVar4);
-			for (j = 0; j < nobjects; ++j)
+		if (object[i]._oAnimFrame != object[i]._oVar6) {
+			ObjChangeMapResync(object[i]._oVar1, object[i]._oVar2, object[i]._oVar3, object[i]._oVar4);
+			for (j = 0; j < nobjects; j++)
 				SyncObjectAnim(objectactive[j]);
 		}
-		object[v2]._oAnimFrame = object[v2]._oVar6;
+		object[i]._oAnimFrame = object[i]._oVar6;
 		if (quests[QTYPE_BONE]._qactive == 1) {
 			quests[QTYPE_BONE]._qactive = 2;
 			quests[QTYPE_BONE]._qlog = 1;
 		}
 		if (plr[myplr]._pClass == PC_WARRIOR) {
-			v5 = QUEST_BONER;
+			textdef = QUEST_BONER;
 		} else if (plr[myplr]._pClass == PC_ROGUE) {
-			v5 = QUEST_RBONER;
+			textdef = QUEST_RBONER;
 		} else if (plr[myplr]._pClass == PC_SORCERER) {
-			v5 = QUEST_MBONER;
+			textdef = QUEST_MBONER;
 		}
-		quests[QTYPE_BONE]._qmsg = v5;
-		InitQTextMsg(v5);
+		quests[QTYPE_BONE]._qmsg = textdef;
+		InitQTextMsg(textdef);
 	}
 }
-// 646D00: using guessed type char qtextflag;
 
 void __fastcall OperateChest(int pnum, int i, unsigned char sendmsg)
 {
@@ -3467,72 +3439,57 @@ void __fastcall OperateChest(int pnum, int i, unsigned char sendmsg)
 
 void __fastcall OperateMushPatch(int pnum, int i)
 {
-	int v2;     // esi
-	BOOLEAN v3; // zf
-	int v5;     // ecx
-	int xx;     // [esp+8h] [ebp-8h]
-	int yy;     // [esp+Ch] [ebp-4h]
+	int x, y;
 
 	if (quests[QTYPE_BLKM]._qactive != 2 || quests[QTYPE_BLKM]._qvar1 < QS_TOMEGIVEN) {
 		if (!deltaload && pnum == myplr) {
 			if (plr[myplr]._pClass == PC_WARRIOR) {
-				v5 = PS_WARR13;
+				PlaySFX(PS_WARR13);
 			} else if (plr[myplr]._pClass == PC_ROGUE) {
-				v5 = PS_ROGUE13;
+				PlaySFX(PS_ROGUE13);
 			} else if (plr[myplr]._pClass == PC_SORCERER) {
-				v5 = PS_MAGE13;
+				PlaySFX(PS_MAGE13);
 			}
-			PlaySFX(v5);
 		}
 	} else {
-		v2 = i;
 		if (object[i]._oSelFlag) {
 			if (!deltaload)
-				PlaySfxLoc(IS_CHEST, object[v2]._ox, object[v2]._oy);
-			++object[v2]._oAnimFrame;
-			v3 = deltaload == 0;
-			object[v2]._oSelFlag = 0;
-			if (v3) {
-				GetSuperItemLoc(object[v2]._ox, object[v2]._oy, &xx, &yy);
-				SpawnQuestItem(IDI_MUSHROOM, xx, yy, 0, 0);
+				PlaySfxLoc(IS_CHEST, object[i]._ox, object[i]._oy);
+			object[i]._oAnimFrame++;
+			object[i]._oSelFlag = 0;
+			if (!deltaload) {
+				GetSuperItemLoc(object[i]._ox, object[i]._oy, &x, &y);
+				SpawnQuestItem(IDI_MUSHROOM, x, y, 0, 0);
 				quests[QTYPE_BLKM]._qvar1 = QS_MUSHSPAWNED;
 			}
 		}
 	}
 }
-// 676190: using guessed type int deltaload;
 
 void __fastcall OperateInnSignChest(int pnum, int i)
 {
-	int v4;     // esi
-	BOOLEAN v5; // zf
-	int xx;     // [esp+8h] [ebp-8h]
-	int yy;     // [esp+Ch] [ebp-4h]
+	int x, y;
 
-	if (quests[QTYPE_BOL]._qvar1 == 2) {
-		v4 = i;
-		if (object[i]._oSelFlag) {
-			if (!deltaload)
-				PlaySfxLoc(IS_CHEST, object[v4]._ox, object[v4]._oy);
-			object[v4]._oAnimFrame += 2;
-			v5 = deltaload == 0;
-			object[v4]._oSelFlag = 0;
-			if (v5) {
-				GetSuperItemLoc(object[v4]._ox, object[v4]._oy, &xx, &yy);
-				SpawnQuestItem(IDI_BANNER, xx, yy, 0, 0);
+	if (quests[QTYPE_BOL]._qvar1 != 2) {
+		if (!deltaload && pnum == myplr) {
+			if (plr[myplr]._pClass == PC_WARRIOR) {
+				PlaySFX(PS_WARR24);
+			} else if (plr[myplr]._pClass == PC_ROGUE) {
+				PlaySFX(PS_ROGUE24);
+			} else if (plr[myplr]._pClass == PC_SORCERER) {
+				PlaySFX(PS_MAGE24);
 			}
 		}
-	} else if (!deltaload && pnum == myplr) {
-		switch (plr[myplr]._pClass) {
-		case PC_WARRIOR:
-			PlaySFX(PS_WARR24);
-			break;
-		case PC_ROGUE:
-			PlaySFX(PS_ROGUE24);
-			break;
-		case PC_SORCERER:
-			PlaySFX(PS_MAGE24);
-			break;
+	} else {
+		if (object[i]._oSelFlag) {
+			if (!deltaload)
+				PlaySfxLoc(IS_CHEST, object[i]._ox, object[i]._oy);
+			object[i]._oAnimFrame += 2;
+			object[i]._oSelFlag = 0;
+			if (!deltaload) {
+				GetSuperItemLoc(object[i]._ox, object[i]._oy, &x, &y);
+				SpawnQuestItem(IDI_BANNER, x, y, 0, 0);
+			}
 		}
 	}
 }
@@ -3540,34 +3497,21 @@ void __fastcall OperateInnSignChest(int pnum, int i)
 
 void __fastcall OperateSlainHero(int pnum, int i, unsigned char sendmsg)
 {
-	unsigned short v3; // di
-	int v4;            // esi
-	int v5;            // eax
-	BOOLEAN v6;        // zf
-	int v8;            // ecx
-
-	v3 = i;
-	v4 = pnum;
-	v5 = i;
 	if (object[i]._oSelFlag) {
-		v6 = deltaload == 0;
-		object[v5]._oSelFlag = 0;
-		if (v6) {
+		object[i]._oSelFlag = 0;
+		if (!deltaload) {
 			if (plr[pnum]._pClass == PC_WARRIOR) {
-				CreateMagicArmor(object[v5]._ox, object[v5]._oy, 9, ICURS_BREAST_PLATE, 0, 1);
-				v8 = PS_WARR9;
+				CreateMagicArmor(object[i]._ox, object[i]._oy, 9, ICURS_BREAST_PLATE, 0, 1);
+				PlaySfxLoc(PS_WARR9, plr[myplr].WorldX, plr[myplr].WorldY);
 			} else if (plr[pnum]._pClass == PC_ROGUE) {
-				CreateMagicWeapon(object[v5]._ox, object[v5]._oy, 3, ICURS_LONG_WAR_BOW, 0, 1);
-				v8 = PS_ROGUE9;
+				CreateMagicWeapon(object[i]._ox, object[i]._oy, 3, ICURS_LONG_WAR_BOW, 0, 1);
+				PlaySfxLoc(PS_ROGUE9, plr[myplr].WorldX, plr[myplr].WorldY);
 			} else if (plr[pnum]._pClass == PC_SORCERER) {
-				CreateSpellBook(object[v5]._ox, object[v5]._oy, 3, 0, 1);
-				v8 = PS_MAGE9;
+				CreateSpellBook(object[i]._ox, object[i]._oy, 3, 0, 1);
+				PlaySfxLoc(PS_MAGE9, plr[myplr].WorldX, plr[myplr].WorldY);
 			}
-			PlaySfxLoc(v8, plr[myplr].WorldX, plr[myplr].WorldY);
-
-			if (v4 == myplr)
-				NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, v3);
-			return;
+			if (pnum == myplr)
+				NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, i);
 		}
 	}
 }

@@ -697,7 +697,7 @@ void __cdecl AddInitItems()
 				GetItemAttrs(ii, IDI_MANA, currlevel);
 			item[ii]._iCreateInfo = currlevel + -32768;
 			SetupItem(ii);
-			item[ii]._iAnimFlag = 0;
+			item[ii]._iAnimFlag = FALSE;
 			item[ii]._iAnimFrame = item[ii]._iAnimLen;
 			item[ii]._iSelFlag = 1;
 			DeltaAddItem(ii);
@@ -1838,7 +1838,7 @@ void __fastcall GetStaffSpell(int i, int lvl, unsigned char onlygood)
 
 void __fastcall GetItemAttrs(int i, int idata, int lvl)
 {
-	int rndv; // eax
+	int rndv;
 
 	item[i]._itype = AllItemsList[idata].itype;
 	item[i]._iCurs = AllItemsList[idata].iCurs;
@@ -1848,19 +1848,14 @@ void __fastcall GetItemAttrs(int i, int idata, int lvl)
 	item[i]._iClass = AllItemsList[idata].iClass;
 	item[i]._iMinDam = AllItemsList[idata].iMinDam;
 	item[i]._iMaxDam = AllItemsList[idata].iMaxDam;
-	item[i]._iMiscId = AllItemsList[idata].iMiscId;
 	item[i]._iAC = AllItemsList[idata].iMinAC + random(20, AllItemsList[idata].iMaxAC - AllItemsList[idata].iMinAC + 1);
 	item[i]._iFlags = AllItemsList[idata].iFlags;
+	item[i]._iMiscId = AllItemsList[idata].iMiscId;
 	item[i]._iSpell = AllItemsList[idata].iSpell;
+	item[i]._iMagical = ITEM_QUALITY_NORMAL;
 	item[i]._ivalue = AllItemsList[idata].iValue;
 	item[i]._iIvalue = AllItemsList[idata].iValue;
-	item[i]._iMagical = ITEM_QUALITY_NORMAL;
-	item[i]._iDurability = AllItemsList[idata].iDurability;
-	item[i]._iMaxDur = AllItemsList[idata].iDurability;
 	item[i]._iVAdd1 = 0;
-	item[i]._iMinStr = AllItemsList[idata].iMinStr;
-	item[i]._iMinMag = AllItemsList[idata].iMinMag;
-	item[i]._iMinDex = AllItemsList[idata].iMinDex;
 	item[i]._iVMult1 = 0;
 	item[i]._iVAdd2 = 0;
 	item[i]._iVMult2 = 0;
@@ -1873,6 +1868,11 @@ void __fastcall GetItemAttrs(int i, int idata, int lvl)
 	item[i]._iPLVit = 0;
 	item[i]._iCharges = 0;
 	item[i]._iMaxCharges = 0;
+	item[i]._iDurability = AllItemsList[idata].iDurability;
+	item[i]._iMaxDur = AllItemsList[idata].iDurability;
+	item[i]._iMinStr = AllItemsList[idata].iMinStr;
+	item[i]._iMinMag = AllItemsList[idata].iMinMag;
+	item[i]._iMinDex = AllItemsList[idata].iMinDex;
 	item[i]._iPLFR = 0;
 	item[i]._iPLLR = 0;
 	item[i]._iPLMR = 0;
@@ -1881,8 +1881,6 @@ void __fastcall GetItemAttrs(int i, int idata, int lvl)
 	item[i]._iPLGetHit = 0;
 	item[i]._iPLLight = 0;
 	item[i]._iSplLvlAdd = 0;
-	item[i]._iPrePower = -1;
-	item[i]._iSufPower = -1;
 	item[i]._iRequest = FALSE;
 	item[i]._iFMinDam = 0;
 	item[i]._iFMaxDam = 0;
@@ -1891,15 +1889,17 @@ void __fastcall GetItemAttrs(int i, int idata, int lvl)
 	item[i]._iPLEnAc = 0;
 	item[i]._iPLMana = 0;
 	item[i]._iPLHP = 0;
+	item[i]._iPrePower = -1;
+	item[i]._iSufPower = -1;
 
 	if (AllItemsList[idata].iMiscId == IMISC_BOOK)
 		GetBookSpell(i, lvl);
 
 	if (item[i]._itype == ITYPE_GOLD) {
-		if (gnDifficulty) /* clean this up, NORMAL */
-			rndv = lvl;
-		else
+		if (gnDifficulty == DIFF_NORMAL)
 			rndv = 5 * currlevel + random(21, 10 * currlevel);
+		else
+			rndv = lvl;
 
 		if (gnDifficulty == DIFF_NIGHTMARE)
 			rndv = 5 * (currlevel + 16) + random(21, 10 * (currlevel + 16));
@@ -1913,13 +1913,13 @@ void __fastcall GetItemAttrs(int i, int idata, int lvl)
 
 		item[i]._ivalue = rndv;
 
-		if (rndv < 2500)
-			item[i]._iCurs = (rndv > 1000) + 4;
-		else
+		if (rndv >= 2500)
 			item[i]._iCurs = ICURS_GOLD_LARGE;
+		else
+			item[i]._iCurs = (rndv > 1000) + 4;
 	}
 }
-// 5BB1ED: using guessed type char leveltype;
+
 
 int __fastcall RndPL(int param1, int param2)
 {
@@ -2467,24 +2467,23 @@ void __fastcall GetItemBonus(int i, int idata, int minlvl, int maxlvl, int onlyg
 
 void __fastcall SetupItem(int i)
 {
-	int it; // eax
-	int il; // eax
+	int it, il;
 
 	it = ItemCAnimTbl[item[i]._iCurs];
 	item[i]._iAnimWidth = 96;
 	item[i]._iAnimWidth2 = 16;
-	il = ItemAnimLs[it];
 	item[i]._iAnimData = itemanims[it];
+	il = ItemAnimLs[it];
 	item[i]._iAnimLen = il;
 	item[i]._iIdentified = FALSE;
-	item[i]._iPostDraw = 0;
+	item[i]._iPostDraw = FALSE;
 
 	if (!plr[myplr].pLvlLoad) {
 		item[i]._iSelFlag = 0;
 		il = 1;
-		item[i]._iAnimFlag = 1;
+		item[i]._iAnimFlag = TRUE;
 	} else {
-		item[i]._iAnimFlag = 0;
+		item[i]._iAnimFlag = FALSE;
 		item[i]._iSelFlag = 1;
 	}
 
@@ -3054,9 +3053,9 @@ void __fastcall SpawnQuestItem(int itemid, int x, int y, int randarea, int selfl
 		dItem[x][y] = i + 1;
 		GetItemAttrs(i, itemid, currlevel);
 		SetupItem(i);
-		item[i]._iPostDraw = 1;
+		item[i]._iPostDraw = TRUE;
 		if (selflag) {
-			item[i]._iAnimFlag = 0;
+			item[i]._iAnimFlag = FALSE;
 			item[i]._iSelFlag = selflag;
 			item[i]._iAnimFrame = item[i]._iAnimLen;
 		}
@@ -3109,7 +3108,7 @@ void __cdecl SpawnRock()
 		SetupItem(v4);
 		++numitems;
 		item[v6]._iSelFlag = 2;
-		item[v6]._iPostDraw = 1;
+		item[v6]._iPostDraw = TRUE;
 		item[v6]._iAnimFrame = 11;
 	}
 }
@@ -3125,15 +3124,15 @@ void __fastcall RespawnItem(int i, BOOL FlipFlag)
 	il = ItemAnimLs[it];
 	item[i]._iAnimLen = il;
 	item[i]._iAnimData = itemanims[it];
-	item[i]._iPostDraw = 0;
+	item[i]._iPostDraw = FALSE;
 	item[i]._iRequest = FALSE;
 
 	if (FlipFlag) {
 		item[i]._iSelFlag = 0;
 		il = 1;
-		item[i]._iAnimFlag = 1;
+		item[i]._iAnimFlag = TRUE;
 	} else {
-		item[i]._iAnimFlag = 0;
+		item[i]._iAnimFlag = FALSE;
 		item[i]._iSelFlag = 1;
 	}
 
@@ -3204,7 +3203,7 @@ void __cdecl ProcessItems()
 					PlaySfxLoc(ItemDropSnds[ItemCAnimTbl[item[ii]._iCurs]], item[ii]._ix, item[ii]._iy);
 
 				if (item[ii]._iAnimFrame >= item[ii]._iAnimLen) {
-					item[ii]._iAnimFlag = 0;
+					item[ii]._iAnimFlag = FALSE;
 					item[ii]._iAnimFrame = item[ii]._iAnimLen;
 					item[ii]._iSelFlag = 1;
 				}
@@ -4784,7 +4783,7 @@ int __cdecl ItemNoFlippy()
 	int r; // ecx
 
 	r = itemactive[numitems - 1];
-	item[r]._iAnimFlag = 0;
+	item[r]._iAnimFlag = FALSE;
 	item[r]._iAnimFrame = item[r]._iAnimLen;
 	item[r]._iSelFlag = 1;
 
