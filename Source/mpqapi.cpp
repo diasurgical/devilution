@@ -578,30 +578,28 @@ BOOLEAN __fastcall mpqapi_parse_archive_header(_FILEHEADER *pHdr, int *pdwNextFi
 
 void __fastcall mpqapi_close_archive(const char *pszArchive, BOOL bFree, int dwChar) // CloseMPQ
 {
-	const char *v3;  // esi
-	_BLOCKENTRY *v4; // ecx
-	_HASHENTRY *v5;  // ecx
+	_BLOCKENTRY *blockEntry;
+	_HASHENTRY *hashEntry;
 
-	v3 = pszArchive;
 	if (bFree) {
-		v4 = sgpBlockTbl;
+		blockEntry = sgpBlockTbl;
 		sgpBlockTbl = 0;
-		mem_free_dbg(v4);
-		v5 = sgpHashTbl;
+		mem_free_dbg(blockEntry);
+		hashEntry = sgpHashTbl;
 		sgpHashTbl = 0;
-		mem_free_dbg(v5);
+		mem_free_dbg(hashEntry);
 	}
-	if (sghArchive != (HANDLE)-1) {
+	if (sghArchive != INVALID_HANDLE_VALUE) {
 		CloseHandle(sghArchive);
-		sghArchive = (HANDLE)-1;
+		sghArchive = INVALID_HANDLE_VALUE;
 	}
 	if (save_archive_modified) {
-		save_archive_modified = 0;
-		mpqapi_store_modified_time(v3, dwChar);
+		save_archive_modified = FALSE;
+		mpqapi_store_modified_time(pszArchive, dwChar);
 	}
 	if (save_archive_open) {
-		save_archive_open = 0;
-		mpqapi_store_creation_time(v3, dwChar);
+		save_archive_open = FALSE;
+		mpqapi_store_creation_time(pszArchive, dwChar);
 	}
 }
 // 65AB0C: using guessed type int save_archive_modified;
