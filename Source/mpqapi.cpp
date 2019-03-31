@@ -449,21 +449,18 @@ int __fastcall mpqapi_find_free_block(int size, int *block_size)
 
 void __fastcall mpqapi_rename(char *pszOld, char *pszNew)
 {
-	char *v2;        // esi
-	int v3;          // eax
-	_HASHENTRY *v4;  // eax
-	int v5;          // ST00_4
-	_BLOCKENTRY *v6; // edx
+	int index, block; 
+	_HASHENTRY *hashEntry;
+	_BLOCKENTRY *blockEntry;
 
-	v2 = pszNew;
-	v3 = mpqapi_get_hash_index_of_path(pszOld);
-	if (v3 != -1) {
-		v4 = &sgpHashTbl[v3];
-		v5 = v4->block;
-		v6 = &sgpBlockTbl[v5];
-		v4->block = -2;
-		mpqapi_add_file(v2, v6, v5);
-		save_archive_modified = 1;
+	index = mpqapi_get_hash_index_of_path(pszOld);
+	if (index != -1) {
+		hashEntry = &sgpHashTbl[index];
+		block = hashEntry->block;
+		blockEntry = &sgpBlockTbl[block];
+		hashEntry->block = -2;
+		mpqapi_add_file(pszNew, blockEntry, block);
+		save_archive_modified = TRUE;
 	}
 }
 // 65AB0C: using guessed type int save_archive_modified;
