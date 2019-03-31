@@ -586,7 +586,7 @@ void __fastcall mpqapi_close_archive(const char *pszArchive, BOOL bFree, int dwC
 		sgpBlockTbl = 0;
 		mem_free_dbg(blockEntry);
 		hashEntry = sgpHashTbl;
-		sgpHashTbl = 0;
+		sgpHashTbl = NULL;
 		mem_free_dbg(hashEntry);
 	}
 	if (sghArchive != INVALID_HANDLE_VALUE) {
