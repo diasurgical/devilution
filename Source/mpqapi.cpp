@@ -583,7 +583,7 @@ void __fastcall mpqapi_close_archive(const char *pszArchive, BOOL bFree, int dwC
 
 	if (bFree) {
 		blockEntry = sgpBlockTbl;
-		sgpBlockTbl = 0;
+		sgpBlockTbl = NULL;
 		mem_free_dbg(blockEntry);
 		hashEntry = sgpHashTbl;
 		sgpHashTbl = NULL;
