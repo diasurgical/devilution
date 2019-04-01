@@ -6,12 +6,12 @@ LightListStruct VisionList[32];
 char lightactive[32];
 LightListStruct LightList[32];
 int numlights;
-char dung_map_radius[2048]; /* char [16][128] */
+BYTE lightradius[16][128];
 int dovision;               // weak
 int numvision;
 char lightmax;             // weak
 int dolighting;            // weak
-char dung_map_rgba[16384]; /* int [64][64] short [64][128] char [64][256] */
+BYTE lightblock[8][8][16][16];
 int visionid;
 char *pLightTbl; /* todo: struct? */
 BOOL lightflag;
@@ -451,279 +451,153 @@ unsigned char byte_49463C[18][18] = /* unused */
 
 unsigned char RadiusAdj[23] = { 0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 4, 3, 2, 2, 2, 1, 1, 1, 0, 0, 0, 0 };
 
-void __fastcall SetLightFX(int *x, int *y, short *s_r, short *s_g, int *s_b, int *d_r, int *d_g, int *d_b)
+void __fastcall RotateRadius(int *x, int *y, int *dx, int *dy, int *lx, int *ly, int *bx, int *by)
 {
-	short *v8;   // eax
-	int v9;      // edx
-	int *v10;    // [esp+Ch] [ebp-4h]
-	short *s_ra; // [esp+18h] [ebp+8h]
+	int swap;
 
-	*d_g = 0;
-	*d_b = 0;
-	v8 = s_r;
-	v10 = y;
-	v9 = *(_DWORD *)s_r;
-	*(_DWORD *)s_r = 7 - *(_DWORD *)s_g;
-	*(_DWORD *)s_g = v9;
-	s_ra = (short *)*s_b;
-	*s_b = 7 - *d_r;
-	*d_r = (int)s_ra;
-	*x = *(_DWORD *)v8 - *s_b;
-	*v10 = *(_DWORD *)s_g - *d_r;
-	if (*x < 0) {
+	*bx = 0;
+	*by = 0;
+
+	swap = *dx;
+	*dx = 7 - *dy;
+	*dy = swap;
+	swap = *lx;
+	*lx = 7 - *ly;
+	*ly = swap;
+
+	*x = *dx - *lx;
+	*y = *dy - *ly;
+
+	if(*x < 0) {
 		*x += 8;
-		*d_g = 1;
+		*bx = 1;
 	}
-	if (*v10 < 0) {
-		*v10 += 8;
-		*d_b = 1;
+	if(*y < 0) {
+		*y += 8;
+		*by = 1;
 	}
 }
 
 void __fastcall DoLighting(int nXPos, int nYPos, int nRadius, int Lnum)
 {
-	int v4;         // edi
-	int v5;         // ebx
-	int v6;         // ecx
-	int v7;         // eax
-	int v8;         // edx
-	int v9;         // esi
-	int v10;        // eax
-	char *v11;      // edi
-	signed int v12; // ecx
-	int v13;        // edx
-	_BYTE *v14;     // ecx
-	int v15;        // ebx
-	BOOLEAN v16;    // sf
-	//unsigned char v17; // of
-	int v18;        // esi
-	int v19;        // ecx
-	char *v20;      // edi
-	signed int v21; // eax
-	int v22;        // edx
-	_BYTE *v23;     // eax
-	int v24;        // ebx
-	int v25;        // eax
-	int v26;        // esi
-	char *v27;      // edi
-	signed int v28; // ecx
-	int v29;        // edx
-	_BYTE *v30;     // ecx
-	int v31;        // ebx
-	signed int v32; // ebx
-	int v33;        // ecx
-	char *v34;      // esi
-	signed int v35; // eax
-	int v36;        // edx
-	_BYTE *v37;     // eax
-	int v38;        // edi
-	short s_r[2];   // [esp+Ch] [ebp-44h]
-	short s_g[2];   // [esp+10h] [ebp-40h]
-	int s_b;        // [esp+14h] [ebp-3Ch]
-	int d_r;        // [esp+18h] [ebp-38h]
-	int v43;        // [esp+1Ch] [ebp-34h]
-	int v44;        // [esp+20h] [ebp-30h]
-	int v45;        // [esp+24h] [ebp-2Ch]
-	int v46;        // [esp+28h] [ebp-28h]
-	int v47;        // [esp+2Ch] [ebp-24h]
-	int v48;        // [esp+30h] [ebp-20h]
-	int d_g;        // [esp+34h] [ebp-1Ch]
-	int d_b;        // [esp+38h] [ebp-18h]
-	int v51;        // [esp+3Ch] [ebp-14h]
-	int v52;        // [esp+40h] [ebp-10h]
-	int y;          // [esp+44h] [ebp-Ch]
-	int x;          // [esp+48h] [ebp-8h]
-	int v55;        // [esp+4Ch] [ebp-4h]
-	int Lnuma;      // [esp+5Ch] [ebp+Ch]
-	int Lnumb;      // [esp+5Ch] [ebp+Ch]
-	int Lnumc;      // [esp+5Ch] [ebp+Ch]
-	int Lnumd;      // [esp+5Ch] [ebp+Ch]
+	int x, y, v, xoff, yoff, mult, radius_block;
+	int min_x, max_x, min_y, max_y;
+	int dist_x, dist_y, light_x, light_y, block_x, block_y, temp_x, temp_y;
 
-	v4 = nYPos;
-	v5 = nXPos;
-	v6 = 0;
-	v7 = 0;
-	v48 = nYPos;
-	v52 = v5;
-	x = 0;
-	y = 0;
-	s_b = 0;
-	d_r = 0;
-	d_g = 0;
-	d_b = 0;
-	if (Lnum >= 0) {
-		v7 = LightList[Lnum]._yoff;
-		x = LightList[Lnum]._xoff;
-		v6 = x;
-		y = v7;
-		if (x < 0) {
-			v6 = x + 8;
-			--v5;
-			x += 8;
-			v52 = v5;
+	xoff = 0;
+	yoff = 0;
+	light_x = 0;
+	light_y = 0;
+	block_x = 0;
+	block_y = 0;
+
+	if(Lnum >= 0) {
+		xoff = LightList[Lnum]._xoff;
+		yoff = LightList[Lnum]._yoff;
+		if(xoff < 0) {
+			xoff += 8;
+			nXPos--;
 		}
-		if (v7 < 0) {
-			v7 += 8;
-			v4 = nYPos - 1;
-			y = v7;
-			v48 = nYPos - 1;
+		if(yoff < 0) {
+			yoff += 8;
+			nYPos--;
 		}
 	}
-	*(_DWORD *)s_r = v6;
-	*(_DWORD *)s_g = v7;
-	v8 = 15;
-	if (v5 - 15 >= 0)
-		v44 = 15;
-	else
-		v44 = v5 + 1;
-	if (v5 + 15 <= 112)
-		v46 = 15;
-	else
-		v46 = 112 - v5;
-	if (v4 - 15 >= 0)
-		v43 = 15;
-	else
-		v43 = v4 + 1;
-	if (v4 + 15 > 112)
-		v8 = 112 - v4;
-	v45 = v8;
-	if (v5 >= 0 && v5 < MAXDUNX && v4 >= 0 && v4 < MAXDUNY)
-		dTransVal[v5][v4] = 0;
-	v55 = 0;
-	v51 = v6 + 8 * v7;
-	if (v43 > 0) {
-		v47 = v4;
-		do {
-			Lnuma = 1;
-			if (v46 > 1) {
-				v9 = v5 + 1;
-				v10 = 112 * (v5 + 1);
-				v11 = &dung_map_rgba[16 * (v55 + 16 * v51)];
-				do {
-					v12 = (unsigned char)v11[Lnuma];
-					if (v12 < 128) {
-						v13 = (unsigned char)dung_map_radius[128 * nRadius + v12];
-						if (v9 >= 0 && v9 < 112 && v47 >= 0 && v47 < 112) {
-							v14 = (unsigned char *)dTransVal + v47 + v10;
-							v15 = (char)*v14;
-							//v17 = __OFSUB__(v13, v15);
-							v16 = v13 - v15 < 0;
-							v5 = v52;
-							if (v16) // if (v16 ^ v17)
-								*v14 = v13;
-						}
-					}
-					++Lnuma;
-					v10 += 112;
-					++v9;
-				} while (Lnuma < v46);
-				v4 = v48;
-			}
-			++v55;
-			++v47;
-		} while (v55 < v43);
+
+	dist_x = xoff;
+	dist_y = yoff;
+
+	if(nXPos - 15 < 0) {
+		min_x = nXPos + 1;
+	} else {
+		min_x = 15;
 	}
-	SetLightFX(&x, &y, s_r, s_g, &s_b, &d_r, &d_g, &d_b);
-	v18 = 0;
-	v51 = x + 8 * y;
-	if (v45 > 0) {
-		v47 = 112 * v5;
-		do {
-			Lnumb = 1;
-			if (v46 > 1) {
-				v19 = v4 - 1;
-				v20 = &dung_map_rgba[16 * (d_b + v18 + 16 * v51) + d_g];
-				do {
-					v21 = (unsigned char)v20[Lnumb];
-					if (v21 < 128) {
-						v22 = (unsigned char)dung_map_radius[128 * nRadius + v21];
-						if (v18 + v5 >= 0 && v18 + v5 < 112 && v19 >= 0 && v19 < 112) {
-							v23 = (unsigned char *)dTransVal + v47 + v19;
-							v24 = (char)*v23;
-							//v17 = __OFSUB__(v22, v24);
-							v16 = v22 - v24 < 0;
-							v5 = v52;
-							if (v16) //if (v16 ^ v17)
-								*v23 = v22;
-						}
-					}
-					++Lnumb;
-					--v19;
-				} while (Lnumb < v46);
-				v4 = v48;
-			}
-			v47 += 112;
-			++v18;
-		} while (v18 < v45);
+	if(nXPos + 15 > MAXDUNX) {
+		max_x = MAXDUNX - nXPos;
+	} else {
+		max_x = 15;
 	}
-	SetLightFX(&x, &y, s_r, s_g, &s_b, &d_r, &d_g, &d_b);
-	v55 = 0;
-	v51 = x + 8 * y;
-	if (v45 > 0) {
-		v46 = v4;
-		do {
-			Lnumc = 1;
-			if (v44 > 1) {
-				v25 = 112 * v5 - 112;
-				v26 = v5 - 1;
-				v27 = &dung_map_rgba[16 * (d_b + v55 + 16 * v51) + d_g];
-				do {
-					v28 = (unsigned char)v27[Lnumc];
-					if (v28 < 128) {
-						v29 = (unsigned char)dung_map_radius[128 * nRadius + v28];
-						if (v26 >= 0 && v26 < 112 && v46 >= 0 && v46 < 112) {
-							v30 = (unsigned char *)dTransVal + v46 + v25;
-							v31 = (char)*v30;
-							//v17 = __OFSUB__(v29, v31);
-							v16 = v29 - v31 < 0;
-							v5 = v52;
-							if (v16) //if (v16 ^ v17)
-								*v30 = v29;
-						}
-					}
-					++Lnumc;
-					v25 -= 112;
-					--v26;
-				} while (Lnumc < v44);
-				v4 = v48;
-			}
-			++v55;
-			--v46;
-		} while (v55 < v45);
+	if(nYPos - 15 < 0) {
+		min_y = nYPos + 1;
+	} else {
+		min_y = 15;
 	}
-	SetLightFX(&x, &y, s_r, s_g, &s_b, &d_r, &d_g, &d_b);
-	v55 = 0;
-	v51 = x + 8 * y;
-	if (v43 > 0) {
-		Lnumd = v5;
-		*(_DWORD *)s_r = 112 * v5;
-		do {
-			v32 = 1;
-			if (v44 > 1) {
-				v33 = v4 + 1;
-				v34 = &dung_map_rgba[16 * (d_b + v55 + 16 * v51) + d_g];
-				do {
-					v35 = (unsigned char)v34[v32];
-					if (v35 < 128) {
-						v36 = (unsigned char)dung_map_radius[128 * nRadius + v35];
-						if (Lnumd >= 0 && Lnumd < 112 && v33 >= 0 && v33 < 112) {
-							v37 = (unsigned char *)dTransVal + v33 + *(_DWORD *)s_r;
-							v38 = (char)*v37;
-							//v17 = __OFSUB__(v36, v38);
-							v16 = v36 - v38 < 0;
-							v4 = v48;
-							if (v16) //if (v16 ^ v17)
-								*v37 = v36;
-						}
+	if(nYPos + 15 > MAXDUNY) {
+		max_y = MAXDUNY - nYPos;
+	} else {
+		max_y = 15;
+	}
+
+	if(nXPos >= 0 && nXPos < MAXDUNX && nYPos >= 0 && nYPos < MAXDUNY) {
+		dTransVal[nXPos][nYPos] = 0;
+	}
+
+	mult = xoff + 8 * yoff;
+	for(y = 0; y < min_y; y++) {
+		for(x = 1; x < max_x; x++) {
+			radius_block = lightblock[0][mult][y][x];
+			if(radius_block < 128) {
+				temp_x = nXPos + x;
+				temp_y = nYPos + y;
+				v = lightradius[nRadius][radius_block];
+				if(temp_x >= 0 && temp_x < MAXDUNX && temp_y >= 0 && temp_y < MAXDUNY) {
+					if(v < dTransVal[temp_x][temp_y]) {
+						dTransVal[temp_x][temp_y] = v;
 					}
-					++v32;
-					++v33;
-				} while (v32 < v44);
+				}
 			}
-			++v55;
-			--Lnumd;
-			*(_DWORD *)s_r -= 112;
-		} while (v55 < v43);
+		}
+	}
+	RotateRadius(&xoff, &yoff, &dist_x, &dist_y, &light_x, &light_y, &block_x, &block_y);
+	mult = xoff + 8 * yoff;
+	for(y = 0; y < max_y; y++) {
+		for(x = 1; x < max_x; x++) {
+			radius_block = lightblock[0][mult][y + block_y][x + block_x];
+			if(radius_block < 128) {
+				temp_x = nXPos + y;
+				temp_y = nYPos - x;
+				v = lightradius[nRadius][radius_block];
+				if(temp_x >= 0 && temp_x < MAXDUNX && temp_y >= 0 && temp_y < MAXDUNY) {
+					if(v < dTransVal[temp_x][temp_y]) {
+						dTransVal[temp_x][temp_y] = v;
+					}
+				}
+			}
+		}
+	}
+	RotateRadius(&xoff, &yoff, &dist_x, &dist_y, &light_x, &light_y, &block_x, &block_y);
+	mult = xoff + 8 * yoff;
+	for(y = 0; y < max_y; y++) {
+		for(x = 1; x < min_x; x++) {
+			radius_block = lightblock[0][mult][y + block_y][x + block_x];
+			if(radius_block < 128) {
+				temp_x = nXPos - x;
+				temp_y = nYPos - y;
+				v = lightradius[nRadius][radius_block];
+				if(temp_x >= 0 && temp_x < MAXDUNX && temp_y >= 0 && temp_y < MAXDUNY) {
+					if(v < dTransVal[temp_x][temp_y]) {
+						dTransVal[temp_x][temp_y] = v;
+					}
+				}
+			}
+		}
+	}
+	RotateRadius(&xoff, &yoff, &dist_x, &dist_y, &light_x, &light_y, &block_x, &block_y);
+	mult = xoff + 8 * yoff;
+	for(y = 0; y < min_y; y++) {
+		for(x = 1; x < min_x; x++) {
+			radius_block = lightblock[0][mult][y + block_y][x + block_x];
+			if(radius_block < 128) {
+				temp_x = nXPos - y;
+				temp_y = nYPos + x;
+				v = lightradius[nRadius][radius_block];
+				if(temp_x >= 0 && temp_x < MAXDUNX && temp_y >= 0 && temp_y < MAXDUNY) {
+					if(v < dTransVal[temp_x][temp_y]) {
+						dTransVal[temp_x][temp_y] = v;
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -797,145 +671,92 @@ void __fastcall DoUnVision(int nXPos, int nYPos, int nRadius)
 	}
 }
 
-void __fastcall DoVision(int nXPos, int nYPos, int nRadius, unsigned char doautomap, int visible)
+void __fastcall DoVision(int nXPos, int nYPos, int nRadius, BOOL doautomap, BOOL visible)
 {
-	char *v5;           // esi
-	int v6;             // esi
-	int v7;             // edi
-	unsigned char *v8;  // eax
-	int v9;             // ebx
-	int v10;            // ecx
-	unsigned char v11;  // dl
-	int v12;            // ecx
-	int v13;            // ecx
-	unsigned char v14;  // cl
-	unsigned char v15;  // dl
-	int v16;            // ecx
-	int v17;            // ecx
-	int i;              // [esp+Ch] [ebp-34h]
-	unsigned char *v19; // [esp+10h] [ebp-30h]
-	int v20;            // [esp+14h] [ebp-2Ch]
-	int v21;            // [esp+18h] [ebp-28h]
-	int v22;            // [esp+1Ch] [ebp-24h]
-	signed int v23;     // [esp+20h] [ebp-20h]
-	signed int v24;     // [esp+24h] [ebp-1Ch]
-	signed int v25;     // [esp+28h] [ebp-18h]
-	signed int v26;     // [esp+2Ch] [ebp-14h]
-	signed int v27;     // [esp+30h] [ebp-10h]
-	int v28;            // [esp+34h] [ebp-Ch]
-	int v29;            // [esp+38h] [ebp-8h]
-	unsigned char v30;  // [esp+3Fh] [ebp-1h]
-	unsigned char v31;  // [esp+3Fh] [ebp-1h]
+	int nCrawlX, nCrawlY, nLineLen, nBlockerFlag, nTrans;
+	int j, k, v, x1adj, x2adj, y1adj, y2adj;
 
-	v28 = nYPos;
-	v29 = nXPos;
-	if (nXPos >= 0 && nXPos <= MAXDUNX && nYPos >= 0 && nYPos <= MAXDUNY) {
-		if (doautomap) {
-			v5 = &dFlags[nXPos][nYPos];
-			if (*v5 >= 0) {
+	if(nXPos >= 0 && nXPos <= MAXDUNX && nYPos >= 0 && nYPos <= MAXDUNY) {
+		if(doautomap) {
+			if(dFlags[nXPos][nYPos] >= 0) {
 				SetAutomapView(nXPos, nXPos);
-				nYPos = v28;
-				nXPos = v29;
 			}
-			*v5 |= DFLAG_EXPLORED;
+			dFlags[nXPos][nYPos] |= 0x80;
 		}
-		if (visible)
-			dFlags[nXPos][nYPos] |= DFLAG_LIT;
-		dFlags[nXPos][nYPos] |= DFLAG_VISIBLE;
+		if(visible) {
+			dFlags[nXPos][nYPos] |= 0x40;
+		}
+		dFlags[nXPos][nYPos] |= 2;
 	}
-	v27 = 0;
-	v6 = doautomap;
-	v7 = doautomap;
-	do {
-		v20 = 0;
-		v8 = &vCrawlTable[0][1];
-		v19 = &vCrawlTable[0][1];
-		do {
-			v9 = 0;
-			v21 = 0;
-			for (i = 2 * (nRadius - RadiusAdj[v20]); v9 < i; v9 += 2) {
-				if (v21)
+
+	for(v = 0; v < 4; v++) {
+		for(j = 0; j < 23; j++) {
+			nBlockerFlag = FALSE;
+			nLineLen = 2 * (nRadius - RadiusAdj[j]);
+			for(k = 0; k < nLineLen && !nBlockerFlag; k += 2) {
+				x1adj = 0;
+				x2adj = 0;
+				y1adj = 0;
+				y2adj = 0;
+				switch(v) {
+				case 0:
+					nCrawlX = nXPos + vCrawlTable[j][k];
+					nCrawlY = nYPos + vCrawlTable[j][k + 1];
+					if(vCrawlTable[j][k] > 0 && vCrawlTable[j][k + 1] > 0) {
+						x1adj = -1;
+						y2adj = -1;
+					}
 					break;
-				v26 = 0;
-				v24 = 0;
-				v25 = 0;
-				v23 = 0;
-				if (v27) {
-					switch (v27) {
-					case 1:
-						v13 = v8[v9 - 1];
-						v6 = v29 - (unsigned char)v13;
-						v31 = v8[v9];
-						v7 = v28 - v31;
-						if ((_BYTE)v13 && v31) {
-							v25 = 1;
-							v24 = 1;
-						}
-						break;
-					case 2:
-						v12 = v8[v9 - 1];
-						v30 = v8[v9];
-						v6 = v29 + (unsigned char)v12;
-						v7 = v28 - v30;
-						if ((_BYTE)v12 && v30) {
-							v26 = -1;
-							v23 = 1;
-						}
-						break;
-					case 3:
-						v10 = v8[v9 - 1];
-						v6 = v29 - (unsigned char)v10;
-						v11 = v8[v9];
-						v7 = v28 + v11;
-						if ((_BYTE)v10) {
-							if (v11) {
-								v25 = -1;
-								v24 = 1;
-							}
-						}
-						break;
+				case 1:
+					nCrawlX = nXPos - vCrawlTable[j][k];
+					nCrawlY = nYPos - vCrawlTable[j][k + 1];
+					if(vCrawlTable[j][k] > 0 && vCrawlTable[j][k + 1] > 0) {
+						y1adj = 1;
+						x2adj = 1;
 					}
-				} else {
-					v14 = v8[v9 - 1];
-					v15 = v8[v9];
-					v6 = v29 + v14;
-					v7 = v28 + v15;
-					if (v14 && v15) {
-						v26 = -1;
-						v23 = -1;
+					break;
+				case 2:
+					nCrawlX = nXPos + vCrawlTable[j][k];
+					nCrawlY = nYPos - vCrawlTable[j][k + 1];
+					if(vCrawlTable[j][k] > 0 && vCrawlTable[j][k + 1] > 0) {
+						x1adj = -1;
+						y2adj = 1;
 					}
+					break;
+				case 3:
+					nCrawlX = nXPos - vCrawlTable[j][k];
+					nCrawlY = nYPos + vCrawlTable[j][k + 1];
+					if(vCrawlTable[j][k] > 0 && vCrawlTable[j][k + 1] > 0) {
+						y1adj = -1;
+						x2adj = 1;
+					}
+					break;
 				}
-				if (v6 >= 0 && v6 <= MAXDUNX && v7 >= 0 && v7 <= MAXDUNY) {
-					v22 = v7 + 112 * v6;
-					v21 = (unsigned char)nBlockTable[dPiece[0][v22]];
-					if (!nBlockTable[dPiece[v6 + v26][v25 + v7]]
-					    || !nBlockTable[dPiece[v6 + v24][v23 + v7]]) {
-						v16 = v7 + 112 * v6;
-						if (doautomap) {
-							if (dFlags[0][v22] >= 0) {
-								SetAutomapView(v6, v7);
-								v16 = v7 + 112 * v6;
-								v8 = v19;
+				if(nCrawlX >= 0 && nCrawlX <= MAXDUNX && nCrawlY >= 0 && nCrawlY <= MAXDUNY) {
+					nBlockerFlag = (unsigned char)nBlockTable[dPiece[nCrawlX][nCrawlY]];
+					if(!nBlockTable[dPiece[x1adj + nCrawlX][y1adj + nCrawlY]]
+					|| !nBlockTable[dPiece[x2adj + nCrawlX][y2adj + nCrawlY]]) {
+						if(doautomap) {
+							if(dFlags[nCrawlX][nCrawlY] >= 0) {
+								SetAutomapView(nCrawlX, nCrawlY);
 							}
-							dFlags[0][v16] |= DFLAG_EXPLORED;
+							dFlags[nCrawlX][nCrawlY] |= 0x80;
 						}
-						if (visible)
-							dFlags[0][v16] |= DFLAG_LIT;
-						dFlags[0][v16] |= DFLAG_VISIBLE;
-						if (!v21) {
-							v17 = dung_map[0][v16];
-							if (v17)
-								TransList[v17] = 1;
+						if(visible) {
+							dFlags[nCrawlX][nCrawlY] |= 0x40;
+						}
+						dFlags[nCrawlX][nCrawlY] |= 2;
+						if(!nBlockerFlag) {
+							nTrans = dung_map[nCrawlX][nCrawlY];
+							if(nTrans != 0) {
+								TransList[nTrans] = 1;
+							}
 						}
 					}
 				}
 			}
-			++v20;
-			v8 += 30;
-			v19 = v8;
-		} while ((signed int)v8 < (signed int)&vCrawlTable[23][1]);
-		++v27;
-	} while (v27 < 4);
+		}
+	}
 }
 
 void __cdecl FreeLightTable()
@@ -954,290 +775,183 @@ void __cdecl InitLightTable()
 
 void __cdecl MakeLightTable()
 {
-	char *v0;           // ebx
-	signed int v1;      // esi
-	unsigned char v2;   // al
-	unsigned char v3;   // cl
-	signed int v4;      // edi
-	int v5;             // edx
-	signed int v6;      // edi
-	unsigned char v7;   // cl
-	unsigned char v8;   // al
-	signed int v9;      // edx
-	unsigned char v10;  // cl
-	unsigned char v11;  // al
-	char *v12;          // ebx
-	char *v13;          // ebx
-	int v14;            // ecx
-	signed int v15;     // esi
-	char v16;           // al
-	int v17;            // edx
-	int v18;            // ebx
-	signed int v19;     // esi
-	_BYTE *v20;         // ebx
-	char *v21;          // ebx
-	int v22;            // edi
-	unsigned char *v23; // esi
-	signed int v24;     // edx
-	unsigned char *v25; // esi
-	signed int v26;     // edx
-	signed int v27;     // ecx
-	char v28;           // al
-	_BYTE *v29;         // ebx
-	signed int v30;     // edx
-	char v31;           // al
-	signed int v32;     // ecx
-	signed int v33;     // ecx
-	char v34;           // al
-	int v35;            // eax
-	signed int v36;     // esi
-	char *v37;          // eax
-	signed int v38;     // ebx
-	int v39;            // esi
-	double v40;         // st7
-	double v41;         // st6
-	int v42;            // ecx
-	char *v43;          // ecx
-	BOOLEAN v44;        // zf
-	char v45[16];       // [esp+14h] [ebp-2Ch] /* check */
-	int v46;            // [esp+24h] [ebp-1Ch]
-	int v47;            // [esp+28h] [ebp-18h]
-	char *v48;          // [esp+2Ch] [ebp-14h]
-	int v49;            // [esp+30h] [ebp-10h]
-	int v50;            // [esp+34h] [ebp-Ch]
-	int v51;            // [esp+38h] [ebp-8h]
-	int v52;            // [esp+3Ch] [ebp-4h]
+	int i, j, k, l, lights, shade, l1, l2, cnt, rem, div;
+	double fs, fa;
+	BYTE col, max;
+	BYTE *tbl, *trn;
+	BYTE blood[16];
 
-	v51 = 0;
-	v0 = pLightTbl;
-	v1 = light4flag != 0 ? 3 : 15;
-	v50 = light4flag != 0 ? 3 : 15;
-	if (v1 > 0) {
-		v49 = light4flag != 0 ? 3 : 15;
-		do {
-			*v0++ = 0;
-			v52 = 0;
-			do {
-				v2 = 16 * v52 + 15;
-				v3 = v51 + 16 * v52;
-				v4 = 0;
-				do {
-					if (v4 || v52)
-						*v0++ = v3;
-					if (v3 >= v2) {
-						v2 = 0;
-						v3 = 0;
-					} else {
-						++v3;
-					}
-					++v4;
-				} while (v4 < 16);
-				++v52;
-			} while (v52 < 8);
-			v52 = 16;
-			v5 = v51 >> 1;
-			do {
-				v6 = 8;
-				v7 = v5 + 8 * v52;
-				v8 = 8 * v52 + 7;
-				do {
-					*v0++ = v7;
-					if (v7 >= v8) {
-						v8 = 0;
-						v7 = 0;
-					} else {
-						++v7;
-					}
-					--v6;
-				} while (v6);
-				++v52;
-			} while (v52 < 20);
-			v52 = 10;
-			do {
-				v9 = 16;
-				v10 = v51 + 16 * v52;
-				v11 = 16 * v52 + 15;
-				do {
-					*v0++ = v10;
-					if (v10 >= v11) {
-						v11 = 0;
-						v10 = 0;
-					} else {
-						++v10;
-					}
-					if (v10 == LOBYTE(-1)) {
-						v11 = 0;
-						v10 = 0;
-					}
-					--v9;
-				} while (v9);
-				++v52;
-			} while (v52 < 16);
-			if (light4flag)
-				v51 += 5;
-			else
-				++v51;
-			--v49;
-		} while (v49);
+	tbl = (BYTE *)pLightTbl;
+	shade = 0;
+
+	if(light4flag) {
+		lights = 3;
+	} else {
+		lights = 15;
 	}
-	memset(v0, 0, 0x100u);
-	v12 = v0 + 256;
-	if (leveltype == DTYPE_HELL) {
-		v13 = pLightTbl;
-		if (v1 > 0) {
-			v14 = v50;
-			v49 = v50;
-			do {
-				v52 = 0;
-				v45[0] = 0;
-				v51 = v14;
-				v15 = 1;
-				v48 = (char *)(v50 / v14);
-				v47 = v50 % v14;
-				v16 = 1;
-				do {
-					v17 = v51;
-					v45[v15] = v16;
-					v51 = v47 + v17;
-					if (v47 + v17 > v14 && v15 < 15) {
-						++v15;
-						v51 -= v14;
-						v45[v15] = v16;
-					}
-					if ((char *)++v52 == v48) {
-						++v16;
-						v52 = 0;
-					}
-					++v15;
-				} while (v15 < 16);
-				*v13 = 0;
-				v18 = (int)(v13 + 1);
-				*(_DWORD *)v18 = *(_DWORD *)&v45[1];
-				*(_DWORD *)(v18 + 4) = *(_DWORD *)&v45[5];
-				*(_DWORD *)(v18 + 8) = *(_DWORD *)&v45[9];
-				*(_WORD *)(v18 + 12) = *(_WORD *)&v45[13];
-				*(_BYTE *)(v18 + 14) = v45[15];
-				v19 = 15;
-				v20 = (_BYTE *)(v18 + 15);
-				do
-					*v20++ = v45[v19--];
-				while (v19 > 0);
-				*v20 = 1;
-				v13 = (char *)v20 + 225;
-				--v14;
-				--v49;
-			} while (v49);
+
+	for(i = 0; i < lights; i++) {
+		*tbl++ = 0;
+		for(j = 0; j < 8; j++) {
+			col = 16 * j + shade;
+			max = 16 * j + 15;
+			for(k = 0; k < 16; k++) {
+				if(k != 0 || j != 0) {
+					*tbl++ = col;
+				}
+				if(col < max) {
+					col++;
+				} else {
+					max = 0;
+					col = 0;
+				}
+			}
 		}
-		*v13 = 0;
-		v21 = v13 + 1;
-		memset(v21, 1u, 0x1Cu);
-		v22 = (int)(v21 + 28);
-		*(_WORD *)v22 = 257;
-		*(_BYTE *)(v22 + 2) = 1;
-		v12 = v21 + 255;
+		for(j = 16; j < 20; j++) {
+			col = 8 * j + (shade >> 1);
+			max = 8 * j + 7;
+			for(k = 0; k < 8; k++) {
+				*tbl++ = col;
+				if(col < max) {
+					col++;
+				} else {
+					max = 0;
+					col = 0;
+				}
+			}
+		}
+		for(j = 10; j < 16; j++) {
+			col = 16 * j + shade;
+			max = 16 * j + 15;
+			for(k = 0; k < 16; k++) {
+				*tbl++ = col;
+				if(col < max) {
+					col++;
+				} else {
+					max = 0;
+					col = 0;
+				}
+				if(col == 255) {
+					max = 0;
+					col = 0;
+				}
+			}
+		}
+		if(light4flag) {
+			shade += 5;
+		} else {
+			shade++;
+		}
 	}
-	v23 = LoadFileInMem("PlrGFX\\Infra.TRN", 0);
-	v24 = 0;
-	do
-		*v12++ = v23[v24++];
-	while (v24 < 256);
-	mem_free_dbg(v23);
-	v25 = LoadFileInMem("PlrGFX\\Stone.TRN", 0);
-	v26 = 0;
-	do
-		*v12++ = v25[v26++];
-	while (v26 < 256);
-	mem_free_dbg(v25);
-	v27 = 0;
-	do {
-		v28 = -30;
-		do {
-			if (v27 || v28 != -30)
-				*v12 = v28;
-			else
-				*v12 = 0;
-			++v12;
-			++v28;
-		} while ((unsigned char)v28 < 0xEFu);
-		*v12 = 0;
-		v29 = (unsigned char *)v12 + 1;
-		*v29++ = 0;
-		*v29 = 0;
-		v12 = (char *)v29 + 1;
-		++v27;
-	} while (v27 < 8);
-	v30 = 4;
-	do {
-		v31 = -32;
-		v32 = 8;
-		do {
-			*v12++ = v31;
-			v31 += 2;
-			--v32;
-		} while (v32);
-		--v30;
-	} while (v30);
-	v33 = 6;
-	do {
-		v34 = -32;
-		do
-			*v12++ = v34++;
-		while ((unsigned char)v34 < 0xEFu);
-		*v12++ = 0;
-		--v33;
-	} while (v33);
-	v35 = 0;
-	v51 = (int)dung_map_radius;
-	v52 = 8;
-	do {
-		v36 = 0;
-		v49 = 0;
-		v50 = v35 + 1;
-		do {
-			if (v36 <= v52)
-				*(_BYTE *)(v51 + v36) = (signed __int64)((double)v49 * 15.0 / ((double)v50 * 8.0) + 0.5);
-			else
-				*(_BYTE *)(v51 + v36) = 15;
-			v49 = ++v36;
-		} while (v36 < 128);
-		v52 += 8;
-		v51 += 128;
-		v35 = v50;
-	} while (v52 < 136);
-	v49 = 0;
-	v37 = dung_map_rgba;
-	do {
-		v52 = 0;
-		do {
-			v48 = v37;
-			v50 = v49;
-			v47 = 16;
-			do {
-				v38 = 0;
-				v39 = v50 * v50;
-				v51 = v52;
-				do {
-					v46 = v39 + v51 * v51;
-					v46 = (unsigned char)(signed __int64)sqrt((double)v46);
-					v40 = (double)v46;
-					if (v40 >= 0.0)
-						v41 = 0.5;
-					else
-						v41 = -0.5;
-					v42 = (int)v48;
-					v51 += 8;
-					v48[v38++] = (signed __int64)(v41 + v40);
-				} while (v38 < 16);
-				v50 += 8;
-				v43 = (char *)(v42 + 16);
-				v44 = v47-- == 1;
-				v48 = v43;
-			} while (!v44);
-			--v52;
-			v37 = v43;
-		} while (v52 > -8);
-		--v49;
-	} while ((signed int)v43 < (signed int)&dung_map_rgba[16384]);
+
+	for(i = 0; i < 256; i++) {
+		*tbl++ = 0;
+	}
+
+	if(leveltype == DTYPE_HELL) {
+		tbl = (BYTE *)pLightTbl;
+		for(i = 0; i < lights; i++) {
+			l1 = lights - i;
+			l2 = l1;
+			div = lights / l1;
+			rem = lights % l1;
+			cnt = 0;
+			blood[0] = 0;
+			col = 1;
+			for(j = 1; j < 16; j++) {
+				blood[j] = col;
+				l2 += rem;
+				if(l2 > l1 && j < 15) {
+					j++;
+					blood[j] = col;
+					l2 -= l1;
+				}
+				cnt++;
+				if(cnt == div) {
+					col++;
+					cnt = 0;
+				}
+			}
+			*tbl++ = 0;
+			for(j = 1; j <= 15; j++) {
+				*tbl++ = blood[j];
+			}
+			for(j = 15; j > 0; j--) {
+				*tbl++ = blood[j];
+			}
+			*tbl++ = 1;
+			tbl += 224;
+		}
+		*tbl++ = 0;
+		for(j = 0; j < 31; j++) {
+			*tbl++ = 1;
+		}
+		tbl += 224;
+	}
+
+	trn = LoadFileInMem("PlrGFX\\Infra.TRN", 0);
+	for(i = 0; i < 256; i++) {
+		*tbl++ = trn[i];
+	}
+	mem_free_dbg(trn);
+
+	trn = LoadFileInMem("PlrGFX\\Stone.TRN", 0);
+	for(i = 0; i < 256; i++) {
+		*tbl++ = trn[i];
+	}
+	mem_free_dbg(trn);
+
+	for(i = 0; i < 8; i++) {
+		for(col = 226; col < 239; col++) {
+			if(i != 0 || col != 226) {
+				*tbl++ = col;
+			} else {
+				*tbl++ = 0;
+			}
+		}
+		*tbl++ = 0;
+		*tbl++ = 0;
+		*tbl++ = 0;
+	}
+	for(i = 0; i < 4; i++) {
+		col = 224;
+		for(j = 224; j < 239; j += 2) {
+			*tbl++ = col;
+			col += 2;
+		}
+	}
+	for(i = 0; i < 6; i++) {
+		for(col = 224; col < 239; col++) {
+			*tbl++ = col;
+		}
+		*tbl++ = 0;
+	}
+
+	for(i = 0; i < 16; i++) {
+		for(j = 0; j < 128; j++) {
+			if(j > (i + 1) * 8) { /* check */
+				lightradius[i][j] = 15;
+			} else {
+				lightradius[i][j] = j * 15.0 / ((i + 1) * 8.0) + 0.5;
+			}
+		}
+	}
+
+	for(i = 0; i < 8; i++) {
+		for(j = 0; j < 8; j++) {
+			for(k = 0; k < 16; k++) {
+				for(l = 0; l < 16; l++) {
+					fs = (BYTE)sqrt((8 * l - j) * (8 * l - j) + (8 * k - i) * (8 * k - i));
+					if(fs < 0.0) {
+						fa = -0.5;
+					} else {
+						fa = 0.5;
+					}
+					lightblock[i][j][k][l] = fs + fa;
+				}
+			}
+		}
+	}
 }
 // 525728: using guessed type int light4flag;
 
