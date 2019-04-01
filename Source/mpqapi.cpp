@@ -55,29 +55,30 @@ void __fastcall mpqapi_store_creation_time(const char *pszArchive, int dwChar)
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-BOOLEAN __fastcall mpqapi_reg_load_modification_time(char *dst, int size)
+BOOL __fastcall mpqapi_reg_load_modification_time(char *dst, int size)
 {
-	unsigned int v2; // esi
-	char *v3;        // edi
-	unsigned int v6; // esi
-	char *v7;        // ecx
-	int nbytes_read; // [esp+8h] [ebp-4h]
+	unsigned int iSize;
+	char *pszDst;
+	char *pbData;
+	int nbytes_read;
 
-	v2 = size;
-	v3 = dst;
+	iSize = size;
+	pszDst = dst;
 	memset(dst, 0, size);
-	if (!SRegLoadData("Diablo", "Video Player ", 0, (unsigned char *)v3, v2, (LPDWORD)&nbytes_read) || nbytes_read != v2)
-		return 0;
-	if (v2 >= 8) {
-		v6 = v2 >> 3;
-		do {
-			v7 = v3;
-			v3 += 8;
-			mpqapi_xor_buf(v7);
-			--v6;
-		} while (v6);
+	if (!SRegLoadData("Diablo", "Video Player ", 0, (unsigned char *)pszDst, iSize, (LPDWORD)&nbytes_read)) {
+		return FALSE;
 	}
-	return 1;
+
+	if (nbytes_read != size)
+		return FALSE;
+			
+	for (; iSize >= 8; iSize -=8) {
+		pbData = pszDst;
+		pszDst += 8;
+		mpqapi_xor_buf(pbData);
+	}
+
+	return TRUE;
 }
 
 void __fastcall mpqapi_xor_buf(char *pbData)

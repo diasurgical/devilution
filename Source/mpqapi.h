@@ -8,7 +8,7 @@ extern BOOLEAN save_archive_open;     // weak
 
 BOOL __fastcall mpqapi_set_hidden(const char *pszArchive, BOOL hidden);
 void __fastcall mpqapi_store_creation_time(const char *pszArchive, int dwChar);
-BOOLEAN __fastcall mpqapi_reg_load_modification_time(char *dst, int size);
+BOOL __fastcall mpqapi_reg_load_modification_time(char *dst, int size);
 void __fastcall mpqapi_xor_buf(char *pbData);
 void __fastcall mpqapi_update_multi_creation_time(DWORD dwChar);
 BOOLEAN __fastcall mpqapi_reg_store_modification_time(char *pbData, DWORD dwLen);
