@@ -2491,7 +2491,7 @@ void __cdecl RedBack()
 
 	if(leveltype != DTYPE_HELL) {
 		dst = &gpBuffer[SCREENXY(0, 0)];
-		tbl = (BYTE *)&pLightTbl[idx];
+		tbl = &pLightTbl[idx];
 		for(h = 352; h; h--, dst += 768 - 640) {
 			for(w = 640; w; w--) {
 				*dst = tbl[*dst];
@@ -2500,7 +2500,7 @@ void __cdecl RedBack()
 		}
 	} else {
 		dst = &gpBuffer[SCREENXY(0, 0)];
-		tbl = (BYTE *)&pLightTbl[idx];
+		tbl = &pLightTbl[idx];
 		for(h = 352; h; h--, dst += 768 - 640) {
 			for(w = 640; w; w--) {
 				if(*dst >= 32)

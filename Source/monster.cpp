@@ -986,7 +986,7 @@ void __fastcall PlaceUniqueMonst(int uniqindex, int miniontype, int packsize)
 	}
 
 	sprintf(filestr, "Monsters\\Monsters\\%s.TRN", Uniq->mTrnName);
-	LoadFileWithMem(filestr, (BYTE *)&pLightTbl[256 * (uniquetrans + 19)]);
+	LoadFileWithMem(filestr, &pLightTbl[256 * (uniquetrans + 19)]);
 
 	Monst->_uniqtrans = uniquetrans++;
 
@@ -1120,7 +1120,7 @@ void __fastcall PlaceGroup(int mtype, int num, int leaderf, int leader)
 		j = 0;
 		for (try2 = 0; j < num && try2 < 100; xp += offset_x[random(94, 8)], yp += offset_x[random(94, 8)]) {
 			if (!MonstPlace(xp, yp)
-			    || (dung_map[x1][y1] != dung_map[xp][yp])
+			    || (dTransVal[x1][y1] != dTransVal[xp][yp])
 			    || (leaderf & 2) && ((abs(xp - x1) >= 4) || (abs(yp - y1) >= 4))) {
 				try2++;
 				continue;
@@ -1539,7 +1539,7 @@ void __fastcall M_Enemy(int i)
 				goto LABEL_18;
 			v3 = v1->_my;
 			v4 = v2[2];
-			v19 = dung_map[v2[1]][v4] == dung_map[v1->_mx][v3];
+			v19 = dTransVal[v2[1]][v4] == dTransVal[v1->_mx][v3];
 			v5 = abs(v3 - v4);
 			if (abs(v1->_mx - v2[1]) <= v5)
 				v6 = v1->_my - v2[2];
@@ -1587,7 +1587,7 @@ void __fastcall M_Enemy(int i)
 		}
 		v12 = v1->_my;
 		v13 = monster[v10]._my;
-		v20 = dung_map[monster[v10]._mx][v13] == dung_map[v1->_mx][v12];
+		v20 = dTransVal[monster[v10]._mx][v13] == dTransVal[v1->_mx][v12];
 		v14 = abs(v12 - v13);
 		if (abs(v1->_mx - monster[v10]._mx) <= v14)
 			v15 = v1->_my - monster[v10]._my;
@@ -3984,7 +3984,7 @@ void __fastcall MAI_Sneak(int i)
 	v2 = &monster[v1];
 	if (v2->_mmode == MM_STAND) {
 		v3 = v2->_my;
-		if (dTransVal[v2->_mx][v3] != lightmax) {
+		if (dLight[v2->_mx][v3] != lightmax) {
 			v17 = v2->_mx - (unsigned char)v2->_menemyx;
 			v4 = v3 - (unsigned char)v2->_menemyy;
 			md = M_GetDir(v1);
@@ -4255,8 +4255,8 @@ void __fastcall MAI_Round(int i, BOOL special)
 			MonstCheckDoors(arglist);
 		v30 = random(114, 100);
 		if ((abs(v7) >= 2 || abs(v32) >= 2) && v3->_msquelch == -1) {
-			v29 = &dung_map[v6][v28];
-			if (dung_map[v3->_mx][v3->_my] == *v29) {
+			v29 = &dTransVal[v6][v28];
+			if (dTransVal[v3->_mx][v3->_my] == *v29) {
 				if (_LOBYTE(v3->_mgoal) != MGOAL_MOVE) {
 					v9 = abs(v7);
 					//v11 = v10;
@@ -4282,7 +4282,7 @@ void __fastcall MAI_Round(int i, BOOL special)
 				v17 = v3->_mgoalvar1;
 				v3->_mgoalvar1 = v17 + 1;
 				if (v17 < 2 * v16 || (v18 = DirOK(arglist, md), !v18)) {
-					if (dung_map[v3->_mx][v3->_my] == *v29) {
+					if (dTransVal[v3->_mx][v3->_my] == *v29) {
 						//_LOBYTE(v19) = M_RoundWalk(arglist, md, &v3->_mgoalvar2);
 						if (!M_RoundWalk(arglist, md, &v3->_mgoalvar2)) {
 							v21 = random(125, 10);
@@ -4622,7 +4622,7 @@ void __fastcall MAI_RoundRanged(int i, int missile_type, unsigned char checkdoor
 		if (v6->_msquelch != -1)
 			goto LABEL_50;
 		//v13 = y2;
-		if (dung_map[v6->_mx][v6->_my] != dung_map[x2][y2])
+		if (dTransVal[v6->_mx][v6->_my] != dTransVal[x2][y2])
 			goto LABEL_50;
 		if (_LOBYTE(v6->_mgoal) != MGOAL_MOVE) {
 			if (abs(v9) < 3) {
@@ -4776,7 +4776,7 @@ void __fastcall MAI_RR2(int i, int mistype, int dam)
 		{
 			if (v4->_msquelch == -1) {
 				//v12 = y2;
-				if (dung_map[v4->_mx][v4->_my] == dung_map[x2][y2]) {
+				if (dTransVal[v4->_mx][v4->_my] == dTransVal[x2][y2]) {
 					if (_LOBYTE(v4->_mgoal) != MGOAL_MOVE) {
 						v15 = abs(v8);
 						//v12 = v16;
@@ -4997,8 +4997,8 @@ void __fastcall MAI_SkelKing(int i)
 			MonstCheckDoors(arglist);
 		v35 = random(126, 100);
 		if ((abs(v5) >= 2 || abs(v4) >= 2) && v2->_msquelch == -1) {
-			v32 = &dung_map[x2][y2];
-			if (dung_map[v2->_mx][v2->_my] == *v32) {
+			v32 = &dTransVal[x2][y2];
+			if (dTransVal[v2->_mx][v2->_my] == *v32) {
 				if (_LOBYTE(v2->_mgoal) != MGOAL_MOVE) {
 					v7 = abs(v5);
 					//v9 = v8;
@@ -5027,7 +5027,7 @@ void __fastcall MAI_SkelKing(int i)
 				v15 = v2->_mgoalvar1;
 				v2->_mgoalvar1 = v15 + 1;
 				if (v15 < 2 * v14 || (v16 = DirOK(arglist, md), !v16)) {
-					if (dung_map[v2->_mx][v2->_my] == *v32) {
+					if (dTransVal[v2->_mx][v2->_my] == *v32) {
 						//_LOBYTE(v17) = M_RoundWalk(arglist, md, &v2->_mgoalvar2);
 						if (!M_RoundWalk(arglist, md, &v2->_mgoalvar2)) {
 							v19 = random(125, 10);
@@ -5153,7 +5153,7 @@ void __fastcall MAI_Rhino(int i)
 			}
 			v15 = esi3->_mgoalvar1;
 			esi3->_mgoalvar1 = v15 + 1;
-			if (v15 < 2 * v14 && dung_map[esi3->_mx][esi3->_my] == dung_map[v1][v2]) {
+			if (v15 < 2 * v14 && dTransVal[esi3->_mx][esi3->_my] == dTransVal[v1][v2]) {
 				//_LOBYTE(v16) = M_RoundWalk(arglist, midir, &esi3->_mgoalvar2);
 				if (!M_RoundWalk(arglist, midir, &esi3->_mgoalvar2)) {
 					v18 = random(125, 10);
@@ -5288,7 +5288,7 @@ void __fastcall MAI_Counselor(int i)
 			v18 = v17;
 			if (abs(v4) < 2 && abs(v6) < 2
 			    || monster[v2]._msquelch != -1
-			    || dung_map[monster[v2]._mx][monster[v2]._my] != dung_map[x2][y2]) {
+			    || dTransVal[monster[v2]._mx][monster[v2]._my] != dTransVal[x2][y2]) {
 				v1 = arglist;
 			LABEL_20:
 				v15 = v1;

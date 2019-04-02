@@ -14,12 +14,12 @@ extern int nlevel_frames; // weak
 extern char pdungeon[40][40];
 extern char dDead[MAXDUNX][MAXDUNY];
 extern WORD dpiece_defs_map_1[MAXDUNX * MAXDUNY][16];
-extern char dTransVal2[MAXDUNX][MAXDUNY];
+extern char dPreLight[MAXDUNX][MAXDUNY];
 extern char TransVal; // weak
 extern int MicroTileLen;
 extern char dflags[40][40];
 extern int dPiece[MAXDUNX][MAXDUNY];
-extern char dTransVal[MAXDUNX][MAXDUNY];
+extern char dLight[MAXDUNX][MAXDUNY];
 extern int setloadflag_2; // weak
 extern int tile_defs[MAXTILES];
 extern BYTE *pMegaTiles;
@@ -27,7 +27,7 @@ extern BYTE *pLevelPieces;
 extern int gnDifficulty; // idb
 extern char block_lvid[2049];
 //char byte_5B78EB;
-extern char dung_map[MAXDUNX][MAXDUNY];
+extern char dTransVal[MAXDUNX][MAXDUNY];
 extern BOOLEAN nTrapTable[2049];
 extern BYTE leveltype;
 extern unsigned char currlevel; // idb

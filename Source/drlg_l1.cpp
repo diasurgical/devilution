@@ -126,7 +126,7 @@ void __cdecl DRLG_Init_Globals()
 		c = (light4flag) ? 3 : 15;
 	else
 		c = 0;
-	memset(dTransVal, c, sizeof(dTransVal));
+	memset(dLight, c, sizeof(dLight));
 }
 // 525728: using guessed type int light4flag;
 // 646A28: using guessed type int lightflag;
@@ -1664,7 +1664,7 @@ void __cdecl DRLG_L5FloodTVal()
 		xx = 16;
 
 		for (i = 0; i < DMAXX; i++) {
-			if (dungeon[i][j] == 13 && !dung_map[xx][yy]) {
+			if (dungeon[i][j] == 13 && !dTransVal[xx][yy]) {
 				DRLG_L5FTVR(i, j, xx, yy, 0);
 				TransVal++;
 			}
@@ -1677,36 +1677,36 @@ void __cdecl DRLG_L5FloodTVal()
 
 void __fastcall DRLG_L5FTVR(int i, int j, int x, int y, int d)
 {
-	if (dung_map[x][y] || dungeon[i][j] != 13) {
+	if (dTransVal[x][y] || dungeon[i][j] != 13) {
 		if (d == 1) {
-			dung_map[x][y] = TransVal;
-			dung_map[x][y + 1] = TransVal;
+			dTransVal[x][y] = TransVal;
+			dTransVal[x][y + 1] = TransVal;
 		}
 		if (d == 2) {
-			dung_map[x + 1][y] = TransVal;
-			dung_map[x + 1][y + 1] = TransVal;
+			dTransVal[x + 1][y] = TransVal;
+			dTransVal[x + 1][y + 1] = TransVal;
 		}
 		if (d == 3) {
-			dung_map[x][y] = TransVal;
-			dung_map[x + 1][y] = TransVal;
+			dTransVal[x][y] = TransVal;
+			dTransVal[x + 1][y] = TransVal;
 		}
 		if (d == 4) {
-			dung_map[x][y + 1] = TransVal;
-			dung_map[x + 1][y + 1] = TransVal;
+			dTransVal[x][y + 1] = TransVal;
+			dTransVal[x + 1][y + 1] = TransVal;
 		}
 		if (d == 5)
-			dung_map[x + 1][y + 1] = TransVal;
+			dTransVal[x + 1][y + 1] = TransVal;
 		if (d == 6)
-			dung_map[x][y + 1] = TransVal;
+			dTransVal[x][y + 1] = TransVal;
 		if (d == 7)
-			dung_map[x + 1][y] = TransVal;
+			dTransVal[x + 1][y] = TransVal;
 		if (d == 8)
-			dung_map[x][y] = TransVal;
+			dTransVal[x][y] = TransVal;
 	} else {
-		dung_map[x][y] = TransVal;
-		dung_map[x + 1][y] = TransVal;
-		dung_map[x][y + 1] = TransVal;
-		dung_map[x + 1][y + 1] = TransVal;
+		dTransVal[x][y] = TransVal;
+		dTransVal[x + 1][y] = TransVal;
+		dTransVal[x][y + 1] = TransVal;
+		dTransVal[x + 1][y + 1] = TransVal;
 		DRLG_L5FTVR(i + 1, j, x + 2, y, 1);
 		DRLG_L5FTVR(i - 1, j, x - 2, y, 2);
 		DRLG_L5FTVR(i, j + 1, x, y + 2, 3);
@@ -1730,25 +1730,25 @@ void __cdecl DRLG_L5TransFix()
 
 		for (i = 0; i < DMAXX; i++) {
 			if (dungeon[i][j] == 23 && dungeon[i][j - 1] == 18) {
-				dung_map[xx + 1][yy] = dung_map[xx][yy];
-				dung_map[xx + 1][yy + 1] = dung_map[xx][yy];
+				dTransVal[xx + 1][yy] = dTransVal[xx][yy];
+				dTransVal[xx + 1][yy + 1] = dTransVal[xx][yy];
 			}
 			if (dungeon[i][j] == 24 && dungeon[i + 1][j] == 19) {
-				dung_map[xx][yy + 1] = dung_map[xx][yy];
-				dung_map[xx + 1][yy + 1] = dung_map[xx][yy];
+				dTransVal[xx][yy + 1] = dTransVal[xx][yy];
+				dTransVal[xx + 1][yy + 1] = dTransVal[xx][yy];
 			}
 			if (dungeon[i][j] == 18) {
-				dung_map[xx + 1][yy] = dung_map[xx][yy];
-				dung_map[xx + 1][yy + 1] = dung_map[xx][yy];
+				dTransVal[xx + 1][yy] = dTransVal[xx][yy];
+				dTransVal[xx + 1][yy + 1] = dTransVal[xx][yy];
 			}
 			if (dungeon[i][j] == 19) {
-				dung_map[xx][yy + 1] = dung_map[xx][yy];
-				dung_map[xx + 1][yy + 1] = dung_map[xx][yy];
+				dTransVal[xx][yy + 1] = dTransVal[xx][yy];
+				dTransVal[xx + 1][yy + 1] = dTransVal[xx][yy];
 			}
 			if (dungeon[i][j] == 20) {
-				dung_map[xx + 1][yy] = dung_map[xx][yy];
-				dung_map[xx][yy + 1] = dung_map[xx][yy];
-				dung_map[xx + 1][yy + 1] = dung_map[xx][yy];
+				dTransVal[xx + 1][yy] = dTransVal[xx][yy];
+				dTransVal[xx][yy + 1] = dTransVal[xx][yy];
+				dTransVal[xx + 1][yy + 1] = dTransVal[xx][yy];
 			}
 			xx += 2;
 		}

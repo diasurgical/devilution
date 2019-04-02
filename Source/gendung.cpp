@@ -14,12 +14,12 @@ int nlevel_frames; // weak
 char pdungeon[40][40];
 char dDead[MAXDUNX][MAXDUNY];
 WORD dpiece_defs_map_1[MAXDUNX * MAXDUNY][16];
-char dTransVal2[MAXDUNX][MAXDUNY];
+char dPreLight[MAXDUNX][MAXDUNY];
 char TransVal; // weak
 int MicroTileLen;
 char dflags[40][40];
 int dPiece[MAXDUNX][MAXDUNY];
-char dTransVal[MAXDUNX][MAXDUNY];
+char dLight[MAXDUNX][MAXDUNY];
 int setloadflag_2; // weak
 int tile_defs[MAXTILES];
 BYTE *pMegaTiles;
@@ -27,7 +27,7 @@ BYTE *pLevelPieces;
 int gnDifficulty; // idb
 char block_lvid[2049];
 //char byte_5B78EB;
-char dung_map[MAXDUNX][MAXDUNY];
+char dTransVal[MAXDUNX][MAXDUNY];
 BOOLEAN nTrapTable[2049];
 BYTE leveltype;
 unsigned char currlevel; // idb
@@ -348,7 +348,7 @@ void __cdecl MakeSpeedCels()
 #else
 				src = &pDungeonCels[pFrameTable[currtile]];
 				dst = &pSpeedCels[frameidx];
-				tbl = (BYTE *)&pLightTbl[256 * j];
+				tbl = &pLightTbl[256 * j];
 				for(k = lfs_adder; k; k--) {
 					*dst++ = tbl[*src++];
 				}
@@ -402,7 +402,7 @@ void __cdecl MakeSpeedCels()
 #else
 				src = &pDungeonCels[pFrameTable[currtile]];
 				dst = &pSpeedCels[frameidx];
-				tbl = (BYTE *)&pLightTbl[256 * j];
+				tbl = &pLightTbl[256 * j];
 				for(k = 32; k; k--) {
 					for(l = 32; l;) {
 						width = *src++;
@@ -560,7 +560,7 @@ void __cdecl SetDungeonMicros()
 
 void __cdecl DRLG_InitTrans()
 {
-	memset(dung_map, 0, sizeof(dung_map));
+	memset(dTransVal, 0, sizeof(dTransVal));
 	memset(TransList, 0, sizeof(TransList));
 	TransVal = 1;
 }
@@ -580,7 +580,7 @@ void __fastcall DRLG_MRectTrans(int x1, int y1, int x2, int y2)
 	i = 2 * y1 + 17;
 	for (ty_enda = 2 * y2 + 16; i <= ty_enda; ++i) {
 		if (v4 <= v5) {
-			v7 = &dung_map[v4][i];
+			v7 = &dTransVal[v4][i];
 			j = v5 - v4 + 1;
 			do {
 				*v7 = TransVal;
@@ -601,7 +601,7 @@ void __fastcall DRLG_RectTrans(int x1, int y1, int x2, int y2)
 
 	for (i = y1; i <= y2; ++i) {
 		if (x1 <= x2) {
-			v5 = &dung_map[x1][i];
+			v5 = &dTransVal[x1][i];
 			j = x2 - x1 + 1;
 			do {
 				*v5 = TransVal;
@@ -616,7 +616,7 @@ void __fastcall DRLG_RectTrans(int x1, int y1, int x2, int y2)
 
 void __fastcall DRLG_CopyTrans(int sx, int sy, int dx, int dy)
 {
-	dung_map[dx][dy] = dung_map[sx][sy];
+	dTransVal[dx][dy] = dTransVal[sx][sy];
 }
 
 void __fastcall DRLG_ListTrans(int num, unsigned char *List)

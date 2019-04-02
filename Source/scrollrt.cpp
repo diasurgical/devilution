@@ -76,7 +76,7 @@ void __fastcall DrawMissile(int x, int y, int sx, int sy, int a5, int a6, BOOL p
 
 	if(dMissile[x][y] == -1) {
 		for(i = 0; i < nummissiles; i++) {
-			/// ASSERT: assert(missileactive[i] < MAXMISSILES)
+			/// ASSERT: assert(missileactive[i] < MAXMISSILES);
 			if(missileactive[i] >= MAXMISSILES)
 				break;
 			m = &missile[missileactive[i]];
@@ -137,7 +137,7 @@ void __fastcall DrawClippedMissile(int x, int y, int sx, int sy, int a5, int a6,
 
 	if(dMissile[x][y] == -1) {
 		for(i = 0; i < nummissiles; i++) {
-			/// ASSERT: assert(missileactive[i] < MAXMISSILES)
+			/// ASSERT: assert(missileactive[i] < MAXMISSILES);
 			if(missileactive[i] >= MAXMISSILES)
 				break;
 			m = &missile[missileactive[i]];
@@ -557,10 +557,10 @@ void __fastcall scrollrt_draw_lower(int x, int y, int sx, int sy, int a5, int so
 	if(some_flag) {
 		if((DWORD)y < MAXDUNY && (DWORD)x < MAXDUNX) {
 			level_piece_id = dPiece[x][y];
-			light_table_index = dTransVal[x][y];
+			light_table_index = dLight[x][y];
 			if(level_piece_id != 0) {
 				dst = &gpBuffer[sx + 32 + screen_y_times_768[sy]];
-				cel_transparency_active = (unsigned char)(nTransTable[level_piece_id] & TransList[dung_map[x][y]]);
+				cel_transparency_active = (unsigned char)(nTransTable[level_piece_id] & TransList[dTransVal[x][y]]);
 				arch_draw_type = 2;
 				level_cel_block = pMap[1];
 				if(level_cel_block != 0) {
@@ -612,12 +612,12 @@ void __fastcall scrollrt_draw_lower(int x, int y, int sx, int sy, int a5, int so
 		}
 		if(y < MAXDUNY && x >= 0) {
 			level_piece_id = dPiece[x][y];
-			light_table_index = dTransVal[x][y];
+			light_table_index = dLight[x][y];
 			if(level_piece_id == 0) {
 				world_draw_black_tile(&gpBuffer[sx + screen_y_times_768[sy]]);
 			} else {
 				dst = &gpBuffer[sx + screen_y_times_768[sy]];
-				cel_transparency_active = (unsigned char)(nTransTable[level_piece_id] & TransList[dung_map[x][y]]);
+				cel_transparency_active = (unsigned char)(nTransTable[level_piece_id] & TransList[dTransVal[x][y]]);
 				arch_draw_type = 1;
 				level_cel_block = pMap[0];
 				if(level_cel_block != 0) {
@@ -651,12 +651,12 @@ void __fastcall scrollrt_draw_lower(int x, int y, int sx, int sy, int a5, int so
 
 	if(some_flag && (DWORD)y < MAXDUNY && (DWORD)x < MAXDUNX) {
 		level_piece_id = dPiece[x][y];
-		light_table_index = dTransVal[x][y];
+		light_table_index = dLight[x][y];
 		if(level_piece_id == 0) {
 			world_draw_black_tile(&gpBuffer[sx + screen_y_times_768[sy]]);
 		} else {
 			dst = &gpBuffer[sx + screen_y_times_768[sy]];
-			cel_transparency_active = (unsigned char)(nTransTable[level_piece_id] & TransList[dung_map[x][y]]);
+			cel_transparency_active = (unsigned char)(nTransTable[level_piece_id] & TransList[dTransVal[x][y]]);
 			arch_draw_type = 1;
 			level_cel_block = pMap[0];
 			if(level_cel_block != 0) {
@@ -756,7 +756,7 @@ void __fastcall scrollrt_draw_clipped_dungeon(char *a1, int sx, int sy, int a4, 
 	v8 = dPlayer[0][v6 - 1];
 	v48 = dPlayer[0][v6];
 	v46 = dArch[0][v6];
-	v9 = dung_map[0][v6];
+	v9 = dTransVal[0][v6];
 	v10 = (int *)((char *)dMonster + 4 * v6);
 	v44 = v9;
 	v45 = v8;
@@ -1051,8 +1051,8 @@ void __fastcall scrollrt_draw_clipped_e_flag(BYTE *pBuff, int x, int y, int a4, 
 	lpi_old = level_piece_id;
 
 	level_piece_id = dPiece[x][y];
-	light_table_index = dTransVal[x][y];
-	cel_transparency_active = (unsigned char)(nTransTable[level_piece_id] & TransList[dung_map[x][y]]);
+	light_table_index = dLight[x][y];
+	cel_transparency_active = (unsigned char)(nTransTable[level_piece_id] & TransList[dTransVal[x][y]]);
 	pMap = dpiece_defs_map_1[IsometricCoord(x, y)];
 
 	dst = pBuff;
@@ -1107,10 +1107,10 @@ void __fastcall scrollrt_draw_lower_2(int x, int y, int sx, int sy, int a5, int 
 	if(some_flag) {
 		if(y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX) {
 			level_piece_id = dPiece[x][y];
-			light_table_index = dTransVal[x][y];
+			light_table_index = dLight[x][y];
 			if(level_piece_id != 0) {
 				dst = &gpBuffer[sx - (768 * 32 - 32) + screen_y_times_768[sy]];
-				cel_transparency_active = (unsigned char)(nTransTable[level_piece_id] & TransList[dung_map[x][y]]);
+				cel_transparency_active = (unsigned char)(nTransTable[level_piece_id] & TransList[dTransVal[x][y]]);
 				for(i = 0; i < (MicroTileLen >> 1) - 1; i++) {
 					if(a6 <= i) {
 						level_cel_block = pMap[2 * i + 3];
@@ -1140,10 +1140,10 @@ void __fastcall scrollrt_draw_lower_2(int x, int y, int sx, int sy, int a5, int 
 		}
 		if(y < MAXDUNY && x >= 0) {
 			level_piece_id = dPiece[x][y];
-			light_table_index = dTransVal[x][y];
+			light_table_index = dLight[x][y];
 			if(level_piece_id != 0) {
 				dst = &gpBuffer[sx - 768 * 32 + screen_y_times_768[sy]];
-				cel_transparency_active = (unsigned char)(nTransTable[level_piece_id] & TransList[dung_map[x][y]]);
+				cel_transparency_active = (unsigned char)(nTransTable[level_piece_id] & TransList[dTransVal[x][y]]);
 				i = 0;
 				while(i < (MicroTileLen >> 1) - 1) {
 					if(a6 <= i) {
@@ -1172,10 +1172,10 @@ void __fastcall scrollrt_draw_lower_2(int x, int y, int sx, int sy, int a5, int 
 
 	if(some_flag && (DWORD)y < MAXDUNY && (DWORD)x < MAXDUNX) {
 		level_piece_id = dPiece[x][y];
-		light_table_index = dTransVal[x][y];
+		light_table_index = dLight[x][y];
 		if(level_piece_id != 0) {
 			dst = &gpBuffer[sx - 768 * 32 + screen_y_times_768[sy]];
-			cel_transparency_active = (unsigned char)(nTransTable[level_piece_id] & TransList[dung_map[x][y]]);
+			cel_transparency_active = (unsigned char)(nTransTable[level_piece_id] & TransList[dTransVal[x][y]]);
 			for(i = 0; i < (MicroTileLen >> 1) - 1; i++) {
 				if(a6 <= i) {
 					level_cel_block = pMap[2 * i + 2];
@@ -1255,7 +1255,7 @@ void __fastcall scrollrt_draw_clipped_dungeon_2(char *buffer, int x, int y, int 
 	v10 = dPlayer[0][v8 - 1];
 	v51 = dPlayer[0][v8];
 	v49 = dArch[0][v8];
-	v11 = dung_map[0][v8];
+	v11 = dTransVal[0][v8];
 	v12 = (int *)((char *)dMonster + 4 * v8);
 	v47 = v11;
 	v48 = v10;
@@ -1451,9 +1451,9 @@ void __fastcall scrollrt_draw_clipped_e_flag_2(BYTE *pBuff, int x, int y, int a4
 	lpi_old = level_piece_id;
 
 	level_piece_id = dPiece[x][y];
-	light_table_index = dTransVal[x][y];
+	light_table_index = dLight[x][y];
 	dst = &pBuff[768 * 32 * a4];
-	cel_transparency_active = (unsigned char)(nTransTable[level_piece_id] & TransList[dung_map[x][y]]);
+	cel_transparency_active = (unsigned char)(nTransTable[level_piece_id] & TransList[dTransVal[x][y]]);
 	pMap = dpiece_defs_map_1[IsometricCoord(x, y)];
 
 	switch(a4) {
@@ -1529,10 +1529,10 @@ void __fastcall scrollrt_draw_upper(int x, int y, int sx, int sy, int a5, int a6
 	if(some_flag) {
 		if(y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX) {
 			level_piece_id = dPiece[x][y];
-			light_table_index = dTransVal[x][y];
+			light_table_index = dLight[x][y];
 			if(level_piece_id != 0) {
 				dst = &gpBuffer[sx + 32 + screen_y_times_768[sy]];
-				cel_transparency_active = (unsigned char)(nTransTable[level_piece_id] & TransList[dung_map[x][y]]);
+				cel_transparency_active = (unsigned char)(nTransTable[level_piece_id] & TransList[dTransVal[x][y]]);
 				if(a6 >= 0) {
 					level_cel_block = pMap[1];
 					if(level_cel_block != 0) {
@@ -1577,10 +1577,10 @@ void __fastcall scrollrt_draw_upper(int x, int y, int sx, int sy, int a5, int a6
 	for(j = 0; j < a5; j++) {
 		if(y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX) {
 			level_piece_id = dPiece[x][y];
-			light_table_index = dTransVal[x][y];
+			light_table_index = dLight[x][y];
 			if(level_piece_id != 0) {
 				dst = &gpBuffer[sx + screen_y_times_768[sy]];
-				cel_transparency_active = (unsigned char)(nTransTable[level_piece_id] & TransList[dung_map[x][y]]);
+				cel_transparency_active = (unsigned char)(nTransTable[level_piece_id] & TransList[dTransVal[x][y]]);
 				arch_draw_type = 1;
 				level_cel_block = pMap[0];
 				if(level_cel_block != 0) {
@@ -1618,10 +1618,10 @@ void __fastcall scrollrt_draw_upper(int x, int y, int sx, int sy, int a5, int a6
 
 	if(some_flag && y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX) {
 		level_piece_id = dPiece[x][y];
-		light_table_index = dTransVal[x][y];
+		light_table_index = dLight[x][y];
 		if(level_piece_id != 0) {
 			dst = &gpBuffer[sx + screen_y_times_768[sy]];
-			cel_transparency_active = (unsigned char)(nTransTable[level_piece_id] & TransList[dung_map[x][y]]);
+			cel_transparency_active = (unsigned char)(nTransTable[level_piece_id] & TransList[dTransVal[x][y]]);
 			arch_draw_type = 1;
 			if(a6 >= 0) {
 				level_cel_block = pMap[0];
@@ -1682,7 +1682,7 @@ void __fastcall scrollrt_draw_dungeon(BYTE *pBuff, int sx, int sy, int a4, int a
 	bItem = dItem[sx][sy];
 	bPlr = dPlayer[sx][sy];
 	bArch = dArch[sx][sy];
-	bMap = dung_map[sx][sy];
+	bMap = dTransVal[sx][sy];
 	nMon = dMonster[sx][sy];
 
 	/// ASSERT: assert((DWORD)(sy-1) < MAXDUNY);
@@ -1712,7 +1712,7 @@ void __fastcall scrollrt_draw_dungeon(BYTE *pBuff, int sx, int sy, int a4, int a
 						Cl2DecodeLightTbl(px, dy, pDeadGuy->_deadData[dd], pDeadGuy->_deadFrame, pDeadGuy->_deadWidth, 0, a5);
 					}
 				} else {
-					// TermMsg("Unclipped dead: frame %d of %d, deadnum==%d", nCel, pFrameTable[0], (bDead & 0x1F) - 1);
+					// app_fatal("Unclipped dead: frame %d of %d, deadnum==%d", nCel, pFrameTable[0], (bDead & 0x1F) - 1);
 				}
 			}
 		}
@@ -1736,10 +1736,10 @@ void __fastcall scrollrt_draw_dungeon(BYTE *pBuff, int sx, int sy, int a4, int a
 						}
 						CelDecodeHdrLightOnly(px, dy, pItem->_iAnimData, pItem->_iAnimFrame, pItem->_iAnimWidth, 0, a5);
 					} else {
-						// TermMsg("Draw \"%s\" Item 1: frame %d of %d, item type==%d", pItem->_iIName, nCel, pFrameTable[0], pItem->_itype);
+						// app_fatal("Draw \"%s\" Item 1: frame %d of %d, item type==%d", pItem->_iIName, nCel, pFrameTable[0], pItem->_itype);
 					}
 				} else {
-					// TermMsg("Draw Item \"%s\" 1: NULL Cel Buffer", pItem->_iIName);
+					// app_fatal("Draw Item \"%s\" 1: NULL Cel Buffer", pItem->_iIName);
 				}
 			}
 		}
@@ -1758,7 +1758,7 @@ void __fastcall scrollrt_draw_dungeon(BYTE *pBuff, int sx, int sy, int a4, int a
 				scrollrt_draw_e_flag(pBuff - 64, sx - 1, sy + 1, a4, a5, dx - 64, dy);
 			}
 		} else {
-			// TermMsg("draw player: tried to draw illegal player %d", p);
+			// app_fatal("draw player: tried to draw illegal player %d", p);
 		}
 	}
 	if((bFlag & 0x10) && ((bFlag & 0x40) || plr[myplr]._pInfraFlag) && negMon < 0) {
@@ -1777,11 +1777,11 @@ void __fastcall scrollrt_draw_dungeon(BYTE *pBuff, int sx, int sy, int a4, int a
 						scrollrt_draw_e_flag(pBuff - 64, sx - 1, sy + 1, a4, a5, dx - 64, dy);
 					}
 				} else {
-					// TermMsg("Draw Monster \"%s\": uninitialized monster", pMonster->mName);
+					// app_fatal("Draw Monster \"%s\": uninitialized monster", pMonster->mName);
 				}
 			}
 		} else {
-			// TermMsg("Draw Monster: tried to draw illegal monster %d", draw_monster_num);
+			// app_fatal("Draw Monster: tried to draw illegal monster %d", draw_monster_num);
 		}
 	}
 	if(bFlag & 4) {
@@ -1801,7 +1801,7 @@ void __fastcall scrollrt_draw_dungeon(BYTE *pBuff, int sx, int sy, int a4, int a
 				scrollrt_draw_e_flag(pBuff - 64, sx - 1, sy + 1, a4, a5, dx - 64, dy);
 			}
 		} else {
-			// TermMsg("draw player: tried to draw illegal player %d", p);
+			// app_fatal("draw player: tried to draw illegal player %d", p);
 		}
 	}
 	if(nMon > 0 && ((bFlag & 0x40) || plr[myplr]._pInfraFlag)) {
@@ -1820,11 +1820,11 @@ void __fastcall scrollrt_draw_dungeon(BYTE *pBuff, int sx, int sy, int a4, int a
 						scrollrt_draw_e_flag(pBuff - 64, sx - 1, sy + 1, a4, a5, dx - 64, dy);
 					}
 				} else {
-					// TermMsg("Draw Monster \"%s\": uninitialized monster", pMonster->mName);
+					// app_fatal("Draw Monster \"%s\": uninitialized monster", pMonster->mName);
 				}
 			}
 		} else {
-			// TermMsg("Draw Monster: tried to draw illegal monster %d", draw_monster_num);
+			// app_fatal("Draw Monster: tried to draw illegal monster %d", draw_monster_num);
 		}
 	}
 	if(bFlag & 1) {
@@ -1849,10 +1849,10 @@ void __fastcall scrollrt_draw_dungeon(BYTE *pBuff, int sx, int sy, int a4, int a
 						}
 						CelDecodeHdrLightOnly(px, dy, pItem->_iAnimData, pItem->_iAnimFrame, pItem->_iAnimWidth, 0, a5);
 					} else {
-						// TermMsg("Draw \"%s\" Item 2: frame %d of %d, item type==%d", pItem->_iIName, nCel, pFrameTable[0], pItem->_itype);
+						// app_fatal("Draw \"%s\" Item 2: frame %d of %d, item type==%d", pItem->_iIName, nCel, pFrameTable[0], pItem->_itype);
 					}
 				} else {
-					// TermMsg("Draw Item \"%s\" 2: NULL Cel Buffer", pItem->_iIName);
+					// app_fatal("Draw Item \"%s\" 2: NULL Cel Buffer", pItem->_iIName);
 				}
 			}
 		}
@@ -1989,9 +1989,9 @@ void __fastcall scrollrt_draw_e_flag(BYTE *pBuff, int x, int y, int a4, int a5, 
 	lpi_old = level_piece_id;
 
 	level_piece_id = dPiece[x][y];
-	light_table_index = dTransVal[x][y];
+	light_table_index = dLight[x][y];
 	dst = pBuff;
-	cel_transparency_active = (unsigned char)(nTransTable[level_piece_id] & TransList[dung_map[x][y]]);
+	cel_transparency_active = (unsigned char)(nTransTable[level_piece_id] & TransList[dTransVal[x][y]]);
 	pMap = dpiece_defs_map_1[IsometricCoord(x, y)];
 
 	arch_draw_type = 1;

@@ -64,15 +64,15 @@ BOOLEAN __fastcall TFit_Shrine(int i)
 	v6 = 0;
 	while (1) {
 		v3 = v2 + 112 * v7;
-		if (dung_map[0][v3] != v1) { /* check */
+		if (dTransVal[0][v3] != v1) { /* check */
 			goto LABEL_20;
 		}
 		v4 = dPiece[0][v3 - 1]; // *(_DWORD *)&dflags[39][4 * v3 + 36];
 		if (nTrapTable[v4]
 		    && !nSolidTable[dPiece[-1][v3]] // !nSolidTable[*(_DWORD *)&dflags[28][4 * v3 + 32]]
 		    && !nSolidTable[dPiece[1][v3]]
-		    && dung_map[-1][v3] == v1 // block_lvid[v3 + 1940] == v1
-		    && dung_map[1][v3] == v1
+		    && dTransVal[-1][v3] == v1 // block_lvid[v3 + 1940] == v1
+		    && dTransVal[1][v3] == v1
 		    && !dObject[-1][v3 - 1]
 		    && !dObject[0][v3 + 111]) {
 			v6 = 1;
@@ -83,8 +83,8 @@ BOOLEAN __fastcall TFit_Shrine(int i)
 		if (!nTrapTable[dPiece[-1][v3]] // !nTrapTable[*(_DWORD *)&dflags[28][4 * v3 + 32]]
 		    || nSolidTable[v4]
 		    || nSolidTable[dPiece[0][v3 + 1]]
-		    || dung_map[0][v3 - 1] != v1 // *(&byte_5B78EB + v3) != v1
-		    || dung_map[0][v3 + 1] != v1
+		    || dTransVal[0][v3 - 1] != v1 // *(&byte_5B78EB + v3) != v1
+		    || dTransVal[0][v3 + 1] != v1
 		    || dObject[-1][v3 - 1]
 		    || dObject[-1][v3 + 1]) /* check */
 		{
@@ -137,7 +137,7 @@ BOOLEAN __fastcall TFit_Obj5(int t)
 	v11 = v5;
 	while (1) {
 		v6 = v3 + 112 * v2;
-		if (dung_map[0][v6] == v5 && !nSolidTable[dPiece[0][v6]]) {
+		if (dTransVal[0][v6] == v5 && !nSolidTable[dPiece[0][v6]]) {
 			v12 = 1;
 			v7 = 0;
 			do {
@@ -149,7 +149,7 @@ BOOLEAN __fastcall TFit_Obj5(int t)
 					v12 = 0;
 				}
 				v5 = v11;
-				if (dung_map[0][v8] != v11) {
+				if (dTransVal[0][v8] != v11) {
 					v12 = 0;
 				}
 				++v7;
@@ -227,7 +227,7 @@ BOOL __fastcall CheckThemeObj3(int xp, int yp, int t, int f)
 			return FALSE;
 		if (nSolidTable[dPiece[xp + trm3x[i]][yp + trm3y[i]]])
 			return FALSE;
-		if (dung_map[xp + trm3x[i]][yp + trm3y[i]] != themes[t].ttval)
+		if (dTransVal[xp + trm3x[i]][yp + trm3y[i]] != themes[t].ttval)
 			return FALSE;
 		if (dObject[xp + trm3x[i]][yp + trm3y[i]])
 			return FALSE;
@@ -454,7 +454,7 @@ BOOLEAN __fastcall CheckThemeRoom(int tv)
 			v5 = 0;
 			v6 = v4;
 			do {
-				if (dung_map[0][v6] == tv) {
+				if (dTransVal[0][v6] == tv) {
 					if (dFlags[0][v6] & DFLAG_POPULATED) {
 						return 0;
 					}
@@ -470,7 +470,7 @@ BOOLEAN __fastcall CheckThemeRoom(int tv)
 			v8 = &dPiece[-1][111];
 		LABEL_16:
 			v12 = 0;
-			v9 = &dung_map[-1][v7 + 111];
+			v9 = &dTransVal[-1][v7 + 111];
 			v10 = v8;
 			while (v9[1] != tv
 			    || nSolidTable[v10[1]]
@@ -493,7 +493,7 @@ BOOLEAN __fastcall CheckThemeRoom(int tv)
 		}
 	} else {
 		v2 = &trigs[0]._ty;
-		while (dung_map[*(v2 - 1)][*v2] != tv) {
+		while (dTransVal[*(v2 - 1)][*v2] != tv) {
 			++v1;
 			v2 += 4;
 			if (v1 >= trigflag[4]) {
@@ -630,7 +630,7 @@ void __cdecl HoldThemeRooms()
 			for (i = 0; i < numthemes; i++) {
 				for (y = 0; y < MAXDUNY; y++) {
 					for (x = 0; x < MAXDUNX; x++) {
-						if (dung_map[x][y] == (char)themes[i].ttval) {
+						if (dTransVal[x][y] == (char)themes[i].ttval) {
 							dFlags[x][y] |= DFLAG_POPULATED;
 						}
 					}
@@ -663,7 +663,7 @@ void __fastcall PlaceThemeMonsts(int t, int f)
 	mtype = scattertypes[random(0, numscattypes)];
 	for (yp = 0; yp < MAXDUNY; yp++) {
 		for (xp = 0; xp < MAXDUNX; xp++) {
-			if (dung_map[xp][yp] == themes[t].ttval && !nSolidTable[dPiece[xp][yp]] && dItem[xp][yp] == 0 && dObject[xp][yp] == 0) {
+			if (dTransVal[xp][yp] == themes[t].ttval && !nSolidTable[dPiece[xp][yp]] && dItem[xp][yp] == 0 && dObject[xp][yp] == 0) {
 				if (random(0, f) == 0) {
 					AddMonster(xp, yp, random(0, 8), mtype, 1);
 				}
@@ -684,7 +684,7 @@ void __fastcall Theme_Barrel(int t)
 
 	for (yp = 0; yp < MAXDUNY; yp++) {
 		for (xp = 0; xp < MAXDUNX; xp++) {
-			if (dung_map[xp][yp] == themes[t].ttval && !nSolidTable[dPiece[xp][yp]]) {
+			if (dTransVal[xp][yp] == themes[t].ttval && !nSolidTable[dPiece[xp][yp]]) {
 				if (random(0, barrnd[leveltype - 1]) == 0) {
 					r = random(0, barrnd[leveltype - 1]) != 0;
 					r += OBJ_BARREL;
@@ -732,7 +732,7 @@ void __fastcall Theme_MonstPit(int t)
 	iyp = 0;
 	if (r > 0) {
 		while (TRUE) {
-			if (dung_map[ixp][iyp] == themes[t].ttval && !nSolidTable[dPiece[ixp][iyp]]) {
+			if (dTransVal[ixp][iyp] == themes[t].ttval && !nSolidTable[dPiece[ixp][iyp]]) {
 				--r;
 			}
 			if (r <= 0) {
@@ -820,7 +820,7 @@ void __fastcall Theme_Treasure(int t)
 	GetRndSeed();
 	for (yp = 0; yp < MAXDUNY; yp++) {
 		for (xp = 0; xp < MAXDUNX; xp++) {
-			if (dung_map[xp][yp] == themes[t].ttval && !nSolidTable[dPiece[xp][yp]]) {
+			if (dTransVal[xp][yp] == themes[t].ttval && !nSolidTable[dPiece[xp][yp]]) {
 				int rv = random(0, treasrnd[leveltype - 1]);
 				// BUGFIX: the `2*` in `2*random(0, treasrnd...) == 0` has no effect, should probably be `random(0, 2*treasrnd...) == 0`
 				if ((2 * random(0, treasrnd[leveltype - 1])) == 0) {
@@ -899,7 +899,7 @@ void __fastcall Theme_Torture(int t)
 
 	for (yp = 1; yp < MAXDUNY - 1; yp++) {
 		for (xp = 1; xp < MAXDUNX - 1; xp++) {
-			if (dung_map[xp][yp] == themes[t].ttval && !nSolidTable[dPiece[xp][yp]]) {
+			if (dTransVal[xp][yp] == themes[t].ttval && !nSolidTable[dPiece[xp][yp]]) {
 				if (CheckThemeObj3(xp, yp, t, -1)) {
 					if (random(0, tortrnd[leveltype - 1]) == 0) {
 						AddObject(OBJ_TNUDEM2, xp, yp);
@@ -936,7 +936,7 @@ void __fastcall Theme_Decap(int t)
 
 	for (yp = 1; yp < MAXDUNY - 1; yp++) {
 		for (xp = 1; xp < MAXDUNX - 1; xp++) {
-			if (dung_map[xp][yp] == themes[t].ttval && !nSolidTable[dPiece[xp][yp]]) {
+			if (dTransVal[xp][yp] == themes[t].ttval && !nSolidTable[dPiece[xp][yp]]) {
 				if (CheckThemeObj3(xp, yp, t, -1)) {
 					if (random(0, decaprnd[leveltype - 1]) == 0) {
 						AddObject(OBJ_DECAP, xp, yp);
@@ -977,7 +977,7 @@ void __fastcall Theme_ArmorStand(int t)
 	}
 	for (yp = 0; yp < MAXDUNY; yp++) {
 		for (xp = 0; xp < MAXDUNX; xp++) {
-			if (dung_map[xp][yp] == themes[t].ttval && !nSolidTable[dPiece[xp][yp]]) {
+			if (dTransVal[xp][yp] == themes[t].ttval && !nSolidTable[dPiece[xp][yp]]) {
 				if (CheckThemeObj3(xp, yp, t, -1)) {
 					if (random(0, armorrnd[leveltype - 1]) == 0) {
 						AddObject(OBJ_ARMORSTANDN, xp, yp);
@@ -1002,7 +1002,7 @@ void __fastcall Theme_GoatShrine(int t)
 	AddObject(OBJ_GOATSHRINE, themex, themey);
 	for (yy = themey - 1; yy <= themey + 1; yy++) {
 		for (xx = themex - 1; xx <= themex + 1; xx++) {
-			if (dung_map[xx][yy] == themes[t].ttval && !nSolidTable[dPiece[xx][yy]] && (xx != themex || yy != themey)) {
+			if (dTransVal[xx][yy] == themes[t].ttval && !nSolidTable[dPiece[xx][yy]] && (xx != themex || yy != themey)) {
 				AddMonster(xx, yy, DIR_SW, themeVar1, 1);
 			}
 		}
@@ -1060,7 +1060,7 @@ void __fastcall Theme_BrnCross(int t)
 
 	for (yp = 0; yp < MAXDUNY; yp++) {
 		for (xp = 0; xp < MAXDUNX; xp++) {
-			if (dung_map[xp][yp] == themes[t].ttval && !nSolidTable[dPiece[xp][yp]]) {
+			if (dTransVal[xp][yp] == themes[t].ttval && !nSolidTable[dPiece[xp][yp]]) {
 				if (CheckThemeObj3(xp, yp, t, -1)) {
 					if (random(0, bcrossrnd[leveltype - 1]) == 0) {
 						AddObject(OBJ_TBCROSS, xp, yp);
@@ -1089,7 +1089,7 @@ void __fastcall Theme_WeaponRack(int t)
 	}
 	for (yp = 0; yp < MAXDUNY; yp++) {
 		for (xp = 0; xp < MAXDUNX; xp++) {
-			if (dung_map[xp][yp] == themes[t].ttval && !nSolidTable[dPiece[xp][yp]]) {
+			if (dTransVal[xp][yp] == themes[t].ttval && !nSolidTable[dPiece[xp][yp]]) {
 				if (CheckThemeObj3(xp, yp, t, -1)) {
 					if (random(0, weaponrnd[leveltype - 1]) == 0) {
 						AddObject(OBJ_WEAPONRACKN, xp, yp);
@@ -1109,8 +1109,8 @@ void __cdecl UpdateL4Trans()
 
 	for (j = 0; j < MAXDUNY; j++) {
 		for (i = 0; i < MAXDUNX; i++) {
-			if (dung_map[i][j]) {
-				dung_map[i][j] = 1;
+			if (dTransVal[i][j]) {
+				dTransVal[i][j] = 1;
 			}
 		}
 	}

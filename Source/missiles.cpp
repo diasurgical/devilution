@@ -3282,20 +3282,20 @@ void __fastcall MI_Fireball(int i)
 				CheckMissileCol(i, dam, dam, 0, mx - 1, my + 1, 1);
 			if (!CheckBlock(px, py, mx - 1, my - 1))
 				CheckMissileCol(i, dam, dam, 0, mx - 1, my - 1, 1);
-			if (!TransList[dung_map[mx][my]]
-			    || (missile[i]._mixvel < 0 && ((TransList[dung_map[mx][my + 1]] && nSolidTable[dPiece[mx][my + 1]]) || (TransList[dung_map[mx][my - 1]] && nSolidTable[dPiece[mx][my - 1]])))) {
+			if (!TransList[dTransVal[mx][my]]
+			    || (missile[i]._mixvel < 0 && ((TransList[dTransVal[mx][my + 1]] && nSolidTable[dPiece[mx][my + 1]]) || (TransList[dTransVal[mx][my - 1]] && nSolidTable[dPiece[mx][my - 1]])))) {
 				missile[i]._mix++;
 				missile[i]._miy++;
 				missile[i]._miyoff -= 32;
 			}
 			if (missile[i]._miyvel > 0
-			    && (TransList[dung_map[mx + 1][my]] && nSolidTable[dPiece[mx + 1][my]]
-			           || TransList[dung_map[mx - 1][my]] && nSolidTable[dPiece[mx - 1][my]])) {
+			    && (TransList[dTransVal[mx + 1][my]] && nSolidTable[dPiece[mx + 1][my]]
+			           || TransList[dTransVal[mx - 1][my]] && nSolidTable[dPiece[mx - 1][my]])) {
 				missile[i]._miyoff -= 32;
 			}
 			if (missile[i]._mixvel > 0
-			    && (TransList[dung_map[mx][my + 1]] && nSolidTable[dPiece[mx][my + 1]]
-			           || TransList[dung_map[mx][my - 1]] && nSolidTable[dPiece[mx][my - 1]])) {
+			    && (TransList[dTransVal[mx][my + 1]] && nSolidTable[dPiece[mx][my + 1]]
+			           || TransList[dTransVal[mx][my - 1]] && nSolidTable[dPiece[mx][my - 1]])) {
 				missile[i]._mixoff -= 32;
 			}
 			missile[i]._mimfnum = 0;
