@@ -681,12 +681,12 @@ void __fastcall DoVision(int nXPos, int nYPos, int nRadius, BOOL doautomap, BOOL
 			if(dFlags[nXPos][nYPos] >= 0) {
 				SetAutomapView(nXPos, nXPos);
 			}
-			dFlags[nXPos][nYPos] |= 0x80;
+			dFlags[nXPos][nYPos] |= DFLAG_EXPLORED;
 		}
 		if(visible) {
-			dFlags[nXPos][nYPos] |= 0x40;
+			dFlags[nXPos][nYPos] |= DFLAG_LIT;
 		}
-		dFlags[nXPos][nYPos] |= 2;
+		dFlags[nXPos][nYPos] |= DFLAG_VISIBLE;
 	}
 
 	for(v = 0; v < 4; v++) {
@@ -740,12 +740,12 @@ void __fastcall DoVision(int nXPos, int nYPos, int nRadius, BOOL doautomap, BOOL
 							if(dFlags[nCrawlX][nCrawlY] >= 0) {
 								SetAutomapView(nCrawlX, nCrawlY);
 							}
-							dFlags[nCrawlX][nCrawlY] |= 0x80;
+							dFlags[nCrawlX][nCrawlY] |= DFLAG_EXPLORED;
 						}
 						if(visible) {
-							dFlags[nCrawlX][nCrawlY] |= 0x40;
+							dFlags[nCrawlX][nCrawlY] |= DFLAG_LIT;
 						}
-						dFlags[nCrawlX][nCrawlY] |= 2;
+						dFlags[nCrawlX][nCrawlY] |= DFLAG_VISIBLE;
 						if(!nBlockerFlag) {
 							nTrans = dung_map[nCrawlX][nCrawlY];
 							if(nTrans != 0) {
