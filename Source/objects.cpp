@@ -561,18 +561,14 @@ void __cdecl AddTortures()
 }
 void __cdecl AddCandles()
 {
-	int v0; // esi
-	int v1; // edi
-	int v2; // ebx
+	int tx, ty;
 
-	v0 = quests[QTYPE_PW]._qtx;
-	v1 = quests[QTYPE_PW]._qty;
-	v2 = quests[QTYPE_PW]._qty + 1;
-	AddObject(OBJ_STORYCANDLE, quests[QTYPE_PW]._qtx - 2, quests[QTYPE_PW]._qty + 1);
-	AddObject(OBJ_STORYCANDLE, v0 + 3, v2);
-	v1 += 2;
-	AddObject(OBJ_STORYCANDLE, v0 - 1, v1);
-	AddObject(OBJ_STORYCANDLE, v0 + 2, v1);
+	tx = quests[QTYPE_PW]._qtx;
+	ty = quests[QTYPE_PW]._qty;
+	AddObject(OBJ_STORYCANDLE, tx - 2, ty + 1);
+	AddObject(OBJ_STORYCANDLE, tx + 3, ty + 1);
+	AddObject(OBJ_STORYCANDLE, tx - 1, ty + 2);
+	AddObject(OBJ_STORYCANDLE, tx + 2, ty + 2);
 }
 
 void __fastcall AddBookLever(int lx1, int ly1, int lx2, int ly2, int x1, int y1, int x2, int y2, int msg)
@@ -1662,9 +1658,9 @@ void __fastcall AddPurifyingFountain(int i)
 
 	ox = object[i]._ox;
 	oy = object[i]._oy;
-	dObject[ox][oy-1] = -1 - i;
-	dObject[ox-1][oy] = -1 - i;
-	dObject[ox-1][oy - 1] = -1 - i;
+	dObject[ox][oy - 1] = -1 - i;
+	dObject[ox - 1][oy] = -1 - i;
+	dObject[ox - 1][oy - 1] = -1 - i;
 	object[i]._oRndSeed = GetRndSeed();
 }
 
