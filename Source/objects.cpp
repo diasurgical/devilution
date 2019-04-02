@@ -4595,7 +4595,7 @@ void __fastcall OperateWeaponRack(int pnum, int i, BOOL sendmsg)
 	SetRndSeed(object[i]._oRndSeed);
 
 	switch (random(0, 4)) {
-	case 2:
+	case ITYPE_BOW-1:
 		weaponType = ITYPE_BOW;
 		break;
 	case 1:
