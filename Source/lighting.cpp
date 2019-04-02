@@ -2,9 +2,9 @@
 
 #include "../types.h"
 
-LightListStruct VisionList[32];
-unsigned char lightactive[32];
-LightListStruct LightList[32];
+LightListStruct VisionList[MAXVISION];
+unsigned char lightactive[MAXLIGHTS];
+LightListStruct LightList[MAXLIGHTS];
 int numlights;
 BYTE lightradius[16][128];
 int dovision;               // weak
@@ -1003,7 +1003,7 @@ void __cdecl InitLighting()
 	dolighting = 0;
 	lightflag = 0;
 
-	for(i = 0; i < 32; i++) {
+	for(i = 0; i < MAXLIGHTS; i++) {
 		lightactive[i] = i;
 	}
 }
@@ -1020,7 +1020,7 @@ int __fastcall AddLight(int x, int y, int r)
 
 	lid = -1;
 
-	if(numlights < 32) {
+	if(numlights < MAXLIGHTS) {
 		lid = lightactive[numlights++];
 		LightList[lid]._lx = x;
 		LightList[lid]._ly = y;
@@ -1187,7 +1187,7 @@ int __fastcall AddVision(int x, int y, int r, BOOL mine)
 
 	vid = r;
 
-	if(numvision < 32) {
+	if(numvision < MAXVISION) {
 		VisionList[numvision]._lx = x;
 		VisionList[numvision]._ly = y;
 		VisionList[numvision]._lradius = r;

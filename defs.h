@@ -20,6 +20,7 @@
 #define MAXDUNY					112
 #define MAXITEMS				127
 #define MAXBELTITEMS			8
+#define MAXLIGHTS				32
 #define MAXMISSILES				125
 #define MAXMONSTERS				200
 #define MAXMULTIQUESTS			4
@@ -29,6 +30,7 @@
 #define MAXTHEMES				50
 #define MAXTILES				2048
 #define MAXTRIGGERS				5
+#define MAXVISION				32
 #define MDMAXX					40
 #define MDMAXY					40
 #define MAXCHARLEVEL			51
