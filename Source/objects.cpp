@@ -4598,7 +4598,7 @@ void __fastcall OperateWeaponRack(int pnum, int i, BOOL sendmsg)
 	case ITYPE_BOW-1:
 		weaponType = ITYPE_BOW;
 		break;
-	case 1:
+	case ITYPE_AXE-1:
 		weaponType = ITYPE_AXE;
 		break;
 	case 3:
