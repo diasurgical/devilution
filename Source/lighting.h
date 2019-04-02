@@ -3,7 +3,7 @@
 #define __LIGHTING_H__
 
 extern LightListStruct VisionList[32];
-extern char lightactive[32];
+extern unsigned char lightactive[32];
 extern LightListStruct LightList[32];
 extern int numlights;
 extern BYTE lightradius[16][128];
@@ -25,6 +25,7 @@ void __cdecl FreeLightTable();
 void __cdecl InitLightTable();
 void __cdecl MakeLightTable();
 #ifdef _DEBUG
+void __cdecl ToggleLighting_2();
 void __cdecl ToggleLighting();
 #endif
 void __cdecl InitLightMax();

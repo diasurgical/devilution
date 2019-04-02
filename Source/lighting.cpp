@@ -3,7 +3,7 @@
 #include "../types.h"
 
 LightListStruct VisionList[32];
-char lightactive[32];
+unsigned char lightactive[32];
 LightListStruct LightList[32];
 int numlights;
 BYTE lightradius[16][128];
@@ -603,71 +603,63 @@ void __fastcall DoLighting(int nXPos, int nYPos, int nRadius, int Lnum)
 
 void __fastcall DoUnLight(int nXPos, int nYPos, int nRadius)
 {
-	int max_y;        // ebx
-	int y;            // esi
-	int x;            // edx
-	int max_x;        // edi
-	signed int v7;    // esi
-	int v8;           // eax
-	int radius_block; // [esp+14h] [ebp+8h]
+	int x, y, min_x, min_y, max_x, max_y;
 
-	max_y = nYPos + nRadius + 1;
-	y = nYPos - (nRadius + 1);
-	x = nXPos - (nRadius + 1);
-	max_x = nXPos + nRadius + 1;
-	if (y < 0)
-		y = 0;
-	if (max_y > MAXDUNY)
+	nRadius++;
+	min_y = nYPos - nRadius;
+	max_y = nYPos + nRadius;
+	min_x = nXPos - nRadius;
+	max_x = nXPos + nRadius;
+
+	if(min_y < 0) {
+		min_y = 0;
+	}
+	if(max_y > MAXDUNY) {
 		max_y = MAXDUNY;
-	if (x < 0)
-		x = 0;
-	if (max_x > MAXDUNX)
+	}
+	if(min_x < 0) {
+		min_x = 0;
+	}
+	if(max_x > MAXDUNX) {
 		max_x = MAXDUNX;
-	for (radius_block = y; radius_block < max_y; ++radius_block) {
-		v7 = x;
-		if (x < max_x) {
-			v8 = radius_block + 112 * x;
-			do {
-				if (v7 >= 0 && v7 < 112 && radius_block >= 0 && radius_block < 112)
-					dLight[0][v8] = dPreLight[0][v8];
-				++v7;
-				v8 += 112;
-			} while (v7 < max_x);
+	}
+
+	for(y = min_y; y < max_y; y++) {
+		for(x = min_x; x < max_x; x++) {
+			if(x >= 0 && x < MAXDUNX && y >= 0 && y < MAXDUNY) {
+				dLight[x][y] = dPreLight[x][y];
+			}
 		}
 	}
 }
 
 void __fastcall DoUnVision(int nXPos, int nYPos, int nRadius)
 {
-	int y2;   // edi
-	int y1;   // esi
-	int x1;   // edx
-	int x2;   // ecx
-	char *v7; // eax
-	int i;    // ecx
-	int j;    // edx
+	int i, j, x1, y1, x2, y2;
 
-	y2 = nYPos + nRadius + 1;
-	y1 = nYPos - (nRadius + 1);
-	x1 = nXPos - (nRadius + 1);
-	x2 = nRadius + 1 + nXPos;
-	if (y1 < 0)
+	nRadius++;
+	y1 = nYPos - nRadius;
+	y2 = nYPos + nRadius;
+	x1 = nXPos - nRadius;
+	x2 = nXPos + nRadius;
+
+	if(y1 < 0) {
 		y1 = 0;
-	if (y2 > MAXDUNY)
+	}
+	if(y2 > MAXDUNY) {
 		y2 = MAXDUNY;
-	if (x1 < 0)
+	}
+	if(x1 < 0) {
 		x1 = 0;
-	if (x2 > MAXDUNX)
+	}
+	if(x2 > MAXDUNX) {
 		x2 = MAXDUNX;
-	if (x1 < x2) {
-		v7 = dFlags[x1];
-		i = x2 - x1;
-		do {
-			for (j = y1; j < y2; ++j)
-				v7[j] &= ~(DFLAG_VISIBLE | DFLAG_LIT);
-			v7 += 112;
-			--i;
-		} while (i);
+	}
+
+	for(i = x1; i < x2; i++) {
+		for(j = y1; j < y2; j++) {
+			dFlags[i][j] &= ~(DFLAG_VISIBLE | DFLAG_LIT);
+		}
 	}
 }
 
@@ -770,6 +762,7 @@ void __cdecl FreeLightTable()
 
 void __cdecl InitLightTable()
 {
+	/// ASSERT: assert(! pLightTbl);
 	pLightTbl = DiabloAllocPtr(LIGHTSIZE);
 }
 
@@ -956,19 +949,35 @@ void __cdecl MakeLightTable()
 // 525728: using guessed type int light4flag;
 
 #ifdef _DEBUG
+void __cdecl ToggleLighting_2()
+{
+	int i;
+
+	if(lightflag) {
+		memset(dLight, 0, sizeof(dLight));
+	} else {
+		memset(dLight, lightmax, sizeof(dLight));
+		for(i = 0; i < MAX_PLRS; i++) {
+			if(plr[i].plractive && plr[i].plrlevel == currlevel) {
+				DoLighting(plr[i].WorldX, plr[i].WorldY, plr[i]._pLightRad, -1);
+			}
+		}
+	}
+}
+
 void __cdecl ToggleLighting()
 {
 	int i;
 
-	lightflag ^= 1;
-	if (lightflag) {
+	lightflag ^= TRUE;
+
+	if(lightflag) {
 		memset(dLight, 0, sizeof(dLight));
 	} else {
 		memcpy(dLight, dPreLight, sizeof(dLight));
-		for (i = 0; i < 4; i++) {
-			if (plr[i].plractive) {
-				if (currlevel == plr[i].plrlevel)
-					DoLighting(plr[i].WorldX, plr[i].WorldY, plr[i]._pLightRad, -1);
+		for(i = 0; i < MAX_PLRS; i++) {
+			if(plr[i].plractive && plr[i].plrlevel == currlevel) {
+				DoLighting(plr[i].WorldX, plr[i].WorldY, plr[i]._pLightRad, -1);
 			}
 		}
 	}
@@ -977,35 +986,42 @@ void __cdecl ToggleLighting()
 
 void __cdecl InitLightMax()
 {
-	lightmax = light4flag == 0 ? 15 : 3;
+	if(light4flag) {
+		lightmax = 3;
+	} else {
+		lightmax = 15;
+	}
 }
 // 525728: using guessed type int light4flag;
 // 642A14: using guessed type char lightmax;
 
 void __cdecl InitLighting()
 {
-	signed int v0; // eax
+	int i;
 
-	v0 = 0;
 	numlights = 0;
 	dolighting = 0;
 	lightflag = 0;
-	do {
-		lightactive[v0] = v0;
-		++v0;
-	} while (v0 < 32);
+
+	for(i = 0; i < 32; i++) {
+		lightactive[i] = i;
+	}
 }
 // 642A18: using guessed type int dolighting;
 // 646A28: using guessed type int lightflag;
 
 int __fastcall AddLight(int x, int y, int r)
 {
-	int lid; // eax
+	int lid;
+
+	if(lightflag) {
+		return -1;
+	}
 
 	lid = -1;
-	if (!lightflag && numlights < 32) {
+
+	if(numlights < 32) {
 		lid = lightactive[numlights++];
-		dolighting = 1;
 		LightList[lid]._lx = x;
 		LightList[lid]._ly = y;
 		LightList[lid]._lradius = r;
@@ -1013,7 +1029,9 @@ int __fastcall AddLight(int x, int y, int r)
 		LightList[lid]._yoff = 0;
 		LightList[lid]._ldel = 0;
 		LightList[lid]._lunflag = 0;
+		dolighting = 1;
 	}
+
 	return lid;
 }
 // 642A18: using guessed type int dolighting;
@@ -1021,184 +1039,183 @@ int __fastcall AddLight(int x, int y, int r)
 
 void __fastcall AddUnLight(int i)
 {
-	if (!lightflag && i != -1) {
-		LightList[i]._ldel = 1;
-		dolighting = 1;
+	if(lightflag || i == -1) {
+		return;
 	}
+
+	LightList[i]._ldel = 1;
+	dolighting = 1;
 }
 // 642A18: using guessed type int dolighting;
 // 646A28: using guessed type int lightflag;
 
 void __fastcall ChangeLightRadius(int i, int r)
 {
-	if (!lightflag && i != -1) {
-		LightList[i]._lunx = LightList[i]._lx;
-		LightList[i]._luny = LightList[i]._ly;
-		LightList[i]._lunflag = 1;
-		LightList[i]._lunr = LightList[i]._lradius;
-		dolighting = 1;
-		LightList[i]._lradius = r;
+	if(lightflag || i == -1) {
+		return;
 	}
+
+	LightList[i]._lunflag = 1;
+	LightList[i]._lunx = LightList[i]._lx;
+	LightList[i]._luny = LightList[i]._ly;
+	LightList[i]._lunr = LightList[i]._lradius;
+	LightList[i]._lradius = r;
+	dolighting = 1;
 }
 // 642A18: using guessed type int dolighting;
 // 646A28: using guessed type int lightflag;
 
 void __fastcall ChangeLightXY(int i, int x, int y)
 {
-	if (!lightflag && i != -1) {
-		LightList[i]._lunx = LightList[i]._lx;
-		LightList[i]._lunflag = 1;
-		dolighting = 1;
-		LightList[i]._luny = LightList[i]._ly;
-		LightList[i]._lunr = LightList[i]._lradius;
-		LightList[i]._ly = y;
-		LightList[i]._lx = x;
+	if(lightflag || i == -1) {
+		return;
 	}
+
+	LightList[i]._lunflag = 1;
+	LightList[i]._lunx = LightList[i]._lx;
+	LightList[i]._luny = LightList[i]._ly;
+	LightList[i]._lunr = LightList[i]._lradius;
+	LightList[i]._lx = x;
+	LightList[i]._ly = y;
+	dolighting = 1;
 }
 // 642A18: using guessed type int dolighting;
 // 646A28: using guessed type int lightflag;
 
 void __fastcall ChangeLightOff(int i, int x, int y)
 {
-	if (!lightflag && i != -1) {
-		LightList[i]._xoff = x;
-		LightList[i]._lunx = LightList[i]._lx;
-		LightList[i]._luny = LightList[i]._ly;
-		LightList[i]._lunr = LightList[i]._lradius;
-		LightList[i]._lunflag = 1;
-		LightList[i]._yoff = y;
-		dolighting = 1;
+	if(lightflag || i == -1) {
+		return;
 	}
+
+	LightList[i]._lunflag = 1;
+	LightList[i]._lunx = LightList[i]._lx;
+	LightList[i]._luny = LightList[i]._ly;
+	LightList[i]._lunr = LightList[i]._lradius;
+	LightList[i]._xoff = x;
+	LightList[i]._yoff = y;
+	dolighting = 1;
 }
 // 642A18: using guessed type int dolighting;
 // 646A28: using guessed type int lightflag;
 
 void __fastcall ChangeLight(int i, int x, int y, int r)
 {
-	if (!lightflag && i != -1) {
-		LightList[i]._lunx = LightList[i]._lx;
-		LightList[i]._luny = LightList[i]._ly;
-		LightList[i]._lunr = LightList[i]._lradius;
-		LightList[i]._lunflag = 1;
-		LightList[i]._lx = x;
-		LightList[i]._ly = y;
-		LightList[i]._lradius = r;
-		dolighting = 1;
+	if(lightflag || i == -1) {
+		return;
 	}
+
+	LightList[i]._lunflag = 1;
+	LightList[i]._lunx = LightList[i]._lx;
+	LightList[i]._luny = LightList[i]._ly;
+	LightList[i]._lunr = LightList[i]._lradius;
+	LightList[i]._lx = x;
+	LightList[i]._ly = y;
+	LightList[i]._lradius = r;
+	dolighting = 1;
 }
 // 642A18: using guessed type int dolighting;
 // 646A28: using guessed type int lightflag;
 
 void __cdecl ProcessLightList()
 {
-	int v0;           // ebp
-	int v1;           // edi
-	int v2;           // esi
-	int i;            // esi
-	int v4;           // eax
-	int v5;           // ecx
-	unsigned char v6; // bl
-	char v7;          // dl
+	int i, j;
+	unsigned char temp;
 
-	v0 = 0;
-	if (!lightflag) {
-		if (dolighting) {
-			v1 = numlights;
-			if (numlights > 0) {
-				do {
-					v2 = (unsigned char)lightactive[v0];
-					if (LightList[v2]._ldel)
-						DoUnLight(LightList[v2]._lx, LightList[v2]._ly, LightList[v2]._lradius);
-					if (LightList[v2]._lunflag) {
-						DoUnLight(LightList[v2]._lunx, LightList[v2]._luny, LightList[v2]._lunr);
-						LightList[v2]._lunflag = 0;
-					}
-					++v0;
-				} while (v0 < v1);
+	if(lightflag) {
+		return;
+	}
+
+	if(dolighting) {
+		for(i = 0; i < numlights; i++) {
+			j = lightactive[i];
+			if(LightList[j]._ldel) {
+				DoUnLight(LightList[j]._lx, LightList[j]._ly, LightList[j]._lradius);
 			}
-			for (i = 0; i < v1; ++i) {
-				v4 = (unsigned char)lightactive[i];
-				if (!LightList[v4]._ldel)
-					DoLighting(
-					    LightList[v4]._lx,
-					    LightList[v4]._ly,
-					    LightList[v4]._lradius,
-					    (unsigned char)lightactive[i]);
-			}
-			v5 = 0;
-			if (v1 > 0) {
-				do {
-					v6 = lightactive[v5];
-					if (LightList[v6]._ldel) {
-						v7 = lightactive[--v1];
-						lightactive[v1] = v6;
-						lightactive[v5] = v7;
-					} else {
-						++v5;
-					}
-				} while (v5 < v1);
-				numlights = v1;
+			if(LightList[j]._lunflag) {
+				DoUnLight(LightList[j]._lunx, LightList[j]._luny, LightList[j]._lunr);
+				LightList[j]._lunflag = 0;
 			}
 		}
-		dolighting = 0;
+		for(i = 0; i < numlights; i++) {
+			j = lightactive[i];
+			if(!LightList[j]._ldel) {
+				DoLighting(LightList[j]._lx, LightList[j]._ly, LightList[j]._lradius, j);
+			}
+		}
+		i = 0;
+		while(i < numlights) {
+			if(LightList[lightactive[i]]._ldel) {
+				numlights--;
+				temp = lightactive[numlights];
+				lightactive[numlights] = lightactive[i];
+				lightactive[i] = temp;
+			} else {
+				i++;
+			}
+		}
 	}
+
+	dolighting = 0;
 }
 // 642A18: using guessed type int dolighting;
 // 646A28: using guessed type int lightflag;
 
 void __cdecl SavePreLighting()
 {
-	memcpy(dPreLight, dLight, 0x3100u);
+	memcpy(dPreLight, dLight, sizeof(dPreLight));
 }
 
 void __cdecl InitVision()
 {
+	int i;
+
 	numvision = 0;
 	dovision = 0;
 	visionid = 1;
-	if (TransVal > 0)
-		memset(TransList, 0, TransVal);
+
+	for(i = 0; i < TransVal; i++) {
+		TransList[i] = 0;
+	}
 }
 // 5A5590: using guessed type char TransVal;
 // 642A0C: using guessed type int dovision;
 
 int __fastcall AddVision(int x, int y, int r, BOOL mine)
 {
-	int vid; // eax
-	int v5;  // esi
+	int vid;
 
 	vid = r;
-	if (numvision < 32) {
-		v5 = numvision;
-		dovision = 1;
-		VisionList[v5]._lx = x;
-		VisionList[v5]._ly = y;
-		VisionList[v5]._lradius = r;
+
+	if(numvision < 32) {
+		VisionList[numvision]._lx = x;
+		VisionList[numvision]._ly = y;
+		VisionList[numvision]._lradius = r;
 		vid = visionid++;
-		VisionList[v5]._lid = vid;
-		VisionList[v5]._ldel = 0;
-		++numvision;
-		VisionList[v5]._lunflag = 0;
-		VisionList[v5]._lflags = mine != 0;
+		VisionList[numvision]._lid = vid;
+		VisionList[numvision]._ldel = 0;
+		VisionList[numvision]._lunflag = 0;
+		VisionList[numvision]._lflags = mine != 0;
+		numvision++;
+		dovision = 1;
 	}
+
 	return vid;
 }
 // 642A0C: using guessed type int dovision;
 
 void __fastcall ChangeVisionRadius(int id, int r)
 {
-	int i; // esi
+	int i;
 
-	if (numvision > 0) {
-		for (i = 0; i < numvision; i++) {
-			if (VisionList[i]._lid == id) {
-				VisionList[i]._lunflag = 1;
-				VisionList[i]._lunx = VisionList[i]._lx;
-				VisionList[i]._luny = VisionList[i]._ly;
-				VisionList[i]._lunr = VisionList[i]._lradius;
-				VisionList[i]._lradius = r;
-				dovision = 1;
-			}
+	for(i = 0; i < numvision; i++) {
+		if(VisionList[i]._lid == id) {
+			VisionList[i]._lunflag = 1;
+			VisionList[i]._lunx = VisionList[i]._lx;
+			VisionList[i]._luny = VisionList[i]._ly;
+			VisionList[i]._lunr = VisionList[i]._lradius;
+			VisionList[i]._lradius = r;
+			dovision = 1;
 		}
 	}
 }
@@ -1206,19 +1223,17 @@ void __fastcall ChangeVisionRadius(int id, int r)
 
 void __fastcall ChangeVisionXY(int id, int x, int y)
 {
-	int i; // esi
+	int i;
 
-	if (numvision > 0) {
-		for (i = 0; i < numvision; i++) {
-			if (VisionList[i]._lid == id) {
-				VisionList[i]._lunflag = 1;
-				VisionList[i]._lunx = VisionList[i]._lx;
-				VisionList[i]._luny = VisionList[i]._ly;
-				VisionList[i]._lunr = VisionList[i]._lradius;
-				VisionList[i]._lx = x;
-				VisionList[i]._ly = y;
-				dovision = 1;
-			}
+	for(i = 0; i < numvision; i++) {
+		if(VisionList[i]._lid == id) {
+			VisionList[i]._lunflag = 1;
+			VisionList[i]._lunx = VisionList[i]._lx;
+			VisionList[i]._luny = VisionList[i]._ly;
+			VisionList[i]._lunr = VisionList[i]._lradius;
+			VisionList[i]._lx = x;
+			VisionList[i]._ly = y;
+			dovision = 1;
 		}
 	}
 }
@@ -1226,40 +1241,44 @@ void __fastcall ChangeVisionXY(int id, int x, int y)
 
 void __cdecl ProcessVisionList()
 {
-	BOOLEAN delflag; // ecx
 	int i;
+	BOOL delflag;
 
-	if (dovision) {
-		for (i = 0; i < numvision; i++) {
-			if (VisionList[i]._ldel)
+	if(dovision) {
+		for(i = 0; i < numvision; i++) {
+			if(VisionList[i]._ldel) {
 				DoUnVision(VisionList[i]._lx, VisionList[i]._ly, VisionList[i]._lradius);
-			if (VisionList[i]._lunflag) {
+			}
+			if(VisionList[i]._lunflag) {
 				DoUnVision(VisionList[i]._lunx, VisionList[i]._luny, VisionList[i]._lunr);
 				VisionList[i]._lunflag = 0;
 			}
 		}
-
-		if (TransVal > 0)
-			memset(TransList, 0, TransVal);
-
-		for (i = 0; i < numvision; i++) {
-			if (!VisionList[i]._ldel)
-				DoVision(VisionList[i]._lx, VisionList[i]._ly, VisionList[i]._lradius, VisionList[i]._lflags & 1, VisionList[i]._lflags & 1);
+		for(i = 0; i < TransVal; i++) {
+			TransList[i] = 0;
 		}
-
+		for(i = 0; i < numvision; i++) {
+			if(!VisionList[i]._ldel) {
+				DoVision(
+					VisionList[i]._lx,
+					VisionList[i]._ly,
+					VisionList[i]._lradius,
+					VisionList[i]._lflags & 1,
+					VisionList[i]._lflags & 1);
+			}
+		}
 		do {
-			delflag = 0;
-			if (numvision <= 0)
-				break;
-			for (i = 0; i < numvision; i++) {
-				if (VisionList[i]._ldel) {
-					--numvision;
-					if (numvision > 0 && i != numvision)
-						qmemcpy(&VisionList[i], &VisionList[numvision], sizeof(LightListStruct));
-					delflag = 1;
+			delflag = FALSE;
+			for(i = 0; i < numvision; i++) {
+				if(VisionList[i]._ldel) {
+					numvision--;
+					if(numvision > 0 && i != numvision) {
+						qmemcpy(&VisionList[i], &VisionList[numvision], sizeof(LightListStruct)); /* check */
+					}
+					delflag = TRUE;
 				}
 			}
-		} while (delflag);
+		} while(delflag);
 	}
 
 	dovision = 0;
