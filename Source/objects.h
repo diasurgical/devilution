@@ -124,7 +124,7 @@ int __fastcall FindValidShrine(int i);
 void __fastcall OperateGoatShrine(int pnum, int i, int sType);
 void __fastcall OperateCauldron(int pnum, int i, int sType);
 BOOLEAN __fastcall OperateFountains(int pnum, int i);
-void __fastcall OperateWeaponRack(int pnum, int i, unsigned char sendmsg);
+void __fastcall OperateWeaponRack(int pnum, int i, BOOL sendmsg);
 void __fastcall OperateStoryBook(int pnum, int i);
 void __fastcall OperateLazStand(int pnum, int i);
 void __fastcall OperateObject(int pnum, int i, BOOL TeleFlag);
