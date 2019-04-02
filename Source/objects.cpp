@@ -1680,16 +1680,9 @@ void __fastcall AddArmorStand(int i)
 
 void __fastcall AddDecap(int i)
 {
-	int v1; // esi
-	int v2; // eax
-	int v4; // eax
-
-	v1 = i;
-	v2 = GetRndSeed();
-	object[v1]._oRndSeed = v2;
-	v4 = random(151, 8);
-	object[v1]._oPreFlag = TRUE;
-	object[v1]._oAnimFrame = v4 + 1;
+	object[i]._oRndSeed = GetRndSeed();
+	object[i]._oAnimFrame = random(151, 8) + 1;
+	object[i]._oPreFlag = TRUE;
 }
 
 void __fastcall AddVilebook(int i)
