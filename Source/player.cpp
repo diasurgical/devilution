@@ -1034,7 +1034,7 @@ void __fastcall PlrClrTrans(int x, int y)
 
 	for (i = y - 1; i <= y + 1; i++) {
 		for (j = x - 1; j <= x + 1; j++) {
-			TransList[dung_map[j][i]] = 0;
+			TransList[dTransVal[j][i]] = 0;
 		}
 	}
 }
@@ -1048,8 +1048,8 @@ void __fastcall PlrDoTrans(int x, int y)
 	} else {
 		for (i = y - 1; i <= y + 1; i++) {
 			for (j = x - 1; j <= x + 1; j++) {
-				if (!nSolidTable[dPiece[j][i]] && dung_map[j][i]) {
-					TransList[dung_map[j][i]] = 1;
+				if (!nSolidTable[dPiece[j][i]] && dTransVal[j][i]) {
+					TransList[dTransVal[j][i]] = 1;
 				}
 			}
 		}

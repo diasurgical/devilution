@@ -1305,7 +1305,7 @@ void __fastcall CreateTown(int entry)
 	}
 
 	T_Pass3();
-	memset(dTransVal, 0, sizeof(dTransVal));
+	memset(dLight, 0, sizeof(dLight));
 	memset(dFlags, 0, sizeof(dFlags));
 	memset(dPlayer, 0, sizeof(dPlayer));
 	memset(dMonster, 0, sizeof(dMonster));

@@ -2148,7 +2148,7 @@ void __cdecl DRLG_L4FloodTVal()
 	do {
 		i = 0;
 		x = 16;
-		v2 = &dung_map[16][v0];
+		v2 = &dTransVal[16][v0];
 		v3 = (unsigned char *)dungeon + v1;
 		do {
 			if (*v3 == 6 && !*v2) {
@@ -2196,7 +2196,7 @@ void __fastcall DRLG_L4FTVR(int i, int j, int x, int y, int d)
 	v9 = 112 * x + y;
 	ja = v7;
 	v21 = v8;
-	if (!dung_map[0][v9]) {
+	if (!dTransVal[0][v9]) {
 		v19 = x;
 		ia = v8 - 1;
 		v10 = x - 2;
@@ -2205,10 +2205,10 @@ void __fastcall DRLG_L4FTVR(int i, int j, int x, int y, int d)
 		v12 = v6 - 2;
 		for (k = 40 * v8; dungeon[0][v11 + ja] == 6; v11 = k) {
 			v13 = TransVal;
-			dung_map[0][v9] = TransVal;
-			dung_map[1][v9] = v13;
-			dung_map[0][v9 + 1] = v13;
-			dung_map[1][v9 + 1] = v13;
+			dTransVal[0][v9] = TransVal;
+			dTransVal[1][v9] = v13;
+			dTransVal[0][v9 + 1] = v13;
+			dTransVal[1][v9 + 1] = v13;
 			DRLG_L4FTVR(ia + 2, ja, v10 + 4, v6, 1);
 			DRLG_L4FTVR(ia, ja, v10, v6, 2);
 			DRLG_L4FTVR(v21, ya + 2, x, v12 + 4, 3);
@@ -2228,7 +2228,7 @@ void __fastcall DRLG_L4FTVR(int i, int j, int x, int y, int d)
 			++v21;
 			++ia;
 			v9 = v19 * 112 + v6;
-			if (dung_map[v19][v6])
+			if (dTransVal[v19][v6])
 				break;
 		}
 		v5 = x;
@@ -2236,32 +2236,32 @@ void __fastcall DRLG_L4FTVR(int i, int j, int x, int y, int d)
 	v14 = TransVal;
 	if (d == 1) {
 		v15 = v6 + 112 * v5;
-		dung_map[0][v15] = TransVal;
-		dung_map[0][v15 + 1] = v14;
+		dTransVal[0][v15] = TransVal;
+		dTransVal[0][v15 + 1] = v14;
 	}
 	if (d == 2) {
 		v16 = v6 + 112 * v5;
-		dung_map[1][v16] = v14;
-		dung_map[1][v16 + 1] = v14;
+		dTransVal[1][v16] = v14;
+		dTransVal[1][v16 + 1] = v14;
 	}
 	if (d == 3) {
 		v17 = v6 + 112 * v5;
-		dung_map[0][v17] = v14;
-		dung_map[1][v17] = v14;
+		dTransVal[0][v17] = v14;
+		dTransVal[1][v17] = v14;
 	}
 	if (d == 4) {
 		v18 = v6 + 112 * v5;
-		dung_map[0][v18 + 1] = v14;
-		dung_map[1][v18 + 1] = v14;
+		dTransVal[0][v18 + 1] = v14;
+		dTransVal[1][v18 + 1] = v14;
 	}
 	if (d == 5)
-		dung_map[v5 + 1][v6 + 1] = v14;
+		dTransVal[v5 + 1][v6 + 1] = v14;
 	if (d == 6)
-		dung_map[v5][v6 + 1] = v14;
+		dTransVal[v5][v6 + 1] = v14;
 	if (d == 7)
-		dung_map[v5 + 1][v6] = v14;
+		dTransVal[v5 + 1][v6] = v14;
 	if (d == 8)
-		dung_map[v5][v6] = v14;
+		dTransVal[v5][v6] = v14;
 }
 // 5A5590: using guessed type char TransVal;
 
@@ -2275,7 +2275,7 @@ void __cdecl DRLG_L4TransFix()
 	char *v5;      // [esp+10h] [ebp-4h]
 
 	v0 = 0;
-	v5 = &dung_map[16][16];
+	v5 = &dTransVal[16][16];
 	do {
 		v1 = v5;
 		v2 = (char *)dungeon + v0;

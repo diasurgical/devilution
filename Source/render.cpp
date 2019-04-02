@@ -109,7 +109,7 @@ void __fastcall drawTopArchesUpperScreen(BYTE *pBuff)
 	if ((_BYTE)light_table_index != lightmax) {
 		if (!(level_cel_block & 0x8000)) {
 			src = (unsigned char *)pDungeonCels + *((_DWORD *)pDungeonCels + (level_cel_block & 0xFFF));
-			tbl = (unsigned char *)&pLightTbl[256 * light_table_index];
+			tbl = &pLightTbl[256 * light_table_index];
 			cel_type_16 = (unsigned char)(level_cel_block >> 12);
 			switch (cel_type_16) {
 			case 0: // upper (top transparent), with lighting
@@ -1364,7 +1364,7 @@ void __fastcall drawBottomArchesUpperScreen(BYTE *pBuff, unsigned int *pMask)
 	if ((_BYTE)light_table_index != lightmax) {
 		if (!(level_cel_block & 0x8000)) {
 			src = (unsigned char *)pDungeonCels + *((_DWORD *)pDungeonCels + (level_cel_block & 0xFFF));
-			tbl = (unsigned char *)&pLightTbl[256 * light_table_index];
+			tbl = &pLightTbl[256 * light_table_index];
 			cel_type_16 = (unsigned char)(level_cel_block >> 12);
 			switch (cel_type_16) {
 			case 0: // upper (bottom transparent), with lighting
@@ -2005,7 +2005,7 @@ void __fastcall drawUpperScreen(BYTE *pBuff)
 	if ((_BYTE)light_table_index != lightmax) {
 		if (!(level_cel_block & 0x8000)) {
 			src = (unsigned char *)pDungeonCels + *((_DWORD *)pDungeonCels + (level_cel_block & 0xFFF));
-			tbl = (unsigned char *)&pLightTbl[256 * light_table_index];
+			tbl = &pLightTbl[256 * light_table_index];
 			cel_type_16 = (unsigned short)level_cel_block >> 12;
 			switch (cel_type_16) {
 			case 0: // upper (solid), with lighting
@@ -2834,7 +2834,7 @@ void __fastcall drawTopArchesLowerScreen(BYTE *pBuff)
 	}
 	if (!(level_cel_block & 0x8000)) {
 		src = (unsigned char *)pDungeonCels + *((_DWORD *)pDungeonCels + (level_cel_block & 0xFFF));
-		tbl = (unsigned char *)&pLightTbl[256 * light_table_index];
+		tbl = &pLightTbl[256 * light_table_index];
 		cel_type_16 = (unsigned char)(level_cel_block >> 12);
 		switch (cel_type_16) {
 		case 0: // lower (top transparent), with lighting
@@ -3882,7 +3882,7 @@ void __fastcall drawBottomArchesLowerScreen(BYTE *pBuff, unsigned int *pMask)
 		}
 		if (!(level_cel_block & 0x8000)) {
 			src = (unsigned char *)pDungeonCels + *((_DWORD *)pDungeonCels + (level_cel_block & 0xFFF));
-			tbl = (unsigned char *)&pLightTbl[256 * light_table_index];
+			tbl = &pLightTbl[256 * light_table_index];
 			cel_type_16 = (unsigned char)(level_cel_block >> 12);
 			switch (cel_type_16) {
 			case 0: // lower (bottom transparent), with lighting
@@ -4684,7 +4684,7 @@ void __fastcall drawLowerScreen(BYTE *pBuff)
 		}
 		if (!(level_cel_block & 0x8000)) {
 			src = (unsigned char *)pDungeonCels + *((_DWORD *)pDungeonCels + (level_cel_block & 0xFFF));
-			tbl = (unsigned char *)&pLightTbl[256 * light_table_index];
+			tbl = &pLightTbl[256 * light_table_index];
 			cel_type_16 = (unsigned short)level_cel_block >> 12;
 			switch (cel_type_16) {
 			case 0: // lower (solid), with lighting

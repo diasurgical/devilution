@@ -341,7 +341,7 @@ void __fastcall CelDecDatLightOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSi
 
 	src = pRLEBytes;
 	dst = pDecodeTo;
-	tbl = (BYTE *)&pLightTbl[light_table_index * 256];
+	tbl = &pLightTbl[light_table_index * 256];
 	w = nWidth;
 
 	for(; src != &pRLEBytes[nDataSize]; dst -= 768 + w) {
@@ -505,7 +505,7 @@ void __fastcall CelDecDatLightTrans(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataS
 
 	src = pRLEBytes;
 	dst = pDecodeTo;
-	tbl = (BYTE *)&pLightTbl[light_table_index * 256];
+	tbl = &pLightTbl[light_table_index * 256];
 	w = nWidth;
 	shift = (BYTE)dst & 1;
 
@@ -712,7 +712,7 @@ void __fastcall CelDrawHdrLightRed(int sx, int sy, BYTE *pCelBuff, int nCel, int
 	if(light >= 4)
 		idx += (light - 1) << 8;
 
-	tbl = (BYTE *)&pLightTbl[idx];
+	tbl = &pLightTbl[idx];
 
 #if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
 	__asm {
@@ -1092,7 +1092,7 @@ void __fastcall Cel2DecDatLightOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataS
 
 	src = pRLEBytes;
 	dst = pDecodeTo;
-	tbl = (BYTE *)&pLightTbl[light_table_index * 256];
+	tbl = &pLightTbl[light_table_index * 256];
 	w = nWidth;
 
 	for(; src != &pRLEBytes[nDataSize]; dst -= 768 + w) {
@@ -1271,7 +1271,7 @@ void __fastcall Cel2DecDatLightTrans(BYTE *pDecodeTo, BYTE *pRLEBytes, int nData
 
 	src = pRLEBytes;
 	dst = pDecodeTo;
-	tbl = (BYTE *)&pLightTbl[light_table_index * 256];
+	tbl = &pLightTbl[light_table_index * 256];
 	w = nWidth;
 	shift = (BYTE)dst & 1;
 
@@ -1452,7 +1452,7 @@ void __fastcall Cel2DrawHdrLightRed(int sx, int sy, BYTE *pCelBuff, int nCel, in
 	if(light >= 4)
 		idx += (light - 1) << 8;
 
-	tbl = (BYTE *)&pLightTbl[idx];
+	tbl = &pLightTbl[idx];
 
 #if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
 	__asm {
@@ -2891,7 +2891,7 @@ void __fastcall Cl2DecodeFrm3(int sx, int sy, BYTE *pCelBuff, int nCel, int nWid
 		&pRLEBytes[hdr],
 		nDataSize - hdr,
 		nWidth,
-		(BYTE *)&pLightTbl[idx]);
+		&pLightTbl[idx]);
 }
 // 525728: using guessed type int light4flag;
 
@@ -3080,7 +3080,7 @@ void __fastcall Cl2DecodeLightTbl(int sx, int sy, BYTE *pCelBuff, int nCel, int 
 	pDecodeTo = &gpBuffer[sx + screen_y_times_768[sy - 16 * always_0]];
 
 	if(light_table_index)
-		Cl2DecDatLightTbl1(pDecodeTo, &pRLEBytes[hdr], nDataSize - hdr, nWidth, (BYTE *)&pLightTbl[light_table_index * 256]);
+		Cl2DecDatLightTbl1(pDecodeTo, &pRLEBytes[hdr], nDataSize - hdr, nWidth, &pLightTbl[light_table_index * 256]);
 	else
 		Cl2DecDatFrm1(pDecodeTo, &pRLEBytes[hdr], nDataSize - hdr, nWidth);
 }
@@ -3537,7 +3537,7 @@ void __fastcall Cl2DecodeFrm5(int sx, int sy, BYTE *pCelBuff, int nCel, int nWid
 		&pRLEBytes[hdr],
 		nDataSize - hdr,
 		nWidth,
-		(BYTE *)&pLightTbl[idx]);
+		&pLightTbl[idx]);
 }
 // 525728: using guessed type int light4flag;
 
@@ -3740,7 +3740,7 @@ void __fastcall Cl2DecodeFrm6(int sx, int sy, BYTE *pCelBuff, int nCel, int nWid
 	pDecodeTo = &gpBuffer[sx + screen_y_times_768[sy - 16 * always_0]];
 
 	if(light_table_index)
-		Cl2DecDatLightTbl2(pDecodeTo, &pRLEBytes[hdr], nDataSize - hdr, nWidth, (BYTE *)&pLightTbl[light_table_index * 256]);
+		Cl2DecDatLightTbl2(pDecodeTo, &pRLEBytes[hdr], nDataSize - hdr, nWidth, &pLightTbl[light_table_index * 256]);
 	else
 		Cl2DecDatFrm4(pDecodeTo, &pRLEBytes[hdr], nDataSize - hdr, nWidth);
 }

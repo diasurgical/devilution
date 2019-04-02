@@ -105,7 +105,7 @@ void __fastcall LoadGame(BOOL firstflag)
 
 	for (j = 0; j < MAXDUNY; j++) {
 		for (i = 0; i < MAXDUNX; i++)
-			dTransVal[i][j] = BLoad();
+			dLight[i][j] = BLoad();
 	}
 	for (j = 0; j < MAXDUNY; j++) {
 		for (i = 0; i < MAXDUNX; i++)
@@ -135,11 +135,11 @@ void __fastcall LoadGame(BOOL firstflag)
 		}
 		for (j = 0; j < MAXDUNY; j++) {
 			for (i = 0; i < MAXDUNX; i++)
-				dTransVal[i][j] = BLoad();
+				dLight[i][j] = BLoad();
 		}
 		for (j = 0; j < MAXDUNY; j++) {
 			for (i = 0; i < MAXDUNX; i++)
-				dTransVal2[i][j] = BLoad();
+				dPreLight[i][j] = BLoad();
 		}
 		for (j = 0; j < DMAXY; j++) {
 			for (i = 0; i < DMAXX; i++)
@@ -355,7 +355,7 @@ void __cdecl SaveGame()
 
 	for (j = 0; j < MAXDUNY; j++) {
 		for (i = 0; i < MAXDUNX; i++)
-			BSave(dTransVal[i][j]);
+			BSave(dLight[i][j]);
 	}
 	for (j = 0; j < MAXDUNY; j++) {
 		for (i = 0; i < MAXDUNX; i++)
@@ -385,11 +385,11 @@ void __cdecl SaveGame()
 		}
 		for (j = 0; j < MAXDUNY; j++) {
 			for (i = 0; i < MAXDUNX; i++)
-				BSave(dTransVal[i][j]);
+				BSave(dLight[i][j]);
 		}
 		for (j = 0; j < MAXDUNY; j++) {
 			for (i = 0; i < MAXDUNX; i++)
-				BSave(dTransVal2[i][j]);
+				BSave(dPreLight[i][j]);
 		}
 		for (j = 0; j < DMAXY; j++) {
 			for (i = 0; i < DMAXX; i++)
@@ -578,11 +578,11 @@ void __cdecl SaveLevel()
 		}
 		for (j = 0; j < MAXDUNY; j++) {
 			for (i = 0; i < MAXDUNX; i++)
-				BSave(dTransVal[i][j]);
+				BSave(dLight[i][j]);
 		}
 		for (j = 0; j < MAXDUNY; j++) {
 			for (i = 0; i < MAXDUNX; i++)
-				BSave(dTransVal2[i][j]);
+				BSave(dPreLight[i][j]);
 		}
 		for (j = 0; j < DMAXY; j++) {
 			for (i = 0; i < DMAXX; i++)
@@ -671,11 +671,11 @@ void __cdecl LoadLevel()
 		}
 		for (j = 0; j < MAXDUNY; j++) {
 			for (i = 0; i < MAXDUNX; i++)
-				dTransVal[i][j] = BLoad();
+				dLight[i][j] = BLoad();
 		}
 		for (j = 0; j < MAXDUNY; j++) {
 			for (i = 0; i < MAXDUNX; i++)
-				dTransVal2[i][j] = BLoad();
+				dPreLight[i][j] = BLoad();
 		}
 		for (j = 0; j < DMAXY; j++) {
 			for (i = 0; i < DMAXX; i++)

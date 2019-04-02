@@ -13,7 +13,7 @@ extern char lightmax;             // weak
 extern int dolighting;            // weak
 extern BYTE lightblock[8][8][16][16];
 extern int visionid;
-extern char *pLightTbl; /* todo: struct? */
+extern BYTE *pLightTbl;
 extern BOOL lightflag;
 
 void __fastcall RotateRadius(int *x, int *y, int *dx, int *dy, int *lx, int *ly, int *bx, int *by);

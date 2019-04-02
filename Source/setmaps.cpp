@@ -122,7 +122,7 @@ void __fastcall DRLG_SetMapTrans(char *sFileName)
 
 	for (j = 0; j < y; j++) {
 		for (i = 0; i < x; i++) {
-			dung_map[16 + i][16 + j] = *d;
+			dTransVal[16 + i][16 + j] = *d;
 			d += 2;
 		}
 	}

@@ -13,7 +13,7 @@ char lightmax;             // weak
 int dolighting;            // weak
 BYTE lightblock[8][8][16][16];
 int visionid;
-char *pLightTbl; /* todo: struct? */
+BYTE *pLightTbl;
 BOOL lightflag;
 
 char CrawlTable[2749] = {
@@ -529,7 +529,7 @@ void __fastcall DoLighting(int nXPos, int nYPos, int nRadius, int Lnum)
 	}
 
 	if(nXPos >= 0 && nXPos < MAXDUNX && nYPos >= 0 && nYPos < MAXDUNY) {
-		dTransVal[nXPos][nYPos] = 0;
+		dLight[nXPos][nYPos] = 0;
 	}
 
 	mult = xoff + 8 * yoff;
@@ -541,8 +541,8 @@ void __fastcall DoLighting(int nXPos, int nYPos, int nRadius, int Lnum)
 				temp_y = nYPos + y;
 				v = lightradius[nRadius][radius_block];
 				if(temp_x >= 0 && temp_x < MAXDUNX && temp_y >= 0 && temp_y < MAXDUNY) {
-					if(v < dTransVal[temp_x][temp_y]) {
-						dTransVal[temp_x][temp_y] = v;
+					if(v < dLight[temp_x][temp_y]) {
+						dLight[temp_x][temp_y] = v;
 					}
 				}
 			}
@@ -558,8 +558,8 @@ void __fastcall DoLighting(int nXPos, int nYPos, int nRadius, int Lnum)
 				temp_y = nYPos - x;
 				v = lightradius[nRadius][radius_block];
 				if(temp_x >= 0 && temp_x < MAXDUNX && temp_y >= 0 && temp_y < MAXDUNY) {
-					if(v < dTransVal[temp_x][temp_y]) {
-						dTransVal[temp_x][temp_y] = v;
+					if(v < dLight[temp_x][temp_y]) {
+						dLight[temp_x][temp_y] = v;
 					}
 				}
 			}
@@ -575,8 +575,8 @@ void __fastcall DoLighting(int nXPos, int nYPos, int nRadius, int Lnum)
 				temp_y = nYPos - y;
 				v = lightradius[nRadius][radius_block];
 				if(temp_x >= 0 && temp_x < MAXDUNX && temp_y >= 0 && temp_y < MAXDUNY) {
-					if(v < dTransVal[temp_x][temp_y]) {
-						dTransVal[temp_x][temp_y] = v;
+					if(v < dLight[temp_x][temp_y]) {
+						dLight[temp_x][temp_y] = v;
 					}
 				}
 			}
@@ -592,8 +592,8 @@ void __fastcall DoLighting(int nXPos, int nYPos, int nRadius, int Lnum)
 				temp_y = nYPos + x;
 				v = lightradius[nRadius][radius_block];
 				if(temp_x >= 0 && temp_x < MAXDUNX && temp_y >= 0 && temp_y < MAXDUNY) {
-					if(v < dTransVal[temp_x][temp_y]) {
-						dTransVal[temp_x][temp_y] = v;
+					if(v < dLight[temp_x][temp_y]) {
+						dLight[temp_x][temp_y] = v;
 					}
 				}
 			}
@@ -629,7 +629,7 @@ void __fastcall DoUnLight(int nXPos, int nYPos, int nRadius)
 			v8 = radius_block + 112 * x;
 			do {
 				if (v7 >= 0 && v7 < 112 && radius_block >= 0 && radius_block < 112)
-					dTransVal[0][v8] = dTransVal2[0][v8];
+					dLight[0][v8] = dPreLight[0][v8];
 				++v7;
 				v8 += 112;
 			} while (v7 < max_x);
@@ -747,7 +747,7 @@ void __fastcall DoVision(int nXPos, int nYPos, int nRadius, BOOL doautomap, BOOL
 						}
 						dFlags[nCrawlX][nCrawlY] |= DFLAG_VISIBLE;
 						if(!nBlockerFlag) {
-							nTrans = dung_map[nCrawlX][nCrawlY];
+							nTrans = dTransVal[nCrawlX][nCrawlY];
 							if(nTrans != 0) {
 								TransList[nTrans] = 1;
 							}
@@ -761,7 +761,7 @@ void __fastcall DoVision(int nXPos, int nYPos, int nRadius, BOOL doautomap, BOOL
 
 void __cdecl FreeLightTable()
 {
-	char *ptr;
+	BYTE *ptr;
 
 	ptr = pLightTbl;
 	pLightTbl = NULL;
@@ -770,7 +770,7 @@ void __cdecl FreeLightTable()
 
 void __cdecl InitLightTable()
 {
-	pLightTbl = (char *)DiabloAllocPtr(LIGHTSIZE);
+	pLightTbl = DiabloAllocPtr(LIGHTSIZE);
 }
 
 void __cdecl MakeLightTable()
@@ -781,7 +781,7 @@ void __cdecl MakeLightTable()
 	BYTE *tbl, *trn;
 	BYTE blood[16];
 
-	tbl = (BYTE *)pLightTbl;
+	tbl = pLightTbl;
 	shade = 0;
 
 	if(light4flag) {
@@ -849,7 +849,7 @@ void __cdecl MakeLightTable()
 	}
 
 	if(leveltype == DTYPE_HELL) {
-		tbl = (BYTE *)pLightTbl;
+		tbl = pLightTbl;
 		for(i = 0; i < lights; i++) {
 			l1 = lights - i;
 			l2 = l1;
@@ -962,9 +962,9 @@ void __cdecl ToggleLighting()
 
 	lightflag ^= 1;
 	if (lightflag) {
-		memset(dTransVal, 0, sizeof(dTransVal));
+		memset(dLight, 0, sizeof(dLight));
 	} else {
-		memcpy(dTransVal, dTransVal2, sizeof(dTransVal));
+		memcpy(dLight, dPreLight, sizeof(dLight));
 		for (i = 0; i < 4; i++) {
 			if (plr[i].plractive) {
 				if (currlevel == plr[i].plrlevel)
@@ -1148,7 +1148,7 @@ void __cdecl ProcessLightList()
 
 void __cdecl SavePreLighting()
 {
-	memcpy(dTransVal2, dTransVal, 0x3100u);
+	memcpy(dPreLight, dLight, 0x3100u);
 }
 
 void __cdecl InitVision()
@@ -1279,7 +1279,7 @@ void __cdecl lighting_color_cycling()
 		return;
 	}
 
-	tbl = (BYTE *)pLightTbl;
+	tbl = pLightTbl;
 
 	for(j = 0; j < l; j++) {
 		tbl++;
@@ -1288,8 +1288,8 @@ void __cdecl lighting_color_cycling()
 			tbl[0] = tbl[1];
 			tbl++;
 		}
-		*tbl = col;
-		tbl += 225;
+		*tbl++ = col;
+		tbl += 224;
 	}
 }
 // 525728: using guessed type int light4flag;
