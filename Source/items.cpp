@@ -695,7 +695,7 @@ void __cdecl AddInitItems()
 			GetItemAttrs(ii, IDI_HEAL, currlevel);
 		else
 			GetItemAttrs(ii, IDI_MANA, currlevel);
-		item[ii]._iCreateInfo = currlevel + -32768;
+		item[ii]._iCreateInfo = currlevel - 32768;
 		SetupItem(ii);
 		item[ii]._iAnimFlag = 0;
 		item[ii]._iAnimFrame = item[ii]._iAnimLen;
