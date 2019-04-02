@@ -5286,23 +5286,7 @@ void __fastcall SyncObjectAnim(int o)
 
 void __fastcall GetObjectStr(int i)
 {
-	int v1; // edi
-
-	v1 = i;
 	switch (object[i]._otype) {
-	case OBJ_L1LDOOR:
-	case OBJ_L1RDOOR:
-	case OBJ_L2LDOOR:
-	case OBJ_L2RDOOR:
-	case OBJ_L3LDOOR:
-	case OBJ_L3RDOOR:
-		if (object[v1]._oVar4 == 1)
-			strcpy(infostr, "Open Door");
-		if (!object[v1]._oVar4)
-			strcpy(infostr, "Closed Door");
-		if (object[v1]._oVar4 == 2)
-			strcpy(infostr, "Blocked Door");
-		break;
 	case OBJ_LEVER:
 	case OBJ_FLAMELVR:
 		strcpy(infostr, "Lever");
@@ -5311,19 +5295,18 @@ void __fastcall GetObjectStr(int i)
 	case OBJ_TCHEST1:
 		strcpy(infostr, "Small Chest");
 		break;
-	case OBJ_CHEST2:
-	case OBJ_TCHEST2:
-		strcpy(infostr, "Chest");
-		break;
-	case OBJ_CHEST3:
-	case OBJ_TCHEST3:
-	case OBJ_SIGNCHEST:
-		strcpy(infostr, "Large Chest");
-		break;
-	case OBJ_CRUX1:
-	case OBJ_CRUX2:
-	case OBJ_CRUX3:
-		strcpy(infostr, "Crucified Skeleton");
+	case OBJ_L1LDOOR:
+	case OBJ_L1RDOOR:
+	case OBJ_L2LDOOR:
+	case OBJ_L2RDOOR:
+	case OBJ_L3LDOOR:
+	case OBJ_L3RDOOR:
+		if (object[i]._oVar4 == 1)
+			strcpy(infostr, "Open Door");
+		if (object[i]._oVar4 == 0)
+			strcpy(infostr, "Closed Door");
+		if (object[i]._oVar4 == 2)
+			strcpy(infostr, "Blocked Door");
 		break;
 	case OBJ_BOOK2L:
 		if (setlevel) {
@@ -5340,6 +5323,21 @@ void __fastcall GetObjectStr(int i)
 	case OBJ_BOOK2R:
 		strcpy(infostr, "Mythical Book");
 		break;
+
+	case OBJ_CHEST2:
+	case OBJ_TCHEST2:
+		strcpy(infostr, "Chest");
+		break;
+	case OBJ_CHEST3:
+	case OBJ_TCHEST3:
+	case OBJ_SIGNCHEST:
+		strcpy(infostr, "Large Chest");
+		break;
+	case OBJ_CRUX1:
+	case OBJ_CRUX2:
+	case OBJ_CRUX3:
+		strcpy(infostr, "Crucified Skeleton");
+		break;
 	case OBJ_SARC:
 		strcpy(infostr, "Sarcophagus");
 		break;
@@ -5350,13 +5348,13 @@ void __fastcall GetObjectStr(int i)
 	case OBJ_BARRELEX:
 		strcpy(infostr, "Barrel");
 		break;
-	case OBJ_SHRINEL:
-	case OBJ_SHRINER:
-		sprintf(tempstr, "%s Shrine", shrinestrs[object[v1]._oVar1]);
-		strcpy(infostr, tempstr);
-		break;
 	case OBJ_SKELBOOK:
 		strcpy(infostr, "Skeleton Tome");
+		break;
+	case OBJ_SHRINEL:
+	case OBJ_SHRINER:
+		sprintf(tempstr, "%s Shrine", shrinestrs[object[i]._oVar1]);
+		strcpy(infostr, tempstr);
 		break;
 	case OBJ_BOOKCASEL:
 	case OBJ_BOOKCASER:
@@ -5399,11 +5397,11 @@ void __fastcall GetObjectStr(int i)
 	case OBJ_TEARFTN:
 		strcpy(infostr, "Fountain of Tears");
 		break;
-	case OBJ_STORYBOOK:
-		strcpy(infostr, StoryBookName[object[v1]._oVar3]);
-		break;
 	case OBJ_STEELTOME:
 		strcpy(infostr, "Steel Tome");
+		break;
+	case OBJ_STORYBOOK:
+		strcpy(infostr, StoryBookName[object[i]._oVar3]);
 		break;
 	case OBJ_WARWEAP:
 	case OBJ_WEAPONRACK:
@@ -5420,7 +5418,7 @@ void __fastcall GetObjectStr(int i)
 		break;
 	}
 	if (plr[myplr]._pClass == PC_ROGUE) {
-		if (object[v1]._oTrapFlag) {
+		if (object[i]._oTrapFlag) {
 			sprintf(tempstr, "Trapped %s", infostr);
 			strcpy(infostr, tempstr);
 			infoclr = COL_RED;

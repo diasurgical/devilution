@@ -30,7 +30,7 @@ BOOL pinfoflag;
 int talkbtndown[3];
 int pSpell; // weak
 BYTE *pManaBuff;
-int infoclr;       // weak
+char infoclr;       // weak
 int sgbPlrTalkTbl; // weak // should be char [4]
 void *pGBoxBuff;
 void *pSBkBtnCel;
