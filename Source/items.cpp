@@ -679,7 +679,7 @@ void __cdecl AddInitItems()
 		itemactive[numitems] = i;
 		x = random(12, 80) + 16;
 		y = random(12, 80) + 16;
-		while (!ItemPlace(x, y)) {
+		for (k = ItemPlace(x, y); !k; k = ItemPlace(x, y)) {
 			x = random(12, 80) + 16;
 			y = random(12, 80) + 16;
 		}
