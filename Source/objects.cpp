@@ -1577,15 +1577,15 @@ void __fastcall AddFlameLvr(int i)
 
 void __fastcall AddTrap(int i)
 {
-	int mt; // eax
+	int mt;
 
-	mt = random(148, currlevel / 3 + 1);
-	if (!mt)
-		object[i]._oVar3 = 0;
+	mt = random(148, 1 + currlevel / 3);
+	if (mt == 0)
+		object[i]._oVar3 = 0; // arrow
 	if (mt == 1)
-		object[i]._oVar3 = 1;
+		object[i]._oVar3 = 1; // firebolt
 	if (mt == 2)
-		object[i]._oVar3 = 7;
+		object[i]._oVar3 = 7; // lightning
 	object[i]._oVar4 = 0;
 }
 
