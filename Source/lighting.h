@@ -6,21 +6,21 @@ extern LightListStruct VisionList[32];
 extern char lightactive[32];
 extern LightListStruct LightList[32];
 extern int numlights;
-extern char dung_map_radius[2048]; /* char [16][128] */
+extern BYTE lightradius[16][128];
 extern int dovision;               // weak
 extern int numvision;
 extern char lightmax;             // weak
 extern int dolighting;            // weak
-extern char dung_map_rgba[16384]; /* int [64][64] short [64][128] char [64][256] */
+extern BYTE lightblock[8][8][16][16];
 extern int visionid;
 extern char *pLightTbl; /* todo: struct? */
 extern BOOL lightflag;
 
-void __fastcall SetLightFX(int *x, int *y, short *s_r, short *s_g, int *s_b, int *d_r, int *d_g, int *d_b);
+void __fastcall RotateRadius(int *x, int *y, int *dx, int *dy, int *lx, int *ly, int *bx, int *by);
 void __fastcall DoLighting(int nXPos, int nYPos, int nRadius, int Lnum);
 void __fastcall DoUnLight(int nXPos, int nYPos, int nRadius);
 void __fastcall DoUnVision(int nXPos, int nYPos, int nRadius);
-void __fastcall DoVision(int nXPos, int nYPos, int nRadius, unsigned char doautomap, int visible);
+void __fastcall DoVision(int nXPos, int nYPos, int nRadius, BOOL doautomap, BOOL visible);
 void __cdecl FreeLightTable();
 void __cdecl InitLightTable();
 void __cdecl MakeLightTable();
