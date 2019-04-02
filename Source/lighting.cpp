@@ -1288,8 +1288,8 @@ void __cdecl lighting_color_cycling()
 			tbl[0] = tbl[1];
 			tbl++;
 		}
-		*tbl = col;
-		tbl += 225;
+		*tbl++ = col;
+		tbl += 224;
 	}
 }
 // 525728: using guessed type int light4flag;
