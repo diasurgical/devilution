@@ -2,34 +2,36 @@
 
 #include "../types.h"
 
-LPTOP_LEVEL_EXCEPTION_FILTER lpTopLevelExceptionFilter; // idb
+LPTOP_LEVEL_EXCEPTION_FILTER lpTopLevelExceptionFilter;
+
+int fault_unused;
 
 #ifndef _MSC_VER
 __attribute__((constructor))
 #endif
 static void
-exception_c_init(void)
+fault_c_init(void)
 {
-	exception_install_filter();
-	j_exception_init_filter();
+	fault_init_filter();
+	fault_cleanup_filter_atexit();
 }
 
 SEG_ALLOCATE(SEGMENT_C_INIT)
-_PVFV exception_c_init_funcs[] = { &exception_c_init };
+_PVFV exception_c_init_funcs[] = { &fault_c_init };
 
-void __cdecl exception_install_filter()
+void __cdecl fault_init_filter()
 {
-	exception_set_filter();
+	fault_set_filter(&fault_unused);
 }
 
-void __cdecl j_exception_init_filter()
+void __cdecl fault_cleanup_filter_atexit()
 {
-	atexit(exception_init_filter);
+	atexit(fault_cleanup_filter);
 }
 
-void __cdecl exception_init_filter(void)
+void __cdecl fault_cleanup_filter(void)
 {
-	exception_set_filter_ptr();
+	fault_reset_filter(&fault_unused);
 }
 
 LONG __stdcall TopLevelExceptionFilter(PEXCEPTION_POINTERS ExceptionInfo)
@@ -43,10 +45,10 @@ LONG __stdcall TopLevelExceptionFilter(PEXCEPTION_POINTERS ExceptionInfo)
 
 	log_dump_computer_info();
 	xcpt = ExceptionInfo->ExceptionRecord;
-	pszExceptionName = exception_get_error_type(ExceptionInfo->ExceptionRecord->ExceptionCode, szExceptionNameBuf, sizeof(szExceptionNameBuf));
+	pszExceptionName = fault_get_error_type(ExceptionInfo->ExceptionRecord->ExceptionCode, szExceptionNameBuf, sizeof(szExceptionNameBuf));
 	log_printf("Exception code: %08X %s\r\n", xcpt->ExceptionCode, pszExceptionName);
 
-	exception_unknown_module(xcpt->ExceptionAddress, szModuleName, MAX_PATH, &sectionNumber, &sectionOffset);
+	fault_unknown_module(xcpt->ExceptionAddress, szModuleName, MAX_PATH, &sectionNumber, &sectionOffset);
 	log_printf("Fault address:\t%08X %02X:%08X %s\r\n", xcpt->ExceptionAddress, sectionNumber, sectionOffset, szModuleName);
 
 	ctx = ExceptionInfo->ContextRecord;
@@ -65,13 +67,13 @@ LONG __stdcall TopLevelExceptionFilter(PEXCEPTION_POINTERS ExceptionInfo)
 	log_printf("DS:%04X ES:%04X FS:%04X GS:%04X\r\n", ctx->SegDs, ctx->SegEs, ctx->SegFs, ctx->SegGs);
 
 	log_printf("Flags:%08X\r\n", ctx->EFlags);
-	exception_call_stack((void *)ctx->Eip, (STACK_FRAME *)ctx->Ebp);
+	fault_call_stack((void *)ctx->Eip, (STACK_FRAME *)ctx->Ebp);
 
 	log_printf("Stack bytes:\r\n");
-	exception_hex_format((BYTE *)ctx->Esp, 768);
+	fault_hex_format((BYTE *)ctx->Esp, 768);
 
 	log_printf("Code bytes:\r\n");
-	exception_hex_format((BYTE *)ctx->Eip, 16);
+	fault_hex_format((BYTE *)ctx->Eip, 16);
 
 	log_printf("\r\n");
 	log_flush(1);
@@ -81,7 +83,7 @@ LONG __stdcall TopLevelExceptionFilter(PEXCEPTION_POINTERS ExceptionInfo)
 	return EXCEPTION_CONTINUE_SEARCH;
 }
 
-void __fastcall exception_hex_format(BYTE *ptr, unsigned int numBytes)
+void __fastcall fault_hex_format(BYTE *ptr, unsigned int numBytes)
 {
 	DWORD i, bytesRead;
 	const char *fmt;
@@ -122,7 +124,7 @@ void __fastcall exception_hex_format(BYTE *ptr, unsigned int numBytes)
 	log_printf("\r\n");
 }
 
-void __fastcall exception_unknown_module(LPCVOID lpAddress, LPSTR lpModuleName, int iMaxLength, int *sectionNum, int *sectionOffset)
+void __fastcall fault_unknown_module(LPCVOID lpAddress, LPSTR lpModuleName, int iMaxLength, int *sectionNum, int *sectionOffset)
 {
 	MEMORY_BASIC_INFORMATION memInfo;
 	PIMAGE_DOS_HEADER dosHeader;
@@ -173,7 +175,7 @@ void __fastcall exception_unknown_module(LPCVOID lpAddress, LPSTR lpModuleName, 
 	}
 }
 
-void __fastcall exception_call_stack(void *instr, STACK_FRAME *stackFrame)
+void __fastcall fault_call_stack(void *instr, STACK_FRAME *stackFrame)
 {
 	STACK_FRAME *oldStackFrame;
 	char szModuleName[MAX_PATH];
@@ -181,7 +183,7 @@ void __fastcall exception_call_stack(void *instr, STACK_FRAME *stackFrame)
 
 	log_printf("Call stack:\r\nAddress  Frame    Logical addr  Module\r\n");
 	do {
-		exception_unknown_module(instr, szModuleName, MAX_PATH, &sectionNumber, &sectionOffset);
+		fault_unknown_module(instr, szModuleName, MAX_PATH, &sectionNumber, &sectionOffset);
 		log_printf("%08X %08X %04X:%08X %s\r\n", instr, stackFrame, sectionNumber, sectionOffset, szModuleName);
 
 		if (IsBadWritePtr(stackFrame, 8))
@@ -202,7 +204,7 @@ void __fastcall exception_call_stack(void *instr, STACK_FRAME *stackFrame)
 	case EXCEPTION_##errName:      \
 		v = #errName;              \
 		break;
-char *__fastcall exception_get_error_type(DWORD dwMessageId, LPSTR lpString1, DWORD nSize)
+char *__fastcall fault_get_error_type(DWORD dwMessageId, LPSTR lpString1, DWORD nSize)
 {
 	const char *v4; // eax
 	HMODULE ntdll;
@@ -240,17 +242,17 @@ char *__fastcall exception_get_error_type(DWORD dwMessageId, LPSTR lpString1, DW
 	return lpString1;
 }
 
-void __fastcall exception_set_filter()
+void __fastcall fault_set_filter(void *unused)
 {
 	lpTopLevelExceptionFilter = SetUnhandledExceptionFilter((LPTOP_LEVEL_EXCEPTION_FILTER)TopLevelExceptionFilter);
 }
 
-LPTOP_LEVEL_EXCEPTION_FILTER __cdecl exception_set_filter_ptr()
+LPTOP_LEVEL_EXCEPTION_FILTER __cdecl fault_reset_filter(void *unused)
 {
 	return SetUnhandledExceptionFilter(lpTopLevelExceptionFilter);
 }
 
-LPTOP_LEVEL_EXCEPTION_FILTER __cdecl exception_get_filter()
+LPTOP_LEVEL_EXCEPTION_FILTER __cdecl fault_get_filter()
 {
 	return lpTopLevelExceptionFilter;
 }
