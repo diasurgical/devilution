@@ -82,10 +82,10 @@ void __fastcall LoadGame(BOOL firstflag)
 
 		numlights = WLoad();
 
-		for (i = 0; i < 32; i++)
+		for (i = 0; i < MAXLIGHTS; i++)
 			lightactive[i] = BLoad();
 		for (i = 0; i < numlights; i++)
-			LoadLighting((unsigned char)lightactive[i]);
+			LoadLighting(lightactive[i]);
 
 		visionid = WLoad();
 		numvision = WLoad();
@@ -332,10 +332,10 @@ void __cdecl SaveGame()
 
 		WSave(numlights);
 
-		for (i = 0; i < 32; i++)
+		for (i = 0; i < MAXLIGHTS; i++)
 			BSave(lightactive[i]);
 		for (i = 0; i < numlights; i++)
-			SaveLighting((unsigned char)lightactive[i]);
+			SaveLighting(lightactive[i]);
 
 		WSave(visionid);
 		WSave(numvision);

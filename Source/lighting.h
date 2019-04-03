@@ -2,9 +2,9 @@
 #ifndef __LIGHTING_H__
 #define __LIGHTING_H__
 
-extern LightListStruct VisionList[32];
-extern char lightactive[32];
-extern LightListStruct LightList[32];
+extern LightListStruct VisionList[MAXVISION];
+extern unsigned char lightactive[MAXLIGHTS];
+extern LightListStruct LightList[MAXLIGHTS];
 extern int numlights;
 extern BYTE lightradius[16][128];
 extern int dovision;               // weak
@@ -25,6 +25,7 @@ void __cdecl FreeLightTable();
 void __cdecl InitLightTable();
 void __cdecl MakeLightTable();
 #ifdef _DEBUG
+void __cdecl ToggleLighting_2();
 void __cdecl ToggleLighting();
 #endif
 void __cdecl InitLightMax();
