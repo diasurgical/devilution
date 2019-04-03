@@ -26,7 +26,7 @@ void __cdecl fault_init_filter()
 
 void __cdecl fault_cleanup_filter_atexit()
 {
-	atexit((void *)fault_cleanup_filter);
+	atexit((void (*)(void))fault_cleanup_filter);
 }
 
 LPTOP_LEVEL_EXCEPTION_FILTER __cdecl fault_cleanup_filter()
