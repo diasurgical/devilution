@@ -242,9 +242,10 @@ char *__fastcall fault_get_error_type(DWORD dwMessageId, LPSTR lpString1, DWORD 
 	return lpString1;
 }
 
-void __fastcall fault_set_filter(void *unused)
+void * __fastcall fault_set_filter(void *unused)
 {
 	lpTopLevelExceptionFilter = SetUnhandledExceptionFilter((LPTOP_LEVEL_EXCEPTION_FILTER)TopLevelExceptionFilter);
+	return unused;
 }
 
 LPTOP_LEVEL_EXCEPTION_FILTER __fastcall fault_reset_filter(void *unused)
