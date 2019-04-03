@@ -26,12 +26,12 @@ void __cdecl fault_init_filter()
 
 void __cdecl fault_cleanup_filter_atexit()
 {
-	atexit(fault_cleanup_filter);
+	atexit((void *)fault_cleanup_filter);
 }
 
-void __cdecl fault_cleanup_filter(void)
+LPTOP_LEVEL_EXCEPTION_FILTER __cdecl fault_cleanup_filter()
 {
-	fault_reset_filter(&fault_unused);
+	return fault_reset_filter(&fault_unused);
 }
 
 LONG __stdcall TopLevelExceptionFilter(PEXCEPTION_POINTERS ExceptionInfo)
@@ -247,7 +247,7 @@ void __fastcall fault_set_filter(void *unused)
 	lpTopLevelExceptionFilter = SetUnhandledExceptionFilter((LPTOP_LEVEL_EXCEPTION_FILTER)TopLevelExceptionFilter);
 }
 
-LPTOP_LEVEL_EXCEPTION_FILTER __cdecl fault_reset_filter(void *unused)
+LPTOP_LEVEL_EXCEPTION_FILTER __fastcall fault_reset_filter(void *unused)
 {
 	return SetUnhandledExceptionFilter(lpTopLevelExceptionFilter);
 }
