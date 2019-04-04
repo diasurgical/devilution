@@ -7,7 +7,7 @@ configuration: Release
 platform: x86
 build:
   project: Diablo.sln
-	verbosity: minimal
+  verbosity: minimal
 artifacts:
   - path: Source\WinRel\Diablo.exe
   - name: Diablo.exe
