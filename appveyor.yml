@@ -8,3 +8,6 @@ platform: x86
 build:
   project: Diablo.sln
   verbosity: minimal
+artifacts:
+  - path: Debug\devilutionx.exe
+  - name: devilutionx.exe
