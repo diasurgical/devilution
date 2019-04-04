@@ -26,15 +26,8 @@
 
 // tell Visual C++ to shut the hell up
 #ifdef _MSC_VER
-#pragma warning(disable : 4309) // truncation of constant value
-#pragma warning(disable : 4305) // truncation of int
-#pragma warning(disable : 4018) // signed/unsigned mismatch
-#pragma warning(disable : 4700) // used without having been initialized
-#pragma warning(disable : 4804) // unsafe use of type 'bool' in operation
-#pragma warning(disable : 4805) // unsafe bool mix
 #pragma warning(disable : 4244) // conversion loss
 #pragma warning(disable : 4800) // bool perf
-#pragma warning(disable : 4146) // negative unsigned
 #pragma warning(disable : 4996) // deprecation warning
 #endif
 
