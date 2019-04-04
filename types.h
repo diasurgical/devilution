@@ -35,6 +35,7 @@
 #pragma warning(disable : 4244) // conversion loss
 #pragma warning(disable : 4800) // bool perf
 #pragma warning(disable : 4146) // negative unsigned
+#pragma warning(disable : 4996) // deprecation warning
 #endif
 
 #include "defs.h"
