@@ -745,7 +745,7 @@ int __fastcall NetInit(int bSinglePlayer, int *pfExitProgram)
 		buffer_init(&sgHiPriBuf);
 		buffer_init(&sgLoPriBuf);
 		dword_678628 = 0;
-		sync_clear_pkt();
+		sync_init();
 		nthread_start(sgbPlayerTurnBitTbl[myplr]);
 		dthread_start();
 		MI_Dummy(0); /* v5 */

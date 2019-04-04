@@ -2,10 +2,10 @@
 
 #include "../types.h"
 
-short sync_word_6AA708[MAXMONSTERS];
-int syncmonsters; // weak
-short sync_word_6AA89C[MAXMONSTERS];
-int syncitems;
+WORD sync_word_6AA708[MAXMONSTERS];
+int sgnMonsters; // weak
+WORD sgwLRU[MAXMONSTERS];
+int sgnSyncItem;
 int sgnSyncPInv; // weak
 
 int __fastcall sync_all_monsters(TSyncHeader *packet, int size)
@@ -47,11 +47,11 @@ void __cdecl sync_one_monster()
 	int i;      // ebx
 	int v1;     // edi
 	int v2;     // esi
-	short v3;   // bp
-	short v4;   // ax
+	WORD v3;   // bp
+	WORD v4;   // ax
 	BOOLEAN v5; // zf
-	short *v6;  // edx
-	short *v7;  // eax
+	WORD *v6;  // edx
+	WORD *v7;  // eax
 
 	for (i = 0; i < nummonsters; ++i) {
 		v1 = monstactive[i];
@@ -64,7 +64,7 @@ void __cdecl sync_one_monster()
 		if (v5) {
 			*v6 = v4 + v3 + 4096;
 		} else {
-			v7 = &sync_word_6AA89C[v1];
+			v7 = &sgwLRU[v1];
 			if (*v7)
 				--*v7;
 		}
@@ -85,8 +85,8 @@ int __fastcall sync_monster_active(TSyncMonster *packet)
 		return 0;
 	do {
 		v4 = monstactive[v2];
-		if ((unsigned short)sync_word_6AA708[v4] < v1 && (unsigned short)sync_word_6AA89C[v4] < 0xFFFEu) {
-			v1 = (unsigned short)sync_word_6AA708[v4];
+		if (sync_word_6AA708[v4] < v1 && sgwLRU[v4] < 0xFFFEu) {
+			v1 = sync_word_6AA708[v4];
 			v3 = monstactive[v2];
 		}
 		++v2;
@@ -103,7 +103,7 @@ void __fastcall sync_monster_pos(TSyncMonster *packet, int mon_id)
 	TSyncMonster *v3; // esi
 	int v4;           // edi
 	int v5;           // eax
-	short v6;         // cx
+	WORD v6;         // cx
 	char v7;          // cl
 
 	v2 = mon_id;
@@ -115,12 +115,12 @@ void __fastcall sync_monster_pos(TSyncMonster *packet, int mon_id)
 	packet->_menemy = encode_enemy(mon_id);
 	v5 = v2;
 	v6 = sync_word_6AA708[v2];
-	if ((unsigned short)v6 > 0xFFu)
+	if (v6 > 0xFFu)
 		_LOBYTE(v6) = -1;
 	v3->_mdelta = v6;
 	v7 = monster[v4]._msquelch;
 	sync_word_6AA708[v5] = -1;
-	sync_word_6AA89C[v5] = -(v7 != 0) - 1;
+	sgwLRU[v5] = -(v7 != 0) - 1;
 }
 
 int __fastcall sync_monster_active2(TSyncMonster *packet)
@@ -135,26 +135,26 @@ int __fastcall sync_monster_active2(TSyncMonster *packet)
 	v2 = 65534;
 	if (nummonsters <= 0)
 		return 0;
-	v3 = syncmonsters;
+	v3 = sgnMonsters;
 	v6 = nummonsters;
 	do {
 		if (v3 >= nummonsters)
 			v3 = 0;
 		v4 = monstactive[v3];
-		if ((unsigned short)sync_word_6AA89C[v4] < v2) {
-			v2 = (unsigned short)sync_word_6AA89C[v4];
+		if (sgwLRU[v4] < v2) {
+			v2 = sgwLRU[v4];
 			v1 = monstactive[v3];
 		}
 		++v3;
 		--v6;
 	} while (v6);
-	syncmonsters = v3;
+	sgnMonsters = v3;
 	if (v1 == -1)
 		return 0;
 	sync_monster_pos(packet, v1);
 	return 1;
 }
-// 6AA898: using guessed type int syncmonsters;
+// 6AA898: using guessed type int sgnMonsters;
 
 void __fastcall SyncPlrInv(TSyncHeader *pSync)
 {
@@ -168,11 +168,11 @@ void __fastcall SyncPlrInv(TSyncHeader *pSync)
 	if (numitems <= 0) {
 		pSync->bItemI = -1;
 	} else {
-		v1 = syncitems;
-		if (syncitems >= numitems)
+		v1 = sgnSyncItem;
+		if (sgnSyncItem >= numitems)
 			v1 = 0;
 		v2 = itemactive[v1];
-		syncitems = v1 + 1;
+		sgnSyncItem = v1 + 1;
 		pSync->bItemI = v2;
 		v3 = v2;
 		pSync->bItemX = item[v3]._ix;
@@ -219,7 +219,7 @@ void __fastcall SyncPlrInv(TSyncHeader *pSync)
 }
 // 6AAA34: using guessed type int sgnSyncPInv;
 
-int __fastcall SyncData(int pnum, TSyncHeader *packet)
+int __fastcall sync_update(int pnum, TSyncHeader *packet)
 {
 	TSyncHeader *v2;   // esi
 	TSyncMonster *v3;  // edi
@@ -238,7 +238,7 @@ int __fastcall SyncData(int pnum, TSyncHeader *packet)
 			v6 = v5 / 5u;
 			do {
 				if (currlevel == v2->bLevel)
-					sync_monster_data(v4, v3);
+					sync_monster(v4, v3);
 				delta_sync_monster((TCmdLocParam1 *)v3, v2->bLevel);
 				++v3;
 				--v6;
@@ -249,7 +249,7 @@ int __fastcall SyncData(int pnum, TSyncHeader *packet)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-void __fastcall sync_monster_data(int pnum, TSyncMonster *packet)
+void __fastcall sync_monster(int pnum, TSyncMonster *packet)
 {
 	TSyncMonster *v2; // edi
 	int v3;           // ecx
@@ -336,9 +336,9 @@ void __fastcall sync_monster_data(int pnum, TSyncMonster *packet)
 	}
 }
 
-void __cdecl sync_clear_pkt()
+void __cdecl sync_init()
 {
-	syncmonsters = 16 * myplr;
-	memset(sync_word_6AA89C, 255, 0x190u);
+	sgnMonsters = 16 * myplr;
+	memset(sgwLRU, 255, 0x190u);
 }
-// 6AA898: using guessed type int syncmonsters;
+// 6AA898: using guessed type int sgnMonsters;

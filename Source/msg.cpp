@@ -1304,7 +1304,7 @@ void __fastcall DeltaImportJunk(BYTE *src)
 
 int __fastcall On_SYNCDATA(void *packet, int pnum)
 {
-	return SyncData(pnum, (TSyncHeader *)packet);
+	return sync_update(pnum, (TSyncHeader *)packet);
 }
 
 int __fastcall On_WALKXY(TCmdLoc *pCmd, int pnum)
