@@ -155,13 +155,13 @@ void __fastcall InvDrawSlotBack(int X, int Y, int W, int H)
 	int wdt, hgt;
 	BYTE pix;
 
-	for(hgt = H; hgt; hgt--, dst -= 768 + W) {
-		for(wdt = W; wdt; wdt--) {
+	for (hgt = H; hgt; hgt--, dst -= 768 + W) {
+		for (wdt = W; wdt; wdt--) {
 			pix = *dst;
-			if(pix >= PAL16_BLUE) {
-				if(pix <= PAL16_BLUE + 15)
+			if (pix >= PAL16_BLUE) {
+				if (pix <= PAL16_BLUE + 15)
 					pix -= PAL16_BLUE - PAL16_BEIGE;
-				else if(pix >= PAL16_GRAY)
+				else if (pix >= PAL16_GRAY)
 					pix -= PAL16_GRAY - PAL16_BEIGE;
 			}
 			*dst++ = pix;
@@ -1664,27 +1664,18 @@ void __fastcall CheckItemStats(int pnum)
 
 void __fastcall CheckBookLevel(int pnum)
 {
-	int v1;           // ecx
-	int v2;           // eax
-	unsigned char v3; // bl
-	int v4;           // edi
+	int slvl;
 
-	v1 = pnum;
-	if (plr[v1].HoldItem._iMiscId == IMISC_BOOK) {
-		v2 = plr[v1].HoldItem._iSpell;
-		v3 = spelldata[plr[v1].HoldItem._iSpell].sMinInt;
-		plr[v1].HoldItem._iMinMag = v3;
-		v4 = plr[0]._pSplLvl[v2 + v1 * 21720];
-		if (plr[0]._pSplLvl[v2 + v1 * 21720]) {
-			do {
-				v3 += 20 * v3 / 100;
-				--v4;
-				if (v3 + 20 * v3 / 100 > 255) {
-					v3 = -1;
-					v4 = 0;
-				}
-			} while (v4);
-			plr[v1].HoldItem._iMinMag = v3;
+	if (plr[pnum].HoldItem._iMiscId == IMISC_BOOK) {
+		plr[pnum].HoldItem._iMinMag = spelldata[plr[pnum].HoldItem._iSpell].sMinInt;
+		slvl = plr[pnum]._pSplLvl[plr[pnum].HoldItem._iSpell];
+		while (slvl) {
+			plr[pnum].HoldItem._iMinMag += 20 * plr[pnum].HoldItem._iMinMag / 100;
+			slvl--;
+			if (plr[pnum].HoldItem._iMinMag + 20 * plr[pnum].HoldItem._iMinMag / 100 > 255) {
+				plr[pnum].HoldItem._iMinMag = -1;
+				slvl = 0;
+			}
 		}
 	}
 }
