@@ -2024,21 +2024,25 @@ void __fastcall AutoGetItem(int pnum, int ii)
 }
 // 48E9A8: using guessed type int AP2x2Tbl[10];
 
-int __fastcall FindGetItem(int indx, unsigned short ci, int iseed)
+int __fastcall FindGetItem(int indx, WORD ci, int iseed)
 {
-	int i;  // ebx
-	int ii; // esi
+	int i, ii;
 
 	i = 0;
 	if (numitems <= 0)
 		return -1;
+
 	while (1) {
 		ii = itemactive[i];
 		if (item[ii].IDidx == indx && item[ii]._iSeed == iseed && item[ii]._iCreateInfo == ci)
 			break;
-		if (++i >= numitems)
+
+		i++;
+
+		if (i >= numitems)
 			return -1;
 	}
+
 	return ii;
 }
 

@@ -81,7 +81,7 @@ typedef struct ItemGetRecordStruct {
 
 typedef struct ItemStruct {
 	int _iSeed;
-	unsigned short _iCreateInfo;
+	WORD _iCreateInfo;
 	int _itype;
 	int _ix;
 	int _iy;
