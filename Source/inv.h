@@ -44,7 +44,7 @@ void __cdecl StartGoldDrop();
 int __fastcall UseInvItem(int pnum, int cii);
 void __cdecl DoTelekinesis();
 int __fastcall CalculateGold(int pnum);
-int __cdecl DropItemBeforeTrig();
+BOOL __cdecl DropItemBeforeTrig();
 
 /* data */
 

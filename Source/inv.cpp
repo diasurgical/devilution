@@ -2741,11 +2741,13 @@ int __fastcall CalculateGold(int pnum)
 }
 // 52571C: using guessed type int drawpanflag;
 
-int __cdecl DropItemBeforeTrig()
+BOOL __cdecl DropItemBeforeTrig()
 {
-	if (!TryInvPut())
-		return 0;
-	NetSendCmdPItem(TRUE, CMD_PUTITEM, cursmx, cursmy);
-	SetCursor_(CURSOR_HAND);
-	return 1;
+	if (TryInvPut()) {
+		NetSendCmdPItem(TRUE, CMD_PUTITEM, cursmx, cursmy);
+		SetCursor_(CURSOR_HAND);
+		return TRUE;
+	}
+
+	return FALSE;
 }
