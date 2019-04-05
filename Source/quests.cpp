@@ -56,7 +56,7 @@ void __cdecl InitQuests()
 	int initiatedQuests;
 	int i;
 	unsigned int z;
-	
+
 	if (gbMaxPlayers == 1) {
 		for (i = 0; i < MAXQUESTS; i++) {
 			quests[i]._qactive = 0;

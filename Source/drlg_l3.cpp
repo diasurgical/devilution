@@ -2337,7 +2337,7 @@ void __cdecl DRLG_L3Pass3()
 	int i, j, xx, yy;
 	long v1, v2, v3, v4, lv;
 
-	lv = 8-1;
+	lv = 8 - 1;
 
 #if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
 	__asm {
@@ -2360,28 +2360,29 @@ void __cdecl DRLG_L3Pass3()
 		mov		v4, eax
 	}
 #else
-	v1 = *((WORD *)&pMegaTiles[lv*8])+1;
-	v2 = *((WORD *)&pMegaTiles[lv*8]+1)+1;
-	v3 = *((WORD *)&pMegaTiles[lv*8]+2)+1;
-	v4 = *((WORD *)&pMegaTiles[lv*8]+3)+1;
+	v1 = *((WORD *)&pMegaTiles[lv * 8]) + 1;
+	v2 = *((WORD *)&pMegaTiles[lv * 8] + 1) + 1;
+	v3 = *((WORD *)&pMegaTiles[lv * 8] + 2) + 1;
+	v4 = *((WORD *)&pMegaTiles[lv * 8] + 3) + 1;
 #endif
 
-	for(j = 0; j < MAXDUNY; j += 2) {
-		for(i = 0; i < MAXDUNX; i += 2) {
+	for (j = 0; j < MAXDUNY; j += 2)
+	{
+		for (i = 0; i < MAXDUNX; i += 2) {
 			dPiece[i][j] = v1;
-			dPiece[i+1][j] = v2;
-			dPiece[i][j+1] = v3;
-			dPiece[i+1][j+1] = v4;
+			dPiece[i + 1][j] = v2;
+			dPiece[i][j + 1] = v3;
+			dPiece[i + 1][j + 1] = v4;
 		}
 	}
 
 	yy = 16;
-	for(j = 0; j < DMAXY; j++) {
+	for (j = 0; j < DMAXY; j++) {
 		xx = 16;
-		for(i = 0; i < DMAXX; i++) {
-			lv = (unsigned char)dungeon[i][j]-1;
+		for (i = 0; i < DMAXX; i++) {
+			lv = (unsigned char)dungeon[i][j] - 1;
 #if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
-			if(lv >= 0) {
+			if (lv >= 0) {
 				__asm {
 					mov		esi, pMegaTiles
 					mov		eax, lv
@@ -2408,11 +2409,11 @@ void __cdecl DRLG_L3Pass3()
 				v4 = 0;
 			}
 #else
-			if(lv >= 0) {
-				v1 = *((WORD *)&pMegaTiles[lv*8])+1;
-				v2 = *((WORD *)&pMegaTiles[lv*8]+1)+1;
-				v3 = *((WORD *)&pMegaTiles[lv*8]+2)+1;
-				v4 = *((WORD *)&pMegaTiles[lv*8]+3)+1;
+			if (lv >= 0) {
+				v1 = *((WORD *)&pMegaTiles[lv * 8]) + 1;
+				v2 = *((WORD *)&pMegaTiles[lv * 8] + 1) + 1;
+				v3 = *((WORD *)&pMegaTiles[lv * 8] + 2) + 1;
+				v4 = *((WORD *)&pMegaTiles[lv * 8] + 3) + 1;
 			} else {
 				v1 = 0;
 				v2 = 0;
@@ -2421,9 +2422,9 @@ void __cdecl DRLG_L3Pass3()
 			}
 #endif
 			dPiece[xx][yy] = v1;
-			dPiece[xx+1][yy] = v2;
-			dPiece[xx][yy+1] = v3;
-			dPiece[xx+1][yy+1] = v4;
+			dPiece[xx + 1][yy] = v2;
+			dPiece[xx][yy + 1] = v3;
+			dPiece[xx + 1][yy + 1] = v4;
 			xx += 2;
 		}
 		yy += 2;

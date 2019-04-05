@@ -169,7 +169,7 @@ void __cdecl InitL1Triggers()
 				*_tx = i;
 				*_ty = j;
 				*_tmsg = WM_DIABPREVLVL;
-				_tx += sizeof(int*);
+				_tx += sizeof(int *);
 				_ty += sizeof(int *);
 				_tmsg += sizeof(int *);
 			}
@@ -434,7 +434,7 @@ void __cdecl InitVPTriggers()
 BOOL __cdecl ForceTownTrig()
 {
 	int i, j, k, l;
-	
+
 	for (i = 0; TownDownList[i] != -1; i++) {
 		if (dPiece[cursmx][cursmy] == TownDownList[i]) {
 			strcpy(infostr, "Down to dungeon");

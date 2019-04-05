@@ -102,7 +102,7 @@ void __fastcall LoadPalette(char *pszFileName)
 	WReadFile(pBuf, (char *)PalData, sizeof(PalData));
 	WCloseFile(pBuf);
 
-	for(i = 0; i < 256; i++) {
+	for (i = 0; i < 256; i++) {
 		orig_palette[i].peRed = PalData[i][0];
 		orig_palette[i].peGreen = PalData[i][1];
 		orig_palette[i].peBlue = PalData[i][2];
@@ -114,7 +114,7 @@ void __fastcall LoadRndLvlPal(int l)
 {
 	char szFileName[MAX_PATH];
 
-	if(l == DTYPE_TOWN) {
+	if (l == DTYPE_TOWN) {
 		LoadPalette("Levels\\TownData\\Town.pal");
 	} else {
 		sprintf(szFileName, "Levels\\L%iData\\L%i_%i.PAL", l, l, random(0, 4) + 1);
@@ -170,7 +170,7 @@ void __fastcall ApplyGamma(PALETTEENTRY *dst, PALETTEENTRY *src, int n)
 
 	g = gamma_correction / 100.0;
 
-	for(i = 0; i < n; i++) {
+	for (i = 0; i < n; i++) {
 		dst->peRed = pow(src->peRed / 256.0, g) * 256.0;
 		dst->peGreen = pow(src->peGreen / 256.0, g) * 256.0;
 		dst->peBlue = pow(src->peBlue / 256.0, g) * 256.0;
@@ -258,7 +258,7 @@ void __cdecl palette_update_caves()
 	PALETTEENTRY col;
 
 	col = system_palette[1];
-	for(i = 1; i < 31; i++) {
+	for (i = 1; i < 31; i++) {
 		system_palette[i].peRed = system_palette[i + 1].peRed;
 		system_palette[i].peGreen = system_palette[i + 1].peGreen;
 		system_palette[i].peBlue = system_palette[i + 1].peBlue;

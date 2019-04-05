@@ -351,7 +351,7 @@ void __fastcall delta_sync_monster(const TSyncMonster *pSync, BYTE bLevel)
 {
 	DMonsterStr *pD;
 
-	if(gbMaxPlayers == 1) {
+	if (gbMaxPlayers == 1) {
 		return;
 	}
 
@@ -360,7 +360,7 @@ void __fastcall delta_sync_monster(const TSyncMonster *pSync, BYTE bLevel)
 	sgbDeltaChanged = TRUE;
 
 	pD = &sgLevels[bLevel].monster[pSync->_mndx];
-	if(pD->_mhitpoints != 0) {
+	if (pD->_mhitpoints != 0) {
 		pD->_mx = pSync->_mx;
 		pD->_my = pSync->_my;
 		pD->_mactive = -1;

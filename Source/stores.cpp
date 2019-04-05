@@ -259,7 +259,7 @@ void __fastcall DrawSLine(int y)
 {
 	int xy, yy, width, line;
 
-	if(stextsize == 1) {
+	if (stextsize == 1) {
 		xy = SCREENXY(26, 25);
 		yy = screen_y_times_768[SStringY[y] + 198] + 26 + 64;
 		width = 586 / 4;
@@ -297,7 +297,7 @@ void __fastcall DrawSLine(int y)
 	src = &gpBuffer[xy];
 	dst = &gpBuffer[yy];
 
-	for(i = 0; i < 3; i++, src += 768, dst += 768)
+	for (i = 0; i < 3; i++, src += 768, dst += 768)
 		memcpy(dst, src, 768 - line);
 #endif
 }

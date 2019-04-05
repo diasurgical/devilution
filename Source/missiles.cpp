@@ -1999,14 +1999,14 @@ void __fastcall AddManashield(int mi, int sx, int sy, int dx, int dy, int midir,
 
 void __fastcall AddFiremove(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
 {
-  missile[mi]._midam = random(59, 10) + plr[id]._pLevel + 1;
-  GetMissileVel(mi, sx, sy, dx, dy, 16);
-  missile[mi]._mirange = 255;
-  missile[mi]._miVar1 = 0;
-  missile[mi]._miVar2 = 0;
-  missile[mi]._mix++;
-  missile[mi]._miy++;
-  missile[mi]._miyoff -= 32;
+	missile[mi]._midam = random(59, 10) + plr[id]._pLevel + 1;
+	GetMissileVel(mi, sx, sy, dx, dy, 16);
+	missile[mi]._mirange = 255;
+	missile[mi]._miVar1 = 0;
+	missile[mi]._miVar2 = 0;
+	missile[mi]._mix++;
+	missile[mi]._miy++;
+	missile[mi]._miyoff -= 32;
 }
 
 void __fastcall AddGuardian(int mi, int sx, int sy, int dx, int dy, int midir, char mienemy, int id, int dam)
@@ -3761,7 +3761,6 @@ void __fastcall MI_Chain(int i)
 	int sx, sy, id, l, n, m, k, rad, tx, ty, dir;
 	int CrawlNum[19] = { 0, 3, 12, 45, 94, 159, 240, 337, 450, 579, 724, 885, 1062, 1255, 1464, 1689, 1930, 2187, 2460 };
 
-
 	id = missile[i]._misource;
 	sx = missile[i]._mix;
 	sy = missile[i]._miy;
@@ -4250,17 +4249,16 @@ void __fastcall MI_Flamec(int i)
 		id = dPiece[missile[i]._mix][missile[i]._miy];
 		if (!nMissileTable[id]) {
 			AddMissile(
-				missile[i]._mix,
-				missile[i]._miy,
-				missile[i]._misx,
-				missile[i]._misy,
-				i,
-				MIS_FLAME,
-				missile[i]._micaster,
-				src,
-				missile[i]._miVar3,
-				missile[i]._mispllvl
-			);
+			    missile[i]._mix,
+			    missile[i]._miy,
+			    missile[i]._misx,
+			    missile[i]._misy,
+			    i,
+			    MIS_FLAME,
+			    missile[i]._micaster,
+			    src,
+			    missile[i]._miVar3,
+			    missile[i]._mispllvl);
 		} else {
 			missile[i]._mirange = 0;
 		}
