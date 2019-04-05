@@ -731,7 +731,7 @@ void __fastcall DRLG_L4(int entry)
 		v16 = -1;
 		do {
 			v17 = -1;
-			v18 = &dungeon[0][v16 + 1];
+			v18 = (char *)&dungeon[0][v16 + 1];
 			do {
 				if (*v18 == 98)
 					Make_SetPC(v17, v16, 5, 5);
@@ -773,7 +773,7 @@ void __cdecl DRLG_L4Shadows()
 
 	v0 = 1;
 	do {
-		v1 = &dungeon[1][v0];
+		v1 = (char *)&dungeon[1][v0];
 		v2 = 39;
 		do {
 			v3 = *v1;
@@ -832,7 +832,7 @@ void __cdecl L4makeDmt()
 	int v6;        // ebx
 
 	v0 = 1;
-	v1 = dungeon;
+	v1 = (char (*)[40])dungeon;
 	do {
 		v2 = v1;
 		v3 = &L4dungeon[1][v0 + 1];
@@ -975,7 +975,7 @@ int __fastcall L4HWallOk(int i, int j)
 	v8 = 1;
 	if (dungeon[0][v2 + j] == 6) {
 		v3 = 8 * (5 * i + 5);
-		v4 = &dungeon[i + 1][j];
+		v4 = (char *)&dungeon[i + 1][j];
 		do {
 			if (dflags[0][v3 + j])
 				break;
@@ -1027,7 +1027,7 @@ int __fastcall L4VWallOk(int i, int j)
 		do {
 			if (dflags[v2][j + result])
 				break;
-			v4 = &dungeon[v2][j];
+			v4 = (char *)&dungeon[v2][j];
 			if (v4[result - 40] != 6)
 				break;
 			if (dungeon[v2 + 1][result + j] != 6)
@@ -1084,7 +1084,7 @@ void __fastcall L4HorizWall(int i, int j, int dx)
 		dungeon[0][v5] = 14;
 	v6 = dx;
 	if (dx > 1) {
-		v7 = &dungeon[1][v5];
+		v7 = (char *)&dungeon[1][v5];
 		v8 = dx - 1;
 		do {
 			*v7 = 2;
@@ -1092,7 +1092,7 @@ void __fastcall L4HorizWall(int i, int j, int dx)
 			--v8;
 		} while (v8);
 	}
-	v9 = &dungeon[v3 + dx][v4];
+	v9 = (char *)&dungeon[v3 + dx][v4];
 	if (*v9 == 15)
 		*v9 = 14;
 	if (*v9 == 10)
@@ -1108,7 +1108,7 @@ void __fastcall L4HorizWall(int i, int j, int dx)
 	dungeon[0][v10] = 57;
 	if (v11)
 		dungeon[0][v10 - 1] = 58;
-	v12 = &dungeon[0][v10 + 39];
+	v12 = (char *)&dungeon[0][v10 + 39];
 	if (*v12 == 6)
 		*v12 = 59;
 }
@@ -2329,7 +2329,7 @@ void __cdecl DRLG_L4Corners()
 
 	v0 = 1;
 	do {
-		v1 = &dungeon[1][v0];
+		v1 = (char *)&dungeon[1][v0];
 		v2 = 38;
 		do {
 			v3 = *v1;
