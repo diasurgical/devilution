@@ -31,7 +31,7 @@ void __fastcall AutoGetItem(int pnum, int ii);
 int __fastcall FindGetItem(int indx, WORD ci, int iseed);
 void __fastcall SyncGetItem(int x, int y, int idx, WORD ci, int iseed);
 BOOL __fastcall CanPut(int x, int y);
-int __cdecl TryInvPut();
+BOOL __cdecl TryInvPut();
 void __fastcall DrawInvMsg(char *msg);
 int __fastcall InvPutItem(int pnum, int x, int y);
 int __fastcall SyncPutItem(int pnum, int x, int y, int idx, WORD icreateinfo, int iseed, int Id, int dur, int mdur, int ch, int mch, int ivalue, unsigned int ibuff);

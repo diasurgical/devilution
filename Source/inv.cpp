@@ -2115,7 +2115,7 @@ BOOL __fastcall CanPut(int x, int y)
 	return TRUE;
 }
 
-int __cdecl TryInvPut()
+BOOL __cdecl TryInvPut()
 {
 	int dir;
 
@@ -2524,38 +2524,29 @@ void __fastcall RemoveScroll(int pnum)
 
 BOOL __cdecl UseScroll()
 {
-	int v0;        // eax
-	int v1;        // esi
-	int v2;        // ecx
-	int *v3;       // edx
-	signed int v4; // esi
-	int *v5;       // ecx
+	int i;
 
-	if (pcurs != CURSOR_HAND || leveltype == DTYPE_TOWN && !spelldata[plr[myplr]._pRSpell].sTownSpell)
+	if (pcurs != CURSOR_HAND)
 		return FALSE;
-	v0 = myplr;
-	v1 = 0;
-	v2 = plr[myplr]._pNumInv;
-	if (v2 <= 0) {
-	LABEL_11:
-		v4 = 0;
-		v5 = &plr[v0].SpdList[0]._iMiscId;
-		while (*(v5 - 53) == -1 || *v5 != IMISC_SCROLL && *v5 != IMISC_SCROLLT || v5[1] != plr[v0]._pRSpell) {
-			++v4;
-			v5 += 92;
-			if (v4 >= MAXBELTITEMS)
-				return FALSE;
-		}
-	} else {
-		v3 = &plr[v0].InvList[0]._iMiscId;
-		while (*(v3 - 53) == -1 || *v3 != IMISC_SCROLL && *v3 != IMISC_SCROLLT || v3[1] != plr[v0]._pRSpell) {
-			++v1;
-			v3 += 92;
-			if (v1 >= v2)
-				goto LABEL_11;
+	if (leveltype == DTYPE_TOWN && !spelldata[plr[myplr]._pRSpell].sTownSpell)
+		return FALSE;
+
+	for (i = 0; i < plr[myplr]._pNumInv; i++) {
+		if (plr[myplr].InvList[i]._itype != -1
+		    && (plr[myplr].InvList[i]._iMiscId == IMISC_SCROLL || plr[myplr].InvList[i]._iMiscId == IMISC_SCROLLT)
+		    && plr[myplr].InvList[i]._iSpell == plr[myplr]._pRSpell) {
+			return TRUE;
 		}
 	}
-	return TRUE;
+	for (i = 0; i < MAXBELTITEMS; i++) {
+		if (plr[myplr].SpdList[i]._itype != -1
+		    && (plr[myplr].SpdList[i]._iMiscId == IMISC_SCROLL || plr[myplr].SpdList[i]._iMiscId == IMISC_SCROLLT)
+		    && plr[myplr].SpdList[i]._iSpell == plr[myplr]._pRSpell) {
+			return TRUE;
+		}
+	}
+
+	return FALSE;
 }
 
 void __fastcall UseStaffCharge(int pnum)
