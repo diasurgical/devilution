@@ -2117,27 +2117,27 @@ BOOL __fastcall CanPut(int x, int y)
 
 int __cdecl TryInvPut()
 {
-	int result; // eax
-	int v1;     // eax
-	char v2;    // si
-	int v3;     // edi
-	int v4;     // ebx
-	int v5;     // esi
+	int dir;
 
 	if (numitems >= 127)
-		return 0;
-	v1 = GetDirection(plr[myplr].WorldX, plr[myplr].WorldY, cursmx, cursmy);
-	v2 = v1;
-	v3 = plr[myplr].WorldY;
-	v4 = plr[myplr].WorldX;
-	if (CanPut(v4 + offset_x[v1], v3 + offset_y[v1])
-	    || (v5 = (v2 - 1) & 7, CanPut(v4 + offset_x[v5], v3 + offset_y[v5]))
-	    || CanPut(v4 + offset_x[((_BYTE)v5 + 2) & 7], v3 + offset_y[((_BYTE)v5 + 2) & 7])) {
-		result = 1;
-	} else {
-		result = CanPut(v4, v3);
+		return FALSE;
+
+	dir = GetDirection(plr[myplr].WorldX, plr[myplr].WorldY, cursmx, cursmy);
+	if (CanPut(plr[myplr].WorldX + offset_x[dir], plr[myplr].WorldY + offset_y[dir])) {
+		return TRUE;
 	}
-	return result;
+
+	dir = (dir - 1) & 7;
+	if (CanPut(plr[myplr].WorldX + offset_x[dir], plr[myplr].WorldY + offset_y[dir])) {
+		return TRUE;
+	}
+
+	dir = (dir + 2) & 7;
+	if (CanPut(plr[myplr].WorldX + offset_x[dir], plr[myplr].WorldY + offset_y[dir])) {
+		return TRUE;
+	}
+
+	return CanPut(plr[myplr].WorldX, plr[myplr].WorldY);
 }
 
 void __fastcall DrawInvMsg(char *msg)
