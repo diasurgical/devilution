@@ -10,4 +10,4 @@ build:
   verbosity: minimal
 artifacts:
   - path: Source\WinRel\Diablo.exe
-  - name: Diablo.exe
+    name: Diablo.exe
