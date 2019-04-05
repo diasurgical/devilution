@@ -167,7 +167,7 @@ void __fastcall town_draw_clipped_e_flag(BYTE *pBuff, int x, int y, int sx, int 
 }
 // 69CF14: using guessed type int level_cel_block;
 
-void __fastcall town_draw_clipped_town(BYTE *pBuff, int x, int y, int sx, int sy, int some_flag)
+void __fastcall town_draw_clipped_town(BYTE *pBuff, int x, int y, int sx, int sy, BOOL some_flag)
 {
 	int mi, px, py;
 	char bv;
@@ -354,7 +354,7 @@ void __fastcall town_draw_clipped_e_flag_2(BYTE *pBuff, int x, int y, int a4, in
 }
 // 69CF14: using guessed type int level_cel_block;
 
-void __fastcall town_draw_clipped_town_2(BYTE *pBuff, int x, int y, int a4, int a5, int sx, int sy, int some_flag)
+void __fastcall town_draw_clipped_town_2(BYTE *pBuff, int x, int y, int a4, int a5, int sx, int sy, BOOL some_flag)
 {
 	int mi, px, py;
 	char bv;
@@ -544,7 +544,7 @@ void __fastcall town_draw_e_flag(BYTE *pBuff, int x, int y, int a4, int dir, int
 }
 // 69CF14: using guessed type int level_cel_block;
 
-void __fastcall town_draw_town_all(BYTE *pBuff, int x, int y, int a4, int dir, int sx, int sy, int some_flag)
+void __fastcall town_draw_town_all(BYTE *pBuff, int x, int y, int a4, int dir, int sx, int sy, BOOL some_flag)
 {
 	int mi, px, py;
 	char bv;
