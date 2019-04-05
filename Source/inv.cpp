@@ -2562,20 +2562,16 @@ void __fastcall UseStaffCharge(int pnum)
 
 BOOL __cdecl UseStaff()
 {
-	int v0;      // eax
-	BOOL result; // al
-
-	result = FALSE;
 	if (pcurs == CURSOR_HAND) {
-		v0 = myplr;
 		if (plr[myplr].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE
-		    && plr[v0].InvBody[INVLOC_HAND_LEFT]._iMiscId == IMISC_STAFF
-		    && plr[v0].InvBody[INVLOC_HAND_LEFT]._iSpell == plr[v0]._pRSpell
-		    && plr[v0].InvBody[INVLOC_HAND_LEFT]._iCharges > 0) {
-			result = TRUE;
+		    && plr[myplr].InvBody[INVLOC_HAND_LEFT]._iMiscId == IMISC_STAFF
+		    && plr[myplr].InvBody[INVLOC_HAND_LEFT]._iSpell == plr[myplr]._pRSpell
+		    && plr[myplr].InvBody[INVLOC_HAND_LEFT]._iCharges > 0) {
+			return TRUE;
 		}
 	}
-	return result;
+
+	return FALSE;
 }
 
 void __cdecl StartGoldDrop()
