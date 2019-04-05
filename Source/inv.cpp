@@ -2142,14 +2142,12 @@ int __cdecl TryInvPut()
 
 void __fastcall DrawInvMsg(char *msg)
 {
-	char *v1; // esi
-	int v2;   // eax
+	DWORD dwTicks;
 
-	v1 = msg;
-	v2 = GetTickCount();
-	if ((unsigned int)(v2 - sgdwLastTime) >= 5000) {
-		sgdwLastTime = v2;
-		ErrorPlrMsg(v1);
+	dwTicks = GetTickCount();
+	if (dwTicks - sgdwLastTime >= 5000) {
+		sgdwLastTime = dwTicks;
+		ErrorPlrMsg(msg);
 	}
 }
 
