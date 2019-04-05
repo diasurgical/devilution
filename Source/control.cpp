@@ -7,7 +7,7 @@ char sgbTalkSavePos;  // weak
 void *pDurIcons;
 void *pChrButtons;
 BOOL drawhpflag;  // idb
-int dropGoldFlag; // weak
+BOOL dropGoldFlag;
 int panbtn[8];
 int chrbtn[4];
 void *pMultiBtns;
@@ -1283,13 +1283,12 @@ void __cdecl InitControlPan()
 	pQLogCel = LoadFileInMem("Data\\Quest.CEL", 0);
 	v5 = LoadFileInMem("CtrlPan\\Golddrop.cel", 0);
 	frame_4B8800 = 1;
-	dropGoldFlag = 0;
+	dropGoldFlag = FALSE;
 	dropGoldValue = 0;
 	initialDropGoldValue = 0;
 	initialDropGoldIndex = 0;
 	pGBoxBuff = v5;
 }
-// 4B84DC: using guessed type int dropGoldFlag;
 // 4B851C: using guessed type int lvlbtndown;
 // 4B8840: using guessed type int sgbPlrTalkTbl;
 // 4B8950: using guessed type int sbooktab;
@@ -1641,14 +1640,14 @@ void __cdecl CheckBtnUp()
 						sbookflag = 0;
 						invflag = invflag == 0;
 						if (dropGoldFlag) {
-							dropGoldFlag = 0;
+							dropGoldFlag = FALSE;
 							dropGoldValue = 0;
 						}
 						break;
 					case PANBTN_SPELLBOOK:
 						invflag = 0;
 						if (dropGoldFlag) {
-							dropGoldFlag = 0;
+							dropGoldFlag = FALSE;
 							dropGoldValue = 0;
 						}
 						sbookflag = sbookflag == 0;
@@ -1672,7 +1671,6 @@ void __cdecl CheckBtnUp()
 		gamemenu_off();
 }
 // 484368: using guessed type int FriendlyMode;
-// 4B84DC: using guessed type int dropGoldFlag;
 // 4B8960: using guessed type int talkflag;
 // 4B8968: using guessed type int sbookflag;
 // 4B8C90: using guessed type int panbtndown;
@@ -2726,7 +2724,7 @@ void __fastcall control_drop_gold(char vkey)
 
 	v1 = vkey;
 	if (plr[myplr]._pHitPoints >> 6 <= 0) {
-		dropGoldFlag = 0;
+		dropGoldFlag = FALSE;
 		dropGoldValue = 0;
 		return;
 	}
@@ -2734,7 +2732,7 @@ void __fastcall control_drop_gold(char vkey)
 	_itoa(dropGoldValue, v6, 10);
 	if (v1 != VK_RETURN) {
 		if (v1 == VK_ESCAPE) {
-			dropGoldFlag = 0;
+			dropGoldFlag = FALSE;
 			dropGoldValue = 0;
 			return;
 		}
@@ -2762,9 +2760,8 @@ void __fastcall control_drop_gold(char vkey)
 	}
 	if (dropGoldValue > 0)
 		control_remove_gold(myplr, initialDropGoldIndex);
-	dropGoldFlag = 0;
+	dropGoldFlag = FALSE;
 }
-// 4B84DC: using guessed type int dropGoldFlag;
 // 406C40: using guessed type char var_8[8];
 
 void __fastcall control_remove_gold(int pnum, int gold_index)

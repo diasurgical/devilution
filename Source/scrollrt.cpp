@@ -425,7 +425,6 @@ void __fastcall DrawView(int StartX, int StartY)
 	DrawLifeFlask();
 	DrawManaFlask();
 }
-// 4B84DC: using guessed type int dropGoldFlag;
 // 4B8968: using guessed type int sbookflag;
 // 4B8C98: using guessed type int spselflag;
 // 52569C: using guessed type int zoomflag;

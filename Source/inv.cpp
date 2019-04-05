@@ -1406,7 +1406,7 @@ void __fastcall CheckInvCut(int pnum, int mx, int my)
 	}
 
 	if (dropGoldFlag) {
-		dropGoldFlag = 0;
+		dropGoldFlag = FALSE;
 		dropGoldValue = 0;
 	}
 
@@ -1777,7 +1777,7 @@ void __fastcall InvGetItem(int pnum, int ii)
 	v7 = ii;
 	pnuma = pnum;
 	if (dropGoldFlag) {
-		dropGoldFlag = 0;
+		dropGoldFlag = FALSE;
 		dropGoldValue = 0;
 	}
 	v2 = ii;
@@ -1805,7 +1805,6 @@ void __fastcall InvGetItem(int pnum, int ii)
 		SetCursor_(v5 + CURSOR_FIRSTITEM);
 	}
 }
-// 4B84DC: using guessed type int dropGoldFlag;
 // 4B8CC0: using guessed type char pcursitem;
 
 void __fastcall AutoGetItem(int pnum, int ii)
@@ -1841,7 +1840,7 @@ void __fastcall AutoGetItem(int pnum, int ii)
 	v2 = pnum;
 	i = ii;
 	if (dropGoldFlag) {
-		dropGoldFlag = 0;
+		dropGoldFlag = FALSE;
 		dropGoldValue = 0;
 	}
 	if (ii == 127 || dItem[item[ii]._ix][item[ii]._iy]) {
@@ -2038,7 +2037,6 @@ void __fastcall AutoGetItem(int pnum, int ii)
 	}
 }
 // 48E9A8: using guessed type int AP2x2Tbl[10];
-// 4B84DC: using guessed type int dropGoldFlag;
 
 int __fastcall FindGetItem(int indx, unsigned short ci, int iseed)
 {
@@ -2633,20 +2631,16 @@ BOOL __cdecl UseStaff()
 
 void __cdecl StartGoldDrop()
 {
-	int v0; // eax
-
 	initialDropGoldIndex = pcursinvitem;
-	if (pcursinvitem > 46)
-		v0 = plr[myplr].InvBody[pcursinvitem]._iMaxDur;
+	if (pcursinvitem <= 46)
+		initialDropGoldValue = plr[myplr].InvBody[pcursinvitem]._ivalue;
 	else
-		v0 = plr[myplr].InvBody[pcursinvitem]._ivalue;
+		initialDropGoldValue = plr[myplr].InvBody[pcursinvitem]._iMaxDur;
+	dropGoldFlag = TRUE;
 	dropGoldValue = 0;
-	initialDropGoldValue = v0;
-	dropGoldFlag = 1;
 	if (talkflag)
 		control_reset_talk();
 }
-// 4B84DC: using guessed type int dropGoldFlag;
 // 4B8960: using guessed type int talkflag;
 // 4B8CB8: using guessed type char pcursinvitem;
 
@@ -2724,7 +2718,7 @@ int __fastcall UseInvItem(int pnum, int cii)
 			return 1;
 		}
 		if (dropGoldFlag) {
-			dropGoldFlag = 0;
+			dropGoldFlag = FALSE;
 			dropGoldValue = 0;
 		}
 		if (v9 == 21 && !currlevel && !spelldata[v6[56]].sTownSpell
@@ -2750,7 +2744,6 @@ int __fastcall UseInvItem(int pnum, int cii)
 	}
 	return result;
 }
-// 4B84DC: using guessed type int dropGoldFlag;
 // 4B8960: using guessed type int talkflag;
 // 52A554: using guessed type int sfxdelay;
 // 6AA705: using guessed type char stextflag;
