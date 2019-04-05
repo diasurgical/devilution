@@ -2080,47 +2080,39 @@ void __fastcall SyncGetItem(int x, int y, int idx, WORD ci, int iseed)
 	}
 }
 
-int __fastcall CanPut(int i, int j)
+BOOL __fastcall CanPut(int x, int y)
 {
-	int v2;     // ecx
-	int v3;     // esi
-	char v4;    // al
-	int v5;     // eax
-	char v6;    // al
-	BOOLEAN v7; // sf
-	char v8;    // al
-	char v9;    // cl
+	char oi, oi2;
 
-	v2 = i;
-	if (dItem[v2][j])
-		return 0;
-	v3 = v2 * 112 + j;
-	if (nSolidTable[dPiece[0][v3]])
-		return 0;
-	v4 = dObject[v2][j];
-	if (v4) {
-		v5 = v4 <= 0 ? -1 - v4 : v4 - 1;
-		if (object[v5]._oSolidFlag)
-			return 0;
+	if (dItem[x][y])
+		return FALSE;
+	if (nSolidTable[dPiece[x][y]])
+		return FALSE;
+
+	if (dObject[x][y]) {
+		if (object[dObject[x][y] > 0 ? dObject[x][y] - 1 : -1 - dObject[x][y]]._oSolidFlag)
+			return FALSE;
 	}
-	v6 = dObject[v2 + 1][j + 1];
-	v7 = v6 < 0;
-	if (v6 > 0) {
-		if (object[v6 - 1]._oSelFlag) /* check */
-			return 0;
-		v7 = v6 < 0;
+
+	oi = dObject[x + 1][y + 1];
+	if (oi > 0 && object[oi - 1]._oSelFlag) {
+		return FALSE;
 	}
-	if (v7 && object[-(v6 + 1)]._oSelFlag)
-		return 0;
-	v8 = dObject[v2 + 1][j];
-	if (v8 > 0) {
-		v9 = dObject[v2][j + 1];
-		if (v9 > 0 && object[v8 - 1]._oSelFlag && object[v9 - 1]._oSelFlag)
-			return 0;
+	if (oi < 0 && object[-(oi + 1)]._oSelFlag) {
+		return FALSE;
 	}
-	if (!currlevel && (dMonster[0][v3] || dMonster[1][v3 + 1]))
-		return 0;
-	return 1;
+
+	oi = dObject[x + 1][y];
+	if (oi > 0) {
+		oi2 = dObject[x][y + 1];
+		if (oi2 > 0 && object[oi - 1]._oSelFlag && object[oi2 - 1]._oSelFlag)
+			return FALSE;
+	}
+
+	if (!currlevel && (dMonster[x][y] || dMonster[x + 1][y + 1]))
+		return FALSE;
+
+	return TRUE;
 }
 
 int __cdecl TryInvPut()
