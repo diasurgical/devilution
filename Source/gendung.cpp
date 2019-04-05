@@ -7,7 +7,7 @@ int themeCount;
 char nTransTable[2049];
 //int dword_52D204;
 int dMonster[MAXDUNX][MAXDUNY];
-char dungeon[40][40];
+unsigned char dungeon[40][40];
 char dObject[MAXDUNX][MAXDUNY];
 BYTE *pSpeedCels;
 int nlevel_frames; // weak
@@ -845,7 +845,7 @@ void __fastcall DRLG_CreateThemeRoom(int themeIndex)
 			if (v4 >= v3 + v2)
 				goto LABEL_53;
 		}
-		v21 = &dungeon[v6][v4];
+		v21 = (char *)&dungeon[v6][v4];
 		while (1) {
 			if (leveltype != DTYPE_CATACOMBS)
 				goto LABEL_21;

@@ -7,7 +7,7 @@ extern int themeCount;
 extern char nTransTable[2049];
 //int dword_52D204;
 extern int dMonster[MAXDUNX][MAXDUNY];
-extern char dungeon[40][40];
+extern unsigned char dungeon[40][40];
 extern char dObject[MAXDUNX][MAXDUNY];
 extern BYTE *pSpeedCels;
 extern int nlevel_frames; // weak

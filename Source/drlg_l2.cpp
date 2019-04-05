@@ -292,7 +292,7 @@ void __cdecl L2LockoutFix()
 		do {
 			v5 = v4;
 			if (dflags[v4][v3] >= 0) {
-				v6 = &dungeon[v5][v3];
+				v6 = (char *)&dungeon[v5][v3];
 				if ((*v6 == 2 || *v6 == 5) && *(v6 - 1) == 3 && dungeon[v5][v3 + 1] == 3) {
 					v7 = 0;
 					while (1) {
@@ -328,7 +328,7 @@ void __cdecl L2LockoutFix()
 						v13 = dungeon[v9][v10];
 						if (v13 != 1 && v13 != 4)
 							break;
-						v14 = &dungeon[v9 + 1][v10];
+						v14 = (char *)&dungeon[v9 + 1][v10];
 						if (*(v14 - 80) != 3 || *v14 != 3)
 							break;
 						if (v13 == 4)
@@ -353,7 +353,7 @@ void __cdecl L2DoorFix()
 
 	v0 = 1;
 	do {
-		v1 = &dungeon[1][v0];
+		v1 = (char *)&dungeon[1][v0];
 		v2 = 39;
 		do {
 			if (*v1 == 4 && *(v1 - 1) == 3)
@@ -989,7 +989,7 @@ BOOLEAN __fastcall DRLG_L2PlaceMiniSet(unsigned char *miniset, int tmin, int tma
 			for (miniset = (unsigned char *)(v34 * v35 + 2); v24 < v35; ++v24) {
 				v25 = v34;
 				if (v34 > 0) {
-					v26 = &dungeon[v13][v24 + v14];
+					v26 = (char *)&dungeon[v13][v24 + v14];
 					do {
 						v27 = v29[(_DWORD)miniset];
 						if (v27)
@@ -1187,7 +1187,7 @@ void __cdecl DRLG_L2Subs()
 	v7 = 3;
 	do {
 		v10 = 0;
-		v8 = &dungeon[0][v9 + 2];
+		v8 = (char *)&dungeon[0][v9 + 2];
 		do {
 			if ((v10 < nSx1 || v10 > nSx2) && (v0 - 3 < nSy1 || v0 - 3 > nSy2) && !random(0, 4)) {
 				v1 = BTYPESL2[(unsigned char)*v8];
@@ -1244,7 +1244,7 @@ void __cdecl DRLG_L2Shadows()
 	v10 = 1;
 	do {
 		v9 = 39;
-		v0 = &dungeon[0][v10 + 39];
+		v0 = (char *)&dungeon[0][v10 + 39];
 		do {
 			v1 = &SPATSL2[0].s1;
 			v2 = BSTYPESL2[(unsigned char)v0[1]];

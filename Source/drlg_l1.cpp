@@ -1560,7 +1560,7 @@ void __fastcall DRLG_L5GChamber(int sx, int sy, BOOLEAN topflag, BOOLEAN bottomf
 		dungeon[4][v8] = 8;
 		dungeon[7][v8] = 5;
 		dungeon[8][v8] = 12;
-		v9 = &dungeon[9][v8];
+		v9 = (char *)&dungeon[9][v8];
 		if (*v9 != 4)
 			*v9 = 21;
 		sy = v7 - 11;
@@ -1582,7 +1582,7 @@ void __fastcall DRLG_L5GChamber(int sx, int sy, BOOLEAN topflag, BOOLEAN bottomf
 		dungeon[0][v12 + 4] = 9;
 		dungeon[0][v12 + 7] = 5;
 		dungeon[0][v12 + 8] = 11;
-		v13 = &dungeon[0][v12 + 9];
+		v13 = (char *)&dungeon[0][v12 + 9];
 		if (*v13 != 4)
 			*v13 = 21;
 		sx = v11 - 11;
