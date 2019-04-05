@@ -2551,18 +2551,12 @@ BOOL __cdecl UseScroll()
 
 void __fastcall UseStaffCharge(int pnum)
 {
-	int v1;  // eax
-	int *v2; // eax
-
-	v1 = pnum;
 	if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE
-	    && plr[v1].InvBody[INVLOC_HAND_LEFT]._iMiscId == IMISC_STAFF
-	    && plr[v1].InvBody[INVLOC_HAND_LEFT]._iSpell == plr[v1]._pRSpell) {
-		v2 = &plr[v1].InvBody[INVLOC_HAND_LEFT]._iCharges;
-		if (*v2 > 0) {
-			--*v2;
-			CalcPlrStaff(pnum);
-		}
+	    && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iMiscId == IMISC_STAFF
+	    && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iSpell == plr[pnum]._pRSpell
+	    && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iCharges > 0) {
+		plr[pnum].InvBody[INVLOC_HAND_LEFT]._iCharges--;
+		CalcPlrStaff(pnum);
 	}
 }
 
