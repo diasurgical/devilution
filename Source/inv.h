@@ -29,7 +29,7 @@ void __fastcall CheckQuestItem(int pnum);
 void __fastcall InvGetItem(int pnum, int ii);
 void __fastcall AutoGetItem(int pnum, int ii);
 int __fastcall FindGetItem(int indx, WORD ci, int iseed);
-void __fastcall SyncGetItem(int x, int y, int idx, unsigned short ci, int iseed);
+void __fastcall SyncGetItem(int x, int y, int idx, WORD ci, int iseed);
 int __fastcall CanPut(int i, int j);
 int __cdecl TryInvPut();
 void __fastcall DrawInvMsg(char *msg);

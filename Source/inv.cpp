@@ -2046,36 +2046,34 @@ int __fastcall FindGetItem(int indx, WORD ci, int iseed)
 	return ii;
 }
 
-void __fastcall SyncGetItem(int x, int y, int idx, unsigned short ci, int iseed)
+void __fastcall SyncGetItem(int x, int y, int idx, WORD ci, int iseed)
 {
-	char v5; // cl
-	int v6;  // esi
-	int v7;  // eax
-	int v8;  // edx
-	int v9;  // ecx
-	//int v10; // ecx
+	int i, ii;
 
-	v5 = dItem[x][y];
-	if (v5
-	    && (v6 = v5 - 1, v7 = v6, item[v7].IDidx == idx)
-	    && item[v7]._iSeed == iseed
-	    && item[v7]._iCreateInfo == ci) {
-		FindGetItem(idx, ci, iseed);
+	if (dItem[x][y]) {
+		ii = dItem[x][y] - 1;
+		if (item[ii].IDidx == idx
+		    && item[ii]._iSeed == iseed
+		    && item[ii]._iCreateInfo == ci) {
+			FindGetItem(idx, ci, iseed);
+		} else {
+			ii = FindGetItem(idx, ci, iseed);
+		}
 	} else {
-		v6 = FindGetItem(idx, ci, iseed);
+		ii = FindGetItem(idx, ci, iseed);
 	}
-	if (v6 != -1) {
-		v8 = 0;
-		dItem[item[v6]._ix][item[v6]._iy] = 0;
-		while (v8 < numitems) {
-			v9 = itemactive[v8];
-			if (v9 == v6) {
-				DeleteItem(v9, v8);
+
+	if (ii != -1) {
+		dItem[item[ii]._ix][item[ii]._iy] = 0;
+		i = 0;
+		while (i < numitems) {
+			if (itemactive[i] == ii) {
+				DeleteItem(itemactive[i], i);
 				FindGetItem(idx, ci, iseed);
 				FindGetItem(idx, ci, iseed); /* check idx */
-				v8 = 0;
+				i = 0;
 			} else {
-				++v8;
+				i++;
 			}
 		}
 		FindGetItem(idx, ci, iseed);
