@@ -96,7 +96,7 @@ void __fastcall NetRecvPlrData(TPkt *pkt)
 void __fastcall NetSendHiPri(BYTE *pbMsg, BYTE bLen)
 {
 	unsigned char *v5; // eax
-	TSyncHeader *v6;   // eax
+	BYTE *v6;   // eax
 	int v7;            // eax
 	int v8;            // eax
 	TPkt pkt;          // [esp+Ch] [ebp-204h]
@@ -111,7 +111,7 @@ void __fastcall NetSendHiPri(BYTE *pbMsg, BYTE bLen)
 		NetRecvPlrData(&pkt);
 		size = gdwNormalMsgSize - 19;
 		v5 = multi_recv_packet(&sgHiPriBuf, pkt.body, &size);
-		v6 = (TSyncHeader *)multi_recv_packet(&sgLoPriBuf, v5, &size);
+		v6 = multi_recv_packet(&sgLoPriBuf, v5, &size);
 		v7 = sync_all_monsters(v6, size);
 		v8 = gdwNormalMsgSize - v7;
 		pkt.hdr.wLen = v8;
