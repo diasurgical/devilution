@@ -1682,74 +1682,69 @@ void __fastcall CheckBookLevel(int pnum)
 
 void __fastcall CheckQuestItem(int pnum)
 {
-	int v1; // ecx
-	int v2; // esi
-
-	v1 = pnum;
-	v2 = plr[v1].HoldItem.IDidx;
-	if (v2 == IDI_OPTAMULET)
+	if (plr[pnum].HoldItem.IDidx == IDI_OPTAMULET)
 		quests[QTYPE_BLIND]._qactive = 3;
-	if (v2 == IDI_MUSHROOM && quests[QTYPE_BLKM]._qactive == 2 && quests[QTYPE_BLKM]._qvar1 == QS_MUSHSPAWNED) {
-		sfxdelay = IDI_OPTAMULET;
-		if (plr[v1]._pClass == PC_WARRIOR) {
+	if (plr[pnum].HoldItem.IDidx == IDI_MUSHROOM && quests[QTYPE_BLKM]._qactive == 2 && quests[QTYPE_BLKM]._qvar1 == QS_MUSHSPAWNED) {
+		sfxdelay = 10;
+		if (plr[pnum]._pClass == PC_WARRIOR) {
 			sfxdnum = PS_WARR95;
-		} else if (plr[v1]._pClass == PC_ROGUE) {
+		} else if (plr[pnum]._pClass == PC_ROGUE) {
 			sfxdnum = PS_ROGUE95;
-		} else if (plr[v1]._pClass == PC_SORCERER) {
+		} else if (plr[pnum]._pClass == PC_SORCERER) {
 			sfxdnum = PS_MAGE95;
 		}
 		quests[QTYPE_BLKM]._qvar1 = QS_MUSHPICKED;
 	}
-	if (v2 == IDI_ANVIL) {
+	if (plr[pnum].HoldItem.IDidx == IDI_ANVIL) {
 		if (quests[QTYPE_ANVIL]._qactive == 1) {
 			quests[QTYPE_ANVIL]._qactive = 2;
 			quests[QTYPE_ANVIL]._qvar1 = 1;
 		}
 		if (quests[QTYPE_ANVIL]._qlog == 1) {
-			sfxdelay = IDI_OPTAMULET;
-			if (plr[v1]._pClass == PC_WARRIOR) {
+			sfxdelay = 10;
+			if (plr[myplr]._pClass == PC_WARRIOR) {
 				sfxdnum = PS_WARR89;
-			} else if (plr[v1]._pClass == PC_ROGUE) {
+			} else if (plr[myplr]._pClass == PC_ROGUE) {
 				sfxdnum = PS_ROGUE89;
-			} else if (plr[v1]._pClass == PC_SORCERER) {
+			} else if (plr[myplr]._pClass == PC_SORCERER) {
 				sfxdnum = PS_MAGE89;
 			}
 		}
 	}
-	if (v2 == IDI_GLDNELIX) {
+	if (plr[pnum].HoldItem.IDidx == IDI_GLDNELIX) {
 		sfxdelay = 30;
-		if (plr[v1]._pClass == PC_WARRIOR) {
+		if (plr[myplr]._pClass == PC_WARRIOR) {
 			sfxdnum = PS_WARR88;
-		} else if (plr[v1]._pClass == PC_ROGUE) {
+		} else if (plr[myplr]._pClass == PC_ROGUE) {
 			sfxdnum = PS_ROGUE88;
-		} else if (plr[v1]._pClass == PC_SORCERER) {
+		} else if (plr[myplr]._pClass == PC_SORCERER) {
 			sfxdnum = PS_MAGE88;
 		}
 	}
-	if (v2 == IDI_ROCK) {
+	if (plr[pnum].HoldItem.IDidx == IDI_ROCK) {
 		if (quests[QTYPE_INFRA]._qactive == 1) {
 			quests[QTYPE_INFRA]._qactive = 2;
 			quests[QTYPE_INFRA]._qvar1 = 1;
 		}
 		if (quests[QTYPE_INFRA]._qlog == 1) {
-			sfxdelay = IDI_OPTAMULET;
-			if (plr[v1]._pClass == PC_WARRIOR) {
+			sfxdelay = 10;
+			if (plr[myplr]._pClass == PC_WARRIOR) {
 				sfxdnum = PS_WARR87;
-			} else if (plr[v1]._pClass == PC_ROGUE) {
+			} else if (plr[myplr]._pClass == PC_ROGUE) {
 				sfxdnum = PS_ROGUE87;
-			} else if (plr[v1]._pClass == PC_SORCERER) {
+			} else if (plr[myplr]._pClass == PC_SORCERER) {
 				sfxdnum = PS_MAGE87;
 			}
 		}
 	}
-	if (v2 == IDI_ARMOFVAL) {
+	if (plr[pnum].HoldItem.IDidx == IDI_ARMOFVAL) {
 		quests[QTYPE_BLOOD]._qactive = 3;
 		sfxdelay = 20;
-		if (plr[v1]._pClass == PC_WARRIOR) {
+		if (plr[myplr]._pClass == PC_WARRIOR) {
 			sfxdnum = PS_WARR91;
-		} else if (plr[v1]._pClass == PC_ROGUE) {
+		} else if (plr[myplr]._pClass == PC_ROGUE) {
 			sfxdnum = PS_ROGUE91;
-		} else if (plr[v1]._pClass == PC_SORCERER) {
+		} else if (plr[myplr]._pClass == PC_SORCERER) {
 			sfxdnum = PS_MAGE91;
 		}
 	}
