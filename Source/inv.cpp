@@ -2500,40 +2500,26 @@ LABEL_36:
 
 void __fastcall RemoveScroll(int pnum)
 {
-	int v1;  // eax
-	int v2;  // esi
-	int v3;  // edx
-	int *v4; // ecx
-	int v5;  // edx
-	int *v6; // ecx
-	int p;   // [esp+Ch] [ebp-4h]
+	int i;
 
-	p = pnum;
-	v1 = pnum;
-	v2 = plr[pnum]._pNumInv;
-	v3 = 0;
-	if (v2 <= 0) {
-	LABEL_8:
-		v5 = 0;
-		v6 = &plr[v1].SpdList[0]._iMiscId;
-		while (*(v6 - 53) == -1 || *v6 != IMISC_SCROLL && *v6 != IMISC_SCROLLT || v6[1] != plr[v1]._pSpell) {
-			++v5;
-			v6 += 92;
-			if (v5 >= MAXBELTITEMS)
-				return;
+	for (i = 0; i < plr[pnum]._pNumInv; i++) {
+		if (plr[pnum].InvList[i]._itype != -1
+		    && (plr[pnum].InvList[i]._iMiscId == IMISC_SCROLL || plr[pnum].InvList[i]._iMiscId == IMISC_SCROLLT)
+		    && plr[pnum].InvList[i]._iSpell == plr[pnum]._pRSpell) {
+			RemoveInvItem(pnum, i);
+			CalcPlrScrolls(pnum);
+			return;
 		}
-		RemoveSpdBarItem(p, v5);
-	} else {
-		v4 = &plr[v1].InvList[0]._iMiscId;
-		while (*(v4 - 53) == -1 || *v4 != IMISC_SCROLL && *v4 != IMISC_SCROLLT || v4[1] != plr[v1]._pSpell) {
-			++v3;
-			v4 += 92;
-			if (v3 >= v2)
-				goto LABEL_8;
-		}
-		RemoveInvItem(p, v3);
 	}
-	CalcPlrScrolls(p);
+	for (i = 0; i < MAXBELTITEMS; i++) {
+		if (plr[pnum].SpdList[i]._itype != -1
+		    && (plr[pnum].SpdList[i]._iMiscId == IMISC_SCROLL || plr[pnum].SpdList[i]._iMiscId == IMISC_SCROLLT)
+		    && plr[pnum].SpdList[i]._iSpell == plr[pnum]._pRSpell) {
+			RemoveSpdBarItem(pnum, i);
+			CalcPlrScrolls(pnum);
+			return;
+		}
+	}
 }
 
 BOOL __cdecl UseScroll()
