@@ -32,7 +32,7 @@ BOOL pinfoflag;
 int talkbtndown[3];
 int pSpell; // weak
 BYTE *pManaBuff;
-int infoclr;       // weak
+char infoclr;       // weak
 int sgbPlrTalkTbl; // weak // should be char [4]
 void *pGBoxBuff;
 void *pSBkBtnCel;
@@ -1664,8 +1664,6 @@ void __cdecl CheckBtnUp()
 					case PANBTN_FRIENDLY:
 						FriendlyMode = FriendlyMode == 0;
 						break;
-					default:
-						break;
 					}
 				}
 			}
@@ -2495,7 +2493,7 @@ void __cdecl RedBack()
 
 	if(leveltype != DTYPE_HELL) {
 		dst = &gpBuffer[SCREENXY(0, 0)];
-		tbl = (BYTE *)&pLightTbl[idx];
+		tbl = &pLightTbl[idx];
 		for(h = 352; h; h--, dst += 768 - 640) {
 			for(w = 640; w; w--) {
 				*dst = tbl[*dst];
@@ -2504,7 +2502,7 @@ void __cdecl RedBack()
 		}
 	} else {
 		dst = &gpBuffer[SCREENXY(0, 0)];
-		tbl = (BYTE *)&pLightTbl[idx];
+		tbl = &pLightTbl[idx];
 		for(h = 352; h; h--, dst += 768 - 640) {
 			for(w = 640; w; w--) {
 				if(*dst >= 32)

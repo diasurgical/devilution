@@ -690,46 +690,35 @@ void __fastcall DrawBlood(int x, int y)
 
 void __fastcall DRLG_CheckQuests(int x, int y)
 {
-	int v2;            // esi
-	int v3;            // edi
-	int v4;            // ebx
-	unsigned char *v5; // ebp
-	//int v6; // eax
+	int i;
 
-	v2 = y;
-	v3 = x;
-	v4 = 0;
-	v5 = &quests[0]._qtype;
-	do {
-		//_LOBYTE(v6) = QuestStatus(v4);
-		if (QuestStatus(v4)) {
-			switch (*v5) {
+	for (i = 0; i < MAXQUESTS; i++) {
+		if (QuestStatus(i)) {
+			switch (quests[i]._qtype) {
 			case QTYPE_BUTCH:
 				DrawButcher();
 				break;
 			case QTYPE_BOL:
-				DrawLTBanner(v3, v2);
+				DrawLTBanner(x, y);
 				break;
 			case QTYPE_BLIND:
-				DrawBlind(v3, v2);
+				DrawBlind(x, y);
 				break;
 			case QTYPE_BLOOD:
-				DrawBlood(v3, v2);
+				DrawBlood(x, y);
 				break;
 			case QTYPE_WARLRD:
-				DrawWarLord(v3, v2);
+				DrawWarLord(x, y);
 				break;
 			case QTYPE_KING:
-				DrawSkelKing(v4, v3, v2);
+				DrawSkelKing(i, x, y);
 				break;
 			case QTYPE_BONE:
-				DrawSChamber(v4, v3, v2);
+				DrawSChamber(i, x, y);
 				break;
 			}
 		}
-		v5 += 24;
-		++v4;
-	} while ((signed int)v5 < (signed int)&quests[MAXQUESTS]._qtype);
+	}
 }
 // 69BE90: using guessed type int qline;
 

@@ -82,7 +82,7 @@ int WorldTbl17_2[17] = { 0, 32, 60, 88, 112, 136, 156, 176, 192, 208, 220, 232, 
 #if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
 #include "_render.cpp"
 #else
-void __fastcall drawTopArchesUpperScreen(unsigned char *pbDst)
+void __fastcall drawTopArchesUpperScreen(BYTE *pBuff)
 {
 	unsigned char *dst;        // edi MAPDST
 	unsigned char *tbl;        // ebx
@@ -98,8 +98,8 @@ void __fastcall drawTopArchesUpperScreen(unsigned char *pbDst)
 	signed int i;              // edx MAPDST
 	signed int j;              // ecx MAPDST
 
-	gpCelFrame = (unsigned char *)speed_cel_frame_num_from_light_index_frame_num;
-	dst = pbDst;
+	gpCelFrame = (unsigned char *)SpeedFrameTbl;
+	dst = pBuff;
 	if (!(_BYTE)light_table_index) {
 		if (level_cel_block & 0x8000)
 			level_cel_block = *(_DWORD *)&gpCelFrame[64 * (level_cel_block & 0xFFF)]
@@ -111,7 +111,7 @@ void __fastcall drawTopArchesUpperScreen(unsigned char *pbDst)
 	if ((_BYTE)light_table_index != lightmax) {
 		if (!(level_cel_block & 0x8000)) {
 			src = (unsigned char *)pDungeonCels + *((_DWORD *)pDungeonCels + (level_cel_block & 0xFFF));
-			tbl = (unsigned char *)&pLightTbl[256 * light_table_index];
+			tbl = &pLightTbl[256 * light_table_index];
 			cel_type_16 = (unsigned char)(level_cel_block >> 12);
 			switch (cel_type_16) {
 			case 0: // upper (top transparent), with lighting
@@ -129,7 +129,7 @@ void __fastcall drawTopArchesUpperScreen(unsigned char *pbDst)
 				} while (i);
 				break;
 			case 1: // upper (top transparent), with lighting
-				WorldBoolFlag = (unsigned char)pbDst & 1;
+				WorldBoolFlag = (unsigned char)pBuff & 1;
 				xx_32 = 32;
 				do {
 					yy_32 = 32;
@@ -324,7 +324,7 @@ void __fastcall drawTopArchesUpperScreen(unsigned char *pbDst)
 			} while (i);
 			break;
 		case 9: // upper (top transparent), without lighting
-			WorldBoolFlag = (unsigned char)pbDst & 1;
+			WorldBoolFlag = (unsigned char)pBuff & 1;
 			yy_32 = 32;
 		LABEL_251:
 			xx_32 = 32;
@@ -740,7 +740,7 @@ void __fastcall drawTopArchesUpperScreen(unsigned char *pbDst)
 		} while (i);
 		break;
 	case 1: // upper (top transparent), black
-		WorldBoolFlag = (unsigned char)pbDst & 1;
+		WorldBoolFlag = (unsigned char)pBuff & 1;
 		xx_32 = 32;
 		while (1) {
 			yy_32 = 32;
@@ -1108,7 +1108,7 @@ void __fastcall drawTopArchesUpperScreen(unsigned char *pbDst)
 	}
 }
 
-void __fastcall drawBottomArchesUpperScreen(unsigned char *pbDst, unsigned int *pMask)
+void __fastcall drawBottomArchesUpperScreen(BYTE *pBuff, unsigned int *pMask)
 {
 	unsigned char *dst;        // edi MAPDST
 	unsigned char *src;        // esi MAPDST
@@ -1122,8 +1122,8 @@ void __fastcall drawBottomArchesUpperScreen(unsigned char *pbDst, unsigned int *
 	signed int i;              // ecx MAPDST
 	unsigned char *tbl;
 
-	gpCelFrame = (unsigned char *)speed_cel_frame_num_from_light_index_frame_num;
-	dst = pbDst;
+	gpCelFrame = (unsigned char *)SpeedFrameTbl;
+	dst = pBuff;
 	gpDrawMask = pMask;
 	if (!(_BYTE)light_table_index) {
 		if (level_cel_block & 0x8000)
@@ -1366,7 +1366,7 @@ void __fastcall drawBottomArchesUpperScreen(unsigned char *pbDst, unsigned int *
 	if ((_BYTE)light_table_index != lightmax) {
 		if (!(level_cel_block & 0x8000)) {
 			src = (unsigned char *)pDungeonCels + *((_DWORD *)pDungeonCels + (level_cel_block & 0xFFF));
-			tbl = (unsigned char *)&pLightTbl[256 * light_table_index];
+			tbl = &pLightTbl[256 * light_table_index];
 			cel_type_16 = (unsigned char)(level_cel_block >> 12);
 			switch (cel_type_16) {
 			case 0: // upper (bottom transparent), with lighting
@@ -1742,7 +1742,7 @@ void __fastcall drawBottomArchesUpperScreen(unsigned char *pbDst, unsigned int *
 	}
 }
 
-void __fastcall drawUpperScreen(unsigned char *pbDst)
+void __fastcall drawUpperScreen(BYTE *pBuff)
 {
 	unsigned char *dst;        // edi MAPDST
 	unsigned char *tbl;        // ebx
@@ -1758,24 +1758,24 @@ void __fastcall drawUpperScreen(unsigned char *pbDst)
 
 	if (cel_transparency_active) {
 		if (!arch_draw_type) {
-			drawTopArchesUpperScreen(pbDst);
+			drawTopArchesUpperScreen(pBuff);
 			return;
 		}
 		if (arch_draw_type == 1) {
 			if (block_lvid[level_piece_id] == 1 || block_lvid[level_piece_id] == 3) {
-				drawBottomArchesUpperScreen(pbDst, &LeftMask[31]);
+				drawBottomArchesUpperScreen(pBuff, &LeftMask[31]);
 				return;
 			}
 		}
 		if (arch_draw_type == 2) {
 			if (block_lvid[level_piece_id] == 2 || block_lvid[level_piece_id] == 3) {
-				drawBottomArchesUpperScreen(pbDst, &RightMask[31]);
+				drawBottomArchesUpperScreen(pBuff, &RightMask[31]);
 				return;
 			}
 		}
 	}
-	gpCelFrame = (unsigned char *)speed_cel_frame_num_from_light_index_frame_num;
-	dst = pbDst;
+	gpCelFrame = (unsigned char *)SpeedFrameTbl;
+	dst = pBuff;
 	if (!(_BYTE)light_table_index) {
 		if (level_cel_block & 0x8000)
 			level_cel_block = *(_DWORD *)&gpCelFrame[64 * (level_cel_block & 0xFFF)]
@@ -2007,7 +2007,7 @@ void __fastcall drawUpperScreen(unsigned char *pbDst)
 	if ((_BYTE)light_table_index != lightmax) {
 		if (!(level_cel_block & 0x8000)) {
 			src = (unsigned char *)pDungeonCels + *((_DWORD *)pDungeonCels + (level_cel_block & 0xFFF));
-			tbl = (unsigned char *)&pLightTbl[256 * light_table_index];
+			tbl = &pLightTbl[256 * light_table_index];
 			cel_type_16 = (unsigned short)level_cel_block >> 12;
 			switch (cel_type_16) {
 			case 0: // upper (solid), with lighting
@@ -2362,7 +2362,7 @@ void __fastcall drawUpperScreen(unsigned char *pbDst)
 	}
 }
 
-void __fastcall drawTopArchesLowerScreen(unsigned char *pbDst)
+void __fastcall drawTopArchesLowerScreen(BYTE *pBuff)
 {
 	unsigned char *dst;        // edi MAPDST
 	unsigned char *tbl;        // ebx
@@ -2380,8 +2380,8 @@ void __fastcall drawTopArchesLowerScreen(unsigned char *pbDst)
 	signed int i;              // edx MAPDST
 	signed int j;              // ecx MAPDST
 
-	gpCelFrame = (unsigned char *)speed_cel_frame_num_from_light_index_frame_num;
-	dst = pbDst;
+	gpCelFrame = (unsigned char *)SpeedFrameTbl;
+	dst = pBuff;
 	if (!(_BYTE)light_table_index) {
 		if (level_cel_block & 0x8000)
 			level_cel_block = *(_DWORD *)&gpCelFrame[64 * (level_cel_block & 0xFFF)]
@@ -2430,7 +2430,7 @@ void __fastcall drawTopArchesLowerScreen(unsigned char *pbDst)
 			} while (i);
 			break;
 		case 1: // lower (top transparent), black
-			WorldBoolFlag = (unsigned char)pbDst & 1;
+			WorldBoolFlag = (unsigned char)pBuff & 1;
 			xx_32 = 32;
 		LABEL_412:
 			yy_32 = 32;
@@ -2836,7 +2836,7 @@ void __fastcall drawTopArchesLowerScreen(unsigned char *pbDst)
 	}
 	if (!(level_cel_block & 0x8000)) {
 		src = (unsigned char *)pDungeonCels + *((_DWORD *)pDungeonCels + (level_cel_block & 0xFFF));
-		tbl = (unsigned char *)&pLightTbl[256 * light_table_index];
+		tbl = &pLightTbl[256 * light_table_index];
 		cel_type_16 = (unsigned char)(level_cel_block >> 12);
 		switch (cel_type_16) {
 		case 0: // lower (top transparent), with lighting
@@ -2860,7 +2860,7 @@ void __fastcall drawTopArchesLowerScreen(unsigned char *pbDst)
 			} while (i);
 			break;
 		case 1: // lower (top transparent), with lighting
-			WorldBoolFlag = (unsigned char)pbDst & 1;
+			WorldBoolFlag = (unsigned char)pBuff & 1;
 			xx_32 = 32;
 			do {
 				yy_32 = 32;
@@ -2896,10 +2896,10 @@ void __fastcall drawTopArchesLowerScreen(unsigned char *pbDst)
 		case 2: // lower (top transparent), with lighting
 			WorldBoolFlag = 0;
 			xx_32 = 30;
-			if (pbDst >= gpBufEnd) {
-				tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
+			if (pBuff >= gpBufEnd) {
+				tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
 				if (tile_42_45 > 45) {
-					dst = pbDst - 12288;
+					dst = pBuff - 12288;
 					src += 288;
 				LABEL_98:
 					yy_32 = 2;
@@ -2951,10 +2951,10 @@ void __fastcall drawTopArchesLowerScreen(unsigned char *pbDst)
 		case 3: // lower (top transparent), with lighting
 			WorldBoolFlag = 0;
 			xx_32 = 30;
-			if (pbDst >= gpBufEnd) {
-				tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
+			if (pBuff >= gpBufEnd) {
+				tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
 				if (tile_42_45 > 45) {
-					dst = pbDst - 12288;
+					dst = pBuff - 12288;
 					src += 288;
 				LABEL_154:
 					yy_32 = 2;
@@ -3004,10 +3004,10 @@ void __fastcall drawTopArchesLowerScreen(unsigned char *pbDst)
 		case 4: // lower (top transparent), with lighting
 			WorldBoolFlag = 0;
 			xx_32 = 30;
-			if (pbDst >= gpBufEnd) {
-				tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
+			if (pBuff >= gpBufEnd) {
+				tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
 				if (tile_42_45 > 45) {
-					dst = pbDst - 12288;
+					dst = pBuff - 12288;
 					src += 288;
 				LABEL_210:
 					i = 8;
@@ -3053,10 +3053,10 @@ void __fastcall drawTopArchesLowerScreen(unsigned char *pbDst)
 		default: // lower (top transparent), with lighting
 			WorldBoolFlag = 0;
 			xx_32 = 30;
-			if (pbDst >= gpBufEnd) {
-				tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
+			if (pBuff >= gpBufEnd) {
+				tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
 				if (tile_42_45 > 45) {
-					dst = pbDst - 12288;
+					dst = pBuff - 12288;
 					src += 288;
 				LABEL_249:
 					i = 8;
@@ -3140,7 +3140,7 @@ LABEL_11:
 		} while (i);
 		break;
 	case 9: // lower (top transparent), without lighting
-		WorldBoolFlag = (unsigned char)pbDst & 1;
+		WorldBoolFlag = (unsigned char)pBuff & 1;
 		xx_32 = 32;
 		while (1) {
 			yy_32 = 32;
@@ -3222,10 +3222,10 @@ LABEL_11:
 	case 10: // lower (top transparent), without lighting
 		WorldBoolFlag = 0;
 		xx_32 = 30;
-		if (pbDst >= gpBufEnd) {
-			tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
+		if (pBuff >= gpBufEnd) {
+			tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
 			if (tile_42_45 > 45) {
-				dst = pbDst - 12288;
+				dst = pBuff - 12288;
 				src += 288;
 			LABEL_308:
 				yy_32 = 2;
@@ -3334,9 +3334,9 @@ LABEL_11:
 	case 11: // lower (top transparent), without lighting
 		WorldBoolFlag = 0;
 		xx_32 = 30;
-		if (pbDst < gpBufEnd)
+		if (pBuff < gpBufEnd)
 			goto LABEL_326;
-		tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
+		tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
 		if (tile_42_45 <= 45) {
 			world_tbl = WorldTbl3x16[tile_42_45];
 			src += WorldTbl17_1[world_tbl >> 2];
@@ -3378,7 +3378,7 @@ LABEL_11:
 			} while (xx_32 >= 0);
 			goto LABEL_336;
 		}
-		dst = pbDst - 12288;
+		dst = pBuff - 12288;
 		src += 288;
 	LABEL_336:
 		yy_32 = 2;
@@ -3428,10 +3428,10 @@ LABEL_11:
 	case 12: // lower (top transparent), without lighting
 		WorldBoolFlag = 0;
 		xx_32 = 30;
-		if (pbDst >= gpBufEnd) {
-			tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
+		if (pBuff >= gpBufEnd) {
+			tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
 			if (tile_42_45 > 45) {
-				dst = pbDst - 12288;
+				dst = pBuff - 12288;
 				src += 288;
 			LABEL_364:
 				i = 8;
@@ -3519,10 +3519,10 @@ LABEL_11:
 	default: // lower (top transparent), without lighting
 		WorldBoolFlag = 0;
 		xx_32 = 30;
-		if (pbDst >= gpBufEnd) {
-			tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
+		if (pBuff >= gpBufEnd) {
+			tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
 			if (tile_42_45 > 45) {
-				dst = pbDst - 12288;
+				dst = pBuff - 12288;
 				src += 288;
 			LABEL_389:
 				i = 8;
@@ -3601,7 +3601,7 @@ LABEL_11:
 	}
 }
 
-void __fastcall drawBottomArchesLowerScreen(unsigned char *pbDst, unsigned int *pMask)
+void __fastcall drawBottomArchesLowerScreen(BYTE *pBuff, unsigned int *pMask)
 {
 	unsigned char *dst;        // edi MAPDST
 	short cel_type_16;         // ax MAPDST
@@ -3617,8 +3617,8 @@ void __fastcall drawBottomArchesLowerScreen(unsigned char *pbDst, unsigned int *
 	unsigned int n_draw_shift; // ecx MAPDST
 	unsigned char *tbl;
 
-	gpCelFrame = (unsigned char *)speed_cel_frame_num_from_light_index_frame_num;
-	dst = pbDst;
+	gpCelFrame = (unsigned char *)SpeedFrameTbl;
+	dst = pBuff;
 	gpDrawMask = pMask;
 	if ((_BYTE)light_table_index) {
 		if ((_BYTE)light_table_index == lightmax) {
@@ -3884,7 +3884,7 @@ void __fastcall drawBottomArchesLowerScreen(unsigned char *pbDst, unsigned int *
 		}
 		if (!(level_cel_block & 0x8000)) {
 			src = (unsigned char *)pDungeonCels + *((_DWORD *)pDungeonCels + (level_cel_block & 0xFFF));
-			tbl = (unsigned char *)&pLightTbl[256 * light_table_index];
+			tbl = &pLightTbl[256 * light_table_index];
 			cel_type_16 = (unsigned char)(level_cel_block >> 12);
 			switch (cel_type_16) {
 			case 0: // lower (bottom transparent), with lighting
@@ -3935,10 +3935,10 @@ void __fastcall drawBottomArchesLowerScreen(unsigned char *pbDst, unsigned int *
 				break;
 			case 2: // lower (bottom transparent), with lighting
 				xx_32 = 30;
-				if (pbDst >= gpBufEnd) {
-					tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
+				if (pBuff >= gpBufEnd) {
+					tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
 					if (tile_42_45 > 45) {
-						dst = pbDst - 12288;
+						dst = pBuff - 12288;
 						src += 288;
 					LABEL_62:
 						yy_32 = 2;
@@ -3975,10 +3975,10 @@ void __fastcall drawBottomArchesLowerScreen(unsigned char *pbDst, unsigned int *
 				goto LABEL_62;
 			case 3: // lower (bottom transparent), with lighting
 				xx_32 = 30;
-				if (pbDst >= gpBufEnd) {
-					tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
+				if (pBuff >= gpBufEnd) {
+					tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
 					if (tile_42_45 > 45) {
-						dst = pbDst - 12288;
+						dst = pBuff - 12288;
 						src += 288;
 					LABEL_80:
 						yy_32 = 2;
@@ -4014,10 +4014,10 @@ void __fastcall drawBottomArchesLowerScreen(unsigned char *pbDst, unsigned int *
 				goto LABEL_80;
 			case 4: // lower (bottom transparent), with lighting
 				xx_32 = 30;
-				if (pbDst >= gpBufEnd) {
-					tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
+				if (pBuff >= gpBufEnd) {
+					tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
 					if (tile_42_45 > 45) {
-						dst = pbDst - 12288;
+						dst = pBuff - 12288;
 						src += 288;
 					LABEL_98:
 						gpDrawMask -= 16;
@@ -4050,10 +4050,10 @@ void __fastcall drawBottomArchesLowerScreen(unsigned char *pbDst, unsigned int *
 				goto LABEL_98;
 			default: // lower (bottom transparent), with lighting
 				xx_32 = 30;
-				if (pbDst >= gpBufEnd) {
-					tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
+				if (pBuff >= gpBufEnd) {
+					tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
 					if (tile_42_45 > 45) {
-						dst = pbDst - 12288;
+						dst = pBuff - 12288;
 						src += 288;
 					LABEL_117:
 						gpDrawMask -= 16;
@@ -4165,10 +4165,10 @@ void __fastcall drawBottomArchesLowerScreen(unsigned char *pbDst, unsigned int *
 		break;
 	case 10: // lower (bottom transparent), without lighting
 		xx_32 = 30;
-		if (pbDst >= gpBufEnd) {
-			tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
+		if (pBuff >= gpBufEnd) {
+			tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
 			if (tile_42_45 > 45) {
-				dst = pbDst - 12288;
+				dst = pBuff - 12288;
 				src += 288;
 			LABEL_162:
 				yy_32 = 2;
@@ -4229,9 +4229,9 @@ void __fastcall drawBottomArchesLowerScreen(unsigned char *pbDst, unsigned int *
 		goto LABEL_162;
 	case 11: // lower (bottom transparent), without lighting
 		xx_32 = 30;
-		if (pbDst < gpBufEnd)
+		if (pBuff < gpBufEnd)
 			goto LABEL_175;
-		tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
+		tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
 		if (tile_42_45 <= 45) {
 			world_tbl = WorldTbl3x16[tile_42_45];
 			src += WorldTbl17_1[world_tbl >> 2];
@@ -4254,7 +4254,7 @@ void __fastcall drawBottomArchesLowerScreen(unsigned char *pbDst, unsigned int *
 			} while (xx_32 >= 0);
 			goto LABEL_180;
 		}
-		dst = pbDst - 12288;
+		dst = pBuff - 12288;
 		src += 288;
 	LABEL_180:
 		yy_32 = 2;
@@ -4284,10 +4284,10 @@ void __fastcall drawBottomArchesLowerScreen(unsigned char *pbDst, unsigned int *
 		break;
 	case 12: // lower (bottom transparent), without lighting
 		xx_32 = 30;
-		if (pbDst >= gpBufEnd) {
-			tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
+		if (pBuff >= gpBufEnd) {
+			tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
 			if (tile_42_45 > 45) {
-				dst = pbDst - 12288;
+				dst = pBuff - 12288;
 				src += 288;
 			LABEL_198:
 				gpDrawMask -= 16;
@@ -4341,10 +4341,10 @@ void __fastcall drawBottomArchesLowerScreen(unsigned char *pbDst, unsigned int *
 		goto LABEL_198;
 	default: // lower (bottom transparent), without lighting
 		xx_32 = 30;
-		if (pbDst >= gpBufEnd) {
-			tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
+		if (pBuff >= gpBufEnd) {
+			tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
 			if (tile_42_45 > 45) {
-				dst = pbDst - 12288;
+				dst = pBuff - 12288;
 				src += 288;
 			LABEL_217:
 				gpDrawMask -= 16;
@@ -4395,7 +4395,7 @@ void __fastcall drawBottomArchesLowerScreen(unsigned char *pbDst, unsigned int *
 	}
 }
 
-void __fastcall drawLowerScreen(unsigned char *pbDst)
+void __fastcall drawLowerScreen(BYTE *pBuff)
 {
 	unsigned char *dst;        // edi MAPDST
 	unsigned char *src;        // esi MAPDST
@@ -4413,24 +4413,24 @@ void __fastcall drawLowerScreen(unsigned char *pbDst)
 
 	if (cel_transparency_active) {
 		if (!arch_draw_type) {
-			drawTopArchesLowerScreen(pbDst);
+			drawTopArchesLowerScreen(pBuff);
 			return;
 		}
 		if (arch_draw_type == 1) {
 			if (block_lvid[level_piece_id] == 1 || block_lvid[level_piece_id] == 3) {
-				drawBottomArchesLowerScreen(pbDst, &LeftMask[31]);
+				drawBottomArchesLowerScreen(pBuff, &LeftMask[31]);
 				return;
 			}
 		}
 		if (arch_draw_type == 2) {
 			if (block_lvid[level_piece_id] == 2 || block_lvid[level_piece_id] == 3) {
-				drawBottomArchesLowerScreen(pbDst, &RightMask[31]);
+				drawBottomArchesLowerScreen(pBuff, &RightMask[31]);
 				return;
 			}
 		}
 	}
-	gpCelFrame = (unsigned char *)speed_cel_frame_num_from_light_index_frame_num;
-	dst = pbDst;
+	gpCelFrame = (unsigned char *)SpeedFrameTbl;
+	dst = pBuff;
 	if ((_BYTE)light_table_index) {
 		if ((_BYTE)light_table_index == lightmax) {
 			if (level_cel_block & 0x8000)
@@ -4686,7 +4686,7 @@ void __fastcall drawLowerScreen(unsigned char *pbDst)
 		}
 		if (!(level_cel_block & 0x8000)) {
 			src = (unsigned char *)pDungeonCels + *((_DWORD *)pDungeonCels + (level_cel_block & 0xFFF));
-			tbl = (unsigned char *)&pLightTbl[256 * light_table_index];
+			tbl = &pLightTbl[256 * light_table_index];
 			cel_type_16 = (unsigned short)level_cel_block >> 12;
 			switch (cel_type_16) {
 			case 0: // lower (solid), with lighting
@@ -4728,10 +4728,10 @@ void __fastcall drawLowerScreen(unsigned char *pbDst)
 				break;
 			case 2: // lower (solid), with lighting
 				xx_32 = 30;
-				if (pbDst >= gpBufEnd) {
-					tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
+				if (pBuff >= gpBufEnd) {
+					tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
 					if (tile_42_45 > 45) {
-						dst = pbDst - 12288;
+						dst = pBuff - 12288;
 						src += 288;
 					LABEL_68:
 						yy_32 = 2;
@@ -4768,10 +4768,10 @@ void __fastcall drawLowerScreen(unsigned char *pbDst)
 				goto LABEL_68;
 			case 3: // lower (solid), with lighting
 				xx_32 = 30;
-				if (pbDst >= gpBufEnd) {
-					tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
+				if (pBuff >= gpBufEnd) {
+					tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
 					if (tile_42_45 > 45) {
-						dst = pbDst - 12288;
+						dst = pBuff - 12288;
 						src += 288;
 					LABEL_83:
 						yy_32 = 2;
@@ -4806,10 +4806,10 @@ void __fastcall drawLowerScreen(unsigned char *pbDst)
 				goto LABEL_83;
 			case 4: // lower (solid), with lighting
 				xx_32 = 30;
-				if (pbDst >= gpBufEnd) {
-					tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
+				if (pBuff >= gpBufEnd) {
+					tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
 					if (tile_42_45 > 45) {
-						dst = pbDst - 12288;
+						dst = pBuff - 12288;
 						src += 288;
 					LABEL_100:
 						i = 16;
@@ -4840,10 +4840,10 @@ void __fastcall drawLowerScreen(unsigned char *pbDst)
 				goto LABEL_100;
 			default: // lower (solid), with lighting
 				xx_32 = 30;
-				if (pbDst >= gpBufEnd) {
-					tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
+				if (pBuff >= gpBufEnd) {
+					tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
 					if (tile_42_45 > 45) {
-						dst = pbDst - 12288;
+						dst = pBuff - 12288;
 						src += 288;
 					LABEL_116:
 						j = 16;
@@ -4955,10 +4955,10 @@ void __fastcall drawLowerScreen(unsigned char *pbDst)
 		break;
 	case 10: // lower (solid), without lighting
 		xx_32 = 30;
-		if (pbDst >= gpBufEnd) {
-			tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
+		if (pBuff >= gpBufEnd) {
+			tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
 			if (tile_42_45 > 45) {
-				dst = pbDst - 12288;
+				dst = pBuff - 12288;
 				src += 288;
 			LABEL_153:
 				yy_32 = 2;
@@ -5019,9 +5019,9 @@ void __fastcall drawLowerScreen(unsigned char *pbDst)
 		goto LABEL_153;
 	case 11: // lower (solid), without lighting
 		xx_32 = 30;
-		if (pbDst < gpBufEnd)
+		if (pBuff < gpBufEnd)
 			goto LABEL_166;
-		tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
+		tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
 		if (tile_42_45 <= 45) {
 			world_tbl = WorldTbl3x16[tile_42_45];
 			src += WorldTbl17_1[world_tbl >> 2];
@@ -5044,7 +5044,7 @@ void __fastcall drawLowerScreen(unsigned char *pbDst)
 			} while (xx_32 >= 0);
 			goto LABEL_171;
 		}
-		dst = pbDst - 12288;
+		dst = pBuff - 12288;
 		src += 288;
 	LABEL_171:
 		yy_32 = 2;
@@ -5075,10 +5075,10 @@ void __fastcall drawLowerScreen(unsigned char *pbDst)
 		break;
 	case 12: // lower (solid), without lighting
 		xx_32 = 30;
-		if (pbDst >= gpBufEnd) {
-			tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
+		if (pBuff >= gpBufEnd) {
+			tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
 			if (tile_42_45 > 45) {
-				dst = pbDst - 12288;
+				dst = pBuff - 12288;
 				src += 288;
 			LABEL_189:
 				i = 16;
@@ -5127,10 +5127,10 @@ void __fastcall drawLowerScreen(unsigned char *pbDst)
 		goto LABEL_189;
 	default: // lower (solid), without lighting
 		xx_32 = 30;
-		if (pbDst >= gpBufEnd) {
-			tile_42_45 = (unsigned int)(pbDst - gpBufEnd + 1023) >> 8;
+		if (pBuff >= gpBufEnd) {
+			tile_42_45 = (unsigned int)(pBuff - gpBufEnd + 1023) >> 8;
 			if (tile_42_45 > 45) {
-				dst = pbDst - 12288;
+				dst = pBuff - 12288;
 				src += 288;
 			LABEL_205:
 				i = 16;
@@ -5175,7 +5175,7 @@ void __fastcall drawLowerScreen(unsigned char *pbDst)
 	}
 }
 
-void __fastcall world_draw_black_tile(unsigned char *pbDst)
+void __fastcall world_draw_black_tile(BYTE *pBuff)
 {
 	unsigned char *dst; // edi MAPDST
 	signed int xx_32;   // edx
@@ -5183,7 +5183,7 @@ void __fastcall world_draw_black_tile(unsigned char *pbDst)
 	signed int j;       // ecx MAPDST
 	signed int yy_32;   // edx
 
-	dst = pbDst;
+	dst = pBuff;
 	xx_32 = 30;
 	for (i = 1;; ++i) {
 		dst += xx_32;
