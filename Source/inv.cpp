@@ -634,7 +634,7 @@ int __fastcall SpecialAutoPlace(int pnum, int ii, int sx, int sy, int saveflag)
 	if (sx <= 1 && sy <= 1) {
 		v11 = 0;
 		v12 = &plr[p].SpdList[0]._itype;
-		while (*v12 != -1) {
+		while (*v12 != ITYPE_NONE) {
 			++v11;
 			v12 += 92;
 			if (v11 >= MAXBELTITEMS)
@@ -769,7 +769,7 @@ int __fastcall WeaponAutoPlace(int pnum)
 
 	v1 = pnum;
 	if (plr[pnum].HoldItem._iLoc == ILOC_TWOHAND) {
-		if (plr[v1].InvBody[INVLOC_HAND_LEFT]._itype != -1 || plr[v1].InvBody[INVLOC_HAND_RIGHT]._itype != -1)
+		if (plr[v1].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE || plr[v1].InvBody[INVLOC_HAND_RIGHT]._itype != ITYPE_NONE)
 			return 0;
 	LABEL_12:
 		NetSendCmdChItem(TRUE, 4u);
@@ -778,14 +778,14 @@ int __fastcall WeaponAutoPlace(int pnum)
 		goto LABEL_13;
 	}
 	v2 = plr[v1].InvBody[INVLOC_HAND_LEFT]._itype;
-	if (v2 != -1 && plr[v1].InvBody[INVLOC_HAND_LEFT]._iClass == 1)
+	if (v2 != ITYPE_NONE && plr[v1].InvBody[INVLOC_HAND_LEFT]._iClass == 1)
 		return 0;
 	v3 = plr[v1].InvBody[INVLOC_HAND_RIGHT]._itype;
-	if (v3 != -1 && plr[v1].InvBody[INVLOC_HAND_RIGHT]._iClass == 1)
+	if (v3 != ITYPE_NONE && plr[v1].InvBody[INVLOC_HAND_RIGHT]._iClass == 1)
 		return 0;
-	if (v2 == -1)
+	if (v2 == ITYPE_NONE)
 		goto LABEL_12;
-	if (v3 == -1 && plr[v1].InvBody[INVLOC_HAND_LEFT]._iLoc != ILOC_TWOHAND) {
+	if (v3 == ITYPE_NONE && plr[v1].InvBody[INVLOC_HAND_LEFT]._iLoc != ILOC_TWOHAND) {
 		NetSendCmdChItem(TRUE, 5u);
 		v4 = &plr[v1].HoldItem;
 		v5 = &plr[v1].InvBody[INVLOC_HAND_RIGHT];
@@ -1120,7 +1120,7 @@ LABEL_18:
 				goto LABEL_99;
 			case ILOC_UNEQUIPABLE:
 				v35 = plr[v3].HoldItem._itype;
-				if (v35 == 11) {
+				if (v35 == ITYPE_GOLD) {
 					if (!v66) {
 						v36 = &plr[0].InvGrid[10 * ((v68 - 25) / 10) + v3 * 21720 + (v68 - 25) % 10];
 						if (*v36 <= 0) {
@@ -1205,7 +1205,7 @@ LABEL_18:
 					goto LABEL_226;
 				}
 				v44 = v66 - 1;
-				if (v35 == 11)
+				if (v35 == ITYPE_GOLD)
 					plr[v3]._pGold += plr[v3].HoldItem._ivalue;
 				cursor_ida = SwapItem((ItemStruct *)((char *)&plr[0].InvList[v44] + v3 * 21720), &plr[v3].HoldItem);
 				if (plr[v3].HoldItem._itype == ITYPE_GOLD)
@@ -1234,7 +1234,7 @@ LABEL_18:
 					goto LABEL_225;
 				}
 				v54 = *(int *)((char *)&plr[0].SpdList[0]._itype + v53);
-				if (v54 != -1) {
+				if (v54 != ITYPE_NONE) {
 					if (v54 == ITYPE_GOLD) {
 						v55 = *(int *)((char *)&plr[0].SpdList[0]._ivalue + v53);
 						v56 = plr[v3].HoldItem._ivalue;
@@ -1864,7 +1864,7 @@ void __fastcall AutoGetItem(int pnum, int ii)
 						do {
 							if (v4)
 								break;
-							if (v24->_itype == -1) {
+							if (v24->_itype == ITYPE_NONE) {
 								qmemcpy(v24, &plr[v3].HoldItem, sizeof(ItemStruct));
 								CalcPlrScrolls(v2);
 								v4 = 1;
@@ -2447,7 +2447,7 @@ int __cdecl CheckInvHLight()
 			drawsbarflag = 1;
 			result = 368 * v5;
 			v2 = &v3->SpdList[v5];
-			if (v3->SpdList[v5]._itype != -1) {
+			if (v3->SpdList[v5]._itype != ITYPE_NONE) {
 				v9 = v5 + 47;
 				goto LABEL_36;
 			}
@@ -2465,7 +2465,7 @@ int __cdecl CheckInvHLight()
 		return result;
 	}
 	v2 = &v3->InvBody[INVLOC_HAND_LEFT];
-	if (v3->InvBody[INVLOC_HAND_LEFT]._itype == -1 || v3->InvBody[INVLOC_HAND_LEFT]._iLoc != 2) {
+	if (v3->InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_NONE || v3->InvBody[INVLOC_HAND_LEFT]._iLoc != 2) {
 		v9 = 5;
 		v2 = &v3->InvBody[INVLOC_HAND_RIGHT];
 	} else {
@@ -2503,7 +2503,7 @@ void __fastcall RemoveScroll(int pnum)
 	int i;
 
 	for (i = 0; i < plr[pnum]._pNumInv; i++) {
-		if (plr[pnum].InvList[i]._itype != -1
+		if (plr[pnum].InvList[i]._itype != ITYPE_NONE
 		    && (plr[pnum].InvList[i]._iMiscId == IMISC_SCROLL || plr[pnum].InvList[i]._iMiscId == IMISC_SCROLLT)
 		    && plr[pnum].InvList[i]._iSpell == plr[pnum]._pRSpell) {
 			RemoveInvItem(pnum, i);
@@ -2512,7 +2512,7 @@ void __fastcall RemoveScroll(int pnum)
 		}
 	}
 	for (i = 0; i < MAXBELTITEMS; i++) {
-		if (plr[pnum].SpdList[i]._itype != -1
+		if (plr[pnum].SpdList[i]._itype != ITYPE_NONE
 		    && (plr[pnum].SpdList[i]._iMiscId == IMISC_SCROLL || plr[pnum].SpdList[i]._iMiscId == IMISC_SCROLLT)
 		    && plr[pnum].SpdList[i]._iSpell == plr[pnum]._pRSpell) {
 			RemoveSpdBarItem(pnum, i);
@@ -2532,14 +2532,14 @@ BOOL __cdecl UseScroll()
 		return FALSE;
 
 	for (i = 0; i < plr[myplr]._pNumInv; i++) {
-		if (plr[myplr].InvList[i]._itype != -1
+		if (plr[myplr].InvList[i]._itype != ITYPE_NONE
 		    && (plr[myplr].InvList[i]._iMiscId == IMISC_SCROLL || plr[myplr].InvList[i]._iMiscId == IMISC_SCROLLT)
 		    && plr[myplr].InvList[i]._iSpell == plr[myplr]._pRSpell) {
 			return TRUE;
 		}
 	}
 	for (i = 0; i < MAXBELTITEMS; i++) {
-		if (plr[myplr].SpdList[i]._itype != -1
+		if (plr[myplr].SpdList[i]._itype != ITYPE_NONE
 		    && (plr[myplr].SpdList[i]._iMiscId == IMISC_SCROLL || plr[myplr].SpdList[i]._iMiscId == IMISC_SCROLLT)
 		    && plr[myplr].SpdList[i]._iSpell == plr[myplr]._pRSpell) {
 			return TRUE;
@@ -2708,36 +2708,21 @@ void __cdecl DoTelekinesis()
 
 int __fastcall CalculateGold(int pnum)
 {
-	int result;    // eax
-	int v2;        // ecx
-	int *v3;       // edx
-	signed int v4; // esi
-	int v5;        // edx
-	int *v6;       // ecx
+	int i, gold;
 
-	result = 0;
-	v2 = pnum;
-	v3 = &plr[v2].SpdList[0]._ivalue;
-	v4 = MAXBELTITEMS;
-	do {
-		if (*(v3 - 47) == 11) {
-			result += *v3;
+	gold = 0;
+	for (i = 0; i < MAXBELTITEMS; i++) {
+		if (plr[pnum].SpdList[i]._itype == ITYPE_GOLD) {
+			gold += plr[pnum].SpdList[i]._ivalue;
 			drawpanflag = 255;
 		}
-		v3 += 92;
-		--v4;
-	} while (v4);
-	v5 = plr[v2]._pNumInv;
-	if (v5 > 0) {
-		v6 = &plr[v2].InvList[0]._ivalue;
-		do {
-			if (*(v6 - 47) == 11)
-				result += *v6;
-			v6 += 92;
-			--v5;
-		} while (v5);
 	}
-	return result;
+	for (i = 0; i < plr[pnum]._pNumInv; i++) {
+		if (plr[pnum].InvList[i]._itype == ITYPE_GOLD)
+			gold += plr[pnum].InvList[i]._ivalue;
+	}
+
+	return gold;
 }
 // 52571C: using guessed type int drawpanflag;
 
