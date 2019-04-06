@@ -833,45 +833,35 @@ BOOL __fastcall SmithSellOk(int i)
 
 void __fastcall S_ScrollSSell(int idx)
 {
-	int v1;   // esi
-	int v2;   // edi
-	char *v3; // esi
-	int v4;   // edx
-	int v5;   // [esp+Ch] [ebp-8h]
-	int iclr; // [esp+10h] [ebp-4h]
+	char clr;
+	int y;
 
-	v1 = idx;
-	v5 = idx;
-	v2 = 5;
 	ClearSText(5, 21);
-	v3 = &storehold[v1]._iMagical;
 	stextup = 5;
-	do {
-		if (v5 >= storenumh)
+	for (y = 5; y < 20; y += 4) {
+		if (idx >= storenumh)
 			break;
-		if (*((_DWORD *)v3 - 13) != -1) {
-			_LOBYTE(iclr) = 0;
-			if (*v3)
-				_LOBYTE(iclr) = 1;
-			if (!*((_DWORD *)v3 + 74))
-				_LOBYTE(iclr) = 2;
-			if (*v3 && *((_DWORD *)v3 - 1)) {
-				AddSText(20, v2, 0, v3 + 65, iclr, 1);
-				v4 = *((_DWORD *)v3 + 35);
+		if (storehold[idx]._itype != -1) {
+			clr = 0;
+			if (storehold[idx]._iMagical)
+				clr = 1;
+			if (!storehold[idx]._iStatFlag)
+				clr = 2;
+			if (storehold[idx]._iMagical && storehold[idx]._iIdentified) {
+				AddSText(20, y, 0, storehold[idx]._iIName, clr, 1);
+				AddSTextVal(y, storehold[idx]._iIvalue);
 			} else {
-				AddSText(20, v2, 0, v3 + 1, iclr, 1);
-				v4 = *((_DWORD *)v3 + 34);
+				AddSText(20, y, 0, storehold[idx]._iName, clr, 1);
+				AddSTextVal(y, storehold[idx]._ivalue);
 			}
-			AddSTextVal(v2, v4);
-			PrintStoreItem((ItemStruct *)(v3 - 60), v2 + 1, iclr);
-			stextdown = v2;
+			PrintStoreItem(&storehold[idx], y + 1, clr);
+			stextdown = y;
 		}
-		++v5;
-		v2 += 4;
-		v3 += 368;
-	} while (v2 < 20);
+		idx++;
+	}
+
 	stextsmax = storenumh - 4;
-	if (storenumh - 4 < 0)
+	if (stextsmax < 0)
 		stextsmax = 0;
 }
 // 69F108: using guessed type int stextup;
