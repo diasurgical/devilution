@@ -84,10 +84,10 @@ void __cdecl InitStores()
 	ClearSText(0, 24);
 	stextflag = 0;
 	InStoreFlag = 1;
-	premiumlevel = 1;
 	stextsize = 0;
 	stextscrl = 0;
 	numpremium = 0;
+	premiumlevel = 1;
 
 	for (i = 0; i < 6; i++)
 		premiumitem[i]._itype = -1;
@@ -356,24 +356,17 @@ void __cdecl DrawSTextHelp()
 
 void __fastcall ClearSText(int s, int e)
 {
-	int v2;  // edx
-	int *v3; // eax
+	int i;
 
-	if (s < e) {
-		v2 = e - s;
-		v3 = &stext[s]._syoff;
-		do {
-			v3[37] = -1;
-			*(v3 - 1) = 0;
-			*v3 = 0;
-			*((_BYTE *)v3 + 4) = 0;
-			v3[33] = 0;
-			*((_BYTE *)v3 + 136) = 0;
-			v3[35] = 0;
-			v3[36] = 0;
-			v3 += 39;
-			--v2;
-		} while (v2);
+	for (i = s; i < e; ++i) {
+		stext[i]._sx = 0;
+		stext[i]._syoff = 0;
+		stext[i]._sstr[0] = 0;
+		stext[i]._sjust = 0;
+		stext[i]._sclr = 0;
+		stext[i]._sline = 0;
+		stext[i]._ssel = 0;
+		stext[i]._sval = -1;
 	}
 }
 
