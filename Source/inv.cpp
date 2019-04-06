@@ -1686,7 +1686,7 @@ void __fastcall CheckQuestItem(int pnum)
 		quests[QTYPE_BLIND]._qactive = 3;
 	if (plr[pnum].HoldItem.IDidx == IDI_MUSHROOM && quests[QTYPE_BLKM]._qactive == 2 && quests[QTYPE_BLKM]._qvar1 == QS_MUSHSPAWNED) {
 		sfxdelay = 10;
-		if (plr[pnum]._pClass == PC_WARRIOR) {
+		if (plr[pnum]._pClass == PC_WARRIOR) { // BUGFIX: Voice for this quest might be wrong in MP
 			sfxdnum = PS_WARR95;
 		} else if (plr[pnum]._pClass == PC_ROGUE) {
 			sfxdnum = PS_ROGUE95;
