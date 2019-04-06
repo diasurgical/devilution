@@ -229,33 +229,22 @@ BOOL __fastcall CheckThemeObj3(int xp, int yp, int t, int f)
 	return TRUE;
 }
 
-BOOLEAN __fastcall TFit_Obj3(int t)
+BOOL __fastcall TFit_Obj3(int t)
 {
-	int yp;         // edi
-	int xp;         // esi
-	char objrnd[4]; // [esp+Bh] [ebp-5h]
+	int xp, yp;
+	char objrnd[4] = { 4, 4, 3, 5 };
 
-	objrnd[0] = 4;
-	objrnd[1] = 4;
-	objrnd[2] = 3;
-	objrnd[3] = 5;
-	yp = 1;
-	while (2) {
-		xp = 1;
-		do {
+	for (yp = 1; yp < MAXDUNY - 1; yp++) {
+		for (xp = 1; xp < MAXDUNX - 1; xp++) {
 			if (CheckThemeObj3(xp, yp, t, objrnd[leveltype - 1])) {
 				themex = xp;
 				themey = yp;
-				return 1;
+				return TRUE;
 			}
-			++xp;
-		} while (xp < 111);
-		if (++yp < 111) {
-			continue;
 		}
-		break;
 	}
-	return 0;
+
+	return FALSE;
 }
 
 BOOLEAN __fastcall CheckThemeReqs(int t)
