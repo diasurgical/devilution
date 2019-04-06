@@ -210,33 +210,33 @@ LABEL_29:
 // 679660: using guessed type char gbMaxPlayers;
 // 69BE90: using guessed type int qline;
 
-BOOLEAN __cdecl ForceQuests()
+BOOL __cdecl ForceQuests()
 {
-	QuestStruct *v0; // eax
-	int v1;          // esi
-	int v2;          // edi
-	int v3;          // edx
+	int i, j, qx, qy, ql;
 
-	if (gbMaxPlayers != 1)
-		return 0;
-	v0 = (QuestStruct *)((char *)quests + 12);
-	while (v0 == (QuestStruct *)&quests[15]._qslvl || currlevel != v0[-1]._qslvl || !v0->_qlevel) {
-	LABEL_10:
-		++v0;
-		if ((signed int)v0 >= (signed int)&quests[MAXQUESTS]._qslvl) /* fix */
-			return 0;
+	if (gbMaxPlayers != 1) {
+		return FALSE;
 	}
-	v1 = *(_DWORD *)&v0[-1]._qvar2;
-	v2 = v0[-1]._qlog;
-	v3 = 0;
-	while (v1 + questxoff[v3] != cursmx || v2 + questyoff[v3] != cursmy) {
-		if (++v3 >= 7)
-			goto LABEL_10;
+
+	for (i = 0; i < MAXQUESTS; i++) {
+		
+		if (i != QTYPE_VB && currlevel == quests[i]._qlevel && quests[i]._qslvl != 0) {
+			ql = quests[quests[i]._qidx]._qslvl - 1;
+			qx = quests[i]._qtx;
+			qy = quests[i]._qty;
+
+			for (j = 0; j < 7; j++) {
+				if (qx + questxoff[j] == cursmx && qy + questyoff[j] == cursmy) {
+					sprintf(infostr, "To %s", questtrigstr[ql]);
+					cursmx = qx;
+					cursmy = qy;
+					return TRUE;
+				}
+			}
+		}
 	}
-	sprintf(infostr, "To %s", questtrigstr[(unsigned char)quests[(unsigned char)v0->_qtype]._qslvl - 1]);
-	cursmx = v1;
-	cursmy = v2;
-	return 1;
+
+	return FALSE;
 }
 // 679660: using guessed type char gbMaxPlayers;
 
