@@ -235,7 +235,7 @@ BOOL __cdecl ForceQuests()
 			}
 		}
 	}
-	
+
 	return FALSE;
 }
 // 679660: using guessed type char gbMaxPlayers;
