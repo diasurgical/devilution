@@ -1,13 +1,20 @@
 version: 1.0.{build}
+
 pull_requests:
   do_not_increment_build_number: true
 clone_depth: 1
 image: Visual Studio 2017
-configuration: Release
-platform: x86
+cache: c:\tools\vcpkg\installed\
+
+install:
+  - vcpkg install sdl2:x86-windows sdl2-mixer:x86-windows sdl2-ttf:x86-windows libsodium:x86-windows
+
+before_build:
+  - cmake -G "Visual Studio 15 2017" -DCMAKE_TOOLCHAIN_FILE=c:/tools/vcpkg/scripts/buildsystems/vcpkg.cmake .
+
 build:
-  project: Diablo.sln
+  project: $(APPVEYOR_BUILD_FOLDER)\$(APPVEYOR_PROJECT_NAME).sln
   verbosity: minimal
 artifacts:
   - path: Debug\devilutionx.exe
-  - name: devilutionx.exe
+    name: devilutionx.exe

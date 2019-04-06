@@ -292,7 +292,8 @@ void *__fastcall fault_set_filter(void *unused)
 
 LPTOP_LEVEL_EXCEPTION_FILTER __fastcall fault_reset_filter(void *unused)
 {
-	return SetUnhandledExceptionFilter(lpTopLevelExceptionFilter);
+	//return SetUnhandledExceptionFilter(lpTopLevelExceptionFilter);
+	return lpTopLevelExceptionFilter;
 }
 
 LPTOP_LEVEL_EXCEPTION_FILTER __cdecl fault_get_filter()
