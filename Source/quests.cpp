@@ -58,7 +58,7 @@ void __cdecl InitQuests()
 	int initiatedQuests;
 	int i;
 	unsigned int z;
-	
+
 	if (gbMaxPlayers == 1) {
 		for (i = 0; i < MAXQUESTS; i++) {
 			quests[i]._qactive = 0;
@@ -453,7 +453,7 @@ void __fastcall DrawWarLord(int x, int y)
 		do {
 			if (v3 < v13) {
 				v9 = v13 - v3;
-				v10 = &dungeon[v3][v14];
+				v10 = (char *)&dungeon[v3][v14];
 				do {
 					v11 = *v8;
 					if (!*v8)
@@ -507,7 +507,7 @@ void __fastcall DrawSChamber(int q, int x, int y)
 		do {
 			if (v3 < v16) {
 				v9 = v16 - v3;
-				v10 = &dungeon[v3][v6];
+				v10 = (char *)&dungeon[v3][v6];
 				do {
 					v11 = *v8;
 					if (!*v8)
@@ -670,7 +670,7 @@ void __fastcall DrawBlood(int x, int y)
 		do {
 			if (v6 > 0) {
 				v13 = v6;
-				v10 = &dungeon[v3][v14 + v12];
+				v10 = (char *)&dungeon[v3][v14 + v12];
 				do {
 					if (*v9)
 						*v10 = *v9;

@@ -32,7 +32,7 @@ BOOL pinfoflag;
 int talkbtndown[3];
 int pSpell; // weak
 BYTE *pManaBuff;
-char infoclr;       // weak
+char infoclr;      // weak
 int sgbPlrTalkTbl; // weak // should be char [4]
 void *pGBoxBuff;
 void *pSBkBtnCel;
@@ -112,6 +112,7 @@ const int lineoffset[25] = {
 	768 * 617 + 241
 };
 const unsigned char gbFontTransTbl[256] = {
+	// clang-format off
 	'\0', 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 	0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
 	' ',  '!',  '\"', '#',  '$',  '%',  '&',  '\'', '(',  ')',  '*',  '+',  ',',  '-',  '.',  '/',
@@ -128,6 +129,7 @@ const unsigned char gbFontTransTbl[256] = {
 	'D',  'N',  'O',  'O',  'O',  'O',  'O',  'X',  '0',  'U',  'U',  'U',  'U',  'Y',  'b',  'B',
 	'a',  'a',  'a',  'a',  'a',  'a',  'a',  'c',  'e',  'e',  'e',  'e',  'i',  'i',  'i',  'i',
 	'o',  'n',  'o',  'o',  'o',  'o',  'o',  '/',  '0',  'u',  'u',  'u',  'u',  'y',  'b',  'y'
+	// clang-format on
 };
 
 /* data */
@@ -262,26 +264,26 @@ void __fastcall DrawSpellCel(int xp, int yp, BYTE *Trans, int nCel, int w)
 	src = &Trans[pFrameTable[0]];
 	end = &src[pFrameTable[1] - pFrameTable[0]];
 
-	for(; src != end; dst -= 768 + w) {
-		for(i = w; i;) {
+	for (; src != end; dst -= 768 + w) {
+		for (i = w; i;) {
 			width = *src++;
-			if(!(width & 0x80)) {
+			if (!(width & 0x80)) {
 				i -= width;
 				// asm_cel_light_edge(width, tbl, dst, src);
-				if(width & 1) {
+				if (width & 1) {
 					dst[0] = tbl[src[0]];
 					src++;
 					dst++;
 				}
 				width >>= 1;
-				if(width & 1) {
+				if (width & 1) {
 					dst[0] = tbl[src[0]];
 					dst[1] = tbl[src[1]];
 					src += 2;
 					dst += 2;
 				}
 				width >>= 1;
-				for(; width; width--) {
+				for (; width; width--) {
 					dst[0] = tbl[src[0]];
 					dst[1] = tbl[src[1]];
 					dst[2] = tbl[src[2]];
@@ -680,7 +682,7 @@ void __fastcall CPrintString(int nOffset, int nCel, char col)
 		jz		c2_label1
 		jmp		d_label1
 
-	// Case 0
+		            // Case 0
 	c0_label1:
 		mov		edx, 13
 	c0_label2:
@@ -716,7 +718,7 @@ void __fastcall CPrintString(int nOffset, int nCel, char col)
 		jnz		c0_label1
 		jmp		labret
 
-	// Case 1
+		            // Case 1
 	c1_label1:
 		mov		edx, 13
 	c1_label2:
@@ -753,7 +755,7 @@ void __fastcall CPrintString(int nOffset, int nCel, char col)
 		jnz		c1_label1
 		jmp		labret
 
-	// Case 2
+		            // Case 2
 	c2_label1:
 		mov		edx, 13
 	c2_label2:
@@ -785,7 +787,7 @@ void __fastcall CPrintString(int nOffset, int nCel, char col)
 		jnz		c2_label1
 		jmp		labret
 
-	// Default
+		            // Default
 	d_label1:
 		mov		edx, 13
 	d_label2:
@@ -834,27 +836,27 @@ void __fastcall CPrintString(int nOffset, int nCel, char col)
 	end = &src[pFrameTable[1] - pFrameTable[0]];
 	dst = &gpBuffer[nOffset];
 
-	switch(col) {
+	switch (col) {
 	case COL_WHITE:
-		for(; src != end; dst -= 768 + 13) {
-			for(i = 13; i;) {
+		for (; src != end; dst -= 768 + 13) {
+			for (i = 13; i;) {
 				width = *src++;
-				if(!(width & 0x80)) {
+				if (!(width & 0x80)) {
 					i -= width;
-					if(width & 1) {
+					if (width & 1) {
 						dst[0] = src[0];
 						src++;
 						dst++;
 					}
 					width >>= 1;
-					if(width & 1) {
+					if (width & 1) {
 						dst[0] = src[0];
 						dst[1] = src[1];
 						src += 2;
 						dst += 2;
 					}
 					width >>= 1;
-					while(width) {
+					while (width) {
 						dst[0] = src[0];
 						dst[1] = src[1];
 						dst[2] = src[2];
@@ -872,16 +874,16 @@ void __fastcall CPrintString(int nOffset, int nCel, char col)
 		}
 		break;
 	case COL_BLUE:
-		for(; src != end; dst -= 768 + 13) {
-			for(i = 13; i;) {
+		for (; src != end; dst -= 768 + 13) {
+			for (i = 13; i;) {
 				width = *src++;
-				if(!(width & 0x80)) {
+				if (!(width & 0x80)) {
 					i -= width;
-					while(width) {
+					while (width) {
 						pix = *src++;
-						if(pix > PAL16_GRAY + 13)
+						if (pix > PAL16_GRAY + 13)
 							pix = PAL16_BLUE + 15;
-						else if(pix >= PAL16_GRAY)
+						else if (pix >= PAL16_GRAY)
 							pix -= PAL16_GRAY - (PAL16_BLUE + 2);
 						*dst++ = pix;
 						width--;
@@ -895,14 +897,14 @@ void __fastcall CPrintString(int nOffset, int nCel, char col)
 		}
 		break;
 	case COL_RED:
-		for(; src != end; dst -= 768 + 13) {
-			for(i = 13; i;) {
+		for (; src != end; dst -= 768 + 13) {
+			for (i = 13; i;) {
 				width = *src++;
-				if(!(width & 0x80)) {
+				if (!(width & 0x80)) {
 					i -= width;
-					while(width) {
+					while (width) {
 						pix = *src++;
-						if(pix >= PAL16_GRAY)
+						if (pix >= PAL16_GRAY)
 							pix -= PAL16_GRAY - PAL16_RED;
 						*dst++ = pix;
 						width--;
@@ -916,15 +918,15 @@ void __fastcall CPrintString(int nOffset, int nCel, char col)
 		}
 		break;
 	default:
-		for(; src != end; dst -= 768 + 13) {
-			for(i = 13; i;) {
+		for (; src != end; dst -= 768 + 13) {
+			for (i = 13; i;) {
 				width = *src++;
-				if(!(width & 0x80)) {
+				if (!(width & 0x80)) {
 					i -= width;
-					while(width) {
+					while (width) {
 						pix = *src++;
-						if(pix >= PAL16_GRAY) {
-							if(pix >= PAL16_GRAY + 14)
+						if (pix >= PAL16_GRAY) {
+							if (pix >= PAL16_GRAY + 14)
 								pix = PAL16_YELLOW + 15;
 							else
 								pix -= PAL16_GRAY - (PAL16_YELLOW + 2);
@@ -1006,22 +1008,22 @@ void __fastcall DrawPanelBox(int x, int y, int w, int h, int sx, int sy)
 	src = &pBtmBuff[nSrcOff];
 	dst = &gpBuffer[nDstOff];
 
-	for(hgt = h; hgt; hgt--, src += 640 - w, dst += 768 - w) {
+	for (hgt = h; hgt; hgt--, src += 640 - w, dst += 768 - w) {
 		wdt = w;
-		if(wdt & 1) {
+		if (wdt & 1) {
 			dst[0] = src[0];
 			src++;
 			dst++;
 		}
 		wdt >>= 1;
-		if(wdt & 1) {
+		if (wdt & 1) {
 			dst[0] = src[0];
 			dst[1] = src[1];
 			src += 2;
 			dst += 2;
 		}
 		wdt >>= 1;
-		while(wdt) {
+		while (wdt) {
 			dst[0] = src[0];
 			dst[1] = src[1];
 			dst[2] = src[2];
@@ -1064,7 +1066,7 @@ void __fastcall SetFlaskHeight(BYTE *pCelBuff, int min, int max, int c, int r)
 	src = &pCelBuff[nSrcOff];
 	dst = &gpBuffer[nDstOff];
 
-	for(; w; w--, src += 88, dst += 768)
+	for (; w; w--, src += 88, dst += 768)
 		memcpy(dst, src, 88);
 #endif
 }
@@ -1101,9 +1103,9 @@ void __fastcall DrawFlask(BYTE *pCelBuff, int w, int nSrcOff, BYTE *pBuff, int n
 	src = &pCelBuff[nSrcOff];
 	dst = &pBuff[nDstOff];
 
-	for(hgt = h; hgt; hgt--, src += w - 59, dst += 768 - 59) {
-		for(wdt = 59; wdt; wdt--) {
-			if(*src)
+	for (hgt = h; hgt; hgt--, src += w - 59, dst += 768 - 59) {
+		for (wdt = 59; wdt; wdt--) {
+			if (*src)
 				*dst = *src;
 			src++;
 			dst++;
@@ -2447,7 +2449,7 @@ void __cdecl RedBack()
 	/// ASSERT: assert(gpBuffer);
 
 #if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
-	if(leveltype != DTYPE_HELL) {
+	if (leveltype != DTYPE_HELL) {
 		__asm {
 			mov		edi, gpBuffer
 			add		edi, SCREENXY(0, 0)
@@ -2491,11 +2493,11 @@ void __cdecl RedBack()
 	int w, h;
 	BYTE *dst, *tbl;
 
-	if(leveltype != DTYPE_HELL) {
+	if (leveltype != DTYPE_HELL) {
 		dst = &gpBuffer[SCREENXY(0, 0)];
 		tbl = &pLightTbl[idx];
-		for(h = 352; h; h--, dst += 768 - 640) {
-			for(w = 640; w; w--) {
+		for (h = 352; h; h--, dst += 768 - 640) {
+			for (w = 640; w; w--) {
 				*dst = tbl[*dst];
 				dst++;
 			}
@@ -2503,9 +2505,9 @@ void __cdecl RedBack()
 	} else {
 		dst = &gpBuffer[SCREENXY(0, 0)];
 		tbl = &pLightTbl[idx];
-		for(h = 352; h; h--, dst += 768 - 640) {
-			for(w = 640; w; w--) {
-				if(*dst >= 32)
+		for (h = 352; h; h--, dst += 768 - 640) {
+			for (w = 640; w; w--) {
+				if (*dst >= 32)
 					*dst = tbl[*dst];
 				dst++;
 			}

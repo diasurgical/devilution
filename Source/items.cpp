@@ -1475,7 +1475,7 @@ BOOL __fastcall ItemSpaceOk(int i, int j)
 		return FALSE;
 
 	if (dObject[i][j]) {
-		oi = dObject[i][j] > 0 ? dObject[i][j] - 1 : -(dObject[i][j] + 1) ;
+		oi = dObject[i][j] > 0 ? dObject[i][j] - 1 : -(dObject[i][j] + 1);
 		if (object[oi]._oSolidFlag)
 			return FALSE;
 	}
@@ -1921,7 +1921,6 @@ void __fastcall GetItemAttrs(int i, int idata, int lvl)
 			item[i]._iCurs = (rndv > 1000) + 4;
 	}
 }
-
 
 int __fastcall RndPL(int param1, int param2)
 {

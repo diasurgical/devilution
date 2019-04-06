@@ -4484,16 +4484,16 @@ void __fastcall OperateWeaponRack(int pnum, int i, BOOL sendmsg)
 	SetRndSeed(object[i]._oRndSeed);
 
 	switch (random(0, 4)) {
-	case ITYPE_BOW-1:
+	case ITYPE_BOW - 1:
 		weaponType = ITYPE_BOW;
 		break;
-	case ITYPE_AXE-1:
+	case ITYPE_AXE - 1:
 		weaponType = ITYPE_AXE;
 		break;
-	case ITYPE_MACE-1:
+	case ITYPE_MACE - 1:
 		weaponType = ITYPE_MACE;
 		break;
-	case ITYPE_SWORD-1:
+	case ITYPE_SWORD - 1:
 		weaponType = ITYPE_SWORD;
 		break;
 	}

@@ -146,8 +146,8 @@ void __fastcall LoadL1Dungeon(char *sFileName, int vx, int vy)
 	DRLG_InitTrans();
 	pLevelMap = LoadFileInMem(sFileName, 0);
 
-	for(j = 0; j < DMAXY; j++) {
-		for(i = 0; i < DMAXX; i++) {
+	for (j = 0; j < DMAXY; j++) {
+		for (i = 0; i < DMAXX; i++) {
 			dungeon[i][j] = 22;
 			mydflags[i][j] = 0;
 		}
@@ -159,9 +159,9 @@ void __fastcall LoadL1Dungeon(char *sFileName, int vx, int vy)
 	rh = *lm;
 	lm += 2;
 
-	for(j = 0; j < rh; j++) {
-		for(i = 0; i < rw; i++) {
-			if(*lm != 0) {
+	for (j = 0; j < rh; j++) {
+		for (i = 0; i < rw; i++) {
+			if (*lm != 0) {
 				dungeon[i][j] = *lm;
 				mydflags[i][j] |= 0x80;
 			} else {
@@ -210,7 +210,7 @@ void __cdecl DRLG_L1Pass3()
 	int i, j, xx, yy;
 	long v1, v2, v3, v4, lv;
 
-	lv = 22-1;
+	lv = 22 - 1;
 
 #if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
 	__asm {
@@ -233,26 +233,27 @@ void __cdecl DRLG_L1Pass3()
 		mov		v4, eax
 	}
 #else
-	v1 = *((WORD *)&pMegaTiles[lv*8])+1;
-	v2 = *((WORD *)&pMegaTiles[lv*8]+1)+1;
-	v3 = *((WORD *)&pMegaTiles[lv*8]+2)+1;
-	v4 = *((WORD *)&pMegaTiles[lv*8]+3)+1;
+	v1 = *((WORD *)&pMegaTiles[lv * 8]) + 1;
+	v2 = *((WORD *)&pMegaTiles[lv * 8] + 1) + 1;
+	v3 = *((WORD *)&pMegaTiles[lv * 8] + 2) + 1;
+	v4 = *((WORD *)&pMegaTiles[lv * 8] + 3) + 1;
 #endif
 
-	for(j = 0; j < MAXDUNY; j += 2) {
-		for(i = 0; i < MAXDUNX; i += 2) {
+	for (j = 0; j < MAXDUNY; j += 2)
+	{
+		for (i = 0; i < MAXDUNX; i += 2) {
 			dPiece[i][j] = v1;
-			dPiece[i+1][j] = v2;
-			dPiece[i][j+1] = v3;
-			dPiece[i+1][j+1] = v4;
+			dPiece[i + 1][j] = v2;
+			dPiece[i][j + 1] = v3;
+			dPiece[i + 1][j + 1] = v4;
 		}
 	}
 
 	yy = 16;
-	for(j = 0; j < DMAXY; j++) {
+	for (j = 0; j < DMAXY; j++) {
 		xx = 16;
-		for(i = 0; i < DMAXX; i++) {
-			lv = (unsigned char)dungeon[i][j]-1;
+		for (i = 0; i < DMAXX; i++) {
+			lv = (unsigned char)dungeon[i][j] - 1;
 			/// ASSERT: assert(lv >= 0);
 #if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
 			__asm {
@@ -275,15 +276,15 @@ void __cdecl DRLG_L1Pass3()
 				mov		v4, eax
 			}
 #else
-			v1 = *((WORD *)&pMegaTiles[lv*8])+1;
-			v2 = *((WORD *)&pMegaTiles[lv*8]+1)+1;
-			v3 = *((WORD *)&pMegaTiles[lv*8]+2)+1;
-			v4 = *((WORD *)&pMegaTiles[lv*8]+3)+1;
+			v1 = *((WORD *)&pMegaTiles[lv * 8]) + 1;
+			v2 = *((WORD *)&pMegaTiles[lv * 8] + 1) + 1;
+			v3 = *((WORD *)&pMegaTiles[lv * 8] + 2) + 1;
+			v4 = *((WORD *)&pMegaTiles[lv * 8] + 3) + 1;
 #endif
 			dPiece[xx][yy] = v1;
-			dPiece[xx+1][yy] = v2;
-			dPiece[xx][yy+1] = v3;
-			dPiece[xx+1][yy+1] = v4;
+			dPiece[xx + 1][yy] = v2;
+			dPiece[xx][yy + 1] = v3;
+			dPiece[xx + 1][yy + 1] = v4;
 			xx += 2;
 		}
 		yy += 2;
@@ -294,35 +295,35 @@ void __cdecl DRLG_InitL1Vals()
 {
 	int i, j, pc;
 
-	for(j = 0; j < MAXDUNY; j++) {
-		for(i = 0; i < MAXDUNX; i++) {
-			if(dPiece[i][j] == 12) {
+	for (j = 0; j < MAXDUNY; j++) {
+		for (i = 0; i < MAXDUNX; i++) {
+			if (dPiece[i][j] == 12) {
 				pc = 1;
-			} else if(dPiece[i][j] == 11) {
+			} else if (dPiece[i][j] == 11) {
 				pc = 2;
-			} else if(dPiece[i][j] == 71) {
+			} else if (dPiece[i][j] == 71) {
 				pc = 1;
-			} else if(dPiece[i][j] == 259) {
+			} else if (dPiece[i][j] == 259) {
 				pc = 5;
-			} else if(dPiece[i][j] == 249) {
+			} else if (dPiece[i][j] == 249) {
 				pc = 2;
-			} else if(dPiece[i][j] == 325) {
+			} else if (dPiece[i][j] == 325) {
 				pc = 2;
-			} else if(dPiece[i][j] == 321) {
+			} else if (dPiece[i][j] == 321) {
 				pc = 1;
-			} else if(dPiece[i][j] == 255) {
+			} else if (dPiece[i][j] == 255) {
 				pc = 4;
-			} else if(dPiece[i][j] == 211) {
+			} else if (dPiece[i][j] == 211) {
 				pc = 1;
-			} else if(dPiece[i][j] == 344) {
+			} else if (dPiece[i][j] == 344) {
 				pc = 2;
-			} else if(dPiece[i][j] == 341) {
+			} else if (dPiece[i][j] == 341) {
 				pc = 1;
-			} else if(dPiece[i][j] == 331) {
+			} else if (dPiece[i][j] == 331) {
 				pc = 2;
-			} else if(dPiece[i][j] == 418) {
+			} else if (dPiece[i][j] == 418) {
 				pc = 1;
-			} else if(dPiece[i][j] == 421) {
+			} else if (dPiece[i][j] == 421) {
 				pc = 2;
 			} else {
 				continue;
@@ -344,8 +345,8 @@ void __fastcall LoadPreL1Dungeon(char *sFileName, int vx, int vy)
 
 	pLevelMap = LoadFileInMem(sFileName, 0);
 
-	for(j = 0; j < DMAXY; j++) {
-		for(i = 0; i < DMAXX; i++) {
+	for (j = 0; j < DMAXY; j++) {
+		for (i = 0; i < DMAXX; i++) {
 			dungeon[i][j] = 22;
 			mydflags[i][j] = 0;
 		}
@@ -357,9 +358,9 @@ void __fastcall LoadPreL1Dungeon(char *sFileName, int vx, int vy)
 	rh = *lm;
 	lm += 2;
 
-	for(j = 0; j < rh; j++) {
-		for(i = 0; i < rw; i++) {
-			if(*lm != 0) {
+	for (j = 0; j < rh; j++) {
+		for (i = 0; i < rw; i++) {
+			if (*lm != 0) {
 				dungeon[i][j] = *lm;
 				mydflags[i][j] |= 0x80;
 			} else {
@@ -371,8 +372,8 @@ void __fastcall LoadPreL1Dungeon(char *sFileName, int vx, int vy)
 
 	DRLG_L1Floor();
 
-	for(j = 0; j < DMAXY; j++) {
-		for(i = 0; i < DMAXX; i++) {
+	for (j = 0; j < DMAXY; j++) {
+		for (i = 0; i < DMAXX; i++) {
 			pdungeon[i][j] = dungeon[i][j];
 		}
 	}
@@ -1561,7 +1562,7 @@ void __fastcall DRLG_L5GChamber(int sx, int sy, BOOLEAN topflag, BOOLEAN bottomf
 		dungeon[4][v8] = 8;
 		dungeon[7][v8] = 5;
 		dungeon[8][v8] = 12;
-		v9 = &dungeon[9][v8];
+		v9 = (char *)&dungeon[9][v8];
 		if (*v9 != 4)
 			*v9 = 21;
 		sy = v7 - 11;
@@ -1583,7 +1584,7 @@ void __fastcall DRLG_L5GChamber(int sx, int sy, BOOLEAN topflag, BOOLEAN bottomf
 		dungeon[0][v12 + 4] = 9;
 		dungeon[0][v12 + 7] = 5;
 		dungeon[0][v12 + 8] = 11;
-		v13 = &dungeon[0][v12 + 9];
+		v13 = (char *)&dungeon[0][v12 + 9];
 		if (*v13 != 4)
 			*v13 = 21;
 		sx = v11 - 11;

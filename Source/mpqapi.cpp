@@ -73,8 +73,8 @@ BOOL __fastcall mpqapi_reg_load_modification_time(char *dst, int size)
 
 	if (nbytes_read != size)
 		return FALSE;
-			
-	for (; iSize >= 8; iSize -=8) {
+
+	for (; iSize >= 8; iSize -= 8) {
 		pbData = pszDst;
 		pszDst += 8;
 		mpqapi_xor_buf(pbData);
@@ -452,7 +452,7 @@ int __fastcall mpqapi_find_free_block(int size, int *block_size)
 
 void __fastcall mpqapi_rename(char *pszOld, char *pszNew)
 {
-	int index, block; 
+	int index, block;
 	_HASHENTRY *hashEntry;
 	_BLOCKENTRY *blockEntry;
 

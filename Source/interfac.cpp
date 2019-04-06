@@ -90,7 +90,7 @@ void __fastcall ShowProgress(unsigned int uMsg)
 	stream_update();
 	IncProgress();
 
-	switch(uMsg) {
+	switch (uMsg) {
 	case WM_DIABLOADGAME:
 		IncProgress();
 		LoadGame(TRUE);
@@ -106,7 +106,7 @@ void __fastcall ShowProgress(unsigned int uMsg)
 		break;
 	case WM_DIABNEXTLVL:
 		IncProgress();
-		if(gbMaxPlayers == 1) {
+		if (gbMaxPlayers == 1) {
 			SaveLevel();
 		} else {
 			DeltaSaveLevel();
@@ -121,7 +121,7 @@ void __fastcall ShowProgress(unsigned int uMsg)
 		break;
 	case WM_DIABPREVLVL:
 		IncProgress();
-		if(gbMaxPlayers == 1) {
+		if (gbMaxPlayers == 1) {
 			SaveLevel();
 		} else {
 			DeltaSaveLevel();
@@ -137,7 +137,7 @@ void __fastcall ShowProgress(unsigned int uMsg)
 		break;
 	case WM_DIABSETLVL:
 		SetReturnLvlPos();
-		if(gbMaxPlayers == 1) {
+		if (gbMaxPlayers == 1) {
 			SaveLevel();
 		} else {
 			DeltaSaveLevel();
@@ -150,7 +150,7 @@ void __fastcall ShowProgress(unsigned int uMsg)
 		IncProgress();
 		break;
 	case WM_DIABRTNLVL:
-		if(gbMaxPlayers == 1) {
+		if (gbMaxPlayers == 1) {
 			SaveLevel();
 		} else {
 			DeltaSaveLevel();
@@ -164,7 +164,7 @@ void __fastcall ShowProgress(unsigned int uMsg)
 		break;
 	case WM_DIABWARPLVL:
 		IncProgress();
-		if(gbMaxPlayers == 1) {
+		if (gbMaxPlayers == 1) {
 			SaveLevel();
 		} else {
 			DeltaSaveLevel();
@@ -177,7 +177,7 @@ void __fastcall ShowProgress(unsigned int uMsg)
 		break;
 	case WM_DIABTOWNWARP:
 		IncProgress();
-		if(gbMaxPlayers == 1) {
+		if (gbMaxPlayers == 1) {
 			SaveLevel();
 		} else {
 			DeltaSaveLevel();
@@ -192,7 +192,7 @@ void __fastcall ShowProgress(unsigned int uMsg)
 		break;
 	case WM_DIABTWARPUP:
 		IncProgress();
-		if(gbMaxPlayers == 1) {
+		if (gbMaxPlayers == 1) {
 			SaveLevel();
 		} else {
 			DeltaSaveLevel();
@@ -207,7 +207,7 @@ void __fastcall ShowProgress(unsigned int uMsg)
 		break;
 	case WM_DIABRETOWN:
 		IncProgress();
-		if(gbMaxPlayers == 1) {
+		if (gbMaxPlayers == 1) {
 			SaveLevel();
 		} else {
 			DeltaSaveLevel();
@@ -234,7 +234,7 @@ void __fastcall ShowProgress(unsigned int uMsg)
 	plrmsg_delay(FALSE);
 	ResetPal();
 
-	if(gbSomebodyWonGameKludge && plr[myplr].plrlevel == 16) {
+	if (gbSomebodyWonGameKludge && plr[myplr].plrlevel == 16) {
 		PrepDoEnding();
 	}
 

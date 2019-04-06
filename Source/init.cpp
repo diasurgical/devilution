@@ -267,7 +267,7 @@ HANDLE __fastcall init_test_access(char *mpq_path, char *mpq_name, char *reg_loc
 	char Buffer[260];   // [esp+110h] [ebp-210h]
 	char v15[260];      // [esp+214h] [ebp-10Ch]
 	char *mpq_namea;    // [esp+318h] [ebp-8h]
-	HANDLE archive;      // [esp+31Ch] [ebp-4h]
+	HANDLE archive;     // [esp+31Ch] [ebp-4h]
 
 	mpq_namea = mpq_name;
 	v5 = mpq_path;

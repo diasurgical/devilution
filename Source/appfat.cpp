@@ -52,7 +52,7 @@ void __fastcall TraceErrorDD(HRESULT hError, char *pszBuffer, DWORD dwMaxChars)
 {
 	const char *szError;
 
-	switch(hError) {
+	switch (hError) {
 	case DDERR_CANTPAGEUNLOCK:
 		szError = "DDERR_CANTPAGEUNLOCK";
 		break;
@@ -362,7 +362,7 @@ void __fastcall TraceErrorDS(HRESULT hError, char *pszBuffer, DWORD dwMaxChars)
 {
 	const char *szError;
 
-	switch(hError) {
+	switch (hError) {
 	case DSERR_PRIOLEVELNEEDED:
 		szError = "DSERR_PRIOLEVELNEEDED";
 		break;

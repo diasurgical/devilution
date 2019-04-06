@@ -98,7 +98,7 @@ void __fastcall NetRecvPlrData(TPkt *pkt)
 void __fastcall NetSendHiPri(BYTE *pbMsg, BYTE bLen)
 {
 	unsigned char *v5; // eax
-	BYTE *v6;   // eax
+	BYTE *v6;          // eax
 	int v7;            // eax
 	int v8;            // eax
 	TPkt pkt;          // [esp+Ch] [ebp-204h]
