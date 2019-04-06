@@ -358,7 +358,7 @@ void __fastcall ClearSText(int s, int e)
 {
 	int i;
 
-	for (i = s; i < e; ++i) {
+	for (i = s; i < e; i++) {
 		stext[i]._sx = 0;
 		stext[i]._syoff = 0;
 		stext[i]._sstr[0] = 0;
