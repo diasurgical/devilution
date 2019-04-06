@@ -213,24 +213,21 @@ LABEL_29:
 BOOL __cdecl ForceQuests()
 {
 	int i, j, qx, qy, ql;
-	unsigned char *_qslvl;
 
 	if (gbMaxPlayers != 1) {
 		return FALSE;
 	}
 
 	for (i = 0; i < MAXQUESTS; i++) {
-
-		_qslvl = &quests[i]._qslvl;
 		
-		if (_qslvl != &quests[MAXQUESTS - 1]._qslvl && currlevel == quests[i]._qlevel && *_qslvl) {
-			ql = quests[quests[i]._qidx]._qslvl;
+		if (i != QTYPE_VB && currlevel == quests[i]._qlevel && quests[i]._qslvl != 0) {
+			ql = quests[quests[i]._qidx]._qslvl - 1;
 			qx = quests[i]._qtx;
 			qy = quests[i]._qty;
 
 			for (j = 0; j < 7; j++) {
 				if (qx + questxoff[j] == cursmx && qy + questyoff[j] == cursmy) {
-					sprintf(infostr, "To %s", questtrigstr[ql - 1]);
+					sprintf(infostr, "To %s", questtrigstr[ql]);
 					cursmx = qx;
 					cursmy = qy;
 					return TRUE;
@@ -238,7 +235,7 @@ BOOL __cdecl ForceQuests()
 			}
 		}
 	}
-
+	
 	return FALSE;
 }
 // 679660: using guessed type char gbMaxPlayers;
