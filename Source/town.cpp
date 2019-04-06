@@ -614,7 +614,7 @@ void __fastcall town_draw_town_all(BYTE *pBuff, int x, int y, int a4, int dir, i
 // 4B8CC0: using guessed type char pcursitem;
 // 4B8CC2: using guessed type char pcursplr;
 
-void __fastcall town_draw_upper(int x, int y, int sx, int sy, INT_PTR a5, int a6, int some_flag)
+void __fastcall town_draw_upper(int x, int y, int sx, int sy, int a5, int a6, int some_flag)
 {
 	int i, j, dir;
 	BYTE *dst;
