@@ -110,7 +110,7 @@ BOOLEAN __fastcall TFit_Shrine(int i)
 	return 1;
 }
 
-BOOLEAN __fastcall TFit_Obj5(int t)
+BOOL __fastcall TFit_Obj5(int t)
 {
 	int v2;         // ebx
 	int v3;         // esi
@@ -177,26 +177,22 @@ BOOLEAN __fastcall TFit_Obj5(int t)
 	}
 }
 
-BOOLEAN __fastcall TFit_SkelRoom(int t)
+BOOL __fastcall TFit_SkelRoom(int t)
 {
-	int i; // esi
+	int i;
 
 	if (leveltype != 1 && leveltype != 2) {
-		return 0;
-	}
-	i = 0;
-	if (nummtypes <= 0) {
-		return 0;
+		return FALSE;
 	}
 
-	while (!IsSkel(Monsters[i].mtype)) {
-		++i;
-		if (i >= nummtypes) {
-			return 0;
+	for (i = 0; i < nummtypes; i++) {
+		if (IsSkel(Monsters[i].mtype)) {
+			themeVar1 = i;
+			return TFit_Obj5(t);
 		}
 	}
-	themeVar1 = i;
-	return TFit_Obj5(t);
+
+	return FALSE;
 }
 
 BOOLEAN __fastcall TFit_GoatShrine(int t)

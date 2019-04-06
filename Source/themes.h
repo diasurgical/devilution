@@ -20,8 +20,8 @@ extern BOOLEAN bFountainFlag; // weak
 extern BOOL bCrossFlag;
 
 BOOLEAN __fastcall TFit_Shrine(int i);
-BOOLEAN __fastcall TFit_Obj5(int t);
-BOOLEAN __fastcall TFit_SkelRoom(int t);
+BOOL __fastcall TFit_Obj5(int t);
+BOOL __fastcall TFit_SkelRoom(int t);
 BOOLEAN __fastcall TFit_GoatShrine(int t);
 BOOL __fastcall CheckThemeObj3(int xp, int yp, int t, int f);
 BOOLEAN __fastcall TFit_Obj3(int t);
