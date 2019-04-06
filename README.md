@@ -87,7 +87,7 @@ Download and place the 32bit MSVC Development Libraries of [SDL2](https://www.li
 
 Go to `File -> Open -> CMake`, select `CMakeLists` from the project root.
 ### Compiling
-Next select `Build devilution.exe` from the `Build` menu.
+Select `Build devilution.exe` from the `Build` menu.
 </details>
 
 ## Building for the native platform
