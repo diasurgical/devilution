@@ -2,13 +2,12 @@
 
 #include "devilution.h"
 #include "stubs.h"
-#include "dx.h"
+#include "miniwin/ddraw.h"
 #include "DiabloUI/diabloui.h"
 #include <string>
 #ifdef _MSC_VER
 #define strcasecmp _stricmp
 #endif
-
 
 namespace dvl {
 
@@ -88,6 +87,7 @@ HANDLE FindFirstFileA(LPCSTR lpFileName, LPWIN32_FIND_DATAA lpFindFileData)
 WINBOOL FindClose(HANDLE hFindFile)
 {
 	UNIMPLEMENTED();
+	return true;
 }
 
 /**
@@ -204,11 +204,13 @@ UINT GetDriveTypeA(LPCSTR lpRootPathName)
 WINBOOL DeleteFileA(LPCSTR lpFileName)
 {
 	UNIMPLEMENTED();
+	return true;
 }
 
 WINBOOL CopyFileA(LPCSTR lpExistingFileName, LPCSTR lpNewFileName, WINBOOL bFailIfExists)
 {
 	UNIMPLEMENTED();
+	return true;
 }
 
 HFILE OpenFile(LPCSTR lpFileName, LPOFSTRUCT lpReOpenBuff, UINT uStyle)
@@ -238,21 +240,35 @@ WINBOOL DestroyWindow(HWND hWnd)
 HWND GetLastActivePopup(HWND hWnd)
 {
 	UNIMPLEMENTED();
+	return hWnd;
+}
+
+DWORD GdiSetBatchLimit(DWORD dw)
+{
+	DUMMY();
+	return 1;
 }
 
 HWND GetTopWindow(HWND hWnd)
 {
 	UNIMPLEMENTED();
+	return NULL;
 }
 
 WINBOOL SetForegroundWindow(HWND hWnd)
 {
 	UNIMPLEMENTED();
+	return true;
 }
 
+/**
+ * @return Always null as it's unused
+ */
 HWND SetFocus(HWND hWnd)
 {
-	UNIMPLEMENTED();
+	SDL_SetWindowInputFocus(window);
+	MainWndProc(NULL, DVL_WM_ACTIVATEAPP, true, 0); // SDL_WINDOWEVENT_FOCUS_GAINED
+	return NULL;
 }
 
 HWND FindWindowA(LPCSTR lpClassName, LPCSTR lpWindowName)
@@ -297,6 +313,24 @@ HWND CreateWindowExA(
 
 	window = SDL_CreateWindow(lpWindowName, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, nWidth, nHeight, flags);
 	atexit(FakeWMDestroy);
+
+	char scaleQuality[2] = "2";
+	DvlStringSetting("scaling quality", scaleQuality, 2);
+	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, scaleQuality);
+
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
+	if (renderer == NULL) {
+		SDL_Log("SDL_CreateRenderer: %s\n", SDL_GetError());
+	}
+
+	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, nWidth, nHeight);
+	if (texture == NULL) {
+		SDL_Log("SDL_CreateTexture: %s\n", SDL_GetError());
+	}
+
+	if (SDL_RenderSetLogicalSize(renderer, nWidth, nHeight) != 0) {
+		SDL_Log("SDL_RenderSetLogicalSize: %s\n", SDL_GetError());
+	}
 
 	return window;
 }
@@ -596,32 +630,38 @@ HANDLE CreateFileMappingA(HANDLE hFile, LPSECURITY_ATTRIBUTES lpFileMappingAttri
     DWORD dwMaximumSizeHigh, DWORD dwMaximumSizeLow, LPCSTR lpName)
 {
 	UNIMPLEMENTED();
+	return NULL;
 }
 
 LPVOID MapViewOfFile(HANDLE hFileMappingObject, DWORD dwDesiredAccess, DWORD dwFileOffsetHigh,
     DWORD dwFileOffsetLow, SIZE_T dwNumberOfBytesToMap)
 {
 	UNIMPLEMENTED();
+	return NULL;
 }
 
 WINBOOL UnmapViewOfFile(LPCVOID lpBaseAddress)
 {
 	UNIMPLEMENTED();
+	return false;
 }
 
 DWORD WaitForInputIdle(HANDLE hProcess, DWORD dwMilliseconds)
 {
 	UNIMPLEMENTED();
+	return 0;
 }
 
 HWND GetWindow(HWND hWnd, UINT uCmd)
 {
 	UNIMPLEMENTED();
+	return NULL;
 }
 
 DWORD GetWindowThreadProcessId(HWND hWnd, LPDWORD lpdwProcessId)
 {
 	UNIMPLEMENTED();
+	return 0;
 }
 
 DWORD GetPrivateProfileStringA(LPCSTR lpAppName, LPCSTR lpKeyName, LPCSTR lpDefault, LPSTR lpReturnedString,

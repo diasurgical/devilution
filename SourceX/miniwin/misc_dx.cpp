@@ -1,7 +1,7 @@
 #include <SDL.h>
 
 #include "devilution.h"
-#include "dx.h"
+#include "miniwin/ddraw.h"
 #include "stubs.h"
 
 namespace dvl {
@@ -42,4 +42,4 @@ WINBOOL TextOutA(HDC hdc, int x, int y, LPCSTR lpString, int c)
 	return true;
 }
 
-}  // namespace dvl
+} // namespace dvl

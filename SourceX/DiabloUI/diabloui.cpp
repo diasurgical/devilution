@@ -2,7 +2,7 @@
 
 #include "devilution.h"
 #include "DiabloUI/diabloui.h"
-#include "dx.h"
+#include "miniwin/ddraw.h"
 #include "utf8.h"
 #include "stubs.h"
 

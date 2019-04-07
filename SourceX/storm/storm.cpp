@@ -6,7 +6,7 @@
 #include "devilution.h"
 #include "stubs.h"
 #include "DiabloUI/diabloui.h"
-#include "dx.h"
+#include "miniwin/ddraw.h"
 
 namespace dvl {
 
@@ -643,10 +643,10 @@ void SDrawMessageBox(char *Text, char *Title, int Flags)
 	MessageBoxA(NULL, Text, Title, Flags);
 }
 
-// void SDrawDestroy(void)
-//{
-//	UNIMPLEMENTED();
-//}
+void SDrawDestroy(void)
+{
+	DUMMY();
+}
 
 BOOLEAN StormDestroy(void)
 {

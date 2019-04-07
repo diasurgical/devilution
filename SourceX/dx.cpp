@@ -1,467 +1,380 @@
-#include "dx.h"
+#include "miniwin/ddraw.h"
 
-#include "devilution.h"
-#include "stubs.h"
-#include "DiabloUI/diabloui.h"
+#include "../types.h"
 
 namespace dvl {
 
+BYTE *sgpBackBuf;
+LPDIRECTDRAW lpDDInterface;
+IDirectDrawPalette *lpDDPalette; // idb
+int sgdwLockCount;
 BYTE *gpBuffer;
-
-IDirectDraw *lpDDInterface;
-IDirectDrawSurface *lpDDSPrimary;
 IDirectDrawSurface *lpDDSBackBuf;
-IDirectDrawPalette *lpDDPalette;
+IDirectDrawSurface *lpDDSPrimary;
+#ifdef _DEBUG
+int locktbl[256];
+#endif
+static CRITICAL_SECTION sgMemCrit;
+char gbBackBuf;    // weak
+char gbEmulate;    // weak
+HMODULE ghDiabMod; // idb
 
-char gbBackBuf; // unread
-char gbEmulate; // unread
+#ifndef _MSC_VER
+__attribute__((constructor))
+#endif
+static void
+dx_c_init(void)
+{
+	dx_init_mutex();
+	dx_cleanup_mutex_atexit();
+}
 
-SDL_Window *window;
-SDL_Renderer *renderer;
-SDL_Texture *texture;
+SEG_ALLOCATE(SEGMENT_C_INIT)
+_PVFV dx_c_init_funcs[] = { &dx_c_init };
 
-/** 32-bit in-memory backbuffer surface */
-SDL_Surface *surface;
+void dx_init_mutex()
+{
+	InitializeCriticalSection(&sgMemCrit);
+}
 
-/** 8-bit surface wrapper around #gpBuffer */
-SDL_Surface *pal_surface;
-/** Currently active palette */
-SDL_Palette *palette;
+void dx_cleanup_mutex_atexit()
+{
+	atexit(dx_cleanup_mutex);
+}
 
-/**
- * Is #sdl_pal_surface dirty?
- *
- * This is required so the front buffer would not be updated twice per game loop in unlock_buf_priv().
- */
-bool surface_dirty;
-
-//
-// DirectDraw COM interface stub implementations
-//
-
-class StubSurface : public IDirectDrawSurface {
-	virtual ULONG Release()
-	{
-		UNIMPLEMENTED();
-	};
-
-	virtual HRESULT AddAttachedSurface(LPDIRECTDRAWSURFACE lpDDSAttachedSurface)
-	{
-		UNIMPLEMENTED();
-	}
-	virtual HRESULT AddOverlayDirtyRect(LPRECT lpRect)
-	{
-		UNIMPLEMENTED();
-	}
-	virtual HRESULT Blt(LPRECT lpDestRect, LPDIRECTDRAWSURFACE lpDDSrcSurface, LPRECT lpSrcRect, DWORD dwFlags,
-	    LPDDBLTFX lpDDBltFx)
-	{
-		UNIMPLEMENTED();
-	}
-	virtual HRESULT BltBatch(LPDDBLTBATCH lpDDBltBatch, DWORD dwCount, DWORD dwFlags)
-	{
-		UNIMPLEMENTED();
-	}
-
-	virtual HRESULT BltFast(DWORD dwX, DWORD dwY, LPDIRECTDRAWSURFACE lpDDSrcSurface, LPRECT lpSrcRect, DWORD dwTrans)
-	{
-		DUMMY_ONCE();
-
-		assert(lpDDSrcSurface == lpDDSBackBuf);
-
-		int w = lpSrcRect->right - lpSrcRect->left + 1;
-		int h = lpSrcRect->bottom - lpSrcRect->top + 1;
-
-		SDL_Rect src_rect = { lpSrcRect->left, lpSrcRect->top, w, h };
-		SDL_Rect dst_rect = { (int)dwX, (int)dwY, w, h };
-
-		// Convert from 8-bit to 32-bit
-		if (SDL_BlitSurface(pal_surface, &src_rect, surface, &dst_rect) != 0) {
-			SDL_Log("SDL_BlitSurface: %s\n", SDL_GetError());
-			return DVL_E_FAIL;
-		}
-
-		surface_dirty = true;
-		return DVL_S_OK;
-	}
-
-	virtual HRESULT DeleteAttachedSurface(DWORD dwFlags, LPDIRECTDRAWSURFACE lpDDSAttachedSurface)
-	{
-		UNIMPLEMENTED();
-	}
-	virtual HRESULT EnumAttachedSurfaces(LPVOID lpContext, LPDDENUMSURFACESCALLBACK lpEnumSurfacesCallback)
-	{
-		UNIMPLEMENTED();
-	}
-	virtual HRESULT EnumOverlayZOrders(DWORD dwFlags, LPVOID lpContext, LPDDENUMSURFACESCALLBACK lpfnCallback)
-	{
-		UNIMPLEMENTED();
-	}
-	virtual HRESULT Flip(LPDIRECTDRAWSURFACE lpDDSurfaceTargetOverride, DWORD dwFlags)
-	{
-		UNIMPLEMENTED();
-	}
-	virtual HRESULT GetAttachedSurface(LPDDSCAPS lpDDSCaps, LPDIRECTDRAWSURFACE *lplpDDAttachedSurface)
-	{
-		UNIMPLEMENTED();
-	}
-	virtual HRESULT GetBltStatus(DWORD dwFlags)
-	{
-		UNIMPLEMENTED();
-	}
-	virtual HRESULT GetCaps(LPDDSCAPS lpDDSCaps)
-	{
-		UNIMPLEMENTED();
-	}
-	virtual HRESULT GetClipper(LPDIRECTDRAWCLIPPER *lplpDDClipper)
-	{
-		UNIMPLEMENTED();
-	}
-	virtual HRESULT GetColorKey(DWORD dwFlags, LPDDCOLORKEY lpDDColorKey)
-	{
-		UNIMPLEMENTED();
-	}
-
-	virtual HRESULT GetDC(HDC *lphDC)
-	{
-		DUMMY_ONCE();
-		return DVL_S_OK;
-	}
-
-	virtual HRESULT GetFlipStatus(DWORD dwFlags)
-	{
-		UNIMPLEMENTED();
-	}
-	virtual HRESULT GetOverlayPosition(LPLONG lplX, LPLONG lplY)
-	{
-		UNIMPLEMENTED();
-	}
-	virtual HRESULT GetPalette(LPDIRECTDRAWPALETTE *lplpDDPalette)
-	{
-		UNIMPLEMENTED();
-	}
-	virtual HRESULT GetPixelFormat(LPDDPIXELFORMAT lpDDPixelFormat)
-	{
-		UNIMPLEMENTED();
-	}
-	virtual HRESULT GetSurfaceDesc(LPDDSURFACEDESC lpDDSurfaceDesc)
-	{
-		UNIMPLEMENTED();
-	}
-	virtual HRESULT Initialize(LPDIRECTDRAW lpDD, LPDDSURFACEDESC lpDDSurfaceDesc)
-	{
-		UNIMPLEMENTED();
-	}
-
-	virtual HRESULT IsLost()
-	{
-		DUMMY_ONCE();
-		return DVL_S_OK;
-	}
-
-	virtual HRESULT Lock(LPRECT lpDestRect, LPDDSURFACEDESC lpDDSurfaceDesc, DWORD dwFlags, HANDLE hEvent)
-	{
-		UNIMPLEMENTED();
-	}
-
-	virtual HRESULT ReleaseDC(HDC hDC)
-	{
-		DUMMY_ONCE();
-		return DVL_S_OK;
-	}
-
-	virtual HRESULT Restore()
-	{
-		UNIMPLEMENTED();
-	}
-	virtual HRESULT SetClipper(LPDIRECTDRAWCLIPPER lpDDClipper)
-	{
-		UNIMPLEMENTED();
-	}
-	virtual HRESULT SetColorKey(DWORD dwFlags, LPDDCOLORKEY lpDDColorKey)
-	{
-		UNIMPLEMENTED();
-	}
-	virtual HRESULT SetOverlayPosition(LONG lX, LONG lY)
-	{
-		UNIMPLEMENTED();
-	}
-	virtual HRESULT SetPalette(LPDIRECTDRAWPALETTE lpDDPalette)
-	{
-		DUMMY();
-		return DVL_S_OK;
-	}
-	virtual HRESULT Unlock(LPVOID lpSurfaceData)
-	{
-		UNIMPLEMENTED();
-	}
-	virtual HRESULT UpdateOverlay(LPRECT lpSrcRect, LPDIRECTDRAWSURFACE lpDDDestSurface, LPRECT lpDestRect,
-	    DWORD dwFlags, LPDDOVERLAYFX lpDDOverlayFx)
-	{
-		UNIMPLEMENTED();
-	}
-	virtual HRESULT UpdateOverlayDisplay(DWORD dwFlags)
-	{
-		UNIMPLEMENTED();
-	}
-	virtual HRESULT UpdateOverlayZOrder(DWORD dwFlags, LPDIRECTDRAWSURFACE lpDDSReference)
-	{
-		UNIMPLEMENTED();
-	}
-};
-
-class StubPalette : public IDirectDrawPalette {
-	virtual ULONG Release()
-	{
-		UNIMPLEMENTED();
-	};
-
-	virtual HRESULT GetCaps(LPDWORD lpdwCaps)
-	{
-		UNIMPLEMENTED();
-	};
-	virtual HRESULT GetEntries(DWORD dwFlags, DWORD dwBase, DWORD dwNumEntries, LPPALETTEENTRY lpEntries)
-	{
-		for (int i = 0; i < dwNumEntries; i++) {
-			lpEntries[i].peFlags = 0;
-			lpEntries[i].peRed = system_palette[i].peRed;
-			lpEntries[i].peGreen = system_palette[i].peGreen;
-			lpEntries[i].peBlue = system_palette[i].peBlue;
-		}
-		return DVL_S_OK;
-	};
-	virtual HRESULT Initialize(LPDIRECTDRAW lpDD, DWORD dwFlags, LPPALETTEENTRY lpDDColorTable)
-	{
-		UNIMPLEMENTED();
-	};
-	virtual HRESULT SetEntries(DWORD dwFlags, DWORD dwStartingEntry, DWORD dwCount, LPPALETTEENTRY lpEntries)
-	{
-		for (int i = 0; i < dwCount; i++) {
-			system_palette[i].peFlags = 0;
-			system_palette[i].peRed = lpEntries[i].peRed;
-			system_palette[i].peGreen = lpEntries[i].peGreen;
-			system_palette[i].peBlue = lpEntries[i].peBlue;
-		}
-		palette_update();
-		return DVL_S_OK;
-	};
-};
-
-class StubDraw : public IDirectDraw {
-	virtual ULONG Release()
-	{
-		UNIMPLEMENTED();
-	};
-
-	virtual HRESULT Compact()
-	{
-		UNIMPLEMENTED();
-	}
-	virtual HRESULT CreateClipper(DWORD dwFlags, LPDIRECTDRAWCLIPPER *lplpDDClipper, IUnknown *pUnkOuter)
-	{
-		UNIMPLEMENTED();
-	}
-	virtual HRESULT CreatePalette(DWORD dwFlags, LPPALETTEENTRY lpColorTable, LPDIRECTDRAWPALETTE *lplpDDPalette,
-	    IUnknown *pUnkOuter)
-	{
-		DUMMY();
-		return DVL_S_OK;
-	}
-	virtual HRESULT CreateSurface(LPDDSURFACEDESC lpDDSurfaceDesc, LPDIRECTDRAWSURFACE *lplpDDSurface,
-	    IUnknown *pUnkOuter)
-	{
-		UNIMPLEMENTED();
-	}
-	virtual HRESULT DuplicateSurface(LPDIRECTDRAWSURFACE lpDDSurface, LPDIRECTDRAWSURFACE *lplpDupDDSurface)
-	{
-		UNIMPLEMENTED();
-	}
-	virtual HRESULT EnumDisplayModes(DWORD dwFlags, LPDDSURFACEDESC lpDDSurfaceDesc, LPVOID lpContext,
-	    LPDDENUMMODESCALLBACK lpEnumModesCallback)
-	{
-		UNIMPLEMENTED();
-	}
-	virtual HRESULT EnumSurfaces(DWORD dwFlags, LPDDSURFACEDESC lpDDSD, LPVOID lpContext,
-	    LPDDENUMSURFACESCALLBACK lpEnumSurfacesCallback)
-	{
-		UNIMPLEMENTED();
-	}
-	virtual HRESULT FlipToGDISurface()
-	{
-		UNIMPLEMENTED();
-	}
-	virtual HRESULT GetCaps(LPDDCAPS lpDDDriverCaps, LPDDCAPS lpDDHELCaps)
-	{
-		UNIMPLEMENTED();
-	}
-	virtual HRESULT GetDisplayMode(LPDDSURFACEDESC lpDDSurfaceDesc)
-	{
-		UNIMPLEMENTED();
-	}
-	virtual HRESULT GetFourCCCodes(LPDWORD lpNumCodes, LPDWORD lpCodes)
-	{
-		UNIMPLEMENTED();
-	}
-	virtual HRESULT GetGDISurface(LPDIRECTDRAWSURFACE *lplpGDIDDSurface)
-	{
-		UNIMPLEMENTED();
-	}
-	virtual HRESULT GetMonitorFrequency(LPDWORD lpdwFrequency)
-	{
-		UNIMPLEMENTED();
-	}
-	virtual HRESULT GetScanLine(LPDWORD lpdwScanLine)
-	{
-		UNIMPLEMENTED();
-	}
-	virtual HRESULT GetVerticalBlankStatus(BOOL *lpbIsInVB)
-	{
-		UNIMPLEMENTED();
-	}
-	virtual HRESULT Initialize(GUID *lpGUID)
-	{
-		UNIMPLEMENTED();
-	}
-	virtual HRESULT RestoreDisplayMode()
-	{
-		UNIMPLEMENTED();
-	}
-	virtual HRESULT SetCooperativeLevel(HWND hWnd, DWORD dwFlags)
-	{
-		UNIMPLEMENTED();
-	}
-	virtual HRESULT SetDisplayMode(DWORD dwWidth, DWORD dwHeight, DWORD dwBPP)
-	{
-		UNIMPLEMENTED();
-	}
-	virtual HRESULT WaitForVerticalBlank(DWORD dwFlags, HANDLE hEvent)
-	{
-		DUMMY_ONCE();
-		return DVL_S_OK;
-	}
-};
-
-static StubDraw stub_draw;
-static StubSurface stub_surface;
-static StubPalette stub_palette;
-
-//
-// Main functions
-//
+void dx_cleanup_mutex(void)
+{
+	DeleteCriticalSection(&sgMemCrit);
+}
 
 void dx_init(HWND hWnd)
 {
-	DUMMY();
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
-	if (renderer == NULL) {
-		SDL_Log("SDL_CreateRenderer: %s\n", SDL_GetError());
-		return;
+	HRESULT hDDVal;
+	int winw, winh;
+	BOOL bSuccess;
+	GUID *lpGUID;
+
+	/// ASSERT: assert(! gpBuffer);
+	/// ASSERT: assert(! sgdwLockCount);
+	/// ASSERT: assert(! sgpBackBuf);
+
+	SetFocus(hWnd);
+	ShowWindow(hWnd, 1);
+
+	lpGUID = NULL;
+	if (!gbEmulate) {
+		lpGUID = NULL;
+	}
+	hDDVal = dx_DirectDrawCreate(lpGUID, &lpDDInterface, NULL);
+	if (hDDVal != DVL_S_OK) {
+		ErrDlg(IDD_DIALOG1, hDDVal, "C:\\Src\\Diablo\\Source\\dx.cpp", 149);
 	}
 
-	char scaleQuality[2] = "2";
-	DvlStringSetting("scaling quality", scaleQuality, 2);
+#ifdef COLORFIX
+#ifdef __DDRAWI_INCLUDED__
+	((LPDDRAWI_DIRECTDRAW_INT)lpDDInterface)->lpLcl->dwAppHackFlags |= 0x800;
+#else
+	((DWORD **)lpDDInterface)[1][18] |= 0x800;
+#endif
+#endif
 
-	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, scaleQuality);
-	if (SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH, SCREEN_HEIGHT) != 0) {
-		SDL_Log("SDL_RenderSetLogicalSize: %s\n", SDL_GetError());
-		return;
+	fullscreen = true;
+	if (!fullscreen) {
+#ifdef __cplusplus
+		hDDVal = lpDDInterface->SetCooperativeLevel(hWnd, 0 | 0);
+#else
+		hDDVal = lpDDInterface->lpVtbl->SetCooperativeLevel(lpDDInterface, hWnd, DDSCL_NORMAL | DDSCL_ALLOWREBOOT);
+#endif
+		if (hDDVal == 1) {
+			MI_Dummy(0); // v5
+		} else if (hDDVal != DVL_S_OK) {
+			ErrDlg(IDD_DIALOG1, hDDVal, "C:\\Diablo\\Direct\\dx.cpp", 155);
+		}
+		SetWindowPos(hWnd, 0, 0, 0, 0, 0, 0 | 0 | 0);
+	} else {
+#ifdef __cplusplus
+		hDDVal = lpDDInterface->SetCooperativeLevel(hWnd, 0 | 0 | 0);
+#else
+		hDDVal = lpDDInterface->lpVtbl->SetCooperativeLevel(lpDDInterface, hWnd, DDSCL_EXCLUSIVE | DDSCL_ALLOWREBOOT | DDSCL_FULLSCREEN);
+#endif
+		if (hDDVal == 1) {
+			MI_Dummy(0); // v5
+		} else if (hDDVal != DVL_S_OK) {
+			ErrDlg(IDD_DIALOG1, hDDVal, "C:\\Src\\Diablo\\Source\\dx.cpp", 170);
+		}
+#ifdef __cplusplus
+		hDDVal = lpDDInterface->SetDisplayMode(640, 480, 8);
+#else
+		hDDVal = lpDDInterface->lpVtbl->SetDisplayMode(lpDDInterface, SCREEN_WIDTH, SCREEN_HEIGHT, 8);
+#endif
+		if (hDDVal != DVL_S_OK) {
+			winw = GetSystemMetrics(DVL_SM_CXSCREEN);
+			winh = GetSystemMetrics(DVL_SM_CYSCREEN);
+#ifdef __cplusplus
+			hDDVal = lpDDInterface->SetDisplayMode(winw, winh, 8);
+#else
+			hDDVal = lpDDInterface->lpVtbl->SetDisplayMode(lpDDInterface, winw, winh, 8);
+#endif
+			if (hDDVal != DVL_S_OK) {
+				ErrDlg(IDD_DIALOG1, hDDVal, "C:\\Src\\Diablo\\Source\\dx.cpp", 183);
+			}
+		}
 	}
 
-	surface = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_HEIGHT, 32, 0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF);
-	if (surface == NULL) {
-		SDL_Log("SDL_CreateRGBSurface: %s\n", SDL_GetError());
-		return;
-	}
-
-	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, SCREEN_WIDTH, SCREEN_HEIGHT);
-	if (texture == NULL) {
-		SDL_Log("SDL_CreateTexture: %s\n", SDL_GetError());
-		return;
-	}
-
-	palette = SDL_AllocPalette(256);
-	if (palette == NULL) {
-		SDL_Log("SDL_AllocPalette: %s\n", SDL_GetError());
-		return;
-	}
-
-	const int pitch = 64 + SCREEN_WIDTH + 64;
-	gpBuffer = (BYTE *)malloc(656 * 768);
-	gpBufEnd += (uintptr_t)gpBuffer;
-
-	pal_surface = SDL_CreateRGBSurfaceFrom(gpBuffer, pitch, 160 + SCREEN_HEIGHT + 16, 8, pitch, 0, 0, 0, 0);
-	if (pal_surface == NULL) {
-		SDL_Log("SDL_CreateRGBSurfaceFrom: %s\n", SDL_GetError());
-		return;
-	}
-
-	if (SDL_SetSurfacePalette(pal_surface, palette) != 0) {
-		SDL_Log("SDL_SetSurfacePalette: %s\n", SDL_GetError());
-		return;
-	}
-
-	MainWndProc(NULL, DVL_WM_ACTIVATEAPP, true, 0);
-
-	lpDDInterface = &stub_draw;
-	lpDDSPrimary = &stub_surface;
-	lpDDSBackBuf = &stub_surface;
-	lpDDPalette = &stub_palette;
+	dx_create_primary_surface();
 	palette_init();
+	GdiSetBatchLimit(1);
+	dx_create_back_buffer();
+	bSuccess = SDrawManualInitialize(hWnd, lpDDInterface, lpDDSPrimary, NULL, NULL, lpDDSBackBuf, lpDDPalette, NULL);
+	/// ASSERT: assert(bSuccess);
+}
+// 52A549: using guessed type char gbEmulate;
+
+void dx_create_back_buffer()
+{
+	DDSCAPS caps;
+	HRESULT error_code;
+	DDSURFACEDESC ddsd;
+
+#ifdef __cplusplus
+	error_code = lpDDSPrimary->GetCaps(&caps);
+#else
+	error_code = lpDDSPrimary->lpVtbl->GetCaps(lpDDSPrimary, &caps);
+#endif
+	if (error_code != DVL_S_OK)
+		DDErrMsg(error_code, 59, "C:\\Src\\Diablo\\Source\\dx.cpp");
+
+	gbBackBuf = 1;
+	if (!gbBackBuf) {
+		ddsd.dwSize = sizeof(ddsd);
+#ifdef __cplusplus
+		error_code = lpDDSPrimary->Lock(NULL, &ddsd, 0 | 0, NULL);
+#else
+		error_code = lpDDSPrimary->lpVtbl->Lock(lpDDSPrimary, NULL, &ddsd, 0 | 0, NULL);
+#endif
+		if (error_code == DVL_S_OK) {
+#ifdef __cplusplus
+			lpDDSPrimary->Unlock(NULL);
+#else
+			lpDDSPrimary->lpVtbl->Unlock(lpDDSPrimary, NULL);
+#endif
+			sgpBackBuf = (BYTE *)DiabloAllocPtr(656 * 768);
+			return;
+		}
+		if (error_code != 2)
+			ErrDlg(IDD_DIALOG1, error_code, "C:\\Src\\Diablo\\Source\\dx.cpp", 81);
+	}
+
+	memset(&ddsd, 0, sizeof(ddsd));
+	ddsd.dwWidth = 768;
+	ddsd.lPitch = 768;
+	ddsd.dwSize = sizeof(ddsd);
+	ddsd.dwFlags = 0 | 0 | 0 | 0 | 0;
+	ddsd.ddsCaps.dwCaps = 0 | 0;
+	ddsd.dwHeight = 656;
+	ddsd.ddpfPixelFormat.dwSize = sizeof(ddsd.ddpfPixelFormat);
+#ifdef __cplusplus
+	error_code = lpDDSPrimary->GetPixelFormat(&ddsd.ddpfPixelFormat);
+#else
+	error_code = lpDDSPrimary->lpVtbl->GetPixelFormat(lpDDSPrimary, &ddsd.ddpfPixelFormat);
+#endif
+	if (error_code != DVL_S_OK)
+		ErrDlg(IDD_DIALOG1, error_code, "C:\\Src\\Diablo\\Source\\dx.cpp", 94);
+#ifdef __cplusplus
+	error_code = lpDDInterface->CreateSurface(&ddsd, &lpDDSBackBuf, NULL);
+#else
+	error_code = lpDDInterface->lpVtbl->CreateSurface(lpDDInterface, &ddsd, &lpDDSBackBuf, NULL);
+#endif
+	if (error_code != DVL_S_OK)
+		ErrDlg(IDD_DIALOG1, error_code, "C:\\Src\\Diablo\\Source\\dx.cpp", 96);
+}
+// 52A548: using guessed type char gbBackBuf;
+
+void dx_create_primary_surface()
+{
+	DDSURFACEDESC ddsd;
+	HRESULT error_code;
+
+	memset(&ddsd, 0, sizeof(ddsd));
+	ddsd.dwSize = sizeof(ddsd);
+	ddsd.dwFlags = 0;
+	ddsd.ddsCaps.dwCaps = 0;
+#ifdef __cplusplus
+	error_code = lpDDInterface->CreateSurface(&ddsd, &lpDDSPrimary, NULL);
+#else
+	error_code = lpDDInterface->lpVtbl->CreateSurface(lpDDInterface, &ddsd, &lpDDSPrimary, NULL);
+#endif
+	if (error_code != DVL_S_OK)
+		ErrDlg(IDD_DIALOG1, error_code, "C:\\Src\\Diablo\\Source\\dx.cpp", 109);
 }
 
-void dx_cleanup()
+HRESULT dx_DirectDrawCreate(LPGUID guid, LPDIRECTDRAW *lplpDD, LPUNKNOWN pUnkOuter)
 {
-	DUMMY();
-}
-
-/** Copy the palette surface to the main backbuffer */
-void sdl_update_entire_surface()
-{
-	assert(surface && pal_surface);
-	SDL_Rect src_rect = { 64, 160, SCREEN_WIDTH, SCREEN_HEIGHT };
-	if (SDL_BlitSurface(pal_surface, &src_rect, surface, NULL) != 0) {
-		SDL_Log("SDL_BlitSurface: %s\n", SDL_GetError());
-	}
-}
-
-void sdl_present_surface()
-{
-	assert(!SDL_MUSTLOCK(surface));
-	if (SDL_UpdateTexture(texture, NULL, surface->pixels, surface->pitch) != 0) { //pitch is 2560
-		SDL_Log("SDL_UpdateTexture: %s\n", SDL_GetError());
+	if (ghDiabMod == NULL) {
+		ghDiabMod = NULL; //ghDiabMod = LoadLibrary("ddraw.dll");
+		if (ghDiabMod == NULL) {
+			//ErrDlg(IDD_DIALOG4, GetLastError(), "C:\\Src\\Diablo\\Source\\dx.cpp", 122);
+		}
 	}
 
-	// Clear the entire screen to our selected color.
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-	SDL_RenderClear(renderer);
+	*lplpDD = new StubDraw();
 
-	if (SDL_RenderCopy(renderer, texture, NULL, NULL) != 0) {
-		SDL_Log("SDL_RenderCopy: %s\n", SDL_GetError());
-	}
-	SDL_RenderPresent(renderer);
-
-	surface_dirty = false;
+	return DVL_S_OK;
 }
 
 void j_lock_buf_priv(BYTE idx)
 {
-	j_unlock_buf_priv(idx); // what is idx?
+#ifdef _DEBUG
+	++locktbl[idx];
+#endif
+	lock_buf_priv();
+}
+
+void lock_buf_priv()
+{
+	DDSURFACEDESC ddsd;
+	HRESULT error_code;
+
+	EnterCriticalSection(&sgMemCrit);
+	if (sgpBackBuf != NULL) {
+		gpBuffer = sgpBackBuf;
+		sgdwLockCount++;
+		return;
+	}
+
+	if (lpDDSBackBuf == NULL) {
+		Sleep(20000);
+		app_fatal("lock_buf_priv");
+		sgdwLockCount++;
+		return;
+	}
+
+	if (sgdwLockCount != 0) {
+		sgdwLockCount++;
+		return;
+	}
+	ddsd.dwSize = sizeof(ddsd);
+#ifdef __cplusplus
+	error_code = lpDDSBackBuf->Lock(NULL, &ddsd, 0, NULL);
+#else
+	error_code = lpDDSBackBuf->lpVtbl->Lock(lpDDSBackBuf, NULL, &ddsd, 0, NULL);
+#endif
+	if (error_code != DVL_S_OK)
+		DDErrMsg(error_code, 235, "C:\\Src\\Diablo\\Source\\dx.cpp");
+
+	gpBufEnd += (uintptr_t)ddsd.lpSurface;
+	gpBuffer = (BYTE *)ddsd.lpSurface;
+	sgdwLockCount++;
 }
 
 void j_unlock_buf_priv(BYTE idx)
 {
-	gpBufEnd -= (uintptr_t)gpBufEnd;
+#ifdef _DEBUG
+	if (!locktbl[idx])
+		app_fatal("Draw lock underflow: 0x%x", idx);
+	--locktbl[idx];
+#endif
+	unlock_buf_priv();
+}
 
-	if (!surface_dirty) {
-		return;
+void unlock_buf_priv()
+{
+	HRESULT error_code;
+
+	if (sgdwLockCount == 0)
+		app_fatal("draw main unlock error");
+	if (!gpBuffer)
+		app_fatal("draw consistency error");
+
+	sgdwLockCount--;
+	if (sgdwLockCount == 0) {
+		gpBufEnd -= (uintptr_t)gpBuffer;
+		//gpBuffer = NULL; unable to return to menu
+		if (sgpBackBuf == NULL) {
+#ifdef __cplusplus
+			error_code = lpDDSBackBuf->Unlock(NULL);
+#else
+			error_code = lpDDSBackBuf->lpVtbl->Unlock(lpDDSBackBuf, NULL);
+#endif
+			if (error_code != DVL_S_OK)
+				DDErrMsg(error_code, 273, "C:\\Src\\Diablo\\Source\\dx.cpp");
+		}
 	}
+	LeaveCriticalSection(&sgMemCrit);
+}
 
-	sdl_present_surface();
+void dx_cleanup()
+{
+	BYTE *v0; // ecx
+
+	if (ghMainWnd)
+		ShowWindow(ghMainWnd, 0);
+	SDrawDestroy();
+	EnterCriticalSection(&sgMemCrit);
+	if (sgpBackBuf != NULL) {
+		v0 = sgpBackBuf;
+		sgpBackBuf = 0;
+		mem_free_dbg(v0);
+	} else if (lpDDSBackBuf != NULL) {
+#ifdef __cplusplus
+		lpDDSBackBuf->Release();
+#else
+		lpDDSBackBuf->lpVtbl->Release(lpDDSBackBuf);
+#endif
+		lpDDSBackBuf = NULL;
+	}
+	sgdwLockCount = 0;
+	gpBuffer = 0;
+	LeaveCriticalSection(&sgMemCrit);
+	if (lpDDSPrimary) {
+#ifdef __cplusplus
+		lpDDSPrimary->Release();
+#else
+		lpDDSPrimary->lpVtbl->Release(lpDDSPrimary);
+#endif
+		lpDDSPrimary = NULL;
+	}
+	if (lpDDPalette) {
+#ifdef __cplusplus
+		lpDDPalette->Release();
+#else
+		lpDDPalette->lpVtbl->Release(lpDDPalette);
+#endif
+		lpDDPalette = NULL;
+	}
+	if (lpDDInterface) {
+#ifdef __cplusplus
+		lpDDInterface->Release();
+#else
+		lpDDInterface->lpVtbl->Release(lpDDInterface);
+#endif
+		lpDDInterface = NULL;
+	}
 }
 
 void dx_reinit()
 {
-	UNIMPLEMENTED();
+	int lockCount;
+
+	EnterCriticalSection(&sgMemCrit);
+	ClearCursor();
+	lockCount = sgdwLockCount;
+
+	while (sgdwLockCount != 0)
+		unlock_buf_priv();
+
+	dx_cleanup();
+
+	drawpanflag = 255;
+
+	dx_init(ghMainWnd);
+
+	while (lockCount != 0) {
+		lock_buf_priv();
+		lockCount--;
+	}
+
+	LeaveCriticalSection(&sgMemCrit);
 }
 
 } // namespace dvl

@@ -1,6 +1,6 @@
 #include "devilution.h"
 #include "DiabloUI/diabloui.h"
-#include "dx.h"
+#include "miniwin/ddraw.h"
 
 namespace dvl {
 

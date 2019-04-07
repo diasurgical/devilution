@@ -168,6 +168,7 @@ add_executable(devilutionx
   SourceX/miniwin/rand.cpp
   SourceX/miniwin/thread.cpp
   SourceX/miniwin/dsound.cpp
+  SourceX/miniwin/ddraw.cpp
   SourceX/sound.cpp
   SourceX/storm/storm.cpp
   SourceX/storm/storm_net.cpp
@@ -242,7 +243,7 @@ if(NOT CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
   target_compile_options(devilution PRIVATE -fpermissive -Wno-write-strings -Wno-multichar -w)
   # Disable optimizations that can break non-standards-conforming code
   target_compile_options(devilution PRIVATE -fno-strict-aliasing)
-	
+
   # Warnings for devilutionX
   target_compile_options(devilutionx PRIVATE -Wall -Wextra -Wno-write-strings -Wno-multichar -Wno-unused-parameter)
 endif()
