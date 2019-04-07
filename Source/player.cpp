@@ -935,7 +935,7 @@ void __cdecl InitMultiView()
 	ViewY = plr[myplr].WorldY;
 }
 
-void __fastcall InitPlayerLoc(int pnum, BOOL flag)
+void __fastcall CheckEFlag(int pnum, BOOL flag)
 {
 	int x, y, i;
 	int bitflags;
@@ -1078,7 +1078,7 @@ void __fastcall FixPlayerLocation(int pnum, int dir)
 	plr[pnum]._ptargy = plr[pnum].WorldY;
 	plr[pnum]._pxoff = 0;
 	plr[pnum]._pyoff = 0;
-	InitPlayerLoc(pnum, FALSE);
+	CheckEFlag(pnum, FALSE);
 	plr[pnum]._pdir = dir;
 	if (pnum == myplr) {
 		ScrollInfo._sxoff = 0;
@@ -1123,7 +1123,7 @@ void __fastcall StartWalkStand(int pnum)
 	plr[pnum]._pxoff = 0;
 	plr[pnum]._pyoff = 0;
 
-	InitPlayerLoc(pnum, 0);
+	CheckEFlag(pnum, 0);
 
 	if (pnum == myplr) {
 		ScrollInfo._sxoff = 0;
@@ -1251,7 +1251,7 @@ void __fastcall StartWalk(int pnum, int xvel, int yvel, int xadd, int yadd, int 
 	plr[pnum]._pVar7 = 0;
 	plr[pnum]._pVar8 = 0;
 
-	InitPlayerLoc(pnum, FALSE);
+	CheckEFlag(pnum, FALSE);
 
 	if (pnum != myplr) {
 		return;
@@ -1328,9 +1328,9 @@ void __fastcall StartWalk2(int pnum, int xvel, int yvel, int xoff, int yoff, int
 	plr[pnum]._pVar8 = 0;
 
 	if (EndDir == DIR_SE) {
-		InitPlayerLoc(pnum, TRUE);
+		CheckEFlag(pnum, TRUE);
 	} else {
-		InitPlayerLoc(pnum, FALSE);
+		CheckEFlag(pnum, FALSE);
 	}
 
 	if (pnum != myplr) {
@@ -1412,7 +1412,7 @@ void __fastcall StartWalk3(int pnum, int xvel, int yvel, int xoff, int yoff, int
 	plr[pnum]._pdir = EndDir;
 	plr[pnum]._pVar8 = 0;
 
-	InitPlayerLoc(pnum, FALSE);
+	CheckEFlag(pnum, FALSE);
 
 	if (pnum != myplr) {
 		return;
