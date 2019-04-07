@@ -1378,8 +1378,8 @@ void __fastcall Cel2DecDatLightTrans(BYTE *pDecodeTo, BYTE *pRLEBytes, int nData
  */
 void __fastcall Cel2DecodeHdrLight(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
-	int hdr, nDataSize, v1;
-	BYTE *pRLEBytes, *pDecodeTo, *v9;
+	int nDataStart, nDataCap, nDataSize;
+	BYTE *pRLEBytes, *pDecodeTo;
 	DWORD *pFrameTable;
 
 	/// ASSERT: assert(gpBuffer);
@@ -1389,21 +1389,22 @@ void __fastcall Cel2DecodeHdrLight(int sx, int sy, BYTE *pCelBuff, int nCel, int
 	if (!pCelBuff)
 		return;
 
-	pFrameTable = (DWORD *)&pCelBuff[4 * nCel];
-	v9 = &pCelBuff[pFrameTable[0]];
-	hdr = *(WORD *)&v9[CelSkip];
-	if (!hdr)
+	pFrameTable = (DWORD *)pCelBuff;
+	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
+	nDataStart = *(WORD *)&pRLEBytes[CelSkip];
+	if (!nDataStart)
 		return;
 
-	v1 = *(WORD *)&v9[CelCap];
+	nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
+	nDataCap = *(WORD *)&pRLEBytes[CelCap];
 	if (CelCap == 8)
-		v1 = 0;
-	if (v1)
-		nDataSize = v1 - hdr;
+		nDataCap = 0;
+	if (nDataCap)
+		nDataSize = nDataCap - nDataStart;
 	else
-		nDataSize = pFrameTable[1] - pFrameTable[0] - hdr;
+		nDataSize -= nDataStart;
 
-	pRLEBytes = &v9[hdr];
+	pRLEBytes += nDataStart;
 	pDecodeTo = &gpBuffer[sx + screen_y_times_768[sy - 16 * CelSkip]];
 
 	if (light_table_index)
