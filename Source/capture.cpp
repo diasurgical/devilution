@@ -75,10 +75,7 @@ BOOL __fastcall CapturePal(HANDLE hFile, PALETTEENTRY *palette)
 		pcx_palette[1 + 3*i + 2] = palette[i].peBlue;
 	}
 
-	if (!(WriteFile(hFile, pcx_palette, 769, &NumberOfBytesWritten, 0) && NumberOfBytesWritten == 769)) {
-		return FALSE;
-	}
-	return TRUE;
+	return WriteFile(hFile, pcx_palette, 769, &NumberOfBytesWritten, 0) && NumberOfBytesWritten == 769;
 }
 
 BOOL __fastcall CapturePix(HANDLE hFile, WORD width, WORD height, WORD stride, BYTE *pixels)
