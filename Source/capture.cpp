@@ -64,23 +64,18 @@ BOOL __fastcall CaptureHdr(HANDLE hFile, short width, short height)
 
 BOOL __fastcall CapturePal(HANDLE hFile, PALETTEENTRY *palette)
 {
-	char *v3;
-	char Buffer[769];
+	DWORD NumberOfBytesWritten;
+	BYTE pcx_palette[769];
 	int i;
-	DWORD lpNumBytes;
 
-	Buffer[0] = 12;
-	v3 = &Buffer[1];
-	for (i = 256; i != 0; --i) {
-		v3[0] = palette->peRed;
-		v3[1] = palette->peGreen;
-		v3[2] = palette->peBlue;
-
-		palette++;
-		v3 += 3;
+	pcx_palette[0] = 12;
+	for (i = 0; i < 256; i++) {
+		pcx_palette[1 + 3*i + 0] = palette[i].peRed;
+		pcx_palette[1 + 3*i + 1] = palette[i].peGreen;
+		pcx_palette[1 + 3*i + 2] = palette[i].peBlue;
 	}
 
-	return WriteFile(hFile, Buffer, sizeof(Buffer), &lpNumBytes, NULL) && lpNumBytes == sizeof(Buffer);
+	return WriteFile(hFile, pcx_palette, 769, &NumberOfBytesWritten, 0) && NumberOfBytesWritten == 769;
 }
 
 BOOL __fastcall CapturePix(HANDLE hFile, WORD width, WORD height, WORD stride, BYTE *pixels)
