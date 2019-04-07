@@ -5673,7 +5673,7 @@ void __fastcall MAI_Warlord(int i)
 void __cdecl DeleteMonsterList()
 {
 	int i;
-	for (i = 0; i < 4; i++) {
+	for (i = 0; i < MAX_PLRS; i++) {
 		if (monster[i]._mDelFlag) {
 			monster[i]._mx = 1;
 			monster[i]._my = 0;
@@ -5685,7 +5685,7 @@ void __cdecl DeleteMonsterList()
 		}
 	}
 
-	i = 4;
+	i = MAX_PLRS;
 	while (i < nummonsters) {
 		if (monster[monstactive[i]]._mDelFlag) {
 			DeleteMonster(i);
