@@ -38,20 +38,20 @@ char unk_volume[4][2] = {
 
 void snd_update(BOOL bStopAll)
 {
-	DWORD error_code, i;
+	DWORD dwStatus, i;
 
 	for (i = 0; i < 8; i++) {
 		if (!DSBs[i])
 			continue;
 
 #ifdef __cplusplus
-		if (!bStopAll && !DSBs[i]->GetStatus(&error_code) && error_code == DVL_DSBSTATUS_PLAYING)
+		if (!bStopAll && DSBs[i]->GetStatus(&dwStatus) == DVL_DS_OK && dwStatus == DVL_DSBSTATUS_PLAYING)
 			continue;
 
 		DSBs[i]->Stop();
 		DSBs[i]->Release();
 #else
-		if (!bStopAll && !DSBs[i]->lpVtbl->GetStatus(DSBs[i], &error_code) && error_code == DSBSTATUS_PLAYING)
+		if (!bStopAll && DSBs[i]->lpVtbl->GetStatus(DSBs[i], &dwStatus) == DVL_DS_OK && dwStatus == DSBSTATUS_PLAYING)
 			continue;
 
 		DSBs[i]->lpVtbl->Stop(DSBs[i]);
@@ -74,7 +74,7 @@ void snd_stop_snd(TSnd *pSnd)
 
 BOOL snd_playing(TSnd *pSnd)
 {
-	DWORD error_code; // TODO should probably be HRESULT
+	DWORD dwStatus;
 
 	if (!pSnd)
 		return false;
@@ -83,13 +83,13 @@ BOOL snd_playing(TSnd *pSnd)
 		return false;
 
 #ifdef __cplusplus
-	if (pSnd->DSB->GetStatus(&error_code))
+	if (pSnd->DSB->GetStatus(&dwStatus) != DVL_DS_OK)
 #else
-	if (pSnd->DSB->lpVtbl->GetStatus(pSnd->DSB, &error_code))
+	if (pSnd->DSB->lpVtbl->GetStatus(pSnd->DSB, &dwStatus) != DVL_DS_OK)
 #endif
 		return false;
 
-	return error_code == DVL_DSBSTATUS_PLAYING;
+	return dwStatus == DVL_DSBSTATUS_PLAYING;
 }
 
 void snd_play_snd(TSnd *pSnd, int lVolume, int lPan)
@@ -186,9 +186,9 @@ BOOL sound_file_reload(TSnd *sound_file, LPDIRECTSOUNDBUFFER DSB)
 	BOOL rv;
 
 #ifdef __cplusplus
-	if (DSB->Restore())
+	if (DSB->Restore() != DVL_DS_OK)
 #else
-	if (DSB->lpVtbl->Restore(DSB))
+	if (DSB->lpVtbl->Restore(DSB) != DVL_DS_OK)
 #endif
 		return false;
 
