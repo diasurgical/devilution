@@ -14,26 +14,26 @@ extern void (__fastcall *DrawPlrProc)(int, int, int, int, int, BYTE *, int, int,
 extern int draw_monster_num; // weak
 
 void __cdecl ClearCursor();
-void __fastcall DrawMissile(int x, int y, int sx, int sy, int a5, int a6, BOOL pre);
-void __fastcall DrawClippedMissile(int x, int y, int sx, int sy, int a5, int a6, BOOL pre);
-void __fastcall DrawDeadPlayer(int x, int y, int sx, int sy, int a5, int a6, BOOL clipped);
-void __fastcall DrawPlayer(int pnum, int x, int y, int px, int py, BYTE *pCelBuff, int nCel, int nWidth, int a9, int a10);
-void __fastcall DrawClippedPlayer(int pnum, int x, int y, int px, int py, BYTE *pCelBuff, int nCel, int nWidth, int a9, int a10);
+void __fastcall DrawMissile(int x, int y, int sx, int sy, int CelSkip, int capChunks, BOOL pre);
+void __fastcall DrawClippedMissile(int x, int y, int sx, int sy, int CelSkip, int capChunks, BOOL pre);
+void __fastcall DrawDeadPlayer(int x, int y, int sx, int sy, int CelSkip, int capChunks, BOOL clipped);
+void __fastcall DrawPlayer(int pnum, int x, int y, int px, int py, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int capChunks);
+void __fastcall DrawClippedPlayer(int pnum, int x, int y, int px, int py, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int capChunks);
 void __fastcall DrawView(int StartX, int StartY);
 void __fastcall DrawGame(int x, int y);
-void __fastcall scrollrt_draw_lower(int x, int y, int sx, int sy, int a5, int some_flag);
-void __fastcall scrollrt_draw_clipped_dungeon(char *a1, int sx, int sy, int a4, int a5, int a6);
-void __fastcall DrawClippedMonster(int x, int y, int mx, int my, int m, int a6, int a7);
-void __fastcall DrawClippedObject(int x, int y, int ox, int oy, BOOL pre, int a6, int dir);
-void __fastcall scrollrt_draw_clipped_e_flag(BYTE *pBuff, int x, int y, int a4, int a5);
-void __fastcall scrollrt_draw_lower_2(int x, int y, int sx, int sy, int a5, int a6, int some_flag);
-void __fastcall scrollrt_draw_clipped_dungeon_2(char *buffer, int x, int y, int a4, int a5, int sx, int sy, int me_flag);
-void __fastcall scrollrt_draw_clipped_e_flag_2(BYTE *pBuff, int x, int y, int a4, signed int a5, int sx, int sy);
-void __fastcall scrollrt_draw_upper(int x, int y, int sx, int sy, int a5, int a6, int some_flag);
-void __fastcall scrollrt_draw_dungeon(BYTE *pBuff, int sx, int sy, int a4, int a5, int dx, int dy, int me_flag);
-void __fastcall DrawMonster(int x, int y, int mx, int my, int m, int a6, int a7);
-void __fastcall DrawObject(int x, int y, int ox, int oy, BOOL pre, int a6, int dir);
-void __fastcall scrollrt_draw_e_flag(BYTE *pBuff, int x, int y, int a4, int a5, int sx, int sy);
+void __fastcall scrollrt_draw_lower(int x, int y, int sx, int sy, int chunks, int eflag);
+void __fastcall scrollrt_draw_clipped_dungeon(char *pBuff, int sx, int sy, int x, int y, int eflag);
+void __fastcall DrawClippedMonster(int x, int y, int mx, int my, int m, int CelSkip, int capChunks);
+void __fastcall DrawClippedObject(int x, int y, int ox, int oy, BOOL pre, int CelSkip, int capChunks);
+void __fastcall scrollrt_draw_clipped_e_flag(BYTE *pBuff, int x, int y, int sx, int sy);
+void __fastcall scrollrt_draw_lower_2(int x, int y, int sx, int sy, int chunks, int skipChunks, int eflag);
+void __fastcall scrollrt_draw_clipped_dungeon_2(char *buffer, int x, int y, int skipChunks, int CelSkip, int sx, int sy, int eflag);
+void __fastcall scrollrt_draw_clipped_e_flag_2(BYTE *pBuff, int x, int y, int skipChunks, signed int CelSkip, int sx, int sy);
+void __fastcall scrollrt_draw_upper(int x, int y, int sx, int sy, int chunks, int capChunks, int eflag);
+void __fastcall scrollrt_draw_dungeon(BYTE *pBuff, int sx, int sy, int capChunks, int CelCap, int dx, int dy, int eflag);
+void __fastcall DrawMonster(int x, int y, int mx, int my, int m, int CelSkip, int CelCap);
+void __fastcall DrawObject(int x, int y, int ox, int oy, BOOL pre, int CelSkip, int capChunks);
+void __fastcall scrollrt_draw_e_flag(BYTE *pBuff, int x, int y, int capChunks, int CelCap, int sx, int sy);
 void __fastcall DrawZoom(int x, int y);
 void __cdecl ClearScreenBuffer();
 #ifdef _DEBUG
