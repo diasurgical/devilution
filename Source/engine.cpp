@@ -1421,30 +1421,31 @@ void __fastcall Cel2DecodeHdrLight(int sx, int sy, BYTE *pCelBuff, int nCel, int
  */
 void __fastcall Cel2DecodeLightTrans(BYTE *pBuff, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
-	int hdr, nDataSize, v1, v2;
-	BYTE *pRLEBytes, *v9;
+	int nDataStart, nDataSize, nDataCap;
+	BYTE *pRLEBytes;
 	DWORD *pFrameTable;
 
 	/// ASSERT: assert(pCelBuff != NULL);
 	if (!pCelBuff)
 		return;
 
-	pFrameTable = (DWORD *)&pCelBuff[4 * nCel];
-	v9 = &pCelBuff[pFrameTable[0]];
-	hdr = *(WORD *)&v9[CelSkip];
-	if (!hdr)
+	pFrameTable = (DWORD *)pCelBuff;
+	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
+	nDataStart = *(WORD *)&pRLEBytes[CelSkip];
+	if (!nDataStart)
 		return;
 
-	v1 = pFrameTable[1] - pFrameTable[0];
-	v2 = *(WORD *)&v9[CelCap];
-	if (CelCap == 8)
-		v2 = 0;
-	if (v2)
-		nDataSize = v2 - hdr;
-	else
-		nDataSize = v1 - hdr;
+	nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
 
-	pRLEBytes = &v9[hdr];
+	nDataCap = *(WORD *)&pRLEBytes[CelCap];
+	if (CelCap == 8)
+		nDataCap = 0;
+	if (nDataCap)
+		nDataSize = nDataCap - nDataStart;
+	else
+		nDataSize -= nDataStart;
+
+	pRLEBytes = &pRLEBytes[nDataStart];
 
 	if (cel_transparency_active)
 		Cel2DecDatLightTrans(pBuff, pRLEBytes, nDataSize, nWidth);
