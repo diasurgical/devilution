@@ -90,7 +90,8 @@ BOOL __fastcall CapturePix(HANDLE hFile, WORD width, WORD height, WORD stride, B
 	BYTE *pBuffer, *pBufferEnd;
 
 	pBuffer = (BYTE *)DiabloAllocPtr(2 * width);
-	while (height-- != 0) {
+	while (height != 0) {
+		height--;
 		pBufferEnd = CaptureEnc(pixels, pBuffer, width);
 		pixels += stride;
 		writeSize = pBufferEnd - pBuffer;
