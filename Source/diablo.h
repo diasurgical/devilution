@@ -49,7 +49,7 @@ LRESULT CALLBACK DisableInputWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
 LRESULT CALLBACK GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 BOOL __fastcall LeftMouseDown(int wParam);
 BOOL __fastcall LeftMouseCmd(BOOL bShift);
-BOOLEAN __cdecl TryIconCurs();
+BOOL __cdecl TryIconCurs();
 void __cdecl LeftMouseUp();
 void __cdecl RightMouseDown();
 void __fastcall j_gmenu_on_mouse_move(LPARAM lParam);
