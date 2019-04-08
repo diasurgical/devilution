@@ -46,7 +46,7 @@ int sbookflag; // weak
 int chrflag;
 int drawbtnflag; // idb
 void *pSpellBkCel;
-char infostr[260];
+char infostr[MAX_PATH];
 int numpanbtns; // weak
 void *pStatusPanel;
 char panelstr[256];

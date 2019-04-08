@@ -4,20 +4,20 @@
 
 _SNETVERSIONDATA fileinfo;
 int gbActive; // weak
-char diablo_exe_path[260];
+char diablo_exe_path[MAX_PATH];
 HANDLE unused_mpq;
-char patch_rt_mpq_path[260];
+char patch_rt_mpq_path[MAX_PATH];
 WNDPROC CurrentProc;
 HANDLE diabdat_mpq;
-char diabdat_mpq_path[260];
+char diabdat_mpq_path[MAX_PATH];
 HANDLE patch_rt_mpq;
 int killed_mom_parent; // weak
 BOOLEAN screensaver_enabled_prev;
 
 /* data */
 
-char gszVersionNumber[260] = "internal version unknown";
-char gszProductName[260] = "Diablo v1.09";
+char gszVersionNumber[MAX_PATH] = "internal version unknown";
+char gszProductName[MAX_PATH] = "Diablo v1.09";
 
 void __fastcall init_cleanup(BOOL show_cursor)
 {
@@ -78,8 +78,8 @@ void __fastcall init_run_office(char *dir)
 	HANDLE v2;                             // ebx
 	BOOLEAN v3;                            // zf
 	HWND v4;                               // eax
-	char Directory[260];                   // [esp+8h] [ebp-348h]
-	char FileName[260];                    // [esp+10Ch] [ebp-244h]
+	char Directory[MAX_PATH];                   // [esp+8h] [ebp-348h]
+	char FileName[MAX_PATH];                    // [esp+10Ch] [ebp-244h]
 	struct _WIN32_FIND_DATAA FindFileData; // [esp+210h] [ebp-140h]
 
 	v1 = dir;
@@ -261,20 +261,20 @@ HANDLE __fastcall init_test_access(char *mpq_path, char *mpq_name, char *reg_loc
 {
 	char *v5;           // esi
 	char *v7;           // eax
-	char Filename[260]; // [esp+Ch] [ebp-314h]
-	char Buffer[260];   // [esp+110h] [ebp-210h]
-	char v15[260];      // [esp+214h] [ebp-10Ch]
+	char Filename[MAX_PATH]; // [esp+Ch] [ebp-314h]
+	char Buffer[MAX_PATH];   // [esp+110h] [ebp-210h]
+	char v15[MAX_PATH];      // [esp+214h] [ebp-10Ch]
 	char *mpq_namea;    // [esp+318h] [ebp-8h]
 	HANDLE archive;     // [esp+31Ch] [ebp-4h]
 
 	mpq_namea = mpq_name;
 	v5 = mpq_path;
-	if (!GetCurrentDirectory(0x104u, Buffer))
+	if (!GetCurrentDirectory(sizeof(Buffer), Buffer))
 		app_fatal("Can't get program path");
 	init_strip_trailing_slash(Buffer);
 	if (!SFileSetBasePath(Buffer))
 		app_fatal("SFileSetBasePath");
-	if (!GetModuleFileName(ghInst, Filename, 0x104u))
+	if (!GetModuleFileName(ghInst, Filename, sizeof(Filename)))
 		app_fatal("Can't get program name");
 	v7 = strrchr(Filename, '\\');
 	if (v7)
@@ -300,7 +300,7 @@ HANDLE __fastcall init_test_access(char *mpq_path, char *mpq_name, char *reg_loc
 	}
 	v15[0] = 0;
 	if (reg_loc) {
-		if (SRegLoadString("Archives", (const char *)reg_loc, 0, v15, 260)) {
+		if (SRegLoadString("Archives", (const char *)reg_loc, 0, v15, sizeof(v15))) {
 			init_strip_trailing_slash(v15);
 			strcpy(v5, v15);
 			strcat(v5, mpq_namea);
@@ -337,13 +337,13 @@ int __fastcall init_read_test_file(char *mpq_path, char *mpq_name, int flags, HA
 	DWORD v5;         // eax
 	const char *v7;   // ebx
 	const char *v8;   // esi
-	char Buffer[260]; // [esp+Ch] [ebp-108h]
+	char Buffer[MAX_PATH]; // [esp+Ch] [ebp-108h]
 	char *mpq_patha;  // [esp+110h] [ebp-4h]
 
 	v4 = mpq_name;
 	mpq_patha = mpq_path;
-	v5 = GetLogicalDriveStrings(0x104u, Buffer);
-	if (!v5 || v5 > 0x104)
+	v5 = GetLogicalDriveStrings(sizeof(Buffer), Buffer);
+	if (!v5 || v5 > sizeof(Buffer))
 		return 0;
 	while (*v4 == '\\')
 		++v4;
@@ -374,7 +374,7 @@ void __cdecl init_get_file_info()
 	DWORD dwHandle;             // [esp+Ch] [ebp-8h]
 	VS_FIXEDFILEINFO *lpBuffer; // [esp+10h] [ebp-4h]
 
-	if (GetModuleFileName(ghInst, diablo_exe_path, 0x104u)) {
+	if (GetModuleFileName(ghInst, diablo_exe_path, sizeof(diablo_exe_path))) {
 		v0 = GetFileVersionInfoSize(diablo_exe_path, &dwHandle);
 		v1 = v0;
 		if (v0) {

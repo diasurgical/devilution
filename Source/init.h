@@ -4,12 +4,12 @@
 
 extern _SNETVERSIONDATA fileinfo;
 extern int gbActive; // weak
-extern char diablo_exe_path[260];
+extern char diablo_exe_path[MAX_PATH];
 extern HANDLE unused_mpq;
-extern char patch_rt_mpq_path[260];
+extern char patch_rt_mpq_path[MAX_PATH];
 extern WNDPROC CurrentProc;
 extern HANDLE diabdat_mpq;
-extern char diabdat_mpq_path[260];
+extern char diabdat_mpq_path[MAX_PATH];
 extern HANDLE patch_rt_mpq;
 extern int killed_mom_parent; // weak
 extern BOOLEAN screensaver_enabled_prev;
@@ -37,7 +37,7 @@ extern const int init_inf; // weak
 
 /* data */
 
-extern char gszVersionNumber[260];
-extern char gszProductName[260];
+extern char gszVersionNumber[MAX_PATH];
+extern char gszProductName[MAX_PATH];
 
 #endif /* __INIT_H__ */
