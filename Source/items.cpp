@@ -669,7 +669,6 @@ BOOL __fastcall ItemPlace(int xp, int yp)
 
 void __cdecl AddInitItems()
 {
-	BOOL k;
 	int x, y, i, j, rnd;
 
 	rnd = random(11, 3) + 3;
