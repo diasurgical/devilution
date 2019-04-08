@@ -110,7 +110,7 @@ BOOLEAN __fastcall TFit_Shrine(int i)
 	return 1;
 }
 
-BOOLEAN __fastcall TFit_Obj5(int t)
+BOOL __fastcall TFit_Obj5(int t)
 {
 	int v2;         // ebx
 	int v3;         // esi
@@ -177,45 +177,36 @@ BOOLEAN __fastcall TFit_Obj5(int t)
 	}
 }
 
-BOOLEAN __fastcall TFit_SkelRoom(int t)
+BOOL __fastcall TFit_SkelRoom(int t)
 {
-	int i; // esi
+	int i;
 
 	if (leveltype != 1 && leveltype != 2) {
-		return 0;
-	}
-	i = 0;
-	if (nummtypes <= 0) {
-		return 0;
+		return FALSE;
 	}
 
-	while (!IsSkel(Monsters[i].mtype)) {
-		++i;
-		if (i >= nummtypes) {
-			return 0;
+	for (i = 0; i < nummtypes; i++) {
+		if (IsSkel(Monsters[i].mtype)) {
+			themeVar1 = i;
+			return TFit_Obj5(t);
 		}
 	}
-	themeVar1 = i;
-	return TFit_Obj5(t);
+
+	return FALSE;
 }
 
-BOOLEAN __fastcall TFit_GoatShrine(int t)
+BOOL __fastcall TFit_GoatShrine(int t)
 {
-	int i; // esi
+	int i;
 
-	i = 0;
-	if (nummtypes <= 0) {
-		return 0;
-	}
-
-	while (!IsGoat(Monsters[i].mtype)) {
-		++i;
-		if (i >= nummtypes) {
-			return 0;
+	for (i = 0; i < nummtypes; i++) {
+		if (IsGoat(Monsters[i].mtype)) {
+			themeVar1 = i;
+			return TFit_Obj5(t);
 		}
 	}
-	themeVar1 = i;
-	return TFit_Obj5(t);
+
+	return FALSE;
 }
 
 BOOL __fastcall CheckThemeObj3(int xp, int yp, int t, int f)
@@ -238,33 +229,22 @@ BOOL __fastcall CheckThemeObj3(int xp, int yp, int t, int f)
 	return TRUE;
 }
 
-BOOLEAN __fastcall TFit_Obj3(int t)
+BOOL __fastcall TFit_Obj3(int t)
 {
-	int yp;         // edi
-	int xp;         // esi
-	char objrnd[4]; // [esp+Bh] [ebp-5h]
+	int xp, yp;
+	char objrnd[4] = { 4, 4, 3, 5 };
 
-	objrnd[0] = 4;
-	objrnd[1] = 4;
-	objrnd[2] = 3;
-	objrnd[3] = 5;
-	yp = 1;
-	while (2) {
-		xp = 1;
-		do {
+	for (yp = 1; yp < MAXDUNY - 1; yp++) {
+		for (xp = 1; xp < MAXDUNX - 1; xp++) {
 			if (CheckThemeObj3(xp, yp, t, objrnd[leveltype - 1])) {
 				themex = xp;
 				themey = yp;
-				return 1;
+				return TRUE;
 			}
-			++xp;
-		} while (xp < 111);
-		if (++yp < 111) {
-			continue;
 		}
-		break;
 	}
-	return 0;
+
+	return FALSE;
 }
 
 BOOLEAN __fastcall CheckThemeReqs(int t)
