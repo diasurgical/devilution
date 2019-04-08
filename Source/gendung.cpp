@@ -621,27 +621,15 @@ void __fastcall DRLG_CopyTrans(int sx, int sy, int dx, int dy)
 
 void __fastcall DRLG_ListTrans(int num, unsigned char *List)
 {
-	unsigned char *v2; // esi
-	int v3;            // edi
-	unsigned char v4;  // al
-	unsigned char *v5; // esi
-	unsigned char v6;  // cl
-	unsigned char v7;  // dl
-	unsigned char v8;  // bl
+	int i;
+	unsigned char x1, x2, y1, y2;
 
-	v2 = List;
-	if (num > 0) {
-		v3 = num;
-		do {
-			v4 = *v2;
-			v5 = v2 + 1;
-			v6 = *v5++;
-			v7 = *v5++;
-			v8 = *v5;
-			v2 = v5 + 1;
-			DRLG_RectTrans(v4, v6, v7, v8);
-			--v3;
-		} while (v3);
+	for (i = 0; i < num; i++) {
+		x1 = *List++;
+		y1 = *List++;
+		x2 = *List++;
+		y2 = *List++;
+		DRLG_RectTrans(x1, y1, x2, y2);
 	}
 }
 
