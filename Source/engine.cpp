@@ -186,7 +186,6 @@ void __fastcall CelDrawHdrOnly(int sx, int sy, BYTE *pCelBuff, int nCel, int nWi
 		nDataCap = 0;
 	else
 		nDataCap = *(WORD *)&pRLEBytes[CelCap];
-
 	if (nDataCap)
 		nDataSize = nDataCap - nDataStart;
 	else
@@ -194,7 +193,7 @@ void __fastcall CelDrawHdrOnly(int sx, int sy, BYTE *pCelBuff, int nCel, int nWi
 
 	CelDrawDatOnly(
 	    &gpBuffer[sx + screen_y_times_768[sy - 16 * CelSkip]],
-	    &pRLEBytes[nDataStart],
+	    pRLEBytes + nDataStart,
 	    nDataSize,
 	    nWidth);
 }
@@ -233,7 +232,7 @@ void __fastcall CelDecodeHdrOnly(BYTE *pBuff, BYTE *pCelBuff, int nCel, int nWid
 	else
 		nDataSize -= nDataStart;
 
-	CelDrawDatOnly(pBuff, &pRLEBytes[nDataStart], nDataSize, nWidth);
+	CelDrawDatOnly(pBuff, pRLEBytes + nDataStart, nDataSize, nWidth);
 }
 
 void __fastcall CelDecDatLightOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
@@ -638,7 +637,7 @@ void __fastcall CelDecodeHdrLightOnly(int sx, int sy, BYTE *pCelBuff, int nCel, 
 	else
 		nDataSize -= nDataStart;
 
-	pRLEBytes = &pRLEBytes[nDataStart];
+	pRLEBytes += nDataStart;
 	pDecodeTo = &gpBuffer[sx + screen_y_times_768[sy - 16 * CelSkip]];
 
 	if (light_table_index)
@@ -672,6 +671,7 @@ void __fastcall CelDecodeHdrLightTrans(BYTE *pBuff, BYTE *pCelBuff, int nCel, in
 		return;
 
 	nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
+
 	if (CelCap == 8)
 		nDataCap = 0;
 	else
@@ -681,7 +681,7 @@ void __fastcall CelDecodeHdrLightTrans(BYTE *pBuff, BYTE *pCelBuff, int nCel, in
 	else
 		nDataSize -= nDataStart;
 
-	pRLEBytes = &pRLEBytes[nDataStart];
+	pRLEBytes += nDataStart;
 
 	if (cel_transparency_active)
 		CelDecDatLightTrans(pBuff, pRLEBytes, nDataSize, nWidth);
@@ -957,7 +957,7 @@ void __fastcall Cel2DrawHdrOnly(int sx, int sy, BYTE *pCelBuff, int nCel, int nW
 
 	Cel2DecDatOnly(
 	    &gpBuffer[sx + screen_y_times_768[sy - 16 * CelSkip]],
-	    &pRLEBytes[nDataStart],
+	    pRLEBytes + nDataStart,
 	    nDataSize,
 	    nWidth);
 }
@@ -986,7 +986,6 @@ void __fastcall Cel2DecodeHdrOnly(BYTE *pBuff, BYTE *pCelBuff, int nCel, int nWi
 		return;
 
 	nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
-
 	nDataCap = *(WORD *)&pRLEBytes[CelCap];
 	if (CelCap == 8)
 		nDataCap = 0;
@@ -996,7 +995,7 @@ void __fastcall Cel2DecodeHdrOnly(BYTE *pBuff, BYTE *pCelBuff, int nCel, int nWi
 	else
 		nDataSize -= nDataStart;
 
-	Cel2DecDatOnly(pBuff, &pRLEBytes[nDataStart], nDataSize, nWidth);
+	Cel2DecDatOnly(pBuff, pRLEBytes + nDataStart, nDataSize, nWidth);
 }
 
 void __fastcall Cel2DecDatLightOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
@@ -1399,6 +1398,7 @@ void __fastcall Cel2DecodeHdrLight(int sx, int sy, BYTE *pCelBuff, int nCel, int
 	nDataCap = *(WORD *)&pRLEBytes[CelCap];
 	if (CelCap == 8)
 		nDataCap = 0;
+
 	if (nDataCap)
 		nDataSize = nDataCap - nDataStart;
 	else
@@ -1435,16 +1435,16 @@ void __fastcall Cel2DecodeLightTrans(BYTE *pBuff, BYTE *pCelBuff, int nCel, int 
 		return;
 
 	nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
-
 	nDataCap = *(WORD *)&pRLEBytes[CelCap];
 	if (CelCap == 8)
 		nDataCap = 0;
+
 	if (nDataCap)
 		nDataSize = nDataCap - nDataStart;
 	else
 		nDataSize -= nDataStart;
 
-	pRLEBytes = &pRLEBytes[nDataStart];
+	pRLEBytes += nDataStart;
 
 	if (cel_transparency_active)
 		Cel2DecDatLightTrans(pBuff, pRLEBytes, nDataSize, nWidth);
@@ -1804,12 +1804,13 @@ void __fastcall CelDecodeClr(char col, int sx, int sy, BYTE *pCelBuff, int nCel,
 	nDataCap = *(WORD *)&pRLEBytes[CelCap];
 	if (CelCap == 8)
 		nDataCap = 0;
+
 	if (nDataCap)
 		nDataSize = nDataCap - nDataStart;
 	else
 		nDataSize = pFrameTable[1] - pFrameTable[0] - nDataStart;
 
-	src = &pRLEBytes[nDataStart];
+	src = pRLEBytes + nDataStart;
 	end = &src[nDataSize];
 	dst = &gpBuffer[sx + screen_y_times_768[sy - 16 * CelSkip]];
 
@@ -1969,12 +1970,13 @@ void __fastcall CelDrawHdrClrHL(char col, int sx, int sy, BYTE *pCelBuff, int nC
 	nDataCap = *(WORD *)&pRLEBytes[CelCap];
 	if (CelCap == 8)
 		nDataCap = 0;
+
 	if (nDataCap)
 		nDataSize = nDataCap - nDataStart;
 	else
 		nDataSize = pFrameTable[1] - pFrameTable[0] - nDataStart;
 
-	src = &pRLEBytes[nDataStart];
+	src = pRLEBytes + nDataStart;
 	end = &src[nDataSize];
 	dst = &gpBuffer[sx + screen_y_times_768[sy - 16 * CelSkip]];
 
@@ -2557,7 +2559,7 @@ void __fastcall Cl2DecodeFrm1(int sx, int sy, BYTE *pCelBuff, int nCel, int nWid
 
 	Cl2DecDatFrm1(
 	    &gpBuffer[sx + screen_y_times_768[sy - 16 * CelSkip]],
-	    &pRLEBytes[nDataStart],
+	    pRLEBytes + nDataStart,
 	    nDataSize - nDataStart,
 	    nWidth);
 }
@@ -2740,7 +2742,7 @@ void __fastcall Cl2DecodeFrm2(char col, int sx, int sy, BYTE *pCelBuff, int nCel
 
 	Cl2DecDatFrm2(
 	    &gpBuffer[sx + screen_y_times_768[sy - 16 * CelSkip]],
-	    &pRLEBytes[nDataStart],
+	    pRLEBytes + nDataStart,
 	    nDataSize - nDataStart,
 	    nWidth,
 	    col);
@@ -3190,7 +3192,7 @@ void __fastcall Cl2DecodeFrm4(int sx, int sy, BYTE *pCelBuff, int nCel, int nWid
 
 	Cl2DecDatFrm4(
 	    &gpBuffer[sx + screen_y_times_768[sy - 16 * CelSkip]],
-	    &pRLEBytes[nDataStart],
+	    pRLEBytes + nDataStart,
 	    nDataSize - nDataStart,
 	    nWidth);
 }
@@ -3388,7 +3390,7 @@ void __fastcall Cl2DecodeClrHL(char col, int sx, int sy, BYTE *pCelBuff, int nCe
 	gpBufEnd -= 768;
 	Cl2DecDatClrHL(
 	    &gpBuffer[sx + screen_y_times_768[sy - 16 * CelSkip]],
-	    &pRLEBytes[nDataStart],
+	    pRLEBytes + nDataStart,
 	    nDataSize - nDataStart,
 	    nWidth,
 	    col);
