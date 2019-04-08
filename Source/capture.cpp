@@ -85,18 +85,17 @@ BOOL __fastcall CapturePix(HANDLE hFile, WORD width, WORD height, WORD stride, B
 	BYTE *pBuffer, *pBufferEnd;
 
 	pBuffer = (BYTE *)DiabloAllocPtr(2 * width);
-	do {
-		if (!height) {
-			mem_free_dbg(pBuffer);
-			return TRUE;
-		}
+	while (height != 0) {
 		height--;
 		pBufferEnd = CaptureEnc(pixels, pBuffer, width);
 		pixels += stride;
 		writeSize = pBufferEnd - pBuffer;
-	} while (WriteFile(hFile, pBuffer, writeSize, &lpNumBytes, 0) && lpNumBytes == writeSize);
-
-	return FALSE;
+		if (!(WriteFile(hFile, pBuffer, writeSize, &lpNumBytes, 0) && lpNumBytes == writeSize)) {
+			return FALSE;
+		}
+	}
+	mem_free_dbg(pBuffer);
+	return TRUE;
 }
 
 BYTE *__fastcall CaptureEnc(BYTE *src, BYTE *dst, int width)
