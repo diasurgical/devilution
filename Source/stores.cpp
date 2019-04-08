@@ -3261,36 +3261,29 @@ void __cdecl S_ConfirmEnter()
 
 void __cdecl S_HealerEnter()
 {
-	int v0; // ecx
-	int v1; // eax
-
-	v0 = 12;
-	if (stextsel == 12) {
+	switch (stextsel) {
+	case 12:
 		stextlhold = 12;
 		talker = 1;
 		stextshold = 14;
 		gossipstart = QUEST_PEPIN2;
 		gossipend = QUEST_PEPIN11;
-		_LOBYTE(v0) = STORE_GOSSIP;
-		goto LABEL_12;
-	}
-	if (stextsel != 14) {
-		if (stextsel != 16) {
-			if (stextsel == 18)
-				stextflag = 0;
-			return;
-		}
-		_LOBYTE(v0) = STORE_HBUY;
-	LABEL_12:
-		StartStore(v0);
+		StartStore(STORE_GOSSIP);
+		return;
+	case 14:
+		if (plr[myplr]._pHitPoints != plr[myplr]._pMaxHP)
+			PlaySFX(IS_CAST8);
+		drawhpflag = TRUE;
+		plr[myplr]._pHitPoints = plr[myplr]._pMaxHP;
+		plr[myplr]._pHPBase = plr[myplr]._pMaxHPBase;
+		return;
+	case 16:
+		StartStore(STORE_HBUY);
+		return;
+	case 18:
+		stextflag = 0;
 		return;
 	}
-	if (plr[myplr]._pHitPoints != plr[myplr]._pMaxHP)
-		PlaySFX(IS_CAST8);
-	drawhpflag = TRUE;
-	v1 = myplr;
-	plr[v1]._pHitPoints = plr[myplr]._pMaxHP;
-	plr[v1]._pHPBase = plr[v1]._pMaxHPBase;
 }
 // 69F110: using guessed type int stextlhold;
 // 69FB38: using guessed type int talker;
