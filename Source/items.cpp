@@ -669,41 +669,36 @@ BOOL __fastcall ItemPlace(int xp, int yp)
 
 void __cdecl AddInitItems()
 {
-	int i;  // eax
-	int ii; // ebx
-	int xx; // esi
-	int yy; // eax
-	int j;  // eax
+	BOOL k;
+	int x, y, i, j, rnd;
 
-	i = random(11, 3) + 3;
-	if (i > 0) {
-		do {
-			ii = itemavail[0];
-			itemactive[numitems] = itemavail[0];
-			itemavail[0] = itemavail[MAXITEMS - numitems - 1];
-			do {
-				xx = random(12, 80) + 16;
-				yy = random(12, 80) + 16;
-			} while (!ItemPlace(xx, yy));
-			item[ii]._ix = xx;
-			item[ii]._iy = yy;
-			dItem[xx][yy] = ii + 1;
-			j = GetRndSeed();
-			item[ii]._iSeed = j;
-			SetRndSeed(j);
-			if (random(12, 2))
-				GetItemAttrs(ii, IDI_HEAL, currlevel);
-			else
-				GetItemAttrs(ii, IDI_MANA, currlevel);
-			item[ii]._iCreateInfo = currlevel + -32768;
-			SetupItem(ii);
-			item[ii]._iAnimFlag = FALSE;
-			item[ii]._iAnimFrame = item[ii]._iAnimLen;
-			item[ii]._iSelFlag = 1;
-			DeltaAddItem(ii);
-			++numitems;
-			--i;
-		} while (i);
+	rnd = random(11, 3) + 3;
+	for (j = 0; j < rnd; j++) {
+		i = itemavail[0];
+		itemavail[0] = itemavail[MAXITEMS - numitems - 1];
+		itemactive[numitems] = i;
+		x = random(12, 80) + 16;
+		y = random(12, 80) + 16;
+		while (!ItemPlace(x, y)) {
+			x = random(12, 80) + 16;
+			y = random(12, 80) + 16;
+		}
+		item[i]._ix = x;
+		item[i]._iy = y;
+		dItem[x][y] = i + 1;
+		item[i]._iSeed = GetRndSeed();
+		SetRndSeed(item[i]._iSeed);
+		if (random(12, 2))
+			GetItemAttrs(i, IDI_HEAL, currlevel);
+		else
+			GetItemAttrs(i, IDI_MANA, currlevel);
+		item[i]._iCreateInfo = currlevel - 32768;
+		SetupItem(i);
+		item[i]._iAnimFrame = item[i]._iAnimLen;
+		item[i]._iAnimFlag = 0;
+		item[i]._iSelFlag = 1;
+		DeltaAddItem(i);
+		numitems++;
 	}
 }
 
