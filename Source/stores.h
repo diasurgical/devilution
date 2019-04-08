@@ -59,7 +59,7 @@ BOOLEAN __cdecl S_StartSPBuy();
 BOOL __fastcall SmithSellOk(int i);
 void __fastcall S_ScrollSSell(int idx);
 void __cdecl S_StartSSell();
-BOOLEAN __fastcall SmithRepairOk(int i);
+BOOL __fastcall SmithRepairOk(int i);
 void __cdecl S_StartSRepair();
 void __fastcall AddStoreHoldRepair(ItemStruct *itm, int i);
 void __cdecl S_StartWitch();

@@ -84,10 +84,10 @@ void __cdecl InitStores()
 	ClearSText(0, 24);
 	stextflag = 0;
 	InStoreFlag = 1;
-	premiumlevel = 1;
 	stextsize = 0;
 	stextscrl = 0;
 	numpremium = 0;
+	premiumlevel = 1;
 
 	for (i = 0; i < 6; i++)
 		premiumitem[i]._itype = -1;
@@ -356,24 +356,17 @@ void __cdecl DrawSTextHelp()
 
 void __fastcall ClearSText(int s, int e)
 {
-	int v2;  // edx
-	int *v3; // eax
+	int i;
 
-	if (s < e) {
-		v2 = e - s;
-		v3 = &stext[s]._syoff;
-		do {
-			v3[37] = -1;
-			*(v3 - 1) = 0;
-			*v3 = 0;
-			*((_BYTE *)v3 + 4) = 0;
-			v3[33] = 0;
-			*((_BYTE *)v3 + 136) = 0;
-			v3[35] = 0;
-			v3[36] = 0;
-			v3 += 39;
-			--v2;
-		} while (v2);
+	for (i = s; i < e; i++) {
+		stext[i]._sx = 0;
+		stext[i]._syoff = 0;
+		stext[i]._sstr[0] = 0;
+		stext[i]._sjust = 0;
+		stext[i]._sclr = 0;
+		stext[i]._sline = 0;
+		stext[i]._ssel = 0;
+		stext[i]._sval = -1;
 	}
 }
 
@@ -840,45 +833,35 @@ BOOL __fastcall SmithSellOk(int i)
 
 void __fastcall S_ScrollSSell(int idx)
 {
-	int v1;   // esi
-	int v2;   // edi
-	char *v3; // esi
-	int v4;   // edx
-	int v5;   // [esp+Ch] [ebp-8h]
-	int iclr; // [esp+10h] [ebp-4h]
+	char clr;
+	int y;
 
-	v1 = idx;
-	v5 = idx;
-	v2 = 5;
 	ClearSText(5, 21);
-	v3 = &storehold[v1]._iMagical;
 	stextup = 5;
-	do {
-		if (v5 >= storenumh)
+	for (y = 5; y < 20; y += 4) {
+		if (idx >= storenumh)
 			break;
-		if (*((_DWORD *)v3 - 13) != -1) {
-			_LOBYTE(iclr) = 0;
-			if (*v3)
-				_LOBYTE(iclr) = 1;
-			if (!*((_DWORD *)v3 + 74))
-				_LOBYTE(iclr) = 2;
-			if (*v3 && *((_DWORD *)v3 - 1)) {
-				AddSText(20, v2, 0, v3 + 65, iclr, 1);
-				v4 = *((_DWORD *)v3 + 35);
+		if (storehold[idx]._itype != -1) {
+			clr = 0;
+			if (storehold[idx]._iMagical)
+				clr = 1;
+			if (!storehold[idx]._iStatFlag)
+				clr = 2;
+			if (storehold[idx]._iMagical && storehold[idx]._iIdentified) {
+				AddSText(20, y, 0, storehold[idx]._iIName, clr, 1);
+				AddSTextVal(y, storehold[idx]._iIvalue);
 			} else {
-				AddSText(20, v2, 0, v3 + 1, iclr, 1);
-				v4 = *((_DWORD *)v3 + 34);
+				AddSText(20, y, 0, storehold[idx]._iName, clr, 1);
+				AddSTextVal(y, storehold[idx]._ivalue);
 			}
-			AddSTextVal(v2, v4);
-			PrintStoreItem((ItemStruct *)(v3 - 60), v2 + 1, iclr);
-			stextdown = v2;
+			PrintStoreItem(&storehold[idx], y + 1, clr);
+			stextdown = y;
 		}
-		++v5;
-		v2 += 4;
-		v3 += 368;
-	} while (v2 < 20);
+		idx++;
+	}
+
 	stextsmax = storenumh - 4;
-	if (storenumh - 4 < 0)
+	if (stextsmax < 0)
 		stextsmax = 0;
 }
 // 69F108: using guessed type int stextup;
@@ -940,15 +923,20 @@ void __cdecl S_StartSSell()
 // 6A09E4: using guessed type int stextsmax;
 // 6A6BB8: using guessed type int stextscrl;
 
-BOOLEAN __fastcall SmithRepairOk(int i)
+BOOL __fastcall SmithRepairOk(int i)
 {
-	if (plr[myplr].InvList[i]._itype != ITYPE_NONE
-	    && plr[myplr].InvList[i]._itype
-	    && plr[myplr].InvList[i]._itype != ITYPE_GOLD
-	    && plr[myplr].InvList[i]._itype != ITYPE_0E)
-		return plr[myplr].InvList[i]._iDurability != plr[myplr].InvList[i]._iMaxDur;
-	else
-		return 0;
+	if (plr[myplr].InvList[i]._itype == ITYPE_NONE)
+		return FALSE;
+	if (plr[myplr].InvList[i]._itype == ITYPE_MISC)
+		return FALSE;
+	if (plr[myplr].InvList[i]._itype == ITYPE_GOLD)
+		return FALSE;
+	if (plr[myplr].InvList[i]._itype == ITYPE_0E)
+		return FALSE;
+	if (plr[myplr].InvList[i]._iDurability == plr[myplr].InvList[i]._iMaxDur)
+		return FALSE;
+
+	return TRUE;
 }
 
 void __cdecl S_StartSRepair()
