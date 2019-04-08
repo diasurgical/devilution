@@ -770,41 +770,39 @@ void __fastcall S_ScrollSPBuy(int idx)
 // 6A8A28: using guessed type int stextsel;
 // 6AA700: using guessed type int stextdown;
 
-BOOLEAN __cdecl S_StartSPBuy()
+BOOL __cdecl S_StartSPBuy()
 {
-	int *v0;        // eax
-	BOOLEAN result; // al
-	int v2;         // ST10_4
+	int i;
 
 	storenumh = 0;
-	v0 = &premiumitem[0]._itype;
-	do {
-		if (*v0 != -1)
-			++storenumh;
-		v0 += 92;
-	} while ((signed int)v0 < (signed int)&premiumitem[6]._itype);
-	if (storenumh) {
-		v2 = plr[myplr]._pGold;
-		stextsval = 0;
-		stextsize = 1;
-		stextscrl = 1;
-		sprintf(tempstr, "I have these premium items for sale :   Your gold : %i", v2);
-		AddSText(0, 1, 1u, tempstr, COL_GOLD, 0);
-		AddSLine(3);
-		AddSLine(21);
-		AddSText(0, 22, 1u, "Back", COL_WHITE, 0);
-		OffsetSTextY(22, 6);
-		stextsmax = storenumh - 4;
-		if (storenumh - 4 < 0)
-			stextsmax = 0;
-		S_ScrollSPBuy(stextsval);
-		result = 1;
-	} else {
+	for (i = 0; i < 6; i++) {
+		if (premiumitem[i]._itype != -1)
+			storenumh++;
+	}
+	if (!storenumh) {
 		StartStore(STORE_SMITH);
 		stextsel = 14;
-		result = 0;
+		return FALSE;
 	}
-	return result;
+
+	stextsize = 1;
+	stextscrl = 1;
+	stextsval = 0;
+
+	sprintf(tempstr, "I have these premium items for sale :   Your gold : %i", plr[myplr]._pGold);
+	AddSText(0, 1, 1, tempstr, COL_GOLD, 0);
+	AddSLine(3);
+	AddSLine(21);
+	AddSText(0, 22, 1, "Back", COL_WHITE, 0);
+	OffsetSTextY(22, 6);
+
+	stextsmax = storenumh - 4;
+	if (stextsmax < 0)
+		stextsmax = 0;
+
+	S_ScrollSPBuy(stextsval);
+
+	return TRUE;
 }
 // 69F10C: using guessed type int storenumh;
 // 69FB38: using guessed type int talker;
