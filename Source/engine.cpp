@@ -1463,7 +1463,7 @@ void __fastcall Cel2DecodeLightTrans(BYTE *pBuff, BYTE *pCelBuff, int nCel, int 
 void __fastcall Cel2DrawHdrLightRed(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap, char light)
 {
 	int w, hdr, idx, nDataSize, v1;
-	BYTE *src, *dst, *tbl, *pRLEBytes;
+	BYTE *src, *dst, *tbl;
 	DWORD *pFrameTable;
 
 	/// ASSERT: assert(gpBuffer);
@@ -1473,22 +1473,23 @@ void __fastcall Cel2DrawHdrLightRed(int sx, int sy, BYTE *pCelBuff, int nCel, in
 	if (!pCelBuff)
 		return;
 
-	pFrameTable = (DWORD *)&pCelBuff[4 * nCel];
-	pRLEBytes = &pCelBuff[pFrameTable[0]];
-	hdr = *(WORD *)&pRLEBytes[CelSkip];
+	pFrameTable = (DWORD *)pCelBuff;
+	src = &pCelBuff[pFrameTable[nCel]];
+	hdr = *(WORD *)&src[CelSkip];
 	if (!hdr)
 		return;
 
+	nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
 	if (CelCap == 8)
 		v1 = 0;
 	else
-		v1 = *(WORD *)&pRLEBytes[CelCap];
+		v1 = *(WORD *)&src[CelCap];
 	if (v1)
 		nDataSize = v1 - hdr;
 	else
-		nDataSize = pFrameTable[1] - pFrameTable[0] - hdr;
+		nDataSize -= hdr;
 
-	src = &pRLEBytes[hdr];
+	src += hdr;
 	dst = &gpBuffer[sx + screen_y_times_768[sy - 16 * CelSkip]];
 
 	idx = light4flag ? 1024 : 4096;
@@ -1500,10 +1501,9 @@ void __fastcall Cel2DrawHdrLightRed(int sx, int sy, BYTE *pCelBuff, int nCel, in
 	tbl = &pLightTbl[idx];
 
 #if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+	w = 768 + nWidth;
+
 	__asm {
-		mov		eax, nWidth
-		add		eax, 768
-		mov		w, eax /* use C for w? w = 768 + nWidth */
 		mov		esi, src
 		mov		edi, dst
 		mov		ecx, nDataSize
