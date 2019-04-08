@@ -586,7 +586,6 @@ BOOL __cdecl PressEscKey()
 
 	return rv;
 }
-// 4B84DC: using guessed type int dropGoldFlag;
 // 4B8960: using guessed type int talkflag;
 // 4B8C98: using guessed type int spselflag;
 // 52575C: using guessed type int doomflag;
@@ -813,7 +812,6 @@ BOOL __fastcall LeftMouseDown(int wParam)
 	return 0;
 }
 // 484368: using guessed type int FriendlyMode;
-// 4B84DC: using guessed type int dropGoldFlag;
 // 4B851C: using guessed type int lvlbtndown;
 // 4B8960: using guessed type int talkflag;
 // 4B8968: using guessed type int sbookflag;
@@ -1227,7 +1225,6 @@ void __fastcall PressKey(int vkey)
 		}
 	}
 }
-// 4B84DC: using guessed type int dropGoldFlag;
 // 4B8960: using guessed type int talkflag;
 // 4B8968: using guessed type int sbookflag;
 // 4B8C98: using guessed type int spselflag;
@@ -1549,7 +1546,6 @@ void __fastcall PressChar(int vkey)
 		}
 	}
 }
-// 4B84DC: using guessed type int dropGoldFlag;
 // 4B8968: using guessed type int sbookflag;
 // 4B8C98: using guessed type int spselflag;
 // 52569C: using guessed type int zoomflag;

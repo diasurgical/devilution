@@ -28,10 +28,10 @@ void __fastcall CheckBookLevel(int pnum);
 void __fastcall CheckQuestItem(int pnum);
 void __fastcall InvGetItem(int pnum, int ii);
 void __fastcall AutoGetItem(int pnum, int ii);
-int __fastcall FindGetItem(int indx, unsigned short ci, int iseed);
-void __fastcall SyncGetItem(int x, int y, int idx, unsigned short ci, int iseed);
-int __fastcall CanPut(int i, int j);
-int __cdecl TryInvPut();
+int __fastcall FindGetItem(int indx, WORD ci, int iseed);
+void __fastcall SyncGetItem(int x, int y, int idx, WORD ci, int iseed);
+BOOL __fastcall CanPut(int x, int y);
+BOOL __cdecl TryInvPut();
 void __fastcall DrawInvMsg(char *msg);
 int __fastcall InvPutItem(int pnum, int x, int y);
 int __fastcall SyncPutItem(int pnum, int x, int y, int idx, WORD icreateinfo, int iseed, int Id, int dur, int mdur, int ch, int mch, int ivalue, unsigned int ibuff);
@@ -44,7 +44,7 @@ void __cdecl StartGoldDrop();
 int __fastcall UseInvItem(int pnum, int cii);
 void __cdecl DoTelekinesis();
 int __fastcall CalculateGold(int pnum);
-int __cdecl DropItemBeforeTrig();
+BOOL __cdecl DropItemBeforeTrig();
 
 /* data */
 

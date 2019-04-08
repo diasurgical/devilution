@@ -1843,7 +1843,7 @@ void __fastcall StartStore(char s)
 		invflag = 0;
 		chrflag = 0;
 		questlog = 0;
-		dropGoldFlag = 0;
+		dropGoldFlag = FALSE;
 		ClearSText(0, 24);
 		ReleaseStoreBtn();
 		switch (t) {
@@ -1933,7 +1933,6 @@ void __fastcall StartStore(char s)
 			break;
 	}
 }
-// 4B84DC: using guessed type int dropGoldFlag;
 // 4B8968: using guessed type int sbookflag;
 // 69BD04: using guessed type int questlog;
 // 69F10C: using guessed type int storenumh;

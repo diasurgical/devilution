@@ -3639,7 +3639,7 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 	int min, max;
 
 	if (dropGoldFlag) {
-		dropGoldFlag = 0;
+		dropGoldFlag = FALSE;
 		dropGoldValue = 0;
 	}
 
@@ -4157,7 +4157,6 @@ void __fastcall OperateShrine(int pnum, int i, int sType)
 	if (pnum == myplr)
 		NetSendCmdParam2(FALSE, CMD_PLROPOBJ, pnum, i);
 }
-// 4B84DC: using guessed type int dropGoldFlag;
 // 52571C: using guessed type int drawpanflag;
 // 676190: using guessed type int deltaload;
 

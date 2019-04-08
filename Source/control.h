@@ -5,7 +5,7 @@
 extern void *pDurIcons;
 extern void *pChrButtons;
 extern BOOL drawhpflag;  // idb
-extern int dropGoldFlag; // weak
+extern BOOL dropGoldFlag;
 extern int panbtn[8];
 extern int chrbtn[4];
 extern void *pMultiBtns;
