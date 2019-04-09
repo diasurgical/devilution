@@ -701,13 +701,9 @@ BOOLEAN mpqapi_write_hash_table()
 	return v2 && NumberOfBytesWritten == 0x8000;
 }
 
-BOOLEAN mpqapi_can_seek()
+BOOL mpqapi_can_seek()
 {
-	BOOLEAN result; // al
-
 	if (SetFilePointer(sghArchive, sgdwMpqOffset, NULL, FILE_BEGIN) == -1)
-		result = 0;
-	else
-		result = SetEndOfFile(sghArchive);
-	return result;
+		return FALSE;
+	return SetEndOfFile(sghArchive);
 }
