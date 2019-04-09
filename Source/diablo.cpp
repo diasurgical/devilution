@@ -1908,11 +1908,11 @@ void timeout_cursor(BOOL bTimeout)
 
 void diablo_color_cyc_logic()
 {
-	DWORD v0; // eax
+	DWORD tc; // eax
 
-	v0 = GetTickCount();
-	if (v0 - color_cycle_timer >= 0x32) {
-		color_cycle_timer = v0;
+	tc = GetTickCount();
+	if (tc - color_cycle_timer >= 0x32) {
+		color_cycle_timer = tc;
 		if (palette_get_colour_cycling()) {
 			if (leveltype == DTYPE_HELL) {
 				lighting_color_cycling();

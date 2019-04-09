@@ -280,12 +280,12 @@ void palette_update_quest_palette(int n)
 	palette_update();
 }
 
-BOOLEAN palette_get_colour_cycling()
+BOOL palette_get_colour_cycling()
 {
 	return color_cycling_enabled;
 }
 
-void palette_set_color_cycling(BOOLEAN enabled)
+void palette_set_color_cycling(BOOL enabled)
 {
 	color_cycling_enabled = enabled;
 }
