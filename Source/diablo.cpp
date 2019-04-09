@@ -987,20 +987,18 @@ BOOL __fastcall PressSysKey(int wParam)
 
 void __fastcall diablo_hotkey_msg(int dwMsg)
 {
-	int v1;                  // esi
-	char *v2;                // eax
-	char Filename[260];      // [esp+4h] [ebp-154h]
-	char ReturnedString[80]; // [esp+108h] [ebp-50h]
+	char Filename[MAX_PATH];
+	char ReturnedString[MAX_SEND_STR_LEN];
+	char *separator;
 
-	v1 = dwMsg;
 	if (gbMaxPlayers != 1) {
-		if (!GetModuleFileName(ghInst, Filename, 0x104u))
+		if (!GetModuleFileName(ghInst, Filename, sizeof(Filename)))
 			app_fatal("Can't get program name");
-		v2 = strrchr(Filename, '\\');
-		if (v2)
-			*v2 = 0;
+		separator = strrchr(Filename, '\\');
+		if (separator)
+			*separator = NULL;
 		strcat(Filename, "\\Diablo.ini");
-		GetPrivateProfileString("NetMsg", spszMsgKeyTbl[v1], spszMsgTbl[v1], ReturnedString, 0x50u, Filename);
+		GetPrivateProfileString("NetMsg", spszMsgKeyTbl[dwMsg], spszMsgTbl[dwMsg], ReturnedString, sizeof(ReturnedString), Filename);
 		NetSendCmdString(-1, ReturnedString);
 	}
 }
