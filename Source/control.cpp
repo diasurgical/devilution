@@ -580,15 +580,12 @@ void DrawSpellList()
 
 void SetSpell()
 {
-	int v0; // eax
-
 	spselflag = 0;
 	if (pSpell != -1) {
 		ClearPanel();
-		v0 = myplr;
 		drawpanflag = 255;
-		plr[v0]._pRSpell = pSpell;
-		_LOBYTE(plr[v0]._pRSplType) = pSplType;
+		plr[myplr]._pRSpell = pSpell;
+		plr[myplr]._pRSplType = pSplType;
 	}
 }
 // 4B8834: using guessed type int pSpell;
