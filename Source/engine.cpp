@@ -699,8 +699,8 @@ void CelDecodeHdrLightTrans(BYTE *pBuff, BYTE *pCelBuff, int nCel, int nWidth, i
  */
 void CelDrawHdrLightRed(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap, char light)
 {
-	int w, hdr, idx, nDataSize, v1;
-	BYTE *src, *dst, *tbl, *pRLEBytes;
+	int w, idx, nDataStart, nDataCap, nDataSize;
+	BYTE *src, *dst, *tbl;
 	DWORD *pFrameTable;
 
 	/// ASSERT: assert(gpBuffer);
@@ -710,22 +710,24 @@ void CelDrawHdrLightRed(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, in
 	if (!pCelBuff)
 		return;
 
-	pFrameTable = (DWORD *)&pCelBuff[4 * nCel];
-	pRLEBytes = &pCelBuff[pFrameTable[0]];
-	hdr = *(WORD *)&pRLEBytes[CelSkip];
-	if (!hdr)
+	pFrameTable = (DWORD *)pCelBuff;
+	src = &pCelBuff[pFrameTable[nCel]];
+	nDataStart = *(WORD *)&src[CelSkip];
+	if (!nDataStart)
 		return;
 
-	if (CelCap == 8)
-		v1 = 0;
-	else
-		v1 = *(WORD *)&pRLEBytes[CelCap];
-	if (v1)
-		nDataSize = v1 - hdr;
-	else
-		nDataSize = pFrameTable[1] - pFrameTable[0] - hdr;
+	nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
 
-	src = &pRLEBytes[hdr];
+	if (CelCap == 8)
+		nDataCap = 0;
+	else
+		nDataCap = *(WORD *)&src[CelCap];
+	if (nDataCap)
+		nDataSize = nDataCap - nDataStart;
+	else
+		nDataSize -= nDataStart;
+
+	src += nDataStart;
 	dst = &gpBuffer[sx + screen_y_times_768[sy - 16 * CelSkip]];
 
 	idx = light4flag ? 1024 : 4096;
