@@ -3170,38 +3170,31 @@ void __cdecl S_BBuyEnter()
 
 void __cdecl StoryIdItem()
 {
-	int v0; // ecx
-	int v1; // eax
-	int v2; // eax
+	int idx;
 
-	v0 = storehidx[((stextlhold - stextup) >> 2) + stextvhold];
-	v1 = myplr;
-	if (v0 >= 0) {
-		plr[myplr].InvList[v0]._iIdentified = TRUE;
-	} else {
-		if (v0 == -1)
+	idx = storehidx[((stextlhold - stextup) >> 2) + stextvhold];
+	if (idx < 0) {
+		if (idx == -1)
 			plr[myplr].InvBody[INVLOC_HEAD]._iIdentified = TRUE;
-		if (v0 == -2)
-			plr[v1].InvBody[INVLOC_CHEST]._iIdentified = TRUE;
-		if (v0 == -3)
-			plr[v1].InvBody[INVLOC_HAND_LEFT]._iIdentified = TRUE;
-		if (v0 == -4)
-			plr[v1].InvBody[INVLOC_HAND_RIGHT]._iIdentified = TRUE;
-		if (v0 == -5)
-			plr[v1].InvBody[INVLOC_RING_LEFT]._iIdentified = TRUE;
-		if (v0 == -6)
-			plr[v1].InvBody[INVLOC_RING_RIGHT]._iIdentified = TRUE;
-		if (v0 == -7)
-			plr[v1].InvBody[INVLOC_AMULET]._iIdentified = TRUE;
+		if (idx == -2)
+			plr[myplr].InvBody[INVLOC_CHEST]._iIdentified = TRUE;
+		if (idx == -3)
+			plr[myplr].InvBody[INVLOC_HAND_LEFT]._iIdentified = TRUE;
+		if (idx == -4)
+			plr[myplr].InvBody[INVLOC_HAND_RIGHT]._iIdentified = TRUE;
+		if (idx == -5)
+			plr[myplr].InvBody[INVLOC_RING_LEFT]._iIdentified = TRUE;
+		if (idx == -6)
+			plr[myplr].InvBody[INVLOC_RING_RIGHT]._iIdentified = TRUE;
+		if (idx == -7)
+			plr[myplr].InvBody[INVLOC_AMULET]._iIdentified = TRUE;
+	} else {
+		plr[myplr].InvList[idx]._iIdentified = TRUE;
 	}
-	v2 = v1;
-	plr[v2].HoldItem._iIdentified = TRUE;
-	TakePlrsMoney(plr[v2].HoldItem._iIvalue);
-	CalcPlrInv(myplr, 1u);
+	plr[myplr].HoldItem._iIdentified = TRUE;
+	TakePlrsMoney(plr[myplr].HoldItem._iIvalue);
+	CalcPlrInv(myplr, TRUE);
 }
-// 69F108: using guessed type int stextup;
-// 69F110: using guessed type int stextlhold;
-// 6A8A24: using guessed type int stextvhold;
 
 void __cdecl S_ConfirmEnter()
 {
