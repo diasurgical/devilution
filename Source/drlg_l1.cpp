@@ -1527,85 +1527,62 @@ void L5FillChambers()
 }
 // 5276A4: using guessed type int setloadflag;
 
-void DRLG_L5GChamber(int sx, int sy, BOOLEAN topflag, BOOLEAN bottomflag, BOOLEAN leftflag, BOOLEAN rightflag)
+void DRLG_L5GChamber(int sx, int sy, BOOL topflag, BOOL bottomflag, BOOL leftflag, BOOL rightflag)
 {
-	int v6;         // eax
-	int v7;         // edx
-	int v8;         // eax
-	char *v9;       // eax
-	int v10;        // eax
-	int v11;        // ecx
-	int v12;        // eax
-	char *v13;      // eax
-	signed int v14; // edi
-	int v15;        // eax
-	int v16;        // edx
-	int v17;        // ecx
-	signed int v18; // esi
+	int i, j;
 
-	if (topflag == 1) {
-		v6 = sy + 40 * sx;
-		dungeon[2][v6] = 12;
-		dungeon[3][v6] = 12;
-		dungeon[4][v6] = 3;
-		dungeon[7][v6] = 9;
-		dungeon[8][v6] = 12;
-		dungeon[9][v6] = 2;
+	if(topflag == TRUE) {
+		dungeon[sx + 2][sy] = 12;
+		dungeon[sx + 3][sy] = 12;
+		dungeon[sx + 4][sy] = 3;
+		dungeon[sx + 7][sy] = 9;
+		dungeon[sx + 8][sy] = 12;
+		dungeon[sx + 9][sy] = 2;
 	}
-	if (bottomflag == 1) {
-		v7 = sy + 11;
-		v8 = v7 + 40 * sx;
-		dungeon[2][v8] = 10;
-		dungeon[3][v8] = 12;
-		dungeon[4][v8] = 8;
-		dungeon[7][v8] = 5;
-		dungeon[8][v8] = 12;
-		v9 = (char *)&dungeon[9][v8];
-		if (*v9 != 4)
-			*v9 = 21;
-		sy = v7 - 11;
+	if(bottomflag == TRUE) {
+		sy += 11;
+		dungeon[sx + 2][sy] = 10;
+		dungeon[sx + 3][sy] = 12;
+		dungeon[sx + 4][sy] = 8;
+		dungeon[sx + 7][sy] = 5;
+		dungeon[sx + 8][sy] = 12;
+		if(dungeon[sx + 9][sy] != 4) {
+			dungeon[sx + 9][sy] = 21;
+		}
+		sy -= 11;
 	}
-	if (leftflag == 1) {
-		v10 = sy + 40 * sx;
-		dungeon[0][v10 + 2] = 11;
-		dungeon[0][v10 + 3] = 11;
-		dungeon[0][v10 + 4] = 3;
-		dungeon[0][v10 + 7] = 8;
-		dungeon[0][v10 + 8] = 11;
-		dungeon[0][v10 + 9] = 1;
+	if(leftflag == TRUE) {
+		dungeon[sx][sy + 2] = 11;
+		dungeon[sx][sy + 3] = 11;
+		dungeon[sx][sy + 4] = 3;
+		dungeon[sx][sy + 7] = 8;
+		dungeon[sx][sy + 8] = 11;
+		dungeon[sx][sy + 9] = 1;
 	}
-	if (rightflag == 1) {
-		v11 = sx + 11;
-		v12 = sy + 40 * v11;
-		dungeon[0][v12 + 2] = 14;
-		dungeon[0][v12 + 3] = 11;
-		dungeon[0][v12 + 4] = 9;
-		dungeon[0][v12 + 7] = 5;
-		dungeon[0][v12 + 8] = 11;
-		v13 = (char *)&dungeon[0][v12 + 9];
-		if (*v13 != 4)
-			*v13 = 21;
-		sx = v11 - 11;
+	if(rightflag == TRUE) {
+		sx += 11;
+		dungeon[sx][sy + 2] = 14;
+		dungeon[sx][sy + 3] = 11;
+		dungeon[sx][sy + 4] = 9;
+		dungeon[sx][sy + 7] = 5;
+		dungeon[sx][sy + 8] = 11;
+		if(dungeon[sx][sy + 9] != 4) {
+			dungeon[sx][sy + 9] = 21;
+		}
+		sx -= 11;
 	}
-	v14 = 10;
-	v15 = sy + 40 * sx;
-	v16 = v15 + 1;
-	do {
-		v17 = v16;
-		v18 = 10;
-		do {
-			mydflags[1][v17] |= 0x40u;
-			dungeon[1][v17] = 13;
-			v17 += 40;
-			--v18;
-		} while (v18);
-		++v16;
-		--v14;
-	} while (v14);
-	dungeon[4][v15 + 4] = 15;
-	dungeon[7][v15 + 4] = 15;
-	dungeon[4][v15 + 7] = 15;
-	dungeon[7][v15 + 7] = 15;
+
+	for(j = 1; j < 11; j++) {
+		for(i = 1; i < 11; i++) {
+			dungeon[i + sx][j + sy] = 13;
+			mydflags[i + sx][j + sy] |= 0x40;
+		}
+	}
+
+	dungeon[sx + 4][sy + 4] = 15;
+	dungeon[sx + 7][sy + 4] = 15;
+	dungeon[sx + 4][sy + 7] = 15;
+	dungeon[sx + 7][sy + 7] = 15;
 }
 
 void DRLG_L5GHall(int x1, int y1, int x2, int y2)

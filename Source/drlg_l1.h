@@ -43,7 +43,7 @@ void L5VertWall(int i, int j, char p, int dy);
 void L5tileFix();
 void DRLG_L5Subs();
 void L5FillChambers();
-void DRLG_L5GChamber(int sx, int sy, BOOLEAN topflag, BOOLEAN bottomflag, BOOLEAN leftflag, BOOLEAN rightflag);
+void DRLG_L5GChamber(int sx, int sy, BOOL topflag, BOOL bottomflag, BOOL leftflag, BOOL rightflag);
 void DRLG_L5GHall(int x1, int y1, int x2, int y2);
 void DRLG_L5SetRoom(int rx1, int ry1);
 void DRLG_L5FloodTVal();
