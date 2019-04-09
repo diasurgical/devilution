@@ -5,7 +5,7 @@
 PALETTEENTRY logical_palette[256];
 PALETTEENTRY system_palette[256];
 PALETTEENTRY orig_palette[256];
-UINT gdwPalEntries;
+int gdwPalEntries;
 
 /* data */
 
@@ -67,25 +67,27 @@ void LoadGamma()
 
 void LoadSysPal()
 {
-	HDC hDC;         // ebx
-	int i;           // ecx
-	int iStartIndex; // edi
+	HDC hDC;
+	int i, iStartIndex;
 
 	for (i = 0; i < 256; i++)
 		system_palette[i].peFlags = PC_NOCOLLAPSE | PC_RESERVED;
 
 	if (!fullscreen) {
 		hDC = GetDC(NULL);
+
 		gdwPalEntries = GetDeviceCaps(hDC, NUMRESERVED) / 2;
 		GetSystemPaletteEntries(hDC, 0, gdwPalEntries, system_palette);
 		for (i = 0; i < gdwPalEntries; i++)
 			system_palette[i].peFlags = 0;
+
 		iStartIndex = 256 - gdwPalEntries;
 		GetSystemPaletteEntries(hDC, iStartIndex, gdwPalEntries, &system_palette[iStartIndex]);
 		if (iStartIndex < 256) {
 			for (i = iStartIndex; i < 256; i++)
 				system_palette[i].peFlags = 0;
 		}
+
 		ReleaseDC(NULL, hDC);
 	}
 }

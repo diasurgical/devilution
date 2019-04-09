@@ -5,7 +5,7 @@
 extern PALETTEENTRY logical_palette[256];
 extern PALETTEENTRY system_palette[256];
 extern PALETTEENTRY orig_palette[256];
-extern UINT gdwPalEntries;
+extern int gdwPalEntries;
 
 void SaveGamma();
 void palette_init();
