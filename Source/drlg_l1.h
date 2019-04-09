@@ -3,7 +3,7 @@
 #define __DRLG_L1_H__
 
 extern char L5dungeon[80][80];
-extern char mydflags[40][40];
+extern unsigned char L5dflags[40][40];
 extern int setloadflag; // weak
 extern int HR1;
 extern int HR2;
