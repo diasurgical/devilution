@@ -3009,42 +3009,27 @@ void __cdecl S_WRechargeEnter()
 
 void __cdecl S_BoyEnter()
 {
-	signed int v0; // ecx
-
-	v0 = boyitem._itype;
 	if (boyitem._itype != -1 && stextsel == 18) {
-		v0 = 50;
-		if (plr[myplr]._pGold >= 50) {
-			TakePlrsMoney(50);
-			_LOBYTE(v0) = STORE_BBOY;
-		} else {
+		if (plr[myplr]._pGold < 50) {
 			stextshold = 12;
 			stextlhold = 18;
 			stextvhold = stextsval;
-			_LOBYTE(v0) = STORE_NOMONEY;
+			StartStore(STORE_NOMONEY);
+		} else {
+			TakePlrsMoney(50);
+			StartStore(STORE_BBOY);
 		}
-		goto LABEL_5;
-	}
-	if (stextsel == 8 && boyitem._itype != -1 || stextsel == 12 && boyitem._itype == -1) {
+	} else if (stextsel == 8 && boyitem._itype != -1 || stextsel == 12 && boyitem._itype == -1) {
 		talker = 8;
 		stextshold = 12;
 		stextlhold = stextsel;
 		gossipstart = QUEST_WIRT2;
 		gossipend = QUEST_WIRT12;
-		_LOBYTE(v0) = STORE_GOSSIP;
-	LABEL_5:
-		StartStore(v0);
-		return;
+		StartStore(STORE_GOSSIP);
+	} else {
+		stextflag = 0;
 	}
-	stextflag = 0;
 }
-// 69F110: using guessed type int stextlhold;
-// 69FB38: using guessed type int talker;
-// 6A4EF0: using guessed type int gossipstart;
-// 6A8A24: using guessed type int stextvhold;
-// 6A8A28: using guessed type int stextsel;
-// 6A8A30: using guessed type int gossipend;
-// 6AA705: using guessed type char stextflag;
 
 void __cdecl BoyBuyItem()
 {
