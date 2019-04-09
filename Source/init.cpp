@@ -144,10 +144,9 @@ void init_disable_screensaver(BOOLEAN disable)
 
 void init_create_window(int nCmdShow)
 {
-	int nHeight;      // eax
-	HWND hWnd;        // esi
-	WNDCLASSEXA wcex; // [esp+8h] [ebp-34h]
-	int nWidth;       // [esp+38h] [ebp-4h]
+	int nWidth, nHeight;
+	HWND hWnd;
+	WNDCLASSEXA wcex;
 
 	init_kill_mom_parent();
 	pfile_init_save_directory();
@@ -164,14 +163,14 @@ void init_create_window(int nCmdShow)
 	wcex.hIconSm = (HICON)LoadImage(ghInst, MAKEINTRESOURCE(IDI_ICON1), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
 	if (!RegisterClassEx(&wcex))
 		app_fatal("Unable to register window class");
-	if (GetSystemMetrics(SM_CXSCREEN) >= 640)
-		nWidth = GetSystemMetrics(SM_CXSCREEN);
-	else
+	if (GetSystemMetrics(SM_CXSCREEN) < 640)
 		nWidth = 640;
-	if (GetSystemMetrics(SM_CYSCREEN) >= 480)
-		nHeight = GetSystemMetrics(SM_CYSCREEN);
 	else
+		nWidth = GetSystemMetrics(SM_CXSCREEN);
+	if (GetSystemMetrics(SM_CYSCREEN) < 480)
 		nHeight = 480;
+	else
+		nHeight = GetSystemMetrics(SM_CYSCREEN);
 	hWnd = CreateWindowEx(0, "DIABLO", "DIABLO", WS_POPUP, 0, 0, nWidth, nHeight, NULL, NULL, ghInst, NULL);
 	if (!hWnd)
 		app_fatal("Unable to create main window");
