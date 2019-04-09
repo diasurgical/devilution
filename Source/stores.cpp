@@ -3502,27 +3502,19 @@ void __cdecl S_TavernEnter()
 
 void __cdecl S_BarmaidEnter()
 {
-	int v0; // ecx
-
-	v0 = 12;
-	if (stextsel == 12) {
+	if (stextsel != 12) {
+		if (stextsel == 18) {
+			stextflag = 0;
+		}
+	} else {
 		stextlhold = 12;
 		talker = 7;
 		stextshold = 23;
 		gossipstart = QUEST_GILLIAN2;
 		gossipend = QUEST_GILLIAN10;
-		_LOBYTE(v0) = STORE_GOSSIP;
-		StartStore(v0);
-	} else if (stextsel == 18) {
-		stextflag = 0;
+		StartStore(STORE_GOSSIP);
 	}
 }
-// 69F110: using guessed type int stextlhold;
-// 69FB38: using guessed type int talker;
-// 6A4EF0: using guessed type int gossipstart;
-// 6A8A28: using guessed type int stextsel;
-// 6A8A30: using guessed type int gossipend;
-// 6AA705: using guessed type char stextflag;
 
 void __cdecl S_DrunkEnter()
 {
