@@ -67,7 +67,7 @@ void S_ScrollWBuy(int idx);
 void S_StartWBuy();
 BOOLEAN WitchSellOk(int i);
 void S_StartWSell();
-BOOLEAN WitchRechargeOk(int i);
+BOOL WitchRechargeOk(int i);
 void AddStoreHoldRecharge(ItemStruct itm, int i);
 void S_StartWRecharge();
 void S_StartNoMoney();
