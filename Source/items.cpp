@@ -3165,13 +3165,11 @@ void __cdecl ItemDoppel()
 					dItem[idoppelx][idoppely] = 0;
 			}
 		}
-
-		if (idoppely++ == 95)
+		idoppely++;
+		if (idoppely == 96)
 			idoppely = 16;
 	}
 }
-// 492EAC: using guessed type int idoppely;
-// 679660: using guessed type char gbMaxPlayers;
 
 void __cdecl ProcessItems()
 {
