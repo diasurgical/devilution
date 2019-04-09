@@ -1908,7 +1908,7 @@ void timeout_cursor(BOOL bTimeout)
 
 void diablo_color_cyc_logic()
 {
-	DWORD tc; // eax
+	DWORD tc;
 
 	tc = GetTickCount();
 	if (tc - color_cycle_timer >= 0x32) {
