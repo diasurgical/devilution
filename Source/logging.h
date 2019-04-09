@@ -2,7 +2,7 @@
 #ifndef __LOGGING_H__
 #define __LOGGING_H__
 
-extern CHAR FileName[260]; // idb
+extern CHAR FileName[MAX_PATH]; // idb
 extern char log_buffer[388];
 extern LPCVOID lpAddress;           // idb
 extern DWORD nNumberOfBytesToWrite; // idb

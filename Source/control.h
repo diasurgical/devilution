@@ -41,7 +41,7 @@ extern int sbookflag; // weak
 extern int chrflag;
 extern int drawbtnflag; // idb
 extern void *pSpellBkCel;
-extern char infostr[260];
+extern char infostr[MAX_PATH];
 extern int numpanbtns; // weak
 extern void *pStatusPanel;
 extern char panelstr[256];

@@ -3,7 +3,7 @@
 #include "../types.h"
 
 static CRITICAL_SECTION sgMemCrit;
-CHAR FileName[260]; // idb
+CHAR FileName[MAX_PATH]; // idb
 char log_buffer[388];
 LPCVOID lpAddress;           // idb
 DWORD nNumberOfBytesToWrite; // idb
@@ -73,13 +73,13 @@ HANDLE __cdecl log_create()
 	HANDLE v1;                  // ebx
 	HANDLE v2;                  // eax
 	char *v3;                   // edx
-	char Filename[260];         // [esp+Ch] [ebp-15Ch]
+	char Filename[MAX_PATH];         // [esp+Ch] [ebp-15Ch]
 	VS_FIXEDFILEINFO file_info; // [esp+110h] [ebp-58h]
 	char Buffer[32];            // [esp+144h] [ebp-24h]
 	DWORD pcbBuffer;            // [esp+164h] [ebp-4h]
 
 	if (log_not_created) {
-		if (GetModuleFileName(0, Filename, 0x104u) && (v0 = strrchr(Filename, '\\')) != 0)
+		if (GetModuleFileName(0, Filename, sizeof(Filename)) && (v0 = strrchr(Filename, '\\')) != 0)
 			v0[1] = 0;
 		else
 			Filename[0] = 0;
@@ -89,7 +89,7 @@ HANDLE __cdecl log_create()
 		log_get_version(&file_info);
 		_snprintf(
 		    FileName,
-		    0x104u,
+		    sizeof(Filename),
 		    "%s%s%02u%02u%02u.ERR",
 		    Filename,
 		    Buffer,
@@ -125,7 +125,7 @@ void __fastcall log_get_version(VS_FIXEDFILEINFO *file_info)
 	DWORD v2;           // esi
 	void *v3;           // ebx
 	unsigned int v4;    // eax
-	char Filename[260]; // [esp+8h] [ebp-114h]
+	char Filename[MAX_PATH]; // [esp+8h] [ebp-114h]
 	DWORD dwHandle;     // [esp+10Ch] [ebp-10h]
 	LPVOID lpBuffer;    // [esp+110h] [ebp-Ch]
 	unsigned int puLen; // [esp+114h] [ebp-8h]
@@ -133,7 +133,7 @@ void __fastcall log_get_version(VS_FIXEDFILEINFO *file_info)
 
 	v9 = file_info;
 	memset(file_info, 0, 0x34u);
-	if (GetModuleFileName(0, Filename, 0x104u)) {
+	if (GetModuleFileName(0, Filename, sizeof(Filename))) {
 		v1 = GetFileVersionInfoSize(Filename, &dwHandle);
 		v2 = v1;
 		if (v1) {

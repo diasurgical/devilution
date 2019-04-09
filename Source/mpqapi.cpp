@@ -251,7 +251,7 @@ void __fastcall mpqapi_remove_hash_entries(BOOL(__stdcall *fnGetName)(DWORD, cha
 {
 	DWORD dwIndex;
 	BOOL i;
-	char pszFileName[260];
+	char pszFileName[MAX_PATH];
 
 	dwIndex = 1;
 	for (i = fnGetName(0, pszFileName); i; i = fnGetName(dwIndex++, pszFileName)) {

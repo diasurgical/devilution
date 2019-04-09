@@ -2,7 +2,7 @@
 #ifndef __ERROR_H__
 #define __ERROR_H__
 
-extern char msgtable[80];
+extern char msgtable[MAX_SEND_STR_LEN];
 extern char msgdelay;
 extern char msgflag;
 extern char msgcnt;

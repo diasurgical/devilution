@@ -477,7 +477,7 @@ void __fastcall diablo_reload_process(HMODULE hModule)
 	_DWORD *v5;             // esi
 	HWND v6;                // eax
 	char Name[276];         // [esp+Ch] [ebp-29Ch]
-	char Filename[260];     // [esp+120h] [ebp-188h]
+	char Filename[MAX_PATH];     // [esp+120h] [ebp-188h]
 	STARTUPINFOA si;        // [esp+224h] [ebp-84h]
 	SYSTEM_INFO sinf;       // [esp+268h] [ebp-40h]
 	PROCESS_INFORMATION pi; // [esp+28Ch] [ebp-1Ch]
@@ -489,7 +489,7 @@ void __fastcall diablo_reload_process(HMODULE hModule)
 	memset(Filename, 0, sizeof(Filename));
 	//	*(_WORD *)&Filename[257] = 0;
 	//	Filename[259] = 0;
-	GetModuleFileName(hModule, Filename, 0x104u);
+	GetModuleFileName(hModule, Filename, sizeof(Filename));
 	wsprintf(Name, "Reload-%s", Filename);
 	for (i = Name; *i; ++i) {
 		if (*i == '\\')

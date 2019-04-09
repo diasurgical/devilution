@@ -2,7 +2,7 @@
 
 #include "../types.h"
 
-char msgtable[80];
+char msgtable[MAX_SEND_STR_LEN];
 char msgdelay;
 char msgflag;
 char msgcnt;

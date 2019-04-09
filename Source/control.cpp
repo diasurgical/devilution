@@ -18,7 +18,7 @@ char sgszTalkSave[8][80];
 int dropGoldValue; // idb
 BOOL drawmanaflag; // idb
 BOOL chrbtnactive;
-char sgszTalkMsg[80];
+char sgszTalkMsg[MAX_SEND_STR_LEN];
 BYTE *pPanelText;
 int frame_4B8800; // idb
 BYTE *pLifeBuff;
@@ -46,7 +46,7 @@ int sbookflag; // weak
 int chrflag;
 int drawbtnflag; // idb
 void *pSpellBkCel;
-char infostr[260];
+char infostr[MAX_PATH];
 int numpanbtns; // weak
 void *pStatusPanel;
 char panelstr[256];
