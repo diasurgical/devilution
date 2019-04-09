@@ -423,7 +423,7 @@ void gmenu_enable(TMenuItem *pMenuItem, BOOL enable)
 	if (enable)
 		pMenuItem->dwFlags |= 0x80000000;
 	else
-		pMenuItem->dwFlags &= 0x7F000000;
+		pMenuItem->dwFlags &= ~0x80000000;
 }
 
 void gmenu_slider_1(TMenuItem *pItem, int min, int max, int gamma)
