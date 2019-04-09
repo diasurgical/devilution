@@ -3478,27 +3478,20 @@ void __cdecl S_TalkEnter()
 
 void __cdecl S_TavernEnter()
 {
-	int v0; // ecx
-
-	v0 = 12;
-	if (stextsel == 12) {
+	switch (stextsel) {
+	case 12:
 		stextlhold = 12;
 		talker = 3;
 		stextshold = 21;
 		gossipstart = QUEST_OGDEN2;
 		gossipend = QUEST_OGDEN10;
-		_LOBYTE(v0) = STORE_GOSSIP;
-		StartStore(v0);
-	} else if (stextsel == 18) {
+		StartStore(STORE_GOSSIP);
+		break;
+	case 18:
 		stextflag = 0;
+		break;
 	}
 }
-// 69F110: using guessed type int stextlhold;
-// 69FB38: using guessed type int talker;
-// 6A4EF0: using guessed type int gossipstart;
-// 6A8A28: using guessed type int stextsel;
-// 6A8A30: using guessed type int gossipend;
-// 6AA705: using guessed type char stextflag;
 
 void __cdecl S_BarmaidEnter()
 {
