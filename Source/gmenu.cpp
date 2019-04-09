@@ -9,7 +9,7 @@ TMenuItem *sgpCurrItem;
 void *BigTGold_cel;
 int dword_634474; // weak
 char byte_634478; // weak
-void(__fastcall *dword_63447C)(TMenuItem *);
+void(*dword_63447C)(TMenuItem *);
 TMenuItem *dword_634480; // idb
 void *option_cel;
 void *sgpLogo;
@@ -39,7 +39,7 @@ const unsigned char lfontkern[56] = {
 	11, 10, 12, 11, 21, 23
 };
 
-void __cdecl gmenu_draw_pause()
+void gmenu_draw_pause()
 {
 	if (currlevel)
 		RedBack();
@@ -50,7 +50,7 @@ void __cdecl gmenu_draw_pause()
 }
 // 69BEF8: using guessed type int light_table_index;
 
-void __fastcall gmenu_print_text(int x, int y, char *pszStr)
+void gmenu_print_text(int x, int y, char *pszStr)
 {
 	char *v3;         // edi
 	int v4;           // ebp
@@ -70,7 +70,7 @@ void __fastcall gmenu_print_text(int x, int y, char *pszStr)
 	}
 }
 
-void __cdecl FreeGMenu()
+void FreeGMenu()
 {
 	void *ptr;
 
@@ -91,7 +91,7 @@ void __cdecl FreeGMenu()
 	mem_free_dbg(ptr);
 }
 
-void __cdecl gmenu_init_menu()
+void gmenu_init_menu()
 {
 	byte_634478 = 1;
 	dword_634480 = 0;
@@ -109,16 +109,16 @@ void __cdecl gmenu_init_menu()
 // 634478: using guessed type char byte_634478;
 // 63448C: using guessed type int dword_63448C;
 
-BOOL __cdecl gmenu_exception()
+BOOL gmenu_exception()
 {
 	return dword_634480 != 0;
 }
 
-void __fastcall gmenu_call_proc(TMenuItem *pItem, void(__fastcall *gmFunc)(TMenuItem *))
+void gmenu_call_proc(TMenuItem *pItem, void(*gmFunc)(TMenuItem *))
 {
 	TMenuItem *v2;         // eax
 	int v3;                // ecx
-	void(__fastcall * *v4)(BOOL); // edx
+	void(* *v4)(BOOL); // edx
 
 	PauseMode = 0;
 	byte_634464 = 0;
@@ -146,7 +146,7 @@ void __fastcall gmenu_call_proc(TMenuItem *pItem, void(__fastcall *gmFunc)(TMenu
 // 634464: using guessed type char byte_634464;
 // 63448C: using guessed type int dword_63448C;
 
-void __fastcall gmenu_up_down(int a1)
+void gmenu_up_down(int a1)
 {
 	TMenuItem *v1; // eax
 	int v2;        // edi
@@ -181,7 +181,7 @@ void __fastcall gmenu_up_down(int a1)
 // 634464: using guessed type char byte_634464;
 // 63448C: using guessed type int dword_63448C;
 
-void __cdecl gmenu_draw()
+void gmenu_draw()
 {
 	int v0;       // edi
 	TMenuItem *i; // esi
@@ -207,7 +207,7 @@ void __cdecl gmenu_draw()
 // 634474: using guessed type int dword_634474;
 // 634478: using guessed type char byte_634478;
 
-void __fastcall gmenu_draw_menu_item(TMenuItem *pItem, int a2)
+void gmenu_draw_menu_item(TMenuItem *pItem, int a2)
 {
 	int v2;           // edi
 	TMenuItem *v3;    // ebx
@@ -255,7 +255,7 @@ void __fastcall gmenu_draw_menu_item(TMenuItem *pItem, int a2)
 // 634478: using guessed type char byte_634478;
 // 69BEF8: using guessed type int light_table_index;
 
-void __fastcall gmenu_clear_buffer(int x, int y, int width, int height)
+void gmenu_clear_buffer(int x, int y, int width, int height)
 {
 	int v4;  // edi
 	char *i; // esi
@@ -267,7 +267,7 @@ void __fastcall gmenu_clear_buffer(int x, int y, int width, int height)
 	}
 }
 
-int __fastcall gmenu_get_lfont(TMenuItem *pItem)
+int gmenu_get_lfont(TMenuItem *pItem)
 {
 	char *v2;         // eax
 	int i;            // edx
@@ -285,7 +285,7 @@ int __fastcall gmenu_get_lfont(TMenuItem *pItem)
 	return i - 2;
 }
 
-BOOL __fastcall gmenu_presskeys(int a1)
+BOOL gmenu_presskeys(int a1)
 {
 	if (!dword_634480)
 		return 0;
@@ -318,7 +318,7 @@ BOOL __fastcall gmenu_presskeys(int a1)
 	return TRUE;
 }
 
-void __fastcall gmenu_left_right(int a1)
+void gmenu_left_right(int a1)
 {
 	signed int v1;   // edx
 	unsigned int v2; // eax
@@ -343,7 +343,7 @@ void __fastcall gmenu_left_right(int a1)
 	}
 }
 
-BOOL __cdecl gmenu_on_mouse_move()
+BOOL gmenu_on_mouse_move()
 {
 	int a1; // [esp+0h] [ebp-4h]
 
@@ -359,7 +359,7 @@ BOOL __cdecl gmenu_on_mouse_move()
 // 41A37A: could not find valid save-restore pair for esi
 // 634464: using guessed type char byte_634464;
 
-BOOLEAN __fastcall gmenu_valid_mouse_pos(int *plOffset)
+BOOLEAN gmenu_valid_mouse_pos(int *plOffset)
 {
 	*plOffset = 282;
 	if (MouseX < 282) {
@@ -374,7 +374,7 @@ BOOLEAN __fastcall gmenu_valid_mouse_pos(int *plOffset)
 	return 1;
 }
 
-int __fastcall gmenu_left_mouse(int a1)
+int gmenu_left_mouse(int a1)
 {
 	int result;      // eax
 	unsigned int v2; // eax
@@ -418,7 +418,7 @@ int __fastcall gmenu_left_mouse(int a1)
 // 634464: using guessed type char byte_634464;
 // 63448C: using guessed type int dword_63448C;
 
-void __fastcall gmenu_enable(TMenuItem *pMenuItem, BOOL enable)
+void gmenu_enable(TMenuItem *pMenuItem, BOOL enable)
 {
 	if (enable)
 		pMenuItem->dwFlags |= 0x80000000;
@@ -426,7 +426,7 @@ void __fastcall gmenu_enable(TMenuItem *pMenuItem, BOOL enable)
 		pMenuItem->dwFlags &= 0x7F000000;
 }
 
-void __fastcall gmenu_slider_1(TMenuItem *pItem, int min, int max, int gamma)
+void gmenu_slider_1(TMenuItem *pItem, int min, int max, int gamma)
 {
 	unsigned int v4; // esi
 	int v5;          // eax
@@ -439,7 +439,7 @@ void __fastcall gmenu_slider_1(TMenuItem *pItem, int min, int max, int gamma)
 	pItem->dwFlags = v4 | (v5 * (gamma - min) + (max - min - 1) / 2) / (max - min);
 }
 
-int __fastcall gmenu_slider_get(TMenuItem *pItem, int min, int max)
+int gmenu_slider_get(TMenuItem *pItem, int min, int max)
 {
 	int v3;          // eax
 	unsigned int v4; // ecx
@@ -451,7 +451,7 @@ int __fastcall gmenu_slider_get(TMenuItem *pItem, int min, int max)
 	return min + (v4 * (max - min) + (v3 - 1) / 2) / v3;
 }
 
-void __fastcall gmenu_slider_3(TMenuItem *pItem, int dwTicks)
+void gmenu_slider_3(TMenuItem *pItem, int dwTicks)
 {
 	pItem->dwFlags ^= (pItem->dwFlags ^ (dwTicks << 12)) & 0xFFF000;
 }

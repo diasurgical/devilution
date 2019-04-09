@@ -6,21 +6,21 @@ void *pSquareCel;
 char dMonsDbg[NUMLEVELS][MAXDUNX][MAXDUNY];
 char dFlagDbg[NUMLEVELS][MAXDUNX][MAXDUNY];
 
-void __cdecl LoadDebugGFX()
+void LoadDebugGFX()
 {
 	if (visiondebug)
 		pSquareCel = LoadFileInMem("Data\\Square.CEL", 0);
 }
 // 525720: using guessed type int visiondebug;
 
-void __cdecl FreeDebugGFX()
+void FreeDebugGFX()
 {
 	void *temp = pSquareCel;
 	pSquareCel = NULL;
 	mem_free_dbg(temp);
 }
 
-void __cdecl CheckDungeonClear()
+void CheckDungeonClear()
 {
 	int i;
 	int j;
@@ -39,7 +39,7 @@ void __cdecl CheckDungeonClear()
 }
 
 #ifdef _DEBUG
-void __cdecl GiveGoldCheat()
+void GiveGoldCheat()
 {
 	int i;  // esi
 	int ni; // ebp
@@ -57,7 +57,7 @@ void __cdecl GiveGoldCheat()
 	}
 }
 
-void __cdecl StoresCheat()
+void StoresCheat()
 {
 	int i; // eax
 
@@ -74,7 +74,7 @@ void __cdecl StoresCheat()
 	SpawnWitch(30);
 }
 
-void __cdecl TakeGoldCheat()
+void TakeGoldCheat()
 {
 	int i;   // esi
 	char ig; // cl
@@ -93,7 +93,7 @@ void __cdecl TakeGoldCheat()
 	plr[myplr]._pGold = 0;
 }
 
-void __cdecl MaxSpellsCheat()
+void MaxSpellsCheat()
 {
 	int i;
 
@@ -105,13 +105,13 @@ void __cdecl MaxSpellsCheat()
 	}
 }
 
-void __fastcall SetSpellLevelCheat(char spl, int spllvl)
+void SetSpellLevelCheat(char spl, int spllvl)
 {
 	plr[myplr]._pMemSpells |= (__int64)1 << (spl - 1);
 	plr[myplr]._pSplLvl[spl] = spllvl;
 }
 
-void __cdecl SetAllSpellsCheat()
+void SetAllSpellsCheat()
 {
 	SetSpellLevelCheat(SPL_FIREBOLT, 8);
 	SetSpellLevelCheat(SPL_CBOLT, 11);
@@ -137,7 +137,7 @@ void __cdecl SetAllSpellsCheat()
 	SetSpellLevelCheat(SPL_BONESPIRIT, 1);
 }
 
-void __fastcall PrintDebugPlayer(BOOLEAN bNextPlayer)
+void PrintDebugPlayer(BOOLEAN bNextPlayer)
 {
 	char dstr[128]; // [esp+Ch] [ebp-80h]
 
@@ -161,7 +161,7 @@ void __fastcall PrintDebugPlayer(BOOLEAN bNextPlayer)
 	}
 }
 
-void __cdecl PrintDebugQuest()
+void PrintDebugQuest()
 {
 	char dstr[128]; // [esp+0h] [ebp-80h]
 
@@ -171,7 +171,7 @@ void __cdecl PrintDebugQuest()
 		dbgqst = 0;
 }
 
-void __fastcall PrintDebugMonster(int m)
+void PrintDebugMonster(int m)
 {
 	BOOLEAN bActive; // ecx
 	int i;           // eax
@@ -197,7 +197,7 @@ void __fastcall PrintDebugMonster(int m)
 	NetSendCmdString(1 << myplr, dstr);
 }
 
-void __cdecl GetDebugMonster()
+void GetDebugMonster()
 {
 	int v0; // ecx
 	int v1; // eax
@@ -216,7 +216,7 @@ void __cdecl GetDebugMonster()
 	PrintDebugMonster(v0);
 }
 
-void __cdecl NextDebugMonster()
+void NextDebugMonster()
 {
 	char dstr[128]; // [esp+0h] [ebp-80h]
 

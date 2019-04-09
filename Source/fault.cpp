@@ -19,14 +19,14 @@ fault_c_init(void)
 SEG_ALLOCATE(SEGMENT_C_INIT)
 _PVFV exception_c_init_funcs[] = { &fault_c_init };
 
-void __cdecl fault_init_filter()
+void fault_init_filter()
 {
 	fault_set_filter(&fault_unused);
 }
 
-void __cdecl fault_cleanup_filter_atexit()
+void fault_cleanup_filter_atexit()
 {
-	atexit((void (*)(void))fault_cleanup_filter);
+	atexit((void (__cdecl *)(void ))fault_cleanup_filter);
 }
 
 LPTOP_LEVEL_EXCEPTION_FILTER __cdecl fault_cleanup_filter()
@@ -83,7 +83,7 @@ LONG __stdcall TopLevelExceptionFilter(PEXCEPTION_POINTERS ExceptionInfo)
 	return EXCEPTION_CONTINUE_SEARCH;
 }
 
-void __fastcall fault_hex_format(BYTE *ptr, unsigned int numBytes)
+void fault_hex_format(BYTE *ptr, unsigned int numBytes)
 {
 	DWORD i, bytesRead;
 	const char *fmt;
@@ -124,7 +124,7 @@ void __fastcall fault_hex_format(BYTE *ptr, unsigned int numBytes)
 	log_printf("\r\n");
 }
 
-void __fastcall fault_unknown_module(LPCVOID lpAddress, LPSTR lpModuleName, int iMaxLength, int *sectionNum, int *sectionOffset)
+void fault_unknown_module(LPCVOID lpAddress, LPSTR lpModuleName, int iMaxLength, int *sectionNum, int *sectionOffset)
 {
 	MEMORY_BASIC_INFORMATION memInfo;
 	PIMAGE_DOS_HEADER dosHeader;
@@ -175,7 +175,7 @@ void __fastcall fault_unknown_module(LPCVOID lpAddress, LPSTR lpModuleName, int 
 	}
 }
 
-void __fastcall fault_call_stack(void *instr, STACK_FRAME *stackFrame)
+void fault_call_stack(void *instr, STACK_FRAME *stackFrame)
 {
 	STACK_FRAME *oldStackFrame;
 	char szModuleName[MAX_PATH];
@@ -200,7 +200,7 @@ void __fastcall fault_call_stack(void *instr, STACK_FRAME *stackFrame)
 	log_printf("\r\n");
 }
 
-char *__fastcall fault_get_error_type(DWORD dwMessageId, LPSTR lpString1, DWORD nSize)
+char *fault_get_error_type(DWORD dwMessageId, LPSTR lpString1, DWORD nSize)
 {
 	const char *s;
 
@@ -282,18 +282,18 @@ char *__fastcall fault_get_error_type(DWORD dwMessageId, LPSTR lpString1, DWORD 
 	return lpString1;
 }
 
-void *__fastcall fault_set_filter(void *unused)
+void *fault_set_filter(void *unused)
 {
 	lpTopLevelExceptionFilter = SetUnhandledExceptionFilter((LPTOP_LEVEL_EXCEPTION_FILTER)TopLevelExceptionFilter);
 	return unused;
 }
 
-LPTOP_LEVEL_EXCEPTION_FILTER __fastcall fault_reset_filter(void *unused)
+LPTOP_LEVEL_EXCEPTION_FILTER fault_reset_filter(void *unused)
 {
 	return SetUnhandledExceptionFilter(lpTopLevelExceptionFilter);
 }
 
-LPTOP_LEVEL_EXCEPTION_FILTER __cdecl fault_get_filter()
+LPTOP_LEVEL_EXCEPTION_FILTER fault_get_filter()
 {
 	return lpTopLevelExceptionFilter;
 }

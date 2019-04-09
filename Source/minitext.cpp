@@ -39,7 +39,7 @@ const unsigned char mfontkern[56] = {
 
 int qscroll_spd_tbl[9] = { 2, 4, 6, 8, 0, -1, -2, -3, -4 };
 
-void __cdecl FreeQuestText()
+void FreeQuestText()
 {
 	void *ptr;
 
@@ -51,7 +51,7 @@ void __cdecl FreeQuestText()
 	mem_free_dbg(ptr);
 }
 
-void __cdecl InitQuestText()
+void InitQuestText()
 {
 	unsigned char *v0; // eax
 
@@ -62,7 +62,7 @@ void __cdecl InitQuestText()
 }
 // 646D00: using guessed type char qtextflag;
 
-void __fastcall InitQTextMsg(int m)
+void InitQTextMsg(int m)
 {
 	if (alltext[m].scrlltxt) {
 		questlog = 0;
@@ -82,7 +82,7 @@ void __fastcall InitQTextMsg(int m)
 // 646D08: using guessed type int sgLastScroll;
 // 69BD04: using guessed type int questlog;
 
-void __cdecl DrawQTextBack()
+void DrawQTextBack()
 {
 	CelDecodeOnly(88, 487, (BYTE *)pTextBoxCels, 1, 591);
 
@@ -93,7 +93,7 @@ void __cdecl DrawQTextBack()
 #include "asm_trans_rect.inc"
 }
 
-void __fastcall PrintQTextChr(int sx, int sy, BYTE *pCelBuff, int nCel)
+void PrintQTextChr(int sx, int sy, BYTE *pCelBuff, int nCel)
 {
 	BYTE *dst, *pStart, *pEnd, *end;
 
@@ -210,7 +210,7 @@ void __fastcall PrintQTextChr(int sx, int sy, BYTE *pCelBuff, int nCel)
 #endif
 }
 
-void __cdecl DrawQText()
+void DrawQText()
 {
 	char *v0;          // edi
 	signed int v1;     // edx

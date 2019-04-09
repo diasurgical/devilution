@@ -289,7 +289,7 @@ const unsigned char L4BTYPES[140] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 };
 
-void __cdecl DRLG_LoadL4SP()
+void DRLG_LoadL4SP()
 {
 	setloadflag_2 = 0;
 	if (QuestStatus(QTYPE_WARLRD)) {
@@ -304,7 +304,7 @@ void __cdecl DRLG_LoadL4SP()
 // 5B50D8: using guessed type int setloadflag_2;
 // 679660: using guessed type char gbMaxPlayers;
 
-void __cdecl DRLG_FreeL4SP()
+void DRLG_FreeL4SP()
 {
 	char *ptr;
 
@@ -313,7 +313,7 @@ void __cdecl DRLG_FreeL4SP()
 	mem_free_dbg(ptr);
 }
 
-void __fastcall DRLG_L4SetSPRoom(int rx1, int ry1)
+void DRLG_L4SetSPRoom(int rx1, int ry1)
 {
 	int v2;   // edi
 	int v3;   // esi
@@ -356,7 +356,7 @@ void __fastcall DRLG_L4SetSPRoom(int rx1, int ry1)
 // 5CF330: using guessed type int setpc_h;
 // 5CF334: using guessed type int setpc_w;
 
-void __cdecl L4SaveQuads()
+void L4SaveQuads()
 {
 	char *v0;      // esi
 	char *v1;      // edx
@@ -403,7 +403,7 @@ void __cdecl L4SaveQuads()
 // 528A34: using guessed type int l4holdx;
 // 528A38: using guessed type int l4holdy;
 
-void __fastcall DRLG_L4SetRoom(unsigned char *pSetPiece, int rx1, int ry1)
+void DRLG_L4SetRoom(unsigned char *pSetPiece, int rx1, int ry1)
 {
 	int v3;            // ebx
 	int v4;            // edi
@@ -440,7 +440,7 @@ void __fastcall DRLG_L4SetRoom(unsigned char *pSetPiece, int rx1, int ry1)
 	}
 }
 
-void __fastcall DRLG_LoadDiabQuads(BOOL preflag)
+void DRLG_LoadDiabQuads(BOOL preflag)
 {
 	BYTE *dun;
 
@@ -482,7 +482,7 @@ void __fastcall DRLG_LoadDiabQuads(BOOL preflag)
 // 528A34: using guessed type int l4holdx;
 // 528A38: using guessed type int l4holdy;
 
-BOOLEAN __fastcall IsDURWall(char d)
+BOOLEAN IsDURWall(char d)
 {
 	BOOLEAN result; // al
 
@@ -493,7 +493,7 @@ BOOLEAN __fastcall IsDURWall(char d)
 	return result;
 }
 
-BOOLEAN __fastcall IsDLLWall(char dd)
+BOOLEAN IsDLLWall(char dd)
 {
 	BOOLEAN result; // al
 
@@ -504,7 +504,7 @@ BOOLEAN __fastcall IsDLLWall(char dd)
 	return result;
 }
 
-void __cdecl L4FixRim()
+void L4FixRim()
 {
 	char(*v0)[20]; // eax
 
@@ -521,7 +521,7 @@ void __cdecl L4FixRim()
 }
 // 52A4DC: using guessed type int dword_52A4DC;
 
-void __cdecl DRLG_L4GeneralFix()
+void DRLG_L4GeneralFix()
 {
 	signed int v0; // ecx
 	char *v1;      // eax
@@ -541,7 +541,7 @@ void __cdecl DRLG_L4GeneralFix()
 	} while (v0 < 39);
 }
 
-void __fastcall CreateL4Dungeon(int rseed, int entry)
+void CreateL4Dungeon(int rseed, int entry)
 {
 	int v2; // esi
 
@@ -565,7 +565,7 @@ void __fastcall CreateL4Dungeon(int rseed, int entry)
 // 5D2458: using guessed type int dminx;
 // 5D245C: using guessed type int dminy;
 
-void __fastcall DRLG_L4(int entry)
+void DRLG_L4(int entry)
 {
 	signed int v1; // ebp
 	//int v2; // eax
@@ -763,7 +763,7 @@ void __fastcall DRLG_L4(int entry)
 // 5B50D8: using guessed type int setloadflag_2;
 // 679660: using guessed type char gbMaxPlayers;
 
-void __cdecl DRLG_L4Shadows()
+void DRLG_L4Shadows()
 {
 	signed int v0; // esi
 	char *v1;      // eax
@@ -799,7 +799,7 @@ void __cdecl DRLG_L4Shadows()
 	} while (v0 < 40);
 }
 
-void __cdecl InitL4Dungeon()
+void InitL4Dungeon()
 {
 	signed int v0; // edx
 	signed int v1; // eax
@@ -821,7 +821,7 @@ void __cdecl InitL4Dungeon()
 	} while (v0 < 40);
 }
 
-void __cdecl L4makeDmt()
+void L4makeDmt()
 {
 	signed int v0; // ecx
 	char(*v1)[40]; // ebp
@@ -851,7 +851,7 @@ void __cdecl L4makeDmt()
 	} while (v0 <= 77);
 }
 
-void __cdecl L4AddWall()
+void L4AddWall()
 {
 	int v0;  // edi
 	int v1;  // esi
@@ -961,7 +961,7 @@ void __cdecl L4AddWall()
 	} while (v0 < 40);
 }
 
-int __fastcall L4HWallOk(int i, int j)
+int L4HWallOk(int i, int j)
 {
 	int v2;        // esi
 	int v3;        // edi
@@ -1013,7 +1013,7 @@ int __fastcall L4HWallOk(int i, int j)
 	return result;
 }
 
-int __fastcall L4VWallOk(int i, int j)
+int L4VWallOk(int i, int j)
 {
 	int v2;        // ecx
 	int result;    // eax
@@ -1060,7 +1060,7 @@ int __fastcall L4VWallOk(int i, int j)
 	return result;
 }
 
-void __fastcall L4HorizWall(int i, int j, int dx)
+void L4HorizWall(int i, int j, int dx)
 {
 	int v3;      // esi
 	int v4;      // edi
@@ -1113,7 +1113,7 @@ void __fastcall L4HorizWall(int i, int j, int dx)
 		*v12 = 59;
 }
 
-void __fastcall L4VertWall(int i, int j, int dy)
+void L4VertWall(int i, int j, int dy)
 {
 	int v3;      // edi
 	int v4;      // esi
@@ -1166,7 +1166,7 @@ void __fastcall L4VertWall(int i, int j, int dy)
 		*(v10 - 41) = 55;
 }
 
-void __cdecl L4tileFix()
+void L4tileFix()
 {
 	int i, j;
 
@@ -1512,7 +1512,7 @@ void __cdecl L4tileFix()
 	}
 }
 
-void __cdecl DRLG_L4Subs()
+void DRLG_L4Subs()
 {
 	signed int v0;    // edi
 	signed int v1;    // esi
@@ -1564,7 +1564,7 @@ void __cdecl DRLG_L4Subs()
 	} while (v6 < 40);
 }
 
-void __cdecl L4makeDungeon()
+void L4makeDungeon()
 {
 	signed int v0;  // ebx
 	signed int v1;  // esi
@@ -1666,7 +1666,7 @@ void __cdecl L4makeDungeon()
 	} while ((signed int)v26 > (signed int)&dung[18][19]);
 }
 
-void __cdecl uShape()
+void uShape()
 {
 	int v0;         // ecx
 	signed int v1;  // esi
@@ -1752,7 +1752,7 @@ void __cdecl uShape()
 	} while (v11);
 }
 
-int __cdecl GetArea()
+int GetArea()
 {
 	int result;    // eax
 	signed int v1; // edx
@@ -1775,7 +1775,7 @@ int __cdecl GetArea()
 	return result;
 }
 
-void __cdecl L4firstRoom()
+void L4firstRoom()
 {
 	int v0; // esi
 	int v1; // edi
@@ -1837,7 +1837,7 @@ LABEL_10:
 // 528A48: using guessed type int SP4y2;
 // 679660: using guessed type char gbMaxPlayers;
 
-void __fastcall L4drawRoom(int x, int y, int width, int height)
+void L4drawRoom(int x, int y, int width, int height)
 {
 	int i;    // esi
 	int v5;   // edi
@@ -1856,7 +1856,7 @@ void __fastcall L4drawRoom(int x, int y, int width, int height)
 	}
 }
 
-void __fastcall L4roomGen(int x, int y, int w, int h, int dir)
+void L4roomGen(int x, int y, int w, int h, int dir)
 {
 	int v5;   // eax
 	int v6;   // ecx
@@ -1956,7 +1956,7 @@ void __fastcall L4roomGen(int x, int y, int w, int h, int dir)
 	}
 }
 
-BOOLEAN __fastcall L4checkRoom(int x, int y, int width, int height)
+BOOLEAN L4checkRoom(int x, int y, int width, int height)
 {
 	int v4;   // esi
 	int v5;   // ebx
@@ -1988,7 +1988,7 @@ BOOLEAN __fastcall L4checkRoom(int x, int y, int width, int height)
 	return 0;
 }
 
-BOOLEAN __fastcall DRLG_L4PlaceMiniSet(const unsigned char *miniset, int tmin, int tmax, int cx, int cy, int setview, int ldir)
+BOOLEAN DRLG_L4PlaceMiniSet(const unsigned char *miniset, int tmin, int tmax, int cx, int cy, int setview, int ldir)
 {
 	int v7;                   // ebx
 	int v8;                   // esi
@@ -2134,7 +2134,7 @@ BOOLEAN __fastcall DRLG_L4PlaceMiniSet(const unsigned char *miniset, int tmin, i
 // 5CF320: using guessed type int LvlViewY;
 // 5CF324: using guessed type int LvlViewX;
 
-void __cdecl DRLG_L4FloodTVal()
+void DRLG_L4FloodTVal()
 {
 	int v0;       // ebx
 	int v1;       // esi
@@ -2166,7 +2166,7 @@ void __cdecl DRLG_L4FloodTVal()
 }
 // 5A5590: using guessed type char TransVal;
 
-void __fastcall DRLG_L4FTVR(int i, int j, int x, int y, int d)
+void DRLG_L4FTVR(int i, int j, int x, int y, int d)
 {
 	int v5;   // ebx
 	int v6;   // esi
@@ -2265,7 +2265,7 @@ void __fastcall DRLG_L4FTVR(int i, int j, int x, int y, int d)
 }
 // 5A5590: using guessed type char TransVal;
 
-void __cdecl DRLG_L4TransFix()
+void DRLG_L4TransFix()
 {
 	signed int v0; // ebx
 	char *v1;      // esi
@@ -2320,7 +2320,7 @@ void __cdecl DRLG_L4TransFix()
 	} while (v0 < 40);
 }
 
-void __cdecl DRLG_L4Corners()
+void DRLG_L4Corners()
 {
 	signed int v0; // edx
 	char *v1;      // ecx
@@ -2345,7 +2345,7 @@ void __cdecl DRLG_L4Corners()
 	} while (v0 < 39);
 }
 
-void __cdecl DRLG_L4Pass3()
+void DRLG_L4Pass3()
 {
 	int i, j, xx, yy;
 	long v1, v2, v3, v4, lv;

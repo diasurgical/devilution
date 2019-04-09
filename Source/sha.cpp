@@ -4,12 +4,12 @@
 
 SHA1Context sgSHA1[3];
 
-void __cdecl SHA1Clear()
+void SHA1Clear()
 {
 	memset(sgSHA1, 0, sizeof(sgSHA1));
 }
 
-void __fastcall SHA1Result(int n, char Message_Digest[SHA1HashSize])
+void SHA1Result(int n, char Message_Digest[SHA1HashSize])
 {
 	DWORD *Message_Digest_Block;
 	int i;
@@ -23,14 +23,14 @@ void __fastcall SHA1Result(int n, char Message_Digest[SHA1HashSize])
 	}
 }
 
-void __fastcall SHA1Calculate(int n, const char *data, char Message_Digest[SHA1HashSize])
+void SHA1Calculate(int n, const char *data, char Message_Digest[SHA1HashSize])
 {
 	SHA1Input(&sgSHA1[n], data, 64);
 	if (Message_Digest)
 		SHA1Result(n, Message_Digest);
 }
 
-void __fastcall SHA1Input(SHA1Context *context, const char *message_array, int len)
+void SHA1Input(SHA1Context *context, const char *message_array, int len)
 {
 	int i, count;
 
@@ -48,7 +48,7 @@ void __fastcall SHA1Input(SHA1Context *context, const char *message_array, int l
 	}
 }
 
-void __fastcall SHA1ProcessMessageBlock(SHA1Context *context)
+void SHA1ProcessMessageBlock(SHA1Context *context)
 {
 	int i;
 	int temp;
@@ -112,12 +112,12 @@ void __fastcall SHA1ProcessMessageBlock(SHA1Context *context)
 	context->state[4] += E;
 }
 
-void __fastcall SHA1Reset(int n)
+void SHA1Reset(int n)
 {
 	SHA1Init(&sgSHA1[n]);
 }
 
-void __fastcall SHA1Init(SHA1Context *context)
+void SHA1Init(SHA1Context *context)
 {
 	context->count[0] = 0;
 	context->count[1] = 0;

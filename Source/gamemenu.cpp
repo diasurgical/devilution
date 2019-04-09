@@ -38,9 +38,9 @@ char *music_toggle_names[] = { "Music", "Music Disabled" };
 char *sound_toggle_names[] = { "Sound", "Sound Disabled" };
 char *color_cycling_toggle_names[] = { "Color Cycling Off", "Color Cycling On" };
 
-void __cdecl gamemenu_previous()
+void gamemenu_previous()
 {
-	void(__fastcall * proc)(TMenuItem *);
+	void(* proc)(TMenuItem *);
 	TMenuItem *item;
 
 	if (gbMaxPlayers == 1) {
@@ -54,7 +54,7 @@ void __cdecl gamemenu_previous()
 	PressEscKey();
 }
 
-void __fastcall gamemenu_enable_single(TMenuItem *a1)
+void gamemenu_enable_single(TMenuItem *a1)
 {
 	BOOL enable;
 
@@ -67,17 +67,17 @@ void __fastcall gamemenu_enable_single(TMenuItem *a1)
 	gmenu_enable(sgSingleMenu, enable);
 }
 
-void __fastcall gamemenu_enable_multi(TMenuItem *a1)
+void gamemenu_enable_multi(TMenuItem *a1)
 {
 	gmenu_enable(&sgMultiMenu[2], deathflag);
 }
 
-void __cdecl gamemenu_off()
+void gamemenu_off()
 {
 	gmenu_call_proc(0, NULL);
 }
 
-void __cdecl gamemenu_handle_previous()
+void gamemenu_handle_previous()
 {
 	if (gmenu_exception())
 		gamemenu_off();
@@ -85,12 +85,12 @@ void __cdecl gamemenu_handle_previous()
 		gamemenu_previous();
 }
 
-void __fastcall j_gamemenu_previous(BOOL a1)
+void j_gamemenu_previous(BOOL a1)
 {
 	gamemenu_previous();
 }
 
-void __fastcall gamemenu_new_game(BOOL a1)
+void gamemenu_new_game(BOOL a1)
 {
 	int i;
 
@@ -107,13 +107,13 @@ void __fastcall gamemenu_new_game(BOOL a1)
 }
 // 52571C: using guessed type int drawpanflag;
 
-void __fastcall gamemenu_quit_game(BOOL a1)
+void gamemenu_quit_game(BOOL a1)
 {
 	gamemenu_new_game(a1);
 	gbRunGameResult = FALSE;
 }
 
-void __fastcall gamemenu_load_game(BOOL a1)
+void gamemenu_load_game(BOOL a1)
 {
 	WNDPROC saveProc = SetWindowProc(DisableInputWndProc);
 	gamemenu_off();
@@ -134,7 +134,7 @@ void __fastcall gamemenu_load_game(BOOL a1)
 }
 // 52571C: using guessed type int drawpanflag;
 
-void __fastcall gamemenu_save_game(BOOL a1)
+void gamemenu_save_game(BOOL a1)
 {
 	if (pcurs == CURSOR_HAND) {
 		if (plr[myplr]._pmode == PM_DEATH || deathflag) {
@@ -157,12 +157,12 @@ void __fastcall gamemenu_save_game(BOOL a1)
 }
 // 52571C: using guessed type int drawpanflag;
 
-void __fastcall gamemenu_restart_town(BOOL a1)
+void gamemenu_restart_town(BOOL a1)
 {
 	NetSendCmd(TRUE, CMD_RETOWN);
 }
 
-void __fastcall gamemenu_options(BOOL a1)
+void gamemenu_options(BOOL a1)
 {
 	gamemenu_get_music();
 	gamemenu_get_sound();
@@ -171,12 +171,12 @@ void __fastcall gamemenu_options(BOOL a1)
 	gmenu_call_proc(sgOptionMenu, NULL);
 }
 
-void __cdecl gamemenu_get_music()
+void gamemenu_get_music()
 {
 	gamemenu_sound_music_toggle(music_toggle_names, sgOptionMenu, sound_get_or_set_music_volume(1));
 }
 
-void __fastcall gamemenu_sound_music_toggle(char **names, TMenuItem *menu_item, int volume)
+void gamemenu_sound_music_toggle(char **names, TMenuItem *menu_item, int volume)
 {
 	if (gbSndInited) {
 		menu_item->dwFlags |= 0xC0000000;
@@ -189,23 +189,23 @@ void __fastcall gamemenu_sound_music_toggle(char **names, TMenuItem *menu_item, 
 	}
 }
 
-void __cdecl gamemenu_get_sound()
+void gamemenu_get_sound()
 {
 	gamemenu_sound_music_toggle(sound_toggle_names, &sgOptionMenu[1], sound_get_or_set_sound_volume(1));
 }
 
-void __cdecl gamemenu_get_color_cycling()
+void gamemenu_get_color_cycling()
 {
 	sgOptionMenu[3].pszStr = color_cycling_toggle_names[palette_get_colour_cycling() & 1];
 }
 
-void __cdecl gamemenu_get_gamma()
+void gamemenu_get_gamma()
 {
 	gmenu_slider_3(&sgOptionMenu[2], 15);
 	gmenu_slider_1(&sgOptionMenu[2], 30, 100, UpdateGamma(0));
 }
 
-void __fastcall gamemenu_music_volume(BOOL a1)
+void gamemenu_music_volume(BOOL a1)
 {
 	int volume;
 	if (a1) {
@@ -247,12 +247,12 @@ void __fastcall gamemenu_music_volume(BOOL a1)
 	gamemenu_get_music();
 }
 
-int __fastcall gamemenu_slider_music_sound(TMenuItem *menu_item)
+int gamemenu_slider_music_sound(TMenuItem *menu_item)
 {
 	return gmenu_slider_get(menu_item, VOLUME_MIN, VOLUME_MAX);
 }
 
-void __fastcall gamemenu_sound_volume(BOOL a1)
+void gamemenu_sound_volume(BOOL a1)
 {
 	int volume;
 	if (a1) {
@@ -280,7 +280,7 @@ void __fastcall gamemenu_sound_volume(BOOL a1)
 	gamemenu_get_sound();
 }
 
-void __fastcall gamemenu_gamma(BOOL a1)
+void gamemenu_gamma(BOOL a1)
 {
 	int gamma;
 	if (a1) {
@@ -296,12 +296,12 @@ void __fastcall gamemenu_gamma(BOOL a1)
 	gamemenu_get_gamma();
 }
 
-int __cdecl gamemenu_slider_gamma()
+int gamemenu_slider_gamma()
 {
 	return gmenu_slider_get(&sgOptionMenu[2], 30, 100);
 }
 
-void __fastcall gamemenu_color_cycling(BOOL a1)
+void gamemenu_color_cycling(BOOL a1)
 {
 	palette_set_color_cycling(palette_get_colour_cycling() == 0);
 	sgOptionMenu[3].pszStr = color_cycling_toggle_names[palette_get_colour_cycling() & 1];

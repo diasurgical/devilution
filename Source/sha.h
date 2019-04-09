@@ -11,12 +11,12 @@
 
 //sha
 
-void __cdecl SHA1Clear();
-void __fastcall SHA1Result(int n, char Message_Digest[SHA1HashSize]);
-void __fastcall SHA1Calculate(int n, const char *data, char Message_Digest[SHA1HashSize]);
-void __fastcall SHA1Input(SHA1Context *context, const char *message_array, int len);
-void __fastcall SHA1ProcessMessageBlock(SHA1Context *context);
-void __fastcall SHA1Reset(int n);
-void __fastcall SHA1Init(SHA1Context *context);
+void SHA1Clear();
+void SHA1Result(int n, char Message_Digest[SHA1HashSize]);
+void SHA1Calculate(int n, const char *data, char Message_Digest[SHA1HashSize]);
+void SHA1Input(SHA1Context *context, const char *message_array, int len);
+void SHA1ProcessMessageBlock(SHA1Context *context);
+void SHA1Reset(int n);
+void SHA1Init(SHA1Context *context);
 
 #endif /* __SHA_H__ */

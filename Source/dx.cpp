@@ -30,12 +30,12 @@ dx_c_init(void)
 SEG_ALLOCATE(SEGMENT_C_INIT)
 _PVFV dx_c_init_funcs[] = { &dx_c_init };
 
-void __cdecl dx_init_mutex()
+void dx_init_mutex()
 {
 	InitializeCriticalSection(&sgMemCrit);
 }
 
-void __cdecl dx_cleanup_mutex_atexit()
+void dx_cleanup_mutex_atexit()
 {
 	atexit(dx_cleanup_mutex);
 }
@@ -45,7 +45,7 @@ void __cdecl dx_cleanup_mutex(void)
 	DeleteCriticalSection(&sgMemCrit);
 }
 
-void __fastcall dx_init(HWND hWnd)
+void dx_init(HWND hWnd)
 {
 	HWND v1;  // esi
 	GUID *v2; // ecx
@@ -101,7 +101,7 @@ void __fastcall dx_init(HWND hWnd)
 }
 // 52A549: using guessed type char gbEmulate;
 
-void __cdecl dx_create_back_buffer()
+void dx_create_back_buffer()
 {
 	DDSCAPS caps;
 	HRESULT error_code;
@@ -160,7 +160,7 @@ void __cdecl dx_create_back_buffer()
 }
 // 52A548: using guessed type char gbBackBuf;
 
-void __cdecl dx_create_primary_surface()
+void dx_create_primary_surface()
 {
 	DDSURFACEDESC ddsd;
 	HRESULT error_code;
@@ -178,7 +178,7 @@ void __cdecl dx_create_primary_surface()
 		ErrDlg(IDD_DIALOG1, error_code, "C:\\Src\\Diablo\\Source\\dx.cpp", 109);
 }
 
-HRESULT __fastcall dx_DirectDrawCreate(LPGUID guid, LPDIRECTDRAW *lplpDD, LPUNKNOWN pUnkOuter)
+HRESULT dx_DirectDrawCreate(LPGUID guid, LPDIRECTDRAW *lplpDD, LPUNKNOWN pUnkOuter)
 {
 	HRESULT(WINAPI * DirectDrawCreate)
 	(LPGUID lpGuid, LPDIRECTDRAW * lplpDD, LPUNKNOWN pUnkOuter);
@@ -197,7 +197,7 @@ HRESULT __fastcall dx_DirectDrawCreate(LPGUID guid, LPDIRECTDRAW *lplpDD, LPUNKN
 	return DirectDrawCreate(guid, lplpDD, pUnkOuter);
 }
 
-void __fastcall j_lock_buf_priv(BYTE idx)
+void j_lock_buf_priv(BYTE idx)
 {
 #ifdef _DEBUG
 	++locktbl[idx];
@@ -205,7 +205,7 @@ void __fastcall j_lock_buf_priv(BYTE idx)
 	lock_buf_priv();
 }
 
-void __cdecl lock_buf_priv()
+void lock_buf_priv()
 {
 	DDSURFACEDESC ddsd;
 	HRESULT error_code;
@@ -242,7 +242,7 @@ void __cdecl lock_buf_priv()
 	sgdwLockCount++;
 }
 
-void __fastcall j_unlock_buf_priv(BYTE idx)
+void j_unlock_buf_priv(BYTE idx)
 {
 #ifdef _DEBUG
 	if (!locktbl[idx])
@@ -252,7 +252,7 @@ void __fastcall j_unlock_buf_priv(BYTE idx)
 	unlock_buf_priv();
 }
 
-void __cdecl unlock_buf_priv()
+void unlock_buf_priv()
 {
 	HRESULT error_code;
 
@@ -278,7 +278,7 @@ void __cdecl unlock_buf_priv()
 	LeaveCriticalSection(&sgMemCrit);
 }
 
-void __cdecl dx_cleanup()
+void dx_cleanup()
 {
 	BYTE *v0; // ecx
 
@@ -327,7 +327,7 @@ void __cdecl dx_cleanup()
 	}
 }
 
-void __cdecl dx_reinit()
+void dx_reinit()
 {
 	int lockCount;
 

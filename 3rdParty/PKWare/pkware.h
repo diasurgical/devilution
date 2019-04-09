@@ -30,11 +30,11 @@
 //-----------------------------------------------------------------------------
 // Define calling convention
 
-#ifndef PKEXPORT
+#ifndef PKWAREAPI
 #ifdef WIN32
-#define PKEXPORT  __cdecl                   // Use for normal __cdecl calling 
+#define PKWAREAPI  __cdecl                   // Use for normal __cdecl calling 
 #else
-#define PKEXPORT
+#define PKWAREAPI
 #endif
 #endif
 
@@ -58,8 +58,8 @@ typedef struct
     unsigned short offs09AE;                // 09AE: 
 
     void         * param;                   // 09B0: User parameter
-    unsigned int (*read_buf)(char *buf, unsigned int *size, void *param);  // 9B4
-    void         (*write_buf)(char *buf, unsigned int *size, void *param); // 9B8
+    unsigned int (PKWAREAPI *read_buf)(char *buf, unsigned int *size, void *param);  // 9B4
+    void         (PKWAREAPI *write_buf)(char *buf, unsigned int *size, void *param); // 9B8
 
     unsigned short offs09BC[0x204];         // 09BC:
     unsigned long  offs0DC4;                // 0DC4: 
@@ -89,8 +89,8 @@ typedef struct
     unsigned int  in_pos;                   // 001C: Position in in_buff
     unsigned long in_bytes;                 // 0020: Number of bytes in input buffer
     void        * param;                    // 0024: Custom parameter
-    unsigned int (*read_buf)(char *buf, unsigned int *size, void *param); // Pointer to function that reads data from the input stream
-    void         (*write_buf)(char *buf, unsigned int *size, void *param);// Pointer to function that writes data to the output stream
+    unsigned int (PKWAREAPI *read_buf)(char *buf, unsigned int *size, void *param); // Pointer to function that reads data from the input stream
+    void         (PKWAREAPI *write_buf)(char *buf, unsigned int *size, void *param);// Pointer to function that writes data to the output stream
 
     unsigned char out_buff[0x2204];         // 0030: Output circle buffer.
                                             //       0x0000 - 0x0FFF: Previous uncompressed data, kept for repetitions
@@ -120,18 +120,18 @@ typedef struct
    extern "C" {
 #endif
 
-unsigned int PKEXPORT implode(
-   unsigned int (*read_buf)(char *buf, unsigned int *size, void *param),
-   void         (*write_buf)(char *buf, unsigned int *size, void *param),
+unsigned int PKWAREAPI implode(
+   unsigned int (PKWAREAPI *read_buf)(char *buf, unsigned int *size, void *param),
+   void         (PKWAREAPI *write_buf)(char *buf, unsigned int *size, void *param),
    char         *work_buf,
    void         *param,
    unsigned int *type,
    unsigned int *dsize);
 
 
-unsigned int PKEXPORT explode(
-   unsigned int (*read_buf)(char *buf, unsigned  int *size, void *param),
-   void         (*write_buf)(char *buf, unsigned  int *size, void *param),
+unsigned int PKWAREAPI explode(
+   unsigned int (PKWAREAPI *read_buf)(char *buf, unsigned  int *size, void *param),
+   void         (PKWAREAPI *write_buf)(char *buf, unsigned  int *size, void *param),
    char         *work_buf,
    void         *param);
 

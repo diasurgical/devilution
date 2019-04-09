@@ -24,12 +24,12 @@ dthread_c_init(void)
 SEG_ALLOCATE(SEGMENT_C_INIT)
 _PVFV dthread_c_init_funcs[] = { &dthread_c_init };
 
-void __cdecl dthread_init_mutex()
+void dthread_init_mutex()
 {
 	InitializeCriticalSection(&sgMemCrit);
 }
 
-void __cdecl dthread_cleanup_mutex_atexit()
+void dthread_cleanup_mutex_atexit()
 {
 	atexit(dthread_cleanup_mutex);
 }
@@ -39,7 +39,7 @@ void __cdecl dthread_cleanup_mutex()
 	DeleteCriticalSection(&sgMemCrit);
 }
 
-void __fastcall dthread_remove_player(int pnum)
+void dthread_remove_player(int pnum)
 {
 	TMegaPkt *pkt;
 
@@ -51,7 +51,7 @@ void __fastcall dthread_remove_player(int pnum)
 	LeaveCriticalSection(&sgMemCrit);
 }
 
-void __fastcall dthread_send_delta(int pnum, char cmd, void *pbSrc, int dwLen)
+void dthread_send_delta(int pnum, char cmd, void *pbSrc, int dwLen)
 {
 	TMegaPkt *pkt;
 	TMegaPkt *p;
@@ -77,7 +77,7 @@ void __fastcall dthread_send_delta(int pnum, char cmd, void *pbSrc, int dwLen)
 	LeaveCriticalSection(&sgMemCrit);
 }
 
-void __cdecl dthread_start()
+void dthread_start()
 {
 	char *error_buf;
 
@@ -139,7 +139,7 @@ unsigned int __stdcall dthread_handler(void *unused)
 }
 // 679730: using guessed type int gdwDeltaBytesSec;
 
-void __cdecl dthread_cleanup()
+void dthread_cleanup()
 {
 	char *error_buf;
 	TMegaPkt *tmp1, *tmp2;

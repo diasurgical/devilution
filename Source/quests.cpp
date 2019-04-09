@@ -51,7 +51,7 @@ int QuestGroup2[3] = { QTYPE_BLIND, QTYPE_INFRA, QTYPE_BLOOD };
 int QuestGroup3[3] = { QTYPE_BLKM, QTYPE_ZHAR, QTYPE_ANVIL };
 int QuestGroup4[2] = { QTYPE_VEIL, QTYPE_WARLRD };
 
-void __cdecl InitQuests()
+void InitQuests()
 {
 	int initiatedQuests;
 	int i;
@@ -130,7 +130,7 @@ void __cdecl InitQuests()
 // 69BD04: using guessed type int questlog;
 // 69BE90: using guessed type int qline;
 
-void __cdecl CheckQuests()
+void CheckQuests()
 {
 	//int v0; // eax
 	unsigned char *v1; // esi
@@ -210,7 +210,7 @@ LABEL_29:
 // 679660: using guessed type char gbMaxPlayers;
 // 69BE90: using guessed type int qline;
 
-BOOL __cdecl ForceQuests()
+BOOL ForceQuests()
 {
 	int i, j, qx, qy, ql;
 
@@ -240,7 +240,7 @@ BOOL __cdecl ForceQuests()
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-BOOL __fastcall QuestStatus(int i)
+BOOL QuestStatus(int i)
 {
 	BOOL result; // al
 
@@ -255,7 +255,7 @@ BOOL __fastcall QuestStatus(int i)
 // 5CF31D: using guessed type char setlevel;
 // 679660: using guessed type char gbMaxPlayers;
 
-void __fastcall CheckQuestKill(int m, BOOL sendmsg)
+void CheckQuestKill(int m, BOOL sendmsg)
 {
 	int v2;           // ecx
 	char v3;          // al
@@ -402,12 +402,12 @@ void __fastcall CheckQuestKill(int m, BOOL sendmsg)
 // 52A554: using guessed type int sfxdelay;
 // 679660: using guessed type char gbMaxPlayers;
 
-void __cdecl DrawButcher()
+void DrawButcher()
 {
 	DRLG_RectTrans(2 * setpc_x + 19, 2 * setpc_y + 19, 2 * setpc_x + 26, 2 * setpc_y + 26);
 }
 
-void __fastcall DrawSkelKing(int q, int x, int y)
+void DrawSkelKing(int q, int x, int y)
 {
 	int v3; // eax
 
@@ -416,7 +416,7 @@ void __fastcall DrawSkelKing(int q, int x, int y)
 	quests[v3]._qty = 2 * y + 23;
 }
 
-void __fastcall DrawWarLord(int x, int y)
+void DrawWarLord(int x, int y)
 {
 	int v2;             // esi
 	int v3;             // edi
@@ -470,7 +470,7 @@ void __fastcall DrawWarLord(int x, int y)
 // 5CF330: using guessed type int setpc_h;
 // 5CF334: using guessed type int setpc_w;
 
-void __fastcall DrawSChamber(int q, int x, int y)
+void DrawSChamber(int q, int x, int y)
 {
 	int v3;             // esi
 	unsigned char *v4;  // eax
@@ -527,7 +527,7 @@ void __fastcall DrawSChamber(int q, int x, int y)
 // 5CF330: using guessed type int setpc_h;
 // 5CF334: using guessed type int setpc_w;
 
-void __fastcall DrawLTBanner(int x, int y)
+void DrawLTBanner(int x, int y)
 {
 	int v2;             // ebx
 	int v3;             // esi
@@ -580,7 +580,7 @@ void __fastcall DrawLTBanner(int x, int y)
 // 5CF330: using guessed type int setpc_h;
 // 5CF334: using guessed type int setpc_w;
 
-void __fastcall DrawBlind(int x, int y)
+void DrawBlind(int x, int y)
 {
 	int v2;             // ebx
 	int v3;             // esi
@@ -633,7 +633,7 @@ void __fastcall DrawBlind(int x, int y)
 // 5CF330: using guessed type int setpc_h;
 // 5CF334: using guessed type int setpc_w;
 
-void __fastcall DrawBlood(int x, int y)
+void DrawBlood(int x, int y)
 {
 	int v2;             // ebx
 	int v3;             // esi
@@ -686,7 +686,7 @@ void __fastcall DrawBlood(int x, int y)
 // 5CF330: using guessed type int setpc_h;
 // 5CF334: using guessed type int setpc_w;
 
-void __fastcall DRLG_CheckQuests(int x, int y)
+void DRLG_CheckQuests(int x, int y)
 {
 	int i;
 
@@ -720,7 +720,7 @@ void __fastcall DRLG_CheckQuests(int x, int y)
 }
 // 69BE90: using guessed type int qline;
 
-void __cdecl SetReturnLvlPos()
+void SetReturnLvlPos()
 {
 	int v0; // eax
 
@@ -754,7 +754,7 @@ LABEL_10:
 	ReturnLvl = v0;
 }
 
-void __cdecl GetReturnLvlPos()
+void GetReturnLvlPos()
 {
 	if (quests[QTYPE_VB]._qactive == 3)
 		quests[QTYPE_VB]._qvar2 = 2;
@@ -765,7 +765,7 @@ void __cdecl GetReturnLvlPos()
 }
 // 5BB1ED: using guessed type char leveltype;
 
-void __cdecl ResyncMPQuests()
+void ResyncMPQuests()
 {
 	if (quests[QTYPE_KING]._qactive == 1
 	    && currlevel >= (unsigned char)quests[QTYPE_KING]._qlevel - 1
@@ -787,7 +787,7 @@ void __cdecl ResyncMPQuests()
 		AddObject(OBJ_ALTBOY, 2 * setpc_x + 20, 2 * setpc_y + 22);
 }
 
-void __cdecl ResyncQuests()
+void ResyncQuests()
 {
 	char *v0; // ecx
 	int v1;   // esi
@@ -883,7 +883,7 @@ void __cdecl ResyncQuests()
 // 5CF330: using guessed type int setpc_h;
 // 5CF334: using guessed type int setpc_w;
 
-void __fastcall PrintQLString(int x, int y, unsigned char cjustflag, char *str, int col)
+void PrintQLString(int x, int y, unsigned char cjustflag, char *str, int col)
 {
 	int v5;            // ebx
 	int v6;            // edi
@@ -957,7 +957,7 @@ void __fastcall PrintQLString(int x, int y, unsigned char cjustflag, char *str, 
 }
 // 69BE90: using guessed type int qline;
 
-void __cdecl DrawQuestLog()
+void DrawQuestLog()
 {
 	int v0; // edi
 	int i;  // esi
@@ -974,7 +974,7 @@ void __cdecl DrawQuestLog()
 }
 // 69BED4: using guessed type int numqlines;
 
-void __cdecl StartQuestlog()
+void StartQuestlog()
 {
 	signed int v0;   // eax
 	int v1;          // edx
@@ -1007,7 +1007,7 @@ void __cdecl StartQuestlog()
 // 69BE90: using guessed type int qline;
 // 69BED4: using guessed type int numqlines;
 
-void __cdecl QuestlogUp()
+void QuestlogUp()
 {
 	if (numqlines) {
 		if (qline == qtopline) {
@@ -1023,7 +1023,7 @@ void __cdecl QuestlogUp()
 // 69BE90: using guessed type int qline;
 // 69BED4: using guessed type int numqlines;
 
-void __cdecl QuestlogDown()
+void QuestlogDown()
 {
 	if (numqlines) {
 		if (qline == 22) {
@@ -1039,7 +1039,7 @@ void __cdecl QuestlogDown()
 // 69BE90: using guessed type int qline;
 // 69BED4: using guessed type int numqlines;
 
-void __cdecl QuestlogEnter()
+void QuestlogEnter()
 {
 	PlaySFX(IS_TITLSLCT);
 	if (numqlines && qline != 22)
@@ -1050,7 +1050,7 @@ void __cdecl QuestlogEnter()
 // 69BE90: using guessed type int qline;
 // 69BED4: using guessed type int numqlines;
 
-void __cdecl QuestlogESC()
+void QuestlogESC()
 {
 	int v0; // esi
 	int i;  // edi
@@ -1072,7 +1072,7 @@ void __cdecl QuestlogESC()
 // 69BE90: using guessed type int qline;
 // 69BED4: using guessed type int numqlines;
 
-void __fastcall SetMultiQuest(int q, int s, int l, int v1)
+void SetMultiQuest(int q, int s, int l, int v1)
 {
 	int v4;            // eax
 	unsigned char *v5; // ecx

@@ -9,14 +9,14 @@ BOOL doomflag;
 int DoomQuestState;
 
 /*
-void __cdecl doom_reset_state()
+void doom_reset_state()
 {
     if (DoomQuestState <= 0) {
         DoomQuestState = 0;
     }
 }
 
-void __cdecl doom_play_movie()
+void doom_play_movie()
 {
     if (DoomQuestState < 36001) {
         DoomQuestState++;
@@ -28,7 +28,7 @@ void __cdecl doom_play_movie()
 }
 */
 
-int __cdecl doom_get_frame_from_time()
+int doom_get_frame_from_time()
 {
 	if (DoomQuestState == 36001) {
 		return 31;
@@ -37,19 +37,19 @@ int __cdecl doom_get_frame_from_time()
 	return DoomQuestState / 1200;
 }
 
-void __cdecl doom_alloc_cel()
+void doom_alloc_cel()
 {
 	pDoomCel = DiabloAllocPtr(229376);
 }
 
-void __cdecl doom_cleanup()
+void doom_cleanup()
 {
 	void *ptr = pDoomCel;
 	pDoomCel = NULL;
 	mem_free_dbg(ptr);
 }
 
-void __cdecl doom_load_graphics()
+void doom_load_graphics()
 {
 	if (doom_quest_time == 31) {
 		strcpy(tempstr, "Items\\Map\\MapZDoom.CEL");
@@ -61,7 +61,7 @@ void __cdecl doom_load_graphics()
 	LoadFileWithMem(tempstr, pDoomCel);
 }
 
-void __cdecl doom_init()
+void doom_init()
 {
 	doomflag = TRUE;
 	doom_alloc_cel();
@@ -69,7 +69,7 @@ void __cdecl doom_init()
 	doom_load_graphics();
 }
 
-void __cdecl doom_close()
+void doom_close()
 {
 	if (doomflag) {
 		doomflag = FALSE;
@@ -77,7 +77,7 @@ void __cdecl doom_close()
 	}
 }
 
-void __cdecl doom_draw()
+void doom_draw()
 {
 	if (!doomflag) {
 		return;

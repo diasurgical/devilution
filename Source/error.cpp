@@ -54,7 +54,7 @@ char *MsgStrings[44] = {
 	"Arcane knowledge gained!"
 };
 
-void __fastcall InitDiabloMsg(char e)
+void InitDiabloMsg(char e)
 {
 	int i;
 
@@ -71,7 +71,7 @@ void __fastcall InitDiabloMsg(char e)
 	msgdelay = 70;
 }
 
-void __cdecl ClrDiabloMsg()
+void ClrDiabloMsg()
 {
 	int i;
 
@@ -82,7 +82,7 @@ void __cdecl ClrDiabloMsg()
 	msgcnt = 0;
 }
 
-void __cdecl DrawDiabloMsg()
+void DrawDiabloMsg()
 {
 	int v0;              // esi
 	signed int v1;       // edi

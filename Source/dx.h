@@ -11,20 +11,20 @@ extern char gbBackBuf;    // weak
 extern char gbEmulate;    // weak
 extern HMODULE ghDiabMod; // idb
 
-void __cdecl dx_init_mutex();
-void __cdecl dx_cleanup_mutex_atexit();
+void dx_init_mutex();
+void dx_cleanup_mutex_atexit();
 void __cdecl dx_cleanup_mutex(void);
-void __fastcall dx_init(HWND hWnd);
-void __cdecl dx_create_back_buffer();
-void __cdecl dx_create_primary_surface();
-HRESULT __fastcall dx_DirectDrawCreate(LPGUID guid, LPDIRECTDRAW *lplpDD, LPUNKNOWN pUnkOuter);
-void __fastcall j_lock_buf_priv(BYTE idx);
-void __cdecl lock_buf_priv();
-void __fastcall j_unlock_buf_priv(BYTE idx);
-void __cdecl unlock_buf_priv();
-void __cdecl dx_cleanup();
-void __cdecl dx_reinit();
-void __cdecl j_dx_reinit();
+void dx_init(HWND hWnd);
+void dx_create_back_buffer();
+void dx_create_primary_surface();
+HRESULT dx_DirectDrawCreate(LPGUID guid, LPDIRECTDRAW *lplpDD, LPUNKNOWN pUnkOuter);
+void j_lock_buf_priv(BYTE idx);
+void lock_buf_priv();
+void j_unlock_buf_priv(BYTE idx);
+void unlock_buf_priv();
+void dx_cleanup();
+void dx_reinit();
+void j_dx_reinit();
 
 /* data */
 

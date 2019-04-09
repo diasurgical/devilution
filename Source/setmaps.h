@@ -2,12 +2,12 @@
 #ifndef __SETMAPS_H__
 #define __SETMAPS_H__
 
-int __fastcall ObjIndex(int x, int y);
-void __cdecl AddSKingObjs();
-void __cdecl AddSChamObjs();
-void __cdecl AddVileObjs();
-void __fastcall DRLG_SetMapTrans(char *sFileName);
-void __cdecl LoadSetMap();
+int ObjIndex(int x, int y);
+void AddSKingObjs();
+void AddSChamObjs();
+void AddVileObjs();
+void DRLG_SetMapTrans(char *sFileName);
+void LoadSetMap();
 
 /* rdata */
 extern unsigned char SkelKingTrans1[8];

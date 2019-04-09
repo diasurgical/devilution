@@ -127,7 +127,7 @@ static unsigned short ChCodeAsc[] =
 //-----------------------------------------------------------------------------
 // Local functions
 
-static void GenDecodeTabs(
+static void PKWAREAPI GenDecodeTabs(
     unsigned char * positions,          // [out] Table of positions
     unsigned char * start_indexes,      // [in] Table of start indexes
     unsigned char * length_bits,        // [in] Table of lengths. Each length is stored as number of bits
@@ -148,7 +148,7 @@ static void GenDecodeTabs(
     }
 }
 
-static void GenAscTabs(TDcmpStruct * pWork)
+static void PKWAREAPI GenAscTabs(TDcmpStruct * pWork)
 {
     unsigned short * pChCodeAsc = &ChCodeAsc[0xFF];
     unsigned int  acc, add;
@@ -227,7 +227,7 @@ static void GenAscTabs(TDcmpStruct * pWork)
 // Returns: PKDCL_OK:         Operation was successful
 //          PKDCL_STREAM_END: There are no more bits in the input buffer
 
-static int WasteBits(TDcmpStruct * pWork, unsigned int nBits)
+static int PKWAREAPI WasteBits(TDcmpStruct * pWork, unsigned int nBits)
 {
     // If number of bits required is less than number of (bits in the buffer) ?
     if(nBits <= pWork->extra_bits)
@@ -267,7 +267,7 @@ static int WasteBits(TDcmpStruct * pWork, unsigned int nBits)
 //           0x305: End of stream
 //           0x306: Error
 
-static unsigned int DecodeLit(TDcmpStruct * pWork)
+static unsigned int PKWAREAPI DecodeLit(TDcmpStruct * pWork)
 {
     unsigned int extra_length_bits;    // Number of bits of extra literal length
     unsigned int length_code;          // Length code
@@ -357,7 +357,7 @@ static unsigned int DecodeLit(TDcmpStruct * pWork)
 // Decodes the distance of the repetition, backwards relative to the
 // current output buffer position
 
-static unsigned int DecodeDist(TDcmpStruct * pWork, unsigned int rep_length)
+static unsigned int PKWAREAPI DecodeDist(TDcmpStruct * pWork, unsigned int rep_length)
 {
     unsigned int dist_pos_code;            // Distance position code
     unsigned int dist_pos_bits;            // Number of bits of distance position
@@ -388,7 +388,7 @@ static unsigned int DecodeDist(TDcmpStruct * pWork, unsigned int rep_length)
     return distance + 1;
 }
 
-static unsigned int Expand(TDcmpStruct * pWork)
+static unsigned int PKWAREAPI Expand(TDcmpStruct * pWork)
 {
     unsigned int next_literal;         // Literal decoded from the compressed data
     unsigned int result;               // Value to be returned
@@ -470,9 +470,9 @@ static unsigned int Expand(TDcmpStruct * pWork)
 //-----------------------------------------------------------------------------
 // Main exploding function.
 
-unsigned int explode(
-        unsigned int (*read_buf)(char *buf, unsigned  int *size, void *param),
-        void         (*write_buf)(char *buf, unsigned  int *size, void *param),
+unsigned int PKWAREAPI explode(
+        unsigned int (PKWAREAPI *read_buf)(char *buf, unsigned  int *size, void *param),
+        void         (PKWAREAPI *write_buf)(char *buf, unsigned  int *size, void *param),
         char         *work_buf,
         void         *param)
 {

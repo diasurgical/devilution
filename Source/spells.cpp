@@ -45,7 +45,7 @@ SpellData spelldata[MAX_SPELLS] = {
 	// clang-format on
 };
 
-int __fastcall GetManaAmount(int id, int sn)
+int GetManaAmount(int id, int sn)
 {
 	int i;  // "raw" mana cost
 	int ma; // mana amount
@@ -97,7 +97,7 @@ int __fastcall GetManaAmount(int id, int sn)
 	return ma * (100 - plr[id]._pISplCost) / 100;
 }
 
-void __fastcall UseMana(int id, int sn)
+void UseMana(int id, int sn)
 {
 	int ma; // mana cost
 
@@ -125,7 +125,7 @@ void __fastcall UseMana(int id, int sn)
 	}
 }
 
-BOOL __fastcall CheckSpell(int id, int sn, BYTE st, BOOL manaonly)
+BOOL CheckSpell(int id, int sn, BYTE st, BOOL manaonly)
 {
 	BOOL result;
 
@@ -150,7 +150,7 @@ BOOL __fastcall CheckSpell(int id, int sn, BYTE st, BOOL manaonly)
 	return result;
 }
 
-void __fastcall CastSpell(int id, int spl, int sx, int sy, int dx, int dy, BOOL caster, int spllvl)
+void CastSpell(int id, int spl, int sx, int sy, int dx, int dy, BOOL caster, int spllvl)
 {
 	int i;
 	int dir; // missile direction
@@ -190,7 +190,7 @@ void __fastcall CastSpell(int id, int spl, int sx, int sy, int dx, int dy, BOOL 
 
 // pnum: player index
 // rid: target player index
-void __fastcall DoResurrect(int pnum, int rid)
+void DoResurrect(int pnum, int rid)
 {
 	int hp;
 
@@ -235,7 +235,7 @@ void __fastcall DoResurrect(int pnum, int rid)
 	}
 }
 
-void __fastcall PlacePlayer(int pnum)
+void PlacePlayer(int pnum)
 {
 	int nx, ny, max, min, x, y;
 	DWORD i;
@@ -281,7 +281,7 @@ void __fastcall PlacePlayer(int pnum)
 	}
 }
 
-void __fastcall DoHealOther(int pnum, int rid)
+void DoHealOther(int pnum, int rid)
 {
 	int i, j, hp;
 

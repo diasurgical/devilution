@@ -635,7 +635,7 @@ int ItemInvSnds[35] = {
 int idoppely = 16; // weak
 int premiumlvladd[6] = { -1, -1, 0, 0, 1, 2 };
 
-void __cdecl InitItemGFX()
+void InitItemGFX()
 {
 	signed int v0;    // esi
 	char arglist[64]; // [esp+4h] [ebp-40h]
@@ -649,7 +649,7 @@ void __cdecl InitItemGFX()
 	memset(UniqueItemFlag, 0, sizeof(UniqueItemFlag));
 }
 
-BOOL __fastcall ItemPlace(int xp, int yp)
+BOOL ItemPlace(int xp, int yp)
 {
 	if (dMonster[xp][yp])
 		return FALSE;
@@ -667,7 +667,7 @@ BOOL __fastcall ItemPlace(int xp, int yp)
 	return TRUE;
 }
 
-void __cdecl AddInitItems()
+void AddInitItems()
 {
 	int x, y, i, j, rnd;
 
@@ -701,7 +701,7 @@ void __cdecl AddInitItems()
 	}
 }
 
-void __cdecl InitItems()
+void InitItems()
 {
 	int *v0; // eax
 	int v1;  // edx
@@ -740,7 +740,7 @@ void __cdecl InitItems()
 }
 // 5CF31D: using guessed type char setlevel;
 
-void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
+void CalcPlrItemVals(int p, BOOL Loadgfx)
 {
 	int pvid, d;
 
@@ -1058,7 +1058,7 @@ void __fastcall CalcPlrItemVals(int p, BOOL Loadgfx)
 	drawhpflag = TRUE;
 }
 
-void __fastcall CalcPlrScrolls(int p)
+void CalcPlrScrolls(int p)
 {
 	int i, j;
 
@@ -1086,7 +1086,7 @@ void __fastcall CalcPlrScrolls(int p)
 }
 // 52571C: using guessed type int drawpanflag;
 
-void __fastcall CalcPlrStaff(int pnum)
+void CalcPlrStaff(int pnum)
 {
 	plr[pnum]._pISpells = 0;
 	if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iStatFlag && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iCharges > 0) {
@@ -1094,7 +1094,7 @@ void __fastcall CalcPlrStaff(int pnum)
 	}
 }
 
-void __fastcall CalcSelfItems(int pnum)
+void CalcSelfItems(int pnum)
 {
 	PlayerStruct *v1; // ecx
 	int v2;           // edx
@@ -1159,7 +1159,7 @@ void __fastcall CalcSelfItems(int pnum)
 	} while (v9);
 }
 
-void __fastcall CalcPlrItemMin(int pnum)
+void CalcPlrItemMin(int pnum)
 {
 	PlayerStruct *p;
 	ItemStruct *pi;
@@ -1182,7 +1182,7 @@ void __fastcall CalcPlrItemMin(int pnum)
 	}
 }
 
-BOOL __fastcall ItemMinStats(PlayerStruct *p, ItemStruct *x)
+BOOL ItemMinStats(PlayerStruct *p, ItemStruct *x)
 {
 	if (p->_pMagic < x->_iMinMag)
 		return FALSE;
@@ -1196,7 +1196,7 @@ BOOL __fastcall ItemMinStats(PlayerStruct *p, ItemStruct *x)
 	return TRUE;
 }
 
-void __fastcall CalcPlrBookVals(int p)
+void CalcPlrBookVals(int p)
 {
 	int v1;            // esi
 	int v2;            // ebx
@@ -1256,7 +1256,7 @@ void __fastcall CalcPlrBookVals(int p)
 	}
 }
 
-void __fastcall CalcPlrInv(int p, BOOL Loadgfx)
+void CalcPlrInv(int p, BOOL Loadgfx)
 {
 	CalcPlrItemMin(p);
 	CalcSelfItems(p);
@@ -1271,7 +1271,7 @@ void __fastcall CalcPlrInv(int p, BOOL Loadgfx)
 	}
 }
 
-void __fastcall SetPlrHandItem(ItemStruct *h, int idata)
+void SetPlrHandItem(ItemStruct *h, int idata)
 {
 	ItemDataStruct *pAllItem;
 
@@ -1310,12 +1310,12 @@ void __fastcall SetPlrHandItem(ItemStruct *h, int idata)
 	h->IDidx = idata;
 }
 
-void __fastcall GetPlrHandSeed(ItemStruct *h)
+void GetPlrHandSeed(ItemStruct *h)
 {
 	h->_iSeed = GetRndSeed();
 }
 
-void __fastcall GetGoldSeed(int pnum, ItemStruct *h)
+void GetGoldSeed(int pnum, ItemStruct *h)
 {
 	int v3;         // edi
 	signed int v4;  // esi
@@ -1348,12 +1348,12 @@ void __fastcall GetGoldSeed(int pnum, ItemStruct *h)
 	h->_iSeed = v5;
 }
 
-void __fastcall SetPlrHandSeed(ItemStruct *h, int iseed)
+void SetPlrHandSeed(ItemStruct *h, int iseed)
 {
 	h->_iSeed = iseed;
 }
 
-void __fastcall SetPlrHandGoldCurs(ItemStruct *h)
+void SetPlrHandGoldCurs(ItemStruct *h)
 {
 	int v1; // eax
 
@@ -1368,7 +1368,7 @@ void __fastcall SetPlrHandGoldCurs(ItemStruct *h)
 	}
 }
 
-void __fastcall CreatePlrItems(int p)
+void CreatePlrItems(int p)
 {
 	int i;
 	ItemStruct *pi = plr[p].InvBody;
@@ -1450,7 +1450,7 @@ void __fastcall CreatePlrItems(int p)
 	CalcPlrItemVals(p, FALSE);
 }
 
-BOOL __fastcall ItemSpaceOk(int i, int j)
+BOOL ItemSpaceOk(int i, int j)
 {
 	int oi;
 
@@ -1488,7 +1488,7 @@ BOOL __fastcall ItemSpaceOk(int i, int j)
 	return !nSolidTable[dPiece[i][j]];
 }
 
-BOOL __fastcall GetItemSpace(int x, int y, char inum)
+BOOL GetItemSpace(int x, int y, char inum)
 {
 	int i, j, rs;
 	int xx, yy;
@@ -1542,7 +1542,7 @@ BOOL __fastcall GetItemSpace(int x, int y, char inum)
 	return TRUE;
 }
 
-void __fastcall GetSuperItemSpace(int x, int y, char inum)
+void GetSuperItemSpace(int x, int y, char inum)
 {
 	signed int v4;  // edi
 	signed int v5;  // ebx
@@ -1588,7 +1588,7 @@ void __fastcall GetSuperItemSpace(int x, int y, char inum)
 	}
 }
 
-void __fastcall GetSuperItemLoc(int x, int y, int *xx, int *yy)
+void GetSuperItemLoc(int x, int y, int *xx, int *yy)
 {
 	signed int v4;  // edi
 	signed int v5;  // ebx
@@ -1629,7 +1629,7 @@ LABEL_3:
 	}
 }
 
-void __fastcall CalcItemValue(int i)
+void CalcItemValue(int i)
 {
 	int v1;     // ecx
 	int v2;     // esi
@@ -1651,7 +1651,7 @@ void __fastcall CalcItemValue(int i)
 	item[v1]._iIvalue = v4;
 }
 
-void __fastcall GetBookSpell(int i, int lvl)
+void GetBookSpell(int i, int lvl)
 {
 	int v2;          // edi
 	int v3;          // esi
@@ -1706,7 +1706,7 @@ LABEL_13:
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-void __fastcall GetStaffPower(int i, int lvl, int bs, unsigned char onlygood)
+void GetStaffPower(int i, int lvl, int bs, unsigned char onlygood)
 {
 	int v4;         // esi
 	int v5;         // ebx
@@ -1775,7 +1775,7 @@ void __fastcall GetStaffPower(int i, int lvl, int bs, unsigned char onlygood)
 }
 // 420514: using guessed type int var_484[256];
 
-void __fastcall GetStaffSpell(int i, int lvl, unsigned char onlygood)
+void GetStaffSpell(int i, int lvl, unsigned char onlygood)
 {
 	int l;         // esi
 	int rv;        // eax
@@ -1830,7 +1830,7 @@ void __fastcall GetStaffSpell(int i, int lvl, unsigned char onlygood)
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-void __fastcall GetItemAttrs(int i, int idata, int lvl)
+void GetItemAttrs(int i, int idata, int lvl)
 {
 	int rndv;
 
@@ -1914,12 +1914,12 @@ void __fastcall GetItemAttrs(int i, int idata, int lvl)
 	}
 }
 
-int __fastcall RndPL(int param1, int param2)
+int RndPL(int param1, int param2)
 {
 	return param1 + random(22, param2 - param1 + 1);
 }
 
-int __fastcall PLVal(int pv, int p1, int p2, int minv, int maxv)
+int PLVal(int pv, int p1, int p2, int minv, int maxv)
 {
 	if (p1 == p2)
 		return minv;
@@ -1928,7 +1928,7 @@ int __fastcall PLVal(int pv, int p1, int p2, int minv, int maxv)
 	return minv + (maxv - minv) * (100 * (pv - p1) / (p2 - p1)) / 100;
 }
 
-void __fastcall SaveItemPower(int i, int power, int param1, int param2, int minval, int maxval, int multval)
+void SaveItemPower(int i, int power, int param1, int param2, int minval, int maxval, int multval)
 {
 	int v7;         // edi
 	int v8;         // esi
@@ -2314,7 +2314,7 @@ void __fastcall SaveItemPower(int i, int power, int param1, int param2, int minv
 	}
 }
 
-void __fastcall GetItemPower(int i, int minlvl, int maxlvl, int flgs, int onlygood)
+void GetItemPower(int i, int minlvl, int maxlvl, int flgs, int onlygood)
 {
 	//int v6; // ecx
 	int pre; // esi
@@ -2419,7 +2419,7 @@ void __fastcall GetItemPower(int i, int minlvl, int maxlvl, int flgs, int onlygo
 }
 // 4215EF: using guessed type int var_494[256];
 
-void __fastcall GetItemBonus(int i, int idata, int minlvl, int maxlvl, int onlygood)
+void GetItemBonus(int i, int idata, int minlvl, int maxlvl, int onlygood)
 {
 	if (item[i]._iClass != ICLASS_GOLD) {
 		if (minlvl > 25)
@@ -2454,7 +2454,7 @@ void __fastcall GetItemBonus(int i, int idata, int minlvl, int maxlvl, int onlyg
 	}
 }
 
-void __fastcall SetupItem(int i)
+void SetupItem(int i)
 {
 	int it, il;
 
@@ -2479,7 +2479,7 @@ void __fastcall SetupItem(int i)
 	item[i]._iAnimFrame = il;
 }
 
-int __fastcall RndItem(int m)
+int RndItem(int m)
 {
 	int i, ri;
 	int ril[512];
@@ -2516,7 +2516,7 @@ int __fastcall RndItem(int m)
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-int __fastcall RndUItem(int m)
+int RndUItem(int m)
 {
 	int i, ri;
 	int ril[512];
@@ -2559,7 +2559,7 @@ int __fastcall RndUItem(int m)
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-int __cdecl RndAllItems()
+int RndAllItems()
 {
 	int i, ri;
 	int ril[512];
@@ -2583,7 +2583,7 @@ int __cdecl RndAllItems()
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-int __fastcall RndTypeItems(int itype, int imid)
+int RndTypeItems(int itype, int imid)
 {
 	int i;          // edi
 	BOOLEAN okflag; // esi
@@ -2614,7 +2614,7 @@ int __fastcall RndTypeItems(int itype, int imid)
 }
 // 421CB7: using guessed type int var_80C[512];
 
-int __fastcall CheckUnique(int i, int lvl, int uper, BOOLEAN recreate)
+int CheckUnique(int i, int lvl, int uper, BOOLEAN recreate)
 {
 	int numu;      // ebx
 	int j;         // esi
@@ -2658,7 +2658,7 @@ int __fastcall CheckUnique(int i, int lvl, int uper, BOOLEAN recreate)
 // 679660: using guessed type char gbMaxPlayers;
 // 421D41: using guessed type char var_84[128];
 
-void __fastcall GetUniqueItem(int i, int uid)
+void GetUniqueItem(int i, int uid)
 {
 	UniqueItemFlag[uid] = 1;
 	SaveItemPower(i, UniqueItemList[uid].UIPower1, UniqueItemList[uid].UIParam1, UniqueItemList[uid].UIParam2, 0, 0, 1);
@@ -2685,7 +2685,7 @@ void __fastcall GetUniqueItem(int i, int uid)
 	item[i]._iMagical = ITEM_QUALITY_UNIQUE;
 }
 
-void __fastcall SpawnUnique(int uid, int x, int y)
+void SpawnUnique(int uid, int x, int y)
 {
 	int ii;    // esi
 	int itype; // edx
@@ -2711,13 +2711,13 @@ void __fastcall SpawnUnique(int uid, int x, int y)
 }
 // 421F5C: could not find valid save-restore pair for esi
 
-void __fastcall ItemRndDur(int ii)
+void ItemRndDur(int ii)
 {
 	if (item[ii]._iDurability && item[ii]._iDurability != DUR_INDESTRUCTIBLE)
 		item[ii]._iDurability = random(0, item[ii]._iMaxDur >> 1) + (item[ii]._iMaxDur >> 2) + 1;
 }
 
-void __fastcall SetupAllItems(int ii, int idx, int iseed, int lvl, int uper, int onlygood, int recreate, int pregen)
+void SetupAllItems(int ii, int idx, int iseed, int lvl, int uper, int onlygood, int recreate, int pregen)
 {
 	int iblvl; // edi
 	int uid;   // eax
@@ -2770,7 +2770,7 @@ void __fastcall SetupAllItems(int ii, int idx, int iseed, int lvl, int uper, int
 	SetupItem(ii);
 }
 
-void __fastcall SpawnItem(int m, int x, int y, BOOL sendmsg)
+void SpawnItem(int m, int x, int y, BOOL sendmsg)
 {
 	int ii;       // edi
 	int onlygood; // [esp+Ch] [ebp-Ch]
@@ -2817,7 +2817,7 @@ LABEL_13:
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-void __fastcall CreateItem(int uid, int x, int y)
+void CreateItem(int uid, int x, int y)
 {
 	int ii;  // esi
 	int idx; // edx
@@ -2844,7 +2844,7 @@ void __fastcall CreateItem(int uid, int x, int y)
 }
 // 422290: could not find valid save-restore pair for esi
 
-void __fastcall CreateRndItem(int x, int y, unsigned char onlygood, unsigned char sendmsg, int delta)
+void CreateRndItem(int x, int y, unsigned char onlygood, unsigned char sendmsg, int delta)
 {
 	int idx; // edi
 	int ii;  // esi
@@ -2870,7 +2870,7 @@ void __fastcall CreateRndItem(int x, int y, unsigned char onlygood, unsigned cha
 	}
 }
 
-void __fastcall SetupAllUseful(int ii, int iseed, int lvl)
+void SetupAllUseful(int ii, int iseed, int lvl)
 {
 	int idx; // esi
 
@@ -2888,7 +2888,7 @@ void __fastcall SetupAllUseful(int ii, int iseed, int lvl)
 	SetupItem(ii);
 }
 
-void __fastcall CreateRndUseful(int pnum, int x, int y, unsigned char sendmsg)
+void CreateRndUseful(int pnum, int x, int y, unsigned char sendmsg)
 {
 	int ii; // esi
 
@@ -2906,7 +2906,7 @@ void __fastcall CreateRndUseful(int pnum, int x, int y, unsigned char sendmsg)
 	}
 }
 
-void __fastcall CreateTypeItem(int x, int y, unsigned char onlygood, int itype, int imisc, int sendmsg, int delta)
+void CreateTypeItem(int x, int y, unsigned char onlygood, int itype, int imisc, int sendmsg, int delta)
 {
 	int idx; // edi
 	int ii;  // esi
@@ -2932,7 +2932,7 @@ void __fastcall CreateTypeItem(int x, int y, unsigned char onlygood, int itype, 
 	}
 }
 
-void __fastcall RecreateItem(int ii, int idx, unsigned short ic, int iseed, int ivalue)
+void RecreateItem(int ii, int idx, unsigned short ic, int iseed, int ivalue)
 {
 	int uper;     // esi
 	int onlygood; // edx
@@ -2982,7 +2982,7 @@ void __fastcall RecreateItem(int ii, int idx, unsigned short ic, int iseed, int 
 	}
 }
 
-void __fastcall RecreateEar(int ii, unsigned short ic, int iseed, int Id, int dur, int mdur, int ch, int mch, int ivalue, int ibuff)
+void RecreateEar(int ii, unsigned short ic, int iseed, int Id, int dur, int mdur, int ch, int mch, int ivalue, int ibuff)
 {
 	SetPlrHandItem(&item[ii], IDI_EAR);
 	tempstr[0] = (ic >> 8) & 0x7F;
@@ -3009,7 +3009,7 @@ void __fastcall RecreateEar(int ii, unsigned short ic, int iseed, int Id, int du
 	item[ii]._iSeed = iseed;
 }
 
-void __fastcall SpawnQuestItem(int itemid, int x, int y, int randarea, int selflag)
+void SpawnQuestItem(int itemid, int x, int y, int randarea, int selflag)
 {
 	BOOL failed;
 	int i, j, tries;
@@ -3052,7 +3052,7 @@ void __fastcall SpawnQuestItem(int itemid, int x, int y, int randarea, int selfl
 	}
 }
 
-void __cdecl SpawnRock()
+void SpawnRock()
 {
 	BOOL v0; // edx
 	int v1;  // eax
@@ -3102,7 +3102,7 @@ void __cdecl SpawnRock()
 	}
 }
 
-void __fastcall RespawnItem(int i, BOOL FlipFlag)
+void RespawnItem(int i, BOOL FlipFlag)
 {
 	int it; // ecx
 	int il; // eax
@@ -3137,7 +3137,7 @@ void __fastcall RespawnItem(int i, BOOL FlipFlag)
 		item[i]._iSelFlag = 1;
 }
 
-void __fastcall DeleteItem(int ii, int i)
+void DeleteItem(int ii, int i)
 {
 	itemavail[MAXITEMS - numitems] = ii;
 	numitems--;
@@ -3145,7 +3145,7 @@ void __fastcall DeleteItem(int ii, int i)
 		itemactive[i] = itemactive[numitems];
 }
 
-void __cdecl ItemDoppel()
+void ItemDoppel()
 {
 	int idoppelx;  // esi
 	ItemStruct *i; // edx
@@ -3164,7 +3164,7 @@ void __cdecl ItemDoppel()
 	}
 }
 
-void __cdecl ProcessItems()
+void ProcessItems()
 {
 	int i;  // edi
 	int ii; // esi
@@ -3193,7 +3193,7 @@ void __cdecl ProcessItems()
 	ItemDoppel();
 }
 
-void __cdecl FreeItemGFX()
+void FreeItemGFX()
 {
 	int i;    // esi
 	void *v1; // ecx
@@ -3205,12 +3205,12 @@ void __cdecl FreeItemGFX()
 	}
 }
 
-void __fastcall GetItemFrm(int i)
+void GetItemFrm(int i)
 {
 	item[i]._iAnimData = itemanims[ItemCAnimTbl[item[i]._iCurs]];
 }
 
-void __fastcall GetItemStr(int i)
+void GetItemStr(int i)
 {
 	int nGold; // esi
 
@@ -3231,7 +3231,7 @@ void __fastcall GetItemStr(int i)
 }
 // 4B883C: using guessed type int infoclr;
 
-void __fastcall CheckIdentify(int pnum, int cii)
+void CheckIdentify(int pnum, int cii)
 {
 	ItemStruct *pi; // esi
 
@@ -3244,7 +3244,7 @@ void __fastcall CheckIdentify(int pnum, int cii)
 		SetCursor_(CURSOR_HAND);
 }
 
-void __fastcall DoRepair(int pnum, int cii)
+void DoRepair(int pnum, int cii)
 {
 	PlayerStruct *p; // eax
 	ItemStruct *pi;  // esi
@@ -3260,7 +3260,7 @@ void __fastcall DoRepair(int pnum, int cii)
 		SetCursor_(CURSOR_HAND);
 }
 
-void __fastcall RepairItem(ItemStruct *i, int lvl)
+void RepairItem(ItemStruct *i, int lvl)
 {
 	int rep; // edi
 	int d;   // eax
@@ -3291,7 +3291,7 @@ void __fastcall RepairItem(ItemStruct *i, int lvl)
 	}
 }
 
-void __fastcall DoRecharge(int pnum, int cii)
+void DoRecharge(int pnum, int cii)
 {
 	PlayerStruct *p; // eax
 	ItemStruct *pi;  // esi
@@ -3308,7 +3308,7 @@ void __fastcall DoRecharge(int pnum, int cii)
 		SetCursor_(CURSOR_HAND);
 }
 
-void __fastcall RechargeItem(ItemStruct *i, int r)
+void RechargeItem(ItemStruct *i, int r)
 {
 	if (i->_iCharges != i->_iMaxCharges) {
 		while (1) {
@@ -3326,7 +3326,7 @@ void __fastcall RechargeItem(ItemStruct *i, int r)
 	}
 }
 
-void __fastcall PrintItemOil(char IDidx)
+void PrintItemOil(char IDidx)
 {
 	switch (IDidx) {
 	case IMISC_FULLHEAL:
@@ -3382,7 +3382,7 @@ void __fastcall PrintItemOil(char IDidx)
 	AddPanelString(tempstr, 1);
 }
 
-void __fastcall PrintItemPower(char plidx, ItemStruct *x)
+void PrintItemPower(char plidx, ItemStruct *x)
 {
 	ItemStruct *v2; // esi
 	int *v3;        // esi
@@ -3649,7 +3649,7 @@ void __fastcall PrintItemPower(char plidx, ItemStruct *x)
 	}
 }
 
-void __cdecl DrawUTextBack()
+void DrawUTextBack()
 {
 	CelDecodeOnly(88, 487, (BYTE *)pSTextBoxCels, 1, 271);
 
@@ -3660,7 +3660,7 @@ void __cdecl DrawUTextBack()
 #include "asm_trans_rect.inc"
 }
 
-void __fastcall PrintUString(int x, int y, int cjustflag, char *str, int col)
+void PrintUString(int x, int y, int cjustflag, char *str, int col)
 {
 	char *v5;          // edi
 	int v6;            // ebx
@@ -3714,7 +3714,7 @@ void __fastcall PrintUString(int x, int y, int cjustflag, char *str, int col)
 	}
 }
 
-void __fastcall DrawULine(int y)
+void DrawULine(int y)
 {
 	/// ASSERT: assert(gpBuffer);
 
@@ -3751,7 +3751,7 @@ void __fastcall DrawULine(int y)
 #endif
 }
 
-void __cdecl DrawUniqueInfo()
+void DrawUniqueInfo()
 {
 	int v0; // esi
 	int v1; // esi
@@ -3790,7 +3790,7 @@ void __cdecl DrawUniqueInfo()
 }
 // 69BD04: using guessed type int questlog;
 
-void __fastcall PrintItemMisc(ItemStruct *x)
+void PrintItemMisc(ItemStruct *x)
 {
 	if (x->_iMiscId == IMISC_SCROLL) {
 		strcpy(tempstr, "Right-click to read");
@@ -3821,7 +3821,7 @@ void __fastcall PrintItemMisc(ItemStruct *x)
 	}
 }
 
-void __fastcall PrintItemDetails(ItemStruct *x)
+void PrintItemDetails(ItemStruct *x)
 {
 	ItemStruct *v1;   // ebp
 	char v2;          // cl
@@ -3882,7 +3882,7 @@ void __fastcall PrintItemDetails(ItemStruct *x)
 	pinfoflag = TRUE;
 }
 
-void __fastcall PrintItemDur(ItemStruct *x)
+void PrintItemDur(ItemStruct *x)
 {
 	ItemStruct *v1;   // esi
 	int v2;           // eax
@@ -3937,7 +3937,7 @@ void __fastcall PrintItemDur(ItemStruct *x)
 	pinfoflag = TRUE;
 }
 
-void __fastcall UseItem(int p, int Mid, int spl)
+void UseItem(int p, int Mid, int spl)
 {
 	int l, j;
 
@@ -4099,7 +4099,7 @@ void __fastcall UseItem(int p, int Mid, int spl)
 	}
 }
 
-BOOL __fastcall StoreStatOk(ItemStruct *h)
+BOOL StoreStatOk(ItemStruct *h)
 {
 	BOOL sf;
 
@@ -4114,7 +4114,7 @@ BOOL __fastcall StoreStatOk(ItemStruct *h)
 	return sf;
 }
 
-BOOL __fastcall SmithItemOk(int i)
+BOOL SmithItemOk(int i)
 {
 	BOOL rv;
 
@@ -4135,7 +4135,7 @@ BOOL __fastcall SmithItemOk(int i)
 	return rv;
 }
 
-int __fastcall RndSmithItem(int lvl)
+int RndSmithItem(int lvl)
 {
 	int i, ri;
 	int ril[512];
@@ -4155,7 +4155,7 @@ int __fastcall RndSmithItem(int lvl)
 	return ril[random(50, ri)] + 1;
 }
 
-void __fastcall BubbleSwapItem(ItemStruct *a, ItemStruct *b)
+void BubbleSwapItem(ItemStruct *a, ItemStruct *b)
 {
 	ItemStruct h; // [esp+8h] [ebp-170h]
 
@@ -4164,7 +4164,7 @@ void __fastcall BubbleSwapItem(ItemStruct *a, ItemStruct *b)
 	qmemcpy(b, &h, sizeof(ItemStruct));
 }
 
-void __cdecl SortSmith()
+void SortSmith()
 {
 	int j, k;
 	BOOL sorted;
@@ -4189,7 +4189,7 @@ void __cdecl SortSmith()
 	}
 }
 
-void __fastcall SpawnSmith(int lvl)
+void SpawnSmith(int lvl)
 {
 	ItemStruct *holdItem;
 	int i, nsi, idata;
@@ -4214,7 +4214,7 @@ void __fastcall SpawnSmith(int lvl)
 	SortSmith();
 }
 
-BOOL __fastcall PremiumItemOk(int i)
+BOOL PremiumItemOk(int i)
 {
 	BOOL rv;
 
@@ -4239,7 +4239,7 @@ BOOL __fastcall PremiumItemOk(int i)
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-int __fastcall RndPremiumItem(int minlvl, int maxlvl)
+int RndPremiumItem(int minlvl, int maxlvl)
 {
 	int i, ri;
 	int ril[512];
@@ -4258,7 +4258,7 @@ int __fastcall RndPremiumItem(int minlvl, int maxlvl)
 }
 // 42445F: using guessed type int ril[512];
 
-void __fastcall SpawnOnePremium(int i, int plvl)
+void SpawnOnePremium(int i, int plvl)
 {
 	int itype;           // esi
 	ItemStruct holditem; // [esp+Ch] [ebp-178h]
@@ -4282,7 +4282,7 @@ void __fastcall SpawnOnePremium(int i, int plvl)
 	qmemcpy(item, &holditem, sizeof(ItemStruct));
 }
 
-void __fastcall SpawnPremium(int lvl)
+void SpawnPremium(int lvl)
 {
 	int i; // eax
 
@@ -4305,7 +4305,7 @@ void __fastcall SpawnPremium(int lvl)
 }
 // 69FB38: using guessed type int talker;
 
-BOOL __fastcall WitchItemOk(int i)
+BOOL WitchItemOk(int i)
 {
 	BOOL rv;
 
@@ -4333,7 +4333,7 @@ BOOL __fastcall WitchItemOk(int i)
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-int __fastcall RndWitchItem(int lvl)
+int RndWitchItem(int lvl)
 {
 	int i, ri;
 	int ril[512];
@@ -4349,7 +4349,7 @@ int __fastcall RndWitchItem(int lvl)
 	return ril[random(51, ri)] + 1;
 }
 
-void __cdecl SortWitch()
+void SortWitch()
 {
 	int j, k;
 	BOOL sorted;
@@ -4374,7 +4374,7 @@ void __cdecl SortWitch()
 	}
 }
 
-void __fastcall WitchBookLevel(int ii)
+void WitchBookLevel(int ii)
 {
 	int slvl; // edi
 
@@ -4394,7 +4394,7 @@ void __fastcall WitchBookLevel(int ii)
 	}
 }
 
-void __fastcall SpawnWitch(int lvl)
+void SpawnWitch(int lvl)
 {
 	int v2;          // ebp
 	int itype;       // esi
@@ -4453,7 +4453,7 @@ void __fastcall SpawnWitch(int lvl)
 	SortWitch();
 }
 
-int __fastcall RndBoyItem(int lvl)
+int RndBoyItem(int lvl)
 {
 	int i, ri;
 	int ril[512];
@@ -4470,7 +4470,7 @@ int __fastcall RndBoyItem(int lvl)
 }
 // 4249A4: using guessed type int var_800[512];
 
-void __fastcall SpawnBoy(int lvl)
+void SpawnBoy(int lvl)
 {
 	int itype; // esi
 
@@ -4491,7 +4491,7 @@ void __fastcall SpawnBoy(int lvl)
 }
 // 6A8A3C: using guessed type int boylevel;
 
-BOOL __fastcall HealerItemOk(int i)
+BOOL HealerItemOk(int i)
 {
 	int v1;         // ecx
 	BOOLEAN result; // eax
@@ -4546,7 +4546,7 @@ LABEL_21:
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-int __fastcall RndHealerItem(int lvl)
+int RndHealerItem(int lvl)
 {
 	int i, ri;
 	int ril[512];
@@ -4562,7 +4562,7 @@ int __fastcall RndHealerItem(int lvl)
 	return ril[random(50, ri)] + 1;
 }
 
-void __cdecl SortHealer()
+void SortHealer()
 {
 	int j, k;
 	BOOL sorted;
@@ -4587,7 +4587,7 @@ void __cdecl SortHealer()
 	}
 }
 
-void __fastcall SpawnHealer(int lvl)
+void SpawnHealer(int lvl)
 {
 	int v3;         // eax
 	ItemStruct *v4; // ebp
@@ -4637,14 +4637,14 @@ void __fastcall SpawnHealer(int lvl)
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-void __cdecl SpawnStoreGold()
+void SpawnStoreGold()
 {
 	GetItemAttrs(0, IDI_GOLD, 1);
 	qmemcpy(&golditem, item, sizeof(golditem));
 	golditem._iStatFlag = 1;
 }
 
-void __fastcall RecreateSmithItem(int ii, int idx, int plvl, int iseed)
+void RecreateSmithItem(int ii, int idx, int plvl, int iseed)
 {
 	SetRndSeed(iseed);
 	GetItemAttrs(ii, RndSmithItem(plvl) - 1, plvl);
@@ -4653,7 +4653,7 @@ void __fastcall RecreateSmithItem(int ii, int idx, int plvl, int iseed)
 	item[ii]._iIdentified = TRUE;
 }
 
-void __fastcall RecreatePremiumItem(int ii, int idx, int lvl, int iseed)
+void RecreatePremiumItem(int ii, int idx, int lvl, int iseed)
 {
 	int itype; // edi
 
@@ -4666,7 +4666,7 @@ void __fastcall RecreatePremiumItem(int ii, int idx, int lvl, int iseed)
 	item[ii]._iIdentified = TRUE;
 }
 
-void __fastcall RecreateBoyItem(int ii, int idx, int lvl, int iseed)
+void RecreateBoyItem(int ii, int idx, int lvl, int iseed)
 {
 	int itype; // edi
 
@@ -4679,7 +4679,7 @@ void __fastcall RecreateBoyItem(int ii, int idx, int lvl, int iseed)
 	item[ii]._iIdentified = TRUE;
 }
 
-void __fastcall RecreateWitchItem(int ii, int idx, int lvl, int iseed)
+void RecreateWitchItem(int ii, int idx, int lvl, int iseed)
 {
 	int itype; // edi
 	int iblvl; // eax
@@ -4700,7 +4700,7 @@ void __fastcall RecreateWitchItem(int ii, int idx, int lvl, int iseed)
 	item[ii]._iIdentified = TRUE;
 }
 
-void __fastcall RecreateHealerItem(int ii, int idx, int lvl, int iseed)
+void RecreateHealerItem(int ii, int idx, int lvl, int iseed)
 {
 	if (idx != IDI_HEAL && idx != IDI_FULLHEAL && idx != IDI_RESURRECT) {
 		SetRndSeed(iseed);
@@ -4712,7 +4712,7 @@ void __fastcall RecreateHealerItem(int ii, int idx, int lvl, int iseed)
 	item[ii]._iIdentified = TRUE;
 }
 
-void __fastcall RecreateTownItem(int ii, int idx, unsigned short icreateinfo, int iseed, int ivalue)
+void RecreateTownItem(int ii, int idx, unsigned short icreateinfo, int iseed, int ivalue)
 {
 	if (icreateinfo & 0x400)
 		RecreateSmithItem(ii, idx, icreateinfo & 0x3F, iseed);
@@ -4726,7 +4726,7 @@ void __fastcall RecreateTownItem(int ii, int idx, unsigned short icreateinfo, in
 		RecreateHealerItem(ii, idx, icreateinfo & 0x3F, iseed);
 }
 
-void __cdecl RecalcStoreStats()
+void RecalcStoreStats()
 {
 	int i;
 
@@ -4749,7 +4749,7 @@ void __cdecl RecalcStoreStats()
 // 6A6BB8: using guessed type int stextscrl;
 // 6AA700: using guessed type int stextdown;
 
-int __cdecl ItemNoFlippy()
+int ItemNoFlippy()
 {
 	int r; // ecx
 
@@ -4761,7 +4761,7 @@ int __cdecl ItemNoFlippy()
 	return r;
 }
 
-void __fastcall CreateSpellBook(int x, int y, int ispell, BOOLEAN sendmsg, int delta)
+void CreateSpellBook(int x, int y, int ispell, BOOLEAN sendmsg, int delta)
 {
 	int ii;       // edi
 	int idx;      // [esp+8h] [ebp-8h]
@@ -4787,7 +4787,7 @@ void __fastcall CreateSpellBook(int x, int y, int ispell, BOOLEAN sendmsg, int d
 	}
 }
 
-void __fastcall CreateMagicArmor(int x, int y, int imisc, int icurs, int sendmsg, int delta)
+void CreateMagicArmor(int x, int y, int imisc, int icurs, int sendmsg, int delta)
 {
 	int ii;    // esi
 	int idx;   // ebx
@@ -4815,7 +4815,7 @@ void __fastcall CreateMagicArmor(int x, int y, int imisc, int icurs, int sendmsg
 	}
 }
 
-void __fastcall CreateMagicWeapon(int x, int y, int imisc, int icurs, int sendmsg, int delta)
+void CreateMagicWeapon(int x, int y, int imisc, int icurs, int sendmsg, int delta)
 {
 	int ii;    // esi
 	int idx;   // ebx
@@ -4843,7 +4843,7 @@ void __fastcall CreateMagicWeapon(int x, int y, int imisc, int icurs, int sendms
 	}
 }
 
-BOOL __fastcall GetItemRecord(int dwSeed, WORD CI, int indx)
+BOOL GetItemRecord(int dwSeed, WORD CI, int indx)
 {
 	int v3;                   // edi
 	int *v4;                  // ebx
@@ -4885,7 +4885,7 @@ BOOL __fastcall GetItemRecord(int dwSeed, WORD CI, int indx)
 	return 0;
 }
 
-void __fastcall NextItemRecord(int i)
+void NextItemRecord(int i)
 {
 	int v1; // eax
 
@@ -4898,7 +4898,7 @@ void __fastcall NextItemRecord(int i)
 	}
 }
 
-void __fastcall SetItemRecord(int dwSeed, WORD CI, int indx)
+void SetItemRecord(int dwSeed, WORD CI, int indx)
 {
 	int i; // ecx
 
@@ -4911,7 +4911,7 @@ void __fastcall SetItemRecord(int dwSeed, WORD CI, int indx)
 	}
 }
 
-void __fastcall PutItemRecord(int seed, WORD ci, int index)
+void PutItemRecord(int seed, WORD ci, int index)
 {
 	int v3;                  // edi
 	int *v4;                 // ebx

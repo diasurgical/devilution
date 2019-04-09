@@ -2,13 +2,13 @@
 #ifndef __RENDER_H__
 #define __RENDER_H__
 
-void __fastcall drawTopArchesUpperScreen(BYTE *pBuff);
-void __fastcall drawBottomArchesUpperScreen(BYTE *pBuff, unsigned int *pMask);
-void __fastcall drawUpperScreen(BYTE *pBuff);
-void __fastcall drawTopArchesLowerScreen(BYTE *pBuff);
-void __fastcall drawBottomArchesLowerScreen(BYTE *pBuff, unsigned int *pMask);
-void __fastcall drawLowerScreen(BYTE *pBuff);
-void __fastcall world_draw_black_tile(BYTE *pBuff);
+void drawTopArchesUpperScreen(BYTE *pBuff);
+void drawBottomArchesUpperScreen(BYTE *pBuff, unsigned int *pMask);
+void drawUpperScreen(BYTE *pBuff);
+void drawTopArchesLowerScreen(BYTE *pBuff);
+void drawBottomArchesLowerScreen(BYTE *pBuff, unsigned int *pMask);
+void drawLowerScreen(BYTE *pBuff);
+void world_draw_black_tile(BYTE *pBuff);
 
 /* rdata */
 

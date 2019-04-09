@@ -4,7 +4,7 @@
 
 DWORD hashtable[1280];
 
-void __fastcall Decrypt(void *block, DWORD size, DWORD key)
+void Decrypt(void *block, DWORD size, DWORD key)
 {
 	DWORD *castBlock;
 	DWORD seed, i;
@@ -20,7 +20,7 @@ void __fastcall Decrypt(void *block, DWORD size, DWORD key)
 	}
 }
 
-void __fastcall Encrypt(void *block, DWORD size, DWORD key)
+void Encrypt(void *block, DWORD size, DWORD key)
 {
 	DWORD *castBlock;
 	DWORD seed, i, ch;
@@ -37,7 +37,7 @@ void __fastcall Encrypt(void *block, DWORD size, DWORD key)
 	}
 }
 
-DWORD __fastcall Hash(const char *s, int type)
+DWORD Hash(const char *s, int type)
 {
 	char ch;
 	DWORD seed1, seed2;
@@ -53,7 +53,7 @@ DWORD __fastcall Hash(const char *s, int type)
 	return seed1;
 }
 
-void __cdecl InitHash()
+void InitHash()
 {
 	DWORD seed, ch;
 	int i, j;
@@ -70,7 +70,7 @@ void __cdecl InitHash()
 	}
 }
 
-int __fastcall PkwareCompress(void *buf, int size)
+int PkwareCompress(void *buf, int size)
 {
 	BYTE *srcData, *destData;
 	char *ptr;
@@ -136,7 +136,7 @@ void __cdecl PkwareBufferWrite(char *buf, unsigned int *size, void *param)
 	pInfo->destOffset += *size;
 }
 
-void __fastcall PkwareDecompress(void *param, int recv_size, int dwMaxBytes)
+void PkwareDecompress(void *param, int recv_size, int dwMaxBytes)
 {
 	char *ptr;
 	BYTE *pbInBuff, *pbOutBuff;

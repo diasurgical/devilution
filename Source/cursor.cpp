@@ -68,14 +68,14 @@ const int InvItemHeight[180] = {
 	3 * 28, 3 * 28, 3 * 28, 3 * 28, 3 * 28, 3 * 28, 3 * 28, 3 * 28
 };
 
-void __cdecl InitCursor()
+void InitCursor()
 {
 	/// ASSERT: assert(! pCursCels);
 	pCursCels = LoadFileInMem("Data\\Inv\\Objcurs.CEL", 0);
 	ClearCursor();
 }
 
-void __cdecl FreeCursor()
+void FreeCursor()
 {
 	void *p;
 
@@ -86,7 +86,7 @@ void __cdecl FreeCursor()
 	ClearCursor();
 }
 
-void __fastcall SetICursor(int i)
+void SetICursor(int i)
 {
 	icursW = InvItemWidth[i];
 	icursH = InvItemHeight[i];
@@ -96,7 +96,7 @@ void __fastcall SetICursor(int i)
 // 4B8CB4: using guessed type int icursH;
 // 4B8CBC: using guessed type int icursW;
 
-void __fastcall SetCursor_(int i)
+void SetCursor_(int i)
 {
 	pcurs = i;
 	cursW = InvItemWidth[i];
@@ -105,12 +105,12 @@ void __fastcall SetCursor_(int i)
 }
 // 4B8C9C: using guessed type int cursH;
 
-void __fastcall NewCursor(int i)
+void NewCursor(int i)
 {
 	SetCursor_(i);
 }
 
-void __cdecl InitLevelCursor()
+void InitLevelCursor()
 {
 	SetCursor_(CURSOR_HAND);
 	cursmx = ViewX;
@@ -127,7 +127,7 @@ void __cdecl InitLevelCursor()
 // 4B8CC2: using guessed type char pcursplr;
 // 4B8CCC: using guessed type int dword_4B8CCC;
 
-void __cdecl CheckTown()
+void CheckTown()
 {
 	int i, mx;
 
@@ -153,7 +153,7 @@ void __cdecl CheckTown()
 	}
 }
 
-void __cdecl CheckRportal()
+void CheckRportal()
 {
 	int i, mx;
 
@@ -183,7 +183,7 @@ void __cdecl CheckRportal()
 }
 // 5CF31D: using guessed type char setlevel;
 
-void __cdecl CheckCursMove()
+void CheckCursMove()
 {
 	int mos_x;     // esi MAPDST
 	int mos_y;     // edi MAPDST

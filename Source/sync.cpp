@@ -8,7 +8,7 @@ WORD sgwLRU[MAXMONSTERS];
 int sgnSyncItem;
 int sgnSyncPInv;
 
-DWORD __fastcall sync_all_monsters(const BYTE *pbBuf, DWORD dwMaxLen)
+DWORD sync_all_monsters(const BYTE *pbBuf, DWORD dwMaxLen)
 {
 	TSyncHeader *pHdr;
 	int i;
@@ -51,7 +51,7 @@ DWORD __fastcall sync_all_monsters(const BYTE *pbBuf, DWORD dwMaxLen)
 	return dwMaxLen;
 }
 
-void __cdecl sync_one_monster()
+void sync_one_monster()
 {
 	int i, m;
 
@@ -66,7 +66,7 @@ void __cdecl sync_one_monster()
 	}
 }
 
-BOOL __fastcall sync_monster_active(TSyncMonster *p)
+BOOL sync_monster_active(TSyncMonster *p)
 {
 	int i, m, ndx;
 	DWORD lru;
@@ -90,7 +90,7 @@ BOOL __fastcall sync_monster_active(TSyncMonster *p)
 	return TRUE;
 }
 
-void __fastcall sync_monster_pos(TSyncMonster *p, int ndx)
+void sync_monster_pos(TSyncMonster *p, int ndx)
 {
 	p->_mndx = ndx;
 	p->_mx = monster[ndx]._mx;
@@ -102,7 +102,7 @@ void __fastcall sync_monster_pos(TSyncMonster *p, int ndx)
 	sgwLRU[ndx] = monster[ndx]._msquelch == 0 ? 0xFFFF : 0xFFFE;
 }
 
-BOOL __fastcall sync_monster_active2(TSyncMonster *p)
+BOOL sync_monster_active2(TSyncMonster *p)
 {
 	int i, m, ndx;
 	DWORD lru;
@@ -130,7 +130,7 @@ BOOL __fastcall sync_monster_active2(TSyncMonster *p)
 	return TRUE;
 }
 
-void __fastcall SyncPlrInv(TSyncHeader *pHdr)
+void SyncPlrInv(TSyncHeader *pHdr)
 {
 	int ii;
 	ItemStruct *pItem;
@@ -188,7 +188,7 @@ void __fastcall SyncPlrInv(TSyncHeader *pHdr)
 	}
 }
 
-DWORD __fastcall sync_update(int pnum, const BYTE *pbBuf)
+DWORD sync_update(int pnum, const BYTE *pbBuf)
 {
 	TSyncHeader *pHdr;
 	WORD wLen;
@@ -223,7 +223,7 @@ DWORD __fastcall sync_update(int pnum, const BYTE *pbBuf)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-void __fastcall sync_monster(int pnum, const TSyncMonster *p)
+void sync_monster(int pnum, const TSyncMonster *p)
 {
 	int i, ndx, md, mdx, mdy;
 	DWORD delta;
@@ -281,7 +281,7 @@ void __fastcall sync_monster(int pnum, const TSyncMonster *p)
 	decode_enemy(ndx, p->_menemy);
 }
 
-void __cdecl sync_init()
+void sync_init()
 {
 	sgnMonsters = 16 * myplr;
 	memset(sgwLRU, 255, sizeof(sgwLRU));
