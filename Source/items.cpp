@@ -1355,17 +1355,12 @@ void SetPlrHandSeed(ItemStruct *h, int iseed)
 
 void SetPlrHandGoldCurs(ItemStruct *h)
 {
-	int v1; // eax
-
-	v1 = h->_ivalue;
-	if (v1 < 2500) {
-		if (v1 > 1000)
-			h->_iCurs = ICURS_GOLD_MEDIUM;
-		else
-			h->_iCurs = ICURS_GOLD_SMALL;
-	} else {
+	if (h->_ivalue >= 2500)
 		h->_iCurs = ICURS_GOLD_LARGE;
-	}
+	else if (h->_ivalue <= 1000)
+		h->_iCurs = ICURS_GOLD_SMALL;
+	else
+		h->_iCurs = ICURS_GOLD_MEDIUM;
 }
 
 void CreatePlrItems(int p)
