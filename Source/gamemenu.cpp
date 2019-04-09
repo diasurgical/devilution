@@ -26,12 +26,12 @@ TMenuItem sgMultiMenu[5] = {
 TMenuItem sgOptionMenu[6] = {
 	// clang-format off
 	//   dwFlags, pszStr,          fnMenu
-	{ 0xC0000000, NULL,            (void(__cdecl *)(void)) & gamemenu_music_volume },
-	{ 0xC0000000, NULL,            (void(__cdecl *)(void)) & gamemenu_sound_volume },
-	{ 0xC0000000, "Gamma",         (void(__cdecl *)(void)) & gamemenu_gamma        },
-	{ 0x80000000, NULL,            &gamemenu_color_cycling                         },
-	{ 0x80000000, "Previous Menu", &gamemenu_previous                              },
-	{ 0x80000000, NULL,            NULL                                            }
+	{ 0xC0000000, NULL,            &gamemenu_music_volume  },
+	{ 0xC0000000, NULL,            &gamemenu_sound_volume  },
+	{ 0xC0000000, "Gamma",         &gamemenu_gamma         },
+	{ 0x80000000, NULL,            &gamemenu_color_cycling },
+	{ 0x80000000, "Previous Menu", &j_gamemenu_previous    },
+	{ 0x80000000, NULL,            NULL                    }
 	// clang-format on
 };
 char *music_toggle_names[] = { "Music", "Music Disabled" };
@@ -40,7 +40,7 @@ char *color_cycling_toggle_names[] = { "Color Cycling Off", "Color Cycling On" }
 
 void __cdecl gamemenu_previous()
 {
-	void(__cdecl * proc)();
+	void(__fastcall * proc)(TMenuItem *);
 	TMenuItem *item;
 
 	if (gbMaxPlayers == 1) {
@@ -54,7 +54,7 @@ void __cdecl gamemenu_previous()
 	PressEscKey();
 }
 
-void __cdecl gamemenu_enable_single()
+void __fastcall gamemenu_enable_single(TMenuItem *a1)
 {
 	BOOL enable;
 
@@ -67,7 +67,7 @@ void __cdecl gamemenu_enable_single()
 	gmenu_enable(sgSingleMenu, enable);
 }
 
-void __cdecl gamemenu_enable_multi()
+void __fastcall gamemenu_enable_multi(TMenuItem *a1)
 {
 	gmenu_enable(&sgMultiMenu[2], deathflag);
 }
@@ -85,7 +85,12 @@ void __cdecl gamemenu_handle_previous()
 		gamemenu_previous();
 }
 
-void __cdecl gamemenu_new_game()
+void __fastcall j_gamemenu_previous(BOOL a1)
+{
+	gamemenu_previous();
+}
+
+void __fastcall gamemenu_new_game(BOOL a1)
 {
 	int i;
 
@@ -102,13 +107,13 @@ void __cdecl gamemenu_new_game()
 }
 // 52571C: using guessed type int drawpanflag;
 
-void __cdecl gamemenu_quit_game()
+void __fastcall gamemenu_quit_game(BOOL a1)
 {
-	gamemenu_new_game();
+	gamemenu_new_game(a1);
 	gbRunGameResult = FALSE;
 }
 
-void __cdecl gamemenu_load_game()
+void __fastcall gamemenu_load_game(BOOL a1)
 {
 	WNDPROC saveProc = SetWindowProc(DisableInputWndProc);
 	gamemenu_off();
@@ -129,7 +134,7 @@ void __cdecl gamemenu_load_game()
 }
 // 52571C: using guessed type int drawpanflag;
 
-void __cdecl gamemenu_save_game()
+void __fastcall gamemenu_save_game(BOOL a1)
 {
 	if (pcurs == CURSOR_HAND) {
 		if (plr[myplr]._pmode == PM_DEATH || deathflag) {
@@ -152,12 +157,12 @@ void __cdecl gamemenu_save_game()
 }
 // 52571C: using guessed type int drawpanflag;
 
-void __cdecl gamemenu_restart_town()
+void __fastcall gamemenu_restart_town(BOOL a1)
 {
 	NetSendCmd(TRUE, CMD_RETOWN);
 }
 
-void __cdecl gamemenu_options()
+void __fastcall gamemenu_options(BOOL a1)
 {
 	gamemenu_get_music();
 	gamemenu_get_sound();
@@ -200,9 +205,10 @@ void __cdecl gamemenu_get_gamma()
 	gmenu_slider_1(&sgOptionMenu[2], 30, 100, UpdateGamma(0));
 }
 
-void __fastcall gamemenu_music_volume(int volume)
+void __fastcall gamemenu_music_volume(BOOL a1)
 {
-	if (volume) {
+	int volume;
+	if (a1) {
 		if (gbMusicOn) {
 			gbMusicOn = FALSE;
 			music_stop();
@@ -246,9 +252,10 @@ int __fastcall gamemenu_slider_music_sound(TMenuItem *menu_item)
 	return gmenu_slider_get(menu_item, VOLUME_MIN, VOLUME_MAX);
 }
 
-void __fastcall gamemenu_sound_volume(int volume)
+void __fastcall gamemenu_sound_volume(BOOL a1)
 {
-	if (volume) {
+	int volume;
+	if (a1) {
 		if (gbSoundOn) {
 			gbSoundOn = FALSE;
 			FreeMonsterSnd();
@@ -273,9 +280,10 @@ void __fastcall gamemenu_sound_volume(int volume)
 	gamemenu_get_sound();
 }
 
-void __fastcall gamemenu_gamma(int gamma)
+void __fastcall gamemenu_gamma(BOOL a1)
 {
-	if (gamma) {
+	int gamma;
+	if (a1) {
 		if (UpdateGamma(0) == 30)
 			gamma = 100;
 		else
@@ -293,7 +301,7 @@ int __cdecl gamemenu_slider_gamma()
 	return gmenu_slider_get(&sgOptionMenu[2], 30, 100);
 }
 
-void __cdecl gamemenu_color_cycling()
+void __fastcall gamemenu_color_cycling(BOOL a1)
 {
 	palette_set_color_cycling(palette_get_colour_cycling() == 0);
 	sgOptionMenu[3].pszStr = color_cycling_toggle_names[palette_get_colour_cycling() & 1];
