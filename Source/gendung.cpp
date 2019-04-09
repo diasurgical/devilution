@@ -1107,26 +1107,15 @@ void DRLG_HoldThemeRooms()
 
 BOOL SkipThemeRoom(int x, int y)
 {
-	int i;         // ebx
-	THEME_LOC *v3; // eax
-	int v4;        // esi
+	int i;
 
-	i = 0;
-	if (themeCount <= 0)
-		return 1;
-	v3 = themeLoc;
-	while (1) {
-		if (x >= v3->x - 2 && x <= v3->x + v3->width + 2) {
-			v4 = v3->y;
-			if (y >= v4 - 2 && y <= v4 + v3->height + 2)
-				break;
-		}
-		++i;
-		++v3;
-		if (i >= themeCount)
-			return 1;
+	for (i = 0; i < themeCount; i++) {
+		if (x >= themeLoc[i].x - 2 && x <= themeLoc[i].x + themeLoc[i].width + 2
+		    && y >= themeLoc[i].y - 2 && y <= themeLoc[i].y + themeLoc[i].height + 2)
+			return 0;
 	}
-	return 0;
+
+	return 1;
 }
 
 void InitLevels()
