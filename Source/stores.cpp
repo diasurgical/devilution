@@ -3348,9 +3348,6 @@ void __cdecl S_HBuyEnter()
 
 void __cdecl S_StoryEnter()
 {
-	int v0; // ecx
-
-	v0 = 12;
 	switch (stextsel) {
 	case 12:
 		stextlhold = 12;
@@ -3358,24 +3355,16 @@ void __cdecl S_StoryEnter()
 		stextshold = 15;
 		gossipstart = QUEST_STORY2;
 		gossipend = QUEST_STORY11;
-		_LOBYTE(v0) = STORE_GOSSIP;
-		goto LABEL_8;
+		StartStore(STORE_GOSSIP);
+		break;
 	case 14:
-		_LOBYTE(v0) = STORE_SIDENTIFY;
-	LABEL_8:
-		StartStore(v0);
-		return;
+		StartStore(STORE_SIDENTIFY);
+		break;
 	case 18:
 		stextflag = 0;
 		break;
 	}
 }
-// 69F110: using guessed type int stextlhold;
-// 69FB38: using guessed type int talker;
-// 6A4EF0: using guessed type int gossipstart;
-// 6A8A28: using guessed type int stextsel;
-// 6A8A30: using guessed type int gossipend;
-// 6AA705: using guessed type char stextflag;
 
 void __cdecl S_SIDEnter()
 {
