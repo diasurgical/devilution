@@ -2934,13 +2934,24 @@ void CreateTypeItem(int x, int y, unsigned char onlygood, int itype, int imisc, 
 
 void RecreateItem(int ii, int idx, unsigned short ic, int iseed, int ivalue)
 {
-	int uper;     // esi
-	int onlygood; // edx
-	int recreate; // ebx
-	int pregen;   // edi
+	int uper, onlygood, recreate, pregen;
 
-	if (idx) {
-		if (ic) {
+	if (!idx) {
+		SetPlrHandItem(&item[ii], IDI_GOLD);
+		item[ii]._iSeed = iseed;
+		item[ii]._iCreateInfo = ic;
+		item[ii]._ivalue = ivalue;
+		if (ivalue >= 2500)
+			item[ii]._iCurs = ICURS_GOLD_LARGE;
+		else if (ivalue <= 1000)
+			item[ii]._iCurs = ICURS_GOLD_SMALL;
+		else
+			item[ii]._iCurs = ICURS_GOLD_MEDIUM;
+	} else {
+		if (!ic) {
+			SetPlrHandItem(&item[ii], idx);
+			SetPlrHandSeed(&item[ii], iseed);
+		} else {
 			if (ic & 0x7C00) {
 				RecreateTownItem(ii, idx, ic, iseed, ivalue);
 			} else if ((ic & 0x0180) == 0x0180) {
@@ -2962,22 +2973,6 @@ void RecreateItem(int ii, int idx, unsigned short ic, int iseed, int ivalue)
 					pregen = 1;
 				SetupAllItems(ii, idx, iseed, ic & 0x3F, uper, onlygood, recreate, pregen);
 			}
-		} else {
-			SetPlrHandItem(&item[ii], idx);
-			SetPlrHandSeed(&item[ii], iseed);
-		}
-	} else {
-		SetPlrHandItem(&item[ii], IDI_GOLD);
-		item[ii]._iSeed = iseed;
-		item[ii]._iCreateInfo = ic;
-		item[ii]._ivalue = ivalue;
-		if (ivalue < 2500) {
-			if (ivalue > 1000)
-				item[ii]._iCurs = ICURS_GOLD_MEDIUM;
-			else
-				item[ii]._iCurs = ICURS_GOLD_SMALL;
-		} else {
-			item[ii]._iCurs = ICURS_GOLD_LARGE;
 		}
 	}
 }
