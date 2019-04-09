@@ -3495,33 +3495,35 @@ void __cdecl S_TavernEnter()
 
 void __cdecl S_BarmaidEnter()
 {
-	if (stextsel != 12) {
-		if (stextsel == 18) {
-			stextflag = 0;
-		}
-	} else {
+	switch (stextsel) {
+	case 12:
 		stextlhold = 12;
 		talker = 7;
 		stextshold = 23;
 		gossipstart = QUEST_GILLIAN2;
 		gossipend = QUEST_GILLIAN10;
 		StartStore(STORE_GOSSIP);
+		break;
+	case 18:
+		stextflag = 0;
+		break;
 	}
 }
 
 void __cdecl S_DrunkEnter()
 {
-	if (stextsel != 12) {
-		if (stextsel == 18) {
-			stextflag = 0;
-		}
-	} else {
+	switch (stextsel) {
+	case 12:
 		stextlhold = 12;
 		talker = 5;
 		stextshold = 22;
 		gossipstart = QUEST_FARNHAM2;
 		gossipend = QUEST_FARNHAM13;
 		StartStore(STORE_GOSSIP);
+		break;
+	case 18:
+		stextflag = 0;
+		break;
 	}
 }
 
