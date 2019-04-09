@@ -9,7 +9,7 @@ TMenuItem *sgpCurrItem;
 void *BigTGold_cel;
 int dword_634474; // weak
 char byte_634478; // weak
-void(__cdecl *dword_63447C)();
+void(__fastcall *dword_63447C)(TMenuItem *);
 TMenuItem *dword_634480; // idb
 void *option_cel;
 void *sgpLogo;
@@ -114,11 +114,11 @@ BOOL __cdecl gmenu_exception()
 	return dword_634480 != 0;
 }
 
-void __fastcall gmenu_call_proc(TMenuItem *pItem, void(__cdecl *gmFunc)())
+void __fastcall gmenu_call_proc(TMenuItem *pItem, void(__fastcall *gmFunc)(TMenuItem *))
 {
 	TMenuItem *v2;         // eax
 	int v3;                // ecx
-	void(__cdecl * *v4)(); // edx
+	void(__fastcall * *v4)(BOOL); // edx
 
 	PauseMode = 0;
 	byte_634464 = 0;
@@ -126,7 +126,7 @@ void __fastcall gmenu_call_proc(TMenuItem *pItem, void(__cdecl *gmFunc)())
 	dword_63447C = gmFunc;
 	dword_634480 = pItem;
 	if (gmFunc) {
-		gmFunc();
+		gmFunc(dword_634480);
 		v2 = dword_634480;
 	}
 	v3 = 0;
@@ -189,7 +189,7 @@ void __cdecl gmenu_draw()
 
 	if (dword_634480) {
 		if (dword_63447C)
-			dword_63447C();
+			dword_63447C(dword_634480);
 		CelDecodeOnly(236, 262, (BYTE *)sgpLogo, 1, 296);
 		v0 = 320;
 		for (i = dword_634480; i->fnMenu; v0 += 45) {
@@ -293,7 +293,7 @@ BOOL __fastcall gmenu_presskeys(int a1)
 	case VK_RETURN:
 		if ((sgpCurrItem->dwFlags & 0x80000000) != 0) {
 			PlaySFX(IS_TITLEMOV);
-			((void(__fastcall *)(signed int))sgpCurrItem->fnMenu)(1);
+			sgpCurrItem->fnMenu(TRUE);
 		}
 		break;
 	case VK_ESCAPE:
@@ -339,24 +339,21 @@ void __fastcall gmenu_left_right(int a1)
 		_LOWORD(v1) = v1 & 0xF000;
 		sgpCurrItem->dwFlags = v1;
 		sgpCurrItem->dwFlags |= v3;
-		((void(__fastcall *)(_DWORD))sgpCurrItem->fnMenu)(0);
+		sgpCurrItem->fnMenu(FALSE);
 	}
 }
 
-int __fastcall gmenu_on_mouse_move(LPARAM lParam)
+BOOL __cdecl gmenu_on_mouse_move()
 {
-	int v2; // edx
 	int a1; // [esp+0h] [ebp-4h]
 
-	a1 = lParam;
 	if (!byte_634464)
 		return 0;
 	gmenu_valid_mouse_pos(&a1);
-	v2 = a1 * ((sgpCurrItem->dwFlags >> 12) & 0xFFF) % 256;
 	a1 = a1 * ((sgpCurrItem->dwFlags >> 12) & 0xFFF) / 256;
 	_LOWORD(sgpCurrItem->dwFlags) &= 0xF000u;
 	sgpCurrItem->dwFlags |= a1;
-	((void(__fastcall *)(_DWORD, int))sgpCurrItem->fnMenu)(0, v2);
+	sgpCurrItem->fnMenu(FALSE);
 	return 1;
 }
 // 41A37A: could not find valid save-restore pair for esi
@@ -402,9 +399,9 @@ int __fastcall gmenu_left_mouse(int a1)
 						PlaySFX(IS_TITLEMOV);
 						if (v4->dwFlags & 0x40000000) {
 							byte_634464 = gmenu_valid_mouse_pos(&a1a);
-							gmenu_on_mouse_move(a1); /* v6 */
+							gmenu_on_mouse_move();
 						} else {
-							((void(__fastcall *)(signed int))sgpCurrItem->fnMenu)(1);
+							sgpCurrItem->fnMenu(TRUE);
 						}
 					}
 				}

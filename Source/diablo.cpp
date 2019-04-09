@@ -664,7 +664,7 @@ LRESULT CALLBACK GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_MOUSEMOVE:
 		MouseX = LOWORD(lParam);
 		MouseY = HIWORD(lParam);
-		gmenu_on_mouse_move(LOWORD(lParam));
+		gmenu_on_mouse_move();
 		return 0;
 	case WM_LBUTTONDOWN:
 		MouseX = LOWORD(lParam);

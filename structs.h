@@ -991,7 +991,7 @@ typedef struct QuestData {
 typedef struct TMenuItem {
 	unsigned int dwFlags;
 	char *pszStr;
-	void(__cdecl *fnMenu)(); /* fix, should have one arg */
+	void(__fastcall *fnMenu)(BOOL); /* fix, should have one arg */
 } TMenuItem;
 
 // TPDEF PTR FCN VOID TMenuUpdateFcn
