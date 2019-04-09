@@ -2719,8 +2719,8 @@ void ItemRndDur(int ii)
 
 void SetupAllItems(int ii, int idx, int iseed, int lvl, int uper, int onlygood, int recreate, int pregen)
 {
-	int iblvl; // edi
-	int uid;   // eax
+	int iblvl;
+	int uid;
 
 	item[ii]._iSeed = iseed;
 	SetRndSeed(iseed);
@@ -2737,10 +2737,7 @@ void SetupAllItems(int ii, int idx, int iseed, int lvl, int uper, int onlygood, 
 	else if (uper == 1)
 		item[ii]._iCreateInfo |= 0x0100;
 
-	if (item[ii]._iMiscId == IMISC_UNIQUE) {
-		if (item[ii]._iLoc != ILOC_UNEQUIPABLE)
-			GetUniqueItem(ii, iseed);
-	} else {
+	if (item[ii]._iMiscId != IMISC_UNIQUE) {
 		iblvl = -1;
 		if (random(32, 100) > 10 && random(33, 100) > lvl || (iblvl = lvl, lvl == -1)) {
 
@@ -2766,6 +2763,9 @@ void SetupAllItems(int ii, int idx, int iseed, int lvl, int uper, int onlygood, 
 		}
 		if (item[ii]._iMagical != ITEM_QUALITY_UNIQUE)
 			ItemRndDur(ii);
+	} else {
+		if (item[ii]._iLoc != ILOC_UNEQUIPABLE)
+			GetUniqueItem(ii, iseed);
 	}
 	SetupItem(ii);
 }
