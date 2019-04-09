@@ -3019,7 +3019,7 @@ void __cdecl S_BoyEnter()
 			TakePlrsMoney(50);
 			StartStore(STORE_BBOY);
 		}
-	} else if (stextsel == 8 && boyitem._itype != -1 || stextsel == 12 && boyitem._itype == -1) {
+	} else if (stextsel == 8 && boyitem._itype != ITYPE_NONE || stextsel == 12 && boyitem._itype == ITYPE_NONE) {
 		talker = 8;
 		stextshold = 12;
 		stextlhold = stextsel;
