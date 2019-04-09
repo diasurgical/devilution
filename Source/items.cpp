@@ -4472,7 +4472,7 @@ int RndBoyItem(int lvl)
 
 void SpawnBoy(int lvl)
 {
-	int itype; // esi
+	int itype;
 
 	if (boylevel<lvl>> 1 || boyitem._itype == -1) {
 		do {
@@ -4483,7 +4483,7 @@ void SpawnBoy(int lvl)
 			GetItemBonus(0, itype, lvl, 2 * lvl, 1);
 		} while (item[0]._iIvalue > 90000);
 		qmemcpy(&boyitem, item, sizeof(boyitem));
-		boyitem._iCreateInfo = lvl | 0x10;
+		boyitem._iCreateInfo = lvl | 0x1000;
 		boyitem._iIdentified = TRUE;
 		boyitem._iStatFlag = StoreStatOk(&boyitem);
 		boylevel = lvl >> 1;
