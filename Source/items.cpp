@@ -3139,17 +3139,10 @@ void __fastcall RespawnItem(int i, BOOL FlipFlag)
 
 void __fastcall DeleteItem(int ii, int i)
 {
-	int v2;     // eax
-	BOOLEAN v3; // zf
-	BOOLEAN v4; // sf
-
-	v2 = numitems - 1;
-	v3 = numitems == 1;
-	v4 = numitems - 1 < 0;
-	itemavail[-numitems + MAXITEMS] = ii;
-	numitems = v2;
-	if (!v4 && !v3 && i != v2)
-		itemactive[i] = itemactive[v2];
+	itemavail[MAXITEMS - numitems] = ii;
+	numitems--;
+	if (numitems > 0 && i != numitems)
+		itemactive[i] = itemactive[numitems];
 }
 
 void __cdecl ItemDoppel()
