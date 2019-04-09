@@ -136,7 +136,7 @@ static unsigned short ChCodeAsc[] =
 // Every element of "hash_to_index" will contain lowest index to the
 // "pair_hash_offsets" table, effectively giving offset of the first
 // occurence of the given PAIR_HASH in the input data.
-static void SortBuffer(TCmpStruct * pWork, unsigned char * buffer_begin, unsigned char * buffer_end)
+static void PKWAREAPI SortBuffer(TCmpStruct * pWork, unsigned char * buffer_begin, unsigned char * buffer_end)
 {
     unsigned short * phash_to_index;
     unsigned char  * buffer_ptr;
@@ -182,7 +182,7 @@ static void SortBuffer(TCmpStruct * pWork, unsigned char * buffer_begin, unsigne
     }
 }
 
-static void FlushBuf(TCmpStruct * pWork)
+static void PKWAREAPI FlushBuf(TCmpStruct * pWork)
 {
     unsigned char save_ch1;
     unsigned char save_ch2;
@@ -202,7 +202,7 @@ static void FlushBuf(TCmpStruct * pWork)
         pWork->out_buff[pWork->out_bytes] = save_ch2;
 }
 
-static void OutputBits(TCmpStruct * pWork, unsigned int nbits, unsigned long bit_buff)
+static void PKWAREAPI OutputBits(TCmpStruct * pWork, unsigned int nbits, unsigned long bit_buff)
 {
     unsigned int out_bits;
 
@@ -244,7 +244,7 @@ static void OutputBits(TCmpStruct * pWork, unsigned int nbits, unsigned long bit
 // (a previous occurence of the current byte sequence)
 // Returns length of the repetition, and stores the backward distance 
 // to pWork structure.
-static unsigned int FindRep(TCmpStruct * pWork, unsigned char * input_data)
+static unsigned int PKWAREAPI FindRep(TCmpStruct * pWork, unsigned char * input_data)
 {
     unsigned short * phash_to_index;            // Pointer into pWork->phash_to_index table
     unsigned short * phash_offs;                // Pointer to the table containing offsets of each PAIR_HASH
@@ -500,7 +500,7 @@ static unsigned int FindRep(TCmpStruct * pWork, unsigned char * input_data)
     }
 }
 
-static void WriteCmpData(TCmpStruct * pWork)
+static void PKWAREAPI WriteCmpData(TCmpStruct * pWork)
 {
     unsigned char * input_data_end;         // Pointer to the end of the input data
     unsigned char * input_data = pWork->work_buff + pWork->dsize_bytes + 0x204;
@@ -685,9 +685,9 @@ __Exit:
 //-----------------------------------------------------------------------------
 // Main imploding function
 
-unsigned int PKEXPORT implode(
-    unsigned int (*read_buf)(char *buf, unsigned int *size, void *param),
-    void         (*write_buf)(char *buf, unsigned int *size, void *param),
+unsigned int PKWAREAPI implode(
+    unsigned int (PKWAREAPI *read_buf)(char *buf, unsigned int *size, void *param),
+    void         (PKWAREAPI *write_buf)(char *buf, unsigned int *size, void *param),
     char         *work_buf,
     void         *param,
     unsigned int *type,

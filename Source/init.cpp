@@ -19,7 +19,7 @@ BOOLEAN screensaver_enabled_prev;
 char gszVersionNumber[260] = "internal version unknown";
 char gszProductName[260] = "Diablo v1.09";
 
-void __fastcall init_cleanup(BOOL show_cursor)
+void init_cleanup(BOOL show_cursor)
 {
 	pfile_flush_W();
 	init_disable_screensaver(0);
@@ -50,7 +50,7 @@ void __fastcall init_cleanup(BOOL show_cursor)
 		ShowCursor(TRUE);
 }
 
-void __cdecl init_run_office_from_start_menu()
+void init_run_office_from_start_menu()
 {
 	HWND v0;            // eax
 	char pszPath[256];  // [esp+0h] [ebp-104h]
@@ -72,7 +72,7 @@ void __cdecl init_run_office_from_start_menu()
 }
 // 634CA0: using guessed type int killed_mom_parent;
 
-void __fastcall init_run_office(char *dir)
+void init_run_office(char *dir)
 {
 	char *v1;                              // esi
 	HANDLE v2;                             // ebx
@@ -113,7 +113,7 @@ void __fastcall init_run_office(char *dir)
 	}
 }
 
-void __fastcall init_disable_screensaver(BOOLEAN disable)
+void init_disable_screensaver(BOOLEAN disable)
 {
 	BOOLEAN v1;     // al
 	char Data[16];  // [esp+4h] [ebp-20h]
@@ -142,7 +142,7 @@ void __fastcall init_disable_screensaver(BOOLEAN disable)
 	}
 }
 
-void __fastcall init_create_window(int nCmdShow)
+void init_create_window(int nCmdShow)
 {
 	int nHeight;      // eax
 	HWND hWnd;        // esi
@@ -185,7 +185,7 @@ void __fastcall init_create_window(int nCmdShow)
 	init_disable_screensaver(1);
 }
 
-void __cdecl init_kill_mom_parent()
+void init_kill_mom_parent()
 {
 	HWND v0; // eax
 
@@ -197,7 +197,7 @@ void __cdecl init_kill_mom_parent()
 }
 // 634CA0: using guessed type int killed_mom_parent;
 
-HWND __cdecl init_find_mom_parent()
+HWND init_find_mom_parent()
 {
 	HWND i;              // eax
 	HWND v1;             // esi
@@ -214,7 +214,7 @@ HWND __cdecl init_find_mom_parent()
 	return v1;
 }
 
-void __cdecl init_await_mom_parent_exit()
+void init_await_mom_parent_exit()
 {
 	DWORD v0; // edi
 
@@ -226,7 +226,7 @@ void __cdecl init_await_mom_parent_exit()
 	} while (GetTickCount() - v0 <= 4000);
 }
 
-void __cdecl init_archives()
+void init_archives()
 {
 	HANDLE a1; // [esp+8h] [ebp-8h]
 #ifdef COPYPROT
@@ -257,7 +257,7 @@ void __cdecl init_archives()
 	patch_rt_mpq = init_test_access(patch_rt_mpq_path, "\\patch_rt.mpq", "DiabloInstall", 2000, FS_PC);
 }
 
-HANDLE __fastcall init_test_access(char *mpq_path, char *mpq_name, char *reg_loc, int flags, int fs)
+HANDLE init_test_access(char *mpq_path, char *mpq_name, char *reg_loc, int flags, int fs)
 {
 	char *v5;           // esi
 	char *v7;           // eax
@@ -319,7 +319,7 @@ HANDLE __fastcall init_test_access(char *mpq_path, char *mpq_name, char *reg_loc
 	return 0;
 }
 
-char *__fastcall init_strip_trailing_slash(char *path)
+char *init_strip_trailing_slash(char *path)
 {
 	char *result; // eax
 
@@ -331,7 +331,7 @@ char *__fastcall init_strip_trailing_slash(char *path)
 	return result;
 }
 
-int __fastcall init_read_test_file(char *mpq_path, char *mpq_name, int flags, HANDLE *archive)
+int init_read_test_file(char *mpq_path, char *mpq_name, int flags, HANDLE *archive)
 {
 	char *v4;         // edi
 	DWORD v5;         // eax
@@ -365,7 +365,7 @@ int __fastcall init_read_test_file(char *mpq_path, char *mpq_name, int flags, HA
 	return 1;
 }
 
-void __cdecl init_get_file_info()
+void init_get_file_info()
 {
 	int v0;                     // eax
 	DWORD v1;                   // edi
@@ -430,7 +430,7 @@ LRESULT __stdcall MainWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 }
 // 52571C: using guessed type int drawpanflag;
 
-void __fastcall init_activate_window(HWND hWnd, BOOLEAN bActive)
+void init_activate_window(HWND hWnd, BOOLEAN bActive)
 {
 	LONG dwNewLong; // eax
 
@@ -464,7 +464,7 @@ LRESULT __stdcall WindowProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 	return result;
 }
 
-WNDPROC __fastcall SetWindowProc(WNDPROC NewProc)
+WNDPROC SetWindowProc(WNDPROC NewProc)
 {
 	WNDPROC OldProc; // eax
 

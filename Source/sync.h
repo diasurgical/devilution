@@ -7,14 +7,14 @@ extern int sgnMonsters;
 extern WORD sgwLRU[MAXMONSTERS];
 extern int sgnSyncItem;
 
-DWORD __fastcall sync_all_monsters(const BYTE *pbBuf, DWORD dwMaxLen);
-void __cdecl sync_one_monster();
-BOOL __fastcall sync_monster_active(TSyncMonster *p);
-void __fastcall sync_monster_pos(TSyncMonster *p, int ndx);
-BOOL __fastcall sync_monster_active2(TSyncMonster *p);
-void __fastcall SyncPlrInv(TSyncHeader *pHdr);
-DWORD __fastcall sync_update(int pnum, const BYTE *pbBuf);
-void __fastcall sync_monster(int pnum, const TSyncMonster *p);
-void __cdecl sync_init();
+DWORD sync_all_monsters(const BYTE *pbBuf, DWORD dwMaxLen);
+void sync_one_monster();
+BOOL sync_monster_active(TSyncMonster *p);
+void sync_monster_pos(TSyncMonster *p, int ndx);
+BOOL sync_monster_active2(TSyncMonster *p);
+void SyncPlrInv(TSyncHeader *pHdr);
+DWORD sync_update(int pnum, const BYTE *pbBuf);
+void sync_monster(int pnum, const TSyncMonster *p);
+void sync_init();
 
 #endif /* __SYNC_H__ */

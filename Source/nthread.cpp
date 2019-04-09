@@ -35,12 +35,12 @@ nthread_c_init(void)
 SEG_ALLOCATE(SEGMENT_C_INIT)
 _PVFV nthread_c_init_funcs[] = { &nthread_c_init };
 
-void __cdecl nthread_init_mutex()
+void nthread_init_mutex()
 {
 	InitializeCriticalSection(&sgMemCrit);
 }
 
-void __cdecl nthread_cleanup_mutex_atexit()
+void nthread_cleanup_mutex_atexit()
 {
 	atexit(nthread_cleanup_mutex);
 }
@@ -50,7 +50,7 @@ void __cdecl nthread_cleanup_mutex(void)
 	DeleteCriticalSection(&sgMemCrit);
 }
 
-void __fastcall nthread_terminate_game(const char *pszFcn)
+void nthread_terminate_game(const char *pszFcn)
 {
 	DWORD sErr; // eax
 
@@ -65,7 +65,7 @@ void __fastcall nthread_terminate_game(const char *pszFcn)
 }
 // 67862D: using guessed type char gbGameDestroyed;
 
-int __fastcall nthread_send_and_recv_turn(int cur_turn, int turn_delta)
+int nthread_send_and_recv_turn(int cur_turn, int turn_delta)
 {
 	unsigned int new_cur_turn; // edi
 	const char *lastStormFn;   // ecx
@@ -103,7 +103,7 @@ int __fastcall nthread_send_and_recv_turn(int cur_turn, int turn_delta)
 // 679738: using guessed type int gdwTurnsInTransit;
 // 679754: using guessed type int turn_upper_bit;
 
-int __fastcall nthread_recv_turns(int *pfSendAsync)
+int nthread_recv_turns(int *pfSendAsync)
 {
 	BOOLEAN hasCountedDown; // zf
 
@@ -141,13 +141,13 @@ int __fastcall nthread_recv_turns(int *pfSendAsync)
 // 679759: using guessed type char sgbPacketCountdown;
 // 679764: using guessed type int last_tick;
 
-void __cdecl nthread_set_turn_upper_bit()
+void nthread_set_turn_upper_bit()
 {
 	turn_upper_bit = 0x80000000;
 }
 // 679754: using guessed type int turn_upper_bit;
 
-void __fastcall nthread_start(BOOL set_turn_upper_bit)
+void nthread_start(BOOL set_turn_upper_bit)
 {
 	char *err;                   // eax
 	unsigned int largestMsgSize; // esi
@@ -247,7 +247,7 @@ unsigned int __stdcall nthread_handler(void *a1)
 // 679734: using guessed type char nthread_should_run;
 // 679764: using guessed type int last_tick;
 
-void __cdecl nthread_cleanup()
+void nthread_cleanup()
 {
 	nthread_should_run = 0;
 	gdwTurnsInTransit = 0;
@@ -269,7 +269,7 @@ void __cdecl nthread_cleanup()
 // 67975C: using guessed type int gdwLargestMsgSize;
 // 679760: using guessed type int gdwNormalMsgSize;
 
-void __fastcall nthread_ignore_mutex(BOOL bStart)
+void nthread_ignore_mutex(BOOL bStart)
 {
 	if (sghThread != (HANDLE)-1) {
 		if (bStart)
@@ -281,7 +281,7 @@ void __fastcall nthread_ignore_mutex(BOOL bStart)
 }
 // 67975A: using guessed type char sgbThreadIsRunning;
 
-BOOL __fastcall nthread_has_500ms_passed(BOOL unused)
+BOOL nthread_has_500ms_passed(BOOL unused)
 {
 	DWORD currentTickCount; // eax
 	int ticksElapsed;       // ecx

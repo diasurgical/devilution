@@ -5,7 +5,7 @@
 BYTE movie_playing;
 BOOL loop_movie;
 
-void __fastcall play_movie(char *pszMovie, BOOL user_can_close)
+void play_movie(char *pszMovie, BOOL user_can_close)
 {
 	WNDPROC saveProc;
 	HANDLE video_stream;

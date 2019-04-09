@@ -2,7 +2,7 @@
 
 #include "../types.h"
 
-void __cdecl CaptureScreen()
+void CaptureScreen()
 {
 	HANDLE hObject;
 	PALETTEENTRY palette[256];
@@ -42,7 +42,7 @@ void __cdecl CaptureScreen()
 	}
 }
 
-BOOL __fastcall CaptureHdr(HANDLE hFile, short width, short height)
+BOOL CaptureHdr(HANDLE hFile, short width, short height)
 {
 	DWORD lpNumBytes;
 	PCXHeader Buffer;
@@ -62,7 +62,7 @@ BOOL __fastcall CaptureHdr(HANDLE hFile, short width, short height)
 	return WriteFile(hFile, &Buffer, sizeof(Buffer), &lpNumBytes, NULL) && lpNumBytes == sizeof(Buffer);
 }
 
-BOOL __fastcall CapturePal(HANDLE hFile, PALETTEENTRY *palette)
+BOOL CapturePal(HANDLE hFile, PALETTEENTRY *palette)
 {
 	DWORD NumberOfBytesWritten;
 	BYTE pcx_palette[769];
@@ -78,7 +78,7 @@ BOOL __fastcall CapturePal(HANDLE hFile, PALETTEENTRY *palette)
 	return WriteFile(hFile, pcx_palette, 769, &NumberOfBytesWritten, 0) && NumberOfBytesWritten == 769;
 }
 
-BOOL __fastcall CapturePix(HANDLE hFile, WORD width, WORD height, WORD stride, BYTE *pixels)
+BOOL CapturePix(HANDLE hFile, WORD width, WORD height, WORD stride, BYTE *pixels)
 {
 	int writeSize;
 	DWORD lpNumBytes;
@@ -98,7 +98,7 @@ BOOL __fastcall CapturePix(HANDLE hFile, WORD width, WORD height, WORD stride, B
 	return TRUE;
 }
 
-BYTE *__fastcall CaptureEnc(BYTE *src, BYTE *dst, int width)
+BYTE *CaptureEnc(BYTE *src, BYTE *dst, int width)
 {
 	int rleLength;
 
@@ -132,7 +132,7 @@ BYTE *__fastcall CaptureEnc(BYTE *src, BYTE *dst, int width)
 	return dst;
 }
 
-HANDLE __fastcall CaptureFile(char *dst_path)
+HANDLE CaptureFile(char *dst_path)
 {
 	BOOLEAN num_used[100];
 	int free_num, hFind;
@@ -160,7 +160,7 @@ HANDLE __fastcall CaptureFile(char *dst_path)
 	return INVALID_HANDLE_VALUE;
 }
 
-void __fastcall RedPalette(PALETTEENTRY *pal)
+void RedPalette(PALETTEENTRY *pal)
 {
 	PALETTEENTRY red[256];
 	int i;

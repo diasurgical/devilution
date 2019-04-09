@@ -49,7 +49,7 @@ int trm3y[9] = {
 	1, 1, 1
 };
 
-BOOLEAN __fastcall TFit_Shrine(int i)
+BOOLEAN TFit_Shrine(int i)
 {
 	int v1;        // ecx
 	int v2;        // esi
@@ -110,7 +110,7 @@ BOOLEAN __fastcall TFit_Shrine(int i)
 	return 1;
 }
 
-BOOL __fastcall TFit_Obj5(int t)
+BOOL TFit_Obj5(int t)
 {
 	int v2;         // ebx
 	int v3;         // esi
@@ -177,7 +177,7 @@ BOOL __fastcall TFit_Obj5(int t)
 	}
 }
 
-BOOL __fastcall TFit_SkelRoom(int t)
+BOOL TFit_SkelRoom(int t)
 {
 	int i;
 
@@ -195,7 +195,7 @@ BOOL __fastcall TFit_SkelRoom(int t)
 	return FALSE;
 }
 
-BOOL __fastcall TFit_GoatShrine(int t)
+BOOL TFit_GoatShrine(int t)
 {
 	int i;
 
@@ -209,7 +209,7 @@ BOOL __fastcall TFit_GoatShrine(int t)
 	return FALSE;
 }
 
-BOOL __fastcall CheckThemeObj3(int xp, int yp, int t, int f)
+BOOL CheckThemeObj3(int xp, int yp, int t, int f)
 {
 	int i;
 
@@ -229,7 +229,7 @@ BOOL __fastcall CheckThemeObj3(int xp, int yp, int t, int f)
 	return TRUE;
 }
 
-BOOL __fastcall TFit_Obj3(int t)
+BOOL TFit_Obj3(int t)
 {
 	int xp, yp;
 	char objrnd[4] = { 4, 4, 3, 5 };
@@ -247,7 +247,7 @@ BOOL __fastcall TFit_Obj3(int t)
 	return FALSE;
 }
 
-BOOLEAN __fastcall CheckThemeReqs(int t)
+BOOLEAN CheckThemeReqs(int t)
 {
 	BOOLEAN rv; // al
 	int v2;     // ecx
@@ -324,7 +324,7 @@ BOOLEAN __fastcall CheckThemeReqs(int t)
 // 6AAC08: using guessed type int pFountainFlag;
 // 6AAC0C: using guessed type int bFountainFlag;
 
-BOOLEAN __fastcall SpecialThemeFit(int i, int t)
+BOOLEAN SpecialThemeFit(int i, int t)
 {
 	BOOLEAN rv; // eax
 
@@ -411,7 +411,7 @@ BOOLEAN __fastcall SpecialThemeFit(int i, int t)
 // 6AAC08: using guessed type int pFountainFlag;
 // 6AAC0C: using guessed type int bFountainFlag;
 
-BOOLEAN __fastcall CheckThemeRoom(int tv)
+BOOLEAN CheckThemeRoom(int tv)
 {
 	int v1;         // esi
 	int *v2;        // edx
@@ -484,7 +484,7 @@ BOOLEAN __fastcall CheckThemeRoom(int tv)
 	return 0;
 }
 
-void __cdecl InitThemes()
+void InitThemes()
 {
 	int v0;  // esi
 	char v1; // bl
@@ -601,7 +601,7 @@ void __cdecl InitThemes()
 // 6AAC0C: using guessed type int bFountainFlag;
 
 // HoldThemeRooms marks theme rooms as populated.
-void __cdecl HoldThemeRooms()
+void HoldThemeRooms()
 {
 	int i, x, y;
 
@@ -627,7 +627,7 @@ void __cdecl HoldThemeRooms()
 // Parameters:
 //    - t: theme number (index into themes array).
 //    - f: frequency (1/f likelihood of adding monster).
-void __fastcall PlaceThemeMonsts(int t, int f)
+void PlaceThemeMonsts(int t, int f)
 {
 	int xp, yp;
 	int scattertypes[111];
@@ -656,7 +656,7 @@ void __fastcall PlaceThemeMonsts(int t, int f)
 //
 // Parameters:
 //    - t: theme number (index into themes array).
-void __fastcall Theme_Barrel(int t)
+void Theme_Barrel(int t)
 {
 	int xp, yp, r;
 	char barrnd[4] = { 2, 6, 4, 8 };
@@ -680,7 +680,7 @@ void __fastcall Theme_Barrel(int t)
 //
 // Parameters:
 //    - t: theme number (index into themes array).
-void __fastcall Theme_Shrine(int t)
+void Theme_Shrine(int t)
 {
 	char monstrnd[4] = { 6, 6, 3, 9 };
 
@@ -701,7 +701,7 @@ void __fastcall Theme_Shrine(int t)
 //
 // Parameters:
 //    - t: theme number (index into themes array).
-void __fastcall Theme_MonstPit(int t)
+void Theme_MonstPit(int t)
 {
 	int r;
 	int ixp, iyp;
@@ -737,7 +737,7 @@ void __fastcall Theme_MonstPit(int t)
 //
 // Parameters:
 //    - t: theme number (index into themes array).
-void __fastcall Theme_SkelRoom(int t)
+void Theme_SkelRoom(int t)
 {
 	int xp, yp;
 	char monstrnd[4] = { 6, 7, 3, 9 };
@@ -790,7 +790,7 @@ void __fastcall Theme_SkelRoom(int t)
 //
 // Parameters:
 //    - t: theme number (index into themes array).
-void __fastcall Theme_Treasure(int t)
+void Theme_Treasure(int t)
 {
 	int xp, yp;
 	int i;
@@ -827,7 +827,7 @@ void __fastcall Theme_Treasure(int t)
 //
 // Parameters:
 //    - t: theme number (index into themes array).
-void __fastcall Theme_Library(int t)
+void Theme_Library(int t)
 {
 	int xp, yp;
 	int oi;
@@ -871,7 +871,7 @@ void __fastcall Theme_Library(int t)
 //
 // Parameters:
 //    - t: theme number (index into themes array).
-void __fastcall Theme_Torture(int t)
+void Theme_Torture(int t)
 {
 	int xp, yp;
 	char tortrnd[4] = { 6, 8, 3, 8 };
@@ -895,7 +895,7 @@ void __fastcall Theme_Torture(int t)
 //
 // Parameters:
 //    - t: theme number (index into themes array).
-void __fastcall Theme_BloodFountain(int t)
+void Theme_BloodFountain(int t)
 {
 	char monstrnd[4] = { 6, 8, 3, 9 };
 
@@ -908,7 +908,7 @@ void __fastcall Theme_BloodFountain(int t)
 //
 // Parameters:
 //    - t: theme number (index into themes array).
-void __fastcall Theme_Decap(int t)
+void Theme_Decap(int t)
 {
 	int xp, yp;
 	char decaprnd[4] = { 6, 8, 3, 8 };
@@ -932,7 +932,7 @@ void __fastcall Theme_Decap(int t)
 //
 // Parameters:
 //    - t: theme number (index into themes array).
-void __fastcall Theme_PurifyingFountain(int t)
+void Theme_PurifyingFountain(int t)
 {
 	char monstrnd[4] = { 6, 7, 3, 9 };
 
@@ -945,7 +945,7 @@ void __fastcall Theme_PurifyingFountain(int t)
 //
 // Parameters:
 //    - t: theme number (index into themes array).
-void __fastcall Theme_ArmorStand(int t)
+void Theme_ArmorStand(int t)
 {
 	int xp, yp;
 	char armorrnd[4] = { 6, 8, 3, 8 };
@@ -974,7 +974,7 @@ void __fastcall Theme_ArmorStand(int t)
 //
 // Parameters:
 //    - t: theme number (index into themes array).
-void __fastcall Theme_GoatShrine(int t)
+void Theme_GoatShrine(int t)
 {
 	int xx, yy;
 
@@ -993,7 +993,7 @@ void __fastcall Theme_GoatShrine(int t)
 //
 // Parameters:
 //    - t: theme number (index into themes array).
-void __fastcall Theme_Cauldron(int t)
+void Theme_Cauldron(int t)
 {
 	char monstrnd[4] = { 6, 7, 3, 9 };
 
@@ -1006,7 +1006,7 @@ void __fastcall Theme_Cauldron(int t)
 //
 // Parameters:
 //    - t: theme number (index into themes array).
-void __fastcall Theme_MurkyFountain(int t)
+void Theme_MurkyFountain(int t)
 {
 	char monstrnd[4] = { 6, 7, 3, 9 };
 
@@ -1019,7 +1019,7 @@ void __fastcall Theme_MurkyFountain(int t)
 //
 // Parameters:
 //    - t: theme number (index into themes array).
-void __fastcall Theme_TearFountain(int t)
+void Theme_TearFountain(int t)
 {
 	char monstrnd[4] = { 6, 7, 3, 9 };
 
@@ -1032,7 +1032,7 @@ void __fastcall Theme_TearFountain(int t)
 //
 // Parameters:
 //    - t: theme number (index into themes array).
-void __fastcall Theme_BrnCross(int t)
+void Theme_BrnCross(int t)
 {
 	int xp, yp;
 	char monstrnd[4] = { 6, 8, 3, 9 };
@@ -1057,7 +1057,7 @@ void __fastcall Theme_BrnCross(int t)
 //
 // Parameters:
 //    - t: theme number (index into themes array).
-void __fastcall Theme_WeaponRack(int t)
+void Theme_WeaponRack(int t)
 {
 	int xp, yp;
 	char weaponrnd[4] = { 6, 8, 5, 8 };
@@ -1083,7 +1083,7 @@ void __fastcall Theme_WeaponRack(int t)
 }
 
 // UpdateL4Trans sets each value of the transparency map to 1.
-void __cdecl UpdateL4Trans()
+void UpdateL4Trans()
 {
 	int i, j;
 
@@ -1097,7 +1097,7 @@ void __cdecl UpdateL4Trans()
 }
 
 // CreateThemeRooms adds thematic elements to rooms.
-void __cdecl CreateThemeRooms()
+void CreateThemeRooms()
 {
 	int i;
 

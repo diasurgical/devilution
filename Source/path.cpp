@@ -39,7 +39,7 @@ char path_directions[9] = { 5, 1, 6, 2, 0, 3, 8, 4, 7 };
  * check that each step is a valid position. Store the step directions (see
  * path_directions) in path, which must have room for 24 steps
  */
-int __fastcall FindPath(BOOL(__fastcall *PosOk)(int, int, int), int PosOkArg, int sx, int sy, int dx, int dy, char *path)
+int FindPath(BOOL(*PosOk)(int, int, int), int PosOkArg, int sx, int sy, int dx, int dy, char *path)
 {
 	PATHNODE *path_start; // esi
 	char initial_h;       // al
@@ -110,7 +110,7 @@ int __fastcall FindPath(BOOL(__fastcall *PosOk)(int, int, int), int PosOkArg, in
 }
 
 /* heuristic, estimated cost from (sx,sy) to (dx,dy) */
-int __fastcall path_get_h_cost(int sx, int sy, int dx, int dy)
+int path_get_h_cost(int sx, int sy, int dx, int dy)
 {
 	int delta_x = abs(sx - dx);
 	int delta_y = abs(sy - dy);
@@ -128,7 +128,7 @@ int __fastcall path_get_h_cost(int sx, int sy, int dx, int dy)
  * of sqrt(2). That's approximately 1.5, so they multiply all step costs by 2,
  * except diagonal steps which are times 3
  */
-int __fastcall path_check_equal(PATHNODE *pPath, int dx, int dy)
+int path_check_equal(PATHNODE *pPath, int dx, int dy)
 {
 	if (pPath->x == dx || pPath->y == dy)
 		return 2;
@@ -139,7 +139,7 @@ int __fastcall path_check_equal(PATHNODE *pPath, int dx, int dy)
 /* get the next node on the A* frontier to explore (estimated to be closest to
  * the goal), mark it as visited, and return it
  */
-PATHNODE *__cdecl GetNextPath()
+PATHNODE *GetNextPath()
 {
 	PATHNODE *result;
 
@@ -162,7 +162,7 @@ PATHNODE *__cdecl GetNextPath()
  *
  *  return true if step is allowed
  */
-BOOL __fastcall path_solid_pieces(PATHNODE *pPath, int dx, int dy)
+BOOL path_solid_pieces(PATHNODE *pPath, int dx, int dy)
 {
 	BOOL rv = TRUE;
 	switch (path_directions[3 * (dy - pPath->y) + 3 - pPath->x + 1 + dx]) {
@@ -187,7 +187,7 @@ BOOL __fastcall path_solid_pieces(PATHNODE *pPath, int dx, int dy)
  *
  * return 0 if we ran out of preallocated nodes to use, else 1
  */
-BOOL __fastcall path_get_path(BOOL(__fastcall *PosOk)(int, int, int), int PosOkArg, PATHNODE *pPath, int x, int y)
+BOOL path_get_path(BOOL(*PosOk)(int, int, int), int PosOkArg, PATHNODE *pPath, int x, int y)
 {
 	int dx, dy;
 	int i;
@@ -211,7 +211,7 @@ BOOL __fastcall path_get_path(BOOL(__fastcall *PosOk)(int, int, int), int PosOkA
  *
  * return 1 if step successfully added, 0 if we ran out of nodes to use
  */
-BOOL __fastcall path_parent_path(PATHNODE *pPath, int dx, int dy, int sx, int sy)
+BOOL path_parent_path(PATHNODE *pPath, int dx, int dy, int sx, int sy)
 {
 	int next_g;
 	PATHNODE *dxdy;
@@ -278,7 +278,7 @@ BOOL __fastcall path_parent_path(PATHNODE *pPath, int dx, int dy, int sx, int sy
 }
 
 /* return a node for (dx,dy) on the frontier, or NULL if not found */
-PATHNODE *__fastcall path_get_node1(int dx, int dy)
+PATHNODE *path_get_node1(int dx, int dy)
 {
 	PATHNODE *result = path_2_nodes;
 	while (result != NULL && (result->x != dx || result->y != dy))
@@ -287,7 +287,7 @@ PATHNODE *__fastcall path_get_node1(int dx, int dy)
 }
 
 /* return a node for (dx,dy) if it was visited, or NULL if not found */
-PATHNODE *__fastcall path_get_node2(int dx, int dy)
+PATHNODE *path_get_node2(int dx, int dy)
 {
 	PATHNODE *result = pnode_ptr;
 	while (result != NULL && (result->x != dx || result->y != dy))
@@ -297,7 +297,7 @@ PATHNODE *__fastcall path_get_node2(int dx, int dy)
 
 /* insert pPath into the frontier (keeping the frontier sorted by total
  * distance) */
-void __fastcall path_next_node(PATHNODE *pPath)
+void path_next_node(PATHNODE *pPath)
 {
 	PATHNODE *current; // edx
 	PATHNODE *next;    // eax
@@ -317,7 +317,7 @@ void __fastcall path_next_node(PATHNODE *pPath)
 }
 
 /* update all path costs using depth-first search starting at pPath */
-void __fastcall path_set_coords(PATHNODE *pPath)
+void path_set_coords(PATHNODE *pPath)
 {
 	PATHNODE *PathOld;
 	PATHNODE *PathAct;
@@ -344,7 +344,7 @@ void __fastcall path_set_coords(PATHNODE *pPath)
 }
 
 /* push pPath onto the pnode_tblptr stack */
-void __fastcall path_push_active_step(PATHNODE *pPath)
+void path_push_active_step(PATHNODE *pPath)
 {
 	int stack_index = gdwCurPathStep;
 	gdwCurPathStep++;
@@ -352,7 +352,7 @@ void __fastcall path_push_active_step(PATHNODE *pPath)
 }
 
 /* pop and return a node from the pnode_tblptr stack */
-PATHNODE *__cdecl path_pop_active_step()
+PATHNODE *path_pop_active_step()
 {
 	gdwCurPathStep--;
 	return pnode_tblptr[gdwCurPathStep];
@@ -360,7 +360,7 @@ PATHNODE *__cdecl path_pop_active_step()
 
 /* zero one of the preallocated nodes and return a pointer to it, or NULL if
  * none are available */
-PATHNODE *__cdecl path_new_step()
+PATHNODE *path_new_step()
 {
 	PATHNODE *new_node;
 

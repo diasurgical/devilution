@@ -875,7 +875,7 @@ TSFX sgSFX[NUM_SFX] = {
 	// clang-format on
 };
 
-BOOL __fastcall effect_is_playing(int nSFX)
+BOOL effect_is_playing(int nSFX)
 {
 	TSFX *sfx = &sgSFX[nSFX];
 	if (sfx->pSnd)
@@ -887,7 +887,7 @@ BOOL __fastcall effect_is_playing(int nSFX)
 	return FALSE;
 }
 
-void __cdecl sfx_stop()
+void sfx_stop()
 {
 	if (sfx_stream) {
 		SFileDdaEnd(sfx_stream);
@@ -897,7 +897,7 @@ void __cdecl sfx_stop()
 	}
 }
 
-void __fastcall InitMonsterSND(int monst)
+void InitMonsterSND(int monst)
 {
 	TSnd *pSnd;
 	char name[MAX_PATH];
@@ -924,7 +924,7 @@ void __fastcall InitMonsterSND(int monst)
 	}
 }
 
-void __cdecl FreeEffects()
+void FreeEffects()
 {
 	int mtype, i, j, k;
 	char *file;
@@ -947,7 +947,7 @@ void __cdecl FreeEffects()
 	}
 }
 
-void __fastcall PlayEffect(int i, int mode)
+void PlayEffect(int i, int mode)
 {
 	int sndIdx, mi, lVolume, lPan;
 	TSnd *snd;
@@ -974,7 +974,7 @@ void __fastcall PlayEffect(int i, int mode)
 }
 // 676194: using guessed type char gbBufferMsgs;
 
-BOOL __fastcall calc_snd_position(int x, int y, int *plVolume, int *plPan)
+BOOL calc_snd_position(int x, int y, int *plVolume, int *plPan)
 {
 	int pan, volume;
 
@@ -999,13 +999,13 @@ BOOL __fastcall calc_snd_position(int x, int y, int *plVolume, int *plPan)
 	return TRUE;
 }
 
-void __fastcall PlaySFX(int psfx)
+void PlaySFX(int psfx)
 {
 	psfx = RndSFX(psfx);
 	PlaySFX_priv(&sgSFX[psfx], 0, 0, 0);
 }
 
-void __fastcall PlaySFX_priv(TSFX *pSFX, BOOL loc, int x, int y)
+void PlaySFX_priv(TSFX *pSFX, BOOL loc, int x, int y)
 {
 	int lPan, lVolume;
 
@@ -1040,7 +1040,7 @@ void __fastcall PlaySFX_priv(TSFX *pSFX, BOOL loc, int x, int y)
 // 676194: using guessed type char gbBufferMsgs;
 // 679660: using guessed type char gbMaxPlayers;
 
-void __fastcall stream_play(TSFX *pSFX, int lVolume, int lPan)
+void stream_play(TSFX *pSFX, int lVolume, int lPan)
 {
 	BOOL success;
 
@@ -1069,7 +1069,7 @@ void __fastcall stream_play(TSFX *pSFX, int lVolume, int lPan)
 	}
 }
 
-int __fastcall RndSFX(int psfx)
+int RndSFX(int psfx)
 {
 	int v1; // esi
 	int v3; // [esp-4h] [ebp-8h]
@@ -1101,7 +1101,7 @@ int __fastcall RndSFX(int psfx)
 	return psfx;
 }
 
-void __fastcall PlaySfxLoc(int psfx, int x, int y)
+void PlaySfxLoc(int psfx, int x, int y)
 {
 	TSnd *pSnd;
 
@@ -1116,7 +1116,7 @@ void __fastcall PlaySfxLoc(int psfx, int x, int y)
 	PlaySFX_priv(&sgSFX[psfx], 1, x, y);
 }
 
-void __cdecl FreeMonsterSnd()
+void FreeMonsterSnd()
 {
 	int i, j, k;
 
@@ -1133,7 +1133,7 @@ void __cdecl FreeMonsterSnd()
 	}
 }
 
-void __cdecl sound_stop()
+void sound_stop()
 {
 	int i; // edi
 
@@ -1143,7 +1143,7 @@ void __cdecl sound_stop()
 	}
 }
 
-void __cdecl sound_update()
+void sound_update()
 {
 	int current, end;
 
@@ -1159,7 +1159,7 @@ void __cdecl sound_update()
 
 // 415DBA: could not find valid save-restore pair for ebp
 
-void __cdecl effects_cleanup_sfx()
+void effects_cleanup_sfx()
 {
 	DWORD i;
 
@@ -1173,7 +1173,7 @@ void __cdecl effects_cleanup_sfx()
 	}
 }
 
-void __cdecl stream_update()
+void stream_update()
 {
 	UCHAR mask = 0;
 	if (gbMaxPlayers > 1) {
@@ -1192,7 +1192,7 @@ void __cdecl stream_update()
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-void __fastcall priv_sound_init(UCHAR bLoadMask)
+void priv_sound_init(UCHAR bLoadMask)
 {
 	UCHAR pc, bFlags;
 	DWORD i;
@@ -1226,7 +1226,7 @@ void __fastcall priv_sound_init(UCHAR bLoadMask)
 	}
 }
 
-void __cdecl sound_init()
+void sound_init()
 {
 	priv_sound_init(SFX_UI);
 }

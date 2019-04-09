@@ -7,7 +7,7 @@ int spurtndx;
 DeadStruct dead[MAXDEAD];
 int stonendx;
 
-void __cdecl InitDead()
+void InitDead()
 {
 	int mtypes[MAXMONSTERS];
 	int i;
@@ -69,12 +69,12 @@ void __cdecl InitDead()
 	/// ASSERT: assert(nd <= MAXDEAD);
 }
 
-void __fastcall AddDead(int dx, int dy, char dv, int ddir)
+void AddDead(int dx, int dy, char dv, int ddir)
 {
 	dDead[dx][dy] = (dv & 0x1F) + (ddir << 5);
 }
 
-void __cdecl SetDead()
+void SetDead()
 {
 	int mi;
 	int i;

@@ -110,7 +110,7 @@ const unsigned char PWATERIN[] = { 6, 6, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
 /* data */
 unsigned char L5ConvTbl[16] = { 22u, 13u, 1u, 13u, 2u, 13u, 13u, 13u, 4u, 13u, 1u, 13u, 2u, 13u, 16u, 13u };
 
-void __cdecl DRLG_Init_Globals()
+void DRLG_Init_Globals()
 {
 	char c;
 
@@ -131,7 +131,7 @@ void __cdecl DRLG_Init_Globals()
 // 525728: using guessed type int light4flag;
 // 646A28: using guessed type int lightflag;
 
-void __fastcall LoadL1Dungeon(char *sFileName, int vx, int vy)
+void LoadL1Dungeon(char *sFileName, int vx, int vy)
 {
 	int i, j, rw, rh;
 	BYTE *pLevelMap, *lm;
@@ -184,7 +184,7 @@ void __fastcall LoadL1Dungeon(char *sFileName, int vx, int vy)
 // 5D2458: using guessed type int dminx;
 // 5D245C: using guessed type int dminy;
 
-void __cdecl DRLG_L1Floor()
+void DRLG_L1Floor()
 {
 	int i, j;
 	LONG rv;
@@ -203,7 +203,7 @@ void __cdecl DRLG_L1Floor()
 	}
 }
 
-void __cdecl DRLG_L1Pass3()
+void DRLG_L1Pass3()
 {
 	int i, j, xx, yy;
 	long v1, v2, v3, v4, lv;
@@ -289,7 +289,7 @@ void __cdecl DRLG_L1Pass3()
 	}
 }
 
-void __cdecl DRLG_InitL1Vals()
+void DRLG_InitL1Vals()
 {
 	int i, j, pc;
 
@@ -331,7 +331,7 @@ void __cdecl DRLG_InitL1Vals()
 	}
 }
 
-void __fastcall LoadPreL1Dungeon(char *sFileName, int vx, int vy)
+void LoadPreL1Dungeon(char *sFileName, int vx, int vy)
 {
 	int i, j, rw, rh;
 	BYTE *pLevelMap, *lm;
@@ -383,7 +383,7 @@ void __fastcall LoadPreL1Dungeon(char *sFileName, int vx, int vy)
 // 5D2458: using guessed type int dminx;
 // 5D245C: using guessed type int dminy;
 
-void __fastcall CreateL5Dungeon(int rseed, int entry)
+void CreateL5Dungeon(int rseed, int entry)
 {
 	SetRndSeed(rseed);
 
@@ -406,7 +406,7 @@ void __fastcall CreateL5Dungeon(int rseed, int entry)
 // 5D2458: using guessed type int dminx;
 // 5D245C: using guessed type int dminy;
 
-void __cdecl DRLG_LoadL1SP()
+void DRLG_LoadL1SP()
 {
 	setloadflag = 0;
 	if (QuestStatus(QTYPE_BUTCH)) {
@@ -425,7 +425,7 @@ void __cdecl DRLG_LoadL1SP()
 // 5276A4: using guessed type int setloadflag;
 // 679660: using guessed type char gbMaxPlayers;
 
-void __cdecl DRLG_FreeL1SP()
+void DRLG_FreeL1SP()
 {
 	void *ptr;
 
@@ -434,7 +434,7 @@ void __cdecl DRLG_FreeL1SP()
 	mem_free_dbg(ptr);
 }
 
-void __fastcall DRLG_L5(int entry)
+void DRLG_L5(int entry)
 {
 	int i, j;
 	LONG minarea;
@@ -546,7 +546,7 @@ void __fastcall DRLG_L5(int entry)
 	DRLG_CheckQuests(setpc_x, setpc_y);
 }
 
-void __fastcall DRLG_PlaceDoor(int x, int y)
+void DRLG_PlaceDoor(int x, int y)
 {
 	if ((mydflags[x][y] & 0x80) == 0) { /* todo: unsigned */
 		unsigned char df = mydflags[x][y] & 0x7F;
@@ -605,7 +605,7 @@ void __fastcall DRLG_PlaceDoor(int x, int y)
 	mydflags[x][y] = 0x80;
 }
 
-void __cdecl DRLG_L1Shadows()
+void DRLG_L1Shadows()
 {
 	int x, y, i;
 	unsigned char sd[2][2];
@@ -697,7 +697,7 @@ void __cdecl DRLG_L1Shadows()
 	}
 }
 
-int __fastcall DRLG_PlaceMiniSet(const unsigned char *miniset, int tmin, int tmax, int cx, int cy, BOOL setview, int noquad, int ldir)
+int DRLG_PlaceMiniSet(const unsigned char *miniset, int tmin, int tmax, int cx, int cy, BOOL setview, int noquad, int ldir)
 {
 	int xx, yy, sx, sy;
 	int ii, i, t, found;
@@ -815,7 +815,7 @@ int __fastcall DRLG_PlaceMiniSet(const unsigned char *miniset, int tmin, int tma
 // 5CF320: using guessed type int LvlViewY;
 // 5CF324: using guessed type int LvlViewX;
 
-void __cdecl InitL5Dungeon()
+void InitL5Dungeon()
 {
 	int i, j;
 
@@ -827,7 +827,7 @@ void __cdecl InitL5Dungeon()
 	}
 }
 
-void __cdecl L5ClearFlags()
+void L5ClearFlags()
 {
 	int i, j;
 
@@ -838,7 +838,7 @@ void __cdecl L5ClearFlags()
 	}
 }
 
-void __cdecl L5firstRoom()
+void L5firstRoom()
 {
 	int ys, ye, y;
 	int xs, xe, x;
@@ -928,7 +928,7 @@ void __cdecl L5firstRoom()
 	}
 }
 
-void __fastcall L5drawRoom(int x, int y, int w, int h)
+void L5drawRoom(int x, int y, int w, int h)
 {
 	int i, j;
 
@@ -939,7 +939,7 @@ void __fastcall L5drawRoom(int x, int y, int w, int h)
 	}
 }
 
-void __fastcall L5roomGen(int x, int y, int w, int h, int dir)
+void L5roomGen(int x, int y, int w, int h, int dir)
 {
 	int num, dirProb;
 	BOOL ran, ran2;
@@ -996,7 +996,7 @@ void __fastcall L5roomGen(int x, int y, int w, int h, int dir)
 	}
 }
 
-BOOL __fastcall L5checkRoom(int x, int y, int width, int height)
+BOOL L5checkRoom(int x, int y, int width, int height)
 {
 	int i, j;
 
@@ -1012,7 +1012,7 @@ BOOL __fastcall L5checkRoom(int x, int y, int width, int height)
 	return TRUE;
 }
 
-int __cdecl L5GetArea()
+int L5GetArea()
 {
 	int i, j;
 	int rv;
@@ -1029,7 +1029,7 @@ int __cdecl L5GetArea()
 	return rv;
 }
 
-void __cdecl L5makeDungeon()
+void L5makeDungeon()
 {
 	signed int v0; // edi
 	signed int v1; // esi
@@ -1056,7 +1056,7 @@ void __cdecl L5makeDungeon()
 	} while (v0 < 40);
 }
 
-void __cdecl L5makeDmt()
+void L5makeDmt()
 {
 	int i, j, dmtx, dmty;
 
@@ -1077,7 +1077,7 @@ void __cdecl L5makeDmt()
 	}
 }
 
-void __cdecl L5AddWall()
+void L5AddWall()
 {
 	int i, j, x, y;
 
@@ -1119,7 +1119,7 @@ void __cdecl L5AddWall()
 	}
 }
 
-int __fastcall L5HWallOk(int i, int j)
+int L5HWallOk(int i, int j)
 {
 	int x;
 	BOOL wallok;
@@ -1145,7 +1145,7 @@ int __fastcall L5HWallOk(int i, int j)
 		return -1;
 }
 
-int __fastcall L5VWallOk(int i, int j)
+int L5VWallOk(int i, int j)
 {
 	int y;
 	BOOL wallok;
@@ -1171,7 +1171,7 @@ int __fastcall L5VWallOk(int i, int j)
 		return -1;
 }
 
-void __fastcall L5HorizWall(int i, int j, char p, int dx)
+void L5HorizWall(int i, int j, char p, int dx)
 {
 	int xx;
 	char wt, dt;
@@ -1220,7 +1220,7 @@ void __fastcall L5HorizWall(int i, int j, char p, int dx)
 	}
 }
 
-void __fastcall L5VertWall(int i, int j, char p, int dy)
+void L5VertWall(int i, int j, char p, int dy)
 {
 	int yy;
 	char wt, dt;
@@ -1269,7 +1269,7 @@ void __fastcall L5VertWall(int i, int j, char p, int dy)
 	}
 }
 
-void __cdecl L5tileFix()
+void L5tileFix()
 {
 	int i, j;
 
@@ -1377,7 +1377,7 @@ void __cdecl L5tileFix()
 	}
 }
 
-void __cdecl DRLG_L5Subs()
+void DRLG_L5Subs()
 {
 	int x, y, rv, i;
 
@@ -1416,7 +1416,7 @@ void __cdecl DRLG_L5Subs()
 	}
 }
 
-void __cdecl L5FillChambers()
+void L5FillChambers()
 {
 	int c;
 
@@ -1527,7 +1527,7 @@ void __cdecl L5FillChambers()
 }
 // 5276A4: using guessed type int setloadflag;
 
-void __fastcall DRLG_L5GChamber(int sx, int sy, BOOLEAN topflag, BOOLEAN bottomflag, BOOLEAN leftflag, BOOLEAN rightflag)
+void DRLG_L5GChamber(int sx, int sy, BOOLEAN topflag, BOOLEAN bottomflag, BOOLEAN leftflag, BOOLEAN rightflag)
 {
 	int v6;         // eax
 	int v7;         // edx
@@ -1608,7 +1608,7 @@ void __fastcall DRLG_L5GChamber(int sx, int sy, BOOLEAN topflag, BOOLEAN bottomf
 	dungeon[7][v15 + 7] = 15;
 }
 
-void __fastcall DRLG_L5GHall(int x1, int y1, int x2, int y2)
+void DRLG_L5GHall(int x1, int y1, int x2, int y2)
 {
 	int i;
 
@@ -1625,7 +1625,7 @@ void __fastcall DRLG_L5GHall(int x1, int y1, int x2, int y2)
 	}
 }
 
-void __fastcall DRLG_L5SetRoom(int rx1, int ry1)
+void DRLG_L5SetRoom(int rx1, int ry1)
 {
 	int rw, rh, i, j;
 	unsigned char *sp;
@@ -1655,7 +1655,7 @@ void __fastcall DRLG_L5SetRoom(int rx1, int ry1)
 // 5CF330: using guessed type int setpc_h;
 // 5CF334: using guessed type int setpc_w;
 
-void __cdecl DRLG_L5FloodTVal()
+void DRLG_L5FloodTVal()
 {
 	int xx, yy, i, j;
 
@@ -1676,7 +1676,7 @@ void __cdecl DRLG_L5FloodTVal()
 }
 // 5A5590: using guessed type char TransVal;
 
-void __fastcall DRLG_L5FTVR(int i, int j, int x, int y, int d)
+void DRLG_L5FTVR(int i, int j, int x, int y, int d)
 {
 	if (dTransVal[x][y] || dungeon[i][j] != 13) {
 		if (d == 1) {
@@ -1720,7 +1720,7 @@ void __fastcall DRLG_L5FTVR(int i, int j, int x, int y, int d)
 }
 // 5A5590: using guessed type char TransVal;
 
-void __cdecl DRLG_L5TransFix()
+void DRLG_L5TransFix()
 {
 	int xx, yy, i, j;
 
@@ -1757,7 +1757,7 @@ void __cdecl DRLG_L5TransFix()
 	}
 }
 
-void __cdecl DRLG_L5DirtFix()
+void DRLG_L5DirtFix()
 {
 	int i, j;
 
@@ -1779,7 +1779,7 @@ void __cdecl DRLG_L5DirtFix()
 	}
 }
 
-void __cdecl DRLG_L5CornerFix()
+void DRLG_L5CornerFix()
 {
 	signed int v0; // esi
 	signed int v1; // eax

@@ -7,7 +7,7 @@ _plrmsg plr_msgs[PMSG_COUNT];
 
 const char text_color_from_player_num[MAX_PLRS + 1] = { COL_WHITE, COL_WHITE, COL_WHITE, COL_WHITE, COL_GOLD };
 
-void __fastcall plrmsg_delay(BOOL delay)
+void plrmsg_delay(BOOL delay)
 {
 	int i;
 	_plrmsg *pMsg;
@@ -24,7 +24,7 @@ void __fastcall plrmsg_delay(BOOL delay)
 		pMsg->time += plrmsg_ticks;
 }
 
-char *__fastcall ErrorPlrMsg(const char *pszMsg)
+char *ErrorPlrMsg(const char *pszMsg)
 {
 	char *result;
 	_plrmsg *pMsg = &plr_msgs[plr_msg_slot];
@@ -36,7 +36,7 @@ char *__fastcall ErrorPlrMsg(const char *pszMsg)
 	return result;
 }
 
-size_t EventPlrMsg(const char *pszFmt, ...)
+size_t __cdecl EventPlrMsg(const char *pszFmt, ...)
 {
 	_plrmsg *pMsg;
 	va_list va;
@@ -51,7 +51,7 @@ size_t EventPlrMsg(const char *pszFmt, ...)
 	return strlen(pMsg->str);
 }
 
-void __fastcall SendPlrMsg(int pnum, const char *pszStr)
+void SendPlrMsg(int pnum, const char *pszStr)
 {
 	_plrmsg *pMsg = &plr_msgs[plr_msg_slot];
 	plr_msg_slot = (plr_msg_slot + 1) & (PMSG_COUNT - 1);
@@ -62,7 +62,7 @@ void __fastcall SendPlrMsg(int pnum, const char *pszStr)
 	sprintf(pMsg->str, "%s (lvl %d): %s", plr[pnum]._pName, plr[pnum]._pLevel, pszStr);
 }
 
-void __cdecl ClearPlrMsg()
+void ClearPlrMsg()
 {
 	int i;
 	_plrmsg *pMsg = plr_msgs;
@@ -74,13 +74,13 @@ void __cdecl ClearPlrMsg()
 	}
 }
 
-void __cdecl InitPlrMsg()
+void InitPlrMsg()
 {
 	memset(plr_msgs, 0, sizeof(plr_msgs));
 	plr_msg_slot = 0;
 }
 
-void __cdecl DrawPlrMsg()
+void DrawPlrMsg()
 {
 	int i;
 	int x = 74;
@@ -105,7 +105,7 @@ void __cdecl DrawPlrMsg()
 	}
 }
 
-void __fastcall PrintPlrMsg(unsigned int x, unsigned int y, unsigned int width, const char *str, unsigned char col)
+void PrintPlrMsg(unsigned int x, unsigned int y, unsigned int width, const char *str, unsigned char col)
 {
 	int line = 0;
 

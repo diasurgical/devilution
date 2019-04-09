@@ -9,7 +9,7 @@ int progress_id; // idb
 const unsigned char progress_bar_colours[3] = { 138u, 43u, 254u };
 const int progress_bar_screen_pos[3][2] = { { 53, 37 }, { 53, 421 }, { 53, 37 } };
 
-void __cdecl interface_msg_pump()
+void interface_msg_pump()
 {
 	MSG Msg; // [esp+8h] [ebp-1Ch]
 
@@ -21,7 +21,7 @@ void __cdecl interface_msg_pump()
 	}
 }
 
-BOOL __cdecl IncProgress()
+BOOL IncProgress()
 {
 	interface_msg_pump();
 	sgdwProgress += 15;
@@ -32,7 +32,7 @@ BOOL __cdecl IncProgress()
 	return (unsigned int)sgdwProgress >= 0x216;
 }
 
-void __cdecl DrawCutscene()
+void DrawCutscene()
 {
 	unsigned int v0; // esi
 
@@ -53,7 +53,7 @@ void __cdecl DrawCutscene()
 }
 // 52571C: using guessed type int drawpanflag;
 
-void __fastcall DrawProgress(int screen_x, int screen_y, int progress_id)
+void DrawProgress(int screen_x, int screen_y, int progress_id)
 {
 	_BYTE *v3;     // eax
 	signed int v4; // ecx
@@ -67,7 +67,7 @@ void __fastcall DrawProgress(int screen_x, int screen_y, int progress_id)
 	} while (v4);
 }
 
-void __fastcall ShowProgress(unsigned int uMsg)
+void ShowProgress(unsigned int uMsg)
 {
 	WNDPROC saveProc;
 
@@ -243,7 +243,7 @@ void __fastcall ShowProgress(unsigned int uMsg)
 // 6761B8: using guessed type char gbSomebodyWonGameKludge;
 // 679660: using guessed type char gbMaxPlayers;
 
-void __cdecl FreeInterface()
+void FreeInterface()
 {
 	void *ptr;
 
@@ -252,7 +252,7 @@ void __cdecl FreeInterface()
 	mem_free_dbg(ptr);
 }
 
-void __fastcall InitCutscene(unsigned int uMsg)
+void InitCutscene(unsigned int uMsg)
 {
 	/// ASSERT: assert(! sgpBackCel);
 

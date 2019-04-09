@@ -8,7 +8,7 @@ char gszHero[16];
 
 int menu_music_track_id = 5;
 
-void __cdecl mainmenu_refresh_music()
+void mainmenu_refresh_music()
 {
 	music_start(menu_music_track_id);
 	do {
@@ -80,7 +80,7 @@ int __stdcall mainmenu_select_hero_dialog(
 	return 1;
 }
 
-void __cdecl mainmenu_loop()
+void mainmenu_loop()
 {
 	BOOL done;
 	int menu;
@@ -120,14 +120,14 @@ void __cdecl mainmenu_loop()
 }
 // 634980: using guessed type int gbActive;
 
-BOOL __cdecl mainmenu_single_player()
+BOOL mainmenu_single_player()
 {
 	gbMaxPlayers = 1;
 	return mainmenu_init_menu(1);
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-BOOL __fastcall mainmenu_init_menu(int type)
+BOOL mainmenu_init_menu(int type)
 {
 	BOOL success;
 
@@ -143,13 +143,13 @@ BOOL __fastcall mainmenu_init_menu(int type)
 	return success;
 }
 
-BOOL __cdecl mainmenu_multi_player()
+BOOL mainmenu_multi_player()
 {
 	gbMaxPlayers = MAX_PLRS;
 	return mainmenu_init_menu(3);
 }
 
-void __cdecl mainmenu_play_intro()
+void mainmenu_play_intro()
 {
 	music_stop();
 	play_movie("gendata\\diablo1.smk", 1);

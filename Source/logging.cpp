@@ -26,12 +26,12 @@ log_c_init(void)
 SEG_ALLOCATE(SEGMENT_C_INIT)
 _PVFV log_c_init_funcs[] = { &log_c_init };
 
-void __cdecl log_init_mutex()
+void log_init_mutex()
 {
 	InitializeCriticalSection(&sgMemCrit);
 }
 
-void __cdecl j_log_cleanup_mutex()
+void j_log_cleanup_mutex()
 {
 	atexit(log_cleanup_mutex);
 }
@@ -67,7 +67,7 @@ void __cdecl log_flush(BOOLEAN force_close)
 	LeaveCriticalSection(&sgMemCrit);
 }
 
-HANDLE __cdecl log_create()
+HANDLE log_create()
 {
 	char *v0;                   // eax
 	HANDLE v1;                  // ebx
@@ -119,7 +119,7 @@ HANDLE __cdecl log_create()
 }
 // 4947D4: using guessed type int log_not_created;
 
-void __fastcall log_get_version(VS_FIXEDFILEINFO *file_info)
+void log_get_version(VS_FIXEDFILEINFO *file_info)
 {
 	DWORD v1;           // eax
 	DWORD v2;           // esi
@@ -149,7 +149,7 @@ void __fastcall log_get_version(VS_FIXEDFILEINFO *file_info)
 	}
 }
 
-void log_printf(const char *pszFmt, ...)
+void __cdecl log_printf(const char *pszFmt, ...)
 {
 	size_t v1;    // edi
 	char *v2;     // eax
@@ -175,7 +175,7 @@ void log_printf(const char *pszFmt, ...)
 	LeaveCriticalSection(&sgMemCrit);
 }
 
-void __cdecl log_dump_computer_info()
+void log_dump_computer_info()
 {
 	char Buffer[64];            // [esp+0h] [ebp-88h]
 	VS_FIXEDFILEINFO file_info; // [esp+40h] [ebp-48h]

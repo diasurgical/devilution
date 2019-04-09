@@ -17,7 +17,7 @@ DDSURFACEDESC DDS_desc;
 int cel_transparency_active; // weak
 int level_piece_id;          // weak
 DWORD sgdwCursWdt;
-void(__fastcall *DrawPlrProc)(int, int, int, int, int, BYTE *, int, int, int, int);
+void(*DrawPlrProc)(int, int, int, int, int, BYTE *, int, int, int, int);
 BYTE sgSaveBack[8192];
 int draw_monster_num; // weak
 DWORD sgdwCursHgtOld; // idb
@@ -61,13 +61,13 @@ char *szPlrModeAssert[12] = {
 	"quitting"
 };
 
-void __cdecl ClearCursor() // CODE_FIX: this was supposed to be in cursor.cpp
+void ClearCursor() // CODE_FIX: this was supposed to be in cursor.cpp
 {
 	sgdwCursWdt = 0;
 	sgdwCursWdtOld = 0;
 }
 
-void __fastcall DrawMissile(int x, int y, int sx, int sy, int CelSkip, int CelCap, BOOL pre)
+void DrawMissile(int x, int y, int sx, int sy, int CelSkip, int CelCap, BOOL pre)
 {
 	int i, mx, my, nCel;
 	MissileStruct *m;
@@ -128,7 +128,7 @@ void __fastcall DrawMissile(int x, int y, int sx, int sy, int CelSkip, int CelCa
 	}
 }
 
-void __fastcall DrawClippedMissile(int x, int y, int sx, int sy, int CelSkip, int CelCap, BOOL pre)
+void DrawClippedMissile(int x, int y, int sx, int sy, int CelSkip, int CelCap, BOOL pre)
 {
 	int i, mx, my, nCel;
 	MissileStruct *m;
@@ -189,7 +189,7 @@ void __fastcall DrawClippedMissile(int x, int y, int sx, int sy, int CelSkip, in
 	}
 }
 
-void __fastcall DrawDeadPlayer(int x, int y, int sx, int sy, int CelSkip, int CelCap, BOOL clipped)
+void DrawDeadPlayer(int x, int y, int sx, int sy, int CelSkip, int CelCap, BOOL clipped)
 {
 	int i, px, py, nCel;
 	PlayerStruct *p;
@@ -225,7 +225,7 @@ void __fastcall DrawDeadPlayer(int x, int y, int sx, int sy, int CelSkip, int Ce
 	}
 }
 
-void __fastcall DrawPlayer(int pnum, int x, int y, int px, int py, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
+void DrawPlayer(int pnum, int x, int y, int px, int py, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
 	int l;
 	DWORD *pFrameTable;
@@ -301,7 +301,7 @@ void __fastcall DrawPlayer(int pnum, int x, int y, int px, int py, BYTE *pCelBuf
 // 5CF31D: using guessed type char setlevel;
 // 69BEF8: using guessed type int light_table_index;
 
-void __fastcall DrawClippedPlayer(int pnum, int x, int y, int px, int py, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
+void DrawClippedPlayer(int pnum, int x, int y, int px, int py, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
 	int l;
 	DWORD *pFrameTable;
@@ -376,7 +376,7 @@ void __fastcall DrawClippedPlayer(int pnum, int x, int y, int px, int py, BYTE *
 // 4B8CC2: using guessed type char pcursplr;
 // 69BEF8: using guessed type int light_table_index;
 
-void __fastcall DrawView(int StartX, int StartY)
+void DrawView(int StartX, int StartY)
 {
 	if (zoomflag)
 		DrawGame(StartX, StartY);
@@ -433,7 +433,7 @@ void __fastcall DrawView(int StartX, int StartY)
 // 646D00: using guessed type char qtextflag;
 // 69BD04: using guessed type int questlog;
 
-void __fastcall DrawGame(int x, int y)
+void DrawGame(int x, int y)
 {
 	int i, sx, sy, chunks, blocks;
 
@@ -543,7 +543,7 @@ void __fastcall DrawGame(int x, int y)
 // 69CF0C: using guessed type int gpBufEnd;
 // 69CF20: using guessed type char arch_draw_type;
 
-void __fastcall scrollrt_draw_lower(int x, int y, int sx, int sy, int chunks, int eflag)
+void scrollrt_draw_lower(int x, int y, int sx, int sy, int chunks, int eflag)
 {
 	int i, j;
 	BYTE *dst;
@@ -697,7 +697,7 @@ void __fastcall scrollrt_draw_lower(int x, int y, int sx, int sy, int chunks, in
 // 69CF94: using guessed type int cel_transparency_active;
 // 69CF98: using guessed type int level_piece_id;
 
-void __fastcall scrollrt_draw_clipped_dungeon(char *pBuff, int sx, int sy, int x, int y, int eflag)
+void scrollrt_draw_clipped_dungeon(char *pBuff, int sx, int sy, int x, int y, int eflag)
 {
 	int v6;             // eax
 	char v7;            // bl
@@ -934,7 +934,7 @@ void __fastcall scrollrt_draw_clipped_dungeon(char *pBuff, int sx, int sy, int x
 // 69CF94: using guessed type int cel_transparency_active;
 // 69EFA4: using guessed type int draw_monster_num;
 
-void __fastcall DrawClippedMonster(int x, int y, int mx, int my, int m, int CelSkip, int CelCap)
+void DrawClippedMonster(int x, int y, int mx, int my, int m, int CelSkip, int CelCap)
 {
 	int nCel;
 	char trans;
@@ -988,7 +988,7 @@ void __fastcall DrawClippedMonster(int x, int y, int mx, int my, int m, int CelS
 }
 // 69BEF8: using guessed type int light_table_index;
 
-void __fastcall DrawClippedObject(int x, int y, int ox, int oy, BOOL pre, int CelSkip, int CelCap)
+void DrawClippedObject(int x, int y, int ox, int oy, BOOL pre, int CelSkip, int CelCap)
 {
 	int sx, sy, xx, yy, nCel;
 	char bv;
@@ -1039,7 +1039,7 @@ void __fastcall DrawClippedObject(int x, int y, int ox, int oy, BOOL pre, int Ce
 }
 // 4B8CC1: using guessed type char pcursobj;
 
-void __fastcall scrollrt_draw_clipped_e_flag(BYTE *pBuff, int x, int y, int a4, int a5)
+void scrollrt_draw_clipped_e_flag(BYTE *pBuff, int x, int y, int a4, int a5)
 {
 	int i, lti_old, cta_old, lpi_old;
 	BYTE *dst;
@@ -1092,7 +1092,7 @@ void __fastcall scrollrt_draw_clipped_e_flag(BYTE *pBuff, int x, int y, int a4, 
 // 69CF94: using guessed type int cel_transparency_active;
 // 69CF98: using guessed type int level_piece_id;
 
-void __fastcall scrollrt_draw_lower_2(int x, int y, int sx, int sy, int chunks, int skipChunks, int eflag)
+void scrollrt_draw_lower_2(int x, int y, int sx, int sy, int chunks, int skipChunks, int eflag)
 {
 	int i, j, CelSkip;
 	BYTE *dst;
@@ -1195,7 +1195,7 @@ void __fastcall scrollrt_draw_lower_2(int x, int y, int sx, int sy, int chunks, 
 // 69CF94: using guessed type int cel_transparency_active;
 // 69CF98: using guessed type int level_piece_id;
 
-void __fastcall scrollrt_draw_clipped_dungeon_2(char *buffer, int x, int y, int skipChunks, int CelSkip, int sx, int sy, int eflag)
+void scrollrt_draw_clipped_dungeon_2(char *buffer, int x, int y, int skipChunks, int CelSkip, int sx, int sy, int eflag)
 {
 	int v8;             // eax
 	char v9;            // bl
@@ -1439,7 +1439,7 @@ void __fastcall scrollrt_draw_clipped_dungeon_2(char *buffer, int x, int y, int 
 // 69CF94: using guessed type int cel_transparency_active;
 // 69EFA4: using guessed type int draw_monster_num;
 
-void __fastcall scrollrt_draw_clipped_e_flag_2(BYTE *pBuff, int x, int y, int skipChunks, signed int CelSkip, int sx, int sy)
+void scrollrt_draw_clipped_e_flag_2(BYTE *pBuff, int x, int y, int skipChunks, signed int CelSkip, int sx, int sy)
 {
 	int lti_old, cta_old, lpi_old;
 	BYTE *dst;
@@ -1511,7 +1511,7 @@ void __fastcall scrollrt_draw_clipped_e_flag_2(BYTE *pBuff, int x, int y, int sk
 // 69CF94: using guessed type int cel_transparency_active;
 // 69CF98: using guessed type int level_piece_id;
 
-void __fastcall scrollrt_draw_upper(int x, int y, int sx, int sy, int chunks, int capChunks, int eflag)
+void scrollrt_draw_upper(int x, int y, int sx, int sy, int chunks, int capChunks, int eflag)
 {
 	int i, j, CelCap;
 	BYTE *dst;
@@ -1662,7 +1662,7 @@ void __fastcall scrollrt_draw_upper(int x, int y, int sx, int sy, int chunks, in
 // 69CF94: using guessed type int cel_transparency_active;
 // 69CF98: using guessed type int level_piece_id;
 
-void __fastcall scrollrt_draw_dungeon(BYTE *pBuff, int sx, int sy, int capChunks, int CelCap, int dx, int dy, int eflag)
+void scrollrt_draw_dungeon(BYTE *pBuff, int sx, int sy, int capChunks, int CelCap, int dx, int dy, int eflag)
 {
 	int px, py, nCel, nMon, negMon, p;
 	char bFlag, bDead, bObj, bItem, bPlr, bArch, bMap, negPlr, dd;
@@ -1869,7 +1869,7 @@ void __fastcall scrollrt_draw_dungeon(BYTE *pBuff, int sx, int sy, int capChunks
 // 69CF94: using guessed type int cel_transparency_active;
 // 69EFA4: using guessed type int draw_monster_num;
 
-void __fastcall DrawMonster(int x, int y, int mx, int my, int m, int CelSkip, int CelCap)
+void DrawMonster(int x, int y, int mx, int my, int m, int CelSkip, int CelCap)
 {
 	int nCel;
 	char trans;
@@ -1923,7 +1923,7 @@ void __fastcall DrawMonster(int x, int y, int mx, int my, int m, int CelSkip, in
 }
 // 69BEF8: using guessed type int light_table_index;
 
-void __fastcall DrawObject(int x, int y, int ox, int oy, BOOL pre, int CelSkip, int CelCap)
+void DrawObject(int x, int y, int ox, int oy, BOOL pre, int CelSkip, int CelCap)
 {
 	int sx, sy, xx, yy, nCel;
 	char bv;
@@ -1977,7 +1977,7 @@ void __fastcall DrawObject(int x, int y, int ox, int oy, BOOL pre, int CelSkip, 
 }
 // 4B8CC1: using guessed type char pcursobj;
 
-void __fastcall scrollrt_draw_e_flag(BYTE *pBuff, int x, int y, int capChunks, int CelCap, int sx, int sy)
+void scrollrt_draw_e_flag(BYTE *pBuff, int x, int y, int capChunks, int CelCap, int sx, int sy)
 {
 	int i, lti_old, cta_old, lpi_old;
 	BYTE *dst;
@@ -2031,7 +2031,7 @@ void __fastcall scrollrt_draw_e_flag(BYTE *pBuff, int x, int y, int capChunks, i
 // 69CF94: using guessed type int cel_transparency_active;
 // 69CF98: using guessed type int level_piece_id;
 
-void __fastcall DrawZoom(int x, int y)
+void DrawZoom(int x, int y)
 {
 	int i, sx, sy, chunks, blocks;
 	int wdt, nSrcOff, nDstOff;
@@ -2196,7 +2196,7 @@ void __fastcall DrawZoom(int x, int y)
 // 69CF0C: using guessed type int gpBufEnd;
 // 69CF20: using guessed type char arch_draw_type;
 
-void __cdecl ClearScreenBuffer()
+void ClearScreenBuffer()
 {
 	j_lock_buf_priv(3);
 
@@ -2230,7 +2230,7 @@ void __cdecl ClearScreenBuffer()
 }
 
 #ifdef _DEBUG
-void __cdecl ScrollView()
+void ScrollView()
 {
 	BOOL scroll;
 
@@ -2308,14 +2308,14 @@ void __cdecl ScrollView()
 		ScrollInfo._sdir = SDIR_NONE;
 }
 
-void __cdecl EnableFrameCount()
+void EnableFrameCount()
 {
 	frameflag = frameflag == 0;
 	framestart = GetTickCount();
 }
 #endif
 
-void __fastcall scrollrt_draw_game_screen(BOOL draw_cursor)
+void scrollrt_draw_game_screen(BOOL draw_cursor)
 {
 	int hgt;
 
@@ -2342,7 +2342,7 @@ void __fastcall scrollrt_draw_game_screen(BOOL draw_cursor)
 }
 // 52571C: using guessed type int drawpanflag;
 
-void __cdecl scrollrt_draw_cursor_back_buffer()
+void scrollrt_draw_cursor_back_buffer()
 {
 	int i;
 	BYTE *src, *dst;
@@ -2366,7 +2366,7 @@ void __cdecl scrollrt_draw_cursor_back_buffer()
 	sgdwCursWdt = 0;
 }
 
-void __cdecl scrollrt_draw_cursor_item()
+void scrollrt_draw_cursor_item()
 {
 	int i, mx, my, col;
 	BYTE *src, *dst;
@@ -2442,7 +2442,7 @@ void __cdecl scrollrt_draw_cursor_item()
 // 4B8C9C: using guessed type int cursH;
 // 69CF0C: using guessed type int gpBufEnd;
 
-void __fastcall DrawMain(int dwHgt, int draw_desc, int draw_hp, int draw_mana, int draw_sbar, int draw_btn)
+void DrawMain(int dwHgt, int draw_desc, int draw_hp, int draw_mana, int draw_sbar, int draw_btn)
 {
 	int ysize;
 	DWORD dwTicks;
@@ -2564,7 +2564,7 @@ void __fastcall DrawMain(int dwHgt, int draw_desc, int draw_hp, int draw_mana, i
 // 679660: using guessed type char gbMaxPlayers;
 
 #ifdef _DEBUG
-void __cdecl DrawFPS()
+void DrawFPS()
 {
 	DWORD v0;        // eax
 	int v1;          // esi
@@ -2598,7 +2598,7 @@ void __cdecl DrawFPS()
 }
 #endif
 
-void __fastcall DoBlitScreen(DWORD dwX, DWORD dwY, DWORD dwWdt, DWORD dwHgt)
+void DoBlitScreen(DWORD dwX, DWORD dwY, DWORD dwWdt, DWORD dwHgt)
 {
 	int nSrcOff, nDstOff, nSrcWdt, nDstWdt;
 	DWORD dwTicks;
@@ -2687,7 +2687,7 @@ void __fastcall DoBlitScreen(DWORD dwX, DWORD dwY, DWORD dwWdt, DWORD dwHgt)
 	}
 }
 
-void __cdecl DrawAndBlit()
+void DrawAndBlit()
 {
 	BOOLEAN ddsdesc; // ebp
 	BOOLEAN ctrlPan; // esi

@@ -16,31 +16,31 @@ extern int ReturnLvlT; // idb
 extern int ALLQUESTS;  // idb
 extern int ReturnLvl;  // idb
 
-void __cdecl InitQuests();
-void __cdecl CheckQuests();
-BOOL __cdecl ForceQuests();
-BOOL __fastcall QuestStatus(int i);
-void __fastcall CheckQuestKill(int m, BOOL sendmsg);
-void __cdecl DrawButcher();
-void __fastcall DrawSkelKing(int q, int x, int y);
-void __fastcall DrawWarLord(int x, int y);
-void __fastcall DrawSChamber(int q, int x, int y);
-void __fastcall DrawLTBanner(int x, int y);
-void __fastcall DrawBlind(int x, int y);
-void __fastcall DrawBlood(int x, int y);
-void __fastcall DRLG_CheckQuests(int x, int y);
-void __cdecl SetReturnLvlPos();
-void __cdecl GetReturnLvlPos();
-void __cdecl ResyncMPQuests();
-void __cdecl ResyncQuests();
-void __fastcall PrintQLString(int x, int y, unsigned char cjustflag, char *str, int col);
-void __cdecl DrawQuestLog();
-void __cdecl StartQuestlog();
-void __cdecl QuestlogUp();
-void __cdecl QuestlogDown();
-void __cdecl QuestlogEnter();
-void __cdecl QuestlogESC();
-void __fastcall SetMultiQuest(int q, int s, int l, int v1);
+void InitQuests();
+void CheckQuests();
+BOOL ForceQuests();
+BOOL QuestStatus(int i);
+void CheckQuestKill(int m, BOOL sendmsg);
+void DrawButcher();
+void DrawSkelKing(int q, int x, int y);
+void DrawWarLord(int x, int y);
+void DrawSChamber(int q, int x, int y);
+void DrawLTBanner(int x, int y);
+void DrawBlind(int x, int y);
+void DrawBlood(int x, int y);
+void DRLG_CheckQuests(int x, int y);
+void SetReturnLvlPos();
+void GetReturnLvlPos();
+void ResyncMPQuests();
+void ResyncQuests();
+void PrintQLString(int x, int y, unsigned char cjustflag, char *str, int col);
+void DrawQuestLog();
+void StartQuestlog();
+void QuestlogUp();
+void QuestlogDown();
+void QuestlogEnter();
+void QuestlogESC();
+void SetMultiQuest(int q, int s, int l, int v1);
 
 /* rdata */
 extern QuestData questlist[MAXQUESTS];

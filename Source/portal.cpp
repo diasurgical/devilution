@@ -8,7 +8,7 @@ int portalindex;
 int WarpDropX[MAXPORTAL] = { 57, 59, 61, 63 };
 int WarpDropY[MAXPORTAL] = { 40, 40, 40, 40 };
 
-void __cdecl InitPortals()
+void InitPortals()
 {
 	int i;
 
@@ -18,7 +18,7 @@ void __cdecl InitPortals()
 	}
 }
 
-void __fastcall SetPortalStats(int i, BOOL o, int x, int y, int lvl, int lvltype)
+void SetPortalStats(int i, BOOL o, int x, int y, int lvl, int lvltype)
 {
 	portal[i].setlvl = FALSE;
 	portal[i].x = x;
@@ -28,7 +28,7 @@ void __fastcall SetPortalStats(int i, BOOL o, int x, int y, int lvl, int lvltype
 	portal[i].ltype = lvltype;
 }
 
-void __fastcall AddWarpMissile(int i, int x, int y)
+void AddWarpMissile(int i, int x, int y)
 {
 	int mi;
 
@@ -46,7 +46,7 @@ void __fastcall AddWarpMissile(int i, int x, int y)
 	}
 }
 
-void __cdecl SyncPortals()
+void SyncPortals()
 {
 	int i;
 
@@ -66,12 +66,12 @@ void __cdecl SyncPortals()
 }
 // 5CF31D: using guessed type char setlevel;
 
-void __fastcall AddInTownPortal(int i)
+void AddInTownPortal(int i)
 {
 	AddWarpMissile(i, WarpDropX[i], WarpDropY[i]);
 }
 
-void __fastcall ActivatePortal(int i, int x, int y, int lvl, int lvltype, BOOL sp)
+void ActivatePortal(int i, int x, int y, int lvl, int lvltype, BOOL sp)
 {
 	portal[i].open = TRUE;
 
@@ -84,12 +84,12 @@ void __fastcall ActivatePortal(int i, int x, int y, int lvl, int lvltype, BOOL s
 	}
 }
 
-void __fastcall DeactivatePortal(int i)
+void DeactivatePortal(int i)
 {
 	portal[i].open = FALSE;
 }
 
-BOOL __fastcall PortalOnLevel(int i)
+BOOL PortalOnLevel(int i)
 {
 	if (portal[i].level == currlevel)
 		return TRUE;
@@ -97,7 +97,7 @@ BOOL __fastcall PortalOnLevel(int i)
 		return currlevel == 0;
 }
 
-void __fastcall RemovePortalMissile(int id)
+void RemovePortalMissile(int id)
 {
 	int i;
 	int mi;
@@ -116,12 +116,12 @@ void __fastcall RemovePortalMissile(int id)
 	}
 }
 
-void __fastcall SetCurrentPortal(int p)
+void SetCurrentPortal(int p)
 {
 	portalindex = p;
 }
 
-void __cdecl GetPortalLevel()
+void GetPortalLevel()
 {
 	if (currlevel) {
 		setlevel = 0;
@@ -149,7 +149,7 @@ void __cdecl GetPortalLevel()
 }
 // 5CF31D: using guessed type char setlevel;
 
-void __cdecl GetPortalLvlPos()
+void GetPortalLvlPos()
 {
 	if (currlevel == 0) {
 		ViewX = WarpDropX[portalindex] + 1;
@@ -165,7 +165,7 @@ void __cdecl GetPortalLvlPos()
 	}
 }
 
-BOOL __fastcall PosOkPortal(int lvl, int x, int y)
+BOOL PosOkPortal(int lvl, int x, int y)
 {
 	int i;
 

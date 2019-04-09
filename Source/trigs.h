@@ -6,27 +6,27 @@ extern int trigflag[MAXTRIGGERS];
 extern TriggerStruct trigs[MAXTRIGGERS];
 extern int TWarpFrom; // weak
 
-void __cdecl InitNoTriggers();
-void __cdecl InitTownTriggers();
-void __cdecl InitL1Triggers();
-void __cdecl InitL2Triggers();
-void __cdecl InitL3Triggers();
-void __cdecl InitL4Triggers();
-void __cdecl InitSKingTriggers();
-void __cdecl InitSChambTriggers();
-void __cdecl InitPWaterTriggers();
-void __cdecl InitVPTriggers();
-BOOL __cdecl ForceTownTrig();
-unsigned char __cdecl ForceL1Trig();
-unsigned char __cdecl ForceL2Trig();
-unsigned char __cdecl ForceL3Trig();
-unsigned char __cdecl ForceL4Trig();
-void __cdecl Freeupstairs();
-BOOL __cdecl ForceSKingTrig();
-BOOL __cdecl ForceSChambTrig();
-BOOL __cdecl ForcePWaterTrig();
-void __cdecl CheckTrigForce();
-void __cdecl CheckTriggers();
+void InitNoTriggers();
+void InitTownTriggers();
+void InitL1Triggers();
+void InitL2Triggers();
+void InitL3Triggers();
+void InitL4Triggers();
+void InitSKingTriggers();
+void InitSChambTriggers();
+void InitPWaterTriggers();
+void InitVPTriggers();
+BOOL ForceTownTrig();
+unsigned char ForceL1Trig();
+unsigned char ForceL2Trig();
+unsigned char ForceL3Trig();
+unsigned char ForceL4Trig();
+void Freeupstairs();
+BOOL ForceSKingTrig();
+BOOL ForceSChambTrig();
+BOOL ForcePWaterTrig();
+void CheckTrigForce();
+void CheckTriggers();
 
 /* rdata */
 
