@@ -28,7 +28,7 @@ char *init_strip_trailing_slash(char *path);
 int init_read_test_file(char *mpq_path, char *mpq_name, int flags, HANDLE *archive);
 void init_get_file_info();
 LRESULT __stdcall MainWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
-void init_activate_window(HWND hWnd, BOOLEAN bActive);
+void init_activate_window(HWND hWnd, BOOL bActive);
 LRESULT __stdcall WindowProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
 WNDPROC SetWindowProc(WNDPROC NewProc);
 

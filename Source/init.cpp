@@ -396,41 +396,39 @@ void init_get_file_info()
 
 LRESULT __stdcall MainWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
-	if (Msg > WM_ERASEBKGND) {
-		if (Msg == WM_ACTIVATEAPP) {
-			init_activate_window(hWnd, wParam);
-		} else {
-			if (Msg == WM_QUERYNEWPALETTE) {
-				SDrawRealizePalette();
-				return 1;
-			}
-			if (Msg == WM_PALETTECHANGED && (HWND)wParam != hWnd)
-				SDrawRealizePalette();
-		}
-	} else {
-		switch (Msg) {
-		case WM_ERASEBKGND:
-			return 0;
-		case WM_CREATE:
-			ghMainWnd = hWnd;
-			break;
-		case WM_DESTROY:
-			init_cleanup(1);
-			ghMainWnd = 0;
-			PostQuitMessage(0);
-			break;
-		case WM_PAINT:
-			drawpanflag = 255;
-			break;
-		case WM_CLOSE:
-			return 0;
-		}
+	switch (Msg) {
+	case WM_ERASEBKGND:
+		return 0;
+	case WM_CREATE:
+		ghMainWnd = hWnd;
+		break;
+	case WM_DESTROY:
+		init_cleanup(1);
+		ghMainWnd = 0;
+		PostQuitMessage(0);
+		break;
+	case WM_PAINT:
+		drawpanflag = 255;
+		break;
+	case WM_CLOSE:
+		return 0;
+	case WM_ACTIVATEAPP:
+		init_activate_window(hWnd, wParam);
+		break;
+	case WM_QUERYNEWPALETTE:
+		SDrawRealizePalette();
+		return 1;
+	case WM_PALETTECHANGED:
+		if ((HWND)wParam != hWnd)
+			SDrawRealizePalette();
+		break;
 	}
+
 	return DefWindowProc(hWnd, Msg, wParam, lParam);
 }
 // 52571C: using guessed type int drawpanflag;
 
-void init_activate_window(HWND hWnd, BOOLEAN bActive)
+void init_activate_window(HWND hWnd, BOOL bActive)
 {
 	LONG dwNewLong; // eax
 
