@@ -3183,59 +3183,45 @@ void StoryIdItem()
 
 void S_ConfirmEnter()
 {
-	char v0; // cl
-
 	if (stextsel == 18) {
-		if (stextshold > STORE_WRECHARGE) {
-			switch (stextshold) {
-			case STORE_BBOY:
-				BoyBuyItem();
-				break;
-			case STORE_HBUY:
-				HealerBuyItem();
-				break;
-			case STORE_SIDENTIFY:
-				StoryIdItem();
-				v0 = STORE_IDSHOW;
-			LABEL_20:
-				StartStore(v0);
-				return;
-			case STORE_SPBUY:
-				SmithBuyPItem();
-				break;
-			}
-		} else {
-			switch (stextshold) {
-			case STORE_WRECHARGE:
-				WitchRechargeItem();
-				break;
-			case STORE_SBUY:
-				SmithBuyItem();
-				break;
-			case STORE_SSELL:
-				goto LABEL_27;
-			case STORE_SREPAIR:
-				SmithRepairItem();
-				break;
-			case STORE_WBUY:
-				WitchBuyItem();
-				break;
-			case STORE_WSELL:
-			LABEL_27:
-				StoreSellItem();
-				break;
-			}
+		switch (stextshold) {
+		case STORE_SBUY:
+			SmithBuyItem();
+			break;
+		case STORE_SSELL:
+		case STORE_WSELL:
+			StoreSellItem();
+			break;
+		case STORE_SREPAIR:
+			SmithRepairItem();
+			break;
+		case STORE_WBUY:
+			WitchBuyItem();
+			break;
+		case STORE_WRECHARGE:
+			WitchRechargeItem();
+			break;
+		case STORE_BBOY:
+			BoyBuyItem();
+			break;
+		case STORE_HBUY:
+			HealerBuyItem();
+			break;
+		case STORE_SIDENTIFY:
+			StoryIdItem();
+			StartStore(STORE_IDSHOW);
+			return;
+		case STORE_SPBUY:
+			SmithBuyPItem();
+			break;
 		}
-		v0 = stextshold;
-		goto LABEL_20;
+		StartStore(stextshold);
+	} else {
+		StartStore(stextshold);
+		stextsel = stextlhold;
+		stextsval = stextvhold;
 	}
-	StartStore((unsigned char)stextshold);
-	stextsel = stextlhold;
-	stextsval = stextvhold;
 }
-// 69F110: using guessed type int stextlhold;
-// 6A8A24: using guessed type int stextvhold;
-// 6A8A28: using guessed type int stextsel;
 
 void S_HealerEnter()
 {
