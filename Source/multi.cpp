@@ -541,14 +541,11 @@ void multi_handle_all_packets(int players, TPkt *packet, int a3)
 
 void multi_process_tmsgs()
 {
-	int v0;   // eax
-	TPkt pkt; // [esp+0h] [ebp-200h]
+	int cnt;
+	TPkt pkt;
 
-	while (1) {
-		v0 = tmsg_get((BYTE *)&pkt, 512);
-		if (!v0)
-			break;
-		multi_handle_all_packets(myplr, &pkt, v0);
+	while (cnt = tmsg_get((BYTE *)&pkt, 512)) {
+		multi_handle_all_packets(myplr, &pkt, cnt);
 	}
 }
 
