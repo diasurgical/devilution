@@ -4191,34 +4191,25 @@ void __cdecl SortSmith()
 
 void __fastcall SpawnSmith(int lvl)
 {
-	int v3;         // ebp
-	ItemStruct *v4; // ebx
-	int v9;         // [esp+Ch] [ebp-8h]
+	ItemStruct *holdItem;
+	int i, nsi, idata;
 
-	v3 = random(50, 10) + 10;
-	if (v3 > 0) {
-		v4 = smithitem;
-		v9 = v3;
-		while (1) {
-			do {
-				item[0]._iSeed = GetRndSeed();
-				SetRndSeed(item[0]._iSeed);
-				GetItemAttrs(0, RndSmithItem(lvl) - 1, lvl);
-			} while (item[0]._iIvalue > 140000);
-			qmemcpy(v4, item, sizeof(ItemStruct));
-			v4->_iCreateInfo = lvl | 0x400;
-			v4->_iIdentified = TRUE;
-			v4->_iStatFlag = StoreStatOk(v4);
-			++v4;
-			if (!--v9)
-				break;
-		}
-	}
-	if (v3 < 20) {
+	nsi = random(50, 10) + 10;
+	for (i = 0; i < nsi; i++) {
+		holdItem = &smithitem[i];
 		do {
-			smithitem[v3]._itype = -1;
-			v3++;
-		} while (v3 < 20);
+			item[0]._iSeed = GetRndSeed();
+			SetRndSeed(item[0]._iSeed);
+			idata = RndSmithItem(lvl) - 1;
+			GetItemAttrs(0, idata, lvl);
+		} while (item[0]._iIvalue > 140000);
+		qmemcpy(holdItem, item, sizeof(ItemStruct));
+		holdItem->_iCreateInfo = lvl | 0x400;
+		holdItem->_iIdentified = TRUE;
+		holdItem->_iStatFlag = StoreStatOk(holdItem);
+	}
+	for (i = nsi; i < 20; i++) {
+		smithitem[i]._itype = -1;
 	}
 	SortSmith();
 }
