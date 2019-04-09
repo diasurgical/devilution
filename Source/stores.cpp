@@ -3009,7 +3009,7 @@ void __cdecl S_WRechargeEnter()
 
 void __cdecl S_BoyEnter()
 {
-	if (boyitem._itype != -1 && stextsel == 18) {
+	if (boyitem._itype != ITYPE_NONE && stextsel == 18) {
 		if (plr[myplr]._pGold < 50) {
 			stextshold = 12;
 			stextlhold = 18;
