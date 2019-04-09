@@ -34,19 +34,18 @@ BOOL IncProgress()
 
 void DrawCutscene()
 {
-	unsigned int v0; // esi
+	DWORD i;
 
 	j_lock_buf_priv(1);
 	CelDecodeOnly(64, 639, (BYTE *)sgpBackCel, 1, 640);
-	v0 = 0;
-	if (sgdwProgress) {
-		do
-			DrawProgress(
-			    progress_bar_screen_pos[progress_id][0] + v0++ + 64,
-			    progress_bar_screen_pos[progress_id][1] + 160,
-			    progress_id);
-		while (v0 < sgdwProgress);
+
+	for (i = 0; i < sgdwProgress; i++) {
+		DrawProgress(
+		    progress_bar_screen_pos[progress_id][0] + i + 64,
+		    progress_bar_screen_pos[progress_id][1] + 160,
+		    progress_id);
 	}
+
 	j_unlock_buf_priv(1);
 	drawpanflag = 255;
 	scrollrt_draw_game_screen(0);
