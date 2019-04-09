@@ -219,7 +219,7 @@ BOOL ForceQuests()
 	}
 
 	for (i = 0; i < MAXQUESTS; i++) {
-		
+
 		if (i != QTYPE_VB && currlevel == quests[i]._qlevel && quests[i]._qslvl != 0) {
 			ql = quests[quests[i]._qidx]._qslvl - 1;
 			qx = quests[i]._qtx;
@@ -722,36 +722,32 @@ void DRLG_CheckQuests(int x, int y)
 
 void SetReturnLvlPos()
 {
-	int v0; // eax
-
 	switch (setlvlnum) {
 	case SL_SKELKING:
 		ReturnLvlX = quests[QTYPE_KING]._qtx + 1;
 		ReturnLvlY = quests[QTYPE_KING]._qty;
-		v0 = (unsigned char)quests[QTYPE_KING]._qlevel;
-		goto LABEL_9;
+		ReturnLvlT = 1;
+		ReturnLvl = quests[QTYPE_KING]._qlevel;
+		break;
 	case SL_BONECHAMB:
-		ReturnLvlT = 2;
 		ReturnLvlX = quests[QTYPE_BONE]._qtx + 1;
 		ReturnLvlY = quests[QTYPE_BONE]._qty;
-		v0 = (unsigned char)quests[QTYPE_BONE]._qlevel;
-		goto LABEL_10;
+		ReturnLvlT = 2;
+		ReturnLvl = quests[QTYPE_BONE]._qlevel;
+		break;
 	case SL_POISONWATER:
 		ReturnLvlX = quests[QTYPE_PW]._qtx;
 		ReturnLvlY = quests[QTYPE_PW]._qty + 1;
-		v0 = (unsigned char)quests[QTYPE_PW]._qlevel;
-	LABEL_9:
 		ReturnLvlT = 1;
-		goto LABEL_10;
+		ReturnLvl = quests[QTYPE_PW]._qlevel;
+		break;
+	case SL_VILEBETRAYER:
+		ReturnLvlX = quests[QTYPE_VB]._qtx + 1;
+		ReturnLvlY = quests[QTYPE_VB]._qty - 1;
+		ReturnLvlT = 4;
+		ReturnLvl = quests[QTYPE_VB]._qlevel;
+		break;
 	}
-	if (setlvlnum != 5)
-		return;
-	ReturnLvlT = 4;
-	ReturnLvlX = quests[QTYPE_VB]._qtx + 1;
-	ReturnLvlY = quests[QTYPE_VB]._qty - 1;
-	v0 = (unsigned char)quests[QTYPE_VB]._qlevel;
-LABEL_10:
-	ReturnLvl = v0;
 }
 
 void GetReturnLvlPos()
