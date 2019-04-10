@@ -11,7 +11,7 @@ int gdwPalEntries;
 
 int gamma_correction = 100; // idb
 BOOL color_cycling_enabled = TRUE;
-BOOLEAN sgbFadedIn = 1;
+BOOLEAN sgbFadedIn = TRUE;
 
 void SaveGamma()
 {
@@ -228,28 +228,27 @@ void SetFadeLevel(DWORD fadeval)
 
 void PaletteFadeIn(int fr)
 {
-	int i; // ebp
+	int i;
 
 	ApplyGamma(logical_palette, orig_palette, 256);
-
-	for (i = 0; i < 256; i += fr)
+	for (i = 0; i < 256; i += fr) {
 		SetFadeLevel(i);
-
+	}
 	SetFadeLevel(256);
-	memcpy(logical_palette, orig_palette, 0x400u);
-	sgbFadedIn = 1;
+	memcpy(logical_palette, orig_palette, sizeof(orig_palette));
+	sgbFadedIn = TRUE;
 }
 
 void PaletteFadeOut(int fr)
 {
-	int i; // esi
+	int i;
 
 	if (sgbFadedIn) {
-		for (i = 256; i > 0; i -= fr)
+		for (i = 256; i > 0; i -= fr) {
 			SetFadeLevel(i);
-
+		}
 		SetFadeLevel(0);
-		sgbFadedIn = 0;
+		sgbFadedIn = FALSE;
 	}
 }
 
