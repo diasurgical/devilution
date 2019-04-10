@@ -3484,111 +3484,77 @@ void MI_Flash2(int i)
 
 void MI_Manashield(int i)
 {
-	int v1;      // edi
-	int v2;      // esi
-	int v3;      // edx
-	int v4;      // eax
-	int v5;      // ecx
-	int v6;      // edx
-	BOOLEAN v7;  // zf
-	int v8;      // eax
-	int v9;      // ecx
-	int v10;     // edx
-	int v11;     // ecx
-	int v12;     // ecx
-	BOOLEAN v13; // sf
-	int v14;     // [esp+Ch] [ebp-10h]
-	int ia;      // [esp+14h] [ebp-8h]
-	int arglist; // [esp+18h] [ebp-4h]
+	int id, diff;
 
-	ia = i;
-	v1 = i;
-	arglist = missile[i]._misource;
-	v2 = arglist;
-	v3 = plr[arglist]._pxoff;
-	v4 = plr[arglist].WorldX;
-	v5 = plr[arglist].WorldY;
-	missile[v1]._mix = v4;
-	missile[v1]._mitxoff = v3 << 16;
-	v6 = plr[arglist]._pyoff << 16;
-	v7 = plr[arglist]._pmode == PM_WALK3;
-	missile[v1]._miy = v5;
-	missile[v1]._mityoff = v6;
-	if (v7) {
-		missile[v1]._misx = plr[v2]._px;
-		missile[v1]._misy = plr[v2]._py;
+	id = missile[i]._misource;
+	missile[i]._mix = plr[id].WorldX;
+	missile[i]._miy = plr[id].WorldY;
+	missile[i]._mitxoff = plr[id]._pxoff << 16;
+	missile[i]._mityoff = plr[id]._pyoff << 16;
+	if (plr[id]._pmode == PM_WALK3) {
+		missile[i]._misx = plr[id]._px;
+		missile[i]._misy = plr[id]._py;
 	} else {
-		missile[v1]._misx = v4;
-		missile[v1]._misy = v5;
+		missile[i]._misx = plr[id].WorldX;
+		missile[i]._misy = plr[id].WorldY;
 	}
-	GetMissilePos(ia);
-	if (plr[v2]._pmode == PM_WALK3) {
-		if (plr[v2]._pdir == 2)
-			++missile[v1]._mix;
+	GetMissilePos(i);
+	if (plr[id]._pmode == PM_WALK3) {
+		if (plr[id]._pdir == DIR_W)
+			missile[i]._mix++;
 		else
-			++missile[v1]._miy;
+			missile[i]._miy++;
 	}
-	if (arglist != myplr) {
-		if (currlevel != plr[v2].plrlevel)
-			missile[v1]._miDelFlag = TRUE;
-		goto LABEL_33;
-	}
-	v8 = plr[v2]._pMana;
-	v14 = plr[v2]._pMana;
-	if (v8 <= 0 || !plr[v2].plractive)
-		missile[v1]._mirange = 0;
-	v9 = missile[v1]._miVar1;
-	if (plr[v2]._pHitPoints >= v9)
-		goto LABEL_26;
-	v10 = v9 - plr[v2]._pHitPoints;
-	if (missile[v1]._mispllvl > 0) {
-		v10 = v10 / -3 + v9 - plr[v2]._pHitPoints;
-		v8 = v14;
-	}
-	if (v10 < 0)
-		v10 = 0;
-	drawmanaflag = TRUE;
-	drawhpflag = TRUE;
-	if (v8 >= v10) {
-		plr[v2]._pHitPoints = v9;
-		v11 = missile[v1]._miVar2;
-		plr[v2]._pManaBase -= v10;
-		plr[v2]._pHPBase = v11;
-		plr[v2]._pMana = v8 - v10;
-	LABEL_26:
-		if (arglist == myplr && !plr[v2]._pHitPoints && !missile[v1]._miVar1 && plr[v2]._pmode != PM_DEATH) {
-			missile[v1]._mirange = 0;
-			missile[v1]._miDelFlag = TRUE;
-			SyncPlrKill(arglist, -1);
+	if (id != myplr) {
+		if (currlevel != plr[id].plrlevel)
+			missile[i]._miDelFlag = TRUE;
+	} else {
+		if (plr[id]._pMana <= 0 || !plr[id].plractive)
+			missile[i]._mirange = 0;
+		if (plr[id]._pHitPoints < missile[i]._miVar1) {
+			diff = missile[i]._miVar1 - plr[id]._pHitPoints;
+			if (missile[i]._mispllvl > 0) {
+				diff += diff / -3;
+			}
+
+			if (diff < 0)
+				diff = 0;
+			drawmanaflag = TRUE;
+			drawhpflag = TRUE;
+
+			if (plr[id]._pMana >= diff) {
+				plr[id]._pHitPoints = missile[i]._miVar1;
+				plr[id]._pHPBase = missile[i]._miVar2;
+				plr[id]._pMana -= diff;
+				plr[id]._pManaBase -= diff;
+			} else {
+				missile[i]._miDelFlag = TRUE;
+				plr[id]._pHitPoints = plr[id]._pMana + missile[i]._miVar1 - diff;
+				plr[id]._pHPBase = plr[id]._pMana + missile[i]._miVar2 - diff;
+				plr[id]._pMana = 0;
+				plr[id]._pManaBase = plr[id]._pMaxManaBase - plr[id]._pMaxMana;
+				missile[i]._mirange = 0;
+				if (plr[id]._pHitPoints < 0)
+					SetPlayerHitPoints(id, 0);
+				 if (!(plr[id]._pHitPoints >> 6) && id == myplr) {
+					SyncPlrKill(id, missile[i]._miVar8);
+				}
+			}
 		}
-		goto LABEL_31;
+
+		if (id == myplr && !plr[id]._pHitPoints && !missile[i]._miVar1 && plr[id]._pmode != PM_DEATH) {
+			missile[i]._mirange = 0;
+			missile[i]._miDelFlag = TRUE;
+			SyncPlrKill(id, -1);
+		}
+		missile[i]._miVar1 = plr[id]._pHitPoints;
+		missile[i]._miVar2 = plr[id]._pHPBase;
+		if (missile[i]._mirange == 0) {
+			missile[i]._miDelFlag = TRUE;
+			NetSendCmd(TRUE, CMD_ENDSHIELD);
+		}
 	}
-	missile[v1]._miDelFlag = TRUE;
-	plr[v2]._pHitPoints = v8 + v9 - v10;
-	plr[v2]._pHPBase = v8 + missile[v1]._miVar2 - v10;
-	v12 = plr[v2]._pMaxManaBase - plr[v2]._pMaxMana;
-	v13 = plr[v2]._pHitPoints < 0;
-	plr[v2]._pMana = 0;
-	missile[v1]._mirange = 0;
-	plr[v2]._pManaBase = v12;
-	if (v13)
-		SetPlayerHitPoints(arglist, 0);
-	if (plr[v2]._pHitPoints >> 6)
-		goto LABEL_26;
-	if (arglist == myplr) {
-		SyncPlrKill(arglist, missile[v1]._miVar8);
-		goto LABEL_26;
-	}
-LABEL_31:
-	v7 = missile[v1]._mirange == 0;
-	missile[v1]._miVar1 = plr[v2]._pHitPoints;
-	missile[v1]._miVar2 = plr[v2]._pHPBase;
-	if (v7) {
-		missile[v1]._miDelFlag = TRUE;
-		NetSendCmd(TRUE, CMD_ENDSHIELD);
-	}
-LABEL_33:
-	PutMissile(ia);
+	PutMissile(i);
 }
 
 void MI_Etherealize(int i)
