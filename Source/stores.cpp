@@ -1241,14 +1241,14 @@ void S_StartWSell()
 // 6A09E4: using guessed type int stextsmax;
 // 6A6BB8: using guessed type int stextscrl;
 
-BOOLEAN WitchRechargeOk(int i)
+BOOL WitchRechargeOk(int i)
 {
-	BOOLEAN rv; // al
+	BOOL rv;
 
-	rv = 0;
+	rv = FALSE;
 	if (plr[myplr].InvList[i]._itype == ITYPE_STAFF
 	    && plr[myplr].InvList[i]._iCharges != plr[myplr].InvList[i]._iMaxCharges) {
-		rv = 1;
+		rv = TRUE;
 	}
 	return rv;
 }
