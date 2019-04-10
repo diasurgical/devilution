@@ -205,9 +205,9 @@ void BlackPalette()
 	SetFadeLevel(0);
 }
 
-void SetFadeLevel(int fadeval)
+void SetFadeLevel(DWORD fadeval)
 {
-	int i; // eax
+	int i;
 
 	if (lpDDInterface) {
 		for (i = 0; i < 255; i++) {

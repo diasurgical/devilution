@@ -20,7 +20,7 @@ void ApplyGamma(PALETTEENTRY *dst, PALETTEENTRY *src, int n);
 void DecreaseGamma();
 int UpdateGamma(int gamma);
 void BlackPalette();
-void SetFadeLevel(int fadeval);
+void SetFadeLevel(DWORD fadeval);
 void PaletteFadeIn(int fr);
 void PaletteFadeOut(int fr);
 void palette_update_caves();
