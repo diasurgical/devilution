@@ -10,7 +10,7 @@ PkPlayerStruct netplr[MAX_PLRS];
 BYTE sgbPlayerTurnBitTbl[MAX_PLRS];
 char sgbPlayerLeftGameTbl[MAX_PLRS];
 int sgbSentThisCycle; // idb
-BOOL dword_678628;    // weak
+BOOL gbShouldValidatePackage;
 BYTE gbActivePlayers; // weak
 char gbGameDestroyed; // weak
 BOOLEAN sgbSendDeltaTbl[MAX_PLRS];
@@ -106,8 +106,8 @@ void NetSendHiPri(BYTE *pbMsg, BYTE bLen)
 		multi_copy_packet(&sgHiPriBuf, pbMsg, bLen);
 		multi_send_packet(pbMsg, bLen);
 	}
-	if (!dword_678628) {
-		dword_678628 = TRUE;
+	if (!gbShouldValidatePackage) {
+		gbShouldValidatePackage = TRUE;
 		NetRecvPlrData(&pkt);
 		size = gdwNormalMsgSize - 19;
 		v5 = multi_recv_packet(&sgHiPriBuf, pkt.body, &size);
@@ -323,11 +323,11 @@ int multi_handle_delta()
 
 	sgbTimeout = FALSE;
 	if (recieved) {
-		if (!dword_678628) {
+		if (!gbShouldValidatePackage) {
 			NetSendHiPri(0, 0);
-			dword_678628 = FALSE;
+			gbShouldValidatePackage = FALSE;
 		} else {
-			dword_678628 = FALSE;
+			gbShouldValidatePackage = FALSE;
 			if (!multi_check_pkt_valid(&sgHiPriBuf))
 				NetSendHiPri(0, 0);
 		}
@@ -737,7 +737,7 @@ int NetInit(int bSinglePlayer, int *pfExitProgram)
 		InitPlrMsg();
 		buffer_init(&sgHiPriBuf);
 		buffer_init(&sgLoPriBuf);
-		dword_678628 = 0;
+		gbShouldValidatePackage = FALSE;
 		sync_init();
 		nthread_start(sgbPlayerTurnBitTbl[myplr]);
 		dthread_start();
@@ -773,7 +773,6 @@ int NetInit(int bSinglePlayer, int *pfExitProgram)
 	return 1;
 }
 // 6761B8: using guessed type char gbSomebodyWonGameKludge;
-// 678628: using guessed type int dword_678628;
 // 67862D: using guessed type char gbGameDestroyed;
 // 678640: using guessed type char byte_678640;
 // 6796E4: using guessed type char gbDeltaSender;

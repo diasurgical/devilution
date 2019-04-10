@@ -6,7 +6,7 @@ extern char gbSomebodyWonGameKludge; // weak
 extern char szPlayerDescript[128];
 extern short sgwPackPlrOffsetTbl[MAX_PLRS];
 extern PkPlayerStruct netplr[MAX_PLRS];
-extern int dword_678628; // weak
+extern BOOL gbShouldValidatePackage;
 extern BYTE gbActivePlayers;
 extern char gbGameDestroyed; // weak
 extern char byte_678640;     // weak
