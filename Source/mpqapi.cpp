@@ -667,21 +667,18 @@ BOOLEAN mpqapi_write_header() // WriteMPQHeader
 	return result;
 }
 
-BOOLEAN mpqapi_write_block_table()
+BOOL mpqapi_write_block_table()
 {
-	int v1;                     // eax
-	BOOL v2;                    // ebx
-	int v3;                     // eax
-	DWORD NumberOfBytesWritten; // [esp+4h] [ebp-4h]
+	BOOL success;
+	DWORD NumberOfBytesWritten;
 
 	if (SetFilePointer(sghArchive, 104, NULL, FILE_BEGIN) == -1)
-		return 0;
-	v1 = Hash("(block table)", 3);
-	Encrypt(sgpBlockTbl, 0x8000, v1);
-	v2 = WriteFile(sghArchive, sgpBlockTbl, 0x8000u, &NumberOfBytesWritten, 0);
-	v3 = Hash("(block table)", 3);
-	Decrypt(sgpBlockTbl, 0x8000, v3);
-	return v2 && NumberOfBytesWritten == 0x8000;
+		return FALSE;
+
+	Encrypt(sgpBlockTbl, 0x8000, Hash("(block table)", 3));
+	success = WriteFile(sghArchive, sgpBlockTbl, 0x8000, &NumberOfBytesWritten, 0);
+	Decrypt(sgpBlockTbl, 0x8000, Hash("(block table)", 3));
+	return success && NumberOfBytesWritten == 0x8000;
 }
 
 BOOLEAN mpqapi_write_hash_table()

@@ -31,7 +31,7 @@ void mpqapi_close_archive(const char *pszArchive, BOOL bFree, int dwChar);
 void mpqapi_store_modified_time(const char *pszArchive, int dwChar);
 void mpqapi_flush_and_close(const char *pszArchive, BOOL bFree, int dwChar);
 BOOLEAN mpqapi_write_header();
-BOOLEAN mpqapi_write_block_table();
+BOOL mpqapi_write_block_table();
 BOOLEAN mpqapi_write_hash_table();
 BOOL mpqapi_can_seek();
 
