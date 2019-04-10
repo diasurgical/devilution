@@ -308,7 +308,7 @@ int multi_handle_delta()
 		return FALSE;
 	}
 
-	for (i = 0; i < MAX_PLRS; ++i) {
+	for (i = 0; i < MAX_PLRS; i++) {
 		if (sgbSendDeltaTbl[i]) {
 			sgbSendDeltaTbl[i] = FALSE;
 			DeltaExportData(i);
