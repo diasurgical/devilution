@@ -1453,16 +1453,16 @@ void S_StartBoy()
 	stextscrl = 0;
 	AddSText(0, 2, 1u, "Wirt the Peg-legged boy", COL_GOLD, 0);
 	AddSLine(5);
-	if (boyitem._itype == -1) {
-		AddSText(0, 12, 1u, "Talk to Wirt", COL_BLUE, 1);
-		AddSText(0, 18, 1u, "Say goodbye", COL_WHITE, 1);
-	} else {
+	if (boyitem._itype != -1) {
 		AddSText(0, 8, 1u, "Talk to Wirt", COL_BLUE, 1);
 		AddSText(0, 12, 1u, "I have something for sale,", COL_GOLD, 0);
 		AddSText(0, 14, 1u, "but it will cost 50 gold", COL_GOLD, 0);
 		AddSText(0, 16, 1u, "just to take a look. ", COL_GOLD, 0);
 		AddSText(0, 18, 1u, "What have you got?", COL_WHITE, 1);
 		AddSText(0, 20, 1u, "Say goodbye", COL_WHITE, 1);
+	} else {
+		AddSText(0, 12, 1u, "Talk to Wirt", COL_BLUE, 1);
+		AddSText(0, 18, 1u, "Say goodbye", COL_WHITE, 1);
 	}
 }
 // 6A09E0: using guessed type char stextsize;
