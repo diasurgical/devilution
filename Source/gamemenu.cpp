@@ -303,6 +303,8 @@ int gamemenu_slider_gamma()
 
 void gamemenu_color_cycling(BOOL a1)
 {
-	palette_set_color_cycling(palette_get_colour_cycling() == 0);
-	sgOptionMenu[3].pszStr = color_cycling_toggle_names[palette_get_colour_cycling() & 1];
+	BOOL color_cycling;
+
+	color_cycling = palette_set_color_cycling(palette_get_colour_cycling() == 0);
+	sgOptionMenu[3].pszStr = color_cycling_toggle_names[color_cycling & 1];
 }
