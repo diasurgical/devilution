@@ -996,7 +996,7 @@ void diablo_hotkey_msg(int dwMsg)
 			app_fatal("Can't get program name");
 		separator = strrchr(Filename, '\\');
 		if (separator)
-			*separator = NULL;
+			*separator = '\0';
 		strcat(Filename, "\\Diablo.ini");
 		GetPrivateProfileString("NetMsg", spszMsgKeyTbl[dwMsg], spszMsgTbl[dwMsg], ReturnedString, sizeof(ReturnedString), Filename);
 		NetSendCmdString(-1, ReturnedString);
