@@ -21,26 +21,25 @@ void SaveGamma()
 
 void palette_init()
 {
-	int v0; // eax
-	int v1; // eax
+	DWORD error_code;
 
 	LoadGamma();
-	memcpy(system_palette, orig_palette, 0x400u);
+	memcpy(system_palette, orig_palette, sizeof(orig_palette));
 	LoadSysPal();
 #ifdef __cplusplus
-	v0 = lpDDInterface->CreatePalette(DDPCAPS_ALLOW256 | DDPCAPS_8BIT, system_palette, &lpDDPalette, NULL);
+	error_code = lpDDInterface->CreatePalette(DDPCAPS_ALLOW256 | DDPCAPS_8BIT, system_palette, &lpDDPalette, NULL);
 #else
-	v0 = lpDDInterface->lpVtbl->CreatePalette(lpDDInterface, DDPCAPS_ALLOW256 | DDPCAPS_8BIT, system_palette, &lpDDPalette, NULL);
+	error_code = lpDDInterface->lpVtbl->CreatePalette(lpDDInterface, DDPCAPS_ALLOW256 | DDPCAPS_8BIT, system_palette, &lpDDPalette, NULL);
 #endif
-	if (v0)
-		ErrDlg(IDD_DIALOG8, v0, "C:\\Src\\Diablo\\Source\\PALETTE.CPP", 143);
+	if (error_code)
+		ErrDlg(IDD_DIALOG8, error_code, "C:\\Src\\Diablo\\Source\\PALETTE.CPP", 143);
 #ifdef __cplusplus
-	v1 = lpDDSPrimary->SetPalette(lpDDPalette);
+	error_code = lpDDSPrimary->SetPalette(lpDDPalette);
 #else
-	v1 = lpDDSPrimary->lpVtbl->SetPalette(lpDDSPrimary, lpDDPalette);
+	error_code = lpDDSPrimary->lpVtbl->SetPalette(lpDDSPrimary, lpDDPalette);
 #endif
-	if (v1)
-		ErrDlg(IDD_DIALOG8, v1, "C:\\Src\\Diablo\\Source\\PALETTE.CPP", 146);
+	if (error_code)
+		ErrDlg(IDD_DIALOG8, error_code, "C:\\Src\\Diablo\\Source\\PALETTE.CPP", 146);
 }
 
 void LoadGamma()
