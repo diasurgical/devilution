@@ -33,7 +33,7 @@ void mpqapi_flush_and_close(const char *pszArchive, BOOL bFree, int dwChar);
 BOOLEAN mpqapi_write_header();
 BOOLEAN mpqapi_write_block_table();
 BOOLEAN mpqapi_write_hash_table();
-BOOLEAN mpqapi_can_seek();
+BOOL mpqapi_can_seek();
 
 /* rdata */
 
