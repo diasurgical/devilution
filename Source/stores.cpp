@@ -2238,26 +2238,22 @@ void S_SmithEnter()
 
 void SetGoldCurs(int pnum, int i)
 {
-	if (plr[pnum].InvList[i]._ivalue < 2500) {
-		if (plr[pnum].InvList[i]._ivalue > 1000)
-			plr[pnum].InvList[i]._iCurs = ICURS_GOLD_MEDIUM;
-		else
-			plr[pnum].InvList[i]._iCurs = ICURS_GOLD_SMALL;
-	} else {
+	if (plr[pnum].InvList[i]._ivalue >= 2500)
 		plr[pnum].InvList[i]._iCurs = ICURS_GOLD_LARGE;
-	}
+	else if (plr[pnum].InvList[i]._ivalue <= 1000)
+		plr[pnum].InvList[i]._iCurs = ICURS_GOLD_SMALL;
+	else
+		plr[pnum].InvList[i]._iCurs = ICURS_GOLD_MEDIUM;
 }
 
 void SetSpdbarGoldCurs(int pnum, int i)
 {
-	if (plr[pnum].SpdList[i]._ivalue < 2500) {
-		if (plr[pnum].SpdList[i]._ivalue > 1000)
-			plr[pnum].SpdList[i]._iCurs = ICURS_GOLD_MEDIUM;
-		else
-			plr[pnum].SpdList[i]._iCurs = ICURS_GOLD_SMALL;
-	} else {
+	if (plr[pnum].SpdList[i]._ivalue >= 2500)
 		plr[pnum].SpdList[i]._iCurs = ICURS_GOLD_LARGE;
-	}
+	else if (plr[pnum].SpdList[i]._ivalue <= 1000)
+		plr[pnum].SpdList[i]._iCurs = ICURS_GOLD_SMALL;
+	else
+		plr[pnum].SpdList[i]._iCurs = ICURS_GOLD_MEDIUM;
 }
 
 void TakePlrsMoney(int cost)
