@@ -150,17 +150,17 @@ void IncreaseGamma()
 
 void palette_update()
 {
-	int v0; // ecx
-	int v1; // eax
+	int nentries;
+	int max_entries;
 
 	if (lpDDPalette) {
-		v0 = 0;
-		v1 = 256;
+		nentries = 0;
+		max_entries = 256;
 		if (!fullscreen) {
-			v0 = gdwPalEntries;
-			v1 = 2 * (128 - gdwPalEntries);
+			nentries = gdwPalEntries;
+			max_entries = 2 * (128 - gdwPalEntries);
 		}
-		SDrawUpdatePalette(v0, v1, &system_palette[v0], 0);
+		SDrawUpdatePalette(nentries, max_entries, &system_palette[nentries], 0);
 	}
 }
 
