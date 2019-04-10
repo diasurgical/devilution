@@ -272,10 +272,11 @@ void palette_update_caves()
 
 void palette_update_quest_palette(int n)
 {
-	int i; // eax
+	int i;
 
-	for (i = 32 - n; i >= 0; --i)
+	for (i = 32 - n; i >= 0; i--) {
 		logical_palette[i] = orig_palette[i];
+	}
 	ApplyGamma(system_palette, logical_palette, 32);
 	palette_update();
 }
