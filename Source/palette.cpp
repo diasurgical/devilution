@@ -287,7 +287,8 @@ BOOL palette_get_colour_cycling()
 	return color_cycling_enabled;
 }
 
-void palette_set_color_cycling(BOOL enabled)
+BOOL palette_set_color_cycling(BOOL enabled)
 {
 	color_cycling_enabled = enabled;
+	return enabled;
 }

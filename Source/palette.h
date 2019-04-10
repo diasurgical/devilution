@@ -26,7 +26,7 @@ void PaletteFadeOut(int fr);
 void palette_update_caves();
 void palette_update_quest_palette(int n);
 BOOL palette_get_colour_cycling();
-void palette_set_color_cycling(BOOL enabled);
+BOOL palette_set_color_cycling(BOOL enabled);
 
 /* rdata */
 
