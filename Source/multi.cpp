@@ -10,10 +10,10 @@ PkPlayerStruct netplr[MAX_PLRS];
 BYTE sgbPlayerTurnBitTbl[MAX_PLRS];
 char sgbPlayerLeftGameTbl[MAX_PLRS];
 int sgbSentThisCycle; // idb
-int dword_678628;     // weak
+BOOL dword_678628;    // weak
 BYTE gbActivePlayers; // weak
 char gbGameDestroyed; // weak
-char sgbSendDeltaTbl[MAX_PLRS];
+BOOLEAN sgbSendDeltaTbl[MAX_PLRS];
 _gamedata sgGameInitInfo;
 char byte_678640;    // weak
 int sglTimeoutStart; // weak
@@ -21,7 +21,7 @@ int sgdwPlayerLeftReasonTbl[MAX_PLRS];
 TBuffer sgLoPriBuf;
 unsigned int sgdwGameLoops; // idb
 BYTE gbMaxPlayers;
-char sgbTimeout; // weak
+BOOLEAN sgbTimeout;
 char szPlayerName[128];
 BYTE gbDeltaSender;
 int sgbNetInited; // weak
@@ -107,7 +107,7 @@ void NetSendHiPri(BYTE *pbMsg, BYTE bLen)
 		multi_send_packet(pbMsg, bLen);
 	}
 	if (!dword_678628) {
-		dword_678628 = 1;
+		dword_678628 = TRUE;
 		NetRecvPlrData(&pkt);
 		size = gdwNormalMsgSize - 19;
 		v5 = multi_recv_packet(&sgHiPriBuf, pkt.body, &size);
@@ -119,7 +119,6 @@ void NetSendHiPri(BYTE *pbMsg, BYTE bLen)
 			nthread_terminate_game("SNetSendMessage");
 	}
 }
-// 678628: using guessed type int dword_678628;
 // 679760: using guessed type int gdwNormalMsgSize;
 
 unsigned char *multi_recv_packet(TBuffer *packet, unsigned char *a2, int *a3)
@@ -224,7 +223,7 @@ void multi_handle_turn_upper_bit(int pnum)
 		++v1;
 	} while (v1 < MAX_PLRS);
 	if (myplr == v1) {
-		sgbSendDeltaTbl[pnum] = 1;
+		sgbSendDeltaTbl[pnum] = TRUE;
 	} else if (myplr == pnum) {
 		gbDeltaSender = v1;
 	}
@@ -295,51 +294,48 @@ void multi_player_left_msg(int pnum, int left)
 
 void multi_net_ping()
 {
-	sgbTimeout = 1;
+	sgbTimeout = TRUE;
 	sglTimeoutStart = GetTickCount();
 }
 // 678644: using guessed type int sglTimeoutStart;
-// 679661: using guessed type char sgbTimeout;
 
 int multi_handle_delta()
 {
-	int v0;       // esi
-	int recieved; // [esp+4h] [ebp-4h]
+	int i, recieved;
 
 	if (gbGameDestroyed) {
 		gbRunGame = FALSE;
-		return 0;
+		return FALSE;
 	}
-	v0 = 0;
-	do {
-		if (sgbSendDeltaTbl[v0]) {
-			sgbSendDeltaTbl[v0] = 0;
-			DeltaExportData(v0);
+
+	for (i = 0; i < MAX_PLRS; ++i) {
+		if (sgbSendDeltaTbl[i]) {
+			sgbSendDeltaTbl[i] = FALSE;
+			DeltaExportData(i);
 		}
-		++v0;
-	} while (v0 < MAX_PLRS);
+	}
+
 	sgbSentThisCycle = nthread_send_and_recv_turn(sgbSentThisCycle, 1);
 	if (!nthread_recv_turns(&recieved)) {
 		multi_begin_timeout();
-		return 0;
+		return FALSE;
 	}
-	sgbTimeout = 0;
+
+	sgbTimeout = FALSE;
 	if (recieved) {
-		if (dword_678628) {
-			dword_678628 = 0;
+		if (!dword_678628) {
+			NetSendHiPri(0, 0);
+			dword_678628 = FALSE;
+		} else {
+			dword_678628 = FALSE;
 			if (!multi_check_pkt_valid(&sgHiPriBuf))
 				NetSendHiPri(0, 0);
-		} else {
-			NetSendHiPri(0, 0);
-			dword_678628 = 0;
 		}
 	}
 	multi_mon_seeds();
-	return 1;
+
+	return TRUE;
 }
-// 678628: using guessed type int dword_678628;
-// 67862D: using guessed type char gbGameDestroyed;
-// 679661: using guessed type char sgbTimeout;
 
 // Microsoft VisualC 2-11/net runtime
 int multi_check_pkt_valid(TBuffer *a1)
@@ -656,7 +652,7 @@ void __stdcall multi_handle_events(_SNETEVENT *pEvt)
 		sgdwPlayerLeftReasonTbl[pEvt->playerid] = v1;
 		if (v1 == 0x40000004)
 			gbSomebodyWonGameKludge = 1;
-		sgbSendDeltaTbl[pEvt->playerid] = 0;
+		sgbSendDeltaTbl[pEvt->playerid] = FALSE;
 		dthread_remove_player(pEvt->playerid);
 		if (gbDeltaSender == pEvt->playerid)
 			gbDeltaSender = 4;
@@ -780,7 +776,6 @@ int NetInit(int bSinglePlayer, int *pfExitProgram)
 // 678628: using guessed type int dword_678628;
 // 67862D: using guessed type char gbGameDestroyed;
 // 678640: using guessed type char byte_678640;
-// 679661: using guessed type char sgbTimeout;
 // 6796E4: using guessed type char gbDeltaSender;
 // 6796E8: using guessed type int sgbNetInited;
 
