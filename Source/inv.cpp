@@ -1743,42 +1743,33 @@ void CheckQuestItem(int pnum)
 
 void InvGetItem(int pnum, int ii)
 {
-	int v2;    // ebp
-	int v3;    // edx
-	int v4;    // ecx
-	int v5;    // ecx
-	int pnuma; // [esp+4h] [ebp-8h]
-	int v7;    // [esp+8h] [ebp-4h]
+	int i;
 
-	v7 = ii;
-	pnuma = pnum;
 	if (dropGoldFlag) {
 		dropGoldFlag = FALSE;
 		dropGoldValue = 0;
 	}
-	v2 = ii;
+
 	if (dItem[item[ii]._ix][item[ii]._iy]) {
 		if (myplr == pnum && pcurs >= CURSOR_FIRSTITEM)
 			NetSendCmdPItem(TRUE, CMD_SYNCPUTITEM, plr[myplr].WorldX, plr[myplr].WorldY);
-		_HIBYTE(item[v2]._iCreateInfo) &= 0x7Fu;
-		qmemcpy(&plr[pnuma].HoldItem, &item[v2], sizeof(plr[pnuma].HoldItem));
-		CheckQuestItem(pnuma);
-		CheckBookLevel(pnuma);
-		CheckItemStats(pnuma);
-		v3 = 0;
-		dItem[item[v2]._ix][item[v2]._iy] = 0;
-		while (v3 < numitems) {
-			v4 = itemactive[v3];
-			if (v4 == v7) {
-				DeleteItem(v4, v3);
-				v3 = 0;
+		item[ii]._iCreateInfo &= ~0x8000;
+		plr[pnum].HoldItem = item[ii];
+		CheckQuestItem(pnum);
+		CheckBookLevel(pnum);
+		CheckItemStats(pnum);
+		dItem[item[ii]._ix][item[ii]._iy] = 0;
+		i = 0;
+		while (i < numitems) {
+			if (itemactive[i] == ii) {
+				DeleteItem(itemactive[i], i);
+				i = 0;
 			} else {
-				++v3;
+				i++;
 			}
 		}
-		v5 = plr[pnuma].HoldItem._iCurs;
 		pcursitem = -1;
-		SetCursor_(v5 + CURSOR_FIRSTITEM);
+		SetCursor_(plr[pnum].HoldItem._iCurs + CURSOR_FIRSTITEM);
 	}
 }
 // 4B8CC0: using guessed type char pcursitem;
