@@ -20,7 +20,7 @@ BOOL ForceTownTrig();
 BOOL ForceL1Trig();
 BOOL ForceL2Trig();
 BOOL ForceL3Trig();
-unsigned char ForceL4Trig();
+BOOL ForceL4Trig();
 void Freeupstairs();
 BOOL ForceSKingTrig();
 BOOL ForceSChambTrig();
