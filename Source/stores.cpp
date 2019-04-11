@@ -1036,7 +1036,7 @@ void AddStoreHoldRepair(ItemStruct *itm, int i)
 	int v;
 
 	item = &storehold[storenumh];
-	memcpy(&storehold[storenumh], itm, sizeof(ItemStruct));
+	storehold[storenumh] = *itm;
 	if (item->_iMagical != ITEM_QUALITY_NORMAL && item->_iIdentified)
 		item->_ivalue = 30 * item->_iIvalue / 100;
 	v = item->_ivalue * (100 * (item->_iMaxDur - item->_iDurability) / item->_iMaxDur) / 100;
