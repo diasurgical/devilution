@@ -869,11 +869,11 @@ void S_ScrollSSell(int idx)
 
 void S_StartSSell()
 {
-	int i;          // eax
-	BOOLEAN sellok; // [esp+14h] [ebp-4h]
+	int i;
+	BOOL sellok;
 
 	stextsize = 1;
-	sellok = 0;
+	sellok = FALSE;
 	storenumh = 0;
 
 	for (i = 0; i < 48; i++)
@@ -881,8 +881,8 @@ void S_StartSSell()
 
 	for (i = 0; i < plr[myplr]._pNumInv; i++) {
 		if (SmithSellOk(i)) {
-			sellok = 1;
-			qmemcpy(&storehold[storenumh], &plr[myplr].InvList[i], sizeof(ItemStruct));
+			sellok = TRUE;
+			storehold[storenumh] = plr[myplr].InvList[i];
 
 			if (storehold[storenumh]._iMagical != ITEM_QUALITY_NORMAL && storehold[storenumh]._iIdentified)
 				storehold[storenumh]._ivalue = storehold[storenumh]._iIvalue;
@@ -895,7 +895,15 @@ void S_StartSSell()
 		}
 	}
 
-	if (sellok) {
+	if (!sellok) {
+		stextscrl = 0;
+		sprintf(tempstr, "You have nothing I want.            Your gold : %i", plr[myplr]._pGold);
+		AddSText(0, 1, 1, tempstr, COL_GOLD, 0);
+		AddSLine(3);
+		AddSLine(21);
+		AddSText(0, 22, 1, "Back", COL_WHITE, 1);
+		OffsetSTextY(22, 6);
+	} else {
 		stextsmax = plr[myplr]._pNumInv;
 		stextscrl = 1;
 		stextsval = 0;
@@ -904,14 +912,6 @@ void S_StartSSell()
 		AddSLine(3);
 		AddSLine(21);
 		S_ScrollSSell(stextsval);
-		AddSText(0, 22, 1, "Back", COL_WHITE, 1);
-		OffsetSTextY(22, 6);
-	} else {
-		stextscrl = 0;
-		sprintf(tempstr, "You have nothing I want.            Your gold : %i", plr[myplr]._pGold);
-		AddSText(0, 1, 1, tempstr, COL_GOLD, 0);
-		AddSLine(3);
-		AddSLine(21);
 		AddSText(0, 22, 1, "Back", COL_WHITE, 1);
 		OffsetSTextY(22, 6);
 	}
