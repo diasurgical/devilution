@@ -1614,62 +1614,61 @@ void AddStoreHoldId(ItemStruct itm, int i)
 
 void S_StartSIdentify()
 {
-	ItemStruct itm; // [esp-170h] [ebp-18Ch]
-	BOOLEAN idok;   // [esp+10h] [ebp-Ch]
-	int i;          // [esp+14h] [ebp-8h]
+	BOOL idok;
+	int i;
 
-	idok = 0;
-	storenumh = 0;
+	idok = FALSE;
 	stextsize = 1;
+	storenumh = 0;
 
 	for (i = 0; i < 48; i++)
 		storehold[i]._itype = -1;
 
-	if (IdItemOk(plr[myplr].InvBody)) {
-		idok = 1;
-		qmemcpy(&itm, plr[myplr].InvBody, sizeof(ItemStruct));
-		AddStoreHoldId(itm, -1);
+	if (IdItemOk(&plr[myplr].InvBody[INVLOC_HEAD])) {
+		idok = TRUE;
+		AddStoreHoldId(plr[myplr].InvBody[INVLOC_HEAD], -1);
 	}
 	if (IdItemOk(&plr[myplr].InvBody[INVLOC_CHEST])) {
-		idok = 1;
-		qmemcpy(&itm, &plr[myplr].InvBody[INVLOC_CHEST], sizeof(ItemStruct));
-		AddStoreHoldId(itm, -2);
+		idok = TRUE;
+		AddStoreHoldId(plr[myplr].InvBody[INVLOC_CHEST], -2);
 	}
 	if (IdItemOk(&plr[myplr].InvBody[INVLOC_HAND_LEFT])) {
-		idok = 1;
-		qmemcpy(&itm, &plr[myplr].InvBody[INVLOC_HAND_LEFT], sizeof(ItemStruct));
-		AddStoreHoldId(itm, -3);
+		idok = TRUE;
+		AddStoreHoldId(plr[myplr].InvBody[INVLOC_HAND_LEFT], -3);
 	}
 	if (IdItemOk(&plr[myplr].InvBody[INVLOC_HAND_RIGHT])) {
-		idok = 1;
-		qmemcpy(&itm, &plr[myplr].InvBody[INVLOC_HAND_RIGHT], sizeof(ItemStruct));
-		AddStoreHoldId(itm, -4);
+		idok = TRUE;
+		AddStoreHoldId(plr[myplr].InvBody[INVLOC_HAND_RIGHT], -4);
 	}
 	if (IdItemOk(&plr[myplr].InvBody[INVLOC_RING_LEFT])) {
-		idok = 1;
-		qmemcpy(&itm, &plr[myplr].InvBody[INVLOC_RING_LEFT], sizeof(ItemStruct));
-		AddStoreHoldId(itm, -5);
+		idok = TRUE;
+		AddStoreHoldId(plr[myplr].InvBody[INVLOC_RING_LEFT], -5);
 	}
 	if (IdItemOk(&plr[myplr].InvBody[INVLOC_RING_RIGHT])) {
-		idok = 1;
-		qmemcpy(&itm, &plr[myplr].InvBody[INVLOC_RING_RIGHT], sizeof(ItemStruct));
-		AddStoreHoldId(itm, -6);
+		idok = TRUE;
+		AddStoreHoldId(plr[myplr].InvBody[INVLOC_RING_RIGHT], -6);
 	}
 	if (IdItemOk(&plr[myplr].InvBody[INVLOC_AMULET])) {
-		idok = 1;
-		qmemcpy(&itm, &plr[myplr].InvBody[INVLOC_AMULET], sizeof(ItemStruct));
-		AddStoreHoldId(itm, -7);
+		idok = TRUE;
+		AddStoreHoldId(plr[myplr].InvBody[INVLOC_AMULET], -7);
 	}
 
 	for (i = 0; i < plr[myplr]._pNumInv; i++) {
 		if (IdItemOk(&plr[myplr].InvList[i])) {
-			idok = 1;
-			qmemcpy(&itm, &plr[myplr].InvList[i], sizeof(ItemStruct));
-			AddStoreHoldId(itm, i);
+			idok = TRUE;
+			AddStoreHoldId(plr[myplr].InvList[i], i);
 		}
 	}
 
-	if (idok) {
+	if (!idok) {
+		stextscrl = 0;
+		sprintf(tempstr, "You have nothing to identify.            Your gold : %i", plr[myplr]._pGold);
+		AddSText(0, 1, 1, tempstr, COL_GOLD, 0);
+		AddSLine(3);
+		AddSLine(21);
+		AddSText(0, 22, 1, "Back", COL_WHITE, 1);
+		OffsetSTextY(22, 6);
+	} else {
 		stextscrl = 1;
 		stextsval = 0;
 		stextsmax = plr[myplr]._pNumInv;
@@ -1678,16 +1677,9 @@ void S_StartSIdentify()
 		AddSLine(3);
 		AddSLine(21);
 		S_ScrollSSell(stextsval);
-	} else {
-		stextscrl = 0;
-		sprintf(tempstr, "You have nothing to identify.            Your gold : %i", plr[myplr]._pGold);
-		AddSText(0, 1, 1, tempstr, COL_GOLD, 0);
-		AddSLine(3);
-		AddSLine(21);
+		AddSText(0, 22, 1, "Back", COL_WHITE, 1);
+		OffsetSTextY(22, 6);
 	}
-
-	AddSText(0, 22, 1, "Back", COL_WHITE, 1);
-	OffsetSTextY(22, 6);
 }
 // 69F10C: using guessed type int storenumh;
 // 6A09E0: using guessed type char stextsize;
