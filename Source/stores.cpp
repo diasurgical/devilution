@@ -1157,7 +1157,7 @@ BOOL WitchSellOk(int i)
 	if (i >= 0)
 		pI = &plr[myplr].InvList[i];
 	else
-		pI = &plr[myplr].SpdList[-(i+1)];
+		pI = &plr[myplr].SpdList[-(i + 1)];
 
 	if (pI->_itype == ITYPE_MISC)
 		rv = TRUE;
@@ -1199,7 +1199,7 @@ void S_StartWSell()
 	}
 
 	for (i = 0; i < MAXBELTITEMS; i++) {
-		if (plr[myplr].SpdList[i]._itype != -1 && WitchSellOk(-(i+1))) {
+		if (plr[myplr].SpdList[i]._itype != -1 && WitchSellOk(-(i + 1))) {
 			sellok = TRUE;
 			storehold[storenumh] = plr[myplr].SpdList[i];
 
@@ -1210,7 +1210,7 @@ void S_StartWSell()
 				storehold[storenumh]._ivalue = 1;
 
 			storehold[storenumh]._iIvalue = storehold[storenumh]._ivalue;
-			storehidx[storenumh++] = -(i+1);
+			storehidx[storenumh++] = -(i + 1);
 		}
 	}
 
@@ -1266,65 +1266,50 @@ void AddStoreHoldRecharge(ItemStruct itm, int i)
 
 void S_StartWRecharge()
 {
-	int *v0; // eax
-	int v1;  // ebp
-	int v2;  // eax
-	//int v3; // eax
-	ItemStruct v4;  // [esp-170h] [ebp-18Ch]
-	int v5;         // [esp-4h] [ebp-20h]
-	int inv_num;    // [esp+10h] [ebp-Ch]
-	ItemStruct *v7; // [esp+14h] [ebp-8h]
-	int v8;         // [esp+18h] [ebp-4h]
+	int i;
+	BOOL rechargeok;
 
 	stextsize = 1;
-	v8 = 0;
+	rechargeok = FALSE;
 	storenumh = 0;
-	v0 = &storehold[0]._itype;
-	do {
-		*v0 = -1;
-		v0 += 92;
-	} while ((signed int)v0 < (signed int)&storehold[48]._itype);
-	v1 = myplr;
-	if (plr[myplr].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_STAFF && plr[v1].InvBody[INVLOC_HAND_LEFT]._iCharges != plr[v1].InvBody[INVLOC_HAND_LEFT]._iMaxCharges) {
-		v8 = 1;
-		qmemcpy(&v4, &plr[v1].InvBody[INVLOC_HAND_LEFT], sizeof(v4));
-		AddStoreHoldRecharge(v4, -1);
+
+	for (i = 0; i < 48; i++) {
+		storehold[i]._itype = ITYPE_NONE;
 	}
-	v2 = plr[v1]._pNumInv;
-	inv_num = 0;
-	if (v2 > 0) {
-		v7 = plr[v1].InvList;
-		do {
-			//_LOBYTE(v3) = WitchRechargeOk(inv_num);
-			if (WitchRechargeOk(inv_num)) {
-				v8 = 1;
-				qmemcpy(&v4, v7, sizeof(v4));
-				AddStoreHoldRecharge(v4, inv_num);
-			}
-			++inv_num;
-			v2 = plr[v1]._pNumInv;
-			++v7;
-		} while (inv_num < v2);
+
+	if (plr[myplr].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_STAFF
+	    && plr[myplr].InvBody[INVLOC_HAND_LEFT]._iCharges != plr[myplr].InvBody[INVLOC_HAND_LEFT]._iMaxCharges) {
+		rechargeok = TRUE;
+		AddStoreHoldRecharge(plr[myplr].InvBody[INVLOC_HAND_LEFT], -1);
 	}
-	v5 = plr[v1]._pGold;
-	if (v8) {
+
+	for (i = 0; i < plr[myplr]._pNumInv; i++) {
+		if (WitchRechargeOk(i)) {
+			rechargeok = TRUE;
+			AddStoreHoldRecharge(plr[myplr].InvList[i], i);
+		}
+	}
+
+	if (!rechargeok) {
+		stextscrl = 0;
+		sprintf(tempstr, "You have nothing to recharge.            Your gold : %i", plr[myplr]._pGold);
+		AddSText(0, 1, 1, tempstr, COL_GOLD, 0);
+		AddSLine(3);
+		AddSLine(21);
+		AddSText(0, 22, 1, "Back", COL_WHITE, 1);
+		OffsetSTextY(22, 6);
+	} else {
 		stextscrl = 1;
 		stextsval = 0;
-		stextsmax = v2;
-		sprintf(tempstr, "Recharge which item?            Your gold : %i", v5);
-		AddSText(0, 1, 1u, tempstr, COL_GOLD, 0);
+		stextsmax = plr[myplr]._pNumInv;
+		sprintf(tempstr, "Recharge which item?            Your gold : %i", plr[myplr]._pGold);
+		AddSText(0, 1, 1, tempstr, COL_GOLD, 0);
 		AddSLine(3);
 		AddSLine(21);
 		S_ScrollSSell(stextsval);
-	} else {
-		stextscrl = 0;
-		sprintf(tempstr, "You have nothing to recharge.            Your gold : %i", v5);
-		AddSText(0, 1, 1u, tempstr, COL_GOLD, 0);
-		AddSLine(3);
-		AddSLine(21);
+		AddSText(0, 22, 1, "Back", COL_WHITE, 1);
+		OffsetSTextY(22, 6);
 	}
-	AddSText(0, 22, 1u, "Back", COL_WHITE, 1);
-	OffsetSTextY(22, 6);
 }
 // 69F10C: using guessed type int storenumh;
 // 6A09E0: using guessed type char stextsize;
