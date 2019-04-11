@@ -18,7 +18,7 @@ void InitPWaterTriggers();
 void InitVPTriggers();
 BOOL ForceTownTrig();
 BOOL ForceL1Trig();
-unsigned char ForceL2Trig();
+BOOL ForceL2Trig();
 unsigned char ForceL3Trig();
 unsigned char ForceL4Trig();
 void Freeupstairs();
