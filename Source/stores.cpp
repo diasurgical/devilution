@@ -2473,7 +2473,7 @@ void S_SPBuyEnter()
 	}
 }
 
-BOOLEAN StoreGoldFit(int idx)
+BOOL StoreGoldFit(int idx)
 {
 	int cost;    // edi
 	int i;       // ecx
@@ -2612,7 +2612,7 @@ void StoreSellItem()
 
 void S_SSellEnter()
 {
-	int idx; // eax
+	int idx;
 
 	if (stextsel == 22) {
 		StartStore(STORE_SMITH);
@@ -2622,13 +2622,12 @@ void S_SSellEnter()
 		idx = stextsval + ((stextsel - stextup) >> 2);
 		stextshold = 3;
 		stextvhold = stextsval;
+		plr[myplr].HoldItem = storehold[idx];
 
-		qmemcpy(&plr[myplr].HoldItem, &storehold[idx], sizeof(plr[myplr].HoldItem));
-
-		if (!StoreGoldFit(idx))
-			StartStore(STORE_NOROOM);
-		else
+		if (StoreGoldFit(idx))
 			StartStore(STORE_CONFIRM);
+		else
+			StartStore(STORE_NOROOM);
 	}
 }
 // 69F108: using guessed type int stextup;

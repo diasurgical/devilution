@@ -102,7 +102,7 @@ void SmithBuyItem();
 void S_SBuyEnter();
 void SmithBuyPItem();
 void S_SPBuyEnter();
-BOOLEAN StoreGoldFit(int idx);
+BOOL StoreGoldFit(int idx);
 void PlaceStoreGold(int v);
 void StoreSellItem();
 void S_SSellEnter();
