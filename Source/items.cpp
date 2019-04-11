@@ -4442,7 +4442,7 @@ void SpawnBoy(int lvl)
 			GetItemAttrs(0, itype, lvl);
 			GetItemBonus(0, itype, lvl, 2 * lvl, 1);
 		} while (item[0]._iIvalue > 90000);
-		qmemcpy(&boyitem, item, sizeof(boyitem));
+		boyitem = *item;
 		boyitem._iCreateInfo = lvl | 0x1000;
 		boyitem._iIdentified = TRUE;
 		boyitem._iStatFlag = StoreStatOk(&boyitem);
