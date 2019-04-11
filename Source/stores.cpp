@@ -2350,10 +2350,7 @@ void TakePlrsMoney(int cost)
 
 void SmithBuyItem()
 {
-	int idx;        // eax
-	ItemStruct *v1; // edx
-	ItemStruct *v2; // edi
-	BOOLEAN v3;     // zf
+	int idx;
 
 	TakePlrsMoney(plr[myplr].HoldItem._iIvalue);
 	if (plr[myplr].HoldItem._iMagical == ITEM_QUALITY_NORMAL)
@@ -2363,23 +2360,13 @@ void SmithBuyItem()
 	if (idx == 19) {
 		smithitem[19]._itype = -1;
 	} else {
-		if (smithitem[idx + 1]._itype != -1) {
-			v1 = &smithitem[idx];
-			do {
-				v2 = v1;
-				++v1;
-				++idx;
-				v3 = v1[1]._itype == -1;
-				qmemcpy(v2, v1, sizeof(ItemStruct));
-			} while (!v3);
+		for (; smithitem[idx + 1]._itype != -1; idx++) {
+			smithitem[idx] = smithitem[idx + 1];
 		}
 		smithitem[idx]._itype = -1;
 	}
-	CalcPlrInv(myplr, 1u);
+	CalcPlrInv(myplr, 1);
 }
-// 69F108: using guessed type int stextup;
-// 69F110: using guessed type int stextlhold;
-// 6A8A24: using guessed type int stextvhold;
 
 void S_SBuyEnter()
 {
