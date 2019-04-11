@@ -2737,9 +2737,7 @@ void S_WitchEnter()
 
 void WitchBuyItem()
 {
-	int idx;        // ebx
-	ItemStruct *v3; // eax
-	ItemStruct *v4; // edi
+	int idx;
 
 	idx = stextvhold + ((stextlhold - stextup) >> 2);
 
@@ -2753,23 +2751,15 @@ void WitchBuyItem()
 		if (idx == 19) {
 			witchitem[19]._itype = -1;
 		} else {
-			if (witchitem[idx + 1]._itype != -1) {
-				v3 = &witchitem[idx];
-				do {
-					v4 = v3;
-					++v3;
-					++idx;
-					qmemcpy(v4, v3, sizeof(ItemStruct));
-				} while (v3[1]._itype != -1);
+			for (; witchitem[idx + 1]._itype != -1; idx++) {
+				witchitem[idx] = witchitem[idx + 1];
 			}
 			witchitem[idx]._itype = -1;
 		}
 	}
-	CalcPlrInv(myplr, 1u);
+
+	CalcPlrInv(myplr, TRUE);
 }
-// 69F108: using guessed type int stextup;
-// 69F110: using guessed type int stextlhold;
-// 6A8A24: using guessed type int stextvhold;
 
 void S_WBuyEnter()
 {
