@@ -3080,11 +3080,8 @@ void S_HealerEnter()
 
 void S_HBuyEnter()
 {
-	int v0;   // eax
-	int idx;  // ecx
-	int done; // eax
-	int i;    // esi
-	char v4;  // cl
+	int i, idx;
+	BOOL done;
 
 	if (stextsel == 22) {
 		StartStore(STORE_HEALER);
@@ -3093,37 +3090,25 @@ void S_HBuyEnter()
 		stextlhold = stextsel;
 		stextvhold = stextsval;
 		stextshold = 16;
-		v0 = myplr;
 		idx = stextsval + ((stextsel - stextup) >> 2);
-		if (plr[myplr]._pGold >= healitem[idx]._iIvalue) {
-			qmemcpy(&plr[v0].HoldItem, &healitem[idx], sizeof(plr[v0].HoldItem));
-			SetCursor_(plr[v0].HoldItem._iCurs + CURSOR_FIRSTITEM);
-			done = 0;
-			i = 0;
-			do {
-				if (done)
-					goto LABEL_9;
-				done = SpecialAutoPlace(myplr, i++, cursW / 28, cursH / 28, 0);
-			} while (i < 40);
-			if (done) {
-			LABEL_9:
-				v4 = STORE_CONFIRM;
-				goto LABEL_11;
-			}
-			v4 = STORE_NOROOM;
-		LABEL_11:
-			StartStore(v4);
-			SetCursor_(CURSOR_HAND);
-		} else {
+		if (plr[myplr]._pGold < healitem[idx]._iIvalue) {
 			StartStore(STORE_NOMONEY);
+		} else {
+			plr[myplr].HoldItem = healitem[idx];
+			SetCursor_(plr[myplr].HoldItem._iCurs + CURSOR_FIRSTITEM);
+			done = FALSE;
+			i = 0;
+			for (i = 0; i < 40 && !done; i++) {
+				done = SpecialAutoPlace(myplr, i, cursW / 28, cursH / 28, 0);
+			}
+			if (done)
+				StartStore(STORE_CONFIRM);
+			else
+				StartStore(STORE_NOROOM);
+			SetCursor_(CURSOR_HAND);
 		}
 	}
 }
-// 4B8C9C: using guessed type int cursH;
-// 69F108: using guessed type int stextup;
-// 69F110: using guessed type int stextlhold;
-// 6A8A24: using guessed type int stextvhold;
-// 6A8A28: using guessed type int stextsel;
 
 void S_StoryEnter()
 {
