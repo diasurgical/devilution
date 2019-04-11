@@ -2516,28 +2516,23 @@ BOOLEAN StoreGoldFit(int idx)
 
 void PlaceStoreGold(int v)
 {
-	BOOLEAN done; // ecx
-	int ii;       // ebp
-	int xx;       // esi
-	int yy;       // ST20_4
-	int i;        // [esp+10h] [ebp-10h]
+	BOOL done;
+	int ii, xx, yy, i;
 
-	done = 0;
+	done = FALSE;
 
-	for (i = 0; i < 40; i++) {
-		if (done)
-			break;
-		ii = 10 * (i / 10);
-		if (!plr[myplr].InvGrid[i % 10 + ii]) {
-			xx = plr[myplr]._pNumInv;
-			yy = plr[myplr]._pNumInv;
+	for (i = 0; i < 40 && !done; i++) {
+		xx = 10 * (i / 10);
+		yy = i % 10;
+		if (!plr[myplr].InvGrid[xx + yy]) {
+			ii = plr[myplr]._pNumInv;
 			GetGoldSeed(myplr, &golditem);
-			qmemcpy(&plr[myplr].InvList[xx], &golditem, sizeof(ItemStruct));
-			++plr[myplr]._pNumInv;
-			plr[myplr].InvGrid[i % 10 + ii] = plr[myplr]._pNumInv;
-			plr[myplr].InvList[xx]._ivalue = v;
-			SetGoldCurs(myplr, yy);
-			done = 1;
+			plr[myplr].InvList[ii] = golditem;
+			plr[myplr]._pNumInv++;
+			plr[myplr].InvGrid[xx + yy] = plr[myplr]._pNumInv;
+			plr[myplr].InvList[ii]._ivalue = v;
+			SetGoldCurs(myplr, ii);
+			done = TRUE;
 		}
 	}
 }
