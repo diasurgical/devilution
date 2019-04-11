@@ -4233,10 +4233,10 @@ int RndPremiumItem(int minlvl, int maxlvl)
 
 void SpawnOnePremium(int i, int plvl)
 {
-	int itype;           // esi
-	ItemStruct holditem; // [esp+Ch] [ebp-178h]
+	int itype;
+	ItemStruct holditem;
 
-	qmemcpy(&holditem, item, sizeof(ItemStruct));
+	holditem = *item;
 	if (plvl > 30)
 		plvl = 30;
 	if (plvl < 1)
@@ -4248,11 +4248,11 @@ void SpawnOnePremium(int i, int plvl)
 		GetItemAttrs(0, itype, plvl);
 		GetItemBonus(0, itype, plvl >> 1, plvl, 1);
 	} while (item[0]._iIvalue > 140000);
-	qmemcpy(&premiumitem[i], item, sizeof(ItemStruct));
+	premiumitem[i] = *item;
 	premiumitem[i]._iCreateInfo = plvl | 0x800;
 	premiumitem[i]._iIdentified = TRUE;
 	premiumitem[i]._iStatFlag = StoreStatOk(&premiumitem[i]);
-	qmemcpy(item, &holditem, sizeof(ItemStruct));
+	*item = holditem;
 }
 
 void SpawnPremium(int lvl)
