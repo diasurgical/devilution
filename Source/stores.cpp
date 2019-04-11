@@ -1032,27 +1032,25 @@ void S_StartSRepair()
 
 void AddStoreHoldRepair(ItemStruct *itm, int i)
 {
-	int v2;         // ebx
-	ItemStruct *v3; // ebp
-	int v5;         // eax
+	ItemStruct *item;
+	int v;
 
-	v2 = storenumh;
-	v3 = &storehold[storenumh];
-	qmemcpy(&storehold[storenumh], itm, sizeof(ItemStruct));
-	if (v3->_iMagical != ITEM_QUALITY_NORMAL && v3->_iIdentified)
-		v3->_ivalue = 30 * v3->_iIvalue / 100;
-	v5 = v3->_ivalue * (100 * (v3->_iMaxDur - v3->_iDurability) / v3->_iMaxDur) / 100;
-	if (!v5) {
-		if (v3->_iMagical != ITEM_QUALITY_NORMAL && v3->_iIdentified)
+	item = &storehold[storenumh];
+	memcpy(&storehold[storenumh], itm, sizeof(ItemStruct));
+	if (item->_iMagical != ITEM_QUALITY_NORMAL && item->_iIdentified)
+		item->_ivalue = 30 * item->_iIvalue / 100;
+	v = item->_ivalue * (100 * (item->_iMaxDur - item->_iDurability) / item->_iMaxDur) / 100;
+	if (!v) {
+		if (item->_iMagical != ITEM_QUALITY_NORMAL && item->_iIdentified)
 			return;
-		v5 = 1;
+		v = 1;
 	}
-	if (v5 > 1)
-		v5 >>= 1;
-	v3->_iIvalue = v5;
-	v3->_ivalue = v5;
-	storehidx[v2] = i;
-	storenumh = v2 + 1;
+	if (v > 1)
+		v >>= 1;
+	item->_iIvalue = v;
+	item->_ivalue = v;
+	storehidx[storenumh] = i;
+	storenumh++;
 }
 // 69F10C: using guessed type int storenumh;
 
