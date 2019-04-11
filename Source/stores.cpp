@@ -18,7 +18,7 @@ int InStoreFlag; // idb
 ItemStruct storehold[48];
 int gossipstart; // weak
 ItemStruct witchitem[20];
-int stextscrl;  // weak
+int stextscrl;
 int numpremium; // idb
 ItemStruct healitem[20];
 ItemStruct golditem;
@@ -34,7 +34,7 @@ int boylevel;  // weak
 ItemStruct smithitem[20];
 int stextdown;      // weak
 char stextscrlubtn; // weak
-char stextflag;     // weak
+char stextflag;
 
 int SStringY[24] = {
 	0,
@@ -82,7 +82,7 @@ void InitStores()
 	pCelBuff = LoadFileInMem("Data\\PentSpn2.CEL", 0);
 	pSTextSlidCels = LoadFileInMem("Data\\TextSlid.CEL", 0);
 	ClearSText(0, 24);
-	stextflag = 0;
+	stextflag = STORE_NONE;
 	InStoreFlag = 1;
 	stextsize = 0;
 	stextscrl = 0;
@@ -1311,10 +1311,6 @@ void S_StartWRecharge()
 		OffsetSTextY(22, 6);
 	}
 }
-// 69F10C: using guessed type int storenumh;
-// 6A09E0: using guessed type char stextsize;
-// 6A09E4: using guessed type int stextsmax;
-// 6A6BB8: using guessed type int stextscrl;
 
 void S_StartNoMoney()
 {
@@ -1784,7 +1780,7 @@ void StartStore(char s)
 	char t; // bl
 	int i;  // ecx
 
-	for (t = s;; t = 1) {
+	for (t = s;; t = STORE_SMITH) {
 		sbookflag = 0;
 		invflag = 0;
 		chrflag = 0;
@@ -1875,7 +1871,7 @@ void StartStore(char s)
 
 		stextsel = i == 24 ? -1 : i;
 		stextflag = t;
-		if (t != 2 || storenumh)
+		if (t != STORE_SBUY || storenumh)
 			break;
 	}
 }
@@ -1962,7 +1958,7 @@ void STextESC()
 		case STORE_TAVERN:
 		case STORE_DRUNK:
 		case STORE_BARMAID:
-			stextflag = 0;
+			stextflag = STORE_NONE;
 			return;
 		case STORE_SBUY:
 			StartStore(STORE_SMITH);
@@ -2185,7 +2181,7 @@ void S_SmithEnter()
 		_LOBYTE(v0) = STORE_SREPAIR;
 		goto LABEL_13;
 	case 20:
-		stextflag = 0;
+		stextflag = STORE_NONE;
 		break;
 	}
 }
@@ -2793,7 +2789,7 @@ void S_WitchEnter()
 		StartStore(v0);
 		return;
 	case 20:
-		stextflag = 0;
+		stextflag = STORE_NONE;
 		break;
 	}
 }
@@ -2983,7 +2979,7 @@ void S_BoyEnter()
 		gossipend = QUEST_WIRT12;
 		StartStore(STORE_GOSSIP);
 	} else {
-		stextflag = 0;
+		stextflag = STORE_NONE;
 	}
 }
 
@@ -3100,7 +3096,7 @@ void S_BBuyEnter()
 			StartStore(v0);
 		}
 	} else {
-		stextflag = 0;
+		stextflag = STORE_NONE;
 	}
 }
 // 4B8C9C: using guessed type int cursH;
@@ -3201,7 +3197,7 @@ void S_HealerEnter()
 		StartStore(STORE_HBUY);
 		return;
 	case 18:
-		stextflag = 0;
+		stextflag = STORE_NONE;
 		return;
 	}
 }
@@ -3274,7 +3270,7 @@ void S_StoryEnter()
 		StartStore(STORE_SIDENTIFY);
 		break;
 	case 18:
-		stextflag = 0;
+		stextflag = STORE_NONE;
 		break;
 	}
 }
@@ -3390,7 +3386,7 @@ void S_TavernEnter()
 		StartStore(STORE_GOSSIP);
 		break;
 	case 18:
-		stextflag = 0;
+		stextflag = STORE_NONE;
 		break;
 	}
 }
@@ -3407,7 +3403,7 @@ void S_BarmaidEnter()
 		StartStore(STORE_GOSSIP);
 		break;
 	case 18:
-		stextflag = 0;
+		stextflag = STORE_NONE;
 		break;
 	}
 }
@@ -3424,7 +3420,7 @@ void S_DrunkEnter()
 		StartStore(STORE_GOSSIP);
 		break;
 	case 18:
-		stextflag = 0;
+		stextflag = STORE_NONE;
 		break;
 	}
 }
