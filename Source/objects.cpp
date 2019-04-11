@@ -3931,14 +3931,14 @@ void OperateShrine(int pnum, int i, int sType)
 						SetPlrHandItem(&plr[pnum].HoldItem, ItemMiscIdIdx(IMISC_REJUV));
 						GetPlrHandSeed(&plr[pnum].HoldItem);
 						plr[pnum].HoldItem._iStatFlag = 1;
-						qmemcpy(&plr[pnum].InvList[j], &plr[pnum].HoldItem, sizeof(ItemStruct));
+						plr[pnum].InvList[j] = plr[pnum].HoldItem;
 					}
 					if (plr[pnum].InvList[j]._iMiscId == IMISC_FULLHEAL
 					    || plr[pnum].InvList[j]._iMiscId == IMISC_FULLMANA) {
 						SetPlrHandItem(&plr[pnum].HoldItem, ItemMiscIdIdx(IMISC_FULLREJUV));
 						GetPlrHandSeed(&plr[pnum].HoldItem);
 						plr[pnum].HoldItem._iStatFlag = 1;
-						qmemcpy(&plr[pnum].InvList[j], &plr[pnum].HoldItem, sizeof(ItemStruct));
+						plr[pnum].InvList[j] = plr[pnum].HoldItem;
 					}
 				}
 			}
@@ -3949,14 +3949,14 @@ void OperateShrine(int pnum, int i, int sType)
 						SetPlrHandItem(&plr[pnum].HoldItem, ItemMiscIdIdx(IMISC_REJUV));
 						GetPlrHandSeed(&plr[pnum].HoldItem);
 						plr[pnum].HoldItem._iStatFlag = 1;
-						qmemcpy(&plr[pnum].SpdList[j], &plr[pnum].HoldItem, sizeof(ItemStruct));
+						plr[pnum].SpdList[j] = plr[pnum].HoldItem;
 					}
 					if (plr[pnum].SpdList[j]._iMiscId == IMISC_FULLHEAL
 					    || plr[pnum].SpdList[j]._iMiscId == IMISC_FULLMANA) {
 						SetPlrHandItem(&plr[pnum].HoldItem, ItemMiscIdIdx(IMISC_FULLREJUV));
 						GetPlrHandSeed(&plr[pnum].HoldItem);
 						plr[pnum].HoldItem._iStatFlag = 1;
-						qmemcpy(&plr[pnum].SpdList[j], &plr[pnum].HoldItem, sizeof(ItemStruct));
+						plr[pnum].SpdList[j] = plr[pnum].HoldItem;
 					}
 				}
 			}
@@ -4032,7 +4032,7 @@ void OperateShrine(int pnum, int i, int sType)
 			if (!plr[pnum].InvGrid[j]) {
 				v107 = 5 * leveltype + random(160, 10 * leveltype);
 				v108 = plr[pnum]._pNumInv; // check
-				qmemcpy(&plr[pnum].InvList[v108], &golditem, sizeof(ItemStruct));
+				plr[pnum].InvList[v108] = golditem;
 				plr[pnum]._pNumInv++;
 				plr[pnum].InvList[v108]._iSeed = GetRndSeed();
 				plr[pnum].InvGrid[j] = plr[pnum]._pNumInv;
