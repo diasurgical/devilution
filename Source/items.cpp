@@ -703,30 +703,28 @@ void AddInitItems()
 
 void InitItems()
 {
-	int *v0; // eax
-	int v1;  // edx
+	int i;
 
 	GetItemAttrs(0, IDI_GOLD, 1);
-	numitems = 0;
-	qmemcpy(&golditem, item, sizeof(golditem));
+	golditem = item[0];
 	golditem._iStatFlag = 1;
-	v0 = &item[0]._ix;
-	do {
-		*(v0 - 1) = 0;
-		*v0 = 0;
-		v0[1] = 0;
-		v0[2] = 0;
-		*((_BYTE *)v0 + 36) = 0;
-		v0[11] = 0;
-		v0[10] = 0;
-		v0 += 92;
-	} while ((signed int)v0 < (signed int)&item[MAXITEMS + 1]._ix);
-	v1 = 0;
-	memset(itemactive, 0, sizeof(itemactive));
-	do {
-		itemavail[v1] = v1;
-		++v1;
-	} while (v1 < MAXITEMS);
+	numitems = 0;
+
+	for (i = 0; i < MAXITEMS; i++) {
+		item[i]._itype = 0;
+		item[i]._ix = 0;
+		item[i]._iy = 0;
+		item[i]._isin = 0;
+		item[i]._iSelFlag = 0;
+		item[i]._iIdentified = FALSE;
+		item[i]._iPostDraw = 0;
+	}
+
+	for (i = 0; i < MAXITEMS; i++) {
+		itemavail[i] = i;
+		itemactive[i] = 0;
+	}
+
 	if (!setlevel) {
 		GetRndSeed();
 		if (QuestStatus(QTYPE_INFRA))
@@ -736,6 +734,7 @@ void InitItems()
 		if (currlevel > 0u && currlevel < 0x10u)
 			AddInitItems();
 	}
+
 	uitemflag = 0;
 }
 // 5CF31D: using guessed type char setlevel;
@@ -3813,14 +3812,6 @@ void PrintItemMisc(ItemStruct *x)
 
 void PrintItemDetails(ItemStruct *x)
 {
-	ItemStruct *v1;   // ebp
-	char v2;          // cl
-	char v3;          // cl
-	char v4;          // al
-	unsigned char v5; // al
-	char v6;          // al
-
-	v1 = x;
 	if (x->_iClass == 1) {
 		if (x->_iMaxDur == 255)
 			sprintf(tempstr, "damage: %i-%i  Indestructible", x->_iMinDam, x->_iMaxDam);
@@ -3828,45 +3819,40 @@ void PrintItemDetails(ItemStruct *x)
 			sprintf(tempstr, "damage: %i-%i  Dur: %i/%i", x->_iMinDam, x->_iMaxDam, x->_iDurability, x->_iMaxDur);
 		AddPanelString(tempstr, 1);
 	}
-	if (v1->_iClass == 2) {
-		if (v1->_iMaxDur == 255)
-			sprintf(tempstr, "armor: %i  Indestructible", v1->_iAC);
+	if (x->_iClass == 2) {
+		if (x->_iMaxDur == 255)
+			sprintf(tempstr, "armor: %i  Indestructible", x->_iAC);
 		else
-			sprintf(tempstr, "armor: %i  Dur: %i/%i", v1->_iAC, v1->_iDurability, v1->_iMaxDur);
+			sprintf(tempstr, "armor: %i  Dur: %i/%i", x->_iAC, x->_iDurability, x->_iMaxDur);
 		AddPanelString(tempstr, 1);
 	}
-	if (v1->_iMiscId == IMISC_STAFF && v1->_iMaxCharges) {
-		sprintf(tempstr, "dam: %i-%i  Dur: %i/%i", v1->_iMinDam, v1->_iMaxDam, v1->_iDurability, v1->_iMaxDur);
-		sprintf(tempstr, "Charges: %i/%i", v1->_iCharges, v1->_iMaxCharges);
+	if (x->_iMiscId == IMISC_STAFF && x->_iMaxCharges) {
+		sprintf(tempstr, "dam: %i-%i  Dur: %i/%i", x->_iMinDam, x->_iMaxDam, x->_iDurability, x->_iMaxDur);
+		sprintf(tempstr, "Charges: %i/%i", x->_iCharges, x->_iMaxCharges);
 		AddPanelString(tempstr, 1);
 	}
-	v2 = v1->_iPrePower;
-	if (v2 != -1) {
-		PrintItemPower(v2, v1);
+	if (x->_iPrePower != -1) {
+		PrintItemPower(x->_iPrePower, x);
 		AddPanelString(tempstr, 1);
 	}
-	v3 = v1->_iSufPower;
-	if (v3 != -1) {
-		PrintItemPower(v3, v1);
+	if (x->_iSufPower != -1) {
+		PrintItemPower(x->_iSufPower, x);
 		AddPanelString(tempstr, 1);
 	}
-	if (v1->_iMagical == ITEM_QUALITY_UNIQUE) {
+	if (x->_iMagical == ITEM_QUALITY_UNIQUE) {
 		AddPanelString("unique item", 1);
 		uitemflag = 1;
-		qmemcpy(&curruitem, v1, sizeof(curruitem));
+		curruitem = *x;
 	}
-	PrintItemMisc(v1);
-	if ((unsigned char)v1->_iMinMag + v1->_iMinDex + v1->_iMinStr) {
+	PrintItemMisc(x);
+	if (x->_iMinMag + x->_iMinDex + x->_iMinStr) {
 		strcpy(tempstr, "Required:");
-		v4 = v1->_iMinStr;
-		if (v4)
-			sprintf(tempstr, "%s %i Str", tempstr, v4);
-		v5 = v1->_iMinMag;
-		if (v5)
-			sprintf(tempstr, "%s %i Mag", tempstr, v5);
-		v6 = v1->_iMinDex;
-		if (v6)
-			sprintf(tempstr, "%s %i Dex", tempstr, v6);
+		if (x->_iMinStr)
+			sprintf(tempstr, "%s %i Str", tempstr, x->_iMinStr);
+		if (x->_iMinMag)
+			sprintf(tempstr, "%s %i Mag", tempstr, x->_iMinMag);
+		if (x->_iMinDex)
+			sprintf(tempstr, "%s %i Dex", tempstr, x->_iMinDex);
 		AddPanelString(tempstr, 1);
 	}
 	pinfoflag = TRUE;
@@ -4147,11 +4133,11 @@ int RndSmithItem(int lvl)
 
 void BubbleSwapItem(ItemStruct *a, ItemStruct *b)
 {
-	ItemStruct h; // [esp+8h] [ebp-170h]
+	ItemStruct h;
 
-	qmemcpy(&h, a, sizeof(h));
-	qmemcpy(a, b, sizeof(ItemStruct));
-	qmemcpy(b, &h, sizeof(ItemStruct));
+	h = *a;
+	*a = *b;
+	*b = h;
 }
 
 void SortSmith()
@@ -4181,26 +4167,24 @@ void SortSmith()
 
 void SpawnSmith(int lvl)
 {
-	ItemStruct *holdItem;
-	int i, nsi, idata;
+	int i, iCnt, idata;
 
-	nsi = random(50, 10) + 10;
-	for (i = 0; i < nsi; i++) {
-		holdItem = &smithitem[i];
+	iCnt = random(50, 10) + 10;
+	for (i = 0; i < iCnt; i++) {
 		do {
 			item[0]._iSeed = GetRndSeed();
 			SetRndSeed(item[0]._iSeed);
 			idata = RndSmithItem(lvl) - 1;
 			GetItemAttrs(0, idata, lvl);
 		} while (item[0]._iIvalue > 140000);
-		qmemcpy(holdItem, item, sizeof(ItemStruct));
-		holdItem->_iCreateInfo = lvl | 0x400;
-		holdItem->_iIdentified = TRUE;
-		holdItem->_iStatFlag = StoreStatOk(holdItem);
+		smithitem[i] = item[0];
+		smithitem[i]._iCreateInfo = lvl | 0x400;
+		smithitem[i]._iIdentified = TRUE;
+		smithitem[i]._iStatFlag = StoreStatOk(&smithitem[i]);
 	}
-	for (i = nsi; i < 20; i++) {
+	for (i = iCnt; i < 20; i++)
 		smithitem[i]._itype = -1;
-	}
+
 	SortSmith();
 }
 
@@ -4250,10 +4234,10 @@ int RndPremiumItem(int minlvl, int maxlvl)
 
 void SpawnOnePremium(int i, int plvl)
 {
-	int itype;           // esi
-	ItemStruct holditem; // [esp+Ch] [ebp-178h]
+	int itype;
+	ItemStruct holditem;
 
-	qmemcpy(&holditem, item, sizeof(ItemStruct));
+	holditem = item[0];
 	if (plvl > 30)
 		plvl = 30;
 	if (plvl < 1)
@@ -4265,16 +4249,16 @@ void SpawnOnePremium(int i, int plvl)
 		GetItemAttrs(0, itype, plvl);
 		GetItemBonus(0, itype, plvl >> 1, plvl, 1);
 	} while (item[0]._iIvalue > 140000);
-	qmemcpy(&premiumitem[i], item, sizeof(ItemStruct));
+	premiumitem[i] = item[0];
 	premiumitem[i]._iCreateInfo = plvl | 0x800;
 	premiumitem[i]._iIdentified = TRUE;
 	premiumitem[i]._iStatFlag = StoreStatOk(&premiumitem[i]);
-	qmemcpy(item, &holditem, sizeof(ItemStruct));
+	item[0] = holditem;
 }
 
 void SpawnPremium(int lvl)
 {
-	int i; // eax
+	int i;
 
 	if (numpremium < 6) {
 		for (i = 0; i < 6; i++) {
@@ -4283,14 +4267,14 @@ void SpawnPremium(int lvl)
 		}
 		numpremium = 6;
 	}
-	for (i = premiumlevel; premiumlevel < lvl; i = premiumlevel) {
-		qmemcpy(premiumitem, &premiumitem[2], sizeof(ItemStruct));
-		qmemcpy(&premiumitem[1], &premiumitem[3], sizeof(ItemStruct));
-		qmemcpy(&premiumitem[2], &premiumitem[4], sizeof(ItemStruct));
-		premiumlevel = i + 1;
-		SpawnOnePremium(3, premiumlvladd[3] + i + 1);
-		qmemcpy(&premiumitem[4], &premiumitem[5], sizeof(ItemStruct));
-		SpawnOnePremium(5, premiumlvladd[5] + premiumlevel);
+	while (premiumlevel < lvl) {
+		premiumlevel++;
+		premiumitem[0] = premiumitem[2];
+		premiumitem[1] = premiumitem[3];
+		premiumitem[2] = premiumitem[4];
+		SpawnOnePremium(3, premiumlevel + premiumlvladd[3]);
+		premiumitem[4] = premiumitem[5];
+		SpawnOnePremium(5, premiumlevel + premiumlvladd[5]);
 	}
 }
 // 69FB38: using guessed type int talker;
@@ -4386,60 +4370,47 @@ void WitchBookLevel(int ii)
 
 void SpawnWitch(int lvl)
 {
-	int v2;          // ebp
-	int itype;       // esi
-	int iblvl;       // eax
-	signed int ii;   // [esp+10h] [ebp-8h]
-	ItemStruct *itm; // [esp+14h] [ebp-4h]
+	int i, iCnt;
+	int idata, maxlvl;
 
 	GetItemAttrs(0, IDI_MANA, 1);
-	qmemcpy(witchitem, item, sizeof(ItemStruct));
+	witchitem[0] = item[0];
 	witchitem[0]._iCreateInfo = lvl;
 	witchitem[0]._iStatFlag = 1;
 	GetItemAttrs(0, IDI_FULLMANA, 1);
-	qmemcpy(&witchitem[1], item, sizeof(ItemStruct));
+	witchitem[1] = item[0];
 	witchitem[1]._iCreateInfo = lvl;
 	witchitem[1]._iStatFlag = 1;
 	GetItemAttrs(0, IDI_PORTAL, 1);
-	qmemcpy(&witchitem[2], item, sizeof(ItemStruct));
+	witchitem[2] = item[0];
 	witchitem[2]._iCreateInfo = lvl;
 	witchitem[2]._iStatFlag = 1;
-	v2 = random(51, 8) + 10;
-	ii = 3;
-	if (v2 > 3) {
-		itm = &witchitem[3];
-		while (1) {
+	iCnt = random(51, 8) + 10;
+
+	for (i = 3; i < iCnt; i++) {
+		do {
 			item[0]._iSeed = GetRndSeed();
 			SetRndSeed(item[0]._iSeed);
-			itype = RndWitchItem(lvl) - 1;
-			GetItemAttrs(0, itype, lvl);
-			if (random(51, 100) > 5 || (iblvl = 2 * lvl, iblvl == -1)) {
-				if (item[0]._iMiscId != IMISC_STAFF)
-					continue;
-				iblvl = 2 * lvl;
-				if (iblvl == -1)
-					continue;
-			}
-			GetItemBonus(0, itype, iblvl >> 1, iblvl, 1);
-			if (item[0]._iIvalue <= 140000) {
-				qmemcpy(itm, item, sizeof(ItemStruct));
-				itm->_iIdentified = TRUE;
-				itm->_iCreateInfo = lvl | 0x2000;
-				WitchBookLevel(ii);
-				++ii;
-				itm->_iStatFlag = StoreStatOk(itm);
-				++itm;
-				if (ii >= v2)
-					break;
-			}
-		}
+			idata = RndWitchItem(lvl) - 1;
+			GetItemAttrs(0, idata, lvl);
+			maxlvl = -1;
+			if (random(51, 100) <= 5)
+				maxlvl = 2 * lvl;
+			if (maxlvl == -1 && item[0]._iMiscId == IMISC_STAFF)
+				maxlvl = 2 * lvl;
+			if (maxlvl != -1)
+				GetItemBonus(0, idata, maxlvl >> 1, maxlvl, 1);
+		} while (item[0]._iIvalue > 140000);
+		witchitem[i] = item[0];
+		witchitem[i]._iCreateInfo = lvl | 0x2000;
+		witchitem[i]._iIdentified = TRUE;
+		WitchBookLevel(i);
+		witchitem[i]._iStatFlag = StoreStatOk(&witchitem[i]);
 	}
-	if (v2 < 20) {
-		do {
-			witchitem[v2]._itype = -1;
-			v2++;
-		} while (v2 < 20);
-	}
+
+	for (i = iCnt; i < 20; i++)
+		witchitem[i]._itype = -1;
+
 	SortWitch();
 }
 
@@ -4472,7 +4443,7 @@ void SpawnBoy(int lvl)
 			GetItemAttrs(0, itype, lvl);
 			GetItemBonus(0, itype, lvl, 2 * lvl, 1);
 		} while (item[0]._iIvalue > 90000);
-		qmemcpy(&boyitem, item, sizeof(boyitem));
+		boyitem = item[0];
 		boyitem._iCreateInfo = lvl | 0x1000;
 		boyitem._iIdentified = TRUE;
 		boyitem._iStatFlag = StoreStatOk(&boyitem);
@@ -4630,7 +4601,7 @@ void SpawnHealer(int lvl)
 void SpawnStoreGold()
 {
 	GetItemAttrs(0, IDI_GOLD, 1);
-	qmemcpy(&golditem, item, sizeof(golditem));
+	golditem = item[0];
 	golditem._iStatFlag = 1;
 }
 
