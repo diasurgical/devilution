@@ -2947,51 +2947,33 @@ void HealerBuyItem()
 
 void S_BBuyEnter()
 {
-	int v0; // ecx
-	int v1; // eax
-	int v2; // ecx
-	int v3; // eax
-	int v4; // esi
+	BOOL done;
+	int i;
 
 	if (stextsel == 10) {
-		v0 = boyitem._iIvalue;
-		stextvhold = stextsval;
-		v1 = myplr;
-		stextshold = 13;
 		stextlhold = 10;
+		stextvhold = stextsval;
+		stextshold = 13;
 		if (plr[myplr]._pGold >= boyitem._iIvalue + (boyitem._iIvalue >> 1)) {
-			qmemcpy(&plr[v1].HoldItem, &boyitem, sizeof(plr[v1].HoldItem));
-			plr[v1].HoldItem._iIvalue += plr[v1].HoldItem._iIvalue >> 1;
-			SetCursor_(plr[v1].HoldItem._iCurs + CURSOR_FIRSTITEM);
-			v3 = 0;
-			v4 = 0;
-			do {
-				if (v3)
-					goto LABEL_8;
-				v3 = AutoPlace(myplr, v4++, cursW / 28, cursH / 28, 0);
-			} while (v4 < 40);
-			if (v3) {
-			LABEL_8:
-				_LOBYTE(v2) = STORE_CONFIRM;
-				goto LABEL_10;
-			}
-			_LOBYTE(v2) = STORE_NOROOM;
-		LABEL_10:
-			StartStore(v2);
-			SetCursor_(CURSOR_HAND);
+			StartStore(STORE_NOMONEY);
 		} else {
-			_LOBYTE(v0) = STORE_NOMONEY;
-			StartStore(v0);
+			plr[myplr].HoldItem = boyitem;
+			plr[myplr].HoldItem._iIvalue += plr[myplr].HoldItem._iIvalue >> 1;
+			SetCursor_(plr[myplr].HoldItem._iCurs + CURSOR_FIRSTITEM);
+			done = FALSE;
+			for (i = 0; i < 40 && !done; i++) {
+				done = AutoPlace(myplr, i, cursW / 28, cursH / 28, 0);
+			}
+			if (done)
+				StartStore(STORE_CONFIRM);
+			else
+				StartStore(STORE_NOROOM);
+			SetCursor_(CURSOR_HAND);
 		}
 	} else {
 		stextflag = STORE_NONE;
 	}
 }
-// 4B8C9C: using guessed type int cursH;
-// 69F110: using guessed type int stextlhold;
-// 6A8A24: using guessed type int stextvhold;
-// 6A8A28: using guessed type int stextsel;
-// 6AA705: using guessed type char stextflag;
 
 void StoryIdItem()
 {
