@@ -480,466 +480,215 @@ BOOL ForceTownTrig()
 	return FALSE;
 }
 
-unsigned char ForceL1Trig()
+BOOL ForceL1Trig()
 {
-	int *v0; // eax
-	int *v1; // esi
-	int v2;  // eax
-	int *v3; // edx
-	int *v4; // eax
-	int *v5; // esi
-	int *v6; // edx
-	int v8;  // eax
-	int v9;  // ecx
+	int i, j;
 
-	if (L1UpList[0] == -1) {
-	LABEL_12:
-		if (L1DownList[0] == -1)
-			return 0;
-		v4 = L1DownList;
-		v5 = L1DownList;
-		while (1) {
-			if (dPiece[cursmx][cursmy] == *v4) {
-				sprintf(infostr, "Down to level %i", currlevel + 1);
-				v2 = 0;
-				if (trigflag[4] > 0)
-					break;
-			}
-		LABEL_19:
-			++v5;
-			v4 = v5;
-			if (*v5 == -1)
-				return 0;
-		}
-		v6 = &trigs[0]._tmsg;
-		while (*v6 != WM_DIABNEXTLVL) {
-			++v2;
-			v6 += 4;
-			if (v2 >= trigflag[4])
-				goto LABEL_19;
-		}
-	} else {
-		v0 = L1UpList;
-		v1 = L1UpList;
-		while (1) {
-			if (dPiece[cursmx][cursmy] == *v0) {
-				if (currlevel <= 1u)
-					strcpy(infostr, "Up to town");
-				else
-					sprintf(infostr, "Up to level %i", currlevel - 1);
-				v2 = 0;
-				if (trigflag[4] > 0)
-					break;
-			}
-		LABEL_11:
-			++v1;
-			v0 = v1;
-			if (*v1 == -1)
-				goto LABEL_12;
-		}
-		v3 = &trigs[0]._tmsg;
-		while (*v3 != WM_DIABPREVLVL) {
-			++v2;
-			v3 += 4;
-			if (v2 >= trigflag[4])
-				goto LABEL_11;
-		}
-	}
-	v8 = v2;
-	v9 = trigs[v8]._tx;
-	cursmy = trigs[v8]._ty;
-	cursmx = v9;
-	return 1;
-}
-
-unsigned char ForceL2Trig()
-{
-	int *v0;            // eax
-	int *v1;            // ebp
-	int v2;             // edi
-	TriggerStruct *v3;  // esi
-	int v4;             // ebx
-	int v5;             // eax
-	int *v6;            // eax
-	int *v7;            // esi
-	int v8;             // eax
-	int *v9;            // ecx
-	int v10;            // eax
-	int v11;            // ecx
-	int v12;            // eax
-	int *v13;           // eax
-	int *v14;           // ebp
-	TriggerStruct *v15; // esi
-	int v16;            // ebx
-	int v17;            // eax
-	int v19;            // edi
-
-	if (L2UpList[0] == -1) {
-	LABEL_11:
-		if (L2DownList[0] != -1) {
-			v6 = L2DownList;
-			v7 = L2DownList;
-			while (1) {
-				if (dPiece[cursmx][cursmy] == *v6) {
-					sprintf(infostr, "Down to level %i", currlevel + 1);
-					v8 = 0;
-					if (trigflag[4] > 0)
-						break;
+	for (i = 0; L1UpList[i] != -1; i++) {
+		if (dPiece[cursmx][cursmy] == L1UpList[i]) {
+			if (currlevel > 1)
+				sprintf(infostr, "Up to level %i", currlevel - 1);
+			else
+				strcpy(infostr, "Up to town");
+			for (j = 0; j < trigflag[4]; j++) {
+				if (trigs[j]._tmsg == WM_DIABPREVLVL) {
+					cursmx = trigs[j]._tx;
+					cursmy = trigs[j]._ty;
+					return TRUE;
 				}
-			LABEL_18:
-				++v7;
-				v6 = v7;
-				if (*v7 == -1)
-					goto LABEL_22;
 			}
-			v9 = &trigs[0]._tmsg;
-			while (*v9 != WM_DIABNEXTLVL) {
-				++v8;
-				v9 += 4;
-				if (v8 >= trigflag[4])
-					goto LABEL_18;
-			}
-			v10 = v8;
-			v11 = trigs[v10]._tx;
-			v12 = trigs[v10]._ty;
-			cursmx = v11;
-			goto LABEL_37;
 		}
-	LABEL_22:
-		if (currlevel != 5 || L2TWarpUpList[0] == -1)
-			return 0;
-		v13 = L2TWarpUpList;
-		v14 = L2TWarpUpList;
-		while (1) {
-			if (dPiece[cursmx][cursmy] == *v13) {
-				v2 = 0;
-				if (trigflag[4] > 0)
-					break;
-			}
-		LABEL_32:
-			++v14;
-			v13 = v14;
-			if (*v14 == -1)
-				return 0;
-		}
-		v15 = trigs;
-		while (1) {
-			if (v15->_tmsg == WM_DIABTWARPUP) {
-				v16 = abs(v15->_tx - cursmx);
-				v17 = abs(v15->_ty - cursmy);
-				if (v16 < 4 && v17 < 4)
-					break;
-			}
-			++v2;
-			++v15;
-			if (v2 >= trigflag[4])
-				goto LABEL_32;
-		}
-		strcpy(infostr, "Up to town");
-	} else {
-		v0 = L2UpList;
-		v1 = L2UpList;
-		while (1) {
-			if (dPiece[cursmx][cursmy] == *v0) {
-				v2 = 0;
-				if (trigflag[4] > 0)
-					break;
-			}
-		LABEL_10:
-			++v1;
-			v0 = v1;
-			if (*v1 == -1)
-				goto LABEL_11;
-		}
-		v3 = trigs;
-		while (1) {
-			if (v3->_tmsg == WM_DIABPREVLVL) {
-				v4 = abs(v3->_tx - cursmx);
-				v5 = abs(v3->_ty - cursmy);
-				if (v4 < 4 && v5 < 4)
-					break;
-			}
-			++v2;
-			++v3;
-			if (v2 >= trigflag[4])
-				goto LABEL_10;
-		}
-		sprintf(infostr, "Up to level %i", currlevel - 1);
 	}
-	v19 = v2;
-	cursmx = trigs[v19]._tx;
-	v12 = trigs[v19]._ty;
-LABEL_37:
-	cursmy = v12;
-	return 1;
+
+	for (i = 0; L1DownList[i] != -1; i++) {
+		if (dPiece[cursmx][cursmy] == L1DownList[i]) {
+			sprintf(infostr, "Down to level %i", currlevel + 1);
+			for (j = 0; j < trigflag[4]; j++) {
+				if (trigs[j]._tmsg == WM_DIABNEXTLVL) {
+					cursmx = trigs[j]._tx;
+					cursmy = trigs[j]._ty;
+					return TRUE;
+				}
+			}
+		}
+	}
+
+	return FALSE;
 }
 
-unsigned char ForceL3Trig()
+BOOL ForceL2Trig()
 {
-	int *v0;            // eax
-	int *v1;            // esi
-	int v2;             // eax
-	int *v3;            // ecx
-	int *v4;            // ecx
-	int *v5;            // esi
-	int v6;             // ecx
-	int v7;             // eax
-	int *v8;            // ecx
-	int *v9;            // eax
-	int *v10;           // ebp
-	int v11;            // edi
-	TriggerStruct *v12; // esi
-	int v13;            // ebx
-	int v14;            // eax
-	int v15;            // eax
-	int v16;            // ecx
-	int v17;            // eax
-	int v18;            // edi
+	int i, j, dx, dy;
 
-	if (L3UpList[0] != -1) {
-		v0 = L3UpList;
-		v1 = L3UpList;
-		while (1) {
-			if (dPiece[cursmx][cursmy] == *v0) {
-				sprintf(infostr, "Up to level %i", currlevel - 1);
-				v2 = 0;
-				if (trigflag[4] > 0)
-					break;
+	for (i = 0; L2UpList[i] != -1; i++) {
+		if (dPiece[cursmx][cursmy] == L2UpList[i]) {
+			for (j = 0; j < trigflag[4]; j++) {
+				if (trigs[j]._tmsg == WM_DIABPREVLVL) {
+					dx = abs(trigs[j]._tx - cursmx);
+					dy = abs(trigs[j]._ty - cursmy);
+					if (dx < 4 && dy < 4) {
+						sprintf(infostr, "Up to level %i", currlevel - 1);
+						cursmx = trigs[j]._tx;
+						cursmy = trigs[j]._ty;
+						return TRUE;
+					}
+				}
 			}
-		LABEL_8:
-			++v1;
-			v0 = v1;
-			if (*v1 == -1)
-				goto LABEL_9;
 		}
-		v3 = &trigs[0]._tmsg;
-		while (*v3 != WM_DIABPREVLVL) {
-			++v2;
-			v3 += 4;
-			if (v2 >= trigflag[4])
-				goto LABEL_8;
-		}
-		goto LABEL_31;
 	}
-LABEL_9:
-	if (L3DownList[0] != -1) {
-		v4 = L3DownList;
-		v5 = L3DownList;
-		while (1) {
-			v6 = *v4;
-			v7 = cursmy + 112 * cursmx;
-			if (dPiece[0][v7] == v6 || dPiece[1][v7] == v6 || dPiece[2][v7] == v6) {
-				sprintf(infostr, "Down to level %i", currlevel + 1);
-				v2 = 0;
-				if (trigflag[4] > 0)
-					break;
+
+	for (i = 0; L2DownList[i] != -1; i++) {
+		if (dPiece[cursmx][cursmy] == L2DownList[i]) {
+			sprintf(infostr, "Down to level %i", currlevel + 1);
+			for (j = 0; j < trigflag[4]; j++) {
+				if (trigs[j]._tmsg == WM_DIABNEXTLVL) {
+					cursmx = trigs[j]._tx;
+					cursmy = trigs[j]._ty;
+					return TRUE;
+				}
 			}
-		LABEL_18:
-			++v5;
-			v4 = v5;
-			if (*v5 == -1)
-				goto LABEL_19;
 		}
-		v8 = &trigs[0]._tmsg;
-		while (*v8 != WM_DIABNEXTLVL) {
-			++v2;
-			v8 += 4;
-			if (v2 >= trigflag[4])
-				goto LABEL_18;
-		}
-	LABEL_31:
-		v15 = v2;
-		v16 = trigs[v15]._tx;
-		v17 = trigs[v15]._ty;
-		cursmx = v16;
-	LABEL_33:
-		cursmy = v17;
-		return 1;
 	}
-LABEL_19:
-	if (currlevel == 9 && L3TWarpUpList[0] != -1) {
-		v9 = L3TWarpUpList;
-		v10 = L3TWarpUpList;
-		while (1) {
-			if (dPiece[cursmx][cursmy] == *v9) {
-				v11 = 0;
-				if (trigflag[4] > 0)
-					break;
+
+	if (currlevel == 5) {
+		for (i = 0; L2TWarpUpList[i] != -1; i++) {
+			if (dPiece[cursmx][cursmy] == L2TWarpUpList[i]) {
+				for (j = 0; j < trigflag[4]; j++) {
+					if (trigs[j]._tmsg == WM_DIABTWARPUP) {
+						dx = abs(trigs[j]._tx - cursmx);
+						dy = abs(trigs[j]._ty - cursmy);
+						if (dx < 4 && dy < 4) {
+							strcpy(infostr, "Up to town");
+							cursmx = trigs[j]._tx;
+							cursmy = trigs[j]._ty;
+							return TRUE;
+						}
+					}
+				}
 			}
-		LABEL_29:
-			++v10;
-			v9 = v10;
-			if (*v10 == -1)
-				return 0;
 		}
-		v12 = trigs;
-		while (1) {
-			if (v12->_tmsg == WM_DIABTWARPUP) {
-				v13 = abs(v12->_tx - cursmx);
-				v14 = abs(v12->_ty - cursmy);
-				if (v13 < 4 && v14 < 4)
-					break;
-			}
-			++v11;
-			++v12;
-			if (v11 >= trigflag[4])
-				goto LABEL_29;
-		}
-		strcpy(infostr, "Up to town");
-		v18 = v11;
-		cursmx = trigs[v18]._tx;
-		v17 = trigs[v18]._ty;
-		goto LABEL_33;
 	}
-	return 0;
+
+	return FALSE;
 }
 
-unsigned char ForceL4Trig()
+BOOL ForceL3Trig()
 {
-	int *v0;            // eax
-	int *v1;            // esi
-	int v2;             // eax
-	int *v3;            // ecx
-	int *v4;            // eax
-	int *v5;            // esi
-	int *v6;            // ecx
-	int *v7;            // eax
-	int *v8;            // ebp
-	int v9;             // edi
-	TriggerStruct *v10; // esi
-	int v11;            // ebx
-	int v12;            // eax
-	int *v13;           // eax
-	int *v14;           // esi
-	int *v15;           // edx
-	int v16;            // edi
-	int v17;            // eax
-	int v18;            // eax
-	int v19;            // ecx
+	int i, j, dx, dy;
 
-	if (L4UpList[0] != -1) {
-		v0 = L4UpList;
-		v1 = L4UpList;
-		while (1) {
-			if (dPiece[cursmx][cursmy] == *v0) {
-				sprintf(infostr, "Up to level %i", currlevel - 1);
-				v2 = 0;
-				if (trigflag[4] > 0)
-					break;
+	for (i = 0; L3UpList[i] != -1; ++i) {
+		if (dPiece[cursmx][cursmy] == L3UpList[i]) {
+			sprintf(infostr, "Up to level %i", currlevel - 1);
+			for (j = 0; j < trigflag[4]; j++) {
+				if (trigs[j]._tmsg == WM_DIABPREVLVL) {
+					cursmx = trigs[j]._tx;
+					cursmy = trigs[j]._ty;
+					return TRUE;
+				}
 			}
-		LABEL_8:
-			++v1;
-			v0 = v1;
-			if (*v1 == -1)
-				goto LABEL_9;
 		}
-		v3 = &trigs[0]._tmsg;
-		while (*v3 != WM_DIABPREVLVL) {
-			++v2;
-			v3 += 4;
-			if (v2 >= trigflag[4])
-				goto LABEL_8;
-		}
-		goto LABEL_39;
 	}
-LABEL_9:
-	if (L4DownList[0] != -1) {
-		v4 = L4DownList;
-		v5 = L4DownList;
-		while (1) {
-			if (dPiece[cursmx][cursmy] == *v4) {
-				sprintf(infostr, "Down to level %i", currlevel + 1);
-				v2 = 0;
-				if (trigflag[4] > 0)
-					break;
+
+	for (i = 0; L3DownList[i] != -1; i++) {
+		if (dPiece[cursmx][cursmy] == L3DownList[i] || dPiece[cursmx + 1][cursmy] == L3DownList[i] || dPiece[cursmx + 2][cursmy] == L3DownList[i]) {
+			sprintf(infostr, "Down to level %i", currlevel + 1);
+			for (j = 0; j < trigflag[4]; j++) {
+				if (trigs[j]._tmsg == WM_DIABNEXTLVL) {
+					cursmx = trigs[j]._tx;
+					cursmy = trigs[j]._ty;
+					return TRUE;
+				}
 			}
-		LABEL_16:
-			++v5;
-			v4 = v5;
-			if (*v5 == -1)
-				goto LABEL_17;
 		}
-		v6 = &trigs[0]._tmsg;
-		while (*v6 != WM_DIABNEXTLVL) {
-			++v2;
-			v6 += 4;
-			if (v2 >= trigflag[4])
-				goto LABEL_16;
-		}
-		goto LABEL_39;
 	}
-LABEL_17:
+
+	if (currlevel == 9) {
+		for (i = 0; L3TWarpUpList[i] != -1; i++) {
+			if (dPiece[cursmx][cursmy] == L3TWarpUpList[i]) {
+				for (j = 0; j < trigflag[4]; j++) {
+					if (trigs[j]._tmsg == WM_DIABTWARPUP) {
+						dx = abs(trigs[j]._tx - cursmx);
+						dy = abs(trigs[j]._ty - cursmy);
+						if (dx < 4 && dy < 4) {
+							strcpy(infostr, "Up to town");
+							cursmx = trigs[j]._tx;
+							cursmy = trigs[j]._ty;
+							return TRUE;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return FALSE;
+}
+
+BOOL ForceL4Trig()
+{
+	int i, j, dx, dy;
+
+	for (i = 0; L4UpList[i] != -1; ++i) {
+		if (dPiece[cursmx][cursmy] == L4UpList[i]) {
+			sprintf(infostr, "Up to level %i", currlevel - 1);
+			for (j = 0; j < trigflag[4]; j++) {
+				if (trigs[j]._tmsg == WM_DIABPREVLVL) {
+					cursmx = trigs[j]._tx;
+					cursmy = trigs[j]._ty;
+					return TRUE;
+				}
+			}
+		}
+	}
+
+	for (i = 0; L4DownList[i] != -1; i++) {
+		if (dPiece[cursmx][cursmy] == L4DownList[i]) {
+			sprintf(infostr, "Down to level %i", currlevel + 1);
+			for (j = 0; j < trigflag[4]; j++) {
+				if (trigs[j]._tmsg == WM_DIABNEXTLVL) {
+					cursmx = trigs[j]._tx;
+					cursmy = trigs[j]._ty;
+					return TRUE;
+				}
+			}
+		}
+	}
+
 	if (currlevel == 13) {
-		if (L4TWarpUpList[0] != -1) {
-			v7 = L4TWarpUpList;
-			v8 = L4TWarpUpList;
-			while (1) {
-				if (dPiece[cursmx][cursmy] == *v7) {
-					v9 = 0;
-					if (trigflag[4] > 0)
-						break;
+		for (i = 0; L4TWarpUpList[i] != -1; i++) {
+			if (dPiece[cursmx][cursmy] == L4TWarpUpList[i]) {
+				for (j = 0; j < trigflag[4]; j++) {
+					if (trigs[j]._tmsg == WM_DIABTWARPUP) {
+						dx = abs(trigs[j]._tx - cursmx);
+						dy = abs(trigs[j]._ty - cursmy);
+						if (dx < 4 && dy < 4) {
+							strcpy(infostr, "Up to town");
+							cursmx = trigs[j]._tx;
+							cursmy = trigs[j]._ty;
+							return TRUE;
+						}
+					}
 				}
-			LABEL_27:
-				++v8;
-				v7 = v8;
-				if (*v8 == -1)
-					goto LABEL_28;
 			}
-			v10 = trigs;
-			while (1) {
-				if (v10->_tmsg == WM_DIABTWARPUP) {
-					v11 = abs(v10->_tx - cursmx);
-					v12 = abs(v10->_ty - cursmy);
-					if (v11 < 4 && v12 < 4)
-						break;
-				}
-				++v9;
-				++v10;
-				if (v9 >= trigflag[4])
-					goto LABEL_27;
-			}
-			strcpy(infostr, "Up to town");
-			v16 = v9;
-			cursmx = trigs[v16]._tx;
-			v17 = trigs[v16]._ty;
-			goto LABEL_40;
-		}
-	} else {
-	LABEL_28:
-		if (currlevel == 15 && L4PentaList[0] != -1) {
-			v13 = L4PentaList;
-			v14 = L4PentaList;
-			while (1) {
-				if (dPiece[cursmx][cursmy] == *v13) {
-					strcpy(infostr, "Down to Diablo");
-					v2 = 0;
-					if (trigflag[4] > 0)
-						break;
-				}
-			LABEL_36:
-				++v14;
-				v13 = v14;
-				if (*v14 == -1)
-					return 0;
-			}
-			v15 = &trigs[0]._tmsg;
-			while (*v15 != WM_DIABNEXTLVL) {
-				++v2;
-				v15 += 4;
-				if (v2 >= trigflag[4])
-					goto LABEL_36;
-			}
-		LABEL_39:
-			v18 = v2;
-			v19 = trigs[v18]._tx;
-			v17 = trigs[v18]._ty;
-			cursmx = v19;
-		LABEL_40:
-			cursmy = v17;
-			return 1;
 		}
 	}
-	return 0;
+
+	if (currlevel == 15) {
+		for (i = 0; L4PentaList[i] != -1; i++) {
+			if (dPiece[cursmx][cursmy] == L4PentaList[i]) {
+				strcpy(infostr, "Down to Diablo");
+				for (j = 0; j < trigflag[4]; j++) {
+					if (trigs[j]._tmsg == WM_DIABNEXTLVL) {
+						cursmx = trigs[j]._tx;
+						cursmy = trigs[j]._ty;
+						return TRUE;
+					}
+				}
+			}
+		}
+	}
+
+	return FALSE;
 }
 
 void Freeupstairs()
