@@ -4257,7 +4257,7 @@ void SpawnOnePremium(int i, int plvl)
 
 void SpawnPremium(int lvl)
 {
-	int i; // eax
+	int i;
 
 	if (numpremium < 6) {
 		for (i = 0; i < 6; i++) {
@@ -4266,14 +4266,14 @@ void SpawnPremium(int lvl)
 		}
 		numpremium = 6;
 	}
-	for (i = premiumlevel; premiumlevel < lvl; i = premiumlevel) {
-		qmemcpy(premiumitem, &premiumitem[2], sizeof(ItemStruct));
-		qmemcpy(&premiumitem[1], &premiumitem[3], sizeof(ItemStruct));
-		qmemcpy(&premiumitem[2], &premiumitem[4], sizeof(ItemStruct));
-		premiumlevel = i + 1;
-		SpawnOnePremium(3, premiumlvladd[3] + i + 1);
-		qmemcpy(&premiumitem[4], &premiumitem[5], sizeof(ItemStruct));
-		SpawnOnePremium(5, premiumlvladd[5] + premiumlevel);
+	while (premiumlevel < lvl) {
+		premiumlevel++;
+		premiumitem[0] = premiumitem[2];
+		premiumitem[1] = premiumitem[3];
+		premiumitem[2] = premiumitem[4];
+		SpawnOnePremium(3, premiumlevel + premiumlvladd[3]);
+		premiumitem[4] = premiumitem[5];
+		SpawnOnePremium(5, premiumlevel + premiumlvladd[5]);
 	}
 }
 // 69FB38: using guessed type int talker;
