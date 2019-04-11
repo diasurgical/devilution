@@ -17,7 +17,7 @@ void InitSChambTriggers();
 void InitPWaterTriggers();
 void InitVPTriggers();
 BOOL ForceTownTrig();
-unsigned char ForceL1Trig();
+BOOL ForceL1Trig();
 unsigned char ForceL2Trig();
 unsigned char ForceL3Trig();
 unsigned char ForceL4Trig();

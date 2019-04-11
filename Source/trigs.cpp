@@ -480,76 +480,40 @@ BOOL ForceTownTrig()
 	return FALSE;
 }
 
-unsigned char ForceL1Trig()
+BOOL ForceL1Trig()
 {
-	int *v0; // eax
-	int *v1; // esi
-	int v2;  // eax
-	int *v3; // edx
-	int *v4; // eax
-	int *v5; // esi
-	int *v6; // edx
-	int v8;  // eax
-	int v9;  // ecx
+	int i, j;
 
-	if (L1UpList[0] == -1) {
-	LABEL_12:
-		if (L1DownList[0] == -1)
-			return 0;
-		v4 = L1DownList;
-		v5 = L1DownList;
-		while (1) {
-			if (dPiece[cursmx][cursmy] == *v4) {
-				sprintf(infostr, "Down to level %i", currlevel + 1);
-				v2 = 0;
-				if (trigflag[4] > 0)
-					break;
+	for (i = 0; L1UpList[i] != -1; i++) {
+		if (dPiece[cursmx][cursmy] == L1UpList[i]) {
+			if (currlevel > 1)
+				sprintf(infostr, "Up to level %i", currlevel - 1);
+			else
+				strcpy(infostr, "Up to town");
+			for (j = 0; j < trigflag[4]; j++) {
+				if (trigs[j]._tmsg == WM_DIABPREVLVL) {
+					cursmx = trigs[j]._tx;
+					cursmy = trigs[j]._ty;
+					return TRUE;
+				}
 			}
-		LABEL_19:
-			++v5;
-			v4 = v5;
-			if (*v5 == -1)
-				return 0;
-		}
-		v6 = &trigs[0]._tmsg;
-		while (*v6 != WM_DIABNEXTLVL) {
-			++v2;
-			v6 += 4;
-			if (v2 >= trigflag[4])
-				goto LABEL_19;
-		}
-	} else {
-		v0 = L1UpList;
-		v1 = L1UpList;
-		while (1) {
-			if (dPiece[cursmx][cursmy] == *v0) {
-				if (currlevel <= 1u)
-					strcpy(infostr, "Up to town");
-				else
-					sprintf(infostr, "Up to level %i", currlevel - 1);
-				v2 = 0;
-				if (trigflag[4] > 0)
-					break;
-			}
-		LABEL_11:
-			++v1;
-			v0 = v1;
-			if (*v1 == -1)
-				goto LABEL_12;
-		}
-		v3 = &trigs[0]._tmsg;
-		while (*v3 != WM_DIABPREVLVL) {
-			++v2;
-			v3 += 4;
-			if (v2 >= trigflag[4])
-				goto LABEL_11;
 		}
 	}
-	v8 = v2;
-	v9 = trigs[v8]._tx;
-	cursmy = trigs[v8]._ty;
-	cursmx = v9;
-	return 1;
+
+	for (i = 0; L1DownList[i] != -1; i++) {
+		if (dPiece[cursmx][cursmy] == L1DownList[i]) {
+			sprintf(infostr, "Down to level %i", currlevel + 1);
+			for (j = 0; j < trigflag[4]; j++) {
+				if (trigs[j]._tmsg == WM_DIABNEXTLVL) {
+					cursmx = trigs[j]._tx;
+					cursmy = trigs[j]._ty;
+					return TRUE;
+				}
+			}
+		}
+	}
+
+	return FALSE;
 }
 
 unsigned char ForceL2Trig()
