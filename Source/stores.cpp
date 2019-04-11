@@ -904,9 +904,9 @@ void S_StartSSell()
 		AddSText(0, 22, 1, "Back", COL_WHITE, 1);
 		OffsetSTextY(22, 6);
 	} else {
-		stextsmax = plr[myplr]._pNumInv;
 		stextscrl = 1;
 		stextsval = 0;
+		stextsmax = plr[myplr]._pNumInv;
 		sprintf(tempstr, "Which item is for sale?            Your gold : %i", plr[myplr]._pGold);
 		AddSText(0, 1, 1, tempstr, COL_GOLD, 0);
 		AddSLine(3);
