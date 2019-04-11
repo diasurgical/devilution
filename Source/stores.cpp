@@ -2827,19 +2827,18 @@ void S_WSellEnter()
 
 void WitchRechargeItem()
 {
-	int i;   // ecx
-	int idx; // eax
+	int i, idx;
 
 	TakePlrsMoney(plr[myplr].HoldItem._iIvalue);
 
 	idx = stextvhold + ((stextlhold - stextup) >> 2);
-	i = storehidx[idx];
 	storehold[idx]._iCharges = storehold[idx]._iMaxCharges;
 
-	if (i >= 0)
-		plr[myplr].InvList[i]._iCharges = plr[myplr].InvList[i]._iMaxCharges;
-	else
+	i = storehidx[idx];
+	if (i < 0)
 		plr[myplr].InvBody[INVLOC_HAND_LEFT]._iCharges = plr[myplr].InvBody[INVLOC_HAND_LEFT]._iMaxCharges;
+	else
+		plr[myplr].InvList[i]._iCharges = plr[myplr].InvList[i]._iMaxCharges;
 
 	CalcPlrInv(myplr, 1u);
 }
