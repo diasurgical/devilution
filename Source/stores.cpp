@@ -2803,8 +2803,7 @@ void S_WBuyEnter()
 
 void S_WSellEnter()
 {
-	int idx; // eax
-	char v2; // cl
+	int idx;
 
 	if (stextsel == 22) {
 		StartStore(STORE_WITCH);
@@ -2814,11 +2813,11 @@ void S_WSellEnter()
 		idx = stextsval + ((stextsel - stextup) >> 2);
 		stextshold = 7;
 		stextvhold = stextsval;
-		qmemcpy(&plr[myplr].HoldItem, &storehold[idx], sizeof(plr[myplr].HoldItem));
-		v2 = STORE_CONFIRM;
-		if (!StoreGoldFit(idx))
-			v2 = STORE_NOROOM;
-		StartStore(v2);
+		plr[myplr].HoldItem = storehold[idx];
+		if (StoreGoldFit(idx))
+			StartStore(STORE_CONFIRM);
+		else
+			StartStore(STORE_NOROOM);
 	}
 }
 // 69F108: using guessed type int stextup;
