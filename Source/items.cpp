@@ -4613,7 +4613,7 @@ void SpawnHealer(int lvl)
 void SpawnStoreGold()
 {
 	GetItemAttrs(0, IDI_GOLD, 1);
-	qmemcpy(&golditem, item, sizeof(golditem));
+	golditem = *item;
 	golditem._iStatFlag = 1;
 }
 
