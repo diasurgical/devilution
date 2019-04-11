@@ -2901,68 +2901,49 @@ void BoyBuyItem()
 
 void HealerBuyItem()
 {
-	int idx;    // esi
-	BOOLEAN v1; // sf
-	//unsigned char v2; // of
-	int v3;     // eax
-	int v4;     // ecx
-	BOOLEAN v5; // sf
-	//unsigned char v6; // of
-	int v7;         // eax
-	ItemStruct *v8; // edx
-	ItemStruct *v9; // edi
-	BOOLEAN v10;    // zf
+	int idx;
+	BOOL ok;
 
 	idx = stextvhold + ((stextlhold - stextup) >> 2);
+
+	ok = FALSE;
 	if (gbMaxPlayers == 1) {
-		//v2 = __OFSUB__(idx, 2);
-		v1 = idx - 2 < 0;
+		if (idx < 2)
+			ok = TRUE;
 	} else {
-		//v2 = __OFSUB__(idx, 3);
-		v1 = idx - 3 < 0;
+		if (idx < 3)
+			ok = TRUE;
 	}
-	if (v1) { //if (v1 ^ v2) {
-		v3 = GetRndSeed();
-		v4 = myplr;
-		plr[myplr].HoldItem._iSeed = v3;
-	} else {
-		v4 = myplr;
+	if (ok) {
+		plr[myplr].HoldItem._iSeed = GetRndSeed();
 	}
-	TakePlrsMoney(plr[v4].HoldItem._iIvalue);
+
+	TakePlrsMoney(plr[myplr].HoldItem._iIvalue);
 	if (plr[myplr].HoldItem._iMagical == ITEM_QUALITY_NORMAL)
 		plr[myplr].HoldItem._iIdentified = FALSE;
 	StoreAutoPlace();
+
+	ok = FALSE;
 	if (gbMaxPlayers == 1) {
-		//v6 = __OFSUB__(idx, 2);
-		v5 = idx - 2 < 0;
+		if (idx >= 2)
+			ok = TRUE;
 	} else {
-		//v6 = __OFSUB__(idx, 3);
-		v5 = idx - 3 < 0;
+		if (idx >= 3)
+			ok = TRUE;
 	}
-	if (!v5) { //if (!(v5 ^ v6)) {
-		v7 = stextvhold + ((stextlhold - stextup) >> 2);
-		if (v7 == 19) {
+	if (ok) {
+		idx = stextvhold + ((stextlhold - stextup) >> 2);
+		if (idx == 19) {
 			healitem[19]._itype = -1;
 		} else {
-			if (healitem[v7 + 1]._itype != -1) {
-				v8 = &healitem[v7];
-				do {
-					v9 = v8;
-					++v8;
-					++v7;
-					v10 = v8[1]._itype == -1;
-					qmemcpy(v9, v8, sizeof(ItemStruct));
-				} while (!v10);
+			for (; healitem[idx + 1]._itype != -1; idx++) {
+				healitem[idx] = healitem[idx + 1];
 			}
-			healitem[v7]._itype = -1;
+			healitem[idx]._itype = -1;
 		}
-		CalcPlrInv(myplr, 1u);
+		CalcPlrInv(myplr, TRUE);
 	}
 }
-// 679660: using guessed type char gbMaxPlayers;
-// 69F108: using guessed type int stextup;
-// 69F110: using guessed type int stextlhold;
-// 6A8A24: using guessed type int stextvhold;
 
 void S_BBuyEnter()
 {
