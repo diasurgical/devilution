@@ -79,7 +79,7 @@ void S_StartHealer();
 void S_ScrollHBuy(int idx);
 void S_StartHBuy();
 void S_StartStory();
-BOOLEAN IdItemOk(ItemStruct *i);
+BOOL IdItemOk(ItemStruct *i);
 void AddStoreHoldId(ItemStruct itm, int i);
 void S_StartSIdentify();
 void S_StartIdShow();
