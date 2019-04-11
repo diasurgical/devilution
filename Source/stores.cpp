@@ -1254,28 +1254,12 @@ BOOL WitchRechargeOk(int i)
 
 void AddStoreHoldRecharge(ItemStruct itm, int i)
 {
-	int v2;  // ebx
-	int v3;  // eax
-	char v4; // ST10_1
-	int v5;  // ecx
-	int v6;  // eax
-
-	v2 = storenumh;
-	v3 = spelldata[itm._iSpell].sStaffCost;
-	v4 = i;
-	qmemcpy(&storehold[storenumh], &itm, sizeof(ItemStruct));
-	storehold[v2]._ivalue += v3;
-	v5 = storenumh;
-	v6 = storehold[v2]._ivalue
-	        * (100
-	              * (storehold[v2]._iMaxCharges - storehold[v2]._iCharges)
-	              / storehold[v2]._iMaxCharges)
-	        / 100
-	    >> 1;
-	++storenumh;
-	storehold[v2]._ivalue = v6;
-	storehold[v2]._iIvalue = v6;
-	storehidx[v5] = v4;
+	storehold[storenumh] = itm;
+	storehold[storenumh]._ivalue += spelldata[itm._iSpell].sStaffCost;
+	storehold[storenumh]._ivalue = storehold[storenumh]._ivalue * (100 * (storehold[storenumh]._iMaxCharges - storehold[storenumh]._iCharges) / storehold[storenumh]._iMaxCharges) / 100 >> 1;
+	storehold[storenumh]._iIvalue = storehold[storenumh]._ivalue;
+	storehidx[storenumh] = i;
+	storenumh++;
 }
 // 69F108: using guessed type int stextup;
 // 69F10C: using guessed type int storenumh;
