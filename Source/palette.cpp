@@ -44,24 +44,22 @@ void palette_init()
 
 void LoadGamma()
 {
-	int v3;    // eax
-	int value; // [esp+8h] [ebp-4h]
+	int gamma_value;
+	int value;
 
 	value = gamma_correction;
 	if (!SRegLoadValue("Diablo", "Gamma Correction", 0, &value))
 		value = 100;
-	if (value >= 30) {
-		if (value > 100)
-			value = 100;
-	} else {
-		value = 30;
+	gamma_value = value;
+	if (value < 30) {
+		gamma_value = 30;
+	} else if (value > 100) {
+		gamma_value = 100;
 	}
-	gamma_correction = value - value % 5;
-	if (SRegLoadValue("Diablo", "Color Cycling", 0, &value))
-		v3 = value;
-	else
-		v3 = TRUE;
-	color_cycling_enabled = v3;
+	gamma_correction = gamma_value - gamma_value % 5;
+	if (!SRegLoadValue("Diablo", "Color Cycling", 0, &value))
+		value = 1;
+	color_cycling_enabled = value;
 }
 
 void LoadSysPal()
