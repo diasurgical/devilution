@@ -1591,16 +1591,15 @@ void S_StartStory()
 // 6A09E0: using guessed type char stextsize;
 // 6A6BB8: using guessed type int stextscrl;
 
-BOOLEAN IdItemOk(ItemStruct *i)
+BOOL IdItemOk(ItemStruct *i)
 {
-	BOOLEAN result; // al
-
-	result = 0;
-	if (i->_itype != -1) {
-		if (i->_iMagical != ITEM_QUALITY_NORMAL)
-			result = !i->_iIdentified;
+	if (i->_itype == -1) {
+		return FALSE;
 	}
-	return result;
+	if (i->_iMagical == ITEM_QUALITY_NORMAL) {
+		return FALSE;
+	}
+	return !i->_iIdentified;
 }
 
 void AddStoreHoldId(ItemStruct itm, int i)
