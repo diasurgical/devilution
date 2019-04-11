@@ -703,30 +703,28 @@ void AddInitItems()
 
 void InitItems()
 {
-	int *v0; // eax
-	int v1;  // edx
+	int i;
 
 	GetItemAttrs(0, IDI_GOLD, 1);
-	numitems = 0;
-	qmemcpy(&golditem, item, sizeof(golditem));
+	golditem = *item;
 	golditem._iStatFlag = 1;
-	v0 = &item[0]._ix;
-	do {
-		*(v0 - 1) = 0;
-		*v0 = 0;
-		v0[1] = 0;
-		v0[2] = 0;
-		*((_BYTE *)v0 + 36) = 0;
-		v0[11] = 0;
-		v0[10] = 0;
-		v0 += 92;
-	} while ((signed int)v0 < (signed int)&item[MAXITEMS + 1]._ix);
-	v1 = 0;
-	memset(itemactive, 0, sizeof(itemactive));
-	do {
-		itemavail[v1] = v1;
-		++v1;
-	} while (v1 < MAXITEMS);
+	numitems = 0;
+
+	for (i = 0; i < MAXITEMS; i++) {
+		item[i]._itype = 0;
+		item[i]._ix = 0;
+		item[i]._iy = 0;
+		item[i]._isin = 0;
+		item[i]._iSelFlag = 0;
+		item[i]._iIdentified = 0;
+		item[i]._iPostDraw = 0;
+	}
+
+	for (i = 0; i < MAXITEMS; i++) {
+		itemavail[i] = i;
+		itemactive[i] = 0;
+	}
+
 	if (!setlevel) {
 		GetRndSeed();
 		if (QuestStatus(QTYPE_INFRA))
@@ -736,6 +734,7 @@ void InitItems()
 		if (currlevel > 0u && currlevel < 0x10u)
 			AddInitItems();
 	}
+
 	uitemflag = 0;
 }
 // 5CF31D: using guessed type char setlevel;
