@@ -760,41 +760,32 @@ int GoldAutoPlace(int pnum)
 
 int WeaponAutoPlace(int pnum)
 {
-	int v1;         // edi
-	int v2;         // eax
-	int v3;         // ecx
-	ItemStruct *v4; // esi
-	ItemStruct *v5; // edi
-	int result;     // eax
+	if (plr[pnum].HoldItem._iLoc != ILOC_TWOHAND) {
+		if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iClass == ICLASS_WEAPON)
+			return FALSE;
+		if (plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype != ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iClass == ICLASS_WEAPON)
+			return FALSE;
+		if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_NONE) {
+			NetSendCmdChItem(TRUE, INVLOC_HAND_LEFT);
+			plr[pnum].InvBody[INVLOC_HAND_LEFT] = plr[pnum].HoldItem;
+			return TRUE;
+		}
+		if (plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iLoc != ILOC_TWOHAND) {
+			NetSendCmdChItem(TRUE, INVLOC_HAND_RIGHT);
+			plr[pnum].InvBody[INVLOC_HAND_RIGHT] = plr[pnum].HoldItem;
+			return TRUE;
+		}
+	} else {
+		if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_NONE) {
+			NetSendCmdChItem(TRUE, INVLOC_HAND_LEFT);
+			plr[pnum].InvBody[INVLOC_HAND_LEFT] = plr[pnum].HoldItem;
+			return TRUE;
+		} else {
+			return FALSE;
+		}
+	}
 
-	v1 = pnum;
-	if (plr[pnum].HoldItem._iLoc == ILOC_TWOHAND) {
-		if (plr[v1].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE || plr[v1].InvBody[INVLOC_HAND_RIGHT]._itype != ITYPE_NONE)
-			return 0;
-	LABEL_12:
-		NetSendCmdChItem(TRUE, 4u);
-		v4 = &plr[v1].HoldItem;
-		v5 = &plr[v1].InvBody[INVLOC_HAND_LEFT];
-		goto LABEL_13;
-	}
-	v2 = plr[v1].InvBody[INVLOC_HAND_LEFT]._itype;
-	if (v2 != ITYPE_NONE && plr[v1].InvBody[INVLOC_HAND_LEFT]._iClass == 1)
-		return 0;
-	v3 = plr[v1].InvBody[INVLOC_HAND_RIGHT]._itype;
-	if (v3 != ITYPE_NONE && plr[v1].InvBody[INVLOC_HAND_RIGHT]._iClass == 1)
-		return 0;
-	if (v2 == ITYPE_NONE)
-		goto LABEL_12;
-	if (v3 == ITYPE_NONE && plr[v1].InvBody[INVLOC_HAND_LEFT]._iLoc != ILOC_TWOHAND) {
-		NetSendCmdChItem(TRUE, 5u);
-		v4 = &plr[v1].HoldItem;
-		v5 = &plr[v1].InvBody[INVLOC_HAND_RIGHT];
-	LABEL_13:
-		result = 1;
-		qmemcpy(v5, v4, sizeof(ItemStruct));
-		return result;
-	}
-	return 0;
+	return FALSE;
 }
 
 int SwapItem(ItemStruct *a, ItemStruct *b)
