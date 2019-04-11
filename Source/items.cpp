@@ -3812,14 +3812,6 @@ void PrintItemMisc(ItemStruct *x)
 
 void PrintItemDetails(ItemStruct *x)
 {
-	ItemStruct *v1;   // ebp
-	char v2;          // cl
-	char v3;          // cl
-	char v4;          // al
-	unsigned char v5; // al
-	char v6;          // al
-
-	v1 = x;
 	if (x->_iClass == 1) {
 		if (x->_iMaxDur == 255)
 			sprintf(tempstr, "damage: %i-%i  Indestructible", x->_iMinDam, x->_iMaxDam);
@@ -3827,45 +3819,40 @@ void PrintItemDetails(ItemStruct *x)
 			sprintf(tempstr, "damage: %i-%i  Dur: %i/%i", x->_iMinDam, x->_iMaxDam, x->_iDurability, x->_iMaxDur);
 		AddPanelString(tempstr, 1);
 	}
-	if (v1->_iClass == 2) {
-		if (v1->_iMaxDur == 255)
-			sprintf(tempstr, "armor: %i  Indestructible", v1->_iAC);
+	if (x->_iClass == 2) {
+		if (x->_iMaxDur == 255)
+			sprintf(tempstr, "armor: %i  Indestructible", x->_iAC);
 		else
-			sprintf(tempstr, "armor: %i  Dur: %i/%i", v1->_iAC, v1->_iDurability, v1->_iMaxDur);
+			sprintf(tempstr, "armor: %i  Dur: %i/%i", x->_iAC, x->_iDurability, x->_iMaxDur);
 		AddPanelString(tempstr, 1);
 	}
-	if (v1->_iMiscId == IMISC_STAFF && v1->_iMaxCharges) {
-		sprintf(tempstr, "dam: %i-%i  Dur: %i/%i", v1->_iMinDam, v1->_iMaxDam, v1->_iDurability, v1->_iMaxDur);
-		sprintf(tempstr, "Charges: %i/%i", v1->_iCharges, v1->_iMaxCharges);
+	if (x->_iMiscId == IMISC_STAFF && x->_iMaxCharges) {
+		sprintf(tempstr, "dam: %i-%i  Dur: %i/%i", x->_iMinDam, x->_iMaxDam, x->_iDurability, x->_iMaxDur);
+		sprintf(tempstr, "Charges: %i/%i", x->_iCharges, x->_iMaxCharges);
 		AddPanelString(tempstr, 1);
 	}
-	v2 = v1->_iPrePower;
-	if (v2 != -1) {
-		PrintItemPower(v2, v1);
+	if (x->_iPrePower != -1) {
+		PrintItemPower(x->_iPrePower, x);
 		AddPanelString(tempstr, 1);
 	}
-	v3 = v1->_iSufPower;
-	if (v3 != -1) {
-		PrintItemPower(v3, v1);
+	if (x->_iSufPower != -1) {
+		PrintItemPower(x->_iSufPower, x);
 		AddPanelString(tempstr, 1);
 	}
-	if (v1->_iMagical == ITEM_QUALITY_UNIQUE) {
+	if (x->_iMagical == ITEM_QUALITY_UNIQUE) {
 		AddPanelString("unique item", 1);
 		uitemflag = 1;
-		qmemcpy(&curruitem, v1, sizeof(curruitem));
+		curruitem = *x;
 	}
-	PrintItemMisc(v1);
-	if ((unsigned char)v1->_iMinMag + v1->_iMinDex + v1->_iMinStr) {
+	PrintItemMisc(x);
+	if (x->_iMinMag + x->_iMinDex + x->_iMinStr) {
 		strcpy(tempstr, "Required:");
-		v4 = v1->_iMinStr;
-		if (v4)
-			sprintf(tempstr, "%s %i Str", tempstr, v4);
-		v5 = v1->_iMinMag;
-		if (v5)
-			sprintf(tempstr, "%s %i Mag", tempstr, v5);
-		v6 = v1->_iMinDex;
-		if (v6)
-			sprintf(tempstr, "%s %i Dex", tempstr, v6);
+		if (x->_iMinStr)
+			sprintf(tempstr, "%s %i Str", tempstr, x->_iMinStr);
+		if (x->_iMinMag)
+			sprintf(tempstr, "%s %i Mag", tempstr, x->_iMinMag);
+		if (x->_iMinDex)
+			sprintf(tempstr, "%s %i Dex", tempstr, x->_iMinDex);
 		AddPanelString(tempstr, 1);
 	}
 	pinfoflag = TRUE;
