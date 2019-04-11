@@ -2763,9 +2763,8 @@ void WitchBuyItem()
 
 void S_WBuyEnter()
 {
-	int idx;  // ecx
-	int done; // eax
-	int i;    // esi
+	int i, idx;
+	BOOL done;
 
 	if (stextsel == 22) {
 		StartStore(STORE_WITCH);
@@ -2776,14 +2775,14 @@ void S_WBuyEnter()
 		stextshold = 6;
 		idx = stextsval + ((stextsel - stextup) >> 2);
 
-		if (plr[myplr]._pGold >= witchitem[idx]._iIvalue) {
-			qmemcpy(&plr[myplr].HoldItem, &witchitem[idx], sizeof(ItemStruct));
+		if (plr[myplr]._pGold < witchitem[idx]._iIvalue) {
+			StartStore(STORE_NOMONEY);
+		} else {
+			plr[myplr].HoldItem = witchitem[idx];
 			SetCursor_(plr[myplr].HoldItem._iCurs + CURSOR_FIRSTITEM);
-			done = 0;
+			done = FALSE;
 
-			for (i = 0; i < 40; i++) {
-				if (done)
-					break;
+			for (i = 0; i < 40 && !done; i++) {
 				done = SpecialAutoPlace(myplr, i, cursW / 28, cursH / 28, 0);
 			}
 
@@ -2793,8 +2792,6 @@ void S_WBuyEnter()
 				StartStore(STORE_NOROOM);
 
 			SetCursor_(CURSOR_HAND);
-		} else {
-			StartStore(STORE_NOMONEY);
 		}
 	}
 }
