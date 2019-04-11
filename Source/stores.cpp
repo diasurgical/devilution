@@ -2437,72 +2437,41 @@ void SmithBuyPItem()
 
 void S_SPBuyEnter()
 {
-	int v0;     // eax
-	BOOLEAN v1; // sf
-	int v2;     // eax
-	int v3;     // ecx
-	int v4;     // edx
-	int *v5;    // esi
-	int v6;     // ecx
-	int v7;     // eax
-	int v8;     // eax
-	int v9;     // esi
-	char v10;   // cl
+	int i, idx, xx;
+	BOOL done;
 
 	if (stextsel == 22) {
 		StartStore(STORE_SMITH);
 		stextsel = 14;
 	} else {
-		stextlhold = stextsel;
 		stextshold = 18;
+		stextlhold = stextsel;
 		stextvhold = stextsval;
-		v0 = (stextsel - stextup) >> 2;
-		v1 = stextsval + v0 < 0;
-		v2 = stextsval + v0;
-		v3 = 0;
-		v4 = 0;
-		if (!v1) {
-			v5 = &premiumitem[0]._itype;
-			do {
-				if (*v5 != -1) {
-					--v2;
-					v3 = v4;
-				}
-				++v4;
-				v5 += 92;
-			} while (v2 >= 0);
-		}
-		v6 = v3;
-		v7 = myplr;
-		if (plr[myplr]._pGold >= premiumitem[v6]._iIvalue) {
-			qmemcpy(&plr[v7].HoldItem, &premiumitem[v6], sizeof(plr[v7].HoldItem));
-			SetCursor_(plr[v7].HoldItem._iCurs + CURSOR_FIRSTITEM);
-			v8 = 0;
-			v9 = 0;
-			do {
-				if (v8)
-					goto LABEL_14;
-				v8 = AutoPlace(myplr, v9++, cursW / 28, cursH / 28, 0);
-			} while (v9 < 40);
-			if (v8) {
-			LABEL_14:
-				v10 = STORE_CONFIRM;
-				goto LABEL_16;
+		xx = stextsval + ((stextsel - stextup) >> 2);
+		idx = 0;
+		for (i = 0; xx >= 0; i++) {
+			if (premiumitem[i]._itype != -1) {
+				xx--;
+				idx = i;
 			}
-			v10 = STORE_NOROOM;
-		LABEL_16:
-			StartStore(v10);
-			SetCursor_(CURSOR_HAND);
-		} else {
+		}
+		if (plr[myplr]._pGold < premiumitem[idx]._iIvalue) {
 			StartStore(STORE_NOMONEY);
+		} else {
+			plr[myplr].HoldItem = premiumitem[idx];
+			SetCursor_(plr[myplr].HoldItem._iCurs + CURSOR_FIRSTITEM);
+			done = FALSE;
+			for (i = 0; i < 40 && !done; i++) {
+				done = AutoPlace(myplr, i, cursW / 28, cursH / 28, 0);
+			}
+			if (done)
+				StartStore(STORE_CONFIRM);
+			else
+				StartStore(STORE_NOROOM);
+			SetCursor_(CURSOR_HAND);
 		}
 	}
 }
-// 4B8C9C: using guessed type int cursH;
-// 69F108: using guessed type int stextup;
-// 69F110: using guessed type int stextlhold;
-// 6A8A24: using guessed type int stextvhold;
-// 6A8A28: using guessed type int stextsel;
 
 BOOLEAN StoreGoldFit(int idx)
 {
