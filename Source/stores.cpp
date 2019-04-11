@@ -1147,26 +1147,26 @@ void S_StartWBuy()
 // 6A09E4: using guessed type int stextsmax;
 // 6A6BB8: using guessed type int stextscrl;
 
-BOOLEAN WitchSellOk(int i)
+BOOL WitchSellOk(int i)
 {
-	BOOLEAN rv;     // al
-	ItemStruct *pI; // edx
+	BOOL rv;
+	ItemStruct *pI;
 
-	rv = 0;
+	rv = FALSE;
 
-	if (i < 0)
-		pI = &plr[myplr].SpdList[~i]; // -(i+1)
-	else
+	if (i >= 0)
 		pI = &plr[myplr].InvList[i];
+	else
+		pI = &plr[myplr].SpdList[-(i+1)];
 
 	if (pI->_itype == ITYPE_MISC)
-		rv = 1;
+		rv = TRUE;
 	if (pI->_itype == ITYPE_STAFF)
-		rv = 1;
+		rv = TRUE;
 	if (pI->IDidx >= IDI_FIRSTQUEST && pI->IDidx <= IDI_LASTQUEST)
-		rv = 0;
+		rv = FALSE;
 	if (pI->IDidx == IDI_LAZSTAFF)
-		rv = 0;
+		rv = FALSE;
 	return rv;
 }
 
