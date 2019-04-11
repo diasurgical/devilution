@@ -340,35 +340,35 @@ void InitDrunk()
 
 void InitCows()
 {
-	int i, dir, tnum;
+	int i, dir;
 	int x, y, xo, yo;
 
+	//if ( pCowCels )
+	//	assertion_failed(300, "C:\\Diablo\\Direct\\towners.cpp", "! pCowCels");
 	pCowCels = LoadFileInMem("Towners\\Animals\\Cow.CEL", 0);
 	for (i = 0; i < 3; i++) {
-		dir = TownCowDir[i];
-		InitTownerInfo(numtowners, 128, 0, TOWN_COW, TownCowX[i], TownCowY[i], -1, 10);
-		tnum = numtowners;
-		towner[tnum]._tNData = pCowCels;
-		SetTownerGPtrs(towner[tnum]._tNData, (BYTE **)towner[tnum]._tNAnim);
-		towner[tnum]._tNFrames = 12;
-		NewTownerAnim(numtowners, towner[tnum]._tNAnim[dir], towner[tnum]._tNFrames, 3);
-		towner[tnum]._tAnimFrame = random(0, 11) + 1;
-		towner[tnum]._tSelFlag = 1;
-		strcpy(towner[tnum]._tName, "Cow");
-
 		x = TownCowX[i];
 		y = TownCowY[i];
+		dir = TownCowDir[i];
+		InitTownerInfo(numtowners, 128, 0, TOWN_COW, TownCowX[i], TownCowY[i], -1, 10);
+		towner[numtowners]._tNData = pCowCels;
+		SetTownerGPtrs(towner[numtowners]._tNData, (BYTE **)towner[numtowners]._tNAnim);
+		towner[numtowners]._tNFrames = 12;
+		NewTownerAnim(numtowners, towner[numtowners]._tNAnim[dir], towner[numtowners]._tNFrames, 3);
+		towner[numtowners]._tAnimFrame = random(0, 11) + 1;
+		towner[numtowners]._tSelFlag = 1;
+		strcpy(towner[numtowners]._tName, "Cow");
+
 		xo = x + cowoffx[dir];
 		yo = y + cowoffy[dir];
 		if (!dMonster[x][yo])
-			dMonster[x][yo] = -(tnum + 1);
+			dMonster[x][yo] = -(numtowners + 1);
 		if (!dMonster[xo][y])
-			dMonster[xo][y] = -(tnum + 1);
+			dMonster[xo][y] = -(numtowners + 1);
 		if (!dMonster[xo][yo])
-			dMonster[xo][yo] = -(tnum + 1);
+			dMonster[xo][yo] = -(numtowners + 1);
 
-		tnum++;
-		numtowners = tnum;
+		numtowners++;
 	}
 }
 // 6AAC2C: using guessed type int boyloadflag;
