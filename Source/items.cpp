@@ -4133,11 +4133,11 @@ int RndSmithItem(int lvl)
 
 void BubbleSwapItem(ItemStruct *a, ItemStruct *b)
 {
-	ItemStruct h; // [esp+8h] [ebp-170h]
+	ItemStruct h;
 
-	qmemcpy(&h, a, sizeof(h));
-	qmemcpy(a, b, sizeof(ItemStruct));
-	qmemcpy(b, &h, sizeof(ItemStruct));
+	h = *a;
+	*a = *b;
+	*b = h;
 }
 
 void SortSmith()
