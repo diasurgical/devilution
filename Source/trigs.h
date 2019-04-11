@@ -19,7 +19,7 @@ void InitVPTriggers();
 BOOL ForceTownTrig();
 BOOL ForceL1Trig();
 BOOL ForceL2Trig();
-unsigned char ForceL3Trig();
+BOOL ForceL3Trig();
 unsigned char ForceL4Trig();
 void Freeupstairs();
 BOOL ForceSKingTrig();
