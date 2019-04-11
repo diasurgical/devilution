@@ -706,7 +706,7 @@ void InitItems()
 	int i;
 
 	GetItemAttrs(0, IDI_GOLD, 1);
-	golditem = *item;
+	golditem = item[0];
 	golditem._iStatFlag = 1;
 	numitems = 0;
 
@@ -716,7 +716,7 @@ void InitItems()
 		item[i]._iy = 0;
 		item[i]._isin = 0;
 		item[i]._iSelFlag = 0;
-		item[i]._iIdentified = 0;
+		item[i]._iIdentified = FALSE;
 		item[i]._iPostDraw = 0;
 	}
 
@@ -4167,18 +4167,19 @@ void SortSmith()
 
 void SpawnSmith(int lvl)
 {
-	int i, iCnt;
+	int i, iCnt, idata;
 
 	iCnt = random(50, 10) + 10;
 	for (i = 0; i < iCnt; i++) {
 		do {
 			item[0]._iSeed = GetRndSeed();
 			SetRndSeed(item[0]._iSeed);
-			GetItemAttrs(0, RndSmithItem(lvl) - 1, lvl);
+			idata = RndSmithItem(lvl) - 1;
+			GetItemAttrs(0, idata, lvl);
 		} while (item[0]._iIvalue > 140000);
-		smithitem[i] = *item;
+		smithitem[i] = item[0];
 		smithitem[i]._iCreateInfo = lvl | 0x400;
-		smithitem[i]._iIdentified = 1;
+		smithitem[i]._iIdentified = TRUE;
 		smithitem[i]._iStatFlag = StoreStatOk(&smithitem[i]);
 	}
 	for (i = iCnt; i < 20; i++)
@@ -4236,7 +4237,7 @@ void SpawnOnePremium(int i, int plvl)
 	int itype;
 	ItemStruct holditem;
 
-	holditem = *item;
+	holditem = item[0];
 	if (plvl > 30)
 		plvl = 30;
 	if (plvl < 1)
@@ -4248,11 +4249,11 @@ void SpawnOnePremium(int i, int plvl)
 		GetItemAttrs(0, itype, plvl);
 		GetItemBonus(0, itype, plvl >> 1, plvl, 1);
 	} while (item[0]._iIvalue > 140000);
-	premiumitem[i] = *item;
+	premiumitem[i] = item[0];
 	premiumitem[i]._iCreateInfo = plvl | 0x800;
 	premiumitem[i]._iIdentified = TRUE;
 	premiumitem[i]._iStatFlag = StoreStatOk(&premiumitem[i]);
-	*item = holditem;
+	item[0] = holditem;
 }
 
 void SpawnPremium(int lvl)
@@ -4373,15 +4374,15 @@ void SpawnWitch(int lvl)
 	int idata, maxlvl;
 
 	GetItemAttrs(0, IDI_MANA, 1);
-	witchitem[0] = *item;
+	witchitem[0] = item[0];
 	witchitem[0]._iCreateInfo = lvl;
 	witchitem[0]._iStatFlag = 1;
 	GetItemAttrs(0, IDI_FULLMANA, 1);
-	witchitem[1] = *item;
+	witchitem[1] = item[0];
 	witchitem[1]._iCreateInfo = lvl;
 	witchitem[1]._iStatFlag = 1;
 	GetItemAttrs(0, IDI_PORTAL, 1);
-	witchitem[2] = *item;
+	witchitem[2] = item[0];
 	witchitem[2]._iCreateInfo = lvl;
 	witchitem[2]._iStatFlag = 1;
 	iCnt = random(51, 8) + 10;
@@ -4400,7 +4401,7 @@ void SpawnWitch(int lvl)
 			if (maxlvl != -1)
 				GetItemBonus(0, idata, maxlvl >> 1, maxlvl, 1);
 		} while (item[0]._iIvalue > 140000);
-		witchitem[i] = *item;
+		witchitem[i] = item[0];
 		witchitem[i]._iCreateInfo = lvl | 0x2000;
 		witchitem[i]._iIdentified = TRUE;
 		WitchBookLevel(i);
@@ -4442,7 +4443,7 @@ void SpawnBoy(int lvl)
 			GetItemAttrs(0, itype, lvl);
 			GetItemBonus(0, itype, lvl, 2 * lvl, 1);
 		} while (item[0]._iIvalue > 90000);
-		boyitem = *item;
+		boyitem = item[0];
 		boyitem._iCreateInfo = lvl | 0x1000;
 		boyitem._iIdentified = TRUE;
 		boyitem._iStatFlag = StoreStatOk(&boyitem);
@@ -4600,7 +4601,7 @@ void SpawnHealer(int lvl)
 void SpawnStoreGold()
 {
 	GetItemAttrs(0, IDI_GOLD, 1);
-	golditem = *item;
+	golditem = item[0];
 	golditem._iStatFlag = 1;
 }
 
