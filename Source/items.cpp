@@ -4167,26 +4167,23 @@ void SortSmith()
 
 void SpawnSmith(int lvl)
 {
-	ItemStruct *holdItem;
-	int i, nsi, idata;
+	int i, iCnt;
 
-	nsi = random(50, 10) + 10;
-	for (i = 0; i < nsi; i++) {
-		holdItem = &smithitem[i];
+	iCnt = random(50, 10) + 10;
+	for (i = 0; i < iCnt; ++i) {
 		do {
 			item[0]._iSeed = GetRndSeed();
 			SetRndSeed(item[0]._iSeed);
-			idata = RndSmithItem(lvl) - 1;
-			GetItemAttrs(0, idata, lvl);
+			GetItemAttrs(0, RndSmithItem(lvl) - 1, lvl);
 		} while (item[0]._iIvalue > 140000);
-		qmemcpy(holdItem, item, sizeof(ItemStruct));
-		holdItem->_iCreateInfo = lvl | 0x400;
-		holdItem->_iIdentified = TRUE;
-		holdItem->_iStatFlag = StoreStatOk(holdItem);
+		smithitem[i] = *item;
+		smithitem[i]._iCreateInfo = lvl | 0x400;
+		smithitem[i]._iIdentified = 1;
+		smithitem[i]._iStatFlag = StoreStatOk(&smithitem[i]);
 	}
-	for (i = nsi; i < 20; i++) {
+	for (i = iCnt; i < 20; ++i)
 		smithitem[i]._itype = -1;
-	}
+
 	SortSmith();
 }
 
