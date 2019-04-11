@@ -799,14 +799,13 @@ int WeaponAutoPlace(int pnum)
 
 int SwapItem(ItemStruct *a, ItemStruct *b)
 {
-	int v2;       // eax
-	ItemStruct h; // [esp+8h] [ebp-170h]
+	ItemStruct h;
 
-	qmemcpy(&h, a, sizeof(h));
-	v2 = h._iCurs;
-	qmemcpy(a, b, sizeof(ItemStruct));
-	qmemcpy(b, &h, sizeof(ItemStruct));
-	return v2 + CURSOR_FIRSTITEM;
+	h = *a;
+	*a = *b;
+	*b = h;
+
+	return h._iCurs + CURSOR_FIRSTITEM;
 }
 
 void CheckInvPaste(int pnum, int mx, int my)
