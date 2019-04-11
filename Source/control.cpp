@@ -1593,39 +1593,29 @@ void CheckPanelInfo()
 
 void CheckBtnUp()
 {
-	signed int v0; // esi
-	int *v1;       // eax
-	int v2;        // edx
-	signed int v3; // eax
-	int v4;        // ecx
-	int v5;        // ecx
-	char v6;       // [esp+Fh] [ebp-1h]
+	int i;
+	char gamemenuOff;
 
-	v6 = 1;
+	gamemenuOff = 1;
 	drawbtnflag = 1;
 	panbtndown = 0;
-	v0 = 0;
-	do {
-		v1 = &panbtn[v0];
-		if (*v1) {
-			v2 = MouseX;
-			*v1 = 0;
-			v3 = v0;
-			v4 = PanBtnPos[v0][0];
-			if (v2 >= v4 && v2 <= v4 + PanBtnPos[v3][2]) {
-				v5 = PanBtnPos[v3][1];
-				if (MouseY >= v5 && MouseY <= v5 + PanBtnPos[v3][3]) {
-					switch (v0) {
+
+	for (i = 0; i < 8; i++) {
+		if (panbtn[i]) {
+			panbtn[i] = 0;
+			if (MouseX >= PanBtnPos[i][0] && MouseX <= PanBtnPos[i][0] + PanBtnPos[i][2]) {
+				if (MouseY >= PanBtnPos[i][1] && MouseY <= PanBtnPos[i][1] + PanBtnPos[i][3]) {
+					switch (i) {
 					case PANBTN_CHARINFO:
 						questlog = 0;
 						chrflag = chrflag == 0;
 						break;
 					case PANBTN_QLOG:
 						chrflag = 0;
-						if (questlog)
-							questlog = 0;
-						else
+						if (!questlog)
 							StartQuestlog();
+						else
+							questlog = 0;
 						break;
 					case PANBTN_AUTOMAP:
 						DoAutoMap();
@@ -1633,7 +1623,7 @@ void CheckBtnUp()
 					case PANBTN_MAINMENU:
 						qtextflag = FALSE;
 						gamemenu_handle_previous();
-						v6 = 0;
+						gamemenuOff = 0;
 						break;
 					case PANBTN_INVENTORY:
 						sbookflag = 0;
@@ -1660,13 +1650,15 @@ void CheckBtnUp()
 					case PANBTN_FRIENDLY:
 						FriendlyMode = FriendlyMode == 0;
 						break;
+					default:
+						break;
 					}
 				}
 			}
 		}
-		++v0;
-	} while (v0 < 8);
-	if (v6)
+	}
+
+	if (gamemenuOff)
 		gamemenu_off();
 }
 // 484368: using guessed type int FriendlyMode;
