@@ -1629,14 +1629,14 @@ void CheckBtnUp()
 						sbookflag = 0;
 						invflag = invflag == 0;
 						if (dropGoldFlag) {
-							dropGoldFlag = 0;
+							dropGoldFlag = FALSE;
 							dropGoldValue = 0;
 						}
 						break;
 					case PANBTN_SPELLBOOK:
 						invflag = 0;
 						if (dropGoldFlag) {
-							dropGoldFlag = 0;
+							dropGoldFlag = FALSE;
 							dropGoldValue = 0;
 						}
 						sbookflag = sbookflag == 0;
