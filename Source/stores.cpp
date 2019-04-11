@@ -1603,10 +1603,11 @@ BOOL IdItemOk(ItemStruct *i)
 
 void AddStoreHoldId(ItemStruct itm, int i)
 {
-	qmemcpy(&storehold[storenumh], &itm, sizeof(ItemStruct));
+	storehold[storenumh] = itm;
 	storehold[storenumh]._ivalue = 100;
 	storehold[storenumh]._iIvalue = 100;
-	storehidx[storenumh++] = i;
+	storehidx[storenumh] = i;
+	storenumh++;
 }
 // 69F108: using guessed type int stextup;
 // 69F10C: using guessed type int storenumh;
