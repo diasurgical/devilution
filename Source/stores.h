@@ -65,7 +65,7 @@ void AddStoreHoldRepair(ItemStruct *itm, int i);
 void S_StartWitch();
 void S_ScrollWBuy(int idx);
 void S_StartWBuy();
-BOOLEAN WitchSellOk(int i);
+BOOL WitchSellOk(int i);
 void S_StartWSell();
 BOOL WitchRechargeOk(int i);
 void AddStoreHoldRecharge(ItemStruct itm, int i);

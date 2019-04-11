@@ -1273,7 +1273,7 @@ void ProcessVisionList()
 				if (VisionList[i]._ldel) {
 					numvision--;
 					if (numvision > 0 && i != numvision) {
-						qmemcpy(&VisionList[i], &VisionList[numvision], sizeof(LightListStruct)); /* check */
+						VisionList[i] = VisionList[numvision];
 					}
 					delflag = TRUE;
 				}

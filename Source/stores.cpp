@@ -904,9 +904,9 @@ void S_StartSSell()
 		AddSText(0, 22, 1, "Back", COL_WHITE, 1);
 		OffsetSTextY(22, 6);
 	} else {
-		stextsmax = plr[myplr]._pNumInv;
 		stextscrl = 1;
 		stextsval = 0;
+		stextsmax = plr[myplr]._pNumInv;
 		sprintf(tempstr, "Which item is for sale?            Your gold : %i", plr[myplr]._pGold);
 		AddSText(0, 1, 1, tempstr, COL_GOLD, 0);
 		AddSLine(3);
@@ -1147,36 +1147,36 @@ void S_StartWBuy()
 // 6A09E4: using guessed type int stextsmax;
 // 6A6BB8: using guessed type int stextscrl;
 
-BOOLEAN WitchSellOk(int i)
+BOOL WitchSellOk(int i)
 {
-	BOOLEAN rv;     // al
-	ItemStruct *pI; // edx
+	BOOL rv;
+	ItemStruct *pI;
 
-	rv = 0;
+	rv = FALSE;
 
-	if (i < 0)
-		pI = &plr[myplr].SpdList[~i]; // -(i+1)
-	else
+	if (i >= 0)
 		pI = &plr[myplr].InvList[i];
+	else
+		pI = &plr[myplr].SpdList[-(i+1)];
 
 	if (pI->_itype == ITYPE_MISC)
-		rv = 1;
+		rv = TRUE;
 	if (pI->_itype == ITYPE_STAFF)
-		rv = 1;
+		rv = TRUE;
 	if (pI->IDidx >= IDI_FIRSTQUEST && pI->IDidx <= IDI_LASTQUEST)
-		rv = 0;
+		rv = FALSE;
 	if (pI->IDidx == IDI_LAZSTAFF)
-		rv = 0;
+		rv = FALSE;
 	return rv;
 }
 
 void S_StartWSell()
 {
-	int i;          // eax
-	BOOLEAN sellok; // [esp+18h] [ebp-8h]
+	int i;
+	BOOL sellok;
 
 	stextsize = 1;
-	sellok = 0;
+	sellok = FALSE;
 	storenumh = 0;
 
 	for (i = 0; i < 48; i++)
@@ -1184,8 +1184,8 @@ void S_StartWSell()
 
 	for (i = 0; i < plr[myplr]._pNumInv; i++) {
 		if (WitchSellOk(i)) {
-			sellok = 1;
-			qmemcpy(&storehold[storenumh], &plr[myplr].InvList[i], sizeof(ItemStruct));
+			sellok = TRUE;
+			storehold[storenumh] = plr[myplr].InvList[i];
 
 			if (storehold[storenumh]._iMagical != ITEM_QUALITY_NORMAL && storehold[storenumh]._iIdentified)
 				storehold[storenumh]._ivalue = storehold[storenumh]._iIvalue;
@@ -1199,9 +1199,9 @@ void S_StartWSell()
 	}
 
 	for (i = 0; i < MAXBELTITEMS; i++) {
-		if (plr[myplr].SpdList[i]._itype != -1 && WitchSellOk(~i)) {
-			sellok = 1;
-			qmemcpy(&storehold[storenumh], &plr[myplr].SpdList[i], sizeof(ItemStruct));
+		if (plr[myplr].SpdList[i]._itype != -1 && WitchSellOk(-(i+1))) {
+			sellok = TRUE;
+			storehold[storenumh] = plr[myplr].SpdList[i];
 
 			if (storehold[storenumh]._iMagical != ITEM_QUALITY_NORMAL && storehold[storenumh]._iIdentified)
 				storehold[storenumh]._ivalue = storehold[storenumh]._iIvalue;
@@ -1210,11 +1210,19 @@ void S_StartWSell()
 				storehold[storenumh]._ivalue = 1;
 
 			storehold[storenumh]._iIvalue = storehold[storenumh]._ivalue;
-			storehidx[storenumh++] = ~i;
+			storehidx[storenumh++] = -(i+1);
 		}
 	}
 
-	if (sellok) {
+	if (!sellok) {
+		stextscrl = 0;
+		sprintf(tempstr, "You have nothing I want.            Your gold : %i", plr[myplr]._pGold);
+		AddSText(0, 1, 1, tempstr, COL_GOLD, 0);
+		AddSLine(3);
+		AddSLine(21);
+		AddSText(0, 22, 1, "Back", COL_WHITE, 1);
+		OffsetSTextY(22, 6);
+	} else {
 		stextscrl = 1;
 		stextsval = 0;
 		stextsmax = plr[myplr]._pNumInv;
@@ -1223,16 +1231,9 @@ void S_StartWSell()
 		AddSLine(3);
 		AddSLine(21);
 		S_ScrollSSell(stextsval);
-	} else {
-		stextscrl = 0;
-		sprintf(tempstr, "You have nothing I want.            Your gold : %i", plr[myplr]._pGold);
-		AddSText(0, 1, 1, tempstr, COL_GOLD, 0);
-		AddSLine(3);
-		AddSLine(21);
+		AddSText(0, 22, 1, "Back", COL_WHITE, 1);
+		OffsetSTextY(22, 6);
 	}
-
-	AddSText(0, 22, 1, "Back", COL_WHITE, 1);
-	OffsetSTextY(22, 6);
 }
 // 69F10C: using guessed type int storenumh;
 // 6A09E0: using guessed type char stextsize;
