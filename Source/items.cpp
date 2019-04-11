@@ -4170,7 +4170,7 @@ void SpawnSmith(int lvl)
 	int i, iCnt;
 
 	iCnt = random(50, 10) + 10;
-	for (i = 0; i < iCnt; ++i) {
+	for (i = 0; i < iCnt; i++) {
 		do {
 			item[0]._iSeed = GetRndSeed();
 			SetRndSeed(item[0]._iSeed);
@@ -4181,7 +4181,7 @@ void SpawnSmith(int lvl)
 		smithitem[i]._iIdentified = 1;
 		smithitem[i]._iStatFlag = StoreStatOk(&smithitem[i]);
 	}
-	for (i = iCnt; i < 20; ++i)
+	for (i = iCnt; i < 20; i++)
 		smithitem[i]._itype = -1;
 
 	SortSmith();
@@ -4369,60 +4369,47 @@ void WitchBookLevel(int ii)
 
 void SpawnWitch(int lvl)
 {
-	int v2;          // ebp
-	int itype;       // esi
-	int iblvl;       // eax
-	signed int ii;   // [esp+10h] [ebp-8h]
-	ItemStruct *itm; // [esp+14h] [ebp-4h]
+	int i, iCnt;
+	int idata, maxlvl;
 
 	GetItemAttrs(0, IDI_MANA, 1);
-	qmemcpy(witchitem, item, sizeof(ItemStruct));
+	witchitem[0] = *item;
 	witchitem[0]._iCreateInfo = lvl;
 	witchitem[0]._iStatFlag = 1;
 	GetItemAttrs(0, IDI_FULLMANA, 1);
-	qmemcpy(&witchitem[1], item, sizeof(ItemStruct));
+	witchitem[1] = *item;
 	witchitem[1]._iCreateInfo = lvl;
 	witchitem[1]._iStatFlag = 1;
 	GetItemAttrs(0, IDI_PORTAL, 1);
-	qmemcpy(&witchitem[2], item, sizeof(ItemStruct));
+	witchitem[2] = *item;
 	witchitem[2]._iCreateInfo = lvl;
 	witchitem[2]._iStatFlag = 1;
-	v2 = random(51, 8) + 10;
-	ii = 3;
-	if (v2 > 3) {
-		itm = &witchitem[3];
-		while (1) {
+	iCnt = random(51, 8) + 10;
+
+	for (i = 3; i < iCnt; i++) {
+		do {
 			item[0]._iSeed = GetRndSeed();
 			SetRndSeed(item[0]._iSeed);
-			itype = RndWitchItem(lvl) - 1;
-			GetItemAttrs(0, itype, lvl);
-			if (random(51, 100) > 5 || (iblvl = 2 * lvl, iblvl == -1)) {
-				if (item[0]._iMiscId != IMISC_STAFF)
-					continue;
-				iblvl = 2 * lvl;
-				if (iblvl == -1)
-					continue;
-			}
-			GetItemBonus(0, itype, iblvl >> 1, iblvl, 1);
-			if (item[0]._iIvalue <= 140000) {
-				qmemcpy(itm, item, sizeof(ItemStruct));
-				itm->_iIdentified = TRUE;
-				itm->_iCreateInfo = lvl | 0x2000;
-				WitchBookLevel(ii);
-				++ii;
-				itm->_iStatFlag = StoreStatOk(itm);
-				++itm;
-				if (ii >= v2)
-					break;
-			}
-		}
+			idata = RndWitchItem(lvl) - 1;
+			GetItemAttrs(0, idata, lvl);
+			maxlvl = -1;
+			if (random(51, 100) <= 5)
+				maxlvl = 2 * lvl;
+			if (maxlvl == -1 && item[0]._iMiscId == IMISC_STAFF)
+				maxlvl = 2 * lvl;
+			if (maxlvl != -1)
+				GetItemBonus(0, idata, maxlvl >> 1, maxlvl, 1);
+		} while (item[0]._iIvalue > 140000);
+		witchitem[i] = *item;
+		witchitem[i]._iCreateInfo = lvl | 0x2000;
+		witchitem[i]._iIdentified = TRUE;
+		WitchBookLevel(i);
+		witchitem[i]._iStatFlag = StoreStatOk(&witchitem[i]);
 	}
-	if (v2 < 20) {
-		do {
-			witchitem[v2]._itype = -1;
-			v2++;
-		} while (v2 < 20);
-	}
+
+	for (i = iCnt; i < 20; i++)
+		witchitem[i]._itype = -1;
+
 	SortWitch();
 }
 
