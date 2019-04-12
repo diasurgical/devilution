@@ -595,28 +595,17 @@ void SetSpell()
 
 void SetSpeedSpell(int slot)
 {
-	int v1;        // esi
-	signed int v3; // ebp
-	int v5;        // ebx
-	int *v6;       // edi
+	int i;
 
-	v1 = pSpell;
 	if (pSpell != -1) {
-		v3 = 0;
-		v5 = pSplType;
-		v6 = plr[myplr]._pSplHotKey;
-		do {
-			if (*v6 == v1 && plr[myplr]._pSplTHotKey[v3] == v5)
-				*v6 = -1;
-			++v3;
-			++v6;
-		} while (v3 < 4);
-		plr[myplr]._pSplHotKey[slot] = v1;
-		plr[myplr]._pSplTHotKey[slot] = v5;
+		for (i = 0; i < 4; ++i) {
+			if (plr[myplr]._pSplHotKey[i] == pSpell && plr[myplr]._pSplTHotKey[i] == pSplType)
+				plr[myplr]._pSplHotKey[i] = -1;
+		}
+		plr[myplr]._pSplHotKey[slot] = pSpell;
+		plr[myplr]._pSplTHotKey[slot] = pSplType;
 	}
 }
-// 4B8834: using guessed type int pSpell;
-// 4B8954: using guessed type int pSplType;
 
 void ToggleSpell(int slot)
 {
