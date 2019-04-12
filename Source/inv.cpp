@@ -499,7 +499,7 @@ BOOL AutoPlace(int pnum, int ii, int sx, int sy, int saveflag)
 			if (ii % 10 < 0)
 				xx = 0;
 			for (j = 0; j < sx; j++) {
-				if (j || i != sy - 1)
+				if (j != 0 || i != sy - 1)
 					plr[pnum].InvGrid[xx + yy] = -plr[pnum]._pNumInv;
 				else
 					plr[pnum].InvGrid[xx + yy] = plr[pnum]._pNumInv;
