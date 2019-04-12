@@ -496,7 +496,7 @@ BOOL AutoPlace(int pnum, int ii, int sx, int sy, int saveflag)
 			yy = 0;
 		for (i = 0; i < sy; i++) {
 			xx = ii % 10;
-			if (ii % 10 < 0)
+			if (xx < 0)
 				xx = 0;
 			for (j = 0; j < sx; j++) {
 				if (j != 0 || i != sy - 1)
