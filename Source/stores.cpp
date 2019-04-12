@@ -2685,42 +2685,29 @@ void S_SRepairEnter()
 
 void S_WitchEnter()
 {
-	int v0; // ecx
-
-	v0 = 12;
-	if (stextsel == 12) {
+	switch (stextsel) {
+	case 12:
 		stextlhold = 12;
 		talker = 6;
 		stextshold = 5;
 		gossipstart = QUEST_ADRIA2;
 		gossipend = QUEST_ADRIA13;
-		_LOBYTE(v0) = STORE_GOSSIP;
-		goto LABEL_12;
-	}
-	v0 = 2;
-	switch (stextsel) {
+		StartStore(STORE_GOSSIP);
+		return;
 	case 14:
-		_LOBYTE(v0) = STORE_WBUY;
-		goto LABEL_12;
+		StartStore(STORE_WBUY);
+		return;
 	case 16:
-		_LOBYTE(v0) = STORE_WSELL;
-		goto LABEL_12;
+		StartStore(STORE_WSELL);
+		return;
 	case 18:
-		_LOBYTE(v0) = STORE_WRECHARGE;
-	LABEL_12:
-		StartStore(v0);
+		StartStore(STORE_WRECHARGE);
 		return;
 	case 20:
 		stextflag = STORE_NONE;
 		break;
 	}
 }
-// 69F110: using guessed type int stextlhold;
-// 69FB38: using guessed type int talker;
-// 6A4EF0: using guessed type int gossipstart;
-// 6A8A28: using guessed type int stextsel;
-// 6A8A30: using guessed type int gossipend;
-// 6AA705: using guessed type char stextflag;
 
 void WitchBuyItem()
 {
