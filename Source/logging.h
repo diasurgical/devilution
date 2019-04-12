@@ -10,7 +10,7 @@ extern DWORD nNumberOfBytesToWrite; // idb
 void log_init_mutex();
 void j_log_cleanup_mutex();
 void __cdecl log_cleanup_mutex(void);
-void __cdecl log_flush(BOOLEAN force_close);
+void __cdecl log_flush(BOOL force_close);
 HANDLE log_create(); // should be HANDLE
 void log_get_version(VS_FIXEDFILEINFO *file_info);
 void __cdecl log_printf(const char *pszFmt, ...); // LogMessage

@@ -41,28 +41,26 @@ void __cdecl log_cleanup_mutex(void)
 	DeleteCriticalSection(&sgMemCrit);
 }
 
-void __cdecl log_flush(BOOLEAN force_close)
+void __cdecl log_flush(BOOL force_close)
 {
-	HANDLE v1;                  // eax
-	DWORD NumberOfBytesWritten; // [esp+8h] [ebp-4h]
+	DWORD NumberOfBytesWritten;
 
 	EnterCriticalSection(&sgMemCrit);
 	if (nNumberOfBytesToWrite) {
-		if (log_file == (HANDLE)-1) {
-			v1 = log_create();
-			log_file = v1;
-			if (v1 == (HANDLE)-1) {
+		if (log_file == INVALID_HANDLE_VALUE) {
+			log_file = log_create();
+			if (log_file == INVALID_HANDLE_VALUE) {
 				nNumberOfBytesToWrite = 0;
 				return;
 			}
-			SetFilePointer(v1, 0, NULL, FILE_END);
+			SetFilePointer(log_file, 0, NULL, FILE_END);
 		}
 		WriteFile(log_file, lpAddress, nNumberOfBytesToWrite, &NumberOfBytesWritten, 0);
 		nNumberOfBytesToWrite = 0;
 	}
-	if (force_close && log_file != (HANDLE)-1) {
+	if (force_close && log_file != INVALID_HANDLE_VALUE) {
 		CloseHandle(log_file);
-		log_file = (HANDLE)-1;
+		log_file = INVALID_HANDLE_VALUE;
 	}
 	LeaveCriticalSection(&sgMemCrit);
 }
