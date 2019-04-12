@@ -775,14 +775,10 @@ int WeaponAutoPlace(int pnum)
 			plr[pnum].InvBody[INVLOC_HAND_RIGHT] = plr[pnum].HoldItem;
 			return TRUE;
 		}
-	} else {
-		if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_NONE) {
-			NetSendCmdChItem(TRUE, INVLOC_HAND_LEFT);
-			plr[pnum].InvBody[INVLOC_HAND_LEFT] = plr[pnum].HoldItem;
-			return TRUE;
-		} else {
-			return FALSE;
-		}
+	} else if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_NONE) {
+		NetSendCmdChItem(TRUE, INVLOC_HAND_LEFT);
+		plr[pnum].InvBody[INVLOC_HAND_LEFT] = plr[pnum].HoldItem;
+		return TRUE;
 	}
 
 	return FALSE;
