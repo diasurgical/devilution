@@ -1392,40 +1392,22 @@ void DoSpeedBook()
 
 void DoPanBtn()
 {
-	int v0;      // edx
-	int v1;      // ebx
-	int v2;      // edi
-	int v3;      // esi
-	int(*v4)[5]; // eax
-	int v5;      // ecx
+	int i;
 
-	v0 = MouseX;
-	v1 = MouseY;
-	v2 = numpanbtns;
-	v3 = 0;
-	if (numpanbtns > 0) {
-		v4 = PanBtnPos;
-		do {
-			if (v0 >= (*v4)[0] && v0 <= (*v4)[0] + (*v4)[2]) {
-				v5 = (*v4)[1];
-				if (v1 >= v5 && v1 <= v5 + (*v4)[3]) {
-					panbtn[v3] = 1;
-					drawbtnflag = 1;
-					panbtndown = 1;
-				}
+	for (i = 0; i < numpanbtns; i++) {
+		if (MouseX >= PanBtnPos[i][0] && MouseX <= PanBtnPos[i][0] + PanBtnPos[i][2]) {
+			if (MouseY >= PanBtnPos[i][1] && MouseY <= PanBtnPos[i][1] + PanBtnPos[i][3]) {
+				panbtn[i] = 1;
+				drawbtnflag = 1;
+				panbtndown = 1;
 			}
-			++v3;
-			++v4;
-		} while (v3 < v2);
+		}
 	}
-	if (!spselflag && v0 >= 565 && v0 < 621 && v1 >= 416 && v1 < 472) {
+	if (!spselflag && MouseX >= 565 && MouseX < 621 && MouseY >= 416 && MouseY < 472) {
 		DoSpeedBook();
 		gamemenu_off();
 	}
 }
-// 4B8A7C: using guessed type int numpanbtns;
-// 4B8C90: using guessed type int panbtndown;
-// 4B8C98: using guessed type int spselflag;
 
 void control_set_button_down(int btn_id)
 {
