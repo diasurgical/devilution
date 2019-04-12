@@ -463,7 +463,7 @@ void DrawInvBelt()
 // 4B8960: using guessed type int talkflag;
 // 4B8CB8: using guessed type char pcursinvitem;
 
-int AutoPlace(int pnum, int ii, int sx, int sy, int saveflag)
+BOOL AutoPlace(int pnum, int ii, int sx, int sy, int saveflag)
 {
 	int i, j, xx, yy;
 	BOOL done;
