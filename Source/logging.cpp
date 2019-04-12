@@ -47,9 +47,9 @@ void __cdecl log_flush(BOOL force_close)
 
 	EnterCriticalSection(&sgMemCrit);
 	if (nNumberOfBytesToWrite) {
-		if (log_file == (HANDLE)-1) {
+		if (log_file == INVALID_HANDLE_VALUE) {
 			log_file = log_create();
-			if (log_file == (HANDLE)-1) {
+			if (log_file == INVALID_HANDLE_VALUE) {
 				nNumberOfBytesToWrite = 0;
 				return;
 			}
@@ -58,9 +58,9 @@ void __cdecl log_flush(BOOL force_close)
 		WriteFile(log_file, lpAddress, nNumberOfBytesToWrite, &NumberOfBytesWritten, 0);
 		nNumberOfBytesToWrite = 0;
 	}
-	if (force_close && log_file != (HANDLE)-1) {
+	if (force_close && log_file != INVALID_HANDLE_VALUE) {
 		CloseHandle(log_file);
-		log_file = (HANDLE)-1;
+		log_file = INVALID_HANDLE_VALUE;
 	}
 	LeaveCriticalSection(&sgMemCrit);
 }
