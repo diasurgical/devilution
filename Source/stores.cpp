@@ -656,9 +656,9 @@ void PrintStoreItem(ItemStruct *x, int l, char iclr)
 	if (sstr[0])
 		AddSText(40, y++, 0, sstr, iclr, 0);
 	sstr[0] = 0;
-	if (v3->_iClass == 1)
+	if (v3->_iClass == ICLASS_WEAPON)
 		sprintf(sstr, "Damage: %i-%i  ", v3->_iMinDam, v3->_iMaxDam);
-	if (v3->_iClass == 2)
+	if (v3->_iClass == ICLASS_ARMOR)
 		sprintf(sstr, "Armor: %i  ", v3->_iAC);
 	v7 = v3->_iMaxDur;
 	if (v7 != 255 && v7) {

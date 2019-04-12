@@ -3812,14 +3812,14 @@ void PrintItemMisc(ItemStruct *x)
 
 void PrintItemDetails(ItemStruct *x)
 {
-	if (x->_iClass == 1) {
+	if (x->_iClass == ICLASS_WEAPON) {
 		if (x->_iMaxDur == 255)
 			sprintf(tempstr, "damage: %i-%i  Indestructible", x->_iMinDam, x->_iMaxDam);
 		else
 			sprintf(tempstr, "damage: %i-%i  Dur: %i/%i", x->_iMinDam, x->_iMaxDam, x->_iDurability, x->_iMaxDur);
 		AddPanelString(tempstr, 1);
 	}
-	if (x->_iClass == 2) {
+	if (x->_iClass == ICLASS_ARMOR) {
 		if (x->_iMaxDur == 255)
 			sprintf(tempstr, "armor: %i  Indestructible", x->_iAC);
 		else
@@ -3867,7 +3867,7 @@ void PrintItemDur(ItemStruct *x)
 	char v5;          // al
 
 	v1 = x;
-	if (x->_iClass == 1) {
+	if (x->_iClass == ICLASS_WEAPON) {
 		if (x->_iMaxDur == 255)
 			sprintf(tempstr, "damage: %i-%i  Indestructible", x->_iMinDam, x->_iMaxDam);
 		else
@@ -3880,7 +3880,7 @@ void PrintItemDur(ItemStruct *x)
 		if (v1->_iMagical != ITEM_QUALITY_NORMAL)
 			AddPanelString("Not Identified", 1);
 	}
-	if (v1->_iClass == 2) {
+	if (v1->_iClass == ICLASS_ARMOR) {
 		if (v1->_iMaxDur == 255)
 			sprintf(tempstr, "armor: %i  Indestructible", v1->_iAC);
 		else

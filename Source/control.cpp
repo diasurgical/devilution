@@ -2387,7 +2387,7 @@ int DrawDurIcon4Item(ItemStruct *pItem, int x, int c)
 		return x;
 	v7 = c;
 	if (!c) {
-		if (pItem->_iClass != 1) {
+		if (pItem->_iClass != ICLASS_WEAPON) {
 			v7 = 1;
 			goto LABEL_18;
 		}

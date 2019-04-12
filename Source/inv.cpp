@@ -1821,7 +1821,7 @@ void AutoGetItem(int pnum, int ii)
 			v4 = 0;
 			if (((plr[v3]._pgfxnum & 0xF) == ANIM_ID_UNARMED || (plr[v3]._pgfxnum & 0xF) == ANIM_ID_UNARMED_SHIELD) && plr[v3]._pmode <= PM_WALK3) {
 				if (plr[v3].HoldItem._iStatFlag) {
-					if (plr[v3].HoldItem._iClass == 1) {
+					if (plr[v3].HoldItem._iClass == ICLASS_WEAPON) {
 						v4 = WeaponAutoPlace(v2);
 						if (v4) {
 							CalcPlrInv(v2, TRUE);
