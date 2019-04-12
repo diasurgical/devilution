@@ -12,7 +12,7 @@ void DrawInv();
 void DrawInvBelt();
 int AutoPlace(int pnum, int ii, int sx, int sy, int saveflag);
 int SpecialAutoPlace(int pnum, int ii, int sx, int sy, int saveflag);
-int GoldAutoPlace(int pnum);
+BOOL GoldAutoPlace(int pnum);
 int WeaponAutoPlace(int pnum);
 int SwapItem(ItemStruct *a, ItemStruct *b);
 void CheckInvPaste(int pnum, int mx, int my);
