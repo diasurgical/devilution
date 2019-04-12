@@ -2964,7 +2964,7 @@ void control_release_talk_btn()
 				++v2;
 			} while (v2 < 4);
 			if (v2 <= 4)
-				tempstr[v2 + 255] = tempstr[v2 + 255] == 0;
+				byte_4B894C[v2 - 1] = byte_4B894C[v2 - 1] == 0;
 		}
 	}
 }
