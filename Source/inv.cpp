@@ -760,53 +760,39 @@ int GoldAutoPlace(int pnum)
 
 int WeaponAutoPlace(int pnum)
 {
-	int v1;         // edi
-	int v2;         // eax
-	int v3;         // ecx
-	ItemStruct *v4; // esi
-	ItemStruct *v5; // edi
-	int result;     // eax
+	if (plr[pnum].HoldItem._iLoc != ILOC_TWOHAND) {
+		if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iClass == ICLASS_WEAPON)
+			return FALSE;
+		if (plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype != ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iClass == ICLASS_WEAPON)
+			return FALSE;
+		if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_NONE) {
+			NetSendCmdChItem(TRUE, INVLOC_HAND_LEFT);
+			plr[pnum].InvBody[INVLOC_HAND_LEFT] = plr[pnum].HoldItem;
+			return TRUE;
+		}
+		if (plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iLoc != ILOC_TWOHAND) {
+			NetSendCmdChItem(TRUE, INVLOC_HAND_RIGHT);
+			plr[pnum].InvBody[INVLOC_HAND_RIGHT] = plr[pnum].HoldItem;
+			return TRUE;
+		}
+	} else if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_NONE) {
+		NetSendCmdChItem(TRUE, INVLOC_HAND_LEFT);
+		plr[pnum].InvBody[INVLOC_HAND_LEFT] = plr[pnum].HoldItem;
+		return TRUE;
+	}
 
-	v1 = pnum;
-	if (plr[pnum].HoldItem._iLoc == ILOC_TWOHAND) {
-		if (plr[v1].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE || plr[v1].InvBody[INVLOC_HAND_RIGHT]._itype != ITYPE_NONE)
-			return 0;
-	LABEL_12:
-		NetSendCmdChItem(TRUE, 4u);
-		v4 = &plr[v1].HoldItem;
-		v5 = &plr[v1].InvBody[INVLOC_HAND_LEFT];
-		goto LABEL_13;
-	}
-	v2 = plr[v1].InvBody[INVLOC_HAND_LEFT]._itype;
-	if (v2 != ITYPE_NONE && plr[v1].InvBody[INVLOC_HAND_LEFT]._iClass == 1)
-		return 0;
-	v3 = plr[v1].InvBody[INVLOC_HAND_RIGHT]._itype;
-	if (v3 != ITYPE_NONE && plr[v1].InvBody[INVLOC_HAND_RIGHT]._iClass == 1)
-		return 0;
-	if (v2 == ITYPE_NONE)
-		goto LABEL_12;
-	if (v3 == ITYPE_NONE && plr[v1].InvBody[INVLOC_HAND_LEFT]._iLoc != ILOC_TWOHAND) {
-		NetSendCmdChItem(TRUE, 5u);
-		v4 = &plr[v1].HoldItem;
-		v5 = &plr[v1].InvBody[INVLOC_HAND_RIGHT];
-	LABEL_13:
-		result = 1;
-		qmemcpy(v5, v4, sizeof(ItemStruct));
-		return result;
-	}
-	return 0;
+	return FALSE;
 }
 
 int SwapItem(ItemStruct *a, ItemStruct *b)
 {
-	int v2;       // eax
-	ItemStruct h; // [esp+8h] [ebp-170h]
+	ItemStruct h;
 
-	qmemcpy(&h, a, sizeof(h));
-	v2 = h._iCurs;
-	qmemcpy(a, b, sizeof(ItemStruct));
-	qmemcpy(b, &h, sizeof(ItemStruct));
-	return v2 + CURSOR_FIRSTITEM;
+	h = *a;
+	*a = *b;
+	*b = h;
+
+	return h._iCurs + CURSOR_FIRSTITEM;
 }
 
 void CheckInvPaste(int pnum, int mx, int my)
@@ -1753,42 +1739,33 @@ void CheckQuestItem(int pnum)
 
 void InvGetItem(int pnum, int ii)
 {
-	int v2;    // ebp
-	int v3;    // edx
-	int v4;    // ecx
-	int v5;    // ecx
-	int pnuma; // [esp+4h] [ebp-8h]
-	int v7;    // [esp+8h] [ebp-4h]
+	int i;
 
-	v7 = ii;
-	pnuma = pnum;
 	if (dropGoldFlag) {
 		dropGoldFlag = FALSE;
 		dropGoldValue = 0;
 	}
-	v2 = ii;
+
 	if (dItem[item[ii]._ix][item[ii]._iy]) {
 		if (myplr == pnum && pcurs >= CURSOR_FIRSTITEM)
 			NetSendCmdPItem(TRUE, CMD_SYNCPUTITEM, plr[myplr].WorldX, plr[myplr].WorldY);
-		_HIBYTE(item[v2]._iCreateInfo) &= 0x7Fu;
-		qmemcpy(&plr[pnuma].HoldItem, &item[v2], sizeof(plr[pnuma].HoldItem));
-		CheckQuestItem(pnuma);
-		CheckBookLevel(pnuma);
-		CheckItemStats(pnuma);
-		v3 = 0;
-		dItem[item[v2]._ix][item[v2]._iy] = 0;
-		while (v3 < numitems) {
-			v4 = itemactive[v3];
-			if (v4 == v7) {
-				DeleteItem(v4, v3);
-				v3 = 0;
+		item[ii]._iCreateInfo &= ~0x8000;
+		plr[pnum].HoldItem = item[ii];
+		CheckQuestItem(pnum);
+		CheckBookLevel(pnum);
+		CheckItemStats(pnum);
+		dItem[item[ii]._ix][item[ii]._iy] = 0;
+		i = 0;
+		while (i < numitems) {
+			if (itemactive[i] == ii) {
+				DeleteItem(itemactive[i], i);
+				i = 0;
 			} else {
-				++v3;
+				i++;
 			}
 		}
-		v5 = plr[pnuma].HoldItem._iCurs;
 		pcursitem = -1;
-		SetCursor_(v5 + CURSOR_FIRSTITEM);
+		SetCursor_(plr[pnum].HoldItem._iCurs + CURSOR_FIRSTITEM);
 	}
 }
 // 4B8CC0: using guessed type char pcursitem;
