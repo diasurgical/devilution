@@ -483,7 +483,7 @@ BOOL AutoPlace(int pnum, int ii, int sx, int sy, int saveflag)
 		}
 		for (i = 0; i < sx && done; i++) {
 			if (xx < 10) {
-				done = plr[pnum].InvGrid[yy + xx] == 0;
+				done = plr[pnum].InvGrid[xx + yy] == 0;
 			} else {
 				done = FALSE;
 			}
@@ -505,9 +505,9 @@ BOOL AutoPlace(int pnum, int ii, int sx, int sy, int saveflag)
 			}
 			for (i = 0; i < sx; i++) {
 				if (i != 0 || j != sy - 1) {
-					plr[pnum].InvGrid[yy + xx] = -plr[pnum]._pNumInv;
+					plr[pnum].InvGrid[xx + yy] = -plr[pnum]._pNumInv;
 				} else {
-					plr[pnum].InvGrid[yy + xx] = plr[pnum]._pNumInv;
+					plr[pnum].InvGrid[xx + yy] = plr[pnum]._pNumInv;
 				}
 				xx++;
 			}
