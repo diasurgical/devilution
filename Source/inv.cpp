@@ -463,90 +463,54 @@ void DrawInvBelt()
 // 4B8960: using guessed type int talkflag;
 // 4B8CB8: using guessed type char pcursinvitem;
 
-int AutoPlace(int pnum, int ii, int sx, int sy, int saveflag)
+BOOL AutoPlace(int pnum, int ii, int sx, int sy, int saveflag)
 {
-	__int64 v5;     // rax
-	int v6;         // ebx
-	signed int v7;  // edx
-	signed int v8;  // eax
-	signed int v9;  // esi
-	int j;          // edi
-	int v11;        // eax
-	signed int v12; // esi
-	signed int v13; // ecx
-	int v14;        // edi
-	char *v15;      // ecx
-	char v16;       // dl
-	signed int v18; // [esp+Ch] [ebp-Ch]
-	int p;          // [esp+10h] [ebp-8h]
-	int v20;        // [esp+14h] [ebp-4h]
-	int i;          // [esp+14h] [ebp-4h]
+	int xx, yy;
+	int i, j;
+	BOOL done;
 
-	p = pnum;
-	v5 = ii;
-	v6 = 1;
-	v18 = v5 % 10;
-	v7 = 10 * (unsigned __int64)(v5 / 10);
-	v8 = v7;
-	if (v7 < 0)
-		v8 = 0;
-	v20 = 0;
-	if (sy <= 0) {
-	LABEL_16:
-		if (saveflag) {
-			v11 = pnum;
-			qmemcpy(
-			    &plr[pnum].InvList[plr[pnum]._pNumInv],
-			    &plr[pnum].HoldItem,
-			    sizeof(plr[pnum].InvList[plr[pnum]._pNumInv]));
-			++plr[v11]._pNumInv;
-			v12 = v7;
-			if (v7 < 0)
-				v12 = 0;
-			for (i = 0; i < sy; ++i) {
-				v13 = v18;
-				if (v18 < 0)
-					v13 = 0;
-				v14 = 0;
-				if (sx > 0) {
-					v15 = &plr[v11].InvGrid[v13 + v12];
-					do {
-						if (v14 || i != sy - 1)
-							v16 = -_LOBYTE(plr[v11]._pNumInv);
-						else
-							v16 = plr[v11]._pNumInv;
-						*v15++ = v16;
-						++v14;
-					} while (v14 < sx);
-				}
-				v12 += 10;
-			}
-			CalcPlrScrolls(p);
+	done = TRUE;
+	yy = 10 * (ii / 10);
+	if (yy < 0)
+		yy = 0;
+	for (i = 0; i < sy && done; i++) {
+		if (yy >= 40)
+			done = FALSE;
+		xx = ii % 10;
+		if (ii % 10 < 0)
+			xx = 0;
+		for (j = 0; j < sx && done; j++) {
+			if (xx < 10)
+				done = plr[pnum].InvGrid[xx + yy] == 0;
+			else
+				done = FALSE;
+			xx++;
 		}
-	} else {
-		while (v6) {
-			if (v8 >= 40)
-				v6 = 0;
-			v9 = v18;
-			if (v18 < 0)
-				v9 = 0;
-			for (j = 0; j < sx; ++j) {
-				if (!v6)
-					break;
-				v6 = 0;
-				if (v9 < 10)
-					_LOBYTE(v6) = plr[pnum].InvGrid[v9 + v8] == 0;
-				++v9;
-			}
-			v8 += 10;
-			if (++v20 >= sy) {
-				if (!v6)
-					return v6;
-				goto LABEL_16;
-			}
-		}
+		yy += 10;
 	}
-	return v6;
+	if (done && saveflag) {
+		plr[pnum].InvList[plr[pnum]._pNumInv] = plr[pnum].HoldItem;
+		plr[pnum]._pNumInv++;
+		yy = 10 * (ii / 10);
+		if (yy < 0)
+			yy = 0;
+		for (i = 0; i < sy; i++) {
+			xx = ii % 10;
+			if (ii % 10 < 0)
+				xx = 0;
+			for (j = 0; j < sx; j++) {
+				if (j || i != sy - 1)
+					plr[pnum].InvGrid[xx + yy] = -plr[pnum]._pNumInv;
+				else
+					plr[pnum].InvGrid[xx + yy] = plr[pnum]._pNumInv;
+				xx++;
+			}
+			yy += 10;
+		}
+		CalcPlrScrolls(pnum);
+	}
+
+	return done;
 }
 
 int SpecialAutoPlace(int pnum, int ii, int sx, int sy, int saveflag)

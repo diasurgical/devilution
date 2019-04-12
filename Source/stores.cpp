@@ -2522,8 +2522,8 @@ void PlaceStoreGold(int v)
 	done = FALSE;
 
 	for (i = 0; i < 40 && !done; i++) {
-		xx = 10 * (i / 10);
-		yy = i % 10;
+		yy = 10 * (i / 10);
+		xx = i % 10;
 		if (!plr[myplr].InvGrid[xx + yy]) {
 			ii = plr[myplr]._pNumInv;
 			GetGoldSeed(myplr, &golditem);
