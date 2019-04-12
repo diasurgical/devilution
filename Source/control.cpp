@@ -358,35 +358,27 @@ void SetSpellTrans(char t)
 
 void DrawSpell()
 {
-	int v0;  // ebp
-	char v1; // cl
-	char v2; // bl
-	int v3;  // edi
-	int v4;  // esi
-	char v6; // [esp+Fh] [ebp-5h]
+	char spl, st;
+	int tlvl;
 
-	v0 = myplr;
-	v1 = plr[myplr]._pRSpell;
-	v2 = plr[myplr]._pRSplType;
-	v3 = v1;
-	v6 = plr[myplr]._pRSpell;
-	v4 = plr[myplr]._pISplLvlAdd + plr[myplr]._pSplLvl[v1];
-	if (v2 == RSPLTYPE_SPELL && v1 != -1) {
-		if (!CheckSpell(myplr, v1, RSPLTYPE_SPELL, TRUE))
-			v2 = RSPLTYPE_INVALID;
-		v0 = myplr;
-		if (v4 <= 0)
-			v2 = RSPLTYPE_INVALID;
+	spl = plr[myplr]._pRSpell;
+	st = plr[myplr]._pRSplType;
+	tlvl = plr[myplr]._pISplLvlAdd + plr[myplr]._pSplLvl[spl];
+	if (st == RSPLTYPE_SPELL && spl != RSPLTYPE_INVALID) {
+		if (!CheckSpell(myplr, spl, RSPLTYPE_SPELL, TRUE))
+			st = RSPLTYPE_INVALID;
+		if (tlvl <= 0)
+			st = RSPLTYPE_INVALID;
 	}
-	if (!currlevel && v2 != RSPLTYPE_INVALID && !spelldata[v3].sTownSpell)
-		v2 = RSPLTYPE_INVALID;
-	if (plr[v0]._pRSpell < 0)
-		v2 = RSPLTYPE_INVALID;
-	SetSpellTrans(v2);
-	if (v6 == -1)
-		DrawSpellCel(629, 631, (BYTE *)pSpellCels, 27, 56);
+	if (!currlevel && st != RSPLTYPE_INVALID && !spelldata[spl].sTownSpell)
+		st = RSPLTYPE_INVALID;
+	if (plr[myplr]._pRSpell < 0)
+		st = RSPLTYPE_INVALID;
+	SetSpellTrans(st);
+	if (spl != RSPLTYPE_INVALID)
+		DrawSpellCel(629, 631, (BYTE *)pSpellCels, (char)SpellITbl[spl], 56);
 	else
-		DrawSpellCel(629, 631, (BYTE *)pSpellCels, (char)SpellITbl[v3], 56);
+		DrawSpellCel(629, 631, (BYTE *)pSpellCels, 27, 56);
 }
 
 void DrawSpellList()
