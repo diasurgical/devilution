@@ -831,7 +831,7 @@ void CheckTriggers()
 		return;
 
 	for (i = 0; i < trigflag[4]; i++) {
-		if (trigs[i]._tx != plr[myplr].WorldX || trigs[i]._ty != plr[myplr].WorldY) {
+		if (plr[myplr].WorldX != trigs[i]._tx || plr[myplr].WorldY != trigs[i]._ty) {
 			continue;
 		}
 
