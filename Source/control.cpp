@@ -1459,10 +1459,10 @@ void control_check_btn_press()
 void DoAutoMap()
 {
 	if (currlevel || gbMaxPlayers != 1) {
-		if (automapflag)
-			automapflag = 0;
-		else
+		if (!automapflag)
 			StartAutomap();
+		else
+			automapflag = 0;
 	} else {
 		InitDiabloMsg(EMSG_NO_AUTOMAP_IN_TOWN);
 	}
