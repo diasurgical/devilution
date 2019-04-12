@@ -18,7 +18,7 @@ extern int InStoreFlag; // idb
 extern ItemStruct storehold[48];
 extern int gossipstart; // weak
 extern ItemStruct witchitem[20];
-extern int stextscrl;  // weak
+extern int stextscrl;
 extern int numpremium; // idb
 extern ItemStruct healitem[20];
 extern ItemStruct golditem;
@@ -34,7 +34,7 @@ extern int boylevel;  // weak
 extern ItemStruct smithitem[20];
 extern int stextdown;      // weak
 extern char stextscrlubtn; // weak
-extern char stextflag;     // weak
+extern char stextflag;
 
 void InitStores();
 void SetupTownStores();
@@ -102,7 +102,7 @@ void SmithBuyItem();
 void S_SBuyEnter();
 void SmithBuyPItem();
 void S_SPBuyEnter();
-BOOLEAN StoreGoldFit(int idx);
+BOOL StoreGoldFit(int idx);
 void PlaceStoreGold(int v);
 void StoreSellItem();
 void S_SSellEnter();
