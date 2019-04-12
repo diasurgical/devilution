@@ -2665,36 +2665,23 @@ void SmithRepairItem()
 
 void S_SRepairEnter()
 {
-	int idx;    // eax
-	int v1;     // edx
-	int v2;     // ecx
-	BOOLEAN v3; // sf
-	//unsigned char v4; // of
-	char v5; // cl
+	int idx;
 
 	if (stextsel == 22) {
 		StartStore(STORE_SMITH);
 		stextsel = 18;
 	} else {
-		stextlhold = stextsel;
 		stextshold = 4;
-		idx = stextsval + ((stextsel - stextup) >> 2);
-		v1 = myplr;
+		stextlhold = stextsel;
 		stextvhold = stextsval;
-		qmemcpy(&plr[myplr].HoldItem, &storehold[idx], sizeof(plr[myplr].HoldItem));
-		v2 = plr[v1]._pGold;
-		//v4 = __OFSUB__(v2, storehold[idx]._iIvalue);
-		v3 = v2 - storehold[idx]._iIvalue < 0;
-		v5 = STORE_NOMONEY;
-		if (!v3) //if (!(v3 ^ v4))
-			v5 = STORE_CONFIRM;
-		StartStore(v5);
+		idx = stextsval + ((stextsel - stextup) >> 2);
+		plr[myplr].HoldItem = storehold[idx];
+		if (plr[myplr]._pGold < storehold[idx]._iIvalue)
+			StartStore(STORE_NOMONEY);
+		else
+			StartStore(STORE_CONFIRM);
 	}
 }
-// 69F108: using guessed type int stextup;
-// 69F110: using guessed type int stextlhold;
-// 6A8A24: using guessed type int stextvhold;
-// 6A8A28: using guessed type int stextsel;
 
 void S_WitchEnter()
 {
