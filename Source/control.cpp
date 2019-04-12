@@ -1308,33 +1308,22 @@ void ClearCtrlPan()
 
 void DrawCtrlPan()
 {
-	signed int v0; // edi
-	int *v1;       // esi
-	int v2;        // ecx
-	int v3;        // eax
+	int i;
 
-	v0 = 0;
-	v1 = (int *)PanBtnPos;
-	do {
-		v2 = *v1;
-		if (panbtn[v0])
-			CelDecodeOnly(v2 + 64, v1[1] + 178, (BYTE *)pPanelButtons, v0 + 1, 71);
+	for (i = 0; i < 6; i++) {
+		if (!panbtn[i])
+			DrawPanelBox(PanBtnPos[i][0], PanBtnPos[i][1] - 336, 71, 20, PanBtnPos[i][0] + 64, PanBtnPos[i][1] + 160);
 		else
-			DrawPanelBox(v2, v1[1] - 336, 71, 20, v2 + 64, v1[1] + 160);
-		++v0;
-		v1 += 5;
-	} while (v0 < 6);
+			CelDecodeOnly(PanBtnPos[i][0] + 64, PanBtnPos[i][1] + 178, (BYTE *)pPanelButtons, i + 1, 71);
+	}
 	if (numpanbtns == 8) {
 		CelDecodeOnly(151, 634, (BYTE *)pMultiBtns, panbtn[6] + 1, 33);
 		if (FriendlyMode)
-			v3 = panbtn[7] + 3;
+			CelDecodeOnly(591, 634, (BYTE *)pMultiBtns, panbtn[7] + 3, 33);
 		else
-			v3 = panbtn[7] + 5;
-		CelDecodeOnly(591, 634, (BYTE *)pMultiBtns, v3, 33);
+			CelDecodeOnly(591, 634, (BYTE *)pMultiBtns, panbtn[7] + 5, 33);
 	}
 }
-// 484368: using guessed type int FriendlyMode;
-// 4B8A7C: using guessed type int numpanbtns;
 
 void DoSpeedBook()
 {
