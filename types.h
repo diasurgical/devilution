@@ -48,13 +48,19 @@
 
 // If defined, use copy protection [Default -> Defined]
 //#define COPYPROT
+
 // If defined, don't reload for debuggers [Default -> Undefined]
 // Note that with patch 1.03 the command line was hosed, this is required to pass arguments to the game
 #ifdef _DEBUG
 #define DEBUGGER
 #endif
+
 // If defined, don't fry the CPU [Default -> Undefined]
-#define SLEEP
+#define SLEEPFIX
+
+// If defined, fix palette glitch in Windows Vista+ [Default -> Undefined]
+//#define COLORFIX
+
 // If defined, use standard memcpy() in place of qmemcpy() [Default -> Undefined]
 // Will be replaced with [rep movsd] if optimization is used
 #define FAST_MEMCPY

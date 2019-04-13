@@ -823,108 +823,83 @@ void CheckTrigForce()
 
 void CheckTriggers()
 {
-	int *v0;       // edi
-	int v1;        // esi
-	int v2;        // ecx
-	int v3;        // eax
-	int v4;        // edx
-	signed int v5; // edx
-	int v6;        // eax
-	int v9;        // [esp-4h] [ebp-20h]
-	int x;         // [esp+Ch] [ebp-10h]
-	int y;         // [esp+10h] [ebp-Ch]
-	int v12;       // [esp+14h] [ebp-8h]
-	int error_id;  // [esp+1Bh] [ebp-1h]
+	int x, y, i;
+	BOOL abort;
+	char abortflag;
 
 	if (plr[myplr]._pmode)
 		return;
-	v12 = 0;
-	if (trigflag[4] <= 0)
-		return;
-	v0 = &trigs[0]._tmsg;
-	while (1) {
-		v1 = myplr;
-		v2 = plr[myplr].WorldX;
-		if (v2 != *(v0 - 2))
-			goto LABEL_34;
-		v3 = plr[v1].WorldY;
-		if (v3 != *(v0 - 1))
-			goto LABEL_34;
-		v4 = *v0;
-		if (*v0 == WM_DIABNEXTLVL) {
+
+	for (i = 0; i < trigflag[4]; i++) {
+		if (plr[myplr].WorldX != trigs[i]._tx || plr[myplr].WorldY != trigs[i]._ty) {
+			continue;
+		}
+
+		switch (trigs[i]._tmsg) {
+		case WM_DIABNEXTLVL:
 			if (pcurs >= CURSOR_FIRSTITEM && DropItemBeforeTrig())
 				return;
-			v6 = currlevel + 1;
-			goto LABEL_32;
-		}
-		if (*v0 == WM_DIABPREVLVL) {
-			if (pcurs >= CURSOR_FIRSTITEM && DropItemBeforeTrig())
-				return;
-			v6 = currlevel - 1;
-		LABEL_32:
-			v9 = v6;
-			goto LABEL_33;
-		}
-		if (*v0 != WM_DIABRTNLVL)
+			StartNewLvl(myplr, trigs[i]._tmsg, currlevel + 1);
 			break;
-		StartNewLvl(myplr, v4, ReturnLvl);
-	LABEL_34:
-		++v12;
-		v0 += 4;
-		if (v12 >= trigflag[4])
-			return;
-	}
-	if (*v0 != WM_DIABTOWNWARP) {
-		if (*v0 == WM_DIABTWARPUP) {
+		case WM_DIABPREVLVL:
+			if (pcurs >= CURSOR_FIRSTITEM && DropItemBeforeTrig())
+				return;
+			StartNewLvl(myplr, trigs[i]._tmsg, currlevel - 1);
+			break;
+		case WM_DIABRTNLVL:
+			StartNewLvl(myplr, trigs[i]._tmsg, ReturnLvl);
+			break;
+		case WM_DIABTOWNWARP:
+			if (gbMaxPlayers != 1) {
+				abort = FALSE;
+
+				if (trigs[i]._tlvl == 5 && plr[myplr]._pLevel < 8) {
+					abort = TRUE;
+					x = plr[myplr].WorldX;
+					y = plr[myplr].WorldY + 1;
+					abortflag = EMSG_REQUIRES_LVL_8;
+				}
+
+				if (trigs[i]._tlvl == 9 && plr[myplr]._pLevel < 13) {
+					abort = TRUE;
+					x = plr[myplr].WorldX + 1;
+					y = plr[myplr].WorldY;
+					abortflag = EMSG_REQUIRES_LVL_13;
+				}
+
+				if (trigs[i]._tlvl == 13 && plr[myplr]._pLevel < 17) {
+					abort = TRUE;
+					x = plr[myplr].WorldX;
+					y = plr[myplr].WorldY + 1;
+					abortflag = EMSG_REQUIRES_LVL_17;
+				}
+
+				if (abort) {
+					if (plr[myplr]._pClass == PC_WARRIOR) {
+						PlaySFX(PS_WARR43);
+					} else if (plr[myplr]._pClass == PC_ROGUE) {
+						PlaySFX(PS_ROGUE43);
+					} else if (plr[myplr]._pClass == PC_SORCERER) {
+						PlaySFX(PS_MAGE43);
+					}
+
+					InitDiabloMsg(abortflag);
+					NetSendCmdLoc(TRUE, CMD_WALKXY, x, y);
+					return;
+				}
+			}
+
+			StartNewLvl(myplr, trigs[i]._tmsg, trigs[i]._tlvl);
+			break;
+		case WM_DIABTWARPUP:
 			TWarpFrom = currlevel;
-			StartNewLvl(myplr, v4, 0);
-		} else {
+			StartNewLvl(myplr, trigs[i]._tmsg, 0);
+			break;
+		default:
 			app_fatal("Unknown trigger msg");
+			break;
 		}
-		goto LABEL_34;
 	}
-	if (gbMaxPlayers == 1)
-		goto LABEL_46;
-	v5 = 0;
-	if (v0[1] == 5 && plr[v1]._pLevel < 8) {
-		v5 = 1;
-		x = plr[myplr].WorldX;
-		_LOBYTE(y) = v3 + 1;
-		_LOBYTE(error_id) = EMSG_REQUIRES_LVL_8;
-	}
-	if (v0[1] == 9 && plr[v1]._pLevel < 13) {
-		v5 = 1;
-		_LOBYTE(x) = v2 + 1;
-		y = plr[v1].WorldY;
-		_LOBYTE(error_id) = EMSG_REQUIRES_LVL_13;
-	}
-	if (v0[1] == 13 && plr[v1]._pLevel < 17) {
-		x = plr[myplr].WorldX;
-		v5 = 1;
-		_LOBYTE(y) = v3 + 1;
-		_LOBYTE(error_id) = EMSG_REQUIRES_LVL_17;
-	}
-	if (!v5) {
-	LABEL_46:
-		v9 = v0[1];
-	LABEL_33:
-		StartNewLvl(myplr, *v0, v9);
-		goto LABEL_34;
-	}
-	switch (plr[myplr]._pClass) {
-	case PC_WARRIOR:
-		PlaySFX(PS_WARR43);
-		break;
-	case PC_ROGUE:
-		PlaySFX(PS_ROGUE43);
-		break;
-	case PC_SORCERER:
-		PlaySFX(PS_MAGE43);
-		break;
-	}
-	_LOBYTE(v2) = error_id;
-	InitDiabloMsg(v2);
-	NetSendCmdLoc(TRUE, CMD_WALKXY, x, y);
 }
 // 679660: using guessed type char gbMaxPlayers;
 // 6ABB30: using guessed type int TWarpFrom;

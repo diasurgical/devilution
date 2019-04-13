@@ -595,22 +595,14 @@ void DRLG_MRectTrans(int x1, int y1, int x2, int y2)
 
 void DRLG_RectTrans(int x1, int y1, int x2, int y2)
 {
-	int i;    // esi
-	char *v5; // edx
-	int j;    // eax
+	int i, j;
 
-	for (i = y1; i <= y2; ++i) {
-		if (x1 <= x2) {
-			v5 = &dTransVal[x1][i];
-			j = x2 - x1 + 1;
-			do {
-				*v5 = TransVal;
-				v5 += 112;
-				--j;
-			} while (j);
+	for (j = y1; j <= y2; j++) {
+		for (i = x1; i <= x2; i++) {
+			dTransVal[i][j] = TransVal;
 		}
 	}
-	++TransVal;
+	TransVal++;
 }
 // 5A5590: using guessed type char TransVal;
 

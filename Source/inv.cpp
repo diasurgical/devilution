@@ -619,112 +619,69 @@ LABEL_24:
 	return v6;
 }
 
-int GoldAutoPlace(int pnum)
+BOOL GoldAutoPlace(int pnum)
 {
-	int v1;        // ebp
-	int v2;        // edi
-	int v3;        // ecx
-	int *v4;       // esi
-	int v5;        // eax
-	int v6;        // edi
-	int *v7;       // esi
-	int v8;        // eax
-	signed int v9; // ebx
-	char *v10;     // edx
-	int v11;       // eax
-	int v12;       // ecx
-	int pnuma;     // [esp+10h] [ebp-4h]
+	BOOL done;
+	int i, ii;
+	int xx, yy;
 
-	pnuma = pnum;
-	v1 = pnum;
-	v2 = 0;
-	v3 = 0;
-	if (plr[v1]._pNumInv <= 0) {
-	LABEL_14:
-		v6 = 0;
-		if (plr[v1]._pNumInv <= 0) {
-		LABEL_28:
-			v9 = 39;
-			do {
-				if (v3)
-					break;
-				v10 = &plr[0].InvGrid[10 * (v9 / 10) + v1 * 21720 + v9 % 10];
-				if (!*v10) {
-					v11 = v1 * 21720 + 368 * plr[v1]._pNumInv;
-					qmemcpy((char *)plr[0].InvList + v11, &plr[v1].HoldItem, 0x170u);
-					++plr[v1]._pNumInv;
-					*v10 = plr[v1]._pNumInv;
-					v12 = plr[v1].HoldItem._ivalue;
-					if (v12 < 2500) {
-						if (v12 > 1000)
-							*(int *)((char *)&plr[0].InvList[0]._iCurs + v11) = 5;
-						else
-							*(int *)((char *)&plr[0].InvList[0]._iCurs + v11) = 4;
-					} else {
-						*(int *)((char *)&plr[0].InvList[0]._iCurs + v11) = 6;
-					}
-					plr[v1]._pGold = CalculateGold(pnuma);
-					v3 = 1;
-				}
-				--v9;
-			} while (v9 >= 0);
-		} else {
-			v7 = &plr[v1].InvList[0]._ivalue;
-			while (!v3) {
-				if (*(v7 - 47) == 11 && *v7 < 5000) {
-					v8 = plr[v1].HoldItem._ivalue + *v7;
-					if (v8 <= 5000) {
-						*v7 = v8;
-						if (v8 < 2500) {
-							if (v8 > 1000)
-								*(v7 - 1) = 5;
-							else
-								*(v7 - 1) = 4;
-						} else {
-							*(v7 - 1) = 6;
-						}
-						plr[v1]._pGold = CalculateGold(pnuma);
-						v3 = 1;
-					}
-				}
-				++v6;
-				v7 += 92;
-				if (v6 >= plr[v1]._pNumInv) {
-					if (v3)
-						return v3;
-					goto LABEL_28;
-				}
-			}
-		}
-	} else {
-		v4 = &plr[v1].InvList[0]._ivalue;
-		while (!v3) {
-			if (*(v4 - 47) == 11) {
-				v5 = *v4 + plr[v1].HoldItem._ivalue;
-				if (v5 <= 5000) {
-					*v4 = v5;
-					if (v5 < 2500) {
-						if (v5 > 1000)
-							*(v4 - 1) = 5;
-						else
-							*(v4 - 1) = 4;
-					} else {
-						*(v4 - 1) = 6;
-					}
-					plr[v1]._pGold = CalculateGold(pnuma);
-					v3 = 1;
-				}
-			}
-			++v2;
-			v4 += 92;
-			if (v2 >= plr[v1]._pNumInv) {
-				if (v3)
-					return v3;
-				goto LABEL_14;
+	done = FALSE;
+	for (i = 0; i < plr[pnum]._pNumInv && !done; i++) {
+		if (plr[pnum].InvList[i]._itype == ITYPE_GOLD) {
+			if (plr[pnum].HoldItem._ivalue + plr[pnum].InvList[i]._ivalue <= 5000) {
+				plr[pnum].InvList[i]._ivalue = plr[pnum].HoldItem._ivalue + plr[pnum].InvList[i]._ivalue;
+				if (plr[pnum].InvList[i]._ivalue >= 2500)
+					plr[pnum].InvList[i]._iCurs = ICURS_GOLD_LARGE;
+				else if (plr[pnum].InvList[i]._ivalue <= 1000)
+					plr[pnum].InvList[i]._iCurs = ICURS_GOLD_SMALL;
+				else
+					plr[pnum].InvList[i]._iCurs = ICURS_GOLD_MEDIUM;
+				plr[pnum]._pGold = CalculateGold(pnum);
+				done = TRUE;
 			}
 		}
 	}
-	return v3;
+	if (done)
+		return done;
+
+	for (i = 0; i < plr[pnum]._pNumInv && !done; i++) {
+		if (plr[pnum].InvList[i]._itype == ITYPE_GOLD && plr[pnum].InvList[i]._ivalue < 5000) {
+			if (plr[pnum].HoldItem._ivalue + plr[pnum].InvList[i]._ivalue <= 5000) {
+				plr[pnum].InvList[i]._ivalue = plr[pnum].HoldItem._ivalue + plr[pnum].InvList[i]._ivalue;
+				if (plr[pnum].InvList[i]._ivalue >= 2500)
+					plr[pnum].InvList[i]._iCurs = ICURS_GOLD_LARGE;
+				else if (plr[pnum].InvList[i]._ivalue <= 1000)
+					plr[pnum].InvList[i]._iCurs = ICURS_GOLD_SMALL;
+				else
+					plr[pnum].InvList[i]._iCurs = ICURS_GOLD_MEDIUM;
+				plr[pnum]._pGold = CalculateGold(pnum);
+				done = TRUE;
+			}
+		}
+	}
+	if (done)
+		return done;
+
+	for (i = 39; i >= 0 && !done; i--) {
+		yy = 10 * (i / 10);
+		xx = i % 10;
+		if (!plr[pnum].InvGrid[xx + yy]) {
+			ii = plr[pnum]._pNumInv;
+			plr[pnum].InvList[ii] = plr[pnum].HoldItem;
+			plr[pnum]._pNumInv = plr[pnum]._pNumInv + 1;
+			plr[pnum].InvGrid[xx + yy] = plr[pnum]._pNumInv;
+			if (plr[pnum].HoldItem._ivalue >= 2500)
+				plr[pnum].InvList[ii]._iCurs = ICURS_GOLD_LARGE;
+			else if (plr[pnum].HoldItem._ivalue <= 1000)
+				plr[pnum].InvList[ii]._iCurs = ICURS_GOLD_SMALL;
+			else
+				plr[pnum].InvList[ii]._iCurs = ICURS_GOLD_MEDIUM;
+			plr[pnum]._pGold = CalculateGold(pnum);
+			done = TRUE;
+		}
+	}
+
+	return done;
 }
 
 int WeaponAutoPlace(int pnum)

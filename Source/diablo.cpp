@@ -171,7 +171,7 @@ void run_game_loop(unsigned int uMsg)
 			gbGameLoopStartup = 0;
 			DrawAndBlit();
 		}
-#ifdef SLEEP
+#ifdef SLEEPFIX
 		Sleep(1);
 #endif
 	}

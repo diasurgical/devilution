@@ -418,111 +418,71 @@ void DrawSkelKing(int q, int x, int y)
 
 void DrawWarLord(int x, int y)
 {
-	int v2;             // esi
-	int v3;             // edi
-	unsigned char *v4;  // eax
-	int v5;             // ebx
-	int v6;             // edx
-	int v7;             // edx
-	char *v8;           // eax
-	int v9;             // ecx
-	char *v10;          // esi
-	char v11;           // bl
-	unsigned char *ptr; // [esp+Ch] [ebp-Ch]
-	int v13;            // [esp+10h] [ebp-8h]
-	int v14;            // [esp+14h] [ebp-4h]
+	int rw, rh;
+	int i, j;
+	unsigned char *sp;
+	unsigned char *setp;
+	int v;
 
-	v2 = y;
-	v3 = x;
-	v4 = LoadFileInMem("Levels\\L4Data\\Warlord2.DUN", 0);
-	v5 = *v4;
-	ptr = v4;
-	v4 += 2;
-	v14 = v2;
-	v6 = *v4;
-	setpc_h = v6;
-	v7 = v2 + v6;
-	v8 = (char *)(v4 + 2);
-	setpc_w = v5;
-	setpc_x = v3;
-	setpc_y = v2;
-	if (v2 < v7) {
-		v13 = v3 + v5;
-		do {
-			if (v3 < v13) {
-				v9 = v13 - v3;
-				v10 = (char *)&dungeon[v3][v14];
-				do {
-					v11 = *v8;
-					if (!*v8)
-						v11 = 6;
-					*v10 = v11;
-					v8 += 2;
-					v10 += 40;
-					--v9;
-				} while (v9);
+	setp = LoadFileInMem("Levels\\L4Data\\Warlord2.DUN", NULL);
+	rw = *setp;
+	sp = setp + 2;
+	rh = *sp;
+	sp += 2;
+	setpc_w = rw;
+	setpc_h = rh;
+	setpc_x = x;
+	setpc_y = y;
+	for (j = y; j < y+rh; j++) {
+		for (i = x; i < x+rw; i++) {
+			if (*sp != 0) {
+				v = *sp;
+			} else {
+				v = 6;
 			}
-			++v14;
-		} while (v14 < v7);
+			dungeon[i][j] = v;
+			sp += 2;
+		}
 	}
-	mem_free_dbg(ptr);
+	mem_free_dbg(setp);
 }
 // 5CF330: using guessed type int setpc_h;
 // 5CF334: using guessed type int setpc_w;
 
 void DrawSChamber(int q, int x, int y)
 {
-	int v3;             // esi
-	unsigned char *v4;  // eax
-	int v5;             // edi
-	int v6;             // ebx
-	int v7;             // eax
-	char *v8;           // ecx
-	int v9;             // eax
-	char *v10;          // edx
-	char v11;           // bl
-	int v12;            // edx
-	unsigned char *ptr; // [esp+Ch] [ebp-10h]
-	int v14;            // [esp+10h] [ebp-Ch]
-	int v15;            // [esp+14h] [ebp-8h]
-	int v16;            // [esp+18h] [ebp-4h]
+	int i, j;
+	int rw, rh;
+	int xx, yy;
+	unsigned char *sp;
+	unsigned char *setp;
+	int v;
 
-	v3 = x;
-	v14 = q;
-	v4 = LoadFileInMem("Levels\\L2Data\\Bonestr1.DUN", 0);
-	v5 = y;
-	ptr = v4;
-	v6 = y;
-	v7 = *v4;
-	setpc_h = ptr[2];
-	v8 = (char *)(ptr + 4);
-	setpc_w = v7;
-	setpc_x = v3;
+	setp = LoadFileInMem("Levels\\L2Data\\Bonestr1.DUN", NULL);
+	rw = *setp;
+	sp = setp + 2;
+	rh = *sp;
+	sp += 2;
+	setpc_w = rw;
+	setpc_h = rh;
+	setpc_x = x;
 	setpc_y = y;
-	v15 = y + setpc_h;
-	if (y < y + setpc_h) {
-		v16 = v3 + v7;
-		do {
-			if (v3 < v16) {
-				v9 = v16 - v3;
-				v10 = (char *)&dungeon[v3][v6];
-				do {
-					v11 = *v8;
-					if (!*v8)
-						v11 = 3;
-					*v10 = v11;
-					v8 += 2;
-					v10 += 40;
-					--v9;
-				} while (v9);
+	for (j = y; j < y+rh; j++) {
+		for (i = x; i < x+rw; i++) {
+			if (*sp != 0) {
+				v = *sp;
+			} else {
+				v = 3;
 			}
-			v6 = y++ + 1;
-		} while (y < v15);
+			dungeon[i][j] = v;
+			sp += 2;
+		}
 	}
-	v12 = v14;
-	quests[v12]._qtx = 2 * v3 + 22;
-	quests[v12]._qty = 2 * v5 + 23;
-	mem_free_dbg(ptr);
+	xx = 2 * x + 22;
+	yy = 2 * y + 23;
+	quests[q]._qtx = xx;
+	quests[q]._qty = yy;
+	mem_free_dbg(setp);
 }
 // 5CF330: using guessed type int setpc_h;
 // 5CF334: using guessed type int setpc_w;

@@ -358,35 +358,27 @@ void SetSpellTrans(char t)
 
 void DrawSpell()
 {
-	int v0;  // ebp
-	char v1; // cl
-	char v2; // bl
-	int v3;  // edi
-	int v4;  // esi
-	char v6; // [esp+Fh] [ebp-5h]
+	char spl, st;
+	int tlvl;
 
-	v0 = myplr;
-	v1 = plr[myplr]._pRSpell;
-	v2 = plr[myplr]._pRSplType;
-	v3 = v1;
-	v6 = plr[myplr]._pRSpell;
-	v4 = plr[myplr]._pISplLvlAdd + plr[myplr]._pSplLvl[v1];
-	if (v2 == RSPLTYPE_SPELL && v1 != -1) {
-		if (!CheckSpell(myplr, v1, RSPLTYPE_SPELL, TRUE))
-			v2 = RSPLTYPE_INVALID;
-		v0 = myplr;
-		if (v4 <= 0)
-			v2 = RSPLTYPE_INVALID;
+	spl = plr[myplr]._pRSpell;
+	st = plr[myplr]._pRSplType;
+	tlvl = plr[myplr]._pISplLvlAdd + plr[myplr]._pSplLvl[spl];
+	if (st == RSPLTYPE_SPELL && spl != RSPLTYPE_INVALID) {
+		if (!CheckSpell(myplr, spl, RSPLTYPE_SPELL, TRUE))
+			st = RSPLTYPE_INVALID;
+		if (tlvl <= 0)
+			st = RSPLTYPE_INVALID;
 	}
-	if (!currlevel && v2 != RSPLTYPE_INVALID && !spelldata[v3].sTownSpell)
-		v2 = RSPLTYPE_INVALID;
-	if (plr[v0]._pRSpell < 0)
-		v2 = RSPLTYPE_INVALID;
-	SetSpellTrans(v2);
-	if (v6 == -1)
-		DrawSpellCel(629, 631, (BYTE *)pSpellCels, 27, 56);
+	if (!currlevel && st != RSPLTYPE_INVALID && !spelldata[spl].sTownSpell)
+		st = RSPLTYPE_INVALID;
+	if (plr[myplr]._pRSpell < 0)
+		st = RSPLTYPE_INVALID;
+	SetSpellTrans(st);
+	if (spl != RSPLTYPE_INVALID)
+		DrawSpellCel(629, 631, (BYTE *)pSpellCels, (char)SpellITbl[spl], 56);
 	else
-		DrawSpellCel(629, 631, (BYTE *)pSpellCels, (char)SpellITbl[v3], 56);
+		DrawSpellCel(629, 631, (BYTE *)pSpellCels, 27, 56);
 }
 
 void DrawSpellList()
@@ -595,28 +587,17 @@ void SetSpell()
 
 void SetSpeedSpell(int slot)
 {
-	int v1;        // esi
-	signed int v3; // ebp
-	int v5;        // ebx
-	int *v6;       // edi
+	int i;
 
-	v1 = pSpell;
-	if (pSpell != -1) {
-		v3 = 0;
-		v5 = pSplType;
-		v6 = plr[myplr]._pSplHotKey;
-		do {
-			if (*v6 == v1 && plr[myplr]._pSplTHotKey[v3] == v5)
-				*v6 = -1;
-			++v3;
-			++v6;
-		} while (v3 < 4);
-		plr[myplr]._pSplHotKey[slot] = v1;
-		plr[myplr]._pSplTHotKey[slot] = v5;
+	if (pSpell != SPL_INVALID) {
+		for (i = 0; i < 4; ++i) {
+			if (plr[myplr]._pSplHotKey[i] == pSpell && plr[myplr]._pSplTHotKey[i] == pSplType)
+				plr[myplr]._pSplHotKey[i] = SPL_INVALID;
+		}
+		plr[myplr]._pSplHotKey[slot] = pSpell;
+		plr[myplr]._pSplTHotKey[slot] = pSplType;
 	}
 }
-// 4B8834: using guessed type int pSpell;
-// 4B8954: using guessed type int pSplType;
 
 void ToggleSpell(int slot)
 {
@@ -1308,33 +1289,22 @@ void ClearCtrlPan()
 
 void DrawCtrlPan()
 {
-	signed int v0; // edi
-	int *v1;       // esi
-	int v2;        // ecx
-	int v3;        // eax
+	int i;
 
-	v0 = 0;
-	v1 = (int *)PanBtnPos;
-	do {
-		v2 = *v1;
-		if (panbtn[v0])
-			CelDecodeOnly(v2 + 64, v1[1] + 178, (BYTE *)pPanelButtons, v0 + 1, 71);
+	for (i = 0; i < 6; i++) {
+		if (!panbtn[i])
+			DrawPanelBox(PanBtnPos[i][0], PanBtnPos[i][1] - 336, 71, 20, PanBtnPos[i][0] + 64, PanBtnPos[i][1] + 160);
 		else
-			DrawPanelBox(v2, v1[1] - 336, 71, 20, v2 + 64, v1[1] + 160);
-		++v0;
-		v1 += 5;
-	} while (v0 < 6);
+			CelDecodeOnly(PanBtnPos[i][0] + 64, PanBtnPos[i][1] + 178, (BYTE *)pPanelButtons, i + 1, 71);
+	}
 	if (numpanbtns == 8) {
 		CelDecodeOnly(151, 634, (BYTE *)pMultiBtns, panbtn[6] + 1, 33);
 		if (FriendlyMode)
-			v3 = panbtn[7] + 3;
+			CelDecodeOnly(591, 634, (BYTE *)pMultiBtns, panbtn[7] + 3, 33);
 		else
-			v3 = panbtn[7] + 5;
-		CelDecodeOnly(591, 634, (BYTE *)pMultiBtns, v3, 33);
+			CelDecodeOnly(591, 634, (BYTE *)pMultiBtns, panbtn[7] + 5, 33);
 	}
 }
-// 484368: using guessed type int FriendlyMode;
-// 4B8A7C: using guessed type int numpanbtns;
 
 void DoSpeedBook()
 {
@@ -1392,40 +1362,22 @@ void DoSpeedBook()
 
 void DoPanBtn()
 {
-	int v0;      // edx
-	int v1;      // ebx
-	int v2;      // edi
-	int v3;      // esi
-	int(*v4)[5]; // eax
-	int v5;      // ecx
+	int i;
 
-	v0 = MouseX;
-	v1 = MouseY;
-	v2 = numpanbtns;
-	v3 = 0;
-	if (numpanbtns > 0) {
-		v4 = PanBtnPos;
-		do {
-			if (v0 >= (*v4)[0] && v0 <= (*v4)[0] + (*v4)[2]) {
-				v5 = (*v4)[1];
-				if (v1 >= v5 && v1 <= v5 + (*v4)[3]) {
-					panbtn[v3] = 1;
-					drawbtnflag = 1;
-					panbtndown = 1;
-				}
+	for (i = 0; i < numpanbtns; i++) {
+		if (MouseX >= PanBtnPos[i][0] && MouseX <= PanBtnPos[i][0] + PanBtnPos[i][2]) {
+			if (MouseY >= PanBtnPos[i][1] && MouseY <= PanBtnPos[i][1] + PanBtnPos[i][3]) {
+				panbtn[i] = 1;
+				drawbtnflag = 1;
+				panbtndown = 1;
 			}
-			++v3;
-			++v4;
-		} while (v3 < v2);
+		}
 	}
-	if (!spselflag && v0 >= 565 && v0 < 621 && v1 >= 416 && v1 < 472) {
+	if (!spselflag && MouseX >= 565 && MouseX < 621 && MouseY >= 416 && MouseY < 472) {
 		DoSpeedBook();
 		gamemenu_off();
 	}
 }
-// 4B8A7C: using guessed type int numpanbtns;
-// 4B8C90: using guessed type int panbtndown;
-// 4B8C98: using guessed type int spselflag;
 
 void control_set_button_down(int btn_id)
 {
@@ -1459,10 +1411,10 @@ void control_check_btn_press()
 void DoAutoMap()
 {
 	if (currlevel || gbMaxPlayers != 1) {
-		if (automapflag)
-			automapflag = 0;
-		else
+		if (!automapflag)
 			StartAutomap();
+		else
+			automapflag = 0;
 	} else {
 		InitDiabloMsg(EMSG_NO_AUTOMAP_IN_TOWN);
 	}
