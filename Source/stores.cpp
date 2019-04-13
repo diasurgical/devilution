@@ -2539,76 +2539,44 @@ void PlaceStoreGold(int v)
 
 void StoreSellItem()
 {
-	int idx;    // ebx
-	char v1;    // al
-	int v2;     // eax
-	int cost;   // ebp
-	BOOLEAN v4; // sf
-	//unsigned char v5; // of
-	unsigned int v6;  // eax
-	int v8;           // edx
-	int *v10;         // edi
-	int v11;          // eax
-	unsigned int v12; // esi
-	int v13;          // [esp+10h] [ebp-4h]
+	int i, idx, cost;
 
 	idx = stextvhold + ((stextlhold - stextup) >> 2);
-	v1 = storehidx[idx];
-	if (v1 < 0)
-		RemoveSpdBarItem(myplr, -1 - v1);
+	if (storehidx[idx] >= 0)
+		RemoveInvItem(myplr, storehidx[idx]);
 	else
-		RemoveInvItem(myplr, v1);
-	v2 = storenumh - 1;
+		RemoveSpdBarItem(myplr, -(storehidx[idx] + 1));
 	cost = storehold[idx]._iIvalue;
-	//v5 = __OFSUB__(idx, storenumh - 1);
-	v4 = idx - (storenumh-- - 1) < 0;
-	if (v4) { //if (v4 ^ v5) {
-		v6 = v2 - idx;
-		qmemcpy(&storehidx[idx], &storehidx[idx + 1], v6);
-		qmemcpy(&storehold[idx], &storehold[idx + 1], 4 * (368 * v6 >> 2));
+	storenumh--;
+	if (idx != storenumh) {
+		while (idx < storenumh) {
+			storehold[idx] = storehold[idx + 1];
+			storehidx[idx] = storehidx[idx + 1];
+			idx++;
+		}
 	}
-	v8 = 0;
-	v13 = 0;
 	plr[myplr]._pGold += cost;
-	if (plr[myplr]._pNumInv <= 0) {
-	LABEL_15:
-		if (cost > 0) {
-			if (cost > 5000) {
-				v12 = (cost - 5001) / 5000 + 1;
-				cost += -5000 * v12;
-				do {
-					PlaceStoreGold(5000);
-					--v12;
-				} while (v12);
+	for (i = 0; i < plr[myplr]._pNumInv && cost > 0; i++) {
+		if (plr[myplr].InvList[i]._itype == ITYPE_GOLD && plr[myplr].InvList[i]._ivalue != 5000) {
+			if (cost + plr[myplr].InvList[i]._ivalue <= 5000) {
+				plr[myplr].InvList[i]._ivalue += cost;
+				SetGoldCurs(myplr, i);
+				cost = 0;
+			} else {
+				cost -= 5000 - plr[myplr].InvList[i]._ivalue;
+				plr[myplr].InvList[i]._ivalue = 5000;
+				SetGoldCurs(myplr, i);
 			}
-			PlaceStoreGold(cost);
 		}
-	} else {
-		v10 = &plr[myplr].InvList[0]._ivalue;
-		while (cost > 0) {
-			if (*(v10 - 47) == ITYPE_GOLD && *v10 != 5000) {
-				v11 = cost + *v10;
-				if (v11 > 5000) {
-					*v10 = 5000;
-					cost = v11 - 5000;
-					SetGoldCurs(myplr, v8);
-				} else {
-					*v10 = v11;
-					SetGoldCurs(myplr, v8);
-					cost = 0;
-				}
-			}
-			v10 += 92;
-			v8 = v13++ + 1;
-			if (v13 >= plr[myplr]._pNumInv)
-				goto LABEL_15;
+	}
+	if (cost > 0) {
+		while (cost > 5000) {
+			PlaceStoreGold(5000);
+			cost -= 5000;
 		}
+		PlaceStoreGold(cost);
 	}
 }
-// 69F108: using guessed type int stextup;
-// 69F10C: using guessed type int storenumh;
-// 69F110: using guessed type int stextlhold;
-// 6A8A24: using guessed type int stextvhold;
 
 void S_SSellEnter()
 {
