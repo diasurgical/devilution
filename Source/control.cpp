@@ -2372,7 +2372,7 @@ int DrawDurIcon4Item(ItemStruct *item, int x, int frame)
 		return x;
 	if (item->_iDurability > 5)
 		return x;
-	if (!frame) {
+	if (frame == 0) {
 		if (item->_iClass == ICLASS_WEAPON) {
 			switch (item->_itype) {
 			case ITYPE_SWORD:
