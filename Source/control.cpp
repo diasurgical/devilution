@@ -2366,63 +2366,41 @@ void DrawDurIcon()
 // 4B8968: using guessed type int sbookflag;
 // 69BD04: using guessed type int questlog;
 
-int DrawDurIcon4Item(ItemStruct *pItem, int x, int c)
+int DrawDurIcon4Item(ItemStruct *item, int x, int frame)
 {
-	int v3;         // eax
-	int v4;         // edi
-	int v5;         // esi
-	signed int v7;  // edx
-	int v8;         // eax
-	int v9;         // eax
-	int v10;        // eax
-	int v11;        // eax
-	signed int v12; // [esp-4h] [ebp-Ch]
-
-	v3 = pItem->_itype;
-	v4 = x;
-	if (v3 == -1)
+	if (item->_itype == ITYPE_NONE)
 		return x;
-	v5 = pItem->_iDurability;
-	if (v5 > 5)
+	if (item->_iDurability > 5)
 		return x;
-	v7 = c;
-	if (!c) {
-		if (pItem->_iClass != ICLASS_WEAPON) {
-			v7 = 1;
-			goto LABEL_18;
-		}
-		v8 = v3 - 1;
-		if (!v8) {
-			v12 = 2;
-			goto LABEL_15;
-		}
-		v9 = v8 - 1;
-		if (!v9) {
-			v12 = 6;
-			goto LABEL_15;
-		}
-		v10 = v9 - 1;
-		if (!v10) {
-			v12 = 7;
-			goto LABEL_15;
-		}
-		v11 = v10 - 1;
-		if (!v11) {
-			v12 = 5;
-			goto LABEL_15;
-		}
-		if (v11 == 6) {
-			v12 = 8;
-		LABEL_15:
-			v7 = v12;
-			goto LABEL_18;
+	if (!frame) {
+		if (item->_iClass == ICLASS_WEAPON) {
+			switch (item->_itype) {
+			case ITYPE_SWORD:
+				frame = 2;
+				break;
+			case ITYPE_AXE:
+				frame = 6;
+				break;
+			case ITYPE_BOW:
+				frame = 7;
+				break;
+			case ITYPE_MACE:
+				frame = 5;
+				break;
+			case ITYPE_STAFF:
+				frame = 8;
+				break;
+			default:
+				break;
+			}
+		} else {
+			frame = 1;
 		}
 	}
-LABEL_18:
-	if (v5 > 2)
-		v7 += 8;
-	CelDecodeOnly(v4, 495, (BYTE *)pDurIcons, v7, 32);
-	return v4 - 40;
+	if (item->_iDurability > 2)
+		frame += 8;
+	CelDecodeOnly(x, 495, (BYTE *)pDurIcons, frame, 32);
+	return x - 40;
 }
 
 void RedBack()
