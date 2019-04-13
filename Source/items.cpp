@@ -3777,7 +3777,6 @@ void DrawUniqueInfo()
 		}
 	}
 }
-// 69BD04: using guessed type int questlog;
 
 void PrintItemMisc(ItemStruct *x)
 {

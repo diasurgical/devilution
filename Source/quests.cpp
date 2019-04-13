@@ -3,7 +3,7 @@
 #include "../types.h"
 
 int qtopline; // idb
-int questlog; // weak
+BOOL questlog;
 void *pQLogCel;
 QuestStruct quests[MAXQUESTS];
 int qline; // weak
@@ -70,7 +70,7 @@ void InitQuests()
 	}
 
 	initiatedQuests = 0;
-	questlog = 0;
+	questlog = FALSE;
 	ALLQUESTS = 1;
 	WaterDone = 0;
 
@@ -127,7 +127,6 @@ void InitQuests()
 		quests[QTYPE_VB]._qvar1 = 2;
 }
 // 679660: using guessed type char gbMaxPlayers;
-// 69BD04: using guessed type int questlog;
 // 69BE90: using guessed type int qline;
 
 void CheckQuests()
@@ -860,34 +859,25 @@ void DrawQuestLog()
 
 void StartQuestlog()
 {
-	signed int v0;   // eax
-	int v1;          // edx
-	unsigned int v2; // ecx
-	int v3;          // ecx
+	unsigned int i;
 
-	v0 = 0;
-	v1 = 0;
 	numqlines = 0;
-	v2 = 0;
-	do {
-		if (quests[v2]._qactive == 2 && quests[v2]._qlog)
-			qlist[v0++] = v1;
-		++v2;
-		++v1;
-	} while (v2 < MAXQUESTS);
-	numqlines = v0;
-	if (v0 <= 5)
-		v3 = 8;
-	else
-		v3 = 5 - (v0 >> 1);
-	qtopline = v3;
+	for (i = 0; i < MAXQUESTS; i++) {
+		if (quests[i]._qactive == 2 && quests[i]._qlog) {
+			qlist[numqlines++] = i;
+		}
+	}
+	if (numqlines > 5) {
+		qtopline = 5 - (numqlines >> 1);
+	} else {
+		qtopline = 8;
+	}
 	qline = 22;
-	if (v0)
-		qline = v3;
-	questlog = 1;
+	if (numqlines != 0)
+		qline = qtopline;
+	questlog = TRUE;
 	ALLQUESTS = 1;
 }
-// 69BD04: using guessed type int questlog;
 // 69BE90: using guessed type int qline;
 // 69BED4: using guessed type int numqlines;
 
@@ -928,9 +918,8 @@ void QuestlogEnter()
 	PlaySFX(IS_TITLSLCT);
 	if (numqlines && qline != 22)
 		InitQTextMsg((unsigned char)quests[qlist[(qline - qtopline) >> 1]]._qmsg);
-	questlog = 0;
+	questlog = FALSE;
 }
-// 69BD04: using guessed type int questlog;
 // 69BE90: using guessed type int qline;
 // 69BED4: using guessed type int numqlines;
 

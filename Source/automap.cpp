@@ -248,7 +248,6 @@ void DrawAutomap()
 	DrawAutomapGame();
 }
 // 4B8968: using guessed type int sbookflag;
-// 69BD04: using guessed type int questlog;
 // 69CF0C: using guessed type int gpBufEnd;
 
 void DrawAutomapType(int sx, int sy, WORD automap_type)

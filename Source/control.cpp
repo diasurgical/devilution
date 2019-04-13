@@ -1559,7 +1559,7 @@ void CheckBtnUp()
 				if (MouseY >= PanBtnPos[i][1] && MouseY <= PanBtnPos[i][1] + PanBtnPos[i][3]) {
 					switch (i) {
 					case PANBTN_CHARINFO:
-						questlog = 0;
+						questlog = FALSE;
 						chrflag = chrflag == 0;
 						break;
 					case PANBTN_QLOG:
@@ -1567,7 +1567,7 @@ void CheckBtnUp()
 						if (!questlog)
 							StartQuestlog();
 						else
-							questlog = 0;
+							questlog = FALSE;
 						break;
 					case PANBTN_AUTOMAP:
 						DoAutoMap();
@@ -1618,7 +1618,6 @@ void CheckBtnUp()
 // 4B8968: using guessed type int sbookflag;
 // 4B8C90: using guessed type int panbtndown;
 // 646D00: using guessed type char qtextflag;
-// 69BD04: using guessed type int questlog;
 
 void FreeControlPan()
 {
@@ -2316,7 +2315,6 @@ void DrawDurIcon()
 	}
 }
 // 4B8968: using guessed type int sbookflag;
-// 69BD04: using guessed type int questlog;
 
 int DrawDurIcon4Item(ItemStruct *pItem, int x, int c)
 {

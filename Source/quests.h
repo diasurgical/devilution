@@ -3,7 +3,7 @@
 #define __QUESTS_H__
 
 extern int qtopline; // idb
-extern int questlog; // weak
+extern BOOL questlog;
 extern void *pQLogCel;
 extern QuestStruct quests[MAXQUESTS];
 extern int qline; // weak
