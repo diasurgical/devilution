@@ -11,7 +11,7 @@ void InvDrawSlotBack(int X, int Y, int W, int H);
 void DrawInv();
 void DrawInvBelt();
 BOOL AutoPlace(int pnum, int ii, int sx, int sy, int saveflag);
-int SpecialAutoPlace(int pnum, int ii, int sx, int sy, int saveflag);
+BOOL SpecialAutoPlace(int pnum, int ii, int sx, int sy, int saveflag);
 BOOL GoldAutoPlace(int pnum);
 int WeaponAutoPlace(int pnum);
 int SwapItem(ItemStruct *a, ItemStruct *b);
