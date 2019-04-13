@@ -67,6 +67,15 @@ void dx_init(HWND hWnd)
 	v3 = dx_DirectDrawCreate(v2, &lpDDInterface, NULL);
 	if (v3)
 		ErrDlg(IDD_DIALOG1, v3, "C:\\Src\\Diablo\\Source\\dx.cpp", 149);
+
+#ifdef COLORFIX
+#ifdef __DDRAWI_INCLUDED__
+	((LPDDRAWI_DIRECTDRAW_INT)lpDDInterface)->lpLcl->dwAppHackFlags |= 0x800;
+#else
+	((DWORD **)lpDDInterface)[1][18] |= 0x800;
+#endif
+#endif
+
 	fullscreen = 1;
 #ifdef __cplusplus
 	v4 = lpDDInterface->SetCooperativeLevel(v1, DDSCL_EXCLUSIVE | DDSCL_ALLOWREBOOT | DDSCL_FULLSCREEN);
