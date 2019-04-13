@@ -489,53 +489,29 @@ void DrawSChamber(int q, int x, int y)
 
 void DrawLTBanner(int x, int y)
 {
-	int v2;             // ebx
-	int v3;             // esi
-	unsigned char *v4;  // eax
-	unsigned char *v5;  // ecx
-	int v6;             // edi
-	int v7;             // edx
-	int v8;             // eax
-	char *v9;           // edx
-	char *v10;          // ecx
-	unsigned char *ptr; // [esp+Ch] [ebp-10h]
-	int v12;            // [esp+10h] [ebp-Ch]
-	int v13;            // [esp+14h] [ebp-8h]
-	int v14;            // [esp+18h] [ebp-4h]
+	int rw, rh;
+	int i, j;
+	unsigned char *sp;
+	unsigned char *setp;
 
-	v2 = y;
-	v3 = x;
-	v12 = y;
-	v4 = LoadFileInMem("Levels\\L1Data\\Banner1.DUN", 0);
-	v5 = v4;
-	v14 = 0;
-	ptr = v4;
-	v6 = *v4;
-	v7 = (int)(v4 + 2);
-	v8 = v4[2];
-	setpc_w = v6;
-	v9 = (char *)(v7 + 2);
-	setpc_h = v8;
-	setpc_x = v3;
-	setpc_y = v2;
-	if (v8 > 0) {
-		do {
-			if (v6 > 0) {
-				v13 = v6;
-				v10 = &pdungeon[v3][v14 + v12];
-				do {
-					if (*v9)
-						*v10 = *v9;
-					v10 += 40;
-					v9 += 2;
-					--v13;
-				} while (v13);
-				v5 = ptr;
+	setp = LoadFileInMem("Levels\\L1Data\\Banner1.DUN", NULL);
+	rw = *setp;
+	sp = setp + 2;
+	rh = *sp;
+	sp += 2;
+	setpc_w = rw;
+	setpc_h = rh;
+	setpc_x = x;
+	setpc_y = y;
+	for (j = 0; j < rh; j++) {
+		for (i = 0; i < rw; i++) {
+			if (*sp != 0) {
+				pdungeon[x+i][y+j] = *sp;
 			}
-			++v14;
-		} while (v14 < v8);
+			sp += 2;
+		}
 	}
-	mem_free_dbg(v5);
+	mem_free_dbg(setp);
 }
 // 5CF330: using guessed type int setpc_h;
 // 5CF334: using guessed type int setpc_w;
