@@ -2130,110 +2130,70 @@ void DrawInvMsg(char *msg)
 
 int InvPutItem(int pnum, int x, int y)
 {
-	int v3;          // edi
-	int *v4;         // esi
-	int v5;          // ebx
-	int v6;          // esi
-	int v7;          // eax
-	int v8;          // edi
-	int v9;          // esi
-	int v10;         // esi
-	int v11;         // eax
-	int v12;         // edx
-	int v13;         // esi
-	int v15;         // eax
-	int *v16;        // edx
-	int v17;         // edx
-	ItemStruct *v18; // [esp+Ch] [ebp-1Ch]
-	int v19;         // [esp+10h] [ebp-18h]
-	signed int v20;  // [esp+14h] [ebp-14h]
-	int v21;         // [esp+18h] [ebp-10h]
-	int v22;         // [esp+1Ch] [ebp-Ch]
-	signed int v23;  // [esp+20h] [ebp-8h]
-	int xa;          // [esp+24h] [ebp-4h]
-	int ya;          // [esp+30h] [ebp+8h]
-	int yb;          // [esp+30h] [ebp+8h]
-	int yc;          // [esp+30h] [ebp+8h]
+	BOOL done;
+	int d, dy, ii;
+	int i, j, l;
+	int xx, yy;
 
-	xa = x;
 	if (numitems >= 127)
 		return -1;
-	v3 = pnum;
-	_LOWORD(x) = plr[pnum].HoldItem._iCreateInfo;
-	v4 = &plr[pnum].HoldItem._iSeed;
-	v18 = &plr[pnum].HoldItem;
-	v5 = y;
-	if (FindGetItem(plr[pnum].HoldItem.IDidx, x, plr[pnum].HoldItem._iSeed) != -1) {
+
+	if (FindGetItem(plr[pnum].HoldItem.IDidx, plr[pnum].HoldItem._iCreateInfo, plr[pnum].HoldItem._iSeed) != -1) {
 		DrawInvMsg("A duplicate item has been detected.  Destroying duplicate...");
-		SyncGetItem(xa, y, plr[v3].HoldItem.IDidx, plr[v3].HoldItem._iCreateInfo, *v4);
+		SyncGetItem(x, y, plr[pnum].HoldItem.IDidx, plr[pnum].HoldItem._iCreateInfo, plr[pnum].HoldItem._iSeed);
 	}
-	ya = GetDirection(plr[v3].WorldX, plr[v3].WorldY, xa, y);
-	v6 = v5 - plr[v3].WorldY;
-	if (abs(xa - plr[v3].WorldX) > 1 || abs(v6) > 1) {
-		v5 = plr[v3].WorldY + offset_y[ya];
-		xa = plr[v3].WorldX + offset_x[ya];
+
+	d = GetDirection(plr[pnum].WorldX, plr[pnum].WorldY, x, y);
+	xx = x - plr[pnum].WorldX;
+	yy = y - plr[pnum].WorldY;
+	if (abs(xx) > 1 || abs(yy) > 1) {
+		x = plr[pnum].WorldX + offset_x[d];
+		y = plr[pnum].WorldY + offset_y[d];
 	}
-	if (!CanPut(xa, v5)) {
-		v7 = plr[v3].WorldX;
-		v8 = plr[v3].WorldY;
-		v9 = ((_BYTE)ya - 1) & 7;
-		v19 = v7;
-		v5 = v8 + offset_y[v9];
-		xa = v7 + offset_x[v9];
-		if (!CanPut(xa, v8 + offset_y[v9])) {
-			v10 = ((_BYTE)v9 + 2) & 7;
-			v5 = v8 + offset_y[v10];
-			xa = v19 + offset_x[v10];
-			if (!CanPut(xa, v8 + offset_y[v10])) {
-				v23 = 0;
-				v11 = -1;
-				yb = 1;
-				v20 = -1;
-				while (!v23) {
-					v22 = v11;
-					while (v11 <= yb && !v23) {
-						v21 = v20;
-						v12 = v8 + v22;
-						v13 = v19 + v20;
-						do {
-							if (v23)
-								break;
-							if (CanPut(v13, v12)) {
-								v23 = 1;
-								xa = v13;
-								v5 = v12;
+	if (!CanPut(x, y)) {
+		d = (d - 1) & 7;
+		x = plr[pnum].WorldX + offset_x[d];
+		y = plr[pnum].WorldY + offset_y[d];
+		if (!CanPut(x, y)) {
+			d = (d + 2) & 7;
+			x = plr[pnum].WorldX + offset_x[d];
+			y = plr[pnum].WorldY + offset_y[d];
+			if (!CanPut(x, y)) {
+				done = FALSE;
+				for (l = 1; l < 50 && !done; l++) {
+					for (j = -l; j <= l && !done; j++) {
+						yy = j + plr[pnum].WorldY;
+						for (i = -l; i <= l && !done; i++) {
+							xx = i + plr[pnum].WorldX;
+							if (CanPut(xx, yy)) {
+								done = TRUE;
+								x = xx;
+								y = yy;
 							}
-							++v21;
-							++v13;
-						} while (v21 <= yb);
-						v11 = ++v22;
-					}
-					++yb;
-					v11 = v20-- - 1;
-					if (v20 <= -50) {
-						if (v23)
-							break;
-						return -1;
+						}
 					}
 				}
+				if (!done)
+					return -1;
 			}
 		}
 	}
-	CanPut(xa, v5);
-	v15 = itemavail[0];
-	dItem[xa][v5] = _LOBYTE(itemavail[0]) + 1;
-	yc = v15;
-	v16 = &itemavail[MAXITEMS - numitems - 1];
-	itemactive[numitems] = v15;
-	itemavail[0] = *v16;
-	v17 = v15;
-	qmemcpy(&item[v15], v18, sizeof(ItemStruct));
-	item[v17]._iy = v5;
-	item[v17]._ix = xa;
-	RespawnItem(v15, 1);
-	++numitems;
+
+	CanPut(x, y); //if (!CanPut(x, y)) {
+	//	assertion_failed(1524, "C:\\Diablo\\Direct\\inv.cpp", "CanPut(x,y)");
+	//}
+
+	ii = itemavail[0];
+	dItem[x][y] = ii + 1;
+	itemavail[0] = itemavail[MAXITEMS - (numitems + 1)];
+	itemactive[numitems] = ii;
+	item[ii] = plr[pnum].HoldItem;
+	item[ii]._ix = x;
+	item[ii]._iy = y;
+	RespawnItem(ii, 1);
+	numitems++;
 	SetCursor_(CURSOR_HAND);
-	return yc;
+	return ii;
 }
 
 int SyncPutItem(int pnum, int x, int y, int idx, WORD icreateinfo, int iseed, int Id, int dur, int mdur, int ch, int mch, int ivalue, unsigned int ibuff)
