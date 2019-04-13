@@ -3254,78 +3254,57 @@ void M_WalkDir(int i, int md)
 
 void GroupUnity(int i)
 {
-	int v1;           // ebx
-	int v2;           // esi
-	int v3;           // ebp
-	int v4;           // edi
-	BOOLEAN v5;       // eax
-	int v6;           // eax
-	unsigned char v8; // al
-	int v9;           // ebp
-	int j;            // edi
-	int v11;          // eax
+	int leader, m, j;
+	BOOL clear;
 
-	v1 = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		app_fatal("GroupUnity: Invalid monster %d", i);
-	v2 = v1;
-	if (monster[v1].leaderflag) {
-		v3 = (unsigned char)monster[v2].leader;
-		v4 = v3;
-		v5 = LineClearF(
-		    CheckNoSolid,
-		    monster[v2]._mx,
-		    monster[v2]._my,
-		    monster[v4]._mfutx,
-		    monster[v4]._mfuty);
-		if (v5) {
-			if (monster[v2].leaderflag == 2
-			    && abs(monster[v2]._mx - monster[v4]._mfutx) < 4
-			    && abs(monster[v2]._my - monster[v4]._mfuty) < 4) {
-				++monster[v4].packsize;
-				monster[v2].leaderflag = 1;
+
+	if (monster[i].leaderflag) {
+		leader = monster[i].leader;
+		clear = LineClearF(CheckNoSolid, monster[i]._mx, monster[i]._my, monster[leader]._mfutx, monster[leader]._mfuty);
+		if (clear || monster[i].leaderflag != 1) {
+			if (clear
+			    && monster[i].leaderflag == 2
+			    && abs(monster[i]._mx - monster[leader]._mfutx) < 4
+			    && abs(monster[i]._my - monster[leader]._mfuty) < 4) {
+				monster[leader].packsize++;
+				monster[i].leaderflag = 1;
 			}
 		} else {
-			if (monster[v2].leaderflag != 1)
-				goto LABEL_18;
-			--monster[v4].packsize;
-			monster[v2].leaderflag = 2;
+			monster[leader].packsize--;
+			monster[i].leaderflag = 2;
 		}
-	} else {
-		v3 = 0; /* v13 */
 	}
-	if (monster[v2].leaderflag == 1) {
-		v6 = v3;
-		if (monster[v2]._msquelch > monster[v3]._msquelch) {
-			monster[v6]._lastx = monster[v2]._mx;
-			monster[v6]._lasty = monster[v2]._my;
-			monster[v6]._msquelch = monster[v2]._msquelch - 1;
+
+	if (monster[i].leaderflag == 1) {
+		if ((BYTE)monster[i]._msquelch > (BYTE)monster[leader]._msquelch) {
+			monster[leader]._lastx = monster[i]._mx;
+			monster[leader]._lasty = monster[i]._my;
+			monster[leader]._msquelch = monster[i]._msquelch - 1;
 		}
-		if (monster[v6]._mAi == AI_GARG) {
-			if (monster[v6]._mFlags & MFLAG_ALLOW_SPECIAL) {
-				monster[v6]._mmode = MM_SATTACK;
-				monster[v6]._mFlags &= ~MFLAG_ALLOW_SPECIAL;
+		if (monster[leader]._mAi == AI_GARG) {
+			if (monster[leader]._mFlags & MFLAG_ALLOW_SPECIAL) {
+				monster[leader]._mmode = MM_SATTACK;
+				monster[leader]._mFlags &= ~MFLAG_ALLOW_SPECIAL;
 			}
 		}
 		return;
 	}
-LABEL_18:
-	v8 = monster[v2]._uniqtype;
-	if (v8 != 0) {
-		if (UniqMonst[v8 - 1].mUnqAttr & 2) {
-			v9 = nummonsters;
-			for (j = 0; j < v9; ++j) {
-				v11 = monstactive[j];
-				if (monster[v11].leaderflag == 1 && (unsigned char)monster[v11].leader == v1) {
-					if (monster[v2]._msquelch > monster[v11]._msquelch) {
-						monster[v11]._lastx = monster[v2]._mx;
-						monster[v11]._lasty = monster[v2]._my;
-						monster[v11]._msquelch = monster[v2]._msquelch - 1;
+	if (monster[i]._uniqtype != 0) {
+		if (UniqMonst[monster[i]._uniqtype - 1].mUnqAttr & 2) {
+			for (j = 0; j < nummonsters; j++) {
+				m = monstactive[j];
+				if (monster[m].leaderflag == 1 && monster[m].leader == i) {
+					if ((BYTE)monster[i]._msquelch > (BYTE)monster[m]._msquelch) {
+						monster[m]._lastx = monster[i]._mx;
+						monster[m]._lasty = monster[i]._my;
+						monster[m]._msquelch = monster[i]._msquelch - 1;
 					}
-					if (monster[v11]._mAi == AI_GARG) {
-						if (monster[v11]._mFlags & MFLAG_ALLOW_SPECIAL) {
-							monster[v11]._mmode = MM_SATTACK;
-							monster[v11]._mFlags &= ~MFLAG_ALLOW_SPECIAL;
+					if (monster[m]._mAi == AI_GARG) {
+						if (monster[m]._mFlags & MFLAG_ALLOW_SPECIAL) {
+							monster[m]._mmode = MM_SATTACK;
+							monster[m]._mFlags &= ~MFLAG_ALLOW_SPECIAL;
 						}
 					}
 				}
