@@ -1219,7 +1219,7 @@ void InitMonsters()
 		if (!setlevel && currlevel == 16)
 			LoadDiabMonsts();
 	}
-	v24 = trigflag[4];
+	v24 = trigflag_4;
 	if (currlevel == 15)
 		v24 = 1;
 	v1 = v24;
