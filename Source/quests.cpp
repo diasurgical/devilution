@@ -418,54 +418,33 @@ void DrawSkelKing(int q, int x, int y)
 
 void DrawWarLord(int x, int y)
 {
-	int v2;             // esi
-	int v3;             // edi
-	unsigned char *v4;  // eax
-	int v5;             // ebx
-	int v6;             // edx
-	int v7;             // edx
-	char *v8;           // eax
-	int v9;             // ecx
-	char *v10;          // esi
-	char v11;           // bl
-	unsigned char *ptr; // [esp+Ch] [ebp-Ch]
-	int v13;            // [esp+10h] [ebp-8h]
-	int v14;            // [esp+14h] [ebp-4h]
+	int rw, rh;
+	int i, j;
+	unsigned char *sp;
+	unsigned char *setp;
+	int v;
 
-	v2 = y;
-	v3 = x;
-	v4 = LoadFileInMem("Levels\\L4Data\\Warlord2.DUN", 0);
-	v5 = *v4;
-	ptr = v4;
-	v4 += 2;
-	v14 = v2;
-	v6 = *v4;
-	setpc_h = v6;
-	v7 = v2 + v6;
-	v8 = (char *)(v4 + 2);
-	setpc_w = v5;
-	setpc_x = v3;
-	setpc_y = v2;
-	if (v2 < v7) {
-		v13 = v3 + v5;
-		do {
-			if (v3 < v13) {
-				v9 = v13 - v3;
-				v10 = (char *)&dungeon[v3][v14];
-				do {
-					v11 = *v8;
-					if (!*v8)
-						v11 = 6;
-					*v10 = v11;
-					v8 += 2;
-					v10 += 40;
-					--v9;
-				} while (v9);
+	setp = LoadFileInMem("Levels\\L4Data\\Warlord2.DUN", NULL);
+	rw = *setp;
+	sp = setp + 2;
+	rh = *sp;
+	sp += 2;
+	setpc_w = rw;
+	setpc_h = rh;
+	setpc_x = x;
+	setpc_y = y;
+	for (j = y; j < y+rh; j++) {
+		for (i = x; i < x+rw; i++) {
+			if (*sp != 0) {
+				v = *sp;
+			} else {
+				v = 6;
 			}
-			++v14;
-		} while (v14 < v7);
+			dungeon[i][j] = v;
+			sp += 2;
+		}
 	}
-	mem_free_dbg(ptr);
+	mem_free_dbg(setp);
 }
 // 5CF330: using guessed type int setpc_h;
 // 5CF334: using guessed type int setpc_w;
