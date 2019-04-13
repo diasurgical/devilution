@@ -331,7 +331,7 @@ void DRLG_L3LockRec(int x, int y)
 }
 // 528380: using guessed type int lockoutcnt;
 
-BOOLEAN DRLG_L3Lockout()
+BOOL DRLG_L3Lockout()
 {
 	int v0;        // esi
 	signed int v1; // edx
@@ -402,92 +402,77 @@ void CreateL3Dungeon(unsigned int rseed, int entry)
 
 void DRLG_L3(int entry)
 {
-	int x1;       // esi
-	int y1;       // eax
-	int x2;       // edi
-	int y2;       // eax
-	int found;    // eax
-	int genok;    // eax
-	signed int i; // ecx
-	signed int j; // esi
-	BOOLEAN v24;  // [esp-8h] [ebp-20h]
+	int x1, y1, x2, y2, i, j;
+	BOOL found, genok;
 
-	lavapool = 0;
+	lavapool = FALSE;
+
 	do {
 		do {
 			do {
 				InitL3Dungeon();
 				x1 = random(0, 20) + 10;
-				y1 = random(0, 20);
-				DRLG_L3FillRoom(x1, y1 + 10, x1 + 2, y1 + 12);
-				DRLG_L3CreateBlock(x1, y1 + 10, 2, 0);
-				DRLG_L3CreateBlock(x1 + 2, y1 + 10, 2, 1);
-				DRLG_L3CreateBlock(x1, y1 + 12, 2, 2);
-				DRLG_L3CreateBlock(x1, y1 + 10, 2, 3);
-
-				if (QuestStatus(QTYPE_ANVIL)) {
-					x2 = random(0, 10) + 10;
-					y2 = random(0, 10);
-					DRLG_L3FloorArea(x2, y2 + 10, x2 + 12, y2 + 22);
+				y1 = random(0, 20) + 10;
+				x2 = x1 + 2;
+				y2 = y1 + 2;
+				DRLG_L3FillRoom(x1, y1, x2, y2);
+				DRLG_L3CreateBlock(x1, y1, 2, 0);
+				DRLG_L3CreateBlock(x2, y1, 2, 1);
+				DRLG_L3CreateBlock(x1, y2, 2, 2);
+				DRLG_L3CreateBlock(x1, y1, 2, 3);
+				if(QuestStatus(QTYPE_ANVIL)) {
+					x1 = random(0, 10) + 10;
+					y1 = random(0, 10) + 10;
+					x2 = x1 + 12;
+					y2 = y1 + 12;
+					DRLG_L3FloorArea(x1, y1, x2, y2);
 				}
 				DRLG_L3FillDiags();
 				DRLG_L3FillSingles();
 				DRLG_L3FillStraights();
 				DRLG_L3FillDiags();
 				DRLG_L3Edges();
-				if (DRLG_L3GetFloorArea() < 600)
-					found = 0;
-				else
+				if(DRLG_L3GetFloorArea() >= 600) {
 					found = DRLG_L3Lockout();
-			} while (!found);
+				} else {
+					found = FALSE;
+				}
+			} while(!found);
 			DRLG_L3MakeMegas();
-			if (!entry) {
+			if(entry == 0) {
 				genok = DRLG_L3PlaceMiniSet(L3UP, 1, 1, -1, -1, 1, 0);
-				if (genok)
-					continue;
-				genok = DRLG_L3PlaceMiniSet(L3DOWN, 1, 1, -1, -1, 0, 1);
-				if (genok)
-					continue;
-				if (currlevel != 9)
-					goto LABEL_24;
-				genok = DRLG_L3PlaceMiniSet(L3HOLDWARP, 1, 1, -1, -1, 0, 6);
-				goto LABEL_23;
+				if(!genok) {
+					genok = DRLG_L3PlaceMiniSet(L3DOWN, 1, 1, -1, -1, 0, 1);
+					if(!genok && currlevel == 9) {
+						genok = DRLG_L3PlaceMiniSet(L3HOLDWARP, 1, 1, -1, -1, 0, 6);
+					}
+				}
+			} else if(entry == 1) {
+				genok = DRLG_L3PlaceMiniSet(L3UP, 1, 1, -1, -1, 0, 0);
+				if(!genok) {
+					genok = DRLG_L3PlaceMiniSet(L3DOWN, 1, 1, -1, -1, 1, 1);
+					ViewX += 2;
+					ViewY -= 2;
+					if(!genok && currlevel == 9) {
+						genok = DRLG_L3PlaceMiniSet(L3HOLDWARP, 1, 1, -1, -1, 0, 6);
+					}
+				}
+			} else {
+				genok = DRLG_L3PlaceMiniSet(L3UP, 1, 1, -1, -1, 0, 0);
+				if(!genok) {
+					genok = DRLG_L3PlaceMiniSet(L3DOWN, 1, 1, -1, -1, 0, 1);
+					if(!genok && currlevel == 9) {
+						genok = DRLG_L3PlaceMiniSet(L3HOLDWARP, 1, 1, -1, -1, 1, 6);
+					}
+				}
 			}
-			genok = DRLG_L3PlaceMiniSet(L3UP, 1, 1, -1, -1, 0, 0);
-			if (entry == 1) {
-				if (genok)
-					continue;
-				genok = DRLG_L3PlaceMiniSet(L3DOWN, 1, 1, -1, -1, 1, 1);
-				ViewX += 2;
-				ViewY -= 2;
-				if (genok)
-					continue;
-				if (currlevel != 9)
-					goto LABEL_24;
-				v24 = 0;
-			LABEL_22:
-				genok = DRLG_L3PlaceMiniSet(L3HOLDWARP, 1, 1, -1, -1, v24, 6);
-			LABEL_23:
-				if (genok)
-					continue;
-				goto LABEL_24;
+			if(!genok && QuestStatus(QTYPE_ANVIL)) {
+				genok = DRLG_L3Anvil();
 			}
-			if (genok)
-				continue;
-			genok = DRLG_L3PlaceMiniSet(L3DOWN, 1, 1, -1, -1, 0, 1);
-			if (genok)
-				continue;
-			if (currlevel == 9) {
-				v24 = 1;
-				goto LABEL_22;
-			}
-		LABEL_24:
-			if (!QuestStatus(QTYPE_ANVIL))
-				break;
-			genok = DRLG_L3Anvil();
-		} while (genok == 1);
+		} while(genok == TRUE);
 		DRLG_L3Pool();
-	} while (!lavapool);
+	} while(!lavapool);
+
 	DRLG_L3PoolFix();
 	FixL3Warp();
 	DRLG_L3PlaceRndSet(L3ISLE1, 70);
@@ -500,13 +485,13 @@ void DRLG_L3(int entry)
 	FixL3HallofHeroes();
 	DRLG_L3River();
 
-	if (QuestStatus(QTYPE_ANVIL)) {
+	if(QuestStatus(QTYPE_ANVIL)) {
 		dungeon[setpc_x + 7][setpc_y + 5] = 7;
 		dungeon[setpc_x + 8][setpc_y + 5] = 7;
 		dungeon[setpc_x + 9][setpc_y + 5] = 7;
-		if (dungeon[setpc_x + 10][setpc_y + 5] == 17
-		    || dungeon[setpc_x + 10][setpc_y + 5] == 18)
+		if(dungeon[setpc_x + 10][setpc_y + 5] == 17 || dungeon[setpc_x + 10][setpc_y + 5] == 18) {
 			dungeon[setpc_x + 10][setpc_y + 5] = 45;
+		}
 	}
 
 	DRLG_PlaceThemeRooms(5, 10, 7, 0, 0);
@@ -539,9 +524,10 @@ void DRLG_L3(int entry)
 	DRLG_L3PlaceRndSet(L3XTRA4, 25);
 	DRLG_L3PlaceRndSet(L3XTRA5, 25);
 
-	for (i = 0; i < 40; i++) {
-		for (j = 0; j < 40; j++)
+	for(j = 0; j < DMAXY; j++) {
+		for(i = 0; i < DMAXX; i++) {
 			pdungeon[i][j] = dungeon[i][j];
+		}
 	}
 
 	DRLG_Init_Globals();
