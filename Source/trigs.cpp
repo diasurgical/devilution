@@ -182,65 +182,35 @@ void InitL1Triggers()
 
 void InitL2Triggers()
 {
-	signed int v0;     // edi
-	int *v1;           // esi
-	int *v2;           // edx
-	TriggerStruct *v3; // ecx
-	int *v4;           // eax
-	int(*v5)[112];     // [esp+Ch] [ebp-10h]
-	int(*v6)[112];     // [esp+10h] [ebp-Ch]
-	int v7;            // [esp+14h] [ebp-8h]
-	int *v8;           // [esp+18h] [ebp-4h]
+	int i, j;
 
 	trigflag_4 = 0;
-	v7 = 0;
-	v5 = dPiece;
-	do {
-		v0 = 0;
-		v1 = &trigs[trigflag_4]._tmsg;
-		v2 = &trigs[trigflag_4]._ty;
-		v3 = &trigs[trigflag_4];
-		v8 = &trigs[trigflag_4]._tlvl;
-		v6 = v5;
-		do {
-			if ((*v6)[0] == 267 && (v0 != quests[QTYPE_BONE]._qtx || v7 != quests[QTYPE_BONE]._qty)) {
-				++trigflag_4;
-				v8 += 4;
-				v3->_tx = v0;
-				*v2 = v7;
-				*v1 = WM_DIABPREVLVL;
-				++v3;
-				v2 += 4;
-				v1 += 4;
+	for (j = 0; j < MAXDUNY; j++) {
+		for (i = 0; i < MAXDUNX; i++) {
+			if (dPiece[i][j] == 267 && (i != quests[QTYPE_BONE]._qtx || j != quests[QTYPE_BONE]._qty)) {
+				trigs[trigflag_4]._tx = i;
+				trigs[trigflag_4]._ty = j;
+				trigs[trigflag_4]._tmsg = WM_DIABPREVLVL;
+				trigflag_4++;
 			}
-			if ((*v6)[0] == 559) {
-				v3->_tx = v0;
-				*v2 = v7;
-				v4 = v8;
-				v8 += 4;
-				*v1 = WM_DIABTWARPUP;
-				*v4 = 0;
-				++trigflag_4;
-				++v3;
-				v2 += 4;
-				v1 += 4;
+
+			if (dPiece[i][j] == 559) {
+				trigs[trigflag_4]._tx = i;
+				trigs[trigflag_4]._ty = j;
+				trigs[trigflag_4]._tmsg = WM_DIABTWARPUP;
+				trigs[trigflag_4]._tlvl = 0;
+				trigflag_4++;
 			}
-			if ((*v6)[0] == 271) {
-				++trigflag_4;
-				v8 += 4;
-				v3->_tx = v0;
-				*v2 = v7;
-				*v1 = WM_DIABNEXTLVL;
-				++v3;
-				v2 += 4;
-				v1 += 4;
+
+			if (dPiece[i][j] == 271) {
+				trigs[trigflag_4]._tx = i;
+				trigs[trigflag_4]._ty = j;
+				trigs[trigflag_4]._tmsg = WM_DIABNEXTLVL;
+				trigflag_4++;
 			}
-			++v6;
-			++v0;
-		} while (v0 < 112);
-		v5 = (int(*)[112])((char *)v5 + 4);
-		++v7;
-	} while ((signed int)v5 < (signed int)dPiece[1]);
+
+		}
+	}
 	trigflag_3 = 0;
 }
 
