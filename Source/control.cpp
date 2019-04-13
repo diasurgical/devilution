@@ -9,7 +9,7 @@ void *pChrButtons;
 BOOL drawhpflag;  // idb
 BOOL dropGoldFlag;
 int panbtn[8];
-int chrbtn[4];
+BOOL chrbtn[4];
 void *pMultiBtns;
 void *pPanelButtons;
 void *pChrPanel;
@@ -2290,7 +2290,7 @@ void CheckChrBtns()
 			    && MouseX <= attribute_inc_rects[i][0] + attribute_inc_rects[i][2]
 			    && MouseY >= attribute_inc_rects[i][1]
 			    && MouseY <= attribute_inc_rects[i][3] + attribute_inc_rects[i][1]) {
-				chrbtn[i] = 1;
+				chrbtn[i] = TRUE;
 				chrbtnactive = TRUE;
 			}
 		}
@@ -2299,49 +2299,39 @@ void CheckChrBtns()
 
 void ReleaseChrBtns()
 {
-	signed int v0;    // esi
-	int *v1;          // eax
-	signed int v2;    // eax
-	int v3;           // ecx
-	int v4;           // ecx
-	unsigned char v5; // dl
+	int i;
 
 	chrbtnactive = FALSE;
-	v0 = 0;
-	do {
-		v1 = &chrbtn[v0];
-		if (*v1) {
-			*v1 = 0;
-			v2 = v0;
-			v3 = attribute_inc_rects[v0][0];
-			if (MouseX >= v3 && MouseX <= v3 + attribute_inc_rects[v2][2]) {
-				v4 = attribute_inc_rects[v2][1];
-				if (MouseY >= v4 && MouseY <= v4 + attribute_inc_rects[v2][3]) {
-					if (v0) {
-						switch (v0) {
-						case ATTRIB_MAG:
-							v5 = CMD_ADDMAG;
-							break;
-						case ATTRIB_DEX:
-							v5 = CMD_ADDDEX;
-							break;
-						case ATTRIB_VIT:
-							v5 = CMD_ADDVIT;
-							break;
-						default:
-							goto LABEL_16;
-						}
-					} else {
-						v5 = CMD_ADDSTR;
-					}
-					NetSendCmdParam1(TRUE, v5, 1u);
+	for (i = 0; i < 4; ++i) {
+		if (chrbtn[i]) {
+			chrbtn[i] = FALSE;
+			if (MouseX >= attribute_inc_rects[i][0]
+			    && MouseX <= attribute_inc_rects[i][0] + attribute_inc_rects[i][2]
+			    && MouseY >= attribute_inc_rects[i][1]
+			    && MouseY <= attribute_inc_rects[i][3] + attribute_inc_rects[i][1]) {
+				switch (i) {
+				case 0:
+					NetSendCmdParam1(TRUE, CMD_ADDSTR, 1);
 					--plr[myplr]._pStatPts;
+					break;
+				case 1:
+					NetSendCmdParam1(TRUE, CMD_ADDMAG, 1);
+					--plr[myplr]._pStatPts;
+					break;
+				case 2:
+					NetSendCmdParam1(TRUE, CMD_ADDDEX, 1);
+					--plr[myplr]._pStatPts;
+					break;
+				case 3:
+					NetSendCmdParam1(TRUE, CMD_ADDVIT, 1);
+					--plr[myplr]._pStatPts;
+					break;
+				default:
+					continue;
 				}
 			}
 		}
-	LABEL_16:
-		++v0;
-	} while (v0 < 4);
+	}
 }
 
 void DrawDurIcon()
