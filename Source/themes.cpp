@@ -426,7 +426,7 @@ BOOLEAN CheckThemeRoom(int tv)
 	signed int v12; // [esp+Ch] [ebp-8h]
 
 	v1 = 0;
-	if (trigflag[4] <= 0) {
+	if (trigflag_4 <= 0) {
 	LABEL_5:
 		v3 = 0;
 		v4 = 0;
@@ -476,7 +476,7 @@ BOOLEAN CheckThemeRoom(int tv)
 		while (dTransVal[*(v2 - 1)][*v2] != tv) {
 			++v1;
 			v2 += 4;
-			if (v1 >= trigflag[4]) {
+			if (v1 >= trigflag_4) {
 				goto LABEL_5;
 			}
 		}

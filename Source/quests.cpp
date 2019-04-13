@@ -322,11 +322,11 @@ void CheckQuestKill(int m, BOOL sendmsg)
 					v11 = dPiece;
 					do {
 						v12 = 0;
-						v13 = &trigs[trigflag[4]]._ty;
+						v13 = &trigs[trigflag_4]._ty;
 						v14 = v11;
 						do {
 							if ((*v14)[0] == 370) {
-								++trigflag[4];
+								++trigflag_4;
 								*(v13 - 1) = v12;
 								*v13 = v10;
 								v13[1] = 1026;

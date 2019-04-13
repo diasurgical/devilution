@@ -1875,7 +1875,7 @@ BOOL CheckIfTrig(int x, int y)
 {
 	int i;
 
-	for (i = 0; i < trigflag[4]; i++) {
+	for (i = 0; i < trigflag_4; i++) {
 		if ((x == trigs[i]._tx && y == trigs[i]._ty) || (abs(trigs[i]._tx - x) < 2 && abs(trigs[i]._ty - y) < 2))
 			return TRUE;
 	}

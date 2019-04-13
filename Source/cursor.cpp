@@ -141,7 +141,7 @@ void CheckTown()
 			    || cursmx == missile[mx]._mix - 2 && cursmy == missile[mx]._miy - 2
 			    || cursmx == missile[mx]._mix - 1 && cursmy == missile[mx]._miy - 2
 			    || cursmx == missile[mx]._mix && cursmy == missile[mx]._miy) {
-				trigflag[3] = 1;
+				trigflag_3 = 1;
 				ClearPanel();
 				strcpy(infostr, "Town Portal");
 				sprintf(tempstr, "from %s", plr[missile[mx]._misource]._pName);
@@ -167,7 +167,7 @@ void CheckRportal()
 			    || cursmx == missile[mx]._mix - 2 && cursmy == missile[mx]._miy - 2
 			    || cursmx == missile[mx]._mix - 1 && cursmy == missile[mx]._miy - 2
 			    || cursmx == missile[mx]._mix && cursmy == missile[mx]._miy) {
-				trigflag[3] = 1;
+				trigflag_3 = 1;
 				ClearPanel();
 				strcpy(infostr, "Portal to");
 				if (!setlevel)
@@ -290,7 +290,7 @@ void CheckCursMove()
 	pcursplr = -1;
 	uitemflag = 0;
 	panelflag = 0;
-	trigflag[3] = 0;
+	trigflag_3 = 0;
 
 	if (plr[myplr]._pInvincible)
 		return;
