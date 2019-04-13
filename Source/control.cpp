@@ -600,7 +600,7 @@ void SetSpeedSpell(int slot)
 	if (pSpell != -1) {
 		for (i = 0; i < 4; ++i) {
 			if (plr[myplr]._pSplHotKey[i] == pSpell && plr[myplr]._pSplTHotKey[i] == pSplType)
-				plr[myplr]._pSplHotKey[i] = -1;
+				plr[myplr]._pSplHotKey[i] = SPL_INVALID;
 		}
 		plr[myplr]._pSplHotKey[slot] = pSpell;
 		plr[myplr]._pSplTHotKey[slot] = pSplType;
