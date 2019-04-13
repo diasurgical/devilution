@@ -254,57 +254,51 @@ void InitL2Triggers()
 
 void InitL3Triggers()
 {
-	int v0;            // edi
-	signed int v1;     // esi
-	int *v2;           // edx
-	int *v3;           // ecx
-	TriggerStruct *v4; // eax
-	int(*v5)[112];     // [esp+Ch] [ebp-8h]
-	int(*v6)[112];     // [esp+10h] [ebp-4h]
+	int i, j;
+	int *_tmsg, *_ty, *_tx;
 
-	v0 = 0;
 	trigflag[4] = 0;
-	v5 = dPiece;
-	do {
-		v1 = 0;
-		v6 = v5;
-		v2 = &trigs[trigflag[4]]._tmsg;
-		v3 = &trigs[trigflag[4]]._ty;
-		v4 = &trigs[trigflag[4]];
-		do {
-			if ((*v6)[0] == 171) {
-				++trigflag[4];
-				v4->_tx = v1;
-				*v3 = v0;
-				*v2 = WM_DIABPREVLVL;
-				++v4;
-				v3 += 4;
-				v2 += 4;
+	for (j = 0; j < MAXDUNY; j++) {
+		i = 0;
+		_tmsg = &trigs[trigflag[4]]._tmsg;
+		_ty = &trigs[trigflag[4]]._ty;
+		_tx = &trigs[trigflag[4]]._tx;
+
+		while (i < MAXDUNX) {
+			if (dPiece[i][j] == 171) {
+				trigflag[4]++;
+				*_tx = i;
+				*_ty = j;
+				*_tmsg = WM_DIABPREVLVL;
+				_tx += sizeof(int *);
+				_ty += sizeof(int *);
+				_tmsg += sizeof(int *);
 			}
-			if ((*v6)[0] == 168) {
-				++trigflag[4];
-				v4->_tx = v1;
-				*v3 = v0;
-				*v2 = WM_DIABNEXTLVL;
-				++v4;
-				v3 += 4;
-				v2 += 4;
+
+			if (dPiece[i][j] == 168) {
+				trigflag[4]++;
+				*_tx = i;
+				*_ty = j;
+				*_tmsg = WM_DIABNEXTLVL;
+				_tx += sizeof(int *);
+				_ty += sizeof(int *);
+				_tmsg += sizeof(int *);
 			}
-			if ((*v6)[0] == 549) {
-				++trigflag[4];
-				v4->_tx = v1;
-				*v3 = v0;
-				*v2 = WM_DIABTWARPUP;
-				++v4;
-				v3 += 4;
-				v2 += 4;
+
+			if (dPiece[i][j] == 549) {
+				trigflag[4]++;
+				*_tx = i;
+				*_ty = j;
+				*_tmsg = WM_DIABTWARPUP;
+				_tx += sizeof(int *);
+				_ty += sizeof(int *);
+				_tmsg += sizeof(int *);
 			}
-			++v6;
-			++v1;
-		} while (v1 < 112);
-		v5 = (int(*)[112])((char *)v5 + 4);
-		++v0;
-	} while ((signed int)v5 < (signed int)dPiece[1]);
+
+			i++;
+		}
+
+	}
 	trigflag[3] = 0;
 }
 
