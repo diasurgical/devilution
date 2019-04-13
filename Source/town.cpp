@@ -826,7 +826,6 @@ void T_DrawGame(int x, int y)
 // 5C2FFC: using guessed type int dword_5C2FFC;
 // 5C3000: using guessed type int scr_pix_width;
 // 5C3004: using guessed type int scr_pix_height;
-// 69BD04: using guessed type int questlog;
 // 69CF0C: using guessed type int gpBufEnd;
 
 void T_DrawZoom(int x, int y)
@@ -1001,7 +1000,6 @@ void T_DrawZoom(int x, int y)
 // 5C2FFC: using guessed type int dword_5C2FFC;
 // 5C3000: using guessed type int scr_pix_width;
 // 5C3004: using guessed type int scr_pix_height;
-// 69BD04: using guessed type int questlog;
 // 69CF0C: using guessed type int gpBufEnd;
 
 void T_DrawView(int StartX, int StartY)
@@ -1056,7 +1054,6 @@ void T_DrawView(int StartX, int StartY)
 // 525740: using guessed type int PauseMode;
 // 52B9F1: using guessed type char msgflag;
 // 646D00: using guessed type char qtextflag;
-// 69BD04: using guessed type int questlog;
 // 69BEF8: using guessed type int light_table_index;
 // 69CF94: using guessed type int cel_transparency_active;
 // 6AA705: using guessed type char stextflag;

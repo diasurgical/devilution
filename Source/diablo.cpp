@@ -822,7 +822,6 @@ BOOL LeftMouseDown(int wParam)
 // 525740: using guessed type int PauseMode;
 // 52575C: using guessed type int doomflag;
 // 646D00: using guessed type char qtextflag;
-// 69BD04: using guessed type int questlog;
 // 6AA705: using guessed type char stextflag;
 
 BOOL LeftMouseCmd(BOOL bShift)
@@ -1085,7 +1084,7 @@ void PressKey(int vkey)
 				qtextflag = 0;
 				sfx_stop();
 			}
-			questlog = 0;
+			questlog = FALSE;
 			automapflag = 0;
 			msgdelay = 0;
 			gamemenu_off();
@@ -1203,7 +1202,7 @@ void PressKey(int vkey)
 			qtextflag = 0;
 			sfx_stop();
 		}
-		questlog = 0;
+		questlog = FALSE;
 		automapflag = 0;
 		msgdelay = 0;
 		gamemenu_off();
@@ -1216,7 +1215,6 @@ void PressKey(int vkey)
 // 525740: using guessed type int PauseMode;
 // 52B9F0: using guessed type char msgdelay;
 // 646D00: using guessed type char qtextflag;
-// 69BD04: using guessed type int questlog;
 // 6AA705: using guessed type char stextflag;
 
 void diablo_pause_game()
@@ -1285,7 +1283,7 @@ void PressChar(int vkey)
 	case 'C':
 	case 'c':
 		if(!stextflag) {
-			questlog = 0;
+			questlog = FALSE;
 			chrflag = chrflag == 0;
 			if(!chrflag || invflag) {
 				if(MouseX > 160 && MouseY < 352) {
@@ -1305,7 +1303,7 @@ void PressChar(int vkey)
 			if(!questlog) {
 				StartQuestlog();
 			} else {
-				questlog = 0;
+				questlog = FALSE;
 			}
 		}
 		break;
@@ -1505,7 +1503,6 @@ void PressChar(int vkey)
 // 52569C: using guessed type int zoomflag;
 // 525740: using guessed type int PauseMode;
 // 52575C: using guessed type int doomflag;
-// 69BD04: using guessed type int questlog;
 // 6AA705: using guessed type char stextflag;
 
 void LoadLvlGFX()

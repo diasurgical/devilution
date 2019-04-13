@@ -65,7 +65,7 @@ void InitQuestText()
 void InitQTextMsg(int m)
 {
 	if (alltext[m].scrlltxt) {
-		questlog = 0;
+		questlog = FALSE;
 		qtextptr = alltext[m].txtstr;
 		qtextflag = TRUE;
 		qtexty = 500;
@@ -80,7 +80,6 @@ void InitQTextMsg(int m)
 // 646D00: using guessed type char qtextflag;
 // 646D04: using guessed type int scrolltexty;
 // 646D08: using guessed type int sgLastScroll;
-// 69BD04: using guessed type int questlog;
 
 void DrawQTextBack()
 {

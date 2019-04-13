@@ -1784,7 +1784,7 @@ void StartStore(char s)
 		sbookflag = 0;
 		invflag = 0;
 		chrflag = 0;
-		questlog = 0;
+		questlog = FALSE;
 		dropGoldFlag = FALSE;
 		ClearSText(0, 24);
 		ReleaseStoreBtn();
@@ -1876,7 +1876,6 @@ void StartStore(char s)
 	}
 }
 // 4B8968: using guessed type int sbookflag;
-// 69BD04: using guessed type int questlog;
 // 69F10C: using guessed type int storenumh;
 // 6A8A28: using guessed type int stextsel;
 // 6AA705: using guessed type char stextflag;
