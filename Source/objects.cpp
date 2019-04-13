@@ -612,52 +612,48 @@ void AddBookLever(int lx1, int ly1, int lx2, int ly2, int x1, int y1, int x2, in
 
 void InitRndBarrels()
 {
-	int v0;        // ebp
-	int v1;        // esi
-	int v2;        // edi
-	int v3;        // eax
-	BOOLEAN v4;    // ebx
-	int v5;        // edx
-	int v6;        // eax
-	int v7;        // eax
-	signed int v8; // [esp+4h] [ebp-Ch]
-	signed int v9; // [esp+8h] [ebp-8h]
-	int v10;       // [esp+Ch] [ebp-4h]
+	int numobjs; // number of groups of barrels to generate
+	int xp, yp;
+	_object_id o;
+	BOOL found;
+	int p; // regulates chance to stop placing barrels in current group
+	int dir;
+	int t; // number of tries of placing next barrel in current group
+	int c; // number of barrels in current group
+	int i;
 
-	v10 = 0;
-	v0 = random(143, 5) + 3;
-	if (v0 > 0) {
+	numobjs = random(143, 5) + 3;
+	for (i = 0; i < numobjs; i++) {
 		do {
-			do {
-				v1 = random(143, 80) + 16;
-				v2 = random(143, 80) + 16;
-			} while (!RndLocOk(v1, v2));
-			v3 = random(143, 4);
-			AddObject(OBJ_BARRELEX - (v3 != 0), v1, v2);
-			v4 = 1;
-			v5 = 0;
-			v9 = 1;
-			while (!random(143, v5) && v4) {
-				v8 = 0;
-				v4 = 0;
-				do {
-					if (v8 >= 3)
-						break;
-					v6 = random(143, 8);
-					v1 += bxadd[v6];
-					v2 += byadd[v6];
-					++v8;
-					v4 = RndLocOk(v1, v2);
-				} while (!v4);
-				if (v4) {
-					v7 = random(143, 5);
-					AddObject(OBJ_BARRELEX - (v7 != 0), v1, v2);
-					++v9;
-				}
-				v5 = v9 >> 1;
+			xp = random(143, 80) + 16;
+			yp = random(143, 80) + 16;
+		} while (!RndLocOk(xp, yp));
+		o = (random(143, 4) != 0) ? OBJ_BARREL : OBJ_BARRELEX;
+		AddObject(o, xp, yp);
+		found = TRUE;
+		p = 0;
+		c = 1;
+		while (random(143, p) == 0 && found) {
+			t = 0;
+			found = FALSE;
+			while (TRUE) {
+				if (t >= 3)
+					break;
+				dir = random(143, 8);
+				xp += bxadd[dir];
+				yp += byadd[dir];
+				found = RndLocOk(xp, yp);
+				t++;
+				if (found)
+					break;
 			}
-			++v10;
-		} while (v10 < v0);
+			if (found) {
+				o = (random(143, 5) != 0) ? OBJ_BARREL : OBJ_BARRELEX;
+				AddObject(o, xp, yp);
+				c++;
+			}
+			p = c >> 1;
+		}
 	}
 }
 
