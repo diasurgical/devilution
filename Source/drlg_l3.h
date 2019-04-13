@@ -13,7 +13,7 @@ int DRLG_L3Anvil();
 void FixL3Warp();
 void FixL3HallofHeroes();
 void DRLG_L3LockRec(int x, int y);
-BOOLEAN DRLG_L3Lockout();
+BOOL DRLG_L3Lockout();
 void CreateL3Dungeon(unsigned int rseed, int entry);
 void DRLG_L3(int entry);
 void InitL3Dungeon();
