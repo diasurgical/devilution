@@ -1,22 +1,11 @@
 //HEADER_GOES_HERE
 
 #include "../types.h"
-
-#include <new>      // for placement new
-#include <stddef.h> // for offsetof
-#include <typeinfo> // for typeid
-
-#ifdef _MSC_VER
-#pragma warning (disable : 4291) // no matching operator delete found
-#endif
+#include "list.h"
 
 #define COMMAND_LEN 128
 
-#define OBJECT_NAME(obj) (((const char *)&typeid(obj)) + 8)
-
 // static float msgcmd_init_cpp_value = 0x7F800000;
-
-#include "list.h"
 
 struct EXTERNMESSAGE {
 	LIST_LINK(EXTERNMESSAGE) m_Link;
@@ -71,4 +60,3 @@ void msgcmd_add_server_cmd(const char *command)
 		memcpy(msg->command, command, len);
 	}
 }
-

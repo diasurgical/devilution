@@ -2,6 +2,16 @@
  * based on https://github.com/webcoyote/coho/blob/master/Base/List.h
  */
 
+#include <new>      // for placement new
+#include <stddef.h> // for offsetof
+#include <typeinfo> // for typeid
+
+#ifdef _MSC_VER
+#pragma warning (disable : 4291) // no matching operator delete found
+#endif
+
+#define OBJECT_NAME(obj) (((const char *)&typeid(obj)) + 8)
+
 /******************************************************************************
 *
 *   List definition macros
