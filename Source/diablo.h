@@ -75,7 +75,7 @@ extern int diablo_inf; // weak
 /* rdata */
 
 extern BOOL fullscreen;
-#ifdef _DEBUG
+//#ifdef _DEBUG // SpawnHealer is only bin exact with the following defined
 extern int showintrodebug;
 extern int questdebug;
 extern int debug_mode_key_s;
@@ -92,7 +92,7 @@ extern int frameflag;
 extern int frameend;
 extern int framerate;
 extern int framestart;
-#endif
+//#endif
 extern BOOL FriendlyMode;
 extern char *spszMsgTbl[4];    // weak
 extern char *spszMsgKeyTbl[4]; // weak
