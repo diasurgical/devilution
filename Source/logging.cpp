@@ -2,7 +2,9 @@
 
 #include "../types.h"
 
-static CRITICAL_SECTION sgMemCrit;
+#ifdef __cplusplus
+static CCritSect sgMemCrit;
+#endif
 CHAR FileName[MAX_PATH]; // idb
 char log_buffer[388];
 LPCVOID lpAddress;           // idb
@@ -13,39 +15,13 @@ DWORD nNumberOfBytesToWrite; // idb
 int log_not_created = 1;              // weak
 HANDLE log_file = (HANDLE)0xFFFFFFFF; // idb
 
-#ifndef _MSC_VER
-__attribute__((constructor))
-#endif
-static void
-log_c_init(void)
-{
-	log_init_mutex();
-	j_log_cleanup_mutex();
-}
-
-SEG_ALLOCATE(SEGMENT_C_INIT)
-_PVFV log_c_init_funcs[] = { &log_c_init };
-
-void log_init_mutex()
-{
-	InitializeCriticalSection(&sgMemCrit);
-}
-
-void j_log_cleanup_mutex()
-{
-	atexit(log_cleanup_mutex);
-}
-
-void __cdecl log_cleanup_mutex(void)
-{
-	DeleteCriticalSection(&sgMemCrit);
-}
-
 void __cdecl log_flush(BOOL force_close)
 {
 	DWORD NumberOfBytesWritten;
 
-	EnterCriticalSection(&sgMemCrit);
+#ifdef __cplusplus
+	sgMemCrit.Enter();
+#endif
 	if (nNumberOfBytesToWrite) {
 		if (log_file == INVALID_HANDLE_VALUE) {
 			log_file = log_create();
@@ -62,7 +38,9 @@ void __cdecl log_flush(BOOL force_close)
 		CloseHandle(log_file);
 		log_file = INVALID_HANDLE_VALUE;
 	}
-	LeaveCriticalSection(&sgMemCrit);
+#ifdef __cplusplus
+	sgMemCrit.Leave();
+#endif
 }
 
 HANDLE log_create()
@@ -155,7 +133,9 @@ void __cdecl log_printf(const char *pszFmt, ...)
 	va_list va;   // [esp+218h] [ebp+Ch]
 
 	va_start(va, pszFmt);
-	EnterCriticalSection(&sgMemCrit);
+#ifdef __cplusplus
+	sgMemCrit.Enter();
+#endif
 	_vsnprintf(v3, 0x200u, pszFmt, va);
 	va_end(va);
 	v3[511] = 0;
@@ -170,7 +150,9 @@ void __cdecl log_printf(const char *pszFmt, ...)
 		memcpy(&v2[nNumberOfBytesToWrite], v3, v1);
 		nNumberOfBytesToWrite += v1;
 	}
-	LeaveCriticalSection(&sgMemCrit);
+#ifdef __cplusplus
+	sgMemCrit.Leave();
+#endif
 }
 
 void log_dump_computer_info()

@@ -11,9 +11,6 @@ extern char gbBackBuf;    // weak
 extern char gbEmulate;    // weak
 extern HMODULE ghDiabMod; // idb
 
-void dx_init_mutex();
-void dx_cleanup_mutex_atexit();
-void __cdecl dx_cleanup_mutex(void);
 void dx_init(HWND hWnd);
 void dx_create_back_buffer();
 void dx_create_primary_surface();
