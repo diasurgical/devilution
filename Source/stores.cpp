@@ -401,156 +401,72 @@ void AddSText(int x, int y, int j, char *str, char clr, int sel)
 
 void StoreAutoPlace()
 {
-	int v0;         // edi
-	int v1;         // eax
-	int v2;         // edx
-	ItemStruct *v3; // ebp
-	int v4;         // esi
-	int v5;         // esi
-	int v6;         // esi
-	int v7;         // esi
-	int v8;         // esi
-	int v9;         // esi
-	int v10;        // esi
-	int v11;        // esi
-	int *v12;       // esi
-	int v13;        // esi
-	int v14;        // esi
-	int v15;        // esi
-	int v16;        // esi
-	int v17;        // esi
-	signed int v19; // [esp+10h] [ebp-Ch]
-	int v20;        // [esp+14h] [ebp-8h]
-	int v21;        // [esp+18h] [ebp-4h]
+	BOOL done;
+	int i, w, h, idx;
 
 	SetICursor(plr[myplr].HoldItem._iCurs + CURSOR_FIRSTITEM);
-	v0 = icursH28;
-	v1 = 0;
-	v21 = icursW28;
-	v20 = icursH28;
-	if (icursW28 == 1) {
-		if (icursH28 == 1) {
-			v2 = myplr;
-			if (plr[myplr].HoldItem._iStatFlag && AllItemsList[plr[v2].HoldItem.IDidx].iUsable) {
-				v19 = 0;
-				v3 = plr[v2].SpdList;
-				do {
-					if (v1)
-						break;
-					if (v3->_itype == -1) {
-						qmemcpy(v3, &plr[v2].HoldItem, sizeof(ItemStruct));
-						v0 = v20;
-						v1 = 1;
-					}
-					++v19;
-					++v3;
-				} while (v19 < 8);
-			}
-			v4 = 30;
-			do {
-				if (v1)
-					break;
-				v1 = AutoPlace(myplr, v4++, 1, 1, 1);
-			} while (v4 <= 39);
-			v5 = 20;
-			do {
-				if (v1)
-					break;
-				v1 = AutoPlace(myplr, v5++, 1, 1, 1);
-			} while (v5 <= 29);
-			v6 = 10;
-			do {
-				if (v1)
-					break;
-				v1 = AutoPlace(myplr, v6++, 1, 1, 1);
-			} while (v6 <= 19);
-			v7 = 0;
-			while (!v1) {
-				v1 = AutoPlace(myplr, v7++, 1, 1, 1);
-				if (v7 > 9)
-					goto LABEL_22;
-			}
-		} else {
-		LABEL_22:
-			if (v0 == 2) {
-				v8 = 29;
-				do {
-					if (v1)
-						break;
-					v1 = AutoPlace(myplr, v8--, 1, 2, 1);
-				} while (v8 >= 20);
-				v9 = 9;
-				do {
-					if (v1)
-						break;
-					v1 = AutoPlace(myplr, v9--, 1, 2, 1);
-				} while (v9 >= 0);
-				v10 = 19;
-				while (!v1) {
-					v1 = AutoPlace(myplr, v10--, 1, 2, 1);
-					if (v10 < 10)
-						goto LABEL_32;
-				}
-			} else {
-			LABEL_32:
-				if (v0 == 3) {
-					v11 = 0;
-					while (!v1) {
-						v1 = AutoPlace(myplr, v11++, 1, 3, 1);
-						if (v11 >= 20)
-							goto LABEL_36;
-					}
+	done = FALSE;
+	w = icursW28;
+	h = icursH28;
+	if (w == 1 && h == 1) {
+		idx = plr[myplr].HoldItem.IDidx;
+		if (plr[myplr].HoldItem._iStatFlag && AllItemsList[idx].iUsable) {
+			for (i = 0; i < 8 && !done; i++) {
+				if (plr[myplr].SpdList[i]._itype == ITYPE_NONE) {
+					plr[myplr].SpdList[i] = plr[myplr].HoldItem;
+					done = TRUE;
 				}
 			}
 		}
-	} else {
-	LABEL_36:
-		if (v21 == 2) {
-			if (v0 == 2) {
-				v12 = AP2x2Tbl;
-				do {
-					if (v1)
-						break;
-					v1 = AutoPlace(myplr, *v12, 2, 2, 1);
-					++v12;
-				} while ((signed int)v12 < (signed int)&AP2x2Tbl[10]);
-				v13 = 21;
-				do {
-					if (v1)
-						break;
-					v1 = AutoPlace(myplr, v13, 2, 2, 1);
-					v13 += 2;
-				} while (v13 < 29);
-				v14 = 1;
-				do {
-					if (v1)
-						break;
-					v1 = AutoPlace(myplr, v14, 2, 2, 1);
-					v14 += 2;
-				} while (v14 < 9);
-				v15 = 10;
-				while (!v1) {
-					v1 = AutoPlace(myplr, v15++, 2, 2, 1);
-					if (v15 >= 19)
-						goto LABEL_50;
-				}
-			} else {
-			LABEL_50:
-				if (v0 == 3) {
-					v16 = 0;
-					do {
-						if (v1)
-							break;
-						v1 = AutoPlace(myplr, v16++, 2, 3, 1);
-					} while (v16 < 9);
-					v17 = 10;
-					do {
-						if (v1)
-							break;
-						v1 = AutoPlace(myplr, v17++, 2, 3, 1);
-					} while (v17 < 19);
-				}
-			}
+		for (i = 30; i <= 39 && !done; i++) {
+			done = AutoPlace(myplr, i, w, h, TRUE);
+		}
+		for (i = 20; i <= 29 && !done; i++) {
+			done = AutoPlace(myplr, i, w, h, TRUE);
+		}
+		for (i = 10; i <= 19 && !done; i++) {
+			done = AutoPlace(myplr, i, w, h, TRUE);
+		}
+		for (i = 0; i <= 9 && !done; i++) {
+			done = AutoPlace(myplr, i, w, h, TRUE);
+		}
+	}
+	if (w == 1 && h == 2) {
+		for (i = 29; i >= 20 && !done; i--) {
+			done = AutoPlace(myplr, i, w, h, TRUE);
+		}
+		for (i = 9; i >= 0 && !done; i--) {
+			done = AutoPlace(myplr, i, w, h, TRUE);
+		}
+		for (i = 19; i >= 10 && !done; i--) {
+			done = AutoPlace(myplr, i, w, h, TRUE);
+		}
+	}
+	if (w == 1 && h == 3) {
+		for (i = 0; i < 20 && !done; i++) {
+			done = AutoPlace(myplr, i, w, h, TRUE);
+		}
+	}
+	if (w == 2 && h == 2) {
+		for (i = 0; i < 10 && !done; i++) {
+			done = AutoPlace(myplr, AP2x2Tbl[i], w, h, TRUE);
+		}
+		for (i = 21; i < 29 && !done; i += 2) {
+			done = AutoPlace(myplr, i, w, h, TRUE);
+		}
+		for (i = 1; i < 9 && !done; i += 2) {
+			done = AutoPlace(myplr, i, w, h, TRUE);
+		}
+		for (i = 10; i < 19 && !done; i++) {
+			done = AutoPlace(myplr, i, w, h, TRUE);
+		}
+	}
+	if (w == 2 && h == 3) {
+		for (i = 0; i < 9 && !done; i++) {
+			done = AutoPlace(myplr, i, w, h, TRUE);
+		}
+		for (i = 10; i < 19 && !done; i++) {
+			done = AutoPlace(myplr, i, w, h, TRUE);
 		}
 	}
 }
