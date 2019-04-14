@@ -22,7 +22,7 @@ void DrawClippedPlayer(int pnum, int x, int y, int px, int py, BYTE *pCelBuff, i
 void DrawView(int StartX, int StartY);
 void DrawGame(int x, int y);
 void scrollrt_draw_lower(int x, int y, int sx, int sy, int chunks, int eflag);
-void scrollrt_draw_clipped_dungeon(char *pBuff, int sx, int sy, int x, int y, int eflag);
+void scrollrt_draw_clipped_dungeon(BYTE *pBuff, int sx, int sy, int dx, int dy, int eflag);
 void DrawClippedMonster(int x, int y, int mx, int my, int m, int CelSkip, int capChunks);
 void DrawClippedObject(int x, int y, int ox, int oy, BOOL pre, int CelSkip, int capChunks);
 void scrollrt_draw_clipped_e_flag(BYTE *pBuff, int x, int y, int sx, int sy);
