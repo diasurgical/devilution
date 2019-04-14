@@ -1567,18 +1567,3 @@ typedef struct TDataInfo {
 	DWORD destOffset;
 	DWORD size;
 } TDataInfo;
-
-//////////////////////////////////////////////////
-// msgcmd
-//////////////////////////////////////////////////
-
-typedef struct ServerCommand {
-	int field_0;
-	int field_4;
-	char command[128];
-} ServerCommand;
-
-typedef struct ChatCmd {
-	struct ChatCmd *next;
-	ServerCommand *extern_msgs[2];
-} ChatCmd;
