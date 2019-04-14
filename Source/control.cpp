@@ -6,7 +6,7 @@ char sgbNextTalkSave; // weak
 char sgbTalkSavePos;  // weak
 void *pDurIcons;
 void *pChrButtons;
-BOOL drawhpflag;  // idb
+BOOL drawhpflag; // idb
 BOOL dropGoldFlag;
 int panbtn[8];
 int chrbtn[4];
@@ -1553,60 +1553,64 @@ void CheckBtnUp()
 	panbtndown = 0;
 
 	for (i = 0; i < 8; i++) {
-		if (panbtn[i]) {
-			panbtn[i] = 0;
-			if (MouseX >= PanBtnPos[i][0] && MouseX <= PanBtnPos[i][0] + PanBtnPos[i][2]) {
-				if (MouseY >= PanBtnPos[i][1] && MouseY <= PanBtnPos[i][1] + PanBtnPos[i][3]) {
-					switch (i) {
-					case PANBTN_CHARINFO:
-						questlog = FALSE;
-						chrflag = chrflag == 0;
-						break;
-					case PANBTN_QLOG:
-						chrflag = 0;
-						if (!questlog)
-							StartQuestlog();
-						else
-							questlog = FALSE;
-						break;
-					case PANBTN_AUTOMAP:
-						DoAutoMap();
-						break;
-					case PANBTN_MAINMENU:
-						qtextflag = FALSE;
-						gamemenu_handle_previous();
-						gamemenuOff = 0;
-						break;
-					case PANBTN_INVENTORY:
-						sbookflag = 0;
-						invflag = invflag == 0;
-						if (dropGoldFlag) {
-							dropGoldFlag = FALSE;
-							dropGoldValue = 0;
-						}
-						break;
-					case PANBTN_SPELLBOOK:
-						invflag = 0;
-						if (dropGoldFlag) {
-							dropGoldFlag = FALSE;
-							dropGoldValue = 0;
-						}
-						sbookflag = sbookflag == 0;
-						break;
-					case PANBTN_SENDMSG:
-						if (talkflag)
-							control_reset_talk();
-						else
-							control_type_message();
-						break;
-					case PANBTN_FRIENDLY:
-						FriendlyMode = FriendlyMode == 0;
-						break;
-					default:
-						break;
-					}
-				}
+		if (!panbtn[i]) {
+			continue;
+		}
+
+		panbtn[i] = 0;
+
+		if (MouseX < PanBtnPos[i][0]
+		    || MouseX > PanBtnPos[i][0] + PanBtnPos[i][2]
+		    || MouseY < PanBtnPos[i][1]
+		    || MouseY > PanBtnPos[i][1] + PanBtnPos[i][3]) {
+			continue;
+		}
+
+		switch (i) {
+		case PANBTN_CHARINFO:
+			questlog = FALSE;
+			chrflag = chrflag == 0;
+			break;
+		case PANBTN_QLOG:
+			chrflag = 0;
+			if (!questlog)
+				StartQuestlog();
+			else
+				questlog = FALSE;
+			break;
+		case PANBTN_AUTOMAP:
+			DoAutoMap();
+			break;
+		case PANBTN_MAINMENU:
+			qtextflag = FALSE;
+			gamemenu_handle_previous();
+			gamemenuOff = 0;
+			break;
+		case PANBTN_INVENTORY:
+			sbookflag = 0;
+			invflag = invflag == 0;
+			if (dropGoldFlag) {
+				dropGoldFlag = FALSE;
+				dropGoldValue = 0;
 			}
+			break;
+		case PANBTN_SPELLBOOK:
+			invflag = 0;
+			if (dropGoldFlag) {
+				dropGoldFlag = FALSE;
+				dropGoldValue = 0;
+			}
+			sbookflag = sbookflag == 0;
+			break;
+		case PANBTN_SENDMSG:
+			if (talkflag)
+				control_reset_talk();
+			else
+				control_type_message();
+			break;
+		case PANBTN_FRIENDLY:
+			FriendlyMode = FriendlyMode == 0;
+			break;
 		}
 	}
 
