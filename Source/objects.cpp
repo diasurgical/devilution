@@ -713,52 +713,27 @@ BOOL WallTrapLocOk(int xp, int yp)
 
 void AddL2Torches()
 {
-	int v0;   // esi
-	int v1;   // edi
-	char *v2; // ebx
-	//int v3; // eax
-	int(*v5)[112]; // [esp+Ch] [ebp-Ch]
-	int v6;        // [esp+10h] [ebp-8h]
-	int(*v7)[112]; // [esp+14h] [ebp-4h]
+	int i, j, pn;
 
-	v0 = 0;
-	v7 = dPiece;
-	do {
-		v1 = 0;
-		v2 = &dObject[0][v0 - 1]; /* &dungeon[39][v0 + 39]; */
-		v5 = v7;
-		do {
-			//_LOBYTE(v3) = WallTrapLocOk(v1, v0);
-			if (!WallTrapLocOk(v1, v0))
-				goto LABEL_18;
-			v6 = (*v5)[0];
-			if ((*v5)[0] == 1) {
-				if (random(145, 3))
-					goto LABEL_18;
-				AddObject(OBJ_TORCHL2, v1, v0);
-			}
-			if (v6 == 5) {
-				if (random(145, 3))
-					goto LABEL_18;
-				AddObject(OBJ_TORCHR2, v1, v0);
-			}
-			if (v6 == 37) {
-				if (random(145, 10) || *(v2 - 111))
-					goto LABEL_18;
-				AddObject(OBJ_TORCHL, v1 - 1, v0);
-			}
-			if (v6 == 41) {
-				if (!random(145, 10) && !*v2)
-					AddObject(OBJ_TORCHR, v1, v0 - 1);
-			}
-		LABEL_18:
-			++v5;
-			++v1;
-			v2 += 112;
-		} while (v1 < 112);
-		v7 = (int(*)[112])((char *)v7 + 4);
-		++v0;
-	} while ((signed int)v7 < (signed int)dPiece[1]);
+	for (j = 0; j < MAXDUNY; j++) {
+		for (i = 0; i < MAXDUNX; i++) {
+			if (!WallTrapLocOk(i, j))
+				continue;
+
+			pn = dPiece[i][j];
+			if (pn == 1 && random(145, 3) == 0)
+				AddObject(OBJ_TORCHL2, i, j);
+
+			if (pn == 5 && random(145, 3) == 0)
+				AddObject(OBJ_TORCHR2, i, j);
+
+			if (pn == 37 && random(145, 10) == 0 && dObject[i - 1][j] == 0)
+				AddObject(OBJ_TORCHL, i - 1, j);
+
+			if (pn == 41 && random(145, 10) == 0 && dObject[i][j - 1] == 0)
+				AddObject(OBJ_TORCHR, i, j - 1);
+		}
+	}
 }
 
 BOOL TorchLocOK(int xp, int yp)
