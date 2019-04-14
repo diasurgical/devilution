@@ -4549,49 +4549,41 @@ void SortHealer()
 
 void SpawnHealer(int lvl)
 {
-	int v3;         // eax
-	ItemStruct *v4; // ebp
-	signed int v8;  // [esp-4h] [ebp-20h]
-	int v10;        // [esp+14h] [ebp-8h]
+	int i, nsi, srnd;
 
 	GetItemAttrs(0, IDI_HEAL, 1);
-	qmemcpy(healitem, item, sizeof(ItemStruct));
+	healitem[0] = item[0];
 	healitem[0]._iCreateInfo = lvl;
-	healitem[0]._iStatFlag = 1;
+	healitem[0]._iStatFlag = TRUE;
+
 	GetItemAttrs(0, IDI_FULLHEAL, 1);
-	qmemcpy(&healitem[1], item, sizeof(ItemStruct));
+	healitem[1] = item[0];
 	healitem[1]._iCreateInfo = lvl;
-	healitem[1]._iStatFlag = 1;
-	if (gbMaxPlayers == 1) {
-		v8 = 2;
-	} else {
+	healitem[1]._iStatFlag = TRUE;
+
+	if (gbMaxPlayers != 1) {
 		GetItemAttrs(0, IDI_RESURRECT, 1);
-		qmemcpy(&healitem[2], item, sizeof(ItemStruct));
+		healitem[2] = item[0];
 		healitem[2]._iCreateInfo = lvl;
-		healitem[2]._iStatFlag = 1;
-		v8 = 3;
+		healitem[2]._iStatFlag = TRUE;
+
+		i = 3;
+	} else {
+		i = 2;
 	}
-	v3 = random(50, 8) + 10;
-	if (v8 < v3) {
-		v4 = &healitem[v8];
-		v10 = v3 - v8;
-		do {
-			item[0]._iSeed = GetRndSeed();
-			SetRndSeed(item[0]._iSeed);
-			GetItemAttrs(0, RndHealerItem(lvl) - 1, lvl);
-			qmemcpy(v4, item, sizeof(ItemStruct));
-			v4->_iCreateInfo = lvl | 0x4000;
-			v4->_iIdentified = TRUE;
-			v4->_iStatFlag = StoreStatOk(v4);
-			++v4;
-			--v10;
-		} while (v10);
+	nsi = random(50, 8) + 10;
+	for (; i < nsi; i++) {
+		item[0]._iSeed = GetRndSeed();
+		SetRndSeed(item[0]._iSeed);
+		srnd = RndHealerItem(lvl) - 1;
+		GetItemAttrs(0, srnd, lvl);
+		healitem[i] = item[0];
+		healitem[i]._iCreateInfo = lvl | 0x4000;
+		healitem[i]._iIdentified = TRUE;
+		healitem[i]._iStatFlag = StoreStatOk(&healitem[i]);
 	}
-	if (v3 < 20) {
-		do {
-			healitem[v3]._itype = -1;
-			v3++;
-		} while (v3 < 20);
+	for (i = nsi; i < 20; i++) {
+		healitem[i]._itype = -1;
 	}
 	SortHealer();
 }
