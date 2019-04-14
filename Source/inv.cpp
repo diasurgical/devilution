@@ -2057,7 +2057,7 @@ void DrawInvMsg(char *msg)
 int InvPutItem(int pnum, int x, int y)
 {
 	BOOL done;
-	int d, dy, ii;
+	int d, ii;
 	int i, j, l;
 	int xx, yy;
 
