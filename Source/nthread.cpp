@@ -4,7 +4,9 @@
 
 char byte_679704; // weak
 int gdwMsgLenTbl[MAX_PLRS];
-static CRITICAL_SECTION sgMemCrit;
+#ifdef __cplusplus
+static CCritSect sgMemCrit;
+#endif
 int gdwDeltaBytesSec;    // weak
 char nthread_should_run; // weak
 DWORD gdwTurnsInTransit; // weak
@@ -21,34 +23,6 @@ int last_tick;           // weak
 
 /* data */
 static HANDLE sghThread = (HANDLE)0xFFFFFFFF; // idb
-
-#ifndef _MSC_VER
-__attribute__((constructor))
-#endif
-static void
-nthread_c_init(void)
-{
-	nthread_init_mutex();
-	nthread_cleanup_mutex_atexit();
-}
-
-SEG_ALLOCATE(SEGMENT_C_INIT)
-_PVFV nthread_c_init_funcs[] = { &nthread_c_init };
-
-void nthread_init_mutex()
-{
-	InitializeCriticalSection(&sgMemCrit);
-}
-
-void nthread_cleanup_mutex_atexit()
-{
-	atexit(nthread_cleanup_mutex);
-}
-
-void __cdecl nthread_cleanup_mutex(void)
-{
-	DeleteCriticalSection(&sgMemCrit);
-}
 
 void nthread_terminate_game(const char *pszFcn)
 {
@@ -195,7 +169,9 @@ void nthread_start(BOOL set_turn_upper_bit)
 		gdwNormalMsgSize = largestMsgSize;
 	if ((unsigned char)gbMaxPlayers > 1u) {
 		sgbThreadIsRunning = 0;
-		EnterCriticalSection(&sgMemCrit);
+#ifdef __cplusplus
+		sgMemCrit.Enter();
+#endif
 		nthread_should_run = 1;
 		sghThread = (HANDLE)_beginthreadex(NULL, 0, nthread_handler, NULL, 0, &glpNThreadId);
 		if (sghThread == (HANDLE)-1) {
@@ -226,7 +202,9 @@ unsigned int __stdcall nthread_handler(void *a1)
 
 	if (nthread_should_run) {
 		while (1) {
-			EnterCriticalSection(&sgMemCrit);
+#ifdef __cplusplus
+			sgMemCrit.Enter();
+#endif
 			if (!nthread_should_run)
 				break;
 			nthread_send_and_recv_turn(0, 0);
@@ -234,13 +212,17 @@ unsigned int __stdcall nthread_handler(void *a1)
 				delta = last_tick - GetTickCount();
 			else
 				delta = 50;
-			LeaveCriticalSection(&sgMemCrit);
+#ifdef __cplusplus
+			sgMemCrit.Leave();
+#endif
 			if (delta > 0)
 				Sleep(delta);
 			if (!nthread_should_run)
 				return 0;
 		}
-		LeaveCriticalSection(&sgMemCrit);
+#ifdef __cplusplus
+		sgMemCrit.Leave();
+#endif
 	}
 	return 0;
 }
@@ -254,8 +236,10 @@ void nthread_cleanup()
 	gdwNormalMsgSize = 0;
 	gdwLargestMsgSize = 0;
 	if (sghThread != (HANDLE)-1 && glpNThreadId != GetCurrentThreadId()) {
+#ifdef __cplusplus
 		if (!sgbThreadIsRunning)
-			LeaveCriticalSection(&sgMemCrit);
+			sgMemCrit.Leave();
+#endif
 		if (WaitForSingleObject(sghThread, 0xFFFFFFFF) == -1) {
 			app_fatal("nthread3:\n(%s)", TraceLastError());
 		}
@@ -272,10 +256,12 @@ void nthread_cleanup()
 void nthread_ignore_mutex(BOOL bStart)
 {
 	if (sghThread != (HANDLE)-1) {
+#ifdef __cplusplus
 		if (bStart)
-			LeaveCriticalSection(&sgMemCrit);
+			sgMemCrit.Leave();
 		else
-			EnterCriticalSection(&sgMemCrit);
+			sgMemCrit.Enter();
+#endif
 		sgbThreadIsRunning = bStart;
 	}
 }

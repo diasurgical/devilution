@@ -518,105 +518,71 @@ BOOL AutoPlace(int pnum, int ii, int sx, int sy, BOOL saveflag)
 	return done;
 }
 
-int SpecialAutoPlace(int pnum, int ii, int sx, int sy, int saveflag)
+BOOL SpecialAutoPlace(int pnum, int ii, int sx, int sy, int saveflag)
 {
-	__int64 v5;     // rax
-	int v6;         // ebx
-	signed int v7;  // edx
-	signed int v8;  // eax
-	signed int v9;  // esi
-	int j;          // edi
-	signed int v11; // ecx
-	int *v12;       // eax
-	int v13;        // eax
-	signed int v14; // esi
-	signed int v15; // ecx
-	int v16;        // edi
-	char *v17;      // ecx
-	char v18;       // dl
-	signed int v20; // [esp+Ch] [ebp-Ch]
-	int p;          // [esp+10h] [ebp-8h]
-	int v22;        // [esp+14h] [ebp-4h]
-	int i;          // [esp+14h] [ebp-4h]
+	int i, j, xx, yy;
+	BOOL done;
 
-	p = pnum;
-	v5 = ii;
-	v6 = 1;
-	v20 = v5 % 10;
-	v7 = 10 * (unsigned __int64)(v5 / 10);
-	v8 = v7;
-	if (v7 < 0)
-		v8 = 0;
-	v22 = 0;
-	if (sy <= 0) {
-	LABEL_25:
-		if (saveflag) {
-			v13 = p;
-			qmemcpy(&plr[p].InvList[plr[p]._pNumInv], &plr[p].HoldItem, sizeof(plr[p].InvList[plr[p]._pNumInv]));
-			++plr[v13]._pNumInv;
-			v14 = v7;
-			if (v7 < 0)
-				v14 = 0;
-			for (i = 0; i < sy; ++i) {
-				v15 = v20;
-				if (v20 < 0)
-					v15 = 0;
-				v16 = 0;
-				if (sx > 0) {
-					v17 = &plr[v13].InvGrid[v15 + v14];
-					do {
-						if (v16 || i != sy - 1)
-							v18 = -_LOBYTE(plr[v13]._pNumInv);
-						else
-							v18 = plr[v13]._pNumInv;
-						*v17++ = v18;
-						++v16;
-					} while (v16 < sx);
-				}
-				v14 += 10;
+	done = TRUE;
+	yy = 10 * (ii / 10);
+	if (yy < 0) {
+		yy = 0;
+	}
+	for (j = 0; j < sy && done; j++) {
+		if (yy >= 40) {
+			done = FALSE;
+		}
+		xx = ii % 10;
+		if (xx < 0) {
+			xx = 0;
+		}
+		for (i = 0; i < sx && done; i++) {
+			if (xx < 10) {
+				done = plr[pnum].InvGrid[xx + yy] == 0;
+			} else {
+				done = FALSE;
 			}
-			CalcPlrScrolls(p);
+			xx++;
 		}
-		return v6;
+		yy += 10;
 	}
-	while (v6) {
-		if (v8 >= 40)
-			v6 = 0;
-		v9 = v20;
-		if (v20 < 0)
-			v9 = 0;
-		for (j = 0; j < sx; ++j) {
-			if (!v6)
-				break;
-			v6 = 0;
-			if (v9 < 10)
-				_LOBYTE(v6) = plr[pnum].InvGrid[v9 + v8] == 0;
-			++v9;
-		}
-		v8 += 10;
-		if (++v22 >= sy) {
-			if (v6)
-				goto LABEL_25;
-			break;
+	if (!done) {
+		if (sx <= 1 && sy <= 1) {
+			for (i = 0; i < MAXBELTITEMS; i++) {
+				if (plr[pnum].SpdList[i]._itype == ITYPE_NONE) {
+					done = TRUE;
+					break;
+				}
+			}
+		} else {
+			done = FALSE;
 		}
 	}
-	if (sx <= 1 && sy <= 1) {
-		v11 = 0;
-		v12 = &plr[p].SpdList[0]._itype;
-		while (*v12 != ITYPE_NONE) {
-			++v11;
-			v12 += 92;
-			if (v11 >= MAXBELTITEMS)
-				goto LABEL_24;
+	if (done && saveflag) {
+		plr[pnum].InvList[plr[pnum]._pNumInv] = plr[pnum].HoldItem;
+		plr[pnum]._pNumInv++;
+		yy = 10 * (ii / 10);
+		if (yy < 0) {
+			yy = 0;
 		}
-		v6 = 1;
-		goto LABEL_25;
+		for (j = 0; j < sy; j++) {
+			xx = ii % 10;
+			if (xx < 0) {
+				xx = 0;
+			}
+			for (i = 0; i < sx; i++) {
+				if (i != 0 || j != sy - 1) {
+					plr[pnum].InvGrid[xx + yy] = -plr[pnum]._pNumInv;
+				} else {
+					plr[pnum].InvGrid[xx + yy] = plr[pnum]._pNumInv;
+				}
+				xx++;
+			}
+			yy += 10;
+		}
+		CalcPlrScrolls(pnum);
 	}
-	v6 = 0;
-LABEL_24:
-	if (v6)
-		goto LABEL_25;
-	return v6;
+	return done;
 }
 
 BOOL GoldAutoPlace(int pnum)

@@ -378,45 +378,52 @@ void DrawClippedPlayer(int pnum, int x, int y, int px, int py, BYTE *pCelBuff, i
 
 void DrawView(int StartX, int StartY)
 {
-	if (zoomflag)
+	if(zoomflag) {
 		DrawGame(StartX, StartY);
-	else
+	} else {
 		DrawZoom(StartX, StartY);
-
-	if (automapflag)
+	}
+	if(automapflag) {
 		DrawAutomap();
-
-	if (invflag)
+	}
+	if(invflag) {
 		DrawInv();
-	else if (sbookflag)
+	} else if(sbookflag) {
 		DrawSpellBook();
+	}
 
 	DrawDurIcon();
 
-	if (chrflag)
+	if(chrflag) {
 		DrawChr();
-	else if (questlog)
+	} else if(questlog) {
 		DrawQuestLog();
-	else if (plr[myplr]._pStatPts && !spselflag)
+	} else if(plr[myplr]._pStatPts != 0 && !spselflag) {
 		DrawLevelUpIcon();
-
-	if (uitemflag)
+	}
+	if(uitemflag) {
 		DrawUniqueInfo();
-	if (qtextflag)
+	}
+	if(qtextflag) {
 		DrawQText();
-	if (spselflag)
+	}
+	if(spselflag) {
 		DrawSpellList();
-	if (dropGoldFlag)
+	}
+	if(dropGoldFlag) {
 		DrawGoldSplit(dropGoldValue);
-	if (helpflag)
+	}
+	if(helpflag) {
 		DrawHelp();
-	if (msgflag)
+	}
+	if(msgflag) {
 		DrawDiabloMsg();
-
-	if (deathflag)
+	}
+	if(deathflag) {
 		RedBack();
-	else if (PauseMode)
+	} else if(PauseMode != 0) {
 		gmenu_draw_pause();
+	}
 
 	DrawPlrMsg();
 	gmenu_draw();
@@ -589,7 +596,7 @@ void scrollrt_draw_lower(int x, int y, int sx, int sy, int chunks, int eflag)
 				if (level_cel_block != 0 && leveltype == DTYPE_HELL) {
 					drawLowerScreen(dst);
 				}
-				scrollrt_draw_clipped_dungeon((char *)&gpBuffer[sx + screen_y_times_768[sy]], x, y, sx, sy, 0);
+				scrollrt_draw_clipped_dungeon(&gpBuffer[sx + screen_y_times_768[sy]], x, y, sx, sy, 0);
 			} else {
 				world_draw_black_tile(&gpBuffer[sx + screen_y_times_768[sy]]);
 			}
@@ -637,7 +644,7 @@ void scrollrt_draw_lower(int x, int y, int sx, int sy, int chunks, int eflag)
 						drawLowerScreen(dst + 32);
 					}
 				}
-				scrollrt_draw_clipped_dungeon((char *)&gpBuffer[sx + screen_y_times_768[sy]], x, y, sx, sy, 1);
+				scrollrt_draw_clipped_dungeon(&gpBuffer[sx + screen_y_times_768[sy]], x, y, sx, sy, 1);
 			}
 		}
 		x++;
@@ -685,7 +692,7 @@ void scrollrt_draw_lower(int x, int y, int sx, int sy, int chunks, int eflag)
 			if (level_cel_block != 0 && leveltype == DTYPE_HELL) {
 				drawLowerScreen(dst);
 			}
-			scrollrt_draw_clipped_dungeon((char *)&gpBuffer[sx + screen_y_times_768[sy]], x, y, sx, sy, 0);
+			scrollrt_draw_clipped_dungeon(&gpBuffer[sx + screen_y_times_768[sy]], x, y, sx, sy, 0);
 		}
 	}
 }
@@ -695,233 +702,220 @@ void scrollrt_draw_lower(int x, int y, int sx, int sy, int chunks, int eflag)
 // 69CF94: using guessed type int cel_transparency_active;
 // 69CF98: using guessed type int level_piece_id;
 
-void scrollrt_draw_clipped_dungeon(char *pBuff, int sx, int sy, int x, int y, int eflag)
+void scrollrt_draw_clipped_dungeon(BYTE *pBuff, int sx, int sy, int dx, int dy, int eflag)
 {
-	int v6;             // eax
-	char v7;            // bl
-	char v8;            // cl
-	char v9;            // dl
-	int *v10;           // eax
-	DeadStruct *v11;    // eax
-	int *v12;           // esi
-	int v13;            // ecx
-	int v14;            // edx
-	char v15;           // bl
-	ItemStruct *v16;    // esi
-	char *v17;          // eax
-	signed int v18;     // ebx
-	int v19;            // ebx
-	unsigned int v20;   // ecx
-	PlayerStruct *v21;  // esi
-	int v22;            // esi
-	int v23;            // eax
-	MonsterStruct *v24; // esi
-	CMonster *v25;      // ecx
-	int v26;            // ebx
-	int v27;            // edi
-	unsigned int v28;   // ecx
-	PlayerStruct *v29;  // esi
-	int v30;            // esi
-	int v31;            // eax
-	MonsterStruct *v32; // esi
-	CMonster *v33;      // ecx
-	int v34;            // ebx
-	int v35;            // edi
-	ItemStruct *v36;    // esi
-	char *v37;          // ecx
-	signed int v38;     // ebx
-	int v39;            // ebx
-	int v40;            // [esp+Ch] [ebp-18h]
-	int v41;            // [esp+10h] [ebp-14h]
-	char *dst_buf;      // [esp+14h] [ebp-10h]
-	int a1a;            // [esp+18h] [ebp-Ch]
-	char v44;           // [esp+1Dh] [ebp-7h]
-	char v45;           // [esp+1Eh] [ebp-6h]
-	char v46;           // [esp+1Fh] [ebp-5h]
-	char v47;           // [esp+20h] [ebp-4h]
-	char v48;           // [esp+21h] [ebp-3h]
-	char v49;           // [esp+22h] [ebp-2h]
-	char v50;           // [esp+23h] [ebp-1h]
+	int px, py, nCel, nMon, negMon, p;
+	char bFlag, bDead, bObj, bItem, bPlr, bArch, bMap, negPlr, dd;
+	DeadStruct *pDeadGuy;
+	ItemStruct *pItem;
+	PlayerStruct *pPlayer;
+	MonsterStruct *pMonster;
+	BYTE *pCelBuff;
+	DWORD *pFrameTable;
 
-	a1a = sx;
-	dst_buf = pBuff;
-	v6 = 112 * sx + sy;
-	v7 = dDead[0][v6];
-	v50 = dFlags[0][v6];
-	v47 = dObject[0][v6];
-	v49 = dItem[0][v6];
-	v8 = dPlayer[0][v6 - 1];
-	v48 = dPlayer[0][v6];
-	v46 = dArch[0][v6];
-	v9 = dTransVal[0][v6];
-	v10 = (int *)((char *)dMonster + 4 * v6);
-	v44 = v9;
-	v45 = v8;
-	v40 = *v10;
-	v41 = *(v10 - 1);
-	if (visiondebug && v50 & DFLAG_LIT)
-		Cel2DecodeHdrOnly((BYTE *)dst_buf, (BYTE *)pSquareCel, 1, 64, 0, 8);
-	if (MissilePreFlag && v50 & DFLAG_MISSILE)
-		DrawClippedMissile(a1a, sy, x, y, 0, 8, TRUE);
-	if (light_table_index < lightmax) {
-		if (v7) {
-			v11 = &dead[(v7 & 0x1F) - 1];
-			v12 = (int *)v11->_deadData[(v7 >> 5) & 7];
-			v13 = x - v11->_deadWidth2;
-			if (v12) {
-				v14 = v11->_deadFrame;
-				if (v14 >= 1 && (unsigned int)*v12 <= 0x32 && v14 <= *v12) {
-					v15 = v11->_deadtrans;
-					if (v15)
-						Cl2DecodeFrm5(v13, y, (BYTE *)v12, v14, v11->_deadWidth, 0, 8, v15);
-					else
-						Cl2DecodeFrm6(v13, y, (BYTE *)v12, v14, v11->_deadWidth, 0, 8);
-				}
-			}
-		}
-		if (v47)
-			DrawClippedObject(a1a, sy, x, y, 1, 0, 8);
+	int xyoff;
+
+	/// ASSERT: assert((DWORD)sx < MAXDUNX);
+	/// ASSERT: assert((DWORD)sy < MAXDUNY);
+	xyoff = 112 * sx + sy;
+	bFlag = dFlags[0][xyoff];
+	bDead = dDead[0][xyoff];
+	bObj = dObject[0][xyoff];
+	bItem = dItem[0][xyoff];
+	bPlr = dPlayer[0][xyoff];
+	bArch = dArch[0][xyoff];
+	bMap = dTransVal[0][xyoff];
+	nMon = dMonster[0][xyoff];
+
+	/// ASSERT: assert((DWORD)(sy-1) < MAXDUNY);
+	negPlr = dPlayer[0][xyoff - 1];
+	negMon = dMonster[0][xyoff - 1];
+
+	if(visiondebug && bFlag & DFLAG_LIT) {
+		Cel2DecodeHdrOnly(pBuff, (BYTE *)pSquareCel, 1, 64, 0, 8);
 	}
-	if (v49) {
-		v16 = &item[v49 - 1];
-		if (!v16->_iPostDraw && (unsigned char)v49 <= MAXITEMS) {
-			v17 = (char *)v16->_iAnimData;
-			if (v17) {
-				v18 = v16->_iAnimFrame;
-				if (v18 >= 1 && *(_DWORD *)v17 <= 0x32u && v18 <= *(_DWORD *)v17) {
-					v19 = x - v16->_iAnimWidth2;
-					if (v49 - 1 == pcursitem)
-						CelDrawHdrClrHL(ICOL_BLUE, v19, y, (BYTE *)v17, v16->_iAnimFrame, v16->_iAnimWidth, 0, 8);
-					Cel2DecodeHdrLight(v19, y, v16->_iAnimData, v16->_iAnimFrame, v16->_iAnimWidth, 0, 8);
-				}
-			}
-		}
+	if(MissilePreFlag && bFlag & DFLAG_MISSILE) {
+		DrawClippedMissile(sx, sy, dx, dy, 0, 8, 1);
 	}
-	if (v50 & DFLAG_PLAYER) {
-		v20 = -1 - v45;
-		if (v20 < 4) {
-			v21 = &plr[v20];
-			DrawClippedPlayer(
-			    v20,
-			    a1a,
-			    sy - 1,
-			    x + v21->_pxoff - v21->_pAnimWidth2,
-			    y + v21->_pyoff,
-			    v21->_pAnimData,
-			    v21->_pAnimFrame,
-			    v21->_pAnimWidth,
-			    0,
-			    8);
-			if (eflag) {
-				v22 = v21->_peflag;
-				if (v22) {
-					if (v22 == 2)
-						scrollrt_draw_clipped_e_flag((BYTE *)dst_buf - 12384, a1a - 2, sy + 1, x - 96, y - 16);
-					scrollrt_draw_clipped_e_flag((BYTE *)dst_buf - 64, a1a - 1, sy + 1, x - 64, y);
-				}
-			}
-		}
-	}
-	if (v50 & DFLAG_MONSTER && (v50 & DFLAG_LIT || plr[myplr]._pInfraFlag) && v41 < 0) {
-		v23 = -1 - v41;
-		draw_monster_num = -1 - v41;
-		if ((unsigned int)(-1 - v41) < MAXMONSTERS) {
-			v24 = &monster[v23];
-			if (!(v24->_mFlags & MFLAG_HIDDEN)) {
-				v25 = v24->MType;
-				if (v25) {
-					v26 = y + v24->_myoff;
-					v27 = x + v24->_mxoff - v25->width2;
-					if (v23 == pcursmonst) {
-						Cl2DecodeClrHL(233, v27, v26, v24->_mAnimData, v24->_mAnimFrame, v25->width, 0, 8);
-						v23 = draw_monster_num;
+	if(light_table_index < lightmax) {
+		if(bDead != 0) {
+			pDeadGuy = &dead[(bDead & 0x1F) - 1];
+			dd = (bDead >> 5) & 7;
+			pCelBuff = pDeadGuy->_deadData[dd];
+			px = dx - pDeadGuy->_deadWidth2;
+			/// ASSERT: assert(pDeadGuy->_deadData[dd] != NULL);
+			if(pCelBuff != NULL) {
+				pFrameTable = (DWORD *)pCelBuff;
+				nCel = pDeadGuy->_deadFrame;
+				if(nCel >= 1 && pFrameTable[0] <= 50 && nCel <= (int)pFrameTable[0]) {
+					if(pDeadGuy->_deadtrans != 0) {
+						Cl2DecodeFrm5(px, dy, pCelBuff, nCel, pDeadGuy->_deadWidth, 0, 8, pDeadGuy->_deadtrans);
+					} else {
+						Cl2DecodeFrm6(px, dy, pCelBuff, nCel, pDeadGuy->_deadWidth, 0, 8);
 					}
-					DrawClippedMonster(a1a, sy, v27, v26, v23, 0, 8);
-					if (eflag && v24->_meflag)
-						scrollrt_draw_clipped_e_flag((BYTE *)dst_buf - 64, a1a - 1, sy + 1, x - 64, y);
+				} else {
+					// app_fatal("Clipped dead sub: frame %d of %d, deadnum==%d", nCel, pFrameTable[0], (bDead & 0x1F) - 1);
 				}
 			}
 		}
-	}
-	if (v50 & 4)
-		DrawDeadPlayer(a1a, sy, x, y, 0, 8, 1);
-	if (v48 > 0) {
-		v28 = v48 - 1;
-		if (v28 < 4) {
-			v29 = &plr[v28];
-			DrawClippedPlayer(
-			    v28,
-			    a1a,
-			    sy,
-			    x + v29->_pxoff - v29->_pAnimWidth2,
-			    y + v29->_pyoff,
-			    v29->_pAnimData,
-			    v29->_pAnimFrame,
-			    v29->_pAnimWidth,
-			    0,
-			    8);
-			if (eflag) {
-				v30 = v29->_peflag;
-				if (v30) {
-					if (v30 == 2)
-						scrollrt_draw_clipped_e_flag((BYTE *)dst_buf - 12384, a1a - 2, sy + 1, x - 96, y - 16);
-					scrollrt_draw_clipped_e_flag((BYTE *)dst_buf - 64, a1a - 1, sy + 1, x - 64, y);
-				}
-			}
+		if(bObj != 0) {
+			DrawClippedObject(sx, sy, dx, dy, 1, 0, 8);
 		}
 	}
-	if (v40 > 0 && (v50 & 0x40 || plr[myplr]._pInfraFlag)) {
-		v31 = v40 - 1;
-		draw_monster_num = v40 - 1;
-		if ((unsigned int)(v40 - 1) < MAXMONSTERS) {
-			v32 = &monster[v31];
-			if (!(v32->_mFlags & MFLAG_HIDDEN)) {
-				v33 = v32->MType;
-				if (v33) {
-					v34 = y + v32->_myoff;
-					v35 = x + v32->_mxoff - v33->width2;
-					if (v31 == pcursmonst) {
-						Cl2DecodeClrHL(233, v35, v34, v32->_mAnimData, v32->_mAnimFrame, v33->width, 0, 8);
-						v31 = draw_monster_num;
+	if(bItem != 0) {
+		pItem = &item[bItem - 1];
+		if(!pItem->_iPostDraw) {
+			/// ASSERT: assert((unsigned char)bItem <= MAXITEMS);
+			if((unsigned char)bItem <= MAXITEMS) {
+				pCelBuff = pItem->_iAnimData;
+				if(pCelBuff != NULL) {
+					pFrameTable = (DWORD *)pCelBuff;
+					nCel = pItem->_iAnimFrame;
+					if(nCel >= 1 && pFrameTable[0] <= 50 && nCel <= (int)pFrameTable[0]) {
+						px = dx - pItem->_iAnimWidth2;
+						if(bItem - 1 == pcursitem) {
+							CelDrawHdrClrHL(181, px, dy, pCelBuff, pItem->_iAnimFrame, pItem->_iAnimWidth, 0, 8);
+						}
+						Cel2DecodeHdrLight(px, dy, pItem->_iAnimData, pItem->_iAnimFrame, pItem->_iAnimWidth, 0, 8);
+					} else {
+						/*
+						app_fatal(
+							"Draw Clipped \"%s\" Item: frame %d of %d, item type==%d",
+							pItem->_iIName,
+							nCel,
+							pFrameTable[0],
+							pItem->_itype);
+						*/
 					}
-					DrawClippedMonster(a1a, sy, v35, v34, v31, 0, 8);
-					if (eflag && v32->_meflag)
-						scrollrt_draw_clipped_e_flag((BYTE *)dst_buf - 64, a1a - 1, sy + 1, x - 64, y);
+				} else {
+					// app_fatal("Draw Item \"%s\" Clipped 1: NULL Cel Buffer", pItem->_iIName);
 				}
 			}
 		}
 	}
-	if (v50 & 1)
-		DrawClippedMissile(a1a, sy, x, y, 0, 8, FALSE);
-	if (v47 && light_table_index < lightmax)
-		DrawClippedObject(a1a, sy, x, y, 0, 0, 8);
-	if (v49) {
-		v36 = &item[v49 - 1];
-		if (v36->_iPostDraw) {
-			if ((unsigned char)v49 <= MAXITEMS) {
-				v37 = (char *)v36->_iAnimData;
-				if (v37) {
-					v38 = v36->_iAnimFrame;
-					if (v38 >= 1 && *(_DWORD *)v37 <= 0x32u && v38 <= *(_DWORD *)v37) {
-						v39 = x - v36->_iAnimWidth2;
-						if (v49 - 1 == pcursitem)
-							CelDrawHdrClrHL(ICOL_BLUE, v39, y, (BYTE *)v37, v36->_iAnimFrame, v36->_iAnimWidth, 0, 8);
-						Cel2DecodeHdrLight(
-						    v39,
-						    y,
-						    v36->_iAnimData,
-						    v36->_iAnimFrame,
-						    v36->_iAnimWidth,
-						    0,
-						    8);
+	if(bFlag & DFLAG_PLAYER) {
+		p = -(negPlr + 1);
+		if((DWORD)p < MAX_PLRS) {
+			pPlayer = &plr[p];
+			px = dx + pPlayer->_pxoff - pPlayer->_pAnimWidth2;
+			py = dy + pPlayer->_pyoff;
+			DrawClippedPlayer(p, sx, sy - 1, px, py, pPlayer->_pAnimData, pPlayer->_pAnimFrame, pPlayer->_pAnimWidth, 0, 8);
+			if(eflag && pPlayer->_peflag != 0) {
+				if(pPlayer->_peflag == 2) {
+					scrollrt_draw_clipped_e_flag(pBuff - (768 * 16 + 96), sx - 2, sy + 1, dx - 96, dy - 16);
+				}
+				scrollrt_draw_clipped_e_flag(pBuff - 64, sx - 1, sy + 1, dx - 64, dy);
+			}
+		} else {
+			// app_fatal("draw player clipped: tried to draw illegal player %d", p);
+		}
+	}
+	if(bFlag & DFLAG_MONSTER && (bFlag & DFLAG_LIT || plr[myplr]._pInfraFlag) && negMon < 0) {
+		draw_monster_num = -(negMon + 1);
+		if((DWORD)draw_monster_num < MAXMONSTERS) {
+			pMonster = &monster[draw_monster_num];
+			if(!(pMonster->_mFlags & 1)) {
+				if(pMonster->MType != NULL) {
+					py = dy + pMonster->_myoff;
+					px = dx + pMonster->_mxoff - pMonster->MType->width2;
+					if(draw_monster_num == pcursmonst) {
+						Cl2DecodeClrHL(233, px, py, pMonster->_mAnimData, pMonster->_mAnimFrame, pMonster->MType->width, 0, 8);
 					}
+					DrawClippedMonster(sx, sy, px, py, draw_monster_num, 0, 8);
+					if(eflag && pMonster->_meflag) {
+						scrollrt_draw_clipped_e_flag(pBuff - 64, sx - 1, sy + 1, dx - 64, dy);
+					}
+				} else {
+					// app_fatal("Draw Monster \"%s\" Clipped: uninitialized monster", pMonster->mName);
+				}
+			}
+		} else {
+			// app_fatal("Draw Monster Clipped: tried to draw illegal monster %d", draw_monster_num);
+		}
+	}
+	if(bFlag & DFLAG_DEAD_PLAYER) {
+		DrawDeadPlayer(sx, sy, dx, dy, 0, 8, 1);
+	}
+	if(bPlr > 0) {
+		p = bPlr - 1;
+		if((DWORD)p < MAX_PLRS) {
+			pPlayer = &plr[p];
+			px = dx + pPlayer->_pxoff - pPlayer->_pAnimWidth2;
+			py = dy + pPlayer->_pyoff;
+			DrawClippedPlayer(p, sx, sy, px, py, pPlayer->_pAnimData, pPlayer->_pAnimFrame, pPlayer->_pAnimWidth, 0, 8);
+			if(eflag && pPlayer->_peflag != 0) {
+				if(pPlayer->_peflag == 2) {
+					scrollrt_draw_clipped_e_flag(pBuff - (768 * 16 + 96), sx - 2, sy + 1, dx - 96, dy - 16);
+				}
+				scrollrt_draw_clipped_e_flag(pBuff - 64, sx - 1, sy + 1, dx - 64, dy);
+			}
+		} else {
+			// app_fatal("draw player clipped: tried to draw illegal player %d", p);
+		}
+	}
+	if(nMon > 0 && (bFlag & DFLAG_LIT || plr[myplr]._pInfraFlag)) {
+		draw_monster_num = nMon - 1;
+		if((DWORD)draw_monster_num < MAXMONSTERS) {
+			pMonster = &monster[draw_monster_num];
+			if(!(pMonster->_mFlags & 1)) {
+				if(pMonster->MType != NULL) {
+					py = dy + pMonster->_myoff;
+					px = dx + pMonster->_mxoff - pMonster->MType->width2;
+					if(draw_monster_num == pcursmonst) {
+						Cl2DecodeClrHL(233, px, py, pMonster->_mAnimData, pMonster->_mAnimFrame, pMonster->MType->width, 0, 8);
+					}
+					DrawClippedMonster(sx, sy, px, py, draw_monster_num, 0, 8);
+					if(eflag && pMonster->_meflag) {
+						scrollrt_draw_clipped_e_flag(pBuff - 64, sx - 1, sy + 1, dx - 64, dy);
+					}
+				} else {
+					// app_fatal("Draw Monster \"%s\" Clipped: uninitialized monster", pMonster->mName);
+				}
+			}
+		} else {
+			// app_fatal("Draw Monster Clipped: tried to draw illegal monster %d", draw_monster_num);
+		}
+	}
+	if(bFlag & DFLAG_MISSILE) {
+		DrawClippedMissile(sx, sy, dx, dy, 0, 8, 0);
+	}
+	if(bObj != 0 && light_table_index < lightmax) {
+		DrawClippedObject(sx, sy, dx, dy, 0, 0, 8);
+	}
+	if(bItem != 0) {
+		pItem = &item[bItem - 1];
+		if(pItem->_iPostDraw) {
+			/// ASSERT: assert((unsigned char)bItem <= MAXITEMS);
+			if((unsigned char)bItem <= MAXITEMS) {
+				pCelBuff = pItem->_iAnimData;
+				if(pCelBuff != NULL) {
+					pFrameTable = (DWORD *)pCelBuff;
+					nCel = pItem->_iAnimFrame;
+					if(nCel >= 1 && pFrameTable[0] <= 50 && nCel <= (int)pFrameTable[0]) {
+						px = dx - pItem->_iAnimWidth2;
+						if(bItem - 1 == pcursitem) {
+							CelDrawHdrClrHL(181, px, dy, pCelBuff, pItem->_iAnimFrame, pItem->_iAnimWidth, 0, 8);
+						}
+						Cel2DecodeHdrLight(px, dy, pItem->_iAnimData, pItem->_iAnimFrame, pItem->_iAnimWidth, 0, 8);
+					} else {
+						/*
+						app_fatal(
+							"Draw Clipped \"%s\" Item 2: frame %d of %d, item type==%d",
+							pItem->_iIName,
+							nCel,
+							pFrameTable[0],
+							pItem->_itype);
+						*/
+					}
+				} else {
+					// app_fatal("Draw Item \"%s\" Clipped 2: NULL Cel Buffer", pItem->_iIName);
 				}
 			}
 		}
 	}
-	if (v46) {
-		cel_transparency_active = (unsigned char)TransList[v44];
-		Cel2DecodeLightTrans((BYTE *)dst_buf, (BYTE *)level_special_cel, v46, 64, 0, 8);
+	if(bArch != 0) {
+		cel_transparency_active = (unsigned char)TransList[bMap];
+		Cel2DecodeLightTrans(pBuff, (BYTE *)level_special_cel, bArch, 64, 0, 8);
 	}
 }
 // 4B8CC0: using guessed type char pcursitem;
@@ -1078,7 +1072,7 @@ void scrollrt_draw_clipped_e_flag(BYTE *pBuff, int x, int y, int a4, int a5)
 		}
 	}
 
-	scrollrt_draw_clipped_dungeon((char *)pBuff, x, y, a4, a5, 0);
+	scrollrt_draw_clipped_dungeon(pBuff, x, y, a4, a5, 0);
 
 	light_table_index = lti_old;
 	cel_transparency_active = cta_old;
@@ -2686,57 +2680,69 @@ void DoBlitScreen(DWORD dwX, DWORD dwY, DWORD dwWdt, DWORD dwHgt)
 
 void DrawAndBlit()
 {
-	BOOLEAN ddsdesc; // ebp
-	BOOLEAN ctrlPan; // esi
-	int dwHgt;       // edi
+	int hgt;
+	BOOL ddsdesc, ctrlPan;
 
-	if (gbRunGame) {
-		if (drawpanflag == 255) {
-			drawhpflag = TRUE;
-			drawmanaflag = TRUE;
-			drawbtnflag = 1;
-			drawsbarflag = 1;
-			ddsdesc = 0;
-			ctrlPan = 1;
-			dwHgt = 480;
-		} else {
-			if (drawpanflag != 1)
-				return;
-			ddsdesc = 1;
-			ctrlPan = 0;
-			dwHgt = 352;
-		}
-		drawpanflag = 0;
-		j_lock_buf_priv(0);
-		if (leveltype)
-			DrawView(ViewX, ViewY);
-		else
-			T_DrawView(ViewX, ViewY);
-		if (ctrlPan)
-			ClearCtrlPan();
-		if (drawhpflag)
-			UpdateLifeFlask();
-		if (drawmanaflag)
-			UpdateManaFlask();
-		if (drawbtnflag)
-			DrawCtrlPan();
-		if (drawsbarflag)
-			DrawInvBelt();
-		if (talkflag) {
-			DrawTalkPan();
-			dwHgt = 480;
-		}
-		scrollrt_draw_cursor_item();
-		j_unlock_buf_priv(0);
-		DrawMain(dwHgt, ddsdesc, drawhpflag, drawmanaflag, drawsbarflag, drawbtnflag);
-		j_lock_buf_priv(0);
-		scrollrt_draw_cursor_back_buffer();
-		j_unlock_buf_priv(0);
-		drawhpflag = FALSE;
-		drawmanaflag = FALSE;
-		drawbtnflag = 0;
-		drawsbarflag = 0;
+	if(!gbRunGame) {
+		return;
 	}
+
+	if(drawpanflag == 255) {
+		drawhpflag = TRUE;
+		drawmanaflag = TRUE;
+		drawbtnflag = TRUE;
+		drawsbarflag = TRUE;
+		ddsdesc = FALSE;
+		ctrlPan = TRUE;
+		hgt = 480;
+	} else if(drawpanflag == 1) {
+		ddsdesc = TRUE;
+		ctrlPan = FALSE;
+		hgt = 352;
+	} else {
+		return;
+	}
+
+	drawpanflag = 0;
+
+	j_lock_buf_priv(0);
+	if(leveltype != DTYPE_TOWN) {
+		DrawView(ViewX, ViewY);
+	} else {
+		T_DrawView(ViewX, ViewY);
+	}
+	if(ctrlPan) {
+		ClearCtrlPan();
+	}
+	if(drawhpflag) {
+		UpdateLifeFlask();
+	}
+	if(drawmanaflag) {
+		UpdateManaFlask();
+	}
+	if(drawbtnflag) {
+		DrawCtrlPan();
+	}
+	if(drawsbarflag) {
+		DrawInvBelt();
+	}
+	if(talkflag) {
+		DrawTalkPan();
+		hgt = 480;
+	}
+	scrollrt_draw_cursor_item();
+	j_unlock_buf_priv(0);
+
+	DrawMain(hgt, ddsdesc, drawhpflag, drawmanaflag, drawsbarflag, drawbtnflag);
+
+	j_lock_buf_priv(0);
+	scrollrt_draw_cursor_back_buffer();
+	j_unlock_buf_priv(0);
+
+	drawhpflag = FALSE;
+	drawmanaflag = FALSE;
+	drawbtnflag = FALSE;
+	drawsbarflag = FALSE;
 }
 // 4B8960: using guessed type int talkflag;
 // 52571C: using guessed type int drawpanflag;

@@ -11,7 +11,9 @@ int dword_52B970; // BOOLEAN flip - if y < x
 int orgseed;      // weak
 int sgnWidth;
 int sglGameSeed; // weak
-static CRITICAL_SECTION sgMemCrit;
+#ifdef __cplusplus
+static CCritSect sgMemCrit;
+#endif
 int SeedCount;    // weak
 int dword_52B99C; // BOOLEAN valid - if x/y are in bounds
 
@@ -2389,41 +2391,17 @@ int random(BYTE idx, int v)
 	return (GetRndSeed() >> 16) % v;
 }
 
-#ifndef _MSC_VER
-__attribute__((constructor))
-#endif
-static void
-engine_c_init(void)
-{
-	mem_init_mutex();
-	mem_atexit_mutex();
-}
-
-SEG_ALLOCATE(SEGMENT_C_INIT)
-_PVFV engine_c_init_funcs[] = { &engine_c_init };
-
-void mem_init_mutex()
-{
-	InitializeCriticalSection(&sgMemCrit);
-}
-
-void mem_atexit_mutex()
-{
-	atexit(mem_free_mutex);
-}
-
-void __cdecl mem_free_mutex(void)
-{
-	DeleteCriticalSection(&sgMemCrit);
-}
-
 unsigned char *DiabloAllocPtr(int dwBytes)
 {
 	BYTE *buf;
 
-	EnterCriticalSection(&sgMemCrit);
+#ifdef __cplusplus
+	sgMemCrit.Enter();
+#endif
 	buf = (BYTE *)SMemAlloc(dwBytes, "C:\\Src\\Diablo\\Source\\ENGINE.CPP", 2236, 0);
-	LeaveCriticalSection(&sgMemCrit);
+#ifdef __cplusplus
+	sgMemCrit.Leave();
+#endif
 
 	if (buf == NULL) {
 		ErrDlg(IDD_DIALOG2, GetLastError(), "C:\\Src\\Diablo\\Source\\ENGINE.CPP", 2269);
@@ -2435,9 +2413,13 @@ unsigned char *DiabloAllocPtr(int dwBytes)
 void mem_free_dbg(void *p)
 {
 	if (p) {
-		EnterCriticalSection(&sgMemCrit);
+#ifdef __cplusplus
+		sgMemCrit.Enter();
+#endif
 		SMemFree(p, "C:\\Src\\Diablo\\Source\\ENGINE.CPP", 2317, 0);
-		LeaveCriticalSection(&sgMemCrit);
+#ifdef __cplusplus
+		sgMemCrit.Leave();
+#endif
 	}
 }
 

@@ -5,9 +5,6 @@
 extern unsigned int glpDThreadId; // idb
 extern BOOLEAN dthread_running;
 
-void dthread_init_mutex();
-void dthread_cleanup_mutex_atexit();
-void __cdecl dthread_cleanup_mutex(void);
 void dthread_remove_player(int pnum);
 void dthread_send_delta(int pnum, char cmd, void *pbSrc, int dwLen);
 void dthread_start();

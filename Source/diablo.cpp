@@ -315,111 +315,149 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 void diablo_parse_flags(char *args)
 {
+	char c;
 #ifdef _DEBUG
-	int n;   // edi
-	int v15; // eax
+	int i;
 #endif
-	while (*args) {
-		for (; isspace(*args); ++args)
-			;
-		if (!_strcmpi("dd_emulate", args)) {
+
+	while(*args != '\0') {
+		while(isspace(*args)) {
+			args++;
+		}
+		if(_strnicmp("dd_emulate", args, strlen("dd_emulate")) == 0) {
 			gbEmulate = 1;
 			args += strlen("dd_emulate");
-		} else if (!_strcmpi("dd_backbuf", args)) {
+		} else if(_strnicmp("dd_backbuf", args, strlen("dd_backbuf")) == 0) {
 			gbBackBuf = 1;
 			args += strlen("dd_backbuf");
-		} else if (!_strcmpi("ds_noduplicates", args)) {
-			gbDupSounds = FALSE;
+		} else if(_strnicmp("ds_noduplicates", args, strlen("ds_noduplicates")) == 0) {
+			gbDupSounds = 0;
 			args += strlen("ds_noduplicates");
 		} else {
+			c = tolower(*args);
+			args++;
 #ifdef _DEBUG
-			switch (tolower(*args++)) {
-			case '^': // god mod with all spells as skills
+			switch(c) {
+			case '^':
 				debug_mode_key_inverted_v = 1;
 				break;
-			case '$': // demi-god
+			case '$':
 				debug_mode_dollar_sign = 1;
 				break;
-			/*case 'b': // enable drop log
-					debug_mode_key_b = 1;
-					break;*/
-			case 'd': // no startup video+???
+			case 'b':
+			/*
+				debug_mode_key_b = 1;
+			*/
+				break;
+			case 'd':
 				showintrodebug = 0;
 				debug_mode_key_d = 1;
 				break;
-			case 'f': // draw fps
+			case 'f':
 				EnableFrameCount();
 				break;
-			case 'i': // disable network timeout
+			case 'i':
 				debug_mode_key_i = 1;
 				break;
-			/*case 'j': // <level>: init trigger at level
-					for ( ; isspace(*args); ++args )
-						;
-					for ( n = 0; isdigit(*args); n = v15 + 10 * n - 48 )
-						v15 = *args++;
-					debug_mode_key_J_trigger = n;
-					break;*/
-			case 'l': // <dtype> <level>: start in level as type
+			case 'j':
+			/*
+				while(isspace(*args)) {
+					args++;
+				}
+				i = 0;
+				while(isdigit(*args)) {
+					i = *args + 10 * i - '0';
+					args++;
+				}
+				debug_mode_key_J_trigger = i;
+			*/
+				break;
+			case 'l':
 				setlevel = 0;
-				for (leveldebug = 1; isspace(*args); ++args)
-					;
-				for (n = 0; isdigit(*args); n = v15 + 10 * n - 48)
-					v15 = *args++;
-				for (leveltype = n; isspace(*args); ++args)
-					;
-				for (n = 0; isdigit(*args); n = v15 + 10 * n - 48)
-					v15 = *args++;
-				currlevel = n;
-				plr[0].plrlevel = n;
+				leveldebug = 1;
+				while(isspace(*args)) {
+					args++;
+				}
+				i = 0;
+				while(isdigit(*args)) {
+					i = *args + 10 * i - '0';
+					args++;
+				}
+				leveltype = i;
+				while(isspace(*args)) {
+					args++;
+				}
+				i = 0;
+				while(isdigit(*args)) {
+					i = *args + 10 * i - '0';
+					args++;
+				}
+				currlevel = i;
+				plr[0].plrlevel = i;
 				break;
-			case 'm': // <mtype>: add debug monster, up to 10 allowed
-				for (monstdebug = 1; isspace(*args); ++args)
-					;
-				for (n = 0; isdigit(*args); n = v15 + 10 * n - 48)
-					v15 = *args++;
-				DebugMonsters[debugmonsttypes++] = n;
+			case 'm':
+				monstdebug = 1;
+				while(isspace(*args)) {
+					args++;
+				}
+				i = 0;
+				while(isdigit(*args)) {
+					i = *args + 10 * i - '0';
+					args++;
+				}
+				DebugMonsters[debugmonsttypes++] = i;
 				break;
-			case 'n': // disable startup video
+			case 'n':
 				showintrodebug = 0;
 				break;
-			case 'q': // <qnum>: force a certain quest
-				for (; isspace(*args); ++args)
-					;
-				for (n = 0; isdigit(*args); n = v15 + 10 * n - 48)
-					v15 = *args++;
-				questdebug = n;
+			case 'q':
+				while(isspace(*args)) {
+					args++;
+				}
+				i = 0;
+				while(isdigit(*args)) {
+					i = *args + 10 * i - '0';
+					args++;
+				}
+				questdebug = i;
 				break;
-			case 'r': // <seed>: set map seed to
-				for (; isspace(*args); ++args)
-					;
-				for (n = 0; isdigit(*args); n = v15 + 10 * n - 48)
-					v15 = *args++;
-				setseed = n;
+			case 'r':
+				while(isspace(*args)) {
+					args++;
+				}
+				i = 0;
+				while(isdigit(*args)) {
+					i = *args + 10 * i - '0';
+					args++;
+				}
+				setseed = i;
 				break;
-			case 's': // unused
+			case 's':
 				debug_mode_key_s = 1;
 				break;
-			case 't': // <qlvl>: sets current quest level
+			case 't':
 				leveldebug = 1;
-				for (setlevel = 1; isspace(*args); ++args)
-					;
-				for (n = 0; isdigit(*args); n = v15 + 10 * n - 48)
-					v15 = *args++;
-				setlvlnum = n;
+				setlevel = 1;
+				while(isspace(*args)) {
+					args++;
+				}
+				i = 0;
+				while(isdigit(*args)) {
+					i = *args + 10 * i - '0';
+					args++;
+				}
+				setlvlnum = i;
 				break;
-			case 'v': // draw yellow debug tiles
+			case 'v':
 				visiondebug = 1;
 				break;
-			case 'w': // rest of the cheats, some only in town
+			case 'w':
 				debug_mode_key_w = 1;
 				break;
 			case 'x':
-				fullscreen = FALSE;
+				fullscreen = 0;
 				break;
 			}
-#else
-			tolower(*args++);
 #endif
 		}
 	}

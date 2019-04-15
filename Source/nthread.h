@@ -15,9 +15,6 @@ extern int gdwLargestMsgSize; // weak
 extern int gdwNormalMsgSize;  // weak
 extern int last_tick;         // weak
 
-void nthread_init_mutex();
-void nthread_cleanup_mutex_atexit();
-void __cdecl nthread_cleanup_mutex(void);
 void nthread_terminate_game(const char *pszFcn);
 int nthread_send_and_recv_turn(int cur_turn, int turn_delta);
 int nthread_recv_turns(int *pfSendAsync);

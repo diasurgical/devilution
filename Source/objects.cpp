@@ -713,52 +713,27 @@ BOOL WallTrapLocOk(int xp, int yp)
 
 void AddL2Torches()
 {
-	int v0;   // esi
-	int v1;   // edi
-	char *v2; // ebx
-	//int v3; // eax
-	int(*v5)[112]; // [esp+Ch] [ebp-Ch]
-	int v6;        // [esp+10h] [ebp-8h]
-	int(*v7)[112]; // [esp+14h] [ebp-4h]
+	int i, j, pn;
 
-	v0 = 0;
-	v7 = dPiece;
-	do {
-		v1 = 0;
-		v2 = &dObject[0][v0 - 1]; /* &dungeon[39][v0 + 39]; */
-		v5 = v7;
-		do {
-			//_LOBYTE(v3) = WallTrapLocOk(v1, v0);
-			if (!WallTrapLocOk(v1, v0))
-				goto LABEL_18;
-			v6 = (*v5)[0];
-			if ((*v5)[0] == 1) {
-				if (random(145, 3))
-					goto LABEL_18;
-				AddObject(OBJ_TORCHL2, v1, v0);
-			}
-			if (v6 == 5) {
-				if (random(145, 3))
-					goto LABEL_18;
-				AddObject(OBJ_TORCHR2, v1, v0);
-			}
-			if (v6 == 37) {
-				if (random(145, 10) || *(v2 - 111))
-					goto LABEL_18;
-				AddObject(OBJ_TORCHL, v1 - 1, v0);
-			}
-			if (v6 == 41) {
-				if (!random(145, 10) && !*v2)
-					AddObject(OBJ_TORCHR, v1, v0 - 1);
-			}
-		LABEL_18:
-			++v5;
-			++v1;
-			v2 += 112;
-		} while (v1 < 112);
-		v7 = (int(*)[112])((char *)v7 + 4);
-		++v0;
-	} while ((signed int)v7 < (signed int)dPiece[1]);
+	for (j = 0; j < MAXDUNY; j++) {
+		for (i = 0; i < MAXDUNX; i++) {
+			if (!WallTrapLocOk(i, j))
+				continue;
+
+			pn = dPiece[i][j];
+			if (pn == 1 && random(145, 3) == 0)
+				AddObject(OBJ_TORCHL2, i, j);
+
+			if (pn == 5 && random(145, 3) == 0)
+				AddObject(OBJ_TORCHR2, i, j);
+
+			if (pn == 37 && random(145, 10) == 0 && dObject[i - 1][j] == 0)
+				AddObject(OBJ_TORCHL, i - 1, j);
+
+			if (pn == 41 && random(145, 10) == 0 && dObject[i][j - 1] == 0)
+				AddObject(OBJ_TORCHR, i, j - 1);
+		}
+	}
 }
 
 BOOL TorchLocOK(int xp, int yp)
@@ -771,85 +746,57 @@ BOOL TorchLocOK(int xp, int yp)
 
 void AddObjTraps()
 {
-	int v0;   // esi
-	int *v1;  // eax
-	char *v2; // edi
-	int v3;   // ebx
-	int v4;   // edi
-	int *j;   // eax
-	//int v6; // eax
-	char v7; // al
-	int v8;  // edi
-	int *i;  // eax
-	//int v10; // eax
-	int v11;        // eax
-	int *v12;       // [esp+0h] [ebp-18h]
-	char *v13;      // [esp+4h] [ebp-14h]
-	int *v14;       // [esp+8h] [ebp-10h]
-	int v15;        // [esp+Ch] [ebp-Ch]
-	signed int v16; // [esp+10h] [ebp-8h]
-	int x;          // [esp+14h] [ebp-4h]
+	char oi_trap, oi;
+	int i, j;
+	int xp, yp;
+	int rndv;
 
 	if (currlevel == 1)
-		v15 = 10;
-	if (currlevel >= 2u)
-		v15 = 15;
-	if (currlevel >= 5u)
-		v15 = 20;
-	if (currlevel >= 7u)
-		v15 = 25;
-	v0 = 0;
-	v1 = dPiece[-1];
-	v12 = dPiece[-1];
-	do {
-		x = 0;
-		v16 = 0;
-		v2 = (char *)dObject + v0;
-		v14 = v1;
-		v13 = (char *)dObject + v0;
-		do {
-			if (*v2 > 0 && random(144, 100) < v15) {
-				v3 = (char)(*v2 - 1);
-				if (AllObjects[object[v3]._otype].oTrapFlag) {
-					if (random(144, 2)) {
-						v8 = v0 - 1;
-						for (i = &dPiece[v16][v0 - 1]; !nSolidTable[*i]; i--) /* check dpiece */
-							--v8;
-						//_LOBYTE(v10) = TorchLocOK(x, v8);
-						if (TorchLocOK(x, v8) && v0 - v8 > 1) {
-							AddObject(OBJ_TRAPR, x, v8);
-							v7 = dObject[v16][v8];
-							goto LABEL_27;
-						}
-					} else {
-						v4 = x - 1;
-						for (j = v14; !nSolidTable[*j]; j -= 112)
-							--v4;
-						//_LOBYTE(v6) = TorchLocOK(v4, v0);
-						if (TorchLocOK(v4, v0) && x - v4 > 1) {
-							AddObject(OBJ_TRAPL, v4, v0);
-							v7 = dObject[v4][v0];
-						LABEL_27:
-							v11 = (char)(v7 - 1);
-							object[v11]._oVar2 = v0;
-							object[v11]._oVar1 = x;
-							object[v3]._oTrapFlag = TRUE;
-							goto LABEL_28;
-						}
-					}
-				}
+		rndv = 10;
+	if (currlevel >= 2)
+		rndv = 15;
+	if (currlevel >= 5)
+		rndv = 20;
+	if (currlevel >= 7)
+		rndv = 25;
+	for (j = 0; j < MAXDUNY; j++) {
+		for (i = 0; i < MAXDUNX; i++) {
+			if (dObject[i][j] <= 0 || random(144, 100) >= rndv)
+				continue;
+
+			oi = dObject[i][j] - 1;
+			if (AllObjects[object[oi]._otype].oTrapFlag == FALSE)
+				continue;
+
+			if (random(144, 2) == 0) {
+				xp = i - 1;
+				while (!nSolidTable[dPiece[xp][j]])
+					xp--;
+
+				if (!TorchLocOK(xp, j) || i - xp <= 1)
+					continue;
+
+				AddObject(OBJ_TRAPL, xp, j);
+				oi_trap = dObject[xp][j] - 1;
+				object[oi_trap]._oVar1 = i;
+				object[oi_trap]._oVar2 = j;
+				object[oi]._oTrapFlag = TRUE;
+			} else {
+				yp = j - 1;
+				while (!nSolidTable[dPiece[i][yp]])
+					yp--;
+
+				if (!TorchLocOK(i, yp) || j - yp <= 1)
+					continue;
+
+				AddObject(OBJ_TRAPR, i, yp);
+				oi_trap = dObject[i][yp] - 1;
+				object[oi_trap]._oVar1 = i;
+				object[oi_trap]._oVar2 = j;
+				object[oi]._oTrapFlag = TRUE;
 			}
-		LABEL_28:
-			++v16;
-			++x;
-			v14 += 112;
-			v2 = (char *)v13 + 112;
-			v13 += 112;
-		} while (v16 < 112);
-		++v0;
-		v1 = v12 + 1;
-		++v12;
-	} while ((signed int)v12 < (signed int)dPiece);
+		}
+	}
 }
 
 void AddChestTraps()
