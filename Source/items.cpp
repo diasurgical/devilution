@@ -4453,55 +4453,46 @@ void SpawnBoy(int lvl)
 
 BOOL HealerItemOk(int i)
 {
-	int v1;         // ecx
-	BOOLEAN result; // eax
-	int v3;         // esi
+	BOOL result;
 
-	v1 = i;
-	result = 0;
-	if (AllItemsList[v1].itype)
-		return 0;
-	v3 = AllItemsList[v1].iMiscId;
-	if (v3 == IMISC_SCROLL && AllItemsList[v1].iSpell == SPL_HEAL)
-		result = 1;
-	if (v3 != IMISC_SCROLLT)
-		goto LABEL_12;
-	if (AllItemsList[v1].iSpell == SPL_RESURRECT && gbMaxPlayers != 1)
-		result = 0;
-	if (AllItemsList[v1].iSpell != SPL_HEALOTHER) {
-	LABEL_12:
-		if (gbMaxPlayers != 1)
-			goto LABEL_21;
-		goto LABEL_13;
+	result = FALSE;
+	if (AllItemsList[i].itype != ITYPE_MISC)
+		return FALSE;
+
+	if (AllItemsList[i].iMiscId == IMISC_SCROLL && AllItemsList[i].iSpell == SPL_HEAL)
+		result = TRUE;
+	if (AllItemsList[i].iMiscId == IMISC_SCROLLT && AllItemsList[i].iSpell == SPL_RESURRECT && gbMaxPlayers != 1)
+		result = FALSE;
+	if (AllItemsList[i].iMiscId == IMISC_SCROLLT && AllItemsList[i].iSpell == SPL_HEALOTHER && gbMaxPlayers != 1)
+		result = TRUE;
+
+	if (gbMaxPlayers == 1) {
+		if (AllItemsList[i].iMiscId == IMISC_ELIXSTR)
+			result = TRUE;
+		if (AllItemsList[i].iMiscId == IMISC_ELIXMAG)
+			result = TRUE;
+		if (AllItemsList[i].iMiscId == IMISC_ELIXDEX)
+			result = TRUE;
+		if (AllItemsList[i].iMiscId == IMISC_ELIXVIT)
+			result = TRUE;
 	}
-	if (gbMaxPlayers != 1) {
-		result = 1;
-		goto LABEL_12;
-	}
-LABEL_13:
-	if (v3 == IMISC_ELIXSTR)
-		result = 1;
-	if (v3 == IMISC_ELIXMAG)
-		result = 1;
-	if (v3 == IMISC_ELIXDEX)
-		result = 1;
-	if (v3 == IMISC_ELIXVIT)
-		result = 1;
-LABEL_21:
-	if (v3 == IMISC_FULLHEAL)
-		result = 1;
-	if (v3 == IMISC_REJUV)
-		result = 1;
-	if (v3 == IMISC_FULLREJUV)
-		result = 1;
-	if (v3 == IMISC_HEAL)
-		result = 0;
-	if (v3 == IMISC_FULLHEAL)
-		result = 0;
-	if (v3 == IMISC_MANA)
-		result = 0;
-	if (v3 == IMISC_FULLMANA)
-		return 0;
+
+	if (AllItemsList[i].iMiscId == IMISC_FULLHEAL) // BUGFIX this is a duplicate with the wrong case
+		result = TRUE;
+
+	if (AllItemsList[i].iMiscId == IMISC_REJUV)
+		result = TRUE;
+	if (AllItemsList[i].iMiscId == IMISC_FULLREJUV)
+		result = TRUE;
+	if (AllItemsList[i].iMiscId == IMISC_HEAL)
+		result = FALSE;
+	if (AllItemsList[i].iMiscId == IMISC_FULLHEAL)
+		result = FALSE;
+	if (AllItemsList[i].iMiscId == IMISC_MANA)
+		result = FALSE;
+	if (AllItemsList[i].iMiscId == IMISC_FULLMANA)
+		result = FALSE;
+
 	return result;
 }
 // 679660: using guessed type char gbMaxPlayers;
