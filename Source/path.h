@@ -2,13 +2,14 @@
 #ifndef __PATH_H__
 #define __PATH_H__
 
-extern PATHNODE path_nodes[300];
+extern PATHNODE path_nodes[MAXPATHNODES];
 extern int gdwCurPathStep;
 extern int gdwCurNodes;
 extern int pnode_vals[25];
 extern PATHNODE *pnode_ptr;
-extern PATHNODE *pnode_tblptr[300];
+extern PATHNODE *pnode_tblptr[MAXPATHNODES];
 extern PATHNODE *path_2_nodes;
+extern PATHNODE path_unusednodes[MAXPATHNODES];
 
 int FindPath(BOOL(*PosOk)(int, int, int), int PosOkArg, int sx, int sy, int dx, int dy, char *path);
 int path_get_h_cost(int sx, int sy, int dx, int dy);
