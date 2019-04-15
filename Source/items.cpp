@@ -4455,43 +4455,43 @@ BOOL HealerItemOk(int i)
 {
 	BOOL result;
 
-	result = 0;
+	result = FALSE;
 	if (AllItemsList[i].itype != ITYPE_MISC)
-		return 0;
+		return FALSE;
 
 	if (AllItemsList[i].iMiscId == IMISC_SCROLL && AllItemsList[i].iSpell == SPL_HEAL)
-		result = 1;
+		result = TRUE;
 	if (AllItemsList[i].iMiscId == IMISC_SCROLLT && AllItemsList[i].iSpell == SPL_RESURRECT && gbMaxPlayers != 1)
-		result = 0;
+		result = FALSE;
 	if (AllItemsList[i].iMiscId == IMISC_SCROLLT && AllItemsList[i].iSpell == SPL_HEALOTHER && gbMaxPlayers != 1)
-		result = 1;
+		result = TRUE;
 
 	if (gbMaxPlayers == 1) {
 		if (AllItemsList[i].iMiscId == IMISC_ELIXSTR)
-			result = 1;
+			result = TRUE;
 		if (AllItemsList[i].iMiscId == IMISC_ELIXMAG)
-			result = 1;
+			result = TRUE;
 		if (AllItemsList[i].iMiscId == IMISC_ELIXDEX)
-			result = 1;
+			result = TRUE;
 		if (AllItemsList[i].iMiscId == IMISC_ELIXVIT)
-			result = 1;
+			result = TRUE;
 	}
 
 	if (AllItemsList[i].iMiscId == IMISC_FULLHEAL) // BUGFIX this is a duplicate with the wrong case
-		result = 1;
+		result = TRUE;
 
 	if (AllItemsList[i].iMiscId == IMISC_REJUV)
-		result = 1;
+		result = TRUE;
 	if (AllItemsList[i].iMiscId == IMISC_FULLREJUV)
-		result = 1;
+		result = TRUE;
 	if (AllItemsList[i].iMiscId == IMISC_HEAL)
-		result = 0;
+		result = FALSE;
 	if (AllItemsList[i].iMiscId == IMISC_FULLHEAL)
-		result = 0;
+		result = FALSE;
 	if (AllItemsList[i].iMiscId == IMISC_MANA)
-		result = 0;
+		result = FALSE;
 	if (AllItemsList[i].iMiscId == IMISC_FULLMANA)
-		result = 0;
+		result = FALSE;
 
 	return result;
 }
