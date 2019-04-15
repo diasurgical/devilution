@@ -765,7 +765,7 @@ void AddObjTraps()
 				continue;
 
 			oi = dObject[i][j] - 1;
-			if (AllObjects[object[oi]._otype].oTrapFlag == FALSE)
+			if (!AllObjects[object[oi]._otype].oTrapFlag)
 				continue;
 
 			if (random(144, 2) == 0) {
