@@ -16,7 +16,7 @@ extern char pcursobj;     // weak
 extern char pcursplr;     // weak
 extern int cursmx;
 extern int cursmy;
-extern int dword_4B8CCC; // weak
+extern int pcurstemp; // weak
 extern int pcurs;        // idb
 
 void InitCursor();
