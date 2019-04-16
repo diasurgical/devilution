@@ -1534,41 +1534,17 @@ void GetSuperItemSpace(int x, int y, char inum)
 
 void GetSuperItemLoc(int x, int y, int *xx, int *yy)
 {
-	signed int v4;  // edi
-	signed int v5;  // ebx
-	int v6;         // esi
-	int v8;         // [esp+Ch] [ebp-10h]
-	int v9;         // [esp+10h] [ebp-Ch]
-	signed int v10; // [esp+14h] [ebp-8h]
-	signed int v11; // [esp+18h] [ebp-4h]
+	int i, j, k;
 
-	v9 = y;
-	v8 = x;
-	v11 = 1;
-	v4 = -1;
-	while (1) {
-		v5 = v4;
-		if (v4 <= v11)
-			break;
-	LABEL_7:
-		++v11;
-		if (--v4 <= -50)
-			return;
-	}
-LABEL_3:
-	v10 = v4;
-	*yy = v5 + v9;
-	v6 = v4 + v8;
-	while (1) {
-		*xx = v6;
-		if (ItemSpaceOk(v6, *yy))
-			break;
-		++v10;
-		++v6;
-		if (v10 > v11) {
-			if (++v5 <= v11)
-				goto LABEL_3;
-			goto LABEL_7;
+	for (k = 1; k < 50; k++) {
+		for (j = -k; j <= k; j++) {
+			*yy = y + j;
+			for (i = -k; i <= k; i++) {
+				*xx = i + x;
+				if (ItemSpaceOk(*xx, *yy)) {
+					return;
+				}
+			}
 		}
 	}
 }
