@@ -38,6 +38,7 @@ EXPORTS
 	UiProfileCallback              @20
 	UiProfileDraw                  @21
 	UiProfileGetString             @22
+	UiProfileGetString@0           @22 NONAME
 	UiProgressDialog               @23
 	UiProgressDialog@20            @23 NONAME
 	UiSelHeroMultDialog            @24
