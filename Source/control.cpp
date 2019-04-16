@@ -364,7 +364,7 @@ void DrawSpell()
 	spl = plr[myplr]._pRSpell;
 	st = plr[myplr]._pRSplType;
 	tlvl = plr[myplr]._pISplLvlAdd + plr[myplr]._pSplLvl[spl];
-	if (st == RSPLTYPE_SPELL && spl != RSPLTYPE_INVALID) {
+	if (st == RSPLTYPE_SPELL && spl != SPL_INVALID) {
 		if (!CheckSpell(myplr, spl, RSPLTYPE_SPELL, TRUE))
 			st = RSPLTYPE_INVALID;
 		if (tlvl <= 0)
