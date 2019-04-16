@@ -375,7 +375,7 @@ void DrawSpell()
 	if (plr[myplr]._pRSpell < 0)
 		st = RSPLTYPE_INVALID;
 	SetSpellTrans(st);
-	if (spl != RSPLTYPE_INVALID)
+	if (spl != SPL_INVALID)
 		DrawSpellCel(629, 631, (BYTE *)pSpellCels, (char)SpellITbl[spl], 56);
 	else
 		DrawSpellCel(629, 631, (BYTE *)pSpellCels, 27, 56);
