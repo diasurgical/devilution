@@ -637,15 +637,13 @@ int premiumlvladd[6] = { -1, -1, 0, 0, 1, 2 };
 
 void InitItemGFX()
 {
-	signed int v0;    // esi
-	char arglist[64]; // [esp+4h] [ebp-40h]
+	int i;
+	char arglist[64];
 
-	v0 = 0;
-	do {
-		sprintf(arglist, "Items\\%s.CEL", ItemDropStrs[v0]);
-		itemanims[v0] = LoadFileInMem(arglist, 0);
-		++v0;
-	} while (v0 < 35);
+	for (i = 0; i < 35; i++) {
+		sprintf(arglist, "Items\\%s.CEL", ItemDropStrs[i]);
+		itemanims[i] = LoadFileInMem(arglist, 0);
+	}
 	memset(UniqueItemFlag, 0, sizeof(UniqueItemFlag));
 }
 
