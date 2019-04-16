@@ -2,17 +2,17 @@
 
 #include "../types.h"
 
-char gbSomebodyWonGameKludge; // weak
+BOOLEAN gbSomebodyWonGameKludge; // weak
 TBuffer sgHiPriBuf;
 char szPlayerDescript[128];
 short sgwPackPlrOffsetTbl[MAX_PLRS];
 PkPlayerStruct netplr[MAX_PLRS];
-BYTE sgbPlayerTurnBitTbl[MAX_PLRS];
+BOOLEAN sgbPlayerTurnBitTbl[MAX_PLRS];
 char sgbPlayerLeftGameTbl[MAX_PLRS];
 int sgbSentThisCycle; // idb
 BOOL gbShouldValidatePackage;
-BYTE gbActivePlayers; // weak
-char gbGameDestroyed; // weak
+BYTE gbActivePlayers;    // weak
+BOOLEAN gbGameDestroyed; // weak
 BOOLEAN sgbSendDeltaTbl[MAX_PLRS];
 _gamedata sgGameInitInfo;
 char byte_678640;    // weak
@@ -24,7 +24,7 @@ BYTE gbMaxPlayers;
 BOOLEAN sgbTimeout;
 char szPlayerName[128];
 BYTE gbDeltaSender;
-int sgbNetInited; // weak
+BOOL sgbNetInited; // weak
 int player_state[MAX_PLRS];
 
 const int event_types[3] = {
@@ -281,7 +281,7 @@ void multi_player_left_msg(int pnum, int left)
 					v5 = "Player '%s' dropped due to timeout";
 			} else {
 				v5 = "Player '%s' killed Diablo and left the game!";
-				gbSomebodyWonGameKludge = 1;
+				gbSomebodyWonGameKludge = TRUE;
 			}
 			EventPlrMsg(v5, plr[v4]._pName);
 		}
@@ -397,7 +397,7 @@ void multi_begin_timeout()
 					if (nLowestActive == myplr)
 						multi_check_drop_player();
 				} else {
-					gbGameDestroyed = 1;
+					gbGameDestroyed = TRUE;
 				}
 			}
 		} else {
@@ -591,7 +591,7 @@ void multi_send_zero_packet(int pnum, char a2, void *pbSrc, int dwLen)
 void NetClose()
 {
 	if (sgbNetInited) {
-		sgbNetInited = 0;
+		sgbNetInited = FALSE;
 		nthread_cleanup();
 		dthread_cleanup();
 		tmsg_cleanup();
@@ -651,7 +651,7 @@ void __stdcall multi_handle_events(_SNETEVENT *pEvt)
 			v1 = *v2;
 		sgdwPlayerLeftReasonTbl[pEvt->playerid] = v1;
 		if (v1 == 0x40000004)
-			gbSomebodyWonGameKludge = 1;
+			gbSomebodyWonGameKludge = TRUE;
 		sgbSendDeltaTbl[pEvt->playerid] = FALSE;
 		dthread_remove_player(pEvt->playerid);
 		if (gbDeltaSender == pEvt->playerid)
@@ -665,31 +665,21 @@ void __stdcall multi_handle_events(_SNETEVENT *pEvt)
 // 6761B8: using guessed type char gbSomebodyWonGameKludge;
 // 6796E4: using guessed type char gbDeltaSender;
 
-int NetInit(int bSinglePlayer, int *pfExitProgram)
+BOOL NetInit(BOOL bSinglePlayer, BOOL *pfExitProgram)
 {
-	int v2; // ebx
-	int v4; // eax
-	//int v5; // ecx
-	BOOLEAN v7; // zf
-	//int v9; // eax
-	//int v10; // eax
-	_SNETPROGRAMDATA ProgramData; // [esp+8h] [ebp-A8h]
-	_SNETUIDATA UiData;           // [esp+44h] [ebp-6Ch]
-	_SNETPLAYERDATA a2;           // [esp+94h] [ebp-1Ch]
-	int v14;                      // [esp+A4h] [ebp-Ch]
-	unsigned int len;             // [esp+A8h] [ebp-8h]
-	int *a4;                      // [esp+ACh] [ebp-4h]
+	int i;
+	_SNETPROGRAMDATA ProgramData;
+	_SNETUIDATA UiData;
+	_SNETPLAYERDATA plrdata;
+	unsigned int len;
 
-	a4 = pfExitProgram;
-	v14 = bSinglePlayer;
-	v2 = 0;
 	while (1) {
-		*a4 = 0;
+		*pfExitProgram = FALSE;
 		SetRndSeed(0);
 		sgGameInitInfo.dwSeed = time(NULL);
-		_LOBYTE(sgGameInitInfo.bDiff) = gnDifficulty;
-		memset(&ProgramData, 0, 0x3Cu);
-		ProgramData.size = 60;
+		sgGameInitInfo.bDiff = gnDifficulty;
+		memset(&ProgramData, 0, sizeof(ProgramData));
+		ProgramData.size = sizeof(ProgramData);
 		ProgramData.programname = "Diablo Retail";
 		ProgramData.programdescription = gszVersionNumber;
 		ProgramData.programid = 'DRTL';
@@ -699,40 +689,41 @@ int NetInit(int bSinglePlayer, int *pfExitProgram)
 		ProgramData.initdatabytes = 8;
 		ProgramData.optcategorybits = 15;
 		ProgramData.lcid = 1033; /* LANG_ENGLISH */
-		memset(&a2, 0, 0x10u);
-		a2.size = 16;
-		memset(&UiData, 0, 0x50u);
-		UiData.size = 80;
+		memset(&plrdata, 0, sizeof(plrdata));
+		plrdata.size = sizeof(plrdata);
+		memset(&UiData, 0, sizeof(UiData));
+		UiData.size = sizeof(UiData);
 		UiData.parentwindow = SDrawGetFrameWindow(NULL);
-		UiData.artcallback = (void(*)())UiArtCallback;
-		UiData.createcallback = (void(*)())UiCreateGameCallback;
-		UiData.drawdesccallback = (void(*)())UiDrawDescCallback;
-		UiData.messageboxcallback = (void(*)())UiMessageBoxCallback;
-		UiData.soundcallback = (void(*)())UiSoundCallback;
-		UiData.authcallback = (void(*)())UiAuthCallback;
-		UiData.getdatacallback = (void(*)())UiGetDataCallback;
-		UiData.categorycallback = (void(*)())UiCategoryCallback;
+		UiData.artcallback = (void (*)())UiArtCallback;
+		UiData.createcallback = (void (*)())UiCreateGameCallback;
+		UiData.drawdesccallback = (void (*)())UiDrawDescCallback;
+		UiData.messageboxcallback = (void (*)())UiMessageBoxCallback;
+		UiData.soundcallback = (void (*)())UiSoundCallback;
+		UiData.authcallback = (void (*)())UiAuthCallback;
+		UiData.getdatacallback = (void (*)())UiGetDataCallback;
+		UiData.categorycallback = (void (*)())UiCategoryCallback;
 		UiData.selectnamecallback = mainmenu_select_hero_dialog;
-		UiData.changenamecallback = (void(*)())mainmenu_create_hero;
-		UiData.profilebitmapcallback = (void(*)())UiProfileDraw;
-		UiData.profilecallback = (void(*)())UiProfileCallback;
+		UiData.changenamecallback = (void (*)())mainmenu_create_hero;
+		UiData.profilebitmapcallback = (void (*)())UiProfileDraw;
+		UiData.profilecallback = (void (*)())UiProfileCallback;
 		UiData.profilefields = UiProfileGetString();
-		memset(sgbPlayerTurnBitTbl, 0, 4u);
-		gbGameDestroyed = 0;
-		memset(sgbPlayerLeftGameTbl, 0, 4u);
-		memset(sgdwPlayerLeftReasonTbl, 0, 0x10u);
-		memset(sgbSendDeltaTbl, 0, 4u);
-		memset(plr, 0, 0x15360u);
-		memset(sgwPackPlrOffsetTbl, 0, 8u);
+		memset(sgbPlayerTurnBitTbl, 0, sizeof(sgbPlayerTurnBitTbl));
+		gbGameDestroyed = FALSE;
+		memset(sgbPlayerLeftGameTbl, 0, sizeof(sgbPlayerLeftGameTbl));
+		memset(sgdwPlayerLeftReasonTbl, 0, sizeof(sgdwPlayerLeftReasonTbl));
+		memset(sgbSendDeltaTbl, 0, sizeof(sgbSendDeltaTbl));
+		memset(plr, 0, sizeof(plr));
+		memset(sgwPackPlrOffsetTbl, 0, sizeof(sgwPackPlrOffsetTbl));
 		SNetSetBasePlayer(0);
-		if (v14)
-			v4 = multi_init_single(&ProgramData, &a2, &UiData);
-		else
-			v4 = multi_init_multi(&ProgramData, &a2, &UiData, a4);
-		if (!v4)
-			return 0;
-		sgbNetInited = 1;
-		sgbTimeout = 0;
+		if (bSinglePlayer) {
+			if (!multi_init_single(&ProgramData, &plrdata, &UiData))
+				return FALSE;
+		} else {
+			if (!multi_init_multi(&ProgramData, &plrdata, &UiData, pfExitProgram))
+				return FALSE;
+		}
+		sgbNetInited = TRUE;
+		sgbTimeout = FALSE;
 		delta_init();
 		InitPlrMsg();
 		buffer_init(&sgHiPriBuf);
@@ -741,42 +732,44 @@ int NetInit(int bSinglePlayer, int *pfExitProgram)
 		sync_init();
 		nthread_start(sgbPlayerTurnBitTbl[myplr]);
 		dthread_start();
-		MI_Dummy(0); /* v5 */
+		dummy_nop_used_in_NetInit();
 		sgdwGameLoops = 0;
 		sgbSentThisCycle = 0;
 		gbDeltaSender = myplr;
-		gbSomebodyWonGameKludge = 0;
+		gbSomebodyWonGameKludge = FALSE;
 		nthread_send_and_recv_turn(0, 0);
 		SetupLocalCoords();
 		multi_send_pinfo(-2, CMD_SEND_PLRINFO);
 		gbActivePlayers = 1;
-		v7 = sgbPlayerTurnBitTbl[myplr] == 0;
 		plr[myplr].plractive = 1;
-		if (v7 || msg_wait_resync())
+		if (sgbPlayerTurnBitTbl[myplr] == 0 || msg_wait_resync())
 			break;
 		NetClose();
 		byte_678640 = 0;
 	}
-	gnDifficulty = _LOBYTE(sgGameInitInfo.bDiff);
+	gnDifficulty = sgGameInitInfo.bDiff;
 	SetRndSeed(sgGameInitInfo.dwSeed);
-	do {
-		glSeedTbl[v2] = GetRndSeed();
-		gnLevelTypeTbl[v2] = InitNewSeed(v2);
-		++v2;
-	} while (v2 < 17);
-	//_LOBYTE(v9) = SNetGetGameInfo(GAMEINFO_NAME, szPlayerName, 128, len);
+
+	for (i = 0; i < 17; i++) {
+		glSeedTbl[i] = GetRndSeed();
+		gnLevelTypeTbl[i] = InitNewSeed(i);
+	}
 	if (!SNetGetGameInfo(GAMEINFO_NAME, szPlayerName, 128, &len))
 		nthread_terminate_game("SNetGetGameInfo1");
-	//_LOBYTE(v10) = SNetGetGameInfo(GAMEINFO_PASSWORD, szPlayerDescript, 128, len);
 	if (!SNetGetGameInfo(GAMEINFO_PASSWORD, szPlayerDescript, 128, &len))
 		nthread_terminate_game("SNetGetGameInfo2");
-	return 1;
+
+	return TRUE;
 }
 // 6761B8: using guessed type char gbSomebodyWonGameKludge;
 // 67862D: using guessed type char gbGameDestroyed;
 // 678640: using guessed type char byte_678640;
 // 6796E4: using guessed type char gbDeltaSender;
 // 6796E8: using guessed type int sgbNetInited;
+
+void dummy_nop_used_in_NetInit()
+{
+}
 
 void buffer_init(TBuffer *pBuf)
 {
@@ -786,14 +779,10 @@ void buffer_init(TBuffer *pBuf)
 
 void multi_send_pinfo(int pnum, char cmd)
 {
-	char v2;              // bl
-	int v3;               // esi
-	PkPlayerStruct pkplr; // [esp+8h] [ebp-4F4h]
+	PkPlayerStruct pkplr;
 
-	v2 = cmd;
-	v3 = pnum;
-	PackPlayer(&pkplr, myplr, 1);
-	dthread_send_delta(v3, v2, &pkplr, 1266);
+	PackPlayer(&pkplr, myplr, TRUE);
+	dthread_send_delta(pnum, cmd, &pkplr, sizeof(pkplr));
 }
 
 int InitNewSeed(int newseed)

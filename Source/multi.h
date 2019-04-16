@@ -2,13 +2,13 @@
 #ifndef __MULTI_H__
 #define __MULTI_H__
 
-extern char gbSomebodyWonGameKludge; // weak
+extern BOOLEAN gbSomebodyWonGameKludge; // weak
 extern char szPlayerDescript[128];
 extern short sgwPackPlrOffsetTbl[MAX_PLRS];
 extern PkPlayerStruct netplr[MAX_PLRS];
 extern BOOL gbShouldValidatePackage;
 extern BYTE gbActivePlayers;
-extern char gbGameDestroyed; // weak
+extern BOOLEAN gbGameDestroyed; // weak
 extern char byte_678640;     // weak
 extern BYTE gbMaxPlayers;
 extern char szPlayerName[128];
@@ -42,7 +42,8 @@ void multi_send_zero_packet(int pnum, char a2, void *pbSrc, int dwLen);
 void NetClose();
 char multi_event_handler(int a1);
 void __stdcall multi_handle_events(_SNETEVENT *pEvt);
-int NetInit(int bSinglePlayer, int *pfExitProgram);
+BOOL NetInit(BOOL bSinglePlayer, BOOL *pfExitProgram);
+void dummy_nop_used_in_NetInit();
 void buffer_init(TBuffer *pBuf);
 void multi_send_pinfo(int pnum, char cmd);
 int InitNewSeed(int newseed);
