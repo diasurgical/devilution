@@ -43,7 +43,7 @@ void EnableFrameCount();
 void scrollrt_draw_game_screen(BOOL draw_cursor);
 void scrollrt_draw_cursor_back_buffer();
 void scrollrt_draw_cursor_item();
-void DrawMain(int dwHgt, int draw_desc, int draw_hp, int draw_mana, int draw_sbar, int draw_btn);
+void DrawMain(int dwHgt, BOOL draw_desc, BOOL draw_hp, BOOL draw_mana, BOOL draw_sbar, BOOL draw_btn);
 #ifdef _DEBUG
 void DrawFPS();
 #endif
