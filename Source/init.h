@@ -11,7 +11,7 @@ extern WNDPROC CurrentProc;
 extern HANDLE diabdat_mpq;
 extern char diabdat_mpq_path[MAX_PATH];
 extern HANDLE patch_rt_mpq;
-extern int killed_mom_parent; // weak
+extern BOOL killed_mom_parent; // weak
 extern BOOLEAN screensaver_enabled_prev;
 
 void init_cleanup(BOOL show_cursor);

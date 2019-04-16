@@ -11,7 +11,7 @@ WNDPROC CurrentProc;
 HANDLE diabdat_mpq;
 char diabdat_mpq_path[MAX_PATH];
 HANDLE patch_rt_mpq;
-int killed_mom_parent; // weak
+BOOL killed_mom_parent; // weak
 BOOLEAN screensaver_enabled_prev;
 
 /* data */
@@ -52,65 +52,60 @@ void init_cleanup(BOOL show_cursor)
 
 void init_run_office_from_start_menu()
 {
-	HWND v0;            // eax
-	char pszPath[256];  // [esp+0h] [ebp-104h]
-	LPITEMIDLIST ppidl; // [esp+100h] [ebp-4h]
+	LPITEMIDLIST idl;
 
-	if (killed_mom_parent) {
-		//*pszPath = empty_string;
-		killed_mom_parent = 0;
-		memset(pszPath, 0, sizeof(pszPath));
-		// *(_WORD *)&pszPath[253] = 0;
-		//pszPath[255] = 0;
-		ppidl = 0;
-		v0 = GetDesktopWindow();
-		if (!SHGetSpecialFolderLocation(v0, CSIDL_STARTMENU, &ppidl)) {
-			SHGetPathFromIDList(ppidl, pszPath);
-			init_run_office(pszPath);
-		}
+	if(!killed_mom_parent) {
+		return;
+	}
+
+	killed_mom_parent = FALSE;
+	char szPath[256] = ""; /// BUGFIX: size should be at least 'MAX_PATH'
+	idl = NULL;
+
+	if(SHGetSpecialFolderLocation(GetDesktopWindow(), CSIDL_STARTMENU, &idl) == NOERROR) {
+		SHGetPathFromIDList(idl, szPath);
+		init_run_office(szPath);
 	}
 }
 // 634CA0: using guessed type int killed_mom_parent;
 
 void init_run_office(char *dir)
 {
-	char *v1;                              // esi
-	HANDLE v2;                             // ebx
-	BOOLEAN v3;                            // zf
-	HWND v4;                               // eax
-	char Directory[MAX_PATH];                   // [esp+8h] [ebp-348h]
-	char FileName[MAX_PATH];                    // [esp+10Ch] [ebp-244h]
-	struct _WIN32_FIND_DATAA FindFileData; // [esp+210h] [ebp-140h]
+	HANDLE hSearch;
+	WIN32_FIND_DATA find;
+	char szFirst[MAX_PATH];
 
-	v1 = dir;
-	strcpy(FileName, dir);
-	if (FileName[0] && Directory[strlen(FileName) + 259] == '\\')
-		strcat(FileName, "*");
-	else
-		strcat(FileName, "\\*");
-	v2 = FindFirstFile(FileName, &FindFileData);
-	if (v2 != (HANDLE)-1) {
-		do {
-			if (FindFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
-				if (strcmp(FindFileData.cFileName, ".") && strcmp(FindFileData.cFileName, "..")) {
-					//*Directory = empty_string;
-					memset(Directory, 0, sizeof(Directory));
-					v3 = *v1 == 0;
-					// *(_WORD *)&Directory[257] = 0;
-					//Directory[259] = 0;
-					if (v3 || v1[strlen(v1) - 1] != '\\')
-						sprintf(Directory, "%s\\%s\\", v1, FindFileData.cFileName);
-					else
-						sprintf(Directory, "%s%s\\", v1, FindFileData.cFileName);
-					init_run_office(Directory);
-				}
-			} else if (!_strcmpi(FindFileData.cFileName, "Microsoft Office Shortcut Bar.lnk")) {
-				v4 = GetDesktopWindow();
-				ShellExecute(v4, "open", FindFileData.cFileName, "", v1, SW_SHOWNORMAL);
-			}
-		} while (FindNextFile(v2, &FindFileData));
-		FindClose(v2);
+	strcpy(szFirst, dir);
+	if(szFirst[0] != '\0' && szFirst[strlen(szFirst) - 1] == '\\') {
+		strcat(szFirst, "*");
+	} else {
+		strcat(szFirst, "\\*");
 	}
+	hSearch = FindFirstFile(szFirst, &find);
+	if(hSearch == INVALID_HANDLE_VALUE) {
+		return;
+	}
+
+	while(1) {
+		if(find.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+			if(strcmp(find.cFileName, ".") != 0 && strcmp(find.cFileName, "..") != 0) {
+				char szNext[MAX_PATH] = "";
+				if(dir[0] != '\0' && dir[strlen(dir) - 1] == '\\') {
+					sprintf(szNext, "%s%s\\", dir, find.cFileName);
+				} else {
+					sprintf(szNext, "%s\\%s\\", dir, find.cFileName);
+				}
+				init_run_office(szNext);
+			}
+		} else if(_strcmpi(find.cFileName, "Microsoft Office Shortcut Bar.lnk") == 0) {
+			ShellExecute(GetDesktopWindow(), "open", find.cFileName, "", dir, SW_SHOWNORMAL);
+		}
+		if(!FindNextFile(hSearch, &find)) {
+			break;
+		}
+	}
+
+	FindClose(hSearch);
 }
 
 void init_disable_screensaver(BOOLEAN disable)
@@ -191,7 +186,7 @@ void init_kill_mom_parent()
 	v0 = init_find_mom_parent();
 	if (v0) {
 		PostMessage(v0, WM_CLOSE, 0, 0);
-		killed_mom_parent = 1;
+		killed_mom_parent = TRUE;
 	}
 }
 // 634CA0: using guessed type int killed_mom_parent;

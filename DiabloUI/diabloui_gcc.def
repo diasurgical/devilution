@@ -22,12 +22,14 @@ EXPORTS
 	UiCreditsDialog                @11
 	UiCreditsDialog@4              @11 NONAME
 	UiDestroy                      @12
+	UiDestroy@0                    @12 NONAME
 	UiDrawDescCallback             @13
 	UiDrawDescCallback@32          @13 NONAME
 	UiGetDataCallback              @14
 	UiGetDataCallback@20           @14 NONAME
 	UiGetDefaultStats              @15
 	UiInitialize                   @16
+	UiInitialize@0                 @16 NONAME
 	UiMainMenuDialog               @17
 	UiMainMenuDialog@16            @17 NONAME
 	UiMessageBoxCallback           @18
@@ -36,6 +38,7 @@ EXPORTS
 	UiProfileCallback              @20
 	UiProfileDraw                  @21
 	UiProfileGetString             @22
+	UiProfileGetString@0           @22 NONAME
 	UiProgressDialog               @23
 	UiProgressDialog@20            @23 NONAME
 	UiSelHeroMultDialog            @24
