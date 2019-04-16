@@ -58,20 +58,15 @@ BOOL panbtndown;
 void *pTalkPanel; // idb
 int spselflag;    // weak
 
-const unsigned char fontframe[127] = {
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 54, 44, 57, 58, 56, 55, 47,
-	40, 41, 59, 39, 50, 37, 51, 52, 36, 27,
-	28, 29, 30, 31, 32, 33, 34, 35, 48, 49,
-	60, 38, 61, 53, 62, 1, 2, 3, 4, 5,
-	6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
-	16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
-	26, 42, 63, 43, 64, 65, 0, 1, 2, 3,
-	4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
-	14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
-	24, 25, 26, 40, 66, 41, 67
+const unsigned char fontframe[128] = {
+	0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+	0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+	0,  54, 44, 57, 58, 56, 55, 47, 40, 41, 59, 39, 50, 37, 51, 52,
+	36, 27, 28, 29, 30, 31, 32, 33, 34, 35, 48, 49, 60, 38, 61, 53,
+	62, 1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15,
+	16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 42, 63, 43, 64, 65,
+	0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15,
+	16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 40, 66, 41, 67, 0
 };
 const unsigned char fontkern[68] = {
 	8, 10, 7, 9, 8, 7, 6, 8, 8, 3,
@@ -132,7 +127,7 @@ const unsigned char gbFontTransTbl[256] = {
 
 /* data */
 
-unsigned char SpellITbl[MAX_SPELLS] = {
+char SpellITbl[MAX_SPELLS] = {
 	1, 1, 2, 3, 4, 5, 6, 7, 8, 9,
 	28, 13, 12, 18, 16, 14, 18, 19, 11, 20,
 	15, 21, 23, 24, 25, 22, 26, 29, 37, 38,
@@ -376,7 +371,7 @@ void DrawSpell()
 		st = RSPLTYPE_INVALID;
 	SetSpellTrans(st);
 	if (spl != SPL_INVALID)
-		DrawSpellCel(629, 631, (BYTE *)pSpellCels, (char)SpellITbl[spl], 56);
+		DrawSpellCel(629, 631, (BYTE *)pSpellCels, SpellITbl[spl], 56);
 	else
 		DrawSpellCel(629, 631, (BYTE *)pSpellCels, 27, 56);
 }
@@ -464,7 +459,7 @@ void DrawSpellList()
 			}
 			if (!currlevel && !*v20)
 				SetSpellTrans(RSPLTYPE_INVALID);
-			DrawSpellCel(v17, xp, (BYTE *)pSpellCels, (char)SpellITbl[v4], 56);
+			DrawSpellCel(v17, xp, (BYTE *)pSpellCels, SpellITbl[v4], 56);
 			if (MouseX >= v17 - 64 && MouseX < v17 - 64 + 56 && MouseY >= v22 && MouseY < v22 + 56) {
 				pSpell = v4;
 				pSplType = v1;
@@ -1622,56 +1617,22 @@ void CheckBtnUp()
 
 void FreeControlPan()
 {
-	void *ptr;
-
-	ptr = pBtmBuff;
-	pBtmBuff = NULL;
-	mem_free_dbg(ptr);
-	ptr = pManaBuff;
-	pManaBuff = NULL;
-	mem_free_dbg(ptr);
-	ptr = pLifeBuff;
-	pLifeBuff = NULL;
-	mem_free_dbg(ptr);
-	ptr = pPanelText;
-	pPanelText = NULL;
-	mem_free_dbg(ptr);
-	ptr = pChrPanel;
-	pChrPanel = NULL;
-	mem_free_dbg(ptr);
-	ptr = pSpellCels;
-	pSpellCels = NULL;
-	mem_free_dbg(ptr);
-	ptr = pPanelButtons;
-	pPanelButtons = NULL;
-	mem_free_dbg(ptr);
-	ptr = pMultiBtns;
-	pMultiBtns = NULL;
-	mem_free_dbg(ptr);
-	ptr = pTalkBtns;
-	pTalkBtns = NULL;
-	mem_free_dbg(ptr);
-	ptr = pChrButtons;
-	pChrButtons = NULL;
-	mem_free_dbg(ptr);
-	ptr = pDurIcons;
-	pDurIcons = NULL;
-	mem_free_dbg(ptr);
-	ptr = pQLogCel;
-	pQLogCel = NULL;
-	mem_free_dbg(ptr);
-	ptr = pSpellBkCel;
-	pSpellBkCel = NULL;
-	mem_free_dbg(ptr);
-	ptr = pSBkBtnCel;
-	pSBkBtnCel = NULL;
-	mem_free_dbg(ptr);
-	ptr = pSBkIconCels;
-	pSBkIconCels = NULL;
-	mem_free_dbg(ptr);
-	ptr = pGBoxBuff;
-	pGBoxBuff = NULL;
-	mem_free_dbg(ptr);
+	MemFreeDbg(pBtmBuff);
+	MemFreeDbg(pManaBuff);
+	MemFreeDbg(pLifeBuff);
+	MemFreeDbg(pPanelText);
+	MemFreeDbg(pChrPanel);
+	MemFreeDbg(pSpellCels);
+	MemFreeDbg(pPanelButtons);
+	MemFreeDbg(pMultiBtns);
+	MemFreeDbg(pTalkBtns);
+	MemFreeDbg(pChrButtons);
+	MemFreeDbg(pDurIcons);
+	MemFreeDbg(pQLogCel);
+	MemFreeDbg(pSpellBkCel);
+	MemFreeDbg(pSBkBtnCel);
+	MemFreeDbg(pSBkIconCels);
+	MemFreeDbg(pGBoxBuff);
 }
 
 int control_WriteStringToBuffer(char *str)
@@ -2433,94 +2394,91 @@ void RedBack()
 
 char GetSBookTrans(int ii, BOOL townok)
 {
-	char result = RSPLTYPE_SPELL;
-	if ((__int64)1 << (ii - 1) & plr[myplr]._pISpells)
-		result = RSPLTYPE_CHARGES;
-	if (1 << (ii - 1) & plr[myplr]._pAblSpells)
-		result = RSPLTYPE_SKILL;
+	char st;
 
-	if (result == RSPLTYPE_SPELL) {
-		if (!CheckSpell(myplr, ii, RSPLTYPE_SPELL, TRUE))
-			result = RSPLTYPE_INVALID;
-		if ((char)(plr[myplr]._pISplLvlAdd + plr[myplr]._pSplLvl[ii]) <= 0)
-			result = RSPLTYPE_INVALID;
+	st = RSPLTYPE_SPELL;
+	if(plr[myplr]._pISpells & (__int64)1 << (ii - 1)) {
+		st = RSPLTYPE_CHARGES;
+	}
+	if(plr[myplr]._pAblSpells & 1 << (ii - 1)) { /// BUGFIX: missing (__int64)
+		st = RSPLTYPE_SKILL;
+	}
+	if(st == RSPLTYPE_SPELL) {
+		if(!CheckSpell(myplr, ii, RSPLTYPE_SPELL, TRUE)) {
+			st = RSPLTYPE_INVALID;
+		}
+		if((char)(plr[myplr]._pSplLvl[ii] + plr[myplr]._pISplLvlAdd) <= 0) {
+			st = RSPLTYPE_INVALID;
+		}
+	}
+	if(townok && currlevel == 0 && st != RSPLTYPE_INVALID && !spelldata[ii].sTownSpell) {
+		st = RSPLTYPE_INVALID;
 	}
 
-	if (townok && currlevel == 0 && result != RSPLTYPE_INVALID && !spelldata[ii].sTownSpell)
-		result = RSPLTYPE_INVALID;
-
-	return result;
+	return st;
 }
 
 void DrawSpellBook()
 {
-	__int64 v0;    // edi
-	__int64 v1;    // ebp
-	int v2;        // esi
-	char v3;       // al
-	int v4;        // eax
-	int v5;        // ebx
-	int v6;        // ecx
-	char v7;       // [esp+Bh] [ebp-1Dh]
-	int v8;        // [esp+Ch] [ebp-1Ch]
-	signed int v9; // [esp+10h] [ebp-18h]
-	int sel;       // [esp+14h] [ebp-14h]
-	int v11;       // [esp+18h] [ebp-10h]
-	int v12;       // [esp+1Ch] [ebp-Ch]
+	int i, sn, mana, lvl, yp, min, max;
+	char st;
+	unsigned __int64 spl;
 
 	CelDecodeOnly(384, 511, (BYTE *)pSpellBkCel, 1, 320);
 	CelDecodeOnly(76 * sbooktab + 391, 508, (BYTE *)pSBkBtnCel, sbooktab + 1, 76);
-	v9 = 1;
-	v8 = 214;
-	v0 = plr[myplr]._pISpells | plr[myplr]._pMemSpells | plr[myplr]._pAblSpells;
-	do {
-		v2 = SpellPages[0][v9 + 7 * sbooktab - 1]; // *(&attribute_inc_rects[3].h + v9 + 7 * sbooktab); /* check */
-		v1 = (__int64)1 << (v2 - 1);
-		if (v2 != -1 && (v1 & v0)) {
-			v7 = GetSBookTrans(v2, TRUE);
-			SetSpellTrans(v7);
-			DrawSpellCel(395, v8 + 1, (BYTE *)pSBkIconCels, (char)SpellITbl[v2], MAX_SPELLS);
-			if (v2 == plr[myplr]._pRSpell && v7 == _LOBYTE(plr[myplr]._pRSplType)) {
+
+	spl = plr[myplr]._pMemSpells | plr[myplr]._pISpells | plr[myplr]._pAblSpells;
+
+	yp = 215;
+	for(i = 1; i < 8; i++) {
+		sn = SpellPages[sbooktab][i - 1];
+		if(sn != -1 && spl & (__int64)1 << (sn - 1)) {
+			st = GetSBookTrans(sn, TRUE);
+			SetSpellTrans(st);
+			DrawSpellCel(395, yp, (BYTE *)pSBkIconCels, SpellITbl[sn], 37);
+			if(sn == plr[myplr]._pRSpell && st == plr[myplr]._pRSplType) {
 				SetSpellTrans(RSPLTYPE_SKILL);
-				DrawSpellCel(395, v8 + 1, (BYTE *)pSBkIconCels, 43, MAX_SPELLS);
+				DrawSpellCel(395, yp, (BYTE *)pSBkIconCels, 43, 37);
 			}
-			PrintSBookStr(10, v8 - 22, 0, spelldata[v2].sNameText, 0);
-			v3 = GetSBookTrans(v2, FALSE);
-			if (v3 != RSPLTYPE_SKILL) {
-				if (v3 == RSPLTYPE_CHARGES) {
-					sprintf(tempstr, "Staff (%i charges)", plr[myplr].InvBody[INVLOC_HAND_LEFT]._iCharges);
-				} else {
-					v4 = GetManaAmount(myplr, v2);
-					v5 = v4 >> 6;
-					v12 = v4 >> 6;
-					GetDamageAmt(v2, &sel, &v11);
-					if (sel == -1)
-						sprintf(tempstr, "Mana: %i   Dam: n/a", v5);
-					else
-						sprintf(tempstr, "Mana: %i  Dam: %i - %i", v5, sel, v11);
-					if (v2 == SPL_BONESPIRIT)
-						sprintf(tempstr, "Mana: %i  Dam: 1/3 tgt hp", v12);
-					PrintSBookStr(10, v8, 0, tempstr, 0);
-					v6 = plr[myplr]._pISplLvlAdd + plr[myplr]._pSplLvl[v2];
-					if (v6 < 0)
-						v6 = 0;
-					if (v6)
-						sprintf(tempstr, "Spell Level %i", v6);
-					else
-						sprintf(tempstr, "Spell Level 0 - Unusable");
-				}
-			} else {
+			PrintSBookStr(10, yp - 23, FALSE, spelldata[sn].sNameText, COL_WHITE);
+			switch(GetSBookTrans(sn, FALSE)) {
+			case RSPLTYPE_SKILL:
 				strcpy(tempstr, "Skill");
+				break;
+			case RSPLTYPE_CHARGES:
+				sprintf(tempstr, "Staff (%i charges)", plr[myplr].InvBody[INVLOC_HAND_LEFT]._iCharges);
+				break;
+			default:
+				mana = GetManaAmount(myplr, sn) >> 6;
+				GetDamageAmt(sn, &min, &max);
+				if(min != -1) {
+					sprintf(tempstr, "Mana: %i  Dam: %i - %i", mana, min, max);
+				} else {
+					sprintf(tempstr, "Mana: %i   Dam: n/a", mana);
+				}
+				if(sn == SPL_BONESPIRIT) {
+					sprintf(tempstr, "Mana: %i  Dam: 1/3 tgt hp", mana);
+				}
+				PrintSBookStr(10, yp - 1, FALSE, tempstr, COL_WHITE);
+				lvl = plr[myplr]._pSplLvl[sn] + plr[myplr]._pISplLvlAdd;
+				if(lvl < 0) {
+					lvl = 0;
+				}
+				if(lvl == 0) {
+					sprintf(tempstr, "Spell Level 0 - Unusable");
+				} else {
+					sprintf(tempstr, "Spell Level %i", lvl);
+				}
+				break;
 			}
-			PrintSBookStr(10, v8 - 11, 0, tempstr, 0);
+			PrintSBookStr(10, yp - 12, FALSE, tempstr, COL_WHITE);
 		}
-		v8 += 43;
-		++v9;
-	} while (v9 < 8);
+		yp += 43;
+	}
 }
 // 4B8950: using guessed type int sbooktab;
 
-void PrintSBookStr(int x, int y, BOOLEAN cjustflag, char *pszStr, int bright)
+void PrintSBookStr(int x, int y, BOOL cjustflag, char *pszStr, char col)
 {
 	char *v5;          // ebx
 	signed int v6;     // eax
@@ -2561,7 +2519,7 @@ void PrintSBookStr(int x, int y, BOOLEAN cjustflag, char *pszStr, int bright)
 		v7 += fontkern[v10] + 1;
 		if (v10) {
 			if (v7 <= 222)
-				CPrintString(width, v10, bright);
+				CPrintString(width, v10, col);
 		}
 		width += fontkern[v11] + 1;
 	}
@@ -2569,23 +2527,29 @@ void PrintSBookStr(int x, int y, BOOLEAN cjustflag, char *pszStr, int bright)
 
 void CheckSBook()
 {
-	if (MouseX >= 331 && MouseX < 368 && MouseY >= 18 && MouseY < 314) {
-		int spell = SpellPages[sbooktab][(MouseY - 18) / 43];
-		if (spell != -1) {
-			if ((__int64)1 << (spell - 1) & (plr[myplr]._pAblSpells | plr[myplr]._pMemSpells | plr[myplr]._pISpells)) {
-				char splType = RSPLTYPE_SPELL;
-				if ((__int64)1 << (spell - 1) & plr[myplr]._pISpells)
-					splType = RSPLTYPE_CHARGES;
-				if ((__int64)1 << (spell - 1) & plr[myplr]._pAblSpells)
-					splType = RSPLTYPE_SKILL;
-				plr[myplr]._pRSpell = spell;
-				plr[myplr]._pRSplType = splType;
-				drawpanflag = 255;
+	int sn;
+	char st;
+	unsigned __int64 spl;
+
+	if(MouseX >= 331 && MouseX < 368 && MouseY >= 18 && MouseY < 314) {
+		spl = plr[myplr]._pMemSpells | plr[myplr]._pISpells | plr[myplr]._pAblSpells;
+		sn = SpellPages[sbooktab][(MouseY - 18) / 43];
+		if(sn != -1 && spl & (__int64)1 << (sn - 1)) {
+			st = RSPLTYPE_SPELL;
+			if(plr[myplr]._pISpells & (__int64)1 << (sn - 1)) {
+				st = RSPLTYPE_CHARGES;
 			}
+			if(plr[myplr]._pAblSpells & (__int64)1 << (sn - 1)) {
+				st = RSPLTYPE_SKILL;
+			}
+			plr[myplr]._pRSpell = sn;
+			plr[myplr]._pRSplType = st;
+			drawpanflag = 255;
 		}
 	}
-	if (MouseX >= 327 && MouseX < 633 && MouseY >= 320 && MouseY < 349) /// BUGFIX: change `< 633` to `< 631`
+	if(MouseX >= 327 && MouseX < 633 && MouseY >= 320 && MouseY < 349) { /// BUGFIX: change `< 633` to `< 631`
 		sbooktab = (MouseX - 327) / 76;
+	}
 }
 // 4B8950: using guessed type int sbooktab;
 // 52571C: using guessed type int drawpanflag;

@@ -100,7 +100,7 @@ int DrawDurIcon4Item(ItemStruct *item, int x, int frame);
 void RedBack();
 char GetSBookTrans(int ii, BOOL townok);
 void DrawSpellBook();
-void PrintSBookStr(int x, int y, BOOLEAN cjustflag, char *pszStr, int bright);
+void PrintSBookStr(int x, int y, BOOL cjustflag, char *pszStr, char col);
 void CheckSBook();
 char *get_pieces_str(int nGold);
 void DrawGoldSplit(int amount);
@@ -120,14 +120,14 @@ void control_press_enter();
 void control_up_down(char a1);
 
 /* rdata */
-extern const unsigned char fontframe[127];
+extern const unsigned char fontframe[128];
 extern const unsigned char fontkern[68];
 extern const int lineoffset[25];
 extern const unsigned char gbFontTransTbl[256];
 
 /* data */
 
-extern unsigned char SpellITbl[MAX_SPELLS];
+extern char SpellITbl[MAX_SPELLS];
 extern int PanBtnPos[8][5];
 extern char *PanBtnHotKey[8];
 extern char *PanBtnStr[8];
