@@ -1095,67 +1095,49 @@ void CalcPlrStaff(int pnum)
 
 void CalcSelfItems(int pnum)
 {
-	PlayerStruct *v1; // ecx
-	int v2;           // edx
-	int v3;           // esi
-	int v4;           // edi
-	int *v5;          // eax
-	signed int v6;    // ebx
-	BOOLEAN v7;       // zf
-	char *v8;         // eax
-	signed int v9;    // [esp+Ch] [ebp-10h]
-	signed int v10;   // [esp+10h] [ebp-Ch]
-	int v11;          // [esp+14h] [ebp-8h]
-	signed int v12;   // [esp+18h] [ebp-4h]
+	int i;
+	PlayerStruct *p;
+	BOOL sf, changeflag;
+	int sa, ma, da;
 
-	v1 = &plr[pnum];
-	v2 = 0;
-	v3 = 0;
-	v4 = 0;
-	v5 = &v1->InvBody[0]._iStatFlag;
-	v6 = 7;
-	do {
-		if (*(v5 - 87) != -1) {
-			v7 = *(v5 - 75) == 0;
-			*v5 = 1;
-			if (!v7) {
-				v2 += *(v5 - 25);
-				v3 += *(v5 - 24);
-				v4 += *(v5 - 23);
+	p = &plr[pnum];
+
+	sa = 0;
+	ma = 0;
+	da = 0;
+	for (i = 0; i < NUM_INVLOC; i++) {
+		if (p->InvBody[i]._itype != ITYPE_NONE) {
+			p->InvBody[i]._iStatFlag = TRUE;
+			if (p->InvBody[i]._iIdentified) {
+				sa += p->InvBody[i]._iPLStr;
+				ma += p->InvBody[i]._iPLMag;
+				da += p->InvBody[i]._iPLDex;
 			}
 		}
-		v5 += 92;
-		--v6;
-	} while (v6);
-	v11 = v4;
+	}
 	do {
-		v9 = 0;
-		v8 = &v1->InvBody[0]._iMinStr;
-		v10 = 7;
-		do {
-			if (*((_DWORD *)v8 - 86) != -1 && *((_DWORD *)v8 + 1)) {
-				v12 = 1;
-				if (v2 + v1->_pBaseStr < *v8)
-					v12 = 0;
-				if (v3 + v1->_pBaseMag < (unsigned char)v8[1])
-					v12 = 0;
-				if (v11 + v1->_pBaseDex < v8[2])
-					v12 = 0;
-				if (!v12) {
-					v7 = *((_DWORD *)v8 - 74) == 0;
-					v9 = 1;
-					*((_DWORD *)v8 + 1) = 0;
-					if (!v7) {
-						v2 -= *((_DWORD *)v8 - 24);
-						v3 -= *((_DWORD *)v8 - 23);
-						v11 -= *((_DWORD *)v8 - 22);
+		changeflag = FALSE;
+		for (i = 0; i < NUM_INVLOC; i++) {
+			if (p->InvBody[i]._itype != ITYPE_NONE && p->InvBody[i]._iStatFlag) {
+				sf = TRUE;
+				if (sa + p->_pBaseStr < p->InvBody[i]._iMinStr)
+					sf = FALSE;
+				if (ma + p->_pBaseMag < p->InvBody[i]._iMinMag)
+					sf = FALSE;
+				if (da + p->_pBaseDex < p->InvBody[i]._iMinDex)
+					sf = FALSE;
+				if (!sf) {
+					changeflag = TRUE;
+					p->InvBody[i]._iStatFlag = FALSE;
+					if (p->InvBody[i]._iIdentified) {
+						sa -= p->InvBody[i]._iPLStr;
+						ma -= p->InvBody[i]._iPLMag;
+						da -= p->InvBody[i]._iPLDex;
 					}
 				}
 			}
-			v8 += 368;
-			--v10;
-		} while (v10);
-	} while (v9);
+		}
+	} while (changeflag);
 }
 
 void CalcPlrItemMin(int pnum)
