@@ -25,9 +25,9 @@ struct ProfFntStruct {
 	int field_8;
 };
 
-void __cdecl UiDestroy();
+void __stdcall UiDestroy();
 BOOL __stdcall UiTitleDialog(int a1);
-void __cdecl UiInitialize();
+void __stdcall UiInitialize();
 BOOL __stdcall UiCopyProtError(int *pdwResult);
 void __stdcall UiAppActivate(BOOL bActive);
 BOOL __fastcall UiValidPlayerName(char *name); /* check __stdcall */
