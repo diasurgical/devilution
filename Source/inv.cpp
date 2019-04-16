@@ -4,7 +4,7 @@
 
 BOOL invflag;
 void *pInvCels;
-int drawsbarflag; // idb
+BOOL drawsbarflag;
 int sgdwLastTime; // check name
 
 const InvXY InvRect[73] = {
@@ -109,7 +109,7 @@ void InitInv()
 	}
 
 	invflag = 0;
-	drawsbarflag = 0;
+	drawsbarflag = FALSE;
 }
 
 void InvDrawSlotBack(int X, int Y, int W, int H)
@@ -1150,7 +1150,7 @@ LABEL_18:
 				qmemcpy((char *)plr[0].SpdList + v53, &plr[v3].HoldItem, 0x170u);
 				plr[v3]._pGold += plr[v3].HoldItem._ivalue;
 			LABEL_225:
-				drawsbarflag = 1;
+				drawsbarflag = TRUE;
 			LABEL_226:
 				v60 = p;
 				CalcPlrInv(p, 1u);
@@ -1408,7 +1408,7 @@ void CheckInvCut(int pnum, int mx, int my)
 		if (plr[pnum].SpdList[offs]._itype != ITYPE_NONE) {
 			plr[pnum].HoldItem = plr[pnum].SpdList[offs];
 			plr[pnum].SpdList[offs]._itype = ITYPE_NONE;
-			drawsbarflag = 1;
+			drawsbarflag = TRUE;
 		}
 	}
 
@@ -2273,7 +2273,7 @@ int CheckInvHLight()
 			if (v0 < 65)
 				goto LABEL_36;
 			v5 = v0 - 65;
-			drawsbarflag = 1;
+			drawsbarflag = TRUE;
 			result = 368 * v5;
 			v2 = &v3->SpdList[v5];
 			if (v3->SpdList[v5]._itype != ITYPE_NONE) {

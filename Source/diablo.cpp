@@ -982,7 +982,6 @@ void LeftMouseUp()
 		ReleaseStoreBtn();
 }
 // 4B851C: using guessed type int lvlbtndown;
-// 4B8C90: using guessed type int panbtndown;
 // 6AA705: using guessed type char stextflag;
 
 void RightMouseDown()

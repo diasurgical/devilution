@@ -285,7 +285,7 @@ void CheckCursMove()
 	pcursobj = -1;
 	pcursitem = -1;
 	if (pcursinvitem != -1)
-		drawsbarflag = 1;
+		drawsbarflag = TRUE;
 	pcursinvitem = -1;
 	pcursplr = -1;
 	uitemflag = 0;

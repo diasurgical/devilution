@@ -2433,7 +2433,7 @@ void scrollrt_draw_cursor_item()
 // 4B8C9C: using guessed type int cursH;
 // 69CF0C: using guessed type int gpBufEnd;
 
-void DrawMain(int dwHgt, int draw_desc, int draw_hp, int draw_mana, int draw_sbar, int draw_btn)
+void DrawMain(int dwHgt, BOOL draw_desc, BOOL draw_hp, BOOL draw_mana, BOOL draw_sbar, BOOL draw_btn)
 {
 	int ysize;
 	DWORD dwTicks;

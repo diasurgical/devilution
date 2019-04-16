@@ -3,7 +3,7 @@
 #define __INV_H__
 
 extern BOOL invflag;
-extern int drawsbarflag; // idb
+extern BOOL drawsbarflag;
 
 void FreeInvGFX();
 void InitInv();
