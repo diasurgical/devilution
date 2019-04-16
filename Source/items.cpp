@@ -1511,47 +1511,24 @@ BOOL GetItemSpace(int x, int y, char inum)
 
 void GetSuperItemSpace(int x, int y, char inum)
 {
-	signed int v4;  // edi
-	signed int v5;  // ebx
-	int v6;         // edx
-	int v7;         // esi
-	int v9;         // eax
-	int v10;        // [esp+Ch] [ebp-10h]
-	int v11;        // [esp+10h] [ebp-Ch]
-	signed int v12; // [esp+14h] [ebp-8h]
-	signed int v13; // [esp+18h] [ebp-4h]
+	int xx, yy;
+	int i, j, k;
 
-	v11 = y;
-	v10 = x;
 	if (!GetItemSpace(x, y, inum)) {
-		v13 = 2;
-		v4 = -2;
-		do {
-			v5 = v4;
-			if (v4 <= v13) {
-				while (2) {
-					v12 = v4;
-					v6 = v5 + v11;
-					v7 = v4 + v10;
-					do {
-						if (ItemSpaceOk(v7, v6)) {
-							v9 = inum;
-							item[v9]._ix = v7;
-							item[v9]._iy = v6;
-							dItem[v7][v6] = inum + 1;
-							return;
-						}
-						++v12;
-						++v7;
-					} while (v12 <= v13);
-					if (++v5 <= v13)
-						continue;
-					break;
+		for (k = 2; k < 50; k++) {
+			for (j = -k; j <= k; j++) {
+				yy = y + j;
+				for (i = -k; i <= k; i++) {
+					xx = i + x;
+					if (ItemSpaceOk(xx, yy)) {
+						item[inum]._ix = xx;
+						item[inum]._iy = yy;
+						dItem[xx][yy] = inum + 1;
+						return;
+					}
 				}
 			}
-			++v13;
-			--v4;
-		} while (v4 > -50);
+		}
 	}
 }
 
