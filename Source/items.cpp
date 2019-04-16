@@ -1086,7 +1086,9 @@ void CalcPlrScrolls(int p)
 void CalcPlrStaff(int pnum)
 {
 	plr[pnum]._pISpells = 0;
-	if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iStatFlag && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iCharges > 0) {
+	if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE
+	    && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iStatFlag
+	    && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iCharges > 0) {
 		plr[pnum]._pISpells |= (__int64)1 << (plr[pnum].InvBody[INVLOC_HAND_LEFT]._iSpell - 1);
 	}
 }
