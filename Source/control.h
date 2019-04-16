@@ -39,7 +39,7 @@ extern int talkflag;             // weak
 extern void *pSBkIconCels;
 extern int sbookflag; // weak
 extern int chrflag;
-extern int drawbtnflag; // idb
+extern BOOL drawbtnflag;
 extern void *pSpellBkCel;
 extern char infostr[MAX_PATH];
 extern int numpanbtns; // weak
@@ -49,7 +49,7 @@ extern int panelflag; // weak
 extern unsigned char SplTransTbl[256];
 extern int initialDropGoldValue; // idb
 extern void *pSpellCels;
-extern int panbtndown;   // weak
+extern BOOL panbtndown;
 extern void *pTalkPanel; // idb
 extern int spselflag;    // weak
 

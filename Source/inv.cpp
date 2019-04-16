@@ -4,7 +4,7 @@
 
 BOOL invflag;
 void *pInvCels;
-int drawsbarflag; // idb
+BOOL drawsbarflag;
 int sgdwLastTime; // check name
 
 const InvXY InvRect[73] = {
@@ -109,7 +109,7 @@ void InitInv()
 	}
 
 	invflag = 0;
-	drawsbarflag = 0;
+	drawsbarflag = FALSE;
 }
 
 void InvDrawSlotBack(int X, int Y, int W, int H)
@@ -1150,7 +1150,7 @@ LABEL_18:
 				qmemcpy((char *)plr[0].SpdList + v53, &plr[v3].HoldItem, 0x170u);
 				plr[v3]._pGold += plr[v3].HoldItem._ivalue;
 			LABEL_225:
-				drawsbarflag = 1;
+				drawsbarflag = TRUE;
 			LABEL_226:
 				v60 = p;
 				CalcPlrInv(p, 1u);
@@ -1408,7 +1408,7 @@ void CheckInvCut(int pnum, int mx, int my)
 		if (plr[pnum].SpdList[offs]._itype != ITYPE_NONE) {
 			plr[pnum].HoldItem = plr[pnum].SpdList[offs];
 			plr[pnum].SpdList[offs]._itype = ITYPE_NONE;
-			drawsbarflag = 1;
+			drawsbarflag = TRUE;
 		}
 	}
 
@@ -1664,231 +1664,131 @@ void InvGetItem(int pnum, int ii)
 
 void AutoGetItem(int pnum, int ii)
 {
-	int v2;          // ebx
-	int v3;          // ebp
-	int v4;          // eax
-	int v5;          // ecx
-	int v6;          // edi
-	int v7;          // edi
-	int v8;          // edi
-	int v9;          // edi
-	int v10;         // edx
-	int v11;         // ecx
-	int v13;         // ecx
-	int iia;         // [esp+10h] [ebp-18h]
-	signed int iib;  // [esp+10h] [ebp-18h]
-	signed int iic;  // [esp+10h] [ebp-18h]
-	signed int iid;  // [esp+10h] [ebp-18h]
-	signed int iie;  // [esp+10h] [ebp-18h]
-	signed int iif;  // [esp+10h] [ebp-18h]
-	signed int iig;  // [esp+10h] [ebp-18h]
-	signed int iih;  // [esp+10h] [ebp-18h]
-	signed int iii;  // [esp+10h] [ebp-18h]
-	signed int iij;  // [esp+10h] [ebp-18h]
-	ItemStruct *v24; // [esp+14h] [ebp-14h]
-	int *v25;        // [esp+14h] [ebp-14h]
-	int v26;         // [esp+18h] [ebp-10h]
-	int i;           // [esp+1Ch] [ebp-Ch]
-	int v28;         // [esp+20h] [ebp-8h]
-	int v29;         // [esp+24h] [ebp-4h]
+	int i, idx;
+	int w, h;
+	BOOL done;
 
-	v2 = pnum;
-	i = ii;
 	if (dropGoldFlag) {
 		dropGoldFlag = FALSE;
 		dropGoldValue = 0;
 	}
-	if (ii == 127 || dItem[item[ii]._ix][item[ii]._iy]) {
-		v3 = pnum;
-		_HIBYTE(item[ii]._iCreateInfo) &= 0x7Fu;
-		v28 = ii;
-		qmemcpy(&plr[pnum].HoldItem, &item[ii], sizeof(plr[pnum].HoldItem));
-		CheckQuestItem(pnum);
-		CheckBookLevel(v2);
-		CheckItemStats(v2);
-		SetICursor(plr[v2].HoldItem._iCurs + CURSOR_FIRSTITEM);
-		if (plr[v2].HoldItem._itype == ITYPE_GOLD) {
-			v4 = GoldAutoPlace(v2);
-		} else {
-			v4 = 0;
-			if (((plr[v3]._pgfxnum & 0xF) == ANIM_ID_UNARMED || (plr[v3]._pgfxnum & 0xF) == ANIM_ID_UNARMED_SHIELD) && plr[v3]._pmode <= PM_WALK3) {
-				if (plr[v3].HoldItem._iStatFlag) {
-					if (plr[v3].HoldItem._iClass == ICLASS_WEAPON) {
-						v4 = WeaponAutoPlace(v2);
-						if (v4) {
-							CalcPlrInv(v2, TRUE);
-							goto LABEL_71;
+
+	if (ii != MAXITEMS && !dItem[item[ii]._ix][item[ii]._iy]) {
+		return;
+	}
+
+	item[ii]._iCreateInfo &= 0x7FFF;
+	plr[pnum].HoldItem = item[ii];
+	CheckQuestItem(pnum);
+	CheckBookLevel(pnum);
+	CheckItemStats(pnum);
+	SetICursor(plr[pnum].HoldItem._iCurs + CURSOR_FIRSTITEM);
+	if (plr[pnum].HoldItem._itype == ITYPE_GOLD) {
+		done = GoldAutoPlace(pnum);
+	} else {
+		done = FALSE;
+		if (((plr[pnum]._pgfxnum & 0xF) == ANIM_ID_UNARMED || (plr[pnum]._pgfxnum & 0xF) == ANIM_ID_UNARMED_SHIELD) && plr[pnum]._pmode <= PM_WALK3) {
+			if (plr[pnum].HoldItem._iStatFlag) {
+				if (plr[pnum].HoldItem._iClass == ICLASS_WEAPON) {
+					done = WeaponAutoPlace(pnum);
+					if (done)
+						CalcPlrInv(pnum, TRUE);
+				}
+			}
+		}
+		if (!done) {
+			w = icursW28;
+			h = icursH28;
+			if (w == 1 && h == 1) {
+				idx = plr[pnum].HoldItem.IDidx;
+				if (plr[pnum].HoldItem._iStatFlag && AllItemsList[idx].iUsable) {
+					for (i = 0; i < 8 && !done; i++) {
+						if (plr[pnum].SpdList[i]._itype == ITYPE_NONE) {
+							plr[pnum].SpdList[i] = plr[pnum].HoldItem;
+							CalcPlrScrolls(pnum);
+							drawsbarflag = TRUE;
+							done = TRUE;
 						}
 					}
 				}
+				for (i = 30; i <= 39 && !done; i++) {
+					done = AutoPlace(pnum, i, w, h, TRUE);
+				}
+				for (i = 20; i <= 29 && !done; i++) {
+					done = AutoPlace(pnum, i, w, h, TRUE);
+				}
+				for (i = 10; i <= 19 && !done; i++) {
+					done = AutoPlace(pnum, i, w, h, TRUE);
+				}
+				for (i = 0; i <= 9 && !done; i++) {
+					done = AutoPlace(pnum, i, w, h, TRUE);
+				}
 			}
-			v5 = icursW28;
-			v29 = icursW28;
-			v26 = icursH28;
-			if (icursW28 == 1) {
-				if (icursH28 == 1) {
-					if (plr[v3].HoldItem._iStatFlag && AllItemsList[plr[v3].HoldItem.IDidx].iUsable) {
-						iia = 0;
-						v24 = plr[v3].SpdList;
-						do {
-							if (v4)
-								break;
-							if (v24->_itype == ITYPE_NONE) {
-								qmemcpy(v24, &plr[v3].HoldItem, sizeof(ItemStruct));
-								CalcPlrScrolls(v2);
-								v4 = 1;
-								drawsbarflag = 1;
-							}
-							++iia;
-							++v24;
-						} while (iia < 8);
-					}
-					v6 = 30;
-					do {
-						if (v4)
-							break;
-						v4 = AutoPlace(v2, v6++, 1, 1, 1);
-					} while (v6 <= 39);
-					v7 = 20;
-					do {
-						if (v4)
-							break;
-						v4 = AutoPlace(v2, v7++, 1, 1, 1);
-					} while (v7 <= 29);
-					v8 = 10;
-					do {
-						if (v4)
-							break;
-						v4 = AutoPlace(v2, v8++, 1, 1, 1);
-					} while (v8 <= 19);
-					v9 = 0;
-					while (!v4) {
-						v4 = AutoPlace(v2, v9++, 1, 1, 1);
-						if (v9 > 9)
-							goto LABEL_35;
-					}
-					goto LABEL_71;
+			if (w == 1 && h == 2) {
+				for (i = 29; i >= 20 && !done; i--) {
+					done = AutoPlace(pnum, i, w, h, TRUE);
 				}
-			LABEL_35:
-				if (v26 == 2) {
-					iib = 29;
-					do {
-						if (v4)
-							break;
-						v4 = AutoPlace(v2, iib--, 1, 2, 1);
-					} while (iib >= 20);
-					iic = 9;
-					do {
-						if (v4)
-							break;
-						v4 = AutoPlace(v2, iic--, 1, 2, 1);
-					} while (iic >= 0);
-					iid = 19;
-					while (!v4) {
-						v4 = AutoPlace(v2, iid--, 1, 2, 1);
-						if (iid < 10)
-							goto LABEL_45;
-					}
-					goto LABEL_71;
+				for (i = 9; i >= 0 && !done; i--) {
+					done = AutoPlace(pnum, i, w, h, TRUE);
 				}
-			LABEL_45:
-				if (v26 == 3) {
-					iie = 0;
-					while (!v4) {
-						v4 = AutoPlace(v2, iie++, 1, 3, 1);
-						if (iie >= 20)
-							goto LABEL_49;
-					}
-					goto LABEL_71;
+				for (i = 19; i >= 10 && !done; i--) {
+					done = AutoPlace(pnum, i, w, h, TRUE);
 				}
+			}
+			if (w == 1 && h == 3) {
+				for (i = 0; i < 20 && !done; i++) {
+					done = AutoPlace(pnum, i, w, h, TRUE);
+				}
+			}
+			if (w == 2 && h == 2) {
+				for (i = 0; i < 10 && !done; i++) {
+					done = AutoPlace(pnum, AP2x2Tbl[i], w, h, TRUE);
+				}
+				for (i = 21; i < 29 && !done; i += 2) {
+					done = AutoPlace(pnum, i, w, h, TRUE);
+				}
+				for (i = 1; i < 9 && !done; i += 2) {
+					done = AutoPlace(pnum, i, w, h, TRUE);
+				}
+				for (i = 10; i < 19 && !done; i++) {
+					done = AutoPlace(pnum, i, w, h, TRUE);
+				}
+			}
+			if (w == 2 && h == 3) {
+				for (i = 0; i < 9 && !done; i++) {
+					done = AutoPlace(pnum, i, w, h, TRUE);
+				}
+				for (i = 10; i < 19 && !done; i++) {
+					done = AutoPlace(pnum, i, w, h, TRUE);
+				}
+			}
+		}
+	}
+	if (done) {
+		dItem[item[ii]._ix][item[ii]._iy] = 0;
+		i = 0;
+		while (i < numitems) {
+			if (itemactive[i] == ii) {
+				DeleteItem(itemactive[i], i);
+				i = 0;
 			} else {
-			LABEL_49:
-				if (v29 == 2) {
-					if (v26 == 2) {
-						v25 = AP2x2Tbl;
-						do {
-							if (v4)
-								break;
-							v4 = AutoPlace(v2, *v25, 2, 2, 1);
-							++v25;
-						} while ((signed int)v25 < (signed int)&AP2x2Tbl[10]);
-						iif = 21;
-						do {
-							if (v4)
-								break;
-							v4 = AutoPlace(v2, iif, 2, 2, 1);
-							iif += 2;
-						} while (iif < 29);
-						iig = 1;
-						do {
-							if (v4)
-								break;
-							v4 = AutoPlace(v2, iig, 2, 2, 1);
-							iig += 2;
-						} while (iig < 9);
-						iih = 10;
-						while (!v4) {
-							v4 = AutoPlace(v2, iih++, 2, 2, 1);
-							if (iih >= 19)
-								goto LABEL_63;
-						}
-						goto LABEL_71;
-					}
-				LABEL_63:
-					if (v26 == 3) {
-						iii = 0;
-						do {
-							if (v4)
-								break;
-							v4 = AutoPlace(v2, iii++, 2, 3, 1);
-						} while (iii < 9);
-						iij = 10;
-						while (!v4) {
-							v4 = AutoPlace(v2, iij++, 2, 3, 1);
-							if (iij >= 19)
-								goto LABEL_70;
-						}
-						goto LABEL_71;
-					}
-				}
+				i++;
 			}
 		}
-	LABEL_70:
-		if (v4) {
-		LABEL_71:
-			v10 = 0;
-			dItem[item[v28]._ix][item[v28]._iy] = 0;
-			while (v10 < numitems) {
-				v11 = itemactive[v10];
-				if (v11 == i) {
-					DeleteItem(v11, v10);
-					v10 = 0;
-				} else {
-					++v10;
-				}
-			}
-			return;
-		}
-		if (v2 == myplr) {
-			switch (plr[v3]._pClass) {
-			case PC_WARRIOR:
-				v13 = random(0, 3) + PS_WARR14;
-				PlaySFX(v13);
-				break;
-			case PC_ROGUE:
-				v13 = random(0, 3) + PS_ROGUE14;
-				PlaySFX(v13);
-				break;
-			case PC_SORCERER:
-				v13 = random(0, 3) + PS_MAGE14;
-				PlaySFX(v13);
-				break;
+	} else {
+		if (pnum == myplr) {
+			if (plr[pnum]._pClass == PC_WARRIOR) {
+				PlaySFX(random(0, 3) + PS_WARR14);
+			} else if (plr[pnum]._pClass == PC_ROGUE) {
+				PlaySFX(random(0, 3) + PS_ROGUE14);
+			} else if (plr[pnum]._pClass == PC_SORCERER) {
+				PlaySFX(random(0, 3) + PS_MAGE14);
 			}
 		}
-		qmemcpy(&plr[v3].HoldItem, &item[v28], sizeof(plr[v3].HoldItem));
-		RespawnItem(i, 1);
-		NetSendCmdPItem(TRUE, CMD_RESPAWNITEM, item[v28]._ix, item[v28]._iy);
-		plr[v3].HoldItem._itype = ITYPE_NONE;
+		plr[pnum].HoldItem = item[ii];
+		RespawnItem(ii, 1);
+		NetSendCmdPItem(TRUE, CMD_RESPAWNITEM, item[ii]._ix, item[ii]._iy);
+		plr[pnum].HoldItem._itype = ITYPE_NONE;
 	}
 }
 // 48E9A8: using guessed type int AP2x2Tbl[10];
@@ -2273,7 +2173,7 @@ int CheckInvHLight()
 			if (v0 < 65)
 				goto LABEL_36;
 			v5 = v0 - 65;
-			drawsbarflag = 1;
+			drawsbarflag = TRUE;
 			result = 368 * v5;
 			v2 = &v3->SpdList[v5];
 			if (v3->SpdList[v5]._itype != ITYPE_NONE) {

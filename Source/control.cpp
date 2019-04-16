@@ -44,7 +44,7 @@ int talkflag;             // weak
 void *pSBkIconCels;
 int sbookflag; // weak
 int chrflag;
-int drawbtnflag; // idb
+BOOL drawbtnflag;
 void *pSpellBkCel;
 char infostr[MAX_PATH];
 int numpanbtns; // weak
@@ -54,7 +54,7 @@ int panelflag; // weak
 unsigned char SplTransTbl[256];
 int initialDropGoldValue; // idb
 void *pSpellCels;
-int panbtndown;   // weak
+BOOL panbtndown;
 void *pTalkPanel; // idb
 int spselflag;    // weak
 
@@ -364,7 +364,7 @@ void DrawSpell()
 	spl = plr[myplr]._pRSpell;
 	st = plr[myplr]._pRSplType;
 	tlvl = plr[myplr]._pISplLvlAdd + plr[myplr]._pSplLvl[spl];
-	if (st == RSPLTYPE_SPELL && spl != RSPLTYPE_INVALID) {
+	if (st == RSPLTYPE_SPELL && spl != SPL_INVALID) {
 		if (!CheckSpell(myplr, spl, RSPLTYPE_SPELL, TRUE))
 			st = RSPLTYPE_INVALID;
 		if (tlvl <= 0)
@@ -375,7 +375,7 @@ void DrawSpell()
 	if (plr[myplr]._pRSpell < 0)
 		st = RSPLTYPE_INVALID;
 	SetSpellTrans(st);
-	if (spl != RSPLTYPE_INVALID)
+	if (spl != SPL_INVALID)
 		DrawSpellCel(629, 631, (BYTE *)pSpellCels, (char)SpellITbl[spl], 56);
 	else
 		DrawSpellCel(629, 631, (BYTE *)pSpellCels, 27, 56);
@@ -1276,7 +1276,6 @@ void InitControlPan()
 // 4B8968: using guessed type int sbookflag;
 // 4B8A7C: using guessed type int numpanbtns;
 // 4B8B84: using guessed type int panelflag;
-// 4B8C90: using guessed type int panbtndown;
 // 4B8C98: using guessed type int spselflag;
 // 679660: using guessed type char gbMaxPlayers;
 
@@ -1368,8 +1367,8 @@ void DoPanBtn()
 		if (MouseX >= PanBtnPos[i][0] && MouseX <= PanBtnPos[i][0] + PanBtnPos[i][2]) {
 			if (MouseY >= PanBtnPos[i][1] && MouseY <= PanBtnPos[i][1] + PanBtnPos[i][3]) {
 				panbtn[i] = 1;
-				drawbtnflag = 1;
-				panbtndown = 1;
+				drawbtnflag = TRUE;
+				panbtndown = TRUE;
 			}
 		}
 	}
@@ -1382,10 +1381,9 @@ void DoPanBtn()
 void control_set_button_down(int btn_id)
 {
 	panbtn[btn_id] = 1;
-	drawbtnflag = 1;
-	panbtndown = 1;
+	drawbtnflag = TRUE;
+	panbtndown = TRUE;
 }
-// 4B8C90: using guessed type int panbtndown;
 
 void control_check_btn_press()
 {
@@ -1549,8 +1547,8 @@ void CheckBtnUp()
 	char gamemenuOff;
 
 	gamemenuOff = 1;
-	drawbtnflag = 1;
-	panbtndown = 0;
+	drawbtnflag = TRUE;
+	panbtndown = FALSE;
 
 	for (i = 0; i < 8; i++) {
 		if (!panbtn[i]) {
@@ -1620,7 +1618,6 @@ void CheckBtnUp()
 // 484368: using guessed type int FriendlyMode;
 // 4B8960: using guessed type int talkflag;
 // 4B8968: using guessed type int sbookflag;
-// 4B8C90: using guessed type int panbtndown;
 // 646D00: using guessed type char qtextflag;
 
 void FreeControlPan()
