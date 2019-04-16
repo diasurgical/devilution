@@ -1298,35 +1298,26 @@ void GetPlrHandSeed(ItemStruct *h)
 
 void GetGoldSeed(int pnum, ItemStruct *h)
 {
-	int v3;         // edi
-	signed int v4;  // esi
-	int v5;         // eax
-	int i;          // ecx
-	int v7;         // edx
-	ItemStruct *v8; // ecx
+	int i, ii, s;
+	BOOL doneflag;
 
-	v3 = pnum;
 	do {
-		v4 = 1;
-		v5 = GetRndSeed();
-		for (i = 0; i < numitems; ++i) {
-			if (item[itemactive[i]]._iSeed == v5)
-				v4 = 0;
+		doneflag = TRUE;
+		s = GetRndSeed();
+		for (i = 0; i < numitems; i++) {
+			ii = itemactive[i];
+			if (item[ii]._iSeed == s)
+				doneflag = FALSE;
 		}
-		if (v3 == myplr) {
-			v7 = plr[v3]._pNumInv;
-			if (v7 > 0) {
-				v8 = plr[v3].InvList;
-				do {
-					if (v8->_iSeed == v5)
-						v4 = 0;
-					++v8;
-					--v7;
-				} while (v7);
+		if (pnum == myplr) {
+			for (i = 0; i < plr[pnum]._pNumInv; i++) {
+				if (plr[pnum].InvList[i]._iSeed == s)
+					doneflag = FALSE;
 			}
 		}
-	} while (!v4);
-	h->_iSeed = v5;
+	} while (!doneflag);
+
+	h->_iSeed = s;
 }
 
 void SetPlrHandSeed(ItemStruct *h, int iseed)
