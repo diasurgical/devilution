@@ -22,12 +22,14 @@ EXPORTS
 	UiCreditsDialog                @11
 	UiCreditsDialog@4              @11 NONAME
 	UiDestroy                      @12
+	UiDestroy@0                    @12 NONAME
 	UiDrawDescCallback             @13
 	UiDrawDescCallback@32          @13 NONAME
 	UiGetDataCallback              @14
 	UiGetDataCallback@20           @14 NONAME
 	UiGetDefaultStats              @15
 	UiInitialize                   @16
+	UiInitialize@0                 @16 NONAME
 	UiMainMenuDialog               @17
 	UiMainMenuDialog@16            @17 NONAME
 	UiMessageBoxCallback           @18
