@@ -180,7 +180,7 @@ HRESULT dx_DirectDrawCreate(LPGUID guid, LPDIRECTDRAW *lplpDD, LPUNKNOWN pUnkOut
 	return DirectDrawCreate(guid, lplpDD, pUnkOuter);
 }
 
-void j_lock_buf_priv(BYTE idx)
+void lock_buf(BYTE idx)
 {
 #ifdef _DEBUG
 	++locktbl[idx];
@@ -227,7 +227,7 @@ void lock_buf_priv()
 	sgdwLockCount++;
 }
 
-void j_unlock_buf_priv(BYTE idx)
+void unlock_buf(BYTE idx)
 {
 #ifdef _DEBUG
 	if (!locktbl[idx])

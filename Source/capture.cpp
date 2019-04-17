@@ -19,7 +19,7 @@ void CaptureScreen()
 #endif
 		RedPalette(palette);
 
-		j_lock_buf_priv(2);
+		lock_buf(2);
 		success = CaptureHdr(hObject, 640, 480);
 		if (success) {
 			success = CapturePix(hObject, 640, 480, 768, &gpBuffer[SCREENXY(0, 0)]);
@@ -27,7 +27,7 @@ void CaptureScreen()
 				success = CapturePal(hObject, palette);
 			}
 		}
-		j_unlock_buf_priv(2);
+		unlock_buf(2);
 		CloseHandle(hObject);
 
 		if (!success)
