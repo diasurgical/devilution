@@ -62,9 +62,9 @@ void dx_init(HWND hWnd)
 		ErrDlg(IDD_DIALOG1, v4, "C:\\Src\\Diablo\\Source\\dx.cpp", 170);
 	}
 #ifdef __cplusplus
-	if (lpDDInterface->SetDisplayMode(640, 480, 8)) {
+	if (lpDDInterface->SetDisplayMode(SCREEN_WIDTH, SCREEN_HEIGHT, 8)) {
 #else
-	if (lpDDInterface->lpVtbl->SetDisplayMode(lpDDInterface, 640, 480, 8)) {
+	if (lpDDInterface->lpVtbl->SetDisplayMode(lpDDInterface, SCREEN_WIDTH, SCREEN_HEIGHT, 8)) {
 #endif
 		v6 = GetSystemMetrics(SM_CXSCREEN);
 		v7 = GetSystemMetrics(SM_CYSCREEN);
@@ -111,7 +111,7 @@ void dx_create_back_buffer()
 #else
 			lpDDSPrimary->lpVtbl->Unlock(lpDDSPrimary, NULL);
 #endif
-			sgpBackBuf = (BYTE *)DiabloAllocPtr(656 * 768);
+			sgpBackBuf = (BYTE *)DiabloAllocPtr(BUFFER_HEIGHT * BUFFER_WIDTH);
 			return;
 		}
 		if (error_code != DDERR_CANTLOCKSURFACE)
@@ -119,12 +119,12 @@ void dx_create_back_buffer()
 	}
 
 	memset(&ddsd, 0, sizeof(ddsd));
-	ddsd.dwWidth = 768;
-	ddsd.lPitch = 768;
+	ddsd.dwWidth = BUFFER_WIDTH;
+	ddsd.lPitch = BUFFER_WIDTH;
 	ddsd.dwSize = sizeof(ddsd);
 	ddsd.dwFlags = DDSD_PIXELFORMAT | DDSD_PITCH | DDSD_WIDTH | DDSD_HEIGHT | DDSD_CAPS;
 	ddsd.ddsCaps.dwCaps = DDSCAPS_SYSTEMMEMORY | DDSCAPS_OFFSCREENPLAIN;
-	ddsd.dwHeight = 656;
+	ddsd.dwHeight = BUFFER_HEIGHT;
 	ddsd.ddpfPixelFormat.dwSize = sizeof(ddsd.ddpfPixelFormat);
 #ifdef __cplusplus
 	error_code = lpDDSPrimary->GetPixelFormat(&ddsd.ddpfPixelFormat);
