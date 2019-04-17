@@ -159,7 +159,7 @@ char *PanBtnStr[8] = {
 	"Send Message",
 	"Player Attack"
 };
-int attribute_inc_rects[4][4] = {
+RECT32 attribute_inc_rects[4] = {
 	{ 137, 138, 41, 22 },
 	{ 137, 166, 41, 22 },
 	{ 137, 195, 41, 22 },
@@ -2238,10 +2238,10 @@ void CheckChrBtns()
 			default:
 				continue;
 			}
-			if (MouseX >= attribute_inc_rects[i][0]
-			    && MouseX <= attribute_inc_rects[i][0] + attribute_inc_rects[i][2]
-			    && MouseY >= attribute_inc_rects[i][1]
-			    && MouseY <= attribute_inc_rects[i][3] + attribute_inc_rects[i][1]) {
+			if (MouseX >= attribute_inc_rects[i].x
+			    && MouseX <= attribute_inc_rects[i].x + attribute_inc_rects[i].w
+			    && MouseY >= attribute_inc_rects[i].y
+			    && MouseY <= attribute_inc_rects[i].y + attribute_inc_rects[i].h) {
 				chrbtn[i] = TRUE;
 				chrbtnactive = TRUE;
 			}
@@ -2257,10 +2257,10 @@ void ReleaseChrBtns()
 	for (i = 0; i < 4; ++i) {
 		if (chrbtn[i]) {
 			chrbtn[i] = FALSE;
-			if (MouseX >= attribute_inc_rects[i][0]
-			    && MouseX <= attribute_inc_rects[i][0] + attribute_inc_rects[i][2]
-			    && MouseY >= attribute_inc_rects[i][1]
-			    && MouseY <= attribute_inc_rects[i][3] + attribute_inc_rects[i][1]) {
+			if (MouseX >= attribute_inc_rects[i].x
+			    && MouseX <= attribute_inc_rects[i].x + attribute_inc_rects[i].w
+			    && MouseY >= attribute_inc_rects[i].y
+			    && MouseY <= attribute_inc_rects[i].y + attribute_inc_rects[i].h) {
 				switch (i) {
 				case 0:
 					NetSendCmdParam1(TRUE, CMD_ADDSTR, 1);
