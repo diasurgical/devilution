@@ -2189,7 +2189,7 @@ void DrawZoom(int x, int y)
 
 void ClearScreenBuffer()
 {
-	j_lock_buf_priv(3);
+	lock_buf(3);
 
 	/// ASSERT: assert(gpBuffer);
 
@@ -2217,7 +2217,7 @@ void ClearScreenBuffer()
 	}
 #endif
 
-	j_unlock_buf_priv(3);
+	unlock_buf(3);
 }
 
 #ifdef _DEBUG
@@ -2318,17 +2318,17 @@ void scrollrt_draw_game_screen(BOOL draw_cursor)
 	}
 
 	if (draw_cursor) {
-		j_lock_buf_priv(0);
+		lock_buf(0);
 		scrollrt_draw_cursor_item();
-		j_unlock_buf_priv(0);
+		unlock_buf(0);
 	}
 
 	DrawMain(hgt, 0, 0, 0, 0, 0);
 
 	if (draw_cursor) {
-		j_lock_buf_priv(0);
+		lock_buf(0);
 		scrollrt_draw_cursor_back_buffer();
-		j_unlock_buf_priv(0);
+		unlock_buf(0);
 	}
 }
 // 52571C: using guessed type int drawpanflag;
@@ -2639,7 +2639,7 @@ void DoBlitScreen(DWORD dwX, DWORD dwY, DWORD dwWdt, DWORD dwHgt)
 		nDstWdt = DDS_desc.lPitch - dwWdt;
 		dwWdt >>= 2;
 
-		j_lock_buf_priv(6);
+		lock_buf(6);
 
 		/// ASSERT: assert(gpBuffer);
 
@@ -2674,7 +2674,7 @@ void DoBlitScreen(DWORD dwX, DWORD dwY, DWORD dwWdt, DWORD dwHgt)
 		}
 #endif
 
-		j_unlock_buf_priv(6);
+		unlock_buf(6);
 	}
 }
 
@@ -2705,7 +2705,7 @@ void DrawAndBlit()
 
 	drawpanflag = 0;
 
-	j_lock_buf_priv(0);
+	lock_buf(0);
 	if(leveltype != DTYPE_TOWN) {
 		DrawView(ViewX, ViewY);
 	} else {
@@ -2731,13 +2731,13 @@ void DrawAndBlit()
 		hgt = 480;
 	}
 	scrollrt_draw_cursor_item();
-	j_unlock_buf_priv(0);
+	unlock_buf(0);
 
 	DrawMain(hgt, ddsdesc, drawhpflag, drawmanaflag, drawsbarflag, drawbtnflag);
 
-	j_lock_buf_priv(0);
+	lock_buf(0);
 	scrollrt_draw_cursor_back_buffer();
-	j_unlock_buf_priv(0);
+	unlock_buf(0);
 
 	drawhpflag = FALSE;
 	drawmanaflag = FALSE;
