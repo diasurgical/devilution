@@ -2197,12 +2197,12 @@ void ClearScreenBuffer()
 	__asm {
 		mov		edi, gpBuffer
 		add		edi, SCREENXY(0, 0)
-		mov		edx, 480
+		mov		edx, SCREEN_HEIGHT
 		xor		eax, eax
 	zeroline:
-		mov		ecx, 640 / 4
+		mov		ecx, SCREEN_WIDTH / 4
 		rep stosd
-		add		edi, 768 - 640
+		add		edi, BUFFER_WIDTH - SCREEN_WIDTH
 		dec		edx
 		jnz		zeroline
 	}
@@ -2212,8 +2212,8 @@ void ClearScreenBuffer()
 
 	dst = &gpBuffer[SCREENXY(0, 0)];
 
-	for (i = 0; i < 480; i++, dst += 768) {
-		memset(dst, 0, 640);
+	for (i = 0; i < SCREEN_HEIGHT; i++, dst += BUFFER_WIDTH) {
+		memset(dst, 0, SCREEN_WIDTH);
 	}
 #endif
 
@@ -2246,7 +2246,7 @@ void ScrollView()
 			scroll = TRUE;
 		}
 	}
-	if (MouseX > 640 - 20) {
+	if (MouseX > SCREEN_WIDTH - 20) {
 		if (dmaxx - 1 <= ViewX || dminy >= ViewY) {
 			if (dmaxx - 1 > ViewX) {
 				ViewX++;
@@ -2278,7 +2278,7 @@ void ScrollView()
 			scroll = TRUE;
 		}
 	}
-	if (MouseY > 480 - 20) {
+	if (MouseY > SCREEN_HEIGHT - 20) {
 		if (dmaxy - 1 <= ViewY || dmaxx - 1 <= ViewX) {
 			if (dmaxy - 1 > ViewY) {
 				ViewY++;
@@ -2371,20 +2371,20 @@ void scrollrt_draw_cursor_item()
 	mx = MouseX - 1;
 	if (mx < 0) {
 		mx = 0;
-	} else if (mx > 640 - 1) {
+	} else if (mx > SCREEN_WIDTH - 1) {
 		return;
 	}
 	my = MouseY - 1;
 	if (my < 0) {
 		my = 0;
-	} else if (my > 480 - 1) {
+	} else if (my > SCREEN_HEIGHT - 1) {
 		return;
 	}
 
 	sgdwCursX = mx;
 	sgdwCursWdt = sgdwCursX + cursW + 1;
-	if (sgdwCursWdt > 640 - 1) {
-		sgdwCursWdt = 640 - 1;
+	if (sgdwCursWdt > SCREEN_WIDTH - 1) {
+		sgdwCursWdt = SCREEN_WIDTH - 1;
 	}
 	sgdwCursX &= ~3;
 	sgdwCursWdt |= 3;
@@ -2393,8 +2393,8 @@ void scrollrt_draw_cursor_item()
 
 	sgdwCursY = my;
 	sgdwCursHgt = sgdwCursY + cursH + 1;
-	if (sgdwCursHgt > 480 - 1) {
-		sgdwCursHgt = 480 - 1;
+	if (sgdwCursHgt > SCREEN_HEIGHT - 1) {
+		sgdwCursHgt = SCREEN_HEIGHT - 1;
 	}
 	sgdwCursHgt -= sgdwCursY;
 	sgdwCursHgt++;
@@ -2635,7 +2635,7 @@ void DoBlitScreen(DWORD dwX, DWORD dwY, DWORD dwWdt, DWORD dwHgt)
 	} else {
 		nSrcOff = SCREENXY(dwX, dwY);
 		nDstOff = dwX + dwY * DDS_desc.lPitch;
-		nSrcWdt = 768 - dwWdt;
+		nSrcWdt = BUFFER_WIDTH - dwWdt;
 		nDstWdt = DDS_desc.lPitch - dwWdt;
 		dwWdt >>= 2;
 

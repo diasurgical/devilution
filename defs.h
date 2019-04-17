@@ -85,6 +85,12 @@
 #define PAL16_RED		224
 #define PAL16_GRAY		240
 
+#define SCREEN_WIDTH	640
+#define SCREEN_HEIGHT	480
+#define BUFFER_WIDTH	768
+#define BUFFER_HEIGHT	656
+#define TILE_SIZE		32
+
 #define SCREENXY(x, y)	((x) + 64 + (((y) + 160) * 768))
 
 #define MemFreeDbg(p)	\
