@@ -637,15 +637,13 @@ int premiumlvladd[6] = { -1, -1, 0, 0, 1, 2 };
 
 void InitItemGFX()
 {
-	signed int v0;    // esi
-	char arglist[64]; // [esp+4h] [ebp-40h]
+	int i;
+	char arglist[64];
 
-	v0 = 0;
-	do {
-		sprintf(arglist, "Items\\%s.CEL", ItemDropStrs[v0]);
-		itemanims[v0] = LoadFileInMem(arglist, 0);
-		++v0;
-	} while (v0 < 35);
+	for (i = 0; i < 35; i++) {
+		sprintf(arglist, "Items\\%s.CEL", ItemDropStrs[i]);
+		itemanims[i] = LoadFileInMem(arglist, 0);
+	}
 	memset(UniqueItemFlag, 0, sizeof(UniqueItemFlag));
 }
 
@@ -1088,74 +1086,58 @@ void CalcPlrScrolls(int p)
 void CalcPlrStaff(int pnum)
 {
 	plr[pnum]._pISpells = 0;
-	if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iStatFlag && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iCharges > 0) {
+	if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE
+	    && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iStatFlag
+	    && plr[pnum].InvBody[INVLOC_HAND_LEFT]._iCharges > 0) {
 		plr[pnum]._pISpells |= (__int64)1 << (plr[pnum].InvBody[INVLOC_HAND_LEFT]._iSpell - 1);
 	}
 }
 
 void CalcSelfItems(int pnum)
 {
-	PlayerStruct *v1; // ecx
-	int v2;           // edx
-	int v3;           // esi
-	int v4;           // edi
-	int *v5;          // eax
-	signed int v6;    // ebx
-	BOOLEAN v7;       // zf
-	char *v8;         // eax
-	signed int v9;    // [esp+Ch] [ebp-10h]
-	signed int v10;   // [esp+10h] [ebp-Ch]
-	int v11;          // [esp+14h] [ebp-8h]
-	signed int v12;   // [esp+18h] [ebp-4h]
+	int i;
+	PlayerStruct *p;
+	BOOL sf, changeflag;
+	int sa, ma, da;
 
-	v1 = &plr[pnum];
-	v2 = 0;
-	v3 = 0;
-	v4 = 0;
-	v5 = &v1->InvBody[0]._iStatFlag;
-	v6 = 7;
-	do {
-		if (*(v5 - 87) != -1) {
-			v7 = *(v5 - 75) == 0;
-			*v5 = 1;
-			if (!v7) {
-				v2 += *(v5 - 25);
-				v3 += *(v5 - 24);
-				v4 += *(v5 - 23);
+	p = &plr[pnum];
+
+	sa = 0;
+	ma = 0;
+	da = 0;
+	for (i = 0; i < NUM_INVLOC; i++) {
+		if (p->InvBody[i]._itype != ITYPE_NONE) {
+			p->InvBody[i]._iStatFlag = TRUE;
+			if (p->InvBody[i]._iIdentified) {
+				sa += p->InvBody[i]._iPLStr;
+				ma += p->InvBody[i]._iPLMag;
+				da += p->InvBody[i]._iPLDex;
 			}
 		}
-		v5 += 92;
-		--v6;
-	} while (v6);
-	v11 = v4;
+	}
 	do {
-		v9 = 0;
-		v8 = &v1->InvBody[0]._iMinStr;
-		v10 = 7;
-		do {
-			if (*((_DWORD *)v8 - 86) != -1 && *((_DWORD *)v8 + 1)) {
-				v12 = 1;
-				if (v2 + v1->_pBaseStr < *v8)
-					v12 = 0;
-				if (v3 + v1->_pBaseMag < (unsigned char)v8[1])
-					v12 = 0;
-				if (v11 + v1->_pBaseDex < v8[2])
-					v12 = 0;
-				if (!v12) {
-					v7 = *((_DWORD *)v8 - 74) == 0;
-					v9 = 1;
-					*((_DWORD *)v8 + 1) = 0;
-					if (!v7) {
-						v2 -= *((_DWORD *)v8 - 24);
-						v3 -= *((_DWORD *)v8 - 23);
-						v11 -= *((_DWORD *)v8 - 22);
+		changeflag = FALSE;
+		for (i = 0; i < NUM_INVLOC; i++) {
+			if (p->InvBody[i]._itype != ITYPE_NONE && p->InvBody[i]._iStatFlag) {
+				sf = TRUE;
+				if (sa + p->_pBaseStr < p->InvBody[i]._iMinStr)
+					sf = FALSE;
+				if (ma + p->_pBaseMag < p->InvBody[i]._iMinMag)
+					sf = FALSE;
+				if (da + p->_pBaseDex < p->InvBody[i]._iMinDex)
+					sf = FALSE;
+				if (!sf) {
+					changeflag = TRUE;
+					p->InvBody[i]._iStatFlag = FALSE;
+					if (p->InvBody[i]._iIdentified) {
+						sa -= p->InvBody[i]._iPLStr;
+						ma -= p->InvBody[i]._iPLMag;
+						da -= p->InvBody[i]._iPLDex;
 					}
 				}
 			}
-			v8 += 368;
-			--v10;
-		} while (v10);
-	} while (v9);
+		}
+	} while (changeflag);
 }
 
 void CalcPlrItemMin(int pnum)
@@ -1316,35 +1298,26 @@ void GetPlrHandSeed(ItemStruct *h)
 
 void GetGoldSeed(int pnum, ItemStruct *h)
 {
-	int v3;         // edi
-	signed int v4;  // esi
-	int v5;         // eax
-	int i;          // ecx
-	int v7;         // edx
-	ItemStruct *v8; // ecx
+	int i, ii, s;
+	BOOL doneflag;
 
-	v3 = pnum;
 	do {
-		v4 = 1;
-		v5 = GetRndSeed();
-		for (i = 0; i < numitems; ++i) {
-			if (item[itemactive[i]]._iSeed == v5)
-				v4 = 0;
+		doneflag = TRUE;
+		s = GetRndSeed();
+		for (i = 0; i < numitems; i++) {
+			ii = itemactive[i];
+			if (item[ii]._iSeed == s)
+				doneflag = FALSE;
 		}
-		if (v3 == myplr) {
-			v7 = plr[v3]._pNumInv;
-			if (v7 > 0) {
-				v8 = plr[v3].InvList;
-				do {
-					if (v8->_iSeed == v5)
-						v4 = 0;
-					++v8;
-					--v7;
-				} while (v7);
+		if (pnum == myplr) {
+			for (i = 0; i < plr[pnum]._pNumInv; i++) {
+				if (plr[pnum].InvList[i]._iSeed == s)
+					doneflag = FALSE;
 			}
 		}
-	} while (!v4);
-	h->_iSeed = v5;
+	} while (!doneflag);
+
+	h->_iSeed = s;
 }
 
 void SetPlrHandSeed(ItemStruct *h, int iseed)
@@ -1538,87 +1511,40 @@ BOOL GetItemSpace(int x, int y, char inum)
 
 void GetSuperItemSpace(int x, int y, char inum)
 {
-	signed int v4;  // edi
-	signed int v5;  // ebx
-	int v6;         // edx
-	int v7;         // esi
-	int v9;         // eax
-	int v10;        // [esp+Ch] [ebp-10h]
-	int v11;        // [esp+10h] [ebp-Ch]
-	signed int v12; // [esp+14h] [ebp-8h]
-	signed int v13; // [esp+18h] [ebp-4h]
+	int xx, yy;
+	int i, j, k;
 
-	v11 = y;
-	v10 = x;
 	if (!GetItemSpace(x, y, inum)) {
-		v13 = 2;
-		v4 = -2;
-		do {
-			v5 = v4;
-			if (v4 <= v13) {
-				while (2) {
-					v12 = v4;
-					v6 = v5 + v11;
-					v7 = v4 + v10;
-					do {
-						if (ItemSpaceOk(v7, v6)) {
-							v9 = inum;
-							item[v9]._ix = v7;
-							item[v9]._iy = v6;
-							dItem[v7][v6] = inum + 1;
-							return;
-						}
-						++v12;
-						++v7;
-					} while (v12 <= v13);
-					if (++v5 <= v13)
-						continue;
-					break;
+		for (k = 2; k < 50; k++) {
+			for (j = -k; j <= k; j++) {
+				yy = y + j;
+				for (i = -k; i <= k; i++) {
+					xx = i + x;
+					if (ItemSpaceOk(xx, yy)) {
+						item[inum]._ix = xx;
+						item[inum]._iy = yy;
+						dItem[xx][yy] = inum + 1;
+						return;
+					}
 				}
 			}
-			++v13;
-			--v4;
-		} while (v4 > -50);
+		}
 	}
 }
 
 void GetSuperItemLoc(int x, int y, int *xx, int *yy)
 {
-	signed int v4;  // edi
-	signed int v5;  // ebx
-	int v6;         // esi
-	int v8;         // [esp+Ch] [ebp-10h]
-	int v9;         // [esp+10h] [ebp-Ch]
-	signed int v10; // [esp+14h] [ebp-8h]
-	signed int v11; // [esp+18h] [ebp-4h]
+	int i, j, k;
 
-	v9 = y;
-	v8 = x;
-	v11 = 1;
-	v4 = -1;
-	while (1) {
-		v5 = v4;
-		if (v4 <= v11)
-			break;
-	LABEL_7:
-		++v11;
-		if (--v4 <= -50)
-			return;
-	}
-LABEL_3:
-	v10 = v4;
-	*yy = v5 + v9;
-	v6 = v4 + v8;
-	while (1) {
-		*xx = v6;
-		if (ItemSpaceOk(v6, *yy))
-			break;
-		++v10;
-		++v6;
-		if (v10 > v11) {
-			if (++v5 <= v11)
-				goto LABEL_3;
-			goto LABEL_7;
+	for (k = 1; k < 50; k++) {
+		for (j = -k; j <= k; j++) {
+			*yy = y + j;
+			for (i = -k; i <= k; i++) {
+				*xx = i + x;
+				if (ItemSpaceOk(*xx, *yy)) {
+					return;
+				}
+			}
 		}
 	}
 }
