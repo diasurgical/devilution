@@ -2,7 +2,6 @@
 // control
 //////////////////////////////////////////////////
 
-// size: 0x10
 typedef struct RECT32 {
 	int x;
 	int y;
