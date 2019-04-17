@@ -98,6 +98,7 @@ void AddDiabApoca(int mi, int sx, int sy, int dx, int dy, int midir, char mienem
 int AddMissile(int sx, int sy, int dx, int dy, int midir, int mitype, char micaster, int id, int midam, int spllvl);
 int Sentfire(int i, int sx, int sy);
 void MI_Dummy(int i);
+void MI_Dummy2();
 void MI_Golem(int i);
 void MI_SetManashield(int i);
 void MI_LArrow(int i);
