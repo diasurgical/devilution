@@ -7,7 +7,7 @@ extern void *pChrButtons;
 extern BOOL drawhpflag;  // idb
 extern BOOL dropGoldFlag;
 extern int panbtn[8];
-extern int chrbtn[4];
+extern BOOL chrbtn[4];
 extern void *pMultiBtns;
 extern void *pPanelButtons;
 extern void *pChrPanel;
@@ -131,7 +131,7 @@ extern char SpellITbl[MAX_SPELLS];
 extern int PanBtnPos[8][5];
 extern char *PanBtnHotKey[8];
 extern char *PanBtnStr[8];
-extern int attribute_inc_rects[4][4];
+extern RECT32 attribute_inc_rects[4];
 extern int SpellPages[6][7];
 
 #endif /* __CONTROL_H__ */
