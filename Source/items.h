@@ -121,10 +121,10 @@ int ItemNoFlippy();
 void CreateSpellBook(int x, int y, int ispell, BOOLEAN sendmsg, int delta);
 void CreateMagicArmor(int x, int y, int imisc, int icurs, int sendmsg, int delta);
 void CreateMagicWeapon(int x, int y, int imisc, int icurs, int sendmsg, int delta);
-BOOL GetItemRecord(int dwSeed, WORD CI, int indx);
+BOOL GetItemRecord(int nSeed, WORD wCI, int nIndex);
 void NextItemRecord(int i);
-void SetItemRecord(int dwSeed, WORD CI, int indx);
-void PutItemRecord(int seed, WORD ci, int index);
+void SetItemRecord(int nSeed, WORD wCI, int nIndex);
+void PutItemRecord(int nSeed, WORD wCI, int nIndex);
 
 /* rdata */
 
