@@ -915,19 +915,17 @@ void LoadMapObjs(unsigned char *pMap, int startx, int starty)
 
 void AddDiabObjs()
 {
-	unsigned char *v0; // esi
-	unsigned char *v1; // esi
-	unsigned char *v2; // esi
+	unsigned char *lpSetPiece; // esi
 
-	v0 = LoadFileInMem("Levels\\L4Data\\diab1.DUN", 0);
-	LoadMapObjects(v0, 2 * diabquad1x, 2 * diabquad1y, diabquad2x, diabquad2y, 11, 12, 1);
-	mem_free_dbg(v0);
-	v1 = LoadFileInMem("Levels\\L4Data\\diab2a.DUN", 0);
-	LoadMapObjects(v1, 2 * diabquad2x, 2 * diabquad2y, diabquad3x, diabquad3y, 11, 11, 2);
-	mem_free_dbg(v1);
-	v2 = LoadFileInMem("Levels\\L4Data\\diab3a.DUN", 0);
-	LoadMapObjects(v2, 2 * diabquad3x, 2 * diabquad3y, diabquad4x, diabquad4y, 9, 9, 3);
-	mem_free_dbg(v2);
+	lpSetPiece = LoadFileInMem("Levels\\L4Data\\diab1.DUN", 0);
+	LoadMapObjects(lpSetPiece, 2 * diabquad1x, 2 * diabquad1y, diabquad2x, diabquad2y, 11, 12, 1);
+	mem_free_dbg(lpSetPiece);
+	lpSetPiece = LoadFileInMem("Levels\\L4Data\\diab2a.DUN", 0);
+	LoadMapObjects(lpSetPiece, 2 * diabquad2x, 2 * diabquad2y, diabquad3x, diabquad3y, 11, 11, 2);
+	mem_free_dbg(lpSetPiece);
+	lpSetPiece = LoadFileInMem("Levels\\L4Data\\diab3a.DUN", 0);
+	LoadMapObjects(lpSetPiece, 2 * diabquad3x, 2 * diabquad3y, diabquad4x, diabquad4y, 9, 9, 3);
+	mem_free_dbg(lpSetPiece);
 }
 // 5289C4: using guessed type int diabquad1x;
 // 5289C8: using guessed type int diabquad1y;
