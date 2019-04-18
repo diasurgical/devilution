@@ -1368,11 +1368,15 @@ void CreatePlrItems(int p)
 		SetPlrHandItem(&plr[p].InvBody[INVLOC_HAND_RIGHT], IDI_WARRSHLD);
 		GetPlrHandSeed(&plr[p].InvBody[INVLOC_HAND_RIGHT]);
 
-		// TODO: Add debug logic from 1.00 here
-
-		SetPlrHandItem(&plr[p].HoldItem, IDI_WARRCLUB);
-		GetPlrHandSeed(&plr[p].HoldItem);
-		AutoPlace(p, 0, 1, 3, 1);
+#ifdef _DEBUG
+		if(!debug_mode_key_w) {
+#endif
+			SetPlrHandItem(&plr[p].HoldItem, IDI_WARRCLUB);
+			GetPlrHandSeed(&plr[p].HoldItem);
+			AutoPlace(p, 0, 1, 3, TRUE);
+#ifdef _DEBUG
+		}
+#endif
 
 		SetPlrHandItem(&plr[p].SpdList[0], IDI_HEAL);
 		GetPlrHandSeed(&plr[p].SpdList[0]);
@@ -1405,14 +1409,26 @@ void CreatePlrItems(int p)
 	SetPlrHandItem(&plr[p].HoldItem, IDI_GOLD);
 	GetPlrHandSeed(&plr[p].HoldItem);
 
-	// TODO: Add debug logic from 1.00 here
-
-	plr[p].HoldItem._iCurs = CURSOR_RECHARGE;
-	plr[p].HoldItem._ivalue = 100;
-	plr[p]._pGold = 100;
-
-	plr[p].InvList[plr[p]._pNumInv++] = plr[p].HoldItem;
-	plr[p].InvGrid[30] = plr[p]._pNumInv;
+#ifdef _DEBUG
+	if(!debug_mode_key_w) {
+#endif
+		plr[p].HoldItem._ivalue = 100;
+		plr[p].HoldItem._iCurs = ICURS_GOLD_SMALL;
+		plr[p]._pGold = plr[p].HoldItem._ivalue;
+		plr[p].InvList[plr[p]._pNumInv++] = plr[p].HoldItem;
+		plr[p].InvGrid[30] = plr[p]._pNumInv;
+#ifdef _DEBUG
+	} else {
+		plr[p].HoldItem._ivalue = 5000;
+		plr[p].HoldItem._iCurs = ICURS_GOLD_LARGE;
+		plr[p]._pGold = plr[p].HoldItem._ivalue * 40;
+		for(i = 0; i < 40; i++) {
+			GetPlrHandSeed(&plr[p].HoldItem);
+			plr[p].InvList[plr[p]._pNumInv++] = plr[p].HoldItem;
+			plr[p].InvGrid[i] = plr[p]._pNumInv;
+		}
+	}
+#endif
 
 	CalcPlrItemVals(p, FALSE);
 }
@@ -4712,113 +4728,70 @@ void CreateMagicWeapon(int x, int y, int imisc, int icurs, int sendmsg, int delt
 	}
 }
 
-BOOL GetItemRecord(int dwSeed, WORD CI, int indx)
+BOOL GetItemRecord(int nSeed, WORD wCI, int nIndex)
 {
-	int v3;                   // edi
-	int *v4;                  // ebx
-	int v6;                   // [esp+Ch] [ebp-18h]
-	DWORD v7;                 // [esp+10h] [ebp-14h]
-	int *v8;                  // [esp+14h] [ebp-10h]
-	unsigned short *v9;       // [esp+18h] [ebp-Ch]
-	ItemGetRecordStruct *v10; // [esp+1Ch] [ebp-8h]
-	short v11;                // [esp+20h] [ebp-4h]
+	int i;
+	DWORD dwTicks;
 
-	v11 = CI;
-	v6 = dwSeed;
-	v3 = 0;
-	v7 = GetTickCount();
-	if (gnNumGetRecords <= 0)
-		return 1;
-	v8 = &itemrecord[0].nIndex;
-	v9 = &itemrecord[0].wCI;
-	v10 = itemrecord;
-	v4 = &itemrecord[0].dwTimestamp;
-	while (v7 - *v4 > 6000) {
-		NextItemRecord(v3);
-		--v10;
-		v9 -= 8;
-		--v3;
-		v4 -= 4;
-		v8 -= 4;
-	LABEL_8:
-		++v10;
-		v9 += 8;
-		v8 += 4;
-		++v3;
-		v4 += 4;
-		if (v3 >= gnNumGetRecords)
-			return 1;
+	dwTicks = GetTickCount();
+
+	for(i = 0; i < gnNumGetRecords; i++) {
+		if(dwTicks - itemrecord[i].dwTimestamp > 6000) {
+			NextItemRecord(i);
+			i--;
+		} else if(nSeed == itemrecord[i].nSeed && wCI == itemrecord[i].wCI && nIndex == itemrecord[i].nIndex) {
+			return FALSE;
+		}
 	}
-	if (v6 != v10->nSeed || v11 != *v9 || indx != *v8)
-		goto LABEL_8;
-	return 0;
+
+	return TRUE;
 }
 
 void NextItemRecord(int i)
 {
-	int v1; // eax
+	gnNumGetRecords--;
 
-	v1 = gnNumGetRecords-- - 1;
-	if (gnNumGetRecords) {
-		itemrecord[i].nIndex = itemrecord[v1].nIndex;
-		itemrecord[i].nSeed = itemrecord[v1].nSeed;
-		itemrecord[i].wCI = itemrecord[v1].wCI;
-		itemrecord[i].dwTimestamp = itemrecord[v1].dwTimestamp;
+	if(gnNumGetRecords == 0) {
+		return;
 	}
+
+	itemrecord[i].dwTimestamp = itemrecord[gnNumGetRecords].dwTimestamp;
+	itemrecord[i].nSeed = itemrecord[gnNumGetRecords].nSeed;
+	itemrecord[i].wCI = itemrecord[gnNumGetRecords].wCI;
+	itemrecord[i].nIndex = itemrecord[gnNumGetRecords].nIndex;
 }
 
-void SetItemRecord(int dwSeed, WORD CI, int indx)
+void SetItemRecord(int nSeed, WORD wCI, int nIndex)
 {
-	int i; // ecx
+	DWORD dwTicks;
 
-	if (gnNumGetRecords != MAXITEMS) {
-		i = gnNumGetRecords++;
-		itemrecord[i].dwTimestamp = GetTickCount();
-		itemrecord[i].nSeed = dwSeed;
-		itemrecord[i].wCI = CI;
-		itemrecord[i].nIndex = indx;
+	dwTicks = GetTickCount();
+
+	if(gnNumGetRecords == MAXITEMS) {
+		return;
 	}
+
+	itemrecord[gnNumGetRecords].dwTimestamp = dwTicks;
+	itemrecord[gnNumGetRecords].nSeed = nSeed;
+	itemrecord[gnNumGetRecords].wCI = wCI;
+	itemrecord[gnNumGetRecords].nIndex = nIndex;
+	gnNumGetRecords++;
 }
 
-void PutItemRecord(int seed, WORD ci, int index)
+void PutItemRecord(int nSeed, WORD wCI, int nIndex)
 {
-	int v3;                  // edi
-	int *v4;                 // ebx
-	int v5;                  // [esp+Ch] [ebp-18h]
-	DWORD v6;                // [esp+10h] [ebp-14h]
-	int *v7;                 // [esp+14h] [ebp-10h]
-	unsigned short *v8;      // [esp+18h] [ebp-Ch]
-	ItemGetRecordStruct *v9; // [esp+1Ch] [ebp-8h]
-	short v10;               // [esp+20h] [ebp-4h]
+	int i;
+	DWORD dwTicks;
 
-	v10 = ci;
-	v5 = seed;
-	v3 = 0;
-	v6 = GetTickCount();
-	if (gnNumGetRecords > 0) {
-		v7 = &itemrecord[0].nIndex;
-		v8 = &itemrecord[0].wCI;
-		v9 = itemrecord;
-		v4 = &itemrecord[0].dwTimestamp;
-		do {
-			if (v6 - *v4 <= 6000) {
-				if (v5 == v9->nSeed && v10 == *v8 && index == *v7) {
-					NextItemRecord(v3);
-					return;
-				}
-			} else {
-				NextItemRecord(v3);
-				--v9;
-				v8 -= 8;
-				--v3;
-				v4 -= 4;
-				v7 -= 4;
-			}
-			++v9;
-			v8 += 8;
-			v7 += 4;
-			++v3;
-			v4 += 4;
-		} while (v3 < gnNumGetRecords);
+	dwTicks = GetTickCount();
+
+	for(i = 0; i < gnNumGetRecords; i++) {
+		if(dwTicks - itemrecord[i].dwTimestamp > 6000) {
+			NextItemRecord(i);
+			i--;
+		} else if(nSeed == itemrecord[i].nSeed && wCI == itemrecord[i].wCI && nIndex == itemrecord[i].nIndex) {
+			NextItemRecord(i);
+			break;
+		}
 	}
 }

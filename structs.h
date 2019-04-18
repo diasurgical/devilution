@@ -87,7 +87,7 @@ typedef struct ItemGetRecordStruct {
 	int nSeed;
 	unsigned short wCI;
 	int nIndex;
-	int dwTimestamp;
+	unsigned int dwTimestamp;
 } ItemGetRecordStruct;
 
 typedef struct ItemStruct {
