@@ -932,44 +932,34 @@ void AddDiabObjs()
 
 void AddStoryBooks()
 {
-	int v0;        // esi
-	int v1;        // edi
-	signed int v2; // ebx
-	int v3;        // edx
-	int v4;        // esi
-	int y;         // [esp+Ch] [ebp-Ch]
-	int v6;        // [esp+10h] [ebp-8h]
-	signed int v7; // [esp+14h] [ebp-4h]
+	int xp, yp, xx, yy;
+	int cnt;
+	BOOL done;
 
-	v6 = 0;
-	while (1) {
-		y = 1;
-		v0 = random(139, 80) + 16;
-		v1 = random(139, 80) + 16;
-		v2 = -2;
-		do {
-			v7 = -3;
-			v3 = v2 + v1;
-			do {
-				if (!RndLocOk(v7 + v0, v3))
-					y = 0;
-				++v7;
-			} while (v7 <= 3);
-			++v2;
-		} while (v2 <= 2);
-		if (y)
+	cnt = 0;
+	while (TRUE) {
+		done = TRUE;
+		xp = random(139, 80) + 16;
+		yp = random(139, 80) + 16;
+		for (yy = -2; yy <= 2; yy++) {
+			for (xx =-3; xx <= 3; xx++) {
+				if (!RndLocOk(xx + xp, yy + yp))
+					done = FALSE;
+			}
+		}
+		if (done)
 			break;
-		if (++v6 > 20000)
+		cnt++;
+		if (cnt > 20000)
 			return;
 	}
-	AddObject(OBJ_STORYBOOK, v0, v1);
-	AddObject(OBJ_STORYCANDLE, v0 - 2, v1 + 1);
-	AddObject(OBJ_STORYCANDLE, v0 - 2, v1);
-	AddObject(OBJ_STORYCANDLE, v0 - 1, v1 - 1);
-	AddObject(OBJ_STORYCANDLE, v0 + 1, v1 - 1);
-	v4 = v0 + 2;
-	AddObject(OBJ_STORYCANDLE, v4, v1);
-	AddObject(OBJ_STORYCANDLE, v4, v1 + 1);
+	AddObject(OBJ_STORYBOOK, xp, yp);
+	AddObject(OBJ_STORYCANDLE, xp - 2, yp + 1);
+	AddObject(OBJ_STORYCANDLE, xp - 2, yp);
+	AddObject(OBJ_STORYCANDLE, xp - 1, yp - 1);
+	AddObject(OBJ_STORYCANDLE, xp + 1, yp - 1);
+	AddObject(OBJ_STORYCANDLE, xp + 2, yp);
+	AddObject(OBJ_STORYCANDLE, xp + 2, yp + 1);
 }
 
 void AddHookedBodies(int freq)
