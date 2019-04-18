@@ -518,7 +518,7 @@ BOOL AutoPlace(int pnum, int ii, int sx, int sy, BOOL saveflag)
 	return done;
 }
 
-BOOL SpecialAutoPlace(int pnum, int ii, int sx, int sy, int saveflag)
+BOOL SpecialAutoPlace(int pnum, int ii, int sx, int sy, BOOL saveflag)
 {
 	int i, j, xx, yy;
 	BOOL done;
@@ -1990,240 +1990,169 @@ int InvPutItem(int pnum, int x, int y)
 
 int SyncPutItem(int pnum, int x, int y, int idx, WORD icreateinfo, int iseed, int Id, int dur, int mdur, int ch, int mch, int ivalue, unsigned int ibuff)
 {
-	int v13;        // ebx
-	int v14;        // edi
-	int v15;        // esi
-	int v17;        // edi
-	int v18;        // ecx
-	int v19;        // edi
-	int v20;        // eax
-	int v21;        // eax
-	int v22;        // eax
-	int v23;        // edx
-	int v25;        // ecx
-	int *v26;       // edx
-	int v27;        // eax
-	int v28;        // eax
-	int v29;        // [esp+Ch] [ebp-18h]
-	int v30;        // [esp+Ch] [ebp-18h]
-	signed int v31; // [esp+10h] [ebp-14h]
-	int v32;        // [esp+14h] [ebp-10h]
-	int v33;        // [esp+18h] [ebp-Ch]
-	int o1;         // [esp+1Ch] [ebp-8h]
-	signed int v35; // [esp+20h] [ebp-4h]
-	int i;          // [esp+2Ch] [ebp+8h]
-	int ia;         // [esp+2Ch] [ebp+8h]
-	int ib;         // [esp+2Ch] [ebp+8h]
-	int ic;         // [esp+2Ch] [ebp+8h]
+	BOOL done;
+	int d, ii;
+	int i, j, l;
+	int xx, yy;
 
-	v13 = x;
-	v14 = pnum;
 	if (numitems >= 127)
 		return -1;
-	v15 = y;
+
 	if (FindGetItem(idx, icreateinfo, iseed) != -1) {
 		DrawInvMsg("A duplicate item has been detected from another player.");
-		SyncGetItem(v13, y, idx, icreateinfo, iseed);
+		SyncGetItem(x, y, idx, icreateinfo, iseed);
 	}
-	v17 = v14;
-	i = GetDirection(plr[v17].WorldX, plr[v17].WorldY, v13, y);
-	v29 = v15 - plr[v17].WorldY;
-	if (abs(v13 - plr[v17].WorldX) > 1 || abs(v29) > 1) {
-		v13 = plr[v17].WorldX + offset_x[i];
-		v15 = plr[v17].WorldY + offset_y[i];
+
+	d = GetDirection(plr[pnum].WorldX, plr[pnum].WorldY, x, y);
+	xx = x - plr[pnum].WorldX;
+	yy = y - plr[pnum].WorldY;
+	if (abs(xx) > 1 || abs(yy) > 1) {
+		x = plr[pnum].WorldX + offset_x[d];
+		y = plr[pnum].WorldY + offset_y[d];
 	}
-	if (!CanPut(v13, v15)) {
-		v18 = plr[v17].WorldX;
-		v19 = plr[v17].WorldY;
-		v20 = ((_BYTE)i - 1) & 7;
-		v30 = v18;
-		ia = v20;
-		v20 *= 4;
-		v13 = v18 + *(int *)((char *)offset_x + v20);
-		v15 = v19 + *(int *)((char *)offset_y + v20);
-		if (!CanPut(v18 + *(int *)((char *)offset_x + v20), v19 + *(int *)((char *)offset_y + v20))) {
-			v21 = ((_BYTE)ia + 2) & 7;
-			v13 = v30 + offset_x[v21];
-			v15 = v19 + offset_y[v21];
-			if (!CanPut(v30 + offset_x[v21], v19 + offset_y[v21])) {
-				v35 = 0;
-				v22 = -1;
-				ib = 1;
-				v31 = -1;
-				while (!v35) {
-					v33 = v22;
-					while (v22 <= ib && !v35) {
-						v23 = v19 + v33;
-						v32 = v31;
-						o1 = v30 + v31;
-						do {
-							if (v35)
-								break;
-							if (CanPut(o1, v23)) {
-								v13 = o1;
-								v35 = 1;
-								v15 = v23;
+	if (!CanPut(x, y)) {
+		d = (d - 1) & 7;
+		x = plr[pnum].WorldX + offset_x[d];
+		y = plr[pnum].WorldY + offset_y[d];
+		if (!CanPut(x, y)) {
+			d = (d + 2) & 7;
+			x = plr[pnum].WorldX + offset_x[d];
+			y = plr[pnum].WorldY + offset_y[d];
+			if (!CanPut(x, y)) {
+				done = FALSE;
+				for (l = 1; l < 50 && !done; l++) {
+					for (j = -l; j <= l && !done; j++) {
+						yy = j + plr[pnum].WorldY;
+						for (i = -l; i <= l && !done; i++) {
+							xx = i + plr[pnum].WorldX;
+							if (CanPut(xx, yy)) {
+								done = TRUE;
+								x = xx;
+								y = yy;
 							}
-							++v32;
-							++o1;
-						} while (v32 <= ib);
-						v22 = ++v33;
-					}
-					++ib;
-					v22 = v31-- - 1;
-					if (v31 <= -50) {
-						if (v35)
-							break;
-						return -1;
+						}
 					}
 				}
+				if (!done)
+					return -1;
 			}
 		}
 	}
-	CanPut(v13, v15);
-	v25 = itemavail[0];
-	ic = itemavail[0];
-	dItem[v13][v15] = _LOBYTE(itemavail[0]) + 1;
-	v26 = &itemavail[MAXITEMS - numitems - 1];
-	itemactive[numitems] = v25;
-	itemavail[0] = *v26;
+
+	CanPut(x, y);
+
+	ii = itemavail[0];
+	dItem[x][y] = ii + 1;
+	itemavail[0] = itemavail[MAXITEMS - (numitems + 1)];
+	itemactive[numitems] = ii;
+
 	if (idx == IDI_EAR) {
-		RecreateEar(v25, icreateinfo, iseed, Id, dur, mdur, ch, mch, ivalue, ibuff);
+		RecreateEar(ii, icreateinfo, iseed, Id, dur, mdur, ch, mch, ivalue, ibuff);
 	} else {
-		RecreateItem(v25, idx, icreateinfo, iseed, ivalue);
+		RecreateItem(ii, idx, icreateinfo, iseed, ivalue);
 		if (Id)
-			item[ic]._iIdentified = TRUE;
-		v27 = ic;
-		item[v27]._iDurability = dur;
-		item[v27]._iMaxDur = mdur;
-		item[v27]._iCharges = ch;
-		item[v27]._iMaxCharges = mch;
+			item[ii]._iIdentified = TRUE;
+		item[ii]._iDurability = dur;
+		item[ii]._iMaxDur = mdur;
+		item[ii]._iCharges = ch;
+		item[ii]._iMaxCharges = mch;
 	}
-	v28 = ic;
-	item[v28]._ix = v13;
-	item[v28]._iy = v15;
-	RespawnItem(ic, 1);
-	++numitems;
-	return ic;
+
+	item[ii]._ix = x;
+	item[ii]._iy = y;
+	RespawnItem(ii, 1);
+	numitems++;
+	return ii;
 }
 
-int CheckInvHLight()
+char CheckInvHLight()
 {
-	signed int v0;    // ebx
-	int result;       // eax
-	ItemStruct *v2;   // edi
-	PlayerStruct *v3; // esi
-	int v4;           // eax
-	int v5;           // ebx
-	int v6;           // edi
-	char *v7;         // eax
-	char v9;          // [esp+Fh] [ebp-1h]
+	int r, ii, nGold;
+	ItemStruct *pi;
+	PlayerStruct *p;
+	char rv;
 
-	v0 = 0;
-	do {
-		result = InvRect[v0].X;
-		if (MouseX >= result) {
-			result += 29;
-			if (MouseX < result) {
-				result = InvRect[v0].Y;
-				if (MouseY >= result - 29 && MouseY < result)
-					break;
-			}
+	for (r = 0; (DWORD)r < 73; r++) {
+		if (MouseX >= InvRect[r].X
+		    && MouseX < InvRect[r].X + 29
+		    && MouseY >= InvRect[r].Y - 29
+		    && MouseY < InvRect[r].Y) {
+			break;
 		}
-		++v0;
-	} while ((unsigned int)v0 < 0x49);
-	if ((unsigned int)v0 >= 0x49)
-		goto LABEL_37;
-	v9 = -1;
+	}
+
+	if ((DWORD)r >= 73)
+		return -1;
+
+	rv = -1;
 	infoclr = COL_WHITE;
-	v2 = 0;
-	v3 = &plr[myplr];
+	pi = NULL;
+	p = &plr[myplr];
 	ClearPanel();
-	if (v0 >= 0 && v0 <= 3) {
-		v9 = 0;
-		v2 = v3->InvBody;
-		goto LABEL_36;
-	}
-	switch (v0) {
-	case 4:
-		v9 = 1;
-		v2 = &v3->InvBody[INVLOC_RING_LEFT];
-		goto LABEL_36;
-	case 5:
-		v9 = 2;
-		v2 = &v3->InvBody[INVLOC_RING_RIGHT];
-		goto LABEL_36;
-	case 6:
-		v9 = 3;
-		v2 = &v3->InvBody[INVLOC_AMULET];
-		goto LABEL_36;
-	}
-	if (v0 >= 7 && v0 <= 12) {
-		v9 = 4;
-		v2 = &v3->InvBody[INVLOC_HAND_LEFT];
-		goto LABEL_36;
-	}
-	if (v0 < 13 || v0 > 18) {
-		if (v0 >= 19 && v0 <= 24) {
-			v9 = 6;
-			v2 = &v3->InvBody[INVLOC_CHEST];
-			goto LABEL_36;
-		}
-		if (v0 < 25 || v0 > 64) {
-			if (v0 < 65)
-				goto LABEL_36;
-			v5 = v0 - 65;
-			drawsbarflag = TRUE;
-			result = 368 * v5;
-			v2 = &v3->SpdList[v5];
-			if (v3->SpdList[v5]._itype != ITYPE_NONE) {
-				v9 = v5 + 47;
-				goto LABEL_36;
-			}
+	if (r >= 0 && r <= 3) {
+		rv = INVLOC_HEAD;
+		pi = &p->InvBody[rv];
+	} else if (r == 4) {
+		rv = INVLOC_RING_LEFT;
+		pi = &p->InvBody[rv];
+	} else if (r == 5) {
+		rv = INVLOC_RING_RIGHT;
+		pi = &p->InvBody[rv];
+	} else if (r == 6) {
+		rv = INVLOC_AMULET;
+		pi = &p->InvBody[rv];
+	} else if (r >= 7 && r <= 12) {
+		rv = INVLOC_HAND_LEFT;
+		pi = &p->InvBody[rv];
+	} else if (r >= 13 && r <= 18) {
+		pi = &p->InvBody[INVLOC_HAND_LEFT];
+		if (pi->_itype == ITYPE_NONE || pi->_iLoc != ILOC_TWOHAND) {
+			rv = INVLOC_HAND_RIGHT;
+			pi = &p->InvBody[rv];
 		} else {
-			result = abs(v3->InvGrid[v0 - 25]); // abs(*((char *)&v3->InvList[39]._iVAdd2 + v0 + 3)); /* find right address */
-			if (result) {
-				v4 = result - 1;
-				v9 = v4 + 7;
-				v2 = &v3->InvList[v4];
-				goto LABEL_36;
-			}
+			rv = INVLOC_HAND_LEFT;
 		}
-	LABEL_37:
-		_LOBYTE(result) = -1;
-		return result;
+	} else if (r >= 19 && r <= 24) {
+		rv = INVLOC_CHEST;
+		pi = &p->InvBody[rv];
+	} else if (r >= 25 && r <= 64) {
+		r = abs(p->InvGrid[r - 25]);
+		if (!r)
+			return -1;
+		ii = r - 1;
+		rv = ii + 7;
+		pi = &p->InvList[ii];
+	} else if (r >= 65) {
+		r -= 65;
+		drawsbarflag = TRUE;
+		pi = &p->SpdList[r];
+		if (pi->_itype == ITYPE_NONE)
+			return -1;
+		rv = r + 47;
 	}
-	v2 = &v3->InvBody[INVLOC_HAND_LEFT];
-	if (v3->InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_NONE || v3->InvBody[INVLOC_HAND_LEFT]._iLoc != 2) {
-		v9 = 5;
-		v2 = &v3->InvBody[INVLOC_HAND_RIGHT];
+
+	if (pi->_itype == ITYPE_NONE)
+		return -1;
+
+	if (pi->_itype == ITYPE_GOLD) {
+		nGold = pi->_ivalue;
+		sprintf(infostr, "%i gold %s", nGold, get_pieces_str(nGold));
 	} else {
-		v9 = 4;
-	}
-LABEL_36:
-	result = v2->_itype;
-	if (result == ITYPE_NONE)
-		goto LABEL_37;
-	if (result == ITYPE_GOLD) {
-		v6 = v2->_ivalue;
-		v7 = get_pieces_str(v6);
-		result = sprintf(infostr, "%i gold %s", v6, v7);
-	} else {
-		if (v2->_iMagical == ITEM_QUALITY_MAGIC) {
+		if (pi->_iMagical == ITEM_QUALITY_MAGIC) {
 			infoclr = COL_BLUE;
-		} else if (v2->_iMagical == ITEM_QUALITY_UNIQUE) {
+		} else if (pi->_iMagical == ITEM_QUALITY_UNIQUE) {
 			infoclr = COL_GOLD;
 		}
-		strcpy(infostr, v2->_iName);
-		if (v2->_iIdentified) {
-			strcpy(infostr, v2->_iIName);
-			PrintItemDetails(v2);
+		strcpy(infostr, pi->_iName);
+		if (pi->_iIdentified) {
+			strcpy(infostr, pi->_iIName);
+			PrintItemDetails(pi);
 		} else {
-			PrintItemDur(v2);
+			PrintItemDur(pi);
 		}
 	}
-	_LOBYTE(result) = v9;
-	return result;
+
+	return rv;
 }
 // 4B883C: using guessed type int infoclr;
 
