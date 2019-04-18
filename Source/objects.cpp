@@ -3243,74 +3243,45 @@ void OperateSChambBk(int pnum, int i)
 
 void OperateChest(int pnum, int i, unsigned char sendmsg)
 {
-	int v3;         // esi
-	BOOLEAN v4;     // zf
-	int v5;         // edi
-	int v6;         // eax
-	int v7;         // eax
-	int v8;         // ecx
-	int v9;         // ecx
-	int v10;        // ecx
-	signed int v11; // [esp-8h] [ebp-18h]
-	short param2;   // [esp+8h] [ebp-8h]
-	int param1;     // [esp+Ch] [ebp-4h]
+	int j, mdir, mtype;
 
-	param2 = i;
-	v3 = i;
-	param1 = pnum;
 	if (object[i]._oSelFlag) {
 		if (!deltaload)
-			PlaySfxLoc(IS_CHEST, object[v3]._ox, object[v3]._oy);
-		object[v3]._oAnimFrame += 2;
-		v4 = deltaload == 0;
-		object[v3]._oSelFlag = 0;
-		if (v4) {
-			SetRndSeed(object[v3]._oRndSeed);
-			v5 = 0;
+			PlaySfxLoc(IS_CHEST, object[i]._ox, object[i]._oy);
+		object[i]._oAnimFrame += 2;
+		object[i]._oSelFlag = 0;
+		if (!deltaload) {
+			SetRndSeed(object[i]._oRndSeed);
 			if (setlevel) {
-				if (object[v3]._oVar1 > 0) {
-					do {
-						CreateRndItem(object[v3]._ox, object[v3]._oy, 1u, sendmsg, 0);
-						++v5;
-					} while (v5 < object[v3]._oVar1);
+				for (j = 0; j < object[i]._oVar1; j++) {
+					CreateRndItem(object[i]._ox, object[i]._oy, 1u, sendmsg, 0);
 				}
-			} else if (object[v3]._oVar1 > 0) {
-				do {
-					if (object[v3]._oVar2)
-						CreateRndItem(object[v3]._ox, object[v3]._oy, 0, sendmsg, 0);
-					else
-						CreateRndUseful(param1, object[v3]._ox, object[v3]._oy, sendmsg);
-					++v5;
-				} while (v5 < object[v3]._oVar1);
-			}
-			if (!object[v3]._oTrapFlag)
-				goto LABEL_26;
-			v6 = object[v3]._otype;
-			if (v6 < OBJ_TCHEST1 || v6 > OBJ_TCHEST3)
-				goto LABEL_26;
-			v7 = GetDirection(object[v3]._ox, object[v3]._oy, plr[param1].WorldX, plr[param1].WorldY);
-			v8 = object[v3]._oVar4;
-			if (v8) {
-				v9 = v8 - 1;
-				if (v9) {
-					if (v9 != 1) {
-						v10 = sendmsg;
-						goto LABEL_25;
-					}
-					v11 = MIS_NOVA;
-				} else {
-					v11 = MIS_FARROW;
-				}
-				v10 = v11;
 			} else {
-				v10 = MIS_ARROW;
+				for (j = 0; j < object[i]._oVar1; j++) {
+					if (object[i]._oVar2)
+						CreateRndItem(object[i]._ox, object[i]._oy, 0, sendmsg, 0);
+					else
+						CreateRndUseful(pnum, object[i]._ox, object[i]._oy, sendmsg);
+				}
 			}
-		LABEL_25:
-			AddMissile(object[v3]._ox, object[v3]._oy, plr[param1].WorldX, plr[param1].WorldY, v7, v10, 1, -1, 0, 0);
-			object[v3]._oTrapFlag = FALSE;
-		LABEL_26:
-			if (param1 == myplr)
-				NetSendCmdParam2(FALSE, CMD_PLROPOBJ, param1, param2);
+			if (object[i]._oTrapFlag && object[i]._otype >= OBJ_TCHEST1 && object[i]._otype <= OBJ_TCHEST3) {
+				mdir = GetDirection(object[i]._ox, object[i]._oy, plr[pnum].WorldX, plr[pnum].WorldY);
+				switch (object[i]._oVar4) {
+				case 0:
+					mtype = MIS_ARROW;
+					break;
+				case 1:
+					mtype=MIS_FARROW;
+					break;
+				case 2:
+					mtype = MIS_NOVA;
+					break;
+				}
+				AddMissile(object[i]._ox, object[i]._oy, plr[pnum].WorldX, plr[pnum].WorldY, mdir, mtype, 1, -1, 0, 0);
+				object[i]._oTrapFlag = FALSE;
+			}
+			if (pnum == myplr)
+				NetSendCmdParam2(FALSE, CMD_PLROPOBJ, pnum, i);
 			return;
 		}
 	}
