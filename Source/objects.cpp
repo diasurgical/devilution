@@ -1058,19 +1058,8 @@ void AddLazStand()
 
 void InitObjects()
 {
-	//int v1; // eax
-	//int v2; // eax
-	//int v3; // eax
-	//int v4; // eax
-	//int v5; // eax
-	//int v6; // eax
-	signed int v8;     // ebx
-	unsigned char *v9; // esi
-	//int v10; // eax
-	//int v12; // eax
-	unsigned char *v14; // esi
-	//int v15; // eax
-	//int v16; // [esp+0h] [ebp-4h]
+	int sp_id;
+	unsigned char *mem;
 
 	ClrAllObjects();
 	if (currlevel == 16) {
@@ -1089,13 +1078,10 @@ void InitObjects()
 		if (currlevel == 12)
 			AddStoryBooks();
 		if (leveltype == DTYPE_CATHEDRAL) {
-			//_LOBYTE(v1) = QuestStatus(QTYPE_BUTCH);
 			if (QuestStatus(QTYPE_BUTCH))
 				AddTortures();
-			//_LOBYTE(v2) = QuestStatus(QTYPE_PW);
 			if (QuestStatus(QTYPE_PW))
 				AddCandles();
-			//_LOBYTE(v3) = QuestStatus(QTYPE_BOL);
 			if (QuestStatus(QTYPE_BOL))
 				AddObject(OBJ_SIGNCHEST, 2 * setpc_x + 26, 2 * setpc_y + 19);
 			InitRndLocBigObj(10, 15, OBJ_SARC);
@@ -1103,40 +1089,36 @@ void InitObjects()
 			InitRndBarrels();
 		}
 		if (leveltype == DTYPE_CATACOMBS) {
-			//_LOBYTE(v4) = QuestStatus(QTYPE_INFRA);
 			if (QuestStatus(QTYPE_INFRA))
 				InitRndLocObj5x5(1, 1, OBJ_STAND);
-			//_LOBYTE(v5) = QuestStatus(QTYPE_BONE);
 			if (QuestStatus(QTYPE_BONE))
 				InitRndLocObj5x5(1, 1, OBJ_BOOK2R);
 			AddL2Objs(0, 0, MAXDUNX, MAXDUNY);
 			AddL2Torches();
-			//_LOBYTE(v6) = QuestStatus(QTYPE_BLIND);
 			if (QuestStatus(QTYPE_BLIND)) {
 				if (plr[myplr]._pClass == PC_WARRIOR) {
-					v8 = QUEST_BLINDING;
+					sp_id = QUEST_BLINDING;
 				} else if (plr[myplr]._pClass == PC_ROGUE) {
-					v8 = QUEST_RBLINDING;
+					sp_id = QUEST_RBLINDING;
 				} else if (plr[myplr]._pClass == PC_SORCERER) {
-					v8 = QUEST_MBLINDING;
+					sp_id = QUEST_MBLINDING;
 				}
-				quests[QTYPE_BLIND]._qmsg = v8;
-				AddBookLever(0, 0, MAXDUNX, MAXDUNY, setpc_x, setpc_y, setpc_w + setpc_x + 1, setpc_h + setpc_y + 1, v8);
-				v9 = LoadFileInMem("Levels\\L2Data\\Blind2.DUN", 0);
-				LoadMapObjs(v9, 2 * setpc_x, 2 * setpc_y);
-				mem_free_dbg(v9);
+				quests[QTYPE_BLIND]._qmsg = sp_id;
+				AddBookLever(0, 0, MAXDUNX, MAXDUNY, setpc_x, setpc_y, setpc_w + setpc_x + 1, setpc_h + setpc_y + 1, sp_id);
+				mem = LoadFileInMem("Levels\\L2Data\\Blind2.DUN", 0);
+				LoadMapObjs(mem, 2 * setpc_x, 2 * setpc_y);
+				mem_free_dbg(mem);
 			}
-			//_LOBYTE(v10) = QuestStatus(QTYPE_BLOOD);
 			if (QuestStatus(QTYPE_BLOOD)) {
 				if (plr[myplr]._pClass == PC_WARRIOR) {
-					v8 = QUEST_BLOODY;
+					sp_id = QUEST_BLOODY;
 				} else if (plr[myplr]._pClass == PC_ROGUE) {
-					v8 = QUEST_RBLOODY;
+					sp_id = QUEST_RBLOODY;
 				} else if (plr[myplr]._pClass == PC_SORCERER) {
-					v8 = QUEST_MBLOODY;
+					sp_id = QUEST_MBLOODY;
 				}
-				quests[QTYPE_BLOOD]._qmsg = v8;
-				AddBookLever(0, 0, MAXDUNX, MAXDUNY, setpc_x, setpc_y + 3, setpc_x + 2, setpc_y + 7, v8);
+				quests[QTYPE_BLOOD]._qmsg = sp_id;
+				AddBookLever(0, 0, MAXDUNX, MAXDUNY, setpc_x, setpc_y + 3, setpc_x + 2, setpc_y + 7, sp_id);
 				AddObject(OBJ_PEDISTAL, 2 * setpc_x + 25, 2 * setpc_y + 32);
 			}
 			InitRndBarrels();
@@ -1146,22 +1128,20 @@ void InitObjects()
 			InitRndBarrels();
 		}
 		if (leveltype == DTYPE_HELL) {
-			//_LOBYTE(v12) = QuestStatus(QTYPE_WARLRD);
 			if (QuestStatus(QTYPE_WARLRD)) {
 				if (plr[myplr]._pClass == PC_WARRIOR) {
-					v8 = QUEST_BLOODWAR;
+					sp_id = QUEST_BLOODWAR;
 				} else if (plr[myplr]._pClass == PC_ROGUE) {
-					v8 = QUEST_RBLOODWAR;
+					sp_id = QUEST_RBLOODWAR;
 				} else if (plr[myplr]._pClass == PC_SORCERER) {
-					v8 = QUEST_MBLOODWAR;
+					sp_id = QUEST_MBLOODWAR;
 				}
-				quests[QTYPE_WARLRD]._qmsg = v8;
-				AddBookLever(0, 0, MAXDUNX, MAXDUNY, setpc_x, setpc_y, setpc_x + setpc_w, setpc_y + setpc_h, v8);
-				v14 = LoadFileInMem("Levels\\L4Data\\Warlord.DUN", 0);
-				LoadMapObjs(v14, 2 * setpc_x, 2 * setpc_y);
-				mem_free_dbg(v14);
+				quests[QTYPE_WARLRD]._qmsg = sp_id;
+				AddBookLever(0, 0, MAXDUNX, MAXDUNY, setpc_x, setpc_y, setpc_x + setpc_w, setpc_y + setpc_h, sp_id);
+				mem = LoadFileInMem("Levels\\L4Data\\Warlord.DUN", 0);
+				LoadMapObjs(mem, 2 * setpc_x, 2 * setpc_y);
+				mem_free_dbg(mem);
 			}
-			//_LOBYTE(v15) = QuestStatus(QTYPE_VB);
 			if (QuestStatus(QTYPE_VB) && gbMaxPlayers == 1)
 				AddLazStand();
 			InitRndBarrels();
