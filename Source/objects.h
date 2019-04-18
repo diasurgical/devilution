@@ -119,7 +119,7 @@ void OperateShrine(int pnum, int i, int sType);
 void OperateSkelBook(int pnum, int i, BOOL sendmsg);
 void OperateBookCase(int pnum, int i, BOOL sendmsg);
 void OperateDecap(int pnum, int i, unsigned char sendmsg);
-void OperateArmorStand(int pnum, int i, unsigned char sendmsg);
+void OperateArmorStand(int pnum, int i, BOOL sendmsg);
 int FindValidShrine(int i);
 void OperateGoatShrine(int pnum, int i, int sType);
 void OperateCauldron(int pnum, int i, int sType);
