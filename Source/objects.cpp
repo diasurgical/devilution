@@ -4051,7 +4051,7 @@ void OperateArmorStand(int pnum, int i, BOOL sendmsg)
 	if (object[i]._oSelFlag) {
 		object[i]._oAnimFrame++;
 		object[i]._oSelFlag = 0;
-		if (deltaload == 0) {
+		if (!deltaload) {
 			SetRndSeed(object[i]._oRndSeed);
 			uniqueRnd = random(0, 2);
 			if (currlevel <= 5) {
