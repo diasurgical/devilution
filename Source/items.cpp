@@ -1420,7 +1420,7 @@ void CreatePlrItems(int p)
 #ifdef _DEBUG
 	} else {
 		plr[p].HoldItem._ivalue = 5000;
-		plr[p].HoldItem._iCurs = 6;
+		plr[p].HoldItem._iCurs = ICURS_GOLD_LARGE;
 		plr[p]._pGold = plr[p].HoldItem._ivalue * 40;
 		for(i = 0; i < 40; i++) {
 			GetPlrHandSeed(&plr[p].HoldItem);
