@@ -2922,35 +2922,20 @@ void ObjChangeMap(int x1, int y1, int x2, int y2)
 
 void ObjChangeMapResync(int x1, int y1, int x2, int y2)
 {
-	int v4; // edi
-	int v5; // esi
-	int v6; // ebx
-	int v7; // edi
-	int v8; // [esp+Ch] [ebp-Ch]
-	int i;  // [esp+10h] [ebp-8h]
-	int a2; // [esp+14h] [ebp-4h]
+	int i, j;
 
-	v4 = y2;
-	v5 = y1;
-	v6 = x1;
-	v8 = y1;
-	for (a2 = y1; a2 <= v4; ++a2) {
-		i = v6;
-		if (v6 <= x2) {
-			v7 = a2 + 40 * v6;
-			do {
-				ObjSetMini(i++, a2, (unsigned char)pdungeon[0][v7]);
-				dungeon[0][v7] = pdungeon[0][v7];
-				v7 += 40;
-			} while (i <= x2);
-			v4 = y2;
-			v5 = v8;
+	for (j = y1; j <= y2; j++) {
+		for (i = x1; i <= x2; i++) {
+			ObjSetMini(i, j, (unsigned char)pdungeon[i][j]);
+			dungeon[i][j] = pdungeon[i][j];
 		}
 	}
-	if (leveltype == DTYPE_CATHEDRAL)
-		ObjL1Special(2 * v6 + 16, 2 * v5 + 16, 2 * x2 + 17, 2 * v4 + 17);
-	if (leveltype == DTYPE_CATACOMBS)
-		ObjL2Special(2 * v6 + 16, 2 * v5 + 16, 2 * x2 + 17, 2 * v4 + 17);
+	if (leveltype == DTYPE_CATHEDRAL) {
+		ObjL1Special(2 * x1 + 16, 2 * y1 + 16, 2 * x2 + 17, 2 * y2 + 17);
+	}
+	if (leveltype == DTYPE_CATACOMBS) {
+		ObjL2Special(2 * x1 + 16, 2 * y1 + 16, 2 * x2 + 17, 2 * y2 + 17);
+	}
 }
 
 void OperateL1Door(int pnum, int i, unsigned char sendflag)
