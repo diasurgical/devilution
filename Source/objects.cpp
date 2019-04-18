@@ -1020,49 +1020,40 @@ void AddL4Goodies()
 
 void AddLazStand()
 {
-	int v0;        // edi
-	int v1;        // esi
-	signed int v2; // ebx
-	int v3;        // edx
-	int v4;        // edi
-	signed int v5; // [esp+Ch] [ebp-Ch]
-	int v6;        // [esp+10h] [ebp-8h]
-	signed int v7; // [esp+14h] [ebp-4h]
+	int xp, yp, xx, yy;
+	int cnt;
+	BOOL found;
 
-	v6 = 0;
-	while (1) {
-		v5 = 1;
-		v0 = random(139, 80) + 16;
-		v1 = random(139, 80) + 16;
-		v2 = -3;
-		do {
-			v7 = -2;
-			v3 = v2 + v1;
-			do {
-				if (!RndLocOk(v7 + v0, v3))
-					v5 = 0;
-				++v7;
-			} while (v7 <= 3);
-			++v2;
-		} while (v2 <= 3);
-		if (v5)
+	cnt = 0;
+	while (TRUE) {
+		found = 1;
+		xp = random(139, 80) + 16;
+		yp = random(139, 80) + 16;
+		for (yy = -3; yy <= 3; yy++) {
+			for (xx =-2; xx <= 3; xx++) {
+				if (!RndLocOk(xp + xx, yp + yy))
+					found = FALSE;
+			}
+		}
+		if (found)
 			break;
-		if (++v6 > 10000) {
+
+		cnt++;
+		if (cnt > 10000) {
 			InitRndLocObj(1, 1, OBJ_LAZSTAND);
 			return;
 		}
 	}
-	AddObject(OBJ_LAZSTAND, v0, v1);
-	AddObject(OBJ_TNUDEM2, v0, v1 + 2);
-	AddObject(OBJ_STORYCANDLE, v0 + 1, v1 + 2);
-	AddObject(OBJ_TNUDEM3, v0 + 2, v1 + 2);
-	AddObject(OBJ_TNUDEW1, v0, v1 - 2);
-	AddObject(OBJ_STORYCANDLE, v0 + 1, v1 - 2);
-	AddObject(OBJ_TNUDEW2, v0 + 2, v1 - 2);
-	v4 = v0 - 1;
-	AddObject(OBJ_STORYCANDLE, v4, v1 - 1);
-	AddObject(OBJ_TNUDEW3, v4, v1);
-	AddObject(OBJ_STORYCANDLE, v4, v1 + 1);
+	AddObject(OBJ_LAZSTAND, xp, yp);
+	AddObject(OBJ_TNUDEM2, xp, yp + 2);
+	AddObject(OBJ_STORYCANDLE, xp + 1, yp + 2);
+	AddObject(OBJ_TNUDEM3, xp + 2, yp + 2);
+	AddObject(OBJ_TNUDEW1, xp, yp - 2);
+	AddObject(OBJ_STORYCANDLE, xp + 1, yp - 2);
+	AddObject(OBJ_TNUDEW2, xp + 2, yp - 2);
+	AddObject(OBJ_STORYCANDLE, xp - 1, yp - 1);
+	AddObject(OBJ_TNUDEW3, xp - 1, yp);
+	AddObject(OBJ_STORYCANDLE, xp - 1, yp + 1);
 }
 
 void InitObjects()
