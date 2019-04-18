@@ -1413,7 +1413,7 @@ void CreatePlrItems(int p)
 	if(!debug_mode_key_w) {
 #endif
 		plr[p].HoldItem._ivalue = 100;
-		plr[p].HoldItem._iCurs = 4;
+		plr[p].HoldItem._iCurs = ICURS_GOLD_SMALL;
 		plr[p]._pGold = plr[p].HoldItem._ivalue;
 		plr[p].InvList[plr[p]._pNumInv++] = plr[p].HoldItem;
 		plr[p].InvGrid[30] = plr[p]._pNumInv;
