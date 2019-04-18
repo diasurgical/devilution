@@ -2392,127 +2392,75 @@ void ObjSetMini(int x, int y, int v)
 
 void ObjL1Special(int x1, int y1, int x2, int y2)
 {
-	int i;     // ebx
-	int v5;    // edx
-	_BYTE *v6; // eax
-	int *v7;   // edi
-	int v8;    // edx
-	int v9;    // esi
+	int i,j;
 
 	for (i = y1; i <= y2; ++i) {
-		if (x1 <= x2) {
-			v5 = 112 * x1 + i;
-			v6 = (unsigned char *)dArch + v5;
-			v7 = (int *)((char *)dPiece + 4 * v5);
-			v8 = x2 - x1 + 1;
-			do {
-				v9 = *v7;
-				*v6 = 0;
-				if (v9 == 12)
-					*v6 = 1;
-				if (v9 == 11)
-					*v6 = 2;
-				if (v9 == 71)
-					*v6 = 1;
-				if (v9 == 259)
-					*v6 = 5;
-				if (v9 == 249)
-					*v6 = 2;
-				if (v9 == 325)
-					*v6 = 2;
-				if (v9 == 321)
-					*v6 = 1;
-				if (v9 == 255)
-					*v6 = 4;
-				if (v9 == 211)
-					*v6 = 1;
-				if (v9 == 344)
-					*v6 = 2;
-				if (v9 == 341)
-					*v6 = 1;
-				if (v9 == 331)
-					*v6 = 2;
-				if (v9 == 418)
-					*v6 = 1;
-				if (v9 == 421)
-					*v6 = 2;
-				v7 += 112;
-				v6 += 112;
-				--v8;
-			} while (v8);
+		for (j = x1; j <= x2; ++j) {
+			dArch[j][i] = 0;
+			if (dPiece[j][i] == 12)
+				dArch[j][i] = 1;
+			if (dPiece[j][i] == 11)
+				dArch[j][i] = 2;
+			if (dPiece[j][i] == 71)
+				dArch[j][i] = 1;
+			if (dPiece[j][i] == 259)
+				dArch[j][i] = 5;
+			if (dPiece[j][i] == 249)
+				dArch[j][i] = 2;
+			if (dPiece[j][i] == 325)
+				dArch[j][i] = 2;
+			if (dPiece[j][i] == 321)
+				dArch[j][i] = 1;
+			if (dPiece[j][i] == 255)
+				dArch[j][i] = 4;
+			if (dPiece[j][i] == 211)
+				dArch[j][i] = 1;
+			if (dPiece[j][i] == 344)
+				dArch[j][i] = 2;
+			if (dPiece[j][i] == 341)
+				dArch[j][i] = 1;
+			if (dPiece[j][i] == 331)
+				dArch[j][i] = 2;
+			if (dPiece[j][i] == 418)
+				dArch[j][i] = 1;
+			if (dPiece[j][i] == 421)
+				dArch[j][i] = 2;
 		}
 	}
 }
 
 void ObjL2Special(int x1, int y1, int x2, int y2)
 {
-	int v4;    // edi
-	int v5;    // esi
-	_BYTE *v6; // eax
-	int *v7;   // ebx
-	int v8;    // esi
-	int v9;    // edx
-	int i;     // edi
-	int v11;   // eax
-	char *v12; // edx
-	int *v13;  // esi
-	int v14;   // eax
-	int v15;   // ebx
-	int v16;   // [esp+Ch] [ebp-4h]
+	int i, j;
 
-	v4 = y1;
-	v16 = y1;
-	if (y1 <= y2) {
-		do {
-			if (x1 <= x2) {
-				v5 = 112 * x1 + v4;
-				v6 = (unsigned char *)dArch + v5;
-				v7 = (int *)((char *)dPiece + 4 * v5);
-				v8 = x2 - x1 + 1;
-				do {
-					v9 = *v7;
-					*v6 = 0;
-					if (v9 == 541)
-						*v6 = 5;
-					if (v9 == 178)
-						*v6 = 5;
-					if (v9 == 551)
-						*v6 = 5;
-					if (v9 == 542)
-						*v6 = 6;
-					if (v9 == 553)
-						*v6 = 6;
-					if (v9 == 13)
-						*v6 = 5;
-					if (v9 == 17)
-						*v6 = 6;
-					v7 += 112;
-					v6 += 112;
-					--v8;
-				} while (v8);
+	for (j = y1; j <= y2; j++) {
+		for (i = x1; i <= x2; i++) {
+			dArch[i][j] = 0;
+			if (dPiece[i][j] == 541)
+				dArch[i][j] = 5;
+			if (dPiece[i][j] == 178)
+				dArch[i][j] = 5;
+			if (dPiece[i][j] == 551)
+				dArch[i][j] = 5;
+			if (dPiece[i][j] == 542)
+				dArch[i][j] = 6;
+			if (dPiece[i][j] == 553)
+				dArch[i][j] = 6;
+			if (dPiece[i][j] == 13)
+				dArch[i][j] = 5;
+			if (dPiece[i][j] == 17)
+				dArch[i][j] = 6;
+		}
+	}
+	for (j = y1; j <= y2; j++) {
+		for (i = x1; i <= x2; i++) {
+			if (dPiece[i][j] == 132) {
+				dArch[i][j + 1] = 2;
+				dArch[i][j + 2] = 1;
 			}
-			++v4;
-		} while (v4 <= y2);
-		for (i = v16; i <= y2; ++i) {
-			if (x1 <= x2) {
-				v11 = i + 112 * x1;
-				v12 = &dArch[0][v11 + 2];
-				v13 = (int *)((char *)dPiece + 4 * v11);
-				v14 = x2 - x1 + 1;
-				do {
-					v15 = *v13;
-					if (*v13 == 132) {
-						*(v12 - 1) = 2;
-						*v12 = 1;
-					}
-					if (v15 == 135 || v15 == 139) {
-						v12[110] = 3;
-						v12[222] = 4;
-					}
-					v13 += 112;
-					v12 += 112;
-					--v14;
-				} while (v14);
+			if (dPiece[i][j] == 135 || dPiece[i][j] == 139) {
+				dArch[i + 1][j] = 3;
+				dArch[i + 2][j] = 4;
 			}
 		}
 	}
@@ -2954,42 +2902,21 @@ void MonstCheckDoors(int m)
 
 void ObjChangeMap(int x1, int y1, int x2, int y2)
 {
-	int v4; // ebx
-	int v5; // edi
-	int v6; // esi
-	//int v7; // ecx
-	int v8; // edi
-	int v9; // ebx
-	//int v10; // ecx
-	int v11;   // [esp+Ch] [ebp-8h]
-	int a2;    // [esp+10h] [ebp-4h]
-	int i;     // [esp+1Ch] [ebp+8h]
-	int y_end; // [esp+20h] [ebp+Ch]
+	int i, j;
 
-	v4 = y1;
-	v5 = x2;
-	v6 = x1;
-	for (a2 = y1; a2 <= y2; ++a2) {
-		i = v6;
-		if (v6 <= v5) {
-			v11 = a2 + 40 * v6;
-			do {
-				ObjSetMini(i++, a2, (unsigned char)pdungeon[0][v11]);
-				dungeon[0][v11] = pdungeon[0][v11];
-				v11 += 40;
-			} while (i <= v5);
+	for (j = y1; j <= y2; j++) {
+		for (i = x1; i <= x2; i++) {
+			ObjSetMini(i, j, (unsigned char)pdungeon[i][j]);
+			dungeon[i][j] = pdungeon[i][j];
 		}
 	}
 	if (leveltype == DTYPE_CATHEDRAL) {
-		ObjL1Special(2 * v6 + 16, 2 * v4 + 16, 2 * v5 + 17, 2 * y2 + 17);
-		AddL1Objs(2 * v6 + 16, 2 * v4 + 16, 2 * v5 + 17, 2 * y2 + 17); /* v7 */
+		ObjL1Special(2 * x1 + 16, 2 * y1 + 16, 2 * x2 + 17, 2 * y2 + 17);
+		AddL1Objs(2 * x1 + 16, 2 * y1 + 16, 2 * x2 + 17, 2 * y2 + 17);
 	}
 	if (leveltype == DTYPE_CATACOMBS) {
-		v8 = 2 * v5 + 17;
-		v9 = 2 * v4 + 16;
-		y_end = 2 * y2 + 17;
-		ObjL2Special(2 * v6 + 16, v9, v8, y_end);
-		AddL2Objs(2 * v6 + 16, v9, v8, y_end); /* v10 */
+		ObjL2Special(2 * x1 + 16, 2 * y1 + 16, 2 * x2 + 17, 2 * y2 + 17);
+		AddL2Objs(2 * x1 + 16, 2 * y1 + 16, 2 * x2 + 17, 2 * y2 + 17);
 	}
 }
 
