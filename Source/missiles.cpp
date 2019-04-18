@@ -3633,93 +3633,78 @@ void MI_Firemove(int i)
 
 void MI_Guardian(int i)
 {
-	int v1;             // esi
-	int v2;             // eax
-	int v3;             // ecx
-	unsigned char *v4;  // edi
-	int v5;             // eax
-	signed int v6;      // ecx
-	unsigned char *v7;  // ebx
-	unsigned char v8;   // dl
-	unsigned char *v9;  // edi
-	int v10;            // ecx
-	int *v11;           // eax
-	int v12;            // ecx
-	int v13;            // ecx
-	signed int v14;     // [esp+Ch] [ebp-14h]
-	int v15;            // [esp+10h] [ebp-10h]
-	int v16;            // [esp+14h] [ebp-Ch]
-	unsigned char *v17; // [esp+18h] [ebp-8h]
-	int ia;             // [esp+1Ch] [ebp-4h]
+	int j, k, sx, sy, sx1, sy1, ex;
 
-	ia = i;
-	v1 = i;
-	v2 = missile[i]._miVar2;
-	--missile[v1]._mirange;
-	v3 = missile[i]._mirange;
-	v16 = 0;
-	v15 = 0;
-	if (v2 > 0)
-		missile[v1]._miVar2 = v2 - 1;
-	if (v3 == missile[v1]._miVar1 || missile[v1]._mimfnum == 2 && !missile[v1]._miVar2)
-		SetMissDir(ia, 1);
-	if (!(missile[v1]._mirange % 16)) {
-		v4 = &vCrawlTable[0][1];
-		v5 = 0;
-		v17 = &vCrawlTable[0][1];
-		do {
-			if (v5 == -1)
-				break;
-			v6 = 10;
-			v14 = 10;
-			do {
-				v7 = &v4[v6 - 1];
-				v8 = *v7;
-				if (!*v7 && !v4[v6])
-					break;
-				if (v16 != v8 || v15 != v4[v6]) {
-					v9 = &v4[v6];
-					v5 = Sentfire(ia, v8 + missile[v1]._mix, missile[v1]._miy + *v9);
-					if (v5 == -1
-					    || (v5 = Sentfire(ia, missile[v1]._mix - *v7, missile[v1]._miy - *v9), v5 == -1)
-					    || (v5 = Sentfire(ia, missile[v1]._mix + *v7, missile[v1]._miy - *v9), v5 == -1)
-					    || (v5 = Sentfire(ia, missile[v1]._mix - *v7, missile[v1]._miy + *v9), v5 == -1)) {
-						v4 = v17;
-						break;
-					}
-					v16 = *v7;
-					v10 = *v9;
-					v4 = v17;
-					v15 = v10;
-					v6 = v14;
+	/// ASSERT: assert((DWORD)i < MAXMISSILES);
+
+	sx1 = 0;
+	sy1 = 0;
+	missile[i]._mirange--;
+
+	if(missile[i]._miVar2 > 0) {
+		missile[i]._miVar2--;
+	}
+	if(missile[i]._mirange == missile[i]._miVar1 || missile[i]._mimfnum == MFILE_GUARD && missile[i]._miVar2 == 0) {
+		SetMissDir(i, 1);
+	}
+
+	if(!(missile[i]._mirange % 16)) {
+		ex = 0;
+		for(j = 0; j < 23 && ex != -1; j++) {
+			for(k = 10; k >= 0 && ex != -1 && (vCrawlTable[j][k] != 0 || vCrawlTable[j][k + 1] != 0); k -= 2) {
+				if(sx1 == vCrawlTable[j][k] && sy1 == vCrawlTable[j][k + 1]) {
+					continue;
 				}
-				v6 -= 2;
-				v14 = v6;
-			} while (v6 >= 0);
-			v4 += 30;
-			v17 = v4;
-		} while ((signed int)v4 < (signed int)&vCrawlTable[23][1]);
+				sx = missile[i]._mix + vCrawlTable[j][k];
+				sy = missile[i]._miy + vCrawlTable[j][k + 1];
+				ex = Sentfire(i, sx, sy);
+				if(ex == -1) {
+					break;
+				}
+				sx = missile[i]._mix - vCrawlTable[j][k];
+				sy = missile[i]._miy - vCrawlTable[j][k + 1];
+				ex = Sentfire(i, sx, sy);
+				if(ex == -1) {
+					break;
+				}
+				sx = missile[i]._mix + vCrawlTable[j][k];
+				sy = missile[i]._miy - vCrawlTable[j][k + 1];
+				ex = Sentfire(i, sx, sy);
+				if(ex == -1) {
+					break;
+				}
+				sx = missile[i]._mix - vCrawlTable[j][k];
+				sy = missile[i]._miy + vCrawlTable[j][k + 1];
+				ex = Sentfire(i, sx, sy);
+				if(ex == -1) {
+					break;
+				}
+				sx1 = vCrawlTable[j][k];
+				sy1 = vCrawlTable[j][k + 1];
+			}
+		}
 	}
-	if (missile[v1]._mirange == 14) {
-		SetMissDir(ia, 0);
-		missile[v1]._miAnimAdd = -1;
-		missile[v1]._miAnimFrame = 15;
+
+	if(missile[i]._mirange == 14) {
+		SetMissDir(i, 0);
+		missile[i]._miAnimFrame = 15;
+		missile[i]._miAnimAdd = -1;
 	}
-	v11 = &missile[v1]._miVar3;
-	*v11 += missile[v1]._miAnimAdd;
-	v12 = missile[v1]._miVar3;
-	if (v12 <= 15) {
-		if (v12 > 0)
-			ChangeLight(missile[v1]._mlid, missile[v1]._mix, missile[v1]._miy, missile[v1]._miVar3);
-	} else {
-		*v11 = 15;
+
+	missile[i]._miVar3 += missile[i]._miAnimAdd;
+
+	if(missile[i]._miVar3 > 15) {
+		missile[i]._miVar3 = 15;
+	} else if(missile[i]._miVar3 > 0) {
+		ChangeLight(missile[i]._mlid, missile[i]._mix, missile[i]._miy, missile[i]._miVar3);
 	}
-	if (!missile[v1]._mirange) {
-		v13 = missile[v1]._mlid;
-		missile[v1]._miDelFlag = TRUE;
-		AddUnLight(v13);
+
+	if(missile[i]._mirange == 0) {
+		missile[i]._miDelFlag = TRUE;
+		AddUnLight(missile[i]._mlid);
 	}
-	PutMissile(ia);
+
+	PutMissile(i);
 }
 
 void MI_Chain(int i)
