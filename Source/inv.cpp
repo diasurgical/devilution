@@ -2247,105 +2247,104 @@ void StartGoldDrop()
 // 4B8960: using guessed type int talkflag;
 // 4B8CB8: using guessed type char pcursinvitem;
 
-int UseInvItem(int pnum, int cii)
+BOOL UseInvItem(int pnum, int cii)
 {
-	int v2;         // esi
-	int result;     // eax
-	int v4;         // ebx
-	int v5;         // ebp
-	_DWORD *v6;     // edi
-	int v9;         // eax
-	int v10;        // ecx
-	int p;          // [esp+10h] [ebp-8h]
-	signed int v14; // [esp+14h] [ebp-4h]
+	int c, idata, it;
+	ItemStruct *Item;
+	BOOL speedlist;
 
-	v2 = pnum;
-	p = pnum;
-	if (plr[pnum]._pInvincible && !plr[v2]._pHitPoints && pnum == myplr)
-		return 1;
-	result = 1;
-	if (pcurs == 1 && !stextflag) {
-		if (cii <= 5)
-			return 0;
-		if (cii > 46) {
-			if (talkflag)
-				return result;
-			v4 = cii - 47;
-			v14 = 1;
-			v5 = 368 * (cii - 47) + v2 * 21720;
-			v6 = (_DWORD *)((char *)plr[0].SpdList + v5);
-		} else {
-			v4 = cii - 7;
-			v14 = 0;
-			v5 = 368 * (cii - 7) + v2 * 21720;
-			v6 = (_DWORD *)((char *)plr[0].InvList + v5);
+	if (plr[pnum]._pInvincible && !plr[pnum]._pHitPoints && pnum == myplr)
+		return TRUE;
+
+	if (pcurs != 1 || stextflag)
+		return TRUE;
+
+	if (cii <= 5)
+		return FALSE;
+
+	if (cii <= 46) {
+		c = cii - 7;
+		speedlist = FALSE;
+		Item = &plr[pnum].InvList[c];
+	} else {
+		if (talkflag)
+			return TRUE;
+		c = cii - 47;
+		speedlist = TRUE;
+		Item = &plr[pnum].SpdList[c];
+	}
+
+	switch (Item->IDidx) {
+	case 17:
+		sfxdelay = 10;
+		if (plr[pnum]._pClass == PC_WARRIOR) {
+			sfxdnum = PS_WARR95;
+		} else if (plr[pnum]._pClass == PC_ROGUE) {
+			sfxdnum = PS_ROGUE95;
+		} else if (plr[pnum]._pClass == PC_SORCERER) {
+			sfxdnum = PS_MAGE95;
 		}
-		if (v6[90] == 17) {
-			sfxdelay = 10;
-			if (plr[v2]._pClass == PC_WARRIOR) {
-				sfxdnum = PS_WARR95;
-			} else if (plr[v2]._pClass == PC_ROGUE) {
-				sfxdnum = PS_ROGUE95;
-			} else if (plr[v2]._pClass == PC_SORCERER) {
-				sfxdnum = PS_MAGE95;
-			}
-			return 1;
+		break;
+	case 19:
+		PlaySFX(IS_IBOOK);
+		sfxdelay = 10;
+		if (plr[pnum]._pClass == PC_WARRIOR) {
+			sfxdnum = PS_WARR29;
+		} else if (plr[pnum]._pClass == PC_ROGUE) {
+			sfxdnum = PS_ROGUE29;
+		} else if (plr[pnum]._pClass == PC_SORCERER) {
+			sfxdnum = PS_MAGE29;
 		}
-		if (v6[90] == 19) {
-			PlaySFX(IS_IBOOK);
-			sfxdelay = 10;
-			if (plr[v2]._pClass == PC_WARRIOR) {
-				sfxdnum = PS_WARR29;
-			} else if (plr[v2]._pClass == PC_ROGUE) {
-				sfxdnum = PS_ROGUE29;
-			} else if (plr[v2]._pClass == PC_SORCERER) {
-				sfxdnum = PS_MAGE29;
-			}
-			return 1;
-		}
-		if (!AllItemsList[v6[90]].iUsable)
-			return 0;
-		if (!v6[89]) {
-			if (plr[v2]._pClass == PC_WARRIOR) {
+		break;
+	default:
+		if (!AllItemsList[Item->IDidx].iUsable)
+			return FALSE;
+
+		if (!Item->_iStatFlag) {
+			if (plr[pnum]._pClass == PC_WARRIOR) {
 				PlaySFX(PS_WARR13);
-			} else if (plr[v2]._pClass == PC_ROGUE) {
+			} else if (plr[pnum]._pClass == PC_ROGUE) {
 				PlaySFX(PS_ROGUE13);
-			} else if (plr[v2]._pClass == PC_SORCERER) {
+			} else if (plr[pnum]._pClass == PC_SORCERER) {
 				PlaySFX(PS_MAGE13);
 			}
-			return 1;
+			return TRUE;
 		}
-		v9 = v6[55];
-		if (!v9 && v6[2] == 11) {
+
+		it = Item->_iMiscId;
+
+		if (it == IMISC_NONE && Item->_itype == ITYPE_GOLD) {
 			StartGoldDrop();
-			return 1;
+			return TRUE;
 		}
+
 		if (dropGoldFlag) {
 			dropGoldFlag = FALSE;
 			dropGoldValue = 0;
 		}
-		if (v9 == 21 && !currlevel && !spelldata[v6[56]].sTownSpell
-		    || v9 == 22 && !currlevel && !spelldata[v6[56]].sTownSpell) {
-			return 1;
+
+		if (it == IMISC_SCROLL && currlevel == 0 && !spelldata[Item->_iSpell].sTownSpell
+		    || it == IMISC_SCROLLT && currlevel == 0 && !spelldata[Item->_iSpell].sTownSpell) {
+			return TRUE;
 		}
-		if (v9 == 24) {
-			v10 = 65;
-		} else {
-			if (pnum != myplr)
-				goto LABEL_39;
-			v10 = ItemInvSnds[ItemCAnimTbl[v6[48]]];
+
+		idata = ItemCAnimTbl[Item->_iCurs];
+		if (it == IMISC_BOOK)
+			PlaySFX(IS_RBOOK);
+		else if (pnum == myplr)
+			PlaySFX(ItemInvSnds[idata]);
+
+		UseItem(pnum, Item->_iMiscId, Item->_iSpell);
+
+		if (speedlist) {
+			RemoveSpdBarItem(pnum, c);
+		} else if (plr[pnum].InvList[c]._iMiscId != IMISC_MAPOFDOOM) {
+			RemoveInvItem(pnum, c);
 		}
-		PlaySFX(v10);
-	LABEL_39:
-		UseItem(p, v6[55], v6[56]);
-		if (v14) {
-			RemoveSpdBarItem(p, v4);
-		} else if (*(int *)((char *)&plr[0].InvList[0]._iMiscId + v5) != IMISC_MAPOFDOOM) {
-			RemoveInvItem(p, v4);
-		}
-		return 1;
+		break;
 	}
-	return result;
+
+	return TRUE;
 }
 // 4B8960: using guessed type int talkflag;
 // 52A554: using guessed type int sfxdelay;
