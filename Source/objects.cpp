@@ -4073,54 +4073,32 @@ void OperateDecap(int pnum, int i, unsigned char sendmsg)
 	}
 }
 
-void OperateArmorStand(int pnum, int i, unsigned char sendmsg)
+void OperateArmorStand(int pnum, int i, BOOL sendmsg)
 {
-	unsigned short v3; // di
-	int v4;            // esi
-	int *v5;           // eax
-	BOOLEAN v6;        // zf
-	unsigned char v8;  // al
-	int v9;            // [esp-10h] [ebp-20h]
-	int v10;           // [esp-8h] [ebp-18h]
-	int v11;           // [esp+Ch] [ebp-4h]
+	int uniqueRnd;
 
-	v3 = i;
-	v4 = i;
-	v11 = pnum;
-	v5 = (int *)&object[i]._oSelFlag;
-	if (*(_BYTE *)v5) {
-		++object[v4]._oAnimFrame;
-		v6 = deltaload == 0;
-		*(_BYTE *)v5 = 0;
-		if (v6) {
-			SetRndSeed(object[v4]._oRndSeed);
-			v8 = random(0, 2);
-			if (currlevel > 5u) {
-				if (currlevel >= 6u && currlevel <= 9u) {
-					CreateTypeItem(object[v4]._ox, object[v4]._oy, v8, ITYPE_MARMOR, 0, sendmsg, 0);
-					goto LABEL_15;
-				}
-				if (currlevel >= 0xAu && currlevel <= 0xCu) {
-					CreateTypeItem(object[v4]._ox, object[v4]._oy, 0, ITYPE_HARMOR, 0, sendmsg, 0);
-					goto LABEL_15;
-				}
-				if (currlevel < 0xDu || currlevel > 0x10u)
-					goto LABEL_15;
-				v10 = sendmsg;
-				v9 = ITYPE_HARMOR;
-			} else {
-				v10 = sendmsg;
-				v9 = ITYPE_LARMOR;
+	if (object[i]._oSelFlag) {
+		object[i]._oAnimFrame++;
+		object[i]._oSelFlag = 0;
+		if (deltaload == 0) {
+			SetRndSeed(object[i]._oRndSeed);
+			uniqueRnd = random(0, 2);
+			if (currlevel <= 5) {
+				CreateTypeItem(object[i]._ox, object[i]._oy, 1, ITYPE_LARMOR, 0, sendmsg, 0);
+			} else if (currlevel >= 6 && currlevel <= 9) {
+				CreateTypeItem(object[i]._ox, object[i]._oy, uniqueRnd, ITYPE_MARMOR, 0, sendmsg, 0);
+			} else if (currlevel >= 10 && currlevel <= 12) {
+				CreateTypeItem(object[i]._ox, object[i]._oy, 0, ITYPE_HARMOR, 0, sendmsg, 0);
+			} else if (currlevel >= 13 && currlevel <= 16) {
+				CreateTypeItem(object[i]._ox, object[i]._oy, 1, ITYPE_HARMOR, 0, sendmsg, 0);
 			}
-			CreateTypeItem(object[v4]._ox, object[v4]._oy, 1u, v9, 0, v10, 0);
-		LABEL_15:
-			if (v11 == myplr)
-				NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, v3);
+			if (pnum == myplr)
+				NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, i);
 			return;
 		}
 	}
 }
-// 676190: using guessed type int deltaload;
+
 
 int FindValidShrine(int i)
 {
