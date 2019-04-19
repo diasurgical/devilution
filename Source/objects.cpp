@@ -2428,55 +2428,45 @@ void ObjL2Special(int x1, int y1, int x2, int y2)
 	}
 }
 
-void DoorSet(int oi, int dx, int dy)
+void __fastcall DoorSet(int oi, int dx, int dy)
 {
-	int v3;           // esi
-	int v4;           // ebp
-	int v5;           // ebx
-	ObjectStruct *v6; // ebp
+	int pn;
 
-	v3 = dx;
-	v4 = oi;
-	v5 = dPiece[dx][dy];
-	if (v5 == 43)
+	pn = dPiece[dx][dy];
+	if (pn == 43)
 		ObjSetMicro(dx, dy, 392);
-	if (v5 == 45)
-		ObjSetMicro(v3, dy, 394);
-	if (v5 != 50)
-		goto LABEL_10;
-	v6 = &object[v4];
-	if (v6->_otype == OBJ_L1LDOOR)
-		ObjSetMicro(v3, dy, 411);
-	if (v6->_otype == OBJ_L1RDOOR) {
-		ObjSetMicro(v3, dy, 412);
-	LABEL_10:
-		if (v5 == 54)
-			ObjSetMicro(v3, dy, 397);
-		if (v5 == 55)
-			ObjSetMicro(v3, dy, 398);
-		if (v5 == 61)
-			ObjSetMicro(v3, dy, 399);
-		if (v5 == 67)
-			ObjSetMicro(v3, dy, 400);
-		if (v5 == 68)
-			ObjSetMicro(v3, dy, 401);
-		if (v5 == 69)
-			ObjSetMicro(v3, dy, 403);
-		if (v5 == 70)
-			ObjSetMicro(v3, dy, 404);
-		if (v5 == 72)
-			ObjSetMicro(v3, dy, 406);
-		if (v5 == 212)
-			ObjSetMicro(v3, dy, 407);
-		if (v5 == 354)
-			ObjSetMicro(v3, dy, 409);
-		if (v5 == 355)
-			ObjSetMicro(v3, dy, 410);
-		if (v5 == 411)
-			ObjSetMicro(v3, dy, 396);
-		if (v5 == 412)
-			ObjSetMicro(v3, dy, 396);
-	}
+	if (pn == 45)
+		ObjSetMicro(dx, dy, 394);
+	if (pn == 50 && object[oi]._otype == OBJ_L1LDOOR)
+		ObjSetMicro(dx, dy, 411);
+	if (pn == 50 && object[oi]._otype == OBJ_L1RDOOR)
+		ObjSetMicro(dx, dy, 412);
+	if (pn == 54)
+		ObjSetMicro(dx, dy, 397);
+	if (pn == 55)
+		ObjSetMicro(dx, dy, 398);
+	if (pn == 61)
+		ObjSetMicro(dx, dy, 399);
+	if (pn == 67)
+		ObjSetMicro(dx, dy, 400);
+	if (pn == 68)
+		ObjSetMicro(dx, dy, 401);
+	if (pn == 69)
+		ObjSetMicro(dx, dy, 403);
+	if (pn == 70)
+		ObjSetMicro(dx, dy, 404);
+	if (pn == 72)
+		ObjSetMicro(dx, dy, 406);
+	if (pn == 212)
+		ObjSetMicro(dx, dy, 407);
+	if (pn == 354)
+		ObjSetMicro(dx, dy, 409);
+	if (pn == 355)
+		ObjSetMicro(dx, dy, 410);
+	if (pn == 411)
+		ObjSetMicro(dx, dy, 396);
+	if (pn == 412)
+		ObjSetMicro(dx, dy, 396);
 }
 
 void RedoPlayerVision()
