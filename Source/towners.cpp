@@ -448,24 +448,22 @@ void TownBarOwner()
 
 void TownDead()
 {
-	int v0; // esi
-	int v1; // eax
+	int tidx;
 
-	v0 = GetActiveTowner(TOWN_DEADGUY);
-	TownCtrlMsg(v0);
-	if (qtextflag)
-		goto LABEL_6;
-	if ((quests[6]._qactive != 2 || quests[6]._qlog) && quests[6]._qactive != 1) {
-		v1 = v0;
-		towner[v1]._tAnimDelay = 1000;
-		towner[v1]._tAnimFrame = 1;
-		strcpy(towner[v0]._tName, "Slain Townsman");
-	LABEL_6:
-		if (quests[QTYPE_BUTCH]._qactive != 1)
-			towner[v0]._tAnimCnt = 0;
+	tidx = GetActiveTowner(TOWN_DEADGUY);
+	TownCtrlMsg(tidx);
+	if (!qtextflag) {
+		if ((quests[6]._qactive != 2 || quests[6]._qlog) && quests[6]._qactive != 1) {
+			towner[tidx]._tAnimDelay = 1000;
+			towner[tidx]._tAnimFrame = 1;
+			strcpy(towner[tidx]._tName, "Slain Townsman");
+		} else {
+			return;
+		}
 	}
+	if (quests[QTYPE_BUTCH]._qactive != 1)
+		towner[tidx]._tAnimCnt = 0;
 }
-// 646D00: using guessed type char qtextflag;
 
 void TownHealer()
 {
