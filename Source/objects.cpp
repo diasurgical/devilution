@@ -1852,53 +1852,37 @@ void AddObject(int ot, int ox, int oy)
 
 void Obj_Light(int i, int lr)
 {
-	int v2;         // esi
-	int v3;         // ebx
-	int *v4;        // edi
-	int v5;         // ST18_4
-	int v6;         // eax
-	int r;          // [esp+Ch] [ebp-14h]
-	int x;          // [esp+14h] [ebp-Ch]
-	int y;          // [esp+18h] [ebp-8h]
-	signed int v10; // [esp+1Ch] [ebp-4h]
+	int ox, oy, dx, dy, p, tr;
+	BOOL turnon;
 
-	v2 = i;
-	r = lr;
 	if (object[i]._oVar1 != -1) {
-		v10 = 0;
-		x = object[v2]._ox;
-		v3 = lr + 10;
-		y = object[v2]._oy;
-		if (lightflag) {
-		LABEL_15:
-			if (object[v2]._oVar1 == 1)
-				AddUnLight(object[v2]._olid);
-			object[v2]._oVar1 = 0;
-		} else {
-			v4 = &plr[0].plrlevel;
-			while (!v10) {
-				if (*((_BYTE *)v4 - 23)) {
-					if (currlevel == *v4) {
-						v5 = abs(v4[1] - x);
-						v6 = abs(v4[2] - y);
-						if (v5 < v3 && v6 < v3)
-							v10 = 1;
+		ox = object[i]._ox;
+		oy = object[i]._oy;
+		tr = lr + 10;
+		turnon = FALSE;
+		if (!lightflag) {
+			for (p = 0; p < MAX_PLRS && !turnon; p++) {
+				if (plr[p].plractive) {
+					if (currlevel == plr[p].plrlevel) {
+						dx = abs(plr[p].WorldX - ox);
+						dy = abs(plr[p].WorldY - oy);
+						if (dx < tr && dy < tr)
+							turnon = TRUE;
 					}
 				}
-				v4 += 5430;
-				if ((signed int)v4 >= (signed int)&plr[4].plrlevel) {
-					if (!v10)
-						goto LABEL_15;
-					break;
-				}
 			}
-			if (!object[v2]._oVar1)
-				object[v2]._olid = AddLight(x, y, r);
-			object[v2]._oVar1 = 1;
+		}
+		if (turnon) {
+			if (!object[i]._oVar1)
+				object[i]._olid = AddLight(ox, oy, lr);
+			object[i]._oVar1 = 1;
+		} else {
+			if (object[i]._oVar1 == 1)
+				AddUnLight(object[i]._olid);
+			object[i]._oVar1 = 0;
 		}
 	}
 }
-// 646A28: using guessed type int lightflag;
 
 void Obj_Circle(int i)
 {
