@@ -964,70 +964,44 @@ void AddStoryBooks()
 
 void AddHookedBodies(int freq)
 {
-	int v1;   // ebx
-	char *v2; // esi
-	int v3;   // edi
-	//int v4; // eax
-	int v5;  // eax
-	int v6;  // eax
-	int v7;  // eax
-	int v8;  // [esp-8h] [ebp-20h]
-	int v9;  // [esp-4h] [ebp-1Ch]
-	int max; // [esp+Ch] [ebp-Ch]
-	int x;   // [esp+10h] [ebp-8h]
-	int y;   // [esp+14h] [ebp-4h]
+	int i, j, ii, jj;
 
-	y = 0;
-	max = freq;
-	v1 = 16;
-	do {
-		x = 0;
-		v2 = (char *)dungeon + y;
-		v3 = 17;
-		do {
-			if (*v2 == 1 || *v2 == 2) {
-				if (!random(0, max)) {
-					//_LOBYTE(v4) = SkipThemeRoom(x, y);
-					if (SkipThemeRoom(x, y)) {
-						if (*v2 != 1 || v2[40] != 6) {
-							if (*v2 == 2 && v2[1] == 6) {
-								v7 = random(0, 2);
-								if (v7) {
-									if (v7 != 1)
-										goto LABEL_22;
-									v9 = v1;
-									v8 = 39;
-								} else {
-									v9 = v1;
-									v8 = 38;
-								}
-								AddObject(v8, v3 - 1, v9);
-							}
-						} else {
-							v5 = random(0, 3);
-							if (v5) {
-								v6 = v5 - 1;
-								if (v6) {
-									if (v6 == 1)
-										AddObject(OBJ_TORTURE5, v3, v1);
-								} else {
-									AddObject(OBJ_TORTURE2, v3, v1);
-								}
-							} else {
-								AddObject(OBJ_TORTURE1, v3, v1);
-							}
-						}
-					}
+	for (j = 0; j < 40; j++) {
+		jj = 16 + j * 2;
+		for (i = 0; i < 40; i++) {
+			ii = 16 + i * 2;
+			if (dungeon[i][j] != 1 && dungeon[i][j] != 2)
+				continue;
+			if (random(0, freq) != 0)
+				continue;
+			if (!SkipThemeRoom(i, j))
+				continue;
+			if (dungeon[i][j] == 1 && dungeon[i + 1][j] == 6) {
+				switch (random(0, 3)) {
+				case 0:
+					AddObject(OBJ_TORTURE1, ii + 1, jj);
+					break;
+				case 1:
+					AddObject(OBJ_TORTURE2, ii + 1, jj);
+					break;
+				case 2:
+					AddObject(OBJ_TORTURE5, ii + 1, jj);
+					break;
+				}
+				continue;
+			}
+			if (dungeon[i][j] == 2 && dungeon[i][j + 1] == 6) {
+				switch (random(0, 2)) {
+				case 0:
+					AddObject(OBJ_TORTURE3, ii, jj);
+					break;
+				case 1:
+					AddObject(OBJ_TORTURE4, ii, jj);
+					break;
 				}
 			}
-		LABEL_22:
-			++x;
-			v3 += 2;
-			v2 += 40;
-		} while (v3 < 97);
-		++y;
-		v1 += 2;
-	} while (v1 < 96);
+		}
+	}
 }
 
 void AddL4Goodies()
