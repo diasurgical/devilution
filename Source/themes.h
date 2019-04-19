@@ -19,7 +19,7 @@ extern BOOLEAN pFountainFlag; // weak
 extern BOOLEAN bFountainFlag; // weak
 extern BOOL bCrossFlag;
 
-BOOLEAN TFit_Shrine(int i);
+BOOL TFit_Shrine(int i);
 BOOL TFit_Obj5(int t);
 BOOL TFit_SkelRoom(int t);
 BOOL TFit_GoatShrine(int t);

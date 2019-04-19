@@ -49,65 +49,49 @@ int trm3y[9] = {
 	1, 1, 1
 };
 
-BOOLEAN TFit_Shrine(int i)
+BOOL TFit_Shrine(int i)
 {
-	int v1;        // ecx
-	int v2;        // esi
-	int v3;        // eax
-	int v4;        // edx
-	signed int v6; // [esp+Ch] [ebp-8h]
-	int v7;        // [esp+10h] [ebp-4h]
+	int xp, yp, found;
 
-	v1 = themes[i].ttval;
-	v7 = 0;
-	v2 = 0;
-	v6 = 0;
-	while (1) {
-		v3 = v2 + 112 * v7;
-		if (dTransVal[0][v3] != v1) { /* check */
-			goto LABEL_20;
+	xp = 0;
+	yp = 0;
+	found = 0;
+	while (found == 0) {
+		if (dTransVal[xp][yp] == themes[i].ttval) {
+			if (nTrapTable[dPiece[xp][yp - 1]]
+			    && !nSolidTable[dPiece[xp - 1][yp]]
+			    && !nSolidTable[dPiece[xp + 1][yp]]
+			    && dTransVal[xp - 1][yp] == themes[i].ttval
+			    && dTransVal[xp + 1][yp] == themes[i].ttval
+			    && dObject[xp - 1][yp - 1] == 0
+			    && dObject[xp + 1][yp - 1] == 0) {
+				found = 1;
+			}
+			if (!found
+			    && nTrapTable[dPiece[xp - 1][yp]]
+			    && !nSolidTable[dPiece[xp][yp - 1]]
+			    && !nSolidTable[dPiece[xp][yp + 1]]
+			    && dTransVal[xp][yp - 1] == themes[i].ttval
+			    && dTransVal[xp][yp + 1] == themes[i].ttval
+			    && dObject[xp - 1][yp - 1] == 0
+			    && dObject[xp - 1][yp + 1] == 0) {
+				found = 2;
+			}
 		}
-		v4 = dPiece[0][v3 - 1]; // *(_DWORD *)&dflags[39][4 * v3 + 36];
-		if (nTrapTable[v4]
-		    && !nSolidTable[dPiece[-1][v3]] // !nSolidTable[*(_DWORD *)&dflags[28][4 * v3 + 32]]
-		    && !nSolidTable[dPiece[1][v3]]
-		    && dTransVal[-1][v3] == v1 // block_lvid[v3 + 1940] == v1
-		    && dTransVal[1][v3] == v1
-		    && !dObject[-1][v3 - 1]
-		    && !dObject[0][v3 + 111]) {
-			v6 = 1;
-		}
-		if (v6) {
-			break;
-		}
-		if (!nTrapTable[dPiece[-1][v3]] // !nTrapTable[*(_DWORD *)&dflags[28][4 * v3 + 32]]
-		    || nSolidTable[v4]
-		    || nSolidTable[dPiece[0][v3 + 1]]
-		    || dTransVal[0][v3 - 1] != v1 // *(&byte_5B78EB + v3) != v1
-		    || dTransVal[0][v3 + 1] != v1
-		    || dObject[-1][v3 - 1]
-		    || dObject[-1][v3 + 1]) /* check */
-		{
-			goto LABEL_21;
-		}
-		v6 = 2;
-	LABEL_20:
-		if (v6) {
-			break;
-		}
-	LABEL_21:
-		if (++v7 == MAXDUNX) {
-			++v2;
-			v7 = 0;
-			if (v2 == MAXDUNY) {
-				return 0;
+		if (found == 0) {
+			xp++;
+			if (xp == MAXDUNX) {
+				xp = 0;
+				yp++;
+				if (yp == MAXDUNY)
+					return FALSE;
 			}
 		}
 	}
-	themey = v2;
-	themex = v7;
-	themeVar1 = v6;
-	return 1;
+	themex = xp;
+	themey = yp;
+	themeVar1 = found;
+	return TRUE;
 }
 
 BOOL TFit_Obj5(int t)
