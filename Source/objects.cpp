@@ -1267,55 +1267,40 @@ void DeleteObject_(int oi, int i)
 
 void SetupObject(int i, int x, int y, int ot)
 {
-	int v4;  // esi
-	int v5;  // edi
-	int v6;  // ecx
-	int v7;  // edx
-	int v8;  // eax
-	int v9;  // eax
-	int v10; // edx
-	int v11; // eax
-	int v13; // eax
-	int v14; // eax
+	int ofi;
+	int j;
 
-	v4 = i;
-	object[v4]._otype = ot;
-	v5 = ot;
-	v6 = AllObjects[ot].ofindex;
-	object[v4]._ox = x;
-	object[v4]._oy = y;
-	v7 = ObjFileList[0];
-	v8 = 0;
-	while (v7 != v6)
-		v7 = ObjFileList[v8++ + 1];
-	object[v4]._oAnimData = pObjCels[v8];
-	v9 = AllObjects[v5].oAnimFlag;
-	object[v4]._oAnimFlag = v9;
-	if (v9) {
-		v10 = AllObjects[v5].oAnimDelay;
-		object[v4]._oAnimDelay = v10;
-		object[v4]._oAnimCnt = random(146, v10);
-		v11 = AllObjects[v5].oAnimLen;
-		object[v4]._oAnimLen = v11;
-		v13 = random(146, v11 - 1) + 1;
-	} else {
-		v14 = AllObjects[v5].oAnimLen;
-		object[v4]._oAnimDelay = 1000;
-		object[v4]._oAnimLen = v14;
-		v13 = AllObjects[v5].oAnimDelay;
-		object[v4]._oAnimCnt = 0;
+	object[i]._otype = ot;
+	ofi = AllObjects[ot].ofindex;
+	object[i]._ox = x;
+	object[i]._oy = y;
+	j = 0;
+	while (ObjFileList[j] != ofi) {
+		j++;
 	}
-	object[v4]._oAnimFrame = v13;
-	object[v4]._oAnimWidth = AllObjects[v5].oAnimWidth;
-	object[v4]._oSolidFlag = AllObjects[v5].oSolidFlag;
-	object[v4]._oMissFlag = AllObjects[v5].oMissFlag;
-	object[v4]._oLight = AllObjects[v5].oLightFlag;
-	object[v4]._oBreak = AllObjects[v5].oBreak;
-	object[v4]._oDelFlag = 0;
-	object[v4]._oSelFlag = AllObjects[v5].oSelFlag;
-	object[v4]._oPreFlag = FALSE;
-	object[v4]._oTrapFlag = FALSE;
-	object[v4]._oDoorFlag = FALSE;
+	object[i]._oAnimData = pObjCels[j];
+	object[i]._oAnimFlag = AllObjects[ot].oAnimFlag;
+	if (AllObjects[ot].oAnimFlag) {
+		object[i]._oAnimDelay = AllObjects[ot].oAnimDelay;
+		object[i]._oAnimCnt = random(146, AllObjects[ot].oAnimDelay);
+		object[i]._oAnimLen = AllObjects[ot].oAnimLen;
+		object[i]._oAnimFrame = random(146, AllObjects[ot].oAnimLen - 1) + 1;
+	} else {
+		object[i]._oAnimDelay = 1000;
+		object[i]._oAnimLen = AllObjects[ot].oAnimLen;
+		object[i]._oAnimFrame = AllObjects[ot].oAnimDelay;
+		object[i]._oAnimCnt = 0;
+	}
+	object[i]._oAnimWidth = AllObjects[ot].oAnimWidth;
+	object[i]._oSolidFlag = AllObjects[ot].oSolidFlag;
+	object[i]._oMissFlag = AllObjects[ot].oMissFlag;
+	object[i]._oLight = AllObjects[ot].oLightFlag;
+	object[i]._oBreak = AllObjects[ot].oBreak;
+	object[i]._oDelFlag = 0;
+	object[i]._oSelFlag = AllObjects[ot].oSelFlag;
+	object[i]._oPreFlag = FALSE;
+	object[i]._oTrapFlag = FALSE;
+	object[i]._oDoorFlag = FALSE;
 }
 
 void SetObjMapRange(int i, int x1, int y1, int x2, int y2, int v)
