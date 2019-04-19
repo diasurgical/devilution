@@ -1839,45 +1839,33 @@ void Obj_Light(int i, int lr)
 
 void Obj_Circle(int i)
 {
-	int v1; // ecx
-	int v2; // edx
-	int v3; // esi
-	int v4; // eax
-	int v5; // ST1C_4
-	int v6; // edx
-	int v7; // eax
+	int ox;
+	int oy;
 
-	v1 = i;
-	v2 = object[v1]._ox;
-	v3 = object[v1]._oy;
-	if (plr[myplr].WorldX != v2 || plr[myplr].WorldY != v3) {
-		v7 = object[v1]._otype;
-		if (v7 == OBJ_MCIRCLE1)
-			object[v1]._oAnimFrame = 1;
-		if (v7 == OBJ_MCIRCLE2)
-			object[v1]._oAnimFrame = 3;
-		object[v1]._oVar6 = 0;
+	ox = object[i]._ox;
+	oy = object[i]._oy;
+	if (plr[myplr].WorldX != ox || plr[myplr].WorldY != object[i]._oy) {
+		if (object[i]._otype == OBJ_MCIRCLE1)
+			object[i]._oAnimFrame = 1;
+		if (object[i]._otype == OBJ_MCIRCLE2)
+			object[i]._oAnimFrame = 3;
+		object[i]._oVar6 = 0;
 	} else {
-		v4 = object[v1]._otype;
-		if (v4 == OBJ_MCIRCLE1)
-			object[v1]._oAnimFrame = 2;
-		if (v4 == OBJ_MCIRCLE2)
-			object[v1]._oAnimFrame = 4;
-		if (v2 == 45) {
-			if (v3 == 47) {
-				object[v1]._oVar6 = 2;
-				return;
-			}
-		} else if (v2 == 26 && v3 == 46) {
-			object[v1]._oVar6 = 1;
+		if (object[i]._otype == OBJ_MCIRCLE1)
+			object[i]._oAnimFrame = 2;
+		if (object[i]._otype == OBJ_MCIRCLE2)
+			object[i]._oAnimFrame = 4;
+		if (ox == 45 && oy == 47) {
+			object[i]._oVar6 = 2;
+			return;
+		} else if (object[i]._ox == 26 && object[i]._oy == 46) {
+			object[i]._oVar6 = 1;
 			return;
 		}
-		object[v1]._oVar6 = 0;
-		if (v2 == 35 && v3 == 36 && object[v1]._oVar5 == 3) {
-			v5 = object[v1]._oVar4;
-			v6 = object[v1]._oVar2;
-			object[v1]._oVar6 = 4;
-			ObjChangeMapResync(object[v1]._oVar1, v6, object[v1]._oVar3, v5);
+		object[i]._oVar6 = 0;
+		if (ox == 35 && object[i]._oy == 36 && object[i]._oVar5 == 3) {
+			object[i]._oVar6 = 4;
+			ObjChangeMapResync(object[i]._oVar1, object[i]._oVar2, object[i]._oVar3, object[i]._oVar4);
 			if (quests[QTYPE_VB]._qactive == 2)
 				quests[QTYPE_VB]._qvar1 = 4;
 			AddMissile(plr[myplr].WorldX, plr[myplr].WorldY, 35, 46, plr[myplr]._pdir, MIS_RNDTELEPORT, 0, myplr, 0, 0);
