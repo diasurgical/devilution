@@ -54,7 +54,7 @@ void LeftMouseUp();
 void RightMouseDown();
 void j_gmenu_on_mouse_move(LPARAM lParam);
 BOOL PressSysKey(int wParam);
-void diablo_hotkey_msg(int dwMsg);
+void diablo_hotkey_msg(DWORD dwMsg);
 void ReleaseKey(int vkey);
 void PressKey(int vkey);
 void diablo_pause_game();

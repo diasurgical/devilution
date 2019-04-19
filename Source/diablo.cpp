@@ -1024,22 +1024,28 @@ BOOL PressSysKey(int wParam)
 	return TRUE;
 }
 
-void diablo_hotkey_msg(int dwMsg)
+void diablo_hotkey_msg(DWORD dwMsg)
 {
-	char Filename[MAX_PATH];
-	char ReturnedString[MAX_SEND_STR_LEN];
-	char *separator;
+	char *s;
+	char szFileName[MAX_PATH];
+	char szMsg[MAX_SEND_STR_LEN];
 
-	if (gbMaxPlayers != 1) {
-		if (!GetModuleFileName(ghInst, Filename, sizeof(Filename)))
-			app_fatal("Can't get program name");
-		separator = strrchr(Filename, '\\');
-		if (separator)
-			*separator = '\0';
-		strcat(Filename, "\\Diablo.ini");
-		GetPrivateProfileString("NetMsg", spszMsgKeyTbl[dwMsg], spszMsgTbl[dwMsg], ReturnedString, sizeof(ReturnedString), Filename);
-		NetSendCmdString(-1, ReturnedString);
+	if(gbMaxPlayers == 1) {
+		return;
 	}
+	if(GetModuleFileName(ghInst, szFileName, sizeof(szFileName)) == 0) {
+		app_fatal("Can't get program name");
+	}
+
+	s = strrchr(szFileName, '\\');
+	if(s != NULL) {
+		*s = '\0';
+	}
+
+	strcat(szFileName, "\\Diablo.ini");
+	/// ASSERT: assert(dwMsg < sizeof(spszMsgTbl) / sizeof(spszMsgTbl[0]));
+	GetPrivateProfileString("NetMsg", spszMsgKeyTbl[dwMsg], spszMsgTbl[dwMsg], szMsg, sizeof(szMsg), szFileName);
+	NetSendCmdString(-1, szMsg);
 }
 // 48436C: using guessed type char *spszMsgTbl[4];
 // 48437C: using guessed type char *spszMsgKeyTbl[4];
