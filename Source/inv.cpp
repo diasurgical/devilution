@@ -118,7 +118,7 @@ void InvDrawSlotBack(int X, int Y, int W, int H)
 
 	/// ASSERT: assert(gpBuffer);
 
-	dst = &gpBuffer[X + screen_y_times_768[Y]];
+	dst = &gpBuffer[X + PitchTbl[Y]];
 
 #if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
 	__asm {
@@ -456,7 +456,7 @@ void DrawInvBelt()
 		    && plr[myplr].SpdList[i]._itype != ITYPE_GOLD) {
 			fi = i + 49;
 			ff = fontframe[gbFontTransTbl[fi]];
-			CPrintString(InvRect[i + 65].X + 64 + screen_y_times_768[InvRect[i + 65].Y + 159] - fontkern[ff] + 28, ff, 0);
+			CPrintString(InvRect[i + 65].X + 64 + PitchTbl[InvRect[i + 65].Y + 159] - fontkern[ff] + 28, ff, 0);
 		}
 	}
 }

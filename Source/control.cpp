@@ -176,7 +176,7 @@ void DrawSpellCel(int xp, int yp, BYTE *Trans, int nCel, int w)
 
 	/// ASSERT: assert(gpBuffer);
 
-	dst = &gpBuffer[xp + screen_y_times_768[yp]];
+	dst = &gpBuffer[xp + PitchTbl[yp]];
 	tbl = SplTransTbl;
 
 #if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
@@ -1817,7 +1817,7 @@ void PrintGameStr(int x, int y, char *str, int color)
 	unsigned char v7; // bl
 
 	v4 = str;
-	v5 = screen_y_times_768[y + 160] + x + 64;
+	v5 = PitchTbl[y + 160] + x + 64;
 	for (i = *str; *v4; i = *v4) {
 		++v4;
 		v7 = fontframe[gbFontTransTbl[i]];
@@ -2066,7 +2066,7 @@ void ADD_PlrStringXY(int x, int y, int width, char *pszStr, char col)
 	int widtha;        // [esp+Ch] [ebp-4h]
 	int widthb;        // [esp+Ch] [ebp-4h]
 
-	v5 = screen_y_times_768[y + 160];
+	v5 = PitchTbl[y + 160];
 	v6 = pszStr;
 	widtha = v5 + x + 64;
 	v7 = *pszStr;
@@ -2113,7 +2113,7 @@ void MY_PlrStringXY(int x, int y, int width, char *pszStr, char col, int base)
 	int v16;           // [esp+18h] [ebp+8h]
 
 	v6 = pszStr;
-	widtha = screen_y_times_768[y + 160] + x + 64;
+	widtha = PitchTbl[y + 160] + x + 64;
 	v7 = *pszStr;
 	v8 = 0;
 	v9 = width - x + 1;
@@ -2479,7 +2479,7 @@ void PrintSBookStr(int x, int y, BOOL cjustflag, char *pszStr, char col)
 	int width;         // [esp+Ch] [ebp-4h]
 
 	v5 = pszStr;
-	width = screen_y_times_768[y] + x + 440;
+	width = PitchTbl[y] + x + 440;
 	v6 = 0;
 	v7 = 0;
 	if (cjustflag) {
@@ -2776,7 +2776,7 @@ char *control_print_talk_msg(char *msg, int x, int y, int *a4, int just)
 
 	v5 = x + 264;
 	v6 = msg;
-	*a4 = v5 + screen_y_times_768[y + 534];
+	*a4 = v5 + PitchTbl[y + 534];
 	v7 = *msg;
 	v8 = v5;
 	if (!v7)

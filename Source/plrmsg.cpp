@@ -111,7 +111,7 @@ void PrintPlrMsg(unsigned int x, unsigned int y, unsigned int width, const char 
 
 	while (*str) {
 		unsigned char c;
-		int screen = screen_y_times_768[y] + x;
+		int screen = PitchTbl[y] + x;
 		const char *sstr = str;
 		unsigned int len = 0;
 		const char *endstr = sstr;

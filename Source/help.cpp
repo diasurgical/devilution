@@ -209,7 +209,7 @@ void DrawHelpLine(int always_0, int help_line_nr, char *text, text_color color)
 	int v8;           // esi
 
 	v4 = 0;
-	v5 = screen_y_times_768[SStringY[help_line_nr] + 204] + always_0 + 96;
+	v5 = PitchTbl[SStringY[help_line_nr] + 204] + always_0 + 96;
 	for (i = *text; *text; i = *text) {
 		++text;
 		v7 = fontframe[gbFontTransTbl[i]];

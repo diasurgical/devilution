@@ -790,7 +790,7 @@ void PrintQLString(int x, int y, unsigned char cjustflag, char *str, int col)
 	v6 = x;
 	v18 = y;
 	v17 = x;
-	width = screen_y_times_768[v5 + 204] + x + 96;
+	width = PitchTbl[v5 + 204] + x + 96;
 	v7 = strlen(str);
 	v8 = 0;
 	v9 = 0;
