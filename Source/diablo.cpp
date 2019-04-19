@@ -470,8 +470,8 @@ void diablo_init_screen()
 {
 	int i;
 
-	MouseX = 320;
-	MouseY = 240;
+	MouseX = SCREEN_WIDTH / 2;
+	MouseY = SCREEN_HEIGHT / 2;
 	ScrollInfo._sdx = 0;
 	ScrollInfo._sdy = 0;
 	ScrollInfo._sxoff = 0;
@@ -479,7 +479,7 @@ void diablo_init_screen()
 	ScrollInfo._sdir = SDIR_NONE;
 
 	for (i = 0; i < 1024; i++)
-		screen_y_times_768[i] = i * 768;
+		PitchTbl[i] = i * BUFFER_WIDTH;
 
 	ClrDiabloMsg();
 }

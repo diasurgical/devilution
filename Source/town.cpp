@@ -174,7 +174,7 @@ void town_draw_clipped_town(BYTE *pBuff, int x, int y, int sx, int sy, BOOL some
 
 	/// ASSERT: assert(gpBuffer);
 
-	pBuff = &gpBuffer[sx + screen_y_times_768[sy]];
+	pBuff = &gpBuffer[sx + PitchTbl[sy]];
 
 	if (dItem[x][y] != 0) {
 		bv = dItem[x][y] - 1;
@@ -246,7 +246,7 @@ void town_draw_lower(int x, int y, int sx, int sy, int a5, int some_flag)
 		if (y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX) {
 			level_cel_block = dPiece[x][y];
 			if (level_cel_block != 0) {
-				dst = &gpBuffer[sx + 32 + screen_y_times_768[sy]];
+				dst = &gpBuffer[sx + 32 + PitchTbl[sy]];
 				pMap = dpiece_defs_map_1[IsometricCoord(x, y)];
 				for (i = 1; i < 17; i += 2) {
 					level_cel_block = pMap[i];
@@ -255,12 +255,12 @@ void town_draw_lower(int x, int y, int sx, int sy, int a5, int some_flag)
 					}
 					dst -= 768 * 32;
 				}
-				town_draw_clipped_town(&gpBuffer[sx + screen_y_times_768[sy]], x, y, sx, sy, 0);
+				town_draw_clipped_town(&gpBuffer[sx + PitchTbl[sy]], x, y, sx, sy, 0);
 			} else {
-				town_clear_low_buf(&gpBuffer[sx + screen_y_times_768[sy]]);
+				town_clear_low_buf(&gpBuffer[sx + PitchTbl[sy]]);
 			}
 		} else {
-			town_clear_low_buf(&gpBuffer[sx + screen_y_times_768[sy]]);
+			town_clear_low_buf(&gpBuffer[sx + PitchTbl[sy]]);
 		}
 		x++;
 		y--;
@@ -271,7 +271,7 @@ void town_draw_lower(int x, int y, int sx, int sy, int a5, int some_flag)
 		if (y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX) {
 			level_cel_block = dPiece[x][y];
 			if (level_cel_block != 0) {
-				dst = &gpBuffer[sx + screen_y_times_768[sy]];
+				dst = &gpBuffer[sx + PitchTbl[sy]];
 				pMap = dpiece_defs_map_1[IsometricCoord(x, y)];
 				for (i = 0; i < 16; i += 2) {
 					level_cel_block = pMap[i];
@@ -284,12 +284,12 @@ void town_draw_lower(int x, int y, int sx, int sy, int a5, int some_flag)
 					}
 					dst -= 768 * 32;
 				}
-				town_draw_clipped_town(&gpBuffer[sx + screen_y_times_768[sy]], x, y, sx, sy, 1);
+				town_draw_clipped_town(&gpBuffer[sx + PitchTbl[sy]], x, y, sx, sy, 1);
 			} else {
-				town_clear_low_buf(&gpBuffer[sx + screen_y_times_768[sy]]);
+				town_clear_low_buf(&gpBuffer[sx + PitchTbl[sy]]);
 			}
 		} else {
-			town_clear_low_buf(&gpBuffer[sx + screen_y_times_768[sy]]);
+			town_clear_low_buf(&gpBuffer[sx + PitchTbl[sy]]);
 		}
 		x++;
 		y--;
@@ -300,7 +300,7 @@ void town_draw_lower(int x, int y, int sx, int sy, int a5, int some_flag)
 		if (y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX) {
 			level_cel_block = dPiece[x][y];
 			if (level_cel_block != 0) {
-				dst = &gpBuffer[sx + screen_y_times_768[sy]];
+				dst = &gpBuffer[sx + PitchTbl[sy]];
 				pMap = dpiece_defs_map_1[IsometricCoord(x, y)];
 				for (i = 0; i < 16; i += 2) {
 					level_cel_block = pMap[i];
@@ -309,12 +309,12 @@ void town_draw_lower(int x, int y, int sx, int sy, int a5, int some_flag)
 					}
 					dst -= 768 * 32;
 				}
-				town_draw_clipped_town(&gpBuffer[sx + screen_y_times_768[sy]], x, y, sx, sy, 0);
+				town_draw_clipped_town(&gpBuffer[sx + PitchTbl[sy]], x, y, sx, sy, 0);
 			} else {
-				town_clear_low_buf(&gpBuffer[sx + screen_y_times_768[sy]]);
+				town_clear_low_buf(&gpBuffer[sx + PitchTbl[sy]]);
 			}
 		} else {
-			town_clear_low_buf(&gpBuffer[sx + screen_y_times_768[sy]]);
+			town_clear_low_buf(&gpBuffer[sx + PitchTbl[sy]]);
 		}
 	}
 }
@@ -431,7 +431,7 @@ void town_draw_lower_2(int x, int y, int sx, int sy, int a5, int a6, int some_fl
 		if (y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX) {
 			level_cel_block = dPiece[x][y];
 			if (level_cel_block != 0) {
-				dst = &gpBuffer[sx - (768 * 32 - 32) + screen_y_times_768[sy]];
+				dst = &gpBuffer[sx - (768 * 32 - 32) + PitchTbl[sy]];
 				pMap = dpiece_defs_map_1[IsometricCoord(x, y)];
 				for (i = 0; i < 7; i++) {
 					if (a6 <= i) {
@@ -443,13 +443,13 @@ void town_draw_lower_2(int x, int y, int sx, int sy, int a5, int a6, int some_fl
 					dst -= 768 * 32;
 				}
 				if (dir < 8) {
-					town_draw_clipped_town_2(&gpBuffer[sx + screen_y_times_768[sy]], x, y, a6, dir, sx, sy, 0);
+					town_draw_clipped_town_2(&gpBuffer[sx + PitchTbl[sy]], x, y, a6, dir, sx, sy, 0);
 				}
 			} else {
-				town_clear_low_buf(&gpBuffer[sx + screen_y_times_768[sy]]);
+				town_clear_low_buf(&gpBuffer[sx + PitchTbl[sy]]);
 			}
 		} else {
-			town_clear_low_buf(&gpBuffer[sx + screen_y_times_768[sy]]);
+			town_clear_low_buf(&gpBuffer[sx + PitchTbl[sy]]);
 		}
 		x++;
 		y--;
@@ -460,7 +460,7 @@ void town_draw_lower_2(int x, int y, int sx, int sy, int a5, int a6, int some_fl
 		if (y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX) {
 			level_cel_block = dPiece[x][y];
 			if (level_cel_block != 0) {
-				dst = &gpBuffer[sx - 768 * 32 + screen_y_times_768[sy]];
+				dst = &gpBuffer[sx - 768 * 32 + PitchTbl[sy]];
 				pMap = dpiece_defs_map_1[IsometricCoord(x, y)];
 				for (i = 0; i < 7; i++) {
 					if (a6 <= i) {
@@ -476,13 +476,13 @@ void town_draw_lower_2(int x, int y, int sx, int sy, int a5, int a6, int some_fl
 					dst -= 768 * 32;
 				}
 				if (dir < 8) {
-					town_draw_clipped_town_2(&gpBuffer[sx + screen_y_times_768[sy] - 768 * 16 * dir], x, y, a6, dir, sx, sy, 1);
+					town_draw_clipped_town_2(&gpBuffer[sx + PitchTbl[sy] - 768 * 16 * dir], x, y, a6, dir, sx, sy, 1);
 				}
 			} else {
-				town_clear_low_buf(&gpBuffer[sx + screen_y_times_768[sy]]);
+				town_clear_low_buf(&gpBuffer[sx + PitchTbl[sy]]);
 			}
 		} else {
-			town_clear_low_buf(&gpBuffer[sx + screen_y_times_768[sy]]);
+			town_clear_low_buf(&gpBuffer[sx + PitchTbl[sy]]);
 		}
 		x++;
 		y--;
@@ -493,7 +493,7 @@ void town_draw_lower_2(int x, int y, int sx, int sy, int a5, int a6, int some_fl
 		if (y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX) {
 			level_cel_block = dPiece[x][y];
 			if (level_cel_block != 0) {
-				dst = &gpBuffer[sx - 768 * 32 + screen_y_times_768[sy]];
+				dst = &gpBuffer[sx - 768 * 32 + PitchTbl[sy]];
 				pMap = dpiece_defs_map_1[IsometricCoord(x, y)];
 				for (i = 0; i < 7; i++) {
 					if (a6 <= i) {
@@ -505,13 +505,13 @@ void town_draw_lower_2(int x, int y, int sx, int sy, int a5, int a6, int some_fl
 					dst -= 768 * 32;
 				}
 				if (dir < 8) {
-					town_draw_clipped_town_2(&gpBuffer[sx + screen_y_times_768[sy]], x, y, a6, dir, sx, sy, 0);
+					town_draw_clipped_town_2(&gpBuffer[sx + PitchTbl[sy]], x, y, a6, dir, sx, sy, 0);
 				}
 			} else {
-				town_clear_low_buf(&gpBuffer[sx + screen_y_times_768[sy]]);
+				town_clear_low_buf(&gpBuffer[sx + PitchTbl[sy]]);
 			}
 		} else {
-			town_clear_low_buf(&gpBuffer[sx + screen_y_times_768[sy]]);
+			town_clear_low_buf(&gpBuffer[sx + PitchTbl[sy]]);
 		}
 	}
 }
@@ -629,7 +629,7 @@ void town_draw_upper(int x, int y, int sx, int sy, int a5, int a6, int some_flag
 		if (y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX) {
 			level_cel_block = dPiece[x][y];
 			if (level_cel_block != 0) {
-				dst = &gpBuffer[sx + 32 + screen_y_times_768[sy]];
+				dst = &gpBuffer[sx + 32 + PitchTbl[sy]];
 				pMap = dpiece_defs_map_1[IsometricCoord(x, y)];
 				for (i = 0; i < 7; i++) {
 					if (a6 >= i) {
@@ -640,12 +640,12 @@ void town_draw_upper(int x, int y, int sx, int sy, int a5, int a6, int some_flag
 					}
 					dst -= 768 * 32;
 				}
-				town_draw_town_all(&gpBuffer[sx + screen_y_times_768[sy]], x, y, a6, dir, sx, sy, 0);
+				town_draw_town_all(&gpBuffer[sx + PitchTbl[sy]], x, y, a6, dir, sx, sy, 0);
 			} else {
-				town_clear_upper_buf(&gpBuffer[sx + screen_y_times_768[sy]]);
+				town_clear_upper_buf(&gpBuffer[sx + PitchTbl[sy]]);
 			}
 		} else {
-			town_clear_upper_buf(&gpBuffer[sx + screen_y_times_768[sy]]);
+			town_clear_upper_buf(&gpBuffer[sx + PitchTbl[sy]]);
 		}
 		x++;
 		y--;
@@ -656,7 +656,7 @@ void town_draw_upper(int x, int y, int sx, int sy, int a5, int a6, int some_flag
 		if (y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX) {
 			level_cel_block = dPiece[x][y];
 			if (level_cel_block != 0) {
-				dst = &gpBuffer[sx + screen_y_times_768[sy]];
+				dst = &gpBuffer[sx + PitchTbl[sy]];
 				pMap = dpiece_defs_map_1[IsometricCoord(x, y)];
 				for (i = 0; i < 7; i++) {
 					if (a6 >= i) {
@@ -671,12 +671,12 @@ void town_draw_upper(int x, int y, int sx, int sy, int a5, int a6, int some_flag
 					}
 					dst -= 768 * 32;
 				}
-				town_draw_town_all(&gpBuffer[sx + screen_y_times_768[sy]], x, y, a6, dir, sx, sy, 1);
+				town_draw_town_all(&gpBuffer[sx + PitchTbl[sy]], x, y, a6, dir, sx, sy, 1);
 			} else {
-				town_clear_upper_buf(&gpBuffer[sx + screen_y_times_768[sy]]);
+				town_clear_upper_buf(&gpBuffer[sx + PitchTbl[sy]]);
 			}
 		} else {
-			town_clear_upper_buf(&gpBuffer[sx + screen_y_times_768[sy]]);
+			town_clear_upper_buf(&gpBuffer[sx + PitchTbl[sy]]);
 		}
 		x++;
 		y--;
@@ -687,7 +687,7 @@ void town_draw_upper(int x, int y, int sx, int sy, int a5, int a6, int some_flag
 		if (y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX) {
 			level_cel_block = dPiece[x][y];
 			if (level_cel_block != 0) {
-				dst = &gpBuffer[sx + screen_y_times_768[sy]];
+				dst = &gpBuffer[sx + PitchTbl[sy]];
 				pMap = dpiece_defs_map_1[IsometricCoord(x, y)];
 				for (i = 0; i < 7; i++) {
 					if (a6 >= i) {
@@ -698,12 +698,12 @@ void town_draw_upper(int x, int y, int sx, int sy, int a5, int a6, int some_flag
 					}
 					dst -= 768 * 32;
 				}
-				town_draw_town_all(&gpBuffer[sx + screen_y_times_768[sy]], x, y, a6, dir, sx, sy, 0);
+				town_draw_town_all(&gpBuffer[sx + PitchTbl[sy]], x, y, a6, dir, sx, sy, 0);
 			} else {
-				town_clear_upper_buf(&gpBuffer[sx + screen_y_times_768[sy]]);
+				town_clear_upper_buf(&gpBuffer[sx + PitchTbl[sy]]);
 			}
 		} else {
-			town_clear_upper_buf(&gpBuffer[sx + screen_y_times_768[sy]]);
+			town_clear_upper_buf(&gpBuffer[sx + PitchTbl[sy]]);
 		}
 	}
 }
@@ -787,7 +787,7 @@ void T_DrawGame(int x, int y)
 	}
 
 	/// ASSERT: assert(gpBuffer);
-	gpBufEnd = &gpBuffer[screen_y_times_768[160]];
+	gpBufEnd = &gpBuffer[PitchTbl[160]];
 	for (i = 0; i < 7; i++) {
 		town_draw_upper(x, y, sx, sy, chunks, i, 0);
 		y++;
@@ -799,7 +799,7 @@ void T_DrawGame(int x, int y)
 		sy += 16;
 	}
 	/// ASSERT: assert(gpBuffer);
-	gpBufEnd = &gpBuffer[screen_y_times_768[512]];
+	gpBufEnd = &gpBuffer[PitchTbl[512]];
 	for (i = 0; i < blocks; i++) {
 		town_draw_lower(x, y, sx, sy, chunks, 0);
 		y++;
@@ -894,7 +894,7 @@ void T_DrawZoom(int x, int y)
 	}
 
 	/// ASSERT: assert(gpBuffer);
-	gpBufEnd = &gpBuffer[screen_y_times_768[143]];
+	gpBufEnd = &gpBuffer[PitchTbl[143]];
 	for (i = 0; i < 7; i++) {
 		town_draw_upper(x, y, sx, sy, chunks, i, 0);
 		y++;
@@ -906,7 +906,7 @@ void T_DrawZoom(int x, int y)
 		sy += 16;
 	}
 	/// ASSERT: assert(gpBuffer);
-	gpBufEnd = &gpBuffer[screen_y_times_768[320]];
+	gpBufEnd = &gpBuffer[PitchTbl[320]];
 	for (i = 0; i < blocks; i++) {
 		town_draw_lower(x, y, sx, sy, chunks, 0);
 		y++;

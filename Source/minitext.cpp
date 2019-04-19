@@ -98,9 +98,9 @@ void PrintQTextChr(int sx, int sy, BYTE *pCelBuff, int nCel)
 
 	/// ASSERT: assert(gpBuffer);
 
-	dst = &gpBuffer[sx + screen_y_times_768[sy]];
-	pStart = &gpBuffer[screen_y_times_768[209]];
-	pEnd = &gpBuffer[screen_y_times_768[469]];
+	dst = &gpBuffer[sx + PitchTbl[sy]];
+	pStart = &gpBuffer[PitchTbl[209]];
+	pEnd = &gpBuffer[PitchTbl[469]];
 
 #if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
 	__asm {

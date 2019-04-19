@@ -133,7 +133,7 @@ void CelDecodeOnly(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth)
 	pFrameTable = (DWORD *)pCelBuff;
 
 	CelDrawDatOnly(
-	    &gpBuffer[sx + screen_y_times_768[sy]],
+	    &gpBuffer[sx + PitchTbl[sy]],
 	    &pCelBuff[pFrameTable[nCel]],
 	    pFrameTable[nCel + 1] - pFrameTable[nCel],
 	    nWidth);
@@ -194,7 +194,7 @@ void CelDrawHdrOnly(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int Ce
 		nDataSize -= nDataStart;
 
 	CelDrawDatOnly(
-	    &gpBuffer[sx + screen_y_times_768[sy - 16 * CelSkip]],
+	    &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]],
 	    pRLEBytes + nDataStart,
 	    nDataSize,
 	    nWidth);
@@ -596,7 +596,7 @@ void CelDecodeLightOnly(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth)
 
 	nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
 	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
-	pDecodeTo = &gpBuffer[sx + screen_y_times_768[sy]];
+	pDecodeTo = &gpBuffer[sx + PitchTbl[sy]];
 
 	if (light_table_index)
 		CelDecDatLightOnly(pDecodeTo, pRLEBytes, nDataSize, nWidth);
@@ -640,7 +640,7 @@ void CelDecodeHdrLightOnly(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth,
 		nDataSize -= nDataStart;
 
 	pRLEBytes += nDataStart;
-	pDecodeTo = &gpBuffer[sx + screen_y_times_768[sy - 16 * CelSkip]];
+	pDecodeTo = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
 
 	if (light_table_index)
 		CelDecDatLightOnly(pDecodeTo, pRLEBytes, nDataSize, nWidth);
@@ -730,7 +730,7 @@ void CelDrawHdrLightRed(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, in
 		nDataSize -= nDataStart;
 
 	src += nDataStart;
-	dst = &gpBuffer[sx + screen_y_times_768[sy - 16 * CelSkip]];
+	dst = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
 
 	idx = light4flag ? 1024 : 4096;
 	if (light == 2)
@@ -960,7 +960,7 @@ void Cel2DrawHdrOnly(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int C
 		nDataSize -= nDataStart;
 
 	Cel2DecDatOnly(
-	    &gpBuffer[sx + screen_y_times_768[sy - 16 * CelSkip]],
+	    &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]],
 	    pRLEBytes + nDataStart,
 	    nDataSize,
 	    nWidth);
@@ -1409,7 +1409,7 @@ void Cel2DecodeHdrLight(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, in
 		nDataSize -= nDataStart;
 
 	pRLEBytes += nDataStart;
-	pDecodeTo = &gpBuffer[sx + screen_y_times_768[sy - 16 * CelSkip]];
+	pDecodeTo = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
 
 	if (light_table_index)
 		Cel2DecDatLightOnly(pDecodeTo, pRLEBytes, nDataSize, nWidth);
@@ -1494,7 +1494,7 @@ void Cel2DrawHdrLightRed(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, i
 		nDataSize -= hdr;
 
 	src += hdr;
-	dst = &gpBuffer[sx + screen_y_times_768[sy - 16 * CelSkip]];
+	dst = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
 
 	idx = light4flag ? 1024 : 4096;
 	if (light == 2)
@@ -1750,7 +1750,7 @@ void CelDecodeClr(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth
 		nDataSize -= nDataStart;
 
 	src += nDataStart;
-	dst = &gpBuffer[sx + screen_y_times_768[sy - 16 * CelSkip]];
+	dst = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
 
 	__asm {
 		mov		esi, src
@@ -1816,7 +1816,7 @@ void CelDecodeClr(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth
 
 	src = pRLEBytes + nDataStart;
 	end = &src[nDataSize];
-	dst = &gpBuffer[sx + screen_y_times_768[sy - 16 * CelSkip]];
+	dst = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
 
 	for (; src != end; dst -= 768 + nWidth) {
 		for (w = nWidth; w;) {
@@ -1891,7 +1891,7 @@ void CelDrawHdrClrHL(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWi
 		nDataSize -= nDataStart;
 
 	src += nDataStart;
-	dst = &gpBuffer[sx + screen_y_times_768[sy - 16 * CelSkip]];
+	dst = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
 
 	__asm {
 		mov		esi, src
@@ -1982,7 +1982,7 @@ void CelDrawHdrClrHL(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWi
 
 	src = pRLEBytes + nDataStart;
 	end = &src[nDataSize];
-	dst = &gpBuffer[sx + screen_y_times_768[sy - 16 * CelSkip]];
+	dst = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
 
 	for (; src != end; dst -= 768 + nWidth) {
 		for (w = nWidth; w;) {
@@ -2036,7 +2036,7 @@ void ENG_set_pixel(int sx, int sy, BYTE col)
 	if (sy < 0 || sy >= 640 || sx < 64 || sx >= 704)
 		return;
 
-	dst = &gpBuffer[sx + screen_y_times_768[sy]];
+	dst = &gpBuffer[sx + PitchTbl[sy]];
 
 #if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
 	__asm {
@@ -2063,11 +2063,11 @@ void engine_draw_pixel(int sx, int sy)
 	if (dword_52B970) {
 		if (dword_52B99C && (sx < 0 || sx >= 640 || sy < 64 || sy >= 704))
 			return;
-		dst = &gpBuffer[sy + screen_y_times_768[sx]];
+		dst = &gpBuffer[sy + PitchTbl[sx]];
 	} else {
 		if (dword_52B99C && (sy < 0 || sy >= 640 || sx < 64 || sx >= 704))
 			return;
-		dst = &gpBuffer[sx + screen_y_times_768[sy]];
+		dst = &gpBuffer[sx + PitchTbl[sy]];
 	}
 
 #if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
@@ -2542,7 +2542,7 @@ void Cl2DecodeFrm1(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int Cel
 		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
 
 	Cl2DecDatFrm1(
-	    &gpBuffer[sx + screen_y_times_768[sy - 16 * CelSkip]],
+	    &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]],
 	    pRLEBytes + nDataStart,
 	    nDataSize - nDataStart,
 	    nWidth);
@@ -2725,7 +2725,7 @@ void Cl2DecodeFrm2(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWidt
 		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
 
 	Cl2DecDatFrm2(
-	    &gpBuffer[sx + screen_y_times_768[sy - 16 * CelSkip]],
+	    &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]],
 	    pRLEBytes + nDataStart,
 	    nDataSize - nDataStart,
 	    nWidth,
@@ -2936,7 +2936,7 @@ void Cl2DecodeFrm3(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int Cel
 		idx += (light - 1) << 8;
 
 	Cl2DecDatLightTbl1(
-	    &gpBuffer[sx + screen_y_times_768[sy - 16 * CelSkip]],
+	    &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]],
 	    &pRLEBytes[hdr],
 	    nDataSize - hdr,
 	    nWidth,
@@ -3130,7 +3130,7 @@ void Cl2DecodeLightTbl(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int
 	if (!nDataSize)
 		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
 
-	pDecodeTo = &gpBuffer[sx + screen_y_times_768[sy - 16 * CelSkip]];
+	pDecodeTo = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
 
 	if (light_table_index)
 		Cl2DecDatLightTbl1(pDecodeTo, &pRLEBytes[hdr], nDataSize - hdr, nWidth, &pLightTbl[light_table_index * 256]);
@@ -3175,7 +3175,7 @@ void Cl2DecodeFrm4(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int Cel
 		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
 
 	Cl2DecDatFrm4(
-	    &gpBuffer[sx + screen_y_times_768[sy - 16 * CelSkip]],
+	    &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]],
 	    pRLEBytes + nDataStart,
 	    nDataSize - nDataStart,
 	    nWidth);
@@ -3373,7 +3373,7 @@ void Cl2DecodeClrHL(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWid
 
 	gpBufEnd -= 768;
 	Cl2DecDatClrHL(
-	    &gpBuffer[sx + screen_y_times_768[sy - 16 * CelSkip]],
+	    &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]],
 	    pRLEBytes + nDataStart,
 	    nDataSize - nDataStart,
 	    nWidth,
@@ -3598,7 +3598,7 @@ void Cl2DecodeFrm5(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int Cel
 		idx += (light - 1) << 8;
 
 	Cl2DecDatLightTbl2(
-	    &gpBuffer[sx + screen_y_times_768[sy - 16 * CelSkip]],
+	    &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]],
 	    &pRLEBytes[hdr],
 	    nDataSize - hdr,
 	    nWidth,
@@ -3806,7 +3806,7 @@ void Cl2DecodeFrm6(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int Cel
 	if (!nDataSize)
 		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
 
-	pDecodeTo = &gpBuffer[sx + screen_y_times_768[sy - 16 * CelSkip]];
+	pDecodeTo = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
 
 	if (light_table_index)
 		Cl2DecDatLightTbl2(pDecodeTo, &pRLEBytes[hdr], nDataSize - hdr, nWidth, &pLightTbl[light_table_index * 256]);

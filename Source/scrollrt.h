@@ -3,7 +3,7 @@
 #define __SCROLLRT_H__
 
 extern int light_table_index; // weak
-extern int screen_y_times_768[1024];
+extern int PitchTbl[1024];
 extern unsigned char *gpBufEnd; // weak
 extern DWORD level_cel_block;   // weak
 extern char arch_draw_type;     // weak

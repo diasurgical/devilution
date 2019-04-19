@@ -3607,7 +3607,7 @@ void PrintUString(int x, int y, int cjustflag, char *str, int col)
 	int a3;            // [esp+18h] [ebp+8h]
 
 	v5 = str;
-	v6 = screen_y_times_768[SStringY[y] + 204] + x + 96;
+	v6 = PitchTbl[SStringY[y] + 204] + x + 96;
 	v7 = strlen(str);
 	v8 = 0;
 	v9 = 0;
@@ -3652,7 +3652,7 @@ void DrawULine(int y)
 #if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
 	int yy;
 
-	yy = screen_y_times_768[SStringY[y] + 198] + 26 + 64;
+	yy = PitchTbl[SStringY[y] + 198] + 26 + 64;
 
 	__asm {
 		mov		esi, gpBuffer
@@ -3675,7 +3675,7 @@ void DrawULine(int y)
 	BYTE *src, *dst;
 
 	src = &gpBuffer[SCREENXY(26, 25)];
-	dst = &gpBuffer[screen_y_times_768[SStringY[y] + 198] + 26 + 64];
+	dst = &gpBuffer[PitchTbl[SStringY[y] + 198] + 26 + 64];
 
 	for (i = 0; i < 3; i++, src += 768, dst += 768)
 		memcpy(dst, src, 266);

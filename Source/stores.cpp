@@ -187,7 +187,7 @@ void PrintSString(int x, int y, unsigned char cjustflag, char *str, int col, int
 	v6 = SStringY[y] + stext[y]._syoff;
 	v7 = -(stextsize != 0);
 	v8 = x;
-	v9 = screen_y_times_768[v6 + 204];
+	v9 = PitchTbl[v6 + 204];
 	_LOWORD(v7) = v7 & 0xFEC0;
 	v24 = y;
 	v26 = x;
@@ -233,7 +233,7 @@ void PrintSString(int x, int y, unsigned char cjustflag, char *str, int col, int
 	}
 	if (!cjustflag && val >= 0) {
 		sprintf(valstr, "%i", val);
-		v19 = screen_y_times_768[v6 + 204] - v8 + 656;
+		v19 = PitchTbl[v6 + 204] - v8 + 656;
 		v20 = strlen(valstr);
 		while ((--v20 & 0x80000000) == 0) {
 			v21 = fontframe[gbFontTransTbl[(unsigned char)valstr[v20]]];
@@ -261,12 +261,12 @@ void DrawSLine(int y)
 
 	if (stextsize == 1) {
 		xy = SCREENXY(26, 25);
-		yy = screen_y_times_768[SStringY[y] + 198] + 26 + 64;
+		yy = PitchTbl[SStringY[y] + 198] + 26 + 64;
 		width = 586 / 4;
 		line = 768 - 586;
 	} else {
 		xy = SCREENXY(346, 25);
-		yy = screen_y_times_768[SStringY[y] + 198] + 346 + 64;
+		yy = PitchTbl[SStringY[y] + 198] + 346 + 64;
 		width = 266 / 4;
 		line = 768 - 266;
 	}
