@@ -2029,45 +2029,33 @@ void Obj_Trap(int i)
 
 void Obj_BCrossDamage(int i)
 {
-	int v1;        // esi
-	BOOLEAN v2;    // zf
-	int v3;        // ecx
-	int v4;        // edx
-	int v6;        // ecx
-	int damage[4]; // [esp+4h] [ebp-18h]
-	int v8;        // [esp+18h] [ebp-4h]
+	int fire_resist;
+	int damage[4] = { 6, 8, 10, 12 };
 
-	v1 = myplr;
-	v8 = i;
-	v2 = plr[myplr]._pmode == PM_DEATH;
-	damage[0] = 6;
-	damage[1] = 8;
-	damage[2] = 10;
-	damage[3] = 12;
-	if (!v2) {
-		v3 = plr[v1]._pFireResist;
-		if (v3 > 0)
-			damage[leveltype - 1] -= v3 * damage[leveltype - 1] / 100;
-		if (plr[v1].WorldX == object[v8]._ox && plr[v1].WorldY == object[v8]._oy - 1) {
-			v4 = damage[leveltype - 1];
-			plr[v1]._pHitPoints -= v4;
-			plr[v1]._pHPBase -= v4;
-			if (plr[v1]._pHitPoints >> 6 <= 0) {
-				SyncPlrKill(myplr, 0);
-				drawhpflag = TRUE;
-				return;
-			}
-			if (plr[myplr]._pClass == PC_WARRIOR) {
-				v6 = PS_WARR68;
-			} else if (plr[myplr]._pClass == PC_ROGUE) {
-				v6 = PS_ROGUE68;
-			} else if (plr[myplr]._pClass == PC_SORCERER) {
-				v6 = PS_MAGE68;
-			}
-			PlaySfxLoc(v6, plr[v1].WorldX, plr[v1].WorldY);
-			drawhpflag = TRUE;
+	if (plr[myplr]._pmode == PM_DEATH)
+		return;
+
+	fire_resist = plr[myplr]._pFireResist;
+	if (fire_resist > 0)
+		damage[leveltype - 1] -= fire_resist * damage[leveltype - 1] / 100;
+
+	if (plr[myplr].WorldX != object[i]._ox || plr[myplr].WorldY != object[i]._oy - 1)
+		return;
+
+	plr[myplr]._pHitPoints -= damage[leveltype - 1];
+	plr[myplr]._pHPBase -= damage[leveltype - 1];
+	if (plr[myplr]._pHitPoints >> 6 <= 0) {
+		SyncPlrKill(myplr, 0);
+	} else {
+		if (plr[myplr]._pClass == PC_WARRIOR) {
+			PlaySfxLoc(PS_WARR68, plr[myplr].WorldX, plr[myplr].WorldY);
+		} else if (plr[myplr]._pClass == PC_ROGUE) {
+			PlaySfxLoc(PS_ROGUE68, plr[myplr].WorldX, plr[myplr].WorldY);
+		} else if (plr[myplr]._pClass == PC_SORCERER) {
+			PlaySfxLoc(PS_MAGE68, plr[myplr].WorldX, plr[myplr].WorldY);
 		}
 	}
+	drawhpflag = TRUE;
 }
 
 void ProcessObjects()
