@@ -942,7 +942,7 @@ void AddStoryBooks()
 		xp = random(139, 80) + 16;
 		yp = random(139, 80) + 16;
 		for (yy = -2; yy <= 2; yy++) {
-			for (xx =-3; xx <= 3; xx++) {
+			for (xx = -3; xx <= 3; xx++) {
 				if (!RndLocOk(xx + xp, yy + yp))
 					done = FALSE;
 			}
@@ -1030,7 +1030,7 @@ void AddLazStand()
 		xp = random(139, 80) + 16;
 		yp = random(139, 80) + 16;
 		for (yy = -3; yy <= 3; yy++) {
-			for (xx =-2; xx <= 3; xx++) {
+			for (xx = -2; xx <= 3; xx++) {
 				if (!RndLocOk(xp + xx, yp + yy))
 					found = FALSE;
 			}
@@ -2309,7 +2309,7 @@ void ObjSetMini(int x, int y, int v)
 
 void ObjL1Special(int x1, int y1, int x2, int y2)
 {
-	int i,j;
+	int i, j;
 
 	for (i = y1; i <= y2; ++i) {
 		for (j = x1; j <= x2; ++j) {
@@ -3090,7 +3090,7 @@ void OperateChest(int pnum, int i, unsigned char sendmsg)
 					mtype = MIS_ARROW;
 					break;
 				case 1:
-					mtype=MIS_FARROW;
+					mtype = MIS_FARROW;
 					break;
 				case 2:
 					mtype = MIS_NOVA;
@@ -3976,7 +3976,6 @@ void OperateArmorStand(int pnum, int i, BOOL sendmsg)
 		}
 	}
 }
-
 
 int FindValidShrine(int i)
 {
