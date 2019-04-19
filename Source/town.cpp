@@ -1102,7 +1102,7 @@ void SetTownMicros()
 void T_FillSector(unsigned char *P3Tiles, unsigned char *pSector, int xi, int yi, int w, int h)
 {
 	int i, j, xx, yy;
-	long v1, v2, v3, v4, ii;
+	long tile1, tile2, tile3, tile4, ii;
 
 	ii = 4;
 	yy = yi;
@@ -1125,22 +1125,22 @@ void T_FillSector(unsigned char *P3Tiles, unsigned char *pSector, int xi, int yi
 				xor		eax, eax
 				lodsw
 				inc		eax
-				mov		v1, eax
+				mov		tile1, eax
 				lodsw
 				inc		eax
-				mov		v2, eax
+				mov		tile2, eax
 				lodsw
 				inc		eax
-				mov		v3, eax
+				mov		tile3, eax
 				lodsw
 				inc		eax
-				mov		v4, eax
+				mov		tile4, eax
 				jmp		label2
 			label1:
-				mov		v1, eax
-				mov		v2, eax
-				mov		v3, eax
-				mov		v4, eax
+				mov		tile1, eax
+				mov		tile2, eax
+				mov		tile3, eax
+				mov		tile4, eax
 			label2:
 				nop
 			}
@@ -1149,21 +1149,21 @@ void T_FillSector(unsigned char *P3Tiles, unsigned char *pSector, int xi, int yi
 
 			Map = (WORD *)&pSector[ii];
 			if (*Map) {
-				v1 = *((WORD *)&P3Tiles[(*Map - 1) * 8]) + 1;
-				v2 = *((WORD *)&P3Tiles[(*Map - 1) * 8] + 1) + 1;
-				v3 = *((WORD *)&P3Tiles[(*Map - 1) * 8] + 2) + 1;
-				v4 = *((WORD *)&P3Tiles[(*Map - 1) * 8] + 3) + 1;
+				tile1 = *((WORD *)&P3Tiles[(*Map - 1) * 8]) + 1;
+				tile2 = *((WORD *)&P3Tiles[(*Map - 1) * 8] + 1) + 1;
+				tile3 = *((WORD *)&P3Tiles[(*Map - 1) * 8] + 2) + 1;
+				tile4 = *((WORD *)&P3Tiles[(*Map - 1) * 8] + 3) + 1;
 			} else {
-				v1 = 0;
-				v2 = 0;
-				v3 = 0;
-				v4 = 0;
+				tile1 = 0;
+				tile2 = 0;
+				tile3 = 0;
+				tile4 = 0;
 			}
 #endif
-			dPiece[xx][yy] = v1;
-			dPiece[xx + 1][yy] = v2;
-			dPiece[xx][yy + 1] = v3;
-			dPiece[xx + 1][yy + 1] = v4;
+			dPiece[xx][yy] = tile1;
+			dPiece[xx + 1][yy] = tile2;
+			dPiece[xx][yy + 1] = tile3;
+			dPiece[xx + 1][yy + 1] = tile4;
 			xx += 2;
 			ii += 2;
 		}
@@ -1173,7 +1173,7 @@ void T_FillSector(unsigned char *P3Tiles, unsigned char *pSector, int xi, int yi
 
 void T_FillTile(unsigned char *P3Tiles, int xx, int yy, int t)
 {
-	long v1, v2, v3, v4;
+	long tile1, tile2, tile3, tile4;
 
 #if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
 	__asm {
@@ -1185,35 +1185,35 @@ void T_FillTile(unsigned char *P3Tiles, int xx, int yy, int t)
 		xor		eax, eax
 		lodsw
 		inc		eax
-		mov		v1, eax
+		mov		tile1, eax
 		lodsw
 		inc		eax
-		mov		v2, eax
+		mov		tile2, eax
 		lodsw
 		inc		eax
-		mov		v3, eax
+		mov		tile3, eax
 		lodsw
 		inc		eax
-		mov		v4, eax
+		mov		tile4, eax
 		jmp		label1
-		mov		v1, eax
-		mov		v2, eax
-		mov		v3, eax
-		mov		v4, eax
+		mov		tile1, eax
+		mov		tile2, eax
+		mov		tile3, eax
+		mov		tile4, eax
 	label1:
 		nop
 	}
 #else
-	v1 = *((WORD *)&P3Tiles[(t - 1) * 8]) + 1;
-	v2 = *((WORD *)&P3Tiles[(t - 1) * 8] + 1) + 1;
-	v3 = *((WORD *)&P3Tiles[(t - 1) * 8] + 2) + 1;
-	v4 = *((WORD *)&P3Tiles[(t - 1) * 8] + 3) + 1;
+	tile1 = *((WORD *)&P3Tiles[(t - 1) * 8]) + 1;
+	tile2 = *((WORD *)&P3Tiles[(t - 1) * 8] + 1) + 1;
+	tile3 = *((WORD *)&P3Tiles[(t - 1) * 8] + 2) + 1;
+	tile4 = *((WORD *)&P3Tiles[(t - 1) * 8] + 3) + 1;
 #endif
 
-	dPiece[xx][yy] = v1;
-	dPiece[xx + 1][yy] = v2;
-	dPiece[xx][yy + 1] = v3;
-	dPiece[xx + 1][yy + 1] = v4;
+	dPiece[xx][yy] = tile1;
+	dPiece[xx + 1][yy] = tile2;
+	dPiece[xx][yy + 1] = tile3;
+	dPiece[xx + 1][yy + 1] = tile4;
 }
 
 void T_Pass3()
