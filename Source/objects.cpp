@@ -2428,7 +2428,7 @@ void ObjL2Special(int x1, int y1, int x2, int y2)
 	}
 }
 
-void __fastcall DoorSet(int oi, int dx, int dy)
+void DoorSet(int oi, int dx, int dy)
 {
 	int pn;
 
