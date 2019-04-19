@@ -1506,11 +1506,8 @@ void AddShrine(int i)
 
 void AddBookcase(int i)
 {
-	int v1; // esi
-
-	v1 = i;
-	object[v1]._oRndSeed = GetRndSeed();
-	object[v1]._oPreFlag = TRUE;
+	object[i]._oRndSeed = GetRndSeed();
+	object[i]._oPreFlag = TRUE;
 }
 
 void AddPurifyingFountain(int i)
