@@ -2266,30 +2266,22 @@ LABEL_45:
 
 void ObjSetMicro(int dx, int dy, int pn)
 {
-	int v3;        // esi
-	char *v4;      // eax
-	char *v5;      // edx
-	signed int v6; // ecx
-	char *v7;      // esi
-	signed int v8; // ecx
+	WORD *defs, *v;
+	int i;
 
 	dPiece[dx][dy] = pn;
-	v3 = pn - 1;
-	v4 = (char *)dpiece_defs_map_1 + 32 * IsometricCoord(dx, dy);
-	if (leveltype == DTYPE_HELL) {
-		v7 = (char *)pLevelPieces + 32 * v3;
-		v8 = 0;
-		do {
-			*(_WORD *)&v4[2 * v8] = *(_WORD *)&v7[2 * ((v8 & 1) - (v8 & 0xE)) + 28];
-			++v8;
-		} while (v8 < 16);
+	pn--;
+	defs = dpiece_defs_map_1[IsometricCoord(dx, dy)];
+	if (leveltype != DTYPE_HELL) {
+		v = (WORD *)pLevelPieces + 10 * pn;
+		for (i = 0; i < 10; i++) {
+			defs[i] = v[(i & 1) - (i & 0xE) + 8];
+		}
 	} else {
-		v5 = (char *)pLevelPieces + 20 * v3;
-		v6 = 0;
-		do {
-			*(_WORD *)&v4[2 * v6] = *(_WORD *)&v5[2 * ((v6 & 1) - (v6 & 0xE)) + 16];
-			++v6;
-		} while (v6 < 10);
+		v = (WORD *)pLevelPieces + 16 * pn;
+		for (i = 0; i < 16; i++) {
+			defs[i] = v[(i & 1) - (i & 0xE) + 14];
+		}
 	}
 }
 
