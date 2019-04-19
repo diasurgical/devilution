@@ -196,11 +196,12 @@ void run_game_loop(unsigned int uMsg)
 
 void start_game(unsigned int uMsg)
 {
-	cineflag = FALSE;
 	zoomflag = 1;
+	cineflag = FALSE;
 	InitCursor();
 	InitLightTable();
 	LoadDebugGFX();
+	/// ASSERT: assert(ghMainWnd);
 	music_stop();
 	ShowProgress(uMsg);
 	gmenu_init_menu();
@@ -866,7 +867,9 @@ BOOL LeftMouseCmd(BOOL bShift)
 {
 	BOOL bNear;
 
-	if (!leveltype) {
+	/// ASSERT: assert(MouseY < 352);
+
+	if (leveltype == DTYPE_TOWN) {
 		if (pcursitem != -1 && pcurs == CURSOR_HAND)
 			NetSendCmdLocParam1(TRUE, invflag ? CMD_GOTOGETITEM : CMD_GOTOAGETITEM, cursmx, cursmy, pcursitem);
 		if (pcursmonst != -1)
@@ -1544,7 +1547,9 @@ void PressChar(int vkey)
 
 void LoadLvlGFX()
 {
-	switch (leveltype) {
+	/// ASSERT: assert(! pDungeonCels);
+
+	switch((unsigned char)leveltype) {
 	case DTYPE_TOWN:
 		pDungeonCels = LoadFileInMem("Levels\\TownData\\Town.CEL", 0);
 		pMegaTiles = LoadFileInMem("Levels\\TownData\\Town.TIL", 0);
@@ -1577,12 +1582,13 @@ void LoadLvlGFX()
 		break;
 	default:
 		app_fatal("LoadLvlGFX");
-		return;
+		break;
 	}
 }
 
 void LoadAllGFX()
 {
+	/// ASSERT: assert(! pSpeedCels);
 	pSpeedCels = DiabloAllocPtr(0x100000);
 	IncProgress();
 	IncProgress();
@@ -1594,44 +1600,40 @@ void LoadAllGFX()
 
 void CreateLevel(int lvldir)
 {
-	int hnd; // cl
-
-	switch (leveltype) {
+	switch((unsigned char)leveltype) {
 	case DTYPE_TOWN:
 		CreateTown(lvldir);
 		InitTownTriggers();
-		hnd = 0;
+		LoadRndLvlPal(0);
 		break;
 	case DTYPE_CATHEDRAL:
 		CreateL5Dungeon(glSeedTbl[currlevel], lvldir);
 		InitL1Triggers();
 		Freeupstairs();
-		hnd = 1;
+		LoadRndLvlPal(1);
 		break;
 	case DTYPE_CATACOMBS:
 		CreateL2Dungeon(glSeedTbl[currlevel], lvldir);
 		InitL2Triggers();
 		Freeupstairs();
-		hnd = 2;
+		LoadRndLvlPal(2);
 		break;
 	case DTYPE_CAVES:
 		CreateL3Dungeon(glSeedTbl[currlevel], lvldir);
 		InitL3Triggers();
 		Freeupstairs();
-		hnd = 3;
+		LoadRndLvlPal(3);
 		break;
 	case DTYPE_HELL:
 		CreateL4Dungeon(glSeedTbl[currlevel], lvldir);
 		InitL4Triggers();
 		Freeupstairs();
-		hnd = 4;
+		LoadRndLvlPal(4);
 		break;
 	default:
 		app_fatal("CreateLevel");
-		return;
+		break;
 	}
-
-	LoadRndLvlPal(hnd);
 }
 
 void LoadGameLevel(BOOL firstflag, int lvldir)
@@ -1873,44 +1875,49 @@ void game_loop(BOOL bStartup)
 
 void game_logic()
 {
-	if (PauseMode != 2) {
-		if (PauseMode == 1)
-			PauseMode = 2;
-		if (gbMaxPlayers == 1 && gmenu_exception()) {
-			drawpanflag |= 1u;
-		} else {
-			if (!gmenu_exception() && sgnTimeoutCurs == CURSOR_NONE) {
-				CheckCursMove();
-				track_process();
-			}
-			if (gbProcessPlayers)
-				ProcessPlayers();
-			if (leveltype != DTYPE_TOWN) {
-				ProcessMonsters();
-				ProcessObjects();
-				ProcessMissiles();
-				ProcessItems();
-				ProcessLightList();
-				ProcessVisionList();
-			} else {
-				ProcessTowners();
-				ProcessItems();
-				ProcessMissiles();
-			}
-#ifdef _DEBUG
-			if (debug_mode_key_inverted_v) {
-				if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
-					ScrollView();
-			}
-#endif
-			sound_update();
-			ClearPlrMsg();
-			CheckTriggers();
-			CheckQuests();
-			drawpanflag |= 1u;
-			pfile_update(0);
-		}
+	if(PauseMode == 2) {
+		return;
 	}
+	if(PauseMode == 1) {
+		PauseMode = 2;
+	}
+	if(gbMaxPlayers == 1 && gmenu_exception()) {
+		drawpanflag |= 1;
+		return;
+	}
+
+	if(!gmenu_exception() && sgnTimeoutCurs == 0) {
+		CheckCursMove();
+		track_process();
+	}
+	if(gbProcessPlayers) {
+		ProcessPlayers();
+	}
+	if(leveltype != DTYPE_TOWN) {
+		ProcessMonsters();
+		ProcessObjects();
+		ProcessMissiles();
+		ProcessItems();
+		ProcessLightList();
+		ProcessVisionList();
+	} else {
+		ProcessTowners();
+		ProcessItems();
+		ProcessMissiles();
+	}
+
+#ifdef _DEBUG
+	if(debug_mode_key_inverted_v && GetAsyncKeyState(VK_SHIFT) & 0x8000) {
+		ScrollView();
+	}
+#endif
+
+	sound_update();
+	ClearPlrMsg();
+	CheckTriggers();
+	CheckQuests();
+	drawpanflag |= 1;
+	pfile_update(FALSE);
 }
 // 525718: using guessed type char cineflag;
 // 52571C: using guessed type int drawpanflag;
