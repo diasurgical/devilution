@@ -27,7 +27,7 @@ BOOL CheckThemeObj3(int xp, int yp, int t, int f);
 BOOL TFit_Obj3(int t);
 BOOL CheckThemeReqs(int t);
 BOOL SpecialThemeFit(int i, int t);
-BOOLEAN CheckThemeRoom(int tv);
+BOOL CheckThemeRoom(int tv);
 void InitThemes();
 void HoldThemeRooms();
 void PlaceThemeMonsts(int t, int f);

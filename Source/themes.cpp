@@ -371,77 +371,46 @@ BOOL SpecialThemeFit(int i, int t)
 	return rv;
 }
 
-BOOLEAN CheckThemeRoom(int tv)
+BOOL CheckThemeRoom(int tv)
 {
-	int v1;         // esi
-	int *v2;        // edx
-	signed int v3;  // edi
-	signed int v4;  // esi
-	signed int v5;  // edx
-	signed int v6;  // eax
-	int v7;         // edi
-	int *v8;        // esi
-	char *v9;       // eax
-	int *v10;       // edx
-	signed int v12; // [esp+Ch] [ebp-8h]
+	int i, j, tarea;
 
-	v1 = 0;
-	if (trigflag_4 <= 0) {
-	LABEL_5:
-		v3 = 0;
-		v4 = 0;
-		do {
-			v5 = 0;
-			v6 = v4;
-			do {
-				if (dTransVal[0][v6] == tv) {
-					if (dFlags[0][v6] & DFLAG_POPULATED) {
-						return 0;
-					}
-					++v3;
-				}
-				++v5;
-				v6 += 112;
-			} while (v5 < 112);
-			++v4;
-		} while (v4 < 112);
-		if (leveltype != 1 || v3 >= 9 && v3 <= 100) {
-			v7 = 0;
-			v8 = &dPiece[-1][111];
-		LABEL_16:
-			v12 = 0;
-			v9 = &dTransVal[-1][v7 + 111];
-			v10 = v8;
-			while (v9[1] != tv
-			    || nSolidTable[v10[1]]
-			    || (*(v9 - 111) == tv || nSolidTable[*(v10 - 111)]) /* check */
-			        && (v9[113] == tv || nSolidTable[v10[113]])
-			        && (*v9 == tv || nSolidTable[*v10])
-			        && (v9[2] == tv || nSolidTable[v10[2]])) {
-				++v12;
-				v10 += 112;
-				v9 += 112;
-				if (v12 >= 112) {
-					++v8;
-					++v7;
-					if ((signed int)v8 < (signed int)&dPiece[0][111]) {
-						goto LABEL_16;
-					}
-					return 1;
-				}
-			}
-		}
-	} else {
-		v2 = &trigs[0]._ty;
-		while (dTransVal[*(v2 - 1)][*v2] != tv) {
-			++v1;
-			v2 += 4;
-			if (v1 >= trigflag_4) {
-				goto LABEL_5;
-			}
+	for (i = 0; i < trigflag_4; i++) {
+		if (dTransVal[trigs[i]._tx][trigs[i]._ty] == tv)
+			return FALSE;
+	}
+
+	tarea = 0;
+	for (j = 0; j < MAXDUNY; j++) {
+		for (i = 0; i < MAXDUNX; i++) {
+			if (dTransVal[i][j] == tv)
+				continue;
+			if (dFlags[i][j] & DFLAG_POPULATED)
+				return FALSE;
+
+			tarea++;
 		}
 	}
-	return 0;
+
+	if (leveltype == DTYPE_CATHEDRAL && (tarea < 9 || tarea > 100))
+		return FALSE;
+
+	for (j = 0; j < MAXDUNY; j++) {
+		for (i = 0; i < MAXDUNX; i++) {
+			if (dTransVal[i][j] != tv || nSolidTable[dPiece[i][j]])
+				continue;
+			if (dTransVal[i - 1][j] != tv && !nSolidTable[dPiece[i - 1][j]])
+				return FALSE;
+			if (dTransVal[i + 1][j] != tv && !nSolidTable[dPiece[i + 1][j]])
+				return FALSE;
+			if (dTransVal[i][j - 1] != tv && !nSolidTable[dPiece[i][j - 1]])
+				return FALSE;
+			if (dTransVal[i][j + 1] != tv && !nSolidTable[dPiece[i][j + 1]])
+				return FALSE;
+		}
+	}
+
+	return TRUE;
 }
 
 void InitThemes()
