@@ -363,7 +363,7 @@ BOOL SpecialThemeFit(int i, int t)
 	case THEME_TREASURE:
 		rv = treasureFlag;
 		if (treasureFlag) {
-			treasureFlag = 0;
+			treasureFlag = FALSE;
 		}
 		break;
 	}
