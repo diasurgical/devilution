@@ -668,7 +668,7 @@ typedef struct ObjectStruct {
 	int _oAnimFrame;
 	int _oAnimWidth;
 	int _oAnimWidth2;
-	int _oDelFlag;
+	BOOL _oDelFlag;
 	char _oBreak; // check
 	BOOL _oSolidFlag;
 	BOOL _oMissFlag;

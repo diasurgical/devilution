@@ -518,7 +518,7 @@ void ClrAllObjects()
 		object[i]._oAnimCnt = 0;
 		object[i]._oAnimLen = 0;
 		object[i]._oAnimFrame = 0;
-		object[i]._oDelFlag = 0;
+		object[i]._oDelFlag = FALSE;
 		object[i]._oVar1 = 0;
 		object[i]._oVar2 = 0;
 		object[i]._oVar3 = 0;
@@ -1267,55 +1267,40 @@ void DeleteObject_(int oi, int i)
 
 void SetupObject(int i, int x, int y, int ot)
 {
-	int v4;  // esi
-	int v5;  // edi
-	int v6;  // ecx
-	int v7;  // edx
-	int v8;  // eax
-	int v9;  // eax
-	int v10; // edx
-	int v11; // eax
-	int v13; // eax
-	int v14; // eax
+	int ofi;
+	int j;
 
-	v4 = i;
-	object[v4]._otype = ot;
-	v5 = ot;
-	v6 = AllObjects[ot].ofindex;
-	object[v4]._ox = x;
-	object[v4]._oy = y;
-	v7 = ObjFileList[0];
-	v8 = 0;
-	while (v7 != v6)
-		v7 = ObjFileList[v8++ + 1];
-	object[v4]._oAnimData = pObjCels[v8];
-	v9 = AllObjects[v5].oAnimFlag;
-	object[v4]._oAnimFlag = v9;
-	if (v9) {
-		v10 = AllObjects[v5].oAnimDelay;
-		object[v4]._oAnimDelay = v10;
-		object[v4]._oAnimCnt = random(146, v10);
-		v11 = AllObjects[v5].oAnimLen;
-		object[v4]._oAnimLen = v11;
-		v13 = random(146, v11 - 1) + 1;
-	} else {
-		v14 = AllObjects[v5].oAnimLen;
-		object[v4]._oAnimDelay = 1000;
-		object[v4]._oAnimLen = v14;
-		v13 = AllObjects[v5].oAnimDelay;
-		object[v4]._oAnimCnt = 0;
+	object[i]._otype = ot;
+	ofi = AllObjects[ot].ofindex;
+	object[i]._ox = x;
+	object[i]._oy = y;
+	j = 0;
+	while (ObjFileList[j] != ofi) {
+		j++;
 	}
-	object[v4]._oAnimFrame = v13;
-	object[v4]._oAnimWidth = AllObjects[v5].oAnimWidth;
-	object[v4]._oSolidFlag = AllObjects[v5].oSolidFlag;
-	object[v4]._oMissFlag = AllObjects[v5].oMissFlag;
-	object[v4]._oLight = AllObjects[v5].oLightFlag;
-	object[v4]._oBreak = AllObjects[v5].oBreak;
-	object[v4]._oDelFlag = 0;
-	object[v4]._oSelFlag = AllObjects[v5].oSelFlag;
-	object[v4]._oPreFlag = FALSE;
-	object[v4]._oTrapFlag = FALSE;
-	object[v4]._oDoorFlag = FALSE;
+	object[i]._oAnimData = pObjCels[j];
+	object[i]._oAnimFlag = AllObjects[ot].oAnimFlag;
+	if (AllObjects[ot].oAnimFlag) {
+		object[i]._oAnimDelay = AllObjects[ot].oAnimDelay;
+		object[i]._oAnimCnt = random(146, AllObjects[ot].oAnimDelay);
+		object[i]._oAnimLen = AllObjects[ot].oAnimLen;
+		object[i]._oAnimFrame = random(146, AllObjects[ot].oAnimLen - 1) + 1;
+	} else {
+		object[i]._oAnimDelay = 1000;
+		object[i]._oAnimLen = AllObjects[ot].oAnimLen;
+		object[i]._oAnimFrame = AllObjects[ot].oAnimDelay;
+		object[i]._oAnimCnt = 0;
+	}
+	object[i]._oAnimWidth = AllObjects[ot].oAnimWidth;
+	object[i]._oSolidFlag = AllObjects[ot].oSolidFlag;
+	object[i]._oMissFlag = AllObjects[ot].oMissFlag;
+	object[i]._oLight = AllObjects[ot].oLightFlag;
+	object[i]._oBreak = AllObjects[ot].oBreak;
+	object[i]._oDelFlag = FALSE;
+	object[i]._oSelFlag = AllObjects[ot].oSelFlag;
+	object[i]._oPreFlag = FALSE;
+	object[i]._oTrapFlag = FALSE;
+	object[i]._oDoorFlag = FALSE;
 }
 
 void SetObjMapRange(int i, int x1, int y1, int x2, int y2, int v)
@@ -1521,11 +1506,8 @@ void AddShrine(int i)
 
 void AddBookcase(int i)
 {
-	int v1; // esi
-
-	v1 = i;
-	object[v1]._oRndSeed = GetRndSeed();
-	object[v1]._oPreFlag = TRUE;
+	object[i]._oRndSeed = GetRndSeed();
+	object[i]._oPreFlag = TRUE;
 }
 
 void AddPurifyingFountain(int i)
@@ -1857,45 +1839,33 @@ void Obj_Light(int i, int lr)
 
 void Obj_Circle(int i)
 {
-	int v1; // ecx
-	int v2; // edx
-	int v3; // esi
-	int v4; // eax
-	int v5; // ST1C_4
-	int v6; // edx
-	int v7; // eax
+	int ox;
+	int oy;
 
-	v1 = i;
-	v2 = object[v1]._ox;
-	v3 = object[v1]._oy;
-	if (plr[myplr].WorldX != v2 || plr[myplr].WorldY != v3) {
-		v7 = object[v1]._otype;
-		if (v7 == OBJ_MCIRCLE1)
-			object[v1]._oAnimFrame = 1;
-		if (v7 == OBJ_MCIRCLE2)
-			object[v1]._oAnimFrame = 3;
-		object[v1]._oVar6 = 0;
+	ox = object[i]._ox;
+	oy = object[i]._oy;
+	if (plr[myplr].WorldX != ox || plr[myplr].WorldY != object[i]._oy) {
+		if (object[i]._otype == OBJ_MCIRCLE1)
+			object[i]._oAnimFrame = 1;
+		if (object[i]._otype == OBJ_MCIRCLE2)
+			object[i]._oAnimFrame = 3;
+		object[i]._oVar6 = 0;
 	} else {
-		v4 = object[v1]._otype;
-		if (v4 == OBJ_MCIRCLE1)
-			object[v1]._oAnimFrame = 2;
-		if (v4 == OBJ_MCIRCLE2)
-			object[v1]._oAnimFrame = 4;
-		if (v2 == 45) {
-			if (v3 == 47) {
-				object[v1]._oVar6 = 2;
-				return;
-			}
-		} else if (v2 == 26 && v3 == 46) {
-			object[v1]._oVar6 = 1;
+		if (object[i]._otype == OBJ_MCIRCLE1)
+			object[i]._oAnimFrame = 2;
+		if (object[i]._otype == OBJ_MCIRCLE2)
+			object[i]._oAnimFrame = 4;
+		if (ox == 45 && oy == 47) {
+			object[i]._oVar6 = 2;
+			return;
+		} else if (object[i]._ox == 26 && object[i]._oy == 46) {
+			object[i]._oVar6 = 1;
 			return;
 		}
-		object[v1]._oVar6 = 0;
-		if (v2 == 35 && v3 == 36 && object[v1]._oVar5 == 3) {
-			v5 = object[v1]._oVar4;
-			v6 = object[v1]._oVar2;
-			object[v1]._oVar6 = 4;
-			ObjChangeMapResync(object[v1]._oVar1, v6, object[v1]._oVar3, v5);
+		object[i]._oVar6 = 0;
+		if (ox == 35 && object[i]._oy == 36 && object[i]._oVar5 == 3) {
+			object[i]._oVar6 = 4;
+			ObjChangeMapResync(object[i]._oVar1, object[i]._oVar2, object[i]._oVar3, object[i]._oVar4);
 			if (quests[QTYPE_VB]._qactive == 2)
 				quests[QTYPE_VB]._qvar1 = 4;
 			AddMissile(plr[myplr].WorldX, plr[myplr].WorldY, 35, 46, plr[myplr]._pdir, MIS_RNDTELEPORT, 0, myplr, 0, 0);
@@ -2059,45 +2029,33 @@ void Obj_Trap(int i)
 
 void Obj_BCrossDamage(int i)
 {
-	int v1;        // esi
-	BOOLEAN v2;    // zf
-	int v3;        // ecx
-	int v4;        // edx
-	int v6;        // ecx
-	int damage[4]; // [esp+4h] [ebp-18h]
-	int v8;        // [esp+18h] [ebp-4h]
+	int fire_resist;
+	int damage[4] = { 6, 8, 10, 12 };
 
-	v1 = myplr;
-	v8 = i;
-	v2 = plr[myplr]._pmode == PM_DEATH;
-	damage[0] = 6;
-	damage[1] = 8;
-	damage[2] = 10;
-	damage[3] = 12;
-	if (!v2) {
-		v3 = plr[v1]._pFireResist;
-		if (v3 > 0)
-			damage[leveltype - 1] -= v3 * damage[leveltype - 1] / 100;
-		if (plr[v1].WorldX == object[v8]._ox && plr[v1].WorldY == object[v8]._oy - 1) {
-			v4 = damage[leveltype - 1];
-			plr[v1]._pHitPoints -= v4;
-			plr[v1]._pHPBase -= v4;
-			if (plr[v1]._pHitPoints >> 6 <= 0) {
-				SyncPlrKill(myplr, 0);
-				drawhpflag = TRUE;
-				return;
-			}
-			if (plr[myplr]._pClass == PC_WARRIOR) {
-				v6 = PS_WARR68;
-			} else if (plr[myplr]._pClass == PC_ROGUE) {
-				v6 = PS_ROGUE68;
-			} else if (plr[myplr]._pClass == PC_SORCERER) {
-				v6 = PS_MAGE68;
-			}
-			PlaySfxLoc(v6, plr[v1].WorldX, plr[v1].WorldY);
-			drawhpflag = TRUE;
+	if (plr[myplr]._pmode == PM_DEATH)
+		return;
+
+	fire_resist = plr[myplr]._pFireResist;
+	if (fire_resist > 0)
+		damage[leveltype - 1] -= fire_resist * damage[leveltype - 1] / 100;
+
+	if (plr[myplr].WorldX != object[i]._ox || plr[myplr].WorldY != object[i]._oy - 1)
+		return;
+
+	plr[myplr]._pHitPoints -= damage[leveltype - 1];
+	plr[myplr]._pHPBase -= damage[leveltype - 1];
+	if (plr[myplr]._pHitPoints >> 6 <= 0) {
+		SyncPlrKill(myplr, 0);
+	} else {
+		if (plr[myplr]._pClass == PC_WARRIOR) {
+			PlaySfxLoc(PS_WARR68, plr[myplr].WorldX, plr[myplr].WorldY);
+		} else if (plr[myplr]._pClass == PC_ROGUE) {
+			PlaySfxLoc(PS_ROGUE68, plr[myplr].WorldX, plr[myplr].WorldY);
+		} else if (plr[myplr]._pClass == PC_SORCERER) {
+			PlaySfxLoc(PS_MAGE68, plr[myplr].WorldX, plr[myplr].WorldY);
 		}
 	}
+	drawhpflag = TRUE;
 }
 
 void ProcessObjects()
