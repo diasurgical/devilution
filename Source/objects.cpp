@@ -518,7 +518,7 @@ void ClrAllObjects()
 		object[i]._oAnimCnt = 0;
 		object[i]._oAnimLen = 0;
 		object[i]._oAnimFrame = 0;
-		object[i]._oDelFlag = 0;
+		object[i]._oDelFlag = FALSE;
 		object[i]._oVar1 = 0;
 		object[i]._oVar2 = 0;
 		object[i]._oVar3 = 0;
@@ -1296,7 +1296,7 @@ void SetupObject(int i, int x, int y, int ot)
 	object[i]._oMissFlag = AllObjects[ot].oMissFlag;
 	object[i]._oLight = AllObjects[ot].oLightFlag;
 	object[i]._oBreak = AllObjects[ot].oBreak;
-	object[i]._oDelFlag = 0;
+	object[i]._oDelFlag = FALSE;
 	object[i]._oSelFlag = AllObjects[ot].oSelFlag;
 	object[i]._oPreFlag = FALSE;
 	object[i]._oTrapFlag = FALSE;
