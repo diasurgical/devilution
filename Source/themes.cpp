@@ -6,17 +6,17 @@ int numthemes; // idb
 BOOL armorFlag;
 int ThemeGoodIn[4];
 BOOL weaponFlag;
-BOOLEAN treasureFlag;  // weak
-BOOLEAN mFountainFlag; // weak
-BOOLEAN cauldronFlag;  // weak
-BOOLEAN tFountainFlag; // weak
+BOOL treasureFlag;
+BOOL mFountainFlag;
+BOOL cauldronFlag;
+BOOL tFountainFlag;
 int zharlib;
 int themex;    // idb
 int themey;    // idb
 int themeVar1; // idb
 ThemeStruct themes[MAXTHEMES];
-BOOLEAN pFountainFlag; // weak
-BOOLEAN bFountainFlag; // weak
+BOOL pFountainFlag;
+BOOL bFountainFlag;
 BOOL bCrossFlag;
 
 int ThemeGood[4] = { THEME_GOATSHRINE, THEME_SHRINE, THEME_SKELROOM, THEME_LIBRARY };
@@ -212,7 +212,7 @@ BOOL TFit_Obj3(int t)
 	return FALSE;
 }
 
-BOOLEAN CheckThemeReqs(int t)
+BOOL CheckThemeReqs(int t)
 {
 	BOOLEAN rv; // al
 	int v2;     // ecx
@@ -289,9 +289,9 @@ BOOLEAN CheckThemeReqs(int t)
 // 6AAC08: using guessed type int pFountainFlag;
 // 6AAC0C: using guessed type int bFountainFlag;
 
-BOOLEAN SpecialThemeFit(int i, int t)
+BOOL SpecialThemeFit(int i, int t)
 {
-	BOOLEAN rv; // eax
+	BOOL rv;
 
 	rv = CheckThemeReqs(t);
 	switch (t) {
@@ -304,21 +304,6 @@ BOOLEAN SpecialThemeFit(int i, int t)
 	case THEME_SKELROOM:
 		if (rv) {
 			rv = TFit_SkelRoom(i);
-		}
-		break;
-	case THEME_TREASURE:
-		rv = treasureFlag;
-		if (treasureFlag) {
-			treasureFlag = 0;
-		}
-		break;
-	case THEME_TORTURE:
-	case THEME_DECAPITATED:
-	case THEME_ARMORSTAND:
-	case THEME_BRNCROSS:
-	case THEME_WEAPONRACK:
-		if (rv) {
-			rv = TFit_Obj3(i);
 		}
 		break;
 	case THEME_BLOODFOUNTAIN:
@@ -334,19 +319,6 @@ BOOLEAN SpecialThemeFit(int i, int t)
 			rv = TFit_Obj5(i);
 			if (rv) {
 				pFountainFlag = 0;
-			}
-		}
-		break;
-	case THEME_GOATSHRINE:
-		if (rv) {
-			rv = TFit_GoatShrine(i);
-		}
-		break;
-	case THEME_CAULDRON:
-		if (rv) {
-			rv = TFit_Obj5(i);
-			if (rv) {
-				cauldronFlag = 0;
 			}
 		}
 		break;
@@ -366,15 +338,38 @@ BOOLEAN SpecialThemeFit(int i, int t)
 			}
 		}
 		break;
+	case THEME_CAULDRON:
+		if (rv) {
+			rv = TFit_Obj5(i);
+			if (rv) {
+				cauldronFlag = 0;
+			}
+		}
+		break;
+	case THEME_GOATSHRINE:
+		if (rv) {
+			rv = TFit_GoatShrine(i);
+		}
+		break;
+	case THEME_TORTURE:
+	case THEME_DECAPITATED:
+	case THEME_ARMORSTAND:
+	case THEME_BRNCROSS:
+	case THEME_WEAPONRACK:
+		if (rv) {
+			rv = TFit_Obj3(i);
+		}
+		break;
+	case THEME_TREASURE:
+		rv = treasureFlag;
+		if (treasureFlag) {
+			treasureFlag = 0;
+		}
+		break;
 	}
+
 	return rv;
 }
-// 6AAA54: using guessed type int treasureFlag;
-// 6AAA58: using guessed type int mFountainFlag;
-// 6AAA5C: using guessed type int cauldronFlag;
-// 6AAA60: using guessed type int tFountainFlag;
-// 6AAC08: using guessed type int pFountainFlag;
-// 6AAC0C: using guessed type int bFountainFlag;
 
 BOOLEAN CheckThemeRoom(int tv)
 {

@@ -6,17 +6,17 @@ extern int numthemes; // idb
 extern BOOL armorFlag;
 extern int ThemeGoodIn[4];
 extern BOOL weaponFlag;
-extern BOOLEAN treasureFlag;  // weak
-extern BOOLEAN mFountainFlag; // weak
-extern BOOLEAN cauldronFlag;  // weak
-extern BOOLEAN tFountainFlag; // weak
+extern BOOL treasureFlag;
+extern BOOL mFountainFlag;
+extern BOOL cauldronFlag;
+extern BOOL tFountainFlag;
 extern int zharlib;
 extern int themex;    // idb
 extern int themey;    // idb
 extern int themeVar1; // idb
 extern ThemeStruct themes[MAXTHEMES];
-extern BOOLEAN pFountainFlag; // weak
-extern BOOLEAN bFountainFlag; // weak
+extern BOOL pFountainFlag;
+extern BOOL bFountainFlag;
 extern BOOL bCrossFlag;
 
 BOOL TFit_Shrine(int i);
@@ -25,8 +25,8 @@ BOOL TFit_SkelRoom(int t);
 BOOL TFit_GoatShrine(int t);
 BOOL CheckThemeObj3(int xp, int yp, int t, int f);
 BOOL TFit_Obj3(int t);
-BOOLEAN CheckThemeReqs(int t);
-BOOLEAN SpecialThemeFit(int i, int t);
+BOOL CheckThemeReqs(int t);
+BOOL SpecialThemeFit(int i, int t);
 BOOLEAN CheckThemeRoom(int tv);
 void InitThemes();
 void HoldThemeRooms();
