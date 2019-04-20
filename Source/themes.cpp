@@ -334,7 +334,7 @@ BOOL SpecialThemeFit(int i, int t)
 		if (rv) {
 			rv = TFit_Obj5(i);
 			if (rv) {
-				tFountainFlag = 0;
+				tFountainFlag = FALSE;
 			}
 		}
 		break;
