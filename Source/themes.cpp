@@ -96,69 +96,50 @@ BOOL TFit_Shrine(int i)
 
 BOOL TFit_Obj5(int t)
 {
-	int v2;         // ebx
-	int v3;         // esi
-	int v4;         // eax
-	int v5;         // edi
-	int v6;         // ecx
-	signed int v7;  // edx
-	int v8;         // ecx
-	int v10;        // [esp+Ch] [ebp-Ch]
-	int v11;        // [esp+10h] [ebp-8h]
-	signed int v12; // [esp+14h] [ebp-4h]
+	int xp, yp;
+	int i, r, rs;
+	BOOL found;
 
-	v2 = 0;
-	v3 = 0;
-	v4 = random(0, 5) + 1;
-	v10 = v4;
-	if (v4 <= 0) {
-	LABEL_19:
-		themex = v2;
-		themey = v3;
-		return 1;
-	}
-	v5 = themes[t].ttval;
-	v11 = v5;
-	while (1) {
-		v6 = v3 + 112 * v2;
-		if (dTransVal[0][v6] == v5 && !nSolidTable[dPiece[0][v6]]) {
-			v12 = 1;
-			v7 = 0;
-			do {
-				if (v7 >= 25) {
-					break;
+	xp = 0;
+	yp = 0;
+	r = random(0, 5) + 1;
+	rs = r;
+	while (r > 0) {
+		found = FALSE;
+		if (dTransVal[xp][yp] == themes[t].ttval && !nSolidTable[dPiece[xp][yp]]) {
+			found = TRUE;
+			for (i = 0; found && i < 25; i++) {
+				if (nSolidTable[dPiece[xp + trm5x[i]][yp + trm5y[i]]]) {
+					found = FALSE;
 				}
-				v8 = v3 + trm5y[v7] + 112 * (v2 + trm5x[v7]);
-				if (nSolidTable[dPiece[0][v8]]) {
-					v12 = 0;
+				if (dTransVal[xp + trm5x[i]][yp + trm5y[i]] != themes[t].ttval) {
+					found = FALSE;
 				}
-				v5 = v11;
-				if (dTransVal[0][v8] != v11) {
-					v12 = 0;
-				}
-				++v7;
-			} while (v12);
-			if (v12) {
-				--v4;
-				goto LABEL_18;
 			}
 		}
-		if (++v2 != 112) {
-			goto LABEL_18;
+
+		if (!found) {
+			xp++;
+			if (xp == MAXDUNX) {
+				xp = 0;
+				yp++;
+				if (yp == MAXDUNY) {
+					if (r == rs) {
+						return FALSE;
+					}
+					yp = 0;
+				}
+			}
+			continue;
 		}
-		v2 = 0;
-		if (++v3 != 112) {
-			goto LABEL_18;
-		}
-		if (v4 == v10) {
-			return 0;
-		}
-		v3 = 0;
-	LABEL_18:
-		if (v4 <= 0) {
-			goto LABEL_19;
-		}
+
+		r--;
 	}
+
+	themex = xp;
+	themey = yp;
+
+	return TRUE;
 }
 
 BOOL TFit_SkelRoom(int t)
