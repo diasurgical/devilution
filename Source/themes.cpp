@@ -6,17 +6,17 @@ int numthemes; // idb
 BOOL armorFlag;
 int ThemeGoodIn[4];
 BOOL weaponFlag;
-BOOLEAN treasureFlag;  // weak
-BOOLEAN mFountainFlag; // weak
-BOOLEAN cauldronFlag;  // weak
-BOOLEAN tFountainFlag; // weak
+BOOL treasureFlag;
+BOOL mFountainFlag;
+BOOL cauldronFlag;
+BOOL tFountainFlag;
 int zharlib;
 int themex;    // idb
 int themey;    // idb
 int themeVar1; // idb
 ThemeStruct themes[MAXTHEMES];
-BOOLEAN pFountainFlag; // weak
-BOOLEAN bFountainFlag; // weak
+BOOL pFountainFlag;
+BOOL bFountainFlag;
 BOOL bCrossFlag;
 
 int ThemeGood[4] = { THEME_GOATSHRINE, THEME_SHRINE, THEME_SKELROOM, THEME_LIBRARY };
@@ -49,132 +49,97 @@ int trm3y[9] = {
 	1, 1, 1
 };
 
-BOOLEAN TFit_Shrine(int i)
+BOOL TFit_Shrine(int i)
 {
-	int v1;        // ecx
-	int v2;        // esi
-	int v3;        // eax
-	int v4;        // edx
-	signed int v6; // [esp+Ch] [ebp-8h]
-	int v7;        // [esp+10h] [ebp-4h]
+	int xp, yp, found;
 
-	v1 = themes[i].ttval;
-	v7 = 0;
-	v2 = 0;
-	v6 = 0;
-	while (1) {
-		v3 = v2 + 112 * v7;
-		if (dTransVal[0][v3] != v1) { /* check */
-			goto LABEL_20;
+	xp = 0;
+	yp = 0;
+	found = 0;
+	while (found == 0) {
+		if (dTransVal[xp][yp] == themes[i].ttval) {
+			if (nTrapTable[dPiece[xp][yp - 1]]
+			    && !nSolidTable[dPiece[xp - 1][yp]]
+			    && !nSolidTable[dPiece[xp + 1][yp]]
+			    && dTransVal[xp - 1][yp] == themes[i].ttval
+			    && dTransVal[xp + 1][yp] == themes[i].ttval
+			    && dObject[xp - 1][yp - 1] == 0
+			    && dObject[xp + 1][yp - 1] == 0) {
+				found = 1;
+			}
+			if (!found
+			    && nTrapTable[dPiece[xp - 1][yp]]
+			    && !nSolidTable[dPiece[xp][yp - 1]]
+			    && !nSolidTable[dPiece[xp][yp + 1]]
+			    && dTransVal[xp][yp - 1] == themes[i].ttval
+			    && dTransVal[xp][yp + 1] == themes[i].ttval
+			    && dObject[xp - 1][yp - 1] == 0
+			    && dObject[xp - 1][yp + 1] == 0) {
+				found = 2;
+			}
 		}
-		v4 = dPiece[0][v3 - 1]; // *(_DWORD *)&dflags[39][4 * v3 + 36];
-		if (nTrapTable[v4]
-		    && !nSolidTable[dPiece[-1][v3]] // !nSolidTable[*(_DWORD *)&dflags[28][4 * v3 + 32]]
-		    && !nSolidTable[dPiece[1][v3]]
-		    && dTransVal[-1][v3] == v1 // block_lvid[v3 + 1940] == v1
-		    && dTransVal[1][v3] == v1
-		    && !dObject[-1][v3 - 1]
-		    && !dObject[0][v3 + 111]) {
-			v6 = 1;
-		}
-		if (v6) {
-			break;
-		}
-		if (!nTrapTable[dPiece[-1][v3]] // !nTrapTable[*(_DWORD *)&dflags[28][4 * v3 + 32]]
-		    || nSolidTable[v4]
-		    || nSolidTable[dPiece[0][v3 + 1]]
-		    || dTransVal[0][v3 - 1] != v1 // *(&byte_5B78EB + v3) != v1
-		    || dTransVal[0][v3 + 1] != v1
-		    || dObject[-1][v3 - 1]
-		    || dObject[-1][v3 + 1]) /* check */
-		{
-			goto LABEL_21;
-		}
-		v6 = 2;
-	LABEL_20:
-		if (v6) {
-			break;
-		}
-	LABEL_21:
-		if (++v7 == MAXDUNX) {
-			++v2;
-			v7 = 0;
-			if (v2 == MAXDUNY) {
-				return 0;
+		if (found == 0) {
+			xp++;
+			if (xp == MAXDUNX) {
+				xp = 0;
+				yp++;
+				if (yp == MAXDUNY)
+					return FALSE;
 			}
 		}
 	}
-	themey = v2;
-	themex = v7;
-	themeVar1 = v6;
-	return 1;
+	themex = xp;
+	themey = yp;
+	themeVar1 = found;
+	return TRUE;
 }
 
 BOOL TFit_Obj5(int t)
 {
-	int v2;         // ebx
-	int v3;         // esi
-	int v4;         // eax
-	int v5;         // edi
-	int v6;         // ecx
-	signed int v7;  // edx
-	int v8;         // ecx
-	int v10;        // [esp+Ch] [ebp-Ch]
-	int v11;        // [esp+10h] [ebp-8h]
-	signed int v12; // [esp+14h] [ebp-4h]
+	int xp, yp;
+	int i, r, rs;
+	BOOL found;
 
-	v2 = 0;
-	v3 = 0;
-	v4 = random(0, 5) + 1;
-	v10 = v4;
-	if (v4 <= 0) {
-	LABEL_19:
-		themex = v2;
-		themey = v3;
-		return 1;
-	}
-	v5 = themes[t].ttval;
-	v11 = v5;
-	while (1) {
-		v6 = v3 + 112 * v2;
-		if (dTransVal[0][v6] == v5 && !nSolidTable[dPiece[0][v6]]) {
-			v12 = 1;
-			v7 = 0;
-			do {
-				if (v7 >= 25) {
-					break;
+	xp = 0;
+	yp = 0;
+	r = random(0, 5) + 1;
+	rs = r;
+	while (r > 0) {
+		found = FALSE;
+		if (dTransVal[xp][yp] == themes[t].ttval && !nSolidTable[dPiece[xp][yp]]) {
+			found = TRUE;
+			for (i = 0; found && i < 25; i++) {
+				if (nSolidTable[dPiece[xp + trm5x[i]][yp + trm5y[i]]]) {
+					found = FALSE;
 				}
-				v8 = v3 + trm5y[v7] + 112 * (v2 + trm5x[v7]);
-				if (nSolidTable[dPiece[0][v8]]) {
-					v12 = 0;
+				if (dTransVal[xp + trm5x[i]][yp + trm5y[i]] != themes[t].ttval) {
+					found = FALSE;
 				}
-				v5 = v11;
-				if (dTransVal[0][v8] != v11) {
-					v12 = 0;
-				}
-				++v7;
-			} while (v12);
-			if (v12) {
-				--v4;
-				goto LABEL_18;
 			}
 		}
-		if (++v2 != 112) {
-			goto LABEL_18;
+
+		if (!found) {
+			xp++;
+			if (xp == MAXDUNX) {
+				xp = 0;
+				yp++;
+				if (yp == MAXDUNY) {
+					if (r == rs) {
+						return FALSE;
+					}
+					yp = 0;
+				}
+			}
+			continue;
 		}
-		v2 = 0;
-		if (++v3 != 112) {
-			goto LABEL_18;
-		}
-		if (v4 == v10) {
-			return 0;
-		}
-		v3 = 0;
-	LABEL_18:
-		if (v4 <= 0) {
-			goto LABEL_19;
-		}
+
+		r--;
 	}
+
+	themex = xp;
+	themey = yp;
+
+	return TRUE;
 }
 
 BOOL TFit_SkelRoom(int t)
@@ -247,7 +212,7 @@ BOOL TFit_Obj3(int t)
 	return FALSE;
 }
 
-BOOLEAN CheckThemeReqs(int t)
+BOOL CheckThemeReqs(int t)
 {
 	BOOLEAN rv; // al
 	int v2;     // ecx
@@ -324,9 +289,9 @@ BOOLEAN CheckThemeReqs(int t)
 // 6AAC08: using guessed type int pFountainFlag;
 // 6AAC0C: using guessed type int bFountainFlag;
 
-BOOLEAN SpecialThemeFit(int i, int t)
+BOOL SpecialThemeFit(int i, int t)
 {
-	BOOLEAN rv; // eax
+	BOOL rv;
 
 	rv = CheckThemeReqs(t);
 	switch (t) {
@@ -341,10 +306,49 @@ BOOLEAN SpecialThemeFit(int i, int t)
 			rv = TFit_SkelRoom(i);
 		}
 		break;
-	case THEME_TREASURE:
-		rv = treasureFlag;
-		if (treasureFlag) {
-			treasureFlag = 0;
+	case THEME_BLOODFOUNTAIN:
+		if (rv) {
+			rv = TFit_Obj5(i);
+			if (rv) {
+				bFountainFlag = FALSE;
+			}
+		}
+		break;
+	case THEME_PURIFYINGFOUNTAIN:
+		if (rv) {
+			rv = TFit_Obj5(i);
+			if (rv) {
+				pFountainFlag = FALSE;
+			}
+		}
+		break;
+	case THEME_MURKYFOUNTAIN:
+		if (rv) {
+			rv = TFit_Obj5(i);
+			if (rv) {
+				mFountainFlag = FALSE;
+			}
+		}
+		break;
+	case THEME_TEARFOUNTAIN:
+		if (rv) {
+			rv = TFit_Obj5(i);
+			if (rv) {
+				tFountainFlag = FALSE;
+			}
+		}
+		break;
+	case THEME_CAULDRON:
+		if (rv) {
+			rv = TFit_Obj5(i);
+			if (rv) {
+				cauldronFlag = FALSE;
+			}
+		}
+		break;
+	case THEME_GOATSHRINE:
+		if (rv) {
+			rv = TFit_GoatShrine(i);
 		}
 		break;
 	case THEME_TORTURE:
@@ -356,60 +360,16 @@ BOOLEAN SpecialThemeFit(int i, int t)
 			rv = TFit_Obj3(i);
 		}
 		break;
-	case THEME_BLOODFOUNTAIN:
-		if (rv) {
-			rv = TFit_Obj5(i);
-			if (rv) {
-				bFountainFlag = 0;
-			}
-		}
-		break;
-	case THEME_PURIFYINGFOUNTAIN:
-		if (rv) {
-			rv = TFit_Obj5(i);
-			if (rv) {
-				pFountainFlag = 0;
-			}
-		}
-		break;
-	case THEME_GOATSHRINE:
-		if (rv) {
-			rv = TFit_GoatShrine(i);
-		}
-		break;
-	case THEME_CAULDRON:
-		if (rv) {
-			rv = TFit_Obj5(i);
-			if (rv) {
-				cauldronFlag = 0;
-			}
-		}
-		break;
-	case THEME_MURKYFOUNTAIN:
-		if (rv) {
-			rv = TFit_Obj5(i);
-			if (rv) {
-				mFountainFlag = 0;
-			}
-		}
-		break;
-	case THEME_TEARFOUNTAIN:
-		if (rv) {
-			rv = TFit_Obj5(i);
-			if (rv) {
-				tFountainFlag = 0;
-			}
+	case THEME_TREASURE:
+		rv = treasureFlag;
+		if (treasureFlag) {
+			treasureFlag = FALSE;
 		}
 		break;
 	}
+
 	return rv;
 }
-// 6AAA54: using guessed type int treasureFlag;
-// 6AAA58: using guessed type int mFountainFlag;
-// 6AAA5C: using guessed type int cauldronFlag;
-// 6AAA60: using guessed type int tFountainFlag;
-// 6AAC08: using guessed type int pFountainFlag;
-// 6AAC0C: using guessed type int bFountainFlag;
 
 BOOLEAN CheckThemeRoom(int tv)
 {
