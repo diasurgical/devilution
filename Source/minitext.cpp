@@ -39,24 +39,15 @@ int qscroll_spd_tbl[9] = { 2, 4, 6, 8, 0, -1, -2, -3, -4 };
 
 void FreeQuestText()
 {
-	void *ptr;
-
-	ptr = pMedTextCels;
-	pMedTextCels = NULL;
-	mem_free_dbg(ptr);
-	ptr = pTextBoxCels;
-	pTextBoxCels = NULL;
-	mem_free_dbg(ptr);
+	MemFreeDbg(pMedTextCels);
+	MemFreeDbg(pTextBoxCels);
 }
 
 void InitQuestText()
 {
-	unsigned char *v0; // eax
-
 	pMedTextCels = LoadFileInMem("Data\\MedTextS.CEL", 0);
-	v0 = LoadFileInMem("Data\\TextBox.CEL", 0);
+	pTextBoxCels = LoadFileInMem("Data\\TextBox.CEL", 0);
 	qtextflag = FALSE;
-	pTextBoxCels = v0;
 }
 // 646D00: using guessed type char qtextflag;
 

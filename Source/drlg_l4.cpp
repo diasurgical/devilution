@@ -304,11 +304,7 @@ void DRLG_LoadL4SP()
 
 void DRLG_FreeL4SP()
 {
-	char *ptr;
-
-	ptr = pSetPiece_2;
-	pSetPiece_2 = NULL;
-	mem_free_dbg(ptr);
+	MemFreeDbg(pSetPiece_2);
 }
 
 void DRLG_L4SetSPRoom(int rx1, int ry1)

@@ -650,11 +650,7 @@ void DRLG_LoadL2SP()
 
 void DRLG_FreeL2SP()
 {
-	char *ptr;
-
-	ptr = pSetPiece_2;
-	pSetPiece_2 = NULL;
-	mem_free_dbg(ptr);
+	MemFreeDbg(pSetPiece_2);
 }
 
 void DRLG_L2(int entry)
@@ -1517,21 +1513,18 @@ void AddHall(int nX1, int nY1, int nX2, int nY2, int nHd)
 
 void GetHall(int *nX1, int *nY1, int *nX2, int *nY2, int *nHd)
 {
-	HALLNODE *p1;
-	HALLNODE *p2;
+	HALLNODE *p;
 
-	p1 = pHallList->pNext;
+	p = pHallList->pNext;
 	*nX1 = pHallList->nHallx1;
 	*nY1 = pHallList->nHally1;
 	*nX2 = pHallList->nHallx2;
 	*nY2 = pHallList->nHally2;
 	*nHd = pHallList->nHalldir;
 
-	p2 = pHallList;
-	pHallList = NULL;
-	mem_free_dbg(p2);
+	MemFreeDbg(pHallList);
 
-	pHallList = p1;
+	pHallList = p;
 }
 
 void ConnectHall(int nX1, int nY1, int nX2, int nY2, int nHd)

@@ -575,16 +575,9 @@ BOOLEAN mpqapi_parse_archive_header(_FILEHEADER *pHdr, int *pdwNextFileStart) //
 
 void mpqapi_close_archive(const char *pszArchive, BOOL bFree, int dwChar) // CloseMPQ
 {
-	_BLOCKENTRY *blockEntry;
-	_HASHENTRY *hashEntry;
-
 	if (bFree) {
-		blockEntry = sgpBlockTbl;
-		sgpBlockTbl = NULL;
-		mem_free_dbg(blockEntry);
-		hashEntry = sgpHashTbl;
-		sgpHashTbl = NULL;
-		mem_free_dbg(hashEntry);
+		MemFreeDbg(sgpBlockTbl);
+		MemFreeDbg(sgpHashTbl);
 	}
 	if (sghArchive != INVALID_HANDLE_VALUE) {
 		CloseHandle(sghArchive);

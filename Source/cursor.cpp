@@ -75,12 +75,7 @@ void InitCursor()
 
 void FreeCursor()
 {
-	void *p;
-
-	p = pCursCels;
-	pCursCels = NULL;
-	mem_free_dbg(p);
-
+	MemFreeDbg(pCursCels);
 	ClearCursor();
 }
 

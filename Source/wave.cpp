@@ -102,9 +102,7 @@ void *AllocateMemFile(HANDLE hsFile, MEMFILE *pMemFile, DWORD dwPos)
 
 void FreeMemFile(MEMFILE *pMemFile)
 {
-	void *mem = pMemFile->buf;
-	pMemFile->buf = NULL;
-	mem_free_dbg(mem);
+	MemFreeDbg(pMemFile->buf);
 }
 
 BOOL ReadWaveFile(MEMFILE *pMemFile, WAVEFORMATEX *pwfx, CKINFO *chunk)

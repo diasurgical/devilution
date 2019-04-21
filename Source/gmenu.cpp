@@ -70,23 +70,11 @@ void gmenu_print_text(int x, int y, char *pszStr)
 
 void FreeGMenu()
 {
-	void *ptr;
-
-	ptr = sgpLogo;
-	sgpLogo = NULL;
-	mem_free_dbg(ptr);
-	ptr = BigTGold_cel;
-	BigTGold_cel = NULL;
-	mem_free_dbg(ptr);
-	ptr = PentSpin_cel;
-	PentSpin_cel = NULL;
-	mem_free_dbg(ptr);
-	ptr = option_cel;
-	option_cel = NULL;
-	mem_free_dbg(ptr);
-	ptr = optbar_cel;
-	optbar_cel = NULL;
-	mem_free_dbg(ptr);
+	MemFreeDbg(sgpLogo);
+	MemFreeDbg(BigTGold_cel);
+	MemFreeDbg(PentSpin_cel);
+	MemFreeDbg(option_cel);
+	MemFreeDbg(optbar_cel);
 }
 
 void gmenu_init_menu()

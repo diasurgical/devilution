@@ -425,11 +425,7 @@ void DRLG_LoadL1SP()
 
 void DRLG_FreeL1SP()
 {
-	void *ptr;
-
-	ptr = pSetPiece;
-	pSetPiece = NULL;
-	mem_free_dbg(ptr);
+	MemFreeDbg(pSetPiece);
 }
 
 void DRLG_L5(int entry)
