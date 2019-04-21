@@ -1,6 +1,4 @@
-//HEADER_GOES_HERE
-
-#include "../types.h"
+#include "diablo.h"
 
 WORD sync_word_6AA708[MAXMONSTERS];
 int sgnMonsters;

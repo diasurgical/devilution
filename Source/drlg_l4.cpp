@@ -1,6 +1,4 @@
-//HEADER_GOES_HERE
-
-#include "../types.h"
+#include "diablo.h"
 
 int diabquad1x; // weak
 int diabquad1y; // weak

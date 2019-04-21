@@ -1,6 +1,5 @@
-//HEADER_GOES_HERE
-
-#include "../types.h"
+#include "diablo.h"
+#include "../3rdParty/PKWare/pkware.h"
 
 DWORD hashtable[1280];
 

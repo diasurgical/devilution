@@ -1,6 +1,4 @@
-//HEADER_GOES_HERE
-
-#include "../types.h"
+#include "diablo.h"
 
 int codec_decode(void *pbSrcDst, int size, char *pszPassword)
 {

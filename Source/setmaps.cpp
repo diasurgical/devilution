@@ -1,6 +1,4 @@
-//HEADER_GOES_HERE
-
-#include "../types.h"
+#include "diablo.h"
 
 // BUGFIX: constant data should be const
 unsigned char SkelKingTrans1[8] = {

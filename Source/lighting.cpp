@@ -1,6 +1,4 @@
-//HEADER_GOES_HERE
-
-#include "../types.h"
+#include "diablo.h"
 
 LightListStruct VisionList[MAXVISION];
 unsigned char lightactive[MAXLIGHTS];

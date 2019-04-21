@@ -1,6 +1,4 @@
-//HEADER_GOES_HERE
-
-#include "../types.h"
+#include "diablo.h"
 
 static unsigned char plr_msg_slot;
 _plrmsg plr_msgs[PMSG_COUNT];
