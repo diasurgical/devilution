@@ -5,7 +5,7 @@
 #include "../types.h"
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 #include "appfat.h"
 #include "automap.h"
@@ -75,7 +75,7 @@ extern "C" {
 #include "wave.h"
 #include "render.h" // linked last, likely .s/.asm
 #ifdef __cplusplus
-}
+//}
 #endif
 
 extern HWND ghMainWnd;
