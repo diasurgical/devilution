@@ -1153,7 +1153,7 @@ typedef struct ROOMNODE {
 //////////////////////////////////////////////////
 
 typedef struct ThemeStruct {
-	int ttype; /* aligned 4 */
+	char ttype; /* aligned 4 */
 	int ttval;
 } ThemeStruct;
 

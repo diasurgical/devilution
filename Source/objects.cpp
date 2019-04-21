@@ -370,7 +370,7 @@ void InitObjectGFX()
 		}
 		if (AllObjects[i].otheme != -1) {
 			for (j = 0; j < numthemes; j++) {
-				if ((char)themes[j].ttype == AllObjects[i].otheme)
+				if (themes[j].ttype == AllObjects[i].otheme)
 					fileload[AllObjects[i].ofindex] = TRUE;
 			}
 		}
