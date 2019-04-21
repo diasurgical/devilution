@@ -3175,38 +3175,34 @@ void OperateL3Door(int pnum, int i, unsigned char sendflag)
 
 void OperatePedistal(int pnum, int i)
 {
-	int v2;            // esi
-	int v3;            // edi
-	unsigned char *v4; // edi
-	int inv_item_num;  // [esp+8h] [ebp-4h]
+	unsigned char *mem;
+	int iv;
 
-	v2 = i;
-	v3 = pnum;
 	if (object[i]._oVar6 != 3) {
-		if (PlrHasItem(pnum, 21, &inv_item_num)) {
-			RemoveInvItem(v3, inv_item_num);
-			++object[v2]._oAnimFrame;
-			++object[v2]._oVar6;
+		if (PlrHasItem(pnum, IDI_BLDSTONE, &iv)) {
+			RemoveInvItem(pnum, iv);
+			object[i]._oAnimFrame++;
+			object[i]._oVar6++;
 		}
-		if (object[v2]._oVar6 == 1) {
+		if (object[i]._oVar6 == 1) {
 			if (!deltaload)
-				PlaySfxLoc(LS_PUDDLE, object[v2]._ox, object[v2]._oy);
+				PlaySfxLoc(LS_PUDDLE, object[i]._ox, object[i]._oy);
 			ObjChangeMap(setpc_x, setpc_y + 3, setpc_x + 2, setpc_y + 7);
 		}
-		if (object[v2]._oVar6 == 2) {
+		if (object[i]._oVar6 == 2) {
 			if (!deltaload)
-				PlaySfxLoc(LS_PUDDLE, object[v2]._ox, object[v2]._oy);
+				PlaySfxLoc(LS_PUDDLE, object[i]._ox, object[i]._oy);
 			ObjChangeMap(setpc_x + 6, setpc_y + 3, setpc_x + setpc_w, setpc_y + 7);
 		}
-		if (object[v2]._oVar6 == 3) {
+		if (object[i]._oVar6 == 3) {
 			if (!deltaload)
-				PlaySfxLoc(LS_BLODSTAR, object[v2]._ox, object[v2]._oy);
-			ObjChangeMap(object[v2]._oVar1, object[v2]._oVar2, object[v2]._oVar3, object[v2]._oVar4);
-			v4 = LoadFileInMem("Levels\\L2Data\\Blood2.DUN", 0);
-			LoadMapObjs(v4, 2 * setpc_x, 2 * setpc_y);
-			mem_free_dbg(v4);
+				PlaySfxLoc(LS_BLODSTAR, object[i]._ox, object[i]._oy);
+			ObjChangeMap(object[i]._oVar1, object[i]._oVar2, object[i]._oVar3, object[i]._oVar4);
+			mem = LoadFileInMem("Levels\\L2Data\\Blood2.DUN", 0);
+			LoadMapObjs(mem, 2 * setpc_x, 2 * setpc_y);
+			mem_free_dbg(mem);
 			CreateItem(7, 2 * setpc_x + 25, 2 * setpc_y + 19);
-			object[v2]._oSelFlag = 0;
+			object[i]._oSelFlag = 0;
 		}
 	}
 }
