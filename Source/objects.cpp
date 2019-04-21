@@ -3096,41 +3096,32 @@ void OperateSlainHero(int pnum, int i, unsigned char sendmsg)
 
 void OperateTrapLvr(int i)
 {
-	int v1; // ecx
-	int v2; // eax
-	int v3; // esi
-	int v4; // edx
-	int v5; // eax
-	int v6; // eax
+	int frame;
+	int j;
+	int oi;
 
-	v1 = i;
-	v2 = object[v1]._oAnimFrame;
-	v3 = nobjects;
-	v4 = 0;
-	if (v2 == 1) {
-		object[v1]._oAnimFrame = 2;
-		if (v3 > 0) {
-			do {
-				v5 = objectactive[v4];
-				if (object[v5]._otype == object[v1]._oVar2 && object[v5]._oVar1 == object[v1]._oVar1) {
-					object[v5]._oAnimFlag = 0;
-					object[v5]._oVar2 = 1;
-				}
-				++v4;
-			} while (v4 < v3);
+	frame = object[i]._oAnimFrame;
+	j = 0;
+
+	if (frame == 1) {
+		object[i]._oAnimFrame = 2;
+		for (; j < nobjects; j++) {
+			oi = objectactive[j];
+			if (object[oi]._otype == object[i]._oVar2 && object[oi]._oVar1 == object[i]._oVar1) {
+				object[oi]._oAnimFlag = 0;
+				object[oi]._oVar2 = 1;
+			}
 		}
-	} else {
-		object[v1]._oAnimFrame = v2 - 1;
-		if (v3 > 0) {
-			do {
-				v6 = objectactive[v4];
-				if (object[v6]._otype == object[v1]._oVar2 && object[v6]._oVar1 == object[v1]._oVar1) {
-					object[v6]._oVar2 = 0;
-					if (object[v6]._oVar4)
-						object[v6]._oAnimFlag = 1;
-				}
-				++v4;
-			} while (v4 < v3);
+		return;
+	}
+
+	object[i]._oAnimFrame = frame - 1;
+	for (; j < nobjects; j++) {
+		oi = objectactive[j];
+		if (object[oi]._otype == object[i]._oVar2 && object[oi]._oVar1 == object[i]._oVar1) {
+			object[oi]._oVar2 = 0;
+			if (object[oi]._oVar4 != 0)
+				object[oi]._oAnimFlag = 1;
 		}
 	}
 }
