@@ -1,6 +1,5 @@
-//HEADER_GOES_HERE
-
-#include "../types.h"
+#include "diablo.h"
+#include "../3rdParty/Storm/Source/storm.h"
 
 PALETTEENTRY logical_palette[256];
 PALETTEENTRY system_palette[256];

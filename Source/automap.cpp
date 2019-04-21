@@ -1,6 +1,4 @@
-//HEADER_GOES_HERE
-
-#include "../types.h"
+#include "diablo.h"
 
 // BUGFIX: only the first 256 elements are ever read
 WORD automaptype[512];

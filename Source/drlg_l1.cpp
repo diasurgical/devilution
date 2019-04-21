@@ -1,6 +1,4 @@
-//HEADER_GOES_HERE
-
-#include "../types.h"
+#include "diablo.h"
 
 char L5dungeon[80][80];
 unsigned char L5dflags[DMAXX][DMAXY];

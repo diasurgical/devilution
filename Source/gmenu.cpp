@@ -1,6 +1,4 @@
-//HEADER_GOES_HERE
-
-#include "../types.h"
+#include "diablo.h"
 
 void *optbar_cel;
 BOOLEAN byte_634464; // weak

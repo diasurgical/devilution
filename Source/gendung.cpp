@@ -1,6 +1,4 @@
-//HEADER_GOES_HERE
-
-#include "../types.h"
+#include "diablo.h"
 
 WORD level_frame_types[MAXTILES];
 int themeCount;

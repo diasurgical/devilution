@@ -6,6 +6,8 @@
 #include <stddef.h> // for offsetof
 #include <typeinfo> // for typeid
 
+#include "../3rdParty/Storm/Source/storm.h"
+
 #ifdef _MSC_VER
 #pragma warning (disable : 4291) // no matching operator delete found
 #endif

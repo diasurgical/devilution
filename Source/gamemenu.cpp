@@ -1,6 +1,4 @@
-//HEADER_GOES_HERE
-
-#include "../types.h"
+#include "diablo.h"
 
 TMenuItem sgSingleMenu[6] = {
 	// clang-format off

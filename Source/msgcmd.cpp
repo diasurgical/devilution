@@ -1,6 +1,4 @@
-//HEADER_GOES_HERE
-
-#include "../types.h"
+#include "diablo.h"
 #include "list.h"
 
 #define COMMAND_LEN 128
