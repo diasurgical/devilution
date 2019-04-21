@@ -4,7 +4,7 @@
 
 int numthemes; // idb
 BOOL armorFlag;
-int ThemeGoodIn[4];
+WORD ThemeGoodIn[4];
 BOOL weaponFlag;
 BOOL treasureFlag;
 BOOL mFountainFlag;
@@ -415,111 +415,65 @@ BOOL CheckThemeRoom(int tv)
 
 void InitThemes()
 {
-	int v0;  // esi
-	char v1; // bl
-	int v2;  // edi
-	//int v3; // eax
-	int i; // ebx
-	//int v6; // eax
-	int v8; // esi
-	int v9; // ecx
-	int j;  // eax
-	//int v11; // eax
-	int *v13; // edi
-	int v14;  // esi
-	int *v15; // ebx
-	//int v16; // eax
-	int v17; // eax
-	int k;   // esi
-	int l;   // ebx
-	//int v20; // eax
+	int i, j;
 
 	zharlib = -1;
-	v0 = 0;
-	bCrossFlag = FALSE;
 	numthemes = 0;
+	bCrossFlag = FALSE;
 	armorFlag = TRUE;
-	bFountainFlag = 1;
-	cauldronFlag = 1;
-	mFountainFlag = 1;
-	pFountainFlag = 1;
-	tFountainFlag = 1;
-	treasureFlag = 1;
+	bFountainFlag = TRUE;
+	cauldronFlag = TRUE;
+	mFountainFlag = TRUE;
+	pFountainFlag = TRUE;
+	tFountainFlag = TRUE;
+	treasureFlag = TRUE;
 	weaponFlag = TRUE;
-	if (currlevel != 16) {
-		v1 = leveltype;
-		if (leveltype == DTYPE_CATHEDRAL) {
-			ThemeGoodIn[0] = 0;
-			ThemeGoodIn[1] = 0;
-			ThemeGoodIn[2] = 0;
-			ThemeGoodIn[3] = 0;
-			v2 = 0;
-			do {
-				if (v0 >= MAXTHEMES) {
+
+	if (currlevel == 16)
+		return;
+
+	if (leveltype == DTYPE_CATHEDRAL) {
+		for (i = 0; i < sizeof(ThemeGoodIn); i++)
+			ThemeGoodIn[i] = 0;
+
+		for (i = 0; i < 256 && numthemes < MAXTHEMES; i++) {
+			if (CheckThemeRoom(i)) {
+				themes[numthemes].ttval = i;
+				for (j = ThemeGood[random(0, 4)];; j = random(0, 17)) {
+					if (SpecialThemeFit(numthemes, j)) {
+						break;
+					}
+				}
+				themes[numthemes].ttype = j;
+				numthemes++;
+			}
+		}
+	}
+	if (leveltype == 2 || leveltype == 3 || leveltype == 4) {
+		for (i = 0; i < themeCount; i++)
+			themes[i].ttype = -1;
+		if (QuestStatus(QTYPE_ZHAR)) {
+			for (j = 0; j < themeCount; j++) {
+				themes[j].ttval = themeLoc[j].ttval;
+				if (SpecialThemeFit(j, 5)) {
+					themes[j].ttype = 5;
+					zharlib = j;
 					break;
 				}
-				//_LOBYTE(v3) = CheckThemeRoom(v2);
-				if (CheckThemeRoom(v2)) {
-					themes[v0].ttval = v2;
-					for (i = ThemeGood[random(0, 4)];; i = random(0, 17)) {
-						//_LOBYTE(v6) = SpecialThemeFit(numthemes, i);
-						if (SpecialThemeFit(numthemes, i)) {
-							break;
-						}
-					}
-					v8 = numthemes;
-					themes[numthemes].ttype = i;
-					v1 = leveltype;
-					v0 = v8 + 1;
-					numthemes = v0;
-				}
-				++v2;
-			} while (v2 < 256);
-		}
-		if (v1 == 2 || v1 == 3 || v1 == 4) {
-			v9 = themeCount;
-			for (j = 0; j < v9; ++j)
-				themes[j].ttype = -1;
-			//_LOBYTE(v11) = QuestStatus(QTYPE_ZHAR);
-			v13 = &themeLoc[0].ttval;
-			if (QuestStatus(QTYPE_ZHAR)) {
-				v14 = 0;
-				if (themeCount > 0) {
-					v15 = &themeLoc[0].ttval;
-					while (1) {
-						themes[v14].ttval = *v15;
-						//_LOBYTE(v16) = SpecialThemeFit(v14, 5);
-						if (SpecialThemeFit(v14, 5)) {
-							break;
-						}
-						++v14;
-						v15 += 5;
-						if (v14 >= themeCount) {
-							goto LABEL_23;
-						}
-					}
-					themes[v14].ttype = 5;
-					zharlib = v14;
-				}
 			}
-		LABEL_23:
-			v17 = themeCount;
-			for (k = 0; k < themeCount; v13 += 5) {
-				if (themes[k].ttype == -1) {
-					themes[k].ttval = *v13;
-					for (l = ThemeGood[random(0, 4)];; l = random(0, 17)) {
-						//_LOBYTE(v20) = SpecialThemeFit(k, l);
-						if (SpecialThemeFit(k, l)) {
-							break;
-						}
-					}
-					themes[k].ttype = l;
-				}
-				v17 = themeCount;
-				++k;
-			}
-			numthemes += v17;
 		}
+		for (i = 0; i < themeCount; i++) {
+			if (themes[i].ttype == -1) {
+				themes[i].ttval = themeLoc[i].ttval;
+				for (j = ThemeGood[random(0, 4)];; j = random(0, 17)) {
+					if (SpecialThemeFit(i, j)) {
+						break;
+					}
+				}
+				themes[i].ttype = j;
+			}
+		}
+		numthemes += themeCount;
 	}
 }
 // 6AAA54: using guessed type int treasureFlag;
@@ -1037,7 +991,7 @@ void CreateThemeRooms()
 	for (i = 0; i < numthemes; i++) {
 		themex = 0;
 		themey = 0;
-		switch ((char)themes[i].ttype) {
+		switch (themes[i].ttype) {
 		case THEME_BARREL:
 			Theme_Barrel(i);
 			break;
