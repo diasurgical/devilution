@@ -2820,88 +2820,76 @@ void OperateLever(int pnum, int i)
 
 void OperateBook(int pnum, int i)
 {
-	signed int v4;  // ecx
-	int v5;         // eax
-	BOOLEAN v6;     // zf
-	int j;          // esi
-	signed int v11; // [esp+10h] [ebp-10h]
-	signed int v1;  // [esp+14h] [ebp-Ch]
-	signed int v2;  // [esp+18h] [ebp-8h]
-	int v14;        // [esp+1Ch] [ebp-4h]
+	BOOL do_add_missile;
+	int oi;
+	int j;
+	BOOL missile_added;
+	int dx, dy;
 
 	if (!object[i]._oSelFlag)
 		return;
-	if (!setlevel || setlvlnum != SL_VILEBETRAYER)
-		goto LABEL_17;
-	v4 = 0;
-	v11 = 0;
-	v14 = 0;
-	if (nobjects > 0) {
-		while (1) {
-			v5 = objectactive[v14];
-			if (object[v5]._otype == OBJ_MCIRCLE2) {
-				if (object[v5]._oVar6 == 1) {
-					v1 = 27;
-					v2 = 29;
-					object[v5]._oVar6 = 4;
-					v4 = 1;
+	if (setlevel && setlvlnum == SL_VILEBETRAYER) {
+		do_add_missile = FALSE;
+		missile_added = FALSE;
+		for (j = 0; j < nobjects; j++) {
+			oi = objectactive[j];
+			if (object[oi]._otype == OBJ_MCIRCLE2) {
+				if (object[oi]._oVar6 == 1) {
+					dx = 27;
+					dy = 29;
+					object[oi]._oVar6 = 4;
+					do_add_missile = TRUE;
 				}
-				if (object[v5]._oVar6 == 2) {
-					v1 = 43;
-					v2 = 29;
-					object[v5]._oVar6 = 4;
-					v4 = 1;
+				if (object[oi]._oVar6 == 2) {
+					dx = 43;
+					dy = 29;
+					object[oi]._oVar6 = 4;
+					do_add_missile = TRUE;
 				}
 			}
-			if (v4) {
-				++object[dObject[35][36] - 1]._oVar5; // ++objectavail[30 * dObject[35][36] + 123]; /* fix */
-				AddMissile(plr[pnum].WorldX, plr[pnum].WorldY, v1, v2, plr[pnum]._pdir, MIS_RNDTELEPORT, 0, pnum, 0, 0);
-				v11 = 1;
-				v4 = 0;
+			if (do_add_missile) {
+				object[dObject[35][36] - 1]._oVar5++;
+				AddMissile(plr[pnum].WorldX, plr[pnum].WorldY, dx, dy, plr[pnum]._pdir, MIS_RNDTELEPORT, 0, pnum, 0, 0);
+				missile_added = TRUE;
+				do_add_missile = FALSE;
 			}
-			if (++v14 >= nobjects)
-				break;
 		}
-		if (v11) {
-		LABEL_17:
-			++object[i]._oAnimFrame;
-			v6 = setlevel == 0;
-			object[i]._oSelFlag = 0;
-			if (!v6) {
-				if (setlvlnum == SL_BONECHAMB) {
-					plr[myplr]._pMemSpells |= (__int64)1 << (SPL_GUARDIAN - 1);
-					if (plr[pnum]._pSplLvl[SPL_GUARDIAN] < 15)
-						plr[myplr]._pSplLvl[SPL_GUARDIAN]++;
-					quests[QTYPE_BONE]._qactive = 3;
-					if (!deltaload)
-						PlaySfxLoc(IS_QUESTDN, object[i]._ox, object[i]._oy);
-					InitDiabloMsg(EMSG_BONECHAMB);
-					AddMissile(
-					    plr[myplr].WorldX,
-					    plr[myplr].WorldY,
-					    object[i]._ox - 2,
-					    object[i]._oy - 4,
-					    plr[myplr]._pdir,
-					    MIS_GUARDIAN,
-					    0,
-					    myplr,
-					    0,
-					    0);
-				}
-				if (setlevel) {
-					if (setlvlnum == SL_VILEBETRAYER) {
-						ObjChangeMapResync(
-						    object[i]._oVar1,
-						    object[i]._oVar2,
-						    object[i]._oVar3,
-						    object[i]._oVar4);
-						for (j = 0; j < nobjects; ++j)
-							SyncObjectAnim(objectactive[j]);
-					}
-				}
-			}
+		if (!missile_added)
 			return;
-		}
+	}
+	object[i]._oAnimFrame++;
+	object[i]._oSelFlag = 0;
+	if (setlevel == 0)
+		return;
+
+	if (setlvlnum == SL_BONECHAMB) {
+		plr[myplr]._pMemSpells |= ((__int64)1 << (SPL_GUARDIAN - 1));
+		if (plr[pnum]._pSplLvl[SPL_GUARDIAN] < 15)
+			plr[myplr]._pSplLvl[SPL_GUARDIAN]++;
+		quests[QTYPE_BONE]._qactive = 3;
+		if (!deltaload)
+			PlaySfxLoc(IS_QUESTDN, object[i]._ox, object[i]._oy);
+		InitDiabloMsg(EMSG_BONECHAMB);
+		AddMissile(
+		    plr[myplr].WorldX,
+		    plr[myplr].WorldY,
+		    object[i]._ox - 2,
+		    object[i]._oy - 4,
+		    plr[myplr]._pdir,
+		    MIS_GUARDIAN,
+		    0,
+		    myplr,
+		    0,
+		    0);
+	}
+	if (setlevel != 0 && setlvlnum == SL_VILEBETRAYER) {
+		ObjChangeMapResync(
+		    object[i]._oVar1,
+		    object[i]._oVar2,
+		    object[i]._oVar3,
+		    object[i]._oVar4);
+		for (j = 0; j < nobjects; j++)
+			SyncObjectAnim(objectactive[j]);
 	}
 }
 // 5CF31D: using guessed type char setlevel;
