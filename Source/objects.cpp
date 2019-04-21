@@ -2060,119 +2060,89 @@ void Obj_BCrossDamage(int i)
 
 void ProcessObjects()
 {
-	int v0;  // ebx
-	int v1;  // edi
-	int v2;  // esi
-	int v3;  // eax
-	int *v4; // eax
-	int *v5; // eax
-	int v6;  // edx
+	int oi;
+	int i;
 
-	v0 = 0;
-	if (nobjects > 0) {
-		while (1) {
-			v1 = objectactive[v0];
-			v2 = objectactive[v0];
-			v3 = object[v2]._otype;
-			if (v3 <= OBJ_SARC)
-				break;
-			if (v3 <= OBJ_L3RDOOR) {
-				if (v3 >= OBJ_L3LDOOR)
-					goto LABEL_32;
-				if (v3 == OBJ_FLAMEHOLE) {
-					Obj_FlameTrap(v1);
-					goto LABEL_40;
-				}
-				if (v3 <= OBJ_BOOKLVR)
-					goto LABEL_40;
-				if (v3 <= OBJ_TRAPR) {
-					Obj_Trap(v1);
-					goto LABEL_40;
-				}
-				if (v3 <= OBJ_WEAPRACK)
-					goto LABEL_40;
-				if (v3 <= OBJ_SHRINER) {
-				LABEL_29:
-					Obj_StopAnim(v1);
-					goto LABEL_40;
-				}
-				if (v3 != OBJ_BOOKCANDLE)
-					goto LABEL_40;
-			LABEL_28:
-				Obj_Light(v1, 5);
-				goto LABEL_40;
-			}
-			if (v3 < OBJ_MCIRCLE1)
-				goto LABEL_40;
-			if (v3 <= OBJ_MCIRCLE2) {
-				Obj_Circle(v1);
-			} else {
-				if (v3 != OBJ_STORYCANDLE) {
-					if (v3 != OBJ_TBCROSS)
-						goto LABEL_40;
-					goto LABEL_37;
-				}
-				Obj_Light(v1, 3);
-			}
-		LABEL_40:
-			if (object[v2]._oAnimFlag) {
-				v4 = &object[v2]._oAnimCnt;
-				++*v4;
-				if (object[v2]._oAnimCnt >= object[v2]._oAnimDelay) {
-					*v4 = 0;
-					v5 = &object[v2]._oAnimFrame;
-					++*v5;
-					if (object[v2]._oAnimFrame > object[v2]._oAnimLen)
-						*v5 = 1;
-				}
-			}
-			if (++v0 >= nobjects)
-				goto LABEL_45;
+	for (i = 0; i < nobjects; ++i) {
+		oi = objectactive[i];
+		switch (object[oi]._otype) {
+		case OBJ_STORYCANDLE:
+			Obj_Light(oi, 3);
+			break;
+		case OBJ_SKFIRE:
+		case OBJ_CANDLE2:
+		case OBJ_BOOKCANDLE:
+			Obj_Light(oi, 5);
+			break;
+		case OBJ_TORCHL:
+		case OBJ_TORCHR:
+		case OBJ_TORCHL2:
+		case OBJ_TORCHR2:
+			Obj_Light(oi, 8);
+			break;
+		case OBJ_L1LIGHT:
+			Obj_Light(oi, 10);
+			break;
+		case OBJ_L1LDOOR:
+		case OBJ_L1RDOOR:
+		case OBJ_L2LDOOR:
+		case OBJ_L2RDOOR:
+		case OBJ_L3LDOOR:
+		case OBJ_L3RDOOR:
+			Obj_Door(oi);
+			break;
+		case OBJ_CRUX1:
+		case OBJ_CRUX2:
+		case OBJ_CRUX3:
+			Obj_StopAnim(oi);
+			break;
+		case OBJ_BCROSS:
+		case OBJ_TBCROSS:
+			Obj_Light(oi, 10);
+			Obj_BCrossDamage(oi);
+			break;
+		case OBJ_SARC:
+			Obj_Sarc(oi);
+			break;
+		case OBJ_FLAMEHOLE:
+			Obj_FlameTrap(oi);
+			break;
+		case OBJ_BARREL:
+		case OBJ_BARRELEX:
+		case OBJ_SHRINEL:
+		case OBJ_SHRINER:
+			Obj_StopAnim(oi);
+			break;
+		case OBJ_TRAPL:
+		case OBJ_TRAPR:
+			Obj_Trap(oi);
+			break;
+		case OBJ_MCIRCLE1:
+		case OBJ_MCIRCLE2:
+			Obj_Circle(oi);
+			break;
 		}
-		if (v3 == OBJ_SARC) {
-			Obj_Sarc(v1);
-			goto LABEL_40;
-		}
-		if (v3 > OBJ_CRUX3) {
-			if (v3 != OBJ_BCROSS) {
-				if (v3 <= OBJ_BOOK2R)
-					goto LABEL_40;
-				if (v3 > OBJ_L2RDOOR) {
-					if (v3 <= OBJ_TORCHR2)
-						Obj_Light(v1, 8);
-					goto LABEL_40;
-				}
-			LABEL_32:
-				Obj_Door(v1);
-				goto LABEL_40;
-			}
-		LABEL_37:
-			Obj_Light(v1, 10);
-			Obj_BCrossDamage(v1);
-			goto LABEL_40;
-		}
-		if (v3 >= OBJ_CRUX1)
-			goto LABEL_29;
-		if (!v3) {
-			Obj_Light(v1, 10);
-			goto LABEL_40;
-		}
-		if (v3 <= 0)
-			goto LABEL_40;
-		if (v3 <= OBJ_L1RDOOR)
-			goto LABEL_32;
-		if (v3 != OBJ_SKFIRE && v3 != OBJ_CANDLE2)
-			goto LABEL_40;
-		goto LABEL_28;
+		if (object[oi]._oAnimFlag == 0)
+			continue;
+
+		object[oi]._oAnimCnt++;
+
+		if (object[oi]._oAnimCnt < object[oi]._oAnimDelay)
+			continue;
+
+		object[oi]._oAnimCnt = 0;
+		object[oi]._oAnimFrame++;
+		if (object[oi]._oAnimFrame > object[oi]._oAnimLen)
+			object[oi]._oAnimFrame = 1;
 	}
-LABEL_45:
-	v6 = 0;
-	while (v6 < nobjects) {
-		if (object[objectactive[v6]]._oDelFlag) {
-			DeleteObject_(objectactive[v6], v6);
-			v6 = 0;
+	i = 0;
+	while (i < nobjects) {
+		oi = objectactive[i];
+		if (object[oi]._oDelFlag) {
+			DeleteObject_(oi, i);
+			i = 0;
 		} else {
-			++v6;
+			i++;
 		}
 	}
 }
