@@ -1367,7 +1367,7 @@ void CreatePlrItems(int p)
 		GetPlrHandSeed(&plr[p].InvBody[INVLOC_HAND_RIGHT]);
 
 #ifdef _DEBUG
-		if(!debug_mode_key_w) {
+		if (!debug_mode_key_w) {
 #endif
 			SetPlrHandItem(&plr[p].HoldItem, IDI_WARRCLUB);
 			GetPlrHandSeed(&plr[p].HoldItem);
@@ -1408,7 +1408,7 @@ void CreatePlrItems(int p)
 	GetPlrHandSeed(&plr[p].HoldItem);
 
 #ifdef _DEBUG
-	if(!debug_mode_key_w) {
+	if (!debug_mode_key_w) {
 #endif
 		plr[p].HoldItem._ivalue = 100;
 		plr[p].HoldItem._iCurs = ICURS_GOLD_SMALL;
@@ -1420,7 +1420,7 @@ void CreatePlrItems(int p)
 		plr[p].HoldItem._ivalue = 5000;
 		plr[p].HoldItem._iCurs = ICURS_GOLD_LARGE;
 		plr[p]._pGold = plr[p].HoldItem._ivalue * 40;
-		for(i = 0; i < 40; i++) {
+		for (i = 0; i < 40; i++) {
 			GetPlrHandSeed(&plr[p].HoldItem);
 			plr[p].InvList[plr[p]._pNumInv++] = plr[p].HoldItem;
 			plr[p].InvGrid[i] = plr[p]._pNumInv;
@@ -4730,11 +4730,11 @@ BOOL GetItemRecord(int nSeed, WORD wCI, int nIndex)
 
 	dwTicks = GetTickCount();
 
-	for(i = 0; i < gnNumGetRecords; i++) {
-		if(dwTicks - itemrecord[i].dwTimestamp > 6000) {
+	for (i = 0; i < gnNumGetRecords; i++) {
+		if (dwTicks - itemrecord[i].dwTimestamp > 6000) {
 			NextItemRecord(i);
 			i--;
-		} else if(nSeed == itemrecord[i].nSeed && wCI == itemrecord[i].wCI && nIndex == itemrecord[i].nIndex) {
+		} else if (nSeed == itemrecord[i].nSeed && wCI == itemrecord[i].wCI && nIndex == itemrecord[i].nIndex) {
 			return FALSE;
 		}
 	}
@@ -4746,7 +4746,7 @@ void NextItemRecord(int i)
 {
 	gnNumGetRecords--;
 
-	if(gnNumGetRecords == 0) {
+	if (gnNumGetRecords == 0) {
 		return;
 	}
 
@@ -4762,7 +4762,7 @@ void SetItemRecord(int nSeed, WORD wCI, int nIndex)
 
 	dwTicks = GetTickCount();
 
-	if(gnNumGetRecords == MAXITEMS) {
+	if (gnNumGetRecords == MAXITEMS) {
 		return;
 	}
 
@@ -4780,11 +4780,11 @@ void PutItemRecord(int nSeed, WORD wCI, int nIndex)
 
 	dwTicks = GetTickCount();
 
-	for(i = 0; i < gnNumGetRecords; i++) {
-		if(dwTicks - itemrecord[i].dwTimestamp > 6000) {
+	for (i = 0; i < gnNumGetRecords; i++) {
+		if (dwTicks - itemrecord[i].dwTimestamp > 6000) {
 			NextItemRecord(i);
 			i--;
-		} else if(nSeed == itemrecord[i].nSeed && wCI == itemrecord[i].wCI && nIndex == itemrecord[i].nIndex) {
+		} else if (nSeed == itemrecord[i].nSeed && wCI == itemrecord[i].wCI && nIndex == itemrecord[i].nIndex) {
 			NextItemRecord(i);
 			break;
 		}
