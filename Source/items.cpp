@@ -3124,13 +3124,10 @@ void ProcessItems()
 
 void FreeItemGFX()
 {
-	int i;    // esi
-	void *v1; // ecx
+	int i;
 
 	for (i = 0; i < 35; i++) {
-		v1 = (void *)itemanims[i];
-		itemanims[i] = 0;
-		mem_free_dbg(v1);
+		MemFreeDbg(itemanims[i]);
 	}
 }
 

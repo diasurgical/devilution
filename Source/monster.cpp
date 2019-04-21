@@ -5861,15 +5861,12 @@ void FreeMonsters()
 {
 	int mtype;
 	int i, j;
-	void *ptr;
 
 	for (i = 0; i < nummtypes; i++) {
 		mtype = Monsters[i].mtype;
 		for (j = 0; j < 6; j++) {
 			if (animletter[j] != 's' || monsterdata[mtype].has_special) {
-				ptr = Monsters[i].Anims[j].CMem;
-				Monsters[i].Anims[j].CMem = NULL;
-				mem_free_dbg(ptr);
+				MemFreeDbg(Monsters[i].Anims[j].CMem);
 			}
 		}
 	}

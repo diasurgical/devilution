@@ -13,9 +13,7 @@ void LoadDebugGFX()
 
 void FreeDebugGFX()
 {
-	void *temp = pSquareCel;
-	pSquareCel = NULL;
-	mem_free_dbg(temp);
+	MemFreeDbg(pSquareCel);
 }
 
 void CheckDungeonClear()

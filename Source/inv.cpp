@@ -90,10 +90,7 @@ int AP2x2Tbl[10] = { 8, 28, 6, 26, 4, 24, 2, 22, 0, 20 }; // weak
 
 void FreeInvGFX()
 {
-	void *invCels = pInvCels;
-
-	pInvCels = NULL;
-	mem_free_dbg(invCels);
+	MemFreeDbg(pInvCels);
 }
 
 void InitInv()

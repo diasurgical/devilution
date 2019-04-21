@@ -38,11 +38,11 @@ void tmsg_add(BYTE *pbMsg, BYTE bLen)
 
 void *tmsg_cleanup()
 {
+	TMsg *next;
+
 	while (sgpTimedMsgHead) {
-		TMsg *next = sgpTimedMsgHead->hdr.pNext;
-		TMsg *head = sgpTimedMsgHead;
-		sgpTimedMsgHead = NULL;
-		mem_free_dbg(head);
+		next = sgpTimedMsgHead->hdr.pNext;
+		MemFreeDbg(sgpTimedMsgHead);
 		sgpTimedMsgHead = next;
 	}
 	return sgpTimedMsgHead;

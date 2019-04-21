@@ -394,12 +394,9 @@ void InitObjectGFX()
 void FreeObjectGFX()
 {
 	int i;
-	void *ptr;
 
 	for (i = 0; i < numobjfiles; i++) {
-		ptr = pObjCels[i];
-		pObjCels[i] = NULL;
-		mem_free_dbg(ptr);
+		MemFreeDbg(pObjCels[i]);
 	}
 	numobjfiles = 0;
 }
@@ -4666,21 +4663,19 @@ void SyncQSTLever(int i)
 
 void SyncPedistal(int i)
 {
-	int v1;            // esi
-	unsigned char *v2; // esi
+	BYTE *setp;
 
-	v1 = i;
 	if (object[i]._oVar6 == 1)
 		ObjChangeMapResync(setpc_x, setpc_y + 3, setpc_x + 2, setpc_y + 7);
-	if (object[v1]._oVar6 == 2) {
+	if (object[i]._oVar6 == 2) {
 		ObjChangeMapResync(setpc_x, setpc_y + 3, setpc_x + 2, setpc_y + 7);
 		ObjChangeMapResync(setpc_x + 6, setpc_y + 3, setpc_x + setpc_w, setpc_y + 7);
 	}
-	if (object[v1]._oVar6 == 3) {
-		ObjChangeMapResync(object[v1]._oVar1, object[v1]._oVar2, object[v1]._oVar3, object[v1]._oVar4);
-		v2 = LoadFileInMem("Levels\\L2Data\\Blood2.DUN", 0);
-		LoadMapObjs(v2, 2 * setpc_x, 2 * setpc_y);
-		mem_free_dbg(v2);
+	if (object[i]._oVar6 == 3) {
+		ObjChangeMapResync(object[i]._oVar1, object[i]._oVar2, object[i]._oVar3, object[i]._oVar4);
+		setp = LoadFileInMem("Levels\\L2Data\\Blood2.DUN", 0);
+		LoadMapObjs(setp, 2 * setpc_x, 2 * setpc_y);
+		mem_free_dbg(setp);
 	}
 }
 // 5CF334: using guessed type int setpc_w;

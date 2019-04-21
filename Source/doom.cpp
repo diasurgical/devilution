@@ -42,9 +42,7 @@ void doom_alloc_cel()
 
 void doom_cleanup()
 {
-	void *ptr = pDoomCel;
-	pDoomCel = NULL;
-	mem_free_dbg(ptr);
+	MemFreeDbg(pDoomCel);
 }
 
 void doom_load_graphics()

@@ -243,11 +243,7 @@ void ShowProgress(unsigned int uMsg)
 
 void FreeInterface()
 {
-	void *ptr;
-
-	ptr = sgpBackCel;
-	sgpBackCel = NULL;
-	mem_free_dbg(ptr);
+	MemFreeDbg(sgpBackCel);
 }
 
 void InitCutscene(unsigned int uMsg)

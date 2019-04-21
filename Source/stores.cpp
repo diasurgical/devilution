@@ -130,17 +130,9 @@ void SetupTownStores()
 
 void FreeStoreMem()
 {
-	void *p;
-
-	p = pSTextBoxCels;
-	pSTextBoxCels = NULL;
-	mem_free_dbg(p);
-	p = pCelBuff;
-	pCelBuff = NULL;
-	mem_free_dbg(p);
-	p = pSTextSlidCels;
-	pSTextSlidCels = NULL;
-	mem_free_dbg(p);
+	MemFreeDbg(pSTextBoxCels);
+	MemFreeDbg(pCelBuff);
+	MemFreeDbg(pSTextSlidCels);
 }
 
 void DrawSTextBack()

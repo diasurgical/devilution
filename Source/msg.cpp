@@ -106,13 +106,9 @@ BOOL msg_wait_resync()
 
 void msg_free_packets()
 {
-	TMegaPkt *tmp;
-
 	while (sgpMegaPkt) {
 		sgpCurrPkt = sgpMegaPkt->pNext;
-		tmp = sgpMegaPkt;
-		sgpMegaPkt = NULL;
-		mem_free_dbg(tmp);
+		MemFreeDbg(sgpMegaPkt);
 		sgpMegaPkt = sgpCurrPkt;
 	}
 }
