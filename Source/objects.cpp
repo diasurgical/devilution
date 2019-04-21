@@ -3919,158 +3919,127 @@ void OperateCauldron(int pnum, int i, int sType)
 }
 // 52571C: using guessed type int drawpanflag;
 
-BOOLEAN OperateFountains(int pnum, int i)
+BOOL OperateFountains(int pnum, int i)
 {
-	unsigned short v2; // bx
-	int v3;            // esi
-	int v4;            // edi
-	BOOLEAN v5;        // bp
-	signed int v7;     // ebx
-	int v8;            // ebp
-	int v10;           // eax
-	int v11;           // esi
-	int v12;           // eax
-	int v13;           // eax
-	int v14;           // edi
-	int v15;           // edx
-	int v16;           // edx
-	int v17;           // ecx
-	int *v18;          // eax
-	int v19;           // ecx
-	int v20;           // edi
-	int v21;           // edx
-	int v22;           // ecx
-	int v23;           // [esp-4h] [ebp-20h]
-	signed int v24;    // [esp+10h] [ebp-Ch]
-	signed int v25;    // [esp+14h] [ebp-8h]
-	short param1;      // [esp+18h] [ebp-4h]
+	BOOL applied;
+	int prev;
+	int add;
+	int rnd;
+	int cnt;
+	BOOL done;
 
-	v2 = i;
-	v3 = i;
-	v4 = pnum;
-	param1 = i;
-	v5 = 0;
+	applied = FALSE;
 	SetRndSeed(object[i]._oRndSeed);
-	switch (object[v3]._otype) {
+	switch (object[i]._otype) {
 	case OBJ_BLOODFTN:
-		if (!deltaload && v4 == myplr) {
-			v20 = v4;
-			v23 = object[v3]._oy;
-			v15 = object[v3]._ox;
-			if (plr[v20]._pHitPoints < plr[v20]._pMaxHP) {
-				PlaySfxLoc(LS_FOUNTAIN, v15, v23);
-				plr[v20]._pHitPoints += 64;
-				v21 = plr[v20]._pHitPoints;
-				v22 = plr[v20]._pMaxHP;
-				v18 = &plr[v20]._pHPBase;
-				*v18 += 64;
-				if (v21 <= v22)
-					goto LABEL_39;
-				plr[v20]._pHitPoints = v22;
-				v19 = plr[v20]._pMaxHPBase;
-				goto LABEL_38;
+		if (deltaload)
+			return FALSE;
+		if (pnum != myplr)
+			return FALSE;
+
+		if (plr[pnum]._pHitPoints < plr[pnum]._pMaxHP) {
+			PlaySfxLoc(LS_FOUNTAIN, object[i]._ox, object[i]._oy);
+			plr[pnum]._pHitPoints += 64;
+			plr[pnum]._pHPBase += 64;
+			if (plr[pnum]._pHitPoints > plr[pnum]._pMaxHP) {
+				plr[pnum]._pHitPoints = plr[pnum]._pMaxHP;
+				plr[pnum]._pHPBase = plr[pnum]._pMaxHPBase;
 			}
-		LABEL_45:
-			PlaySfxLoc(LS_FOUNTAIN, v15, v23);
-			break;
-		}
-		return 0;
+			applied = TRUE;
+		} else
+			PlaySfxLoc(LS_FOUNTAIN, object[i]._ox, object[i]._oy);
+		break;
 	case OBJ_PURIFYINGFTN:
-		if (!deltaload && v4 == myplr) {
-			v14 = v4;
-			v23 = object[v3]._oy;
-			v15 = object[v3]._ox;
-			if (plr[v14]._pMana < plr[v14]._pMaxMana) {
-				PlaySfxLoc(LS_FOUNTAIN, v15, v23);
-				plr[v14]._pMana += 64;
-				v16 = plr[v14]._pMana;
-				v17 = plr[v14]._pMaxMana;
-				v18 = &plr[v14]._pManaBase;
-				*v18 += 64;
-				if (v16 <= v17) {
-				LABEL_39:
-					v5 = 1;
+		if (deltaload)
+			return FALSE;
+		if (pnum != myplr)
+			return FALSE;
+
+		if (plr[pnum]._pMana < plr[pnum]._pMaxMana) {
+			PlaySfxLoc(LS_FOUNTAIN, object[i]._ox, object[i]._oy);
+
+			plr[pnum]._pMana += 64;
+			plr[pnum]._pManaBase += 64;
+			if (plr[pnum]._pMana > plr[pnum]._pMaxMana) {
+				plr[pnum]._pMana = plr[pnum]._pMaxMana;
+				plr[pnum]._pManaBase = plr[pnum]._pMaxManaBase;
+			}
+
+			applied = TRUE;
+		} else
+			PlaySfxLoc(LS_FOUNTAIN, object[i]._ox, object[i]._oy);
+		break;
+	case OBJ_MURKYFTN:
+		if (!object[i]._oSelFlag)
+			break;
+		if (!deltaload)
+			PlaySfxLoc(LS_FOUNTAIN, object[i]._ox, object[i]._oy);
+		object[i]._oSelFlag = 0;
+		if (deltaload)
+			return FALSE;
+		AddMissile(
+		    plr[pnum].WorldX,
+		    plr[pnum].WorldY,
+		    plr[pnum].WorldX,
+		    plr[pnum].WorldY,
+		    plr[pnum]._pdir,
+		    MIS_INFRA,
+		    -1,
+		    pnum,
+		    0,
+		    2 * leveltype);
+		applied = TRUE;
+		if (pnum == myplr)
+			NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, i);
+		break;
+	case OBJ_TEARFTN:
+		if (!object[i]._oSelFlag)
+			break;
+		prev = -1;
+		add = -1;
+		done = FALSE;
+		cnt = 0;
+		if (!deltaload)
+			PlaySfxLoc(LS_FOUNTAIN, object[i]._ox, object[i]._oy);
+		object[i]._oSelFlag = 0;
+		if (deltaload)
+			return FALSE;
+		if (pnum != myplr)
+			return FALSE;
+		while (!done) {
+			rnd = random(0, 4);
+			if (rnd != prev) {
+				switch (rnd) {
+				case 0:
+					ModifyPlrStr(pnum, add);
+					break;
+				case 1:
+					ModifyPlrMag(pnum, add);
+					break;
+				case 2:
+					ModifyPlrDex(pnum, add);
+					break;
+				case 3:
+					ModifyPlrVit(pnum, add);
 					break;
 				}
-				plr[v14]._pMana = v17;
-				v19 = plr[v14]._pMaxManaBase;
-			LABEL_38:
-				*v18 = v19;
-				goto LABEL_39;
+				prev = rnd;
+				add = 1;
+				cnt++;
 			}
-			goto LABEL_45;
+			if (cnt <= 1)
+				continue;
+
+			done = TRUE;
 		}
-		return 0;
-	case OBJ_MURKYFTN:
-		if (object[v3]._oSelFlag) {
-			if (!deltaload)
-				PlaySfxLoc(LS_FOUNTAIN, object[v3]._ox, object[v3]._oy);
-			object[v3]._oSelFlag = 0;
-			if (deltaload)
-				return 0;
-			AddMissile(
-			    plr[v4].WorldX,
-			    plr[v4].WorldY,
-			    plr[v4].WorldX,
-			    plr[v4].WorldY,
-			    plr[v4]._pdir,
-			    MIS_INFRA,
-			    -1,
-			    v4,
-			    0,
-			    2 * leveltype);
-			v5 = 1;
-			if (v4 == myplr)
-				NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, v2);
-		}
-		break;
-	default:
-		if (object[v3]._otype == OBJ_TEARFTN && object[v3]._oSelFlag) {
-			v7 = -1;
-			v8 = -1;
-			v25 = 0;
-			v24 = 0;
-			if (!deltaload)
-				PlaySfxLoc(LS_FOUNTAIN, object[v3]._ox, object[v3]._oy);
-			object[v3]._oSelFlag = 0;
-			if (deltaload || v4 != myplr)
-				return 0;
-			do {
-				v10 = random(0, 4);
-				v11 = v10;
-				if (v10 != v7) {
-					if (v10) {
-						v12 = v10 - 1;
-						if (v12) {
-							v13 = v12 - 1;
-							if (v13) {
-								if (v13 == 1)
-									ModifyPlrVit(v4, v8);
-							} else {
-								ModifyPlrDex(v4, v8);
-							}
-						} else {
-							ModifyPlrMag(v4, v8);
-						}
-					} else {
-						ModifyPlrStr(v4, v8);
-					}
-					v7 = v11;
-					v8 = 1;
-					++v24;
-				}
-				if (v24 > 1)
-					v25 = 1;
-			} while (!v25);
-			CheckStats(v4);
-			v5 = 1;
-			if (v4 == myplr)
-				NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, param1);
-		}
+		CheckStats(pnum);
+		applied = TRUE;
+		if (pnum == myplr)
+			NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, i);
 		break;
 	}
 	drawpanflag = 255;
-	return v5;
+	return applied;
 }
 // 52571C: using guessed type int drawpanflag;
 // 676190: using guessed type int deltaload;
