@@ -74,7 +74,7 @@ char *talkname[9] = {
 
 void InitStores()
 {
-	int i; // eax
+	int i;
 
 	pSTextBoxCels = LoadFileInMem("Data\\TextBox2.CEL", 0);
 	pCelBuff = LoadFileInMem("Data\\PentSpn2.CEL", 0);
@@ -93,16 +93,10 @@ void InitStores()
 	boyitem._itype = -1;
 	boylevel = 0;
 }
-// 69FB38: using guessed type int talker;
-// 6A09E0: using guessed type char stextsize;
-// 6A6BB8: using guessed type int stextscrl;
-// 6A8A3C: using guessed type int boylevel;
-// 6AA705: using guessed type char stextflag;
 
 void SetupTownStores()
 {
-	int i; // eax
-	int l; // esi
+	int i, l;
 
 	SetRndSeed(glSeedTbl[currlevel] * GetTickCount());
 	if (gbMaxPlayers == 1) {
@@ -126,7 +120,6 @@ void SetupTownStores()
 	SpawnBoy(plr[myplr]._pLevel);
 	SpawnPremium(plr[myplr]._pLevel);
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 void FreeStoreMem()
 {
