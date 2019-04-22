@@ -218,44 +218,44 @@ BOOL CheckThemeReqs(int t)
 
 	rv = TRUE;
 	switch (t) {
-	case 1:
-	case 3:
-	case 5:
+	case THEME_SHRINE:
+	case THEME_SKELROOM:
+	case THEME_LIBRARY:
 		if (leveltype == DTYPE_CAVES || leveltype == DTYPE_HELL) {
 			rv = FALSE;
 		}
 		break;
-	case 7:
+	case THEME_BLOODFOUNTAIN:
 		if (!bFountainFlag) {
 			rv = FALSE;
 		}
 		break;
-	case 9:
+	case THEME_PURIFYINGFOUNTAIN:
 		if (!pFountainFlag) {
 			rv = FALSE;
 		}
 		break;
-	case 10:
+	case THEME_ARMORSTAND:
 		if (leveltype == DTYPE_CATHEDRAL) {
 			rv = FALSE;
 		}
 		break;
-	case 12:
+	case THEME_CAULDRON:
 		if (leveltype != DTYPE_HELL || !cauldronFlag) {
 			rv = FALSE;
 		}
 		break;
-	case 13:
+	case THEME_MURKYFOUNTAIN:
 		if (!mFountainFlag) {
 			rv = FALSE;
 		}
 		break;
-	case 14:
+	case THEME_TEARFOUNTAIN:
 		if (!tFountainFlag) {
 			rv = FALSE;
 		}
 		break;
-	case 16:
+	case THEME_WEAPONRACK:
 		if (leveltype == DTYPE_CATHEDRAL) {
 			rv = FALSE;
 		}
@@ -432,19 +432,19 @@ void InitThemes()
 	}
 	if (leveltype == 2 || leveltype == 3 || leveltype == 4) {
 		for (i = 0; i < themeCount; i++)
-			themes[i].ttype = -1;
+			themes[i].ttype = THEME_NONE;
 		if (QuestStatus(QTYPE_ZHAR)) {
 			for (j = 0; j < themeCount; j++) {
 				themes[j].ttval = themeLoc[j].ttval;
-				if (SpecialThemeFit(j, 5)) {
-					themes[j].ttype = 5;
+				if (SpecialThemeFit(j, THEME_LIBRARY)) {
+					themes[j].ttype = THEME_LIBRARY;
 					zharlib = j;
 					break;
 				}
 			}
 		}
 		for (i = 0; i < themeCount; i++) {
-			if (themes[i].ttype == -1) {
+			if (themes[i].ttype == THEME_NONE) {
 				themes[i].ttval = themeLoc[i].ttval;
 				for (j = ThemeGood[random(0, 4)];; j = random(0, 17)) {
 					if (SpecialThemeFit(i, j)) {
