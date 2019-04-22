@@ -4314,6 +4314,14 @@ void SyncOpObject(int pnum, int cmd, int i)
 	case OBJ_L1RDOOR:
 		SyncOpL1Door(pnum, cmd, i);
 		break;
+	case OBJ_L2LDOOR:
+	case OBJ_L2RDOOR:
+		SyncOpL2Door(pnum, cmd, i);
+		break;
+	case OBJ_L3LDOOR:
+	case OBJ_L3RDOOR:
+		SyncOpL3Door(pnum, cmd, i);
+		break;
 	case OBJ_LEVER:
 	case OBJ_SWITCHSKL:
 		OperateLever(pnum, i);
@@ -4324,14 +4332,15 @@ void SyncOpObject(int pnum, int cmd, int i)
 	case OBJ_TCHEST1:
 	case OBJ_TCHEST2:
 	case OBJ_TCHEST3:
-		OperateChest(pnum, i, 0);
-		break;
-	case OBJ_L2LDOOR:
-	case OBJ_L2RDOOR:
-		SyncOpL2Door(pnum, cmd, i);
+		OperateChest(pnum, i, FALSE);
 		break;
 	case OBJ_SARC:
-		OperateSarc(pnum, i, 0);
+		OperateSarc(pnum, i, FALSE);
+		break;
+	case OBJ_BLINDBOOK:
+	case OBJ_BLOODBOOK:
+	case OBJ_STEELTOME:
+		OperateBookLever(pnum, i);
 		break;
 	case OBJ_SHRINEL:
 	case OBJ_SHRINER:
@@ -4347,18 +4356,6 @@ void SyncOpObject(int pnum, int cmd, int i)
 		break;
 	case OBJ_DECAP:
 		OperateDecap(pnum, i, 0);
-		break;
-	case OBJ_BLINDBOOK:
-	case OBJ_BLOODBOOK:
-	case OBJ_STEELTOME:
-		OperateBookLever(pnum, i);
-		break;
-	case OBJ_PEDISTAL:
-		OperatePedistal(pnum, i);
-		break;
-	case OBJ_L3LDOOR:
-	case OBJ_L3RDOOR:
-		SyncOpL3Door(pnum, cmd, i);
 		break;
 	case OBJ_ARMORSTAND:
 	case OBJ_WARARMOR:
@@ -4377,6 +4374,9 @@ void SyncOpObject(int pnum, int cmd, int i)
 	case OBJ_STORYBOOK:
 		OperateStoryBook(pnum, i);
 		break;
+	case OBJ_PEDISTAL:
+		OperatePedistal(pnum, i);
+		break;
 	case OBJ_WARWEAP:
 	case OBJ_WEAPONRACK:
 		OperateWeaponRack(pnum, i, FALSE);
@@ -4385,7 +4385,7 @@ void SyncOpObject(int pnum, int cmd, int i)
 		OperateMushPatch(pnum, i);
 		break;
 	case OBJ_SLAINHERO:
-		OperateSlainHero(pnum, i, 0);
+		OperateSlainHero(pnum, i, FALSE);
 		break;
 	case OBJ_SIGNCHEST:
 		OperateInnSignChest(pnum, i);
