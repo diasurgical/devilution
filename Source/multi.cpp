@@ -926,7 +926,7 @@ BOOL multi_upgrade(int *pfExitProgram)
 	return result;
 }
 
-void __fastcall multi_player_joins(int pnum, TCmdPlrInfoHdr *cmd, int a3)
+void multi_player_joins(int pnum, TCmdPlrInfoHdr *cmd, int a3)
 {
 	char *msg;
 
