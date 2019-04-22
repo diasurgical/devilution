@@ -4,7 +4,7 @@
 
 extern BOOLEAN gbSomebodyWonGameKludge; // weak
 extern char szPlayerDescript[128];
-extern short sgwPackPlrOffsetTbl[MAX_PLRS];
+extern WORD sgwPackPlrOffsetTbl[MAX_PLRS];
 extern PkPlayerStruct netplr[MAX_PLRS];
 extern BOOL gbShouldValidatePackage;
 extern BYTE gbActivePlayers;
