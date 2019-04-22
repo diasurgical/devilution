@@ -1248,8 +1248,8 @@ void S_StartNoRoom()
 
 void S_StartConfirm()
 {
-	BOOL idprint; // esi
-	char iclr;    // [esp+Ch] [ebp-4h]
+	BOOL idprint;
+	char iclr;
 
 	StartStore(stextshold);
 	stextscrl = 0;
@@ -1283,47 +1283,34 @@ void S_StartConfirm()
 	AddSTextVal(8, plr[myplr].HoldItem._iIvalue);
 	PrintStoreItem(&plr[myplr].HoldItem, 9, iclr);
 
-	if (stextshold > STORE_WRECHARGE) {
-		if (stextshold == STORE_BBOY) {
-			strcpy(tempstr, "Do we have a deal?");
-			goto LABEL_37;
-		}
-		if (stextshold != STORE_HBUY) {
-			if (stextshold == STORE_SIDENTIFY) {
-				strcpy(tempstr, "Are you sure you want to identify this item?");
-				goto LABEL_37;
-			}
-			if (stextshold != STORE_SPBUY)
-				goto LABEL_37;
-		}
-	LABEL_34:
-		strcpy(tempstr, "Are you sure you want to buy this item?");
-		goto LABEL_37;
-	}
 	switch (stextshold) {
+	case STORE_BBOY:
+		strcpy(tempstr, "Do we have a deal?");
+		break;
+	case STORE_SIDENTIFY:
+		strcpy(tempstr, "Are you sure you want to identify this item?");
+		break;
+	case STORE_HBUY:
+	case STORE_SPBUY:
+	case STORE_WBUY:
+	case STORE_SBUY:
+		strcpy(tempstr, "Are you sure you want to buy this item?");
+		break;
 	case STORE_WRECHARGE:
 		strcpy(tempstr, "Are you sure you want to recharge this item?");
 		break;
-	case STORE_SBUY:
-		goto LABEL_34;
 	case STORE_SSELL:
-	LABEL_27:
+	case STORE_WSELL:
 		strcpy(tempstr, "Are you sure you want to sell this item?");
 		break;
 	case STORE_SREPAIR:
 		strcpy(tempstr, "Are you sure you want to repair this item?");
 		break;
-	case STORE_WBUY:
-		goto LABEL_34;
-	case STORE_WSELL:
-		goto LABEL_27;
 	}
-LABEL_37:
 	AddSText(0, 15, 1u, tempstr, COL_WHITE, 0);
 	AddSText(0, 18, 1u, "Yes", COL_WHITE, 1);
 	AddSText(0, 20, 1u, "No", COL_WHITE, 1);
 }
-// 6A6BB8: using guessed type int stextscrl;
 
 void S_StartBoy()
 {
