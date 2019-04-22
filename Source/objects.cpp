@@ -4255,25 +4255,24 @@ void SyncOpL1Door(int pnum, int cmd, int i)
 
 void SyncOpL2Door(int pnum, int cmd, int i)
 {
-	signed int v3;    // eax
-	ObjectStruct *v4; // esi
+	BOOL do_sync;
 
-	if (pnum != myplr) {
-		v3 = 0;
-		if (cmd == 43) {
-			if (object[i]._oVar4)
-				return;
-			v3 = 1;
-		}
-		if (cmd == 44 && object[i]._oVar4 == 1)
-			v3 = 1;
-		if (v3) {
-			v4 = &object[i];
-			if (v4->_otype == OBJ_L2LDOOR)
-				OperateL2LDoor(-1, i, 0);
-			if (v4->_otype == OBJ_L2RDOOR)
-				OperateL2RDoor(-1, i, 0);
-		}
+	if (pnum == myplr)
+		return;
+
+	do_sync = FALSE;
+	if (cmd == CMD_OPENDOOR) {
+		if (object[i]._oVar4 != 0)
+			return;
+		do_sync = TRUE;
+	}
+	if (cmd == CMD_CLOSEDOOR && object[i]._oVar4 == 1)
+		do_sync = TRUE;
+	if (do_sync) {
+		if (object[i]._otype == OBJ_L2LDOOR)
+			OperateL2LDoor(-1, i, 0);
+		if (object[i]._otype == OBJ_L2RDOOR)
+			OperateL2RDoor(-1, i, 0);
 	}
 }
 
