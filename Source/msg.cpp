@@ -2230,7 +2230,7 @@ int On_SEND_PLRINFO(TCmdPlrInfoHdr *pCmd, int pnum)
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, pCmd, pCmd->wBytes + sizeof(*pCmd));
 	else
-		multi_player_joins(pnum, pCmd, pCmd->bCmd == CMD_ACK_PLRINFO);
+		recv_plrinfo(pnum, pCmd, pCmd->bCmd == CMD_ACK_PLRINFO);
 
 	return pCmd->wBytes + sizeof(*pCmd);
 }

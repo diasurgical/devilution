@@ -15,6 +15,9 @@ extern char szPlayerName[128];
 extern BYTE gbDeltaSender; // weak
 extern int player_state[MAX_PLRS];
 
+#ifdef _DEBUG
+void __cdecl dumphist(const char *pszFmt, ...);
+#endif
 void multi_msg_add(BYTE *a1, unsigned char a2);
 void NetSendLoPri(BYTE *pbMsg, BYTE bLen);
 void multi_copy_packet(TBuffer *a1, void *packet, BYTE size);
@@ -51,7 +54,7 @@ void SetupLocalCoords();
 BOOL multi_init_single(_SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info, _SNETUIDATA *ui_info);
 BOOL multi_init_multi(_SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info, _SNETUIDATA *ui_info, int *pfExitProgram);
 BOOL multi_upgrade(int *pfExitProgram);
-void multi_player_joins(int pnum, TCmdPlrInfoHdr *cmd, int a3);
+void recv_plrinfo(int pnum, TCmdPlrInfoHdr *p, BOOL recv);
 
 /* rdata */
 
