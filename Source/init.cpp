@@ -43,7 +43,7 @@ void init_cleanup(BOOL show_cursor)
 	sound_cleanup();
 	NetClose();
 	dx_cleanup();
-	MI_Dummy(show_cursor);
+	engine_debug_trap(show_cursor);
 	StormDestroy();
 
 	if (show_cursor)

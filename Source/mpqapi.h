@@ -10,7 +10,7 @@ BOOL mpqapi_set_hidden(const char *pszArchive, BOOL hidden);
 void mpqapi_store_creation_time(const char *pszArchive, int dwChar);
 BOOL mpqapi_reg_load_modification_time(char *dst, int size);
 void mpqapi_xor_buf(char *pbData);
-void mpqapi_update_multi_creation_time(DWORD dwChar);
+void mpqapi_store_default_time(DWORD dwChar);
 BOOLEAN mpqapi_reg_store_modification_time(char *pbData, DWORD dwLen);
 _BLOCKENTRY *j_mpqapi_remove_hash_entry(char *pszName);
 void mpqapi_remove_hash_entry(const char *pszName);

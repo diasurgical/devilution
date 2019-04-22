@@ -2392,6 +2392,21 @@ int random(BYTE idx, int v)
 	return (GetRndSeed() >> 16) % v;
 }
 
+void engine_debug_trap(BOOL show_cursor)
+{
+/*
+	TMemBlock *pCurr;
+
+	sgMemCrit.Enter();
+	while(sgpMemBlock != NULL) {
+		pCurr = sgpMemBlock->pNext;
+		SMemFree(sgpMemBlock, "C:\\Diablo\\Direct\\ENGINE.CPP", 1970);
+		sgpMemBlock = pCurr;
+	}
+	sgMemCrit.Leave();
+*/
+}
+
 unsigned char *DiabloAllocPtr(int dwBytes)
 {
 	BYTE *buf;
