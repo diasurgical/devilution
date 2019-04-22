@@ -288,46 +288,32 @@ void DrawSLine(int y)
 
 void DrawSArrows(int y1, int y2)
 {
-	int *v2; // ebp
-	int v3;  // ebx
-	int v4;  // edi
-	int v5;  // esi
-	int v6;  // eax
-	int v7;  // eax
+	int yd1, yd2, yd3;
 
-	v2 = &SStringY[y2];
-	v3 = y1;
-	v4 = SStringY[y1] + 204;
-	v5 = *v2 + 204;
-	if (stextscrlubtn == -1)
-		CelDecodeOnly(665, v4, (BYTE *)pSTextSlidCels, 10, 12);
+	yd1 = SStringY[y1] + 204;
+	yd2 = SStringY[y2] + 204;
+	if (stextscrlubtn != -1)
+		CelDecodeOnly(665, yd1, (BYTE *)pSTextSlidCels, 12, 12);
 	else
-		CelDecodeOnly(665, v4, (BYTE *)pSTextSlidCels, 12, 12);
-	if (stextscrldbtn == -1)
-		CelDecodeOnly(665, v5, (BYTE *)pSTextSlidCels, 9, 12);
+		CelDecodeOnly(665, yd1, (BYTE *)pSTextSlidCels, 10, 12);
+	if (stextscrldbtn != -1)
+		CelDecodeOnly(665, yd2, (BYTE *)pSTextSlidCels, 11, 12);
 	else
-		CelDecodeOnly(665, v5, (BYTE *)pSTextSlidCels, 11, 12);
-	while (1) {
-		v4 += 12;
-		if (v4 >= v5)
-			break;
-		CelDecodeOnly(665, v4, (BYTE *)pSTextSlidCels, 14, 12);
+		CelDecodeOnly(665, yd2, (BYTE *)pSTextSlidCels, 9, 12);
+	yd1 += 12;
+	for (yd3 = yd1; yd3 < yd2; yd3 += 12) {
+		CelDecodeOnly(665, yd3, (BYTE *)pSTextSlidCels, 14, 12);
 	}
-	v6 = stextsel;
 	if (stextsel == 22)
-		v6 = stextlhold;
-	if (storenumh <= 1)
-		v7 = 0;
+		yd3 = stextlhold;
 	else
-		v7 = (*v2 - SStringY[v3] - 24) * (1000 * (stextsval + ((v6 - stextup) >> 2)) / (storenumh - 1)) / 1000;
-	CelDecodeOnly(665, SStringY[v3 + 1] + v7 + 204, (BYTE *)pSTextSlidCels, 13, 12);
+		yd3 = stextsel;
+	if (storenumh > 1)
+		yd3 = 1000 * (stextsval + ((yd3 - stextup) >> 2)) / (storenumh - 1) * (SStringY[y2] - SStringY[y1] - 24) / 1000;
+	else
+		yd3 = 0;
+	CelDecodeOnly(665, SStringY[y1 + 1] + 204 + yd3, (BYTE *)pSTextSlidCels, 13, 12);
 }
-// 69F108: using guessed type int stextup;
-// 69F10C: using guessed type int storenumh;
-// 69F110: using guessed type int stextlhold;
-// 6A8A28: using guessed type int stextsel;
-// 6A8A2C: using guessed type char stextscrldbtn;
-// 6AA704: using guessed type char stextscrlubtn;
 
 void DrawSTextHelp()
 {
