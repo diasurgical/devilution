@@ -2966,7 +2966,7 @@ void OperateSChambBk(int pnum, int i)
 	}
 }
 
-void OperateChest(int pnum, int i, unsigned char sendmsg)
+void OperateChest(int pnum, int i, BOOL sendmsg)
 {
 	int j, mdir, mtype;
 
@@ -3072,7 +3072,7 @@ void OperateInnSignChest(int pnum, int i)
 }
 // 676190: using guessed type int deltaload;
 
-void OperateSlainHero(int pnum, int i, unsigned char sendmsg)
+void OperateSlainHero(int pnum, int i, BOOL sendmsg)
 {
 	if (object[i]._oSelFlag) {
 		object[i]._oSelFlag = 0;
@@ -3126,7 +3126,7 @@ void OperateTrapLvr(int i)
 	}
 }
 
-void OperateSarc(int pnum, int i, unsigned char sendmsg)
+void OperateSarc(int pnum, int i, BOOL sendmsg)
 {
 	if (object[i]._oSelFlag) {
 		if (!deltaload)
@@ -3831,7 +3831,7 @@ void OperateBookCase(int pnum, int i, BOOL sendmsg)
 }
 // 676190: using guessed type int deltaload;
 
-void OperateDecap(int pnum, int i, unsigned char sendmsg)
+void OperateDecap(int pnum, int i, BOOL sendmsg)
 {
 	if (object[i]._oSelFlag) {
 		object[i]._oSelFlag = 0;
@@ -4108,32 +4108,55 @@ void OperateLazStand(int pnum, int i)
 
 void OperateObject(int pnum, int i, BOOL TeleFlag)
 {
-	int v3;           // esi
-	int v4;           // edi
-	ObjectStruct *v5; // ebx
-	int v6;           // ecx
-	BOOLEAN sendmsg;  // [esp+Ch] [ebp-4h]
+	BOOL sendmsg;
 
-	v3 = pnum;
-	v4 = i;
-	sendmsg = pnum == myplr;
-	v5 = &object[i];
-	v6 = v5->_otype;
-	switch (v5->_otype) {
+	sendmsg = (pnum == myplr);
+	switch (object[i]._otype) {
 	case OBJ_L1LDOOR:
 	case OBJ_L1RDOOR:
 		if (TeleFlag) {
-			if (v6 == OBJ_L1LDOOR)
-				OperateL1LDoor(v3, i, OBJ_L1LDOOR);
-			if (v5->_otype == OBJ_L1RDOOR)
-				OperateL1RDoor(v3, v4, 1u);
-		} else if (v3 == myplr) {
-			OperateL1Door(v3, i, 1u);
+			if (object[i]._otype == OBJ_L1LDOOR)
+				OperateL1LDoor(pnum, i, 1);
+			if (object[i]._otype == OBJ_L1RDOOR)
+				OperateL1RDoor(pnum, i, 1);
+			break;
 		}
+		if (pnum == myplr)
+			OperateL1Door(pnum, i, 1);
+		break;
+	case OBJ_L2LDOOR:
+	case OBJ_L2RDOOR:
+		if (TeleFlag) {
+			if (object[i]._otype == OBJ_L2LDOOR)
+				OperateL2LDoor(pnum, i, 1);
+			if (object[i]._otype == OBJ_L2RDOOR)
+				OperateL2RDoor(pnum, i, 1);
+			break;
+		}
+		if (pnum == myplr)
+			OperateL2Door(pnum, i, 1);
+		break;
+	case OBJ_L3LDOOR:
+	case OBJ_L3RDOOR:
+		if (TeleFlag) {
+			if (object[i]._otype == OBJ_L3LDOOR)
+				OperateL3LDoor(pnum, i, 1);
+			if (object[i]._otype == OBJ_L3RDOOR)
+				OperateL3RDoor(pnum, i, 1);
+			break;
+		}
+		if (pnum == myplr)
+			OperateL3Door(pnum, i, 1);
 		break;
 	case OBJ_LEVER:
 	case OBJ_SWITCHSKL:
-		OperateLever(v3, i);
+		OperateLever(pnum, i);
+		break;
+	case OBJ_BOOK2L:
+		OperateBook(pnum, i);
+		break;
+	case OBJ_BOOK2R:
+		OperateSChambBk(pnum, i);
 		break;
 	case OBJ_CHEST1:
 	case OBJ_CHEST2:
@@ -4141,99 +4164,71 @@ void OperateObject(int pnum, int i, BOOL TeleFlag)
 	case OBJ_TCHEST1:
 	case OBJ_TCHEST2:
 	case OBJ_TCHEST3:
-		OperateChest(v3, i, sendmsg);
-		break;
-	case OBJ_BOOK2L:
-		OperateBook(v3, i);
-		break;
-	case OBJ_BOOK2R:
-		OperateSChambBk(v3, i);
-		break;
-	case OBJ_L2LDOOR:
-	case OBJ_L2RDOOR:
-		if (TeleFlag) {
-			if (v6 == OBJ_L2LDOOR)
-				OperateL2LDoor(v3, i, 1u);
-			if (v5->_otype == OBJ_L2RDOOR)
-				OperateL2RDoor(v3, v4, 1u);
-		} else if (v3 == myplr) {
-			OperateL2Door(v3, i, 1u);
-		}
+		OperateChest(pnum, i, sendmsg);
 		break;
 	case OBJ_SARC:
-		OperateSarc(v3, i, sendmsg);
+		OperateSarc(pnum, i, sendmsg);
 		break;
 	case OBJ_FLAMELVR:
 		OperateTrapLvr(i);
 		break;
+	case OBJ_BLINDBOOK:
+	case OBJ_BLOODBOOK:
+	case OBJ_STEELTOME:
+		OperateBookLever(pnum, i);
+		break;
 	case OBJ_SHRINEL:
 	case OBJ_SHRINER:
-		OperateShrine(v3, i, IS_MAGIC);
+		OperateShrine(pnum, i, IS_MAGIC);
 		break;
 	case OBJ_SKELBOOK:
 	case OBJ_BOOKSTAND:
-		OperateSkelBook(v3, i, sendmsg);
+		OperateSkelBook(pnum, i, sendmsg);
 		break;
 	case OBJ_BOOKCASEL:
 	case OBJ_BOOKCASER:
-		OperateBookCase(v3, i, sendmsg);
+		OperateBookCase(pnum, i, sendmsg);
+		break;
+	case OBJ_DECAP:
+		OperateDecap(pnum, i, sendmsg);
+		break;
+	case OBJ_ARMORSTAND:
+	case OBJ_WARARMOR:
+		OperateArmorStand(pnum, i, sendmsg);
+		break;
+	case OBJ_GOATSHRINE:
+		OperateGoatShrine(pnum, i, LS_GSHRINE);
+		break;
+	case OBJ_CAULDRON:
+		OperateCauldron(pnum, i, LS_CALDRON);
 		break;
 	case OBJ_BLOODFTN:
 	case OBJ_PURIFYINGFTN:
 	case OBJ_MURKYFTN:
 	case OBJ_TEARFTN:
-		OperateFountains(v3, i);
-		break;
-	case OBJ_DECAP:
-		OperateDecap(v3, i, sendmsg);
-		break;
-	case OBJ_BLINDBOOK:
-	case OBJ_BLOODBOOK:
-	case OBJ_STEELTOME:
-		OperateBookLever(v3, i);
-		break;
-	case OBJ_PEDISTAL:
-		OperatePedistal(v3, i);
-		break;
-	case OBJ_L3LDOOR:
-	case OBJ_L3RDOOR:
-		if (TeleFlag) {
-			if (v6 == OBJ_L3LDOOR)
-				OperateL3LDoor(v3, i, 1u);
-			if (v5->_otype == OBJ_L3RDOOR)
-				OperateL3RDoor(v3, v4, 1u);
-		} else if (v3 == myplr) {
-			OperateL3Door(v3, i, 1u);
-		}
-		break;
-	case OBJ_ARMORSTAND:
-	case OBJ_WARARMOR:
-		OperateArmorStand(v3, i, sendmsg);
-		break;
-	case OBJ_GOATSHRINE:
-		OperateGoatShrine(v3, i, LS_GSHRINE);
-		break;
-	case OBJ_CAULDRON:
-		OperateCauldron(v3, i, LS_CALDRON);
+		OperateFountains(pnum, i);
 		break;
 	case OBJ_STORYBOOK:
-		OperateStoryBook(v3, i);
+		OperateStoryBook(pnum, i);
+		break;
+	case OBJ_PEDISTAL:
+		OperatePedistal(pnum, i);
 		break;
 	case OBJ_WARWEAP:
 	case OBJ_WEAPONRACK:
-		OperateWeaponRack(v3, i, sendmsg);
+		OperateWeaponRack(pnum, i, sendmsg);
 		break;
 	case OBJ_MUSHPATCH:
-		OperateMushPatch(v3, i);
+		OperateMushPatch(pnum, i);
 		break;
 	case OBJ_LAZSTAND:
-		OperateLazStand(v3, i);
+		OperateLazStand(pnum, i);
 		break;
 	case OBJ_SLAINHERO:
-		OperateSlainHero(v3, i, sendmsg);
+		OperateSlainHero(pnum, i, sendmsg);
 		break;
 	case OBJ_SIGNCHEST:
-		OperateInnSignChest(v3, i);
+		OperateInnSignChest(pnum, i);
 		break;
 	}
 }
