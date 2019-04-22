@@ -118,7 +118,7 @@ void InvDrawSlotBack(int X, int Y, int W, int H)
 
 	dst = &gpBuffer[X + PitchTbl[Y]];
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	__asm {
 		mov		edi, dst
 		xor		edx, edx

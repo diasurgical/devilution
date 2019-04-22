@@ -2066,7 +2066,7 @@ void DRLG_L4Pass3()
 
 	lv = 30 - 1;
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	__asm {
 		mov		esi, pMegaTiles
 		mov		eax, lv
@@ -2108,7 +2108,7 @@ void DRLG_L4Pass3()
 		xx = 16;
 		for (i = 0; i < DMAXX; i++) {
 			lv = (unsigned char)dungeon[i][j] - 1;
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 			if (lv >= 0) {
 				__asm {
 					mov		esi, pMegaTiles

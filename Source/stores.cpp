@@ -271,7 +271,7 @@ void DrawSLine(int y)
 
 	/// ASSERT: assert(gpBuffer);
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	__asm {
 		mov		esi, gpBuffer
 		mov		edi, esi

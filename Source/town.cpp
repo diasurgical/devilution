@@ -4,7 +4,7 @@ void town_clear_upper_buf(BYTE *pBuff)
 {
 	/// ASSERT: assert(gpBuffer);
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	__asm {
 		mov		edi, pBuff
 		mov		edx, 30
@@ -67,7 +67,7 @@ void town_clear_low_buf(BYTE *pBuff)
 {
 	/// ASSERT: assert(gpBuffer);
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	__asm {
 		mov		edi, pBuff
 		mov		edx, 30
@@ -942,7 +942,7 @@ void T_DrawZoom(int x, int y)
 
 	/// ASSERT: assert(gpBuffer);
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	__asm {
 		mov		esi, gpBuffer
 		mov		edx, nDstOff
@@ -1107,7 +1107,7 @@ void T_FillSector(unsigned char *P3Tiles, unsigned char *pSector, int xi, int yi
 	for (j = 0; j < h; j++) {
 		xx = xi;
 		for (i = 0; i < w; i++) {
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 			__asm {
 				mov		esi, pSector
 				mov		eax, ii
@@ -1173,7 +1173,7 @@ void T_FillTile(unsigned char *P3Tiles, int xx, int yy, int t)
 {
 	long v1, v2, v3, v4;
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	__asm {
 		mov		eax, t
 		dec		eax

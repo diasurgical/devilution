@@ -128,7 +128,7 @@ void MakeSpeedCels()
 	BOOL blood_flag;
 	WORD *pMap;
 	DWORD *pFrameTable;
-#if (_MSC_VER < 800) || (_MSC_VER > 1200)
+#ifndef USE_ASM
 	int k, l;
 	BYTE width, pix;
 	BYTE *src, *dst, *tbl;
@@ -161,7 +161,7 @@ void MakeSpeedCels()
 	nlevel_frames = pFrameTable[0] & 0xFFFF;
 
 	for (i = 1; i < nlevel_frames; i++) {
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 		__asm {
 			mov		ebx, pDungeonCels
 			mov		eax, i
@@ -186,7 +186,7 @@ void MakeSpeedCels()
 			blood_flag = TRUE;
 			if (level_frame_count[i]) {
 				if (level_frame_types[i] != 0x1000) {
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 					j = level_frame_sizes[i];
 					__asm {
 						mov		ebx, pDungeonCels
@@ -219,7 +219,7 @@ void MakeSpeedCels()
 					}
 #endif
 				} else {
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 					__asm {
 						mov		ebx, pDungeonCels
 						mov		eax, i
@@ -320,7 +320,7 @@ void MakeSpeedCels()
 			lfs_adder = level_frame_sizes[i];
 			for (j = 1; j < blk_cnt; j++) {
 				SpeedFrameTbl[i][j] = frameidx;
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 				__asm {
 					mov		ebx, pDungeonCels
 					mov		eax, currtile
@@ -356,7 +356,7 @@ void MakeSpeedCels()
 		} else {
 			for (j = 1; j < blk_cnt; j++) {
 				SpeedFrameTbl[i][j] = frameidx;
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 				__asm {
 					mov		ebx, pDungeonCels
 					mov		eax, currtile

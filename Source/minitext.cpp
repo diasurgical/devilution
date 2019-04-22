@@ -100,7 +100,7 @@ void PrintQTextChr(int sx, int sy, BYTE *pCelBuff, int nCel)
 	pStart = &gpBuffer[PitchTbl[209]];
 	pEnd = &gpBuffer[PitchTbl[469]];
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	__asm {
 		mov		ebx, pCelBuff
 		mov		eax, nCel
