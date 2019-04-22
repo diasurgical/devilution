@@ -212,74 +212,55 @@ BOOL TFit_Obj3(int t)
 
 BOOL CheckThemeReqs(int t)
 {
-	BOOLEAN rv; // al
-	int v2;     // ecx
-	int v3;     // ecx
-	int v4;     // ecx
-	int v5;     // ecx
-	BOOLEAN v6; // zf
-	int v7;     // ecx
-	int v8;     // ecx
-	int v9;     // ecx
+	BOOL rv;
 
-	rv = 1;
-	if (t <= 10) {
-		if (t != 10) {
-			v2 = t - 1;
-			if (v2) {
-				v3 = v2 - 2;
-				if (v3) {
-					v4 = v3 - 2;
-					if (v4) {
-						v5 = v4 - 2;
-						if (v5) {
-							if (v5 != 2) {
-								return rv;
-							}
-							v6 = pFountainFlag == 0;
-						} else {
-							v6 = bFountainFlag == 0;
-						}
-					LABEL_21:
-						if (!v6) {
-							return rv;
-						}
-						return 0;
-					}
-				}
-			}
-			if (leveltype != 3) {
-				v6 = leveltype == DTYPE_HELL;
-				goto LABEL_21;
-			}
-			return 0;
+	rv = TRUE;
+	switch (t) {
+	case THEME_SHRINE:
+	case THEME_SKELROOM:
+	case THEME_LIBRARY:
+		if (leveltype == DTYPE_CAVES || leveltype == DTYPE_HELL) {
+			rv = FALSE;
 		}
-	LABEL_16:
-		v6 = leveltype == DTYPE_CATHEDRAL;
-		goto LABEL_21;
+		break;
+	case THEME_BLOODFOUNTAIN:
+		if (!bFountainFlag) {
+			rv = FALSE;
+		}
+		break;
+	case THEME_PURIFYINGFOUNTAIN:
+		if (!pFountainFlag) {
+			rv = FALSE;
+		}
+		break;
+	case THEME_ARMORSTAND:
+		if (leveltype == DTYPE_CATHEDRAL) {
+			rv = FALSE;
+		}
+		break;
+	case THEME_CAULDRON:
+		if (leveltype != DTYPE_HELL || !cauldronFlag) {
+			rv = FALSE;
+		}
+		break;
+	case THEME_MURKYFOUNTAIN:
+		if (!mFountainFlag) {
+			rv = FALSE;
+		}
+		break;
+	case THEME_TEARFOUNTAIN:
+		if (!tFountainFlag) {
+			rv = FALSE;
+		}
+		break;
+	case THEME_WEAPONRACK:
+		if (leveltype == DTYPE_CATHEDRAL) {
+			rv = FALSE;
+		}
+		break;
 	}
-	v7 = t - 12;
-	if (v7) {
-		v8 = v7 - 1;
-		if (!v8) {
-			v6 = mFountainFlag == 0;
-			goto LABEL_21;
-		}
-		v9 = v8 - 1;
-		if (!v9) {
-			v6 = tFountainFlag == 0;
-			goto LABEL_21;
-		}
-		if (v9 != 2) {
-			return rv;
-		}
-		goto LABEL_16;
-	}
-	if (leveltype == DTYPE_HELL) {
-		v6 = cauldronFlag == 0;
-		goto LABEL_21;
-	}
-	return 0;
+
+	return rv;
 }
 // 6AAA58: using guessed type int mFountainFlag;
 // 6AAA5C: using guessed type int cauldronFlag;
@@ -449,19 +430,19 @@ void InitThemes()
 	}
 	if (leveltype == 2 || leveltype == 3 || leveltype == 4) {
 		for (i = 0; i < themeCount; i++)
-			themes[i].ttype = -1;
+			themes[i].ttype = THEME_NONE;
 		if (QuestStatus(QTYPE_ZHAR)) {
 			for (j = 0; j < themeCount; j++) {
 				themes[j].ttval = themeLoc[j].ttval;
-				if (SpecialThemeFit(j, 5)) {
-					themes[j].ttype = 5;
+				if (SpecialThemeFit(j, THEME_LIBRARY)) {
+					themes[j].ttype = THEME_LIBRARY;
 					zharlib = j;
 					break;
 				}
 			}
 		}
 		for (i = 0; i < themeCount; i++) {
-			if (themes[i].ttype == -1) {
+			if (themes[i].ttype == THEME_NONE) {
 				themes[i].ttval = themeLoc[i].ttval;
 				for (j = ThemeGood[random(0, 4)];; j = random(0, 17)) {
 					if (SpecialThemeFit(i, j)) {
