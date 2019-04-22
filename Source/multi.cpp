@@ -631,26 +631,25 @@ char multi_event_handler(int a1)
 
 void __stdcall multi_handle_events(_SNETEVENT *pEvt)
 {
-	int v1;  // ecx
-	int *v2; // eax
-	int *v3; // eax
+	int LeftReason;
+	int *data;
 
 	switch (pEvt->eventid) {
 	case EVENT_TYPE_PLAYER_CREATE_GAME:
-		v3 = (int *)pEvt->data;
-		sgGameInitInfo.dwSeed = *v3;
-		_LOBYTE(sgGameInitInfo.bDiff) = *((_BYTE *)v3 + 4);
-		sgbPlayerTurnBitTbl[pEvt->playerid] = 1;
+		data = (int *)pEvt->data;
+		sgGameInitInfo.dwSeed = data[0];
+		sgGameInitInfo.bDiff = data[1];
+		sgbPlayerTurnBitTbl[pEvt->playerid] = TRUE;
 		break;
 	case EVENT_TYPE_PLAYER_LEAVE_GAME:
-		v1 = 0;
 		sgbPlayerLeftGameTbl[pEvt->playerid] = 1;
-		sgbPlayerTurnBitTbl[pEvt->playerid] = 0;
-		v2 = (int *)pEvt->data;
-		if (v2 && pEvt->databytes >= 4u)
-			v1 = *v2;
-		sgdwPlayerLeftReasonTbl[pEvt->playerid] = v1;
-		if (v1 == 0x40000004)
+		sgbPlayerTurnBitTbl[pEvt->playerid] = FALSE;
+		LeftReason = 0;
+		data = (int *)pEvt->data;
+		if (data && pEvt->databytes >= 4u) //has to be 4u to be bin exact - maybe databytes should be unsigned int instead of int?
+			LeftReason = data[0];
+		sgdwPlayerLeftReasonTbl[pEvt->playerid] = LeftReason;
+		if (LeftReason == 0x40000004)
 			gbSomebodyWonGameKludge = TRUE;
 		sgbSendDeltaTbl[pEvt->playerid] = FALSE;
 		dthread_remove_player(pEvt->playerid);
@@ -662,8 +661,6 @@ void __stdcall multi_handle_events(_SNETEVENT *pEvt)
 		break;
 	}
 }
-// 6761B8: using guessed type char gbSomebodyWonGameKludge;
-// 6796E4: using guessed type char gbDeltaSender;
 
 BOOL NetInit(BOOL bSinglePlayer, BOOL *pfExitProgram)
 {
@@ -928,60 +925,40 @@ BOOL multi_upgrade(int *pfExitProgram)
 
 void multi_player_joins(int pnum, TCmdPlrInfoHdr *cmd, int a3)
 {
-	int v3;             // ebx
-	TCmdPlrInfoHdr *v4; // edi
-	short *v5;          // esi
-	int v6;             // esi
-	BOOLEAN v7;         // zf
-	char *v8;           // eax
-	int v9;             // ST08_4
-	unsigned char *v10; // edx
-	int v11;            // eax
-	int v12;            // ecx
-	int v13;            // eax
+	char *msg;
 
-	v3 = pnum;
-	v4 = cmd;
 	if (myplr != pnum) {
-		v5 = &sgwPackPlrOffsetTbl[pnum];
-		if (*v5 == cmd->wOffset || (*v5 = 0, !cmd->wOffset)) {
-			if (!a3 && !*v5) {
+		if ((WORD)sgwPackPlrOffsetTbl[pnum] == cmd->wOffset || (sgwPackPlrOffsetTbl[pnum] = 0, !cmd->wOffset)) {
+			if (!a3 && !sgwPackPlrOffsetTbl[pnum]) {
 				multi_send_pinfo(pnum, CMD_ACK_PLRINFO);
 			}
-			memcpy((char *)&netplr[v3] + (unsigned short)v4->wOffset, &v4[1], (unsigned short)v4->wBytes);
-			*v5 += v4->wBytes;
-			if (*v5 == 1266) {
-				*v5 = 0;
-				multi_player_left_msg(v3, 0);
-				v6 = v3;
-				plr[v3]._pGFXLoad = 0;
-				UnPackPlayer(&netplr[v3], v3, 1);
+			memcpy((char *)&netplr[pnum] + cmd->wOffset, &cmd[1], cmd->wBytes);
+			sgwPackPlrOffsetTbl[pnum] += cmd->wBytes;
+			if (sgwPackPlrOffsetTbl[pnum] == 1266) {
+				sgwPackPlrOffsetTbl[pnum] = 0;
+				multi_player_left_msg(pnum, 0);
+				plr[pnum]._pGFXLoad = 0;
+				UnPackPlayer(&netplr[pnum], pnum, 1);
 				if (a3) {
-					++gbActivePlayers;
-					v7 = sgbPlayerTurnBitTbl[v3] == 0;
-					plr[v6].plractive = 1;
-					v8 = "Player '%s' (level %d) just joined the game";
-					if (v7)
-						v8 = "Player '%s' (level %d) is already in the game";
-					EventPlrMsg(v8, plr[v6]._pName, plr[v6]._pLevel);
-					LoadPlrGFX(v3, PFILE_STAND);
-					SyncInitPlr(v3);
-					if (plr[v6].plrlevel == currlevel) {
-						if (plr[v6]._pHitPoints >> 6 <= 0) {
-							plr[v6]._pgfxnum = 0;
-							LoadPlrGFX(v3, PFILE_DEATH);
-							v9 = plr[v6]._pDWidth;
-							v10 = plr[v6]._pDAnim[0];
-							plr[v6]._pmode = 8;
-							NewPlrAnim(v3, v10, plr[v6]._pDFrames, 1, v9);
-							v11 = plr[v6]._pAnimLen;
-							v12 = v11 - 1;
-							plr[v6]._pVar8 = 2 * v11;
-							v13 = plr[v6].WorldX;
-							plr[v6]._pAnimFrame = v12;
-							dFlags[v13][plr[v6].WorldY] |= DFLAG_DEAD_PLAYER;
+					gbActivePlayers++;
+					plr[pnum].plractive = 1;
+					msg = "Player '%s' (level %d) just joined the game";
+					if (sgbPlayerTurnBitTbl[pnum] == 0)
+						msg = "Player '%s' (level %d) is already in the game";
+					EventPlrMsg(msg, plr[pnum]._pName, plr[pnum]._pLevel);
+					LoadPlrGFX(pnum, PFILE_STAND);
+					SyncInitPlr(pnum);
+					if (plr[pnum].plrlevel == currlevel) {
+						if (plr[pnum]._pHitPoints >> 6 > 0) {
+							StartStand(pnum, 0);
 						} else {
-							StartStand(v3, 0);
+							plr[pnum]._pgfxnum = 0;
+							LoadPlrGFX(pnum, PFILE_DEATH);
+							plr[pnum]._pmode = 8;
+							NewPlrAnim(pnum, plr[pnum]._pDAnim[0], plr[pnum]._pDFrames, 1, plr[pnum]._pDWidth);
+							plr[pnum]._pAnimFrame = plr[pnum]._pAnimLen - 1;
+							plr[pnum]._pVar8 = 2 * plr[pnum]._pAnimLen;
+							dFlags[plr[pnum].WorldX][plr[pnum].WorldY] |= DFLAG_DEAD_PLAYER;
 						}
 					}
 				}
