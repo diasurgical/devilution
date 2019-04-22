@@ -2127,7 +2127,7 @@ void DrawZoom(int x, int y)
 
 	/// ASSERT: assert(gpBuffer);
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	__asm {
 		mov		esi, gpBuffer
 		mov		edx, nDstOff
@@ -2192,7 +2192,7 @@ void ClearScreenBuffer()
 
 	/// ASSERT: assert(gpBuffer);
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	__asm {
 		mov		edi, gpBuffer
 		add		edi, SCREENXY(0, 0)
@@ -2642,7 +2642,7 @@ void DoBlitScreen(DWORD dwX, DWORD dwY, DWORD dwWdt, DWORD dwHgt)
 
 		/// ASSERT: assert(gpBuffer);
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 		__asm {
 			mov		esi, gpBuffer
 			mov		edi, DDS_desc.lpSurface

@@ -3647,7 +3647,7 @@ void DrawULine(int y)
 {
 	/// ASSERT: assert(gpBuffer);
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	int yy;
 
 	yy = PitchTbl[SStringY[y] + 198] + 26 + 64;

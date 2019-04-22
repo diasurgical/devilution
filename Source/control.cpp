@@ -177,7 +177,7 @@ void DrawSpellCel(int xp, int yp, BYTE *Trans, int nCel, int w)
 	dst = &gpBuffer[xp + PitchTbl[yp]];
 	tbl = SplTransTbl;
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	__asm {
 		mov		ebx, Trans
 		mov		eax, nCel
@@ -627,7 +627,7 @@ void CPrintString(int nOffset, int nCel, char col)
 {
 	/// ASSERT: assert(gpBuffer);
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	__asm {
 		mov		ebx, pPanelText
 		mov		eax, nCel
@@ -939,7 +939,7 @@ void DrawPanelBox(int x, int y, int w, int h, int sx, int sy)
 	nSrcOff = x + 640 * y;
 	nDstOff = sx + 768 * sy;
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	__asm {
 		mov		esi, pBtmBuff
 		add		esi, nSrcOff
@@ -1015,7 +1015,7 @@ void SetFlaskHeight(BYTE *pCelBuff, int min, int max, int c, int r)
 	nDstOff = c + 768 * r;
 	w = max - min;
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	__asm {
 		mov		esi, pCelBuff
 		add		esi, nSrcOff
@@ -1042,7 +1042,7 @@ void SetFlaskHeight(BYTE *pCelBuff, int min, int max, int c, int r)
 
 void DrawFlask(BYTE *pCelBuff, int w, int nSrcOff, BYTE *pBuff, int nDstOff, int h)
 {
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	__asm {
 		mov		esi, pCelBuff
 		add		esi, nSrcOff
@@ -2309,7 +2309,7 @@ void RedBack()
 
 	/// ASSERT: assert(gpBuffer);
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	if (leveltype != DTYPE_HELL) {
 		__asm {
 			mov		edi, gpBuffer

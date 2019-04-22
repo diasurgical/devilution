@@ -2188,7 +2188,7 @@ void ObjSetMini(int x, int y, int v)
 	int xx, yy;
 	long v1, v2, v3, v4;
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	__asm {
 		mov		esi, pMegaTiles
 		xor		eax, eax
