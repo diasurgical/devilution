@@ -20,26 +20,26 @@ HMODULE ghDiabMod; // idb
 
 void dx_init(HWND hWnd)
 {
-	HWND v1;  // esi
-	GUID *v2; // ecx
-	int v3;   // eax
-	int v4;   // eax
-	//int v5; // ecx
-	int v6;     // edi
-	int v7;     // eax
-	int v8;     // eax
-	HWND hWnda; // [esp+1Ch] [ebp-4h]
+	HRESULT hDDVal;
+	int winw, winh;
+	BOOL bSuccess;
+	GUID *lpGUID;
 
-	v1 = hWnd;
-	hWnda = hWnd;
+	/// ASSERT: assert(! gpBuffer);
+	/// ASSERT: assert(! sgdwLockCount);
+	/// ASSERT: assert(! sgpBackBuf);
+
 	SetFocus(hWnd);
-	ShowWindow(v1, SW_SHOWNORMAL);
-	v2 = NULL;
-	if (gbEmulate)
-		v2 = (GUID *)DDCREATE_EMULATIONONLY;
-	v3 = dx_DirectDrawCreate(v2, &lpDDInterface, NULL);
-	if (v3)
-		ErrDlg(IDD_DIALOG1, v3, "C:\\Src\\Diablo\\Source\\dx.cpp", 149);
+	ShowWindow(hWnd, SW_SHOWNORMAL);
+
+	lpGUID = (GUID *)DDCREATE_EMULATIONONLY;
+	if(!gbEmulate) {
+		lpGUID = NULL;
+	}
+	hDDVal = dx_DirectDrawCreate(lpGUID, &lpDDInterface, NULL);
+	if(hDDVal != DD_OK) {
+		ErrDlg(IDD_DIALOG1, hDDVal, "C:\\Src\\Diablo\\Source\\dx.cpp", 149);
+	}
 
 #ifdef COLORFIX
 #ifdef __DDRAWI_INCLUDED__
@@ -49,37 +49,57 @@ void dx_init(HWND hWnd)
 #endif
 #endif
 
-	fullscreen = 1;
-#ifdef __cplusplus
-	v4 = lpDDInterface->SetCooperativeLevel(v1, DDSCL_EXCLUSIVE | DDSCL_ALLOWREBOOT | DDSCL_FULLSCREEN);
-#else
-	v4 = lpDDInterface->lpVtbl->SetCooperativeLevel(lpDDInterface, v1, DDSCL_EXCLUSIVE | DDSCL_ALLOWREBOOT | DDSCL_FULLSCREEN);
+#ifndef _DEBUG
+	fullscreen = TRUE;
 #endif
-	if (v4 == DDERR_EXCLUSIVEMODEALREADYSET) {
-		MI_Dummy(0); // v5
-	} else if (v4) {
-		ErrDlg(IDD_DIALOG1, v4, "C:\\Src\\Diablo\\Source\\dx.cpp", 170);
+	if(!fullscreen) {
+#ifdef __cplusplus
+		hDDVal = lpDDInterface->SetCooperativeLevel(hWnd, DDSCL_NORMAL | DDSCL_ALLOWREBOOT);
+#else
+		hDDVal = lpDDInterface->lpVtbl->SetCooperativeLevel(lpDDInterface, hWnd, DDSCL_NORMAL | DDSCL_ALLOWREBOOT);
+#endif
+		if(hDDVal == DDERR_EXCLUSIVEMODEALREADYSET) {
+			MI_Dummy2(); /* break_exception(); */
+		} else if(hDDVal != DD_OK) {
+			ErrDlg(IDD_DIALOG1, hDDVal, "C:\\Diablo\\Direct\\dx.cpp", 155);
+		}
+		SetWindowPos(hWnd, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE);
+	} else {
+#ifdef __cplusplus
+		hDDVal = lpDDInterface->SetCooperativeLevel(hWnd, DDSCL_EXCLUSIVE | DDSCL_ALLOWREBOOT | DDSCL_FULLSCREEN);
+#else
+		hDDVal = lpDDInterface->lpVtbl->SetCooperativeLevel(lpDDInterface, hWnd, DDSCL_EXCLUSIVE | DDSCL_ALLOWREBOOT | DDSCL_FULLSCREEN);
+#endif
+		if(hDDVal == DDERR_EXCLUSIVEMODEALREADYSET) {
+			MI_Dummy2(); /* break_exception(); */
+		} else if(hDDVal != DD_OK) {
+			ErrDlg(IDD_DIALOG1, hDDVal, "C:\\Src\\Diablo\\Source\\dx.cpp", 170);
+		}
+#ifdef __cplusplus
+		hDDVal = lpDDInterface->SetDisplayMode(SCREEN_WIDTH, SCREEN_HEIGHT, 8);
+#else
+		hDDVal = lpDDInterface->lpVtbl->SetDisplayMode(lpDDInterface, SCREEN_WIDTH, SCREEN_HEIGHT, 8);
+#endif
+		if(hDDVal != DD_OK) {
+			winw = GetSystemMetrics(SM_CXSCREEN);
+			winh = GetSystemMetrics(SM_CYSCREEN);
+#ifdef __cplusplus
+			hDDVal = lpDDInterface->SetDisplayMode(winw, winh, 8);
+#else
+			hDDVal = lpDDInterface->lpVtbl->SetDisplayMode(lpDDInterface, winw, winh, 8);
+#endif
+			if(hDDVal != DD_OK) {
+				ErrDlg(IDD_DIALOG1, hDDVal, "C:\\Src\\Diablo\\Source\\dx.cpp", 183);
+			}
+		}
 	}
-#ifdef __cplusplus
-	if (lpDDInterface->SetDisplayMode(SCREEN_WIDTH, SCREEN_HEIGHT, 8)) {
-#else
-	if (lpDDInterface->lpVtbl->SetDisplayMode(lpDDInterface, SCREEN_WIDTH, SCREEN_HEIGHT, 8)) {
-#endif
-		v6 = GetSystemMetrics(SM_CXSCREEN);
-		v7 = GetSystemMetrics(SM_CYSCREEN);
-#ifdef __cplusplus
-		v8 = lpDDInterface->SetDisplayMode(v6, v7, 8);
-#else
-		v8 = lpDDInterface->lpVtbl->SetDisplayMode(lpDDInterface, v6, v7, 8);
-#endif
-		if (v8)
-			ErrDlg(IDD_DIALOG1, v8, "C:\\Src\\Diablo\\Source\\dx.cpp", 183);
-	}
+
 	dx_create_primary_surface();
 	palette_init();
 	GdiSetBatchLimit(1);
 	dx_create_back_buffer();
-	SDrawManualInitialize(hWnda, lpDDInterface, lpDDSPrimary, 0, 0, lpDDSBackBuf, lpDDPalette, 0);
+	bSuccess = SDrawManualInitialize(hWnd, lpDDInterface, lpDDSPrimary, NULL, NULL, lpDDSBackBuf, lpDDPalette, NULL);
+	/// ASSERT: assert(bSuccess);
 }
 // 52A549: using guessed type char gbEmulate;
 

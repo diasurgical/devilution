@@ -2841,6 +2841,11 @@ void MI_Dummy(int i)
 	return;
 }
 
+void MI_Dummy2()
+{
+	return;
+}
+
 void MI_Golem(int i)
 {
 	int CrawlNum[6] = { 0, 3, 12, 45, 94, 159 };
