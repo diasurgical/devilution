@@ -4390,42 +4390,30 @@ void SyncOpObject(int pnum, int cmd, int i)
 
 void BreakCrux(int i)
 {
-	int v1;        // esi
-	int v2;        // edi
-	int v3;        // edx
-	signed int v4; // eax
-	int v5;        // ecx
-	int v6;        // ebx
+	int j, oi;
+	BOOL triggered;
 
-	v1 = i;
-	v2 = nobjects;
-	object[v1]._oBreak = -1;
-	object[v1]._oSelFlag = 0;
-	v3 = 0;
-	v4 = 1;
-	object[v1]._oAnimFlag = 1;
-	object[v1]._oAnimFrame = 1;
-	object[v1]._oAnimDelay = 1;
-	object[v1]._oSolidFlag = TRUE;
-	object[v1]._oMissFlag = TRUE;
-	if (v2 <= 0)
-		goto LABEL_15;
-	do {
-		v5 = objectactive[v3];
-		v6 = object[v5]._otype;
-		if ((v6 == OBJ_CRUX1 || v6 == OBJ_CRUX2 || v6 == OBJ_CRUX3)
-		    && object[v1]._oVar8 == object[v5]._oVar8
-		    && object[v5]._oBreak != -1) {
-			v4 = 0;
-		}
-		++v3;
-	} while (v3 < v2);
-	if (v4) {
-	LABEL_15:
-		if (!deltaload)
-			PlaySfxLoc(IS_LEVER, object[v1]._ox, object[v1]._oy);
-		ObjChangeMap(object[v1]._oVar1, object[v1]._oVar2, object[v1]._oVar3, object[v1]._oVar4);
+	object[i]._oBreak = -1;
+	object[i]._oSelFlag = 0;
+	object[i]._oAnimFlag = 1;
+	object[i]._oAnimFrame = 1;
+	object[i]._oAnimDelay = 1;
+	object[i]._oSolidFlag = TRUE;
+	object[i]._oMissFlag = TRUE;
+	triggered = TRUE;
+	for (j = 0; j < nobjects; j++) {
+		oi = objectactive[j];
+		if (object[oi]._otype != OBJ_CRUX1 && object[oi]._otype != OBJ_CRUX2 && object[oi]._otype != OBJ_CRUX3)
+			continue;
+		if (object[i]._oVar8 != object[oi]._oVar8 || object[oi]._oBreak == -1)
+			continue;
+		triggered = FALSE;
 	}
+	if (!triggered)
+		return;
+	if (!deltaload)
+		PlaySfxLoc(IS_LEVER, object[i]._ox, object[i]._oy);
+	ObjChangeMap(object[i]._oVar1, object[i]._oVar2, object[i]._oVar3, object[i]._oVar4);
 }
 // 676190: using guessed type int deltaload;
 
