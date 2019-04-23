@@ -59,7 +59,7 @@ void dx_init(HWND hWnd)
 		hDDVal = lpDDInterface->lpVtbl->SetCooperativeLevel(lpDDInterface, hWnd, DDSCL_NORMAL | DDSCL_ALLOWREBOOT);
 #endif
 		if(hDDVal == DDERR_EXCLUSIVEMODEALREADYSET) {
-			MI_Dummy2(); /* break_exception(); */
+			break_exception();
 		} else if(hDDVal != DD_OK) {
 			ErrDlg(IDD_DIALOG1, hDDVal, "C:\\Diablo\\Direct\\dx.cpp", 155);
 		}
@@ -71,7 +71,7 @@ void dx_init(HWND hWnd)
 		hDDVal = lpDDInterface->lpVtbl->SetCooperativeLevel(lpDDInterface, hWnd, DDSCL_EXCLUSIVE | DDSCL_ALLOWREBOOT | DDSCL_FULLSCREEN);
 #endif
 		if(hDDVal == DDERR_EXCLUSIVEMODEALREADYSET) {
-			MI_Dummy2(); /* break_exception(); */
+			break_exception();
 		} else if(hDDVal != DD_OK) {
 			ErrDlg(IDD_DIALOG1, hDDVal, "C:\\Src\\Diablo\\Source\\dx.cpp", 170);
 		}

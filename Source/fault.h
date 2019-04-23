@@ -13,6 +13,7 @@ extern LPTOP_LEVEL_EXCEPTION_FILTER lpTopLevelExceptionFilter;
 void fault_init_filter();
 void fault_cleanup_filter_atexit();
 LPTOP_LEVEL_EXCEPTION_FILTER __cdecl fault_cleanup_filter();
+void break_exception();
 LONG __stdcall TopLevelExceptionFilter(PEXCEPTION_POINTERS ExceptionInfo);
 void fault_hex_format(BYTE *ptr, unsigned int numBytes);
 void fault_unknown_module(LPCVOID lpAddress, LPSTR lpModuleName, int iMaxLength, int *sectionNum, int *sectionOffset);

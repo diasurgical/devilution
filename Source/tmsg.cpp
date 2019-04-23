@@ -36,6 +36,11 @@ void tmsg_add(BYTE *pbMsg, BYTE bLen)
 	*tail = msg;
 }
 
+void tmsg_start()
+{
+	/// ASSERT: assert(! sgpTimedMsgHead);
+}
+
 void *tmsg_cleanup()
 {
 	TMsg *next;

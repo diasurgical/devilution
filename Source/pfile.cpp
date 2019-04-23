@@ -104,7 +104,7 @@ BOOL pfile_open_archive(BOOL a1, unsigned int save_num)
 		return TRUE;
 
 	if (a1 && gbMaxPlayers > 1)
-		mpqapi_update_multi_creation_time(save_num);
+		mpqapi_store_default_time(save_num);
 	return FALSE;
 }
 

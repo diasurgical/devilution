@@ -43,7 +43,6 @@ void NetClose();
 char multi_event_handler(int a1);
 void __stdcall multi_handle_events(_SNETEVENT *pEvt);
 BOOL NetInit(BOOL bSinglePlayer, BOOL *pfExitProgram);
-void dummy_nop_used_in_NetInit();
 void buffer_init(TBuffer *pBuf);
 void multi_send_pinfo(int pnum, char cmd);
 int InitNewSeed(int newseed);

@@ -732,7 +732,7 @@ BOOL NetInit(BOOL bSinglePlayer, BOOL *pfExitProgram)
 		sync_init();
 		nthread_start(sgbPlayerTurnBitTbl[myplr]);
 		dthread_start();
-		dummy_nop_used_in_NetInit();
+		tmsg_start();
 		sgdwGameLoops = 0;
 		sgbSentThisCycle = 0;
 		gbDeltaSender = myplr;
@@ -766,10 +766,6 @@ BOOL NetInit(BOOL bSinglePlayer, BOOL *pfExitProgram)
 // 678640: using guessed type char byte_678640;
 // 6796E4: using guessed type char gbDeltaSender;
 // 6796E8: using guessed type int sgbNetInited;
-
-void dummy_nop_used_in_NetInit()
-{
-}
 
 void buffer_init(TBuffer *pBuf)
 {
