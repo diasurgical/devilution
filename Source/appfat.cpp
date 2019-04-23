@@ -13,6 +13,41 @@ int cleanup_thread_id;
 //	}
 //}
 
+void TriggerBreak()
+{
+#ifdef _DEBUG
+	LPTOP_LEVEL_EXCEPTION_FILTER pFilter;
+
+	pFilter = SetUnhandledExceptionFilter(BreakFilter);
+#ifdef USE_ASM
+	__asm {
+		int		3
+	}
+#else
+	__debugbreak();
+#endif
+	SetUnhandledExceptionFilter(pFilter);
+#endif
+}
+
+#ifdef _DEBUG
+LONG __stdcall BreakFilter(PEXCEPTION_POINTERS pExc)
+{
+	if(pExc->ExceptionRecord == NULL) {
+		return 0;
+	}
+	if(pExc->ExceptionRecord->ExceptionCode != EXCEPTION_BREAKPOINT) {
+		return 0;
+	}
+
+	if(((BYTE *)pExc->ContextRecord->Eip)[0] == 0xCC) { // int 3
+		pExc->ContextRecord->Eip++;
+	}
+
+	return -1;
+}
+#endif
+
 char *GetErrorStr(DWORD error_code)
 {
 	DWORD upper_code;
@@ -421,6 +456,9 @@ void __cdecl app_fatal(const char *pszFmt, ...)
 
 	va_start(va, pszFmt);
 	FreeDlg();
+#ifdef _DEBUG
+	TriggerBreak();
+#endif
 
 	if (pszFmt)
 		MsgBox(pszFmt, va);
