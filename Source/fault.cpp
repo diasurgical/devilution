@@ -32,17 +32,6 @@ LPTOP_LEVEL_EXCEPTION_FILTER __cdecl fault_cleanup_filter()
 	return fault_reset_filter(&fault_unused);
 }
 
-void break_exception()
-{
-/*
-	LPTOP_LEVEL_EXCEPTION_FILTER pFilter;
-
-	pFilter = SetUnhandledExceptionFilter(TopLevelExceptionFilter);
-	__asm int 3
-	SetUnhandledExceptionFilter(pFilter);
-*/
-}
-
 LONG __stdcall TopLevelExceptionFilter(PEXCEPTION_POINTERS ExceptionInfo)
 {
 	PEXCEPTION_RECORD xcpt;
