@@ -4525,36 +4525,32 @@ void SyncBreakObj(int pnum, int oi)
 
 void SyncL1Doors(int i)
 {
-	int v1;     // ebx
-	int v2;     // eax
-	int v3;     // esi
-	int v4;     // edi
-	BOOLEAN v5; // zf
+	int x, y;
 
-	v1 = i;
-	v2 = i;
-	if (object[i]._oVar4) {
-		v3 = object[v2]._oy;
-		v4 = object[v2]._ox;
-		v5 = object[v2]._otype == 1;
-		object[v2]._oMissFlag = TRUE;
-		object[v2]._oSelFlag = 2;
-		if (v5) {
-			if (object[v2]._oVar1 == 214)
-				ObjSetMicro(v4, v3, 408);
-			else
-				ObjSetMicro(v4, v3, 393);
-			dArch[v4][v3] = 7;
-			objects_set_door_piece(v4 - 1, v3--);
-		} else {
-			ObjSetMicro(v4, v3, 395);
-			dArch[v4][v3] = 8;
-			objects_set_door_piece(v4--, v3 - 1);
-		}
-		DoorSet(v1, v4, v3);
-	} else {
-		object[v2]._oMissFlag = FALSE;
+	if (object[i]._oVar4 != 0) {
+		object[i]._oMissFlag = FALSE;
+		return;
 	}
+
+	y = object[i]._oy;
+	x = object[i]._ox;
+	object[i]._oMissFlag = TRUE;
+	object[i]._oSelFlag = 2;
+	if (object[i]._otype == OBJ_L1LDOOR) {
+		if (object[i]._oVar1 == 214)
+			ObjSetMicro(x, y, 408);
+		else
+			ObjSetMicro(x, y, 393);
+		dArch[x][y] = 7;
+		objects_set_door_piece(x - 1, y);
+		y--;
+	} else {
+		ObjSetMicro(x, y, 395);
+		dArch[x][y] = 8;
+		objects_set_door_piece(x, y - 1);
+		x--;
+	}
+	DoorSet(i, x, y);
 }
 
 void SyncCrux(int i)
