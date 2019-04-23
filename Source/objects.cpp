@@ -4519,11 +4519,8 @@ void BreakObject(int pnum, int oi)
 
 void SyncBreakObj(int pnum, int oi)
 {
-	int v2; // eax
-
-	v2 = object[oi]._otype;
-	if (v2 >= OBJ_BARREL && v2 <= OBJ_BARRELEX)
-		BreakBarrel(pnum, oi, 0, 1u, 0);
+	if (object[oi]._otype >= OBJ_BARREL && object[oi]._otype <= OBJ_BARRELEX)
+		BreakBarrel(pnum, oi, 0, TRUE, 0);
 }
 
 void SyncL1Doors(int i)
