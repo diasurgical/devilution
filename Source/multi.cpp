@@ -3,6 +3,9 @@
 #include "../DiabloUI/diabloui.h"
 
 BOOLEAN gbSomebodyWonGameKludge; // weak
+#ifdef _DEBUG
+DWORD gdwHistTicks;
+#endif
 TBuffer sgHiPriBuf;
 char szPlayerDescript[128];
 WORD sgwPackPlrOffsetTbl[MAX_PLRS];
@@ -32,6 +35,40 @@ const int event_types[3] = {
 	EVENT_TYPE_PLAYER_CREATE_GAME,
 	EVENT_TYPE_PLAYER_MESSAGE
 };
+
+#ifdef _DEBUG
+void __cdecl dumphist(const char *pszFmt, ...)
+{
+	static FILE *sgpHistFile = NULL;
+	DWORD dwTicks;
+	va_list va;
+
+	va_start(va, pszFmt);
+
+	if(sgpHistFile == NULL) {
+		sgpHistFile = fopen("c:\\dumphist.txt", "wb");
+		if(sgpHistFile == NULL) {
+			return;
+		}
+	}
+
+	dwTicks = GetTickCount();
+	fprintf(sgpHistFile, "%4u.%02u  ", (dwTicks - gdwHistTicks) / 1000, (dwTicks - gdwHistTicks) % 1000 / 10);
+	vfprintf(sgpHistFile, pszFmt, va);
+	fprintf(
+		sgpHistFile,
+		"\r\n          (%d,%d)(%d,%d)(%d,%d)(%d,%d)\r\n",
+		plr[0].plractive,
+		player_state[0],
+		plr[1].plractive,
+		player_state[1],
+		plr[2].plractive,
+		player_state[2],
+		plr[3].plractive,
+		player_state[3]);
+	fflush(sgpHistFile);
+}
+#endif
 
 void multi_msg_add(BYTE *a1, unsigned char a2)
 {
@@ -722,6 +759,10 @@ BOOL NetInit(BOOL bSinglePlayer, BOOL *pfExitProgram)
 			if (!multi_init_multi(&ProgramData, &plrdata, &UiData, pfExitProgram))
 				return FALSE;
 		}
+#ifdef _DEBUG
+		gdwHistTicks = GetTickCount();
+		dumphist("(%d) new game started", myplr);
+#endif
 		sgbNetInited = TRUE;
 		sgbTimeout = FALSE;
 		delta_init();
@@ -922,46 +963,70 @@ BOOL multi_upgrade(int *pfExitProgram)
 	return result;
 }
 
-void multi_player_joins(int pnum, TCmdPlrInfoHdr *cmd, int a3)
+void recv_plrinfo(int pnum, TCmdPlrInfoHdr *p, BOOL recv)
 {
-	char *msg;
+	char *szEvent;
 
-	if (myplr != pnum) {
-		if (sgwPackPlrOffsetTbl[pnum] == cmd->wOffset || (sgwPackPlrOffsetTbl[pnum] = 0, !cmd->wOffset)) {
-			if (!a3 && !sgwPackPlrOffsetTbl[pnum]) {
-				multi_send_pinfo(pnum, CMD_ACK_PLRINFO);
-			}
-			memcpy((char *)&netplr[pnum] + cmd->wOffset, &cmd[1], cmd->wBytes);
-			sgwPackPlrOffsetTbl[pnum] += cmd->wBytes;
-			if (sgwPackPlrOffsetTbl[pnum] == 1266) {
-				sgwPackPlrOffsetTbl[pnum] = 0;
-				multi_player_left_msg(pnum, 0);
-				plr[pnum]._pGFXLoad = 0;
-				UnPackPlayer(&netplr[pnum], pnum, 1);
-				if (a3) {
-					gbActivePlayers++;
-					plr[pnum].plractive = 1;
-					msg = "Player '%s' (level %d) just joined the game";
-					if (sgbPlayerTurnBitTbl[pnum] == 0)
-						msg = "Player '%s' (level %d) is already in the game";
-					EventPlrMsg(msg, plr[pnum]._pName, plr[pnum]._pLevel);
-					LoadPlrGFX(pnum, PFILE_STAND);
-					SyncInitPlr(pnum);
-					if (plr[pnum].plrlevel == currlevel) {
-						if (plr[pnum]._pHitPoints >> 6 > 0) {
-							StartStand(pnum, 0);
-						} else {
-							plr[pnum]._pgfxnum = 0;
-							LoadPlrGFX(pnum, PFILE_DEATH);
-							plr[pnum]._pmode = 8;
-							NewPlrAnim(pnum, plr[pnum]._pDAnim[0], plr[pnum]._pDFrames, 1, plr[pnum]._pDWidth);
-							plr[pnum]._pAnimFrame = plr[pnum]._pAnimLen - 1;
-							plr[pnum]._pVar8 = 2 * plr[pnum]._pAnimLen;
-							dFlags[plr[pnum].WorldX][plr[pnum].WorldY] |= DFLAG_DEAD_PLAYER;
-						}
-					}
-				}
-			}
+	if(myplr == pnum) {
+		return;
+	}
+	/// ASSERT: assert((DWORD)pnum < MAX_PLRS);
+
+	if(sgwPackPlrOffsetTbl[pnum] != p->wOffset) {
+		sgwPackPlrOffsetTbl[pnum] = 0;
+		if(p->wOffset != 0) {
+			return;
 		}
 	}
+	if(!recv && sgwPackPlrOffsetTbl[pnum] == 0) {
+		multi_send_pinfo(pnum, CMD_ACK_PLRINFO);
+	}
+
+	memcpy((char *)&netplr[pnum] + p->wOffset, &p[1], p->wBytes); /* todo: cast? */
+	sgwPackPlrOffsetTbl[pnum] += p->wBytes;
+	if(sgwPackPlrOffsetTbl[pnum] != sizeof(*netplr)) {
+		return;
+	}
+
+	sgwPackPlrOffsetTbl[pnum] = 0;
+	multi_player_left_msg(pnum, 0);
+	plr[pnum]._pGFXLoad = 0;
+	UnPackPlayer(&netplr[pnum], pnum, 1);
+
+	if(!recv) {
+#ifdef _DEBUG
+		dumphist("(%d) received all %d plrinfo", myplr, pnum);
+#endif
+		return;
+	}
+
+	plr[pnum].plractive = 1;
+	gbActivePlayers++;
+
+	if(sgbPlayerTurnBitTbl[pnum] != 0) {
+		szEvent = "Player '%s' (level %d) just joined the game";
+	} else {
+		szEvent = "Player '%s' (level %d) is already in the game";
+	}
+	EventPlrMsg(szEvent, plr[pnum]._pName, plr[pnum]._pLevel);
+
+	LoadPlrGFX(pnum, PFILE_STAND);
+	SyncInitPlr(pnum);
+
+	if(plr[pnum].plrlevel == currlevel) {
+		if(plr[pnum]._pHitPoints >> 6 > 0) {
+			StartStand(pnum, 0);
+		} else {
+			plr[pnum]._pgfxnum = 0;
+			LoadPlrGFX(pnum, PFILE_DEATH);
+			plr[pnum]._pmode = PM_DEATH;
+			NewPlrAnim(pnum, plr[pnum]._pDAnim[0], plr[pnum]._pDFrames, 1, plr[pnum]._pDWidth);
+			plr[pnum]._pAnimFrame = plr[pnum]._pAnimLen - 1;
+			plr[pnum]._pVar8 = 2 * plr[pnum]._pAnimLen;
+			dFlags[plr[pnum].WorldX][plr[pnum].WorldY] |= DFLAG_DEAD_PLAYER;
+		}
+	}
+#ifdef _DEBUG
+	dumphist("(%d) making %d active -- recv_plrinfo", myplr, pnum);
+#endif
 }
