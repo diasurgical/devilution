@@ -4390,146 +4390,100 @@ void SyncOpObject(int pnum, int cmd, int i)
 
 void BreakCrux(int i)
 {
-	int v1;        // esi
-	int v2;        // edi
-	int v3;        // edx
-	signed int v4; // eax
-	int v5;        // ecx
-	int v6;        // ebx
+	int j, oi;
+	BOOL triggered;
 
-	v1 = i;
-	v2 = nobjects;
-	object[v1]._oBreak = -1;
-	object[v1]._oSelFlag = 0;
-	v3 = 0;
-	v4 = 1;
-	object[v1]._oAnimFlag = 1;
-	object[v1]._oAnimFrame = 1;
-	object[v1]._oAnimDelay = 1;
-	object[v1]._oSolidFlag = TRUE;
-	object[v1]._oMissFlag = TRUE;
-	if (v2 <= 0)
-		goto LABEL_15;
-	do {
-		v5 = objectactive[v3];
-		v6 = object[v5]._otype;
-		if ((v6 == OBJ_CRUX1 || v6 == OBJ_CRUX2 || v6 == OBJ_CRUX3)
-		    && object[v1]._oVar8 == object[v5]._oVar8
-		    && object[v5]._oBreak != -1) {
-			v4 = 0;
-		}
-		++v3;
-	} while (v3 < v2);
-	if (v4) {
-	LABEL_15:
-		if (!deltaload)
-			PlaySfxLoc(IS_LEVER, object[v1]._ox, object[v1]._oy);
-		ObjChangeMap(object[v1]._oVar1, object[v1]._oVar2, object[v1]._oVar3, object[v1]._oVar4);
+	object[i]._oBreak = -1;
+	object[i]._oSelFlag = 0;
+	object[i]._oAnimFlag = 1;
+	object[i]._oAnimFrame = 1;
+	object[i]._oAnimDelay = 1;
+	object[i]._oSolidFlag = TRUE;
+	object[i]._oMissFlag = TRUE;
+	triggered = TRUE;
+	for (j = 0; j < nobjects; j++) {
+		oi = objectactive[j];
+		if (object[oi]._otype != OBJ_CRUX1 && object[oi]._otype != OBJ_CRUX2 && object[oi]._otype != OBJ_CRUX3)
+			continue;
+		if (object[i]._oVar8 != object[oi]._oVar8 || object[oi]._oBreak == -1)
+			continue;
+		triggered = FALSE;
 	}
+	if (!triggered)
+		return;
+	if (!deltaload)
+		PlaySfxLoc(IS_LEVER, object[i]._ox, object[i]._oy);
+	ObjChangeMap(object[i]._oVar1, object[i]._oVar2, object[i]._oVar3, object[i]._oVar4);
 }
 // 676190: using guessed type int deltaload;
 
-void BreakBarrel(int pnum, int i, int dam, unsigned char forcebreak, int sendmsg)
+void BreakBarrel(int pnum, int i, int dam, BOOL forcebreak, int sendmsg)
 {
-	int v5;          // esi
-	BOOLEAN v6;      // zf
-	int v7;          // eax
-	int v8;          // edx
-	int v9;          // eax
-	int v10;         // eax
-	int v11;         // eax
-	char v12;        // al
-	char v13;        // al
-	int v14;         // edx
-	int v15;         // [esp-4h] [ebp-24h]
-	short param2;    // [esp+Ch] [ebp-14h]
-	int param1;      // [esp+10h] [ebp-10h]
-	int v18;         // [esp+14h] [ebp-Ch]
-	int *v19;        // [esp+18h] [ebp-8h]
-	int v20;         // [esp+1Ch] [ebp-4h]
-	int forcebreaka; // [esp+2Ch] [ebp+Ch]
+	int oi;
+	int xp, yp;
 
-	param2 = i;
-	v5 = i;
-	param1 = pnum;
-	if (object[i]._oSelFlag) {
-		if (forcebreak) {
-			object[v5]._oVar1 = 0;
-		} else {
-			object[v5]._oVar1 -= dam;
-			if (pnum != myplr && object[v5]._oVar1 <= 0)
-				object[v5]._oVar1 = 1;
-		}
-		if (object[v5]._oVar1 <= 0) {
-			object[v5]._oBreak = -1;
-			v6 = deltaload == 0;
-			object[v5]._oVar1 = 0;
-			object[v5]._oAnimFlag = 1;
-			object[v5]._oAnimFrame = 1;
-			object[v5]._oAnimDelay = 1;
-			object[v5]._oSolidFlag = FALSE;
-			object[v5]._oMissFlag = TRUE;
-			object[v5]._oSelFlag = 0;
-			object[v5]._oPreFlag = TRUE;
-			if (v6) {
-				v8 = object[v5]._ox;
-				v15 = object[v5]._oy;
-				if (object[v5]._otype == OBJ_BARRELEX) {
-					PlaySfxLoc(IS_BARLFIRE, v8, v15);
-					v9 = object[v5]._oy;
-					v20 = v9 - 1;
-					if (v9 - 1 <= v9 + 1) {
-						do {
-							v10 = object[v5]._ox;
-							v18 = v10 - 1;
-							if (v10 - 1 <= v10 + 1) {
-								forcebreaka = 112 * (v10 - 1) + v20;
-								v19 = (int *)((char *)dMonster + 4 * forcebreaka);
-								do {
-									v11 = *v19;
-									if (*v19 > 0)
-										MonsterTrapHit(v11 - 1, 1, 4, 0, 1, 0);
-									v12 = dPlayer[0][forcebreaka];
-									if (v12 > 0)
-										PlayerMHit(v12 - 1, -1, 0, 8, 16, 1, 0, 0);
-									v13 = dObject[0][forcebreaka];
-									if (v13 > 0) {
-										v14 = v13 - 1;
-										if (object[v14]._otype == OBJ_BARRELEX && object[v14]._oBreak != -1)
-											BreakBarrel(param1, v14, dam, 1u, sendmsg);
-									}
-									++v18;
-									v19 += 112;
-									forcebreaka += 112;
-								} while (v18 <= object[v5]._ox + 1);
-							}
-							++v20;
-						} while (v20 <= object[v5]._oy + 1);
-					}
-				} else {
-					PlaySfxLoc(IS_BARREL, v8, v15);
-					SetRndSeed(object[v5]._oRndSeed);
-					if (object[v5]._oVar2 <= 1) {
-						if (object[v5]._oVar3)
-							CreateRndItem(object[v5]._ox, object[v5]._oy, 0, sendmsg, 0);
-						else
-							CreateRndUseful(param1, object[v5]._ox, object[v5]._oy, sendmsg);
-					}
-					if (object[v5]._oVar2 >= 8)
-						SpawnSkeleton(object[v5]._oVar4, object[v5]._ox, object[v5]._oy);
-				}
-				if (param1 == myplr)
-					NetSendCmdParam2(FALSE, CMD_BREAKOBJ, param1, param2);
-			} else {
-				v7 = object[v5]._oAnimLen;
-				object[v5]._oAnimCnt = 0;
-				object[v5]._oAnimFrame = v7;
-				object[v5]._oAnimDelay = 1000;
-			}
-		} else if (!deltaload) {
-			PlaySfxLoc(IS_IBOW, object[v5]._ox, object[v5]._oy);
-		}
+	if (!object[i]._oSelFlag)
+		return;
+	if (forcebreak) {
+		object[i]._oVar1 = 0;
+	} else {
+		object[i]._oVar1 -= dam;
+		if (pnum != myplr && object[i]._oVar1 <= 0)
+			object[i]._oVar1 = 1;
 	}
+	if (object[i]._oVar1 > 0) {
+		if (deltaload)
+			return;
+
+		PlaySfxLoc(IS_IBOW, object[i]._ox, object[i]._oy);
+		return;
+	}
+
+	object[i]._oBreak = -1;
+	object[i]._oVar1 = 0;
+	object[i]._oAnimFlag = 1;
+	object[i]._oAnimFrame = 1;
+	object[i]._oAnimDelay = 1;
+	object[i]._oSolidFlag = FALSE;
+	object[i]._oMissFlag = TRUE;
+	object[i]._oSelFlag = 0;
+	object[i]._oPreFlag = TRUE;
+	if (deltaload != 0) {
+		object[i]._oAnimCnt = 0;
+		object[i]._oAnimFrame = object[i]._oAnimLen;
+		object[i]._oAnimDelay = 1000;
+		return;
+	}
+
+	if (object[i]._otype == OBJ_BARRELEX) {
+		PlaySfxLoc(IS_BARLFIRE, object[i]._ox, object[i]._oy);
+		for (yp = object[i]._oy - 1; yp <= object[i]._oy + 1; yp++) {
+			for (xp = object[i]._ox - 1; xp <= object[i]._ox + 1; xp++) {
+				if (dMonster[xp][yp] > 0)
+					MonsterTrapHit(dMonster[xp][yp] - 1, 1, 4, 0, 1, 0);
+				if (dPlayer[xp][yp] > 0)
+					PlayerMHit(dPlayer[xp][yp] - 1, -1, 0, 8, 16, 1, 0, 0);
+				if (dObject[xp][yp] > 0) {
+					oi = dObject[xp][yp] - 1;
+					if (object[oi]._otype == OBJ_BARRELEX && object[oi]._oBreak != -1)
+						BreakBarrel(pnum, oi, dam, TRUE, sendmsg);
+				}
+			}
+		}
+	} else {
+		PlaySfxLoc(IS_BARREL, object[i]._ox, object[i]._oy);
+		SetRndSeed(object[i]._oRndSeed);
+		if (object[i]._oVar2 <= 1) {
+			if (!object[i]._oVar3)
+				CreateRndUseful(pnum, object[i]._ox, object[i]._oy, sendmsg);
+			else
+				CreateRndItem(object[i]._ox, object[i]._oy, 0, sendmsg, 0);
+		}
+		if (object[i]._oVar2 >= 8)
+			SpawnSkeleton(object[i]._oVar4, object[i]._ox, object[i]._oy);
+	}
+	if (pnum == myplr)
+		NetSendCmdParam2(FALSE, CMD_BREAKOBJ, pnum, i);
 }
 // 676190: using guessed type int deltaload;
 
