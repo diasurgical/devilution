@@ -4647,39 +4647,26 @@ void SyncL2Doors(int i)
 
 void SyncL3Doors(int i)
 {
-	int v1; // eax
-	int v2; // esi
-	int v3; // ecx
-	int v4; // edx
-	int v5; // ebx
-	int v6; // eax
+	int x, y;
 
-	v1 = i;
-	v2 = object[i]._otype;
-	v3 = object[i]._ox;
-	v4 = object[v1]._oy;
-	object[v1]._oMissFlag = TRUE;
-	object[v1]._oSelFlag = 2;
-	if (v2 != OBJ_L3LDOOR)
-		goto LABEL_15;
-	if (!object[v1]._oVar4) {
-		ObjSetMicro(v3, v4, 531);
+	object[i]._oMissFlag = TRUE;
+	x = object[i]._ox;
+	y = object[i]._oy;
+	object[i]._oSelFlag = 2;
+	if (object[i]._otype == OBJ_L3LDOOR && object[i]._oVar4 == 0) {
+		ObjSetMicro(x, y, 531);
 		return;
 	}
-	v5 = object[v1]._oVar4;
-	if (v5 != 1 && v5 != 2) {
-	LABEL_15:
-		if (v2 == OBJ_L3RDOOR) {
-			if (object[v1]._oVar4) {
-				v6 = object[v1]._oVar4;
-				if (v6 == 1 || v6 == 2)
-					ObjSetMicro(v3, v4, 541);
-			} else {
-				ObjSetMicro(v3, v4, 534);
-			}
-		}
-	} else {
-		ObjSetMicro(v3, v4, 538);
+	if (object[i]._otype == OBJ_L3LDOOR && (object[i]._oVar4 == 1 || object[i]._oVar4 == 2)) {
+		ObjSetMicro(x, y, 538);
+		return;
+	}
+	if (object[i]._otype == OBJ_L3RDOOR && object[i]._oVar4 == 0) {
+		ObjSetMicro(x, y, 534);
+		return;
+	}
+	if (object[i]._otype == OBJ_L3RDOOR && (object[i]._oVar4 == 1 || object[i]._oVar4 == 2)) {
+		ObjSetMicro(x, y, 541);
 	}
 }
 
