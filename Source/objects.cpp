@@ -4555,27 +4555,20 @@ void SyncL1Doors(int i)
 
 void SyncCrux(int i)
 {
-	signed int v1; // ebx
-	int v2;        // edx
-	int v3;        // eax
-	int v4;        // esi
+	BOOL found;
+	int j, oi, type;
 
-	v1 = 1;
-	v2 = 0;
-	if (nobjects <= 0)
-		goto LABEL_13;
-	do {
-		v3 = objectactive[v2];
-		v4 = object[v3]._otype;
-		if ((v4 == OBJ_CRUX1 || v4 == OBJ_CRUX2 || v4 == OBJ_CRUX3)
-		    && object[i]._oVar8 == object[v3]._oVar8
-		    && object[v3]._oBreak != -1) {
-			v1 = 0;
-		}
-		++v2;
-	} while (v2 < nobjects);
-	if (v1)
-	LABEL_13:
+	found = TRUE;
+	for (j = 0; j < nobjects; j++) {
+		oi = objectactive[j];
+		type = object[oi]._otype;
+		if (type != OBJ_CRUX1 && type != OBJ_CRUX2 && type != OBJ_CRUX3)
+			continue;
+		if (object[i]._oVar8 != object[oi]._oVar8 || object[oi]._oBreak == -1)
+			continue;
+		found = FALSE;
+	}
+	if (found)
 		ObjChangeMap(object[i]._oVar1, object[i]._oVar2, object[i]._oVar3, object[i]._oVar4);
 }
 
