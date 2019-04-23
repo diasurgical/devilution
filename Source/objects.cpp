@@ -4588,11 +4588,8 @@ void SyncCrux(int i)
 
 void SyncLever(int i)
 {
-	int v1; // ecx
-
-	v1 = i;
-	if (!object[v1]._oSelFlag)
-		ObjChangeMap(object[v1]._oVar1, object[v1]._oVar2, object[v1]._oVar3, object[v1]._oVar4);
+	if (!object[i]._oSelFlag)
+		ObjChangeMap(object[i]._oVar1, object[i]._oVar2, object[i]._oVar3, object[i]._oVar4);
 }
 
 void SyncQSTLever(int i)
