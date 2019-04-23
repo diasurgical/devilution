@@ -4666,60 +4666,51 @@ void SyncL3Doors(int i)
 
 void SyncObjectAnim(int o)
 {
-	int v1; // edx
-	int v2; // ebx
-	int v3; // esi
+	int file;
+	int i;
+	int ofindex;
 
-	v1 = object[o]._otype;
-	v2 = ObjFileList[0];
-	v3 = 0;
-	while (v2 != (char)AllObjects[object[o]._otype].ofindex)
-		v2 = ObjFileList[v3++ + 1];
-	object[o]._oAnimData = pObjCels[v3];
-	if (v1 <= OBJ_BOOK2R) {
-		if (v1 != OBJ_BOOK2R) {
-			if (v1 > OBJ_L1LIGHT) {
-				if (v1 <= OBJ_L1RDOOR) {
-					SyncL1Doors(o);
-				} else {
-					if (v1 == OBJ_LEVER)
-						goto LABEL_30;
-					if (v1 > OBJ_SKSTICK5) {
-						if (v1 <= OBJ_CRUX3) {
-							SyncCrux(o);
-							return;
-						}
-						if (v1 == OBJ_BOOK2L || v1 == OBJ_SWITCHSKL)
-						LABEL_30:
-							SyncLever(o);
-					}
-				}
-			}
-			return;
-		}
-	LABEL_24:
-		SyncQSTLever(o);
-		return;
+	file = ObjFileList[0];
+	ofindex = AllObjects[object[o]._otype].ofindex;
+	i = 0;
+	while (file != ofindex) {
+		file = ObjFileList[i + 1];
+		i++;
 	}
-	if (v1 >= OBJ_L2LDOOR) {
-		if (v1 <= OBJ_L2RDOOR) {
-			SyncL2Doors(o);
-			return;
-		}
-		if (v1 == OBJ_BLINDBOOK)
-			goto LABEL_24;
-		if (v1 == OBJ_PEDISTAL) {
-			SyncPedistal(o);
-			return;
-		}
-		if (v1 > OBJ_PEDISTAL) {
-			if (v1 <= OBJ_L3RDOOR) {
-				SyncL3Doors(o);
-				return;
-			}
-			if (v1 == OBJ_STEELTOME)
-				goto LABEL_24;
-		}
+	object[o]._oAnimData = pObjCels[i];
+	switch (object[o]._otype) {
+	case OBJ_BOOK2R:
+	case OBJ_BLINDBOOK:
+	case OBJ_STEELTOME:
+		SyncQSTLever(o);
+		break;
+	case OBJ_L1LIGHT:
+		break;
+	case OBJ_L1LDOOR:
+	case OBJ_L1RDOOR:
+		SyncL1Doors(o);
+		break;
+	case OBJ_L2LDOOR:
+	case OBJ_L2RDOOR:
+		SyncL2Doors(o);
+		break;
+	case OBJ_L3LDOOR:
+	case OBJ_L3RDOOR:
+		SyncL3Doors(o);
+		break;
+	case OBJ_LEVER:
+	case OBJ_BOOK2L:
+	case OBJ_SWITCHSKL:
+		SyncLever(o);
+		break;
+	case OBJ_CRUX1:
+	case OBJ_CRUX2:
+	case OBJ_CRUX3:
+		SyncCrux(o);
+		break;
+	case OBJ_PEDISTAL:
+		SyncPedistal(o);
+		break;
 	}
 }
 
