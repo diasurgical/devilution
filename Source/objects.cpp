@@ -4617,40 +4617,31 @@ void SyncPedistal(int i)
 
 void SyncL2Doors(int i)
 {
-	int v1; // eax
-	int v2; // esi
-	int v3; // ecx
-	int v4; // edx
-	int v5; // eax
+	int val;
+	int x, y;
 
-	v1 = i;
-	v2 = object[i]._oVar4;
-	if (v2)
-		object[v1]._oMissFlag = TRUE;
+	val = object[i]._oVar4;
+	if (!val)
+		object[i]._oMissFlag = FALSE;
 	else
-		object[v1]._oMissFlag = FALSE;
-	v3 = object[v1]._ox;
-	v4 = object[v1]._oy;
-	object[v1]._oSelFlag = 2;
-	v5 = object[v1]._otype;
-	if (v5 != OBJ_L2LDOOR)
-		goto LABEL_18;
-	if (!v2) {
-		ObjSetMicro(v3, v4, 538);
+		object[i]._oMissFlag = TRUE;
+	x = object[i]._ox;
+	y = object[i]._oy;
+	object[i]._oSelFlag = 2;
+	if (object[i]._otype == OBJ_L2LDOOR && val == 0) {
+		ObjSetMicro(x, y, 538);
 		return;
 	}
-	if (v2 != 1 && v2 != 2) {
-	LABEL_18:
-		if (v5 == OBJ_L2RDOOR) {
-			if (v2) {
-				if (v2 == 1 || v2 == 2)
-					ObjSetMicro(v3, v4, 17);
-			} else {
-				ObjSetMicro(v3, v4, 540);
-			}
-		}
-	} else {
-		ObjSetMicro(v3, v4, 13);
+	if (object[i]._otype == OBJ_L2LDOOR && (val == 1 || val == 2)) {
+		ObjSetMicro(x, y, 13);
+		return;
+	}
+	if (object[i]._otype == OBJ_L2RDOOR && val == 0) {
+		ObjSetMicro(x, y, 540);
+		return;
+	}
+	if (object[i]._otype == OBJ_L2RDOOR && (val == 1 || val == 2)) {
+		ObjSetMicro(x, y, 17);
 	}
 }
 
