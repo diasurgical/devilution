@@ -533,195 +533,154 @@ void CreateL4Dungeon(unsigned int rseed, int entry)
 
 void DRLG_L4(int entry)
 {
-	signed int v1; // ebp
-	//int v2; // eax
-	int v3;          // edx
-	char *v4;        // edi
-	char v5;         // bp
-	unsigned int v6; // ecx
-	char *v7;        // edi
-	int v8;          // ecx
-	//int v9; // eax
-	int v10;            // eax
-	unsigned char *v11; // ecx
-	unsigned char *v12; // ecx
-	//int v13; // eax
-	signed int v14; // eax
-	signed int v15; // ecx
-	int v16;        // ebx
-	int v17;        // edi
-	char *v18;      // ebp
-	signed int v19; // ecx
-	signed int v20; // eax
-	signed int v21; // esi
-	int v22;        // [esp-8h] [ebp-20h]
-	int v23;        // [esp+10h] [ebp-8h]
-	int v24;        // [esp+14h] [ebp-4h]
+	int i, j, spi, spj;
+	BOOL doneflag;
 
-	v1 = 0;
-	v23 = entry;
 	do {
 		DRLG_InitTrans();
 		do {
 			InitL4Dungeon();
 			L4firstRoom();
 			L4FixRim();
-		} while (GetArea() < 173);
+		} while(GetArea() < 173);
 		uShape();
 		L4makeDungeon();
 		L4makeDmt();
 		L4tileFix();
-		if (currlevel == 16)
+		if(currlevel == 16) {
 			L4SaveQuads();
-		//_LOBYTE(v2) = QuestStatus(QTYPE_WARLRD);
-		if ((QuestStatus(QTYPE_WARLRD) || currlevel == quests[QTYPE_VB]._qlevel && gbMaxPlayers != 1) && SP4x1 < SP4x2) {
-			v3 = SP4x1;
-			v24 = SP4x2 - SP4x1;
-			do {
-				if (SP4y1 < SP4y2) {
-					v4 = &dflags[v3][SP4y1];
-					v5 = SP4y2 - SP4y1;
-					v6 = (unsigned int)(SP4y2 - SP4y1) >> 2;
-					memset(v4, 1u, 4 * v6);
-					v7 = &v4[4 * v6];
-					v8 = v5 & 3;
-					v1 = 0;
-					memset(v7, 1, v8);
+		}
+		if(QuestStatus(QTYPE_WARLRD) || currlevel == quests[QTYPE_VB]._qlevel && gbMaxPlayers != 1) {
+			for(spi = SP4x1; spi < SP4x2; spi++) {
+				for(spj = SP4y1; spj < SP4y2; spj++) {
+					dflags[spi][spj] = 1;
 				}
-				++v3;
-				--v24;
-			} while (v24);
+			}
 		}
 		L4AddWall();
 		DRLG_L4FloodTVal();
 		DRLG_L4TransFix();
-		if (setloadflag_2)
+		if(setloadflag_2) {
 			DRLG_L4SetSPRoom(SP4x1, SP4y1);
-		if (currlevel == 16)
-			DRLG_LoadDiabQuads(1);
-		//_LOBYTE(v9) = QuestStatus(QTYPE_WARLRD);
-		if (!QuestStatus(QTYPE_WARLRD)) {
-			if (currlevel == 15) {
-				if (!v23) {
-					v10 = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 1, 0);
-					if (v10) {
-						if (gbMaxPlayers != 1 || (v11 = (unsigned char *)L4PENTA, quests[QTYPE_MOD]._qactive == 2))
-							v11 = (unsigned char *)L4PENTA2;
-						v10 = DRLG_L4PlaceMiniSet(v11, 1, 1, -1, -1, 0, 1);
-					}
-					goto LABEL_35;
+		}
+		if(currlevel == 16) {
+			DRLG_LoadDiabQuads(TRUE);
+		}
+		if(QuestStatus(QTYPE_WARLRD)) {
+			if(entry == 0) {
+				doneflag = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 1, 0);
+				if(doneflag && currlevel == 13) {
+					doneflag = DRLG_L4PlaceMiniSet(L4TWARP, 1, 1, -1, -1, 0, 6);
 				}
-				v10 = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 0, 0);
-				if (v10) {
-					if (gbMaxPlayers != 1 || (v12 = (unsigned char *)L4PENTA, quests[QTYPE_MOD]._qactive == 2))
-						v12 = (unsigned char *)L4PENTA2;
-					v10 = DRLG_L4PlaceMiniSet(v12, 1, 1, -1, -1, 1, 1);
+				ViewX++;
+			} else if(entry == 1) {
+				doneflag = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 0, 0);
+				if(doneflag && currlevel == 13) {
+					doneflag = DRLG_L4PlaceMiniSet(L4TWARP, 1, 1, -1, -1, 0, 6);
 				}
+				ViewX = 2 * setpc_x + 22;
+				ViewY = 2 * setpc_y + 22;
 			} else {
-				if (!v23) {
-					v10 = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 1, 0);
-					if (v10) {
-						if (currlevel != 16)
-							v10 = DRLG_L4PlaceMiniSet(L4DSTAIRS, 1, 1, -1, -1, 0, 1);
-						goto LABEL_31;
-					}
-				LABEL_35:
-					++ViewX;
-					continue;
+				doneflag = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 0, 0);
+				if(doneflag && currlevel == 13) {
+					doneflag = DRLG_L4PlaceMiniSet(L4TWARP, 1, 1, -1, -1, 1, 6);
 				}
-				v10 = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 0, 0);
-				if (v23 != 1) {
-					if (v10) {
-						if (currlevel != 16)
-							v10 = DRLG_L4PlaceMiniSet(L4DSTAIRS, 1, 1, -1, -1, 0, 1);
-					LABEL_46:
-						if (v10) {
-							if (currlevel == 13) {
-								v22 = 1;
-							LABEL_34:
-								v10 = DRLG_L4PlaceMiniSet(L4TWARP, 1, 1, -1, -1, v22, 6);
-								goto LABEL_35;
-							}
-						}
-					}
-					goto LABEL_35;
-				}
-				if (v10) {
-					if (currlevel != 16)
-						v10 = DRLG_L4PlaceMiniSet(L4DSTAIRS, 1, 1, -1, -1, 1, 1);
-					if (v10 && currlevel == 13)
-						v10 = DRLG_L4PlaceMiniSet(L4TWARP, 1, 1, -1, -1, 0, 6);
-				}
+				ViewX++;
 			}
-			++ViewY;
-			continue;
+		} else if(currlevel != 15) {
+			if(entry == 0) {
+				doneflag = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 1, 0);
+				if(doneflag && currlevel != 16) {
+					doneflag = DRLG_L4PlaceMiniSet(L4DSTAIRS, 1, 1, -1, -1, 0, 1);
+				}
+				if(doneflag && currlevel == 13) {
+					doneflag = DRLG_L4PlaceMiniSet(L4TWARP, 1, 1, -1, -1, 0, 6);
+				}
+				ViewX++;
+			} else if(entry == 1) {
+				doneflag = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 0, 0);
+				if(doneflag && currlevel != 16) {
+					doneflag = DRLG_L4PlaceMiniSet(L4DSTAIRS, 1, 1, -1, -1, 1, 1);
+				}
+				if(doneflag && currlevel == 13) {
+					doneflag = DRLG_L4PlaceMiniSet(L4TWARP, 1, 1, -1, -1, 0, 6);
+				}
+				ViewY++;
+			} else {
+				doneflag = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 0, 0);
+				if(doneflag && currlevel != 16) {
+					doneflag = DRLG_L4PlaceMiniSet(L4DSTAIRS, 1, 1, -1, -1, 0, 1);
+				}
+				if(doneflag && currlevel == 13) {
+					doneflag = DRLG_L4PlaceMiniSet(L4TWARP, 1, 1, -1, -1, 1, 6);
+				}
+				ViewX++;
+			}
+		} else {
+			if(entry == 0) {
+				doneflag = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 1, 0);
+				if(doneflag) {
+					if(gbMaxPlayers == 1 && quests[QTYPE_MOD]._qactive != 2) {
+						doneflag = DRLG_L4PlaceMiniSet(L4PENTA, 1, 1, -1, -1, 0, 1);
+					} else {
+						doneflag = DRLG_L4PlaceMiniSet(L4PENTA2, 1, 1, -1, -1, 0, 1);
+					}
+				}
+				ViewX++;
+			} else {
+				doneflag = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 0, 0);
+				if(doneflag) {
+					if(gbMaxPlayers == 1 && quests[QTYPE_MOD]._qactive != 2) {
+						doneflag = DRLG_L4PlaceMiniSet(L4PENTA, 1, 1, -1, -1, 1, 1);
+					} else {
+						doneflag = DRLG_L4PlaceMiniSet(L4PENTA2, 1, 1, -1, -1, 1, 1);
+					}
+				}
+				ViewY++;
+			}
 		}
-		if (!v23) {
-			v10 = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 1, 0);
-		LABEL_31:
-			if (!v10 || currlevel != 13)
-				goto LABEL_35;
-			v22 = 0;
-			goto LABEL_34;
-		}
-		v10 = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 0, 0);
-		if (v23 != 1)
-			goto LABEL_46;
-		if (v10 && currlevel == 13)
-			v10 = DRLG_L4PlaceMiniSet(L4TWARP, 1, 1, -1, -1, 0, 6);
-		ViewX = 2 * setpc_x + 22;
-		ViewY = 2 * setpc_y + 22;
-	} while (!v10);
+	} while(!doneflag);
+
 	DRLG_L4GeneralFix();
-	if (currlevel != 16)
+
+	if(currlevel != 16) {
 		DRLG_PlaceThemeRooms(7, 10, 6, 8, 1);
+	}
+
 	DRLG_L4Shadows();
 	DRLG_L4Corners();
 	DRLG_L4Subs();
 	DRLG_Init_Globals();
-	//_LOBYTE(v13) = QuestStatus(QTYPE_WARLRD);
-	if (QuestStatus(QTYPE_WARLRD)) {
-		do {
-			v14 = v1;
-			v15 = 40;
-			do {
-				pdungeon[0][v14] = dungeon[0][v14];
-				v14 += 40;
-				--v15;
-			} while (v15);
-			++v1;
-		} while (v1 < 40);
+
+	if(QuestStatus(QTYPE_WARLRD)) {
+		for(j = 0; j < DMAXY; j++) {
+			for(i = 0; i < DMAXX; i++) {
+				pdungeon[i][j] = dungeon[i][j];
+			}
+		}
 	}
+
 	DRLG_CheckQuests(SP4x1, SP4y1);
-	if (currlevel == 15) {
-		v16 = -1;
-		do {
-			v17 = -1;
-			v18 = (char *)&dungeon[0][v16 + 1];
-			do {
-				if (*v18 == 98)
-					Make_SetPC(v17, v16, 5, 5);
-				if (*v18 == 107)
-					Make_SetPC(v17, v16, 5, 5);
-				v18 += 40;
-				++v17;
-			} while (v17 + 1 < 40);
-			++v16;
-		} while (v16 < 39);
+
+	if(currlevel == 15) {
+		for(j = 0; j < DMAXY; j++) {
+			for(i = 0; i < DMAXX; i++) {
+				if(dungeon[i][j] == 98) {
+					Make_SetPC(i - 1, j - 1, 5, 5);
+				}
+				if(dungeon[i][j] == 107) {
+					Make_SetPC(i - 1, j - 1, 5, 5);
+				}
+			}
+		}
 	}
-	if (currlevel == 16) {
-		v19 = 0;
-		do {
-			v20 = v19;
-			v21 = 40;
-			do {
-				pdungeon[0][v20] = dungeon[0][v20];
-				v20 += 40;
-				--v21;
-			} while (v21);
-			++v19;
-		} while (v19 < 40);
-		DRLG_LoadDiabQuads(0);
+	if(currlevel == 16) {
+		for(j = 0; j < DMAXY; j++) {
+			for(i = 0; i < DMAXX; i++) {
+				pdungeon[i][j] = dungeon[i][j];
+			}
+		}
+		DRLG_LoadDiabQuads(FALSE);
 	}
 }
 // 528A40: using guessed type int SP4x2;
