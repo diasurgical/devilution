@@ -81,9 +81,6 @@ extern Art ArtBackground;
 extern Art ArtCursor;
 extern Art ArtHero;
 
-extern int SCREEN_WIDTH;
-extern int SCREEN_HEIGHT;
-
 typedef enum TXT_JUST {
 	JustLeft = 0,
 	JustCentre = 1,

@@ -6,6 +6,7 @@
 #include <stddef.h> // for offsetof
 #include <typeinfo> // for typeid
 
+DEVILUTION_BEGIN_NAMESPACE
 #ifdef _MSC_VER
 #pragma warning (disable : 4291) // no matching operator delete found
 #endif
@@ -63,13 +64,13 @@ private:
 	TList &operator=(const TList &);
 
 	// replacement new/delete operators for Storm objects
-	static __forceinline T *SNew(size_t extralen, int flags)
+	static __inline T *SNew(size_t extralen, int flags)
 	{
 		void *obj = SMemAlloc(sizeof(T) + extralen, (char *)OBJECT_NAME(T), SLOG_OBJECT, flags | (1<<3));
 		return new (obj) T();
 	}
 
-	static __forceinline void SDelete(T *node)
+	static __inline void SDelete(T *node)
 	{
 		node->~T();
 		SMemFree(node, (char *)OBJECT_NAME(T), SLOG_OBJECT, 0);
@@ -105,14 +106,14 @@ void TList<T>::DeleteAll()
 
 //=============================================================================
 template <class T>
-__forceinline T *TList<T>::Head()
+__inline T *TList<T>::Head()
 {
 	return m_link.Next();
 }
 
 //=============================================================================
 template <class T>
-__forceinline TLink<T> *TList<T>::GetLinkFromNode(T *node) const
+__inline TLink<T> *TList<T>::GetLinkFromNode(T *node) const
 {
 	//    assert(m_offset != (size_t) -1);
 	//    return (TLink<T> *) ((size_t) node + m_offset);
@@ -196,9 +197,7 @@ public:
 
 	T *Next()
 	{
-		if ((int)m_nextNode <= 0)
 			return NULL;
-		return m_nextNode;
 	}
 
 	TLink<T> *NextLink(size_t offset = -1)
@@ -225,7 +224,7 @@ public:
 		nextLink->m_prevLink = this;
 	}
 
-	__forceinline void InsertAfter(T *node, TLink<T> *prevLink, const size_t &offset)
+	__inline void InsertAfter(T *node, TLink<T> *prevLink, const size_t &offset)
 	{
 		m_prevLink = prevLink;
 		m_nextNode = prevLink->m_nextNode;
@@ -257,3 +256,5 @@ void TLink<T>::Unlink()
 		m_nextNode = NULL;
 	}
 }
+
+DEVILUTION_END_NAMESPACE

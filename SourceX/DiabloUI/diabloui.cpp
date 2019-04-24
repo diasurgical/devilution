@@ -29,9 +29,6 @@ bool UiItemsWraps;
 char *UiTextInput;
 int UiTextInputLen;
 
-int SCREEN_WIDTH = 640;
-int SCREEN_HEIGHT = 480;
-
 int fadeValue = 0;
 int SelectedItem = 0;
 

@@ -443,12 +443,16 @@ void sdl_present_surface()
 	surface_dirty = false;
 }
 
-void j_lock_buf_priv(BYTE idx)
+void lock_buf(BYTE idx)
 {
-	j_unlock_buf_priv(idx); // what is idx?
 }
 
-void j_unlock_buf_priv(BYTE idx)
+void unlock_buf(BYTE idx)
+{
+	unlock_buf_priv(); // what is idx?
+}
+
+void unlock_buf_priv()
 {
 	gpBufEnd -= (uintptr_t)gpBufEnd;
 

@@ -42,6 +42,9 @@
 
 #define WM_QUIT DVL_WM_QUIT
 
+#define NOERROR 0
+#define FILE_ATTRIBUTE_DIRECTORY 1
+
 #define PeekMessage PeekMessageA
 #define DispatchMessage DispatchMessageA
 #define PostMessage PostMessageA
