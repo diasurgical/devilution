@@ -2461,52 +2461,45 @@ void OperateL1LDoor(int pnum, int oi, BOOL sendflag)
 }
 // 676190: using guessed type int deltaload;
 
-void OperateL2RDoor(int pnum, int oi, unsigned char sendflag)
+void OperateL2RDoor(int pnum, int oi, BOOL sendflag)
 {
-	int v3;       // esi
-	int v4;       // eax
-	int v5;       // ebx
-	short param1; // [esp+Ch] [ebp-Ch]
-	int v7;       // [esp+10h] [ebp-8h]
-	int v8;       // [esp+14h] [ebp-4h]
+	int xp, yp;
 
-	v3 = oi;
-	param1 = oi;
-	v7 = pnum;
-	v4 = object[oi]._oVar4;
-	if (v4 != 2) {
-		v5 = object[v3]._oy;
-		v8 = object[v3]._ox;
-		if (v4) {
-			if (!deltaload)
-				PlaySfxLoc(IS_DOORCLOS, object[v3]._ox, v5);
-			if (dDead[v8][v5] != 0 || dMonster[v8][v5] != 0 || dItem[v8][v5] != 0) {
-				object[v3]._oVar4 = 2;
-				return;
-			}
-			if (v7 == myplr && sendflag)
-				NetSendCmdParam1(TRUE, CMD_CLOSEDOOR, param1);
-			object[v3]._oVar4 = 0;
-			object[v3]._oSelFlag = 3;
-			ObjSetMicro(v8, v5, 540);
-			object[v3]._oAnimFrame -= 2;
-			object[v3]._oPreFlag = FALSE;
-		} else {
-			if (pnum == myplr && sendflag)
-				NetSendCmdParam1(TRUE, CMD_OPENDOOR, oi);
-			if (!deltaload)
-				PlaySfxLoc(IS_DOOROPEN, object[v3]._ox, object[v3]._oy);
-			ObjSetMicro(v8, v5, 17);
-			object[v3]._oAnimFrame += 2;
-			object[v3]._oPreFlag = TRUE;
-			object[v3]._oVar4 = 1;
-			object[v3]._oSelFlag = 2;
-		}
+	if (object[oi]._oVar4 == 2) {
+		if (!deltaload)
+			PlaySfxLoc(IS_DOORCLOS, object[oi]._ox, object[oi]._oy);
+		return;
+	}
+	xp = object[oi]._ox;
+	yp = object[oi]._oy;
+	if (object[oi]._oVar4 == 0) {
+		if (pnum == myplr && sendflag)
+			NetSendCmdParam1(TRUE, CMD_OPENDOOR, oi);
+		if (!deltaload)
+			PlaySfxLoc(IS_DOOROPEN, object[oi]._ox, object[oi]._oy);
+		ObjSetMicro(xp, yp, 17);
+		object[oi]._oAnimFrame += 2;
+		object[oi]._oPreFlag = TRUE;
+		object[oi]._oVar4 = 1;
+		object[oi]._oSelFlag = 2;
 		RedoPlayerVision();
 		return;
 	}
+
 	if (!deltaload)
-		PlaySfxLoc(IS_DOORCLOS, object[v3]._ox, object[v3]._oy);
+		PlaySfxLoc(IS_DOORCLOS, object[oi]._ox, yp);
+	if (((dDead[xp][yp] != 0 ? 0 : 1) & (dMonster[xp][yp] != 0 ? 0 : 1) & (dItem[xp][yp] != 0 ? 0 : 1)) != 0) {
+		if (pnum == myplr && sendflag)
+			NetSendCmdParam1(TRUE, CMD_CLOSEDOOR, oi);
+		object[oi]._oVar4 = 0;
+		object[oi]._oSelFlag = 3;
+		ObjSetMicro(xp, yp, 540);
+		object[oi]._oAnimFrame -= 2;
+		object[oi]._oPreFlag = FALSE;
+		RedoPlayerVision();
+	} else {
+		object[oi]._oVar4 = 2;
+	}
 }
 // 676190: using guessed type int deltaload;
 
