@@ -1,5 +1,4 @@
 //HEADER_GOES_HERE
-
 #include "../types.h"
 
 DEVILUTION_BEGIN_NAMESPACE
@@ -210,6 +209,7 @@ void __cdecl BlackPalette()
 void __fastcall SetFadeLevel(int fadeval)
 {
 	int i; // eax
+	RECT SrcRect;
 
 	if (lpDDInterface) {
 		for (i = 0; i < 255; i++) {
@@ -224,6 +224,14 @@ void __fastcall SetFadeLevel(int fadeval)
 		lpDDInterface->lpVtbl->WaitForVerticalBlank(lpDDInterface, DDWAITVB_BLOCKBEGIN, NULL);
 #endif
 		palette_update();
+
+		// Workaround for flickering mouse in caves https://github.com/diasurgical/devilutionX/issues/7
+		SrcRect.left = 64;
+		SrcRect.top = 160;
+		SrcRect.right = 640 + 64;
+		SrcRect.bottom = 480 + 160; // menu isn't offset so make sure we copy all of it
+		lpDDSPrimary->BltFast(0, 0, lpDDSBackBuf, &SrcRect, DDBLTFAST_WAIT);
+		lpDDSPrimary->Unlock(NULL);
 	}
 }
 

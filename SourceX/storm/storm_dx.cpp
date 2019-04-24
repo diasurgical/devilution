@@ -20,16 +20,6 @@ BOOL SDrawManualInitialize(
 	return true;
 }
 
-/** Copy the palette surface to the main backbuffer */
-void sdl_update_entire_surface()
-{
-	assert(surface && pal_surface);
-	SDL_Rect src_rect = { 64, 160, 640, 480 };
-	if (SDL_BlitSurface(pal_surface, &src_rect, surface, NULL) != 0) {
-		SDL_Log("SDL_BlitSurface: %s\n", SDL_GetError());
-	}
-}
-
 BOOL SDrawUpdatePalette(unsigned int firstentry, unsigned int numentries, PALETTEENTRY *pPalEntries, int a4)
 {
 	assert(firstentry == 0);
@@ -49,11 +39,6 @@ BOOL SDrawUpdatePalette(unsigned int firstentry, unsigned int numentries, PALETT
 	if (SDL_SetPaletteColors(palette, colors, firstentry, numentries) != 0) {
 		SDL_Log("SDL_SetPaletteColors: %s\n", SDL_GetError());
 		return false;
-	}
-
-	if (pal_surface) {
-		sdl_update_entire_surface();
-		lpDDSPrimary->Unlock(NULL);
 	}
 
 	return true;
