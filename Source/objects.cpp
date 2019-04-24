@@ -2352,7 +2352,7 @@ void RedoPlayerVision()
 
 void OperateL1RDoor(int pnum, int oi, BOOL sendflag)
 {
-	int xp, yp, pn;
+	int xp, yp;
 
 	if (object[oi]._oVar4 == 2) {
 		if (!deltaload)
@@ -2376,30 +2376,30 @@ void OperateL1RDoor(int pnum, int oi, BOOL sendflag)
 		object[oi]._oVar4 = 1;
 		object[oi]._oSelFlag = 2;
 		RedoPlayerVision();
-	} else {
-		if (!deltaload)
-			PlaySfxLoc(IS_DOORCLOS, xp, object[oi]._oy);
-		if (((dDead[xp][yp] != 0 ? 0 : 1) & (dMonster[xp][yp] != 0 ? 0 : 1) & (dItem[xp][yp] != 0 ? 0 : 1)) != 0) {
-			if (pnum == myplr && sendflag)
-				NetSendCmdParam1(TRUE, CMD_CLOSEDOOR, oi);
-			pn = object[oi]._oVar1;
-			object[oi]._oVar4 = 0;
-			object[oi]._oSelFlag = 3;
-			ObjSetMicro(xp, yp, pn);
-			if (object[oi]._oVar2 != 50) {
-				ObjSetMicro(xp - 1, yp, object[oi]._oVar2);
-			} else {
-				if (dPiece[xp - 1][yp] == 396)
-					ObjSetMicro(xp - 1, yp, 411);
-				else
-					ObjSetMicro(xp - 1, yp, 50);
-			}
-			object[oi]._oAnimFrame -= 2;
-			object[oi]._oPreFlag = FALSE;
-			RedoPlayerVision();
+		return;
+	}
+
+	if (!deltaload)
+		PlaySfxLoc(IS_DOORCLOS, xp, object[oi]._oy);
+	if (((dDead[xp][yp] != 0 ? 0 : 1) & (dMonster[xp][yp] != 0 ? 0 : 1) & (dItem[xp][yp] != 0 ? 0 : 1)) != 0) {
+		if (pnum == myplr && sendflag)
+			NetSendCmdParam1(TRUE, CMD_CLOSEDOOR, oi);
+		object[oi]._oVar4 = 0;
+		object[oi]._oSelFlag = 3;
+		ObjSetMicro(xp, yp, object[oi]._oVar1);
+		if (object[oi]._oVar2 != 50) {
+			ObjSetMicro(xp - 1, yp, object[oi]._oVar2);
 		} else {
-			object[oi]._oVar4 = 2;
+			if (dPiece[xp - 1][yp] == 396)
+				ObjSetMicro(xp - 1, yp, 411);
+			else
+				ObjSetMicro(xp - 1, yp, 50);
 		}
+		object[oi]._oAnimFrame -= 2;
+		object[oi]._oPreFlag = FALSE;
+		RedoPlayerVision();
+	} else {
+		object[oi]._oVar4 = 2;
 	}
 }
 // 676190: using guessed type int deltaload;
