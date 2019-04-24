@@ -2633,16 +2633,16 @@ void DoBlitScreen(DWORD dwX, DWORD dwY, DWORD dwWdt, DWORD dwHgt)
 		}
 	} else {
 		nSrcOff = SCREENXY(dwX, dwY);
-		nDstOff = dwX + dwY * DDS_desc.lPitch;
+		nDstOff = dwX * (SCREEN_BPP / 8) + dwY * DDS_desc.lPitch;
 		nSrcWdt = BUFFER_WIDTH - dwWdt;
-		nDstWdt = DDS_desc.lPitch - dwWdt;
+		nDstWdt = DDS_desc.lPitch - dwWdt * (SCREEN_BPP / 8);
 		dwWdt >>= 2;
 
 		lock_buf(6);
 
 		/// ASSERT: assert(gpBuffer);
 
-#ifdef USE_ASM
+#if defined(USE_ASM) && !defined(RGBMODE)
 		__asm {
 			mov		esi, gpBuffer
 			mov		edi, DDS_desc.lpSurface
@@ -2668,7 +2668,15 @@ void DoBlitScreen(DWORD dwX, DWORD dwY, DWORD dwWdt, DWORD dwHgt)
 
 		for (hgt = 0; hgt < dwHgt; hgt++, src += nSrcWdt, dst += nDstWdt) {
 			for (wdt = 0; wdt < 4 * dwWdt; wdt++) {
+#ifndef RGBMODE
 				*dst++ = *src++;
+#else
+				PALETTEENTRY pal = system_palette[*src++];
+				dst[0] = pal.peBlue;
+				dst[1] = pal.peGreen;
+				dst[2] = pal.peRed;
+				dst += 4;
+#endif
 			}
 		}
 #endif

@@ -87,8 +87,18 @@
 
 #define SCREEN_WIDTH	640
 #define SCREEN_HEIGHT	480
-#define BUFFER_WIDTH	768
-#define BUFFER_HEIGHT	656
+
+// If defined, use 32-bit colors instead of 8-bit [Default -> Undefined]
+//#define RGBMODE
+
+#ifndef RGBMODE
+#define SCREEN_BPP		8
+#else
+#define SCREEN_BPP		32
+#endif
+
+#define BUFFER_WIDTH	(64 + SCREEN_WIDTH + 64)
+#define BUFFER_HEIGHT	(160 + SCREEN_HEIGHT + 16)
 #define TILE_SIZE		32
 
 #define SCREENXY(x, y)	((x) + 64 + (((y) + 160) * 768))
