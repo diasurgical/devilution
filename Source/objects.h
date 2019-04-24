@@ -95,7 +95,7 @@ void OperateL1LDoor(int pnum, int oi, BOOL sendflag);
 void OperateL2RDoor(int pnum, int oi, BOOL sendflag);
 void OperateL2LDoor(int pnum, int oi, BOOL sendflag);
 void OperateL3RDoor(int pnum, int oi, BOOL sendflag);
-void OperateL3LDoor(int pnum, int oi, unsigned char sendflag);
+void OperateL3LDoor(int pnum, int oi, BOOL sendflag);
 void MonstCheckDoors(int m);
 void ObjChangeMap(int x1, int y1, int x2, int y2);
 void ObjChangeMapResync(int x1, int y1, int x2, int y2);
