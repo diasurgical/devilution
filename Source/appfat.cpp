@@ -16,7 +16,7 @@ int cleanup_thread_id;
 //	}
 //}
 
-char *__fastcall GetErrorStr(DWORD error_code)
+char *GetErrorStr(DWORD error_code)
 {
 	DWORD upper_code;
 	int size;
@@ -48,7 +48,7 @@ char *__fastcall GetErrorStr(DWORD error_code)
 	return sz_error_buf;
 }
 
-void __fastcall TraceErrorDD(HRESULT hError, char *pszBuffer, DWORD dwMaxChars)
+void TraceErrorDD(HRESULT hError, char *pszBuffer, DWORD dwMaxChars)
 {
 	const char *szError;
 
@@ -358,7 +358,7 @@ void __fastcall TraceErrorDD(HRESULT hError, char *pszBuffer, DWORD dwMaxChars)
 	strncpy(pszBuffer, szError, dwMaxChars);
 }
 
-void __fastcall TraceErrorDS(HRESULT hError, char *pszBuffer, DWORD dwMaxChars)
+void TraceErrorDS(HRESULT hError, char *pszBuffer, DWORD dwMaxChars)
 {
 	const char *szError;
 
@@ -413,12 +413,12 @@ void __fastcall TraceErrorDS(HRESULT hError, char *pszBuffer, DWORD dwMaxChars)
 	strncpy(pszBuffer, szError, dwMaxChars);
 }
 
-char *__cdecl TraceLastError()
+char *TraceLastError()
 {
 	return GetErrorStr(GetLastError());
 }
 
-void app_fatal(const char *pszFmt, ...)
+void __cdecl app_fatal(const char *pszFmt, ...)
 {
 	va_list va;
 
@@ -434,7 +434,7 @@ void app_fatal(const char *pszFmt, ...)
 	exit(1);
 }
 
-void __fastcall MsgBox(const char *pszFmt, va_list va)
+void MsgBox(const char *pszFmt, va_list va)
 {
 	char Text[256]; // [esp+0h] [ebp-100h]
 
@@ -444,7 +444,7 @@ void __fastcall MsgBox(const char *pszFmt, va_list va)
 	MessageBox(ghMainWnd, Text, "ERROR", MB_TASKMODAL | MB_ICONHAND);
 }
 
-void __cdecl FreeDlg()
+void FreeDlg()
 {
 	if (terminating && cleanup_thread_id != GetCurrentThreadId())
 		Sleep(20000);
@@ -463,7 +463,7 @@ void __cdecl FreeDlg()
 	ShowCursor(TRUE);
 }
 
-void DrawDlg(char *pszFmt, ...)
+void __cdecl DrawDlg(char *pszFmt, ...)
 {
 	char text[256];  // [esp+0h] [ebp-100h]
 	va_list arglist; // [esp+10Ch] [ebp+Ch]
@@ -475,13 +475,13 @@ void DrawDlg(char *pszFmt, ...)
 }
 
 #ifdef _DEBUG
-void __fastcall assert_fail(int nLineNo, const char *pszFile, const char *pszFail)
+void assert_fail(int nLineNo, const char *pszFile, const char *pszFail)
 {
 	app_fatal("assertion failed (%d:%s)\n%s", nLineNo, pszFile, pszFail);
 }
 #endif
 
-void __fastcall DDErrMsg(DWORD error_code, int log_line_nr, char *log_file_path)
+void DDErrMsg(DWORD error_code, int log_line_nr, char *log_file_path)
 {
 	char *msg;
 
@@ -491,7 +491,7 @@ void __fastcall DDErrMsg(DWORD error_code, int log_line_nr, char *log_file_path)
 	}
 }
 
-void __fastcall DSErrMsg(DWORD error_code, int log_line_nr, char *log_file_path)
+void DSErrMsg(DWORD error_code, int log_line_nr, char *log_file_path)
 {
 	char *msg;
 
@@ -501,7 +501,7 @@ void __fastcall DSErrMsg(DWORD error_code, int log_line_nr, char *log_file_path)
 	}
 }
 
-void __fastcall center_window(HWND hDlg)
+void center_window(HWND hDlg)
 {
 	LONG w, h;
 	int screenW, screenH;
@@ -521,7 +521,7 @@ void __fastcall center_window(HWND hDlg)
 	}
 }
 
-void __fastcall ErrDlg(int template_id, DWORD error_code, char *log_file_path, int log_line_nr)
+void ErrDlg(int template_id, DWORD error_code, char *log_file_path, int log_line_nr)
 {
 	char *size;
 	LPARAM dwInitParam[128];
@@ -559,7 +559,7 @@ BOOL __stdcall FuncDlg(HWND hDlg, UINT uMsg, WPARAM wParam, char *text)
 	return TRUE;
 }
 
-void __fastcall TextDlg(HWND hDlg, char *text)
+void TextDlg(HWND hDlg, char *text)
 {
 	center_window(hDlg);
 
@@ -567,7 +567,7 @@ void __fastcall TextDlg(HWND hDlg, char *text)
 		SetDlgItemText(hDlg, 1000, text);
 }
 
-void __fastcall ErrOkDlg(int template_id, DWORD error_code, char *log_file_path, int log_line_nr)
+void ErrOkDlg(int template_id, DWORD error_code, char *log_file_path, int log_line_nr)
 {
 	char *size;
 	LPARAM dwInitParam[128];
@@ -580,7 +580,7 @@ void __fastcall ErrOkDlg(int template_id, DWORD error_code, char *log_file_path,
 	DialogBoxParam(ghInst, MAKEINTRESOURCE(template_id), ghMainWnd, (DLGPROC)FuncDlg, (LPARAM)dwInitParam);
 }
 
-void __fastcall FileErrDlg(const char *error)
+void FileErrDlg(const char *error)
 {
 	FreeDlg();
 
@@ -593,7 +593,7 @@ void __fastcall FileErrDlg(const char *error)
 	app_fatal(NULL);
 }
 
-void __fastcall DiskFreeDlg(char *error)
+void DiskFreeDlg(char *error)
 {
 	FreeDlg();
 
@@ -603,7 +603,7 @@ void __fastcall DiskFreeDlg(char *error)
 	app_fatal(NULL);
 }
 
-BOOL __cdecl InsertCDDlg()
+BOOL InsertCDDlg()
 {
 	int nResult;
 
@@ -618,7 +618,7 @@ BOOL __cdecl InsertCDDlg()
 	return nResult == 1;
 }
 
-void __fastcall DirErrorDlg(char *error)
+void DirErrorDlg(char *error)
 {
 	FreeDlg();
 

@@ -13,14 +13,16 @@ int dword_52B970; // BOOLEAN flip - if y < x
 int orgseed;      // weak
 int sgnWidth;
 int sglGameSeed; // weak
-static CRITICAL_SECTION sgMemCrit;
+#ifdef __cplusplus
+static CCritSect sgMemCrit;
+#endif
 int SeedCount;    // weak
 int dword_52B99C; // BOOLEAN valid - if x/y are in bounds
 
 const int rand_increment = 1;
 const int rand_multiplier = 0x015A4E35;
 
-void __fastcall CelDrawDatOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
+void CelDrawDatOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 {
 	int w;
 
@@ -119,7 +121,7 @@ void __fastcall CelDrawDatOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, 
 #endif
 }
 
-void __fastcall CelDecodeOnly(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth)
+void CelDecodeOnly(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth)
 {
 	DWORD *pFrameTable;
 
@@ -133,13 +135,13 @@ void __fastcall CelDecodeOnly(int sx, int sy, BYTE *pCelBuff, int nCel, int nWid
 	pFrameTable = (DWORD *)pCelBuff;
 
 	CelDrawDatOnly(
-	    &gpBuffer[sx + screen_y_times_768[sy]],
+	    &gpBuffer[sx + PitchTbl[sy]],
 	    &pCelBuff[pFrameTable[nCel]],
 	    pFrameTable[nCel + 1] - pFrameTable[nCel],
 	    nWidth);
 }
 
-void __fastcall CelDecDatOnly(BYTE *pBuff, BYTE *pCelBuff, int nCel, int nWidth)
+void CelDecDatOnly(BYTE *pBuff, BYTE *pCelBuff, int nCel, int nWidth)
 {
 	DWORD *pFrameTable;
 
@@ -159,9 +161,13 @@ void __fastcall CelDecDatOnly(BYTE *pBuff, BYTE *pCelBuff, int nCel, int nWidth)
 	    nWidth);
 }
 
-void __fastcall CelDrawHdrOnly(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int always_0, int dir)
+/**
+ * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
+ * @param CelCap Amount of sprite to render from lower to upper, must be multiple of 2, max 8
+ */
+void CelDrawHdrOnly(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
-	int v1, v2, nDataSize;
+	int nDataStart, nDataCap, nDataSize;
 	BYTE *pRLEBytes;
 	DWORD *pFrameTable;
 
@@ -174,32 +180,35 @@ void __fastcall CelDrawHdrOnly(int sx, int sy, BYTE *pCelBuff, int nCel, int nWi
 
 	pFrameTable = (DWORD *)pCelBuff;
 	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
-	v1 = *(WORD *)&pRLEBytes[always_0];
-
-	if (!v1)
+	nDataStart = *(WORD *)&pRLEBytes[CelSkip];
+	if (!nDataStart)
 		return;
 
 	nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
 
-	if (dir == 8)
-		v2 = 0;
+	if (CelCap == 8)
+		nDataCap = 0;
 	else
-		v2 = *(WORD *)&pRLEBytes[dir];
-	if (v2)
-		nDataSize = v2 - v1;
+		nDataCap = *(WORD *)&pRLEBytes[CelCap];
+	if (nDataCap)
+		nDataSize = nDataCap - nDataStart;
 	else
-		nDataSize -= v1;
+		nDataSize -= nDataStart;
 
 	CelDrawDatOnly(
-	    &gpBuffer[sx + screen_y_times_768[sy - 16 * always_0]],
-	    &pRLEBytes[v1],
+	    &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]],
+	    pRLEBytes + nDataStart,
 	    nDataSize,
 	    nWidth);
 }
 
-void __fastcall CelDecodeHdrOnly(BYTE *pBuff, BYTE *pCelBuff, int nCel, int nWidth, int always_0, int dir)
+/**
+ * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
+ * @param CelCap Amount of sprite to render from lower to upper, must be multiple of 2, max 8
+ */
+void CelDecodeHdrOnly(BYTE *pBuff, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
-	int v1, v2, nDataSize;
+	int nDataStart, nDataCap, nDataSize;
 	BYTE *pRLEBytes;
 	DWORD *pFrameTable;
 
@@ -212,26 +221,25 @@ void __fastcall CelDecodeHdrOnly(BYTE *pBuff, BYTE *pCelBuff, int nCel, int nWid
 
 	pFrameTable = (DWORD *)pCelBuff;
 	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
-	v1 = *(WORD *)&pRLEBytes[always_0];
-
-	if (!v1)
+	nDataStart = *(WORD *)&pRLEBytes[CelSkip];
+	if (!nDataStart)
 		return;
 
 	nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
 
-	if (dir == 8)
-		v2 = 0;
+	if (CelCap == 8)
+		nDataCap = 0;
 	else
-		v2 = *(WORD *)&pRLEBytes[dir];
-	if (v2)
-		nDataSize = v2 - v1;
+		nDataCap = *(WORD *)&pRLEBytes[CelCap];
+	if (nDataCap)
+		nDataSize = nDataCap - nDataStart;
 	else
-		nDataSize -= v1;
+		nDataSize -= nDataStart;
 
-	CelDrawDatOnly(pBuff, &pRLEBytes[v1], nDataSize, nWidth);
+	CelDrawDatOnly(pBuff, pRLEBytes + nDataStart, nDataSize, nWidth);
 }
 
-void __fastcall CelDecDatLightOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
+void CelDecDatLightOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 {
 	int w;
 	BYTE *tbl;
@@ -385,7 +393,7 @@ void __fastcall CelDecDatLightOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSi
 }
 // 69BEF8: using guessed type int light_table_index;
 
-void __fastcall CelDecDatLightTrans(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
+void CelDecDatLightTrans(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 {
 	int w;
 	BOOL shift;
@@ -573,7 +581,7 @@ void __fastcall CelDecDatLightTrans(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataS
 }
 // 69BEF8: using guessed type int light_table_index;
 
-void __fastcall CelDecodeLightOnly(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth)
+void CelDecodeLightOnly(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth)
 {
 	int nDataSize;
 	BYTE *pDecodeTo, *pRLEBytes;
@@ -590,7 +598,7 @@ void __fastcall CelDecodeLightOnly(int sx, int sy, BYTE *pCelBuff, int nCel, int
 
 	nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
 	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
-	pDecodeTo = &gpBuffer[sx + screen_y_times_768[sy]];
+	pDecodeTo = &gpBuffer[sx + PitchTbl[sy]];
 
 	if (light_table_index)
 		CelDecDatLightOnly(pDecodeTo, pRLEBytes, nDataSize, nWidth);
@@ -599,10 +607,14 @@ void __fastcall CelDecodeLightOnly(int sx, int sy, BYTE *pCelBuff, int nCel, int
 }
 // 69BEF8: using guessed type int light_table_index;
 
-void __fastcall CelDecodeHdrLightOnly(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int always_0, int dir)
+/**
+ * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
+ * @param CelCap Amount of sprite to render from lower to upper, must be multiple of 2, max 8
+ */
+void CelDecodeHdrLightOnly(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
-	int hdr, nDataSize, v1, v2;
-	BYTE *pRLEBytes, *pDecodeTo, *v9;
+	int nDataStart, nDataCap, nDataSize;
+	BYTE *pRLEBytes, *pDecodeTo;
 	DWORD *pFrameTable;
 
 	/// ASSERT: assert(gpBuffer);
@@ -612,24 +624,25 @@ void __fastcall CelDecodeHdrLightOnly(int sx, int sy, BYTE *pCelBuff, int nCel, 
 	if (!pCelBuff)
 		return;
 
-	pFrameTable = (DWORD *)&pCelBuff[4 * nCel];
-	v9 = &pCelBuff[pFrameTable[0]];
-	hdr = *(WORD *)&v9[always_0];
-	if (!hdr)
+	pFrameTable = (DWORD *)pCelBuff;
+	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
+	nDataStart = *(WORD *)&pRLEBytes[CelSkip];
+	if (!nDataStart)
 		return;
 
-	v1 = pFrameTable[1] - pFrameTable[0];
-	if (dir == 8)
-		v2 = 0;
-	else
-		v2 = *(WORD *)&v9[dir];
-	if (v2)
-		nDataSize = v2 - hdr;
-	else
-		nDataSize = v1 - hdr;
+	nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
 
-	pRLEBytes = &v9[hdr];
-	pDecodeTo = &gpBuffer[sx + screen_y_times_768[sy - 16 * always_0]];
+	if (CelCap == 8)
+		nDataCap = 0;
+	else
+		nDataCap = *(WORD *)&pRLEBytes[CelCap];
+	if (nDataCap)
+		nDataSize = nDataCap - nDataStart;
+	else
+		nDataSize -= nDataStart;
+
+	pRLEBytes += nDataStart;
+	pDecodeTo = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
 
 	if (light_table_index)
 		CelDecDatLightOnly(pDecodeTo, pRLEBytes, nDataSize, nWidth);
@@ -638,10 +651,14 @@ void __fastcall CelDecodeHdrLightOnly(int sx, int sy, BYTE *pCelBuff, int nCel, 
 }
 // 69BEF8: using guessed type int light_table_index;
 
-void __fastcall CelDecodeHdrLightTrans(BYTE *pBuff, BYTE *pCelBuff, int nCel, int nWidth, int always_0, int dir)
+/**
+ * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
+ * @param CelCap Amount of sprite to render from lower to upper, must be multiple of 2, max 8
+ */
+void CelDecodeHdrLightTrans(BYTE *pBuff, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
-	int hdr, nDataSize, v1, v2;
-	BYTE *pRLEBytes, *v9;
+	int nDataStart, nDataCap, nDataSize;
+	BYTE *pRLEBytes;
 	DWORD *pFrameTable;
 
 	/// ASSERT: assert(pCelBuff != NULL);
@@ -651,23 +668,24 @@ void __fastcall CelDecodeHdrLightTrans(BYTE *pBuff, BYTE *pCelBuff, int nCel, in
 	if (!pBuff)
 		return;
 
-	pFrameTable = (DWORD *)&pCelBuff[4 * nCel];
-	v9 = &pCelBuff[pFrameTable[0]];
-	hdr = *(WORD *)&v9[always_0];
-	if (!hdr)
+	pFrameTable = (DWORD *)pCelBuff;
+	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
+	nDataStart = *(WORD *)&pRLEBytes[CelSkip];
+	if (!nDataStart)
 		return;
 
-	v1 = pFrameTable[1] - pFrameTable[0];
-	if (dir == 8)
-		v2 = 0;
-	else
-		v2 = *(WORD *)&v9[dir];
-	if (v2)
-		nDataSize = v2 - hdr;
-	else
-		nDataSize = v1 - hdr;
+	nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
 
-	pRLEBytes = &v9[hdr];
+	if (CelCap == 8)
+		nDataCap = 0;
+	else
+		nDataCap = *(WORD *)&pRLEBytes[CelCap];
+	if (nDataCap)
+		nDataSize = nDataCap - nDataStart;
+	else
+		nDataSize -= nDataStart;
+
+	pRLEBytes += nDataStart;
 
 	if (cel_transparency_active)
 		CelDecDatLightTrans(pBuff, pRLEBytes, nDataSize, nWidth);
@@ -679,10 +697,14 @@ void __fastcall CelDecodeHdrLightTrans(BYTE *pBuff, BYTE *pCelBuff, int nCel, in
 // 69BEF8: using guessed type int light_table_index;
 // 69CF94: using guessed type int cel_transparency_active;
 
-void __fastcall CelDrawHdrLightRed(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int always_0, int dir, char light)
+/**
+ * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
+ * @param CelCap Amount of sprite to render from lower to upper, must be multiple of 2, max 8
+ */
+void CelDrawHdrLightRed(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap, char light)
 {
-	int w, hdr, idx, nDataSize, v1;
-	BYTE *src, *dst, *tbl, *pRLEBytes;
+	int w, idx, nDataStart, nDataCap, nDataSize;
+	BYTE *src, *dst, *tbl;
 	DWORD *pFrameTable;
 
 	/// ASSERT: assert(gpBuffer);
@@ -692,23 +714,25 @@ void __fastcall CelDrawHdrLightRed(int sx, int sy, BYTE *pCelBuff, int nCel, int
 	if (!pCelBuff)
 		return;
 
-	pFrameTable = (DWORD *)&pCelBuff[4 * nCel];
-	pRLEBytes = &pCelBuff[pFrameTable[0]];
-	hdr = *(WORD *)&pRLEBytes[always_0];
-	if (!hdr)
+	pFrameTable = (DWORD *)pCelBuff;
+	src = &pCelBuff[pFrameTable[nCel]];
+	nDataStart = *(WORD *)&src[CelSkip];
+	if (!nDataStart)
 		return;
 
-	if (dir == 8)
-		v1 = 0;
-	else
-		v1 = *(WORD *)&pRLEBytes[dir];
-	if (v1)
-		nDataSize = v1 - hdr;
-	else
-		nDataSize = pFrameTable[1] - pFrameTable[0] - hdr;
+	nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
 
-	src = &pRLEBytes[hdr];
-	dst = &gpBuffer[sx + screen_y_times_768[sy - 16 * always_0]];
+	if (CelCap == 8)
+		nDataCap = 0;
+	else
+		nDataCap = *(WORD *)&src[CelCap];
+	if (nDataCap)
+		nDataSize = nDataCap - nDataStart;
+	else
+		nDataSize -= nDataStart;
+
+	src += nDataStart;
+	dst = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
 
 	idx = light4flag ? 1024 : 4096;
 	if (light == 2)
@@ -789,7 +813,7 @@ void __fastcall CelDrawHdrLightRed(int sx, int sy, BYTE *pCelBuff, int nCel, int
 }
 // 525728: using guessed type int light4flag;
 
-void __fastcall Cel2DecDatOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
+void Cel2DecDatOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 {
 	int w;
 
@@ -903,9 +927,13 @@ void __fastcall Cel2DecDatOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, 
 }
 // 69CF0C: using guessed type int gpBufEnd;
 
-void __fastcall Cel2DrawHdrOnly(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int always_0, int dir)
+/**
+ * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
+ * @param CelCap Amount of sprite to render from lower to upper, must be multiple of 2, max 8
+ */
+void Cel2DrawHdrOnly(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
-	int v1, v2, nDataSize;
+	int nDataStart, nDataCap, nDataSize;
 	BYTE *pRLEBytes;
 	DWORD *pFrameTable;
 
@@ -918,32 +946,35 @@ void __fastcall Cel2DrawHdrOnly(int sx, int sy, BYTE *pCelBuff, int nCel, int nW
 
 	pFrameTable = (DWORD *)pCelBuff;
 	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
-	v1 = *(WORD *)&pRLEBytes[always_0];
-
-	if (!v1)
+	nDataStart = *(WORD *)&pRLEBytes[CelSkip];
+	if (!nDataStart)
 		return;
 
 	nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
 
-	if (dir == 8)
-		v2 = 0;
+	if (CelCap == 8)
+		nDataCap = 0;
 	else
-		v2 = *(WORD *)&pRLEBytes[dir];
-	if (v2)
-		nDataSize = v2 - v1;
+		nDataCap = *(WORD *)&pRLEBytes[CelCap];
+	if (nDataCap)
+		nDataSize = nDataCap - nDataStart;
 	else
-		nDataSize -= v1;
+		nDataSize -= nDataStart;
 
 	Cel2DecDatOnly(
-	    &gpBuffer[sx + screen_y_times_768[sy - 16 * always_0]],
-	    &pRLEBytes[v1],
+	    &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]],
+	    pRLEBytes + nDataStart,
 	    nDataSize,
 	    nWidth);
 }
 
-void __fastcall Cel2DecodeHdrOnly(BYTE *pBuff, BYTE *pCelBuff, int nCel, int nWidth, int always_0, int dir)
+/**
+ * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
+ * @param CelCap Amount of sprite to render from lower to upper, must be multiple of 2, max 8
+ */
+void Cel2DecodeHdrOnly(BYTE *pBuff, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
-	int v1, v2, nDataSize;
+	int nDataStart, nDataCap, nDataSize;
 	BYTE *pRLEBytes;
 	DWORD *pFrameTable;
 
@@ -956,25 +987,24 @@ void __fastcall Cel2DecodeHdrOnly(BYTE *pBuff, BYTE *pCelBuff, int nCel, int nWi
 
 	pFrameTable = (DWORD *)pCelBuff;
 	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
-	v1 = *(WORD *)&pRLEBytes[always_0];
-
-	if (!v1)
+	nDataStart = *(WORD *)&pRLEBytes[CelSkip];
+	if (!nDataStart)
 		return;
 
 	nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
+	nDataCap = *(WORD *)&pRLEBytes[CelCap];
+	if (CelCap == 8)
+		nDataCap = 0;
 
-	v2 = *(WORD *)&pRLEBytes[dir];
-	if (dir == 8)
-		v2 = 0;
-	if (v2)
-		nDataSize = v2 - v1;
+	if (nDataCap)
+		nDataSize = nDataCap - nDataStart;
 	else
-		nDataSize -= v1;
+		nDataSize -= nDataStart;
 
-	Cel2DecDatOnly(pBuff, &pRLEBytes[v1], nDataSize, nWidth);
+	Cel2DecDatOnly(pBuff, pRLEBytes + nDataStart, nDataSize, nWidth);
 }
 
-void __fastcall Cel2DecDatLightOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
+void Cel2DecDatLightOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 {
 	int w;
 	BYTE *tbl;
@@ -1144,7 +1174,7 @@ void __fastcall Cel2DecDatLightOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataS
 // 69BEF8: using guessed type int light_table_index;
 // 69CF0C: using guessed type int gpBufEnd;
 
-void __fastcall Cel2DecDatLightTrans(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
+void Cel2DecDatLightTrans(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 {
 	int w;
 	BOOL shift;
@@ -1347,10 +1377,14 @@ void __fastcall Cel2DecDatLightTrans(BYTE *pDecodeTo, BYTE *pRLEBytes, int nData
 // 69BEF8: using guessed type int light_table_index;
 // 69CF0C: using guessed type int gpBufEnd;
 
-void __fastcall Cel2DecodeHdrLight(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int always_0, int dir)
+/**
+ * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
+ * @param CelCap Amount of sprite to render from lower to upper, must be multiple of 2, max 8
+ */
+void Cel2DecodeHdrLight(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
-	int hdr, nDataSize, v1;
-	BYTE *pRLEBytes, *pDecodeTo, *v9;
+	int nDataStart, nDataCap, nDataSize;
+	BYTE *pRLEBytes, *pDecodeTo;
 	DWORD *pFrameTable;
 
 	/// ASSERT: assert(gpBuffer);
@@ -1360,22 +1394,24 @@ void __fastcall Cel2DecodeHdrLight(int sx, int sy, BYTE *pCelBuff, int nCel, int
 	if (!pCelBuff)
 		return;
 
-	pFrameTable = (DWORD *)&pCelBuff[4 * nCel];
-	v9 = &pCelBuff[pFrameTable[0]];
-	hdr = *(WORD *)&v9[always_0];
-	if (!hdr)
+	pFrameTable = (DWORD *)pCelBuff;
+	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
+	nDataStart = *(WORD *)&pRLEBytes[CelSkip];
+	if (!nDataStart)
 		return;
 
-	v1 = *(WORD *)&v9[dir];
-	if (dir == 8)
-		v1 = 0;
-	if (v1)
-		nDataSize = v1 - hdr;
-	else
-		nDataSize = pFrameTable[1] - pFrameTable[0] - hdr;
+	nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
+	nDataCap = *(WORD *)&pRLEBytes[CelCap];
+	if (CelCap == 8)
+		nDataCap = 0;
 
-	pRLEBytes = &v9[hdr];
-	pDecodeTo = &gpBuffer[sx + screen_y_times_768[sy - 16 * always_0]];
+	if (nDataCap)
+		nDataSize = nDataCap - nDataStart;
+	else
+		nDataSize -= nDataStart;
+
+	pRLEBytes += nDataStart;
+	pDecodeTo = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
 
 	if (light_table_index)
 		Cel2DecDatLightOnly(pDecodeTo, pRLEBytes, nDataSize, nWidth);
@@ -1384,32 +1420,37 @@ void __fastcall Cel2DecodeHdrLight(int sx, int sy, BYTE *pCelBuff, int nCel, int
 }
 // 69BEF8: using guessed type int light_table_index;
 
-void __fastcall Cel2DecodeLightTrans(BYTE *pBuff, BYTE *pCelBuff, int nCel, int nWidth, int always_0, int dir)
+/**
+ * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
+ * @param CelCap Amount of sprite to render from lower to upper, must be multiple of 2, max 8
+ */
+void Cel2DecodeLightTrans(BYTE *pBuff, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
-	int hdr, nDataSize, v1, v2;
-	BYTE *pRLEBytes, *v9;
+	int nDataStart, nDataCap, nDataSize;
+	BYTE *pRLEBytes;
 	DWORD *pFrameTable;
 
 	/// ASSERT: assert(pCelBuff != NULL);
 	if (!pCelBuff)
 		return;
 
-	pFrameTable = (DWORD *)&pCelBuff[4 * nCel];
-	v9 = &pCelBuff[pFrameTable[0]];
-	hdr = *(WORD *)&v9[always_0];
-	if (!hdr)
+	pFrameTable = (DWORD *)pCelBuff;
+	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
+	nDataStart = *(WORD *)&pRLEBytes[CelSkip];
+	if (!nDataStart)
 		return;
 
-	v1 = pFrameTable[1] - pFrameTable[0];
-	v2 = *(WORD *)&v9[dir];
-	if (dir == 8)
-		v2 = 0;
-	if (v2)
-		nDataSize = v2 - hdr;
-	else
-		nDataSize = v1 - hdr;
+	nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
+	nDataCap = *(WORD *)&pRLEBytes[CelCap];
+	if (CelCap == 8)
+		nDataCap = 0;
 
-	pRLEBytes = &v9[hdr];
+	if (nDataCap)
+		nDataSize = nDataCap - nDataStart;
+	else
+		nDataSize -= nDataStart;
+
+	pRLEBytes += nDataStart;
 
 	if (cel_transparency_active)
 		Cel2DecDatLightTrans(pBuff, pRLEBytes, nDataSize, nWidth);
@@ -1421,10 +1462,14 @@ void __fastcall Cel2DecodeLightTrans(BYTE *pBuff, BYTE *pCelBuff, int nCel, int 
 // 69BEF8: using guessed type int light_table_index;
 // 69CF94: using guessed type int cel_transparency_active;
 
-void __fastcall Cel2DrawHdrLightRed(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int always_0, int dir, char light)
+/**
+ * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
+ * @param CelCap Amount of sprite to render from lower to upper, must be multiple of 2, max 8
+ */
+void Cel2DrawHdrLightRed(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap, char light)
 {
 	int w, hdr, idx, nDataSize, v1;
-	BYTE *src, *dst, *tbl, *pRLEBytes;
+	BYTE *src, *dst, *tbl;
 	DWORD *pFrameTable;
 
 	/// ASSERT: assert(gpBuffer);
@@ -1434,23 +1479,24 @@ void __fastcall Cel2DrawHdrLightRed(int sx, int sy, BYTE *pCelBuff, int nCel, in
 	if (!pCelBuff)
 		return;
 
-	pFrameTable = (DWORD *)&pCelBuff[4 * nCel];
-	pRLEBytes = &pCelBuff[pFrameTable[0]];
-	hdr = *(WORD *)&pRLEBytes[always_0];
+	pFrameTable = (DWORD *)pCelBuff;
+	src = &pCelBuff[pFrameTable[nCel]];
+	hdr = *(WORD *)&src[CelSkip];
 	if (!hdr)
 		return;
 
-	if (dir == 8)
+	nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
+	if (CelCap == 8)
 		v1 = 0;
 	else
-		v1 = *(WORD *)&pRLEBytes[dir];
+		v1 = *(WORD *)&src[CelCap];
 	if (v1)
 		nDataSize = v1 - hdr;
 	else
-		nDataSize = pFrameTable[1] - pFrameTable[0] - hdr;
+		nDataSize -= hdr;
 
-	src = &pRLEBytes[hdr];
-	dst = &gpBuffer[sx + screen_y_times_768[sy - 16 * always_0]];
+	src += hdr;
+	dst = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
 
 	idx = light4flag ? 1024 : 4096;
 	if (light == 2)
@@ -1461,10 +1507,9 @@ void __fastcall Cel2DrawHdrLightRed(int sx, int sy, BYTE *pCelBuff, int nCel, in
 	tbl = &pLightTbl[idx];
 
 #if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+	w = 768 + nWidth;
+
 	__asm {
-		mov		eax, nWidth
-		add		eax, 768
-		mov		w, eax /* use C for w? w = 768 + nWidth */
 		mov		esi, src
 		mov		edi, dst
 		mov		ecx, nDataSize
@@ -1543,7 +1588,7 @@ void __fastcall Cel2DrawHdrLightRed(int sx, int sy, BYTE *pCelBuff, int nCel, in
 // 525728: using guessed type int light4flag;
 // 69CF0C: using guessed type int gpBufEnd;
 
-void __fastcall CelDecodeRect(BYTE *pBuff, int always_0, int hgt, int wdt, BYTE *pCelBuff, int nCel, int nWidth)
+void CelDecodeRect(BYTE *pBuff, int CelSkip, int hgt, int wdt, BYTE *pCelBuff, int nCel, int nWidth)
 {
 	BYTE *src, *dst, *end;
 
@@ -1568,7 +1613,7 @@ void __fastcall CelDecodeRect(BYTE *pBuff, int always_0, int hgt, int wdt, BYTE 
 		mov		src, eax
 	}
 
-	dst = &pBuff[hgt * wdt + always_0];
+	dst = &pBuff[hgt * wdt + CelSkip];
 
 	__asm {
 		mov		esi, src
@@ -1620,7 +1665,7 @@ void __fastcall CelDecodeRect(BYTE *pBuff, int always_0, int hgt, int wdt, BYTE 
 	pFrameTable = (DWORD *)&pCelBuff[4 * nCel];
 	src = &pCelBuff[pFrameTable[0]];
 	end = &src[pFrameTable[1] - pFrameTable[0]];
-	dst = &pBuff[hgt * wdt + always_0];
+	dst = &pBuff[hgt * wdt + CelSkip];
 
 	for (; src != end; dst -= wdt + nWidth) {
 		for (i = nWidth; i;) {
@@ -1659,9 +1704,13 @@ void __fastcall CelDecodeRect(BYTE *pBuff, int always_0, int hgt, int wdt, BYTE 
 #endif
 }
 
-void __fastcall CelDecodeClr(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int always_0, int dir)
+/**
+ * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
+ * @param CelCap Amount of sprite to render from lower to upper, must be multiple of 2, max 8
+ */
+void CelDecodeClr(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
-	int w, hdr, nDataSize, v1;
+	int w, nDataStart, nDataCap, nDataSize;
 	BYTE *src, *dst;
 
 	/// ASSERT: assert(pCelBuff != NULL);
@@ -1683,27 +1732,27 @@ void __fastcall CelDecodeClr(char col, int sx, int sy, BYTE *pCelBuff, int nCel,
 		mov		edx, pCelBuff
 		add		edx, [ebx]
 		mov		src, edx
-		add		edx, always_0
+		add		edx, CelSkip
 		xor		eax, eax
 		mov		ax, [edx]
-		mov		hdr, eax
+		mov		nDataStart, eax
 		mov		edx, src
-		add		edx, dir
+		add		edx, CelCap
 		mov		ax, [edx]
-		mov		v1, eax
+		mov		nDataCap, eax
 	}
 
-	if (!hdr) return;
+	if (!nDataStart) return;
 
-	if (dir == 8)
-		v1 = 0;
-	if (v1)
-		nDataSize = v1 - hdr;
+	if (CelCap == 8)
+		nDataCap = 0;
+	if (nDataCap)
+		nDataSize = nDataCap - nDataStart;
 	else
-		nDataSize -= hdr;
+		nDataSize -= nDataStart;
 
-	src += hdr;
-	dst = &gpBuffer[sx + screen_y_times_768[sy - 16 * always_0]];
+	src += nDataStart;
+	dst = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
 
 	__asm {
 		mov		esi, src
@@ -1754,21 +1803,22 @@ void __fastcall CelDecodeClr(char col, int sx, int sy, BYTE *pCelBuff, int nCel,
 
 	pFrameTable = (DWORD *)&pCelBuff[4 * nCel];
 	pRLEBytes = &pCelBuff[pFrameTable[0]];
-	hdr = *(WORD *)&pRLEBytes[always_0];
-	if (!hdr)
+	nDataStart = *(WORD *)&pRLEBytes[CelSkip];
+	if (!nDataStart)
 		return;
 
-	v1 = *(WORD *)&pRLEBytes[dir];
-	if (dir == 8)
-		v1 = 0;
-	if (v1)
-		nDataSize = v1 - hdr;
-	else
-		nDataSize = pFrameTable[1] - pFrameTable[0] - hdr;
+	nDataCap = *(WORD *)&pRLEBytes[CelCap];
+	if (CelCap == 8)
+		nDataCap = 0;
 
-	src = &pRLEBytes[hdr];
+	if (nDataCap)
+		nDataSize = nDataCap - nDataStart;
+	else
+		nDataSize = pFrameTable[1] - pFrameTable[0] - nDataStart;
+
+	src = pRLEBytes + nDataStart;
 	end = &src[nDataSize];
-	dst = &gpBuffer[sx + screen_y_times_768[sy - 16 * always_0]];
+	dst = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
 
 	for (; src != end; dst -= 768 + nWidth) {
 		for (w = nWidth; w;) {
@@ -1795,9 +1845,13 @@ void __fastcall CelDecodeClr(char col, int sx, int sy, BYTE *pCelBuff, int nCel,
 #endif
 }
 
-void __fastcall CelDrawHdrClrHL(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int always_0, int dir)
+/**
+ * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
+ * @param CelCap Amount of sprite to render from lower to upper, must be multiple of 2, max 8
+ */
+void CelDrawHdrClrHL(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
-	int w, hdr, nDataSize, v1;
+	int w, nDataStart, nDataCap, nDataSize;
 	BYTE *src, *dst;
 
 	/// ASSERT: assert(pCelBuff != NULL);
@@ -1819,27 +1873,27 @@ void __fastcall CelDrawHdrClrHL(char col, int sx, int sy, BYTE *pCelBuff, int nC
 		mov		edx, pCelBuff
 		add		edx, [ebx]
 		mov		src, edx
-		add		edx, always_0
+		add		edx, CelSkip
 		xor		eax, eax
 		mov		ax, [edx]
-		mov		hdr, eax
+		mov		nDataStart, eax
 		mov		edx, src
-		add		edx, dir
+		add		edx, CelCap
 		mov		ax, [edx]
-		mov		v1, eax
+		mov		nDataCap, eax
 	}
 
-	if (!hdr) return;
+	if (!nDataStart) return;
 
-	if (dir == 8)
-		v1 = 0;
-	if (v1)
-		nDataSize = v1 - hdr;
+	if (CelCap == 8)
+		nDataCap = 0;
+	if (nDataCap)
+		nDataSize = nDataCap - nDataStart;
 	else
-		nDataSize -= hdr;
+		nDataSize -= nDataStart;
 
-	src += hdr;
-	dst = &gpBuffer[sx + screen_y_times_768[sy - 16 * always_0]];
+	src += nDataStart;
+	dst = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
 
 	__asm {
 		mov		esi, src
@@ -1915,21 +1969,22 @@ void __fastcall CelDrawHdrClrHL(char col, int sx, int sy, BYTE *pCelBuff, int nC
 
 	pFrameTable = (DWORD *)&pCelBuff[4 * nCel];
 	pRLEBytes = &pCelBuff[pFrameTable[0]];
-	hdr = *(WORD *)&pRLEBytes[always_0];
-	if (!hdr)
+	nDataStart = *(WORD *)&pRLEBytes[CelSkip];
+	if (!nDataStart)
 		return;
 
-	v1 = *(WORD *)&pRLEBytes[dir];
-	if (dir == 8)
-		v1 = 0;
-	if (v1)
-		nDataSize = v1 - hdr;
-	else
-		nDataSize = pFrameTable[1] - pFrameTable[0] - hdr;
+	nDataCap = *(WORD *)&pRLEBytes[CelCap];
+	if (CelCap == 8)
+		nDataCap = 0;
 
-	src = &pRLEBytes[hdr];
+	if (nDataCap)
+		nDataSize = nDataCap - nDataStart;
+	else
+		nDataSize = pFrameTable[1] - pFrameTable[0] - nDataStart;
+
+	src = pRLEBytes + nDataStart;
 	end = &src[nDataSize];
-	dst = &gpBuffer[sx + screen_y_times_768[sy - 16 * always_0]];
+	dst = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
 
 	for (; src != end; dst -= 768 + nWidth) {
 		for (w = nWidth; w;) {
@@ -1974,7 +2029,7 @@ void __fastcall CelDrawHdrClrHL(char col, int sx, int sy, BYTE *pCelBuff, int nC
 }
 // 69CF0C: using guessed type int gpBufEnd;
 
-void __fastcall ENG_set_pixel(int sx, int sy, BYTE col)
+void ENG_set_pixel(int sx, int sy, BYTE col)
 {
 	BYTE *dst;
 
@@ -1983,7 +2038,7 @@ void __fastcall ENG_set_pixel(int sx, int sy, BYTE col)
 	if (sy < 0 || sy >= 640 || sx < 64 || sx >= 704)
 		return;
 
-	dst = &gpBuffer[sx + screen_y_times_768[sy]];
+	dst = &gpBuffer[sx + PitchTbl[sy]];
 
 #if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
 	__asm {
@@ -2001,7 +2056,7 @@ void __fastcall ENG_set_pixel(int sx, int sy, BYTE col)
 }
 // 69CF0C: using guessed type int gpBufEnd;
 
-void __fastcall engine_draw_pixel(int sx, int sy)
+void engine_draw_pixel(int sx, int sy)
 {
 	BYTE *dst;
 
@@ -2010,11 +2065,11 @@ void __fastcall engine_draw_pixel(int sx, int sy)
 	if (dword_52B970) {
 		if (dword_52B99C && (sx < 0 || sx >= 640 || sy < 64 || sy >= 704))
 			return;
-		dst = &gpBuffer[sy + screen_y_times_768[sx]];
+		dst = &gpBuffer[sy + PitchTbl[sx]];
 	} else {
 		if (dword_52B99C && (sy < 0 || sy >= 640 || sx < 64 || sx >= 704))
 			return;
-		dst = &gpBuffer[sx + screen_y_times_768[sy]];
+		dst = &gpBuffer[sx + PitchTbl[sy]];
 	}
 
 #if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
@@ -2036,7 +2091,7 @@ void __fastcall engine_draw_pixel(int sx, int sy)
 // 52B99C: using guessed type int dword_52B99C;
 // 69CF0C: using guessed type int gpBufEnd;
 
-void __fastcall DrawLine(int x0, int y0, int x1, int y1, UCHAR col)
+void DrawLine(int x0, int y0, int x1, int y1, UCHAR col)
 {
 	int v5;         // ST18_4
 	int v6;         // ST2C_4
@@ -2272,7 +2327,7 @@ void __fastcall DrawLine(int x0, int y0, int x1, int y1, UCHAR col)
 // 52B970: using guessed type int dword_52B970;
 // 52B99C: using guessed type int dword_52B99C;
 
-int __fastcall GetDirection(int x1, int y1, int x2, int y2)
+int GetDirection(int x1, int y1, int x2, int y2)
 {
 	int mx, my;
 	int md, ny;
@@ -2312,7 +2367,7 @@ int __fastcall GetDirection(int x1, int y1, int x2, int y2)
 	return md;
 }
 
-void __fastcall SetRndSeed(int s)
+void SetRndSeed(int s)
 {
 	SeedCount = 0;
 	sglGameSeed = s;
@@ -2322,7 +2377,7 @@ void __fastcall SetRndSeed(int s)
 // 52B97C: using guessed type int sglGameSeed;
 // 52B998: using guessed type int SeedCount;
 
-int __cdecl GetRndSeed()
+int GetRndSeed()
 {
 	SeedCount++;
 	sglGameSeed = rand_multiplier * sglGameSeed + rand_increment;
@@ -2331,7 +2386,7 @@ int __cdecl GetRndSeed()
 // 52B97C: using guessed type int sglGameSeed;
 // 52B998: using guessed type int SeedCount;
 
-int __fastcall random(BYTE idx, int v)
+int random(BYTE idx, int v)
 {
 	if (v <= 0)
 		return 0;
@@ -2340,41 +2395,17 @@ int __fastcall random(BYTE idx, int v)
 	return (GetRndSeed() >> 16) % v;
 }
 
-#ifndef _MSC_VER
-__attribute__((constructor))
-#endif
-static void
-engine_c_init(void)
-{
-	mem_init_mutex();
-	mem_atexit_mutex();
-}
-
-SEG_ALLOCATE(SEGMENT_C_INIT)
-_PVFV engine_c_init_funcs[] = { &engine_c_init };
-
-void __cdecl mem_init_mutex()
-{
-	InitializeCriticalSection(&sgMemCrit);
-}
-
-void __cdecl mem_atexit_mutex()
-{
-	atexit(mem_free_mutex);
-}
-
-void __cdecl mem_free_mutex(void)
-{
-	DeleteCriticalSection(&sgMemCrit);
-}
-
-unsigned char *__fastcall DiabloAllocPtr(int dwBytes)
+unsigned char *DiabloAllocPtr(int dwBytes)
 {
 	BYTE *buf;
 
-	EnterCriticalSection(&sgMemCrit);
+#ifdef __cplusplus
+	sgMemCrit.Enter();
+#endif
 	buf = (BYTE *)SMemAlloc(dwBytes, "C:\\Src\\Diablo\\Source\\ENGINE.CPP", 2236, 0);
-	LeaveCriticalSection(&sgMemCrit);
+#ifdef __cplusplus
+	sgMemCrit.Leave();
+#endif
 
 	if (buf == NULL) {
 		ErrDlg(IDD_DIALOG2, GetLastError(), "C:\\Src\\Diablo\\Source\\ENGINE.CPP", 2269);
@@ -2383,16 +2414,20 @@ unsigned char *__fastcall DiabloAllocPtr(int dwBytes)
 	return buf;
 }
 
-void __fastcall mem_free_dbg(void *p)
+void mem_free_dbg(void *p)
 {
 	if (p) {
-		EnterCriticalSection(&sgMemCrit);
+#ifdef __cplusplus
+		sgMemCrit.Enter();
+#endif
 		SMemFree(p, "C:\\Src\\Diablo\\Source\\ENGINE.CPP", 2317, 0);
-		LeaveCriticalSection(&sgMemCrit);
+#ifdef __cplusplus
+		sgMemCrit.Leave();
+#endif
 	}
 }
 
-BYTE *__fastcall LoadFileInMem(char *pszName, int *pdwFileLen)
+BYTE *LoadFileInMem(char *pszName, int *pdwFileLen)
 {
 	HANDLE file;
 	BYTE *buf;
@@ -2415,7 +2450,7 @@ BYTE *__fastcall LoadFileInMem(char *pszName, int *pdwFileLen)
 	return buf;
 }
 
-void __fastcall LoadFileWithMem(char *pszName, void *buf)
+void LoadFileWithMem(char *pszName, void *buf)
 {
 	char *v2;  // ebx
 	char *v3;  // edi
@@ -2434,7 +2469,7 @@ void __fastcall LoadFileWithMem(char *pszName, void *buf)
 	WCloseFile(a1);
 }
 
-void __fastcall Cl2ApplyTrans(BYTE *p, BYTE *ttbl, int nCel)
+void Cl2ApplyTrans(BYTE *p, BYTE *ttbl, int nCel)
 {
 	int i, nDataSize;
 	char width;
@@ -2473,9 +2508,13 @@ void __fastcall Cl2ApplyTrans(BYTE *p, BYTE *ttbl, int nCel)
 	}
 }
 
-void __fastcall Cl2DecodeFrm1(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int always_0, int dir)
+/**
+ * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
+ * @param CelCap Amount of sprite to render from lower to upper, must be multiple of 2, max 8
+ */
+void Cl2DecodeFrm1(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
-	int hdr, nDataSize;
+	int nDataStart, nDataSize;
 	BYTE *pRLEBytes;
 	DWORD *pFrameTable;
 
@@ -2493,25 +2532,25 @@ void __fastcall Cl2DecodeFrm1(int sx, int sy, BYTE *pCelBuff, int nCel, int nWid
 	/// ASSERT: assert(nCel <= (int) pFrameTable[0]);
 
 	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
-	hdr = *(WORD *)&pRLEBytes[always_0];
-	if (!hdr)
+	nDataStart = *(WORD *)&pRLEBytes[CelSkip];
+	if (!nDataStart)
 		return;
 
-	if (dir == 8)
+	if (CelCap == 8)
 		nDataSize = 0;
 	else
-		nDataSize = *(WORD *)&pRLEBytes[dir];
+		nDataSize = *(WORD *)&pRLEBytes[CelCap];
 	if (!nDataSize)
 		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
 
 	Cl2DecDatFrm1(
-	    &gpBuffer[sx + screen_y_times_768[sy - 16 * always_0]],
-	    &pRLEBytes[hdr],
-	    nDataSize - hdr,
+	    &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]],
+	    pRLEBytes + nDataStart,
+	    nDataSize - nDataStart,
 	    nWidth);
 }
 
-void __fastcall Cl2DecDatFrm1(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
+void Cl2DecDatFrm1(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 {
 #if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
 	__asm {
@@ -2652,9 +2691,13 @@ void __fastcall Cl2DecDatFrm1(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, i
 #endif
 }
 
-void __fastcall Cl2DecodeFrm2(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int always_0, int dir)
+/**
+ * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
+ * @param CelCap Amount of sprite to render from lower to upper, must be multiple of 2, max 8
+ */
+void Cl2DecodeFrm2(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
-	int hdr, nDataSize;
+	int nDataStart, nDataSize;
 	BYTE *pRLEBytes;
 	DWORD *pFrameTable;
 
@@ -2672,26 +2715,26 @@ void __fastcall Cl2DecodeFrm2(char col, int sx, int sy, BYTE *pCelBuff, int nCel
 	/// ASSERT: assert(nCel <= (int) pFrameTable[0]);
 
 	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
-	hdr = *(WORD *)&pRLEBytes[always_0];
-	if (!hdr)
+	nDataStart = *(WORD *)&pRLEBytes[CelSkip];
+	if (!nDataStart)
 		return;
 
-	if (dir == 8)
+	if (CelCap == 8)
 		nDataSize = 0;
 	else
-		nDataSize = *(WORD *)&pRLEBytes[dir];
+		nDataSize = *(WORD *)&pRLEBytes[CelCap];
 	if (!nDataSize)
 		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
 
 	Cl2DecDatFrm2(
-	    &gpBuffer[sx + screen_y_times_768[sy - 16 * always_0]],
-	    &pRLEBytes[hdr],
-	    nDataSize - hdr,
+	    &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]],
+	    pRLEBytes + nDataStart,
+	    nDataSize - nDataStart,
 	    nWidth,
 	    col);
 }
 
-void __fastcall Cl2DecDatFrm2(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, char col)
+void Cl2DecDatFrm2(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, char col)
 {
 #if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
 	__asm {
@@ -2853,7 +2896,11 @@ void __fastcall Cl2DecDatFrm2(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, i
 #endif
 }
 
-void __fastcall Cl2DecodeFrm3(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int always_0, int dir, char light)
+/**
+ * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
+ * @param CelCap Amount of sprite to render from lower to upper, must be multiple of 2, max 8
+ */
+void Cl2DecodeFrm3(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap, char light)
 {
 	int hdr, idx, nDataSize;
 	BYTE *pRLEBytes;
@@ -2873,14 +2920,14 @@ void __fastcall Cl2DecodeFrm3(int sx, int sy, BYTE *pCelBuff, int nCel, int nWid
 	/// ASSERT: assert(nCel <= (int) pFrameTable[0]);
 
 	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
-	hdr = *(WORD *)&pRLEBytes[always_0];
+	hdr = *(WORD *)&pRLEBytes[CelSkip];
 	if (!hdr)
 		return;
 
-	if (dir == 8)
+	if (CelCap == 8)
 		nDataSize = 0;
 	else
-		nDataSize = *(WORD *)&pRLEBytes[dir];
+		nDataSize = *(WORD *)&pRLEBytes[CelCap];
 	if (!nDataSize)
 		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
 
@@ -2891,7 +2938,7 @@ void __fastcall Cl2DecodeFrm3(int sx, int sy, BYTE *pCelBuff, int nCel, int nWid
 		idx += (light - 1) << 8;
 
 	Cl2DecDatLightTbl1(
-	    &gpBuffer[sx + screen_y_times_768[sy - 16 * always_0]],
+	    &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]],
 	    &pRLEBytes[hdr],
 	    nDataSize - hdr,
 	    nWidth,
@@ -2899,7 +2946,7 @@ void __fastcall Cl2DecodeFrm3(int sx, int sy, BYTE *pCelBuff, int nCel, int nWid
 }
 // 525728: using guessed type int light4flag;
 
-void __fastcall Cl2DecDatLightTbl1(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, BYTE *pTable)
+void Cl2DecDatLightTbl1(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, BYTE *pTable)
 {
 #if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
 	__asm {
@@ -3050,7 +3097,11 @@ void __fastcall Cl2DecDatLightTbl1(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSi
 }
 // 52B978: using guessed type int sgnWidth;
 
-void __fastcall Cl2DecodeLightTbl(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int always_0, int dir)
+/**
+ * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
+ * @param CelCap Amount of sprite to render from lower to upper, must be multiple of 2, max 8
+ */
+void Cl2DecodeLightTbl(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
 	int hdr, nDataSize;
 	BYTE *pRLEBytes, *pDecodeTo;
@@ -3070,18 +3121,18 @@ void __fastcall Cl2DecodeLightTbl(int sx, int sy, BYTE *pCelBuff, int nCel, int 
 	/// ASSERT: assert(nCel <= (int) pFrameTable[0]);
 
 	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
-	hdr = *(WORD *)&pRLEBytes[always_0];
+	hdr = *(WORD *)&pRLEBytes[CelSkip];
 	if (!hdr)
 		return;
 
-	if (dir == 8)
+	if (CelCap == 8)
 		nDataSize = 0;
 	else
-		nDataSize = *(WORD *)&pRLEBytes[dir];
+		nDataSize = *(WORD *)&pRLEBytes[CelCap];
 	if (!nDataSize)
 		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
 
-	pDecodeTo = &gpBuffer[sx + screen_y_times_768[sy - 16 * always_0]];
+	pDecodeTo = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
 
 	if (light_table_index)
 		Cl2DecDatLightTbl1(pDecodeTo, &pRLEBytes[hdr], nDataSize - hdr, nWidth, &pLightTbl[light_table_index * 256]);
@@ -3090,9 +3141,13 @@ void __fastcall Cl2DecodeLightTbl(int sx, int sy, BYTE *pCelBuff, int nCel, int 
 }
 // 69BEF8: using guessed type int light_table_index;
 
-void __fastcall Cl2DecodeFrm4(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int always_0, int dir)
+/**
+ * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
+ * @param CelCap Amount of sprite to render from lower to upper, must be multiple of 2, max 8
+ */
+void Cl2DecodeFrm4(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
-	int hdr, nDataSize;
+	int nDataStart, nDataSize;
 	BYTE *pRLEBytes;
 	DWORD *pFrameTable;
 
@@ -3110,25 +3165,25 @@ void __fastcall Cl2DecodeFrm4(int sx, int sy, BYTE *pCelBuff, int nCel, int nWid
 	/// ASSERT: assert(nCel <= (int) pFrameTable[0]);
 
 	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
-	hdr = *(WORD *)&pRLEBytes[always_0];
-	if (!hdr)
+	nDataStart = *(WORD *)&pRLEBytes[CelSkip];
+	if (!nDataStart)
 		return;
 
-	if (dir == 8)
+	if (CelCap == 8)
 		nDataSize = 0;
 	else
-		nDataSize = *(WORD *)&pRLEBytes[dir];
+		nDataSize = *(WORD *)&pRLEBytes[CelCap];
 	if (!nDataSize)
 		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
 
 	Cl2DecDatFrm4(
-	    &gpBuffer[sx + screen_y_times_768[sy - 16 * always_0]],
-	    &pRLEBytes[hdr],
-	    nDataSize - hdr,
+	    &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]],
+	    pRLEBytes + nDataStart,
+	    nDataSize - nDataStart,
 	    nWidth);
 }
 
-void __fastcall Cl2DecDatFrm4(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
+void Cl2DecDatFrm4(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 {
 #if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
 	__asm {
@@ -3283,9 +3338,13 @@ void __fastcall Cl2DecDatFrm4(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, i
 }
 // 69CF0C: using guessed type int gpBufEnd;
 
-void __fastcall Cl2DecodeClrHL(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int always_0, int dir)
+/**
+ * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
+ * @param CelCap Amount of sprite to render from lower to upper, must be multiple of 2, max 8
+ */
+void Cl2DecodeClrHL(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
-	int hdr, nDataSize;
+	int nDataStart, nDataSize;
 	BYTE *pRLEBytes;
 	DWORD *pFrameTable;
 
@@ -3303,29 +3362,29 @@ void __fastcall Cl2DecodeClrHL(char col, int sx, int sy, BYTE *pCelBuff, int nCe
 	/// ASSERT: assert(nCel <= (int) pFrameTable[0]);
 
 	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
-	hdr = *(WORD *)&pRLEBytes[always_0];
-	if (!hdr)
+	nDataStart = *(WORD *)&pRLEBytes[CelSkip];
+	if (!nDataStart)
 		return;
 
-	if (dir == 8)
+	if (CelCap == 8)
 		nDataSize = 0;
 	else
-		nDataSize = *(WORD *)&pRLEBytes[dir];
+		nDataSize = *(WORD *)&pRLEBytes[CelCap];
 	if (!nDataSize)
 		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
 
 	gpBufEnd -= 768;
 	Cl2DecDatClrHL(
-	    &gpBuffer[sx + screen_y_times_768[sy - 16 * always_0]],
-	    &pRLEBytes[hdr],
-	    nDataSize - hdr,
+	    &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]],
+	    pRLEBytes + nDataStart,
+	    nDataSize - nDataStart,
 	    nWidth,
 	    col);
 	gpBufEnd += 768;
 }
 // 69CF0C: using guessed type int gpBufEnd;
 
-void __fastcall Cl2DecDatClrHL(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, char col)
+void Cl2DecDatClrHL(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, char col)
 {
 #if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
 	__asm {
@@ -3499,7 +3558,11 @@ void __fastcall Cl2DecDatClrHL(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, 
 }
 // 69CF0C: using guessed type int gpBufEnd;
 
-void __fastcall Cl2DecodeFrm5(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int always_0, int dir, char light)
+/**
+ * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
+ * @param CelCap Amount of sprite to render from lower to upper, must be multiple of 2, max 8
+ */
+void Cl2DecodeFrm5(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap, char light)
 {
 	int hdr, idx, nDataSize;
 	BYTE *pRLEBytes;
@@ -3519,14 +3582,14 @@ void __fastcall Cl2DecodeFrm5(int sx, int sy, BYTE *pCelBuff, int nCel, int nWid
 	/// ASSERT: assert(nCel <= (int) pFrameTable[0]);
 
 	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
-	hdr = *(WORD *)&pRLEBytes[always_0];
+	hdr = *(WORD *)&pRLEBytes[CelSkip];
 	if (!hdr)
 		return;
 
-	if (dir == 8)
+	if (CelCap == 8)
 		nDataSize = 0;
 	else
-		nDataSize = *(WORD *)&pRLEBytes[dir];
+		nDataSize = *(WORD *)&pRLEBytes[CelCap];
 	if (!nDataSize)
 		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
 
@@ -3537,7 +3600,7 @@ void __fastcall Cl2DecodeFrm5(int sx, int sy, BYTE *pCelBuff, int nCel, int nWid
 		idx += (light - 1) << 8;
 
 	Cl2DecDatLightTbl2(
-	    &gpBuffer[sx + screen_y_times_768[sy - 16 * always_0]],
+	    &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]],
 	    &pRLEBytes[hdr],
 	    nDataSize - hdr,
 	    nWidth,
@@ -3545,7 +3608,7 @@ void __fastcall Cl2DecodeFrm5(int sx, int sy, BYTE *pCelBuff, int nCel, int nWid
 }
 // 525728: using guessed type int light4flag;
 
-void __fastcall Cl2DecDatLightTbl2(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, BYTE *pTable)
+void Cl2DecDatLightTbl2(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, BYTE *pTable)
 {
 #if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
 	__asm {
@@ -3710,7 +3773,11 @@ void __fastcall Cl2DecDatLightTbl2(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSi
 // 52B978: using guessed type int sgnWidth;
 // 69CF0C: using guessed type int gpBufEnd;
 
-void __fastcall Cl2DecodeFrm6(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int always_0, int dir)
+/**
+ * @param CelSkip Skip lower parts of sprite, must be multiple of 2, max 8
+ * @param CelCap Amount of sprite to render from lower to upper, must be multiple of 2, max 8
+ */
+void Cl2DecodeFrm6(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
 	int hdr, nDataSize;
 	BYTE *pRLEBytes, *pDecodeTo;
@@ -3730,18 +3797,18 @@ void __fastcall Cl2DecodeFrm6(int sx, int sy, BYTE *pCelBuff, int nCel, int nWid
 	/// ASSERT: assert(nCel <= (int) pFrameTable[0]);
 
 	pRLEBytes = &pCelBuff[pFrameTable[nCel]];
-	hdr = *(WORD *)&pRLEBytes[always_0];
+	hdr = *(WORD *)&pRLEBytes[CelSkip];
 	if (!hdr)
 		return;
 
-	if (dir == 8)
+	if (CelCap == 8)
 		nDataSize = 0;
 	else
-		nDataSize = *(WORD *)&pRLEBytes[dir];
+		nDataSize = *(WORD *)&pRLEBytes[CelCap];
 	if (!nDataSize)
 		nDataSize = pFrameTable[nCel + 1] - pFrameTable[nCel];
 
-	pDecodeTo = &gpBuffer[sx + screen_y_times_768[sy - 16 * always_0]];
+	pDecodeTo = &gpBuffer[sx + PitchTbl[sy - 16 * CelSkip]];
 
 	if (light_table_index)
 		Cl2DecDatLightTbl2(pDecodeTo, &pRLEBytes[hdr], nDataSize - hdr, nWidth, &pLightTbl[light_table_index * 256]);
@@ -3750,7 +3817,7 @@ void __fastcall Cl2DecodeFrm6(int sx, int sy, BYTE *pCelBuff, int nCel, int nWid
 }
 // 69BEF8: using guessed type int light_table_index;
 
-void __fastcall PlayInGameMovie(char *pszMovie)
+void PlayInGameMovie(char *pszMovie)
 {
 	PaletteFadeOut(8);
 	play_movie(pszMovie, 0);

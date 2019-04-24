@@ -4,7 +4,7 @@
 
 DEVILUTION_BEGIN_NAMESPACE
 
-void __fastcall town_clear_upper_buf(BYTE *pBuff)
+void town_clear_upper_buf(BYTE *pBuff)
 {
 	/// ASSERT: assert(gpBuffer);
 
@@ -67,7 +67,7 @@ void __fastcall town_clear_upper_buf(BYTE *pBuff)
 }
 // 69CF0C: using guessed type int gpBufEnd;
 
-void __fastcall town_clear_low_buf(BYTE *pBuff)
+void town_clear_low_buf(BYTE *pBuff)
 {
 	/// ASSERT: assert(gpBuffer);
 
@@ -144,7 +144,7 @@ void __fastcall town_clear_low_buf(BYTE *pBuff)
 }
 // 69CF0C: using guessed type int gpBufEnd;
 
-void __fastcall town_draw_clipped_e_flag(BYTE *pBuff, int x, int y, int sx, int sy)
+void town_draw_clipped_e_flag(BYTE *pBuff, int x, int y, int sx, int sy)
 {
 	int i;
 	BYTE *dst;
@@ -169,14 +169,14 @@ void __fastcall town_draw_clipped_e_flag(BYTE *pBuff, int x, int y, int sx, int 
 }
 // 69CF14: using guessed type int level_cel_block;
 
-void __fastcall town_draw_clipped_town(BYTE *pBuff, int x, int y, int sx, int sy, BOOL some_flag)
+void town_draw_clipped_town(BYTE *pBuff, int x, int y, int sx, int sy, BOOL some_flag)
 {
 	int mi, px, py;
 	char bv;
 
 	/// ASSERT: assert(gpBuffer);
 
-	pBuff = &gpBuffer[sx + screen_y_times_768[sy]];
+	pBuff = &gpBuffer[sx + PitchTbl[sy]];
 
 	if (dItem[x][y] != 0) {
 		bv = dItem[x][y] - 1;
@@ -236,7 +236,7 @@ void __fastcall town_draw_clipped_town(BYTE *pBuff, int x, int y, int sx, int sy
 // 4B8CC0: using guessed type char pcursitem;
 // 4B8CC2: using guessed type char pcursplr;
 
-void __fastcall town_draw_lower(int x, int y, int sx, int sy, int a5, int some_flag)
+void town_draw_lower(int x, int y, int sx, int sy, int a5, int some_flag)
 {
 	int i, j;
 	BYTE *dst;
@@ -248,7 +248,7 @@ void __fastcall town_draw_lower(int x, int y, int sx, int sy, int a5, int some_f
 		if (y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX) {
 			level_cel_block = dPiece[x][y];
 			if (level_cel_block != 0) {
-				dst = &gpBuffer[sx + 32 + screen_y_times_768[sy]];
+				dst = &gpBuffer[sx + 32 + PitchTbl[sy]];
 				pMap = dpiece_defs_map_1[IsometricCoord(x, y)];
 				for (i = 1; i < 17; i += 2) {
 					level_cel_block = pMap[i];
@@ -257,12 +257,12 @@ void __fastcall town_draw_lower(int x, int y, int sx, int sy, int a5, int some_f
 					}
 					dst -= 768 * 32;
 				}
-				town_draw_clipped_town(&gpBuffer[sx + screen_y_times_768[sy]], x, y, sx, sy, 0);
+				town_draw_clipped_town(&gpBuffer[sx + PitchTbl[sy]], x, y, sx, sy, 0);
 			} else {
-				town_clear_low_buf(&gpBuffer[sx + screen_y_times_768[sy]]);
+				town_clear_low_buf(&gpBuffer[sx + PitchTbl[sy]]);
 			}
 		} else {
-			town_clear_low_buf(&gpBuffer[sx + screen_y_times_768[sy]]);
+			town_clear_low_buf(&gpBuffer[sx + PitchTbl[sy]]);
 		}
 		x++;
 		y--;
@@ -273,7 +273,7 @@ void __fastcall town_draw_lower(int x, int y, int sx, int sy, int a5, int some_f
 		if (y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX) {
 			level_cel_block = dPiece[x][y];
 			if (level_cel_block != 0) {
-				dst = &gpBuffer[sx + screen_y_times_768[sy]];
+				dst = &gpBuffer[sx + PitchTbl[sy]];
 				pMap = dpiece_defs_map_1[IsometricCoord(x, y)];
 				for (i = 0; i < 16; i += 2) {
 					level_cel_block = pMap[i];
@@ -286,12 +286,12 @@ void __fastcall town_draw_lower(int x, int y, int sx, int sy, int a5, int some_f
 					}
 					dst -= 768 * 32;
 				}
-				town_draw_clipped_town(&gpBuffer[sx + screen_y_times_768[sy]], x, y, sx, sy, 1);
+				town_draw_clipped_town(&gpBuffer[sx + PitchTbl[sy]], x, y, sx, sy, 1);
 			} else {
-				town_clear_low_buf(&gpBuffer[sx + screen_y_times_768[sy]]);
+				town_clear_low_buf(&gpBuffer[sx + PitchTbl[sy]]);
 			}
 		} else {
-			town_clear_low_buf(&gpBuffer[sx + screen_y_times_768[sy]]);
+			town_clear_low_buf(&gpBuffer[sx + PitchTbl[sy]]);
 		}
 		x++;
 		y--;
@@ -302,7 +302,7 @@ void __fastcall town_draw_lower(int x, int y, int sx, int sy, int a5, int some_f
 		if (y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX) {
 			level_cel_block = dPiece[x][y];
 			if (level_cel_block != 0) {
-				dst = &gpBuffer[sx + screen_y_times_768[sy]];
+				dst = &gpBuffer[sx + PitchTbl[sy]];
 				pMap = dpiece_defs_map_1[IsometricCoord(x, y)];
 				for (i = 0; i < 16; i += 2) {
 					level_cel_block = pMap[i];
@@ -311,18 +311,18 @@ void __fastcall town_draw_lower(int x, int y, int sx, int sy, int a5, int some_f
 					}
 					dst -= 768 * 32;
 				}
-				town_draw_clipped_town(&gpBuffer[sx + screen_y_times_768[sy]], x, y, sx, sy, 0);
+				town_draw_clipped_town(&gpBuffer[sx + PitchTbl[sy]], x, y, sx, sy, 0);
 			} else {
-				town_clear_low_buf(&gpBuffer[sx + screen_y_times_768[sy]]);
+				town_clear_low_buf(&gpBuffer[sx + PitchTbl[sy]]);
 			}
 		} else {
-			town_clear_low_buf(&gpBuffer[sx + screen_y_times_768[sy]]);
+			town_clear_low_buf(&gpBuffer[sx + PitchTbl[sy]]);
 		}
 	}
 }
 // 69CF14: using guessed type int level_cel_block;
 
-void __fastcall town_draw_clipped_e_flag_2(BYTE *pBuff, int x, int y, int a4, int a5, int sx, int sy)
+void town_draw_clipped_e_flag_2(BYTE *pBuff, int x, int y, int a4, int a5, int sx, int sy)
 {
 	int i;
 	BYTE *dst;
@@ -356,7 +356,7 @@ void __fastcall town_draw_clipped_e_flag_2(BYTE *pBuff, int x, int y, int a4, in
 }
 // 69CF14: using guessed type int level_cel_block;
 
-void __fastcall town_draw_clipped_town_2(BYTE *pBuff, int x, int y, int a4, int a5, int sx, int sy, BOOL some_flag)
+void town_draw_clipped_town_2(BYTE *pBuff, int x, int y, int a4, int a5, int sx, int sy, BOOL some_flag)
 {
 	int mi, px, py;
 	char bv;
@@ -419,7 +419,7 @@ void __fastcall town_draw_clipped_town_2(BYTE *pBuff, int x, int y, int a4, int 
 // 4B8CC0: using guessed type char pcursitem;
 // 4B8CC2: using guessed type char pcursplr;
 
-void __fastcall town_draw_lower_2(int x, int y, int sx, int sy, int a5, int a6, int some_flag)
+void town_draw_lower_2(int x, int y, int sx, int sy, int a5, int a6, int some_flag)
 {
 	int i, j, dir;
 	BYTE *dst;
@@ -433,7 +433,7 @@ void __fastcall town_draw_lower_2(int x, int y, int sx, int sy, int a5, int a6, 
 		if (y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX) {
 			level_cel_block = dPiece[x][y];
 			if (level_cel_block != 0) {
-				dst = &gpBuffer[sx - (768 * 32 - 32) + screen_y_times_768[sy]];
+				dst = &gpBuffer[sx - (768 * 32 - 32) + PitchTbl[sy]];
 				pMap = dpiece_defs_map_1[IsometricCoord(x, y)];
 				for (i = 0; i < 7; i++) {
 					if (a6 <= i) {
@@ -445,13 +445,13 @@ void __fastcall town_draw_lower_2(int x, int y, int sx, int sy, int a5, int a6, 
 					dst -= 768 * 32;
 				}
 				if (dir < 8) {
-					town_draw_clipped_town_2(&gpBuffer[sx + screen_y_times_768[sy]], x, y, a6, dir, sx, sy, 0);
+					town_draw_clipped_town_2(&gpBuffer[sx + PitchTbl[sy]], x, y, a6, dir, sx, sy, 0);
 				}
 			} else {
-				town_clear_low_buf(&gpBuffer[sx + screen_y_times_768[sy]]);
+				town_clear_low_buf(&gpBuffer[sx + PitchTbl[sy]]);
 			}
 		} else {
-			town_clear_low_buf(&gpBuffer[sx + screen_y_times_768[sy]]);
+			town_clear_low_buf(&gpBuffer[sx + PitchTbl[sy]]);
 		}
 		x++;
 		y--;
@@ -462,7 +462,7 @@ void __fastcall town_draw_lower_2(int x, int y, int sx, int sy, int a5, int a6, 
 		if (y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX) {
 			level_cel_block = dPiece[x][y];
 			if (level_cel_block != 0) {
-				dst = &gpBuffer[sx - 768 * 32 + screen_y_times_768[sy]];
+				dst = &gpBuffer[sx - 768 * 32 + PitchTbl[sy]];
 				pMap = dpiece_defs_map_1[IsometricCoord(x, y)];
 				for (i = 0; i < 7; i++) {
 					if (a6 <= i) {
@@ -478,13 +478,13 @@ void __fastcall town_draw_lower_2(int x, int y, int sx, int sy, int a5, int a6, 
 					dst -= 768 * 32;
 				}
 				if (dir < 8) {
-					town_draw_clipped_town_2(&gpBuffer[sx + screen_y_times_768[sy] - 768 * 16 * dir], x, y, a6, dir, sx, sy, 1);
+					town_draw_clipped_town_2(&gpBuffer[sx + PitchTbl[sy] - 768 * 16 * dir], x, y, a6, dir, sx, sy, 1);
 				}
 			} else {
-				town_clear_low_buf(&gpBuffer[sx + screen_y_times_768[sy]]);
+				town_clear_low_buf(&gpBuffer[sx + PitchTbl[sy]]);
 			}
 		} else {
-			town_clear_low_buf(&gpBuffer[sx + screen_y_times_768[sy]]);
+			town_clear_low_buf(&gpBuffer[sx + PitchTbl[sy]]);
 		}
 		x++;
 		y--;
@@ -495,7 +495,7 @@ void __fastcall town_draw_lower_2(int x, int y, int sx, int sy, int a5, int a6, 
 		if (y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX) {
 			level_cel_block = dPiece[x][y];
 			if (level_cel_block != 0) {
-				dst = &gpBuffer[sx - 768 * 32 + screen_y_times_768[sy]];
+				dst = &gpBuffer[sx - 768 * 32 + PitchTbl[sy]];
 				pMap = dpiece_defs_map_1[IsometricCoord(x, y)];
 				for (i = 0; i < 7; i++) {
 					if (a6 <= i) {
@@ -507,19 +507,19 @@ void __fastcall town_draw_lower_2(int x, int y, int sx, int sy, int a5, int a6, 
 					dst -= 768 * 32;
 				}
 				if (dir < 8) {
-					town_draw_clipped_town_2(&gpBuffer[sx + screen_y_times_768[sy]], x, y, a6, dir, sx, sy, 0);
+					town_draw_clipped_town_2(&gpBuffer[sx + PitchTbl[sy]], x, y, a6, dir, sx, sy, 0);
 				}
 			} else {
-				town_clear_low_buf(&gpBuffer[sx + screen_y_times_768[sy]]);
+				town_clear_low_buf(&gpBuffer[sx + PitchTbl[sy]]);
 			}
 		} else {
-			town_clear_low_buf(&gpBuffer[sx + screen_y_times_768[sy]]);
+			town_clear_low_buf(&gpBuffer[sx + PitchTbl[sy]]);
 		}
 	}
 }
 // 69CF14: using guessed type int level_cel_block;
 
-void __fastcall town_draw_e_flag(BYTE *pBuff, int x, int y, int a4, int dir, int sx, int sy)
+void town_draw_e_flag(BYTE *pBuff, int x, int y, int a4, int dir, int sx, int sy)
 {
 	int i;
 	BYTE *dst;
@@ -546,7 +546,7 @@ void __fastcall town_draw_e_flag(BYTE *pBuff, int x, int y, int a4, int dir, int
 }
 // 69CF14: using guessed type int level_cel_block;
 
-void __fastcall town_draw_town_all(BYTE *pBuff, int x, int y, int a4, int dir, int sx, int sy, BOOL some_flag)
+void town_draw_town_all(BYTE *pBuff, int x, int y, int a4, int dir, int sx, int sy, BOOL some_flag)
 {
 	int mi, px, py;
 	char bv;
@@ -614,7 +614,7 @@ void __fastcall town_draw_town_all(BYTE *pBuff, int x, int y, int a4, int dir, i
 // 4B8CC0: using guessed type char pcursitem;
 // 4B8CC2: using guessed type char pcursplr;
 
-void __fastcall town_draw_upper(int x, int y, int sx, int sy, int a5, int a6, int some_flag)
+void town_draw_upper(int x, int y, int sx, int sy, int a5, int a6, int some_flag)
 {
 	int i, j, dir;
 	BYTE *dst;
@@ -631,7 +631,7 @@ void __fastcall town_draw_upper(int x, int y, int sx, int sy, int a5, int a6, in
 		if (y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX) {
 			level_cel_block = dPiece[x][y];
 			if (level_cel_block != 0) {
-				dst = &gpBuffer[sx + 32 + screen_y_times_768[sy]];
+				dst = &gpBuffer[sx + 32 + PitchTbl[sy]];
 				pMap = dpiece_defs_map_1[IsometricCoord(x, y)];
 				for (i = 0; i < 7; i++) {
 					if (a6 >= i) {
@@ -642,12 +642,12 @@ void __fastcall town_draw_upper(int x, int y, int sx, int sy, int a5, int a6, in
 					}
 					dst -= 768 * 32;
 				}
-				town_draw_town_all(&gpBuffer[sx + screen_y_times_768[sy]], x, y, a6, dir, sx, sy, 0);
+				town_draw_town_all(&gpBuffer[sx + PitchTbl[sy]], x, y, a6, dir, sx, sy, 0);
 			} else {
-				town_clear_upper_buf(&gpBuffer[sx + screen_y_times_768[sy]]);
+				town_clear_upper_buf(&gpBuffer[sx + PitchTbl[sy]]);
 			}
 		} else {
-			town_clear_upper_buf(&gpBuffer[sx + screen_y_times_768[sy]]);
+			town_clear_upper_buf(&gpBuffer[sx + PitchTbl[sy]]);
 		}
 		x++;
 		y--;
@@ -658,7 +658,7 @@ void __fastcall town_draw_upper(int x, int y, int sx, int sy, int a5, int a6, in
 		if (y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX) {
 			level_cel_block = dPiece[x][y];
 			if (level_cel_block != 0) {
-				dst = &gpBuffer[sx + screen_y_times_768[sy]];
+				dst = &gpBuffer[sx + PitchTbl[sy]];
 				pMap = dpiece_defs_map_1[IsometricCoord(x, y)];
 				for (i = 0; i < 7; i++) {
 					if (a6 >= i) {
@@ -673,12 +673,12 @@ void __fastcall town_draw_upper(int x, int y, int sx, int sy, int a5, int a6, in
 					}
 					dst -= 768 * 32;
 				}
-				town_draw_town_all(&gpBuffer[sx + screen_y_times_768[sy]], x, y, a6, dir, sx, sy, 1);
+				town_draw_town_all(&gpBuffer[sx + PitchTbl[sy]], x, y, a6, dir, sx, sy, 1);
 			} else {
-				town_clear_upper_buf(&gpBuffer[sx + screen_y_times_768[sy]]);
+				town_clear_upper_buf(&gpBuffer[sx + PitchTbl[sy]]);
 			}
 		} else {
-			town_clear_upper_buf(&gpBuffer[sx + screen_y_times_768[sy]]);
+			town_clear_upper_buf(&gpBuffer[sx + PitchTbl[sy]]);
 		}
 		x++;
 		y--;
@@ -689,7 +689,7 @@ void __fastcall town_draw_upper(int x, int y, int sx, int sy, int a5, int a6, in
 		if (y >= 0 && y < MAXDUNY && x >= 0 && x < MAXDUNX) {
 			level_cel_block = dPiece[x][y];
 			if (level_cel_block != 0) {
-				dst = &gpBuffer[sx + screen_y_times_768[sy]];
+				dst = &gpBuffer[sx + PitchTbl[sy]];
 				pMap = dpiece_defs_map_1[IsometricCoord(x, y)];
 				for (i = 0; i < 7; i++) {
 					if (a6 >= i) {
@@ -700,18 +700,18 @@ void __fastcall town_draw_upper(int x, int y, int sx, int sy, int a5, int a6, in
 					}
 					dst -= 768 * 32;
 				}
-				town_draw_town_all(&gpBuffer[sx + screen_y_times_768[sy]], x, y, a6, dir, sx, sy, 0);
+				town_draw_town_all(&gpBuffer[sx + PitchTbl[sy]], x, y, a6, dir, sx, sy, 0);
 			} else {
-				town_clear_upper_buf(&gpBuffer[sx + screen_y_times_768[sy]]);
+				town_clear_upper_buf(&gpBuffer[sx + PitchTbl[sy]]);
 			}
 		} else {
-			town_clear_upper_buf(&gpBuffer[sx + screen_y_times_768[sy]]);
+			town_clear_upper_buf(&gpBuffer[sx + PitchTbl[sy]]);
 		}
 	}
 }
 // 69CF14: using guessed type int level_cel_block;
 
-void __fastcall T_DrawGame(int x, int y)
+void T_DrawGame(int x, int y)
 {
 	int i, sx, sy, chunks, blocks;
 
@@ -789,7 +789,7 @@ void __fastcall T_DrawGame(int x, int y)
 	}
 
 	/// ASSERT: assert(gpBuffer);
-	gpBufEnd = &gpBuffer[screen_y_times_768[160]];
+	gpBufEnd = &gpBuffer[PitchTbl[160]];
 	for (i = 0; i < 7; i++) {
 		town_draw_upper(x, y, sx, sy, chunks, i, 0);
 		y++;
@@ -801,7 +801,7 @@ void __fastcall T_DrawGame(int x, int y)
 		sy += 16;
 	}
 	/// ASSERT: assert(gpBuffer);
-	gpBufEnd = &gpBuffer[screen_y_times_768[512]];
+	gpBufEnd = &gpBuffer[PitchTbl[512]];
 	for (i = 0; i < blocks; i++) {
 		town_draw_lower(x, y, sx, sy, chunks, 0);
 		y++;
@@ -828,10 +828,9 @@ void __fastcall T_DrawGame(int x, int y)
 // 5C2FFC: using guessed type int dword_5C2FFC;
 // 5C3000: using guessed type int scr_pix_width;
 // 5C3004: using guessed type int scr_pix_height;
-// 69BD04: using guessed type int questlog;
 // 69CF0C: using guessed type int gpBufEnd;
 
-void __fastcall T_DrawZoom(int x, int y)
+void T_DrawZoom(int x, int y)
 {
 	int i, sx, sy, chunks, blocks;
 	int wdt, nSrcOff, nDstOff;
@@ -897,7 +896,7 @@ void __fastcall T_DrawZoom(int x, int y)
 	}
 
 	/// ASSERT: assert(gpBuffer);
-	gpBufEnd = &gpBuffer[screen_y_times_768[143]];
+	gpBufEnd = &gpBuffer[PitchTbl[143]];
 	for (i = 0; i < 7; i++) {
 		town_draw_upper(x, y, sx, sy, chunks, i, 0);
 		y++;
@@ -909,7 +908,7 @@ void __fastcall T_DrawZoom(int x, int y)
 		sy += 16;
 	}
 	/// ASSERT: assert(gpBuffer);
-	gpBufEnd = &gpBuffer[screen_y_times_768[320]];
+	gpBufEnd = &gpBuffer[PitchTbl[320]];
 	for (i = 0; i < blocks; i++) {
 		town_draw_lower(x, y, sx, sy, chunks, 0);
 		y++;
@@ -1003,10 +1002,9 @@ void __fastcall T_DrawZoom(int x, int y)
 // 5C2FFC: using guessed type int dword_5C2FFC;
 // 5C3000: using guessed type int scr_pix_width;
 // 5C3004: using guessed type int scr_pix_height;
-// 69BD04: using guessed type int questlog;
 // 69CF0C: using guessed type int gpBufEnd;
 
-void __fastcall T_DrawView(int StartX, int StartY)
+void T_DrawView(int StartX, int StartY)
 {
 	light_table_index = 0;
 	cel_transparency_active = 0;
@@ -1052,19 +1050,17 @@ void __fastcall T_DrawView(int StartX, int StartY)
 	DrawLifeFlask();
 	DrawManaFlask();
 }
-// 4B84DC: using guessed type int dropGoldFlag;
 // 4B8968: using guessed type int sbookflag;
 // 4B8C98: using guessed type int spselflag;
 // 52569C: using guessed type int zoomflag;
 // 525740: using guessed type int PauseMode;
 // 52B9F1: using guessed type char msgflag;
 // 646D00: using guessed type char qtextflag;
-// 69BD04: using guessed type int questlog;
 // 69BEF8: using guessed type int light_table_index;
 // 69CF94: using guessed type int cel_transparency_active;
 // 6AA705: using guessed type char stextflag;
 
-void __cdecl SetTownMicros()
+void SetTownMicros()
 {
 	int i, x, y, lv;
 	WORD *pMap, *pPiece;
@@ -1105,7 +1101,7 @@ void __cdecl SetTownMicros()
 // 5C3000: using guessed type int scr_pix_width;
 // 5C3004: using guessed type int scr_pix_height;
 
-void __fastcall T_FillSector(unsigned char *P3Tiles, unsigned char *pSector, int xi, int yi, int w, int h)
+void T_FillSector(unsigned char *P3Tiles, unsigned char *pSector, int xi, int yi, int w, int h)
 {
 	int i, j, xx, yy;
 	long v1, v2, v3, v4, ii;
@@ -1177,7 +1173,7 @@ void __fastcall T_FillSector(unsigned char *P3Tiles, unsigned char *pSector, int
 	}
 }
 
-void __fastcall T_FillTile(unsigned char *P3Tiles, int xx, int yy, int t)
+void T_FillTile(unsigned char *P3Tiles, int xx, int yy, int t)
 {
 	long v1, v2, v3, v4;
 
@@ -1222,7 +1218,7 @@ void __fastcall T_FillTile(unsigned char *P3Tiles, int xx, int yy, int t)
 	dPiece[xx + 1][yy + 1] = v4;
 }
 
-void __cdecl T_Pass3()
+void T_Pass3()
 {
 	int xx, yy, x;
 	unsigned char *P3Tiles, *pSector;
@@ -1276,7 +1272,7 @@ void __cdecl T_Pass3()
 // 45FDE6: could not find valid save-restore pair for edi
 // 679660: using guessed type char gbMaxPlayers;
 
-void __fastcall CreateTown(int entry)
+void CreateTown(int entry)
 {
 	int x, y;
 

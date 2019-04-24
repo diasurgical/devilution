@@ -6,8 +6,8 @@ extern int spurtndx; // weak
 extern DeadStruct dead[MAXDEAD];
 extern int stonendx;
 
-void __cdecl InitDead();
-void __fastcall AddDead(int dx, int dy, char dv, int ddir);
-void __cdecl SetDead();
+void InitDead();
+void AddDead(int dx, int dy, char dv, int ddir);
+void SetDead();
 
 #endif /* __DEAD_H__ */

@@ -5,9 +5,9 @@
 extern void *pDurIcons;
 extern void *pChrButtons;
 extern BOOL drawhpflag;  // idb
-extern int dropGoldFlag; // weak
+extern BOOL dropGoldFlag;
 extern int panbtn[8];
-extern int chrbtn[4];
+extern BOOL chrbtn[4];
 extern void *pMultiBtns;
 extern void *pPanelButtons;
 extern void *pChrPanel;
@@ -39,9 +39,9 @@ extern int talkflag;             // weak
 extern void *pSBkIconCels;
 extern int sbookflag; // weak
 extern int chrflag;
-extern int drawbtnflag; // idb
+extern BOOL drawbtnflag;
 extern void *pSpellBkCel;
-extern char infostr[260];
+extern char infostr[MAX_PATH];
 extern int numpanbtns; // weak
 extern void *pStatusPanel;
 extern char panelstr[256];
@@ -49,89 +49,89 @@ extern int panelflag; // weak
 extern unsigned char SplTransTbl[256];
 extern int initialDropGoldValue; // idb
 extern void *pSpellCels;
-extern int panbtndown;   // weak
+extern BOOL panbtndown;
 extern void *pTalkPanel; // idb
 extern int spselflag;    // weak
 
-void __fastcall DrawSpellCel(int xp, int yp, BYTE *Trans, int nCel, int w);
-void __fastcall SetSpellTrans(char t);
-void __cdecl DrawSpell();
-void __cdecl DrawSpellList();
-void __cdecl SetSpell();
-void __fastcall SetSpeedSpell(int slot);
-void __fastcall ToggleSpell(int slot);
-void __fastcall CPrintString(int nOffset, int nCel, char col);
-void __fastcall AddPanelString(char *str, BOOL just);
-void __cdecl ClearPanel();
-void __fastcall DrawPanelBox(int x, int y, int w, int h, int sx, int sy);
-void __cdecl InitPanelStr();
-void __fastcall SetFlaskHeight(BYTE *pCelBuff, int min, int max, int c, int r);
-void __fastcall DrawFlask(BYTE *pCelBuff, int w, int nSrcOff, BYTE *pBuff, int nDstOff, int h);
-void __cdecl DrawLifeFlask();
-void __cdecl UpdateLifeFlask();
-void __cdecl DrawManaFlask();
-void __cdecl control_update_life_mana();
-void __cdecl UpdateManaFlask();
-void __cdecl InitControlPan();
-void __cdecl ClearCtrlPan();
-void __cdecl DrawCtrlPan();
-void __cdecl DoSpeedBook();
-void __cdecl DoPanBtn();
-void __fastcall control_set_button_down(int btn_id);
-void __cdecl control_check_btn_press();
-void __cdecl DoAutoMap();
-void __cdecl CheckPanelInfo();
-void __cdecl CheckBtnUp();
-void __cdecl FreeControlPan();
-int __fastcall control_WriteStringToBuffer(char *str);
-void __cdecl DrawInfoBox();
-void __fastcall control_print_info_str(int y, char *str, BOOLEAN center, int lines);
-void __fastcall PrintGameStr(int x, int y, char *str, int color);
-void __cdecl DrawChr();
-void __fastcall ADD_PlrStringXY(int x, int y, int width, char *pszStr, char col);
-void __fastcall MY_PlrStringXY(int x, int y, int width, char *pszStr, char col, int base);
-void __cdecl CheckLvlBtn();
-void __cdecl ReleaseLvlBtn();
-void __cdecl DrawLevelUpIcon();
-void __cdecl CheckChrBtns();
-void __cdecl ReleaseChrBtns();
-void __cdecl DrawDurIcon();
-int __fastcall DrawDurIcon4Item(ItemStruct *pItem, int x, int c);
-void __cdecl RedBack();
-char __fastcall GetSBookTrans(int ii, BOOL townok);
-void __cdecl DrawSpellBook();
-void __fastcall PrintSBookStr(int x, int y, BOOLEAN cjustflag, char *pszStr, int bright);
-void __cdecl CheckSBook();
-char *__fastcall get_pieces_str(int nGold);
-void __fastcall DrawGoldSplit(int amount);
-void __fastcall control_drop_gold(char vkey);
-void __fastcall control_remove_gold(int pnum, int gold_index);
-void __fastcall control_set_gold_curs(int pnum);
-void __cdecl DrawTalkPan();
-char *__fastcall control_print_talk_msg(char *msg, int x, int y, int *a4, int just);
-int __cdecl control_check_talk_btn();
-void __cdecl control_release_talk_btn();
-void __cdecl control_reset_talk_msg();
-void __cdecl control_type_message();
-void __cdecl control_reset_talk();
-int __fastcall control_talk_last_key(int a1);
-int __fastcall control_presskeys(int a1);
-void __cdecl control_press_enter();
-void __fastcall control_up_down(char a1);
+void DrawSpellCel(int xp, int yp, BYTE *Trans, int nCel, int w);
+void SetSpellTrans(char t);
+void DrawSpell();
+void DrawSpellList();
+void SetSpell();
+void SetSpeedSpell(int slot);
+void ToggleSpell(int slot);
+void CPrintString(int nOffset, int nCel, char col);
+void AddPanelString(char *str, BOOL just);
+void ClearPanel();
+void DrawPanelBox(int x, int y, int w, int h, int sx, int sy);
+void InitPanelStr();
+void SetFlaskHeight(BYTE *pCelBuff, int min, int max, int c, int r);
+void DrawFlask(BYTE *pCelBuff, int w, int nSrcOff, BYTE *pBuff, int nDstOff, int h);
+void DrawLifeFlask();
+void UpdateLifeFlask();
+void DrawManaFlask();
+void control_update_life_mana();
+void UpdateManaFlask();
+void InitControlPan();
+void ClearCtrlPan();
+void DrawCtrlPan();
+void DoSpeedBook();
+void DoPanBtn();
+void control_set_button_down(int btn_id);
+void control_check_btn_press();
+void DoAutoMap();
+void CheckPanelInfo();
+void CheckBtnUp();
+void FreeControlPan();
+int control_WriteStringToBuffer(char *str);
+void DrawInfoBox();
+void control_print_info_str(int y, char *str, BOOLEAN center, int lines);
+void PrintGameStr(int x, int y, char *str, int color);
+void DrawChr();
+void ADD_PlrStringXY(int x, int y, int width, char *pszStr, char col);
+void MY_PlrStringXY(int x, int y, int width, char *pszStr, char col, int base);
+void CheckLvlBtn();
+void ReleaseLvlBtn();
+void DrawLevelUpIcon();
+void CheckChrBtns();
+void ReleaseChrBtns();
+void DrawDurIcon();
+int DrawDurIcon4Item(ItemStruct *item, int x, int frame);
+void RedBack();
+char GetSBookTrans(int ii, BOOL townok);
+void DrawSpellBook();
+void PrintSBookStr(int x, int y, BOOL cjustflag, char *pszStr, char col);
+void CheckSBook();
+char *get_pieces_str(int nGold);
+void DrawGoldSplit(int amount);
+void control_drop_gold(char vkey);
+void control_remove_gold(int pnum, int gold_index);
+void control_set_gold_curs(int pnum);
+void DrawTalkPan();
+char *control_print_talk_msg(char *msg, int x, int y, int *a4, int just);
+int control_check_talk_btn();
+void control_release_talk_btn();
+void control_reset_talk_msg();
+void control_type_message();
+void control_reset_talk();
+int control_talk_last_key(int a1);
+int control_presskeys(int a1);
+void control_press_enter();
+void control_up_down(char a1);
 
 /* rdata */
-extern const unsigned char fontframe[127];
+extern const unsigned char fontframe[128];
 extern const unsigned char fontkern[68];
 extern const int lineoffset[25];
 extern const unsigned char gbFontTransTbl[256];
 
 /* data */
 
-extern unsigned char SpellITbl[MAX_SPELLS];
+extern char SpellITbl[MAX_SPELLS];
 extern int PanBtnPos[8][5];
 extern char *PanBtnHotKey[8];
 extern char *PanBtnStr[8];
-extern int attribute_inc_rects[4][4];
+extern RECT32 attribute_inc_rects[4];
 extern int SpellPages[6][7];
 
 #endif /* __CONTROL_H__ */

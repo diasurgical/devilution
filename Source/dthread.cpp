@@ -4,7 +4,9 @@
 
 DEVILUTION_BEGIN_NAMESPACE
 
-static CRITICAL_SECTION sgMemCrit; // idb
+#ifdef __cplusplus
+static CCritSect sgMemCrit;
+#endif
 unsigned int glpDThreadId;         // idb
 TMegaPkt *sgpInfoHead;             /* may not be right struct */
 BOOLEAN dthread_running;
@@ -13,47 +15,23 @@ HANDLE sghWorkToDoEvent;
 /* rdata */
 static HANDLE sghThread = INVALID_HANDLE_VALUE;
 
-#ifndef _MSC_VER
-__attribute__((constructor))
-#endif
-static void
-dthread_c_init(void)
-{
-	dthread_init_mutex();
-	dthread_cleanup_mutex_atexit();
-}
-
-SEG_ALLOCATE(SEGMENT_C_INIT)
-_PVFV dthread_c_init_funcs[] = { &dthread_c_init };
-
-void __cdecl dthread_init_mutex()
-{
-	InitializeCriticalSection(&sgMemCrit);
-}
-
-void __cdecl dthread_cleanup_mutex_atexit()
-{
-	atexit(dthread_cleanup_mutex);
-}
-
-void __cdecl dthread_cleanup_mutex()
-{
-	DeleteCriticalSection(&sgMemCrit);
-}
-
-void __fastcall dthread_remove_player(int pnum)
+void dthread_remove_player(int pnum)
 {
 	TMegaPkt *pkt;
 
-	EnterCriticalSection(&sgMemCrit);
+#ifdef __cplusplus
+	sgMemCrit.Enter();
+#endif
 	for (pkt = sgpInfoHead; pkt; pkt = pkt->pNext) {
 		if (pkt->dwSpaceLeft == pnum)
 			pkt->dwSpaceLeft = 4;
 	}
-	LeaveCriticalSection(&sgMemCrit);
+#ifdef __cplusplus
+	sgMemCrit.Leave();
+#endif
 }
 
-void __fastcall dthread_send_delta(int pnum, char cmd, void *pbSrc, int dwLen)
+void dthread_send_delta(int pnum, char cmd, void *pbSrc, int dwLen)
 {
 	TMegaPkt *pkt;
 	TMegaPkt *p;
@@ -68,7 +46,9 @@ void __fastcall dthread_send_delta(int pnum, char cmd, void *pbSrc, int dwLen)
 	pkt->data[0] = cmd;
 	*(_DWORD *)&pkt->data[4] = dwLen;
 	memcpy(&pkt->data[8], pbSrc, dwLen);
-	EnterCriticalSection(&sgMemCrit);
+#ifdef __cplusplus
+	sgMemCrit.Enter();
+#endif
 	p = (TMegaPkt *)&sgpInfoHead;
 	while (p->pNext) {
 		p = p->pNext;
@@ -76,10 +56,12 @@ void __fastcall dthread_send_delta(int pnum, char cmd, void *pbSrc, int dwLen)
 	p->pNext = pkt;
 
 	SetEvent(sghWorkToDoEvent);
-	LeaveCriticalSection(&sgMemCrit);
+#ifdef __cplusplus
+	sgMemCrit.Leave();
+#endif
 }
 
-void __cdecl dthread_start()
+void dthread_start()
 {
 	char *error_buf;
 
@@ -114,13 +96,17 @@ unsigned int __stdcall dthread_handler(void *unused)
 			app_fatal("dthread4:\n%s", error_buf);
 		}
 
-		EnterCriticalSection(&sgMemCrit);
+#ifdef __cplusplus
+		sgMemCrit.Enter();
+#endif
 		pkt = sgpInfoHead;
 		if (sgpInfoHead)
 			sgpInfoHead = sgpInfoHead->pNext;
 		else
 			ResetEvent(sghWorkToDoEvent);
-		LeaveCriticalSection(&sgMemCrit);
+#ifdef __cplusplus
+		sgMemCrit.Leave();
+#endif
 
 		if (pkt) {
 			if (pkt->dwSpaceLeft != 4)
@@ -141,7 +127,7 @@ unsigned int __stdcall dthread_handler(void *unused)
 }
 // 679730: using guessed type int gdwDeltaBytesSec;
 
-void __cdecl dthread_cleanup()
+void dthread_cleanup()
 {
 	char *error_buf;
 	TMegaPkt *tmp1, *tmp2;

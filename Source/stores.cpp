@@ -20,7 +20,7 @@ int InStoreFlag; // idb
 ItemStruct storehold[48];
 int gossipstart; // weak
 ItemStruct witchitem[20];
-int stextscrl;  // weak
+int stextscrl;
 int numpremium; // idb
 ItemStruct healitem[20];
 ItemStruct golditem;
@@ -36,7 +36,7 @@ int boylevel;  // weak
 ItemStruct smithitem[20];
 int stextdown;      // weak
 char stextscrlubtn; // weak
-char stextflag;     // weak
+char stextflag;
 
 int SStringY[24] = {
 	0,
@@ -76,7 +76,7 @@ char *talkname[9] = {
 	"Wirt"
 };
 
-void __cdecl InitStores()
+void InitStores()
 {
 	int i; // eax
 
@@ -84,12 +84,12 @@ void __cdecl InitStores()
 	pCelBuff = LoadFileInMem("Data\\PentSpn2.CEL", 0);
 	pSTextSlidCels = LoadFileInMem("Data\\TextSlid.CEL", 0);
 	ClearSText(0, 24);
-	stextflag = 0;
+	stextflag = STORE_NONE;
 	InStoreFlag = 1;
-	premiumlevel = 1;
 	stextsize = 0;
 	stextscrl = 0;
 	numpremium = 0;
+	premiumlevel = 1;
 
 	for (i = 0; i < 6; i++)
 		premiumitem[i]._itype = -1;
@@ -103,7 +103,7 @@ void __cdecl InitStores()
 // 6A8A3C: using guessed type int boylevel;
 // 6AA705: using guessed type char stextflag;
 
-void __cdecl SetupTownStores()
+void SetupTownStores()
 {
 	int i; // eax
 	int l; // esi
@@ -132,7 +132,7 @@ void __cdecl SetupTownStores()
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-void __cdecl FreeStoreMem()
+void FreeStoreMem()
 {
 	void *p;
 
@@ -147,7 +147,7 @@ void __cdecl FreeStoreMem()
 	mem_free_dbg(p);
 }
 
-void __cdecl DrawSTextBack()
+void DrawSTextBack()
 {
 	CelDecodeOnly(408, 487, (BYTE *)pSTextBoxCels, 1, 271);
 
@@ -158,7 +158,7 @@ void __cdecl DrawSTextBack()
 #include "asm_trans_rect.inc"
 }
 
-void __fastcall PrintSString(int x, int y, unsigned char cjustflag, char *str, int col, int val)
+void PrintSString(int x, int y, unsigned char cjustflag, char *str, int col, int val)
 {
 	int v6;            // edi
 	int v7;            // eax
@@ -189,7 +189,7 @@ void __fastcall PrintSString(int x, int y, unsigned char cjustflag, char *str, i
 	v6 = SStringY[y] + stext[y]._syoff;
 	v7 = -(stextsize != 0);
 	v8 = x;
-	v9 = screen_y_times_768[v6 + 204];
+	v9 = PitchTbl[v6 + 204];
 	_LOWORD(v7) = v7 & 0xFEC0;
 	v24 = y;
 	v26 = x;
@@ -235,7 +235,7 @@ void __fastcall PrintSString(int x, int y, unsigned char cjustflag, char *str, i
 	}
 	if (!cjustflag && val >= 0) {
 		sprintf(valstr, "%i", val);
-		v19 = screen_y_times_768[v6 + 204] - v8 + 656;
+		v19 = PitchTbl[v6 + 204] - v8 + 656;
 		v20 = strlen(valstr);
 		while ((--v20 & 0x80000000) == 0) {
 			v21 = fontframe[gbFontTransTbl[(unsigned char)valstr[v20]]];
@@ -257,18 +257,18 @@ void __fastcall PrintSString(int x, int y, unsigned char cjustflag, char *str, i
 // 6A8A28: using guessed type int stextsel;
 // 457BD6: using guessed type char valstr[32];
 
-void __fastcall DrawSLine(int y)
+void DrawSLine(int y)
 {
 	int xy, yy, width, line;
 
 	if (stextsize == 1) {
 		xy = SCREENXY(26, 25);
-		yy = screen_y_times_768[SStringY[y] + 198] + 26 + 64;
+		yy = PitchTbl[SStringY[y] + 198] + 26 + 64;
 		width = 586 / 4;
 		line = 768 - 586;
 	} else {
 		xy = SCREENXY(346, 25);
-		yy = screen_y_times_768[SStringY[y] + 198] + 346 + 64;
+		yy = PitchTbl[SStringY[y] + 198] + 346 + 64;
 		width = 266 / 4;
 		line = 768 - 266;
 	}
@@ -305,7 +305,7 @@ void __fastcall DrawSLine(int y)
 }
 // 6A09E0: using guessed type char stextsize;
 
-void __fastcall DrawSArrows(int y1, int y2)
+void DrawSArrows(int y1, int y2)
 {
 	int *v2; // ebp
 	int v3;  // ebx
@@ -348,7 +348,7 @@ void __fastcall DrawSArrows(int y1, int y2)
 // 6A8A2C: using guessed type char stextscrldbtn;
 // 6AA704: using guessed type char stextscrlubtn;
 
-void __cdecl DrawSTextHelp()
+void DrawSTextHelp()
 {
 	stextsel = -1;
 	stextsize = 1;
@@ -356,30 +356,23 @@ void __cdecl DrawSTextHelp()
 // 6A09E0: using guessed type char stextsize;
 // 6A8A28: using guessed type int stextsel;
 
-void __fastcall ClearSText(int s, int e)
+void ClearSText(int s, int e)
 {
-	int v2;  // edx
-	int *v3; // eax
+	int i;
 
-	if (s < e) {
-		v2 = e - s;
-		v3 = &stext[s]._syoff;
-		do {
-			v3[37] = -1;
-			*(v3 - 1) = 0;
-			*v3 = 0;
-			*((_BYTE *)v3 + 4) = 0;
-			v3[33] = 0;
-			*((_BYTE *)v3 + 136) = 0;
-			v3[35] = 0;
-			v3[36] = 0;
-			v3 += 39;
-			--v2;
-		} while (v2);
+	for (i = s; i < e; i++) {
+		stext[i]._sx = 0;
+		stext[i]._syoff = 0;
+		stext[i]._sstr[0] = 0;
+		stext[i]._sjust = 0;
+		stext[i]._sclr = 0;
+		stext[i]._sline = 0;
+		stext[i]._ssel = 0;
+		stext[i]._sval = -1;
 	}
 }
 
-void __fastcall AddSLine(int y)
+void AddSLine(int y)
 {
 	stext[y]._sx = 0;
 	stext[y]._syoff = 0;
@@ -387,17 +380,17 @@ void __fastcall AddSLine(int y)
 	stext[y]._sline = 1;
 }
 
-void __fastcall AddSTextVal(int y, int val)
+void AddSTextVal(int y, int val)
 {
 	stext[y]._sval = val;
 }
 
-void __fastcall OffsetSTextY(int y, int yo)
+void OffsetSTextY(int y, int yo)
 {
 	stext[y]._syoff = yo;
 }
 
-void __fastcall AddSText(int x, int y, int j, char *str, char clr, int sel)
+void AddSText(int x, int y, int j, char *str, char clr, int sel)
 {
 	stext[y]._sx = x;
 	stext[y]._syoff = 0;
@@ -408,164 +401,80 @@ void __fastcall AddSText(int x, int y, int j, char *str, char clr, int sel)
 	stext[y]._ssel = sel;
 }
 
-void __cdecl StoreAutoPlace()
+void StoreAutoPlace()
 {
-	int v0;         // edi
-	int v1;         // eax
-	int v2;         // edx
-	ItemStruct *v3; // ebp
-	int v4;         // esi
-	int v5;         // esi
-	int v6;         // esi
-	int v7;         // esi
-	int v8;         // esi
-	int v9;         // esi
-	int v10;        // esi
-	int v11;        // esi
-	int *v12;       // esi
-	int v13;        // esi
-	int v14;        // esi
-	int v15;        // esi
-	int v16;        // esi
-	int v17;        // esi
-	signed int v19; // [esp+10h] [ebp-Ch]
-	int v20;        // [esp+14h] [ebp-8h]
-	int v21;        // [esp+18h] [ebp-4h]
+	BOOL done;
+	int i, w, h, idx;
 
 	SetICursor(plr[myplr].HoldItem._iCurs + CURSOR_FIRSTITEM);
-	v0 = icursH28;
-	v1 = 0;
-	v21 = icursW28;
-	v20 = icursH28;
-	if (icursW28 == 1) {
-		if (icursH28 == 1) {
-			v2 = myplr;
-			if (plr[myplr].HoldItem._iStatFlag && AllItemsList[plr[v2].HoldItem.IDidx].iUsable) {
-				v19 = 0;
-				v3 = plr[v2].SpdList;
-				do {
-					if (v1)
-						break;
-					if (v3->_itype == -1) {
-						qmemcpy(v3, &plr[v2].HoldItem, sizeof(ItemStruct));
-						v0 = v20;
-						v1 = 1;
-					}
-					++v19;
-					++v3;
-				} while (v19 < 8);
-			}
-			v4 = 30;
-			do {
-				if (v1)
-					break;
-				v1 = AutoPlace(myplr, v4++, 1, 1, 1);
-			} while (v4 <= 39);
-			v5 = 20;
-			do {
-				if (v1)
-					break;
-				v1 = AutoPlace(myplr, v5++, 1, 1, 1);
-			} while (v5 <= 29);
-			v6 = 10;
-			do {
-				if (v1)
-					break;
-				v1 = AutoPlace(myplr, v6++, 1, 1, 1);
-			} while (v6 <= 19);
-			v7 = 0;
-			while (!v1) {
-				v1 = AutoPlace(myplr, v7++, 1, 1, 1);
-				if (v7 > 9)
-					goto LABEL_22;
-			}
-		} else {
-		LABEL_22:
-			if (v0 == 2) {
-				v8 = 29;
-				do {
-					if (v1)
-						break;
-					v1 = AutoPlace(myplr, v8--, 1, 2, 1);
-				} while (v8 >= 20);
-				v9 = 9;
-				do {
-					if (v1)
-						break;
-					v1 = AutoPlace(myplr, v9--, 1, 2, 1);
-				} while (v9 >= 0);
-				v10 = 19;
-				while (!v1) {
-					v1 = AutoPlace(myplr, v10--, 1, 2, 1);
-					if (v10 < 10)
-						goto LABEL_32;
-				}
-			} else {
-			LABEL_32:
-				if (v0 == 3) {
-					v11 = 0;
-					while (!v1) {
-						v1 = AutoPlace(myplr, v11++, 1, 3, 1);
-						if (v11 >= 20)
-							goto LABEL_36;
-					}
+	done = FALSE;
+	w = icursW28;
+	h = icursH28;
+	if (w == 1 && h == 1) {
+		idx = plr[myplr].HoldItem.IDidx;
+		if (plr[myplr].HoldItem._iStatFlag && AllItemsList[idx].iUsable) {
+			for (i = 0; i < 8 && !done; i++) {
+				if (plr[myplr].SpdList[i]._itype == ITYPE_NONE) {
+					plr[myplr].SpdList[i] = plr[myplr].HoldItem;
+					done = TRUE;
 				}
 			}
 		}
-	} else {
-	LABEL_36:
-		if (v21 == 2) {
-			if (v0 == 2) {
-				v12 = AP2x2Tbl;
-				do {
-					if (v1)
-						break;
-					v1 = AutoPlace(myplr, *v12, 2, 2, 1);
-					++v12;
-				} while ((signed int)v12 < (signed int)&AP2x2Tbl[10]);
-				v13 = 21;
-				do {
-					if (v1)
-						break;
-					v1 = AutoPlace(myplr, v13, 2, 2, 1);
-					v13 += 2;
-				} while (v13 < 29);
-				v14 = 1;
-				do {
-					if (v1)
-						break;
-					v1 = AutoPlace(myplr, v14, 2, 2, 1);
-					v14 += 2;
-				} while (v14 < 9);
-				v15 = 10;
-				while (!v1) {
-					v1 = AutoPlace(myplr, v15++, 2, 2, 1);
-					if (v15 >= 19)
-						goto LABEL_50;
-				}
-			} else {
-			LABEL_50:
-				if (v0 == 3) {
-					v16 = 0;
-					do {
-						if (v1)
-							break;
-						v1 = AutoPlace(myplr, v16++, 2, 3, 1);
-					} while (v16 < 9);
-					v17 = 10;
-					do {
-						if (v1)
-							break;
-						v1 = AutoPlace(myplr, v17++, 2, 3, 1);
-					} while (v17 < 19);
-				}
-			}
+		for (i = 30; i <= 39 && !done; i++) {
+			done = AutoPlace(myplr, i, w, h, TRUE);
+		}
+		for (i = 20; i <= 29 && !done; i++) {
+			done = AutoPlace(myplr, i, w, h, TRUE);
+		}
+		for (i = 10; i <= 19 && !done; i++) {
+			done = AutoPlace(myplr, i, w, h, TRUE);
+		}
+		for (i = 0; i <= 9 && !done; i++) {
+			done = AutoPlace(myplr, i, w, h, TRUE);
+		}
+	}
+	if (w == 1 && h == 2) {
+		for (i = 29; i >= 20 && !done; i--) {
+			done = AutoPlace(myplr, i, w, h, TRUE);
+		}
+		for (i = 9; i >= 0 && !done; i--) {
+			done = AutoPlace(myplr, i, w, h, TRUE);
+		}
+		for (i = 19; i >= 10 && !done; i--) {
+			done = AutoPlace(myplr, i, w, h, TRUE);
+		}
+	}
+	if (w == 1 && h == 3) {
+		for (i = 0; i < 20 && !done; i++) {
+			done = AutoPlace(myplr, i, w, h, TRUE);
+		}
+	}
+	if (w == 2 && h == 2) {
+		for (i = 0; i < 10 && !done; i++) {
+			done = AutoPlace(myplr, AP2x2Tbl[i], w, h, TRUE);
+		}
+		for (i = 21; i < 29 && !done; i += 2) {
+			done = AutoPlace(myplr, i, w, h, TRUE);
+		}
+		for (i = 1; i < 9 && !done; i += 2) {
+			done = AutoPlace(myplr, i, w, h, TRUE);
+		}
+		for (i = 10; i < 19 && !done; i++) {
+			done = AutoPlace(myplr, i, w, h, TRUE);
+		}
+	}
+	if (w == 2 && h == 3) {
+		for (i = 0; i < 9 && !done; i++) {
+			done = AutoPlace(myplr, i, w, h, TRUE);
+		}
+		for (i = 10; i < 19 && !done; i++) {
+			done = AutoPlace(myplr, i, w, h, TRUE);
 		}
 	}
 }
 // 48E9A8: using guessed type int AP2x2Tbl[10];
 
-void __cdecl S_StartSmith()
+void S_StartSmith()
 {
 	stextsize = 0;
 	stextscrl = 0;
@@ -585,7 +494,7 @@ void __cdecl S_StartSmith()
 // 6A09E0: using guessed type char stextsize;
 // 6A6BB8: using guessed type int stextscrl;
 
-void __fastcall S_ScrollSBuy(int idx)
+void S_ScrollSBuy(int idx)
 {
 	int y;
 	char clr;
@@ -624,7 +533,7 @@ void __fastcall S_ScrollSBuy(int idx)
 // 6A8A28: using guessed type int stextsel;
 // 6AA700: using guessed type int stextdown;
 
-void __fastcall PrintStoreItem(ItemStruct *x, int l, char iclr)
+void PrintStoreItem(ItemStruct *x, int l, char iclr)
 {
 	ItemStruct *v3;   // esi
 	char v5;          // cl
@@ -665,9 +574,9 @@ void __fastcall PrintStoreItem(ItemStruct *x, int l, char iclr)
 	if (sstr[0])
 		AddSText(40, y++, 0, sstr, iclr, 0);
 	sstr[0] = 0;
-	if (v3->_iClass == 1)
+	if (v3->_iClass == ICLASS_WEAPON)
 		sprintf(sstr, "Damage: %i-%i  ", v3->_iMinDam, v3->_iMaxDam);
-	if (v3->_iClass == 2)
+	if (v3->_iClass == ICLASS_ARMOR)
 		sprintf(sstr, "Armor: %i  ", v3->_iAC);
 	v7 = v3->_iMaxDur;
 	if (v7 != 255 && v7) {
@@ -701,7 +610,7 @@ void __fastcall PrintStoreItem(ItemStruct *x, int l, char iclr)
 	}
 }
 
-void __cdecl S_StartSBuy()
+void S_StartSBuy()
 {
 	int i;
 
@@ -727,7 +636,7 @@ void __cdecl S_StartSBuy()
 // 6A09E4: using guessed type int stextsmax;
 // 6A6BB8: using guessed type int stextscrl;
 
-void __fastcall S_ScrollSPBuy(int idx)
+void S_ScrollSPBuy(int idx)
 {
 	int v1;   // esi
 	int v2;   // edi
@@ -779,41 +688,39 @@ void __fastcall S_ScrollSPBuy(int idx)
 // 6A8A28: using guessed type int stextsel;
 // 6AA700: using guessed type int stextdown;
 
-BOOLEAN __cdecl S_StartSPBuy()
+BOOL S_StartSPBuy()
 {
-	int *v0;        // eax
-	BOOLEAN result; // al
-	int v2;         // ST10_4
+	int i;
 
 	storenumh = 0;
-	v0 = &premiumitem[0]._itype;
-	do {
-		if (*v0 != -1)
-			++storenumh;
-		v0 += 92;
-	} while ((signed int)v0 < (signed int)&premiumitem[6]._itype);
-	if (storenumh) {
-		v2 = plr[myplr]._pGold;
-		stextsval = 0;
-		stextsize = 1;
-		stextscrl = 1;
-		sprintf(tempstr, "I have these premium items for sale :   Your gold : %i", v2);
-		AddSText(0, 1, 1u, tempstr, COL_GOLD, 0);
-		AddSLine(3);
-		AddSLine(21);
-		AddSText(0, 22, 1u, "Back", COL_WHITE, 0);
-		OffsetSTextY(22, 6);
-		stextsmax = storenumh - 4;
-		if (storenumh - 4 < 0)
-			stextsmax = 0;
-		S_ScrollSPBuy(stextsval);
-		result = 1;
-	} else {
+	for (i = 0; i < 6; i++) {
+		if (premiumitem[i]._itype != -1)
+			storenumh++;
+	}
+	if (!storenumh) {
 		StartStore(STORE_SMITH);
 		stextsel = 14;
-		result = 0;
+		return FALSE;
 	}
-	return result;
+
+	stextsize = 1;
+	stextscrl = 1;
+	stextsval = 0;
+
+	sprintf(tempstr, "I have these premium items for sale :   Your gold : %i", plr[myplr]._pGold);
+	AddSText(0, 1, 1, tempstr, COL_GOLD, 0);
+	AddSLine(3);
+	AddSLine(21);
+	AddSText(0, 22, 1, "Back", COL_WHITE, 0);
+	OffsetSTextY(22, 6);
+
+	stextsmax = storenumh - 4;
+	if (stextsmax < 0)
+		stextsmax = 0;
+
+	S_ScrollSPBuy(stextsval);
+
+	return TRUE;
 }
 // 69F10C: using guessed type int storenumh;
 // 69FB38: using guessed type int talker;
@@ -822,7 +729,7 @@ BOOLEAN __cdecl S_StartSPBuy()
 // 6A6BB8: using guessed type int stextscrl;
 // 6A8A28: using guessed type int stextsel;
 
-BOOL __fastcall SmithSellOk(int i)
+BOOL SmithSellOk(int i)
 {
 	if (plr[myplr].InvList[i]._itype == ITYPE_NONE)
 		return FALSE;
@@ -840,47 +747,37 @@ BOOL __fastcall SmithSellOk(int i)
 	return TRUE;
 }
 
-void __fastcall S_ScrollSSell(int idx)
+void S_ScrollSSell(int idx)
 {
-	int v1;   // esi
-	int v2;   // edi
-	char *v3; // esi
-	int v4;   // edx
-	int v5;   // [esp+Ch] [ebp-8h]
-	int iclr; // [esp+10h] [ebp-4h]
+	char clr;
+	int y;
 
-	v1 = idx;
-	v5 = idx;
-	v2 = 5;
 	ClearSText(5, 21);
-	v3 = &storehold[v1]._iMagical;
 	stextup = 5;
-	do {
-		if (v5 >= storenumh)
+	for (y = 5; y < 20; y += 4) {
+		if (idx >= storenumh)
 			break;
-		if (*((_DWORD *)v3 - 13) != -1) {
-			_LOBYTE(iclr) = 0;
-			if (*v3)
-				_LOBYTE(iclr) = 1;
-			if (!*((_DWORD *)v3 + 74))
-				_LOBYTE(iclr) = 2;
-			if (*v3 && *((_DWORD *)v3 - 1)) {
-				AddSText(20, v2, 0, v3 + 65, iclr, 1);
-				v4 = *((_DWORD *)v3 + 35);
+		if (storehold[idx]._itype != -1) {
+			clr = 0;
+			if (storehold[idx]._iMagical)
+				clr = 1;
+			if (!storehold[idx]._iStatFlag)
+				clr = 2;
+			if (storehold[idx]._iMagical && storehold[idx]._iIdentified) {
+				AddSText(20, y, 0, storehold[idx]._iIName, clr, 1);
+				AddSTextVal(y, storehold[idx]._iIvalue);
 			} else {
-				AddSText(20, v2, 0, v3 + 1, iclr, 1);
-				v4 = *((_DWORD *)v3 + 34);
+				AddSText(20, y, 0, storehold[idx]._iName, clr, 1);
+				AddSTextVal(y, storehold[idx]._ivalue);
 			}
-			AddSTextVal(v2, v4);
-			PrintStoreItem((ItemStruct *)(v3 - 60), v2 + 1, iclr);
-			stextdown = v2;
+			PrintStoreItem(&storehold[idx], y + 1, clr);
+			stextdown = y;
 		}
-		++v5;
-		v2 += 4;
-		v3 += 368;
-	} while (v2 < 20);
+		idx++;
+	}
+
 	stextsmax = storenumh - 4;
-	if (storenumh - 4 < 0)
+	if (stextsmax < 0)
 		stextsmax = 0;
 }
 // 69F108: using guessed type int stextup;
@@ -888,13 +785,13 @@ void __fastcall S_ScrollSSell(int idx)
 // 6A09E4: using guessed type int stextsmax;
 // 6AA700: using guessed type int stextdown;
 
-void __cdecl S_StartSSell()
+void S_StartSSell()
 {
-	int i;          // eax
-	BOOLEAN sellok; // [esp+14h] [ebp-4h]
+	int i;
+	BOOL sellok;
 
 	stextsize = 1;
-	sellok = 0;
+	sellok = FALSE;
 	storenumh = 0;
 
 	for (i = 0; i < 48; i++)
@@ -902,8 +799,8 @@ void __cdecl S_StartSSell()
 
 	for (i = 0; i < plr[myplr]._pNumInv; i++) {
 		if (SmithSellOk(i)) {
-			sellok = 1;
-			qmemcpy(&storehold[storenumh], &plr[myplr].InvList[i], sizeof(ItemStruct));
+			sellok = TRUE;
+			storehold[storenumh] = plr[myplr].InvList[i];
 
 			if (storehold[storenumh]._iMagical != ITEM_QUALITY_NORMAL && storehold[storenumh]._iIdentified)
 				storehold[storenumh]._ivalue = storehold[storenumh]._iIvalue;
@@ -916,23 +813,23 @@ void __cdecl S_StartSSell()
 		}
 	}
 
-	if (sellok) {
-		stextsmax = plr[myplr]._pNumInv;
-		stextscrl = 1;
-		stextsval = 0;
-		sprintf(tempstr, "Which item is for sale?            Your gold : %i", plr[myplr]._pGold);
-		AddSText(0, 1, 1, tempstr, COL_GOLD, 0);
-		AddSLine(3);
-		AddSLine(21);
-		S_ScrollSSell(stextsval);
-		AddSText(0, 22, 1, "Back", COL_WHITE, 1);
-		OffsetSTextY(22, 6);
-	} else {
+	if (!sellok) {
 		stextscrl = 0;
 		sprintf(tempstr, "You have nothing I want.            Your gold : %i", plr[myplr]._pGold);
 		AddSText(0, 1, 1, tempstr, COL_GOLD, 0);
 		AddSLine(3);
 		AddSLine(21);
+		AddSText(0, 22, 1, "Back", COL_WHITE, 1);
+		OffsetSTextY(22, 6);
+	} else {
+		stextscrl = 1;
+		stextsval = 0;
+		stextsmax = plr[myplr]._pNumInv;
+		sprintf(tempstr, "Which item is for sale?            Your gold : %i", plr[myplr]._pGold);
+		AddSText(0, 1, 1, tempstr, COL_GOLD, 0);
+		AddSLine(3);
+		AddSLine(21);
+		S_ScrollSSell(stextsval);
 		AddSText(0, 22, 1, "Back", COL_WHITE, 1);
 		OffsetSTextY(22, 6);
 	}
@@ -942,18 +839,23 @@ void __cdecl S_StartSSell()
 // 6A09E4: using guessed type int stextsmax;
 // 6A6BB8: using guessed type int stextscrl;
 
-BOOLEAN __fastcall SmithRepairOk(int i)
+BOOL SmithRepairOk(int i)
 {
-	if (plr[myplr].InvList[i]._itype != ITYPE_NONE
-	    && plr[myplr].InvList[i]._itype
-	    && plr[myplr].InvList[i]._itype != ITYPE_GOLD
-	    && plr[myplr].InvList[i]._itype != ITYPE_0E)
-		return plr[myplr].InvList[i]._iDurability != plr[myplr].InvList[i]._iMaxDur;
-	else
-		return 0;
+	if (plr[myplr].InvList[i]._itype == ITYPE_NONE)
+		return FALSE;
+	if (plr[myplr].InvList[i]._itype == ITYPE_MISC)
+		return FALSE;
+	if (plr[myplr].InvList[i]._itype == ITYPE_GOLD)
+		return FALSE;
+	if (plr[myplr].InvList[i]._itype == ITYPE_0E)
+		return FALSE;
+	if (plr[myplr].InvList[i]._iDurability == plr[myplr].InvList[i]._iMaxDur)
+		return FALSE;
+
+	return TRUE;
 }
 
-void __cdecl S_StartSRepair()
+void S_StartSRepair()
 {
 	int v0;  // ebp
 	int *v1; // eax
@@ -1046,33 +948,31 @@ void __cdecl S_StartSRepair()
 // 6A09E4: using guessed type int stextsmax;
 // 6A6BB8: using guessed type int stextscrl;
 
-void __fastcall AddStoreHoldRepair(ItemStruct *itm, int i)
+void AddStoreHoldRepair(ItemStruct *itm, int i)
 {
-	int v2;         // ebx
-	ItemStruct *v3; // ebp
-	int v5;         // eax
+	ItemStruct *item;
+	int v;
 
-	v2 = storenumh;
-	v3 = &storehold[storenumh];
-	qmemcpy(&storehold[storenumh], itm, sizeof(ItemStruct));
-	if (v3->_iMagical != ITEM_QUALITY_NORMAL && v3->_iIdentified)
-		v3->_ivalue = 30 * v3->_iIvalue / 100;
-	v5 = v3->_ivalue * (100 * (v3->_iMaxDur - v3->_iDurability) / v3->_iMaxDur) / 100;
-	if (!v5) {
-		if (v3->_iMagical != ITEM_QUALITY_NORMAL && v3->_iIdentified)
+	item = &storehold[storenumh];
+	storehold[storenumh] = *itm;
+	if (item->_iMagical != ITEM_QUALITY_NORMAL && item->_iIdentified)
+		item->_ivalue = 30 * item->_iIvalue / 100;
+	v = item->_ivalue * (100 * (item->_iMaxDur - item->_iDurability) / item->_iMaxDur) / 100;
+	if (!v) {
+		if (item->_iMagical != ITEM_QUALITY_NORMAL && item->_iIdentified)
 			return;
-		v5 = 1;
+		v = 1;
 	}
-	if (v5 > 1)
-		v5 >>= 1;
-	v3->_iIvalue = v5;
-	v3->_ivalue = v5;
-	storehidx[v2] = i;
-	storenumh = v2 + 1;
+	if (v > 1)
+		v >>= 1;
+	item->_iIvalue = v;
+	item->_ivalue = v;
+	storehidx[storenumh] = i;
+	storenumh++;
 }
 // 69F10C: using guessed type int storenumh;
 
-void __cdecl S_StartWitch()
+void S_StartWitch()
 {
 	stextsize = 0;
 	stextscrl = 0;
@@ -1090,7 +990,7 @@ void __cdecl S_StartWitch()
 // 6A09E0: using guessed type char stextsize;
 // 6A6BB8: using guessed type int stextscrl;
 
-void __fastcall S_ScrollWBuy(int idx)
+void S_ScrollWBuy(int idx)
 {
 	int v1;   // esi
 	int v2;   // edi
@@ -1128,7 +1028,7 @@ void __fastcall S_ScrollWBuy(int idx)
 // 6A8A28: using guessed type int stextsel;
 // 6AA700: using guessed type int stextdown;
 
-void __cdecl S_StartWBuy()
+void S_StartWBuy()
 {
 	int v0;  // ST10_4
 	int v1;  // eax
@@ -1165,36 +1065,36 @@ void __cdecl S_StartWBuy()
 // 6A09E4: using guessed type int stextsmax;
 // 6A6BB8: using guessed type int stextscrl;
 
-BOOLEAN __fastcall WitchSellOk(int i)
+BOOL WitchSellOk(int i)
 {
-	BOOLEAN rv;     // al
-	ItemStruct *pI; // edx
+	BOOL rv;
+	ItemStruct *pI;
 
-	rv = 0;
+	rv = FALSE;
 
-	if (i < 0)
-		pI = &plr[myplr].SpdList[~i]; // -(i+1)
-	else
+	if (i >= 0)
 		pI = &plr[myplr].InvList[i];
+	else
+		pI = &plr[myplr].SpdList[-(i + 1)];
 
 	if (pI->_itype == ITYPE_MISC)
-		rv = 1;
+		rv = TRUE;
 	if (pI->_itype == ITYPE_STAFF)
-		rv = 1;
+		rv = TRUE;
 	if (pI->IDidx >= IDI_FIRSTQUEST && pI->IDidx <= IDI_LASTQUEST)
-		rv = 0;
+		rv = FALSE;
 	if (pI->IDidx == IDI_LAZSTAFF)
-		rv = 0;
+		rv = FALSE;
 	return rv;
 }
 
-void __cdecl S_StartWSell()
+void S_StartWSell()
 {
-	int i;          // eax
-	BOOLEAN sellok; // [esp+18h] [ebp-8h]
+	int i;
+	BOOL sellok;
 
 	stextsize = 1;
-	sellok = 0;
+	sellok = FALSE;
 	storenumh = 0;
 
 	for (i = 0; i < 48; i++)
@@ -1202,8 +1102,8 @@ void __cdecl S_StartWSell()
 
 	for (i = 0; i < plr[myplr]._pNumInv; i++) {
 		if (WitchSellOk(i)) {
-			sellok = 1;
-			qmemcpy(&storehold[storenumh], &plr[myplr].InvList[i], sizeof(ItemStruct));
+			sellok = TRUE;
+			storehold[storenumh] = plr[myplr].InvList[i];
 
 			if (storehold[storenumh]._iMagical != ITEM_QUALITY_NORMAL && storehold[storenumh]._iIdentified)
 				storehold[storenumh]._ivalue = storehold[storenumh]._iIvalue;
@@ -1217,9 +1117,9 @@ void __cdecl S_StartWSell()
 	}
 
 	for (i = 0; i < MAXBELTITEMS; i++) {
-		if (plr[myplr].SpdList[i]._itype != -1 && WitchSellOk(~i)) {
-			sellok = 1;
-			qmemcpy(&storehold[storenumh], &plr[myplr].SpdList[i], sizeof(ItemStruct));
+		if (plr[myplr].SpdList[i]._itype != -1 && WitchSellOk(-(i + 1))) {
+			sellok = TRUE;
+			storehold[storenumh] = plr[myplr].SpdList[i];
 
 			if (storehold[storenumh]._iMagical != ITEM_QUALITY_NORMAL && storehold[storenumh]._iIdentified)
 				storehold[storenumh]._ivalue = storehold[storenumh]._iIvalue;
@@ -1228,11 +1128,19 @@ void __cdecl S_StartWSell()
 				storehold[storenumh]._ivalue = 1;
 
 			storehold[storenumh]._iIvalue = storehold[storenumh]._ivalue;
-			storehidx[storenumh++] = ~i;
+			storehidx[storenumh++] = -(i + 1);
 		}
 	}
 
-	if (sellok) {
+	if (!sellok) {
+		stextscrl = 0;
+		sprintf(tempstr, "You have nothing I want.            Your gold : %i", plr[myplr]._pGold);
+		AddSText(0, 1, 1, tempstr, COL_GOLD, 0);
+		AddSLine(3);
+		AddSLine(21);
+		AddSText(0, 22, 1, "Back", COL_WHITE, 1);
+		OffsetSTextY(22, 6);
+	} else {
 		stextscrl = 1;
 		stextsval = 0;
 		stextsmax = plr[myplr]._pNumInv;
@@ -1241,130 +1149,88 @@ void __cdecl S_StartWSell()
 		AddSLine(3);
 		AddSLine(21);
 		S_ScrollSSell(stextsval);
-	} else {
-		stextscrl = 0;
-		sprintf(tempstr, "You have nothing I want.            Your gold : %i", plr[myplr]._pGold);
-		AddSText(0, 1, 1, tempstr, COL_GOLD, 0);
-		AddSLine(3);
-		AddSLine(21);
+		AddSText(0, 22, 1, "Back", COL_WHITE, 1);
+		OffsetSTextY(22, 6);
 	}
-
-	AddSText(0, 22, 1, "Back", COL_WHITE, 1);
-	OffsetSTextY(22, 6);
 }
 // 69F10C: using guessed type int storenumh;
 // 6A09E0: using guessed type char stextsize;
 // 6A09E4: using guessed type int stextsmax;
 // 6A6BB8: using guessed type int stextscrl;
 
-BOOLEAN __fastcall WitchRechargeOk(int i)
+BOOL WitchRechargeOk(int i)
 {
-	BOOLEAN rv; // al
+	BOOL rv;
 
-	rv = 0;
+	rv = FALSE;
 	if (plr[myplr].InvList[i]._itype == ITYPE_STAFF
 	    && plr[myplr].InvList[i]._iCharges != plr[myplr].InvList[i]._iMaxCharges) {
-		rv = 1;
+		rv = TRUE;
 	}
 	return rv;
 }
 
-void __fastcall AddStoreHoldRecharge(ItemStruct itm, int i)
+void AddStoreHoldRecharge(ItemStruct itm, int i)
 {
-	int v2;  // ebx
-	int v3;  // eax
-	char v4; // ST10_1
-	int v5;  // ecx
-	int v6;  // eax
-
-	v2 = storenumh;
-	v3 = spelldata[itm._iSpell].sStaffCost;
-	v4 = i;
-	qmemcpy(&storehold[storenumh], &itm, sizeof(ItemStruct));
-	storehold[v2]._ivalue += v3;
-	v5 = storenumh;
-	v6 = storehold[v2]._ivalue
-	        * (100
-	              * (storehold[v2]._iMaxCharges - storehold[v2]._iCharges)
-	              / storehold[v2]._iMaxCharges)
-	        / 100
-	    >> 1;
-	++storenumh;
-	storehold[v2]._ivalue = v6;
-	storehold[v2]._iIvalue = v6;
-	storehidx[v5] = v4;
+	storehold[storenumh] = itm;
+	storehold[storenumh]._ivalue += spelldata[itm._iSpell].sStaffCost;
+	storehold[storenumh]._ivalue = storehold[storenumh]._ivalue * (100 * (storehold[storenumh]._iMaxCharges - storehold[storenumh]._iCharges) / storehold[storenumh]._iMaxCharges) / 100 >> 1;
+	storehold[storenumh]._iIvalue = storehold[storenumh]._ivalue;
+	storehidx[storenumh] = i;
+	storenumh++;
 }
 // 69F108: using guessed type int stextup;
 // 69F10C: using guessed type int storenumh;
 
-void __cdecl S_StartWRecharge()
+void S_StartWRecharge()
 {
-	int *v0; // eax
-	int v1;  // ebp
-	int v2;  // eax
-	//int v3; // eax
-	ItemStruct v4;  // [esp-170h] [ebp-18Ch]
-	int v5;         // [esp-4h] [ebp-20h]
-	int inv_num;    // [esp+10h] [ebp-Ch]
-	ItemStruct *v7; // [esp+14h] [ebp-8h]
-	int v8;         // [esp+18h] [ebp-4h]
+	int i;
+	BOOL rechargeok;
 
 	stextsize = 1;
-	v8 = 0;
+	rechargeok = FALSE;
 	storenumh = 0;
-	v0 = &storehold[0]._itype;
-	do {
-		*v0 = -1;
-		v0 += 92;
-	} while ((signed int)v0 < (signed int)&storehold[48]._itype);
-	v1 = myplr;
-	if (plr[myplr].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_STAFF && plr[v1].InvBody[INVLOC_HAND_LEFT]._iCharges != plr[v1].InvBody[INVLOC_HAND_LEFT]._iMaxCharges) {
-		v8 = 1;
-		qmemcpy(&v4, &plr[v1].InvBody[INVLOC_HAND_LEFT], sizeof(v4));
-		AddStoreHoldRecharge(v4, -1);
+
+	for (i = 0; i < 48; i++) {
+		storehold[i]._itype = ITYPE_NONE;
 	}
-	v2 = plr[v1]._pNumInv;
-	inv_num = 0;
-	if (v2 > 0) {
-		v7 = plr[v1].InvList;
-		do {
-			//_LOBYTE(v3) = WitchRechargeOk(inv_num);
-			if (WitchRechargeOk(inv_num)) {
-				v8 = 1;
-				qmemcpy(&v4, v7, sizeof(v4));
-				AddStoreHoldRecharge(v4, inv_num);
-			}
-			++inv_num;
-			v2 = plr[v1]._pNumInv;
-			++v7;
-		} while (inv_num < v2);
+
+	if (plr[myplr].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_STAFF
+	    && plr[myplr].InvBody[INVLOC_HAND_LEFT]._iCharges != plr[myplr].InvBody[INVLOC_HAND_LEFT]._iMaxCharges) {
+		rechargeok = TRUE;
+		AddStoreHoldRecharge(plr[myplr].InvBody[INVLOC_HAND_LEFT], -1);
 	}
-	v5 = plr[v1]._pGold;
-	if (v8) {
+
+	for (i = 0; i < plr[myplr]._pNumInv; i++) {
+		if (WitchRechargeOk(i)) {
+			rechargeok = TRUE;
+			AddStoreHoldRecharge(plr[myplr].InvList[i], i);
+		}
+	}
+
+	if (!rechargeok) {
+		stextscrl = 0;
+		sprintf(tempstr, "You have nothing to recharge.            Your gold : %i", plr[myplr]._pGold);
+		AddSText(0, 1, 1, tempstr, COL_GOLD, 0);
+		AddSLine(3);
+		AddSLine(21);
+		AddSText(0, 22, 1, "Back", COL_WHITE, 1);
+		OffsetSTextY(22, 6);
+	} else {
 		stextscrl = 1;
 		stextsval = 0;
-		stextsmax = v2;
-		sprintf(tempstr, "Recharge which item?            Your gold : %i", v5);
-		AddSText(0, 1, 1u, tempstr, COL_GOLD, 0);
+		stextsmax = plr[myplr]._pNumInv;
+		sprintf(tempstr, "Recharge which item?            Your gold : %i", plr[myplr]._pGold);
+		AddSText(0, 1, 1, tempstr, COL_GOLD, 0);
 		AddSLine(3);
 		AddSLine(21);
 		S_ScrollSSell(stextsval);
-	} else {
-		stextscrl = 0;
-		sprintf(tempstr, "You have nothing to recharge.            Your gold : %i", v5);
-		AddSText(0, 1, 1u, tempstr, COL_GOLD, 0);
-		AddSLine(3);
-		AddSLine(21);
+		AddSText(0, 22, 1, "Back", COL_WHITE, 1);
+		OffsetSTextY(22, 6);
 	}
-	AddSText(0, 22, 1u, "Back", COL_WHITE, 1);
-	OffsetSTextY(22, 6);
 }
-// 69F10C: using guessed type int storenumh;
-// 6A09E0: using guessed type char stextsize;
-// 6A09E4: using guessed type int stextsmax;
-// 6A6BB8: using guessed type int stextscrl;
 
-void __cdecl S_StartNoMoney()
+void S_StartNoMoney()
 {
 	StartStore((unsigned char)stextshold);
 	stextscrl = 0;
@@ -1375,7 +1241,7 @@ void __cdecl S_StartNoMoney()
 // 6A09E0: using guessed type char stextsize;
 // 6A6BB8: using guessed type int stextscrl;
 
-void __cdecl S_StartNoRoom()
+void S_StartNoRoom()
 {
 	StartStore((unsigned char)stextshold);
 	stextscrl = 0;
@@ -1384,7 +1250,7 @@ void __cdecl S_StartNoRoom()
 }
 // 6A6BB8: using guessed type int stextscrl;
 
-void __cdecl S_StartConfirm()
+void S_StartConfirm()
 {
 	BOOL idprint; // esi
 	char iclr;    // [esp+Ch] [ebp-4h]
@@ -1463,28 +1329,28 @@ LABEL_37:
 }
 // 6A6BB8: using guessed type int stextscrl;
 
-void __cdecl S_StartBoy()
+void S_StartBoy()
 {
 	stextsize = 0;
 	stextscrl = 0;
 	AddSText(0, 2, 1u, "Wirt the Peg-legged boy", COL_GOLD, 0);
 	AddSLine(5);
-	if (boyitem._itype == -1) {
-		AddSText(0, 12, 1u, "Talk to Wirt", COL_BLUE, 1);
-		AddSText(0, 18, 1u, "Say goodbye", COL_WHITE, 1);
-	} else {
+	if (boyitem._itype != -1) {
 		AddSText(0, 8, 1u, "Talk to Wirt", COL_BLUE, 1);
 		AddSText(0, 12, 1u, "I have something for sale,", COL_GOLD, 0);
 		AddSText(0, 14, 1u, "but it will cost 50 gold", COL_GOLD, 0);
 		AddSText(0, 16, 1u, "just to take a look. ", COL_GOLD, 0);
 		AddSText(0, 18, 1u, "What have you got?", COL_WHITE, 1);
 		AddSText(0, 20, 1u, "Say goodbye", COL_WHITE, 1);
+	} else {
+		AddSText(0, 12, 1u, "Talk to Wirt", COL_BLUE, 1);
+		AddSText(0, 18, 1u, "Say goodbye", COL_WHITE, 1);
 	}
 }
 // 6A09E0: using guessed type char stextsize;
 // 6A6BB8: using guessed type int stextscrl;
 
-void __cdecl S_StartBBoy()
+void S_StartBBoy()
 {
 	int iclr; // esi
 
@@ -1513,7 +1379,7 @@ void __cdecl S_StartBBoy()
 // 6A09E0: using guessed type char stextsize;
 // 6A6BB8: using guessed type int stextscrl;
 
-void __cdecl S_StartHealer()
+void S_StartHealer()
 {
 	stextsize = 0;
 	stextscrl = 0;
@@ -1531,7 +1397,7 @@ void __cdecl S_StartHealer()
 // 6A09E0: using guessed type char stextsize;
 // 6A6BB8: using guessed type int stextscrl;
 
-void __fastcall S_ScrollHBuy(int idx)
+void S_ScrollHBuy(int idx)
 {
 	int i;
 	char iclr;
@@ -1558,7 +1424,7 @@ void __fastcall S_ScrollHBuy(int idx)
 // 6A8A28: using guessed type int stextsel;
 // 6AA700: using guessed type int stextdown;
 
-void __cdecl S_StartHBuy()
+void S_StartHBuy()
 {
 	int v0;  // ST10_4
 	int v1;  // eax
@@ -1594,7 +1460,7 @@ void __cdecl S_StartHBuy()
 // 6A09E4: using guessed type int stextsmax;
 // 6A6BB8: using guessed type int stextscrl;
 
-void __cdecl S_StartStory()
+void S_StartStory()
 {
 	stextsize = 0;
 	stextscrl = 0;
@@ -1608,86 +1474,85 @@ void __cdecl S_StartStory()
 // 6A09E0: using guessed type char stextsize;
 // 6A6BB8: using guessed type int stextscrl;
 
-BOOLEAN __fastcall IdItemOk(ItemStruct *i)
+BOOL IdItemOk(ItemStruct *i)
 {
-	BOOLEAN result; // al
-
-	result = 0;
-	if (i->_itype != -1) {
-		if (i->_iMagical != ITEM_QUALITY_NORMAL)
-			result = !i->_iIdentified;
+	if (i->_itype == -1) {
+		return FALSE;
 	}
-	return result;
+	if (i->_iMagical == ITEM_QUALITY_NORMAL) {
+		return FALSE;
+	}
+	return !i->_iIdentified;
 }
 
-void __fastcall AddStoreHoldId(ItemStruct itm, int i)
+void AddStoreHoldId(ItemStruct itm, int i)
 {
-	qmemcpy(&storehold[storenumh], &itm, sizeof(ItemStruct));
+	storehold[storenumh] = itm;
 	storehold[storenumh]._ivalue = 100;
 	storehold[storenumh]._iIvalue = 100;
-	storehidx[storenumh++] = i;
+	storehidx[storenumh] = i;
+	storenumh++;
 }
 // 69F108: using guessed type int stextup;
 // 69F10C: using guessed type int storenumh;
 
-void __cdecl S_StartSIdentify()
+void S_StartSIdentify()
 {
-	ItemStruct itm; // [esp-170h] [ebp-18Ch]
-	BOOLEAN idok;   // [esp+10h] [ebp-Ch]
-	int i;          // [esp+14h] [ebp-8h]
+	BOOL idok;
+	int i;
 
-	idok = 0;
-	storenumh = 0;
+	idok = FALSE;
 	stextsize = 1;
+	storenumh = 0;
 
 	for (i = 0; i < 48; i++)
 		storehold[i]._itype = -1;
 
-	if (IdItemOk(plr[myplr].InvBody)) {
-		idok = 1;
-		qmemcpy(&itm, plr[myplr].InvBody, sizeof(ItemStruct));
-		AddStoreHoldId(itm, -1);
+	if (IdItemOk(&plr[myplr].InvBody[INVLOC_HEAD])) {
+		idok = TRUE;
+		AddStoreHoldId(plr[myplr].InvBody[INVLOC_HEAD], -1);
 	}
 	if (IdItemOk(&plr[myplr].InvBody[INVLOC_CHEST])) {
-		idok = 1;
-		qmemcpy(&itm, &plr[myplr].InvBody[INVLOC_CHEST], sizeof(ItemStruct));
-		AddStoreHoldId(itm, -2);
+		idok = TRUE;
+		AddStoreHoldId(plr[myplr].InvBody[INVLOC_CHEST], -2);
 	}
 	if (IdItemOk(&plr[myplr].InvBody[INVLOC_HAND_LEFT])) {
-		idok = 1;
-		qmemcpy(&itm, &plr[myplr].InvBody[INVLOC_HAND_LEFT], sizeof(ItemStruct));
-		AddStoreHoldId(itm, -3);
+		idok = TRUE;
+		AddStoreHoldId(plr[myplr].InvBody[INVLOC_HAND_LEFT], -3);
 	}
 	if (IdItemOk(&plr[myplr].InvBody[INVLOC_HAND_RIGHT])) {
-		idok = 1;
-		qmemcpy(&itm, &plr[myplr].InvBody[INVLOC_HAND_RIGHT], sizeof(ItemStruct));
-		AddStoreHoldId(itm, -4);
+		idok = TRUE;
+		AddStoreHoldId(plr[myplr].InvBody[INVLOC_HAND_RIGHT], -4);
 	}
 	if (IdItemOk(&plr[myplr].InvBody[INVLOC_RING_LEFT])) {
-		idok = 1;
-		qmemcpy(&itm, &plr[myplr].InvBody[INVLOC_RING_LEFT], sizeof(ItemStruct));
-		AddStoreHoldId(itm, -5);
+		idok = TRUE;
+		AddStoreHoldId(plr[myplr].InvBody[INVLOC_RING_LEFT], -5);
 	}
 	if (IdItemOk(&plr[myplr].InvBody[INVLOC_RING_RIGHT])) {
-		idok = 1;
-		qmemcpy(&itm, &plr[myplr].InvBody[INVLOC_RING_RIGHT], sizeof(ItemStruct));
-		AddStoreHoldId(itm, -6);
+		idok = TRUE;
+		AddStoreHoldId(plr[myplr].InvBody[INVLOC_RING_RIGHT], -6);
 	}
 	if (IdItemOk(&plr[myplr].InvBody[INVLOC_AMULET])) {
-		idok = 1;
-		qmemcpy(&itm, &plr[myplr].InvBody[INVLOC_AMULET], sizeof(ItemStruct));
-		AddStoreHoldId(itm, -7);
+		idok = TRUE;
+		AddStoreHoldId(plr[myplr].InvBody[INVLOC_AMULET], -7);
 	}
 
 	for (i = 0; i < plr[myplr]._pNumInv; i++) {
 		if (IdItemOk(&plr[myplr].InvList[i])) {
-			idok = 1;
-			qmemcpy(&itm, &plr[myplr].InvList[i], sizeof(ItemStruct));
-			AddStoreHoldId(itm, i);
+			idok = TRUE;
+			AddStoreHoldId(plr[myplr].InvList[i], i);
 		}
 	}
 
-	if (idok) {
+	if (!idok) {
+		stextscrl = 0;
+		sprintf(tempstr, "You have nothing to identify.            Your gold : %i", plr[myplr]._pGold);
+		AddSText(0, 1, 1, tempstr, COL_GOLD, 0);
+		AddSLine(3);
+		AddSLine(21);
+		AddSText(0, 22, 1, "Back", COL_WHITE, 1);
+		OffsetSTextY(22, 6);
+	} else {
 		stextscrl = 1;
 		stextsval = 0;
 		stextsmax = plr[myplr]._pNumInv;
@@ -1696,23 +1561,16 @@ void __cdecl S_StartSIdentify()
 		AddSLine(3);
 		AddSLine(21);
 		S_ScrollSSell(stextsval);
-	} else {
-		stextscrl = 0;
-		sprintf(tempstr, "You have nothing to identify.            Your gold : %i", plr[myplr]._pGold);
-		AddSText(0, 1, 1, tempstr, COL_GOLD, 0);
-		AddSLine(3);
-		AddSLine(21);
+		AddSText(0, 22, 1, "Back", COL_WHITE, 1);
+		OffsetSTextY(22, 6);
 	}
-
-	AddSText(0, 22, 1, "Back", COL_WHITE, 1);
-	OffsetSTextY(22, 6);
 }
 // 69F10C: using guessed type int storenumh;
 // 6A09E0: using guessed type char stextsize;
 // 6A09E4: using guessed type int stextsmax;
 // 6A6BB8: using guessed type int stextscrl;
 
-void __cdecl S_StartIdShow()
+void S_StartIdShow()
 {
 	char iclr; // [esp+4h] [ebp-4h]
 
@@ -1733,7 +1591,7 @@ void __cdecl S_StartIdShow()
 }
 // 6A6BB8: using guessed type int stextscrl;
 
-void __cdecl S_StartTalk()
+void S_StartTalk()
 {
 	int *v0;       // edi
 	signed int v1; // eax
@@ -1789,7 +1647,7 @@ void __cdecl S_StartTalk()
 // 6A09E0: using guessed type char stextsize;
 // 6A6BB8: using guessed type int stextscrl;
 
-void __cdecl S_StartTavern()
+void S_StartTavern()
 {
 	stextsize = 0;
 	stextscrl = 0;
@@ -1805,7 +1663,7 @@ void __cdecl S_StartTavern()
 // 6A09E0: using guessed type char stextsize;
 // 6A6BB8: using guessed type int stextscrl;
 
-void __cdecl S_StartBarMaid()
+void S_StartBarMaid()
 {
 	stextsize = 0;
 	stextscrl = 0;
@@ -1820,7 +1678,7 @@ void __cdecl S_StartBarMaid()
 // 6A09E0: using guessed type char stextsize;
 // 6A6BB8: using guessed type int stextscrl;
 
-void __cdecl S_StartDrunk()
+void S_StartDrunk()
 {
 	stextsize = 0;
 	stextscrl = 0;
@@ -1835,17 +1693,17 @@ void __cdecl S_StartDrunk()
 // 6A09E0: using guessed type char stextsize;
 // 6A6BB8: using guessed type int stextscrl;
 
-void __fastcall StartStore(char s)
+void StartStore(char s)
 {
 	char t; // bl
 	int i;  // ecx
 
-	for (t = s;; t = 1) {
+	for (t = s;; t = STORE_SMITH) {
 		sbookflag = 0;
 		invflag = 0;
 		chrflag = 0;
-		questlog = 0;
-		dropGoldFlag = 0;
+		questlog = FALSE;
+		dropGoldFlag = FALSE;
 		ClearSText(0, 24);
 		ReleaseStoreBtn();
 		switch (t) {
@@ -1931,18 +1789,16 @@ void __fastcall StartStore(char s)
 
 		stextsel = i == 24 ? -1 : i;
 		stextflag = t;
-		if (t != 2 || storenumh)
+		if (t != STORE_SBUY || storenumh)
 			break;
 	}
 }
-// 4B84DC: using guessed type int dropGoldFlag;
 // 4B8968: using guessed type int sbookflag;
-// 69BD04: using guessed type int questlog;
 // 69F10C: using guessed type int storenumh;
 // 6A8A28: using guessed type int stextsel;
 // 6AA705: using guessed type char stextflag;
 
-void __cdecl DrawSText()
+void DrawSText()
 {
 	int i; // edi
 
@@ -1998,7 +1854,7 @@ LABEL_19:
 // 6A6BB8: using guessed type int stextscrl;
 // 6AA705: using guessed type char stextflag;
 
-void __cdecl STextESC()
+void STextESC()
 {
 	char v0; // cl
 	char v1; // cl
@@ -2019,7 +1875,7 @@ void __cdecl STextESC()
 		case STORE_TAVERN:
 		case STORE_DRUNK:
 		case STORE_BARMAID:
-			stextflag = 0;
+			stextflag = STORE_NONE;
 			return;
 		case STORE_SBUY:
 			StartStore(STORE_SMITH);
@@ -2081,7 +1937,7 @@ void __cdecl STextESC()
 // 6A8A28: using guessed type int stextsel;
 // 6AA705: using guessed type char stextflag;
 
-void __cdecl STextUp()
+void STextUp()
 {
 	int v0; // eax
 
@@ -2127,7 +1983,7 @@ void __cdecl STextUp()
 // 6A6BB8: using guessed type int stextscrl;
 // 6A8A28: using guessed type int stextsel;
 
-void __cdecl STextDown()
+void STextDown()
 {
 	int v0; // eax
 
@@ -2174,7 +2030,7 @@ void __cdecl STextDown()
 // 6A8A28: using guessed type int stextsel;
 // 6AA700: using guessed type int stextdown;
 
-void __cdecl STextPrior()
+void STextPrior()
 {
 	PlaySFX(IS_TITLEMOV);
 	if (stextsel != -1 && stextscrl) {
@@ -2193,7 +2049,7 @@ void __cdecl STextPrior()
 // 6A6BB8: using guessed type int stextscrl;
 // 6A8A28: using guessed type int stextsel;
 
-void __cdecl STextNext()
+void STextNext()
 {
 	PlaySFX(IS_TITLEMOV);
 	if (stextsel != -1 && stextscrl) {
@@ -2212,7 +2068,7 @@ void __cdecl STextNext()
 // 6A8A28: using guessed type int stextsel;
 // 6AA700: using guessed type int stextdown;
 
-void __cdecl S_SmithEnter()
+void S_SmithEnter()
 {
 	int v0; // ecx
 
@@ -2242,7 +2098,7 @@ void __cdecl S_SmithEnter()
 		_LOBYTE(v0) = STORE_SREPAIR;
 		goto LABEL_13;
 	case 20:
-		stextflag = 0;
+		stextflag = STORE_NONE;
 		break;
 	}
 }
@@ -2253,31 +2109,27 @@ void __cdecl S_SmithEnter()
 // 6A8A30: using guessed type int gossipend;
 // 6AA705: using guessed type char stextflag;
 
-void __fastcall SetGoldCurs(int pnum, int i)
+void SetGoldCurs(int pnum, int i)
 {
-	if (plr[pnum].InvList[i]._ivalue < 2500) {
-		if (plr[pnum].InvList[i]._ivalue > 1000)
-			plr[pnum].InvList[i]._iCurs = ICURS_GOLD_MEDIUM;
-		else
-			plr[pnum].InvList[i]._iCurs = ICURS_GOLD_SMALL;
-	} else {
+	if (plr[pnum].InvList[i]._ivalue >= 2500)
 		plr[pnum].InvList[i]._iCurs = ICURS_GOLD_LARGE;
-	}
+	else if (plr[pnum].InvList[i]._ivalue <= 1000)
+		plr[pnum].InvList[i]._iCurs = ICURS_GOLD_SMALL;
+	else
+		plr[pnum].InvList[i]._iCurs = ICURS_GOLD_MEDIUM;
 }
 
-void __fastcall SetSpdbarGoldCurs(int pnum, int i)
+void SetSpdbarGoldCurs(int pnum, int i)
 {
-	if (plr[pnum].SpdList[i]._ivalue < 2500) {
-		if (plr[pnum].SpdList[i]._ivalue > 1000)
-			plr[pnum].SpdList[i]._iCurs = ICURS_GOLD_MEDIUM;
-		else
-			plr[pnum].SpdList[i]._iCurs = ICURS_GOLD_SMALL;
-	} else {
+	if (plr[pnum].SpdList[i]._ivalue >= 2500)
 		plr[pnum].SpdList[i]._iCurs = ICURS_GOLD_LARGE;
-	}
+	else if (plr[pnum].SpdList[i]._ivalue <= 1000)
+		plr[pnum].SpdList[i]._iCurs = ICURS_GOLD_SMALL;
+	else
+		plr[pnum].SpdList[i]._iCurs = ICURS_GOLD_MEDIUM;
 }
 
-void __fastcall TakePlrsMoney(int cost)
+void TakePlrsMoney(int cost)
 {
 	int v1;         // edi
 	int v2;         // eax
@@ -2413,12 +2265,9 @@ void __fastcall TakePlrsMoney(int cost)
 }
 // 52571C: using guessed type int drawpanflag;
 
-void __cdecl SmithBuyItem()
+void SmithBuyItem()
 {
-	int idx;        // eax
-	ItemStruct *v1; // edx
-	ItemStruct *v2; // edi
-	BOOLEAN v3;     // zf
+	int idx;
 
 	TakePlrsMoney(plr[myplr].HoldItem._iIvalue);
 	if (plr[myplr].HoldItem._iMagical == ITEM_QUALITY_NORMAL)
@@ -2428,31 +2277,18 @@ void __cdecl SmithBuyItem()
 	if (idx == 19) {
 		smithitem[19]._itype = -1;
 	} else {
-		if (smithitem[idx + 1]._itype != -1) {
-			v1 = &smithitem[idx];
-			do {
-				v2 = v1;
-				++v1;
-				++idx;
-				v3 = v1[1]._itype == -1;
-				qmemcpy(v2, v1, sizeof(ItemStruct));
-			} while (!v3);
+		for (; smithitem[idx + 1]._itype != -1; idx++) {
+			smithitem[idx] = smithitem[idx + 1];
 		}
 		smithitem[idx]._itype = -1;
 	}
-	CalcPlrInv(myplr, 1u);
+	CalcPlrInv(myplr, 1);
 }
-// 69F108: using guessed type int stextup;
-// 69F110: using guessed type int stextlhold;
-// 6A8A24: using guessed type int stextvhold;
 
-void __cdecl S_SBuyEnter()
+void S_SBuyEnter()
 {
-	int v0;   // eax
-	int idx;  // ecx
-	int done; // eax
-	int i;    // esi
-	char v4;  // cl
+	int idx, i;
+	BOOL done;
 
 	if (stextsel == 22) {
 		StartStore(STORE_SMITH);
@@ -2461,39 +2297,27 @@ void __cdecl S_SBuyEnter()
 		stextlhold = stextsel;
 		stextvhold = stextsval;
 		stextshold = 2;
-		v0 = myplr;
 		idx = stextsval + ((stextsel - stextup) >> 2);
-		if (plr[myplr]._pGold >= smithitem[idx]._iIvalue) {
-			qmemcpy(&plr[v0].HoldItem, &smithitem[idx], sizeof(plr[v0].HoldItem));
-			SetCursor_(plr[v0].HoldItem._iCurs + CURSOR_FIRSTITEM);
-			done = 0;
-			i = 0;
-			do {
-				if (done)
-					goto LABEL_9;
-				done = AutoPlace(myplr, i++, cursW / 28, cursH / 28, 0);
-			} while (i < 40);
-			if (done) {
-			LABEL_9:
-				v4 = STORE_CONFIRM;
-				goto LABEL_11;
-			}
-			v4 = STORE_NOROOM;
-		LABEL_11:
-			StartStore(v4);
-			SetCursor_(CURSOR_HAND);
-		} else {
+		if (plr[myplr]._pGold < smithitem[idx]._iIvalue) {
 			StartStore(STORE_NOMONEY);
+		} else {
+			plr[myplr].HoldItem = smithitem[idx];
+			SetCursor_(plr[myplr].HoldItem._iCurs + CURSOR_FIRSTITEM);
+			done = FALSE;
+
+			for (i = 0; i < 40 && !done; i++) {
+				done = AutoPlace(myplr, i, cursW / 28, cursH / 28, 0);
+			}
+			if (done)
+				StartStore(STORE_CONFIRM);
+			else
+				StartStore(STORE_NOROOM);
+			SetCursor_(CURSOR_HAND);
 		}
 	}
 }
-// 4B8C9C: using guessed type int cursH;
-// 69F108: using guessed type int stextup;
-// 69F110: using guessed type int stextlhold;
-// 6A8A24: using guessed type int stextvhold;
-// 6A8A28: using guessed type int stextsel;
 
-void __cdecl SmithBuyPItem()
+void SmithBuyPItem()
 {
 	int xx;     // ecx
 	int idx;    // eax
@@ -2528,76 +2352,45 @@ void __cdecl SmithBuyPItem()
 // 69F110: using guessed type int stextlhold;
 // 6A8A24: using guessed type int stextvhold;
 
-void __cdecl S_SPBuyEnter()
+void S_SPBuyEnter()
 {
-	int v0;     // eax
-	BOOLEAN v1; // sf
-	int v2;     // eax
-	int v3;     // ecx
-	int v4;     // edx
-	int *v5;    // esi
-	int v6;     // ecx
-	int v7;     // eax
-	int v8;     // eax
-	int v9;     // esi
-	char v10;   // cl
+	int i, idx, xx;
+	BOOL done;
 
 	if (stextsel == 22) {
 		StartStore(STORE_SMITH);
 		stextsel = 14;
 	} else {
-		stextlhold = stextsel;
 		stextshold = 18;
+		stextlhold = stextsel;
 		stextvhold = stextsval;
-		v0 = (stextsel - stextup) >> 2;
-		v1 = stextsval + v0 < 0;
-		v2 = stextsval + v0;
-		v3 = 0;
-		v4 = 0;
-		if (!v1) {
-			v5 = &premiumitem[0]._itype;
-			do {
-				if (*v5 != -1) {
-					--v2;
-					v3 = v4;
-				}
-				++v4;
-				v5 += 92;
-			} while (v2 >= 0);
-		}
-		v6 = v3;
-		v7 = myplr;
-		if (plr[myplr]._pGold >= premiumitem[v6]._iIvalue) {
-			qmemcpy(&plr[v7].HoldItem, &premiumitem[v6], sizeof(plr[v7].HoldItem));
-			SetCursor_(plr[v7].HoldItem._iCurs + CURSOR_FIRSTITEM);
-			v8 = 0;
-			v9 = 0;
-			do {
-				if (v8)
-					goto LABEL_14;
-				v8 = AutoPlace(myplr, v9++, cursW / 28, cursH / 28, 0);
-			} while (v9 < 40);
-			if (v8) {
-			LABEL_14:
-				v10 = STORE_CONFIRM;
-				goto LABEL_16;
+		xx = stextsval + ((stextsel - stextup) >> 2);
+		idx = 0;
+		for (i = 0; xx >= 0; i++) {
+			if (premiumitem[i]._itype != -1) {
+				xx--;
+				idx = i;
 			}
-			v10 = STORE_NOROOM;
-		LABEL_16:
-			StartStore(v10);
-			SetCursor_(CURSOR_HAND);
-		} else {
+		}
+		if (plr[myplr]._pGold < premiumitem[idx]._iIvalue) {
 			StartStore(STORE_NOMONEY);
+		} else {
+			plr[myplr].HoldItem = premiumitem[idx];
+			SetCursor_(plr[myplr].HoldItem._iCurs + CURSOR_FIRSTITEM);
+			done = FALSE;
+			for (i = 0; i < 40 && !done; i++) {
+				done = AutoPlace(myplr, i, cursW / 28, cursH / 28, 0);
+			}
+			if (done)
+				StartStore(STORE_CONFIRM);
+			else
+				StartStore(STORE_NOROOM);
+			SetCursor_(CURSOR_HAND);
 		}
 	}
 }
-// 4B8C9C: using guessed type int cursH;
-// 69F108: using guessed type int stextup;
-// 69F110: using guessed type int stextlhold;
-// 6A8A24: using guessed type int stextvhold;
-// 6A8A28: using guessed type int stextsel;
 
-BOOLEAN __fastcall StoreGoldFit(int idx)
+BOOL StoreGoldFit(int idx)
 {
 	int cost;    // edi
 	int i;       // ecx
@@ -2638,110 +2431,73 @@ BOOLEAN __fastcall StoreGoldFit(int idx)
 }
 // 4B8C9C: using guessed type int cursH;
 
-void __fastcall PlaceStoreGold(int v)
+void PlaceStoreGold(int v)
 {
-	BOOLEAN done; // ecx
-	int ii;       // ebp
-	int xx;       // esi
-	int yy;       // ST20_4
-	int i;        // [esp+10h] [ebp-10h]
+	BOOL done;
+	int ii, xx, yy, i;
 
-	done = 0;
+	done = FALSE;
 
-	for (i = 0; i < 40; i++) {
-		if (done)
-			break;
-		ii = 10 * (i / 10);
-		if (!plr[myplr].InvGrid[i % 10 + ii]) {
-			xx = plr[myplr]._pNumInv;
-			yy = plr[myplr]._pNumInv;
+	for (i = 0; i < 40 && !done; i++) {
+		yy = 10 * (i / 10);
+		xx = i % 10;
+		if (!plr[myplr].InvGrid[xx + yy]) {
+			ii = plr[myplr]._pNumInv;
 			GetGoldSeed(myplr, &golditem);
-			qmemcpy(&plr[myplr].InvList[xx], &golditem, sizeof(ItemStruct));
-			++plr[myplr]._pNumInv;
-			plr[myplr].InvGrid[i % 10 + ii] = plr[myplr]._pNumInv;
-			plr[myplr].InvList[xx]._ivalue = v;
-			SetGoldCurs(myplr, yy);
-			done = 1;
+			plr[myplr].InvList[ii] = golditem;
+			plr[myplr]._pNumInv++;
+			plr[myplr].InvGrid[xx + yy] = plr[myplr]._pNumInv;
+			plr[myplr].InvList[ii]._ivalue = v;
+			SetGoldCurs(myplr, ii);
+			done = TRUE;
 		}
 	}
 }
 
-void __cdecl StoreSellItem()
+void StoreSellItem()
 {
-	int idx;    // ebx
-	char v1;    // al
-	int v2;     // eax
-	int cost;   // ebp
-	BOOLEAN v4; // sf
-	//unsigned char v5; // of
-	unsigned int v6;  // eax
-	int v8;           // edx
-	int *v10;         // edi
-	int v11;          // eax
-	unsigned int v12; // esi
-	int v13;          // [esp+10h] [ebp-4h]
+	int i, idx, cost;
 
 	idx = stextvhold + ((stextlhold - stextup) >> 2);
-	v1 = storehidx[idx];
-	if (v1 < 0)
-		RemoveSpdBarItem(myplr, -1 - v1);
+	if (storehidx[idx] >= 0)
+		RemoveInvItem(myplr, storehidx[idx]);
 	else
-		RemoveInvItem(myplr, v1);
-	v2 = storenumh - 1;
+		RemoveSpdBarItem(myplr, -(storehidx[idx] + 1));
 	cost = storehold[idx]._iIvalue;
-	//v5 = __OFSUB__(idx, storenumh - 1);
-	v4 = idx - (storenumh-- - 1) < 0;
-	if (v4) { //if (v4 ^ v5) {
-		v6 = v2 - idx;
-		qmemcpy(&storehidx[idx], &storehidx[idx + 1], v6);
-		qmemcpy(&storehold[idx], &storehold[idx + 1], 4 * (368 * v6 >> 2));
+	storenumh--;
+	if (idx != storenumh) {
+		while (idx < storenumh) {
+			storehold[idx] = storehold[idx + 1];
+			storehidx[idx] = storehidx[idx + 1];
+			idx++;
+		}
 	}
-	v8 = 0;
-	v13 = 0;
 	plr[myplr]._pGold += cost;
-	if (plr[myplr]._pNumInv <= 0) {
-	LABEL_15:
-		if (cost > 0) {
-			if (cost > 5000) {
-				v12 = (cost - 5001) / 5000 + 1;
-				cost += -5000 * v12;
-				do {
-					PlaceStoreGold(5000);
-					--v12;
-				} while (v12);
+	for (i = 0; i < plr[myplr]._pNumInv && cost > 0; i++) {
+		if (plr[myplr].InvList[i]._itype == ITYPE_GOLD && plr[myplr].InvList[i]._ivalue != 5000) {
+			if (cost + plr[myplr].InvList[i]._ivalue <= 5000) {
+				plr[myplr].InvList[i]._ivalue += cost;
+				SetGoldCurs(myplr, i);
+				cost = 0;
+			} else {
+				cost -= 5000 - plr[myplr].InvList[i]._ivalue;
+				plr[myplr].InvList[i]._ivalue = 5000;
+				SetGoldCurs(myplr, i);
 			}
-			PlaceStoreGold(cost);
 		}
-	} else {
-		v10 = &plr[myplr].InvList[0]._ivalue;
-		while (cost > 0) {
-			if (*(v10 - 47) == ITYPE_GOLD && *v10 != 5000) {
-				v11 = cost + *v10;
-				if (v11 > 5000) {
-					*v10 = 5000;
-					cost = v11 - 5000;
-					SetGoldCurs(myplr, v8);
-				} else {
-					*v10 = v11;
-					SetGoldCurs(myplr, v8);
-					cost = 0;
-				}
-			}
-			v10 += 92;
-			v8 = v13++ + 1;
-			if (v13 >= plr[myplr]._pNumInv)
-				goto LABEL_15;
+	}
+	if (cost > 0) {
+		while (cost > 5000) {
+			PlaceStoreGold(5000);
+			cost -= 5000;
 		}
+		PlaceStoreGold(cost);
 	}
 }
-// 69F108: using guessed type int stextup;
-// 69F10C: using guessed type int storenumh;
-// 69F110: using guessed type int stextlhold;
-// 6A8A24: using guessed type int stextvhold;
 
-void __cdecl S_SSellEnter()
+void S_SSellEnter()
 {
-	int idx; // eax
+	int idx;
 
 	if (stextsel == 22) {
 		StartStore(STORE_SMITH);
@@ -2751,13 +2507,12 @@ void __cdecl S_SSellEnter()
 		idx = stextsval + ((stextsel - stextup) >> 2);
 		stextshold = 3;
 		stextvhold = stextsval;
+		plr[myplr].HoldItem = storehold[idx];
 
-		qmemcpy(&plr[myplr].HoldItem, &storehold[idx], sizeof(plr[myplr].HoldItem));
-
-		if (!StoreGoldFit(idx))
-			StartStore(STORE_NOROOM);
-		else
+		if (StoreGoldFit(idx))
 			StartStore(STORE_CONFIRM);
+		else
+			StartStore(STORE_NOROOM);
 	}
 }
 // 69F108: using guessed type int stextup;
@@ -2765,7 +2520,7 @@ void __cdecl S_SSellEnter()
 // 6A8A24: using guessed type int stextvhold;
 // 6A8A28: using guessed type int stextsel;
 
-void __cdecl SmithRepairItem()
+void SmithRepairItem()
 {
 	int i;   // edx
 	int idx; // eax
@@ -2793,83 +2548,55 @@ void __cdecl SmithRepairItem()
 // 69F110: using guessed type int stextlhold;
 // 6A8A24: using guessed type int stextvhold;
 
-void __cdecl S_SRepairEnter()
+void S_SRepairEnter()
 {
-	int idx;    // eax
-	int v1;     // edx
-	int v2;     // ecx
-	BOOLEAN v3; // sf
-	//unsigned char v4; // of
-	char v5; // cl
+	int idx;
 
 	if (stextsel == 22) {
 		StartStore(STORE_SMITH);
 		stextsel = 18;
 	} else {
-		stextlhold = stextsel;
 		stextshold = 4;
-		idx = stextsval + ((stextsel - stextup) >> 2);
-		v1 = myplr;
+		stextlhold = stextsel;
 		stextvhold = stextsval;
-		qmemcpy(&plr[myplr].HoldItem, &storehold[idx], sizeof(plr[myplr].HoldItem));
-		v2 = plr[v1]._pGold;
-		//v4 = __OFSUB__(v2, storehold[idx]._iIvalue);
-		v3 = v2 - storehold[idx]._iIvalue < 0;
-		v5 = STORE_NOMONEY;
-		if (!v3) //if (!(v3 ^ v4))
-			v5 = STORE_CONFIRM;
-		StartStore(v5);
+		idx = stextsval + ((stextsel - stextup) >> 2);
+		plr[myplr].HoldItem = storehold[idx];
+		if (plr[myplr]._pGold < storehold[idx]._iIvalue)
+			StartStore(STORE_NOMONEY);
+		else
+			StartStore(STORE_CONFIRM);
 	}
 }
-// 69F108: using guessed type int stextup;
-// 69F110: using guessed type int stextlhold;
-// 6A8A24: using guessed type int stextvhold;
-// 6A8A28: using guessed type int stextsel;
 
-void __cdecl S_WitchEnter()
+void S_WitchEnter()
 {
-	int v0; // ecx
-
-	v0 = 12;
-	if (stextsel == 12) {
+	switch (stextsel) {
+	case 12:
 		stextlhold = 12;
 		talker = 6;
 		stextshold = 5;
 		gossipstart = QUEST_ADRIA2;
 		gossipend = QUEST_ADRIA13;
-		_LOBYTE(v0) = STORE_GOSSIP;
-		goto LABEL_12;
-	}
-	v0 = 2;
-	switch (stextsel) {
+		StartStore(STORE_GOSSIP);
+		return;
 	case 14:
-		_LOBYTE(v0) = STORE_WBUY;
-		goto LABEL_12;
+		StartStore(STORE_WBUY);
+		return;
 	case 16:
-		_LOBYTE(v0) = STORE_WSELL;
-		goto LABEL_12;
+		StartStore(STORE_WSELL);
+		return;
 	case 18:
-		_LOBYTE(v0) = STORE_WRECHARGE;
-	LABEL_12:
-		StartStore(v0);
+		StartStore(STORE_WRECHARGE);
 		return;
 	case 20:
-		stextflag = 0;
+		stextflag = STORE_NONE;
 		break;
 	}
 }
-// 69F110: using guessed type int stextlhold;
-// 69FB38: using guessed type int talker;
-// 6A4EF0: using guessed type int gossipstart;
-// 6A8A28: using guessed type int stextsel;
-// 6A8A30: using guessed type int gossipend;
-// 6AA705: using guessed type char stextflag;
 
-void __cdecl WitchBuyItem()
+void WitchBuyItem()
 {
-	int idx;        // ebx
-	ItemStruct *v3; // eax
-	ItemStruct *v4; // edi
+	int idx;
 
 	idx = stextvhold + ((stextlhold - stextup) >> 2);
 
@@ -2883,29 +2610,20 @@ void __cdecl WitchBuyItem()
 		if (idx == 19) {
 			witchitem[19]._itype = -1;
 		} else {
-			if (witchitem[idx + 1]._itype != -1) {
-				v3 = &witchitem[idx];
-				do {
-					v4 = v3;
-					++v3;
-					++idx;
-					qmemcpy(v4, v3, sizeof(ItemStruct));
-				} while (v3[1]._itype != -1);
+			for (; witchitem[idx + 1]._itype != -1; idx++) {
+				witchitem[idx] = witchitem[idx + 1];
 			}
 			witchitem[idx]._itype = -1;
 		}
 	}
-	CalcPlrInv(myplr, 1u);
-}
-// 69F108: using guessed type int stextup;
-// 69F110: using guessed type int stextlhold;
-// 6A8A24: using guessed type int stextvhold;
 
-void __cdecl S_WBuyEnter()
+	CalcPlrInv(myplr, TRUE);
+}
+
+void S_WBuyEnter()
 {
-	int idx;  // ecx
-	int done; // eax
-	int i;    // esi
+	int i, idx;
+	BOOL done;
 
 	if (stextsel == 22) {
 		StartStore(STORE_WITCH);
@@ -2916,14 +2634,14 @@ void __cdecl S_WBuyEnter()
 		stextshold = 6;
 		idx = stextsval + ((stextsel - stextup) >> 2);
 
-		if (plr[myplr]._pGold >= witchitem[idx]._iIvalue) {
-			qmemcpy(&plr[myplr].HoldItem, &witchitem[idx], sizeof(ItemStruct));
+		if (plr[myplr]._pGold < witchitem[idx]._iIvalue) {
+			StartStore(STORE_NOMONEY);
+		} else {
+			plr[myplr].HoldItem = witchitem[idx];
 			SetCursor_(plr[myplr].HoldItem._iCurs + CURSOR_FIRSTITEM);
-			done = 0;
+			done = FALSE;
 
-			for (i = 0; i < 40; i++) {
-				if (done)
-					break;
+			for (i = 0; i < 40 && !done; i++) {
 				done = SpecialAutoPlace(myplr, i, cursW / 28, cursH / 28, 0);
 			}
 
@@ -2933,8 +2651,6 @@ void __cdecl S_WBuyEnter()
 				StartStore(STORE_NOROOM);
 
 			SetCursor_(CURSOR_HAND);
-		} else {
-			StartStore(STORE_NOMONEY);
 		}
 	}
 }
@@ -2944,10 +2660,9 @@ void __cdecl S_WBuyEnter()
 // 6A8A24: using guessed type int stextvhold;
 // 6A8A28: using guessed type int stextsel;
 
-void __cdecl S_WSellEnter()
+void S_WSellEnter()
 {
-	int idx; // eax
-	char v2; // cl
+	int idx;
 
 	if (stextsel == 22) {
 		StartStore(STORE_WITCH);
@@ -2957,11 +2672,11 @@ void __cdecl S_WSellEnter()
 		idx = stextsval + ((stextsel - stextup) >> 2);
 		stextshold = 7;
 		stextvhold = stextsval;
-		qmemcpy(&plr[myplr].HoldItem, &storehold[idx], sizeof(plr[myplr].HoldItem));
-		v2 = STORE_CONFIRM;
-		if (!StoreGoldFit(idx))
-			v2 = STORE_NOROOM;
-		StartStore(v2);
+		plr[myplr].HoldItem = storehold[idx];
+		if (StoreGoldFit(idx))
+			StartStore(STORE_CONFIRM);
+		else
+			StartStore(STORE_NOROOM);
 	}
 }
 // 69F108: using guessed type int stextup;
@@ -2969,21 +2684,20 @@ void __cdecl S_WSellEnter()
 // 6A8A24: using guessed type int stextvhold;
 // 6A8A28: using guessed type int stextsel;
 
-void __cdecl WitchRechargeItem()
+void WitchRechargeItem()
 {
-	int i;   // ecx
-	int idx; // eax
+	int i, idx;
 
 	TakePlrsMoney(plr[myplr].HoldItem._iIvalue);
 
 	idx = stextvhold + ((stextlhold - stextup) >> 2);
-	i = storehidx[idx];
 	storehold[idx]._iCharges = storehold[idx]._iMaxCharges;
 
-	if (i >= 0)
-		plr[myplr].InvList[i]._iCharges = plr[myplr].InvList[i]._iMaxCharges;
-	else
+	i = storehidx[idx];
+	if (i < 0)
 		plr[myplr].InvBody[INVLOC_HAND_LEFT]._iCharges = plr[myplr].InvBody[INVLOC_HAND_LEFT]._iMaxCharges;
+	else
+		plr[myplr].InvList[i]._iCharges = plr[myplr].InvList[i]._iMaxCharges;
 
 	CalcPlrInv(myplr, 1u);
 }
@@ -2991,79 +2705,51 @@ void __cdecl WitchRechargeItem()
 // 69F110: using guessed type int stextlhold;
 // 6A8A24: using guessed type int stextvhold;
 
-void __cdecl S_WRechargeEnter()
+void S_WRechargeEnter()
 {
-	int idx;    // eax
-	int v1;     // edx
-	int v2;     // ecx
-	BOOLEAN v3; // sf
-	//unsigned char v4; // of
-	char v5; // cl
+	int idx;
 
 	if (stextsel == 22) {
 		StartStore(STORE_WITCH);
 		stextsel = 18;
 	} else {
-		stextlhold = stextsel;
 		stextshold = 8;
-		idx = stextsval + ((stextsel - stextup) >> 2);
-		v1 = myplr;
+		stextlhold = stextsel;
 		stextvhold = stextsval;
-		qmemcpy(&plr[myplr].HoldItem, &storehold[idx], sizeof(plr[myplr].HoldItem));
-		v2 = plr[v1]._pGold;
-		//v4 = __OFSUB__(v2, storehold[idx]._iIvalue);
-		v3 = v2 - storehold[idx]._iIvalue < 0;
-		v5 = STORE_NOMONEY;
-		if (!v3) //if (!(v3 ^ v4))
-			v5 = STORE_CONFIRM;
-		StartStore(v5);
+		idx = stextsval + ((stextsel - stextup) >> 2);
+		plr[myplr].HoldItem = storehold[idx];
+		if (plr[myplr]._pGold < storehold[idx]._iIvalue)
+			StartStore(STORE_NOMONEY);
+		else
+			StartStore(STORE_CONFIRM);
 	}
 }
-// 69F108: using guessed type int stextup;
-// 69F110: using guessed type int stextlhold;
-// 6A8A24: using guessed type int stextvhold;
-// 6A8A28: using guessed type int stextsel;
 
-void __cdecl S_BoyEnter()
+void S_BoyEnter()
 {
-	signed int v0; // ecx
-
-	v0 = boyitem._itype;
-	if (boyitem._itype != -1 && stextsel == 18) {
-		v0 = 50;
-		if (plr[myplr]._pGold >= 50) {
-			TakePlrsMoney(50);
-			_LOBYTE(v0) = STORE_BBOY;
-		} else {
+	if (boyitem._itype != ITYPE_NONE && stextsel == 18) {
+		if (plr[myplr]._pGold < 50) {
 			stextshold = 12;
 			stextlhold = 18;
 			stextvhold = stextsval;
-			_LOBYTE(v0) = STORE_NOMONEY;
+			StartStore(STORE_NOMONEY);
+		} else {
+			TakePlrsMoney(50);
+			StartStore(STORE_BBOY);
 		}
-		goto LABEL_5;
-	}
-	if (stextsel == 8 && boyitem._itype != -1 || stextsel == 12 && boyitem._itype == -1) {
+	} else if (stextsel == 8 && boyitem._itype != ITYPE_NONE || stextsel == 12 && boyitem._itype == ITYPE_NONE) {
 		talker = 8;
 		stextshold = 12;
 		stextlhold = stextsel;
 		gossipstart = QUEST_WIRT2;
 		gossipend = QUEST_WIRT12;
-		_LOBYTE(v0) = STORE_GOSSIP;
-	LABEL_5:
-		StartStore(v0);
-		return;
+		StartStore(STORE_GOSSIP);
+	} else {
+		stextflag = STORE_NONE;
 	}
-	stextflag = 0;
 }
-// 69F110: using guessed type int stextlhold;
-// 69FB38: using guessed type int talker;
-// 6A4EF0: using guessed type int gossipstart;
-// 6A8A24: using guessed type int stextvhold;
-// 6A8A28: using guessed type int stextsel;
-// 6A8A30: using guessed type int gossipend;
-// 6AA705: using guessed type char stextflag;
 
-void __cdecl BoyBuyItem()
+void BoyBuyItem()
 {
 	TakePlrsMoney(plr[myplr].HoldItem._iIvalue);
 	StoreAutoPlace();
@@ -3072,242 +2758,177 @@ void __cdecl BoyBuyItem()
 	CalcPlrInv(myplr, 1u);
 }
 
-void __cdecl HealerBuyItem()
+void HealerBuyItem()
 {
-	int idx;    // esi
-	BOOLEAN v1; // sf
-	//unsigned char v2; // of
-	int v3;     // eax
-	int v4;     // ecx
-	BOOLEAN v5; // sf
-	//unsigned char v6; // of
-	int v7;         // eax
-	ItemStruct *v8; // edx
-	ItemStruct *v9; // edi
-	BOOLEAN v10;    // zf
+	int idx;
+	BOOL ok;
 
 	idx = stextvhold + ((stextlhold - stextup) >> 2);
+
+	ok = FALSE;
 	if (gbMaxPlayers == 1) {
-		//v2 = __OFSUB__(idx, 2);
-		v1 = idx - 2 < 0;
+		if (idx < 2)
+			ok = TRUE;
 	} else {
-		//v2 = __OFSUB__(idx, 3);
-		v1 = idx - 3 < 0;
+		if (idx < 3)
+			ok = TRUE;
 	}
-	if (v1) { //if (v1 ^ v2) {
-		v3 = GetRndSeed();
-		v4 = myplr;
-		plr[myplr].HoldItem._iSeed = v3;
-	} else {
-		v4 = myplr;
+	if (ok) {
+		plr[myplr].HoldItem._iSeed = GetRndSeed();
 	}
-	TakePlrsMoney(plr[v4].HoldItem._iIvalue);
+
+	TakePlrsMoney(plr[myplr].HoldItem._iIvalue);
 	if (plr[myplr].HoldItem._iMagical == ITEM_QUALITY_NORMAL)
 		plr[myplr].HoldItem._iIdentified = FALSE;
 	StoreAutoPlace();
+
+	ok = FALSE;
 	if (gbMaxPlayers == 1) {
-		//v6 = __OFSUB__(idx, 2);
-		v5 = idx - 2 < 0;
+		if (idx >= 2)
+			ok = TRUE;
 	} else {
-		//v6 = __OFSUB__(idx, 3);
-		v5 = idx - 3 < 0;
+		if (idx >= 3)
+			ok = TRUE;
 	}
-	if (!v5) { //if (!(v5 ^ v6)) {
-		v7 = stextvhold + ((stextlhold - stextup) >> 2);
-		if (v7 == 19) {
+	if (ok) {
+		idx = stextvhold + ((stextlhold - stextup) >> 2);
+		if (idx == 19) {
 			healitem[19]._itype = -1;
 		} else {
-			if (healitem[v7 + 1]._itype != -1) {
-				v8 = &healitem[v7];
-				do {
-					v9 = v8;
-					++v8;
-					++v7;
-					v10 = v8[1]._itype == -1;
-					qmemcpy(v9, v8, sizeof(ItemStruct));
-				} while (!v10);
+			for (; healitem[idx + 1]._itype != -1; idx++) {
+				healitem[idx] = healitem[idx + 1];
 			}
-			healitem[v7]._itype = -1;
+			healitem[idx]._itype = -1;
 		}
-		CalcPlrInv(myplr, 1u);
+		CalcPlrInv(myplr, TRUE);
 	}
 }
-// 679660: using guessed type char gbMaxPlayers;
-// 69F108: using guessed type int stextup;
-// 69F110: using guessed type int stextlhold;
-// 6A8A24: using guessed type int stextvhold;
 
-void __cdecl S_BBuyEnter()
+void S_BBuyEnter()
 {
-	int v0; // ecx
-	int v1; // eax
-	int v2; // ecx
-	int v3; // eax
-	int v4; // esi
+	BOOL done;
+	int i;
 
 	if (stextsel == 10) {
-		v0 = boyitem._iIvalue;
-		stextvhold = stextsval;
-		v1 = myplr;
-		stextshold = 13;
 		stextlhold = 10;
+		stextvhold = stextsval;
+		stextshold = 13;
 		if (plr[myplr]._pGold >= boyitem._iIvalue + (boyitem._iIvalue >> 1)) {
-			qmemcpy(&plr[v1].HoldItem, &boyitem, sizeof(plr[v1].HoldItem));
-			plr[v1].HoldItem._iIvalue += plr[v1].HoldItem._iIvalue >> 1;
-			SetCursor_(plr[v1].HoldItem._iCurs + CURSOR_FIRSTITEM);
-			v3 = 0;
-			v4 = 0;
-			do {
-				if (v3)
-					goto LABEL_8;
-				v3 = AutoPlace(myplr, v4++, cursW / 28, cursH / 28, 0);
-			} while (v4 < 40);
-			if (v3) {
-			LABEL_8:
-				_LOBYTE(v2) = STORE_CONFIRM;
-				goto LABEL_10;
+			StartStore(STORE_NOMONEY);
+		} else {
+			plr[myplr].HoldItem = boyitem;
+			plr[myplr].HoldItem._iIvalue += plr[myplr].HoldItem._iIvalue >> 1;
+			SetCursor_(plr[myplr].HoldItem._iCurs + CURSOR_FIRSTITEM);
+			done = FALSE;
+			for (i = 0; i < 40 && !done; i++) {
+				done = AutoPlace(myplr, i, cursW / 28, cursH / 28, 0);
 			}
-			_LOBYTE(v2) = STORE_NOROOM;
-		LABEL_10:
-			StartStore(v2);
+			if (done)
+				StartStore(STORE_CONFIRM);
+			else
+				StartStore(STORE_NOROOM);
 			SetCursor_(CURSOR_HAND);
-		} else {
-			_LOBYTE(v0) = STORE_NOMONEY;
-			StartStore(v0);
 		}
 	} else {
-		stextflag = 0;
+		stextflag = STORE_NONE;
 	}
 }
-// 4B8C9C: using guessed type int cursH;
-// 69F110: using guessed type int stextlhold;
-// 6A8A24: using guessed type int stextvhold;
-// 6A8A28: using guessed type int stextsel;
-// 6AA705: using guessed type char stextflag;
 
-void __cdecl StoryIdItem()
+void StoryIdItem()
 {
-	int v0; // ecx
-	int v1; // eax
-	int v2; // eax
+	int idx;
 
-	v0 = storehidx[((stextlhold - stextup) >> 2) + stextvhold];
-	v1 = myplr;
-	if (v0 >= 0) {
-		plr[myplr].InvList[v0]._iIdentified = TRUE;
-	} else {
-		if (v0 == -1)
+	idx = storehidx[((stextlhold - stextup) >> 2) + stextvhold];
+	if (idx < 0) {
+		if (idx == -1)
 			plr[myplr].InvBody[INVLOC_HEAD]._iIdentified = TRUE;
-		if (v0 == -2)
-			plr[v1].InvBody[INVLOC_CHEST]._iIdentified = TRUE;
-		if (v0 == -3)
-			plr[v1].InvBody[INVLOC_HAND_LEFT]._iIdentified = TRUE;
-		if (v0 == -4)
-			plr[v1].InvBody[INVLOC_HAND_RIGHT]._iIdentified = TRUE;
-		if (v0 == -5)
-			plr[v1].InvBody[INVLOC_RING_LEFT]._iIdentified = TRUE;
-		if (v0 == -6)
-			plr[v1].InvBody[INVLOC_RING_RIGHT]._iIdentified = TRUE;
-		if (v0 == -7)
-			plr[v1].InvBody[INVLOC_AMULET]._iIdentified = TRUE;
+		if (idx == -2)
+			plr[myplr].InvBody[INVLOC_CHEST]._iIdentified = TRUE;
+		if (idx == -3)
+			plr[myplr].InvBody[INVLOC_HAND_LEFT]._iIdentified = TRUE;
+		if (idx == -4)
+			plr[myplr].InvBody[INVLOC_HAND_RIGHT]._iIdentified = TRUE;
+		if (idx == -5)
+			plr[myplr].InvBody[INVLOC_RING_LEFT]._iIdentified = TRUE;
+		if (idx == -6)
+			plr[myplr].InvBody[INVLOC_RING_RIGHT]._iIdentified = TRUE;
+		if (idx == -7)
+			plr[myplr].InvBody[INVLOC_AMULET]._iIdentified = TRUE;
+	} else {
+		plr[myplr].InvList[idx]._iIdentified = TRUE;
 	}
-	v2 = v1;
-	plr[v2].HoldItem._iIdentified = TRUE;
-	TakePlrsMoney(plr[v2].HoldItem._iIvalue);
-	CalcPlrInv(myplr, 1u);
+	plr[myplr].HoldItem._iIdentified = TRUE;
+	TakePlrsMoney(plr[myplr].HoldItem._iIvalue);
+	CalcPlrInv(myplr, TRUE);
 }
-// 69F108: using guessed type int stextup;
-// 69F110: using guessed type int stextlhold;
-// 6A8A24: using guessed type int stextvhold;
 
-void __cdecl S_ConfirmEnter()
+void S_ConfirmEnter()
 {
-	char v0; // cl
-
 	if (stextsel == 18) {
-		if (stextshold > STORE_WRECHARGE) {
-			switch (stextshold) {
-			case STORE_BBOY:
-				BoyBuyItem();
-				break;
-			case STORE_HBUY:
-				HealerBuyItem();
-				break;
-			case STORE_SIDENTIFY:
-				StoryIdItem();
-				v0 = STORE_IDSHOW;
-			LABEL_20:
-				StartStore(v0);
-				return;
-			case STORE_SPBUY:
-				SmithBuyPItem();
-				break;
-			}
-		} else {
-			switch (stextshold) {
-			case STORE_WRECHARGE:
-				WitchRechargeItem();
-				break;
-			case STORE_SBUY:
-				SmithBuyItem();
-				break;
-			case STORE_SSELL:
-				goto LABEL_27;
-			case STORE_SREPAIR:
-				SmithRepairItem();
-				break;
-			case STORE_WBUY:
-				WitchBuyItem();
-				break;
-			case STORE_WSELL:
-			LABEL_27:
-				StoreSellItem();
-				break;
-			}
+		switch (stextshold) {
+		case STORE_SBUY:
+			SmithBuyItem();
+			break;
+		case STORE_SSELL:
+		case STORE_WSELL:
+			StoreSellItem();
+			break;
+		case STORE_SREPAIR:
+			SmithRepairItem();
+			break;
+		case STORE_WBUY:
+			WitchBuyItem();
+			break;
+		case STORE_WRECHARGE:
+			WitchRechargeItem();
+			break;
+		case STORE_BBOY:
+			BoyBuyItem();
+			break;
+		case STORE_HBUY:
+			HealerBuyItem();
+			break;
+		case STORE_SIDENTIFY:
+			StoryIdItem();
+			StartStore(STORE_IDSHOW);
+			return;
+		case STORE_SPBUY:
+			SmithBuyPItem();
+			break;
 		}
-		v0 = stextshold;
-		goto LABEL_20;
+		StartStore(stextshold);
+	} else {
+		StartStore(stextshold);
+		stextsel = stextlhold;
+		stextsval = stextvhold;
 	}
-	StartStore((unsigned char)stextshold);
-	stextsel = stextlhold;
-	stextsval = stextvhold;
 }
-// 69F110: using guessed type int stextlhold;
-// 6A8A24: using guessed type int stextvhold;
-// 6A8A28: using guessed type int stextsel;
 
-void __cdecl S_HealerEnter()
+void S_HealerEnter()
 {
-	int v0; // ecx
-	int v1; // eax
-
-	v0 = 12;
-	if (stextsel == 12) {
+	switch (stextsel) {
+	case 12:
 		stextlhold = 12;
 		talker = 1;
 		stextshold = 14;
 		gossipstart = QUEST_PEPIN2;
 		gossipend = QUEST_PEPIN11;
-		_LOBYTE(v0) = STORE_GOSSIP;
-		goto LABEL_12;
-	}
-	if (stextsel != 14) {
-		if (stextsel != 16) {
-			if (stextsel == 18)
-				stextflag = 0;
-			return;
-		}
-		_LOBYTE(v0) = STORE_HBUY;
-	LABEL_12:
-		StartStore(v0);
+		StartStore(STORE_GOSSIP);
+		return;
+	case 14:
+		if (plr[myplr]._pHitPoints != plr[myplr]._pMaxHP)
+			PlaySFX(IS_CAST8);
+		drawhpflag = TRUE;
+		plr[myplr]._pHitPoints = plr[myplr]._pMaxHP;
+		plr[myplr]._pHPBase = plr[myplr]._pMaxHPBase;
+		return;
+	case 16:
+		StartStore(STORE_HBUY);
+		return;
+	case 18:
+		stextflag = STORE_NONE;
 		return;
 	}
-	if (plr[myplr]._pHitPoints != plr[myplr]._pMaxHP)
-		PlaySFX(IS_CAST8);
-	drawhpflag = TRUE;
-	v1 = myplr;
-	plr[v1]._pHitPoints = plr[myplr]._pMaxHP;
-	plr[v1]._pHPBase = plr[v1]._pMaxHPBase;
 }
 // 69F110: using guessed type int stextlhold;
 // 69FB38: using guessed type int talker;
@@ -3316,13 +2937,10 @@ void __cdecl S_HealerEnter()
 // 6A8A30: using guessed type int gossipend;
 // 6AA705: using guessed type char stextflag;
 
-void __cdecl S_HBuyEnter()
+void S_HBuyEnter()
 {
-	int v0;   // eax
-	int idx;  // ecx
-	int done; // eax
-	int i;    // esi
-	char v4;  // cl
+	int i, idx;
+	BOOL done;
 
 	if (stextsel == 22) {
 		StartStore(STORE_HEALER);
@@ -3331,43 +2949,28 @@ void __cdecl S_HBuyEnter()
 		stextlhold = stextsel;
 		stextvhold = stextsval;
 		stextshold = 16;
-		v0 = myplr;
 		idx = stextsval + ((stextsel - stextup) >> 2);
-		if (plr[myplr]._pGold >= healitem[idx]._iIvalue) {
-			qmemcpy(&plr[v0].HoldItem, &healitem[idx], sizeof(plr[v0].HoldItem));
-			SetCursor_(plr[v0].HoldItem._iCurs + CURSOR_FIRSTITEM);
-			done = 0;
-			i = 0;
-			do {
-				if (done)
-					goto LABEL_9;
-				done = SpecialAutoPlace(myplr, i++, cursW / 28, cursH / 28, 0);
-			} while (i < 40);
-			if (done) {
-			LABEL_9:
-				v4 = STORE_CONFIRM;
-				goto LABEL_11;
-			}
-			v4 = STORE_NOROOM;
-		LABEL_11:
-			StartStore(v4);
-			SetCursor_(CURSOR_HAND);
-		} else {
+		if (plr[myplr]._pGold < healitem[idx]._iIvalue) {
 			StartStore(STORE_NOMONEY);
+		} else {
+			plr[myplr].HoldItem = healitem[idx];
+			SetCursor_(plr[myplr].HoldItem._iCurs + CURSOR_FIRSTITEM);
+			done = FALSE;
+			i = 0;
+			for (i = 0; i < 40 && !done; i++) {
+				done = SpecialAutoPlace(myplr, i, cursW / 28, cursH / 28, 0);
+			}
+			if (done)
+				StartStore(STORE_CONFIRM);
+			else
+				StartStore(STORE_NOROOM);
+			SetCursor_(CURSOR_HAND);
 		}
 	}
 }
-// 4B8C9C: using guessed type int cursH;
-// 69F108: using guessed type int stextup;
-// 69F110: using guessed type int stextlhold;
-// 6A8A24: using guessed type int stextvhold;
-// 6A8A28: using guessed type int stextsel;
 
-void __cdecl S_StoryEnter()
+void S_StoryEnter()
 {
-	int v0; // ecx
-
-	v0 = 12;
 	switch (stextsel) {
 	case 12:
 		stextlhold = 12;
@@ -3375,59 +2978,38 @@ void __cdecl S_StoryEnter()
 		stextshold = 15;
 		gossipstart = QUEST_STORY2;
 		gossipend = QUEST_STORY11;
-		_LOBYTE(v0) = STORE_GOSSIP;
-		goto LABEL_8;
+		StartStore(STORE_GOSSIP);
+		break;
 	case 14:
-		_LOBYTE(v0) = STORE_SIDENTIFY;
-	LABEL_8:
-		StartStore(v0);
-		return;
+		StartStore(STORE_SIDENTIFY);
+		break;
 	case 18:
-		stextflag = 0;
+		stextflag = STORE_NONE;
 		break;
 	}
 }
-// 69F110: using guessed type int stextlhold;
-// 69FB38: using guessed type int talker;
-// 6A4EF0: using guessed type int gossipstart;
-// 6A8A28: using guessed type int stextsel;
-// 6A8A30: using guessed type int gossipend;
-// 6AA705: using guessed type char stextflag;
 
-void __cdecl S_SIDEnter()
+void S_SIDEnter()
 {
-	int idx;    // eax
-	int v1;     // edx
-	int v2;     // ecx
-	BOOLEAN v3; // sf
-	//unsigned char v4; // of
-	char v5; // cl
+	int idx;
 
 	if (stextsel == 22) {
 		StartStore(STORE_STORY);
 		stextsel = 14;
 	} else {
-		stextlhold = stextsel;
 		stextshold = 17;
-		idx = stextsval + ((stextsel - stextup) >> 2);
-		v1 = myplr;
+		stextlhold = stextsel;
 		stextvhold = stextsval;
-		qmemcpy(&plr[myplr].HoldItem, &storehold[idx], sizeof(plr[myplr].HoldItem));
-		v2 = plr[v1]._pGold;
-		//v4 = __OFSUB__(v2, storehold[idx]._iIvalue);
-		v3 = v2 - storehold[idx]._iIvalue < 0;
-		v5 = STORE_NOMONEY;
-		if (!v3) //if (!(v3 ^ v4))
-			v5 = STORE_CONFIRM;
-		StartStore(v5);
+		idx = stextsval + ((stextsel - stextup) >> 2);
+		plr[myplr].HoldItem = storehold[idx];
+		if (plr[myplr]._pGold < storehold[idx]._iIvalue)
+			StartStore(STORE_NOMONEY);
+		else
+			StartStore(STORE_CONFIRM);
 	}
 }
-// 69F108: using guessed type int stextup;
-// 69F110: using guessed type int stextlhold;
-// 6A8A24: using guessed type int stextvhold;
-// 6A8A28: using guessed type int stextsel;
 
-void __cdecl S_TalkEnter()
+void S_TalkEnter()
 {
 	int v0;        // edx
 	int *v1;       // edi
@@ -3493,79 +3075,58 @@ void __cdecl S_TalkEnter()
 // 6A8A28: using guessed type int stextsel;
 // 6A8A30: using guessed type int gossipend;
 
-void __cdecl S_TavernEnter()
+void S_TavernEnter()
 {
-	int v0; // ecx
-
-	v0 = 12;
-	if (stextsel == 12) {
+	switch (stextsel) {
+	case 12:
 		stextlhold = 12;
 		talker = 3;
 		stextshold = 21;
 		gossipstart = QUEST_OGDEN2;
 		gossipend = QUEST_OGDEN10;
-		_LOBYTE(v0) = STORE_GOSSIP;
-		StartStore(v0);
-	} else if (stextsel == 18) {
-		stextflag = 0;
+		StartStore(STORE_GOSSIP);
+		break;
+	case 18:
+		stextflag = STORE_NONE;
+		break;
 	}
 }
-// 69F110: using guessed type int stextlhold;
-// 69FB38: using guessed type int talker;
-// 6A4EF0: using guessed type int gossipstart;
-// 6A8A28: using guessed type int stextsel;
-// 6A8A30: using guessed type int gossipend;
-// 6AA705: using guessed type char stextflag;
 
-void __cdecl S_BarmaidEnter()
+void S_BarmaidEnter()
 {
-	int v0; // ecx
-
-	v0 = 12;
-	if (stextsel == 12) {
+	switch (stextsel) {
+	case 12:
 		stextlhold = 12;
 		talker = 7;
 		stextshold = 23;
 		gossipstart = QUEST_GILLIAN2;
 		gossipend = QUEST_GILLIAN10;
-		_LOBYTE(v0) = STORE_GOSSIP;
-		StartStore(v0);
-	} else if (stextsel == 18) {
-		stextflag = 0;
+		StartStore(STORE_GOSSIP);
+		break;
+	case 18:
+		stextflag = STORE_NONE;
+		break;
 	}
 }
-// 69F110: using guessed type int stextlhold;
-// 69FB38: using guessed type int talker;
-// 6A4EF0: using guessed type int gossipstart;
-// 6A8A28: using guessed type int stextsel;
-// 6A8A30: using guessed type int gossipend;
-// 6AA705: using guessed type char stextflag;
 
-void __cdecl S_DrunkEnter()
+void S_DrunkEnter()
 {
-	int v0; // ecx
-
-	v0 = 12;
-	if (stextsel == 12) {
+	switch (stextsel) {
+	case 12:
 		stextlhold = 12;
 		talker = 5;
 		stextshold = 22;
 		gossipstart = QUEST_FARNHAM2;
 		gossipend = QUEST_FARNHAM13;
-		_LOBYTE(v0) = STORE_GOSSIP;
-		StartStore(v0);
-	} else if (stextsel == 18) {
-		stextflag = 0;
+		StartStore(STORE_GOSSIP);
+		break;
+	case 18:
+		stextflag = STORE_NONE;
+		break;
 	}
 }
-// 69F110: using guessed type int stextlhold;
-// 69FB38: using guessed type int talker;
-// 6A4EF0: using guessed type int gossipstart;
-// 6A8A28: using guessed type int stextsel;
-// 6A8A30: using guessed type int gossipend;
-// 6AA705: using guessed type char stextflag;
 
-void __cdecl STextEnter()
+void STextEnter()
 {
 	if (qtextflag) {
 		qtextflag = FALSE;
@@ -3652,7 +3213,7 @@ void __cdecl STextEnter()
 // 6A8A28: using guessed type int stextsel;
 // 6AA705: using guessed type char stextflag;
 
-void __cdecl CheckStoreBtn()
+void CheckStoreBtn()
 {
 	BOOLEAN v0; // sf
 	//unsigned char v1; // of
@@ -3720,7 +3281,7 @@ void __cdecl CheckStoreBtn()
 // 6A8A2C: using guessed type char stextscrldbtn;
 // 6AA704: using guessed type char stextscrlubtn;
 
-void __cdecl ReleaseStoreBtn()
+void ReleaseStoreBtn()
 {
 	stextscrlubtn = -1;
 	stextscrldbtn = -1;

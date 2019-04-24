@@ -4,7 +4,7 @@
 
 DEVILUTION_BEGIN_NAMESPACE
 
-BOOL __cdecl SystemSupported()
+BOOL SystemSupported()
 {
 	OSVERSIONINFO VersionInformation;
 	BOOL ret = FALSE;
@@ -19,7 +19,7 @@ BOOL __cdecl SystemSupported()
 	return ret;
 }
 
-BOOL __cdecl RestrictedTest()
+BOOL RestrictedTest()
 {
 	FILE *f;
 	char Buffer[MAX_PATH];
@@ -38,7 +38,7 @@ BOOL __cdecl RestrictedTest()
 	return ret;
 }
 
-BOOL __cdecl ReadOnlyTest()
+BOOL ReadOnlyTest()
 {
 	char *c;
 	FILE *f;

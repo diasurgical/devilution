@@ -67,7 +67,7 @@ char *quest_level_names[] = {
 	"Archbishop Lazarus' Lair"
 };
 
-int __fastcall ObjIndex(int x, int y)
+int ObjIndex(int x, int y)
 {
 	int i;
 	int oi;
@@ -81,7 +81,7 @@ int __fastcall ObjIndex(int x, int y)
 	return -1;
 }
 
-void __cdecl AddSKingObjs()
+void AddSKingObjs()
 {
 	SetObjMapRange(ObjIndex(64, 34), 20, 7, 23, 10, 1);
 	SetObjMapRange(ObjIndex(64, 59), 20, 14, 21, 16, 2);
@@ -91,20 +91,20 @@ void __cdecl AddSKingObjs()
 	SetObjMapRange(ObjIndex(27, 53), 8, 1, 15, 11, 3);
 }
 
-void __cdecl AddSChamObjs()
+void AddSChamObjs()
 {
 	SetObjMapRange(ObjIndex(37, 30), 17, 0, 21, 5, 1);
 	SetObjMapRange(ObjIndex(37, 46), 13, 0, 16, 5, 2);
 }
 
-void __cdecl AddVileObjs()
+void AddVileObjs()
 {
 	SetObjMapRange(ObjIndex(26, 45), 1, 1, 9, 10, 1);
 	SetObjMapRange(ObjIndex(45, 46), 11, 1, 20, 10, 2);
 	SetObjMapRange(ObjIndex(35, 36), 7, 11, 13, 18, 3);
 }
 
-void __fastcall DRLG_SetMapTrans(char *sFileName)
+void DRLG_SetMapTrans(char *sFileName)
 {
 	int x, y;
 	int i, j;
@@ -131,7 +131,7 @@ void __fastcall DRLG_SetMapTrans(char *sFileName)
 	mem_free_dbg(pLevelMap);
 }
 
-void __cdecl LoadSetMap()
+void LoadSetMap()
 {
 	switch (setlvlnum) {
 	case SL_SKELKING:

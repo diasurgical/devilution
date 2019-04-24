@@ -6,19 +6,19 @@ DEVILUTION_BEGIN_NAMESPACE
 
 int numthemes; // idb
 BOOL armorFlag;
-int ThemeGoodIn[4];
+WORD ThemeGoodIn[4];
 BOOL weaponFlag;
-BOOLEAN treasureFlag;  // weak
-BOOLEAN mFountainFlag; // weak
-BOOLEAN cauldronFlag;  // weak
-BOOLEAN tFountainFlag; // weak
+BOOL treasureFlag;
+BOOL mFountainFlag;
+BOOL cauldronFlag;
+BOOL tFountainFlag;
 int zharlib;
 int themex;    // idb
 int themey;    // idb
 int themeVar1; // idb
 ThemeStruct themes[MAXTHEMES];
-BOOLEAN pFountainFlag; // weak
-BOOLEAN bFountainFlag; // weak
+BOOL pFountainFlag;
+BOOL bFountainFlag;
 BOOL bCrossFlag;
 
 int ThemeGood[4] = { THEME_GOATSHRINE, THEME_SHRINE, THEME_SKELROOM, THEME_LIBRARY };
@@ -51,176 +51,132 @@ int trm3y[9] = {
 	1, 1, 1
 };
 
-BOOLEAN __fastcall TFit_Shrine(int i)
+BOOL TFit_Shrine(int i)
 {
-	int v1;        // ecx
-	int v2;        // esi
-	int v3;        // eax
-	int v4;        // edx
-	signed int v6; // [esp+Ch] [ebp-8h]
-	int v7;        // [esp+10h] [ebp-4h]
+	int xp, yp, found;
 
-	v1 = themes[i].ttval;
-	v7 = 0;
-	v2 = 0;
-	v6 = 0;
-	while (1) {
-		v3 = v2 + 112 * v7;
-		if (dTransVal[0][v3] != v1) { /* check */
-			goto LABEL_20;
+	xp = 0;
+	yp = 0;
+	found = 0;
+	while (found == 0) {
+		if (dTransVal[xp][yp] == themes[i].ttval) {
+			if (nTrapTable[dPiece[xp][yp - 1]]
+			    && !nSolidTable[dPiece[xp - 1][yp]]
+			    && !nSolidTable[dPiece[xp + 1][yp]]
+			    && dTransVal[xp - 1][yp] == themes[i].ttval
+			    && dTransVal[xp + 1][yp] == themes[i].ttval
+			    && dObject[xp - 1][yp - 1] == 0
+			    && dObject[xp + 1][yp - 1] == 0) {
+				found = 1;
+			}
+			if (!found
+			    && nTrapTable[dPiece[xp - 1][yp]]
+			    && !nSolidTable[dPiece[xp][yp - 1]]
+			    && !nSolidTable[dPiece[xp][yp + 1]]
+			    && dTransVal[xp][yp - 1] == themes[i].ttval
+			    && dTransVal[xp][yp + 1] == themes[i].ttval
+			    && dObject[xp - 1][yp - 1] == 0
+			    && dObject[xp - 1][yp + 1] == 0) {
+				found = 2;
+			}
 		}
-		v4 = dPiece[0][v3 - 1]; // *(_DWORD *)&dflags[39][4 * v3 + 36];
-		if (nTrapTable[v4]
-		    && !nSolidTable[dPiece[-1][v3]] // !nSolidTable[*(_DWORD *)&dflags[28][4 * v3 + 32]]
-		    && !nSolidTable[dPiece[1][v3]]
-		    && dTransVal[-1][v3] == v1 // block_lvid[v3 + 1940] == v1
-		    && dTransVal[1][v3] == v1
-		    && !dObject[-1][v3 - 1]
-		    && !dObject[0][v3 + 111]) {
-			v6 = 1;
-		}
-		if (v6) {
-			break;
-		}
-		if (!nTrapTable[dPiece[-1][v3]] // !nTrapTable[*(_DWORD *)&dflags[28][4 * v3 + 32]]
-		    || nSolidTable[v4]
-		    || nSolidTable[dPiece[0][v3 + 1]]
-		    || dTransVal[0][v3 - 1] != v1 // *(&byte_5B78EB + v3) != v1
-		    || dTransVal[0][v3 + 1] != v1
-		    || dObject[-1][v3 - 1]
-		    || dObject[-1][v3 + 1]) /* check */
-		{
-			goto LABEL_21;
-		}
-		v6 = 2;
-	LABEL_20:
-		if (v6) {
-			break;
-		}
-	LABEL_21:
-		if (++v7 == MAXDUNX) {
-			++v2;
-			v7 = 0;
-			if (v2 == MAXDUNY) {
-				return 0;
+		if (found == 0) {
+			xp++;
+			if (xp == MAXDUNX) {
+				xp = 0;
+				yp++;
+				if (yp == MAXDUNY)
+					return FALSE;
 			}
 		}
 	}
-	themey = v2;
-	themex = v7;
-	themeVar1 = v6;
-	return 1;
+	themex = xp;
+	themey = yp;
+	themeVar1 = found;
+	return TRUE;
 }
 
-BOOLEAN __fastcall TFit_Obj5(int t)
+BOOL TFit_Obj5(int t)
 {
-	int v2;         // ebx
-	int v3;         // esi
-	int v4;         // eax
-	int v5;         // edi
-	int v6;         // ecx
-	signed int v7;  // edx
-	int v8;         // ecx
-	int v10;        // [esp+Ch] [ebp-Ch]
-	int v11;        // [esp+10h] [ebp-8h]
-	signed int v12; // [esp+14h] [ebp-4h]
+	int xp, yp;
+	int i, r, rs;
+	BOOL found;
 
-	v2 = 0;
-	v3 = 0;
-	v4 = random(0, 5) + 1;
-	v10 = v4;
-	if (v4 <= 0) {
-	LABEL_19:
-		themex = v2;
-		themey = v3;
-		return 1;
-	}
-	v5 = themes[t].ttval;
-	v11 = v5;
-	while (1) {
-		v6 = v3 + 112 * v2;
-		if (dTransVal[0][v6] == v5 && !nSolidTable[dPiece[0][v6]]) {
-			v12 = 1;
-			v7 = 0;
-			do {
-				if (v7 >= 25) {
-					break;
+	xp = 0;
+	yp = 0;
+	r = random(0, 5) + 1;
+	rs = r;
+	while (r > 0) {
+		found = FALSE;
+		if (dTransVal[xp][yp] == themes[t].ttval && !nSolidTable[dPiece[xp][yp]]) {
+			found = TRUE;
+			for (i = 0; found && i < 25; i++) {
+				if (nSolidTable[dPiece[xp + trm5x[i]][yp + trm5y[i]]]) {
+					found = FALSE;
 				}
-				v8 = v3 + trm5y[v7] + 112 * (v2 + trm5x[v7]);
-				if (nSolidTable[dPiece[0][v8]]) {
-					v12 = 0;
+				if (dTransVal[xp + trm5x[i]][yp + trm5y[i]] != themes[t].ttval) {
+					found = FALSE;
 				}
-				v5 = v11;
-				if (dTransVal[0][v8] != v11) {
-					v12 = 0;
-				}
-				++v7;
-			} while (v12);
-			if (v12) {
-				--v4;
-				goto LABEL_18;
 			}
 		}
-		if (++v2 != 112) {
-			goto LABEL_18;
+
+		if (!found) {
+			xp++;
+			if (xp == MAXDUNX) {
+				xp = 0;
+				yp++;
+				if (yp == MAXDUNY) {
+					if (r == rs) {
+						return FALSE;
+					}
+					yp = 0;
+				}
+			}
+			continue;
 		}
-		v2 = 0;
-		if (++v3 != 112) {
-			goto LABEL_18;
-		}
-		if (v4 == v10) {
-			return 0;
-		}
-		v3 = 0;
-	LABEL_18:
-		if (v4 <= 0) {
-			goto LABEL_19;
-		}
+
+		r--;
 	}
+
+	themex = xp;
+	themey = yp;
+
+	return TRUE;
 }
 
-BOOLEAN __fastcall TFit_SkelRoom(int t)
+BOOL TFit_SkelRoom(int t)
 {
-	int i; // esi
+	int i;
 
 	if (leveltype != 1 && leveltype != 2) {
-		return 0;
-	}
-	i = 0;
-	if (nummtypes <= 0) {
-		return 0;
+		return FALSE;
 	}
 
-	while (!IsSkel(Monsters[i].mtype)) {
-		++i;
-		if (i >= nummtypes) {
-			return 0;
+	for (i = 0; i < nummtypes; i++) {
+		if (IsSkel(Monsters[i].mtype)) {
+			themeVar1 = i;
+			return TFit_Obj5(t);
 		}
 	}
-	themeVar1 = i;
-	return TFit_Obj5(t);
+
+	return FALSE;
 }
 
-BOOLEAN __fastcall TFit_GoatShrine(int t)
+BOOL TFit_GoatShrine(int t)
 {
-	int i; // esi
+	int i;
 
-	i = 0;
-	if (nummtypes <= 0) {
-		return 0;
-	}
-
-	while (!IsGoat(Monsters[i].mtype)) {
-		++i;
-		if (i >= nummtypes) {
-			return 0;
+	for (i = 0; i < nummtypes; i++) {
+		if (IsGoat(Monsters[i].mtype)) {
+			themeVar1 = i;
+			return TFit_Obj5(t);
 		}
 	}
-	themeVar1 = i;
-	return TFit_Obj5(t);
+
+	return FALSE;
 }
 
-BOOL __fastcall CheckThemeObj3(int xp, int yp, int t, int f)
+BOOL CheckThemeObj3(int xp, int yp, int t, int f)
 {
 	int i;
 
@@ -240,36 +196,25 @@ BOOL __fastcall CheckThemeObj3(int xp, int yp, int t, int f)
 	return TRUE;
 }
 
-BOOLEAN __fastcall TFit_Obj3(int t)
+BOOL TFit_Obj3(int t)
 {
-	int yp;         // edi
-	int xp;         // esi
-	char objrnd[4]; // [esp+Bh] [ebp-5h]
+	int xp, yp;
+	char objrnd[4] = { 4, 4, 3, 5 };
 
-	objrnd[0] = 4;
-	objrnd[1] = 4;
-	objrnd[2] = 3;
-	objrnd[3] = 5;
-	yp = 1;
-	while (2) {
-		xp = 1;
-		do {
+	for (yp = 1; yp < MAXDUNY - 1; yp++) {
+		for (xp = 1; xp < MAXDUNX - 1; xp++) {
 			if (CheckThemeObj3(xp, yp, t, objrnd[leveltype - 1])) {
 				themex = xp;
 				themey = yp;
-				return 1;
+				return TRUE;
 			}
-			++xp;
-		} while (xp < 111);
-		if (++yp < 111) {
-			continue;
 		}
-		break;
 	}
-	return 0;
+
+	return FALSE;
 }
 
-BOOLEAN __fastcall CheckThemeReqs(int t)
+BOOL CheckThemeReqs(int t)
 {
 	BOOLEAN rv; // al
 	int v2;     // ecx
@@ -346,9 +291,9 @@ BOOLEAN __fastcall CheckThemeReqs(int t)
 // 6AAC08: using guessed type int pFountainFlag;
 // 6AAC0C: using guessed type int bFountainFlag;
 
-BOOLEAN __fastcall SpecialThemeFit(int i, int t)
+BOOL SpecialThemeFit(int i, int t)
 {
-	BOOLEAN rv; // eax
+	BOOL rv;
 
 	rv = CheckThemeReqs(t);
 	switch (t) {
@@ -363,10 +308,49 @@ BOOLEAN __fastcall SpecialThemeFit(int i, int t)
 			rv = TFit_SkelRoom(i);
 		}
 		break;
-	case THEME_TREASURE:
-		rv = treasureFlag;
-		if (treasureFlag) {
-			treasureFlag = 0;
+	case THEME_BLOODFOUNTAIN:
+		if (rv) {
+			rv = TFit_Obj5(i);
+			if (rv) {
+				bFountainFlag = FALSE;
+			}
+		}
+		break;
+	case THEME_PURIFYINGFOUNTAIN:
+		if (rv) {
+			rv = TFit_Obj5(i);
+			if (rv) {
+				pFountainFlag = FALSE;
+			}
+		}
+		break;
+	case THEME_MURKYFOUNTAIN:
+		if (rv) {
+			rv = TFit_Obj5(i);
+			if (rv) {
+				mFountainFlag = FALSE;
+			}
+		}
+		break;
+	case THEME_TEARFOUNTAIN:
+		if (rv) {
+			rv = TFit_Obj5(i);
+			if (rv) {
+				tFountainFlag = FALSE;
+			}
+		}
+		break;
+	case THEME_CAULDRON:
+		if (rv) {
+			rv = TFit_Obj5(i);
+			if (rv) {
+				cauldronFlag = FALSE;
+			}
+		}
+		break;
+	case THEME_GOATSHRINE:
+		if (rv) {
+			rv = TFit_GoatShrine(i);
 		}
 		break;
 	case THEME_TORTURE:
@@ -378,241 +362,120 @@ BOOLEAN __fastcall SpecialThemeFit(int i, int t)
 			rv = TFit_Obj3(i);
 		}
 		break;
-	case THEME_BLOODFOUNTAIN:
-		if (rv) {
-			rv = TFit_Obj5(i);
-			if (rv) {
-				bFountainFlag = 0;
-			}
-		}
-		break;
-	case THEME_PURIFYINGFOUNTAIN:
-		if (rv) {
-			rv = TFit_Obj5(i);
-			if (rv) {
-				pFountainFlag = 0;
-			}
-		}
-		break;
-	case THEME_GOATSHRINE:
-		if (rv) {
-			rv = TFit_GoatShrine(i);
-		}
-		break;
-	case THEME_CAULDRON:
-		if (rv) {
-			rv = TFit_Obj5(i);
-			if (rv) {
-				cauldronFlag = 0;
-			}
-		}
-		break;
-	case THEME_MURKYFOUNTAIN:
-		if (rv) {
-			rv = TFit_Obj5(i);
-			if (rv) {
-				mFountainFlag = 0;
-			}
-		}
-		break;
-	case THEME_TEARFOUNTAIN:
-		if (rv) {
-			rv = TFit_Obj5(i);
-			if (rv) {
-				tFountainFlag = 0;
-			}
+	case THEME_TREASURE:
+		rv = treasureFlag;
+		if (treasureFlag) {
+			treasureFlag = FALSE;
 		}
 		break;
 	}
+
 	return rv;
 }
-// 6AAA54: using guessed type int treasureFlag;
-// 6AAA58: using guessed type int mFountainFlag;
-// 6AAA5C: using guessed type int cauldronFlag;
-// 6AAA60: using guessed type int tFountainFlag;
-// 6AAC08: using guessed type int pFountainFlag;
-// 6AAC0C: using guessed type int bFountainFlag;
 
-BOOLEAN __fastcall CheckThemeRoom(int tv)
+BOOL CheckThemeRoom(int tv)
 {
-	int v1;         // esi
-	int *v2;        // edx
-	signed int v3;  // edi
-	signed int v4;  // esi
-	signed int v5;  // edx
-	signed int v6;  // eax
-	int v7;         // edi
-	int *v8;        // esi
-	char *v9;       // eax
-	int *v10;       // edx
-	signed int v12; // [esp+Ch] [ebp-8h]
+	int i, j, tarea;
 
-	v1 = 0;
-	if (trigflag[4] <= 0) {
-	LABEL_5:
-		v3 = 0;
-		v4 = 0;
-		do {
-			v5 = 0;
-			v6 = v4;
-			do {
-				if (dTransVal[0][v6] == tv) {
-					if (dFlags[0][v6] & DFLAG_POPULATED) {
-						return 0;
-					}
-					++v3;
-				}
-				++v5;
-				v6 += 112;
-			} while (v5 < 112);
-			++v4;
-		} while (v4 < 112);
-		if (leveltype != 1 || v3 >= 9 && v3 <= 100) {
-			v7 = 0;
-			v8 = &dPiece[-1][111];
-		LABEL_16:
-			v12 = 0;
-			v9 = &dTransVal[-1][v7 + 111];
-			v10 = v8;
-			while (v9[1] != tv
-			    || nSolidTable[v10[1]]
-			    || (*(v9 - 111) == tv || nSolidTable[*(v10 - 111)]) /* check */
-			        && (v9[113] == tv || nSolidTable[v10[113]])
-			        && (*v9 == tv || nSolidTable[*v10])
-			        && (v9[2] == tv || nSolidTable[v10[2]])) {
-				++v12;
-				v10 += 112;
-				v9 += 112;
-				if (v12 >= 112) {
-					++v8;
-					++v7;
-					if ((signed int)v8 < (signed int)&dPiece[0][111]) {
-						goto LABEL_16;
-					}
-					return 1;
-				}
-			}
+	for (i = 0; i < trigflag_4; i++) {
+		if (dTransVal[trigs[i]._tx][trigs[i]._ty] == tv)
+			return FALSE;
+	}
+
+	tarea = 0;
+	for (j = 0; j < MAXDUNY; j++) {
+		for (i = 0; i < MAXDUNX; i++) {
+			if (dTransVal[i][j] == tv)
+				continue;
+			if (dFlags[i][j] & DFLAG_POPULATED)
+				return FALSE;
+
+			tarea++;
 		}
-	} else {
-		v2 = &trigs[0]._ty;
-		while (dTransVal[*(v2 - 1)][*v2] != tv) {
-			++v1;
-			v2 += 4;
-			if (v1 >= trigflag[4]) {
-				goto LABEL_5;
+	}
+
+	if (leveltype == DTYPE_CATHEDRAL && (tarea < 9 || tarea > 100))
+		return FALSE;
+
+	for (j = 0; j < MAXDUNY; j++) {
+		for (i = 0; i < MAXDUNX; i++) {
+			if (dTransVal[i][j] != tv || nSolidTable[dPiece[i][j]])
+				continue;
+			if (dTransVal[i - 1][j] != tv && !nSolidTable[dPiece[i - 1][j]])
+				return FALSE;
+			if (dTransVal[i + 1][j] != tv && !nSolidTable[dPiece[i + 1][j]])
+				return FALSE;
+			if (dTransVal[i][j - 1] != tv && !nSolidTable[dPiece[i][j - 1]])
+				return FALSE;
+			if (dTransVal[i][j + 1] != tv && !nSolidTable[dPiece[i][j + 1]])
+				return FALSE;
+		}
+	}
+
+	return TRUE;
+}
+
+void InitThemes()
+{
+	int i, j;
+
+	zharlib = -1;
+	numthemes = 0;
+	bCrossFlag = FALSE;
+	armorFlag = TRUE;
+	bFountainFlag = TRUE;
+	cauldronFlag = TRUE;
+	mFountainFlag = TRUE;
+	pFountainFlag = TRUE;
+	tFountainFlag = TRUE;
+	treasureFlag = TRUE;
+	weaponFlag = TRUE;
+
+	if (currlevel == 16)
+		return;
+
+	if (leveltype == DTYPE_CATHEDRAL) {
+		for (i = 0; i < sizeof(ThemeGoodIn); i++)
+			ThemeGoodIn[i] = 0;
+
+		for (i = 0; i < 256 && numthemes < MAXTHEMES; i++) {
+			if (CheckThemeRoom(i)) {
+				themes[numthemes].ttval = i;
+				for (j = ThemeGood[random(0, 4)];; j = random(0, 17)) {
+					if (SpecialThemeFit(numthemes, j)) {
+						break;
+					}
+				}
+				themes[numthemes].ttype = j;
+				numthemes++;
 			}
 		}
 	}
-	return 0;
-}
-
-void __cdecl InitThemes()
-{
-	int v0;  // esi
-	char v1; // bl
-	int v2;  // edi
-	//int v3; // eax
-	int i; // ebx
-	//int v6; // eax
-	int v8; // esi
-	int v9; // ecx
-	int j;  // eax
-	//int v11; // eax
-	int *v13; // edi
-	int v14;  // esi
-	int *v15; // ebx
-	//int v16; // eax
-	int v17; // eax
-	int k;   // esi
-	int l;   // ebx
-	//int v20; // eax
-
-	zharlib = -1;
-	v0 = 0;
-	bCrossFlag = FALSE;
-	numthemes = 0;
-	armorFlag = TRUE;
-	bFountainFlag = 1;
-	cauldronFlag = 1;
-	mFountainFlag = 1;
-	pFountainFlag = 1;
-	tFountainFlag = 1;
-	treasureFlag = 1;
-	weaponFlag = TRUE;
-	if (currlevel != 16) {
-		v1 = leveltype;
-		if (leveltype == DTYPE_CATHEDRAL) {
-			ThemeGoodIn[0] = 0;
-			ThemeGoodIn[1] = 0;
-			ThemeGoodIn[2] = 0;
-			ThemeGoodIn[3] = 0;
-			v2 = 0;
-			do {
-				if (v0 >= MAXTHEMES) {
+	if (leveltype == 2 || leveltype == 3 || leveltype == 4) {
+		for (i = 0; i < themeCount; i++)
+			themes[i].ttype = -1;
+		if (QuestStatus(QTYPE_ZHAR)) {
+			for (j = 0; j < themeCount; j++) {
+				themes[j].ttval = themeLoc[j].ttval;
+				if (SpecialThemeFit(j, 5)) {
+					themes[j].ttype = 5;
+					zharlib = j;
 					break;
 				}
-				//_LOBYTE(v3) = CheckThemeRoom(v2);
-				if (CheckThemeRoom(v2)) {
-					themes[v0].ttval = v2;
-					for (i = ThemeGood[random(0, 4)];; i = random(0, 17)) {
-						//_LOBYTE(v6) = SpecialThemeFit(numthemes, i);
-						if (SpecialThemeFit(numthemes, i)) {
-							break;
-						}
-					}
-					v8 = numthemes;
-					themes[numthemes].ttype = i;
-					v1 = leveltype;
-					v0 = v8 + 1;
-					numthemes = v0;
-				}
-				++v2;
-			} while (v2 < 256);
-		}
-		if (v1 == 2 || v1 == 3 || v1 == 4) {
-			v9 = themeCount;
-			for (j = 0; j < v9; ++j)
-				themes[j].ttype = -1;
-			//_LOBYTE(v11) = QuestStatus(QTYPE_ZHAR);
-			v13 = &themeLoc[0].ttval;
-			if (QuestStatus(QTYPE_ZHAR)) {
-				v14 = 0;
-				if (themeCount > 0) {
-					v15 = &themeLoc[0].ttval;
-					while (1) {
-						themes[v14].ttval = *v15;
-						//_LOBYTE(v16) = SpecialThemeFit(v14, 5);
-						if (SpecialThemeFit(v14, 5)) {
-							break;
-						}
-						++v14;
-						v15 += 5;
-						if (v14 >= themeCount) {
-							goto LABEL_23;
-						}
-					}
-					themes[v14].ttype = 5;
-					zharlib = v14;
-				}
 			}
-		LABEL_23:
-			v17 = themeCount;
-			for (k = 0; k < themeCount; v13 += 5) {
-				if (themes[k].ttype == -1) {
-					themes[k].ttval = *v13;
-					for (l = ThemeGood[random(0, 4)];; l = random(0, 17)) {
-						//_LOBYTE(v20) = SpecialThemeFit(k, l);
-						if (SpecialThemeFit(k, l)) {
-							break;
-						}
-					}
-					themes[k].ttype = l;
-				}
-				v17 = themeCount;
-				++k;
-			}
-			numthemes += v17;
 		}
+		for (i = 0; i < themeCount; i++) {
+			if (themes[i].ttype == -1) {
+				themes[i].ttval = themeLoc[i].ttval;
+				for (j = ThemeGood[random(0, 4)];; j = random(0, 17)) {
+					if (SpecialThemeFit(i, j)) {
+						break;
+					}
+				}
+				themes[i].ttype = j;
+			}
+		}
+		numthemes += themeCount;
 	}
 }
 // 6AAA54: using guessed type int treasureFlag;
@@ -623,7 +486,7 @@ void __cdecl InitThemes()
 // 6AAC0C: using guessed type int bFountainFlag;
 
 // HoldThemeRooms marks theme rooms as populated.
-void __cdecl HoldThemeRooms()
+void HoldThemeRooms()
 {
 	int i, x, y;
 
@@ -649,7 +512,7 @@ void __cdecl HoldThemeRooms()
 // Parameters:
 //    - t: theme number (index into themes array).
 //    - f: frequency (1/f likelihood of adding monster).
-void __fastcall PlaceThemeMonsts(int t, int f)
+void PlaceThemeMonsts(int t, int f)
 {
 	int xp, yp;
 	int scattertypes[111];
@@ -678,7 +541,7 @@ void __fastcall PlaceThemeMonsts(int t, int f)
 //
 // Parameters:
 //    - t: theme number (index into themes array).
-void __fastcall Theme_Barrel(int t)
+void Theme_Barrel(int t)
 {
 	int xp, yp, r;
 	char barrnd[4] = { 2, 6, 4, 8 };
@@ -702,7 +565,7 @@ void __fastcall Theme_Barrel(int t)
 //
 // Parameters:
 //    - t: theme number (index into themes array).
-void __fastcall Theme_Shrine(int t)
+void Theme_Shrine(int t)
 {
 	char monstrnd[4] = { 6, 6, 3, 9 };
 
@@ -723,7 +586,7 @@ void __fastcall Theme_Shrine(int t)
 //
 // Parameters:
 //    - t: theme number (index into themes array).
-void __fastcall Theme_MonstPit(int t)
+void Theme_MonstPit(int t)
 {
 	int r;
 	int ixp, iyp;
@@ -759,7 +622,7 @@ void __fastcall Theme_MonstPit(int t)
 //
 // Parameters:
 //    - t: theme number (index into themes array).
-void __fastcall Theme_SkelRoom(int t)
+void Theme_SkelRoom(int t)
 {
 	int xp, yp;
 	char monstrnd[4] = { 6, 7, 3, 9 };
@@ -812,7 +675,7 @@ void __fastcall Theme_SkelRoom(int t)
 //
 // Parameters:
 //    - t: theme number (index into themes array).
-void __fastcall Theme_Treasure(int t)
+void Theme_Treasure(int t)
 {
 	int xp, yp;
 	int i;
@@ -849,7 +712,7 @@ void __fastcall Theme_Treasure(int t)
 //
 // Parameters:
 //    - t: theme number (index into themes array).
-void __fastcall Theme_Library(int t)
+void Theme_Library(int t)
 {
 	int xp, yp;
 	int oi;
@@ -893,7 +756,7 @@ void __fastcall Theme_Library(int t)
 //
 // Parameters:
 //    - t: theme number (index into themes array).
-void __fastcall Theme_Torture(int t)
+void Theme_Torture(int t)
 {
 	int xp, yp;
 	char tortrnd[4] = { 6, 8, 3, 8 };
@@ -917,7 +780,7 @@ void __fastcall Theme_Torture(int t)
 //
 // Parameters:
 //    - t: theme number (index into themes array).
-void __fastcall Theme_BloodFountain(int t)
+void Theme_BloodFountain(int t)
 {
 	char monstrnd[4] = { 6, 8, 3, 9 };
 
@@ -930,7 +793,7 @@ void __fastcall Theme_BloodFountain(int t)
 //
 // Parameters:
 //    - t: theme number (index into themes array).
-void __fastcall Theme_Decap(int t)
+void Theme_Decap(int t)
 {
 	int xp, yp;
 	char decaprnd[4] = { 6, 8, 3, 8 };
@@ -954,7 +817,7 @@ void __fastcall Theme_Decap(int t)
 //
 // Parameters:
 //    - t: theme number (index into themes array).
-void __fastcall Theme_PurifyingFountain(int t)
+void Theme_PurifyingFountain(int t)
 {
 	char monstrnd[4] = { 6, 7, 3, 9 };
 
@@ -967,7 +830,7 @@ void __fastcall Theme_PurifyingFountain(int t)
 //
 // Parameters:
 //    - t: theme number (index into themes array).
-void __fastcall Theme_ArmorStand(int t)
+void Theme_ArmorStand(int t)
 {
 	int xp, yp;
 	char armorrnd[4] = { 6, 8, 3, 8 };
@@ -996,7 +859,7 @@ void __fastcall Theme_ArmorStand(int t)
 //
 // Parameters:
 //    - t: theme number (index into themes array).
-void __fastcall Theme_GoatShrine(int t)
+void Theme_GoatShrine(int t)
 {
 	int xx, yy;
 
@@ -1015,7 +878,7 @@ void __fastcall Theme_GoatShrine(int t)
 //
 // Parameters:
 //    - t: theme number (index into themes array).
-void __fastcall Theme_Cauldron(int t)
+void Theme_Cauldron(int t)
 {
 	char monstrnd[4] = { 6, 7, 3, 9 };
 
@@ -1028,7 +891,7 @@ void __fastcall Theme_Cauldron(int t)
 //
 // Parameters:
 //    - t: theme number (index into themes array).
-void __fastcall Theme_MurkyFountain(int t)
+void Theme_MurkyFountain(int t)
 {
 	char monstrnd[4] = { 6, 7, 3, 9 };
 
@@ -1041,7 +904,7 @@ void __fastcall Theme_MurkyFountain(int t)
 //
 // Parameters:
 //    - t: theme number (index into themes array).
-void __fastcall Theme_TearFountain(int t)
+void Theme_TearFountain(int t)
 {
 	char monstrnd[4] = { 6, 7, 3, 9 };
 
@@ -1054,7 +917,7 @@ void __fastcall Theme_TearFountain(int t)
 //
 // Parameters:
 //    - t: theme number (index into themes array).
-void __fastcall Theme_BrnCross(int t)
+void Theme_BrnCross(int t)
 {
 	int xp, yp;
 	char monstrnd[4] = { 6, 8, 3, 9 };
@@ -1079,7 +942,7 @@ void __fastcall Theme_BrnCross(int t)
 //
 // Parameters:
 //    - t: theme number (index into themes array).
-void __fastcall Theme_WeaponRack(int t)
+void Theme_WeaponRack(int t)
 {
 	int xp, yp;
 	char weaponrnd[4] = { 6, 8, 5, 8 };
@@ -1105,7 +968,7 @@ void __fastcall Theme_WeaponRack(int t)
 }
 
 // UpdateL4Trans sets each value of the transparency map to 1.
-void __cdecl UpdateL4Trans()
+void UpdateL4Trans()
 {
 	int i, j;
 
@@ -1119,7 +982,7 @@ void __cdecl UpdateL4Trans()
 }
 
 // CreateThemeRooms adds thematic elements to rooms.
-void __cdecl CreateThemeRooms()
+void CreateThemeRooms()
 {
 	int i;
 
@@ -1130,7 +993,7 @@ void __cdecl CreateThemeRooms()
 	for (i = 0; i < numthemes; i++) {
 		themex = 0;
 		themey = 0;
-		switch ((char)themes[i].ttype) {
+		switch (themes[i].ttype) {
 		case THEME_BARREL:
 			Theme_Barrel(i);
 			break;

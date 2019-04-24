@@ -4,7 +4,11 @@
 
 DEVILUTION_BEGIN_NAMESPACE
 
-int trigflag[MAXTRIGGERS];
+int trigflag_0;
+int trigflag_1;
+int trigflag_2;
+int trigflag_3;
+int trigflag_4;
 TriggerStruct trigs[MAXTRIGGERS];
 int TWarpFrom; // weak
 
@@ -87,13 +91,13 @@ int L4PentaList[33] = {
 	-1
 };
 
-void __cdecl InitNoTriggers()
+void InitNoTriggers()
 {
-	trigflag[4] = 0;
-	trigflag[3] = 0;
+	trigflag_4 = 0;
+	trigflag_3 = 0;
 }
 
-void __cdecl InitTownTriggers()
+void InitTownTriggers()
 {
 	char v0; // bl
 	int v1;  // eax
@@ -102,12 +106,12 @@ void __cdecl InitTownTriggers()
 	trigs[0]._tx = 25;
 	trigs[0]._ty = 29;
 	trigs[0]._tmsg = WM_DIABNEXTLVL;
-	trigflag[4] = 1;
+	trigflag_4 = 1;
 	if (gbMaxPlayers == 4) {
 		trigs[1]._tx = 49;
-		trigflag[0] = 1;
-		trigflag[1] = 1;
-		trigflag[2] = 1;
+		trigflag_0 = 1;
+		trigflag_1 = 1;
+		trigflag_2 = 1;
 		trigs[1]._ty = 21;
 		trigs[1]._tmsg = WM_DIABTOWNWARP;
 		trigs[1]._tlvl = 5;
@@ -119,198 +123,133 @@ void __cdecl InitTownTriggers()
 		trigs[3]._ty = 80;
 		trigs[3]._tmsg = WM_DIABTOWNWARP;
 		trigs[3]._tlvl = 13;
-		trigflag[4] = 4;
+		trigflag_4 = 4;
 	} else {
-		trigflag[0] = 0;
-		trigflag[1] = 0;
-		trigflag[2] = 0;
+		trigflag_0 = 0;
+		trigflag_1 = 0;
+		trigflag_2 = 0;
 		v0 = plr[myplr].pTownWarps;
 		if (v0 & 1) {
 			trigs[1]._tx = 49;
 			trigs[1]._ty = 21;
 			trigs[1]._tmsg = WM_DIABTOWNWARP;
 			trigs[1]._tlvl = 5;
-			trigflag[4] = 2;
-			trigflag[0] = 1;
+			trigflag_4 = 2;
+			trigflag_0 = 1;
 		}
 		if (v0 & 2) {
-			trigflag[1] = 1;
-			v1 = trigflag[4]++;
+			trigflag_1 = 1;
+			v1 = trigflag_4++;
 			trigs[v1]._tx = 17;
 			trigs[v1]._ty = 69;
 			trigs[v1]._tmsg = WM_DIABTOWNWARP;
 			trigs[v1]._tlvl = 9;
 		}
 		if (v0 & 4) {
-			trigflag[2] = 1;
-			v2 = trigflag[4]++;
+			trigflag_2 = 1;
+			v2 = trigflag_4++;
 			trigs[v2]._tx = 41;
 			trigs[v2]._ty = 80;
 			trigs[v2]._tmsg = WM_DIABTOWNWARP;
 			trigs[v2]._tlvl = 13;
 		}
 	}
-	trigflag[3] = 0;
+	trigflag_3 = 0;
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-void __cdecl InitL1Triggers()
+void InitL1Triggers()
 {
 	int j, i;
-	int *_tmsg, *_ty, *_tx;
 
-	trigflag[4] = 0;
+	trigflag_4 = 0;
 	for (j = 0; j < MAXDUNY; j++) {
-		i = 0;
-		_tmsg = &trigs[trigflag[4]]._tmsg;
-		_ty = &trigs[trigflag[4]]._ty;
-		_tx = &trigs[trigflag[4]]._tx;
-		while (i < MAXDUNX) {
+		for (i = 0; i < MAXDUNX; i++) {
 			if (dPiece[i][j] == 129) {
-				trigflag[4]++;
-				*_tx = i;
-				*_ty = j;
-				*_tmsg = WM_DIABPREVLVL;
-				_tx += sizeof(int *);
-				_ty += sizeof(int *);
-				_tmsg += sizeof(int *);
+				trigs[trigflag_4]._tx = i;
+				trigs[trigflag_4]._ty = j;
+				trigs[trigflag_4]._tmsg = WM_DIABPREVLVL;
+				trigflag_4++;
 			}
 			if (dPiece[i][j] == 115) {
-				trigflag[4]++;
-				*_tx = i;
-				*_ty = j;
-				*_tmsg = WM_DIABNEXTLVL;
-				_tx += sizeof(int *);
-				_ty += sizeof(int *);
-				_tmsg += sizeof(int *);
+				trigs[trigflag_4]._tx = i;
+				trigs[trigflag_4]._ty = j;
+				trigs[trigflag_4]._tmsg = WM_DIABNEXTLVL;
+				trigflag_4++;
 			}
-			i++;
 		}
 	}
-	trigflag[3] = 0;
+	trigflag_3 = 0;
 }
 
-void __cdecl InitL2Triggers()
+void InitL2Triggers()
 {
-	signed int v0;     // edi
-	int *v1;           // esi
-	int *v2;           // edx
-	TriggerStruct *v3; // ecx
-	int *v4;           // eax
-	int(*v5)[112];     // [esp+Ch] [ebp-10h]
-	int(*v6)[112];     // [esp+10h] [ebp-Ch]
-	int v7;            // [esp+14h] [ebp-8h]
-	int *v8;           // [esp+18h] [ebp-4h]
+	int i, j;
 
-	trigflag[4] = 0;
-	v7 = 0;
-	v5 = dPiece;
-	do {
-		v0 = 0;
-		v1 = &trigs[trigflag[4]]._tmsg;
-		v2 = &trigs[trigflag[4]]._ty;
-		v3 = &trigs[trigflag[4]];
-		v8 = &trigs[trigflag[4]]._tlvl;
-		v6 = v5;
-		do {
-			if ((*v6)[0] == 267 && (v0 != quests[QTYPE_BONE]._qtx || v7 != quests[QTYPE_BONE]._qty)) {
-				++trigflag[4];
-				v8 += 4;
-				v3->_tx = v0;
-				*v2 = v7;
-				*v1 = WM_DIABPREVLVL;
-				++v3;
-				v2 += 4;
-				v1 += 4;
+	trigflag_4 = 0;
+	for (j = 0; j < MAXDUNY; j++) {
+		for (i = 0; i < MAXDUNX; i++) {
+			if (dPiece[i][j] == 267 && (i != quests[QTYPE_BONE]._qtx || j != quests[QTYPE_BONE]._qty)) {
+				trigs[trigflag_4]._tx = i;
+				trigs[trigflag_4]._ty = j;
+				trigs[trigflag_4]._tmsg = WM_DIABPREVLVL;
+				trigflag_4++;
 			}
-			if ((*v6)[0] == 559) {
-				v3->_tx = v0;
-				*v2 = v7;
-				v4 = v8;
-				v8 += 4;
-				*v1 = WM_DIABTWARPUP;
-				*v4 = 0;
-				++trigflag[4];
-				++v3;
-				v2 += 4;
-				v1 += 4;
+
+			if (dPiece[i][j] == 559) {
+				trigs[trigflag_4]._tx = i;
+				trigs[trigflag_4]._ty = j;
+				trigs[trigflag_4]._tmsg = WM_DIABTWARPUP;
+				trigs[trigflag_4]._tlvl = 0;
+				trigflag_4++;
 			}
-			if ((*v6)[0] == 271) {
-				++trigflag[4];
-				v8 += 4;
-				v3->_tx = v0;
-				*v2 = v7;
-				*v1 = WM_DIABNEXTLVL;
-				++v3;
-				v2 += 4;
-				v1 += 4;
+
+			if (dPiece[i][j] == 271) {
+				trigs[trigflag_4]._tx = i;
+				trigs[trigflag_4]._ty = j;
+				trigs[trigflag_4]._tmsg = WM_DIABNEXTLVL;
+				trigflag_4++;
 			}
-			++v6;
-			++v0;
-		} while (v0 < 112);
-		v5 = (int(*)[112])((char *)v5 + 4);
-		++v7;
-	} while ((signed int)v5 < (signed int)dPiece[1]);
-	trigflag[3] = 0;
+
+		}
+	}
+	trigflag_3 = 0;
 }
 
-void __cdecl InitL3Triggers()
+void InitL3Triggers()
 {
-	int v0;            // edi
-	signed int v1;     // esi
-	int *v2;           // edx
-	int *v3;           // ecx
-	TriggerStruct *v4; // eax
-	int(*v5)[112];     // [esp+Ch] [ebp-8h]
-	int(*v6)[112];     // [esp+10h] [ebp-4h]
+	int i, j;
 
-	v0 = 0;
-	trigflag[4] = 0;
-	v5 = dPiece;
-	do {
-		v1 = 0;
-		v6 = v5;
-		v2 = &trigs[trigflag[4]]._tmsg;
-		v3 = &trigs[trigflag[4]]._ty;
-		v4 = &trigs[trigflag[4]];
-		do {
-			if ((*v6)[0] == 171) {
-				++trigflag[4];
-				v4->_tx = v1;
-				*v3 = v0;
-				*v2 = WM_DIABPREVLVL;
-				++v4;
-				v3 += 4;
-				v2 += 4;
+	trigflag_4 = 0;
+	for (j = 0; j < MAXDUNY; j++) {
+		for (i = 0; i < MAXDUNX; i++) {
+			if (dPiece[i][j] == 171) {
+				trigs[trigflag_4]._tx = i;
+				trigs[trigflag_4]._ty = j;
+				trigs[trigflag_4]._tmsg = WM_DIABPREVLVL;
+				trigflag_4++;
 			}
-			if ((*v6)[0] == 168) {
-				++trigflag[4];
-				v4->_tx = v1;
-				*v3 = v0;
-				*v2 = WM_DIABNEXTLVL;
-				++v4;
-				v3 += 4;
-				v2 += 4;
+
+			if (dPiece[i][j] == 168) {
+				trigs[trigflag_4]._tx = i;
+				trigs[trigflag_4]._ty = j;
+				trigs[trigflag_4] ._tmsg = WM_DIABNEXTLVL;
+				trigflag_4++;
 			}
-			if ((*v6)[0] == 549) {
-				++trigflag[4];
-				v4->_tx = v1;
-				*v3 = v0;
-				*v2 = WM_DIABTWARPUP;
-				++v4;
-				v3 += 4;
-				v2 += 4;
+
+			if (dPiece[i][j] == 549) {
+				trigs[trigflag_4]._tx = i;
+				trigs[trigflag_4]._ty = j;
+				trigs[trigflag_4]._tmsg = WM_DIABTWARPUP;
+				trigflag_4++;
 			}
-			++v6;
-			++v1;
-		} while (v1 < 112);
-		v5 = (int(*)[112])((char *)v5 + 4);
-		++v0;
-	} while ((signed int)v5 < (signed int)dPiece[1]);
-	trigflag[3] = 0;
+		}
+
+	}
+	trigflag_3 = 0;
 }
 
-void __cdecl InitL4Triggers()
+void InitL4Triggers()
 {
 	signed int v0;     // edi
 	int *v1;           // esi
@@ -326,19 +265,19 @@ void __cdecl InitL4Triggers()
 	int v11;           // [esp+10h] [ebp-8h]
 	int(*v12)[112];    // [esp+14h] [ebp-4h]
 
-	trigflag[4] = 0;
+	trigflag_4 = 0;
 	v11 = 0;
 	v9 = dPiece;
 	do {
 		v0 = 0;
 		v12 = v9;
-		v1 = &trigs[trigflag[4]]._tmsg;
-		v2 = &trigs[trigflag[4]]._ty;
-		v3 = &trigs[trigflag[4]];
-		v4 = &trigs[trigflag[4]]._tlvl;
+		v1 = &trigs[trigflag_4]._tmsg;
+		v2 = &trigs[trigflag_4]._ty;
+		v3 = &trigs[trigflag_4];
+		v4 = &trigs[trigflag_4]._tlvl;
 		do {
 			if ((*v12)[0] == 83) {
-				++trigflag[4];
+				++trigflag_4;
 				v3->_tx = v0;
 				*v2 = v11;
 				*v1 = WM_DIABPREVLVL;
@@ -352,14 +291,14 @@ void __cdecl InitL4Triggers()
 				*v2 = v11;
 				*v1 = WM_DIABTWARPUP;
 				*v4 = 0;
-				++trigflag[4];
+				++trigflag_4;
 				v4 += 4;
 				++v3;
 				v2 += 4;
 				v1 += 4;
 			}
 			if ((*v12)[0] == 120) {
-				++trigflag[4];
+				++trigflag_4;
 				v3->_tx = v0;
 				*v2 = v11;
 				*v1 = WM_DIABNEXTLVL;
@@ -379,10 +318,10 @@ void __cdecl InitL4Triggers()
 	do {
 		v6 = v10;
 		v7 = 0;
-		v8 = &trigs[trigflag[4]]._ty;
+		v8 = &trigs[trigflag_4]._ty;
 		do {
 			if ((*v6)[0] == 370 && quests[QTYPE_VB]._qactive == 3) {
-				++trigflag[4];
+				++trigflag_4;
 				*(v8 - 1) = v7;
 				*v8 = v5;
 				v8[1] = WM_DIABNEXTLVL;
@@ -394,46 +333,46 @@ void __cdecl InitL4Triggers()
 		v10 = (int(*)[112])((char *)v10 + 4);
 		++v5;
 	} while ((signed int)v10 < (signed int)dPiece[1]);
-	trigflag[3] = 0;
+	trigflag_3 = 0;
 }
 
-void __cdecl InitSKingTriggers()
+void InitSKingTriggers()
 {
-	trigflag[3] = 0;
-	trigflag[4] = 1;
+	trigflag_3 = 0;
+	trigflag_4 = 1;
 	trigs[0]._tx = 82;
 	trigs[0]._ty = 42;
 	trigs[0]._tmsg = WM_DIABRTNLVL;
 }
 
-void __cdecl InitSChambTriggers()
+void InitSChambTriggers()
 {
-	trigflag[3] = 0;
-	trigflag[4] = 1;
+	trigflag_3 = 0;
+	trigflag_4 = 1;
 	trigs[0]._tx = 70;
 	trigs[0]._ty = 39;
 	trigs[0]._tmsg = WM_DIABRTNLVL;
 }
 
-void __cdecl InitPWaterTriggers()
+void InitPWaterTriggers()
 {
-	trigflag[3] = 0;
-	trigflag[4] = 1;
+	trigflag_3 = 0;
+	trigflag_4 = 1;
 	trigs[0]._tx = 30;
 	trigs[0]._ty = 83;
 	trigs[0]._tmsg = WM_DIABRTNLVL;
 }
 
-void __cdecl InitVPTriggers()
+void InitVPTriggers()
 {
-	trigflag[3] = 0;
-	trigflag[4] = 1;
+	trigflag_3 = 0;
+	trigflag_4 = 1;
 	trigs[0]._tx = 35;
 	trigs[0]._ty = 32;
 	trigs[0]._tmsg = WM_DIABRTNLVL;
 }
 
-BOOL __cdecl ForceTownTrig()
+BOOL ForceTownTrig()
 {
 	int i, j, k, l;
 
@@ -446,7 +385,7 @@ BOOL __cdecl ForceTownTrig()
 		}
 	}
 
-	if (trigflag[0]) {
+	if (trigflag_0) {
 		for (j = 0; TownWarp1List[j] != -1; j++) {
 			if (dPiece[cursmx][cursmy] == TownWarp1List[j]) {
 				strcpy(infostr, "Down to catacombs");
@@ -457,7 +396,7 @@ BOOL __cdecl ForceTownTrig()
 		}
 	}
 
-	if (trigflag[1]) {
+	if (trigflag_1) {
 		for (k = 1199; k <= 1220; k++) {
 			if (dPiece[cursmx][cursmy] == k) {
 				strcpy(infostr, "Down to caves");
@@ -468,7 +407,7 @@ BOOL __cdecl ForceTownTrig()
 		}
 	}
 
-	if (trigflag[2]) {
+	if (trigflag_2) {
 		for (l = 1240; l <= 1254; l++) {
 			if (dPiece[cursmx][cursmy] == l) {
 				strcpy(infostr, "Down to hell");
@@ -482,473 +421,222 @@ BOOL __cdecl ForceTownTrig()
 	return FALSE;
 }
 
-unsigned char __cdecl ForceL1Trig()
+BOOL ForceL1Trig()
 {
-	int *v0; // eax
-	int *v1; // esi
-	int v2;  // eax
-	int *v3; // edx
-	int *v4; // eax
-	int *v5; // esi
-	int *v6; // edx
-	int v8;  // eax
-	int v9;  // ecx
+	int i, j;
 
-	if (L1UpList[0] == -1) {
-	LABEL_12:
-		if (L1DownList[0] == -1)
-			return 0;
-		v4 = L1DownList;
-		v5 = L1DownList;
-		while (1) {
-			if (dPiece[cursmx][cursmy] == *v4) {
-				sprintf(infostr, "Down to level %i", currlevel + 1);
-				v2 = 0;
-				if (trigflag[4] > 0)
-					break;
-			}
-		LABEL_19:
-			++v5;
-			v4 = v5;
-			if (*v5 == -1)
-				return 0;
-		}
-		v6 = &trigs[0]._tmsg;
-		while (*v6 != WM_DIABNEXTLVL) {
-			++v2;
-			v6 += 4;
-			if (v2 >= trigflag[4])
-				goto LABEL_19;
-		}
-	} else {
-		v0 = L1UpList;
-		v1 = L1UpList;
-		while (1) {
-			if (dPiece[cursmx][cursmy] == *v0) {
-				if (currlevel <= 1u)
-					strcpy(infostr, "Up to town");
-				else
-					sprintf(infostr, "Up to level %i", currlevel - 1);
-				v2 = 0;
-				if (trigflag[4] > 0)
-					break;
-			}
-		LABEL_11:
-			++v1;
-			v0 = v1;
-			if (*v1 == -1)
-				goto LABEL_12;
-		}
-		v3 = &trigs[0]._tmsg;
-		while (*v3 != WM_DIABPREVLVL) {
-			++v2;
-			v3 += 4;
-			if (v2 >= trigflag[4])
-				goto LABEL_11;
-		}
-	}
-	v8 = v2;
-	v9 = trigs[v8]._tx;
-	cursmy = trigs[v8]._ty;
-	cursmx = v9;
-	return 1;
-}
-
-unsigned char __cdecl ForceL2Trig()
-{
-	int *v0;            // eax
-	int *v1;            // ebp
-	int v2;             // edi
-	TriggerStruct *v3;  // esi
-	int v4;             // ebx
-	int v5;             // eax
-	int *v6;            // eax
-	int *v7;            // esi
-	int v8;             // eax
-	int *v9;            // ecx
-	int v10;            // eax
-	int v11;            // ecx
-	int v12;            // eax
-	int *v13;           // eax
-	int *v14;           // ebp
-	TriggerStruct *v15; // esi
-	int v16;            // ebx
-	int v17;            // eax
-	int v19;            // edi
-
-	if (L2UpList[0] == -1) {
-	LABEL_11:
-		if (L2DownList[0] != -1) {
-			v6 = L2DownList;
-			v7 = L2DownList;
-			while (1) {
-				if (dPiece[cursmx][cursmy] == *v6) {
-					sprintf(infostr, "Down to level %i", currlevel + 1);
-					v8 = 0;
-					if (trigflag[4] > 0)
-						break;
+	for (i = 0; L1UpList[i] != -1; i++) {
+		if (dPiece[cursmx][cursmy] == L1UpList[i]) {
+			if (currlevel > 1)
+				sprintf(infostr, "Up to level %i", currlevel - 1);
+			else
+				strcpy(infostr, "Up to town");
+			for (j = 0; j < trigflag_4; j++) {
+				if (trigs[j]._tmsg == WM_DIABPREVLVL) {
+					cursmx = trigs[j]._tx;
+					cursmy = trigs[j]._ty;
+					return TRUE;
 				}
-			LABEL_18:
-				++v7;
-				v6 = v7;
-				if (*v7 == -1)
-					goto LABEL_22;
 			}
-			v9 = &trigs[0]._tmsg;
-			while (*v9 != WM_DIABNEXTLVL) {
-				++v8;
-				v9 += 4;
-				if (v8 >= trigflag[4])
-					goto LABEL_18;
-			}
-			v10 = v8;
-			v11 = trigs[v10]._tx;
-			v12 = trigs[v10]._ty;
-			cursmx = v11;
-			goto LABEL_37;
 		}
-	LABEL_22:
-		if (currlevel != 5 || L2TWarpUpList[0] == -1)
-			return 0;
-		v13 = L2TWarpUpList;
-		v14 = L2TWarpUpList;
-		while (1) {
-			if (dPiece[cursmx][cursmy] == *v13) {
-				v2 = 0;
-				if (trigflag[4] > 0)
-					break;
-			}
-		LABEL_32:
-			++v14;
-			v13 = v14;
-			if (*v14 == -1)
-				return 0;
-		}
-		v15 = trigs;
-		while (1) {
-			if (v15->_tmsg == WM_DIABTWARPUP) {
-				v16 = abs(v15->_tx - cursmx);
-				v17 = abs(v15->_ty - cursmy);
-				if (v16 < 4 && v17 < 4)
-					break;
-			}
-			++v2;
-			++v15;
-			if (v2 >= trigflag[4])
-				goto LABEL_32;
-		}
-		strcpy(infostr, "Up to town");
-	} else {
-		v0 = L2UpList;
-		v1 = L2UpList;
-		while (1) {
-			if (dPiece[cursmx][cursmy] == *v0) {
-				v2 = 0;
-				if (trigflag[4] > 0)
-					break;
-			}
-		LABEL_10:
-			++v1;
-			v0 = v1;
-			if (*v1 == -1)
-				goto LABEL_11;
-		}
-		v3 = trigs;
-		while (1) {
-			if (v3->_tmsg == WM_DIABPREVLVL) {
-				v4 = abs(v3->_tx - cursmx);
-				v5 = abs(v3->_ty - cursmy);
-				if (v4 < 4 && v5 < 4)
-					break;
-			}
-			++v2;
-			++v3;
-			if (v2 >= trigflag[4])
-				goto LABEL_10;
-		}
-		sprintf(infostr, "Up to level %i", currlevel - 1);
 	}
-	v19 = v2;
-	cursmx = trigs[v19]._tx;
-	v12 = trigs[v19]._ty;
-LABEL_37:
-	cursmy = v12;
-	return 1;
+
+	for (i = 0; L1DownList[i] != -1; i++) {
+		if (dPiece[cursmx][cursmy] == L1DownList[i]) {
+			sprintf(infostr, "Down to level %i", currlevel + 1);
+			for (j = 0; j < trigflag_4; j++) {
+				if (trigs[j]._tmsg == WM_DIABNEXTLVL) {
+					cursmx = trigs[j]._tx;
+					cursmy = trigs[j]._ty;
+					return TRUE;
+				}
+			}
+		}
+	}
+
+	return FALSE;
 }
 
-unsigned char __cdecl ForceL3Trig()
+BOOL ForceL2Trig()
 {
-	int *v0;            // eax
-	int *v1;            // esi
-	int v2;             // eax
-	int *v3;            // ecx
-	int *v4;            // ecx
-	int *v5;            // esi
-	int v6;             // ecx
-	int v7;             // eax
-	int *v8;            // ecx
-	int *v9;            // eax
-	int *v10;           // ebp
-	int v11;            // edi
-	TriggerStruct *v12; // esi
-	int v13;            // ebx
-	int v14;            // eax
-	int v15;            // eax
-	int v16;            // ecx
-	int v17;            // eax
-	int v18;            // edi
+	int i, j, dx, dy;
 
-	if (L3UpList[0] != -1) {
-		v0 = L3UpList;
-		v1 = L3UpList;
-		while (1) {
-			if (dPiece[cursmx][cursmy] == *v0) {
-				sprintf(infostr, "Up to level %i", currlevel - 1);
-				v2 = 0;
-				if (trigflag[4] > 0)
-					break;
+	for (i = 0; L2UpList[i] != -1; i++) {
+		if (dPiece[cursmx][cursmy] == L2UpList[i]) {
+			for (j = 0; j < trigflag_4; j++) {
+				if (trigs[j]._tmsg == WM_DIABPREVLVL) {
+					dx = abs(trigs[j]._tx - cursmx);
+					dy = abs(trigs[j]._ty - cursmy);
+					if (dx < 4 && dy < 4) {
+						sprintf(infostr, "Up to level %i", currlevel - 1);
+						cursmx = trigs[j]._tx;
+						cursmy = trigs[j]._ty;
+						return TRUE;
+					}
+				}
 			}
-		LABEL_8:
-			++v1;
-			v0 = v1;
-			if (*v1 == -1)
-				goto LABEL_9;
 		}
-		v3 = &trigs[0]._tmsg;
-		while (*v3 != WM_DIABPREVLVL) {
-			++v2;
-			v3 += 4;
-			if (v2 >= trigflag[4])
-				goto LABEL_8;
-		}
-		goto LABEL_31;
 	}
-LABEL_9:
-	if (L3DownList[0] != -1) {
-		v4 = L3DownList;
-		v5 = L3DownList;
-		while (1) {
-			v6 = *v4;
-			v7 = cursmy + 112 * cursmx;
-			if (dPiece[0][v7] == v6 || dPiece[1][v7] == v6 || dPiece[2][v7] == v6) {
-				sprintf(infostr, "Down to level %i", currlevel + 1);
-				v2 = 0;
-				if (trigflag[4] > 0)
-					break;
+
+	for (i = 0; L2DownList[i] != -1; i++) {
+		if (dPiece[cursmx][cursmy] == L2DownList[i]) {
+			sprintf(infostr, "Down to level %i", currlevel + 1);
+			for (j = 0; j < trigflag_4; j++) {
+				if (trigs[j]._tmsg == WM_DIABNEXTLVL) {
+					cursmx = trigs[j]._tx;
+					cursmy = trigs[j]._ty;
+					return TRUE;
+				}
 			}
-		LABEL_18:
-			++v5;
-			v4 = v5;
-			if (*v5 == -1)
-				goto LABEL_19;
 		}
-		v8 = &trigs[0]._tmsg;
-		while (*v8 != WM_DIABNEXTLVL) {
-			++v2;
-			v8 += 4;
-			if (v2 >= trigflag[4])
-				goto LABEL_18;
-		}
-	LABEL_31:
-		v15 = v2;
-		v16 = trigs[v15]._tx;
-		v17 = trigs[v15]._ty;
-		cursmx = v16;
-	LABEL_33:
-		cursmy = v17;
-		return 1;
 	}
-LABEL_19:
-	if (currlevel == 9 && L3TWarpUpList[0] != -1) {
-		v9 = L3TWarpUpList;
-		v10 = L3TWarpUpList;
-		while (1) {
-			if (dPiece[cursmx][cursmy] == *v9) {
-				v11 = 0;
-				if (trigflag[4] > 0)
-					break;
+
+	if (currlevel == 5) {
+		for (i = 0; L2TWarpUpList[i] != -1; i++) {
+			if (dPiece[cursmx][cursmy] == L2TWarpUpList[i]) {
+				for (j = 0; j < trigflag_4; j++) {
+					if (trigs[j]._tmsg == WM_DIABTWARPUP) {
+						dx = abs(trigs[j]._tx - cursmx);
+						dy = abs(trigs[j]._ty - cursmy);
+						if (dx < 4 && dy < 4) {
+							strcpy(infostr, "Up to town");
+							cursmx = trigs[j]._tx;
+							cursmy = trigs[j]._ty;
+							return TRUE;
+						}
+					}
+				}
 			}
-		LABEL_29:
-			++v10;
-			v9 = v10;
-			if (*v10 == -1)
-				return 0;
 		}
-		v12 = trigs;
-		while (1) {
-			if (v12->_tmsg == WM_DIABTWARPUP) {
-				v13 = abs(v12->_tx - cursmx);
-				v14 = abs(v12->_ty - cursmy);
-				if (v13 < 4 && v14 < 4)
-					break;
-			}
-			++v11;
-			++v12;
-			if (v11 >= trigflag[4])
-				goto LABEL_29;
-		}
-		strcpy(infostr, "Up to town");
-		v18 = v11;
-		cursmx = trigs[v18]._tx;
-		v17 = trigs[v18]._ty;
-		goto LABEL_33;
 	}
-	return 0;
+
+	return FALSE;
 }
 
-unsigned char __cdecl ForceL4Trig()
+BOOL ForceL3Trig()
 {
-	int *v0;            // eax
-	int *v1;            // esi
-	int v2;             // eax
-	int *v3;            // ecx
-	int *v4;            // eax
-	int *v5;            // esi
-	int *v6;            // ecx
-	int *v7;            // eax
-	int *v8;            // ebp
-	int v9;             // edi
-	TriggerStruct *v10; // esi
-	int v11;            // ebx
-	int v12;            // eax
-	int *v13;           // eax
-	int *v14;           // esi
-	int *v15;           // edx
-	int v16;            // edi
-	int v17;            // eax
-	int v18;            // eax
-	int v19;            // ecx
+	int i, j, dx, dy;
 
-	if (L4UpList[0] != -1) {
-		v0 = L4UpList;
-		v1 = L4UpList;
-		while (1) {
-			if (dPiece[cursmx][cursmy] == *v0) {
-				sprintf(infostr, "Up to level %i", currlevel - 1);
-				v2 = 0;
-				if (trigflag[4] > 0)
-					break;
+	for (i = 0; L3UpList[i] != -1; ++i) {
+		if (dPiece[cursmx][cursmy] == L3UpList[i]) {
+			sprintf(infostr, "Up to level %i", currlevel - 1);
+			for (j = 0; j < trigflag_4; j++) {
+				if (trigs[j]._tmsg == WM_DIABPREVLVL) {
+					cursmx = trigs[j]._tx;
+					cursmy = trigs[j]._ty;
+					return TRUE;
+				}
 			}
-		LABEL_8:
-			++v1;
-			v0 = v1;
-			if (*v1 == -1)
-				goto LABEL_9;
 		}
-		v3 = &trigs[0]._tmsg;
-		while (*v3 != WM_DIABPREVLVL) {
-			++v2;
-			v3 += 4;
-			if (v2 >= trigflag[4])
-				goto LABEL_8;
-		}
-		goto LABEL_39;
 	}
-LABEL_9:
-	if (L4DownList[0] != -1) {
-		v4 = L4DownList;
-		v5 = L4DownList;
-		while (1) {
-			if (dPiece[cursmx][cursmy] == *v4) {
-				sprintf(infostr, "Down to level %i", currlevel + 1);
-				v2 = 0;
-				if (trigflag[4] > 0)
-					break;
+
+	for (i = 0; L3DownList[i] != -1; i++) {
+		if (dPiece[cursmx][cursmy] == L3DownList[i] || dPiece[cursmx + 1][cursmy] == L3DownList[i] || dPiece[cursmx + 2][cursmy] == L3DownList[i]) {
+			sprintf(infostr, "Down to level %i", currlevel + 1);
+			for (j = 0; j < trigflag_4; j++) {
+				if (trigs[j]._tmsg == WM_DIABNEXTLVL) {
+					cursmx = trigs[j]._tx;
+					cursmy = trigs[j]._ty;
+					return TRUE;
+				}
 			}
-		LABEL_16:
-			++v5;
-			v4 = v5;
-			if (*v5 == -1)
-				goto LABEL_17;
 		}
-		v6 = &trigs[0]._tmsg;
-		while (*v6 != WM_DIABNEXTLVL) {
-			++v2;
-			v6 += 4;
-			if (v2 >= trigflag[4])
-				goto LABEL_16;
-		}
-		goto LABEL_39;
 	}
-LABEL_17:
+
+	if (currlevel == 9) {
+		for (i = 0; L3TWarpUpList[i] != -1; i++) {
+			if (dPiece[cursmx][cursmy] == L3TWarpUpList[i]) {
+				for (j = 0; j < trigflag_4; j++) {
+					if (trigs[j]._tmsg == WM_DIABTWARPUP) {
+						dx = abs(trigs[j]._tx - cursmx);
+						dy = abs(trigs[j]._ty - cursmy);
+						if (dx < 4 && dy < 4) {
+							strcpy(infostr, "Up to town");
+							cursmx = trigs[j]._tx;
+							cursmy = trigs[j]._ty;
+							return TRUE;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return FALSE;
+}
+
+BOOL ForceL4Trig()
+{
+	int i, j, dx, dy;
+
+	for (i = 0; L4UpList[i] != -1; ++i) {
+		if (dPiece[cursmx][cursmy] == L4UpList[i]) {
+			sprintf(infostr, "Up to level %i", currlevel - 1);
+			for (j = 0; j < trigflag_4; j++) {
+				if (trigs[j]._tmsg == WM_DIABPREVLVL) {
+					cursmx = trigs[j]._tx;
+					cursmy = trigs[j]._ty;
+					return TRUE;
+				}
+			}
+		}
+	}
+
+	for (i = 0; L4DownList[i] != -1; i++) {
+		if (dPiece[cursmx][cursmy] == L4DownList[i]) {
+			sprintf(infostr, "Down to level %i", currlevel + 1);
+			for (j = 0; j < trigflag_4; j++) {
+				if (trigs[j]._tmsg == WM_DIABNEXTLVL) {
+					cursmx = trigs[j]._tx;
+					cursmy = trigs[j]._ty;
+					return TRUE;
+				}
+			}
+		}
+	}
+
 	if (currlevel == 13) {
-		if (L4TWarpUpList[0] != -1) {
-			v7 = L4TWarpUpList;
-			v8 = L4TWarpUpList;
-			while (1) {
-				if (dPiece[cursmx][cursmy] == *v7) {
-					v9 = 0;
-					if (trigflag[4] > 0)
-						break;
+		for (i = 0; L4TWarpUpList[i] != -1; i++) {
+			if (dPiece[cursmx][cursmy] == L4TWarpUpList[i]) {
+				for (j = 0; j < trigflag_4; j++) {
+					if (trigs[j]._tmsg == WM_DIABTWARPUP) {
+						dx = abs(trigs[j]._tx - cursmx);
+						dy = abs(trigs[j]._ty - cursmy);
+						if (dx < 4 && dy < 4) {
+							strcpy(infostr, "Up to town");
+							cursmx = trigs[j]._tx;
+							cursmy = trigs[j]._ty;
+							return TRUE;
+						}
+					}
 				}
-			LABEL_27:
-				++v8;
-				v7 = v8;
-				if (*v8 == -1)
-					goto LABEL_28;
 			}
-			v10 = trigs;
-			while (1) {
-				if (v10->_tmsg == WM_DIABTWARPUP) {
-					v11 = abs(v10->_tx - cursmx);
-					v12 = abs(v10->_ty - cursmy);
-					if (v11 < 4 && v12 < 4)
-						break;
-				}
-				++v9;
-				++v10;
-				if (v9 >= trigflag[4])
-					goto LABEL_27;
-			}
-			strcpy(infostr, "Up to town");
-			v16 = v9;
-			cursmx = trigs[v16]._tx;
-			v17 = trigs[v16]._ty;
-			goto LABEL_40;
-		}
-	} else {
-	LABEL_28:
-		if (currlevel == 15 && L4PentaList[0] != -1) {
-			v13 = L4PentaList;
-			v14 = L4PentaList;
-			while (1) {
-				if (dPiece[cursmx][cursmy] == *v13) {
-					strcpy(infostr, "Down to Diablo");
-					v2 = 0;
-					if (trigflag[4] > 0)
-						break;
-				}
-			LABEL_36:
-				++v14;
-				v13 = v14;
-				if (*v14 == -1)
-					return 0;
-			}
-			v15 = &trigs[0]._tmsg;
-			while (*v15 != WM_DIABNEXTLVL) {
-				++v2;
-				v15 += 4;
-				if (v2 >= trigflag[4])
-					goto LABEL_36;
-			}
-		LABEL_39:
-			v18 = v2;
-			v19 = trigs[v18]._tx;
-			v17 = trigs[v18]._ty;
-			cursmx = v19;
-		LABEL_40:
-			cursmy = v17;
-			return 1;
 		}
 	}
-	return 0;
+
+	if (currlevel == 15) {
+		for (i = 0; L4PentaList[i] != -1; i++) {
+			if (dPiece[cursmx][cursmy] == L4PentaList[i]) {
+				strcpy(infostr, "Down to Diablo");
+				for (j = 0; j < trigflag_4; j++) {
+					if (trigs[j]._tmsg == WM_DIABNEXTLVL) {
+						cursmx = trigs[j]._tx;
+						cursmy = trigs[j]._ty;
+						return TRUE;
+					}
+				}
+			}
+		}
+	}
+
+	return FALSE;
 }
 
-void __cdecl Freeupstairs()
+void Freeupstairs()
 {
 	int i, yy, xx, tx, ty;
 
-	for (i = 0; i < trigflag[4]; i++) {
+	for (i = 0; i < trigflag_4; i++) {
 		tx = trigs[i]._tx;
 		ty = trigs[i]._ty;
 
@@ -960,7 +648,7 @@ void __cdecl Freeupstairs()
 	}
 }
 
-BOOL __cdecl ForceSKingTrig()
+BOOL ForceSKingTrig()
 {
 	int i;
 
@@ -977,7 +665,7 @@ BOOL __cdecl ForceSKingTrig()
 	return FALSE;
 }
 
-BOOL __cdecl ForceSChambTrig()
+BOOL ForceSChambTrig()
 {
 	int i;
 
@@ -994,7 +682,7 @@ BOOL __cdecl ForceSChambTrig()
 	return FALSE;
 }
 
-BOOL __cdecl ForcePWaterTrig()
+BOOL ForcePWaterTrig()
 {
 	int i;
 
@@ -1011,12 +699,12 @@ BOOL __cdecl ForcePWaterTrig()
 	return FALSE;
 }
 
-void __cdecl CheckTrigForce()
+void CheckTrigForce()
 {
 	int v0; // eax
 	int v1; // eax
 
-	trigflag[3] = 0;
+	trigflag_3 = 0;
 	if (MouseY <= 351) {
 		if (setlevel) {
 			switch (setlvlnum) {
@@ -1052,132 +740,107 @@ void __cdecl CheckTrigForce()
 			LABEL_14:
 				if (leveltype == DTYPE_TOWN)
 					goto LABEL_24;
-				if (trigflag[3]) {
+				if (trigflag_3) {
 				LABEL_25:
 					ClearPanel();
 					return;
 				}
 				v1 = ForceQuests();
 			LABEL_23:
-				trigflag[3] = v1;
+				trigflag_3 = v1;
 			LABEL_24:
-				if (!trigflag[3])
+				if (!trigflag_3)
 					return;
 				goto LABEL_25;
 			}
 		} else {
 			v0 = ForceTownTrig();
 		}
-		trigflag[3] = v0;
+		trigflag_3 = v0;
 		goto LABEL_14;
 	}
 }
 // 5CF31D: using guessed type char setlevel;
 
-void __cdecl CheckTriggers()
+void CheckTriggers()
 {
-	int *v0;       // edi
-	int v1;        // esi
-	int v2;        // ecx
-	int v3;        // eax
-	int v4;        // edx
-	signed int v5; // edx
-	int v6;        // eax
-	int v9;        // [esp-4h] [ebp-20h]
-	int x;         // [esp+Ch] [ebp-10h]
-	int y;         // [esp+10h] [ebp-Ch]
-	int v12;       // [esp+14h] [ebp-8h]
-	int error_id;  // [esp+1Bh] [ebp-1h]
+	int x, y, i;
+	BOOL abort;
+	char abortflag;
 
 	if (plr[myplr]._pmode)
 		return;
-	v12 = 0;
-	if (trigflag[4] <= 0)
-		return;
-	v0 = &trigs[0]._tmsg;
-	while (1) {
-		v1 = myplr;
-		v2 = plr[myplr].WorldX;
-		if (v2 != *(v0 - 2))
-			goto LABEL_34;
-		v3 = plr[v1].WorldY;
-		if (v3 != *(v0 - 1))
-			goto LABEL_34;
-		v4 = *v0;
-		if (*v0 == WM_DIABNEXTLVL) {
+
+	for (i = 0; i < trigflag_4; i++) {
+		if (plr[myplr].WorldX != trigs[i]._tx || plr[myplr].WorldY != trigs[i]._ty) {
+			continue;
+		}
+
+		switch (trigs[i]._tmsg) {
+		case WM_DIABNEXTLVL:
 			if (pcurs >= CURSOR_FIRSTITEM && DropItemBeforeTrig())
 				return;
-			v6 = currlevel + 1;
-			goto LABEL_32;
-		}
-		if (*v0 == WM_DIABPREVLVL) {
-			if (pcurs >= CURSOR_FIRSTITEM && DropItemBeforeTrig())
-				return;
-			v6 = currlevel - 1;
-		LABEL_32:
-			v9 = v6;
-			goto LABEL_33;
-		}
-		if (*v0 != WM_DIABRTNLVL)
+			StartNewLvl(myplr, trigs[i]._tmsg, currlevel + 1);
 			break;
-		StartNewLvl(myplr, v4, ReturnLvl);
-	LABEL_34:
-		++v12;
-		v0 += 4;
-		if (v12 >= trigflag[4])
-			return;
-	}
-	if (*v0 != WM_DIABTOWNWARP) {
-		if (*v0 == WM_DIABTWARPUP) {
+		case WM_DIABPREVLVL:
+			if (pcurs >= CURSOR_FIRSTITEM && DropItemBeforeTrig())
+				return;
+			StartNewLvl(myplr, trigs[i]._tmsg, currlevel - 1);
+			break;
+		case WM_DIABRTNLVL:
+			StartNewLvl(myplr, trigs[i]._tmsg, ReturnLvl);
+			break;
+		case WM_DIABTOWNWARP:
+			if (gbMaxPlayers != 1) {
+				abort = FALSE;
+
+				if (trigs[i]._tlvl == 5 && plr[myplr]._pLevel < 8) {
+					abort = TRUE;
+					x = plr[myplr].WorldX;
+					y = plr[myplr].WorldY + 1;
+					abortflag = EMSG_REQUIRES_LVL_8;
+				}
+
+				if (trigs[i]._tlvl == 9 && plr[myplr]._pLevel < 13) {
+					abort = TRUE;
+					x = plr[myplr].WorldX + 1;
+					y = plr[myplr].WorldY;
+					abortflag = EMSG_REQUIRES_LVL_13;
+				}
+
+				if (trigs[i]._tlvl == 13 && plr[myplr]._pLevel < 17) {
+					abort = TRUE;
+					x = plr[myplr].WorldX;
+					y = plr[myplr].WorldY + 1;
+					abortflag = EMSG_REQUIRES_LVL_17;
+				}
+
+				if (abort) {
+					if (plr[myplr]._pClass == PC_WARRIOR) {
+						PlaySFX(PS_WARR43);
+					} else if (plr[myplr]._pClass == PC_ROGUE) {
+						PlaySFX(PS_ROGUE43);
+					} else if (plr[myplr]._pClass == PC_SORCERER) {
+						PlaySFX(PS_MAGE43);
+					}
+
+					InitDiabloMsg(abortflag);
+					NetSendCmdLoc(TRUE, CMD_WALKXY, x, y);
+					return;
+				}
+			}
+
+			StartNewLvl(myplr, trigs[i]._tmsg, trigs[i]._tlvl);
+			break;
+		case WM_DIABTWARPUP:
 			TWarpFrom = currlevel;
-			StartNewLvl(myplr, v4, 0);
-		} else {
+			StartNewLvl(myplr, trigs[i]._tmsg, 0);
+			break;
+		default:
 			app_fatal("Unknown trigger msg");
+			break;
 		}
-		goto LABEL_34;
 	}
-	if (gbMaxPlayers == 1)
-		goto LABEL_46;
-	v5 = 0;
-	if (v0[1] == 5 && plr[v1]._pLevel < 8) {
-		v5 = 1;
-		x = plr[myplr].WorldX;
-		_LOBYTE(y) = v3 + 1;
-		_LOBYTE(error_id) = EMSG_REQUIRES_LVL_8;
-	}
-	if (v0[1] == 9 && plr[v1]._pLevel < 13) {
-		v5 = 1;
-		_LOBYTE(x) = v2 + 1;
-		y = plr[v1].WorldY;
-		_LOBYTE(error_id) = EMSG_REQUIRES_LVL_13;
-	}
-	if (v0[1] == 13 && plr[v1]._pLevel < 17) {
-		x = plr[myplr].WorldX;
-		v5 = 1;
-		_LOBYTE(y) = v3 + 1;
-		_LOBYTE(error_id) = EMSG_REQUIRES_LVL_17;
-	}
-	if (!v5) {
-	LABEL_46:
-		v9 = v0[1];
-	LABEL_33:
-		StartNewLvl(myplr, *v0, v9);
-		goto LABEL_34;
-	}
-	switch (plr[myplr]._pClass) {
-	case PC_WARRIOR:
-		PlaySFX(PS_WARR43);
-		break;
-	case PC_ROGUE:
-		PlaySFX(PS_ROGUE43);
-		break;
-	case PC_SORCERER:
-		PlaySFX(PS_MAGE43);
-		break;
-	}
-	_LOBYTE(v2) = error_id;
-	InitDiabloMsg(v2);
-	NetSendCmdLoc(TRUE, CMD_WALKXY, x, y);
 }
 // 679660: using guessed type char gbMaxPlayers;
 // 6ABB30: using guessed type int TWarpFrom;

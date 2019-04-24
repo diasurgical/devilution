@@ -314,7 +314,7 @@ int rnd20[4] = { 20, 30, 40, 50 };
 int rnd60[4] = { 60, 70, 80, 90 };
 //
 
-void(__fastcall *AiProc[])(int i) = {
+void(*AiProc[])(int i) = {
 	&MAI_Zombie,
 	&MAI_Fat,
 	&MAI_SkelSd,
@@ -349,7 +349,7 @@ void(__fastcall *AiProc[])(int i) = {
 	&MAI_Warlord
 };
 
-void __fastcall InitMonsterTRN(int monst, BOOL special)
+void InitMonsterTRN(int monst, BOOL special)
 {
 	BYTE *f;
 	int i, n, j, k;
@@ -375,7 +375,7 @@ void __fastcall InitMonsterTRN(int monst, BOOL special)
 	}
 }
 
-void __cdecl InitLevelMonsters()
+void InitLevelMonsters()
 {
 	int i;
 
@@ -398,7 +398,7 @@ void __cdecl InitLevelMonsters()
 	uniquetrans = 0;
 }
 
-int __fastcall AddMonsterType(int type, int placeflag)
+int AddMonsterType(int type, int placeflag)
 {
 	BOOL done = FALSE;
 	int i;
@@ -422,7 +422,7 @@ int __fastcall AddMonsterType(int type, int placeflag)
 	return i;
 }
 
-void __cdecl GetLevelMTypes()
+void GetLevelMTypes()
 {
 	int i;
 
@@ -523,7 +523,7 @@ void __cdecl GetLevelMTypes()
 	}
 }
 
-void __fastcall InitMonsterGFX(int monst)
+void InitMonsterGFX(int monst)
 {
 	int mtype, anim, i;
 	char strBuff[256];
@@ -629,7 +629,7 @@ void __fastcall InitMonsterGFX(int monst)
 	}
 }
 
-void __fastcall ClearMVars(int i)
+void ClearMVars(int i)
 {
 	monster[i]._mVar1 = 0;
 	monster[i]._mVar2 = 0;
@@ -641,7 +641,7 @@ void __fastcall ClearMVars(int i)
 	monster[i]._mVar8 = 0;
 }
 
-void __fastcall InitMonster(int i, int rd, int mtype, int x, int y)
+void InitMonster(int i, int rd, int mtype, int x, int y)
 {
 	CMonster *monst = &Monsters[mtype];
 
@@ -743,7 +743,7 @@ void __fastcall InitMonster(int i, int rd, int mtype, int x, int y)
 	}
 }
 
-void __cdecl ClrAllMonsters()
+void ClrAllMonsters()
 {
 	int i;
 	MonsterStruct *Monst;
@@ -778,7 +778,7 @@ void __cdecl ClrAllMonsters()
 	}
 }
 
-BOOL __fastcall MonstPlace(int xp, int yp)
+BOOL MonstPlace(int xp, int yp)
 {
 	char f;
 
@@ -802,7 +802,7 @@ BOOL __fastcall MonstPlace(int xp, int yp)
 	return !SolidLoc(xp, yp);
 }
 
-void __fastcall PlaceMonster(int i, int mtype, int x, int y)
+void PlaceMonster(int i, int mtype, int x, int y)
 {
 	int rd;
 
@@ -812,7 +812,7 @@ void __fastcall PlaceMonster(int i, int mtype, int x, int y)
 	InitMonster(i, rd, mtype, x, y);
 }
 
-void __fastcall PlaceUniqueMonst(int uniqindex, int miniontype, int packsize)
+void PlaceUniqueMonst(int uniqindex, int miniontype, int packsize)
 {
 	int xp, yp, x, y, i;
 	int uniqtype;
@@ -1014,7 +1014,7 @@ void __fastcall PlaceUniqueMonst(int uniqindex, int miniontype, int packsize)
 	}
 }
 
-void __cdecl PlaceQuestMonsters()
+void PlaceQuestMonsters()
 {
 	int skeltype;
 	unsigned char *setp;
@@ -1086,7 +1086,7 @@ void __cdecl PlaceQuestMonsters()
 	}
 }
 
-void __fastcall PlaceGroup(int mtype, int num, int leaderf, int leader)
+void PlaceGroup(int mtype, int num, int leaderf, int leader)
 {
 	int placed, try1, try2, j;
 	int xp, yp, x1, y1;
@@ -1162,7 +1162,7 @@ void __fastcall PlaceGroup(int mtype, int num, int leaderf, int leader)
 	}
 }
 
-void __cdecl LoadDiabMonsts()
+void LoadDiabMonsts()
 {
 	unsigned char *lpSetPiece; // esi
 
@@ -1182,7 +1182,7 @@ void __cdecl LoadDiabMonsts()
 // 5289C4: using guessed type int diabquad1x;
 // 5289C8: using guessed type int diabquad1y;
 
-void __cdecl InitMonsters()
+void InitMonsters()
 {
 	int v0;                // ebp
 	int v1;                // ebx
@@ -1221,7 +1221,7 @@ void __cdecl InitMonsters()
 		if (!setlevel && currlevel == 16)
 			LoadDiabMonsts();
 	}
-	v24 = trigflag[4];
+	v24 = trigflag_4;
 	if (currlevel == 15)
 		v24 = 1;
 	v1 = v24;
@@ -1321,7 +1321,7 @@ LABEL_42:
 // 679660: using guessed type char gbMaxPlayers;
 // 432637: using guessed type int var_1BC[111];
 
-void __cdecl PlaceUniques()
+void PlaceUniques()
 {
 	int v0;              // edi
 	int v1;              // eax
@@ -1389,7 +1389,7 @@ void __cdecl PlaceUniques()
 	}
 }
 
-void __fastcall SetMapMonsters(unsigned char *pMap, int startx, int starty)
+void SetMapMonsters(unsigned char *pMap, int startx, int starty)
 {
 	unsigned char *v3;  // esi
 	unsigned short v4;  // cx
@@ -1446,7 +1446,7 @@ void __fastcall SetMapMonsters(unsigned char *pMap, int startx, int starty)
 }
 // 5CF31D: using guessed type char setlevel;
 
-void __fastcall DeleteMonster(int i)
+void DeleteMonster(int i)
 {
 	int temp;
 
@@ -1456,7 +1456,7 @@ void __fastcall DeleteMonster(int i)
 	monstactive[i] = temp;
 }
 
-int __fastcall AddMonster(int x, int y, int dir, int mtype, int InMap)
+int AddMonster(int x, int y, int dir, int mtype, int InMap)
 {
 	if (nummonsters < MAXMONSTERS) {
 		int i = monstactive[nummonsters++];
@@ -1469,7 +1469,7 @@ int __fastcall AddMonster(int x, int y, int dir, int mtype, int InMap)
 	return -1;
 }
 
-void __fastcall NewMonsterAnim(int i, AnimStruct *anim, int md)
+void NewMonsterAnim(int i, AnimStruct *anim, int md)
 {
 	monster[i]._mAnimData = anim->Data[md];
 	monster[i]._mAnimCnt = 0;
@@ -1480,13 +1480,13 @@ void __fastcall NewMonsterAnim(int i, AnimStruct *anim, int md)
 	monster[i]._mdir = md;
 }
 
-BOOL __fastcall M_Ranged(int i)
+BOOL M_Ranged(int i)
 {
 	char ai = monster[i]._mAi;
 	return ai == AI_SKELBOW || ai == AI_GOATBOW || ai == AI_SUCC || ai == AI_LAZHELP;
 }
 
-BOOL __fastcall M_Talker(int i)
+BOOL M_Talker(int i)
 {
 	char ai = monster[i]._mAi;
 	return ai == AI_LAZURUS
@@ -1498,7 +1498,7 @@ BOOL __fastcall M_Talker(int i)
 	    || ai == AI_LAZHELP;
 }
 
-void __fastcall M_Enemy(int i)
+void M_Enemy(int i)
 {
 	MonsterStruct *v1; // esi
 	int *v2;           // edi
@@ -1626,12 +1626,12 @@ void __fastcall M_Enemy(int i)
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-int __fastcall M_GetDir(int i)
+int M_GetDir(int i)
 {
 	return GetDirection(monster[i]._mx, monster[i]._my, monster[i]._menemyx, monster[i]._menemyy);
 }
 
-void __fastcall M_CheckEFlag(int i)
+void M_CheckEFlag(int i)
 {
 	int v1;        // ecx
 	int v2;        // edi
@@ -1654,7 +1654,7 @@ void __fastcall M_CheckEFlag(int i)
 		monster[v1]._meflag = 0;
 }
 
-void __fastcall M_StartStand(int i, int md)
+void M_StartStand(int i, int md)
 {
 	ClearMVars(i);
 	if (monster[i].MType->mtype == MT_GOLEM)
@@ -1675,7 +1675,7 @@ void __fastcall M_StartStand(int i, int md)
 	M_Enemy(i);
 }
 
-void __fastcall M_StartDelay(int i, int len)
+void M_StartDelay(int i, int len)
 {
 	if (len <= 0) {
 		return;
@@ -1687,7 +1687,7 @@ void __fastcall M_StartDelay(int i, int len)
 	}
 }
 
-void __fastcall M_StartSpStand(int i, int md)
+void M_StartSpStand(int i, int md)
 {
 	NewMonsterAnim(i, &monster[i].MType->Anims[MA_SPECIAL], md);
 	monster[i]._mmode = MM_SPSTAND;
@@ -1701,7 +1701,7 @@ void __fastcall M_StartSpStand(int i, int md)
 	M_CheckEFlag(i);
 }
 
-void __fastcall M_StartWalk(int i, int xvel, int yvel, int xadd, int yadd, int EndDir)
+void M_StartWalk(int i, int xvel, int yvel, int xadd, int yadd, int EndDir)
 {
 	int fx = xadd + monster[i]._mx;
 	int fy = yadd + monster[i]._my;
@@ -1725,7 +1725,7 @@ void __fastcall M_StartWalk(int i, int xvel, int yvel, int xadd, int yadd, int E
 	M_CheckEFlag(i);
 }
 
-void __fastcall M_StartWalk2(int i, int xvel, int yvel, int xoff, int yoff, int xadd, int yadd, int EndDir)
+void M_StartWalk2(int i, int xvel, int yvel, int xoff, int yoff, int xadd, int yadd, int EndDir)
 {
 	int fx = xadd + monster[i]._mx;
 	int fy = yadd + monster[i]._my;
@@ -1756,7 +1756,7 @@ void __fastcall M_StartWalk2(int i, int xvel, int yvel, int xoff, int yoff, int 
 	M_CheckEFlag(i);
 }
 
-void __fastcall M_StartWalk3(int i, int xvel, int yvel, int xoff, int yoff, int xadd, int yadd, int mapx, int mapy, int EndDir)
+void M_StartWalk3(int i, int xvel, int yvel, int xoff, int yoff, int xadd, int yadd, int mapx, int mapy, int EndDir)
 {
 	int fx = xadd + monster[i]._mx;
 	int fy = yadd + monster[i]._my;
@@ -1791,7 +1791,7 @@ void __fastcall M_StartWalk3(int i, int xvel, int yvel, int xoff, int yoff, int 
 	M_CheckEFlag(i);
 }
 
-void __fastcall M_StartAttack(int i)
+void M_StartAttack(int i)
 {
 	int md = M_GetDir(i);
 	NewMonsterAnim(i, &monster[i].MType->Anims[MA_ATTACK], md);
@@ -1806,7 +1806,7 @@ void __fastcall M_StartAttack(int i)
 	M_CheckEFlag(i);
 }
 
-void __fastcall M_StartRAttack(int i, int missile_type, int dam)
+void M_StartRAttack(int i, int missile_type, int dam)
 {
 	int md = M_GetDir(i);
 	NewMonsterAnim(i, &monster[i].MType->Anims[MA_ATTACK], md);
@@ -1823,7 +1823,7 @@ void __fastcall M_StartRAttack(int i, int missile_type, int dam)
 	M_CheckEFlag(i);
 }
 
-void __fastcall M_StartRSpAttack(int i, int missile_type, int dam)
+void M_StartRSpAttack(int i, int missile_type, int dam)
 {
 	int md = M_GetDir(i);
 	NewMonsterAnim(i, &monster[i].MType->Anims[MA_SPECIAL], md);
@@ -1841,7 +1841,7 @@ void __fastcall M_StartRSpAttack(int i, int missile_type, int dam)
 	M_CheckEFlag(i);
 }
 
-void __fastcall M_StartSpAttack(int i)
+void M_StartSpAttack(int i)
 {
 	int md = M_GetDir(i);
 	NewMonsterAnim(i, &monster[i].MType->Anims[MA_SPECIAL], md);
@@ -1856,7 +1856,7 @@ void __fastcall M_StartSpAttack(int i)
 	M_CheckEFlag(i);
 }
 
-void __fastcall M_StartEat(int i)
+void M_StartEat(int i)
 {
 	NewMonsterAnim(i, &monster[i].MType->Anims[MA_SPECIAL], monster[i]._mdir);
 	monster[i]._mmode = MM_SATTACK;
@@ -1869,7 +1869,7 @@ void __fastcall M_StartEat(int i)
 	M_CheckEFlag(i);
 }
 
-void __fastcall M_ClearSquares(int i)
+void M_ClearSquares(int i)
 {
 	int x, y, mx, my, m1, m2;
 
@@ -1893,7 +1893,7 @@ void __fastcall M_ClearSquares(int i)
 		dFlags[mx][my + 1] &= ~DFLAG_MONSTER;
 }
 
-void __fastcall M_GetKnockback(int i)
+void M_GetKnockback(int i)
 {
 	int d = (monster[i]._mdir - 4) & 7;
 	if (DirOK(i, d)) {
@@ -1914,7 +1914,7 @@ void __fastcall M_GetKnockback(int i)
 	}
 }
 
-void __fastcall M_StartHit(int i, int pnum, int dam)
+void M_StartHit(int i, int pnum, int dam)
 {
 	if (pnum >= 0)
 		monster[i].mWhoHit |= 1 << pnum;
@@ -1952,7 +1952,7 @@ void __fastcall M_StartHit(int i, int pnum, int dam)
 	}
 }
 
-void __fastcall M_DiabloDeath(int i, BOOL sendmsg)
+void M_DiabloDeath(int i, BOOL sendmsg)
 {
 	int v2;     // esi
 	int v3;     // edi
@@ -2023,7 +2023,7 @@ void __fastcall M_DiabloDeath(int i, BOOL sendmsg)
 }
 // 64D32C: using guessed type int sgbSaveSoundOn;
 
-void __fastcall M2MStartHit(int mid, int i, int dam)
+void M2MStartHit(int mid, int i, int dam)
 {
 	if ((DWORD)mid >= MAXMONSTERS) {
 		app_fatal("Invalid monster %d getting hit by monster", mid);
@@ -2069,7 +2069,7 @@ void __fastcall M2MStartHit(int mid, int i, int dam)
 	}
 }
 
-void __fastcall MonstStartKill(int i, int pnum, BOOL sendmsg)
+void MonstStartKill(int i, int pnum, BOOL sendmsg)
 {
 	int md;
 
@@ -2120,7 +2120,7 @@ void __fastcall MonstStartKill(int i, int pnum, BOOL sendmsg)
 		AddMissile(monster[i]._mx, monster[i]._my, 0, 0, 0, MIS_ACIDPUD, 1, i, monster[i]._mint + 1, 0);
 }
 
-void __fastcall M2MStartKill(int i, int mid)
+void M2MStartKill(int i, int mid)
 {
 	int md;
 
@@ -2174,7 +2174,7 @@ void __fastcall M2MStartKill(int i, int mid)
 		AddMissile(monster[mid]._mx, monster[mid]._my, 0, 0, 0, MIS_ACIDPUD, 1, mid, monster[mid]._mint + 1, 0);
 }
 
-void __fastcall M_StartKill(int i, int pnum)
+void M_StartKill(int i, int pnum)
 {
 	if ((DWORD)i >= MAXMONSTERS) {
 		app_fatal("M_StartKill: Invalid monster %d", i);
@@ -2192,7 +2192,7 @@ void __fastcall M_StartKill(int i, int pnum)
 	MonstStartKill(i, pnum, TRUE);
 }
 
-void __fastcall M_SyncStartKill(int i, int x, int y, int pnum)
+void M_SyncStartKill(int i, int x, int y, int pnum)
 {
 	if ((DWORD)i >= MAXMONSTERS)
 		app_fatal("M_SyncStartKill: Invalid monster %d", i);
@@ -2217,7 +2217,7 @@ void __fastcall M_SyncStartKill(int i, int x, int y, int pnum)
 	}
 }
 
-void __fastcall M_StartFadein(int i, int md, BOOL backwards)
+void M_StartFadein(int i, int md, BOOL backwards)
 {
 	if ((DWORD)i >= MAXMONSTERS)
 		app_fatal("M_StartFadein: Invalid monster %d", i);
@@ -2241,7 +2241,7 @@ void __fastcall M_StartFadein(int i, int md, BOOL backwards)
 	}
 }
 
-void __fastcall M_StartFadeout(int i, int md, BOOL backwards)
+void M_StartFadeout(int i, int md, BOOL backwards)
 {
 	if ((DWORD)i >= MAXMONSTERS)
 		app_fatal("M_StartFadeout: Invalid monster %d", i);
@@ -2264,7 +2264,7 @@ void __fastcall M_StartFadeout(int i, int md, BOOL backwards)
 	}
 }
 
-void __fastcall M_StartHeal(int i)
+void M_StartHeal(int i)
 {
 	MonsterStruct *Monst;
 
@@ -2281,7 +2281,7 @@ void __fastcall M_StartHeal(int i)
 	Monst->_mVar1 = Monst->_mmaxhp / (16 * (random(97, 5) + 4));
 }
 
-void __fastcall M_ChangeLightOffset(int monst)
+void M_ChangeLightOffset(int monst)
 {
 	int lx, ly, _mxoff, _myoff, sign;
 
@@ -2309,7 +2309,7 @@ void __fastcall M_ChangeLightOffset(int monst)
 	ChangeLightOff(monster[monst].mlid, _mxoff, _myoff * (ly >> 3));
 }
 
-int __fastcall M_DoStand(int i)
+int M_DoStand(int i)
 {
 	MonsterStruct *Monst;
 
@@ -2332,7 +2332,7 @@ int __fastcall M_DoStand(int i)
 	return FALSE;
 }
 
-BOOL __fastcall M_DoWalk(int i)
+BOOL M_DoWalk(int i)
 {
 	BOOL rv;
 
@@ -2365,7 +2365,7 @@ BOOL __fastcall M_DoWalk(int i)
 	return rv;
 }
 
-BOOL __fastcall M_DoWalk2(int i)
+BOOL M_DoWalk2(int i)
 {
 	BOOL rv;
 
@@ -2396,7 +2396,7 @@ BOOL __fastcall M_DoWalk2(int i)
 	return rv;
 }
 
-BOOL __fastcall M_DoWalk3(int i)
+BOOL M_DoWalk3(int i)
 {
 	BOOL rv;
 
@@ -2431,7 +2431,7 @@ BOOL __fastcall M_DoWalk3(int i)
 	return rv;
 }
 
-void __fastcall M_TryM2MHit(int i, int mid, int hper, int mind, int maxd)
+void M_TryM2MHit(int i, int mid, int hper, int mind, int maxd)
 {
 	BOOL ret;
 
@@ -2466,7 +2466,7 @@ void __fastcall M_TryM2MHit(int i, int mid, int hper, int mind, int maxd)
 	}
 }
 
-void __fastcall M_TryH2HHit(int i, int pnum, int Hit, int MinDam, int MaxDam)
+void M_TryH2HHit(int i, int pnum, int Hit, int MinDam, int MaxDam)
 {
 	int v5; // esi
 	int v6; // ebx
@@ -2660,7 +2660,7 @@ void __fastcall M_TryH2HHit(int i, int pnum, int Hit, int MinDam, int MaxDam)
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-BOOL __fastcall M_DoAttack(int i)
+BOOL M_DoAttack(int i)
 {
 	MonsterStruct *Monst;
 
@@ -2696,7 +2696,7 @@ BOOL __fastcall M_DoAttack(int i)
 	return FALSE;
 }
 
-BOOL __fastcall M_DoRAttack(int i)
+BOOL M_DoRAttack(int i)
 {
 	int multimissiles, mi;
 
@@ -2738,7 +2738,7 @@ BOOL __fastcall M_DoRAttack(int i)
 	return FALSE;
 }
 
-int __fastcall M_DoRSpAttack(int i)
+int M_DoRSpAttack(int i)
 {
 	if ((DWORD)i >= MAXMONSTERS)
 		app_fatal("M_DoRSpAttack: Invalid monster %d", i);
@@ -2780,7 +2780,7 @@ int __fastcall M_DoRSpAttack(int i)
 	return FALSE;
 }
 
-BOOL __fastcall M_DoSAttack(int i)
+BOOL M_DoSAttack(int i)
 {
 	if ((DWORD)i >= MAXMONSTERS)
 		app_fatal("M_DoSAttack: Invalid monster %d", i);
@@ -2800,7 +2800,7 @@ BOOL __fastcall M_DoSAttack(int i)
 	return FALSE;
 }
 
-BOOL __fastcall M_DoFadein(int i)
+BOOL M_DoFadein(int i)
 {
 	if ((DWORD)i >= MAXMONSTERS)
 		app_fatal("M_DoFadein: Invalid monster %d", i);
@@ -2816,7 +2816,7 @@ BOOL __fastcall M_DoFadein(int i)
 	return TRUE;
 }
 
-BOOL __fastcall M_DoFadeout(int i)
+BOOL M_DoFadeout(int i)
 {
 	int mt;
 
@@ -2841,7 +2841,7 @@ BOOL __fastcall M_DoFadeout(int i)
 	return TRUE;
 }
 
-int __fastcall M_DoHeal(int i)
+int M_DoHeal(int i)
 {
 	int v1;  // esi
 	int v2;  // eax
@@ -2878,7 +2878,7 @@ int __fastcall M_DoHeal(int i)
 	return 0;
 }
 
-int __fastcall M_DoTalk(int i)
+int M_DoTalk(int i)
 {
 	int v1; // edi
 	int v2; // esi
@@ -2965,7 +2965,7 @@ int __fastcall M_DoTalk(int i)
 // 5CF334: using guessed type int setpc_w;
 // 679660: using guessed type char gbMaxPlayers;
 
-void __fastcall M_Teleport(int i)
+void M_Teleport(int i)
 {
 	BOOL tren;
 	MonsterStruct *Monst;
@@ -3008,7 +3008,7 @@ void __fastcall M_Teleport(int i)
 	}
 }
 
-BOOL __fastcall M_DoGotHit(int i)
+BOOL M_DoGotHit(int i)
 {
 	if ((DWORD)i >= MAXMONSTERS)
 		app_fatal("M_DoGotHit: Invalid monster %d", i);
@@ -3024,7 +3024,7 @@ BOOL __fastcall M_DoGotHit(int i)
 	return FALSE;
 }
 
-void __fastcall M_UpdateLeader(int i)
+void M_UpdateLeader(int i)
 {
 	int ma, j;
 
@@ -3042,7 +3042,7 @@ void __fastcall M_UpdateLeader(int i)
 	}
 }
 
-void __cdecl DoEnding()
+void DoEnding()
 {
 	BOOL bMusicOn;
 	int musicVolume;
@@ -3083,7 +3083,7 @@ void __cdecl DoEnding()
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-void __cdecl PrepDoEnding()
+void PrepDoEnding()
 {
 	int newKillLevel, i;
 	DWORD *killLevel;
@@ -3114,7 +3114,7 @@ void __cdecl PrepDoEnding()
 // 64D32C: using guessed type int sgbSaveSoundOn;
 // 679660: using guessed type char gbMaxPlayers;
 
-BOOL __fastcall M_DoDeath(int i)
+BOOL M_DoDeath(int i)
 {
 	int var1;
 	int x, y;
@@ -3158,7 +3158,7 @@ BOOL __fastcall M_DoDeath(int i)
 	return FALSE;
 }
 
-BOOL __fastcall M_DoSpStand(int i)
+BOOL M_DoSpStand(int i)
 {
 	if ((DWORD)i >= MAXMONSTERS)
 		app_fatal("M_DoSpStand: Invalid monster %d", i);
@@ -3176,7 +3176,7 @@ BOOL __fastcall M_DoSpStand(int i)
 	return FALSE;
 }
 
-BOOL __fastcall M_DoDelay(int i)
+BOOL M_DoDelay(int i)
 {
 	int mVar2;
 	int oFrame;
@@ -3205,7 +3205,7 @@ BOOL __fastcall M_DoDelay(int i)
 	return FALSE;
 }
 
-BOOL __fastcall M_DoStone(int i)
+BOOL M_DoStone(int i)
 {
 	if ((DWORD)i >= MAXMONSTERS)
 		app_fatal("M_DoStone: Invalid monster %d", i);
@@ -3218,7 +3218,7 @@ BOOL __fastcall M_DoStone(int i)
 	return FALSE;
 }
 
-void __fastcall M_WalkDir(int i, int md)
+void M_WalkDir(int i, int md)
 {
 	int mwi;
 
@@ -3254,80 +3254,59 @@ void __fastcall M_WalkDir(int i, int md)
 	}
 }
 
-void __fastcall GroupUnity(int i)
+void GroupUnity(int i)
 {
-	int v1;           // ebx
-	int v2;           // esi
-	int v3;           // ebp
-	int v4;           // edi
-	BOOLEAN v5;       // eax
-	int v6;           // eax
-	unsigned char v8; // al
-	int v9;           // ebp
-	int j;            // edi
-	int v11;          // eax
+	int leader, m, j;
+	BOOL clear;
 
-	v1 = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		app_fatal("GroupUnity: Invalid monster %d", i);
-	v2 = v1;
-	if (monster[v1].leaderflag) {
-		v3 = (unsigned char)monster[v2].leader;
-		v4 = v3;
-		v5 = LineClearF(
-		    CheckNoSolid,
-		    monster[v2]._mx,
-		    monster[v2]._my,
-		    monster[v4]._mfutx,
-		    monster[v4]._mfuty);
-		if (v5) {
-			if (monster[v2].leaderflag == 2
-			    && abs(monster[v2]._mx - monster[v4]._mfutx) < 4
-			    && abs(monster[v2]._my - monster[v4]._mfuty) < 4) {
-				++monster[v4].packsize;
-				monster[v2].leaderflag = 1;
+
+	if (monster[i].leaderflag) {
+		leader = monster[i].leader;
+		clear = LineClearF(CheckNoSolid, monster[i]._mx, monster[i]._my, monster[leader]._mfutx, monster[leader]._mfuty);
+		if (clear || monster[i].leaderflag != 1) {
+			if (clear
+			    && monster[i].leaderflag == 2
+			    && abs(monster[i]._mx - monster[leader]._mfutx) < 4
+			    && abs(monster[i]._my - monster[leader]._mfuty) < 4) {
+				monster[leader].packsize++;
+				monster[i].leaderflag = 1;
 			}
 		} else {
-			if (monster[v2].leaderflag != 1)
-				goto LABEL_18;
-			--monster[v4].packsize;
-			monster[v2].leaderflag = 2;
+			monster[leader].packsize--;
+			monster[i].leaderflag = 2;
 		}
-	} else {
-		v3 = 0; /* v13 */
 	}
-	if (monster[v2].leaderflag == 1) {
-		v6 = v3;
-		if (monster[v2]._msquelch > monster[v3]._msquelch) {
-			monster[v6]._lastx = monster[v2]._mx;
-			monster[v6]._lasty = monster[v2]._my;
-			monster[v6]._msquelch = monster[v2]._msquelch - 1;
+
+	if (monster[i].leaderflag == 1) {
+		if ((BYTE)monster[i]._msquelch > (BYTE)monster[leader]._msquelch) {
+			monster[leader]._lastx = monster[i]._mx;
+			monster[leader]._lasty = monster[i]._my;
+			monster[leader]._msquelch = monster[i]._msquelch - 1;
 		}
-		if (monster[v6]._mAi == AI_GARG) {
-			if (monster[v6]._mFlags & MFLAG_ALLOW_SPECIAL) {
-				monster[v6]._mmode = MM_SATTACK;
-				monster[v6]._mFlags &= ~MFLAG_ALLOW_SPECIAL;
+		if (monster[leader]._mAi == AI_GARG) {
+			if (monster[leader]._mFlags & MFLAG_ALLOW_SPECIAL) {
+				monster[leader]._mmode = MM_SATTACK;
+				monster[leader]._mFlags &= ~MFLAG_ALLOW_SPECIAL;
 			}
 		}
 		return;
 	}
-LABEL_18:
-	v8 = monster[v2]._uniqtype;
-	if (v8 != 0) {
-		if (UniqMonst[v8 - 1].mUnqAttr & 2) {
-			v9 = nummonsters;
-			for (j = 0; j < v9; ++j) {
-				v11 = monstactive[j];
-				if (monster[v11].leaderflag == 1 && (unsigned char)monster[v11].leader == v1) {
-					if (monster[v2]._msquelch > monster[v11]._msquelch) {
-						monster[v11]._lastx = monster[v2]._mx;
-						monster[v11]._lasty = monster[v2]._my;
-						monster[v11]._msquelch = monster[v2]._msquelch - 1;
+	if (monster[i]._uniqtype != 0) {
+		if (UniqMonst[monster[i]._uniqtype - 1].mUnqAttr & 2) {
+			for (j = 0; j < nummonsters; j++) {
+				m = monstactive[j];
+				if (monster[m].leaderflag == 1 && monster[m].leader == i) {
+					if ((BYTE)monster[i]._msquelch > (BYTE)monster[m]._msquelch) {
+						monster[m]._lastx = monster[i]._mx;
+						monster[m]._lasty = monster[i]._my;
+						monster[m]._msquelch = monster[i]._msquelch - 1;
 					}
-					if (monster[v11]._mAi == AI_GARG) {
-						if (monster[v11]._mFlags & MFLAG_ALLOW_SPECIAL) {
-							monster[v11]._mmode = MM_SATTACK;
-							monster[v11]._mFlags &= ~MFLAG_ALLOW_SPECIAL;
+					if (monster[m]._mAi == AI_GARG) {
+						if (monster[m]._mFlags & MFLAG_ALLOW_SPECIAL) {
+							monster[m]._mmode = MM_SATTACK;
+							monster[m]._mFlags &= ~MFLAG_ALLOW_SPECIAL;
 						}
 					}
 				}
@@ -3336,7 +3315,7 @@ LABEL_18:
 	}
 }
 
-BOOL __fastcall M_CallWalk(int i, int md)
+BOOL M_CallWalk(int i, int md)
 {
 	int v2; // esi
 	int v3; // edi
@@ -3413,10 +3392,10 @@ LABEL_11:
 	return 0;
 }
 
-BOOL __fastcall M_PathWalk(int i)
+BOOL M_PathWalk(int i)
 {
 	char path[25];
-	BOOL(__fastcall * Check)
+	BOOL(* Check)
 	(int, int, int);
 
 	if ((DWORD)i >= MAXMONSTERS)
@@ -3434,7 +3413,7 @@ BOOL __fastcall M_PathWalk(int i)
 	return FALSE;
 }
 
-BOOL __fastcall M_CallWalk2(int i, int md)
+BOOL M_CallWalk2(int i, int md)
 {
 	BOOL ok;
 	int mdtemp;
@@ -3453,7 +3432,7 @@ BOOL __fastcall M_CallWalk2(int i, int md)
 	return ok;
 }
 
-BOOL __fastcall M_DumbWalk(int i, int md)
+BOOL M_DumbWalk(int i, int md)
 {
 	BOOL ok;
 	ok = DirOK(i, md);
@@ -3463,7 +3442,7 @@ BOOL __fastcall M_DumbWalk(int i, int md)
 	return ok;
 }
 
-BOOLEAN __fastcall M_RoundWalk(int i, int md, int *dir)
+BOOLEAN M_RoundWalk(int i, int md, int *dir)
 {
 	int *v3; // ebp
 	int v4;  // ebx
@@ -3518,7 +3497,7 @@ LABEL_12:
 	return v7;
 }
 
-void __fastcall MAI_Zombie(int i)
+void MAI_Zombie(int i)
 {
 	MonsterStruct *Monst;
 	int mx, my;
@@ -3563,7 +3542,7 @@ void __fastcall MAI_Zombie(int i)
 		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[Monst->_mdir];
 }
 
-void __fastcall MAI_SkelSd(int i)
+void MAI_SkelSd(int i)
 {
 	MonsterStruct *Monst;
 	int mx, my, x, y, md;
@@ -3600,7 +3579,7 @@ void __fastcall MAI_SkelSd(int i)
 		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
 }
 
-BOOL __fastcall MAI_Path(int i)
+BOOL MAI_Path(int i)
 {
 	MonsterStruct *Monst;
 	BOOL clear;
@@ -3643,7 +3622,7 @@ BOOL __fastcall MAI_Path(int i)
 	return FALSE;
 }
 
-void __fastcall MAI_Snake(int i)
+void MAI_Snake(int i)
 {
 	int esi1;            // esi
 	MonsterStruct *esi3; // esi
@@ -3814,7 +3793,7 @@ void __fastcall MAI_Snake(int i)
 	}
 }
 
-void __fastcall MAI_Bat(int i)
+void MAI_Bat(int i)
 {
 	MonsterStruct *Monst;
 	int md, v, pnum;
@@ -3878,7 +3857,7 @@ void __fastcall MAI_Bat(int i)
 		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
 }
 
-void __fastcall MAI_SkelBow(int i)
+void MAI_SkelBow(int i)
 {
 	MonsterStruct *Monst;
 	int mx, my, md, v;
@@ -3922,7 +3901,7 @@ void __fastcall MAI_SkelBow(int i)
 		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
 }
 
-void __fastcall MAI_Fat(int i)
+void MAI_Fat(int i)
 {
 	MonsterStruct *Monst;
 	int mx, my, md, v;
@@ -3957,7 +3936,7 @@ void __fastcall MAI_Fat(int i)
 		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
 }
 
-void __fastcall MAI_Sneak(int i)
+void MAI_Sneak(int i)
 {
 	int v1;            // edi
 	MonsterStruct *v2; // esi
@@ -4046,7 +4025,7 @@ void __fastcall MAI_Sneak(int i)
 }
 // 642A14: using guessed type char lightmax;
 
-void __fastcall MAI_Fireman(int i)
+void MAI_Fireman(int i)
 {
 	int xd, yd;
 	int md, pnum;
@@ -4107,7 +4086,7 @@ void __fastcall MAI_Fireman(int i)
 	}
 }
 
-void __fastcall MAI_Fallen(int i)
+void MAI_Fallen(int i)
 {
 	int x, y, xpos, ypos;
 	int m, rad, md;
@@ -4179,7 +4158,7 @@ void __fastcall MAI_Fallen(int i)
 	}
 }
 
-void __fastcall MAI_Cleaver(int i)
+void MAI_Cleaver(int i)
 {
 	MonsterStruct *Monst;
 	int x, y, mx, my, md;
@@ -4209,7 +4188,7 @@ void __fastcall MAI_Cleaver(int i)
 		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
 }
 
-void __fastcall MAI_Round(int i, BOOL special)
+void MAI_Round(int i, BOOL special)
 {
 	int v2;            // esi
 	MonsterStruct *v3; // esi
@@ -4320,12 +4299,12 @@ void __fastcall MAI_Round(int i, BOOL special)
 	}
 }
 
-void __fastcall MAI_GoatMc(int i)
+void MAI_GoatMc(int i)
 {
 	MAI_Round(i, 1u);
 }
 
-void __fastcall MAI_Ranged(int i, int missile_type, BOOL special)
+void MAI_Ranged(int i, int missile_type, BOOL special)
 {
 	int md;
 	int mx, my, fx, fy;
@@ -4370,22 +4349,22 @@ void __fastcall MAI_Ranged(int i, int missile_type, BOOL special)
 	}
 }
 
-void __fastcall MAI_GoatBow(int i)
+void MAI_GoatBow(int i)
 {
 	MAI_Ranged(i, MIS_ARROW, 0);
 }
 
-void __fastcall MAI_Succ(int i)
+void MAI_Succ(int i)
 {
 	MAI_Ranged(i, MIS_FLARE, 0);
 }
 
-void __fastcall MAI_AcidUniq(int i)
+void MAI_AcidUniq(int i)
 {
 	MAI_Ranged(i, MIS_ACID, 1u);
 }
 
-void __fastcall MAI_Scav(int i)
+void MAI_Scav(int i)
 {
 	int v1;            // edi
 	int v2;            // esi
@@ -4521,7 +4500,7 @@ void __fastcall MAI_Scav(int i)
 	}
 }
 
-void __fastcall MAI_Garg(int i)
+void MAI_Garg(int i)
 {
 	MonsterStruct *Monst;
 	int mx, my, dx, dy, md;
@@ -4560,7 +4539,7 @@ void __fastcall MAI_Garg(int i)
 	MAI_Round(i, 0);
 }
 
-void __fastcall MAI_RoundRanged(int i, int missile_type, unsigned char checkdoors, int dam, int lessmissiles)
+void MAI_RoundRanged(int i, int missile_type, unsigned char checkdoors, int dam, int lessmissiles)
 {
 	int v5;            // esi
 	MonsterStruct *v6; // esi
@@ -4691,27 +4670,27 @@ void __fastcall MAI_RoundRanged(int i, int missile_type, unsigned char checkdoor
 	}
 }
 
-void __fastcall MAI_Magma(int i)
+void MAI_Magma(int i)
 {
 	MAI_RoundRanged(i, MIS_MAGMABALL, 1u, 4, 0);
 }
 
-void __fastcall MAI_Storm(int i)
+void MAI_Storm(int i)
 {
 	MAI_RoundRanged(i, MIS_LIGHTCTRL2, 1u, 4, 0);
 }
 
-void __fastcall MAI_Acid(int i)
+void MAI_Acid(int i)
 {
 	MAI_RoundRanged(i, MIS_ACID, 0, 4, 1);
 }
 
-void __fastcall MAI_Diablo(int i)
+void MAI_Diablo(int i)
 {
 	MAI_RoundRanged(i, MIS_DIABAPOCA, 0, 40, 0);
 }
 
-void __fastcall MAI_RR2(int i, int mistype, int dam)
+void MAI_RR2(int i, int mistype, int dam)
 {
 	int v3;            // ebx
 	MonsterStruct *v4; // esi
@@ -4862,12 +4841,12 @@ void __fastcall MAI_RR2(int i, int mistype, int dam)
 	}
 }
 
-void __fastcall MAI_Mega(int i)
+void MAI_Mega(int i)
 {
 	MAI_RR2(i, MIS_FLAMEC, 0);
 }
 
-void __fastcall MAI_Golum(int i)
+void MAI_Golum(int i)
 {
 	int mx, my, _mex, _mey;
 	int md, j, k, _menemy;
@@ -4946,7 +4925,7 @@ void __fastcall MAI_Golum(int i)
 	}
 }
 
-void __fastcall MAI_SkelKing(int i)
+void MAI_SkelKing(int i)
 {
 	int v1;            // esi
 	MonsterStruct *v2; // esi
@@ -5078,7 +5057,7 @@ void __fastcall MAI_SkelKing(int i)
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-void __fastcall MAI_Rhino(int i)
+void MAI_Rhino(int i)
 {
 	int esi1;            // esi
 	MonsterStruct *esi3; // esi
@@ -5211,7 +5190,7 @@ void __fastcall MAI_Rhino(int i)
 	}
 }
 
-void __fastcall MAI_Counselor(int i)
+void MAI_Counselor(int i)
 {
 	int v1;      // ebx
 	int v2;      // esi
@@ -5369,7 +5348,7 @@ void __fastcall MAI_Counselor(int i)
 	}
 }
 
-void __fastcall MAI_Garbud(int i)
+void MAI_Garbud(int i)
 {
 	int _mx, _my, md;
 	MonsterStruct *Monst;
@@ -5413,7 +5392,7 @@ void __fastcall MAI_Garbud(int i)
 		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
 }
 
-void __fastcall MAI_Zhar(int i)
+void MAI_Zhar(int i)
 {
 	int mx, my, _mx, _my, md;
 	MonsterStruct *Monst;
@@ -5459,7 +5438,7 @@ void __fastcall MAI_Zhar(int i)
 		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
 }
 
-void __fastcall MAI_SnotSpil(int i)
+void MAI_SnotSpil(int i)
 {
 	int mx, my, md;
 	MonsterStruct *Monst;
@@ -5511,7 +5490,7 @@ void __fastcall MAI_SnotSpil(int i)
 // 5CF330: using guessed type int setpc_h;
 // 5CF334: using guessed type int setpc_w;
 
-void __fastcall MAI_Lazurus(int i)
+void MAI_Lazurus(int i)
 {
 	int mx, my, md;
 	MonsterStruct *Monst;
@@ -5562,7 +5541,7 @@ void __fastcall MAI_Lazurus(int i)
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-void __fastcall MAI_Lazhelp(int i)
+void MAI_Lazhelp(int i)
 {
 	int v1; // esi
 	int v2; // esi
@@ -5600,7 +5579,7 @@ void __fastcall MAI_Lazhelp(int i)
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-void __fastcall MAI_Lachdanan(int i)
+void MAI_Lachdanan(int i)
 {
 	int _mx, _my, md;
 	MonsterStruct *Monst;
@@ -5637,7 +5616,7 @@ void __fastcall MAI_Lachdanan(int i)
 		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[md];
 }
 
-void __fastcall MAI_Warlord(int i)
+void MAI_Warlord(int i)
 {
 	MonsterStruct *Monst;
 	int mx, my, md;
@@ -5672,10 +5651,10 @@ void __fastcall MAI_Warlord(int i)
 		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[Monst->_mdir];
 }
 
-void __cdecl DeleteMonsterList()
+void DeleteMonsterList()
 {
 	int i;
-	for (i = 0; i < 4; i++) {
+	for (i = 0; i < MAX_PLRS; i++) {
 		if (monster[i]._mDelFlag) {
 			monster[i]._mx = 1;
 			monster[i]._my = 0;
@@ -5687,7 +5666,7 @@ void __cdecl DeleteMonsterList()
 		}
 	}
 
-	i = 4;
+	i = MAX_PLRS;
 	while (i < nummonsters) {
 		if (monster[monstactive[i]]._mDelFlag) {
 			DeleteMonster(i);
@@ -5698,7 +5677,7 @@ void __cdecl DeleteMonsterList()
 	}
 }
 
-void __cdecl ProcessMonsters()
+void ProcessMonsters()
 {
 	int v0;          // edi
 	int v1;          // esi
@@ -5881,7 +5860,7 @@ LABEL_60:
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-void __cdecl FreeMonsters()
+void FreeMonsters()
 {
 	int mtype;
 	int i, j;
@@ -5901,7 +5880,7 @@ void __cdecl FreeMonsters()
 	FreeMissiles2();
 }
 
-BOOL __fastcall DirOK(int i, int mdir)
+BOOL DirOK(int i, int mdir)
 {
 	int v2;             // ebx
 	int v3;             // esi
@@ -6017,17 +5996,17 @@ LABEL_24:
 	return v26 == (unsigned char)monster[v4].packsize;
 }
 
-BOOL __fastcall PosOkMissile(int x, int y)
+BOOL PosOkMissile(int x, int y)
 {
 	return !nMissileTable[dPiece[x][y]] && !(dFlags[x][y] & DFLAG_MONSTER);
 }
 
-BOOL __fastcall CheckNoSolid(int x, int y)
+BOOL CheckNoSolid(int x, int y)
 {
 	return nSolidTable[dPiece[x][y]] == 0;
 }
 
-BOOL __fastcall LineClearF(BOOL(__fastcall *Clear)(int, int), int x1, int y1, int x2, int y2)
+BOOL LineClearF(BOOL(*Clear)(int, int), int x1, int y1, int x2, int y2)
 {
 	int v5;         // esi
 	int v6;         // edi
@@ -6139,12 +6118,12 @@ BOOL __fastcall LineClearF(BOOL(__fastcall *Clear)(int, int), int x1, int y1, in
 	return 0;
 }
 
-BOOL __fastcall LineClear(int x1, int y1, int x2, int y2)
+BOOL LineClear(int x1, int y1, int x2, int y2)
 {
 	return LineClearF(PosOkMissile, x1, y1, x2, y2);
 }
 
-BOOL __fastcall LineClearF1(BOOL(__fastcall *Clear)(int, int, int), int monst, int x1, int y1, int x2, int y2)
+BOOL LineClearF1(BOOL(*Clear)(int, int, int), int monst, int x1, int y1, int x2, int y2)
 {
 	int v6;         // esi
 	int v7;         // edi
@@ -6254,7 +6233,7 @@ BOOL __fastcall LineClearF1(BOOL(__fastcall *Clear)(int, int, int), int monst, i
 	return 0;
 }
 
-void __fastcall SyncMonsterAnim(int i)
+void SyncMonsterAnim(int i)
 {
 	int v1;             // esi
 	int v2;             // eax
@@ -6334,7 +6313,7 @@ void __fastcall SyncMonsterAnim(int i)
 	monster[v2]._mAnimLen = v12;
 }
 
-void __fastcall M_FallenFear(int x, int y)
+void M_FallenFear(int x, int y)
 {
 	int v2;         // eax
 	int *v3;        // ebx
@@ -6401,7 +6380,7 @@ void __fastcall M_FallenFear(int x, int y)
 	}
 }
 
-void __fastcall PrintMonstHistory(int mt)
+void PrintMonstHistory(int mt)
 {
 	int v1;   // edi
 	int *v2;  // ebx
@@ -6477,7 +6456,7 @@ void __fastcall PrintMonstHistory(int mt)
 // 4B8824: using guessed type int pinfoflag;
 // 679660: using guessed type char gbMaxPlayers;
 
-void __cdecl PrintUniqueHistory()
+void PrintUniqueHistory()
 {
 	char v0; // bl
 
@@ -6503,7 +6482,7 @@ LABEL_4:
 }
 // 4B8824: using guessed type int pinfoflag;
 
-void __fastcall MissToMonst(int i, int x, int y)
+void MissToMonst(int i, int x, int y)
 {
 	int v3;            // edi
 	MissileStruct *v4; // edi
@@ -6624,7 +6603,7 @@ void __fastcall MissToMonst(int i, int x, int y)
 	}
 }
 
-BOOL __fastcall PosOkMonst(int i, int x, int y)
+BOOL PosOkMonst(int i, int x, int y)
 {
 	int oi, mi, j;
 	BOOL ret, fire;
@@ -6656,7 +6635,7 @@ BOOL __fastcall PosOkMonst(int i, int x, int y)
 	return ret;
 }
 
-BOOL __fastcall PosOkMonst2(int i, int x, int y)
+BOOL PosOkMonst2(int i, int x, int y)
 {
 	int oi, mi, j;
 	BOOL ret, fire;
@@ -6688,7 +6667,7 @@ BOOL __fastcall PosOkMonst2(int i, int x, int y)
 	return ret;
 }
 
-BOOL __fastcall PosOkMonst3(int i, int x, int y)
+BOOL PosOkMonst3(int i, int x, int y)
 {
 	int oi, mi, j, objtype;
 	BOOL ret, fire, isdoor;
@@ -6733,20 +6712,20 @@ BOOL __fastcall PosOkMonst3(int i, int x, int y)
 	return ret;
 }
 
-BOOL __fastcall IsSkel(int mt)
+BOOL IsSkel(int mt)
 {
 	return mt >= MT_WSKELAX && mt <= MT_XSKELAX
 	    || mt >= MT_WSKELBW && mt <= MT_XSKELBW
 	    || mt >= MT_WSKELSD && mt <= MT_XSKELSD;
 }
 
-BOOL __fastcall IsGoat(int mt)
+BOOL IsGoat(int mt)
 {
 	return mt >= MT_NGOATMC && mt <= MT_GGOATMC
 	    || mt >= MT_NGOATBW && mt <= MT_GGOATBW;
 }
 
-int __fastcall M_SpawnSkel(int x, int y, int dir)
+int M_SpawnSkel(int x, int y, int dir)
 {
 	int i, j, skeltypes, skel;
 
@@ -6773,7 +6752,7 @@ int __fastcall M_SpawnSkel(int x, int y, int dir)
 	return -1;
 }
 
-void __fastcall ActivateSpawn(int i, int x, int y, int dir)
+void ActivateSpawn(int i, int x, int y, int dir)
 {
 	dMonster[x][y] = i + 1;
 	monster[i]._mx = x;
@@ -6785,7 +6764,7 @@ void __fastcall ActivateSpawn(int i, int x, int y, int dir)
 	M_StartSpStand(i, dir);
 }
 
-BOOL __fastcall SpawnSkeleton(int ii, int x, int y)
+BOOL SpawnSkeleton(int ii, int x, int y)
 {
 	int dx, dy, xx, yy, dir, j, k, rs;
 	BOOL savail;
@@ -6840,7 +6819,7 @@ BOOL __fastcall SpawnSkeleton(int ii, int x, int y)
 	return TRUE;
 }
 
-int __cdecl PreSpawnSkeleton()
+int PreSpawnSkeleton()
 {
 	int i, j, skeltypes, skel;
 
@@ -6871,7 +6850,7 @@ int __cdecl PreSpawnSkeleton()
 	return -1;
 }
 
-void __fastcall TalktoMonster(int i)
+void TalktoMonster(int i)
 {
 	MonsterStruct *Monst;
 	int pnum, itm;
@@ -6899,7 +6878,7 @@ void __fastcall TalktoMonster(int i)
 	}
 }
 
-void __fastcall SpawnGolum(int i, int x, int y, int mi)
+void SpawnGolum(int i, int x, int y, int mi)
 {
 	if ((DWORD)i >= MAXMONSTERS)
 		app_fatal("SpawnGolum: Invalid monster %d", i);
@@ -6932,7 +6911,7 @@ void __fastcall SpawnGolum(int i, int x, int y, int mi)
 	}
 }
 
-BOOL __fastcall CanTalkToMonst(int m)
+BOOL CanTalkToMonst(int m)
 {
 	if ((DWORD)m >= MAXMONSTERS) {
 		app_fatal("CanTalkToMonst: Invalid monster %d", m);
@@ -6945,7 +6924,7 @@ BOOL __fastcall CanTalkToMonst(int m)
 	return monster[m]._mgoal == MGOAL_TALKING;
 }
 
-BOOL __fastcall CheckMonsterHit(int m, BOOL *ret)
+BOOL CheckMonsterHit(int m, BOOL *ret)
 {
 	if ((DWORD)m >= MAXMONSTERS) {
 		app_fatal("CheckMonsterHit: Invalid monster %d", m);
@@ -6967,7 +6946,7 @@ BOOL __fastcall CheckMonsterHit(int m, BOOL *ret)
 	return TRUE;
 }
 
-int __fastcall encode_enemy(int m)
+int encode_enemy(int m)
 {
 	int enemy;
 
@@ -6978,7 +6957,7 @@ int __fastcall encode_enemy(int m)
 	return enemy;
 }
 
-void __fastcall decode_enemy(int m, int enemy)
+void decode_enemy(int m, int enemy)
 {
 	if (enemy < 4) {
 		monster[m]._mFlags &= ~MFLAG_TARGETS_MONSTER;

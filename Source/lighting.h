@@ -16,34 +16,34 @@ extern int visionid;
 extern BYTE *pLightTbl;
 extern BOOL lightflag;
 
-void __fastcall RotateRadius(int *x, int *y, int *dx, int *dy, int *lx, int *ly, int *bx, int *by);
-void __fastcall DoLighting(int nXPos, int nYPos, int nRadius, int Lnum);
-void __fastcall DoUnLight(int nXPos, int nYPos, int nRadius);
-void __fastcall DoUnVision(int nXPos, int nYPos, int nRadius);
-void __fastcall DoVision(int nXPos, int nYPos, int nRadius, BOOL doautomap, BOOL visible);
-void __cdecl FreeLightTable();
-void __cdecl InitLightTable();
-void __cdecl MakeLightTable();
+void RotateRadius(int *x, int *y, int *dx, int *dy, int *lx, int *ly, int *bx, int *by);
+void DoLighting(int nXPos, int nYPos, int nRadius, int Lnum);
+void DoUnLight(int nXPos, int nYPos, int nRadius);
+void DoUnVision(int nXPos, int nYPos, int nRadius);
+void DoVision(int nXPos, int nYPos, int nRadius, BOOL doautomap, BOOL visible);
+void FreeLightTable();
+void InitLightTable();
+void MakeLightTable();
 #ifdef _DEBUG
-void __cdecl ToggleLighting_2();
-void __cdecl ToggleLighting();
+void ToggleLighting_2();
+void ToggleLighting();
 #endif
-void __cdecl InitLightMax();
-void __cdecl InitLighting();
-int __fastcall AddLight(int x, int y, int r);
-void __fastcall AddUnLight(int i);
-void __fastcall ChangeLightRadius(int i, int r);
-void __fastcall ChangeLightXY(int i, int x, int y);
-void __fastcall ChangeLightOff(int i, int x, int y);
-void __fastcall ChangeLight(int i, int x, int y, int r);
-void __cdecl ProcessLightList();
-void __cdecl SavePreLighting();
-void __cdecl InitVision();
-int __fastcall AddVision(int x, int y, int r, BOOL mine);
-void __fastcall ChangeVisionRadius(int id, int r);
-void __fastcall ChangeVisionXY(int id, int x, int y);
-void __cdecl ProcessVisionList();
-void __cdecl lighting_color_cycling();
+void InitLightMax();
+void InitLighting();
+int AddLight(int x, int y, int r);
+void AddUnLight(int i);
+void ChangeLightRadius(int i, int r);
+void ChangeLightXY(int i, int x, int y);
+void ChangeLightOff(int i, int x, int y);
+void ChangeLight(int i, int x, int y, int r);
+void ProcessLightList();
+void SavePreLighting();
+void InitVision();
+int AddVision(int x, int y, int r, BOOL mine);
+void ChangeVisionRadius(int id, int r);
+void ChangeVisionXY(int id, int x, int y);
+void ProcessVisionList();
+void lighting_color_cycling();
 
 /* rdata */
 

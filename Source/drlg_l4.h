@@ -10,52 +10,52 @@ extern int diabquad2x; // idb
 extern int diabquad2y; // idb
 extern int diabquad4x; // idb
 extern int diabquad4y; // idb
-extern int hallok[20];
+extern BOOL hallok[20];
 extern int l4holdx; // weak
 extern int l4holdy; // weak
 extern int SP4x1;   // idb
 extern int SP4x2;   // weak
 extern int SP4y1;   // idb
 extern int SP4y2;   // weak
-extern char L4dungeon[80][80];
-extern char dung[20][20];
+extern unsigned char L4dungeon[80][80];
+extern unsigned char dung[20][20];
 //int dword_52A4DC; // weak
 
-void __cdecl DRLG_LoadL4SP();
-void __cdecl DRLG_FreeL4SP();
-void __fastcall DRLG_L4SetSPRoom(int rx1, int ry1);
-void __cdecl L4SaveQuads();
-void __fastcall DRLG_L4SetRoom(unsigned char *pSetPiece, int rx1, int ry1);
-void __fastcall DRLG_LoadDiabQuads(BOOL preflag);
-BOOLEAN __fastcall IsDURWall(char d);
-BOOLEAN __fastcall IsDLLWall(char dd);
-void __cdecl L4FixRim();
-void __cdecl DRLG_L4GeneralFix();
-void __fastcall CreateL4Dungeon(int rseed, int entry);
-void __fastcall DRLG_L4(int entry);
-void __cdecl DRLG_L4Shadows();
-void __cdecl InitL4Dungeon();
-void __cdecl L4makeDmt();
-void __cdecl L4AddWall();
-int __fastcall L4HWallOk(int i, int j);
-int __fastcall L4VWallOk(int i, int j);
-void __fastcall L4HorizWall(int i, int j, int dx);
-void __fastcall L4VertWall(int i, int j, int dy);
-void __cdecl L4tileFix();
-void __cdecl DRLG_L4Subs();
-void __cdecl L4makeDungeon();
-void __cdecl uShape();
-int __cdecl GetArea();
-void __cdecl L4firstRoom();
-void __fastcall L4drawRoom(int x, int y, int width, int height);
-void __fastcall L4roomGen(int x, int y, int w, int h, int dir);
-BOOLEAN __fastcall L4checkRoom(int x, int y, int width, int height);
-BOOLEAN __fastcall DRLG_L4PlaceMiniSet(const unsigned char *miniset, int tmin, int tmax, int cx, int cy, int setview, int ldir);
-void __cdecl DRLG_L4FloodTVal();
-void __fastcall DRLG_L4FTVR(int i, int j, int x, int y, int d);
-void __cdecl DRLG_L4TransFix();
-void __cdecl DRLG_L4Corners();
-void __cdecl DRLG_L4Pass3();
+void DRLG_LoadL4SP();
+void DRLG_FreeL4SP();
+void DRLG_L4SetSPRoom(int rx1, int ry1);
+void L4SaveQuads();
+void DRLG_L4SetRoom(unsigned char *pSetPiece, int rx1, int ry1);
+void DRLG_LoadDiabQuads(BOOL preflag);
+BOOL IsDURWall(char d);
+BOOL IsDLLWall(char dd);
+void L4FixRim();
+void DRLG_L4GeneralFix();
+void CreateL4Dungeon(unsigned int rseed, int entry);
+void DRLG_L4(int entry);
+void DRLG_L4Shadows();
+void InitL4Dungeon();
+void L4makeDmt();
+void L4AddWall();
+int L4HWallOk(int i, int j);
+int L4VWallOk(int i, int j);
+void L4HorizWall(int i, int j, int dx);
+void L4VertWall(int i, int j, int dy);
+void L4tileFix();
+void DRLG_L4Subs();
+void L4makeDungeon();
+void uShape();
+long GetArea();
+void L4firstRoom();
+void L4drawRoom(int x, int y, int width, int height);
+void L4roomGen(int x, int y, int w, int h, int dir);
+BOOL L4checkRoom(int x, int y, int width, int height);
+BOOL DRLG_L4PlaceMiniSet(const unsigned char *miniset, int tmin, int tmax, int cx, int cy, BOOL setview, int ldir);
+void DRLG_L4FloodTVal();
+void DRLG_L4FTVR(int i, int j, int x, int y, int d);
+void DRLG_L4TransFix();
+void DRLG_L4Corners();
+void DRLG_L4Pass3();
 
 /* rdata */
 extern const unsigned char L4ConvTbl[16];

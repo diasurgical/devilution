@@ -38,7 +38,7 @@ int AMPlayerY;      // weak
 #define MAPFLAG_SQUARE 0x40
 #define MAPFLAG_STAIRS 0x80
 
-void __cdecl InitAutomapOnce()
+void InitAutomapOnce()
 {
 	automapflag = FALSE;
 	AutoMapScale = 50;
@@ -49,7 +49,7 @@ void __cdecl InitAutomapOnce()
 	AMPlayerY = 2;
 }
 
-void __cdecl InitAutomap()
+void InitAutomap()
 {
 	unsigned char b1, b2;
 	unsigned int dwTiles;
@@ -110,38 +110,38 @@ void __cdecl InitAutomap()
 	}
 }
 
-void __cdecl StartAutomap()
+void StartAutomap()
 {
 	AutoMapXOfs = 0;
 	AutoMapYOfs = 0;
 	automapflag = TRUE;
 }
 
-void __cdecl AutomapUp()
+void AutomapUp()
 {
 	--AutoMapXOfs;
 	--AutoMapYOfs;
 }
 
-void __cdecl AutomapDown()
+void AutomapDown()
 {
 	++AutoMapXOfs;
 	++AutoMapYOfs;
 }
 
-void __cdecl AutomapLeft()
+void AutomapLeft()
 {
 	--AutoMapXOfs;
 	++AutoMapYOfs;
 }
 
-void __cdecl AutomapRight()
+void AutomapRight()
 {
 	++AutoMapXOfs;
 	--AutoMapYOfs;
 }
 
-void __cdecl AutomapZoomIn()
+void AutomapZoomIn()
 {
 	if (AutoMapScale < 200) {
 		AutoMapScale += 5;
@@ -153,7 +153,7 @@ void __cdecl AutomapZoomIn()
 	}
 }
 
-void __cdecl AutomapZoomOut()
+void AutomapZoomOut()
 {
 	if (AutoMapScale > 50) {
 		AutoMapScale -= 5;
@@ -165,7 +165,7 @@ void __cdecl AutomapZoomOut()
 	}
 }
 
-void __cdecl DrawAutomap()
+void DrawAutomap()
 {
 	int cells;
 	int sx, sy;
@@ -250,10 +250,9 @@ void __cdecl DrawAutomap()
 	DrawAutomapGame();
 }
 // 4B8968: using guessed type int sbookflag;
-// 69BD04: using guessed type int questlog;
 // 69CF0C: using guessed type int gpBufEnd;
 
-void __fastcall DrawAutomapType(int sx, int sy, WORD automap_type)
+void DrawAutomapType(int sx, int sy, WORD automap_type)
 {
 	BOOL do_vert;
 	BOOL do_horz;
@@ -438,7 +437,7 @@ void __fastcall DrawAutomapType(int sx, int sy, WORD automap_type)
 	}
 }
 
-void __cdecl DrawAutomapPlr()
+void DrawAutomapPlr()
 {
 	int px, py;
 	int x, y;
@@ -509,7 +508,7 @@ void __cdecl DrawAutomapPlr()
 	}
 }
 
-WORD __fastcall GetAutomapType(int x, int y, BOOL view)
+WORD GetAutomapType(int x, int y, BOOL view)
 {
 	if (view) {
 		if (x == -1 && y >= 0 && y < DMAXY && automapview[0][y])
@@ -535,7 +534,7 @@ WORD __fastcall GetAutomapType(int x, int y, BOOL view)
 	return 0;
 }
 
-void __cdecl DrawAutomapGame()
+void DrawAutomapGame()
 {
 	char desc[256];
 	int nextline = 20;
@@ -558,7 +557,7 @@ void __cdecl DrawAutomapGame()
 	}
 }
 
-void __fastcall SetAutomapView(int x, int y)
+void SetAutomapView(int x, int y)
 {
 	WORD maptype, solid;
 	int xx, yy;
@@ -630,7 +629,7 @@ void __fastcall SetAutomapView(int x, int y)
 	}
 }
 
-void __cdecl AutomapZoomReset()
+void AutomapZoomReset()
 {
 	AutoMapXOfs = 0;
 	AutoMapYOfs = 0;

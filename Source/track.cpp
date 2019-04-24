@@ -8,7 +8,7 @@ static BYTE sgbIsScrolling;
 static DWORD sgdwLastWalk;
 static BOOL sgbIsWalking;
 
-void __cdecl track_process()
+void track_process()
 {
 	if (!sgbIsWalking)
 		return;
@@ -30,7 +30,7 @@ void __cdecl track_process()
 	}
 }
 
-void __fastcall track_repeat_walk(BOOL rep)
+void track_repeat_walk(BOOL rep)
 {
 	if (sgbIsWalking == rep)
 		return;
@@ -45,7 +45,7 @@ void __fastcall track_repeat_walk(BOOL rep)
 	}
 }
 
-BOOL __cdecl track_isscrolling()
+BOOL track_isscrolling()
 {
 	return sgbIsScrolling;
 }

@@ -4,14 +4,14 @@
 
 extern _plrmsg plr_msgs[PMSG_COUNT];
 
-void __fastcall plrmsg_delay(BOOL delay);
-char *__fastcall ErrorPlrMsg(const char *pszMsg);
-size_t EventPlrMsg(const char *pszFmt, ...);
-void __fastcall SendPlrMsg(int pnum, const char *pszStr);
-void __cdecl ClearPlrMsg();
-void __cdecl InitPlrMsg();
-void __cdecl DrawPlrMsg();
-void __fastcall PrintPlrMsg(unsigned int x, unsigned int y, unsigned int width, const char *str, unsigned char just);
+void plrmsg_delay(BOOL delay);
+char *ErrorPlrMsg(const char *pszMsg);
+size_t __cdecl EventPlrMsg(const char *pszFmt, ...);
+void SendPlrMsg(int pnum, const char *pszStr);
+void ClearPlrMsg();
+void InitPlrMsg();
+void DrawPlrMsg();
+void PrintPlrMsg(unsigned int x, unsigned int y, unsigned int width, const char *str, unsigned char just);
 
 /* rdata */
 

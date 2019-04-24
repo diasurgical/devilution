@@ -58,6 +58,29 @@ typedef struct _WSIZE
   WORD  cy;
 } WSIZE, *PWSIZE;
 
+#ifdef __cplusplus
+struct CCritSect {
+	CRITICAL_SECTION m_critsect;
+
+	CCritSect()
+	{
+		InitializeCriticalSection(&m_critsect);
+	}
+	~CCritSect()
+	{
+		DeleteCriticalSection(&m_critsect);
+	}
+	void Enter()
+	{
+		EnterCriticalSection(&m_critsect);
+	}
+	void Leave()
+	{
+		LeaveCriticalSection(&m_critsect);
+	}
+};
+#endif
+
 
 
 // Game states
@@ -1224,7 +1247,7 @@ void  STORMAPI SRgn529i(int handle, int a2, int a3);
  *
  *  Returns TRUE if the user chose to continue execution, FALSE otherwise.
  */
-BOOL
+BOOL __cdecl
 SErrDisplayErrorFmt(
     DWORD dwErrMsg,
     const char *logfilename,
@@ -1278,7 +1301,7 @@ char *STORMAPI SStrChrR(const char *string, char c);
  *
  *  Returns the number of characters written.
  */
-unsigned int
+unsigned int __cdecl
 SStrVPrintf(
     char *dest,
     unsigned int size,

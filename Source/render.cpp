@@ -118,7 +118,7 @@ int WorldTbl17_2[17] = { 0, 32, 60, 88, 112, 136, 156, 176, 192, 208, 220, 232, 
 #if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
 #include "_render.cpp"
 #else
-void __fastcall drawTopArchesUpperScreen(BYTE *pBuff)
+void drawTopArchesUpperScreen(BYTE *pBuff)
 {
 	unsigned char *dst;        // edi MAPDST
 	unsigned char *tbl;        // ebx
@@ -1144,7 +1144,7 @@ void __fastcall drawTopArchesUpperScreen(BYTE *pBuff)
 	}
 }
 
-void __fastcall drawBottomArchesUpperScreen(BYTE *pBuff, unsigned int *pMask)
+void drawBottomArchesUpperScreen(BYTE *pBuff, unsigned int *pMask)
 {
 	unsigned char *dst;        // edi MAPDST
 	unsigned char *src;        // esi MAPDST
@@ -1778,7 +1778,7 @@ void __fastcall drawBottomArchesUpperScreen(BYTE *pBuff, unsigned int *pMask)
 	}
 }
 
-void __fastcall drawUpperScreen(BYTE *pBuff)
+void drawUpperScreen(BYTE *pBuff)
 {
 	unsigned char *dst;        // edi MAPDST
 	unsigned char *tbl;        // ebx
@@ -2398,7 +2398,7 @@ void __fastcall drawUpperScreen(BYTE *pBuff)
 	}
 }
 
-void __fastcall drawTopArchesLowerScreen(BYTE *pBuff)
+void drawTopArchesLowerScreen(BYTE *pBuff)
 {
 	unsigned char *dst;        // edi MAPDST
 	unsigned char *tbl;        // ebx
@@ -3637,7 +3637,7 @@ LABEL_11:
 	}
 }
 
-void __fastcall drawBottomArchesLowerScreen(BYTE *pBuff, unsigned int *pMask)
+void drawBottomArchesLowerScreen(BYTE *pBuff, unsigned int *pMask)
 {
 	unsigned char *dst;        // edi MAPDST
 	short cel_type_16;         // ax MAPDST
@@ -4431,7 +4431,7 @@ void __fastcall drawBottomArchesLowerScreen(BYTE *pBuff, unsigned int *pMask)
 	}
 }
 
-void __fastcall drawLowerScreen(BYTE *pBuff)
+void drawLowerScreen(BYTE *pBuff)
 {
 	unsigned char *dst;        // edi MAPDST
 	unsigned char *src;        // esi MAPDST
@@ -5211,7 +5211,7 @@ void __fastcall drawLowerScreen(BYTE *pBuff)
 	}
 }
 
-void __fastcall world_draw_black_tile(BYTE *pBuff)
+void world_draw_black_tile(BYTE *pBuff)
 {
 	unsigned char *dst; // edi MAPDST
 	signed int xx_32;   // edx

@@ -4,7 +4,7 @@
 
 DEVILUTION_BEGIN_NAMESPACE
 
-void __fastcall PackPlayer(PkPlayerStruct *pPack, int pnum, BOOL manashield)
+void PackPlayer(PkPlayerStruct *pPack, int pnum, BOOL manashield)
 {
 	PlayerStruct *pPlayer;
 	int i;
@@ -79,7 +79,7 @@ void __fastcall PackPlayer(PkPlayerStruct *pPack, int pnum, BOOL manashield)
 		pPack->pManaShield = FALSE;
 }
 
-void __fastcall PackItem(PkItemStruct *id, ItemStruct *is)
+void PackItem(PkItemStruct *id, ItemStruct *is)
 {
 	if (is->_itype == -1) {
 		id->idx = 0xFFFF;
@@ -109,7 +109,7 @@ void __fastcall PackItem(PkItemStruct *id, ItemStruct *is)
 	}
 }
 
-void __fastcall VerifyGoldSeeds(PlayerStruct *pPlayer)
+void VerifyGoldSeeds(PlayerStruct *pPlayer)
 {
 	int i, j;
 
@@ -127,7 +127,7 @@ void __fastcall VerifyGoldSeeds(PlayerStruct *pPlayer)
 	}
 }
 
-void __fastcall UnPackPlayer(PkPlayerStruct *pPack, int pnum, BOOL killok)
+void UnPackPlayer(PkPlayerStruct *pPack, int pnum, BOOL killok)
 {
 	PlayerStruct *pPlayer;
 	int i;
@@ -222,7 +222,7 @@ void __fastcall UnPackPlayer(PkPlayerStruct *pPack, int pnum, BOOL killok)
 
 // Note: last slot of item[MAXITEMS+1] used as temporary buffer
 // find real name reference below, possibly [sizeof(item[])/sizeof(ItemStruct)]
-void __fastcall UnPackItem(PkItemStruct *is, ItemStruct *id)
+void UnPackItem(PkItemStruct *is, ItemStruct *id)
 {
 	if (is->idx == 0xFFFF) {
 		id->_itype = -1;
