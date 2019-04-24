@@ -92,7 +92,7 @@ void DoorSet(int oi, int dx, int dy);
 void RedoPlayerVision();
 void OperateL1RDoor(int pnum, int oi, BOOL sendflag);
 void OperateL1LDoor(int pnum, int oi, BOOL sendflag);
-void OperateL2RDoor(int pnum, int oi, unsigned char sendflag);
+void OperateL2RDoor(int pnum, int oi, BOOL sendflag);
 void OperateL2LDoor(int pnum, int oi, unsigned char sendflag);
 void OperateL3RDoor(int pnum, int oi, unsigned char sendflag);
 void OperateL3LDoor(int pnum, int oi, unsigned char sendflag);
