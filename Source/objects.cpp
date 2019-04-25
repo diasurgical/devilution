@@ -4033,31 +4033,32 @@ void OperateWeaponRack(int pnum, int i, BOOL sendmsg)
 		return;
 	SetRndSeed(object[i]._oRndSeed);
 
-	switch (random(0, 4)) {
-	case ITYPE_BOW - 1:
-		weaponType = ITYPE_BOW;
+	switch (random(0, 4) + 1) {
+	case ITYPE_SWORD:
+		weaponType = ITYPE_SWORD;
 		break;
-	case ITYPE_AXE - 1:
+	case ITYPE_AXE:
 		weaponType = ITYPE_AXE;
 		break;
-	case ITYPE_MACE - 1:
-		weaponType = ITYPE_MACE;
+	case ITYPE_BOW:
+		weaponType = ITYPE_BOW;
 		break;
-	case ITYPE_SWORD - 1:
-		weaponType = ITYPE_SWORD;
+	case ITYPE_MACE:
+		weaponType = ITYPE_MACE;
 		break;
 	}
 
 	object[i]._oAnimFrame++;
 	object[i]._oSelFlag = 0;
-	if (!deltaload) {
-		if (leveltype > 1)
-			CreateTypeItem(object[i]._ox, object[i]._oy, 1, weaponType, 0, sendmsg, 0);
-		else
-			CreateTypeItem(object[i]._ox, object[i]._oy, 0, weaponType, 0, sendmsg, 0);
-		if (pnum == myplr)
-			NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, i);
-	}
+	if (deltaload)
+		return;
+
+	if (leveltype > 1)
+		CreateTypeItem(object[i]._ox, object[i]._oy, 1, weaponType, 0, sendmsg, 0);
+	else
+		CreateTypeItem(object[i]._ox, object[i]._oy, 0, weaponType, 0, sendmsg, 0);
+	if (pnum == myplr)
+		NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, i);
 }
 // 676190: using guessed type int deltaload;
 
