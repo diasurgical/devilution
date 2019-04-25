@@ -295,39 +295,32 @@ void multi_clear_left_tbl()
 
 void multi_player_left_msg(int pnum, int left)
 {
-	int v2;   // edi
-	int v3;   // ebx
-	int v4;   // esi
-	char *v5; // eax
-	int v6;   // edi
+	char *pszFmt;
 
-	v2 = pnum;
-	v3 = left;
-	v4 = pnum;
 	if (plr[pnum].plractive) {
 		RemovePlrFromMap(pnum);
-		RemovePortalMissile(v2);
-		DeactivatePortal(v2);
-		RemovePlrPortal(v2);
-		RemovePlrMissiles(v2);
-		if (v3) {
-			v5 = "Player '%s' just left the game";
-			v6 = sgdwPlayerLeftReasonTbl[v2] - 0x40000004;
-			if (v6) {
-				if (v6 == 2)
-					v5 = "Player '%s' dropped due to timeout";
-			} else {
-				v5 = "Player '%s' killed Diablo and left the game!";
+		RemovePortalMissile(pnum);
+		DeactivatePortal(pnum);
+		RemovePlrPortal(pnum);
+		RemovePlrMissiles(pnum);
+		if (left) {
+			pszFmt = "Player '%s' just left the game";
+			switch (sgdwPlayerLeftReasonTbl[pnum]) {
+			case 0x40000004:
+				pszFmt = "Player '%s' killed Diablo and left the game!";
 				gbSomebodyWonGameKludge = TRUE;
+				break;
+			case 0x40000006:
+				pszFmt = "Player '%s' dropped due to timeout";
+				break;
 			}
-			EventPlrMsg(v5, plr[v4]._pName);
+			EventPlrMsg(pszFmt, plr[pnum]._pName);
 		}
-		plr[v4].plractive = 0;
-		plr[v4]._pName[0] = 0;
-		--gbActivePlayers;
+		plr[pnum].plractive = FALSE;
+		plr[pnum]._pName[0] = '\0';
+		gbActivePlayers--;
 	}
 }
-// 6761B8: using guessed type char gbSomebodyWonGameKludge;
 
 void multi_net_ping()
 {
@@ -775,7 +768,7 @@ BOOL NetInit(BOOL bSinglePlayer, BOOL *pfExitProgram)
 		SetupLocalCoords();
 		multi_send_pinfo(-2, CMD_SEND_PLRINFO);
 		gbActivePlayers = 1;
-		plr[myplr].plractive = 1;
+		plr[myplr].plractive = TRUE;
 		if (sgbPlayerTurnBitTbl[myplr] == 0 || msg_wait_resync())
 			break;
 		NetClose();
@@ -979,7 +972,7 @@ void recv_plrinfo(int pnum, TCmdPlrInfoHdr *p, BOOL recv)
 		return;
 	}
 
-	plr[pnum].plractive = 1;
+	plr[pnum].plractive = TRUE;
 	gbActivePlayers++;
 
 	if (sgbPlayerTurnBitTbl[pnum] != 0) {
