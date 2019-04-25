@@ -515,7 +515,7 @@ BOOL UiCreatePlayerDescription(_uiheroinfo *info, DWORD mode, char *desc)
 void DrawArt(int screenX, int screenY, Art *art, int nFrame, int drawW)
 {
 	BYTE *src = (BYTE *)art->data + (art->width * art->height * nFrame);
-	BYTE *dst = &gpBuffer[screenX + 64 + (screenY + 160) * 768];
+	BYTE *dst = &gpBuffer[screenX + 64 + (screenY + 160) * BUFFER_WIDTH];
 	drawW = drawW ? drawW : art->width;
 
 	for (int i = 0; i < art->height && i + screenY < SCREEN_HEIGHT; i++, src += art->width, dst += ROW_PITCH) {

@@ -1,5 +1,5 @@
-#include "devilution.h"
-#include "DiabloUI/diabloui.h"
+#include "diablo.h"
+#include "../3rdParty/Storm/Source/storm.h"
 #include "miniwin/ddraw.h"
 
 namespace dvl {
@@ -52,7 +52,9 @@ void dx_init(HWND hWnd)
 #endif
 #endif
 
+#ifndef _DEBUG
 	fullscreen = true;
+#endif
 	if (!fullscreen) {
 #ifdef __cplusplus
 		hDDVal = lpDDInterface->SetCooperativeLevel(hWnd, 0 | 0);
@@ -60,7 +62,7 @@ void dx_init(HWND hWnd)
 		hDDVal = lpDDInterface->lpVtbl->SetCooperativeLevel(lpDDInterface, hWnd, DDSCL_NORMAL | DDSCL_ALLOWREBOOT);
 #endif
 		if (hDDVal == 1) {
-			MI_Dummy(0); // v5
+			TriggerBreak();
 		} else if (hDDVal != DVL_S_OK) {
 			ErrDlg(IDD_DIALOG1, hDDVal, "C:\\Diablo\\Direct\\dx.cpp", 155);
 		}
@@ -72,22 +74,22 @@ void dx_init(HWND hWnd)
 		hDDVal = lpDDInterface->lpVtbl->SetCooperativeLevel(lpDDInterface, hWnd, DDSCL_EXCLUSIVE | DDSCL_ALLOWREBOOT | DDSCL_FULLSCREEN);
 #endif
 		if (hDDVal == 1) {
-			MI_Dummy(0); // v5
+			TriggerBreak();
 		} else if (hDDVal != DVL_S_OK) {
 			ErrDlg(IDD_DIALOG1, hDDVal, "C:\\Src\\Diablo\\Source\\dx.cpp", 170);
 		}
 #ifdef __cplusplus
-		hDDVal = lpDDInterface->SetDisplayMode(640, 480, 8);
+		hDDVal = lpDDInterface->SetDisplayMode(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP);
 #else
-		hDDVal = lpDDInterface->lpVtbl->SetDisplayMode(lpDDInterface, SCREEN_WIDTH, SCREEN_HEIGHT, 8);
+		hDDVal = lpDDInterface->lpVtbl->SetDisplayMode(lpDDInterface, SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP);
 #endif
 		if (hDDVal != DVL_S_OK) {
 			winw = GetSystemMetrics(DVL_SM_CXSCREEN);
 			winh = GetSystemMetrics(DVL_SM_CYSCREEN);
 #ifdef __cplusplus
-			hDDVal = lpDDInterface->SetDisplayMode(winw, winh, 8);
+			hDDVal = lpDDInterface->SetDisplayMode(winw, winh, SCREEN_BPP);
 #else
-			hDDVal = lpDDInterface->lpVtbl->SetDisplayMode(lpDDInterface, winw, winh, 8);
+			hDDVal = lpDDInterface->lpVtbl->SetDisplayMode(lpDDInterface, winw, winh, SCREEN_BPP);
 #endif
 			if (hDDVal != DVL_S_OK) {
 				ErrDlg(IDD_DIALOG1, hDDVal, "C:\\Src\\Diablo\\Source\\dx.cpp", 183);
@@ -124,7 +126,7 @@ void dx_create_back_buffer()
 #ifdef __cplusplus
 		error_code = lpDDSPrimary->Lock(NULL, &ddsd, 0 | 0, NULL);
 #else
-		error_code = lpDDSPrimary->lpVtbl->Lock(lpDDSPrimary, NULL, &ddsd, 0 | 0, NULL);
+		error_code = lpDDSPrimary->lpVtbl->Lock(lpDDSPrimary, NULL, &ddsd, DDLOCK_WRITEONLY | DDLOCK_WAIT, NULL);
 #endif
 		if (error_code == DVL_S_OK) {
 #ifdef __cplusplus
@@ -140,12 +142,12 @@ void dx_create_back_buffer()
 	}
 
 	memset(&ddsd, 0, sizeof(ddsd));
-	ddsd.dwWidth = 768;
-	ddsd.lPitch = 768;
+	ddsd.dwWidth = BUFFER_WIDTH;
+	ddsd.lPitch = BUFFER_WIDTH;
 	ddsd.dwSize = sizeof(ddsd);
 	ddsd.dwFlags = 0 | 0 | 0 | 0 | 0;
 	ddsd.ddsCaps.dwCaps = 0 | 0;
-	ddsd.dwHeight = 656;
+	ddsd.dwHeight = BUFFER_HEIGHT;
 	ddsd.ddpfPixelFormat.dwSize = sizeof(ddsd.ddpfPixelFormat);
 #ifdef __cplusplus
 	error_code = lpDDSPrimary->GetPixelFormat(&ddsd.ddpfPixelFormat);
@@ -233,7 +235,7 @@ void lock_buf_priv()
 #ifdef __cplusplus
 	error_code = lpDDSBackBuf->Lock(NULL, &ddsd, 0, NULL);
 #else
-	error_code = lpDDSBackBuf->lpVtbl->Lock(lpDDSBackBuf, NULL, &ddsd, 0, NULL);
+	error_code = lpDDSBackBuf->lpVtbl->Lock(lpDDSBackBuf, NULL, &ddsd, DDLOCK_WAIT, NULL);
 #endif
 	if (error_code != DVL_S_OK)
 		DDErrMsg(error_code, 235, "C:\\Src\\Diablo\\Source\\dx.cpp");

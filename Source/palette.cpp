@@ -229,8 +229,8 @@ void SetFadeLevel(DWORD fadeval)
 		// Workaround for flickering mouse in caves https://github.com/diasurgical/devilutionX/issues/7
 		SrcRect.left = 64;
 		SrcRect.top = 160;
-		SrcRect.right = 640 + 64;
-		SrcRect.bottom = 480 + 160; // menu isn't offset so make sure we copy all of it
+		SrcRect.right = BUFFER_WIDTH;
+		SrcRect.bottom = BUFFER_HEIGHT; // menu isn't offset so make sure we copy all of it
 		lpDDSPrimary->BltFast(0, 0, lpDDSBackBuf, &SrcRect, DDBLTFAST_WAIT);
 		lpDDSPrimary->Unlock(NULL);
 	}
