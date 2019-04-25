@@ -218,16 +218,14 @@ void multi_send_msg_packet(int a1, BYTE *a2, BYTE len)
 
 void multi_msg_countdown()
 {
-	int v0; // esi
+	int i;
 
-	v0 = 0;
-	do {
-		if (player_state[v0] & 0x20000) {
-			if (gdwMsgLenTbl[v0] == 4)
-				multi_parse_turn(v0, *(_DWORD *)glpMsgTbl[v0]);
+	for (i = 0; i < MAX_PLRS; i++) {
+		if (player_state[i] & 0x20000) {
+			if (gdwMsgLenTbl[i] == 4)
+				multi_parse_turn(i, *(DWORD *)glpMsgTbl[i]);
 		}
-		++v0;
-	} while (v0 < MAX_PLRS);
+	}
 }
 
 void multi_parse_turn(int pnum, int turn)
