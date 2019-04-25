@@ -838,10 +838,9 @@ int InitNewSeed(int newseed)
 
 void SetupLocalCoords()
 {
-	int x; // ecx
-	int y; // edx
+	int x, y;
 
-	if (!leveldebug || (unsigned char)gbMaxPlayers > 1u) {
+	if (!leveldebug || gbMaxPlayers > 1) {
 		currlevel = 0;
 		leveltype = 0;
 		setlevel = 0;
@@ -868,9 +867,6 @@ void SetupLocalCoords()
 	plr[myplr]._pmode = PM_NEWLVL;
 	plr[myplr].destAction = ACTION_NONE;
 }
-// 52572C: using guessed type int leveldebug;
-// 5CF31D: using guessed type char setlevel;
-// 679660: using guessed type char gbMaxPlayers;
 
 BOOL multi_init_single(_SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info, _SNETUIDATA *ui_info)
 {
