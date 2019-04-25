@@ -1427,7 +1427,7 @@ void AddFlameLvr(int i)
 }
 // 679768: using guessed type int trapid;
 
-void AddTrap(int i)
+void AddTrap(int i, int t)
 {
 	int mt;
 
@@ -1451,7 +1451,7 @@ void AddObjLight(int i, int r)
 	}
 }
 
-void AddBarrel(int i)
+void AddBarrel(int i, int t)
 {
 	object[i]._oVar1 = 0;
 	object[i]._oRndSeed = GetRndSeed();
@@ -1689,150 +1689,141 @@ void AddSlainHero()
 
 void AddObject(int ot, int ox, int oy)
 {
-	int v3; // ebp
-	int v4; // esi
-	//unsigned int v5; // eax
-	int v6; // ebx
-	int v7; // ebx
-	int v8; // eax
+	int oi;
 
-	v3 = ox;
-	v4 = ot;
-	if (nobjects < MAXOBJECTS) {
-		//v5 = 4 * nobjects;
-		v6 = objectavail[0];
-		objectactive[nobjects] = objectavail[0];
-		objectavail[0] = objectavail[-nobjects + 126]; /* double check, MAXOBJECTS */
-		dObject[ox][oy] = v6 + 1;
-		SetupObject(v6, ox, oy, ot);
-		switch (v4) {
-		case OBJ_L1LIGHT:
-		case OBJ_SKFIRE:
-		case OBJ_CANDLE1:
-		case OBJ_CANDLE2:
-		case OBJ_BOOKCANDLE:
-			goto LABEL_31;
-		case OBJ_L1LDOOR:
-		case OBJ_L1RDOOR:
-			AddL1Door(v6, v3, oy, v4);
-			break;
-		case OBJ_CHEST1:
-		case OBJ_CHEST2:
-		case OBJ_CHEST3:
-		case OBJ_TCHEST1:
-		case OBJ_TCHEST2:
-		case OBJ_TCHEST3:
-			AddChest(v6, v4);
-			break;
-		case OBJ_BOOK2L:
-			AddVilebook(v6);
-			break;
-		case OBJ_BCROSS:
-		case OBJ_TBCROSS:
-			AddBookstand(v6);
-		LABEL_31:
-			AddObjLight(v6, 5);
-			break;
-		case OBJ_TNUDEM2:
-			AddTorturedBody(v6);
-			break;
-		case OBJ_BOOK2R:
-			AddSCambBook(v6);
-			break;
-		case OBJ_L2LDOOR:
-		case OBJ_L2RDOOR:
-			AddL2Door(v6, v3, oy, v4);
-			break;
-		case OBJ_TORCHL:
-		case OBJ_TORCHR:
-		case OBJ_TORCHL2:
-		case OBJ_TORCHR2:
-			AddObjLight(v6, 8);
-			break;
-		case OBJ_SARC:
-			AddSarc(v6);
-			break;
-		case OBJ_FLAMEHOLE:
-			AddFlameTrap(v6);
-			break;
-		case OBJ_FLAMELVR:
-			AddFlameLvr(v6);
-			break;
-		case OBJ_WATER:
-			object[v6]._oAnimFrame = 1;
-			break;
-		case OBJ_TRAPL:
-		case OBJ_TRAPR:
-			AddTrap(v6);
-			break;
-		case OBJ_BARREL:
-		case OBJ_BARRELEX:
-			AddBarrel(v6);
-			break;
-		case OBJ_SHRINEL:
-		case OBJ_SHRINER:
-			AddShrine(v6);
-			break;
-		case OBJ_SKELBOOK:
-		case OBJ_BOOKSTAND:
-			AddBookstand(v6);
-			break;
-		case OBJ_BOOKCASEL:
-		case OBJ_BOOKCASER:
-			AddBookcase(v6);
-			break;
-		case OBJ_BLOODFTN:
-			AddBookstand(v6);
-			break;
-		case OBJ_DECAP:
-			AddDecap(v6);
-			break;
-		case OBJ_PEDISTAL:
-			AddPedistal(v6);
-			break;
-		case OBJ_L3LDOOR:
-		case OBJ_L3RDOOR:
-			AddL3Door(v6, v3, oy, v4);
-			break;
-		case OBJ_PURIFYINGFTN:
-			AddPurifyingFountain(v6);
-			break;
-		case OBJ_ARMORSTAND:
-		case OBJ_WARARMOR:
-			AddArmorStand(v6);
-			break;
-		case OBJ_GOATSHRINE:
-			AddBookstand(v6);
-			break;
-		case OBJ_CAULDRON:
-			AddBookstand(v6);
-			break;
-		case OBJ_MURKYFTN:
-			AddPurifyingFountain(v6);
-			break;
-		case OBJ_TEARFTN:
-			AddBookstand(v6);
-			break;
-		case OBJ_MCIRCLE1:
-		case OBJ_MCIRCLE2:
-			AddMagicCircle(v6);
-			break;
-		case OBJ_STORYBOOK:
-			AddStoryBook(v6);
-			break;
-		case OBJ_STORYCANDLE:
-			AddObjLight(v6, 3);
-			break;
-		case OBJ_WARWEAP:
-		case OBJ_WEAPONRACK:
-			AddWeaponRack(v6);
-			break;
-		}
-		v7 = v6;
-		v8 = object[v7]._oAnimWidth - 64;
-		++nobjects;
-		object[v7]._oAnimWidth2 = v8 >> 1;
+	if (nobjects >= MAXOBJECTS)
+		return;
+
+	oi = objectavail[0];
+	objectavail[0] = objectavail[126 - nobjects];
+	objectactive[nobjects] = oi;
+	dObject[ox][oy] = oi + 1;
+	SetupObject(oi, ox, oy, ot);
+	switch (ot) {
+	case OBJ_STORYCANDLE:
+		AddObjLight(oi, 3);
+		break;
+	case OBJ_TORCHL:
+	case OBJ_TORCHR:
+	case OBJ_TORCHL2:
+	case OBJ_TORCHR2:
+		AddObjLight(oi, 8);
+		break;
+	case OBJ_L1LDOOR:
+	case OBJ_L1RDOOR:
+		AddL1Door(oi, ox, oy, ot);
+		break;
+	case OBJ_L2LDOOR:
+	case OBJ_L2RDOOR:
+		AddL2Door(oi, ox, oy, ot);
+		break;
+	case OBJ_L3LDOOR:
+	case OBJ_L3RDOOR:
+		AddL3Door(oi, ox, oy, ot);
+		break;
+	case OBJ_BOOK2R:
+		AddSCambBook(oi);
+		break;
+	case OBJ_CHEST1:
+	case OBJ_CHEST2:
+	case OBJ_CHEST3:
+	case OBJ_TCHEST1:
+	case OBJ_TCHEST2:
+	case OBJ_TCHEST3:
+		AddChest(oi, ot);
+		break;
+	case OBJ_SARC:
+		AddSarc(oi);
+		break;
+	case OBJ_FLAMEHOLE:
+		AddFlameTrap(oi);
+		break;
+	case OBJ_FLAMELVR:
+		AddFlameLvr(oi);
+		break;
+	case OBJ_WATER:
+		object[oi]._oAnimFrame = 1;
+		break;
+	case OBJ_TRAPL:
+	case OBJ_TRAPR:
+		AddTrap(oi, ot);
+		break;
+	case OBJ_BARREL:
+	case OBJ_BARRELEX:
+		AddBarrel(oi, ot);
+		break;
+	case OBJ_SHRINEL:
+	case OBJ_SHRINER:
+		AddShrine(oi);
+		break;
+	case OBJ_BOOKCASEL:
+	case OBJ_BOOKCASER:
+		AddBookcase(oi);
+		break;
+	case OBJ_SKELBOOK:
+	case OBJ_BOOKSTAND:
+		AddBookstand(oi);
+		break;
+	case OBJ_BLOODFTN:
+		AddBloodFtn(oi);
+		break;
+	case OBJ_DECAP:
+		AddDecap(oi);
+		break;
+	case OBJ_PURIFYINGFTN:
+		AddPurifyingFountain(oi);
+		break;
+	case OBJ_ARMORSTAND:
+	case OBJ_WARARMOR:
+		AddArmorStand(oi);
+		break;
+	case OBJ_GOATSHRINE:
+		AddGoatShrine(oi);
+		break;
+	case OBJ_CAULDRON:
+		AddCauldron(oi);
+		break;
+	case OBJ_MURKYFTN:
+		AddMurkyFountain(oi);
+		break;
+	case OBJ_TEARFTN:
+		AddTearFountain(oi);
+		break;
+	case OBJ_BOOK2L:
+		AddVilebook(oi);
+		break;
+	case OBJ_MCIRCLE1:
+	case OBJ_MCIRCLE2:
+		AddMagicCircle(oi);
+		break;
+	case OBJ_STORYBOOK:
+		AddStoryBook(oi);
+		break;
+	case OBJ_BCROSS:
+	case OBJ_TBCROSS:
+		AddBrnCross(oi);
+		AddObjLight(oi, 5);
+		break;
+	case OBJ_L1LIGHT:
+	case OBJ_SKFIRE:
+	case OBJ_CANDLE1:
+	case OBJ_CANDLE2:
+	case OBJ_BOOKCANDLE:
+		AddObjLight(oi, 5);
+		break;
+	case OBJ_PEDISTAL:
+		AddPedistal(oi);
+		break;
+	case OBJ_WARWEAP:
+	case OBJ_WEAPONRACK:
+		AddWeaponRack(oi);
+		break;
+	case OBJ_TNUDEM2:
+		AddTorturedBody(oi);
+		break;
 	}
+	object[oi]._oAnimWidth2 = (object[oi]._oAnimWidth - 64) >> 1;
+	nobjects++;
 }
 
 void Obj_Light(int i, int lr)
