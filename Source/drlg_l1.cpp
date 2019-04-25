@@ -1025,29 +1025,19 @@ int L5GetArea()
 
 void L5makeDungeon()
 {
-	signed int v0; // edi
-	signed int v1; // esi
-	char *v2;      // edx
-	char v3;       // cl
-	int v4;        // eax
-	int v5;        // eax
+	int i, j;
+	int i_2, j_2;
 
-	v0 = 0;
-	do {
-		v1 = 0;
-		v2 = (char *)dungeon + v0;
-		do {
-			v3 = *v2;
-			v2 += 40;
-			v4 = 160 * v1++;
-			v5 = v4 + 2 * v0;
-			L5dungeon[0][v5] = v3;
-			L5dungeon[0][v5 + 1] = v3;
-			L5dungeon[1][v5] = v3;
-			L5dungeon[1][v5 + 1] = v3;
-		} while (v1 < 40);
-		++v0;
-	} while (v0 < 40);
+	for (j = 0; j < 40; j++) {
+		for (i = 0; i < 40; i++) {
+			j_2 = j << 1;
+			i_2 = i << 1;
+			L5dungeon[i_2][j_2] = dungeon[i][j];
+			L5dungeon[i_2][j_2 + 1] = dungeon[i][j];
+			L5dungeon[i_2 + 1][j_2] = dungeon[i][j];
+			L5dungeon[i_2 + 1][j_2 + 1] = dungeon[i][j];
+		}
+	}
 }
 
 void L5makeDmt()
