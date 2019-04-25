@@ -1915,7 +1915,7 @@ typedef enum theme_id {
 	THEME_TEARFOUNTAIN      = 0xE,
 	THEME_BRNCROSS          = 0xF,
 	THEME_WEAPONRACK        = 0x10,
-	THEME_NONE              = 0xFF,
+	THEME_NONE              = -1,
 } theme_id;
 
 typedef enum event_type {

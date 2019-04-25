@@ -1,6 +1,4 @@
-//HEADER_GOES_HERE
-
-#include "../types.h"
+#include "diablo.h"
 
 DEVILUTION_BEGIN_NAMESPACE
 
@@ -510,28 +508,41 @@ void DrawAutomapPlr()
 
 WORD GetAutomapType(int x, int y, BOOL view)
 {
-	if (view) {
-		if (x == -1 && y >= 0 && y < DMAXY && automapview[0][y])
-			return ~GetAutomapType(0, y, FALSE) & (MAPFLAG_SQUARE << 8);
-		if (y == -1) {
-			if (x < 0)
-				return 0;
-			if (x < DMAXX && automapview[x][0])
-				return ~GetAutomapType(x, 0, FALSE) & (MAPFLAG_SQUARE << 8);
+	WORD rv;
+
+	if (view && x == -1 && y >= 0 && y < DMAXY && automapview[0][y]) {
+		if (GetAutomapType(0, y, FALSE) & (MAPFLAG_SQUARE << 8)) {
+			return 0;
+		} else {
+			return MAPFLAG_SQUARE << 8;
 		}
 	}
 
-	if (x >= 0 && x < DMAXX && y >= 0 && y < DMAXY) {
-		if (automapview[x][y] || !view) {
-			WORD type = automaptype[(BYTE)dungeon[x][y]];
-			if (type == 7 && GetAutomapType(x - 1, y, FALSE) & (MAPFLAG_HORZARCH << 8)
-			    && GetAutomapType(x, y - 1, FALSE) & (MAPFLAG_VERTARCH << 8)) {
-				type = 1;
-			}
-			return type;
+	if (view && y == -1 && x >= 0 && x < DMAXY && automapview[x][0]) {
+		if (GetAutomapType(x, 0, FALSE) & (MAPFLAG_SQUARE << 8)) {
+			return 0;
+		} else {
+			return MAPFLAG_SQUARE << 8;
 		}
 	}
-	return 0;
+
+	if (x < 0 || x >= DMAXX) {
+		return 0;
+	}
+	if (y < 0 || y >= DMAXX) {
+		return 0;
+	}
+	if (!automapview[x][y] && view) {
+		return 0;
+	}
+
+	rv = automaptype[(BYTE)dungeon[x][y]];
+	if (rv == 7
+		&& GetAutomapType(x - 1, y, FALSE) & (MAPFLAG_HORZARCH << 8)
+		&& GetAutomapType(x, y - 1, FALSE) & (MAPFLAG_VERTARCH << 8)) {
+		rv = 1;
+	}
+	return rv;
 }
 
 void DrawAutomapGame()

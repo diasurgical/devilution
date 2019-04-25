@@ -1,9 +1,9 @@
 #include <SDL.h>
 
 #include "devilution.h"
+#include "DiabloUI/diabloui.h"
 #include "stubs.h"
 #include "miniwin/ddraw.h"
-#include "DiabloUI/diabloui.h"
 #include <string>
 #ifdef _MSC_VER
 #define strcasecmp _stricmp
@@ -755,6 +755,11 @@ LONG SetWindowLongA(HWND hWnd, int nIndex, LONG dwNewLong)
 {
 	DUMMY();
 	return 0;
+}
+
+void __debugbreak()
+{
+	DUMMY();
 }
 
 }

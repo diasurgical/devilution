@@ -6,6 +6,10 @@ extern char sz_error_buf[256];
 extern int terminating;       // weak
 extern int cleanup_thread_id; // weak
 
+void TriggerBreak();
+#ifdef _DEBUG
+LONG __stdcall BreakFilter(PEXCEPTION_POINTERS pExc);
+#endif
 char *GetErrorStr(DWORD error_code);
 void TraceErrorDD(HRESULT hError, char *pszBuffer, DWORD dwMaxChars);
 void TraceErrorDS(HRESULT hError, char *pszBuffer, DWORD dwMaxChars);

@@ -1,6 +1,4 @@
-//HEADER_GOES_HERE
-
-#include "../types.h"
+#include "diablo.h"
 
 DEVILUTION_BEGIN_NAMESPACE
 
@@ -94,10 +92,7 @@ int AP2x2Tbl[10] = { 8, 28, 6, 26, 4, 24, 2, 22, 0, 20 }; // weak
 
 void FreeInvGFX()
 {
-	void *invCels = pInvCels;
-
-	pInvCels = NULL;
-	mem_free_dbg(invCels);
+	MemFreeDbg(pInvCels);
 }
 
 void InitInv()
@@ -122,7 +117,7 @@ void InvDrawSlotBack(int X, int Y, int W, int H)
 
 	dst = &gpBuffer[X + PitchTbl[Y]];
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	__asm {
 		mov		edi, dst
 		xor		edx, edx

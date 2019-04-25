@@ -1,6 +1,6 @@
-//HEADER_GOES_HERE
-
-#include "../types.h"
+#include "diablo.h"
+#include "../3rdParty/Storm/Source/storm.h"
+#include "../DiabloUI/diabloui.h"
 
 DEVILUTION_BEGIN_NAMESPACE
 
@@ -106,7 +106,7 @@ BOOL pfile_open_archive(BOOL a1, unsigned int save_num)
 		return TRUE;
 
 	if (a1 && gbMaxPlayers > 1)
-		mpqapi_update_multi_creation_time(save_num);
+		mpqapi_store_default_time(save_num);
 	return FALSE;
 }
 

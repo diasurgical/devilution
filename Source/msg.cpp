@@ -1,6 +1,6 @@
-//HEADER_GOES_HERE
-
-#include "../types.h"
+#include "diablo.h"
+#include "../3rdParty/Storm/Source/storm.h"
+#include "../DiabloUI/diabloui.h"
 
 DEVILUTION_BEGIN_NAMESPACE
 
@@ -108,13 +108,9 @@ BOOL msg_wait_resync()
 
 void msg_free_packets()
 {
-	TMegaPkt *tmp;
-
 	while (sgpMegaPkt) {
 		sgpCurrPkt = sgpMegaPkt->pNext;
-		tmp = sgpMegaPkt;
-		sgpMegaPkt = NULL;
-		mem_free_dbg(tmp);
+		MemFreeDbg(sgpMegaPkt);
 		sgpMegaPkt = sgpCurrPkt;
 	}
 }
@@ -2236,7 +2232,7 @@ int On_SEND_PLRINFO(TCmdPlrInfoHdr *pCmd, int pnum)
 	if (gbBufferMsgs == 1)
 		msg_send_packet(pnum, pCmd, pCmd->wBytes + sizeof(*pCmd));
 	else
-		multi_player_joins(pnum, pCmd, pCmd->bCmd == CMD_ACK_PLRINFO);
+		recv_plrinfo(pnum, pCmd, pCmd->bCmd == CMD_ACK_PLRINFO);
 
 	return pCmd->wBytes + sizeof(*pCmd);
 }

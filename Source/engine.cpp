@@ -1,10 +1,9 @@
-//HEADER_GOES_HERE
-
-#include "../types.h"
+#include "diablo.h"
+#include "../3rdParty/Storm/Source/storm.h"
 
 DEVILUTION_BEGIN_NAMESPACE
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 #pragma warning(disable : 4731) // frame pointer register 'ebp' modified by inline assembly code
 #endif
 
@@ -33,7 +32,7 @@ void CelDrawDatOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 	if (!pRLEBytes)
 		return;
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	__asm {
 		mov		esi, pRLEBytes
 		mov		edi, pDecodeTo
@@ -251,7 +250,7 @@ void CelDecDatLightOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWi
 	if (!pRLEBytes)
 		return;
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	__asm {
 		mov		eax, light_table_index
 		shl		eax, 8
@@ -406,7 +405,7 @@ void CelDecDatLightTrans(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nW
 	if (!pRLEBytes)
 		return;
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	__asm {
 		mov		eax, light_table_index
 		shl		eax, 8
@@ -742,7 +741,7 @@ void CelDrawHdrLightRed(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, in
 
 	tbl = &pLightTbl[idx];
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	__asm {
 		mov		esi, src
 		mov		edi, dst
@@ -827,7 +826,7 @@ void Cel2DecDatOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 	if (!gpBuffer)
 		return;
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	__asm {
 		mov		esi, pRLEBytes
 		mov		edi, pDecodeTo
@@ -1019,7 +1018,7 @@ void Cel2DecDatLightOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nW
 	if (!gpBuffer)
 		return;
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	__asm {
 		mov		eax, light_table_index
 		shl		eax, 8
@@ -1190,7 +1189,7 @@ void Cel2DecDatLightTrans(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int n
 	if (!gpBuffer)
 		return;
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	__asm {
 		mov		eax, light_table_index
 		shl		eax, 8
@@ -1506,7 +1505,7 @@ void Cel2DrawHdrLightRed(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, i
 
 	tbl = &pLightTbl[idx];
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	w = 768 + nWidth;
 
 	__asm {
@@ -1599,7 +1598,7 @@ void CelDecodeRect(BYTE *pBuff, int CelSkip, int hgt, int wdt, BYTE *pCelBuff, i
 	if (!pBuff)
 		return;
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	__asm {
 		mov		ebx, pCelBuff
 		mov		eax, nCel
@@ -1720,7 +1719,7 @@ void CelDecodeClr(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth
 	if (!gpBuffer)
 		return;
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	__asm {
 		mov		ebx, pCelBuff
 		mov		eax, nCel
@@ -1861,7 +1860,7 @@ void CelDrawHdrClrHL(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWi
 	if (!gpBuffer)
 		return;
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	__asm {
 		mov		ebx, pCelBuff
 		mov		eax, nCel
@@ -2040,7 +2039,7 @@ void ENG_set_pixel(int sx, int sy, BYTE col)
 
 	dst = &gpBuffer[sx + PitchTbl[sy]];
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	__asm {
 		mov		edi, dst
 		cmp		edi, gpBufEnd
@@ -2072,7 +2071,7 @@ void engine_draw_pixel(int sx, int sy)
 		dst = &gpBuffer[sx + PitchTbl[sy]];
 	}
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	__asm {
 		mov		edi, dst
 		cmp		edi, gpBufEnd
@@ -2395,6 +2394,21 @@ int random(BYTE idx, int v)
 	return (GetRndSeed() >> 16) % v;
 }
 
+void engine_debug_trap(BOOL show_cursor)
+{
+/*
+	TMemBlock *pCurr;
+
+	sgMemCrit.Enter();
+	while(sgpMemBlock != NULL) {
+		pCurr = sgpMemBlock->pNext;
+		SMemFree(sgpMemBlock, "C:\\Diablo\\Direct\\ENGINE.CPP", 1970);
+		sgpMemBlock = pCurr;
+	}
+	sgMemCrit.Leave();
+*/
+}
+
 unsigned char *DiabloAllocPtr(int dwBytes)
 {
 	BYTE *buf;
@@ -2552,7 +2566,7 @@ void Cl2DecodeFrm1(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int Cel
 
 void Cl2DecDatFrm1(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 {
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	__asm {
 		push	ebx
 		push	esi
@@ -2736,7 +2750,7 @@ void Cl2DecodeFrm2(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWidt
 
 void Cl2DecDatFrm2(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, char col)
 {
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	__asm {
 		push	ebx
 		push	esi
@@ -2948,7 +2962,7 @@ void Cl2DecodeFrm3(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int Cel
 
 void Cl2DecDatLightTbl1(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, BYTE *pTable)
 {
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	__asm {
 		push	ebx
 		push	esi
@@ -3185,7 +3199,7 @@ void Cl2DecodeFrm4(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int Cel
 
 void Cl2DecDatFrm4(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth)
 {
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	__asm {
 		push	ebx
 		push	esi
@@ -3386,7 +3400,7 @@ void Cl2DecodeClrHL(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWid
 
 void Cl2DecDatClrHL(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, char col)
 {
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	__asm {
 		push	ebx
 		push	esi
@@ -3610,7 +3624,7 @@ void Cl2DecodeFrm5(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int Cel
 
 void Cl2DecDatLightTbl2(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth, BYTE *pTable)
 {
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	__asm {
 		push	ebx
 		push	esi

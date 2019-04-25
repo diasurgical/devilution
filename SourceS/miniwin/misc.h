@@ -544,6 +544,8 @@ WINBOOL WINAPI DeleteFileA(LPCSTR lpFileName);
 WINBOOL WINAPI CopyFileA(LPCSTR lpExistingFileName, LPCSTR lpNewFileName, WINBOOL bFailIfExists);
 HFILE WINAPI OpenFile(LPCSTR lpFileName, LPOFSTRUCT lpReOpenBuff, UINT uStyle);
 
+void __debugbreak();
+
 typedef struct _CONTEXT {
 
 	//

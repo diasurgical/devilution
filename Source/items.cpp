@@ -1,6 +1,4 @@
-//HEADER_GOES_HERE
-
-#include "../types.h"
+#include "diablo.h"
 
 DEVILUTION_BEGIN_NAMESPACE
 
@@ -1371,7 +1369,7 @@ void CreatePlrItems(int p)
 		GetPlrHandSeed(&plr[p].InvBody[INVLOC_HAND_RIGHT]);
 
 #ifdef _DEBUG
-		if(!debug_mode_key_w) {
+		if (!debug_mode_key_w) {
 #endif
 			SetPlrHandItem(&plr[p].HoldItem, IDI_WARRCLUB);
 			GetPlrHandSeed(&plr[p].HoldItem);
@@ -1412,7 +1410,7 @@ void CreatePlrItems(int p)
 	GetPlrHandSeed(&plr[p].HoldItem);
 
 #ifdef _DEBUG
-	if(!debug_mode_key_w) {
+	if (!debug_mode_key_w) {
 #endif
 		plr[p].HoldItem._ivalue = 100;
 		plr[p].HoldItem._iCurs = ICURS_GOLD_SMALL;
@@ -1424,7 +1422,7 @@ void CreatePlrItems(int p)
 		plr[p].HoldItem._ivalue = 5000;
 		plr[p].HoldItem._iCurs = ICURS_GOLD_LARGE;
 		plr[p]._pGold = plr[p].HoldItem._ivalue * 40;
-		for(i = 0; i < 40; i++) {
+		for (i = 0; i < 40; i++) {
 			GetPlrHandSeed(&plr[p].HoldItem);
 			plr[p].InvList[plr[p]._pNumInv++] = plr[p].HoldItem;
 			plr[p].InvGrid[i] = plr[p]._pNumInv;
@@ -1569,24 +1567,20 @@ void GetSuperItemLoc(int x, int y, int *xx, int *yy)
 
 void CalcItemValue(int i)
 {
-	int v1;     // ecx
-	int v2;     // esi
-	BOOLEAN v3; // sf
-	int v4;     // esi
+	int v;
 
-	v1 = i;
-	v2 = item[v1]._iVMult1 + item[v1]._iVMult2;
-	v3 = v2 < 0;
-	if (v2 > 0) {
-		v2 *= item[v1]._ivalue;
-		v3 = v2 < 0;
+	v = item[i]._iVMult1 + item[i]._iVMult2;
+	if (v > 0) {
+		v *= item[i]._ivalue;
 	}
-	if (v3)
-		v2 = item[v1]._ivalue / v2;
-	v4 = item[v1]._iVAdd1 + item[v1]._iVAdd2 + v2;
-	if (v4 <= 0)
-		v4 = 1;
-	item[v1]._iIvalue = v4;
+	if (v < 0) {
+		v = item[i]._ivalue / v;
+	}
+	v = item[i]._iVAdd1 + item[i]._iVAdd2 + v;
+	if (v <= 0) {
+		v = 1;
+	}
+	item[i]._iIvalue = v;
 }
 
 void GetBookSpell(int i, int lvl)
@@ -3128,13 +3122,10 @@ void ProcessItems()
 
 void FreeItemGFX()
 {
-	int i;    // esi
-	void *v1; // ecx
+	int i;
 
 	for (i = 0; i < 35; i++) {
-		v1 = (void *)itemanims[i];
-		itemanims[i] = 0;
-		mem_free_dbg(v1);
+		MemFreeDbg(itemanims[i]);
 	}
 }
 
@@ -3651,7 +3642,7 @@ void DrawULine(int y)
 {
 	/// ASSERT: assert(gpBuffer);
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	int yy;
 
 	yy = PitchTbl[SStringY[y] + 198] + 26 + 64;
@@ -4737,11 +4728,11 @@ BOOL GetItemRecord(int nSeed, WORD wCI, int nIndex)
 
 	dwTicks = GetTickCount();
 
-	for(i = 0; i < gnNumGetRecords; i++) {
-		if(dwTicks - itemrecord[i].dwTimestamp > 6000) {
+	for (i = 0; i < gnNumGetRecords; i++) {
+		if (dwTicks - itemrecord[i].dwTimestamp > 6000) {
 			NextItemRecord(i);
 			i--;
-		} else if(nSeed == itemrecord[i].nSeed && wCI == itemrecord[i].wCI && nIndex == itemrecord[i].nIndex) {
+		} else if (nSeed == itemrecord[i].nSeed && wCI == itemrecord[i].wCI && nIndex == itemrecord[i].nIndex) {
 			return FALSE;
 		}
 	}
@@ -4753,7 +4744,7 @@ void NextItemRecord(int i)
 {
 	gnNumGetRecords--;
 
-	if(gnNumGetRecords == 0) {
+	if (gnNumGetRecords == 0) {
 		return;
 	}
 
@@ -4769,7 +4760,7 @@ void SetItemRecord(int nSeed, WORD wCI, int nIndex)
 
 	dwTicks = GetTickCount();
 
-	if(gnNumGetRecords == MAXITEMS) {
+	if (gnNumGetRecords == MAXITEMS) {
 		return;
 	}
 
@@ -4787,11 +4778,11 @@ void PutItemRecord(int nSeed, WORD wCI, int nIndex)
 
 	dwTicks = GetTickCount();
 
-	for(i = 0; i < gnNumGetRecords; i++) {
-		if(dwTicks - itemrecord[i].dwTimestamp > 6000) {
+	for (i = 0; i < gnNumGetRecords; i++) {
+		if (dwTicks - itemrecord[i].dwTimestamp > 6000) {
 			NextItemRecord(i);
 			i--;
-		} else if(nSeed == itemrecord[i].nSeed && wCI == itemrecord[i].wCI && nIndex == itemrecord[i].nIndex) {
+		} else if (nSeed == itemrecord[i].nSeed && wCI == itemrecord[i].wCI && nIndex == itemrecord[i].nIndex) {
 			NextItemRecord(i);
 			break;
 		}

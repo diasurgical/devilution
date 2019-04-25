@@ -1,8 +1,7 @@
-//HEADER_GOES_HERE
-
-#include "../types.h"
+#include "diablo.h"
 
 DEVILUTION_BEGIN_NAMESPACE
+
 #include "_asm.cpp"
 
 int WorldBoolFlag = 0;
@@ -115,7 +114,7 @@ int WorldTbl17_2[17] = { 0, 32, 60, 88, 112, 136, 156, 176, 192, 208, 220, 232, 
 	|/
 */
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 #include "_render.cpp"
 #else
 void drawTopArchesUpperScreen(BYTE *pBuff)

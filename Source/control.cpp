@@ -1,6 +1,4 @@
-//HEADER_GOES_HERE
-
-#include "../types.h"
+#include "diablo.h"
 
 DEVILUTION_BEGIN_NAMESPACE
 
@@ -10,8 +8,8 @@ void *pDurIcons;
 void *pChrButtons;
 BOOL drawhpflag; // idb
 BOOL dropGoldFlag;
-int panbtn[8];
-BOOL chrbtn[4];
+WORD panbtn[8];
+WORD chrbtn[4];
 void *pMultiBtns;
 void *pPanelButtons;
 void *pChrPanel;
@@ -22,14 +20,14 @@ BOOL drawmanaflag; // idb
 BOOL chrbtnactive;
 char sgszTalkMsg[MAX_SEND_STR_LEN];
 BYTE *pPanelText;
-int frame_4B8800; // idb
+int nGoldFrame;
 BYTE *pLifeBuff;
 BYTE *pBtmBuff;
 void *pTalkBtns;
 int pstrjust[4];
 int pnumlines; // idb
 BOOL pinfoflag;
-int talkbtndown[3];
+WORD talkbtndown[3];
 int pSpell; // weak
 BYTE *pManaBuff;
 char infoclr;      // weak
@@ -181,7 +179,7 @@ void DrawSpellCel(int xp, int yp, BYTE *Trans, int nCel, int w)
 	dst = &gpBuffer[xp + PitchTbl[yp]];
 	tbl = SplTransTbl;
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	__asm {
 		mov		ebx, Trans
 		mov		eax, nCel
@@ -632,7 +630,7 @@ void CPrintString(int nOffset, int nCel, char col)
 {
 	/// ASSERT: assert(gpBuffer);
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	__asm {
 		mov		ebx, pPanelText
 		mov		eax, nCel
@@ -944,7 +942,7 @@ void DrawPanelBox(int x, int y, int w, int h, int sx, int sy)
 	nSrcOff = x + 640 * y;
 	nDstOff = sx + 768 * sy;
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	__asm {
 		mov		esi, pBtmBuff
 		add		esi, nSrcOff
@@ -1020,7 +1018,7 @@ void SetFlaskHeight(BYTE *pCelBuff, int min, int max, int c, int r)
 	nDstOff = c + 768 * r;
 	w = max - min;
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	__asm {
 		mov		esi, pCelBuff
 		add		esi, nSrcOff
@@ -1047,7 +1045,7 @@ void SetFlaskHeight(BYTE *pCelBuff, int min, int max, int c, int r)
 
 void DrawFlask(BYTE *pCelBuff, int w, int nSrcOff, BYTE *pBuff, int nDstOff, int h)
 {
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	__asm {
 		mov		esi, pCelBuff
 		add		esi, nSrcOff
@@ -1181,64 +1179,58 @@ void UpdateManaFlask()
 
 void InitControlPan()
 {
-	size_t v0;         // esi
-	void *v1;          // ecx
-	void *v2;          // ecx
-	void *v3;          // ecx
-	unsigned char *v5; // eax
+	int i;
 
-	v0 = 144 * 640;
-	if (gbMaxPlayers != 1)
-		v0 = 288 * 640;
-	pBtmBuff = DiabloAllocPtr(v0);
-	memset(pBtmBuff, 0, v0);
-	pManaBuff = DiabloAllocPtr(0x1E40);
-	memset(pManaBuff, 0, 0x1E40);
-	pLifeBuff = DiabloAllocPtr(0x1E40);
-	memset(pLifeBuff, 0, 0x1E40);
+	if (gbMaxPlayers == 1) {
+		pBtmBuff = DiabloAllocPtr(144 * 640);
+		memset(pBtmBuff, 0, 144 * 640);
+	} else {
+		pBtmBuff = DiabloAllocPtr(288 * 640);
+		memset(pBtmBuff, 0, 288 * 640);
+	}
+	pManaBuff = DiabloAllocPtr(88 * 88);
+	memset(pManaBuff, 0, 88 * 88);
+	pLifeBuff = DiabloAllocPtr(88 * 88);
+	memset(pLifeBuff, 0, 88 * 88);
 	pPanelText = LoadFileInMem("CtrlPan\\SmalText.CEL", 0);
 	pChrPanel = LoadFileInMem("Data\\Char.CEL", 0);
 	pSpellCels = LoadFileInMem("CtrlPan\\SpelIcon.CEL", 0);
 	SetSpellTrans(RSPLTYPE_SKILL);
 	pStatusPanel = LoadFileInMem("CtrlPan\\Panel8.CEL", 0);
 	CelDecodeRect((BYTE *)pBtmBuff, 0, 143, 640, (BYTE *)pStatusPanel, 1, 640);
-	v1 = pStatusPanel;
-	pStatusPanel = 0;
-	mem_free_dbg(v1);
+	MemFreeDbg(pStatusPanel);
 	pStatusPanel = LoadFileInMem("CtrlPan\\P8Bulbs.CEL", 0);
 	CelDecodeRect((BYTE *)pLifeBuff, 0, 87, 88, (BYTE *)pStatusPanel, 1, 88);
 	CelDecodeRect((BYTE *)pManaBuff, 0, 87, 88, (BYTE *)pStatusPanel, 2, 88);
-	v2 = pStatusPanel;
-	pStatusPanel = 0;
-	mem_free_dbg(v2);
+	MemFreeDbg(pStatusPanel);
 	talkflag = 0;
 	if (gbMaxPlayers != 1) {
 		pTalkPanel = LoadFileInMem("CtrlPan\\TalkPanl.CEL", 0);
 		CelDecodeRect((BYTE *)pBtmBuff, 0, 287, 640, (BYTE *)pTalkPanel, 1, 640);
-		v3 = pTalkPanel;
-		pTalkPanel = 0;
-		mem_free_dbg(v3);
+		MemFreeDbg(pTalkPanel);
 		pMultiBtns = LoadFileInMem("CtrlPan\\P8But2.CEL", 0);
 		pTalkBtns = LoadFileInMem("CtrlPan\\TalkButt.CEL", 0);
 		sgbPlrTalkTbl = 0;
-		*(_DWORD *)byte_4B894C = 0x1010101;
-		talkbtndown[0] = 0;
-		talkbtndown[1] = 0;
 		sgszTalkMsg[0] = 0;
-		talkbtndown[2] = 0;
+		for (i = 0; i < sizeof(byte_4B894C); i++)
+			byte_4B894C[i] = 1;
+		for (i = 0; i < sizeof(talkbtndown); i++)
+			talkbtndown[i] = 0;
 	}
 	panelflag = 0;
 	lvlbtndown = 0;
 	pPanelButtons = LoadFileInMem("CtrlPan\\Panel8bu.CEL", 0);
-	memset(panbtn, 0, sizeof(panbtn));
+	for (i = 0; i < sizeof(panbtn); i++)
+		panbtn[i] = 0;
 	panbtndown = 0;
-	numpanbtns = 2 * (gbMaxPlayers != 1) + 6;
+	if (gbMaxPlayers == 1)
+		numpanbtns = 6;
+	else
+		numpanbtns = 8;
 	pChrButtons = LoadFileInMem("Data\\CharBut.CEL", 0);
-	chrbtn[0] = 0;
-	chrbtn[1] = 0;
-	chrbtn[2] = 0;
+	for (i = 0; i < sizeof(chrbtn); i++)
+		chrbtn[i] = 0;
 	chrbtnactive = FALSE;
-	chrbtn[3] = 0;
 	pDurIcons = LoadFileInMem("Items\\DurIcons.CEL", 0);
 	strcpy(infostr, "");
 	ClearPanel();
@@ -1259,23 +1251,13 @@ void InitControlPan()
 		SpellPages[0][0] = SPL_RECHARGE;
 	}
 	pQLogCel = LoadFileInMem("Data\\Quest.CEL", 0);
-	v5 = LoadFileInMem("CtrlPan\\Golddrop.cel", 0);
-	frame_4B8800 = 1;
+	pGBoxBuff = LoadFileInMem("CtrlPan\\Golddrop.cel", 0);
 	dropGoldFlag = FALSE;
 	dropGoldValue = 0;
 	initialDropGoldValue = 0;
 	initialDropGoldIndex = 0;
-	pGBoxBuff = v5;
+	nGoldFrame = 1;
 }
-// 4B851C: using guessed type int lvlbtndown;
-// 4B8840: using guessed type int sgbPlrTalkTbl;
-// 4B8950: using guessed type int sbooktab;
-// 4B8960: using guessed type int talkflag;
-// 4B8968: using guessed type int sbookflag;
-// 4B8A7C: using guessed type int numpanbtns;
-// 4B8B84: using guessed type int panelflag;
-// 4B8C98: using guessed type int spselflag;
-// 679660: using guessed type char gbMaxPlayers;
 
 void ClearCtrlPan()
 {
@@ -2314,7 +2296,7 @@ void RedBack()
 
 	/// ASSERT: assert(gpBuffer);
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	if (leveltype != DTYPE_HELL) {
 		__asm {
 			mov		edi, gpBuffer
@@ -2585,8 +2567,8 @@ void DrawGoldSplit(int amount)
 		}
 		screen_xa = screen_x + 452;
 	}
-	CelDecodeOnly(screen_xa, 300, (BYTE *)pCelBuff, frame_4B8800, 12);
-	frame_4B8800 = (frame_4B8800 & 7) + 1;
+	CelDecodeOnly(screen_xa, 300, (BYTE *)pCelBuff, nGoldFrame, 12);
+	nGoldFrame = (nGoldFrame & 7) + 1;
 }
 
 void control_drop_gold(char vkey)

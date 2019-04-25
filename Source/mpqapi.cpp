@@ -1,6 +1,5 @@
-//HEADER_GOES_HERE
-
-#include "../types.h"
+#include "diablo.h"
+#include "../3rdParty/Storm/Source/storm.h"
 
 DEVILUTION_BEGIN_NAMESPACE
 
@@ -100,8 +99,22 @@ void mpqapi_xor_buf(char *pbData)
 	} while (v3);
 }
 
-void mpqapi_update_multi_creation_time(DWORD dwChar)
+void mpqapi_store_default_time(DWORD dwChar)
 {
+/*
+	DWORD idx;
+	char dst[160];
+
+	if(gbMaxPlayers == 1) {
+		return;
+	}
+
+	/// ASSERT: assert(dwChar < MAX_CHARACTERS);
+	idx = 16 * dwChar;
+	mpqapi_reg_load_modification_time(dst, sizeof(dst));
+	*(_DWORD *)&dst[idx + 4] = 0x78341348; // dwHighDateTime
+	mpqapi_reg_store_modification_time(dst, sizeof(dst));
+*/
 }
 
 BOOLEAN mpqapi_reg_store_modification_time(char *pbData, DWORD dwLen)
@@ -578,16 +591,9 @@ BOOLEAN mpqapi_parse_archive_header(_FILEHEADER *pHdr, int *pdwNextFileStart) //
 
 void mpqapi_close_archive(const char *pszArchive, BOOL bFree, int dwChar) // CloseMPQ
 {
-	_BLOCKENTRY *blockEntry;
-	_HASHENTRY *hashEntry;
-
 	if (bFree) {
-		blockEntry = sgpBlockTbl;
-		sgpBlockTbl = NULL;
-		mem_free_dbg(blockEntry);
-		hashEntry = sgpHashTbl;
-		sgpHashTbl = NULL;
-		mem_free_dbg(hashEntry);
+		MemFreeDbg(sgpBlockTbl);
+		MemFreeDbg(sgpHashTbl);
 	}
 	if (sghArchive != INVALID_HANDLE_VALUE) {
 		CloseHandle(sghArchive);

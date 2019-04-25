@@ -1,6 +1,4 @@
-//HEADER_GOES_HERE
-
-#include "../types.h"
+#include "diablo.h"
 
 DEVILUTION_BEGIN_NAMESPACE
 
@@ -308,11 +306,7 @@ void DRLG_LoadL4SP()
 
 void DRLG_FreeL4SP()
 {
-	char *ptr;
-
-	ptr = pSetPiece_2;
-	pSetPiece_2 = NULL;
-	mem_free_dbg(ptr);
+	MemFreeDbg(pSetPiece_2);
 }
 
 void DRLG_L4SetSPRoom(int rx1, int ry1)
@@ -541,195 +535,154 @@ void CreateL4Dungeon(unsigned int rseed, int entry)
 
 void DRLG_L4(int entry)
 {
-	signed int v1; // ebp
-	//int v2; // eax
-	int v3;          // edx
-	char *v4;        // edi
-	char v5;         // bp
-	unsigned int v6; // ecx
-	char *v7;        // edi
-	int v8;          // ecx
-	//int v9; // eax
-	int v10;            // eax
-	unsigned char *v11; // ecx
-	unsigned char *v12; // ecx
-	//int v13; // eax
-	signed int v14; // eax
-	signed int v15; // ecx
-	int v16;        // ebx
-	int v17;        // edi
-	char *v18;      // ebp
-	signed int v19; // ecx
-	signed int v20; // eax
-	signed int v21; // esi
-	int v22;        // [esp-8h] [ebp-20h]
-	int v23;        // [esp+10h] [ebp-8h]
-	int v24;        // [esp+14h] [ebp-4h]
+	int i, j, spi, spj;
+	BOOL doneflag;
 
-	v1 = 0;
-	v23 = entry;
 	do {
 		DRLG_InitTrans();
 		do {
 			InitL4Dungeon();
 			L4firstRoom();
 			L4FixRim();
-		} while (GetArea() < 173);
+		} while(GetArea() < 173);
 		uShape();
 		L4makeDungeon();
 		L4makeDmt();
 		L4tileFix();
-		if (currlevel == 16)
+		if(currlevel == 16) {
 			L4SaveQuads();
-		//_LOBYTE(v2) = QuestStatus(QTYPE_WARLRD);
-		if ((QuestStatus(QTYPE_WARLRD) || currlevel == quests[QTYPE_VB]._qlevel && gbMaxPlayers != 1) && SP4x1 < SP4x2) {
-			v3 = SP4x1;
-			v24 = SP4x2 - SP4x1;
-			do {
-				if (SP4y1 < SP4y2) {
-					v4 = &dflags[v3][SP4y1];
-					v5 = SP4y2 - SP4y1;
-					v6 = (unsigned int)(SP4y2 - SP4y1) >> 2;
-					memset(v4, 1u, 4 * v6);
-					v7 = &v4[4 * v6];
-					v8 = v5 & 3;
-					v1 = 0;
-					memset(v7, 1, v8);
+		}
+		if(QuestStatus(QTYPE_WARLRD) || currlevel == quests[QTYPE_VB]._qlevel && gbMaxPlayers != 1) {
+			for(spi = SP4x1; spi < SP4x2; spi++) {
+				for(spj = SP4y1; spj < SP4y2; spj++) {
+					dflags[spi][spj] = 1;
 				}
-				++v3;
-				--v24;
-			} while (v24);
+			}
 		}
 		L4AddWall();
 		DRLG_L4FloodTVal();
 		DRLG_L4TransFix();
-		if (setloadflag_2)
+		if(setloadflag_2) {
 			DRLG_L4SetSPRoom(SP4x1, SP4y1);
-		if (currlevel == 16)
-			DRLG_LoadDiabQuads(1);
-		//_LOBYTE(v9) = QuestStatus(QTYPE_WARLRD);
-		if (!QuestStatus(QTYPE_WARLRD)) {
-			if (currlevel == 15) {
-				if (!v23) {
-					v10 = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 1, 0);
-					if (v10) {
-						if (gbMaxPlayers != 1 || (v11 = (unsigned char *)L4PENTA, quests[QTYPE_MOD]._qactive == 2))
-							v11 = (unsigned char *)L4PENTA2;
-						v10 = DRLG_L4PlaceMiniSet(v11, 1, 1, -1, -1, 0, 1);
-					}
-					goto LABEL_35;
+		}
+		if(currlevel == 16) {
+			DRLG_LoadDiabQuads(TRUE);
+		}
+		if(QuestStatus(QTYPE_WARLRD)) {
+			if(entry == 0) {
+				doneflag = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 1, 0);
+				if(doneflag && currlevel == 13) {
+					doneflag = DRLG_L4PlaceMiniSet(L4TWARP, 1, 1, -1, -1, 0, 6);
 				}
-				v10 = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 0, 0);
-				if (v10) {
-					if (gbMaxPlayers != 1 || (v12 = (unsigned char *)L4PENTA, quests[QTYPE_MOD]._qactive == 2))
-						v12 = (unsigned char *)L4PENTA2;
-					v10 = DRLG_L4PlaceMiniSet(v12, 1, 1, -1, -1, 1, 1);
+				ViewX++;
+			} else if(entry == 1) {
+				doneflag = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 0, 0);
+				if(doneflag && currlevel == 13) {
+					doneflag = DRLG_L4PlaceMiniSet(L4TWARP, 1, 1, -1, -1, 0, 6);
 				}
+				ViewX = 2 * setpc_x + 22;
+				ViewY = 2 * setpc_y + 22;
 			} else {
-				if (!v23) {
-					v10 = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 1, 0);
-					if (v10) {
-						if (currlevel != 16)
-							v10 = DRLG_L4PlaceMiniSet(L4DSTAIRS, 1, 1, -1, -1, 0, 1);
-						goto LABEL_31;
-					}
-				LABEL_35:
-					++ViewX;
-					continue;
+				doneflag = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 0, 0);
+				if(doneflag && currlevel == 13) {
+					doneflag = DRLG_L4PlaceMiniSet(L4TWARP, 1, 1, -1, -1, 1, 6);
 				}
-				v10 = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 0, 0);
-				if (v23 != 1) {
-					if (v10) {
-						if (currlevel != 16)
-							v10 = DRLG_L4PlaceMiniSet(L4DSTAIRS, 1, 1, -1, -1, 0, 1);
-					LABEL_46:
-						if (v10) {
-							if (currlevel == 13) {
-								v22 = 1;
-							LABEL_34:
-								v10 = DRLG_L4PlaceMiniSet(L4TWARP, 1, 1, -1, -1, v22, 6);
-								goto LABEL_35;
-							}
-						}
-					}
-					goto LABEL_35;
-				}
-				if (v10) {
-					if (currlevel != 16)
-						v10 = DRLG_L4PlaceMiniSet(L4DSTAIRS, 1, 1, -1, -1, 1, 1);
-					if (v10 && currlevel == 13)
-						v10 = DRLG_L4PlaceMiniSet(L4TWARP, 1, 1, -1, -1, 0, 6);
-				}
+				ViewX++;
 			}
-			++ViewY;
-			continue;
+		} else if(currlevel != 15) {
+			if(entry == 0) {
+				doneflag = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 1, 0);
+				if(doneflag && currlevel != 16) {
+					doneflag = DRLG_L4PlaceMiniSet(L4DSTAIRS, 1, 1, -1, -1, 0, 1);
+				}
+				if(doneflag && currlevel == 13) {
+					doneflag = DRLG_L4PlaceMiniSet(L4TWARP, 1, 1, -1, -1, 0, 6);
+				}
+				ViewX++;
+			} else if(entry == 1) {
+				doneflag = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 0, 0);
+				if(doneflag && currlevel != 16) {
+					doneflag = DRLG_L4PlaceMiniSet(L4DSTAIRS, 1, 1, -1, -1, 1, 1);
+				}
+				if(doneflag && currlevel == 13) {
+					doneflag = DRLG_L4PlaceMiniSet(L4TWARP, 1, 1, -1, -1, 0, 6);
+				}
+				ViewY++;
+			} else {
+				doneflag = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 0, 0);
+				if(doneflag && currlevel != 16) {
+					doneflag = DRLG_L4PlaceMiniSet(L4DSTAIRS, 1, 1, -1, -1, 0, 1);
+				}
+				if(doneflag && currlevel == 13) {
+					doneflag = DRLG_L4PlaceMiniSet(L4TWARP, 1, 1, -1, -1, 1, 6);
+				}
+				ViewX++;
+			}
+		} else {
+			if(entry == 0) {
+				doneflag = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 1, 0);
+				if(doneflag) {
+					if(gbMaxPlayers == 1 && quests[QTYPE_MOD]._qactive != 2) {
+						doneflag = DRLG_L4PlaceMiniSet(L4PENTA, 1, 1, -1, -1, 0, 1);
+					} else {
+						doneflag = DRLG_L4PlaceMiniSet(L4PENTA2, 1, 1, -1, -1, 0, 1);
+					}
+				}
+				ViewX++;
+			} else {
+				doneflag = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 0, 0);
+				if(doneflag) {
+					if(gbMaxPlayers == 1 && quests[QTYPE_MOD]._qactive != 2) {
+						doneflag = DRLG_L4PlaceMiniSet(L4PENTA, 1, 1, -1, -1, 1, 1);
+					} else {
+						doneflag = DRLG_L4PlaceMiniSet(L4PENTA2, 1, 1, -1, -1, 1, 1);
+					}
+				}
+				ViewY++;
+			}
 		}
-		if (!v23) {
-			v10 = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 1, 0);
-		LABEL_31:
-			if (!v10 || currlevel != 13)
-				goto LABEL_35;
-			v22 = 0;
-			goto LABEL_34;
-		}
-		v10 = DRLG_L4PlaceMiniSet(L4USTAIRS, 1, 1, -1, -1, 0, 0);
-		if (v23 != 1)
-			goto LABEL_46;
-		if (v10 && currlevel == 13)
-			v10 = DRLG_L4PlaceMiniSet(L4TWARP, 1, 1, -1, -1, 0, 6);
-		ViewX = 2 * setpc_x + 22;
-		ViewY = 2 * setpc_y + 22;
-	} while (!v10);
+	} while(!doneflag);
+
 	DRLG_L4GeneralFix();
-	if (currlevel != 16)
+
+	if(currlevel != 16) {
 		DRLG_PlaceThemeRooms(7, 10, 6, 8, 1);
+	}
+
 	DRLG_L4Shadows();
 	DRLG_L4Corners();
 	DRLG_L4Subs();
 	DRLG_Init_Globals();
-	//_LOBYTE(v13) = QuestStatus(QTYPE_WARLRD);
-	if (QuestStatus(QTYPE_WARLRD)) {
-		do {
-			v14 = v1;
-			v15 = 40;
-			do {
-				pdungeon[0][v14] = dungeon[0][v14];
-				v14 += 40;
-				--v15;
-			} while (v15);
-			++v1;
-		} while (v1 < 40);
+
+	if(QuestStatus(QTYPE_WARLRD)) {
+		for(j = 0; j < DMAXY; j++) {
+			for(i = 0; i < DMAXX; i++) {
+				pdungeon[i][j] = dungeon[i][j];
+			}
+		}
 	}
+
 	DRLG_CheckQuests(SP4x1, SP4y1);
-	if (currlevel == 15) {
-		v16 = -1;
-		do {
-			v17 = -1;
-			v18 = (char *)&dungeon[0][v16 + 1];
-			do {
-				if (*v18 == 98)
-					Make_SetPC(v17, v16, 5, 5);
-				if (*v18 == 107)
-					Make_SetPC(v17, v16, 5, 5);
-				v18 += 40;
-				++v17;
-			} while (v17 + 1 < 40);
-			++v16;
-		} while (v16 < 39);
+
+	if(currlevel == 15) {
+		for(j = 0; j < DMAXY; j++) {
+			for(i = 0; i < DMAXX; i++) {
+				if(dungeon[i][j] == 98) {
+					Make_SetPC(i - 1, j - 1, 5, 5);
+				}
+				if(dungeon[i][j] == 107) {
+					Make_SetPC(i - 1, j - 1, 5, 5);
+				}
+			}
+		}
 	}
-	if (currlevel == 16) {
-		v19 = 0;
-		do {
-			v20 = v19;
-			v21 = 40;
-			do {
-				pdungeon[0][v20] = dungeon[0][v20];
-				v20 += 40;
-				--v21;
-			} while (v21);
-			++v19;
-		} while (v19 < 40);
-		DRLG_LoadDiabQuads(0);
+	if(currlevel == 16) {
+		for(j = 0; j < DMAXY; j++) {
+			for(i = 0; i < DMAXX; i++) {
+				pdungeon[i][j] = dungeon[i][j];
+			}
+		}
+		DRLG_LoadDiabQuads(FALSE);
 	}
 }
 // 528A40: using guessed type int SP4x2;
@@ -1484,104 +1437,48 @@ void DRLG_L4Subs()
 
 void L4makeDungeon()
 {
-	signed int v0;  // ebx
-	signed int v1;  // esi
-	char *v2;       // edx
-	char v3;        // cl
-	int v4;         // eax
-	int v5;         // eax
-	int v6;         // ebx
-	char *v7;       // esi
-	signed int v8;  // edx
-	char v9;        // cl
-	int v10;        // eax
-	int v11;        // eax
-	signed int v12; // ebx
-	signed int v13; // esi
-	char *v14;      // edx
-	char v15;       // cl
-	int v16;        // eax
-	int v17;        // eax
-	int v18;        // ebx
-	char *v19;      // esi
-	signed int v20; // edx
-	char v21;       // cl
-	int v22;        // eax
-	int v23;        // eax
-	signed int v24; // [esp+Ch] [ebp-8h]
-	char *v25;      // [esp+10h] [ebp-4h]
-	char *v26;      // [esp+10h] [ebp-4h]
+	int i, j, k, l;
 
-	v0 = 0;
-	do {
-		v1 = 0;
-		v2 = (char *)dung + v0;
-		do {
-			v3 = *v2;
-			v2 += 20;
-			v4 = 160 * v1++;
-			v5 = v4 + 2 * v0;
-			L4dungeon[0][v5] = v3;
-			L4dungeon[0][v5 + 1] = v3;
-			L4dungeon[1][v5] = v3;
-			L4dungeon[1][v5 + 1] = v3;
-		} while (v1 < 20);
-		++v0;
-	} while (v0 < 20);
-	v6 = 0;
-	v25 = (char *)&dung[0][19];
-	v24 = 20;
-	do {
-		v7 = v25;
-		v8 = 0;
-		do {
-			v9 = *v7;
-			v7 += 20;
-			v10 = 160 * v8++;
-			v11 = v10 + 2 * v6;
-			L4dungeon[0][v11 + 40] = v9;
-			L4dungeon[0][v11 + 41] = v9;
-			L4dungeon[1][v11 + 40] = v9;
-			L4dungeon[1][v11 + 41] = v9;
-		} while (v8 < 20);
-		++v6;
-		--v25;
-		--v24;
-	} while (v24);
-	v12 = 0;
-	do {
-		v13 = 0;
-		v14 = (char *)&dung[19][v12];
-		do {
-			v15 = *v14;
-			v14 -= 20;
-			v16 = 160 * v13++;
-			v17 = v16 + 2 * v12;
-			L4dungeon[40][v17] = v15;
-			L4dungeon[40][v17 + 1] = v15;
-			L4dungeon[41][v17] = v15;
-			L4dungeon[41][v17 + 1] = v15;
-		} while (v13 < 20);
-		++v12;
-	} while (v12 < 20);
-	v18 = 0;
-	v26 = (char *)&dung[19][19];
-	do {
-		v19 = v26;
-		v20 = 0;
-		do {
-			v21 = *v19;
-			v19 -= 20;
-			v22 = 160 * v20++;
-			v23 = v22 + 2 * v18;
-			L4dungeon[40][v23 + 40] = v21;
-			L4dungeon[40][v23 + 41] = v21;
-			L4dungeon[41][v23 + 40] = v21;
-			L4dungeon[41][v23 + 41] = v21;
-		} while (v20 < 20);
-		++v18;
-		--v26;
-	} while ((signed int)v26 > (signed int)&dung[18][19]);
+	for(j = 0; j < 20; j++) {
+		for(i = 0; i < 20; i++) {
+			k = i << 1;
+			l = j << 1;
+			L4dungeon[k][l] = dung[i][j];
+			L4dungeon[k][l + 1] = dung[i][j];
+			L4dungeon[k + 1][l] = dung[i][j];
+			L4dungeon[k + 1][l + 1] = dung[i][j];
+		}
+	}
+	for(j = 0; j < 20; j++) {
+		for(i = 0; i < 20; i++) {
+			k = i << 1;
+			l = j << 1;
+			L4dungeon[k][l + 40] = dung[i][19 - j];
+			L4dungeon[k][l + 41] = dung[i][19 - j];
+			L4dungeon[k + 1][l + 40] = dung[i][19 - j];
+			L4dungeon[k + 1][l + 41] = dung[i][19 - j];
+		}
+	}
+	for(j = 0; j < 20; j++) {
+		for(i = 0; i < 20; i++) {
+			k = i << 1;
+			l = j << 1;
+			L4dungeon[k + 40][l] = dung[19 - i][j];
+			L4dungeon[k + 40][l + 1] = dung[19 - i][j];
+			L4dungeon[k + 41][l] = dung[19 - i][j];
+			L4dungeon[k + 41][l + 1] = dung[19 - i][j];
+		}
+	}
+	for(j = 0; j < 20; j++) {
+		for(i = 0; i < 20; i++) {
+			k = i << 1;
+			l = j << 1;
+			L4dungeon[k + 40][l + 40] = dung[19 - i][19 - j];
+			L4dungeon[k + 40][l + 41] = dung[19 - i][19 - j];
+			L4dungeon[k + 41][l + 40] = dung[19 - i][19 - j];
+			L4dungeon[k + 41][l + 41] = dung[19 - i][19 - j];
+		}
+	}
 }
 
 void uShape()
@@ -2070,7 +1967,7 @@ void DRLG_L4Pass3()
 
 	lv = 30 - 1;
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	__asm {
 		mov		esi, pMegaTiles
 		mov		eax, lv
@@ -2112,7 +2009,7 @@ void DRLG_L4Pass3()
 		xx = 16;
 		for (i = 0; i < DMAXX; i++) {
 			lv = (unsigned char)dungeon[i][j] - 1;
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 			if (lv >= 0) {
 				__asm {
 					mov		esi, pMegaTiles

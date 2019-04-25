@@ -1,6 +1,5 @@
-//HEADER_GOES_HERE
-
-#include "../types.h"
+#include "diablo.h"
+#include "../3rdParty/Storm/Source/storm.h"
 
 DEVILUTION_BEGIN_NAMESPACE
 
@@ -130,7 +129,7 @@ unsigned int __stdcall dthread_handler(void *unused)
 void dthread_cleanup()
 {
 	char *error_buf;
-	TMegaPkt *tmp1, *tmp2;
+	TMegaPkt *tmp;
 
 	if (sghWorkToDoEvent == NULL) {
 		return;
@@ -150,11 +149,9 @@ void dthread_cleanup()
 	sghWorkToDoEvent = NULL;
 
 	while (sgpInfoHead) {
-		tmp1 = sgpInfoHead->pNext;
-		tmp2 = sgpInfoHead;
-		sgpInfoHead = NULL;
-		mem_free_dbg(tmp2);
-		sgpInfoHead = tmp1;
+		tmp = sgpInfoHead->pNext;
+		MemFreeDbg(sgpInfoHead);
+		sgpInfoHead = tmp;
 	}
 }
 

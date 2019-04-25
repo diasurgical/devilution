@@ -11,7 +11,8 @@
 
 #else
 
-#include "miniwin.h"
+#include "miniwin/pushdecl.inc"
+namespace dvl {
 
 #endif
 
@@ -1346,6 +1347,11 @@ BOOL __stdcall SFileEnableDirectAccess(BOOL enable);
 
 #if defined(__GNUC__) || defined(__cplusplus)
 }
+#endif
+
+#ifdef DEVILUTION_STUB
+}
+#include "miniwin/popdecl.inc"
 #endif
 
 #endif

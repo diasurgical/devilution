@@ -1,6 +1,4 @@
-//HEADER_GOES_HERE
-
-#include "../types.h"
+#include "diablo.h"
 
 DEVILUTION_BEGIN_NAMESPACE
 
@@ -755,11 +753,7 @@ void DoVision(int nXPos, int nYPos, int nRadius, BOOL doautomap, BOOL visible)
 
 void FreeLightTable()
 {
-	BYTE *ptr;
-
-	ptr = pLightTbl;
-	pLightTbl = NULL;
-	mem_free_dbg(ptr);
+	MemFreeDbg(pLightTbl);
 }
 
 void InitLightTable()

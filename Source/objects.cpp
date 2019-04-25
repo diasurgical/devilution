@@ -1,6 +1,4 @@
-//HEADER_GOES_HERE
-
-#include "../types.h"
+#include "diablo.h"
 
 DEVILUTION_BEGIN_NAMESPACE
 
@@ -133,106 +131,106 @@ int ObjTypeConv[113] = {
 };
 ObjDataStruct AllObjects[99] = {
 	// clang-format off
-	// oload, ofindex,   ominlvl, omaxlvl, olvltype, otheme, oquest, oAnimFlag, oAnimDelay, oAnimLen, oAnimWidth, oSolidFlag, oMissFlag, oLightFlag, oBreak, oSelFlag, oTrapFlag
-	{      1, OFILE_L1BRAZ,    1,       4,        1,     -1,     -1,         1,          1,       26,         64, TRUE,       TRUE,      FALSE,           0,        0, FALSE     },
-	{      1, OFILE_L1DOORS,   1,       4,        1,     -1,     -1,         0,          1,        0,         64, FALSE,      FALSE,     TRUE,            0,        3, TRUE      },
-	{      1, OFILE_L1DOORS,   1,       4,        1,     -1,     -1,         0,          2,        0,         64, FALSE,      FALSE,     TRUE,            0,        3, TRUE      },
-	{      3, OFILE_SKULFIRE,  0,       0,        0,      3,     -1,         1,          2,       11,         96, TRUE,       TRUE,      FALSE,           0,        0, FALSE     },
-	{      1, OFILE_LEVER,     1,       4,        1,     -1,     -1,         0,          1,        1,         96, TRUE,       TRUE,      TRUE,            0,        1, TRUE      },
-	{      1, OFILE_CHEST1,    1,      16,        0,     -1,     -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        1, TRUE      },
-	{      1, OFILE_CHEST2,    1,      16,        0,     -1,     -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        1, TRUE      },
-	{      1, OFILE_CHEST3,    1,      16,        0,     -1,     -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        1, TRUE      },
-	{      2, OFILE_L1BRAZ,    0,       0,        0,     -1,     -1,         0,          0,        0,          0, FALSE,      FALSE,     FALSE,           0,        0, FALSE     },
-	{      3, OFILE_CANDLE2,   0,       0,        0,      1,     -1,         1,          2,        4,         96, TRUE,       TRUE,      TRUE,            0,        0, FALSE     },
-	{      2, OFILE_L1BRAZ,    0,       0,        0,     -1,     -1,         0,          0,        0,          0, FALSE,      FALSE,     FALSE,           0,        0, FALSE     },
-	{      3, OFILE_BANNER,    0,       0,        0,      3,     -1,         0,          2,        0,         96, TRUE,       TRUE,      TRUE,            0,        0, FALSE     },
-	{      3, OFILE_BANNER,    0,       0,        0,      3,     -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        0, FALSE     },
-	{      3, OFILE_BANNER,    0,       0,        0,      3,     -1,         0,          3,        0,         96, TRUE,       TRUE,      TRUE,            0,        0, FALSE     },
-	{      2, OFILE_SKULPILE,  1,       4,        0,     -1,     -1,         0,          0,        1,         96, TRUE,       TRUE,      TRUE,            0,        0, FALSE     },
-	{      2, OFILE_L1BRAZ,    0,       0,        0,     -1,     -1,         0,          0,        0,          0, FALSE,      FALSE,     FALSE,           0,        0, FALSE     },
-	{      2, OFILE_L1BRAZ,    0,       0,        0,     -1,     -1,         0,          0,        0,          0, FALSE,      FALSE,     FALSE,           0,        0, FALSE     },
-	{      2, OFILE_L1BRAZ,    0,       0,        0,     -1,     -1,         0,          0,        0,          0, FALSE,      FALSE,     FALSE,           0,        0, FALSE     },
-	{      2, OFILE_L1BRAZ,    0,       0,        0,     -1,     -1,         0,          0,        0,          0, FALSE,      FALSE,     FALSE,           0,        0, FALSE     },
-	{      2, OFILE_L1BRAZ,    0,       0,        0,     -1,     -1,         0,          0,        0,          0, FALSE,      FALSE,     FALSE,           0,        0, FALSE     },
-	{      2, OFILE_CRUXSK1,   0,       0,        0,     -1,     -1,         0,          1,       15,         96, TRUE,       FALSE,     TRUE,            1,        3, FALSE     },
-	{      2, OFILE_CRUXSK2,   0,       0,        0,     -1,     -1,         0,          1,       15,         96, TRUE,       FALSE,     TRUE,            1,        3, FALSE     },
-	{      2, OFILE_CRUXSK3,   0,       0,        0,     -1,     -1,         0,          1,       15,         96, TRUE,       FALSE,     TRUE,            1,        3, FALSE     },
-	{      1, OFILE_ROCKSTAN,  5,       5,        0,     -1,     -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        0, FALSE     },
-	{      2, OFILE_ANGEL,     0,       0,        0,     -1,     -1,         0,          1,        0,         96, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
-	{      2, OFILE_BOOK2,     0,       0,        0,     -1,     -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
-	{      2, OFILE_BURNCROS,  0,       0,        0,     -1,     -1,         1,          0,       10,        160, TRUE,       FALSE,     FALSE,           0,        0, FALSE     },
-	{      2, OFILE_NUDE2,     0,       0,        0,     -1,     -1,         1,          3,        6,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
-	{      1, OFILE_SWITCH4,  16,      16,        0,     -1,     -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        1, TRUE      },
-	{      1, OFILE_TNUDEM,   13,      16,        0,     -1,      6,         0,          1,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
-	{      1, OFILE_TNUDEM,   13,      16,        0,      6,      6,         0,          2,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
-	{      1, OFILE_TNUDEM,   13,      16,        0,      6,      6,         0,          3,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
-	{      1, OFILE_TNUDEM,   13,      16,        0,      6,      6,         0,          4,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
-	{      1, OFILE_TNUDEW,   13,      16,        0,      6,      6,         0,          1,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
-	{      1, OFILE_TNUDEW,   13,      16,        0,      6,      6,         0,          2,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
-	{      1, OFILE_TNUDEW,   13,      16,        0,      6,      6,         0,          3,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
-	{      1, OFILE_TSOUL,    13,      16,        0,     -1,      6,         0,          1,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
-	{      1, OFILE_TSOUL,    13,      16,        0,     -1,      6,         0,          2,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
-	{      1, OFILE_TSOUL,    13,      16,        0,     -1,      6,         0,          3,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
-	{      1, OFILE_TSOUL,    13,      16,        0,     -1,      6,         0,          4,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
-	{      1, OFILE_TSOUL,    13,      16,        0,     -1,      6,         0,          5,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
-	{      1, OFILE_BOOK2,     6,       6,        0,     -1,     -1,         0,          4,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
-	{      1, OFILE_L2DOORS,   5,       8,        2,     -1,     -1,         0,          1,        0,         64, FALSE,      FALSE,     TRUE,            0,        3, TRUE      },
-	{      1, OFILE_L2DOORS,   5,       8,        2,     -1,     -1,         0,          2,        0,         64, FALSE,      FALSE,     TRUE,            0,        3, FALSE     },
-	{      1, OFILE_WTORCH4,   5,       8,        2,     -1,     -1,         1,          1,        9,         96, FALSE,      TRUE,      FALSE,           0,        0, FALSE     },
-	{      1, OFILE_WTORCH3,   5,       8,        2,     -1,     -1,         1,          1,        9,         96, FALSE,      TRUE,      FALSE,           0,        0, FALSE     },
-	{      1, OFILE_WTORCH1,   5,       8,        2,     -1,     -1,         1,          1,        9,         96, FALSE,      TRUE,      FALSE,           0,        0, FALSE     },
-	{      1, OFILE_WTORCH2,   5,       8,        2,     -1,     -1,         1,          1,        9,         96, FALSE,      TRUE,      FALSE,           0,        0, FALSE     },
-	{      1, OFILE_SARC,      1,       4,        1,     -1,     -1,         0,          1,        5,        128, TRUE,       TRUE,      TRUE,            0,        3, TRUE      },
-	{      2, OFILE_FLAME1,    1,       4,        1,     -1,     -1,         0,          1,       20,         96, FALSE,      TRUE,      TRUE,            0,        0, FALSE     },
-	{      2, OFILE_LEVER,     1,       4,        1,     -1,     -1,         0,          1,        2,         96, TRUE,       TRUE,      TRUE,            0,        1, TRUE      },
-	{      2, OFILE_MINIWATR,  1,       4,        1,     -1,     -1,         1,          1,       10,         64, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
-	{      1, OFILE_BOOK1,     3,       4,        1,     -1,     -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
-	{      1, OFILE_TRAPHOLE,  1,      16,        0,     -1,     -1,         0,          1,        0,         64, FALSE,      TRUE,      TRUE,            0,        0, FALSE     },
-	{      1, OFILE_TRAPHOLE,  1,      16,        0,     -1,     -1,         0,          2,        0,         64, FALSE,      TRUE,      TRUE,            0,        0, FALSE     },
-	{      2, OFILE_BCASE,     0,       0,        0,     -1,     -1,         0,          1,        0,         96, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
-	{      2, OFILE_WEAPSTND,  0,       0,        0,     -1,     -1,         0,          1,        0,         96, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
-	{      1, OFILE_BARREL,    1,      16,        0,     -1,     -1,         0,          1,        9,         96, TRUE,       TRUE,      TRUE,            1,        3, FALSE     },
-	{      1, OFILE_BARRELEX,  1,      16,        0,     -1,     -1,         0,          1,       10,         96, TRUE,       TRUE,      TRUE,            1,        3, FALSE     },
-	{      3, OFILE_LSHRINEG,  0,       0,        0,      1,     -1,         0,          1,       11,        128, FALSE,      FALSE,     TRUE,            0,        3, FALSE     },
-	{      3, OFILE_RSHRINEG,  0,       0,        0,      1,     -1,         0,          1,       11,        128, FALSE,      FALSE,     TRUE,            0,        3, FALSE     },
-	{      3, OFILE_BOOK2,     0,       0,        0,      3,     -1,         0,          4,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
-	{      3, OFILE_BCASE,     0,       0,        0,      5,     -1,         0,          3,        0,         96, FALSE,      FALSE,     TRUE,            0,        3, FALSE     },
-	{      3, OFILE_BCASE,     0,       0,        0,      5,     -1,         0,          4,        0,         96, FALSE,      FALSE,     TRUE,            0,        3, FALSE     },
-	{      3, OFILE_BOOK2,     0,       0,        0,      5,     -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
-	{      3, OFILE_CANDLE2,   0,       0,        0,      5,     -1,         1,          2,        4,         96, TRUE,       TRUE,      TRUE,            0,        0, FALSE     },
-	{      3, OFILE_BLOODFNT,  0,       0,        0,      7,     -1,         1,          2,       10,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
-	{      1, OFILE_DECAP,    13,      16,        0,      8,     -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        1, FALSE     },
-	{      1, OFILE_CHEST1,    1,      16,        0,     -1,     -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        1, TRUE      },
-	{      1, OFILE_CHEST2,    1,      16,        0,     -1,     -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        1, TRUE      },
-	{      1, OFILE_CHEST3,    1,      16,        0,     -1,     -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        1, TRUE      },
-	{      1, OFILE_BOOK1,     7,       7,        2,     -1,      8,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
-	{      1, OFILE_BOOK1,     5,       5,        2,     -1,      9,         0,          4,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
-	{      1, OFILE_PEDISTL,   5,       5,        2,     -1,      9,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
-	{      1, OFILE_L3DOORS,   9,      12,        3,     -1,     -1,         0,          1,        0,         64, FALSE,      FALSE,     TRUE,            0,        3, TRUE      },
-	{      1, OFILE_L3DOORS,   9,      12,        3,     -1,     -1,         0,          2,        0,         64, FALSE,      FALSE,     TRUE,            0,        3, TRUE      },
-	{      3, OFILE_PFOUNTN,   0,       0,        0,      9,     -1,         1,          2,       10,        128, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
-	{      3, OFILE_ARMSTAND,  0,       0,        0,     10,     -1,         0,          1,        0,         96, TRUE,       FALSE,     TRUE,            0,        3, FALSE     },
-	{      3, OFILE_ARMSTAND,  0,       0,        0,     10,     -1,         0,          2,        0,         96, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
-	{      3, OFILE_GOATSHRN,  0,       0,        0,     11,     -1,         1,          2,       10,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
-	{      1, OFILE_CAULDREN, 13,      16,        0,     -1,     -1,         0,          1,        0,         96, TRUE,       FALSE,     TRUE,            0,        3, FALSE     },
-	{      3, OFILE_MFOUNTN,   0,       0,        0,     13,     -1,         1,          2,       10,        128, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
-	{      3, OFILE_TFOUNTN,   0,       0,        0,     14,     -1,         1,          2,        4,        128, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
-	{      1, OFILE_ALTBOY,    0,       0,        1,     -1,     15,         0,          1,        0,        128, TRUE,       TRUE,      TRUE,            0,        0, FALSE     },
-	{      1, OFILE_MCIRL,     0,       0,        1,     -1,     15,         0,          1,        0,         96, FALSE,      TRUE,      TRUE,            0,        0, FALSE     },
-	{      1, OFILE_MCIRL,     0,       0,        1,     -1,     15,         0,          1,        0,         96, FALSE,      TRUE,      TRUE,            0,        0, FALSE     },
-	{      1, OFILE_BKSLBRNT,  4,      12,        0,     -1,     -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
-	{      1, OFILE_CANDLE2,   2,      12,        0,     -1,     15,         1,          2,        4,         96, TRUE,       TRUE,      TRUE,            0,        0, FALSE     },
-	{      1, OFILE_BOOK1,    13,      13,        4,     -1,     11,         0,          4,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
-	{      1, OFILE_ARMSTAND, 13,      13,        0,     -1,     11,         0,          1,        0,         96, TRUE,       FALSE,     TRUE,            0,        3, FALSE     },
-	{      2, OFILE_WEAPSTND, 13,      13,        0,     -1,     11,         0,          1,        0,         96, TRUE,       FALSE,     TRUE,            0,        3, FALSE     },
-	{      2, OFILE_BURNCROS,  0,       0,        0,     15,     -1,         1,          0,       10,        160, TRUE,       FALSE,     FALSE,           0,        0, FALSE     },
-	{      2, OFILE_WEAPSTND,  0,       0,        0,     16,     -1,         0,          1,        0,         96, TRUE,       FALSE,     TRUE,            0,        3, FALSE     },
-	{      2, OFILE_WEAPSTND,  0,       0,        0,     16,     -1,         0,          2,        0,         96, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
-	{      2, OFILE_MUSHPTCH,  0,       0,        0,     -1,      1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, TRUE      },
-	{      2, OFILE_LZSTAND,   0,       0,        0,     -1,     15,         0,          1,        0,        128, TRUE,       FALSE,     TRUE,            0,        3, FALSE     },
-	{      1, OFILE_DECAP,     9,       9,        3,     -1,     -1,         0,          2,        0,         96, TRUE,       TRUE,      TRUE,            0,        1, FALSE     },
-	{      2, OFILE_CHEST3,    0,       0,        0,     -1,     -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        1, TRUE      },
-	{     -1, 0,               0,       0,       -1,     -1,     -1,         0,          0,        0,          0, FALSE,      FALSE,     FALSE,           0,        0, FALSE     }
+	// oload, ofindex,   ominlvl, omaxlvl, olvltype, otheme,              oquest, oAnimFlag, oAnimDelay, oAnimLen, oAnimWidth, oSolidFlag, oMissFlag, oLightFlag, oBreak, oSelFlag, oTrapFlag
+	{      1, OFILE_L1BRAZ,    1,       4,        1, THEME_NONE,              -1,         1,          1,       26,         64, TRUE,       TRUE,      FALSE,           0,        0, FALSE     },
+	{      1, OFILE_L1DOORS,   1,       4,        1, THEME_NONE,              -1,         0,          1,        0,         64, FALSE,      FALSE,     TRUE,            0,        3, TRUE      },
+	{      1, OFILE_L1DOORS,   1,       4,        1, THEME_NONE,              -1,         0,          2,        0,         64, FALSE,      FALSE,     TRUE,            0,        3, TRUE      },
+	{      3, OFILE_SKULFIRE,  0,       0,        0, THEME_SKELROOM,          -1,         1,          2,       11,         96, TRUE,       TRUE,      FALSE,           0,        0, FALSE     },
+	{      1, OFILE_LEVER,     1,       4,        1, THEME_NONE,              -1,         0,          1,        1,         96, TRUE,       TRUE,      TRUE,            0,        1, TRUE      },
+	{      1, OFILE_CHEST1,    1,      16,        0, THEME_NONE,              -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        1, TRUE      },
+	{      1, OFILE_CHEST2,    1,      16,        0, THEME_NONE,              -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        1, TRUE      },
+	{      1, OFILE_CHEST3,    1,      16,        0, THEME_NONE,              -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        1, TRUE      },
+	{      2, OFILE_L1BRAZ,    0,       0,        0, THEME_NONE,              -1,         0,          0,        0,          0, FALSE,      FALSE,     FALSE,           0,        0, FALSE     },
+	{      3, OFILE_CANDLE2,   0,       0,        0, THEME_SHRINE,            -1,         1,          2,        4,         96, TRUE,       TRUE,      TRUE,            0,        0, FALSE     },
+	{      2, OFILE_L1BRAZ,    0,       0,        0, THEME_NONE,              -1,         0,          0,        0,          0, FALSE,      FALSE,     FALSE,           0,        0, FALSE     },
+	{      3, OFILE_BANNER,    0,       0,        0, THEME_SKELROOM,          -1,         0,          2,        0,         96, TRUE,       TRUE,      TRUE,            0,        0, FALSE     },
+	{      3, OFILE_BANNER,    0,       0,        0, THEME_SKELROOM,          -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        0, FALSE     },
+	{      3, OFILE_BANNER,    0,       0,        0, THEME_SKELROOM,          -1,         0,          3,        0,         96, TRUE,       TRUE,      TRUE,            0,        0, FALSE     },
+	{      2, OFILE_SKULPILE,  1,       4,        0, THEME_NONE,              -1,         0,          0,        1,         96, TRUE,       TRUE,      TRUE,            0,        0, FALSE     },
+	{      2, OFILE_L1BRAZ,    0,       0,        0, THEME_NONE,              -1,         0,          0,        0,          0, FALSE,      FALSE,     FALSE,           0,        0, FALSE     },
+	{      2, OFILE_L1BRAZ,    0,       0,        0, THEME_NONE,              -1,         0,          0,        0,          0, FALSE,      FALSE,     FALSE,           0,        0, FALSE     },
+	{      2, OFILE_L1BRAZ,    0,       0,        0, THEME_NONE,              -1,         0,          0,        0,          0, FALSE,      FALSE,     FALSE,           0,        0, FALSE     },
+	{      2, OFILE_L1BRAZ,    0,       0,        0, THEME_NONE,              -1,         0,          0,        0,          0, FALSE,      FALSE,     FALSE,           0,        0, FALSE     },
+	{      2, OFILE_L1BRAZ,    0,       0,        0, THEME_NONE,              -1,         0,          0,        0,          0, FALSE,      FALSE,     FALSE,           0,        0, FALSE     },
+	{      2, OFILE_CRUXSK1,   0,       0,        0, THEME_NONE,              -1,         0,          1,       15,         96, TRUE,       FALSE,     TRUE,            1,        3, FALSE     },
+	{      2, OFILE_CRUXSK2,   0,       0,        0, THEME_NONE,              -1,         0,          1,       15,         96, TRUE,       FALSE,     TRUE,            1,        3, FALSE     },
+	{      2, OFILE_CRUXSK3,   0,       0,        0, THEME_NONE,              -1,         0,          1,       15,         96, TRUE,       FALSE,     TRUE,            1,        3, FALSE     },
+	{      1, OFILE_ROCKSTAN,  5,       5,        0, THEME_NONE,              -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        0, FALSE     },
+	{      2, OFILE_ANGEL,     0,       0,        0, THEME_NONE,              -1,         0,          1,        0,         96, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
+	{      2, OFILE_BOOK2,     0,       0,        0, THEME_NONE,              -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
+	{      2, OFILE_BURNCROS,  0,       0,        0, THEME_NONE,              -1,         1,          0,       10,        160, TRUE,       FALSE,     FALSE,           0,        0, FALSE     },
+	{      2, OFILE_NUDE2,     0,       0,        0, THEME_NONE,              -1,         1,          3,        6,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
+	{      1, OFILE_SWITCH4,  16,      16,        0, THEME_NONE,              -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        1, TRUE      },
+	{      1, OFILE_TNUDEM,   13,      16,        0, THEME_NONE,               6,         0,          1,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
+	{      1, OFILE_TNUDEM,   13,      16,        0, THEME_TORTURE,            6,         0,          2,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
+	{      1, OFILE_TNUDEM,   13,      16,        0, THEME_TORTURE,            6,         0,          3,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
+	{      1, OFILE_TNUDEM,   13,      16,        0, THEME_TORTURE,            6,         0,          4,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
+	{      1, OFILE_TNUDEW,   13,      16,        0, THEME_TORTURE,            6,         0,          1,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
+	{      1, OFILE_TNUDEW,   13,      16,        0, THEME_TORTURE,            6,         0,          2,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
+	{      1, OFILE_TNUDEW,   13,      16,        0, THEME_TORTURE,            6,         0,          3,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
+	{      1, OFILE_TSOUL,    13,      16,        0, THEME_NONE,               6,         0,          1,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
+	{      1, OFILE_TSOUL,    13,      16,        0, THEME_NONE,               6,         0,          2,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
+	{      1, OFILE_TSOUL,    13,      16,        0, THEME_NONE,               6,         0,          3,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
+	{      1, OFILE_TSOUL,    13,      16,        0, THEME_NONE,               6,         0,          4,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
+	{      1, OFILE_TSOUL,    13,      16,        0, THEME_NONE,               6,         0,          5,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
+	{      1, OFILE_BOOK2,     6,       6,        0, THEME_NONE,              -1,         0,          4,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
+	{      1, OFILE_L2DOORS,   5,       8,        2, THEME_NONE,              -1,         0,          1,        0,         64, FALSE,      FALSE,     TRUE,            0,        3, TRUE      },
+	{      1, OFILE_L2DOORS,   5,       8,        2, THEME_NONE,              -1,         0,          2,        0,         64, FALSE,      FALSE,     TRUE,            0,        3, FALSE     },
+	{      1, OFILE_WTORCH4,   5,       8,        2, THEME_NONE,              -1,         1,          1,        9,         96, FALSE,      TRUE,      FALSE,           0,        0, FALSE     },
+	{      1, OFILE_WTORCH3,   5,       8,        2, THEME_NONE,              -1,         1,          1,        9,         96, FALSE,      TRUE,      FALSE,           0,        0, FALSE     },
+	{      1, OFILE_WTORCH1,   5,       8,        2, THEME_NONE,              -1,         1,          1,        9,         96, FALSE,      TRUE,      FALSE,           0,        0, FALSE     },
+	{      1, OFILE_WTORCH2,   5,       8,        2, THEME_NONE,              -1,         1,          1,        9,         96, FALSE,      TRUE,      FALSE,           0,        0, FALSE     },
+	{      1, OFILE_SARC,      1,       4,        1, THEME_NONE,              -1,         0,          1,        5,        128, TRUE,       TRUE,      TRUE,            0,        3, TRUE      },
+	{      2, OFILE_FLAME1,    1,       4,        1, THEME_NONE,              -1,         0,          1,       20,         96, FALSE,      TRUE,      TRUE,            0,        0, FALSE     },
+	{      2, OFILE_LEVER,     1,       4,        1, THEME_NONE,              -1,         0,          1,        2,         96, TRUE,       TRUE,      TRUE,            0,        1, TRUE      },
+	{      2, OFILE_MINIWATR,  1,       4,        1, THEME_NONE,              -1,         1,          1,       10,         64, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
+	{      1, OFILE_BOOK1,     3,       4,        1, THEME_NONE,              -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
+	{      1, OFILE_TRAPHOLE,  1,      16,        0, THEME_NONE,              -1,         0,          1,        0,         64, FALSE,      TRUE,      TRUE,            0,        0, FALSE     },
+	{      1, OFILE_TRAPHOLE,  1,      16,        0, THEME_NONE,              -1,         0,          2,        0,         64, FALSE,      TRUE,      TRUE,            0,        0, FALSE     },
+	{      2, OFILE_BCASE,     0,       0,        0, THEME_NONE,              -1,         0,          1,        0,         96, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
+	{      2, OFILE_WEAPSTND,  0,       0,        0, THEME_NONE,              -1,         0,          1,        0,         96, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
+	{      1, OFILE_BARREL,    1,      16,        0, THEME_NONE,              -1,         0,          1,        9,         96, TRUE,       TRUE,      TRUE,            1,        3, FALSE     },
+	{      1, OFILE_BARRELEX,  1,      16,        0, THEME_NONE,              -1,         0,          1,       10,         96, TRUE,       TRUE,      TRUE,            1,        3, FALSE     },
+	{      3, OFILE_LSHRINEG,  0,       0,        0, THEME_SHRINE,            -1,         0,          1,       11,        128, FALSE,      FALSE,     TRUE,            0,        3, FALSE     },
+	{      3, OFILE_RSHRINEG,  0,       0,        0, THEME_SHRINE,            -1,         0,          1,       11,        128, FALSE,      FALSE,     TRUE,            0,        3, FALSE     },
+	{      3, OFILE_BOOK2,     0,       0,        0, THEME_SKELROOM,          -1,         0,          4,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
+	{      3, OFILE_BCASE,     0,       0,        0, THEME_LIBRARY,           -1,         0,          3,        0,         96, FALSE,      FALSE,     TRUE,            0,        3, FALSE     },
+	{      3, OFILE_BCASE,     0,       0,        0, THEME_LIBRARY,           -1,         0,          4,        0,         96, FALSE,      FALSE,     TRUE,            0,        3, FALSE     },
+	{      3, OFILE_BOOK2,     0,       0,        0, THEME_LIBRARY,           -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
+	{      3, OFILE_CANDLE2,   0,       0,        0, THEME_LIBRARY,           -1,         1,          2,        4,         96, TRUE,       TRUE,      TRUE,            0,        0, FALSE     },
+	{      3, OFILE_BLOODFNT,  0,       0,        0, THEME_BLOODFOUNTAIN,     -1,         1,          2,       10,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
+	{      1, OFILE_DECAP,    13,      16,        0, THEME_DECAPITATED,       -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        1, FALSE     },
+	{      1, OFILE_CHEST1,    1,      16,        0, THEME_NONE,              -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        1, TRUE      },
+	{      1, OFILE_CHEST2,    1,      16,        0, THEME_NONE,              -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        1, TRUE      },
+	{      1, OFILE_CHEST3,    1,      16,        0, THEME_NONE,              -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        1, TRUE      },
+	{      1, OFILE_BOOK1,     7,       7,        2, THEME_NONE,               8,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
+	{      1, OFILE_BOOK1,     5,       5,        2, THEME_NONE,               9,         0,          4,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
+	{      1, OFILE_PEDISTL,   5,       5,        2, THEME_NONE,               9,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
+	{      1, OFILE_L3DOORS,   9,      12,        3, THEME_NONE,              -1,         0,          1,        0,         64, FALSE,      FALSE,     TRUE,            0,        3, TRUE      },
+	{      1, OFILE_L3DOORS,   9,      12,        3, THEME_NONE,              -1,         0,          2,        0,         64, FALSE,      FALSE,     TRUE,            0,        3, TRUE      },
+	{      3, OFILE_PFOUNTN,   0,       0,        0, THEME_PURIFYINGFOUNTAIN, -1,         1,          2,       10,        128, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
+	{      3, OFILE_ARMSTAND,  0,       0,        0, THEME_ARMORSTAND,        -1,         0,          1,        0,         96, TRUE,       FALSE,     TRUE,            0,        3, FALSE     },
+	{      3, OFILE_ARMSTAND,  0,       0,        0, THEME_ARMORSTAND,        -1,         0,          2,        0,         96, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
+	{      3, OFILE_GOATSHRN,  0,       0,        0, THEME_GOATSHRINE,        -1,         1,          2,       10,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
+	{      1, OFILE_CAULDREN, 13,      16,        0, THEME_NONE,              -1,         0,          1,        0,         96, TRUE,       FALSE,     TRUE,            0,        3, FALSE     },
+	{      3, OFILE_MFOUNTN,   0,       0,        0, THEME_MURKYFOUNTAIN,     -1,         1,          2,       10,        128, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
+	{      3, OFILE_TFOUNTN,   0,       0,        0, THEME_TEARFOUNTAIN,      -1,         1,          2,        4,        128, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
+	{      1, OFILE_ALTBOY,    0,       0,        1, THEME_NONE,              15,         0,          1,        0,        128, TRUE,       TRUE,      TRUE,            0,        0, FALSE     },
+	{      1, OFILE_MCIRL,     0,       0,        1, THEME_NONE,              15,         0,          1,        0,         96, FALSE,      TRUE,      TRUE,            0,        0, FALSE     },
+	{      1, OFILE_MCIRL,     0,       0,        1, THEME_NONE,              15,         0,          1,        0,         96, FALSE,      TRUE,      TRUE,            0,        0, FALSE     },
+	{      1, OFILE_BKSLBRNT,  4,      12,        0, THEME_NONE,              -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
+	{      1, OFILE_CANDLE2,   2,      12,        0, THEME_NONE,              15,         1,          2,        4,         96, TRUE,       TRUE,      TRUE,            0,        0, FALSE     },
+	{      1, OFILE_BOOK1,    13,      13,        4, THEME_NONE,              11,         0,          4,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
+	{      1, OFILE_ARMSTAND, 13,      13,        0, THEME_NONE,              11,         0,          1,        0,         96, TRUE,       FALSE,     TRUE,            0,        3, FALSE     },
+	{      2, OFILE_WEAPSTND, 13,      13,        0, THEME_NONE,              11,         0,          1,        0,         96, TRUE,       FALSE,     TRUE,            0,        3, FALSE     },
+	{      2, OFILE_BURNCROS,  0,       0,        0, THEME_BRNCROSS,          -1,         1,          0,       10,        160, TRUE,       FALSE,     FALSE,           0,        0, FALSE     },
+	{      2, OFILE_WEAPSTND,  0,       0,        0, THEME_WEAPONRACK,        -1,         0,          1,        0,         96, TRUE,       FALSE,     TRUE,            0,        3, FALSE     },
+	{      2, OFILE_WEAPSTND,  0,       0,        0, THEME_WEAPONRACK,        -1,         0,          2,        0,         96, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
+	{      2, OFILE_MUSHPTCH,  0,       0,        0, THEME_NONE,               1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, TRUE      },
+	{      2, OFILE_LZSTAND,   0,       0,        0, THEME_NONE,              15,         0,          1,        0,        128, TRUE,       FALSE,     TRUE,            0,        3, FALSE     },
+	{      1, OFILE_DECAP,     9,       9,        3, THEME_NONE,              -1,         0,          2,        0,         96, TRUE,       TRUE,      TRUE,            0,        1, FALSE     },
+	{      2, OFILE_CHEST3,    0,       0,        0, THEME_NONE,              -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        1, TRUE      },
+	{     -1, 0,               0,       0,       -1, THEME_NONE,              -1,         0,          0,        0,          0, FALSE,      FALSE,     FALSE,           0,        0, FALSE     }
 	// clang-format on
 };
 char *ObjMasterLoadList[56] = {
@@ -370,7 +368,7 @@ void InitObjectGFX()
 		    && (int)currlevel <= AllObjects[i].omaxlvl) {
 			fileload[AllObjects[i].ofindex] = TRUE;
 		}
-		if (AllObjects[i].otheme != -1) {
+		if (AllObjects[i].otheme != THEME_NONE) {
 			for (j = 0; j < numthemes; j++) {
 				if (themes[j].ttype == AllObjects[i].otheme)
 					fileload[AllObjects[i].ofindex] = TRUE;
@@ -398,12 +396,9 @@ void InitObjectGFX()
 void FreeObjectGFX()
 {
 	int i;
-	void *ptr;
 
 	for (i = 0; i < numobjfiles; i++) {
-		ptr = pObjCels[i];
-		pObjCels[i] = NULL;
-		mem_free_dbg(ptr);
+		MemFreeDbg(pObjCels[i]);
 	}
 	numobjfiles = 0;
 }
@@ -1434,11 +1429,12 @@ void AddFlameLvr(int i)
 }
 // 679768: using guessed type int trapid;
 
-void AddTrap(int i)
+void AddTrap(int i, int t)
 {
 	int mt;
 
-	mt = random(148, 1 + currlevel / 3);
+	mt = currlevel / 3 + 1;
+	mt = random(148, mt);
 	if (mt == 0)
 		object[i]._oVar3 = 0; // arrow
 	if (mt == 1)
@@ -1458,7 +1454,7 @@ void AddObjLight(int i, int r)
 	}
 }
 
-void AddBarrel(int i)
+void AddBarrel(int i, int t)
 {
 	object[i]._oVar1 = 0;
 	object[i]._oRndSeed = GetRndSeed();
@@ -1512,6 +1508,16 @@ void AddBookcase(int i)
 	object[i]._oPreFlag = TRUE;
 }
 
+void AddBookstand(int i)
+{
+	object[i]._oRndSeed = GetRndSeed();
+}
+
+void AddBloodFtn(int i)
+{
+	object[i]._oRndSeed = GetRndSeed();
+}
+
 void AddPurifyingFountain(int i)
 {
 	int ox, oy;
@@ -1531,6 +1537,33 @@ void AddArmorStand(int i)
 		object[i]._oAnimFlag = 2;
 	}
 
+	object[i]._oRndSeed = GetRndSeed();
+}
+
+void AddGoatShrine(int i)
+{
+	object[i]._oRndSeed = GetRndSeed();
+}
+
+void AddCauldron(int i)
+{
+	object[i]._oRndSeed = GetRndSeed();
+}
+
+void AddMurkyFountain(int i)
+{
+	int ox, oy;
+
+	ox = object[i]._ox;
+	oy = object[i]._oy;
+	dObject[ox][oy - 1] = -1 - i;
+	dObject[ox - 1][oy] = -1 - i;
+	dObject[ox - 1][oy - 1] = -1 - i;
+	object[i]._oRndSeed = GetRndSeed();
+}
+
+void AddTearFountain(int i)
+{
 	object[i]._oRndSeed = GetRndSeed();
 }
 
@@ -1558,7 +1591,7 @@ void AddMagicCircle(int i)
 	object[i]._oVar6 = 0;
 }
 
-void AddBookstand(int i)
+void AddBrnCross(int i)
 {
 	object[i]._oRndSeed = GetRndSeed();
 }
@@ -1659,150 +1692,141 @@ void AddSlainHero()
 
 void AddObject(int ot, int ox, int oy)
 {
-	int v3; // ebp
-	int v4; // esi
-	//unsigned int v5; // eax
-	int v6; // ebx
-	int v7; // ebx
-	int v8; // eax
+	int oi;
 
-	v3 = ox;
-	v4 = ot;
-	if (nobjects < MAXOBJECTS) {
-		//v5 = 4 * nobjects;
-		v6 = objectavail[0];
-		objectactive[nobjects] = objectavail[0];
-		objectavail[0] = objectavail[-nobjects + 126]; /* double check, MAXOBJECTS */
-		dObject[ox][oy] = v6 + 1;
-		SetupObject(v6, ox, oy, ot);
-		switch (v4) {
-		case OBJ_L1LIGHT:
-		case OBJ_SKFIRE:
-		case OBJ_CANDLE1:
-		case OBJ_CANDLE2:
-		case OBJ_BOOKCANDLE:
-			goto LABEL_31;
-		case OBJ_L1LDOOR:
-		case OBJ_L1RDOOR:
-			AddL1Door(v6, v3, oy, v4);
-			break;
-		case OBJ_CHEST1:
-		case OBJ_CHEST2:
-		case OBJ_CHEST3:
-		case OBJ_TCHEST1:
-		case OBJ_TCHEST2:
-		case OBJ_TCHEST3:
-			AddChest(v6, v4);
-			break;
-		case OBJ_BOOK2L:
-			AddVilebook(v6);
-			break;
-		case OBJ_BCROSS:
-		case OBJ_TBCROSS:
-			AddBookstand(v6);
-		LABEL_31:
-			AddObjLight(v6, 5);
-			break;
-		case OBJ_TNUDEM2:
-			AddTorturedBody(v6);
-			break;
-		case OBJ_BOOK2R:
-			AddSCambBook(v6);
-			break;
-		case OBJ_L2LDOOR:
-		case OBJ_L2RDOOR:
-			AddL2Door(v6, v3, oy, v4);
-			break;
-		case OBJ_TORCHL:
-		case OBJ_TORCHR:
-		case OBJ_TORCHL2:
-		case OBJ_TORCHR2:
-			AddObjLight(v6, 8);
-			break;
-		case OBJ_SARC:
-			AddSarc(v6);
-			break;
-		case OBJ_FLAMEHOLE:
-			AddFlameTrap(v6);
-			break;
-		case OBJ_FLAMELVR:
-			AddFlameLvr(v6);
-			break;
-		case OBJ_WATER:
-			object[v6]._oAnimFrame = 1;
-			break;
-		case OBJ_TRAPL:
-		case OBJ_TRAPR:
-			AddTrap(v6);
-			break;
-		case OBJ_BARREL:
-		case OBJ_BARRELEX:
-			AddBarrel(v6);
-			break;
-		case OBJ_SHRINEL:
-		case OBJ_SHRINER:
-			AddShrine(v6);
-			break;
-		case OBJ_SKELBOOK:
-		case OBJ_BOOKSTAND:
-			AddBookstand(v6);
-			break;
-		case OBJ_BOOKCASEL:
-		case OBJ_BOOKCASER:
-			AddBookcase(v6);
-			break;
-		case OBJ_BLOODFTN:
-			AddBookstand(v6);
-			break;
-		case OBJ_DECAP:
-			AddDecap(v6);
-			break;
-		case OBJ_PEDISTAL:
-			AddPedistal(v6);
-			break;
-		case OBJ_L3LDOOR:
-		case OBJ_L3RDOOR:
-			AddL3Door(v6, v3, oy, v4);
-			break;
-		case OBJ_PURIFYINGFTN:
-			AddPurifyingFountain(v6);
-			break;
-		case OBJ_ARMORSTAND:
-		case OBJ_WARARMOR:
-			AddArmorStand(v6);
-			break;
-		case OBJ_GOATSHRINE:
-			AddBookstand(v6);
-			break;
-		case OBJ_CAULDRON:
-			AddBookstand(v6);
-			break;
-		case OBJ_MURKYFTN:
-			AddPurifyingFountain(v6);
-			break;
-		case OBJ_TEARFTN:
-			AddBookstand(v6);
-			break;
-		case OBJ_MCIRCLE1:
-		case OBJ_MCIRCLE2:
-			AddMagicCircle(v6);
-			break;
-		case OBJ_STORYBOOK:
-			AddStoryBook(v6);
-			break;
-		case OBJ_STORYCANDLE:
-			AddObjLight(v6, 3);
-			break;
-		case OBJ_WARWEAP:
-		case OBJ_WEAPONRACK:
-			AddWeaponRack(v6);
-			break;
-		}
-		v7 = v6;
-		v8 = object[v7]._oAnimWidth - 64;
-		++nobjects;
-		object[v7]._oAnimWidth2 = v8 >> 1;
+	if (nobjects >= MAXOBJECTS)
+		return;
+
+	oi = objectavail[0];
+	objectavail[0] = objectavail[126 - nobjects];
+	objectactive[nobjects] = oi;
+	dObject[ox][oy] = oi + 1;
+	SetupObject(oi, ox, oy, ot);
+	switch (ot) {
+	case OBJ_STORYCANDLE:
+		AddObjLight(oi, 3);
+		break;
+	case OBJ_TORCHL:
+	case OBJ_TORCHR:
+	case OBJ_TORCHL2:
+	case OBJ_TORCHR2:
+		AddObjLight(oi, 8);
+		break;
+	case OBJ_L1LDOOR:
+	case OBJ_L1RDOOR:
+		AddL1Door(oi, ox, oy, ot);
+		break;
+	case OBJ_L2LDOOR:
+	case OBJ_L2RDOOR:
+		AddL2Door(oi, ox, oy, ot);
+		break;
+	case OBJ_L3LDOOR:
+	case OBJ_L3RDOOR:
+		AddL3Door(oi, ox, oy, ot);
+		break;
+	case OBJ_BOOK2R:
+		AddSCambBook(oi);
+		break;
+	case OBJ_CHEST1:
+	case OBJ_CHEST2:
+	case OBJ_CHEST3:
+	case OBJ_TCHEST1:
+	case OBJ_TCHEST2:
+	case OBJ_TCHEST3:
+		AddChest(oi, ot);
+		break;
+	case OBJ_SARC:
+		AddSarc(oi);
+		break;
+	case OBJ_FLAMEHOLE:
+		AddFlameTrap(oi);
+		break;
+	case OBJ_FLAMELVR:
+		AddFlameLvr(oi);
+		break;
+	case OBJ_WATER:
+		object[oi]._oAnimFrame = 1;
+		break;
+	case OBJ_TRAPL:
+	case OBJ_TRAPR:
+		AddTrap(oi, ot);
+		break;
+	case OBJ_BARREL:
+	case OBJ_BARRELEX:
+		AddBarrel(oi, ot);
+		break;
+	case OBJ_SHRINEL:
+	case OBJ_SHRINER:
+		AddShrine(oi);
+		break;
+	case OBJ_BOOKCASEL:
+	case OBJ_BOOKCASER:
+		AddBookcase(oi);
+		break;
+	case OBJ_SKELBOOK:
+	case OBJ_BOOKSTAND:
+		AddBookstand(oi);
+		break;
+	case OBJ_BLOODFTN:
+		AddBloodFtn(oi);
+		break;
+	case OBJ_DECAP:
+		AddDecap(oi);
+		break;
+	case OBJ_PURIFYINGFTN:
+		AddPurifyingFountain(oi);
+		break;
+	case OBJ_ARMORSTAND:
+	case OBJ_WARARMOR:
+		AddArmorStand(oi);
+		break;
+	case OBJ_GOATSHRINE:
+		AddGoatShrine(oi);
+		break;
+	case OBJ_CAULDRON:
+		AddCauldron(oi);
+		break;
+	case OBJ_MURKYFTN:
+		AddMurkyFountain(oi);
+		break;
+	case OBJ_TEARFTN:
+		AddTearFountain(oi);
+		break;
+	case OBJ_BOOK2L:
+		AddVilebook(oi);
+		break;
+	case OBJ_MCIRCLE1:
+	case OBJ_MCIRCLE2:
+		AddMagicCircle(oi);
+		break;
+	case OBJ_STORYBOOK:
+		AddStoryBook(oi);
+		break;
+	case OBJ_BCROSS:
+	case OBJ_TBCROSS:
+		AddBrnCross(oi);
+		AddObjLight(oi, 5);
+		break;
+	case OBJ_L1LIGHT:
+	case OBJ_SKFIRE:
+	case OBJ_CANDLE1:
+	case OBJ_CANDLE2:
+	case OBJ_BOOKCANDLE:
+		AddObjLight(oi, 5);
+		break;
+	case OBJ_PEDISTAL:
+		AddPedistal(oi);
+		break;
+	case OBJ_WARWEAP:
+	case OBJ_WEAPONRACK:
+		AddWeaponRack(oi);
+		break;
+	case OBJ_TNUDEM2:
+		AddTorturedBody(oi);
+		break;
 	}
+	object[oi]._oAnimWidth2 = (object[oi]._oAnimWidth - 64) >> 1;
+	nobjects++;
 }
 
 void Obj_Light(int i, int lr)
@@ -2192,7 +2216,7 @@ void ObjSetMini(int x, int y, int v)
 	int xx, yy;
 	long v1, v2, v3, v4;
 
-#if (_MSC_VER >= 800) && (_MSC_VER <= 1200)
+#ifdef USE_ASM
 	__asm {
 		mov		esi, pMegaTiles
 		xor		eax, eax
@@ -2357,330 +2381,285 @@ void RedoPlayerVision()
 	}
 }
 
-void OperateL1RDoor(int pnum, int oi, unsigned char sendflag)
+void OperateL1RDoor(int pnum, int oi, BOOL sendflag)
 {
-	int v3;     // esi
-	int v4;     // eax
-	int v5;     // ebx
-	int v6;     // edi
-	int v7;     // ST04_4
-	int v8;     // [esp+Ch] [ebp-Ch]
-	int v9;     // [esp+10h] [ebp-8h]
-	int param1; // [esp+14h] [ebp-4h]
+	int xp, yp;
 
-	v3 = oi;
-	param1 = oi;
-	v9 = pnum;
-	v4 = object[oi]._oVar4;
-	if (v4 != 2) {
-		v5 = object[v3]._ox;
-		v6 = object[v3]._oy;
-		if (v4) {
-			if (!deltaload)
-				PlaySfxLoc(IS_DOORCLOS, v5, object[v3]._oy);
-			v8 = v6 + 112 * v5;
-			if (dDead[0][v8] != 0 || dMonster[0][v8] != 0 || dItem[0][v8] != 0) {
-				object[v3]._oVar4 = 2;
-				return;
-			}
-			if (v9 == myplr && sendflag)
-				NetSendCmdParam1(TRUE, CMD_CLOSEDOOR, param1);
-			v7 = object[v3]._oVar1;
-			object[v3]._oVar4 = 0;
-			object[v3]._oSelFlag = 3;
-			ObjSetMicro(v5, v6, v7);
-			if (object[v3]._oVar2 == 50) {
-				if (dPiece[-1][v8] == 396) /* check *(_DWORD *)&dflags[28][4 * v8 + 32] == 396 ) */
-					ObjSetMicro(v5 - 1, v6, 411);
-				else
-					ObjSetMicro(v5 - 1, v6, 50);
-			} else {
-				ObjSetMicro(v5 - 1, v6, object[v3]._oVar2);
-			}
-			object[v3]._oAnimFrame -= 2;
-			object[v3]._oPreFlag = FALSE;
-		} else {
-			if (pnum == myplr && sendflag)
-				NetSendCmdParam1(TRUE, CMD_OPENDOOR, oi);
-			if (!deltaload)
-				PlaySfxLoc(IS_DOOROPEN, object[v3]._ox, object[v3]._oy);
-			ObjSetMicro(v5, v6, 395);
-			dArch[v5][v6] = 8;
-			objects_set_door_piece(v5, v6 - 1);
-			object[v3]._oAnimFrame += 2;
-			object[v3]._oPreFlag = TRUE;
-			DoorSet(param1, v5 - 1, v6);
-			object[v3]._oVar4 = 1;
-			object[v3]._oSelFlag = 2;
-		}
+	if (object[oi]._oVar4 == 2) {
+		if (!deltaload)
+			PlaySfxLoc(IS_DOORCLOS, object[oi]._ox, object[oi]._oy);
+		return;
+	}
+
+	xp = object[oi]._ox;
+	yp = object[oi]._oy;
+	if (object[oi]._oVar4 == 0) {
+		if (pnum == myplr && sendflag)
+			NetSendCmdParam1(TRUE, CMD_OPENDOOR, oi);
+		if (!deltaload)
+			PlaySfxLoc(IS_DOOROPEN, object[oi]._ox, object[oi]._oy);
+		ObjSetMicro(xp, yp, 395);
+		dArch[xp][yp] = 8;
+		objects_set_door_piece(xp, yp - 1);
+		object[oi]._oAnimFrame += 2;
+		object[oi]._oPreFlag = TRUE;
+		DoorSet(oi, xp - 1, yp);
+		object[oi]._oVar4 = 1;
+		object[oi]._oSelFlag = 2;
 		RedoPlayerVision();
 		return;
 	}
+
 	if (!deltaload)
-		PlaySfxLoc(IS_DOORCLOS, object[v3]._ox, object[v3]._oy);
-}
-// 676190: using guessed type int deltaload;
-
-void OperateL1LDoor(int pnum, int oi, unsigned char sendflag)
-{
-	int v3;     // esi
-	int v4;     // eax
-	int v5;     // ebx
-	int v6;     // edi
-	int v7;     // ST04_4
-	int v8;     // [esp+Ch] [ebp-Ch]
-	int v9;     // [esp+10h] [ebp-8h]
-	int param1; // [esp+14h] [ebp-4h]
-
-	v3 = oi;
-	param1 = oi;
-	v9 = pnum;
-	v4 = object[oi]._oVar4;
-	if (v4 != 2) {
-		v5 = object[v3]._ox;
-		v6 = object[v3]._oy;
-		if (v4) {
-			if (!deltaload)
-				PlaySfxLoc(IS_DOORCLOS, v5, object[v3]._oy);
-			v8 = v6 + 112 * v5;
-			if (dDead[v5][v6] != 0 || dMonster[0][v8] != 0 || dItem[v5][v6] != 0) {
-				object[v3]._oVar4 = 2;
-				return;
-			}
-			if (v9 == myplr && sendflag)
-				NetSendCmdParam1(TRUE, CMD_CLOSEDOOR, param1);
-			v7 = object[v3]._oVar1;
-			object[v3]._oVar4 = 0;
-			object[v3]._oSelFlag = 3;
-			ObjSetMicro(v5, v6, v7);
-			if (object[v3]._oVar2 == 50) {
-				if (dPiece[0][v8 - 1] == 396) /* check  *(_DWORD *)&dflags[39][v8 * 4 + 36] == 396 ) */
-					ObjSetMicro(v5, v6 - 1, 412);
-				else
-					ObjSetMicro(v5, v6 - 1, 50);
-			} else {
-				ObjSetMicro(v5, v6 - 1, object[v3]._oVar2);
-			}
-			object[v3]._oAnimFrame -= 2;
-			object[v3]._oPreFlag = FALSE;
+		PlaySfxLoc(IS_DOORCLOS, xp, object[oi]._oy);
+	if (((dDead[xp][yp] != 0 ? 0 : 1) & (dMonster[xp][yp] != 0 ? 0 : 1) & (dItem[xp][yp] != 0 ? 0 : 1)) != 0) {
+		if (pnum == myplr && sendflag)
+			NetSendCmdParam1(TRUE, CMD_CLOSEDOOR, oi);
+		object[oi]._oVar4 = 0;
+		object[oi]._oSelFlag = 3;
+		ObjSetMicro(xp, yp, object[oi]._oVar1);
+		if (object[oi]._oVar2 != 50) {
+			ObjSetMicro(xp - 1, yp, object[oi]._oVar2);
 		} else {
-			if (pnum == myplr && sendflag)
-				NetSendCmdParam1(TRUE, CMD_OPENDOOR, oi);
-			if (!deltaload)
-				PlaySfxLoc(IS_DOOROPEN, object[v3]._ox, object[v3]._oy);
-			if (object[v3]._oVar1 == 214)
-				ObjSetMicro(v5, v6, 408);
+			if (dPiece[xp - 1][yp] == 396)
+				ObjSetMicro(xp - 1, yp, 411);
 			else
-				ObjSetMicro(v5, v6, 393);
-			dArch[v5][v6] = 7;
-			objects_set_door_piece(v5 - 1, v6);
-			object[v3]._oAnimFrame += 2;
-			object[v3]._oPreFlag = TRUE;
-			DoorSet(param1, v5, v6 - 1);
-			object[v3]._oVar4 = 1;
-			object[v3]._oSelFlag = 2;
+				ObjSetMicro(xp - 1, yp, 50);
 		}
+		object[oi]._oAnimFrame -= 2;
+		object[oi]._oPreFlag = FALSE;
 		RedoPlayerVision();
-		return;
+	} else {
+		object[oi]._oVar4 = 2;
 	}
-	if (!deltaload)
-		PlaySfxLoc(IS_DOORCLOS, object[v3]._ox, object[v3]._oy);
 }
 // 676190: using guessed type int deltaload;
 
-void OperateL2RDoor(int pnum, int oi, unsigned char sendflag)
+void OperateL1LDoor(int pnum, int oi, BOOL sendflag)
 {
-	int v3;       // esi
-	int v4;       // eax
-	int v5;       // ebx
-	short param1; // [esp+Ch] [ebp-Ch]
-	int v7;       // [esp+10h] [ebp-8h]
-	int v8;       // [esp+14h] [ebp-4h]
+	int xp, yp;
 
-	v3 = oi;
-	param1 = oi;
-	v7 = pnum;
-	v4 = object[oi]._oVar4;
-	if (v4 != 2) {
-		v5 = object[v3]._oy;
-		v8 = object[v3]._ox;
-		if (v4) {
-			if (!deltaload)
-				PlaySfxLoc(IS_DOORCLOS, object[v3]._ox, v5);
-			if (dDead[v8][v5] != 0 || dMonster[v8][v5] != 0 || dItem[v8][v5] != 0) {
-				object[v3]._oVar4 = 2;
-				return;
-			}
-			if (v7 == myplr && sendflag)
-				NetSendCmdParam1(TRUE, CMD_CLOSEDOOR, param1);
-			object[v3]._oVar4 = 0;
-			object[v3]._oSelFlag = 3;
-			ObjSetMicro(v8, v5, 540);
-			object[v3]._oAnimFrame -= 2;
-			object[v3]._oPreFlag = FALSE;
-		} else {
-			if (pnum == myplr && sendflag)
-				NetSendCmdParam1(TRUE, CMD_OPENDOOR, oi);
-			if (!deltaload)
-				PlaySfxLoc(IS_DOOROPEN, object[v3]._ox, object[v3]._oy);
-			ObjSetMicro(v8, v5, 17);
-			object[v3]._oAnimFrame += 2;
-			object[v3]._oPreFlag = TRUE;
-			object[v3]._oVar4 = 1;
-			object[v3]._oSelFlag = 2;
-		}
+	if (object[oi]._oVar4 == 2) {
+		if (!deltaload)
+			PlaySfxLoc(IS_DOORCLOS, object[oi]._ox, object[oi]._oy);
+		return;
+	}
+
+	xp = object[oi]._ox;
+	yp = object[oi]._oy;
+	if (object[oi]._oVar4 == 0) {
+		if (pnum == myplr && sendflag)
+			NetSendCmdParam1(TRUE, CMD_OPENDOOR, oi);
+		if (!deltaload)
+			PlaySfxLoc(IS_DOOROPEN, object[oi]._ox, object[oi]._oy);
+		if (object[oi]._oVar1 == 214)
+			ObjSetMicro(xp, yp, 408);
+		else
+			ObjSetMicro(xp, yp, 393);
+		dArch[xp][yp] = 7;
+		objects_set_door_piece(xp - 1, yp);
+		object[oi]._oAnimFrame += 2;
+		object[oi]._oPreFlag = TRUE;
+		DoorSet(oi, xp, yp - 1);
+		object[oi]._oVar4 = 1;
+		object[oi]._oSelFlag = 2;
 		RedoPlayerVision();
 		return;
 	}
+
 	if (!deltaload)
-		PlaySfxLoc(IS_DOORCLOS, object[v3]._ox, object[v3]._oy);
+		PlaySfxLoc(IS_DOORCLOS, xp, object[oi]._oy);
+	if (((dDead[xp][yp] != 0 ? 0 : 1) & (dMonster[xp][yp] != 0 ? 0 : 1) & (dItem[xp][yp] != 0 ? 0 : 1)) != 0) {
+		if (pnum == myplr && sendflag)
+			NetSendCmdParam1(TRUE, CMD_CLOSEDOOR, oi);
+		object[oi]._oVar4 = 0;
+		object[oi]._oSelFlag = 3;
+		ObjSetMicro(xp, yp, object[oi]._oVar1);
+		if (object[oi]._oVar2 != 50) {
+			ObjSetMicro(xp, yp - 1, object[oi]._oVar2);
+		} else {
+			if (dPiece[xp][yp - 1] == 396)
+				ObjSetMicro(xp, yp - 1, 412);
+			else
+				ObjSetMicro(xp, yp - 1, 50);
+		}
+		object[oi]._oAnimFrame -= 2;
+		object[oi]._oPreFlag = FALSE;
+		RedoPlayerVision();
+	} else {
+		object[oi]._oVar4 = 2;
+	}
 }
 // 676190: using guessed type int deltaload;
 
-void OperateL2LDoor(int pnum, int oi, unsigned char sendflag)
+void OperateL2RDoor(int pnum, int oi, BOOL sendflag)
 {
-	int v3;       // esi
-	int v4;       // eax
-	int v5;       // ebx
-	short param1; // [esp+Ch] [ebp-Ch]
-	int v7;       // [esp+10h] [ebp-8h]
-	int v8;       // [esp+14h] [ebp-4h]
+	int xp, yp;
 
-	v3 = oi;
-	param1 = oi;
-	v7 = pnum;
-	v4 = object[oi]._oVar4;
-	if (v4 != 2) {
-		v5 = object[v3]._oy;
-		v8 = object[v3]._ox;
-		if (v4) {
-			if (!deltaload)
-				PlaySfxLoc(IS_DOORCLOS, object[v3]._ox, v5);
-			if (dDead[v8][v5] != 0 || dMonster[v8][v5] != 0 || dItem[v8][v5] != 0) {
-				object[v3]._oVar4 = 2;
-				return;
-			}
-			if (v7 == myplr && sendflag)
-				NetSendCmdParam1(TRUE, CMD_CLOSEDOOR, param1);
-			object[v3]._oVar4 = 0;
-			object[v3]._oSelFlag = 3;
-			ObjSetMicro(v8, v5, 538);
-			object[v3]._oAnimFrame -= 2;
-			object[v3]._oPreFlag = FALSE;
-		} else {
-			if (pnum == myplr && sendflag)
-				NetSendCmdParam1(TRUE, CMD_OPENDOOR, oi);
-			if (!deltaload)
-				PlaySfxLoc(IS_DOOROPEN, object[v3]._ox, object[v3]._oy);
-			ObjSetMicro(v8, v5, 13);
-			object[v3]._oAnimFrame += 2;
-			object[v3]._oPreFlag = TRUE;
-			object[v3]._oVar4 = 1;
-			object[v3]._oSelFlag = 2;
-		}
+	if (object[oi]._oVar4 == 2) {
+		if (!deltaload)
+			PlaySfxLoc(IS_DOORCLOS, object[oi]._ox, object[oi]._oy);
+		return;
+	}
+	xp = object[oi]._ox;
+	yp = object[oi]._oy;
+	if (object[oi]._oVar4 == 0) {
+		if (pnum == myplr && sendflag)
+			NetSendCmdParam1(TRUE, CMD_OPENDOOR, oi);
+		if (!deltaload)
+			PlaySfxLoc(IS_DOOROPEN, object[oi]._ox, object[oi]._oy);
+		ObjSetMicro(xp, yp, 17);
+		object[oi]._oAnimFrame += 2;
+		object[oi]._oPreFlag = TRUE;
+		object[oi]._oVar4 = 1;
+		object[oi]._oSelFlag = 2;
 		RedoPlayerVision();
 		return;
 	}
+
 	if (!deltaload)
-		PlaySfxLoc(IS_DOORCLOS, object[v3]._ox, object[v3]._oy);
+		PlaySfxLoc(IS_DOORCLOS, object[oi]._ox, yp);
+	if (((dDead[xp][yp] != 0 ? 0 : 1) & (dMonster[xp][yp] != 0 ? 0 : 1) & (dItem[xp][yp] != 0 ? 0 : 1)) != 0) {
+		if (pnum == myplr && sendflag)
+			NetSendCmdParam1(TRUE, CMD_CLOSEDOOR, oi);
+		object[oi]._oVar4 = 0;
+		object[oi]._oSelFlag = 3;
+		ObjSetMicro(xp, yp, 540);
+		object[oi]._oAnimFrame -= 2;
+		object[oi]._oPreFlag = FALSE;
+		RedoPlayerVision();
+	} else {
+		object[oi]._oVar4 = 2;
+	}
 }
 // 676190: using guessed type int deltaload;
 
-void OperateL3RDoor(int pnum, int oi, unsigned char sendflag)
+void OperateL2LDoor(int pnum, int oi, BOOL sendflag)
 {
-	int v3;       // esi
-	int v4;       // eax
-	int v5;       // ebx
-	short param1; // [esp+Ch] [ebp-Ch]
-	int v7;       // [esp+10h] [ebp-8h]
-	int v8;       // [esp+14h] [ebp-4h]
+	int xp, yp;
 
-	v3 = oi;
-	param1 = oi;
-	v7 = pnum;
-	v4 = object[oi]._oVar4;
-	if (v4 != 2) {
-		v5 = object[v3]._oy;
-		v8 = object[v3]._ox;
-		if (v4) {
-			if (!deltaload)
-				PlaySfxLoc(IS_DOORCLOS, object[v3]._ox, v5);
-			if (dDead[v8][v5] != 0 || dMonster[v8][v5] != 0 || dItem[v8][v5] != 0) {
-				object[v3]._oVar4 = 2;
-				return;
-			}
-			if (v7 == myplr && sendflag)
-				NetSendCmdParam1(TRUE, CMD_CLOSEDOOR, param1);
-			object[v3]._oVar4 = 0;
-			object[v3]._oSelFlag = 3;
-			ObjSetMicro(v8, v5, 534);
-			object[v3]._oAnimFrame -= 2;
-			object[v3]._oPreFlag = FALSE;
-		} else {
-			if (pnum == myplr && sendflag)
-				NetSendCmdParam1(TRUE, CMD_OPENDOOR, oi);
-			if (!deltaload)
-				PlaySfxLoc(IS_DOOROPEN, object[v3]._ox, object[v3]._oy);
-			ObjSetMicro(v8, v5, 541);
-			object[v3]._oAnimFrame += 2;
-			object[v3]._oPreFlag = TRUE;
-			object[v3]._oVar4 = 1;
-			object[v3]._oSelFlag = 2;
-		}
+	if (object[oi]._oVar4 == 2) {
+		if (!deltaload)
+			PlaySfxLoc(IS_DOORCLOS, object[oi]._ox, object[oi]._oy);
+		return;
+	}
+
+	xp = object[oi]._ox;
+	yp = object[oi]._oy;
+	if (object[oi]._oVar4 == 0) {
+		if (pnum == myplr && sendflag)
+			NetSendCmdParam1(TRUE, CMD_OPENDOOR, oi);
+		if (!deltaload)
+			PlaySfxLoc(IS_DOOROPEN, object[oi]._ox, object[oi]._oy);
+		ObjSetMicro(xp, yp, 13);
+		object[oi]._oAnimFrame += 2;
+		object[oi]._oPreFlag = TRUE;
+		object[oi]._oVar4 = 1;
+		object[oi]._oSelFlag = 2;
 		RedoPlayerVision();
 		return;
 	}
+
 	if (!deltaload)
-		PlaySfxLoc(IS_DOORCLOS, object[v3]._ox, object[v3]._oy);
+		PlaySfxLoc(IS_DOORCLOS, object[oi]._ox, yp);
+	if (((dDead[xp][yp] != 0 ? 0 : 1) & (dMonster[xp][yp] != 0 ? 0 : 1) & (dItem[xp][yp] != 0 ? 0 : 1)) != 0) {
+		if (pnum == myplr && sendflag)
+			NetSendCmdParam1(TRUE, CMD_CLOSEDOOR, oi);
+		object[oi]._oVar4 = 0;
+		object[oi]._oSelFlag = 3;
+		ObjSetMicro(xp, yp, 538);
+		object[oi]._oAnimFrame -= 2;
+		object[oi]._oPreFlag = FALSE;
+		RedoPlayerVision();
+	} else {
+		object[oi]._oVar4 = 2;
+	}
 }
 // 676190: using guessed type int deltaload;
 
-void OperateL3LDoor(int pnum, int oi, unsigned char sendflag)
+void OperateL3RDoor(int pnum, int oi, BOOL sendflag)
 {
-	int v3;       // esi
-	int v4;       // eax
-	int v5;       // ebx
-	short param1; // [esp+Ch] [ebp-Ch]
-	int v7;       // [esp+10h] [ebp-8h]
-	int v8;       // [esp+14h] [ebp-4h]
+	int xp, yp;
 
-	v3 = oi;
-	param1 = oi;
-	v7 = pnum;
-	v4 = object[oi]._oVar4;
-	if (v4 != 2) {
-		v5 = object[v3]._oy;
-		v8 = object[v3]._ox;
-		if (v4) {
-			if (!deltaload)
-				PlaySfxLoc(IS_DOORCLOS, object[v3]._ox, v5);
-			if (dDead[v8][v5] != 0 || dMonster[v8][v5] != 0 || dItem[v8][v5] != 0) {
-				object[v3]._oVar4 = 2;
-				return;
-			}
-			if (v7 == myplr && sendflag)
-				NetSendCmdParam1(TRUE, CMD_CLOSEDOOR, param1);
-			object[v3]._oVar4 = 0;
-			object[v3]._oSelFlag = 3;
-			ObjSetMicro(v8, v5, 531);
-			object[v3]._oAnimFrame -= 2;
-			object[v3]._oPreFlag = FALSE;
-		} else {
-			if (pnum == myplr && sendflag)
-				NetSendCmdParam1(TRUE, CMD_OPENDOOR, oi);
-			if (!deltaload)
-				PlaySfxLoc(IS_DOOROPEN, object[v3]._ox, object[v3]._oy);
-			ObjSetMicro(v8, v5, 538);
-			object[v3]._oAnimFrame += 2;
-			object[v3]._oPreFlag = TRUE;
-			object[v3]._oVar4 = 1;
-			object[v3]._oSelFlag = 2;
-		}
+	if (object[oi]._oVar4 == 2) {
+		if (!deltaload)
+			PlaySfxLoc(IS_DOORCLOS, object[oi]._ox, object[oi]._oy);
+		return;
+	}
+
+	xp = object[oi]._ox;
+	yp = object[oi]._oy;
+	if (object[oi]._oVar4 == 0) {
+		if (pnum == myplr && sendflag)
+			NetSendCmdParam1(TRUE, CMD_OPENDOOR, oi);
+		if (!deltaload)
+			PlaySfxLoc(IS_DOOROPEN, object[oi]._ox, object[oi]._oy);
+		ObjSetMicro(xp, yp, 541);
+		object[oi]._oAnimFrame += 2;
+		object[oi]._oPreFlag = TRUE;
+		object[oi]._oVar4 = 1;
+		object[oi]._oSelFlag = 2;
 		RedoPlayerVision();
 		return;
 	}
+
 	if (!deltaload)
-		PlaySfxLoc(IS_DOORCLOS, object[v3]._ox, object[v3]._oy);
+		PlaySfxLoc(IS_DOORCLOS, object[oi]._ox, yp);
+	if (((dDead[xp][yp] != 0 ? 0 : 1) & (dMonster[xp][yp] != 0 ? 0 : 1) & (dItem[xp][yp] != 0 ? 0 : 1)) != 0) {
+		if (pnum == myplr && sendflag)
+			NetSendCmdParam1(TRUE, CMD_CLOSEDOOR, oi);
+		object[oi]._oVar4 = 0;
+		object[oi]._oSelFlag = 3;
+		ObjSetMicro(xp, yp, 534);
+		object[oi]._oAnimFrame -= 2;
+		object[oi]._oPreFlag = FALSE;
+		RedoPlayerVision();
+	} else {
+		object[oi]._oVar4 = 2;
+	}
+}
+// 676190: using guessed type int deltaload;
+
+void OperateL3LDoor(int pnum, int oi, BOOL sendflag)
+{
+	int xp, yp;
+
+	if (object[oi]._oVar4 == 2) {
+		if (!deltaload)
+			PlaySfxLoc(IS_DOORCLOS, object[oi]._ox, object[oi]._oy);
+		return;
+	}
+
+	xp = object[oi]._ox;
+	yp = object[oi]._oy;
+	if (object[oi]._oVar4 == 0) {
+		if (pnum == myplr && sendflag)
+			NetSendCmdParam1(TRUE, CMD_OPENDOOR, oi);
+		if (!deltaload)
+			PlaySfxLoc(IS_DOOROPEN, object[oi]._ox, object[oi]._oy);
+		ObjSetMicro(xp, yp, 538);
+		object[oi]._oAnimFrame += 2;
+		object[oi]._oPreFlag = TRUE;
+		object[oi]._oVar4 = 1;
+		object[oi]._oSelFlag = 2;
+		RedoPlayerVision();
+		return;
+	}
+
+	if (!deltaload)
+		PlaySfxLoc(IS_DOORCLOS, object[oi]._ox, yp);
+	if (((dDead[xp][yp] != 0 ? 0 : 1) & (dMonster[xp][yp] != 0 ? 0 : 1) & (dItem[xp][yp] != 0 ? 0 : 1)) != 0) {
+		if (pnum == myplr && sendflag)
+			NetSendCmdParam1(TRUE, CMD_CLOSEDOOR, oi);
+		object[oi]._oVar4 = 0;
+		object[oi]._oSelFlag = 3;
+		ObjSetMicro(xp, yp, 531);
+		object[oi]._oAnimFrame -= 2;
+		object[oi]._oPreFlag = FALSE;
+		RedoPlayerVision();
+	} else {
+		object[oi]._oVar4 = 2;
+	}
 }
 // 676190: using guessed type int deltaload;
 
@@ -2824,88 +2803,76 @@ void OperateLever(int pnum, int i)
 
 void OperateBook(int pnum, int i)
 {
-	signed int v4;  // ecx
-	int v5;         // eax
-	BOOLEAN v6;     // zf
-	int j;          // esi
-	signed int v11; // [esp+10h] [ebp-10h]
-	signed int v1;  // [esp+14h] [ebp-Ch]
-	signed int v2;  // [esp+18h] [ebp-8h]
-	int v14;        // [esp+1Ch] [ebp-4h]
+	BOOL do_add_missile;
+	int oi;
+	int j;
+	BOOL missile_added;
+	int dx, dy;
 
 	if (!object[i]._oSelFlag)
 		return;
-	if (!setlevel || setlvlnum != SL_VILEBETRAYER)
-		goto LABEL_17;
-	v4 = 0;
-	v11 = 0;
-	v14 = 0;
-	if (nobjects > 0) {
-		while (1) {
-			v5 = objectactive[v14];
-			if (object[v5]._otype == OBJ_MCIRCLE2) {
-				if (object[v5]._oVar6 == 1) {
-					v1 = 27;
-					v2 = 29;
-					object[v5]._oVar6 = 4;
-					v4 = 1;
+	if (setlevel && setlvlnum == SL_VILEBETRAYER) {
+		do_add_missile = FALSE;
+		missile_added = FALSE;
+		for (j = 0; j < nobjects; j++) {
+			oi = objectactive[j];
+			if (object[oi]._otype == OBJ_MCIRCLE2) {
+				if (object[oi]._oVar6 == 1) {
+					dx = 27;
+					dy = 29;
+					object[oi]._oVar6 = 4;
+					do_add_missile = TRUE;
 				}
-				if (object[v5]._oVar6 == 2) {
-					v1 = 43;
-					v2 = 29;
-					object[v5]._oVar6 = 4;
-					v4 = 1;
+				if (object[oi]._oVar6 == 2) {
+					dx = 43;
+					dy = 29;
+					object[oi]._oVar6 = 4;
+					do_add_missile = TRUE;
 				}
 			}
-			if (v4) {
-				++object[dObject[35][36] - 1]._oVar5; // ++objectavail[30 * dObject[35][36] + 123]; /* fix */
-				AddMissile(plr[pnum].WorldX, plr[pnum].WorldY, v1, v2, plr[pnum]._pdir, MIS_RNDTELEPORT, 0, pnum, 0, 0);
-				v11 = 1;
-				v4 = 0;
+			if (do_add_missile) {
+				object[dObject[35][36] - 1]._oVar5++;
+				AddMissile(plr[pnum].WorldX, plr[pnum].WorldY, dx, dy, plr[pnum]._pdir, MIS_RNDTELEPORT, 0, pnum, 0, 0);
+				missile_added = TRUE;
+				do_add_missile = FALSE;
 			}
-			if (++v14 >= nobjects)
-				break;
 		}
-		if (v11) {
-		LABEL_17:
-			++object[i]._oAnimFrame;
-			v6 = setlevel == 0;
-			object[i]._oSelFlag = 0;
-			if (!v6) {
-				if (setlvlnum == SL_BONECHAMB) {
-					plr[myplr]._pMemSpells |= (__int64)1 << (SPL_GUARDIAN - 1);
-					if (plr[pnum]._pSplLvl[SPL_GUARDIAN] < 15)
-						plr[myplr]._pSplLvl[SPL_GUARDIAN]++;
-					quests[QTYPE_BONE]._qactive = 3;
-					if (!deltaload)
-						PlaySfxLoc(IS_QUESTDN, object[i]._ox, object[i]._oy);
-					InitDiabloMsg(EMSG_BONECHAMB);
-					AddMissile(
-					    plr[myplr].WorldX,
-					    plr[myplr].WorldY,
-					    object[i]._ox - 2,
-					    object[i]._oy - 4,
-					    plr[myplr]._pdir,
-					    MIS_GUARDIAN,
-					    0,
-					    myplr,
-					    0,
-					    0);
-				}
-				if (setlevel) {
-					if (setlvlnum == SL_VILEBETRAYER) {
-						ObjChangeMapResync(
-						    object[i]._oVar1,
-						    object[i]._oVar2,
-						    object[i]._oVar3,
-						    object[i]._oVar4);
-						for (j = 0; j < nobjects; ++j)
-							SyncObjectAnim(objectactive[j]);
-					}
-				}
-			}
+		if (!missile_added)
 			return;
-		}
+	}
+	object[i]._oAnimFrame++;
+	object[i]._oSelFlag = 0;
+	if (setlevel == 0)
+		return;
+
+	if (setlvlnum == SL_BONECHAMB) {
+		plr[myplr]._pMemSpells |= ((__int64)1 << (SPL_GUARDIAN - 1));
+		if (plr[pnum]._pSplLvl[SPL_GUARDIAN] < 15)
+			plr[myplr]._pSplLvl[SPL_GUARDIAN]++;
+		quests[QTYPE_BONE]._qactive = 3;
+		if (!deltaload)
+			PlaySfxLoc(IS_QUESTDN, object[i]._ox, object[i]._oy);
+		InitDiabloMsg(EMSG_BONECHAMB);
+		AddMissile(
+		    plr[myplr].WorldX,
+		    plr[myplr].WorldY,
+		    object[i]._ox - 2,
+		    object[i]._oy - 4,
+		    plr[myplr]._pdir,
+		    MIS_GUARDIAN,
+		    0,
+		    myplr,
+		    0,
+		    0);
+	}
+	if (setlevel != 0 && setlvlnum == SL_VILEBETRAYER) {
+		ObjChangeMapResync(
+		    object[i]._oVar1,
+		    object[i]._oVar2,
+		    object[i]._oVar3,
+		    object[i]._oVar4);
+		for (j = 0; j < nobjects; j++)
+			SyncObjectAnim(objectactive[j]);
 	}
 }
 // 5CF31D: using guessed type char setlevel;
@@ -2982,7 +2949,7 @@ void OperateSChambBk(int pnum, int i)
 	}
 }
 
-void OperateChest(int pnum, int i, unsigned char sendmsg)
+void OperateChest(int pnum, int i, BOOL sendmsg)
 {
 	int j, mdir, mtype;
 
@@ -3088,7 +3055,7 @@ void OperateInnSignChest(int pnum, int i)
 }
 // 676190: using guessed type int deltaload;
 
-void OperateSlainHero(int pnum, int i, unsigned char sendmsg)
+void OperateSlainHero(int pnum, int i, BOOL sendmsg)
 {
 	if (object[i]._oSelFlag) {
 		object[i]._oSelFlag = 0;
@@ -3112,46 +3079,37 @@ void OperateSlainHero(int pnum, int i, unsigned char sendmsg)
 
 void OperateTrapLvr(int i)
 {
-	int v1; // ecx
-	int v2; // eax
-	int v3; // esi
-	int v4; // edx
-	int v5; // eax
-	int v6; // eax
+	int frame;
+	int j;
+	int oi;
 
-	v1 = i;
-	v2 = object[v1]._oAnimFrame;
-	v3 = nobjects;
-	v4 = 0;
-	if (v2 == 1) {
-		object[v1]._oAnimFrame = 2;
-		if (v3 > 0) {
-			do {
-				v5 = objectactive[v4];
-				if (object[v5]._otype == object[v1]._oVar2 && object[v5]._oVar1 == object[v1]._oVar1) {
-					object[v5]._oAnimFlag = 0;
-					object[v5]._oVar2 = 1;
-				}
-				++v4;
-			} while (v4 < v3);
+	frame = object[i]._oAnimFrame;
+	j = 0;
+
+	if (frame == 1) {
+		object[i]._oAnimFrame = 2;
+		for (; j < nobjects; j++) {
+			oi = objectactive[j];
+			if (object[oi]._otype == object[i]._oVar2 && object[oi]._oVar1 == object[i]._oVar1) {
+				object[oi]._oAnimFlag = 0;
+				object[oi]._oVar2 = 1;
+			}
 		}
-	} else {
-		object[v1]._oAnimFrame = v2 - 1;
-		if (v3 > 0) {
-			do {
-				v6 = objectactive[v4];
-				if (object[v6]._otype == object[v1]._oVar2 && object[v6]._oVar1 == object[v1]._oVar1) {
-					object[v6]._oVar2 = 0;
-					if (object[v6]._oVar4)
-						object[v6]._oAnimFlag = 1;
-				}
-				++v4;
-			} while (v4 < v3);
+		return;
+	}
+
+	object[i]._oAnimFrame = frame - 1;
+	for (; j < nobjects; j++) {
+		oi = objectactive[j];
+		if (object[oi]._otype == object[i]._oVar2 && object[oi]._oVar1 == object[i]._oVar1) {
+			object[oi]._oVar2 = 0;
+			if (object[oi]._oVar4 != 0)
+				object[oi]._oAnimFlag = 1;
 		}
 	}
 }
 
-void OperateSarc(int pnum, int i, unsigned char sendmsg)
+void OperateSarc(int pnum, int i, BOOL sendmsg)
 {
 	if (object[i]._oSelFlag) {
 		if (!deltaload)
@@ -3200,38 +3158,34 @@ void OperateL3Door(int pnum, int i, unsigned char sendflag)
 
 void OperatePedistal(int pnum, int i)
 {
-	int v2;            // esi
-	int v3;            // edi
-	unsigned char *v4; // edi
-	int inv_item_num;  // [esp+8h] [ebp-4h]
+	unsigned char *mem;
+	int iv;
 
-	v2 = i;
-	v3 = pnum;
 	if (object[i]._oVar6 != 3) {
-		if (PlrHasItem(pnum, 21, &inv_item_num)) {
-			RemoveInvItem(v3, inv_item_num);
-			++object[v2]._oAnimFrame;
-			++object[v2]._oVar6;
+		if (PlrHasItem(pnum, IDI_BLDSTONE, &iv)) {
+			RemoveInvItem(pnum, iv);
+			object[i]._oAnimFrame++;
+			object[i]._oVar6++;
 		}
-		if (object[v2]._oVar6 == 1) {
+		if (object[i]._oVar6 == 1) {
 			if (!deltaload)
-				PlaySfxLoc(LS_PUDDLE, object[v2]._ox, object[v2]._oy);
+				PlaySfxLoc(LS_PUDDLE, object[i]._ox, object[i]._oy);
 			ObjChangeMap(setpc_x, setpc_y + 3, setpc_x + 2, setpc_y + 7);
 		}
-		if (object[v2]._oVar6 == 2) {
+		if (object[i]._oVar6 == 2) {
 			if (!deltaload)
-				PlaySfxLoc(LS_PUDDLE, object[v2]._ox, object[v2]._oy);
+				PlaySfxLoc(LS_PUDDLE, object[i]._ox, object[i]._oy);
 			ObjChangeMap(setpc_x + 6, setpc_y + 3, setpc_x + setpc_w, setpc_y + 7);
 		}
-		if (object[v2]._oVar6 == 3) {
+		if (object[i]._oVar6 == 3) {
 			if (!deltaload)
-				PlaySfxLoc(LS_BLODSTAR, object[v2]._ox, object[v2]._oy);
-			ObjChangeMap(object[v2]._oVar1, object[v2]._oVar2, object[v2]._oVar3, object[v2]._oVar4);
-			v4 = LoadFileInMem("Levels\\L2Data\\Blood2.DUN", 0);
-			LoadMapObjs(v4, 2 * setpc_x, 2 * setpc_y);
-			mem_free_dbg(v4);
+				PlaySfxLoc(LS_BLODSTAR, object[i]._ox, object[i]._oy);
+			ObjChangeMap(object[i]._oVar1, object[i]._oVar2, object[i]._oVar3, object[i]._oVar4);
+			mem = LoadFileInMem("Levels\\L2Data\\Blood2.DUN", 0);
+			LoadMapObjs(mem, 2 * setpc_x, 2 * setpc_y);
+			mem_free_dbg(mem);
 			CreateItem(7, 2 * setpc_x + 25, 2 * setpc_y + 19);
-			object[v2]._oSelFlag = 0;
+			object[i]._oSelFlag = 0;
 		}
 	}
 }
@@ -3860,7 +3814,7 @@ void OperateBookCase(int pnum, int i, BOOL sendmsg)
 }
 // 676190: using guessed type int deltaload;
 
-void OperateDecap(int pnum, int i, unsigned char sendmsg)
+void OperateDecap(int pnum, int i, BOOL sendmsg)
 {
 	if (object[i]._oSelFlag) {
 		object[i]._oSelFlag = 0;
@@ -3948,158 +3902,127 @@ void OperateCauldron(int pnum, int i, int sType)
 }
 // 52571C: using guessed type int drawpanflag;
 
-BOOLEAN OperateFountains(int pnum, int i)
+BOOL OperateFountains(int pnum, int i)
 {
-	unsigned short v2; // bx
-	int v3;            // esi
-	int v4;            // edi
-	BOOLEAN v5;        // bp
-	signed int v7;     // ebx
-	int v8;            // ebp
-	int v10;           // eax
-	int v11;           // esi
-	int v12;           // eax
-	int v13;           // eax
-	int v14;           // edi
-	int v15;           // edx
-	int v16;           // edx
-	int v17;           // ecx
-	int *v18;          // eax
-	int v19;           // ecx
-	int v20;           // edi
-	int v21;           // edx
-	int v22;           // ecx
-	int v23;           // [esp-4h] [ebp-20h]
-	signed int v24;    // [esp+10h] [ebp-Ch]
-	signed int v25;    // [esp+14h] [ebp-8h]
-	short param1;      // [esp+18h] [ebp-4h]
+	BOOL applied;
+	int prev;
+	int add;
+	int rnd;
+	int cnt;
+	BOOL done;
 
-	v2 = i;
-	v3 = i;
-	v4 = pnum;
-	param1 = i;
-	v5 = 0;
+	applied = FALSE;
 	SetRndSeed(object[i]._oRndSeed);
-	switch (object[v3]._otype) {
+	switch (object[i]._otype) {
 	case OBJ_BLOODFTN:
-		if (!deltaload && v4 == myplr) {
-			v20 = v4;
-			v23 = object[v3]._oy;
-			v15 = object[v3]._ox;
-			if (plr[v20]._pHitPoints < plr[v20]._pMaxHP) {
-				PlaySfxLoc(LS_FOUNTAIN, v15, v23);
-				plr[v20]._pHitPoints += 64;
-				v21 = plr[v20]._pHitPoints;
-				v22 = plr[v20]._pMaxHP;
-				v18 = &plr[v20]._pHPBase;
-				*v18 += 64;
-				if (v21 <= v22)
-					goto LABEL_39;
-				plr[v20]._pHitPoints = v22;
-				v19 = plr[v20]._pMaxHPBase;
-				goto LABEL_38;
+		if (deltaload)
+			return FALSE;
+		if (pnum != myplr)
+			return FALSE;
+
+		if (plr[pnum]._pHitPoints < plr[pnum]._pMaxHP) {
+			PlaySfxLoc(LS_FOUNTAIN, object[i]._ox, object[i]._oy);
+			plr[pnum]._pHitPoints += 64;
+			plr[pnum]._pHPBase += 64;
+			if (plr[pnum]._pHitPoints > plr[pnum]._pMaxHP) {
+				plr[pnum]._pHitPoints = plr[pnum]._pMaxHP;
+				plr[pnum]._pHPBase = plr[pnum]._pMaxHPBase;
 			}
-		LABEL_45:
-			PlaySfxLoc(LS_FOUNTAIN, v15, v23);
-			break;
-		}
-		return 0;
+			applied = TRUE;
+		} else
+			PlaySfxLoc(LS_FOUNTAIN, object[i]._ox, object[i]._oy);
+		break;
 	case OBJ_PURIFYINGFTN:
-		if (!deltaload && v4 == myplr) {
-			v14 = v4;
-			v23 = object[v3]._oy;
-			v15 = object[v3]._ox;
-			if (plr[v14]._pMana < plr[v14]._pMaxMana) {
-				PlaySfxLoc(LS_FOUNTAIN, v15, v23);
-				plr[v14]._pMana += 64;
-				v16 = plr[v14]._pMana;
-				v17 = plr[v14]._pMaxMana;
-				v18 = &plr[v14]._pManaBase;
-				*v18 += 64;
-				if (v16 <= v17) {
-				LABEL_39:
-					v5 = 1;
+		if (deltaload)
+			return FALSE;
+		if (pnum != myplr)
+			return FALSE;
+
+		if (plr[pnum]._pMana < plr[pnum]._pMaxMana) {
+			PlaySfxLoc(LS_FOUNTAIN, object[i]._ox, object[i]._oy);
+
+			plr[pnum]._pMana += 64;
+			plr[pnum]._pManaBase += 64;
+			if (plr[pnum]._pMana > plr[pnum]._pMaxMana) {
+				plr[pnum]._pMana = plr[pnum]._pMaxMana;
+				plr[pnum]._pManaBase = plr[pnum]._pMaxManaBase;
+			}
+
+			applied = TRUE;
+		} else
+			PlaySfxLoc(LS_FOUNTAIN, object[i]._ox, object[i]._oy);
+		break;
+	case OBJ_MURKYFTN:
+		if (!object[i]._oSelFlag)
+			break;
+		if (!deltaload)
+			PlaySfxLoc(LS_FOUNTAIN, object[i]._ox, object[i]._oy);
+		object[i]._oSelFlag = 0;
+		if (deltaload)
+			return FALSE;
+		AddMissile(
+		    plr[pnum].WorldX,
+		    plr[pnum].WorldY,
+		    plr[pnum].WorldX,
+		    plr[pnum].WorldY,
+		    plr[pnum]._pdir,
+		    MIS_INFRA,
+		    -1,
+		    pnum,
+		    0,
+		    2 * leveltype);
+		applied = TRUE;
+		if (pnum == myplr)
+			NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, i);
+		break;
+	case OBJ_TEARFTN:
+		if (!object[i]._oSelFlag)
+			break;
+		prev = -1;
+		add = -1;
+		done = FALSE;
+		cnt = 0;
+		if (!deltaload)
+			PlaySfxLoc(LS_FOUNTAIN, object[i]._ox, object[i]._oy);
+		object[i]._oSelFlag = 0;
+		if (deltaload)
+			return FALSE;
+		if (pnum != myplr)
+			return FALSE;
+		while (!done) {
+			rnd = random(0, 4);
+			if (rnd != prev) {
+				switch (rnd) {
+				case 0:
+					ModifyPlrStr(pnum, add);
+					break;
+				case 1:
+					ModifyPlrMag(pnum, add);
+					break;
+				case 2:
+					ModifyPlrDex(pnum, add);
+					break;
+				case 3:
+					ModifyPlrVit(pnum, add);
 					break;
 				}
-				plr[v14]._pMana = v17;
-				v19 = plr[v14]._pMaxManaBase;
-			LABEL_38:
-				*v18 = v19;
-				goto LABEL_39;
+				prev = rnd;
+				add = 1;
+				cnt++;
 			}
-			goto LABEL_45;
+			if (cnt <= 1)
+				continue;
+
+			done = TRUE;
 		}
-		return 0;
-	case OBJ_MURKYFTN:
-		if (object[v3]._oSelFlag) {
-			if (!deltaload)
-				PlaySfxLoc(LS_FOUNTAIN, object[v3]._ox, object[v3]._oy);
-			object[v3]._oSelFlag = 0;
-			if (deltaload)
-				return 0;
-			AddMissile(
-			    plr[v4].WorldX,
-			    plr[v4].WorldY,
-			    plr[v4].WorldX,
-			    plr[v4].WorldY,
-			    plr[v4]._pdir,
-			    MIS_INFRA,
-			    -1,
-			    v4,
-			    0,
-			    2 * leveltype);
-			v5 = 1;
-			if (v4 == myplr)
-				NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, v2);
-		}
-		break;
-	default:
-		if (object[v3]._otype == OBJ_TEARFTN && object[v3]._oSelFlag) {
-			v7 = -1;
-			v8 = -1;
-			v25 = 0;
-			v24 = 0;
-			if (!deltaload)
-				PlaySfxLoc(LS_FOUNTAIN, object[v3]._ox, object[v3]._oy);
-			object[v3]._oSelFlag = 0;
-			if (deltaload || v4 != myplr)
-				return 0;
-			do {
-				v10 = random(0, 4);
-				v11 = v10;
-				if (v10 != v7) {
-					if (v10) {
-						v12 = v10 - 1;
-						if (v12) {
-							v13 = v12 - 1;
-							if (v13) {
-								if (v13 == 1)
-									ModifyPlrVit(v4, v8);
-							} else {
-								ModifyPlrDex(v4, v8);
-							}
-						} else {
-							ModifyPlrMag(v4, v8);
-						}
-					} else {
-						ModifyPlrStr(v4, v8);
-					}
-					v7 = v11;
-					v8 = 1;
-					++v24;
-				}
-				if (v24 > 1)
-					v25 = 1;
-			} while (!v25);
-			CheckStats(v4);
-			v5 = 1;
-			if (v4 == myplr)
-				NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, param1);
-		}
+		CheckStats(pnum);
+		applied = TRUE;
+		if (pnum == myplr)
+			NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, i);
 		break;
 	}
 	drawpanflag = 255;
-	return v5;
+	return applied;
 }
 // 52571C: using guessed type int drawpanflag;
 // 676190: using guessed type int deltaload;
@@ -4168,32 +4091,55 @@ void OperateLazStand(int pnum, int i)
 
 void OperateObject(int pnum, int i, BOOL TeleFlag)
 {
-	int v3;           // esi
-	int v4;           // edi
-	ObjectStruct *v5; // ebx
-	int v6;           // ecx
-	BOOLEAN sendmsg;  // [esp+Ch] [ebp-4h]
+	BOOL sendmsg;
 
-	v3 = pnum;
-	v4 = i;
-	sendmsg = pnum == myplr;
-	v5 = &object[i];
-	v6 = v5->_otype;
-	switch (v5->_otype) {
+	sendmsg = (pnum == myplr);
+	switch (object[i]._otype) {
 	case OBJ_L1LDOOR:
 	case OBJ_L1RDOOR:
 		if (TeleFlag) {
-			if (v6 == OBJ_L1LDOOR)
-				OperateL1LDoor(v3, i, OBJ_L1LDOOR);
-			if (v5->_otype == OBJ_L1RDOOR)
-				OperateL1RDoor(v3, v4, 1u);
-		} else if (v3 == myplr) {
-			OperateL1Door(v3, i, 1u);
+			if (object[i]._otype == OBJ_L1LDOOR)
+				OperateL1LDoor(pnum, i, 1);
+			if (object[i]._otype == OBJ_L1RDOOR)
+				OperateL1RDoor(pnum, i, 1);
+			break;
 		}
+		if (pnum == myplr)
+			OperateL1Door(pnum, i, 1);
+		break;
+	case OBJ_L2LDOOR:
+	case OBJ_L2RDOOR:
+		if (TeleFlag) {
+			if (object[i]._otype == OBJ_L2LDOOR)
+				OperateL2LDoor(pnum, i, 1);
+			if (object[i]._otype == OBJ_L2RDOOR)
+				OperateL2RDoor(pnum, i, 1);
+			break;
+		}
+		if (pnum == myplr)
+			OperateL2Door(pnum, i, 1);
+		break;
+	case OBJ_L3LDOOR:
+	case OBJ_L3RDOOR:
+		if (TeleFlag) {
+			if (object[i]._otype == OBJ_L3LDOOR)
+				OperateL3LDoor(pnum, i, 1);
+			if (object[i]._otype == OBJ_L3RDOOR)
+				OperateL3RDoor(pnum, i, 1);
+			break;
+		}
+		if (pnum == myplr)
+			OperateL3Door(pnum, i, 1);
 		break;
 	case OBJ_LEVER:
 	case OBJ_SWITCHSKL:
-		OperateLever(v3, i);
+		OperateLever(pnum, i);
+		break;
+	case OBJ_BOOK2L:
+		OperateBook(pnum, i);
+		break;
+	case OBJ_BOOK2R:
+		OperateSChambBk(pnum, i);
 		break;
 	case OBJ_CHEST1:
 	case OBJ_CHEST2:
@@ -4201,172 +4147,141 @@ void OperateObject(int pnum, int i, BOOL TeleFlag)
 	case OBJ_TCHEST1:
 	case OBJ_TCHEST2:
 	case OBJ_TCHEST3:
-		OperateChest(v3, i, sendmsg);
-		break;
-	case OBJ_BOOK2L:
-		OperateBook(v3, i);
-		break;
-	case OBJ_BOOK2R:
-		OperateSChambBk(v3, i);
-		break;
-	case OBJ_L2LDOOR:
-	case OBJ_L2RDOOR:
-		if (TeleFlag) {
-			if (v6 == OBJ_L2LDOOR)
-				OperateL2LDoor(v3, i, 1u);
-			if (v5->_otype == OBJ_L2RDOOR)
-				OperateL2RDoor(v3, v4, 1u);
-		} else if (v3 == myplr) {
-			OperateL2Door(v3, i, 1u);
-		}
+		OperateChest(pnum, i, sendmsg);
 		break;
 	case OBJ_SARC:
-		OperateSarc(v3, i, sendmsg);
+		OperateSarc(pnum, i, sendmsg);
 		break;
 	case OBJ_FLAMELVR:
 		OperateTrapLvr(i);
 		break;
+	case OBJ_BLINDBOOK:
+	case OBJ_BLOODBOOK:
+	case OBJ_STEELTOME:
+		OperateBookLever(pnum, i);
+		break;
 	case OBJ_SHRINEL:
 	case OBJ_SHRINER:
-		OperateShrine(v3, i, IS_MAGIC);
+		OperateShrine(pnum, i, IS_MAGIC);
 		break;
 	case OBJ_SKELBOOK:
 	case OBJ_BOOKSTAND:
-		OperateSkelBook(v3, i, sendmsg);
+		OperateSkelBook(pnum, i, sendmsg);
 		break;
 	case OBJ_BOOKCASEL:
 	case OBJ_BOOKCASER:
-		OperateBookCase(v3, i, sendmsg);
+		OperateBookCase(pnum, i, sendmsg);
+		break;
+	case OBJ_DECAP:
+		OperateDecap(pnum, i, sendmsg);
+		break;
+	case OBJ_ARMORSTAND:
+	case OBJ_WARARMOR:
+		OperateArmorStand(pnum, i, sendmsg);
+		break;
+	case OBJ_GOATSHRINE:
+		OperateGoatShrine(pnum, i, LS_GSHRINE);
+		break;
+	case OBJ_CAULDRON:
+		OperateCauldron(pnum, i, LS_CALDRON);
 		break;
 	case OBJ_BLOODFTN:
 	case OBJ_PURIFYINGFTN:
 	case OBJ_MURKYFTN:
 	case OBJ_TEARFTN:
-		OperateFountains(v3, i);
-		break;
-	case OBJ_DECAP:
-		OperateDecap(v3, i, sendmsg);
-		break;
-	case OBJ_BLINDBOOK:
-	case OBJ_BLOODBOOK:
-	case OBJ_STEELTOME:
-		OperateBookLever(v3, i);
-		break;
-	case OBJ_PEDISTAL:
-		OperatePedistal(v3, i);
-		break;
-	case OBJ_L3LDOOR:
-	case OBJ_L3RDOOR:
-		if (TeleFlag) {
-			if (v6 == OBJ_L3LDOOR)
-				OperateL3LDoor(v3, i, 1u);
-			if (v5->_otype == OBJ_L3RDOOR)
-				OperateL3RDoor(v3, v4, 1u);
-		} else if (v3 == myplr) {
-			OperateL3Door(v3, i, 1u);
-		}
-		break;
-	case OBJ_ARMORSTAND:
-	case OBJ_WARARMOR:
-		OperateArmorStand(v3, i, sendmsg);
-		break;
-	case OBJ_GOATSHRINE:
-		OperateGoatShrine(v3, i, LS_GSHRINE);
-		break;
-	case OBJ_CAULDRON:
-		OperateCauldron(v3, i, LS_CALDRON);
+		OperateFountains(pnum, i);
 		break;
 	case OBJ_STORYBOOK:
-		OperateStoryBook(v3, i);
+		OperateStoryBook(pnum, i);
+		break;
+	case OBJ_PEDISTAL:
+		OperatePedistal(pnum, i);
 		break;
 	case OBJ_WARWEAP:
 	case OBJ_WEAPONRACK:
-		OperateWeaponRack(v3, i, sendmsg);
+		OperateWeaponRack(pnum, i, sendmsg);
 		break;
 	case OBJ_MUSHPATCH:
-		OperateMushPatch(v3, i);
+		OperateMushPatch(pnum, i);
 		break;
 	case OBJ_LAZSTAND:
-		OperateLazStand(v3, i);
+		OperateLazStand(pnum, i);
 		break;
 	case OBJ_SLAINHERO:
-		OperateSlainHero(v3, i, sendmsg);
+		OperateSlainHero(pnum, i, sendmsg);
 		break;
 	case OBJ_SIGNCHEST:
-		OperateInnSignChest(v3, i);
+		OperateInnSignChest(pnum, i);
 		break;
 	}
 }
 
 void SyncOpL1Door(int pnum, int cmd, int i)
 {
-	signed int v3;    // eax
-	ObjectStruct *v4; // esi
+	BOOL do_sync;
 
-	if (pnum != myplr) {
-		v3 = 0;
-		if (cmd == 43) {
-			if (object[i]._oVar4)
-				return;
-			v3 = 1;
-		}
-		if (cmd == 44 && object[i]._oVar4 == 1)
-			v3 = 1;
-		if (v3) {
-			v4 = &object[i];
-			if (v4->_otype == 1)
-				OperateL1LDoor(-1, i, 0);
-			if (v4->_otype == OBJ_L1RDOOR)
-				OperateL1RDoor(-1, i, 0);
-		}
+	if (pnum == myplr)
+		return;
+
+	do_sync = FALSE;
+	if (cmd == CMD_OPENDOOR) {
+		if (object[i]._oVar4 != 0)
+			return;
+		do_sync = TRUE;
+	}
+	if (cmd == CMD_CLOSEDOOR && object[i]._oVar4 == 1)
+		do_sync = TRUE;
+	if (do_sync) {
+		if (object[i]._otype == OBJ_L1LDOOR)
+			OperateL1LDoor(-1, i, 0);
+		if (object[i]._otype == OBJ_L1RDOOR)
+			OperateL1RDoor(-1, i, 0);
 	}
 }
 
 void SyncOpL2Door(int pnum, int cmd, int i)
 {
-	signed int v3;    // eax
-	ObjectStruct *v4; // esi
+	BOOL do_sync;
 
-	if (pnum != myplr) {
-		v3 = 0;
-		if (cmd == 43) {
-			if (object[i]._oVar4)
-				return;
-			v3 = 1;
-		}
-		if (cmd == 44 && object[i]._oVar4 == 1)
-			v3 = 1;
-		if (v3) {
-			v4 = &object[i];
-			if (v4->_otype == OBJ_L2LDOOR)
-				OperateL2LDoor(-1, i, 0);
-			if (v4->_otype == OBJ_L2RDOOR)
-				OperateL2RDoor(-1, i, 0);
-		}
+	if (pnum == myplr)
+		return;
+
+	do_sync = FALSE;
+	if (cmd == CMD_OPENDOOR) {
+		if (object[i]._oVar4 != 0)
+			return;
+		do_sync = TRUE;
+	}
+	if (cmd == CMD_CLOSEDOOR && object[i]._oVar4 == 1)
+		do_sync = TRUE;
+	if (do_sync) {
+		if (object[i]._otype == OBJ_L2LDOOR)
+			OperateL2LDoor(-1, i, 0);
+		if (object[i]._otype == OBJ_L2RDOOR)
+			OperateL2RDoor(-1, i, 0);
 	}
 }
 
 void SyncOpL3Door(int pnum, int cmd, int i)
 {
-	signed int v3;    // eax
-	ObjectStruct *v4; // esi
+	BOOL do_sync;
 
-	if (pnum != myplr) {
-		v3 = 0;
-		if (cmd == 43) {
-			if (object[i]._oVar4)
-				return;
-			v3 = 1;
-		}
-		if (cmd == 44 && object[i]._oVar4 == 1)
-			v3 = 1;
-		if (v3) {
-			v4 = &object[i];
-			if (v4->_otype == OBJ_L3LDOOR)
-				OperateL3LDoor(-1, i, 0);
-			if (v4->_otype == OBJ_L3RDOOR)
-				OperateL3RDoor(-1, i, 0);
-		}
+	if (pnum == myplr)
+		return;
+
+	do_sync = FALSE;
+	if (cmd == CMD_OPENDOOR) {
+		if (object[i]._oVar4 != 0)
+			return;
+		do_sync = TRUE;
+	}
+	if (cmd == CMD_CLOSEDOOR && object[i]._oVar4 == 1)
+		do_sync = TRUE;
+	if (do_sync) {
+		if (object[i]._otype == OBJ_L3LDOOR)
+			OperateL2LDoor(-1, i, 0);
+		if (object[i]._otype == OBJ_L3RDOOR)
+			OperateL2RDoor(-1, i, 0);
 	}
 }
 
@@ -4376,6 +4291,14 @@ void SyncOpObject(int pnum, int cmd, int i)
 	case OBJ_L1LDOOR:
 	case OBJ_L1RDOOR:
 		SyncOpL1Door(pnum, cmd, i);
+		break;
+	case OBJ_L2LDOOR:
+	case OBJ_L2RDOOR:
+		SyncOpL2Door(pnum, cmd, i);
+		break;
+	case OBJ_L3LDOOR:
+	case OBJ_L3RDOOR:
+		SyncOpL3Door(pnum, cmd, i);
 		break;
 	case OBJ_LEVER:
 	case OBJ_SWITCHSKL:
@@ -4387,14 +4310,15 @@ void SyncOpObject(int pnum, int cmd, int i)
 	case OBJ_TCHEST1:
 	case OBJ_TCHEST2:
 	case OBJ_TCHEST3:
-		OperateChest(pnum, i, 0);
-		break;
-	case OBJ_L2LDOOR:
-	case OBJ_L2RDOOR:
-		SyncOpL2Door(pnum, cmd, i);
+		OperateChest(pnum, i, FALSE);
 		break;
 	case OBJ_SARC:
-		OperateSarc(pnum, i, 0);
+		OperateSarc(pnum, i, FALSE);
+		break;
+	case OBJ_BLINDBOOK:
+	case OBJ_BLOODBOOK:
+	case OBJ_STEELTOME:
+		OperateBookLever(pnum, i);
 		break;
 	case OBJ_SHRINEL:
 	case OBJ_SHRINER:
@@ -4410,18 +4334,6 @@ void SyncOpObject(int pnum, int cmd, int i)
 		break;
 	case OBJ_DECAP:
 		OperateDecap(pnum, i, 0);
-		break;
-	case OBJ_BLINDBOOK:
-	case OBJ_BLOODBOOK:
-	case OBJ_STEELTOME:
-		OperateBookLever(pnum, i);
-		break;
-	case OBJ_PEDISTAL:
-		OperatePedistal(pnum, i);
-		break;
-	case OBJ_L3LDOOR:
-	case OBJ_L3RDOOR:
-		SyncOpL3Door(pnum, cmd, i);
 		break;
 	case OBJ_ARMORSTAND:
 	case OBJ_WARARMOR:
@@ -4440,6 +4352,9 @@ void SyncOpObject(int pnum, int cmd, int i)
 	case OBJ_STORYBOOK:
 		OperateStoryBook(pnum, i);
 		break;
+	case OBJ_PEDISTAL:
+		OperatePedistal(pnum, i);
+		break;
 	case OBJ_WARWEAP:
 	case OBJ_WEAPONRACK:
 		OperateWeaponRack(pnum, i, FALSE);
@@ -4448,7 +4363,7 @@ void SyncOpObject(int pnum, int cmd, int i)
 		OperateMushPatch(pnum, i);
 		break;
 	case OBJ_SLAINHERO:
-		OperateSlainHero(pnum, i, 0);
+		OperateSlainHero(pnum, i, FALSE);
 		break;
 	case OBJ_SIGNCHEST:
 		OperateInnSignChest(pnum, i);
@@ -4458,255 +4373,187 @@ void SyncOpObject(int pnum, int cmd, int i)
 
 void BreakCrux(int i)
 {
-	int v1;        // esi
-	int v2;        // edi
-	int v3;        // edx
-	signed int v4; // eax
-	int v5;        // ecx
-	int v6;        // ebx
+	int j, oi;
+	BOOL triggered;
 
-	v1 = i;
-	v2 = nobjects;
-	object[v1]._oBreak = -1;
-	object[v1]._oSelFlag = 0;
-	v3 = 0;
-	v4 = 1;
-	object[v1]._oAnimFlag = 1;
-	object[v1]._oAnimFrame = 1;
-	object[v1]._oAnimDelay = 1;
-	object[v1]._oSolidFlag = TRUE;
-	object[v1]._oMissFlag = TRUE;
-	if (v2 <= 0)
-		goto LABEL_15;
-	do {
-		v5 = objectactive[v3];
-		v6 = object[v5]._otype;
-		if ((v6 == OBJ_CRUX1 || v6 == OBJ_CRUX2 || v6 == OBJ_CRUX3)
-		    && object[v1]._oVar8 == object[v5]._oVar8
-		    && object[v5]._oBreak != -1) {
-			v4 = 0;
-		}
-		++v3;
-	} while (v3 < v2);
-	if (v4) {
-	LABEL_15:
-		if (!deltaload)
-			PlaySfxLoc(IS_LEVER, object[v1]._ox, object[v1]._oy);
-		ObjChangeMap(object[v1]._oVar1, object[v1]._oVar2, object[v1]._oVar3, object[v1]._oVar4);
+	object[i]._oBreak = -1;
+	object[i]._oSelFlag = 0;
+	object[i]._oAnimFlag = 1;
+	object[i]._oAnimFrame = 1;
+	object[i]._oAnimDelay = 1;
+	object[i]._oSolidFlag = TRUE;
+	object[i]._oMissFlag = TRUE;
+	triggered = TRUE;
+	for (j = 0; j < nobjects; j++) {
+		oi = objectactive[j];
+		if (object[oi]._otype != OBJ_CRUX1 && object[oi]._otype != OBJ_CRUX2 && object[oi]._otype != OBJ_CRUX3)
+			continue;
+		if (object[i]._oVar8 != object[oi]._oVar8 || object[oi]._oBreak == -1)
+			continue;
+		triggered = FALSE;
 	}
+	if (!triggered)
+		return;
+	if (!deltaload)
+		PlaySfxLoc(IS_LEVER, object[i]._ox, object[i]._oy);
+	ObjChangeMap(object[i]._oVar1, object[i]._oVar2, object[i]._oVar3, object[i]._oVar4);
 }
 // 676190: using guessed type int deltaload;
 
-void BreakBarrel(int pnum, int i, int dam, unsigned char forcebreak, int sendmsg)
+void BreakBarrel(int pnum, int i, int dam, BOOL forcebreak, int sendmsg)
 {
-	int v5;          // esi
-	BOOLEAN v6;      // zf
-	int v7;          // eax
-	int v8;          // edx
-	int v9;          // eax
-	int v10;         // eax
-	int v11;         // eax
-	char v12;        // al
-	char v13;        // al
-	int v14;         // edx
-	int v15;         // [esp-4h] [ebp-24h]
-	short param2;    // [esp+Ch] [ebp-14h]
-	int param1;      // [esp+10h] [ebp-10h]
-	int v18;         // [esp+14h] [ebp-Ch]
-	int *v19;        // [esp+18h] [ebp-8h]
-	int v20;         // [esp+1Ch] [ebp-4h]
-	int forcebreaka; // [esp+2Ch] [ebp+Ch]
+	int oi;
+	int xp, yp;
 
-	param2 = i;
-	v5 = i;
-	param1 = pnum;
-	if (object[i]._oSelFlag) {
-		if (forcebreak) {
-			object[v5]._oVar1 = 0;
-		} else {
-			object[v5]._oVar1 -= dam;
-			if (pnum != myplr && object[v5]._oVar1 <= 0)
-				object[v5]._oVar1 = 1;
-		}
-		if (object[v5]._oVar1 <= 0) {
-			object[v5]._oBreak = -1;
-			v6 = deltaload == 0;
-			object[v5]._oVar1 = 0;
-			object[v5]._oAnimFlag = 1;
-			object[v5]._oAnimFrame = 1;
-			object[v5]._oAnimDelay = 1;
-			object[v5]._oSolidFlag = FALSE;
-			object[v5]._oMissFlag = TRUE;
-			object[v5]._oSelFlag = 0;
-			object[v5]._oPreFlag = TRUE;
-			if (v6) {
-				v8 = object[v5]._ox;
-				v15 = object[v5]._oy;
-				if (object[v5]._otype == OBJ_BARRELEX) {
-					PlaySfxLoc(IS_BARLFIRE, v8, v15);
-					v9 = object[v5]._oy;
-					v20 = v9 - 1;
-					if (v9 - 1 <= v9 + 1) {
-						do {
-							v10 = object[v5]._ox;
-							v18 = v10 - 1;
-							if (v10 - 1 <= v10 + 1) {
-								forcebreaka = 112 * (v10 - 1) + v20;
-								v19 = (int *)((char *)dMonster + 4 * forcebreaka);
-								do {
-									v11 = *v19;
-									if (*v19 > 0)
-										MonsterTrapHit(v11 - 1, 1, 4, 0, 1, 0);
-									v12 = dPlayer[0][forcebreaka];
-									if (v12 > 0)
-										PlayerMHit(v12 - 1, -1, 0, 8, 16, 1, 0, 0);
-									v13 = dObject[0][forcebreaka];
-									if (v13 > 0) {
-										v14 = v13 - 1;
-										if (object[v14]._otype == OBJ_BARRELEX && object[v14]._oBreak != -1)
-											BreakBarrel(param1, v14, dam, 1u, sendmsg);
-									}
-									++v18;
-									v19 += 112;
-									forcebreaka += 112;
-								} while (v18 <= object[v5]._ox + 1);
-							}
-							++v20;
-						} while (v20 <= object[v5]._oy + 1);
-					}
-				} else {
-					PlaySfxLoc(IS_BARREL, v8, v15);
-					SetRndSeed(object[v5]._oRndSeed);
-					if (object[v5]._oVar2 <= 1) {
-						if (object[v5]._oVar3)
-							CreateRndItem(object[v5]._ox, object[v5]._oy, 0, sendmsg, 0);
-						else
-							CreateRndUseful(param1, object[v5]._ox, object[v5]._oy, sendmsg);
-					}
-					if (object[v5]._oVar2 >= 8)
-						SpawnSkeleton(object[v5]._oVar4, object[v5]._ox, object[v5]._oy);
-				}
-				if (param1 == myplr)
-					NetSendCmdParam2(FALSE, CMD_BREAKOBJ, param1, param2);
-			} else {
-				v7 = object[v5]._oAnimLen;
-				object[v5]._oAnimCnt = 0;
-				object[v5]._oAnimFrame = v7;
-				object[v5]._oAnimDelay = 1000;
-			}
-		} else if (!deltaload) {
-			PlaySfxLoc(IS_IBOW, object[v5]._ox, object[v5]._oy);
-		}
+	if (!object[i]._oSelFlag)
+		return;
+	if (forcebreak) {
+		object[i]._oVar1 = 0;
+	} else {
+		object[i]._oVar1 -= dam;
+		if (pnum != myplr && object[i]._oVar1 <= 0)
+			object[i]._oVar1 = 1;
 	}
+	if (object[i]._oVar1 > 0) {
+		if (deltaload)
+			return;
+
+		PlaySfxLoc(IS_IBOW, object[i]._ox, object[i]._oy);
+		return;
+	}
+
+	object[i]._oBreak = -1;
+	object[i]._oVar1 = 0;
+	object[i]._oAnimFlag = 1;
+	object[i]._oAnimFrame = 1;
+	object[i]._oAnimDelay = 1;
+	object[i]._oSolidFlag = FALSE;
+	object[i]._oMissFlag = TRUE;
+	object[i]._oSelFlag = 0;
+	object[i]._oPreFlag = TRUE;
+	if (deltaload != 0) {
+		object[i]._oAnimCnt = 0;
+		object[i]._oAnimFrame = object[i]._oAnimLen;
+		object[i]._oAnimDelay = 1000;
+		return;
+	}
+
+	if (object[i]._otype == OBJ_BARRELEX) {
+		PlaySfxLoc(IS_BARLFIRE, object[i]._ox, object[i]._oy);
+		for (yp = object[i]._oy - 1; yp <= object[i]._oy + 1; yp++) {
+			for (xp = object[i]._ox - 1; xp <= object[i]._ox + 1; xp++) {
+				if (dMonster[xp][yp] > 0)
+					MonsterTrapHit(dMonster[xp][yp] - 1, 1, 4, 0, 1, 0);
+				if (dPlayer[xp][yp] > 0)
+					PlayerMHit(dPlayer[xp][yp] - 1, -1, 0, 8, 16, 1, 0, 0);
+				if (dObject[xp][yp] > 0) {
+					oi = dObject[xp][yp] - 1;
+					if (object[oi]._otype == OBJ_BARRELEX && object[oi]._oBreak != -1)
+						BreakBarrel(pnum, oi, dam, TRUE, sendmsg);
+				}
+			}
+		}
+	} else {
+		PlaySfxLoc(IS_BARREL, object[i]._ox, object[i]._oy);
+		SetRndSeed(object[i]._oRndSeed);
+		if (object[i]._oVar2 <= 1) {
+			if (!object[i]._oVar3)
+				CreateRndUseful(pnum, object[i]._ox, object[i]._oy, sendmsg);
+			else
+				CreateRndItem(object[i]._ox, object[i]._oy, 0, sendmsg, 0);
+		}
+		if (object[i]._oVar2 >= 8)
+			SpawnSkeleton(object[i]._oVar4, object[i]._ox, object[i]._oy);
+	}
+	if (pnum == myplr)
+		NetSendCmdParam2(FALSE, CMD_BREAKOBJ, pnum, i);
 }
 // 676190: using guessed type int deltaload;
 
 void BreakObject(int pnum, int oi)
 {
-	int v2; // ebx
-	int v3; // ebp
-	int v4; // esi
-	int v5; // edi
-	int v6; // ecx
-	int v7; // ecx
-	int v8; // eax
+	int objdam, mind, maxd;
 
-	v2 = pnum;
-	v3 = oi;
-	if (pnum == -1) {
-		v7 = 10;
+	if (pnum != -1) {
+		mind = plr[pnum]._pIMinDam;
+		maxd = random(163, plr[pnum]._pIMaxDam - mind + 1);
+		objdam = maxd + mind;
+		objdam += plr[pnum]._pDamageMod + plr[pnum]._pIBonusDamMod + objdam * plr[pnum]._pIBonusDam / 100;
 	} else {
-		v4 = pnum;
-		v5 = plr[v2]._pIMinDam;
-		v6 = v5 + random(163, plr[v2]._pIMaxDam - v5 + 1);
-		v7 = plr[v4]._pIBonusDamMod + plr[v4]._pDamageMod + v6 * plr[v4]._pIBonusDam / 100 + v6;
+		objdam = 10;
 	}
-	v8 = object[v3]._otype;
-	if (v8 >= OBJ_CRUX1) {
-		if (v8 <= OBJ_CRUX3) {
-			BreakCrux(v3);
-		} else if (v8 > OBJ_WEAPRACK && v8 <= OBJ_BARRELEX) {
-			BreakBarrel(v2, v3, v7, 0, 1);
-		}
+	switch (object[oi]._otype) {
+	case OBJ_CRUX1:
+	case OBJ_CRUX2:
+	case OBJ_CRUX3:
+		BreakCrux(oi);
+		break;
+	case OBJ_BARREL:
+	case OBJ_BARRELEX:
+		BreakBarrel(pnum, oi, objdam, 0, 1);
+		break;
 	}
 }
 
 void SyncBreakObj(int pnum, int oi)
 {
-	int v2; // eax
-
-	v2 = object[oi]._otype;
-	if (v2 >= OBJ_BARREL && v2 <= OBJ_BARRELEX)
-		BreakBarrel(pnum, oi, 0, 1u, 0);
+	if (object[oi]._otype >= OBJ_BARREL && object[oi]._otype <= OBJ_BARRELEX)
+		BreakBarrel(pnum, oi, 0, TRUE, 0);
 }
 
 void SyncL1Doors(int i)
 {
-	int v1;     // ebx
-	int v2;     // eax
-	int v3;     // esi
-	int v4;     // edi
-	BOOLEAN v5; // zf
+	int x, y;
 
-	v1 = i;
-	v2 = i;
-	if (object[i]._oVar4) {
-		v3 = object[v2]._oy;
-		v4 = object[v2]._ox;
-		v5 = object[v2]._otype == 1;
-		object[v2]._oMissFlag = TRUE;
-		object[v2]._oSelFlag = 2;
-		if (v5) {
-			if (object[v2]._oVar1 == 214)
-				ObjSetMicro(v4, v3, 408);
-			else
-				ObjSetMicro(v4, v3, 393);
-			dArch[v4][v3] = 7;
-			objects_set_door_piece(v4 - 1, v3--);
-		} else {
-			ObjSetMicro(v4, v3, 395);
-			dArch[v4][v3] = 8;
-			objects_set_door_piece(v4--, v3 - 1);
-		}
-		DoorSet(v1, v4, v3);
-	} else {
-		object[v2]._oMissFlag = FALSE;
+	if (object[i]._oVar4 != 0) {
+		object[i]._oMissFlag = FALSE;
+		return;
 	}
+
+	y = object[i]._oy;
+	x = object[i]._ox;
+	object[i]._oMissFlag = TRUE;
+	object[i]._oSelFlag = 2;
+	if (object[i]._otype == OBJ_L1LDOOR) {
+		if (object[i]._oVar1 == 214)
+			ObjSetMicro(x, y, 408);
+		else
+			ObjSetMicro(x, y, 393);
+		dArch[x][y] = 7;
+		objects_set_door_piece(x - 1, y);
+		y--;
+	} else {
+		ObjSetMicro(x, y, 395);
+		dArch[x][y] = 8;
+		objects_set_door_piece(x, y - 1);
+		x--;
+	}
+	DoorSet(i, x, y);
 }
 
 void SyncCrux(int i)
 {
-	signed int v1; // ebx
-	int v2;        // edx
-	int v3;        // eax
-	int v4;        // esi
+	BOOL found;
+	int j, oi, type;
 
-	v1 = 1;
-	v2 = 0;
-	if (nobjects <= 0)
-		goto LABEL_13;
-	do {
-		v3 = objectactive[v2];
-		v4 = object[v3]._otype;
-		if ((v4 == OBJ_CRUX1 || v4 == OBJ_CRUX2 || v4 == OBJ_CRUX3)
-		    && object[i]._oVar8 == object[v3]._oVar8
-		    && object[v3]._oBreak != -1) {
-			v1 = 0;
-		}
-		++v2;
-	} while (v2 < nobjects);
-	if (v1)
-	LABEL_13:
+	found = TRUE;
+	for (j = 0; j < nobjects; j++) {
+		oi = objectactive[j];
+		type = object[oi]._otype;
+		if (type != OBJ_CRUX1 && type != OBJ_CRUX2 && type != OBJ_CRUX3)
+			continue;
+		if (object[i]._oVar8 != object[oi]._oVar8 || object[oi]._oBreak == -1)
+			continue;
+		found = FALSE;
+	}
+	if (found)
 		ObjChangeMap(object[i]._oVar1, object[i]._oVar2, object[i]._oVar3, object[i]._oVar4);
 }
 
 void SyncLever(int i)
 {
-	int v1; // ecx
-
-	v1 = i;
-	if (!object[v1]._oSelFlag)
-		ObjChangeMap(object[v1]._oVar1, object[v1]._oVar2, object[v1]._oVar3, object[v1]._oVar4);
+	if (!object[i]._oSelFlag)
+		ObjChangeMap(object[i]._oVar1, object[i]._oVar2, object[i]._oVar3, object[i]._oVar4);
 }
 
 void SyncQSTLever(int i)
@@ -4726,158 +4573,125 @@ void SyncQSTLever(int i)
 
 void SyncPedistal(int i)
 {
-	int v1;            // esi
-	unsigned char *v2; // esi
+	BYTE *setp;
 
-	v1 = i;
 	if (object[i]._oVar6 == 1)
 		ObjChangeMapResync(setpc_x, setpc_y + 3, setpc_x + 2, setpc_y + 7);
-	if (object[v1]._oVar6 == 2) {
+	if (object[i]._oVar6 == 2) {
 		ObjChangeMapResync(setpc_x, setpc_y + 3, setpc_x + 2, setpc_y + 7);
 		ObjChangeMapResync(setpc_x + 6, setpc_y + 3, setpc_x + setpc_w, setpc_y + 7);
 	}
-	if (object[v1]._oVar6 == 3) {
-		ObjChangeMapResync(object[v1]._oVar1, object[v1]._oVar2, object[v1]._oVar3, object[v1]._oVar4);
-		v2 = LoadFileInMem("Levels\\L2Data\\Blood2.DUN", 0);
-		LoadMapObjs(v2, 2 * setpc_x, 2 * setpc_y);
-		mem_free_dbg(v2);
+	if (object[i]._oVar6 == 3) {
+		ObjChangeMapResync(object[i]._oVar1, object[i]._oVar2, object[i]._oVar3, object[i]._oVar4);
+		setp = LoadFileInMem("Levels\\L2Data\\Blood2.DUN", 0);
+		LoadMapObjs(setp, 2 * setpc_x, 2 * setpc_y);
+		mem_free_dbg(setp);
 	}
 }
 // 5CF334: using guessed type int setpc_w;
 
 void SyncL2Doors(int i)
 {
-	int v1; // eax
-	int v2; // esi
-	int v3; // ecx
-	int v4; // edx
-	int v5; // eax
+	int val;
+	int x, y;
 
-	v1 = i;
-	v2 = object[i]._oVar4;
-	if (v2)
-		object[v1]._oMissFlag = TRUE;
+	val = object[i]._oVar4;
+	if (!val)
+		object[i]._oMissFlag = FALSE;
 	else
-		object[v1]._oMissFlag = FALSE;
-	v3 = object[v1]._ox;
-	v4 = object[v1]._oy;
-	object[v1]._oSelFlag = 2;
-	v5 = object[v1]._otype;
-	if (v5 != OBJ_L2LDOOR)
-		goto LABEL_18;
-	if (!v2) {
-		ObjSetMicro(v3, v4, 538);
+		object[i]._oMissFlag = TRUE;
+	x = object[i]._ox;
+	y = object[i]._oy;
+	object[i]._oSelFlag = 2;
+	if (object[i]._otype == OBJ_L2LDOOR && val == 0) {
+		ObjSetMicro(x, y, 538);
 		return;
 	}
-	if (v2 != 1 && v2 != 2) {
-	LABEL_18:
-		if (v5 == OBJ_L2RDOOR) {
-			if (v2) {
-				if (v2 == 1 || v2 == 2)
-					ObjSetMicro(v3, v4, 17);
-			} else {
-				ObjSetMicro(v3, v4, 540);
-			}
-		}
-	} else {
-		ObjSetMicro(v3, v4, 13);
+	if (object[i]._otype == OBJ_L2LDOOR && (val == 1 || val == 2)) {
+		ObjSetMicro(x, y, 13);
+		return;
+	}
+	if (object[i]._otype == OBJ_L2RDOOR && val == 0) {
+		ObjSetMicro(x, y, 540);
+		return;
+	}
+	if (object[i]._otype == OBJ_L2RDOOR && (val == 1 || val == 2)) {
+		ObjSetMicro(x, y, 17);
 	}
 }
 
 void SyncL3Doors(int i)
 {
-	int v1; // eax
-	int v2; // esi
-	int v3; // ecx
-	int v4; // edx
-	int v5; // ebx
-	int v6; // eax
+	int x, y;
 
-	v1 = i;
-	v2 = object[i]._otype;
-	v3 = object[i]._ox;
-	v4 = object[v1]._oy;
-	object[v1]._oMissFlag = TRUE;
-	object[v1]._oSelFlag = 2;
-	if (v2 != OBJ_L3LDOOR)
-		goto LABEL_15;
-	if (!object[v1]._oVar4) {
-		ObjSetMicro(v3, v4, 531);
+	object[i]._oMissFlag = TRUE;
+	x = object[i]._ox;
+	y = object[i]._oy;
+	object[i]._oSelFlag = 2;
+	if (object[i]._otype == OBJ_L3LDOOR && object[i]._oVar4 == 0) {
+		ObjSetMicro(x, y, 531);
 		return;
 	}
-	v5 = object[v1]._oVar4;
-	if (v5 != 1 && v5 != 2) {
-	LABEL_15:
-		if (v2 == OBJ_L3RDOOR) {
-			if (object[v1]._oVar4) {
-				v6 = object[v1]._oVar4;
-				if (v6 == 1 || v6 == 2)
-					ObjSetMicro(v3, v4, 541);
-			} else {
-				ObjSetMicro(v3, v4, 534);
-			}
-		}
-	} else {
-		ObjSetMicro(v3, v4, 538);
+	if (object[i]._otype == OBJ_L3LDOOR && (object[i]._oVar4 == 1 || object[i]._oVar4 == 2)) {
+		ObjSetMicro(x, y, 538);
+		return;
+	}
+	if (object[i]._otype == OBJ_L3RDOOR && object[i]._oVar4 == 0) {
+		ObjSetMicro(x, y, 534);
+		return;
+	}
+	if (object[i]._otype == OBJ_L3RDOOR && (object[i]._oVar4 == 1 || object[i]._oVar4 == 2)) {
+		ObjSetMicro(x, y, 541);
 	}
 }
 
 void SyncObjectAnim(int o)
 {
-	int v1; // edx
-	int v2; // ebx
-	int v3; // esi
+	int file;
+	int i;
+	int ofindex;
 
-	v1 = object[o]._otype;
-	v2 = ObjFileList[0];
-	v3 = 0;
-	while (v2 != (char)AllObjects[object[o]._otype].ofindex)
-		v2 = ObjFileList[v3++ + 1];
-	object[o]._oAnimData = pObjCels[v3];
-	if (v1 <= OBJ_BOOK2R) {
-		if (v1 != OBJ_BOOK2R) {
-			if (v1 > OBJ_L1LIGHT) {
-				if (v1 <= OBJ_L1RDOOR) {
-					SyncL1Doors(o);
-				} else {
-					if (v1 == OBJ_LEVER)
-						goto LABEL_30;
-					if (v1 > OBJ_SKSTICK5) {
-						if (v1 <= OBJ_CRUX3) {
-							SyncCrux(o);
-							return;
-						}
-						if (v1 == OBJ_BOOK2L || v1 == OBJ_SWITCHSKL)
-						LABEL_30:
-							SyncLever(o);
-					}
-				}
-			}
-			return;
-		}
-	LABEL_24:
-		SyncQSTLever(o);
-		return;
+	file = ObjFileList[0];
+	ofindex = AllObjects[object[o]._otype].ofindex;
+	i = 0;
+	while (file != ofindex) {
+		file = ObjFileList[i + 1];
+		i++;
 	}
-	if (v1 >= OBJ_L2LDOOR) {
-		if (v1 <= OBJ_L2RDOOR) {
-			SyncL2Doors(o);
-			return;
-		}
-		if (v1 == OBJ_BLINDBOOK)
-			goto LABEL_24;
-		if (v1 == OBJ_PEDISTAL) {
-			SyncPedistal(o);
-			return;
-		}
-		if (v1 > OBJ_PEDISTAL) {
-			if (v1 <= OBJ_L3RDOOR) {
-				SyncL3Doors(o);
-				return;
-			}
-			if (v1 == OBJ_STEELTOME)
-				goto LABEL_24;
-		}
+	object[o]._oAnimData = pObjCels[i];
+	switch (object[o]._otype) {
+	case OBJ_BOOK2R:
+	case OBJ_BLINDBOOK:
+	case OBJ_STEELTOME:
+		SyncQSTLever(o);
+		break;
+	case OBJ_L1LIGHT:
+		break;
+	case OBJ_L1LDOOR:
+	case OBJ_L1RDOOR:
+		SyncL1Doors(o);
+		break;
+	case OBJ_L2LDOOR:
+	case OBJ_L2RDOOR:
+		SyncL2Doors(o);
+		break;
+	case OBJ_L3LDOOR:
+	case OBJ_L3RDOOR:
+		SyncL3Doors(o);
+		break;
+	case OBJ_LEVER:
+	case OBJ_BOOK2L:
+	case OBJ_SWITCHSKL:
+		SyncLever(o);
+		break;
+	case OBJ_CRUX1:
+	case OBJ_CRUX2:
+	case OBJ_CRUX3:
+		SyncCrux(o);
+		break;
+	case OBJ_PEDISTAL:
+		SyncPedistal(o);
+		break;
 	}
 }
 

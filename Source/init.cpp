@@ -1,6 +1,6 @@
-//HEADER_GOES_HERE
-
-#include "../types.h"
+#include "diablo.h"
+#include "../3rdParty/Storm/Source/storm.h"
+#include "../DiabloUI/diabloui.h"
 
 DEVILUTION_BEGIN_NAMESPACE
 
@@ -45,7 +45,7 @@ void init_cleanup(BOOL show_cursor)
 	sound_cleanup();
 	NetClose();
 	dx_cleanup();
-	MI_Dummy(show_cursor);
+	engine_debug_trap(show_cursor);
 	StormDestroy();
 
 	if (show_cursor)

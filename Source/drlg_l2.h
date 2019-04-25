@@ -29,7 +29,7 @@ void DRLG_L2SetRoom(int rx1, int ry1);
 void L2TileFix();
 BOOL CreateDungeon();
 void CreateRoom(int nX1, int nY1, int nX2, int nY2, int nRDest, int nHDir, int ForceHW, int nH, int nW);
-void DefineRoom(int nX1, int nY1, int nX2, int nY2, int ForceHW);
+void DefineRoom(int nX1, int nY1, int nX2, int nY2, BOOL ForceHW);
 void AddHall(int nX1, int nY1, int nX2, int nY2, int nHd);
 void GetHall(int *nX1, int *nY1, int *nX2, int *nY2, int *nHd);
 void ConnectHall(int nX1, int nY1, int nX2, int nY2, int nHd);

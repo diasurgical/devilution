@@ -2,9 +2,14 @@
 #ifndef __DIABLOUI_H__
 #define __DIABLOUI_H__
 
-#if defined(__GNUC__) || defined(__cplusplus)
-extern "C" {
+#ifdef DEVILUTION_STUB
+#include "miniwin/pushdecl.inc"
+namespace dvl {
 #endif
+
+//#if defined(__GNUC__) || defined(__cplusplus)
+//extern "C" {
+//#endif
 
 struct FontStruct {
 	unsigned char fontbin[258];
@@ -55,8 +60,13 @@ void __stdcall UiCreateGameCriteria(_uiheroinfo *pInfo, char *str);
 BOOL __stdcall UiGetDefaultStats(int pclass, _uidefaultstats *pStats);
 BOOL __stdcall UiBetaDisclaimer(int a1);
 
-#if defined(__GNUC__) || defined(__cplusplus)
+//#if defined(__GNUC__) || defined(__cplusplus)
+//}
+//#endif
+
+#ifdef DEVILUTION_STUB
 }
+#include "miniwin/popdecl.inc"
 #endif
 
 #endif /* __DIABLOUI_H__ */

@@ -1,6 +1,5 @@
-//HEADER_GOES_HERE
-
-#include "../types.h"
+#include "diablo.h"
+#include "../3rdParty/Storm/Source/storm.h"
 
 DEVILUTION_BEGIN_NAMESPACE
 
@@ -355,39 +354,19 @@ DWORD GetPlrGFXSize(char *szCel)
 
 void FreePlayerGFX(int pnum)
 {
-	void *ptr;
-
 	if ((DWORD)pnum >= MAX_PLRS) {
 		app_fatal("FreePlayerGFX: illegal player %d", pnum);
 	}
 
-	ptr = plr[pnum]._pNData;
-	plr[pnum]._pNData = NULL;
-	mem_free_dbg(ptr);
-	ptr = plr[pnum]._pWData;
-	plr[pnum]._pWData = NULL;
-	mem_free_dbg(ptr);
-	ptr = plr[pnum]._pAData;
-	plr[pnum]._pAData = NULL;
-	mem_free_dbg(ptr);
-	ptr = plr[pnum]._pHData;
-	plr[pnum]._pHData = NULL;
-	mem_free_dbg(ptr);
-	ptr = plr[pnum]._pLData;
-	plr[pnum]._pLData = NULL;
-	mem_free_dbg(ptr);
-	ptr = plr[pnum]._pFData;
-	plr[pnum]._pFData = NULL;
-	mem_free_dbg(ptr);
-	ptr = plr[pnum]._pTData;
-	plr[pnum]._pTData = NULL;
-	mem_free_dbg(ptr);
-	ptr = plr[pnum]._pDData;
-	plr[pnum]._pDData = NULL;
-	mem_free_dbg(ptr);
-	ptr = plr[pnum]._pBData;
-	plr[pnum]._pBData = NULL;
-	mem_free_dbg(ptr);
+	MemFreeDbg(plr[pnum]._pNData);
+	MemFreeDbg(plr[pnum]._pWData);
+	MemFreeDbg(plr[pnum]._pAData);
+	MemFreeDbg(plr[pnum]._pHData);
+	MemFreeDbg(plr[pnum]._pLData);
+	MemFreeDbg(plr[pnum]._pFData);
+	MemFreeDbg(plr[pnum]._pTData);
+	MemFreeDbg(plr[pnum]._pDData);
+	MemFreeDbg(plr[pnum]._pBData);
 	plr[pnum]._pGFXLoad = 0;
 }
 

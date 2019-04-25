@@ -1,6 +1,4 @@
-//HEADER_GOES_HERE
-
-#include "../types.h"
+#include "diablo.h"
 
 DEVILUTION_BEGIN_NAMESPACE
 
@@ -395,22 +393,17 @@ void InitTowners()
 
 void FreeTownerGFX()
 {
-	void *tmp;
 	int i;
 
 	for (i = 0; i < 16; i++) {
 		if (towner[i]._tNData == pCowCels) {
 			towner[i]._tNData = NULL;
 		} else if (towner[i]._tNData) {
-			tmp = towner[i]._tNData;
-			towner[i]._tNData = NULL;
-			mem_free_dbg(tmp);
+			MemFreeDbg(towner[i]._tNData);
 		}
 	}
 
-	tmp = pCowCels;
-	pCowCels = NULL;
-	mem_free_dbg(tmp);
+	MemFreeDbg(pCowCels);
 }
 
 void TownCtrlMsg(int i)

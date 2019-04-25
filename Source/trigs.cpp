@@ -1,6 +1,4 @@
-//HEADER_GOES_HERE
-
-#include "../types.h"
+#include "diablo.h"
 
 DEVILUTION_BEGIN_NAMESPACE
 
@@ -251,88 +249,45 @@ void InitL3Triggers()
 
 void InitL4Triggers()
 {
-	signed int v0;     // edi
-	int *v1;           // esi
-	int *v2;           // edx
-	TriggerStruct *v3; // ecx
-	int *v4;           // eax
-	int v5;            // edx
-	int(*v6)[112];     // edi
-	signed int v7;     // ecx
-	int *v8;           // eax
-	int(*v9)[112];     // [esp+Ch] [ebp-Ch]
-	int(*v10)[112];    // [esp+Ch] [ebp-Ch]
-	int v11;           // [esp+10h] [ebp-8h]
-	int(*v12)[112];    // [esp+14h] [ebp-4h]
+	int i, j;
 
 	trigflag_4 = 0;
-	v11 = 0;
-	v9 = dPiece;
-	do {
-		v0 = 0;
-		v12 = v9;
-		v1 = &trigs[trigflag_4]._tmsg;
-		v2 = &trigs[trigflag_4]._ty;
-		v3 = &trigs[trigflag_4];
-		v4 = &trigs[trigflag_4]._tlvl;
-		do {
-			if ((*v12)[0] == 83) {
-				++trigflag_4;
-				v3->_tx = v0;
-				*v2 = v11;
-				*v1 = WM_DIABPREVLVL;
-				v4 += 4;
-				++v3;
-				v2 += 4;
-				v1 += 4;
+	for (j = 0; j < MAXDUNY; j++) {
+		for (i = 0; i < MAXDUNX; i++) {
+			if (dPiece[i][j] == 83) {
+				trigs[trigflag_4]._tx = i;
+				trigs[trigflag_4]._ty = j;
+				trigs[trigflag_4]._tmsg = WM_DIABPREVLVL;
+				trigflag_4++;
 			}
-			if ((*v12)[0] == 422) {
-				v3->_tx = v0;
-				*v2 = v11;
-				*v1 = WM_DIABTWARPUP;
-				*v4 = 0;
-				++trigflag_4;
-				v4 += 4;
-				++v3;
-				v2 += 4;
-				v1 += 4;
+
+			if (dPiece[i][j] == 422) {
+				trigs[trigflag_4]._tx = i;
+				trigs[trigflag_4]._ty = j;
+				trigs[trigflag_4]._tmsg = WM_DIABTWARPUP;
+				trigs[trigflag_4]._tlvl = 0;
+				trigflag_4++;
 			}
-			if ((*v12)[0] == 120) {
-				++trigflag_4;
-				v3->_tx = v0;
-				*v2 = v11;
-				*v1 = WM_DIABNEXTLVL;
-				v4 += 4;
-				++v3;
-				v2 += 4;
-				v1 += 4;
+
+			if (dPiece[i][j] == 120) {
+				trigs[trigflag_4]._tx = i;
+				trigs[trigflag_4]._ty = j;
+				trigs[trigflag_4]._tmsg = WM_DIABNEXTLVL;
+				trigflag_4++;
 			}
-			++v12;
-			++v0;
-		} while (v0 < 112);
-		v9 = (int(*)[112])((char *)v9 + 4);
-		++v11;
-	} while ((signed int)v9 < (signed int)dPiece[1]);
-	v5 = 0;
-	v10 = dPiece;
-	do {
-		v6 = v10;
-		v7 = 0;
-		v8 = &trigs[trigflag_4]._ty;
-		do {
-			if ((*v6)[0] == 370 && quests[QTYPE_VB]._qactive == 3) {
-				++trigflag_4;
-				*(v8 - 1) = v7;
-				*v8 = v5;
-				v8[1] = WM_DIABNEXTLVL;
-				v8 += 4;
+		}
+	}
+
+	for (j = 0; j < MAXDUNY; j++) {
+		for (i = 0; i < MAXDUNX; i++) {
+			if (dPiece[i][j] == 370 && quests[QTYPE_VB]._qactive == 3) {
+				trigs[trigflag_4]._tx = i;
+				trigs[trigflag_4]._ty = j;
+				trigs[trigflag_4]._tmsg = WM_DIABNEXTLVL;
+				trigflag_4++;
 			}
-			++v7;
-			++v6;
-		} while (v7 < 112);
-		v10 = (int(*)[112])((char *)v10 + 4);
-		++v5;
-	} while ((signed int)v10 < (signed int)dPiece[1]);
+		}
+	}
 	trigflag_3 = 0;
 }
 

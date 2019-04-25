@@ -1,6 +1,5 @@
-//HEADER_GOES_HERE
-
-#include "../types.h"
+#include "diablo.h"
+#include "../3rdParty/Storm/Source/storm.h"
 
 DEVILUTION_BEGIN_NAMESPACE
 
@@ -246,11 +245,7 @@ void ShowProgress(unsigned int uMsg)
 
 void FreeInterface()
 {
-	void *ptr;
-
-	ptr = sgpBackCel;
-	sgpBackCel = NULL;
-	mem_free_dbg(ptr);
+	MemFreeDbg(sgpBackCel);
 }
 
 void InitCutscene(unsigned int uMsg)

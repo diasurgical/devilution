@@ -1,13 +1,16 @@
-//HEADER_GOES_HERE
-
-#include "../types.h"
+#include "diablo.h"
+#include "../3rdParty/Storm/Source/storm.h"
+#include "../DiabloUI/diabloui.h"
 
 DEVILUTION_BEGIN_NAMESPACE
 
 BOOLEAN gbSomebodyWonGameKludge; // weak
+#ifdef _DEBUG
+DWORD gdwHistTicks;
+#endif
 TBuffer sgHiPriBuf;
 char szPlayerDescript[128];
-short sgwPackPlrOffsetTbl[MAX_PLRS];
+WORD sgwPackPlrOffsetTbl[MAX_PLRS];
 PkPlayerStruct netplr[MAX_PLRS];
 BOOLEAN sgbPlayerTurnBitTbl[MAX_PLRS];
 char sgbPlayerLeftGameTbl[MAX_PLRS];
@@ -34,6 +37,40 @@ const int event_types[3] = {
 	EVENT_TYPE_PLAYER_CREATE_GAME,
 	EVENT_TYPE_PLAYER_MESSAGE
 };
+
+#ifdef _DEBUG
+void __cdecl dumphist(const char *pszFmt, ...)
+{
+	static FILE *sgpHistFile = NULL;
+	DWORD dwTicks;
+	va_list va;
+
+	va_start(va, pszFmt);
+
+	if(sgpHistFile == NULL) {
+		sgpHistFile = fopen("c:\\dumphist.txt", "wb");
+		if(sgpHistFile == NULL) {
+			return;
+		}
+	}
+
+	dwTicks = GetTickCount();
+	fprintf(sgpHistFile, "%4u.%02u  ", (dwTicks - gdwHistTicks) / 1000, (dwTicks - gdwHistTicks) % 1000 / 10);
+	vfprintf(sgpHistFile, pszFmt, va);
+	fprintf(
+		sgpHistFile,
+		"\r\n          (%d,%d)(%d,%d)(%d,%d)(%d,%d)\r\n",
+		plr[0].plractive,
+		player_state[0],
+		plr[1].plractive,
+		player_state[1],
+		plr[2].plractive,
+		player_state[2],
+		plr[3].plractive,
+		player_state[3]);
+	fflush(sgpHistFile);
+}
+#endif
 
 void multi_msg_add(BYTE *a1, unsigned char a2)
 {
@@ -724,6 +761,10 @@ BOOL NetInit(BOOL bSinglePlayer, BOOL *pfExitProgram)
 			if (!multi_init_multi(&ProgramData, &plrdata, &UiData, pfExitProgram))
 				return FALSE;
 		}
+#ifdef _DEBUG
+		gdwHistTicks = GetTickCount();
+		dumphist("(%d) new game started", myplr);
+#endif
 		sgbNetInited = TRUE;
 		sgbTimeout = FALSE;
 		delta_init();
@@ -734,7 +775,7 @@ BOOL NetInit(BOOL bSinglePlayer, BOOL *pfExitProgram)
 		sync_init();
 		nthread_start(sgbPlayerTurnBitTbl[myplr]);
 		dthread_start();
-		dummy_nop_used_in_NetInit();
+		tmsg_start();
 		sgdwGameLoops = 0;
 		sgbSentThisCycle = 0;
 		gbDeltaSender = myplr;
@@ -768,10 +809,6 @@ BOOL NetInit(BOOL bSinglePlayer, BOOL *pfExitProgram)
 // 678640: using guessed type char byte_678640;
 // 6796E4: using guessed type char gbDeltaSender;
 // 6796E8: using guessed type int sgbNetInited;
-
-void dummy_nop_used_in_NetInit()
-{
-}
 
 void buffer_init(TBuffer *pBuf)
 {
@@ -928,68 +965,72 @@ BOOL multi_upgrade(int *pfExitProgram)
 	return result;
 }
 
-void multi_player_joins(int pnum, TCmdPlrInfoHdr *cmd, int a3)
+void recv_plrinfo(int pnum, TCmdPlrInfoHdr *p, BOOL recv)
 {
-	int v3;             // ebx
-	TCmdPlrInfoHdr *v4; // edi
-	short *v5;          // esi
-	int v6;             // esi
-	BOOLEAN v7;         // zf
-	char *v8;           // eax
-	int v9;             // ST08_4
-	unsigned char *v10; // edx
-	int v11;            // eax
-	int v12;            // ecx
-	int v13;            // eax
+	char *szEvent;
 
-	v3 = pnum;
-	v4 = cmd;
-	if (myplr != pnum) {
-		v5 = &sgwPackPlrOffsetTbl[pnum];
-		if (*v5 == cmd->wOffset || (*v5 = 0, !cmd->wOffset)) {
-			if (!a3 && !*v5) {
-				multi_send_pinfo(pnum, CMD_ACK_PLRINFO);
-			}
-			memcpy((char *)&netplr[v3] + (unsigned short)v4->wOffset, &v4[1], (unsigned short)v4->wBytes);
-			*v5 += v4->wBytes;
-			if (*v5 == 1266) {
-				*v5 = 0;
-				multi_player_left_msg(v3, 0);
-				v6 = v3;
-				plr[v3]._pGFXLoad = 0;
-				UnPackPlayer(&netplr[v3], v3, 1);
-				if (a3) {
-					++gbActivePlayers;
-					v7 = sgbPlayerTurnBitTbl[v3] == 0;
-					plr[v6].plractive = 1;
-					v8 = "Player '%s' (level %d) just joined the game";
-					if (v7)
-						v8 = "Player '%s' (level %d) is already in the game";
-					EventPlrMsg(v8, plr[v6]._pName, plr[v6]._pLevel);
-					LoadPlrGFX(v3, PFILE_STAND);
-					SyncInitPlr(v3);
-					if (plr[v6].plrlevel == currlevel) {
-						if (plr[v6]._pHitPoints >> 6 <= 0) {
-							plr[v6]._pgfxnum = 0;
-							LoadPlrGFX(v3, PFILE_DEATH);
-							v9 = plr[v6]._pDWidth;
-							v10 = plr[v6]._pDAnim[0];
-							plr[v6]._pmode = 8;
-							NewPlrAnim(v3, v10, plr[v6]._pDFrames, 1, v9);
-							v11 = plr[v6]._pAnimLen;
-							v12 = v11 - 1;
-							plr[v6]._pVar8 = 2 * v11;
-							v13 = plr[v6].WorldX;
-							plr[v6]._pAnimFrame = v12;
-							dFlags[v13][plr[v6].WorldY] |= DFLAG_DEAD_PLAYER;
-						} else {
-							StartStand(v3, 0);
-						}
-					}
-				}
-			}
+	if(myplr == pnum) {
+		return;
+	}
+	/// ASSERT: assert((DWORD)pnum < MAX_PLRS);
+
+	if(sgwPackPlrOffsetTbl[pnum] != p->wOffset) {
+		sgwPackPlrOffsetTbl[pnum] = 0;
+		if(p->wOffset != 0) {
+			return;
 		}
 	}
+	if(!recv && sgwPackPlrOffsetTbl[pnum] == 0) {
+		multi_send_pinfo(pnum, CMD_ACK_PLRINFO);
+	}
+
+	memcpy((char *)&netplr[pnum] + p->wOffset, &p[1], p->wBytes); /* todo: cast? */
+	sgwPackPlrOffsetTbl[pnum] += p->wBytes;
+	if(sgwPackPlrOffsetTbl[pnum] != sizeof(*netplr)) {
+		return;
+	}
+
+	sgwPackPlrOffsetTbl[pnum] = 0;
+	multi_player_left_msg(pnum, 0);
+	plr[pnum]._pGFXLoad = 0;
+	UnPackPlayer(&netplr[pnum], pnum, 1);
+
+	if(!recv) {
+#ifdef _DEBUG
+		dumphist("(%d) received all %d plrinfo", myplr, pnum);
+#endif
+		return;
+	}
+
+	plr[pnum].plractive = 1;
+	gbActivePlayers++;
+
+	if(sgbPlayerTurnBitTbl[pnum] != 0) {
+		szEvent = "Player '%s' (level %d) just joined the game";
+	} else {
+		szEvent = "Player '%s' (level %d) is already in the game";
+	}
+	EventPlrMsg(szEvent, plr[pnum]._pName, plr[pnum]._pLevel);
+
+	LoadPlrGFX(pnum, PFILE_STAND);
+	SyncInitPlr(pnum);
+
+	if(plr[pnum].plrlevel == currlevel) {
+		if(plr[pnum]._pHitPoints >> 6 > 0) {
+			StartStand(pnum, 0);
+		} else {
+			plr[pnum]._pgfxnum = 0;
+			LoadPlrGFX(pnum, PFILE_DEATH);
+			plr[pnum]._pmode = PM_DEATH;
+			NewPlrAnim(pnum, plr[pnum]._pDAnim[0], plr[pnum]._pDFrames, 1, plr[pnum]._pDWidth);
+			plr[pnum]._pAnimFrame = plr[pnum]._pAnimLen - 1;
+			plr[pnum]._pVar8 = 2 * plr[pnum]._pAnimLen;
+			dFlags[plr[pnum].WorldX][plr[pnum].WorldY] |= DFLAG_DEAD_PLAYER;
+		}
+	}
+#ifdef _DEBUG
+	dumphist("(%d) making %d active -- recv_plrinfo", myplr, pnum);
+#endif
 }
 
 DEVILUTION_END_NAMESPACE

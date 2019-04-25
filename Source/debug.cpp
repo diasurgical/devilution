@@ -1,6 +1,4 @@
-//HEADER_GOES_HERE
-
-#include "../types.h"
+#include "diablo.h"
 
 DEVILUTION_BEGIN_NAMESPACE
 
@@ -17,9 +15,7 @@ void LoadDebugGFX()
 
 void FreeDebugGFX()
 {
-	void *temp = pSquareCel;
-	pSquareCel = NULL;
-	mem_free_dbg(temp);
+	MemFreeDbg(pSquareCel);
 }
 
 void CheckDungeonClear()
