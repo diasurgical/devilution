@@ -45,9 +45,9 @@ void __cdecl dumphist(const char *pszFmt, ...)
 
 	va_start(va, pszFmt);
 
-	if(sgpHistFile == NULL) {
+	if (sgpHistFile == NULL) {
 		sgpHistFile = fopen("c:\\dumphist.txt", "wb");
-		if(sgpHistFile == NULL) {
+		if (sgpHistFile == NULL) {
 			return;
 		}
 	}
@@ -56,16 +56,16 @@ void __cdecl dumphist(const char *pszFmt, ...)
 	fprintf(sgpHistFile, "%4u.%02u  ", (dwTicks - gdwHistTicks) / 1000, (dwTicks - gdwHistTicks) % 1000 / 10);
 	vfprintf(sgpHistFile, pszFmt, va);
 	fprintf(
-		sgpHistFile,
-		"\r\n          (%d,%d)(%d,%d)(%d,%d)(%d,%d)\r\n",
-		plr[0].plractive,
-		player_state[0],
-		plr[1].plractive,
-		player_state[1],
-		plr[2].plractive,
-		player_state[2],
-		plr[3].plractive,
-		player_state[3]);
+	    sgpHistFile,
+	    "\r\n          (%d,%d)(%d,%d)(%d,%d)(%d,%d)\r\n",
+	    plr[0].plractive,
+	    player_state[0],
+	    plr[1].plractive,
+	    player_state[1],
+	    plr[2].plractive,
+	    player_state[2],
+	    plr[3].plractive,
+	    player_state[3]);
 	fflush(sgpHistFile);
 }
 #endif
@@ -824,23 +824,16 @@ void multi_send_pinfo(int pnum, char cmd)
 
 int InitNewSeed(int newseed)
 {
-	int result; // eax
+	if (newseed == 0)
+		return 0;
+	if (newseed >= 1 && newseed <= 4)
+		return 1;
+	if (newseed >= 5 && newseed <= 8)
+		return 2;
+	if (newseed >= 9 && newseed <= 12)
+		return 3;
 
-	result = 0;
-	if (newseed) {
-		result = 1;
-		if (newseed < 1 || newseed > 4) {
-			if (newseed < 5 || newseed > 8) {
-				if (newseed < 9 || newseed > 12)
-					result = 4;
-				else
-					result = 3;
-			} else {
-				result = 2;
-			}
-		}
-	}
-	return result;
+	return 4;
 }
 
 void SetupLocalCoords()
@@ -967,24 +960,24 @@ void recv_plrinfo(int pnum, TCmdPlrInfoHdr *p, BOOL recv)
 {
 	char *szEvent;
 
-	if(myplr == pnum) {
+	if (myplr == pnum) {
 		return;
 	}
 	/// ASSERT: assert((DWORD)pnum < MAX_PLRS);
 
-	if(sgwPackPlrOffsetTbl[pnum] != p->wOffset) {
+	if (sgwPackPlrOffsetTbl[pnum] != p->wOffset) {
 		sgwPackPlrOffsetTbl[pnum] = 0;
-		if(p->wOffset != 0) {
+		if (p->wOffset != 0) {
 			return;
 		}
 	}
-	if(!recv && sgwPackPlrOffsetTbl[pnum] == 0) {
+	if (!recv && sgwPackPlrOffsetTbl[pnum] == 0) {
 		multi_send_pinfo(pnum, CMD_ACK_PLRINFO);
 	}
 
 	memcpy((char *)&netplr[pnum] + p->wOffset, &p[1], p->wBytes); /* todo: cast? */
 	sgwPackPlrOffsetTbl[pnum] += p->wBytes;
-	if(sgwPackPlrOffsetTbl[pnum] != sizeof(*netplr)) {
+	if (sgwPackPlrOffsetTbl[pnum] != sizeof(*netplr)) {
 		return;
 	}
 
@@ -993,7 +986,7 @@ void recv_plrinfo(int pnum, TCmdPlrInfoHdr *p, BOOL recv)
 	plr[pnum]._pGFXLoad = 0;
 	UnPackPlayer(&netplr[pnum], pnum, 1);
 
-	if(!recv) {
+	if (!recv) {
 #ifdef _DEBUG
 		dumphist("(%d) received all %d plrinfo", myplr, pnum);
 #endif
@@ -1003,7 +996,7 @@ void recv_plrinfo(int pnum, TCmdPlrInfoHdr *p, BOOL recv)
 	plr[pnum].plractive = 1;
 	gbActivePlayers++;
 
-	if(sgbPlayerTurnBitTbl[pnum] != 0) {
+	if (sgbPlayerTurnBitTbl[pnum] != 0) {
 		szEvent = "Player '%s' (level %d) just joined the game";
 	} else {
 		szEvent = "Player '%s' (level %d) is already in the game";
@@ -1013,8 +1006,8 @@ void recv_plrinfo(int pnum, TCmdPlrInfoHdr *p, BOOL recv)
 	LoadPlrGFX(pnum, PFILE_STAND);
 	SyncInitPlr(pnum);
 
-	if(plr[pnum].plrlevel == currlevel) {
-		if(plr[pnum]._pHitPoints >> 6 > 0) {
+	if (plr[pnum].plrlevel == currlevel) {
+		if (plr[pnum]._pHitPoints >> 6 > 0) {
 			StartStand(pnum, 0);
 		} else {
 			plr[pnum]._pgfxnum = 0;
