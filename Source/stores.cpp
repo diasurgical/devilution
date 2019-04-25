@@ -502,78 +502,62 @@ void S_ScrollSBuy(int idx)
 
 void PrintStoreItem(ItemStruct *x, int l, char iclr)
 {
-	ItemStruct *v3;   // esi
-	char v5;          // cl
-	char v6;          // cl
-	int v7;           // eax
-	char v8;          // al
-	unsigned char v9; // al
-	char v10;         // al
-	int v11;          // edi
-	char sstr[128];   // [esp+Ch] [ebp-84h]
-	int y;            // [esp+8Ch] [ebp-4h]
+	char sstr[128];
 
-	sstr[0] = 0;
-	v3 = x;
-	y = l;
+	sstr[0] = '\0';
 	if (x->_iIdentified) {
 		if (x->_iMagical != ITEM_QUALITY_UNIQUE) {
-			v5 = x->_iPrePower;
-			if (v5 != -1) {
-				PrintItemPower(v5, v3);
+			if (x->_iPrePower != -1) {
+				PrintItemPower(x->_iPrePower, x);
 				strcat(sstr, tempstr);
 			}
 		}
-		v6 = v3->_iSufPower;
-		if (v6 != -1) {
-			PrintItemPower(v6, v3);
+		if (x->_iSufPower != -1) {
+			PrintItemPower(x->_iSufPower, x);
 			if (sstr[0])
 				strcat(sstr, ",  ");
 			strcat(sstr, tempstr);
 		}
 	}
-	if (v3->_iMiscId == IMISC_STAFF && v3->_iMaxCharges) {
-		sprintf(tempstr, "Charges: %i/%i", v3->_iCharges, v3->_iMaxCharges);
+	if (x->_iMiscId == IMISC_STAFF && x->_iMaxCharges) {
+		sprintf(tempstr, "Charges: %i/%i", x->_iCharges, x->_iMaxCharges);
 		if (sstr[0])
 			strcat(sstr, ",  ");
 		strcat(sstr, tempstr);
 	}
-	if (sstr[0])
-		AddSText(40, y++, 0, sstr, iclr, 0);
-	sstr[0] = 0;
-	if (v3->_iClass == ICLASS_WEAPON)
-		sprintf(sstr, "Damage: %i-%i  ", v3->_iMinDam, v3->_iMaxDam);
-	if (v3->_iClass == ICLASS_ARMOR)
-		sprintf(sstr, "Armor: %i  ", v3->_iAC);
-	v7 = v3->_iMaxDur;
-	if (v7 != 255 && v7) {
-		sprintf(tempstr, "Dur: %i/%i,  ", v3->_iDurability, v3->_iMaxDur);
+	if (sstr[0]) {
+		AddSText(40, l, 0, sstr, iclr, 0);
+		l++;
+	}
+	sstr[0] = '\0';
+	if (x->_iClass == ICLASS_WEAPON)
+		sprintf(sstr, "Damage: %i-%i  ", x->_iMinDam, x->_iMaxDam);
+	if (x->_iClass == ICLASS_ARMOR)
+		sprintf(sstr, "Armor: %i  ", x->_iAC);
+	if (x->_iMaxDur != 255 && x->_iMaxDur) {
+		sprintf(tempstr, "Dur: %i/%i,  ", x->_iDurability, x->_iMaxDur);
 		strcat(sstr, tempstr);
 	} else {
 		strcat(sstr, "Indestructible,  ");
 	}
-	if (!v3->_itype)
-		sstr[0] = 0;
-	if (v3->_iMinStr + (unsigned char)v3->_iMinMag + v3->_iMinDex) {
-		strcpy(tempstr, "Required:");
-		v8 = v3->_iMinStr;
-		if (v8)
-			sprintf(tempstr, "%s %i Str", tempstr, v8);
-		v9 = v3->_iMinMag;
-		if (v9)
-			sprintf(tempstr, "%s %i Mag", tempstr, v9);
-		v10 = v3->_iMinDex;
-		if (v10)
-			sprintf(tempstr, "%s %i Dex", tempstr, v10);
-		strcat(sstr, tempstr);
-	} else {
+	if (!x->_itype)
+		sstr[0] = '\0';
+	if (!(x->_iMinStr + x->_iMinMag + x->_iMinDex)) {
 		strcat(sstr, "No required attributes");
+	} else {
+		strcpy(tempstr, "Required:");
+		if (x->_iMinStr)
+			sprintf(tempstr, "%s %i Str", tempstr, x->_iMinStr);
+		if (x->_iMinMag)
+			sprintf(tempstr, "%s %i Mag", tempstr, x->_iMinMag);
+		if (x->_iMinDex)
+			sprintf(tempstr, "%s %i Dex", tempstr, x->_iMinDex);
+		strcat(sstr, tempstr);
 	}
-	v11 = y;
-	AddSText(40, y, 0, sstr, iclr, 0);
-	if (v3->_iMagical == ITEM_QUALITY_UNIQUE) {
-		if (v3->_iIdentified)
-			AddSText(40, v11 + 1, 0, "Unique Item", iclr, 0);
+	AddSText(40, l, 0, sstr, iclr, 0);
+	if (x->_iMagical == ITEM_QUALITY_UNIQUE) {
+		if (x->_iIdentified)
+			AddSText(40, l + 1, 0, "Unique Item", iclr, 0);
 	}
 }
 
