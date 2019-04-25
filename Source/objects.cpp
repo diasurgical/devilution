@@ -1431,7 +1431,8 @@ void AddTrap(int i, int t)
 {
 	int mt;
 
-	mt = random(148, 1 + currlevel / 3);
+	mt = currlevel / 3 + 1;
+	mt = random(148, mt);
 	if (mt == 0)
 		object[i]._oVar3 = 0; // arrow
 	if (mt == 1)
