@@ -31,8 +31,9 @@
 #include "miniwin/thread.h"
 #include "miniwin/rand.h"
 #include "storm_full.h"
-#include "miniwin/misc_macro.h"
 
+#define MAX_PATH DVL_MAX_PATH
 #ifdef DEVILUTION_ENGINE
+#include "miniwin/misc_macro.h"
 #include "miniwin/com_macro.h"
 #endif

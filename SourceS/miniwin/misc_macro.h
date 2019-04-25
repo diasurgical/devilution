@@ -92,7 +92,6 @@
 #define FILE_SHARE_READ 1
 
 #define OFS_MAXPATHNAME DVL_OFS_MAXPATHNAME
-#define MAX_PATH DVL_MAX_PATH
 
 //
 // Calculate the byte offset of a field in a structure of type type.
