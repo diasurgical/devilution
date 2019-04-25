@@ -1913,23 +1913,22 @@ void Obj_StopAnim(int i)
 
 void Obj_Door(int i)
 {
-	int dy; // edx
-	int dx; // eax
+	int dx, dy;
 
-	if (object[i]._oVar4) {
+	if (!object[i]._oVar4) {
+		object[i]._oMissFlag = FALSE;
+		object[i]._oSelFlag = 3;
+	} else {
 		dy = object[i]._oy;
 		dx = object[i]._ox;
 		object[i]._oSelFlag = 2;
 		object[i]._oMissFlag = TRUE;
-		object[i]._oVar4 = ((dItem[dx][dy] == 0
-		                        && dDead[dx][dy] == 0
-		                        && dPlayer[dx][dy] == 0
-		                        && dMonster[dx][dy] == 0)
-		                       == 0)
-		    + 1;
-	} else {
-		object[i]._oMissFlag = FALSE;
-		object[i]._oSelFlag = 3;
+		object[i]._oVar4 = (((dItem[dx][dy] == 0 ? 1 : 0)
+					& (dDead[dx][dy] == 0 ? 1 : 0)
+					& (dPlayer[dx][dy] == 0 ? 1 : 0)
+					& (dMonster[dx][dy] == 0 ? 1 : 0))
+				== 0)
+			+ 1;
 	}
 }
 
