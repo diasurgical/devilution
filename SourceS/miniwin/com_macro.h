@@ -23,6 +23,7 @@
 
 #define E_FAIL DVL_E_FAIL
 #define S_OK DVL_S_OK
+#define NOERROR DVL_S_OK
 
 #define MAKE_HRESULT DVL_MAKE_HRESULT
 

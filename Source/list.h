@@ -197,7 +197,9 @@ public:
 
 	T *Next()
 	{
+		if ((int)m_nextNode <= 0)
 			return NULL;
+		return m_nextNode;
 	}
 
 	TLink<T> *NextLink(size_t offset = -1)
