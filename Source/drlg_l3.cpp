@@ -1453,263 +1453,192 @@ void DRLG_L3PlaceRndSet(const unsigned char *miniset, int rndper)
 
 void DRLG_L3Wood()
 {
-	char *v0;      // edi
-	int v1;        // edx
-	_BYTE *v2;     // eax
-	int v3;        // edx
-	_BYTE *v4;     // ebx
-	int v5;        // esi
-	int v6;        // esi
-	int v7;        // ebx
-	int v8;        // ebx
-	signed int v9; // esi
-	_BYTE *v10;    // eax
-	int v11;       // esi
-	int v12;       // ebx
-	int v13;       // eax
-	_BYTE *v14;    // ecx
-	int v15;       // ecx
-	int v16;       // eax
-	int v17;       // esi
-	int v18;       // esi
-	//int v19; // eax
-	int v20;        // edi
-	int v21;        // esi
-	int i;          // edx
-	int v23;        // esi
-	int v24;        // edi
-	signed int v25; // ecx
-	int v26;        // ebx
-	char *v27;      // esi
-	int v28;        // ecx
-	int v29;        // edi
-	int v30;        // ecx
-	int v31;        // edi
-	int v32;        // ebx
-	int v33;        // ebx
-	char *v34;      // esi
-	signed int v35; // ecx
-	int v36;        // [esp+Ch] [ebp-14h]
-	int v37;        // [esp+10h] [ebp-10h]
-	int v38;        // [esp+10h] [ebp-10h]
-	int v39;        // [esp+10h] [ebp-10h]
-	int v40;        // [esp+10h] [ebp-10h]
-	int v41;        // [esp+10h] [ebp-10h]
-	int x;          // [esp+14h] [ebp-Ch]
-	int xa;         // [esp+14h] [ebp-Ch]
-	signed int v44; // [esp+18h] [ebp-8h]
-	signed int v45; // [esp+18h] [ebp-8h]
-	int y;          // [esp+1Ch] [ebp-4h]
-	signed int ya;  // [esp+1Ch] [ebp-4h]
+	int i, j, x, y, xx, yy, rt, rp, x1, y1, x2, y2;
+	BOOL skip;
 
-	y = 0;
-	do {
-		x = 0;
-		v44 = 1;
-		v0 = (char *)dungeon + y;
-		do {
-			if (*v0 == 10 && random(0, 2)) {
-				v1 = v44 - 1;
-				if (*v0 == 10) {
-					v2 = (unsigned char *)v0;
-					do {
-						v2 += 40;
-						++v1;
-					} while (*v2 == 10);
+	for(j = 0; j < DMAXY - 1; j++) {
+		for(i = 0; i < DMAXX - 1; i++) {
+			if(dungeon[i][j] == 10 && random(0, 2) != 0) {
+				x = i;
+				while(dungeon[x][j] == 10) {
+					x++;
 				}
-				v3 = v1 - 1;
-				v37 = v3;
-				if (v3 - (v44 - 1) > 0) {
-					*v0 = 127;
-					if (v44 < v3) {
-						v4 = (unsigned char *)v0 + 40;
-						v5 = v3 - v44;
-						do {
-							*v4 = random(0, 2) != 0 ? 126 : -127;
-							v4 += 40;
-							--v5;
-						} while (v5);
-					}
-					dungeon[v37][y] = -128;
-				}
-			}
-			if (*v0 == 9 && random(0, 2)) {
-				v6 = y;
-				v7 = y;
-				if (*v0 == 9) {
-					do
-						++v7;
-					while (dungeon[x][v7] == 9);
-				}
-				v8 = v7 - 1;
-				if (v8 - y > 0) {
-					*v0 = 123;
-					while (++v6 < v8) {
-						if (random(0, 2))
-							dungeon[x][v6] = 121;
-						else
-							dungeon[x][v6] = 124;
-					}
-					dungeon[x][v8] = 122;
-				}
-			}
-			if (*v0 == 11 && v0[40] == 10 && v0[1] == 9 && random(0, 2)) {
-				v9 = v44;
-				*v0 = 125;
-				if (v0[40] == 10) {
-					v10 = (unsigned char *)v0 + 40;
-					do {
-						v10 += 40;
-						++v9;
-					} while (*v10 == 10);
-				}
-				v11 = v9 - 1;
-				if (v44 < v11) {
-					v38 = (int)(v0 + 40);
-					v12 = v11 - v44;
-					do {
-						v13 = random(0, 2);
-						v14 = (_BYTE *)v38;
-						v38 += 40;
-						--v12;
-						*v14 = v13 != 0 ? 126 : -127;
-					} while (v12);
-				}
-				v15 = v11;
-				v16 = y + 1;
-				v17 = v16;
-				for (dungeon[v15][v16 - 1] = 128; dungeon[x][v17] == 9; ++v17) /* check  *((_BYTE *)&dMonster[111][2 * v15 + 111] + v16 + 3) */
-					;
-				v18 = v17 - 1;
-				v39 = y + 1;
-				if (v16 < v18) {
-					do {
-						if (random(0, 2))
-							dungeon[x][v39] = 121;
-						else
-							dungeon[x][v39] = 124;
-						++v39;
-					} while (v39 < v18);
-				}
-				dungeon[x][v18] = 122;
-			}
-			++v44;
-			++x;
-			v0 += 40;
-		} while (v44 - 1 < 39);
-		++y;
-	} while (y < 39);
-	ya = 0;
-	do {
-		xa = 0;
-		v45 = 0;
-		do {
-			if (dungeon[v45][ya] != 7)
-				goto LABEL_112;
-			if (random(0, 1))
-				goto LABEL_112;
-			//_LOBYTE(v19) = SkipThemeRoom(xa, ya);
-			if (!SkipThemeRoom(xa, ya))
-				goto LABEL_112;
-			v36 = random(0, 2);
-			if (!v36) {
-				v20 = ya;
-				v21 = ya;
-				for (i = ya; WoodVertU(xa, i); i = v21)
-					--v21;
-				v23 = v21 + 1;
-				while (WoodVertD(xa, v20))
-					++v20;
-				v24 = v20 - 1;
-				v25 = 1;
-				if (dungeon[v45][v23] == 7)
-					v25 = 0;
-				if (dungeon[v45][v24] == 7)
-					v25 = 0;
-				if (v24 - v23 <= 1)
-					goto LABEL_112;
-				if (!v25)
-					goto LABEL_112;
-				v40 = random(0, v24 - v23 - 1) + v23 + 1;
-				v26 = v23;
-				if (v23 > v24)
-					goto LABEL_112;
-				do {
-					if (v26 != v40) {
-						v27 = (char *)&dungeon[v45][v26];
-						if (*v27 == 7)
-							*v27 = random(0, 2) != 0 ? -121 : -119;
-						if (*v27 == 10)
-							*v27 = -125;
-						if (*v27 == 126)
-							*v27 = -123;
-						if (*v27 == -127)
-							*v27 = -123;
-						if (*v27 == 2)
-							*v27 = -117;
-						if (*v27 == -122)
-							*v27 = -118;
-						if (*v27 == -120)
-							*v27 = -118;
-					}
-					++v26;
-				} while (v26 <= v24);
-			}
-			if (v36 == 1) {
-				v28 = xa;
-				v29 = xa;
-				while (WoodHorizL(v28, ya))
-					v28 = --v29;
-				v30 = xa;
-				v31 = v29 + 1;
-				v32 = xa;
-				while (WoodHorizR(v30, ya))
-					v30 = ++v32;
-				v33 = v32 - 1;
-				v34 = (char *)&dungeon[v31][ya];
-				v35 = 1;
-				if (*v34 == 7)
-					v35 = 0;
-				if (dungeon[v33][ya] == 7)
-					v35 = 0;
-				if (v33 - v31 > 1 && v35) {
-					v41 = random(0, v33 - v31 - 1) + v31 + 1;
-					while (1) {
-						if (v31 > v33)
-							break;
-						if (v31 != v41) {
-							if (*v34 == 7) {
-								if (random(0, 2)) {
-									*v34 = -122;
-									goto LABEL_110;
-								}
-								*v34 = -120;
-							}
-							if (*v34 == 9)
-								*v34 = -126;
-							if (*v34 == 121)
-								*v34 = -124;
-							if (*v34 == 124)
-								*v34 = -124;
-							if (*v34 == 4)
-								*v34 = -116;
-							if (*v34 == -121)
-								*v34 = -118;
-							if (*v34 == -119)
-								*v34 = -118;
+				x--;
+				if(x - i > 0) {
+					dungeon[i][j] = 127;
+					for(xx = i + 1; xx < x; xx++) {
+						if(random(0, 2) != 0) {
+							dungeon[xx][j] = 126;
+						} else {
+							dungeon[xx][j] = 129;
 						}
-					LABEL_110:
-						++v31;
-						v34 += 40;
+					}
+					dungeon[x][j] = 128;
+				}
+			}
+			if(dungeon[i][j] == 9 && random(0, 2) != 0) {
+				y = j;
+				while(dungeon[i][y] == 9) {
+					y++;
+				}
+				y--;
+				if(y - j > 0) {
+					dungeon[i][j] = 123;
+					for(yy = j + 1; yy < y; yy++) {
+						if(random(0, 2) != 0) {
+							dungeon[i][yy] = 121;
+						} else {
+							dungeon[i][yy] = 124;
+						}
+					}
+					dungeon[i][y] = 122;
+				}
+			}
+			if(dungeon[i][j] == 11 && dungeon[i + 1][j] == 10 && dungeon[i][j + 1] == 9 && random(0, 2) != 0) {
+				dungeon[i][j] = 125;
+				x = i + 1;
+				while(dungeon[x][j] == 10) {
+					x++;
+				}
+				x--;
+				for(xx = i + 1; xx < x; xx++) {
+					if(random(0, 2) != 0) {
+						dungeon[xx][j] = 126;
+					} else {
+						dungeon[xx][j] = 129;
+					}
+				}
+				dungeon[x][j] = 128;
+				y = j + 1;
+				while(dungeon[i][y] == 9) {
+					y++;
+				}
+				y--;
+				for(yy = j + 1; yy < y; yy++) {
+					if(random(0, 2) != 0) {
+						dungeon[i][yy] = 121;
+					} else {
+						dungeon[i][yy] = 124;
+					}
+				}
+				dungeon[i][y] = 122;
+			}
+		}
+	}
+
+	for(j = 0; j < DMAXY; j++) {
+		for(i = 0; i < DMAXX; i++) {
+			if(dungeon[i][j] != 7 || random(0, 1) != 0 || !SkipThemeRoom(i, j)) {
+				continue;
+			}
+			rt = random(0, 2);
+			if(rt == 0) {
+				y1 = j;
+				while(WoodVertU(i, y1)) {
+					y1--;
+				}
+				y1++;
+				y2 = j;
+				while(WoodVertD(i, y2)) {
+					y2++;
+				}
+				y2--;
+				skip = TRUE;
+				if(dungeon[i][y1] == 7) {
+					skip = FALSE;
+				}
+				if(dungeon[i][y2] == 7) {
+					skip = FALSE;
+				}
+				if(y2 - y1 > 1 && skip) {
+					rp = random(0, y2 - y1 - 1) + y1 + 1;
+					for(y = y1; y <= y2; y++) {
+						if(y == rp) {
+							continue;
+						}
+						if(dungeon[i][y] == 7) {
+							if(random(0, 2) != 0) {
+								dungeon[i][y] = 135;
+							} else {
+								dungeon[i][y] = 137;
+							}
+						}
+						if(dungeon[i][y] == 10) {
+							dungeon[i][y] = 131;
+						}
+						if(dungeon[i][y] == 126) {
+							dungeon[i][y] = 133;
+						}
+						if(dungeon[i][y] == 129) {
+							dungeon[i][y] = 133;
+						}
+						if(dungeon[i][y] == 2) {
+							dungeon[i][y] = 139;
+						}
+						if(dungeon[i][y] == 134) {
+							dungeon[i][y] = 138;
+						}
+						if(dungeon[i][y] == 136) {
+							dungeon[i][y] = 138;
+						}
 					}
 				}
 			}
-		LABEL_112:
-			++v45;
-			++xa;
-		} while (v45 < 40);
-		++ya;
-	} while (ya < 40);
+			if(rt == 1) {
+				x1 = i;
+				while(WoodHorizL(x1, j)) {
+					x1--;
+				}
+				x1++;
+				x2 = i;
+				while(WoodHorizR(x2, j)) {
+					x2++;
+				}
+				x2--;
+				skip = TRUE;
+				if(dungeon[x1][j] == 7) {
+					skip = FALSE;
+				}
+				if(dungeon[x2][j] == 7) {
+					skip = FALSE;
+				}
+				if(x2 - x1 > 1 && skip) {
+					rp = random(0, x2 - x1 - 1) + x1 + 1;
+					for(x = x1; x <= x2; x++) {
+						if(x == rp) {
+							continue;
+						}
+						if(dungeon[x][j] == 7) {
+							if(random(0, 2) != 0) {
+								dungeon[x][j] = 134;
+							} else {
+								dungeon[x][j] = 136;
+							}
+						}
+						if(dungeon[x][j] == 9) {
+							dungeon[x][j] = 130;
+						}
+						if(dungeon[x][j] == 121) {
+							dungeon[x][j] = 132;
+						}
+						if(dungeon[x][j] == 124) {
+							dungeon[x][j] = 132;
+						}
+						if(dungeon[x][j] == 4) {
+							dungeon[x][j] = 140;
+						}
+						if(dungeon[x][j] == 135) {
+							dungeon[x][j] = 138;
+						}
+						if(dungeon[x][j] == 137) {
+							dungeon[x][j] = 138;
+						}
+					}
+				}
+			}
+		}
+	}
+
 	AddFenceDoors();
 	FenceDoorFix();
 }
