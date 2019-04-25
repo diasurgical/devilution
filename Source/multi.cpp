@@ -232,22 +232,18 @@ void multi_msg_countdown()
 
 void multi_parse_turn(int pnum, int turn)
 {
-	int v2;          // esi
-	unsigned int v3; // esi
+	DWORD absTurns;
 
-	v2 = turn;
-	if (turn < 0)
+	if (turn >> 31)
 		multi_handle_turn_upper_bit(pnum);
-	v3 = v2 & 0x7FFFFFFF;
-	if (sgbSentThisCycle < gdwTurnsInTransit + v3) {
-		if (v3 >= 0x7FFFFFFF)
-			v3 = (unsigned short)v3;
-		sgbSentThisCycle = v3 + gdwTurnsInTransit;
-		sgdwGameLoops = 4 * v3 * (unsigned char)byte_679704;
+	absTurns = turn & 0x7FFFFFFF;
+	if (sgbSentThisCycle < gdwTurnsInTransit + absTurns) {
+		if (absTurns >= 0x7FFFFFFF)
+			absTurns &= 0xFFFF;
+		sgbSentThisCycle = absTurns + gdwTurnsInTransit;
+		sgdwGameLoops = 4 * absTurns * (BYTE)byte_679704;
 	}
 }
-// 679704: using guessed type char byte_679704;
-// 679738: using guessed type int gdwTurnsInTransit;
 
 void multi_handle_turn_upper_bit(int pnum)
 {
