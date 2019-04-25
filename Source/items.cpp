@@ -1587,58 +1587,40 @@ void CalcItemValue(int i)
 
 void GetBookSpell(int i, int lvl)
 {
-	int v2;          // edi
-	int v3;          // esi
-	int v4;          // eax
-	int v5;          // edx
-	signed int v6;   // ecx
-	int v7;          // esi
-	const char **v8; // ebx
-	int v9;          // eax
-	char v10;        // al
-	int v11;         // [esp+8h] [ebp-4h]
+	int rv, s, bs;
 
-	v2 = lvl;
-	v3 = i;
 	if (!lvl)
-		v2 = lvl + 1;
-	v4 = random(14, MAX_SPELLS) + 1;
-LABEL_13:
-	v6 = 1;
-	while (v4 > 0) {
-		v5 = spelldata[v6].sBookLvl;
-		if (v5 != -1 && v2 >= v5) {
-			--v4;
-			v11 = v6;
+		lvl = 1;
+	rv = random(14, MAX_SPELLS) + 1;
+	s = 1;
+	while (rv > 0) {
+		if (spelldata[s].sBookLvl != -1 && lvl >= spelldata[s].sBookLvl) {
+			rv--;
+			bs = s;
 		}
-		++v6;
+		s++;
 		if (gbMaxPlayers == 1) {
-			if (v6 == SPL_RESURRECT)
-				v6 = SPL_TELEKINESIS;
-			if (v6 == SPL_HEALOTHER)
-				v6 = SPL_FLARE;
+			if (s == SPL_RESURRECT)
+				s = SPL_TELEKINESIS;
+			if (s == SPL_HEALOTHER)
+				s = SPL_FLARE;
 		}
-		if (v6 == MAX_SPELLS)
-			goto LABEL_13;
+		if (s == MAX_SPELLS)
+			s = 1;
 	}
-	v7 = v3;
-	v8 = (const char **)&spelldata[v11].sNameText;
-	strcat(item[v7]._iName, *v8);
-	strcat(item[v7]._iIName, *v8);
-	item[v7]._iSpell = v11;
-	item[v7]._iMinMag = spelldata[v11].sMinInt;
-	v9 = spelldata[v11].sBookCost;
-	item[v7]._ivalue += v9;
-	item[v7]._iIvalue += v9;
-	v10 = spelldata[v11].sType;
-	if (v10 == STYPE_FIRE)
-		item[v7]._iCurs = ICURS_BOOK_RED;
-	if (v10 == STYPE_LIGHTNING)
-		item[v7]._iCurs = ICURS_BOOK_BLUE;
-	if (v10 == STYPE_MAGIC)
-		item[v7]._iCurs = ICURS_BOOK_GREY;
+	strcat(item[i]._iName, spelldata[bs].sNameText);
+	strcat(item[i]._iIName, spelldata[bs].sNameText);
+	item[i]._iSpell = bs;
+	item[i]._iMinMag = spelldata[bs].sMinInt;
+	item[i]._ivalue += spelldata[bs].sBookCost;
+	item[i]._iIvalue += spelldata[bs].sBookCost;
+	if (spelldata[bs].sType == STYPE_FIRE)
+		item[i]._iCurs = ICURS_BOOK_RED;
+	if (spelldata[bs].sType == STYPE_LIGHTNING)
+		item[i]._iCurs = ICURS_BOOK_BLUE;
+	if (spelldata[bs].sType == STYPE_MAGIC)
+		item[i]._iCurs = ICURS_BOOK_GREY;
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 void GetStaffPower(int i, int lvl, int bs, unsigned char onlygood)
 {
