@@ -1565,24 +1565,20 @@ void GetSuperItemLoc(int x, int y, int *xx, int *yy)
 
 void CalcItemValue(int i)
 {
-	int v1;     // ecx
-	int v2;     // esi
-	BOOLEAN v3; // sf
-	int v4;     // esi
+	int v;
 
-	v1 = i;
-	v2 = item[v1]._iVMult1 + item[v1]._iVMult2;
-	v3 = v2 < 0;
-	if (v2 > 0) {
-		v2 *= item[v1]._ivalue;
-		v3 = v2 < 0;
+	v = item[i]._iVMult1 + item[i]._iVMult2;
+	if (v > 0) {
+		v *= item[i]._ivalue;
 	}
-	if (v3)
-		v2 = item[v1]._ivalue / v2;
-	v4 = item[v1]._iVAdd1 + item[v1]._iVAdd2 + v2;
-	if (v4 <= 0)
-		v4 = 1;
-	item[v1]._iIvalue = v4;
+	if (v < 0) {
+		v = item[i]._ivalue / v;
+	}
+	v = item[i]._iVAdd1 + item[i]._iVAdd2 + v;
+	if (v <= 0) {
+		v = 1;
+	}
+	item[i]._iIvalue = v;
 }
 
 void GetBookSpell(int i, int lvl)
