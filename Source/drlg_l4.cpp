@@ -1435,104 +1435,48 @@ void DRLG_L4Subs()
 
 void L4makeDungeon()
 {
-	signed int v0;  // ebx
-	signed int v1;  // esi
-	char *v2;       // edx
-	char v3;        // cl
-	int v4;         // eax
-	int v5;         // eax
-	int v6;         // ebx
-	char *v7;       // esi
-	signed int v8;  // edx
-	char v9;        // cl
-	int v10;        // eax
-	int v11;        // eax
-	signed int v12; // ebx
-	signed int v13; // esi
-	char *v14;      // edx
-	char v15;       // cl
-	int v16;        // eax
-	int v17;        // eax
-	int v18;        // ebx
-	char *v19;      // esi
-	signed int v20; // edx
-	char v21;       // cl
-	int v22;        // eax
-	int v23;        // eax
-	signed int v24; // [esp+Ch] [ebp-8h]
-	char *v25;      // [esp+10h] [ebp-4h]
-	char *v26;      // [esp+10h] [ebp-4h]
+	int i, j, k, l;
 
-	v0 = 0;
-	do {
-		v1 = 0;
-		v2 = (char *)dung + v0;
-		do {
-			v3 = *v2;
-			v2 += 20;
-			v4 = 160 * v1++;
-			v5 = v4 + 2 * v0;
-			L4dungeon[0][v5] = v3;
-			L4dungeon[0][v5 + 1] = v3;
-			L4dungeon[1][v5] = v3;
-			L4dungeon[1][v5 + 1] = v3;
-		} while (v1 < 20);
-		++v0;
-	} while (v0 < 20);
-	v6 = 0;
-	v25 = (char *)&dung[0][19];
-	v24 = 20;
-	do {
-		v7 = v25;
-		v8 = 0;
-		do {
-			v9 = *v7;
-			v7 += 20;
-			v10 = 160 * v8++;
-			v11 = v10 + 2 * v6;
-			L4dungeon[0][v11 + 40] = v9;
-			L4dungeon[0][v11 + 41] = v9;
-			L4dungeon[1][v11 + 40] = v9;
-			L4dungeon[1][v11 + 41] = v9;
-		} while (v8 < 20);
-		++v6;
-		--v25;
-		--v24;
-	} while (v24);
-	v12 = 0;
-	do {
-		v13 = 0;
-		v14 = (char *)&dung[19][v12];
-		do {
-			v15 = *v14;
-			v14 -= 20;
-			v16 = 160 * v13++;
-			v17 = v16 + 2 * v12;
-			L4dungeon[40][v17] = v15;
-			L4dungeon[40][v17 + 1] = v15;
-			L4dungeon[41][v17] = v15;
-			L4dungeon[41][v17 + 1] = v15;
-		} while (v13 < 20);
-		++v12;
-	} while (v12 < 20);
-	v18 = 0;
-	v26 = (char *)&dung[19][19];
-	do {
-		v19 = v26;
-		v20 = 0;
-		do {
-			v21 = *v19;
-			v19 -= 20;
-			v22 = 160 * v20++;
-			v23 = v22 + 2 * v18;
-			L4dungeon[40][v23 + 40] = v21;
-			L4dungeon[40][v23 + 41] = v21;
-			L4dungeon[41][v23 + 40] = v21;
-			L4dungeon[41][v23 + 41] = v21;
-		} while (v20 < 20);
-		++v18;
-		--v26;
-	} while ((signed int)v26 > (signed int)&dung[18][19]);
+	for(j = 0; j < 20; j++) {
+		for(i = 0; i < 20; i++) {
+			k = i << 1;
+			l = j << 1;
+			L4dungeon[k][l] = dung[i][j];
+			L4dungeon[k][l + 1] = dung[i][j];
+			L4dungeon[k + 1][l] = dung[i][j];
+			L4dungeon[k + 1][l + 1] = dung[i][j];
+		}
+	}
+	for(j = 0; j < 20; j++) {
+		for(i = 0; i < 20; i++) {
+			k = i << 1;
+			l = j << 1;
+			L4dungeon[k][l + 40] = dung[i][19 - j];
+			L4dungeon[k][l + 41] = dung[i][19 - j];
+			L4dungeon[k + 1][l + 40] = dung[i][19 - j];
+			L4dungeon[k + 1][l + 41] = dung[i][19 - j];
+		}
+	}
+	for(j = 0; j < 20; j++) {
+		for(i = 0; i < 20; i++) {
+			k = i << 1;
+			l = j << 1;
+			L4dungeon[k + 40][l] = dung[19 - i][j];
+			L4dungeon[k + 40][l + 1] = dung[19 - i][j];
+			L4dungeon[k + 41][l] = dung[19 - i][j];
+			L4dungeon[k + 41][l + 1] = dung[19 - i][j];
+		}
+	}
+	for(j = 0; j < 20; j++) {
+		for(i = 0; i < 20; i++) {
+			k = i << 1;
+			l = j << 1;
+			L4dungeon[k + 40][l + 40] = dung[19 - i][19 - j];
+			L4dungeon[k + 40][l + 41] = dung[19 - i][19 - j];
+			L4dungeon[k + 41][l + 40] = dung[19 - i][19 - j];
+			L4dungeon[k + 41][l + 41] = dung[19 - i][19 - j];
+		}
+	}
 }
 
 void uShape()
