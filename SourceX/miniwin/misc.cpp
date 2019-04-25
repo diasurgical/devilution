@@ -48,6 +48,11 @@ int _strcmpi(const char *_Str1, const char *_Str2)
 	return strcasecmp(_Str1, _Str2);
 }
 
+int _strnicmp(const char *_Str1, const char *_Str2, int n) {
+	DUMMY();
+	return strcasecmp(_Str1, _Str2);
+}
+
 char *_itoa(int _Value, char *_Dest, int _Radix)
 {
 	switch (_Radix) {

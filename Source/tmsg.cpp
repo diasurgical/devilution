@@ -6,7 +6,7 @@ DEVILUTION_BEGIN_NAMESPACE
 
 static TMsg *sgpTimedMsgHead;
 
-int __fastcall tmsg_get(BYTE *pbMsg, DWORD dwMaxLen)
+int tmsg_get(BYTE *pbMsg, DWORD dwMaxLen)
 {
 	int len;
 	TMsg *head;
@@ -25,7 +25,7 @@ int __fastcall tmsg_get(BYTE *pbMsg, DWORD dwMaxLen)
 	return len;
 }
 
-void __fastcall tmsg_add(BYTE *pbMsg, BYTE bLen)
+void tmsg_add(BYTE *pbMsg, BYTE bLen)
 {
 	TMsg **tail;
 
@@ -40,7 +40,7 @@ void __fastcall tmsg_add(BYTE *pbMsg, BYTE bLen)
 	*tail = msg;
 }
 
-void *__cdecl tmsg_cleanup()
+void *tmsg_cleanup()
 {
 	while (sgpTimedMsgHead) {
 		TMsg *next = sgpTimedMsgHead->hdr.pNext;

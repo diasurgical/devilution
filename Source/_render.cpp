@@ -1,4 +1,4 @@
-__declspec(naked) void __fastcall drawTopArchesUpperScreen(BYTE *pBuff)
+__declspec(naked) void drawTopArchesUpperScreen(BYTE *pBuff)
 {
 	__asm {
 		push	ebx
@@ -2303,7 +2303,7 @@ __declspec(naked) void __fastcall drawTopArchesUpperScreen(BYTE *pBuff)
 	}
 }
 
-__declspec(naked) void __fastcall drawBottomArchesUpperScreen(BYTE *pBuff, unsigned int *pMask)
+__declspec(naked) void drawBottomArchesUpperScreen(BYTE *pBuff, unsigned int *pMask)
 {
 	__asm {
 		push	ebx
@@ -3460,7 +3460,7 @@ __declspec(naked) void __fastcall drawBottomArchesUpperScreen(BYTE *pBuff, unsig
 	}
 }
 
-__declspec(naked) void __fastcall drawUpperScreen(BYTE *pBuff)
+__declspec(naked) void drawUpperScreen(BYTE *pBuff)
 {
 	__asm {
 		push	ebx
@@ -4646,7 +4646,7 @@ __declspec(naked) void __fastcall drawUpperScreen(BYTE *pBuff)
 	}
 }
 
-__declspec(naked) void __fastcall drawTopArchesLowerScreen(BYTE *pBuff)
+__declspec(naked) void drawTopArchesLowerScreen(BYTE *pBuff)
 {
 	__asm {
 		push	ebx
@@ -7350,7 +7350,7 @@ __declspec(naked) void __fastcall drawTopArchesLowerScreen(BYTE *pBuff)
 	}
 }
 
-__declspec(naked) void __fastcall drawBottomArchesLowerScreen(BYTE *pBuff, unsigned int *pMask)
+__declspec(naked) void drawBottomArchesLowerScreen(BYTE *pBuff, unsigned int *pMask)
 {
 	__asm {
 		push	ebx
@@ -8815,7 +8815,7 @@ __declspec(naked) void __fastcall drawBottomArchesLowerScreen(BYTE *pBuff, unsig
 	}
 }
 
-__declspec(naked) void __fastcall drawLowerScreen(BYTE *pBuff)
+__declspec(naked) void drawLowerScreen(BYTE *pBuff)
 {
 	__asm {
 		push	ebx
@@ -10199,7 +10199,7 @@ __declspec(naked) void __fastcall drawLowerScreen(BYTE *pBuff)
 	}
 }
 
-__declspec(naked) void __fastcall world_draw_black_tile(BYTE *pBuff)
+__declspec(naked) void world_draw_black_tile(BYTE *pBuff)
 {
 	__asm {
 		push	ebx

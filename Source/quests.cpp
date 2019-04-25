@@ -5,7 +5,7 @@
 DEVILUTION_BEGIN_NAMESPACE
 
 int qtopline; // idb
-int questlog; // weak
+BOOL questlog;
 void *pQLogCel;
 QuestStruct quests[MAXQUESTS];
 int qline; // weak
@@ -53,7 +53,7 @@ int QuestGroup2[3] = { QTYPE_BLIND, QTYPE_INFRA, QTYPE_BLOOD };
 int QuestGroup3[3] = { QTYPE_BLKM, QTYPE_ZHAR, QTYPE_ANVIL };
 int QuestGroup4[2] = { QTYPE_VEIL, QTYPE_WARLRD };
 
-void __cdecl InitQuests()
+void InitQuests()
 {
 	int initiatedQuests;
 	int i;
@@ -72,7 +72,7 @@ void __cdecl InitQuests()
 	}
 
 	initiatedQuests = 0;
-	questlog = 0;
+	questlog = FALSE;
 	ALLQUESTS = 1;
 	WaterDone = 0;
 
@@ -129,10 +129,9 @@ void __cdecl InitQuests()
 		quests[QTYPE_VB]._qvar1 = 2;
 }
 // 679660: using guessed type char gbMaxPlayers;
-// 69BD04: using guessed type int questlog;
 // 69BE90: using guessed type int qline;
 
-void __cdecl CheckQuests()
+void CheckQuests()
 {
 	//int v0; // eax
 	unsigned char *v1; // esi
@@ -212,37 +211,37 @@ LABEL_29:
 // 679660: using guessed type char gbMaxPlayers;
 // 69BE90: using guessed type int qline;
 
-BOOLEAN __cdecl ForceQuests()
+BOOL ForceQuests()
 {
-	QuestStruct *v0; // eax
-	int v1;          // esi
-	int v2;          // edi
-	int v3;          // edx
+	int i, j, qx, qy, ql;
 
-	if (gbMaxPlayers != 1)
-		return 0;
-	v0 = (QuestStruct *)((char *)quests + 12);
-	while (v0 == (QuestStruct *)&quests[15]._qslvl || currlevel != v0[-1]._qslvl || !v0->_qlevel) {
-	LABEL_10:
-		++v0;
-		if ((signed int)v0 >= (signed int)&quests[MAXQUESTS]._qslvl) /* fix */
-			return 0;
+	if (gbMaxPlayers != 1) {
+		return FALSE;
 	}
-	v1 = *(_DWORD *)&v0[-1]._qvar2;
-	v2 = v0[-1]._qlog;
-	v3 = 0;
-	while (v1 + questxoff[v3] != cursmx || v2 + questyoff[v3] != cursmy) {
-		if (++v3 >= 7)
-			goto LABEL_10;
+
+	for (i = 0; i < MAXQUESTS; i++) {
+
+		if (i != QTYPE_VB && currlevel == quests[i]._qlevel && quests[i]._qslvl != 0) {
+			ql = quests[quests[i]._qidx]._qslvl - 1;
+			qx = quests[i]._qtx;
+			qy = quests[i]._qty;
+
+			for (j = 0; j < 7; j++) {
+				if (qx + questxoff[j] == cursmx && qy + questyoff[j] == cursmy) {
+					sprintf(infostr, "To %s", questtrigstr[ql]);
+					cursmx = qx;
+					cursmy = qy;
+					return TRUE;
+				}
+			}
+		}
 	}
-	sprintf(infostr, "To %s", questtrigstr[(unsigned char)quests[(unsigned char)v0->_qtype]._qslvl - 1]);
-	cursmx = v1;
-	cursmy = v2;
-	return 1;
+
+	return FALSE;
 }
 // 679660: using guessed type char gbMaxPlayers;
 
-BOOL __fastcall QuestStatus(int i)
+BOOL QuestStatus(int i)
 {
 	BOOL result; // al
 
@@ -257,7 +256,7 @@ BOOL __fastcall QuestStatus(int i)
 // 5CF31D: using guessed type char setlevel;
 // 679660: using guessed type char gbMaxPlayers;
 
-void __fastcall CheckQuestKill(int m, BOOL sendmsg)
+void CheckQuestKill(int m, BOOL sendmsg)
 {
 	int v2;           // ecx
 	char v3;          // al
@@ -325,11 +324,11 @@ void __fastcall CheckQuestKill(int m, BOOL sendmsg)
 					v11 = dPiece;
 					do {
 						v12 = 0;
-						v13 = &trigs[trigflag[4]]._ty;
+						v13 = &trigs[trigflag_4]._ty;
 						v14 = v11;
 						do {
 							if ((*v14)[0] == 370) {
-								++trigflag[4];
+								++trigflag_4;
 								*(v13 - 1) = v12;
 								*v13 = v10;
 								v13[1] = 1026;
@@ -404,12 +403,12 @@ void __fastcall CheckQuestKill(int m, BOOL sendmsg)
 // 52A554: using guessed type int sfxdelay;
 // 679660: using guessed type char gbMaxPlayers;
 
-void __cdecl DrawButcher()
+void DrawButcher()
 {
 	DRLG_RectTrans(2 * setpc_x + 19, 2 * setpc_y + 19, 2 * setpc_x + 26, 2 * setpc_y + 26);
 }
 
-void __fastcall DrawSkelKing(int q, int x, int y)
+void DrawSkelKing(int q, int x, int y)
 {
 	int v3; // eax
 
@@ -418,277 +417,165 @@ void __fastcall DrawSkelKing(int q, int x, int y)
 	quests[v3]._qty = 2 * y + 23;
 }
 
-void __fastcall DrawWarLord(int x, int y)
+void DrawWarLord(int x, int y)
 {
-	int v2;             // esi
-	int v3;             // edi
-	unsigned char *v4;  // eax
-	int v5;             // ebx
-	int v6;             // edx
-	int v7;             // edx
-	char *v8;           // eax
-	int v9;             // ecx
-	char *v10;          // esi
-	char v11;           // bl
-	unsigned char *ptr; // [esp+Ch] [ebp-Ch]
-	int v13;            // [esp+10h] [ebp-8h]
-	int v14;            // [esp+14h] [ebp-4h]
+	int rw, rh;
+	int i, j;
+	unsigned char *sp;
+	unsigned char *setp;
+	int v;
 
-	v2 = y;
-	v3 = x;
-	v4 = LoadFileInMem("Levels\\L4Data\\Warlord2.DUN", 0);
-	v5 = *v4;
-	ptr = v4;
-	v4 += 2;
-	v14 = v2;
-	v6 = *v4;
-	setpc_h = v6;
-	v7 = v2 + v6;
-	v8 = (char *)(v4 + 2);
-	setpc_w = v5;
-	setpc_x = v3;
-	setpc_y = v2;
-	if (v2 < v7) {
-		v13 = v3 + v5;
-		do {
-			if (v3 < v13) {
-				v9 = v13 - v3;
-				v10 = (char *)&dungeon[v3][v14];
-				do {
-					v11 = *v8;
-					if (!*v8)
-						v11 = 6;
-					*v10 = v11;
-					v8 += 2;
-					v10 += 40;
-					--v9;
-				} while (v9);
-			}
-			++v14;
-		} while (v14 < v7);
-	}
-	mem_free_dbg(ptr);
-}
-// 5CF330: using guessed type int setpc_h;
-// 5CF334: using guessed type int setpc_w;
-
-void __fastcall DrawSChamber(int q, int x, int y)
-{
-	int v3;             // esi
-	unsigned char *v4;  // eax
-	int v5;             // edi
-	int v6;             // ebx
-	int v7;             // eax
-	char *v8;           // ecx
-	int v9;             // eax
-	char *v10;          // edx
-	char v11;           // bl
-	int v12;            // edx
-	unsigned char *ptr; // [esp+Ch] [ebp-10h]
-	int v14;            // [esp+10h] [ebp-Ch]
-	int v15;            // [esp+14h] [ebp-8h]
-	int v16;            // [esp+18h] [ebp-4h]
-
-	v3 = x;
-	v14 = q;
-	v4 = LoadFileInMem("Levels\\L2Data\\Bonestr1.DUN", 0);
-	v5 = y;
-	ptr = v4;
-	v6 = y;
-	v7 = *v4;
-	setpc_h = ptr[2];
-	v8 = (char *)(ptr + 4);
-	setpc_w = v7;
-	setpc_x = v3;
+	setp = LoadFileInMem("Levels\\L4Data\\Warlord2.DUN", NULL);
+	rw = *setp;
+	sp = setp + 2;
+	rh = *sp;
+	sp += 2;
+	setpc_w = rw;
+	setpc_h = rh;
+	setpc_x = x;
 	setpc_y = y;
-	v15 = y + setpc_h;
-	if (y < y + setpc_h) {
-		v16 = v3 + v7;
-		do {
-			if (v3 < v16) {
-				v9 = v16 - v3;
-				v10 = (char *)&dungeon[v3][v6];
-				do {
-					v11 = *v8;
-					if (!*v8)
-						v11 = 3;
-					*v10 = v11;
-					v8 += 2;
-					v10 += 40;
-					--v9;
-				} while (v9);
+	for (j = y; j < y+rh; j++) {
+		for (i = x; i < x+rw; i++) {
+			if (*sp != 0) {
+				v = *sp;
+			} else {
+				v = 6;
 			}
-			v6 = y++ + 1;
-		} while (y < v15);
+			dungeon[i][j] = v;
+			sp += 2;
+		}
 	}
-	v12 = v14;
-	quests[v12]._qtx = 2 * v3 + 22;
-	quests[v12]._qty = 2 * v5 + 23;
-	mem_free_dbg(ptr);
+	mem_free_dbg(setp);
 }
 // 5CF330: using guessed type int setpc_h;
 // 5CF334: using guessed type int setpc_w;
 
-void __fastcall DrawLTBanner(int x, int y)
+void DrawSChamber(int q, int x, int y)
 {
-	int v2;             // ebx
-	int v3;             // esi
-	unsigned char *v4;  // eax
-	unsigned char *v5;  // ecx
-	int v6;             // edi
-	int v7;             // edx
-	int v8;             // eax
-	char *v9;           // edx
-	char *v10;          // ecx
-	unsigned char *ptr; // [esp+Ch] [ebp-10h]
-	int v12;            // [esp+10h] [ebp-Ch]
-	int v13;            // [esp+14h] [ebp-8h]
-	int v14;            // [esp+18h] [ebp-4h]
+	int i, j;
+	int rw, rh;
+	int xx, yy;
+	unsigned char *sp;
+	unsigned char *setp;
+	int v;
 
-	v2 = y;
-	v3 = x;
-	v12 = y;
-	v4 = LoadFileInMem("Levels\\L1Data\\Banner1.DUN", 0);
-	v5 = v4;
-	v14 = 0;
-	ptr = v4;
-	v6 = *v4;
-	v7 = (int)(v4 + 2);
-	v8 = v4[2];
-	setpc_w = v6;
-	v9 = (char *)(v7 + 2);
-	setpc_h = v8;
-	setpc_x = v3;
-	setpc_y = v2;
-	if (v8 > 0) {
-		do {
-			if (v6 > 0) {
-				v13 = v6;
-				v10 = &pdungeon[v3][v14 + v12];
-				do {
-					if (*v9)
-						*v10 = *v9;
-					v10 += 40;
-					v9 += 2;
-					--v13;
-				} while (v13);
-				v5 = ptr;
+	setp = LoadFileInMem("Levels\\L2Data\\Bonestr1.DUN", NULL);
+	rw = *setp;
+	sp = setp + 2;
+	rh = *sp;
+	sp += 2;
+	setpc_w = rw;
+	setpc_h = rh;
+	setpc_x = x;
+	setpc_y = y;
+	for (j = y; j < y+rh; j++) {
+		for (i = x; i < x+rw; i++) {
+			if (*sp != 0) {
+				v = *sp;
+			} else {
+				v = 3;
 			}
-			++v14;
-		} while (v14 < v8);
+			dungeon[i][j] = v;
+			sp += 2;
+		}
 	}
-	mem_free_dbg(v5);
+	xx = 2 * x + 22;
+	yy = 2 * y + 23;
+	quests[q]._qtx = xx;
+	quests[q]._qty = yy;
+	mem_free_dbg(setp);
 }
 // 5CF330: using guessed type int setpc_h;
 // 5CF334: using guessed type int setpc_w;
 
-void __fastcall DrawBlind(int x, int y)
+void DrawLTBanner(int x, int y)
 {
-	int v2;             // ebx
-	int v3;             // esi
-	unsigned char *v4;  // eax
-	unsigned char *v5;  // ecx
-	int v6;             // edi
-	int v7;             // edx
-	int v8;             // eax
-	char *v9;           // edx
-	char *v10;          // ecx
-	unsigned char *ptr; // [esp+Ch] [ebp-10h]
-	int v12;            // [esp+10h] [ebp-Ch]
-	int v13;            // [esp+14h] [ebp-8h]
-	int v14;            // [esp+18h] [ebp-4h]
+	int rw, rh;
+	int i, j;
+	unsigned char *sp;
+	unsigned char *setp;
 
-	v2 = y;
-	v3 = x;
-	v12 = y;
-	v4 = LoadFileInMem("Levels\\L2Data\\Blind1.DUN", 0);
-	v5 = v4;
-	v14 = 0;
-	ptr = v4;
-	v6 = *v4;
-	v7 = (int)(v4 + 2);
-	v8 = v4[2];
-	setpc_x = v3;
-	v9 = (char *)(v7 + 2);
-	setpc_y = v2;
-	setpc_w = v6;
-	setpc_h = v8;
-	if (v8 > 0) {
-		do {
-			if (v6 > 0) {
-				v13 = v6;
-				v10 = &pdungeon[v3][v14 + v12];
-				do {
-					if (*v9)
-						*v10 = *v9;
-					v10 += 40;
-					v9 += 2;
-					--v13;
-				} while (v13);
-				v5 = ptr;
+	setp = LoadFileInMem("Levels\\L1Data\\Banner1.DUN", NULL);
+	rw = *setp;
+	sp = setp + 2;
+	rh = *sp;
+	sp += 2;
+	setpc_w = rw;
+	setpc_h = rh;
+	setpc_x = x;
+	setpc_y = y;
+	for (j = 0; j < rh; j++) {
+		for (i = 0; i < rw; i++) {
+			if (*sp != 0) {
+				pdungeon[x+i][y+j] = *sp;
 			}
-			++v14;
-		} while (v14 < v8);
+			sp += 2;
+		}
 	}
-	mem_free_dbg(v5);
+	mem_free_dbg(setp);
 }
 // 5CF330: using guessed type int setpc_h;
 // 5CF334: using guessed type int setpc_w;
 
-void __fastcall DrawBlood(int x, int y)
+void DrawBlind(int x, int y)
 {
-	int v2;             // ebx
-	int v3;             // esi
-	unsigned char *v4;  // eax
-	unsigned char *v5;  // ecx
-	int v6;             // edi
-	int v7;             // edx
-	int v8;             // eax
-	char *v9;           // edx
-	char *v10;          // ecx
-	unsigned char *ptr; // [esp+Ch] [ebp-10h]
-	int v12;            // [esp+10h] [ebp-Ch]
-	int v13;            // [esp+14h] [ebp-8h]
-	int v14;            // [esp+18h] [ebp-4h]
+	int rw, rh;
+	int i, j;
+	unsigned char *sp;
+	unsigned char *setp;
 
-	v2 = y;
-	v3 = x;
-	v12 = y;
-	v4 = LoadFileInMem("Levels\\L2Data\\Blood2.DUN", 0);
-	v5 = v4;
-	v14 = 0;
-	ptr = v4;
-	v6 = *v4;
-	v7 = (int)(v4 + 2);
-	v8 = v4[2];
-	setpc_x = v3;
-	v9 = (char *)(v7 + 2);
-	setpc_y = v2;
-	setpc_w = v6;
-	setpc_h = v8;
-	if (v8 > 0) {
-		do {
-			if (v6 > 0) {
-				v13 = v6;
-				v10 = (char *)&dungeon[v3][v14 + v12];
-				do {
-					if (*v9)
-						*v10 = *v9;
-					v10 += 40;
-					v9 += 2;
-					--v13;
-				} while (v13);
-				v5 = ptr;
+	setp = LoadFileInMem("Levels\\L2Data\\Blind1.DUN", NULL);
+	rw = *setp;
+	sp = setp + 2;
+	rh = *sp;
+	sp += 2;
+	setpc_x = x;
+	setpc_y = y;
+	setpc_w = rw;
+	setpc_h = rh;
+	for (j = 0; j < rh; j++) {
+		for (i = 0; i < rw; i++) {
+			if (*sp != 0) {
+				pdungeon[x+i][y+j] = *sp;
 			}
-			++v14;
-		} while (v14 < v8);
+			sp += 2;
+		}
 	}
-	mem_free_dbg(v5);
+	mem_free_dbg(setp);
 }
 // 5CF330: using guessed type int setpc_h;
 // 5CF334: using guessed type int setpc_w;
 
-void __fastcall DRLG_CheckQuests(int x, int y)
+void DrawBlood(int x, int y)
+{
+	int rw, rh;
+	int i, j;
+	unsigned char *sp;
+	unsigned char *setp;
+
+	setp = LoadFileInMem("Levels\\L2Data\\Blood2.DUN", NULL);
+	rw = *setp;
+	sp = setp + 2;
+	rh = *sp;
+	sp += 2;
+	setpc_x = x;
+	setpc_y = y;
+	setpc_w = rw;
+	setpc_h = rh;
+	for (j = 0; j < rh; j++) {
+		for (i = 0; i < rw; i++) {
+			if (*sp != 0) {
+				dungeon[x+i][y+j] = *sp;
+			}
+			sp += 2;
+		}
+	}
+	mem_free_dbg(setp);
+}
+// 5CF330: using guessed type int setpc_h;
+// 5CF334: using guessed type int setpc_w;
+
+void DRLG_CheckQuests(int x, int y)
 {
 	int i;
 
@@ -722,41 +609,37 @@ void __fastcall DRLG_CheckQuests(int x, int y)
 }
 // 69BE90: using guessed type int qline;
 
-void __cdecl SetReturnLvlPos()
+void SetReturnLvlPos()
 {
-	int v0; // eax
-
 	switch (setlvlnum) {
 	case SL_SKELKING:
 		ReturnLvlX = quests[QTYPE_KING]._qtx + 1;
 		ReturnLvlY = quests[QTYPE_KING]._qty;
-		v0 = (unsigned char)quests[QTYPE_KING]._qlevel;
-		goto LABEL_9;
+		ReturnLvlT = 1;
+		ReturnLvl = quests[QTYPE_KING]._qlevel;
+		break;
 	case SL_BONECHAMB:
-		ReturnLvlT = 2;
 		ReturnLvlX = quests[QTYPE_BONE]._qtx + 1;
 		ReturnLvlY = quests[QTYPE_BONE]._qty;
-		v0 = (unsigned char)quests[QTYPE_BONE]._qlevel;
-		goto LABEL_10;
+		ReturnLvlT = 2;
+		ReturnLvl = quests[QTYPE_BONE]._qlevel;
+		break;
 	case SL_POISONWATER:
 		ReturnLvlX = quests[QTYPE_PW]._qtx;
 		ReturnLvlY = quests[QTYPE_PW]._qty + 1;
-		v0 = (unsigned char)quests[QTYPE_PW]._qlevel;
-	LABEL_9:
 		ReturnLvlT = 1;
-		goto LABEL_10;
+		ReturnLvl = quests[QTYPE_PW]._qlevel;
+		break;
+	case SL_VILEBETRAYER:
+		ReturnLvlX = quests[QTYPE_VB]._qtx + 1;
+		ReturnLvlY = quests[QTYPE_VB]._qty - 1;
+		ReturnLvlT = 4;
+		ReturnLvl = quests[QTYPE_VB]._qlevel;
+		break;
 	}
-	if (setlvlnum != 5)
-		return;
-	ReturnLvlT = 4;
-	ReturnLvlX = quests[QTYPE_VB]._qtx + 1;
-	ReturnLvlY = quests[QTYPE_VB]._qty - 1;
-	v0 = (unsigned char)quests[QTYPE_VB]._qlevel;
-LABEL_10:
-	ReturnLvl = v0;
 }
 
-void __cdecl GetReturnLvlPos()
+void GetReturnLvlPos()
 {
 	if (quests[QTYPE_VB]._qactive == 3)
 		quests[QTYPE_VB]._qvar2 = 2;
@@ -767,7 +650,7 @@ void __cdecl GetReturnLvlPos()
 }
 // 5BB1ED: using guessed type char leveltype;
 
-void __cdecl ResyncMPQuests()
+void ResyncMPQuests()
 {
 	if (quests[QTYPE_KING]._qactive == 1
 	    && currlevel >= (unsigned char)quests[QTYPE_KING]._qlevel - 1
@@ -789,7 +672,7 @@ void __cdecl ResyncMPQuests()
 		AddObject(OBJ_ALTBOY, 2 * setpc_x + 20, 2 * setpc_y + 22);
 }
 
-void __cdecl ResyncQuests()
+void ResyncQuests()
 {
 	char *v0; // ecx
 	int v1;   // esi
@@ -885,7 +768,7 @@ void __cdecl ResyncQuests()
 // 5CF330: using guessed type int setpc_h;
 // 5CF334: using guessed type int setpc_w;
 
-void __fastcall PrintQLString(int x, int y, unsigned char cjustflag, char *str, int col)
+void PrintQLString(int x, int y, unsigned char cjustflag, char *str, int col)
 {
 	int v5;            // ebx
 	int v6;            // edi
@@ -909,7 +792,7 @@ void __fastcall PrintQLString(int x, int y, unsigned char cjustflag, char *str, 
 	v6 = x;
 	v18 = y;
 	v17 = x;
-	width = screen_y_times_768[v5 + 204] + x + 96;
+	width = PitchTbl[v5 + 204] + x + 96;
 	v7 = strlen(str);
 	v8 = 0;
 	v9 = 0;
@@ -959,7 +842,7 @@ void __fastcall PrintQLString(int x, int y, unsigned char cjustflag, char *str, 
 }
 // 69BE90: using guessed type int qline;
 
-void __cdecl DrawQuestLog()
+void DrawQuestLog()
 {
 	int v0; // edi
 	int i;  // esi
@@ -976,40 +859,31 @@ void __cdecl DrawQuestLog()
 }
 // 69BED4: using guessed type int numqlines;
 
-void __cdecl StartQuestlog()
+void StartQuestlog()
 {
-	signed int v0;   // eax
-	int v1;          // edx
-	unsigned int v2; // ecx
-	int v3;          // ecx
+	unsigned int i;
 
-	v0 = 0;
-	v1 = 0;
 	numqlines = 0;
-	v2 = 0;
-	do {
-		if (quests[v2]._qactive == 2 && quests[v2]._qlog)
-			qlist[v0++] = v1;
-		++v2;
-		++v1;
-	} while (v2 < MAXQUESTS);
-	numqlines = v0;
-	if (v0 <= 5)
-		v3 = 8;
-	else
-		v3 = 5 - (v0 >> 1);
-	qtopline = v3;
+	for (i = 0; i < MAXQUESTS; i++) {
+		if (quests[i]._qactive == 2 && quests[i]._qlog) {
+			qlist[numqlines++] = i;
+		}
+	}
+	if (numqlines > 5) {
+		qtopline = 5 - (numqlines >> 1);
+	} else {
+		qtopline = 8;
+	}
 	qline = 22;
-	if (v0)
-		qline = v3;
-	questlog = 1;
+	if (numqlines != 0)
+		qline = qtopline;
+	questlog = TRUE;
 	ALLQUESTS = 1;
 }
-// 69BD04: using guessed type int questlog;
 // 69BE90: using guessed type int qline;
 // 69BED4: using guessed type int numqlines;
 
-void __cdecl QuestlogUp()
+void QuestlogUp()
 {
 	if (numqlines) {
 		if (qline == qtopline) {
@@ -1025,7 +899,7 @@ void __cdecl QuestlogUp()
 // 69BE90: using guessed type int qline;
 // 69BED4: using guessed type int numqlines;
 
-void __cdecl QuestlogDown()
+void QuestlogDown()
 {
 	if (numqlines) {
 		if (qline == 22) {
@@ -1041,18 +915,17 @@ void __cdecl QuestlogDown()
 // 69BE90: using guessed type int qline;
 // 69BED4: using guessed type int numqlines;
 
-void __cdecl QuestlogEnter()
+void QuestlogEnter()
 {
 	PlaySFX(IS_TITLSLCT);
 	if (numqlines && qline != 22)
 		InitQTextMsg((unsigned char)quests[qlist[(qline - qtopline) >> 1]]._qmsg);
-	questlog = 0;
+	questlog = FALSE;
 }
-// 69BD04: using guessed type int questlog;
 // 69BE90: using guessed type int qline;
 // 69BED4: using guessed type int numqlines;
 
-void __cdecl QuestlogESC()
+void QuestlogESC()
 {
 	int v0; // esi
 	int i;  // edi
@@ -1074,7 +947,7 @@ void __cdecl QuestlogESC()
 // 69BE90: using guessed type int qline;
 // 69BED4: using guessed type int numqlines;
 
-void __fastcall SetMultiQuest(int q, int s, int l, int v1)
+void SetMultiQuest(int q, int s, int l, int v1)
 {
 	int v4;            // eax
 	unsigned char *v5; // ecx

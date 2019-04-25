@@ -6,7 +6,9 @@ DEVILUTION_BEGIN_NAMESPACE
 
 char byte_679704; // weak
 int gdwMsgLenTbl[MAX_PLRS];
-static CRITICAL_SECTION sgMemCrit;
+#ifdef __cplusplus
+static CCritSect sgMemCrit;
+#endif
 int gdwDeltaBytesSec;    // weak
 char nthread_should_run; // weak
 DWORD gdwTurnsInTransit; // weak
@@ -24,35 +26,7 @@ int last_tick;           // weak
 /* data */
 static HANDLE sghThread = (HANDLE)0xFFFFFFFF; // idb
 
-#ifndef _MSC_VER
-__attribute__((constructor))
-#endif
-static void
-nthread_c_init(void)
-{
-	nthread_init_mutex();
-	nthread_cleanup_mutex_atexit();
-}
-
-SEG_ALLOCATE(SEGMENT_C_INIT)
-_PVFV nthread_c_init_funcs[] = { &nthread_c_init };
-
-void __cdecl nthread_init_mutex()
-{
-	InitializeCriticalSection(&sgMemCrit);
-}
-
-void __cdecl nthread_cleanup_mutex_atexit()
-{
-	atexit(nthread_cleanup_mutex);
-}
-
-void __cdecl nthread_cleanup_mutex(void)
-{
-	DeleteCriticalSection(&sgMemCrit);
-}
-
-void __fastcall nthread_terminate_game(const char *pszFcn)
+void nthread_terminate_game(const char *pszFcn)
 {
 	DWORD sErr; // eax
 
@@ -67,7 +41,7 @@ void __fastcall nthread_terminate_game(const char *pszFcn)
 }
 // 67862D: using guessed type char gbGameDestroyed;
 
-int __fastcall nthread_send_and_recv_turn(int cur_turn, int turn_delta)
+int nthread_send_and_recv_turn(int cur_turn, int turn_delta)
 {
 	unsigned int new_cur_turn; // edi
 	const char *lastStormFn;   // ecx
@@ -105,7 +79,7 @@ int __fastcall nthread_send_and_recv_turn(int cur_turn, int turn_delta)
 // 679738: using guessed type int gdwTurnsInTransit;
 // 679754: using guessed type int turn_upper_bit;
 
-int __fastcall nthread_recv_turns(int *pfSendAsync)
+int nthread_recv_turns(int *pfSendAsync)
 {
 	BOOLEAN hasCountedDown; // zf
 
@@ -143,13 +117,13 @@ int __fastcall nthread_recv_turns(int *pfSendAsync)
 // 679759: using guessed type char sgbPacketCountdown;
 // 679764: using guessed type int last_tick;
 
-void __cdecl nthread_set_turn_upper_bit()
+void nthread_set_turn_upper_bit()
 {
 	turn_upper_bit = 0x80000000;
 }
 // 679754: using guessed type int turn_upper_bit;
 
-void __fastcall nthread_start(BOOL set_turn_upper_bit)
+void nthread_start(BOOL set_turn_upper_bit)
 {
 	char *err;                   // eax
 	unsigned int largestMsgSize; // esi
@@ -197,7 +171,9 @@ void __fastcall nthread_start(BOOL set_turn_upper_bit)
 		gdwNormalMsgSize = largestMsgSize;
 	if ((unsigned char)gbMaxPlayers > 1u) {
 		sgbThreadIsRunning = 0;
-		EnterCriticalSection(&sgMemCrit);
+#ifdef __cplusplus
+		sgMemCrit.Enter();
+#endif
 		nthread_should_run = 1;
 		sghThread = (HANDLE)_beginthreadex(NULL, 0, nthread_handler, NULL, 0, &glpNThreadId);
 		if (sghThread == (HANDLE)-1) {
@@ -228,7 +204,9 @@ unsigned int __stdcall nthread_handler(void *a1)
 
 	if (nthread_should_run) {
 		while (1) {
-			EnterCriticalSection(&sgMemCrit);
+#ifdef __cplusplus
+			sgMemCrit.Enter();
+#endif
 			if (!nthread_should_run)
 				break;
 			nthread_send_and_recv_turn(0, 0);
@@ -236,28 +214,34 @@ unsigned int __stdcall nthread_handler(void *a1)
 				delta = last_tick - GetTickCount();
 			else
 				delta = 50;
-			LeaveCriticalSection(&sgMemCrit);
+#ifdef __cplusplus
+			sgMemCrit.Leave();
+#endif
 			if (delta > 0)
 				Sleep(delta);
 			if (!nthread_should_run)
 				return 0;
 		}
-		LeaveCriticalSection(&sgMemCrit);
+#ifdef __cplusplus
+		sgMemCrit.Leave();
+#endif
 	}
 	return 0;
 }
 // 679734: using guessed type char nthread_should_run;
 // 679764: using guessed type int last_tick;
 
-void __cdecl nthread_cleanup()
+void nthread_cleanup()
 {
 	nthread_should_run = 0;
 	gdwTurnsInTransit = 0;
 	gdwNormalMsgSize = 0;
 	gdwLargestMsgSize = 0;
 	if (sghThread != (HANDLE)-1 && glpNThreadId != GetCurrentThreadId()) {
+#ifdef __cplusplus
 		if (!sgbThreadIsRunning)
-			LeaveCriticalSection(&sgMemCrit);
+			sgMemCrit.Leave();
+#endif
 		if (WaitForSingleObject(sghThread, 0xFFFFFFFF) == -1) {
 			app_fatal("nthread3:\n(%s)", TraceLastError());
 		}
@@ -271,19 +255,21 @@ void __cdecl nthread_cleanup()
 // 67975C: using guessed type int gdwLargestMsgSize;
 // 679760: using guessed type int gdwNormalMsgSize;
 
-void __fastcall nthread_ignore_mutex(BOOL bStart)
+void nthread_ignore_mutex(BOOL bStart)
 {
 	if (sghThread != (HANDLE)-1) {
+#ifdef __cplusplus
 		if (bStart)
-			LeaveCriticalSection(&sgMemCrit);
+			sgMemCrit.Leave();
 		else
-			EnterCriticalSection(&sgMemCrit);
+			sgMemCrit.Enter();
+#endif
 		sgbThreadIsRunning = bStart;
 	}
 }
 // 67975A: using guessed type char sgbThreadIsRunning;
 
-BOOL __fastcall nthread_has_500ms_passed(BOOL unused)
+BOOL nthread_has_500ms_passed(BOOL unused)
 {
 	DWORD currentTickCount; // eax
 	int ticksElapsed;       // ecx

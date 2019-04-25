@@ -98,7 +98,7 @@ void __stdcall UiSetSpawned(BOOL bSpawned)
 // 1002972C: using guessed type int sgbIsSpawn;
 
 // ref: 0x10005C73
-void __cdecl UiInitialize()
+void __stdcall UiInitialize()
 {
 	sgbUiIsInitialized = 1;
 	TitleSnd_InitSoundFunc();
@@ -110,7 +110,7 @@ void __cdecl UiInitialize()
 // 10029714: using guessed type int sgbUiIsInitialized;
 
 // ref: 0x10005C96
-void __cdecl UiDestroy()
+void __stdcall UiDestroy()
 {
 	bn_prof_10002247();
 	local_FreeArtCursor();

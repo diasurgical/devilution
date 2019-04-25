@@ -8,31 +8,31 @@ extern void *PentSpin_cel;
 extern void *BigTGold_cel;
 extern int dword_634474; // weak
 extern char byte_634478; // weak
-extern void(__cdecl *dword_63447C)();
+extern void(*dword_63447C)(TMenuItem *);
 extern TMenuItem *dword_634480; // idb
 extern void *option_cel;
 extern int dword_63448C; // weak
 
-void __cdecl gmenu_draw_pause();
-void __fastcall gmenu_print_text(int x, int y, char *pszStr);
-void __cdecl FreeGMenu();
-void __cdecl gmenu_init_menu();
-BOOL __cdecl gmenu_exception();
-void __fastcall gmenu_call_proc(TMenuItem *pItem, void(__cdecl *gmFunc)());
-void __fastcall gmenu_up_down(int a1);
-void __cdecl gmenu_draw();
-void __fastcall gmenu_draw_menu_item(TMenuItem *pItem, int a2);
-void __fastcall gmenu_clear_buffer(int x, int y, int width, int height);
-int __fastcall gmenu_get_lfont(TMenuItem *pItem);
-BOOL __fastcall gmenu_presskeys(int a1);
-void __fastcall gmenu_left_right(int a1);
-int __fastcall gmenu_on_mouse_move(LPARAM lParam);
-BOOLEAN __fastcall gmenu_valid_mouse_pos(int *plOffset);
-int __fastcall gmenu_left_mouse(int a1);
-void __fastcall gmenu_enable(TMenuItem *pMenuItem, BOOL enable);
-void __fastcall gmenu_slider_1(TMenuItem *pItem, int min, int max, int gamma);
-int __fastcall gmenu_slider_get(TMenuItem *pItem, int min, int max);
-void __fastcall gmenu_slider_3(TMenuItem *pItem, int dwTicks);
+void gmenu_draw_pause();
+void gmenu_print_text(int x, int y, char *pszStr);
+void FreeGMenu();
+void gmenu_init_menu();
+BOOL gmenu_exception();
+void gmenu_call_proc(TMenuItem *pItem, void(*gmFunc)(TMenuItem *));
+void gmenu_up_down(int a1);
+void gmenu_draw();
+void gmenu_draw_menu_item(TMenuItem *pItem, int a2);
+void gmenu_clear_buffer(int x, int y, int width, int height);
+int gmenu_get_lfont(TMenuItem *pItem);
+BOOL gmenu_presskeys(int a1);
+void gmenu_left_right(int a1);
+BOOL gmenu_on_mouse_move();
+BOOLEAN gmenu_valid_mouse_pos(int *plOffset);
+int gmenu_left_mouse(int a1);
+void gmenu_enable(TMenuItem *pMenuItem, BOOL enable);
+void gmenu_slider_1(TMenuItem *pItem, int min, int max, int gamma);
+int gmenu_slider_get(TMenuItem *pItem, int min, int max);
+void gmenu_slider_3(TMenuItem *pItem, int dwTicks);
 
 /* rdata */
 

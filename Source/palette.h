@@ -5,28 +5,28 @@
 extern PALETTEENTRY logical_palette[256];
 extern PALETTEENTRY system_palette[256];
 extern PALETTEENTRY orig_palette[256];
-extern UINT gdwPalEntries;
+extern int gdwPalEntries;
 
-void __cdecl SaveGamma();
-void __cdecl palette_init();
-void __cdecl LoadGamma();
-void __cdecl LoadSysPal();
-void __fastcall LoadPalette(char *pszFileName);
-void __fastcall LoadRndLvlPal(int l);
-void __cdecl ResetPal();
-void __cdecl IncreaseGamma();
-void __cdecl palette_update();
-void __fastcall ApplyGamma(PALETTEENTRY *dst, PALETTEENTRY *src, int n);
-void __cdecl DecreaseGamma();
-int __fastcall UpdateGamma(int gamma);
-void __cdecl BlackPalette();
-void __fastcall SetFadeLevel(int fadeval);
-void __fastcall PaletteFadeIn(int fr);
-void __fastcall PaletteFadeOut(int fr);
-void __cdecl palette_update_caves();
-void __fastcall palette_update_quest_palette(int n);
-BOOLEAN __cdecl palette_get_colour_cycling();
-void __fastcall palette_set_color_cycling(BOOLEAN enabled);
+void SaveGamma();
+void palette_init();
+void LoadGamma();
+void LoadSysPal();
+void LoadPalette(char *pszFileName);
+void LoadRndLvlPal(int l);
+void ResetPal();
+void IncreaseGamma();
+void palette_update();
+void ApplyGamma(PALETTEENTRY *dst, PALETTEENTRY *src, int n);
+void DecreaseGamma();
+int UpdateGamma(int gamma);
+void BlackPalette();
+void SetFadeLevel(DWORD fadeval);
+void PaletteFadeIn(int fr);
+void PaletteFadeOut(int fr);
+void palette_update_caves();
+void palette_update_quest_palette(int n);
+BOOL palette_get_colour_cycling();
+BOOL palette_set_color_cycling(BOOL enabled);
 
 /* rdata */
 

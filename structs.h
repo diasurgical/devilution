@@ -1,4 +1,15 @@
 //////////////////////////////////////////////////
+// control
+//////////////////////////////////////////////////
+
+typedef struct RECT32 {
+	int x;
+	int y;
+	int w;
+	int h;
+} RECT32;
+
+//////////////////////////////////////////////////
 // items
 //////////////////////////////////////////////////
 
@@ -76,12 +87,12 @@ typedef struct ItemGetRecordStruct {
 	int nSeed;
 	unsigned short wCI;
 	int nIndex;
-	int dwTimestamp;
+	unsigned int dwTimestamp;
 } ItemGetRecordStruct;
 
 typedef struct ItemStruct {
 	int _iSeed;
-	unsigned short _iCreateInfo;
+	WORD _iCreateInfo;
 	int _itype;
 	int _ix;
 	int _iy;
@@ -359,8 +370,8 @@ typedef struct TextDataStruct {
 
 typedef struct MissileData {
 	unsigned char mName;
-	void(__fastcall *mAddProc)(int, int, int, int, int, int, char, int, int);
-	void(__fastcall *mProc)(int);
+	void(* mAddProc)(int, int, int, int, int, int, char, int, int);
+	void(* mProc)(int);
 	BOOL mDraw;
 	unsigned char mType;
 	unsigned char mResist;
@@ -657,7 +668,7 @@ typedef struct ObjectStruct {
 	int _oAnimFrame;
 	int _oAnimWidth;
 	int _oAnimWidth2;
-	int _oDelFlag;
+	BOOL _oDelFlag;
 	char _oBreak; // check
 	BOOL _oSolidFlag;
 	BOOL _oMissFlag;
@@ -989,9 +1000,9 @@ typedef struct QuestData {
 // TPDEF PTR FCN VOID TMenuFcn
 
 typedef struct TMenuItem {
-	unsigned int dwFlags;
+	DWORD dwFlags;
 	char *pszStr;
-	void(__cdecl *fnMenu)(); /* fix, should have one arg */
+	void(* fnMenu)(BOOL); /* fix, should have one arg */
 } TMenuItem;
 
 // TPDEF PTR FCN VOID TMenuUpdateFcn
@@ -1142,7 +1153,7 @@ typedef struct ROOMNODE {
 //////////////////////////////////////////////////
 
 typedef struct ThemeStruct {
-	int ttype; /* aligned 4 */
+	char ttype; /* aligned 4 */
 	int ttval;
 } ThemeStruct;
 
@@ -1301,21 +1312,21 @@ typedef struct _SNETUIDATA {
 	int size;
 	int uiflags;
 	HWND parentwindow;
-	void(__cdecl *artcallback)();
-	void(__cdecl *authcallback)();
-	void(__cdecl *createcallback)();
-	void(__cdecl *drawdesccallback)();
-	void(__cdecl *selectedcallback)();
-	void(__cdecl *messageboxcallback)();
-	void(__cdecl *soundcallback)();
-	void(__cdecl *statuscallback)();
-	void(__cdecl *getdatacallback)();
-	void(__cdecl *categorycallback)();
-	void(__cdecl *categorylistcallback)();
-	void(__cdecl *newaccountcallback)();
-	void(__cdecl *profilecallback)();
+	void(* artcallback)();
+	void(* authcallback)();
+	void(* createcallback)();
+	void(* drawdesccallback)();
+	void(* selectedcallback)();
+	void(* messageboxcallback)();
+	void(* soundcallback)();
+	void(* statuscallback)();
+	void(* getdatacallback)();
+	void(* categorycallback)();
+	void(* categorylistcallback)();
+	void(* newaccountcallback)();
+	void(* profilecallback)();
 	int profilefields;
-	void(__cdecl *profilebitmapcallback)();
+	void(* profilebitmapcallback)();
 	int(__stdcall *selectnamecallback)(
 	    const struct _SNETPROGRAMDATA *,
 	    const struct _SNETPLAYERDATA *,
@@ -1326,7 +1337,7 @@ typedef struct _SNETUIDATA {
 	    char *, DWORD,  /* character "description" will be copied here (used to advertise games) */
 	    BOOL *          /* new character? - unsure about this */
 	    );
-	void(__cdecl *changenamecallback)();
+	void(* changenamecallback)();
 } _SNETUIDATA;
 
 typedef struct _SNETVERSIONDATA {
@@ -1567,18 +1578,3 @@ typedef struct TDataInfo {
 	DWORD destOffset;
 	DWORD size;
 } TDataInfo;
-
-//////////////////////////////////////////////////
-// msgcmd
-//////////////////////////////////////////////////
-
-typedef struct ServerCommand {
-	int field_0;
-	int field_4;
-	char command[128];
-} ServerCommand;
-
-typedef struct ChatCmd {
-	struct ChatCmd *next;
-	ServerCommand *extern_msgs[2];
-} ChatCmd;

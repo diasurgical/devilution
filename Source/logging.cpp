@@ -4,8 +4,10 @@
 
 DEVILUTION_BEGIN_NAMESPACE
 
-static CRITICAL_SECTION sgMemCrit;
-CHAR FileName[260]; // idb
+#ifdef __cplusplus
+static CCritSect sgMemCrit;
+#endif
+CHAR FileName[MAX_PATH]; // idb
 char log_buffer[388];
 LPCVOID lpAddress;           // idb
 DWORD nNumberOfBytesToWrite; // idb
@@ -15,73 +17,47 @@ DWORD nNumberOfBytesToWrite; // idb
 int log_not_created = 1;              // weak
 HANDLE log_file = (HANDLE)0xFFFFFFFF; // idb
 
-#ifndef _MSC_VER
-__attribute__((constructor))
+void __cdecl log_flush(BOOL force_close)
+{
+	DWORD NumberOfBytesWritten;
+
+#ifdef __cplusplus
+	sgMemCrit.Enter();
 #endif
-static void
-log_c_init(void)
-{
-	log_init_mutex();
-	j_log_cleanup_mutex();
-}
-
-SEG_ALLOCATE(SEGMENT_C_INIT)
-_PVFV log_c_init_funcs[] = { &log_c_init };
-
-void __cdecl log_init_mutex()
-{
-	InitializeCriticalSection(&sgMemCrit);
-}
-
-void __cdecl j_log_cleanup_mutex()
-{
-	atexit(log_cleanup_mutex);
-}
-
-void __cdecl log_cleanup_mutex(void)
-{
-	DeleteCriticalSection(&sgMemCrit);
-}
-
-void __cdecl log_flush(BOOLEAN force_close)
-{
-	HANDLE v1;                  // eax
-	DWORD NumberOfBytesWritten; // [esp+8h] [ebp-4h]
-
-	EnterCriticalSection(&sgMemCrit);
 	if (nNumberOfBytesToWrite) {
-		if (log_file == (HANDLE)-1) {
-			v1 = log_create();
-			log_file = v1;
-			if (v1 == (HANDLE)-1) {
+		if (log_file == INVALID_HANDLE_VALUE) {
+			log_file = log_create();
+			if (log_file == INVALID_HANDLE_VALUE) {
 				nNumberOfBytesToWrite = 0;
 				return;
 			}
-			SetFilePointer(v1, 0, NULL, FILE_END);
+			SetFilePointer(log_file, 0, NULL, FILE_END);
 		}
 		WriteFile(log_file, lpAddress, nNumberOfBytesToWrite, &NumberOfBytesWritten, 0);
 		nNumberOfBytesToWrite = 0;
 	}
-	if (force_close && log_file != (HANDLE)-1) {
+	if (force_close && log_file != INVALID_HANDLE_VALUE) {
 		CloseHandle(log_file);
-		log_file = (HANDLE)-1;
+		log_file = INVALID_HANDLE_VALUE;
 	}
-	LeaveCriticalSection(&sgMemCrit);
+#ifdef __cplusplus
+	sgMemCrit.Leave();
+#endif
 }
 
-HANDLE __cdecl log_create()
+HANDLE log_create()
 {
 	char *v0;                   // eax
 	HANDLE v1;                  // ebx
 	HANDLE v2;                  // eax
 	char *v3;                   // edx
-	char Filename[260];         // [esp+Ch] [ebp-15Ch]
+	char Filename[MAX_PATH];         // [esp+Ch] [ebp-15Ch]
 	VS_FIXEDFILEINFO file_info; // [esp+110h] [ebp-58h]
 	char Buffer[32];            // [esp+144h] [ebp-24h]
 	DWORD pcbBuffer;            // [esp+164h] [ebp-4h]
 
 	if (log_not_created) {
-		if (GetModuleFileName(0, Filename, 0x104u) && (v0 = strrchr(Filename, '\\')) != 0)
+		if (GetModuleFileName(0, Filename, sizeof(Filename)) && (v0 = strrchr(Filename, '\\')) != 0)
 			v0[1] = 0;
 		else
 			Filename[0] = 0;
@@ -91,7 +67,7 @@ HANDLE __cdecl log_create()
 		log_get_version(&file_info);
 		_snprintf(
 		    FileName,
-		    0x104u,
+		    sizeof(Filename),
 		    "%s%s%02u%02u%02u.ERR",
 		    Filename,
 		    Buffer,
@@ -121,13 +97,13 @@ HANDLE __cdecl log_create()
 }
 // 4947D4: using guessed type int log_not_created;
 
-void __fastcall log_get_version(VS_FIXEDFILEINFO *file_info)
+void log_get_version(VS_FIXEDFILEINFO *file_info)
 {
 	DWORD v1;           // eax
 	DWORD v2;           // esi
 	void *v3;           // ebx
 	unsigned int v4;    // eax
-	char Filename[260]; // [esp+8h] [ebp-114h]
+	char Filename[MAX_PATH]; // [esp+8h] [ebp-114h]
 	DWORD dwHandle;     // [esp+10Ch] [ebp-10h]
 	LPVOID lpBuffer;    // [esp+110h] [ebp-Ch]
 	unsigned int puLen; // [esp+114h] [ebp-8h]
@@ -135,7 +111,7 @@ void __fastcall log_get_version(VS_FIXEDFILEINFO *file_info)
 
 	v9 = file_info;
 	memset(file_info, 0, 0x34u);
-	if (GetModuleFileName(0, Filename, 0x104u)) {
+	if (GetModuleFileName(0, Filename, sizeof(Filename))) {
 		v1 = GetFileVersionInfoSize(Filename, &dwHandle);
 		v2 = v1;
 		if (v1) {
@@ -151,7 +127,7 @@ void __fastcall log_get_version(VS_FIXEDFILEINFO *file_info)
 	}
 }
 
-void log_printf(const char *pszFmt, ...)
+void __cdecl log_printf(const char *pszFmt, ...)
 {
 	size_t v1;    // edi
 	char *v2;     // eax
@@ -159,7 +135,9 @@ void log_printf(const char *pszFmt, ...)
 	va_list va;   // [esp+218h] [ebp+Ch]
 
 	va_start(va, pszFmt);
-	EnterCriticalSection(&sgMemCrit);
+#ifdef __cplusplus
+	sgMemCrit.Enter();
+#endif
 	_vsnprintf(v3, 0x200u, pszFmt, va);
 	va_end(va);
 	v3[511] = 0;
@@ -174,10 +152,12 @@ void log_printf(const char *pszFmt, ...)
 		memcpy(&v2[nNumberOfBytesToWrite], v3, v1);
 		nNumberOfBytesToWrite += v1;
 	}
-	LeaveCriticalSection(&sgMemCrit);
+#ifdef __cplusplus
+	sgMemCrit.Leave();
+#endif
 }
 
-void __cdecl log_dump_computer_info()
+void log_dump_computer_info()
 {
 	char Buffer[64];            // [esp+0h] [ebp-88h]
 	VS_FIXEDFILEINFO file_info; // [esp+40h] [ebp-48h]

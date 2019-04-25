@@ -333,6 +333,7 @@ UINT WINAPI GetSystemPaletteEntries(HDC hdc, UINT iStart, UINT cEntries, LPPALET
 int WINAPIV wsprintfA(LPSTR, LPCSTR, ...);
 int WINAPIV wvsprintfA(LPSTR dest, LPCSTR format, va_list arglist);
 int __cdecl _strcmpi(const char *_Str1, const char *_Str2);
+int __cdecl _strnicmp(const char *_Str1, const char *_Str2, int n);
 char *__cdecl _itoa(int _Value, char *_Dest, int _Radix);
 
 char *__cdecl _strlwr(char *str);
@@ -355,7 +356,7 @@ typedef struct _WIN32_FIND_DATAA {
 	DWORD dwFileType;
 	DWORD dwCreatorType;
 	WORD wFinderFlags;
-} WIN32_FIND_DATAA, *LPWIN32_FIND_DATAA;
+} WIN32_FIND_DATAA, WIN32_FIND_DATA, *LPWIN32_FIND_DATAA;
 
 typedef void *LPOVERLAPPED;
 

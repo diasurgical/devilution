@@ -4,7 +4,7 @@
 
 DEVILUTION_BEGIN_NAMESPACE
 
-char msgtable[80];
+char msgtable[MAX_SEND_STR_LEN];
 char msgdelay;
 char msgflag;
 char msgcnt;
@@ -56,7 +56,7 @@ char *MsgStrings[44] = {
 	"Arcane knowledge gained!"
 };
 
-void __fastcall InitDiabloMsg(char e)
+void InitDiabloMsg(char e)
 {
 	int i;
 
@@ -73,7 +73,7 @@ void __fastcall InitDiabloMsg(char e)
 	msgdelay = 70;
 }
 
-void __cdecl ClrDiabloMsg()
+void ClrDiabloMsg()
 {
 	int i;
 
@@ -84,42 +84,30 @@ void __cdecl ClrDiabloMsg()
 	msgcnt = 0;
 }
 
-void __cdecl DrawDiabloMsg()
+void DrawDiabloMsg()
 {
-	int v0;              // esi
-	signed int v1;       // edi
-	int v8;              // edi
-	signed int v9;       // ebx
-	signed int v10;      // eax
-	signed int v11;      // ecx
-	int v12;             // esi
-	signed int v13;      // esi
-	unsigned char v14;   // bl
-	BOOLEAN v15;         // zf
-	signed int v16;      // [esp+Ch] [ebp-8h]
-	signed int v17;      // [esp+Ch] [ebp-8h]
-	signed int screen_x; // [esp+10h] [ebp-4h]
+	int i, len, off, width, sx, sy;
+	BYTE c;
 
 	CelDecodeOnly(165, 318, (BYTE *)pSTextSlidCels, 1, 12);
 	CelDecodeOnly(591, 318, (BYTE *)pSTextSlidCels, 4, 12);
 	CelDecodeOnly(165, 366, (BYTE *)pSTextSlidCels, 2, 12);
 	CelDecodeOnly(591, 366, (BYTE *)pSTextSlidCels, 3, 12);
-	screen_x = 173;
-	v16 = 35;
-	do {
-		CelDecodeOnly(screen_x, 318, (BYTE *)pSTextSlidCels, 5, 12);
-		CelDecodeOnly(screen_x, 366, (BYTE *)pSTextSlidCels, 7, 12);
-		screen_x += 12;
-		--v16;
-	} while (v16);
-	v0 = 330;
-	v1 = 3;
-	do {
-		CelDecodeOnly(165, v0, (BYTE *)pSTextSlidCels, 6, 12);
-		CelDecodeOnly(591, v0, (BYTE *)pSTextSlidCels, 8, 12);
-		v0 += 12;
-		--v1;
-	} while (v1);
+
+	sx = 173;
+	for(i = 0; i < 35; i++) {
+		CelDecodeOnly(sx, 318, (BYTE *)pSTextSlidCels, 5, 12);
+		CelDecodeOnly(sx, 366, (BYTE *)pSTextSlidCels, 7, 12);
+		sx += 12;
+	}
+	sy = 330;
+	for(i = 0; i < 3; i++) {
+		CelDecodeOnly(165, sy, (BYTE *)pSTextSlidCels, 6, 12);
+		CelDecodeOnly(591, sy, (BYTE *)pSTextSlidCels, 8, 12);
+		sy += 12;
+	}
+
+	/// ASSERT: assert(gpBuffer);
 
 #define TRANS_RECT_X 104
 #define TRANS_RECT_Y 150
@@ -128,40 +116,37 @@ void __cdecl DrawDiabloMsg()
 #include "asm_trans_rect.inc"
 
 	strcpy(tempstr, MsgStrings[msgflag]);
-	v8 = screen_y_times_768[342] + 165;
-	v9 = strlen(tempstr);
-	v10 = 0;
-	v11 = 0;
-	v17 = v9;
-	if (v9 <= 0)
-		goto LABEL_27;
-	do {
-		v12 = (unsigned char)tempstr[v11++];
-		v10 += fontkern[fontframe[gbFontTransTbl[v12]]] + 1;
-	} while (v11 < v9);
-	if (v10 < 442)
-	LABEL_27:
-		v8 += (442 - v10) >> 1;
-	v13 = 0;
-	if (v9 > 0) {
-		do {
-			v14 = fontframe[gbFontTransTbl[(unsigned char)tempstr[v13]]];
-			if (v14)
-				CPrintString(v8, v14, 3);
-			++v13;
-			v8 += fontkern[v14] + 1;
-		} while (v13 < v17);
+	off = 165 + PitchTbl[342];
+	len = strlen(tempstr);
+	width = 0;
+
+	for(i = 0; i < len; i++) {
+		width += fontkern[fontframe[gbFontTransTbl[(BYTE)tempstr[i]]]] + 1;
 	}
-	v15 = msgdelay == 0;
-	if (msgdelay > 0)
-		v15 = --msgdelay == 0;
-	if (v15) {
-		v15 = msgcnt-- == 1;
+
+	if(width < 442) {
+		off += (442 - width) >> 1;
+	}
+
+	for(i = 0; i < len; i++) {
+		c = fontframe[gbFontTransTbl[(BYTE)tempstr[i]]];
+		if(c != '\0') {
+			CPrintString(off, c, COL_GOLD);
+		}
+		off += fontkern[c] + 1;
+	}
+
+	if(msgdelay > 0) {
+		msgdelay--;
+	}
+	if(msgdelay == 0) {
+		msgcnt--;
 		msgdelay = 70;
-		if (v15)
+		if(msgcnt == 0) {
 			msgflag = 0;
-		else
+		} else {
 			msgflag = msgtable[msgcnt];
+		}
 	}
 }
 

@@ -14,38 +14,12 @@ IDirectDrawSurface *lpDDSPrimary;
 #ifdef _DEBUG
 int locktbl[256];
 #endif
-static CRITICAL_SECTION sgMemCrit;
+#ifdef __cplusplus
+static CCritSect sgMemCrit;
+#endif
 char gbBackBuf;    // weak
 char gbEmulate;    // weak
 HMODULE ghDiabMod; // idb
-
-#ifndef _MSC_VER
-__attribute__((constructor))
-#endif
-static void
-dx_c_init(void)
-{
-	dx_init_mutex();
-	dx_cleanup_mutex_atexit();
-}
-
-SEG_ALLOCATE(SEGMENT_C_INIT)
-_PVFV dx_c_init_funcs[] = { &dx_c_init };
-
-void dx_init_mutex()
-{
-	InitializeCriticalSection(&sgMemCrit);
-}
-
-void dx_cleanup_mutex_atexit()
-{
-	atexit(dx_cleanup_mutex);
-}
-
-void dx_cleanup_mutex(void)
-{
-	DeleteCriticalSection(&sgMemCrit);
-}
 
 void dx_init(HWND hWnd)
 {
@@ -158,7 +132,7 @@ void dx_create_back_buffer()
 #else
 			lpDDSPrimary->lpVtbl->Unlock(lpDDSPrimary, NULL);
 #endif
-			sgpBackBuf = (BYTE *)DiabloAllocPtr(656 * 768);
+			sgpBackBuf = (BYTE *)DiabloAllocPtr(BUFFER_HEIGHT * BUFFER_WIDTH);
 			return;
 		}
 		if (error_code != 2)
@@ -222,7 +196,7 @@ HRESULT dx_DirectDrawCreate(LPGUID guid, LPDIRECTDRAW *lplpDD, LPUNKNOWN pUnkOut
 	return DVL_S_OK;
 }
 
-void j_lock_buf_priv(BYTE idx)
+void lock_buf(BYTE idx)
 {
 #ifdef _DEBUG
 	++locktbl[idx];
@@ -235,7 +209,9 @@ void lock_buf_priv()
 	DDSURFACEDESC ddsd;
 	HRESULT error_code;
 
-	EnterCriticalSection(&sgMemCrit);
+#ifdef __cplusplus
+	sgMemCrit.Enter();
+#endif
 	if (sgpBackBuf != NULL) {
 		gpBuffer = sgpBackBuf;
 		sgdwLockCount++;
@@ -267,7 +243,7 @@ void lock_buf_priv()
 	sgdwLockCount++;
 }
 
-void j_unlock_buf_priv(BYTE idx)
+void unlock_buf(BYTE idx)
 {
 #ifdef _DEBUG
 	if (!locktbl[idx])
@@ -300,7 +276,9 @@ void unlock_buf_priv()
 				DDErrMsg(error_code, 273, "C:\\Src\\Diablo\\Source\\dx.cpp");
 		}
 	}
-	LeaveCriticalSection(&sgMemCrit);
+#ifdef __cplusplus
+	sgMemCrit.Leave();
+#endif
 }
 
 void dx_cleanup()
@@ -310,7 +288,9 @@ void dx_cleanup()
 	if (ghMainWnd)
 		ShowWindow(ghMainWnd, 0);
 	SDrawDestroy();
-	EnterCriticalSection(&sgMemCrit);
+#ifdef __cplusplus
+	sgMemCrit.Enter();
+#endif
 	if (sgpBackBuf != NULL) {
 		v0 = sgpBackBuf;
 		sgpBackBuf = 0;
@@ -325,7 +305,9 @@ void dx_cleanup()
 	}
 	sgdwLockCount = 0;
 	gpBuffer = 0;
-	LeaveCriticalSection(&sgMemCrit);
+#ifdef __cplusplus
+	sgMemCrit.Leave();
+#endif
 	if (lpDDSPrimary) {
 #ifdef __cplusplus
 		lpDDSPrimary->Release();
@@ -356,7 +338,9 @@ void dx_reinit()
 {
 	int lockCount;
 
-	EnterCriticalSection(&sgMemCrit);
+#ifdef __cplusplus
+	sgMemCrit.Enter();
+#endif
 	ClearCursor();
 	lockCount = sgdwLockCount;
 
@@ -374,7 +358,9 @@ void dx_reinit()
 		lockCount--;
 	}
 
-	LeaveCriticalSection(&sgMemCrit);
+#ifdef __cplusplus
+	sgMemCrit.Leave();
+#endif
 }
 
 } // namespace dvl

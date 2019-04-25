@@ -2,31 +2,37 @@
 #ifndef __TRIGS_H__
 #define __TRIGS_H__
 
-extern int trigflag[MAXTRIGGERS];
+// The trigflag variables (0-4) here were split up from the trigflag array.
+// Complete diff is part of PR #947 on Github.
+extern int trigflag_0;
+extern int trigflag_1;
+extern int trigflag_2;
+extern int trigflag_3;
+extern int trigflag_4;
 extern TriggerStruct trigs[MAXTRIGGERS];
 extern int TWarpFrom; // weak
 
-void __cdecl InitNoTriggers();
-void __cdecl InitTownTriggers();
-void __cdecl InitL1Triggers();
-void __cdecl InitL2Triggers();
-void __cdecl InitL3Triggers();
-void __cdecl InitL4Triggers();
-void __cdecl InitSKingTriggers();
-void __cdecl InitSChambTriggers();
-void __cdecl InitPWaterTriggers();
-void __cdecl InitVPTriggers();
-BOOL __cdecl ForceTownTrig();
-unsigned char __cdecl ForceL1Trig();
-unsigned char __cdecl ForceL2Trig();
-unsigned char __cdecl ForceL3Trig();
-unsigned char __cdecl ForceL4Trig();
-void __cdecl Freeupstairs();
-BOOL __cdecl ForceSKingTrig();
-BOOL __cdecl ForceSChambTrig();
-BOOL __cdecl ForcePWaterTrig();
-void __cdecl CheckTrigForce();
-void __cdecl CheckTriggers();
+void InitNoTriggers();
+void InitTownTriggers();
+void InitL1Triggers();
+void InitL2Triggers();
+void InitL3Triggers();
+void InitL4Triggers();
+void InitSKingTriggers();
+void InitSChambTriggers();
+void InitPWaterTriggers();
+void InitVPTriggers();
+BOOL ForceTownTrig();
+BOOL ForceL1Trig();
+BOOL ForceL2Trig();
+BOOL ForceL3Trig();
+BOOL ForceL4Trig();
+void Freeupstairs();
+BOOL ForceSKingTrig();
+BOOL ForceSChambTrig();
+BOOL ForcePWaterTrig();
+void CheckTrigForce();
+void CheckTriggers();
 
 /* rdata */
 
