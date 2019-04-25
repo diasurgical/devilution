@@ -18,7 +18,7 @@ extern int InStoreFlag; // idb
 extern ItemStruct storehold[48];
 extern int gossipstart; // weak
 extern ItemStruct witchitem[20];
-extern int stextscrl;
+extern BOOL stextscrl;
 extern int numpremium; // idb
 extern ItemStruct healitem[20];
 extern ItemStruct golditem;
