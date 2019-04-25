@@ -1458,44 +1458,40 @@ void DRLG_L3Wood()
 
 	for(j = 0; j < DMAXY - 1; j++) {
 		for(i = 0; i < DMAXX - 1; i++) {
-			if(dungeon[i][j] == 10) {
-				if(random(0, 2) != 0) {
-					x = i;
-					while(dungeon[x][j] == 10) {
-						x++;
-					}
-					x--;
-					if(x - i > 0) {
-						dungeon[i][j] = 127;
-						for(xx = i + 1; xx < x; xx++) {
-							if(random(0, 2) != 0) {
-								dungeon[xx][j] = 126;
-							} else {
-								dungeon[xx][j] = 129;
-							}
+			if(dungeon[i][j] == 10 && random(0, 2) != 0) {
+				x = i;
+				while(dungeon[x][j] == 10) {
+					x++;
+				}
+				x--;
+				if(x - i > 0) {
+					dungeon[i][j] = 127;
+					for(xx = i + 1; xx < x; xx++) {
+						if(random(0, 2) != 0) {
+							dungeon[xx][j] = 126;
+						} else {
+							dungeon[xx][j] = 129;
 						}
-						dungeon[x][j] = 128;
 					}
+					dungeon[x][j] = 128;
 				}
 			}
-			if(dungeon[i][j] == 9) {
-				if(random(0, 2) != 0) {
-					y = j;
-					while(dungeon[i][y] == 9) {
-						y++;
-					}
-					y--;
-					if(y - j > 0) {
-						dungeon[i][j] = 123;
-						for(yy = j + 1; yy < y; yy++) {
-							if(random(0, 2) != 0) {
-								dungeon[i][yy] = 121;
-							} else {
-								dungeon[i][yy] = 124;
-							}
+			if(dungeon[i][j] == 9 && random(0, 2) != 0) {
+				y = j;
+				while(dungeon[i][y] == 9) {
+					y++;
+				}
+				y--;
+				if(y - j > 0) {
+					dungeon[i][j] = 123;
+					for(yy = j + 1; yy < y; yy++) {
+						if(random(0, 2) != 0) {
+							dungeon[i][yy] = 121;
+						} else {
+							dungeon[i][yy] = 124;
 						}
-						dungeon[i][y] = 122;
 					}
+					dungeon[i][y] = 122;
 				}
 			}
 			if(dungeon[i][j] == 11 && dungeon[i + 1][j] == 10 && dungeon[i][j + 1] == 9 && random(0, 2) != 0) {
