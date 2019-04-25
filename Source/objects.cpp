@@ -1505,6 +1505,16 @@ void AddBookcase(int i)
 	object[i]._oPreFlag = TRUE;
 }
 
+void AddBookstand(int i)
+{
+	object[i]._oRndSeed = GetRndSeed();
+}
+
+void AddBloodFtn(int i)
+{
+	object[i]._oRndSeed = GetRndSeed();
+}
+
 void AddPurifyingFountain(int i)
 {
 	int ox, oy;
@@ -1524,6 +1534,33 @@ void AddArmorStand(int i)
 		object[i]._oAnimFlag = 2;
 	}
 
+	object[i]._oRndSeed = GetRndSeed();
+}
+
+void AddGoatShrine(int i)
+{
+	object[i]._oRndSeed = GetRndSeed();
+}
+
+void AddCauldron(int i)
+{
+	object[i]._oRndSeed = GetRndSeed();
+}
+
+void AddMurkyFountain(int i)
+{
+	int ox, oy;
+
+	ox = object[i]._ox;
+	oy = object[i]._oy;
+	dObject[ox][oy - 1] = -1 - i;
+	dObject[ox - 1][oy] = -1 - i;
+	dObject[ox - 1][oy - 1] = -1 - i;
+	object[i]._oRndSeed = GetRndSeed();
+}
+
+void AddTearFountain(int i)
+{
 	object[i]._oRndSeed = GetRndSeed();
 }
 
@@ -1551,7 +1588,7 @@ void AddMagicCircle(int i)
 	object[i]._oVar6 = 0;
 }
 
-void AddBookstand(int i)
+void AddBrnCross(int i)
 {
 	object[i]._oRndSeed = GetRndSeed();
 }
