@@ -11,7 +11,7 @@ char szPlayerDescript[128];
 WORD sgwPackPlrOffsetTbl[MAX_PLRS];
 PkPlayerStruct netplr[MAX_PLRS];
 BOOLEAN sgbPlayerTurnBitTbl[MAX_PLRS];
-char sgbPlayerLeftGameTbl[MAX_PLRS];
+BOOLEAN sgbPlayerLeftGameTbl[MAX_PLRS];
 int sgbSentThisCycle; // idb
 BOOL gbShouldValidatePackage;
 BYTE gbActivePlayers;    // weak
@@ -269,27 +269,26 @@ void multi_handle_turn_upper_bit(int pnum)
 
 void multi_player_left(int pnum, int reason)
 {
-	sgbPlayerLeftGameTbl[pnum] = 1;
+	sgbPlayerLeftGameTbl[pnum] = TRUE;
 	sgdwPlayerLeftReasonTbl[pnum] = reason;
 	multi_clear_left_tbl();
 }
 
 void multi_clear_left_tbl()
 {
-	int v0; // esi
+	int i;
 
-	v0 = 0;
-	do {
-		if (sgbPlayerLeftGameTbl[v0]) {
+	for (i = 0; i < MAX_PLRS; i++) {
+		if (sgbPlayerLeftGameTbl[i]) {
 			if (gbBufferMsgs == 1)
-				msg_send_drop_pkt(v0, sgdwPlayerLeftReasonTbl[v0]);
+				msg_send_drop_pkt(i, sgdwPlayerLeftReasonTbl[i]);
 			else
-				multi_player_left_msg(v0, 1);
-			sgbPlayerLeftGameTbl[v0] = 0;
-			sgdwPlayerLeftReasonTbl[v0] = 0;
+				multi_player_left_msg(i, 1);
+
+			sgbPlayerLeftGameTbl[i] = FALSE;
+			sgdwPlayerLeftReasonTbl[i] = 0;
 		}
-		++v0;
-	} while (v0 < MAX_PLRS);
+	}
 }
 // 676194: using guessed type char gbBufferMsgs;
 
@@ -669,7 +668,7 @@ void __stdcall multi_handle_events(_SNETEVENT *pEvt)
 		break;
 	case EVENT_TYPE_PLAYER_LEAVE_GAME:
 		v1 = 0;
-		sgbPlayerLeftGameTbl[pEvt->playerid] = 1;
+		sgbPlayerLeftGameTbl[pEvt->playerid] = TRUE;
 		sgbPlayerTurnBitTbl[pEvt->playerid] = 0;
 		v2 = (int *)pEvt->data;
 		if (v2 && pEvt->databytes >= 4u)
