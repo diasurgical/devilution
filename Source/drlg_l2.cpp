@@ -234,22 +234,14 @@ int Patterns[100][10] = {
 
 void InitDungeon()
 {
-	signed int v0; // edx
-	signed int v1; // eax
-	signed int v2; // ecx
+	int i, j;
 
-	v0 = 0;
-	do {
-		v1 = v0;
-		v2 = 40;
-		do {
-			dflags[0][v1] = 0;
-			predungeon[0][v1] = 32;
-			v1 += 40;
-			--v2;
-		} while (v2);
-		++v0;
-	} while (v0 < 40);
+	for(j = 0; j < DMAXY; j++) {
+		for(i = 0; i < DMAXX; i++) {
+			predungeon[i][j] = 32;
+			dflags[i][j] = 0;
+		}
+	}
 }
 
 void L2LockoutFix()
@@ -629,22 +621,18 @@ void CreateL2Dungeon(unsigned int rseed, int entry)
 
 void DRLG_LoadL2SP()
 {
-	char *v1; // ecx
-
 	setloadflag_2 = 0;
-	if (QuestStatus(QTYPE_BLIND)) {
-		v1 = "Levels\\L2Data\\Blind2.DUN";
-	} else {
-		if (QuestStatus(QTYPE_BLOOD)) {
-			v1 = "Levels\\L2Data\\Blood1.DUN";
-		} else {
-			if (!QuestStatus(QTYPE_BONE))
-				return;
-			v1 = "Levels\\L2Data\\Bonestr2.DUN";
-		}
+
+	if(QuestStatus(QTYPE_BLIND)) {
+		pSetPiece_2 = (char *)LoadFileInMem("Levels\\L2Data\\Blind2.DUN", 0);
+		setloadflag_2 = 1;
+	} else if(QuestStatus(QTYPE_BLOOD)) {
+		pSetPiece_2 = (char *)LoadFileInMem("Levels\\L2Data\\Blood1.DUN", 0);
+		setloadflag_2 = 1;
+	} else if(QuestStatus(QTYPE_BONE)) {
+		pSetPiece_2 = (char *)LoadFileInMem("Levels\\L2Data\\Bonestr2.DUN", 0);
+		setloadflag_2 = 1;
 	}
-	pSetPiece_2 = (char *)LoadFileInMem(v1, 0);
-	setloadflag_2 = 1;
 }
 // 5B50D8: using guessed type int setloadflag_2;
 
@@ -1110,104 +1098,101 @@ void L2TileFix()
 
 BOOL CreateDungeon()
 {
-	int v0;         // esi
-	int v1;         // edx
-	int v2;         // ecx
-	signed int v3;  // esi
-	char *v4;       // eax
-	signed int v5;  // ebx
-	_BYTE *v6;      // ecx
-	BOOL v7;     // zf
-	BOOL v8;     // eax
-	int v9;         // edi
-	int v10;        // esi
-	signed int v12; // [esp-4h] [ebp-20h]
-	int nX1;        // [esp+8h] [ebp-14h]
-	int nY1;        // [esp+Ch] [ebp-10h]
-	int nX2;        // [esp+10h] [ebp-Ch]
-	int nY2;        // [esp+14h] [ebp-8h]
-	int nHd;        // [esp+18h] [ebp-4h]
+	int i, j, nHx1, nHy1, nHx2, nHy2, nHd, ForceH, ForceW;
+	BOOL ForceHW;
 
-	v0 = 0;
-	v1 = 0;
-	v2 = 0;
-	if (currlevel == 5) {
-		if (!quests[QTYPE_BLOOD]._qactive)
-			goto LABEL_12;
-		v1 = 20;
-		v0 = 14;
-	} else {
-		if (currlevel == 6) {
-			if (!quests[QTYPE_BONE]._qactive)
-				goto LABEL_12;
-			v12 = 10;
-		} else {
-			if (currlevel != 7 || !quests[QTYPE_BLIND]._qactive)
-				goto LABEL_12;
-			v12 = 15;
+	ForceW = 0;
+	ForceH = 0;
+	ForceHW = FALSE;
+
+	switch(currlevel) {
+	case 5:
+		if(quests[QTYPE_BLOOD]._qactive) {
+			ForceHW = TRUE;
+			ForceH = 20;
+			ForceW = 14;
 		}
-		v0 = v12;
-		v1 = v12;
+		break;
+	case 6:
+		if(quests[QTYPE_BONE]._qactive) {
+			ForceHW = TRUE;
+			ForceW = 10;
+			ForceH = 10;
+		}
+		break;
+	case 7:
+		if(quests[QTYPE_BLIND]._qactive) {
+			ForceHW = TRUE;
+			ForceW = 15;
+			ForceH = 15;
+		}
+		break;
+	case 8:
+		break;
 	}
-	v2 = 1;
-LABEL_12:
-	CreateRoom(2, 2, 39, 39, 0, 0, v2, v1, v0);
-	while (pHallList) {
-		GetHall(&nX1, &nY1, &nX2, &nY2, &nHd);
-		ConnectHall(nX1, nY1, nX2, nY2, nHd);
+
+	CreateRoom(2, 2, 39, 39, 0, 0, ForceHW, ForceH, ForceW);
+
+	while(pHallList != NULL) {
+		GetHall(&nHx1, &nHy1, &nHx2, &nHy2, &nHd);
+		ConnectHall(nHx1, nHy1, nHx2, nHy2, nHd);
 	}
-	v3 = 0;
-	do {
-		v4 = (char *)&predungeon[-1][v3];
-		v5 = 41;
-		do {
-			v6 = (unsigned char *)v4 + 40;
-			if (v4[40] == 67)
-				*v6 = 35;
-			if (*v6 == 66)
-				*v6 = 35;
-			if (*v6 == 69)
-				*v6 = 35;
-			if (*v6 == 65)
-				*v6 = 35;
-			if (*v6 == 44) {
-				v7 = *(v4 - 1) == 32;
-				*v6 = 46;
-				if (v7)
-					*(v4 - 1) = 35;
-				if (*v4 == 32)
-					*v4 = 35;
-				if (v4[1] == 32)
-					v4[1] = 35;
-				if (v4[79] == 32)
-					v4[79] = 35;
-				if (v4[80] == 32)
-					v4[80] = 35;
-				if (v4[81] == 32)
-					v4[81] = 35;
-				if (v4[39] == 32)
-					v4[39] = 35;
-				if (v4[41] == 32)
-					v4[41] = 35;
+
+	for(j = 0; j <= DMAXY; j++) { /// BUGFIX: change '<=' to '<'
+		for(i = 0; i <= DMAXX; i++) { /// BUGFIX: change '<=' to '<'
+			if(predungeon[i][j] == 67) {
+				predungeon[i][j] = 35;
 			}
-			--v5;
-			v4 += 40;
-		} while (v5);
-		++v3;
-	} while (v3 <= 40);
-	v8 = DL2_FillVoids();
-	if (v8) {
-		v9 = 0;
-		do {
-			v10 = 0;
-			do
-				DoPatternCheck(v10++, v9);
-			while (v10 < 40);
-			++v9;
-		} while (v9 < 40);
-		v8 = 1;
+			if(predungeon[i][j] == 66) {
+				predungeon[i][j] = 35;
+			}
+			if(predungeon[i][j] == 69) {
+				predungeon[i][j] = 35;
+			}
+			if(predungeon[i][j] == 65) {
+				predungeon[i][j] = 35;
+			}
+			if(predungeon[i][j] == 44) {
+				predungeon[i][j] = 46;
+				if(predungeon[i - 1][j - 1] == 32) {
+					predungeon[i - 1][j - 1] = 35;
+				}
+				if(predungeon[i - 1][j] == 32) {
+					predungeon[i - 1][j] = 35;
+				}
+				if(predungeon[i - 1][1 + j] == 32) {
+					predungeon[i - 1][1 + j] = 35;
+				}
+				if(predungeon[i + 1][j - 1] == 32) {
+					predungeon[i + 1][j - 1] = 35;
+				}
+				if(predungeon[i + 1][j] == 32) {
+					predungeon[i + 1][j] = 35;
+				}
+				if(predungeon[i + 1][1 + j] == 32) {
+					predungeon[i + 1][1 + j] = 35;
+				}
+				if(predungeon[i][j - 1] == 32) {
+					predungeon[i][j - 1] = 35;
+				}
+				if(predungeon[i][j + 1] == 32) {
+					predungeon[i][j + 1] = 35;
+				}
+			}
+		}
 	}
-	return v8;
+
+	if(!DL2_FillVoids()) {
+		return FALSE;
+	}
+
+	for(j = 0; j < DMAXY; j++) {
+		for(i = 0; i < DMAXX; i++) {
+			DoPatternCheck(i, j);
+		}
+	}
+
+	return TRUE;
 }
 
 void CreateRoom(int nX1, int nY1, int nX2, int nY2, int nRDest, int nHDir, int ForceHW, int nH, int nW)
@@ -1410,121 +1395,83 @@ void CreateRoom(int nX1, int nY1, int nX2, int nY2, int nRDest, int nHDir, int F
 // 5276CC: using guessed type int nSx2;
 // 5276D4: using guessed type int nSy2;
 
-void DefineRoom(int nX1, int nY1, int nX2, int nY2, int ForceHW)
+void DefineRoom(int nX1, int nY1, int nX2, int nY2, BOOL ForceHW)
 {
-	int v5;         // esi
-	int v6;         // edi
-	int v7;         // eax
-	int i;          // eax
-	BOOLEAN v9;     // zf
-	int v10;        // ecx
-	char *v11;      // eax
-	char *v12;      // ebx
-	int v13;        // eax
-	int v14;        // [esp+10h] [ebp-4h]
-	int v15;        // [esp+10h] [ebp-4h]
-	int nY2a;       // [esp+20h] [ebp+Ch]
-	char *ForceHWa; // [esp+24h] [ebp+10h]
+	int i, j;
 
-	v5 = nX1;
-	v6 = nX2;
-	predungeon[v5][nY1] = 67;
-	predungeon[v5][nY2] = 69;
-	predungeon[v6][nY1] = 66;
-	predungeon[v6][nY2] = 65;
-	v7 = nRoomCnt + 1;
-	nRoomCnt = v7;
-	v7 *= 20;
-	*(int *)((char *)&RoomList[0].nRoomx1 + v7) = nX1;
-	*(int *)((char *)&RoomList[0].nRoomx2 + v7) = nX2;
-	*(int *)((char *)&RoomList[0].nRoomy1 + v7) = nY1;
-	*(int *)((char *)&RoomList[0].nRoomy2 + v7) = nY2;
-	if (ForceHW == 1) {
-		for (i = nX1; i < nX2; ++i) {
-			if (i < nY2) {
-				ForceHWa = &dflags[i][nY1];
-				v14 = nY2 - i;
-				i = nY2;
-				do {
-					*ForceHWa |= DFLAG_EXPLORED;
-					v9 = v14-- == 1;
-					ForceHWa += 40;
-				} while (!v9);
+	predungeon[nX1][nY1] = 67;
+	predungeon[nX1][nY2] = 69;
+	predungeon[nX2][nY1] = 66;
+	predungeon[nX2][nY2] = 65;
+
+	nRoomCnt++;
+	RoomList[nRoomCnt].nRoomx1 = nX1;
+	RoomList[nRoomCnt].nRoomx2 = nX2;
+	RoomList[nRoomCnt].nRoomy1 = nY1;
+	RoomList[nRoomCnt].nRoomy2 = nY2;
+
+	if(ForceHW == TRUE) {
+		for(i = nX1; i < nX2; i++) {
+			while(i < nY2) {
+				dflags[i][nY1] |= 0x80;
+				i++;
 			}
 		}
 	}
-	v10 = nX1 + 1;
-	if (v10 <= nX2 - 1) {
-		v15 = nX2 - v10;
-		v11 = (char *)&predungeon[v10][nY2];
-		do {
-			v11[nY1 - nY2] = 35;
-			*v11 = 35;
-			v11 += 40;
-			--v15;
-		} while (v15);
+	for(i = nX1 + 1; i <= nX2 - 1; i++) {
+		predungeon[i][nY1] = 35;
+		predungeon[i][nY2] = 35;
 	}
-	nY2a = nY2 - 1;
-	while (++nY1 <= nY2a) {
-		predungeon[v5][nY1] = 35;
-		predungeon[v6][nY1] = 35;
-		if (v10 < nX2) {
-			v12 = (char *)&predungeon[v10][nY1];
-			v13 = nX2 - v10;
-			do {
-				*v12 = 46;
-				v12 += 40;
-				--v13;
-			} while (v13);
+	nY2--;
+	for(j = nY1 + 1; j <= nY2; j++) {
+		predungeon[nX1][j] = 35;
+		predungeon[nX2][j] = 35;
+		for(i = nX1 + 1; i < nX2; i++) {
+			predungeon[i][j] = 46;
 		}
 	}
 }
 
 void AddHall(int nX1, int nY1, int nX2, int nY2, int nHd)
 {
-	int v5;       // edi
-	int v6;       // esi
-	HALLNODE *v7; // eax
-	HALLNODE *i;  // ecx
+	HALLNODE *p1, *p2;
 
-	v5 = nX1;
-	v6 = nY1;
-	if (pHallList) {
-		v7 = (HALLNODE *)DiabloAllocPtr(24);
-		v7->pNext = 0;
-		v7->nHallx2 = nX2;
-		v7->nHally2 = nY2;
-		v7->nHallx1 = v5;
-		v7->nHally1 = v6;
-		v7->nHalldir = nHd;
-		for (i = pHallList; i->pNext; i = i->pNext)
-			;
-		i->pNext = v7;
-	} else {
-		pHallList = (HALLNODE *)DiabloAllocPtr(24);
-		pHallList->nHallx1 = v5;
-		pHallList->nHally1 = v6;
+	if(pHallList == NULL) {
+		pHallList = (HALLNODE *)DiabloAllocPtr(sizeof(*pHallList));
+		pHallList->nHallx1 = nX1;
+		pHallList->nHally1 = nY1;
 		pHallList->nHallx2 = nX2;
 		pHallList->nHally2 = nY2;
 		pHallList->nHalldir = nHd;
-		pHallList->pNext = 0;
+		pHallList->pNext = NULL;
+	} else {
+		p1 = (HALLNODE *)DiabloAllocPtr(sizeof(*pHallList));
+		p1->nHallx1 = nX1;
+		p1->nHally1 = nY1;
+		p1->nHallx2 = nX2;
+		p1->nHally2 = nY2;
+		p1->nHalldir = nHd;
+		p1->pNext = NULL;
+		p2 = pHallList;
+		while(p2->pNext != NULL) {
+			p2 = p2->pNext;
+		}
+		p2->pNext = p1;
 	}
 }
 
 void GetHall(int *nX1, int *nY1, int *nX2, int *nY2, int *nHd)
 {
-	HALLNODE *p;
+	HALLNODE *p1;
 
-	p = pHallList->pNext;
+	p1 = pHallList->pNext;
 	*nX1 = pHallList->nHallx1;
 	*nY1 = pHallList->nHally1;
 	*nX2 = pHallList->nHallx2;
 	*nY2 = pHallList->nHally2;
 	*nHd = pHallList->nHalldir;
-
 	MemFreeDbg(pHallList);
-
-	pHallList = p;
+	pHallList = p1;
 }
 
 void ConnectHall(int nX1, int nY1, int nX2, int nY2, int nHd)
