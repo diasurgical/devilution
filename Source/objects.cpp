@@ -4470,31 +4470,26 @@ void BreakBarrel(int pnum, int i, int dam, BOOL forcebreak, int sendmsg)
 
 void BreakObject(int pnum, int oi)
 {
-	int v2; // ebx
-	int v3; // ebp
-	int v4; // esi
-	int v5; // edi
-	int v6; // ecx
-	int v7; // ecx
-	int v8; // eax
+	int objdam, mind, maxd;
 
-	v2 = pnum;
-	v3 = oi;
-	if (pnum == -1) {
-		v7 = 10;
+	if (pnum != -1) {
+		mind = plr[pnum]._pIMinDam;
+		maxd = random(163, plr[pnum]._pIMaxDam - mind + 1);
+		objdam = maxd + mind;
+		objdam += plr[pnum]._pDamageMod + plr[pnum]._pIBonusDamMod + objdam * plr[pnum]._pIBonusDam / 100;
 	} else {
-		v4 = pnum;
-		v5 = plr[v2]._pIMinDam;
-		v6 = v5 + random(163, plr[v2]._pIMaxDam - v5 + 1);
-		v7 = plr[v4]._pIBonusDamMod + plr[v4]._pDamageMod + v6 * plr[v4]._pIBonusDam / 100 + v6;
+		objdam = 10;
 	}
-	v8 = object[v3]._otype;
-	if (v8 >= OBJ_CRUX1) {
-		if (v8 <= OBJ_CRUX3) {
-			BreakCrux(v3);
-		} else if (v8 > OBJ_WEAPRACK && v8 <= OBJ_BARRELEX) {
-			BreakBarrel(v2, v3, v7, 0, 1);
-		}
+	switch (object[oi]._otype) {
+	case OBJ_CRUX1:
+	case OBJ_CRUX2:
+	case OBJ_CRUX3:
+		BreakCrux(oi);
+		break;
+	case OBJ_BARREL:
+	case OBJ_BARRELEX:
+		BreakBarrel(pnum, oi, objdam, 0, 1);
+		break;
 	}
 }
 
