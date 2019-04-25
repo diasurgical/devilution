@@ -954,7 +954,7 @@ void multi_player_joins(int pnum, TCmdPlrInfoHdr *cmd, int a3)
 						} else {
 							plr[pnum]._pgfxnum = 0;
 							LoadPlrGFX(pnum, PFILE_DEATH);
-							plr[pnum]._pmode = 8;
+							plr[pnum]._pmode = PM_DEATH;
 							NewPlrAnim(pnum, plr[pnum]._pDAnim[0], plr[pnum]._pDFrames, 1, plr[pnum]._pDWidth);
 							plr[pnum]._pAnimFrame = plr[pnum]._pAnimLen - 1;
 							plr[pnum]._pVar8 = 2 * plr[pnum]._pAnimLen;
