@@ -251,21 +251,19 @@ void multi_parse_turn(int pnum, int turn)
 
 void multi_handle_turn_upper_bit(int pnum)
 {
-	signed int v1; // eax
+	int i;
 
-	v1 = 0;
-	do {
-		if (player_state[v1] & 0x10000 && v1 != pnum)
+	for (i = 0; i < MAX_PLRS; i++) {
+		if (player_state[i] & 0x10000 && i != pnum)
 			break;
-		++v1;
-	} while (v1 < MAX_PLRS);
-	if (myplr == v1) {
+	}
+
+	if (myplr == i) {
 		sgbSendDeltaTbl[pnum] = TRUE;
 	} else if (myplr == pnum) {
-		gbDeltaSender = v1;
+		gbDeltaSender = i;
 	}
 }
-// 6796E4: using guessed type char gbDeltaSender;
 
 void multi_player_left(int pnum, int reason)
 {
@@ -290,7 +288,6 @@ void multi_clear_left_tbl()
 		}
 	}
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 void multi_player_left_msg(int pnum, int left)
 {
@@ -326,7 +323,6 @@ void multi_net_ping()
 	sgbTimeout = TRUE;
 	sglTimeoutStart = GetTickCount();
 }
-// 678644: using guessed type int sglTimeoutStart;
 
 int multi_handle_delta()
 {
