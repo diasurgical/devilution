@@ -4479,14 +4479,16 @@ void BreakObject(int pnum, int oi)
 	} else {
 		objdam = 10;
 	}
-	if (object[oi]._otype >= OBJ_CRUX1) {
-		if (object[oi]._otype > OBJ_CRUX3) {
-			if (object[oi]._otype > OBJ_WEAPRACK && object[oi]._otype <= OBJ_BARRELEX) {
-				BreakBarrel(pnum, oi, objdam, 0, 1);
-				}
-		} else {
-			BreakCrux(oi);
-		}
+	switch (object[oi]._otype) {
+	case OBJ_CRUX1:
+	case OBJ_CRUX2:
+	case OBJ_CRUX3:
+		BreakCrux(oi);
+		break;
+	case OBJ_BARREL:
+	case OBJ_BARRELEX:
+		BreakBarrel(pnum, oi, objdam, 0, 1);
+		break;
 	}
 }
 
