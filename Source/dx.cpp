@@ -76,17 +76,17 @@ void dx_init(HWND hWnd)
 			ErrDlg(IDD_DIALOG1, hDDVal, "C:\\Src\\Diablo\\Source\\dx.cpp", 170);
 		}
 #ifdef __cplusplus
-		hDDVal = lpDDInterface->SetDisplayMode(SCREEN_WIDTH, SCREEN_HEIGHT, 8);
+		hDDVal = lpDDInterface->SetDisplayMode(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP);
 #else
-		hDDVal = lpDDInterface->lpVtbl->SetDisplayMode(lpDDInterface, SCREEN_WIDTH, SCREEN_HEIGHT, 8);
+		hDDVal = lpDDInterface->lpVtbl->SetDisplayMode(lpDDInterface, SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP);
 #endif
 		if(hDDVal != DD_OK) {
 			winw = GetSystemMetrics(SM_CXSCREEN);
 			winh = GetSystemMetrics(SM_CYSCREEN);
 #ifdef __cplusplus
-			hDDVal = lpDDInterface->SetDisplayMode(winw, winh, 8);
+			hDDVal = lpDDInterface->SetDisplayMode(winw, winh, SCREEN_BPP);
 #else
-			hDDVal = lpDDInterface->lpVtbl->SetDisplayMode(lpDDInterface, winw, winh, 8);
+			hDDVal = lpDDInterface->lpVtbl->SetDisplayMode(lpDDInterface, winw, winh, SCREEN_BPP);
 #endif
 			if(hDDVal != DD_OK) {
 				ErrDlg(IDD_DIALOG1, hDDVal, "C:\\Src\\Diablo\\Source\\dx.cpp", 183);

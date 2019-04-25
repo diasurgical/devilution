@@ -37,8 +37,10 @@ void palette_init()
 #else
 	error_code = lpDDSPrimary->lpVtbl->SetPalette(lpDDSPrimary, lpDDPalette);
 #endif
+#ifndef RGBMODE
 	if (error_code)
 		ErrDlg(IDD_DIALOG8, error_code, "C:\\Src\\Diablo\\Source\\PALETTE.CPP", 146);
+#endif
 }
 
 void LoadGamma()
