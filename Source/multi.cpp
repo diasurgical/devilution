@@ -627,20 +627,20 @@ void multi_send_zero_packet(int pnum, char a2, void *pbSrc, int dwLen)
 
 void NetClose()
 {
-	if (sgbNetInited) {
-		sgbNetInited = FALSE;
-		nthread_cleanup();
-		dthread_cleanup();
-		tmsg_cleanup();
-		multi_event_handler(0);
-		SNetLeaveGame(3);
-		msgcmd_cmd_cleanup();
-		if ((unsigned char)gbMaxPlayers > 1u)
-			Sleep(2000);
+	if (!sgbNetInited) {
+		return;
 	}
+
+	sgbNetInited = FALSE;
+	nthread_cleanup();
+	dthread_cleanup();
+	tmsg_cleanup();
+	multi_event_handler(0);
+	SNetLeaveGame(3);
+	msgcmd_cmd_cleanup();
+	if (gbMaxPlayers > 1)
+		Sleep(2000);
 }
-// 679660: using guessed type char gbMaxPlayers;
-// 6796E8: using guessed type int sgbNetInited;
 
 char multi_event_handler(int a1)
 {
