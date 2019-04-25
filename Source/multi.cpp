@@ -448,18 +448,13 @@ void multi_begin_timeout()
 
 void multi_check_drop_player()
 {
-	int v0; // esi
-	int v1; // eax
+	int i;
 
-	v0 = 0;
-	do {
-		v1 = player_state[v0];
-		if (!(v1 & 0x40000)) {
-			if (v1 & 0x10000)
-				SNetDropPlayer(v0, 0x40000006);
+	for (i = 0; i < MAX_PLRS; i++) {
+		if (!(player_state[i] & 0x40000) && player_state[i] & 0x10000) {
+			SNetDropPlayer(i, 0x40000006);
 		}
-		++v0;
-	} while (v0 < MAX_PLRS);
+	}
 }
 
 void multi_process_network_packets()
@@ -699,8 +694,6 @@ void __stdcall multi_handle_events(_SNETEVENT *pEvt)
 		break;
 	}
 }
-// 6761B8: using guessed type char gbSomebodyWonGameKludge;
-// 6796E4: using guessed type char gbDeltaSender;
 
 BOOL NetInit(BOOL bSinglePlayer, BOOL *pfExitProgram)
 {
@@ -887,7 +880,6 @@ BOOL multi_init_single(_SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info
 
 	return TRUE;
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 BOOL multi_init_multi(_SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info, _SNETUIDATA *ui_info, int *pfExitProgram)
 {
@@ -927,8 +919,6 @@ BOOL multi_init_multi(_SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info,
 		return TRUE;
 	}
 }
-// 678640: using guessed type char byte_678640;
-// 679660: using guessed type char gbMaxPlayers;
 
 BOOL multi_upgrade(int *pfExitProgram)
 {
