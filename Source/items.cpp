@@ -4594,7 +4594,7 @@ void RecalcStoreStats()
 		}
 	}
 	for (i = 0; i < 6; i++) {
-		if (premiumitem[i]._itype != -1) {
+		if (premiumitem[i]._itype != ITYPE_NONE) {
 			premiumitem[i]._iStatFlag = StoreStatOk(&premiumitem[i]);
 		}
 	}
