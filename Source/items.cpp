@@ -4286,20 +4286,18 @@ void SortWitch()
 
 void WitchBookLevel(int ii)
 {
-	int slvl; // edi
+	int slvl;
 
 	if (witchitem[ii]._iMiscId == IMISC_BOOK) {
 		witchitem[ii]._iMinMag = spelldata[witchitem[ii]._iSpell].sMinInt;
 		slvl = plr[myplr]._pSplLvl[witchitem[ii]._iSpell];
-		if (slvl) {
-			do {
-				witchitem[ii]._iMinMag += 20 * witchitem[ii]._iMinMag / 100;
-				--slvl;
-				if (witchitem[ii]._iMinMag > 255) {
-					witchitem[ii]._iMinMag = -1;
-					slvl = 0;
-				}
-			} while (slvl);
+		while (slvl) {
+			witchitem[ii]._iMinMag += 20 * witchitem[ii]._iMinMag / 100;
+			slvl--;
+			if (witchitem[ii]._iMinMag + 20 * witchitem[ii]._iMinMag / 100 > 255) {
+				witchitem[ii]._iMinMag = 255;
+				slvl = 0;
+			}
 		}
 	}
 }
