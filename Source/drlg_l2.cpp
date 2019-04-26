@@ -1476,204 +1476,153 @@ void GetHall(int *nX1, int *nY1, int *nX2, int *nY2, int *nHd)
 
 void ConnectHall(int nX1, int nY1, int nX2, int nY2, int nHd)
 {
-	int v5;        // edi
-	signed int v6; // esi
-	int v7;        // eax
-	int v9;        // edi
-	int v10;       // ebx
-	int v11;       // ecx
-	char v12;      // al
-	int v13;       // eax
-	int v14;       // ecx
-	char *v15;     // ebx
-	int v16;       // ecx
-	int v17;       // edx
-	int v18;       // ecx
-	int v19;       // edx
-	int v20;       // eax
-	//int v21; // ST04_4
-	int v23;        // ebx
-	int v24;        // ebx
-	BOOLEAN v25;    // zf
-	signed int v26; // [esp-4h] [ebp-34h]
-	signed int v27; // [esp-4h] [ebp-34h]
-	signed int v28; // [esp-4h] [ebp-34h]
-	signed int v29; // [esp-4h] [ebp-34h]
-	int v30;        // [esp+Ch] [ebp-24h]
-	int v31;        // [esp+10h] [ebp-20h]
-	int v32;        // [esp+14h] [ebp-1Ch]
-	signed int v33; // [esp+18h] [ebp-18h]
-	signed int v34; // [esp+1Ch] [ebp-14h]
-	signed int v35; // [esp+20h] [ebp-10h]
-	int v36;        // [esp+24h] [ebp-Ch]
-	char *v37;      // [esp+28h] [ebp-8h]
-	signed int nY;  // [esp+2Ch] [ebp-4h]
-	int nX2a;       // [esp+38h] [ebp+8h]
-	int nY2a;       // [esp+3Ch] [ebp+Ch]
-	int nHda;       // [esp+40h] [ebp+10h]
+	int nCurrd, nDx, nDy, nRp, nOrigX1, nOrigY1, fMinusFlag, fPlusFlag;
+	BOOL fDoneflag, fInroom;
 
-	v34 = 0;
-	v5 = nY1;
-	v6 = nX1;
-	nY = nY1;
-	v7 = random(0, 100);
-	v33 = v7;
-	v32 = random(0, 100);
-	v31 = v6;
-	v30 = v5;
-	CreateDoorType(v6, v5);
+	fDoneflag = FALSE;
+	fMinusFlag = random(0, 100);
+	fPlusFlag = random(0, 100);
+	nOrigX1 = nX1;
+	nOrigY1 = nY1;
+	CreateDoorType(nX1, nY1);
 	CreateDoorType(nX2, nY2);
-	abs(nX2 - v6);
-	abs(nY2 - v5);
-	v9 = nHd;
-	v10 = nX2 - Dir_Xadd[nHd];
-	v11 = nY2 - Dir_Yadd[nHd];
-	nHda = 0;
-	nY2a = v11;
-	nX2a = v10;
-	predungeon[v10][v11] = 44;
-	v37 = (char *)&predungeon[v6][nY];
-	do {
-		if (v6 >= 38 && v9 == 2)
-			v9 = 4;
-		if (nY >= 38 && v9 == 3)
-			v9 = 1;
-		if (v6 <= 1 && v9 == 4)
-			v9 = 2;
-		if (nY <= 1 && v9 == 1)
-			v9 = 3;
-		v12 = *v37;
-		if (*v37 == 67 && (v9 == 1 || v9 == 4))
-			v9 = 2;
-		if (v12 == 66 && (v9 == 1 || v9 == 2))
-			v9 = 3;
-		if (v12 == 69 && (v9 == 4 || v9 == 3))
-			v9 = 1;
-		if (v12 == 65 && (v9 == 2 || v9 == 3))
-			v9 = 4;
-		v13 = Dir_Xadd[v9];
-		v14 = Dir_Yadd[v9];
-		nY += v14;
-		v6 += v13;
-		v15 = (char *)&predungeon[v6][nY];
-		v37 = v15;
-		if (*v15 == 32) {
-			if (nHda) {
-				CreateDoorType(v6 - v13, nY - v14);
+	nDx = abs(nX2 - nX1); /* unused */
+	nDy = abs(nY2 - nY1); /* unused */
+	nCurrd = nHd;
+	nX2 -= Dir_Xadd[nCurrd];
+	nY2 -= Dir_Yadd[nCurrd];
+	predungeon[nX2][nY2] = 44;
+	fInroom = FALSE;
+
+	while(!fDoneflag) {
+		if(nX1 >= 38 && nCurrd == 2) {
+			nCurrd = 4;
+		}
+		if(nY1 >= 38 && nCurrd == 3) {
+			nCurrd = 1;
+		}
+		if(nX1 <= 1 && nCurrd == 4) {
+			nCurrd = 2;
+		}
+		if(nY1 <= 1 && nCurrd == 1) {
+			nCurrd = 3;
+		}
+		if(predungeon[nX1][nY1] == 67 && (nCurrd == 1 || nCurrd == 4)) {
+			nCurrd = 2;
+		}
+		if(predungeon[nX1][nY1] == 66 && (nCurrd == 1 || nCurrd == 2)) {
+			nCurrd = 3;
+		}
+		if(predungeon[nX1][nY1] == 69 && (nCurrd == 4 || nCurrd == 3)) {
+			nCurrd = 1;
+		}
+		if(predungeon[nX1][nY1] == 65 && (nCurrd == 2 || nCurrd == 3)) {
+			nCurrd = 4;
+		}
+		nX1 += Dir_Xadd[nCurrd];
+		nY1 += Dir_Yadd[nCurrd];
+		if(predungeon[nX1][nY1] == 32) {
+			if(fInroom) {
+				CreateDoorType(nX1 - Dir_Xadd[nCurrd], nY1 - Dir_Yadd[nCurrd]);
 			} else {
-				if (v33 < 50) {
-					if (v9 == 1 || v9 == 3) {
-						v17 = nY;
-						v16 = v6 - 1;
+				if(fMinusFlag < 50) {
+					if(nCurrd != 1 && nCurrd != 3) {
+						PlaceHallExt(nX1, nY1 - 1);
 					} else {
-						v16 = v6;
-						v17 = nY - 1;
+						PlaceHallExt(nX1 - 1, nY1);
 					}
-					PlaceHallExt(v16, v17);
 				}
-				if (v32 < 50) {
-					if (v9 == 1 || v9 == 3) {
-						v19 = nY;
-						v18 = v6 + 1;
+				if(fPlusFlag < 50) {
+					if(nCurrd != 1 && nCurrd != 3) {
+						PlaceHallExt(nX1, nY1 + 1);
 					} else {
-						v18 = v6;
-						v19 = nY + 1;
+						PlaceHallExt(nX1 + 1, nY1);
 					}
-					PlaceHallExt(v18, v19);
 				}
 			}
-			nHda = 0;
-			*v15 = 44;
+			predungeon[nX1][nY1] = 44;
+			fInroom = FALSE;
 		} else {
-			if (!nHda && *v15 == 35)
-				CreateDoorType(v6, nY);
-			if (*v15 != 44)
-				nHda = 1;
+			if(!fInroom && predungeon[nX1][nY1] == 35) {
+				CreateDoorType(nX1, nY1);
+			}
+			if(predungeon[nX1][nY1] != 44) {
+				fInroom = TRUE;
+			}
 		}
-		v36 = abs(nX2a - v6);
-		v20 = abs(nY2a - nY);
-		//v22 = v21;
-		v35 = v20;
-		if (v36 <= v20) {
-			v24 = 5 * v20;
-			if (5 * v20 > 80)
-				v24 = 80;
-			if (random(0, 100) < v24) {
-				if (nY2a <= nY || nY >= 40) {
-					v9 = 1;
-					goto LABEL_67;
+		nDx = abs(nX2 - nX1);
+		nDy = abs(nY2 - nY1);
+		if(nDx > nDy) {
+			nRp = 2 * nDx;
+			if(nRp > 30) {
+				nRp = 30;
+			}
+			if(random(0, 100) < nRp) {
+				if(nX2 <= nX1 || nX1 >= 40) {
+					nCurrd = 4;
+				} else {
+					nCurrd = 2;
 				}
-				v26 = 3;
-				goto LABEL_58;
 			}
 		} else {
-			v23 = 2 * v36;
-			if (2 * v36 > 30)
-				v23 = 30;
-			if (random(0, 100) < v23) {
-				if (nX2a <= v6 || v6 >= 40)
-					v26 = 4;
-				else
-					v26 = 2;
-			LABEL_58:
-				v9 = v26;
-				goto LABEL_67;
+			nRp = 5 * nDy;
+			if(nRp > 80) {
+				nRp = 80;
+			}
+			if(random(0, 100) < nRp) {
+				if(nY2 <= nY1 || nY1 >= 40) {
+					nCurrd = 1;
+				} else {
+					nCurrd = 3;
+				}
 			}
 		}
-	LABEL_67:
-		if (v35 < 10 && v6 == nX2a && (v9 == 2 || v9 == 4)) {
-			if (nY2a <= nY || nY >= 40)
-				v9 = 1;
-			else
-				v9 = 3;
-		}
-		if (v36 < 10 && nY == nY2a && (v9 == 1 || v9 == 3)) {
-			if (nX2a <= v6 || v6 >= 40)
-				v27 = 4;
-			else
-				v27 = 2;
-			v9 = v27;
-		}
-		if (v35 == 1) {
-			v25 = v36 == 1;
-			if (v36 <= 1)
-				goto LABEL_94;
-			if (v9 == 1 || v9 == 3) {
-				if (nX2a <= v6 || v6 >= 40)
-					v28 = 4;
-				else
-					v28 = 2;
-				v9 = v28;
+		if(nDy < 10 && nX1 == nX2 && (nCurrd == 2 || nCurrd == 4)) {
+			if(nY2 <= nY1 || nY1 >= 40) {
+				nCurrd = 1;
+			} else {
+				nCurrd = 3;
 			}
 		}
-		v25 = v36 == 1;
-	LABEL_94:
-		if (v25) {
-			if (v35 <= 1 || v9 != 2 && v9 != 4)
-				goto LABEL_109;
-			if (nY2a > nY && v6 < 40)
-				goto LABEL_100;
-			v9 = 1;
-		}
-		if (!v36 && *v37 != 32 && (v9 == 2 || v9 == 4)) {
-			if (nX2a <= v31 || v6 >= 40) {
-				v9 = 1;
-				goto LABEL_109;
+		if(nDx < 10 && nY1 == nY2 && (nCurrd == 1 || nCurrd == 3)) {
+			if(nX2 <= nX1 || nX1 >= 40) {
+				nCurrd = 4;
+			} else {
+				nCurrd = 2;
 			}
-		LABEL_100:
-			v9 = 3;
 		}
-	LABEL_109:
-		if (!v35 && *v37 != 32 && (v9 == 1 || v9 == 3)) {
-			if (nY2a <= v30 || nY >= 40)
-				v29 = 4;
-			else
-				v29 = 2;
-			v9 = v29;
+		if(nDy == 1 && nDx > 1 && (nCurrd == 1 || nCurrd == 3)) {
+			if(nX2 <= nX1 || nX1 >= 40) {
+				nCurrd = 4;
+			} else {
+				nCurrd = 2;
+			}
 		}
-		if (v6 == nX2a && nY == nY2a)
-			v34 = 1;
-	} while (!v34);
+		if(nDx == 1 && nDy > 1 && (nCurrd == 2 || nCurrd == 4)) {
+			if(nY2 <= nY1 || nX1 >= 40) {
+				nCurrd = 1;
+			} else {
+				nCurrd = 3;
+			}
+		}
+		if(nDx == 0 && predungeon[nX1][nY1] != 32 && (nCurrd == 2 || nCurrd == 4)) {
+			if(nX2 <= nOrigX1 || nX1 >= 40) {
+				nCurrd = 1;
+			} else {
+				nCurrd = 3;
+			}
+		}
+		if(nDy == 0 && predungeon[nX1][nY1] != 32 && (nCurrd == 1 || nCurrd == 3)) {
+			if(nY2 <= nOrigY1 || nY1 >= 40) {
+				nCurrd = 4;
+			} else {
+				nCurrd = 2;
+			}
+		}
+		if(nX1 == nX2 && nY1 == nY2) {
+			fDoneflag = TRUE;
+		}
+	}
 }
 
 void CreateDoorType(int nX, int nY)
