@@ -1859,49 +1859,40 @@ void STextUp()
 
 void STextDown()
 {
-	int v0; // eax
-
 	PlaySFX(IS_TITLEMOV);
-	if (stextsel != -1) {
-		if (stextscrl) {
-			if (stextsel == stextdown) {
-				if (stextsval < stextsmax)
-					++stextsval;
-				return;
-			}
-			v0 = stextsel + 1;
-			stextsel = v0;
-			if (stext[v0]._ssel)
-				return;
-			do {
-				if (v0 == 23)
-					v0 = 0;
-				else
-					++v0;
-			} while (!stext[v0]._ssel);
-		LABEL_20:
-			stextsel = v0;
+	if (stextsel == -1) {
+		return;
+	}
+
+	if (stextscrl) {
+		if (stextsel == stextdown) {
+			if (stextsval < stextsmax)
+				stextsval++;
 			return;
 		}
-		if (stextsel == 23)
-			v0 = 0;
-		else
-			v0 = stextsel + 1;
-		stextsel = v0;
-		if (!stext[v0]._ssel) {
-			do {
-				if (v0 == 23)
-					v0 = 0;
-				else
-					++v0;
-			} while (!stext[v0]._ssel);
-			goto LABEL_20;
+
+		stextsel++;
+		while (!stext[stextsel]._ssel) {
+			if (stextsel == 23)
+				stextsel = 0;
+			else
+				stextsel++;
 		}
+		return;
+	}
+
+	if (stextsel == 23)
+		stextsel = 0;
+	else
+		stextsel++;
+
+	while (!stext[stextsel]._ssel) {
+		if (stextsel == 23)
+			stextsel = 0;
+		else
+			stextsel++;
 	}
 }
-// 6A09E4: using guessed type int stextsmax;
-// 6A8A28: using guessed type int stextsel;
-// 6AA700: using guessed type int stextdown;
 
 void STextPrior()
 {
