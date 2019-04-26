@@ -1908,18 +1908,16 @@ void STextPrior()
 	PlaySFX(IS_TITLEMOV);
 	if (stextsel != -1 && stextscrl) {
 		if (stextsel == stextup) {
-			if (stextsval) {
+			if (stextsval)
 				stextsval -= 4;
-				if (stextsval < 0)
-					stextsval = 0;
-			}
+			stextsval = stextsval;
+			if (stextsval < 0)
+				stextsval = 0;
 		} else {
 			stextsel = stextup;
 		}
 	}
 }
-// 69F108: using guessed type int stextup;
-// 6A8A28: using guessed type int stextsel;
 
 void STextNext()
 {
