@@ -1731,10 +1731,6 @@ LABEL_19:
 
 void STextESC()
 {
-	char v0; // cl
-	char v1; // cl
-	char v2; // cl
-
 	if (qtextflag) {
 		qtextflag = FALSE;
 		if (leveltype == DTYPE_TOWN)
@@ -1750,58 +1746,57 @@ void STextESC()
 		case STORE_TAVERN:
 		case STORE_DRUNK:
 		case STORE_BARMAID:
-			stextflag = STORE_NONE;
-			return;
+			stextflag = 0;
+			break;
+		case STORE_GOSSIP:
+			StartStore(stextshold);
+			stextsel = stextlhold;
+			break;
 		case STORE_SBUY:
 			StartStore(STORE_SMITH);
 			stextsel = 12;
-			return;
-		case STORE_SSELL:
-			v1 = STORE_SMITH;
-			goto LABEL_16;
-		case STORE_SREPAIR:
-			v2 = STORE_SMITH;
-			goto LABEL_14;
-		case STORE_WBUY:
-			v0 = STORE_WITCH;
-			goto LABEL_18;
-		case STORE_WSELL:
-			v1 = STORE_WITCH;
-			goto LABEL_16;
-		case STORE_WRECHARGE:
-			v2 = STORE_WITCH;
-		LABEL_14:
-			StartStore(v2);
-			stextsel = 18;
-			return;
-		case STORE_NOMONEY:
-		case STORE_NOROOM:
-		case STORE_CONFIRM:
-			StartStore((unsigned char)stextshold);
-			stextsel = stextlhold;
-			stextsval = stextvhold;
-			return;
-		case STORE_HBUY:
-			v1 = STORE_HEALER;
-		LABEL_16:
-			StartStore(v1);
-			stextsel = 16;
-			return;
-		case STORE_SIDENTIFY:
-			v0 = STORE_STORY;
-			goto LABEL_18;
+			break;
 		case STORE_SPBUY:
-			v0 = STORE_SMITH;
-		LABEL_18:
-			StartStore(v0);
+			StartStore(STORE_SMITH);
 			stextsel = 14;
 			break;
-		case STORE_GOSSIP:
-			StartStore((unsigned char)stextshold);
-			stextsel = stextlhold;
+		case STORE_SSELL:
+			StartStore(STORE_SMITH);
+			stextsel = 16;
+			break;
+		case STORE_SREPAIR:
+			StartStore(STORE_SMITH);
+			stextsel = 18;
+			break;
+		case STORE_WBUY:
+			StartStore(STORE_WITCH);
+			stextsel = 14;
+			break;
+		case STORE_WSELL:
+			StartStore(STORE_WITCH);
+			stextsel = 16;
+			break;
+		case STORE_WRECHARGE:
+			StartStore(STORE_WITCH);
+			stextsel = 18;
+			break;
+		case STORE_HBUY:
+			StartStore(STORE_HEALER);
+			stextsel = 16;
+			break;
+		case STORE_SIDENTIFY:
+			StartStore(STORE_STORY);
+			stextsel = 14;
 			break;
 		case STORE_IDSHOW:
 			StartStore(STORE_SIDENTIFY);
+			break;
+		case STORE_NOMONEY:
+		case STORE_NOROOM:
+		case STORE_CONFIRM:
+			StartStore(stextshold);
+			stextsel = stextlhold;
+			stextsval = stextvhold;
 			break;
 		}
 	}
