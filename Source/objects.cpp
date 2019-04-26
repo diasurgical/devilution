@@ -2194,19 +2194,32 @@ void ObjSetMicro(int dx, int dy, int pn)
 
 void objects_set_door_piece(int x, int y)
 {
-	int v2;   // edi
-	int v3;   // ST10_4
-	int v4;   // ST18_4
-	short v5; // ST14_2
-	short v6; // ST0C_2
+	int pn;
+	long v1, v2;
 
-	v2 = y;
-	v3 = x;
-	v4 = dPiece[x][y] - 1;
-	v5 = *((_WORD *)pLevelPieces + 10 * (unsigned short)v4 + 8);
-	v6 = *((_WORD *)pLevelPieces + 10 * (unsigned short)v4 + 9);
-	dpiece_defs_map_1[IsometricCoord(x, y)].mt[0] = v5;
-	dpiece_defs_map_1[IsometricCoord(v3, v2)].mt[1] = v6;
+	pn = dPiece[x][y] - 1;
+
+#ifdef USE_ASM
+	__asm {
+	mov		esi, pLevelPieces
+	xor		eax, eax
+	mov		ax, word ptr pn
+	mov		ebx, 20
+	mul		ebx
+	add		esi, eax
+	add		esi, 16
+	xor		eax, eax
+	lodsw
+	mov		word ptr v1, ax
+	lodsw
+	mov		word ptr v2, ax
+	}
+#else
+	v1 = *((WORD *)pLevelPieces + 10 * pn + 8);
+	v2 = *((WORD *)pLevelPieces + 10 * pn + 9);
+#endif
+	dpiece_defs_map_1[IsometricCoord(x, y)].mt[0] = v1;
+	dpiece_defs_map_1[IsometricCoord(x, y)].mt[1] = v2;
 }
 
 void ObjSetMini(int x, int y, int v)
