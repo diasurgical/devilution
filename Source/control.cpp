@@ -2879,7 +2879,7 @@ void control_reset_talk()
 // 4B8960: using guessed type int talkflag;
 // 52571C: using guessed type int drawpanflag;
 
-int control_talk_last_key(int a1)
+BOOL control_talk_last_key(int vkey)
 {
 	int result;
 
