@@ -210,14 +210,15 @@ HWND init_find_mom_parent()
 
 void init_await_mom_parent_exit()
 {
-	DWORD v0; // edi
+	DWORD tick;
 
-	v0 = GetTickCount();
+	tick = GetTickCount();
+	if (!init_find_mom_parent()) {
+		return;
+	}
 	do {
-		if (!init_find_mom_parent())
-			break;
 		Sleep(250);
-	} while (GetTickCount() - v0 <= 4000);
+	} while (GetTickCount() - tick <= 4000 && init_find_mom_parent());
 }
 
 void init_archives()
