@@ -4604,7 +4604,7 @@ void RecalcStoreStats()
 		}
 	}
 	for (i = 0; i < 20; i++) {
-		if (healitem[i]._itype != -1) {
+		if (healitem[i]._itype != ITYPE_NONE) {
 			healitem[i]._iStatFlag = StoreStatOk(&healitem[i]);
 		}
 	}
