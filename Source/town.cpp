@@ -144,17 +144,17 @@ void town_draw_clipped_e_flag(BYTE *pBuff, int x, int y, int sx, int sy)
 {
 	int i;
 	BYTE *dst;
-	WORD *pMap;
+	MICROS *pMap;
 
 	dst = pBuff;
-	pMap = dpiece_defs_map_1[IsometricCoord(x, y)];
+	pMap = &dpiece_defs_map_1[IsometricCoord(x, y)];
 
 	for (i = 0; i < 12; i += 2) {
-		level_cel_block = pMap[i];
+		level_cel_block = pMap->mt[i];
 		if (level_cel_block != 0) {
 			drawLowerScreen(dst);
 		}
-		level_cel_block = pMap[i + 1];
+		level_cel_block = pMap->mt[i + 1];
 		if (level_cel_block != 0) {
 			drawLowerScreen(dst + 32);
 		}
@@ -236,7 +236,7 @@ void town_draw_lower(int x, int y, int sx, int sy, int a5, int some_flag)
 {
 	int i, j;
 	BYTE *dst;
-	WORD *pMap;
+	MICROS *pMap;
 
 	/// ASSERT: assert(gpBuffer);
 
@@ -245,9 +245,9 @@ void town_draw_lower(int x, int y, int sx, int sy, int a5, int some_flag)
 			level_cel_block = dPiece[x][y];
 			if (level_cel_block != 0) {
 				dst = &gpBuffer[sx + 32 + PitchTbl[sy]];
-				pMap = dpiece_defs_map_1[IsometricCoord(x, y)];
+				pMap = &dpiece_defs_map_1[IsometricCoord(x, y)];
 				for (i = 1; i < 17; i += 2) {
-					level_cel_block = pMap[i];
+					level_cel_block = pMap->mt[i];
 					if (level_cel_block != 0) {
 						drawLowerScreen(dst);
 					}
@@ -270,13 +270,13 @@ void town_draw_lower(int x, int y, int sx, int sy, int a5, int some_flag)
 			level_cel_block = dPiece[x][y];
 			if (level_cel_block != 0) {
 				dst = &gpBuffer[sx + PitchTbl[sy]];
-				pMap = dpiece_defs_map_1[IsometricCoord(x, y)];
+				pMap = &dpiece_defs_map_1[IsometricCoord(x, y)];
 				for (i = 0; i < 16; i += 2) {
-					level_cel_block = pMap[i];
+					level_cel_block = pMap->mt[i];
 					if (level_cel_block != 0) {
 						drawLowerScreen(dst);
 					}
-					level_cel_block = pMap[i + 1];
+					level_cel_block = pMap->mt[i + 1];
 					if (level_cel_block != 0) {
 						drawLowerScreen(dst + 32);
 					}
@@ -299,9 +299,9 @@ void town_draw_lower(int x, int y, int sx, int sy, int a5, int some_flag)
 			level_cel_block = dPiece[x][y];
 			if (level_cel_block != 0) {
 				dst = &gpBuffer[sx + PitchTbl[sy]];
-				pMap = dpiece_defs_map_1[IsometricCoord(x, y)];
+				pMap = &dpiece_defs_map_1[IsometricCoord(x, y)];
 				for (i = 0; i < 16; i += 2) {
-					level_cel_block = pMap[i];
+					level_cel_block = pMap->mt[i];
 					if (level_cel_block != 0) {
 						drawLowerScreen(dst);
 					}
@@ -322,7 +322,7 @@ void town_draw_clipped_e_flag_2(BYTE *pBuff, int x, int y, int a4, int a5, int s
 {
 	int i;
 	BYTE *dst;
-	WORD *pMap;
+	MICROS *pMap;
 
 	if (a4 == 0) {
 		dst = pBuff;
@@ -330,15 +330,15 @@ void town_draw_clipped_e_flag_2(BYTE *pBuff, int x, int y, int a4, int a5, int s
 		dst = &pBuff[768 * 32 * a4];
 	}
 
-	pMap = dpiece_defs_map_1[IsometricCoord(x, y)];
+	pMap = &dpiece_defs_map_1[IsometricCoord(x, y)];
 
 	for (i = 0; i < 6; i++) {
 		if (a4 <= i) {
-			level_cel_block = pMap[2 * i + 2];
+			level_cel_block = pMap->mt[2 * i + 2];
 			if (level_cel_block != 0) {
 				drawLowerScreen(dst);
 			}
-			level_cel_block = pMap[2 * i + 3];
+			level_cel_block = pMap->mt[2 * i + 3];
 			if (level_cel_block != 0) {
 				drawLowerScreen(dst + 32);
 			}
@@ -419,7 +419,7 @@ void town_draw_lower_2(int x, int y, int sx, int sy, int a5, int a6, int some_fl
 {
 	int i, j, dir;
 	BYTE *dst;
-	WORD *pMap;
+	MICROS *pMap;
 
 	/// ASSERT: assert(gpBuffer);
 
@@ -430,10 +430,10 @@ void town_draw_lower_2(int x, int y, int sx, int sy, int a5, int a6, int some_fl
 			level_cel_block = dPiece[x][y];
 			if (level_cel_block != 0) {
 				dst = &gpBuffer[sx - (768 * 32 - 32) + PitchTbl[sy]];
-				pMap = dpiece_defs_map_1[IsometricCoord(x, y)];
+				pMap = &dpiece_defs_map_1[IsometricCoord(x, y)];
 				for (i = 0; i < 7; i++) {
 					if (a6 <= i) {
-						level_cel_block = pMap[2 * i + 3];
+						level_cel_block = pMap->mt[2 * i + 3];
 						if (level_cel_block != 0) {
 							drawLowerScreen(dst);
 						}
@@ -459,14 +459,14 @@ void town_draw_lower_2(int x, int y, int sx, int sy, int a5, int a6, int some_fl
 			level_cel_block = dPiece[x][y];
 			if (level_cel_block != 0) {
 				dst = &gpBuffer[sx - 768 * 32 + PitchTbl[sy]];
-				pMap = dpiece_defs_map_1[IsometricCoord(x, y)];
+				pMap = &dpiece_defs_map_1[IsometricCoord(x, y)];
 				for (i = 0; i < 7; i++) {
 					if (a6 <= i) {
-						level_cel_block = pMap[2 * i + 2];
+						level_cel_block = pMap->mt[2 * i + 2];
 						if (level_cel_block != 0) {
 							drawLowerScreen(dst);
 						}
-						level_cel_block = pMap[2 * i + 3];
+						level_cel_block = pMap->mt[2 * i + 3];
 						if (level_cel_block != 0) {
 							drawLowerScreen(dst + 32);
 						}
@@ -492,10 +492,10 @@ void town_draw_lower_2(int x, int y, int sx, int sy, int a5, int a6, int some_fl
 			level_cel_block = dPiece[x][y];
 			if (level_cel_block != 0) {
 				dst = &gpBuffer[sx - 768 * 32 + PitchTbl[sy]];
-				pMap = dpiece_defs_map_1[IsometricCoord(x, y)];
+				pMap = &dpiece_defs_map_1[IsometricCoord(x, y)];
 				for (i = 0; i < 7; i++) {
 					if (a6 <= i) {
-						level_cel_block = pMap[2 * i + 2];
+						level_cel_block = pMap->mt[2 * i + 2];
 						if (level_cel_block != 0) {
 							drawLowerScreen(dst);
 						}
@@ -519,18 +519,18 @@ void town_draw_e_flag(BYTE *pBuff, int x, int y, int a4, int dir, int sx, int sy
 {
 	int i;
 	BYTE *dst;
-	WORD *pMap;
+	MICROS *pMap;
 
 	dst = pBuff;
-	pMap = dpiece_defs_map_1[IsometricCoord(x, y)];
+	pMap = &dpiece_defs_map_1[IsometricCoord(x, y)];
 
 	for (i = 0; i < 7; i++) {
 		if (a4 >= i) {
-			level_cel_block = pMap[2 * i];
+			level_cel_block = pMap->mt[2 * i];
 			if (level_cel_block != 0) {
 				drawUpperScreen(dst);
 			}
-			level_cel_block = pMap[2 * i + 1];
+			level_cel_block = pMap->mt[2 * i + 1];
 			if (level_cel_block != 0) {
 				drawUpperScreen(dst + 32);
 			}
@@ -614,7 +614,7 @@ void town_draw_upper(int x, int y, int sx, int sy, int a5, int a6, int some_flag
 {
 	int i, j, dir;
 	BYTE *dst;
-	WORD *pMap;
+	MICROS *pMap;
 
 	/// ASSERT: assert(gpBuffer);
 
@@ -628,10 +628,10 @@ void town_draw_upper(int x, int y, int sx, int sy, int a5, int a6, int some_flag
 			level_cel_block = dPiece[x][y];
 			if (level_cel_block != 0) {
 				dst = &gpBuffer[sx + 32 + PitchTbl[sy]];
-				pMap = dpiece_defs_map_1[IsometricCoord(x, y)];
+				pMap = &dpiece_defs_map_1[IsometricCoord(x, y)];
 				for (i = 0; i < 7; i++) {
 					if (a6 >= i) {
-						level_cel_block = pMap[2 * i + 1];
+						level_cel_block = pMap->mt[2 * i + 1];
 						if (level_cel_block != 0) {
 							drawUpperScreen(dst);
 						}
@@ -655,14 +655,14 @@ void town_draw_upper(int x, int y, int sx, int sy, int a5, int a6, int some_flag
 			level_cel_block = dPiece[x][y];
 			if (level_cel_block != 0) {
 				dst = &gpBuffer[sx + PitchTbl[sy]];
-				pMap = dpiece_defs_map_1[IsometricCoord(x, y)];
+				pMap = &dpiece_defs_map_1[IsometricCoord(x, y)];
 				for (i = 0; i < 7; i++) {
 					if (a6 >= i) {
-						level_cel_block = pMap[2 * i];
+						level_cel_block = pMap->mt[2 * i];
 						if (level_cel_block != 0) {
 							drawUpperScreen(dst);
 						}
-						level_cel_block = pMap[2 * i + 1];
+						level_cel_block = pMap->mt[2 * i + 1];
 						if (level_cel_block != 0) {
 							drawUpperScreen(dst + 32);
 						}
@@ -686,10 +686,10 @@ void town_draw_upper(int x, int y, int sx, int sy, int a5, int a6, int some_flag
 			level_cel_block = dPiece[x][y];
 			if (level_cel_block != 0) {
 				dst = &gpBuffer[sx + PitchTbl[sy]];
-				pMap = dpiece_defs_map_1[IsometricCoord(x, y)];
+				pMap = &dpiece_defs_map_1[IsometricCoord(x, y)];
 				for (i = 0; i < 7; i++) {
 					if (a6 >= i) {
-						level_cel_block = pMap[2 * i];
+						level_cel_block = pMap->mt[2 * i];
 						if (level_cel_block != 0) {
 							drawUpperScreen(dst);
 						}
@@ -1059,21 +1059,22 @@ void T_DrawView(int StartX, int StartY)
 void SetTownMicros()
 {
 	int i, x, y, lv;
-	WORD *pMap, *pPiece;
+	WORD *pPiece;
+	MICROS *pMap;
 
 	for (y = 0; y < MAXDUNY; y++) {
 		for (x = 0; x < MAXDUNX; x++) {
 			lv = dPiece[x][y];
-			pMap = dpiece_defs_map_1[IsometricCoord(x, y)];
+			pMap = &dpiece_defs_map_1[IsometricCoord(x, y)];
 			if (lv != 0) {
 				lv--;
 				pPiece = (WORD *)&pLevelPieces[32 * lv];
 				for (i = 0; i < 16; i++) {
-					pMap[i] = pPiece[(i & 1) + 14 - (i & 0xE)];
+					pMap->mt[i] = pPiece[(i & 1) + 14 - (i & 0xE)];
 				}
 			} else {
 				for (i = 0; i < 16; i++) {
-					pMap[i] = 0;
+					pMap->mt[i] = 0;
 				}
 			}
 		}

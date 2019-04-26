@@ -2172,21 +2172,22 @@ void ProcessObjects()
 
 void ObjSetMicro(int dx, int dy, int pn)
 {
-	WORD *defs, *v;
+	WORD *v;
+	MICROS *defs;
 	int i;
 
 	dPiece[dx][dy] = pn;
 	pn--;
-	defs = dpiece_defs_map_1[IsometricCoord(dx, dy)];
+	defs = &dpiece_defs_map_1[IsometricCoord(dx, dy)];
 	if (leveltype != DTYPE_HELL) {
 		v = (WORD *)pLevelPieces + 10 * pn;
 		for (i = 0; i < 10; i++) {
-			defs[i] = v[(i & 1) - (i & 0xE) + 8];
+			defs->mt[i] = v[(i & 1) - (i & 0xE) + 8];
 		}
 	} else {
 		v = (WORD *)pLevelPieces + 16 * pn;
 		for (i = 0; i < 16; i++) {
-			defs[i] = v[(i & 1) - (i & 0xE) + 14];
+			defs->mt[i] = v[(i & 1) - (i & 0xE) + 14];
 		}
 	}
 }
@@ -2204,8 +2205,8 @@ void objects_set_door_piece(int x, int y)
 	v4 = dPiece[x][y] - 1;
 	v5 = *((_WORD *)pLevelPieces + 10 * (unsigned short)v4 + 8);
 	v6 = *((_WORD *)pLevelPieces + 10 * (unsigned short)v4 + 9);
-	dpiece_defs_map_1[0][16 * IsometricCoord(x, y)] = v5;
-	dpiece_defs_map_1[0][16 * IsometricCoord(v3, v2) + 1] = v6;
+	dpiece_defs_map_1[IsometricCoord(x, y)].mt[0] = v5;
+	dpiece_defs_map_1[IsometricCoord(v3, v2)].mt[1] = v6;
 }
 
 void ObjSetMini(int x, int y, int v)

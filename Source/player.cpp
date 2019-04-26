@@ -918,7 +918,7 @@ void CheckEFlag(int pnum, BOOL flag)
 {
 	int x, y, i;
 	int bitflags;
-	USHORT *pieces;
+	MICROS *pieces;
 
 	if ((DWORD)pnum >= MAX_PLRS) {
 		app_fatal("InitPlayer: illegal player %d", pnum);
@@ -927,10 +927,10 @@ void CheckEFlag(int pnum, BOOL flag)
 	x = plr[pnum].WorldX - 1;
 	y = plr[pnum].WorldY + 1;
 	bitflags = 0;
-	pieces = dpiece_defs_map_1[IsometricCoord(x, y)];
+	pieces = &dpiece_defs_map_1[IsometricCoord(x, y)];
 
 	for (i = 2; i < 10; i++) {
-		bitflags |= pieces[i];
+		bitflags |= pieces->mt[i];
 	}
 
 	if (bitflags | nSolidTable[dPiece[x][y]] | dArch[x][y]) {
@@ -946,10 +946,10 @@ void CheckEFlag(int pnum, BOOL flag)
 	x = plr[pnum].WorldX;
 	y = plr[pnum].WorldY + 2;
 	bitflags = 0;
-	pieces = dpiece_defs_map_1[IsometricCoord(x, y)];
+	pieces = &dpiece_defs_map_1[IsometricCoord(x, y)];
 
 	for (i = 2; i < 10; i++) {
-		bitflags |= pieces[i];
+		bitflags |= pieces->mt[i];
 	}
 
 	if (bitflags | dArch[x][y]) {
@@ -959,10 +959,10 @@ void CheckEFlag(int pnum, BOOL flag)
 	x = plr[pnum].WorldX - 2;
 	y = plr[pnum].WorldY + 1;
 	bitflags = 0;
-	pieces = dpiece_defs_map_1[IsometricCoord(x, y)];
+	pieces = &dpiece_defs_map_1[IsometricCoord(x, y)];
 
 	for (i = 2; i < 10; i++) {
-		bitflags |= pieces[i];
+		bitflags |= pieces->mt[i];
 	}
 
 	if (bitflags | dArch[x][y]) {
