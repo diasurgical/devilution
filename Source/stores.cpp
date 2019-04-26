@@ -1935,50 +1935,35 @@ void STextNext()
 		}
 	}
 }
-// 6A09E4: using guessed type int stextsmax;
-// 6A8A28: using guessed type int stextsel;
-// 6AA700: using guessed type int stextdown;
 
 void S_SmithEnter()
 {
-	int v0; // ecx
-
-	v0 = 10;
-	if (stextsel == 10) {
+	switch (stextsel) {
+	case 10:
 		talker = 0;
 		stextlhold = 10;
 		stextshold = 1;
 		gossipstart = QUEST_GRISWOLD2;
 		gossipend = QUEST_GRISWOLD13;
-		_LOBYTE(v0) = STORE_GOSSIP;
-		goto LABEL_13;
-	}
-	v0 = STORE_SBUY;
-	switch (stextsel) {
+		StartStore(STORE_GOSSIP);
+		return;
 	case 12:
-	LABEL_13:
-		StartStore(v0);
+		StartStore(STORE_SBUY);
 		return;
 	case 14:
-		_LOBYTE(v0) = STORE_SPBUY;
-		goto LABEL_13;
+		StartStore(STORE_SPBUY);
+		return;
 	case 16:
-		_LOBYTE(v0) = STORE_SSELL;
-		goto LABEL_13;
+		StartStore(STORE_SSELL);
+		return;
 	case 18:
-		_LOBYTE(v0) = STORE_SREPAIR;
-		goto LABEL_13;
+		StartStore(STORE_SREPAIR);
+		return;
 	case 20:
 		stextflag = STORE_NONE;
 		break;
 	}
 }
-// 69F110: using guessed type int stextlhold;
-// 69FB38: using guessed type int talker;
-// 6A4EF0: using guessed type int gossipstart;
-// 6A8A28: using guessed type int stextsel;
-// 6A8A30: using guessed type int gossipend;
-// 6AA705: using guessed type char stextflag;
 
 void SetGoldCurs(int pnum, int i)
 {
