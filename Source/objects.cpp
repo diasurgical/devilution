@@ -4517,13 +4517,13 @@ void SyncL1Doors(int i)
 {
 	int x, y;
 
-	if (object[i]._oVar4 != 0) {
+	if (object[i]._oVar4 == 0) {
 		object[i]._oMissFlag = FALSE;
 		return;
 	}
 
-	y = object[i]._oy;
 	x = object[i]._ox;
+	y = object[i]._oy;
 	object[i]._oMissFlag = TRUE;
 	object[i]._oSelFlag = 2;
 	if (object[i]._otype == OBJ_L1LDOOR) {
