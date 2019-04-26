@@ -1322,38 +1322,27 @@ void S_ScrollHBuy(int idx)
 
 void S_StartHBuy()
 {
-	int v0;  // ST10_4
-	int v1;  // eax
-	int *v2; // ecx
+	int i;
 
-	v0 = plr[myplr]._pGold;
 	stextsize = 1;
 	stextscrl = TRUE;
 	stextsval = 0;
-	sprintf(tempstr, "I have these items for sale :           Your gold : %i", v0);
+	sprintf(tempstr, "I have these items for sale :           Your gold : %i", plr[myplr]._pGold);
 	AddSText(0, 1, 1u, tempstr, COL_GOLD, 0);
 	AddSLine(3);
 	AddSLine(21);
 	S_ScrollHBuy(stextsval);
 	AddSText(0, 22, 1u, "Back", COL_WHITE, 0);
 	OffsetSTextY(22, 6);
-	v1 = 0;
+
 	storenumh = 0;
-	if (healitem[0]._itype != -1) {
-		v2 = &healitem[0]._itype;
-		do {
-			v2 += 92;
-			++v1;
-		} while (*v2 != -1);
-		storenumh = v1;
+	for (i = 0; healitem[i]._itype != -1; i++) {
+		storenumh++;
 	}
-	stextsmax = v1 - 4;
-	if (v1 - 4 < 0)
+	stextsmax = storenumh - 4;
+	if (stextsmax < 0)
 		stextsmax = 0;
 }
-// 69F10C: using guessed type int storenumh;
-// 6A09E0: using guessed type char stextsize;
-// 6A09E4: using guessed type int stextsmax;
 
 void S_StartStory()
 {
