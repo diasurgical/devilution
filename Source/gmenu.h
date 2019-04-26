@@ -25,7 +25,7 @@ void gmenu_draw_menu_item(TMenuItem *pItem, int a2);
 void gmenu_clear_buffer(int x, int y, int width, int height);
 int gmenu_get_lfont(TMenuItem *pItem);
 BOOL gmenu_presskeys(int a1);
-void gmenu_left_right(int a1);
+void gmenu_left_right(BOOL isRight);
 BOOL gmenu_on_mouse_move();
 BOOLEAN gmenu_valid_mouse_pos(int *plOffset);
 int gmenu_left_mouse(int a1);

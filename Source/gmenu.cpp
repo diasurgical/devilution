@@ -304,27 +304,23 @@ BOOL gmenu_presskeys(int a1)
 	return TRUE;
 }
 
-void gmenu_left_right(int a1)
+void gmenu_left_right(BOOL isRight)
 {
-	signed int v1;   // edx
-	unsigned int v2; // eax
-	int v3;          // eax
+	int plOffset;
 
-	v1 = sgpCurrItem->dwFlags;
 	if (sgpCurrItem->dwFlags & 0x40000000) {
-		v2 = sgpCurrItem->dwFlags & 0xFFF;
-		if (a1) {
-			if (v2 == ((v1 >> 12) & 0xFFF))
+		plOffset = sgpCurrItem->dwFlags & 0xFFF;
+		if (isRight) {
+			if (plOffset == (int)(sgpCurrItem->dwFlags & 0xFFF000) >> 12)
 				return;
-			v3 = v2 + 1;
+			plOffset++;
 		} else {
-			if (!(v1 & 0xFFF))
+			if (!plOffset)
 				return;
-			v3 = v2 - 1;
+			plOffset--;
 		}
-		_LOWORD(v1) = v1 & 0xF000;
-		sgpCurrItem->dwFlags = v1;
-		sgpCurrItem->dwFlags |= v3;
+		sgpCurrItem->dwFlags &= 0xFFFFF000;
+		sgpCurrItem->dwFlags |= plOffset;
 		sgpCurrItem->fnMenu(FALSE);
 	}
 }
