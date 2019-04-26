@@ -707,7 +707,7 @@ void InitItems()
 	numitems = 0;
 
 	for (i = 0; i < MAXITEMS; i++) {
-		item[i]._itype = 0;
+		item[i]._itype = ITYPE_MISC;
 		item[i]._ix = 0;
 		item[i]._iy = 0;
 		item[i]._isin = 0;
@@ -1154,7 +1154,7 @@ void CalcPlrItemMin(int pnum)
 
 	pi = p->SpdList;
 	for (i = MAXBELTITEMS; i != 0; i--) {
-		if (pi->_itype != -1) {
+		if (pi->_itype != ITYPE_NONE) {
 			pi->_iStatFlag = ItemMinStats(p, pi);
 		}
 		pi++;
@@ -3160,7 +3160,7 @@ void RepairItem(ItemStruct *i, int lvl)
 				}
 			}
 		}
-		i->_itype = -1;
+		i->_itype = ITYPE_NONE;
 	}
 }
 
@@ -4029,7 +4029,7 @@ void SortSmith()
 	BOOL sorted;
 
 	j = 0;
-	while (smithitem[j + 1]._itype != -1) {
+	while (smithitem[j + 1]._itype != ITYPE_NONE) {
 		j++;
 	}
 
@@ -4066,7 +4066,7 @@ void SpawnSmith(int lvl)
 		smithitem[i]._iStatFlag = StoreStatOk(&smithitem[i]);
 	}
 	for (i = iCnt; i < 20; i++)
-		smithitem[i]._itype = -1;
+		smithitem[i]._itype = ITYPE_NONE;
 
 	SortSmith();
 }
@@ -4145,7 +4145,7 @@ void SpawnPremium(int lvl)
 
 	if (numpremium < 6) {
 		for (i = 0; i < 6; i++) {
-			if (premiumitem[i]._itype == -1)
+			if (premiumitem[i]._itype == ITYPE_NONE)
 				SpawnOnePremium(i, premiumlevel + premiumlvladd[i]);
 		}
 		numpremium = 6;
@@ -4212,7 +4212,7 @@ void SortWitch()
 	BOOL sorted;
 
 	j = 3;
-	while (witchitem[j + 1]._itype != -1) {
+	while (witchitem[j + 1]._itype != ITYPE_NONE) {
 		j++;
 	}
 
@@ -4292,7 +4292,7 @@ void SpawnWitch(int lvl)
 	}
 
 	for (i = iCnt; i < 20; i++)
-		witchitem[i]._itype = -1;
+		witchitem[i]._itype = ITYPE_NONE;
 
 	SortWitch();
 }
@@ -4318,7 +4318,7 @@ void SpawnBoy(int lvl)
 {
 	int itype;
 
-	if (boylevel<lvl>> 1 || boyitem._itype == -1) {
+	if (boylevel<lvl>> 1 || boyitem._itype == ITYPE_NONE) {
 		do {
 			item[0]._iSeed = GetRndSeed();
 			SetRndSeed(item[0]._iSeed);
@@ -4403,7 +4403,7 @@ void SortHealer()
 	BOOL sorted;
 
 	j = 2;
-	while (healitem[j + 1]._itype != -1) {
+	while (healitem[j + 1]._itype != ITYPE_NONE) {
 		j++;
 	}
 
@@ -4458,7 +4458,7 @@ void SpawnHealer(int lvl)
 		healitem[i]._iStatFlag = StoreStatOk(&healitem[i]);
 	}
 	for (i = nsi; i < 20; i++) {
-		healitem[i]._itype = -1;
+		healitem[i]._itype = ITYPE_NONE;
 	}
 	SortHealer();
 }

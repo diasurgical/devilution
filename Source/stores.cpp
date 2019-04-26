@@ -88,9 +88,9 @@ void InitStores()
 	premiumlevel = 1;
 
 	for (i = 0; i < 6; i++)
-		premiumitem[i]._itype = -1;
+		premiumitem[i]._itype = ITYPE_NONE;
 
-	boyitem._itype = -1;
+	boyitem._itype = ITYPE_NONE;
 	boylevel = 0;
 }
 
@@ -576,7 +576,7 @@ void S_StartSBuy()
 	AddSText(0, 22, 1, "Back", COL_WHITE, 0);
 	OffsetSTextY(22, 6);
 	storenumh = 0;
-	for (i = 0; smithitem[i]._itype != -1; i++)
+	for (i = 0; smithitem[i]._itype != ITYPE_NONE; i++)
 		storenumh++;
 	stextsmax = storenumh - 4;
 	if (stextsmax < 0)
@@ -605,7 +605,7 @@ void S_ScrollSPBuy(int idx)
 	if (v3) {
 		v5 = &premiumitem[0]._itype;
 		do {
-			if (*v5 != -1)
+			if (*v5 != ITYPE_NONE)
 				--v3;
 			++v4;
 			v5 += 92;
@@ -644,7 +644,7 @@ BOOL S_StartSPBuy()
 
 	storenumh = 0;
 	for (i = 0; i < 6; i++) {
-		if (premiumitem[i]._itype != -1)
+		if (premiumitem[i]._itype != ITYPE_NONE)
 			storenumh++;
 	}
 	if (!storenumh) {
@@ -750,7 +750,7 @@ void S_StartSSell()
 	storenumh = 0;
 
 	for (i = 0; i < 48; i++)
-		storehold[i]._itype = -1;
+		storehold[i]._itype = ITYPE_NONE;
 
 	for (i = 0; i < plr[myplr]._pNumInv; i++) {
 		if (SmithSellOk(i)) {
@@ -962,12 +962,12 @@ void S_StartWBuy()
 	OffsetSTextY(22, 6);
 	v1 = 0;
 	storenumh = 0;
-	if (witchitem[0]._itype != -1) {
+	if (witchitem[0]._itype != ITYPE_NONE) {
 		v2 = &witchitem[0]._itype;
 		do {
 			v2 += 92;
 			++v1;
-		} while (*v2 != -1);
+		} while (*v2 != ITYPE_NONE);
 		storenumh = v1;
 	}
 	stextsmax = v1 - 4;
@@ -1011,7 +1011,7 @@ void S_StartWSell()
 	storenumh = 0;
 
 	for (i = 0; i < 48; i++)
-		storehold[i]._itype = -1;
+		storehold[i]._itype = ITYPE_NONE;
 
 	for (i = 0; i < plr[myplr]._pNumInv; i++) {
 		if (WitchSellOk(i)) {
@@ -1030,7 +1030,7 @@ void S_StartWSell()
 	}
 
 	for (i = 0; i < MAXBELTITEMS; i++) {
-		if (plr[myplr].SpdList[i]._itype != -1 && WitchSellOk(-(i + 1))) {
+		if (plr[myplr].SpdList[i]._itype != ITYPE_NONE && WitchSellOk(-(i + 1))) {
 			sellok = TRUE;
 			storehold[storenumh] = plr[myplr].SpdList[i];
 
@@ -1230,18 +1230,18 @@ void S_StartBoy()
 {
 	stextsize = 0;
 	stextscrl = FALSE;
-	AddSText(0, 2, 1u, "Wirt the Peg-legged boy", COL_GOLD, 0);
+	AddSText(0, 2, 1, "Wirt the Peg-legged boy", COL_GOLD, 0);
 	AddSLine(5);
-	if (boyitem._itype != -1) {
-		AddSText(0, 8, 1u, "Talk to Wirt", COL_BLUE, 1);
-		AddSText(0, 12, 1u, "I have something for sale,", COL_GOLD, 0);
-		AddSText(0, 14, 1u, "but it will cost 50 gold", COL_GOLD, 0);
-		AddSText(0, 16, 1u, "just to take a look. ", COL_GOLD, 0);
-		AddSText(0, 18, 1u, "What have you got?", COL_WHITE, 1);
-		AddSText(0, 20, 1u, "Say goodbye", COL_WHITE, 1);
+	if (boyitem._itype != ITYPE_NONE) {
+		AddSText(0, 8, 1, "Talk to Wirt", COL_BLUE, 1);
+		AddSText(0, 12, 1, "I have something for sale,", COL_GOLD, 0);
+		AddSText(0, 14, 1, "but it will cost 50 gold", COL_GOLD, 0);
+		AddSText(0, 16, 1, "just to take a look. ", COL_GOLD, 0);
+		AddSText(0, 18, 1, "What have you got?", COL_WHITE, 1);
+		AddSText(0, 20, 1, "Say goodbye", COL_WHITE, 1);
 	} else {
-		AddSText(0, 12, 1u, "Talk to Wirt", COL_BLUE, 1);
-		AddSText(0, 18, 1u, "Say goodbye", COL_WHITE, 1);
+		AddSText(0, 12, 1, "Talk to Wirt", COL_BLUE, 1);
+		AddSText(0, 18, 1, "Say goodbye", COL_WHITE, 1);
 	}
 }
 // 6A09E0: using guessed type char stextsize;
@@ -1328,15 +1328,15 @@ void S_StartHBuy()
 	stextscrl = TRUE;
 	stextsval = 0;
 	sprintf(tempstr, "I have these items for sale :           Your gold : %i", plr[myplr]._pGold);
-	AddSText(0, 1, 1u, tempstr, COL_GOLD, 0);
+	AddSText(0, 1, 1, tempstr, COL_GOLD, 0);
 	AddSLine(3);
 	AddSLine(21);
 	S_ScrollHBuy(stextsval);
-	AddSText(0, 22, 1u, "Back", COL_WHITE, 0);
+	AddSText(0, 22, 1, "Back", COL_WHITE, 0);
 	OffsetSTextY(22, 6);
 
 	storenumh = 0;
-	for (i = 0; healitem[i]._itype != -1; i++) {
+	for (i = 0; healitem[i]._itype != ITYPE_NONE; i++) {
 		storenumh++;
 	}
 	stextsmax = storenumh - 4;
@@ -1358,7 +1358,7 @@ void S_StartStory()
 
 BOOL IdItemOk(ItemStruct *i)
 {
-	if (i->_itype == -1) {
+	if (i->_itype == ITYPE_NONE) {
 		return FALSE;
 	}
 	if (i->_iMagical == ITEM_QUALITY_NORMAL) {
@@ -1388,7 +1388,7 @@ void S_StartSIdentify()
 	storenumh = 0;
 
 	for (i = 0; i < 48; i++)
-		storehold[i]._itype = -1;
+		storehold[i]._itype = ITYPE_NONE;
 
 	if (IdItemOk(&plr[myplr].InvBody[INVLOC_HEAD])) {
 		idok = TRUE;
@@ -2146,12 +2146,12 @@ void SmithBuyItem()
 	StoreAutoPlace();
 	idx = stextvhold + ((stextlhold - stextup) >> 2);
 	if (idx == 19) {
-		smithitem[19]._itype = -1;
+		smithitem[19]._itype = ITYPE_NONE;
 	} else {
-		for (; smithitem[idx + 1]._itype != -1; idx++) {
+		for (; smithitem[idx + 1]._itype != ITYPE_NONE; idx++) {
 			smithitem[idx] = smithitem[idx + 1];
 		}
-		smithitem[idx]._itype = -1;
+		smithitem[idx]._itype = ITYPE_NONE;
 	}
 	CalcPlrInv(myplr, 1);
 }
@@ -2207,7 +2207,7 @@ void SmithBuyPItem()
 	i = 0;
 	if (!v2) {
 		do {
-			if (premiumitem[i]._itype != -1) {
+			if (premiumitem[i]._itype != ITYPE_NONE) {
 				--v3;
 				xx = i;
 			}
@@ -2215,7 +2215,7 @@ void SmithBuyPItem()
 		} while (v3 >= 0);
 	}
 
-	premiumitem[xx]._itype = -1;
+	premiumitem[xx]._itype = ITYPE_NONE;
 	--numpremium;
 	SpawnPremium(plr[myplr]._pLevel);
 }
@@ -2238,7 +2238,7 @@ void S_SPBuyEnter()
 		xx = stextsval + ((stextsel - stextup) >> 2);
 		idx = 0;
 		for (i = 0; xx >= 0; i++) {
-			if (premiumitem[i]._itype != -1) {
+			if (premiumitem[i]._itype != ITYPE_NONE) {
 				xx--;
 				idx = i;
 			}
@@ -2479,12 +2479,12 @@ void WitchBuyItem()
 
 	if (idx >= 3) {
 		if (idx == 19) {
-			witchitem[19]._itype = -1;
+			witchitem[19]._itype = ITYPE_NONE;
 		} else {
-			for (; witchitem[idx + 1]._itype != -1; idx++) {
+			for (; witchitem[idx + 1]._itype != ITYPE_NONE; idx++) {
 				witchitem[idx] = witchitem[idx + 1];
 			}
-			witchitem[idx]._itype = -1;
+			witchitem[idx]._itype = ITYPE_NONE;
 		}
 	}
 
@@ -2624,9 +2624,9 @@ void BoyBuyItem()
 {
 	TakePlrsMoney(plr[myplr].HoldItem._iIvalue);
 	StoreAutoPlace();
-	boyitem._itype = -1;
+	boyitem._itype = ITYPE_NONE;
 	stextshold = 12;
-	CalcPlrInv(myplr, 1u);
+	CalcPlrInv(myplr, 1);
 }
 
 void HealerBuyItem()
@@ -2664,12 +2664,12 @@ void HealerBuyItem()
 	if (ok) {
 		idx = stextvhold + ((stextlhold - stextup) >> 2);
 		if (idx == 19) {
-			healitem[19]._itype = -1;
+			healitem[19]._itype = ITYPE_NONE;
 		} else {
-			for (; healitem[idx + 1]._itype != -1; idx++) {
+			for (; healitem[idx + 1]._itype != ITYPE_NONE; idx++) {
 				healitem[idx] = healitem[idx + 1];
 			}
-			healitem[idx]._itype = -1;
+			healitem[idx]._itype = ITYPE_NONE;
 		}
 		CalcPlrInv(myplr, TRUE);
 	}

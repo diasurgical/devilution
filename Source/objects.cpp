@@ -3310,12 +3310,12 @@ void OperateShrine(int pnum, int i, int sType)
 		if (deltaload || pnum != myplr)
 			return;
 		for (j = 0; j < 7; j++) {
-			if (plr[pnum].InvBody[j]._itype != -1)
+			if (plr[pnum].InvBody[j]._itype != ITYPE_NONE)
 				v12++;
 		}
 		if (v12 > 0) {
 			for (j = 0; j < 7; j++) {
-				if (plr[pnum].InvBody[j]._itype != -1
+				if (plr[pnum].InvBody[j]._itype != ITYPE_NONE
 				    && plr[pnum].InvBody[j]._iMaxDur != 255
 				    && plr[pnum].InvBody[j]._iMaxDur) {
 					plr[pnum].InvBody[j]._iDurability += 10;
@@ -3326,7 +3326,7 @@ void OperateShrine(int pnum, int i, int sType)
 			}
 			v12 = 0;
 			for (j = 0; j < 7; j++) {
-				if (plr[pnum].InvBody[j]._itype != -1
+				if (plr[pnum].InvBody[j]._itype != ITYPE_NONE
 				    && plr[pnum].InvBody[j]._iMaxDur != 255
 				    && plr[pnum].InvBody[j]._iMaxDur)
 					v12++;
@@ -3334,7 +3334,7 @@ void OperateShrine(int pnum, int i, int sType)
 			if (v12 > 0) { // check
 				do {
 					v21 = random(0, 7);
-				} while (plr[pnum].InvBody[v21]._itype == -1 || plr[pnum].InvBody[v21]._iMaxDur == 255 || !plr[pnum].InvBody[v21]._iMaxDur);
+				} while (plr[pnum].InvBody[v21]._itype == ITYPE_NONE || plr[pnum].InvBody[v21]._iMaxDur == 255 || !plr[pnum].InvBody[v21]._iMaxDur);
 
 				plr[pnum].InvBody[v21]._iDurability -= 20;
 				plr[pnum].InvBody[v21]._iMaxDur -= 20;
@@ -3350,11 +3350,11 @@ void OperateShrine(int pnum, int i, int sType)
 		if (deltaload)
 			return;
 		if (pnum == myplr) {
-			if (plr[pnum].InvBody[INVLOC_HEAD]._itype != -1)
+			if (plr[pnum].InvBody[INVLOC_HEAD]._itype != ITYPE_NONE)
 				plr[pnum].InvBody[INVLOC_HEAD]._iAC += 2;
-			if (plr[pnum].InvBody[INVLOC_CHEST]._itype != -1)
+			if (plr[pnum].InvBody[INVLOC_CHEST]._itype != ITYPE_NONE)
 				plr[pnum].InvBody[INVLOC_CHEST]._iAC += 2;
-			if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != -1) {
+			if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE) {
 				if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_SHIELD) {
 					plr[pnum].InvBody[INVLOC_HAND_LEFT]._iAC += 2;
 				} else {
@@ -3363,7 +3363,7 @@ void OperateShrine(int pnum, int i, int sType)
 						plr[pnum].InvBody[INVLOC_HAND_LEFT]._iMaxDam = plr[pnum].InvBody[INVLOC_HAND_LEFT]._iMinDam;
 				}
 			}
-			if (plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype != -1) {
+			if (plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype != ITYPE_NONE) {
 				if (plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_SHIELD) {
 					plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iAC += 2;
 				} else {
@@ -3390,9 +3390,9 @@ void OperateShrine(int pnum, int i, int sType)
 		if (deltaload)
 			return;
 		if (pnum == myplr) {
-			if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != -1 && plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_SHIELD)
+			if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_SHIELD)
 				plr[pnum].InvBody[INVLOC_HAND_LEFT]._iMaxDam++;
-			if (plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype != -1 && plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype != ITYPE_SHIELD)
+			if (plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype != ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype != ITYPE_SHIELD)
 				plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iMaxDam++;
 			for (j = 0; j < plr[pnum]._pNumInv; j++) {
 				if (plr[pnum].InvList[j]._itype > 0 && (plr[pnum].InvList[j]._itype <= ITYPE_MACE || plr[pnum].InvList[j]._itype == ITYPE_STAFF))
