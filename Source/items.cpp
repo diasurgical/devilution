@@ -4560,15 +4560,19 @@ void RecreateWitchItem(int ii, int idx, int lvl, int iseed)
 
 void RecreateHealerItem(int ii, int idx, int lvl, int iseed)
 {
-	if (idx != IDI_HEAL && idx != IDI_FULLHEAL && idx != IDI_RESURRECT) {
+	if (idx == IDI_HEAL || idx == IDI_FULLHEAL || idx == IDI_RESURRECT) {
+		GetItemAttrs(ii, idx, lvl);
+	} else {
 		SetRndSeed(iseed);
 		idx = RndHealerItem(lvl) - 1;
+		GetItemAttrs(ii, idx, lvl);
 	}
-	GetItemAttrs(ii, idx, lvl);
+
 	item[ii]._iCreateInfo = lvl | 0x4000;
-	item[ii]._iSeed = iseed;
+	item[ii]._iSeed       = iseed;
 	item[ii]._iIdentified = TRUE;
 }
+
 
 void RecreateTownItem(int ii, int idx, unsigned short icreateinfo, int iseed, int ivalue)
 {
