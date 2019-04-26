@@ -1195,198 +1195,131 @@ BOOL CreateDungeon()
 	return TRUE;
 }
 
-void CreateRoom(int nX1, int nY1, int nX2, int nY2, int nRDest, int nHDir, int ForceHW, int nH, int nW)
+void CreateRoom(int nX1, int nY1, int nX2, int nY2, int nRDest, int nHDir, BOOL ForceHW, int nH, int nW)
 {
-	int v9;        // esi
-	int v10;       // ebx
-	int v11;       // edx
-	int v12;       // eax
-	int v13;       // edx
-	int v14;       // edx
-	int v15;       // edi
-	int v17;       // esi
-	int v18;       // ebx
-	int v19;       // edx
-	int v20;       // ecx
-	int v21;       // eax
-	int v23;       // eax
-	int v24;       // eax
-	int v26;       // eax
-	int *v27;      // ecx
-	int v28;       // eax
-	int v29;       // eax
-	int *v30;      // ecx
-	int v31;       // eax
-	int nX1a;      // [esp+Ch] [ebp-30h]
-	int v33;       // [esp+10h] [ebp-2Ch]
-	int v34;       // [esp+14h] [ebp-28h]
-	int v35;       // [esp+18h] [ebp-24h]
-	int v36;       // [esp+1Ch] [ebp-20h]
-	int v37;       // [esp+20h] [ebp-1Ch]
-	int nY1a;      // [esp+24h] [ebp-18h]
-	int v39;       // [esp+28h] [ebp-14h]
-	int v40;       // [esp+2Ch] [ebp-10h]
-	int v41;       // [esp+30h] [ebp-Ch]
-	int v42;       // [esp+34h] [ebp-8h]
-	int v43;       // [esp+38h] [ebp-4h]
-	int *ForceHWa; // [esp+54h] [ebp+18h]
-	int *ForceHWb; // [esp+54h] [ebp+18h]
+	int nAw, nAh, nRw, nRh, nRx1, nRy1, nRx2, nRy2, nHw, nHh, nHx1, nHy1, nHx2, nHy2, nRid;
 
-	v39 = nY1;
-	v37 = nX1;
-	if (nRoomCnt < 80) {
-		v40 = nX2 - 2;
-		nY1a = nY1 + 2;
-		while (1) {
-			v9 = nX2 - v37;
-			v10 = nY2 - v39;
-			if (nX2 - v37 < Area_Min || v10 < Area_Min)
-				return;
-			if (v9 > Room_Max)
-				break;
-			nX1 = Room_Min;
-			if (v9 > Room_Min) {
-				v11 = v9 - Room_Min;
-				goto LABEL_7;
-			}
-			v41 = nX2 - v37;
-		LABEL_11:
-			v13 = Room_Max;
-			if (v10 <= Room_Max) {
-				if (v10 <= nX1) {
-					v36 = nY2 - v39;
-					goto LABEL_16;
-				}
-				v13 = nY2 - v39;
-			}
-			v14 = v13 - nX1;
-			v36 = Room_Min + random(0, v14);
-		LABEL_16:
-			if (ForceHW == 1) {
-				v41 = nW;
-				v36 = nH;
-			}
-			v15 = v37 + random(0, v9);
-			v17 = v39 + random(0, v10);
-			v18 = v15 + v41;
-			v43 = v17 + v36;
-			if (v15 + v41 > nX2) {
-				v18 = nX2;
-				v15 = nX2 - v41;
-			}
-			if (v17 + v36 > nY2) {
-				v43 = nY2;
-				v17 = nY2 - v36;
-			}
-			if (v15 >= 38)
-				v15 = 38;
-			if (v17 >= 38)
-				v17 = 38;
-			if (v15 <= 1)
-				v15 = 1;
-			if (v17 <= 1)
-				v17 = 1;
-			if (v18 >= 38)
-				v18 = 38;
-			if (v43 >= 38)
-				v43 = 38;
-			if (v18 <= 1)
-				v18 = 1;
-			if (v43 <= 1)
-				v43 = 1;
-			DefineRoom(v15, v17, v18, v43, ForceHW);
-			if (ForceHW == 1) {
-				nSx2 = v18;
-				nSx1 = v15 + 2;
-				nSy1 = v17 + 2;
-				nSy2 = v43;
-			}
-			v19 = nRoomCnt;
-			v20 = nRDest;
-			v42 = nRoomCnt;
-			RoomList[nRoomCnt].nRoomDest = nRDest;
-			if (nRDest) {
-				if (nHDir == 1) {
-					v21 = random(0, v18 - v15 - 2);
-					nX1a = v21 + v15 + 1;
-					v33 = v17;
-					v23 = random(0, RoomList[nRDest].nRoomx2 - RoomList[nRDest].nRoomx1 - 2);
-					v20 = 20 * nRDest;
-					v34 = v23 + RoomList[nRDest].nRoomx1 + 1;
-					v35 = RoomList[nRDest].nRoomy2;
-				}
-				if (nHDir == 3) {
-					v24 = random(0, v18 - v15 - 2);
-					nX1a = v24 + v15 + 1;
-					v33 = v43;
-					v26 = random(0, RoomList[nRDest].nRoomx2 - RoomList[nRDest].nRoomx1 - 2);
-					v20 = 20 * nRDest;
-					v34 = v26 + RoomList[nRDest].nRoomx1 + 1;
-					v35 = RoomList[nRDest].nRoomy1;
-				}
-				if (nHDir == 2) {
-					nX1a = v18;
-					v33 = random(0, v43 - v17 - 2) + v17 + 1;
-					v34 = RoomList[nRDest].nRoomx1;
-					v27 = &RoomList[nRDest].nRoomy1;
-					ForceHWa = v27;
-					v28 = RoomList[nRDest].nRoomy2 - *v27;
-					v29 = random(0, v28 - 2);
-					v20 = *ForceHWa;
-					v35 = v29 + *ForceHWa + 1;
-				}
-				if (nHDir == 4) {
-					nX1a = v15;
-					v33 = random(0, v43 - v17 - 2) + v17 + 1;
-					v34 = RoomList[nRDest].nRoomx2;
-					v30 = &RoomList[nRDest].nRoomy1;
-					ForceHWb = v30;
-					v31 = RoomList[nRDest].nRoomy2 - *v30;
-					v35 = random(0, v31 - 2) + *ForceHWb + 1;
-				}
-				AddHall(nX1a, v33, v34, v35, nHDir);
-				v19 = v42;
-			}
-			if (v36 <= v41) {
-				CreateRoom(v37 + 2, nY1a, v18 - 2, v17 - 2, v19, 3, 0, 0, 0);
-				CreateRoom(v15 + 2, v43 + 2, v40, nY2 - 2, v42, 1, 0, 0, 0);
-				CreateRoom(v37 + 2, v17 + 2, v15 - 2, nY2 - 2, v42, 2, 0, 0, 0);
-				nHDir = 4;
-				nW = 0;
-				nH = 0;
-				ForceHW = 0;
-				nRDest = v42;
-				nY2 = v43 - 2;
-				nX2 -= 2;
-				v40 -= 2;
-				v39 += 2;
-				nY1a += 2;
-				v37 = v18 + 2;
-			} else {
-				CreateRoom(v37 + 2, nY1a, v15 - 2, v43 - 2, v19, 2, 0, 0, 0);
-				CreateRoom(v18 + 2, v17 + 2, v40, nY2 - 2, v42, 4, 0, 0, 0);
-				CreateRoom(v37 + 2, v43 + 2, v18 - 2, nY2 - 2, v42, 1, 0, 0, 0);
-				nW = 0;
-				nH = 0;
-				ForceHW = 0;
-				nRDest = v42;
-				nHDir = 3;
-				nX2 -= 2;
-				v40 -= 2;
-				v39 += 2;
-				nY1a += 2;
-				nY2 = v17 - 2;
-				v37 = v15 + 2;
-			}
-			if (nRoomCnt >= 80)
-				return;
+	if(nRoomCnt >= 80) {
+		return;
+	}
+
+	nAw = nX2 - nX1;
+	nAh = nY2 - nY1;
+	if(nAw < Area_Min || nAh < Area_Min) {
+		return;
+	}
+
+	if(nAw > Room_Max) {
+		nRw = random(0, Room_Max - Room_Min) + Room_Min;
+	} else if(nAw > Room_Min) {
+		nRw = random(0, nAw - Room_Min) + Room_Min;
+	} else {
+		nRw = nAw;
+	}
+	if(nAh > Room_Max) {
+		nRh = random(0, Room_Max - Room_Min) + Room_Min;
+	} else if(nAh > Room_Min) {
+		nRh = random(0, nAh - Room_Min) + Room_Min;
+	} else {
+		nRh = nAh;
+	}
+
+	if(ForceHW == TRUE) {
+		nRw = nW;
+		nRh = nH;
+	}
+
+	nRx1 = random(0, nX2 - nX1) + nX1;
+	nRy1 = random(0, nY2 - nY1) + nY1;
+	nRx2 = nRw + nRx1;
+	nRy2 = nRh + nRy1;
+	if(nRx2 > nX2) {
+		nRx2 = nX2;
+		nRx1 = nX2 - nRw;
+	}
+	if(nRy2 > nY2) {
+		nRy2 = nY2;
+		nRy1 = nY2 - nRh;
+	}
+
+	if(nRx1 >= 38) {
+		nRx1 = 38;
+	}
+	if(nRy1 >= 38) {
+		nRy1 = 38;
+	}
+	if(nRx1 <= 1) {
+		nRx1 = 1;
+	}
+	if(nRy1 <= 1) {
+		nRy1 = 1;
+	}
+	if(nRx2 >= 38) {
+		nRx2 = 38;
+	}
+	if(nRy2 >= 38) {
+		nRy2 = 38;
+	}
+	if(nRx2 <= 1) {
+		nRx2 = 1;
+	}
+	if(nRy2 <= 1) {
+		nRy2 = 1;
+	}
+	DefineRoom(nRx1, nRy1, nRx2, nRy2, ForceHW);
+
+	if(ForceHW == TRUE) {
+		nSx1 = nRx1 + 2;
+		nSy1 = nRy1 + 2;
+		nSx2 = nRx2;
+		nSy2 = nRy2;
+	}
+
+	nRid = nRoomCnt;
+	RoomList[nRid].nRoomDest = nRDest;
+
+	if(nRDest != 0) {
+		if(nHDir == 1) {
+			nHx1 = random(0, nRx2 - nRx1 - 2) + nRx1 + 1;
+			nHy1 = nRy1;
+			nHw = RoomList[nRDest].nRoomx2 - RoomList[nRDest].nRoomx1 - 2;
+			nHx2 = random(0, nHw) + RoomList[nRDest].nRoomx1 + 1;
+			nHy2 = RoomList[nRDest].nRoomy2;
 		}
-		v11 = Room_Max - Room_Min;
-	LABEL_7:
-		v12 = random(0, v11);
-		nX1 = Room_Min;
-		v41 = Room_Min + v12;
-		goto LABEL_11;
+		if(nHDir == 3) {
+			nHx1 = random(0, nRx2 - nRx1 - 2) + nRx1 + 1;
+			nHy1 = nRy2;
+			nHw = RoomList[nRDest].nRoomx2 - RoomList[nRDest].nRoomx1 - 2;
+			nHx2 = random(0, nHw) + RoomList[nRDest].nRoomx1 + 1;
+			nHy2 = RoomList[nRDest].nRoomy1;
+		}
+		if(nHDir == 2) {
+			nHx1 = nRx2;
+			nHy1 = random(0, nRy2 - nRy1 - 2) + nRy1 + 1;
+			nHx2 = RoomList[nRDest].nRoomx1;
+			nHh = RoomList[nRDest].nRoomy2 - RoomList[nRDest].nRoomy1 - 2;
+			nHy2 = random(0, nHh) + RoomList[nRDest].nRoomy1 + 1;
+		}
+		if(nHDir == 4) {
+			nHx1 = nRx1;
+			nHy1 = random(0, nRy2 - nRy1 - 2) + nRy1 + 1;
+			nHx2 = RoomList[nRDest].nRoomx2;
+			nHh = RoomList[nRDest].nRoomy2 - RoomList[nRDest].nRoomy1 - 2;
+			nHy2 = random(0, nHh) + RoomList[nRDest].nRoomy1 + 1;
+		}
+		AddHall(nHx1, nHy1, nHx2, nHy2, nHDir);
+	}
+
+	if(nRh > nRw) {
+		CreateRoom(nX1 + 2, nY1 + 2, nRx1 - 2, nRy2 - 2, nRid, 2, 0, 0, 0);
+		CreateRoom(nRx2 + 2, nRy1 + 2, nX2 - 2, nY2 - 2, nRid, 4, 0, 0, 0);
+		CreateRoom(nX1 + 2, nRy2 + 2, nRx2 - 2, nY2 - 2, nRid, 1, 0, 0, 0);
+		CreateRoom(nRx1 + 2, nY1 + 2, nX2 - 2, nRy1 - 2, nRid, 3, 0, 0, 0);
+	} else {
+		CreateRoom(nX1 + 2, nY1 + 2, nRx2 - 2, nRy1 - 2, nRid, 3, 0, 0, 0);
+		CreateRoom(nRx1 + 2, nRy2 + 2, nX2 - 2, nY2 - 2, nRid, 1, 0, 0, 0);
+		CreateRoom(nX1 + 2, nRy1 + 2, nRx1 - 2, nY2 - 2, nRid, 2, 0, 0, 0);
+		CreateRoom(nRx2 + 2, nY1 + 2, nX2 - 2, nRy2 - 2, nRid, 4, 0, 0, 0);
 	}
 }
 // 484858: using guessed type int Area_Min;
