@@ -2190,38 +2190,26 @@ void S_SBuyEnter()
 
 void SmithBuyPItem()
 {
-	int xx;     // ecx
-	int idx;    // eax
-	BOOLEAN v2; // sf
-	int v3;     // eax
-	int i;      // edx
+	int i, xx, idx;
 
 	TakePlrsMoney(plr[myplr].HoldItem._iIvalue);
 	if (plr[myplr].HoldItem._iMagical == ITEM_QUALITY_NORMAL)
 		plr[myplr].HoldItem._iIdentified = FALSE;
 	StoreAutoPlace();
+
+	idx = stextvhold + ((stextlhold - stextup) >> 2);
 	xx = 0;
-	idx = (stextlhold - stextup) >> 2;
-	v2 = stextvhold + idx < 0;
-	v3 = stextvhold + idx;
-	i = 0;
-	if (!v2) {
-		do {
-			if (premiumitem[i]._itype != ITYPE_NONE) {
-				--v3;
-				xx = i;
-			}
-			++i;
-		} while (v3 >= 0);
+	for (i = 0; idx >= 0; i++) {
+		if (premiumitem[i]._itype != ITYPE_NONE) {
+			idx--;
+			xx = i;
+		}
 	}
 
 	premiumitem[xx]._itype = ITYPE_NONE;
-	--numpremium;
+	numpremium--;
 	SpawnPremium(plr[myplr]._pLevel);
 }
-// 69F108: using guessed type int stextup;
-// 69F110: using guessed type int stextlhold;
-// 6A8A24: using guessed type int stextvhold;
 
 void S_SPBuyEnter()
 {
