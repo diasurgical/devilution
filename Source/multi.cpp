@@ -70,11 +70,10 @@ void __cdecl dumphist(const char *pszFmt, ...)
 }
 #endif
 
-void multi_msg_add(BYTE *a1, unsigned char a2)
+void multi_msg_add(BYTE *pbMsg, BYTE bLen)
 {
-	if (a1) {
-		if (a2)
-			tmsg_add(a1, a2);
+	if (pbMsg && bLen) {
+		tmsg_add(pbMsg, bLen);
 	}
 }
 
