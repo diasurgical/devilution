@@ -4599,7 +4599,7 @@ void RecalcStoreStats()
 		}
 	}
 	for (i = 0; i < 20; i++) {
-		if (witchitem[i]._itype != -1) {
+		if (witchitem[i]._itype != ITYPE_NONE) {
 			witchitem[i]._iStatFlag = StoreStatOk(&witchitem[i]);
 		}
 	}
