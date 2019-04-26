@@ -642,31 +642,31 @@ char multi_event_handler(int a1)
 
 void __stdcall multi_handle_events(_SNETEVENT *pEvt)
 {
-	int v1;  // ecx
-	int *v2; // eax
-	int *v3; // eax
+	int LeftReason;
+	int *data;
 
 	switch (pEvt->eventid) {
 	case EVENT_TYPE_PLAYER_CREATE_GAME:
-		v3 = (int *)pEvt->data;
-		sgGameInitInfo.dwSeed = *v3;
-		_LOBYTE(sgGameInitInfo.bDiff) = *((_BYTE *)v3 + 4);
-		sgbPlayerTurnBitTbl[pEvt->playerid] = 1;
+		data = (int *)pEvt->data;
+		sgGameInitInfo.dwSeed = data[0];
+		sgGameInitInfo.bDiff = data[1];
+		sgbPlayerTurnBitTbl[pEvt->playerid] = TRUE;
 		break;
 	case EVENT_TYPE_PLAYER_LEAVE_GAME:
-		v1 = 0;
-		sgbPlayerLeftGameTbl[pEvt->playerid] = TRUE;
-		sgbPlayerTurnBitTbl[pEvt->playerid] = 0;
-		v2 = (int *)pEvt->data;
-		if (v2 && pEvt->databytes >= 4u)
-			v1 = *v2;
-		sgdwPlayerLeftReasonTbl[pEvt->playerid] = v1;
-		if (v1 == 0x40000004)
+		sgbPlayerLeftGameTbl[pEvt->playerid] = 1;
+		sgbPlayerTurnBitTbl[pEvt->playerid] = FALSE;
+		LeftReason = 0;
+		data = (int *)pEvt->data;
+		if (data && (DWORD)pEvt->databytes >= 4)
+			LeftReason = data[0];
+		sgdwPlayerLeftReasonTbl[pEvt->playerid] = LeftReason;
+		if (LeftReason == 0x40000004)
 			gbSomebodyWonGameKludge = TRUE;
 		sgbSendDeltaTbl[pEvt->playerid] = FALSE;
 		dthread_remove_player(pEvt->playerid);
+
 		if (gbDeltaSender == pEvt->playerid)
-			gbDeltaSender = 4;
+			gbDeltaSender = MAX_PLRS;
 		break;
 	case EVENT_TYPE_PLAYER_MESSAGE:
 		ErrorPlrMsg((char *)pEvt->data);
