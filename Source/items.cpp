@@ -4562,21 +4562,28 @@ void RecalcStoreStats()
 	int i;
 
 	for (i = 0; i < 20; i++) {
-		if (smithitem[i]._itype != -1)
+		if (smithitem[i]._itype != ITYPE_NONE) {
 			smithitem[i]._iStatFlag = StoreStatOk(&smithitem[i]);
-		if (witchitem[i]._itype != -1)
-			witchitem[i]._iStatFlag = StoreStatOk(&witchitem[i]);
-		if (healitem[i]._itype != -1)
-			healitem[i]._iStatFlag = StoreStatOk(&healitem[i]);
+		}
 	}
-
 	for (i = 0; i < 6; i++) {
-		if (premiumitem[i]._itype != -1)
+		if (premiumitem[i]._itype != ITYPE_NONE) {
 			premiumitem[i]._iStatFlag = StoreStatOk(&premiumitem[i]);
+		}
 	}
-
+	for (i = 0; i < 20; i++) {
+		if (witchitem[i]._itype != ITYPE_NONE) {
+			witchitem[i]._iStatFlag = StoreStatOk(&witchitem[i]);
+		}
+	}
+	for (i = 0; i < 20; i++) {
+		if (healitem[i]._itype != ITYPE_NONE) {
+			healitem[i]._iStatFlag = StoreStatOk(&healitem[i]);
+		}
+	}
 	boyitem._iStatFlag = StoreStatOk(&boyitem);
 }
+
 // 6A6BB8: using guessed type int stextscrl;
 // 6AA700: using guessed type int stextdown;
 
