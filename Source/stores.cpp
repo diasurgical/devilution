@@ -2251,10 +2251,7 @@ void S_SPBuyEnter()
 
 BOOL StoreGoldFit(int idx)
 {
-	int cost;    // edi
-	int i;       // ecx
-	int sz;      // eax
-	int numsqrs; // [esp+Ch] [ebp-4h]
+	int i, sz, cost, numsqrs;
 
 	cost = storehold[idx]._iIvalue;
 	sz = cost / 5000;
@@ -2275,20 +2272,19 @@ BOOL StoreGoldFit(int idx)
 
 	for (i = 0; i < plr[myplr]._pNumInv; i++) {
 		if (plr[myplr].InvList[i]._itype == ITYPE_GOLD && plr[myplr].InvList[i]._ivalue != 5000) {
-			cost += plr[myplr].InvList[i]._ivalue;
-			if (cost > 5000)
-				cost -= 5000;
-			else
+			if (cost + plr[myplr].InvList[i]._ivalue <= 5000)
 				cost = 0;
+			else
+				cost -= 5000 - plr[myplr].InvList[i]._ivalue;
 		}
 	}
 
 	sz = cost / 5000;
 	if (cost % 5000)
 		sz++;
+
 	return numsqrs >= sz;
 }
-// 4B8C9C: using guessed type int cursH;
 
 void PlaceStoreGold(int v)
 {
