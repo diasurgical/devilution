@@ -80,11 +80,9 @@ void multi_msg_add(BYTE *a1, unsigned char a2)
 
 void NetSendLoPri(BYTE *pbMsg, BYTE bLen)
 {
-	if (pbMsg) {
-		if (bLen) {
-			multi_copy_packet(&sgLoPriBuf, pbMsg, bLen);
-			multi_send_packet(pbMsg, bLen);
-		}
+	if (pbMsg && bLen) {
+		multi_copy_packet(&sgLoPriBuf, pbMsg, bLen);
+		multi_send_packet(pbMsg, bLen);
 	}
 }
 
