@@ -2501,11 +2501,6 @@ void S_WBuyEnter()
 		}
 	}
 }
-// 4B8C9C: using guessed type int cursH;
-// 69F108: using guessed type int stextup;
-// 69F110: using guessed type int stextlhold;
-// 6A8A24: using guessed type int stextvhold;
-// 6A8A28: using guessed type int stextsel;
 
 void S_WSellEnter()
 {
@@ -2526,10 +2521,6 @@ void S_WSellEnter()
 			StartStore(STORE_NOROOM);
 	}
 }
-// 69F108: using guessed type int stextup;
-// 69F110: using guessed type int stextlhold;
-// 6A8A24: using guessed type int stextvhold;
-// 6A8A28: using guessed type int stextsel;
 
 void WitchRechargeItem()
 {
@@ -2548,9 +2539,6 @@ void WitchRechargeItem()
 
 	CalcPlrInv(myplr, 1u);
 }
-// 69F108: using guessed type int stextup;
-// 69F110: using guessed type int stextlhold;
-// 6A8A24: using guessed type int stextvhold;
 
 void S_WRechargeEnter()
 {
@@ -2777,12 +2765,6 @@ void S_HealerEnter()
 		return;
 	}
 }
-// 69F110: using guessed type int stextlhold;
-// 69FB38: using guessed type int talker;
-// 6A4EF0: using guessed type int gossipstart;
-// 6A8A28: using guessed type int stextsel;
-// 6A8A30: using guessed type int gossipend;
-// 6AA705: using guessed type char stextflag;
 
 void S_HBuyEnter()
 {
@@ -2985,6 +2967,9 @@ void STextEnter()
 		case STORE_SMITH:
 			S_SmithEnter();
 			break;
+		case STORE_SPBUY:
+			S_SPBuyEnter();
+			break;
 		case STORE_SBUY:
 			S_SBuyEnter();
 			break;
@@ -3033,20 +3018,17 @@ void STextEnter()
 		case STORE_SIDENTIFY:
 			S_SIDEnter();
 			break;
-		case STORE_SPBUY:
-			S_SPBuyEnter();
-			break;
 		case STORE_GOSSIP:
 			S_TalkEnter();
 			break;
 		case STORE_IDSHOW:
 			StartStore(STORE_SIDENTIFY);
 			break;
-		case STORE_TAVERN:
-			S_TavernEnter();
-			break;
 		case STORE_DRUNK:
 			S_DrunkEnter();
+			break;
+		case STORE_TAVERN:
+			S_TavernEnter();
 			break;
 		case STORE_BARMAID:
 			S_BarmaidEnter();
@@ -3054,11 +3036,6 @@ void STextEnter()
 		}
 	}
 }
-// 646D00: using guessed type char qtextflag;
-// 69F110: using guessed type int stextlhold;
-// 6A8A24: using guessed type int stextvhold;
-// 6A8A28: using guessed type int stextsel;
-// 6AA705: using guessed type char stextflag;
 
 void CheckStoreBtn()
 {
