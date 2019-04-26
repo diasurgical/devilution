@@ -601,7 +601,7 @@ void CreatePlayer(int pnum, char c)
 		plr[pnum]._pMemSpells = 0;
 	}
 
-	for (i = 0; i < sizeof(plr[pnum]._pSplLvl); i++) {
+	for (i = 0; i < sizeof(plr[pnum]._pSplLvl) / sizeof(plr[pnum]._pSplLvl[0]); i++) {
 		plr[pnum]._pSplLvl[i] = 0;
 	}
 
@@ -625,7 +625,7 @@ void CreatePlayer(int pnum, char c)
 		plr[pnum]._pgfxnum = ANIM_ID_STAFF;
 	}
 
-	for (i = 0; i < sizeof(plr[pnum]._pLvlVisited); i++) {
+	for (i = 0; i < NUMLEVELS; i++) {
 		plr[pnum]._pLvlVisited[i] = 0;
 	}
 
