@@ -207,7 +207,7 @@ void multi_send_msg_packet(int a1, BYTE *a2, BYTE len)
 		}
 		++v5;
 		v4 *= 2;
-		if (v5 >= 4)
+		if (v5 >= MAX_PLRS)
 			return;
 	}
 	nthread_terminate_game("SNetSendMessage");
