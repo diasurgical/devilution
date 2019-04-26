@@ -1180,7 +1180,7 @@ void CalcPlrBookVals(int p)
 	int i, slvl;
 
 	if (!currlevel) {
-		for (i = 1; witchitem[i]._itype != -1; i++) {
+		for (i = 1; witchitem[i]._itype != ITYPE_NONE; i++) {
 			WitchBookLevel(i);
 			witchitem[i]._iStatFlag = StoreStatOk(&witchitem[i]);
 		}
