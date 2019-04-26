@@ -1177,61 +1177,30 @@ BOOL ItemMinStats(PlayerStruct *p, ItemStruct *x)
 
 void CalcPlrBookVals(int p)
 {
-	int v1;            // esi
-	int v2;            // ebx
-	int *v3;           // edi
-	int v5;            // esi
-	int *v6;           // edi
-	int v7;            // eax
-	unsigned char v8;  // cl
-	unsigned char v9;  // cl
-	int v10;           // eax
-	int v12;           // [esp+Ch] [ebp-Ch]
-	int v13;           // [esp+10h] [ebp-8h]
-	unsigned char v14; // [esp+17h] [ebp-1h]
+	int i, slvl;
 
-	v1 = p;
 	if (!currlevel) {
-		v2 = 1;
-		if (witchitem[1]._itype != -1) {
-			v3 = &witchitem[1]._iStatFlag;
-			do {
-				WitchBookLevel(v2);
-				*v3 = StoreStatOk((ItemStruct *)(v3 - 89));
-				v3 += 92;
-				++v2;
-			} while (*(v3 - 87) != -1);
+		for (i = 1; witchitem[i]._itype != -1; i++) {
+			WitchBookLevel(i);
+			witchitem[i]._iStatFlag = StoreStatOk(&witchitem[i]);
 		}
 	}
-	v5 = v1;
-	v12 = 0;
-	if (plr[v5]._pNumInv > 0) {
-		v6 = &plr[v5].InvList[0]._iSpell;
-		do {
-			if (!*(v6 - 54) && *(v6 - 1) == 24) {
-				v7 = *v6;
-				v8 = spelldata[*v6].sMinInt;
-				*((_BYTE *)v6 + 129) = v8;
-				v13 = plr[0]._pSplLvl[v7 + v5 * 21720];
-				if (plr[0]._pSplLvl[v7 + v5 * 21720]) {
-					do {
-						v9 = 20 * v8 / 100 + v8;
-						--v13;
-						v14 = v9;
-						v10 = v9 + 20 * v9 / 100;
-						v8 = -1;
-						if (v10 <= 255)
-							v8 = v14;
-						else
-							v13 = 0;
-					} while (v13);
-					*((_BYTE *)v6 + 129) = v8;
+
+	for (i = 0; i < plr[p]._pNumInv; i++) {
+		if (plr[p].InvList[i]._itype == ITYPE_NONE && plr[p].InvList[i]._iMiscId == IMISC_BOOK) {
+			plr[p].InvList[i]._iMinMag = spelldata[plr[p].InvList[i]._iSpell].sMinInt;
+			slvl = plr[p]._pSplLvl[plr[p].InvList[i]._iSpell];
+
+			while (slvl) {
+				plr[p].InvList[i]._iMinMag += 20 * plr[p].InvList[i]._iMinMag / 100;
+				slvl--;
+				if (plr[p].InvList[i]._iMinMag + 20 * plr[p].InvList[i]._iMinMag / 100 > 255) {
+					plr[p].InvList[i]._iMinMag = 255;
+					slvl = 0;
 				}
-				v6[33] = ItemMinStats(&plr[v5], (ItemStruct *)(v6 - 56));
 			}
-			++v12;
-			v6 += 92;
-		} while (v12 < plr[v5]._pNumInv);
+			plr[p].InvList[i]._iStatFlag = ItemMinStats(&plr[p], &plr[p].InvList[i]);
+		}
 	}
 }
 
