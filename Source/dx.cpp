@@ -262,7 +262,7 @@ void unlock_buf_priv()
 
 	if (sgdwLockCount == 0)
 		app_fatal("draw main unlock error");
-	if (!gpBuffer)
+	if (gpBuffer == NULL)
 		app_fatal("draw consistency error");
 
 	sgdwLockCount--;
@@ -286,8 +286,6 @@ void unlock_buf_priv()
 
 void dx_cleanup()
 {
-	BYTE *v0; // ecx
-
 	if (ghMainWnd)
 		ShowWindow(ghMainWnd, SW_HIDE);
 	SDrawDestroy();
@@ -295,9 +293,7 @@ void dx_cleanup()
 	sgMemCrit.Enter();
 #endif
 	if (sgpBackBuf != NULL) {
-		v0 = sgpBackBuf;
-		sgpBackBuf = 0;
-		mem_free_dbg(v0);
+		MemFreeDbg(sgpBackBuf);
 	} else if (lpDDSBackBuf != NULL) {
 #ifdef __cplusplus
 		lpDDSBackBuf->Release();
@@ -307,7 +303,7 @@ void dx_cleanup()
 		lpDDSBackBuf = NULL;
 	}
 	sgdwLockCount = 0;
-	gpBuffer = 0;
+	gpBuffer = NULL;
 #ifdef __cplusplus
 	sgMemCrit.Leave();
 #endif
