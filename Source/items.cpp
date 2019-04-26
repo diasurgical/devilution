@@ -4589,7 +4589,7 @@ void RecalcStoreStats()
 	int i;
 
 	for (i = 0; i < 20; i++) {
-		if (smithitem[i]._itype != -1) {
+		if (smithitem[i]._itype != ITYPE_NONE) {
 			smithitem[i]._iStatFlag = StoreStatOk(&smithitem[i]);
 		}
 	}
