@@ -2002,139 +2002,69 @@ void SetSpdbarGoldCurs(int pnum, int i)
 
 void TakePlrsMoney(int cost)
 {
-	int v1;         // edi
-	int v2;         // eax
-	int v3;         // esi
-	int v4;         // ebx
-	int v5;         // eax
-	_DWORD *v6;     // ecx
-	int v7;         // eax
-	int v8;         // ebx
-	int v9;         // eax
-	_DWORD *v10;    // ecx
-	int v11;        // eax
-	signed int v12; // ebx
-	int v13;        // eax
-	int v14;        // eax
-	_DWORD *v15;    // ecx
-	int v16;        // eax
-	signed int v17; // ebx
-	int v18;        // eax
-	int v19;        // eax
-	_DWORD *v20;    // ecx
-	int v21;        // eax
+	int i;
 
-	v1 = cost;
-	v2 = CalculateGold(myplr);
-	v3 = myplr;
-	v4 = 0;
-	plr[myplr]._pGold = v2 - v1;
-	while (v1 > 0) {
-		v5 = 368 * v4 + 21720 * v3;
-		if (*(int *)((char *)&plr[0].SpdList[0]._itype + v5) == ITYPE_GOLD) {
-			v6 = (unsigned int *)((char *)&plr[0].SpdList[0]._ivalue + v5);
-			v7 = *(int *)((char *)&plr[0].SpdList[0]._ivalue + v5);
-			if (v7 != 5000) {
-				if (v1 >= v7) {
-					v1 -= v7;
-					RemoveSpdBarItem(v3, v4);
-					v3 = myplr;
-					v4 = -1;
-				} else {
-					*v6 = v7 - v1;
-					SetSpdbarGoldCurs(v3, v4);
-					v1 = 0;
-				}
+	plr[myplr]._pGold = CalculateGold(myplr) - cost;
+	for (i = 0; i < MAXBELTITEMS && cost > 0; i++) {
+		if (plr[myplr].SpdList[i]._itype == ITYPE_GOLD && plr[myplr].SpdList[i]._ivalue != 5000) {
+			if (cost < plr[myplr].SpdList[i]._ivalue) {
+				plr[myplr].SpdList[i]._ivalue -= cost;
+				SetSpdbarGoldCurs(myplr, i);
+				cost = 0;
+			} else {
+				cost -= plr[myplr].SpdList[i]._ivalue;
+				RemoveSpdBarItem(myplr, i);
+				i = -1;
 			}
-		}
-		if (++v4 >= MAXBELTITEMS) {
-			if (v1 > 0) {
-				v8 = 0;
-				do {
-					if (v1 <= 0)
-						break;
-					v9 = 368 * v8 + 21720 * v3;
-					if (*(int *)((char *)&plr[0].SpdList[0]._itype + v9) == ITYPE_GOLD) {
-						v10 = (unsigned int *)((char *)&plr[0].SpdList[0]._ivalue + v9);
-						v11 = *(int *)((char *)&plr[0].SpdList[0]._ivalue + v9);
-						if (v1 >= v11) {
-							v1 -= v11;
-							RemoveSpdBarItem(v3, v8);
-							v3 = myplr;
-							v8 = -1;
-						} else {
-							*v10 = v11 - v1;
-							SetSpdbarGoldCurs(v3, v8);
-							v1 = 0;
-						}
-					}
-					++v8;
-				} while (v8 < MAXBELTITEMS);
-			}
-			break;
 		}
 	}
-	v12 = 0;
-	drawpanflag = 255;
-	if (v1 > 0) {
-		v13 = 21720 * v3;
-		if (plr[v3]._pNumInv <= 0) {
-		LABEL_26:
-			v17 = 0;
-			if (v1 > 0) {
-				v18 = 21720 * v3;
-				if (plr[v3]._pNumInv > 0) {
-					do {
-						if (v1 <= 0)
-							break;
-						v19 = 368 * v17 + v18;
-						if (*(int *)((char *)&plr[0].InvList[0]._itype + v19) == ITYPE_GOLD) {
-							v20 = (unsigned int *)((char *)&plr[0].InvList[0]._ivalue + v19);
-							v21 = *(int *)((char *)&plr[0].InvList[0]._ivalue + v19);
-							if (v1 >= v21) {
-								v1 -= v21;
-								RemoveInvItem(v3, v17);
-								v3 = myplr;
-								v17 = -1;
-							} else {
-								*v20 = v21 - v1;
-								SetGoldCurs(v3, v17);
-								v1 = 0;
-							}
-						}
-						++v17;
-						v18 = 21720 * v3;
-					} while (v17 < plr[v3]._pNumInv);
+	if (cost > 0) {
+		for (i = 0; i < MAXBELTITEMS && cost > 0; i++) {
+			if (plr[myplr].SpdList[i]._itype == ITYPE_GOLD) {
+				if (cost < plr[myplr].SpdList[i]._ivalue) {
+					plr[myplr].SpdList[i]._ivalue -= cost;
+					SetSpdbarGoldCurs(myplr, i);
+					cost = 0;
+				} else {
+					cost -= plr[myplr].SpdList[i]._ivalue;
+					RemoveSpdBarItem(myplr, i);
+					i = -1;
 				}
 			}
-		} else {
-			while (v1 > 0) {
-				v14 = 368 * v12 + v13;
-				if (*(int *)((char *)&plr[0].InvList[0]._itype + v14) == ITYPE_GOLD) {
-					v15 = (unsigned int *)((char *)&plr[0].InvList[0]._ivalue + v14);
-					v16 = *(int *)((char *)&plr[0].InvList[0]._ivalue + v14);
-					if (v16 != 5000) {
-						if (v1 >= v16) {
-							v1 -= v16;
-							RemoveInvItem(v3, v12);
-							v3 = myplr;
-							v12 = -1;
-						} else {
-							*v15 = v16 - v1;
-							SetGoldCurs(v3, v12);
-							v1 = 0;
-						}
+		}
+	}
+	drawpanflag = 255;
+	if (cost > 0) {
+		for (i = 0; i < plr[myplr]._pNumInv && cost > 0; i++) {
+			if (plr[myplr].InvList[i]._itype == ITYPE_GOLD && plr[myplr].InvList[i]._ivalue != 5000) {
+				if (cost < plr[myplr].InvList[i]._ivalue) {
+					plr[myplr].InvList[i]._ivalue -= cost;
+					SetGoldCurs(myplr, i);
+					cost = 0;
+				} else {
+					cost -= plr[myplr].InvList[i]._ivalue;
+					RemoveInvItem(myplr, i);
+					i = -1;
+				}
+			}
+		}
+		if (cost > 0) {
+			for (i = 0; i < plr[myplr]._pNumInv && cost > 0; i++) {
+				if (plr[myplr].InvList[i]._itype == ITYPE_GOLD) {
+					if (cost < plr[myplr].InvList[i]._ivalue) {
+						plr[myplr].InvList[i]._ivalue -= cost;
+						SetGoldCurs(myplr, i);
+						cost = 0;
+					} else {
+						cost -= plr[myplr].InvList[i]._ivalue;
+						RemoveInvItem(myplr, i);
+						i = -1;
 					}
 				}
-				++v12;
-				v13 = 21720 * v3;
-				if (v12 >= plr[v3]._pNumInv)
-					goto LABEL_26;
 			}
 		}
 	}
 }
-// 52571C: using guessed type int drawpanflag;
 
 void SmithBuyItem()
 {
