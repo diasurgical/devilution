@@ -2,7 +2,7 @@
 
 int numthemes; // idb
 BOOL armorFlag;
-WORD ThemeGoodIn[4];
+BOOL ThemeGoodIn[4];
 BOOL weaponFlag;
 BOOL treasureFlag;
 BOOL mFountainFlag;
@@ -412,8 +412,8 @@ void InitThemes()
 		return;
 
 	if (leveltype == DTYPE_CATHEDRAL) {
-		for (i = 0; i < sizeof(ThemeGoodIn); i++)
-			ThemeGoodIn[i] = 0;
+		for (i = 0; i < sizeof(ThemeGoodIn) / sizeof(ThemeGoodIn[0]); i++)
+			ThemeGoodIn[i] = FALSE;
 
 		for (i = 0; i < 256 && numthemes < MAXTHEMES; i++) {
 			if (CheckThemeRoom(i)) {
