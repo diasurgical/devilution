@@ -2897,7 +2897,7 @@ BOOL control_talk_last_key(int vkey)
 		sgszTalkMsg[result] = a1;
 		sgszTalkMsg[result + 1] = 0;
 	}
-	return 1;
+	return TRUE;
 }
 
 int control_presskeys(int a1)
