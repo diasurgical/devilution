@@ -1348,14 +1348,13 @@ void S_StartStory()
 {
 	stextsize = 0;
 	stextscrl = FALSE;
-	AddSText(0, 2, 1u, "The Town Elder", COL_GOLD, 0);
-	AddSText(0, 9, 1u, "Would you like to:", COL_GOLD, 0);
-	AddSText(0, 12, 1u, "Talk to Cain", COL_BLUE, 1);
-	AddSText(0, 14, 1u, "Identify an item", COL_WHITE, 1);
-	AddSText(0, 18, 1u, "Say goodbye", COL_WHITE, 1);
+	AddSText(0, 2, 1, "The Town Elder", COL_GOLD, 0);
+	AddSText(0, 9, 1, "Would you like to:", COL_GOLD, 0);
+	AddSText(0, 12, 1, "Talk to Cain", COL_BLUE, 1);
+	AddSText(0, 14, 1, "Identify an item", COL_WHITE, 1);
+	AddSText(0, 18, 1, "Say goodbye", COL_WHITE, 1);
 	AddSLine(5);
 }
-// 6A09E0: using guessed type char stextsize;
 
 BOOL IdItemOk(ItemStruct *i)
 {
