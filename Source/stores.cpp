@@ -3039,75 +3039,58 @@ void STextEnter()
 
 void CheckStoreBtn()
 {
-	BOOLEAN v0; // sf
-	//unsigned char v1; // of
-	int v2;  // eax
-	int *v3; // ecx
+	int y;
 
 	if (qtextflag) {
 		qtextflag = FALSE;
 		if (leveltype == DTYPE_TOWN)
 			sfx_stop();
 	} else if (stextsel != -1 && MouseY >= 32 && MouseY <= 320) {
-		if (stextsize) {
-			//v1 = __OFSUB__(MouseX, 24);
-			v0 = MouseX - 24 < 0;
+		if (!stextsize) {
+			if (MouseX < 344 || MouseX > 616)
+				return;
 		} else {
-			//v1 = __OFSUB__(MouseX, 344);
-			v0 = MouseX - 344 < 0;
+			if (MouseX < 3 || MouseX > 616)
+				return;
 		}
-		if (!v0 && MouseX <= 616) { //if (!(v0 ^ v1) && MouseX <= 616) {
-			v2 = (MouseY - 32) / 12;
-			if (stextscrl && MouseX > 600) {
-				if (v2 == 4) {
-					if (stextscrlubtn <= 0) {
-						STextUp();
-						stextscrlubtn = 10;
-						return;
-					}
+		y = (MouseY - 32) / 12;
+		if (stextscrl && MouseX > 600) {
+			if (y == 4) {
+				if (stextscrlubtn <= 0) {
+					STextUp();
+					stextscrlubtn = 10;
+				} else {
 					--stextscrlubtn;
 				}
-				if (v2 == 20) {
-					if (stextscrldbtn > 0) {
-						--stextscrldbtn;
-					} else {
-						STextDown();
-						stextscrldbtn = 10;
-					}
+			}
+			if (y == 20) {
+				if (stextscrldbtn <= 0) {
+					STextDown();
+					stextscrldbtn = 10;
+				} else {
+					--stextscrldbtn;
 				}
-			} else if (v2 >= 5) {
-				if (v2 >= 23)
-					v2 = 22;
-				if (stextscrl) {
-					if (v2 < 21) {
-						v3 = &stext[v2]._ssel;
-						if (!*v3) {
-							if (stext[v2 - 2]._ssel) {
-								v2 -= 2;
-							} else if (*(v3 - 39)) {
-								--v2;
-							}
-						}
-					}
+			}
+		} else if (y >= 5) {
+			if (y >= 23)
+				y = 22;
+			if (stextscrl && y < 21 && !stext[y]._ssel) {
+				if (stext[y - 2]._ssel) {
+					y -= 2;
+				} else if (stext[y - 1]._ssel) {
+					--y;
 				}
-				if (stext[v2]._ssel || stextscrl && v2 == 22) {
-					stextsel = v2;
-					STextEnter();
-				}
+			}
+			if (stext[y]._ssel || stextscrl && y == 22) {
+				stextsel = y;
+				STextEnter();
 			}
 		}
 	}
 }
-// 646D00: using guessed type char qtextflag;
-// 6A09E0: using guessed type char stextsize;
-// 6A8A28: using guessed type int stextsel;
-// 6A8A2C: using guessed type char stextscrldbtn;
-// 6AA704: using guessed type char stextscrlubtn;
 
 void ReleaseStoreBtn()
 {
 	stextscrlubtn = -1;
 	stextscrldbtn = -1;
 }
-// 6A8A2C: using guessed type char stextscrldbtn;
-// 6AA704: using guessed type char stextscrlubtn;
