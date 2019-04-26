@@ -653,7 +653,7 @@ void __stdcall multi_handle_events(_SNETEVENT *pEvt)
 		sgbPlayerTurnBitTbl[pEvt->playerid] = TRUE;
 		break;
 	case EVENT_TYPE_PLAYER_LEAVE_GAME:
-		sgbPlayerLeftGameTbl[pEvt->playerid] = 1;
+		sgbPlayerLeftGameTbl[pEvt->playerid] = TRUE;
 		sgbPlayerTurnBitTbl[pEvt->playerid] = FALSE;
 		LeftReason = 0;
 		data = (int *)pEvt->data;
