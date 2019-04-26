@@ -2370,25 +2370,18 @@ void S_SSellEnter()
 			StartStore(STORE_NOROOM);
 	}
 }
-// 69F108: using guessed type int stextup;
-// 69F110: using guessed type int stextlhold;
-// 6A8A24: using guessed type int stextvhold;
-// 6A8A28: using guessed type int stextsel;
 
 void SmithRepairItem()
 {
-	int i;   // edx
-	int idx; // eax
+	int i, idx;
 
 	TakePlrsMoney(plr[myplr].HoldItem._iIvalue);
 
 	idx = stextvhold + ((stextlhold - stextup) >> 2);
-	i = storehidx[idx];
 	storehold[idx]._iDurability = storehold[idx]._iMaxDur;
 
-	if (i >= 0) {
-		plr[myplr].InvList[i]._iDurability = plr[myplr].InvList[i]._iMaxDur;
-	} else {
+	i = storehidx[idx];
+	if (i < 0) {
 		if (i == -1)
 			plr[myplr].InvBody[INVLOC_HEAD]._iDurability = plr[myplr].InvBody[INVLOC_HEAD]._iMaxDur;
 		if (i == -2)
@@ -2397,11 +2390,10 @@ void SmithRepairItem()
 			plr[myplr].InvBody[INVLOC_HAND_LEFT]._iDurability = plr[myplr].InvBody[INVLOC_HAND_LEFT]._iMaxDur;
 		if (i == -4)
 			plr[myplr].InvBody[INVLOC_HAND_RIGHT]._iDurability = plr[myplr].InvBody[INVLOC_HAND_RIGHT]._iMaxDur;
+	} else {
+		plr[myplr].InvList[i]._iDurability = plr[myplr].InvList[i]._iMaxDur;
 	}
 }
-// 69F108: using guessed type int stextup;
-// 69F110: using guessed type int stextlhold;
-// 6A8A24: using guessed type int stextvhold;
 
 void S_SRepairEnter()
 {
