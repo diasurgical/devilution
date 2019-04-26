@@ -289,10 +289,10 @@ BOOL gmenu_presskeys(int a1)
 	case VK_SPACE:
 		return FALSE;
 	case VK_LEFT:
-		gmenu_left_right(0);
+		gmenu_left_right(FALSE);
 		break;
 	case VK_RIGHT:
-		gmenu_left_right(1);
+		gmenu_left_right(TRUE);
 		break;
 	case VK_UP:
 		gmenu_up_down(0);
