@@ -19,7 +19,7 @@ void FreeGMenu();
 void gmenu_init_menu();
 BOOL gmenu_exception();
 void gmenu_call_proc(TMenuItem *pItem, void(*gmFunc)(TMenuItem *));
-void gmenu_up_down(int a1);
+void gmenu_up_down(BOOL isDown);
 void gmenu_draw();
 void gmenu_draw_menu_item(TMenuItem *pItem, int a2);
 void gmenu_clear_buffer(int x, int y, int width, int height);
