@@ -1814,48 +1814,40 @@ void STextESC()
 
 void STextUp()
 {
-	int v0; // eax
-
 	PlaySFX(IS_TITLEMOV);
-	if (stextsel != -1) {
-		if (stextscrl) {
-			if (stextsel == stextup) {
-				if (stextsval)
-					--stextsval;
-				return;
-			}
-			v0 = stextsel - 1;
-			stextsel = v0;
-			if (stext[v0]._ssel)
-				return;
-			do {
-				if (v0)
-					--v0;
-				else
-					v0 = 23;
-			} while (!stext[v0]._ssel);
-		LABEL_20:
-			stextsel = v0;
+	if (stextsel == -1) {
+		return;
+	}
+
+	if (stextscrl) {
+		if (stextsel == stextup) {
+			if (stextsval)
+				stextsval--;
 			return;
 		}
-		if (stextsel)
-			v0 = stextsel - 1;
-		else
-			v0 = 23;
-		stextsel = v0;
-		if (!stext[v0]._ssel) {
-			do {
-				if (v0)
-					--v0;
-				else
-					v0 = 23;
-			} while (!stext[v0]._ssel);
-			goto LABEL_20;
+
+		stextsel--;
+		while (!stext[stextsel]._ssel) {
+			if (!stextsel)
+				stextsel = 23;
+			else
+				stextsel--;
 		}
+		return;
+	}
+
+	if (!stextsel)
+		stextsel = 23;
+	else
+		stextsel--;
+
+	while (!stext[stextsel]._ssel) {
+		if (!stextsel)
+			stextsel = 23;
+		else
+			stextsel--;
 	}
 }
-// 69F108: using guessed type int stextup;
-// 6A8A28: using guessed type int stextsel;
 
 void STextDown()
 {
