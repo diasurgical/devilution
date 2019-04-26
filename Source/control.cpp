@@ -2895,7 +2895,7 @@ BOOL control_talk_last_key(int vkey)
 	result = strlen(sgszTalkMsg);
 	if (result < 78) {
 		sgszTalkMsg[result] = a1;
-		sgszTalkMsg[result + 1] = 0;
+		sgszTalkMsg[result + 1] = '\0';
 	}
 	return TRUE;
 }
