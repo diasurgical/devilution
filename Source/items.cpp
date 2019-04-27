@@ -4507,20 +4507,23 @@ void RecreateBoyItem(int ii, int idx, int lvl, int iseed)
 
 void RecreateWitchItem(int ii, int idx, int lvl, int iseed)
 {
-	int itype; // edi
-	int iblvl; // eax
+	int iblvl, itype;
 
 	if (idx == IDI_MANA || idx == IDI_FULLMANA || idx == IDI_PORTAL) {
 		GetItemAttrs(ii, idx, lvl);
 	} else {
 		SetRndSeed(iseed);
+		iblvl = -1;
 		itype = RndWitchItem(lvl) - 1;
 		GetItemAttrs(ii, itype, lvl);
-		iblvl = 2 * lvl;
-		if (iblvl != -1 && (random(51, 100) <= 5 || item[ii]._iMiscId == IMISC_STAFF)) {
+		if (random(51, 100) <= 5)
+			iblvl = 2 * lvl;
+		if (iblvl == -1 && item[ii]._iMiscId == IMISC_STAFF)
+			iblvl = 2 * lvl;
+		if (iblvl != -1)
 			GetItemBonus(ii, itype, iblvl >> 1, iblvl, 1);
-		}
 	}
+
 	item[ii]._iCreateInfo = lvl | 0x2000;
 	item[ii]._iSeed = iseed;
 	item[ii]._iIdentified = TRUE;
@@ -4582,12 +4585,9 @@ void RecalcStoreStats()
 	boyitem._iStatFlag = StoreStatOk(&boyitem);
 }
 
-// 6A6BB8: using guessed type int stextscrl;
-// 6AA700: using guessed type int stextdown;
-
 int ItemNoFlippy()
 {
-	int r; // ecx
+	int r;
 
 	r = itemactive[numitems - 1];
 	item[r]._iAnimFlag = FALSE;
