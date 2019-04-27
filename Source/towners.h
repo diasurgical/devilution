@@ -34,7 +34,7 @@ void TownBarMaid();
 void TownCow();
 void ProcessTowners();
 ItemStruct *PlrHasItem(int pnum, int item, int *i);
-void TownerTalk(int t);
+void TownerTalk(int first, int t);
 void TalkToTowner(int p, int t);
 void CowSFX(int pnum);
 
