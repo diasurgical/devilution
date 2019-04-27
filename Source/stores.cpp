@@ -577,55 +577,37 @@ void S_StartSBuy()
 
 void S_ScrollSPBuy(int idx)
 {
-	int v1;   // esi
-	int v2;   // edi
-	int v3;   // eax
-	int v4;   // esi
-	int *v5;  // ecx
-	char *v6; // esi
-	int iclr; // [esp+Ch] [ebp-4h]
+	int l, boughtitems;
+	char iclr;
 
-	v1 = idx;
-	v2 = 5;
 	ClearSText(5, 21);
-	v3 = v1;
-	v4 = 0;
+	boughtitems = idx;
+
 	stextup = 5;
-	if (v3) {
-		v5 = &premiumitem[0]._itype;
-		do {
-			if (*v5 != ITYPE_NONE)
-				--v3;
-			++v4;
-			v5 += 92;
-		} while (v3);
+	for (idx = 0; boughtitems; idx++) {
+		if (premiumitem[idx]._itype != ITYPE_NONE)
+			boughtitems--;
 	}
-	v6 = &premiumitem[v4]._iMagical;
-	do {
-		if ((signed int)v6 >= (signed int)&premiumitem[6]._iMagical)
-			break;
-		if (*((_DWORD *)v6 - 13) == -1) {
-			v2 -= 4;
+
+	for (l = 5; l < 20 && idx < 6; l += 4) {
+		if (premiumitem[idx]._itype != -1) {
+			iclr = COL_WHITE;
+			if (premiumitem[idx]._iMagical)
+				iclr = COL_BLUE;
+			if (!premiumitem[idx]._iStatFlag)
+				iclr = COL_RED;
+			AddSText(20, l, 0, premiumitem[idx]._iIName, iclr, 1);
+			AddSTextVal(l, premiumitem[idx]._iIvalue);
+			PrintStoreItem(&premiumitem[idx], l + 1, iclr);
+			stextdown = l;
 		} else {
-			_LOBYTE(iclr) = COL_WHITE;
-			if (*v6)
-				_LOBYTE(iclr) = COL_BLUE;
-			if (!*((_DWORD *)v6 + 74))
-				_LOBYTE(iclr) = COL_RED;
-			AddSText(20, v2, 0, v6 + 65, iclr, 1);
-			AddSTextVal(v2, *((_DWORD *)v6 + 35));
-			PrintStoreItem((ItemStruct *)(v6 - 60), v2 + 1, iclr);
-			stextdown = v2;
+			l -= 4;
 		}
-		v2 += 4;
-		v6 += 368;
-	} while (v2 < 20);
+		idx++;
+	}
 	if (!stext[stextsel]._ssel && stextsel != 22)
 		stextsel = stextdown;
 }
-// 69F108: using guessed type int stextup;
-// 6A8A28: using guessed type int stextsel;
-// 6AA700: using guessed type int stextdown;
 
 BOOL S_StartSPBuy()
 {
