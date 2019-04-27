@@ -142,7 +142,7 @@ void gmenu_up_down(BOOL isDown)
 		while (i) {
 			i--;
 			if (isDown) {
-				++sgpCurrItem;
+				sgpCurrItem++;
 				if (!sgpCurrItem->fnMenu)
 					sgpCurrItem = dword_634480;
 			} else {
