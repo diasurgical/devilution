@@ -1473,58 +1473,38 @@ void S_StartIdShow()
 
 void S_StartTalk()
 {
-	int *v0;       // edi
-	signed int v1; // eax
-	int v2;        // edx
-	int *v3;       // ecx
-	char **v4;     // ebp
-	int v5;        // esi
-	int v6;        // ebx
-	signed int v7; // [esp-4h] [ebp-1Ch]
-	signed int v8; // [esp+10h] [ebp-8h]
-	int y;         // [esp+14h] [ebp-4h]
+	int s1, s2, y1, y2, y3, i;
 
 	stextsize = 0;
 	stextscrl = FALSE;
 	sprintf(tempstr, "Talk to %s", talkname[talker]);
-	AddSText(0, 2, 1u, tempstr, COL_GOLD, 0);
+	AddSText(0, 2, 1, tempstr, COL_GOLD, 0);
 	AddSLine(5);
-	v0 = &quests[0]._qlog;
-	v1 = 0;
-	v2 = 0;
-	v3 = &quests[0]._qlog;
-	do {
-		if (*((_BYTE *)v3 - 18) == 2 && *((_DWORD *)&Qtalklist[0]._qinfra + v2 + 16 * talker) != -1 && *v3)
-			++v1;
-		v3 += 6;
-		++v2;
-	} while ((signed int)v3 < (signed int)&quests[16]._qlog);
-	if (v1 <= 6) {
-		v7 = 15;
-		v8 = 2;
-	} else {
-		v1 >>= 1;
-		v7 = 14;
-		v8 = 1;
+	s1 = 0;
+	for (i = 0; i < 16; i++) {
+		if (quests[i]._qlevel == 2 && ((DWORD *)&Qtalklist[talker])[i] != -1 && quests[i]._qlog)
+			s1++;
 	}
-	v4 = &questlist[0]._qlstr;
-	v5 = v7 - v1;
-	v6 = 0;
-	y = v7 - v1 - 2;
-	do {
-		if (*((_BYTE *)v0 - 18) == 2 && *((_DWORD *)&Qtalklist[0]._qinfra + v6 + 16 * talker) != -1 && *v0) {
-			AddSText(0, v5, 1u, *v4, COL_WHITE, 1);
-			v5 += v8;
+
+	if (s1 > 6) {
+		y1 = 14 - (s1 >> 1);
+		s2 = 1;
+	} else {
+		y1 = 15 - s1;
+		s2 = 2;
+	}
+
+	y2 = y1 - 2;
+
+	for (i = 0; i < 16; i++) {
+		if (quests[i]._qlevel == 2 && ((DWORD *)&Qtalklist[talker])[i] != -1 && quests[i]._qlog) {
+			AddSText(0, y1, 1, questlist[i]._qlstr, COL_WHITE, 1);
+			y1 += s2;
 		}
-		v0 += 6;
-		++v6;
-		v4 += 5;
-	} while ((signed int)v0 < (signed int)&quests[16]._qlog);
-	AddSText(0, y, 1u, "Gossip", COL_BLUE, 1);
-	AddSText(0, 22, 1u, "Back", COL_WHITE, 1);
+	}
+	AddSText(0, y2, 1, "Gossip", COL_BLUE, 1);
+	AddSText(0, 22, 1, "Back", COL_WHITE, 1);
 }
-// 69FB38: using guessed type int talker;
-// 6A09E0: using guessed type char stextsize;
 
 void S_StartTavern()
 {
