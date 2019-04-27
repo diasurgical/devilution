@@ -2902,8 +2902,8 @@ BOOL control_talk_last_key(int vkey)
 
 int control_presskeys(int a1)
 {
-	signed int v1; // eax
-	char v2;       // cl
+	signed int v1;  // eax
+	signed char v2; // cl
 
 	if (gbMaxPlayers != 1 && talkflag) {
 		switch (a1) {
@@ -2975,7 +2975,7 @@ void control_press_enter()
 // 4B84CC: using guessed type char sgbNextTalkSave;
 // 4B84CD: using guessed type char sgbTalkSavePos;
 
-void control_up_down(char a1)
+void control_up_down(signed char a1)
 {
 	unsigned char v1; // al
 	int v2;           // esi

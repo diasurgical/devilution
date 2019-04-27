@@ -20,18 +20,18 @@ BOOL stextscrl;
 int numpremium; // idb
 ItemStruct healitem[20];
 ItemStruct golditem;
-char storehidx[48];
+signed char storehidx[48];
 void *pSTextSlidCels;
 int stextvhold;     // weak
 int stextsel;       // weak
-char stextscrldbtn; // weak
+signed char stextscrldbtn; // weak
 int gossipend;      // weak
 void *pCelBuff;
 int stextsval; // idb
 int boylevel;  // weak
 ItemStruct smithitem[20];
 int stextdown;      // weak
-char stextscrlubtn; // weak
+signed char stextscrlubtn; // weak
 char stextflag;
 
 int SStringY[24] = {

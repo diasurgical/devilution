@@ -64,7 +64,7 @@ extern int setpc_x;     // idb
 extern int ViewX;       // idb
 extern int ViewY;       // idb
 extern int setpc_y;     // idb
-extern char dMissile[MAXDUNX][MAXDUNY];
+extern signed char dMissile[MAXDUNX][MAXDUNY];
 extern int dminx; // weak
 extern int dminy; // weak
 extern MICROS dpiece_defs_map_2[MAXDUNX][MAXDUNY];

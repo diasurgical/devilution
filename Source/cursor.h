@@ -9,11 +9,11 @@ extern int pcursmonst; // idb
 extern int icursW28;   // idb
 extern void *pCursCels;
 extern int icursH;        // weak
-extern char pcursinvitem; // weak
+extern signed char pcursinvitem; // weak
 extern int icursW;        // weak
-extern char pcursitem;    // weak
-extern char pcursobj;     // weak
-extern char pcursplr;     // weak
+extern signed char pcursitem;    // weak
+extern signed char pcursobj;     // weak
+extern signed char pcursplr;     // weak
 extern int cursmx;
 extern int cursmy;
 extern int pcurstemp; // weak

@@ -22,18 +22,18 @@ extern BOOL stextscrl;
 extern int numpremium; // idb
 extern ItemStruct healitem[20];
 extern ItemStruct golditem;
-extern char storehidx[48];
+extern signed char storehidx[48];
 extern void *pSTextSlidCels;
 extern int stextvhold;     // weak
 extern int stextsel;       // weak
-extern char stextscrldbtn; // weak
+extern signed char stextscrldbtn; // weak
 extern int gossipend;      // weak
 extern void *pCelBuff;
 extern int stextsval; // idb
 extern int boylevel;  // weak
 extern ItemStruct smithitem[20];
 extern int stextdown;      // weak
-extern char stextscrlubtn; // weak
+extern signed char stextscrlubtn; // weak
 extern char stextflag;
 
 void InitStores();

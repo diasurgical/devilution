@@ -62,7 +62,7 @@ int setpc_x;     // idb
 int ViewX;       // idb
 int ViewY;       // idb
 int setpc_y;     // idb
-char dMissile[MAXDUNX][MAXDUNY];
+signed char dMissile[MAXDUNX][MAXDUNY];
 int dminx; // weak
 int dminy; // weak
 MICROS dpiece_defs_map_2[MAXDUNX][MAXDUNY];

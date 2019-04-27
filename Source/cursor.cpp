@@ -9,11 +9,11 @@ void *pCursCels;
 int icursH; // weak
 
 // inv_item value
-char pcursinvitem; // weak
+signed char pcursinvitem; // weak
 int icursW;        // weak
-char pcursitem;    // weak
-char pcursobj;     // weak
-char pcursplr;     // weak
+signed char pcursitem;    // weak
+signed char pcursobj;     // weak
+signed char pcursplr;     // weak
 int cursmx;
 int cursmy;
 int pcurstemp; // weak
