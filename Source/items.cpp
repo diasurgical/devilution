@@ -4472,21 +4472,26 @@ void SpawnStoreGold()
 
 void RecreateSmithItem(int ii, int idx, int plvl, int iseed)
 {
+	int itype;
+
 	SetRndSeed(iseed);
-	GetItemAttrs(ii, RndSmithItem(plvl) - 1, plvl);
-	item[ii]._iSeed = iseed;
+	itype = RndSmithItem(plvl) - 1;
+	GetItemAttrs(ii, itype, plvl);
+
 	item[ii]._iCreateInfo = plvl | 0x400;
+	item[ii]._iSeed = iseed;
 	item[ii]._iIdentified = TRUE;
 }
 
 void RecreatePremiumItem(int ii, int idx, int lvl, int iseed)
 {
-	int itype; // edi
+	int itype;
 
 	SetRndSeed(iseed);
 	itype = RndPremiumItem(lvl >> 2, lvl) - 1;
 	GetItemAttrs(ii, itype, lvl);
 	GetItemBonus(ii, itype, lvl >> 1, lvl, 1);
+
 	item[ii]._iCreateInfo = lvl | 0x800;
 	item[ii]._iSeed = iseed;
 	item[ii]._iIdentified = TRUE;
@@ -4494,12 +4499,13 @@ void RecreatePremiumItem(int ii, int idx, int lvl, int iseed)
 
 void RecreateBoyItem(int ii, int idx, int lvl, int iseed)
 {
-	int itype; // edi
+	int itype;
 
 	SetRndSeed(iseed);
 	itype = RndBoyItem(lvl) - 1;
 	GetItemAttrs(ii, itype, lvl);
 	GetItemBonus(ii, itype, lvl, 2 * lvl, 1);
+
 	item[ii]._iCreateInfo = lvl | 0x1000;
 	item[ii]._iSeed = iseed;
 	item[ii]._iIdentified = TRUE;
