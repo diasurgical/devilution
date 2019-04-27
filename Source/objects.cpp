@@ -1146,94 +1146,63 @@ void InitObjects()
 
 void SetMapObjects(unsigned char *pMap, int startx, int starty)
 {
-	unsigned char *v3;  // esi
-	int v6;             // edi
-	int v7;             // eax
-	int v8;             // esi
-	int v9;             // ecx
-	int v10;            // esi
-	int v11;            // ecx
-	int v12;            // edi
-	_BYTE *v13;         // eax
-	int v14;            // ebx
-	signed int v15;     // ebx
-	char *v16;          // ST08_4
-	unsigned char *v17; // eax
-	int v18;            // ecx
-	int i;              // ebx
-	int fileload[56];   // [esp+Ch] [ebp-10Ch]
-	char filestr[32];   // [esp+ECh] [ebp-2Ch]
-	_BYTE *v22;         // [esp+10Ch] [ebp-Ch]
-	int v23;            // [esp+110h] [ebp-8h]
-	_BYTE *v24;         // [esp+114h] [ebp-4h]
-	int y;              // [esp+120h] [ebp+8h]
+	int rw, rh;
+	int i, j;
+	unsigned char *lm, *h;
+	long mapoff;
+	int fileload[56];
+	char filestr[32];
 
-	v23 = startx;
-	v3 = pMap;
 	ClrAllObjects();
-	memset(fileload, 0, sizeof(fileload));
+	for (i = 0; i < 56; i++)
+		fileload[i] = 0;
 	InitObjFlag = TRUE;
-	if (AllObjects[0].oload != -1) {
-		i = 0;
-		do {
-			if (AllObjects[i].oload == 1 && leveltype == AllObjects[i].olvltype)
-				fileload[AllObjects[i].ofindex] = 1;
-			i++;
-		} while (AllObjects[i].oload != -1);
+
+	for (i = 0; AllObjects[i].oload != -1; i++) {
+		if (AllObjects[i].oload == 1 && leveltype == AllObjects[i].olvltype)
+			fileload[AllObjects[i].ofindex] = 1;
 	}
-	v6 = (unsigned char)*v3;
-	v7 = (int)(v3 + 2);
-	v8 = (unsigned char)v3[2];
-	v9 = v8;
-	v10 = 2 * v8;
-	v11 = v6 * v9;
-	v12 = 2 * v6;
-	v13 = (_BYTE *)(2 * v11 + 2 + 4 * v12 * v10 + v7);
-	v22 = v13;
-	if (v10 > 0) {
-		v24 = (_BYTE *)v10;
-		do {
-			if (v12 > 0) {
-				v14 = v12;
-				do {
-					if (*v13)
-						fileload[(char)AllObjects[ObjTypeConv[(unsigned char)*v13]].ofindex] = 1;
-					v13 += 2;
-					--v14;
-				} while (v14);
+
+	lm = pMap;
+	rw = *lm;
+	lm += 2;
+	rh = *lm;
+	mapoff = (rw * rh + 1) * 2;
+	rw <<= 1;
+	rh <<= 1;
+	mapoff += 2 * rw * rh * 2;
+	lm += mapoff;
+	h = lm;
+
+	for (j = 0; j < rh; j++) {
+		for (i = 0; i < rw; i++) {
+			if (*lm) {
+				fileload[AllObjects[ObjTypeConv[*lm]].ofindex] = 1;
 			}
-			--v24;
-		} while (v24);
-	}
-	v15 = 0;
-	do {
-		if (fileload[v15]) {
-			v16 = ObjMasterLoadList[v15];
-			ObjFileList[numobjfiles] = v15;
-			sprintf(filestr, "Objects\\%s.CEL", v16);
-			v17 = LoadFileInMem(filestr, 0);
-			v18 = numobjfiles++;
-			pObjCels[v18] = v17;
+			lm += 2;
 		}
-		++v15;
-	} while (v15 < 56);
-	v24 = v22;
-	if (v10 > 0) {
-		y = starty + 16;
-		do {
-			for (i = 0; i < v12; ++i) {
-				if (*v24)
-					AddObject(ObjTypeConv[(unsigned char)*v24], i + v23 + 16, y);
-				v24 += 2;
-			}
-			++y;
-			--v10;
-		} while (v10);
+	}
+
+	for (i = 0; i < 56; i++) {
+		if (!fileload[i])
+			continue;
+
+		ObjFileList[numobjfiles] = i;
+		sprintf(filestr, "Objects\\%s.CEL", ObjMasterLoadList[i]);
+		pObjCels[numobjfiles] = LoadFileInMem(filestr, 0);
+		numobjfiles++;
+	}
+
+	lm = h;
+	for (j = 0; j < rh; j++) {
+		for (i = 0; i < rw; i++) {
+			if (*lm)
+				AddObject(ObjTypeConv[*lm], startx + 16 + i, starty + 16 + j);
+			lm += 2;
+		}
 	}
 	InitObjFlag = FALSE;
 }
-// 67D7C4: using guessed type int numobjfiles;
-// 4427C5: using guessed type int var_10C[56];
 
 void DeleteObject_(int oi, int i)
 {
@@ -1912,11 +1881,11 @@ void Obj_Door(int i)
 		object[i]._oSelFlag = 2;
 		object[i]._oMissFlag = TRUE;
 		object[i]._oVar4 = (((dItem[dx][dy] == 0 ? 1 : 0)
-					& (dDead[dx][dy] == 0 ? 1 : 0)
-					& (dPlayer[dx][dy] == 0 ? 1 : 0)
-					& (dMonster[dx][dy] == 0 ? 1 : 0))
-				== 0)
-			+ 1;
+		                        & (dDead[dx][dy] == 0 ? 1 : 0)
+		                        & (dPlayer[dx][dy] == 0 ? 1 : 0)
+		                        & (dMonster[dx][dy] == 0 ? 1 : 0))
+		                       == 0)
+		    + 1;
 	}
 }
 
