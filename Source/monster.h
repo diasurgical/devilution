@@ -32,7 +32,7 @@ void InitMonsters();
 void PlaceUniques();
 void SetMapMonsters(unsigned char *pMap, int startx, int starty);
 void DeleteMonster(int i);
-int AddMonster(int x, int y, int dir, int mtype, int InMap);
+int AddMonster(int x, int y, int dir, int mtype, BOOL InMap);
 void NewMonsterAnim(int i, AnimStruct *anim, int md);
 BOOL M_Ranged(int i);
 BOOL M_Talker(int i);

@@ -1388,57 +1388,41 @@ void PlaceUniques()
 
 void SetMapMonsters(unsigned char *pMap, int startx, int starty)
 {
-	unsigned char *v3;  // esi
-	unsigned short v4;  // cx
-	int v5;             // edx
-	int v6;             // edi
-	int v7;             // ecx
-	unsigned char *v8;  // edx
-	int i;              // esi
-	int v10;            // eax
-	int v11;            // ecx
-	int v12;            // [esp+Ch] [ebp-Ch]
-	int v13;            // [esp+10h] [ebp-8h]
-	unsigned char *v14; // [esp+14h] [ebp-4h]
-	int startya;        // [esp+20h] [ebp+8h]
+	WORD rw, rh;
+	WORD *lm;
+	int i, j;
+	int mtype;
 
-	v12 = startx;
-	v3 = pMap;
 	AddMonsterType(MT_GOLEM, 2);
-	AddMonster(1, 0, 0, 0, 0);
-	AddMonster(1, 0, 0, 0, 0);
-	AddMonster(1, 0, 0, 0, 0);
-	AddMonster(1, 0, 0, 0, 0);
+	AddMonster(1, 0, 0, 0, FALSE);
+	AddMonster(1, 0, 0, 0, FALSE);
+	AddMonster(1, 0, 0, 0, FALSE);
+	AddMonster(1, 0, 0, 0, FALSE);
 	if (setlevel && setlvlnum == SL_VILEBETRAYER) {
-		AddMonsterType((char)UniqMonst[4].mtype, 4);
-		AddMonsterType((char)UniqMonst[5].mtype, 4);
-		AddMonsterType((char)UniqMonst[6].mtype, 4);
+		AddMonsterType(UniqMonst[4].mtype, 4);
+		AddMonsterType(UniqMonst[5].mtype, 4);
+		AddMonsterType(UniqMonst[6].mtype, 4);
 		PlaceUniqueMonst(4, 0, 0);
 		PlaceUniqueMonst(5, 0, 0);
 		PlaceUniqueMonst(6, 0, 0);
 	}
-	v4 = *((_WORD *)v3 + 1);
-	v5 = *(unsigned short *)v3 * v4;
-	v6 = (unsigned short)(2 * *(_WORD *)v3);
-	v7 = (unsigned short)(2 * v4);
-	v8 = &v3[2 * v5 + 4 + 2 * v7 * v6];
-	v14 = v8;
-	if (v7 > 0) {
-		v13 = v7;
-		startya = starty + 16;
-		do {
-			for (i = 0; i < v6; v14 += 2) {
-				if (*(_WORD *)v8) {
-					v10 = AddMonsterType(MonstConvTbl[*(unsigned short *)v8 - 1], 2); /* fix */
-					v11 = nummonsters++;
-					PlaceMonster(v11, v10, i + v12 + 16, startya);
-				}
-				v8 = v14 + 2;
-				++i;
+	lm = (WORD*)pMap;
+	rw = *lm;
+	lm++;
+	rh = *lm;
+	lm += (rw * rh + 1);
+	rw = rw << 1;
+	rh = rh << 1;
+	lm += rw * rh;
+
+	for (j = 0; j < rh; j++) {
+		for (i = 0; i < rw; i++) {
+			if (*lm) {
+				mtype = AddMonsterType(MonstConvTbl[(*lm) - 1], 2);
+				PlaceMonster(nummonsters++, mtype, i + startx + 16, j + starty + 16);
 			}
-			++startya;
-			--v13;
-		} while (v13);
+			lm++;
+		}
 	}
 }
 // 5CF31D: using guessed type char setlevel;
@@ -1453,7 +1437,7 @@ void DeleteMonster(int i)
 	monstactive[i] = temp;
 }
 
-int AddMonster(int x, int y, int dir, int mtype, int InMap)
+int AddMonster(int x, int y, int dir, int mtype, BOOL InMap)
 {
 	if (nummonsters < MAXMONSTERS) {
 		int i = monstactive[nummonsters++];
