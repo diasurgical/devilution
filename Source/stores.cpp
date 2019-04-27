@@ -10,7 +10,7 @@ void *pSTextBoxCels;
 int premiumlevel; // idb
 int talker;       // weak
 STextStruct stext[24];
-char stextsize;  // weak
+char stextsize;
 int stextsmax;   // weak
 int InStoreFlag; // idb
 ItemStruct storehold[48];
@@ -101,7 +101,7 @@ void SetupTownStores()
 	SetRndSeed(glSeedTbl[currlevel] * GetTickCount());
 	if (gbMaxPlayers == 1) {
 		l = 0;
-		for (i = 0; i < 17; i++) {
+		for (i = 0; i < NUMLEVELS; i++) {
 			if (plr[myplr]._pLvlVisited[i])
 				l = i;
 		}
@@ -234,7 +234,6 @@ void PrintSString(int x, int y, unsigned char cjustflag, char *str, int col, int
 		CelDecodeOnly(v22, v6 + 205, (BYTE *)pCelBuff, InStoreFlag, 12);
 	}
 }
-// 6A09E0: using guessed type char stextsize;
 // 6A8A28: using guessed type int stextsel;
 // 457BD6: using guessed type char valstr[32];
 
@@ -284,7 +283,6 @@ void DrawSLine(int y)
 		memcpy(dst, src, 768 - line);
 #endif
 }
-// 6A09E0: using guessed type char stextsize;
 
 void DrawSArrows(int y1, int y2)
 {
@@ -320,8 +318,6 @@ void DrawSTextHelp()
 	stextsel = -1;
 	stextsize = 1;
 }
-// 6A09E0: using guessed type char stextsize;
-// 6A8A28: using guessed type int stextsel;
 
 void ClearSText(int s, int e)
 {
@@ -439,26 +435,23 @@ void StoreAutoPlace()
 		}
 	}
 }
-// 48E9A8: using guessed type int AP2x2Tbl[10];
 
 void S_StartSmith()
 {
 	stextsize = 0;
 	stextscrl = FALSE;
-	AddSText(0, 1, 1u, "Welcome to the", COL_GOLD, 0);
-	AddSText(0, 3, 1u, "Blacksmith's shop", COL_GOLD, 0);
-	AddSText(0, 7, 1u, "Would you like to:", COL_GOLD, 0);
-	AddSText(0, 10, 1u, "Talk to Griswold", COL_BLUE, 1);
-	AddSText(0, 12, 1u, "Buy basic items", COL_WHITE, 1);
-	AddSText(0, 14, 1u, "Buy premium items", COL_WHITE, 1);
-	AddSText(0, 16, 1u, "Sell items", COL_WHITE, 1);
-	AddSText(0, 18, 1u, "Repair items", COL_WHITE, 1);
-	AddSText(0, 20, 1u, "Leave the shop", COL_WHITE, 1);
+	AddSText(0, 1, 1, "Welcome to the", COL_GOLD, 0);
+	AddSText(0, 3, 1, "Blacksmith's shop", COL_GOLD, 0);
+	AddSText(0, 7, 1, "Would you like to:", COL_GOLD, 0);
+	AddSText(0, 10, 1, "Talk to Griswold", COL_BLUE, 1);
+	AddSText(0, 12, 1, "Buy basic items", COL_WHITE, 1);
+	AddSText(0, 14, 1, "Buy premium items", COL_WHITE, 1);
+	AddSText(0, 16, 1, "Sell items", COL_WHITE, 1);
+	AddSText(0, 18, 1, "Repair items", COL_WHITE, 1);
+	AddSText(0, 20, 1, "Leave the shop", COL_WHITE, 1);
 	AddSLine(5);
 	storenumh = 20;
 }
-// 69F10C: using guessed type int storenumh;
-// 6A09E0: using guessed type char stextsize;
 
 void S_ScrollSBuy(int idx)
 {
@@ -496,9 +489,6 @@ void S_ScrollSBuy(int idx)
 	if (!stext[stextsel]._ssel && stextsel != 22)
 		stextsel = stextdown;
 }
-// 69F108: using guessed type int stextup;
-// 6A8A28: using guessed type int stextsel;
-// 6AA700: using guessed type int stextdown;
 
 void PrintStoreItem(ItemStruct *x, int l, char iclr)
 {
@@ -576,15 +566,14 @@ void S_StartSBuy()
 	AddSText(0, 22, 1, "Back", COL_WHITE, 0);
 	OffsetSTextY(22, 6);
 	storenumh = 0;
-	for (i = 0; smithitem[i]._itype != ITYPE_NONE; i++)
+	for (i = 0; smithitem[i]._itype != ITYPE_NONE; i++) {
 		storenumh++;
+	}
+
 	stextsmax = storenumh - 4;
 	if (stextsmax < 0)
 		stextsmax = 0;
 }
-// 69F10C: using guessed type int storenumh;
-// 6A09E0: using guessed type char stextsize;
-// 6A09E4: using guessed type int stextsmax;
 
 void S_ScrollSPBuy(int idx)
 {
@@ -672,11 +661,6 @@ BOOL S_StartSPBuy()
 
 	return TRUE;
 }
-// 69F10C: using guessed type int storenumh;
-// 69FB38: using guessed type int talker;
-// 6A09E0: using guessed type char stextsize;
-// 6A09E4: using guessed type int stextsmax;
-// 6A8A28: using guessed type int stextsel;
 
 BOOL SmithSellOk(int i)
 {
@@ -735,10 +719,6 @@ void S_ScrollSSell(int idx)
 	if (stextsmax < 0)
 		stextsmax = 0;
 }
-// 69F108: using guessed type int stextup;
-// 69F10C: using guessed type int storenumh;
-// 6A09E4: using guessed type int stextsmax;
-// 6AA700: using guessed type int stextdown;
 
 void S_StartSSell()
 {
@@ -789,9 +769,6 @@ void S_StartSSell()
 		OffsetSTextY(22, 6);
 	}
 }
-// 69F10C: using guessed type int storenumh;
-// 6A09E0: using guessed type char stextsize;
-// 6A09E4: using guessed type int stextsmax;
 
 BOOL SmithRepairOk(int i)
 {
@@ -886,24 +863,21 @@ void AddStoreHoldRepair(ItemStruct *itm, int i)
 	storehidx[storenumh] = i;
 	storenumh++;
 }
-// 69F10C: using guessed type int storenumh;
 
 void S_StartWitch()
 {
 	stextsize = 0;
 	stextscrl = FALSE;
-	AddSText(0, 2, 1u, "Witch's shack", COL_GOLD, 0);
-	AddSText(0, 9, 1u, "Would you like to:", COL_GOLD, 0);
-	AddSText(0, 12, 1u, "Talk to Adria", COL_BLUE, 1);
-	AddSText(0, 14, 1u, "Buy items", COL_WHITE, 1);
-	AddSText(0, 16, 1u, "Sell items", COL_WHITE, 1);
-	AddSText(0, 18, 1u, "Recharge staves", COL_WHITE, 1);
-	AddSText(0, 20, 1u, "Leave the shack", COL_WHITE, 1);
+	AddSText(0, 2, 1, "Witch's shack", COL_GOLD, 0);
+	AddSText(0, 9, 1, "Would you like to:", COL_GOLD, 0);
+	AddSText(0, 12, 1, "Talk to Adria", COL_BLUE, 1);
+	AddSText(0, 14, 1, "Buy items", COL_WHITE, 1);
+	AddSText(0, 16, 1, "Sell items", COL_WHITE, 1);
+	AddSText(0, 18, 1, "Recharge staves", COL_WHITE, 1);
+	AddSText(0, 20, 1, "Leave the shack", COL_WHITE, 1);
 	AddSLine(5);
 	storenumh = 20;
 }
-// 69F10C: using guessed type int storenumh;
-// 6A09E0: using guessed type char stextsize;
 
 void S_ScrollWBuy(int idx)
 {
@@ -1055,9 +1029,6 @@ void S_StartWSell()
 		OffsetSTextY(22, 6);
 	}
 }
-// 69F10C: using guessed type int storenumh;
-// 6A09E0: using guessed type char stextsize;
-// 6A09E4: using guessed type int stextsmax;
 
 BOOL WitchRechargeOk(int i)
 {
@@ -1080,8 +1051,6 @@ void AddStoreHoldRecharge(ItemStruct itm, int i)
 	storehidx[storenumh] = i;
 	storenumh++;
 }
-// 69F108: using guessed type int stextup;
-// 69F10C: using guessed type int storenumh;
 
 void S_StartWRecharge()
 {
@@ -1133,20 +1102,19 @@ void S_StartWRecharge()
 
 void S_StartNoMoney()
 {
-	StartStore((unsigned char)stextshold);
+	StartStore(stextshold);
 	stextscrl = FALSE;
 	stextsize = 1;
 	ClearSText(5, 23);
-	AddSText(0, 14, 1u, "You do not have enough gold", COL_WHITE, 1);
+	AddSText(0, 14, 1, "You do not have enough gold", COL_WHITE, 1);
 }
-// 6A09E0: using guessed type char stextsize;
 
 void S_StartNoRoom()
 {
-	StartStore((unsigned char)stextshold);
+	StartStore(stextshold);
 	stextscrl = FALSE;
 	ClearSText(5, 23);
-	AddSText(0, 14, 1u, "You do not have enough room in inventory", COL_WHITE, 1);
+	AddSText(0, 14, 1, "You do not have enough room in inventory", COL_WHITE, 1);
 }
 
 void S_StartConfirm()
@@ -1210,9 +1178,9 @@ void S_StartConfirm()
 		strcpy(tempstr, "Are you sure you want to repair this item?");
 		break;
 	}
-	AddSText(0, 15, 1u, tempstr, COL_WHITE, 0);
-	AddSText(0, 18, 1u, "Yes", COL_WHITE, 1);
-	AddSText(0, 20, 1u, "No", COL_WHITE, 1);
+	AddSText(0, 15, 1, tempstr, COL_WHITE, 0);
+	AddSText(0, 18, 1, "Yes", COL_WHITE, 1);
+	AddSText(0, 20, 1, "No", COL_WHITE, 1);
 }
 
 void S_StartBoy()
@@ -1233,16 +1201,15 @@ void S_StartBoy()
 		AddSText(0, 18, 1, "Say goodbye", COL_WHITE, 1);
 	}
 }
-// 6A09E0: using guessed type char stextsize;
 
 void S_StartBBoy()
 {
-	int iclr; // esi
+	int iclr;
 
 	stextsize = 1;
 	stextscrl = FALSE;
 	sprintf(tempstr, "I have this item for sale :           Your gold : %i", plr[myplr]._pGold);
-	AddSText(0, 1, 1u, tempstr, COL_GOLD, 0);
+	AddSText(0, 1, 1, tempstr, COL_GOLD, 0);
 	AddSLine(3);
 	AddSLine(21);
 	iclr = COL_WHITE;
@@ -1258,27 +1225,24 @@ void S_StartBBoy()
 
 	AddSTextVal(10, boyitem._iIvalue + (boyitem._iIvalue >> 1));
 	PrintStoreItem(&boyitem, 11, iclr);
-	AddSText(0, 22, 1u, "Leave", COL_WHITE, 1);
+	AddSText(0, 22, 1, "Leave", COL_WHITE, 1);
 	OffsetSTextY(22, 6);
 }
-// 6A09E0: using guessed type char stextsize;
 
 void S_StartHealer()
 {
 	stextsize = 0;
 	stextscrl = FALSE;
-	AddSText(0, 1, 1u, "Welcome to the", COL_GOLD, 0);
-	AddSText(0, 3, 1u, "Healer's home", COL_GOLD, 0);
-	AddSText(0, 9, 1u, "Would you like to:", COL_GOLD, 0);
-	AddSText(0, 12, 1u, "Talk to Pepin", COL_BLUE, 1);
-	AddSText(0, 14, 1u, "Receive healing", COL_WHITE, 1);
-	AddSText(0, 16, 1u, "Buy items", COL_WHITE, 1);
-	AddSText(0, 18, 1u, "Leave Healer's home", COL_WHITE, 1);
+	AddSText(0, 1, 1, "Welcome to the", COL_GOLD, 0);
+	AddSText(0, 3, 1, "Healer's home", COL_GOLD, 0);
+	AddSText(0, 9, 1, "Would you like to:", COL_GOLD, 0);
+	AddSText(0, 12, 1, "Talk to Pepin", COL_BLUE, 1);
+	AddSText(0, 14, 1, "Receive healing", COL_WHITE, 1);
+	AddSText(0, 16, 1, "Buy items", COL_WHITE, 1);
+	AddSText(0, 18, 1, "Leave Healer's home", COL_WHITE, 1);
 	AddSLine(5);
 	storenumh = 20;
 }
-// 69F10C: using guessed type int storenumh;
-// 6A09E0: using guessed type char stextsize;
 
 void S_ScrollHBuy(int idx)
 {
@@ -1305,9 +1269,6 @@ void S_ScrollHBuy(int idx)
 	if (!stext[stextsel]._ssel && stextsel != 22)
 		stextsel = stextdown;
 }
-// 69F108: using guessed type int stextup;
-// 6A8A28: using guessed type int stextsel;
-// 6AA700: using guessed type int stextdown;
 
 void S_StartHBuy()
 {
@@ -1364,8 +1325,6 @@ void AddStoreHoldId(ItemStruct itm, int i)
 	storehidx[storenumh] = i;
 	storenumh++;
 }
-// 69F108: using guessed type int stextup;
-// 69F10C: using guessed type int storenumh;
 
 void S_StartSIdentify()
 {
@@ -1436,13 +1395,10 @@ void S_StartSIdentify()
 		OffsetSTextY(22, 6);
 	}
 }
-// 69F10C: using guessed type int storenumh;
-// 6A09E0: using guessed type char stextsize;
-// 6A09E4: using guessed type int stextsmax;
 
 void S_StartIdShow()
 {
-	char iclr; // [esp+4h] [ebp-4h]
+	char iclr;
 
 	StartStore(stextshold);
 	stextscrl = FALSE;
@@ -1454,10 +1410,10 @@ void S_StartIdShow()
 	if (!plr[myplr].HoldItem._iStatFlag)
 		iclr = COL_RED;
 
-	AddSText(0, 7, 1u, "This item is:", COL_WHITE, 0);
+	AddSText(0, 7, 1, "This item is:", COL_WHITE, 0);
 	AddSText(20, 11, 0, plr[myplr].HoldItem._iIName, iclr, 0);
 	PrintStoreItem(&plr[myplr].HoldItem, 12, iclr);
-	AddSText(0, 18, 1u, "Done", COL_WHITE, 1);
+	AddSText(0, 18, 1, "Done", COL_WHITE, 1);
 }
 
 void S_StartTalk()
@@ -1499,49 +1455,43 @@ void S_StartTavern()
 {
 	stextsize = 0;
 	stextscrl = FALSE;
-	AddSText(0, 1, 1u, "Welcome to the", COL_GOLD, 0);
-	AddSText(0, 3, 1u, "Rising Sun", COL_GOLD, 0);
-	AddSText(0, 9, 1u, "Would you like to:", COL_GOLD, 0);
-	AddSText(0, 12, 1u, "Talk to Ogden", COL_BLUE, 1);
-	AddSText(0, 18, 1u, "Leave the tavern", COL_WHITE, 1);
+	AddSText(0, 1, 1, "Welcome to the", COL_GOLD, 0);
+	AddSText(0, 3, 1, "Rising Sun", COL_GOLD, 0);
+	AddSText(0, 9, 1, "Would you like to:", COL_GOLD, 0);
+	AddSText(0, 12, 1, "Talk to Ogden", COL_BLUE, 1);
+	AddSText(0, 18, 1, "Leave the tavern", COL_WHITE, 1);
 	AddSLine(5);
 	storenumh = 20;
 }
-// 69F10C: using guessed type int storenumh;
-// 6A09E0: using guessed type char stextsize;
 
 void S_StartBarMaid()
 {
 	stextsize = 0;
 	stextscrl = FALSE;
-	AddSText(0, 2, 1u, "Gillian", COL_GOLD, 0);
-	AddSText(0, 9, 1u, "Would you like to:", COL_GOLD, 0);
-	AddSText(0, 12, 1u, "Talk to Gillian", COL_BLUE, 1);
-	AddSText(0, 18, 1u, "Say goodbye", COL_WHITE, 1);
+	AddSText(0, 2, 1, "Gillian", COL_GOLD, 0);
+	AddSText(0, 9, 1, "Would you like to:", COL_GOLD, 0);
+	AddSText(0, 12, 1, "Talk to Gillian", COL_BLUE, 1);
+	AddSText(0, 18, 1, "Say goodbye", COL_WHITE, 1);
 	AddSLine(5);
 	storenumh = 20;
 }
-// 69F10C: using guessed type int storenumh;
-// 6A09E0: using guessed type char stextsize;
 
 void S_StartDrunk()
 {
 	stextsize = 0;
 	stextscrl = FALSE;
-	AddSText(0, 2, 1u, "Farnham the Drunk", COL_GOLD, 0);
-	AddSText(0, 9, 1u, "Would you like to:", COL_GOLD, 0);
-	AddSText(0, 12, 1u, "Talk to Farnham", COL_BLUE, 1);
-	AddSText(0, 18, 1u, "Say Goodbye", COL_WHITE, 1);
+	AddSText(0, 2, 1, "Farnham the Drunk", COL_GOLD, 0);
+	AddSText(0, 9, 1, "Would you like to:", COL_GOLD, 0);
+	AddSText(0, 12, 1, "Talk to Farnham", COL_BLUE, 1);
+	AddSText(0, 18, 1, "Say Goodbye", COL_WHITE, 1);
 	AddSLine(5);
 	storenumh = 20;
 }
-// 69F10C: using guessed type int storenumh;
-// 6A09E0: using guessed type char stextsize;
 
 void StartStore(char s)
 {
-	char t; // bl
-	int i;  // ecx
+	char t;
+	int i;
 
 	for (t = s;; t = STORE_SMITH) {
 		sbookflag = 0;
@@ -1638,10 +1588,6 @@ void StartStore(char s)
 			break;
 	}
 }
-// 4B8968: using guessed type int sbookflag;
-// 69F10C: using guessed type int storenumh;
-// 6A8A28: using guessed type int stextsel;
-// 6AA705: using guessed type char stextflag;
 
 void DrawSText()
 {
@@ -1695,7 +1641,6 @@ LABEL_19:
 		DrawSArrows(4, 20);
 	InStoreFlag = (InStoreFlag & 7) + 1;
 }
-// 6A09E0: using guessed type char stextsize;
 // 6AA705: using guessed type char stextflag;
 
 void STextESC()
