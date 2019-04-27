@@ -2378,7 +2378,7 @@ int RndItem(int m)
 		return 1;
 
 	ri = 0;
-	for (i = 0; AllItemsList[i].iLoc != -1; i++) {
+	for (i = 0; AllItemsList[i].iLoc != ILOC_INVALID; i++) {
 		if (AllItemsList[i].iRnd == 2 && monster[m].mLevel >= AllItemsList[i].iMinMLvl) {
 			ril[ri] = i;
 			ri++;
@@ -2407,7 +2407,7 @@ int RndUItem(int m)
 		return -1 - (monster[m].MData->mTreasure & 0xFFF);
 
 	ri = 0;
-	for (i = 0; AllItemsList[i].iLoc != -1; i++) {
+	for (i = 0; AllItemsList[i].iLoc != ILOC_INVALID; i++) {
 		okflag = TRUE;
 		if (!AllItemsList[i].iRnd)
 			okflag = FALSE;
@@ -2449,7 +2449,7 @@ int RndAllItems()
 		return 0;
 
 	ri = 0;
-	for (i = 0; AllItemsList[i].iLoc != -1; i++) {
+	for (i = 0; AllItemsList[i].iLoc != ILOC_INVALID; i++) {
 		if (AllItemsList[i].iRnd && 2 * currlevel >= AllItemsList[i].iMinMLvl) {
 			ril[ri] = i;
 			ri++;
@@ -2474,7 +2474,7 @@ int RndTypeItems(int itype, int imid)
 	ri = 0;
 	i = 0;
 
-	if (AllItemsList[0].iLoc != -1) {
+	if (AllItemsList[0].iLoc != ILOC_INVALID) {
 		do {
 			okflag = 1;
 			if (!AllItemsList[i].iRnd)
@@ -2488,7 +2488,7 @@ int RndTypeItems(int itype, int imid)
 			if (okflag)
 				ril[ri++] = i;
 			++i;
-		} while (AllItemsList[i].iLoc != -1);
+		} while (AllItemsList[i].iLoc != ILOC_INVALID);
 	}
 
 	return ril[random(27, ri)];
@@ -3532,57 +3532,31 @@ void DrawUTextBack()
 #include "asm_trans_rect.inc"
 }
 
-void PrintUString(int x, int y, int cjustflag, char *str, int col)
+void PrintUString(int x, int y, BOOL cjustflag, char *str, int col)
 {
-	char *v5;          // edi
-	int v6;            // ebx
-	size_t v7;         // eax
-	int v8;            // esi
-	int v9;            // ecx
-	signed int v10;    // eax
-	int v11;           // edx
-	int v12;           // eax
-	unsigned char v13; // al
-	int v14;           // edi
-	int v15;           // [esp+Ch] [ebp-4h]
-	int a3;            // [esp+18h] [ebp+8h]
+	int len, width, off, i, k;
+	BYTE c;
 
-	v5 = str;
-	v6 = PitchTbl[SStringY[y] + 204] + x + 96;
-	v7 = strlen(str);
-	v8 = 0;
-	v9 = 0;
-	v15 = v7;
+	off = x + PitchTbl[SStringY[y] + 204] + 96;
+	len = strlen(str);
+	k = 0;
 	if (cjustflag) {
-		v10 = 0;
-		if (v15 <= 0)
-			goto LABEL_16;
-		do {
-			v11 = (unsigned char)str[v9++];
-			v10 += fontkern[fontframe[gbFontTransTbl[v11]]] + 1;
-		} while (v9 < v15);
-		if (v10 < 257)
-		LABEL_16:
-			v8 = (257 - v10) >> 1;
-		v6 += v8;
+		width = 0;
+		for (i = 0; i < len; i++)
+			width += fontkern[fontframe[gbFontTransTbl[(BYTE)str[i]]]] + 1;
+		if (width < 257)
+			k = (257 - width) >> 1;
+		off += k;
 	}
-	v12 = 0;
-	a3 = 0;
-	if (v15 > 0) {
-		while (1) {
-			v13 = fontframe[gbFontTransTbl[(unsigned char)v5[v12]]];
-			v14 = v13;
-			v8 += fontkern[v13] + 1;
-			if (v13) {
-				if (v8 <= 257)
-					CPrintString(v6, v13, col);
-			}
-			v6 += fontkern[v14] + 1;
-			v12 = a3++ + 1;
-			if (a3 >= v15)
-				break;
-			v5 = str;
+
+	for (i = 0; i < len; i++) {
+		c = fontframe[gbFontTransTbl[(BYTE)str[i]]];
+		k += fontkern[c] + 1;
+		if (c) {
+			if (k <= 257)
+				CPrintString(off, c, col);
 		}
+		off += fontkern[c] + 1;
 	}
 }
 
@@ -3625,38 +3599,35 @@ void DrawULine(int y)
 
 void DrawUniqueInfo()
 {
-	int v0; // esi
-	int v1; // esi
-	int v2; // edi
+	int uid, y;
 
 	if (!chrflag && !questlog) {
-		v0 = curruitem._iUid;
+		uid = curruitem._iUid;
 		DrawUTextBack();
-		v1 = v0;
-		PrintUString(0, 2, 1, UniqueItemList[v1].UIName, 3);
+		PrintUString(0, 2, 1, UniqueItemList[uid].UIName, 3);
 		DrawULine(5);
-		PrintItemPower(UniqueItemList[v1].UIPower1, &curruitem);
-		v2 = 14 - (char)UniqueItemList[v1].UINumPL;
-		PrintUString(0, v2, 1, tempstr, 0);
-		if (UniqueItemList[v1].UINumPL > 1) {
-			PrintItemPower(UniqueItemList[v1].UIPower2, &curruitem);
-			PrintUString(0, v2 + 2, 1, tempstr, 0);
+		PrintItemPower(UniqueItemList[uid].UIPower1, &curruitem);
+		y = 14 - UniqueItemList[uid].UINumPL;
+		PrintUString(0, y, 1, tempstr, 0);
+		if (UniqueItemList[uid].UINumPL > 1) {
+			PrintItemPower(UniqueItemList[uid].UIPower2, &curruitem);
+			PrintUString(0, y + 2, 1, tempstr, 0);
 		}
-		if (UniqueItemList[v1].UINumPL > 2) {
-			PrintItemPower(UniqueItemList[v1].UIPower3, &curruitem);
-			PrintUString(0, v2 + 4, 1, tempstr, 0);
+		if (UniqueItemList[uid].UINumPL > 2) {
+			PrintItemPower(UniqueItemList[uid].UIPower3, &curruitem);
+			PrintUString(0, y + 4, 1, tempstr, 0);
 		}
-		if (UniqueItemList[v1].UINumPL > 3) {
-			PrintItemPower(UniqueItemList[v1].UIPower4, &curruitem);
-			PrintUString(0, v2 + 6, 1, tempstr, 0);
+		if (UniqueItemList[uid].UINumPL > 3) {
+			PrintItemPower(UniqueItemList[uid].UIPower4, &curruitem);
+			PrintUString(0, y + 6, 1, tempstr, 0);
 		}
-		if (UniqueItemList[v1].UINumPL > 4) {
-			PrintItemPower(UniqueItemList[v1].UIPower5, &curruitem);
-			PrintUString(0, v2 + 8, 1, tempstr, 0);
+		if (UniqueItemList[uid].UINumPL > 4) {
+			PrintItemPower(UniqueItemList[uid].UIPower5, &curruitem);
+			PrintUString(0, y + 8, 1, tempstr, 0);
 		}
-		if (UniqueItemList[v1].UINumPL > 5) {
-			PrintItemPower(UniqueItemList[v1].UIPower6, &curruitem);
-			PrintUString(0, v2 + 10, 1, tempstr, 0);
+		if (UniqueItemList[uid].UINumPL > 5) {
+			PrintItemPower(UniqueItemList[uid].UIPower6, &curruitem);
+			PrintUString(0, y + 10, 1, tempstr, 0);
 		}
 	}
 }
@@ -3999,7 +3970,7 @@ int RndSmithItem(int lvl)
 	int ril[512];
 
 	ri = 0;
-	for (i = 1; AllItemsList[i].iLoc != -1; i++) {
+	for (i = 1; AllItemsList[i].iLoc != ILOC_INVALID; i++) {
 		if (AllItemsList[i].iRnd && SmithItemOk(i) && lvl >= AllItemsList[i].iMinMLvl) {
 			ril[ri] = i;
 			ri++;
@@ -4093,7 +4064,6 @@ BOOL PremiumItemOk(int i)
 
 	return rv;
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 int RndPremiumItem(int minlvl, int maxlvl)
 {
@@ -4101,18 +4071,19 @@ int RndPremiumItem(int minlvl, int maxlvl)
 	int ril[512];
 
 	ri = 0;
-	for (i = 1; AllItemsList[i].iLoc != -1; i++) {
+	for (i = 1; AllItemsList[i].iLoc != ILOC_INVALID; i++) {
 		if (AllItemsList[i].iRnd) {
 			if (PremiumItemOk(i)) {
-				if (AllItemsList[i].iMinMLvl >= minlvl && AllItemsList[i].iMinMLvl <= maxlvl)
-					ril[ri++] = i;
+				if (AllItemsList[i].iMinMLvl >= minlvl && AllItemsList[i].iMinMLvl <= maxlvl) {
+					ril[ri] = i;
+					ri++;
+				}
 			}
 		}
 	}
 
 	return ril[random(50, ri)] + 1;
 }
-// 42445F: using guessed type int ril[512];
 
 void SpawnOnePremium(int i, int plvl)
 {
@@ -4159,7 +4130,6 @@ void SpawnPremium(int lvl)
 		SpawnOnePremium(5, premiumlevel + premiumlvladd[5]);
 	}
 }
-// 69FB38: using guessed type int talker;
 
 BOOL WitchItemOk(int i)
 {
@@ -4187,7 +4157,6 @@ BOOL WitchItemOk(int i)
 
 	return rv;
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 int RndWitchItem(int lvl)
 {
@@ -4195,7 +4164,7 @@ int RndWitchItem(int lvl)
 	int ril[512];
 
 	ri = 0;
-	for (i = 1; AllItemsList[i].iLoc != -1; i++) {
+	for (i = 1; AllItemsList[i].iLoc != ILOC_INVALID; i++) {
 		if (AllItemsList[i].iRnd && WitchItemOk(i) && lvl >= AllItemsList[i].iMinMLvl) {
 			ril[ri] = i;
 			ri++;
@@ -4302,7 +4271,7 @@ int RndBoyItem(int lvl)
 	int ril[512];
 
 	ri = 0;
-	for (i = 1; AllItemsList[i].iLoc != -1; i++) {
+	for (i = 1; AllItemsList[i].iLoc != ILOC_INVALID; i++) {
 		if (AllItemsList[i].iRnd && PremiumItemOk(i) && lvl >= AllItemsList[i].iMinMLvl) {
 			ril[ri] = i;
 			ri++;
@@ -4311,7 +4280,6 @@ int RndBoyItem(int lvl)
 
 	return ril[random(49, ri)] + 1;
 }
-// 4249A4: using guessed type int var_800[512];
 
 void SpawnBoy(int lvl)
 {
@@ -4332,7 +4300,6 @@ void SpawnBoy(int lvl)
 		boylevel = lvl >> 1;
 	}
 }
-// 6A8A3C: using guessed type int boylevel;
 
 BOOL HealerItemOk(int i)
 {
@@ -4378,7 +4345,6 @@ BOOL HealerItemOk(int i)
 
 	return result;
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 int RndHealerItem(int lvl)
 {
@@ -4386,7 +4352,7 @@ int RndHealerItem(int lvl)
 	int ril[512];
 
 	ri = 0;
-	for (i = 1; AllItemsList[i].iLoc != -1; i++) {
+	for (i = 1; AllItemsList[i].iLoc != ILOC_INVALID; i++) {
 		if (AllItemsList[i].iRnd && HealerItemOk(i) && lvl >= AllItemsList[i].iMinMLvl) {
 			ril[ri] = i;
 			ri++;
@@ -4461,13 +4427,12 @@ void SpawnHealer(int lvl)
 	}
 	SortHealer();
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 void SpawnStoreGold()
 {
 	GetItemAttrs(0, IDI_GOLD, 1);
 	golditem = item[0];
-	golditem._iStatFlag = 1;
+	golditem._iStatFlag = TRUE;
 }
 
 void RecreateSmithItem(int ii, int idx, int plvl, int iseed)
