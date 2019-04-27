@@ -819,50 +819,30 @@ void AddChestTraps()
 
 void LoadMapObjects(unsigned char *pMap, int startx, int starty, int x1, int y1, int w, int h, int leveridx)
 {
-	unsigned char *v8;  // ebx
-	int v9;             // esi
-	int v10;            // ecx
-	int v11;            // eax
-	int v12;            // ecx
-	int v13;            // eax
-	int v14;            // esi
-	unsigned char *v15; // ebx
-	int i;              // edi
-	int v17;            // eax
-	int v18;            // [esp+8h] [ebp-10h]
-	int v19;            // [esp+Ch] [ebp-Ch]
-	int v20;            // [esp+10h] [ebp-8h]
-	int v21;            // [esp+14h] [ebp-4h]
-	int y;              // [esp+20h] [ebp+8h]
+	int rw, rh, i, j, oi;
+	BYTE *lm;
+	long mapoff;
 
-	v8 = pMap + 2;
 	InitObjFlag = TRUE;
-	v9 = *pMap;
-	v10 = pMap[2];
-	v11 = v10;
-	v12 = 2 * v10;
-	v20 = startx;
-	v13 = v9 * v11;
-	v14 = 2 * v9;
-	v19 = v14;
-	v18 = v12;
-	v15 = &v8[4 * v14 * v12 + 2 + 2 * v13];
-	if (v12 > 0) {
-		v21 = -16 - starty;
-		y = starty + 16;
-		do {
-			for (i = 0; i < v14; ++i) {
-				if (*v15) {
-					AddObject(ObjTypeConv[*v15], i + v20 + 16, y);
-					v17 = ObjIndex(i + v20 + 16, y);
-					SetObjMapRange(v17, x1, y1, x1 + w, y1 + h, leveridx);
-					v14 = v19;
-					v12 = v18;
-				}
-				v15 += 2;
+
+	lm = pMap + 2;
+	rw = pMap[0];
+	rh = *lm;
+	mapoff = (rw * rh + 1) * 2;
+	rw <<= 1;
+	rh <<= 1;
+	mapoff += rw * 2 * rh * 2;
+	lm += mapoff;
+
+	for (j = 0; j < rh; j++) {
+		for (i = 0; i < rw; i++) {
+			if (*lm) {
+				AddObject(ObjTypeConv[*lm], startx + 16 + i, starty + 16 + j);
+				oi = ObjIndex(startx + 16 + i, starty + 16 + j);
+				SetObjMapRange(oi, x1, y1, x1 + w, y1 + h, leveridx);
 			}
-			++y;
-		} while (y + v21 < v12);
+			lm += 2;
+		}
 	}
 	InitObjFlag = FALSE;
 }
