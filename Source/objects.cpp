@@ -869,41 +869,29 @@ void LoadMapObjects(unsigned char *pMap, int startx, int starty, int x1, int y1,
 
 void LoadMapObjs(unsigned char *pMap, int startx, int starty)
 {
-	unsigned char *v3;  // esi
-	int v4;             // eax
-	int v5;             // edi
-	int v6;             // ecx
-	int v7;             // eax
-	int v8;             // ecx
-	int v9;             // edi
-	unsigned char *v10; // esi
-	int i;              // ebx
-	int v12;            // [esp+8h] [ebp-8h]
-	int v13;            // [esp+Ch] [ebp-4h]
-	int y;              // [esp+18h] [ebp+8h]
+	int rw, rh;
+	int i, j;
+	unsigned char *lm;
+	long mapoff;
 
-	v3 = pMap + 2;
 	InitObjFlag = TRUE;
-	v4 = pMap[2];
-	v5 = *pMap;
-	v6 = v4;
-	v7 = 2 * v4;
-	v12 = startx;
-	v8 = v5 * v6;
-	v9 = 2 * v5;
-	v10 = &v3[4 * v9 * v7 + 2 + 2 * v8];
-	if (v7 > 0) {
-		v13 = v7;
-		y = starty + 16;
-		do {
-			for (i = 0; i < v9; ++i) {
-				if (*v10)
-					AddObject(ObjTypeConv[*v10], i + v12 + 16, y);
-				v10 += 2;
+	lm = pMap;
+	rw = *lm;
+	lm += 2;
+	rh = *lm;
+	mapoff = (rw * rh + 1) * 2;
+	rw <<= 1;
+	rh <<= 1;
+	mapoff += 2 * rw * rh * 2;
+	lm += mapoff;
+
+	for (j = 0; j < rh; j++) {
+		for (i = 0; i < rw; i++) {
+			if (*lm) {
+				AddObject(ObjTypeConv[*lm], startx + 16 + i, starty + 16 + j);
 			}
-			++y;
-			--v13;
-		} while (v13);
+			lm += 2;
+		}
 	}
 	InitObjFlag = FALSE;
 }
