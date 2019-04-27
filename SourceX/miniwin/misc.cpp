@@ -14,6 +14,22 @@ namespace dvl {
 
 DWORD last_error;
 
+#if !defined(_MSC_VER) && defined(DEVILUTION_ENGINE) && !defined(__x86_64__) && !defined(__i386__)
+unsigned int _rotl(unsigned int value, int shift)
+{
+	if ((shift &= 31) == 0)
+		return value;
+	return (value << shift) | (value >> (32 - shift));
+}
+
+unsigned int _rotr(unsigned int value, int shift)
+{
+	if ((shift &= 31) == 0)
+		return value;
+	return (value >> shift) | (value << (32 - shift));
+}
+#endif
+
 DWORD GetLastError()
 {
 	return last_error;

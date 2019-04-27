@@ -15,7 +15,12 @@
 #include <time.h>
 // For _rotr()
 #if !defined(_MSC_VER) && defined(DEVILUTION_ENGINE)
+#if defined(__x86_64__) || defined(__i386__)
 #include <x86intrin.h>
+#else
+unsigned int _rotl(unsigned int value, int shift);
+unsigned int _rotr(unsigned int value, int shift);
+#endif
 #endif
 
 #ifndef _WIN32
