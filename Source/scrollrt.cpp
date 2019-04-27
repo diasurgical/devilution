@@ -712,23 +712,20 @@ void scrollrt_draw_clipped_dungeon(BYTE *pBuff, int sx, int sy, int dx, int dy, 
 	BYTE *pCelBuff;
 	DWORD *pFrameTable;
 
-	int xyoff;
-
 	/// ASSERT: assert((DWORD)sx < MAXDUNX);
 	/// ASSERT: assert((DWORD)sy < MAXDUNY);
-	xyoff = 112 * sx + sy;
-	bFlag = dFlags[0][xyoff];
-	bDead = dDead[0][xyoff];
-	bObj = dObject[0][xyoff];
-	bItem = dItem[0][xyoff];
-	bPlr = dPlayer[0][xyoff];
-	bArch = dArch[0][xyoff];
-	bMap = dTransVal[0][xyoff];
-	nMon = dMonster[0][xyoff];
+	bFlag = dFlags[sx][sy];
+	bDead = dDead[sx][sy];
+	bObj = dObject[sx][sy];
+	bItem = dItem[sx][sy];
+	bPlr = dPlayer[sx][sy];
+	bArch = dArch[sx][sy];
+	bMap = dTransVal[sx][sy];
+	nMon = dMonster[sx][sy];
 
 	/// ASSERT: assert((DWORD)(sy-1) < MAXDUNY);
-	negPlr = dPlayer[0][xyoff - 1];
-	negMon = dMonster[0][xyoff - 1];
+	negPlr = dPlayer[sx][sy - 1];
+	negMon = dMonster[sx][sy - 1];
 
 	if(visiondebug && bFlag & DFLAG_LIT) {
 		Cel2DecodeHdrOnly(pBuff, (BYTE *)pSquareCel, 1, 64, 0, 8);
@@ -740,11 +737,11 @@ void scrollrt_draw_clipped_dungeon(BYTE *pBuff, int sx, int sy, int dx, int dy, 
 		if(bDead != 0) {
 			pDeadGuy = &dead[(bDead & 0x1F) - 1];
 			dd = (bDead >> 5) & 7;
-			pCelBuff = pDeadGuy->_deadData[dd];
 			px = dx - pDeadGuy->_deadWidth2;
+			pCelBuff = pDeadGuy->_deadData[dd];
 			/// ASSERT: assert(pDeadGuy->_deadData[dd] != NULL);
 			if(pCelBuff != NULL) {
-				pFrameTable = (DWORD *)pCelBuff;
+				pFrameTable = (DWORD *)pDeadGuy->_deadData[dd];
 				nCel = pDeadGuy->_deadFrame;
 				if(nCel >= 1 && pFrameTable[0] <= 50 && nCel <= (int)pFrameTable[0]) {
 					if(pDeadGuy->_deadtrans != 0) {
@@ -815,8 +812,8 @@ void scrollrt_draw_clipped_dungeon(BYTE *pBuff, int sx, int sy, int dx, int dy, 
 			pMonster = &monster[draw_monster_num];
 			if(!(pMonster->_mFlags & 1)) {
 				if(pMonster->MType != NULL) {
-					py = dy + pMonster->_myoff;
 					px = dx + pMonster->_mxoff - pMonster->MType->width2;
+					py = dy + pMonster->_myoff;
 					if(draw_monster_num == pcursmonst) {
 						Cl2DecodeClrHL(233, px, py, pMonster->_mAnimData, pMonster->_mAnimFrame, pMonster->MType->width, 0, 8);
 					}
@@ -858,8 +855,8 @@ void scrollrt_draw_clipped_dungeon(BYTE *pBuff, int sx, int sy, int dx, int dy, 
 			pMonster = &monster[draw_monster_num];
 			if(!(pMonster->_mFlags & 1)) {
 				if(pMonster->MType != NULL) {
-					py = dy + pMonster->_myoff;
 					px = dx + pMonster->_mxoff - pMonster->MType->width2;
+					py = dy + pMonster->_myoff;
 					if(draw_monster_num == pcursmonst) {
 						Cl2DecodeClrHL(233, px, py, pMonster->_mAnimData, pMonster->_mAnimFrame, pMonster->MType->width, 0, 8);
 					}
