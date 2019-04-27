@@ -1418,36 +1418,36 @@ void S_StartIdShow()
 
 void S_StartTalk()
 {
-	int s1, s2, y1, y2, y3, i;
+	int i, tq, sn, sn2, la;
 
 	stextsize = 0;
 	stextscrl = FALSE;
 	sprintf(tempstr, "Talk to %s", talkname[talker]);
 	AddSText(0, 2, 1, tempstr, COL_GOLD, 0);
 	AddSLine(5);
-	s1 = 0;
+	sn = 0;
 	for (i = 0; i < 16; i++) {
 		if (quests[i]._qlevel == 2 && ((DWORD *)&Qtalklist[talker])[i] != -1 && quests[i]._qlog)
-			s1++;
+			sn++;
 	}
 
-	if (s1 > 6) {
-		y1 = 14 - (s1 >> 1);
-		s2 = 1;
+	if (sn > 6) {
+		sn = 14 - (sn >> 1);
+		la = 1;
 	} else {
-		y1 = 15 - s1;
-		s2 = 2;
+		sn = 15 - sn;
+		la = 2;
 	}
 
-	y2 = y1 - 2;
+	sn2 = sn - 2;
 
 	for (i = 0; i < 16; i++) {
 		if (quests[i]._qlevel == 2 && ((DWORD *)&Qtalklist[talker])[i] != -1 && quests[i]._qlog) {
-			AddSText(0, y1, 1, questlist[i]._qlstr, COL_WHITE, 1);
-			y1 += s2;
+			AddSText(0, sn, 1, questlist[i]._qlstr, COL_WHITE, 1);
+			sn += la;
 		}
 	}
-	AddSText(0, y2, 1, "Gossip", COL_BLUE, 1);
+	AddSText(0, sn2, 1, "Gossip", COL_BLUE, 1);
 	AddSText(0, 22, 1, "Back", COL_WHITE, 1);
 }
 
@@ -2645,69 +2645,43 @@ void S_SIDEnter()
 
 void S_TalkEnter()
 {
-	int v0;        // edx
-	int *v1;       // edi
-	signed int v2; // eax
-	int v3;        // esi
-	int *v4;       // ecx
-	int v5;        // esi
-	signed int v6; // ebp
-	int v8;        // eax
-	int v9;        // ebx
-	int v10;       // ecx
+	int i, tq, sn, la;
 
 	if (stextsel == 22) {
-		StartStore((unsigned char)stextshold);
+		StartStore(stextshold);
 		stextsel = stextlhold;
+		return;
+	}
+
+	sn = 0;
+	for (i = 0; i < 16; i++) {
+		if (quests[i]._qlevel == 2 && ((DWORD *)&Qtalklist[talker])[i] != -1 && quests[i]._qlog)
+			sn++;
+	}
+	if (sn > 6) {
+		sn = 14 - (sn >> 1);
+		la = 1;
 	} else {
-		v0 = talker;
-		v1 = &quests[0]._qlog;
-		v2 = 0;
-		v3 = 0;
-		v4 = &quests[0]._qlog;
-		do {
-			if (*((_BYTE *)v4 - 18) == 2 && *((_DWORD *)&Qtalklist[0]._qinfra + v3 + 16 * talker) != -1 && *v4)
-				++v2;
-			v4 += 6;
-			++v3;
-		} while ((signed int)v4 < (signed int)&quests[16]._qlog);
-		if (v2 <= 6) {
-			v5 = 15 - v2;
-			v6 = 2;
-		} else {
-			v5 = 14 - (v2 >> 1);
-			v6 = 1;
-		}
-		if (stextsel == v5 - 2) {
-			SetRndSeed(towner[talker]._tSeed);
-			v8 = random(0, gossipend - gossipstart + 1);
-			InitQTextMsg(gossipstart + v8);
-		} else {
-			v9 = 0;
-			do {
-				if (*((_BYTE *)v1 - 18) == 2) {
-					v10 = *((_DWORD *)&Qtalklist[0]._qinfra + v9 + 16 * v0);
-					if (v10 != -1) {
-						if (*v1) {
-							if (v5 == stextsel) {
-								InitQTextMsg(v10);
-								v0 = talker;
-							}
-							v5 += v6;
-						}
-					}
-				}
-				v1 += 6;
-				++v9;
-			} while ((signed int)v1 < (signed int)&quests[16]._qlog);
+		sn = 15 - sn;
+		la = 2;
+	}
+
+	if (stextsel == sn - 2) {
+		SetRndSeed(towner[talker]._tSeed);
+		tq = gossipstart + random(0, gossipend - gossipstart + 1);
+		InitQTextMsg(tq);
+		return;
+	}
+
+	for (i = 0; i < 16; i++) {
+		if (quests[i]._qlevel == 2 && ((DWORD *)&Qtalklist[talker])[i] != -1 && quests[i]._qlog) {
+			if (sn == stextsel) {
+				InitQTextMsg(((DWORD *)&Qtalklist[talker])[i]);
+			}
+			sn += la;
 		}
 	}
 }
-// 69F110: using guessed type int stextlhold;
-// 69FB38: using guessed type int talker;
-// 6A4EF0: using guessed type int gossipstart;
-// 6A8A28: using guessed type int stextsel;
-// 6A8A30: using guessed type int gossipend;
 
 void S_TavernEnter()
 {
