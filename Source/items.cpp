@@ -1192,7 +1192,7 @@ void GetStaffPower(int i, int lvl, int bs, unsigned char onlygood)
 	}
 	v12 = ia;
 	v13 = item[ia]._iIName;
-	if (!control_WriteStringToBuffer(item[ia]._iIName)) {
+	if (!control_WriteStringToBuffer((BYTE *)item[ia]._iIName)) {
 		strcpy(v13, AllItemsList[item[v12].IDidx].iSName);
 		if (v5 != -1) {
 			sprintf(istr, "%s %s", PL_Prefix[v5].PLName, v13);
@@ -1241,7 +1241,7 @@ void GetStaffSpell(int i, int lvl, unsigned char onlygood)
 				goto LABEL_15;
 		}
 		sprintf(istr, "%s of %s", item[i]._iName, spelldata[bs].sNameText);
-		if (!control_WriteStringToBuffer(istr))
+		if (!control_WriteStringToBuffer((BYTE *)istr))
 			sprintf(istr, "Staff of %s", spelldata[bs].sNameText);
 		strcpy(item[i]._iName, istr);
 		strcpy(item[i]._iIName, istr);
@@ -1835,7 +1835,7 @@ void GetItemPower(int i, int minlvl, int maxlvl, int flgs, int onlygood)
 			}
 		}
 	}
-	if (!control_WriteStringToBuffer(item[i]._iIName)) {
+	if (!control_WriteStringToBuffer((BYTE *)item[i]._iIName)) {
 		strcpy(item[i]._iIName, AllItemsList[item[i].IDidx].iSName);
 		if (preidx != -1) {
 			sprintf(istr, "%s %s", PL_Prefix[preidx].PLName, item[i]._iIName);

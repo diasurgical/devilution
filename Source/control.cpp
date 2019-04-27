@@ -1617,20 +1617,21 @@ void FreeControlPan()
 	MemFreeDbg(pGBoxBuff);
 }
 
-int control_WriteStringToBuffer(char *str)
+BOOL control_WriteStringToBuffer(BYTE *str)
 {
-	signed int v1;    // edx
-	unsigned char v2; // al
+	int k;
+	BYTE ichar;
 
-	v1 = 0;
-	do {
-		v2 = *str;
-		if (!*str)
-			return 1;
-		++str;
-		v1 += fontkern[fontframe[gbFontTransTbl[v2]]];
-	} while (v1 < 125);
-	return 0;
+	k = 0;
+	while (*str) {
+		ichar = gbFontTransTbl[*str];
+		str++;
+		k += fontkern[fontframe[ichar]];
+		if (k >= 125)
+			return FALSE;
+	}
+
+	return TRUE;
 }
 
 void DrawInfoBox()
