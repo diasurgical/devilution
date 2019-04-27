@@ -148,7 +148,7 @@ void gmenu_up_down(BOOL isDown)
 			} else {
 				if (sgpCurrItem == dword_634480)
 					sgpCurrItem = &dword_634480[dword_63448C];
-				--sgpCurrItem;
+				sgpCurrItem--;
 			}
 			if ((sgpCurrItem->dwFlags & 0x80000000) != 0) {
 				if (i)
