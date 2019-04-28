@@ -3084,12 +3084,9 @@ void GetItemFrm(int i)
 
 void GetItemStr(int i)
 {
-	int nGold; // esi
+	int nGold;
 
-	if (item[i]._itype == ITYPE_GOLD) {
-		nGold = item[i]._ivalue;
-		sprintf(infostr, "%i gold %s", nGold, get_pieces_str(nGold));
-	} else {
+	if (item[i]._itype != ITYPE_GOLD) {
 		if (!item[i]._iIdentified)
 			strcpy(infostr, item[i]._iName);
 		else
@@ -3099,9 +3096,11 @@ void GetItemStr(int i)
 			infoclr = COL_BLUE;
 		if (item[i]._iMagical == ITEM_QUALITY_UNIQUE)
 			infoclr = COL_GOLD;
+	} else {
+		nGold = item[i]._ivalue;
+		sprintf(infostr, "%i gold %s", nGold, get_pieces_str(nGold));
 	}
 }
-// 4B883C: using guessed type int infoclr;
 
 void CheckIdentify(int pnum, int cii)
 {
