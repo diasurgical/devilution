@@ -2776,7 +2776,7 @@ void CreateRndUseful(int pnum, int x, int y, BOOL sendmsg)
 	if (numitems < MAXITEMS) {
 		ii = itemactive[0];
 		GetSuperItemSpace(x, y, ii);
-		itemactive[0]       = itemactive[MAXITEMS - numitems -1];
+		itemactive[0] = itemactive[MAXITEMS - numitems - 1];
 		itemavail[numitems] = ii;
 		SetupAllUseful(ii, GetRndSeed(), currlevel);
 		if (sendmsg) {
@@ -2786,21 +2786,20 @@ void CreateRndUseful(int pnum, int x, int y, BOOL sendmsg)
 	}
 }
 
-void CreateTypeItem(int x, int y, unsigned char onlygood, int itype, int imisc, int sendmsg, int delta)
+void CreateTypeItem(int x, int y, BOOL onlygood, int itype, int imisc, BOOL sendmsg, int delta)
 {
-	int idx; // edi
-	int ii;  // esi
+	int idx, ii;
 
-	if (itype == ITYPE_GOLD)
-		idx = 0;
-	else
+	if (itype != ITYPE_GOLD)
 		idx = RndTypeItems(itype, imisc);
+	else
+		idx = 0;
 
 	if (numitems < MAXITEMS) {
 		ii = itemavail[0];
-		GetSuperItemSpace(x, y, itemavail[0]);
-		itemactive[numitems] = ii;
+		GetSuperItemSpace(x, y, ii);
 		itemavail[0] = itemavail[MAXITEMS - numitems - 1];
+		itemactive[numitems] = ii;
 		SetupAllItems(ii, idx, GetRndSeed(), 2 * currlevel, 1, onlygood, 0, delta);
 
 		if (sendmsg)
@@ -2808,7 +2807,7 @@ void CreateTypeItem(int x, int y, unsigned char onlygood, int itype, int imisc, 
 		if (delta)
 			DeltaAddItem(ii);
 
-		++numitems;
+		numitems++;
 	}
 }
 
@@ -2923,7 +2922,7 @@ void SpawnQuestItem(int itemid, int x, int y, int randarea, int selflag)
 			item[i]._iSelFlag = selflag;
 			item[i]._iAnimFrame = item[i]._iAnimLen;
 		}
-		++numitems;
+		numitems++;
 	}
 }
 
@@ -3542,9 +3541,8 @@ void PrintUString(int x, int y, BOOL cjustflag, char *str, int col)
 	for (i = 0; i < len; i++) {
 		c = fontframe[gbFontTransTbl[(BYTE)str[i]]];
 		k += fontkern[c] + 1;
-		if (c) {
-			if (k <= 257)
-				CPrintString(off, c, col);
+		if (c && k <= 257) {
+			CPrintString(off, c, col);
 		}
 		off += fontkern[c] + 1;
 	}
