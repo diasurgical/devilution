@@ -3165,14 +3165,16 @@ void RepairItem(ItemStruct *i, int lvl)
 
 void DoRecharge(int pnum, int cii)
 {
-	PlayerStruct *p; // eax
-	ItemStruct *pi;  // esi
+	PlayerStruct *p;
+	ItemStruct *pi;
+	int r;
 
 	p = &plr[pnum];
 	pi = &p->InvBody[cii];
-
-	if (pi->_itype == ITYPE_STAFF && pi->_iSpell) {
-		RechargeItem(pi, random(38, p->_pLevel / spelldata[pi->_iSpell].sBookLvl) + 1);
+	if (pi->_itype == 10 && pi->_iSpell) {
+		r = spelldata[pi->_iSpell].sBookLvl;
+		r = random(38, p->_pLevel / r) + 1;
+		RechargeItem(pi, r);
 		CalcPlrInv(pnum, 1);
 	}
 
