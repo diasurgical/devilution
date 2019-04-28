@@ -670,26 +670,19 @@ void ResyncMPQuests()
 
 void ResyncQuests()
 {
-	char *v0; // ecx
-	int v1;   // esi
-	//int v2; // eax
-	int i;   // esi
-	char v4; // bl
-	int j;   // esi
-	char v6; // bl
-	int k;   // esi
+	int i, tren;
 
 	if (setlevel && setlvlnum == quests[QTYPE_PW]._qslvl && quests[QTYPE_PW]._qactive != 1 && leveltype == quests[QTYPE_PW]._qlvltype) {
-		v0 = "Levels\\L3Data\\L3pwater.pal";
-		if (quests[QTYPE_PW]._qactive != 3)
-			v0 = "Levels\\L3Data\\L3pfoul.pal";
-		LoadPalette(v0);
-		v1 = 0;
-		do
-			palette_update_quest_palette(v1++);
-		while (v1 <= 32);
+
+		if (quests[QTYPE_PW]._qactive == 3)
+			LoadPalette("Levels\\L3Data\\L3pwater.pal");
+		else
+			LoadPalette("Levels\\L3Data\\L3pfoul.pal");
+
+		for (i = 0; i < 32; i++)
+			palette_update_quest_palette(i);
 	}
-	//_LOBYTE(v2) = QuestStatus(QTYPE_BOL);
+
 	if (QuestStatus(QTYPE_BOL)) {
 		if (quests[QTYPE_BOL]._qvar1 == 1)
 			ObjChangeMapResync(
@@ -704,21 +697,21 @@ void ResyncQuests()
 			    setpc_w + setpc_x + 1,
 			    setpc_h + setpc_y + 1);
 			ObjChangeMapResync(setpc_x, setpc_y, (setpc_w >> 1) + setpc_x + 2, (setpc_h >> 1) + setpc_y - 2);
-			for (i = 0; i < nobjects; ++i)
+			for (i = 0; i < nobjects; i++)
 				SyncObjectAnim(objectactive[i]);
-			v4 = TransVal;
+			tren = TransVal;
 			TransVal = 9;
 			DRLG_MRectTrans(setpc_x, setpc_y, (setpc_w >> 1) + setpc_x + 4, setpc_y + (setpc_h >> 1));
-			TransVal = v4;
+			TransVal = tren;
 		}
 		if (quests[QTYPE_BOL]._qvar1 == 3) {
 			ObjChangeMapResync(setpc_x, setpc_y, setpc_w + setpc_x + 1, setpc_h + setpc_y + 1);
-			for (j = 0; j < nobjects; ++j)
-				SyncObjectAnim(objectactive[j]);
-			v6 = TransVal;
+			for (i = 0; i < nobjects; i++)
+				SyncObjectAnim(objectactive[i]);
+			tren = TransVal;
 			TransVal = 9;
 			DRLG_MRectTrans(setpc_x, setpc_y, (setpc_w >> 1) + setpc_x + 4, setpc_y + (setpc_h >> 1));
-			TransVal = v6;
+			TransVal = tren;
 		}
 	}
 	if (currlevel == quests[QTYPE_BLKM]._qlevel) {
@@ -728,16 +721,15 @@ void ResyncQuests()
 				quests[QTYPE_BLKM]._qvar1 = QS_TOMESPAWNED;
 			}
 		} else if (quests[QTYPE_BLKM]._qactive == 2) {
-			if (quests[QTYPE_BLKM]._qvar1 < QS_MUSHGIVEN) {
-				if (quests[QTYPE_BLKM]._qvar1 >= QS_BRAINGIVEN)
-					Qtalklist[TOWN_HEALER]._qblkm = -1;
-			} else {
+			if (quests[QTYPE_BLKM]._qvar1 >= QS_MUSHGIVEN) {
 				Qtalklist[TOWN_WITCH]._qblkm = -1;
 				Qtalklist[TOWN_HEALER]._qblkm = QUEST_MUSH3;
+			} else if (quests[QTYPE_BLKM]._qvar1 >= QS_BRAINGIVEN) {
+				Qtalklist[TOWN_HEALER]._qblkm = -1;
 			}
 		}
 	}
-	if (currlevel == (unsigned char)quests[QTYPE_VEIL]._qlevel + 1 && quests[QTYPE_VEIL]._qactive == 2 && !quests[QTYPE_VEIL]._qvar1) {
+	if (currlevel == quests[QTYPE_VEIL]._qlevel + 1 && quests[QTYPE_VEIL]._qactive == 2 && !quests[QTYPE_VEIL]._qvar1) {
 		quests[QTYPE_VEIL]._qvar1 = 1;
 		SpawnQuestItem(15, 0, 0, 5, 1);
 	}
@@ -748,8 +740,8 @@ void ResyncQuests()
 			ObjChangeMapResync(1, 18, 20, 24);
 		if (quests[QTYPE_VB]._qvar1 >= 7u)
 			InitVPTriggers();
-		for (k = 0; k < nobjects; ++k)
-			SyncObjectAnim(objectactive[k]);
+		for (i = 0; i < nobjects; i++)
+			SyncObjectAnim(objectactive[i]);
 	}
 	if (currlevel == quests[QTYPE_VB]._qlevel
 	    && !setlevel
