@@ -8,7 +8,7 @@ ItemGetRecordStruct itemrecord[MAXITEMS];
 ItemStruct item[MAXITEMS + 1];
 BOOL itemhold[3][3];
 unsigned char *itemanims[35];
-int UniqueItemFlag[128];
+BOOL UniqueItemFlag[128];
 int numitems;
 int gnNumGetRecords;
 
@@ -1921,7 +1921,6 @@ int RndItem(int m)
 
 	return ril[random(24, ri)] + 1;
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 int RndUItem(int m)
 {
@@ -1964,7 +1963,6 @@ int RndUItem(int m)
 
 	return ril[random(25, ri)];
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 int RndAllItems()
 {
@@ -1988,38 +1986,32 @@ int RndAllItems()
 
 	return ril[random(26, ri)];
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 int RndTypeItems(int itype, int imid)
 {
-	int i;          // edi
-	BOOLEAN okflag; // esi
-	int ril[512];   // [esp+4h] [ebp-80Ch]
-	int ri;         // [esp+80Ch] [ebp-4h]
+	int i, ri;
+	BOOL okflag;
+	int ril[512];
 
 	ri = 0;
-	i = 0;
-
-	if (AllItemsList[0].iLoc != ILOC_INVALID) {
-		do {
-			okflag = 1;
-			if (!AllItemsList[i].iRnd)
-				okflag = 0;
-			if (2 * currlevel < AllItemsList[i].iMinMLvl)
-				okflag = 0;
-			if (AllItemsList[i].itype != itype)
-				okflag = 0;
-			if (imid != -1 && AllItemsList[i].iMiscId != imid)
-				okflag = 0;
-			if (okflag)
-				ril[ri++] = i;
-			++i;
-		} while (AllItemsList[i].iLoc != ILOC_INVALID);
+	for (i = 0; AllItemsList[i].iLoc != ILOC_INVALID; i++) {
+		okflag = TRUE;
+		if (!AllItemsList[i].iRnd)
+			okflag = FALSE;
+		if (currlevel << 1 < AllItemsList[i].iMinMLvl)
+			okflag = FALSE;
+		if (AllItemsList[i].itype != itype)
+			okflag = FALSE;
+		if (imid != -1 && AllItemsList[i].iMiscId != imid)
+			okflag = FALSE;
+		if (okflag) {
+			ril[ri] = i;
+			ri++;
+		}
 	}
 
 	return ril[random(27, ri)];
 }
-// 421CB7: using guessed type int var_80C[512];
 
 int CheckUnique(int i, int lvl, int uper, BOOLEAN recreate)
 {
@@ -2067,7 +2059,7 @@ int CheckUnique(int i, int lvl, int uper, BOOLEAN recreate)
 
 void GetUniqueItem(int i, int uid)
 {
-	UniqueItemFlag[uid] = 1;
+	UniqueItemFlag[uid] = TRUE;
 	SaveItemPower(i, UniqueItemList[uid].UIPower1, UniqueItemList[uid].UIParam1, UniqueItemList[uid].UIParam2, 0, 0, 1);
 
 	if (UniqueItemList[uid].UINumPL > 1)
@@ -2094,8 +2086,7 @@ void GetUniqueItem(int i, int uid)
 
 void SpawnUnique(int uid, int x, int y)
 {
-	int ii;    // esi
-	int itype; // edx
+	int ii, itype;
 
 	if (numitems < MAXITEMS) {
 		ii = itemavail[0];
@@ -2113,10 +2104,9 @@ void SpawnUnique(int uid, int x, int y)
 		GetItemAttrs(ii, itype, currlevel);
 		GetUniqueItem(ii, uid);
 		SetupItem(ii);
-		++numitems;
+		numitems++;
 	}
 }
-// 421F5C: could not find valid save-restore pair for esi
 
 void ItemRndDur(int ii)
 {
@@ -2126,8 +2116,7 @@ void ItemRndDur(int ii)
 
 void SetupAllItems(int ii, int idx, int iseed, int lvl, int uper, int onlygood, int recreate, int pregen)
 {
-	int iblvl;
-	int uid;
+	int iblvl, uid;
 
 	item[ii]._iSeed = iseed;
 	SetRndSeed(iseed);
