@@ -2929,51 +2929,30 @@ void SpawnQuestItem(int itemid, int x, int y, int randarea, int selflag)
 
 void SpawnRock()
 {
-	BOOL v0; // edx
-	int v1;  // eax
-	int v2;  // ecx
-	BOOL v3; // ebx
-	int v4;  // ebx
-	int v5;  // ecx
-	int v6;  // esi
-	int *v7; // edx
-	int v8;  // eax
-	int v9;  // edi
-	int v10; // ST04_4
-	//int v11; // [esp+8h] [ebp-4h]
+	int i, ii;
+	int xx, yy;
+	int ostand;
 
-	v0 = 0;
-	v1 = 0;
-	if (nobjects > 0) {
-		v2 = 0; //v11; /* chceck */
-		while (!v0) {
-			v2 = objectactive[v1];
-			v3 = object[objectactive[v1++]]._otype == OBJ_STAND;
-			v0 = v3;
-			if (v1 >= nobjects) {
-				if (!v3)
-					return;
-				break;
-			}
-		}
-		v4 = itemavail[0];
-		v5 = v2;
-		v6 = itemavail[0];
-		v7 = &itemavail[MAXITEMS - numitems - 1];
-		itemactive[numitems] = itemavail[0];
-		v8 = object[v5]._ox;
-		item[v6]._ix = v8;
-		v9 = object[v5]._oy;
-		itemavail[0] = *v7;
-		dItem[v8][v9] = v4 + 1;
-		v10 = currlevel;
-		item[v6]._iy = v9;
-		GetItemAttrs(v4, IDI_ROCK, v10);
-		SetupItem(v4);
-		++numitems;
-		item[v6]._iSelFlag = 2;
-		item[v6]._iPostDraw = TRUE;
-		item[v6]._iAnimFrame = 11;
+	ostand = FALSE;
+	for (i = 0; i < nobjects && !ostand; i++) {
+		ii = objectactive[i];
+		ostand = object[ii]._otype == OBJ_STAND;
+	}
+	if (ostand) {
+		i = itemavail[0];
+		itemavail[0] = itemavail[127 - numitems - 1];
+		itemactive[numitems] = i;
+		xx = object[ii]._ox;
+		yy = object[ii]._oy;
+		item[i]._ix = xx;
+		item[i]._iy = yy;
+		dItem[xx][item[i]._iy] = i + 1;
+		GetItemAttrs(i, 7, currlevel);
+		SetupItem(i);
+		item[i]._iSelFlag = 2;
+		item[i]._iPostDraw = 1;
+		item[i]._iAnimFrame = 11;
+		numitems++;
 	}
 }
 
