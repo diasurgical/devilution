@@ -10,7 +10,7 @@ extern ItemGetRecordStruct itemrecord[MAXITEMS];
 extern ItemStruct item[MAXITEMS + 1];
 extern BOOL itemhold[3][3];
 extern unsigned char *itemanims[35];
-extern int UniqueItemFlag[128];
+extern BOOL UniqueItemFlag[128];
 extern int numitems;
 extern int gnNumGetRecords;
 
