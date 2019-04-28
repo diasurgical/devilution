@@ -3203,55 +3203,69 @@ void PrintItemOil(char IDidx)
 	switch (IDidx) {
 	case IMISC_FULLHEAL:
 		strcpy(tempstr, "fully recover life");
+		AddPanelString(tempstr, 1);
 		break;
 	case IMISC_HEAL:
 		strcpy(tempstr, "recover partial life");
+		AddPanelString(tempstr, 1);
 		break;
 	case IMISC_OLDHEAL:
 		strcpy(tempstr, "recover life");
+		AddPanelString(tempstr, 1);
 		break;
 	case IMISC_DEADHEAL:
 		strcpy(tempstr, "deadly heal");
+		AddPanelString(tempstr, 1);
 		break;
 	case IMISC_MANA:
 		strcpy(tempstr, "recover mana");
+		AddPanelString(tempstr, 1);
 		break;
 	case IMISC_FULLMANA:
 		strcpy(tempstr, "fully recover mana");
+		AddPanelString(tempstr, 1);
 		break;
 	case IMISC_ELIXSTR:
 		strcpy(tempstr, "increase strength");
+		AddPanelString(tempstr, 1);
 		break;
 	case IMISC_ELIXMAG:
 		strcpy(tempstr, "increase magic");
+		AddPanelString(tempstr, 1);
 		break;
 	case IMISC_ELIXDEX:
 		strcpy(tempstr, "increase dexterity");
+		AddPanelString(tempstr, 1);
 		break;
 	case IMISC_ELIXVIT:
 		strcpy(tempstr, "increase vitality");
+		AddPanelString(tempstr, 1);
 		break;
 	case IMISC_ELIXWEAK:
+		strcpy(tempstr, "decrease strength");
+		AddPanelString(tempstr, 1);
+		break;
 	case IMISC_ELIXDIS:
 		strcpy(tempstr, "decrease strength");
+		AddPanelString(tempstr, 1);
 		break;
 	case IMISC_ELIXCLUM:
 		strcpy(tempstr, "decrease dexterity");
+		AddPanelString(tempstr, 1);
 		break;
 	case IMISC_ELIXSICK:
 		strcpy(tempstr, "decrease vitality");
+		AddPanelString(tempstr, 1);
 		break;
 	case IMISC_REJUV:
 		strcpy(tempstr, "recover life and mana");
+		AddPanelString(tempstr, 1);
 		break;
 	case IMISC_FULLREJUV:
 		strcpy(tempstr, "fully recover life and mana");
+		AddPanelString(tempstr, 1);
 		break;
-	default:
-		return;
 	}
-
-	AddPanelString(tempstr, 1);
 }
 
 void PrintItemPower(char plidx, ItemStruct *x)
