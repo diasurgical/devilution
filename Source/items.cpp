@@ -2226,30 +2226,26 @@ LABEL_13:
 
 void CreateItem(int uid, int x, int y)
 {
-	int ii;  // esi
-	int idx; // edx
+	int ii, idx;
 
 	if (numitems < MAXITEMS) {
 		ii = itemavail[0];
-		GetSuperItemSpace(x, y, itemavail[0]);
+		GetSuperItemSpace(x, y, ii);
 		idx = 0;
-		itemactive[numitems] = ii;
 		itemavail[0] = itemavail[MAXITEMS - numitems - 1];
+		itemactive[numitems] = ii;
 
-		if (AllItemsList[0].iItemId != UniqueItemList[uid].UIItemId) {
-			while (AllItemsList[idx].iItemId != UniqueItemList[uid].UIItemId) {
-				idx++;
-			}
+		while (AllItemsList[idx].iItemId != UniqueItemList[uid].UIItemId) {
+			idx++;
 		}
 
 		GetItemAttrs(ii, idx, currlevel);
 		GetUniqueItem(ii, uid);
 		SetupItem(ii);
-		++numitems;
 		item[ii]._iMagical = ITEM_QUALITY_UNIQUE;
+		numitems++;
 	}
 }
-// 422290: could not find valid save-restore pair for esi
 
 void CreateRndItem(int x, int y, BOOL onlygood, BOOL sendmsg, int delta)
 {
