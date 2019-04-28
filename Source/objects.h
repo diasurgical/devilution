@@ -154,9 +154,6 @@ void GetObjectStr(int i);
 
 /* rdata */
 
-extern int ObjTypeConv[113];
-extern ObjDataStruct AllObjects[99];
-extern char *ObjMasterLoadList[56];
 extern int bxadd[8];
 extern int byadd[8];
 extern char *shrinestrs[NUM_SHRINETYPE];
