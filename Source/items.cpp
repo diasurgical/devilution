@@ -2979,28 +2979,24 @@ void SpawnRock()
 
 void RespawnItem(int i, BOOL FlipFlag)
 {
-	int it; // ecx
-	int il; // eax
+	int it;
 
+	it = ItemCAnimTbl[item[i]._iCurs];
+	item[i]._iAnimData = itemanims[it];
+	item[i]._iAnimLen = ItemAnimLs[it];
+	item[i]._iRequest = FALSE;
 	item[i]._iAnimWidth = 96;
 	item[i]._iAnimWidth2 = 16;
-	it = ItemCAnimTbl[item[i]._iCurs];
-	il = ItemAnimLs[it];
-	item[i]._iAnimLen = il;
-	item[i]._iAnimData = itemanims[it];
 	item[i]._iPostDraw = FALSE;
-	item[i]._iRequest = FALSE;
-
 	if (FlipFlag) {
-		item[i]._iSelFlag = 0;
-		il = 1;
+		item[i]._iAnimFrame = 1;
 		item[i]._iAnimFlag = TRUE;
+		item[i]._iSelFlag = 0;
 	} else {
+		item[i]._iAnimFrame = item[i]._iAnimLen;
 		item[i]._iAnimFlag = FALSE;
 		item[i]._iSelFlag = 1;
 	}
-
-	item[i]._iAnimFrame = il;
 
 	if (item[i]._iCurs == ICURS_MAGIC_ROCK) {
 		item[i]._iSelFlag = 1;
@@ -3022,8 +3018,8 @@ void DeleteItem(int ii, int i)
 
 void ItemDoppel()
 {
-	int idoppelx;  // esi
-	ItemStruct *i; // edx
+	int idoppelx;
+	ItemStruct *i;
 
 	if (gbMaxPlayers != 1) {
 		for (idoppelx = 16; idoppelx < 96; idoppelx++) {
@@ -3041,8 +3037,7 @@ void ItemDoppel()
 
 void ProcessItems()
 {
-	int i;  // edi
-	int ii; // esi
+	int i, ii;
 
 	for (i = 0; i < numitems; i++) {
 		ii = itemactive[i];
