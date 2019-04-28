@@ -3105,11 +3105,14 @@ void GetItemStr(int i)
 
 void CheckIdentify(int pnum, int cii)
 {
-	ItemStruct *pi; // esi
+	ItemStruct *pi;
 
-	pi = &plr[pnum].InvBody[cii];
+	if (cii >= 7)
+		pi = &plr[pnum].InvList[cii - 7];
+	else
+		pi = &plr[pnum].InvBody[cii];
+
 	pi->_iIdentified = TRUE;
-
 	CalcPlrInv(pnum, 1);
 
 	if (pnum == myplr)
