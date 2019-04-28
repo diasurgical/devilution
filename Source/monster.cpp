@@ -816,17 +816,20 @@ void PlaceUniqueMonst(int uniqindex, int miniontype, int packsize)
 	int count2;
 	char filestr[64];
 	BOOL zharflag, done;
+	UniqMonstStruct *Uniq;
+	MonsterStruct *Monst;
+	int count;
 
-	UniqMonstStruct *Uniq = &UniqMonst[uniqindex];
-	MonsterStruct *Monst = &monster[nummonsters];
-	int count = 0;
+	Monst = monster + nummonsters;
+	count = 0;
+	Uniq = UniqMonst + uniqindex;
 
 	if ((uniquetrans + 19) << 8 >= LIGHTSIZE) {
 		return;
 	}
 
 	for (uniqtype = 0; uniqtype < nummtypes; uniqtype++) {
-		if (Monsters[uniqtype].mtype == Uniq->mtype) {
+		if (Monsters[uniqtype].mtype == UniqMonst[uniqindex].mtype) {
 			break;
 		}
 	}
