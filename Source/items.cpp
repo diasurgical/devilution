@@ -3182,18 +3182,16 @@ void DoRecharge(int pnum, int cii)
 
 void RechargeItem(ItemStruct *i, int r)
 {
-	if (i->_iCharges != i->_iMaxCharges) {
-		while (1) {
-			if (i->_iMaxCharges-- == 1)
-				break;
-
-			i->_iCharges += r;
-
-			if (i->_iCharges >= i->_iMaxCharges) {
-				if (i->_iCharges > i->_iMaxCharges)
-					i->_iCharges = i->_iMaxCharges;
-				return;
-			}
+	while (i->_iCharges != i->_iMaxCharges) {
+		i->_iMaxCharges--;
+		if (i->_iMaxCharges == 0) {
+			break;
+		}
+		i->_iCharges += r;
+		if (i->_iCharges >= i->_iMaxCharges) {
+			if (i->_iCharges > i->_iMaxCharges)
+				i->_iCharges = i->_iMaxCharges;
+			return;
 		}
 	}
 }
