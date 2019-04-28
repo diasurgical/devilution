@@ -167,10 +167,6 @@ extern const unsigned char counsmiss[4];
 
 /* data */
 
-extern MonsterData monsterdata[112];
-extern char MonstConvTbl[128];
-extern unsigned char MonstAvailTbl[112];
-extern UniqMonstStruct UniqMonst[98];
 extern int MWVel[24][3];
 extern char animletter[7];
 extern int left[8];
