@@ -3118,8 +3118,8 @@ void CheckIdentify(int pnum, int cii)
 
 void DoRepair(int pnum, int cii)
 {
-	PlayerStruct *p; // eax
-	ItemStruct *pi;  // esi
+	PlayerStruct *p;
+	ItemStruct *pi;
 
 	p = &plr[pnum];
 	pi = &p->InvBody[cii];
@@ -3134,33 +3134,33 @@ void DoRepair(int pnum, int cii)
 
 void RepairItem(ItemStruct *i, int lvl)
 {
-	int rep; // edi
-	int d;   // eax
+	int rep, d;
 
-	if (i->_iDurability != i->_iMaxDur) {
-		if (i->_iMaxDur > 0) {
-			rep = 0;
-			while (1) {
-				rep += lvl + random(37, lvl);
-				d = i->_iMaxDur / (lvl + 9);
-
-				if (d < 1)
-					d = 1;
-				if (i->_iMaxDur == d)
-					break;
-
-				i->_iMaxDur -= d;
-
-				if (rep + i->_iDurability >= i->_iMaxDur) {
-					i->_iDurability += rep;
-					if (i->_iDurability > i->_iMaxDur)
-						i->_iDurability = i->_iMaxDur;
-					return;
-				}
-			}
-		}
-		i->_itype = ITYPE_NONE;
+	if (i->_iDurability == i->_iMaxDur) {
+		return;
 	}
+
+	if (i->_iMaxDur <= 0) {
+		i->_itype = ITYPE_NONE;
+		return;
+	}
+
+	rep = 0;
+	do {
+		rep += lvl + random(37, lvl);
+		d = i->_iMaxDur / (lvl + 9);
+		if (d < 1)
+			d = 1;
+		i->_iMaxDur = i->_iMaxDur - d;
+		if (!i->_iMaxDur) {
+			i->_itype = ITYPE_NONE;
+			return;
+		}
+	} while (rep + i->_iDurability < i->_iMaxDur);
+
+	i->_iDurability += rep;
+	if (i->_iDurability > i->_iMaxDur)
+		i->_iDurability = i->_iMaxDur;
 }
 
 void DoRecharge(int pnum, int cii)
@@ -3171,7 +3171,7 @@ void DoRecharge(int pnum, int cii)
 
 	p = &plr[pnum];
 	pi = &p->InvBody[cii];
-	if (pi->_itype == 10 && pi->_iSpell) {
+	if (pi->_itype == ITYPE_STAFF && pi->_iSpell) {
 		r = spelldata[pi->_iSpell].sBookLvl;
 		r = random(38, p->_pLevel / r) + 1;
 		RechargeItem(pi, r);
