@@ -3257,267 +3257,231 @@ void PrintItemOil(char IDidx)
 
 void PrintItemPower(char plidx, ItemStruct *x)
 {
-	ItemStruct *v2; // esi
-	int *v3;        // esi
-	int *v4;        // esi
-	int v5;         // esi
-	const char *v6; // [esp-4h] [ebp-Ch]
-	const char *v7; // [esp-4h] [ebp-Ch]
-	const char *v8; // [esp-4h] [ebp-Ch]
-	const char *v9; // [esp-4h] [ebp-Ch]
-
-	v2 = x;
 	switch (plidx) {
 	case IPL_TOHIT:
 	case IPL_TOHIT_CURSE:
 		sprintf(tempstr, "chance to hit : %+i%%", x->_iPLToHit);
-		return;
+		break;
 	case IPL_DAMP:
 	case IPL_DAMP_CURSE:
 		sprintf(tempstr, "%+i%% damage", x->_iPLDam);
-		return;
+		break;
 	case IPL_TOHIT_DAMP:
 	case IPL_TOHIT_DAMP_CURSE:
 		sprintf(tempstr, "to hit: %+i%%, %+i%% damage", x->_iPLToHit, x->_iPLDam);
-		return;
+		break;
 	case IPL_ACP:
 	case IPL_ACP_CURSE:
 		sprintf(tempstr, "%+i%% armor", x->_iPLAC);
-		return;
-	case IPL_FIRERES:
-		if (x->_iPLFR < 75)
-			sprintf(tempstr, "Resist Fire : %+i%%", x->_iPLFR);
-		if (v2->_iPLFR >= 75) {
-			v6 = "Resist Fire : 75%% MAX";
-			goto LABEL_11;
-		}
-		return;
-	case IPL_LIGHTRES:
-		if (x->_iPLLR < 75)
-			sprintf(tempstr, "Resist Lightning : %+i%%", x->_iPLLR);
-		if (v2->_iPLLR >= 75) {
-			v6 = "Resist Lightning : 75%% MAX";
-			goto LABEL_11;
-		}
-		return;
-	case IPL_MAGICRES:
-		if (x->_iPLMR < 75)
-			sprintf(tempstr, "Resist Magic : %+i%%", x->_iPLMR);
-		if (v2->_iPLMR >= 75) {
-			v6 = "Resist Magic : 75%% MAX";
-			goto LABEL_11;
-		}
-		return;
-	case IPL_ALLRES:
-		if (x->_iPLFR < 75)
-			sprintf(tempstr, "Resist All : %+i%%", x->_iPLFR);
-		if (v2->_iPLFR >= 75) {
-			v6 = "Resist All : 75%% MAX";
-		LABEL_11:
-			sprintf(tempstr, v6);
-		}
-		return;
-	case IPL_SPLLVLADD:
-		if (x->_iSplLvlAdd == 1)
-			strcpy(tempstr, "spells are increased 1 level");
-		if (v2->_iSplLvlAdd == 2)
-			strcpy(tempstr, "spells are increased 2 levels");
-		if (v2->_iSplLvlAdd < 1) {
-			v7 = "spells are decreased 1 level";
-			goto LABEL_81;
-		}
-		return;
-	case IPL_CHARGES:
-		v8 = "Extra charges";
-		goto LABEL_104;
-	case IPL_FIREDAM:
-		sprintf(tempstr, "Fire hit damage: %i-%i", x->_iFMinDam, x->_iFMaxDam);
-		return;
-	case IPL_LIGHTDAM:
-		sprintf(tempstr, "Lightning hit damage: %i-%i", x->_iLMinDam, x->_iLMaxDam);
-		return;
-	case IPL_STR:
-	case IPL_STR_CURSE:
-		sprintf(tempstr, "%+i to strength", x->_iPLStr);
-		return;
-	case IPL_MAG:
-	case IPL_MAG_CURSE:
-		sprintf(tempstr, "%+i to magic", x->_iPLMag);
-		return;
-	case IPL_DEX:
-	case IPL_DEX_CURSE:
-		sprintf(tempstr, "%+i to dexterity", x->_iPLDex);
-		return;
-	case IPL_VIT:
-	case IPL_VIT_CURSE:
-		sprintf(tempstr, "%+i to vitality", x->_iPLVit);
-		return;
-	case IPL_ATTRIBS:
-	case IPL_ATTRIBS_CURSE:
-		sprintf(tempstr, "%+i to all attributes", x->_iPLStr);
-		return;
-	case IPL_GETHIT_CURSE:
-	case IPL_GETHIT:
-		sprintf(tempstr, "%+i damage from enemies", x->_iPLGetHit);
-		return;
-	case IPL_LIFE:
-	case IPL_LIFE_CURSE:
-		sprintf(tempstr, "Hit Points : %+i", x->_iPLHP >> 6);
-		return;
-	case IPL_MANA:
-	case IPL_MANA_CURSE:
-		sprintf(tempstr, "Mana : %+i", x->_iPLMana >> 6);
-		return;
-	case IPL_DUR:
-		v8 = "high durability";
-		goto LABEL_104;
-	case IPL_DUR_CURSE:
-		v8 = "decreased durability";
-		goto LABEL_104;
-	case IPL_INDESTRUCTIBLE:
-		v8 = "indestructible";
-		goto LABEL_104;
-	case IPL_LIGHT:
-		sprintf(tempstr, "+%i%% light radius", 10 * x->_iPLLight);
-		return;
-	case IPL_LIGHT_CURSE:
-		sprintf(tempstr, "-%i%% light radius", -10 * x->_iPLLight);
-		return;
-	case IPL_FIRE_ARROWS:
-		sprintf(tempstr, "fire arrows damage: %i-%i", x->_iFMinDam, x->_iFMaxDam);
-		return;
-	case IPL_LIGHT_ARROWS:
-		sprintf(tempstr, "lightning arrows damage %i-%i", x->_iLMinDam, x->_iLMaxDam);
-		return;
-	case IPL_INVCURS:
-		v8 = " ";
-		goto LABEL_104;
-	case IPL_THORNS:
-		v8 = "attacker takes 1-3 damage";
-		goto LABEL_104;
-	case IPL_NOMANA:
-		v8 = "user loses all mana";
-		goto LABEL_104;
-	case IPL_NOHEALPLR:
-		v8 = "you can't heal";
-		goto LABEL_104;
-	case IPL_ABSHALFTRAP:
-		v8 = "absorbs half of trap damage";
-		goto LABEL_104;
-	case IPL_KNOCKBACK:
-		v8 = "knocks target back";
-		goto LABEL_104;
-	case IPL_NOHEALMON:
-		v8 = "hit monster doesn't heal";
-		goto LABEL_104;
-	case IPL_STEALMANA:
-		v3 = &x->_iFlags;
-		if (x->_iFlags & 0x2000)
-			strcpy(tempstr, "hit steals 3% mana");
-		if (!(*((_BYTE *)v3 + 1) & 0x40))
-			return;
-		v7 = "hit steals 5% mana";
-		goto LABEL_81;
-	case IPL_STEALLIFE:
-		v4 = &x->_iFlags;
-		if ((x->_iFlags & 0x8000) != 0)
-			strcpy(tempstr, "hit steals 3% life");
-		if (!(*((_BYTE *)v4 + 2) & 1))
-			return;
-		v7 = "hit steals 5% life";
-		goto LABEL_81;
-	case IPL_TARGAC:
-		v8 = "damages target's armor";
-		goto LABEL_104;
-	case IPL_FASTATTACK:
-		if (x->_iFlags & 0x20000)
-			strcpy(tempstr, "quick attack");
-		if (v2->_iFlags & 0x40000)
-			strcpy(tempstr, "fast attack");
-		if (v2->_iFlags & 0x80000)
-			strcpy(tempstr, "faster attack");
-		if (!(v2->_iFlags & 0x100000))
-			return;
-		v7 = "fastest attack";
-		goto LABEL_81;
-	case IPL_FASTRECOVER:
-		if (x->_iFlags & 0x200000)
-			strcpy(tempstr, "fast hit recovery");
-		if (v2->_iFlags & 0x400000)
-			strcpy(tempstr, "faster hit recovery");
-		if ((v2->_iFlags & 0x800000) != 0) {
-			v7 = "fastest hit recovery";
-		LABEL_81:
-			strcpy(tempstr, v7);
-		}
-		return;
-	case IPL_FASTBLOCK:
-		v8 = "fast block";
-		goto LABEL_104;
-	case IPL_DAMMOD:
-		sprintf(tempstr, "adds %i points to damage", x->_iPLDamMod);
-		return;
-	case IPL_RNDARROWVEL:
-		v8 = "fires random speed arrows";
-		goto LABEL_104;
-	case IPL_SETDAM:
-		v9 = "unusual item damage";
-		goto LABEL_98;
-	case IPL_SETDUR:
-		v8 = "altered durability";
-		goto LABEL_104;
-	case IPL_NOMINSTR:
-		v8 = "no strength requirement";
-		goto LABEL_104;
-	case IPL_SPELL:
-		sprintf(tempstr, "%i %s charges", x->_iMaxCharges, spelldata[x->_iSpell].sNameText);
-		return;
-	case IPL_FASTSWING:
-		v8 = "Faster attack swing";
-		goto LABEL_104;
-	case IPL_ONEHAND:
-		v8 = "one handed sword";
-		goto LABEL_104;
-	case IPL_3XDAMVDEM:
-		v8 = "+200% damage vs. demons";
-		goto LABEL_104;
-	case IPL_ALLRESZERO:
-		v8 = "All Resistance equals 0";
-		goto LABEL_104;
-	case IPL_DRAINLIFE:
-		v8 = "constantly lose hit points";
-		goto LABEL_104;
-	case IPL_RNDSTEALLIFE:
-		v8 = "life stealing";
-		goto LABEL_104;
-	case IPL_INFRAVISION:
-		v8 = "see with infravision";
-		goto LABEL_104;
+		break;
 	case IPL_SETAC:
 	case IPL_AC_CURSE:
 		sprintf(tempstr, "armor class: %i", x->_iAC);
-		return;
+		break;
+	case IPL_FIRERES:
+		if (x->_iPLFR < 75)
+			sprintf(tempstr, "Resist Fire : %+i%%", x->_iPLFR);
+		if (x->_iPLFR >= 75)
+			sprintf(tempstr, "Resist Fire : 75%% MAX");
+		break;
+	case IPL_LIGHTRES:
+		if (x->_iPLLR < 75)
+			sprintf(tempstr, "Resist Lightning : %+i%%", x->_iPLLR);
+		if (x->_iPLLR >= 75)
+			sprintf(tempstr, "Resist Lightning : 75%% MAX");
+		break;
+	case IPL_MAGICRES:
+		if (x->_iPLMR < 75)
+			sprintf(tempstr, "Resist Magic : %+i%%", x->_iPLMR);
+		if (x->_iPLMR >= 75)
+			sprintf(tempstr, "Resist Magic : 75%% MAX");
+		break;
+	case IPL_ALLRES:
+		if (x->_iPLFR < 75)
+			sprintf(tempstr, "Resist All : %+i%%", x->_iPLFR);
+		if (x->_iPLFR >= 75)
+			sprintf(tempstr, "Resist All : 75%% MAX");
+		break;
+	case IPL_SPLLVLADD:
+		if (x->_iSplLvlAdd == 1)
+			strcpy(tempstr, "spells are increased 1 level");
+		if (x->_iSplLvlAdd == 2)
+			strcpy(tempstr, "spells are increased 2 levels");
+		if (x->_iSplLvlAdd < 1)
+			strcpy(tempstr, "spells are decreased 1 level");
+		break;
+	case IPL_CHARGES:
+		strcpy(tempstr, "Extra charges");
+		break;
+	case IPL_SPELL:
+		sprintf(tempstr, "%i %s charges", x->_iMaxCharges, spelldata[x->_iSpell].sNameText);
+		break;
+	case IPL_FIREDAM:
+		sprintf(tempstr, "Fire hit damage: %i-%i", x->_iFMinDam, x->_iFMaxDam);
+		break;
+	case IPL_LIGHTDAM:
+		sprintf(tempstr, "Lightning hit damage: %i-%i", x->_iLMinDam, x->_iLMaxDam);
+		break;
+	case IPL_STR:
+	case IPL_STR_CURSE:
+		sprintf(tempstr, "%+i to strength", x->_iPLStr);
+		break;
+	case IPL_MAG:
+	case IPL_MAG_CURSE:
+		sprintf(tempstr, "%+i to magic", x->_iPLMag);
+		break;
+	case IPL_DEX:
+	case IPL_DEX_CURSE:
+		sprintf(tempstr, "%+i to dexterity", x->_iPLDex);
+		break;
+	case IPL_VIT:
+	case IPL_VIT_CURSE:
+		sprintf(tempstr, "%+i to vitality", x->_iPLVit);
+		break;
+	case IPL_ATTRIBS:
+	case IPL_ATTRIBS_CURSE:
+		sprintf(tempstr, "%+i to all attributes", x->_iPLStr);
+		break;
+	case IPL_GETHIT_CURSE:
+	case IPL_GETHIT:
+		sprintf(tempstr, "%+i damage from enemies", x->_iPLGetHit);
+		break;
+	case IPL_LIFE:
+	case IPL_LIFE_CURSE:
+		sprintf(tempstr, "Hit Points : %+i", x->_iPLHP >> 6);
+		break;
+	case IPL_MANA:
+	case IPL_MANA_CURSE:
+		sprintf(tempstr, "Mana : %+i", x->_iPLMana >> 6);
+		break;
+	case IPL_DUR:
+		strcpy(tempstr, "high durability");
+		break;
+	case IPL_DUR_CURSE:
+		strcpy(tempstr, "decreased durability");
+		break;
+	case IPL_INDESTRUCTIBLE:
+		strcpy(tempstr, "indestructible");
+		break;
+	case IPL_LIGHT:
+		sprintf(tempstr, "+%i%% light radius", 10 * x->_iPLLight);
+		break;
+	case IPL_LIGHT_CURSE:
+		sprintf(tempstr, "-%i%% light radius", -10 * x->_iPLLight);
+		break;
+	case IPL_FIRE_ARROWS:
+		sprintf(tempstr, "fire arrows damage: %i-%i", x->_iFMinDam, x->_iFMaxDam);
+		break;
+	case IPL_LIGHT_ARROWS:
+		sprintf(tempstr, "lightning arrows damage %i-%i", x->_iLMinDam, x->_iLMaxDam);
+		break;
+	case IPL_THORNS:
+		strcpy(tempstr, "attacker takes 1-3 damage");
+		break;
+	case IPL_NOMANA:
+		strcpy(tempstr, "user loses all mana");
+		break;
+	case IPL_NOHEALPLR:
+		strcpy(tempstr, "you can't heal");
+		break;
+	case IPL_ABSHALFTRAP:
+		strcpy(tempstr, "absorbs half of trap damage");
+		break;
+	case IPL_KNOCKBACK:
+		strcpy(tempstr, "knocks target back");
+		break;
+	case IPL_3XDAMVDEM:
+		strcpy(tempstr, "+200% damage vs. demons");
+		break;
+	case IPL_ALLRESZERO:
+		strcpy(tempstr, "All Resistance equals 0");
+		break;
+	case IPL_NOHEALMON:
+		strcpy(tempstr, "hit monster doesn't heal");
+		break;
+	case IPL_STEALMANA:
+		if (x->_iFlags & 0x2000)
+			strcpy(tempstr, "hit steals 3% mana");
+		if (x->_iFlags & 0x40)
+			strcpy(tempstr, "hit steals 5% mana");
+		break;
+	case IPL_STEALLIFE:
+		if (x->_iFlags & 0x8000)
+			strcpy(tempstr, "hit steals 3% life");
+		if (x->_iFlags & 1)
+			strcpy(tempstr, "hit steals 5% life");
+		break;
+	case IPL_TARGAC:
+		strcpy(tempstr, "damages target's armor");
+		break;
+	case IPL_FASTATTACK:
+		if (x->_iFlags & 0x20000)
+			strcpy(tempstr, "quick attack");
+		if (x->_iFlags & 0x40000)
+			strcpy(tempstr, "fast attack");
+		if (x->_iFlags & 0x80000)
+			strcpy(tempstr, "faster attack");
+		if (x->_iFlags & 0x100000)
+			strcpy(tempstr, "fastest attack");
+		break;
+	case IPL_FASTRECOVER:
+		if (x->_iFlags & 0x200000)
+			strcpy(tempstr, "fast hit recovery");
+		if (x->_iFlags & 0x400000)
+			strcpy(tempstr, "faster hit recovery");
+		if (x->_iFlags & 0x800000)
+			strcpy(tempstr, "fastest hit recovery");
+		break;
+	case IPL_FASTBLOCK:
+		strcpy(tempstr, "fast block");
+		break;
+	case IPL_DAMMOD:
+		sprintf(tempstr, "adds %i points to damage", x->_iPLDamMod);
+		break;
+	case IPL_RNDARROWVEL:
+		strcpy(tempstr, "fires random speed arrows");
+		break;
+	case IPL_SETDAM:
+		sprintf(tempstr, "unusual item damage");
+		break;
+	case IPL_SETDUR:
+		strcpy(tempstr, "altered durability");
+		break;
+	case IPL_FASTSWING:
+		strcpy(tempstr, "Faster attack swing");
+		break;
+	case IPL_ONEHAND:
+		strcpy(tempstr, "one handed sword");
+		break;
+	case IPL_DRAINLIFE:
+		strcpy(tempstr, "constantly lose hit points");
+		break;
+	case IPL_RNDSTEALLIFE:
+		strcpy(tempstr, "life stealing");
+		break;
+	case IPL_NOMINSTR:
+		strcpy(tempstr, "no strength requirement");
+		break;
+	case IPL_INFRAVISION:
+		strcpy(tempstr, "see with infravision");
+		break;
+	case IPL_INVCURS:
+		strcpy(tempstr, " ");
+		break;
 	case IPL_ADDACLIFE:
-		v8 = "Armor class added to life";
-		goto LABEL_104;
+		strcpy(tempstr, "Armor class added to life");
+		break;
 	case IPL_ADDMANAAC:
-		v8 = "10% of mana added to armor";
-		goto LABEL_104;
+		strcpy(tempstr, "10% of mana added to armor");
+		break;
 	case IPL_FIRERESCLVL:
-		v5 = x->_iPLFR;
-		if (v5 > 0) {
-			if (v5 >= 1)
-				sprintf(tempstr, "Resist Fire : %+i%%", v5);
-		} else {
-			v9 = " ";
-		LABEL_98:
-			sprintf(tempstr, v9);
-		}
+		if (x->_iPLFR <= 0)
+			sprintf(tempstr, " ");
+		else if (x->_iPLFR >= 1)
+			sprintf(tempstr, "Resist Fire : %+i%%", x->_iPLFR);
 		break;
 	default:
-		v8 = "Another ability (NW)";
-	LABEL_104:
-		strcpy(tempstr, v8);
+		strcpy(tempstr, "Another ability (NW)");
 		break;
 	}
 }
