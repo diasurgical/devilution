@@ -2,7 +2,7 @@
 
 int qtopline; // idb
 BOOL questlog;
-void *pQLogCel;
+BYTE *pQLogCel;
 QuestStruct quests[MAXQUESTS];
 int qline; // weak
 int qlist[MAXQUESTS];
@@ -430,8 +430,8 @@ void DrawWarLord(int x, int y)
 	setpc_h = rh;
 	setpc_x = x;
 	setpc_y = y;
-	for (j = y; j < y+rh; j++) {
-		for (i = x; i < x+rw; i++) {
+	for (j = y; j < y + rh; j++) {
+		for (i = x; i < x + rw; i++) {
 			if (*sp != 0) {
 				v = *sp;
 			} else {
@@ -464,8 +464,8 @@ void DrawSChamber(int q, int x, int y)
 	setpc_h = rh;
 	setpc_x = x;
 	setpc_y = y;
-	for (j = y; j < y+rh; j++) {
-		for (i = x; i < x+rw; i++) {
+	for (j = y; j < y + rh; j++) {
+		for (i = x; i < x + rw; i++) {
 			if (*sp != 0) {
 				v = *sp;
 			} else {
@@ -503,7 +503,7 @@ void DrawLTBanner(int x, int y)
 	for (j = 0; j < rh; j++) {
 		for (i = 0; i < rw; i++) {
 			if (*sp != 0) {
-				pdungeon[x+i][y+j] = *sp;
+				pdungeon[x + i][y + j] = *sp;
 			}
 			sp += 2;
 		}
@@ -532,7 +532,7 @@ void DrawBlind(int x, int y)
 	for (j = 0; j < rh; j++) {
 		for (i = 0; i < rw; i++) {
 			if (*sp != 0) {
-				pdungeon[x+i][y+j] = *sp;
+				pdungeon[x + i][y + j] = *sp;
 			}
 			sp += 2;
 		}
@@ -561,7 +561,7 @@ void DrawBlood(int x, int y)
 	for (j = 0; j < rh; j++) {
 		for (i = 0; i < rw; i++) {
 			if (*sp != 0) {
-				dungeon[x+i][y+j] = *sp;
+				dungeon[x + i][y + j] = *sp;
 			}
 			sp += 2;
 		}
@@ -840,29 +840,28 @@ void PrintQLString(int x, int y, unsigned char cjustflag, char *str, int col)
 
 void DrawQuestLog()
 {
-	int v0; // edi
-	int i;  // esi
+	int y, i;
 
 	PrintQLString(0, 2, 1u, "Quest Log", 3);
-	CelDecodeOnly(64, 511, (BYTE *)pQLogCel, 1, 320);
-	v0 = qtopline;
-	for (i = 0; i < numqlines; ++i) {
-		PrintQLString(0, v0, 1u, questlist[qlist[i]]._qlstr, 0);
-		v0 += 2;
+	CelDecodeOnly(64, 511, pQLogCel, 1, 320);
+	y = qtopline;
+	for (i = 0; i < numqlines; i++) {
+		PrintQLString(0, y, 1, questlist[qlist[i]]._qlstr, 0);
+		y += 2;
 	}
-	PrintQLString(0, 22, 1u, "Close Quest Log", 0);
+	PrintQLString(0, 22, 1, "Close Quest Log", 0);
 	ALLQUESTS = (ALLQUESTS & 7) + 1;
 }
-// 69BED4: using guessed type int numqlines;
 
 void StartQuestlog()
 {
-	unsigned int i;
+	DWORD i;
 
 	numqlines = 0;
 	for (i = 0; i < MAXQUESTS; i++) {
 		if (quests[i]._qactive == 2 && quests[i]._qlog) {
-			qlist[numqlines++] = i;
+			qlist[numqlines] = i;
+			numqlines++;
 		}
 	}
 	if (numqlines > 5) {
@@ -876,8 +875,6 @@ void StartQuestlog()
 	questlog = TRUE;
 	ALLQUESTS = 1;
 }
-// 69BE90: using guessed type int qline;
-// 69BED4: using guessed type int numqlines;
 
 void QuestlogUp()
 {
@@ -892,8 +889,6 @@ void QuestlogUp()
 		PlaySFX(IS_TITLEMOV);
 	}
 }
-// 69BE90: using guessed type int qline;
-// 69BED4: using guessed type int numqlines;
 
 void QuestlogDown()
 {
@@ -908,55 +903,41 @@ void QuestlogDown()
 		PlaySFX(IS_TITLEMOV);
 	}
 }
-// 69BE90: using guessed type int qline;
-// 69BED4: using guessed type int numqlines;
 
 void QuestlogEnter()
 {
 	PlaySFX(IS_TITLSLCT);
 	if (numqlines && qline != 22)
-		InitQTextMsg((unsigned char)quests[qlist[(qline - qtopline) >> 1]]._qmsg);
+		InitQTextMsg(quests[qlist[(qline - qtopline) >> 1]]._qmsg);
 	questlog = FALSE;
 }
-// 69BE90: using guessed type int qline;
-// 69BED4: using guessed type int numqlines;
 
 void QuestlogESC()
 {
-	int v0; // esi
-	int i;  // edi
+	int y, i;
 
-	v0 = (MouseY - 32) / 12;
+	y = (MouseY - 32) / 12;
 	if (numqlines) {
-		for (i = 0; i < numqlines; ++i) {
-			if (v0 == qtopline + 2 * i) {
-				qline = v0;
+		for (i = 0; i < numqlines; i++) {
+			if (y == qtopline + 2 * i) {
+				qline = y;
 				QuestlogEnter();
 			}
 		}
 	}
-	if (v0 == 22) {
+	if (y == 22) {
 		qline = 22;
 		QuestlogEnter();
 	}
 }
-// 69BE90: using guessed type int qline;
-// 69BED4: using guessed type int numqlines;
 
 void SetMultiQuest(int q, int s, int l, int v1)
 {
-	int v4;            // eax
-	unsigned char *v5; // ecx
-	unsigned char *v6; // eax
-
-	v4 = q;
-	v5 = &quests[q]._qactive;
-	if (*v5 != 3) {
-		if (s > (unsigned char)*v5)
-			*v5 = s;
-		quests[v4]._qlog |= l;
-		v6 = &quests[v4]._qvar1;
-		if (v1 > (unsigned char)*v6)
-			*v6 = v1;
+	if (quests[q]._qactive != 3) {
+		if (s > quests[q]._qactive)
+			quests[q]._qactive = s;
+		quests[q]._qlog |= l;
+		if (v1 > quests[q]._qvar1)
+			quests[q]._qvar1 = v1;
 	}
 }
