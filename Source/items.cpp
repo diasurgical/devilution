@@ -284,7 +284,6 @@ void InitItems()
 
 	uitemflag = 0;
 }
-// 5CF31D: using guessed type char setlevel;
 
 void CalcPlrItemVals(int p, BOOL Loadgfx)
 {
@@ -330,9 +329,6 @@ void CalcPlrItemVals(int p, BOOL Loadgfx)
 	int fmax = 0; // maximum fire damage
 	int lmin = 0; // minimum lightning damage
 	int lmax = 0; // maximum lightning damage
-
-	// didn't find a use for t for now
-	// int t;
 
 	for (i = 0; i < NUM_INVLOC; i++) {
 		ItemStruct *itm = &plr[p].InvBody[i];
@@ -630,7 +626,6 @@ void CalcPlrScrolls(int p)
 		}
 	}
 }
-// 52571C: using guessed type int drawpanflag;
 
 void CalcPlrStaff(int pnum)
 {
