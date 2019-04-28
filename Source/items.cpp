@@ -2279,19 +2279,21 @@ void CreateRndItem(int x, int y, unsigned char onlygood, unsigned char sendmsg, 
 
 void SetupAllUseful(int ii, int iseed, int lvl)
 {
-	int idx; // esi
+	int idx;
 
 	item[ii]._iSeed = iseed;
 	SetRndSeed(iseed);
-	idx = 25 - (random(34, 2) != 0);
 
-	if (lvl > 1) {
-		if (!random(34, 3))
-			idx = 27; // unique?
-	}
+	if (random(34, 2))
+		idx = 11;
+	else
+		idx = 12;
+
+	if (lvl > 1 && !random(34, 3))
+		idx = 14;
 
 	GetItemAttrs(ii, idx, lvl);
-	item[ii]._iCreateInfo = lvl + 0x180;
+	item[ii]._iCreateInfo = lvl + 384;
 	SetupItem(ii);
 }
 
