@@ -2179,50 +2179,46 @@ void SetupAllItems(int ii, int idx, int iseed, int lvl, int uper, int onlygood, 
 
 void SpawnItem(int m, int x, int y, BOOL sendmsg)
 {
-	int ii;       // edi
-	int onlygood; // [esp+Ch] [ebp-Ch]
-	int idx;      // [esp+14h] [ebp-4h]
+	int ii, onlygood, idx;
 
-	if (!monster[m]._uniqtype && ((monster[m].MData->mTreasure & 0x8000) == 0 || gbMaxPlayers == 1)) {
-		if (quests[QTYPE_BLKM]._qactive == 2 && quests[QTYPE_BLKM]._qvar1 == QS_MUSHGIVEN) {
-			idx = IDI_BRAIN;
-			quests[QTYPE_BLKM]._qvar1 = QS_BRAINSPAWNED;
-			goto LABEL_13;
+	if (monster[m]._uniqtype || ((monster[m].MData->mTreasure & 0x8000) && gbMaxPlayers != 1)) {
+		idx = RndUItem(m);
+		if (idx < 0) {
+			SpawnUnique(-(idx + 1), x, y);
+			return;
 		}
+		onlygood = 1;
+	} else if (quests[QTYPE_BLKM]._qactive != 2 || quests[QTYPE_BLKM]._qvar1 != QS_MUSHGIVEN) {
 		idx = RndItem(m);
 		if (!idx)
 			return;
 		if (idx > 0) {
-			onlygood = 0;
 			idx--;
-			goto LABEL_13;
+			onlygood = 0;
+		} else {
+			SpawnUnique(-(idx + 1), x, y);
+			return;
 		}
-	LABEL_10:
-		SpawnUnique(-1 - idx, x, y);
-		return;
+	} else {
+		idx = IDI_BRAIN;
+		quests[QTYPE_BLKM]._qvar1 = QS_BRAINSPAWNED;
 	}
-	idx = RndUItem(m);
-	if (idx < 0)
-		goto LABEL_10;
-	onlygood = 1;
-LABEL_13:
+
 	if (numitems < MAXITEMS) {
 		ii = itemavail[0];
-		GetSuperItemSpace(x, y, itemavail[0]);
-		itemactive[numitems] = ii;
+		GetSuperItemSpace(x, y, ii);
 		itemavail[0] = itemavail[MAXITEMS - numitems - 1];
-
-		if (!monster[m]._uniqtype)
-			SetupAllItems(ii, idx, GetRndSeed(), monster[m].MData->mLevel, 1, onlygood, 0, 0);
-		else
+		itemactive[numitems] = ii;
+		if (monster[m]._uniqtype) {
 			SetupAllItems(ii, idx, GetRndSeed(), monster[m].MData->mLevel, 15, onlygood, 0, 0);
-
-		++numitems;
+		} else {
+			SetupAllItems(ii, idx, GetRndSeed(), monster[m].MData->mLevel, 1, onlygood, 0, 0);
+		}
+		numitems++;
 		if (sendmsg)
 			NetSendCmdDItem(FALSE, ii);
 	}
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 void CreateItem(int uid, int x, int y)
 {
