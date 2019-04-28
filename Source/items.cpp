@@ -1746,19 +1746,12 @@ void SaveItemPower(int i, int power, int param1, int param2, int minval, int max
 	}
 }
 
-void GetItemPower(int i, int minlvl, int maxlvl, int flgs, int onlygood)
+void GetItemPower(int i, int minlvl, int maxlvl, int flgs, BOOL onlygood)
 {
-	//int v6; // ecx
-	int pre; // esi
-	//int v9; // ecx
-	unsigned char goe; // bl
-	int v11;           // edx
-	int v14;           // ecx
-	int l[256];        // [esp+4h] [ebp-494h]
-	char istr[128];    // [esp+404h] [ebp-94h]
-	int post;          // [esp+488h] [ebp-10h]
-	int sufidx;        // [esp+48Ch] [ebp-Ch]
-	int preidx;        // [esp+490h] [ebp-8h]
+	int pre, post, nt, nl, j, preidx, sufidx;
+	int l[256];
+	char istr[128];
+	BYTE goe;
 
 	pre = random(23, 4);
 	post = random(23, 3);
@@ -1771,68 +1764,64 @@ void GetItemPower(int i, int minlvl, int maxlvl, int flgs, int onlygood)
 	preidx = -1;
 	sufidx = -1;
 	goe = 0;
-	if (!onlygood) {
-		if (random(0, 3))
-			onlygood = 1;
-	}
+	if (!onlygood && random(0, 3))
+		onlygood = 1;
 	if (!pre) {
-		v11 = 0;
-		if (PL_Prefix[0].PLPower != -1) {
-			v14 = 0;
-			do {
-				if (flgs & PL_Prefix[v14].PLIType) {
-					if (PL_Prefix[v14].PLMinLvl >= minlvl && PL_Prefix[v14].PLMinLvl <= maxlvl && (!onlygood || PL_Prefix[v14].PLOk) && (flgs != 256 || PL_Prefix[v14].PLPower != 15)) {
-						l[v11++] = v14;
-						if (PL_Prefix[v14].PLDouble)
-							l[v11++] = v14;
+		nt = 0;
+		for (j = 0; PL_Prefix[j].PLPower != -1; j++) {
+			if (flgs & PL_Prefix[j].PLIType) {
+				if (PL_Prefix[j].PLMinLvl >= minlvl && PL_Prefix[j].PLMinLvl <= maxlvl && (!onlygood || PL_Prefix[j].PLOk) && (flgs != 256 || PL_Prefix[j].PLPower != 15)) {
+					l[nt] = j;
+					nt++;
+					if (PL_Prefix[j].PLDouble) {
+						l[nt] = j;
+						nt++;
 					}
 				}
-				v14++;
-			} while (PL_Prefix[v14].PLPower != -1);
-			if (v11) {
-				preidx = l[random(23, v11)];
-				sprintf(istr, "%s %s", PL_Prefix[preidx].PLName, item[i]._iIName);
-				strcpy(item[i]._iIName, istr);
-				item[i]._iMagical = ITEM_QUALITY_MAGIC;
-				SaveItemPower(
-				    i,
-				    PL_Prefix[preidx].PLPower,
-				    PL_Prefix[preidx].PLParam1,
-				    PL_Prefix[preidx].PLParam2,
-				    PL_Prefix[preidx].PLMinVal,
-				    PL_Prefix[preidx].PLMaxVal,
-				    PL_Prefix[preidx].PLMultVal);
-				goe = PL_Prefix[preidx].PLGOE;
-				item[i]._iPrePower = PL_Prefix[preidx].PLPower;
 			}
+		}
+		if (nt) {
+			preidx = l[random(23, nt)];
+			sprintf(istr, "%s %s", PL_Prefix[preidx].PLName, item[i]._iIName);
+			strcpy(item[i]._iIName, istr);
+			item[i]._iMagical = ITEM_QUALITY_MAGIC;
+			SaveItemPower(
+			    i,
+			    PL_Prefix[preidx].PLPower,
+			    PL_Prefix[preidx].PLParam1,
+			    PL_Prefix[preidx].PLParam2,
+			    PL_Prefix[preidx].PLMinVal,
+			    PL_Prefix[preidx].PLMaxVal,
+			    PL_Prefix[preidx].PLMultVal);
+			item[i]._iPrePower = PL_Prefix[preidx].PLPower;
+			goe = PL_Prefix[preidx].PLGOE;
 		}
 	}
 	if (post) {
-		v11 = 0;
-		if (PL_Suffix[0].PLPower != -1) {
-			v14 = 0;
-			do {
-				if (flgs & PL_Suffix[v14].PLIType) {
-					if (PL_Suffix[v14].PLMinLvl >= minlvl && PL_Suffix[v14].PLMinLvl <= maxlvl && (goe | PL_Suffix[v14].PLGOE) != 0x11 && (!onlygood || PL_Suffix[v14].PLOk))
-						l[v11++] = v14;
-				}
-				v14++;
-			} while (PL_Suffix[v14].PLPower != -1);
-			if (v11) {
-				sufidx = l[random(23, v11)];
-				sprintf(istr, "%s of %s", item[i]._iIName, PL_Suffix[sufidx].PLName);
-				strcpy(item[i]._iIName, istr);
-				item[i]._iMagical = ITEM_QUALITY_MAGIC;
-				SaveItemPower(
-				    i,
-				    PL_Suffix[sufidx].PLPower,
-				    PL_Suffix[sufidx].PLParam1,
-				    PL_Suffix[sufidx].PLParam2,
-				    PL_Suffix[sufidx].PLMinVal,
-				    PL_Suffix[sufidx].PLMaxVal,
-				    PL_Suffix[sufidx].PLMultVal);
-				item[i]._iSufPower = PL_Suffix[sufidx].PLPower;
+		nl = 0;
+		for (j = 0; PL_Suffix[j].PLPower != -1; j++) {
+			if (PL_Suffix[j].PLIType & flgs
+			    && PL_Suffix[j].PLMinLvl >= minlvl && PL_Suffix[j].PLMinLvl <= maxlvl
+			    && (goe | LOBYTE(PL_Suffix[j].PLGOE)) != 17
+			    && (!onlygood || PL_Suffix[j].PLOk)) {
+				l[nl] = j;
+				nl++;
 			}
+		}
+		if (nl) {
+			sufidx = l[random(23, nl)];
+			sprintf(istr, "%s of %s", item[i]._iIName, PL_Suffix[sufidx].PLName);
+			strcpy(item[i]._iIName, istr);
+			item[i]._iMagical = 1;
+			SaveItemPower(
+			    i,
+			    PL_Suffix[sufidx].PLPower,
+			    PL_Suffix[sufidx].PLParam1,
+			    PL_Suffix[sufidx].PLParam2,
+			    PL_Suffix[sufidx].PLMinVal,
+			    PL_Suffix[sufidx].PLMaxVal,
+			    PL_Suffix[sufidx].PLMultVal);
+			item[i]._iSufPower = PL_Suffix[sufidx].PLPower;
 		}
 	}
 	if (!control_WriteStringToBuffer(item[i]._iIName)) {
@@ -2327,7 +2316,7 @@ void CreateRndUseful(int pnum, int x, int y, BOOL sendmsg)
 	if (numitems < MAXITEMS) {
 		ii = itemactive[0];
 		GetSuperItemSpace(x, y, ii);
-		itemactive[0]       = itemactive[MAXITEMS - numitems -1];
+		itemactive[0] = itemactive[MAXITEMS - numitems - 1];
 		itemavail[numitems] = ii;
 		SetupAllUseful(ii, GetRndSeed(), currlevel);
 		if (sendmsg) {
@@ -4088,10 +4077,9 @@ void RecreateHealerItem(int ii, int idx, int lvl, int iseed)
 	}
 
 	item[ii]._iCreateInfo = lvl | 0x4000;
-	item[ii]._iSeed       = iseed;
+	item[ii]._iSeed = iseed;
 	item[ii]._iIdentified = TRUE;
 }
-
 
 void RecreateTownItem(int ii, int idx, unsigned short icreateinfo, int iseed, int ivalue)
 {
