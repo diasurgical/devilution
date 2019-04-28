@@ -401,24 +401,24 @@ void CheckQuestKill(int m, BOOL sendmsg)
 
 void DrawButcher()
 {
-	DRLG_RectTrans(2 * setpc_x + 19, 2 * setpc_y + 19, 2 * setpc_x + 26, 2 * setpc_y + 26);
+	int x, y;
+
+	x = 2 * setpc_x + 16;
+	y = 2 * setpc_y + 16;
+	DRLG_RectTrans(x + 3, y + 3, x + 10, y + 10);
 }
 
 void DrawSkelKing(int q, int x, int y)
 {
-	int v3; // eax
-
-	v3 = q;
-	quests[v3]._qtx = 2 * x + 28;
-	quests[v3]._qty = 2 * y + 23;
+	quests[q]._qtx = 2 * x + 28;
+	quests[q]._qty = 2 * y + 23;
 }
 
 void DrawWarLord(int x, int y)
 {
 	int rw, rh;
 	int i, j;
-	unsigned char *sp;
-	unsigned char *setp;
+	BYTE *sp, *setp;
 	int v;
 
 	setp = LoadFileInMem("Levels\\L4Data\\Warlord2.DUN", NULL);
@@ -443,16 +443,13 @@ void DrawWarLord(int x, int y)
 	}
 	mem_free_dbg(setp);
 }
-// 5CF330: using guessed type int setpc_h;
-// 5CF334: using guessed type int setpc_w;
 
 void DrawSChamber(int q, int x, int y)
 {
 	int i, j;
 	int rw, rh;
 	int xx, yy;
-	unsigned char *sp;
-	unsigned char *setp;
+	BYTE *sp, *setp;
 	int v;
 
 	setp = LoadFileInMem("Levels\\L2Data\\Bonestr1.DUN", NULL);
@@ -481,15 +478,12 @@ void DrawSChamber(int q, int x, int y)
 	quests[q]._qty = yy;
 	mem_free_dbg(setp);
 }
-// 5CF330: using guessed type int setpc_h;
-// 5CF334: using guessed type int setpc_w;
 
 void DrawLTBanner(int x, int y)
 {
 	int rw, rh;
 	int i, j;
-	unsigned char *sp;
-	unsigned char *setp;
+	BYTE *sp, *setp;
 
 	setp = LoadFileInMem("Levels\\L1Data\\Banner1.DUN", NULL);
 	rw = *setp;
@@ -510,15 +504,12 @@ void DrawLTBanner(int x, int y)
 	}
 	mem_free_dbg(setp);
 }
-// 5CF330: using guessed type int setpc_h;
-// 5CF334: using guessed type int setpc_w;
 
 void DrawBlind(int x, int y)
 {
 	int rw, rh;
 	int i, j;
-	unsigned char *sp;
-	unsigned char *setp;
+	BYTE *sp, *setp;
 
 	setp = LoadFileInMem("Levels\\L2Data\\Blind1.DUN", NULL);
 	rw = *setp;
@@ -539,15 +530,12 @@ void DrawBlind(int x, int y)
 	}
 	mem_free_dbg(setp);
 }
-// 5CF330: using guessed type int setpc_h;
-// 5CF334: using guessed type int setpc_w;
 
 void DrawBlood(int x, int y)
 {
 	int rw, rh;
 	int i, j;
-	unsigned char *sp;
-	unsigned char *setp;
+	BYTE *sp, *setp;
 
 	setp = LoadFileInMem("Levels\\L2Data\\Blood2.DUN", NULL);
 	rw = *setp;
@@ -568,8 +556,6 @@ void DrawBlood(int x, int y)
 	}
 	mem_free_dbg(setp);
 }
-// 5CF330: using guessed type int setpc_h;
-// 5CF334: using guessed type int setpc_w;
 
 void DRLG_CheckQuests(int x, int y)
 {
@@ -603,7 +589,6 @@ void DRLG_CheckQuests(int x, int y)
 		}
 	}
 }
-// 69BE90: using guessed type int qline;
 
 void SetReturnLvlPos()
 {
@@ -644,25 +629,24 @@ void GetReturnLvlPos()
 	currlevel = ReturnLvl;
 	leveltype = ReturnLvlT;
 }
-// 5BB1ED: using guessed type char leveltype;
 
 void ResyncMPQuests()
 {
 	if (quests[QTYPE_KING]._qactive == 1
-	    && currlevel >= (unsigned char)quests[QTYPE_KING]._qlevel - 1
-	    && currlevel <= (unsigned char)quests[QTYPE_KING]._qlevel + 1) {
+	    && currlevel >= quests[QTYPE_KING]._qlevel - 1
+	    && currlevel <= quests[QTYPE_KING]._qlevel + 1) {
 		quests[QTYPE_KING]._qactive = 2;
-		NetSendCmdQuest(TRUE, 0xCu);
+		NetSendCmdQuest(TRUE, QTYPE_KING);
 	}
 	if (quests[QTYPE_BUTCH]._qactive == 1
-	    && currlevel >= (unsigned char)quests[QTYPE_BUTCH]._qlevel - 1
-	    && currlevel <= (unsigned char)quests[QTYPE_BUTCH]._qlevel + 1) {
+	    && currlevel >= quests[QTYPE_BUTCH]._qlevel - 1
+	    && currlevel <= quests[QTYPE_BUTCH]._qlevel + 1) {
 		quests[QTYPE_BUTCH]._qactive = 2;
-		NetSendCmdQuest(TRUE, 6u);
+		NetSendCmdQuest(TRUE, QTYPE_BUTCH);
 	}
-	if (quests[QTYPE_VB]._qactive == 1 && currlevel == (unsigned char)quests[QTYPE_VB]._qlevel - 1) {
+	if (quests[QTYPE_VB]._qactive == 1 && currlevel == quests[QTYPE_VB]._qlevel - 1) {
 		quests[QTYPE_VB]._qactive = 2;
-		NetSendCmdQuest(TRUE, 0xFu);
+		NetSendCmdQuest(TRUE, QTYPE_VB);
 	}
 	if (QuestStatus(QTYPE_VB))
 		AddObject(OBJ_ALTBOY, 2 * setpc_x + 20, 2 * setpc_y + 22);
