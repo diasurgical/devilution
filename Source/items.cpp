@@ -2769,21 +2769,20 @@ void SetupAllUseful(int ii, int iseed, int lvl)
 	SetupItem(ii);
 }
 
-void CreateRndUseful(int pnum, int x, int y, unsigned char sendmsg)
+void CreateRndUseful(int pnum, int x, int y, BOOL sendmsg)
 {
-	int ii; // esi
+	int ii;
 
 	if (numitems < MAXITEMS) {
-		ii = itemavail[0];
-		GetSuperItemSpace(x, y, itemavail[0]);
-		itemactive[numitems] = ii;
-		itemavail[0] = itemavail[MAXITEMS - numitems - 1];
+		ii = itemactive[0];
+		GetSuperItemSpace(x, y, ii);
+		itemactive[0]       = itemactive[MAXITEMS - numitems -1];
+		itemavail[numitems] = ii;
 		SetupAllUseful(ii, GetRndSeed(), currlevel);
-
-		if (sendmsg)
+		if (sendmsg) {
 			NetSendCmdDItem(FALSE, ii);
-
-		++numitems;
+		}
+		numitems++;
 	}
 }
 
