@@ -3727,54 +3727,43 @@ void PrintItemDetails(ItemStruct *x)
 
 void PrintItemDur(ItemStruct *x)
 {
-	ItemStruct *v1;   // esi
-	int v2;           // eax
-	char v3;          // al
-	unsigned char v4; // al
-	char v5;          // al
-
-	v1 = x;
 	if (x->_iClass == ICLASS_WEAPON) {
 		if (x->_iMaxDur == 255)
 			sprintf(tempstr, "damage: %i-%i  Indestructible", x->_iMinDam, x->_iMaxDam);
 		else
 			sprintf(tempstr, "damage: %i-%i  Dur: %i/%i", x->_iMinDam, x->_iMaxDam, x->_iDurability, x->_iMaxDur);
 		AddPanelString(tempstr, 1);
-		if (v1->_iMiscId == IMISC_STAFF && v1->_iMaxCharges) {
-			sprintf(tempstr, "Charges: %i/%i", v1->_iCharges, v1->_iMaxCharges);
+		if (x->_iMiscId == IMISC_STAFF && x->_iMaxCharges) {
+			sprintf(tempstr, "Charges: %i/%i", x->_iCharges, x->_iMaxCharges);
 			AddPanelString(tempstr, 1);
 		}
-		if (v1->_iMagical != ITEM_QUALITY_NORMAL)
+		if (x->_iMagical != ITEM_QUALITY_NORMAL)
 			AddPanelString("Not Identified", 1);
 	}
-	if (v1->_iClass == ICLASS_ARMOR) {
-		if (v1->_iMaxDur == 255)
-			sprintf(tempstr, "armor: %i  Indestructible", v1->_iAC);
+	if (x->_iClass == ICLASS_ARMOR) {
+		if (x->_iMaxDur == 255)
+			sprintf(tempstr, "armor: %i  Indestructible", x->_iAC);
 		else
-			sprintf(tempstr, "armor: %i  Dur: %i/%i", v1->_iAC, v1->_iDurability, v1->_iMaxDur);
+			sprintf(tempstr, "armor: %i  Dur: %i/%i", x->_iAC, x->_iDurability, x->_iMaxDur);
 		AddPanelString(tempstr, 1);
-		if (v1->_iMagical != ITEM_QUALITY_NORMAL)
+		if (x->_iMagical != ITEM_QUALITY_NORMAL)
 			AddPanelString("Not Identified", 1);
-		if (v1->_iMiscId == IMISC_STAFF && v1->_iMaxCharges) {
-			sprintf(tempstr, "Charges: %i/%i", v1->_iCharges, v1->_iMaxCharges);
+		if (x->_iMiscId == IMISC_STAFF && x->_iMaxCharges) {
+			sprintf(tempstr, "Charges: %i/%i", x->_iCharges, x->_iMaxCharges);
 			AddPanelString(tempstr, 1);
 		}
 	}
-	v2 = v1->_itype;
-	if (v2 == ITYPE_RING || v2 == ITYPE_AMULET)
+	if (x->_itype == ITYPE_RING || x->_itype == ITYPE_AMULET)
 		AddPanelString("Not Identified", 1);
-	PrintItemMisc(v1);
-	if ((unsigned char)v1->_iMinMag + v1->_iMinDex + v1->_iMinStr) {
+	PrintItemMisc(x);
+	if (x->_iMinMag + x->_iMinDex + x->_iMinStr) {
 		strcpy(tempstr, "Required:");
-		v3 = v1->_iMinStr;
-		if (v3)
-			sprintf(tempstr, "%s %i Str", tempstr, v3);
-		v4 = v1->_iMinMag;
-		if (v4)
-			sprintf(tempstr, "%s %i Mag", tempstr, v4);
-		v5 = v1->_iMinDex;
-		if (v5)
-			sprintf(tempstr, "%s %i Dex", tempstr, v5);
+		if (x->_iMinStr)
+			sprintf(tempstr, "%s %i Str", tempstr, x->_iMinStr);
+		if (x->_iMinMag)
+			sprintf(tempstr, "%s %i Mag", tempstr, x->_iMinMag);
+		if (x->_iMinDex)
+			sprintf(tempstr, "%s %i Dex", tempstr, x->_iMinDex);
 		AddPanelString(tempstr, TRUE);
 	}
 	pinfoflag = TRUE;
