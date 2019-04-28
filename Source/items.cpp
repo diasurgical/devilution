@@ -2251,10 +2251,9 @@ void CreateItem(int uid, int x, int y)
 }
 // 422290: could not find valid save-restore pair for esi
 
-void CreateRndItem(int x, int y, unsigned char onlygood, unsigned char sendmsg, int delta)
+void CreateRndItem(int x, int y, BOOL onlygood, BOOL sendmsg, int delta)
 {
-	int idx; // edi
-	int ii;  // esi
+	int idx, ii;
 
 	if (onlygood)
 		idx = RndUItem(-1);
@@ -2263,17 +2262,15 @@ void CreateRndItem(int x, int y, unsigned char onlygood, unsigned char sendmsg, 
 
 	if (numitems < MAXITEMS) {
 		ii = itemavail[0];
-		GetSuperItemSpace(x, y, itemavail[0]);
-		itemactive[numitems] = ii;
+		GetSuperItemSpace(x, y, ii);
 		itemavail[0] = itemavail[MAXITEMS - numitems - 1];
+		itemactive[numitems] = ii;
 		SetupAllItems(ii, idx, GetRndSeed(), 2 * currlevel, 1, onlygood, 0, delta);
-
 		if (sendmsg)
 			NetSendCmdDItem(FALSE, ii);
 		if (delta)
 			DeltaAddItem(ii);
-
-		++numitems;
+		numitems++;
 	}
 }
 

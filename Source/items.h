@@ -58,7 +58,7 @@ void ItemRndDur(int ii);
 void SetupAllItems(int ii, int idx, int iseed, int lvl, int uper, int onlygood, int recreate, int pregen);
 void SpawnItem(int m, int x, int y, BOOL sendmsg);
 void CreateItem(int uid, int x, int y);
-void CreateRndItem(int x, int y, unsigned char onlygood, unsigned char sendmsg, int delta);
+void CreateRndItem(int x, int y, BOOL onlygood, BOOL sendmsg, int delta);
 void SetupAllUseful(int ii, int iseed, int lvl);
 void CreateRndUseful(int pnum, int x, int y, BOOL sendmsg);
 void CreateTypeItem(int x, int y, BOOL onlygood, int itype, int imisc, BOOL sendmsg, int delta);
