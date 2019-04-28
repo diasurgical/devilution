@@ -2780,7 +2780,7 @@ void CreateRndUseful(int pnum, int x, int y, BOOL sendmsg)
 		itemavail[numitems] = ii;
 		SetupAllUseful(ii, GetRndSeed(), currlevel);
 		if (sendmsg) {
-			NetSendCmdDItem(0, ii);
+			NetSendCmdDItem(FALSE, ii);
 		}
 		numitems++;
 	}
