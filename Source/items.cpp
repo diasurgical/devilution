@@ -1193,60 +1193,51 @@ void GetStaffPower(int i, int lvl, int bs, BOOL onlygood)
 	CalcItemValue(i);
 }
 
-void GetStaffSpell(int i, int lvl, unsigned char onlygood)
+void GetStaffSpell(int i, int lvl, BOOL onlygood)
 {
-	int l;         // esi
-	int rv;        // eax
-	int s;         // ecx
-	int minc;      // ebx
-	int maxc;      // edx
-	int v;         // eax
-	char istr[64]; // [esp+4h] [ebp-4Ch]
-	int bs;        // [esp+4Ch] [ebp-4h]
+	int l, rv, s, minc, maxc, v, bs;
+	char istr[64];
 
-	if (random(17, 4)) {
+	if (!random(17, 4)) {
+		GetItemPower(i, lvl >> 1, lvl, 256, onlygood);
+	} else {
 		l = lvl >> 1;
 		if (!l)
 			l = 1;
 		rv = random(18, MAX_SPELLS) + 1;
-	LABEL_15:
 		s = 1;
 		while (rv > 0) {
 			if (spelldata[s].sStaffLvl != -1 && l >= spelldata[s].sStaffLvl) {
-				--rv;
+				rv--;
 				bs = s;
 			}
-			++s;
-			if (gbMaxPlayers == 1) {
-				if (s == SPL_RESURRECT)
-					s = SPL_TELEKINESIS;
-				if (s == SPL_HEALOTHER)
-					s = SPL_FLARE;
-			}
+			s++;
+			if (gbMaxPlayers == 1 && s == SPL_RESURRECT)
+				s = SPL_TELEKINESIS;
+			if (gbMaxPlayers == 1 && s == SPL_HEALOTHER)
+				s = SPL_FLARE;
 			if (s == MAX_SPELLS)
-				goto LABEL_15;
+				s = 1;
 		}
 		sprintf(istr, "%s of %s", item[i]._iName, spelldata[bs].sNameText);
 		if (!control_WriteStringToBuffer((BYTE *)istr))
 			sprintf(istr, "Staff of %s", spelldata[bs].sNameText);
 		strcpy(item[i]._iName, istr);
 		strcpy(item[i]._iIName, istr);
+
 		minc = spelldata[bs].sStaffMin;
 		maxc = spelldata[bs].sStaffMax - minc + 1;
 		item[i]._iSpell = bs;
-		v = random(19, maxc) + minc;
+		item[i]._iCharges = minc + random(19, maxc);
+		item[i]._iMaxCharges = item[i]._iCharges;
+
 		item[i]._iMinMag = spelldata[bs].sMinInt;
-		item[i]._iCharges = v;
-		item[i]._iMaxCharges = v;
-		v = (v * spelldata[bs].sStaffCost) / 5;
+		v = item[i]._iCharges * spelldata[bs].sStaffCost / 5;
 		item[i]._ivalue += v;
 		item[i]._iIvalue += v;
 		GetStaffPower(i, lvl, bs, onlygood);
-	} else {
-		GetItemPower(i, lvl >> 1, lvl, 256, onlygood);
 	}
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 void GetItemAttrs(int i, int idata, int lvl)
 {
