@@ -1149,7 +1149,7 @@ void GetStaffPower(int i, int lvl, int bs, BOOL onlygood)
 	if (!random(15, 10) || onlygood) {
 		nl = 0;
 		for (j = 0; PL_Prefix[j].PLPower != -1; j++) {
-			if (PL_Prefix[j].PLIType & 0x100 && PL_Prefix[j].PLMinLvl <= lvl) {
+			if (PL_Prefix[j].PLIType & PLT_STAFF && PL_Prefix[j].PLMinLvl <= lvl) {
 				addok = TRUE;
 				if (onlygood && !PL_Prefix[j].PLOk)
 					addok = FALSE;
