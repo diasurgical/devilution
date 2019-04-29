@@ -38,7 +38,7 @@ void GetSuperItemSpace(int x, int y, char inum);
 void GetSuperItemLoc(int x, int y, int *xx, int *yy);
 void CalcItemValue(int i);
 void GetBookSpell(int i, int lvl);
-void GetStaffPower(int i, int lvl, int bs, unsigned char onlygood);
+void GetStaffPower(int i, int lvl, int bs, BOOL onlygood);
 void GetStaffSpell(int i, int lvl, unsigned char onlygood);
 void GetItemAttrs(int i, int idata, int lvl);
 int RndPL(int param1, int param2);
