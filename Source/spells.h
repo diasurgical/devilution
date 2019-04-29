@@ -10,8 +10,4 @@ void DoResurrect(int pnum, int rid);
 void PlacePlayer(int pnum);
 void DoHealOther(int pnum, int rid);
 
-/* rdata */
-
-extern SpellData spelldata[MAX_SPELLS];
-
 #endif /* __SPELLS_H__ */

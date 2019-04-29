@@ -60,7 +60,7 @@ void SpawnItem(int m, int x, int y, BOOL sendmsg);
 void CreateItem(int uid, int x, int y);
 void CreateRndItem(int x, int y, unsigned char onlygood, unsigned char sendmsg, int delta);
 void SetupAllUseful(int ii, int iseed, int lvl);
-void CreateRndUseful(int pnum, int x, int y, unsigned char sendmsg);
+void CreateRndUseful(int pnum, int x, int y, BOOL sendmsg);
 void CreateTypeItem(int x, int y, unsigned char onlygood, int itype, int imisc, int sendmsg, int delta);
 void RecreateItem(int ii, int idx, unsigned short ic, int iseed, int ivalue);
 void RecreateEar(int ii, unsigned short ic, int iseed, int Id, int dur, int mdur, int ch, int mch, int ivalue, int ibuff);
@@ -126,15 +126,8 @@ void NextItemRecord(int i);
 void SetItemRecord(int nSeed, WORD wCI, int nIndex);
 void PutItemRecord(int nSeed, WORD wCI, int nIndex);
 
-/* rdata */
-
-extern const PLStruct PL_Prefix[84];
-extern const PLStruct PL_Suffix[96];
-extern const UItemStruct UniqueItemList[91];
-
 /* data */
 
-extern ItemDataStruct AllItemsList[157];
 extern unsigned char ItemCAnimTbl[169];
 extern char *ItemDropStrs[35];
 extern unsigned char ItemAnimLs[35];

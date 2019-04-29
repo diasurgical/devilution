@@ -333,19 +333,21 @@ void gmenu_left_right(int a1)
 
 BOOL gmenu_on_mouse_move()
 {
-	int a1; // [esp+0h] [ebp-4h]
+	int plOffset, v;
 
 	if (!byte_634464)
-		return 0;
-	gmenu_valid_mouse_pos(&a1);
-	a1 = a1 * ((sgpCurrItem->dwFlags >> 12) & 0xFFF) / 256;
-	_LOWORD(sgpCurrItem->dwFlags) &= 0xF000u;
-	sgpCurrItem->dwFlags |= a1;
+		return FALSE;
+	gmenu_valid_mouse_pos(&plOffset);
+	v = (sgpCurrItem->dwFlags & 0xFFF000);
+	v >>= 12;
+	plOffset *= v;
+	plOffset /= 256;
+
+	sgpCurrItem->dwFlags &= 0xFFFFF000;
+	sgpCurrItem->dwFlags |= plOffset;
 	sgpCurrItem->fnMenu(FALSE);
-	return 1;
+	return TRUE;
 }
-// 41A37A: could not find valid save-restore pair for esi
-// 634464: using guessed type char byte_634464;
 
 BOOLEAN gmenu_valid_mouse_pos(int *plOffset)
 {

@@ -147,8 +147,6 @@ void ClearMissileSpot(int mi);
 
 /* rdata */
 
-extern MissileData missiledata[68];
-extern MisFileData misfiledata[47];
 extern int XDirAdd[8];
 extern int YDirAdd[8];
 

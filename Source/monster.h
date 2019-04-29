@@ -32,7 +32,7 @@ void InitMonsters();
 void PlaceUniques();
 void SetMapMonsters(unsigned char *pMap, int startx, int starty);
 void DeleteMonster(int i);
-int AddMonster(int x, int y, int dir, int mtype, int InMap);
+int AddMonster(int x, int y, int dir, int mtype, BOOL InMap);
 void NewMonsterAnim(int i, AnimStruct *anim, int md);
 BOOL M_Ranged(int i);
 BOOL M_Talker(int i);
@@ -167,10 +167,6 @@ extern const unsigned char counsmiss[4];
 
 /* data */
 
-extern MonsterData monsterdata[112];
-extern char MonstConvTbl[128];
-extern unsigned char MonstAvailTbl[112];
-extern UniqMonstStruct UniqMonst[98];
 extern int MWVel[24][3];
 extern char animletter[7];
 extern int left[8];

@@ -83,7 +83,7 @@ void DoAutoMap();
 void CheckPanelInfo();
 void CheckBtnUp();
 void FreeControlPan();
-int control_WriteStringToBuffer(char *str);
+BOOL control_WriteStringToBuffer(BYTE *str);
 void DrawInfoBox();
 void control_print_info_str(int y, char *str, BOOLEAN center, int lines);
 void PrintGameStr(int x, int y, char *str, int color);

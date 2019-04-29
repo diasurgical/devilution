@@ -118,13 +118,16 @@ add_library(devilution STATIC
   Source/init.cpp
   Source/interfac.cpp
   Source/inv.cpp
+  Source/itemdat.cpp
   Source/items.cpp
   Source/lighting.cpp
   Source/loadsave.cpp
   Source/logging.cpp
   Source/mainmenu.cpp
   Source/minitext.cpp
+  Source/misdat.cpp
   Source/missiles.cpp
+  Source/monstdat.cpp
   Source/monster.cpp
   Source/movie.cpp
   Source/mpqapi.cpp
@@ -132,6 +135,7 @@ add_library(devilution STATIC
   Source/msg.cpp
   Source/multi.cpp
   Source/nthread.cpp
+  Source/objdat.cpp
   Source/objects.cpp
   Source/pack.cpp
   Source/palette.cpp
@@ -140,6 +144,7 @@ add_library(devilution STATIC
   Source/player.cpp
   Source/plrmsg.cpp
   Source/portal.cpp
+  Source/spelldat.cpp
   Source/quests.cpp
   Source/render.cpp
   Source/restrict.cpp

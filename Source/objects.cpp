@@ -14,283 +14,6 @@ ObjectStruct object[MAXOBJECTS];
 BOOL InitObjFlag;
 int numobjfiles; // weak
 
-int ObjTypeConv[113] = {
-	0,
-	4,
-	20,
-	21,
-	22,
-	24,
-	11,
-	12,
-	13,
-	0,
-	0,
-	0,
-	0,
-	0,
-	25,
-	41,
-	26,
-	0,
-	8,
-	9,
-	10,
-	80,
-	0,
-	0,
-	0,
-	0,
-	0,
-	0,
-	0,
-	0,
-	49,
-	0,
-	0,
-	0,
-	0,
-	0,
-	84,
-	85,
-	3,
-	14,
-	15,
-	16,
-	17,
-	18,
-	19,
-	0,
-	0,
-	0,
-	0,
-	0,
-	0,
-	28,
-	0,
-	53,
-	54,
-	36,
-	37,
-	38,
-	39,
-	40,
-	0,
-	0,
-	0,
-	0,
-	0,
-	27,
-	0,
-	0,
-	0,
-	0,
-	29,
-	30,
-	31,
-	32,
-	33,
-	34,
-	35,
-	5,
-	5,
-	5,
-	6,
-	6,
-	6,
-	7,
-	7,
-	7,
-	0,
-	0,
-	0,
-	0,
-	0,
-	73,
-	0,
-	0,
-	0,
-	0,
-	0,
-	0,
-	0,
-	0,
-	0,
-	0,
-	0,
-	0,
-	0,
-	83,
-	0,
-	0,
-	89,
-	90,
-	47,
-	46,
-	94
-};
-ObjDataStruct AllObjects[99] = {
-	// clang-format off
-	// oload, ofindex,   ominlvl, omaxlvl, olvltype, otheme,              oquest, oAnimFlag, oAnimDelay, oAnimLen, oAnimWidth, oSolidFlag, oMissFlag, oLightFlag, oBreak, oSelFlag, oTrapFlag
-	{      1, OFILE_L1BRAZ,    1,       4,        1, THEME_NONE,              -1,         1,          1,       26,         64, TRUE,       TRUE,      FALSE,           0,        0, FALSE     },
-	{      1, OFILE_L1DOORS,   1,       4,        1, THEME_NONE,              -1,         0,          1,        0,         64, FALSE,      FALSE,     TRUE,            0,        3, TRUE      },
-	{      1, OFILE_L1DOORS,   1,       4,        1, THEME_NONE,              -1,         0,          2,        0,         64, FALSE,      FALSE,     TRUE,            0,        3, TRUE      },
-	{      3, OFILE_SKULFIRE,  0,       0,        0, THEME_SKELROOM,          -1,         1,          2,       11,         96, TRUE,       TRUE,      FALSE,           0,        0, FALSE     },
-	{      1, OFILE_LEVER,     1,       4,        1, THEME_NONE,              -1,         0,          1,        1,         96, TRUE,       TRUE,      TRUE,            0,        1, TRUE      },
-	{      1, OFILE_CHEST1,    1,      16,        0, THEME_NONE,              -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        1, TRUE      },
-	{      1, OFILE_CHEST2,    1,      16,        0, THEME_NONE,              -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        1, TRUE      },
-	{      1, OFILE_CHEST3,    1,      16,        0, THEME_NONE,              -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        1, TRUE      },
-	{      2, OFILE_L1BRAZ,    0,       0,        0, THEME_NONE,              -1,         0,          0,        0,          0, FALSE,      FALSE,     FALSE,           0,        0, FALSE     },
-	{      3, OFILE_CANDLE2,   0,       0,        0, THEME_SHRINE,            -1,         1,          2,        4,         96, TRUE,       TRUE,      TRUE,            0,        0, FALSE     },
-	{      2, OFILE_L1BRAZ,    0,       0,        0, THEME_NONE,              -1,         0,          0,        0,          0, FALSE,      FALSE,     FALSE,           0,        0, FALSE     },
-	{      3, OFILE_BANNER,    0,       0,        0, THEME_SKELROOM,          -1,         0,          2,        0,         96, TRUE,       TRUE,      TRUE,            0,        0, FALSE     },
-	{      3, OFILE_BANNER,    0,       0,        0, THEME_SKELROOM,          -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        0, FALSE     },
-	{      3, OFILE_BANNER,    0,       0,        0, THEME_SKELROOM,          -1,         0,          3,        0,         96, TRUE,       TRUE,      TRUE,            0,        0, FALSE     },
-	{      2, OFILE_SKULPILE,  1,       4,        0, THEME_NONE,              -1,         0,          0,        1,         96, TRUE,       TRUE,      TRUE,            0,        0, FALSE     },
-	{      2, OFILE_L1BRAZ,    0,       0,        0, THEME_NONE,              -1,         0,          0,        0,          0, FALSE,      FALSE,     FALSE,           0,        0, FALSE     },
-	{      2, OFILE_L1BRAZ,    0,       0,        0, THEME_NONE,              -1,         0,          0,        0,          0, FALSE,      FALSE,     FALSE,           0,        0, FALSE     },
-	{      2, OFILE_L1BRAZ,    0,       0,        0, THEME_NONE,              -1,         0,          0,        0,          0, FALSE,      FALSE,     FALSE,           0,        0, FALSE     },
-	{      2, OFILE_L1BRAZ,    0,       0,        0, THEME_NONE,              -1,         0,          0,        0,          0, FALSE,      FALSE,     FALSE,           0,        0, FALSE     },
-	{      2, OFILE_L1BRAZ,    0,       0,        0, THEME_NONE,              -1,         0,          0,        0,          0, FALSE,      FALSE,     FALSE,           0,        0, FALSE     },
-	{      2, OFILE_CRUXSK1,   0,       0,        0, THEME_NONE,              -1,         0,          1,       15,         96, TRUE,       FALSE,     TRUE,            1,        3, FALSE     },
-	{      2, OFILE_CRUXSK2,   0,       0,        0, THEME_NONE,              -1,         0,          1,       15,         96, TRUE,       FALSE,     TRUE,            1,        3, FALSE     },
-	{      2, OFILE_CRUXSK3,   0,       0,        0, THEME_NONE,              -1,         0,          1,       15,         96, TRUE,       FALSE,     TRUE,            1,        3, FALSE     },
-	{      1, OFILE_ROCKSTAN,  5,       5,        0, THEME_NONE,              -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        0, FALSE     },
-	{      2, OFILE_ANGEL,     0,       0,        0, THEME_NONE,              -1,         0,          1,        0,         96, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
-	{      2, OFILE_BOOK2,     0,       0,        0, THEME_NONE,              -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
-	{      2, OFILE_BURNCROS,  0,       0,        0, THEME_NONE,              -1,         1,          0,       10,        160, TRUE,       FALSE,     FALSE,           0,        0, FALSE     },
-	{      2, OFILE_NUDE2,     0,       0,        0, THEME_NONE,              -1,         1,          3,        6,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
-	{      1, OFILE_SWITCH4,  16,      16,        0, THEME_NONE,              -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        1, TRUE      },
-	{      1, OFILE_TNUDEM,   13,      16,        0, THEME_NONE,               6,         0,          1,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
-	{      1, OFILE_TNUDEM,   13,      16,        0, THEME_TORTURE,            6,         0,          2,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
-	{      1, OFILE_TNUDEM,   13,      16,        0, THEME_TORTURE,            6,         0,          3,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
-	{      1, OFILE_TNUDEM,   13,      16,        0, THEME_TORTURE,            6,         0,          4,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
-	{      1, OFILE_TNUDEW,   13,      16,        0, THEME_TORTURE,            6,         0,          1,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
-	{      1, OFILE_TNUDEW,   13,      16,        0, THEME_TORTURE,            6,         0,          2,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
-	{      1, OFILE_TNUDEW,   13,      16,        0, THEME_TORTURE,            6,         0,          3,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
-	{      1, OFILE_TSOUL,    13,      16,        0, THEME_NONE,               6,         0,          1,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
-	{      1, OFILE_TSOUL,    13,      16,        0, THEME_NONE,               6,         0,          2,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
-	{      1, OFILE_TSOUL,    13,      16,        0, THEME_NONE,               6,         0,          3,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
-	{      1, OFILE_TSOUL,    13,      16,        0, THEME_NONE,               6,         0,          4,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
-	{      1, OFILE_TSOUL,    13,      16,        0, THEME_NONE,               6,         0,          5,        0,        128, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
-	{      1, OFILE_BOOK2,     6,       6,        0, THEME_NONE,              -1,         0,          4,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
-	{      1, OFILE_L2DOORS,   5,       8,        2, THEME_NONE,              -1,         0,          1,        0,         64, FALSE,      FALSE,     TRUE,            0,        3, TRUE      },
-	{      1, OFILE_L2DOORS,   5,       8,        2, THEME_NONE,              -1,         0,          2,        0,         64, FALSE,      FALSE,     TRUE,            0,        3, FALSE     },
-	{      1, OFILE_WTORCH4,   5,       8,        2, THEME_NONE,              -1,         1,          1,        9,         96, FALSE,      TRUE,      FALSE,           0,        0, FALSE     },
-	{      1, OFILE_WTORCH3,   5,       8,        2, THEME_NONE,              -1,         1,          1,        9,         96, FALSE,      TRUE,      FALSE,           0,        0, FALSE     },
-	{      1, OFILE_WTORCH1,   5,       8,        2, THEME_NONE,              -1,         1,          1,        9,         96, FALSE,      TRUE,      FALSE,           0,        0, FALSE     },
-	{      1, OFILE_WTORCH2,   5,       8,        2, THEME_NONE,              -1,         1,          1,        9,         96, FALSE,      TRUE,      FALSE,           0,        0, FALSE     },
-	{      1, OFILE_SARC,      1,       4,        1, THEME_NONE,              -1,         0,          1,        5,        128, TRUE,       TRUE,      TRUE,            0,        3, TRUE      },
-	{      2, OFILE_FLAME1,    1,       4,        1, THEME_NONE,              -1,         0,          1,       20,         96, FALSE,      TRUE,      TRUE,            0,        0, FALSE     },
-	{      2, OFILE_LEVER,     1,       4,        1, THEME_NONE,              -1,         0,          1,        2,         96, TRUE,       TRUE,      TRUE,            0,        1, TRUE      },
-	{      2, OFILE_MINIWATR,  1,       4,        1, THEME_NONE,              -1,         1,          1,       10,         64, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
-	{      1, OFILE_BOOK1,     3,       4,        1, THEME_NONE,              -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
-	{      1, OFILE_TRAPHOLE,  1,      16,        0, THEME_NONE,              -1,         0,          1,        0,         64, FALSE,      TRUE,      TRUE,            0,        0, FALSE     },
-	{      1, OFILE_TRAPHOLE,  1,      16,        0, THEME_NONE,              -1,         0,          2,        0,         64, FALSE,      TRUE,      TRUE,            0,        0, FALSE     },
-	{      2, OFILE_BCASE,     0,       0,        0, THEME_NONE,              -1,         0,          1,        0,         96, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
-	{      2, OFILE_WEAPSTND,  0,       0,        0, THEME_NONE,              -1,         0,          1,        0,         96, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
-	{      1, OFILE_BARREL,    1,      16,        0, THEME_NONE,              -1,         0,          1,        9,         96, TRUE,       TRUE,      TRUE,            1,        3, FALSE     },
-	{      1, OFILE_BARRELEX,  1,      16,        0, THEME_NONE,              -1,         0,          1,       10,         96, TRUE,       TRUE,      TRUE,            1,        3, FALSE     },
-	{      3, OFILE_LSHRINEG,  0,       0,        0, THEME_SHRINE,            -1,         0,          1,       11,        128, FALSE,      FALSE,     TRUE,            0,        3, FALSE     },
-	{      3, OFILE_RSHRINEG,  0,       0,        0, THEME_SHRINE,            -1,         0,          1,       11,        128, FALSE,      FALSE,     TRUE,            0,        3, FALSE     },
-	{      3, OFILE_BOOK2,     0,       0,        0, THEME_SKELROOM,          -1,         0,          4,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
-	{      3, OFILE_BCASE,     0,       0,        0, THEME_LIBRARY,           -1,         0,          3,        0,         96, FALSE,      FALSE,     TRUE,            0,        3, FALSE     },
-	{      3, OFILE_BCASE,     0,       0,        0, THEME_LIBRARY,           -1,         0,          4,        0,         96, FALSE,      FALSE,     TRUE,            0,        3, FALSE     },
-	{      3, OFILE_BOOK2,     0,       0,        0, THEME_LIBRARY,           -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
-	{      3, OFILE_CANDLE2,   0,       0,        0, THEME_LIBRARY,           -1,         1,          2,        4,         96, TRUE,       TRUE,      TRUE,            0,        0, FALSE     },
-	{      3, OFILE_BLOODFNT,  0,       0,        0, THEME_BLOODFOUNTAIN,     -1,         1,          2,       10,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
-	{      1, OFILE_DECAP,    13,      16,        0, THEME_DECAPITATED,       -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        1, FALSE     },
-	{      1, OFILE_CHEST1,    1,      16,        0, THEME_NONE,              -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        1, TRUE      },
-	{      1, OFILE_CHEST2,    1,      16,        0, THEME_NONE,              -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        1, TRUE      },
-	{      1, OFILE_CHEST3,    1,      16,        0, THEME_NONE,              -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        1, TRUE      },
-	{      1, OFILE_BOOK1,     7,       7,        2, THEME_NONE,               8,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
-	{      1, OFILE_BOOK1,     5,       5,        2, THEME_NONE,               9,         0,          4,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
-	{      1, OFILE_PEDISTL,   5,       5,        2, THEME_NONE,               9,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
-	{      1, OFILE_L3DOORS,   9,      12,        3, THEME_NONE,              -1,         0,          1,        0,         64, FALSE,      FALSE,     TRUE,            0,        3, TRUE      },
-	{      1, OFILE_L3DOORS,   9,      12,        3, THEME_NONE,              -1,         0,          2,        0,         64, FALSE,      FALSE,     TRUE,            0,        3, TRUE      },
-	{      3, OFILE_PFOUNTN,   0,       0,        0, THEME_PURIFYINGFOUNTAIN, -1,         1,          2,       10,        128, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
-	{      3, OFILE_ARMSTAND,  0,       0,        0, THEME_ARMORSTAND,        -1,         0,          1,        0,         96, TRUE,       FALSE,     TRUE,            0,        3, FALSE     },
-	{      3, OFILE_ARMSTAND,  0,       0,        0, THEME_ARMORSTAND,        -1,         0,          2,        0,         96, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
-	{      3, OFILE_GOATSHRN,  0,       0,        0, THEME_GOATSHRINE,        -1,         1,          2,       10,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
-	{      1, OFILE_CAULDREN, 13,      16,        0, THEME_NONE,              -1,         0,          1,        0,         96, TRUE,       FALSE,     TRUE,            0,        3, FALSE     },
-	{      3, OFILE_MFOUNTN,   0,       0,        0, THEME_MURKYFOUNTAIN,     -1,         1,          2,       10,        128, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
-	{      3, OFILE_TFOUNTN,   0,       0,        0, THEME_TEARFOUNTAIN,      -1,         1,          2,        4,        128, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
-	{      1, OFILE_ALTBOY,    0,       0,        1, THEME_NONE,              15,         0,          1,        0,        128, TRUE,       TRUE,      TRUE,            0,        0, FALSE     },
-	{      1, OFILE_MCIRL,     0,       0,        1, THEME_NONE,              15,         0,          1,        0,         96, FALSE,      TRUE,      TRUE,            0,        0, FALSE     },
-	{      1, OFILE_MCIRL,     0,       0,        1, THEME_NONE,              15,         0,          1,        0,         96, FALSE,      TRUE,      TRUE,            0,        0, FALSE     },
-	{      1, OFILE_BKSLBRNT,  4,      12,        0, THEME_NONE,              -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
-	{      1, OFILE_CANDLE2,   2,      12,        0, THEME_NONE,              15,         1,          2,        4,         96, TRUE,       TRUE,      TRUE,            0,        0, FALSE     },
-	{      1, OFILE_BOOK1,    13,      13,        4, THEME_NONE,              11,         0,          4,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, FALSE     },
-	{      1, OFILE_ARMSTAND, 13,      13,        0, THEME_NONE,              11,         0,          1,        0,         96, TRUE,       FALSE,     TRUE,            0,        3, FALSE     },
-	{      2, OFILE_WEAPSTND, 13,      13,        0, THEME_NONE,              11,         0,          1,        0,         96, TRUE,       FALSE,     TRUE,            0,        3, FALSE     },
-	{      2, OFILE_BURNCROS,  0,       0,        0, THEME_BRNCROSS,          -1,         1,          0,       10,        160, TRUE,       FALSE,     FALSE,           0,        0, FALSE     },
-	{      2, OFILE_WEAPSTND,  0,       0,        0, THEME_WEAPONRACK,        -1,         0,          1,        0,         96, TRUE,       FALSE,     TRUE,            0,        3, FALSE     },
-	{      2, OFILE_WEAPSTND,  0,       0,        0, THEME_WEAPONRACK,        -1,         0,          2,        0,         96, TRUE,       FALSE,     TRUE,            0,        0, FALSE     },
-	{      2, OFILE_MUSHPTCH,  0,       0,        0, THEME_NONE,               1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        3, TRUE      },
-	{      2, OFILE_LZSTAND,   0,       0,        0, THEME_NONE,              15,         0,          1,        0,        128, TRUE,       FALSE,     TRUE,            0,        3, FALSE     },
-	{      1, OFILE_DECAP,     9,       9,        3, THEME_NONE,              -1,         0,          2,        0,         96, TRUE,       TRUE,      TRUE,            0,        1, FALSE     },
-	{      2, OFILE_CHEST3,    0,       0,        0, THEME_NONE,              -1,         0,          1,        0,         96, TRUE,       TRUE,      TRUE,            0,        1, TRUE      },
-	{     -1, 0,               0,       0,       -1, THEME_NONE,              -1,         0,          0,        0,          0, FALSE,      FALSE,     FALSE,           0,        0, FALSE     }
-	// clang-format on
-};
-char *ObjMasterLoadList[56] = {
-	"L1Braz",
-	"L1Doors",
-	"Lever",
-	"Chest1",
-	"Chest2",
-	"Banner",
-	"SkulPile",
-	"SkulFire",
-	"SkulStik",
-	"CruxSk1",
-	"CruxSk2",
-	"CruxSk3",
-	"Book1",
-	"Book2",
-	"Rockstan",
-	"Angel",
-	"Chest3",
-	"Burncros",
-	"Candle2",
-	"Nude2",
-	"Switch4",
-	"TNudeM",
-	"TNudeW",
-	"TSoul",
-	"L2Doors",
-	"WTorch4",
-	"WTorch3",
-	"Sarc",
-	"Flame1",
-	"Prsrplt1",
-	"Traphole",
-	"MiniWatr",
-	"WTorch2",
-	"WTorch1",
-	"BCase",
-	"BShelf",
-	"WeapStnd",
-	"Barrel",
-	"Barrelex",
-	"LShrineG",
-	"RShrineG",
-	"Bloodfnt",
-	"Decap",
-	"Pedistl",
-	"L3Doors",
-	"PFountn",
-	"Armstand",
-	"Goatshrn",
-	"Cauldren",
-	"MFountn",
-	"TFountn",
-	"Altboy",
-	"Mcirl",
-	"Bkslbrnt",
-	"Mushptch",
-	"LzStand"
-};
 int bxadd[8] = { -1, 0, 1, -1, 1, -1, 0, 1 };
 int byadd[8] = { -1, -1, -1, 0, 0, 1, 1, 1 };
 char *shrinestrs[NUM_SHRINETYPE] = {
@@ -821,91 +544,59 @@ void AddChestTraps()
 
 void LoadMapObjects(unsigned char *pMap, int startx, int starty, int x1, int y1, int w, int h, int leveridx)
 {
-	unsigned char *v8;  // ebx
-	int v9;             // esi
-	int v10;            // ecx
-	int v11;            // eax
-	int v12;            // ecx
-	int v13;            // eax
-	int v14;            // esi
-	unsigned char *v15; // ebx
-	int i;              // edi
-	int v17;            // eax
-	int v18;            // [esp+8h] [ebp-10h]
-	int v19;            // [esp+Ch] [ebp-Ch]
-	int v20;            // [esp+10h] [ebp-8h]
-	int v21;            // [esp+14h] [ebp-4h]
-	int y;              // [esp+20h] [ebp+8h]
+	int rw, rh, i, j, oi;
+	BYTE *lm;
+	long mapoff;
 
-	v8 = pMap + 2;
 	InitObjFlag = TRUE;
-	v9 = *pMap;
-	v10 = pMap[2];
-	v11 = v10;
-	v12 = 2 * v10;
-	v20 = startx;
-	v13 = v9 * v11;
-	v14 = 2 * v9;
-	v19 = v14;
-	v18 = v12;
-	v15 = &v8[4 * v14 * v12 + 2 + 2 * v13];
-	if (v12 > 0) {
-		v21 = -16 - starty;
-		y = starty + 16;
-		do {
-			for (i = 0; i < v14; ++i) {
-				if (*v15) {
-					AddObject(ObjTypeConv[*v15], i + v20 + 16, y);
-					v17 = ObjIndex(i + v20 + 16, y);
-					SetObjMapRange(v17, x1, y1, x1 + w, y1 + h, leveridx);
-					v14 = v19;
-					v12 = v18;
-				}
-				v15 += 2;
+
+	lm = pMap + 2;
+	rw = pMap[0];
+	rh = *lm;
+	mapoff = (rw * rh + 1) * 2;
+	rw <<= 1;
+	rh <<= 1;
+	mapoff += rw * 2 * rh * 2;
+	lm += mapoff;
+
+	for (j = 0; j < rh; j++) {
+		for (i = 0; i < rw; i++) {
+			if (*lm) {
+				AddObject(ObjTypeConv[*lm], startx + 16 + i, starty + 16 + j);
+				oi = ObjIndex(startx + 16 + i, starty + 16 + j);
+				SetObjMapRange(oi, x1, y1, x1 + w, y1 + h, leveridx);
 			}
-			++y;
-		} while (y + v21 < v12);
+			lm += 2;
+		}
 	}
 	InitObjFlag = FALSE;
 }
 
 void LoadMapObjs(unsigned char *pMap, int startx, int starty)
 {
-	unsigned char *v3;  // esi
-	int v4;             // eax
-	int v5;             // edi
-	int v6;             // ecx
-	int v7;             // eax
-	int v8;             // ecx
-	int v9;             // edi
-	unsigned char *v10; // esi
-	int i;              // ebx
-	int v12;            // [esp+8h] [ebp-8h]
-	int v13;            // [esp+Ch] [ebp-4h]
-	int y;              // [esp+18h] [ebp+8h]
+	int rw, rh;
+	int i, j;
+	unsigned char *lm;
+	long mapoff;
 
-	v3 = pMap + 2;
 	InitObjFlag = TRUE;
-	v4 = pMap[2];
-	v5 = *pMap;
-	v6 = v4;
-	v7 = 2 * v4;
-	v12 = startx;
-	v8 = v5 * v6;
-	v9 = 2 * v5;
-	v10 = &v3[4 * v9 * v7 + 2 + 2 * v8];
-	if (v7 > 0) {
-		v13 = v7;
-		y = starty + 16;
-		do {
-			for (i = 0; i < v9; ++i) {
-				if (*v10)
-					AddObject(ObjTypeConv[*v10], i + v12 + 16, y);
-				v10 += 2;
+	lm = pMap;
+	rw = *lm;
+	lm += 2;
+	rh = *lm;
+	mapoff = (rw * rh + 1) * 2;
+	rw <<= 1;
+	rh <<= 1;
+	mapoff += 2 * rw * rh * 2;
+	lm += mapoff;
+
+	for (j = 0; j < rh; j++) {
+		for (i = 0; i < rw; i++) {
+			if (*lm) {
+				AddObject(ObjTypeConv[*lm], startx + 16 + i, starty + 16 + j);
 			}
-			++y;
-			--v13;
-		} while (v13);
+			lm += 2;
+		}
 	}
 	InitObjFlag = FALSE;
 }
@@ -1160,94 +851,63 @@ void InitObjects()
 
 void SetMapObjects(unsigned char *pMap, int startx, int starty)
 {
-	unsigned char *v3;  // esi
-	int v6;             // edi
-	int v7;             // eax
-	int v8;             // esi
-	int v9;             // ecx
-	int v10;            // esi
-	int v11;            // ecx
-	int v12;            // edi
-	_BYTE *v13;         // eax
-	int v14;            // ebx
-	signed int v15;     // ebx
-	char *v16;          // ST08_4
-	unsigned char *v17; // eax
-	int v18;            // ecx
-	int i;              // ebx
-	int fileload[56];   // [esp+Ch] [ebp-10Ch]
-	char filestr[32];   // [esp+ECh] [ebp-2Ch]
-	_BYTE *v22;         // [esp+10Ch] [ebp-Ch]
-	int v23;            // [esp+110h] [ebp-8h]
-	_BYTE *v24;         // [esp+114h] [ebp-4h]
-	int y;              // [esp+120h] [ebp+8h]
+	int rw, rh;
+	int i, j;
+	unsigned char *lm, *h;
+	long mapoff;
+	int fileload[56];
+	char filestr[32];
 
-	v23 = startx;
-	v3 = pMap;
 	ClrAllObjects();
-	memset(fileload, 0, sizeof(fileload));
+	for (i = 0; i < 56; i++)
+		fileload[i] = 0;
 	InitObjFlag = TRUE;
-	if (AllObjects[0].oload != -1) {
-		i = 0;
-		do {
-			if (AllObjects[i].oload == 1 && leveltype == AllObjects[i].olvltype)
-				fileload[AllObjects[i].ofindex] = 1;
-			i++;
-		} while (AllObjects[i].oload != -1);
+
+	for (i = 0; AllObjects[i].oload != -1; i++) {
+		if (AllObjects[i].oload == 1 && leveltype == AllObjects[i].olvltype)
+			fileload[AllObjects[i].ofindex] = 1;
 	}
-	v6 = (unsigned char)*v3;
-	v7 = (int)(v3 + 2);
-	v8 = (unsigned char)v3[2];
-	v9 = v8;
-	v10 = 2 * v8;
-	v11 = v6 * v9;
-	v12 = 2 * v6;
-	v13 = (_BYTE *)(2 * v11 + 2 + 4 * v12 * v10 + v7);
-	v22 = v13;
-	if (v10 > 0) {
-		v24 = (_BYTE *)v10;
-		do {
-			if (v12 > 0) {
-				v14 = v12;
-				do {
-					if (*v13)
-						fileload[(char)AllObjects[ObjTypeConv[(unsigned char)*v13]].ofindex] = 1;
-					v13 += 2;
-					--v14;
-				} while (v14);
+
+	lm = pMap;
+	rw = *lm;
+	lm += 2;
+	rh = *lm;
+	mapoff = (rw * rh + 1) * 2;
+	rw <<= 1;
+	rh <<= 1;
+	mapoff += 2 * rw * rh * 2;
+	lm += mapoff;
+	h = lm;
+
+	for (j = 0; j < rh; j++) {
+		for (i = 0; i < rw; i++) {
+			if (*lm) {
+				fileload[AllObjects[ObjTypeConv[*lm]].ofindex] = 1;
 			}
-			--v24;
-		} while (v24);
-	}
-	v15 = 0;
-	do {
-		if (fileload[v15]) {
-			v16 = ObjMasterLoadList[v15];
-			ObjFileList[numobjfiles] = v15;
-			sprintf(filestr, "Objects\\%s.CEL", v16);
-			v17 = LoadFileInMem(filestr, 0);
-			v18 = numobjfiles++;
-			pObjCels[v18] = v17;
+			lm += 2;
 		}
-		++v15;
-	} while (v15 < 56);
-	v24 = v22;
-	if (v10 > 0) {
-		y = starty + 16;
-		do {
-			for (i = 0; i < v12; ++i) {
-				if (*v24)
-					AddObject(ObjTypeConv[(unsigned char)*v24], i + v23 + 16, y);
-				v24 += 2;
-			}
-			++y;
-			--v10;
-		} while (v10);
+	}
+
+	for (i = 0; i < 56; i++) {
+		if (!fileload[i])
+			continue;
+
+		ObjFileList[numobjfiles] = i;
+		sprintf(filestr, "Objects\\%s.CEL", ObjMasterLoadList[i]);
+		pObjCels[numobjfiles] = LoadFileInMem(filestr, 0);
+		numobjfiles++;
+	}
+
+	lm = h;
+	for (j = 0; j < rh; j++) {
+		for (i = 0; i < rw; i++) {
+			if (*lm)
+				AddObject(ObjTypeConv[*lm], startx + 16 + i, starty + 16 + j);
+			lm += 2;
+		}
 	}
 	InitObjFlag = FALSE;
 }
-// 67D7C4: using guessed type int numobjfiles;
-// 4427C5: using guessed type int var_10C[56];
 
 void DeleteObject_(int oi, int i)
 {
@@ -1926,11 +1586,11 @@ void Obj_Door(int i)
 		object[i]._oSelFlag = 2;
 		object[i]._oMissFlag = TRUE;
 		object[i]._oVar4 = (((dItem[dx][dy] == 0 ? 1 : 0)
-					& (dDead[dx][dy] == 0 ? 1 : 0)
-					& (dPlayer[dx][dy] == 0 ? 1 : 0)
-					& (dMonster[dx][dy] == 0 ? 1 : 0))
-				== 0)
-			+ 1;
+		                        & (dDead[dx][dy] == 0 ? 1 : 0)
+		                        & (dPlayer[dx][dy] == 0 ? 1 : 0)
+		                        & (dMonster[dx][dy] == 0 ? 1 : 0))
+		                       == 0)
+		    + 1;
 	}
 }
 
@@ -3312,12 +2972,12 @@ void OperateShrine(int pnum, int i, int sType)
 		if (deltaload || pnum != myplr)
 			return;
 		for (j = 0; j < 7; j++) {
-			if (plr[pnum].InvBody[j]._itype != -1)
+			if (plr[pnum].InvBody[j]._itype != ITYPE_NONE)
 				v12++;
 		}
 		if (v12 > 0) {
 			for (j = 0; j < 7; j++) {
-				if (plr[pnum].InvBody[j]._itype != -1
+				if (plr[pnum].InvBody[j]._itype != ITYPE_NONE
 				    && plr[pnum].InvBody[j]._iMaxDur != 255
 				    && plr[pnum].InvBody[j]._iMaxDur) {
 					plr[pnum].InvBody[j]._iDurability += 10;
@@ -3328,7 +2988,7 @@ void OperateShrine(int pnum, int i, int sType)
 			}
 			v12 = 0;
 			for (j = 0; j < 7; j++) {
-				if (plr[pnum].InvBody[j]._itype != -1
+				if (plr[pnum].InvBody[j]._itype != ITYPE_NONE
 				    && plr[pnum].InvBody[j]._iMaxDur != 255
 				    && plr[pnum].InvBody[j]._iMaxDur)
 					v12++;
@@ -3336,7 +2996,7 @@ void OperateShrine(int pnum, int i, int sType)
 			if (v12 > 0) { // check
 				do {
 					v21 = random(0, 7);
-				} while (plr[pnum].InvBody[v21]._itype == -1 || plr[pnum].InvBody[v21]._iMaxDur == 255 || !plr[pnum].InvBody[v21]._iMaxDur);
+				} while (plr[pnum].InvBody[v21]._itype == ITYPE_NONE || plr[pnum].InvBody[v21]._iMaxDur == 255 || !plr[pnum].InvBody[v21]._iMaxDur);
 
 				plr[pnum].InvBody[v21]._iDurability -= 20;
 				plr[pnum].InvBody[v21]._iMaxDur -= 20;
@@ -3352,11 +3012,11 @@ void OperateShrine(int pnum, int i, int sType)
 		if (deltaload)
 			return;
 		if (pnum == myplr) {
-			if (plr[pnum].InvBody[INVLOC_HEAD]._itype != -1)
+			if (plr[pnum].InvBody[INVLOC_HEAD]._itype != ITYPE_NONE)
 				plr[pnum].InvBody[INVLOC_HEAD]._iAC += 2;
-			if (plr[pnum].InvBody[INVLOC_CHEST]._itype != -1)
+			if (plr[pnum].InvBody[INVLOC_CHEST]._itype != ITYPE_NONE)
 				plr[pnum].InvBody[INVLOC_CHEST]._iAC += 2;
-			if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != -1) {
+			if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE) {
 				if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_SHIELD) {
 					plr[pnum].InvBody[INVLOC_HAND_LEFT]._iAC += 2;
 				} else {
@@ -3365,7 +3025,7 @@ void OperateShrine(int pnum, int i, int sType)
 						plr[pnum].InvBody[INVLOC_HAND_LEFT]._iMaxDam = plr[pnum].InvBody[INVLOC_HAND_LEFT]._iMinDam;
 				}
 			}
-			if (plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype != -1) {
+			if (plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype != ITYPE_NONE) {
 				if (plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_SHIELD) {
 					plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iAC += 2;
 				} else {
@@ -3392,9 +3052,9 @@ void OperateShrine(int pnum, int i, int sType)
 		if (deltaload)
 			return;
 		if (pnum == myplr) {
-			if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != -1 && plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_SHIELD)
+			if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_SHIELD)
 				plr[pnum].InvBody[INVLOC_HAND_LEFT]._iMaxDam++;
-			if (plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype != -1 && plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype != ITYPE_SHIELD)
+			if (plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype != ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype != ITYPE_SHIELD)
 				plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iMaxDam++;
 			for (j = 0; j < plr[pnum]._pNumInv; j++) {
 				if (plr[pnum].InvList[j]._itype > 0 && (plr[pnum].InvList[j]._itype <= ITYPE_MACE || plr[pnum].InvList[j]._itype == ITYPE_STAFF))
