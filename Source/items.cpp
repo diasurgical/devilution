@@ -3406,7 +3406,7 @@ void PrintItemPower(char plidx, ItemStruct *x)
 			strcpy(tempstr, "hit steals 5% mana");
 		break;
 	case IPL_STEALLIFE:
-		if (x->_iFlags & 0x8000)
+		if (x->_iFlags & ISPL_STEALLIFE_3)
 			strcpy(tempstr, "hit steals 3% life");
 		if (x->_iFlags & ISPL_STEALLIFE_5)
 			strcpy(tempstr, "hit steals 5% life");
