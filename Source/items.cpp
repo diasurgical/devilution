@@ -3408,7 +3408,7 @@ void PrintItemPower(char plidx, ItemStruct *x)
 	case IPL_STEALLIFE:
 		if (x->_iFlags & 0x8000)
 			strcpy(tempstr, "hit steals 3% life");
-		if (x->_iFlags & 1)
+		if (x->_iFlags & ISPL_STEALLIFE_5)
 			strcpy(tempstr, "hit steals 5% life");
 		break;
 	case IPL_TARGAC:
