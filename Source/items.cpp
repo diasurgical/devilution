@@ -1138,74 +1138,60 @@ void GetBookSpell(int i, int lvl)
 		item[i]._iCurs = ICURS_BOOK_GREY;
 }
 
-void GetStaffPower(int i, int lvl, int bs, unsigned char onlygood)
+void GetStaffPower(int i, int lvl, int bs, BOOL onlygood)
 {
-	int v4;         // esi
-	int v5;         // ebx
-	int v6;         // edx
-	int v7;         // ecx
-	int v9;         // edi
-	int v10;        // ecx
-	int v11;        // ST14_4
-	int v12;        // esi
-	char *v13;      // edi
-	int l[256];     // [esp+Ch] [ebp-484h]
-	char istr[128]; // [esp+40Ch] [ebp-84h]
-	int ia;         // [esp+48Ch] [ebp-4h]
-	char *v17;      // [esp+49Ch] [ebp+Ch]
+	int l[256];
+	char istr[128];
+	int nl, j, preidx;
+	BYTE addok;
 
-	v4 = lvl;
-	ia = i;
-	v5 = -1;
-	if (!random(15, 10) || onlygood) {
-		v6 = 0;
-		v7 = 0;
-		if (PL_Prefix[0].PLPower != -1) {
-			do {
-				if (PL_Prefix[v7].PLIType & 0x100 && PL_Prefix[v7].PLMinLvl <= v4 && (!onlygood || PL_Prefix[v7].PLOk)) {
-					l[v6++] = v7;
-					if (PL_Prefix[v7].PLDouble)
-						l[v6++] = v7;
+	preidx = -1;
+	if (random(15, 10) == 0 || onlygood) {
+		nl = 0;
+		for (j = 0; PL_Prefix[j].PLPower != -1; j++) {
+			if (PL_Prefix[j].PLIType & PLT_STAFF && PL_Prefix[j].PLMinLvl <= lvl) {
+				addok = TRUE;
+				if (onlygood && !PL_Prefix[j].PLOk)
+					addok = FALSE;
+				if (addok) {
+					l[nl] = j;
+					nl++;
+					if (PL_Prefix[j].PLDouble) {
+						l[nl] = j;
+						nl++;
+					}
 				}
-				++v7;
-			} while (PL_Prefix[v7].PLPower != -1);
-			if (v6) {
-				v5 = l[random(16, v6)];
-				v9 = ia;
-				v17 = item[ia]._iIName;
-				sprintf(istr, "%s %s", PL_Prefix[v5].PLName, item[ia]._iIName);
-				strcpy(v17, istr);
-				v10 = ia;
-				v11 = PL_Prefix[v5].PLMultVal;
-				item[v9]._iMagical = ITEM_QUALITY_MAGIC;
-				SaveItemPower(
-				    v10,
-				    PL_Prefix[v5].PLPower,
-				    PL_Prefix[v5].PLParam1,
-				    PL_Prefix[v5].PLParam2,
-				    PL_Prefix[v5].PLMinVal,
-				    PL_Prefix[v5].PLMaxVal,
-				    v11);
-				item[v9]._iPrePower = PL_Prefix[v5].PLPower;
 			}
 		}
-	}
-	v12 = ia;
-	v13 = item[ia]._iIName;
-	if (!control_WriteStringToBuffer((BYTE *)item[ia]._iIName)) {
-		strcpy(v13, AllItemsList[item[v12].IDidx].iSName);
-		if (v5 != -1) {
-			sprintf(istr, "%s %s", PL_Prefix[v5].PLName, v13);
-			strcpy(v13, istr);
+		if (nl != 0) {
+			preidx = l[random(16, nl)];
+			sprintf(istr, "%s %s", PL_Prefix[preidx].PLName, item[i]._iIName);
+			strcpy(item[i]._iIName, istr);
+			item[i]._iMagical = ITEM_QUALITY_MAGIC;
+			SaveItemPower(
+			    i,
+			    PL_Prefix[preidx].PLPower,
+			    PL_Prefix[preidx].PLParam1,
+			    PL_Prefix[preidx].PLParam2,
+			    PL_Prefix[preidx].PLMinVal,
+			    PL_Prefix[preidx].PLMaxVal,
+			    PL_Prefix[preidx].PLMultVal);
+			item[i]._iPrePower = PL_Prefix[preidx].PLPower;
 		}
-		sprintf(istr, "%s of %s", v13, spelldata[bs].sNameText);
-		strcpy(v13, istr);
-		if (item[v12]._iMagical == ITEM_QUALITY_NORMAL)
-			strcpy(item[v12]._iName, v13);
 	}
-	CalcItemValue(ia);
+	if (!control_WriteStringToBuffer((BYTE *)item[i]._iIName)) {
+		strcpy(item[i]._iIName, AllItemsList[item[i].IDidx].iSName);
+		if (preidx != -1) {
+			sprintf(istr, "%s %s", PL_Prefix[preidx].PLName, item[i]._iIName);
+			strcpy(item[i]._iIName, istr);
+		}
+		sprintf(istr, "%s of %s", item[i]._iIName, spelldata[bs].sNameText);
+		strcpy(item[i]._iIName, istr);
+		if (item[i]._iMagical == ITEM_QUALITY_NORMAL)
+			strcpy(item[i]._iName, item[i]._iIName);
+	}
+	CalcItemValue(i);
 }
-// 420514: using guessed type int var_484[256];
 
 void GetStaffSpell(int i, int lvl, unsigned char onlygood)
 {
