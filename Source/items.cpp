@@ -3275,6 +3275,8 @@ void PrintItemPower(char plidx, ItemStruct *x)
 		sprintf(tempstr, "%+i%% armor", x->_iPLAC);
 		break;
 	case IPL_SETAC:
+		sprintf(tempstr, "armor class: %i", x->_iAC);
+		break;
 	case IPL_AC_CURSE:
 		sprintf(tempstr, "armor class: %i", x->_iAC);
 		break;
@@ -3400,7 +3402,7 @@ void PrintItemPower(char plidx, ItemStruct *x)
 		strcpy(tempstr, "hit monster doesn't heal");
 		break;
 	case IPL_STEALMANA:
-		if (x->_iFlags & 0x2000)
+		if (x->_iFlags & ISPL_STEALMANA_3)
 			strcpy(tempstr, "hit steals 3% mana");
 		if (x->_iFlags & ISPL_STEALMANA_5)
 			strcpy(tempstr, "hit steals 5% mana");
