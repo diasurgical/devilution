@@ -1163,7 +1163,7 @@ void GetStaffPower(int i, int lvl, int bs, BOOL onlygood)
 				}
 			}
 		}
-		if (nl) {
+		if (nl != 0) {
 			preidx = l[random(16, nl)];
 			sprintf(istr, "%s %s", PL_Prefix[preidx].PLName, item[i]._iIName);
 			strcpy(item[i]._iIName, istr);
