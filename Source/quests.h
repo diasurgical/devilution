@@ -4,7 +4,7 @@
 
 extern int qtopline; // idb
 extern BOOL questlog;
-extern void *pQLogCel;
+extern BYTE *pQLogCel;
 extern QuestStruct quests[MAXQUESTS];
 extern int qline; // weak
 extern int qlist[MAXQUESTS];
