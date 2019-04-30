@@ -117,7 +117,7 @@ void control_reset_talk();
 BOOL control_talk_last_key(int vkey);
 int control_presskeys(int a1);
 void control_press_enter();
-void control_up_down(char a1);
+void control_up_down(int v);
 
 /* rdata */
 extern const unsigned char fontframe[128];

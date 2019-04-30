@@ -1,7 +1,7 @@
 #include "diablo.h"
 
 char sgbNextTalkSave; // weak
-char sgbTalkSavePos;  // weak
+BYTE sgbTalkSavePos;  // weak
 void *pDurIcons;
 void *pChrButtons;
 BOOL drawhpflag; // idb
@@ -2976,21 +2976,19 @@ void control_press_enter()
 // 4B84CC: using guessed type char sgbNextTalkSave;
 // 4B84CD: using guessed type char sgbTalkSavePos;
 
-void control_up_down(char a1)
+void control_up_down(int v)
 {
-	unsigned char v1; // al
-	int v2;           // esi
+	int i;
 
-	v1 = sgbTalkSavePos;
-	v2 = 0;
+	i = 0;
 	while (1) {
-		v1 = (a1 + v1) & 7;
-		sgbTalkSavePos = v1;
-		if (sgszTalkSave[v1][0])
+		sgbTalkSavePos = (v + sgbTalkSavePos) & 7;
+		if (sgszTalkSave[sgbTalkSavePos][0])
 			break;
-		if (++v2 >= 8)
+		i++;
+		if (i >= 8) {
 			return;
+		}
 	}
-	strcpy(sgszTalkMsg, sgszTalkSave[v1]);
+	strcpy(sgszTalkMsg, sgszTalkSave[sgbTalkSavePos]);
 }
-// 4B84CD: using guessed type char sgbTalkSavePos;
