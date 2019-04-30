@@ -16,7 +16,7 @@ void TakeGoldCheat();
 void MaxSpellsCheat();
 void SetSpellLevelCheat(char spl, int spllvl);
 void SetAllSpellsCheat();
-void PrintDebugPlayer(BOOLEAN bNextPlayer);
+void PrintDebugPlayer(BOOL bNextPlayer);
 void PrintDebugQuest();
 void PrintDebugMonster(int m);
 void GetDebugMonster();
