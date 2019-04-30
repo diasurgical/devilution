@@ -1490,10 +1490,10 @@ void PressChar(int vkey)
 		}
 		break;
 	case 'D':
-		PrintDebugPlayer(1);
+		PrintDebugPlayer(TRUE);
 		break;
 	case 'd':
-		PrintDebugPlayer(0);
+		PrintDebugPlayer(FALSE);
 		break;
 	case 'e':
 		if(debug_mode_key_d) {
