@@ -2782,29 +2782,30 @@ char *control_print_talk_msg(char *msg, int x, int y, int *a4, int just)
 	return v6;
 }
 
-int control_check_talk_btn()
+BOOL control_check_talk_btn()
 {
-	int v0;     // ecx
-	int result; // eax
+	int i;
 
 	if (!talkflag)
-		return 0;
+		return FALSE;
+
 	if (MouseX < 172)
-		return 0;
-	v0 = MouseY;
-	if (MouseY < 421 || MouseX > 233)
-		return 0;
-	result = 0;
-	if (MouseY <= 475) {
-		talkbtndown[0] = FALSE;
-		talkbtndown[1] = FALSE;
-		talkbtndown[2] = FALSE;
-		talkbtndown[(v0 - 421) / 18] = TRUE;
-		result = 1;
+		return FALSE;
+	if (MouseY < 421)
+		return FALSE;
+	if (MouseX > 233)
+		return FALSE;
+	if (MouseY > 475)
+		return FALSE;
+
+	for (i = 0; i < sizeof(talkbtndown) / sizeof(talkbtndown[0]); i++) {
+		talkbtndown[i] = FALSE;
 	}
-	return result;
+
+	talkbtndown[(MouseY - 421) / 18] = TRUE;
+
+	return TRUE;
 }
-// 4B8960: using guessed type int talkflag;
 
 void control_release_talk_btn()
 {
