@@ -6,8 +6,8 @@ extern void *pDurIcons;
 extern void *pChrButtons;
 extern BOOL drawhpflag;  // idb
 extern BOOL dropGoldFlag;
-extern WORD panbtn[8];
-extern WORD chrbtn[4];
+extern int panbtn[8];
+extern int chrbtn[4];
 extern void *pMultiBtns;
 extern void *pPanelButtons;
 extern void *pChrPanel;
@@ -23,7 +23,7 @@ extern void *pTalkBtns;
 extern int pstrjust[4];
 extern int pnumlines; // idb
 extern BOOL pinfoflag;
-extern WORD talkbtndown[3];
+extern BOOL talkbtndown[3];
 extern int pSpell; // weak
 extern BYTE *pManaBuff;
 extern char infoclr; // weak
