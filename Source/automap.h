@@ -3,17 +3,17 @@
 #define __AUTOMAP_H__
 
 extern WORD automaptype[512];
-extern BOOL automapflag; // idb
+extern BOOL automapflag;
 extern char AmShiftTab[32];
 extern unsigned char automapview[DMAXX][DMAXY];
-extern int AutoMapScale;   // idb
-extern int AutoMapXOfs;    // weak
-extern int AutoMapYOfs;    // weak
-extern int AutoMapPosBits; // weak
-extern int AutoMapXPos;    // weak
-extern int AutoMapYPos;    // weak
-extern int AMPlayerX;      // weak
-extern int AMPlayerY;      // weak
+extern int AutoMapScale;
+extern int AutoMapXOfs;
+extern int AutoMapYOfs;
+extern int AutoMapPosBits;
+extern int AutoMapXPos;
+extern int AutoMapYPos;
+extern int AMPlayerX;
+extern int AMPlayerY;
 
 void InitAutomapOnce();
 void InitAutomap();
