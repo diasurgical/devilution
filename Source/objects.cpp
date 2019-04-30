@@ -111,8 +111,6 @@ void InitObjectGFX()
 		}
 	}
 }
-// 67D7C4: using guessed type int numobjfiles;
-// 44121D: using guessed type char fileload[56];
 
 void FreeObjectGFX()
 {
@@ -123,7 +121,6 @@ void FreeObjectGFX()
 	}
 	numobjfiles = 0;
 }
-// 67D7C4: using guessed type int numobjfiles;
 
 BOOL RndLocOk(int xp, int yp)
 {
@@ -251,8 +248,6 @@ void ClrAllObjects()
 	trapid = 1;
 	leverid = 1;
 }
-// 679768: using guessed type int trapid;
-// 67976C: using guessed type int trapdir;
 
 void AddTortures()
 {
@@ -540,7 +535,7 @@ void AddChestTraps()
 	}
 }
 
-void LoadMapObjects(unsigned char *pMap, int startx, int starty, int x1, int y1, int w, int h, int leveridx)
+void LoadMapObjects(BYTE *pMap, int startx, int starty, int x1, int y1, int w, int h, int leveridx)
 {
 	int rw, rh, i, j, oi;
 	BYTE *lm;
@@ -570,11 +565,11 @@ void LoadMapObjects(unsigned char *pMap, int startx, int starty, int x1, int y1,
 	InitObjFlag = FALSE;
 }
 
-void LoadMapObjs(unsigned char *pMap, int startx, int starty)
+void LoadMapObjs(BYTE *pMap, int startx, int starty)
 {
 	int rw, rh;
 	int i, j;
-	unsigned char *lm;
+	BYTE *lm;
 	long mapoff;
 
 	InitObjFlag = TRUE;
@@ -601,7 +596,7 @@ void LoadMapObjs(unsigned char *pMap, int startx, int starty)
 
 void AddDiabObjs()
 {
-	unsigned char *lpSetPiece; // esi
+	BYTE *lpSetPiece;
 
 	lpSetPiece = LoadFileInMem("Levels\\L4Data\\diab1.DUN", 0);
 	LoadMapObjects(lpSetPiece, 2 * diabquad1x, 2 * diabquad1y, diabquad2x, diabquad2y, 11, 12, 1);
@@ -613,8 +608,6 @@ void AddDiabObjs()
 	LoadMapObjects(lpSetPiece, 2 * diabquad3x, 2 * diabquad3y, diabquad4x, diabquad4y, 9, 9, 3);
 	mem_free_dbg(lpSetPiece);
 }
-// 5289C4: using guessed type int diabquad1x;
-// 5289C8: using guessed type int diabquad1y;
 
 void AddStoryBooks()
 {
@@ -745,7 +738,7 @@ void AddLazStand()
 void InitObjects()
 {
 	int sp_id;
-	unsigned char *mem;
+	BYTE *mem;
 
 	ClrAllObjects();
 	if (currlevel == 16) {
@@ -843,9 +836,6 @@ void InitObjects()
 		InitObjFlag = FALSE;
 	}
 }
-// 5CF330: using guessed type int setpc_h;
-// 5CF334: using guessed type int setpc_w;
-// 679660: using guessed type char gbMaxPlayers;
 
 void SetMapObjects(unsigned char *pMap, int startx, int starty)
 {
@@ -997,8 +987,6 @@ void AddSCambBook(int i)
 	object[i]._oVar4 = setpc_h + setpc_y + 1;
 	object[i]._oVar6 = object[i]._oAnimFrame + 1;
 }
-// 5CF330: using guessed type int setpc_h;
-// 5CF334: using guessed type int setpc_w;
 
 void AddChest(int i, int t)
 {
@@ -1033,32 +1021,25 @@ void AddChest(int i, int t)
 	}
 	object[i]._oVar2 = random(147, 8);
 }
-// 5CF31D: using guessed type char setlevel;
 
 void AddL2Door(int i, int x, int y, int ot)
 {
-	int v4; // esi
-
-	v4 = i;
 	object[i]._oDoorFlag = TRUE;
 	if (ot == OBJ_L2LDOOR)
 		ObjSetMicro(x, y, 538);
 	else
 		ObjSetMicro(x, y, 540);
-	object[v4]._oVar4 = 0;
+	object[i]._oVar4 = 0;
 }
 
 void AddL3Door(int i, int x, int y, int ot)
 {
-	int v4; // esi
-
-	v4 = i;
 	object[i]._oDoorFlag = TRUE;
 	if (ot == OBJ_L3LDOOR)
 		ObjSetMicro(x, y, 531);
 	else
 		ObjSetMicro(x, y, 534);
-	object[v4]._oVar4 = 0;
+	object[i]._oVar4 = 0;
 }
 
 void AddSarc(int i)
@@ -1077,15 +1058,12 @@ void AddFlameTrap(int i)
 	object[i]._oVar3 = trapdir;
 	object[i]._oVar4 = 0;
 }
-// 679768: using guessed type int trapid;
-// 67976C: using guessed type int trapdir;
 
 void AddFlameLvr(int i)
 {
 	object[i]._oVar1 = trapid;
 	object[i]._oVar2 = 49;
 }
-// 679768: using guessed type int trapid;
 
 void AddTrap(int i, int t)
 {
@@ -1157,8 +1135,6 @@ void AddShrine(int i)
 		object[i]._oAnimLen = 22;
 	}
 }
-// 679660: using guessed type char gbMaxPlayers;
-// 442E0F: using guessed type int var_68[26];
 
 void AddBookcase(int i)
 {
@@ -1234,12 +1210,10 @@ void AddDecap(int i)
 
 void AddVilebook(int i)
 {
-	if (setlevel) {
-		if (setlvlnum == SL_VILEBETRAYER)
-			object[i]._oAnimFrame = 4;
+	if (setlevel && setlvlnum == SL_VILEBETRAYER) {
+		object[i]._oAnimFrame = 4;
 	}
 }
-// 5CF31D: using guessed type char setlevel;
 
 void AddMagicCircle(int i)
 {
@@ -1325,9 +1299,8 @@ void GetRndObjLoc(int randarea, int *xx, int *yy)
 
 void AddMushPatch()
 {
-	int i; // bl
-	int y; // [esp+0h] [ebp-8h]
-	int x; // [esp+4h] [ebp-4h]
+	int i;
+	int y, x;
 
 	if (nobjects < MAXOBJECTS) {
 		i = objectavail[0];
@@ -1341,8 +1314,7 @@ void AddMushPatch()
 
 void AddSlainHero()
 {
-	int x; // [esp+0h] [ebp-8h]
-	int y; // [esp+4h] [ebp-4h]
+	int x, y;
 
 	GetRndObjLoc(5, &x, &y);
 	AddObject(OBJ_SLAINHERO, x + 2, y + 2);
@@ -1523,8 +1495,7 @@ void Obj_Light(int i, int lr)
 
 void Obj_Circle(int i)
 {
-	int ox;
-	int oy;
+	int ox, oy;
 
 	ox = object[i]._ox;
 	oy = object[i]._oy;
@@ -1561,7 +1532,6 @@ void Obj_Circle(int i)
 		}
 	}
 }
-// 525748: using guessed type char sgbMouseDown;
 
 void Obj_StopAnim(int i)
 {
@@ -1681,7 +1651,7 @@ void Obj_Trap(int i)
 		case OBJ_CHEST3:
 		case OBJ_SWITCHSKL:
 		case OBJ_SARC:
-			if (!object[oti]._oSelFlag)
+			if (object[oti]._oSelFlag == 0)
 				otrig = TRUE;
 			break;
 		}
@@ -1708,7 +1678,6 @@ void Obj_Trap(int i)
 		}
 	}
 }
-// 676190: using guessed type int deltaload;
 
 void Obj_BCrossDamage(int i)
 {
@@ -2104,7 +2073,6 @@ void OperateL1RDoor(int pnum, int oi, BOOL sendflag)
 		object[oi]._oVar4 = 2;
 	}
 }
-// 676190: using guessed type int deltaload;
 
 void OperateL1LDoor(int pnum, int oi, BOOL sendflag)
 {
@@ -2161,7 +2129,6 @@ void OperateL1LDoor(int pnum, int oi, BOOL sendflag)
 		object[oi]._oVar4 = 2;
 	}
 }
-// 676190: using guessed type int deltaload;
 
 void OperateL2RDoor(int pnum, int oi, BOOL sendflag)
 {
@@ -2203,7 +2170,6 @@ void OperateL2RDoor(int pnum, int oi, BOOL sendflag)
 		object[oi]._oVar4 = 2;
 	}
 }
-// 676190: using guessed type int deltaload;
 
 void OperateL2LDoor(int pnum, int oi, BOOL sendflag)
 {
@@ -2246,7 +2212,6 @@ void OperateL2LDoor(int pnum, int oi, BOOL sendflag)
 		object[oi]._oVar4 = 2;
 	}
 }
-// 676190: using guessed type int deltaload;
 
 void OperateL3RDoor(int pnum, int oi, BOOL sendflag)
 {
@@ -2289,7 +2254,6 @@ void OperateL3RDoor(int pnum, int oi, BOOL sendflag)
 		object[oi]._oVar4 = 2;
 	}
 }
-// 676190: using guessed type int deltaload;
 
 void OperateL3LDoor(int pnum, int oi, BOOL sendflag)
 {
@@ -2332,7 +2296,6 @@ void OperateL3LDoor(int pnum, int oi, BOOL sendflag)
 		object[oi]._oVar4 = 2;
 	}
 }
-// 676190: using guessed type int deltaload;
 
 void MonstCheckDoors(int m)
 {
@@ -2385,7 +2348,7 @@ void ObjChangeMap(int x1, int y1, int x2, int y2)
 
 	for (j = y1; j <= y2; j++) {
 		for (i = x1; i <= x2; i++) {
-			ObjSetMini(i, j, (unsigned char)pdungeon[i][j]);
+			ObjSetMini(i, j, (BYTE)pdungeon[i][j]);
 			dungeon[i][j] = pdungeon[i][j];
 		}
 	}
@@ -2431,56 +2394,39 @@ void OperateL1Door(int pnum, int i, unsigned char sendflag)
 
 void OperateLever(int pnum, int i)
 {
-	int v2;        // esi
-	int *v3;       // edi
-	signed int v4; // edi
-	int v5;        // ecx
-	int v6;        // eax
-	short param1;  // [esp+8h] [ebp-8h]
-	int v8;        // [esp+Ch] [ebp-4h]
+	int j, oi;
+	BOOL mapflag;
 
-	param1 = i;
-	v2 = i;
-	v3 = (int *)&object[i]._oSelFlag;
-	v8 = pnum;
-	if (*(_BYTE *)v3) {
+	if (object[i]._oSelFlag != 0) {
 		if (!deltaload)
-			PlaySfxLoc(IS_LEVER, object[v2]._ox, object[v2]._oy);
-		*(_BYTE *)v3 = 0;
-		++object[v2]._oAnimFrame;
-		v4 = 1;
-		if (currlevel != 16)
-			goto LABEL_17;
-		v5 = 0;
-		if (nobjects <= 0)
-			goto LABEL_17;
-		do {
-			v6 = objectactive[v5];
-			if (object[v6]._otype == OBJ_SWITCHSKL
-			    && object[v2]._oVar8 == object[v6]._oVar8
-			    && object[v6]._oSelFlag) {
-				v4 = 0;
+			PlaySfxLoc(IS_LEVER, object[i]._ox, object[i]._oy);
+		object[i]._oSelFlag = 0;
+		object[i]._oAnimFrame++;
+		mapflag = TRUE;
+		if (currlevel == 16) {
+			for (j = 0; j < nobjects; j++) {
+				oi = objectactive[j];
+				if (object[oi]._otype == OBJ_SWITCHSKL
+				    && object[i]._oVar8 == object[oi]._oVar8
+				    && object[oi]._oSelFlag != 0) {
+					mapflag = FALSE;
+				}
 			}
-			++v5;
-		} while (v5 < nobjects);
-		if (v4)
-		LABEL_17:
-			ObjChangeMap(object[v2]._oVar1, object[v2]._oVar2, object[v2]._oVar3, object[v2]._oVar4);
-		if (v8 == myplr)
-			NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, param1);
+		}
+		if (mapflag)
+			ObjChangeMap(object[i]._oVar1, object[i]._oVar2, object[i]._oVar3, object[i]._oVar4);
+		if (pnum == myplr)
+			NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, i);
 	}
 }
-// 676190: using guessed type int deltaload;
 
 void OperateBook(int pnum, int i)
 {
-	BOOL do_add_missile;
-	int oi;
-	int j;
-	BOOL missile_added;
+	int j, oi;
 	int dx, dy;
+	BOOL do_add_missile, missile_added;
 
-	if (!object[i]._oSelFlag)
+	if (object[i]._oSelFlag == 0)
 		return;
 	if (setlevel && setlvlnum == SL_VILEBETRAYER) {
 		do_add_missile = FALSE;
@@ -2546,8 +2492,6 @@ void OperateBook(int pnum, int i)
 			SyncObjectAnim(objectactive[j]);
 	}
 }
-// 5CF31D: using guessed type char setlevel;
-// 676190: using guessed type int deltaload;
 
 void OperateBookLever(int pnum, int i)
 {
@@ -2555,7 +2499,7 @@ void OperateBookLever(int pnum, int i)
 
 	x = 2 * setpc_x + 16;
 	y = 2 * setpc_y + 16;
-	if (object[i]._oSelFlag && !qtextflag) {
+	if (object[i]._oSelFlag != 0 && !qtextflag) {
 		if (object[i]._otype == OBJ_BLINDBOOK && !quests[QTYPE_BLIND]._qvar1) {
 			quests[QTYPE_BLIND]._qactive = 2;
 			quests[QTYPE_BLIND]._qlog = 1;
@@ -2597,7 +2541,7 @@ void OperateSChambBk(int pnum, int i)
 {
 	int j, textdef;
 
-	if (object[i]._oSelFlag && !qtextflag) {
+	if (object[i]._oSelFlag != 0 && !qtextflag) {
 		if (object[i]._oAnimFrame != object[i]._oVar6) {
 			ObjChangeMapResync(object[i]._oVar1, object[i]._oVar2, object[i]._oVar3, object[i]._oVar4);
 			for (j = 0; j < nobjects; j++)
@@ -2624,7 +2568,7 @@ void OperateChest(int pnum, int i, BOOL sendmsg)
 {
 	int j, mdir, mtype;
 
-	if (object[i]._oSelFlag) {
+	if (object[i]._oSelFlag != 0) {
 		if (!deltaload)
 			PlaySfxLoc(IS_CHEST, object[i]._ox, object[i]._oy);
 		object[i]._oAnimFrame += 2;
@@ -2665,8 +2609,6 @@ void OperateChest(int pnum, int i, BOOL sendmsg)
 		}
 	}
 }
-// 5CF31D: using guessed type char setlevel;
-// 676190: using guessed type int deltaload;
 
 void OperateMushPatch(int pnum, int i)
 {
@@ -2683,7 +2625,7 @@ void OperateMushPatch(int pnum, int i)
 			}
 		}
 	} else {
-		if (object[i]._oSelFlag) {
+		if (object[i]._oSelFlag != 0) {
 			if (!deltaload)
 				PlaySfxLoc(IS_CHEST, object[i]._ox, object[i]._oy);
 			object[i]._oAnimFrame++;
@@ -2712,7 +2654,7 @@ void OperateInnSignChest(int pnum, int i)
 			}
 		}
 	} else {
-		if (object[i]._oSelFlag) {
+		if (object[i]._oSelFlag != 0) {
 			if (!deltaload)
 				PlaySfxLoc(IS_CHEST, object[i]._ox, object[i]._oy);
 			object[i]._oAnimFrame += 2;
@@ -2724,11 +2666,10 @@ void OperateInnSignChest(int pnum, int i)
 		}
 	}
 }
-// 676190: using guessed type int deltaload;
 
 void OperateSlainHero(int pnum, int i, BOOL sendmsg)
 {
-	if (object[i]._oSelFlag) {
+	if (object[i]._oSelFlag != 0) {
 		object[i]._oSelFlag = 0;
 		if (!deltaload) {
 			if (plr[pnum]._pClass == PC_WARRIOR) {
@@ -2746,13 +2687,10 @@ void OperateSlainHero(int pnum, int i, BOOL sendmsg)
 		}
 	}
 }
-// 676190: using guessed type int deltaload;
 
 void OperateTrapLvr(int i)
 {
-	int frame;
-	int j;
-	int oi;
+	int frame, j, oi;
 
 	frame = object[i]._oAnimFrame;
 	j = 0;
@@ -2782,7 +2720,7 @@ void OperateTrapLvr(int i)
 
 void OperateSarc(int pnum, int i, BOOL sendmsg)
 {
-	if (object[i]._oSelFlag) {
+	if (object[i]._oSelFlag != 0) {
 		if (!deltaload)
 			PlaySfxLoc(IS_SARC, object[i]._ox, object[i]._oy);
 		object[i]._oSelFlag = 0;
@@ -2801,7 +2739,6 @@ void OperateSarc(int pnum, int i, BOOL sendmsg)
 		}
 	}
 }
-// 676190: using guessed type int deltaload;
 
 void OperateL2Door(int pnum, int i, unsigned char sendflag)
 {
@@ -2829,7 +2766,7 @@ void OperateL3Door(int pnum, int i, unsigned char sendflag)
 
 void OperatePedistal(int pnum, int i)
 {
-	unsigned char *mem;
+	BYTE *mem;
 	int iv;
 
 	if (object[i]._oVar6 != 3) {
@@ -2860,8 +2797,6 @@ void OperatePedistal(int pnum, int i)
 		}
 	}
 }
-// 5CF334: using guessed type int setpc_w;
-// 676190: using guessed type int deltaload;
 
 void TryDisarm(int pnum, int i)
 {
@@ -2897,7 +2832,9 @@ int ItemMiscIdIdx(int imiscid)
 {
 	int i;
 
-	for (i = 0; AllItemsList[i].iRnd == 0 || AllItemsList[i].iMiscId != imiscid; i++) {
+	i = 0;
+	while (AllItemsList[i].iRnd == 0 || AllItemsList[i].iMiscId != imiscid) {
+		i++;
 	}
 
 	return i;
@@ -3171,7 +3108,7 @@ void OperateShrine(int pnum, int i, int sType)
 			if ((object[v1]._otype == OBJ_CHEST1
 			        || object[v1]._otype == OBJ_CHEST2
 			        || object[v1]._otype == OBJ_CHEST3)
-			    && !object[v1]._oSelFlag) {
+			    && object[v1]._oSelFlag == 0) {
 				object[v1]._oRndSeed = GetRndSeed();
 				object[v1]._oAnimFrame -= 2;
 				object[v1]._oSelFlag = 1;
@@ -3511,7 +3448,7 @@ void OperateShrine(int pnum, int i, int sType)
 
 void OperateSkelBook(int pnum, int i, BOOL sendmsg)
 {
-	if (object[i]._oSelFlag) {
+	if (object[i]._oSelFlag != 0) {
 		if (!deltaload)
 			PlaySfxLoc(IS_ISCROL, object[i]._ox, object[i]._oy);
 		object[i]._oAnimFrame += 2;
@@ -3530,7 +3467,7 @@ void OperateSkelBook(int pnum, int i, BOOL sendmsg)
 
 void OperateBookCase(int pnum, int i, BOOL sendmsg)
 {
-	if (object[i]._oSelFlag) {
+	if (object[i]._oSelFlag != 0) {
 		if (!deltaload)
 			PlaySfxLoc(IS_ISCROL, object[i]._ox, object[i]._oy);
 		object[i]._oAnimFrame -= 2;
@@ -3552,11 +3489,10 @@ void OperateBookCase(int pnum, int i, BOOL sendmsg)
 		}
 	}
 }
-// 676190: using guessed type int deltaload;
 
 void OperateDecap(int pnum, int i, BOOL sendmsg)
 {
-	if (object[i]._oSelFlag) {
+	if (object[i]._oSelFlag != 0) {
 		object[i]._oSelFlag = 0;
 		if (!deltaload) {
 			SetRndSeed(object[i]._oRndSeed);
@@ -3571,7 +3507,7 @@ void OperateArmorStand(int pnum, int i, BOOL sendmsg)
 {
 	int uniqueRnd;
 
-	if (object[i]._oSelFlag) {
+	if (object[i]._oSelFlag != 0) {
 		object[i]._oAnimFrame++;
 		object[i]._oSelFlag = 0;
 		if (!deltaload) {
@@ -3619,7 +3555,6 @@ int FindValidShrine(int i)
 
 	return rv;
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 void OperateGoatShrine(int pnum, int i, int sType)
 {
@@ -3629,7 +3564,6 @@ void OperateGoatShrine(int pnum, int i, int sType)
 	object[i]._oAnimDelay = 2;
 	drawpanflag = 255;
 }
-// 52571C: using guessed type int drawpanflag;
 
 void OperateCauldron(int pnum, int i, int sType)
 {
@@ -3640,16 +3574,11 @@ void OperateCauldron(int pnum, int i, int sType)
 	object[i]._oAnimFrame = 3;
 	drawpanflag = 255;
 }
-// 52571C: using guessed type int drawpanflag;
 
 BOOL OperateFountains(int pnum, int i)
 {
-	BOOL applied;
-	int prev;
-	int add;
-	int rnd;
-	int cnt;
-	BOOL done;
+	int prev, add, rnd, cnt;
+	BOOL applied, done;
 
 	applied = FALSE;
 	SetRndSeed(object[i]._oRndSeed);
@@ -3693,7 +3622,7 @@ BOOL OperateFountains(int pnum, int i)
 			PlaySfxLoc(LS_FOUNTAIN, object[i]._ox, object[i]._oy);
 		break;
 	case OBJ_MURKYFTN:
-		if (!object[i]._oSelFlag)
+		if (object[i]._oSelFlag == 0)
 			break;
 		if (!deltaload)
 			PlaySfxLoc(LS_FOUNTAIN, object[i]._ox, object[i]._oy);
@@ -3716,7 +3645,7 @@ BOOL OperateFountains(int pnum, int i)
 			NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, i);
 		break;
 	case OBJ_TEARFTN:
-		if (!object[i]._oSelFlag)
+		if (object[i]._oSelFlag == 0)
 			break;
 		prev = -1;
 		add = -1;
@@ -3764,14 +3693,12 @@ BOOL OperateFountains(int pnum, int i)
 	drawpanflag = 255;
 	return applied;
 }
-// 52571C: using guessed type int drawpanflag;
-// 676190: using guessed type int deltaload;
 
 void OperateWeaponRack(int pnum, int i, BOOL sendmsg)
 {
 	int weaponType;
 
-	if (!object[i]._oSelFlag)
+	if (object[i]._oSelFlag == 0)
 		return;
 	SetRndSeed(object[i]._oRndSeed);
 
@@ -3802,33 +3729,28 @@ void OperateWeaponRack(int pnum, int i, BOOL sendmsg)
 	if (pnum == myplr)
 		NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, i);
 }
-// 676190: using guessed type int deltaload;
 
 void OperateStoryBook(int pnum, int i)
 {
-	if (object[i]._oSelFlag && !deltaload && !qtextflag && pnum == myplr) {
+	if (object[i]._oSelFlag != 0 && !deltaload && !qtextflag && pnum == myplr) {
 		object[i]._oAnimFrame = object[i]._oVar4;
 		PlaySfxLoc(IS_ISCROL, object[i]._ox, object[i]._oy);
 		InitQTextMsg(object[i]._oVar2);
 		NetSendCmdParam1(FALSE, CMD_OPERATEOBJ, i);
 	}
 }
-// 646D00: using guessed type char qtextflag;
-// 676190: using guessed type int deltaload;
 
 void OperateLazStand(int pnum, int i)
 {
 	int xx, yy;
 
-	if (object[i]._oSelFlag && !deltaload && !qtextflag && pnum == myplr) {
+	if (object[i]._oSelFlag != 0 && !deltaload && !qtextflag && pnum == myplr) {
 		object[i]._oAnimFrame++;
 		object[i]._oSelFlag = 0;
 		GetSuperItemLoc(object[i]._ox, object[i]._oy, &xx, &yy);
 		SpawnQuestItem(33, xx, yy, 0, 0);
 	}
 }
-// 646D00: using guessed type char qtextflag;
-// 676190: using guessed type int deltaload;
 
 void OperateObject(int pnum, int i, BOOL TeleFlag)
 {
@@ -4139,14 +4061,13 @@ void BreakCrux(int i)
 		PlaySfxLoc(IS_LEVER, object[i]._ox, object[i]._oy);
 	ObjChangeMap(object[i]._oVar1, object[i]._oVar2, object[i]._oVar3, object[i]._oVar4);
 }
-// 676190: using guessed type int deltaload;
 
 void BreakBarrel(int pnum, int i, int dam, BOOL forcebreak, int sendmsg)
 {
 	int oi;
 	int xp, yp;
 
-	if (!object[i]._oSelFlag)
+	if (object[i]._oSelFlag == 0)
 		return;
 	if (forcebreak) {
 		object[i]._oVar1 = 0;
@@ -4209,7 +4130,6 @@ void BreakBarrel(int pnum, int i, int dam, BOOL forcebreak, int sendmsg)
 	if (pnum == myplr)
 		NetSendCmdParam2(FALSE, CMD_BREAKOBJ, pnum, i);
 }
-// 676190: using guessed type int deltaload;
 
 void BreakObject(int pnum, int oi)
 {
@@ -4293,7 +4213,7 @@ void SyncCrux(int i)
 
 void SyncLever(int i)
 {
-	if (!object[i]._oSelFlag)
+	if (object[i]._oSelFlag == 0)
 		ObjChangeMap(object[i]._oVar1, object[i]._oVar2, object[i]._oVar3, object[i]._oVar4);
 }
 
@@ -4329,7 +4249,6 @@ void SyncPedistal(int i)
 		mem_free_dbg(setp);
 	}
 }
-// 5CF334: using guessed type int setpc_w;
 
 void SyncL2Doors(int i)
 {
@@ -4577,5 +4496,3 @@ void GetObjectStr(int i)
 		}
 	}
 }
-// 4B883C: using guessed type int infoclr;
-// 5CF31D: using guessed type char setlevel;
