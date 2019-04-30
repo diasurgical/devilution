@@ -1334,7 +1334,7 @@ int PLVal(int pv, int p1, int p2, int minv, int maxv)
 
 void SaveItemPower(int i, int power, int param1, int param2, int minval, int maxval, int multval)
 {
-   int r, r2;
+	int r, r2;
 
 	r = RndPL(param1, param2);
 	switch (power) {
