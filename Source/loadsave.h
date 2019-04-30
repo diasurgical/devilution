@@ -2,7 +2,7 @@
 #ifndef __LOADSAVE_H__
 #define __LOADSAVE_H__
 
-extern unsigned char *tbuff;
+extern BYTE *tbuff;
 
 void LoadGame(BOOL firstflag);
 char BLoad();

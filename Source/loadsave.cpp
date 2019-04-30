@@ -1,6 +1,6 @@
 #include "diablo.h"
 
-unsigned char *tbuff;
+BYTE *tbuff;
 
 void LoadGame(BOOL firstflag)
 {
@@ -171,7 +171,6 @@ void LoadGame(BOOL firstflag)
 	SetCursor_(CURSOR_HAND);
 	gbProcessPlayers = TRUE;
 }
-// 5CF31D: using guessed type char setlevel;
 
 char BLoad()
 {
@@ -415,7 +414,6 @@ void SaveGame()
 	pfile_rename_temp_to_perm();
 	pfile_write_hero();
 }
-// 5CF31D: using guessed type char setlevel;
 
 void BSave(char v)
 {
@@ -602,7 +600,6 @@ void SaveLevel()
 	else
 		plr[myplr]._pSLvlVisited[setlvlnum] = 1;
 }
-// 5CF31D: using guessed type char setlevel;
 
 void LoadLevel()
 {
@@ -697,4 +694,3 @@ void LoadLevel()
 
 	mem_free_dbg(LoadBuff);
 }
-// 642A18: using guessed type int dolighting;
