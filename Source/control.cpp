@@ -1,7 +1,7 @@
 #include "diablo.h"
 
 char sgbNextTalkSave; // weak
-BYTE sgbTalkSavePos;  // weak
+BYTE sgbTalkSavePos;
 void *pDurIcons;
 void *pChrButtons;
 BOOL drawhpflag; // idb
@@ -2621,41 +2621,30 @@ void control_drop_gold(char vkey)
 
 void control_remove_gold(int pnum, int gold_index)
 {
-	int v2;     // edi
-	int v3;     // esi
-	int v4;     // edx
-	_DWORD *v5; // eax
-	int v6;     // edx
-	_DWORD *v7; // eax
-	int v8;     // eax
+	int gi;
 
-	v2 = pnum;
-	v3 = pnum;
 	if (gold_index > 46) {
-		v6 = gold_index - 47;
-		v7 = (unsigned int *)((char *)&plr[v3].SpdList[v6]._ivalue);
-		*v7 -= dropGoldValue;
-		if (*v7 <= 0)
-			RemoveSpdBarItem(pnum, v6);
+		gi = gold_index - 47;
+		plr[pnum].SpdList[gi]._ivalue -= dropGoldValue;
+		if (plr[pnum].SpdList[gi]._ivalue > 0)
+			SetSpdbarGoldCurs(pnum, gi);
 		else
-			SetSpdbarGoldCurs(pnum, v6);
+			RemoveSpdBarItem(pnum, gi);
 	} else {
-		v4 = gold_index - 7;
-		v5 = (unsigned int *)((char *)&plr[v3].InvList[v4]._ivalue);
-		*v5 -= dropGoldValue;
-		if (*v5 <= 0)
-			RemoveInvItem(pnum, v4);
+		gi = gold_index - 7;
+		plr[pnum].InvList[gi]._ivalue -= dropGoldValue;
+		if (plr[pnum].InvList[gi]._ivalue > 0)
+			SetGoldCurs(pnum, gi);
 		else
-			SetGoldCurs(pnum, v4);
+			RemoveInvItem(pnum, gi);
 	}
-	SetPlrHandItem(&plr[v3].HoldItem, IDI_GOLD);
-	GetGoldSeed(v2, &plr[v3].HoldItem);
-	plr[v3].HoldItem._ivalue = dropGoldValue;
-	plr[v3].HoldItem._iStatFlag = 1;
-	control_set_gold_curs(v2);
-	v8 = CalculateGold(v2);
+	SetPlrHandItem(&plr[pnum].HoldItem, IDI_GOLD);
+	GetGoldSeed(pnum, &plr[pnum].HoldItem);
+	plr[pnum].HoldItem._ivalue = dropGoldValue;
+	plr[pnum].HoldItem._iStatFlag = 1;
+	control_set_gold_curs(pnum);
+	plr[pnum]._pGold = CalculateGold(pnum);
 	dropGoldValue = 0;
-	plr[v3]._pGold = v8;
 }
 
 void control_set_gold_curs(int pnum)
