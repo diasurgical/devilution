@@ -1426,12 +1426,12 @@ void SaveItemPower(int i, int power, int param1, int param2, int minval, int max
 		item[i]._iMaxCharges = param2;
 		break;
 	case IPL_FIREDAM:
-		item[i]._iFlags |= 0x10;
+		item[i]._iFlags |= ISPL_FIREDAM;
 		item[i]._iFMinDam = param1;
 		item[i]._iFMaxDam = param2;
 		break;
 	case IPL_LIGHTDAM:
-		item[i]._iFlags |= 0x20;
+		item[i]._iFlags |= ISPL_LIGHTDAM;
 		item[i]._iLMinDam = param1;
 		item[i]._iLMaxDam = param2;
 		break;
@@ -1513,52 +1513,52 @@ void SaveItemPower(int i, int power, int param1, int param2, int minval, int max
 		item[i]._iPLLight -= param1;
 		break;
 	case IPL_FIRE_ARROWS:
-		item[i]._iFlags |= 8;
+		item[i]._iFlags |= ISPL_FIRE_ARROWS;
 		item[i]._iFMinDam = param1;
 		item[i]._iFMaxDam = param2;
 		break;
 	case IPL_LIGHT_ARROWS:
-		item[i]._iFlags |= 0x2000000;
+		item[i]._iFlags |= ISPL_LIGHT_ARROWS;
 		item[i]._iLMinDam = param1;
 		item[i]._iLMaxDam = param2;
 		break;
 	case IPL_THORNS:
-		item[i]._iFlags |= 0x4000000;
+		item[i]._iFlags |= ISPL_THORNS;
 		break;
 	case IPL_NOMANA:
-		item[i]._iFlags |= 0x8000000;
+		item[i]._iFlags |= ISPL_NOMANA;
 		drawmanaflag = TRUE;
 		break;
 	case IPL_NOHEALPLR:
-		item[i]._iFlags |= 0x100;
+		item[i]._iFlags |= ISPL_NOHEALPLR;
 		break;
 	case IPL_ABSHALFTRAP:
-		item[i]._iFlags |= 0x10000000;
+		item[i]._iFlags |= ISPL_ABSHALFTRAP;
 		break;
 	case IPL_KNOCKBACK:
-		item[i]._iFlags |= 0x800;
+		item[i]._iFlags |= ISPL_KNOCKBACK;
 		break;
 	case IPL_3XDAMVDEM:
-		item[i]._iFlags |= 0x40000000;
+		item[i]._iFlags |= ISPL_3XDAMVDEM;
 		break;
 	case IPL_ALLRESZERO:
-		item[i]._iFlags |= 0x80000000;
+		item[i]._iFlags |= ISPL_ALLRESZERO;
 		break;
 	case IPL_NOHEALMON:
-		item[i]._iFlags |= 0x1000;
+		item[i]._iFlags |= ISPL_NOHEALMON;
 		break;
 	case IPL_STEALMANA:
 		if (param1 == 3)
-			item[i]._iFlags |= 0x2000;
+			item[i]._iFlags |= ISPL_STEALMANA_3;
 		if (param1 == 5)
-			item[i]._iFlags |= 0x4000;
+			item[i]._iFlags |= ISPL_STEALMANA_5;
 		drawmanaflag = TRUE;
 		break;
 	case IPL_STEALLIFE:
 		if (param1 == 3)
-			item[i]._iFlags |= 0x8000;
+			item[i]._iFlags |= ISPL_STEALLIFE_3;
 		if (param1 == 5)
-			item[i]._iFlags |= 0x10000;
+			item[i]._iFlags |= ISPL_STEALLIFE_5;
 		drawhpflag = TRUE;
 		break;
 	case IPL_TARGAC:
@@ -1566,30 +1566,30 @@ void SaveItemPower(int i, int power, int param1, int param2, int minval, int max
 		break;
 	case IPL_FASTATTACK:
 		if (param1 == 1)
-			item[i]._iFlags |= 0x20000;
+			item[i]._iFlags |= ISPL_QUICKATTACK;
 		if (param1 == 2)
-			item[i]._iFlags |= 0x40000;
+			item[i]._iFlags |= ISPL_FASTATTACK;
 		if (param1 == 3)
-			item[i]._iFlags |= 0x80000;
+			item[i]._iFlags |= ISPL_FASTERATTACK;
 		if (param1 == 4)
-			item[i]._iFlags |= 0x100000;
+			item[i]._iFlags |= ISPL_FASTESTATTACK;
 		break;
 	case IPL_FASTRECOVER:
 		if (param1 == 1)
-			item[i]._iFlags |= 0x200000;
+			item[i]._iFlags |= ISPL_FASTRECOVER;
 		if (param1 == 2)
-			item[i]._iFlags |= 0x400000;
+			item[i]._iFlags |= ISPL_FASTERRECOVER;
 		if (param1 == 3)
-			item[i]._iFlags |= 0x800000;
+			item[i]._iFlags |= ISPL_FASTESTRECOVER;
 		break;
 	case IPL_FASTBLOCK:
-		item[i]._iFlags |= 0x1000000;
+		item[i]._iFlags |= ISPL_FASTBLOCK;
 		break;
 	case IPL_DAMMOD:
 		item[i]._iPLDamMod += r;
 		break;
 	case IPL_RNDARROWVEL:
-		item[i]._iFlags |= 4;
+		item[i]._iFlags |= ISPL_RNDARROWVEL;
 		break;
 	case IPL_SETDAM:
 		item[i]._iMinDam = param1;
@@ -1600,19 +1600,19 @@ void SaveItemPower(int i, int power, int param1, int param2, int minval, int max
 		item[i]._iMaxDur = param1;
 		break;
 	case IPL_FASTSWING:
-		item[i]._iFlags |= 0x80000;
+		item[i]._iFlags |= ISPL_FASTERATTACK;
 		break;
 	case IPL_ONEHAND:
 		item[i]._iLoc = ILOC_ONEHAND;
 		break;
 	case IPL_DRAINLIFE:
-		item[i]._iFlags |= 0x40;
+		item[i]._iFlags |= ISPL_DRAINLIFE;
 		break;
 	case IPL_RNDSTEALLIFE:
-		item[i]._iFlags |= 2;
+		item[i]._iFlags |= ISPL_RNDSTEALLIFE;
 		break;
 	case IPL_INFRAVISION:
-		item[i]._iFlags |= 1;
+		item[i]._iFlags |= ISPL_INFRAVISION;
 		break;
 	case IPL_NOMINSTR:
 		item[i]._iMinStr = 0;
