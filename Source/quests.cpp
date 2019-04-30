@@ -691,79 +691,38 @@ void ResyncQuests()
 // 5CF330: using guessed type int setpc_h;
 // 5CF334: using guessed type int setpc_w;
 
-void PrintQLString(int x, int y, unsigned char cjustflag, char *str, int col)
+void PrintQLString(int x, int y, BOOL cjustflag, char *str, int col)
 {
-	int v5;            // ebx
-	int v6;            // edi
-	size_t v7;         // eax
-	int v8;            // esi
-	signed int v9;     // ecx
-	signed int v10;    // eax
-	int v11;           // edx
-	int v12;           // ecx
-	signed int v13;    // ecx
-	unsigned char v14; // al
-	int v15;           // edi
-	int v16;           // ecx
-	int v17;           // [esp+Ch] [ebp-14h]
-	int v18;           // [esp+10h] [ebp-10h]
-	signed int v19;    // [esp+14h] [ebp-Ch]
-	signed int v20;    // [esp+18h] [ebp-8h]
-	int width;         // [esp+1Ch] [ebp-4h]
+	int len, width, off, i, k, s;
+	BYTE c;
 
-	v5 = SStringY[y];
-	v6 = x;
-	v18 = y;
-	v17 = x;
-	width = PitchTbl[v5 + 204] + x + 96;
-	v7 = strlen(str);
-	v8 = 0;
-	v9 = 0;
-	v20 = v7;
+	s = SStringY[y];
+	off = x + PitchTbl[SStringY[y] + 204] + 96;
+	len = strlen(str);
+	k = 0;
 	if (cjustflag) {
-		v10 = 0;
-		if (v20 <= 0)
-			goto LABEL_24;
-		do {
-			v11 = (unsigned char)str[v9++];
-			v10 += fontkern[fontframe[gbFontTransTbl[v11]]] + 1;
-		} while (v9 < v20);
-		if (v10 < 257)
-		LABEL_24:
-			v8 = (257 - v10) >> 1;
-		width += v8;
+		width = 0;
+		for (i = 0; i < len; i++)
+			width += fontkern[fontframe[gbFontTransTbl[(BYTE)str[i]]]] + 1;
+		if (width < 257)
+			k = (257 - width) >> 1;
+		off += k;
 	}
-	if (qline == v18) {
-		v12 = v8 + v6 + 76;
-		if (!cjustflag)
-			v12 = v6 + 76;
-		CelDecodeOnly(v12, v5 + 205, (BYTE *)pCelBuff, ALLQUESTS, 12);
+	if (qline == y) {
+		CelDecodeOnly(cjustflag ? x + k + 76 : x + 76, s + 205, (BYTE *)pCelBuff, ALLQUESTS, 12);
 	}
-	v13 = 0;
-	v19 = 0;
-	if (v20 > 0) {
-		do {
-			v14 = fontframe[gbFontTransTbl[(unsigned char)str[v13]]];
-			v15 = v14;
-			v8 += fontkern[v14] + 1;
-			if (v14 && v8 <= 257) {
-				CPrintString(width, v14, col);
-				v13 = v19;
-			}
-			v19 = ++v13;
-			width += fontkern[v15] + 1;
-		} while (v13 < v20);
-		v6 = v17;
+	for (i = 0; i < len; i++) {
+		c = fontframe[gbFontTransTbl[(BYTE)str[i]]];
+		k += fontkern[c] + 1;
+		if (c && k <= 257) {
+			CPrintString(off, c, col);
+		}
+		off += fontkern[c] + 1;
 	}
-	if (qline == v18) {
-		if (cjustflag)
-			v16 = v8 + v6 + 100;
-		else
-			v16 = 340 - v6;
-		CelDecodeOnly(v16, v5 + 205, (BYTE *)pCelBuff, ALLQUESTS, 12);
+	if (qline == y) {
+		 CelDecodeOnly(cjustflag ? x + k + 100 : 340 - x, s + 205, (BYTE *)pCelBuff, ALLQUESTS, 12);
 	}
 }
-// 69BE90: using guessed type int qline;
 
 void DrawQuestLog()
 {

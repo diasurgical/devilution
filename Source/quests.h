@@ -33,7 +33,7 @@ void SetReturnLvlPos();
 void GetReturnLvlPos();
 void ResyncMPQuests();
 void ResyncQuests();
-void PrintQLString(int x, int y, unsigned char cjustflag, char *str, int col);
+void PrintQLString(int x, int y, BOOL cjustflag, char *str, int col);
 void DrawQuestLog();
 void StartQuestlog();
 void QuestlogUp();
