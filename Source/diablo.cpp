@@ -1606,7 +1606,7 @@ void LoadAllGFX()
 
 void CreateLevel(int lvldir)
 {
-	switch((unsigned char)leveltype) {
+	switch(leveltype) {
 	case DTYPE_TOWN:
 		CreateTown(lvldir);
 		InitTownTriggers();
