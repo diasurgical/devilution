@@ -6,10 +6,10 @@
 //pCelBuff->pFrameTable[0]
 
 extern char gbPixelCol;  // automap pixel color 8-bit (palette entry)
-extern int dword_52B970; // bool flip - if y < x
+extern int gbRotateMap; // bool flip - if y < x
 extern int orgseed;      // weak
 extern int SeedCount;    // weak
-extern int dword_52B99C; // bool valid - if x/y are in bounds
+extern int gbNotInView; // bool valid - if x/y are in bounds
 
 void CelDrawDatOnly(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth);
 void CelDecodeOnly(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth);
@@ -35,7 +35,7 @@ void CelDecodeClr(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth
 void CelDrawHdrClrHL(char col, int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap);
 void ENG_set_pixel(int sx, int sy, BYTE col);
 void engine_draw_pixel(int sx, int sy);
-void DrawLine(int x0, int y0, int x1, int y1, UCHAR col);
+void DrawLine(int x0, int y0, int x1, int y1, BYTE col);
 int GetDirection(int x1, int y1, int x2, int y2);
 void SetRndSeed(int s);
 int GetRndSeed();
