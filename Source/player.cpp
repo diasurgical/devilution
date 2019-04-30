@@ -2795,7 +2795,7 @@ BOOL PM_DoSpell(int pnum)
 		    plr[pnum].WorldY,
 		    plr[pnum]._pVar1,
 		    plr[pnum]._pVar2,
-		    FALSE,
+		    0,
 		    plr[pnum]._pVar4);
 
 		if (!plr[pnum]._pSplFrom) {
