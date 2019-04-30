@@ -384,10 +384,10 @@ void L4SaveQuads()
 // 528A34: using guessed type int l4holdx;
 // 528A38: using guessed type int l4holdy;
 
-void DRLG_L4SetRoom(unsigned char *pSetPiece, int rx1, int ry1)
+void DRLG_L4SetRoom(BYTE *pSetPiece, int rx1, int ry1)
 {
 	int rw, rh, i, j;
-	unsigned char *sp;
+	BYTE *sp;
 
 	rw = pSetPiece[0];
 	rh = pSetPiece[2];
@@ -446,10 +446,6 @@ void DRLG_LoadDiabQuads(BOOL preflag)
 	DRLG_L4SetRoom(lpSetPiece, diabquad4x, diabquad4y);
 	mem_free_dbg(lpSetPiece);
 }
-// 5289C4: using guessed type int diabquad1x;
-// 5289C8: using guessed type int diabquad1y;
-// 528A34: using guessed type int l4holdx;
-// 528A38: using guessed type int l4holdy;
 
 BOOL IsDURWall(char d)
 {
@@ -492,7 +488,6 @@ void L4FixRim()
 		dung[0][j] = 0;
 	}
 }
-// 52A4DC: using guessed type int dword_52A4DC;
 
 void DRLG_L4GeneralFix()
 {
@@ -526,10 +521,6 @@ void CreateL4Dungeon(unsigned int rseed, int entry)
 	DRLG_FreeL4SP();
 	DRLG_SetPC();
 }
-// 5CF328: using guessed type int dmaxx;
-// 5CF32C: using guessed type int dmaxy;
-// 5D2458: using guessed type int dminx;
-// 5D245C: using guessed type int dminy;
 
 void DRLG_L4(int entry)
 {
@@ -683,10 +674,6 @@ void DRLG_L4(int entry)
 		DRLG_LoadDiabQuads(FALSE);
 	}
 }
-// 528A40: using guessed type int SP4x2;
-// 528A48: using guessed type int SP4y2;
-// 5B50D8: using guessed type int setloadflag_2;
-// 679660: using guessed type char gbMaxPlayers;
 
 void DRLG_L4Shadows()
 {
@@ -1399,7 +1386,7 @@ void L4tileFix()
 void DRLG_L4Subs()
 {
 	int x, y, i, rv;
-	unsigned char c;
+	BYTE c;
 
 	for(y = 0; y < 40; y++) {
 		for(x = 0; x < 40; x++) {
@@ -1636,11 +1623,6 @@ void L4firstRoom()
 	L4drawRoom(x, y, w, h);
 	L4roomGen(x, y, w, h, random(0, 2));
 }
-// 528A34: using guessed type int l4holdx;
-// 528A38: using guessed type int l4holdy;
-// 528A40: using guessed type int SP4x2;
-// 528A48: using guessed type int SP4y2;
-// 679660: using guessed type char gbMaxPlayers;
 
 void L4drawRoom(int x, int y, int width, int height)
 {
@@ -1818,10 +1800,6 @@ BOOL DRLG_L4PlaceMiniSet(const unsigned char *miniset, int tmin, int tmax, int c
 
 	return TRUE;
 }
-// 528A40: using guessed type int SP4x2;
-// 528A48: using guessed type int SP4y2;
-// 5CF320: using guessed type int LvlViewY;
-// 5CF324: using guessed type int LvlViewX;
 
 void DRLG_L4FloodTVal()
 {
@@ -1840,7 +1818,6 @@ void DRLG_L4FloodTVal()
 		yy += 2;
 	}
 }
-// 5A5590: using guessed type char TransVal;
 
 void DRLG_L4FTVR(int i, int j, int x, int y, int d)
 {
@@ -1888,7 +1865,6 @@ void DRLG_L4FTVR(int i, int j, int x, int y, int d)
 		DRLG_L4FTVR(i + 1, j + 1, x + 2, y + 2, 8);
 	}
 }
-// 5A5590: using guessed type char TransVal;
 
 void DRLG_L4TransFix()
 {
@@ -1998,7 +1974,7 @@ void DRLG_L4Pass3()
 	for (j = 0; j < DMAXY; j++) {
 		xx = 16;
 		for (i = 0; i < DMAXX; i++) {
-			lv = (unsigned char)dungeon[i][j] - 1;
+			lv = dungeon[i][j] - 1;
 #ifdef USE_ASM
 			if (lv >= 0) {
 				__asm {

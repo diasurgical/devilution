@@ -1,15 +1,15 @@
 #include "diablo.h"
 
 char L5dungeon[80][80];
-unsigned char L5dflags[DMAXX][DMAXY];
-int setloadflag; // weak
+BYTE L5dflags[DMAXX][DMAXY];
+BOOL setloadflag;
 int HR1;
 int HR2;
 int HR3;
 int VR1;
 int VR2;
 int VR3;
-void *pSetPiece; // idb
+BYTE *pSetPiece;
 
 const ShadowStruct SPATS[37] = {
 	// clang-format off
@@ -53,7 +53,7 @@ const ShadowStruct SPATS[37] = {
 	{      3, 13, 11, 12, 150,   0,   0 }
 	// clang-format on
 };
-const unsigned char BSTYPES[206] = {
+const BYTE BSTYPES[206] = {
 	0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
 	10, 11, 12, 13, 14, 15, 16, 17, 0, 0,
 	0, 0, 0, 0, 0, 1, 2, 10, 4, 5,
@@ -76,7 +76,7 @@ const unsigned char BSTYPES[206] = {
 	28, 1, 2, 25, 26, 22, 22, 25, 26, 0,
 	0, 0, 0, 0, 0, 0
 };
-const unsigned char L5BTYPES[206] = {
+const BYTE L5BTYPES[206] = {
 	0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
 	10, 11, 12, 13, 14, 15, 16, 17, 0, 0,
 	0, 0, 0, 0, 0, 25, 26, 0, 28, 0,
@@ -99,14 +99,14 @@ const unsigned char L5BTYPES[206] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 	0, 0, 0, 0, 0, 0
 };
-const unsigned char STAIRSUP[] = { 4, 4, 13, 13, 13, 13, 2, 2, 2, 2, 13, 13, 13, 13, 13, 13, 13, 13, 0, 66, 6, 0, 63, 64, 65, 0, 0, 67, 68, 0, 0, 0, 0, 0 };
-const unsigned char L5STAIRSUP[] = { 4, 4, 22, 22, 22, 22, 2, 2, 2, 2, 13, 13, 13, 13, 13, 13, 13, 13, 0, 66, 23, 0, 63, 64, 65, 0, 0, 67, 68, 0, 0, 0, 0, 0 };
-const unsigned char STAIRSDOWN[] = { 4, 3, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 62, 57, 58, 0, 61, 59, 60, 0, 0, 0, 0, 0 };
-const unsigned char LAMPS[] = { 2, 2, 13, 0, 13, 13, 129, 0, 130, 128 };
-const unsigned char PWATERIN[] = { 6, 6, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 0, 0, 0, 0, 0, 0, 0, 202, 200, 200, 84, 0, 0, 199, 203, 203, 83, 0, 0, 85, 206, 80, 81, 0, 0, 0, 134, 135, 0, 0, 0, 0, 0, 0, 0, 0 };
+const BYTE STAIRSUP[] = { 4, 4, 13, 13, 13, 13, 2, 2, 2, 2, 13, 13, 13, 13, 13, 13, 13, 13, 0, 66, 6, 0, 63, 64, 65, 0, 0, 67, 68, 0, 0, 0, 0, 0 };
+const BYTE L5STAIRSUP[] = { 4, 4, 22, 22, 22, 22, 2, 2, 2, 2, 13, 13, 13, 13, 13, 13, 13, 13, 0, 66, 23, 0, 63, 64, 65, 0, 0, 67, 68, 0, 0, 0, 0, 0 };
+const BYTE STAIRSDOWN[] = { 4, 3, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 62, 57, 58, 0, 61, 59, 60, 0, 0, 0, 0, 0 };
+const BYTE LAMPS[] = { 2, 2, 13, 0, 13, 13, 129, 0, 130, 128 };
+const BYTE PWATERIN[] = { 6, 6, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 0, 0, 0, 0, 0, 0, 0, 202, 200, 200, 84, 0, 0, 199, 203, 203, 83, 0, 0, 85, 206, 80, 81, 0, 0, 0, 134, 135, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 /* data */
-unsigned char L5ConvTbl[16] = { 22u, 13u, 1u, 13u, 2u, 13u, 13u, 13u, 4u, 13u, 1u, 13u, 2u, 13u, 16u, 13u };
+BYTE L5ConvTbl[16] = { 22u, 13u, 1u, 13u, 2u, 13u, 13u, 13u, 4u, 13u, 1u, 13u, 2u, 13u, 16u, 13u };
 
 void DRLG_Init_Globals()
 {
@@ -126,8 +126,6 @@ void DRLG_Init_Globals()
 		c = 0;
 	memset(dLight, c, sizeof(dLight));
 }
-// 525728: using guessed type int light4flag;
-// 646A28: using guessed type int lightflag;
 
 void LoadL1Dungeon(char *sFileName, int vx, int vy)
 {
@@ -177,10 +175,6 @@ void LoadL1Dungeon(char *sFileName, int vx, int vy)
 	SetMapObjects(pLevelMap, 0, 0);
 	mem_free_dbg(pLevelMap);
 }
-// 5CF328: using guessed type int dmaxx;
-// 5CF32C: using guessed type int dmaxy;
-// 5D2458: using guessed type int dminx;
-// 5D245C: using guessed type int dminy;
 
 void DRLG_L1Floor()
 {
@@ -249,7 +243,7 @@ void DRLG_L1Pass3()
 	for (j = 0; j < DMAXY; j++) {
 		xx = 16;
 		for (i = 0; i < DMAXX; i++) {
-			lv = (unsigned char)dungeon[i][j] - 1;
+			lv = dungeon[i][j] - 1;
 			/// ASSERT: assert(lv >= 0);
 #ifdef USE_ASM
 			__asm {
@@ -376,10 +370,6 @@ void LoadPreL1Dungeon(char *sFileName, int vx, int vy)
 
 	mem_free_dbg(pLevelMap);
 }
-// 5CF328: using guessed type int dmaxx;
-// 5CF32C: using guessed type int dmaxy;
-// 5D2458: using guessed type int dminx;
-// 5D245C: using guessed type int dminy;
 
 void CreateL5Dungeon(int rseed, int entry)
 {
@@ -399,29 +389,23 @@ void CreateL5Dungeon(int rseed, int entry)
 	DRLG_InitL1Vals();
 	DRLG_SetPC();
 }
-// 5CF328: using guessed type int dmaxx;
-// 5CF32C: using guessed type int dmaxy;
-// 5D2458: using guessed type int dminx;
-// 5D245C: using guessed type int dminy;
 
 void DRLG_LoadL1SP()
 {
-	setloadflag = 0;
+	setloadflag = FALSE;
 	if (QuestStatus(QTYPE_BUTCH)) {
 		pSetPiece = LoadFileInMem("Levels\\L1Data\\rnd6.DUN", 0);
-		setloadflag = 1;
+		setloadflag = TRUE;
 	}
 	if (QuestStatus(QTYPE_KING) && gbMaxPlayers == 1) {
 		pSetPiece = LoadFileInMem("Levels\\L1Data\\SKngDO.DUN", 0);
-		setloadflag = 1;
+		setloadflag = TRUE;
 	}
 	if (QuestStatus(QTYPE_BOL)) {
 		pSetPiece = LoadFileInMem("Levels\\L1Data\\Banner2.DUN", 0);
-		setloadflag = 1;
+		setloadflag = TRUE;
 	}
 }
-// 5276A4: using guessed type int setloadflag;
-// 679660: using guessed type char gbMaxPlayers;
 
 void DRLG_FreeL1SP()
 {
@@ -542,9 +526,9 @@ void DRLG_L5(int entry)
 
 void DRLG_PlaceDoor(int x, int y)
 {
-	if ((L5dflags[x][y] & 0x80) == 0) { /* todo: unsigned */
-		unsigned char df = L5dflags[x][y] & 0x7F;
-		unsigned char c = dungeon[x][y];
+	if ((L5dflags[x][y] & 0x80) == 0) {
+		BYTE df = L5dflags[x][y] & 0x7F;
+		BYTE c = dungeon[x][y];
 
 		if (df == 1) {
 			if (y != 1 && c == 2)
@@ -602,16 +586,16 @@ void DRLG_PlaceDoor(int x, int y)
 void DRLG_L1Shadows()
 {
 	int x, y, i;
-	unsigned char sd[2][2];
-	unsigned char tnv3;
+	BYTE sd[2][2];
+	BYTE tnv3;
 	BOOL patflag;
 
 	for (y = 1; y < DMAXY; y++) {
 		for (x = 1; x < DMAXX; x++) {
-			sd[0][0] = BSTYPES[(unsigned char)dungeon[x][y]];
-			sd[1][0] = BSTYPES[(unsigned char)dungeon[x - 1][y]];
-			sd[0][1] = BSTYPES[(unsigned char)dungeon[x][y - 1]];
-			sd[1][1] = BSTYPES[(unsigned char)dungeon[x - 1][y - 1]];
+			sd[0][0] = BSTYPES[dungeon[x][y]];
+			sd[1][0] = BSTYPES[dungeon[x - 1][y]];
+			sd[0][1] = BSTYPES[dungeon[x][y - 1]];
+			sd[1][1] = BSTYPES[dungeon[x - 1][y - 1]];
 
 			for (i = 0; i < 37; i++) {
 				if (SPATS[i].strig == sd[0][0]) {
@@ -639,7 +623,7 @@ void DRLG_L1Shadows()
 
 	for (y = 1; y < DMAXY; y++) {
 		for (x = 1; x < DMAXX; x++) {
-			if ((unsigned char)dungeon[x - 1][y] == 139 && !L5dflags[x - 1][y]) {
+			if (dungeon[x - 1][y] == 139 && !L5dflags[x - 1][y]) {
 				tnv3 = 139;
 				if (dungeon[x][y] == 29)
 					tnv3 = 141;
@@ -655,7 +639,7 @@ void DRLG_L1Shadows()
 					tnv3 = 141;
 				dungeon[x - 1][y] = tnv3;
 			}
-			if ((unsigned char)dungeon[x - 1][y] == 149 && !L5dflags[x - 1][y]) {
+			if (dungeon[x - 1][y] == 149 && !L5dflags[x - 1][y]) {
 				tnv3 = 149;
 				if (dungeon[x][y] == 29)
 					tnv3 = 153;
@@ -671,7 +655,7 @@ void DRLG_L1Shadows()
 					tnv3 = 153;
 				dungeon[x - 1][y] = tnv3;
 			}
-			if ((unsigned char)dungeon[x - 1][y] == 148 && !L5dflags[x - 1][y]) {
+			if (dungeon[x - 1][y] == 148 && !L5dflags[x - 1][y]) {
 				tnv3 = 148;
 				if (dungeon[x][y] == 29)
 					tnv3 = 154;
@@ -691,7 +675,7 @@ void DRLG_L1Shadows()
 	}
 }
 
-int DRLG_PlaceMiniSet(const unsigned char *miniset, int tmin, int tmax, int cx, int cy, BOOL setview, int noquad, int ldir)
+int DRLG_PlaceMiniSet(const BYTE *miniset, int tmin, int tmax, int cx, int cy, BOOL setview, int noquad, int ldir)
 {
 	int xx, yy, sx, sy;
 	int ii, i, t, found;
@@ -746,7 +730,7 @@ int DRLG_PlaceMiniSet(const unsigned char *miniset, int tmin, int tmax, int cx, 
 
 			for (yy = 0; yy < sh && abort == TRUE; yy++) {
 				for (xx = 0; xx < sw && abort == TRUE; xx++) {
-					if (miniset[ii] && (unsigned char)dungeon[xx + sx][sy + yy] != miniset[ii])
+					if (miniset[ii] && dungeon[xx + sx][sy + yy] != miniset[ii])
 						abort = FALSE;
 					if (L5dflags[xx + sx][sy + yy])
 						abort = FALSE;
@@ -805,9 +789,6 @@ int DRLG_PlaceMiniSet(const unsigned char *miniset, int tmin, int tmax, int cx, 
 	else
 		return 3;
 }
-// 5A5590: using guessed type char TransVal;
-// 5CF320: using guessed type int LvlViewY;
-// 5CF324: using guessed type int LvlViewX;
 
 void InitL5Dungeon()
 {
@@ -1114,9 +1095,9 @@ int L5HWallOk(int i, int j)
 	}
 
 	wallok = FALSE;
-	if ((unsigned char)dungeon[i + x][j] >= 3 && (unsigned char)dungeon[i + x][j] <= 7) /* todo: unsigned */
+	if (dungeon[i + x][j] >= 3 && dungeon[i + x][j] <= 7)
 		wallok = TRUE;
-	if ((unsigned char)dungeon[i + x][j] >= 16 && (unsigned char)dungeon[i + x][j] <= 24)
+	if (dungeon[i + x][j] >= 16 && dungeon[i + x][j] <= 24)
 		wallok = TRUE;
 	if (dungeon[i + x][j] == 22)
 		wallok = FALSE;
@@ -1140,9 +1121,9 @@ int L5VWallOk(int i, int j)
 	}
 
 	wallok = FALSE;
-	if ((unsigned char)dungeon[i][j + y] >= 3 && (unsigned char)dungeon[i][j + y] <= 7) /* todo: unsigned */
+	if (dungeon[i][j + y] >= 3 && dungeon[i][j + y] <= 7)
 		wallok = TRUE;
-	if ((unsigned char)dungeon[i][j + y] >= 16 && (unsigned char)dungeon[i][j + y] <= 24)
+	if (dungeon[i][j + y] >= 16 && dungeon[i][j + y] <= 24)
 		wallok = TRUE;
 	if (dungeon[i][j + y] == 22)
 		wallok = FALSE;
@@ -1368,7 +1349,7 @@ void DRLG_L5Subs()
 	for (y = 0; y < DMAXY; y++) {
 		for (x = 0; x < DMAXX; x++) {
 			if (!random(0, 4)) {
-				unsigned char c = L5BTYPES[(unsigned char)dungeon[x][y]]; /* todo: changed to unsigned */
+				BYTE c = L5BTYPES[dungeon[x][y]];
 
 				if (c && !L5dflags[x][y]) {
 					rv = random(0, 16);
@@ -1382,13 +1363,13 @@ void DRLG_L5Subs()
 					}
 
 					if (i == 89) {
-						if (L5BTYPES[(unsigned char)dungeon[x][y - 1]] != 79 || L5dflags[x][y - 1])
+						if (L5BTYPES[dungeon[x][y - 1]] != 79 || L5dflags[x][y - 1])
 							i = 79;
 						else
 							dungeon[x][y - 1] = 90;
 					}
 					if (i == 91) {
-						if (L5BTYPES[(unsigned char)dungeon[x + 1][y]] != 80 || L5dflags[x + 1][y])
+						if (L5BTYPES[dungeon[x + 1][y]] != 80 || L5dflags[x + 1][y])
 							i = 80;
 						else
 							dungeon[x + 1][y] = 92;
@@ -1509,7 +1490,6 @@ void L5FillChambers()
 		}
 	}
 }
-// 5276A4: using guessed type int setloadflag;
 
 void DRLG_L5GChamber(int sx, int sy, BOOL topflag, BOOL bottomflag, BOOL leftflag, BOOL rightflag)
 {
@@ -1589,17 +1569,17 @@ void DRLG_L5GHall(int x1, int y1, int x2, int y2)
 void DRLG_L5SetRoom(int rx1, int ry1)
 {
 	int rw, rh, i, j;
-	unsigned char *sp;
+	BYTE *sp;
 
-	rw = *(unsigned char *)pSetPiece; /* todo: BYTE */
-	rh = *((unsigned char *)pSetPiece + 2);
+	rw = *pSetPiece;
+	rh = *(pSetPiece + 2);
 
 	setpc_x = rx1;
 	setpc_y = ry1;
 	setpc_w = rw;
 	setpc_h = rh;
 
-	sp = (unsigned char *)pSetPiece + 4;
+	sp = pSetPiece + 4;
 
 	for (j = 0; j < rh; j++) {
 		for (i = 0; i < rw; i++) {
@@ -1613,8 +1593,6 @@ void DRLG_L5SetRoom(int rx1, int ry1)
 		}
 	}
 }
-// 5CF330: using guessed type int setpc_h;
-// 5CF334: using guessed type int setpc_w;
 
 void DRLG_L5FloodTVal()
 {
@@ -1635,7 +1613,6 @@ void DRLG_L5FloodTVal()
 		yy += 2;
 	}
 }
-// 5A5590: using guessed type char TransVal;
 
 void DRLG_L5FTVR(int i, int j, int x, int y, int d)
 {
@@ -1679,7 +1656,6 @@ void DRLG_L5FTVR(int i, int j, int x, int y, int d)
 		DRLG_L5FTVR(i + 1, j + 1, x + 2, y + 2, 8);
 	}
 }
-// 5A5590: using guessed type char TransVal;
 
 void DRLG_L5TransFix()
 {
