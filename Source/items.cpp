@@ -2021,49 +2021,42 @@ int RndTypeItems(int itype, int imid)
 }
 // 421CB7: using guessed type int var_80C[512];
 
-int CheckUnique(int i, int lvl, int uper, BOOLEAN recreate)
+int CheckUnique(int i, int lvl, int uper, BOOL recreate)
 {
-	int numu;      // ebx
-	int j;         // esi
-	int idata;     // eax
-	char uok[128]; // [esp+8h] [ebp-84h]
+	int j, idata, numu;
+	BOOLEAN uok[128];
 
 	if (random(28, 100) > uper)
 		return -1;
+
 	numu = 0;
 	memset(uok, 0, sizeof(uok));
-
-	if (UniqueItemList[0].UIItemId == -1)
-		return -1;
-	j = 0;
-	do {
+	for (j = 0; UniqueItemList[j].UIItemId != UITYPE_INVALID; j++) {
 		if (UniqueItemList[j].UIItemId == AllItemsList[item[i].IDidx].iItemId
 		    && lvl >= UniqueItemList[j].UIMinLvl
 		    && (recreate || !UniqueItemFlag[j] || gbMaxPlayers != 1)) {
-			uok[j] = 1;
-			++numu;
+			uok[j] = TRUE;
+			numu++;
 		}
-		j++;
-	} while (UniqueItemList[j].UIItemId != -1);
+	}
+
 	if (!numu)
 		return -1;
 
 	random(29, 10);
 	idata = 0;
-	if (numu > 0) {
-		while (1) {
-			if (uok[idata])
-				--numu;
-			if (numu <= 0)
-				break;
-			if (++idata == 128)
+	while (numu > 0) {
+		if (uok[idata])
+			numu--;
+		if (numu > 0) {
+			idata++;
+			if (idata == 128)
 				idata = 0;
 		}
 	}
+
 	return idata;
 }
-// 679660: using guessed type char gbMaxPlayers;
-// 421D41: using guessed type char var_84[128];
 
 void GetUniqueItem(int i, int uid)
 {
