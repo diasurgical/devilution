@@ -7,10 +7,10 @@ extern unsigned char lightactive[MAXLIGHTS];
 extern LightListStruct LightList[MAXLIGHTS];
 extern int numlights;
 extern BYTE lightradius[16][128];
-extern int dovision;               // weak
+extern BOOL dovision;
 extern int numvision;
-extern char lightmax;             // weak
-extern int dolighting;            // weak
+extern char lightmax;
+extern BOOL dolighting;
 extern BYTE lightblock[8][8][16][16];
 extern int visionid;
 extern BYTE *pLightTbl;
