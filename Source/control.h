@@ -30,7 +30,7 @@ extern char infoclr; // weak
 extern void *pGBoxBuff;
 extern void *pSBkBtnCel;
 extern char tempstr[256];
-extern char byte_4B894C[4];
+extern BOOLEAN whisper[MAX_PLRS];
 extern int sbooktab;             // weak
 extern int pSplType;             // weak
 extern int frame;                // idb
