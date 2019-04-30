@@ -1,6 +1,6 @@
 #include "diablo.h"
 
-int numthemes; // idb
+int numthemes;
 BOOL armorFlag;
 BOOL ThemeGoodIn[4];
 BOOL weaponFlag;
@@ -9,9 +9,9 @@ BOOL mFountainFlag;
 BOOL cauldronFlag;
 BOOL tFountainFlag;
 int zharlib;
-int themex;    // idb
-int themey;    // idb
-int themeVar1; // idb
+int themex;
+int themey;
+int themeVar1;
 ThemeStruct themes[MAXTHEMES];
 BOOL pFountainFlag;
 BOOL bFountainFlag;
@@ -262,11 +262,6 @@ BOOL CheckThemeReqs(int t)
 
 	return rv;
 }
-// 6AAA58: using guessed type int mFountainFlag;
-// 6AAA5C: using guessed type int cauldronFlag;
-// 6AAA60: using guessed type int tFountainFlag;
-// 6AAC08: using guessed type int pFountainFlag;
-// 6AAC0C: using guessed type int bFountainFlag;
 
 BOOL SpecialThemeFit(int i, int t)
 {
@@ -455,12 +450,6 @@ void InitThemes()
 		numthemes += themeCount;
 	}
 }
-// 6AAA54: using guessed type int treasureFlag;
-// 6AAA58: using guessed type int mFountainFlag;
-// 6AAA5C: using guessed type int cauldronFlag;
-// 6AAA60: using guessed type int tFountainFlag;
-// 6AAC08: using guessed type int pFountainFlag;
-// 6AAC0C: using guessed type int bFountainFlag;
 
 // HoldThemeRooms marks theme rooms as populated.
 void HoldThemeRooms()
