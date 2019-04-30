@@ -2828,17 +2828,16 @@ void control_release_talk_btn()
 
 void control_reset_talk_msg()
 {
-	signed int v1; // ecx
+	int i, pmask;
+	pmask = 0;
 
-	BOOL v0 = FALSE;
-	v1 = 0;
-	do {
-		if (byte_4B894C[v1])
-			v0 |= 1 << v1;
-		++v1;
-	} while (v1 < 4);
+	for (i = 0; i < MAX_PLRS; i++) {
+		if (whisper[i])
+			pmask |= 1 << i;
+	}
+
 	if (!msgcmd_add_server_cmd_W(sgszTalkMsg))
-		NetSendCmdString(v0, sgszTalkMsg);
+		NetSendCmdString(pmask, sgszTalkMsg);
 }
 
 void control_type_message()
@@ -2855,12 +2854,6 @@ void control_type_message()
 		sgbTalkSavePos = sgbNextTalkSave;
 	}
 }
-// 4B84CC: using guessed type char sgbNextTalkSave;
-// 4B84CD: using guessed type char sgbTalkSavePos;
-// 4B8840: using guessed type int sgbPlrTalkTbl;
-// 4B8960: using guessed type int talkflag;
-// 52571C: using guessed type int drawpanflag;
-// 679660: using guessed type char gbMaxPlayers;
 
 void control_reset_talk()
 {
@@ -2868,9 +2861,6 @@ void control_reset_talk()
 	sgbPlrTalkTbl = 0;
 	drawpanflag = 255;
 }
-// 4B8840: using guessed type int sgbPlrTalkTbl;
-// 4B8960: using guessed type int talkflag;
-// 52571C: using guessed type int drawpanflag;
 
 BOOL control_talk_last_key(int vkey)
 {
