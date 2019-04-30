@@ -2,7 +2,7 @@
 #ifndef __INTERFAC_H__
 #define __INTERFAC_H__
 
-extern int progress_id; // idb
+extern int progress_id;
 
 void interface_msg_pump();
 BOOL IncProgress();
