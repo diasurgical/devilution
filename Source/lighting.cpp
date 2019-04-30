@@ -940,7 +940,6 @@ void MakeLightTable()
 		}
 	}
 }
-// 525728: using guessed type int light4flag;
 
 #ifdef _DEBUG
 void ToggleLighting_2()
@@ -1136,7 +1135,6 @@ void ProcessLightList()
 
 	dolighting = FALSE;
 }
-// 642A18: using guessed type int dolighting;
 
 void SavePreLighting()
 {
@@ -1193,7 +1191,6 @@ void ChangeVisionRadius(int id, int r)
 		}
 	}
 }
-// 642A0C: using guessed type int dovision;
 
 void ChangeVisionXY(int id, int x, int y)
 {
@@ -1211,7 +1208,6 @@ void ChangeVisionXY(int id, int x, int y)
 		}
 	}
 }
-// 642A0C: using guessed type int dovision;
 
 void ProcessVisionList()
 {
@@ -1257,8 +1253,6 @@ void ProcessVisionList()
 
 	dovision = FALSE;
 }
-// 5A5590: using guessed type char TransVal;
-// 642A0C: using guessed type int dovision;
 
 void lighting_color_cycling()
 {
@@ -1285,4 +1279,3 @@ void lighting_color_cycling()
 		tbl += 224;
 	}
 }
-// 525728: using guessed type int light4flag;

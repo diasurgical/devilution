@@ -2,16 +2,16 @@
 #ifndef __SCROLLRT_H__
 #define __SCROLLRT_H__
 
-extern int light_table_index; // weak
+extern int light_table_index;
 extern int PitchTbl[1024];
-extern unsigned char *gpBufEnd; // weak
-extern DWORD level_cel_block;   // weak
-extern char arch_draw_type;     // weak
+extern BYTE *gpBufEnd;
+extern DWORD level_cel_block;
+extern char arch_draw_type;
 extern DDSURFACEDESC DDS_desc;
 extern int cel_transparency_active; // weak
-extern int level_piece_id;          // weak
+extern int level_piece_id;
 extern void (*DrawPlrProc)(int, int, int, int, int, BYTE *, int, int, int, int);
-extern int draw_monster_num; // weak
+extern int draw_monster_num;
 
 void ClearCursor();
 void DrawMissile(int x, int y, int sx, int sy, int CelSkip, int capChunks, BOOL pre);
