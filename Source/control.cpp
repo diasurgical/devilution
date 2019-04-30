@@ -33,7 +33,7 @@ int sgbPlrTalkTbl; // weak // should be char [4]
 void *pGBoxBuff;
 void *pSBkBtnCel;
 char tempstr[256];
-char byte_4B894C[4];
+BOOLEAN whisper[MAX_PLRS];
 int sbooktab;             // weak
 int pSplType;             // weak
 int frame;                // idb
@@ -1209,8 +1209,8 @@ void InitControlPan()
 		pTalkBtns = LoadFileInMem("CtrlPan\\TalkButt.CEL", 0);
 		sgbPlrTalkTbl = 0;
 		sgszTalkMsg[0] = 0;
-		for (i = 0; i < sizeof(byte_4B894C); i++)
-			byte_4B894C[i] = 1;
+		for (i = 0; i < MAX_PLRS; i++)
+			whisper[i] = TRUE;
 		for (i = 0; i < sizeof(talkbtndown) / sizeof(talkbtndown[0]); i++)
 			talkbtndown[i] = FALSE;
 	}
@@ -2724,7 +2724,7 @@ void DrawTalkPan()
 			if ((signed int)a1 >= (signed int)&plr[4]._pName)
 				return;
 		}
-		if (byte_4B894C[v10]) {
+		if (whisper[v10]) {
 			v6 = 3;
 			if (!talkbtndown[v5]) {
 			LABEL_18:
@@ -2808,31 +2808,23 @@ int control_check_talk_btn()
 
 void control_release_talk_btn()
 {
-	signed int v0; // ecx
-	int v1;        // eax
-	signed int v2; // ecx
+	int i, p, off;
 
 	if (talkflag) {
-		v0 = MouseX;
-		talkbtndown[0] = FALSE;
-		talkbtndown[1] = FALSE;
-		talkbtndown[2] = FALSE;
-		if (v0 >= 172 && MouseY >= 421 && v0 <= 233 && MouseY <= 475) {
-			v1 = (MouseY - 421) / 18;
-			v2 = 0;
-			do {
-				if (v1 == -1)
-					break;
-				if (v2 != myplr)
-					--v1;
-				++v2;
-			} while (v2 < 4);
-			if (v2 <= 4)
-				byte_4B894C[v2 - 1] = byte_4B894C[v2 - 1] == 0;
+		for (i = 0; i < sizeof(talkbtndown) / sizeof(talkbtndown[0]); i++)
+			talkbtndown[i] = FALSE;
+		if (MouseX >= 172 && MouseY >= 421 && MouseX <= 233 && MouseY <= 475) {
+			off = (MouseY - 421) / 18;
+
+			for (p = 0; p < MAX_PLRS && off != -1; p++) {
+				if (p != myplr)
+					off--;
+			}
+			if (p <= MAX_PLRS)
+				whisper[p - 1] = !whisper[p - 1];
 		}
 	}
 }
-// 4B8960: using guessed type int talkflag;
 
 void control_reset_talk_msg()
 {
