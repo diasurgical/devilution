@@ -1334,387 +1334,310 @@ int PLVal(int pv, int p1, int p2, int minv, int maxv)
 
 void SaveItemPower(int i, int power, int param1, int param2, int minval, int maxval, int multval)
 {
-	int v7;         // edi
-	int v8;         // esi
-	int v9;         // eax
-	int v10;        // ebx
-	int *v11;       // eax
-	int *v12;       // eax
-	int v13;        // edi
-	int v14;        // eax
-	int v15;        // edi
-	int v16;        // eax
-	int v17;        // eax
-	int v18;        // ecx
-	int v19;        // edx
-	int v20;        // edi
-	int *v21;       // edx
-	int v22;        // eax
-	int v23;        // eax
-	int v24;        // eax
-	int v25;        // eax
-	int v26;        // eax
-	int v27;        // eax
-	int v28;        // ecx
-	int *v29;       // eax
-	int v30;        // ecx
-	int *v31;       // eax
-	int v32;        // ecx
-	int v33;        // eax
-	int v34;        // ST18_4
-	int v35;        // eax
-	int v36;        // ecx
-	int v37;        // edx
-	signed int v38; // ecx
-	int v39;        // eax
-	int v40;        // eax
-	int v41;        // ecx
-	int *v42;       // eax
-	int v43;        // esi
+   int r, r2;
 
-	v7 = power;
-	v8 = i;
-	v9 = RndPL(param1, param2);
-	v10 = v9;
-	switch (v7) {
+	r = RndPL(param1, param2);
+	switch (power) {
 	case IPL_TOHIT:
-		v11 = &item[v8]._iPLToHit;
-		goto LABEL_115;
+		item[i]._iPLToHit += r;
+		break;
 	case IPL_TOHIT_CURSE:
-		v12 = &item[v8]._iPLToHit;
-		goto LABEL_62;
+		item[i]._iPLToHit -= r;
+		break;
 	case IPL_DAMP:
-		v11 = &item[v8]._iPLDam;
-		goto LABEL_115;
+		item[i]._iPLDam += r;
+		break;
 	case IPL_DAMP_CURSE:
-		v12 = &item[v8]._iPLDam;
-		goto LABEL_62;
+		item[i]._iPLDam -= r;
+		break;
 	case IPL_TOHIT_DAMP:
-		v10 = RndPL(param1, param2);
-		v13 = v8;
-		item[v13]._iPLDam += v10;
+		r = RndPL(param1, param2);
+		item[i]._iPLDam += r;
 		if (param1 == 20)
-			v14 = RndPL(1, 5);
-		else
-			v14 = param1;
+			r2 = RndPL(1, 5);
 		if (param1 == 36)
-			v14 = RndPL(6, 10);
+			r2 = RndPL(6, 10);
 		if (param1 == 51)
-			v14 = RndPL(11, 15);
+			r2 = RndPL(11, 15);
 		if (param1 == 66)
-			v14 = RndPL(16, 20);
+			r2 = RndPL(16, 20);
 		if (param1 == 81)
-			v14 = RndPL(21, 30);
+			r2 = RndPL(21, 30);
 		if (param1 == 96)
-			v14 = RndPL(31, 40);
+			r2 = RndPL(31, 40);
 		if (param1 == 111)
-			v14 = RndPL(41, 50);
+			r2 = RndPL(41, 50);
 		if (param1 == 126)
-			v14 = RndPL(51, 75);
+			r2 = RndPL(51, 75);
 		if (param1 == 151)
-			v14 = RndPL(76, 100);
-		item[v13]._iPLToHit += v14;
+			r2 = RndPL(76, 100);
+		item[i]._iPLToHit += r2;
 		break;
 	case IPL_TOHIT_DAMP_CURSE:
-		v15 = v8;
-		item[v15]._iPLDam -= v9;
+		item[i]._iPLDam -= r;
 		if (param1 == 25)
-			v16 = RndPL(1, 5);
-		else
-			v16 = param1;
+			r2 = RndPL(1, 5);
 		if (param1 == 50)
-			v16 = RndPL(6, 10);
-		item[v15]._iPLToHit -= v16;
+			r2 = RndPL(6, 10);
+		item[i]._iPLToHit -= r2;
 		break;
 	case IPL_ACP:
-		v11 = &item[v8]._iPLAC;
-		goto LABEL_115;
+		item[i]._iPLAC += r;
+		break;
 	case IPL_ACP_CURSE:
-		v12 = &item[v8]._iPLAC;
-		goto LABEL_62;
+		item[i]._iPLAC -= r;
+		break;
+	case IPL_SETAC:
+		item[i]._iAC = r;
+		break;
+	case IPL_AC_CURSE:
+		item[i]._iAC -= r;
+		break;
 	case IPL_FIRERES:
-		v11 = &item[v8]._iPLFR;
-		goto LABEL_115;
+		item[i]._iPLFR += r;
+		break;
 	case IPL_LIGHTRES:
-		v11 = &item[v8]._iPLLR;
-		goto LABEL_115;
+		item[i]._iPLLR += r;
+		break;
 	case IPL_MAGICRES:
-		v11 = &item[v8]._iPLMR;
-		goto LABEL_115;
+		item[i]._iPLMR += r;
+		break;
 	case IPL_ALLRES:
-		v17 = v8;
-		item[v17]._iPLFR += v10;
-		v18 = item[v8]._iPLFR;
-		item[v17]._iPLLR += v10;
-		item[v17]._iPLMR += v10;
-		v19 = item[v8]._iPLLR;
-		v20 = item[v8]._iPLMR;
-		if (v18 < 0)
-			item[v17]._iPLFR = 0;
-		if (v19 < 0)
-			item[v17]._iPLLR = 0;
-		if (v20 < 0)
-			item[v17]._iPLMR = 0;
+		item[i]._iPLFR += r;
+		item[i]._iPLLR += r;
+		item[i]._iPLMR += r;
+		if (item[i]._iPLFR < 0)
+			item[i]._iPLFR = 0;
+		if (item[i]._iPLLR < 0)
+			item[i]._iPLLR = 0;
+		if (item[i]._iPLMR < 0)
+			item[i]._iPLMR = 0;
 		break;
 	case IPL_SPLLVLADD:
-		item[v8]._iSplLvlAdd = v9;
+		item[i]._iSplLvlAdd = r;
 		break;
 	case IPL_CHARGES:
-		v21 = &item[v8]._iCharges;
-		v22 = param1 * *v21;
-		*v21 = v22;
-		item[v8]._iMaxCharges = v22;
+		item[i]._iCharges *= param1;
+		item[i]._iMaxCharges = item[i]._iCharges;
+		break;
+	case IPL_SPELL:
+		item[i]._iSpell = param1;
+		item[i]._iCharges = param1;
+		item[i]._iMaxCharges = param2;
 		break;
 	case IPL_FIREDAM:
-		v24 = v8;
-		item[v24]._iFlags |= 0x10u;
-		goto LABEL_77;
+		item[i]._iFlags |= 0x10;
+		item[i]._iFMinDam = param1;
+		item[i]._iFMaxDam = param2;
+		break;
 	case IPL_LIGHTDAM:
-		v25 = v8;
-		item[v25]._iFlags |= 0x20u;
-		goto LABEL_79;
+		item[i]._iFlags |= 0x20;
+		item[i]._iLMinDam = param1;
+		item[i]._iLMaxDam = param2;
+		break;
 	case IPL_STR:
-		v11 = &item[v8]._iPLStr;
-		goto LABEL_115;
+		item[i]._iPLStr += r;
+		break;
 	case IPL_STR_CURSE:
-		v12 = &item[v8]._iPLStr;
-		goto LABEL_62;
+		item[i]._iPLStr -= r;
+		break;
 	case IPL_MAG:
-		v11 = &item[v8]._iPLMag;
-		goto LABEL_115;
+		item[i]._iPLMag += r;
+		break;
 	case IPL_MAG_CURSE:
-		v12 = &item[v8]._iPLMag;
-		goto LABEL_62;
+		item[i]._iPLMag -= r;
+		break;
 	case IPL_DEX:
-		v11 = &item[v8]._iPLDex;
-		goto LABEL_115;
+		item[i]._iPLDex += r;
+		break;
 	case IPL_DEX_CURSE:
-		v12 = &item[v8]._iPLDex;
-		goto LABEL_62;
+		item[i]._iPLDex -= r;
+		break;
 	case IPL_VIT:
-		v11 = &item[v8]._iPLVit;
-		goto LABEL_115;
+		item[i]._iPLVit += r;
+		break;
 	case IPL_VIT_CURSE:
-		v12 = &item[v8]._iPLVit;
-		goto LABEL_62;
+		item[i]._iPLVit -= r;
+		break;
 	case IPL_ATTRIBS:
-		v26 = v8;
-		item[v26]._iPLStr += v10;
-		item[v26]._iPLMag += v10;
-		item[v26]._iPLDex += v10;
-		item[v26]._iPLVit += v10;
+		item[i]._iPLStr += r;
+		item[i]._iPLMag += r;
+		item[i]._iPLDex += r;
+		item[i]._iPLVit += r;
 		break;
 	case IPL_ATTRIBS_CURSE:
-		v27 = v8;
-		item[v27]._iPLStr -= v10;
-		item[v27]._iPLMag -= v10;
-		item[v27]._iPLDex -= v10;
-		item[v27]._iPLVit -= v10;
+		item[i]._iPLStr -= r;
+		item[i]._iPLMag -= r;
+		item[i]._iPLDex -= r;
+		item[i]._iPLVit -= r;
+		break;
+	case IPL_GETHIT:
+		item[i]._iPLGetHit += r;
 		break;
 	case IPL_GETHIT_CURSE:
-		v11 = &item[v8]._iPLGetHit;
-		goto LABEL_115;
-	case IPL_GETHIT:
-		v12 = &item[v8]._iPLGetHit;
-		goto LABEL_62;
+		item[i]._iPLGetHit -= r;
+		break;
 	case IPL_LIFE:
-		v28 = v9 << 6;
-		v29 = &item[v8]._iPLHP;
-		goto LABEL_73;
+		item[i]._iPLHP += r << 6;
+		break;
 	case IPL_LIFE_CURSE:
-		v30 = v9 << 6;
-		v31 = &item[v8]._iPLHP;
-		goto LABEL_75;
+		item[i]._iPLHP -= r << 6;
+		break;
 	case IPL_MANA:
-		item[v8]._iPLMana += v9 << 6;
-		goto LABEL_92;
+		item[i]._iPLMana += r << 6;
+		drawmanaflag = TRUE;
+		break;
 	case IPL_MANA_CURSE:
-		item[v8]._iPLMana -= v9 << 6;
-		goto LABEL_92;
+		item[i]._iPLMana -= r << 6;
+		drawmanaflag = TRUE;
+		break;
 	case IPL_DUR:
-		v32 = v8;
-		v33 = item[v8]._iMaxDur;
-		v34 = v33;
-		v35 = v10 * v33 / 100;
-		item[v32]._iDurability += v35;
-		item[v32]._iMaxDur = v35 + v34;
+		r2 = r * item[i]._iMaxDur / 100;
+		item[i]._iMaxDur += r2;
+		item[i]._iDurability += r2;
 		break;
 	case IPL_DUR_CURSE:
-		v36 = v8;
-		v37 = item[v8]._iMaxDur - v9 * item[v8]._iMaxDur / 100;
-		item[v8]._iMaxDur = v37;
-		if (v37 < 1)
-			item[v36]._iMaxDur = 1;
-		item[v36]._iDurability = item[v36]._iMaxDur;
+		item[i]._iMaxDur -= r * item[i]._iMaxDur / 100;
+		if (item[i]._iMaxDur < 1)
+			item[i]._iMaxDur = 1;
+		item[i]._iDurability = item[i]._iMaxDur;
 		break;
 	case IPL_INDESTRUCTIBLE:
-		v38 = DUR_INDESTRUCTIBLE;
-		goto LABEL_119;
+		item[i]._iDurability = 255;
+		item[i]._iMaxDur = 255;
+		break;
 	case IPL_LIGHT:
-		v28 = param1;
-		v29 = &item[v8]._iPLLight;
-	LABEL_73:
-		*v29 += v28;
+		item[i]._iPLLight += param1;
 		break;
 	case IPL_LIGHT_CURSE:
-		v30 = param1;
-		v31 = &item[v8]._iPLLight;
-	LABEL_75:
-		*v31 -= v30;
+		item[i]._iPLLight -= param1;
 		break;
 	case IPL_FIRE_ARROWS:
-		v24 = v8;
-		item[v24]._iFlags |= 8u;
-	LABEL_77:
-		item[v24]._iFMinDam = param1;
-		item[v24]._iFMaxDam = param2;
+		item[i]._iFlags |= 8;
+		item[i]._iFMinDam = param1;
+		item[i]._iFMaxDam = param2;
 		break;
 	case IPL_LIGHT_ARROWS:
-		v25 = v8;
-		_HIBYTE(item[v8]._iFlags) |= 2u;
-	LABEL_79:
-		item[v25]._iLMinDam = param1;
-		item[v25]._iLMaxDam = param2;
-		break;
-	case IPL_INVCURS:
-		item[v8]._iCurs = param1;
+		item[i]._iFlags |= 0x2000000;
+		item[i]._iLMinDam = param1;
+		item[i]._iLMaxDam = param2;
 		break;
 	case IPL_THORNS:
-		_HIBYTE(item[v8]._iFlags) |= 4u;
+		item[i]._iFlags |= 0x4000000;
 		break;
 	case IPL_NOMANA:
-		_HIBYTE(item[v8]._iFlags) |= 8u;
-		goto LABEL_92;
+		item[i]._iFlags |= 0x8000000;
+		drawmanaflag = TRUE;
+		break;
 	case IPL_NOHEALPLR:
-		BYTE1(item[v8]._iFlags) |= 1u;
+		item[i]._iFlags |= 0x100;
 		break;
 	case IPL_ABSHALFTRAP:
-		_HIBYTE(item[v8]._iFlags) |= 0x10u;
+		item[i]._iFlags |= 0x10000000;
 		break;
 	case IPL_KNOCKBACK:
-		BYTE1(item[v8]._iFlags) |= 8u;
+		item[i]._iFlags |= 0x800;
+		break;
+	case IPL_3XDAMVDEM:
+		item[i]._iFlags |= 0x40000000;
+		break;
+	case IPL_ALLRESZERO:
+		item[i]._iFlags |= 0x80000000;
 		break;
 	case IPL_NOHEALMON:
-		BYTE1(item[v8]._iFlags) |= 0x10u;
+		item[i]._iFlags |= 0x1000;
 		break;
 	case IPL_STEALMANA:
 		if (param1 == 3)
-			BYTE1(item[v8]._iFlags) |= 0x20u;
+			item[i]._iFlags |= 0x2000;
 		if (param1 == 5)
-			BYTE1(item[v8]._iFlags) |= 0x40u;
-	LABEL_92:
+			item[i]._iFlags |= 0x4000;
 		drawmanaflag = TRUE;
 		break;
 	case IPL_STEALLIFE:
 		if (param1 == 3)
-			BYTE1(item[v8]._iFlags) |= 0x80u;
+			item[i]._iFlags |= 0x8000;
 		if (param1 == 5)
-			BYTE2(item[v8]._iFlags) |= 1u;
+			item[i]._iFlags |= 0x10000;
 		drawhpflag = TRUE;
 		break;
 	case IPL_TARGAC:
-		v11 = &item[v8]._iPLEnAc;
-		goto LABEL_115;
+		item[i]._iPLEnAc += r;
+		break;
 	case IPL_FASTATTACK:
 		if (param1 == 1)
-			BYTE2(item[v8]._iFlags) |= 2u;
+			item[i]._iFlags |= 0x20000;
 		if (param1 == 2)
-			BYTE2(item[v8]._iFlags) |= 4u;
+			item[i]._iFlags |= 0x40000;
 		if (param1 == 3)
-			BYTE2(item[v8]._iFlags) |= 8u;
+			item[i]._iFlags |= 0x80000;
 		if (param1 == 4)
-			BYTE2(item[v8]._iFlags) |= 0x10u;
+			item[i]._iFlags |= 0x100000;
 		break;
 	case IPL_FASTRECOVER:
 		if (param1 == 1)
-			BYTE2(item[v8]._iFlags) |= 0x20u;
+			item[i]._iFlags |= 0x200000;
 		if (param1 == 2)
-			BYTE2(item[v8]._iFlags) |= 0x40u;
+			item[i]._iFlags |= 0x400000;
 		if (param1 == 3)
-			BYTE2(item[v8]._iFlags) |= 0x80u;
+			item[i]._iFlags |= 0x800000;
 		break;
 	case IPL_FASTBLOCK:
-		_HIBYTE(item[v8]._iFlags) |= 1u;
+		item[i]._iFlags |= 0x1000000;
 		break;
 	case IPL_DAMMOD:
-		v11 = &item[v8]._iPLDamMod;
-	LABEL_115:
-		*v11 += v10;
+		item[i]._iPLDamMod += r;
 		break;
 	case IPL_RNDARROWVEL:
-		item[v8]._iFlags |= 4u;
+		item[i]._iFlags |= 4;
 		break;
 	case IPL_SETDAM:
-		v39 = v8;
-		item[v39]._iMinDam = param1;
-		item[v39]._iMaxDam = param2;
+		item[i]._iMinDam = param1;
+		item[i]._iMaxDam = param2;
 		break;
 	case IPL_SETDUR:
-		v38 = param1;
-	LABEL_119:
-		v40 = v8;
-		item[v40]._iDurability = v38;
-		item[v40]._iMaxDur = v38;
-		break;
-	case IPL_NOMINSTR:
-		item[v8]._iMinStr = 0;
-		break;
-	case IPL_SPELL:
-		v23 = v8;
-		item[v23]._iSpell = param1;
-		item[v23]._iCharges = param1;
-		item[v23]._iMaxCharges = param2;
+		item[i]._iDurability = param1;
+		item[i]._iMaxDur = param1;
 		break;
 	case IPL_FASTSWING:
-		BYTE2(item[v8]._iFlags) |= 8u;
+		item[i]._iFlags |= 0x80000;
 		break;
 	case IPL_ONEHAND:
-		item[v8]._iLoc = ILOC_ONEHAND;
-		break;
-	case IPL_3XDAMVDEM:
-		_HIBYTE(item[v8]._iFlags) |= 0x40u;
-		break;
-	case IPL_ALLRESZERO:
-		_HIBYTE(item[v8]._iFlags) |= 0x80u;
+		item[i]._iLoc = ILOC_ONEHAND;
 		break;
 	case IPL_DRAINLIFE:
-		item[v8]._iFlags |= 0x40u;
+		item[i]._iFlags |= 0x40;
 		break;
 	case IPL_RNDSTEALLIFE:
-		item[v8]._iFlags |= 2u;
+		item[i]._iFlags |= 2;
 		break;
 	case IPL_INFRAVISION:
-		item[v8]._iFlags |= 1u;
+		item[i]._iFlags |= 1;
 		break;
-	case IPL_SETAC:
-		item[v8]._iAC = v9;
+	case IPL_NOMINSTR:
+		item[i]._iMinStr = 0;
+		break;
+	case IPL_INVCURS:
+		item[i]._iCurs = param1;
 		break;
 	case IPL_ADDACLIFE:
-		item[v8]._iPLHP = (plr[myplr]._pIBonusAC + plr[myplr]._pIAC + plr[myplr]._pDexterity / 5) << 6;
+		item[i]._iPLHP = (plr[myplr]._pIBonusAC + plr[myplr]._pIAC + plr[myplr]._pDexterity / 5) << 6;
 		break;
 	case IPL_ADDMANAAC:
-		item[v8]._iAC += (plr[myplr]._pMaxManaBase >> 6) / 10;
+		item[i]._iAC += (plr[myplr]._pMaxManaBase >> 6) / 10;
 		break;
 	case IPL_FIRERESCLVL:
-		v41 = 30 - plr[myplr]._pLevel;
-		v42 = &item[v8]._iPLFR;
-		*v42 = v41;
-		if (v41 < 0)
-			*v42 = 0;
-		break;
-	case IPL_AC_CURSE:
-		v12 = &item[v8]._iAC;
-	LABEL_62:
-		*v12 -= v10;
+		item[i]._iPLFR = 30 - plr[myplr]._pLevel;
+		if (item[i]._iPLFR < 0)
+			item[i]._iPLFR = 0;
 		break;
 	}
-	v43 = v8;
-	if (item[v43]._iVAdd1 || item[v43]._iVMult1) {
-		item[v43]._iVAdd2 = PLVal(v10, param1, param2, minval, maxval);
-		item[v43]._iVMult2 = multval;
+	if (item[i]._iVAdd1 || item[i]._iVMult1) {
+		item[i]._iVAdd2 = PLVal(r, param1, param2, minval, maxval);
+		item[i]._iVMult2 = multval;
 	} else {
-		item[v43]._iVAdd1 = PLVal(v10, param1, param2, minval, maxval);
-		item[v43]._iVMult1 = multval;
+		item[i]._iVAdd1 = PLVal(r, param1, param2, minval, maxval);
+		item[i]._iVMult1 = multval;
 	}
 }
 
