@@ -1215,25 +1215,28 @@ int M_GetDir(int i)
 
 void M_CheckEFlag(int i)
 {
-	int v1;        // ecx
-	int v2;        // edi
-	char *v3;      // eax
-	signed int v4; // edx
+	int f, j;
+	int x, y;
+	WORD *m;
 
-	v1 = i;
-	v2 = 0;
-	v3 = (char *)dpiece_defs_map_2 + 32 * (112 * (monster[v1]._mx - 1) + monster[v1]._my + 1);
-	if (v3 < (char *)dpiece_defs_map_2)
-		goto LABEL_9;
-	v4 = 2;
-	do
-		v2 |= *(unsigned short *)&v3[2 * v4++];
-	while (v4 < 10);
-	if (v2 | dArch[monster[v1]._mx - 1][monster[v1]._my + 1])
-		monster[v1]._meflag = 1;
-	else
-	LABEL_9:
-		monster[v1]._meflag = 0;
+	x = monster[i]._mx - 1;
+	y = monster[i]._my + 1;
+	f = 0;
+	m = dpiece_defs_map_2[x][y].mt;
+	if (m >= dpiece_defs_map_2[0][0].mt) {
+		for (j = 2; j < 10; j++) {
+			f |= m[j];
+		}
+	} else {
+		monster[i]._meflag = FALSE;
+		return;
+	}
+
+	if (f | dArch[x][y])
+		monster[i]._meflag = TRUE;
+	else {
+		monster[i]._meflag = FALSE;
+	}
 }
 
 void M_StartStand(int i, int md)

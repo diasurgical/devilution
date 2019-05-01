@@ -566,7 +566,7 @@ typedef struct MonsterStruct { // note: missing field _mAFNum
 	int _mAnimCnt;
 	int _mAnimLen;
 	int _mAnimFrame;
-	int _meflag;
+	BOOL _meflag;
 	BOOL _mDelFlag;
 	int _mVar1;
 	int _mVar2;
