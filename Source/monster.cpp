@@ -1130,128 +1130,80 @@ BOOL M_Talker(int i)
 
 void M_Enemy(int i)
 {
-	MonsterStruct *v1; // esi
-	int *v2;           // edi
-	int v3;            // eax
-	int v4;            // ecx
-	int v5;            // ebx
-	int v6;            // eax
-	int v7;            // eax
-	int v8;            // eax
-	int v9;            // ecx
-	int v10;           // edi
-	//int v11; // edx
-	int v12;        // eax
-	int v13;        // ecx
-	int v14;        // ebx
-	int v15;        // eax
-	int v16;        // eax
-	int v17;        // [esp+Ch] [ebp-20h]
-	int v18;        // [esp+10h] [ebp-1Ch]
-	BOOL v19;       // [esp+14h] [ebp-18h]
-	BOOL v20;       // [esp+14h] [ebp-18h]
-	signed int v21; // [esp+18h] [ebp-14h]
-	int j;          // [esp+18h] [ebp-14h]
-	signed int v23; // [esp+1Ch] [ebp-10h]
-	signed int v24; // [esp+20h] [ebp-Ch]
-	BOOL v25;       // [esp+24h] [ebp-8h]
-	char v26;       // [esp+2Ah] [ebp-2h]
-	char v27;       // [esp+2Bh] [ebp-1h]
+	int j;
+	int mi, pnum;
+	int dist, best_dist;
+	int _menemy;
+	BOOL sameroom, bestsameroom;
+	MonsterStruct *Monst;
+	BYTE enemyx, enemyy;
 
-	v24 = -1;
-	v18 = i;
-	v23 = -1;
-	v1 = &monster[i];
-	v25 = 0;
-	if (!(v1->_mFlags & MFLAG_GOLEM)) {
-		v21 = 0;
-		v2 = &plr[0].plrlevel;
-		do {
-			if (!*((_BYTE *)v2 - 23) || currlevel != *v2 || *((_BYTE *)v2 + 267) || !v2[89] && gbMaxPlayers != 1)
-				goto LABEL_18;
-			v3 = v1->_my;
-			v4 = v2[2];
-			v19 = dTransVal[v2[1]][v4] == dTransVal[v1->_mx][v3];
-			v5 = abs(v3 - v4);
-			if (abs(v1->_mx - v2[1]) <= v5)
-				v6 = v1->_my - v2[2];
+	_menemy = -1;
+	best_dist = -1;
+	bestsameroom = 0;
+	Monst = monster + i;
+	if (!(Monst->_mFlags & MFLAG_GOLEM)) {
+		for (pnum = 0; pnum < MAX_PLRS; pnum++) {
+			if (!plr[pnum].plractive || currlevel != plr[pnum].plrlevel || plr[pnum]._pLvlChanging || (plr[pnum]._pHitPoints == 0 && gbMaxPlayers != 1))
+				continue;
+			if (dTransVal[Monst->_mx][Monst->_my] == dTransVal[plr[pnum].WorldX][plr[pnum].WorldY])
+				sameroom = TRUE;
 			else
-				v6 = v1->_mx - v2[1];
-			v7 = abs(v6);
-			if (v19) {
-				if (!v25)
-					goto LABEL_17;
-			} else if (v25) {
-				goto LABEL_16;
+				sameroom = FALSE;
+			if (abs(Monst->_mx - plr[pnum].WorldX) > abs(Monst->_my - plr[pnum].WorldY))
+				dist = Monst->_mx - plr[pnum].WorldX;
+			else
+				dist = Monst->_my - plr[pnum].WorldY;
+			dist = abs(dist);
+			if ((sameroom && !bestsameroom)
+			    || ((sameroom || !bestsameroom) && dist < best_dist)
+			    || (_menemy == -1)) {
+				Monst->_mFlags &= ~MFLAG_TARGETS_MONSTER;
+				_menemy = pnum;
+				enemyx = plr[pnum]._px;
+				enemyy = plr[pnum]._py;
+				best_dist = dist;
+				bestsameroom = sameroom;
 			}
-			if (v7 < v23)
-				goto LABEL_17;
-		LABEL_16:
-			if (v24 == -1) {
-			LABEL_17:
-				v1->_mFlags &= ~MFLAG_TARGETS_MONSTER;
-				v24 = v21;
-				v27 = *((_BYTE *)v2 + 12);
-				v26 = *((_BYTE *)v2 + 16);
-				v23 = v7;
-				v25 = v19;
-			}
-		LABEL_18:
-			++v21;
-			v2 += 5430;
-		} while ((signed int)v2 < (signed int)&plr[4].plrlevel);
+		}
 	}
-	v8 = 0;
-	for (j = 0; j < nummonsters; v8 = j++ + 1) {
-		v9 = monstactive[v8];
-		v17 = monstactive[v8];
-		if (v9 == v18)
+	for (j = 0; j < nummonsters; j++) {
+		mi = monstactive[j + 1];
+		if (mi == i)
 			continue;
-		v10 = v9;
-		if (monster[v9]._mx == 1 && !monster[v10]._my)
+		if (monster[mi]._mx == 1 && monster[mi]._my == 0)
 			continue;
-		if (M_Talker(v9) && monster[v10].mtalkmsg)
+		if (M_Talker(mi) && monster[mi].mtalkmsg)
 			continue;
-		if (!(v1->_mFlags & MFLAG_GOLEM)
-		    && ((abs(monster[v10]._mx - v1->_mx) >= 2 || abs(monster[v10]._my - v1->_my) >= 2) && !M_Ranged(v18) /* v11 */
-		           || !(v1->_mFlags & MFLAG_GOLEM) && !(monster[v10]._mFlags & MFLAG_GOLEM))) {
+		if (!(Monst->_mFlags & MFLAG_GOLEM)
+		    && ((abs(monster[mi]._mx - Monst->_mx) >= 2 || abs(monster[mi]._my - Monst->_my) >= 2) && !M_Ranged(i)
+		           || (!(Monst->_mFlags & MFLAG_GOLEM) && !(monster[mi]._mFlags & MFLAG_GOLEM)))) {
 			continue;
 		}
-		v12 = v1->_my;
-		v13 = monster[v10]._my;
-		v20 = dTransVal[monster[v10]._mx][v13] == dTransVal[v1->_mx][v12];
-		v14 = abs(v12 - v13);
-		if (abs(v1->_mx - monster[v10]._mx) <= v14)
-			v15 = v1->_my - monster[v10]._my;
+		sameroom = dTransVal[Monst->_mx][Monst->_my] == dTransVal[monster[mi]._mx][monster[mi]._my];
+		if (abs(Monst->_mx - monster[mi]._mx) > abs(Monst->_my - monster[mi]._my))
+			dist = Monst->_mx - monster[mi]._mx;
 		else
-			v15 = v1->_mx - monster[v10]._mx;
-		v16 = abs(v15);
-		if (v20) {
-			if (!v25)
-				goto LABEL_40;
-		} else if (v25) {
-			goto LABEL_39;
-		}
-		if (v16 < v23)
-			goto LABEL_40;
-	LABEL_39:
-		if (v24 == -1) {
-		LABEL_40:
-			v1->_mFlags |= MFLAG_TARGETS_MONSTER;
-			v24 = v17;
-			v27 = monster[v10]._mfutx;
-			v26 = monster[v10]._mfuty;
-			v23 = v16;
-			v25 = v20;
+			dist = Monst->_my - monster[mi]._my;
+		dist = abs(dist);
+		if ((sameroom && !bestsameroom)
+		    || ((sameroom || !bestsameroom) && dist < best_dist)
+		    || (_menemy == -1)) {
+			Monst->_mFlags |= MFLAG_TARGETS_MONSTER;
+			_menemy = mi;
+			enemyx = monster[mi]._mfutx;
+			enemyy = monster[mi]._mfuty;
+			best_dist = dist;
+			bestsameroom = sameroom;
 		}
 	}
-	if (v24 == -1) {
-		v1->_mFlags |= MFLAG_NO_ENEMY;
+	if (_menemy != -1) {
+		Monst->_mFlags &= ~MFLAG_NO_ENEMY;
+		Monst->_menemy = _menemy;
+		Monst->_menemyx = enemyx;
+		Monst->_menemyy = enemyy;
 	} else {
-		v1->_mFlags &= ~MFLAG_NO_ENEMY;
-		v1->_menemy = v24;
-		v1->_menemyx = v27;
-		v1->_menemyy = v26;
+		Monst->_mFlags |= MFLAG_NO_ENEMY;
 	}
 }
 // 679660: using guessed type char gbMaxPlayers;
