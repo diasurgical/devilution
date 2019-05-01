@@ -431,9 +431,8 @@ void DeltaAddItem(int ii)
 	if (gbMaxPlayers == 1) {
 		return;
 	}
-
-	for (i = 0; i < MAXITEMS; i++) {
-		pD = &sgLevels[currlevel].item[i];
+	pD = sgLevels[currlevel].item;
+	for (i = 0; i < MAXITEMS; i++,pD++) {
 		if (pD->bCmd != 0xFF
 		    && pD->wIndx == item[ii].IDidx
 		    && pD->wCI == item[ii]._iCreateInfo
@@ -443,8 +442,8 @@ void DeltaAddItem(int ii)
 		}
 	}
 
-	for (i = 0; i < MAXITEMS; i++) {
-		pD = &sgLevels[currlevel].item[i];
+	pD = sgLevels[currlevel].item;
+	for (i = 0; i < MAXITEMS; i++, pD++) {
 		if (pD->bCmd == 0xFF) {
 			pD->bCmd = CMD_STAND;
 			sgbDeltaChanged = TRUE;
@@ -463,7 +462,6 @@ void DeltaAddItem(int ii)
 		}
 	}
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 void DeltaSaveLevel()
 {
