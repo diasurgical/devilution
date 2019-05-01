@@ -1006,69 +1006,32 @@ void InitMonsters()
 
 void PlaceUniques()
 {
-	int v0;              // edi
-	int v1;              // eax
-	UniqMonstStruct *v2; // ecx
-	int v3;              // eax
-	int v4;              // edx
-	CMonster *v5;        // esi
-	int v6;              // eax
-	int v7;              // edx
+	int u;
+	BOOL done;
+	int mt;
 
-	v0 = 0;
-	if (UniqMonst[0].mtype != -1) {
-		v1 = 0;
-		v2 = UniqMonst;
-		while (UniqMonst[v1].mlevel != currlevel) {
-		LABEL_25:
-			v1 = ++v0;
-			v2 = &UniqMonst[v0];
-			if (v2->mtype == -1)
-				return;
+	for (u = 0; UniqMonst[u].mtype != -1; u++) {
+		if (UniqMonst[u].mlevel != currlevel)
+			continue;
+		done = FALSE;
+		for (mt = 0; mt < nummtypes; mt++) {
+			if (done)
+				break;
+			done = (Monsters[mt].mtype == UniqMonst[u].mtype);
 		}
-		v3 = 0;
-		v4 = 0;
-		if (nummtypes > 0) {
-			v5 = Monsters;
-			do {
-				if (v3)
-					break;
-				v6 = -((char)v2->mtype != (unsigned char)v5->mtype);
-				++v5;
-				v3 = v6 + 1;
-				++v4;
-			} while (v4 < nummtypes);
-		}
-		v7 = v4 - 1;
-		if (!v0) {
-			if (quests[QTYPE_GARB]._qactive)
-				goto LABEL_23;
-			v3 = 0;
-		}
-		if (v0 == 2) {
-			if (quests[QTYPE_ZHAR]._qactive)
-				goto LABEL_23;
-			v3 = 0;
-		}
-		if (v0 == 3) {
-			if (quests[QTYPE_BOL]._qactive)
-				goto LABEL_23;
-			v3 = 0;
-		}
-		if (v0 != 7) {
-		LABEL_20:
-			if (v0 == 8 && !quests[QTYPE_WARLRD]._qactive)
-				v3 = 0;
-			goto LABEL_23;
-		}
-		if (!quests[QTYPE_VEIL]._qactive) {
-			v3 = 0;
-			goto LABEL_20;
-		}
-	LABEL_23:
-		if (v3)
-			PlaceUniqueMonst(v0, v7, 8);
-		goto LABEL_25;
+		mt--;
+		if (u == 0 && quests[QTYPE_GARB]._qactive == 0)
+			done = FALSE;
+		if (u == 2 && quests[QTYPE_ZHAR]._qactive == 0)
+			done = FALSE;
+		if (u == 3 && quests[QTYPE_BOL]._qactive == 0)
+			done = FALSE;
+		if (u == 7 && quests[QTYPE_VEIL]._qactive == 0)
+			done = FALSE;
+		if (u == 8 && quests[QTYPE_WARLRD]._qactive == 0)
+			done = FALSE;
+		if (done)
+			PlaceUniqueMonst(u, mt, 8);
 	}
 }
 
