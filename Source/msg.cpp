@@ -1624,34 +1624,34 @@ void delta_put_item(TCmdPItem *pI, int x, int y, BYTE bLevel)
 	int i;
 	TCmdPItem *pD;
 
-	if (gbMaxPlayers != 1) {
-		for (i = 0; i < MAXITEMS; i++) {
-			pD = &sgLevels[bLevel].item[i];
-			if (pD->bCmd != CMD_WALKXY
-			    && pD->bCmd != 0xFF
-			    && pD->wIndx == pI->wIndx
-			    && pD->wCI == pI->wCI
-			    && pD->dwSeed == pI->dwSeed) {
-				if (pD->bCmd == CMD_ACK_PLRINFO)
-					return;
-				app_fatal("Trying to drop a floor item?");
-			}
-		}
-
-		for (i = 0; i < MAXITEMS; i++) {
-			pD = &sgLevels[bLevel].item[i];
-			if (pD->bCmd == 0xFF) {
-				sgbDeltaChanged = TRUE;
-				memcpy(pD, pI, sizeof(TCmdPItem));
-				pD->bCmd = CMD_ACK_PLRINFO;
-				pD->x = x;
-				pD->y = y;
+	if (gbMaxPlayers == 1) {
+		return;
+	}
+	pD = sgLevels[bLevel].item;
+	for (i = 0; i < MAXITEMS; i++, pD++) {
+		if (pD->bCmd != CMD_WALKXY
+		    && pD->bCmd != 0xFF
+		    && pD->wIndx == pI->wIndx
+		    && pD->wCI == pI->wCI
+		    && pD->dwSeed == pI->dwSeed) {
+			if (pD->bCmd == CMD_ACK_PLRINFO)
 				return;
-			}
+			app_fatal("Trying to drop a floor item?");
+		}
+	}
+
+	pD = sgLevels[bLevel].item;
+	for (i = 0; i < MAXITEMS; i++, pD++) {
+		if (pD->bCmd == 0xFF) {
+			sgbDeltaChanged = TRUE;
+			memcpy(pD, pI, sizeof(TCmdPItem));
+			pD->bCmd = CMD_ACK_PLRINFO;
+			pD->x = x;
+			pD->y = y;
+			return;
 		}
 	}
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 void check_update_plr(int pnum)
 {
