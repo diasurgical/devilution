@@ -198,15 +198,15 @@ void GetLevelMTypes()
 		if (QuestStatus(QTYPE_BUTCH))
 			AddMonsterType(MT_CLEAVER, 2);
 		if (QuestStatus(QTYPE_GARB))
-			AddMonsterType(UniqMonst[0].mtype, 4);
+			AddMonsterType(UniqMonst[UMT_GARBUD].mtype, 4);
 		if (QuestStatus(QTYPE_ZHAR))
-			AddMonsterType(UniqMonst[2].mtype, 4);
+			AddMonsterType(UniqMonst[UMT_ZHAR].mtype, 4);
 		if (QuestStatus(QTYPE_BOL))
-			AddMonsterType(UniqMonst[3].mtype, 4);
+			AddMonsterType(UniqMonst[UMT_SNOTSPIL].mtype, 4);
 		if (QuestStatus(QTYPE_VEIL))
-			AddMonsterType(UniqMonst[7].mtype, 4);
+			AddMonsterType(UniqMonst[UMT_LACHDAN].mtype, 4);
 		if (QuestStatus(QTYPE_WARLRD))
-			AddMonsterType(UniqMonst[8].mtype, 4);
+			AddMonsterType(UniqMonst[UMT_WARLORD].mtype, 4);
 
 		if (gbMaxPlayers != 1 && currlevel == quests[QTYPE_KING]._qlevel) {
 
@@ -771,7 +771,7 @@ void PlaceQuestMonsters()
 
 	if (!setlevel) {
 		if (QuestStatus(QTYPE_BUTCH)) {
-			PlaceUniqueMonst(9, 0, 0);
+			PlaceUniqueMonst(UMT_BUTCHER, 0, 0);
 		}
 
 		if (currlevel == quests[QTYPE_KING]._qlevel && gbMaxPlayers != 1) {
@@ -783,7 +783,7 @@ void PlaceQuestMonsters()
 				}
 			}
 
-			PlaceUniqueMonst(1, skeltype, 30);
+			PlaceUniqueMonst(UMT_SKELKING, skeltype, 30);
 		}
 
 		if (QuestStatus(QTYPE_BOL)) {
@@ -810,28 +810,28 @@ void PlaceQuestMonsters()
 			setp = LoadFileInMem("Levels\\L4Data\\Warlord.DUN", 0);
 			SetMapMonsters(setp, 2 * setpc_x, 2 * setpc_y);
 			mem_free_dbg(setp);
-			AddMonsterType(UniqMonst[8].mtype, 1);
+			AddMonsterType(UniqMonst[UMT_WARLORD].mtype, 1);
 		}
 		if (QuestStatus(QTYPE_VEIL)) {
-			AddMonsterType(UniqMonst[7].mtype, 1);
+			AddMonsterType(UniqMonst[UMT_LACHDAN].mtype, 1);
 		}
 		if (QuestStatus(QTYPE_ZHAR) && zharlib == -1) {
 			quests[QTYPE_ZHAR]._qactive = 0;
 		}
 
 		if (currlevel == quests[QTYPE_VB]._qlevel && gbMaxPlayers != 1) {
-			AddMonsterType(UniqMonst[4].mtype, 4);
-			AddMonsterType(UniqMonst[5].mtype, 4);
-			PlaceUniqueMonst(4, 0, 0);
-			PlaceUniqueMonst(5, 0, 0);
-			PlaceUniqueMonst(6, 0, 0);
+			AddMonsterType(UniqMonst[UMT_LAZURUS].mtype, 4);
+			AddMonsterType(UniqMonst[UMT_RED_VEX].mtype, 4);
+			PlaceUniqueMonst(UMT_LAZURUS, 0, 0);
+			PlaceUniqueMonst(UMT_RED_VEX, 0, 0);
+			PlaceUniqueMonst(UMT_BLACKJADE, 0, 0);
 			setp = LoadFileInMem("Levels\\L4Data\\Vile1.DUN", 0);
 			SetMapMonsters(setp, 2 * setpc_x, 2 * setpc_y);
 			mem_free_dbg(setp);
 		}
 	} else {
 		if (setlvlnum == SL_SKELKING) {
-			PlaceUniqueMonst(1, 0, 0);
+			PlaceUniqueMonst(UMT_SKELKING, 0, 0);
 		}
 	}
 }
@@ -1087,15 +1087,15 @@ void PlaceUniques()
 			done = (Monsters[mt].mtype == UniqMonst[u].mtype);
 		}
 		mt--;
-		if (u == 0 && quests[QTYPE_GARB]._qactive == 0)
+		if (u == UMT_GARBUD && quests[QTYPE_GARB]._qactive == 0)
 			done = FALSE;
-		if (u == 2 && quests[QTYPE_ZHAR]._qactive == 0)
+		if (u == UMT_ZHAR && quests[QTYPE_ZHAR]._qactive == 0)
 			done = FALSE;
-		if (u == 3 && quests[QTYPE_BOL]._qactive == 0)
+		if (u == UMT_SNOTSPIL && quests[QTYPE_BOL]._qactive == 0)
 			done = FALSE;
-		if (u == 7 && quests[QTYPE_VEIL]._qactive == 0)
+		if (u == UMT_LACHDAN && quests[QTYPE_VEIL]._qactive == 0)
 			done = FALSE;
-		if (u == 8 && quests[QTYPE_WARLRD]._qactive == 0)
+		if (u == UMT_WARLORD && quests[QTYPE_WARLRD]._qactive == 0)
 			done = FALSE;
 		if (done)
 			PlaceUniqueMonst(u, mt, 8);
@@ -1115,12 +1115,12 @@ void SetMapMonsters(unsigned char *pMap, int startx, int starty)
 	AddMonster(1, 0, 0, 0, FALSE);
 	AddMonster(1, 0, 0, 0, FALSE);
 	if (setlevel && setlvlnum == SL_VILEBETRAYER) {
-		AddMonsterType(UniqMonst[4].mtype, 4);
-		AddMonsterType(UniqMonst[5].mtype, 4);
-		AddMonsterType(UniqMonst[6].mtype, 4);
-		PlaceUniqueMonst(4, 0, 0);
-		PlaceUniqueMonst(5, 0, 0);
-		PlaceUniqueMonst(6, 0, 0);
+		AddMonsterType(UniqMonst[UMT_LAZURUS].mtype, 4);
+		AddMonsterType(UniqMonst[UMT_RED_VEX].mtype, 4);
+		AddMonsterType(UniqMonst[UMT_BLACKJADE].mtype, 4);
+		PlaceUniqueMonst(UMT_LAZURUS, 0, 0);
+		PlaceUniqueMonst(UMT_RED_VEX, 0, 0);
+		PlaceUniqueMonst(UMT_BLACKJADE, 0, 0);
 	}
 	lm = (WORD*)pMap;
 	rw = *lm;
@@ -1784,7 +1784,7 @@ void MonstStartKill(int i, int pnum, BOOL sendmsg)
 	monstkills[monster[i].MType->mtype]++;
 	monster[i]._mhitpoints = 0;
 	SetRndSeed(monster[i]._mRndSeed);
-	if (QuestStatus(QTYPE_GARB) && monster[i].mName == UniqMonst[0].mName) {
+	if (QuestStatus(QTYPE_GARB) && monster[i].mName == UniqMonst[UMT_GARBUD].mName) {
 		CreateTypeItem(monster[i]._mx + 1, monster[i]._my + 1, TRUE, 4, FALSE, TRUE, FALSE);
 	} else if (i > 3) {
 		SpawnItem(i, monster[i]._mx, monster[i]._my, sendmsg);
@@ -2596,7 +2596,7 @@ int M_DoTalk(int i)
 	//_LOBYTE(v3) = effect_is_playing(alltext[monster[v1].mtalkmsg].sfxnr);
 	if (!effect_is_playing(alltext[monster[v1].mtalkmsg].sfxnr)) {
 		InitQTextMsg(monster[v2].mtalkmsg);
-		if (monster[v2].mName == UniqMonst[0].mName) {
+		if (monster[v2].mName == UniqMonst[UMT_GARBUD].mName) {
 			v4 = monster[v2].mtalkmsg;
 			if (v4 == QUEST_GARBUD1)
 				quests[QTYPE_GARB]._qactive = 2;
@@ -2606,7 +2606,7 @@ int M_DoTalk(int i)
 				monster[v2]._mFlags |= MFLAG_QUEST_COMPLETE;
 			}
 		}
-		if (monster[v2].mName == UniqMonst[2].mName
+		if (monster[v2].mName == UniqMonst[UMT_ZHAR].mName
 		    && monster[v2].mtalkmsg == QUEST_ZHAR1
 		    && !(monster[v2]._mFlags & MFLAG_QUEST_COMPLETE)) {
 			v5 = monster[v2]._my + 1;
@@ -2616,7 +2616,7 @@ int M_DoTalk(int i)
 			CreateTypeItem(v6, v5, 0, 0, 24, 1, 0);
 			monster[v2]._mFlags |= MFLAG_QUEST_COMPLETE;
 		}
-		if (monster[v2].mName == UniqMonst[3].mName) {
+		if (monster[v2].mName == UniqMonst[UMT_SNOTSPIL].mName) {
 			if (monster[v2].mtalkmsg == QUEST_BANNER10 && !(monster[v2]._mFlags & MFLAG_QUEST_COMPLETE)) {
 				ObjChangeMap(setpc_x, setpc_y, (setpc_w >> 1) + setpc_x + 2, (setpc_h >> 1) + setpc_y - 2);
 				v7 = TransVal;
@@ -2633,7 +2633,7 @@ int M_DoTalk(int i)
 				app_fatal(tempstr);
 			}
 		}
-		if (monster[v2].mName == UniqMonst[7].mName) {
+		if (monster[v2].mName == UniqMonst[UMT_LACHDAN].mName) {
 			v8 = monster[v2].mtalkmsg;
 			if (v8 == QUEST_VEIL9) {
 				quests[QTYPE_VEIL]._qactive = 2;
@@ -2645,9 +2645,9 @@ int M_DoTalk(int i)
 			}
 		}
 		v9 = monster[v2].mName;
-		if (v9 == UniqMonst[8].mName)
+		if (v9 == UniqMonst[UMT_WARLORD].mName)
 			quests[QTYPE_WARLRD]._qvar1 = 2;
-		if (v9 == UniqMonst[4].mName && gbMaxPlayers != 1) {
+		if (v9 == UniqMonst[UMT_LAZURUS].mName && gbMaxPlayers != 1) {
 			monster[v2]._msquelch = -1;
 			monster[v2].mtalkmsg = 0;
 			quests[QTYPE_VB]._qvar1 = 6;

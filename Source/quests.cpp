@@ -275,7 +275,7 @@ void CheckQuestKill(int m, BOOL sendmsg)
 		}
 		if (sendmsg)
 			NetSendCmdQuest(TRUE, 6);
-	} else if (monster[m].mName == UniqMonst[0].mName) { //"Gharbad the Weak"
+	} else if (monster[m].mName == UniqMonst[UMT_GARBUD].mName) { //"Gharbad the Weak"
 		quests[QTYPE_GARB]._qactive = 3;
 		sfxdelay = 30;
 		if (plr[myplr]._pClass == PC_WARRIOR) {
@@ -285,7 +285,7 @@ void CheckQuestKill(int m, BOOL sendmsg)
 		} else if (plr[myplr]._pClass == PC_SORCERER) {
 			sfxdnum = PS_MAGE61;
 		}
-	} else if (monster[m].mName == UniqMonst[2].mName) { //"Zhar the Mad"
+	} else if (monster[m].mName == UniqMonst[UMT_ZHAR].mName) { //"Zhar the Mad"
 		quests[QTYPE_ZHAR]._qactive = 3;
 		sfxdelay = 30;
 		if (plr[myplr]._pClass == PC_WARRIOR) {
@@ -295,7 +295,7 @@ void CheckQuestKill(int m, BOOL sendmsg)
 		} else if (plr[myplr]._pClass == PC_SORCERER) {
 			sfxdnum = PS_MAGE62;
 		}
-	} else if (monster[m].mName == UniqMonst[4].mName && gbMaxPlayers != 1) { //"Arch-Bishop Lazarus"
+	} else if (monster[m].mName == UniqMonst[UMT_LAZURUS].mName && gbMaxPlayers != 1) { //"Arch-Bishop Lazarus"
 		quests[QTYPE_VB]._qactive = 3;
 		quests[QTYPE_VB]._qvar1 = 7;
 		sfxdelay = 30;
@@ -322,7 +322,7 @@ void CheckQuestKill(int m, BOOL sendmsg)
 			NetSendCmdQuest(TRUE, 15);
 			NetSendCmdQuest(TRUE, 5);
 		}
-	} else if (monster[m].mName == UniqMonst[4].mName && gbMaxPlayers == 1) { //"Arch-Bishop Lazarus"
+	} else if (monster[m].mName == UniqMonst[UMT_LAZURUS].mName && gbMaxPlayers == 1) { //"Arch-Bishop Lazarus"
 		quests[QTYPE_VB]._qactive = 3;
 		sfxdelay = 30;
 		InitVPTriggers();
@@ -337,7 +337,7 @@ void CheckQuestKill(int m, BOOL sendmsg)
 		} else if (plr[myplr]._pClass == PC_SORCERER) {
 			sfxdnum = PS_MAGE83;
 		}
-	} else if (monster[m].mName == UniqMonst[8].mName) { //"Warlord of Blood"
+	} else if (monster[m].mName == UniqMonst[UMT_WARLORD].mName) { //"Warlord of Blood"
 		quests[QTYPE_WARLRD]._qactive = 3;
 		sfxdelay = 30;
 		if (plr[myplr]._pClass == PC_WARRIOR) {
