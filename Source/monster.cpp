@@ -934,136 +934,69 @@ void LoadDiabMonsts()
 
 void InitMonsters()
 {
-	int v0;                // ebp
-	int v1;                // ebx
-	TriggerStruct *v2;     // esi
-	signed int v3;         // ebp
-	signed int v4;         // edi
-	int v5;                // edi
-	int v6;                // esi
-	int v7;                // eax
-	int v8;                // ecx
-	int v9;                // edx
-	int v10;               // eax
-	int v11;               // esi
-	unsigned char *v12;    // edi
-	int v13;               // ebx
-	int v15;               // esi
-	int v17;               // eax
-	int v18;               // eax
-	int v19;               // ebx
-	TriggerStruct *v20;    // esi
-	signed int v21;        // ebp
-	signed int v22;        // edi
-	int max;               // [esp+10h] [ebp-1C4h]
-	int v24;               // [esp+14h] [ebp-1C0h]
-	int scattertypes[111]; // [esp+18h] [ebp-1BCh]
+	int na, nt;
+	int i, s, t;
+	int numplacemonsters;
+	int mtype;
+	int numscattypes;
+	int scattertypes[111];
 
-	v0 = 0;
-	max = 0;
+	numscattypes = 0;
 	if (gbMaxPlayers != 1)
 		CheckDungeonClear();
 	if (!setlevel) {
-		AddMonster(1, 0, 0, 0, 0);
-		AddMonster(1, 0, 0, 0, 0);
-		AddMonster(1, 0, 0, 0, 0);
-		AddMonster(1, 0, 0, 0, 0);
+		AddMonster(1, 0, 0, 0, FALSE);
+		AddMonster(1, 0, 0, 0, FALSE);
+		AddMonster(1, 0, 0, 0, FALSE);
+		AddMonster(1, 0, 0, 0, FALSE);
 		if (!setlevel && currlevel == 16)
 			LoadDiabMonsts();
 	}
-	v24 = trigflag_4;
+	nt = trigflag_4;
 	if (currlevel == 15)
-		v24 = 1;
-	v1 = v24;
-	if (v24 > 0) {
-		v2 = trigs;
-		do {
-			v3 = -2;
-			do {
-				v4 = -2;
-				do
-					DoVision(v3 + v2->_tx, v4++ + v2->_ty, 15, 0, 0);
-				while (v4 < 2);
-				++v3;
-			} while (v3 < 2);
-			++v2;
-			--v1;
-		} while (v1);
-		v0 = 0;
+		nt = 1;
+	for (i = 0; i < nt; i++) {
+		for (s = -2; s < 2; s++) {
+			for (t = -2; t < 2; t++)
+				DoVision(s + trigs[i]._tx, t + trigs[i]._ty, 15, FALSE, FALSE);
+		}
 	}
 	PlaceQuestMonsters();
 	if (!setlevel) {
 		PlaceUniques();
-		v5 = 16;
-		do {
-			v6 = 16;
-			do {
-				if (!SolidLoc(v5, v6))
-					++v0;
-				++v6;
-			} while (v6 < 96);
-			++v5;
-		} while (v5 < 96);
-		v7 = v0 / 30;
+		na = 0;
+		for (s = 16; s < 96; s++)
+			for (t = 16; t < 96; t++)
+				if (!SolidLoc(s, t))
+					na++;
+		numplacemonsters = na / 30;
 		if (gbMaxPlayers != 1)
-			v7 += v7 >> 1;
-		v8 = nummonsters;
-		if (nummonsters + v7 > 190)
-			v7 = 190 - nummonsters;
-		v9 = nummtypes;
-		v10 = nummonsters + v7;
-		v11 = 0;
-		totalmonsters = v10;
-		if (nummtypes > 0) {
-			v12 = &Monsters[0].mPlaceFlags;
-			do {
-				if (*v12 & 1) {
-					v13 = max++;
-					scattertypes[v13] = v11;
-				}
-				++v11;
-				v12 += 328;
-			} while (v11 < v9);
-		}
-		if (v8 < v10) {
-			while (1) {
-				v15 = scattertypes[random(95, max)];
-				if (currlevel == 1)
-					break;
-				if (!random(95, 2))
-					break;
-				if (currlevel == 2) {
-					v17 = random(95, 2) + 1;
-				LABEL_40:
-					v18 = v17 + 1;
-					goto LABEL_41;
-				}
-				v18 = random(95, 3) + 3;
-			LABEL_41:
-				PlaceGroup(v15, v18, 0, 0);
-				if (nummonsters >= totalmonsters)
-					goto LABEL_42;
+			numplacemonsters += numplacemonsters >> 1;
+		if (nummonsters + numplacemonsters > 190)
+			numplacemonsters = 190 - nummonsters;
+		totalmonsters = nummonsters + numplacemonsters;
+		for (i = 0; i < nummtypes; i++) {
+			if (Monsters[i].mPlaceFlags & 1) {
+				scattertypes[numscattypes] = i;
+				numscattypes++;
 			}
-			v17 = 0;
-			goto LABEL_40;
+		}
+		while (nummonsters < totalmonsters) {
+			mtype = scattertypes[random(95, numscattypes)];
+			if (currlevel == 1 || random(95, 2) == 0)
+				na = 1;
+			else if (currlevel == 2)
+				na = random(95, 2) + 2;
+			else
+				na = random(95, 3) + 3;
+			PlaceGroup(mtype, na, 0, 0);
 		}
 	}
-LABEL_42:
-	v19 = v24;
-	if (v24 > 0) {
-		v20 = trigs;
-		do {
-			v21 = -2;
-			do {
-				v22 = -2;
-				do
-					DoUnVision(v21 + v20->_tx, v22++ + v20->_ty, 15);
-				while (v22 < 2);
-				++v21;
-			} while (v21 < 2);
-			++v20;
-			--v19;
-		} while (v19);
+	for (i = 0; i < nt; i++) {
+		for (s = -2; s < 2; s++) {
+			for (t = -2; t < 2; t++)
+				DoUnVision(s + trigs[i]._tx, t + trigs[i]._ty, 15);
+		}
 	}
 }
 // 5CF31D: using guessed type char setlevel;
