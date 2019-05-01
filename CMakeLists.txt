@@ -40,6 +40,10 @@ if(WIN32)
   set(DIST ON)
 endif()
 
+if(HAIKU)
+  set(ASAN OFF)
+endif()
+
 if(DIST)
   set(sodium_USE_STATIC_LIBS ON)
 endif()
@@ -236,6 +240,10 @@ endif()
 if(WIN32)
   target_link_libraries(devilutionx PRIVATE wsock32 ws2_32 wininet)
   target_compile_options(devilution PUBLIC $<$<CONFIG:Debug>:-gstabs>)
+endif()
+
+if(HAIKU)
+  target_link_libraries(devilutionx PRIVATE network)
 endif()
 
 if(NOT CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
