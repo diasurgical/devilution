@@ -1402,7 +1402,7 @@ void S_StartIdShow()
 
 void S_StartTalk()
 {
-	int i, tq, sn, sn2, la;
+	int i, sn, sn2, la;
 
 	stextsize = 0;
 	stextscrl = FALSE;

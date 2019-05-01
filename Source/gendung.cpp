@@ -53,7 +53,7 @@ int level_frame_sizes[MAXTILES];
 char nMissileTable[2049];
 char *pSetPiece_2;
 char setlvltype; // weak
-char setlevel;   // weak
+BOOLEAN setlevel;
 int LvlViewY;    // weak
 int LvlViewX;    // weak
 int dmaxx;       // weak

@@ -2907,18 +2907,12 @@ int ItemMiscIdIdx(int imiscid)
 
 void OperateShrine(int pnum, int i, int sType)
 {
-	int v1;
-	int v12;  // edx
-	int v21;  // eax
-	int v60;  // ebx
-	int j;    // edi
-	int v72;  // edi
-	int v88;  // ebx
-	int v107; // ST38_4
-	int v108; // ST34_4
-	int v133; // eax
+	int cnt;
+	int r, j;
+	DWORD lv, t;
 	int xx, yy;
-	int min, max;
+	int v1, v2, v3, v4;
+	unsigned __int64 spell, spells;
 
 	if (dropGoldFlag) {
 		dropGoldFlag = FALSE;
@@ -2927,24 +2921,25 @@ void OperateShrine(int pnum, int i, int sType)
 
 	/// ASSERT: assert((DWORD)i < MAXOBJECTS);
 
-	if (!object[i]._oSelFlag)
+	if (object[i]._oSelFlag == 0)
 		return;
 
 	SetRndSeed(object[i]._oRndSeed);
 	object[i]._oSelFlag = 0;
 
-	if (deltaload) {
-		object[i]._oAnimFlag = 0;
-		object[i]._oAnimFrame = object[i]._oAnimLen;
-	} else {
+	if (!deltaload) {
 		PlaySfxLoc(sType, object[i]._ox, object[i]._oy);
 		object[i]._oAnimFlag = 1;
 		object[i]._oAnimDelay = 1;
+	} else {
+		object[i]._oAnimFlag = 0;
+		object[i]._oAnimFrame = object[i]._oAnimLen;
 	}
-
 	switch (object[i]._oVar1) {
 	case SHRINE_MYSTERIOUS:
-		if (deltaload || pnum != myplr)
+		if (deltaload)
+			return;
+		if (pnum != myplr)
 			return;
 		ModifyPlrStr(pnum, -1);
 		ModifyPlrMag(pnum, -1);
@@ -2968,42 +2963,47 @@ void OperateShrine(int pnum, int i, int sType)
 		InitDiabloMsg(EMSG_SHRINE_MYSTERIOUS);
 		break;
 	case SHRINE_HIDDEN:
-		v12 = 0;
-		if (deltaload || pnum != myplr)
+		cnt = 0;
+		if (deltaload)
+			return;
+		if (pnum != myplr)
 			return;
 		for (j = 0; j < 7; j++) {
 			if (plr[pnum].InvBody[j]._itype != ITYPE_NONE)
-				v12++;
+				cnt++;
 		}
-		if (v12 > 0) {
+		if (cnt > 0) {
 			for (j = 0; j < 7; j++) {
 				if (plr[pnum].InvBody[j]._itype != ITYPE_NONE
 				    && plr[pnum].InvBody[j]._iMaxDur != 255
-				    && plr[pnum].InvBody[j]._iMaxDur) {
+				    && plr[pnum].InvBody[j]._iMaxDur != 0) {
 					plr[pnum].InvBody[j]._iDurability += 10;
 					plr[pnum].InvBody[j]._iMaxDur += 10;
 					if (plr[pnum].InvBody[j]._iDurability > plr[pnum].InvBody[j]._iMaxDur)
 						plr[pnum].InvBody[j]._iDurability = plr[pnum].InvBody[j]._iMaxDur;
 				}
 			}
-			v12 = 0;
-			for (j = 0; j < 7; j++) {
-				if (plr[pnum].InvBody[j]._itype != ITYPE_NONE
-				    && plr[pnum].InvBody[j]._iMaxDur != 255
-				    && plr[pnum].InvBody[j]._iMaxDur)
-					v12++;
-			}
-			if (v12 > 0) { // check
-				do {
-					v21 = random(0, 7);
-				} while (plr[pnum].InvBody[v21]._itype == ITYPE_NONE || plr[pnum].InvBody[v21]._iMaxDur == 255 || !plr[pnum].InvBody[v21]._iMaxDur);
+			while (TRUE) {
+				cnt = 0;
+				for (j = 0; j < 7; j++) {
+					if (plr[pnum].InvBody[j]._itype != ITYPE_NONE
+					    && plr[pnum].InvBody[j]._iMaxDur != 255
+					    && plr[pnum].InvBody[j]._iMaxDur != 0)
+						cnt++;
+				}
+				if (cnt == 0)
+					break;
+				r = random(0, 7);
+				if (plr[pnum].InvBody[r]._itype == -1 || plr[pnum].InvBody[r]._iMaxDur == 255 || plr[pnum].InvBody[r]._iMaxDur == 0)
+					continue;
 
-				plr[pnum].InvBody[v21]._iDurability -= 20;
-				plr[pnum].InvBody[v21]._iMaxDur -= 20;
-				if (plr[pnum].InvBody[v21]._iDurability <= 0)
-					plr[pnum].InvBody[v21]._iDurability = 1;
-				if (plr[pnum].InvBody[v21]._iMaxDur <= 0)
-					plr[pnum].InvBody[v21]._iMaxDur = 1;
+				plr[pnum].InvBody[r]._iDurability -= 20;
+				plr[pnum].InvBody[r]._iMaxDur -= 20;
+				if (plr[pnum].InvBody[r]._iDurability <= 0)
+					plr[pnum].InvBody[r]._iDurability = 1;
+				if (plr[pnum].InvBody[r]._iMaxDur <= 0)
+					plr[pnum].InvBody[r]._iMaxDur = 1;
+				break;
 			}
 		}
 		InitDiabloMsg(EMSG_SHRINE_HIDDEN);
@@ -3011,59 +3011,77 @@ void OperateShrine(int pnum, int i, int sType)
 	case SHRINE_GLOOMY:
 		if (deltaload)
 			return;
-		if (pnum == myplr) {
-			if (plr[pnum].InvBody[INVLOC_HEAD]._itype != ITYPE_NONE)
-				plr[pnum].InvBody[INVLOC_HEAD]._iAC += 2;
-			if (plr[pnum].InvBody[INVLOC_CHEST]._itype != ITYPE_NONE)
-				plr[pnum].InvBody[INVLOC_CHEST]._iAC += 2;
-			if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE) {
-				if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_SHIELD) {
-					plr[pnum].InvBody[INVLOC_HAND_LEFT]._iAC += 2;
-				} else {
-					plr[pnum].InvBody[INVLOC_HAND_LEFT]._iMaxDam--;
-					if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._iMaxDam < plr[pnum].InvBody[INVLOC_HAND_LEFT]._iMinDam)
-						plr[pnum].InvBody[INVLOC_HAND_LEFT]._iMaxDam = plr[pnum].InvBody[INVLOC_HAND_LEFT]._iMinDam;
-				}
+		if (pnum != myplr)
+			break;
+		if (plr[pnum].InvBody[INVLOC_HEAD]._itype != ITYPE_NONE)
+			plr[pnum].InvBody[INVLOC_HEAD]._iAC += 2;
+		if (plr[pnum].InvBody[INVLOC_CHEST]._itype != ITYPE_NONE)
+			plr[pnum].InvBody[INVLOC_CHEST]._iAC += 2;
+		if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE) {
+			if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype == ITYPE_SHIELD) {
+				plr[pnum].InvBody[INVLOC_HAND_LEFT]._iAC += 2;
+			} else {
+				plr[pnum].InvBody[INVLOC_HAND_LEFT]._iMaxDam--;
+				if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._iMaxDam < plr[pnum].InvBody[INVLOC_HAND_LEFT]._iMinDam)
+					plr[pnum].InvBody[INVLOC_HAND_LEFT]._iMaxDam = plr[pnum].InvBody[INVLOC_HAND_LEFT]._iMinDam;
 			}
-			if (plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype != ITYPE_NONE) {
-				if (plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_SHIELD) {
-					plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iAC += 2;
-				} else {
-					plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iMaxDam--;
-					if (plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iMaxDam < plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iMinDam)
-						plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iMaxDam = plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iMinDam;
-				}
-			}
-			for (j = 0; j < plr[pnum]._pNumInv; j++) {
-				if (plr[pnum].InvList[j]._itype > 0) {
-					if (plr[pnum].InvList[j]._itype <= ITYPE_MACE || plr[pnum].InvList[j]._itype == ITYPE_STAFF) { // check
-						plr[pnum].InvList[j]._iMaxDam--;
-						if (plr[pnum].InvList[j]._iMaxDam < plr[pnum].InvList[j]._iMinDam)
-							plr[pnum].InvList[j]._iMaxDam = plr[pnum].InvList[j]._iMinDam;
-					} else if (plr[pnum].InvList[j]._itype <= 9) {
-						plr[pnum].InvList[j]._iAC += 2;
-					}
-				}
-			}
-			InitDiabloMsg(EMSG_SHRINE_GLOOMY);
 		}
+		if (plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype != ITYPE_NONE) {
+			if (plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype == ITYPE_SHIELD) {
+				plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iAC += 2;
+			} else {
+				plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iMaxDam--;
+				if (plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iMaxDam < plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iMinDam)
+					plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iMaxDam = plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iMinDam;
+			}
+		}
+		for (j = 0; j < plr[pnum]._pNumInv; j++) {
+			switch (plr[pnum].InvList[j]._itype) {
+			case ITYPE_SWORD:
+			case ITYPE_AXE:
+			case ITYPE_BOW:
+			case ITYPE_MACE:
+			case ITYPE_STAFF:
+				plr[pnum].InvList[j]._iMaxDam--;
+				if (plr[pnum].InvList[j]._iMaxDam < plr[pnum].InvList[j]._iMinDam)
+					plr[pnum].InvList[j]._iMaxDam = plr[pnum].InvList[j]._iMinDam;
+				break;
+			case ITYPE_SHIELD:
+			case ITYPE_LARMOR:
+			case ITYPE_HELM:
+			case ITYPE_MARMOR:
+			case ITYPE_HARMOR:
+				plr[pnum].InvList[j]._iAC += 2;
+				break;
+			}
+		}
+		InitDiabloMsg(EMSG_SHRINE_GLOOMY);
 		break;
 	case SHRINE_WEIRD:
 		if (deltaload)
 			return;
-		if (pnum == myplr) {
-			if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_SHIELD)
-				plr[pnum].InvBody[INVLOC_HAND_LEFT]._iMaxDam++;
-			if (plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype != ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype != ITYPE_SHIELD)
-				plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iMaxDam++;
-			for (j = 0; j < plr[pnum]._pNumInv; j++) {
-				if (plr[pnum].InvList[j]._itype > 0 && (plr[pnum].InvList[j]._itype <= ITYPE_MACE || plr[pnum].InvList[j]._itype == ITYPE_STAFF))
-					plr[pnum].InvList[j]._iMaxDam++;
+		if (pnum != myplr)
+			break;
+
+		if (plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_LEFT]._itype != ITYPE_SHIELD)
+			plr[pnum].InvBody[INVLOC_HAND_LEFT]._iMaxDam++;
+		if (plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype != ITYPE_NONE && plr[pnum].InvBody[INVLOC_HAND_RIGHT]._itype != ITYPE_SHIELD)
+			plr[pnum].InvBody[INVLOC_HAND_RIGHT]._iMaxDam++;
+		for (j = 0; j < plr[pnum]._pNumInv; j++) {
+			switch (plr[pnum].InvList[j]._itype) {
+			case ITYPE_SWORD:
+			case ITYPE_AXE:
+			case ITYPE_BOW:
+			case ITYPE_MACE:
+			case ITYPE_STAFF:
+				plr[pnum].InvList[j]._iMaxDam++;
+				break;
 			}
-			InitDiabloMsg(EMSG_SHRINE_WEIRD);
 		}
+		InitDiabloMsg(EMSG_SHRINE_WEIRD);
 		break;
 	case SHRINE_MAGICAL:
+
 	case SHRINE_MAGICAL2:
 		if (deltaload)
 			return;
@@ -3085,57 +3103,66 @@ void OperateShrine(int pnum, int i, int sType)
 	case SHRINE_STONE:
 		if (deltaload)
 			return;
-		if (pnum == myplr) {
-			for (j = 0; j < 7; j++) {
-				if (plr[pnum].InvBody[j]._itype == ITYPE_STAFF)
-					plr[pnum].InvBody[j]._iCharges = plr[pnum].InvBody[j]._iMaxCharges;
-			}
-			for (j = 0; j < plr[pnum]._pNumInv; j++) {
-				if (plr[pnum].InvList[j]._itype == ITYPE_STAFF)
-					plr[pnum].InvList[j]._iCharges = plr[pnum].InvList[j]._iMaxCharges;
-			}
-			for (j = 0; j < 8; j++) {
-				if (plr[pnum].SpdList[j]._itype == ITYPE_STAFF)
-					plr[pnum].SpdList[j]._iCharges = plr[pnum].SpdList[j]._iMaxCharges; // belt items don't have charges?
-			}
-			InitDiabloMsg(EMSG_SHRINE_STONE);
+		if (pnum != myplr)
+			break;
+
+		for (j = 0; j < NUM_INVLOC; j++) {
+			if (plr[pnum].InvBody[j]._itype == ITYPE_STAFF)
+				plr[pnum].InvBody[j]._iCharges = plr[pnum].InvBody[j]._iMaxCharges;
 		}
+		for (j = 0; j < plr[pnum]._pNumInv; j++) {
+			if (plr[pnum].InvList[j]._itype == ITYPE_STAFF)
+				plr[pnum].InvList[j]._iCharges = plr[pnum].InvList[j]._iMaxCharges;
+		}
+		for (j = 0; j < MAXBELTITEMS; j++) {
+			if (plr[pnum].SpdList[j]._itype == ITYPE_STAFF)
+				plr[pnum].SpdList[j]._iCharges = plr[pnum].SpdList[j]._iMaxCharges; // belt items don't have charges?
+		}
+		InitDiabloMsg(EMSG_SHRINE_STONE);
 		break;
 	case SHRINE_RELIGIOUS:
 		if (deltaload)
 			return;
-		if (pnum == myplr) {
-			for (j = 0; j < 7; j++)
-				plr[pnum].InvBody[j]._iDurability = plr[pnum].InvBody[j]._iMaxDur;
-			for (j = 0; j < plr[pnum]._pNumInv; j++)
-				plr[pnum].InvList[j]._iDurability = plr[pnum].InvList[j]._iMaxDur;
-			for (j = 0; j < 8; j++)
-				plr[pnum].SpdList[j]._iDurability = plr[pnum].SpdList[j]._iMaxDur; // belt items don't have durability?
-			InitDiabloMsg(EMSG_SHRINE_RELIGIOUS);
-		}
+		if (pnum != myplr)
+			break;
+
+		for (j = 0; j < NUM_INVLOC; j++)
+			plr[pnum].InvBody[j]._iDurability = plr[pnum].InvBody[j]._iMaxDur;
+		for (j = 0; j < plr[pnum]._pNumInv; j++)
+			plr[pnum].InvList[j]._iDurability = plr[pnum].InvList[j]._iMaxDur;
+		for (j = 0; j < MAXBELTITEMS; j++)
+			plr[pnum].SpdList[j]._iDurability = plr[pnum].SpdList[j]._iMaxDur; // belt items don't have durability?
+		InitDiabloMsg(EMSG_SHRINE_RELIGIOUS);
 		break;
 	case SHRINE_ENCHANTED:
-		if (deltaload || pnum != myplr)
+		if (deltaload)
 			return;
-		v12 = 0;
-		for (j = 1; j <= 37; j++) {
-			if (plr[pnum]._pMemSpells & ((__int64)1 << (j - 1))) // j
-				v12++;
+		if (pnum != myplr)
+			return;
+		cnt = 0;
+		spell = 1;
+		spells = plr[pnum]._pMemSpells;
+		for (j = 0; j < MAX_SPELLS; j++) {
+			if (spell & spells)
+				cnt++;
+			spell <<= 1;
 		}
-		if (v12 > 1) {
-			for (j = 1; j <= 37; j++) {
-				if (plr[pnum]._pMemSpells & ((__int64)1 << (j - 1))) { // j
+		if (cnt > 1) {
+			spell = 1;
+			for (j = 1; j <= MAX_SPELLS; j++) {
+				if (plr[pnum]._pMemSpells & spell) {
 					if (plr[pnum]._pSplLvl[j] < 15)
 						plr[pnum]._pSplLvl[j]++;
 				}
+				spell <<= 1;
 			}
 			do {
-				v60 = random(0, 37) + 1;
-			} while (!(plr[pnum]._pMemSpells & ((__int64)1 << (v60 - 1))));
-			if (plr[pnum]._pSplLvl[v60] < 2)
-				plr[pnum]._pSplLvl[v60] = 0;
+				r = random(0, 37);
+			} while (!(plr[pnum]._pMemSpells & ((__int64)1 << r)));
+			if (plr[pnum]._pSplLvl[r] >= 2)
+				plr[pnum]._pSplLvl[r] -= 2;
 			else
-				plr[pnum]._pSplLvl[v60] -= 2;
+				plr[pnum]._pSplLvl[r] = 0;
 		}
 		InitDiabloMsg(EMSG_SHRINE_ENCHANTED);
 		break;
@@ -3147,8 +3174,8 @@ void OperateShrine(int pnum, int i, int sType)
 			        || object[v1]._otype == OBJ_CHEST2
 			        || object[v1]._otype == OBJ_CHEST3)
 			    && !object[v1]._oSelFlag) {
-				object[v1]._oAnimFrame -= 2;
 				object[v1]._oRndSeed = GetRndSeed();
+				object[v1]._oAnimFrame -= 2;
 				object[v1]._oSelFlag = 1;
 			}
 		}
@@ -3158,27 +3185,30 @@ void OperateShrine(int pnum, int i, int sType)
 			InitDiabloMsg(EMSG_SHRINE_THAUMATURGIC);
 		break;
 	case SHRINE_FASCINATING:
-		if (deltaload || pnum != myplr)
+		if (deltaload)
+			return;
+		if (pnum != myplr)
 			return;
 		plr[pnum]._pMemSpells |= (__int64)1 << (SPL_FIREBOLT - 1);
 		if (plr[pnum]._pSplLvl[SPL_FIREBOLT] < 15)
 			plr[pnum]._pSplLvl[SPL_FIREBOLT]++;
 		if (plr[pnum]._pSplLvl[SPL_FIREBOLT] < 15)
 			plr[pnum]._pSplLvl[SPL_FIREBOLT]++;
-		v72 = plr[pnum]._pMaxManaBase / 10;
-		min = plr[pnum]._pMana - plr[pnum]._pManaBase;
-		max = plr[pnum]._pMaxMana - plr[pnum]._pMaxManaBase;
-		plr[pnum]._pManaBase -= v72;
-		plr[pnum]._pMana -= v72;
-		plr[pnum]._pMaxManaBase -= v72;
-		plr[pnum]._pMaxMana -= v72;
+		t = plr[pnum]._pMaxManaBase / 10;
+		v1 = plr[pnum]._pMana - plr[pnum]._pManaBase;
+		v2 = plr[pnum]._pMaxMana - plr[pnum]._pMaxManaBase;
+
+		plr[pnum]._pManaBase -= t;
+		plr[pnum]._pMana -= t;
+		plr[pnum]._pMaxMana -= t;
+		plr[pnum]._pMaxManaBase -= t;
 		if (plr[pnum]._pMana >> 6 <= 0) {
-			plr[pnum]._pMana = min;
 			plr[pnum]._pManaBase = 0;
+			plr[pnum]._pMana = v1;
 		}
 		if (plr[pnum]._pMaxMana >> 6 <= 0) {
-			plr[pnum]._pMaxMana = max;
 			plr[pnum]._pMaxManaBase = 0;
+			plr[pnum]._pMaxMana = v2;
 		}
 		InitDiabloMsg(EMSG_SHRINE_FASCINATING);
 		break;
@@ -3205,62 +3235,66 @@ void OperateShrine(int pnum, int i, int sType)
 	case SHRINE_ELDRITCH: /// BUGFIX: change `plr[pnum].HoldItem` to use a temporary buffer to prevent deleting item in hand
 		if (deltaload)
 			return;
-		if (pnum == myplr) {
-			for (j = 0; j < plr[pnum]._pNumInv; j++) {
-				if (!plr[pnum].InvList[j]._itype) {
-					if (plr[pnum].InvList[j]._iMiscId == IMISC_HEAL
-					    || plr[pnum].InvList[j]._iMiscId == IMISC_MANA) {
-						SetPlrHandItem(&plr[pnum].HoldItem, ItemMiscIdIdx(IMISC_REJUV));
-						GetPlrHandSeed(&plr[pnum].HoldItem);
-						plr[pnum].HoldItem._iStatFlag = 1;
-						plr[pnum].InvList[j] = plr[pnum].HoldItem;
-					}
-					if (plr[pnum].InvList[j]._iMiscId == IMISC_FULLHEAL
-					    || plr[pnum].InvList[j]._iMiscId == IMISC_FULLMANA) {
-						SetPlrHandItem(&plr[pnum].HoldItem, ItemMiscIdIdx(IMISC_FULLREJUV));
-						GetPlrHandSeed(&plr[pnum].HoldItem);
-						plr[pnum].HoldItem._iStatFlag = 1;
-						plr[pnum].InvList[j] = plr[pnum].HoldItem;
-					}
+		if (pnum != myplr)
+			break;
+		for (j = 0; j < plr[pnum]._pNumInv; j++) {
+			if (plr[pnum].InvList[j]._itype == ITYPE_MISC) {
+				if (plr[pnum].InvList[j]._iMiscId == IMISC_HEAL
+				    || plr[pnum].InvList[j]._iMiscId == IMISC_MANA) {
+					SetPlrHandItem(&plr[pnum].HoldItem, ItemMiscIdIdx(IMISC_REJUV));
+					GetPlrHandSeed(&plr[pnum].HoldItem);
+					plr[pnum].HoldItem._iStatFlag = 1;
+					plr[pnum].InvList[j] = plr[pnum].HoldItem;
+				}
+				if (plr[pnum].InvList[j]._iMiscId == IMISC_FULLHEAL
+				    || plr[pnum].InvList[j]._iMiscId == IMISC_FULLMANA) {
+					SetPlrHandItem(&plr[pnum].HoldItem, ItemMiscIdIdx(IMISC_FULLREJUV));
+					GetPlrHandSeed(&plr[pnum].HoldItem);
+					plr[pnum].HoldItem._iStatFlag = 1;
+					plr[pnum].InvList[j] = plr[pnum].HoldItem;
 				}
 			}
-			for (j = 0; j < 8; j++) {
-				if (!plr[pnum].SpdList[j]._itype) {
-					if (plr[pnum].SpdList[j]._iMiscId == IMISC_HEAL
-					    || plr[pnum].SpdList[j]._iMiscId == IMISC_MANA) {
-						SetPlrHandItem(&plr[pnum].HoldItem, ItemMiscIdIdx(IMISC_REJUV));
-						GetPlrHandSeed(&plr[pnum].HoldItem);
-						plr[pnum].HoldItem._iStatFlag = 1;
-						plr[pnum].SpdList[j] = plr[pnum].HoldItem;
-					}
-					if (plr[pnum].SpdList[j]._iMiscId == IMISC_FULLHEAL
-					    || plr[pnum].SpdList[j]._iMiscId == IMISC_FULLMANA) {
-						SetPlrHandItem(&plr[pnum].HoldItem, ItemMiscIdIdx(IMISC_FULLREJUV));
-						GetPlrHandSeed(&plr[pnum].HoldItem);
-						plr[pnum].HoldItem._iStatFlag = 1;
-						plr[pnum].SpdList[j] = plr[pnum].HoldItem;
-					}
-				}
-			}
-			InitDiabloMsg(EMSG_SHRINE_ELDRITCH);
 		}
+		for (j = 0; j < MAXBELTITEMS; j++) {
+			if (plr[pnum].SpdList[j]._itype == ITYPE_MISC) {
+				if (plr[pnum].SpdList[j]._iMiscId == IMISC_HEAL
+				    || plr[pnum].SpdList[j]._iMiscId == IMISC_MANA) {
+					SetPlrHandItem(&plr[pnum].HoldItem, ItemMiscIdIdx(IMISC_REJUV));
+					GetPlrHandSeed(&plr[pnum].HoldItem);
+					plr[pnum].HoldItem._iStatFlag = 1;
+					plr[pnum].SpdList[j] = plr[pnum].HoldItem;
+				}
+				if (plr[pnum].SpdList[j]._iMiscId == IMISC_FULLHEAL
+				    || plr[pnum].SpdList[j]._iMiscId == IMISC_FULLMANA) {
+					SetPlrHandItem(&plr[pnum].HoldItem, ItemMiscIdIdx(IMISC_FULLREJUV));
+					GetPlrHandSeed(&plr[pnum].HoldItem);
+					plr[pnum].HoldItem._iStatFlag = 1;
+					plr[pnum].SpdList[j] = plr[pnum].HoldItem;
+				}
+			}
+		}
+		InitDiabloMsg(EMSG_SHRINE_ELDRITCH);
 		break;
 	case SHRINE_EERIE:
-		if (deltaload || pnum != myplr)
+		if (deltaload)
+			return;
+		if (pnum != myplr)
 			return;
 		ModifyPlrMag(pnum, 2);
 		CheckStats(pnum);
 		InitDiabloMsg(EMSG_SHRINE_EERIE);
 		break;
 	case SHRINE_DIVINE:
-		if (deltaload || pnum != myplr)
+		if (deltaload)
 			return;
-		if (2 * currlevel >= 7) {
-			CreateTypeItem(object[i]._ox, object[i]._oy, 0, ITYPE_MISC, IMISC_FULLREJUV, 0, 1);
-			CreateTypeItem(object[i]._ox, object[i]._oy, 0, ITYPE_MISC, IMISC_FULLREJUV, 0, 1);
-		} else {
+		if (pnum != myplr)
+			return;
+		if (2 * currlevel < 7) {
 			CreateTypeItem(object[i]._ox, object[i]._oy, 0, ITYPE_MISC, IMISC_FULLMANA, 0, 1);
 			CreateTypeItem(object[i]._ox, object[i]._oy, 0, ITYPE_MISC, IMISC_FULLHEAL, 0, 1);
+		} else {
+			CreateTypeItem(object[i]._ox, object[i]._oy, 0, ITYPE_MISC, IMISC_FULLREJUV, 0, 1);
+			CreateTypeItem(object[i]._ox, object[i]._oy, 0, ITYPE_MISC, IMISC_FULLREJUV, 0, 1);
 		}
 		plr[pnum]._pMana = plr[pnum]._pMaxMana;
 		plr[pnum]._pManaBase = plr[pnum]._pMaxManaBase;
@@ -3271,12 +3305,15 @@ void OperateShrine(int pnum, int i, int sType)
 	case SHRINE_HOLY:
 		if (deltaload)
 			return;
-		v88 = 0;
+		j = 0;
 		do {
-			v88++;
 			xx = random(159, MAXDUNX);
 			yy = random(159, MAXDUNY);
-		} while (v88 <= MAXDUNX * 112 && (nSolidTable[dPiece[xx][yy]] || dObject[xx][yy] || dMonster[xx][yy]));
+			j++;
+			if (j > MAXDUNX * 112)
+				break;
+			lv = dPiece[xx][yy];
+		} while (nSolidTable[lv] || dObject[xx][yy] || dMonster[xx][yy]);
 		AddMissile(plr[pnum].WorldX, plr[pnum].WorldY, xx, yy, plr[pnum]._pdir, MIS_RNDTELEPORT, -1, pnum, 0, 2 * leveltype);
 		if (pnum != myplr)
 			return;
@@ -3290,37 +3327,39 @@ void OperateShrine(int pnum, int i, int sType)
 			plr[pnum]._pSplLvl[SPL_CBOLT]++;
 		if (plr[pnum]._pSplLvl[SPL_CBOLT] < 15)
 			plr[pnum]._pSplLvl[SPL_CBOLT]++;
-		v72 = plr[pnum]._pMaxManaBase / 10;
-		min = plr[pnum]._pMana - plr[pnum]._pManaBase;
-		max = plr[pnum]._pMaxMana - plr[pnum]._pMaxManaBase;
-		plr[pnum]._pManaBase -= v72;
-		plr[pnum]._pMana -= v72;
-		plr[pnum]._pMaxManaBase -= v72;
-		plr[pnum]._pMaxMana -= v72;
+		t = plr[pnum]._pMaxManaBase / 10;
+		v1 = plr[pnum]._pMana - plr[pnum]._pManaBase;
+		v2 = plr[pnum]._pMaxMana - plr[pnum]._pMaxManaBase;
+		plr[pnum]._pManaBase -= t;
+		plr[pnum]._pMana -= t;
+		plr[pnum]._pMaxMana -= t;
+		plr[pnum]._pMaxManaBase -= t;
 		if (plr[pnum]._pMana >> 6 <= 0) {
-			plr[pnum]._pMana = min;
+			plr[pnum]._pMana = v1;
 			plr[pnum]._pManaBase = 0;
 		}
 		if (plr[pnum]._pMaxMana >> 6 <= 0) {
-			plr[pnum]._pMaxMana = max;
+			plr[pnum]._pMaxMana = v2;
 			plr[pnum]._pMaxManaBase = 0;
 		}
 		InitDiabloMsg(EMSG_SHRINE_SACRED);
 		break;
 	case SHRINE_SPIRITUAL:
-		if (deltaload || pnum != myplr)
+		if (deltaload)
 			return;
-		for (j = 0; j < 40; j++) {
+		if (pnum != myplr)
+			return;
+		for (j = 0; j < NUM_INV_GRID_ELEM; j++) {
 			if (!plr[pnum].InvGrid[j]) {
-				v107 = 5 * leveltype + random(160, 10 * leveltype);
-				v108 = plr[pnum]._pNumInv; // check
-				plr[pnum].InvList[v108] = golditem;
+				r = 5 * leveltype + random(160, 10 * leveltype);
+				t = plr[pnum]._pNumInv; // check
+				plr[pnum].InvList[t] = golditem;
+				plr[pnum].InvList[t]._iSeed = GetRndSeed();
 				plr[pnum]._pNumInv++;
-				plr[pnum].InvList[v108]._iSeed = GetRndSeed();
 				plr[pnum].InvGrid[j] = plr[pnum]._pNumInv;
-				plr[pnum].InvList[v108]._ivalue = v107;
-				plr[pnum]._pGold += v107;
-				SetGoldCurs(pnum, v108);
+				plr[pnum].InvList[t]._ivalue = r;
+				plr[pnum]._pGold += r;
+				SetGoldCurs(pnum, t);
 			}
 		}
 		InitDiabloMsg(EMSG_SHRINE_SPIRITUAL);
@@ -3339,7 +3378,9 @@ void OperateShrine(int pnum, int i, int sType)
 		}
 		break;
 	case SHRINE_ABANDONED:
-		if (deltaload || pnum != myplr)
+		if (deltaload)
+			return;
+		if (pnum != myplr)
 			return;
 		ModifyPlrDex(pnum, 2);
 		CheckStats(pnum);
@@ -3347,7 +3388,9 @@ void OperateShrine(int pnum, int i, int sType)
 			InitDiabloMsg(EMSG_SHRINE_ABANDONED);
 		break;
 	case SHRINE_CREEPY:
-		if (deltaload || pnum != myplr)
+		if (deltaload)
+			return;
+		if (pnum != myplr)
 			return;
 		ModifyPlrStr(pnum, 2);
 		CheckStats(pnum);
@@ -3355,7 +3398,9 @@ void OperateShrine(int pnum, int i, int sType)
 			InitDiabloMsg(EMSG_SHRINE_CREEPY);
 		break;
 	case SHRINE_QUIET:
-		if (deltaload || pnum != myplr)
+		if (deltaload)
+			return;
+		if (pnum != myplr)
 			return;
 		ModifyPlrVit(pnum, 2);
 		CheckStats(pnum);
@@ -3365,42 +3410,47 @@ void OperateShrine(int pnum, int i, int sType)
 	case SHRINE_SECLUDED:
 		if (deltaload)
 			return;
-		if (pnum == myplr) {
-			for (yy = 0; yy < DMAXY; yy++) {
-				for (xx = 0; xx < DMAXX; xx++) {
-					automapview[xx][yy] = 1;
-				}
+		if (pnum != myplr)
+			break;
+
+		for (yy = 0; yy < DMAXY; yy++) {
+			for (xx = 0; xx < DMAXX; xx++) {
+				automapview[xx][yy] = 1;
 			}
-			InitDiabloMsg(EMSG_SHRINE_SECLUDED);
 		}
+		InitDiabloMsg(EMSG_SHRINE_SECLUDED);
 		break;
 	case SHRINE_ORNATE:
-		if (deltaload || pnum != myplr)
+		if (deltaload)
+			return;
+		if (pnum != myplr)
 			return;
 		plr[pnum]._pMemSpells |= (__int64)1 << (SPL_HBOLT - 1);
 		if (plr[pnum]._pSplLvl[SPL_HBOLT] < 15)
 			plr[pnum]._pSplLvl[SPL_HBOLT]++;
 		if (plr[pnum]._pSplLvl[SPL_HBOLT] < 15)
 			plr[pnum]._pSplLvl[SPL_HBOLT]++;
-		v72 = plr[pnum]._pMaxManaBase / 10;
-		min = plr[pnum]._pMana - plr[pnum]._pManaBase;
-		max = plr[pnum]._pMaxMana - plr[pnum]._pMaxManaBase;
-		plr[pnum]._pManaBase -= v72;
-		plr[pnum]._pMana -= v72;
-		plr[pnum]._pMaxManaBase -= v72;
-		plr[pnum]._pMaxMana -= v72;
+		t = plr[pnum]._pMaxManaBase / 10;
+		v1 = plr[pnum]._pMana - plr[pnum]._pManaBase;
+		v2 = plr[pnum]._pMaxMana - plr[pnum]._pMaxManaBase;
+		plr[pnum]._pManaBase -= t;
+		plr[pnum]._pMana -= t;
+		plr[pnum]._pMaxMana -= t;
+		plr[pnum]._pMaxManaBase -= t;
 		if (plr[pnum]._pMana >> 6 <= 0) {
-			plr[pnum]._pMana = min;
+			plr[pnum]._pMana = v1;
 			plr[pnum]._pManaBase = 0;
 		}
 		if (plr[pnum]._pMaxMana >> 6 <= 0) {
-			plr[pnum]._pMaxMana = max;
+			plr[pnum]._pMaxMana = v2;
 			plr[pnum]._pMaxManaBase = 0;
 		}
 		InitDiabloMsg(EMSG_SHRINE_ORNATE);
 		break;
 	case SHRINE_GLIMMERING:
-		if (deltaload || pnum != myplr)
+		if (deltaload)
+			return;
+		if (pnum != myplr)
 			return;
 		for (j = 0; j < 7; j++) {
 			if (plr[pnum].InvBody[j]._iMagical && !plr[pnum].InvBody[j]._iIdentified)
@@ -3423,11 +3473,30 @@ void OperateShrine(int pnum, int i, int sType)
 			InitDiabloMsg(EMSG_SHRINE_TAINTED1);
 		} else {
 			InitDiabloMsg(EMSG_SHRINE_TAINTED2);
-			v133 = random(155, 4);
-			ModifyPlrStr(myplr, v133 == 0 ? 1 : -1);
-			ModifyPlrMag(myplr, v133 == 1 ? 1 : -1);
-			ModifyPlrDex(myplr, v133 == 2 ? 1 : -1);
-			ModifyPlrVit(myplr, v133 == 3 ? 1 : -1);
+			r = random(155, 4);
+
+			if (r != 0)
+				v1 = -1;
+			else
+				v1 = 1;
+			if (r != 1)
+				v2 = -1;
+			else
+				v2 = 1;
+			if (r == 2)
+				v3 = 1;
+			else
+				v3 = -1;
+			if (r == 3)
+				v4 = 1;
+			else
+				v4 = -1;
+
+			ModifyPlrStr(myplr, v1);
+			ModifyPlrMag(myplr, v2);
+			ModifyPlrDex(myplr, v3);
+			ModifyPlrVit(myplr, v4);
+
 			CheckStats(myplr);
 		}
 		break;
@@ -3472,7 +3541,7 @@ void OperateBookCase(int pnum, int i, BOOL sendmsg)
 			SetRndSeed(object[i]._oRndSeed);
 			CreateTypeItem(object[i]._ox, object[i]._oy, 0, ITYPE_MISC, IMISC_BOOK, sendmsg, 0);
 			if (QuestStatus(QTYPE_ZHAR)
-			    && monster[4].mName == UniqMonst[2].mName
+			    && monster[4].mName == UniqMonst[UMT_ZHAR].mName
 			    && monster[4]._msquelch == -1
 			    && monster[4]._mhitpoints) {
 				monster[4].mtalkmsg = QUEST_ZHAR2;

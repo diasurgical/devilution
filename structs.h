@@ -15,10 +15,10 @@ typedef struct RECT32 {
 
 typedef struct PLStruct {
 	const char *PLName;
-	char PLPower;
+	int PLPower;
 	int PLParam1;
 	int PLParam2;
-	int PLMinLvl;
+	char PLMinLvl;
 	int PLIType;
 	int PLGOE;
 	BOOL PLDouble;

@@ -1451,6 +1451,20 @@ typedef enum _monster_id {
 	NUM_MTYPES
 } _monster_id;
 
+// this enum contains indexes from UniqMonst array for special unique monsters (usually quest related)
+typedef enum {
+	UMT_GARBUD    = 0,
+	UMT_SKELKING  = 1,
+	UMT_ZHAR      = 2,
+	UMT_SNOTSPIL  = 3,
+	UMT_LAZURUS   = 4,
+	UMT_RED_VEX   = 5,
+	UMT_BLACKJADE = 6,
+	UMT_LACHDAN   = 7,
+	UMT_WARLORD   = 8,
+	UMT_BUTCHER   = 9,
+} _uniq_monsterid;
+
 typedef enum monster_flag {
 	MFLAG_HIDDEN          = 0x01,
 	MFLAG_LOCK_ANIMATION  = 0x02,

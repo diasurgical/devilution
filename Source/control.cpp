@@ -8,8 +8,8 @@ void *pDurIcons;
 void *pChrButtons;
 BOOL drawhpflag; // idb
 BOOL dropGoldFlag;
-WORD panbtn[8];
-WORD chrbtn[4];
+int panbtn[8];
+int chrbtn[4];
 void *pMultiBtns;
 void *pPanelButtons;
 void *pChrPanel;
@@ -27,7 +27,7 @@ void *pTalkBtns;
 int pstrjust[4];
 int pnumlines; // idb
 BOOL pinfoflag;
-WORD talkbtndown[3];
+BOOL talkbtndown[3];
 int pSpell; // weak
 BYTE *pManaBuff;
 char infoclr;      // weak
@@ -1214,13 +1214,13 @@ void InitControlPan()
 		sgszTalkMsg[0] = 0;
 		for (i = 0; i < sizeof(byte_4B894C); i++)
 			byte_4B894C[i] = 1;
-		for (i = 0; i < sizeof(talkbtndown); i++)
-			talkbtndown[i] = 0;
+		for (i = 0; i < sizeof(talkbtndown) / sizeof(talkbtndown[0]); i++)
+			talkbtndown[i] = FALSE;
 	}
 	panelflag = 0;
 	lvlbtndown = 0;
 	pPanelButtons = LoadFileInMem("CtrlPan\\Panel8bu.CEL", 0);
-	for (i = 0; i < sizeof(panbtn); i++)
+	for (i = 0; i < sizeof(panbtn) / sizeof(panbtn[0]); i++)
 		panbtn[i] = 0;
 	panbtndown = 0;
 	if (gbMaxPlayers == 1)
@@ -1228,7 +1228,7 @@ void InitControlPan()
 	else
 		numpanbtns = 8;
 	pChrButtons = LoadFileInMem("Data\\CharBut.CEL", 0);
-	for (i = 0; i < sizeof(chrbtn); i++)
+	for (i = 0; i < sizeof(chrbtn) / sizeof(chrbtn[0]); i++)
 		chrbtn[i] = 0;
 	chrbtnactive = FALSE;
 	pDurIcons = LoadFileInMem("Items\\DurIcons.CEL", 0);
@@ -2189,7 +2189,7 @@ void CheckChrBtns()
 			    && MouseX <= attribute_inc_rects[i].x + attribute_inc_rects[i].w
 			    && MouseY >= attribute_inc_rects[i].y
 			    && MouseY <= attribute_inc_rects[i].y + attribute_inc_rects[i].h) {
-				chrbtn[i] = TRUE;
+				chrbtn[i] = 1;
 				chrbtnactive = TRUE;
 			}
 		}
@@ -2203,7 +2203,7 @@ void ReleaseChrBtns()
 	chrbtnactive = FALSE;
 	for (i = 0; i < 4; ++i) {
 		if (chrbtn[i]) {
-			chrbtn[i] = FALSE;
+			chrbtn[i] = 0;
 			if (MouseX >= attribute_inc_rects[i].x
 			    && MouseX <= attribute_inc_rects[i].x + attribute_inc_rects[i].w
 			    && MouseY >= attribute_inc_rects[i].y
@@ -2799,10 +2799,10 @@ int control_check_talk_btn()
 		return 0;
 	result = 0;
 	if (MouseY <= 475) {
-		talkbtndown[0] = 0;
-		talkbtndown[1] = 0;
-		talkbtndown[2] = 0;
-		talkbtndown[(v0 - 421) / 18] = 1;
+		talkbtndown[0] = FALSE;
+		talkbtndown[1] = FALSE;
+		talkbtndown[2] = FALSE;
+		talkbtndown[(v0 - 421) / 18] = TRUE;
 		result = 1;
 	}
 	return result;
@@ -2817,9 +2817,9 @@ void control_release_talk_btn()
 
 	if (talkflag) {
 		v0 = MouseX;
-		talkbtndown[0] = 0;
-		talkbtndown[1] = 0;
-		talkbtndown[2] = 0;
+		talkbtndown[0] = FALSE;
+		talkbtndown[1] = FALSE;
+		talkbtndown[2] = FALSE;
 		if (v0 >= 172 && MouseY >= 421 && v0 <= 233 && MouseY <= 475) {
 			v1 = (MouseY - 421) / 18;
 			v2 = 0;
@@ -2858,9 +2858,9 @@ void control_type_message()
 		sgszTalkMsg[0] = 0;
 		talkflag = 1;
 		frame = 1;
-		talkbtndown[0] = 0;
-		talkbtndown[1] = 0;
-		talkbtndown[2] = 0;
+		talkbtndown[0] = FALSE;
+		talkbtndown[1] = FALSE;
+		talkbtndown[2] = FALSE;
 		sgbPlrTalkTbl = 144;
 		drawpanflag = 255;
 		sgbTalkSavePos = sgbNextTalkSave;

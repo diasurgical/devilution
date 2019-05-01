@@ -282,14 +282,15 @@ BYTE *DeltaExportJunk(BYTE *dst)
 		}
 	}
 
+	mq = sgJunk.quests;
 	for (i = 0; i < MAXMULTIQUESTS; i++) {
 		if (questlist[i]._qflags & 1) {
-			mq = &sgJunk.quests[i];
 			mq->qlog = quests[i]._qlog;
 			mq->qstate = quests[i]._qactive;
 			mq->qvar1 = quests[i]._qvar1;
 			memcpy(dst, mq, sizeof(*mq));
 			dst += sizeof(*mq);
+			mq++;
 		}
 	}
 
@@ -1275,6 +1276,7 @@ BYTE *DeltaImportMonster(BYTE *src, DMonsterStr *dst)
 void DeltaImportJunk(BYTE *src)
 {
 	int i;
+	MultiQuests *mq;
 
 	for (i = 0; i < MAXPORTAL; i++) {
 		if (*src == 0xFF) {
@@ -1294,13 +1296,15 @@ void DeltaImportJunk(BYTE *src)
 		}
 	}
 
+	mq = sgJunk.quests;
 	for (i = 0; i < MAXMULTIQUESTS; i++) {
 		if (questlist[i]._qflags & 1) {
-			memcpy(&sgJunk.quests[i], src, sizeof(MultiQuests));
+			memcpy(mq, src, sizeof(MultiQuests));
 			src += sizeof(MultiQuests);
-			quests[i]._qlog = sgJunk.quests[i].qlog;
-			quests[i]._qactive = sgJunk.quests[i].qstate;
-			quests[i]._qvar1 = sgJunk.quests[i].qvar1;
+			quests[i]._qlog = mq->qlog;
+			quests[i]._qactive = mq->qstate;
+			quests[i]._qvar1 = mq->qvar1;
+			mq++;
 		}
 	}
 }

@@ -23,7 +23,7 @@ int gdwNormalMsgSize;    // weak
 int last_tick;           // weak
 
 /* data */
-static HANDLE sghThread = (HANDLE)0xFFFFFFFF; // idb
+static HANDLE sghThread = INVALID_HANDLE_VALUE;
 
 void nthread_terminate_game(const char *pszFcn)
 {

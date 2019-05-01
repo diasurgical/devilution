@@ -53,7 +53,7 @@ extern int level_frame_sizes[MAXTILES];
 extern char nMissileTable[2049];
 extern char *pSetPiece_2;
 extern char setlvltype; // weak
-extern char setlevel;   // weak
+extern BOOLEAN setlevel;
 extern int LvlViewY;    // weak
 extern int LvlViewX;    // weak
 extern int dmaxx;       // weak

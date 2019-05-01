@@ -202,103 +202,94 @@ void PrintQTextChr(int sx, int sy, BYTE *pCelBuff, int nCel)
 
 void DrawQText()
 {
-	char *v0;          // edi
-	signed int v1;     // edx
-	int v2;            // ecx
-	char *i;           // esi
-	unsigned char v4;  // al
-	unsigned char v5;  // al
-	char v6;           // dl
-	char *v7;          // eax
-	unsigned char v8;  // al
-	char *v9;          // esi
-	unsigned char v10; // bl
-	DWORD v11;         // eax
-	char qstr[128];    // [esp+8h] [ebp-90h]
-	char *v13;         // [esp+88h] [ebp-10h]
-	int v14;           // [esp+8Ch] [ebp-Ch]
-	int screen_y;      // [esp+90h] [ebp-8h]
-	int screen_x;      // [esp+94h] [ebp-4h]
+	int i, l, w, tx, ty;
+	BYTE c;
+	char *p, *pnl, *s;
+	char tempstr[128];
+	BOOL doneflag;
+	DWORD currTime;
 
 	DrawQTextBack();
-	v0 = qtextptr;
-	screen_x = MAXDUNX;
-	v13 = 0;
-	screen_y = qtexty;
-	v14 = 0;
-	do {
-		v1 = 0;
-		v2 = 0;
-		for (i = v0; *i != 10; ++v2) {
-			if (*i == 124 || v1 >= 543)
-				break;
-			v4 = *i++;
-			v5 = gbFontTransTbl[v4];
-			if (v5) {
-				qstr[v2] = v5;
-				v1 += mfontkern[mfontframe[v5]] + 2;
+
+	p = qtextptr;
+	pnl = NULL;
+	tx = 112;
+	ty = qtexty;
+
+	doneflag = FALSE;
+	while(!doneflag) {
+		w = 0;
+		s = p;
+		l = 0;
+		while(*s != '\n' && *s != '|' && w < 543) {
+			c = gbFontTransTbl[(BYTE)*s];
+			s++;
+			if(c != '\0') {
+				tempstr[l] = c;
+				w += mfontkern[mfontframe[c]] + 2;
 			} else {
-				--v2;
+				l--;
+			}
+			l++;
+		}
+		tempstr[l] = '\0';
+		if(*s == '|') {
+			tempstr[l] = '\0';
+			doneflag = TRUE;
+		} else if(*s != '\n') {
+			while(tempstr[l] != ' ' && l > 0) {
+				tempstr[l] = '\0';
+				l--;
 			}
 		}
-		v6 = *i;
-		v7 = &qstr[v2];
-		qstr[v2] = 0;
-		if (v6 == 124) {
-			*v7 = 0;
-			v14 = 1;
-		} else if (v6 != 10) {
-			while (*v7 != 32 && v2 > 0) {
-				*v7 = 0;
-				v7 = &qstr[--v2];
+		for(i = 0; tempstr[i]; i++) {
+			p++;
+			c = mfontframe[gbFontTransTbl[(BYTE)tempstr[i]]];
+			if(*p == '\n') {
+				p++;
 			}
+			if(c != 0) {
+				PrintQTextChr(tx, ty, (BYTE *)pMedTextCels, c);
+			}
+			tx += mfontkern[c] + 2;
 		}
-		v8 = qstr[0];
-		if (qstr[0]) {
-			v9 = qstr;
-			do {
-				++v0;
-				v10 = mfontframe[gbFontTransTbl[v8]];
-				if (*v0 == 10)
-					++v0;
-				if (v10)
-					PrintQTextChr(screen_x, screen_y, (BYTE *)pMedTextCels, v10);
-				++v9;
-				screen_x += mfontkern[v10] + 2;
-				v8 = *v9;
-			} while (*v9);
+		if(pnl == NULL) {
+			pnl = p;
 		}
-		if (!v13)
-			v13 = v0;
-		screen_y += 38;
-		screen_x = MAXDUNX;
-		if (screen_y > 501)
-			v14 = 1;
-	} while (!v14);
-	v11 = GetTickCount();
-	while (1) {
-		if (sgLastScroll <= 0) {
-			qtexty = qtexty + sgLastScroll - 1;
-			goto LABEL_33;
+		tx = 112;
+		ty += 38;
+		if(ty > 501) {
+			doneflag = TRUE;
 		}
-		if (--scrolltexty) {
-			--qtexty;
-		LABEL_33:
-			if (scrolltexty)
-				goto LABEL_35;
-		}
-		scrolltexty = sgLastScroll;
-	LABEL_35:
-		if (qtexty <= 209)
-			break;
-		qtextSpd += 50;
-		if (v11 - qtextSpd >= 0x7FFFFFFF)
-			return;
 	}
-	qtexty += 38;
-	qtextptr = v13;
-	if (*v13 == 124)
-		qtextflag = FALSE;
+
+	currTime = GetTickCount();
+	while(1) {
+		if(sgLastScroll <= 0) {
+			qtexty--;
+			qtexty += sgLastScroll;
+		} else {
+			scrolltexty--;
+			if(scrolltexty != 0) {
+				qtexty--;
+			}
+		}
+		if(scrolltexty == 0) {
+			scrolltexty = sgLastScroll;
+		}
+		if(qtexty <= 209) {
+			qtexty += 38;
+			qtextptr = pnl;
+			if(*pnl == '|') {
+				qtextflag = 0;
+			}
+			break;
+		}
+		qtextSpd += 50;
+		if(currTime - qtextSpd >= 0x7FFFFFFF) {
+			break;
+		}
+	}
 }
 // 646CF4: using guessed type int qtexty;
 // 646CFC: using guessed type int qtextSpd;

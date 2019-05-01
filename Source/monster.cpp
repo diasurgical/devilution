@@ -200,15 +200,15 @@ void GetLevelMTypes()
 		if (QuestStatus(QTYPE_BUTCH))
 			AddMonsterType(MT_CLEAVER, 2);
 		if (QuestStatus(QTYPE_GARB))
-			AddMonsterType(UniqMonst[0].mtype, 4);
+			AddMonsterType(UniqMonst[UMT_GARBUD].mtype, 4);
 		if (QuestStatus(QTYPE_ZHAR))
-			AddMonsterType(UniqMonst[2].mtype, 4);
+			AddMonsterType(UniqMonst[UMT_ZHAR].mtype, 4);
 		if (QuestStatus(QTYPE_BOL))
-			AddMonsterType(UniqMonst[3].mtype, 4);
+			AddMonsterType(UniqMonst[UMT_SNOTSPIL].mtype, 4);
 		if (QuestStatus(QTYPE_VEIL))
-			AddMonsterType(UniqMonst[7].mtype, 4);
+			AddMonsterType(UniqMonst[UMT_LACHDAN].mtype, 4);
 		if (QuestStatus(QTYPE_WARLRD))
-			AddMonsterType(UniqMonst[8].mtype, 4);
+			AddMonsterType(UniqMonst[UMT_WARLORD].mtype, 4);
 
 		if (gbMaxPlayers != 1 && currlevel == quests[QTYPE_KING]._qlevel) {
 
@@ -773,7 +773,7 @@ void PlaceQuestMonsters()
 
 	if (!setlevel) {
 		if (QuestStatus(QTYPE_BUTCH)) {
-			PlaceUniqueMonst(9, 0, 0);
+			PlaceUniqueMonst(UMT_BUTCHER, 0, 0);
 		}
 
 		if (currlevel == quests[QTYPE_KING]._qlevel && gbMaxPlayers != 1) {
@@ -785,7 +785,7 @@ void PlaceQuestMonsters()
 				}
 			}
 
-			PlaceUniqueMonst(1, skeltype, 30);
+			PlaceUniqueMonst(UMT_SKELKING, skeltype, 30);
 		}
 
 		if (QuestStatus(QTYPE_BOL)) {
@@ -812,28 +812,28 @@ void PlaceQuestMonsters()
 			setp = LoadFileInMem("Levels\\L4Data\\Warlord.DUN", 0);
 			SetMapMonsters(setp, 2 * setpc_x, 2 * setpc_y);
 			mem_free_dbg(setp);
-			AddMonsterType(UniqMonst[8].mtype, 1);
+			AddMonsterType(UniqMonst[UMT_WARLORD].mtype, 1);
 		}
 		if (QuestStatus(QTYPE_VEIL)) {
-			AddMonsterType(UniqMonst[7].mtype, 1);
+			AddMonsterType(UniqMonst[UMT_LACHDAN].mtype, 1);
 		}
 		if (QuestStatus(QTYPE_ZHAR) && zharlib == -1) {
 			quests[QTYPE_ZHAR]._qactive = 0;
 		}
 
 		if (currlevel == quests[QTYPE_VB]._qlevel && gbMaxPlayers != 1) {
-			AddMonsterType(UniqMonst[4].mtype, 4);
-			AddMonsterType(UniqMonst[5].mtype, 4);
-			PlaceUniqueMonst(4, 0, 0);
-			PlaceUniqueMonst(5, 0, 0);
-			PlaceUniqueMonst(6, 0, 0);
+			AddMonsterType(UniqMonst[UMT_LAZURUS].mtype, 4);
+			AddMonsterType(UniqMonst[UMT_RED_VEX].mtype, 4);
+			PlaceUniqueMonst(UMT_LAZURUS, 0, 0);
+			PlaceUniqueMonst(UMT_RED_VEX, 0, 0);
+			PlaceUniqueMonst(UMT_BLACKJADE, 0, 0);
 			setp = LoadFileInMem("Levels\\L4Data\\Vile1.DUN", 0);
 			SetMapMonsters(setp, 2 * setpc_x, 2 * setpc_y);
 			mem_free_dbg(setp);
 		}
 	} else {
 		if (setlvlnum == SL_SKELKING) {
-			PlaceUniqueMonst(1, 0, 0);
+			PlaceUniqueMonst(UMT_SKELKING, 0, 0);
 		}
 	}
 }
@@ -936,136 +936,69 @@ void LoadDiabMonsts()
 
 void InitMonsters()
 {
-	int v0;                // ebp
-	int v1;                // ebx
-	TriggerStruct *v2;     // esi
-	signed int v3;         // ebp
-	signed int v4;         // edi
-	int v5;                // edi
-	int v6;                // esi
-	int v7;                // eax
-	int v8;                // ecx
-	int v9;                // edx
-	int v10;               // eax
-	int v11;               // esi
-	unsigned char *v12;    // edi
-	int v13;               // ebx
-	int v15;               // esi
-	int v17;               // eax
-	int v18;               // eax
-	int v19;               // ebx
-	TriggerStruct *v20;    // esi
-	signed int v21;        // ebp
-	signed int v22;        // edi
-	int max;               // [esp+10h] [ebp-1C4h]
-	int v24;               // [esp+14h] [ebp-1C0h]
-	int scattertypes[111]; // [esp+18h] [ebp-1BCh]
+	int na, nt;
+	int i, s, t;
+	int numplacemonsters;
+	int mtype;
+	int numscattypes;
+	int scattertypes[111];
 
-	v0 = 0;
-	max = 0;
+	numscattypes = 0;
 	if (gbMaxPlayers != 1)
 		CheckDungeonClear();
 	if (!setlevel) {
-		AddMonster(1, 0, 0, 0, 0);
-		AddMonster(1, 0, 0, 0, 0);
-		AddMonster(1, 0, 0, 0, 0);
-		AddMonster(1, 0, 0, 0, 0);
+		AddMonster(1, 0, 0, 0, FALSE);
+		AddMonster(1, 0, 0, 0, FALSE);
+		AddMonster(1, 0, 0, 0, FALSE);
+		AddMonster(1, 0, 0, 0, FALSE);
 		if (!setlevel && currlevel == 16)
 			LoadDiabMonsts();
 	}
-	v24 = trigflag_4;
+	nt = trigflag_4;
 	if (currlevel == 15)
-		v24 = 1;
-	v1 = v24;
-	if (v24 > 0) {
-		v2 = trigs;
-		do {
-			v3 = -2;
-			do {
-				v4 = -2;
-				do
-					DoVision(v3 + v2->_tx, v4++ + v2->_ty, 15, 0, 0);
-				while (v4 < 2);
-				++v3;
-			} while (v3 < 2);
-			++v2;
-			--v1;
-		} while (v1);
-		v0 = 0;
+		nt = 1;
+	for (i = 0; i < nt; i++) {
+		for (s = -2; s < 2; s++) {
+			for (t = -2; t < 2; t++)
+				DoVision(s + trigs[i]._tx, t + trigs[i]._ty, 15, FALSE, FALSE);
+		}
 	}
 	PlaceQuestMonsters();
 	if (!setlevel) {
 		PlaceUniques();
-		v5 = 16;
-		do {
-			v6 = 16;
-			do {
-				if (!SolidLoc(v5, v6))
-					++v0;
-				++v6;
-			} while (v6 < 96);
-			++v5;
-		} while (v5 < 96);
-		v7 = v0 / 30;
+		na = 0;
+		for (s = 16; s < 96; s++)
+			for (t = 16; t < 96; t++)
+				if (!SolidLoc(s, t))
+					na++;
+		numplacemonsters = na / 30;
 		if (gbMaxPlayers != 1)
-			v7 += v7 >> 1;
-		v8 = nummonsters;
-		if (nummonsters + v7 > 190)
-			v7 = 190 - nummonsters;
-		v9 = nummtypes;
-		v10 = nummonsters + v7;
-		v11 = 0;
-		totalmonsters = v10;
-		if (nummtypes > 0) {
-			v12 = &Monsters[0].mPlaceFlags;
-			do {
-				if (*v12 & 1) {
-					v13 = max++;
-					scattertypes[v13] = v11;
-				}
-				++v11;
-				v12 += 328;
-			} while (v11 < v9);
-		}
-		if (v8 < v10) {
-			while (1) {
-				v15 = scattertypes[random(95, max)];
-				if (currlevel == 1)
-					break;
-				if (!random(95, 2))
-					break;
-				if (currlevel == 2) {
-					v17 = random(95, 2) + 1;
-				LABEL_40:
-					v18 = v17 + 1;
-					goto LABEL_41;
-				}
-				v18 = random(95, 3) + 3;
-			LABEL_41:
-				PlaceGroup(v15, v18, 0, 0);
-				if (nummonsters >= totalmonsters)
-					goto LABEL_42;
+			numplacemonsters += numplacemonsters >> 1;
+		if (nummonsters + numplacemonsters > 190)
+			numplacemonsters = 190 - nummonsters;
+		totalmonsters = nummonsters + numplacemonsters;
+		for (i = 0; i < nummtypes; i++) {
+			if (Monsters[i].mPlaceFlags & 1) {
+				scattertypes[numscattypes] = i;
+				numscattypes++;
 			}
-			v17 = 0;
-			goto LABEL_40;
+		}
+		while (nummonsters < totalmonsters) {
+			mtype = scattertypes[random(95, numscattypes)];
+			if (currlevel == 1 || random(95, 2) == 0)
+				na = 1;
+			else if (currlevel == 2)
+				na = random(95, 2) + 2;
+			else
+				na = random(95, 3) + 3;
+			PlaceGroup(mtype, na, 0, 0);
 		}
 	}
-LABEL_42:
-	v19 = v24;
-	if (v24 > 0) {
-		v20 = trigs;
-		do {
-			v21 = -2;
-			do {
-				v22 = -2;
-				do
-					DoUnVision(v21 + v20->_tx, v22++ + v20->_ty, 15);
-				while (v22 < 2);
-				++v21;
-			} while (v21 < 2);
-			++v20;
-			--v19;
-		} while (v19);
+	for (i = 0; i < nt; i++) {
+		for (s = -2; s < 2; s++) {
+			for (t = -2; t < 2; t++)
+				DoUnVision(s + trigs[i]._tx, t + trigs[i]._ty, 15);
+		}
 	}
 }
 // 5CF31D: using guessed type char setlevel;
@@ -1075,69 +1008,32 @@ LABEL_42:
 
 void PlaceUniques()
 {
-	int v0;              // edi
-	int v1;              // eax
-	UniqMonstStruct *v2; // ecx
-	int v3;              // eax
-	int v4;              // edx
-	CMonster *v5;        // esi
-	int v6;              // eax
-	int v7;              // edx
+	int u;
+	BOOL done;
+	int mt;
 
-	v0 = 0;
-	if (UniqMonst[0].mtype != -1) {
-		v1 = 0;
-		v2 = UniqMonst;
-		while (UniqMonst[v1].mlevel != currlevel) {
-		LABEL_25:
-			v1 = ++v0;
-			v2 = &UniqMonst[v0];
-			if (v2->mtype == -1)
-				return;
+	for (u = 0; UniqMonst[u].mtype != -1; u++) {
+		if (UniqMonst[u].mlevel != currlevel)
+			continue;
+		done = FALSE;
+		for (mt = 0; mt < nummtypes; mt++) {
+			if (done)
+				break;
+			done = (Monsters[mt].mtype == UniqMonst[u].mtype);
 		}
-		v3 = 0;
-		v4 = 0;
-		if (nummtypes > 0) {
-			v5 = Monsters;
-			do {
-				if (v3)
-					break;
-				v6 = -((char)v2->mtype != (unsigned char)v5->mtype);
-				++v5;
-				v3 = v6 + 1;
-				++v4;
-			} while (v4 < nummtypes);
-		}
-		v7 = v4 - 1;
-		if (!v0) {
-			if (quests[QTYPE_GARB]._qactive)
-				goto LABEL_23;
-			v3 = 0;
-		}
-		if (v0 == 2) {
-			if (quests[QTYPE_ZHAR]._qactive)
-				goto LABEL_23;
-			v3 = 0;
-		}
-		if (v0 == 3) {
-			if (quests[QTYPE_BOL]._qactive)
-				goto LABEL_23;
-			v3 = 0;
-		}
-		if (v0 != 7) {
-		LABEL_20:
-			if (v0 == 8 && !quests[QTYPE_WARLRD]._qactive)
-				v3 = 0;
-			goto LABEL_23;
-		}
-		if (!quests[QTYPE_VEIL]._qactive) {
-			v3 = 0;
-			goto LABEL_20;
-		}
-	LABEL_23:
-		if (v3)
-			PlaceUniqueMonst(v0, v7, 8);
-		goto LABEL_25;
+		mt--;
+		if (u == UMT_GARBUD && quests[QTYPE_GARB]._qactive == 0)
+			done = FALSE;
+		if (u == UMT_ZHAR && quests[QTYPE_ZHAR]._qactive == 0)
+			done = FALSE;
+		if (u == UMT_SNOTSPIL && quests[QTYPE_BOL]._qactive == 0)
+			done = FALSE;
+		if (u == UMT_LACHDAN && quests[QTYPE_VEIL]._qactive == 0)
+			done = FALSE;
+		if (u == UMT_WARLORD && quests[QTYPE_WARLRD]._qactive == 0)
+			done = FALSE;
+		if (done)
+			PlaceUniqueMonst(u, mt, 8);
 	}
 }
 
@@ -1154,12 +1050,12 @@ void SetMapMonsters(unsigned char *pMap, int startx, int starty)
 	AddMonster(1, 0, 0, 0, FALSE);
 	AddMonster(1, 0, 0, 0, FALSE);
 	if (setlevel && setlvlnum == SL_VILEBETRAYER) {
-		AddMonsterType(UniqMonst[4].mtype, 4);
-		AddMonsterType(UniqMonst[5].mtype, 4);
-		AddMonsterType(UniqMonst[6].mtype, 4);
-		PlaceUniqueMonst(4, 0, 0);
-		PlaceUniqueMonst(5, 0, 0);
-		PlaceUniqueMonst(6, 0, 0);
+		AddMonsterType(UniqMonst[UMT_LAZURUS].mtype, 4);
+		AddMonsterType(UniqMonst[UMT_RED_VEX].mtype, 4);
+		AddMonsterType(UniqMonst[UMT_BLACKJADE].mtype, 4);
+		PlaceUniqueMonst(UMT_LAZURUS, 0, 0);
+		PlaceUniqueMonst(UMT_RED_VEX, 0, 0);
+		PlaceUniqueMonst(UMT_BLACKJADE, 0, 0);
 	}
 	lm = (WORD*)pMap;
 	rw = *lm;
@@ -1823,7 +1719,7 @@ void MonstStartKill(int i, int pnum, BOOL sendmsg)
 	monstkills[monster[i].MType->mtype]++;
 	monster[i]._mhitpoints = 0;
 	SetRndSeed(monster[i]._mRndSeed);
-	if (QuestStatus(QTYPE_GARB) && monster[i].mName == UniqMonst[0].mName) {
+	if (QuestStatus(QTYPE_GARB) && monster[i].mName == UniqMonst[UMT_GARBUD].mName) {
 		CreateTypeItem(monster[i]._mx + 1, monster[i]._my + 1, TRUE, 4, FALSE, TRUE, FALSE);
 	} else if (i > 3) {
 		SpawnItem(i, monster[i]._mx, monster[i]._my, sendmsg);
@@ -2635,7 +2531,7 @@ int M_DoTalk(int i)
 	//_LOBYTE(v3) = effect_is_playing(alltext[monster[v1].mtalkmsg].sfxnr);
 	if (!effect_is_playing(alltext[monster[v1].mtalkmsg].sfxnr)) {
 		InitQTextMsg(monster[v2].mtalkmsg);
-		if (monster[v2].mName == UniqMonst[0].mName) {
+		if (monster[v2].mName == UniqMonst[UMT_GARBUD].mName) {
 			v4 = monster[v2].mtalkmsg;
 			if (v4 == QUEST_GARBUD1)
 				quests[QTYPE_GARB]._qactive = 2;
@@ -2645,7 +2541,7 @@ int M_DoTalk(int i)
 				monster[v2]._mFlags |= MFLAG_QUEST_COMPLETE;
 			}
 		}
-		if (monster[v2].mName == UniqMonst[2].mName
+		if (monster[v2].mName == UniqMonst[UMT_ZHAR].mName
 		    && monster[v2].mtalkmsg == QUEST_ZHAR1
 		    && !(monster[v2]._mFlags & MFLAG_QUEST_COMPLETE)) {
 			v5 = monster[v2]._my + 1;
@@ -2655,7 +2551,7 @@ int M_DoTalk(int i)
 			CreateTypeItem(v6, v5, 0, 0, 24, 1, 0);
 			monster[v2]._mFlags |= MFLAG_QUEST_COMPLETE;
 		}
-		if (monster[v2].mName == UniqMonst[3].mName) {
+		if (monster[v2].mName == UniqMonst[UMT_SNOTSPIL].mName) {
 			if (monster[v2].mtalkmsg == QUEST_BANNER10 && !(monster[v2]._mFlags & MFLAG_QUEST_COMPLETE)) {
 				ObjChangeMap(setpc_x, setpc_y, (setpc_w >> 1) + setpc_x + 2, (setpc_h >> 1) + setpc_y - 2);
 				v7 = TransVal;
@@ -2672,7 +2568,7 @@ int M_DoTalk(int i)
 				app_fatal(tempstr);
 			}
 		}
-		if (monster[v2].mName == UniqMonst[7].mName) {
+		if (monster[v2].mName == UniqMonst[UMT_LACHDAN].mName) {
 			v8 = monster[v2].mtalkmsg;
 			if (v8 == QUEST_VEIL9) {
 				quests[QTYPE_VEIL]._qactive = 2;
@@ -2684,9 +2580,9 @@ int M_DoTalk(int i)
 			}
 		}
 		v9 = monster[v2].mName;
-		if (v9 == UniqMonst[8].mName)
+		if (v9 == UniqMonst[UMT_WARLORD].mName)
 			quests[QTYPE_WARLRD]._qvar1 = 2;
-		if (v9 == UniqMonst[4].mName && gbMaxPlayers != 1) {
+		if (v9 == UniqMonst[UMT_LAZURUS].mName && gbMaxPlayers != 1) {
 			monster[v2]._msquelch = -1;
 			monster[v2].mtalkmsg = 0;
 			quests[QTYPE_VB]._qvar1 = 6;
