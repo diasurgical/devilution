@@ -6,7 +6,7 @@
 #endif
 
 char gbPixelCol;  // automap pixel color 8-bit (palette entry)
-int dword_52B970; // BOOLEAN flip - if y < x
+int gbRotateMap; // BOOLEAN flip - if y < x
 int orgseed;      // weak
 int sgnWidth;
 int sglGameSeed; // weak
@@ -14,7 +14,7 @@ int sglGameSeed; // weak
 static CCritSect sgMemCrit;
 #endif
 int SeedCount;    // weak
-int dword_52B99C; // BOOLEAN valid - if x/y are in bounds
+int gbNotInView; // BOOLEAN valid - if x/y are in bounds
 
 const int rand_increment = 1;
 const int rand_multiplier = 0x015A4E35;
@@ -2059,12 +2059,12 @@ void engine_draw_pixel(int sx, int sy)
 
 	/// ASSERT: assert(gpBuffer);
 
-	if (dword_52B970) {
-		if (dword_52B99C && (sx < 0 || sx >= 640 || sy < 64 || sy >= 704))
+	if (gbRotateMap) {
+		if (gbNotInView && (sx < 0 || sx >= 640 || sy < 64 || sy >= 704))
 			return;
 		dst = &gpBuffer[sy + PitchTbl[sx]];
 	} else {
-		if (dword_52B99C && (sy < 0 || sy >= 640 || sx < 64 || sx >= 704))
+		if (gbNotInView && (sy < 0 || sy >= 640 || sx < 64 || sx >= 704))
 			return;
 		dst = &gpBuffer[sx + PitchTbl[sy]];
 	}
@@ -2084,245 +2084,244 @@ void engine_draw_pixel(int sx, int sy)
 #endif
 }
 // 52B96C: using guessed type char gbPixelCol;
-// 52B970: using guessed type int dword_52B970;
-// 52B99C: using guessed type int dword_52B99C;
+// 52B970: using guessed type int gbRotateMap;
+// 52B99C: using guessed type int gbNotInView;
 // 69CF0C: using guessed type int gpBufEnd;
 
-void DrawLine(int x0, int y0, int x1, int y1, UCHAR col)
+void DrawLine(int x0, int y0, int x1, int y1, BYTE col)
 {
-	int v5;         // ST18_4
-	int v6;         // ST2C_4
-	int v7;         // ST20_4
-	int v8;         // [esp+Ch] [ebp-48h]
-	int v9;         // [esp+10h] [ebp-44h]
-	int v10;        // [esp+14h] [ebp-40h]
-	int v11;        // [esp+18h] [ebp-3Ch]
-	signed int v12; // [esp+1Ch] [ebp-38h]
-	int v13;        // [esp+20h] [ebp-34h]
-	int v14;        // [esp+24h] [ebp-30h]
-	int v15;        // [esp+28h] [ebp-2Ch]
-	int y;          // [esp+2Ch] [ebp-28h]
-	int ya;         // [esp+2Ch] [ebp-28h]
-	int yb;         // [esp+2Ch] [ebp-28h]
-	int yc;         // [esp+2Ch] [ebp-28h]
-	int j;          // [esp+30h] [ebp-24h]
-	int i;          // [esp+30h] [ebp-24h]
-	int x;          // [esp+34h] [ebp-20h]
-	int xa;         // [esp+34h] [ebp-20h]
-	int xb;         // [esp+34h] [ebp-20h]
-	int xc;         // [esp+34h] [ebp-20h]
-	int xd;         // [esp+34h] [ebp-20h]
-	int xe;         // [esp+34h] [ebp-20h]
-	int xf;         // [esp+34h] [ebp-20h]
-	int xg;         // [esp+34h] [ebp-20h]
-	int xh;         // [esp+34h] [ebp-20h]
-	int v31;        // [esp+38h] [ebp-1Ch]
-	int v32;        // [esp+3Ch] [ebp-18h]
-	int v33;        // [esp+3Ch] [ebp-18h]
-	int v34;        // [esp+3Ch] [ebp-18h]
-	signed int v35; // [esp+40h] [ebp-14h]
-	signed int v36; // [esp+44h] [ebp-10h]
-	int v37;        // [esp+48h] [ebp-Ch]
-	int v38;        // [esp+48h] [ebp-Ch]
-	int v39;        // [esp+4Ch] [ebp-8h]
-	int v40;        // [esp+4Ch] [ebp-8h]
-	int v41;        // [esp+50h] [ebp-4h]
-	int x2a;        // [esp+5Ch] [ebp+8h]
+	int i, sx, sy, dx, dy, nx, ny, xlen, ylen, pixels, remain, xy_same, line_dir, mult_2, mult_4;
 
-	v8 = y0;
-	v9 = x0;
 	gbPixelCol = col;
-	dword_52B99C = 0;
-	if (x0 < 64 || x0 >= 704)
-		dword_52B99C = 1;
-	if (x1 < 64 || x1 >= 704)
-		dword_52B99C = 1;
-	if (y0 < 160 || y0 >= 512)
-		dword_52B99C = 1;
-	if (y1 < 160 || y1 >= 512)
-		dword_52B99C = 1;
-	if (x1 - x0 < 0)
-		v36 = -1;
-	else
-		v36 = 1;
-	v11 = v36 * (x1 - x0);
-	if (y1 - y0 < 0)
-		v35 = -1;
-	else
-		v35 = 1;
-	v10 = v35 * (y1 - y0);
-	if (v35 == v36)
-		v12 = 1;
-	else
-		v12 = -1;
-	if (v11 >= v10) {
-		dword_52B970 = 0;
-	} else {
-		v8 = y0 ^ x0 ^ y0;
-		v9 = v8 ^ y0 ^ x0;
-		x2a = y1 ^ x1;
-		y1 ^= x2a;
-		x1 = y1 ^ x2a;
-		v5 = v10 ^ v11;
-		v10 ^= v5;
-		v11 = v10 ^ v5;
-		dword_52B970 = 1;
+
+	gbNotInView = FALSE;
+	if(x0 < 0 + 64 || x0 >= 640 + 64) {
+		gbNotInView = TRUE;
 	}
-	if (x1 >= v9) {
-		x = v9;
-		y = v8;
-		v32 = x1;
-		v13 = y1;
-	} else {
-		x = x1;
-		y = y1;
-		v32 = v9;
-		v13 = v8;
+	if(x1 < 0 + 64 || x1 >= 640 + 64) {
+		gbNotInView = TRUE;
 	}
-	v31 = (v11 - 1) / 4;
-	v41 = (v11 - 1) % 4; /* (((v11 - 1) >> 31) ^ abs(v11 - 1) & 3) - ((v11 - 1) >> 31) */
-	engine_draw_pixel(x, y);
-	engine_draw_pixel(v32, v13);
-	v14 = 4 * v10 - 2 * v11;
-	if (v14 >= 0) {
-		v40 = 2 * (v10 - v11);
-		v15 = 4 * (v10 - v11);
-		v38 = v15 + v11;
-		for (i = 0; i < v31; ++i) {
-			xe = x + 1;
-			v34 = v32 - 1;
-			if (v38 <= 0) {
-				if (v40 <= v38) {
-					y += v12;
-					engine_draw_pixel(xe, y);
-					x = xe + 1;
-					engine_draw_pixel(x, y);
-					v13 -= v12;
-					engine_draw_pixel(v34, v13);
-				} else {
-					engine_draw_pixel(xe, y);
-					y += v12;
-					x = xe + 1;
-					engine_draw_pixel(x, y);
-					engine_draw_pixel(v34, v13);
-					v13 -= v12;
-				}
-				v32 = v34 - 1;
-				engine_draw_pixel(v32, v13);
-				v38 += v14;
+	if(y0 < 0 + 160 || y0 >= 352 + 160) {
+		gbNotInView = TRUE;
+	}
+	if(y1 < 0 + 160 || y1 >= 352 + 160) {
+		gbNotInView = TRUE;
+	}
+
+	if(x1 - x0 < 0) {
+		nx = -1;
+	} else {
+		nx = 1;
+	}
+	xlen = nx * (x1 - x0);
+
+	if(y1 - y0 < 0) {
+		ny = -1;
+	} else {
+		ny = 1;
+	}
+	ylen = ny * (y1 - y0);
+
+	if(ny == nx) {
+		xy_same = 1;
+	} else {
+		xy_same = -1;
+	}
+
+	if(ylen > xlen) {
+		x0 ^= y0 ^= x0 ^= y0;
+		x1 ^= y1 ^= x1 ^= y1;
+		xlen ^= ylen ^= xlen ^= ylen;
+		gbRotateMap = TRUE;
+	} else {
+		gbRotateMap = FALSE;
+	}
+
+	if(x0 > x1) {
+		sx = x1;
+		sy = y1;
+		dx = x0;
+		dy = y0;
+	} else {
+		sx = x0;
+		sy = y0;
+		dx = x1;
+		dy = y1;
+	}
+
+	pixels = (xlen - 1) / 4;
+	remain = (xlen - 1) % 4;
+	engine_draw_pixel(sx, sy);
+	engine_draw_pixel(dx, dy);
+
+	line_dir = (ylen << 2) - xlen - xlen;
+	if(line_dir < 0) {
+		mult_2 = ylen << 1;
+		mult_4 = (mult_2 << 1) - xlen;
+		for(i = 0; i < pixels; i++) {
+			sx++;
+			dx--;
+			if(mult_4 < 0) {
+				engine_draw_pixel(sx, sy);
+				sx++;
+				engine_draw_pixel(sx, sy);
+				engine_draw_pixel(dx, dy);
+				dx--;
+				engine_draw_pixel(dx, dy);
+				mult_4 += mult_2 + mult_2;
+			} else if(mult_4 < mult_2) {
+				engine_draw_pixel(sx, sy);
+				sy += xy_same;
+				sx++;
+				engine_draw_pixel(sx, sy);
+				engine_draw_pixel(dx, dy);
+				dy -= xy_same;
+				dx--;
+				engine_draw_pixel(dx, dy);
+				mult_4 += line_dir;
 			} else {
-				v6 = v12 + y;
-				engine_draw_pixel(xe, v6);
-				y = v12 + v6;
-				x = xe + 1;
-				engine_draw_pixel(x, y);
-				v7 = v13 - v12;
-				engine_draw_pixel(v34, v7);
-				v13 = v7 - v12;
-				v32 = v34 - 1;
-				engine_draw_pixel(v32, v13);
-				v38 += v15;
+				sy += xy_same;
+				engine_draw_pixel(sx, sy);
+				sx++;
+				engine_draw_pixel(sx, sy);
+				dy -= xy_same;
+				engine_draw_pixel(dx, dy);
+				dx--;
+				engine_draw_pixel(dx, dy);
+				mult_4 += line_dir;
 			}
 		}
-		if (v41) {
-			if (v38 <= 0) {
-				if (v40 <= v38) {
-					yc = v12 + y;
-					xh = x + 1;
-					engine_draw_pixel(xh, yc);
-					if (v41 > 1)
-						engine_draw_pixel(xh + 1, yc);
-					if (v41 > 2) {
-						if (v40 >= v38)
-							engine_draw_pixel(v32 - 1, v13);
-						else
-							engine_draw_pixel(v32 - 1, v13 - v12);
+		if(remain != 0) {
+			if(mult_4 < 0) {
+				sx++;
+				engine_draw_pixel(sx, sy);
+				if(remain > 1) {
+					sx++;
+					engine_draw_pixel(sx, sy);
+				}
+				if(remain > 2) {
+					dx--;
+					engine_draw_pixel(dx, dy);
+				}
+			} else if(mult_4 < mult_2) {
+				sx++;
+				engine_draw_pixel(sx, sy);
+				if(remain > 1) {
+					sy += xy_same;
+					sx++;
+					engine_draw_pixel(sx, sy);
+				}
+				if(remain > 2) {
+					dx--;
+					engine_draw_pixel(dx, dy);
+				}
+			} else {
+				sy += xy_same;
+				sx++;
+				engine_draw_pixel(sx, sy);
+				if(remain > 1) {
+					sx++;
+					engine_draw_pixel(sx, sy);
+				}
+				if(remain > 2) {
+					dy -= xy_same;
+					dx--;
+					engine_draw_pixel(dx, dy);
+				}
+			}
+		}
+	} else {
+		mult_2 = (ylen - xlen) << 1;
+		mult_4 = (mult_2 << 1) + xlen;
+		for(i = 0; i < pixels; i++) {
+			sx++;
+			dx--;
+			if(mult_4 > 0) {
+				sy += xy_same;
+				engine_draw_pixel(sx, sy);
+				sy += xy_same;
+				sx++;
+				engine_draw_pixel(sx, sy);
+				dy -= xy_same;
+				engine_draw_pixel(dx, dy);
+				dy -= xy_same;
+				dx--;
+				engine_draw_pixel(dx, dy);
+				mult_4 += mult_2 + mult_2;
+			} else if(mult_4 < mult_2) {
+				engine_draw_pixel(sx, sy);
+				sy += xy_same;
+				sx++;
+				engine_draw_pixel(sx, sy);
+				engine_draw_pixel(dx, dy);
+				dy -= xy_same;
+				dx--;
+				engine_draw_pixel(dx, dy);
+				mult_4 += line_dir;
+			} else {
+				sy += xy_same;
+				engine_draw_pixel(sx, sy);
+				sx++;
+				engine_draw_pixel(sx, sy);
+				dy -= xy_same;
+				engine_draw_pixel(dx, dy);
+				dx--;
+				engine_draw_pixel(dx, dy);
+				mult_4 += line_dir;
+			}
+		}
+		if(remain != 0) {
+			if(mult_4 > 0) {
+				sy += xy_same;
+				sx++;
+				engine_draw_pixel(sx, sy);
+				if(remain > 1) {
+					sy += xy_same;
+					sx++;
+					engine_draw_pixel(sx, sy);
+				}
+				if(remain > 2) {
+					dy -= xy_same;
+					dx--;
+					engine_draw_pixel(dx, dy);
+				}
+			} else if(mult_4 < mult_2) {
+				sx++;
+				engine_draw_pixel(sx, sy);
+				if(remain > 1) {
+					sy += xy_same;
+					sx++;
+					engine_draw_pixel(sx, sy);
+				}
+				if(remain > 2) {
+					dx--;
+					engine_draw_pixel(dx, dy);
+				}
+			} else {
+				sy += xy_same;
+				sx++;
+				engine_draw_pixel(sx, sy);
+				if(remain > 1) {
+					sx++;
+					engine_draw_pixel(sx, sy);
+				}
+				if(remain > 2) {
+					if(mult_4 > mult_2) {
+						dy -= xy_same;
+						dx--;
+						engine_draw_pixel(dx, dy);
+					} else {
+						dx--;
+						engine_draw_pixel(dx, dy);
 					}
-				} else {
-					xg = x + 1;
-					engine_draw_pixel(xg, y);
-					if (v41 > 1)
-						engine_draw_pixel(xg + 1, v12 + y);
-					if (v41 > 2)
-						engine_draw_pixel(v32 - 1, v13);
 				}
-			} else {
-				yb = v12 + y;
-				xf = x + 1;
-				engine_draw_pixel(xf, yb);
-				if (v41 > 1)
-					engine_draw_pixel(xf + 1, v12 + yb);
-				if (v41 > 2)
-					engine_draw_pixel(v32 - 1, v13 - v12);
-			}
-		}
-	} else {
-		v39 = 2 * v10;
-		v37 = 4 * v10 - v11;
-		for (j = 0; j < v31; ++j) {
-			xa = x + 1;
-			v33 = v32 - 1;
-			if (v37 >= 0) {
-				if (v39 <= v37) {
-					y += v12;
-					engine_draw_pixel(xa, y);
-					x = xa + 1;
-					engine_draw_pixel(x, y);
-					v13 -= v12;
-					engine_draw_pixel(v33, v13);
-				} else {
-					engine_draw_pixel(xa, y);
-					y += v12;
-					x = xa + 1;
-					engine_draw_pixel(x, y);
-					engine_draw_pixel(v33, v13);
-					v13 -= v12;
-				}
-				v32 = v33 - 1;
-				engine_draw_pixel(v32, v13);
-				v37 += v14;
-			} else {
-				engine_draw_pixel(xa, y);
-				x = xa + 1;
-				engine_draw_pixel(x, y);
-				engine_draw_pixel(v33, v13);
-				v32 = v33 - 1;
-				engine_draw_pixel(v32, v13);
-				v37 += 4 * v10;
-			}
-		}
-		if (v41) {
-			if (v37 >= 0) {
-				if (v39 <= v37) {
-					ya = v12 + y;
-					xd = x + 1;
-					engine_draw_pixel(xd, ya);
-					if (v41 > 1)
-						engine_draw_pixel(xd + 1, ya);
-					if (v41 > 2)
-						engine_draw_pixel(v32 - 1, v13 - v12);
-				} else {
-					xc = x + 1;
-					engine_draw_pixel(xc, y);
-					if (v41 > 1)
-						engine_draw_pixel(xc + 1, v12 + y);
-					if (v41 > 2)
-						engine_draw_pixel(v32 - 1, v13);
-				}
-			} else {
-				xb = x + 1;
-				engine_draw_pixel(xb, y);
-				if (v41 > 1)
-					engine_draw_pixel(xb + 1, y);
-				if (v41 > 2)
-					engine_draw_pixel(v32 - 1, v13);
 			}
 		}
 	}
 }
 // 52B96C: using guessed type char gbPixelCol;
-// 52B970: using guessed type int dword_52B970;
-// 52B99C: using guessed type int dword_52B99C;
+// 52B970: using guessed type int gbRotateMap;
+// 52B99C: using guessed type int gbNotInView;
 
 int GetDirection(int x1, int y1, int x2, int y2)
 {
