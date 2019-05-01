@@ -44,7 +44,7 @@ void engine_debug_trap(BOOL show_cursor);
 unsigned char *DiabloAllocPtr(int dwBytes);
 void mem_free_dbg(void *p);
 BYTE *LoadFileInMem(char *pszName, int *pdwFileLen);
-void LoadFileWithMem(char *pszName, void *buf);
+DWORD LoadFileWithMem(const char *pszName, void *p);
 void Cl2ApplyTrans(BYTE *p, BYTE *ttbl, int nCel);
 void Cl2DecodeFrm1(int sx, int sy, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap);
 void Cl2DecDatFrm1(BYTE *pDecodeTo, BYTE *pRLEBytes, int nDataSize, int nWidth);

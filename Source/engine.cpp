@@ -2462,23 +2462,27 @@ BYTE *LoadFileInMem(char *pszName, int *pdwFileLen)
 	return buf;
 }
 
-void LoadFileWithMem(char *pszName, void *buf)
+DWORD LoadFileWithMem(const char *pszName, void *p)
 {
-	char *v2;  // ebx
-	char *v3;  // edi
-	int v4;    // esi
-	HANDLE a1; // [esp+Ch] [ebp-4h]
+	DWORD dwFileLen;
+	HANDLE hsFile;
 
-	v2 = (char *)buf;
-	v3 = pszName;
-	if (!buf)
+	/// ASSERT: assert(pszName);
+	if(p == NULL) {
 		app_fatal("LoadFileWithMem(NULL):\n%s", pszName);
-	WOpenFile(v3, &a1, 0);
-	v4 = WGetFileSize(a1, 0);
-	if (!v4)
-		app_fatal("Zero length SFILE:\n%s", v3);
-	WReadFile(a1, v2, v4);
-	WCloseFile(a1);
+	}
+
+	WOpenFile(pszName, &hsFile, FALSE);
+
+	dwFileLen = WGetFileSize(hsFile, NULL);
+	if(dwFileLen == 0) {
+		app_fatal("Zero length SFILE:\n%s", pszName);
+	}
+
+	WReadFile(hsFile, p, dwFileLen);
+	WCloseFile(hsFile);
+
+	return dwFileLen;
 }
 
 void Cl2ApplyTrans(BYTE *p, BYTE *ttbl, int nCel)
