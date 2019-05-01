@@ -2686,7 +2686,7 @@ void PrepDoEnding()
 
 	for (i = 0; i < MAX_PLRS; i++) {
 		plr[i]._pmode = PM_QUIT;
-		plr[i]._pBlockFlag = TRUE;
+		plr[i]._pInvincible = TRUE;
 		if (gbMaxPlayers > 1) {
 			if (plr[i]._pHitPoints >> 6 == 0)
 				plr[i]._pHitPoints = 64;
