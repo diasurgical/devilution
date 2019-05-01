@@ -85,120 +85,96 @@ void InitHelp()
 
 void DrawHelp()
 {
-	int v0;                   // edi
-	const char *v1;           // esi
-	int v2;                   // edx
-	signed int v3;            // ecx
-	char v4;                  // al
-	unsigned char v5;         // al
-	_BYTE *i;                 // eax
-	int v7;                   // eax
-	signed int v8;            // edx
-	char v9;                  // cl
-	unsigned char v10;        // cl
-	text_color color;         // [esp+Ch] [ebp-8h]
-	int help_line_nr;         // [esp+10h] [ebp-4h]
-	signed int help_line_nra; // [esp+10h] [ebp-4h]
+	int i, c, w;
+	char col;
+	const char *s;
 
 	DrawSTextHelp();
 	DrawQTextBack();
-	PrintSString(0, 2, 1u, "Diablo Help", COL_GOLD, 0);
+	PrintSString(0, 2, 1, "Diablo Help", COL_GOLD, 0);
 	DrawSLine(5);
-	v0 = help_select_line;
-	v1 = gszHelpText;
-	if (help_select_line > 0) {
-		help_line_nr = help_select_line;
-		do {
-			v2 = 0;
-			v3 = 0;
-			while (!*v1)
-				++v1;
-			if (*v1 == '$')
-				++v1;
-			v4 = *v1;
-			if (*v1 != '&') {
-				if (v4 == ('|'))
-					goto LABEL_47;
-				while (v3 < 577) {
-					if (!v4) {
-						do
-							++v1;
-						while (!*v1);
-					}
-					v5 = *v1;
-					tempstr[v2++] = *v1++;
-					v3 += fontkern[fontframe[gbFontTransTbl[v5]]] + 1;
-					v4 = *v1;
-					if (*v1 == ('|')) {
-						if (v3 < 577)
-							goto LABEL_18;
-						break;
-					}
-				}
-				for (i = (unsigned char *)&tempstr[v2] - 1; *i != ' '; --i)
-					--v1;
-			LABEL_18:
-				if (*v1 == ('|'))
-				LABEL_47:
-					++v1;
+
+	s = gszHelpText;
+
+	for(i = 0; i < help_select_line; i++) {
+		c = 0;
+		w = 0;
+		while(*s == '\0') {
+			s++;
+		}
+		if(*s == '$') {
+			s++;
+		}
+		if(*s == '&') {
+			continue;
+		}
+		while(*s != '|' && w < 577) {
+			while(*s == '\0') {
+				s++;
 			}
-			--help_line_nr;
-		} while (help_line_nr);
+			tempstr[c] = *s;
+			w += fontkern[fontframe[gbFontTransTbl[(BYTE)tempstr[c]]]] + 1;
+			c++;
+			s++;
+		}
+		if(w >= 577) {
+			c--;
+			while(tempstr[c] != ' ') {
+				s--;
+				c--;
+			}
+		}
+		if(*s == '|') {
+			s++;
+		}
 	}
-	help_line_nra = 7;
-	do {
-		v7 = 0;
-		v8 = 0;
-		while (!*v1)
-			++v1;
-		if (*v1 == '$') {
-			++v1;
-			_LOBYTE(color) = COL_RED;
-		} else {
-			_LOBYTE(color) = COL_WHITE;
+	for(i = 7; i < 22; i++) {
+		c = 0;
+		w = 0;
+		while(*s == '\0') {
+			s++;
 		}
-		v9 = *v1;
-		if (*v1 == '&') {
-			HelpTop = v0;
+		if(*s == '$') {
+			s++;
+			col = COL_RED;
 		} else {
-			if (v9 == ('|'))
-				goto LABEL_48;
-			while (v8 < 577) {
-				if (!v9) {
-					do
-						++v1;
-					while (!*v1);
-				}
-				v10 = *v1;
-				tempstr[v7++] = *v1++;
-				v8 += fontkern[fontframe[gbFontTransTbl[v10]]] + 1;
-				v9 = *v1;
-				if (*v1 == ('|')) {
-					if (v8 < 577)
-						goto LABEL_39;
-					break;
-				}
-			}
-			while (tempstr[--v7] != ' ')
-				--v1;
-		LABEL_39:
-			if (v7) {
-				tempstr[v7] = 0;
-				DrawHelpLine(0, help_line_nra, tempstr, color);
-				v0 = help_select_line;
-			}
-			if (*v1 == ('|'))
-			LABEL_48:
-				++v1;
+			col = COL_WHITE;
 		}
-		++help_line_nra;
-	} while (help_line_nra < 22);
-	PrintSString(0, 23, 1u, "Press ESC to end or the arrow keys to scroll.", COL_GOLD, 0);
+		if(*s == '&') {
+			HelpTop = help_select_line;
+			continue;
+		}
+		while(*s != '|' && w < 577) {
+			while(*s == '\0') {
+				s++;
+			}
+			tempstr[c] = *s;
+			w += fontkern[fontframe[gbFontTransTbl[(BYTE)tempstr[c]]]] + 1;
+			c++;
+			s++;
+		}
+		if(w >= 577) {
+			c--;
+			while(tempstr[c] != ' ') {
+				s--;
+				c--;
+			}
+		}
+		if(c != 0) {
+			tempstr[c] = '\0';
+			DrawHelpLine(0, i, tempstr, col);
+		}
+		if(*s == '|') {
+			s++;
+		}
+	}
+
+	PrintSString(0, 23, 1, "Press ESC to end or the arrow keys to scroll.", COL_GOLD, 0);
 }
 // 634490: using guessed type int help_select_line;
 // 634960: using guessed type int HelpTop;
 
-void DrawHelpLine(int always_0, int help_line_nr, char *text, text_color color)
+void DrawHelpLine(int always_0, int help_line_nr, char *text, char color)
 {
 	signed int v4;    // ebx
 	int v5;           // edi
