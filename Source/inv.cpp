@@ -2231,9 +2231,9 @@ void StartGoldDrop()
 {
 	initialDropGoldIndex = pcursinvitem;
 	if (pcursinvitem <= 46)
-		initialDropGoldValue = plr[myplr].InvBody[pcursinvitem]._ivalue;
+		initialDropGoldValue = plr[myplr].InvList[pcursinvitem - 7]._ivalue;
 	else
-		initialDropGoldValue = plr[myplr].InvBody[pcursinvitem]._iMaxDur;
+		initialDropGoldValue = plr[myplr].SpdList[pcursinvitem - 47]._ivalue;
 	dropGoldFlag = TRUE;
 	dropGoldValue = 0;
 	if (talkflag)
