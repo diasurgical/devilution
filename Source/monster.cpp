@@ -2806,79 +2806,26 @@ void GroupUnity(int i)
 
 BOOL M_CallWalk(int i, int md)
 {
-	int v2; // esi
-	int v3; // edi
-	int v4; // ebp
-	//int v5; // eax
-	BOOLEAN v7; // ebx
-	int v9;     // ebx
-	//int v10; // eax
-	int v11; // ebx
-	//int v12; // eax
-	//int v13; // eax
-	signed int v14; // ebx
-	//int v15; // eax
-	//int v16; // eax
-	//int v17; // eax
-	unsigned char v18; // bl
+	int mdtemp;
+	BOOL ok;
 
-	v2 = md;
-	v3 = i;
-	v4 = md;
-	//_LOBYTE(v5) = DirOK(i, md);
-	v7 = DirOK(i, md);
-	if (random(101, 2)) {
-		if (v7)
-			goto LABEL_10;
-		v9 = v2;
-		v2 = left[v2];
-		//_LOBYTE(v10) = DirOK(v3, v2);
-		if (DirOK(v3, v2))
-			goto LABEL_10;
-		v2 = right[v9];
-	} else {
-		if (v7)
-			goto LABEL_10;
-		v11 = v2;
-		v2 = right[v2];
-		//_LOBYTE(v12) = DirOK(v3, v2);
-		if (DirOK(v3, v2))
-			goto LABEL_10;
-		v2 = left[v11];
-	}
-	//_LOBYTE(v13) = DirOK(v3, v2);
-	if (!DirOK(v3, v2)) {
-		v14 = 0;
-		goto LABEL_11;
-	}
-LABEL_10:
-	v14 = 1;
-LABEL_11:
-	if (random(102, 2)) {
-		if (v14)
-			goto LABEL_20;
-		v2 = right[right[v4]];
-		//_LOBYTE(v15) = DirOK(v3, v2);
-		if (DirOK(v3, v2))
-			goto LABEL_20;
-		v2 = left[left[v4]];
-	} else {
-		if (v14)
-			goto LABEL_20;
-		v2 = left[left[v4]];
-		//_LOBYTE(v16) = DirOK(v3, v2);
-		if (DirOK(v3, v2))
-			goto LABEL_20;
-		v2 = right[right[v4]];
-	}
-	//_LOBYTE(v17) = DirOK(v3, v2);
-	if (DirOK(v3, v2)) {
-	LABEL_20:
-		v18 = 1;
-		M_WalkDir(v3, v2);
-		return v18;
-	}
-	return 0;
+	mdtemp = md;
+	ok = DirOK(i, md);
+	if (random(101, 2))
+		ok = ok || (md = left[mdtemp], DirOK(i, md)) || (md = right[mdtemp], DirOK(i, md));
+	else
+		ok = ok || (md = right[mdtemp], DirOK(i, md)) || (md = left[mdtemp], DirOK(i, md));
+	if (random(102, 2))
+		ok = ok
+		    || (md = right[right[mdtemp]], DirOK(i, md))
+		    || (md = left[left[mdtemp]], DirOK(i, md));
+	else
+		ok = ok
+		    || (md = left[left[mdtemp]], DirOK(i, md))
+		    || (md = right[right[mdtemp]], DirOK(i, md));
+	if (ok)
+		M_WalkDir(i, md);
+	return ok;
 }
 
 BOOL M_PathWalk(int i)
