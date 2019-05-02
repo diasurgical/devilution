@@ -9,7 +9,7 @@ extern char dFlagDbg[NUMLEVELS][MAXDUNX][MAXDUNY];
 void LoadDebugGFX();
 void FreeDebugGFX();
 void CheckDungeonClear();
-//#ifdef _DEBUG // SpawnHealer is only bin exact with the following defined
+#ifdef _DEBUG
 void GiveGoldCheat();
 void StoresCheat();
 void TakeGoldCheat();
@@ -21,6 +21,6 @@ void PrintDebugQuest();
 void PrintDebugMonster(int m);
 void GetDebugMonster();
 void NextDebugMonster();
-//#endif
+#endif
 
 #endif /* __DEBUG_H__ */
