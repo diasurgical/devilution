@@ -126,38 +126,35 @@ void gmenu_call_proc(TMenuItem *pItem, void(*gmFunc)(TMenuItem *))
 		}
 	}
 	sgpCurrItem = &v2[v3 - 1];
-	gmenu_up_down(1);
+	gmenu_up_down(TRUE);
 }
 // 525740: using guessed type int PauseMode;
 // 634464: using guessed type char byte_634464;
 // 63448C: using guessed type int dword_63448C;
 
-void gmenu_up_down(int a1)
+void gmenu_up_down(BOOL isDown)
 {
-	TMenuItem *v1; // eax
-	int v2;        // edi
+	int i;
 
-	v1 = sgpCurrItem;
-	if (sgpCurrItem) {
-		byte_634464 = 0;
-		v2 = dword_63448C;
-		while (v2) {
-			--v2;
-			if (a1) {
-				++v1;
-				sgpCurrItem = v1;
-				if (v1->fnMenu)
-					goto LABEL_10;
-				v1 = dword_634480;
+	if (!sgpCurrItem) {
+		return;
+	}
+	byte_634464 = FALSE;
+	i = dword_63448C;
+	if (dword_63448C) {
+		while (i) {
+			i--;
+			if (isDown) {
+				sgpCurrItem++;
+				if (!sgpCurrItem->fnMenu)
+					sgpCurrItem = dword_634480;
 			} else {
-				if (v1 == dword_634480)
-					v1 = &dword_634480[dword_63448C];
-				--v1;
+				if (sgpCurrItem == dword_634480)
+					sgpCurrItem = &dword_634480[dword_63448C];
+				sgpCurrItem--;
 			}
-			sgpCurrItem = v1;
-		LABEL_10:
-			if ((v1->dwFlags & 0x80000000) != 0) {
-				if (v2)
+			if ((sgpCurrItem->dwFlags & 0x80000000) != 0) {
+				if (i)
 					PlaySFX(IS_TITLEMOV);
 				return;
 			}
@@ -295,10 +292,10 @@ BOOL gmenu_presskeys(int a1)
 		gmenu_left_right(TRUE);
 		break;
 	case VK_UP:
-		gmenu_up_down(0);
+		gmenu_up_down(FALSE);
 		break;
 	case VK_DOWN:
-		gmenu_up_down(1);
+		gmenu_up_down(TRUE);
 		break;
 	}
 	return TRUE;
