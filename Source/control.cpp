@@ -57,13 +57,13 @@ void *pTalkPanel; // idb
 int spselflag;    // weak
 
 const unsigned char fontframe[128] = {
-	0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-	0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-	0,  54, 44, 57, 58, 56, 55, 47, 40, 41, 59, 39, 50, 37, 51, 52,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	0, 54, 44, 57, 58, 56, 55, 47, 40, 41, 59, 39, 50, 37, 51, 52,
 	36, 27, 28, 29, 30, 31, 32, 33, 34, 35, 48, 49, 60, 38, 61, 53,
-	62, 1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15,
+	62, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
 	16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 42, 63, 43, 64, 65,
-	0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15,
+	0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
 	16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 40, 66, 41, 67, 0
 };
 const unsigned char fontkern[68] = {
@@ -2368,21 +2368,21 @@ char GetSBookTrans(int ii, BOOL townok)
 	char st;
 
 	st = RSPLTYPE_SPELL;
-	if(plr[myplr]._pISpells & (__int64)1 << (ii - 1)) {
+	if (plr[myplr]._pISpells & (__int64)1 << (ii - 1)) {
 		st = RSPLTYPE_CHARGES;
 	}
-	if(plr[myplr]._pAblSpells & 1 << (ii - 1)) { /// BUGFIX: missing (__int64)
+	if (plr[myplr]._pAblSpells & 1 << (ii - 1)) { /// BUGFIX: missing (__int64)
 		st = RSPLTYPE_SKILL;
 	}
-	if(st == RSPLTYPE_SPELL) {
-		if(!CheckSpell(myplr, ii, RSPLTYPE_SPELL, TRUE)) {
+	if (st == RSPLTYPE_SPELL) {
+		if (!CheckSpell(myplr, ii, RSPLTYPE_SPELL, TRUE)) {
 			st = RSPLTYPE_INVALID;
 		}
-		if((char)(plr[myplr]._pSplLvl[ii] + plr[myplr]._pISplLvlAdd) <= 0) {
+		if ((char)(plr[myplr]._pSplLvl[ii] + plr[myplr]._pISplLvlAdd) <= 0) {
 			st = RSPLTYPE_INVALID;
 		}
 	}
-	if(townok && currlevel == 0 && st != RSPLTYPE_INVALID && !spelldata[ii].sTownSpell) {
+	if (townok && currlevel == 0 && st != RSPLTYPE_INVALID && !spelldata[ii].sTownSpell) {
 		st = RSPLTYPE_INVALID;
 	}
 
@@ -2401,18 +2401,18 @@ void DrawSpellBook()
 	spl = plr[myplr]._pMemSpells | plr[myplr]._pISpells | plr[myplr]._pAblSpells;
 
 	yp = 215;
-	for(i = 1; i < 8; i++) {
+	for (i = 1; i < 8; i++) {
 		sn = SpellPages[sbooktab][i - 1];
-		if(sn != -1 && spl & (__int64)1 << (sn - 1)) {
+		if (sn != -1 && spl & (__int64)1 << (sn - 1)) {
 			st = GetSBookTrans(sn, TRUE);
 			SetSpellTrans(st);
 			DrawSpellCel(395, yp, (BYTE *)pSBkIconCels, SpellITbl[sn], 37);
-			if(sn == plr[myplr]._pRSpell && st == plr[myplr]._pRSplType) {
+			if (sn == plr[myplr]._pRSpell && st == plr[myplr]._pRSplType) {
 				SetSpellTrans(RSPLTYPE_SKILL);
 				DrawSpellCel(395, yp, (BYTE *)pSBkIconCels, 43, 37);
 			}
 			PrintSBookStr(10, yp - 23, FALSE, spelldata[sn].sNameText, COL_WHITE);
-			switch(GetSBookTrans(sn, FALSE)) {
+			switch (GetSBookTrans(sn, FALSE)) {
 			case RSPLTYPE_SKILL:
 				strcpy(tempstr, "Skill");
 				break;
@@ -2422,20 +2422,20 @@ void DrawSpellBook()
 			default:
 				mana = GetManaAmount(myplr, sn) >> 6;
 				GetDamageAmt(sn, &min, &max);
-				if(min != -1) {
+				if (min != -1) {
 					sprintf(tempstr, "Mana: %i  Dam: %i - %i", mana, min, max);
 				} else {
 					sprintf(tempstr, "Mana: %i   Dam: n/a", mana);
 				}
-				if(sn == SPL_BONESPIRIT) {
+				if (sn == SPL_BONESPIRIT) {
 					sprintf(tempstr, "Mana: %i  Dam: 1/3 tgt hp", mana);
 				}
 				PrintSBookStr(10, yp - 1, FALSE, tempstr, COL_WHITE);
 				lvl = plr[myplr]._pSplLvl[sn] + plr[myplr]._pISplLvlAdd;
-				if(lvl < 0) {
+				if (lvl < 0) {
 					lvl = 0;
 				}
-				if(lvl == 0) {
+				if (lvl == 0) {
 					sprintf(tempstr, "Spell Level 0 - Unusable");
 				} else {
 					sprintf(tempstr, "Spell Level %i", lvl);
@@ -2502,15 +2502,15 @@ void CheckSBook()
 	char st;
 	unsigned __int64 spl;
 
-	if(MouseX >= 331 && MouseX < 368 && MouseY >= 18 && MouseY < 314) {
+	if (MouseX >= 331 && MouseX < 368 && MouseY >= 18 && MouseY < 314) {
 		spl = plr[myplr]._pMemSpells | plr[myplr]._pISpells | plr[myplr]._pAblSpells;
 		sn = SpellPages[sbooktab][(MouseY - 18) / 43];
-		if(sn != -1 && spl & (__int64)1 << (sn - 1)) {
+		if (sn != -1 && spl & (__int64)1 << (sn - 1)) {
 			st = RSPLTYPE_SPELL;
-			if(plr[myplr]._pISpells & (__int64)1 << (sn - 1)) {
+			if (plr[myplr]._pISpells & (__int64)1 << (sn - 1)) {
 				st = RSPLTYPE_CHARGES;
 			}
-			if(plr[myplr]._pAblSpells & (__int64)1 << (sn - 1)) {
+			if (plr[myplr]._pAblSpells & (__int64)1 << (sn - 1)) {
 				st = RSPLTYPE_SKILL;
 			}
 			plr[myplr]._pRSpell = sn;
@@ -2518,7 +2518,7 @@ void CheckSBook()
 			drawpanflag = 255;
 		}
 	}
-	if(MouseX >= 327 && MouseX < 633 && MouseY >= 320 && MouseY < 349) { /// BUGFIX: change `< 633` to `< 631`
+	if (MouseX >= 327 && MouseX < 633 && MouseY >= 320 && MouseY < 349) { /// BUGFIX: change `< 633` to `< 631`
 		sbooktab = (MouseX - 327) / 76;
 	}
 }
@@ -2571,53 +2571,39 @@ void DrawGoldSplit(int amount)
 
 void control_drop_gold(char vkey)
 {
-	char v1;    // bl
-	int v2;     // eax
-	int v3;     // eax
-	size_t v4;  // esi
-	char v6[6]; // [esp+8h] [ebp-8h]
+	char input[6];
 
-	v1 = vkey;
 	if (plr[myplr]._pHitPoints >> 6 <= 0) {
 		dropGoldFlag = FALSE;
 		dropGoldValue = 0;
 		return;
 	}
-	memset(v6, 0, sizeof(v6));
-	_itoa(dropGoldValue, v6, 10);
-	if (v1 != VK_RETURN) {
-		if (v1 == VK_ESCAPE) {
-			dropGoldFlag = FALSE;
-			dropGoldValue = 0;
-			return;
-		}
-		if (v1 == VK_BACK) {
-			v6[strlen(v6) - 1] = '\0';
-			v2 = atoi(v6);
-		} else {
-			v3 = v1 - '0';
-			if (v3 < 0 || v3 > 9)
+
+	memset(input, 0, sizeof(input));
+	_itoa(dropGoldValue, input, 10);
+	if (vkey == VK_RETURN) {
+		if (dropGoldValue > 0)
+			control_remove_gold(myplr, initialDropGoldIndex);
+		dropGoldFlag = 0;
+	} else if (vkey == VK_ESCAPE) {
+		dropGoldFlag = 0;
+		dropGoldValue = 0;
+	} else if (vkey == VK_BACK) {
+		input[strlen(input) - 1] = 0;
+		dropGoldValue = atoi(input);
+	} else if (vkey - 48 >= 0 && vkey - 48 <= 9) {
+		if (dropGoldValue || atoi(input) <= initialDropGoldValue) {
+			input[strlen(input)] = vkey;
+			if (atoi(input) > initialDropGoldValue)
 				return;
-			if (dropGoldValue || atoi(v6) <= initialDropGoldValue) {
-				v6[strlen(v6)] = v1;
-				if (atoi(v6) > initialDropGoldValue)
-					return;
-				v4 = strlen(v6);
-				if (v4 > strlen(v6))
-					return;
-			} else {
-				v6[0] = v1;
-			}
-			v2 = atoi(v6);
+			if (strlen(input) > strlen(input))
+				return;
+		} else {
+			input[0] = vkey;
 		}
-		dropGoldValue = v2;
-		return;
+		dropGoldValue = atoi(input);
 	}
-	if (dropGoldValue > 0)
-		control_remove_gold(myplr, initialDropGoldIndex);
-	dropGoldFlag = FALSE;
 }
-// 406C40: using guessed type char var_8[8];
 
 void control_remove_gold(int pnum, int gold_index)
 {
