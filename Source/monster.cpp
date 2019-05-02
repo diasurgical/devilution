@@ -7,7 +7,7 @@ int MissileFileFlag;
 int monstkills[MAXMONSTERS];
 int monstactive[MAXMONSTERS];
 int nummonsters;
-int sgbSaveSoundOn; // weak
+BOOLEAN sgbSaveSoundOn;
 MonsterStruct monster[MAXMONSTERS];
 int totalmonsters; // weak
 CMonster Monsters[16];
@@ -1539,72 +1539,53 @@ void M_StartHit(int i, int pnum, int dam)
 
 void M_DiabloDeath(int i, BOOL sendmsg)
 {
-	int v2;     // esi
-	int v3;     // edi
-	int v4;     // eax
-	int v5;     // ebx
-	int v6;     // esi
-	int v7;     // ecx
-	int v8;     // eax
-	int v9;     // esi
-	int v10;    // eax
-	double v11; // st7
-	int v12;    // eax
-	int v13;    // ecx
-	int v14;    // esi
-	int v15;    // [esp+8h] [ebp-8h]
-	int j;      // [esp+Ch] [ebp-4h]
-	int v17;    // [esp+Ch] [ebp-4h]
+	MonsterStruct *Monst, *pmonster;
+	int dist;
+	int j, k;
+	int _moldx, _moldy;
 
-	v15 = i;
-	v2 = sendmsg;
-	v3 = i;
+	Monst = monster + i;
 	PlaySFX(USFX_DIABLOD);
 	quests[QTYPE_MOD]._qactive = 3;
-	if (v2)
-		NetSendCmdQuest(TRUE, 5u);
+	if (sendmsg)
+		NetSendCmdQuest(TRUE, QTYPE_MOD);
 	gbProcessPlayers = FALSE;
-	_LOBYTE(sgbSaveSoundOn) = gbSoundOn;
-	v4 = 0;
-	for (j = 0; j < nummonsters; ++j) {
-		v5 = monstactive[v4];
-		if (v5 != v15 && monster[v3]._msquelch) {
-			v6 = v5;
-			NewMonsterAnim(monstactive[v4], &monster[v5].MType->Anims[MA_DEATH], monster[v5]._mdir);
-			v7 = monster[v5]._moldy;
-			monster[v6]._mxoff = 0;
-			monster[v6]._myoff = 0;
-			monster[v6]._mVar1 = 0;
-			v8 = monster[v5]._moldx;
-			monster[v6]._my = v7;
-			monster[v6]._mfuty = v7;
-			monster[v6]._mmode = MM_DEATH;
-			monster[v6]._mx = v8;
-			monster[v6]._mfutx = v8;
-			M_CheckEFlag(v5);
-			M_ClearSquares(v5);
-			dMonster[monster[v6]._mx][monster[v6]._my] = v5 + 1;
-		}
-		v4 = j + 1;
+	sgbSaveSoundOn = gbSoundOn;
+	for (j = 0; j < nummonsters; j++) {
+		k = monstactive[j];
+		if (k == i || monster[i]._msquelch == 0)
+			continue;
+
+		pmonster = monster + k;
+		NewMonsterAnim(k, pmonster->MType->Anims + MA_DEATH, pmonster->_mdir);
+		monster[k]._mxoff = 0;
+		monster[k]._myoff = 0;
+		monster[k]._mVar1 = 0;
+		_moldx = monster[k]._moldx;
+		_moldy = monster[k]._moldy;
+		monster[k]._my = _moldy;
+		monster[k]._mfuty = _moldy;
+		monster[k]._mmode = MM_DEATH;
+		monster[k]._mx = _moldx;
+		monster[k]._mfutx = _moldx;
+		M_CheckEFlag(k);
+		M_ClearSquares(k);
+		dMonster[pmonster->_mx][pmonster->_my] = k + 1;
 	}
-	AddLight(monster[v3]._mx, monster[v3]._my, 8);
-	DoVision(monster[v3]._mx, monster[v3]._my, 8, 0, 1);
-	v9 = abs(ViewY - monster[v3]._my);
-	if (abs(ViewX - monster[v3]._mx) <= v9)
-		v10 = ViewY - monster[v3]._my;
+	AddLight(Monst->_mx, Monst->_my, 8);
+	DoVision(Monst->_mx, Monst->_my, 8, FALSE, TRUE);
+	if (abs(ViewX - Monst->_mx) > abs(ViewY - Monst->_my))
+		dist = abs (ViewX - Monst->_mx);
 	else
-		v10 = ViewX - monster[v3]._mx;
-	v17 = abs(v10);
-	if (v17 > 20)
-		v17 = 20;
-	v11 = (double)v17;
-	v12 = ViewX << 16;
-	v13 = monster[v3]._mx << 16;
-	monster[v3]._mVar3 = ViewX << 16;
-	v14 = ViewY << 16;
-	monster[v3]._mVar4 = ViewY << 16;
-	monster[v3]._mVar5 = (signed __int64)((double)(v12 - v13) / v11);
-	monster[v3]._mVar6 = (signed __int64)((double)(v14 - (monster[v3]._my << 16)) / v11);
+		dist = abs (ViewY - Monst->_my);
+	if (dist > 20)
+		dist = 20;
+	j = ViewX << 16;
+	k = ViewY << 16;
+	Monst->_mVar3 = j;
+	Monst->_mVar4 = k;
+	Monst->_mVar5 = (int) ((j - (Monst->_mx << 16)) / (double)dist);
+	Monst->_mVar6 = (int) ((k - (Monst->_my << 16)) / (double)dist);
 }
 // 64D32C: using guessed type int sgbSaveSoundOn;
 
@@ -6554,3 +6535,4 @@ void decode_enemy(int m, int enemy)
 		monster[m]._menemyy = monster[enemy]._mfuty;
 	}
 }
+
