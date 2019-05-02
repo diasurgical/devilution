@@ -1,17 +1,17 @@
 #include "diablo.h"
 
 void *optbar_cel;
-BOOLEAN byte_634464; // weak
+BOOLEAN mouseNavigation; // weak
 void *PentSpin_cel;
 TMenuItem *sgpCurrItem;
 void *BigTGold_cel;
 int dword_634474; // weak
 char byte_634478; // weak
 void(*dword_63447C)(TMenuItem *);
-TMenuItem *dword_634480; // idb
+TMenuItem *sgpCurrentMenu; // idb
 void *option_cel;
 void *sgpLogo;
-int dword_63448C; // weak
+int sgCurrentMenuIdx; // weak
 
 const unsigned char lfontframe[127] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -41,7 +41,7 @@ void gmenu_draw_pause()
 {
 	if (currlevel)
 		RedBack();
-	if (!dword_634480) {
+	if (!sgpCurrentMenu) {
 		light_table_index = 0;
 		gmenu_print_text(316, 336, "Pause");
 	}
@@ -80,24 +80,24 @@ void FreeGMenu()
 void gmenu_init_menu()
 {
 	byte_634478 = 1;
-	dword_634480 = 0;
+	sgpCurrentMenu = 0;
 	sgpCurrItem = 0;
 	dword_63447C = 0;
-	dword_63448C = 0;
-	byte_634464 = 0;
+	sgCurrentMenuIdx = 0;
+	mouseNavigation = 0;
 	sgpLogo = LoadFileInMem("Data\\Diabsmal.CEL", 0);
 	BigTGold_cel = LoadFileInMem("Data\\BigTGold.CEL", 0);
 	PentSpin_cel = LoadFileInMem("Data\\PentSpin.CEL", 0);
 	option_cel = LoadFileInMem("Data\\option.CEL", 0);
 	optbar_cel = LoadFileInMem("Data\\optbar.CEL", 0);
 }
-// 634464: using guessed type char byte_634464;
+// 634464: using guessed type char mouseNavigation;
 // 634478: using guessed type char byte_634478;
-// 63448C: using guessed type int dword_63448C;
+// 63448C: using guessed type int sgCurrentMenuIdx;
 
 BOOL gmenu_exception()
 {
-	return dword_634480 != 0;
+	return sgpCurrentMenu != 0;
 }
 
 void gmenu_call_proc(TMenuItem *pItem, void(*gmFunc)(TMenuItem *))
@@ -107,30 +107,30 @@ void gmenu_call_proc(TMenuItem *pItem, void(*gmFunc)(TMenuItem *))
 	void(* *v4)(BOOL); // edx
 
 	PauseMode = 0;
-	byte_634464 = 0;
+	mouseNavigation = 0;
 	v2 = pItem;
 	dword_63447C = gmFunc;
-	dword_634480 = pItem;
+	sgpCurrentMenu = pItem;
 	if (gmFunc) {
-		gmFunc(dword_634480);
-		v2 = dword_634480;
+		gmFunc(sgpCurrentMenu);
+		v2 = sgpCurrentMenu;
 	}
 	v3 = 0;
-	dword_63448C = 0;
+	sgCurrentMenuIdx = 0;
 	if (v2) {
 		v4 = &v2->fnMenu;
 		while (*v4) {
 			++v3;
 			v4 += 3;
-			dword_63448C = v3;
+			sgCurrentMenuIdx = v3;
 		}
 	}
 	sgpCurrItem = &v2[v3 - 1];
 	gmenu_up_down(TRUE);
 }
 // 525740: using guessed type int PauseMode;
-// 634464: using guessed type char byte_634464;
-// 63448C: using guessed type int dword_63448C;
+// 634464: using guessed type char mouseNavigation;
+// 63448C: using guessed type int sgCurrentMenuIdx;
 
 void gmenu_up_down(BOOL isDown)
 {
@@ -139,18 +139,18 @@ void gmenu_up_down(BOOL isDown)
 	if (!sgpCurrItem) {
 		return;
 	}
-	byte_634464 = FALSE;
-	i = dword_63448C;
-	if (dword_63448C) {
+	mouseNavigation = FALSE;
+	i = sgCurrentMenuIdx;
+	if (sgCurrentMenuIdx) {
 		while (i) {
 			i--;
 			if (isDown) {
 				sgpCurrItem++;
 				if (!sgpCurrItem->fnMenu)
-					sgpCurrItem = dword_634480;
+					sgpCurrItem = &sgpCurrentMenu[0];
 			} else {
-				if (sgpCurrItem == dword_634480)
-					sgpCurrItem = &dword_634480[dword_63448C];
+				if (sgpCurrItem == sgpCurrentMenu)
+					sgpCurrItem = &sgpCurrentMenu[sgCurrentMenuIdx];
 				sgpCurrItem--;
 			}
 			if ((sgpCurrItem->dwFlags & 0x80000000) != 0) {
@@ -161,8 +161,8 @@ void gmenu_up_down(BOOL isDown)
 		}
 	}
 }
-// 634464: using guessed type char byte_634464;
-// 63448C: using guessed type int dword_63448C;
+// 634464: using guessed type char mouseNavigation;
+// 63448C: using guessed type int sgCurrentMenuIdx;
 
 void gmenu_draw()
 {
@@ -170,12 +170,12 @@ void gmenu_draw()
 	TMenuItem *i; // esi
 	DWORD v2;     // eax
 
-	if (dword_634480) {
+	if (sgpCurrentMenu) {
 		if (dword_63447C)
-			dword_63447C(dword_634480);
+			dword_63447C(sgpCurrentMenu);
 		CelDecodeOnly(236, 262, (BYTE *)sgpLogo, 1, 296);
 		v0 = 320;
-		for (i = dword_634480; i->fnMenu; v0 += 45) {
+		for (i = sgpCurrentMenu; i->fnMenu; v0 += 45) {
 			gmenu_draw_menu_item(i, v0);
 			++i;
 		}
@@ -270,7 +270,7 @@ int gmenu_get_lfont(TMenuItem *pItem)
 
 BOOL gmenu_presskeys(int a1)
 {
-	if (!dword_634480)
+	if (!sgpCurrentMenu)
 		return 0;
 	switch (a1) {
 	case VK_RETURN:
@@ -326,7 +326,7 @@ BOOL gmenu_on_mouse_move()
 {
 	int plOffset, v;
 
-	if (!byte_634464)
+	if (!mouseNavigation)
 		return FALSE;
 	gmenu_valid_mouse_pos(&plOffset);
 	v = (sgpCurrItem->dwFlags & 0xFFF000);
@@ -366,20 +366,20 @@ int gmenu_left_mouse(int a1)
 	int a1a; // [esp+4h] [ebp-4h]
 
 	if (a1) {
-		if (!dword_634480 || MouseY >= 352)
+		if (!sgpCurrentMenu || MouseY >= 352)
 			return 0;
 		if (MouseY - 117 >= 0) {
 			v2 = (MouseY - 117) / 45;
-			if (v2 < dword_63448C) {
+			if (v2 < sgCurrentMenuIdx) {
 				v3 = v2;
-				v4 = &dword_634480[v3];
+				v4 = &sgpCurrentMenu[v3];
 				if ((v4->dwFlags & 0x80000000) != 0) {
-					v5 = (unsigned int)gmenu_get_lfont(&dword_634480[v3]) >> 1;
+					v5 = (unsigned int)gmenu_get_lfont(&sgpCurrentMenu[v3]) >> 1;
 					if (MouseX >= 320 - v5 && MouseX <= v5 + 320) {
 						sgpCurrItem = v4;
 						PlaySFX(IS_TITLEMOV);
 						if (v4->dwFlags & 0x40000000) {
-							byte_634464 = gmenu_valid_mouse_pos(&a1a);
+							mouseNavigation = gmenu_valid_mouse_pos(&a1a);
 							gmenu_on_mouse_move();
 						} else {
 							sgpCurrItem->fnMenu(TRUE);
@@ -390,14 +390,14 @@ int gmenu_left_mouse(int a1)
 		}
 	} else {
 		result = 0;
-		if (!byte_634464)
+		if (!mouseNavigation)
 			return result;
-		byte_634464 = 0;
+		mouseNavigation = 0;
 	}
 	return 1;
 }
-// 634464: using guessed type char byte_634464;
-// 63448C: using guessed type int dword_63448C;
+// 634464: using guessed type char mouseNavigation;
+// 63448C: using guessed type int sgCurrentMenuIdx;
 
 void gmenu_enable(TMenuItem *pMenuItem, BOOL enable)
 {
