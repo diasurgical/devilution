@@ -2382,84 +2382,71 @@ int M_DoHeal(int i)
 
 int M_DoTalk(int i)
 {
-	int v1; // edi
-	int v2; // esi
-	//int v3; // eax
-	int v4;   // eax
-	int v5;   // edx
-	int v6;   // ecx
-	char v7;  // bl
-	int v8;   // eax
-	char *v9; // eax
+	MonsterStruct *Monst;
+	int tren;
 
-	v1 = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		app_fatal("M_DoTalk: Invalid monster %d", i);
-	v2 = v1;
-	M_StartStand(v1, monster[v1]._mdir);
-	_LOBYTE(monster[v1]._mgoal) = MGOAL_TALKING;
-	//_LOBYTE(v3) = effect_is_playing(alltext[monster[v1].mtalkmsg].sfxnr);
-	if (!effect_is_playing(alltext[monster[v1].mtalkmsg].sfxnr)) {
-		InitQTextMsg(monster[v2].mtalkmsg);
-		if (monster[v2].mName == UniqMonst[UMT_GARBUD].mName) {
-			v4 = monster[v2].mtalkmsg;
-			if (v4 == QUEST_GARBUD1)
-				quests[QTYPE_GARB]._qactive = 2;
-			quests[QTYPE_GARB]._qlog = 1;
-			if (v4 == QUEST_GARBUD2 && !(monster[v2]._mFlags & MFLAG_QUEST_COMPLETE)) {
-				SpawnItem(v1, monster[v2]._mx + 1, monster[v2]._my + 1, 1u);
-				monster[v2]._mFlags |= MFLAG_QUEST_COMPLETE;
-			}
-		}
-		if (monster[v2].mName == UniqMonst[UMT_ZHAR].mName
-		    && monster[v2].mtalkmsg == QUEST_ZHAR1
-		    && !(monster[v2]._mFlags & MFLAG_QUEST_COMPLETE)) {
-			v5 = monster[v2]._my + 1;
-			v6 = monster[v2]._mx + 1;
-			quests[QTYPE_ZHAR]._qactive = 2;
-			quests[QTYPE_ZHAR]._qlog = 1;
-			CreateTypeItem(v6, v5, 0, 0, 24, 1, 0);
-			monster[v2]._mFlags |= MFLAG_QUEST_COMPLETE;
-		}
-		if (monster[v2].mName == UniqMonst[UMT_SNOTSPIL].mName) {
-			if (monster[v2].mtalkmsg == QUEST_BANNER10 && !(monster[v2]._mFlags & MFLAG_QUEST_COMPLETE)) {
-				ObjChangeMap(setpc_x, setpc_y, (setpc_w >> 1) + setpc_x + 2, (setpc_h >> 1) + setpc_y - 2);
-				v7 = TransVal;
-				TransVal = 9;
-				DRLG_MRectTrans(setpc_x, setpc_y, (setpc_w >> 1) + setpc_x + 4, setpc_y + (setpc_h >> 1));
-				TransVal = v7;
-				quests[QTYPE_BOL]._qvar1 = 2;
-				if (quests[QTYPE_BOL]._qactive == 1)
-					quests[QTYPE_BOL]._qactive = 2;
-				monster[v2]._mFlags |= MFLAG_QUEST_COMPLETE;
-			}
-			if (quests[QTYPE_BOL]._qvar1 < 2u) {
-				sprintf(tempstr, "SS Talk = %i, Flags = %i", monster[v2].mtalkmsg, monster[v2]._mFlags);
-				app_fatal(tempstr);
-			}
-		}
-		if (monster[v2].mName == UniqMonst[UMT_LACHDAN].mName) {
-			v8 = monster[v2].mtalkmsg;
-			if (v8 == QUEST_VEIL9) {
-				quests[QTYPE_VEIL]._qactive = 2;
-				quests[QTYPE_VEIL]._qlog = 1;
-			}
-			if (v8 == QUEST_VEIL11 && !(monster[v2]._mFlags & MFLAG_QUEST_COMPLETE)) {
-				SpawnUnique(UITEM_STEELVEIL, monster[v2]._mx + 1, monster[v2]._my + 1);
-				monster[v2]._mFlags |= MFLAG_QUEST_COMPLETE;
-			}
-		}
-		v9 = monster[v2].mName;
-		if (v9 == UniqMonst[UMT_WARLORD].mName)
-			quests[QTYPE_WARLRD]._qvar1 = 2;
-		if (v9 == UniqMonst[UMT_LAZURUS].mName && gbMaxPlayers != 1) {
-			monster[v2]._msquelch = -1;
-			monster[v2].mtalkmsg = 0;
-			quests[QTYPE_VB]._qvar1 = 6;
-			_LOBYTE(monster[v2]._mgoal) = MGOAL_NORMAL;
+
+	Monst = monster + i;
+	M_StartStand(i, Monst->_mdir);
+	monster[i]._mgoal = MGOAL_TALKING;
+	if (effect_is_playing(alltext[Monst->mtalkmsg].sfxnr))
+		return FALSE;
+	InitQTextMsg(Monst->mtalkmsg);
+	if (Monst->mName == UniqMonst[UMT_GARBUD].mName) {
+		if (Monst->mtalkmsg == QUEST_GARBUD1)
+			quests[QTYPE_GARB]._qactive = 2;
+		quests[QTYPE_GARB]._qlog = TRUE;
+		if (Monst->mtalkmsg == QUEST_GARBUD2 && !(Monst->_mFlags & MFLAG_QUEST_COMPLETE)) {
+			SpawnItem(i, Monst->_mx + 1, Monst->_my + 1, TRUE);
+			Monst->_mFlags |= MFLAG_QUEST_COMPLETE;
 		}
 	}
-	return 0;
+	if (Monst->mName == UniqMonst[UMT_ZHAR].mName
+	    && Monst->mtalkmsg == QUEST_ZHAR1
+	    && !(Monst->_mFlags & MFLAG_QUEST_COMPLETE)) {
+		quests[QTYPE_ZHAR]._qactive = 2;
+		quests[QTYPE_ZHAR]._qlog = TRUE;
+		CreateTypeItem(Monst->_mx + 1, Monst->_my + 1, FALSE, 0, 24, TRUE, 0);
+		Monst->_mFlags |= MFLAG_QUEST_COMPLETE;
+	}
+	if (Monst->mName == UniqMonst[UMT_SNOTSPIL].mName) {
+		if (Monst->mtalkmsg == QUEST_BANNER10 && !(Monst->_mFlags & MFLAG_QUEST_COMPLETE)) {
+			ObjChangeMap(setpc_x, setpc_y, (setpc_w >> 1) + setpc_x + 2, (setpc_h >> 1) + setpc_y - 2);
+			tren = TransVal;
+			TransVal = 9;
+			DRLG_MRectTrans(setpc_x, setpc_y, (setpc_w >> 1) + setpc_x + 4, setpc_y + (setpc_h >> 1));
+			TransVal = tren;
+			quests[QTYPE_BOL]._qvar1 = 2;
+			if (quests[QTYPE_BOL]._qactive == 1)
+				quests[QTYPE_BOL]._qactive = 2;
+			Monst->_mFlags |= MFLAG_QUEST_COMPLETE;
+		}
+		if (quests[QTYPE_BOL]._qvar1 < 2) {
+			sprintf(tempstr, "SS Talk = %i, Flags = %i", Monst->mtalkmsg, Monst->_mFlags);
+			app_fatal(tempstr);
+		}
+	}
+	if (Monst->mName == UniqMonst[UMT_LACHDAN].mName) {
+		if (Monst->mtalkmsg == QUEST_VEIL9) {
+			quests[QTYPE_VEIL]._qactive = 2;
+			quests[QTYPE_VEIL]._qlog = TRUE;
+		}
+		if (Monst->mtalkmsg == QUEST_VEIL11 && !(Monst->_mFlags & MFLAG_QUEST_COMPLETE)) {
+			SpawnUnique(UITEM_STEELVEIL, Monst->_mx + 1, Monst->_my + 1);
+			Monst->_mFlags |= MFLAG_QUEST_COMPLETE;
+		}
+	}
+	if (Monst->mName == UniqMonst[UMT_WARLORD].mName)
+		quests[QTYPE_WARLRD]._qvar1 = 2;
+	if (Monst->mName == UniqMonst[UMT_LAZURUS].mName && gbMaxPlayers != 1) {
+		Monst->_msquelch = -1;
+		Monst->mtalkmsg = 0;
+		quests[QTYPE_VB]._qvar1 = 6;
+		Monst->_mgoal = MGOAL_NORMAL;
+	}
+	return FALSE;
 }
 // 4351F5: could not find valid save-restore pair for ebp
 // 5A5590: using guessed type char TransVal;
