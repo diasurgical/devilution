@@ -2355,39 +2355,29 @@ BOOL M_DoFadeout(int i)
 
 int M_DoHeal(int i)
 {
-	int v1;  // esi
-	int v2;  // eax
-	int v3;  // esi
-	int *v4; // edx
-	int v5;  // ecx
-	int v6;  // edi
-	int v7;  // edi
-	int v8;  // esi
+	MonsterStruct *Monst;
 
-	v1 = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		app_fatal("M_DoHeal: Invalid monster %d", i);
-	v2 = v1;
-	if (monster[v1]._mFlags & MFLAG_NOHEAL) {
-		monster[v2]._mFlags &= ~MFLAG_ALLOW_SPECIAL;
-		monster[v2]._mmode = MM_SATTACK;
-	} else if (monster[v2]._mAnimFrame == 1) {
-		v3 = monster[v2]._mVar1;
-		v4 = &monster[v2]._mhitpoints;
-		v5 = monster[v2]._mFlags & ~MFLAG_LOCK_ANIMATION | MFLAG_ALLOW_SPECIAL;
-		v6 = monster[v2]._mhitpoints;
-		monster[v2]._mFlags = v5;
-		v7 = v3 + v6;
-		v8 = monster[v2]._mmaxhp;
-		if (v7 >= v8) {
-			*v4 = v8;
-			monster[v2]._mFlags = v5 & ~MFLAG_ALLOW_SPECIAL;
-			monster[v2]._mmode = MM_SATTACK;
+	Monst = monster + i;
+	if (monster[i]._mFlags & MFLAG_NOHEAL) {
+		Monst->_mFlags &= ~MFLAG_ALLOW_SPECIAL;
+		Monst->_mmode = MM_SATTACK;
+		return FALSE;
+	}
+
+	if (Monst->_mAnimFrame == 1) {
+		Monst->_mFlags &= ~MFLAG_LOCK_ANIMATION;
+		Monst->_mFlags |= MFLAG_ALLOW_SPECIAL;
+		if (Monst->_mVar1 + Monst->_mhitpoints < Monst->_mmaxhp) {
+			Monst->_mhitpoints = Monst->_mVar1 + Monst->_mhitpoints;
 		} else {
-			*v4 = v7;
+			Monst->_mhitpoints = Monst->_mmaxhp;
+			Monst->_mFlags &= ~MFLAG_ALLOW_SPECIAL;
+			Monst->_mmode = MM_SATTACK;
 		}
 	}
-	return 0;
+	return FALSE;
 }
 
 int M_DoTalk(int i)
