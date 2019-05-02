@@ -2451,48 +2451,34 @@ void DrawSpellBook()
 
 void PrintSBookStr(int x, int y, BOOL cjustflag, char *pszStr, char col)
 {
-	char *v5;          // ebx
-	signed int v6;     // eax
-	int v7;            // edi
-	unsigned char v8;  // cl
-	char *v9;          // esi
-	unsigned char v10; // al
-	int v11;           // esi
-	unsigned char v12; // al
-	int width;         // [esp+Ch] [ebp-4h]
+	BYTE nCel;
+	char *tmp;
+	int screen_x, line, width;
 
-	v5 = pszStr;
 	width = PitchTbl[y] + x + 440;
-	v6 = 0;
-	v7 = 0;
+	line = 0;
 	if (cjustflag) {
-		v8 = *pszStr;
-		v9 = pszStr;
-		if (!*pszStr)
-			goto LABEL_14;
-		do {
-			++v9;
-			v6 += fontkern[fontframe[gbFontTransTbl[v8]]] + 1;
-			v8 = *v9;
-		} while (*v9);
-		if (v6 < 222)
-		LABEL_14:
-			v7 = (222 - v6) >> 1;
-		width += v7;
-	}
-	while (1) {
-		v12 = *v5;
-		if (!*v5)
-			break;
-		++v5;
-		v10 = fontframe[gbFontTransTbl[v12]];
-		v11 = v10;
-		v7 += fontkern[v10] + 1;
-		if (v10) {
-			if (v7 <= 222)
-				CPrintString(width, v10, col);
+		screen_x = 0;
+		tmp = pszStr;
+		while (*tmp) {
+			nCel = gbFontTransTbl[(BYTE)*tmp];
+			tmp++;
+			screen_x += fontkern[fontframe[nCel]] + 1;
 		}
-		width += fontkern[v11] + 1;
+		if (screen_x < 222)
+			line = (222 - screen_x) >> 1;
+		width += line;
+	}
+	while (*pszStr) {
+		nCel = gbFontTransTbl[(BYTE)*pszStr];
+		pszStr++;
+		nCel = fontframe[nCel];
+		line += fontkern[nCel] + 1;
+		if (nCel) {
+			if (line <= 222)
+				CPrintString(width, nCel, col);
+		}
+		width += fontkern[nCel] + 1;
 	}
 }
 
@@ -2522,12 +2508,10 @@ void CheckSBook()
 		sbooktab = (MouseX - 327) / 76;
 	}
 }
-// 4B8950: using guessed type int sbooktab;
-// 52571C: using guessed type int drawpanflag;
 
 char *get_pieces_str(int nGold)
 {
-	char *result; // eax
+	char *result;
 
 	result = "piece";
 	if (nGold != 1)
