@@ -2537,35 +2537,26 @@ char *get_pieces_str(int nGold)
 
 void DrawGoldSplit(int amount)
 {
-	int v1;        // ebp
-	char *v2;      // eax
-	char v3;       // cl
-	signed int i;  // eax
-	int screen_x;  // [esp+10h] [ebp-4h]
-	int screen_xa; // [esp+10h] [ebp-4h]
+	int screen_x, i;
 
 	screen_x = 0;
-	v1 = amount;
 	CelDecodeOnly(415, 338, (BYTE *)pGBoxBuff, 1, 261);
 	sprintf(tempstr, "You have %u gold", initialDropGoldValue);
 	ADD_PlrStringXY(366, 87, 600, tempstr, 3);
-	v2 = get_pieces_str(initialDropGoldValue);
-	sprintf(tempstr, "%s.  How many do", v2);
+	sprintf(tempstr, "%s.  How many do", get_pieces_str(initialDropGoldValue));
 	ADD_PlrStringXY(366, 103, 600, tempstr, 3);
 	ADD_PlrStringXY(366, 121, 600, "you want to remove?", 3);
-	if (v1 <= 0) {
-		screen_xa = 450;
-	} else {
-		sprintf(tempstr, "%u", v1);
+	if (amount > 0) {
+		sprintf(tempstr, "%u", amount);
 		PrintGameStr(388, 140, tempstr, 0);
-		v3 = tempstr[0];
-		for (i = 0; i < v3; v3 = tempstr[i]) {
-			++i;
-			screen_x += fontkern[fontframe[gbFontTransTbl[(unsigned char)v3]]] + 1;
+		for (i = 0; i < tempstr[i]; i++) {
+			screen_x += fontkern[fontframe[gbFontTransTbl[(BYTE)tempstr[i]]]] + 1;
 		}
-		screen_xa = screen_x + 452;
+		screen_x += 452;
+	} else {
+		screen_x = 450;
 	}
-	CelDecodeOnly(screen_xa, 300, (BYTE *)pCelBuff, nGoldFrame, 12);
+	CelDecodeOnly(screen_x, 300, (BYTE *)pCelBuff, nGoldFrame, 12);
 	nGoldFrame = (nGoldFrame & 7) + 1;
 }
 
