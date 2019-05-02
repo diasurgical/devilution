@@ -2,15 +2,15 @@
 
 char sgbNextTalkSave; // weak
 BYTE sgbTalkSavePos;
-void *pDurIcons;
-void *pChrButtons;
+BYTE *pDurIcons;
+BYTE *pChrButtons;
 BOOL drawhpflag; // idb
 BOOL dropGoldFlag;
 int panbtn[8];
 int chrbtn[4];
-void *pMultiBtns;
-void *pPanelButtons;
-void *pChrPanel;
+BYTE *pMultiBtns;
+BYTE *pPanelButtons;
+BYTE *pChrPanel;
 int lvlbtndown; // weak
 char sgszTalkSave[8][80];
 int dropGoldValue; // idb
@@ -21,7 +21,7 @@ BYTE *pPanelText;
 int nGoldFrame;
 BYTE *pLifeBuff;
 BYTE *pBtmBuff;
-void *pTalkBtns;
+BYTE *pTalkBtns;
 int pstrjust[4];
 int pnumlines; // idb
 BOOL pinfoflag;
@@ -30,8 +30,8 @@ int pSpell; // weak
 BYTE *pManaBuff;
 char infoclr;      // weak
 int sgbPlrTalkTbl; // weak // should be char [4]
-void *pGBoxBuff;
-void *pSBkBtnCel;
+BYTE *pGBoxBuff;
+BYTE *pSBkBtnCel;
 char tempstr[256];
 BOOLEAN whisper[MAX_PLRS];
 int sbooktab;             // weak
@@ -39,22 +39,22 @@ int pSplType;             // weak
 int frame;                // idb
 int initialDropGoldIndex; // idb
 int talkflag;             // weak
-void *pSBkIconCels;
+BYTE *pSBkIconCels;
 int sbookflag; // weak
 int chrflag;
 BOOL drawbtnflag;
-void *pSpellBkCel;
+BYTE *pSpellBkCel;
 char infostr[MAX_PATH];
 int numpanbtns; // weak
-void *pStatusPanel;
+BYTE *pStatusPanel;
 char panelstr[256];
 int panelflag; // weak
 unsigned char SplTransTbl[256];
 int initialDropGoldValue; // idb
-void *pSpellCels;
+BYTE *pSpellCels;
 BOOL panbtndown;
-void *pTalkPanel; // idb
-int spselflag;    // weak
+BYTE *pTalkPanel;
+int spselflag; // weak
 
 const unsigned char fontframe[128] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -369,9 +369,9 @@ void DrawSpell()
 		st = RSPLTYPE_INVALID;
 	SetSpellTrans(st);
 	if (spl != SPL_INVALID)
-		DrawSpellCel(629, 631, (BYTE *)pSpellCels, SpellITbl[spl], 56);
+		DrawSpellCel(629, 631, pSpellCels, SpellITbl[spl], 56);
 	else
-		DrawSpellCel(629, 631, (BYTE *)pSpellCels, 27, 56);
+		DrawSpellCel(629, 631, pSpellCels, 27, 56);
 }
 
 void DrawSpellList()
@@ -457,11 +457,11 @@ void DrawSpellList()
 			}
 			if (!currlevel && !*v20)
 				SetSpellTrans(RSPLTYPE_INVALID);
-			DrawSpellCel(v17, xp, (BYTE *)pSpellCels, SpellITbl[v4], 56);
+			DrawSpellCel(v17, xp, pSpellCels, SpellITbl[v4], 56);
 			if (MouseX >= v17 - 64 && MouseX < v17 - 64 + 56 && MouseY >= v22 && MouseY < v22 + 56) {
 				pSpell = v4;
 				pSplType = v1;
-				DrawSpellCel(v17, xp, (BYTE *)pSpellCels, yp, 56);
+				DrawSpellCel(v17, xp, pSpellCels, yp, 56);
 				if (v1) {
 					switch (v1) {
 					case RSPLTYPE_SPELL:
@@ -527,7 +527,7 @@ void DrawSpellList()
 				v16 = 0;
 				do {
 					if (plr[v0]._pSplHotKey[v16] == pSpell && plr[v0]._pSplTHotKey[v16] == pSplType) {
-						DrawSpellCel(v17, xp, (BYTE *)pSpellCels, v16 + 48, 56);
+						DrawSpellCel(v17, xp, pSpellCels, v16 + 48, 56);
 						sprintf(tempstr, "Spell Hot Key #F%i", v16 + 5);
 						AddPanelString(tempstr, 1);
 						v0 = myplr;
@@ -1194,16 +1194,16 @@ void InitControlPan()
 	pSpellCels = LoadFileInMem("CtrlPan\\SpelIcon.CEL", 0);
 	SetSpellTrans(RSPLTYPE_SKILL);
 	pStatusPanel = LoadFileInMem("CtrlPan\\Panel8.CEL", 0);
-	CelDecodeRect((BYTE *)pBtmBuff, 0, 143, 640, (BYTE *)pStatusPanel, 1, 640);
+	CelDecodeRect(pBtmBuff, 0, 143, 640, pStatusPanel, 1, 640);
 	MemFreeDbg(pStatusPanel);
 	pStatusPanel = LoadFileInMem("CtrlPan\\P8Bulbs.CEL", 0);
-	CelDecodeRect((BYTE *)pLifeBuff, 0, 87, 88, (BYTE *)pStatusPanel, 1, 88);
-	CelDecodeRect((BYTE *)pManaBuff, 0, 87, 88, (BYTE *)pStatusPanel, 2, 88);
+	CelDecodeRect(pLifeBuff, 0, 87, 88, pStatusPanel, 1, 88);
+	CelDecodeRect(pManaBuff, 0, 87, 88, pStatusPanel, 2, 88);
 	MemFreeDbg(pStatusPanel);
 	talkflag = 0;
 	if (gbMaxPlayers != 1) {
 		pTalkPanel = LoadFileInMem("CtrlPan\\TalkPanl.CEL", 0);
-		CelDecodeRect((BYTE *)pBtmBuff, 0, 287, 640, (BYTE *)pTalkPanel, 1, 640);
+		CelDecodeRect(pBtmBuff, 0, 287, 640, pTalkPanel, 1, 640);
 		MemFreeDbg(pTalkPanel);
 		pMultiBtns = LoadFileInMem("CtrlPan\\P8But2.CEL", 0);
 		pTalkBtns = LoadFileInMem("CtrlPan\\TalkButt.CEL", 0);
@@ -1271,14 +1271,14 @@ void DrawCtrlPan()
 		if (!panbtn[i])
 			DrawPanelBox(PanBtnPos[i][0], PanBtnPos[i][1] - 336, 71, 20, PanBtnPos[i][0] + 64, PanBtnPos[i][1] + 160);
 		else
-			CelDecodeOnly(PanBtnPos[i][0] + 64, PanBtnPos[i][1] + 178, (BYTE *)pPanelButtons, i + 1, 71);
+			CelDecodeOnly(PanBtnPos[i][0] + 64, PanBtnPos[i][1] + 178, pPanelButtons, i + 1, 71);
 	}
 	if (numpanbtns == 8) {
-		CelDecodeOnly(151, 634, (BYTE *)pMultiBtns, panbtn[6] + 1, 33);
+		CelDecodeOnly(151, 634, pMultiBtns, panbtn[6] + 1, 33);
 		if (FriendlyMode)
-			CelDecodeOnly(591, 634, (BYTE *)pMultiBtns, panbtn[7] + 3, 33);
+			CelDecodeOnly(591, 634, pMultiBtns, panbtn[7] + 3, 33);
 		else
-			CelDecodeOnly(591, 634, (BYTE *)pMultiBtns, panbtn[7] + 5, 33);
+			CelDecodeOnly(591, 634, pMultiBtns, panbtn[7] + 5, 33);
 	}
 }
 
@@ -1844,7 +1844,7 @@ void DrawChr()
 	int v30;     // [esp+54h] [ebp-8h]
 	char a5[4];  // [esp+58h] [ebp-4h]
 
-	CelDecodeOnly(64, 511, (BYTE *)pChrPanel, 1, 320);
+	CelDecodeOnly(64, 511, pChrPanel, 1, 320);
 	ADD_PlrStringXY(20, 32, 151, plr[myplr]._pName, 0);
 	if (plr[myplr]._pClass == PC_WARRIOR) {
 		ADD_PlrStringXY(168, 32, 299, "Warrior", 0);
@@ -2007,13 +2007,13 @@ void DrawChr()
 		ADD_PlrStringXY(95, 266, 126, a4, 2);
 		v22 = plr[myplr]._pClass;
 		if (plr[myplr]._pBaseStr < MaxStats[v22][ATTRIB_STR])
-			CelDecodeOnly(201, 319, (BYTE *)pChrButtons, chrbtn[0] + 2, 41);
+			CelDecodeOnly(201, 319, pChrButtons, chrbtn[0] + 2, 41);
 		if (plr[myplr]._pBaseMag < MaxStats[v22][ATTRIB_MAG])
-			CelDecodeOnly(201, 347, (BYTE *)pChrButtons, chrbtn[1] + 4, 41);
+			CelDecodeOnly(201, 347, pChrButtons, chrbtn[1] + 4, 41);
 		if (plr[myplr]._pBaseDex < MaxStats[v22][ATTRIB_DEX])
-			CelDecodeOnly(201, 376, (BYTE *)pChrButtons, chrbtn[2] + 6, 41);
+			CelDecodeOnly(201, 376, pChrButtons, chrbtn[2] + 6, 41);
 		if (plr[myplr]._pBaseVit < MaxStats[v22][ATTRIB_VIT])
-			CelDecodeOnly(201, 404, (BYTE *)pChrButtons, chrbtn[3] + 8, 41);
+			CelDecodeOnly(201, 404, pChrButtons, chrbtn[3] + 8, 41);
 	}
 	v23 = plr[myplr]._pMaxHP;
 	a5[0] = v23 > plr[myplr]._pMaxHPBase;
@@ -2145,9 +2145,9 @@ void DrawLevelUpIcon()
 	int nCel;
 
 	if (!stextflag) {
-		nCel = (lvlbtndown != 0) + 2;
+		nCel = lvlbtndown ? 3 : 2;
 		ADD_PlrStringXY(0, 303, 120, "Level Up", 0);
-		CelDecodeOnly(104, 495, (BYTE *)pChrButtons, nCel, 41);
+		CelDecodeOnly(104, 495, pChrButtons, nCel, 41);
 	}
 }
 
@@ -2274,7 +2274,7 @@ int DrawDurIcon4Item(ItemStruct *item, int x, int frame)
 	}
 	if (item->_iDurability > 2)
 		frame += 8;
-	CelDecodeOnly(x, 495, (BYTE *)pDurIcons, frame, 32);
+	CelDecodeOnly(x, 495, pDurIcons, frame, 32);
 	return x - 40;
 }
 
@@ -2386,8 +2386,8 @@ void DrawSpellBook()
 	char st;
 	unsigned __int64 spl;
 
-	CelDecodeOnly(384, 511, (BYTE *)pSpellBkCel, 1, 320);
-	CelDecodeOnly(76 * sbooktab + 391, 508, (BYTE *)pSBkBtnCel, sbooktab + 1, 76);
+	CelDecodeOnly(384, 511, pSpellBkCel, 1, 320);
+	CelDecodeOnly(76 * sbooktab + 391, 508, pSBkBtnCel, sbooktab + 1, 76);
 
 	spl = plr[myplr]._pMemSpells | plr[myplr]._pISpells | plr[myplr]._pAblSpells;
 
@@ -2397,10 +2397,10 @@ void DrawSpellBook()
 		if (sn != -1 && spl & (__int64)1 << (sn - 1)) {
 			st = GetSBookTrans(sn, TRUE);
 			SetSpellTrans(st);
-			DrawSpellCel(395, yp, (BYTE *)pSBkIconCels, SpellITbl[sn], 37);
+			DrawSpellCel(395, yp, pSBkIconCels, SpellITbl[sn], 37);
 			if (sn == plr[myplr]._pRSpell && st == plr[myplr]._pRSplType) {
 				SetSpellTrans(RSPLTYPE_SKILL);
-				DrawSpellCel(395, yp, (BYTE *)pSBkIconCels, 43, 37);
+				DrawSpellCel(395, yp, pSBkIconCels, 43, 37);
 			}
 			PrintSBookStr(10, yp - 23, FALSE, spelldata[sn].sNameText, COL_WHITE);
 			switch (GetSBookTrans(sn, FALSE)) {
@@ -2514,7 +2514,7 @@ void DrawGoldSplit(int amount)
 	int screen_x, i;
 
 	screen_x = 0;
-	CelDecodeOnly(415, 338, (BYTE *)pGBoxBuff, 1, 261);
+	CelDecodeOnly(415, 338, pGBoxBuff, 1, 261);
 	sprintf(tempstr, "You have %u gold", initialDropGoldValue);
 	ADD_PlrStringXY(366, 87, 600, tempstr, 3);
 	sprintf(tempstr, "%s.  How many do", get_pieces_str(initialDropGoldValue));
@@ -2530,7 +2530,7 @@ void DrawGoldSplit(int amount)
 	} else {
 		screen_x = 450;
 	}
-	CelDecodeOnly(screen_x, 300, (BYTE *)pCelBuff, nGoldFrame, 12);
+	CelDecodeOnly(screen_x, 300, pCelBuff, nGoldFrame, 12);
 	nGoldFrame = (nGoldFrame & 7) + 1;
 }
 
@@ -2554,9 +2554,9 @@ void control_drop_gold(char vkey)
 		dropGoldFlag = 0;
 		dropGoldValue = 0;
 	} else if (vkey == VK_BACK) {
-		input[strlen(input) - 1] = 0;
+		input[strlen(input) - 1] = '\0';
 		dropGoldValue = atoi(input);
-	} else if (vkey - 48 >= 0 && vkey - 48 <= 9) {
+	} else if (vkey - '0' >= 0 && vkey - '0' <= 9) {
 		if (dropGoldValue || atoi(input) <= initialDropGoldValue) {
 			input[strlen(input)] = vkey;
 			if (atoi(input) > initialDropGoldValue)
@@ -2651,7 +2651,7 @@ void DrawTalkPan()
 		} while (v4 < 39);
 		*v3 = 0;
 	LABEL_10:
-		CelDecDatOnly((BYTE *)gpBuffer + a4, (BYTE *)pCelBuff, frame, 12);
+		CelDecDatOnly(gpBuffer + a4, pCelBuff, frame, 12);
 		v5 = 0;
 		a1 = plr[0]._pName;
 		v10 = 0;
@@ -2679,7 +2679,7 @@ void DrawTalkPan()
 			if (talkbtndown[v5])
 				v7 = (v5 != 0) + 5;
 		}
-		CelDecodeOnly(236, 18 * v5 + 596, (BYTE *)pTalkBtns, v7, 61);
+		CelDecodeOnly(236, 18 * v5 + 596, pTalkBtns, v7, 61);
 		goto LABEL_18;
 	}
 }

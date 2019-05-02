@@ -2,15 +2,15 @@
 #ifndef __CONTROL_H__
 #define __CONTROL_H__
 
-extern void *pDurIcons;
-extern void *pChrButtons;
-extern BOOL drawhpflag;  // idb
+extern BYTE *pDurIcons;
+extern BYTE *pChrButtons;
+extern BOOL drawhpflag; // idb
 extern BOOL dropGoldFlag;
 extern int panbtn[8];
 extern int chrbtn[4];
-extern void *pMultiBtns;
-extern void *pPanelButtons;
-extern void *pChrPanel;
+extern BYTE *pMultiBtns;
+extern BYTE *pPanelButtons;
+extern BYTE *pChrPanel;
 extern int lvlbtndown;    // weak
 extern int dropGoldValue; // idb
 extern BOOL drawmanaflag; // idb
@@ -19,7 +19,7 @@ extern BYTE *pPanelText;
 extern int nGoldFrame;
 extern BYTE *pLifeBuff;
 extern BYTE *pBtmBuff;
-extern void *pTalkBtns;
+extern BYTE *pTalkBtns;
 extern int pstrjust[4];
 extern int pnumlines; // idb
 extern BOOL pinfoflag;
@@ -27,8 +27,8 @@ extern BOOL talkbtndown[3];
 extern int pSpell; // weak
 extern BYTE *pManaBuff;
 extern char infoclr; // weak
-extern void *pGBoxBuff;
-extern void *pSBkBtnCel;
+extern BYTE *pGBoxBuff;
+extern BYTE *pSBkBtnCel;
 extern char tempstr[256];
 extern BOOLEAN whisper[MAX_PLRS];
 extern int sbooktab;             // weak
@@ -36,22 +36,22 @@ extern int pSplType;             // weak
 extern int frame;                // idb
 extern int initialDropGoldIndex; // idb
 extern int talkflag;             // weak
-extern void *pSBkIconCels;
+extern BYTE *pSBkIconCels;
 extern int sbookflag; // weak
 extern int chrflag;
 extern BOOL drawbtnflag;
-extern void *pSpellBkCel;
+extern BYTE *pSpellBkCel;
 extern char infostr[MAX_PATH];
 extern int numpanbtns; // weak
-extern void *pStatusPanel;
+extern BYTE *pStatusPanel;
 extern char panelstr[256];
 extern int panelflag; // weak
 extern unsigned char SplTransTbl[256];
 extern int initialDropGoldValue; // idb
-extern void *pSpellCels;
+extern BYTE *pSpellCels;
 extern BOOL panbtndown;
-extern void *pTalkPanel; // idb
-extern int spselflag;    // weak
+extern BYTE *pTalkPanel;
+extern int spselflag; // weak
 
 void DrawSpellCel(int xp, int yp, BYTE *Trans, int nCel, int w);
 void SetSpellTrans(char t);
