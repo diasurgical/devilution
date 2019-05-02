@@ -2132,7 +2132,6 @@ void CheckLvlBtn()
 	if (!lvlbtndown && MouseX >= 40 && MouseX <= 81 && MouseY >= 313 && MouseY <= 335)
 		lvlbtndown = 1;
 }
-// 4B851C: using guessed type int lvlbtndown;
 
 void ReleaseLvlBtn()
 {
@@ -2140,20 +2139,17 @@ void ReleaseLvlBtn()
 		chrflag = 1;
 	lvlbtndown = 0;
 }
-// 4B851C: using guessed type int lvlbtndown;
 
 void DrawLevelUpIcon()
 {
-	int v0; // esi
+	int nCel;
 
 	if (!stextflag) {
-		v0 = (lvlbtndown != 0) + 2;
+		nCel = (lvlbtndown != 0) + 2;
 		ADD_PlrStringXY(0, 303, 120, "Level Up", 0);
-		CelDecodeOnly(104, 495, (BYTE *)pChrButtons, v0, 41);
+		CelDecodeOnly(104, 495, (BYTE *)pChrButtons, nCel, 41);
 	}
 }
-// 4B851C: using guessed type int lvlbtndown;
-// 6AA705: using guessed type char stextflag;
 
 void CheckChrBtns()
 {
@@ -2230,24 +2226,20 @@ void ReleaseChrBtns()
 
 void DrawDurIcon()
 {
-	int v0;           // edx
-	PlayerStruct *v1; // esi
-	int v2;           // eax
-	int v3;           // eax
-	int v4;           // eax
+	PlayerStruct *p;
+	int x1, x2, x3, x4;
 
 	if (!chrflag && !questlog || !invflag && !sbookflag) {
-		v0 = 656;
+		x1 = 656;
 		if (invflag || sbookflag)
-			v0 = 336;
-		v1 = &plr[myplr];
-		v2 = DrawDurIcon4Item(v1->InvBody, v0, 4);
-		v3 = DrawDurIcon4Item(&v1->InvBody[INVLOC_CHEST], v2, 3);
-		v4 = DrawDurIcon4Item(&v1->InvBody[INVLOC_HAND_LEFT], v3, 0);
-		DrawDurIcon4Item(&v1->InvBody[INVLOC_HAND_RIGHT], v4, 0);
+			x1 = 336;
+		p = &plr[myplr];
+		x2 = DrawDurIcon4Item(&p->InvBody[INVLOC_HEAD], x1, 4);
+		x3 = DrawDurIcon4Item(&p->InvBody[INVLOC_CHEST], x2, 3);
+		x4 = DrawDurIcon4Item(&p->InvBody[INVLOC_HAND_LEFT], x3, 0);
+		DrawDurIcon4Item(&p->InvBody[INVLOC_HAND_RIGHT], x4, 0);
 	}
 }
-// 4B8968: using guessed type int sbookflag;
 
 int DrawDurIcon4Item(ItemStruct *item, int x, int frame)
 {
@@ -2361,7 +2353,6 @@ void RedBack()
 	}
 #endif
 }
-// 525728: using guessed type int light4flag;
 
 char GetSBookTrans(int ii, BOOL townok)
 {
@@ -2447,7 +2438,6 @@ void DrawSpellBook()
 		yp += 43;
 	}
 }
-// 4B8950: using guessed type int sbooktab;
 
 void PrintSBookStr(int x, int y, BOOL cjustflag, char *pszStr, char col)
 {
