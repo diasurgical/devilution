@@ -2882,59 +2882,33 @@ BOOL M_DumbWalk(int i, int md)
 	return ok;
 }
 
-BOOLEAN M_RoundWalk(int i, int md, int *dir)
+BOOL M_RoundWalk(int i, int md, int *dir)
 {
-	int *v3; // ebp
-	int v4;  // ebx
-	int v5;  // esi
-	//int v6; // eax
-	BOOLEAN v7; // di
-	int v8;     // edi
-	//int v9; // eax
-	//int v10; // eax
-	int *v11; // ebp
-	//int v12; // eax
-	//int v13; // eax
-
-	v3 = dir;
-	v4 = i;
+	int mdtemp;
+	BOOL ok;
 	if (*dir)
-		v5 = left[left[md]];
+		md = left[left[md]];
 	else
-		v5 = right[right[md]];
-	//_LOBYTE(v6) = DirOK(i, v5);
-	v7 = DirOK(i, v5);
-	if (v7)
-		goto LABEL_12;
-	v8 = v5;
-	if (!*dir) {
-		v11 = &left[v8];
-		v5 = left[v8];
-		//_LOBYTE(v12) = DirOK(v4, left[v8]);
-		if (DirOK(v4, left[v8]))
-			goto LABEL_11;
-		v5 = left[*v11];
-		//_LOBYTE(v13) = DirOK(v4, left[*v11]);
-		if (DirOK(v4, left[*v11]))
-			goto LABEL_11;
-		v3 = dir;
-	LABEL_14:
-		*v3 = *v3 == 0;
-		return M_CallWalk(v4, opposite[v8]);
+		md = right[right[md]];
+
+	ok = DirOK(i, md);
+	mdtemp = md;
+	if (!ok) {
+		if (*dir) {
+			md = right[mdtemp];
+			ok = DirOK(i, md) || (md = right[right[mdtemp]], DirOK(i, md));
+		} else {
+			md = left[mdtemp];
+			ok = (DirOK(i, md) || (md = left[left[mdtemp]], DirOK(i, md)));
+		}
 	}
-	v5 = right[v8];
-	//_LOBYTE(v9) = DirOK(v4, right[v8]);
-	if (!DirOK(v4, right[v8])) {
-		v5 = right[right[v8]];
-		//_LOBYTE(v10) = DirOK(v4, v5);
-		if (!DirOK(v4, v5))
-			goto LABEL_14;
+	if (ok) {
+		M_WalkDir(i, md);
+	} else {
+		*dir = !*dir;
+		ok = M_CallWalk(i, opposite[mdtemp]);
 	}
-LABEL_11:
-	v7 = 1;
-LABEL_12:
-	M_WalkDir(v4, v5);
-	return v7;
+	return ok;
 }
 
 void MAI_Zombie(int i)
