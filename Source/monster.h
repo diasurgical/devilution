@@ -92,7 +92,7 @@ BOOL M_CallWalk(int i, int md);
 BOOL M_PathWalk(int i);
 BOOL M_CallWalk2(int i, int md);
 BOOL M_DumbWalk(int i, int md);
-BOOLEAN M_RoundWalk(int i, int md, int *dir);
+BOOL M_RoundWalk(int i, int md, int *dir);
 void MAI_Zombie(int i);
 void MAI_SkelSd(int i);
 BOOL MAI_Path(int i);
