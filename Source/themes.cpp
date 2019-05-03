@@ -349,7 +349,7 @@ BOOL CheckThemeRoom(int tv)
 {
 	int i, j, tarea;
 
-	for (i = 0; i < trigflag_4; i++) {
+	for (i = 0; i < numtrigs; i++) {
 		if (dTransVal[trigs[i]._tx][trigs[i]._ty] == tv)
 			return FALSE;
 	}
