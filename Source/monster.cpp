@@ -850,6 +850,10 @@ void PlaceGroup(int mtype, int num, int leaderf, int leader)
 			dMonster[monster[nummonsters]._mx][monster[nummonsters]._my] = 0;
 		}
 
+		x1 = 0;
+		y1 = 0;
+		xp = 0;
+		yp = 0;
 		if (leaderf & 1) {
 			int offset = random(92, 8);
 			xp = monster[leader]._mx + offset_x[offset];
@@ -872,7 +876,7 @@ void PlaceGroup(int mtype, int num, int leaderf, int leader)
 		j = 0;
 		for (try2 = 0; j < num && try2 < 100; xp += offset_x[random(94, 8)], yp += offset_x[random(94, 8)]) {
 			if (!MonstPlace(xp, yp)
-			    || (dTransVal[x1][y1] != dTransVal[xp][yp])
+			    || (dTransVal[xp][yp] != dTransVal[x1][y1])
 			    || (leaderf & 2) && ((abs(xp - x1) >= 4) || (abs(yp - y1) >= 4))) {
 				try2++;
 				continue;
