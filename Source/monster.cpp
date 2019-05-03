@@ -956,7 +956,7 @@ void InitMonsters()
 		if (!setlevel && currlevel == 16)
 			LoadDiabMonsts();
 	}
-	nt = trigflag_4;
+	nt = numtrigs;
 	if (currlevel == 15)
 		nt = 1;
 	for (i = 0; i < nt; i++) {

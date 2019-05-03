@@ -1648,9 +1648,9 @@ void DrawInfoBox()
 	char *v10;      // ebx
 
 	DrawPanelBox(177, 62, 288, 60, 241, 558);
-	v0 = trigflag_3;
+	v0 = trigflag;
 	v1 = spselflag;
-	if (!panelflag && !trigflag_3 && pcursinvitem == -1) {
+	if (!panelflag && !trigflag && pcursinvitem == -1) {
 		if (spselflag) {
 		LABEL_32:
 			infoclr = COL_WHITE;
