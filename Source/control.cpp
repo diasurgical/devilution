@@ -1794,19 +1794,15 @@ void control_print_info_str(int y, char *str, BOOLEAN center, int lines)
 
 void PrintGameStr(int x, int y, char *str, int color)
 {
-	char *v4;         // edi
-	int v5;           // esi
-	unsigned char i;  // al
-	unsigned char v7; // bl
-
-	v4 = str;
-	v5 = PitchTbl[y + 160] + x + 64;
-	for (i = *str; *v4; i = *v4) {
-		++v4;
-		v7 = fontframe[gbFontTransTbl[i]];
-		if (v7)
-			CPrintString(v5, v7, color);
-		v5 += fontkern[v7] + 1;
+	unsigned char c;
+	int off;
+	off = PitchTbl[y + 160] + x + 64;
+	while (*str) {
+		c = gbFontTransTbl[(unsigned char)*str++];
+		c = fontframe[c];
+		if (c)
+			CPrintString(off, c, color);
+		off += fontkern[c] + 1;
 	}
 }
 
