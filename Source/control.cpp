@@ -1794,7 +1794,7 @@ void control_print_info_str(int y, char *str, BOOLEAN center, int lines)
 
 void PrintGameStr(int x, int y, char *str, int color)
 {
-	unsigned char c;
+	BYTE c;
 	int off;
 	off = PitchTbl[y + 160] + x + 64;
 	while (*str) {
