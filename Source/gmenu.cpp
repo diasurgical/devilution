@@ -240,13 +240,11 @@ void gmenu_draw_menu_item(TMenuItem *pItem, int a2)
 
 void gmenu_clear_buffer(int x, int y, int width, int height)
 {
-	int v4;  // edi
-	char *i; // esi
+	BYTE *i;
 
-	v4 = height;
-	for (i = (char *)gpBuffer + PitchTbl[y] + x; v4; --v4) {
+	for (i = gpBuffer + PitchTbl[y] + x; height; height--) {
 		memset(i, 205, width);
-		i -= 768;
+		i -= BUFFER_WIDTH;
 	}
 }
 
