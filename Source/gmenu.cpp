@@ -244,7 +244,7 @@ void gmenu_clear_buffer(int x, int y, int width, int height)
 
 	for (i = gpBuffer + PitchTbl[y] + x; height; height--) {
 		memset(i, 205, width);
-		i -= ROW_PITCH;
+		i -= BUFFER_WIDTH;
 	}
 }
 
