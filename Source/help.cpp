@@ -177,7 +177,7 @@ void DrawHelp()
 void DrawHelpLine(int always_0, int help_line_nr, char *text, char color)
 {
 	int off, width;
-	unsigned char c;
+	BYTE c;
 
 	width = 0;
 	off = PitchTbl[SStringY[help_line_nr] + 204] + always_0 + 96;
