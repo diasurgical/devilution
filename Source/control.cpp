@@ -1798,7 +1798,8 @@ void PrintGameStr(int x, int y, char *str, int color)
 	int off;
 	off = PitchTbl[y + 160] + x + 64;
 	while (*str) {
-		c = gbFontTransTbl[(unsigned char)*str++];
+		c = gbFontTransTbl[(BYTE)*str];
+		str++;
 		c = fontframe[c];
 		if (c)
 			CPrintString(off, c, color);
