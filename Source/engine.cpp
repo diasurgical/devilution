@@ -2088,6 +2088,9 @@ void engine_draw_pixel(int sx, int sy)
 // 52B99C: using guessed type int gbNotInView;
 // 69CF0C: using guessed type int gpBufEnd;
 
+/*
+ * Xiaolin Wu's anti-aliased line algorithm
+ */
 void DrawLine(int x0, int y0, int x1, int y1, BYTE col)
 {
 	int i, sx, sy, dx, dy, nx, ny, xlen, ylen, pixels, remain, xy_same, line_dir, mult_2, mult_4;
