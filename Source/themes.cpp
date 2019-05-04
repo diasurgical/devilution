@@ -357,7 +357,7 @@ BOOL CheckThemeRoom(int tv)
 	tarea = 0;
 	for (j = 0; j < MAXDUNY; j++) {
 		for (i = 0; i < MAXDUNX; i++) {
-			if (dTransVal[i][j] == tv)
+			if (dTransVal[i][j] != tv)
 				continue;
 			if (dFlags[i][j] & DFLAG_POPULATED)
 				return FALSE;
