@@ -50,8 +50,7 @@ void SHA1Input(SHA1Context *context, const char *message_array, int len)
 
 void SHA1ProcessMessageBlock(SHA1Context *context)
 {
-	int i;
-	int temp;
+	int i, temp;
 	int W[80];
 	int A, B, C, D, E;
 

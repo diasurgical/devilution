@@ -21,7 +21,7 @@
 #define InterlockedIncrement(x) __sync_add_and_fetch(x, 1)
 #endif
 
-#define INFINITE DVL_INFINITE;
+#define INFINITE DVL_INFINITE
 
 #define MAKEFOURCC(x, y, z, w)             \
 	(((uint32_t)((uint8_t)x))              \
@@ -329,3 +329,8 @@
 #define MB_TASKMODAL DVL_MB_TASKMODAL
 #define MB_ICONHAND DVL_MB_ICONHAND
 #define MB_ICONEXCLAMATION DVL_MB_ICONEXCLAMATION
+
+/*
+ * GetWindow() Constants
+ */
+#define GW_HWNDPREV         3

@@ -28,7 +28,7 @@ extern int stextvhold;     // weak
 extern int stextsel;       // weak
 extern char stextscrldbtn; // weak
 extern int gossipend;      // weak
-extern void *pCelBuff;
+extern BYTE *pCelBuff;
 extern int stextsval; // idb
 extern int boylevel;  // weak
 extern ItemStruct smithitem[20];

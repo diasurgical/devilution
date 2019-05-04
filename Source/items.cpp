@@ -970,16 +970,16 @@ BOOL ItemSpaceOk(int i, int j)
 			return FALSE;
 	}
 
-	if (dObject[i + 1][j + 1] > 0 && object[dObject[i + 1][j + 1] - 1]._oSelFlag)
+	if (dObject[i + 1][j + 1] > 0 && object[dObject[i + 1][j + 1] - 1]._oSelFlag != 0)
 		return FALSE;
 
-	if (dObject[i + 1][j + 1] < 0 && object[-(dObject[i + 1][j + 1] + 1)]._oSelFlag)
+	if (dObject[i + 1][j + 1] < 0 && object[-(dObject[i + 1][j + 1] + 1)]._oSelFlag != 0)
 		return FALSE;
 
 	if (dObject[i + 1][j] > 0
 	    && dObject[i][j + 1] > 0
-	    && object[dObject[i + 1][j] - 1]._oSelFlag
-	    && object[dObject[i][j + 1] - 1]._oSelFlag) {
+	    && object[dObject[i + 1][j] - 1]._oSelFlag != 0
+	    && object[dObject[i][j + 1] - 1]._oSelFlag != 0) {
 		return FALSE;
 	}
 

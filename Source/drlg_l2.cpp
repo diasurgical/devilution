@@ -467,7 +467,7 @@ void DRLG_L2Pass3()
 	for (j = 0; j < DMAXY; j++) {
 		xx = 16;
 		for (i = 0; i < DMAXX; i++) {
-			lv = (unsigned char)dungeon[i][j] - 1;
+			lv = dungeon[i][j] - 1;
 #ifdef USE_ASM
 			__asm {
 				mov		esi, pMegaTiles

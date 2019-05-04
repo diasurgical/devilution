@@ -6,17 +6,17 @@ DEVILUTION_BEGIN_NAMESPACE
 WORD automaptype[512];
 static int MapX;
 static int MapY;
-BOOL automapflag;    // idb
+BOOL automapflag;
 char AmShiftTab[32]; // [31]?
 unsigned char automapview[DMAXX][DMAXY];
-int AutoMapScale;   // idb
-int AutoMapXOfs;    // weak
-int AutoMapYOfs;    // weak
-int AutoMapPosBits; // weak
-int AutoMapXPos;    // weak
-int AutoMapYPos;    // weak
-int AMPlayerX;      // weak
-int AMPlayerY;      // weak
+int AutoMapScale;
+int AutoMapXOfs;
+int AutoMapYOfs;
+int AutoMapPosBits;
+int AutoMapXPos;
+int AutoMapYPos;
+int AMPlayerX;
+int AMPlayerY;
 
 // color used to draw the player's arrow
 #define COLOR_PLAYER (PAL8_ORANGE + 1)
@@ -49,10 +49,10 @@ void InitAutomapOnce()
 
 void InitAutomap()
 {
-	unsigned char b1, b2;
-	unsigned int dwTiles;
+	BYTE b1, b2;
+	DWORD dwTiles;
 	int x, y;
-	unsigned char *pAFile, *pTmp;
+	BYTE *pAFile, *pTmp;
 	int i, j;
 	int d;
 
@@ -117,26 +117,26 @@ void StartAutomap()
 
 void AutomapUp()
 {
-	--AutoMapXOfs;
-	--AutoMapYOfs;
+	AutoMapXOfs--;
+	AutoMapYOfs--;
 }
 
 void AutomapDown()
 {
-	++AutoMapXOfs;
-	++AutoMapYOfs;
+	AutoMapXOfs++;
+	AutoMapYOfs++;
 }
 
 void AutomapLeft()
 {
-	--AutoMapXOfs;
-	++AutoMapYOfs;
+	AutoMapXOfs--;
+	AutoMapYOfs++;
 }
 
 void AutomapRight()
 {
-	++AutoMapXOfs;
-	--AutoMapYOfs;
+	AutoMapXOfs++;
+	AutoMapYOfs--;
 }
 
 void AutomapZoomIn()
@@ -247,8 +247,6 @@ void DrawAutomap()
 	DrawAutomapPlr();
 	DrawAutomapGame();
 }
-// 4B8968: using guessed type int sbookflag;
-// 69CF0C: using guessed type int gpBufEnd;
 
 void DrawAutomapType(int sx, int sy, WORD automap_type)
 {
@@ -538,8 +536,8 @@ WORD GetAutomapType(int x, int y, BOOL view)
 
 	rv = automaptype[(BYTE)dungeon[x][y]];
 	if (rv == 7
-		&& GetAutomapType(x - 1, y, FALSE) & (MAPFLAG_HORZARCH << 8)
-		&& GetAutomapType(x, y - 1, FALSE) & (MAPFLAG_VERTARCH << 8)) {
+	    && GetAutomapType(x - 1, y, FALSE) & (MAPFLAG_HORZARCH << 8)
+	    && GetAutomapType(x, y - 1, FALSE) & (MAPFLAG_VERTARCH << 8)) {
 		rv = 1;
 	}
 	return rv;

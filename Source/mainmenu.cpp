@@ -121,14 +121,12 @@ void mainmenu_loop()
 
 	music_stop();
 }
-// 634980: using guessed type int gbActive;
 
 BOOL mainmenu_single_player()
 {
 	gbMaxPlayers = 1;
 	return mainmenu_init_menu(1);
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 BOOL mainmenu_init_menu(int type)
 {

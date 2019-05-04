@@ -10,7 +10,7 @@ int gdwPalEntries;
 
 /* data */
 
-int gamma_correction = 100; // idb
+int gamma_correction = 100;
 BOOL color_cycling_enabled = TRUE;
 BOOLEAN sgbFadedIn = TRUE;
 

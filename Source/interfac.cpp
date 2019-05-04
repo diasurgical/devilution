@@ -5,14 +5,14 @@ DEVILUTION_BEGIN_NAMESPACE
 
 void *sgpBackCel;
 int sgdwProgress;
-int progress_id; // idb
+int progress_id;
 
-const unsigned char progress_bar_colours[3] = { 138u, 43u, 254u };
+const BYTE progress_bar_colours[3] = { 138, 43, 254 };
 const int progress_bar_screen_pos[3][2] = { { 53, 37 }, { 53, 421 }, { 53, 37 } };
 
 void interface_msg_pump()
 {
-	MSG Msg; // [esp+8h] [ebp-1Ch]
+	MSG Msg;
 
 	while (PeekMessage(&Msg, NULL, 0, 0, PM_REMOVE)) {
 		if (Msg.message != WM_QUIT) {
@@ -26,11 +26,11 @@ BOOL IncProgress()
 {
 	interface_msg_pump();
 	sgdwProgress += 15;
-	if ((unsigned int)sgdwProgress > 0x216)
+	if ((DWORD)sgdwProgress > 534)
 		sgdwProgress = 534;
 	if (sgpBackCel)
 		DrawCutscene();
-	return (unsigned int)sgdwProgress >= 0x216;
+	return (DWORD)sgdwProgress >= 534;
 }
 
 void DrawCutscene()
@@ -51,20 +51,17 @@ void DrawCutscene()
 	drawpanflag = 255;
 	scrollrt_draw_game_screen(0);
 }
-// 52571C: using guessed type int drawpanflag;
 
 void DrawProgress(int screen_x, int screen_y, int progress_id)
 {
-	_BYTE *v3;     // eax
-	signed int v4; // ecx
+	BYTE *dst;
+	int i;
 
-	v3 = (unsigned char *)gpBuffer + PitchTbl[screen_y] + screen_x;
-	v4 = 22;
-	do {
-		*v3 = progress_bar_colours[progress_id];
-		v3 += 768;
-		--v4;
-	} while (v4);
+	dst = &gpBuffer[screen_x + PitchTbl[screen_y]];
+	for (i = 0; i < 22; i++) {
+		*dst = progress_bar_colours[progress_id];
+		dst += BUFFER_WIDTH;
+	}
 }
 
 void ShowProgress(unsigned int uMsg)
@@ -238,10 +235,6 @@ void ShowProgress(unsigned int uMsg)
 
 	gbSomebodyWonGameKludge = FALSE;
 }
-// 5CF31C: using guessed type char setlvltype;
-// 5CF31D: using guessed type char setlevel;
-// 6761B8: using guessed type char gbSomebodyWonGameKludge;
-// 679660: using guessed type char gbMaxPlayers;
 
 void FreeInterface()
 {

@@ -28,7 +28,7 @@ int stextvhold;     // weak
 int stextsel;       // weak
 char stextscrldbtn; // weak
 int gossipend;      // weak
-void *pCelBuff;
+BYTE *pCelBuff;
 int stextsval; // idb
 int boylevel;  // weak
 ItemStruct smithitem[20];
@@ -199,7 +199,7 @@ void PrintSString(int x, int y, unsigned char cjustflag, char *str, int col, int
 			v14 = v27 + v30 + v8 - 20;
 		else
 			v14 = v27 + v8 - 20;
-		CelDecodeOnly(v14, v6 + 205, (BYTE *)pCelBuff, InStoreFlag, 12);
+		CelDecodeOnly(v14, v6 + 205, pCelBuff, InStoreFlag, 12);
 	}
 	v29 = 0;
 	if (v28 > 0) {
@@ -233,7 +233,7 @@ void PrintSString(int x, int y, unsigned char cjustflag, char *str, int col, int
 			v22 = v27 + v30 + v8 + 4;
 		else
 			v22 = 660 - v8;
-		CelDecodeOnly(v22, v6 + 205, (BYTE *)pCelBuff, InStoreFlag, 12);
+		CelDecodeOnly(v22, v6 + 205, pCelBuff, InStoreFlag, 12);
 	}
 }
 // 6A8A28: using guessed type int stextsel;

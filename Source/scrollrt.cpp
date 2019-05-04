@@ -3,25 +3,25 @@
 
 DEVILUTION_BEGIN_NAMESPACE
 
-int light_table_index; // weak
+int light_table_index;
 int PitchTbl[1024];
-DWORD sgdwCursWdtOld;    // idb
-DWORD sgdwCursX;         // idb
-DWORD sgdwCursY;         // idb
-unsigned char *gpBufEnd; // weak
+DWORD sgdwCursWdtOld;
+DWORD sgdwCursX;
+DWORD sgdwCursY;
+BYTE *gpBufEnd;
 DWORD sgdwCursHgt;
-DWORD level_cel_block; // weak
-DWORD sgdwCursXOld;    // idb
-DWORD sgdwCursYOld;    // idb
-char arch_draw_type;   // weak
+DWORD level_cel_block;
+DWORD sgdwCursXOld;
+DWORD sgdwCursYOld;
+char arch_draw_type;
 DDSURFACEDESC DDS_desc;
 int cel_transparency_active; // weak
-int level_piece_id;          // weak
+int level_piece_id;
 DWORD sgdwCursWdt;
 void(*DrawPlrProc)(int, int, int, int, int, BYTE *, int, int, int, int);
 BYTE sgSaveBack[8192];
-int draw_monster_num; // weak
-DWORD sgdwCursHgtOld; // idb
+int draw_monster_num;
+DWORD sgdwCursHgtOld;
 
 /* data */
 
@@ -298,9 +298,6 @@ void DrawPlayer(int pnum, int x, int y, int px, int py, BYTE *pCelBuff, int nCel
 		}
 	}
 }
-// 4B8CC2: using guessed type char pcursplr;
-// 5CF31D: using guessed type char setlevel;
-// 69BEF8: using guessed type int light_table_index;
 
 void DrawClippedPlayer(int pnum, int x, int y, int px, int py, BYTE *pCelBuff, int nCel, int nWidth, int CelSkip, int CelCap)
 {
@@ -374,8 +371,6 @@ void DrawClippedPlayer(int pnum, int x, int y, int px, int py, BYTE *pCelBuff, i
 		}
 	}
 }
-// 4B8CC2: using guessed type char pcursplr;
-// 69BEF8: using guessed type int light_table_index;
 
 void DrawView(int StartX, int StartY)
 {
@@ -433,12 +428,6 @@ void DrawView(int StartX, int StartY)
 	DrawLifeFlask();
 	DrawManaFlask();
 }
-// 4B8968: using guessed type int sbookflag;
-// 4B8C98: using guessed type int spselflag;
-// 52569C: using guessed type int zoomflag;
-// 525740: using guessed type int PauseMode;
-// 52B9F1: using guessed type char msgflag;
-// 646D00: using guessed type char qtextflag;
 
 void DrawGame(int x, int y)
 {
@@ -541,13 +530,6 @@ void DrawGame(int x, int y)
 		sy += 16;
 	}
 }
-// 4B8968: using guessed type int sbookflag;
-// 5C2FF8: using guessed type int dword_5C2FF8;
-// 5C2FFC: using guessed type int dword_5C2FFC;
-// 5C3000: using guessed type int scr_pix_width;
-// 5C3004: using guessed type int scr_pix_height;
-// 69CF0C: using guessed type int gpBufEnd;
-// 69CF20: using guessed type char arch_draw_type;
 
 void scrollrt_draw_lower(int x, int y, int sx, int sy, int chunks, int eflag)
 {
@@ -697,11 +679,6 @@ void scrollrt_draw_lower(int x, int y, int sx, int sy, int chunks, int eflag)
 		}
 	}
 }
-// 69BEF8: using guessed type int light_table_index;
-// 69CF14: using guessed type int level_cel_block;
-// 69CF20: using guessed type char arch_draw_type;
-// 69CF94: using guessed type int cel_transparency_active;
-// 69CF98: using guessed type int level_piece_id;
 
 void scrollrt_draw_clipped_dungeon(BYTE *pBuff, int sx, int sy, int dx, int dy, int eflag)
 {
@@ -916,13 +893,6 @@ void scrollrt_draw_clipped_dungeon(BYTE *pBuff, int sx, int sy, int dx, int dy, 
 		Cel2DecodeLightTrans(pBuff, (BYTE *)level_special_cel, bArch, 64, 0, 8);
 	}
 }
-// 4B8CC0: using guessed type char pcursitem;
-// 525720: using guessed type int visiondebug;
-// 642A14: using guessed type char lightmax;
-// 64CCD4: using guessed type int MissilePreFlag;
-// 69BEF8: using guessed type int light_table_index;
-// 69CF94: using guessed type int cel_transparency_active;
-// 69EFA4: using guessed type int draw_monster_num;
 
 void DrawClippedMonster(int x, int y, int mx, int my, int m, int CelSkip, int CelCap)
 {
@@ -976,7 +946,6 @@ void DrawClippedMonster(int x, int y, int mx, int my, int m, int CelSkip, int Ce
 			Cl2DecodeFrm6(mx, my, monster[m]._mAnimData, monster[m]._mAnimFrame, monster[m].MType->width, CelSkip, CelCap);
 	}
 }
-// 69BEF8: using guessed type int light_table_index;
 
 void DrawClippedObject(int x, int y, int ox, int oy, BOOL pre, int CelSkip, int CelCap)
 {
@@ -1027,7 +996,6 @@ void DrawClippedObject(int x, int y, int ox, int oy, BOOL pre, int CelSkip, int 
 	else
 		Cel2DrawHdrOnly(sx, sy, object[bv]._oAnimData, object[bv]._oAnimFrame, object[bv]._oAnimWidth, CelSkip, CelCap);
 }
-// 4B8CC1: using guessed type char pcursobj;
 
 void scrollrt_draw_clipped_e_flag(BYTE *pBuff, int x, int y, int a4, int a5)
 {
@@ -1076,11 +1044,6 @@ void scrollrt_draw_clipped_e_flag(BYTE *pBuff, int x, int y, int a4, int a5)
 	cel_transparency_active = cta_old;
 	level_piece_id = lpi_old;
 }
-// 69BEF8: using guessed type int light_table_index;
-// 69CF14: using guessed type int level_cel_block;
-// 69CF20: using guessed type char arch_draw_type;
-// 69CF94: using guessed type int cel_transparency_active;
-// 69CF98: using guessed type int level_piece_id;
 
 void scrollrt_draw_lower_2(int x, int y, int sx, int sy, int chunks, int skipChunks, int eflag)
 {
@@ -1180,10 +1143,6 @@ void scrollrt_draw_lower_2(int x, int y, int sx, int sy, int chunks, int skipChu
 		}
 	}
 }
-// 69BEF8: using guessed type int light_table_index;
-// 69CF14: using guessed type int level_cel_block;
-// 69CF94: using guessed type int cel_transparency_active;
-// 69CF98: using guessed type int level_piece_id;
 
 void scrollrt_draw_clipped_dungeon_2(BYTE *pBuff, int sx, int sy, int skipChunks, int CelSkip, int dx, int dy, int eflag)
 {
@@ -1398,13 +1357,6 @@ void scrollrt_draw_clipped_dungeon_2(BYTE *pBuff, int sx, int sy, int skipChunks
 		Cel2DecodeLightTrans(pBuff, (BYTE *)level_special_cel, bArch, 64, CelSkip, 8);
 	}
 }
-// 4B8CC0: using guessed type char pcursitem;
-// 525720: using guessed type int visiondebug;
-// 642A14: using guessed type char lightmax;
-// 64CCD4: using guessed type int MissilePreFlag;
-// 69BEF8: using guessed type int light_table_index;
-// 69CF94: using guessed type int cel_transparency_active;
-// 69EFA4: using guessed type int draw_monster_num;
 
 void scrollrt_draw_clipped_e_flag_2(BYTE *pBuff, int x, int y, int skipChunks, signed int CelSkip, int sx, int sy)
 {
@@ -1473,10 +1425,6 @@ void scrollrt_draw_clipped_e_flag_2(BYTE *pBuff, int x, int y, int skipChunks, s
 	cel_transparency_active = cta_old;
 	level_piece_id = lpi_old;
 }
-// 69BEF8: using guessed type int light_table_index;
-// 69CF14: using guessed type int level_cel_block;
-// 69CF94: using guessed type int cel_transparency_active;
-// 69CF98: using guessed type int level_piece_id;
 
 void scrollrt_draw_upper(int x, int y, int sx, int sy, int chunks, int capChunks, int eflag)
 {
@@ -1623,11 +1571,6 @@ void scrollrt_draw_upper(int x, int y, int sx, int sy, int chunks, int capChunks
 		}
 	}
 }
-// 69BEF8: using guessed type int light_table_index;
-// 69CF14: using guessed type int level_cel_block;
-// 69CF20: using guessed type char arch_draw_type;
-// 69CF94: using guessed type int cel_transparency_active;
-// 69CF98: using guessed type int level_piece_id;
 
 void scrollrt_draw_dungeon(BYTE *pBuff, int sx, int sy, int capChunks, int CelCap, int dx, int dy, int eflag)
 {
@@ -1828,13 +1771,6 @@ void scrollrt_draw_dungeon(BYTE *pBuff, int sx, int sy, int capChunks, int CelCa
 		CelDecodeHdrLightTrans(pBuff, (BYTE *)level_special_cel, bArch, 64, 0, CelCap);
 	}
 }
-// 4B8CC0: using guessed type char pcursitem;
-// 525720: using guessed type int visiondebug;
-// 642A14: using guessed type char lightmax;
-// 64CCD4: using guessed type int MissilePreFlag;
-// 69BEF8: using guessed type int light_table_index;
-// 69CF94: using guessed type int cel_transparency_active;
-// 69EFA4: using guessed type int draw_monster_num;
 
 void DrawMonster(int x, int y, int mx, int my, int m, int CelSkip, int CelCap)
 {
@@ -1888,7 +1824,6 @@ void DrawMonster(int x, int y, int mx, int my, int m, int CelSkip, int CelCap)
 			Cl2DecodeLightTbl(mx, my, monster[m]._mAnimData, monster[m]._mAnimFrame, monster[m].MType->width, CelSkip, CelCap);
 	}
 }
-// 69BEF8: using guessed type int light_table_index;
 
 void DrawObject(int x, int y, int ox, int oy, BOOL pre, int CelSkip, int CelCap)
 {
@@ -1942,7 +1877,6 @@ void DrawObject(int x, int y, int ox, int oy, BOOL pre, int CelSkip, int CelCap)
 			CelDrawHdrOnly(sx, sy, object[bv]._oAnimData, object[bv]._oAnimFrame, object[bv]._oAnimWidth, CelSkip, CelCap);
 	}
 }
-// 4B8CC1: using guessed type char pcursobj;
 
 void scrollrt_draw_e_flag(BYTE *pBuff, int x, int y, int capChunks, int CelCap, int sx, int sy)
 {
@@ -1992,11 +1926,6 @@ void scrollrt_draw_e_flag(BYTE *pBuff, int x, int y, int capChunks, int CelCap, 
 	cel_transparency_active = cta_old;
 	level_piece_id = lpi_old;
 }
-// 69BEF8: using guessed type int light_table_index;
-// 69CF14: using guessed type int level_cel_block;
-// 69CF20: using guessed type char arch_draw_type;
-// 69CF94: using guessed type int cel_transparency_active;
-// 69CF98: using guessed type int level_piece_id;
 
 void DrawZoom(int x, int y)
 {
@@ -2154,13 +2083,6 @@ void DrawZoom(int x, int y)
 	}
 #endif
 }
-// 4B8968: using guessed type int sbookflag;
-// 5C2FF8: using guessed type int dword_5C2FF8;
-// 5C2FFC: using guessed type int dword_5C2FFC;
-// 5C3000: using guessed type int scr_pix_width;
-// 5C3004: using guessed type int scr_pix_height;
-// 69CF0C: using guessed type int gpBufEnd;
-// 69CF20: using guessed type char arch_draw_type;
 
 void ClearScreenBuffer()
 {
@@ -2306,7 +2228,6 @@ void scrollrt_draw_game_screen(BOOL draw_cursor)
 		unlock_buf(0);
 	}
 }
-// 52571C: using guessed type int drawpanflag;
 
 void scrollrt_draw_cursor_back_buffer()
 {
@@ -2405,8 +2326,6 @@ void scrollrt_draw_cursor_item()
 		Cel2DrawHdrOnly(mx + 64, my + cursH + 160 - 1, (BYTE *)pCursCels, pcurs, cursW, 0, 8);
 	}
 }
-// 4B8C9C: using guessed type int cursH;
-// 69CF0C: using guessed type int gpBufEnd;
 
 void DrawMain(int dwHgt, BOOL draw_desc, BOOL draw_hp, BOOL draw_mana, BOOL draw_sbar, BOOL draw_btn)
 {
@@ -2526,24 +2445,21 @@ void DrawMain(int dwHgt, BOOL draw_desc, BOOL draw_hp, BOOL draw_mana, BOOL draw
 	DrawFPS();
 #endif
 }
-// 634980: using guessed type int gbActive;
-// 679660: using guessed type char gbMaxPlayers;
 
 #ifdef _DEBUG
 void DrawFPS()
 {
-	DWORD v0;        // eax
-	int v1;          // esi
-	char String[12]; // [esp+8h] [ebp-10h]
-	HDC hdc;         // [esp+14h] [ebp-4h]
+	DWORD tc, frames;
+	char String[12];
+	HDC hdc;
 
 	if (frameflag && gbActive) {
-		++frameend;
-		v0 = GetTickCount();
-		v1 = v0 - framestart;
-		if (v0 - framestart >= 1000) {
-			framestart = v0;
-			framerate = 1000 * frameend / v1;
+		frameend++;
+		tc = GetTickCount();
+		frames = tc - framestart;
+		if (tc - framestart >= 1000) {
+			framestart = tc;
+			framerate = 1000 * frameend / frames;
 			frameend = 0;
 		}
 		if (framerate > 99)
@@ -2727,7 +2643,5 @@ void DrawAndBlit()
 	drawbtnflag = FALSE;
 	drawsbarflag = FALSE;
 }
-// 4B8960: using guessed type int talkflag;
-// 52571C: using guessed type int drawpanflag;
 
 DEVILUTION_END_NAMESPACE

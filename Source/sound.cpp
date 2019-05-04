@@ -260,7 +260,6 @@ TSnd *sound_file_load(char *path)
 
 	return pSnd;
 }
-// 456F07: could not find valid save-restore pair for esi
 
 void sound_CreateSoundBuffer(TSnd *sound_file)
 {
@@ -391,7 +390,6 @@ void sound_create_primary_buffer(HANDLE music_track)
 #endif
 	}
 }
-// 69F100: using guessed type int sglpDSB;
 
 HRESULT sound_DirectSoundCreate(LPGUID lpGuid, LPDIRECTSOUND *ppDS, LPUNKNOWN pUnkOuter)
 {

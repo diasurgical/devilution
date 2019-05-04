@@ -2,48 +2,48 @@
 
 DEVILUTION_BEGIN_NAMESPACE
 
-char lavapool;  // weak
-int abyssx;     // weak
-int lockoutcnt; // weak
+BOOLEAN lavapool;
+int abyssx;
+int lockoutcnt;
 BOOLEAN lockout[40][40];
 
-const unsigned char L3ConvTbl[16] = { 8, 11, 3, 10, 1, 9, 12, 12, 6, 13, 4, 13, 2, 14, 5, 7 };
-const unsigned char L3UP[20] = { 3, 3, 8, 8, 0, 10, 10, 0, 7, 7, 0, 51, 50, 0, 48, 49, 0, 0, 0, 0 };
-const unsigned char L3DOWN[20] = { 3, 3, 8, 9, 7, 8, 9, 7, 0, 0, 0, 0, 47, 0, 0, 46, 0, 0, 0, 0 };
-const unsigned char L3HOLDWARP[20] = { 3, 3, 8, 8, 0, 10, 10, 0, 7, 7, 0, 125, 125, 0, 125, 125, 0, 0, 0, 0 };
-const unsigned char L3TITE1[34] = { 4, 4, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 0, 57, 58, 0, 0, 56, 55, 0, 0, 0, 0, 0 };
-const unsigned char L3TITE2[34] = { 4, 4, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 0, 61, 62, 0, 0, 60, 59, 0, 0, 0, 0, 0 };
-const unsigned char L3TITE3[34] = { 4, 4, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 0, 65, 66, 0, 0, 64, 63, 0, 0, 0, 0, 0 };
-const unsigned char L3TITE6[42] = { 5, 4, 7, 7, 7, 7, 7, 7, 7, 7, 0, 7, 7, 7, 7, 0, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 0, 0, 77, 78, 0, 0, 0, 76, 74, 75, 0, 0, 0, 0, 0, 0 };
-const unsigned char L3TITE7[42] = { 4, 5, 7, 7, 7, 7, 7, 7, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 0, 83, 0, 0, 0, 82, 80, 0, 0, 81, 79, 0, 0, 0, 0, 0 };
-const unsigned char L3TITE8[20] = { 3, 3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 52, 0, 0, 0, 0 };
-const unsigned char L3TITE9[20] = { 3, 3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 53, 0, 0, 0, 0 };
-const unsigned char L3TITE10[20] = { 3, 3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 54, 0, 0, 0, 0 };
-const unsigned char L3TITE11[20] = { 3, 3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 67, 0, 0, 0, 0 };
-const unsigned char L3TITE12[6] = { 2u, 1u, 9u, 7u, 68u, 0u };
-const unsigned char L3TITE13[6] = { 1u, 2u, 10u, 7u, 69u, 0u };
-const unsigned char L3CREV1[6] = { 2u, 1u, 8u, 7u, 84u, 85u };
-const unsigned char L3CREV2[6] = { 2u, 1u, 8u, 11u, 86u, 87u };
-const unsigned char L3CREV3[6] = { 1u, 2u, 8u, 10u, 89u, 88u };
-const unsigned char L3CREV4[6] = { 2u, 1u, 8u, 7u, 90u, 91u };
-const unsigned char L3CREV5[6] = { 1u, 2u, 8u, 11u, 92u, 93u };
-const unsigned char L3CREV6[6] = { 1u, 2u, 8u, 10u, 95u, 94u };
-const unsigned char L3CREV7[6] = { 2u, 1u, 8u, 7u, 96u, 101u };
-const unsigned char L3CREV8[6] = { 1u, 2u, 2u, 8u, 102u, 97u };
-const unsigned char L3CREV9[6] = { 2u, 1u, 3u, 8u, 103u, 98u };
-const unsigned char L3CREV10[6] = { 2u, 1u, 4u, 8u, 104u, 99u };
-const unsigned char L3CREV11[6] = { 1u, 2u, 6u, 8u, 105u, 100u };
-const unsigned char L3ISLE1[14] = { 2u, 3u, 5u, 14u, 4u, 9u, 13u, 12u, 7u, 7u, 7u, 7u, 7u, 7u };
-const unsigned char L3ISLE2[14] = { 3u, 2u, 5u, 2u, 14u, 13u, 10u, 12u, 7u, 7u, 7u, 7u, 7u, 7u };
-const unsigned char L3ISLE3[14] = { 2u, 3u, 5u, 14u, 4u, 9u, 13u, 12u, 29u, 30u, 25u, 28u, 31u, 32u };
-const unsigned char L3ISLE4[14] = { 3u, 2u, 5u, 2u, 14u, 13u, 10u, 12u, 29u, 26u, 30u, 31u, 27u, 32u };
-const unsigned char L3ISLE5[10] = { 2u, 2u, 5u, 14u, 13u, 12u, 7u, 7u, 7u, 7u };
-const unsigned char L3XTRA1[4] = { 1u, 1u, 7u, 106u };
-const unsigned char L3XTRA2[4] = { 1u, 1u, 7u, 107u };
-const unsigned char L3XTRA3[4] = { 1u, 1u, 7u, 108u };
-const unsigned char L3XTRA4[4] = { 1u, 1u, 9u, 109u };
-const unsigned char L3XTRA5[4] = { 1u, 1u, 10u, 110u };
-const unsigned char L3ANVIL[244] = {
+const BYTE L3ConvTbl[16] = { 8, 11, 3, 10, 1, 9, 12, 12, 6, 13, 4, 13, 2, 14, 5, 7 };
+const BYTE L3UP[20] = { 3, 3, 8, 8, 0, 10, 10, 0, 7, 7, 0, 51, 50, 0, 48, 49, 0, 0, 0, 0 };
+const BYTE L3DOWN[20] = { 3, 3, 8, 9, 7, 8, 9, 7, 0, 0, 0, 0, 47, 0, 0, 46, 0, 0, 0, 0 };
+const BYTE L3HOLDWARP[20] = { 3, 3, 8, 8, 0, 10, 10, 0, 7, 7, 0, 125, 125, 0, 125, 125, 0, 0, 0, 0 };
+const BYTE L3TITE1[34] = { 4, 4, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 0, 57, 58, 0, 0, 56, 55, 0, 0, 0, 0, 0 };
+const BYTE L3TITE2[34] = { 4, 4, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 0, 61, 62, 0, 0, 60, 59, 0, 0, 0, 0, 0 };
+const BYTE L3TITE3[34] = { 4, 4, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 0, 65, 66, 0, 0, 64, 63, 0, 0, 0, 0, 0 };
+const BYTE L3TITE6[42] = { 5, 4, 7, 7, 7, 7, 7, 7, 7, 7, 0, 7, 7, 7, 7, 0, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 0, 0, 77, 78, 0, 0, 0, 76, 74, 75, 0, 0, 0, 0, 0, 0 };
+const BYTE L3TITE7[42] = { 4, 5, 7, 7, 7, 7, 7, 7, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 0, 83, 0, 0, 0, 82, 80, 0, 0, 81, 79, 0, 0, 0, 0, 0 };
+const BYTE L3TITE8[20] = { 3, 3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 52, 0, 0, 0, 0 };
+const BYTE L3TITE9[20] = { 3, 3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 53, 0, 0, 0, 0 };
+const BYTE L3TITE10[20] = { 3, 3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 54, 0, 0, 0, 0 };
+const BYTE L3TITE11[20] = { 3, 3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 67, 0, 0, 0, 0 };
+const BYTE L3TITE12[6] = { 2, 1, 9, 7, 68, 0 };
+const BYTE L3TITE13[6] = { 1, 2, 10, 7, 69, 0 };
+const BYTE L3CREV1[6] = { 2, 1, 8, 7, 84, 85 };
+const BYTE L3CREV2[6] = { 2, 1, 8, 11, 86, 87 };
+const BYTE L3CREV3[6] = { 1, 2, 8, 10, 89, 88 };
+const BYTE L3CREV4[6] = { 2, 1, 8, 7, 90, 91 };
+const BYTE L3CREV5[6] = { 1, 2, 8, 11, 92, 93 };
+const BYTE L3CREV6[6] = { 1, 2, 8, 10, 95, 94 };
+const BYTE L3CREV7[6] = { 2, 1, 8, 7, 96, 101 };
+const BYTE L3CREV8[6] = { 1, 2, 2, 8, 102, 97 };
+const BYTE L3CREV9[6] = { 2, 1, 3, 8, 103, 98 };
+const BYTE L3CREV10[6] = { 2, 1, 4, 8, 104, 99 };
+const BYTE L3CREV11[6] = { 1, 2, 6, 8, 105, 100 };
+const BYTE L3ISLE1[14] = { 2, 3, 5, 14, 4, 9, 13, 12, 7, 7, 7, 7, 7, 7 };
+const BYTE L3ISLE2[14] = { 3, 2, 5, 2, 14, 13, 10, 12, 7, 7, 7, 7, 7, 7 };
+const BYTE L3ISLE3[14] = { 2, 3, 5, 14, 4, 9, 13, 12, 29, 30, 25, 28, 31, 32 };
+const BYTE L3ISLE4[14] = { 3, 2, 5, 2, 14, 13, 10, 12, 29, 26, 30, 31, 27, 32 };
+const BYTE L3ISLE5[10] = { 2, 2, 5, 14, 13, 12, 7, 7, 7, 7 };
+const BYTE L3XTRA1[4] = { 1, 1, 7, 106 };
+const BYTE L3XTRA2[4] = { 1, 1, 7, 107 };
+const BYTE L3XTRA3[4] = { 1, 1, 7, 108 };
+const BYTE L3XTRA4[4] = { 1, 1, 9, 109 };
+const BYTE L3XTRA5[4] = { 1, 1, 10, 110 };
+const BYTE L3ANVIL[244] = {
 	11, 11, 7, 7, 7, 7, 7, 7, 7, 7,
 	7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
 	7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
@@ -203,8 +203,6 @@ BOOL DRLG_L3Anvil()
 
 	return FALSE;
 }
-// 5CF330: using guessed type int setpc_h;
-// 5CF334: using guessed type int setpc_w;
 
 void FixL3Warp()
 {
@@ -266,7 +264,6 @@ void DRLG_L3LockRec(int x, int y)
 	DRLG_L3LockRec(x - 1, y);
 	DRLG_L3LockRec(x + 1, y);
 }
-// 528380: using guessed type int lockoutcnt;
 
 BOOL DRLG_L3Lockout()
 {
@@ -291,9 +288,8 @@ BOOL DRLG_L3Lockout()
 
 	return t == lockoutcnt;
 }
-// 528380: using guessed type int lockoutcnt;
 
-void CreateL3Dungeon(unsigned int rseed, int entry)
+void CreateL3Dungeon(int rseed, int entry)
 {
 	int i, j;
 
@@ -323,10 +319,6 @@ void CreateL3Dungeon(unsigned int rseed, int entry)
 
 	DRLG_SetPC();
 }
-// 5CF328: using guessed type int dmaxx;
-// 5CF32C: using guessed type int dmaxy;
-// 5D2458: using guessed type int dminx;
-// 5D245C: using guessed type int dminy;
 
 void DRLG_L3(int entry)
 {
@@ -460,7 +452,6 @@ void DRLG_L3(int entry)
 
 	DRLG_Init_Globals();
 }
-// 528378: using guessed type char lavapool;
 
 void InitL3Dungeon()
 {
@@ -1034,8 +1025,8 @@ void DRLG_L3Pool()
 {
 	int i, j, dunx, duny, totarea, poolchance;
 	BOOL found;
-	unsigned char k;
-	static unsigned char poolsub[15] = { 0, 35, 26, 36, 25, 29, 34, 7, 33, 28, 27, 37, 32, 31, 30 };
+	BYTE k;
+	static BYTE poolsub[15] = { 0, 35, 26, 36, 25, 29, 34, 7, 33, 28, 27, 37, 32, 31, 30 };
 
 	for(duny = 0; duny < 40; duny++) {
 		for(dunx = 0; dunx < 40; dunx++) {
@@ -1074,7 +1065,7 @@ void DRLG_L3Pool()
 							if(k != 0 && k <= 37) {
 								dungeon[i][j] = k;
 							}
-							lavapool = 1;
+							lavapool = TRUE;
 						}
 					}
 				}
@@ -1082,12 +1073,11 @@ void DRLG_L3Pool()
 		}
 	}
 }
-// 528378: using guessed type char lavapool;
 
 BOOL DRLG_L3SpawnEdge(int x, int y, int *totarea)
 {
-	unsigned char i;
-	static unsigned char spawntable[15] = { 0, 10, 3, 5, 12, 6, 9, 0, 0, 12, 3, 6, 9, 10, 5 };
+	BYTE i;
+	static BYTE spawntable[15] = { 0, 10, 3, 5, 12, 6, 9, 0, 0, 12, 3, 6, 9, 10, 5 };
 
 	if(*totarea > 40) {
 		return TRUE;
@@ -1139,8 +1129,8 @@ BOOL DRLG_L3SpawnEdge(int x, int y, int *totarea)
 
 BOOL DRLG_L3Spawn(int x, int y, int *totarea)
 {
-	unsigned char i;
-	static unsigned char spawntable[15] = { 0, 10, 67, 5, 44, 6, 9, 0, 0, 28, 131, 6, 9, 10, 5 };
+	BYTE i;
+	static BYTE spawntable[15] = { 0, 10, 67, 5, 44, 6, 9, 0, 0, 28, 131, 6, 9, 10, 5 };
 
 	if(*totarea > 40) {
 		return TRUE;
@@ -1209,7 +1199,7 @@ void DRLG_L3PoolFix()
 	}
 }
 
-BOOL DRLG_L3PlaceMiniSet(const unsigned char *miniset, int tmin, int tmax, int cx, int cy, BOOL setview, int ldir)
+BOOL DRLG_L3PlaceMiniSet(const BYTE *miniset, int tmin, int tmax, int cx, int cy, BOOL setview, int ldir)
 {
 	int sx, sy, sw, sh, xx, yy, i, ii, numt, trys;
 	BOOL found;
@@ -1289,10 +1279,8 @@ BOOL DRLG_L3PlaceMiniSet(const unsigned char *miniset, int tmin, int tmax, int c
 
 	return FALSE;
 }
-// 5CF320: using guessed type int LvlViewY;
-// 5CF324: using guessed type int LvlViewX;
 
-void DRLG_L3PlaceRndSet(const unsigned char *miniset, int rndper)
+void DRLG_L3PlaceRndSet(const BYTE *miniset, int rndper)
 {
 	int sx, sy, sw, sh, xx, yy, ii, kk;
 	BOOL found;
@@ -1680,7 +1668,7 @@ void DRLG_L3Pass3()
 	for (j = 0; j < DMAXY; j++) {
 		xx = 16;
 		for (i = 0; i < DMAXX; i++) {
-			lv = (unsigned char)dungeon[i][j] - 1;
+			lv = dungeon[i][j] - 1;
 #ifdef USE_ASM
 			if (lv >= 0) {
 				__asm {
@@ -1792,11 +1780,6 @@ void LoadL3Dungeon(char *sFileName, int vx, int vy)
 
 	mem_free_dbg(pLevelMap);
 }
-// 52837C: using guessed type int abyssx;
-// 5CF328: using guessed type int dmaxx;
-// 5CF32C: using guessed type int dmaxy;
-// 5D2458: using guessed type int dminx;
-// 5D245C: using guessed type int dminy;
 
 void LoadPreL3Dungeon(char *sFileName, int vx, int vy)
 {

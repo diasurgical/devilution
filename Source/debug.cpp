@@ -11,7 +11,6 @@ void LoadDebugGFX()
 	if (visiondebug)
 		pSquareCel = LoadFileInMem("Data\\Square.CEL", 0);
 }
-// 525720: using guessed type int visiondebug;
 
 void FreeDebugGFX()
 {
@@ -20,8 +19,7 @@ void FreeDebugGFX()
 
 void CheckDungeonClear()
 {
-	int i;
-	int j;
+	int i, j;
 
 	for (j = 0; j < MAXDUNY; j++) {
 		for (i = 0; i < MAXDUNX; i++) {
@@ -39,8 +37,7 @@ void CheckDungeonClear()
 #ifdef _DEBUG
 void GiveGoldCheat()
 {
-	int i;  // esi
-	int ni; // ebp
+	int i, ni;
 
 	for (i = 0; i < 40; i++) {
 		if (!plr[myplr].InvGrid[i]) {
@@ -57,7 +54,7 @@ void GiveGoldCheat()
 
 void StoresCheat()
 {
-	int i; // eax
+	int i;
 
 	numpremium = 0;
 
@@ -74,8 +71,8 @@ void StoresCheat()
 
 void TakeGoldCheat()
 {
-	int i;   // esi
-	char ig; // cl
+	int i;
+	char ig;
 
 	for (i = 0; i < 40; i++) {
 		ig = plr[myplr].InvGrid[i];
@@ -135,9 +132,9 @@ void SetAllSpellsCheat()
 	SetSpellLevelCheat(SPL_BONESPIRIT, 1);
 }
 
-void PrintDebugPlayer(BOOLEAN bNextPlayer)
+void PrintDebugPlayer(BOOL bNextPlayer)
 {
-	char dstr[128]; // [esp+Ch] [ebp-80h]
+	char dstr[128];
 
 	if (bNextPlayer)
 		dbgplr = ((_BYTE)dbgplr + 1) & 3;
@@ -161,19 +158,21 @@ void PrintDebugPlayer(BOOLEAN bNextPlayer)
 
 void PrintDebugQuest()
 {
-	char dstr[128]; // [esp+0h] [ebp-80h]
+	char dstr[128];
 
 	sprintf(dstr, "Quest %i :  Active = %i, Var1 = %i", dbgqst, quests[dbgqst]._qactive, quests[dbgqst]._qvar1);
 	NetSendCmdString(1 << myplr, dstr);
-	if (++dbgqst == MAXQUESTS)
+	
+	dbgqst++;
+	if (dbgqst == MAXQUESTS)
 		dbgqst = 0;
 }
 
 void PrintDebugMonster(int m)
 {
-	BOOLEAN bActive; // ecx
-	int i;           // eax
-	char dstr[128];  // [esp+Ch] [ebp-80h]
+	BOOL bActive;
+	int i;          
+	char dstr[128]; 
 
 	sprintf(dstr, "Monster %i = %s", m, monster[m].mName);
 	NetSendCmdString(1 << myplr, dstr);
@@ -197,26 +196,25 @@ void PrintDebugMonster(int m)
 
 void GetDebugMonster()
 {
-	int v0; // ecx
-	int v1; // eax
+	int mi1, mi2;
 
-	v0 = pcursmonst;
-	if (pcursmonst == -1) {
-		v1 = dMonster[cursmx][cursmy];
-		if (v1) {
-			v0 = v1 - 1;
-			if (v1 <= 0)
-				v0 = -1 - v1;
+	mi1 = pcursmonst;
+	if (mi1 == -1) {
+		mi2 = dMonster[cursmx][cursmy];
+		if (mi2) {
+			mi1 = mi2 - 1;
+			if (mi2 <= 0)
+				mi1 = -1 - mi2;
 		} else {
-			v0 = dbgmon;
+			mi1 = dbgmon;
 		}
 	}
-	PrintDebugMonster(v0);
+	PrintDebugMonster(mi1);
 }
 
 void NextDebugMonster()
 {
-	char dstr[128]; // [esp+0h] [ebp-80h]
+	char dstr[128];
 
 	if (dbgmon++ == MAXMONSTERS)
 		dbgmon = 0;

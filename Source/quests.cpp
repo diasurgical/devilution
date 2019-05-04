@@ -128,76 +128,72 @@ void InitQuests()
 
 void CheckQuests()
 {
-	//int v0; // eax
-	unsigned char *v1; // esi
-	unsigned char v2;  // cl
+	int i, rportx, rporty;
 
-	//_LOBYTE(v0) = QuestStatus(QTYPE_VB);
-	if (QuestStatus(QTYPE_VB)) {
-		if (gbMaxPlayers == 1)
-			goto LABEL_6;
-		if (quests[QTYPE_VB]._qvar1 == 2) {
-			AddObject(OBJ_ALTBOY, 2 * setpc_x + 20, 2 * setpc_y + 22);
-			quests[QTYPE_VB]._qvar1 = 3;
-			NetSendCmdQuest(TRUE, 0xFu);
-		}
+	if(QuestStatus(QTYPE_VB) && gbMaxPlayers != 1 && quests[QTYPE_VB]._qvar1 == 2) {
+		AddObject(OBJ_ALTBOY, 2 * setpc_x + 20, 2 * setpc_y + 22);
+		quests[QTYPE_VB]._qvar1 = 3;
+		NetSendCmdQuest(TRUE, QTYPE_VB);
 	}
-	if (gbMaxPlayers != 1)
+
+	if(gbMaxPlayers != 1) {
 		return;
-LABEL_6:
-	if (currlevel == quests[QTYPE_VB]._qlevel && !setlevel && quests[QTYPE_VB]._qvar1 >= 2u) {
-		if (quests[QTYPE_VB]._qactive != 2 && quests[QTYPE_VB]._qactive != 3)
-			goto LABEL_29;
-		if (!quests[QTYPE_VB]._qvar2 || quests[QTYPE_VB]._qvar2 == 2) {
-			quests[QTYPE_VB]._qtx = 2 * quests[QTYPE_VB]._qtx + 16;
-			quests[QTYPE_VB]._qty = 2 * quests[QTYPE_VB]._qty + 16;
-			AddMissile(quests[QTYPE_VB]._qtx, quests[QTYPE_VB]._qty, quests[QTYPE_VB]._qtx, quests[QTYPE_VB]._qty, 0, MIS_RPORTAL, 0, myplr, 0, 0);
-			quests[QTYPE_VB]._qvar2 = 1;
-			if (quests[QTYPE_VB]._qactive == 2)
-				quests[QTYPE_VB]._qvar1 = 3;
+	}
+
+	if(currlevel == quests[QTYPE_VB]._qlevel
+	&& !setlevel
+	&& quests[QTYPE_VB]._qvar1 >= 2
+	&& (quests[QTYPE_VB]._qactive == 2 || quests[QTYPE_VB]._qactive == 3)
+	&& (quests[QTYPE_VB]._qvar2 == 0 || quests[QTYPE_VB]._qvar2 == 2)) {
+		quests[QTYPE_VB]._qtx = 2 * quests[QTYPE_VB]._qtx + 16;
+		quests[QTYPE_VB]._qty = 2 * quests[QTYPE_VB]._qty + 16;
+		rportx = quests[QTYPE_VB]._qtx;
+		rporty = quests[QTYPE_VB]._qty;
+		AddMissile(rportx, rporty, rportx, rporty, 0, MIS_RPORTAL, 0, myplr, 0, 0);
+		quests[QTYPE_VB]._qvar2 = 1;
+		if(quests[QTYPE_VB]._qactive == 2) {
+			quests[QTYPE_VB]._qvar1 = 3;
 		}
 	}
-	if (quests[QTYPE_VB]._qactive == 3) {
-		if (!setlevel)
-			goto LABEL_29;
-		if (setlvlnum == SL_VILEBETRAYER && quests[QTYPE_VB]._qvar2 == 4) {
-			AddMissile(35, 32, 35, 32, 0, MIS_RPORTAL, 0, myplr, 0, 0);
-			quests[QTYPE_VB]._qvar2 = 3;
-		}
+
+	if(quests[QTYPE_VB]._qactive == 3
+	&& setlevel
+	&& setlvlnum == SL_VILEBETRAYER
+	&& quests[QTYPE_VB]._qvar2 == 4) {
+		rportx = 35;
+		rporty = 32;
+		AddMissile(rportx, rporty, rportx, rporty, 0, MIS_RPORTAL, 0, myplr, 0, 0);
+		quests[QTYPE_VB]._qvar2 = 3;
 	}
-	if (setlevel) {
-		if (setlvlnum == quests[QTYPE_PW]._qslvl
-		    && quests[QTYPE_PW]._qactive != 1
-		    && leveltype == quests[QTYPE_PW]._qlvltype
-		    && nummonsters == 4
-		    && quests[QTYPE_PW]._qactive != 3) {
+
+	if(setlevel) {
+		if(setlvlnum == quests[QTYPE_PW]._qslvl
+		&& quests[QTYPE_PW]._qactive != 1
+		&& leveltype == quests[QTYPE_PW]._qlvltype
+		&& nummonsters == 4
+		&& quests[QTYPE_PW]._qactive != 3) {
 			quests[QTYPE_PW]._qactive = 3;
 			PlaySfxLoc(IS_QUESTDN, plr[myplr].WorldX, plr[myplr].WorldY);
 			LoadPalette("Levels\\L3Data\\L3pwater.pal");
 			WaterDone = 32;
 		}
-		if (WaterDone > 0) {
+		if(WaterDone > 0) {
 			palette_update_quest_palette(WaterDone);
-			--WaterDone;
+			WaterDone--;
 		}
-		return;
-	}
-LABEL_29:
-	if (plr[myplr]._pmode == PM_STAND) {
-		v1 = &quests[0]._qactive;
-		do {
-			if (currlevel == *(v1 - 2)) {
-				v2 = v1[10];
-				if (v2) {
-					if (*v1 && plr[myplr].WorldX == *(_DWORD *)(v1 + 2) && plr[myplr].WorldY == *(_DWORD *)(v1 + 6)) {
-						if (v1[1] != -1)
-							setlvltype = v1[1];
-						StartNewLvl(myplr, WM_DIABSETLVL, v2);
-					}
+	} else if(plr[myplr]._pmode == PM_STAND) {
+		for(i = 0; i < MAXQUESTS; i++) {
+			if(currlevel == quests[i]._qlevel
+			&& quests[i]._qslvl != 0
+			&& quests[i]._qactive != 0
+			&& plr[myplr].WorldX == quests[i]._qtx
+			&& plr[myplr].WorldY == quests[i]._qty) {
+				if(quests[i]._qlvltype != 255) {
+					setlvltype = quests[i]._qlvltype;
 				}
+				StartNewLvl(myplr, WM_DIABSETLVL, quests[i]._qslvl);
 			}
-			v1 += 24;
-		} while ((signed int)v1 < (signed int)&quests[MAXQUESTS]._qactive);
+		}
 	}
 }
 // 5BB1ED: using guessed type char leveltype;
@@ -711,7 +707,7 @@ void PrintQLString(int x, int y, BOOL cjustflag, char *str, int col)
 		off += k;
 	}
 	if (qline == y) {
-		CelDecodeOnly(cjustflag ? x + k + 76 : x + 76, s + 205, (BYTE *)pCelBuff, ALLQUESTS, 12);
+		CelDecodeOnly(cjustflag ? x + k + 76 : x + 76, s + 205, pCelBuff, ALLQUESTS, 12);
 	}
 	for (i = 0; i < len; i++) {
 		c = fontframe[gbFontTransTbl[(BYTE)str[i]]];
@@ -722,7 +718,7 @@ void PrintQLString(int x, int y, BOOL cjustflag, char *str, int col)
 		off += fontkern[c] + 1;
 	}
 	if (qline == y) {
-		 CelDecodeOnly(cjustflag ? x + k + 100 : 340 - x, s + 205, (BYTE *)pCelBuff, ALLQUESTS, 12);
+		 CelDecodeOnly(cjustflag ? x + k + 100 : 340 - x, s + 205, pCelBuff, ALLQUESTS, 12);
 	}
 }
 

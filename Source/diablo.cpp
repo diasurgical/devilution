@@ -509,80 +509,87 @@ BOOL diablo_find_window(LPCSTR lpClassName)
 	return 1;
 }
 
-void diablo_reload_process(HMODULE hModule)
+void diablo_reload_process(HINSTANCE hInstance)
 {
-	char *i;                // eax
-	DWORD dwSize;           // esi
-	BOOL v3;                // edi
-	_DWORD *v4;             // eax
-	_DWORD *v5;             // esi
-	HWND v6;                // eax
-	char Name[276];         // [esp+Ch] [ebp-29Ch]
-	char Filename[MAX_PATH];     // [esp+120h] [ebp-188h]
-	STARTUPINFOA si;        // [esp+224h] [ebp-84h]
-	SYSTEM_INFO sinf;       // [esp+268h] [ebp-40h]
-	PROCESS_INFORMATION pi; // [esp+28Ch] [ebp-1Ch]
-	DWORD dwProcessId;      // [esp+29Ch] [ebp-Ch]
-	HANDLE hMap;            // [esp+2A0h] [ebp-8h]
-	HWND hWnd;              // [esp+2A4h] [ebp-4h]
+	DWORD dwSize, dwProcessId;
+	BOOL bNoExist;
+	char *s;
+	long *plMap;
+	HWND hWnd, hPrev;
+	HANDLE hMap;
+	STARTUPINFO si;
+	SYSTEM_INFO sinf;
+	PROCESS_INFORMATION pi;
+	char szReload[MAX_PATH + 16];
+	char szFileName[MAX_PATH] = "";
 
-	//*Filename = empty_string;
-	memset(Filename, 0, sizeof(Filename));
-	//	*(_WORD *)&Filename[257] = 0;
-	//	Filename[259] = 0;
-	GetModuleFileName(hModule, Filename, sizeof(Filename));
-	wsprintf(Name, "Reload-%s", Filename);
-	for (i = Name; *i; ++i) {
-		if (*i == '\\')
-			*i = '/';
+	GetModuleFileName(hInstance, szFileName, sizeof(szFileName));
+	wsprintf(szReload, "Reload-%s", szFileName);
+	for(s = szReload; *s != '\0'; s++) {
+		if(*s == '\\') {
+			*s = '/';
+		}
 	}
+
 	GetSystemInfo(&sinf);
 	dwSize = sinf.dwPageSize;
-	if (sinf.dwPageSize < 4096)
+	if(dwSize < 4096) {
 		dwSize = 4096;
-	hMap = CreateFileMapping((HANDLE)0xFFFFFFFF, NULL, SEC_COMMIT | PAGE_READWRITE, 0, dwSize, Name);
-	v3 = GetLastError() != ERROR_ALREADY_EXISTS;
-	if (hMap) {
-		v4 = (unsigned int *)MapViewOfFile(hMap, FILE_MAP_ALL_ACCESS, 0, 0, dwSize);
-		v5 = v4;
-		if (v4) {
-			if (v3) {
-				*v4 = -1;
-				v4[1] = 0;
-				memset(&si, 0, sizeof(si));
-				si.cb = sizeof(si);
-				CreateProcess(Filename, NULL, NULL, NULL, FALSE, CREATE_NEW_PROCESS_GROUP, NULL, NULL, &si, &pi);
-				WaitForInputIdle(pi.hProcess, 0xFFFFFFFF);
-				CloseHandle(pi.hThread);
-				CloseHandle(pi.hProcess);
-				while (*v5 < 0)
-					Sleep(1000);
-				UnmapViewOfFile(v5);
-				CloseHandle(hMap);
-				ExitProcess(0);
-			}
-			if (InterlockedIncrement((LPLONG)v4)) {
-				v6 = GetForegroundWindow();
-				do {
-					hWnd = v6;
-					v6 = GetWindow(v6, 3u);
-				} while (v6);
-				while (1) {
-					GetWindowThreadProcessId(hWnd, &dwProcessId);
-					if (dwProcessId == v5[1])
-						break;
-					hWnd = GetWindow(hWnd, 2u);
-					if (!hWnd)
-						goto LABEL_23;
-				}
-				SetForegroundWindow(hWnd);
-			LABEL_23:
-				UnmapViewOfFile(v5);
-				CloseHandle(hMap);
-				ExitProcess(0);
-			}
-			v5[1] = GetCurrentProcessId();
+	}
+
+	hMap = CreateFileMapping(INVALID_HANDLE_VALUE, NULL, SEC_COMMIT | PAGE_READWRITE, 0, dwSize, szReload);
+	bNoExist = GetLastError() != ERROR_ALREADY_EXISTS;
+	if(hMap == NULL) {
+		return;
+	}
+	plMap = (long *)MapViewOfFile(hMap, FILE_MAP_ALL_ACCESS, 0, 0, dwSize);
+	if(plMap == NULL) {
+		return;
+	}
+
+	if(bNoExist) {
+		plMap[0] = -1;
+		plMap[1] = 0;
+		memset(&si, 0, sizeof(si));
+		si.cb = sizeof(si);
+		CreateProcess(szFileName, NULL, NULL, NULL, FALSE, CREATE_NEW_PROCESS_GROUP, NULL, NULL, &si, &pi);
+		WaitForInputIdle(pi.hProcess, INFINITE);
+		CloseHandle(pi.hThread);
+		CloseHandle(pi.hProcess);
+		while(plMap[0] < 0) {
+			Sleep(1000);
 		}
+		UnmapViewOfFile(plMap);
+		CloseHandle(hMap);
+		ExitProcess(0);
+	}
+
+	if(InterlockedIncrement(plMap) == 0) {
+		plMap[1] = GetCurrentProcessId();
+	} else {
+		hPrev = GetForegroundWindow();
+		hWnd = hPrev;
+		while(1) {
+			hPrev = GetWindow(hPrev, GW_HWNDPREV);
+			if(hPrev == NULL) {
+				break;
+			}
+			hWnd = hPrev;
+		}
+		while(1) {
+			GetWindowThreadProcessId(hWnd, &dwProcessId);
+			if(dwProcessId == plMap[1]) {
+				SetForegroundWindow(hWnd);
+				break;
+			}
+			hWnd = GetWindow(hWnd, GW_HWNDNEXT);
+			if(hWnd == NULL) {
+				break;
+			}
+		}
+		UnmapViewOfFile(plMap);
+		CloseHandle(hMap);
+		ExitProcess(0);
 	}
 }
 
@@ -1492,10 +1499,10 @@ void PressChar(int vkey)
 		}
 		break;
 	case 'D':
-		PrintDebugPlayer(1);
+		PrintDebugPlayer(TRUE);
 		break;
 	case 'd':
-		PrintDebugPlayer(0);
+		PrintDebugPlayer(FALSE);
 		break;
 	case 'e':
 		if(debug_mode_key_d) {
@@ -1608,7 +1615,7 @@ void LoadAllGFX()
 
 void CreateLevel(int lvldir)
 {
-	switch((unsigned char)leveltype) {
+	switch(leveltype) {
 	case DTYPE_TOWN:
 		CreateTown(lvldir);
 		InitTownTriggers();

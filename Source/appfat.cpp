@@ -473,7 +473,7 @@ void __cdecl app_fatal(const char *pszFmt, ...)
 
 void MsgBox(const char *pszFmt, va_list va)
 {
-	char Text[256]; // [esp+0h] [ebp-100h]
+	char Text[256];
 
 	wvsprintf(Text, pszFmt, va);
 	if (ghMainWnd)
@@ -502,8 +502,8 @@ void FreeDlg()
 
 void __cdecl DrawDlg(char *pszFmt, ...)
 {
-	char text[256];  // [esp+0h] [ebp-100h]
-	va_list arglist; // [esp+10Ch] [ebp+Ch]
+	char text[256];
+	va_list arglist;
 
 	va_start(arglist, pszFmt);
 	wvsprintf(text, pszFmt, arglist);

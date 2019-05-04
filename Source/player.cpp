@@ -501,7 +501,9 @@ void ClearPlrRVars(PlayerStruct *p)
 	p->dwReserved[6] = 0;
 }
 
-// c: plr_classes value
+/**
+ * @param c plr_classes value
+ */
 void CreatePlayer(int pnum, char c)
 {
 	char val;
@@ -639,7 +641,7 @@ void CreatePlayer(int pnum, char c)
 	}
 
 	for (i = 0; i < 10; i++) {
-		plr[pnum]._pSLvlVisited[i] = 0; // TODO double check size of _pSLvlVisited
+		plr[pnum]._pSLvlVisited[i] = 0;
 	}
 
 	plr[pnum]._pLvlChanging = 0;
@@ -911,7 +913,6 @@ void InitPlayer(int pnum, BOOL FirstTime)
 		ScrollInfo._sdir = SDIR_NONE;
 	}
 }
-// 52572C: using guessed type int leveldebug;
 
 void InitMultiView()
 {
@@ -1261,7 +1262,6 @@ void StartWalk(int pnum, int xvel, int yvel, int xadd, int yadd, int EndDir, int
 		ScrollInfo._sdir = sdir;
 	}
 }
-// 52569C: using guessed type int zoomflag;
 
 void StartWalk2(int pnum, int xvel, int yvel, int xoff, int yoff, int xadd, int yadd, int EndDir, int sdir)
 {
@@ -1341,7 +1341,6 @@ void StartWalk2(int pnum, int xvel, int yvel, int xoff, int yoff, int xadd, int 
 		ScrollInfo._sdir = sdir;
 	}
 }
-// 52569C: using guessed type int zoomflag;
 
 void StartWalk3(int pnum, int xvel, int yvel, int xoff, int yoff, int xadd, int yadd, int mapx, int mapy, int EndDir, int sdir)
 {
@@ -1422,7 +1421,6 @@ void StartWalk3(int pnum, int xvel, int yvel, int xoff, int yoff, int xadd, int 
 		ScrollInfo._sdir = sdir;
 	}
 }
-// 52569C: using guessed type int zoomflag;
 
 void StartAttack(int pnum, int d)
 {
@@ -1906,7 +1904,6 @@ void DropHalfPlayersGold(int pnum)
 	}
 	plr[pnum]._pGold = CalculateGold(pnum);
 }
-// 52571C: using guessed type int drawpanflag;
 
 void SyncPlrKill(int pnum, int earflag)
 {
@@ -1984,7 +1981,6 @@ void InitLevelChange(int pnum)
 		plr[pnum].pLvlLoad = 10;
 	}
 }
-// 646D00: using guessed type char qtextflag;
 
 void StartNewLvl(int pnum, int fom, int lvl)
 {
@@ -2808,7 +2804,7 @@ BOOL PM_DoSpell(int pnum)
 		    plr[pnum].WorldY,
 		    plr[pnum]._pVar1,
 		    plr[pnum]._pVar2,
-		    FALSE,
+		    0,
 		    plr[pnum]._pVar4);
 
 		if (!plr[pnum]._pSplFrom) {
@@ -2848,7 +2844,6 @@ BOOL PM_DoSpell(int pnum)
 
 	return FALSE;
 }
-// 52571C: using guessed type int drawpanflag;
 
 BOOL PM_DoGotHit(int pnum)
 {
@@ -2960,7 +2955,6 @@ BOOL PM_DoDeath(int pnum)
 
 	return FALSE;
 }
-// 69B7C4: using guessed type int deathdelay;
 
 BOOL PM_DoNewLvl(int pnum)
 {
@@ -3456,7 +3450,6 @@ void ProcessPlayers()
 		}
 	}
 }
-// 52A554: using guessed type int sfxdelay;
 
 void CheckCheatStats(int pnum)
 {
@@ -3690,7 +3683,6 @@ void CheckPlrSpell()
 		}
 	}
 }
-// 4B8CC2: using guessed type char pcursplr;
 
 void SyncPlrAnim(int pnum)
 {
@@ -4137,6 +4129,5 @@ void PlayDungMsgs()
 		sfxdelay = 0;
 	}
 }
-// 52A554: using guessed type int sfxdelay;
 
 DEVILUTION_END_NAMESPACE

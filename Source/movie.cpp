@@ -44,7 +44,6 @@ void play_movie(char *pszMovie, BOOL user_can_close)
 	SetWindowProc(saveProc);
 	sound_disable_music(FALSE);
 }
-// 634980: using guessed type int gbActive;
 
 LRESULT __stdcall MovieWndProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 {

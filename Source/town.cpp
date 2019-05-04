@@ -63,7 +63,6 @@ void town_clear_upper_buf(BYTE *pBuff)
 	}
 #endif
 }
-// 69CF0C: using guessed type int gpBufEnd;
 
 void town_clear_low_buf(BYTE *pBuff)
 {
@@ -140,7 +139,6 @@ void town_clear_low_buf(BYTE *pBuff)
 	}
 #endif
 }
-// 69CF0C: using guessed type int gpBufEnd;
 
 void town_draw_clipped_e_flag(BYTE *pBuff, int x, int y, int sx, int sy)
 {
@@ -165,7 +163,6 @@ void town_draw_clipped_e_flag(BYTE *pBuff, int x, int y, int sx, int sy)
 
 	town_draw_clipped_town(pBuff, x, y, sx, sy, 0);
 }
-// 69CF14: using guessed type int level_cel_block;
 
 void town_draw_clipped_town(BYTE *pBuff, int x, int y, int sx, int sy, BOOL some_flag)
 {
@@ -231,8 +228,6 @@ void town_draw_clipped_town(BYTE *pBuff, int x, int y, int sx, int sy, BOOL some
 		DrawClippedMissile(x, y, sx, sy, 0, 8, 0);
 	}
 }
-// 4B8CC0: using guessed type char pcursitem;
-// 4B8CC2: using guessed type char pcursplr;
 
 void town_draw_lower(int x, int y, int sx, int sy, int a5, int some_flag)
 {
@@ -318,7 +313,6 @@ void town_draw_lower(int x, int y, int sx, int sy, int a5, int some_flag)
 		}
 	}
 }
-// 69CF14: using guessed type int level_cel_block;
 
 void town_draw_clipped_e_flag_2(BYTE *pBuff, int x, int y, int a4, int a5, int sx, int sy)
 {
@@ -352,7 +346,6 @@ void town_draw_clipped_e_flag_2(BYTE *pBuff, int x, int y, int a4, int a5, int s
 		town_draw_clipped_town_2(pBuff, x, y, a4, a5, sx, sy, 0);
 	}
 }
-// 69CF14: using guessed type int level_cel_block;
 
 void town_draw_clipped_town_2(BYTE *pBuff, int x, int y, int a4, int a5, int sx, int sy, BOOL some_flag)
 {
@@ -414,8 +407,6 @@ void town_draw_clipped_town_2(BYTE *pBuff, int x, int y, int a4, int a5, int sx,
 		DrawClippedMissile(x, y, sx, sy, a5, 8, 0);
 	}
 }
-// 4B8CC0: using guessed type char pcursitem;
-// 4B8CC2: using guessed type char pcursplr;
 
 void town_draw_lower_2(int x, int y, int sx, int sy, int a5, int a6, int some_flag)
 {
@@ -515,7 +506,6 @@ void town_draw_lower_2(int x, int y, int sx, int sy, int a5, int a6, int some_fl
 		}
 	}
 }
-// 69CF14: using guessed type int level_cel_block;
 
 void town_draw_e_flag(BYTE *pBuff, int x, int y, int a4, int dir, int sx, int sy)
 {
@@ -542,7 +532,6 @@ void town_draw_e_flag(BYTE *pBuff, int x, int y, int a4, int dir, int sx, int sy
 
 	town_draw_town_all(pBuff, x, y, a4, dir, sx, sy, 0);
 }
-// 69CF14: using guessed type int level_cel_block;
 
 void town_draw_town_all(BYTE *pBuff, int x, int y, int a4, int dir, int sx, int sy, BOOL some_flag)
 {
@@ -609,8 +598,6 @@ void town_draw_town_all(BYTE *pBuff, int x, int y, int a4, int dir, int sx, int 
 		DrawMissile(x, y, sx, sy, 0, dir, 0);
 	}
 }
-// 4B8CC0: using guessed type char pcursitem;
-// 4B8CC2: using guessed type char pcursplr;
 
 void town_draw_upper(int x, int y, int sx, int sy, int a5, int a6, int some_flag)
 {
@@ -707,7 +694,6 @@ void town_draw_upper(int x, int y, int sx, int sy, int a5, int a6, int some_flag
 		}
 	}
 }
-// 69CF14: using guessed type int level_cel_block;
 
 void T_DrawGame(int x, int y)
 {
@@ -821,12 +807,6 @@ void T_DrawGame(int x, int y)
 		sy += 16;
 	}
 }
-// 4B8968: using guessed type int sbookflag;
-// 5C2FF8: using guessed type int dword_5C2FF8;
-// 5C2FFC: using guessed type int dword_5C2FFC;
-// 5C3000: using guessed type int scr_pix_width;
-// 5C3004: using guessed type int scr_pix_height;
-// 69CF0C: using guessed type int gpBufEnd;
 
 void T_DrawZoom(int x, int y)
 {
@@ -995,12 +975,6 @@ void T_DrawZoom(int x, int y)
 	}
 #endif
 }
-// 4B8968: using guessed type int sbookflag;
-// 5C2FF8: using guessed type int dword_5C2FF8;
-// 5C2FFC: using guessed type int dword_5C2FFC;
-// 5C3000: using guessed type int scr_pix_width;
-// 5C3004: using guessed type int scr_pix_height;
-// 69CF0C: using guessed type int gpBufEnd;
 
 void T_DrawView(int StartX, int StartY)
 {
@@ -1048,15 +1022,6 @@ void T_DrawView(int StartX, int StartY)
 	DrawLifeFlask();
 	DrawManaFlask();
 }
-// 4B8968: using guessed type int sbookflag;
-// 4B8C98: using guessed type int spselflag;
-// 52569C: using guessed type int zoomflag;
-// 525740: using guessed type int PauseMode;
-// 52B9F1: using guessed type char msgflag;
-// 646D00: using guessed type char qtextflag;
-// 69BEF8: using guessed type int light_table_index;
-// 69CF94: using guessed type int cel_transparency_active;
-// 6AA705: using guessed type char stextflag;
 
 void SetTownMicros()
 {
@@ -1094,11 +1059,6 @@ void SetTownMicros()
 		dword_5C2FFC = 7;
 	}
 }
-// 52569C: using guessed type int zoomflag;
-// 5C2FF8: using guessed type int dword_5C2FF8;
-// 5C2FFC: using guessed type int dword_5C2FFC;
-// 5C3000: using guessed type int scr_pix_width;
-// 5C3004: using guessed type int scr_pix_height;
 
 void T_FillSector(unsigned char *P3Tiles, unsigned char *pSector, int xi, int yi, int w, int h)
 {
@@ -1268,8 +1228,6 @@ void T_Pass3()
 
 	mem_free_dbg(P3Tiles);
 }
-// 45FDE6: could not find valid save-restore pair for edi
-// 679660: using guessed type char gbMaxPlayers;
 
 void CreateTown(int entry)
 {
@@ -1348,10 +1306,5 @@ void CreateTown(int entry)
 
 	SetTownMicros();
 }
-// 5CF328: using guessed type int dmaxx;
-// 5CF32C: using guessed type int dmaxy;
-// 5D2458: using guessed type int dminx;
-// 5D245C: using guessed type int dminy;
-// 6ABB30: using guessed type int TWarpFrom;
 
 DEVILUTION_END_NAMESPACE

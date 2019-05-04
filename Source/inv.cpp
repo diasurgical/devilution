@@ -1861,17 +1861,17 @@ BOOL CanPut(int x, int y)
 	}
 
 	oi = dObject[x + 1][y + 1];
-	if (oi > 0 && object[oi - 1]._oSelFlag) {
+	if (oi > 0 && object[oi - 1]._oSelFlag != 0) {
 		return FALSE;
 	}
-	if (oi < 0 && object[-(oi + 1)]._oSelFlag) {
+	if (oi < 0 && object[-(oi + 1)]._oSelFlag != 0) {
 		return FALSE;
 	}
 
 	oi = dObject[x + 1][y];
 	if (oi > 0) {
 		oi2 = dObject[x][y + 1];
-		if (oi2 > 0 && object[oi - 1]._oSelFlag && object[oi2 - 1]._oSelFlag)
+		if (oi2 > 0 && object[oi - 1]._oSelFlag != 0 && object[oi2 - 1]._oSelFlag != 0)
 			return FALSE;
 	}
 

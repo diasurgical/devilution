@@ -221,7 +221,6 @@ DWORD sync_update(int pnum, const BYTE *pbBuf)
 
 	return pHdr->wLen + sizeof(*pHdr);
 }
-// 676194: using guessed type char gbBufferMsgs;
 
 void sync_monster(int pnum, const TSyncMonster *p)
 {

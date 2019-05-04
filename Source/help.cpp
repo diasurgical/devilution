@@ -178,24 +178,21 @@ void DrawHelp()
 
 void DrawHelpLine(int always_0, int help_line_nr, char *text, char color)
 {
-	signed int v4;    // ebx
-	int v5;           // edi
-	unsigned char i;  // al
-	unsigned char v7; // al
-	int v8;           // esi
+	int off, width;
+	BYTE c;
 
-	v4 = 0;
-	v5 = PitchTbl[SStringY[help_line_nr] + 204] + always_0 + 96;
-	for (i = *text; *text; i = *text) {
-		++text;
-		v7 = fontframe[gbFontTransTbl[i]];
-		v8 = v7;
-		v4 += fontkern[v7] + 1;
-		if (v7) {
-			if (v4 <= 577)
-				CPrintString(v5, v7, color);
+	width = 0;
+	off = PitchTbl[SStringY[help_line_nr] + 204] + always_0 + 96;
+	while (*text) {
+		c = gbFontTransTbl[(BYTE)*text];
+		text++;
+		c = fontframe[c];
+		width += fontkern[c] + 1;
+		if (c) {
+			if (width <= 577)
+				CPrintString(off, c, color);
 		}
-		v5 += fontkern[v8] + 1;
+		off += fontkern[c] + 1;
 	}
 }
 

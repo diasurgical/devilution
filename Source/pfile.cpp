@@ -57,7 +57,7 @@ void pfile_check_available_space(char *pszDir)
 
 void pfile_write_hero()
 {
-	unsigned int save_num;
+	DWORD save_num;
 	PkPlayerStruct pkplr;
 
 	save_num = pfile_get_save_num_from_name(plr[myplr]._pName);
@@ -68,9 +68,9 @@ void pfile_write_hero()
 	}
 }
 
-unsigned int pfile_get_save_num_from_name(const char *name)
+DWORD pfile_get_save_num_from_name(const char *name)
 {
-	unsigned int i;
+	DWORD i;
 
 	for (i = 0; i < MAX_CHARACTERS; i++) {
 		if (!_strcmpi(hero_names[i], name))
@@ -97,7 +97,7 @@ void pfile_encode_hero(const PkPlayerStruct *pPack)
 	mem_free_dbg(packed);
 }
 
-BOOL pfile_open_archive(BOOL a1, unsigned int save_num)
+BOOL pfile_open_archive(BOOL a1, DWORD save_num)
 {
 	char FileName[MAX_PATH];
 
@@ -110,7 +110,7 @@ BOOL pfile_open_archive(BOOL a1, unsigned int save_num)
 	return FALSE;
 }
 
-void pfile_get_save_path(char *pszBuf, DWORD dwBufSize, unsigned int save_num)
+void pfile_get_save_path(char *pszBuf, DWORD dwBufSize, DWORD save_num)
 {
 	DWORD plen;
 	char *s;
@@ -134,7 +134,7 @@ void pfile_get_save_path(char *pszBuf, DWORD dwBufSize, unsigned int save_num)
 	_strlwr(pszBuf);
 }
 
-void pfile_flush(BOOL is_single_player, unsigned int save_num)
+void pfile_flush(BOOL is_single_player, DWORD save_num)
 {
 	char FileName[MAX_PATH];
 
@@ -142,7 +142,7 @@ void pfile_flush(BOOL is_single_player, unsigned int save_num)
 	mpqapi_flush_and_close(FileName, is_single_player, save_num);
 }
 
-BOOL pfile_create_player_description(char *dst, unsigned int len)
+BOOL pfile_create_player_description(char *dst, DWORD len)
 {
 	char desc[128];
 	_uiheroinfo uihero;
@@ -163,7 +163,7 @@ BOOL pfile_create_player_description(char *dst, unsigned int len)
 BOOL pfile_create_save_file(const char *name_1, const char *name_2)
 {
 	int i;
-	unsigned int save_num;
+	DWORD save_num;
 	_uiheroinfo uihero;
 	BOOL found = FALSE;
 
@@ -229,10 +229,10 @@ unsigned char game_2_ui_class(const PlayerStruct *p)
 
 BOOL __stdcall pfile_ui_set_hero_infos(BOOL(__stdcall *ui_add_hero_info)(_uiheroinfo *))
 {
-	unsigned int i, save_num;
+	DWORD i, save_num;
 	char FileName[MAX_PATH];
 	char NewFileName[MAX_PATH];
-	int a1;
+	BOOL showFixedMsg;
 
 	memset(hero_names, 0, sizeof(hero_names));
 	if (gbMaxPlayers > 1) {
@@ -266,10 +266,10 @@ BOOL __stdcall pfile_ui_set_hero_infos(BOOL(__stdcall *ui_add_hero_info)(_uihero
 		}
 	}
 
-	a1 = 1;
+	showFixedMsg = TRUE;
 	for (i = 0; i < MAX_CHARACTERS; i++) {
 		PkPlayerStruct pkplr;
-		HANDLE archive = pfile_open_save_archive(&a1, i);
+		HANDLE archive = pfile_open_save_archive(&showFixedMsg, i);
 		if (archive) {
 			if (pfile_read_hero(archive, &pkplr)) {
 				_uiheroinfo uihero;
@@ -285,7 +285,7 @@ BOOL __stdcall pfile_ui_set_hero_infos(BOOL(__stdcall *ui_add_hero_info)(_uihero
 	return TRUE;
 }
 
-char *GetSaveDirectory(char *dst, int dst_size, unsigned int save_num)
+char *GetSaveDirectory(char *dst, int dst_size, DWORD save_num)
 {
 	DWORD dirLen;
 	char FileName[MAX_PATH];
@@ -317,11 +317,11 @@ BOOL pfile_read_hero(HANDLE archive, PkPlayerStruct *pPack)
 	HANDLE file;
 	BOOL decoded;
 	DWORD dwlen, nSize;
-	unsigned char *buf;
+	BYTE *buf;
 
-	if (!SFileOpenFileEx(archive, "hero", 0, &file))
+	if (!SFileOpenFileEx(archive, "hero", 0, &file)) {
 		return FALSE;
-	else {
+	} else {
 		BOOL ret = FALSE;
 		char password[16] = PASSWORD_SINGLE;
 		nSize = 16;
@@ -356,7 +356,10 @@ BOOL pfile_read_hero(HANDLE archive, PkPlayerStruct *pPack)
 	}
 }
 
-HANDLE pfile_open_save_archive(int *unused, unsigned int save_num)
+/**
+ * @param showFixedMsg Display a dialog if a save file was corrected (deprecated)
+ */
+HANDLE pfile_open_save_archive(BOOL *showFixedMsg, DWORD save_num)
 {
 	char SrcStr[MAX_PATH];
 	HANDLE archive;
@@ -372,7 +375,7 @@ void pfile_SFileCloseArchive(HANDLE hsArchive)
 	SFileCloseArchive(hsArchive);
 }
 
-BOOL pfile_archive_contains_game(HANDLE hsArchive, unsigned int save_num)
+BOOL pfile_archive_contains_game(HANDLE hsArchive, DWORD save_num)
 {
 	HANDLE file;
 
@@ -413,7 +416,7 @@ char pfile_get_player_class(unsigned int player_class_nr)
 
 BOOL __stdcall pfile_ui_save_create(_uiheroinfo *heroinfo)
 {
-	unsigned int save_num;
+	DWORD save_num;
 	char cl;
 	PkPlayerStruct pkplr;
 
@@ -469,7 +472,7 @@ BOOL __stdcall pfile_get_file_name(DWORD lvl, char *dst)
 
 BOOL __stdcall pfile_delete_save(_uiheroinfo *hero_info)
 {
-	unsigned int save_num;
+	DWORD save_num;
 	char FileName[MAX_PATH];
 
 	save_num = pfile_get_save_num_from_name(hero_info->name);
@@ -484,7 +487,7 @@ BOOL __stdcall pfile_delete_save(_uiheroinfo *hero_info)
 void pfile_read_player_from_save()
 {
 	HANDLE archive;
-	unsigned int save_num;
+	DWORD save_num;
 	PkPlayerStruct pkplr;
 
 	save_num = pfile_get_save_num_from_name(gszHero);
@@ -511,7 +514,7 @@ void GetTempLevelNames(char *szTemp)
 
 void GetPermLevelNames(char *szPerm)
 {
-	unsigned int save_num;
+	DWORD save_num;
 	BOOL has_file;
 
 	save_num = pfile_get_save_num_from_name(plr[myplr]._pName);
@@ -539,7 +542,7 @@ void pfile_get_game_name(char *dst)
 void pfile_remove_temp_files()
 {
 	if (gbMaxPlayers <= 1) {
-		unsigned int save_num = pfile_get_save_num_from_name(plr[myplr]._pName);
+		DWORD save_num = pfile_get_save_num_from_name(plr[myplr]._pName);
 		if (!pfile_open_archive(FALSE, save_num))
 			app_fatal("Unable to write to save file archive");
 		mpqapi_remove_hash_entries(GetTempSaveNames);
@@ -565,8 +568,7 @@ BOOL __stdcall GetTempSaveNames(DWORD dwIndex, char *szTemp)
 
 void pfile_rename_temp_to_perm()
 {
-	unsigned int save_num;
-	unsigned int i;
+	DWORD save_num, i;
 	char TempName[MAX_PATH];
 	char PermName[MAX_PATH];
 
@@ -606,7 +608,7 @@ BOOL __stdcall GetPermSaveNames(DWORD dwIndex, char *szPerm)
 
 void pfile_write_save_file(const char *pszName, BYTE *pbData, DWORD dwLen, DWORD qwLen)
 {
-	unsigned int save_num;
+	DWORD save_num;
 	char FileName[MAX_PATH];
 
 	pfile_strcpy(FileName, pszName);
@@ -631,11 +633,10 @@ void pfile_strcpy(char *dst, const char *src)
 
 BYTE *pfile_read(const char *pszName, DWORD *pdwLen)
 {
-	unsigned int save_num;
+	DWORD save_num, nread;
 	char FileName[MAX_PATH];
 	HANDLE archive, save;
 	BYTE *buf;
-	DWORD nread;
 
 	pfile_strcpy(FileName, pszName);
 	save_num = pfile_get_save_num_from_name(plr[myplr]._pName);

@@ -10,7 +10,7 @@ BOOL WCloseFile(HANDLE file)
 
 LONG WGetFileSize(HANDLE hsFile, DWORD *lpFileSizeHigh)
 {
-	unsigned int retry = 0;
+	DWORD retry = 0;
 	LONG ret;
 
 	while ((ret = SFileGetFileSize(hsFile, lpFileSizeHigh)) == 0)
@@ -19,7 +19,7 @@ LONG WGetFileSize(HANDLE hsFile, DWORD *lpFileSizeHigh)
 	return ret;
 }
 
-void WGetFileArchive(HANDLE hsFile, unsigned int *retries, const char *FileName)
+void WGetFileArchive(HANDLE hsFile, DWORD *retries, const char *FileName)
 {
 	HANDLE archive;
 
@@ -35,7 +35,7 @@ void WGetFileArchive(HANDLE hsFile, unsigned int *retries, const char *FileName)
 
 BOOL WOpenFile(const char *FileName, HANDLE *phsFile, BOOL mayNotExist)
 {
-	unsigned int retry = 0;
+	DWORD retry = 0;
 
 	while (1) {
 		if (SFileOpenFile(FileName, phsFile))
@@ -49,7 +49,7 @@ BOOL WOpenFile(const char *FileName, HANDLE *phsFile, BOOL mayNotExist)
 
 void WReadFile(HANDLE hsFile, LPVOID buf, DWORD to_read)
 {
-	unsigned int retry = 0;
+	DWORD retry = 0;
 	DWORD readed;
 	int initial_pos = WSetFilePointer(hsFile, 0, NULL, FILE_CURRENT);
 
@@ -61,7 +61,7 @@ void WReadFile(HANDLE hsFile, LPVOID buf, DWORD to_read)
 
 int WSetFilePointer(HANDLE file1, int offset, HANDLE file2, int whence)
 {
-	unsigned int retry = 0;
+	DWORD retry = 0;
 	int result;
 
 	while (1) {

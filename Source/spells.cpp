@@ -27,8 +27,7 @@ int GetManaAmount(int id, int sn)
 		adj = sl * (spelldata[SPL_RESURRECT].sManaCost / 8);
 	}
 
-	if (spelldata[sn].sManaCost == 255) // TODO: check sign
-	{
+	if (spelldata[sn].sManaCost == 255) {
 		i = (BYTE)plr[id]._pMaxManaBase;
 	} else {
 		i = spelldata[sn].sManaCost;
@@ -107,17 +106,16 @@ BOOL CheckSpell(int id, int sn, BYTE st, BOOL manaonly)
 	return result;
 }
 
-void CastSpell(int id, int spl, int sx, int sy, int dx, int dy, BOOL caster, int spllvl)
+void CastSpell(int id, int spl, int sx, int sy, int dx, int dy, int caster, int spllvl)
 {
 	int i;
 	int dir; // missile direction
 
-	// ugly switch, but generates the right code
 	switch (caster) {
-	case TRUE:
+	case 1:
 		dir = monster[id]._mdir;
 		break;
-	case FALSE:
+	case 0:
 		// caster must be 0 already in this case, but oh well,
 		// it's needed to generate the right code
 		caster = 0;
@@ -145,8 +143,10 @@ void CastSpell(int id, int spl, int sx, int sy, int dx, int dy, BOOL caster, int
 	}
 }
 
-// pnum: player index
-// rid: target player index
+/**
+ * @param pnum player index
+ * @param rid target player index
+ */
 void DoResurrect(int pnum, int rid)
 {
 	int hp;
