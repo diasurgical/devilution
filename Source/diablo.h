@@ -124,7 +124,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 void diablo_parse_flags(char *args);
 void diablo_init_screen();
 BOOL diablo_find_window(LPCSTR lpClassName);
-void diablo_reload_process(HMODULE hModule);
+void diablo_reload_process(HINSTANCE hInstance);
 BOOL PressEscKey();
 LRESULT CALLBACK DisableInputWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
