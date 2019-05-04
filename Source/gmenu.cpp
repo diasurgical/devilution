@@ -252,18 +252,17 @@ void gmenu_clear_buffer(int x, int y, int width, int height)
 
 int gmenu_get_lfont(TMenuItem *pItem)
 {
-	char *v2;         // eax
-	int i;            // edx
-	unsigned char v4; // cl
+	char *text;
+	int i;
+	BYTE c;
 
 	if (pItem->dwFlags & 0x40000000)
 		return 490;
-	v2 = pItem->pszStr;
-	for (i = 0;; i += lfontkern[lfontframe[gbFontTransTbl[v4]]] + 2) {
-		v4 = *v2;
-		if (!*v2)
-			break;
-		++v2;
+	text = pItem->pszStr;
+	i = 0;
+	while (*text) {
+		c = gbFontTransTbl[(BYTE)*text++];
+		i += lfontkern[lfontframe[c]] + 2;
 	}
 	return i - 2;
 }
