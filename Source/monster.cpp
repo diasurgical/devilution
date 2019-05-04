@@ -6082,7 +6082,6 @@ BOOL PosOkMonst3(int i, int x, int y)
 {
 	int j, oi, objtype, mi;
 	BOOL ret, fire, isdoor;
-	CMonster *monst;
 
 	fire = FALSE;
 	ret = TRUE;
@@ -6115,11 +6114,8 @@ BOOL PosOkMonst3(int i, int x, int y)
 				}
 			}
 		}
-		if(fire) {
-			monst = monster[i].MType;
-			if(!(monster[i].mMagicRes & IMUNE_FIRE) || monst->mtype == MT_DIABLO) {
-				ret = FALSE;
-			}
+		if(fire && (!(monster[i].mMagicRes & IMUNE_FIRE) || monster[i].MType->mtype == MT_DIABLO)) {
+			ret = FALSE;
 		}
 	}
 
