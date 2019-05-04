@@ -182,7 +182,8 @@ void DrawHelpLine(int always_0, int help_line_nr, char *text, char color)
 	width = 0;
 	off = PitchTbl[SStringY[help_line_nr] + 204] + always_0 + 96;
 	while (*text) {
-		c = gbFontTransTbl[(unsigned char)*text++];
+		c = gbFontTransTbl[(BYTE)*text];
+		text++;
 		c = fontframe[c];
 		width += fontkern[c] + 1;
 		if (c) {
