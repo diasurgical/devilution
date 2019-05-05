@@ -339,47 +339,20 @@ void DRLG_L4SetSPRoom(int rx1, int ry1)
 
 void L4SaveQuads()
 {
-	char *v0;      // esi
-	char *v1;      // edx
-	char *v2;      // edi
-	char *v3;      // eax
-	char *v4;      // ecx
-	char *v5;      // ebx
-	signed int v6; // [esp+Ch] [ebp-14h]
-	signed int v7; // [esp+10h] [ebp-10h]
-	char *v8;      // [esp+14h] [ebp-Ch]
-	char *v9;      // [esp+18h] [ebp-8h]
-	char *v10;     // [esp+1Ch] [ebp-4h]
+	int i, j, x, y;
 
-	v0 = &dflags[39][l4holdy - 40 * l4holdx]; /* check */
-	v1 = &dflags[39][-l4holdy + 39 + -40 * l4holdx];
-	v9 = &dflags[l4holdx][l4holdy];
-	v8 = &dflags[0][40 * l4holdx - l4holdy + 39];
-	v6 = 14;
-	do {
-		v2 = v1;
-		v10 = v8;
-		v3 = v9;
-		v4 = v0;
-		v7 = 14;
-		do {
-			v5 = v10;
-			v10 += 40;
-			*v3 = 1;
-			*v4 = 1;
-			*v5 = 1;
-			*v2 = 1;
-			v4 -= 40;
-			v2 -= 40;
-			v3 += 40;
-			--v7;
-		} while (v7);
-		++v9;
-		--v8;
-		--v1;
-		++v0;
-		--v6;
-	} while (v6);
+	y = 0;
+	for(j = 0; j < 14; j++) {
+		x = 0;
+		for(i = 0; i < 14; i++) {
+			dflags[i + l4holdx][j + l4holdy] = 1;
+			dflags[39 - x - l4holdx][j + l4holdy] = 1;
+			dflags[i + l4holdx][39 - y - l4holdy] = 1;
+			dflags[39 - x - l4holdx][39 - y - l4holdy] = 1;
+			x++;
+		}
+		y++;
+	}
 }
 // 528A34: using guessed type int l4holdx;
 // 528A38: using guessed type int l4holdy;
