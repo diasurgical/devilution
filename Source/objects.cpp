@@ -1510,12 +1510,17 @@ void Obj_Circle(int i)
 			object[i]._oAnimFrame = 2;
 		if (object[i]._otype == OBJ_MCIRCLE2)
 			object[i]._oAnimFrame = 4;
-		if (ox == 45 && oy == 47) {
-			object[i]._oVar6 = 2;
-			return;
-		} else if (object[i]._ox == 26 && object[i]._oy == 46) {
+		if (ox == 45) {
+			if (oy == 47) {
+				object[i]._oVar6 = 2;
+				return;
+			}
+		}
+		else {
+			if (object[i]._ox == 26 && object[i]._oy == 46) {
 			object[i]._oVar6 = 1;
 			return;
+			}
 		}
 		object[i]._oVar6 = 0;
 		if (ox == 35 && object[i]._oy == 36 && object[i]._oVar5 == 3) {
