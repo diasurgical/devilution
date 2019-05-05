@@ -406,15 +406,14 @@ void gmenu_enable(TMenuItem *pMenuItem, BOOL enable)
 
 void gmenu_slider_1(TMenuItem *pItem, int min, int max, int gamma)
 {
-	unsigned int v4; // esi
-	int v5;          // eax
+	int v;
 
-	v4 = pItem->dwFlags;
-	v5 = (pItem->dwFlags >> 12) & 0xFFF;
-	if (v5 < 2)
-		v5 = 2;
-	_LOWORD(v4) = v4 & 0xF000;
-	pItem->dwFlags = v4 | (v5 * (gamma - min) + (max - min - 1) / 2) / (max - min);
+	/// ASSERT: assertassert(pItem, "gmenu.cpp", 445);
+	v = (int)(pItem->dwFlags & 0xFFF000) >> 12;
+	if (v < 2)
+		v = 2;
+	pItem->dwFlags &= 0xFFFFF000;
+	pItem->dwFlags |= ((max - min - 1) / 2 + (gamma - min) * v) / (max - min);
 }
 
 int gmenu_slider_get(TMenuItem *pItem, int min, int max)
