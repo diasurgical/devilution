@@ -1742,55 +1742,37 @@ LABEL_33:
 // 4B8CC1: using guessed type char pcursobj;
 // 4B8CC2: using guessed type char pcursplr;
 
-void control_print_info_str(int y, char *str, BOOLEAN center, int lines)
+void control_print_info_str(int y, char *str, BOOL center, int lines)
 {
-	int v4;            // edi
-	char *v5;          // ebx
-	unsigned char v6;  // cl
-	signed int v7;     // eax
-	char *v8;          // esi
-	int v9;            // eax
-	unsigned char v10; // esi
-	unsigned char v11; // al
-	int width;         // [esp+18h] [ebp+Ch]
+	BYTE c;
+	char *tmp;
+	int screen_x, line, nOffset;
 
-	v4 = 0;
-	v5 = str;
-	width = lineoffset[y + 4 * lines + lines];
+	line = 0;
+	nOffset = lineoffset[y + 4 * lines + lines];
 	if (center == 1) {
-		v6 = *str;
-		v7 = 0;
-		v8 = str;
-		if (!*str)
-			goto LABEL_14;
-		do {
-			++v8;
-			v7 += fontkern[fontframe[gbFontTransTbl[v6]]] + 2;
-			v6 = *v8;
-		} while (*v8);
-		if (v7 < 288)
-		LABEL_14:
-			v4 = (288 - v7) >> 1;
-		width += v4;
+		screen_x = 0;
+		tmp = str;
+		while (*tmp) {
+			c = gbFontTransTbl[(BYTE)*tmp++];
+			screen_x += fontkern[fontframe[c]] + 1;
+		}
+		if (screen_x < 288)
+			line = (288 - screen_x) >> 1;
+		nOffset += line;
 	}
-	while (1) {
-		v11 = *v5;
-		if (!*v5)
-			break;
-		++v5;
-		v9 = gbFontTransTbl[v11];
-		_LOBYTE(v9) = fontframe[v9];
-		v10 = (unsigned char)v9;
-		v4 += fontkern[(unsigned char)v9] + 2;
-		if ((_BYTE)v9) {
-			if (v4 < 288) {
-				CPrintString(width, v10, infoclr);
+	while (*str) {
+		c = gbFontTransTbl[(BYTE)*str++];
+		c = fontframe[c];
+		line += fontkern[c] + 2;
+		if (c) {
+			if (line < 288) {
+				CPrintString(nOffset, c, infoclr);
 			}
 		}
-		width += fontkern[v10] + 2;
+		nOffset += fontkern[c] + 2;
 	}
 }
-// 4B883C: using guessed type int infoclr;
 
 void PrintGameStr(int x, int y, char *str, int color)
 {
