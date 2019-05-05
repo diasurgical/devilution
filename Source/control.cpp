@@ -573,10 +573,6 @@ void SetSpell()
 		plr[myplr]._pRSplType = pSplType;
 	}
 }
-// 4B8834: using guessed type int pSpell;
-// 4B8954: using guessed type int pSplType;
-// 4B8C98: using guessed type int spselflag;
-// 52571C: using guessed type int drawpanflag;
 
 void SetSpeedSpell(int slot)
 {
@@ -621,7 +617,6 @@ void ToggleSpell(int slot)
 		drawpanflag = 255;
 	}
 }
-// 52571C: using guessed type int drawpanflag;
 
 void CPrintString(int nOffset, int nCel, char col)
 {
@@ -1261,7 +1256,6 @@ void ClearCtrlPan()
 	DrawPanelBox(0, sgbPlrTalkTbl + 16, 640, 128, 64, 512);
 	DrawInfoBox();
 }
-// 4B8840: using guessed type int sgbPlrTalkTbl;
 
 void DrawCtrlPan()
 {
@@ -1334,7 +1328,6 @@ void DoSpeedBook()
 
 	SetCursorPos(X, Y);
 }
-// 4B8C98: using guessed type int spselflag;
 
 void DoPanBtn()
 {
@@ -1364,21 +1357,16 @@ void control_set_button_down(int btn_id)
 
 void control_check_btn_press()
 {
-	int v0; // edx
-	int v1; // esi
-
-	v0 = MouseX;
-	v1 = MouseY;
 	if (MouseX >= PanBtnPos[3][0]
 	    && MouseX <= PanBtnPos[3][0] + PanBtnPos[3][2]
 	    && MouseY >= PanBtnPos[3][1]
 	    && MouseY <= PanBtnPos[3][1] + PanBtnPos[3][3]) {
 		control_set_button_down(3);
 	}
-	if (v0 >= PanBtnPos[6][0]
-	    && v0 <= PanBtnPos[6][0] + PanBtnPos[6][2]
-	    && v1 >= PanBtnPos[6][1]
-	    && v1 <= PanBtnPos[6][1] + PanBtnPos[6][3]) {
+	if (MouseX >= PanBtnPos[6][0]
+	    && MouseX <= PanBtnPos[6][0] + PanBtnPos[6][2]
+	    && MouseY >= PanBtnPos[6][1]
+	    && MouseY <= PanBtnPos[6][1] + PanBtnPos[6][3]) {
 		control_set_button_down(6);
 	}
 }
@@ -1394,53 +1382,34 @@ void DoAutoMap()
 		InitDiabloMsg(EMSG_NO_AUTOMAP_IN_TOWN);
 	}
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 void CheckPanelInfo()
 {
-	int v0;         // edi
-	int v1;         // eax
-	int v2;         // ecx
-	int v3;         // ecx
-	int v4;         // edi
-	int v5;         // eax
-	int *v6;        // edx
-	int v7;         // ebx
-	int v8;         // ebx
-	int *v9;        // eax
-	signed int v10; // edx
-	int v11;        // ecx
-	int v12;        // [esp+10h] [ebp-4h]
+	int i, c, v, s;
 
-	v0 = 0;
 	panelflag = 0;
 	ClearPanel();
-	if (numpanbtns > 0) {
-		do {
-			v1 = v0;
-			v2 = PanBtnPos[v0][0];
-			if (MouseX >= v2 && MouseX <= v2 + PanBtnPos[v1][2]) {
-				v3 = PanBtnPos[v1][1];
-				if (MouseY >= v3 && MouseY <= v3 + PanBtnPos[v1][3]) {
-					if (v0 == 7) {
-						if (FriendlyMode)
-							strcpy(infostr, "Player friendly");
-						else
-							strcpy(infostr, "Player attack");
-					} else {
-						strcpy(infostr, PanBtnStr[v0]);
-					}
-					if (PanBtnHotKey[v0]) {
-						sprintf(tempstr, "Hotkey : %s", PanBtnHotKey[v0]);
-						AddPanelString(tempstr, 1);
-					}
-					infoclr = COL_WHITE;
-					panelflag = 1;
-					pinfoflag = TRUE;
-				}
+	for (i = 0; i < numpanbtns; i++) {
+		if (MouseX >= PanBtnPos[i][0]
+		    && MouseX <= PanBtnPos[i][0] + PanBtnPos[i][2]
+		    && MouseY >= PanBtnPos[i][1]
+		    && MouseY <= PanBtnPos[i][1] + PanBtnPos[i][3]) {
+			if (i != 7) {
+				strcpy(infostr, PanBtnStr[i]);
+			} else {
+				if (FriendlyMode)
+					strcpy(infostr, "Player friendly");
+				else
+					strcpy(infostr, "Player attack");
 			}
-			++v0;
-		} while (v0 < numpanbtns);
+			if (PanBtnHotKey[i]) {
+				sprintf(tempstr, "Hotkey : %s", PanBtnHotKey[i]);
+				AddPanelString(tempstr, 1);
+			}
+			infoclr = COL_WHITE;
+			panelflag = 1;
+			pinfoflag = TRUE;
+		}
 	}
 	if (!spselflag && MouseX >= 565 && MouseX < 621 && MouseY >= 416 && MouseY < 472) {
 		strcpy(infostr, "Select current spell button");
@@ -1449,62 +1418,58 @@ void CheckPanelInfo()
 		pinfoflag = TRUE;
 		strcpy(tempstr, "Hotkey : 's'");
 		AddPanelString(tempstr, 1);
-		v4 = plr[myplr]._pRSpell;
-		if (v4 != -1) {
-			switch (_LOBYTE(plr[myplr]._pRSplType)) {
+		v = plr[myplr]._pRSpell;
+		if (v != -1) {
+			switch (plr[myplr]._pRSplType) {
 			case RSPLTYPE_SKILL:
-				sprintf(tempstr, "%s Skill", spelldata[v4].sSkillText);
-			LABEL_54:
+				sprintf(tempstr, "%s Skill", spelldata[v].sSkillText);
 				AddPanelString(tempstr, 1);
 				break;
 			case RSPLTYPE_SPELL:
-				sprintf(tempstr, "%s Spell", spelldata[v4].sNameText);
+				sprintf(tempstr, "%s Spell", spelldata[v].sNameText);
 				AddPanelString(tempstr, 1);
-				v11 = plr[myplr]._pISplLvlAdd + plr[myplr]._pSplLvl[v4];
-				if (v11 < 0)
-					v11 = 0;
-				if (v11)
-					sprintf(tempstr, "Spell Level %i", v11);
-				else
+				c = plr[myplr]._pISplLvlAdd + plr[myplr]._pSplLvl[v];
+				if (c < 0)
+					c = 0;
+				if (!c)
 					sprintf(tempstr, "Spell Level 0 - Unusable");
-				goto LABEL_54;
-			case RSPLTYPE_SCROLL:
-				sprintf(tempstr, "Scroll of %s", spelldata[v4].sNameText);
+				else
+					sprintf(tempstr, "Spell Level %i", c);
 				AddPanelString(tempstr, 1);
-				v12 = 0;
-				v5 = myplr;
-				if (plr[myplr]._pNumInv > 0) {
-					v6 = &plr[v5].InvList[0]._iMiscId;
-					v7 = plr[myplr]._pNumInv;
-					do {
-						if (*(v6 - 53) != -1 && (*v6 == IMISC_SCROLL || *v6 == IMISC_SCROLLT) && v6[1] == v4)
-							++v12;
-						v6 += 92;
-						--v7;
-					} while (v7);
+				break;
+			case RSPLTYPE_SCROLL:
+				sprintf(tempstr, "Scroll of %s", spelldata[v].sNameText);
+				AddPanelString(tempstr, 1);
+				s = 0;
+				for (i = 0; i < plr[myplr]._pNumInv; i++) {
+					if (plr[myplr].InvList[i]._itype != -1
+					    && (plr[myplr].InvList[i]._iMiscId == IMISC_SCROLL || plr[myplr].InvList[i]._iMiscId == IMISC_SCROLLT)
+					    && plr[myplr].InvList[i]._iSpell == v) {
+						s++;
+					}
 				}
-				v8 = v12;
-				v9 = &plr[v5].SpdList[0]._iMiscId;
-				v10 = MAXBELTITEMS;
-				do {
-					if (*(v9 - 53) != -1 && (*v9 == IMISC_SCROLL || *v9 == IMISC_SCROLLT) && v9[1] == v4)
-						++v8;
-					v9 += 92;
-					--v10;
-				} while (v10);
-				if (v8 == 1)
+				for (i = 0; i < MAXBELTITEMS; i++) {
+					if (plr[myplr].SpdList[i]._itype != -1
+					    && (plr[myplr].SpdList[i]._iMiscId == IMISC_SCROLL || plr[myplr].SpdList[i]._iMiscId == IMISC_SCROLLT)
+					    && plr[myplr].SpdList[i]._iSpell == v) {
+						s++;
+					}
+				}
+				if (s == 1)
 					strcpy(tempstr, "1 Scroll");
 				else
-					sprintf(tempstr, "%i Scrolls", v8);
-				goto LABEL_54;
+					sprintf(tempstr, "%i Scrolls", s);
+				AddPanelString(tempstr, 1);
+				break;
 			case RSPLTYPE_CHARGES:
-				sprintf(tempstr, "Staff of %s", spelldata[v4].sNameText);
+				sprintf(tempstr, "Staff of %s", spelldata[v].sNameText);
 				AddPanelString(tempstr, 1);
 				if (plr[myplr].InvBody[INVLOC_HAND_LEFT]._iCharges == 1)
 					strcpy(tempstr, "1 Charge");
 				else
 					sprintf(tempstr, "%i Charges", plr[myplr].InvBody[INVLOC_HAND_LEFT]._iCharges);
-				goto LABEL_54;
+				AddPanelString(tempstr, 1);
+				break;
 			}
 		}
 	}
@@ -1592,10 +1557,6 @@ void CheckBtnUp()
 	if (gamemenuOff)
 		gamemenu_off();
 }
-// 484368: using guessed type int FriendlyMode;
-// 4B8960: using guessed type int talkflag;
-// 4B8968: using guessed type int sbookflag;
-// 646D00: using guessed type char qtextflag;
 
 void FreeControlPan()
 {
