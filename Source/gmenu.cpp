@@ -431,5 +431,6 @@ int gmenu_slider_get(TMenuItem *pItem, int min, int max)
 
 void gmenu_slider_3(TMenuItem *pItem, int dwTicks)
 {
-	pItem->dwFlags ^= (pItem->dwFlags ^ (dwTicks << 12)) & 0xFFF000;
+	pItem->dwFlags &= 0xFF000FFF;
+	pItem->dwFlags |= (dwTicks << 12) & 0xFFF000;
 }
