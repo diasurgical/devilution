@@ -1798,8 +1798,7 @@ void PrintGameStr(int x, int y, char *str, int color)
 	int off;
 	off = PitchTbl[y + 160] + x + 64;
 	while (*str) {
-		c = gbFontTransTbl[(BYTE)*str];
-		str++;
+		c = gbFontTransTbl[(BYTE)*str++];
 		c = fontframe[c];
 		if (c)
 			CPrintString(off, c, color);
@@ -2034,47 +2033,31 @@ void DrawChr()
 
 void ADD_PlrStringXY(int x, int y, int width, char *pszStr, char col)
 {
-	int v5;            // eax
-	char *v6;          // edx
-	unsigned char v7;  // al
-	int v8;            // esi
-	int v9;            // edi
-	int v10;           // ecx
-	unsigned char v11; // bl
-	unsigned char v12; // al
-	int v13;           // ebx
-	int widtha;        // [esp+Ch] [ebp-4h]
-	int widthb;        // [esp+Ch] [ebp-4h]
+	BYTE c;
+	char *tmp;
+	int nOffset, screen_x, line, widthOffset;
 
-	v5 = PitchTbl[y + 160];
-	v6 = pszStr;
-	widtha = v5 + x + 64;
-	v7 = *pszStr;
-	v8 = width - x + 1;
-	v9 = 0;
-	v10 = 0;
-	if (*pszStr) {
-		v11 = *pszStr;
-		do {
-			++v6;
-			v10 += fontkern[fontframe[gbFontTransTbl[v11]]] + 1;
-			v11 = *v6;
-		} while (*v6);
+	nOffset = x + PitchTbl[y + 160] + 64;
+	widthOffset = width - x + 1;
+	line = 0;
+	screen_x = 0;
+	tmp = pszStr;
+	while (*tmp) {
+		c = gbFontTransTbl[(BYTE)*tmp++];
+		screen_x += fontkern[fontframe[c]] + 1;
 	}
-	if (v10 < v8)
-		v9 = (v8 - v10) >> 1;
-	widthb = v9 + widtha;
-	while (v7) {
-		++pszStr;
-		v12 = fontframe[gbFontTransTbl[v7]];
-		v13 = v12;
-		v9 += fontkern[v12] + 1;
-		if (v12) {
-			if (v9 < v8)
-				CPrintString(widthb, v12, col);
+	if (screen_x < widthOffset)
+		line = (widthOffset - screen_x) >> 1;
+	nOffset += line;
+	while (*pszStr) {
+		c = gbFontTransTbl[(BYTE)*pszStr++];
+		c = fontframe[c];
+		line += fontkern[c] + 1;
+		if (c) {
+			if (line < widthOffset)
+				CPrintString(nOffset, c, col);
 		}
-		widthb += fontkern[v13] + 1;
-		v7 = *pszStr;
+		nOffset += fontkern[c] + 1;
 	}
 }
 
@@ -2438,7 +2421,7 @@ void DrawSpellBook()
 
 void PrintSBookStr(int x, int y, BOOL cjustflag, char *pszStr, char col)
 {
-	BYTE nCel;
+	BYTE c;
 	char *tmp;
 	int screen_x, line, width;
 
@@ -2448,24 +2431,22 @@ void PrintSBookStr(int x, int y, BOOL cjustflag, char *pszStr, char col)
 		screen_x = 0;
 		tmp = pszStr;
 		while (*tmp) {
-			nCel = gbFontTransTbl[(BYTE)*tmp];
-			tmp++;
-			screen_x += fontkern[fontframe[nCel]] + 1;
+			c = gbFontTransTbl[(BYTE)*tmp++];
+			screen_x += fontkern[fontframe[c]] + 1;
 		}
 		if (screen_x < 222)
 			line = (222 - screen_x) >> 1;
 		width += line;
 	}
 	while (*pszStr) {
-		nCel = gbFontTransTbl[(BYTE)*pszStr];
-		pszStr++;
-		nCel = fontframe[nCel];
-		line += fontkern[nCel] + 1;
-		if (nCel) {
+		c = gbFontTransTbl[(BYTE)*pszStr++];
+		c = fontframe[c];
+		line += fontkern[c] + 1;
+		if (c) {
 			if (line <= 222)
-				CPrintString(width, nCel, col);
+				CPrintString(width, c, col);
 		}
-		width += fontkern[nCel] + 1;
+		width += fontkern[c] + 1;
 	}
 }
 
