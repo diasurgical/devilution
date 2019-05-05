@@ -124,15 +124,13 @@ BOOL StartGame(BOOL bNewGame, BOOL bSinglePlayer)
 
 void run_game_loop(unsigned int uMsg)
 {
-	//int v3; // eax
-	BOOLEAN v5; // zf
-	//int v6; // eax
-	signed int v7;    // [esp+8h] [ebp-24h]
-	WNDPROC saveProc; // [esp+Ch] [ebp-20h]
-	MSG msg;          // [esp+10h] [ebp-1Ch]
+	BOOL bLoop;
+	WNDPROC saveProc;
+	MSG msg;
 
-	nthread_ignore_mutex(1);
+	nthread_ignore_mutex(TRUE);
 	start_game(uMsg);
+	/// ASSERT: assert(ghMainWnd);
 	saveProc = SetWindowProc(GM_Game);
 	control_update_life_mana();
 	msg_process_net_packets();
@@ -143,14 +141,15 @@ void run_game_loop(unsigned int uMsg)
 	DrawAndBlit();
 	PaletteFadeIn(8);
 	drawpanflag = 255;
-	gbGameLoopStartup = 1;
-	nthread_ignore_mutex(0);
-	while (gbRunGame) {
+	gbGameLoopStartup = TRUE;
+	nthread_ignore_mutex(FALSE);
+
+	while(gbRunGame) {
 		diablo_color_cyc_logic();
-		if (PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE)) {
+		if(PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE)) {
 			SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_ABOVE_NORMAL);
-			while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
-				if (msg.message == WM_QUIT) {
+			while(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+				if(msg.message == WM_QUIT) {
 					gbRunGameResult = FALSE;
 					gbRunGame = FALSE;
 					break;
@@ -158,36 +157,39 @@ void run_game_loop(unsigned int uMsg)
 				TranslateMessage(&msg);
 				DispatchMessage(&msg);
 			}
-			if (!gbRunGame || (v7 = 1, !nthread_has_500ms_passed(0)))
-				v7 = 0;
+			bLoop = gbRunGame && nthread_has_500ms_passed(FALSE);
 			SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_NORMAL);
-			v5 = v7 == 0;
-		} else {
-			//_LOBYTE(v6) = nthread_has_500ms_passed();
-			v5 = nthread_has_500ms_passed(0) == 0;
-		}
-		if (!v5) {
-			multi_process_network_packets();
-			game_loop(gbGameLoopStartup);
-			msgcmd_send_chat();
-			gbGameLoopStartup = 0;
-			DrawAndBlit();
-		}
+			if(!bLoop) {
+				continue;
+			}
+		} else if(!nthread_has_500ms_passed(FALSE)) {
 #ifdef SLEEPFIX
-		Sleep(1);
+			Sleep(1);
 #endif
+			continue;
+		}
+		multi_process_network_packets();
+		game_loop(gbGameLoopStartup);
+		msgcmd_send_chat();
+		gbGameLoopStartup = FALSE;
+		DrawAndBlit();
 	}
-	if ((unsigned char)gbMaxPlayers > 1u)
+
+	if(gbMaxPlayers > 1) {
 		pfile_write_hero();
+	}
+
 	pfile_flush_W();
 	PaletteFadeOut(8);
-	SetCursor_(CURSOR_NONE);
+	SetCursor_(0);
 	ClearScreenBuffer();
 	drawpanflag = 255;
-	scrollrt_draw_game_screen(1);
-	SetWindowProc(saveProc);
+	scrollrt_draw_game_screen(TRUE);
+	saveProc = SetWindowProc(saveProc);
+	/// ASSERT: assert(saveProc == GM_Game);
 	free_game();
-	if (cineflag) {
+
+	if(cineflag) {
 		cineflag = FALSE;
 		DoEnding();
 	}

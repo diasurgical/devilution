@@ -735,7 +735,7 @@ void CalcPlrBookVals(int p)
 	}
 
 	for (i = 0; i < plr[p]._pNumInv; i++) {
-		if (plr[p].InvList[i]._itype == ITYPE_NONE && plr[p].InvList[i]._iMiscId == IMISC_BOOK) {
+		if (plr[p].InvList[i]._itype == ITYPE_MISC && plr[p].InvList[i]._iMiscId == IMISC_BOOK) {
 			plr[p].InvList[i]._iMinMag = spelldata[plr[p].InvList[i]._iSpell].sMinInt;
 			slvl = plr[p]._pSplLvl[plr[p].InvList[i]._iSpell];
 
@@ -1473,10 +1473,10 @@ void SaveItemPower(int i, int power, int param1, int param2, int minval, int max
 		item[i]._iPLDex -= r;
 		item[i]._iPLVit -= r;
 		break;
-	case IPL_GETHIT:
+	case IPL_GETHIT_CURSE:
 		item[i]._iPLGetHit += r;
 		break;
-	case IPL_GETHIT_CURSE:
+	case IPL_GETHIT:
 		item[i]._iPLGetHit -= r;
 		break;
 	case IPL_LIFE:
@@ -2184,10 +2184,10 @@ void CreateRndUseful(int pnum, int x, int y, BOOL sendmsg)
 	int ii;
 
 	if (numitems < MAXITEMS) {
-		ii = itemactive[0];
+		ii = itemavail[0];
 		GetSuperItemSpace(x, y, ii);
-		itemactive[0] = itemactive[MAXITEMS - numitems - 1];
-		itemavail[numitems] = ii;
+		itemavail[0] = itemavail[MAXITEMS - numitems - 1];
+		itemactive[numitems] = ii;
 		SetupAllUseful(ii, GetRndSeed(), currlevel);
 		if (sendmsg) {
 			NetSendCmdDItem(FALSE, ii);

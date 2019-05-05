@@ -6082,46 +6082,45 @@ BOOL PosOkMonst2(int i, int x, int y)
 
 BOOL PosOkMonst3(int i, int x, int y)
 {
-	int oi, mi, j, objtype;
+	int j, oi, objtype, mi;
 	BOOL ret, fire, isdoor;
 
 	fire = FALSE;
+	ret = TRUE;
 	isdoor = FALSE;
-	if (dObject[x][y]) {
+
+	if(ret && dObject[x][y] != 0) {
 		oi = dObject[x][y] > 0 ? dObject[x][y] - 1 : -(dObject[x][y] + 1);
 		objtype = object[oi]._otype;
-		isdoor = TRUE;
-		if (objtype != OBJ_L1LDOOR
-		    && objtype != OBJ_L1RDOOR
-		    && objtype != OBJ_L2LDOOR
-		    && objtype != OBJ_L2RDOOR
-		    && objtype != OBJ_L3LDOOR
-		    && objtype != OBJ_L3RDOOR) {
-			isdoor = FALSE;
+		isdoor = objtype == OBJ_L1LDOOR || objtype == OBJ_L1RDOOR
+			  || objtype == OBJ_L2LDOOR || objtype == OBJ_L2RDOOR
+			  || objtype == OBJ_L3LDOOR || objtype == OBJ_L3RDOOR;
+		if(object[oi]._oSolidFlag && !isdoor) {
+			ret = FALSE;
 		}
-		if (object[oi]._oSolidFlag && !isdoor)
-			return FALSE;
 	}
-
-	if (SolidLoc(x, y) && !isdoor || dPlayer[x][y] || dMonster[x][y])
-		return FALSE;
-
-	ret = TRUE;
-	if (dMissile[x][y] && i >= 0) {
+	if(ret) {
+		ret = (!SolidLoc(x, y) || isdoor) && dPlayer[x][y] == 0 && dMonster[x][y] == 0;
+	}
+	if(ret && dMissile[x][y] != 0 && i >= 0) {
 		mi = dMissile[x][y];
-		if (mi > 0) {
-			if (missile[mi]._mitype == MIS_FIREWALL) {
+		if(mi > 0) {
+			if(missile[mi]._mitype == MIS_FIREWALL) {
 				fire = TRUE;
 			} else {
-				for (j = 0; j < nummissiles; j++) {
-					if (missile[missileactive[j]]._mitype == MIS_FIREWALL)
+				for(j = 0; j < nummissiles; j++) {
+					mi = missileactive[j];
+					if(missile[mi]._mitype == MIS_FIREWALL) {
 						fire = TRUE;
+					}
 				}
 			}
 		}
-		if (fire && (!(monster[i].mMagicRes & IMUNE_FIRE) || monster[i].MType->mtype == MT_DIABLO))
+		if(fire && (!(monster[i].mMagicRes & IMUNE_FIRE) || monster[i].MType->mtype == MT_DIABLO)) {
 			ret = FALSE;
+		}
 	}
+
 	return ret;
 }
 

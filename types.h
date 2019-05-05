@@ -73,7 +73,9 @@ DEVILUTION_BEGIN_NAMESPACE
 #endif
 
 // If defined, don't fry the CPU [Default -> Undefined]
+#ifdef _DEBUG
 #define SLEEPFIX
+#endif
 
 // If defined, fix palette glitch in Windows Vista+ [Default -> Undefined]
 //#define COLORFIX
