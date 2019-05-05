@@ -733,7 +733,7 @@ void CalcPlrBookVals(int p)
 	}
 
 	for (i = 0; i < plr[p]._pNumInv; i++) {
-		if (plr[p].InvList[i]._itype == ITYPE_NONE && plr[p].InvList[i]._iMiscId == IMISC_BOOK) {
+		if (plr[p].InvList[i]._itype == ITYPE_MISC && plr[p].InvList[i]._iMiscId == IMISC_BOOK) {
 			plr[p].InvList[i]._iMinMag = spelldata[plr[p].InvList[i]._iSpell].sMinInt;
 			slvl = plr[p]._pSplLvl[plr[p].InvList[i]._iSpell];
 
