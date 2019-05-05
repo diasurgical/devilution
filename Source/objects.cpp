@@ -1577,9 +1577,9 @@ void ActivateTrapLine(int ttype, int tid)
 {
 	int i, oi;
 
-	for (i = ttype; i < nobjects; i++) {
+	for (i = 0; i < nobjects; i++) {
 		oi = objectactive[i];
-		if (object[oi]._otype == i && object[oi]._oVar1 == tid) {
+		if (object[oi]._otype == ttype && object[oi]._oVar1 == tid) {
 			object[oi]._oVar4 = 1;
 			object[oi]._oAnimFlag = 1;
 			object[oi]._oAnimDelay = 1;
