@@ -2094,6 +2094,12 @@ void engine_draw_pixel(int sx, int sy)
 // * global variable instead of reverse flag
 // * condition for pixels_left < 0 removed
 
+/*
+Symmetric Double Step Line Algorithm
+by Brian Wyvill
+from "Graphics Gems", Academic Press, 1990
+*/
+
 #define GG_SWAP(A, B) \
 	{                 \
 		(A) ^= (B);   \
