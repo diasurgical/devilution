@@ -582,6 +582,16 @@ void SetAutomapView(int x, int y)
 	solid = maptype & 0x4000;
 
 	switch (maptype & 0xF) {
+	case 6:
+		if (solid) {
+			if (GetAutomapType(xx - 1, yy, FALSE) & 0x4000)
+				automapview[xx - 1][yy] = 1;
+			if (GetAutomapType(xx + 1, yy, FALSE) == 0x4007)
+				automapview[xx + 1][yy] = 1;
+		} else if (GetAutomapType(xx, yy - 1, FALSE) & 0x4000) {
+			automapview[xx][yy - 1] = 1;
+		}
+		return;
 	case 2:
 		if (solid) {
 			if (GetAutomapType(xx, yy + 1, FALSE) == 0x4007)
@@ -621,16 +631,6 @@ void SetAutomapView(int x, int y)
 				automapview[xx][yy + 1] = 1;
 		} else if (GetAutomapType(xx - 1, yy, FALSE) & 0x4000) {
 			automapview[xx - 1][yy] = 1;
-		}
-		return;
-	case 6:
-		if (solid) {
-			if (GetAutomapType(xx - 1, yy, FALSE) & 0x4000)
-				automapview[xx - 1][yy] = 1;
-			if (GetAutomapType(xx + 1, yy, FALSE) == 0x4007)
-				automapview[xx + 1][yy] = 1;
-		} else if (GetAutomapType(xx, yy - 1, FALSE) & 0x4000) {
-			automapview[xx][yy - 1] = 1;
 		}
 		return;
 	}
