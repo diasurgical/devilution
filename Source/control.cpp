@@ -2031,6 +2031,9 @@ void DrawChr()
 	ADD_PlrStringXY(143, 332, 174, a4, a5[0]);
 }
 
+/**
+ * @brief Identical to MY_PlrStringXY(x, y, width, pszStr, col, 1)
+ */
 void ADD_PlrStringXY(int x, int y, int width, char *pszStr, char col)
 {
 	BYTE c;
@@ -2063,47 +2066,31 @@ void ADD_PlrStringXY(int x, int y, int width, char *pszStr, char col)
 
 void MY_PlrStringXY(int x, int y, int width, char *pszStr, char col, int base)
 {
-	char *v6;          // ebx
-	unsigned char v7;  // al
-	int v8;            // edx
-	int v9;            // esi
-	char *v10;         // edi
-	unsigned char v11; // cl
-	unsigned char v12; // al
-	int v13;           // edi
-	int widtha;        // [esp+Ch] [ebp-4h]
-	int widthb;        // [esp+Ch] [ebp-4h]
-	int v16;           // [esp+18h] [ebp+8h]
+	BYTE c;
+	char *tmp;
+	int nOffset, screen_x, line, widthOffset;
 
-	v6 = pszStr;
-	widtha = PitchTbl[y + 160] + x + 64;
-	v7 = *pszStr;
-	v8 = 0;
-	v9 = width - x + 1;
-	v16 = 0;
-	v10 = pszStr;
-	if (*pszStr) {
-		v11 = *pszStr;
-		do {
-			++v10;
-			v8 += base + fontkern[fontframe[gbFontTransTbl[v11]]];
-			v11 = *v10;
-		} while (*v10);
+	nOffset = x + PitchTbl[y + 160] + 64;
+	widthOffset = width - x + 1;
+	line = 0;
+	screen_x = 0;
+	tmp = pszStr;
+	while (*tmp) {
+		c = gbFontTransTbl[(BYTE)*tmp++];
+		screen_x += fontkern[fontframe[c]] + base;
 	}
-	if (v8 < v9)
-		v16 = (v9 - v8) >> 1;
-	widthb = v16 + widtha;
-	while (v7) {
-		++v6;
-		v12 = fontframe[gbFontTransTbl[v7]];
-		v13 = v12;
-		v16 += base + fontkern[v12];
-		if (v12) {
-			if (v16 < v9)
-				CPrintString(widthb, v12, col);
+	if (screen_x < widthOffset)
+		line = (widthOffset - screen_x) >> 1;
+	nOffset += line;
+	while (*pszStr) {
+		c = gbFontTransTbl[(BYTE)*pszStr++];
+		c = fontframe[c];
+		line += fontkern[c] + base;
+		if (c) {
+			if (line < widthOffset)
+				CPrintString(nOffset, c, col);
 		}
-		widthb += base + fontkern[v13];
-		v7 = *v6;
+		nOffset += fontkern[c] + base;
 	}
 }
 
