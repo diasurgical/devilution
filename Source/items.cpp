@@ -1471,10 +1471,10 @@ void SaveItemPower(int i, int power, int param1, int param2, int minval, int max
 		item[i]._iPLDex -= r;
 		item[i]._iPLVit -= r;
 		break;
-	case IPL_GETHIT:
+	case IPL_GETHIT_CURSE:
 		item[i]._iPLGetHit += r;
 		break;
-	case IPL_GETHIT_CURSE:
+	case IPL_GETHIT:
 		item[i]._iPLGetHit -= r;
 		break;
 	case IPL_LIFE:
