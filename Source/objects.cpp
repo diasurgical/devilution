@@ -1267,8 +1267,8 @@ void AddWeaponRack(int i)
 void AddTorturedBody(int i)
 {
 	object[i]._oRndSeed = GetRndSeed();
-	object[i]._oPreFlag = TRUE;
 	object[i]._oAnimFrame = random(0, 4) + 1;
+	object[i]._oPreFlag = TRUE;
 }
 
 void GetRndObjLoc(int randarea, int *xx, int *yy)
