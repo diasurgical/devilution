@@ -409,7 +409,7 @@ void gmenu_slider_1(TMenuItem *pItem, int min, int max, int gamma)
 	int v;
 
 	/// ASSERT: assertassert(pItem, "gmenu.cpp", 445);
-	v = (signed int)(pItem->dwFlags & 0xFFF000) >> 12;
+	v = (int)(pItem->dwFlags & 0xFFF000) >> 12;
 	if (v < 2)
 		v = 2;
 	pItem->dwFlags &= 0xFFFFF000;
