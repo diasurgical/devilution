@@ -2385,7 +2385,7 @@ void ObjChangeMapResync(int x1, int y1, int x2, int y2)
 	}
 }
 
-void OperateL1Door(int pnum, int i, unsigned char sendflag)
+void OperateL1Door(int pnum, int i, BOOL sendflag)
 {
 	int dpx, dpy;
 
@@ -2745,7 +2745,7 @@ void OperateSarc(int pnum, int i, BOOL sendmsg)
 	}
 }
 
-void OperateL2Door(int pnum, int i, unsigned char sendflag)
+void OperateL2Door(int pnum, int i, BOOL sendflag)
 {
 	int dpx, dpy;
 
@@ -2757,7 +2757,7 @@ void OperateL2Door(int pnum, int i, unsigned char sendflag)
 		OperateL2RDoor(pnum, i, sendflag);
 }
 
-void OperateL3Door(int pnum, int i, unsigned char sendflag)
+void OperateL3Door(int pnum, int i, BOOL sendflag)
 {
 	int dpx, dpy;
 
@@ -3767,37 +3767,37 @@ void OperateObject(int pnum, int i, BOOL TeleFlag)
 	case OBJ_L1RDOOR:
 		if (TeleFlag) {
 			if (object[i]._otype == OBJ_L1LDOOR)
-				OperateL1LDoor(pnum, i, 1);
+				OperateL1LDoor(pnum, i, TRUE);
 			if (object[i]._otype == OBJ_L1RDOOR)
-				OperateL1RDoor(pnum, i, 1);
+				OperateL1RDoor(pnum, i, TRUE);
 			break;
 		}
 		if (pnum == myplr)
-			OperateL1Door(pnum, i, 1);
+			OperateL1Door(pnum, i, TRUE);
 		break;
 	case OBJ_L2LDOOR:
 	case OBJ_L2RDOOR:
 		if (TeleFlag) {
 			if (object[i]._otype == OBJ_L2LDOOR)
-				OperateL2LDoor(pnum, i, 1);
+				OperateL2LDoor(pnum, i, TRUE);
 			if (object[i]._otype == OBJ_L2RDOOR)
-				OperateL2RDoor(pnum, i, 1);
+				OperateL2RDoor(pnum, i, TRUE);
 			break;
 		}
 		if (pnum == myplr)
-			OperateL2Door(pnum, i, 1);
+			OperateL2Door(pnum, i, TRUE);
 		break;
 	case OBJ_L3LDOOR:
 	case OBJ_L3RDOOR:
 		if (TeleFlag) {
 			if (object[i]._otype == OBJ_L3LDOOR)
-				OperateL3LDoor(pnum, i, 1);
+				OperateL3LDoor(pnum, i, TRUE);
 			if (object[i]._otype == OBJ_L3RDOOR)
-				OperateL3RDoor(pnum, i, 1);
+				OperateL3RDoor(pnum, i, TRUE);
 			break;
 		}
 		if (pnum == myplr)
-			OperateL3Door(pnum, i, 1);
+			OperateL3Door(pnum, i, TRUE);
 		break;
 	case OBJ_LEVER:
 	case OBJ_SWITCHSKL:
