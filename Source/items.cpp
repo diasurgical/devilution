@@ -2182,10 +2182,10 @@ void CreateRndUseful(int pnum, int x, int y, BOOL sendmsg)
 	int ii;
 
 	if (numitems < MAXITEMS) {
-		ii = itemactive[0];
+		ii = itemavail[0];
 		GetSuperItemSpace(x, y, ii);
-		itemactive[0] = itemactive[MAXITEMS - numitems - 1];
-		itemavail[numitems] = ii;
+		itemavail[0] = itemavail[MAXITEMS - numitems - 1];
+		itemactive[numitems] = ii;
 		SetupAllUseful(ii, GetRndSeed(), currlevel);
 		if (sendmsg) {
 			NetSendCmdDItem(FALSE, ii);
