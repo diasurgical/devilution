@@ -2088,234 +2088,202 @@ void engine_draw_pixel(int sx, int sy)
 // 52B99C: using guessed type int gbNotInView;
 // 69CF0C: using guessed type int gpBufEnd;
 
-/*
- * Xiaolin Wu's anti-aliased line algorithm
- */
+// Exact copy from https://github.com/erich666/GraphicsGems/blob/dad26f941e12c8bf1f96ea21c1c04cd2206ae7c9/gems/DoubleLine.c
+// Except:
+// * not in view checks
+// * global variable instead of reverse flag
+// * condition for pixels_left < 0 removed
+
+#define GG_SWAP(A, B) \
+	{                 \
+		(A) ^= (B);   \
+		(B) ^= (A);   \
+		(A) ^= (B);   \
+	}
+#define GG_ABSOLUTE(I, J, K) (((I) - (J)) * ((K) = (((I) - (J)) < 0 ? -1 : 1)))
+
 void DrawLine(int x0, int y0, int x1, int y1, BYTE col)
 {
-	int i, sx, sy, dx, dy, nx, ny, xlen, ylen, pixels, remain, xy_same, line_dir, mult_2, mult_4;
+	int dx, dy, incr1, incr2, D, x, y, xend, c, pixels_left;
+	int sign_x, sign_y, step, i;
+	int x1_, y1_;
 
 	gbPixelCol = col;
 
 	gbNotInView = FALSE;
-	if(x0 < 0 + 64 || x0 >= 640 + 64) {
+	if (x0 < 0 + 64 || x0 >= 640 + 64) {
 		gbNotInView = TRUE;
 	}
-	if(x1 < 0 + 64 || x1 >= 640 + 64) {
+	if (x1 < 0 + 64 || x1 >= 640 + 64) {
 		gbNotInView = TRUE;
 	}
-	if(y0 < 0 + 160 || y0 >= 352 + 160) {
+	if (y0 < 0 + 160 || y0 >= 352 + 160) {
 		gbNotInView = TRUE;
 	}
-	if(y1 < 0 + 160 || y1 >= 352 + 160) {
+	if (y1 < 0 + 160 || y1 >= 352 + 160) {
 		gbNotInView = TRUE;
 	}
 
-	if(x1 - x0 < 0) {
-		nx = -1;
-	} else {
-		nx = 1;
-	}
-	xlen = nx * (x1 - x0);
+	dx = GG_ABSOLUTE(x1, x0, sign_x);
+	dy = GG_ABSOLUTE(y1, y0, sign_y);
+	/* decide increment sign by the slope sign */
+	if (sign_x == sign_y)
+		step = 1;
+	else
+		step = -1;
 
-	if(y1 - y0 < 0) {
-		ny = -1;
-	} else {
-		ny = 1;
-	}
-	ylen = ny * (y1 - y0);
-
-	if(ny == nx) {
-		xy_same = 1;
-	} else {
-		xy_same = -1;
-	}
-
-	if(ylen > xlen) {
-		x0 ^= y0 ^= x0 ^= y0;
-		x1 ^= y1 ^= x1 ^= y1;
-		xlen ^= ylen ^= xlen ^= ylen;
+	if (dy > dx) { /* chooses axis of greatest movement (make
+						* dx) */
+		GG_SWAP(x0, y0);
+		GG_SWAP(x1, y1);
+		GG_SWAP(dx, dy);
 		gbRotateMap = TRUE;
-	} else {
+	} else
 		gbRotateMap = FALSE;
+	/* note error check for dx==0 should be included here */
+	if (x0 > x1) { /* start from the smaller coordinate */
+		x = x1;
+		y = y1;
+		x1_ = x0;
+		y1_ = y0;
+	} else {
+		x = x0;
+		y = y0;
+		x1_ = x1;
+		y1_ = y1;
 	}
 
-	if(x0 > x1) {
-		sx = x1;
-		sy = y1;
-		dx = x0;
-		dy = y0;
-	} else {
-		sx = x0;
-		sy = y0;
-		dx = x1;
-		dy = y1;
+	/* Note dx=n implies 0 - n or (dx+1) pixels to be set */
+	/* Go round loop dx/4 times then plot last 0,1,2 or 3 pixels */
+	/* In fact (dx-1)/4 as 2 pixels are already plotted */
+	xend = (dx - 1) / 4;
+	pixels_left = (dx - 1) % 4; /* number of pixels left over at the end */
+	engine_draw_pixel(x, y);
+	engine_draw_pixel(x1_, y1_); /* plot first two points */
+	incr2 = 4 * dy - 2 * dx;
+	if (incr2 < 0) { /* slope less than 1/2 */
+		c = 2 * dy;
+		incr1 = 2 * c;
+		D = incr1 - dx;
+
+		for (i = 0; i < xend; i++) { /* plotting loop */
+			++x;
+			--x1_;
+			if (D < 0) {
+				/* pattern 1 forwards */
+				engine_draw_pixel(x, y);
+				engine_draw_pixel(++x, y);
+				/* pattern 1 backwards */
+				engine_draw_pixel(x1_, y1_);
+				engine_draw_pixel(--x1_, y1_);
+				D += incr1;
+			} else {
+				if (D < c) {
+					/* pattern 2 forwards */
+					engine_draw_pixel(x, y);
+					engine_draw_pixel(++x, y += step);
+					/* pattern 2 backwards */
+					engine_draw_pixel(x1_, y1_);
+					engine_draw_pixel(--x1_, y1_ -= step);
+				} else {
+					/* pattern 3 forwards */
+					engine_draw_pixel(x, y += step);
+					engine_draw_pixel(++x, y);
+					/* pattern 3 backwards */
+					engine_draw_pixel(x1_, y1_ -= step);
+					engine_draw_pixel(--x1_, y1_);
+				}
+				D += incr2;
+			}
+		} /* end for */
+
+		/* plot last pattern */
+		if (pixels_left) {
+			if (D < 0) {
+				engine_draw_pixel(++x, y); /* pattern 1 */
+				if (pixels_left > 1)
+					engine_draw_pixel(++x, y);
+				if (pixels_left > 2)
+					engine_draw_pixel(--x1_, y1_);
+			} else {
+				if (D < c) {
+					engine_draw_pixel(++x, y); /* pattern 2  */
+					if (pixels_left > 1)
+						engine_draw_pixel(++x, y += step);
+					if (pixels_left > 2)
+						engine_draw_pixel(--x1_, y1_);
+				} else {
+					/* pattern 3 */
+					engine_draw_pixel(++x, y += step);
+					if (pixels_left > 1)
+						engine_draw_pixel(++x, y);
+					if (pixels_left > 2)
+						engine_draw_pixel(--x1_, y1_ -= step);
+				}
+			}
+		} /* end if pixels_left */
 	}
+	/* end slope < 1/2 */
+	else { /* slope greater than 1/2 */
+		c = 2 * (dy - dx);
+		incr1 = 2 * c;
+		D = incr1 + dx;
+		for (i = 0; i < xend; i++) {
+			++x;
+			--x1_;
+			if (D > 0) {
+				/* pattern 4 forwards */
+				engine_draw_pixel(x, y += step);
+				engine_draw_pixel(++x, y += step);
+				/* pattern 4 backwards */
+				engine_draw_pixel(x1_, y1_ -= step);
+				engine_draw_pixel(--x1_, y1_ -= step);
+				D += incr1;
+			} else {
+				if (D < c) {
+					/* pattern 2 forwards */
+					engine_draw_pixel(x, y);
+					engine_draw_pixel(++x, y += step);
 
-	pixels = (xlen - 1) / 4;
-	remain = (xlen - 1) % 4;
-	engine_draw_pixel(sx, sy);
-	engine_draw_pixel(dx, dy);
-
-	line_dir = (ylen << 2) - xlen - xlen;
-	if(line_dir < 0) {
-		mult_2 = ylen << 1;
-		mult_4 = (mult_2 << 1) - xlen;
-		for(i = 0; i < pixels; i++) {
-			sx++;
-			dx--;
-			if(mult_4 < 0) {
-				engine_draw_pixel(sx, sy);
-				sx++;
-				engine_draw_pixel(sx, sy);
-				engine_draw_pixel(dx, dy);
-				dx--;
-				engine_draw_pixel(dx, dy);
-				mult_4 += mult_2 + mult_2;
-			} else if(mult_4 < mult_2) {
-				engine_draw_pixel(sx, sy);
-				sy += xy_same;
-				sx++;
-				engine_draw_pixel(sx, sy);
-				engine_draw_pixel(dx, dy);
-				dy -= xy_same;
-				dx--;
-				engine_draw_pixel(dx, dy);
-				mult_4 += line_dir;
-			} else {
-				sy += xy_same;
-				engine_draw_pixel(sx, sy);
-				sx++;
-				engine_draw_pixel(sx, sy);
-				dy -= xy_same;
-				engine_draw_pixel(dx, dy);
-				dx--;
-				engine_draw_pixel(dx, dy);
-				mult_4 += line_dir;
+					/* pattern 2 backwards */
+					engine_draw_pixel(x1_, y1_);
+					engine_draw_pixel(--x1_, y1_ -= step);
+				} else {
+					/* pattern 3 forwards */
+					engine_draw_pixel(x, y += step);
+					engine_draw_pixel(++x, y);
+					/* pattern 3 backwards */
+					engine_draw_pixel(x1_, y1_ -= step);
+					engine_draw_pixel(--x1_, y1_);
+				}
+				D += incr2;
 			}
-		}
-		if(remain != 0) {
-			if(mult_4 < 0) {
-				sx++;
-				engine_draw_pixel(sx, sy);
-				if(remain > 1) {
-					sx++;
-					engine_draw_pixel(sx, sy);
-				}
-				if(remain > 2) {
-					dx--;
-					engine_draw_pixel(dx, dy);
-				}
-			} else if(mult_4 < mult_2) {
-				sx++;
-				engine_draw_pixel(sx, sy);
-				if(remain > 1) {
-					sy += xy_same;
-					sx++;
-					engine_draw_pixel(sx, sy);
-				}
-				if(remain > 2) {
-					dx--;
-					engine_draw_pixel(dx, dy);
-				}
+		} /* end for */
+		/* plot last pattern */
+		if (pixels_left) {
+			if (D > 0) {
+				engine_draw_pixel(++x, y += step); /* pattern 4 */
+				if (pixels_left > 1)
+					engine_draw_pixel(++x, y += step);
+				if (pixels_left > 2)
+					engine_draw_pixel(--x1_, y1_ -= step);
 			} else {
-				sy += xy_same;
-				sx++;
-				engine_draw_pixel(sx, sy);
-				if(remain > 1) {
-					sx++;
-					engine_draw_pixel(sx, sy);
-				}
-				if(remain > 2) {
-					dy -= xy_same;
-					dx--;
-					engine_draw_pixel(dx, dy);
-				}
-			}
-		}
-	} else {
-		mult_2 = (ylen - xlen) << 1;
-		mult_4 = (mult_2 << 1) + xlen;
-		for(i = 0; i < pixels; i++) {
-			sx++;
-			dx--;
-			if(mult_4 > 0) {
-				sy += xy_same;
-				engine_draw_pixel(sx, sy);
-				sy += xy_same;
-				sx++;
-				engine_draw_pixel(sx, sy);
-				dy -= xy_same;
-				engine_draw_pixel(dx, dy);
-				dy -= xy_same;
-				dx--;
-				engine_draw_pixel(dx, dy);
-				mult_4 += mult_2 + mult_2;
-			} else if(mult_4 < mult_2) {
-				engine_draw_pixel(sx, sy);
-				sy += xy_same;
-				sx++;
-				engine_draw_pixel(sx, sy);
-				engine_draw_pixel(dx, dy);
-				dy -= xy_same;
-				dx--;
-				engine_draw_pixel(dx, dy);
-				mult_4 += line_dir;
-			} else {
-				sy += xy_same;
-				engine_draw_pixel(sx, sy);
-				sx++;
-				engine_draw_pixel(sx, sy);
-				dy -= xy_same;
-				engine_draw_pixel(dx, dy);
-				dx--;
-				engine_draw_pixel(dx, dy);
-				mult_4 += line_dir;
-			}
-		}
-		if(remain != 0) {
-			if(mult_4 > 0) {
-				sy += xy_same;
-				sx++;
-				engine_draw_pixel(sx, sy);
-				if(remain > 1) {
-					sy += xy_same;
-					sx++;
-					engine_draw_pixel(sx, sy);
-				}
-				if(remain > 2) {
-					dy -= xy_same;
-					dx--;
-					engine_draw_pixel(dx, dy);
-				}
-			} else if(mult_4 < mult_2) {
-				sx++;
-				engine_draw_pixel(sx, sy);
-				if(remain > 1) {
-					sy += xy_same;
-					sx++;
-					engine_draw_pixel(sx, sy);
-				}
-				if(remain > 2) {
-					dx--;
-					engine_draw_pixel(dx, dy);
-				}
-			} else {
-				sy += xy_same;
-				sx++;
-				engine_draw_pixel(sx, sy);
-				if(remain > 1) {
-					sx++;
-					engine_draw_pixel(sx, sy);
-				}
-				if(remain > 2) {
-					if(mult_4 > mult_2) {
-						dy -= xy_same;
-						dx--;
-						engine_draw_pixel(dx, dy);
-					} else {
-						dx--;
-						engine_draw_pixel(dx, dy);
+				if (D < c) {
+					engine_draw_pixel(++x, y); /* pattern 2  */
+					if (pixels_left > 1)
+						engine_draw_pixel(++x, y += step);
+					if (pixels_left > 2)
+						engine_draw_pixel(--x1_, y1_);
+				} else {
+					/* pattern 3 */
+					engine_draw_pixel(++x, y += step);
+					if (pixels_left > 1)
+						engine_draw_pixel(++x, y);
+					if (pixels_left > 2) {
+						if (D > c) /* step 3 */
+							engine_draw_pixel(--x1_, y1_ -= step);
+						else /* step 2 */
+							engine_draw_pixel(--x1_, y1_);
 					}
 				}
 			}
