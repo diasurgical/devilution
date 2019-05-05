@@ -326,38 +326,35 @@ char *init_strip_trailing_slash(char *path)
 	return result;
 }
 
-int init_read_test_file(char *mpq_path, char *mpq_name, int flags, HANDLE *archive)
+BOOL init_read_test_file(char *pszPath, char *pszArchive, int flags, HANDLE *phArchive)
 {
-	char *v4;         // edi
-	DWORD v5;         // eax
-	const char *v7;   // ebx
-	const char *v8;   // esi
-	char Buffer[MAX_PATH]; // [esp+Ch] [ebp-108h]
-	char *mpq_patha;  // [esp+110h] [ebp-4h]
+	DWORD dwSize;
+	char *pszDrive, *pszRoot;
+	char szDrive[MAX_PATH];
 
-	v4 = mpq_name;
-	mpq_patha = mpq_path;
-	v5 = GetLogicalDriveStrings(sizeof(Buffer), Buffer);
-	if (!v5 || v5 > sizeof(Buffer))
-		return 0;
-	while (*v4 == '\\')
-		++v4;
-	v7 = Buffer;
-	if (!Buffer[0])
-		return 0;
-	while (1) {
-		v8 = v7;
-		v7 += strlen(v7) + 1;
-		if (GetDriveType(v8) == DRIVE_CDROM) {
-			strcpy(mpq_patha, v8);
-			strcat(mpq_patha, v4);
-			if (SFileOpenArchive(mpq_patha, flags, 1, archive))
-				break;
-		}
-		if (!*v7)
-			return 0;
+	dwSize = GetLogicalDriveStrings(sizeof(szDrive), szDrive);
+	if(dwSize == 0 || dwSize > sizeof(szDrive)) {
+		return FALSE;
 	}
-	return 1;
+
+	while(*pszArchive == '\\') {
+		pszArchive++;
+	}
+
+	pszDrive = szDrive;
+	while(*pszDrive != '\0') {
+		pszRoot = pszDrive;
+		while(*pszDrive++ != '\0');
+		if(GetDriveType(pszRoot) == DRIVE_CDROM) {
+			strcpy(pszPath, pszRoot);
+			strcat(pszPath, pszArchive);
+			if(SFileOpenArchive(pszPath, flags, 1, phArchive)) {
+				return TRUE;
+			}
+		}
+	}
+
+	return FALSE;
 }
 
 void init_get_file_info()
