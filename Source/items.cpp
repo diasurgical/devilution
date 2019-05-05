@@ -2167,12 +2167,12 @@ void SetupAllUseful(int ii, int iseed, int lvl)
 	SetRndSeed(iseed);
 
 	if (random(34, 2))
-		idx = 11;
+		idx = IDI_HEAL;
 	else
-		idx = 12;
+		idx = IDI_MANA;
 
 	if (lvl > 1 && !random(34, 3))
-		idx = 14;
+		idx = IDI_PORTAL;
 
 	GetItemAttrs(ii, idx, lvl);
 	item[ii]._iCreateInfo = lvl + 384;
