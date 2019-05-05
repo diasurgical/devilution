@@ -50,21 +50,14 @@ void gmenu_draw_pause()
 
 void gmenu_print_text(int x, int y, char *pszStr)
 {
-	char *v3;         // edi
-	int v4;           // ebp
-	int v5;           // esi
-	unsigned char i;  // al
-	unsigned char v7; // bl
+	BYTE c;
 
-	v3 = pszStr;
-	v4 = y;
-	v5 = x;
-	for (i = *pszStr; *v3; i = *v3) {
-		++v3;
-		v7 = lfontframe[gbFontTransTbl[i]];
-		if (v7)
-			CelDecodeLightOnly(v5, v4, (BYTE *)BigTGold_cel, v7, 46);
-		v5 += lfontkern[v7] + 2;
+	while (*pszStr) {
+		c = gbFontTransTbl[(BYTE)*pszStr++];
+		c = lfontframe[c];
+		if (c)
+			CelDecodeLightOnly(x, y, (BYTE *)BigTGold_cel, c, 46);
+		x += lfontkern[c] + 2;
 	}
 }
 
