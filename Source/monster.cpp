@@ -3038,173 +3038,84 @@ BOOL MAI_Path(int i)
 
 void MAI_Snake(int i)
 {
-	int esi1;            // esi
-	MonsterStruct *esi3; // esi
-	BOOLEAN v3;          // zf
-	int v4;              // ecx
-	int v5;              // eax
-	int v6;              // ST1C_4
-	int v7;              // edi
-	int v8;              // edx
-	int v9;              // ST18_4
-	int v10;             // ebx
-	int v11;             // eax
-	//int v12; // ST1C_4
-	int v14; // eax
-	int v15; // eax
-	int v16; // ecx
-	int v17; // edx
-	int v18; // ecx
-	int v19; // eax
-	//int v20; // ST1C_4
-	int v22; // eax
-	//int v23; // ST1C_4
-	int v24;         // ebx
-	int v26;         // ecx
-	int v27;         // eax
-	int v28;         // ecx
-	int v29;         // ecx
-	int v30;         // eax
-	int v31;         // edx
-	int v32;         // eax
-	int v33;         // ecx
-	int v34;         // ecx
-	int v35;         // eax
-	char pattern[6]; // [esp+4h] [ebp-1Ch]
-	int micaster;    // [esp+Ch] [ebp-14h]
-	int midir;       // [esp+10h] [ebp-10h]
-	int v1;          // [esp+14h] [ebp-Ch]
-	int v2;          // [esp+18h] [ebp-8h]
-	int arglist;     // [esp+1Ch] [ebp-4h]
+	MonsterStruct *Monst;
+	int fx, fy, mx, my, md;
+	int pnum;
+	int tmp;
 
-	esi1 = i;
-	arglist = i;
 	if ((DWORD)i >= MAXMONSTERS)
 		app_fatal("MAI_Snake: Invalid monster %d", i);
-	pattern[2] = 0;
-	pattern[3] = -1;
-	pattern[4] = -1;
-	pattern[5] = 0;
-	esi3 = &monster[esi1];
-	pattern[0] = 1;
-	pattern[1] = 1;
-	v3 = esi3->_mmode == MM_STAND;
-	micaster = esi3->_menemy;
-	if (v3 && esi3->_msquelch) {
-		v4 = esi3->_mx;
-		v5 = (unsigned char)esi3->_menemyy;
-		v6 = esi3->_lasty;
-		v1 = (unsigned char)esi3->_menemyx;
-		v7 = v4 - v1;
-		v8 = esi3->_my;
-		v9 = esi3->_lastx;
-		v2 = v5;
-		v10 = v8 - v5;
-		midir = GetDirection(v4, v8, v9, v6);
-		esi3->_mdir = midir;
-		if (abs(v7) < 2) {
-			v11 = abs(v10);
-			//v13 = v12;
-			if (v11 < 2) {
-				v14 = esi3->_mVar1;
-				if (v14 == MM_DELAY
-				    || v14 == MM_CHARGE
-				    || (v15 = random(105, 100), v16 = (unsigned char)esi3->_mint + 20, v15 < v16)) {
-					M_StartAttack(arglist);
-				LABEL_49:
-					if (esi3->_mmode == MM_STAND)
-						esi3->_mAnimData = esi3->MType->Anims[MA_STAND].Data[esi3->_mdir];
-					return;
+	char pattern[6] = { 1, 1, 0, -1, -1, 0 };
+	Monst = monster + i;
+	pnum = Monst->_menemy;
+	if (Monst->_mmode != MM_STAND || !Monst->_msquelch)
+		return;
+	fx = Monst->_menemyx;
+	fy = Monst->_menemyy;
+	mx = Monst->_mx - fx;
+	my = Monst->_my - fy;
+	md = GetDirection(Monst->_mx, Monst->_my, Monst->_lastx, Monst->_lasty);
+	Monst->_mdir = md;
+	if (abs(mx) >= 2 || abs(my) >= 2) {
+		if (abs(mx) < 3 && abs(my) < 3 && LineClearF1(PosOkMonst, i, Monst->_mx, Monst->_my, fx, fy) && Monst->_mVar1 != MM_CHARGE) {
+			if (AddMissile(Monst->_mx, Monst->_my, fx, fy, md, MIS_RHINO, pnum, i, 0, 0) != -1) {
+				PlayEffect(i, 0);
+				Monst->_mmode = MM_CHARGE;
+				dMonster[Monst->_mx][Monst->_my] = -1 - i;
+			}
+		} else if (Monst->_mVar1 == MM_DELAY || random(106, 100) >= 35 - 2 * Monst->_mint) {
+			if (md + pattern[Monst->_mgoalvar1] < 0) {
+				tmp = md + pattern[Monst->_mgoalvar1] + 8;
+			} else {
+				tmp = md + pattern[Monst->_mgoalvar1] - 8;
+				if (md + pattern[Monst->_mgoalvar1] < 8)
+					tmp = md + pattern[Monst->_mgoalvar1];
+			}
+			Monst->_mgoalvar1++;
+			if (Monst->_mgoalvar1 > 5)
+				Monst->_mgoalvar1 = 0;
+			if (tmp - Monst->_mgoalvar2 < 0) {
+				md = tmp - Monst->_mgoalvar2 + 8;
+			} else if (tmp - Monst->_mgoalvar2 >= 8) {
+				md = tmp - Monst->_mgoalvar2 - 8;
+			} else
+				md = tmp - Monst->_mgoalvar2;
+			if (md > 0) {
+				if (md < 4) {
+					if (Monst->_mgoalvar2 + 1 < 0) {
+						md = Monst->_mgoalvar2 + 9;
+					} else if (Monst->_mgoalvar2 + 1 >= 8) {
+						md = Monst->_mgoalvar2 - 7;
+					} else
+						md = Monst->_mgoalvar2 + 1;
+					Monst->_mgoalvar2 = md;
+				} else if (md == 4) {
+					Monst->_mgoalvar2 = tmp;
+				} else {
+					if (Monst->_mgoalvar2 - 1 < 0) {
+						md = Monst->_mgoalvar2 + 7;
+					} else if (Monst->_mgoalvar2 - 1 >= 8) {
+						md = Monst->_mgoalvar2 - 9;
+					} else
+						md = Monst->_mgoalvar2 - 1;
+					Monst->_mgoalvar2 = md;
 				}
-				v17 = 10 - (unsigned char)esi3->_mint + random(105, 10);
-				v18 = arglist;
-			LABEL_11:
-				M_StartDelay(v18, v17);
-				goto LABEL_49;
 			}
-		}
-		v19 = abs(v7);
-		//v21 = v20;
-		if (v19 >= 3 || (v22 = abs(v10), v22 >= 3)) /* v21 = v23,  */
-		{
-			v24 = arglist;
+			if (!M_DumbWalk(i, Monst->_mgoalvar2))
+				M_CallWalk2(i, Monst->_mdir);
 		} else {
-			v24 = arglist;
-			if (LineClearF1(PosOkMonst, arglist, esi3->_mx, esi3->_my, v1, v2) && esi3->_mVar1 != MM_CHARGE) {
-				if (AddMissile(esi3->_mx, esi3->_my, v1, v2, midir, MIS_RHINO, micaster, arglist, 0, 0) != -1) {
-					PlayEffect(arglist, 0);
-					v26 = esi3->_my + 112 * esi3->_mx;
-					esi3->_mmode = MM_CHARGE;
-					dMonster[0][v26] = -1 - v24;
-				}
-				goto LABEL_49;
-			}
+			M_StartDelay(i, 15 - Monst->_mint + random(106, 10));
 		}
-		if (esi3->_mVar1 != MM_DELAY) {
-			v27 = random(106, 100);
-			v28 = 2 * (unsigned char)esi3->_mint;
-			if (v27 < 35 - v28) {
-				v17 = 15 - (unsigned char)esi3->_mint + random(106, 10);
-				v18 = v24;
-				goto LABEL_11;
-			}
-		}
-		v29 = esi3->_mgoalvar1;
-		v30 = midir + pattern[v29];
-		if (v30 >= 0) {
-			v31 = v30 - 8;
-			if (v30 < 8)
-				v31 = midir + pattern[v29];
-		} else {
-			v31 = v30 + 8;
-		}
-		esi3->_mgoalvar1 = v29 + 1;
-		if (v29 + 1 > 5)
-			esi3->_mgoalvar1 = 0;
-		v32 = esi3->_mgoalvar2;
-		v33 = v31 - v32;
-		if (v31 - v32 >= 0) {
-			if (v33 >= 8)
-				v33 -= 8;
-		} else {
-			v33 += 8;
-		}
-		if (v33 <= 0) {
-		LABEL_47:
-			if (!M_DumbWalk(v24, esi3->_mgoalvar2))
-				M_CallWalk2(v24, esi3->_mdir);
-			goto LABEL_49;
-		}
-		if (v33 >= 4) {
-			if (v33 == 4) {
-				esi3->_mgoalvar2 = v31;
-				goto LABEL_47;
-			}
-			v34 = v32 - 1;
-			if (v32 - 1 < 0) {
-				v35 = v32 + 7;
-				goto LABEL_46;
-			}
-			if (v34 >= 8) {
-				v35 = v32 - 9;
-				goto LABEL_46;
-			}
-		} else {
-			v34 = v32 + 1;
-			if (v32 + 1 < 0) {
-				v35 = v32 + 9;
-			LABEL_46:
-				esi3->_mgoalvar2 = v35;
-				goto LABEL_47;
-			}
-			if (v34 >= 8) {
-				v35 = v32 - 7;
-				goto LABEL_46;
-			}
-		}
-		v35 = v34;
-		goto LABEL_46;
+	} else {
+		if (Monst->_mVar1 == MM_DELAY
+		    || Monst->_mVar1 == MM_CHARGE
+		    || (random(105, 100) < Monst->_mint + 20)) {
+			M_StartAttack(i);
+		} else
+			M_StartDelay(i, 10 - Monst->_mint + random(105, 10));
 	}
+	if (Monst->_mmode == MM_STAND)
+		Monst->_mAnimData = Monst->MType->Anims[MA_STAND].Data[Monst->_mdir];
 }
 
 void MAI_Bat(int i)
