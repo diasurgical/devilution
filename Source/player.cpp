@@ -2923,7 +2923,7 @@ BOOL PM_DoDeath(int pnum)
 	if (plr[pnum]._pVar8 >= 2 * plr[pnum]._pDFrames) {
 		if (deathdelay > 1 && pnum == myplr) {
 			deathdelay--;
-			if (deathdelay) {
+			if (deathdelay == 1) {
 				deathflag = TRUE;
 				if (gbMaxPlayers == 1) {
 					gamemenu_previous();
