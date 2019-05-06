@@ -914,12 +914,12 @@ void MakeLightTable()
 		*tbl++ = 0;
 	}
 
-	for (i = 0; i < 16; i++) {
-		for (j = 0; j < 128; j++) {
-			if (j > (i + 1) * 8) { /* check */
-				lightradius[i][j] = 15;
+	for (k = 0; k < 16; k++) {
+		for (l = 0; l < 128; l++) {
+			if (l > (k + 1) * 8) {
+				lightradius[k][l] = 15;
 			} else {
-				lightradius[i][j] = j * 15.0 / ((i + 1) * 8.0) + 0.5;
+				lightradius[k][l] = l * 15.0 / ((k + 1) * 8.0) + 0.5;
 			}
 		}
 	}
