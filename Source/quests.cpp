@@ -610,7 +610,7 @@ void ResyncQuests()
 		else
 			LoadPalette("Levels\\L3Data\\L3pfoul.pal");
 
-		for (i = 0; i < 32; i++)
+		for (i = 0; i <= 32; i++)
 			palette_update_quest_palette(i);
 	}
 
