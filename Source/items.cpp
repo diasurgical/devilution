@@ -2467,10 +2467,10 @@ void GetItemStr(int i)
 	int nGold;
 
 	if (item[i]._itype != ITYPE_GOLD) {
-		if (!item[i]._iIdentified)
-			strcpy(infostr, item[i]._iName);
-		else
+		if (item[i]._iIdentified)
 			strcpy(infostr, item[i]._iIName);
+		else
+			strcpy(infostr, item[i]._iName);
 
 		if (item[i]._iMagical == ITEM_QUALITY_MAGIC)
 			infoclr = COL_BLUE;
