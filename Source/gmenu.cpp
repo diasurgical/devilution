@@ -178,7 +178,7 @@ void gmenu_draw()
 		}
 
 		ticks = GetTickCount();
-		if ((signed int)(ticks - PentSpin_tick) > 25) {
+		if ((int)(ticks - PentSpin_tick) > 25) {
 			PentSpin_frame++;
 			if (PentSpin_frame == 9)
 				PentSpin_frame = 1;
