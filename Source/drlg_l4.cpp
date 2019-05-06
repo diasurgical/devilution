@@ -339,55 +339,28 @@ void DRLG_L4SetSPRoom(int rx1, int ry1)
 
 void L4SaveQuads()
 {
-	char *v0;      // esi
-	char *v1;      // edx
-	char *v2;      // edi
-	char *v3;      // eax
-	char *v4;      // ecx
-	char *v5;      // ebx
-	signed int v6; // [esp+Ch] [ebp-14h]
-	signed int v7; // [esp+10h] [ebp-10h]
-	char *v8;      // [esp+14h] [ebp-Ch]
-	char *v9;      // [esp+18h] [ebp-8h]
-	char *v10;     // [esp+1Ch] [ebp-4h]
+	int i, j, x, y;
 
-	v0 = &dflags[39][l4holdy - 40 * l4holdx]; /* check */
-	v1 = &dflags[39][-l4holdy + 39 + -40 * l4holdx];
-	v9 = &dflags[l4holdx][l4holdy];
-	v8 = &dflags[0][40 * l4holdx - l4holdy + 39];
-	v6 = 14;
-	do {
-		v2 = v1;
-		v10 = v8;
-		v3 = v9;
-		v4 = v0;
-		v7 = 14;
-		do {
-			v5 = v10;
-			v10 += 40;
-			*v3 = 1;
-			*v4 = 1;
-			*v5 = 1;
-			*v2 = 1;
-			v4 -= 40;
-			v2 -= 40;
-			v3 += 40;
-			--v7;
-		} while (v7);
-		++v9;
-		--v8;
-		--v1;
-		++v0;
-		--v6;
-	} while (v6);
+	y = 0;
+	for(j = 0; j < 14; j++) {
+		x = 0;
+		for(i = 0; i < 14; i++) {
+			dflags[i + l4holdx][j + l4holdy] = 1;
+			dflags[39 - x - l4holdx][j + l4holdy] = 1;
+			dflags[i + l4holdx][39 - y - l4holdy] = 1;
+			dflags[39 - x - l4holdx][39 - y - l4holdy] = 1;
+			x++;
+		}
+		y++;
+	}
 }
 // 528A34: using guessed type int l4holdx;
 // 528A38: using guessed type int l4holdy;
 
-void DRLG_L4SetRoom(unsigned char *pSetPiece, int rx1, int ry1)
+void DRLG_L4SetRoom(BYTE *pSetPiece, int rx1, int ry1)
 {
 	int rw, rh, i, j;
-	unsigned char *sp;
+	BYTE *sp;
 
 	rw = pSetPiece[0];
 	rh = pSetPiece[2];
@@ -446,10 +419,6 @@ void DRLG_LoadDiabQuads(BOOL preflag)
 	DRLG_L4SetRoom(lpSetPiece, diabquad4x, diabquad4y);
 	mem_free_dbg(lpSetPiece);
 }
-// 5289C4: using guessed type int diabquad1x;
-// 5289C8: using guessed type int diabquad1y;
-// 528A34: using guessed type int l4holdx;
-// 528A38: using guessed type int l4holdy;
 
 BOOL IsDURWall(char d)
 {
@@ -492,7 +461,6 @@ void L4FixRim()
 		dung[0][j] = 0;
 	}
 }
-// 52A4DC: using guessed type int dword_52A4DC;
 
 void DRLG_L4GeneralFix()
 {
@@ -526,10 +494,6 @@ void CreateL4Dungeon(unsigned int rseed, int entry)
 	DRLG_FreeL4SP();
 	DRLG_SetPC();
 }
-// 5CF328: using guessed type int dmaxx;
-// 5CF32C: using guessed type int dmaxy;
-// 5D2458: using guessed type int dminx;
-// 5D245C: using guessed type int dminy;
 
 void DRLG_L4(int entry)
 {
@@ -683,10 +647,6 @@ void DRLG_L4(int entry)
 		DRLG_LoadDiabQuads(FALSE);
 	}
 }
-// 528A40: using guessed type int SP4x2;
-// 528A48: using guessed type int SP4y2;
-// 5B50D8: using guessed type int setloadflag_2;
-// 679660: using guessed type char gbMaxPlayers;
 
 void DRLG_L4Shadows()
 {
@@ -1399,7 +1359,7 @@ void L4tileFix()
 void DRLG_L4Subs()
 {
 	int x, y, i, rv;
-	unsigned char c;
+	BYTE c;
 
 	for(y = 0; y < 40; y++) {
 		for(x = 0; x < 40; x++) {
@@ -1481,88 +1441,79 @@ void L4makeDungeon()
 
 void uShape()
 {
-	int v0;         // ecx
-	signed int v1;  // esi
-	signed int v2;  // eax
-	char v3;        // dl
-	int v4;         // eax
-	signed int v5;  // esi
-	int v6;         // ecx
-	int v7;         // ecx
-	int *v8;        // esi
-	signed int v9;  // eax
-	char v10;       // dl
-	int v11;        // eax
-	signed int v12; // esi
-	char *v13;      // edx
+	int j, i, rv;
 
-	v0 = 19;
-	do {
-		v1 = 19;
-		do {
-			v2 = v1;
-			v3 = dung[v1][v0];
-			if (v3 == 1 || (hallok[v0] = 0, v3 == 1)) {
-				hallok[v0] = dung[v2][v0 + 1] == 1 && !dung[v2 + 1][v0 + 1];
-				v1 = 0;
+	for(j = 19; j >= 0; j--) {
+		for(i = 19; i >= 0; i--) {
+			if(dung[i][j] != 1) {
+				hallok[j] = FALSE;
 			}
-			--v1;
-		} while (v1 >= 0);
-		--v0;
-	} while (v0 >= 0);
-	v4 = random(0, 19) + 1;
-	do {
-		if (hallok[v4]) {
-			v5 = 19;
-			do {
-				v6 = v4 + 20 * v5;
-				if (dung[0][v6] == 1) {
-					v5 = -1;
-					v4 = 0;
+			if(dung[i][j] == 1) {
+				if(dung[i][j + 1] == 1 && dung[i + 1][j + 1] == 0) {
+					hallok[j] = TRUE;
 				} else {
-					dung[0][v6] = 1;
-					dung[0][v6 + 1] = 1;
+					hallok[j] = FALSE;
 				}
-				--v5;
-			} while (v5 >= 0);
-		} else if (++v4 == 20) {
-			v4 = 1;
-		}
-	} while (v4);
-	v7 = 380;
-	v8 = &hallok[19];
-	do {
-		v9 = 19;
-		do {
-			v10 = dung[0][v7 + v9];
-			if (v10 == 1 || (*v8 = 0, v10 == 1)) {
-				*v8 = dung[1][v7 + v9] == 1 && !dung[1][v7 + 1 + v9];
-				v9 = 0;
+				i = 0;
 			}
-			--v9;
-		} while (v9 >= 0);
-		--v8;
-		v7 -= 20;
-	} while ((signed int)v8 >= (signed int)hallok);
-	v11 = random(0, 19) + 1;
-	do {
-		if (hallok[v11]) {
-			v12 = 19;
-			do {
-				v13 = (char *)&dung[v11][v12];
-				if (*v13 == 1) {
-					v12 = -1;
-					v11 = 0;
-				} else {
-					*v13 = 1;
-					dung[v11 + 1][v12] = 1;
-				}
-				--v12;
-			} while (v12 >= 0);
-		} else if (++v11 == 20) {
-			v11 = 1;
 		}
-	} while (v11);
+	}
+
+	rv = random(0, 19) + 1;
+	do {
+		if(hallok[rv]) {
+			for(i = 19; i >= 0; i--) {
+				if(dung[i][rv] == 1) {
+					i = -1;
+					rv = 0;
+				} else {
+					dung[i][rv] = 1;
+					dung[i][rv + 1] = 1;
+				}
+			}
+		} else {
+			rv++;
+			if(rv == 20) {
+				rv = 1;
+			}
+		}
+	} while(rv != 0);
+
+	for(i = 19; i >= 0; i--) {
+		for(j = 19; j >= 0; j--) {
+			if(dung[i][j] != 1) {
+				hallok[i] = FALSE;
+			}
+			if(dung[i][j] == 1) {
+				if(dung[i + 1][j] == 1 && dung[i + 1][j + 1] == 0) {
+					hallok[i] = TRUE;
+				} else {
+					hallok[i] = FALSE;
+				}
+				j = 0;
+			}
+		}
+	}
+
+	rv = random(0, 19) + 1;
+	do {
+		if(hallok[rv]) {
+			for(j = 19; j >= 0; j--) {
+				if(dung[rv][j] == 1) {
+					j = -1;
+					rv = 0;
+				} else {
+					dung[rv][j] = 1;
+					dung[rv + 1][j] = 1;
+				}
+			}
+		} else {
+			rv++;
+			if(rv == 20) {
+				rv = 1;
+			}
+		}
+	} while(rv != 0);
 }
 
 long GetArea()
@@ -1636,11 +1587,6 @@ void L4firstRoom()
 	L4drawRoom(x, y, w, h);
 	L4roomGen(x, y, w, h, random(0, 2));
 }
-// 528A34: using guessed type int l4holdx;
-// 528A38: using guessed type int l4holdy;
-// 528A40: using guessed type int SP4x2;
-// 528A48: using guessed type int SP4y2;
-// 679660: using guessed type char gbMaxPlayers;
 
 void L4drawRoom(int x, int y, int width, int height)
 {
@@ -1818,10 +1764,6 @@ BOOL DRLG_L4PlaceMiniSet(const unsigned char *miniset, int tmin, int tmax, int c
 
 	return TRUE;
 }
-// 528A40: using guessed type int SP4x2;
-// 528A48: using guessed type int SP4y2;
-// 5CF320: using guessed type int LvlViewY;
-// 5CF324: using guessed type int LvlViewX;
 
 void DRLG_L4FloodTVal()
 {
@@ -1840,7 +1782,6 @@ void DRLG_L4FloodTVal()
 		yy += 2;
 	}
 }
-// 5A5590: using guessed type char TransVal;
 
 void DRLG_L4FTVR(int i, int j, int x, int y, int d)
 {
@@ -1888,7 +1829,6 @@ void DRLG_L4FTVR(int i, int j, int x, int y, int d)
 		DRLG_L4FTVR(i + 1, j + 1, x + 2, y + 2, 8);
 	}
 }
-// 5A5590: using guessed type char TransVal;
 
 void DRLG_L4TransFix()
 {
@@ -1998,7 +1938,7 @@ void DRLG_L4Pass3()
 	for (j = 0; j < DMAXY; j++) {
 		xx = 16;
 		for (i = 0; i < DMAXX; i++) {
-			lv = (unsigned char)dungeon[i][j] - 1;
+			lv = dungeon[i][j] - 1;
 #ifdef USE_ASM
 			if (lv >= 0) {
 				__asm {

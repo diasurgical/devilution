@@ -5,10 +5,10 @@ unsigned char lightactive[MAXLIGHTS];
 LightListStruct LightList[MAXLIGHTS];
 int numlights;
 BYTE lightradius[16][128];
-int dovision; // weak
+BOOL dovision;
 int numvision;
-char lightmax;  // weak
-int dolighting; // weak
+char lightmax;
+BOOL dolighting;
 BYTE lightblock[8][8][16][16];
 int visionid;
 BYTE *pLightTbl;
@@ -914,12 +914,12 @@ void MakeLightTable()
 		*tbl++ = 0;
 	}
 
-	for (i = 0; i < 16; i++) {
-		for (j = 0; j < 128; j++) {
-			if (j > (i + 1) * 8) { /* check */
-				lightradius[i][j] = 15;
+	for (k = 0; k < 16; k++) {
+		for (l = 0; l < 128; l++) {
+			if (l > (k + 1) * 8) {
+				lightradius[k][l] = 15;
 			} else {
-				lightradius[i][j] = j * 15.0 / ((i + 1) * 8.0) + 0.5;
+				lightradius[k][l] = l * 15.0 / ((k + 1) * 8.0) + 0.5;
 			}
 		}
 	}
@@ -940,7 +940,6 @@ void MakeLightTable()
 		}
 	}
 }
-// 525728: using guessed type int light4flag;
 
 #ifdef _DEBUG
 void ToggleLighting_2()
@@ -986,23 +985,19 @@ void InitLightMax()
 		lightmax = 15;
 	}
 }
-// 525728: using guessed type int light4flag;
-// 642A14: using guessed type char lightmax;
 
 void InitLighting()
 {
 	int i;
 
 	numlights = 0;
-	dolighting = 0;
-	lightflag = 0;
+	dolighting = FALSE;
+	lightflag = FALSE;
 
 	for (i = 0; i < MAXLIGHTS; i++) {
 		lightactive[i] = i;
 	}
 }
-// 642A18: using guessed type int dolighting;
-// 646A28: using guessed type int lightflag;
 
 int AddLight(int x, int y, int r)
 {
@@ -1023,13 +1018,11 @@ int AddLight(int x, int y, int r)
 		LightList[lid]._yoff = 0;
 		LightList[lid]._ldel = 0;
 		LightList[lid]._lunflag = 0;
-		dolighting = 1;
+		dolighting = TRUE;
 	}
 
 	return lid;
 }
-// 642A18: using guessed type int dolighting;
-// 646A28: using guessed type int lightflag;
 
 void AddUnLight(int i)
 {
@@ -1038,10 +1031,8 @@ void AddUnLight(int i)
 	}
 
 	LightList[i]._ldel = 1;
-	dolighting = 1;
+	dolighting = TRUE;
 }
-// 642A18: using guessed type int dolighting;
-// 646A28: using guessed type int lightflag;
 
 void ChangeLightRadius(int i, int r)
 {
@@ -1054,10 +1045,8 @@ void ChangeLightRadius(int i, int r)
 	LightList[i]._luny = LightList[i]._ly;
 	LightList[i]._lunr = LightList[i]._lradius;
 	LightList[i]._lradius = r;
-	dolighting = 1;
+	dolighting = TRUE;
 }
-// 642A18: using guessed type int dolighting;
-// 646A28: using guessed type int lightflag;
 
 void ChangeLightXY(int i, int x, int y)
 {
@@ -1071,10 +1060,8 @@ void ChangeLightXY(int i, int x, int y)
 	LightList[i]._lunr = LightList[i]._lradius;
 	LightList[i]._lx = x;
 	LightList[i]._ly = y;
-	dolighting = 1;
+	dolighting = TRUE;
 }
-// 642A18: using guessed type int dolighting;
-// 646A28: using guessed type int lightflag;
 
 void ChangeLightOff(int i, int x, int y)
 {
@@ -1088,10 +1075,8 @@ void ChangeLightOff(int i, int x, int y)
 	LightList[i]._lunr = LightList[i]._lradius;
 	LightList[i]._xoff = x;
 	LightList[i]._yoff = y;
-	dolighting = 1;
+	dolighting = TRUE;
 }
-// 642A18: using guessed type int dolighting;
-// 646A28: using guessed type int lightflag;
 
 void ChangeLight(int i, int x, int y, int r)
 {
@@ -1106,10 +1091,8 @@ void ChangeLight(int i, int x, int y, int r)
 	LightList[i]._lx = x;
 	LightList[i]._ly = y;
 	LightList[i]._lradius = r;
-	dolighting = 1;
+	dolighting = TRUE;
 }
-// 642A18: using guessed type int dolighting;
-// 646A28: using guessed type int lightflag;
 
 void ProcessLightList()
 {
@@ -1150,10 +1133,8 @@ void ProcessLightList()
 		}
 	}
 
-	dolighting = 0;
+	dolighting = FALSE;
 }
-// 642A18: using guessed type int dolighting;
-// 646A28: using guessed type int lightflag;
 
 void SavePreLighting()
 {
@@ -1165,15 +1146,13 @@ void InitVision()
 	int i;
 
 	numvision = 0;
-	dovision = 0;
+	dovision = FALSE;
 	visionid = 1;
 
 	for (i = 0; i < TransVal; i++) {
 		TransList[i] = 0;
 	}
 }
-// 5A5590: using guessed type char TransVal;
-// 642A0C: using guessed type int dovision;
 
 int AddVision(int x, int y, int r, BOOL mine)
 {
@@ -1191,12 +1170,11 @@ int AddVision(int x, int y, int r, BOOL mine)
 		VisionList[numvision]._lunflag = 0;
 		VisionList[numvision]._lflags = mine != 0;
 		numvision++;
-		dovision = 1;
+		dovision = TRUE;
 	}
 
 	return vid;
 }
-// 642A0C: using guessed type int dovision;
 
 void ChangeVisionRadius(int id, int r)
 {
@@ -1209,11 +1187,10 @@ void ChangeVisionRadius(int id, int r)
 			VisionList[i]._luny = VisionList[i]._ly;
 			VisionList[i]._lunr = VisionList[i]._lradius;
 			VisionList[i]._lradius = r;
-			dovision = 1;
+			dovision = TRUE;
 		}
 	}
 }
-// 642A0C: using guessed type int dovision;
 
 void ChangeVisionXY(int id, int x, int y)
 {
@@ -1227,11 +1204,10 @@ void ChangeVisionXY(int id, int x, int y)
 			VisionList[i]._lunr = VisionList[i]._lradius;
 			VisionList[i]._lx = x;
 			VisionList[i]._ly = y;
-			dovision = 1;
+			dovision = TRUE;
 		}
 	}
 }
-// 642A0C: using guessed type int dovision;
 
 void ProcessVisionList()
 {
@@ -1275,10 +1251,8 @@ void ProcessVisionList()
 		} while (delflag);
 	}
 
-	dovision = 0;
+	dovision = FALSE;
 }
-// 5A5590: using guessed type char TransVal;
-// 642A0C: using guessed type int dovision;
 
 void lighting_color_cycling()
 {
@@ -1305,4 +1279,3 @@ void lighting_color_cycling()
 		tbl += 224;
 	}
 }
-// 525728: using guessed type int light4flag;

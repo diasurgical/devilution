@@ -2,15 +2,15 @@
 #ifndef __CONTROL_H__
 #define __CONTROL_H__
 
-extern void *pDurIcons;
-extern void *pChrButtons;
-extern BOOL drawhpflag;  // idb
+extern BYTE *pDurIcons;
+extern BYTE *pChrButtons;
+extern BOOL drawhpflag; // idb
 extern BOOL dropGoldFlag;
-extern WORD panbtn[8];
-extern WORD chrbtn[4];
-extern void *pMultiBtns;
-extern void *pPanelButtons;
-extern void *pChrPanel;
+extern int panbtn[8];
+extern int chrbtn[4];
+extern BYTE *pMultiBtns;
+extern BYTE *pPanelButtons;
+extern BYTE *pChrPanel;
 extern int lvlbtndown;    // weak
 extern int dropGoldValue; // idb
 extern BOOL drawmanaflag; // idb
@@ -19,39 +19,39 @@ extern BYTE *pPanelText;
 extern int nGoldFrame;
 extern BYTE *pLifeBuff;
 extern BYTE *pBtmBuff;
-extern void *pTalkBtns;
+extern BYTE *pTalkBtns;
 extern int pstrjust[4];
 extern int pnumlines; // idb
 extern BOOL pinfoflag;
-extern WORD talkbtndown[3];
+extern BOOL talkbtndown[3];
 extern int pSpell; // weak
 extern BYTE *pManaBuff;
 extern char infoclr; // weak
-extern void *pGBoxBuff;
-extern void *pSBkBtnCel;
+extern BYTE *pGBoxBuff;
+extern BYTE *pSBkBtnCel;
 extern char tempstr[256];
-extern char byte_4B894C[4];
+extern BOOLEAN whisper[MAX_PLRS];
 extern int sbooktab;             // weak
 extern int pSplType;             // weak
 extern int frame;                // idb
 extern int initialDropGoldIndex; // idb
 extern int talkflag;             // weak
-extern void *pSBkIconCels;
+extern BYTE *pSBkIconCels;
 extern int sbookflag; // weak
 extern int chrflag;
 extern BOOL drawbtnflag;
-extern void *pSpellBkCel;
+extern BYTE *pSpellBkCel;
 extern char infostr[MAX_PATH];
 extern int numpanbtns; // weak
-extern void *pStatusPanel;
+extern BYTE *pStatusPanel;
 extern char panelstr[256];
 extern int panelflag; // weak
 extern unsigned char SplTransTbl[256];
 extern int initialDropGoldValue; // idb
-extern void *pSpellCels;
+extern BYTE *pSpellCels;
 extern BOOL panbtndown;
-extern void *pTalkPanel; // idb
-extern int spselflag;    // weak
+extern BYTE *pTalkPanel;
+extern int spselflag; // weak
 
 void DrawSpellCel(int xp, int yp, BYTE *Trans, int nCel, int w);
 void SetSpellTrans(char t);
@@ -83,7 +83,7 @@ void DoAutoMap();
 void CheckPanelInfo();
 void CheckBtnUp();
 void FreeControlPan();
-int control_WriteStringToBuffer(char *str);
+BOOL control_WriteStringToBuffer(BYTE *str);
 void DrawInfoBox();
 void control_print_info_str(int y, char *str, BOOLEAN center, int lines);
 void PrintGameStr(int x, int y, char *str, int color);
@@ -109,7 +109,7 @@ void control_remove_gold(int pnum, int gold_index);
 void control_set_gold_curs(int pnum);
 void DrawTalkPan();
 char *control_print_talk_msg(char *msg, int x, int y, int *a4, int just);
-int control_check_talk_btn();
+BOOL control_check_talk_btn();
 void control_release_talk_btn();
 void control_reset_talk_msg();
 void control_type_message();
@@ -117,7 +117,7 @@ void control_reset_talk();
 BOOL control_talk_last_key(int vkey);
 int control_presskeys(int a1);
 void control_press_enter();
-void control_up_down(signed char a1);
+void control_up_down(int v);
 
 /* rdata */
 extern const unsigned char fontframe[128];

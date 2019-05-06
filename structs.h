@@ -15,10 +15,10 @@ typedef struct RECT32 {
 
 typedef struct PLStruct {
 	const char *PLName;
-	char PLPower;
+	int PLPower;
 	int PLParam1;
 	int PLParam2;
-	int PLMinLvl;
+	char PLMinLvl;
 	int PLIType;
 	int PLGOE;
 	BOOL PLDouble;
@@ -566,7 +566,7 @@ typedef struct MonsterStruct { // note: missing field _mAFNum
 	int _mAnimCnt;
 	int _mAnimLen;
 	int _mAnimFrame;
-	int _meflag;
+	BOOL _meflag;
 	BOOL _mDelFlag;
 	int _mVar1;
 	int _mVar2;

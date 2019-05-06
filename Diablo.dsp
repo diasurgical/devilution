@@ -234,6 +234,10 @@ SOURCE=.\Source\inv.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\Source\itemdat.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\Source\items.cpp
 # End Source File
 # Begin Source File
@@ -258,7 +262,15 @@ SOURCE=.\Source\minitext.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\Source\misdat.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\Source\missiles.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\monstdat.cpp
 # End Source File
 # Begin Source File
 
@@ -287,6 +299,10 @@ SOURCE=.\Source\multi.cpp
 # Begin Source File
 
 SOURCE=.\Source\nthread.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\objdat.cpp
 # End Source File
 # Begin Source File
 
@@ -343,6 +359,10 @@ SOURCE=.\Source\sha.cpp
 # Begin Source File
 
 SOURCE=.\Source\sound.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Source\spelldat.cpp
 # End Source File
 # Begin Source File
 

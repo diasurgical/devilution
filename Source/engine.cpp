@@ -6,7 +6,7 @@
 #endif
 
 char gbPixelCol;  // automap pixel color 8-bit (palette entry)
-int dword_52B970; // BOOLEAN flip - if y < x
+int gbRotateMap; // BOOLEAN flip - if y < x
 int orgseed;      // weak
 int sgnWidth;
 int sglGameSeed; // weak
@@ -14,7 +14,7 @@ int sglGameSeed; // weak
 static CCritSect sgMemCrit;
 #endif
 int SeedCount;    // weak
-int dword_52B99C; // BOOLEAN valid - if x/y are in bounds
+int gbNotInView; // BOOLEAN valid - if x/y are in bounds
 
 const int rand_increment = 1;
 const int rand_multiplier = 0x015A4E35;
@@ -2059,12 +2059,12 @@ void engine_draw_pixel(int sx, int sy)
 
 	/// ASSERT: assert(gpBuffer);
 
-	if (dword_52B970) {
-		if (dword_52B99C && (sx < 0 || sx >= 640 || sy < 64 || sy >= 704))
+	if (gbRotateMap) {
+		if (gbNotInView && (sx < 0 || sx >= 640 || sy < 64 || sy >= 704))
 			return;
 		dst = &gpBuffer[sy + PitchTbl[sx]];
 	} else {
-		if (dword_52B99C && (sy < 0 || sy >= 640 || sx < 64 || sx >= 704))
+		if (gbNotInView && (sy < 0 || sy >= 640 || sx < 64 || sx >= 704))
 			return;
 		dst = &gpBuffer[sx + PitchTbl[sy]];
 	}
@@ -2084,245 +2084,221 @@ void engine_draw_pixel(int sx, int sy)
 #endif
 }
 // 52B96C: using guessed type char gbPixelCol;
-// 52B970: using guessed type int dword_52B970;
-// 52B99C: using guessed type int dword_52B99C;
+// 52B970: using guessed type int gbRotateMap;
+// 52B99C: using guessed type int gbNotInView;
 // 69CF0C: using guessed type int gpBufEnd;
 
-void DrawLine(int x0, int y0, int x1, int y1, UCHAR col)
-{
-	int v5;         // ST18_4
-	int v6;         // ST2C_4
-	int v7;         // ST20_4
-	int v8;         // [esp+Ch] [ebp-48h]
-	int v9;         // [esp+10h] [ebp-44h]
-	int v10;        // [esp+14h] [ebp-40h]
-	int v11;        // [esp+18h] [ebp-3Ch]
-	signed int v12; // [esp+1Ch] [ebp-38h]
-	int v13;        // [esp+20h] [ebp-34h]
-	int v14;        // [esp+24h] [ebp-30h]
-	int v15;        // [esp+28h] [ebp-2Ch]
-	int y;          // [esp+2Ch] [ebp-28h]
-	int ya;         // [esp+2Ch] [ebp-28h]
-	int yb;         // [esp+2Ch] [ebp-28h]
-	int yc;         // [esp+2Ch] [ebp-28h]
-	int j;          // [esp+30h] [ebp-24h]
-	int i;          // [esp+30h] [ebp-24h]
-	int x;          // [esp+34h] [ebp-20h]
-	int xa;         // [esp+34h] [ebp-20h]
-	int xb;         // [esp+34h] [ebp-20h]
-	int xc;         // [esp+34h] [ebp-20h]
-	int xd;         // [esp+34h] [ebp-20h]
-	int xe;         // [esp+34h] [ebp-20h]
-	int xf;         // [esp+34h] [ebp-20h]
-	int xg;         // [esp+34h] [ebp-20h]
-	int xh;         // [esp+34h] [ebp-20h]
-	int v31;        // [esp+38h] [ebp-1Ch]
-	int v32;        // [esp+3Ch] [ebp-18h]
-	int v33;        // [esp+3Ch] [ebp-18h]
-	int v34;        // [esp+3Ch] [ebp-18h]
-	signed int v35; // [esp+40h] [ebp-14h]
-	signed int v36; // [esp+44h] [ebp-10h]
-	int v37;        // [esp+48h] [ebp-Ch]
-	int v38;        // [esp+48h] [ebp-Ch]
-	int v39;        // [esp+4Ch] [ebp-8h]
-	int v40;        // [esp+4Ch] [ebp-8h]
-	int v41;        // [esp+50h] [ebp-4h]
-	int x2a;        // [esp+5Ch] [ebp+8h]
+// Exact copy from https://github.com/erich666/GraphicsGems/blob/dad26f941e12c8bf1f96ea21c1c04cd2206ae7c9/gems/DoubleLine.c
+// Except:
+// * not in view checks
+// * global variable instead of reverse flag
+// * condition for pixels_left < 0 removed
 
-	v8 = y0;
-	v9 = x0;
-	gbPixelCol = col;
-	dword_52B99C = 0;
-	if (x0 < 64 || x0 >= 704)
-		dword_52B99C = 1;
-	if (x1 < 64 || x1 >= 704)
-		dword_52B99C = 1;
-	if (y0 < 160 || y0 >= 512)
-		dword_52B99C = 1;
-	if (y1 < 160 || y1 >= 512)
-		dword_52B99C = 1;
-	if (x1 - x0 < 0)
-		v36 = -1;
-	else
-		v36 = 1;
-	v11 = v36 * (x1 - x0);
-	if (y1 - y0 < 0)
-		v35 = -1;
-	else
-		v35 = 1;
-	v10 = v35 * (y1 - y0);
-	if (v35 == v36)
-		v12 = 1;
-	else
-		v12 = -1;
-	if (v11 >= v10) {
-		dword_52B970 = 0;
-	} else {
-		v8 = y0 ^ x0 ^ y0;
-		v9 = v8 ^ y0 ^ x0;
-		x2a = y1 ^ x1;
-		y1 ^= x2a;
-		x1 = y1 ^ x2a;
-		v5 = v10 ^ v11;
-		v10 ^= v5;
-		v11 = v10 ^ v5;
-		dword_52B970 = 1;
+/*
+Symmetric Double Step Line Algorithm
+by Brian Wyvill
+from "Graphics Gems", Academic Press, 1990
+*/
+
+#define GG_SWAP(A, B) \
+	{                 \
+		(A) ^= (B);   \
+		(B) ^= (A);   \
+		(A) ^= (B);   \
 	}
-	if (x1 >= v9) {
-		x = v9;
-		y = v8;
-		v32 = x1;
-		v13 = y1;
-	} else {
+#define GG_ABSOLUTE(I, J, K) (((I) - (J)) * ((K) = (((I) - (J)) < 0 ? -1 : 1)))
+
+void DrawLine(int x0, int y0, int x1, int y1, BYTE col)
+{
+	int dx, dy, incr1, incr2, D, x, y, xend, c, pixels_left;
+	int sign_x, sign_y, step, i;
+	int x1_, y1_;
+
+	gbPixelCol = col;
+
+	gbNotInView = FALSE;
+	if (x0 < 0 + 64 || x0 >= 640 + 64) {
+		gbNotInView = TRUE;
+	}
+	if (x1 < 0 + 64 || x1 >= 640 + 64) {
+		gbNotInView = TRUE;
+	}
+	if (y0 < 0 + 160 || y0 >= 352 + 160) {
+		gbNotInView = TRUE;
+	}
+	if (y1 < 0 + 160 || y1 >= 352 + 160) {
+		gbNotInView = TRUE;
+	}
+
+	dx = GG_ABSOLUTE(x1, x0, sign_x);
+	dy = GG_ABSOLUTE(y1, y0, sign_y);
+	/* decide increment sign by the slope sign */
+	if (sign_x == sign_y)
+		step = 1;
+	else
+		step = -1;
+
+	if (dy > dx) { /* chooses axis of greatest movement (make
+						* dx) */
+		GG_SWAP(x0, y0);
+		GG_SWAP(x1, y1);
+		GG_SWAP(dx, dy);
+		gbRotateMap = TRUE;
+	} else
+		gbRotateMap = FALSE;
+	/* note error check for dx==0 should be included here */
+	if (x0 > x1) { /* start from the smaller coordinate */
 		x = x1;
 		y = y1;
-		v32 = v9;
-		v13 = v8;
-	}
-	v31 = (v11 - 1) / 4;
-	v41 = (v11 - 1) % 4; /* (((v11 - 1) >> 31) ^ abs(v11 - 1) & 3) - ((v11 - 1) >> 31) */
-	engine_draw_pixel(x, y);
-	engine_draw_pixel(v32, v13);
-	v14 = 4 * v10 - 2 * v11;
-	if (v14 >= 0) {
-		v40 = 2 * (v10 - v11);
-		v15 = 4 * (v10 - v11);
-		v38 = v15 + v11;
-		for (i = 0; i < v31; ++i) {
-			xe = x + 1;
-			v34 = v32 - 1;
-			if (v38 <= 0) {
-				if (v40 <= v38) {
-					y += v12;
-					engine_draw_pixel(xe, y);
-					x = xe + 1;
-					engine_draw_pixel(x, y);
-					v13 -= v12;
-					engine_draw_pixel(v34, v13);
-				} else {
-					engine_draw_pixel(xe, y);
-					y += v12;
-					x = xe + 1;
-					engine_draw_pixel(x, y);
-					engine_draw_pixel(v34, v13);
-					v13 -= v12;
-				}
-				v32 = v34 - 1;
-				engine_draw_pixel(v32, v13);
-				v38 += v14;
-			} else {
-				v6 = v12 + y;
-				engine_draw_pixel(xe, v6);
-				y = v12 + v6;
-				x = xe + 1;
-				engine_draw_pixel(x, y);
-				v7 = v13 - v12;
-				engine_draw_pixel(v34, v7);
-				v13 = v7 - v12;
-				v32 = v34 - 1;
-				engine_draw_pixel(v32, v13);
-				v38 += v15;
-			}
-		}
-		if (v41) {
-			if (v38 <= 0) {
-				if (v40 <= v38) {
-					yc = v12 + y;
-					xh = x + 1;
-					engine_draw_pixel(xh, yc);
-					if (v41 > 1)
-						engine_draw_pixel(xh + 1, yc);
-					if (v41 > 2) {
-						if (v40 >= v38)
-							engine_draw_pixel(v32 - 1, v13);
-						else
-							engine_draw_pixel(v32 - 1, v13 - v12);
-					}
-				} else {
-					xg = x + 1;
-					engine_draw_pixel(xg, y);
-					if (v41 > 1)
-						engine_draw_pixel(xg + 1, v12 + y);
-					if (v41 > 2)
-						engine_draw_pixel(v32 - 1, v13);
-				}
-			} else {
-				yb = v12 + y;
-				xf = x + 1;
-				engine_draw_pixel(xf, yb);
-				if (v41 > 1)
-					engine_draw_pixel(xf + 1, v12 + yb);
-				if (v41 > 2)
-					engine_draw_pixel(v32 - 1, v13 - v12);
-			}
-		}
+		x1_ = x0;
+		y1_ = y0;
 	} else {
-		v39 = 2 * v10;
-		v37 = 4 * v10 - v11;
-		for (j = 0; j < v31; ++j) {
-			xa = x + 1;
-			v33 = v32 - 1;
-			if (v37 >= 0) {
-				if (v39 <= v37) {
-					y += v12;
-					engine_draw_pixel(xa, y);
-					x = xa + 1;
-					engine_draw_pixel(x, y);
-					v13 -= v12;
-					engine_draw_pixel(v33, v13);
-				} else {
-					engine_draw_pixel(xa, y);
-					y += v12;
-					x = xa + 1;
-					engine_draw_pixel(x, y);
-					engine_draw_pixel(v33, v13);
-					v13 -= v12;
-				}
-				v32 = v33 - 1;
-				engine_draw_pixel(v32, v13);
-				v37 += v14;
-			} else {
-				engine_draw_pixel(xa, y);
-				x = xa + 1;
+		x = x0;
+		y = y0;
+		x1_ = x1;
+		y1_ = y1;
+	}
+
+	/* Note dx=n implies 0 - n or (dx+1) pixels to be set */
+	/* Go round loop dx/4 times then plot last 0,1,2 or 3 pixels */
+	/* In fact (dx-1)/4 as 2 pixels are already plotted */
+	xend = (dx - 1) / 4;
+	pixels_left = (dx - 1) % 4; /* number of pixels left over at the end */
+	engine_draw_pixel(x, y);
+	engine_draw_pixel(x1_, y1_); /* plot first two points */
+	incr2 = 4 * dy - 2 * dx;
+	if (incr2 < 0) { /* slope less than 1/2 */
+		c = 2 * dy;
+		incr1 = 2 * c;
+		D = incr1 - dx;
+
+		for (i = 0; i < xend; i++) { /* plotting loop */
+			++x;
+			--x1_;
+			if (D < 0) {
+				/* pattern 1 forwards */
 				engine_draw_pixel(x, y);
-				engine_draw_pixel(v33, v13);
-				v32 = v33 - 1;
-				engine_draw_pixel(v32, v13);
-				v37 += 4 * v10;
-			}
-		}
-		if (v41) {
-			if (v37 >= 0) {
-				if (v39 <= v37) {
-					ya = v12 + y;
-					xd = x + 1;
-					engine_draw_pixel(xd, ya);
-					if (v41 > 1)
-						engine_draw_pixel(xd + 1, ya);
-					if (v41 > 2)
-						engine_draw_pixel(v32 - 1, v13 - v12);
-				} else {
-					xc = x + 1;
-					engine_draw_pixel(xc, y);
-					if (v41 > 1)
-						engine_draw_pixel(xc + 1, v12 + y);
-					if (v41 > 2)
-						engine_draw_pixel(v32 - 1, v13);
-				}
+				engine_draw_pixel(++x, y);
+				/* pattern 1 backwards */
+				engine_draw_pixel(x1_, y1_);
+				engine_draw_pixel(--x1_, y1_);
+				D += incr1;
 			} else {
-				xb = x + 1;
-				engine_draw_pixel(xb, y);
-				if (v41 > 1)
-					engine_draw_pixel(xb + 1, y);
-				if (v41 > 2)
-					engine_draw_pixel(v32 - 1, v13);
+				if (D < c) {
+					/* pattern 2 forwards */
+					engine_draw_pixel(x, y);
+					engine_draw_pixel(++x, y += step);
+					/* pattern 2 backwards */
+					engine_draw_pixel(x1_, y1_);
+					engine_draw_pixel(--x1_, y1_ -= step);
+				} else {
+					/* pattern 3 forwards */
+					engine_draw_pixel(x, y += step);
+					engine_draw_pixel(++x, y);
+					/* pattern 3 backwards */
+					engine_draw_pixel(x1_, y1_ -= step);
+					engine_draw_pixel(--x1_, y1_);
+				}
+				D += incr2;
+			}
+		} /* end for */
+
+		/* plot last pattern */
+		if (pixels_left) {
+			if (D < 0) {
+				engine_draw_pixel(++x, y); /* pattern 1 */
+				if (pixels_left > 1)
+					engine_draw_pixel(++x, y);
+				if (pixels_left > 2)
+					engine_draw_pixel(--x1_, y1_);
+			} else {
+				if (D < c) {
+					engine_draw_pixel(++x, y); /* pattern 2  */
+					if (pixels_left > 1)
+						engine_draw_pixel(++x, y += step);
+					if (pixels_left > 2)
+						engine_draw_pixel(--x1_, y1_);
+				} else {
+					/* pattern 3 */
+					engine_draw_pixel(++x, y += step);
+					if (pixels_left > 1)
+						engine_draw_pixel(++x, y);
+					if (pixels_left > 2)
+						engine_draw_pixel(--x1_, y1_ -= step);
+				}
+			}
+		} /* end if pixels_left */
+	}
+	/* end slope < 1/2 */
+	else { /* slope greater than 1/2 */
+		c = 2 * (dy - dx);
+		incr1 = 2 * c;
+		D = incr1 + dx;
+		for (i = 0; i < xend; i++) {
+			++x;
+			--x1_;
+			if (D > 0) {
+				/* pattern 4 forwards */
+				engine_draw_pixel(x, y += step);
+				engine_draw_pixel(++x, y += step);
+				/* pattern 4 backwards */
+				engine_draw_pixel(x1_, y1_ -= step);
+				engine_draw_pixel(--x1_, y1_ -= step);
+				D += incr1;
+			} else {
+				if (D < c) {
+					/* pattern 2 forwards */
+					engine_draw_pixel(x, y);
+					engine_draw_pixel(++x, y += step);
+
+					/* pattern 2 backwards */
+					engine_draw_pixel(x1_, y1_);
+					engine_draw_pixel(--x1_, y1_ -= step);
+				} else {
+					/* pattern 3 forwards */
+					engine_draw_pixel(x, y += step);
+					engine_draw_pixel(++x, y);
+					/* pattern 3 backwards */
+					engine_draw_pixel(x1_, y1_ -= step);
+					engine_draw_pixel(--x1_, y1_);
+				}
+				D += incr2;
+			}
+		} /* end for */
+		/* plot last pattern */
+		if (pixels_left) {
+			if (D > 0) {
+				engine_draw_pixel(++x, y += step); /* pattern 4 */
+				if (pixels_left > 1)
+					engine_draw_pixel(++x, y += step);
+				if (pixels_left > 2)
+					engine_draw_pixel(--x1_, y1_ -= step);
+			} else {
+				if (D < c) {
+					engine_draw_pixel(++x, y); /* pattern 2  */
+					if (pixels_left > 1)
+						engine_draw_pixel(++x, y += step);
+					if (pixels_left > 2)
+						engine_draw_pixel(--x1_, y1_);
+				} else {
+					/* pattern 3 */
+					engine_draw_pixel(++x, y += step);
+					if (pixels_left > 1)
+						engine_draw_pixel(++x, y);
+					if (pixels_left > 2) {
+						if (D > c) /* step 3 */
+							engine_draw_pixel(--x1_, y1_ -= step);
+						else /* step 2 */
+							engine_draw_pixel(--x1_, y1_);
+					}
+				}
 			}
 		}
 	}
 }
 // 52B96C: using guessed type char gbPixelCol;
-// 52B970: using guessed type int dword_52B970;
-// 52B99C: using guessed type int dword_52B99C;
+// 52B970: using guessed type int gbRotateMap;
+// 52B99C: using guessed type int gbNotInView;
 
 int GetDirection(int x1, int y1, int x2, int y2)
 {
@@ -2462,23 +2438,27 @@ BYTE *LoadFileInMem(char *pszName, int *pdwFileLen)
 	return buf;
 }
 
-void LoadFileWithMem(char *pszName, void *buf)
+DWORD LoadFileWithMem(const char *pszName, void *p)
 {
-	char *v2;  // ebx
-	char *v3;  // edi
-	int v4;    // esi
-	HANDLE a1; // [esp+Ch] [ebp-4h]
+	DWORD dwFileLen;
+	HANDLE hsFile;
 
-	v2 = (char *)buf;
-	v3 = pszName;
-	if (!buf)
+	/// ASSERT: assert(pszName);
+	if(p == NULL) {
 		app_fatal("LoadFileWithMem(NULL):\n%s", pszName);
-	WOpenFile(v3, &a1, 0);
-	v4 = WGetFileSize(a1, 0);
-	if (!v4)
-		app_fatal("Zero length SFILE:\n%s", v3);
-	WReadFile(a1, v2, v4);
-	WCloseFile(a1);
+	}
+
+	WOpenFile(pszName, &hsFile, FALSE);
+
+	dwFileLen = WGetFileSize(hsFile, NULL);
+	if(dwFileLen == 0) {
+		app_fatal("Zero length SFILE:\n%s", pszName);
+	}
+
+	WReadFile(hsFile, p, dwFileLen);
+	WCloseFile(hsFile);
+
+	return dwFileLen;
 }
 
 void Cl2ApplyTrans(BYTE *p, BYTE *ttbl, int nCel)

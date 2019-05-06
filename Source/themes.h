@@ -2,7 +2,7 @@
 #ifndef __THEMES_H__
 #define __THEMES_H__
 
-extern int numthemes; // idb
+extern int numthemes;
 extern BOOL armorFlag;
 extern BOOL ThemeGoodIn[4];
 extern BOOL weaponFlag;
@@ -11,9 +11,9 @@ extern BOOL mFountainFlag;
 extern BOOL cauldronFlag;
 extern BOOL tFountainFlag;
 extern int zharlib;
-extern int themex;    // idb
-extern int themey;    // idb
-extern int themeVar1; // idb
+extern int themex;
+extern int themey;
+extern int themeVar1;
 extern ThemeStruct themes[MAXTHEMES];
 extern BOOL pFountainFlag;
 extern BOOL bFountainFlag;

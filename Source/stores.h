@@ -12,7 +12,7 @@ extern void *pSTextBoxCels;
 extern int premiumlevel; // idb
 extern int talker;       // weak
 extern STextStruct stext[24];
-extern char stextsize;  // weak
+extern char stextsize;
 extern int stextsmax;   // weak
 extern int InStoreFlag; // idb
 extern ItemStruct storehold[48];
@@ -28,7 +28,7 @@ extern int stextvhold;     // weak
 extern int stextsel;       // weak
 extern signed char stextscrldbtn; // weak
 extern int gossipend;      // weak
-extern void *pCelBuff;
+extern BYTE *pCelBuff;
 extern int stextsval; // idb
 extern int boylevel;  // weak
 extern ItemStruct smithitem[20];

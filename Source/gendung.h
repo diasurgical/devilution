@@ -7,7 +7,7 @@ extern int themeCount;
 extern char nTransTable[2049];
 //int dword_52D204;
 extern int dMonster[MAXDUNX][MAXDUNY];
-extern unsigned char dungeon[40][40];
+extern BYTE dungeon[40][40];
 extern char dObject[MAXDUNX][MAXDUNY];
 extern BYTE *pSpeedCels;
 extern int nlevel_frames; // weak
@@ -53,7 +53,7 @@ extern int level_frame_sizes[MAXTILES];
 extern char nMissileTable[2049];
 extern char *pSetPiece_2;
 extern char setlvltype; // weak
-extern char setlevel;   // weak
+extern BOOLEAN setlevel;
 extern int LvlViewY;    // weak
 extern int LvlViewX;    // weak
 extern int dmaxx;       // weak

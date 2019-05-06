@@ -86,8 +86,6 @@ void SetICursor(int i)
 	icursW28 = icursW / 28;
 	icursH28 = icursH / 28;
 }
-// 4B8CB4: using guessed type int icursH;
-// 4B8CBC: using guessed type int icursW;
 
 void SetCursor_(int i)
 {
@@ -96,7 +94,6 @@ void SetCursor_(int i)
 	cursH = InvItemHeight[i];
 	SetICursor(i);
 }
-// 4B8C9C: using guessed type int cursH;
 
 void NewCursor(int i)
 {
@@ -115,10 +112,6 @@ void InitLevelCursor()
 	pcursplr = -1;
 	ClearCursor();
 }
-// 4B8CC0: using guessed type char pcursitem;
-// 4B8CC1: using guessed type char pcursobj;
-// 4B8CC2: using guessed type char pcursplr;
-// 4B8CCC: using guessed type int pcurstemp;
 
 void CheckTown()
 {
@@ -134,7 +127,7 @@ void CheckTown()
 			    || cursmx == missile[mx]._mix - 2 && cursmy == missile[mx]._miy - 2
 			    || cursmx == missile[mx]._mix - 1 && cursmy == missile[mx]._miy - 2
 			    || cursmx == missile[mx]._mix && cursmy == missile[mx]._miy) {
-				trigflag_3 = 1;
+				trigflag = 1;
 				ClearPanel();
 				strcpy(infostr, "Town Portal");
 				sprintf(tempstr, "from %s", plr[missile[mx]._misource]._pName);
@@ -160,7 +153,7 @@ void CheckRportal()
 			    || cursmx == missile[mx]._mix - 2 && cursmy == missile[mx]._miy - 2
 			    || cursmx == missile[mx]._mix - 1 && cursmy == missile[mx]._miy - 2
 			    || cursmx == missile[mx]._mix && cursmy == missile[mx]._miy) {
-				trigflag_3 = 1;
+				trigflag = 1;
 				ClearPanel();
 				strcpy(infostr, "Portal to");
 				if (!setlevel)
@@ -174,7 +167,6 @@ void CheckRportal()
 		}
 	}
 }
-// 5CF31D: using guessed type char setlevel;
 
 void CheckCursMove()
 {
@@ -269,7 +261,7 @@ void CheckCursMove()
 	pcursplr = -1;
 	uitemflag = 0;
 	panelflag = 0;
-	trigflag_3 = 0;
+	trigflag = 0;
 
 	if(plr[myplr]._pInvincible) {
 		return;
@@ -602,13 +594,3 @@ void CheckCursMove()
 		pcursmonst = -1;
 	}
 }
-// 4B8968: using guessed type int sbookflag;
-// 4B8B84: using guessed type int panelflag;
-// 4B8C98: using guessed type int spselflag;
-// 4B8CB8: using guessed type char pcursinvitem;
-// 4B8CC0: using guessed type char pcursitem;
-// 4B8CC1: using guessed type char pcursobj;
-// 4B8CC2: using guessed type char pcursplr;
-// 4B8CCC: using guessed type int pcurstemp;
-// 52569C: using guessed type int zoomflag;
-// 52575C: using guessed type int doomflag;

@@ -32,7 +32,7 @@ BOOL palette_set_color_cycling(BOOL enabled);
 
 /* data */
 
-extern int gamma_correction; // idb
+extern int gamma_correction;
 extern BOOL color_cycling_enabled;
 
 #endif /* __PALETTE_H__ */

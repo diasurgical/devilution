@@ -1,6 +1,6 @@
 #include "diablo.h"
 
-int numthemes; // idb
+int numthemes;
 BOOL armorFlag;
 BOOL ThemeGoodIn[4];
 BOOL weaponFlag;
@@ -9,9 +9,9 @@ BOOL mFountainFlag;
 BOOL cauldronFlag;
 BOOL tFountainFlag;
 int zharlib;
-int themex;    // idb
-int themey;    // idb
-int themeVar1; // idb
+int themex;
+int themey;
+int themeVar1;
 ThemeStruct themes[MAXTHEMES];
 BOOL pFountainFlag;
 BOOL bFountainFlag;
@@ -262,11 +262,6 @@ BOOL CheckThemeReqs(int t)
 
 	return rv;
 }
-// 6AAA58: using guessed type int mFountainFlag;
-// 6AAA5C: using guessed type int cauldronFlag;
-// 6AAA60: using guessed type int tFountainFlag;
-// 6AAC08: using guessed type int pFountainFlag;
-// 6AAC0C: using guessed type int bFountainFlag;
 
 BOOL SpecialThemeFit(int i, int t)
 {
@@ -354,7 +349,7 @@ BOOL CheckThemeRoom(int tv)
 {
 	int i, j, tarea;
 
-	for (i = 0; i < trigflag_4; i++) {
+	for (i = 0; i < numtrigs; i++) {
 		if (dTransVal[trigs[i]._tx][trigs[i]._ty] == tv)
 			return FALSE;
 	}
@@ -362,7 +357,7 @@ BOOL CheckThemeRoom(int tv)
 	tarea = 0;
 	for (j = 0; j < MAXDUNY; j++) {
 		for (i = 0; i < MAXDUNX; i++) {
-			if (dTransVal[i][j] == tv)
+			if (dTransVal[i][j] != tv)
 				continue;
 			if (dFlags[i][j] & DFLAG_POPULATED)
 				return FALSE;
@@ -455,12 +450,6 @@ void InitThemes()
 		numthemes += themeCount;
 	}
 }
-// 6AAA54: using guessed type int treasureFlag;
-// 6AAA58: using guessed type int mFountainFlag;
-// 6AAA5C: using guessed type int cauldronFlag;
-// 6AAA60: using guessed type int tFountainFlag;
-// 6AAC08: using guessed type int pFountainFlag;
-// 6AAC0C: using guessed type int bFountainFlag;
 
 // HoldThemeRooms marks theme rooms as populated.
 void HoldThemeRooms()
@@ -601,49 +590,65 @@ void Theme_MonstPit(int t)
 //    - t: theme number (index into themes array).
 void Theme_SkelRoom(int t)
 {
-	int xp, yp;
+	int xp, yp, i;
 	char monstrnd[4] = { 6, 7, 3, 9 };
 
 	TFit_SkelRoom(t);
+
 	xp = themex;
 	yp = themey;
+
 	AddObject(OBJ_SKFIRE, xp, yp);
-	if (random(0, monstrnd[leveltype - 1]) != 0) {
-		SpawnSkeleton(PreSpawnSkeleton(), xp - 1, yp - 1);
+
+	if(random(0, monstrnd[leveltype - 1]) != 0) {
+		i = PreSpawnSkeleton();
+		SpawnSkeleton(i, xp - 1, yp - 1);
 	} else {
 		AddObject(OBJ_BANNERL, xp - 1, yp - 1);
 	}
-	SpawnSkeleton(PreSpawnSkeleton(), xp, yp - 1);
-	if (random(0, monstrnd[leveltype - 1]) != 0) {
-		SpawnSkeleton(PreSpawnSkeleton(), xp + 1, yp - 1);
+
+	i = PreSpawnSkeleton();
+	SpawnSkeleton(i, xp, yp - 1);
+
+	if(random(0, monstrnd[leveltype - 1]) != 0) {
+		i = PreSpawnSkeleton();
+		SpawnSkeleton(i, xp + 1, yp - 1);
 	} else {
 		AddObject(OBJ_BANNERR, xp + 1, yp - 1);
 	}
-	if (random(0, monstrnd[leveltype - 1]) != 0) {
-		SpawnSkeleton(PreSpawnSkeleton(), xp - 1, yp);
+	if(random(0, monstrnd[leveltype - 1]) != 0) {
+		i = PreSpawnSkeleton();
+		SpawnSkeleton(i, xp - 1, yp);
 	} else {
 		AddObject(OBJ_BANNERM, xp - 1, yp);
 	}
-	if (random(0, monstrnd[leveltype - 1]) != 0) {
-		SpawnSkeleton(PreSpawnSkeleton(), xp + 1, yp);
+	if(random(0, monstrnd[leveltype - 1]) != 0) {
+		i = PreSpawnSkeleton();
+		SpawnSkeleton(i, xp + 1, yp);
 	} else {
 		AddObject(OBJ_BANNERM, xp + 1, yp);
 	}
-	if (random(0, monstrnd[leveltype - 1]) != 0) {
-		SpawnSkeleton(PreSpawnSkeleton(), xp - 1, yp + 1);
+	if(random(0, monstrnd[leveltype - 1]) != 0) {
+		i = PreSpawnSkeleton();
+		SpawnSkeleton(i, xp - 1, yp + 1);
 	} else {
 		AddObject(OBJ_BANNERR, xp - 1, yp + 1);
 	}
-	SpawnSkeleton(PreSpawnSkeleton(), xp, yp + 1);
-	if (random(0, monstrnd[leveltype - 1]) != 0) {
-		SpawnSkeleton(PreSpawnSkeleton(), xp + 1, yp + 1);
+
+	i = PreSpawnSkeleton();
+	SpawnSkeleton(i, xp, yp + 1);
+
+	if(random(0, monstrnd[leveltype - 1]) != 0) {
+		i = PreSpawnSkeleton();
+		SpawnSkeleton(i, xp + 1, yp + 1);
 	} else {
 		AddObject(OBJ_BANNERL, xp + 1, yp + 1);
 	}
-	if (dObject[xp][yp - 3] == 0) {
+
+	if(dObject[xp][yp - 3] == 0) {
 		AddObject(OBJ_SKELBOOK, xp, yp - 2);
 	}
-	if (dObject[xp][yp + 3] == 0) {
+	if(dObject[xp][yp + 3] == 0) {
 		AddObject(OBJ_SKELBOOK, xp, yp + 2);
 	}
 }
@@ -691,13 +696,13 @@ void Theme_Treasure(int t)
 //    - t: theme number (index into themes array).
 void Theme_Library(int t)
 {
-	int xp, yp;
-	int oi;
+	int xp, yp, oi;
 	char librnd[4] = { 1, 2, 2, 5 };
 	char monstrnd[4] = { 5, 7, 3, 9 };
 
 	TFit_Shrine(t);
-	if (themeVar1 == 1) {
+
+	if(themeVar1 == 1) {
 		AddObject(OBJ_BOOKCANDLE, themex - 1, themey);
 		AddObject(OBJ_BOOKCASER, themex, themey);
 		AddObject(OBJ_BOOKCANDLE, themex + 1, themey);
@@ -707,25 +712,23 @@ void Theme_Library(int t)
 		AddObject(OBJ_BOOKCANDLE, themex, themey + 1);
 	}
 
-	for (yp = 1; yp < MAXDUNY - 1; yp++) {
-		for (xp = 1; xp < MAXDUNX - 1; xp++) {
-			if (CheckThemeObj3(xp, yp, t, -1)) {
-				if (dMonster[xp][yp] == 0) {
-					if (random(0, librnd[leveltype - 1]) == 0) {
-						AddObject(OBJ_BOOKSTAND, xp, yp);
-						if (random(0, 2 * librnd[leveltype - 1]) != 0) {
-							oi = dObject[xp][yp] - 1;
-							object[oi]._oSelFlag = 0;
-							object[oi]._oAnimFrame += 2;
-						}
-					}
+	for(yp = 1; yp < MAXDUNY - 1; yp++) {
+		for(xp = 1; xp < MAXDUNX - 1; xp++) {
+			if(CheckThemeObj3(xp, yp, t, -1) && dMonster[xp][yp] == 0 && random(0, librnd[leveltype - 1]) == 0) {
+				AddObject(OBJ_BOOKSTAND, xp, yp);
+				if(random(0, 2 * librnd[leveltype - 1]) != 0) {
+					oi = dObject[xp][yp] - 1;
+					object[oi]._oSelFlag = 0;
+					object[oi]._oAnimFrame += 2;
 				}
 			}
 		}
 	}
 
-	if (!QuestStatus(QTYPE_ZHAR) || t != zharlib) {
-		PlaceThemeMonsts(t, monstrnd[leveltype - 1]);
+	if(!QuestStatus(QTYPE_ZHAR)) {
+		PlaceThemeMonsts(t, monstrnd[leveltype]); /// BUGFIX: `leveltype - 1`
+	} else if(t != zharlib) {
+		PlaceThemeMonsts(t, monstrnd[leveltype]); /// BUGFIX: `leveltype - 1`
 	}
 }
 

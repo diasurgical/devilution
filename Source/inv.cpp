@@ -1859,17 +1859,17 @@ BOOL CanPut(int x, int y)
 	}
 
 	oi = dObject[x + 1][y + 1];
-	if (oi > 0 && object[oi - 1]._oSelFlag) {
+	if (oi > 0 && object[oi - 1]._oSelFlag != 0) {
 		return FALSE;
 	}
-	if (oi < 0 && object[-(oi + 1)]._oSelFlag) {
+	if (oi < 0 && object[-(oi + 1)]._oSelFlag != 0) {
 		return FALSE;
 	}
 
 	oi = dObject[x + 1][y];
 	if (oi > 0) {
 		oi2 = dObject[x][y + 1];
-		if (oi2 > 0 && object[oi - 1]._oSelFlag && object[oi2 - 1]._oSelFlag)
+		if (oi2 > 0 && object[oi - 1]._oSelFlag != 0 && object[oi2 - 1]._oSelFlag != 0)
 			return FALSE;
 	}
 
@@ -2231,9 +2231,9 @@ void StartGoldDrop()
 {
 	initialDropGoldIndex = pcursinvitem;
 	if (pcursinvitem <= 46)
-		initialDropGoldValue = plr[myplr].InvBody[pcursinvitem]._ivalue;
+		initialDropGoldValue = plr[myplr].InvList[pcursinvitem - 7]._ivalue;
 	else
-		initialDropGoldValue = plr[myplr].InvBody[pcursinvitem]._iMaxDur;
+		initialDropGoldValue = plr[myplr].SpdList[pcursinvitem - 47]._ivalue;
 	dropGoldFlag = TRUE;
 	dropGoldValue = 0;
 	if (talkflag)

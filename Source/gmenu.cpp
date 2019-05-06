@@ -1,17 +1,17 @@
 #include "diablo.h"
 
 void *optbar_cel;
-BOOLEAN byte_634464; // weak
+BOOLEAN mouseNavigation; // weak
 void *PentSpin_cel;
 TMenuItem *sgpCurrItem;
 void *BigTGold_cel;
-int dword_634474; // weak
-char byte_634478; // weak
+int PentSpin_tick; // weak
+char PentSpin_frame; // weak
 void(*dword_63447C)(TMenuItem *);
-TMenuItem *dword_634480; // idb
+TMenuItem *sgpCurrentMenu; // idb
 void *option_cel;
 void *sgpLogo;
-int dword_63448C; // weak
+int sgCurrentMenuIdx; // weak
 
 const unsigned char lfontframe[127] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -41,7 +41,7 @@ void gmenu_draw_pause()
 {
 	if (currlevel)
 		RedBack();
-	if (!dword_634480) {
+	if (!sgpCurrentMenu) {
 		light_table_index = 0;
 		gmenu_print_text(316, 336, "Pause");
 	}
@@ -50,21 +50,14 @@ void gmenu_draw_pause()
 
 void gmenu_print_text(int x, int y, char *pszStr)
 {
-	char *v3;         // edi
-	int v4;           // ebp
-	int v5;           // esi
-	unsigned char i;  // al
-	unsigned char v7; // bl
+	BYTE c;
 
-	v3 = pszStr;
-	v4 = y;
-	v5 = x;
-	for (i = *pszStr; *v3; i = *v3) {
-		++v3;
-		v7 = lfontframe[gbFontTransTbl[i]];
-		if (v7)
-			CelDecodeLightOnly(v5, v4, (BYTE *)BigTGold_cel, v7, 46);
-		v5 += lfontkern[v7] + 2;
+	while (*pszStr) {
+		c = gbFontTransTbl[(BYTE)*pszStr++];
+		c = lfontframe[c];
+		if (c)
+			CelDecodeLightOnly(x, y, (BYTE *)BigTGold_cel, c, 46);
+		x += lfontkern[c] + 2;
 	}
 }
 
@@ -79,25 +72,25 @@ void FreeGMenu()
 
 void gmenu_init_menu()
 {
-	byte_634478 = 1;
-	dword_634480 = 0;
+	PentSpin_frame = 1;
+	sgpCurrentMenu = 0;
 	sgpCurrItem = 0;
 	dword_63447C = 0;
-	dword_63448C = 0;
-	byte_634464 = 0;
+	sgCurrentMenuIdx = 0;
+	mouseNavigation = 0;
 	sgpLogo = LoadFileInMem("Data\\Diabsmal.CEL", 0);
 	BigTGold_cel = LoadFileInMem("Data\\BigTGold.CEL", 0);
 	PentSpin_cel = LoadFileInMem("Data\\PentSpin.CEL", 0);
 	option_cel = LoadFileInMem("Data\\option.CEL", 0);
 	optbar_cel = LoadFileInMem("Data\\optbar.CEL", 0);
 }
-// 634464: using guessed type char byte_634464;
-// 634478: using guessed type char byte_634478;
-// 63448C: using guessed type int dword_63448C;
+// 634464: using guessed type char mouseNavigation;
+// 634478: using guessed type char PentSpin_frame;
+// 63448C: using guessed type int sgCurrentMenuIdx;
 
 BOOL gmenu_exception()
 {
-	return dword_634480 != 0;
+	return sgpCurrentMenu != 0;
 }
 
 void gmenu_call_proc(TMenuItem *pItem, void(*gmFunc)(TMenuItem *))
@@ -107,91 +100,92 @@ void gmenu_call_proc(TMenuItem *pItem, void(*gmFunc)(TMenuItem *))
 	void(* *v4)(BOOL); // edx
 
 	PauseMode = 0;
-	byte_634464 = 0;
+	mouseNavigation = 0;
 	v2 = pItem;
 	dword_63447C = gmFunc;
-	dword_634480 = pItem;
+	sgpCurrentMenu = pItem;
 	if (gmFunc) {
-		gmFunc(dword_634480);
-		v2 = dword_634480;
+		gmFunc(sgpCurrentMenu);
+		v2 = sgpCurrentMenu;
 	}
 	v3 = 0;
-	dword_63448C = 0;
+	sgCurrentMenuIdx = 0;
 	if (v2) {
 		v4 = &v2->fnMenu;
 		while (*v4) {
 			++v3;
 			v4 += 3;
-			dword_63448C = v3;
+			sgCurrentMenuIdx = v3;
 		}
 	}
 	sgpCurrItem = &v2[v3 - 1];
-	gmenu_up_down(1);
+	gmenu_up_down(TRUE);
 }
 // 525740: using guessed type int PauseMode;
-// 634464: using guessed type char byte_634464;
-// 63448C: using guessed type int dword_63448C;
+// 634464: using guessed type char mouseNavigation;
+// 63448C: using guessed type int sgCurrentMenuIdx;
 
-void gmenu_up_down(int a1)
+void gmenu_up_down(BOOL isDown)
 {
-	TMenuItem *v1; // eax
-	int v2;        // edi
+	int i;
 
-	v1 = sgpCurrItem;
-	if (sgpCurrItem) {
-		byte_634464 = 0;
-		v2 = dword_63448C;
-		while (v2) {
-			--v2;
-			if (a1) {
-				++v1;
-				sgpCurrItem = v1;
-				if (v1->fnMenu)
-					goto LABEL_10;
-				v1 = dword_634480;
+	if (!sgpCurrItem) {
+		return;
+	}
+	mouseNavigation = FALSE;
+	i = sgCurrentMenuIdx;
+	if (sgCurrentMenuIdx) {
+		while (i) {
+			i--;
+			if (isDown) {
+				sgpCurrItem++;
+				if (!sgpCurrItem->fnMenu)
+					sgpCurrItem = &sgpCurrentMenu[0];
 			} else {
-				if (v1 == dword_634480)
-					v1 = &dword_634480[dword_63448C];
-				--v1;
+				if (sgpCurrItem == sgpCurrentMenu)
+					sgpCurrItem = &sgpCurrentMenu[sgCurrentMenuIdx];
+				sgpCurrItem--;
 			}
-			sgpCurrItem = v1;
-		LABEL_10:
-			if ((v1->dwFlags & 0x80000000) != 0) {
-				if (v2)
+			if ((sgpCurrItem->dwFlags & 0x80000000) != 0) {
+				if (i)
 					PlaySFX(IS_TITLEMOV);
 				return;
 			}
 		}
 	}
 }
-// 634464: using guessed type char byte_634464;
-// 63448C: using guessed type int dword_63448C;
+// 634464: using guessed type char mouseNavigation;
+// 63448C: using guessed type int sgCurrentMenuIdx;
 
 void gmenu_draw()
 {
-	int v0;       // edi
-	TMenuItem *i; // esi
-	DWORD v2;     // eax
+	int y;
+	TMenuItem *i;
+	DWORD ticks;
 
-	if (dword_634480) {
+	if (sgpCurrentMenu) {
 		if (dword_63447C)
-			dword_63447C(dword_634480);
+			dword_63447C(sgpCurrentMenu);
 		CelDecodeOnly(236, 262, (BYTE *)sgpLogo, 1, 296);
-		v0 = 320;
-		for (i = dword_634480; i->fnMenu; v0 += 45) {
-			gmenu_draw_menu_item(i, v0);
-			++i;
+		y = 320;
+		i = sgpCurrentMenu;
+		if (sgpCurrentMenu->fnMenu) {
+			while (i->fnMenu) {
+				gmenu_draw_menu_item(i, y);
+				i++;
+				y += 45;
+			}
 		}
-		v2 = GetTickCount();
-		if ((signed int)(v2 - dword_634474) > 25) {
-			if (++byte_634478 == 9)
-				byte_634478 = 1;
-			dword_634474 = v2;
+
+		ticks = GetTickCount();
+		if ((int)(ticks - PentSpin_tick) > 25) {
+			PentSpin_frame++;
+			if (PentSpin_frame == 9)
+				PentSpin_frame = 1;
+			PentSpin_tick = ticks;
 		}
 	}
 }
-// 634474: using guessed type int dword_634474;
-// 634478: using guessed type char byte_634478;
 
 void gmenu_draw_menu_item(TMenuItem *pItem, int a2)
 {
@@ -234,46 +228,43 @@ void gmenu_draw_menu_item(TMenuItem *pItem, int a2)
 	gmenu_print_text(384 - (v5 >> 1), v2, v3->pszStr);
 	if (v3 == sgpCurrItem) {
 		v13 = v2 + 1;
-		CelDecodeOnly(v11 - 54, v13, (BYTE *)PentSpin_cel, (unsigned char)byte_634478, 48);
-		CelDecodeOnly(v11 + v5 + 4, v13, (BYTE *)PentSpin_cel, (unsigned char)byte_634478, 48);
+		CelDecodeOnly(v11 - 54, v13, (BYTE *)PentSpin_cel, (unsigned char)PentSpin_frame, 48);
+		CelDecodeOnly(v11 + v5 + 4, v13, (BYTE *)PentSpin_cel, (unsigned char)PentSpin_frame, 48);
 	}
 }
-// 634478: using guessed type char byte_634478;
+// 634478: using guessed type char PentSpin_frame;
 // 69BEF8: using guessed type int light_table_index;
 
 void gmenu_clear_buffer(int x, int y, int width, int height)
 {
-	int v4;  // edi
-	char *i; // esi
+	BYTE *i;
 
-	v4 = height;
-	for (i = (char *)gpBuffer + PitchTbl[y] + x; v4; --v4) {
+	for (i = gpBuffer + PitchTbl[y] + x; height; height--) {
 		memset(i, 205, width);
-		i -= 768;
+		i -= BUFFER_WIDTH;
 	}
 }
 
 int gmenu_get_lfont(TMenuItem *pItem)
 {
-	char *v2;         // eax
-	int i;            // edx
-	unsigned char v4; // cl
+	char *text;
+	int i;
+	BYTE c;
 
 	if (pItem->dwFlags & 0x40000000)
 		return 490;
-	v2 = pItem->pszStr;
-	for (i = 0;; i += lfontkern[lfontframe[gbFontTransTbl[v4]]] + 2) {
-		v4 = *v2;
-		if (!*v2)
-			break;
-		++v2;
+	text = pItem->pszStr;
+	i = 0;
+	while (*text) {
+		c = gbFontTransTbl[(BYTE)*text++];
+		i += lfontkern[lfontframe[c]] + 2;
 	}
 	return i - 2;
 }
 
 BOOL gmenu_presskeys(int a1)
 {
-	if (!dword_634480)
+	if (!sgpCurrentMenu)
 		return 0;
 	switch (a1) {
 	case VK_RETURN:
@@ -289,61 +280,59 @@ BOOL gmenu_presskeys(int a1)
 	case VK_SPACE:
 		return FALSE;
 	case VK_LEFT:
-		gmenu_left_right(0);
+		gmenu_left_right(FALSE);
 		break;
 	case VK_RIGHT:
-		gmenu_left_right(1);
+		gmenu_left_right(TRUE);
 		break;
 	case VK_UP:
-		gmenu_up_down(0);
+		gmenu_up_down(FALSE);
 		break;
 	case VK_DOWN:
-		gmenu_up_down(1);
+		gmenu_up_down(TRUE);
 		break;
 	}
 	return TRUE;
 }
 
-void gmenu_left_right(int a1)
+void gmenu_left_right(BOOL isRight)
 {
-	signed int v1;   // edx
-	unsigned int v2; // eax
-	int v3;          // eax
+	int plOffset;
 
-	v1 = sgpCurrItem->dwFlags;
 	if (sgpCurrItem->dwFlags & 0x40000000) {
-		v2 = sgpCurrItem->dwFlags & 0xFFF;
-		if (a1) {
-			if (v2 == ((v1 >> 12) & 0xFFF))
+		plOffset = sgpCurrItem->dwFlags & 0xFFF;
+		if (isRight) {
+			if (plOffset == (int)(sgpCurrItem->dwFlags & 0xFFF000) >> 12)
 				return;
-			v3 = v2 + 1;
+			plOffset++;
 		} else {
-			if (!(v1 & 0xFFF))
+			if (!plOffset)
 				return;
-			v3 = v2 - 1;
+			plOffset--;
 		}
-		_LOWORD(v1) = v1 & 0xF000;
-		sgpCurrItem->dwFlags = v1;
-		sgpCurrItem->dwFlags |= v3;
+		sgpCurrItem->dwFlags &= 0xFFFFF000;
+		sgpCurrItem->dwFlags |= plOffset;
 		sgpCurrItem->fnMenu(FALSE);
 	}
 }
 
 BOOL gmenu_on_mouse_move()
 {
-	int a1; // [esp+0h] [ebp-4h]
+	int plOffset, v;
 
-	if (!byte_634464)
-		return 0;
-	gmenu_valid_mouse_pos(&a1);
-	a1 = a1 * ((sgpCurrItem->dwFlags >> 12) & 0xFFF) / 256;
-	_LOWORD(sgpCurrItem->dwFlags) &= 0xF000u;
-	sgpCurrItem->dwFlags |= a1;
+	if (!mouseNavigation)
+		return FALSE;
+	gmenu_valid_mouse_pos(&plOffset);
+	v = (sgpCurrItem->dwFlags & 0xFFF000);
+	v >>= 12;
+	plOffset *= v;
+	plOffset /= 256;
+
+	sgpCurrItem->dwFlags &= 0xFFFFF000;
+	sgpCurrItem->dwFlags |= plOffset;
 	sgpCurrItem->fnMenu(FALSE);
-	return 1;
+	return TRUE;
 }
-// 41A37A: could not find valid save-restore pair for esi
-// 634464: using guessed type char byte_634464;
 
 BOOLEAN gmenu_valid_mouse_pos(int *plOffset)
 {
@@ -371,20 +360,20 @@ int gmenu_left_mouse(int a1)
 	int a1a; // [esp+4h] [ebp-4h]
 
 	if (a1) {
-		if (!dword_634480 || MouseY >= 352)
+		if (!sgpCurrentMenu || MouseY >= 352)
 			return 0;
 		if (MouseY - 117 >= 0) {
 			v2 = (MouseY - 117) / 45;
-			if (v2 < dword_63448C) {
+			if (v2 < sgCurrentMenuIdx) {
 				v3 = v2;
-				v4 = &dword_634480[v3];
+				v4 = &sgpCurrentMenu[v3];
 				if ((v4->dwFlags & 0x80000000) != 0) {
-					v5 = (unsigned int)gmenu_get_lfont(&dword_634480[v3]) >> 1;
+					v5 = (unsigned int)gmenu_get_lfont(&sgpCurrentMenu[v3]) >> 1;
 					if (MouseX >= 320 - v5 && MouseX <= v5 + 320) {
 						sgpCurrItem = v4;
 						PlaySFX(IS_TITLEMOV);
 						if (v4->dwFlags & 0x40000000) {
-							byte_634464 = gmenu_valid_mouse_pos(&a1a);
+							mouseNavigation = gmenu_valid_mouse_pos(&a1a);
 							gmenu_on_mouse_move();
 						} else {
 							sgpCurrItem->fnMenu(TRUE);
@@ -395,14 +384,14 @@ int gmenu_left_mouse(int a1)
 		}
 	} else {
 		result = 0;
-		if (!byte_634464)
+		if (!mouseNavigation)
 			return result;
-		byte_634464 = 0;
+		mouseNavigation = 0;
 	}
 	return 1;
 }
-// 634464: using guessed type char byte_634464;
-// 63448C: using guessed type int dword_63448C;
+// 634464: using guessed type char mouseNavigation;
+// 63448C: using guessed type int sgCurrentMenuIdx;
 
 void gmenu_enable(TMenuItem *pMenuItem, BOOL enable)
 {
@@ -414,15 +403,14 @@ void gmenu_enable(TMenuItem *pMenuItem, BOOL enable)
 
 void gmenu_slider_1(TMenuItem *pItem, int min, int max, int gamma)
 {
-	unsigned int v4; // esi
-	int v5;          // eax
+	int v;
 
-	v4 = pItem->dwFlags;
-	v5 = (pItem->dwFlags >> 12) & 0xFFF;
-	if (v5 < 2)
-		v5 = 2;
-	_LOWORD(v4) = v4 & 0xF000;
-	pItem->dwFlags = v4 | (v5 * (gamma - min) + (max - min - 1) / 2) / (max - min);
+	/// ASSERT: assertassert(pItem, "gmenu.cpp", 445);
+	v = (int)(pItem->dwFlags & 0xFFF000) >> 12;
+	if (v < 2)
+		v = 2;
+	pItem->dwFlags &= 0xFFFFF000;
+	pItem->dwFlags |= ((max - min - 1) / 2 + (gamma - min) * v) / (max - min);
 }
 
 int gmenu_slider_get(TMenuItem *pItem, int min, int max)
@@ -439,5 +427,6 @@ int gmenu_slider_get(TMenuItem *pItem, int min, int max)
 
 void gmenu_slider_3(TMenuItem *pItem, int dwTicks)
 {
-	pItem->dwFlags ^= (pItem->dwFlags ^ (dwTicks << 12)) & 0xFFF000;
+	pItem->dwFlags &= 0xFF000FFF;
+	pItem->dwFlags |= (dwTicks << 12) & 0xFFF000;
 }

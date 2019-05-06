@@ -62,7 +62,6 @@ void SyncPortals()
 		}
 	}
 }
-// 5CF31D: using guessed type char setlevel;
 
 void AddInTownPortal(int i)
 {
@@ -145,7 +144,6 @@ void GetPortalLevel()
 		}
 	}
 }
-// 5CF31D: using guessed type char setlevel;
 
 void GetPortalLvlPos()
 {

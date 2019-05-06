@@ -4,7 +4,7 @@
 
 BOOL WCloseFile(HANDLE file);
 LONG WGetFileSize(HANDLE hsFile, DWORD *lpFileSizeHigh);
-void WGetFileArchive(HANDLE hsFile, unsigned int *retry, const char *FileName);
+void WGetFileArchive(HANDLE hsFile, DWORD *retry, const char *FileName);
 BOOL WOpenFile(const char *FileName, HANDLE *phsFile, BOOL mayNotExist);
 void WReadFile(HANDLE hsFile, LPVOID buf, DWORD to_read);
 int WSetFilePointer(HANDLE file1, int offset, HANDLE file2, int whence);

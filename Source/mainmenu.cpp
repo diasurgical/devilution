@@ -18,9 +18,9 @@ void mainmenu_refresh_music()
 	} while (!menu_music_track_id || menu_music_track_id == 1);
 }
 
-void __stdcall mainmenu_create_hero(char *name_1, char *name_2)
+void __stdcall mainmenu_create_hero(int arg1, int arg2, int arg3, int arg4, char *name_1, char *name_2)
 {
-	if (UiValidPlayerName(name_1))
+	if (UiValidPlayerName(name_2))
 		pfile_create_save_file(name_1, name_2);
 }
 
@@ -118,14 +118,12 @@ void mainmenu_loop()
 
 	music_stop();
 }
-// 634980: using guessed type int gbActive;
 
 BOOL mainmenu_single_player()
 {
 	gbMaxPlayers = 1;
 	return mainmenu_init_menu(1);
 }
-// 679660: using guessed type char gbMaxPlayers;
 
 BOOL mainmenu_init_menu(int type)
 {

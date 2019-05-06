@@ -3,15 +3,15 @@
 #define __DRLG_L1_H__
 
 extern char L5dungeon[80][80];
-extern unsigned char L5dflags[40][40];
-extern int setloadflag; // weak
+extern BYTE L5dflags[40][40];
+extern BOOL setloadflag;
 extern int HR1;
 extern int HR2;
 extern int HR3;
 extern int VR1;
 extern int VR2;
 extern int VR3;
-extern void *pSetPiece; // idb
+extern BYTE *pSetPiece;
 
 void DRLG_Init_Globals();
 void LoadL1Dungeon(char *sFileName, int vx, int vy);
@@ -25,7 +25,7 @@ void DRLG_FreeL1SP();
 void DRLG_L5(int entry);
 void DRLG_PlaceDoor(int x, int y);
 void DRLG_L1Shadows();
-int DRLG_PlaceMiniSet(const unsigned char *miniset, int tmin, int tmax, int cx, int cy, BOOL setview, int noquad, int ldir);
+int DRLG_PlaceMiniSet(const BYTE *miniset, int tmin, int tmax, int cx, int cy, BOOL setview, int noquad, int ldir);
 void InitL5Dungeon();
 void L5ClearFlags();
 void L5firstRoom();
@@ -54,15 +54,15 @@ void DRLG_L5CornerFix();
 
 /* rdata */
 extern const ShadowStruct SPATS[37];
-extern const unsigned char BSTYPES[206];
-extern const unsigned char L5BTYPES[206];
-extern const unsigned char STAIRSUP[];
-extern const unsigned char L5STAIRSUP[];
-extern const unsigned char STAIRSDOWN[];
-extern const unsigned char LAMPS[];
-extern const unsigned char PWATERIN[];
+extern const BYTE BSTYPES[206];
+extern const BYTE L5BTYPES[206];
+extern const BYTE STAIRSUP[];
+extern const BYTE L5STAIRSUP[];
+extern const BYTE STAIRSDOWN[];
+extern const BYTE LAMPS[];
+extern const BYTE PWATERIN[];
 
 /* data */
-extern unsigned char L5ConvTbl[16];
+extern BYTE L5ConvTbl[16];
 
 #endif /* __DRLG_L1_H__ */

@@ -5,7 +5,7 @@ int themeCount;
 char nTransTable[2049];
 //int dword_52D204;
 int dMonster[MAXDUNX][MAXDUNY];
-unsigned char dungeon[40][40];
+BYTE dungeon[40][40];
 char dObject[MAXDUNX][MAXDUNY];
 BYTE *pSpeedCels;
 int nlevel_frames; // weak
@@ -51,7 +51,7 @@ int level_frame_sizes[MAXTILES];
 char nMissileTable[2049];
 char *pSetPiece_2;
 char setlvltype; // weak
-char setlevel;   // weak
+BOOLEAN setlevel;
 int LvlViewY;    // weak
 int LvlViewX;    // weak
 int dmaxx;       // weak
@@ -709,7 +709,7 @@ BOOL DRLG_WillThemeRoomFit(int floor, int x, int y, int minSize, int maxSize, in
 	for (ii = 0; ii < maxSize; ii++) {
 		if (xFlag) {
 			for (xx = x; xx < x + maxSize; xx++) {
-				if ((unsigned char)dungeon[xx][y + ii] != floor) {
+				if (dungeon[xx][y + ii] != floor) {
 					if (xx >= minSize) {
 						break;
 					}
@@ -725,7 +725,7 @@ BOOL DRLG_WillThemeRoomFit(int floor, int x, int y, int minSize, int maxSize, in
 		}
 		if (yFlag) {
 			for (yy = y; yy < y + maxSize; yy++) {
-				if ((unsigned char)dungeon[x + ii][yy] != floor) {
+				if (dungeon[x + ii][yy] != floor) {
 					if (yy >= minSize) {
 						break;
 					}

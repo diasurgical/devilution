@@ -4,8 +4,8 @@
 #ifdef __cplusplus
 static CCritSect sgMemCrit;
 #endif
-unsigned int glpDThreadId;         // idb
-TMegaPkt *sgpInfoHead;             /* may not be right struct */
+unsigned int glpDThreadId;
+TMegaPkt *sgpInfoHead; /* may not be right struct */
 BOOLEAN dthread_running;
 HANDLE sghWorkToDoEvent;
 
@@ -122,7 +122,6 @@ unsigned int __stdcall dthread_handler(void *unused)
 
 	return 0;
 }
-// 679730: using guessed type int gdwDeltaBytesSec;
 
 void dthread_cleanup()
 {

@@ -101,7 +101,7 @@
 #define BUFFER_HEIGHT	(160 + SCREEN_HEIGHT + 16)
 #define TILE_SIZE		32
 
-#define SCREENXY(x, y)	((x) + 64 + (((y) + 160) * 768))
+#define SCREENXY(x, y)	((x) + 64 + (((y) + 160) * BUFFER_WIDTH))
 
 #define MemFreeDbg(p)	\
 {						\

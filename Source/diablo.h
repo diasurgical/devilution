@@ -34,13 +34,16 @@ extern "C" {
 #include "init.h"
 #include "interfac.h"
 #include "inv.h"
+#include "itemdat.h"
 #include "items.h"
 #include "lighting.h"
 #include "loadsave.h"
 #include "logging.h"
 #include "mainmenu.h"
 #include "minitext.h"
+#include "misdat.h"
 #include "missiles.h"
+#include "monstdat.h"
 #include "monster.h"
 #include "movie.h"
 #include "mpqapi.h"
@@ -48,6 +51,7 @@ extern "C" {
 #include "msgcmd.h"
 #include "multi.h"
 #include "nthread.h"
+#include "objdat.h"
 #include "objects.h"
 #include "pack.h"
 #include "palette.h"
@@ -62,6 +66,7 @@ extern "C" {
 #include "setmaps.h"
 #include "sha.h"
 #include "sound.h"
+#include "spelldat.h"
 #include "spells.h"
 #include "stores.h"
 #include "sync.h"
@@ -119,7 +124,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 void diablo_parse_flags(char *args);
 void diablo_init_screen();
 BOOL diablo_find_window(LPCSTR lpClassName);
-void diablo_reload_process(HMODULE hModule);
+void diablo_reload_process(HINSTANCE hInstance);
 BOOL PressEscKey();
 LRESULT CALLBACK DisableInputWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK GM_Game(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -151,7 +156,7 @@ extern int diablo_inf; // weak
 /* rdata */
 
 extern BOOL fullscreen;
-//#ifdef _DEBUG // SpawnHealer is only bin exact with the following defined
+#ifdef _DEBUG
 extern int showintrodebug;
 extern int questdebug;
 extern int debug_mode_key_s;
@@ -168,7 +173,7 @@ extern int frameflag;
 extern int frameend;
 extern int framerate;
 extern int framestart;
-//#endif
+#endif
 extern BOOL FriendlyMode;
 extern char *spszMsgTbl[4];    // weak
 extern char *spszMsgKeyTbl[4]; // weak
