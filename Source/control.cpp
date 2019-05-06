@@ -2175,8 +2175,6 @@ int DrawDurIcon4Item(ItemStruct *item, int x, int frame)
 			case ITYPE_STAFF:
 				frame = 8;
 				break;
-			default:
-				break;
 			}
 		} else {
 			frame = 1;

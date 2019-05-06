@@ -151,6 +151,7 @@ void TList<T>::Insert(T *node, InsertPos pos, T *ref)
 		break;
 	case BEFORE:
 		i->InsertBefore(node, reflink);
+		break;
 	}
 }
 
