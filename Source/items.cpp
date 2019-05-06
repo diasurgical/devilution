@@ -1990,24 +1990,23 @@ void SpawnUnique(int uid, int x, int y)
 {
 	int ii, itype;
 
-	if (numitems < MAXITEMS) {
-		ii = itemavail[0];
-		GetSuperItemSpace(x, y, itemavail[0]);
-		itype = 0;
-		itemactive[numitems] = ii;
-		itemavail[0] = itemavail[MAXITEMS - numitems - 1];
+	if (numitems >= MAXITEMS)
+		return;
 
-		if (AllItemsList[0].iItemId != UniqueItemList[uid].UIItemId) {
-			while (AllItemsList[itype].iItemId != UniqueItemList[uid].UIItemId) {
-				itype++;
-			}
-		}
+	ii = itemavail[0];
+	GetSuperItemSpace(x, y, ii);
+	itemavail[0] = itemavail[MAXITEMS - numitems - 1];
+	itemactive[numitems] = ii;
 
-		GetItemAttrs(ii, itype, currlevel);
-		GetUniqueItem(ii, uid);
-		SetupItem(ii);
-		numitems++;
+	itype = 0;
+	while (AllItemsList[itype].iItemId != UniqueItemList[uid].UIItemId) {
+		itype++;
 	}
+
+	GetItemAttrs(ii, itype, currlevel);
+	GetUniqueItem(ii, uid);
+	SetupItem(ii);
+	numitems++;
 }
 
 void ItemRndDur(int ii)
