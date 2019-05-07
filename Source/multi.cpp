@@ -609,35 +609,29 @@ void NetClose()
 	nthread_cleanup();
 	dthread_cleanup();
 	tmsg_cleanup();
-	multi_event_handler(0);
+	multi_event_handler(FALSE);
 	SNetLeaveGame(3);
 	msgcmd_cmd_cleanup();
 	if (gbMaxPlayers > 1)
 		Sleep(2000);
 }
 
-char multi_event_handler(int a1)
+void multi_event_handler(BOOL add)
 {
-	int v1;                                                       // edi
-	void *(__stdcall * v2)(int, void(__stdcall *)(_SNETEVENT *)); // ebx
-	unsigned int v3;                                              // esi
-	int v4;                                                       // eax
-	char *v5;                                                     // eax
+	DWORD i;
+	BOOL(__stdcall * fn)
+	(int, void(__stdcall *)(_SNETEVENT *));
 
-	v1 = a1;
-	v2 = SNetRegisterEventHandler;
-	if (!a1)
-		v2 = SNetUnregisterEventHandler;
-	v3 = 0;
-	do {
-		v4 = (int)v2(event_types[v3], multi_handle_events);
-		if (!v4 && v1) {
-			v5 = TraceLastError();
-			app_fatal("SNetRegisterEventHandler:\n%s", v5);
+	if (add)
+		fn = SNetRegisterEventHandler;
+	else
+		fn = SNetUnregisterEventHandler;
+
+	for (i = 0; i < 3; i++) {
+		if (!fn(event_types[i], multi_handle_events) && add) {
+			app_fatal("SNetRegisterEventHandler:\n%s", TraceLastError());
 		}
-		++v3;
-	} while (v3 < 3);
-	return v4;
+	}
 }
 
 void __stdcall multi_handle_events(_SNETEVENT *pEvt)
@@ -774,11 +768,6 @@ BOOL NetInit(BOOL bSinglePlayer, BOOL *pfExitProgram)
 
 	return TRUE;
 }
-// 6761B8: using guessed type char gbSomebodyWonGameKludge;
-// 67862D: using guessed type char gbGameDestroyed;
-// 678640: using guessed type char byte_678640;
-// 6796E4: using guessed type char gbDeltaSender;
-// 6796E8: using guessed type int sgbNetInited;
 
 void buffer_init(TBuffer *pBuf)
 {
@@ -877,7 +866,7 @@ BOOL multi_init_multi(_SNETPROGRAMDATA *client_info, _SNETPLAYERDATA *user_info,
 				plr[0].pBattleNet = 1;
 		}
 
-		multi_event_handler(1);
+		multi_event_handler(TRUE);
 		if (UiSelectGame(1, client_info, user_info, ui_info, &fileinfo, &playerId))
 			break;
 
