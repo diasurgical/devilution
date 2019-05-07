@@ -2370,10 +2370,10 @@ void RespawnItem(int i, BOOL FlipFlag)
 	it = ItemCAnimTbl[item[i]._iCurs];
 	item[i]._iAnimData = itemanims[it];
 	item[i]._iAnimLen = ItemAnimLs[it];
-	item[i]._iRequest = FALSE;
 	item[i]._iAnimWidth = 96;
 	item[i]._iAnimWidth2 = 16;
 	item[i]._iPostDraw = FALSE;
+	item[i]._iRequest = FALSE;
 	if (FlipFlag) {
 		item[i]._iAnimFrame = 1;
 		item[i]._iAnimFlag = TRUE;
