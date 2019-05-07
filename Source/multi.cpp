@@ -15,7 +15,7 @@ BOOLEAN sgbPlayerLeftGameTbl[MAX_PLRS];
 int sgbSentThisCycle; // idb
 BOOL gbShouldValidatePackage;
 BYTE gbActivePlayers;    // weak
-BOOLEAN gbGameDestroyed; // weak
+BOOLEAN gbGameDestroyed;
 BOOLEAN sgbSendDeltaTbl[MAX_PLRS];
 _gamedata sgGameInitInfo;
 char byte_678640;    // weak
