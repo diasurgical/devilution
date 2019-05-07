@@ -1289,6 +1289,7 @@ void diablo_pause_game()
 // 525740: using guessed type int PauseMode;
 // 679660: using guessed type char gbMaxPlayers;
 
+/* NOTE: `return` must be used instead of `break` to be bin exact as C++ */
 void PressChar(int vkey)
 {
 	if(gmenu_exception() || control_talk_last_key(vkey) || sgnTimeoutCurs != 0 || deathflag) {
@@ -1314,11 +1315,11 @@ void PressChar(int vkey)
 	case 'G':
 	case 'g':
 		DecreaseGamma();
-		break;
+		return;
 	case 'F':
 	case 'f':
 		IncreaseGamma();
-		break;
+		return;
 	case 'I':
 	case 'i':
 		if(!stextflag) {
@@ -1334,7 +1335,7 @@ void PressChar(int vkey)
 				}
 			}
 		}
-		break;
+		return;
 	case 'C':
 	case 'c':
 		if(!stextflag) {
@@ -1350,7 +1351,7 @@ void PressChar(int vkey)
 				}
 			}
 		}
-		break;
+		return;
 	case 'Q':
 	case 'q':
 		if(!stextflag) {
@@ -1361,11 +1362,11 @@ void PressChar(int vkey)
 				questlog = FALSE;
 			}
 		}
-		break;
+		return;
 	case 'Z':
 	case 'z':
 		zoomflag = zoomflag == 0;
-		break;
+		return;
 	case 'S':
 	case 's':
 		if(!stextflag) {
@@ -1377,86 +1378,86 @@ void PressChar(int vkey)
 			}
 			track_repeat_walk(0);
 		}
-		break;
+		return;
 	case 'B':
 	case 'b':
 		if(!stextflag) {
 			invflag = 0;
 			sbookflag = sbookflag == 0;
 		}
-		break;
+		return;
 	case '+':
 	case '=':
 		if(automapflag) {
 			AutomapZoomIn();
 		}
-		break;
+		return;
 	case '-':
 	case '_':
 		if(automapflag) {
 			AutomapZoomOut();
 		}
-		break;
+		return;
 	case 'v':
 		NetSendCmdString(1 << myplr, gszProductName);
-		break;
+		return;
 	case 'V':
 		NetSendCmdString(1 << myplr, gszVersionNumber);
-		break;
+		return;
 	case '!':
 	case '1':
 		if(plr[myplr].SpdList[0]._itype != -1 && plr[myplr].SpdList[0]._itype != 11) {
 			UseInvItem(myplr, 47);
 		}
-		break;
+		return;
 	case '@':
 	case '2':
 		if(plr[myplr].SpdList[1]._itype != -1 && plr[myplr].SpdList[1]._itype != 11) {
 			UseInvItem(myplr, 48);
 		}
-		break;
+		return;
 	case '#':
 	case '3':
 		if(plr[myplr].SpdList[2]._itype != -1 && plr[myplr].SpdList[2]._itype != 11) {
 			UseInvItem(myplr, 49);
 		}
-		break;
+		return;
 	case '$':
 	case '4':
 		if(plr[myplr].SpdList[3]._itype != -1 && plr[myplr].SpdList[3]._itype != 11) {
 			UseInvItem(myplr, 50);
 		}
-		break;
+		return;
 	case '%':
 	case '5':
 		if(plr[myplr].SpdList[4]._itype != -1 && plr[myplr].SpdList[4]._itype != 11) {
 			UseInvItem(myplr, 51);
 		}
-		break;
+		return;
 	case '^':
 	case '6':
 		if(plr[myplr].SpdList[5]._itype != -1 && plr[myplr].SpdList[5]._itype != 11) {
 			UseInvItem(myplr, 52);
 		}
-		break;
+		return;
 	case '&':
 	case '7':
 		if(plr[myplr].SpdList[6]._itype != -1 && plr[myplr].SpdList[6]._itype != 11) {
 			UseInvItem(myplr, 53);
 		}
-		break;
+		return;
 	case '*':
 	case '8':
 #ifdef _DEBUG
 		if(debug_mode_key_inverted_v || debug_mode_key_w) {
 			NetSendCmd(TRUE, CMD_CHEAT_EXPERIENCE);
-			break;
+			return;
 		}
 #endif
 		if(plr[myplr].SpdList[7]._itype != -1 && plr[myplr].SpdList[7]._itype != 11) {
 			UseInvItem(myplr, 54);
 		}
-		break;
+		return;
 #ifdef _DEBUG
 	case ')':
 	case '0':
@@ -1476,52 +1477,52 @@ void PressChar(int vkey)
 			}
 			arrowdebug++;
 		}
-		break;
+		return;
 	case ':':
 		if(currlevel == 0 && debug_mode_key_w) {
 			SetAllSpellsCheat();
 		}
-		break;
+		return;
 	case '[':
 		if(currlevel == 0 && debug_mode_key_w) {
 			TakeGoldCheat();
 		}
-		break;
+		return;
 	case ']':
 		if(currlevel == 0 && debug_mode_key_w) {
 			MaxSpellsCheat();
 		}
-		break;
+		return;
 	case 'a':
 		if(debug_mode_key_inverted_v) {
 			spelldata[SPL_TELEPORT].sTownSpell = 1;
 			plr[myplr]._pSplLvl[plr[myplr]._pSpell]++;
 		}
-		break;
+		return;
 	case 'D':
 		PrintDebugPlayer(TRUE);
-		break;
+		return;
 	case 'd':
 		PrintDebugPlayer(FALSE);
-		break;
+		return;
 	case 'e':
 		if(debug_mode_key_d) {
 			sprintf(tempstr, "EFlag = %i", plr[myplr]._peflag);
 			NetSendCmdString(1 << myplr, tempstr);
 		}
-		break;
+		return;
 	case 'L':
 	case 'l':
 		if(debug_mode_key_inverted_v) {
 			ToggleLighting();
 		}
-		break;
+		return;
 	case 'M':
 		NextDebugMonster();
-		break;
+		return;
 	case 'm':
 		GetDebugMonster();
-		break;
+		return;
 	case 'R':
 	case 'r':
 		sprintf(tempstr, "seed = %i", glSeedTbl[currlevel]);
@@ -1530,7 +1531,7 @@ void PressChar(int vkey)
 		NetSendCmdString(1 << myplr, tempstr);
 		sprintf(tempstr, "End = %i", glEndSeed[currlevel]);
 		NetSendCmdString(1 << myplr, tempstr);
-		break;
+		return;
 	case 'T':
 	case 't':
 		if(debug_mode_key_inverted_v) {
@@ -1539,17 +1540,17 @@ void PressChar(int vkey)
 			sprintf(tempstr, "CX = %i  CY = %i  DP = %i", cursmx, cursmy, dungeon[cursmx][cursmy]);
 			NetSendCmdString(1 << myplr, tempstr);
 		}
-		break;
+		return;
 	case '|':
 		if(currlevel == 0 && debug_mode_key_w) {
 			GiveGoldCheat();
 		}
-		break;
+		return;
 	case '~':
 		if(currlevel == 0 && debug_mode_key_w) {
 			StoresCheat();
 		}
-		break;
+		return;
 #endif
 	}
 }
