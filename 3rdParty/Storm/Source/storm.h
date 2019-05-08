@@ -372,13 +372,6 @@ typedef struct _s_evt
   DWORD dwSize;
 } S_EVT, *PS_EVT;
 
-typedef struct _SNETEVENT {
-	int eventid;
-	int playerid;
-	void *data;
-	int databytes;
-} _SNETEVENT;
-
 typedef void (STORMAPI *SEVTHANDLER)(struct _SNETEVENT *);
 
 // @TODO: "type" is unknown.

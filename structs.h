@@ -1262,6 +1262,13 @@ typedef struct _SNETCAPS {
 	int defaultturnsintransit;
 } _SNETCAPS;
 
+typedef struct _SNETEVENT {
+	int eventid;
+	int playerid;
+	void *data;
+	int databytes;
+} _SNETEVENT;
+
 // TPDEF PTR FCN UCHAR SNETABORTPROC
 // TPDEF PTR FCN UCHAR SNETCATEGORYPROC
 // TPDEF PTR FCN UCHAR SNETCHECKAUTHPROC
