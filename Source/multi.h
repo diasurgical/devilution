@@ -2,6 +2,8 @@
 #ifndef __MULTI_H__
 #define __MULTI_H__
 
+#include "../3rdParty/Storm/Source/storm.h"
+
 extern BOOLEAN gbSomebodyWonGameKludge; // weak
 extern char szPlayerDescript[128];
 extern WORD sgwPackPlrOffsetTbl[MAX_PLRS];

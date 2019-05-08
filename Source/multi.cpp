@@ -1,5 +1,4 @@
 #include "diablo.h"
-#include "../3rdParty/Storm/Source/storm.h"
 #include "../DiabloUI/diabloui.h"
 
 BOOLEAN gbSomebodyWonGameKludge; // weak
@@ -619,8 +618,8 @@ void NetClose()
 void multi_event_handler(BOOL add)
 {
 	DWORD i;
-	BOOL(__stdcall * fn)
-	(int, void(__stdcall *)(_SNETEVENT *));
+	BOOL(STORMAPI * fn)
+	(int, SEVTHANDLER);
 
 	if (add)
 		fn = SNetRegisterEventHandler;

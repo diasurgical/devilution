@@ -372,6 +372,14 @@ typedef struct _s_evt
   DWORD dwSize;
 } S_EVT, *PS_EVT;
 
+typedef struct _SNETEVENT {
+	int eventid;
+	int playerid;
+	void *data;
+	int databytes;
+} _SNETEVENT;
+
+typedef void (STORMAPI *SEVTHANDLER)(struct _SNETEVENT *);
 
 // @TODO: "type" is unknown.
 //HANDLE STORMAPI SNetRegisterEventHandler(int type, void (STORMAPI *sEvent)(PS_EVT));
@@ -1316,8 +1324,8 @@ BOOLEAN __stdcall SFileSetBasePath(char *);
 void __cdecl SDrawRealizePalette(void);
 BOOL __cdecl SVidPlayContinue(void);
 BOOL __stdcall SNetGetOwnerTurnsWaiting(DWORD *);
-BOOL __stdcall SNetUnregisterEventHandler(int,void (__stdcall*)(struct _SNETEVENT *));
-BOOL __stdcall SNetRegisterEventHandler(int,void (__stdcall*)(struct _SNETEVENT *));
+BOOL __stdcall SNetUnregisterEventHandler(int,SEVTHANDLER);
+BOOL __stdcall SNetRegisterEventHandler(int,SEVTHANDLER);
 BOOLEAN __stdcall SNetSetBasePlayer(int);
 int __stdcall SNetInitializeProvider(unsigned long,struct _SNETPROGRAMDATA *,struct _SNETPLAYERDATA *,struct _SNETUIDATA *,struct _SNETVERSIONDATA *);
 int __stdcall SNetGetProviderCaps(struct _SNETCAPS *);
