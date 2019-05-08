@@ -1247,8 +1247,6 @@ typedef struct _uiheroinfo {
 // storm
 //////////////////////////////////////////////////
 
-// TPDEF PTR FCN VOID SEVTHANDLER
-
 // TPDEF PTR FCN UCHAR SMSGIDLEPROC
 // TPDEF PTR FCN VOID SMSGHANDLER
 
@@ -1263,13 +1261,6 @@ typedef struct _SNETCAPS {
 	int defaultturnssec;
 	int defaultturnsintransit;
 } _SNETCAPS;
-
-typedef struct _SNETEVENT {
-	int eventid;
-	int playerid;
-	void *data;
-	int databytes;
-} _SNETEVENT;
 
 // TPDEF PTR FCN UCHAR SNETABORTPROC
 // TPDEF PTR FCN UCHAR SNETCATEGORYPROC
